@@ -1,11 +1,11 @@
 @interface SFRSAEncryptionOperation
 + (id)_defaultEncryptionOperation;
 - (SFRSAEncryptionOperation)init;
-- (SFRSAEncryptionOperation)initWithCoder:(id)a3;
-- (SFRSAEncryptionOperation)initWithKeySpecifier:(id)a3;
+- (SFRSAEncryptionOperation)initWithCoder:(id)coder;
+- (SFRSAEncryptionOperation)initWithKeySpecifier:(id)specifier;
 - (_SFRSAKeySpecifier)encryptionKeySpecifier;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setEncryptionKeySpecifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setEncryptionKeySpecifier:(id)specifier;
 @end
 
 @implementation SFRSAEncryptionOperation
@@ -27,10 +27,10 @@
   return v4;
 }
 
-- (SFRSAEncryptionOperation)initWithKeySpecifier:(id)a3
+- (SFRSAEncryptionOperation)initWithKeySpecifier:(id)specifier
 {
-  v5 = a3;
-  if (!v5)
+  specifierCopy = specifier;
+  if (!specifierCopy)
   {
     [SFRSAEncryptionOperation initWithKeySpecifier:];
   }
@@ -41,22 +41,22 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(v6->_rsaEncryptionOperationInternal + 1, a3);
+    objc_storeStrong(v6->_rsaEncryptionOperationInternal + 1, specifier);
   }
 
   return v7;
 }
 
-- (SFRSAEncryptionOperation)initWithCoder:(id)a3
+- (SFRSAEncryptionOperation)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = SFRSAEncryptionOperation;
   return [(SFRSAEncryptionOperation *)&v4 init];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = *(self->_rsaEncryptionOperationInternal + 1);
 
   return [v4 initWithKeySpecifier:v5];
@@ -69,9 +69,9 @@
   return v2;
 }
 
-- (void)setEncryptionKeySpecifier:(id)a3
+- (void)setEncryptionKeySpecifier:(id)specifier
 {
-  v4 = [a3 copy];
+  v4 = [specifier copy];
   rsaEncryptionOperationInternal = self->_rsaEncryptionOperationInternal;
   v6 = rsaEncryptionOperationInternal[1];
   rsaEncryptionOperationInternal[1] = v4;

@@ -1,8 +1,8 @@
 @interface DUDisplayInfo
 - (CGPoint)absoluteOriginOnScreen;
 - (CGRect)frameInWindow;
-- (id)copyWithZone:(void *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(void *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DUDisplayInfo
@@ -25,9 +25,9 @@
   return result;
 }
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
-  v3 = self;
+  selfCopy = self;
   sub_232B57378(v6);
 
   sub_232B203C8(v6, v6[3]);
@@ -36,11 +36,11 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_232B5746C(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_232B5746C(coderCopy);
 }
 
 @end

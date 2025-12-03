@@ -1,16 +1,16 @@
 @interface AWDSymptomsNetworkTCPFlowThroughputEstimator
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsNetworkType:(id)a3;
+- (int)StringAsNetworkType:(id)type;
 - (int)networkType;
 - (unint64_t)hash;
-- (void)addFlowThroughputEvent:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasNetworkType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addFlowThroughputEvent:(id)event;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasNetworkType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDSymptomsNetworkTCPFlowThroughputEstimator
@@ -28,9 +28,9 @@
   }
 }
 
-- (void)setHasNetworkType:(BOOL)a3
+- (void)setHasNetworkType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -43,20 +43,20 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsNetworkType:(id)a3
+- (int)StringAsNetworkType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"WIFI"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"WIFI"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CELLULAR"])
+  else if ([typeCopy isEqualToString:@"CELLULAR"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"WIRED_ETHERNET"])
+  else if ([typeCopy isEqualToString:@"WIRED_ETHERNET"])
   {
     v4 = 3;
   }
@@ -69,22 +69,22 @@
   return v4;
 }
 
-- (void)addFlowThroughputEvent:(id)a3
+- (void)addFlowThroughputEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   flowThroughputEvents = self->_flowThroughputEvents;
-  v8 = v4;
+  v8 = eventCopy;
   if (!flowThroughputEvents)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_flowThroughputEvents;
     self->_flowThroughputEvents = v6;
 
-    v4 = v8;
+    eventCopy = v8;
     flowThroughputEvents = self->_flowThroughputEvents;
   }
 
-  [(NSMutableArray *)flowThroughputEvents addObject:v4];
+  [(NSMutableArray *)flowThroughputEvents addObject:eventCopy];
 }
 
 - (id)description
@@ -93,8 +93,8 @@
   v8.receiver = self;
   v8.super_class = AWDSymptomsNetworkTCPFlowThroughputEstimator;
   v4 = [(AWDSymptomsNetworkTCPFlowThroughputEstimator *)&v8 description];
-  v5 = [(AWDSymptomsNetworkTCPFlowThroughputEstimator *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDSymptomsNetworkTCPFlowThroughputEstimator *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -102,12 +102,12 @@
 - (id)dictionaryRepresentation
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
 
     has = self->_has;
   }
@@ -125,19 +125,19 @@
       v7 = *(&off_27898F0E8 + v6);
     }
 
-    [v3 setObject:v7 forKey:@"networkType"];
+    [dictionary setObject:v7 forKey:@"networkType"];
   }
 
   clientIdentifier = self->_clientIdentifier;
   if (clientIdentifier)
   {
-    [v3 setObject:clientIdentifier forKey:@"clientIdentifier"];
+    [dictionary setObject:clientIdentifier forKey:@"clientIdentifier"];
   }
 
   sourceAppIdentifier = self->_sourceAppIdentifier;
   if (sourceAppIdentifier)
   {
-    [v3 setObject:sourceAppIdentifier forKey:@"sourceAppIdentifier"];
+    [dictionary setObject:sourceAppIdentifier forKey:@"sourceAppIdentifier"];
   }
 
   if ([(NSMutableArray *)self->_flowThroughputEvents count])
@@ -162,8 +162,8 @@
             objc_enumerationMutation(v11);
           }
 
-          v16 = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
-          [v10 addObject:v16];
+          dictionaryRepresentation = [*(*(&v19 + 1) + 8 * i) dictionaryRepresentation];
+          [v10 addObject:dictionaryRepresentation];
         }
 
         v13 = [(NSMutableArray *)v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -172,18 +172,18 @@
       while (v13);
     }
 
-    [v3 setObject:v10 forKey:@"flowThroughputEvent"];
+    [dictionary setObject:v10 forKey:@"flowThroughputEvent"];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -240,27 +240,27 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
-    v4[1] = self->_timestamp;
-    *(v4 + 48) |= 1u;
+    toCopy[1] = self->_timestamp;
+    *(toCopy + 48) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 8) = self->_networkType;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 8) = self->_networkType;
+    *(toCopy + 48) |= 2u;
   }
 
-  v10 = v4;
+  v10 = toCopy;
   if (self->_clientIdentifier)
   {
-    [v4 setClientIdentifier:?];
+    [toCopy setClientIdentifier:?];
   }
 
   if (self->_sourceAppIdentifier)
@@ -271,10 +271,10 @@
   if ([(AWDSymptomsNetworkTCPFlowThroughputEstimator *)self flowThroughputEventsCount])
   {
     [v10 clearFlowThroughputEvents];
-    v6 = [(AWDSymptomsNetworkTCPFlowThroughputEstimator *)self flowThroughputEventsCount];
-    if (v6)
+    flowThroughputEventsCount = [(AWDSymptomsNetworkTCPFlowThroughputEstimator *)self flowThroughputEventsCount];
+    if (flowThroughputEventsCount)
     {
-      v7 = v6;
+      v7 = flowThroughputEventsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(AWDSymptomsNetworkTCPFlowThroughputEstimator *)self flowThroughputEventAtIndex:i];
@@ -284,10 +284,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if (has)
@@ -303,11 +303,11 @@
     *(v5 + 48) |= 2u;
   }
 
-  v8 = [(NSString *)self->_clientIdentifier copyWithZone:a3];
+  v8 = [(NSString *)self->_clientIdentifier copyWithZone:zone];
   v9 = v6[2];
   v6[2] = v8;
 
-  v10 = [(NSString *)self->_sourceAppIdentifier copyWithZone:a3];
+  v10 = [(NSString *)self->_sourceAppIdentifier copyWithZone:zone];
   v11 = v6[5];
   v6[5] = v10;
 
@@ -330,7 +330,7 @@
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{a3, v20}];
+        v17 = [*(*(&v20 + 1) + 8 * i) copyWithZone:{zone, v20}];
         [v6 addFlowThroughputEvent:v17];
       }
 
@@ -344,24 +344,24 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_timestamp != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_timestamp != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_18:
     v9 = 0;
@@ -370,25 +370,25 @@ LABEL_18:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_networkType != *(v4 + 8))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_networkType != *(equalCopy + 8))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_18;
   }
 
   clientIdentifier = self->_clientIdentifier;
-  if (clientIdentifier | *(v4 + 2) && ![(NSString *)clientIdentifier isEqual:?])
+  if (clientIdentifier | *(equalCopy + 2) && ![(NSString *)clientIdentifier isEqual:?])
   {
     goto LABEL_18;
   }
 
   sourceAppIdentifier = self->_sourceAppIdentifier;
-  if (sourceAppIdentifier | *(v4 + 5))
+  if (sourceAppIdentifier | *(equalCopy + 5))
   {
     if (![(NSString *)sourceAppIdentifier isEqual:?])
     {
@@ -397,7 +397,7 @@ LABEL_18:
   }
 
   flowThroughputEvents = self->_flowThroughputEvents;
-  if (flowThroughputEvents | *(v4 + 3))
+  if (flowThroughputEvents | *(equalCopy + 3))
   {
     v9 = [(NSMutableArray *)flowThroughputEvents isEqual:?];
   }
@@ -441,26 +441,26 @@ LABEL_6:
   return v5 ^ v6 ^ [(NSMutableArray *)self->_flowThroughputEvents hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 48);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 48);
   if (v6)
   {
-    self->_timestamp = *(v4 + 1);
+    self->_timestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v6 = *(v4 + 48);
+    v6 = *(fromCopy + 48);
   }
 
   if ((v6 & 2) != 0)
   {
-    self->_networkType = *(v4 + 8);
+    self->_networkType = *(fromCopy + 8);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(AWDSymptomsNetworkTCPFlowThroughputEstimator *)self setClientIdentifier:?];
   }

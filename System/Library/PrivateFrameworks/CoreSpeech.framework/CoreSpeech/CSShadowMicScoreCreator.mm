@@ -1,6 +1,6 @@
 @interface CSShadowMicScoreCreator
 - (CSShadowMicScoreCreator)init;
-- (double)_calculateRMSWithFrameData:(signed __int16)a3[80];
+- (double)_calculateRMSWithFrameData:(signed __int16)data[80];
 - (void)_calculateNumberOfVoicingFrames;
 - (void)_calculateSpeechVoicingLevel;
 - (void)calculateShadowMicScore;
@@ -122,7 +122,7 @@ LABEL_3:
   self->_speechVoiceLevel = v14;
 }
 
-- (double)_calculateRMSWithFrameData:(signed __int16)a3[80]
+- (double)_calculateRMSWithFrameData:(signed __int16)data[80]
 {
   v3 = 0;
   v4 = 0uLL;
@@ -131,7 +131,7 @@ LABEL_3:
   v7 = 0uLL;
   do
   {
-    v8 = *&a3[v3];
+    v8 = *&data[v3];
     v9 = vmull_high_s16(v8, v8);
     v10 = vmull_s16(*v8.i8, *v8.i8);
     v7 = vaddw_high_u32(v7, v9);

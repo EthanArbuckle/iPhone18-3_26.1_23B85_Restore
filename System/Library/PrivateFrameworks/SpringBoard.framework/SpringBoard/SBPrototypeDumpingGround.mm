@@ -3,7 +3,7 @@
 - (SBWindowScene)windowScene;
 - (void)_updatePearlDebugUI;
 - (void)dealloc;
-- (void)settings:(id)a3 changedValueForKey:(id)a4;
+- (void)settings:(id)settings changedValueForKey:(id)key;
 @end
 
 @implementation SBPrototypeDumpingGround
@@ -15,32 +15,32 @@
   v2 = [(SBPrototypeDumpingGround *)&v23 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D02C20] rootSettings];
-    v4 = [v3 pearlSettings];
-    [v4 addKeyObserver:v2];
+    rootSettings = [MEMORY[0x277D02C20] rootSettings];
+    pearlSettings = [rootSettings pearlSettings];
+    [pearlSettings addKeyObserver:v2];
 
     [(SBPrototypeDumpingGround *)v2 _updatePearlDebugUI];
-    v5 = [MEMORY[0x277D02C20] rootSettings];
-    v6 = [v5 addNotificationOutlet];
-    v7 = [v6 addAction:&__block_literal_global_262];
+    rootSettings2 = [MEMORY[0x277D02C20] rootSettings];
+    addNotificationOutlet = [rootSettings2 addNotificationOutlet];
+    v7 = [addNotificationOutlet addAction:&__block_literal_global_262];
 
     v8 = +[SBMedusaDomain rootSettings];
-    v9 = [v8 killSpringBoardOutlet];
-    v10 = [v9 addAction:&__block_literal_global_4_0];
+    killSpringBoardOutlet = [v8 killSpringBoardOutlet];
+    v10 = [killSpringBoardOutlet addAction:&__block_literal_global_4_0];
 
     v11 = +[SBExternalDisplaySettingsDomain rootSettings];
-    v12 = [v11 killSpringBoardOutlet];
-    v13 = [v12 addAction:&__block_literal_global_8_2];
+    killSpringBoardOutlet2 = [v11 killSpringBoardOutlet];
+    v13 = [killSpringBoardOutlet2 addAction:&__block_literal_global_8_2];
 
     v14 = +[SBAppSwitcherDomain rootSettings];
-    v15 = [v14 windowingSettings];
-    v16 = [v15 killSpringBoardOutlet];
-    v17 = [v16 addAction:&__block_literal_global_11_4];
+    windowingSettings = [v14 windowingSettings];
+    killSpringBoardOutlet3 = [windowingSettings killSpringBoardOutlet];
+    v17 = [killSpringBoardOutlet3 addAction:&__block_literal_global_11_4];
 
-    v18 = [MEMORY[0x277D661A0] rootSettings];
-    v19 = [v18 iconEditingSettings];
-    v20 = [v19 resetHomeScreenLayoutOutlet];
-    v21 = [v20 addAction:&__block_literal_global_14_1];
+    rootSettings3 = [MEMORY[0x277D661A0] rootSettings];
+    iconEditingSettings = [rootSettings3 iconEditingSettings];
+    resetHomeScreenLayoutOutlet = [iconEditingSettings resetHomeScreenLayoutOutlet];
+    v21 = [resetHomeScreenLayoutOutlet addAction:&__block_literal_global_14_1];
   }
 
   return v2;
@@ -82,8 +82,8 @@ void __32__SBPrototypeDumpingGround_init__block_invoke_5()
 {
   if (self->_appLaunchedNotificationToken)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self->_appLaunchedNotificationToken];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self->_appLaunchedNotificationToken];
 
     appLaunchedNotificationToken = self->_appLaunchedNotificationToken;
     self->_appLaunchedNotificationToken = 0;
@@ -94,14 +94,14 @@ void __32__SBPrototypeDumpingGround_init__block_invoke_5()
   [(SBPrototypeDumpingGround *)&v5 dealloc];
 }
 
-- (void)settings:(id)a3 changedValueForKey:(id)a4
+- (void)settings:(id)settings changedValueForKey:(id)key
 {
   v5 = MEMORY[0x277D02C20];
-  v6 = a3;
-  v7 = [v5 rootSettings];
-  v8 = [v7 pearlSettings];
+  settingsCopy = settings;
+  rootSettings = [v5 rootSettings];
+  pearlSettings = [rootSettings pearlSettings];
 
-  if (v8 == v6)
+  if (pearlSettings == settingsCopy)
   {
 
     [(SBPrototypeDumpingGround *)self _updatePearlDebugUI];
@@ -112,12 +112,12 @@ void __32__SBPrototypeDumpingGround_init__block_invoke_5()
 {
   if ([SBApp hasFinishedLaunching])
   {
-    v3 = [MEMORY[0x277D02C20] rootSettings];
-    v4 = [v3 pearlSettings];
-    v5 = [v4 pearlDebugUIEnabled];
+    rootSettings = [MEMORY[0x277D02C20] rootSettings];
+    pearlSettings = [rootSettings pearlSettings];
+    pearlDebugUIEnabled = [pearlSettings pearlDebugUIEnabled];
 
     pearlMonitorUI = self->_pearlMonitorUI;
-    if (v5)
+    if (pearlDebugUIEnabled)
     {
       if (!pearlMonitorUI)
       {
@@ -126,8 +126,8 @@ void __32__SBPrototypeDumpingGround_init__block_invoke_5()
         self->_pearlMonitorUI = v7;
 
         v9 = self->_pearlMonitorUI;
-        v10 = [(SBPrototypeDumpingGround *)self windowScene];
-        [(SBBiometricMonitorUI *)v9 setWindowScene:v10];
+        windowScene = [(SBPrototypeDumpingGround *)self windowScene];
+        [(SBBiometricMonitorUI *)v9 setWindowScene:windowScene];
 
         v11 = self->_pearlMonitorUI;
         v12 = objc_alloc_init(SBBiometricMonitorPearlDataSource);
@@ -151,14 +151,14 @@ void __32__SBPrototypeDumpingGround_init__block_invoke_5()
   else if (!self->_appLaunchedNotificationToken)
   {
     objc_initWeak(&location, self);
-    v13 = [MEMORY[0x277CCAB98] defaultCenter];
-    v14 = [MEMORY[0x277CCABD8] mainQueue];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    mainQueue = [MEMORY[0x277CCABD8] mainQueue];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __47__SBPrototypeDumpingGround__updatePearlDebugUI__block_invoke;
     v18[3] = &unk_2783AFD98;
     objc_copyWeak(&v19, &location);
-    v15 = [v13 addObserverForName:@"SBBootCompleteNotification" object:0 queue:v14 usingBlock:v18];
+    v15 = [defaultCenter addObserverForName:@"SBBootCompleteNotification" object:0 queue:mainQueue usingBlock:v18];
     appLaunchedNotificationToken = self->_appLaunchedNotificationToken;
     self->_appLaunchedNotificationToken = v15;
 

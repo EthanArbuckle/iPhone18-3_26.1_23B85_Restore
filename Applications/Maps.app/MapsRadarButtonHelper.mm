@@ -1,7 +1,7 @@
 @interface MapsRadarButtonHelper
 + (BOOL)shouldShowButton;
-+ (id)configureMenuWith:(id)a3;
-+ (void)configureWithButton:(id)a3 presentationViewController:(id)a4 actionHandler:(id)a5;
++ (id)configureMenuWith:(id)with;
++ (void)configureWithButton:(id)button presentationViewController:(id)controller actionHandler:(id)handler;
 - (MapsRadarButtonHelper)init;
 @end
 
@@ -22,21 +22,21 @@
   return v2 & 1;
 }
 
-+ (void)configureWithButton:(id)a3 presentationViewController:(id)a4 actionHandler:(id)a5
++ (void)configureWithButton:(id)button presentationViewController:(id)controller actionHandler:(id)handler
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(handler);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
   swift_getObjCClassMetadata();
-  v9 = a3;
-  v10 = a4;
-  sub_10011CC98(v9, v10, sub_1000FA694, v8);
+  buttonCopy = button;
+  controllerCopy = controller;
+  sub_10011CC98(buttonCopy, controllerCopy, sub_1000FA694, v8);
 }
 
-+ (id)configureMenuWith:(id)a3
++ (id)configureMenuWith:(id)with
 {
-  v3 = a3;
-  v4 = sub_100121D48(v3);
+  withCopy = with;
+  v4 = sub_100121D48(withCopy);
 
   return v4;
 }

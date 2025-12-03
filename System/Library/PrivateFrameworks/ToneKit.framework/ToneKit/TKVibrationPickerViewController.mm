@@ -1,73 +1,73 @@
 @interface TKVibrationPickerViewController
-- ($96EE1C12479E9B303E9C2794B92A11A2)_cellAccessoriesDescriptorForRowAtIndexPath:(id)a3;
+- ($96EE1C12479E9B303E9C2794B92A11A2)_cellAccessoriesDescriptorForRowAtIndexPath:(id)path;
 - (BOOL)_showsOnlyEditableSections;
 - (TKVibrationPickerViewControllerDelegate)_additionalDelegate;
 - (TKVibrationPickerViewControllerDelegate)delegate;
 - (TKVibrationPickerViewControllerDismissalDelegate)_dismissalDelegate;
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4;
-- (id)_adjustedNameForVibrationWithDesiredName:(id)a3 vibrationIdentifier:(id)a4;
-- (id)_customHeaderViewForHeaderInSection:(int64_t)a3;
-- (id)_identifierOfVibrationAtIndexPath:(id)a3;
-- (id)_indexPathForVibrationWithIdentifier:(id)a3;
-- (id)_initWithAlertType:(int64_t)a3 tableViewStyle:(int64_t)a4;
-- (id)_localizationIdentifierForHeaderInSection:(int64_t)a3;
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section;
+- (id)_adjustedNameForVibrationWithDesiredName:(id)name vibrationIdentifier:(id)identifier;
+- (id)_customHeaderViewForHeaderInSection:(int64_t)section;
+- (id)_identifierOfVibrationAtIndexPath:(id)path;
+- (id)_indexPathForVibrationWithIdentifier:(id)identifier;
+- (id)_initWithAlertType:(int64_t)type tableViewStyle:(int64_t)style;
+- (id)_localizationIdentifierForHeaderInSection:(int64_t)section;
 - (id)_navigationItem;
-- (id)_sanitizeVibrationIdentifierForPlayback:(id)a3;
+- (id)_sanitizeVibrationIdentifierForPlayback:(id)playback;
 - (id)_sanitizedCorrespondingToneIdentifier;
 - (id)_sanitizedDefaultVibrationIdentifier;
-- (id)_sortedArrayWithVibrationIdentifiers:(id)a3 allowsDuplicateVibrationNames:(BOOL)a4;
+- (id)_sortedArrayWithVibrationIdentifiers:(id)identifiers allowsDuplicateVibrationNames:(BOOL)names;
 - (id)_sortedUserGeneratedVibrationIdentifiers;
 - (id)_sortedVibrationIdentifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (int64_t)_numberOfRowsInVibrationPickerSection:(int64_t)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (int64_t)_numberOfRowsInVibrationPickerSection:(int64_t)section;
 - (int64_t)_sectionForDefaultGroup;
 - (int64_t)_sectionForNoneGroup;
 - (int64_t)_sectionForSynchronizedGroup;
 - (int64_t)_sectionForSystemGroup;
 - (int64_t)_sectionForUserGeneratedGroup;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations;
 - (void)_handleUserGeneratedVibrationsDidChangeNotification;
 - (void)_presentVibrationRecorderViewController;
 - (void)_processCurrentVibrationSelection;
-- (void)_startVibratingWithVibrationIdentifier:(id)a3;
+- (void)_startVibratingWithVibrationIdentifier:(id)identifier;
 - (void)_updateCheckedStateOfAllVisibleCells;
 - (void)_updateEditButtonItem;
-- (void)_updateSectionVisibilityFlagToValue:(BOOL)a3 usingBlock:(id)a4 sectionIndexGetter:(id)a5;
-- (void)_updateSelectionStyleForCell:(id)a3 indexPath:(id)a4;
-- (void)_updateStyleOfTableView:(id)a3 forStyleProvider:(id)a4;
+- (void)_updateSectionVisibilityFlagToValue:(BOOL)value usingBlock:(id)block sectionIndexGetter:(id)getter;
+- (void)_updateSelectionStyleForCell:(id)cell indexPath:(id)path;
+- (void)_updateStyleOfTableView:(id)view forStyleProvider:(id)provider;
 - (void)_updateVisibilityOfSynchronizedGroup;
 - (void)dealloc;
-- (void)setCorrespondingToneIdentifier:(id)a3;
-- (void)setDefaultVibrationIdentifier:(id)a3;
-- (void)setNoneString:(id)a3;
-- (void)setSelectedVibrationIdentifier:(id)a3;
-- (void)setShowsDefault:(BOOL)a3;
-- (void)setShowsEditButtonInNavigationBar:(BOOL)a3;
-- (void)setShowsNone:(BOOL)a3;
-- (void)setShowsNothingSelected:(BOOL)a3;
-- (void)setShowsUserGenerated:(BOOL)a3;
-- (void)setStyleProvider:(id)a3;
-- (void)setTopic:(id)a3;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)vibrationPickerTableViewCell:(id)a3 endedEditingWithText:(id)a4;
-- (void)vibrationRecorderViewController:(id)a3 didFinishRecordingVibrationPattern:(id)a4 name:(id)a5;
-- (void)vibrationRecorderViewControllerWasDismissedWithoutSavingRecordedVibrationPattern:(id)a3;
+- (void)setCorrespondingToneIdentifier:(id)identifier;
+- (void)setDefaultVibrationIdentifier:(id)identifier;
+- (void)setNoneString:(id)string;
+- (void)setSelectedVibrationIdentifier:(id)identifier;
+- (void)setShowsDefault:(BOOL)default;
+- (void)setShowsEditButtonInNavigationBar:(BOOL)bar;
+- (void)setShowsNone:(BOOL)none;
+- (void)setShowsNothingSelected:(BOOL)selected;
+- (void)setShowsUserGenerated:(BOOL)generated;
+- (void)setStyleProvider:(id)provider;
+- (void)setTopic:(id)topic;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)vibrationPickerTableViewCell:(id)cell endedEditingWithText:(id)text;
+- (void)vibrationRecorderViewController:(id)controller didFinishRecordingVibrationPattern:(id)pattern name:(id)name;
+- (void)vibrationRecorderViewControllerWasDismissedWithoutSavingRecordedVibrationPattern:(id)pattern;
 - (void)viewDidLoad;
 @end
 
 @implementation TKVibrationPickerViewController
 
-- (id)_initWithAlertType:(int64_t)a3 tableViewStyle:(int64_t)a4
+- (id)_initWithAlertType:(int64_t)type tableViewStyle:(int64_t)style
 {
   v17.receiver = self;
   v17.super_class = TKVibrationPickerViewController;
-  v5 = [(TKVibrationPickerViewController *)&v17 initWithStyle:a4];
+  v5 = [(TKVibrationPickerViewController *)&v17 initWithStyle:style];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277D71F88]);
@@ -78,13 +78,13 @@
     vibratorController = v5->_vibratorController;
     v5->_vibratorController = v8;
 
-    v5->_alertType = a3;
+    v5->_alertType = type;
     v5->_showsDefault = 0;
-    v10 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-    v5->_showsUserGenerated = [v10 hasUserGeneratedVibrationsCapability];
+    mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+    v5->_showsUserGenerated = [mEMORY[0x277D71F68] hasUserGeneratedVibrationsCapability];
 
     v5->_showsNone = 1;
-    v11 = [(TLVibrationManager *)v5->_vibrationManager currentVibrationIdentifierForAlertType:a3];
+    v11 = [(TLVibrationManager *)v5->_vibrationManager currentVibrationIdentifierForAlertType:type];
     v12 = [v11 copy];
     defaultVibrationIdentifier = v5->_defaultVibrationIdentifier;
     v5->_defaultVibrationIdentifier = v12;
@@ -116,15 +116,15 @@
   [(TKVibrationPickerViewController *)&v4 dealloc];
 }
 
-- (void)setTopic:(id)a3
+- (void)setTopic:(id)topic
 {
-  v4 = a3;
+  topicCopy = topic;
   topic = self->_topic;
-  if (topic != v4)
+  if (topic != topicCopy)
   {
-    v8 = v4;
-    topic = [topic isEqualToString:v4];
-    v4 = v8;
+    v8 = topicCopy;
+    topic = [topic isEqualToString:topicCopy];
+    topicCopy = v8;
     if ((topic & 1) == 0)
     {
       v6 = [v8 copy];
@@ -137,41 +137,41 @@
       }
 
       topic = [(TKVibrationPickerViewController *)self _updateVisibilityOfSynchronizedGroup];
-      v4 = v8;
+      topicCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](topic, v4);
+  MEMORY[0x2821F96F8](topic, topicCopy);
 }
 
-- (void)setShowsDefault:(BOOL)a3
+- (void)setShowsDefault:(BOOL)default
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  if (self->_showsDefault != a3)
+  if (self->_showsDefault != default)
   {
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __51__TKVibrationPickerViewController_setShowsDefault___block_invoke;
     v17 = &unk_278316528;
-    v18 = self;
-    v19 = a3;
+    selfCopy = self;
+    defaultCopy = default;
     v9 = MEMORY[0x277D85DD0];
     v10 = 3221225472;
     v11 = __51__TKVibrationPickerViewController_setShowsDefault___block_invoke_2;
     v12 = &unk_278316878;
-    v13 = self;
+    selfCopy2 = self;
     [TKVibrationPickerViewController _updateSectionVisibilityFlagToValue:"_updateSectionVisibilityFlagToValue:usingBlock:sectionIndexGetter:" usingBlock:? sectionIndexGetter:?];
     if ([(TKVibrationPickerViewController *)self isViewLoaded])
     {
-      v4 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
-      v5 = [(TKVibrationPickerViewController *)self _indexPathForVibrationWithIdentifier:v4];
+      _sanitizedDefaultVibrationIdentifier = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
+      v5 = [(TKVibrationPickerViewController *)self _indexPathForVibrationWithIdentifier:_sanitizedDefaultVibrationIdentifier];
 
       if (v5)
       {
-        v6 = [(TKVibrationPickerViewController *)self tableView];
+        tableView = [(TKVibrationPickerViewController *)self tableView];
         v20[0] = v5;
         v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
-        [v6 reloadRowsAtIndexPaths:v7 withRowAnimation:5];
+        [tableView reloadRowsAtIndexPaths:v7 withRowAnimation:5];
       }
     }
   }
@@ -179,17 +179,17 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDefaultVibrationIdentifier:(id)a3
+- (void)setDefaultVibrationIdentifier:(id)identifier
 {
-  v20 = a3;
-  v4 = [v20 length];
-  v5 = v20;
+  identifierCopy = identifier;
+  v4 = [identifierCopy length];
+  v5 = identifierCopy;
   if (!v4)
   {
     vibrationManager = self->_vibrationManager;
-    v7 = [(TKVibrationPickerViewController *)self alertType];
-    v8 = [(TKVibrationPickerViewController *)self topic];
-    v5 = [(TLVibrationManager *)vibrationManager currentVibrationIdentifierForAlertType:v7 topic:v8];
+    alertType = [(TKVibrationPickerViewController *)self alertType];
+    topic = [(TKVibrationPickerViewController *)self topic];
+    v5 = [(TLVibrationManager *)vibrationManager currentVibrationIdentifierForAlertType:alertType topic:topic];
   }
 
   v9 = self->_defaultVibrationIdentifier;
@@ -203,15 +203,15 @@
     self->_defaultVibrationIdentifierWasExplicitlySet = v4 != 0;
     if ([(TKVibrationPickerViewController *)self isViewLoaded])
     {
-      v13 = [(TKVibrationPickerViewController *)self _sectionForDefaultGroup];
-      if (v13 == 0x7FFFFFFFFFFFFFFFLL)
+      _sectionForDefaultGroup = [(TKVibrationPickerViewController *)self _sectionForDefaultGroup];
+      if (_sectionForDefaultGroup == 0x7FFFFFFFFFFFFFFFLL)
       {
         v14 = 0;
       }
 
       else
       {
-        v14 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:v13];
+        v14 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:_sectionForDefaultGroup];
       }
 
       v15 = MEMORY[0x277CBEA60];
@@ -219,38 +219,38 @@
       v17 = [(TKVibrationPickerViewController *)self _indexPathForVibrationWithIdentifier:v10];
       v18 = [v15 arrayWithObjects:{v16, v17, v14, 0}];
 
-      v19 = [(TKVibrationPickerViewController *)self tableView];
-      [v19 reloadRowsAtIndexPaths:v18 withRowAnimation:5];
+      tableView = [(TKVibrationPickerViewController *)self tableView];
+      [tableView reloadRowsAtIndexPaths:v18 withRowAnimation:5];
     }
   }
 }
 
-- (void)setCorrespondingToneIdentifier:(id)a3
+- (void)setCorrespondingToneIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   correspondingToneIdentifier = self->_correspondingToneIdentifier;
-  v7 = v5;
-  if (correspondingToneIdentifier != v5 && ![(NSString *)correspondingToneIdentifier isEqualToString:v5])
+  v7 = identifierCopy;
+  if (correspondingToneIdentifier != identifierCopy && ![(NSString *)correspondingToneIdentifier isEqualToString:identifierCopy])
   {
-    objc_storeStrong(&self->_correspondingToneIdentifier, a3);
+    objc_storeStrong(&self->_correspondingToneIdentifier, identifier);
   }
 
   [(TKVibrationPickerViewController *)self _updateVisibilityOfSynchronizedGroup];
 }
 
-- (void)setShowsUserGenerated:(BOOL)a3
+- (void)setShowsUserGenerated:(BOOL)generated
 {
-  if (a3)
+  if (generated)
   {
-    v4 = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
-    v5 = [v4 hasUserGeneratedVibrationsCapability];
+    mEMORY[0x277D71F68] = [MEMORY[0x277D71F68] sharedCapabilitiesManager];
+    hasUserGeneratedVibrationsCapability = [mEMORY[0x277D71F68] hasUserGeneratedVibrationsCapability];
 
-    if (self->_showsUserGenerated == v5)
+    if (self->_showsUserGenerated == hasUserGeneratedVibrationsCapability)
     {
       return;
     }
 
-    if (v5)
+    if (hasUserGeneratedVibrationsCapability)
     {
       goto LABEL_8;
     }
@@ -274,20 +274,20 @@ LABEL_8:
   [(TKVibrationPickerViewController *)self canEnterEditingMode];
 }
 
-- (void)setShowsNone:(BOOL)a3
+- (void)setShowsNone:(BOOL)none
 {
-  if (self->_showsNone != a3)
+  if (self->_showsNone != none)
   {
     [TKVibrationPickerViewController _updateSectionVisibilityFlagToValue:"_updateSectionVisibilityFlagToValue:usingBlock:sectionIndexGetter:" usingBlock:? sectionIndexGetter:?];
   }
 }
 
-- (void)setNoneString:(id)a3
+- (void)setNoneString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   noneString = self->_noneString;
-  v13 = v4;
-  if (noneString != v4 && ![(NSString *)noneString isEqualToString:v4])
+  v13 = stringCopy;
+  if (noneString != stringCopy && ![(NSString *)noneString isEqualToString:stringCopy])
   {
     v6 = [(NSString *)v13 copy];
     v7 = self->_noneString;
@@ -296,12 +296,12 @@ LABEL_8:
 
   if ([(TKVibrationPickerViewController *)self isViewLoaded])
   {
-    v8 = [(TKVibrationPickerViewController *)self _sectionForNoneGroup];
-    if (v8 != 0x7FFFFFFFFFFFFFFFLL)
+    _sectionForNoneGroup = [(TKVibrationPickerViewController *)self _sectionForNoneGroup];
+    if (_sectionForNoneGroup != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:v8];
-      v10 = [(TKVibrationPickerViewController *)self tableView];
-      v11 = [v10 cellForRowAtIndexPath:v9];
+      v9 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:_sectionForNoneGroup];
+      tableView = [(TKVibrationPickerViewController *)self tableView];
+      v11 = [tableView cellForRowAtIndexPath:v9];
 
       if (v11)
       {
@@ -312,41 +312,41 @@ LABEL_8:
 
         else
         {
-          v12 = [(TLVibrationManager *)self->_vibrationManager noneVibrationName];
-          [v11 setLabelText:v12];
+          noneVibrationName = [(TLVibrationManager *)self->_vibrationManager noneVibrationName];
+          [v11 setLabelText:noneVibrationName];
         }
       }
     }
   }
 }
 
-- (void)setShowsNothingSelected:(BOOL)a3
+- (void)setShowsNothingSelected:(BOOL)selected
 {
-  if (self->_showsNothingSelected != a3)
+  if (self->_showsNothingSelected != selected)
   {
-    self->_showsNothingSelected = a3;
+    self->_showsNothingSelected = selected;
     [(TKVibrationPickerViewController *)self _updateCheckedStateOfAllVisibleCells];
   }
 }
 
-- (void)setShowsEditButtonInNavigationBar:(BOOL)a3
+- (void)setShowsEditButtonInNavigationBar:(BOOL)bar
 {
-  if (self->_showsEditButtonInNavigationBar != a3)
+  if (self->_showsEditButtonInNavigationBar != bar)
   {
-    self->_showsEditButtonInNavigationBar = a3;
+    self->_showsEditButtonInNavigationBar = bar;
     [(TKVibrationPickerViewController *)self _updateEditButtonItem];
   }
 }
 
-- (void)setSelectedVibrationIdentifier:(id)a3
+- (void)setSelectedVibrationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   selectedVibrationIdentifier = self->_selectedVibrationIdentifier;
-  if (selectedVibrationIdentifier != v4)
+  if (selectedVibrationIdentifier != identifierCopy)
   {
-    v8 = v4;
-    selectedVibrationIdentifier = [selectedVibrationIdentifier isEqualToString:v4];
-    v4 = v8;
+    v8 = identifierCopy;
+    selectedVibrationIdentifier = [selectedVibrationIdentifier isEqualToString:identifierCopy];
+    identifierCopy = v8;
     if ((selectedVibrationIdentifier & 1) == 0)
     {
       v6 = [v8 copy];
@@ -354,77 +354,77 @@ LABEL_8:
       self->_selectedVibrationIdentifier = v6;
 
       selectedVibrationIdentifier = [(TKVibrationPickerViewController *)self _updateCheckedStateOfAllVisibleCells];
-      v4 = v8;
+      identifierCopy = v8;
     }
   }
 
-  MEMORY[0x2821F96F8](selectedVibrationIdentifier, v4);
+  MEMORY[0x2821F96F8](selectedVibrationIdentifier, identifierCopy);
 }
 
-- (void)setStyleProvider:(id)a3
+- (void)setStyleProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_styleProvider != v5)
+  providerCopy = provider;
+  if (self->_styleProvider != providerCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_styleProvider, a3);
+    v7 = providerCopy;
+    objc_storeStrong(&self->_styleProvider, provider);
     if ([(TKVibrationPickerViewController *)self isViewLoaded])
     {
-      v6 = [(TKVibrationPickerViewController *)self tableView];
-      [(TKVibrationPickerViewController *)self _updateStyleOfTableView:v6 forStyleProvider:v7];
-      [v6 reloadData];
+      tableView = [(TKVibrationPickerViewController *)self tableView];
+      [(TKVibrationPickerViewController *)self _updateStyleOfTableView:tableView forStyleProvider:v7];
+      [tableView reloadData];
     }
   }
 
   MEMORY[0x2821F9730]();
 }
 
-- (void)_updateStyleOfTableView:(id)a3 forStyleProvider:(id)a4
+- (void)_updateStyleOfTableView:(id)view forStyleProvider:(id)provider
 {
-  v10 = a3;
-  v5 = a4;
-  v6 = v5;
-  if (!v5)
+  viewCopy = view;
+  providerCopy = provider;
+  v6 = providerCopy;
+  if (!providerCopy)
   {
     goto LABEL_14;
   }
 
-  if ([v5 vibrationPickerUsesOpaqueBackground])
+  if ([providerCopy vibrationPickerUsesOpaqueBackground])
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
       goto LABEL_7;
     }
 
-    v7 = [v6 vibrationPickerCustomBackgroundColor];
-    [v10 setBackgroundView:0];
+    vibrationPickerCustomBackgroundColor = [v6 vibrationPickerCustomBackgroundColor];
+    [viewCopy setBackgroundView:0];
   }
 
   else
   {
-    [v10 setBackgroundView:0];
-    v7 = [MEMORY[0x277D75348] clearColor];
+    [viewCopy setBackgroundView:0];
+    vibrationPickerCustomBackgroundColor = [MEMORY[0x277D75348] clearColor];
   }
 
-  [v10 setBackgroundColor:v7];
+  [viewCopy setBackgroundColor:vibrationPickerCustomBackgroundColor];
 
 LABEL_7:
-  [v10 setSeparatorStyle:{objc_msgSend(v6, "vibrationPickerTableViewSeparatorStyle")}];
+  [viewCopy setSeparatorStyle:{objc_msgSend(v6, "vibrationPickerTableViewSeparatorStyle")}];
   if (objc_opt_respondsToSelector())
   {
     v8 = UIBackdropViewOverlayBlendModeFromTKBackdropViewOverlayBlendMode([v6 vibrationPickerCustomTableSeparatorBackdropOverlayBlendMode]);
     if (v8)
     {
-      [v10 _setSeparatorBackdropOverlayBlendMode:v8];
+      [viewCopy _setSeparatorBackdropOverlayBlendMode:v8];
     }
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v9 = [v6 vibrationPickerCustomTableSeparatorColor];
-    if (v9)
+    vibrationPickerCustomTableSeparatorColor = [v6 vibrationPickerCustomTableSeparatorColor];
+    if (vibrationPickerCustomTableSeparatorColor)
     {
-      [v10 setSeparatorColor:v9];
+      [viewCopy setSeparatorColor:vibrationPickerCustomTableSeparatorColor];
     }
   }
 
@@ -449,16 +449,16 @@ LABEL_14:
   v4.receiver = self;
   v4.super_class = TKVibrationPickerViewController;
   [(TKVibrationPickerViewController *)&v4 viewDidLoad];
-  v3 = [(TKVibrationPickerViewController *)self tableView];
-  [(TKVibrationPickerViewController *)self _updateStyleOfTableView:v3 forStyleProvider:self->_styleProvider];
+  tableView = [(TKVibrationPickerViewController *)self tableView];
+  [(TKVibrationPickerViewController *)self _updateStyleOfTableView:tableView forStyleProvider:self->_styleProvider];
 }
 
-- ($96EE1C12479E9B303E9C2794B92A11A2)_cellAccessoriesDescriptorForRowAtIndexPath:(id)a3
+- ($96EE1C12479E9B303E9C2794B92A11A2)_cellAccessoriesDescriptorForRowAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [v4 section];
-  v6 = [v4 row];
-  if ([(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup]== v5 && v6 == [(TKVibrationPickerViewController *)self _numberOfRowsInVibrationPickerSection:v5]- 1)
+  pathCopy = path;
+  section = [pathCopy section];
+  v6 = [pathCopy row];
+  if ([(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup]== section && v6 == [(TKVibrationPickerViewController *)self _numberOfRowsInVibrationPickerSection:section]- 1)
   {
     v7 = 0;
     v8 = 256;
@@ -473,8 +473,8 @@ LABEL_14:
 
     else
     {
-      v9 = [(TKVibrationPickerViewController *)self _selectedVibrationIndexPath];
-      v7 = [v9 isEqual:v4];
+      _selectedVibrationIndexPath = [(TKVibrationPickerViewController *)self _selectedVibrationIndexPath];
+      v7 = [_selectedVibrationIndexPath isEqual:pathCopy];
     }
 
     v8 = 0;
@@ -488,10 +488,10 @@ LABEL_14:
   v3 = self->_correspondingToneIdentifier;
   if (![(NSString *)v3 length])
   {
-    v4 = [MEMORY[0x277D71F78] sharedToneManager];
-    v5 = [(TKVibrationPickerViewController *)self alertType];
-    v6 = [(TKVibrationPickerViewController *)self topic];
-    v7 = [v4 currentToneIdentifierForAlertType:v5 topic:v6];
+    mEMORY[0x277D71F78] = [MEMORY[0x277D71F78] sharedToneManager];
+    alertType = [(TKVibrationPickerViewController *)self alertType];
+    topic = [(TKVibrationPickerViewController *)self topic];
+    v7 = [mEMORY[0x277D71F78] currentToneIdentifierForAlertType:alertType topic:topic];
 
     v3 = v7;
   }
@@ -503,42 +503,42 @@ LABEL_14:
 {
   vibrationManager = self->_vibrationManager;
   defaultVibrationIdentifier = self->_defaultVibrationIdentifier;
-  v5 = [(TKVibrationPickerViewController *)self alertType];
-  v6 = [(TKVibrationPickerViewController *)self topic];
-  v7 = [(TLVibrationManager *)vibrationManager _sanitizeVibrationIdentifier:defaultVibrationIdentifier forAlertType:v5 topic:v6 targetDevice:0 correspondingToneIdentifier:self->_correspondingToneIdentifier didFallbackToCurrentVibrationIdentifier:0];
+  alertType = [(TKVibrationPickerViewController *)self alertType];
+  topic = [(TKVibrationPickerViewController *)self topic];
+  v7 = [(TLVibrationManager *)vibrationManager _sanitizeVibrationIdentifier:defaultVibrationIdentifier forAlertType:alertType topic:topic targetDevice:0 correspondingToneIdentifier:self->_correspondingToneIdentifier didFallbackToCurrentVibrationIdentifier:0];
 
   return v7;
 }
 
-- (id)_sanitizeVibrationIdentifierForPlayback:(id)a3
+- (id)_sanitizeVibrationIdentifierForPlayback:(id)playback
 {
-  v4 = a3;
-  if ([v4 length])
+  playbackCopy = playback;
+  if ([playbackCopy length])
   {
-    v5 = v4;
+    _sanitizedDefaultVibrationIdentifier = playbackCopy;
   }
 
   else
   {
-    v5 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
+    _sanitizedDefaultVibrationIdentifier = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
   }
 
-  v6 = v5;
+  v6 = _sanitizedDefaultVibrationIdentifier;
 
   return v6;
 }
 
-- (id)_sortedArrayWithVibrationIdentifiers:(id)a3 allowsDuplicateVibrationNames:(BOOL)a4
+- (id)_sortedArrayWithVibrationIdentifiers:(id)identifiers allowsDuplicateVibrationNames:(BOOL)names
 {
-  v4 = a4;
+  namesCopy = names;
   v48 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  identifiersCopy = identifiers;
   v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  obj = v6;
+  obj = identifiersCopy;
   v8 = [obj countByEnumeratingWithState:&v41 objects:v47 count:16];
   if (v8)
   {
@@ -557,7 +557,7 @@ LABEL_14:
         v13 = [(TLVibrationManager *)self->_vibrationManager nameOfVibrationWithIdentifier:v12];
         if (v13)
         {
-          if (v4)
+          if (namesCopy)
           {
             v14 = [v7 objectForKey:v13];
             if (!v14)
@@ -582,8 +582,8 @@ LABEL_14:
     while (v9);
   }
 
-  v15 = [v7 allKeys];
-  v16 = [v15 sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
+  allKeys = [v7 allKeys];
+  v16 = [allKeys sortedArrayUsingSelector:sel_localizedCaseInsensitiveCompare_];
 
   v17 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v37 = 0u;
@@ -607,7 +607,7 @@ LABEL_14:
 
         v22 = [v7 objectForKey:*(*(&v37 + 1) + 8 * j)];
         v23 = v22;
-        if (v4)
+        if (namesCopy)
         {
           v35 = 0u;
           v36 = 0u;
@@ -660,8 +660,8 @@ LABEL_14:
   sortedVibrationIdentifiers = self->_sortedVibrationIdentifiers;
   if (!sortedVibrationIdentifiers)
   {
-    v4 = [(TLVibrationManager *)self->_vibrationManager allUserSelectableSystemVibrationIdentifiers];
-    v5 = [(TKVibrationPickerViewController *)self _sortedArrayWithVibrationIdentifiers:v4 allowsDuplicateVibrationNames:0];
+    allUserSelectableSystemVibrationIdentifiers = [(TLVibrationManager *)self->_vibrationManager allUserSelectableSystemVibrationIdentifiers];
+    v5 = [(TKVibrationPickerViewController *)self _sortedArrayWithVibrationIdentifiers:allUserSelectableSystemVibrationIdentifiers allowsDuplicateVibrationNames:0];
     v6 = self->_sortedVibrationIdentifiers;
     self->_sortedVibrationIdentifiers = v5;
 
@@ -676,33 +676,33 @@ LABEL_14:
   sortedUserGeneratedVibrationIdentifiers = self->_sortedUserGeneratedVibrationIdentifiers;
   if (!sortedUserGeneratedVibrationIdentifiers)
   {
-    v4 = [(TLVibrationManager *)self->_vibrationManager allUserGeneratedVibrationIdentifiers];
-    v5 = [(TKVibrationPickerViewController *)self _sortedArrayWithVibrationIdentifiers:v4 allowsDuplicateVibrationNames:1];
+    allUserGeneratedVibrationIdentifiers = [(TLVibrationManager *)self->_vibrationManager allUserGeneratedVibrationIdentifiers];
+    v5 = [(TKVibrationPickerViewController *)self _sortedArrayWithVibrationIdentifiers:allUserGeneratedVibrationIdentifiers allowsDuplicateVibrationNames:1];
     v6 = self->_sortedUserGeneratedVibrationIdentifiers;
     self->_sortedUserGeneratedVibrationIdentifiers = v5;
 
     if ([(NSArray *)self->_sortedUserGeneratedVibrationIdentifiers count])
     {
-      v7 = [(TKVibrationPickerViewController *)self showsUserGenerated];
+      showsUserGenerated = [(TKVibrationPickerViewController *)self showsUserGenerated];
     }
 
     else
     {
-      v7 = 0;
+      showsUserGenerated = 0;
     }
 
-    if (self->_canEnterEditingMode != v7)
+    if (self->_canEnterEditingMode != showsUserGenerated)
     {
       v8 = NSStringFromSelector(sel_canEnterEditingMode);
       [(TKVibrationPickerViewController *)self willChangeValueForKey:v8];
-      self->_canEnterEditingMode = v7;
+      self->_canEnterEditingMode = showsUserGenerated;
       [(TKVibrationPickerViewController *)self didChangeValueForKey:v8];
       if ([(TKVibrationPickerViewController *)self showsEditButtonInNavigationBar])
       {
         [(TKVibrationPickerViewController *)self _updateEditButtonItem];
       }
 
-      if (!v7 && [(TKVibrationPickerViewController *)self isEditing])
+      if (!showsUserGenerated && [(TKVibrationPickerViewController *)self isEditing])
       {
         [(TKVibrationPickerViewController *)self setEditing:0 animated:self->_viewHasAppearedAtLeastOnce];
       }
@@ -714,28 +714,28 @@ LABEL_14:
   return sortedUserGeneratedVibrationIdentifiers;
 }
 
-- (id)_identifierOfVibrationAtIndexPath:(id)a3
+- (id)_identifierOfVibrationAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4 || (v6 = [v4 section], v7 = objc_msgSend(v5, "row"), -[TKVibrationPickerViewController _sectionForDefaultGroup](self, "_sectionForDefaultGroup") == v6) && !v7)
+  pathCopy = path;
+  v5 = pathCopy;
+  if (!pathCopy || (v6 = [pathCopy section], v7 = objc_msgSend(v5, "row"), -[TKVibrationPickerViewController _sectionForDefaultGroup](self, "_sectionForDefaultGroup") == v6) && !v7)
   {
-    v8 = 0;
+    _sortedVibrationIdentifiers = 0;
     goto LABEL_25;
   }
 
   if ([(TKVibrationPickerViewController *)self _sectionForSynchronizedGroup]== v6 && !v7)
   {
-    v8 = self->_synchronizedVibrationIdentifier;
-    if (self->_showsDefault || (-[TKVibrationPickerViewController _sanitizedDefaultVibrationIdentifier](self, "_sanitizedDefaultVibrationIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEqualToString:v8], v9, (v10 & 1) == 0))
+    _sortedVibrationIdentifiers = self->_synchronizedVibrationIdentifier;
+    if (self->_showsDefault || (-[TKVibrationPickerViewController _sanitizedDefaultVibrationIdentifier](self, "_sanitizedDefaultVibrationIdentifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 isEqualToString:_sortedVibrationIdentifiers], v9, (v10 & 1) == 0))
     {
-      v11 = v8;
-      v8 = v11;
+      v11 = _sortedVibrationIdentifiers;
+      _sortedVibrationIdentifiers = v11;
 LABEL_10:
       v12 = v11;
 LABEL_24:
 
-      v8 = v12;
+      _sortedVibrationIdentifiers = v12;
       goto LABEL_25;
     }
 
@@ -744,17 +744,17 @@ LABEL_24:
 
   if ([(TKVibrationPickerViewController *)self _sectionForSystemGroup]== v6)
   {
-    v8 = [(TKVibrationPickerViewController *)self _sortedVibrationIdentifiers];
-    if (v7 < [(NSString *)v8 count])
+    _sortedVibrationIdentifiers = [(TKVibrationPickerViewController *)self _sortedVibrationIdentifiers];
+    if (v7 < [(NSString *)_sortedVibrationIdentifiers count])
     {
-      v12 = [(NSString *)v8 objectAtIndex:v7];
+      v12 = [(NSString *)_sortedVibrationIdentifiers objectAtIndex:v7];
       if (self->_showsDefault)
       {
         goto LABEL_24;
       }
 
-      v13 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
-      v14 = [v13 isEqualToString:v12];
+      _sanitizedDefaultVibrationIdentifier = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
+      v14 = [_sanitizedDefaultVibrationIdentifier isEqualToString:v12];
 
       if (!v14)
       {
@@ -767,10 +767,10 @@ LABEL_24:
 
   if ([(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup]== v6)
   {
-    v8 = [(TKVibrationPickerViewController *)self _sortedUserGeneratedVibrationIdentifiers];
-    if (v7 < [(NSString *)v8 count])
+    _sortedVibrationIdentifiers = [(TKVibrationPickerViewController *)self _sortedUserGeneratedVibrationIdentifiers];
+    if (v7 < [(NSString *)_sortedVibrationIdentifiers count])
     {
-      v11 = [(NSString *)v8 objectAtIndex:v7];
+      v11 = [(NSString *)_sortedVibrationIdentifiers objectAtIndex:v7];
       goto LABEL_10;
     }
 
@@ -779,14 +779,14 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v8 = 0;
+  _sortedVibrationIdentifiers = 0;
   if ([(TKVibrationPickerViewController *)self _sectionForNoneGroup]== v6 && !v7)
   {
-    v8 = *MEMORY[0x277D72070];
+    _sortedVibrationIdentifiers = *MEMORY[0x277D72070];
     if (!self->_showsDefault)
     {
-      v15 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
-      v16 = [v15 isEqualToString:v8];
+      _sanitizedDefaultVibrationIdentifier2 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
+      v16 = [_sanitizedDefaultVibrationIdentifier2 isEqualToString:_sortedVibrationIdentifiers];
 
       if (v16)
       {
@@ -797,26 +797,26 @@ LABEL_23:
 
 LABEL_25:
 
-  return v8;
+  return _sortedVibrationIdentifiers;
 }
 
-- (id)_indexPathForVibrationWithIdentifier:(id)a3
+- (id)_indexPathForVibrationWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([v4 length] && (-[TLVibrationManager vibrationWithIdentifierIsValid:](self->_vibrationManager, "vibrationWithIdentifierIsValid:", v4) & 1) != 0)
+  identifierCopy = identifier;
+  if ([identifierCopy length] && (-[TLVibrationManager vibrationWithIdentifierIsValid:](self->_vibrationManager, "vibrationWithIdentifierIsValid:", identifierCopy) & 1) != 0)
   {
 LABEL_5:
-    v7 = v4;
+    v7 = identifierCopy;
     vibrationManager = self->_vibrationManager;
-    v9 = [(TKVibrationPickerViewController *)self alertType];
-    v10 = [(TKVibrationPickerViewController *)self topic];
-    v4 = [(TLVibrationManager *)vibrationManager _sanitizeVibrationIdentifier:v7 forAlertType:v9 topic:v10 targetDevice:0 correspondingToneIdentifier:self->_correspondingToneIdentifier didFallbackToCurrentVibrationIdentifier:0];
+    alertType = [(TKVibrationPickerViewController *)self alertType];
+    topic = [(TKVibrationPickerViewController *)self topic];
+    identifierCopy = [(TLVibrationManager *)vibrationManager _sanitizeVibrationIdentifier:v7 forAlertType:alertType topic:topic targetDevice:0 correspondingToneIdentifier:self->_correspondingToneIdentifier didFallbackToCurrentVibrationIdentifier:0];
 
-    v11 = [(TKVibrationPickerViewController *)self _sectionForSynchronizedGroup];
-    if (v11 != 0x7FFFFFFFFFFFFFFFLL)
+    _sectionForSynchronizedGroup = [(TKVibrationPickerViewController *)self _sectionForSynchronizedGroup];
+    if (_sectionForSynchronizedGroup != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v12 = v11;
-      if ([v4 isEqualToString:self->_synchronizedVibrationIdentifier])
+      v12 = _sectionForSynchronizedGroup;
+      if ([identifierCopy isEqualToString:self->_synchronizedVibrationIdentifier])
       {
         v13 = MEMORY[0x277CCAA70];
         v14 = 0;
@@ -826,10 +826,10 @@ LABEL_18:
       }
     }
 
-    if ([v4 isEqualToString:*MEMORY[0x277D72070]])
+    if ([identifierCopy isEqualToString:*MEMORY[0x277D72070]])
     {
-      v5 = [(TKVibrationPickerViewController *)self _sectionForNoneGroup];
-      if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+      _sectionForNoneGroup = [(TKVibrationPickerViewController *)self _sectionForNoneGroup];
+      if (_sectionForNoneGroup != 0x7FFFFFFFFFFFFFFFLL)
       {
         goto LABEL_10;
       }
@@ -837,12 +837,12 @@ LABEL_18:
 
     else
     {
-      v16 = [(TKVibrationPickerViewController *)self _sectionForSystemGroup];
-      if (v16 != 0x7FFFFFFFFFFFFFFFLL)
+      _sectionForSystemGroup = [(TKVibrationPickerViewController *)self _sectionForSystemGroup];
+      if (_sectionForSystemGroup != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v12 = v16;
-        v17 = [(TKVibrationPickerViewController *)self _sortedVibrationIdentifiers];
-        v18 = [v17 indexOfObject:v4];
+        v12 = _sectionForSystemGroup;
+        _sortedVibrationIdentifiers = [(TKVibrationPickerViewController *)self _sortedVibrationIdentifiers];
+        v18 = [_sortedVibrationIdentifiers indexOfObject:identifierCopy];
 
         if (v18 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -852,12 +852,12 @@ LABEL_18:
         }
       }
 
-      v19 = [(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup];
-      if (v19 != 0x7FFFFFFFFFFFFFFFLL)
+      _sectionForUserGeneratedGroup = [(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup];
+      if (_sectionForUserGeneratedGroup != 0x7FFFFFFFFFFFFFFFLL)
       {
-        v12 = v19;
-        v20 = [(TKVibrationPickerViewController *)self _sortedUserGeneratedVibrationIdentifiers];
-        v21 = [v20 indexOfObject:v4];
+        v12 = _sectionForUserGeneratedGroup;
+        _sortedUserGeneratedVibrationIdentifiers = [(TKVibrationPickerViewController *)self _sortedUserGeneratedVibrationIdentifiers];
+        v21 = [_sortedUserGeneratedVibrationIdentifiers indexOfObject:identifierCopy];
 
         if (v21 != 0x7FFFFFFFFFFFFFFFLL)
         {
@@ -872,17 +872,17 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  v5 = [(TKVibrationPickerViewController *)self _sectionForDefaultGroup];
-  if (v5 == 0x7FFFFFFFFFFFFFFFLL)
+  _sectionForNoneGroup = [(TKVibrationPickerViewController *)self _sectionForDefaultGroup];
+  if (_sectionForNoneGroup == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
+    _sanitizedDefaultVibrationIdentifier = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
 
-    v4 = v6;
+    identifierCopy = _sanitizedDefaultVibrationIdentifier;
     goto LABEL_5;
   }
 
 LABEL_10:
-  v15 = v5;
+  v15 = _sectionForNoneGroup;
   v13 = MEMORY[0x277CCAA70];
   v14 = 0;
 LABEL_19:
@@ -895,16 +895,16 @@ LABEL_20:
 - (void)_processCurrentVibrationSelection
 {
   v5 = self->_selectedVibrationIdentifier;
-  v3 = [(TKVibrationPickerViewController *)self delegate];
+  delegate = [(TKVibrationPickerViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 vibrationPickerViewController:self selectedVibrationWithIdentifier:v5];
+    [delegate vibrationPickerViewController:self selectedVibrationWithIdentifier:v5];
   }
 
-  v4 = [(TKVibrationPickerViewController *)self _additionalDelegate];
+  _additionalDelegate = [(TKVibrationPickerViewController *)self _additionalDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 vibrationPickerViewController:self selectedVibrationWithIdentifier:v5];
+    [_additionalDelegate vibrationPickerViewController:self selectedVibrationWithIdentifier:v5];
   }
 }
 
@@ -915,35 +915,35 @@ LABEL_20:
     goto LABEL_5;
   }
 
-  v3 = [(TKVibrationPickerViewController *)self view];
-  v4 = [v3 superview];
+  view = [(TKVibrationPickerViewController *)self view];
+  superview = [view superview];
 
-  if (!v4)
+  if (!superview)
   {
     goto LABEL_5;
   }
 
-  v5 = [(TKVibrationPickerViewController *)self parentViewController];
-  v6 = [v5 view];
+  parentViewController = [(TKVibrationPickerViewController *)self parentViewController];
+  view2 = [parentViewController view];
 
-  if (v4 != v6)
+  if (superview != view2)
   {
 
 LABEL_5:
-    v7 = [(TKVibrationPickerViewController *)self navigationItem];
+    navigationItem = [(TKVibrationPickerViewController *)self navigationItem];
     goto LABEL_6;
   }
 
-  v7 = [v5 navigationItem];
+  navigationItem = [parentViewController navigationItem];
 
-  if (!v7)
+  if (!navigationItem)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
 
-  return v7;
+  return navigationItem;
 }
 
 - (void)_updateEditButtonItem
@@ -961,18 +961,18 @@ LABEL_6:
   [(TKVibrationPickerViewController *)self _updateEditButtonItemWithAnimation:viewHasAppearedAtLeastOnce];
 }
 
-- (void)_updateSelectionStyleForCell:(id)a3 indexPath:(id)a4
+- (void)_updateSelectionStyleForCell:(id)cell indexPath:(id)path
 {
-  v12 = a3;
-  v6 = a4;
-  if (v12)
+  cellCopy = cell;
+  pathCopy = path;
+  if (cellCopy)
   {
     if ([(TKVibrationPickerViewController *)self isEditing])
     {
       if ([(TKVibrationPickerViewController *)self isViewLoaded])
       {
-        v7 = [(TKVibrationPickerViewController *)self tableView];
-        v11 = (v6 || ([v7 indexPathForCell:v12], (v6 = v8 = v7;
+        tableView = [(TKVibrationPickerViewController *)self tableView];
+        v11 = (pathCopy || ([tableView indexPathForCell:cellCopy], (pathCopy = v8 = tableView;
       }
 
       else
@@ -986,17 +986,17 @@ LABEL_6:
       v11 = 1;
     }
 
-    [v12 setSelectionStyle:v11];
+    [cellCopy setSelectionStyle:v11];
   }
 }
 
-- (id)_adjustedNameForVibrationWithDesiredName:(id)a3 vibrationIdentifier:(id)a4
+- (id)_adjustedNameForVibrationWithDesiredName:(id)name vibrationIdentifier:(id)identifier
 {
   v50 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v9 = [v6 stringByTrimmingCharactersInSet:v8];
+  nameCopy = name;
+  identifierCopy = identifier;
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v9 = [nameCopy stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   if (![v9 length])
   {
@@ -1005,15 +1005,15 @@ LABEL_6:
     v9 = v10;
   }
 
-  v11 = [(TKVibrationPickerViewController *)self _sortedUserGeneratedVibrationIdentifiers];
-  v12 = [v11 count];
+  _sortedUserGeneratedVibrationIdentifiers = [(TKVibrationPickerViewController *)self _sortedUserGeneratedVibrationIdentifiers];
+  v12 = [_sortedUserGeneratedVibrationIdentifiers count];
   if (v12)
   {
     __base = malloc_type_malloc(8 * v12, 0x100004000313F17uLL);
     if (__base)
     {
-      v13 = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
-      v44 = [v13 invertedSet];
+      decimalDigitCharacterSet = [MEMORY[0x277CCA900] decimalDigitCharacterSet];
+      invertedSet = [decimalDigitCharacterSet invertedSet];
 
       v14 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ ", v9];
       v43 = [v14 length];
@@ -1021,13 +1021,13 @@ LABEL_6:
       v46 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v15 = v11;
+      v15 = _sortedUserGeneratedVibrationIdentifiers;
       v16 = [v15 countByEnumeratingWithState:&v45 objects:v49 count:16];
       if (v16)
       {
         v17 = v16;
-        v38 = v11;
-        v39 = v6;
+        v38 = _sortedUserGeneratedVibrationIdentifiers;
+        v39 = nameCopy;
         v18 = 0;
         __nel = 0;
         v42 = v15;
@@ -1042,7 +1042,7 @@ LABEL_6:
             }
 
             v21 = *(*(&v45 + 1) + 8 * i);
-            if (![v7 length] || (objc_msgSend(v21, "isEqualToString:", v7) & 1) == 0)
+            if (![identifierCopy length] || (objc_msgSend(v21, "isEqualToString:", identifierCopy) & 1) == 0)
             {
               v22 = [(TLVibrationManager *)self->_vibrationManager nameOfVibrationWithIdentifier:v21];
               v23 = v22;
@@ -1055,24 +1055,24 @@ LABEL_6:
 
                 else if ([v23 hasPrefix:v14])
                 {
-                  v24 = self;
+                  selfCopy = self;
                   v25 = v18;
                   v26 = v14;
                   v27 = v9;
                   v28 = [v23 stringByReplacingCharactersInRange:0 withString:{v43, &stru_282E32280}];
-                  if ([v28 rangeOfCharacterFromSet:v44] == 0x7FFFFFFFFFFFFFFFLL)
+                  if ([v28 rangeOfCharacterFromSet:invertedSet] == 0x7FFFFFFFFFFFFFFFLL)
                   {
-                    v29 = [v28 integerValue];
-                    if (v29 >= 2)
+                    integerValue = [v28 integerValue];
+                    if (integerValue >= 2)
                     {
-                      __base[__nel++] = v29;
+                      __base[__nel++] = integerValue;
                     }
                   }
 
                   v9 = v27;
                   v14 = v26;
                   v18 = v25;
-                  self = v24;
+                  self = selfCopy;
                   v15 = v42;
                 }
               }
@@ -1084,10 +1084,10 @@ LABEL_6:
 
         while (v17);
 
-        v6 = v39;
+        nameCopy = v39;
         if ((v18 & 1) == 0)
         {
-          v11 = v38;
+          _sortedUserGeneratedVibrationIdentifiers = v38;
 LABEL_33:
           free(__base);
 
@@ -1100,7 +1100,7 @@ LABEL_33:
           v31 = __base;
           qsort_b(__base, __nel, 8uLL, &__block_literal_global_1);
           v32 = 2;
-          v11 = v38;
+          _sortedUserGeneratedVibrationIdentifiers = v38;
           v33 = 0x277CCA000;
           while (1)
           {
@@ -1122,7 +1122,7 @@ LABEL_33:
         else
         {
           v32 = 2;
-          v11 = v38;
+          _sortedUserGeneratedVibrationIdentifiers = v38;
           v33 = 0x277CCA000uLL;
         }
 
@@ -1175,18 +1175,18 @@ uint64_t __96__TKVibrationPickerViewController__adjustedNameForVibrationWithDesi
 
   else
   {
-    v3 = [(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup];
-    if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+    _sectionForUserGeneratedGroup = [(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup];
+    if (_sectionForUserGeneratedGroup != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v4 = v3;
+      v4 = _sectionForUserGeneratedGroup;
       sortedUserGeneratedVibrationIdentifiers = self->_sortedUserGeneratedVibrationIdentifiers;
       self->_sortedUserGeneratedVibrationIdentifiers = 0;
 
       if ([(TKVibrationPickerViewController *)self isViewLoaded])
       {
-        v6 = [(TKVibrationPickerViewController *)self tableView];
+        tableView = [(TKVibrationPickerViewController *)self tableView];
         v7 = [MEMORY[0x277CCAA78] indexSetWithIndex:v4];
-        [v6 reloadSections:v7 withRowAnimation:100];
+        [tableView reloadSections:v7 withRowAnimation:100];
 
         [(TKVibrationPickerViewController *)self _updateCheckedStateOfAllVisibleCells];
       }
@@ -1194,22 +1194,22 @@ uint64_t __96__TKVibrationPickerViewController__adjustedNameForVibrationWithDesi
   }
 }
 
-- (void)_updateSectionVisibilityFlagToValue:(BOOL)a3 usingBlock:(id)a4 sectionIndexGetter:(id)a5
+- (void)_updateSectionVisibilityFlagToValue:(BOOL)value usingBlock:(id)block sectionIndexGetter:(id)getter
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3)
+  blockCopy = block;
+  getterCopy = getter;
+  v10 = getterCopy;
+  if (value)
   {
-    v8[2](v8);
+    blockCopy[2](blockCopy);
     v11 = v10[2](v10);
     v12 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    v12 = v9[2](v9);
-    v8[2](v8);
+    v12 = getterCopy[2](getterCopy);
+    blockCopy[2](blockCopy);
     v11 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
@@ -1219,7 +1219,7 @@ uint64_t __96__TKVibrationPickerViewController__adjustedNameForVibrationWithDesi
     v13[1] = 3221225472;
     v13[2] = __101__TKVibrationPickerViewController__updateSectionVisibilityFlagToValue_usingBlock_sectionIndexGetter___block_invoke;
     v13[3] = &unk_2783168C0;
-    v14 = a3;
+    valueCopy = value;
     v13[4] = self;
     v13[5] = v11;
     v13[6] = v12;
@@ -1260,13 +1260,13 @@ void __101__TKVibrationPickerViewController__updateSectionVisibilityFlagToValue_
   v18 = *MEMORY[0x277D85DE8];
   if ([(TKVibrationPickerViewController *)self isViewLoaded])
   {
-    v3 = [(TKVibrationPickerViewController *)self tableView];
-    v4 = [v3 indexPathsForVisibleRows];
+    tableView = [(TKVibrationPickerViewController *)self tableView];
+    indexPathsForVisibleRows = [tableView indexPathsForVisibleRows];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    v5 = [indexPathsForVisibleRows countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -1277,11 +1277,11 @@ void __101__TKVibrationPickerViewController__updateSectionVisibilityFlagToValue_
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(indexPathsForVisibleRows);
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v3 cellForRowAtIndexPath:v9];
+          v10 = [tableView cellForRowAtIndexPath:v9];
           v11 = [(TKVibrationPickerViewController *)self _cellAccessoriesDescriptorForRowAtIndexPath:v9];
           if ((*&v11 & 0x100) == 0)
           {
@@ -1289,7 +1289,7 @@ void __101__TKVibrationPickerViewController__updateSectionVisibilityFlagToValue_
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [indexPathsForVisibleRows countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v6);
@@ -1302,15 +1302,15 @@ void __101__TKVibrationPickerViewController__updateSectionVisibilityFlagToValue_
 - (void)_updateVisibilityOfSynchronizedGroup
 {
   vibrationManager = self->_vibrationManager;
-  v4 = [(TKVibrationPickerViewController *)self alertType];
-  v5 = [(TKVibrationPickerViewController *)self topic];
-  LODWORD(vibrationManager) = [(TLVibrationManager *)vibrationManager _areSynchronizedVibrationsAllowedForAlertType:v4 topic:v5];
+  alertType = [(TKVibrationPickerViewController *)self alertType];
+  topic = [(TKVibrationPickerViewController *)self topic];
+  LODWORD(vibrationManager) = [(TLVibrationManager *)vibrationManager _areSynchronizedVibrationsAllowedForAlertType:alertType topic:topic];
 
   if (vibrationManager)
   {
     v6 = self->_vibrationManager;
-    v7 = [(TKVibrationPickerViewController *)self _sanitizedCorrespondingToneIdentifier];
-    v8 = [(TLVibrationManager *)v6 _synchronizedVibrationIdentifierForToneIdentifier:v7 targetDevice:0];
+    _sanitizedCorrespondingToneIdentifier = [(TKVibrationPickerViewController *)self _sanitizedCorrespondingToneIdentifier];
+    v8 = [(TLVibrationManager *)v6 _synchronizedVibrationIdentifierForToneIdentifier:_sanitizedCorrespondingToneIdentifier targetDevice:0];
 
     v9 = v8 != 0;
   }
@@ -1350,24 +1350,24 @@ uint64_t __71__TKVibrationPickerViewController__updateVisibilityOfSynchronizedGr
   return MEMORY[0x2821F96F8](v2, v4);
 }
 
-- (id)_localizationIdentifierForHeaderInSection:(int64_t)a3
+- (id)_localizationIdentifierForHeaderInSection:(int64_t)section
 {
-  if ([(TKVibrationPickerViewController *)self _sectionForDefaultGroup]== a3)
+  if ([(TKVibrationPickerViewController *)self _sectionForDefaultGroup]== section)
   {
     return @"VIBRATION_PICKER_GROUP_TITLE_DEFAULT";
   }
 
-  if ([(TKVibrationPickerViewController *)self _sectionForSynchronizedGroup]== a3)
+  if ([(TKVibrationPickerViewController *)self _sectionForSynchronizedGroup]== section)
   {
     return 0;
   }
 
-  if ([(TKVibrationPickerViewController *)self _sectionForSystemGroup]== a3)
+  if ([(TKVibrationPickerViewController *)self _sectionForSystemGroup]== section)
   {
     return @"VIBRATION_PICKER_GROUP_TITLE_STANDARD";
   }
 
-  if ([(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup]== a3)
+  if ([(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup]== section)
   {
     return @"VIBRATION_PICKER_GROUP_TITLE_USER_GENERATED";
   }
@@ -1375,9 +1375,9 @@ uint64_t __71__TKVibrationPickerViewController__updateVisibilityOfSynchronizedGr
   return 0;
 }
 
-- (id)_customHeaderViewForHeaderInSection:(int64_t)a3
+- (id)_customHeaderViewForHeaderInSection:(int64_t)section
 {
-  v4 = [(TKVibrationPickerViewController *)self _localizationIdentifierForHeaderInSection:a3];
+  v4 = [(TKVibrationPickerViewController *)self _localizationIdentifierForHeaderInSection:section];
   if (!v4)
   {
     goto LABEL_10;
@@ -1401,20 +1401,20 @@ uint64_t __71__TKVibrationPickerViewController__updateVisibilityOfSynchronizedGr
       v9 = v7;
       if ([(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerHeaderTextShouldBeUppercase])
       {
-        v10 = [MEMORY[0x277CBEAF8] currentLocale];
-        v9 = [v7 uppercaseStringWithLocale:v10];
+        currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+        v9 = [v7 uppercaseStringWithLocale:currentLocale];
       }
     }
 
     [(TKLabelContainerView *)v5 setLabelText:v9];
-    v11 = [(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerHeaderTextFont];
-    [(TKLabelContainerView *)v5 setLabelFont:v11];
+    vibrationPickerHeaderTextFont = [(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerHeaderTextFont];
+    [(TKLabelContainerView *)v5 setLabelFont:vibrationPickerHeaderTextFont];
 
-    v12 = [(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerHeaderTextColor];
-    [(TKLabelContainerView *)v5 setLabelTextColor:v12];
+    vibrationPickerHeaderTextColor = [(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerHeaderTextColor];
+    [(TKLabelContainerView *)v5 setLabelTextColor:vibrationPickerHeaderTextColor];
 
-    v13 = [(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerHeaderTextShadowColor];
-    [(TKLabelContainerView *)v5 setLabelShadowColor:v13];
+    vibrationPickerHeaderTextShadowColor = [(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerHeaderTextShadowColor];
+    [(TKLabelContainerView *)v5 setLabelShadowColor:vibrationPickerHeaderTextShadowColor];
 
     [(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerHeaderTextShadowOffset];
     [(TKLabelContainerView *)v5 setLabelShadowOffset:?];
@@ -1527,48 +1527,48 @@ LABEL_11:
 
   if (self->_showsUserGenerated)
   {
-    v4 = [(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup];
+    _sectionForUserGeneratedGroup = [(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup];
   }
 
   else
   {
-    v4 = [(TKVibrationPickerViewController *)self _sectionForSystemGroup];
+    _sectionForUserGeneratedGroup = [(TKVibrationPickerViewController *)self _sectionForSystemGroup];
   }
 
-  return v4 + 1;
+  return _sectionForUserGeneratedGroup + 1;
 }
 
-- (int64_t)_numberOfRowsInVibrationPickerSection:(int64_t)a3
+- (int64_t)_numberOfRowsInVibrationPickerSection:(int64_t)section
 {
-  if ([(TKVibrationPickerViewController *)self _sectionForDefaultGroup]== a3 || [(TKVibrationPickerViewController *)self _sectionForSynchronizedGroup]== a3)
+  if ([(TKVibrationPickerViewController *)self _sectionForDefaultGroup]== section || [(TKVibrationPickerViewController *)self _sectionForSynchronizedGroup]== section)
   {
     return 1;
   }
 
-  if ([(TKVibrationPickerViewController *)self _sectionForSystemGroup]!= a3)
+  if ([(TKVibrationPickerViewController *)self _sectionForSystemGroup]!= section)
   {
-    if ([(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup]!= a3)
+    if ([(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup]!= section)
     {
-      return [(TKVibrationPickerViewController *)self _sectionForNoneGroup]== a3;
+      return [(TKVibrationPickerViewController *)self _sectionForNoneGroup]== section;
     }
 
-    v9 = [(TKVibrationPickerViewController *)self _sortedUserGeneratedVibrationIdentifiers];
-    v5 = [v9 count] + 1;
+    _sortedUserGeneratedVibrationIdentifiers = [(TKVibrationPickerViewController *)self _sortedUserGeneratedVibrationIdentifiers];
+    v5 = [_sortedUserGeneratedVibrationIdentifiers count] + 1;
 
     return v5;
   }
 
-  v7 = [(TKVibrationPickerViewController *)self _sortedVibrationIdentifiers];
-  v8 = [v7 count];
+  _sortedVibrationIdentifiers = [(TKVibrationPickerViewController *)self _sortedVibrationIdentifiers];
+  v8 = [_sortedVibrationIdentifiers count];
 
   return v8;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TKVibrationPickerViewController *)self _cellAccessoriesDescriptorForRowAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(TKVibrationPickerViewController *)self _cellAccessoriesDescriptorForRowAtIndexPath:pathCopy];
   v9 = @"_TLVibrationPickerViewTableCellWithDisclosureIndicatorIdentifier";
   if ((*&v8 & 0x100) == 0)
   {
@@ -1576,7 +1576,7 @@ LABEL_11:
   }
 
   v10 = v9;
-  v11 = [v6 dequeueReusableCellWithIdentifier:v10];
+  v11 = [viewCopy dequeueReusableCellWithIdentifier:v10];
   if (!v11)
   {
     v11 = [[TKVibrationPickerTableViewCell alloc] initWithReuseIdentifier:v10];
@@ -1590,17 +1590,17 @@ LABEL_11:
     styleProvider = self->_styleProvider;
     if (styleProvider)
     {
-      v13 = [(TKVibrationPickerStyleProvider *)styleProvider vibrationPickerCellTextFont];
-      [(TKVibrationPickerTableViewCell *)v11 setRegularTextFont:v13];
+      vibrationPickerCellTextFont = [(TKVibrationPickerStyleProvider *)styleProvider vibrationPickerCellTextFont];
+      [(TKVibrationPickerTableViewCell *)v11 setRegularTextFont:vibrationPickerCellTextFont];
 
-      v14 = [(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerCellTextColor];
-      [(TKVibrationPickerTableViewCell *)v11 setRegularTextColor:v14];
+      vibrationPickerCellTextColor = [(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerCellTextColor];
+      [(TKVibrationPickerTableViewCell *)v11 setRegularTextColor:vibrationPickerCellTextColor];
 
-      v15 = [(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerCellHighlightedTextColor];
-      [(TKVibrationPickerTableViewCell *)v11 setHighlightedTextColor:v15];
+      vibrationPickerCellHighlightedTextColor = [(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerCellHighlightedTextColor];
+      [(TKVibrationPickerTableViewCell *)v11 setHighlightedTextColor:vibrationPickerCellHighlightedTextColor];
 
-      v16 = [(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerCellBackgroundColor];
-      [(TKVibrationPickerTableViewCell *)v11 setBackgroundColor:v16];
+      vibrationPickerCellBackgroundColor = [(TKVibrationPickerStyleProvider *)self->_styleProvider vibrationPickerCellBackgroundColor];
+      [(TKVibrationPickerTableViewCell *)v11 setBackgroundColor:vibrationPickerCellBackgroundColor];
 
       v17 = [(TKVibrationPickerStyleProvider *)self->_styleProvider newBackgroundViewForSelectedVibrationPickerCell:0];
       if (v17)
@@ -1618,30 +1618,30 @@ LABEL_11:
       {
         [(TKVibrationPickerTableViewCell *)v11 setAccessoryType:1];
         [(TKVibrationPickerTableViewCell *)v11 setEditingAccessoryType:1];
-        v19 = [(TKVibrationPickerStyleProvider *)self->_styleProvider newAccessoryDisclosureIndicatorViewForVibrationPickerCell];
-        if (v19)
+        newAccessoryDisclosureIndicatorViewForVibrationPickerCell = [(TKVibrationPickerStyleProvider *)self->_styleProvider newAccessoryDisclosureIndicatorViewForVibrationPickerCell];
+        if (newAccessoryDisclosureIndicatorViewForVibrationPickerCell)
         {
-          [(TKVibrationPickerTableViewCell *)v11 setAccessoryView:v19];
+          [(TKVibrationPickerTableViewCell *)v11 setAccessoryView:newAccessoryDisclosureIndicatorViewForVibrationPickerCell];
         }
 
-        v20 = [(TKVibrationPickerStyleProvider *)self->_styleProvider newAccessoryDisclosureIndicatorViewForVibrationPickerCell];
-        if (v20)
+        newAccessoryDisclosureIndicatorViewForVibrationPickerCell2 = [(TKVibrationPickerStyleProvider *)self->_styleProvider newAccessoryDisclosureIndicatorViewForVibrationPickerCell];
+        if (newAccessoryDisclosureIndicatorViewForVibrationPickerCell2)
         {
-          [(TKVibrationPickerTableViewCell *)v11 setEditingAccessoryView:v20];
+          [(TKVibrationPickerTableViewCell *)v11 setEditingAccessoryView:newAccessoryDisclosureIndicatorViewForVibrationPickerCell2];
         }
       }
     }
   }
 
-  v21 = [v7 section];
-  v22 = [v7 row];
-  if ([(TKVibrationPickerViewController *)self _sectionForDefaultGroup]== v21)
+  section = [pathCopy section];
+  v22 = [pathCopy row];
+  if ([(TKVibrationPickerViewController *)self _sectionForDefaultGroup]== section)
   {
     if (!v22)
     {
       vibrationManager = self->_vibrationManager;
-      v24 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
-      v25 = [(TLVibrationManager *)vibrationManager nameOfVibrationWithIdentifier:v24];
+      _sanitizedDefaultVibrationIdentifier = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
+      noneString = [(TLVibrationManager *)vibrationManager nameOfVibrationWithIdentifier:_sanitizedDefaultVibrationIdentifier];
 LABEL_21:
 
 LABEL_22:
@@ -1654,26 +1654,26 @@ LABEL_41:
 LABEL_25:
     v26 = 0;
     v27 = 0;
-    v25 = 0;
+    noneString = 0;
     goto LABEL_42;
   }
 
-  if ([(TKVibrationPickerViewController *)self _sectionForSynchronizedGroup]== v21)
+  if ([(TKVibrationPickerViewController *)self _sectionForSynchronizedGroup]== section)
   {
     if (v22)
     {
       goto LABEL_25;
     }
 
-    v24 = self->_synchronizedVibrationIdentifier;
-    v25 = [(TLVibrationManager *)self->_vibrationManager nameOfVibrationWithIdentifier:v24];
+    _sanitizedDefaultVibrationIdentifier = self->_synchronizedVibrationIdentifier;
+    noneString = [(TLVibrationManager *)self->_vibrationManager nameOfVibrationWithIdentifier:_sanitizedDefaultVibrationIdentifier];
     if (self->_showsDefault)
     {
       goto LABEL_21;
     }
 
-    v34 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
-    v35 = [v34 isEqualToString:v24];
+    _sanitizedDefaultVibrationIdentifier2 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
+    v35 = [_sanitizedDefaultVibrationIdentifier2 isEqualToString:_sanitizedDefaultVibrationIdentifier];
 
     v26 = 0;
     if ((v35 & 1) == 0)
@@ -1684,23 +1684,23 @@ LABEL_25:
     goto LABEL_53;
   }
 
-  if ([(TKVibrationPickerViewController *)self _sectionForSystemGroup]== v21)
+  if ([(TKVibrationPickerViewController *)self _sectionForSystemGroup]== section)
   {
-    v28 = [(TKVibrationPickerViewController *)self _sortedVibrationIdentifiers];
-    if (v22 >= [v28 count])
+    _sortedVibrationIdentifiers = [(TKVibrationPickerViewController *)self _sortedVibrationIdentifiers];
+    if (v22 >= [_sortedVibrationIdentifiers count])
     {
       v26 = 0;
-      v25 = 0;
+      noneString = 0;
     }
 
     else
     {
-      v26 = [v28 objectAtIndex:v22];
-      v25 = [(TLVibrationManager *)self->_vibrationManager nameOfVibrationWithIdentifier:v26];
+      v26 = [_sortedVibrationIdentifiers objectAtIndex:v22];
+      noneString = [(TLVibrationManager *)self->_vibrationManager nameOfVibrationWithIdentifier:v26];
       if (!self->_showsDefault)
       {
-        v29 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
-        v44 = [v29 isEqualToString:v26];
+        _sanitizedDefaultVibrationIdentifier3 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
+        v44 = [_sanitizedDefaultVibrationIdentifier3 isEqualToString:v26];
 
         if ((v44 & 1) == 0)
         {
@@ -1710,10 +1710,10 @@ LABEL_25:
 LABEL_53:
         v40 = MEMORY[0x277CCACA8];
         v41 = TLLocalizedString();
-        v42 = [v40 stringWithFormat:@"%@ (%@)", v25, v41];
+        v42 = [v40 stringWithFormat:@"%@ (%@)", noneString, v41];
 
         v27 = 0;
-        v25 = v42;
+        noneString = v42;
         goto LABEL_42;
       }
     }
@@ -1721,36 +1721,36 @@ LABEL_53:
     goto LABEL_41;
   }
 
-  if ([(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup]== v21)
+  if ([(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup]== section)
   {
-    v30 = [(TKVibrationPickerViewController *)self tableView:v6 numberOfRowsInSection:v21]- 1;
+    v30 = [(TKVibrationPickerViewController *)self tableView:viewCopy numberOfRowsInSection:section]- 1;
     if (v22 >= v30)
     {
       if (v22 == v30)
       {
-        v25 = TLLocalizedString();
+        noneString = TLLocalizedString();
         goto LABEL_22;
       }
 
       goto LABEL_25;
     }
 
-    v31 = [(TKVibrationPickerViewController *)self _sortedUserGeneratedVibrationIdentifiers];
-    v32 = [v31 count];
+    _sortedUserGeneratedVibrationIdentifiers = [(TKVibrationPickerViewController *)self _sortedUserGeneratedVibrationIdentifiers];
+    v32 = [_sortedUserGeneratedVibrationIdentifiers count];
     v27 = v22 < v32;
     if (v22 < v32)
     {
-      v26 = [v31 objectAtIndex:v22];
+      v26 = [_sortedUserGeneratedVibrationIdentifiers objectAtIndex:v22];
       v33 = [(TLVibrationManager *)self->_vibrationManager nameOfVibrationWithIdentifier:v26];
-      v43 = v31;
-      v25 = v33;
+      v43 = _sortedUserGeneratedVibrationIdentifiers;
+      noneString = v33;
     }
 
     else
     {
       v26 = 0;
-      v43 = v31;
-      v25 = 0;
+      v43 = _sortedUserGeneratedVibrationIdentifiers;
+      noneString = 0;
     }
   }
 
@@ -1758,18 +1758,18 @@ LABEL_53:
   {
     v27 = 0;
     v26 = 0;
-    if ([(TKVibrationPickerViewController *)self _sectionForNoneGroup]== v21)
+    if ([(TKVibrationPickerViewController *)self _sectionForNoneGroup]== section)
     {
-      v25 = 0;
+      noneString = 0;
       if (v22)
       {
         goto LABEL_42;
       }
 
-      v25 = [(TKVibrationPickerViewController *)self noneString];
-      if (!v25)
+      noneString = [(TKVibrationPickerViewController *)self noneString];
+      if (!noneString)
       {
-        v25 = [(TLVibrationManager *)self->_vibrationManager noneVibrationName];
+        noneString = [(TLVibrationManager *)self->_vibrationManager noneVibrationName];
       }
 
       if (self->_showsDefault)
@@ -1777,8 +1777,8 @@ LABEL_53:
         goto LABEL_22;
       }
 
-      v38 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
-      v39 = [v38 isEqualToString:*MEMORY[0x277D72070]];
+      _sanitizedDefaultVibrationIdentifier4 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
+      v39 = [_sanitizedDefaultVibrationIdentifier4 isEqualToString:*MEMORY[0x277D72070]];
 
       v26 = 0;
       if (!v39)
@@ -1789,12 +1789,12 @@ LABEL_53:
       goto LABEL_53;
     }
 
-    v25 = 0;
+    noneString = 0;
   }
 
 LABEL_42:
   [(TKVibrationPickerTableViewCell *)v11 setEditable:v27];
-  [(TKVibrationPickerTableViewCell *)v11 setLabelText:v25];
+  [(TKVibrationPickerTableViewCell *)v11 setLabelText:noneString];
   v36 = TLLocalizedString();
   [(TKVibrationPickerTableViewCell *)v11 setPlaceholderText:v36];
 
@@ -1803,16 +1803,16 @@ LABEL_42:
     [(TKVibrationPickerTableViewCell *)v11 setChecked:v8.var0];
   }
 
-  [(TKVibrationPickerViewController *)self _updateSelectionStyleForCell:v11 indexPath:v7];
+  [(TKVibrationPickerViewController *)self _updateSelectionStyleForCell:v11 indexPath:pathCopy];
 
   return v11;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v4 = [(TKVibrationPickerViewController *)self _showsOnlyEditableSections];
+  _showsOnlyEditableSections = [(TKVibrationPickerViewController *)self _showsOnlyEditableSections];
   v5 = 2;
-  if (v4)
+  if (_showsOnlyEditableSections)
   {
     v5 = 0;
   }
@@ -1824,10 +1824,10 @@ LABEL_42:
 
   else
   {
-    v6 = !v4;
+    v6 = !_showsOnlyEditableSections;
   }
 
-  if (v4)
+  if (_showsOnlyEditableSections)
   {
     v7 = 0;
   }
@@ -1842,20 +1842,20 @@ LABEL_42:
     v6 = v7;
   }
 
-  return v6 + self->_showsUserGenerated + (self->_showsNone && !v4);
+  return v6 + self->_showsUserGenerated + (self->_showsNone && !_showsOnlyEditableSections);
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (a4 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  if (style == 1)
   {
-    v10 = [(TKVibrationPickerViewController *)self _identifierOfVibrationAtIndexPath:v9];
+    v10 = [(TKVibrationPickerViewController *)self _identifierOfVibrationAtIndexPath:pathCopy];
     if ([v10 length])
     {
-      v11 = [(TKVibrationPickerViewController *)self _selectedVibrationIndexPath];
+      _selectedVibrationIndexPath = [(TKVibrationPickerViewController *)self _selectedVibrationIndexPath];
       self->_skipNextUserGeneratedVibrationsDidChangeNotification = 1;
       vibrationManager = self->_vibrationManager;
       v22 = 0;
@@ -1867,7 +1867,7 @@ LABEL_42:
         [(TKVibrationPickerViewController *)self _handleError:v14];
       }
 
-      v16 = [v11 isEqual:v9];
+      v16 = [_selectedVibrationIndexPath isEqual:pathCopy];
       if (v16)
       {
         selectedVibrationIdentifier = self->_selectedVibrationIdentifier;
@@ -1877,14 +1877,14 @@ LABEL_42:
       sortedUserGeneratedVibrationIdentifiers = self->_sortedUserGeneratedVibrationIdentifiers;
       self->_sortedUserGeneratedVibrationIdentifiers = 0;
 
-      objc_storeStrong(&self->_indexPathOfCellBeingDeleted, a5);
-      [v8 beginUpdates];
+      objc_storeStrong(&self->_indexPathOfCellBeingDeleted, path);
+      [viewCopy beginUpdates];
       [(TKVibrationPickerViewController *)self canEnterEditingMode];
-      v23[0] = v9;
+      v23[0] = pathCopy;
       v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
-      [v8 deleteRowsAtIndexPaths:v19 withRowAnimation:100];
+      [viewCopy deleteRowsAtIndexPaths:v19 withRowAnimation:100];
 
-      [v8 endUpdates];
+      [viewCopy endUpdates];
       [(TKVibrationPickerViewController *)self _updateCheckedStateOfAllVisibleCells];
       indexPathOfCellBeingDeleted = self->_indexPathOfCellBeingDeleted;
       self->_indexPathOfCellBeingDeleted = 0;
@@ -1899,11 +1899,11 @@ LABEL_42:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)tableView:(id)a3 viewForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view viewForHeaderInSection:(int64_t)section
 {
   if ([(TKVibrationPickerStyleProvider *)self->_styleProvider wantsCustomVibrationPickerHeaderView])
   {
-    v6 = [(TKVibrationPickerViewController *)self _customHeaderViewForHeaderInSection:a4];
+    v6 = [(TKVibrationPickerViewController *)self _customHeaderViewForHeaderInSection:section];
   }
 
   else
@@ -1914,7 +1914,7 @@ LABEL_42:
   return v6;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
   if (([(TKVibrationPickerStyleProvider *)self->_styleProvider wantsCustomVibrationPickerHeaderView]& 1) != 0)
   {
@@ -1923,19 +1923,19 @@ LABEL_42:
 
   else
   {
-    v7 = [(TKVibrationPickerViewController *)self _localizationIdentifierForHeaderInSection:a4];
+    v7 = [(TKVibrationPickerViewController *)self _localizationIdentifierForHeaderInSection:section];
     v6 = TLLocalizedString();
   }
 
   return v6;
 }
 
-- (double)tableView:(id)a3 heightForHeaderInSection:(int64_t)a4
+- (double)tableView:(id)view heightForHeaderInSection:(int64_t)section
 {
-  v6 = a3;
+  viewCopy = view;
   if ([(TKVibrationPickerStyleProvider *)self->_styleProvider wantsCustomVibrationPickerHeaderView])
   {
-    v7 = [(TKVibrationPickerViewController *)self tableView:v6 viewForHeaderInSection:a4];
+    v7 = [(TKVibrationPickerViewController *)self tableView:viewCopy viewForHeaderInSection:section];
     v8 = v7;
     if (v7)
     {
@@ -1958,16 +1958,16 @@ LABEL_42:
   return Height;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  viewCopy = view;
+  pathCopy = path;
+  v8 = pathCopy;
   if ([(TKVibrationPickerViewController *)self isEditing])
   {
-    v9 = [v7 section];
-    v10 = [v7 row];
-    if ([(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup]!= v9 || (v11 = [(TKVibrationPickerViewController *)self tableView:v6 numberOfRowsInSection:v9], v8 = v7, v10 != v11 - 1))
+    section = [pathCopy section];
+    v10 = [pathCopy row];
+    if ([(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup]!= section || (v11 = [(TKVibrationPickerViewController *)self tableView:viewCopy numberOfRowsInSection:section], v8 = pathCopy, v10 != v11 - 1))
     {
 
       v8 = 0;
@@ -1977,24 +1977,24 @@ LABEL_42:
   return v8;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  v9 = [v7 row];
-  v10 = [(TKVibrationPickerViewController *)self isEditing];
-  if ([(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup]== v8 && v9 == [(TKVibrationPickerViewController *)self tableView:v6 numberOfRowsInSection:v8]- 1)
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  v9 = [pathCopy row];
+  isEditing = [(TKVibrationPickerViewController *)self isEditing];
+  if ([(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup]== section && v9 == [(TKVibrationPickerViewController *)self tableView:viewCopy numberOfRowsInSection:section]- 1)
   {
-    if (v10)
+    if (isEditing)
     {
-      v11 = [v6 visibleCells];
+      visibleCells = [viewCopy visibleCells];
       v26 = 0u;
       v27 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v12 = [visibleCells countByEnumeratingWithState:&v26 objects:v30 count:16];
       if (v12)
       {
         v13 = v12;
@@ -2006,14 +2006,14 @@ LABEL_42:
           {
             if (*v27 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(visibleCells);
             }
 
             [*(*(&v26 + 1) + 8 * v15++) makeTextFieldResignFirstResponderIfNeeded];
           }
 
           while (v13 != v15);
-          v13 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+          v13 = [visibleCells countByEnumeratingWithState:&v26 objects:v30 count:16];
         }
 
         while (v13);
@@ -2026,15 +2026,15 @@ LABEL_42:
     [(TKVibrationRecorderViewController *)v16 setDelegate:self];
     [(TKVibrationRecorderViewController *)v16 setModalPresentationStyle:0];
     [(TKVibrationPickerViewController *)self presentViewController:v16 animated:1 completion:0];
-    [v6 deselectRowAtIndexPath:v7 animated:1];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
     goto LABEL_29;
   }
 
-  if ((v10 & 1) == 0)
+  if ((isEditing & 1) == 0)
   {
     self->_showsNothingSelected = 0;
     v16 = self->_selectedVibrationIdentifier;
-    v17 = [(TKVibrationPickerViewController *)self _identifierOfVibrationAtIndexPath:v7];
+    v17 = [(TKVibrationPickerViewController *)self _identifierOfVibrationAtIndexPath:pathCopy];
     v18 = [(TKVibrationPickerViewController *)self _sanitizeVibrationIdentifierForPlayback:v17];
     if ([(TKVibrationRecorderViewController *)v18 isEqualToString:*MEMORY[0x277D72070]])
     {
@@ -2055,7 +2055,7 @@ LABEL_24:
         if (v16 == v17 || ([(TKVibrationRecorderViewController *)v16 isEqualToString:v17]& 1) != 0)
         {
           [(TKVibrationPickerViewController *)self _updateCheckedStateOfAllVisibleCells];
-          [v6 deselectRowAtIndexPath:v7 animated:1];
+          [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
         }
 
         else
@@ -2065,7 +2065,7 @@ LABEL_24:
           self->_selectedVibrationIdentifier = v23;
 
           [(TKVibrationPickerViewController *)self _updateCheckedStateOfAllVisibleCells];
-          [v6 deselectRowAtIndexPath:v7 animated:1];
+          [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
           [(TKVibrationPickerViewController *)self _processCurrentVibrationSelection];
         }
 
@@ -2073,17 +2073,17 @@ LABEL_29:
         goto LABEL_30;
       }
 
-      v21 = self;
+      selfCopy2 = self;
       v22 = v17;
     }
 
     else
     {
-      v21 = self;
+      selfCopy2 = self;
       v22 = v18;
     }
 
-    [(TKVibrationPickerViewController *)v21 _startVibratingWithVibrationIdentifier:v22];
+    [(TKVibrationPickerViewController *)selfCopy2 _startVibratingWithVibrationIdentifier:v22];
     goto LABEL_23;
   }
 
@@ -2092,12 +2092,12 @@ LABEL_30:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 section];
-  if (v8 == -[TKVibrationPickerViewController _sectionForUserGeneratedGroup](self, "_sectionForUserGeneratedGroup") && (v9 = [v7 row], v9 < -[TKVibrationPickerViewController tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", v6, v8) - 1))
+  viewCopy = view;
+  pathCopy = path;
+  section = [pathCopy section];
+  if (section == -[TKVibrationPickerViewController _sectionForUserGeneratedGroup](self, "_sectionForUserGeneratedGroup") && (v9 = [pathCopy row], v9 < -[TKVibrationPickerViewController tableView:numberOfRowsInSection:](self, "tableView:numberOfRowsInSection:", viewCopy, section) - 1))
   {
     if (self->_allowsDeletingDefaultVibration)
     {
@@ -2106,9 +2106,9 @@ LABEL_30:
 
     else
     {
-      v12 = [(TKVibrationPickerViewController *)self _identifierOfVibrationAtIndexPath:v7];
-      v13 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
-      v14 = [v12 isEqualToString:v13];
+      v12 = [(TKVibrationPickerViewController *)self _identifierOfVibrationAtIndexPath:pathCopy];
+      _sanitizedDefaultVibrationIdentifier = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
+      v14 = [v12 isEqualToString:_sanitizedDefaultVibrationIdentifier];
 
       v10 = v14 ^ 1u;
     }
@@ -2122,21 +2122,21 @@ LABEL_30:
   return v10;
 }
 
-- (void)vibrationRecorderViewController:(id)a3 didFinishRecordingVibrationPattern:(id)a4 name:(id)a5
+- (void)vibrationRecorderViewController:(id)controller didFinishRecordingVibrationPattern:(id)pattern name:(id)name
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  controllerCopy = controller;
+  patternCopy = pattern;
+  nameCopy = name;
+  if (nameCopy)
   {
-    v11 = [(TKVibrationPickerViewController *)self _adjustedNameForVibrationWithDesiredName:v10 vibrationIdentifier:0];
+    v11 = [(TKVibrationPickerViewController *)self _adjustedNameForVibrationWithDesiredName:nameCopy vibrationIdentifier:0];
     v12 = v11;
-    if (v9 && v11)
+    if (patternCopy && v11)
     {
       self->_skipNextUserGeneratedVibrationsDidChangeNotification = 1;
       vibrationManager = self->_vibrationManager;
       v22 = 0;
-      v14 = [(TLVibrationManager *)vibrationManager addUserGeneratedVibrationPattern:v9 name:v12 error:&v22];
+      v14 = [(TLVibrationManager *)vibrationManager addUserGeneratedVibrationPattern:patternCopy name:v12 error:&v22];
       v15 = v22;
       if ([v14 length])
       {
@@ -2149,12 +2149,12 @@ LABEL_30:
 
         [(TKVibrationPickerViewController *)self _processCurrentVibrationSelection];
         v19 = [(TKVibrationPickerViewController *)self _indexPathForVibrationWithIdentifier:v14];
-        v20 = [(TKVibrationPickerViewController *)self tableView];
-        [v20 beginUpdates];
+        tableView = [(TKVibrationPickerViewController *)self tableView];
+        [tableView beginUpdates];
         v21 = [MEMORY[0x277CBEA60] arrayWithObjects:{v19, 0}];
-        [v20 insertRowsAtIndexPaths:v21 withRowAnimation:4];
+        [tableView insertRowsAtIndexPaths:v21 withRowAnimation:4];
 
-        [v20 endUpdates];
+        [tableView endUpdates];
         [(TKVibrationPickerViewController *)self _updateCheckedStateOfAllVisibleCells];
       }
 
@@ -2171,25 +2171,25 @@ LABEL_30:
   }
 }
 
-- (void)vibrationRecorderViewControllerWasDismissedWithoutSavingRecordedVibrationPattern:(id)a3
+- (void)vibrationRecorderViewControllerWasDismissedWithoutSavingRecordedVibrationPattern:(id)pattern
 {
-  v4 = [(TKVibrationPickerViewController *)self tableView];
-  v3 = [v4 indexPathForSelectedRow];
-  if (v3)
+  tableView = [(TKVibrationPickerViewController *)self tableView];
+  indexPathForSelectedRow = [tableView indexPathForSelectedRow];
+  if (indexPathForSelectedRow)
   {
-    [v4 deselectRowAtIndexPath:v3 animated:1];
+    [tableView deselectRowAtIndexPath:indexPathForSelectedRow animated:1];
   }
 }
 
-- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)a3
+- (unint64_t)navigationControllerSupportedInterfaceOrientations:(id)orientations
 {
-  v3 = [(TKVibrationPickerViewController *)self parentViewController];
-  if (!v3)
+  parentViewController = [(TKVibrationPickerViewController *)self parentViewController];
+  if (!parentViewController)
   {
     return 30;
   }
 
-  v4 = v3;
+  v4 = parentViewController;
   while (1)
   {
     objc_opt_class();
@@ -2198,23 +2198,23 @@ LABEL_30:
       break;
     }
 
-    v5 = [v4 parentViewController];
+    parentViewController2 = [v4 parentViewController];
 
-    v4 = v5;
-    if (!v5)
+    v4 = parentViewController2;
+    if (!parentViewController2)
     {
       return 30;
     }
   }
 
-  v7 = [v4 supportedInterfaceOrientations];
+  supportedInterfaceOrientations = [v4 supportedInterfaceOrientations];
 
-  return v7;
+  return supportedInterfaceOrientations;
 }
 
-- (void)_startVibratingWithVibrationIdentifier:(id)a3
+- (void)_startVibratingWithVibrationIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if ([(TKVibratorController *)self->_vibratorController vibratorState]== 1)
   {
     [(TKVibrationPickerViewController *)self _stopVibrating];
@@ -2224,32 +2224,32 @@ LABEL_30:
     v8[2] = __74__TKVibrationPickerViewController__startVibratingWithVibrationIdentifier___block_invoke;
     v8[3] = &unk_2783165C8;
     v8[4] = self;
-    v4 = v4;
-    v9 = v4;
+    identifierCopy = identifierCopy;
+    v9 = identifierCopy;
     dispatch_after(v5, MEMORY[0x277D85CD0], v8);
   }
 
   else
   {
-    if (![v4 length])
+    if (![identifierCopy length])
     {
-      v6 = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
+      _sanitizedDefaultVibrationIdentifier = [(TKVibrationPickerViewController *)self _sanitizedDefaultVibrationIdentifier];
 
-      v4 = v6;
+      identifierCopy = _sanitizedDefaultVibrationIdentifier;
     }
 
     [(TKVibrationPickerViewController *)self _stopVibrating];
-    v7 = [(TLVibrationManager *)self->_vibrationManager patternForVibrationWithIdentifier:v4];
+    v7 = [(TLVibrationManager *)self->_vibrationManager patternForVibrationWithIdentifier:identifierCopy];
     [(TKVibratorController *)self->_vibratorController turnOnWithVibrationPattern:v7];
   }
 }
 
-- (void)vibrationPickerTableViewCell:(id)a3 endedEditingWithText:(id)a4
+- (void)vibrationPickerTableViewCell:(id)cell endedEditingWithText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TKVibrationPickerViewController *)self tableView];
-  v9 = [v8 indexPathForCell:v6];
+  cellCopy = cell;
+  textCopy = text;
+  tableView = [(TKVibrationPickerViewController *)self tableView];
+  v9 = [tableView indexPathForCell:cellCopy];
   if (v9)
   {
     v10 = [(TKVibrationPickerViewController *)self _identifierOfVibrationAtIndexPath:v9];
@@ -2260,10 +2260,10 @@ LABEL_30:
     v10 = 0;
   }
 
-  v11 = [(TKVibrationPickerViewController *)self _adjustedNameForVibrationWithDesiredName:v7 vibrationIdentifier:v10];
+  v11 = [(TKVibrationPickerViewController *)self _adjustedNameForVibrationWithDesiredName:textCopy vibrationIdentifier:v10];
   if (v11 && ([(NSIndexPath *)self->_indexPathOfCellBeingDeleted isEqual:v9]& 1) == 0)
   {
-    [v6 setLabelText:v11];
+    [cellCopy setLabelText:v11];
     if ([v10 length])
     {
       v12 = [(TLVibrationManager *)self->_vibrationManager nameOfVibrationWithIdentifier:v10];
@@ -2308,9 +2308,9 @@ LABEL_13:
         v22 = v21;
         if (v21 && ([v21 isEqual:v9] & 1) == 0)
         {
-          [v8 beginUpdates];
-          [v8 moveRowAtIndexPath:v9 toIndexPath:v22];
-          [v8 endUpdates];
+          [tableView beginUpdates];
+          [tableView moveRowAtIndexPath:v9 toIndexPath:v22];
+          [tableView endUpdates];
         }
 
         goto LABEL_20;
@@ -2331,14 +2331,14 @@ LABEL_22:
 
 - (void)_presentVibrationRecorderViewController
 {
-  v3 = [(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup];
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL)
+  _sectionForUserGeneratedGroup = [(TKVibrationPickerViewController *)self _sectionForUserGeneratedGroup];
+  if (_sectionForUserGeneratedGroup != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = v3;
-    v7 = [(TKVibrationPickerViewController *)self tableView];
-    v5 = [(TKVibrationPickerViewController *)self tableView:v7 numberOfRowsInSection:v4];
+    v4 = _sectionForUserGeneratedGroup;
+    tableView = [(TKVibrationPickerViewController *)self tableView];
+    v5 = [(TKVibrationPickerViewController *)self tableView:tableView numberOfRowsInSection:v4];
     v6 = [MEMORY[0x277CCAA70] indexPathForRow:v5 - 1 inSection:v4];
-    [(TKVibrationPickerViewController *)self tableView:v7 didSelectRowAtIndexPath:v6];
+    [(TKVibrationPickerViewController *)self tableView:tableView didSelectRowAtIndexPath:v6];
   }
 }
 

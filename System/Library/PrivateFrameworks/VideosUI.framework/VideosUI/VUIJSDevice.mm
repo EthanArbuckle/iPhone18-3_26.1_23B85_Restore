@@ -1,23 +1,23 @@
 @interface VUIJSDevice
-+ (id)getMobileGestaltString:(__CFString *)a3;
++ (id)getMobileGestaltString:(__CFString *)string;
 - (NSString)productType;
-- (VUIJSDevice)initWithAppContext:(id)a3;
+- (VUIJSDevice)initWithAppContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation VUIJSDevice
 
-- (VUIJSDevice)initWithAppContext:(id)a3
+- (VUIJSDevice)initWithAppContext:(id)context
 {
   v4.receiver = self;
   v4.super_class = VUIJSDevice;
-  return [(VUIJSObject *)&v4 initWithAppContext:a3];
+  return [(VUIJSObject *)&v4 initWithAppContext:context];
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self->_networkPropertiesChangedToken];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self->_networkPropertiesChangedToken];
 
   v4.receiver = self;
   v4.super_class = VUIJSDevice;
@@ -31,7 +31,7 @@
   return [v2 getMobileGestaltString:@"ProductType"];
 }
 
-+ (id)getMobileGestaltString:(__CFString *)a3
++ (id)getMobileGestaltString:(__CFString *)string
 {
   v3 = MGCopyAnswer();
   if (v3)

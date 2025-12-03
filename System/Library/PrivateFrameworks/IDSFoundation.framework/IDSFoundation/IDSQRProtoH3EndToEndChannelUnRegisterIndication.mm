@@ -1,11 +1,11 @@
 @interface IDSQRProtoH3EndToEndChannelUnRegisterIndication
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IDSQRProtoH3EndToEndChannelUnRegisterIndication
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = IDSQRProtoH3EndToEndChannelUnRegisterIndication;
   v4 = [(IDSQRProtoH3EndToEndChannelUnRegisterIndication *)&v8 description];
-  v5 = [(IDSQRProtoH3EndToEndChannelUnRegisterIndication *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(IDSQRProtoH3EndToEndChannelUnRegisterIndication *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   e2eChannelUuid = self->_e2eChannelUuid;
   if (e2eChannelUuid)
   {
-    [v3 setObject:e2eChannelUuid forKey:@"e2e_channel_uuid"];
+    [dictionary setObject:e2eChannelUuid forKey:@"e2e_channel_uuid"];
   }
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:self->_txnId];
@@ -38,31 +38,31 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_e2eChannelUuid)
   {
     sub_1A7E1A51C();
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteDataField();
   PBDataWriterWriteUint64Field();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   e2eChannelUuid = self->_e2eChannelUuid;
-  v5 = a3;
-  [v5 setE2eChannelUuid:e2eChannelUuid];
-  v5[1] = self->_txnId;
+  toCopy = to;
+  [toCopy setE2eChannelUuid:e2eChannelUuid];
+  toCopy[1] = self->_txnId;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_e2eChannelUuid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_e2eChannelUuid copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -70,25 +70,25 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = [v4 isMemberOfClass:objc_opt_class()] && ((e2eChannelUuid = self->_e2eChannelUuid, !(e2eChannelUuid | v4[2])) || -[NSData isEqual:](e2eChannelUuid, "isEqual:")) && self->_txnId == v4[1];
+  equalCopy = equal;
+  v6 = [equalCopy isMemberOfClass:objc_opt_class()] && ((e2eChannelUuid = self->_e2eChannelUuid, !(e2eChannelUuid | equalCopy[2])) || -[NSData isEqual:](e2eChannelUuid, "isEqual:")) && self->_txnId == equalCopy[1];
 
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[2])
+  fromCopy = from;
+  if (fromCopy[2])
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(IDSQRProtoH3EndToEndChannelUnRegisterIndication *)self setE2eChannelUuid:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  self->_txnId = v4[1];
+  self->_txnId = fromCopy[1];
 }
 
 @end

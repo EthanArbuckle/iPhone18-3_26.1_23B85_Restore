@@ -1,30 +1,30 @@
 @interface SBCommandTabController
 + (id)keyCommands;
-- (BOOL)dataStore:(id)a3 shouldRestorePersistedDisplayItem:(id)a4;
+- (BOOL)dataStore:(id)store shouldRestorePersistedDisplayItem:(id)item;
 - (BOOL)isVisible;
-- (BOOL)recentDisplayItemsController:(id)a3 shouldAddItem:(id)a4;
-- (SBCommandTabController)initWithWindowScene:(id)a3 iconController:(id)a4;
+- (BOOL)recentDisplayItemsController:(id)controller shouldAddItem:(id)item;
+- (SBCommandTabController)initWithWindowScene:(id)scene iconController:(id)controller;
 - (id)iconController;
-- (id)persistedDisplayItemsForDataStore:(id)a3;
+- (id)persistedDisplayItemsForDataStore:(id)store;
 - (id)selectedDisplayItem;
 - (id)windowScene;
-- (void)_activateWithForwardDirection:(BOOL)a3;
-- (void)_allowAppToAppearWhileHidden:(id)a3;
+- (void)_activateWithForwardDirection:(BOOL)direction;
+- (void)_allowAppToAppearWhileHidden:(id)hidden;
 - (void)_clearTimer;
-- (void)_disallowAppFromAppearingWhileHidden:(id)a3;
-- (void)_effectiveSettingsChangedNotification:(id)a3;
-- (void)_emitAnalyticsEventForDisplayItem:(id)a3;
-- (void)_sceneDidDisconnect:(id)a3;
-- (void)_showCommandTabBarAfterTimer:(id)a3;
-- (void)_showWindow:(BOOL)a3;
-- (void)activateWithKeyCommand:(id)a3;
-- (void)dataStore:(id)a3 persistDisplayItems:(id)a4;
+- (void)_disallowAppFromAppearingWhileHidden:(id)hidden;
+- (void)_effectiveSettingsChangedNotification:(id)notification;
+- (void)_emitAnalyticsEventForDisplayItem:(id)item;
+- (void)_sceneDidDisconnect:(id)disconnect;
+- (void)_showCommandTabBarAfterTimer:(id)timer;
+- (void)_showWindow:(BOOL)window;
+- (void)activateWithKeyCommand:(id)command;
+- (void)dataStore:(id)store persistDisplayItems:(id)items;
 - (void)dealloc;
 - (void)dismiss;
 - (void)launchCurrentSelectedApplication;
-- (void)recentDisplayItemsControllerDidUpdateDisplayItems:(id)a3;
+- (void)recentDisplayItemsControllerDidUpdateDisplayItems:(id)items;
 - (void)removeCurrentSelectedApplication;
-- (void)viewController:(id)a3 selectedApplicationWithDisplayItem:(id)a4;
+- (void)viewController:(id)controller selectedApplicationWithDisplayItem:(id)item;
 @end
 
 @implementation SBCommandTabController
@@ -32,15 +32,15 @@
 + (id)keyCommands
 {
   v10[2] = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D66B00] systemKeyCommandOverlayEnvironment];
+  systemKeyCommandOverlayEnvironment = [MEMORY[0x277D66B00] systemKeyCommandOverlayEnvironment];
   v3 = MEMORY[0x277D75650];
-  v4 = [MEMORY[0x277CCA8D8] mainBundle];
-  v5 = [v4 localizedStringForKey:@"COMMAND_TAB_DISCOVERABILITY" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v5 = [mainBundle localizedStringForKey:@"COMMAND_TAB_DISCOVERABILITY" value:&stru_283094718 table:@"SpringBoard"];
   v6 = [v3 commandWithTitle:v5 image:0 action:sel__handleCommandTab_ input:@"\t" modifierFlags:0x100000 propertyList:0];
 
-  [v6 _setEventDeferringEnvironment:v2];
+  [v6 _setEventDeferringEnvironment:systemKeyCommandOverlayEnvironment];
   v7 = [MEMORY[0x277D75650] commandWithTitle:&stru_283094718 image:0 action:sel__handleShiftCommandTab_ input:@"\t" modifierFlags:1179648 propertyList:&unk_2833709D0];
-  [v6 _setEventDeferringEnvironment:v2];
+  [v6 _setEventDeferringEnvironment:systemKeyCommandOverlayEnvironment];
   v10[0] = v6;
   v10[1] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
@@ -48,21 +48,21 @@
   return v8;
 }
 
-- (SBCommandTabController)initWithWindowScene:(id)a3 iconController:(id)a4
+- (SBCommandTabController)initWithWindowScene:(id)scene iconController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
+  sceneCopy = scene;
+  controllerCopy = controller;
   v37.receiver = self;
   v37.super_class = SBCommandTabController;
   v8 = [(SBCommandTabController *)&v37 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_windowScene, v6);
-    objc_storeWeak(&v9->_iconController, v7);
+    objc_storeWeak(&v8->_windowScene, sceneCopy);
+    objc_storeWeak(&v9->_iconController, controllerCopy);
     v10 = +[SBSceneManagerCoordinator sharedInstance];
-    v11 = [v10 sceneDeactivationManager];
-    v12 = [v11 newAssertionWithReason:3];
+    sceneDeactivationManager = [v10 sceneDeactivationManager];
+    v12 = [sceneDeactivationManager newAssertionWithReason:3];
     resignActiveAssertion = v9->_resignActiveAssertion;
     v9->_resignActiveAssertion = v12;
 
@@ -70,32 +70,32 @@
     recentDisplayItemsPersistenceQueue = v9->_recentDisplayItemsPersistenceQueue;
     v9->_recentDisplayItemsPersistenceQueue = v14;
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v9 selector:sel__sceneDidDisconnect_ name:*MEMORY[0x277D76E50] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__sceneDidDisconnect_ name:*MEMORY[0x277D76E50] object:0];
 
     v17 = +[SBDefaults localDefaults];
-    v18 = [v17 recentDisplayItemsDefaults];
+    recentDisplayItemsDefaults = [v17 recentDisplayItemsDefaults];
     defaults = v9->_defaults;
-    v9->_defaults = v18;
+    v9->_defaults = recentDisplayItemsDefaults;
 
     v20 = objc_alloc_init(SBRecentDisplayItemsDataStore);
     dataStore = v9->_dataStore;
     v9->_dataStore = v20;
 
     [(SBRecentDisplayItemsDataStore *)v9->_dataStore setPersistenceDelegate:v9];
-    v22 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v22 addObserver:v9 selector:sel__effectiveSettingsChangedNotification_ name:*MEMORY[0x277D25CA0] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v9 selector:sel__effectiveSettingsChangedNotification_ name:*MEMORY[0x277D25CA0] object:0];
 
     v23 = [SBRecentDisplayItemsController alloc];
     v24 = +[SBAppInteractionEventSourceManager sharedInstance];
     v25 = +[SBApplicationController sharedInstance];
-    v26 = [(SBRecentDisplayItemsController *)v23 initWithRemovalPersonality:7 movePersonality:15 transitionFromSources:0 maxDisplayItems:10 eventSource:v24 applicationController:v25 iconModelProvider:v7];
+    v26 = [(SBRecentDisplayItemsController *)v23 initWithRemovalPersonality:7 movePersonality:15 transitionFromSources:0 maxDisplayItems:10 eventSource:v24 applicationController:v25 iconModelProvider:controllerCopy];
     recentDisplayItemsController = v9->_recentDisplayItemsController;
     v9->_recentDisplayItemsController = v26;
 
     v28 = v9->_recentDisplayItemsController;
-    v29 = [(SBRecentDisplayItemsDataStore *)v9->_dataStore displayItems];
-    [(SBRecentDisplayItemsController *)v28 setRecentDisplayItems:v29];
+    displayItems = [(SBRecentDisplayItemsDataStore *)v9->_dataStore displayItems];
+    [(SBRecentDisplayItemsController *)v28 setRecentDisplayItems:displayItems];
 
     [(SBRecentDisplayItemsController *)v9->_recentDisplayItemsController setDelegate:v9];
     objc_initWeak(&location, v9);
@@ -142,8 +142,8 @@ void __61__SBCommandTabController_initWithWindowScene_iconController___block_inv
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(UIApplicationSceneDeactivationAssertion *)self->_resignActiveAssertion relinquish];
   v4.receiver = self;
@@ -182,16 +182,16 @@ void __61__SBCommandTabController_initWithWindowScene_iconController___block_inv
 - (void)launchCurrentSelectedApplication
 {
   commandTabViewController = self->_commandTabViewController;
-  v4 = [(SBCommandTabViewController *)commandTabViewController selectedApplicationDisplayItem];
-  [(SBCommandTabController *)self viewController:commandTabViewController selectedApplicationWithDisplayItem:v4];
+  selectedApplicationDisplayItem = [(SBCommandTabViewController *)commandTabViewController selectedApplicationDisplayItem];
+  [(SBCommandTabController *)self viewController:commandTabViewController selectedApplicationWithDisplayItem:selectedApplicationDisplayItem];
 }
 
 - (void)removeCurrentSelectedApplication
 {
-  v3 = [(SBCommandTabViewController *)self->_commandTabViewController selectedApplicationDisplayItem];
-  if ([v3 type] != 1)
+  selectedApplicationDisplayItem = [(SBCommandTabViewController *)self->_commandTabViewController selectedApplicationDisplayItem];
+  if ([selectedApplicationDisplayItem type] != 1)
   {
-    [(SBRecentDisplayItemsController *)self->_recentDisplayItemsController removeDisplayItem:v3];
+    [(SBRecentDisplayItemsController *)self->_recentDisplayItemsController removeDisplayItem:selectedApplicationDisplayItem];
   }
 }
 
@@ -199,45 +199,45 @@ void __61__SBCommandTabController_initWithWindowScene_iconController___block_inv
 {
   if ([(SBCommandTabController *)self isVisible])
   {
-    v3 = [(SBCommandTabViewController *)self->_commandTabViewController selectedApplicationDisplayItem];
+    selectedApplicationDisplayItem = [(SBCommandTabViewController *)self->_commandTabViewController selectedApplicationDisplayItem];
   }
 
   else
   {
-    v3 = 0;
+    selectedApplicationDisplayItem = 0;
   }
 
-  return v3;
+  return selectedApplicationDisplayItem;
 }
 
-- (void)viewController:(id)a3 selectedApplicationWithDisplayItem:(id)a4
+- (void)viewController:(id)controller selectedApplicationWithDisplayItem:(id)item
 {
-  v6 = a4;
-  v7 = [a3 _sbWindowScene];
-  v8 = v7;
-  if (v7)
+  itemCopy = item;
+  _sbWindowScene = [controller _sbWindowScene];
+  v8 = _sbWindowScene;
+  if (_sbWindowScene)
   {
-    v9 = [v7 sceneManager];
+    sceneManager = [_sbWindowScene sceneManager];
     v10 = +[(SBWorkspace *)SBMainWorkspace];
-    v11 = [v10 keyboardFocusController];
+    keyboardFocusController = [v10 keyboardFocusController];
 
-    v12 = [v11 userFocusRequestGeneration];
-    [(SBCommandTabController *)self _emitAnalyticsEventForDisplayItem:v6];
-    v13 = [v11 bufferEventsForSpringBoardScene:v8 reason:@"SBCommandTabController"];
-    if (!v6)
+    userFocusRequestGeneration = [keyboardFocusController userFocusRequestGeneration];
+    [(SBCommandTabController *)self _emitAnalyticsEventForDisplayItem:itemCopy];
+    v13 = [keyboardFocusController bufferEventsForSpringBoardScene:v8 reason:@"SBCommandTabController"];
+    if (!itemCopy)
     {
       [(SBCommandTabController *)self dismiss];
     }
 
-    if ([v6 type] == 1)
+    if ([itemCopy type] == 1)
     {
       [(SBCommandTabController *)self dismiss];
       v14 = +[(SBWorkspaceEntity *)SBHomeScreenEntity];
 LABEL_16:
       if ([(SBWorkspaceEntity *)v14 isApplicationSceneEntity])
       {
-        v28 = [(SBAppClipPlaceholderWorkspaceEntity *)v14 application];
-        v29 = [v28 bundleIdentifier];
+        application = [(SBAppClipPlaceholderWorkspaceEntity *)v14 application];
+        bundleIdentifier = [application bundleIdentifier];
       }
 
       [(SBWorkspaceEntity *)v14 setFlag:1 forActivationSetting:49];
@@ -256,8 +256,8 @@ LABEL_16:
       v44 = v14;
       v45 = v8;
       v47 = v31;
-      v48 = v12;
-      v46 = v6;
+      v48 = userFocusRequestGeneration;
+      v46 = itemCopy;
       v40[0] = MEMORY[0x277D85DD0];
       v40[1] = 3221225472;
       v40[2] = __76__SBCommandTabController_viewController_selectedApplicationWithDisplayItem___block_invoke_78;
@@ -271,61 +271,61 @@ LABEL_16:
       goto LABEL_19;
     }
 
-    v39 = v12;
-    if ([v6 type] == 5)
+    v39 = userFocusRequestGeneration;
+    if ([itemCopy type] == 5)
     {
       v16 = +[SBApplicationController sharedInstance];
-      v17 = [v16 webApplication];
+      webApplication = [v16 webApplication];
 
       v18 = [SBDeviceApplicationSceneEntity alloc];
-      v19 = [v6 uniqueIdentifier];
-      v20 = [v9 displayIdentity];
+      uniqueIdentifier = [itemCopy uniqueIdentifier];
+      displayIdentity = [sceneManager displayIdentity];
       v21 = v18;
-      v22 = v17;
-      v23 = v19;
+      v22 = webApplication;
+      v23 = uniqueIdentifier;
     }
 
     else
     {
-      v17 = [v6 bundleIdentifier];
+      webApplication = [itemCopy bundleIdentifier];
       v24 = +[SBApplicationController sharedInstance];
-      v19 = [v24 applicationWithBundleIdentifier:v17];
+      uniqueIdentifier = [v24 applicationWithBundleIdentifier:webApplication];
 
-      v25 = [v19 bundleIdentifier];
-      v26 = [SBAppClipPlaceholderWorkspaceEntity isAppClipUpdateAvailableForBundleIdentifier:v25];
+      bundleIdentifier2 = [uniqueIdentifier bundleIdentifier];
+      v26 = [SBAppClipPlaceholderWorkspaceEntity isAppClipUpdateAvailableForBundleIdentifier:bundleIdentifier2];
 
-      if (!v19 || v26)
+      if (!uniqueIdentifier || v26)
       {
         v34 = +[SBApplicationPlaceholderController sharedInstance];
-        v35 = [v34 placeholderForDisplayID:v17];
+        v35 = [v34 placeholderForDisplayID:webApplication];
         v36 = [v35 isAppClip] | v26;
 
         if ((v36 & 1) == 0)
         {
           v14 = 0;
-          v9 = v38;
+          sceneManager = v38;
           goto LABEL_15;
         }
 
         v37 = [SBAppClipPlaceholderWorkspaceEntity alloc];
-        v20 = [v6 uniqueIdentifier];
-        v14 = [(SBAppClipPlaceholderWorkspaceEntity *)v37 initWithBundleIdentifier:v17 futureSceneIdentifier:v20 needsUpdate:v26];
-        v9 = v38;
+        displayIdentity = [itemCopy uniqueIdentifier];
+        v14 = [(SBAppClipPlaceholderWorkspaceEntity *)v37 initWithBundleIdentifier:webApplication futureSceneIdentifier:displayIdentity needsUpdate:v26];
+        sceneManager = v38;
 LABEL_14:
 
 LABEL_15:
-        v12 = v39;
+        userFocusRequestGeneration = v39;
         goto LABEL_16;
       }
 
       v27 = [SBDeviceApplicationSceneEntity alloc];
-      v20 = [v9 displayIdentity];
+      displayIdentity = [sceneManager displayIdentity];
       v21 = v27;
-      v22 = v19;
+      v22 = uniqueIdentifier;
       v23 = 0;
     }
 
-    v14 = [(SBDeviceApplicationSceneEntity *)v21 initWithApplication:v22 uniqueIdentifier:v23 sceneHandleProvider:v9 displayIdentity:v20];
+    v14 = [(SBDeviceApplicationSceneEntity *)v21 initWithApplication:v22 uniqueIdentifier:v23 sceneHandleProvider:sceneManager displayIdentity:displayIdentity];
     goto LABEL_14;
   }
 
@@ -449,18 +449,18 @@ uint64_t __76__SBCommandTabController_viewController_selectedApplicationWithDisp
   return 1;
 }
 
-- (void)recentDisplayItemsControllerDidUpdateDisplayItems:(id)a3
+- (void)recentDisplayItemsControllerDidUpdateDisplayItems:(id)items
 {
   dataStore = self->_dataStore;
-  v4 = [(SBRecentDisplayItemsController *)self->_recentDisplayItemsController recentDisplayItems];
-  [(SBRecentDisplayItemsDataStore *)dataStore setDisplayItems:v4];
+  recentDisplayItems = [(SBRecentDisplayItemsController *)self->_recentDisplayItemsController recentDisplayItems];
+  [(SBRecentDisplayItemsDataStore *)dataStore setDisplayItems:recentDisplayItems];
 }
 
-- (id)persistedDisplayItemsForDataStore:(id)a3
+- (id)persistedDisplayItemsForDataStore:(id)store
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (self->_dataStore == v4)
+  storeCopy = store;
+  if (self->_dataStore == storeCopy)
   {
     persistedRecentDisplayItems = self->_persistedRecentDisplayItems;
     if (persistedRecentDisplayItems)
@@ -565,12 +565,12 @@ void __60__SBCommandTabController_persistedDisplayItemsForDataStore___block_invo
   *(v3 + 40) = v2;
 }
 
-- (void)dataStore:(id)a3 persistDisplayItems:(id)a4
+- (void)dataStore:(id)store persistDisplayItems:(id)items
 {
-  v6 = a4;
-  if (self->_dataStore == a3 && ([(NSOrderedSet *)self->_persistedRecentDisplayItems isEqual:v6]& 1) == 0)
+  itemsCopy = items;
+  if (self->_dataStore == store && ([(NSOrderedSet *)self->_persistedRecentDisplayItems isEqual:itemsCopy]& 1) == 0)
   {
-    v7 = [v6 copy];
+    v7 = [itemsCopy copy];
     persistedRecentDisplayItems = self->_persistedRecentDisplayItems;
     self->_persistedRecentDisplayItems = v7;
 
@@ -631,12 +631,12 @@ void __56__SBCommandTabController_dataStore_persistDisplayItems___block_invoke(u
   [WeakRetained setCommandTabPlistRepresentation:v3];
 }
 
-- (void)_sceneDidDisconnect:(id)a3
+- (void)_sceneDidDisconnect:(id)disconnect
 {
-  v4 = [a3 object];
-  v5 = [(UIWindow *)self->_window _sbWindowScene];
+  object = [disconnect object];
+  _sbWindowScene = [(UIWindow *)self->_window _sbWindowScene];
 
-  if (v4 == v5)
+  if (object == _sbWindowScene)
   {
     v6 = SBLogCommon();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -649,7 +649,7 @@ void __56__SBCommandTabController_dataStore_persistDisplayItems___block_invoke(u
   }
 }
 
-- (void)_effectiveSettingsChangedNotification:(id)a3
+- (void)_effectiveSettingsChangedNotification:(id)notification
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -672,13 +672,13 @@ void __64__SBCommandTabController__effectiveSettingsChangedNotification___block_
   }
 }
 
-- (void)_emitAnalyticsEventForDisplayItem:(id)a3
+- (void)_emitAnalyticsEventForDisplayItem:(id)item
 {
   v13[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemCopy = item;
   v12[0] = *MEMORY[0x277D67670];
   v5 = +[SBDisplayItem homeScreenDisplayItem];
-  v6 = [(SBDisplayItem *)v4 isEqualToItem:v5];
+  v6 = [(SBDisplayItem *)itemCopy isEqualToItem:v5];
   if (v6)
   {
     v7 = &unk_2833709E8;
@@ -686,7 +686,7 @@ void __64__SBCommandTabController__effectiveSettingsChangedNotification___block_
 
   else
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SBCommandTabViewController indexOfDisplayItem:](self->_commandTabViewController, "indexOfDisplayItem:", v4)}];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SBCommandTabViewController indexOfDisplayItem:](self->_commandTabViewController, "indexOfDisplayItem:", itemCopy)}];
   }
 
   v12[1] = *MEMORY[0x277D67678];
@@ -699,13 +699,13 @@ void __64__SBCommandTabController__effectiveSettingsChangedNotification___block_
 
   v9 = MEMORY[0x277D65DD0];
   v10 = v8;
-  v11 = [v9 sharedInstance];
-  [v11 emitEvent:14 withPayload:v10];
+  sharedInstance = [v9 sharedInstance];
+  [sharedInstance emitEvent:14 withPayload:v10];
 }
 
-- (void)_activateWithForwardDirection:(BOOL)a3
+- (void)_activateWithForwardDirection:(BOOL)direction
 {
-  v3 = a3;
+  directionCopy = direction;
   if (!self->_window)
   {
     [(SBCommandTabController *)self _showWindow:1];
@@ -720,7 +720,7 @@ void __64__SBCommandTabController__effectiveSettingsChangedNotification___block_
   {
     v6 = [MEMORY[0x277CBEBB8] scheduledTimerWithTimeInterval:self target:sel__showCommandTabBarAfterTimer_ selector:0 userInfo:0 repeats:0.1];
     objc_storeStrong(&self->_timer, v6);
-    if (v3)
+    if (directionCopy)
     {
       if ((SBWorkspaceSpringBoardIsActive() & 1) == 0)
       {
@@ -745,7 +745,7 @@ void __64__SBCommandTabController__effectiveSettingsChangedNotification___block_
   }
 }
 
-- (void)_showCommandTabBarAfterTimer:(id)a3
+- (void)_showCommandTabBarAfterTimer:(id)timer
 {
   [(SBCommandTabController *)self _clearTimer];
   commandTabViewController = self->_commandTabViewController;
@@ -760,28 +760,28 @@ void __64__SBCommandTabController__effectiveSettingsChangedNotification___block_
   self->_timer = 0;
 }
 
-- (void)_allowAppToAppearWhileHidden:(id)a3
+- (void)_allowAppToAppearWhileHidden:(id)hidden
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   appsAllowedWhileHidden = self->_appsAllowedWhileHidden;
-  v8 = v4;
+  v8 = hiddenCopy;
   if (!appsAllowedWhileHidden)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v7 = self->_appsAllowedWhileHidden;
     self->_appsAllowedWhileHidden = v6;
 
-    v4 = v8;
+    hiddenCopy = v8;
     appsAllowedWhileHidden = self->_appsAllowedWhileHidden;
   }
 
-  [(NSMutableSet *)appsAllowedWhileHidden addObject:v4];
+  [(NSMutableSet *)appsAllowedWhileHidden addObject:hiddenCopy];
   [(SBRecentDisplayItemsController *)self->_recentDisplayItemsController _allowAppToAppearWhileHidden:v8];
 }
 
-- (void)_disallowAppFromAppearingWhileHidden:(id)a3
+- (void)_disallowAppFromAppearingWhileHidden:(id)hidden
 {
-  v5 = a3;
+  hiddenCopy = hidden;
   [(NSMutableSet *)self->_appsAllowedWhileHidden removeObject:?];
   if (![(NSMutableSet *)self->_appsAllowedWhileHidden count])
   {
@@ -789,13 +789,13 @@ void __64__SBCommandTabController__effectiveSettingsChangedNotification___block_
     self->_appsAllowedWhileHidden = 0;
   }
 
-  [(SBRecentDisplayItemsController *)self->_recentDisplayItemsController _disallowAppFromAppearingWhileHidden:v5];
+  [(SBRecentDisplayItemsController *)self->_recentDisplayItemsController _disallowAppFromAppearingWhileHidden:hiddenCopy];
 }
 
-- (void)activateWithKeyCommand:(id)a3
+- (void)activateWithKeyCommand:(id)command
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  commandCopy = command;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_windowScene);
@@ -806,42 +806,42 @@ void __64__SBCommandTabController__effectiveSettingsChangedNotification___block_
     WeakRetained = 0;
   }
 
-  v6 = [WeakRetained sceneManager];
-  v7 = [v6 policyAggregator];
+  sceneManager = [WeakRetained sceneManager];
+  policyAggregator = [sceneManager policyAggregator];
   v25 = 0;
-  v8 = [v7 allowsCapability:20 explanation:&v25];
+  v8 = [policyAggregator allowsCapability:20 explanation:&v25];
   v9 = v25;
 
   if (v8)
   {
-    v10 = [WeakRetained assistantController];
-    [v10 dismissAssistantViewIfNecessary];
+    assistantController = [WeakRetained assistantController];
+    [assistantController dismissAssistantViewIfNecessary];
 
     v11 = +[SBVoiceControlController sharedInstance];
     [v11 dismissTransientOverlay];
 
     v12 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-    v13 = [v12 recentAppLayouts];
-    if ([v13 count])
+    recentAppLayouts = [v12 recentAppLayouts];
+    if ([recentAppLayouts count])
     {
-      v14 = [(SBRecentDisplayItemsController *)self->_recentDisplayItemsController recentDisplayItems];
-      v15 = [SBCommandTabViewController canActivateWithRecentDisplayItems:v14];
+      recentDisplayItems = [(SBRecentDisplayItemsController *)self->_recentDisplayItemsController recentDisplayItems];
+      v15 = [SBCommandTabViewController canActivateWithRecentDisplayItems:recentDisplayItems];
 
       if (v15)
       {
-        if (([v4 modifierFlags] & 0x20000) != 0)
+        if (([commandCopy modifierFlags] & 0x20000) != 0)
         {
-          v16 = self;
+          selfCopy2 = self;
           v17 = 0;
         }
 
         else
         {
-          v16 = self;
+          selfCopy2 = self;
           v17 = 1;
         }
 
-        [(SBCommandTabController *)v16 _activateWithForwardDirection:v17];
+        [(SBCommandTabController *)selfCopy2 _activateWithForwardDirection:v17];
         goto LABEL_18;
       }
     }
@@ -854,10 +854,10 @@ void __64__SBCommandTabController__effectiveSettingsChangedNotification___block_
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = +[SBMainSwitcherControllerCoordinator sharedInstance];
-      v21 = [v20 recentAppLayouts];
-      v22 = [v21 count];
-      v23 = [(SBRecentDisplayItemsController *)self->_recentDisplayItemsController recentDisplayItems];
-      v24 = [v23 count];
+      recentAppLayouts2 = [v20 recentAppLayouts];
+      v22 = [recentAppLayouts2 count];
+      recentDisplayItems2 = [(SBRecentDisplayItemsController *)self->_recentDisplayItemsController recentDisplayItems];
+      v24 = [recentDisplayItems2 count];
       *buf = 134218240;
       v27 = v22;
       v28 = 2048;
@@ -891,10 +891,10 @@ LABEL_18:
   return WeakRetained;
 }
 
-- (BOOL)recentDisplayItemsController:(id)a3 shouldAddItem:(id)a4
+- (BOOL)recentDisplayItemsController:(id)controller shouldAddItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
+  controllerCopy = controller;
+  itemCopy = item;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_iconController);
@@ -905,40 +905,40 @@ LABEL_18:
     WeakRetained = 0;
   }
 
-  v10 = [WeakRetained iconModel];
+  iconModel = [WeakRetained iconModel];
 
-  if ([v8 type] == 5)
+  if ([itemCopy type] == 5)
   {
-    [v8 webClipIdentifier];
+    [itemCopy webClipIdentifier];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_0_24() bookmarkIconForWebClipIdentifier:?];
   }
 
   else
   {
-    [v8 bundleIdentifier];
+    [itemCopy bundleIdentifier];
     objc_claimAutoreleasedReturnValue();
     [OUTLINED_FUNCTION_0_24() applicationIconForBundleIdentifier:?];
   }
   v11 = ;
 
-  if ([v10 isIconVisible:v11] & 1) != 0 || (appsAllowedWhileHidden = self->_appsAllowedWhileHidden, objc_msgSend(v8, "bundleIdentifier"), v13 = objc_claimAutoreleasedReturnValue(), LOBYTE(appsAllowedWhileHidden) = -[NSMutableSet containsObject:](appsAllowedWhileHidden, "containsObject:", v13), v13, (appsAllowedWhileHidden))
+  if ([iconModel isIconVisible:v11] & 1) != 0 || (appsAllowedWhileHidden = self->_appsAllowedWhileHidden, objc_msgSend(itemCopy, "bundleIdentifier"), v13 = objc_claimAutoreleasedReturnValue(), LOBYTE(appsAllowedWhileHidden) = -[NSMutableSet containsObject:](appsAllowedWhileHidden, "containsObject:", v13), v13, (appsAllowedWhileHidden))
   {
     v14 = 1;
   }
 
   else if ([v11 isLeafIcon])
   {
-    v16 = [v11 applicationBundleID];
+    applicationBundleID = [v11 applicationBundleID];
     v14 = 0;
-    if (v16)
+    if (applicationBundleID)
     {
       v17 = +[SBApplicationController sharedInstance];
-      v18 = [v17 applicationWithBundleIdentifier:v16];
-      v19 = [v18 info];
-      v20 = [v19 isAppClip];
+      v18 = [v17 applicationWithBundleIdentifier:applicationBundleID];
+      info = [v18 info];
+      isAppClip = [info isAppClip];
 
-      if ((v20 & 1) != 0 || (+[SBApplicationPlaceholderController sharedInstance](SBApplicationPlaceholderController, "sharedInstance"), v21 = objc_claimAutoreleasedReturnValue(), [v21 placeholderForDisplayID:v16], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isAppClip"), v22, v21, v23))
+      if ((isAppClip & 1) != 0 || (+[SBApplicationPlaceholderController sharedInstance](SBApplicationPlaceholderController, "sharedInstance"), v21 = objc_claimAutoreleasedReturnValue(), [v21 placeholderForDisplayID:applicationBundleID], v22 = objc_claimAutoreleasedReturnValue(), v23 = objc_msgSend(v22, "isAppClip"), v22, v21, v23))
       {
         v14 = 1;
       }
@@ -964,10 +964,10 @@ LABEL_18:
   return WeakRetained;
 }
 
-- (BOOL)dataStore:(id)a3 shouldRestorePersistedDisplayItem:(id)a4
+- (BOOL)dataStore:(id)store shouldRestorePersistedDisplayItem:(id)item
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  itemCopy = item;
   if (self)
   {
     WeakRetained = objc_loadWeakRetained(&self->_iconController);
@@ -978,24 +978,24 @@ LABEL_18:
     WeakRetained = 0;
   }
 
-  v10 = [WeakRetained iconModel];
+  iconModel = [WeakRetained iconModel];
 
-  if ([v8 type])
+  if ([itemCopy type])
   {
-    v11 = [v8 type] == 1;
+    v11 = [itemCopy type] == 1;
   }
 
   else
   {
-    v12 = [v8 bundleIdentifier];
-    if (v12)
+    bundleIdentifier = [itemCopy bundleIdentifier];
+    if (bundleIdentifier)
     {
-      [v10 applicationIconForBundleIdentifier:v12];
+      [iconModel applicationIconForBundleIdentifier:bundleIdentifier];
       objc_claimAutoreleasedReturnValue();
       v13 = [OUTLINED_FUNCTION_0_24() isIconVisible:?];
       v14 = +[SBApplicationController sharedInstance];
-      v15 = [v14 restrictionController];
-      v16 = [v15 isApplicationIdentifierRestricted:v12];
+      restrictionController = [v14 restrictionController];
+      v16 = [restrictionController isApplicationIdentifierRestricted:bundleIdentifier];
 
       v11 = v13 & (v16 ^ 1);
     }
@@ -1009,9 +1009,9 @@ LABEL_18:
   return v11;
 }
 
-- (void)_showWindow:(BOOL)a3
+- (void)_showWindow:(BOOL)window
 {
-  v3 = a3;
+  windowCopy = window;
   v32 = *MEMORY[0x277D85DE8];
   if (self)
   {
@@ -1023,32 +1023,32 @@ LABEL_18:
     WeakRetained = 0;
   }
 
-  v6 = [WeakRetained switcherController];
-  v7 = [v6 windowManagementContext];
-  v8 = [v7 isChamoisOrFlexibleWindowing];
+  switcherController = [WeakRetained switcherController];
+  windowManagementContext = [switcherController windowManagementContext];
+  isChamoisOrFlexibleWindowing = [windowManagementContext isChamoisOrFlexibleWindowing];
 
   window = self->_window;
-  if (v3)
+  if (windowCopy)
   {
     if (window)
     {
       v10 = SBLogCommon();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(SBWindow *)self->_window isHidden];
+        isHidden = [(SBWindow *)self->_window isHidden];
         v31[0] = 67109120;
-        v31[1] = v11;
+        v31[1] = isHidden;
         _os_log_impl(&dword_21ED4E000, v10, OS_LOG_TYPE_DEFAULT, "Not creating command-tab window because one already exists, isHidden: %d", v31, 8u);
       }
     }
 
     else
     {
-      if ((v8 & 1) == 0)
+      if ((isChamoisOrFlexibleWindowing & 1) == 0)
       {
         resignActiveAssertion = self->_resignActiveAssertion;
-        v17 = [WeakRetained _fbsDisplayIdentity];
-        [(UIApplicationSceneDeactivationAssertion *)resignActiveAssertion sb_acquireForDisplayIdentity:v17];
+        _fbsDisplayIdentity = [WeakRetained _fbsDisplayIdentity];
+        [(UIApplicationSceneDeactivationAssertion *)resignActiveAssertion sb_acquireForDisplayIdentity:_fbsDisplayIdentity];
       }
 
       v18 = [SBApp deviceOrientationUpdateDeferralAssertionWithReason:@"CommandTab"];
@@ -1060,9 +1060,9 @@ LABEL_18:
       self->_window = &v20->super;
 
       v22 = [SBCommandTabViewController alloc];
-      v23 = [(SBRecentDisplayItemsController *)self->_recentDisplayItemsController recentDisplayItems];
+      recentDisplayItems = [(SBRecentDisplayItemsController *)self->_recentDisplayItemsController recentDisplayItems];
       v24 = objc_loadWeakRetained(&self->_iconController);
-      v25 = [(SBCommandTabViewController *)v22 initWithRecentDisplayItems:v23 iconController:v24];
+      v25 = [(SBCommandTabViewController *)v22 initWithRecentDisplayItems:recentDisplayItems iconController:v24];
       commandTabViewController = self->_commandTabViewController;
       self->_commandTabViewController = v25;
 
@@ -1078,9 +1078,9 @@ LABEL_18:
       [(SBFWindow *)self->_window makeKeyWindow];
       [(SBCommandTabViewController *)self->_commandTabViewController becomeFirstResponder];
       v10 = +[SBMainWorkspace sharedInstance];
-      v27 = [v10 keyboardFocusController];
+      keyboardFocusController = [v10 keyboardFocusController];
       v28 = +[SBKeyboardFocusLockReason commandTab];
-      v29 = [v27 focusLockSpringBoardWindowScene:WeakRetained forReason:v28];
+      v29 = [keyboardFocusController focusLockSpringBoardWindowScene:WeakRetained forReason:v28];
       keyboardFocusAssertion = self->_keyboardFocusAssertion;
       self->_keyboardFocusAssertion = v29;
     }
@@ -1088,7 +1088,7 @@ LABEL_18:
 
   else if (window)
   {
-    if ((v8 & 1) == 0)
+    if ((isChamoisOrFlexibleWindowing & 1) == 0)
     {
       [(UIApplicationSceneDeactivationAssertion *)self->_resignActiveAssertion relinquish];
     }

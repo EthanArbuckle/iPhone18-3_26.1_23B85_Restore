@@ -1,11 +1,11 @@
 @interface RMModelStatusManagementClientCapabilities
 + (NSSet)allowedStatusKeys;
-+ (id)buildRequiredOnlyWithSupportedVersions:(id)a3 supportedFeatures:(id)a4 supportedPayloads:(id)a5;
-+ (id)buildWithSupportedVersions:(id)a3 supportedFeatures:(id)a4 supportedPayloads:(id)a5;
++ (id)buildRequiredOnlyWithSupportedVersions:(id)versions supportedFeatures:(id)features supportedPayloads:(id)payloads;
++ (id)buildWithSupportedVersions:(id)versions supportedFeatures:(id)features supportedPayloads:(id)payloads;
 + (id)supportedOS;
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializePayloadWithType:(signed __int16)a3;
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializePayloadWithType:(signed __int16)type;
 @end
 
 @implementation RMModelStatusManagementClientCapabilities
@@ -25,30 +25,30 @@
   return v4;
 }
 
-+ (id)buildWithSupportedVersions:(id)a3 supportedFeatures:(id)a4 supportedPayloads:(id)a5
++ (id)buildWithSupportedVersions:(id)versions supportedFeatures:(id)features supportedPayloads:(id)payloads
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  payloadsCopy = payloads;
+  featuresCopy = features;
+  versionsCopy = versions;
   v10 = objc_opt_new();
-  [v10 setStatusSupportedVersions:v9];
+  [v10 setStatusSupportedVersions:versionsCopy];
 
-  [v10 setStatusSupportedFeatures:v8];
-  [v10 setStatusSupportedPayloads:v7];
+  [v10 setStatusSupportedFeatures:featuresCopy];
+  [v10 setStatusSupportedPayloads:payloadsCopy];
 
   return v10;
 }
 
-+ (id)buildRequiredOnlyWithSupportedVersions:(id)a3 supportedFeatures:(id)a4 supportedPayloads:(id)a5
++ (id)buildRequiredOnlyWithSupportedVersions:(id)versions supportedFeatures:(id)features supportedPayloads:(id)payloads
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  payloadsCopy = payloads;
+  featuresCopy = features;
+  versionsCopy = versions;
   v10 = objc_opt_new();
-  [v10 setStatusSupportedVersions:v9];
+  [v10 setStatusSupportedVersions:versionsCopy];
 
-  [v10 setStatusSupportedFeatures:v8];
-  [v10 setStatusSupportedPayloads:v7];
+  [v10 setStatusSupportedFeatures:featuresCopy];
+  [v10 setStatusSupportedPayloads:payloadsCopy];
 
   return v10;
 }
@@ -105,12 +105,12 @@
   return v11;
 }
 
-- (BOOL)loadPayloadFromDictionary:(id)a3 serializationType:(signed __int16)a4 error:(id *)a5
+- (BOOL)loadPayloadFromDictionary:(id)dictionary serializationType:(signed __int16)type error:(id *)error
 {
-  v8 = a3;
+  dictionaryCopy = dictionary;
   v9 = MEMORY[0x277CBEB58];
-  v10 = [v8 allKeys];
-  v11 = [v9 setWithArray:v10];
+  allKeys = [dictionaryCopy allKeys];
+  v11 = [v9 setWithArray:allKeys];
 
   v12 = +[RMModelStatusManagementClientCapabilities allowedStatusKeys];
   [v11 minusSet:v12];
@@ -118,10 +118,10 @@
   v13 = [v11 copy];
   [(RMModelPayloadBase *)self setUnknownPayloadKeys:v13];
 
-  if ([(RMModelPayloadBase *)self loadArrayFromDictionary:v8 usingKey:@"supported-versions" forKeyPath:@"statusSupportedVersions" validator:&__block_literal_global_24 isRequired:1 defaultValue:0 error:a5]&& (LOWORD(v16) = a4, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"supported-features" forKeyPath:@"statusSupportedFeatures" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v16 error:a5]))
+  if ([(RMModelPayloadBase *)self loadArrayFromDictionary:dictionaryCopy usingKey:@"supported-versions" forKeyPath:@"statusSupportedVersions" validator:&__block_literal_global_24 isRequired:1 defaultValue:0 error:error]&& (LOWORD(v16) = type, [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"supported-features" forKeyPath:@"statusSupportedFeatures" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v16 error:error]))
   {
-    LOWORD(v17) = a4;
-    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:v8 usingKey:@"supported-payloads" forKeyPath:@"statusSupportedPayloads" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v17 error:a5];
+    LOWORD(v17) = type;
+    v14 = [(RMModelPayloadBase *)self loadDictionaryFromDictionary:dictionaryCopy usingKey:@"supported-payloads" forKeyPath:@"statusSupportedPayloads" classType:objc_opt_class() isRequired:1 defaultValue:0 serializationType:v17 error:error];
   }
 
   else
@@ -141,38 +141,38 @@ uint64_t __95__RMModelStatusManagementClientCapabilities_loadPayloadFromDictiona
   return isKindOfClass & 1;
 }
 
-- (id)serializePayloadWithType:(signed __int16)a3
+- (id)serializePayloadWithType:(signed __int16)type
 {
   v5 = objc_opt_new();
-  v6 = [(RMModelStatusManagementClientCapabilities *)self statusSupportedVersions];
-  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"supported-versions" value:v6 itemSerializer:&__block_literal_global_74 isRequired:1 defaultValue:0];
+  statusSupportedVersions = [(RMModelStatusManagementClientCapabilities *)self statusSupportedVersions];
+  [(RMModelPayloadBase *)self serializeArrayIntoDictionary:v5 usingKey:@"supported-versions" value:statusSupportedVersions itemSerializer:&__block_literal_global_74 isRequired:1 defaultValue:0];
 
-  v7 = [(RMModelStatusManagementClientCapabilities *)self statusSupportedFeatures];
+  statusSupportedFeatures = [(RMModelStatusManagementClientCapabilities *)self statusSupportedFeatures];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __70__RMModelStatusManagementClientCapabilities_serializePayloadWithType___block_invoke_2;
   v13[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v14 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"supported-features" value:v7 dictSerializer:v13 isRequired:1 defaultValue:0];
+  typeCopy = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"supported-features" value:statusSupportedFeatures dictSerializer:v13 isRequired:1 defaultValue:0];
 
-  v8 = [(RMModelStatusManagementClientCapabilities *)self statusSupportedPayloads];
+  statusSupportedPayloads = [(RMModelStatusManagementClientCapabilities *)self statusSupportedPayloads];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __70__RMModelStatusManagementClientCapabilities_serializePayloadWithType___block_invoke_3;
   v11[3] = &__block_descriptor_34_e42___NSDictionary_16__0__RMModelPayloadBase_8l;
-  v12 = a3;
-  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"supported-payloads" value:v8 dictSerializer:v11 isRequired:1 defaultValue:0];
+  typeCopy2 = type;
+  [(RMModelPayloadBase *)self serializeDictionaryIntoDictionary:v5 usingKey:@"supported-payloads" value:statusSupportedPayloads dictSerializer:v11 isRequired:1 defaultValue:0];
 
   v9 = [v5 copy];
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v12.receiver = self;
   v12.super_class = RMModelStatusManagementClientCapabilities;
-  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:a3];
+  v4 = [(RMModelPayloadBase *)&v12 copyWithZone:zone];
   v5 = [(NSArray *)self->_statusSupportedVersions copy];
   v6 = v4[2];
   v4[2] = v5;

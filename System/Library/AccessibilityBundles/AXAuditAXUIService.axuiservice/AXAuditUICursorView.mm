@@ -1,54 +1,54 @@
 @interface AXAuditUICursorView
-+ (CGRect)resizeFrameForDisplay:(CGRect)a3;
-- (AXAuditUICursorView)initWithFrame:(CGRect)a3;
++ (CGRect)resizeFrameForDisplay:(CGRect)display;
+- (AXAuditUICursorView)initWithFrame:(CGRect)frame;
 - (BOOL)largeCursorEnabled;
 - (CGRect)_cursorFrame;
-- (CGRect)resizeFrameForWindow:(CGRect)a3;
+- (CGRect)resizeFrameForWindow:(CGRect)window;
 - (double)lineWidth;
-- (id)_retrieveBezierPaths:(CGRect)a3 usingRealPaths:(BOOL *)a4;
-- (id)_retrieveFrameBezierPath:(CGRect)a3;
+- (id)_retrieveBezierPaths:(CGRect)paths usingRealPaths:(BOOL *)realPaths;
+- (id)_retrieveFrameBezierPath:(CGRect)path;
 - (id)_retrievePathBezierPaths;
 - (void)_orderIn;
 - (void)_orderOut;
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setCursorFrame:(CGRect)a3;
-- (void)setIsHidden:(BOOL)a3;
-- (void)setPath:(CGPath *)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setCursorFrame:(CGRect)frame;
+- (void)setIsHidden:(BOOL)hidden;
+- (void)setPath:(CGPath *)path;
 @end
 
 @implementation AXAuditUICursorView
 
-+ (CGRect)resizeFrameForDisplay:(CGRect)a3
++ (CGRect)resizeFrameForDisplay:(CGRect)display
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (a3.size.width >= 15.0)
+  y = display.origin.y;
+  x = display.origin.x;
+  if (display.size.width >= 15.0)
   {
     v5 = 2.5;
   }
 
   else
   {
-    v5 = 15.0 - a3.size.width + 2.5;
+    v5 = 15.0 - display.size.width + 2.5;
   }
 
-  if (a3.size.height >= 15.0)
+  if (display.size.height >= 15.0)
   {
     v6 = 2.5;
   }
 
   else
   {
-    v6 = 15.0 - a3.size.height;
+    v6 = 15.0 - display.size.height;
   }
 
   v26 = v6;
   v28 = v5;
-  v7 = a3.size.width - fabs(x);
+  v7 = display.size.width - fabs(x);
   if (x >= 0.0)
   {
-    width = a3.size.width;
+    width = display.size.width;
   }
 
   else
@@ -56,10 +56,10 @@
     width = v7;
   }
 
-  v9 = a3.size.height - fabs(a3.origin.y);
-  if (a3.origin.y >= 0.0)
+  v9 = display.size.height - fabs(display.origin.y);
+  if (display.origin.y >= 0.0)
   {
-    height = a3.size.height;
+    height = display.size.height;
   }
 
   else
@@ -138,14 +138,14 @@
   return CGRectInset(*(&v22 - 1), v20, v21);
 }
 
-- (CGRect)resizeFrameForWindow:(CGRect)a3
+- (CGRect)resizeFrameForWindow:(CGRect)window
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(AXAuditUICursorView *)self window];
-  [v7 bounds];
+  height = window.size.height;
+  width = window.size.width;
+  y = window.origin.y;
+  x = window.origin.x;
+  window = [(AXAuditUICursorView *)self window];
+  [window bounds];
   UIRectInset();
   v9 = v8;
   v11 = v10;
@@ -164,11 +164,11 @@
   return CGRectIntersection(*&v16, *&v20);
 }
 
-- (AXAuditUICursorView)initWithFrame:(CGRect)a3
+- (AXAuditUICursorView)initWithFrame:(CGRect)frame
 {
   v11.receiver = self;
   v11.super_class = AXAuditUICursorView;
-  v3 = [(AXAuditUICursorView *)&v11 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AXAuditUICursorView *)&v11 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(AXAuditUICursorView *)v3 setClipsToBounds:1];
   v9[0] = 0;
   v9[1] = v9;
@@ -204,19 +204,19 @@
 - (BOOL)largeCursorEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 voiceOverLargeCursorEnabled];
+  voiceOverLargeCursorEnabled = [v2 voiceOverLargeCursorEnabled];
 
-  return v3;
+  return voiceOverLargeCursorEnabled;
 }
 
-- (void)setPath:(CGPath *)a3
+- (void)setPath:(CGPath *)path
 {
-  if (a3 && !CGPathIsEmpty(a3))
+  if (path && !CGPathIsEmpty(path))
   {
-    self->_path = a3;
-    CFRetain(a3);
-    v6 = [(AXAuditUICursorView *)self window];
-    [v6 frame];
+    self->_path = path;
+    CFRetain(path);
+    window = [(AXAuditUICursorView *)self window];
+    [window frame];
     [(AXAuditUICursorView *)self setFrame:?];
   }
 
@@ -231,12 +231,12 @@
   }
 }
 
-- (void)setIsHidden:(BOOL)a3
+- (void)setIsHidden:(BOOL)hidden
 {
-  v3 = a3;
-  if (![(AXAuditUICursorView *)self _isHidden]|| v3)
+  hiddenCopy = hidden;
+  if (![(AXAuditUICursorView *)self _isHidden]|| hiddenCopy)
   {
-    if (![(AXAuditUICursorView *)self _isHidden]&& v3)
+    if (![(AXAuditUICursorView *)self _isHidden]&& hiddenCopy)
     {
       [(AXAuditUICursorView *)self set_isHidden:1];
 
@@ -287,12 +287,12 @@
   return v5;
 }
 
-- (void)setCursorFrame:(CGRect)a3
+- (void)setCursorFrame:(CGRect)frame
 {
-  v4 = round(a3.origin.x);
-  v5 = round(a3.origin.y);
-  v6 = round(a3.size.width);
-  v7 = round(a3.size.height);
+  v4 = round(frame.origin.x);
+  v5 = round(frame.origin.y);
+  v6 = round(frame.size.width);
+  v7 = round(frame.size.height);
   [(AXAuditUICursorView *)self lineWidth];
   v9 = v8 + 6.0;
   v10 = -(v8 + 6.0);
@@ -347,12 +347,12 @@
   return v4;
 }
 
-- (id)_retrieveFrameBezierPath:(CGRect)a3
+- (id)_retrieveFrameBezierPath:(CGRect)path
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = path.size.height;
+  width = path.size.width;
+  y = path.origin.y;
+  x = path.origin.x;
   [(AXAuditUICursorView *)self _cursorFrame];
   if (CGSizeZero.width == v9 && CGSizeZero.height == v8)
   {
@@ -372,7 +372,7 @@
     v14 = v29.size.height;
     [(AXAuditUICursorView *)self lineWidth];
     v16 = v15;
-    v17 = [(AXAuditUICursorView *)self largeCursorEnabled];
+    largeCursorEnabled = [(AXAuditUICursorView *)self largeCursorEnabled];
     if (v14 >= 3.0)
     {
       v18 = 1;
@@ -380,7 +380,7 @@
 
     else
     {
-      v18 = v17;
+      v18 = largeCursorEnabled;
     }
 
     if (!v18)
@@ -405,38 +405,38 @@
   return v25;
 }
 
-- (id)_retrieveBezierPaths:(CGRect)a3 usingRealPaths:(BOOL *)a4
+- (id)_retrieveBezierPaths:(CGRect)paths usingRealPaths:(BOOL *)realPaths
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  if ([(AXAuditUICursorView *)self path:a3.origin.x])
+  height = paths.size.height;
+  width = paths.size.width;
+  if ([(AXAuditUICursorView *)self path:paths.origin.x])
   {
     IsEmpty = CGPathIsEmpty([(AXAuditUICursorView *)self path]);
-    *a4 = !IsEmpty;
+    *realPaths = !IsEmpty;
     if (!IsEmpty)
     {
-      v9 = [(AXAuditUICursorView *)self _retrievePathBezierPaths];
+      _retrievePathBezierPaths = [(AXAuditUICursorView *)self _retrievePathBezierPaths];
       goto LABEL_6;
     }
   }
 
   else
   {
-    *a4 = 0;
+    *realPaths = 0;
   }
 
-  v9 = [(AXAuditUICursorView *)self _retrieveFrameBezierPath:0.0, 0.0, width, height];
+  _retrievePathBezierPaths = [(AXAuditUICursorView *)self _retrieveFrameBezierPath:0.0, 0.0, width, height];
 LABEL_6:
 
-  return v9;
+  return _retrievePathBezierPaths;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v29 = 0;
   [(AXAuditUICursorView *)self bounds];
   v8 = [(AXAuditUICursorView *)self _retrieveBezierPaths:&v29 usingRealPaths:?];
@@ -448,7 +448,7 @@ LABEL_6:
   v9 = v31.size.height;
   [(AXAuditUICursorView *)self lineWidth:v31.origin.x];
   v11 = v10;
-  v12 = [(AXAuditUICursorView *)self largeCursorEnabled];
+  largeCursorEnabled = [(AXAuditUICursorView *)self largeCursorEnabled];
   if (v9 >= 3.0)
   {
     v13 = 1;
@@ -456,7 +456,7 @@ LABEL_6:
 
   else
   {
-    v13 = v12;
+    v13 = largeCursorEnabled;
   }
 
   if (v13)
@@ -470,9 +470,9 @@ LABEL_6:
   }
 
   v15 = +[AXAuditTheme sharedTheme];
-  v16 = [(AXAuditUICursorView *)self highlightStyle];
-  v17 = [v15 backgroundColorForHighlightStyle:v16];
-  v18 = [v15 borderColorForHighlightStyle:v16];
+  highlightStyle = [(AXAuditUICursorView *)self highlightStyle];
+  v17 = [v15 backgroundColorForHighlightStyle:highlightStyle];
+  v18 = [v15 borderColorForHighlightStyle:highlightStyle];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1AD0;
@@ -480,7 +480,7 @@ LABEL_6:
   v27 = v14;
   v28 = v29;
   v23 = v17;
-  v24 = self;
+  selfCopy = self;
   v25 = v8;
   v26 = v18;
   v19 = v18;

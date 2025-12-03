@@ -1,67 +1,67 @@
 @interface TVRUINowPlayingController
-+ (TVRUINowPlayingController)controllerWithHostingViewController:(id)a3;
++ (TVRUINowPlayingController)controllerWithHostingViewController:(id)controller;
 - (BOOL)_nowPlayingViewControllerIsPresented;
 - (BOOL)_shouldResetNowPlayingInfoTabSelection;
 - (BOOL)_upNextViewControllerIsPresented;
 - (BOOL)capellaInfoAvailable;
-- (BOOL)isReadyForPresentationWithNowPlayingInfo:(id)a3;
-- (TVRUINowPlayingController)initWithHostingViewController:(id)a3;
+- (BOOL)isReadyForPresentationWithNowPlayingInfo:(id)info;
+- (TVRUINowPlayingController)initWithHostingViewController:(id)controller;
 - (UINavigationController)nowPlayingNavController;
 - (UINavigationController)upNextNavController;
 - (id)_activeNavController;
 - (id)actionButtonMenu;
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5;
-- (unint64_t)_layoutStyleForViewServiceLaunchContext:(int64_t)a3;
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController;
+- (unint64_t)_layoutStyleForViewServiceLaunchContext:(int64_t)context;
 - (unint64_t)currentModalContext;
-- (void)_dismissNowPlayingViewControllerAnimated:(BOOL)a3;
-- (void)_dismissUpNextViewControllerAnimated:(BOOL)a3;
-- (void)_infoButtonWasTappedForcingInfoTab:(BOOL)a3;
-- (void)_invokeCommandHandlerWithCommand:(unint64_t)a3 paramDict:(id)a4;
-- (void)_openURL:(id)a3;
-- (void)_presentNowPlayingAnimated:(BOOL)a3 forceInfoTab:(BOOL)a4;
-- (void)_presentUpNextAnimated:(BOOL)a3;
-- (void)_presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)_dismissNowPlayingViewControllerAnimated:(BOOL)animated;
+- (void)_dismissUpNextViewControllerAnimated:(BOOL)animated;
+- (void)_infoButtonWasTappedForcingInfoTab:(BOOL)tab;
+- (void)_invokeCommandHandlerWithCommand:(unint64_t)command paramDict:(id)dict;
+- (void)_openURL:(id)l;
+- (void)_presentNowPlayingAnimated:(BOOL)animated forceInfoTab:(BOOL)tab;
+- (void)_presentUpNextAnimated:(BOOL)animated;
+- (void)_presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)_refreshUpNextInfosIfNeeded;
 - (void)_toggleDockAppearance;
-- (void)_updateNowPlayingUIWithNowPlayingInfo:(id)a3;
+- (void)_updateNowPlayingUIWithNowPlayingInfo:(id)info;
 - (void)dismissModalUI;
 - (void)displayUpNext;
-- (void)openURL:(id)a3;
-- (void)presentMediaWithID:(id)a3 title:(id)a4 presentingViewController:(id)a5;
-- (void)presentModalContext:(unint64_t)a3 animated:(BOOL)a4;
-- (void)presentPersonWithID:(id)a3 name:(id)a4 image:(id)a5 presentingViewController:(id)a6;
-- (void)setCommandHandler:(id)a3;
-- (void)setDevice:(id)a3;
-- (void)setNowPlayingInfo:(id)a3;
-- (void)shareItem:(id)a3 presentingViewController:(id)a4 sourceView:(id)a5;
+- (void)openURL:(id)l;
+- (void)presentMediaWithID:(id)d title:(id)title presentingViewController:(id)controller;
+- (void)presentModalContext:(unint64_t)context animated:(BOOL)animated;
+- (void)presentPersonWithID:(id)d name:(id)name image:(id)image presentingViewController:(id)controller;
+- (void)setCommandHandler:(id)handler;
+- (void)setDevice:(id)device;
+- (void)setNowPlayingInfo:(id)info;
+- (void)shareItem:(id)item presentingViewController:(id)controller sourceView:(id)view;
 @end
 
 @implementation TVRUINowPlayingController
 
-+ (TVRUINowPlayingController)controllerWithHostingViewController:(id)a3
++ (TVRUINowPlayingController)controllerWithHostingViewController:(id)controller
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithHostingViewController:v4];
+  controllerCopy = controller;
+  v5 = [[self alloc] initWithHostingViewController:controllerCopy];
 
   return v5;
 }
 
-- (TVRUINowPlayingController)initWithHostingViewController:(id)a3
+- (TVRUINowPlayingController)initWithHostingViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v21.receiver = self;
   v21.super_class = TVRUINowPlayingController;
   v6 = [(TVRUINowPlayingController *)&v21 init];
   if (v6)
   {
-    v7 = [v5 traitCollection];
-    v6->_isPad = [v7 userInterfaceIdiom] == 1;
+    traitCollection = [controllerCopy traitCollection];
+    v6->_isPad = [traitCollection userInterfaceIdiom] == 1;
 
     v8 = objc_alloc_init(TVRUIUpNextController);
     upNextController = v6->_upNextController;
     v6->_upNextController = v8;
 
-    objc_storeStrong(&v6->_hostingViewController, a3);
+    objc_storeStrong(&v6->_hostingViewController, controller);
     v10 = objc_alloc_init(TVRUIDarkStyleProvider);
     styleProvider = v6->_styleProvider;
     v6->_styleProvider = v10;
@@ -69,20 +69,20 @@
     v12 = objc_alloc_init(TVRUINowPlayingViewController);
     [(TVRUINowPlayingController *)v6 setNowPlayingViewController:v12];
 
-    v13 = [(TVRUINowPlayingController *)v6 styleProvider];
-    v14 = [(TVRUINowPlayingController *)v6 nowPlayingViewController];
-    [v14 setStyleProvider:v13];
+    styleProvider = [(TVRUINowPlayingController *)v6 styleProvider];
+    nowPlayingViewController = [(TVRUINowPlayingController *)v6 nowPlayingViewController];
+    [nowPlayingViewController setStyleProvider:styleProvider];
 
     v15 = v6->_upNextController;
-    v16 = [(TVRUINowPlayingController *)v6 nowPlayingViewController];
-    [v16 setUpNextProvider:v15];
+    nowPlayingViewController2 = [(TVRUINowPlayingController *)v6 nowPlayingViewController];
+    [nowPlayingViewController2 setUpNextProvider:v15];
 
-    v17 = [(TVRUINowPlayingController *)v6 nowPlayingViewController];
-    [v17 setActionProvider:v6];
+    nowPlayingViewController3 = [(TVRUINowPlayingController *)v6 nowPlayingViewController];
+    [nowPlayingViewController3 setActionProvider:v6];
 
     v18 = v6->_styleProvider;
-    v19 = [(TVRUINowPlayingController *)v6 nowPlayingViewController];
-    [v19 setStyleProvider:v18];
+    nowPlayingViewController4 = [(TVRUINowPlayingController *)v6 nowPlayingViewController];
+    [nowPlayingViewController4 setStyleProvider:v18];
   }
 
   return v6;
@@ -90,62 +90,62 @@
 
 - (BOOL)capellaInfoAvailable
 {
-  v2 = self;
-  v3 = [(TVRUINowPlayingController *)self nowPlayingInfo];
-  LOBYTE(v2) = [(TVRUINowPlayingController *)v2 isReadyForPresentationWithNowPlayingInfo:v3];
+  selfCopy = self;
+  nowPlayingInfo = [(TVRUINowPlayingController *)self nowPlayingInfo];
+  LOBYTE(selfCopy) = [(TVRUINowPlayingController *)selfCopy isReadyForPresentationWithNowPlayingInfo:nowPlayingInfo];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setNowPlayingInfo:(id)a3
+- (void)setNowPlayingInfo:(id)info
 {
   v65 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  infoCopy = info;
+  v6 = infoCopy;
+  if (infoCopy)
   {
-    if ([v5 tvrui_isSimplePlaybackRateUpdate])
+    if ([infoCopy tvrui_isSimplePlaybackRateUpdate])
     {
       v7 = _TVRUINowPlayingLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
       {
-        v8 = [v6 playbackRate];
+        playbackRate = [v6 playbackRate];
         *buf = 138412290;
-        v62 = v8;
+        v62 = playbackRate;
         _os_log_impl(&dword_26CFEB000, v7, OS_LOG_TYPE_INFO, "Updating playbackRate to %@", buf, 0xCu);
       }
 
-      v9 = [v6 playbackRate];
-      [(TVRCNowPlayingInfo *)self->_nowPlayingInfo setPlaybackRate:v9];
+      playbackRate2 = [v6 playbackRate];
+      [(TVRCNowPlayingInfo *)self->_nowPlayingInfo setPlaybackRate:playbackRate2];
     }
 
     else if ([v6 tvrui_isSimplePlaybackStateUpdate])
     {
-      v16 = [v6 playbackState];
-      v17 = [v16 integerValue];
+      playbackState = [v6 playbackState];
+      integerValue = [playbackState integerValue];
 
       v18 = _TVRUINowPlayingLog();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
-        v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17];
+        v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue];
         *buf = 138412290;
         v62 = v19;
         _os_log_impl(&dword_26CFEB000, v18, OS_LOG_TYPE_INFO, "Updating playbackState to %@", buf, 0xCu);
       }
 
-      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v17];
+      v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:integerValue];
       [(TVRCNowPlayingInfo *)self->_nowPlayingInfo setPlaybackState:v20];
 
-      if (v17 == 3)
+      if (integerValue == 3)
       {
-        v48 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v48 postNotificationName:@"TVRUINowPlayingControllerMediaStoppedNotification" object:0];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter postNotificationName:@"TVRUINowPlayingControllerMediaStoppedNotification" object:0];
       }
 
-      else if (v17 == 1)
+      else if (integerValue == 1)
       {
-        v21 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v21 postNotificationName:@"TVRUINowPlayingControllerMediaStartedNotification" object:0];
+        defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter2 postNotificationName:@"TVRUINowPlayingControllerMediaStartedNotification" object:0];
       }
     }
 
@@ -154,28 +154,28 @@
       v29 = _TVRUINowPlayingLog();
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
-        v30 = [v6 captionsEnabled];
-        v31 = [v6 hasValidCaptionOptions];
+        captionsEnabled = [v6 captionsEnabled];
+        hasValidCaptionOptions = [v6 hasValidCaptionOptions];
         *buf = 138412546;
-        v62 = v30;
+        v62 = captionsEnabled;
         v63 = 2112;
-        v64 = v31;
+        v64 = hasValidCaptionOptions;
         _os_log_impl(&dword_26CFEB000, v29, OS_LOG_TYPE_INFO, "Updating captionsEnabled to %@; hasValidCaptionsOptoins to %@", buf, 0x16u);
       }
 
-      v32 = [v6 captionsEnabled];
-      [(TVRCNowPlayingInfo *)self->_nowPlayingInfo setCaptionsEnabled:v32];
+      captionsEnabled2 = [v6 captionsEnabled];
+      [(TVRCNowPlayingInfo *)self->_nowPlayingInfo setCaptionsEnabled:captionsEnabled2];
 
-      v33 = [v6 hasValidCaptionOptions];
-      [(TVRCNowPlayingInfo *)self->_nowPlayingInfo setHasValidCaptionOptions:v33];
+      hasValidCaptionOptions2 = [v6 hasValidCaptionOptions];
+      [(TVRCNowPlayingInfo *)self->_nowPlayingInfo setHasValidCaptionOptions:hasValidCaptionOptions2];
     }
 
     else
     {
-      v38 = [v6 identifier];
+      identifier = [v6 identifier];
       p_nowPlayingInfo = &self->_nowPlayingInfo;
-      v40 = [(TVRCNowPlayingInfo *)self->_nowPlayingInfo identifier];
-      v41 = [v38 isEqualToString:v40];
+      identifier2 = [(TVRCNowPlayingInfo *)self->_nowPlayingInfo identifier];
+      v41 = [identifier isEqualToString:identifier2];
 
       if (v41)
       {
@@ -186,10 +186,10 @@
         v44 = _TVRUINowPlayingLog();
         if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
         {
-          v45 = [(TVRCNowPlayingInfo *)*p_nowPlayingInfo metadata];
-          v46 = [v45 canonicalID];
+          metadata = [(TVRCNowPlayingInfo *)*p_nowPlayingInfo metadata];
+          canonicalID = [metadata canonicalID];
           *buf = 138412290;
-          v62 = v46;
+          v62 = canonicalID;
           _os_log_impl(&dword_26CFEB000, v44, OS_LOG_TYPE_INFO, "Updating nowPlayingInfo (identifiers remained the same; merging info) for canonicalID=%@", buf, 0xCu);
         }
       }
@@ -199,22 +199,22 @@
         v49 = _TVRUINowPlayingLog();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
         {
-          v50 = [v6 identifier];
-          v51 = [(TVRCNowPlayingInfo *)*p_nowPlayingInfo identifier];
+          identifier3 = [v6 identifier];
+          identifier4 = [(TVRCNowPlayingInfo *)*p_nowPlayingInfo identifier];
           *buf = 138412546;
-          v62 = v50;
+          v62 = identifier3;
           v63 = 2112;
-          v64 = v51;
+          v64 = identifier4;
           _os_log_impl(&dword_26CFEB000, v49, OS_LOG_TYPE_INFO, "Updating nowPlayingInfo via identified change %@ -> %@", buf, 0x16u);
         }
 
-        v52 = [v6 identifier];
-        if ([v52 length])
+        identifier5 = [v6 identifier];
+        if ([identifier5 length])
         {
-          v53 = [(TVRCNowPlayingInfo *)*p_nowPlayingInfo identifier];
-          v54 = [v53 length] == 0;
+          identifier6 = [(TVRCNowPlayingInfo *)*p_nowPlayingInfo identifier];
+          v54 = [identifier6 length] == 0;
 
-          objc_storeStrong(&self->_nowPlayingInfo, a3);
+          objc_storeStrong(&self->_nowPlayingInfo, info);
           if (!v54)
           {
             +[TVRUIUpNextController refreshDelayOnMediaDidChangeTimeInterval];
@@ -231,19 +231,19 @@
         else
         {
 
-          objc_storeStrong(&self->_nowPlayingInfo, a3);
+          objc_storeStrong(&self->_nowPlayingInfo, info);
         }
       }
     }
 
-    v10 = [v6 tvrui_effectiveCanonicalID];
-    v11 = [v6 metadata];
-    if (v11)
+    tvrui_effectiveCanonicalID = [v6 tvrui_effectiveCanonicalID];
+    metadata2 = [v6 metadata];
+    if (metadata2)
     {
-      v12 = [v6 metadata];
-      v13 = [v12 isMissingCriticalMetadata];
+      metadata3 = [v6 metadata];
+      isMissingCriticalMetadata = [metadata3 isMissingCriticalMetadata];
 
-      v14 = v13 ^ 1;
+      v14 = isMissingCriticalMetadata ^ 1;
     }
 
     else
@@ -251,23 +251,23 @@
       v14 = 1;
     }
 
-    if (([v10 length] == 0) | v14 & 1)
+    if (([tvrui_effectiveCanonicalID length] == 0) | v14 & 1)
     {
-      v22 = [(TVRUINowPlayingController *)self nowPlayingInfo];
-      [(TVRUINowPlayingController *)self _updateNowPlayingUIWithNowPlayingInfo:v22];
+      nowPlayingInfo = [(TVRUINowPlayingController *)self nowPlayingInfo];
+      [(TVRUINowPlayingController *)self _updateNowPlayingUIWithNowPlayingInfo:nowPlayingInfo];
     }
 
     else
     {
-      v23 = [(TVRUINowPlayingController *)self cachedMediaInfo];
-      v24 = [v23 identifier];
-      v25 = [v10 isEqualToString:v24];
+      cachedMediaInfo = [(TVRUINowPlayingController *)self cachedMediaInfo];
+      identifier7 = [cachedMediaInfo identifier];
+      v25 = [tvrui_effectiveCanonicalID isEqualToString:identifier7];
 
       if (v25)
       {
-        v26 = [(TVRCNowPlayingInfo *)self->_nowPlayingInfo metadata];
-        v27 = [(TVRUINowPlayingController *)self cachedMediaInfo];
-        v28 = [v26 metadataMergedFromTVRCMediaInfo:v27];
+        metadata4 = [(TVRCNowPlayingInfo *)self->_nowPlayingInfo metadata];
+        cachedMediaInfo2 = [(TVRUINowPlayingController *)self cachedMediaInfo];
+        v28 = [metadata4 metadataMergedFromTVRCMediaInfo:cachedMediaInfo2];
         [(TVRCNowPlayingInfo *)self->_nowPlayingInfo setMetadata:v28];
 
         [(TVRUINowPlayingController *)self _updateNowPlayingUIWithNowPlayingInfo:self->_nowPlayingInfo];
@@ -275,8 +275,8 @@
 
       else
       {
-        v34 = [(TVRUINowPlayingController *)self canonicalIDOfCurrentUTSRequest];
-        v35 = [v10 isEqualToString:v34];
+        canonicalIDOfCurrentUTSRequest = [(TVRUINowPlayingController *)self canonicalIDOfCurrentUTSRequest];
+        v35 = [tvrui_effectiveCanonicalID isEqualToString:canonicalIDOfCurrentUTSRequest];
 
         v36 = _TVRUINowPlayingLog();
         v37 = os_log_type_enabled(v36, OS_LOG_TYPE_INFO);
@@ -285,7 +285,7 @@
           if (v37)
           {
             *buf = 138412290;
-            v62 = v10;
+            v62 = tvrui_effectiveCanonicalID;
             _os_log_impl(&dword_26CFEB000, v36, OS_LOG_TYPE_INFO, "Already requesting metadata from UTS for canonicalID=%@ ... will not request again.", buf, 0xCu);
           }
         }
@@ -295,11 +295,11 @@
           if (v37)
           {
             *buf = 138412290;
-            v62 = v10;
+            v62 = tvrui_effectiveCanonicalID;
             _os_log_impl(&dword_26CFEB000, v36, OS_LOG_TYPE_INFO, "Requesting metadata from UTS for canonicalID=%@", buf, 0xCu);
           }
 
-          [(TVRUINowPlayingController *)self setCanonicalIDOfCurrentUTSRequest:v10];
+          [(TVRUINowPlayingController *)self setCanonicalIDOfCurrentUTSRequest:tvrui_effectiveCanonicalID];
           v47 = objc_alloc_init(MEMORY[0x277D6C540]);
           objc_initWeak(buf, self);
           v57[0] = MEMORY[0x277D85DD0];
@@ -308,7 +308,7 @@
           v57[3] = &unk_279D89130;
           objc_copyWeak(&v59, buf);
           v57[4] = self;
-          v58 = v10;
+          v58 = tvrui_effectiveCanonicalID;
           [v47 requestForCanonicalID:v58 completion:v57];
 
           objc_destroyWeak(&v59);
@@ -410,15 +410,15 @@ void __47__TVRUINowPlayingController_setNowPlayingInfo___block_invoke_13(uint64_
   }
 }
 
-- (void)shareItem:(id)a3 presentingViewController:(id)a4 sourceView:(id)a5
+- (void)shareItem:(id)item presentingViewController:(id)controller sourceView:(id)view
 {
   v19 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v18 = a3;
+  controllerCopy = controller;
+  viewCopy = view;
+  itemCopy = item;
   v10 = MEMORY[0x277CBEA60];
-  v11 = a3;
-  v12 = [v10 arrayWithObjects:&v18 count:1];
+  itemCopy2 = item;
+  v12 = [v10 arrayWithObjects:&itemCopy count:1];
   v13 = objc_alloc(MEMORY[0x277D546D8]);
 
   v14 = [v12 copy];
@@ -426,53 +426,53 @@ void __47__TVRUINowPlayingController_setNowPlayingInfo___block_invoke_13(uint64_
 
   if ([(TVRUINowPlayingController *)self isPad])
   {
-    v16 = [v15 popoverPresentationController];
-    [v16 setSourceView:v9];
+    popoverPresentationController = [v15 popoverPresentationController];
+    [popoverPresentationController setSourceView:viewCopy];
     [v15 setOverrideUserInterfaceStyle:2];
-    v17 = [(TVRUINowPlayingController *)self nowPlayingViewController];
-    [v17 presentViewController:v15 animated:1 completion:0];
+    nowPlayingViewController = [(TVRUINowPlayingController *)self nowPlayingViewController];
+    [nowPlayingViewController presentViewController:v15 animated:1 completion:0];
   }
 
   else
   {
-    [v8 presentViewController:v15 animated:1 completion:0];
+    [controllerCopy presentViewController:v15 animated:1 completion:0];
   }
 }
 
-- (void)openURL:(id)a3
+- (void)openURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
-    v5 = v4;
+    v5 = lCopy;
     if ([(TVRUINowPlayingController *)self isPad])
     {
       [(TVRUINowPlayingController *)self dismissModalUI];
     }
 
     [(TVRUINowPlayingController *)self _openURL:v5];
-    v4 = v5;
+    lCopy = v5;
   }
 }
 
-- (void)presentPersonWithID:(id)a3 name:(id)a4 image:(id)a5 presentingViewController:(id)a6
+- (void)presentPersonWithID:(id)d name:(id)name image:(id)image presentingViewController:(id)controller
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(TVRUINowPlayingController *)self _activeNavController];
-  if (v14 || ([v13 navigationController], (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+  dCopy = d;
+  nameCopy = name;
+  imageCopy = image;
+  controllerCopy = controller;
+  _activeNavController = [(TVRUINowPlayingController *)self _activeNavController];
+  if (_activeNavController || ([controllerCopy navigationController], (_activeNavController = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v15 = v14;
+    v15 = _activeNavController;
     v16 = objc_alloc_init(TVRUIPersonViewController);
     [(TVRUIPersonViewController *)v16 setActionProvider:self];
-    v17 = [(TVRUINowPlayingController *)self upNextController];
-    [(TVRUIPersonViewController *)v16 setUpNextProvider:v17];
+    upNextController = [(TVRUINowPlayingController *)self upNextController];
+    [(TVRUIPersonViewController *)v16 setUpNextProvider:upNextController];
 
-    [(TVRUIPersonViewController *)v16 setPersonName:v11];
-    [(TVRUIPersonViewController *)v16 setPersonImage:v12];
-    [(TVRUIPersonViewController *)v16 setPersonID:v10];
+    [(TVRUIPersonViewController *)v16 setPersonName:nameCopy];
+    [(TVRUIPersonViewController *)v16 setPersonImage:imageCopy];
+    [(TVRUIPersonViewController *)v16 setPersonID:dCopy];
     [(TVRUIPersonViewController *)v15 pushViewController:v16 animated:1];
   }
 
@@ -480,12 +480,12 @@ void __47__TVRUINowPlayingController_setNowPlayingInfo___block_invoke_13(uint64_
   {
     v15 = objc_alloc_init(TVRUIPersonViewController);
     [(TVRUIPersonViewController *)v15 setActionProvider:self];
-    v18 = [(TVRUINowPlayingController *)self upNextController];
-    [(TVRUIPersonViewController *)v15 setUpNextProvider:v18];
+    upNextController2 = [(TVRUINowPlayingController *)self upNextController];
+    [(TVRUIPersonViewController *)v15 setUpNextProvider:upNextController2];
 
-    [(TVRUIPersonViewController *)v15 setPersonName:v11];
-    [(TVRUIPersonViewController *)v15 setPersonImage:v12];
-    [(TVRUIPersonViewController *)v15 setPersonID:v10];
+    [(TVRUIPersonViewController *)v15 setPersonName:nameCopy];
+    [(TVRUIPersonViewController *)v15 setPersonImage:imageCopy];
+    [(TVRUIPersonViewController *)v15 setPersonID:dCopy];
     v16 = [objc_alloc(MEMORY[0x277D757A0]) initWithRootViewController:v15];
     [(TVRUIPersonViewController *)v16 setOverrideUserInterfaceStyle:2];
     if ([(TVRUINowPlayingController *)self isPad])
@@ -500,48 +500,48 @@ void __47__TVRUINowPlayingController_setNowPlayingInfo___block_invoke_13(uint64_
       v21 = [v20 actionWithHandler:v24];
       v22 = [v19 initWithBarButtonSystemItem:0 primaryAction:v21];
 
-      v23 = [(TVRUIPersonViewController *)v15 navigationItem];
-      [v23 setLeftBarButtonItem:v22];
+      navigationItem = [(TVRUIPersonViewController *)v15 navigationItem];
+      [navigationItem setLeftBarButtonItem:v22];
     }
 
     [(TVRUINowPlayingController *)self _presentViewController:v16 animated:1 completion:0];
   }
 }
 
-- (void)presentMediaWithID:(id)a3 title:(id)a4 presentingViewController:(id)a5
+- (void)presentMediaWithID:(id)d title:(id)title presentingViewController:(id)controller
 {
-  v14 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(TVRUINowPlayingController *)self _activeNavController];
-  if (v10 || ([v9 navigationController], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+  dCopy = d;
+  titleCopy = title;
+  controllerCopy = controller;
+  _activeNavController = [(TVRUINowPlayingController *)self _activeNavController];
+  if (_activeNavController || ([controllerCopy navigationController], (_activeNavController = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v11 = v10;
+    v11 = _activeNavController;
     v12 = objc_alloc_init(TVRUIMediaViewController);
     [(TVRUIMediaViewController *)v12 setActionProvider:self];
-    v13 = [(TVRUINowPlayingController *)self upNextController];
-    [(TVRUIMediaViewController *)v12 setUpNextProvider:v13];
+    upNextController = [(TVRUINowPlayingController *)self upNextController];
+    [(TVRUIMediaViewController *)v12 setUpNextProvider:upNextController];
 
-    [(TVRUIMediaViewController *)v12 setMediaTitle:v8];
-    [(TVRUIMediaViewController *)v12 setMediaIdentifier:v14];
+    [(TVRUIMediaViewController *)v12 setMediaTitle:titleCopy];
+    [(TVRUIMediaViewController *)v12 setMediaIdentifier:dCopy];
     [v11 pushViewController:v12 animated:1];
   }
 }
 
-- (void)setDevice:(id)a3
+- (void)setDevice:(id)device
 {
-  v5 = a3;
-  if (self->_device != v5)
+  deviceCopy = device;
+  if (self->_device != deviceCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_device, a3);
-    v6 = [(TVRUINowPlayingController *)self nowPlayingViewController];
-    [v6 setActiveDevice:v8];
+    v8 = deviceCopy;
+    objc_storeStrong(&self->_device, device);
+    nowPlayingViewController = [(TVRUINowPlayingController *)self nowPlayingViewController];
+    [nowPlayingViewController setActiveDevice:v8];
 
-    v7 = [(TVRUINowPlayingController *)self upNextController];
-    [v7 setActiveDevice:v8];
+    upNextController = [(TVRUINowPlayingController *)self upNextController];
+    [upNextController setActiveDevice:v8];
 
-    v5 = v8;
+    deviceCopy = v8;
   }
 }
 
@@ -560,9 +560,9 @@ LABEL_5:
     return;
   }
 
-  v4 = [(TVRUINowPlayingController *)self device];
+  device = [(TVRUINowPlayingController *)self device];
 
-  if (!v4)
+  if (!device)
   {
     v3 = _TVRUINowPlayingLog();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_ERROR))
@@ -591,64 +591,64 @@ LABEL_5:
   }
 }
 
-- (void)_infoButtonWasTappedForcingInfoTab:(BOOL)a3
+- (void)_infoButtonWasTappedForcingInfoTab:(BOOL)tab
 {
-  v3 = a3;
+  tabCopy = tab;
   if (![(TVRUINowPlayingController *)self _nowPlayingViewControllerIsPresented])
   {
     [(TVRUINowPlayingController *)self _refreshUpNextInfosIfNeeded];
 
-    [(TVRUINowPlayingController *)self _presentNowPlayingAnimated:1 forceInfoTab:v3];
+    [(TVRUINowPlayingController *)self _presentNowPlayingAnimated:1 forceInfoTab:tabCopy];
   }
 }
 
 - (BOOL)_nowPlayingViewControllerIsPresented
 {
-  v2 = [(TVRUINowPlayingController *)self nowPlayingNavController];
-  v3 = [v2 view];
-  v4 = [v3 superview];
-  v5 = v4 != 0;
+  nowPlayingNavController = [(TVRUINowPlayingController *)self nowPlayingNavController];
+  view = [nowPlayingNavController view];
+  superview = [view superview];
+  v5 = superview != 0;
 
   return v5;
 }
 
 - (BOOL)_upNextViewControllerIsPresented
 {
-  v2 = [(TVRUINowPlayingController *)self upNextNavController];
-  v3 = [v2 view];
-  v4 = [v3 superview];
-  v5 = v4 != 0;
+  upNextNavController = [(TVRUINowPlayingController *)self upNextNavController];
+  view = [upNextNavController view];
+  superview = [view superview];
+  v5 = superview != 0;
 
   return v5;
 }
 
-- (void)_updateNowPlayingUIWithNowPlayingInfo:(id)a3
+- (void)_updateNowPlayingUIWithNowPlayingInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(TVRUINowPlayingController *)self nowPlayingViewController];
-  [v5 setNowPlayingInfo:v4];
+  infoCopy = info;
+  nowPlayingViewController = [(TVRUINowPlayingController *)self nowPlayingViewController];
+  [nowPlayingViewController setNowPlayingInfo:infoCopy];
 
-  v6 = [(TVRUINowPlayingController *)self capellaInfoDidChangeHandler];
+  capellaInfoDidChangeHandler = [(TVRUINowPlayingController *)self capellaInfoDidChangeHandler];
 
-  if (v6)
+  if (capellaInfoDidChangeHandler)
   {
-    v7 = [(TVRUINowPlayingController *)self capellaInfoDidChangeHandler];
-    (v7)[2](v7, [(TVRUINowPlayingController *)self capellaInfoAvailable]);
+    capellaInfoDidChangeHandler2 = [(TVRUINowPlayingController *)self capellaInfoDidChangeHandler];
+    (capellaInfoDidChangeHandler2)[2](capellaInfoDidChangeHandler2, [(TVRUINowPlayingController *)self capellaInfoAvailable]);
   }
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 postNotificationName:@"TVRUINowPlayingControllerInfoDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"TVRUINowPlayingControllerInfoDidChangeNotification" object:0];
 }
 
-- (void)setCommandHandler:(id)a3
+- (void)setCommandHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 copy];
+  handlerCopy = handler;
+  v5 = [handlerCopy copy];
   commandHandler = self->_commandHandler;
   self->_commandHandler = v5;
 
-  v7 = [(TVRUINowPlayingController *)self nowPlayingViewController];
-  [v7 setCommandHandler:v4];
+  nowPlayingViewController = [(TVRUINowPlayingController *)self nowPlayingViewController];
+  [nowPlayingViewController setCommandHandler:handlerCopy];
 }
 
 - (id)actionButtonMenu
@@ -843,8 +843,8 @@ void __45__TVRUINowPlayingController_actionButtonMenu__block_invoke_6(uint64_t a
   if (!nowPlayingNavController)
   {
     v4 = objc_alloc(MEMORY[0x277D757A0]);
-    v5 = [(TVRUINowPlayingController *)self nowPlayingViewController];
-    v6 = [v4 initWithRootViewController:v5];
+    nowPlayingViewController = [(TVRUINowPlayingController *)self nowPlayingViewController];
+    v6 = [v4 initWithRootViewController:nowPlayingViewController];
     v7 = self->_nowPlayingNavController;
     self->_nowPlayingNavController = v6;
 
@@ -861,8 +861,8 @@ void __45__TVRUINowPlayingController_actionButtonMenu__block_invoke_6(uint64_t a
       v10 = [v9 actionWithHandler:&v14];
       v11 = [v8 initWithBarButtonSystemItem:0 primaryAction:{v10, v14, v15, v16, v17}];
 
-      v12 = [(TVRUINowPlayingViewController *)self->_nowPlayingViewController navigationItem];
-      [v12 setRightBarButtonItem:v11];
+      navigationItem = [(TVRUINowPlayingViewController *)self->_nowPlayingViewController navigationItem];
+      [navigationItem setRightBarButtonItem:v11];
 
       objc_destroyWeak(&v18);
       objc_destroyWeak(&location);
@@ -889,8 +889,8 @@ void __52__TVRUINowPlayingController_nowPlayingNavController__block_invoke(uint6
   {
     v4 = objc_alloc_init(TVRUIUpNextViewController);
     [(TVRUIUpNextViewController *)v4 setMode:1];
-    v5 = [(TVRUINowPlayingController *)self upNextController];
-    [(TVRUIUpNextViewController *)v4 setUpNextProvider:v5];
+    upNextController = [(TVRUINowPlayingController *)self upNextController];
+    [(TVRUIUpNextViewController *)v4 setUpNextProvider:upNextController];
 
     [(TVRUIUpNextViewController *)v4 setActionProvider:self];
     [(TVRUIUpNextViewController *)v4 setNowPlayingProvider:self];
@@ -905,19 +905,19 @@ void __52__TVRUINowPlayingController_nowPlayingNavController__block_invoke(uint6
   return upNextNavController;
 }
 
-- (void)_openURL:(id)a3
+- (void)_openURL:(id)l
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CC1F00];
-  v4 = a3;
+  lCopy = l;
   v5 = objc_alloc_init(v3);
   v8 = *MEMORY[0x277D0AC58];
   v9[0] = MEMORY[0x277CBEC38];
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   [v5 setFrontBoardOptions:v6];
 
-  v7 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v7 openURL:v4 configuration:v5 completionHandler:&__block_literal_global_23];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace openURL:lCopy configuration:v5 completionHandler:&__block_literal_global_23];
 }
 
 void __38__TVRUINowPlayingController__openURL___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -935,28 +935,28 @@ void __38__TVRUINowPlayingController__openURL___block_invoke(uint64_t a1, uint64
 
 - (void)_refreshUpNextInfosIfNeeded
 {
-  v3 = [(TVRUINowPlayingController *)self upNextController];
-  v4 = [v3 infos];
-  v5 = [v4 count];
+  upNextController = [(TVRUINowPlayingController *)self upNextController];
+  infos = [upNextController infos];
+  v5 = [infos count];
 
   if (!v5)
   {
-    v6 = [(TVRUINowPlayingController *)self upNextController];
-    [v6 refresh];
+    upNextController2 = [(TVRUINowPlayingController *)self upNextController];
+    [upNextController2 refresh];
   }
 }
 
-- (void)_invokeCommandHandlerWithCommand:(unint64_t)a3 paramDict:(id)a4
+- (void)_invokeCommandHandlerWithCommand:(unint64_t)command paramDict:(id)dict
 {
-  v9 = a4;
-  v6 = [(TVRUINowPlayingController *)self commandHandler];
+  dictCopy = dict;
+  commandHandler = [(TVRUINowPlayingController *)self commandHandler];
 
-  if (v6)
+  if (commandHandler)
   {
-    v7 = [(TVRUINowPlayingController *)self commandHandler];
-    if (v9)
+    commandHandler2 = [(TVRUINowPlayingController *)self commandHandler];
+    if (dictCopy)
     {
-      v8 = v9;
+      v8 = dictCopy;
     }
 
     else
@@ -964,37 +964,37 @@ void __38__TVRUINowPlayingController__openURL___block_invoke(uint64_t a1, uint64
       v8 = MEMORY[0x277CBEC10];
     }
 
-    (v7)[2](v7, a3, v8);
+    (commandHandler2)[2](commandHandler2, command, v8);
   }
 }
 
-- (BOOL)isReadyForPresentationWithNowPlayingInfo:(id)a3
+- (BOOL)isReadyForPresentationWithNowPlayingInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 tvrui_hasMetadata];
-  if ([v3 tvrui_hasArtworkImage])
+  infoCopy = info;
+  tvrui_hasMetadata = [infoCopy tvrui_hasMetadata];
+  if ([infoCopy tvrui_hasArtworkImage])
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [v3 metadata];
-    v7 = [v6 imageURLTemplate];
-    v5 = [v7 length] == 0;
+    metadata = [infoCopy metadata];
+    imageURLTemplate = [metadata imageURLTemplate];
+    v5 = [imageURLTemplate length] == 0;
   }
 
-  v8 = [v3 tvrui_mediaIsStopped];
-  v9 = [v3 tvrui_effectiveCanonicalID];
-  v10 = [v9 length];
+  tvrui_mediaIsStopped = [infoCopy tvrui_mediaIsStopped];
+  tvrui_effectiveCanonicalID = [infoCopy tvrui_effectiveCanonicalID];
+  v10 = [tvrui_effectiveCanonicalID length];
 
-  v11 = (v10 != 0) & ~v8;
+  v11 = (v10 != 0) & ~tvrui_mediaIsStopped;
   if (v5)
   {
     v11 = 0;
   }
 
-  if (v4)
+  if (tvrui_hasMetadata)
   {
     v12 = v11;
   }
@@ -1007,26 +1007,26 @@ void __38__TVRUINowPlayingController__openURL___block_invoke(uint64_t a1, uint64
   return v12;
 }
 
-- (void)presentModalContext:(unint64_t)a3 animated:(BOOL)a4
+- (void)presentModalContext:(unint64_t)context animated:(BOOL)animated
 {
-  if (a3 == 1)
+  if (context == 1)
   {
-    [(TVRUINowPlayingController *)self _presentNowPlayingAnimated:a4];
+    [(TVRUINowPlayingController *)self _presentNowPlayingAnimated:animated];
   }
 
-  else if (a3 == 2)
+  else if (context == 2)
   {
-    [(TVRUINowPlayingController *)self _presentUpNextAnimated:a4];
+    [(TVRUINowPlayingController *)self _presentUpNextAnimated:animated];
   }
 }
 
-- (void)_presentNowPlayingAnimated:(BOOL)a3 forceInfoTab:(BOOL)a4
+- (void)_presentNowPlayingAnimated:(BOOL)animated forceInfoTab:(BOOL)tab
 {
-  v4 = a3;
-  if (a4)
+  animatedCopy = animated;
+  if (tab)
   {
-    v6 = [(TVRUINowPlayingController *)self nowPlayingViewController];
-    [v6 forceTabSelectionToInfoTab];
+    nowPlayingViewController = [(TVRUINowPlayingController *)self nowPlayingViewController];
+    [nowPlayingViewController forceTabSelectionToInfoTab];
   }
 
   else
@@ -1036,16 +1036,16 @@ void __38__TVRUINowPlayingController__openURL___block_invoke(uint64_t a1, uint64
       goto LABEL_6;
     }
 
-    v6 = [(TVRUINowPlayingController *)self nowPlayingViewController];
-    [v6 resetTabSelection];
+    nowPlayingViewController = [(TVRUINowPlayingController *)self nowPlayingViewController];
+    [nowPlayingViewController resetTabSelection];
   }
 
 LABEL_6:
   v7 = [MEMORY[0x277CBEAA8] now];
   [(TVRUINowPlayingController *)self setLastPresentedNowPlaying:v7];
 
-  v8 = [(TVRUINowPlayingController *)self nowPlayingNavController];
-  [(TVRUINowPlayingController *)self _presentViewController:v8 animated:v4 completion:0];
+  nowPlayingNavController = [(TVRUINowPlayingController *)self nowPlayingNavController];
+  [(TVRUINowPlayingController *)self _presentViewController:nowPlayingNavController animated:animatedCopy completion:0];
 }
 
 - (void)_toggleDockAppearance
@@ -1070,17 +1070,17 @@ void __50__TVRUINowPlayingController__toggleDockAppearance__block_invoke(uint64_
   }
 }
 
-- (void)_presentUpNextAnimated:(BOOL)a3
+- (void)_presentUpNextAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(TVRUINowPlayingController *)self setUpNextNavController:0];
-  v5 = [(TVRUINowPlayingController *)self upNextNavController];
+  upNextNavController = [(TVRUINowPlayingController *)self upNextNavController];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __52__TVRUINowPlayingController__presentUpNextAnimated___block_invoke;
   v6[3] = &unk_279D87C20;
   v6[4] = self;
-  [(TVRUINowPlayingController *)self _presentViewController:v5 animated:v3 completion:v6];
+  [(TVRUINowPlayingController *)self _presentViewController:upNextNavController animated:animatedCopy completion:v6];
 }
 
 void __52__TVRUINowPlayingController__presentUpNextAnimated___block_invoke(uint64_t a1)
@@ -1089,33 +1089,33 @@ void __52__TVRUINowPlayingController__presentUpNextAnimated___block_invoke(uint6
   [v1 refreshIfNeeded];
 }
 
-- (void)_dismissNowPlayingViewControllerAnimated:(BOOL)a3
+- (void)_dismissNowPlayingViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(TVRUINowPlayingController *)self nowPlayingNavController];
-  [v4 dismissViewControllerAnimated:v3 completion:0];
+  animatedCopy = animated;
+  nowPlayingNavController = [(TVRUINowPlayingController *)self nowPlayingNavController];
+  [nowPlayingNavController dismissViewControllerAnimated:animatedCopy completion:0];
 }
 
-- (void)_dismissUpNextViewControllerAnimated:(BOOL)a3
+- (void)_dismissUpNextViewControllerAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(TVRUINowPlayingController *)self upNextNavController];
-  [v4 dismissViewControllerAnimated:v3 completion:0];
+  animatedCopy = animated;
+  upNextNavController = [(TVRUINowPlayingController *)self upNextNavController];
+  [upNextNavController dismissViewControllerAnimated:animatedCopy completion:0];
 }
 
-- (unint64_t)_layoutStyleForViewServiceLaunchContext:(int64_t)a3
+- (unint64_t)_layoutStyleForViewServiceLaunchContext:(int64_t)context
 {
-  if (a3 > 0xB)
+  if (context > 0xB)
   {
     return 1;
   }
 
-  if (((1 << a3) & 0x864) != 0)
+  if (((1 << context) & 0x864) != 0)
   {
     return 2;
   }
 
-  if (a3 != 3)
+  if (context != 3)
   {
     return 1;
   }
@@ -1128,24 +1128,24 @@ void __52__TVRUINowPlayingController__presentUpNextAnimated___block_invoke(uint6
   return 1;
 }
 
-- (void)_presentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)_presentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  animatedCopy = animated;
+  completionCopy = completion;
+  controllerCopy = controller;
   if ([(TVRUINowPlayingController *)self isPad])
   {
-    [v9 setTransitioningDelegate:self];
-    [v9 setModalPresentationStyle:4];
-    v13 = [(TVRUINowPlayingController *)self hostingViewController];
-    [v13 presentViewController:v9 animated:v5 completion:v8];
+    [controllerCopy setTransitioningDelegate:self];
+    [controllerCopy setModalPresentationStyle:4];
+    hostingViewController = [(TVRUINowPlayingController *)self hostingViewController];
+    [hostingViewController presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
   }
 
   else
   {
     v10 = +[TVRUIFeatures isSolariumEnabled];
-    v13 = [v9 sheetPresentationController];
-    [v13 setPrefersGrabberVisible:!v10];
+    hostingViewController = [controllerCopy sheetPresentationController];
+    [hostingViewController setPrefersGrabberVisible:!v10];
     if (v10)
     {
       v11 = -2;
@@ -1156,12 +1156,12 @@ void __52__TVRUINowPlayingController__presentUpNextAnimated___block_invoke(uint6
       v11 = 1;
     }
 
-    [v9 setModalPresentationStyle:v11];
-    v12 = [(TVRUINowPlayingController *)self hostingViewController];
-    [v12 presentViewController:v9 animated:v5 completion:v8];
+    [controllerCopy setModalPresentationStyle:v11];
+    hostingViewController2 = [(TVRUINowPlayingController *)self hostingViewController];
+    [hostingViewController2 presentViewController:controllerCopy animated:animatedCopy completion:completionCopy];
 
-    v8 = v9;
-    v9 = v12;
+    completionCopy = controllerCopy;
+    controllerCopy = hostingViewController2;
   }
 }
 
@@ -1169,46 +1169,46 @@ void __52__TVRUINowPlayingController__presentUpNextAnimated___block_invoke(uint6
 {
   if ([(TVRUINowPlayingController *)self _upNextViewControllerIsPresented])
   {
-    v3 = [(TVRUINowPlayingController *)self upNextNavController];
+    upNextNavController = [(TVRUINowPlayingController *)self upNextNavController];
   }
 
   else if ([(TVRUINowPlayingController *)self _nowPlayingViewControllerIsPresented])
   {
-    v3 = [(TVRUINowPlayingController *)self nowPlayingNavController];
+    upNextNavController = [(TVRUINowPlayingController *)self nowPlayingNavController];
   }
 
   else
   {
-    v3 = 0;
+    upNextNavController = 0;
   }
 
-  return v3;
+  return upNextNavController;
 }
 
 - (BOOL)_shouldResetNowPlayingInfoTabSelection
 {
-  v3 = [(TVRUINowPlayingController *)self lastPresentedNowPlaying];
+  lastPresentedNowPlaying = [(TVRUINowPlayingController *)self lastPresentedNowPlaying];
 
-  if (!v3)
+  if (!lastPresentedNowPlaying)
   {
     return 0;
   }
 
-  v4 = [(TVRUINowPlayingController *)self lastPresentedNowPlaying];
-  [v4 timeIntervalSinceNow];
+  lastPresentedNowPlaying2 = [(TVRUINowPlayingController *)self lastPresentedNowPlaying];
+  [lastPresentedNowPlaying2 timeIntervalSinceNow];
   v6 = fabs(v5);
 
   return v6 >= 480.0;
 }
 
-- (id)presentationControllerForPresentedViewController:(id)a3 presentingViewController:(id)a4 sourceViewController:(id)a5
+- (id)presentationControllerForPresentedViewController:(id)controller presentingViewController:(id)viewController sourceViewController:(id)sourceViewController
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[_TVRUIControlCenterSheetPresentationController alloc] initWithPresentedViewController:v10 presentingViewController:v9];
+  sourceViewControllerCopy = sourceViewController;
+  viewControllerCopy = viewController;
+  controllerCopy = controller;
+  v11 = [[_TVRUIControlCenterSheetPresentationController alloc] initWithPresentedViewController:controllerCopy presentingViewController:viewControllerCopy];
 
-  [(_TVRUIControlCenterSheetPresentationController *)v11 setSourceViewController:v8];
+  [(_TVRUIControlCenterSheetPresentationController *)v11 setSourceViewController:sourceViewControllerCopy];
   [(_TVRUIControlCenterSheetPresentationController *)v11 setLayoutStyle:[(TVRUINowPlayingController *)self _layoutStyleForViewServiceLaunchContext:[(TVRUINowPlayingController *)self viewServiceLaunchContext]]];
 
   return v11;

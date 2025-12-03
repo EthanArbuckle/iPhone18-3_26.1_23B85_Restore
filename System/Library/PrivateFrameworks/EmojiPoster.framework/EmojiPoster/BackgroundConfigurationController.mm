@@ -1,5 +1,5 @@
 @interface BackgroundConfigurationController
-- (_TtC11EmojiPoster33BackgroundConfigurationController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC11EmojiPoster33BackgroundConfigurationController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -7,11 +7,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_24A00AF70();
 }
 
-- (_TtC11EmojiPoster33BackgroundConfigurationController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC11EmojiPoster33BackgroundConfigurationController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

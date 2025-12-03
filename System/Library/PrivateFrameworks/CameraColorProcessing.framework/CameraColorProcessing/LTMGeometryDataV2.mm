@@ -4,15 +4,15 @@
 - (CGRect)cropRect;
 - (CGRect)sourceRect;
 - (CGSize)inputTextureSize;
-- (LTMGeometryDataV2)initWithInputTextureWidth:(unint64_t)a3 height:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setCropRect:(CGRect)a3 sourceRect:(CGRect)a4;
-- (void)setSensorSpaceToValidBufferSpaceTransform:(CGAffineTransform *)a3;
+- (LTMGeometryDataV2)initWithInputTextureWidth:(unint64_t)width height:(unint64_t)height;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setCropRect:(CGRect)rect sourceRect:(CGRect)sourceRect;
+- (void)setSensorSpaceToValidBufferSpaceTransform:(CGAffineTransform *)transform;
 @end
 
 @implementation LTMGeometryDataV2
 
-- (LTMGeometryDataV2)initWithInputTextureWidth:(unint64_t)a3 height:(unint64_t)a4
+- (LTMGeometryDataV2)initWithInputTextureWidth:(unint64_t)width height:(unint64_t)height
 {
   v17.receiver = self;
   v17.super_class = LTMGeometryDataV2;
@@ -26,20 +26,20 @@ LABEL_8:
     goto LABEL_5;
   }
 
-  if (a3 < 0x1E0 || a4 <= 0x13F)
+  if (width < 0x1E0 || height <= 0x13F)
   {
     [LTMGeometryDataV2 initWithInputTextureWidth:height:];
     goto LABEL_8;
   }
 
-  *(v6 + 13) = a3;
-  *(v6 + 14) = a4;
+  *(v6 + 13) = width;
+  *(v6 + 14) = height;
   *(v6 + 1) = 0;
   *(v6 + 2) = 0;
-  *(v6 + 3) = a3;
-  *(v6 + 4) = a4;
-  *(v6 + 5) = ((a3 - 480) >> 1);
-  *(v6 + 6) = ((a4 - 320) >> 1);
+  *(v6 + 3) = width;
+  *(v6 + 4) = height;
+  *(v6 + 5) = ((width - 480) >> 1);
+  *(v6 + 6) = ((height - 320) >> 1);
   *(v6 + 56) = xmmword_1C9335BB0;
   *(v6 + 11) = 0;
   *(v6 + 12) = 0;
@@ -58,7 +58,7 @@ LABEL_5:
   return v15;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[LTMGeometryDataV2 alloc] initWithInputTextureWidth:self->_inputTextureSize.width height:self->_inputTextureSize.height];
   [(LTMGeometryDataV2 *)v4 setCropRect:self->_cropRect.origin.x sourceRect:self->_cropRect.origin.y, self->_cropRect.size.width, self->_cropRect.size.height, self->_sourceRect.origin.x, self->_sourceRect.origin.y, self->_sourceRect.size.width, self->_sourceRect.size.height];
@@ -69,13 +69,13 @@ LABEL_5:
   return v4;
 }
 
-- (void)setCropRect:(CGRect)a3 sourceRect:(CGRect)a4
+- (void)setCropRect:(CGRect)rect sourceRect:(CGRect)sourceRect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v46 = CGRectIntegral(a4);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v46 = CGRectIntegral(sourceRect);
   v9 = v46.origin.x;
   v34 = v46.origin.y;
   rect2 = v46.origin.x;
@@ -273,11 +273,11 @@ LABEL_5:
   return self;
 }
 
-- (void)setSensorSpaceToValidBufferSpaceTransform:(CGAffineTransform *)a3
+- (void)setSensorSpaceToValidBufferSpaceTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->c;
-  *&self->_sensorSpaceToValidBufferSpaceTransform.tx = *&a3->tx;
+  v3 = *&transform->a;
+  v4 = *&transform->c;
+  *&self->_sensorSpaceToValidBufferSpaceTransform.tx = *&transform->tx;
   *&self->_sensorSpaceToValidBufferSpaceTransform.c = v4;
   *&self->_sensorSpaceToValidBufferSpaceTransform.a = v3;
 }

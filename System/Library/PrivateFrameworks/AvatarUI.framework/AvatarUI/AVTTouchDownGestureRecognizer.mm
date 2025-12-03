@@ -1,10 +1,10 @@
 @interface AVTTouchDownGestureRecognizer
 - (AVTTouchDownGestureRecognizer)init;
-- (AVTTouchDownGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (AVTTouchDownGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (void)_configure;
-- (void)requireGestureRecognizerToFail:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
+- (void)requireGestureRecognizerToFail:(id)fail;
+- (void)touchesBegan:(id)began withEvent:(id)event;
 @end
 
 @implementation AVTTouchDownGestureRecognizer
@@ -23,11 +23,11 @@
   return v3;
 }
 
-- (AVTTouchDownGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (AVTTouchDownGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = AVTTouchDownGestureRecognizer;
-  v4 = [(AVTTouchDownGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(AVTTouchDownGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -44,29 +44,29 @@
   [(AVTTouchDownGestureRecognizer *)self setDelegate:self];
 }
 
-- (void)requireGestureRecognizerToFail:(id)a3
+- (void)requireGestureRecognizerToFail:(id)fail
 {
-  v4 = a3;
+  failCopy = fail;
   v8.receiver = self;
   v8.super_class = AVTTouchDownGestureRecognizer;
-  [(AVTTouchDownGestureRecognizer *)&v8 requireGestureRecognizerToFail:v4];
+  [(AVTTouchDownGestureRecognizer *)&v8 requireGestureRecognizerToFail:failCopy];
   recognizersRequiredToFail = self->_recognizersRequiredToFail;
   if (!recognizersRequiredToFail)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_recognizersRequiredToFail;
-    self->_recognizersRequiredToFail = v6;
+    self->_recognizersRequiredToFail = weakObjectsHashTable;
 
     recognizersRequiredToFail = self->_recognizersRequiredToFail;
   }
 
-  [(NSHashTable *)recognizersRequiredToFail addObject:v4];
+  [(NSHashTable *)recognizersRequiredToFail addObject:failCopy];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  touchCopy = touch;
   if ([(AVTTouchDownGestureRecognizer *)self allowsTouchesToPassThrough])
   {
     v22 = 0u;
@@ -89,15 +89,15 @@
           }
 
           v11 = *(*(&v20 + 1) + 8 * i);
-          v12 = [v11 view];
-          [v5 locationInView:v12];
+          view = [v11 view];
+          [touchCopy locationInView:view];
           v14 = v13;
           v16 = v15;
 
-          v17 = [v11 view];
-          LOBYTE(v12) = [v17 pointInside:0 withEvent:{v14, v16}];
+          view2 = [v11 view];
+          LOBYTE(view) = [view2 pointInside:0 withEvent:{v14, v16}];
 
-          if (v12)
+          if (view)
           {
 
             goto LABEL_12;
@@ -127,9 +127,9 @@ LABEL_12:
   return v18;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  if (![(AVTTouchDownGestureRecognizer *)self state:a3])
+  if (![(AVTTouchDownGestureRecognizer *)self state:began])
   {
 
     [(AVTTouchDownGestureRecognizer *)self setState:3];

@@ -1,7 +1,7 @@
 @interface _CNRunningBoardInhibitor
 + (id)os_log;
 + (id)runningBoardTarget;
-- (_CNRunningBoardInhibitor)initWithExplanation:(id)a3;
+- (_CNRunningBoardInhibitor)initWithExplanation:(id)explanation;
 - (id)description;
 - (void)start;
 - (void)stop;
@@ -21,15 +21,15 @@
   return v3;
 }
 
-- (_CNRunningBoardInhibitor)initWithExplanation:(id)a3
+- (_CNRunningBoardInhibitor)initWithExplanation:(id)explanation
 {
-  v4 = a3;
+  explanationCopy = explanation;
   v10.receiver = self;
   v10.super_class = _CNRunningBoardInhibitor;
   v5 = [(_CNRunningBoardInhibitor *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [explanationCopy copy];
     explanation = v5->_explanation;
     v5->_explanation = v6;
 
@@ -44,16 +44,16 @@
   v3 = [CNDescriptionBuilder descriptionBuilderWithObject:self];
   v4 = [v3 appendName:@"explanation" object:self->_explanation];
   v5 = [v3 appendName:@"assertion" object:self->_assertion];
-  v6 = [v3 build];
+  build = [v3 build];
 
-  return v6;
+  return build;
 }
 
 - (void)start
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138543362;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_1859F0000, a2, OS_LOG_TYPE_ERROR, "Failed to take runningboard assertion, error: %{public}@", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }
@@ -63,8 +63,8 @@
   v4.receiver = self;
   v4.super_class = _CNRunningBoardInhibitor;
   [(CNInhibitor *)&v4 stop];
-  v3 = [(_CNRunningBoardInhibitor *)self assertion];
-  [v3 invalidate];
+  assertion = [(_CNRunningBoardInhibitor *)self assertion];
+  [assertion invalidate];
 
   [(_CNRunningBoardInhibitor *)self setAssertion:0];
 }

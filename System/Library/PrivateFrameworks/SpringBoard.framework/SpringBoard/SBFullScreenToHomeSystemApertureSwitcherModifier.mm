@@ -1,62 +1,62 @@
 @interface SBFullScreenToHomeSystemApertureSwitcherModifier
 - (BOOL)_isEffectivelyHome;
-- (BOOL)_isIndexZoomAppLayout:(unint64_t)a3;
-- (BOOL)_shouldApplyEffectsToIndex:(unint64_t)a3;
+- (BOOL)_isIndexZoomAppLayout:(unint64_t)layout;
+- (BOOL)_shouldApplyEffectsToIndex:(unint64_t)index;
 - (BOOL)systemApertureRequiresHeavyShadowForTransition;
-- (CGPoint)_collapsedTransitionTargetForZoomDown:(BOOL)a3;
+- (CGPoint)_collapsedTransitionTargetForZoomDown:(BOOL)down;
 - (CGPoint)expandedSourcePositionForSystemApertureTransition;
-- (CGRect)frameForIndex:(unint64_t)a3;
+- (CGRect)frameForIndex:(unint64_t)index;
 - (CGRect)rootContentViewMaskRect;
-- (SBFullScreenToHomeSystemApertureSwitcherModifier)initWithTransitionID:(id)a3 zoomModifier:(id)a4 appLayout:(id)a5 direction:(unint64_t)a6 expandedCardFrame:(CGRect)a7 cardScale:(double)a8 cardVelocity:(CGPoint)a9;
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3;
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5;
+- (SBFullScreenToHomeSystemApertureSwitcherModifier)initWithTransitionID:(id)d zoomModifier:(id)modifier appLayout:(id)layout direction:(unint64_t)direction expandedCardFrame:(CGRect)frame cardScale:(double)scale cardVelocity:(CGPoint)velocity;
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index;
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index;
 - (double)rootContentViewBlurRadius;
-- (double)rotationAngleForIndex:(unint64_t)a3;
-- (double)scaleForIndex:(unint64_t)a3;
+- (double)rotationAngleForIndex:(unint64_t)index;
+- (double)scaleForIndex:(unint64_t)index;
 - (id)_blurItemContainerParameters;
-- (id)_collapseMeshForNormalizedXDelta:(double)a3;
+- (id)_collapseMeshForNormalizedXDelta:(double)delta;
 - (id)_systemApertureSettings;
-- (id)_tuckInAtEndMeshForNormalizedXDelta:(double)a3;
-- (id)animationAttributesForLayoutElement:(id)a3;
-- (id)handleRepositionProgressEvent:(id)a3;
-- (id)meshTransformForIndex:(unint64_t)a3;
-- (id)repositionProgressNotificationsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4;
+- (id)_tuckInAtEndMeshForNormalizedXDelta:(double)delta;
+- (id)animationAttributesForLayoutElement:(id)element;
+- (id)handleRepositionProgressEvent:(id)event;
+- (id)meshTransformForIndex:(unint64_t)index;
+- (id)repositionProgressNotificationsForLayoutRole:(int64_t)role inAppLayout:(id)layout;
 - (id)systemApertureTransitioningAppLayouts;
 - (id)topMostLayoutElements;
 - (id)transitionDidEnd;
 - (id)transitionWillBegin;
 - (id)visibleAppLayouts;
 - (id)visibleHomeAffordanceLayoutElements;
-- (void)didMoveToParentModifier:(id)a3;
+- (void)didMoveToParentModifier:(id)modifier;
 @end
 
 @implementation SBFullScreenToHomeSystemApertureSwitcherModifier
 
-- (SBFullScreenToHomeSystemApertureSwitcherModifier)initWithTransitionID:(id)a3 zoomModifier:(id)a4 appLayout:(id)a5 direction:(unint64_t)a6 expandedCardFrame:(CGRect)a7 cardScale:(double)a8 cardVelocity:(CGPoint)a9
+- (SBFullScreenToHomeSystemApertureSwitcherModifier)initWithTransitionID:(id)d zoomModifier:(id)modifier appLayout:(id)layout direction:(unint64_t)direction expandedCardFrame:(CGRect)frame cardScale:(double)scale cardVelocity:(CGPoint)velocity
 {
-  y = a9.y;
-  x = a9.x;
-  height = a7.size.height;
-  width = a7.size.width;
-  v14 = a7.origin.y;
-  v15 = a7.origin.x;
-  v21 = a3;
-  v22 = a4;
-  v23 = a5;
-  if (!v23)
+  y = velocity.y;
+  x = velocity.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  v14 = frame.origin.y;
+  v15 = frame.origin.x;
+  dCopy = d;
+  modifierCopy = modifier;
+  layoutCopy = layout;
+  if (!layoutCopy)
   {
     [SBFullScreenToHomeSystemApertureSwitcherModifier initWithTransitionID:a2 zoomModifier:self appLayout:? direction:? expandedCardFrame:? cardScale:? cardVelocity:?];
   }
 
   v36.receiver = self;
   v36.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
-  v24 = [(SBTransitionSwitcherModifier *)&v36 initWithTransitionID:v21];
+  v24 = [(SBTransitionSwitcherModifier *)&v36 initWithTransitionID:dCopy];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_appLayout, a5);
-    v25->_direction = a6;
-    objc_storeStrong(&v25->_zoomModifier, a4);
+    objc_storeStrong(&v24->_appLayout, layout);
+    v25->_direction = direction;
+    objc_storeStrong(&v25->_zoomModifier, modifier);
     v25->_shouldClipRegionAboveSystemAperture = 1;
     zoomModifier = v25->_zoomModifier;
     if (zoomModifier)
@@ -75,18 +75,18 @@
     v25->_expandedCardCenter.y = v28;
     v25->_liftOffCardVelocity.x = x;
     v25->_liftOffCardVelocity.y = y;
-    v25->_initialCardScale = a8;
+    v25->_initialCardScale = scale;
     v29 = +[SBAppSwitcherDomain rootSettings];
-    v30 = [v29 systemApertureSettings];
+    systemApertureSettings = [v29 systemApertureSettings];
 
     v37.origin.x = v15;
     v37.origin.y = v14;
     v37.size.width = width;
     v37.size.height = height;
     v31 = CGRectGetWidth(v37);
-    [v30 zoomToJindoYFromScreenTopToUseAlternateSettings];
+    [systemApertureSettings zoomToJindoYFromScreenTopToUseAlternateSettings];
     v33 = v32;
-    CGAffineTransformMakeScale(&v35, a8, a8);
+    CGAffineTransformMakeScale(&v35, scale, scale);
     v38.origin.x = v15;
     v38.origin.y = v14;
     v38.size.width = width;
@@ -103,12 +103,12 @@
   return v25;
 }
 
-- (void)didMoveToParentModifier:(id)a3
+- (void)didMoveToParentModifier:(id)modifier
 {
   v7.receiver = self;
   v7.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
   [(SBChainableModifier *)&v7 didMoveToParentModifier:?];
-  if (a3)
+  if (modifier)
   {
     if (![(SBChainableModifier *)self containsChildModifier:self->_coplanarModifier])
     {
@@ -122,14 +122,14 @@
   }
 }
 
-- (id)handleRepositionProgressEvent:(id)a3
+- (id)handleRepositionProgressEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v24.receiver = self;
   v24.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v24 handleRepositionProgressEvent:v4];
-  v6 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
-  if (self->_direction == 1 && ([v4 progress], objc_msgSend(v6, "zoomToJindoBeginShowingShadowThreshold"), BSFloatGreaterThanOrEqualToFloat()) && (objc_msgSend(v4, "progress"), objc_msgSend(v6, "zoomToJindoEndShowingShadowThreshold"), BSFloatLessThanFloat()))
+  v5 = [(SBSwitcherModifier *)&v24 handleRepositionProgressEvent:eventCopy];
+  _systemApertureSettings = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
+  if (self->_direction == 1 && ([eventCopy progress], objc_msgSend(_systemApertureSettings, "zoomToJindoBeginShowingShadowThreshold"), BSFloatGreaterThanOrEqualToFloat()) && (objc_msgSend(eventCopy, "progress"), objc_msgSend(_systemApertureSettings, "zoomToJindoEndShowingShadowThreshold"), BSFloatLessThanFloat()))
   {
     if (self->_showShadow)
     {
@@ -157,8 +157,8 @@ LABEL_9:
   direction = self->_direction;
   if (!direction)
   {
-    [v4 progress];
-    [v6 zoomFromJindoBeginUnblurringProgressThreshold];
+    [eventCopy progress];
+    [_systemApertureSettings zoomFromJindoBeginUnblurringProgressThreshold];
     v10 = BSFloatGreaterThanOrEqualToFloat();
     if (v10 && !self->_unblurred)
     {
@@ -174,8 +174,8 @@ LABEL_9:
 
   if (direction == 1)
   {
-    [v4 progress];
-    [v6 zoomToJindoTuckInThreshold];
+    [eventCopy progress];
+    [_systemApertureSettings zoomToJindoTuckInThreshold];
     v13 = BSFloatGreaterThanOrEqualToFloat();
     if (v13)
     {
@@ -193,8 +193,8 @@ LABEL_9:
   v16 = self->_direction;
   if (v16 == 1)
   {
-    [v4 progress];
-    [v6 zoomToJindoBounceThreshold];
+    [eventCopy progress];
+    [_systemApertureSettings zoomToJindoBounceThreshold];
     v17 = BSFloatGreaterThanOrEqualToFloat();
     if (v17 && !self->_bounced)
     {
@@ -213,8 +213,8 @@ LABEL_9:
 
   if (!v16 && ![(SBTransitionSwitcherModifier *)self isPreparingLayout])
   {
-    [v4 progress];
-    [v6 zoomFromJindoUnmaskThreshold];
+    [eventCopy progress];
+    [_systemApertureSettings zoomFromJindoUnmaskThreshold];
     if (BSFloatGreaterThanOrEqualToFloat())
     {
       self->_shouldClipRegionAboveSystemAperture = 0;
@@ -232,60 +232,60 @@ LABEL_9:
 {
   v14.receiver = self;
   v14.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v14 transitionWillBegin];
+  transitionWillBegin = [(SBTransitionSwitcherModifier *)&v14 transitionWillBegin];
   if (*&self->_direction == 1)
   {
-    v4 = [MEMORY[0x277CCAD78] UUID];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     suppressionIdentifier = self->_suppressionIdentifier;
-    self->_suppressionIdentifier = v4;
+    self->_suppressionIdentifier = uUID;
 
     v6 = [[SBRequestSystemApertureElementSuppressionEventResponse alloc] initWithAppLayout:self->_appLayout wantsGlobalSuppression:1 wantsKeyLineEnabled:1 invalidationIdentifier:self->_suppressionIdentifier];
-    v7 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v6 toResponse:v3];
+    v7 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v6 toResponse:transitionWillBegin];
 
-    v3 = v7;
+    transitionWillBegin = v7;
   }
 
   direction = self->_direction;
   if (direction == 1)
   {
     v9 = objc_alloc_init(SBInvalidateRootContentViewClippingAndBlurEventResponse);
-    v10 = SBAppendSwitcherModifierResponse(v9, v3);
+    v10 = SBAppendSwitcherModifierResponse(v9, transitionWillBegin);
 
     direction = self->_direction;
-    v3 = v10;
+    transitionWillBegin = v10;
   }
 
   if (!direction && ([(SBFullScreenToHomeSystemApertureSwitcherModifier *)self switcherInterfaceOrientation]- 3) >= 2)
   {
     v11 = objc_alloc_init(SBInitiateSystemApertureStretchEventResponse);
-    v12 = SBAppendSwitcherModifierResponse(v11, v3);
+    v12 = SBAppendSwitcherModifierResponse(v11, transitionWillBegin);
 
-    v3 = v12;
+    transitionWillBegin = v12;
   }
 
-  return v3;
+  return transitionWillBegin;
 }
 
 - (id)transitionDidEnd
 {
   v8.receiver = self;
   v8.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
-  v3 = [(SBTransitionSwitcherModifier *)&v8 transitionDidEnd];
+  transitionDidEnd = [(SBTransitionSwitcherModifier *)&v8 transitionDidEnd];
   if (self->_suppressionIdentifier)
   {
     v4 = [[SBRelinquishSystemApertureElementSuppressionEventResponse alloc] initWithInvalidationIdentifier:self->_suppressionIdentifier];
-    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:v3];
+    v5 = [(SBChainableModifierEventResponse *)SBSwitcherModifierEventResponse responseByAppendingResponse:v4 toResponse:transitionDidEnd];
 
     suppressionIdentifier = self->_suppressionIdentifier;
     self->_suppressionIdentifier = 0;
 
-    v3 = v5;
+    transitionDidEnd = v5;
   }
 
-  return v3;
+  return transitionDidEnd;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
   if ([(SBTransitionSwitcherModifier *)self isPreparingLayout])
   {
@@ -307,7 +307,7 @@ LABEL_9:
     v6 = 0;
   }
 
-  if ([(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _isIndexZoomAppLayout:a3]&& (v5 || v6))
+  if ([(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _isIndexZoomAppLayout:index]&& (v5 || v6))
   {
     [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self containerViewBounds];
     SBRectWithSize();
@@ -319,7 +319,7 @@ LABEL_9:
   {
     v11.receiver = self;
     v11.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
-    [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v11 frameForIndex:a3];
+    [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v11 frameForIndex:index];
   }
 
   result.size.height = v10;
@@ -329,11 +329,11 @@ LABEL_9:
   return result;
 }
 
-- (double)scaleForIndex:(unint64_t)a3
+- (double)scaleForIndex:(unint64_t)index
 {
   if ([(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _shouldApplyEffectsToIndex:?])
   {
-    v5 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
+    _systemApertureSettings = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
     [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self containerViewBounds];
     x = v25.origin.x;
     y = v25.origin.y;
@@ -356,12 +356,12 @@ LABEL_9:
     v15 = v13 * v14;
     if (self->_jindoIntersectsIntialCardFrame)
     {
-      [v5 zoomToJindoStraightSwipeAlternateScale];
+      [_systemApertureSettings zoomToJindoStraightSwipeAlternateScale];
     }
 
     else
     {
-      [v5 zoomToJindoStraightSwipeScale];
+      [_systemApertureSettings zoomToJindoStraightSwipeScale];
     }
 
     v19 = v16;
@@ -381,7 +381,7 @@ LABEL_9:
       v21 = 1.0;
     }
 
-    [v5 zoomToJindoArcSwipeScale];
+    [_systemApertureSettings zoomToJindoArcSwipeScale];
     v18 = v19 + v21 * (v22 - v19);
   }
 
@@ -389,7 +389,7 @@ LABEL_9:
   {
     v24.receiver = self;
     v24.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
-    [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v24 scaleForIndex:a3];
+    [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v24 scaleForIndex:index];
     return v17;
   }
 
@@ -400,8 +400,8 @@ LABEL_9:
 {
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
-  v3 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v6 visibleAppLayouts];
-  v4 = [v3 setByAddingObject:self->_appLayout];
+  visibleAppLayouts = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v6 visibleAppLayouts];
+  v4 = [visibleAppLayouts setByAddingObject:self->_appLayout];
 
   return v4;
 }
@@ -422,15 +422,15 @@ LABEL_9:
   return v2;
 }
 
-- (double)rotationAngleForIndex:(unint64_t)a3
+- (double)rotationAngleForIndex:(unint64_t)index
 {
   if ([(SBTransitionSwitcherModifier *)self isUpdatingLayout])
   {
     direction = self->_direction;
     v6 = 0.0;
-    if ([(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _isIndexZoomAppLayout:a3]&& direction == 1)
+    if ([(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _isIndexZoomAppLayout:index]&& direction == 1)
     {
-      v7 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
+      _systemApertureSettings = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
       [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self containerViewBounds];
       x = v20.origin.x;
       y = v20.origin.y;
@@ -451,21 +451,21 @@ LABEL_9:
       }
 
       v17 = fmin(fmax(v15 * v16, -1.0), 1.0);
-      [v7 xDeltaToRotationMappingFactor];
+      [_systemApertureSettings xDeltaToRotationMappingFactor];
       v6 = v18 * v17 + 0.0;
     }
   }
 
   else
   {
-    [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _isIndexZoomAppLayout:a3];
+    [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _isIndexZoomAppLayout:index];
     return 0.0;
   }
 
   return v6;
 }
 
-- (id)meshTransformForIndex:(unint64_t)a3
+- (id)meshTransformForIndex:(unint64_t)index
 {
   if ([(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _isIndexZoomAppLayout:?])
   {
@@ -505,7 +505,7 @@ LABEL_9:
 
     else
     {
-      v15 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _expandMeshForIndex:a3];
+      v15 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _expandMeshForIndex:index];
     }
   }
 
@@ -513,7 +513,7 @@ LABEL_9:
   {
     v17.receiver = self;
     v17.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
-    v15 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v17 meshTransformForIndex:a3];
+    v15 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v17 meshTransformForIndex:index];
   }
 
   return v15;
@@ -599,8 +599,8 @@ LABEL_9:
     }
 
 LABEL_14:
-    v9 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
-    [v9 zoomToFromJindoMaxBlurRadius];
+    _systemApertureSettings = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
+    [_systemApertureSettings zoomToFromJindoMaxBlurRadius];
     v7 = v10;
 
     return v7;
@@ -620,24 +620,24 @@ LABEL_15:
     return v11;
   }
 
-  v5 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
-  v6 = v5;
+  _systemApertureSettings2 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
+  v6 = _systemApertureSettings2;
   v7 = 0.0;
   if (!self->_unblurred)
   {
-    [v5 zoomToFromJindoMaxBlurRadius];
+    [_systemApertureSettings2 zoomToFromJindoMaxBlurRadius];
     v7 = v8;
   }
 
   return v7;
 }
 
-- (id)animationAttributesForLayoutElement:(id)a3
+- (id)animationAttributesForLayoutElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v33.receiver = self;
   v33.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
-  v5 = [(SBTransitionSwitcherModifier *)&v33 animationAttributesForLayoutElement:v4];
+  v5 = [(SBTransitionSwitcherModifier *)&v33 animationAttributesForLayoutElement:elementCopy];
   v6 = [v5 mutableCopy];
 
   if ([(SBTransitionSwitcherModifier *)self isUpdatingLayout])
@@ -670,40 +670,40 @@ LABEL_15:
     v9 = 0;
   }
 
-  v10 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
-  v11 = v10;
-  if (self->_appLayout == v4)
+  _systemApertureSettings = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
+  v11 = _systemApertureSettings;
+  if (self->_appLayout == elementCopy)
   {
     if (v7)
     {
       if (self->_jindoIntersectsIntialCardFrame)
       {
-        v16 = [v10 zoomToJindoLayoutAlternateSettings];
-        [v6 setLayoutSettings:v16];
+        zoomToJindoLayoutAlternateSettings = [_systemApertureSettings zoomToJindoLayoutAlternateSettings];
+        [v6 setLayoutSettings:zoomToJindoLayoutAlternateSettings];
 
-        v17 = [v11 zoomToJindoPositionAlternateSettings];
-        [v6 setPositionSettings:v17];
+        zoomToJindoPositionAlternateSettings = [v11 zoomToJindoPositionAlternateSettings];
+        [v6 setPositionSettings:zoomToJindoPositionAlternateSettings];
 
         [v11 zoomToJindoScaleAndRotateAlternateSettings];
       }
 
       else
       {
-        v21 = [v10 zoomToJindoLayoutSettings];
-        [v6 setLayoutSettings:v21];
+        zoomToJindoLayoutSettings = [_systemApertureSettings zoomToJindoLayoutSettings];
+        [v6 setLayoutSettings:zoomToJindoLayoutSettings];
 
-        v22 = [v11 zoomToJindoPositionSettings];
-        [v6 setPositionSettings:v22];
+        zoomToJindoPositionSettings = [v11 zoomToJindoPositionSettings];
+        [v6 setPositionSettings:zoomToJindoPositionSettings];
 
         [v11 zoomToJindoScaleAndRotateSettings];
       }
       v23 = ;
       [v6 setScaleSettings:v23];
 
-      v24 = [v11 zoomToAndFromJindoMeshSettings];
-      [v6 setMeshSettings:v24];
+      zoomToAndFromJindoMeshSettings = [v11 zoomToAndFromJindoMeshSettings];
+      [v6 setMeshSettings:zoomToAndFromJindoMeshSettings];
 
-      v25 = [v11 zoomToJindoCornerRadiusSettings];
+      zoomToJindoCornerRadiusSettings = [v11 zoomToJindoCornerRadiusSettings];
     }
 
     else
@@ -719,35 +719,35 @@ LABEL_15:
         goto LABEL_30;
       }
 
-      v26 = [v10 zoomFromJindoLayoutSettings];
-      [v6 setLayoutSettings:v26];
+      zoomFromJindoLayoutSettings = [_systemApertureSettings zoomFromJindoLayoutSettings];
+      [v6 setLayoutSettings:zoomFromJindoLayoutSettings];
 
-      v27 = [v11 zoomFromJindoPositionSettings];
-      [v6 setPositionSettings:v27];
+      zoomFromJindoPositionSettings = [v11 zoomFromJindoPositionSettings];
+      [v6 setPositionSettings:zoomFromJindoPositionSettings];
 
-      v28 = [v11 zoomFromJindoScaleAndRotateSettings];
-      [v6 setScaleSettings:v28];
+      zoomFromJindoScaleAndRotateSettings = [v11 zoomFromJindoScaleAndRotateSettings];
+      [v6 setScaleSettings:zoomFromJindoScaleAndRotateSettings];
 
-      v29 = [v11 zoomToAndFromJindoMeshSettings];
-      [v6 setMeshSettings:v29];
+      zoomToAndFromJindoMeshSettings2 = [v11 zoomToAndFromJindoMeshSettings];
+      [v6 setMeshSettings:zoomToAndFromJindoMeshSettings2];
 
-      v25 = [v11 zoomFromJindoCornerRadiusSettings];
+      zoomToJindoCornerRadiusSettings = [v11 zoomFromJindoCornerRadiusSettings];
     }
 
-    v30 = v25;
-    [v6 setCornerRadiusSettings:v25];
+    v30 = zoomToJindoCornerRadiusSettings;
+    [v6 setCornerRadiusSettings:zoomToJindoCornerRadiusSettings];
   }
 
-  else if ([(SBAppLayout *)v4 switcherLayoutElementType]== 5)
+  else if ([(SBAppLayout *)elementCopy switcherLayoutElementType]== 5)
   {
     if (v7)
     {
-      v12 = [v11 zoomToJindoBlurAnimationSettings];
-      [v6 setLayoutSettings:v12];
+      zoomToJindoBlurAnimationSettings = [v11 zoomToJindoBlurAnimationSettings];
+      [v6 setLayoutSettings:zoomToJindoBlurAnimationSettings];
 
       [v6 setLayoutUpdateMode:3];
-      v13 = [v11 zoomToJindoTopClippingSettings];
-      [v6 setClippingSettings:v13];
+      zoomToJindoTopClippingSettings = [v11 zoomToJindoTopClippingSettings];
+      [v6 setClippingSettings:zoomToJindoTopClippingSettings];
 
       v14 = v6;
       v15 = 3;
@@ -757,8 +757,8 @@ LABEL_15:
     {
       if (v8 || v9 && !self->_unblurred)
       {
-        v18 = [v11 zoomFromJindoBlurAnimationSettings];
-        [v6 setLayoutSettings:v18];
+        zoomFromJindoBlurAnimationSettings = [v11 zoomFromJindoBlurAnimationSettings];
+        [v6 setLayoutSettings:zoomFromJindoBlurAnimationSettings];
 
         v19 = v6;
         v20 = 1;
@@ -766,8 +766,8 @@ LABEL_15:
 
       else
       {
-        v31 = [v11 zoomFromJindoBlurAnimationSettings];
-        [v6 setLayoutSettings:v31];
+        zoomFromJindoBlurAnimationSettings2 = [v11 zoomFromJindoBlurAnimationSettings];
+        [v6 setLayoutSettings:zoomFromJindoBlurAnimationSettings2];
 
         v19 = v6;
         v20 = 3;
@@ -808,13 +808,13 @@ LABEL_30:
   return result;
 }
 
-- (id)repositionProgressNotificationsForLayoutRole:(int64_t)a3 inAppLayout:(id)a4
+- (id)repositionProgressNotificationsForLayoutRole:(int64_t)role inAppLayout:(id)layout
 {
   v28[4] = *MEMORY[0x277D85DE8];
   v26.receiver = self;
   v26.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
-  v6 = a4;
-  v7 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v26 repositionProgressNotificationsForLayoutRole:a3 inAppLayout:v6];
+  layoutCopy = layout;
+  v7 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v26 repositionProgressNotificationsForLayoutRole:role inAppLayout:layoutCopy];
   if ([(SBTransitionSwitcherModifier *)self isUpdatingLayout])
   {
     v8 = self->_direction == 1;
@@ -825,20 +825,20 @@ LABEL_30:
     v8 = 0;
   }
 
-  v9 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
-  v10 = [(SBAppLayout *)self->_appLayout isEqual:v6];
+  _systemApertureSettings = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
+  v10 = [(SBAppLayout *)self->_appLayout isEqual:layoutCopy];
 
   if (v10)
   {
     if (v8)
     {
-      [v9 zoomToJindoBeginShowingShadowThreshold];
+      [_systemApertureSettings zoomToJindoBeginShowingShadowThreshold];
       v12 = v11;
-      [v9 zoomToJindoEndShowingShadowThreshold];
+      [_systemApertureSettings zoomToJindoEndShowingShadowThreshold];
       v14 = v13;
-      [v9 zoomToJindoBounceThreshold];
+      [_systemApertureSettings zoomToJindoBounceThreshold];
       v16 = v15;
-      [v9 zoomToJindoTuckInThreshold];
+      [_systemApertureSettings zoomToJindoTuckInThreshold];
       v17 = [MEMORY[0x277CCABB0] numberWithDouble:?];
       v28[0] = v17;
       v18 = [MEMORY[0x277CCABB0] numberWithDouble:v16];
@@ -855,9 +855,9 @@ LABEL_30:
 
     else
     {
-      [v9 zoomToJindoBounceThreshold];
+      [_systemApertureSettings zoomToJindoBounceThreshold];
       v24 = v23;
-      [v9 zoomFromJindoBeginUnblurringProgressThreshold];
+      [_systemApertureSettings zoomFromJindoBeginUnblurringProgressThreshold];
       v17 = [MEMORY[0x277CCABB0] numberWithDouble:?];
       v27[0] = v17;
       v18 = [MEMORY[0x277CCABB0] numberWithDouble:v24];
@@ -872,7 +872,7 @@ LABEL_30:
   return v7;
 }
 
-- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)a3
+- (UIRectCornerRadii)cornerRadiiForIndex:(unint64_t)index
 {
   if ([(SBTransitionSwitcherModifier *)self isPreparingLayout])
   {
@@ -894,10 +894,10 @@ LABEL_30:
     v6 = 0;
   }
 
-  if ([(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _isIndexZoomAppLayout:a3]&& (v5 || v6))
+  if ([(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _isIndexZoomAppLayout:index]&& (v5 || v6))
   {
-    v7 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
-    [v7 zoomToFromJindoMaxCornerRadius];
+    _systemApertureSettings = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
+    [_systemApertureSettings zoomToFromJindoMaxCornerRadius];
     SBRectCornerRadiiForRadius();
     v9 = v8;
     v11 = v10;
@@ -924,15 +924,15 @@ LABEL_30:
   return result;
 }
 
-- (double)opacityForLayoutRole:(int64_t)a3 inAppLayout:(id)a4 atIndex:(unint64_t)a5
+- (double)opacityForLayoutRole:(int64_t)role inAppLayout:(id)layout atIndex:(unint64_t)index
 {
-  v8 = a4;
+  layoutCopy = layout;
   v9 = 1.0;
-  if (![(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _shouldApplyEffectsToIndex:a5])
+  if (![(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _shouldApplyEffectsToIndex:index])
   {
     v12.receiver = self;
     v12.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
-    [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v12 opacityForLayoutRole:a3 inAppLayout:v8 atIndex:a5];
+    [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v12 opacityForLayoutRole:role inAppLayout:layoutCopy atIndex:index];
     v9 = v10;
   }
 
@@ -943,8 +943,8 @@ LABEL_30:
 {
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
-  v3 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v6 systemApertureTransitioningAppLayouts];
-  v4 = [v3 setByAddingObject:self->_appLayout];
+  systemApertureTransitioningAppLayouts = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v6 systemApertureTransitioningAppLayouts];
+  v4 = [systemApertureTransitioningAppLayouts setByAddingObject:self->_appLayout];
 
   return v4;
 }
@@ -960,23 +960,23 @@ LABEL_30:
 {
   v6.receiver = self;
   v6.super_class = SBFullScreenToHomeSystemApertureSwitcherModifier;
-  v3 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v6 topMostLayoutElements];
-  v4 = [v3 sb_arrayByInsertingOrMovingObject:self->_appLayout toIndex:0];
+  topMostLayoutElements = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)&v6 topMostLayoutElements];
+  v4 = [topMostLayoutElements sb_arrayByInsertingOrMovingObject:self->_appLayout toIndex:0];
 
   return v4;
 }
 
 - (id)_systemApertureSettings
 {
-  v2 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self switcherSettings];
-  v3 = [v2 systemApertureSettings];
+  switcherSettings = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self switcherSettings];
+  systemApertureSettings = [switcherSettings systemApertureSettings];
 
-  return v3;
+  return systemApertureSettings;
 }
 
-- (CGPoint)_collapsedTransitionTargetForZoomDown:(BOOL)a3
+- (CGPoint)_collapsedTransitionTargetForZoomDown:(BOOL)down
 {
-  v3 = a3;
+  downCopy = down;
   [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self containerViewBounds];
   SBRectWithSize();
   v6 = v5;
@@ -986,15 +986,15 @@ LABEL_30:
   UIRectGetCenter();
   v14 = v13;
   v16 = v15;
-  if (v3)
+  if (downCopy)
   {
-    v17 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
+    _systemApertureSettings = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
     v37.origin.x = v6;
     v37.origin.y = v8;
     v37.size.width = v10;
     v37.size.height = v12;
     Height = CGRectGetHeight(v37);
-    [v17 zoomToJindoTargetYDisplacement];
+    [_systemApertureSettings zoomToJindoTargetYDisplacement];
     v34 = v16 - Height * v19;
     [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self containerViewBounds];
     x = v38.origin.x;
@@ -1022,7 +1022,7 @@ LABEL_30:
     v40.size.width = v10;
     v40.size.height = v12;
     v28 = CGRectGetWidth(v40);
-    [v17 zoomToJindoTargetXDisplacement];
+    [_systemApertureSettings zoomToJindoTargetXDisplacement];
     v14 = v35 + v28 * v29 * v27;
 
     v30 = v34;
@@ -1043,26 +1043,26 @@ LABEL_30:
   return result;
 }
 
-- (BOOL)_shouldApplyEffectsToIndex:(unint64_t)a3
+- (BOOL)_shouldApplyEffectsToIndex:(unint64_t)index
 {
-  v5 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _isEffectivelyHome];
-  if (v5)
+  _isEffectivelyHome = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _isEffectivelyHome];
+  if (_isEffectivelyHome)
   {
 
-    LOBYTE(v5) = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _isIndexZoomAppLayout:a3];
+    LOBYTE(_isEffectivelyHome) = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _isIndexZoomAppLayout:index];
   }
 
-  return v5;
+  return _isEffectivelyHome;
 }
 
-- (BOOL)_isIndexZoomAppLayout:(unint64_t)a3
+- (BOOL)_isIndexZoomAppLayout:(unint64_t)layout
 {
-  v4 = self;
-  v5 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  selfCopy = self;
+  appLayouts = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:layout];
 
-  LOBYTE(v4) = [v6 isEqual:v4->_appLayout];
-  return v4;
+  LOBYTE(selfCopy) = [v6 isEqual:selfCopy->_appLayout];
+  return selfCopy;
 }
 
 - (BOOL)_isEffectivelyHome
@@ -1090,37 +1090,37 @@ LABEL_30:
   return v3 || v4;
 }
 
-- (id)_collapseMeshForNormalizedXDelta:(double)a3
+- (id)_collapseMeshForNormalizedXDelta:(double)delta
 {
   v55 = *MEMORY[0x277D85DE8];
   v12[0] = 0;
   v12[1] = 0;
-  if (a3 <= 0.0)
+  if (delta <= 0.0)
   {
-    v13 = a3 * 0.9 + 0.0 + 0.1;
-    v14 = a3 * -0.2 + 0.0;
+    v13 = delta * 0.9 + 0.0 + 0.1;
+    v14 = delta * -0.2 + 0.0;
     v15 = xmmword_21F8A6540;
     v16 = 0;
-    v17 = a3 + 0.5;
+    v17 = delta + 0.5;
     v18 = 0;
     v3 = 1.2;
   }
 
   else
   {
-    v13 = a3 * 1.2 + 0.0 + 0.1;
-    v14 = a3 * -0.2 + 0.0;
+    v13 = delta * 1.2 + 0.0 + 0.1;
+    v14 = delta * -0.2 + 0.0;
     v15 = xmmword_21F8A6540;
     v16 = 0;
-    v17 = a3 + 0.5;
+    v17 = delta + 0.5;
     v18 = 0;
     v3 = 0.9;
   }
 
   v19 = xmmword_21F8A6550;
   v20 = 0;
-  v21 = a3 * v3 + 1.0 + -0.1;
-  v22 = a3 * 0.2 + 0.0;
+  v21 = delta * v3 + 1.0 + -0.1;
+  v22 = delta * 0.2 + 0.0;
   v23 = 0;
   v24 = 0;
   v25 = xmmword_21F8A6560;
@@ -1135,7 +1135,7 @@ LABEL_30:
   v33 = 0;
   v31 = 0x3FE0000000000000;
   v34 = xmmword_21F8A65A0;
-  v35 = a3 * 0.1 + 1.1;
+  v35 = delta * 0.1 + 1.1;
   v36 = xmmword_21F8A6540;
   v37 = xmmword_21F8A65B0;
   __asm { FMOV            V2.2D, #1.0 }
@@ -1162,7 +1162,7 @@ LABEL_30:
   return v10;
 }
 
-- (id)_tuckInAtEndMeshForNormalizedXDelta:(double)a3
+- (id)_tuckInAtEndMeshForNormalizedXDelta:(double)delta
 {
   v4 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _collapseMeshForNormalizedXDelta:?];
   v5 = [v4 mutableCopy];
@@ -1185,8 +1185,8 @@ LABEL_30:
     v11 = 0uLL;
   }
 
-  *&v14 = 0.06 - a3 * 0.2;
-  *&v11 = 0.94 - a3 * 0.2;
+  *&v14 = 0.06 - delta * 0.2;
+  *&v11 = 0.94 - delta * 0.2;
   v7 = v13;
   v8 = v14;
   v9 = v15;
@@ -1201,21 +1201,21 @@ LABEL_30:
 
 - (id)_blurItemContainerParameters
 {
-  v3 = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
+  _systemApertureSettings = [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self _systemApertureSettings];
   direction = self->_direction;
   v5 = [SBBlurItemContainerParameters alloc];
-  [v3 zoomToFromJindoMaxBlurRadius];
+  [_systemApertureSettings zoomToFromJindoMaxBlurRadius];
   v7 = v6;
   [(SBFullScreenToHomeSystemApertureSwitcherModifier *)self screenScale];
   v9 = v8;
   if (direction == 1)
   {
-    [v3 zoomToJindoBlurAnimationSettings];
+    [_systemApertureSettings zoomToJindoBlurAnimationSettings];
   }
 
   else
   {
-    [v3 zoomFromJindoBlurAnimationSettings];
+    [_systemApertureSettings zoomFromJindoBlurAnimationSettings];
   }
   v10 = ;
   v11 = [(SBBlurItemContainerParameters *)v5 initWithBlurRadius:1 shouldRasterize:1 rasterizationScale:1 inputQuality:v10 inputIntermediateBitDepth:v7 blurAnimationSettings:v9];

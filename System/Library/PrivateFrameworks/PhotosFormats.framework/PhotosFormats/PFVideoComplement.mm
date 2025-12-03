@@ -1,31 +1,31 @@
 @interface PFVideoComplement
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_retimedPTSForOriginalPTS:(SEL)a3 inAsset:(unint64_t)a4 error:(id)a5;
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertTime:(SEL)a3 fromAsset:(id *)a4 toAsset:(id)a5;
-+ (BOOL)_enumerateV3MetadataInAsset:(id)a3 withBlock:(id)a4 error:(id *)a5;
-+ (unint64_t)_originalPTSForFrameAtTime:(id *)a3 inAsset:(id)a4 error:(id *)a5;
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_retimedPTSForOriginalPTS:(SEL)s inAsset:(unint64_t)asset error:(id)error;
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertTime:(SEL)time fromAsset:(id *)asset toAsset:(id)toAsset;
++ (BOOL)_enumerateV3MetadataInAsset:(id)asset withBlock:(id)block error:(id *)error;
++ (unint64_t)_originalPTSForFrameAtTime:(id *)time inAsset:(id)asset error:(id *)error;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)imageDisplayTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)originalImageDisplayTime;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)originalVideoDuration;
-- (BOOL)_getSourceFilePath:(id)a3 destinationFilePath:(id)a4 areOnSameVolume:(BOOL *)a5 volumeSupportsCloning:(BOOL *)a6;
-- (BOOL)copyOrLinkPath:(id)a3 toPath:(id)a4 error:(id *)a5;
-- (BOOL)writeToBundleAtURL:(id)a3 error:(id *)a4;
+- (BOOL)_getSourceFilePath:(id)path destinationFilePath:(id)filePath areOnSameVolume:(BOOL *)volume volumeSupportsCloning:(BOOL *)cloning;
+- (BOOL)copyOrLinkPath:(id)path toPath:(id)toPath error:(id *)error;
+- (BOOL)writeToBundleAtURL:(id)l error:(id *)error;
 - (NSString)originalPairingIdentifier;
 - (NSString)pairingIdentifier;
 - (PFVideoComplement)init;
-- (PFVideoComplement)initWithBundleAtURL:(id)a3;
-- (PFVideoComplement)initWithPathToVideo:(id)a3 pathToImage:(id)a4;
-- (PFVideoComplement)initWithPathToVideo:(id)a3 pathToImage:(id)a4 imageDisplayTime:(id *)a5 pairingIdentifier:(id)a6;
-- (PFVideoComplement)initWithPropertyList:(id)a3;
+- (PFVideoComplement)initWithBundleAtURL:(id)l;
+- (PFVideoComplement)initWithPathToVideo:(id)video pathToImage:(id)image;
+- (PFVideoComplement)initWithPathToVideo:(id)video pathToImage:(id)image imageDisplayTime:(id *)time pairingIdentifier:(id)identifier;
+- (PFVideoComplement)initWithPropertyList:(id)list;
 - (id)propertyListRepresentation;
-- (int)numberOfFramesRecoveredWithError:(id *)a3;
+- (int)numberOfFramesRecoveredWithError:(id *)error;
 - (void)_readMetadataIfNeeded;
 @end
 
 @implementation PFVideoComplement
 
-- (BOOL)writeToBundleAtURL:(id)a3 error:(id *)a4
+- (BOOL)writeToBundleAtURL:(id)l error:(id *)error
 {
-  v5 = a3;
+  lCopy = l;
   v53 = 0;
   v54 = &v53;
   v55 = 0x2020000000;
@@ -37,7 +37,7 @@
   v51 = __Block_byref_object_dispose__9943;
   v52 = 0;
   v46 = 0;
-  v6 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __46__PFVideoComplement_writeToBundleAtURL_error___block_invoke;
@@ -45,8 +45,8 @@
   v45[4] = &v53;
   v45[5] = &v47;
   v7 = MEMORY[0x1B8C64C40](v45);
-  v8 = [(NSString *)self->_imagePath pathExtension];
-  v9 = [PFUniformTypeUtilities typeWithFilenameExtension:v8];
+  pathExtension = [(NSString *)self->_imagePath pathExtension];
+  v9 = [PFUniformTypeUtilities typeWithFilenameExtension:pathExtension];
 
   if (*(v54 + 24) == 1 && (!v9 || ([v9 conformsToType:*MEMORY[0x1E6982E30]] & 1) == 0))
   {
@@ -54,7 +54,7 @@
   }
 
   v46 = 1;
-  if (*(v54 + 24) == 1 && ([v6 fileExistsAtPath:self->_imagePath isDirectory:&v46] & 1) == 0)
+  if (*(v54 + 24) == 1 && ([defaultManager fileExistsAtPath:self->_imagePath isDirectory:&v46] & 1) == 0)
   {
     (v7)[2](v7, @"no file exists at '%@'");
   }
@@ -64,8 +64,8 @@
     (v7)[2](v7, @"directory exists at '%@'");
   }
 
-  v10 = [(NSString *)self->_videoPath pathExtension];
-  v40 = [PFUniformTypeUtilities typeWithFilenameExtension:v10];
+  pathExtension2 = [(NSString *)self->_videoPath pathExtension];
+  v40 = [PFUniformTypeUtilities typeWithFilenameExtension:pathExtension2];
 
   if (*(v54 + 24) == 1 && (!v40 || ([v40 conformsToType:*MEMORY[0x1E6982EE8]] & 1) == 0))
   {
@@ -73,7 +73,7 @@
   }
 
   v46 = 1;
-  if (*(v54 + 24) == 1 && ([v6 fileExistsAtPath:self->_videoPath isDirectory:&v46] & 1) == 0)
+  if (*(v54 + 24) == 1 && ([defaultManager fileExistsAtPath:self->_videoPath isDirectory:&v46] & 1) == 0)
   {
     (v7)[2](v7, @"no file exists at '%@'");
   }
@@ -82,7 +82,7 @@
   {
     if (v46 != 1 || ((v7)[2](v7, @"directory exists at '%@'"), (v54[3] & 1) != 0))
     {
-      if (([v5 isFileURL] & 1) == 0)
+      if (([lCopy isFileURL] & 1) == 0)
       {
         (v7)[2](v7, @"destination is not a file url: '%@'");
       }
@@ -91,29 +91,29 @@
 
   if (*(v54 + 24) == 1)
   {
-    v11 = [v5 pathExtension];
-    v12 = [v11 isEqualToString:@"pvt"];
+    pathExtension3 = [lCopy pathExtension];
+    v12 = [pathExtension3 isEqualToString:@"pvt"];
 
     if ((v12 & 1) == 0)
     {
-      v37 = [v5 pathExtension];
+      pathExtension4 = [lCopy pathExtension];
       (v7)[2](v7, @"destination has extension '%@' but requires '%@'");
     }
   }
 
-  v13 = [v5 path];
-  if (*(v54 + 24) == 1 && [v6 fileExistsAtPath:v13])
+  path = [lCopy path];
+  if (*(v54 + 24) == 1 && [defaultManager fileExistsAtPath:path])
   {
     (v7)[2](v7, @"destination already exists: '%@'");
   }
 
   v14 = v54;
-  v38 = v5;
+  v38 = lCopy;
   if (*(v54 + 24) == 1)
   {
     v15 = (v48 + 5);
     obj = v48[5];
-    v16 = [v6 createDirectoryAtPath:v13 withIntermediateDirectories:1 attributes:0 error:&obj];
+    v16 = [defaultManager createDirectoryAtPath:path withIntermediateDirectories:1 attributes:0 error:&obj];
     v17 = v9;
     objc_storeStrong(v15, obj);
     v14 = v54;
@@ -126,7 +126,7 @@
   }
 
   *(v14 + 24) = v16;
-  v18 = [v13 stringByAppendingPathComponent:@"metadata.plist"];
+  v18 = [path stringByAppendingPathComponent:@"metadata.plist"];
   v19 = v54;
   if (*(v54 + 24) == 1)
   {
@@ -140,8 +140,8 @@
   }
 
   *(v19 + 24) = v20;
-  v21 = [(NSString *)self->_imagePath lastPathComponent];
-  v22 = [v13 stringByAppendingPathComponent:v21];
+  lastPathComponent = [(NSString *)self->_imagePath lastPathComponent];
+  v22 = [path stringByAppendingPathComponent:lastPathComponent];
 
   v23 = v54;
   if (*(v54 + 24) == 1)
@@ -160,8 +160,8 @@
   }
 
   *(v23 + 24) = v26;
-  v27 = [(NSString *)self->_videoPath lastPathComponent];
-  v28 = [v13 stringByAppendingPathComponent:v27];
+  lastPathComponent2 = [(NSString *)self->_videoPath lastPathComponent];
+  v28 = [path stringByAppendingPathComponent:lastPathComponent2];
 
   if (*(v54 + 24) != 1)
   {
@@ -172,7 +172,7 @@
     }
 
 LABEL_43:
-    [v6 removeItemAtPath:v13 error:0];
+    [defaultManager removeItemAtPath:path error:0];
     if ((v54[3] & 1) == 0)
     {
       goto LABEL_45;
@@ -195,7 +195,7 @@ LABEL_43:
   if (v31)
   {
 LABEL_44:
-    v32 = [MEMORY[0x1E695DFF8] fileURLWithPath:v13 isDirectory:1];
+    v32 = [MEMORY[0x1E695DFF8] fileURLWithPath:path isDirectory:1];
     v33 = *MEMORY[0x1E695DBA0];
     v34 = (v48 + 5);
     v41 = v48[5];
@@ -204,9 +204,9 @@ LABEL_44:
   }
 
 LABEL_45:
-  if (a4)
+  if (error)
   {
-    *a4 = v48[5];
+    *error = v48[5];
   }
 
   v35 = *(v54 + 24);
@@ -243,12 +243,12 @@ void __46__PFVideoComplement_writeToBundleAtURL_error___block_invoke(uint64_t a1
   *(v18 + 40) = v17;
 }
 
-- (BOOL)_getSourceFilePath:(id)a3 destinationFilePath:(id)a4 areOnSameVolume:(BOOL *)a5 volumeSupportsCloning:(BOOL *)a6
+- (BOOL)_getSourceFilePath:(id)path destinationFilePath:(id)filePath areOnSameVolume:(BOOL *)volume volumeSupportsCloning:(BOOL *)cloning
 {
   v39 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:v9 isDirectory:0];
+  pathCopy = path;
+  filePathCopy = filePath;
+  v11 = [MEMORY[0x1E695DFF8] fileURLWithPath:pathCopy isDirectory:0];
   v34 = 0;
   v12 = *MEMORY[0x1E695DD70];
   v33 = 0;
@@ -257,7 +257,7 @@ void __46__PFVideoComplement_writeToBundleAtURL_error___block_invoke(uint64_t a1
   v15 = v33;
   if (v13)
   {
-    v28 = [MEMORY[0x1E695DFF8] fileURLWithPath:v10 isDirectory:0];
+    v28 = [MEMORY[0x1E695DFF8] fileURLWithPath:filePathCopy isDirectory:0];
     [v28 URLByDeletingLastPathComponent];
     v31 = 0;
     v27 = v32 = 0;
@@ -270,7 +270,7 @@ void __46__PFVideoComplement_writeToBundleAtURL_error___block_invoke(uint64_t a1
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v36 = v10;
+        v36 = filePathCopy;
         v37 = 2112;
         v38 = v18;
         _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to query volume ID for %@: %@", buf, 0x16u);
@@ -284,7 +284,7 @@ void __46__PFVideoComplement_writeToBundleAtURL_error___block_invoke(uint64_t a1
     v26 = v17;
     v19 = [v14 isEqual:v17];
     v20 = v19;
-    if (a6 && (*a6 = 0, v19))
+    if (cloning && (*cloning = 0, v19))
     {
       v30 = 0;
       v21 = *MEMORY[0x1E695DE38];
@@ -298,7 +298,7 @@ void __46__PFVideoComplement_writeToBundleAtURL_error___block_invoke(uint64_t a1
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v36 = v9;
+          v36 = pathCopy;
           v37 = 2112;
           v38 = v15;
           _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to query cloning status for %@: %@", buf, 0x16u);
@@ -309,7 +309,7 @@ void __46__PFVideoComplement_writeToBundleAtURL_error___block_invoke(uint64_t a1
         goto LABEL_17;
       }
 
-      *a6 = [v22 BOOLValue];
+      *cloning = [v22 BOOLValue];
     }
 
     else
@@ -318,9 +318,9 @@ void __46__PFVideoComplement_writeToBundleAtURL_error___block_invoke(uint64_t a1
     }
 
     v17 = v26;
-    if (a5)
+    if (volume)
     {
-      *a5 = v20;
+      *volume = v20;
     }
 
     v23 = 1;
@@ -332,7 +332,7 @@ LABEL_17:
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v36 = v9;
+    v36 = pathCopy;
     v37 = 2112;
     v38 = v15;
     _os_log_error_impl(&dword_1B35C1000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Unable to query volume ID for %@: %@", buf, 0x16u);
@@ -344,15 +344,15 @@ LABEL_18:
   return v23;
 }
 
-- (BOOL)copyOrLinkPath:(id)a3 toPath:(id)a4 error:(id *)a5
+- (BOOL)copyOrLinkPath:(id)path toPath:(id)toPath error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x1E696AC08] defaultManager];
+  pathCopy = path;
+  toPathCopy = toPath;
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v20 = 0;
-  v11 = [(PFVideoComplement *)self _getSourceFilePath:v8 destinationFilePath:v9 areOnSameVolume:&v20 + 1 volumeSupportsCloning:&v20];
+  v11 = [(PFVideoComplement *)self _getSourceFilePath:pathCopy destinationFilePath:toPathCopy areOnSameVolume:&v20 + 1 volumeSupportsCloning:&v20];
   v12 = 0;
-  if (v11 && HIBYTE(v20) == 1 && (v20 & 1) == 0 && (v19 = 0, v13 = [v10 linkItemAtPath:v8 toPath:v9 error:&v19], v12 = v19, (v13 & 1) != 0))
+  if (v11 && HIBYTE(v20) == 1 && (v20 & 1) == 0 && (v19 = 0, v13 = [defaultManager linkItemAtPath:pathCopy toPath:toPathCopy error:&v19], v12 = v19, (v13 & 1) != 0))
   {
     v14 = 1;
   }
@@ -361,14 +361,14 @@ LABEL_18:
   {
     v15 = v12;
     v18 = v12;
-    v14 = [v10 copyItemAtPath:v8 toPath:v9 error:&v18];
+    v14 = [defaultManager copyItemAtPath:pathCopy toPath:toPathCopy error:&v18];
     v12 = v18;
 
-    if (a5 && (v14 & 1) == 0)
+    if (error && (v14 & 1) == 0)
     {
       v16 = v12;
       v14 = 0;
-      *a5 = v12;
+      *error = v12;
     }
   }
 
@@ -396,18 +396,18 @@ LABEL_18:
   return v4;
 }
 
-- (PFVideoComplement)initWithBundleAtURL:(id)a3
+- (PFVideoComplement)initWithBundleAtURL:(id)l
 {
   v38 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 pathExtension];
-  v6 = [v5 isEqualToString:@"pvt"];
+  lCopy = l;
+  pathExtension = [lCopy pathExtension];
+  v6 = [pathExtension isEqualToString:@"pvt"];
 
   if (v6)
   {
     v32 = objc_alloc_init(MEMORY[0x1E695DF90]);
-    v7 = [MEMORY[0x1E696AC08] defaultManager];
-    v8 = [v7 enumeratorAtURL:v4 includingPropertiesForKeys:0 options:5 errorHandler:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v8 = [defaultManager enumeratorAtURL:lCopy includingPropertiesForKeys:0 options:5 errorHandler:0];
 
     v35 = 0u;
     v36 = 0u;
@@ -418,8 +418,8 @@ LABEL_18:
     if (v10)
     {
       v11 = v10;
-      v25 = v4;
-      v26 = self;
+      v25 = lCopy;
+      selfCopy = self;
       v27 = 0;
       v31 = 0;
       v29 = 0;
@@ -437,30 +437,30 @@ LABEL_18:
           }
 
           v15 = *(*(&v33 + 1) + 8 * i);
-          v16 = [v15 path];
-          if (v16)
+          path = [v15 path];
+          if (path)
           {
             v17 = MEMORY[0x1E6982C40];
-            v18 = [v15 pathExtension];
-            v19 = [v17 typeWithFilenameExtension:v18];
+            pathExtension2 = [v15 pathExtension];
+            v19 = [v17 typeWithFilenameExtension:pathExtension2];
 
             if (v19)
             {
               if ([v19 conformsToType:v13])
               {
-                [v32 setObject:v16 forKeyedSubscript:@"PFVideoComplementImagePathKey"];
+                [v32 setObject:path forKeyedSubscript:@"PFVideoComplementImagePathKey"];
                 v31 = 1;
               }
 
               else if ([v19 conformsToType:v30])
               {
-                [v32 setObject:v16 forKeyedSubscript:@"PFVideoComplementVideoPathKey"];
+                [v32 setObject:path forKeyedSubscript:@"PFVideoComplementVideoPathKey"];
                 v29 = 1;
               }
 
               else if ([v19 conformsToType:v28])
               {
-                v20 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:v16];
+                v20 = [objc_alloc(MEMORY[0x1E695DF20]) initWithContentsOfFile:path];
                 v21 = v20;
                 if (v20)
                 {
@@ -483,43 +483,43 @@ LABEL_18:
 
       if ((v29 & v31) & v27)
       {
-        self = [(PFVideoComplement *)v26 initWithPropertyList:v32];
-        v23 = self;
+        self = [(PFVideoComplement *)selfCopy initWithPropertyList:v32];
+        selfCopy2 = self;
       }
 
       else
       {
-        v23 = 0;
-        self = v26;
+        selfCopy2 = 0;
+        self = selfCopy;
       }
 
-      v4 = v25;
+      lCopy = v25;
     }
 
     else
     {
 
-      v23 = 0;
+      selfCopy2 = 0;
     }
   }
 
   else
   {
-    v23 = 0;
+    selfCopy2 = 0;
   }
 
-  return v23;
+  return selfCopy2;
 }
 
-- (PFVideoComplement)initWithPropertyList:(id)a3
+- (PFVideoComplement)initWithPropertyList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   v24.receiver = self;
   v24.super_class = PFVideoComplement;
   v5 = [(PFVideoComplement *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"PFVideoComplementMetadataKey"];
+    v6 = [listCopy objectForKeyedSubscript:@"PFVideoComplementMetadataKey"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -585,7 +585,7 @@ LABEL_18:
     [v13 setObject:v16 forKeyedSubscript:@"PFVideoComplementMetadataPairidIdentifierKey"];
 
     objc_storeStrong(&v5->_metadata, v13);
-    v17 = [v4 objectForKeyedSubscript:@"PFVideoComplementImagePathKey"];
+    v17 = [listCopy objectForKeyedSubscript:@"PFVideoComplementImagePathKey"];
     if (v17)
     {
       objc_opt_class();
@@ -597,7 +597,7 @@ LABEL_18:
       }
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"PFVideoComplementVideoPathKey"];
+    v20 = [listCopy objectForKeyedSubscript:@"PFVideoComplementVideoPathKey"];
     if (v20)
     {
       objc_opt_class();
@@ -623,7 +623,7 @@ LABEL_18:
   return 0;
 }
 
-- (int)numberOfFramesRecoveredWithError:(id *)a3
+- (int)numberOfFramesRecoveredWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -631,14 +631,14 @@ LABEL_18:
   v19 = 0;
   v4 = MEMORY[0x1E6987E28];
   v5 = MEMORY[0x1E695DFF8];
-  v6 = [(PFVideoComplement *)self videoPath];
-  v7 = [v5 fileURLWithPath:v6];
+  videoPath = [(PFVideoComplement *)self videoPath];
+  v7 = [v5 fileURLWithPath:videoPath];
   v8 = [v4 assetWithURL:v7];
 
   if (!v8)
   {
     v10 = 0;
-    if (!a3)
+    if (!error)
     {
       goto LABEL_4;
     }
@@ -655,11 +655,11 @@ LABEL_18:
   v15[4] = &v16;
   [v9 _enumerateV3MetadataInAsset:v8 withBlock:v15 error:&v14];
   v10 = v14;
-  if (a3)
+  if (error)
   {
 LABEL_3:
     v11 = v10;
-    *a3 = v10;
+    *error = v10;
   }
 
 LABEL_4:
@@ -697,9 +697,9 @@ LABEL_4:
   {
     self->_didReadOriginalMetadata = 1;
     v3 = PFVideoComplementMetadataForVideoAtPath(self->_videoPath, 0);
-    v4 = [v3 pairingIdentifier];
+    pairingIdentifier = [v3 pairingIdentifier];
     originalPairingIdentifier = self->_originalPairingIdentifier;
-    self->_originalPairingIdentifier = v4;
+    self->_originalPairingIdentifier = pairingIdentifier;
 
     if (v3)
     {
@@ -743,24 +743,24 @@ LABEL_4:
 
 - (NSString)pairingIdentifier
 {
-  v3 = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"PFVideoComplementMetadataPairidIdentifierKey"];
-  if (!v3)
+  originalPairingIdentifier = [(NSDictionary *)self->_metadata objectForKeyedSubscript:@"PFVideoComplementMetadataPairidIdentifierKey"];
+  if (!originalPairingIdentifier)
   {
-    v3 = [(PFVideoComplement *)self originalPairingIdentifier];
+    originalPairingIdentifier = [(PFVideoComplement *)self originalPairingIdentifier];
   }
 
-  return v3;
+  return originalPairingIdentifier;
 }
 
-- (PFVideoComplement)initWithPathToVideo:(id)a3 pathToImage:(id)a4 imageDisplayTime:(id *)a5 pairingIdentifier:(id)a6
+- (PFVideoComplement)initWithPathToVideo:(id)video pathToImage:(id)image imageDisplayTime:(id *)time pairingIdentifier:(id)identifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  videoCopy = video;
+  imageCopy = image;
+  identifierCopy = identifier;
   v13 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  if (a5->var2)
+  if (time->var2)
   {
-    v20 = *a5;
+    v20 = *time;
     v14 = CMTimeCopyAsDictionary(&v20, 0);
     if (v14)
     {
@@ -770,21 +770,21 @@ LABEL_4:
     }
   }
 
-  if (v12)
+  if (identifierCopy)
   {
-    [v13 setObject:v12 forKeyedSubscript:@"PFVideoComplementMetadataPairidIdentifierKey"];
+    [v13 setObject:identifierCopy forKeyedSubscript:@"PFVideoComplementMetadataPairidIdentifierKey"];
   }
 
   v16 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v17 = v16;
-  if (v10)
+  if (videoCopy)
   {
-    [v16 setObject:v10 forKeyedSubscript:@"PFVideoComplementVideoPathKey"];
+    [v16 setObject:videoCopy forKeyedSubscript:@"PFVideoComplementVideoPathKey"];
   }
 
-  if (v11)
+  if (imageCopy)
   {
-    [v17 setObject:v11 forKeyedSubscript:@"PFVideoComplementImagePathKey"];
+    [v17 setObject:imageCopy forKeyedSubscript:@"PFVideoComplementImagePathKey"];
   }
 
   if (v13)
@@ -797,23 +797,23 @@ LABEL_4:
   return v18;
 }
 
-- (PFVideoComplement)initWithPathToVideo:(id)a3 pathToImage:(id)a4
+- (PFVideoComplement)initWithPathToVideo:(id)video pathToImage:(id)image
 {
   v5 = *MEMORY[0x1E6960C70];
   v6 = *(MEMORY[0x1E6960C70] + 16);
-  return [(PFVideoComplement *)self initWithPathToVideo:a3 pathToImage:a4 imageDisplayTime:&v5 pairingIdentifier:0];
+  return [(PFVideoComplement *)self initWithPathToVideo:video pathToImage:image imageDisplayTime:&v5 pairingIdentifier:0];
 }
 
-+ (BOOL)_enumerateV3MetadataInAsset:(id)a3 withBlock:(id)a4 error:(id *)a5
++ (BOOL)_enumerateV3MetadataInAsset:(id)asset withBlock:(id)block error:(id *)error
 {
   v56 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  assetCopy = asset;
+  blockCopy = block;
   v53 = 0;
-  if (!v7)
+  if (!assetCopy)
   {
     v13 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_50;
     }
@@ -822,7 +822,7 @@ LABEL_4:
   }
 
   v52 = 0;
-  v9 = [MEMORY[0x1E6987E78] assetReaderWithAsset:v7 error:&v52];
+  v9 = [MEMORY[0x1E6987E78] assetReaderWithAsset:assetCopy error:&v52];
   v10 = v52;
   v11 = v10;
   if (v10)
@@ -838,22 +838,22 @@ LABEL_4:
   if (!v12)
   {
     v44 = v10;
-    v46 = v8;
+    v46 = blockCopy;
     v47 = v9;
     [v9 setPreparesMediaDataForRealTimeConsumption:1];
     v50 = 0u;
     v51 = 0u;
     v48 = 0u;
     v49 = 0u;
-    v45 = v7;
-    v14 = [v7 tracks];
-    v15 = [v14 countByEnumeratingWithState:&v48 objects:v55 count:16];
+    v45 = assetCopy;
+    tracks = [assetCopy tracks];
+    v15 = [tracks countByEnumeratingWithState:&v48 objects:v55 count:16];
     if (!v15)
     {
 LABEL_27:
 
 LABEL_38:
-      v7 = v45;
+      assetCopy = v45;
       v9 = v47;
       v11 = v44;
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -864,7 +864,7 @@ LABEL_38:
       }
 
       v13 = 0;
-      v8 = v46;
+      blockCopy = v46;
       goto LABEL_48;
     }
 
@@ -877,12 +877,12 @@ LABEL_15:
     {
       if (*v49 != v17)
       {
-        objc_enumerationMutation(v14);
+        objc_enumerationMutation(tracks);
       }
 
       v20 = *(*(&v48 + 1) + 8 * v19);
-      v21 = [v20 formatDescriptions];
-      if ([v21 count] == 1 && (objc_msgSend(v21, "firstObject"), v22 = objc_claimAutoreleasedReturnValue(), v22, v22) && CMFormatDescriptionGetMediaType(v22) == 1835365473 && (CMMetadataFormatDescriptionGetIdentifiers(v22), (v23 = objc_claimAutoreleasedReturnValue()) != 0))
+      formatDescriptions = [v20 formatDescriptions];
+      if ([formatDescriptions count] == 1 && (objc_msgSend(formatDescriptions, "firstObject"), v22 = objc_claimAutoreleasedReturnValue(), v22, v22) && CMFormatDescriptionGetMediaType(v22) == 1835365473 && (CMMetadataFormatDescriptionGetIdentifiers(v22), (v23 = objc_claimAutoreleasedReturnValue()) != 0))
       {
         v24 = v23;
         v25 = [v23 containsObject:v18];
@@ -898,37 +898,37 @@ LABEL_15:
 
           v27 = [objc_alloc(MEMORY[0x1E6987EA8]) initWithTrack:v26 outputSettings:0];
           v9 = v47;
-          v7 = v45;
+          assetCopy = v45;
           if ([v47 canAddOutput:v27])
           {
             [v47 addOutput:v27];
             v28 = [objc_alloc(MEMORY[0x1E6987E98]) initWithAssetReaderTrackOutput:v27];
-            v8 = v46;
+            blockCopy = v46;
             if ([v47 startReading])
             {
-              v29 = [v28 nextTimedMetadataGroup];
-              if (v29)
+              nextTimedMetadataGroup = [v28 nextTimedMetadataGroup];
+              if (nextTimedMetadataGroup)
               {
-                v30 = v29;
+                v30 = nextTimedMetadataGroup;
                 v42 = v27;
                 v43 = v26;
                 do
                 {
-                  v31 = [v30 items];
-                  v32 = [v31 firstObject];
+                  items = [v30 items];
+                  firstObject = [items firstObject];
 
                   *count = 0;
-                  v33 = [v32 dataValue];
-                  [v33 bytes];
-                  v34 = [v32 dataValue];
-                  [v34 length];
+                  dataValue = [firstObject dataValue];
+                  [dataValue bytes];
+                  dataValue2 = [firstObject dataValue];
+                  [dataValue2 length];
                   FigLivePhotoMetadataComputeDeserializationSize();
 
                   v35 = malloc_type_calloc(*count, 1uLL, 0x42C489ACuLL);
-                  v36 = [v32 dataValue];
-                  [v36 bytes];
-                  v37 = [v32 dataValue];
-                  [v37 length];
+                  dataValue3 = [firstObject dataValue];
+                  [dataValue3 bytes];
+                  dataValue4 = [firstObject dataValue];
+                  [dataValue4 length];
                   FigLivePhotoMetadataDeserializeIntoBuffer();
 
                   if (*v35 >= 3u)
@@ -938,14 +938,14 @@ LABEL_15:
                   }
 
                   free(v35);
-                  v39 = [v28 nextTimedMetadataGroup];
+                  nextTimedMetadataGroup2 = [v28 nextTimedMetadataGroup];
 
-                  if (!v39)
+                  if (!nextTimedMetadataGroup2)
                   {
                     break;
                   }
 
-                  v30 = v39;
+                  v30 = nextTimedMetadataGroup2;
                 }
 
                 while (!v53);
@@ -967,7 +967,7 @@ LABEL_15:
 
           else
           {
-            v8 = v46;
+            blockCopy = v46;
             v11 = v44;
             if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
             {
@@ -988,7 +988,7 @@ LABEL_47:
 
       if (v16 == ++v19)
       {
-        v16 = [v14 countByEnumeratingWithState:&v48 objects:v55 count:16];
+        v16 = [tracks countByEnumeratingWithState:&v48 objects:v55 count:16];
         if (v16)
         {
           goto LABEL_15;
@@ -1014,11 +1014,11 @@ LABEL_47:
   v13 = v11;
 LABEL_48:
 
-  if (a5)
+  if (error)
   {
 LABEL_49:
     v40 = v13;
-    *a5 = v13;
+    *error = v13;
   }
 
 LABEL_50:
@@ -1026,9 +1026,9 @@ LABEL_50:
   return 0;
 }
 
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_retimedPTSForOriginalPTS:(SEL)a3 inAsset:(unint64_t)a4 error:(id)a5
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)_retimedPTSForOriginalPTS:(SEL)s inAsset:(unint64_t)asset error:(id)error
 {
-  v10 = a5;
+  errorCopy = error;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -1043,9 +1043,9 @@ LABEL_50:
   v15[2] = __74__PFVideoComplement_Convenience___retimedPTSForOriginalPTS_inAsset_error___block_invoke;
   v15[3] = &unk_1E7B662F0;
   v15[5] = &v16;
-  v15[6] = a4;
+  v15[6] = asset;
   v15[4] = &v20;
-  [a2 _enumerateV3MetadataInAsset:v10 withBlock:v15 error:a6];
+  [a2 _enumerateV3MetadataInAsset:errorCopy withBlock:v15 error:a6];
   v11 = v17[3];
   if (v11)
   {
@@ -1080,9 +1080,9 @@ void *__74__PFVideoComplement_Convenience___retimedPTSForOriginalPTS_inAsset_err
   return result;
 }
 
-+ (unint64_t)_originalPTSForFrameAtTime:(id *)a3 inAsset:(id)a4 error:(id *)a5
++ (unint64_t)_originalPTSForFrameAtTime:(id *)time inAsset:(id)asset error:(id *)error
 {
-  v8 = a4;
+  assetCopy = asset;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -1095,10 +1095,10 @@ void *__74__PFVideoComplement_Convenience___retimedPTSForOriginalPTS_inAsset_err
   v11[1] = 3221225472;
   v11[2] = __75__PFVideoComplement_Convenience___originalPTSForFrameAtTime_inAsset_error___block_invoke;
   v11[3] = &unk_1E7B662C8;
-  v12 = *a3;
+  v12 = *time;
   v11[4] = v13;
   v11[5] = &v14;
-  [a1 _enumerateV3MetadataInAsset:v8 withBlock:v11 error:a5];
+  [self _enumerateV3MetadataInAsset:assetCopy withBlock:v11 error:error];
   v9 = v15[3];
   _Block_object_dispose(v13, 8);
   _Block_object_dispose(&v14, 8);
@@ -1126,12 +1126,12 @@ void __75__PFVideoComplement_Convenience___originalPTSForFrameAtTime_inAsset_err
   *(*(*(a1 + 40) + 8) + 24) = *(a2 + 48);
 }
 
-+ ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertTime:(SEL)a3 fromAsset:(id *)a4 toAsset:(id)a5
++ ($3CC8671D27C23BF42ADDB32F2B5E48AE)convertTime:(SEL)time fromAsset:(id *)asset toAsset:(id)toAsset
 {
   v10 = a6;
   *retstr = **&MEMORY[0x1E6960C70];
-  v13 = *a4;
-  v11 = [a2 _originalPTSForFrameAtTime:&v13 inAsset:a5 error:0];
+  v13 = *asset;
+  v11 = [a2 _originalPTSForFrameAtTime:&v13 inAsset:toAsset error:0];
   if (v11)
   {
     [a2 _retimedPTSForOriginalPTS:v11 inAsset:v10 error:0];

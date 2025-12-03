@@ -1,19 +1,19 @@
 @interface EKSyncStatusUtils
 + (id)_permittedClassesForArchivingLastSyncErrorUserInfo;
-+ (id)dataFromErrorUserInfo:(id)a3;
-+ (id)errorUserInfoFromData:(id)a3;
++ (id)dataFromErrorUserInfo:(id)info;
++ (id)errorUserInfoFromData:(id)data;
 @end
 
 @implementation EKSyncStatusUtils
 
-+ (id)dataFromErrorUserInfo:(id)a3
++ (id)dataFromErrorUserInfo:(id)info
 {
-  if (a3)
+  if (info)
   {
-    v3 = a3;
-    v4 = [objc_opt_class() _permittedClassesForArchivingLastSyncErrorUserInfo];
+    infoCopy = info;
+    _permittedClassesForArchivingLastSyncErrorUserInfo = [objc_opt_class() _permittedClassesForArchivingLastSyncErrorUserInfo];
     v9 = 0;
-    v5 = [MEMORY[0x1E6993068] archiveDictionary:v3 permittedClasses:v4 error:&v9];
+    v5 = [MEMORY[0x1E6993068] archiveDictionary:infoCopy permittedClasses:_permittedClassesForArchivingLastSyncErrorUserInfo error:&v9];
 
     v6 = v9;
     if (!v5)
@@ -34,14 +34,14 @@
   return v5;
 }
 
-+ (id)errorUserInfoFromData:(id)a3
++ (id)errorUserInfoFromData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v3 = a3;
-    v4 = [objc_opt_class() _permittedClassesForArchivingLastSyncErrorUserInfo];
+    dataCopy = data;
+    _permittedClassesForArchivingLastSyncErrorUserInfo = [objc_opt_class() _permittedClassesForArchivingLastSyncErrorUserInfo];
     v9 = 0;
-    v5 = [MEMORY[0x1E6993068] unarchiveDictionaryFromData:v3 permittedClasses:v4 error:&v9];
+    v5 = [MEMORY[0x1E6993068] unarchiveDictionaryFromData:dataCopy permittedClasses:_permittedClassesForArchivingLastSyncErrorUserInfo error:&v9];
 
     v6 = v9;
     if (!v5)

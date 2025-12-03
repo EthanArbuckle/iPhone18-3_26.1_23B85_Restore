@@ -29,22 +29,22 @@
 
   [(ICCloudContext *)self setQualityOfService:9];
   v4 = +[UMUserManager sharedManager];
-  v5 = [v4 currentUser];
-  v6 = [v5 userType];
+  currentUser = [v4 currentUser];
+  userType = [currentUser userType];
 
   v7 = +[UIApplication sharedApplication];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_100067724;
   v13[3] = &unk_100646080;
-  v14 = v6 == 1;
+  v14 = userType == 1;
   v13[4] = self;
   qword_1006CB240 = [v7 beginBackgroundTaskWithName:@"Background Sync" expirationHandler:v13];
 
   if (qword_1006CB240 != UIBackgroundTaskInvalid)
   {
-    v8 = v6 != 1;
-    v9 = [(ICCloudContext *)self syncOnlyIfReachable];
+    v8 = userType != 1;
+    syncOnlyIfReachable = [(ICCloudContext *)self syncOnlyIfReachable];
     [(ICCloudContext *)self setSyncOnlyIfReachable:v8];
     [(ICCloudContext *)self updateCloudContextState];
     v10 = os_log_create("com.apple.notes", "Cloud");
@@ -58,7 +58,7 @@
     v11[2] = sub_1000678A0;
     v11[3] = &unk_1006469C8;
     v11[4] = self;
-    v12 = v9;
+    v12 = syncOnlyIfReachable;
     [(ICCloudContext *)self processPendingCloudObjectsWithCompletionHandler:v11];
   }
 }

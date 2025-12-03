@@ -1,24 +1,24 @@
 @interface ConvexFillProcessor
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6;
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)result;
-+ (int)formatForInputAtIndex:(int)a3;
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error;
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)result;
++ (int)formatForInputAtIndex:(int)index;
 @end
 
 @implementation ConvexFillProcessor
 
-+ (BOOL)processWithInputs:(id)a3 arguments:(id)a4 output:(id)a5 error:(id *)a6
++ (BOOL)processWithInputs:(id)inputs arguments:(id)arguments output:(id)output error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v9 = [a3 objectAtIndexedSubscript:{0, a4, a5, a6}];
-  v10 = [a3 objectAtIndexedSubscript:1];
+  v9 = [inputs objectAtIndexedSubscript:{0, arguments, output, error}];
+  v10 = [inputs objectAtIndexedSubscript:1];
   [v9 format];
   [v10 format];
-  [a5 format];
-  [a5 region];
+  [output format];
+  [output region];
   v12 = v11;
-  [a5 region];
+  [output region];
   v14 = v13;
-  clearOutput(a5);
+  clearOutput(output);
   *&src.height = xmmword_19CF23040;
   src.rowBytes = 8;
   dest.data = v54;
@@ -69,7 +69,7 @@
       }
     }
 
-    v27 = [objc_msgSend(a4 objectForKey:{@"kThreshold", v12), "intValue"}];
+    v27 = [objc_msgSend(arguments objectForKey:{@"kThreshold", v12), "intValue"}];
     if ((v27 & ~(v27 >> 31)) >= 255)
     {
       v28 = 255;
@@ -80,34 +80,34 @@
       v28 = v27 & ~(v27 >> 31);
     }
 
-    v29 = [v9 baseAddress];
-    v30 = [a5 baseAddress];
-    v31 = [v9 bytesPerRow];
-    v32 = [a5 bytesPerRow];
+    baseAddress = [v9 baseAddress];
+    baseAddress2 = [output baseAddress];
+    bytesPerRow = [v9 bytesPerRow];
+    bytesPerRow2 = [output bytesPerRow];
     v33 = v18;
     v34 = v22;
-    v35 = v30;
+    v35 = baseAddress2;
     v36 = v25;
     v56.x = v18;
     v56.y = v22;
-    v37 = convexFill(v29, v35, v25, v51, v31, v32, v28, v56);
+    v37 = convexFill(baseAddress, v35, v25, v51, bytesPerRow, bytesPerRow2, v28, v56);
     if (v37)
     {
       v38 = v37;
-      v39 = [objc_msgSend(a4 objectForKey:{@"kAreaThresholdHi", "intValue"}];
-      v40 = [objc_msgSend(a4 objectForKey:{@"kAreaThresholdLo", "intValue"}];
+      v39 = [objc_msgSend(arguments objectForKey:{@"kAreaThresholdHi", "intValue"}];
+      v40 = [objc_msgSend(arguments objectForKey:{@"kAreaThresholdLo", "intValue"}];
       if (v38 <= v39)
       {
         if (v38 >= v40)
         {
-          v46 = [objc_msgSend(a4 objectForKey:{@"kSplatArea", "intValue"}];
-          v47 = [v9 baseAddress];
-          v48 = [a5 baseAddress];
-          v49 = [v9 bytesPerRow];
-          v50 = [a5 bytesPerRow];
+          v46 = [objc_msgSend(arguments objectForKey:{@"kSplatArea", "intValue"}];
+          baseAddress3 = [v9 baseAddress];
+          baseAddress4 = [output baseAddress];
+          bytesPerRow3 = [v9 bytesPerRow];
+          bytesPerRow4 = [output bytesPerRow];
           v57.x = v33;
           v57.y = v34;
-          radialSplatR8(v47, v48, v36, v51, v49, v50, v46, v57);
+          radialSplatR8(baseAddress3, baseAddress4, v36, v51, bytesPerRow3, bytesPerRow4, v46, v57);
           return 1;
         }
 
@@ -140,21 +140,21 @@
       }
     }
 
-    clearOutput(a5);
+    clearOutput(output);
   }
 
   return 1;
 }
 
-+ (int)formatForInputAtIndex:(int)a3
++ (int)formatForInputAtIndex:(int)index
 {
-  if (a3 == 1)
+  if (index == 1)
   {
     v3 = &kCIFormatRGBAh;
     return *v3;
   }
 
-  if (!a3)
+  if (!index)
   {
     v3 = &kCIFormatR8;
     return *v3;
@@ -163,9 +163,9 @@
   return 0;
 }
 
-+ (CGRect)roiForInput:(int)a3 arguments:(id)a4 outputRect:(CGRect)result
++ (CGRect)roiForInput:(int)input arguments:(id)arguments outputRect:(CGRect)result
 {
-  if (a3 == 1)
+  if (input == 1)
   {
     result.origin.x = 0.0;
     result.origin.y = 0.0;

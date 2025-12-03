@@ -1,16 +1,16 @@
 @interface SBSystemApertureAlertItemPresenter
-- (SBSystemApertureAlertItemPresenter)initWithSystemApertureController:(id)a3;
+- (SBSystemApertureAlertItemPresenter)initWithSystemApertureController:(id)controller;
 - (SBSystemApertureController)systemApertureController;
-- (void)dismissAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)presentAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)dismissAlertItem:(id)item animated:(BOOL)animated completion:(id)completion;
+- (void)presentAlertItem:(id)item animated:(BOOL)animated completion:(id)completion;
 @end
 
 @implementation SBSystemApertureAlertItemPresenter
 
-- (SBSystemApertureAlertItemPresenter)initWithSystemApertureController:(id)a3
+- (SBSystemApertureAlertItemPresenter)initWithSystemApertureController:(id)controller
 {
-  v5 = a3;
-  if (!v5)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     [(SBSystemApertureAlertItemPresenter *)a2 initWithSystemApertureController:?];
   }
@@ -21,70 +21,70 @@
   v7 = v6;
   if (v6)
   {
-    objc_storeWeak(&v6->_systemApertureController, v5);
+    objc_storeWeak(&v6->_systemApertureController, controllerCopy);
   }
 
   return v7;
 }
 
-- (void)presentAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentAlertItem:(id)item animated:(BOOL)animated completion:(id)completion
 {
-  v15 = a3;
-  v8 = a5;
+  itemCopy = item;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  v9 = [v15 _systemApertureElement];
-  if (!v9)
+  _systemApertureElement = [itemCopy _systemApertureElement];
+  if (!_systemApertureElement)
   {
-    [SBSystemApertureAlertItemPresenter presentAlertItem:a2 animated:self completion:v15];
+    [SBSystemApertureAlertItemPresenter presentAlertItem:a2 animated:self completion:itemCopy];
   }
 
-  v10 = [(SBSystemApertureAlertItemPresenter *)self systemApertureController];
-  v11 = [v10 registerElement:v9];
+  systemApertureController = [(SBSystemApertureAlertItemPresenter *)self systemApertureController];
+  v11 = [systemApertureController registerElement:_systemApertureElement];
   if (v11)
   {
     if (!self->_elementsToAssertions)
     {
-      v12 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+      weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
       elementsToAssertions = self->_elementsToAssertions;
-      self->_elementsToAssertions = v12;
+      self->_elementsToAssertions = weakToStrongObjectsMapTable;
     }
 
-    v14 = [(SBSystemApertureAlertItemPresenter *)self elementsToAssertions];
-    [v14 setObject:v11 forKey:v9];
+    elementsToAssertions = [(SBSystemApertureAlertItemPresenter *)self elementsToAssertions];
+    [elementsToAssertions setObject:v11 forKey:_systemApertureElement];
 
-    [v15 wakeDisplay];
+    [itemCopy wakeDisplay];
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)dismissAlertItem:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)dismissAlertItem:(id)item animated:(BOOL)animated completion:(id)completion
 {
-  v13 = a3;
-  v8 = a5;
+  itemCopy = item;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  v9 = [v13 _systemApertureElement];
-  if (!v9)
+  _systemApertureElement = [itemCopy _systemApertureElement];
+  if (!_systemApertureElement)
   {
-    [SBSystemApertureAlertItemPresenter dismissAlertItem:a2 animated:self completion:v13];
+    [SBSystemApertureAlertItemPresenter dismissAlertItem:a2 animated:self completion:itemCopy];
   }
 
-  v10 = [(SBSystemApertureAlertItemPresenter *)self elementsToAssertions];
-  v11 = [v10 objectForKey:v9];
+  elementsToAssertions = [(SBSystemApertureAlertItemPresenter *)self elementsToAssertions];
+  v11 = [elementsToAssertions objectForKey:_systemApertureElement];
 
   if (v11)
   {
     [v11 invalidateWithReason:@"dismissAlertItem"];
-    v12 = [(SBSystemApertureAlertItemPresenter *)self elementsToAssertions];
-    [v12 removeObjectForKey:v9];
+    elementsToAssertions2 = [(SBSystemApertureAlertItemPresenter *)self elementsToAssertions];
+    [elementsToAssertions2 removeObjectForKey:_systemApertureElement];
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 }
 

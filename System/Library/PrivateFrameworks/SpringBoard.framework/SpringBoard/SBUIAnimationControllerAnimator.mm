@@ -1,10 +1,10 @@
 @interface SBUIAnimationControllerAnimator
 - (SBUIAnimationController)animationController;
 - (SBUIAnimationControllerAnimator)init;
-- (SBUIAnimationControllerAnimator)initWithAnimationController:(id)a3;
-- (double)transitionDuration:(id)a3;
-- (id)transitionAnimationFactory:(id)a3;
-- (void)animateTransition:(id)a3;
+- (SBUIAnimationControllerAnimator)initWithAnimationController:(id)controller;
+- (double)transitionDuration:(id)duration;
+- (id)transitionAnimationFactory:(id)factory;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation SBUIAnimationControllerAnimator
@@ -18,51 +18,51 @@
 
 - (SBUIAnimationControllerAnimator)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"SBUIAnimationControllerAnimator.m" lineNumber:18 description:@"use the designated initializer"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBUIAnimationControllerAnimator.m" lineNumber:18 description:@"use the designated initializer"];
 
   return [(SBUIAnimationControllerAnimator *)self initWithAnimationController:0];
 }
 
-- (SBUIAnimationControllerAnimator)initWithAnimationController:(id)a3
+- (SBUIAnimationControllerAnimator)initWithAnimationController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = SBUIAnimationControllerAnimator;
   v5 = [(SBUIAnimationControllerAnimator *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_animationController, v4);
+    objc_storeWeak(&v5->_animationController, controllerCopy);
   }
 
   return v6;
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v3 = [(SBUIAnimationControllerAnimator *)self animationController];
-  v4 = [v3 animationSettings];
-  [v4 duration];
+  animationController = [(SBUIAnimationControllerAnimator *)self animationController];
+  animationSettings = [animationController animationSettings];
+  [animationSettings duration];
   v6 = v5;
 
   return v6;
 }
 
-- (id)transitionAnimationFactory:(id)a3
+- (id)transitionAnimationFactory:(id)factory
 {
   v3 = MEMORY[0x277CF0D38];
-  v4 = [(SBUIAnimationControllerAnimator *)self animationController];
-  v5 = [v4 animationSettings];
-  v6 = [v3 factoryWithSettings:v5];
+  animationController = [(SBUIAnimationControllerAnimator *)self animationController];
+  animationSettings = [animationController animationSettings];
+  v6 = [v3 factoryWithSettings:animationSettings];
 
   return v6;
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v3 = [(SBUIAnimationControllerAnimator *)self animationController];
-  [v3 _startAnimation];
+  animationController = [(SBUIAnimationControllerAnimator *)self animationController];
+  [animationController _startAnimation];
 }
 
 @end

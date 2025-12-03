@@ -1,16 +1,16 @@
 @interface CALogger
-+ (unsigned)bucketRawTrackingRequestDuration:(double)a3;
-+ (void)postCAEventFor:(id)a3 eventInput:(id)a4;
++ (unsigned)bucketRawTrackingRequestDuration:(double)duration;
++ (void)postCAEventFor:(id)for eventInput:(id)input;
 @end
 
 @implementation CALogger
 
-+ (void)postCAEventFor:(id)a3 eventInput:(id)a4
++ (void)postCAEventFor:(id)for eventInput:(id)input
 {
-  v7 = a3;
-  v8 = a4;
-  v5 = v8;
-  v6 = v7;
+  forCopy = for;
+  inputCopy = input;
+  v5 = inputCopy;
+  v6 = forCopy;
   AnalyticsSendEventLazy();
 }
 
@@ -35,19 +35,19 @@ id __38__CALogger_postCAEventFor_eventInput___block_invoke(uint64_t a1)
   return v5;
 }
 
-+ (unsigned)bucketRawTrackingRequestDuration:(double)a3
++ (unsigned)bucketRawTrackingRequestDuration:(double)duration
 {
-  if (a3 <= 5.0)
+  if (duration <= 5.0)
   {
     return 1;
   }
 
-  if (a3 <= 120.0)
+  if (duration <= 120.0)
   {
     return 2;
   }
 
-  if (a3 <= 600.0)
+  if (duration <= 600.0)
   {
     return 3;
   }

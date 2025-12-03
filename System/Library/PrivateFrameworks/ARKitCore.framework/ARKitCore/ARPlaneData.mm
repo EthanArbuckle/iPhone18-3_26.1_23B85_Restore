@@ -1,30 +1,30 @@
 @interface ARPlaneData
-+ (double)_surfaceToWorldTransformForPlane:(uint64_t)a3 pivot:(float64x2_t *)a4;
-+ (double)transformAnchorToPlaneAnchorConvention:(float32x4_t)a3;
-+ (float)_pivotForPlane:(CV3DPlaneDetectionPlane *)a3;
-+ (float)_surfacePivotForPlane:(CV3DSurfaceDetectionPlane *)a3;
-+ (id)anchorForDetectionResult:(CV3DSurfaceDetectionResult *)a3;
-- (ARPlaneData)initWithDetectionResult:(CV3DPlaneDetectionPlaneList *)a3 detectionTypeMask:(unint64_t)a4 sceneUnderstandingEnabled:(BOOL)a5;
++ (double)_surfaceToWorldTransformForPlane:(uint64_t)plane pivot:(float64x2_t *)pivot;
++ (double)transformAnchorToPlaneAnchorConvention:(float32x4_t)convention;
++ (float)_pivotForPlane:(CV3DPlaneDetectionPlane *)plane;
++ (float)_surfacePivotForPlane:(CV3DSurfaceDetectionPlane *)plane;
++ (id)anchorForDetectionResult:(CV3DSurfaceDetectionResult *)result;
+- (ARPlaneData)initWithDetectionResult:(CV3DPlaneDetectionPlaneList *)result detectionTypeMask:(unint64_t)mask sceneUnderstandingEnabled:(BOOL)enabled;
 - (NSDictionary)tracingEntry;
-- (__n128)initWithDetectionResult:(__n128)a3 detectionTypeMask:(__n128)a4 sceneUnderstandingEnabled:(__n128)a5 renderingFromVision:(double)a6 atTimestamp:;
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(__n128)a6;
+- (__n128)initWithDetectionResult:(__n128)result detectionTypeMask:(__n128)mask sceneUnderstandingEnabled:(__n128)enabled renderingFromVision:(double)vision atTimestamp:;
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(__n128)remove;
 @end
 
 @implementation ARPlaneData
 
-- (ARPlaneData)initWithDetectionResult:(CV3DPlaneDetectionPlaneList *)a3 detectionTypeMask:(unint64_t)a4 sceneUnderstandingEnabled:(BOOL)a5
+- (ARPlaneData)initWithDetectionResult:(CV3DPlaneDetectionPlaneList *)result detectionTypeMask:(unint64_t)mask sceneUnderstandingEnabled:(BOOL)enabled
 {
   v22.receiver = self;
   v22.super_class = ARPlaneData;
   v8 = [(ARPlaneData *)&v22 init];
   if (v8)
   {
-    v9 = [[ARCV3DPlaneDetectionPlaneList alloc] initWithDetectionResult:a3];
+    v9 = [[ARCV3DPlaneDetectionPlaneList alloc] initWithDetectionResult:result];
     detectionResult = v8->_detectionResult;
     v8->_detectionResult = v9;
 
-    v8->_detectionTypeMask = a4;
-    v8->_sceneUnderstandingEnabled = a5;
+    v8->_detectionTypeMask = mask;
+    v8->_sceneUnderstandingEnabled = enabled;
     *&v11 = ARVisionToRenderingCoordinateTransform();
     *v8->_anon_20 = v11;
     *&v8->_anon_20[16] = v12;
@@ -52,33 +52,33 @@
   return v8;
 }
 
-- (__n128)initWithDetectionResult:(__n128)a3 detectionTypeMask:(__n128)a4 sceneUnderstandingEnabled:(__n128)a5 renderingFromVision:(double)a6 atTimestamp:
+- (__n128)initWithDetectionResult:(__n128)result detectionTypeMask:(__n128)mask sceneUnderstandingEnabled:(__n128)enabled renderingFromVision:(double)vision atTimestamp:
 {
-  result = [a1 initWithDetectionResult:? detectionTypeMask:? sceneUnderstandingEnabled:?];
+  result = [self initWithDetectionResult:? detectionTypeMask:? sceneUnderstandingEnabled:?];
   if (result)
   {
     result[2] = a2;
-    result[3] = a3;
-    result[4] = a4;
-    result[5] = a5;
-    result[6].n128_f64[0] = a6;
+    result[3] = result;
+    result[4] = mask;
+    result[5] = enabled;
+    result[6].n128_f64[0] = vision;
   }
 
   return result;
 }
 
-- (id)anchorsForCameraWithTransform:(double)a3 referenceOriginTransform:(double)a4 existingAnchors:(double)a5 anchorsToRemove:(__n128)a6
+- (id)anchorsForCameraWithTransform:(double)transform referenceOriginTransform:(double)originTransform existingAnchors:(double)anchors anchorsToRemove:(__n128)remove
 {
   *&v44[32] = a8;
   *&v44[48] = a9;
-  *v44 = a6;
+  *v44 = remove;
   *&v44[16] = a7;
   v65 = *MEMORY[0x1E69E9840];
   v42 = a11;
   v46 = a12;
-  if ((*(a1 + 104) & 3) != 0)
+  if ((*(self + 104) & 3) != 0)
   {
-    v48 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v55 = 0u;
     v56 = 0u;
     v53 = 0u;
@@ -103,9 +103,9 @@
           if (objc_opt_isKindOfClass())
           {
             v19 = v18;
-            v20 = *(a1 + 8);
-            v21 = [v19 identifier];
-            v22 = [v20 objectForKey:v21];
+            v20 = *(self + 8);
+            identifier = [v19 identifier];
+            v22 = [v20 objectForKey:identifier];
             LOBYTE(v20) = v22 == 0;
 
             if (v20)
@@ -120,13 +120,13 @@
               {
                 v25 = objc_opt_class();
                 v26 = NSStringFromClass(v25);
-                v27 = [v19 identifier];
+                identifier2 = [v19 identifier];
                 *buf = 138543874;
                 v59 = v26;
                 v60 = 2048;
-                v61 = a1;
+                selfCopy = self;
                 v62 = 2114;
-                v63 = v27;
+                v63 = identifier2;
                 _os_log_impl(&dword_1C241C000, v24, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Plane anchor removed by plane detection: %{public}@", buf, 0x20u);
               }
 
@@ -135,8 +135,8 @@
 
             else
             {
-              v23 = [v19 identifier];
-              [v48 setObject:v19 forKey:v23];
+              identifier3 = [v19 identifier];
+              [dictionary setObject:v19 forKey:identifier3];
             }
           }
 
@@ -150,13 +150,13 @@
       while (v15);
     }
 
-    v45 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v51 = 0u;
     v52 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v28 = [*(a1 + 8) allKeys];
-    v29 = [v28 countByEnumeratingWithState:&v49 objects:v57 count:16];
+    allKeys = [*(self + 8) allKeys];
+    v29 = [allKeys countByEnumeratingWithState:&v49 objects:v57 count:16];
     if (v29)
     {
       v30 = *v50;
@@ -168,17 +168,17 @@
         {
           if (*v50 != v30)
           {
-            objc_enumerationMutation(v28);
+            objc_enumerationMutation(allKeys);
           }
 
           v33 = *(*(&v49 + 1) + 8 * i);
-          v34 = [*(a1 + 8) objectForKey:{v33, v42}];
-          v35 = [v34 unsignedLongValue];
+          v34 = [*(self + 8) objectForKey:{v33, v42}];
+          unsignedLongValue = [v34 unsignedLongValue];
 
-          v36 = [*(a1 + 112) planeAtIndex:v35];
+          v36 = [*(self + 112) planeAtIndex:unsignedLongValue];
           if (!CV3DPlaneDetectionPlaneAge())
           {
-            v37 = *(a1 + 104);
+            v37 = *(self + 104);
             if ((v37 & 1) == 0)
             {
               if ((v31 & CV3DPlaneDetectionPlaneGetOrientation()) != 0)
@@ -186,33 +186,33 @@
                 continue;
               }
 
-              v37 = *(a1 + 104);
+              v37 = *(self + 104);
             }
 
             if ((v37 & 2) != 0 || (v43 & CV3DPlaneDetectionPlaneGetOrientation()) == 0)
             {
-              v38 = [v48 objectForKey:v33];
-              v47.columns[0] = *(a1 + 32);
-              v47.columns[1] = *(a1 + 48);
-              v47.columns[2] = *(a1 + 64);
-              v47.columns[3] = *(a1 + 80);
-              v39 = *(a1 + 16);
+              v38 = [dictionary objectForKey:v33];
+              v47.columns[0] = *(self + 32);
+              v47.columns[1] = *(self + 48);
+              v47.columns[2] = *(self + 64);
+              v47.columns[3] = *(self + 80);
+              v39 = *(self + 16);
               if (v38)
               {
-                ARUpdatePlaneAnchorFromCV3DPlane(v38, v36, *v44, v47, v39, [a1 applyPivotRotation], *(a1 + 104));
+                ARUpdatePlaneAnchorFromCV3DPlane(v38, v36, *v44, v47, v39, [self applyPivotRotation], *(self + 104));
               }
 
               else
               {
-                ARCreatePlaneAnchorFromCV3DPlane(v36, v33, *v44, v47, v39, [a1 applyPivotRotation], *(a1 + 104));
+                ARCreatePlaneAnchorFromCV3DPlane(v36, v33, *v44, v47, v39, [self applyPivotRotation], *(self + 104));
               }
               v40 = ;
-              [v45 addObject:v40];
+              [array addObject:v40];
             }
           }
         }
 
-        v29 = [v28 countByEnumeratingWithState:&v49 objects:v57 count:16];
+        v29 = [allKeys countByEnumeratingWithState:&v49 objects:v57 count:16];
       }
 
       while (v29);
@@ -221,13 +221,13 @@
 
   else
   {
-    v45 = MEMORY[0x1E695E0F0];
+    array = MEMORY[0x1E695E0F0];
   }
 
-  return v45;
+  return array;
 }
 
-+ (float)_pivotForPlane:(CV3DPlaneDetectionPlane *)a3
++ (float)_pivotForPlane:(CV3DPlaneDetectionPlane *)plane
 {
   v3 = CV3DPlaneDetectionPlaneExtentOrientedBoundingBox();
   Orientation = CV3DPlaneDetectionPlaneGetOrientation();
@@ -272,14 +272,14 @@
   return result;
 }
 
-+ (double)transformAnchorToPlaneAnchorConvention:(float32x4_t)a3
++ (double)transformAnchorToPlaneAnchorConvention:(float32x4_t)convention
 {
   v12 = __invert_f4(*_PromotedConst_1);
   v4 = 0;
   v10 = v12;
   do
   {
-    *(&v11 + v4 * 16) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a1, COERCE_FLOAT(*&v10.columns[v4])), a2, *v10.columns[v4].f32, 1), a3, v10.columns[v4], 2), a4, v10.columns[v4], 3);
+    *(&v11 + v4 * 16) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(self, COERCE_FLOAT(*&v10.columns[v4])), a2, *v10.columns[v4].f32, 1), convention, v10.columns[v4], 2), a4, v10.columns[v4], 3);
     ++v4;
   }
 
@@ -293,7 +293,7 @@
   v4 = [v3 mutableCopy];
 
   LOBYTE(v3) = [(ARPlaneData *)self detectionTypeMask];
-  v5 = [(ARPlaneData *)self detectionTypeMask];
+  detectionTypeMask = [(ARPlaneData *)self detectionTypeMask];
   v6 = objc_opt_new();
   v7 = v6;
   if (v3)
@@ -301,7 +301,7 @@
     [v6 addObject:@"Horizontal"];
   }
 
-  if ((v5 & 2) != 0)
+  if ((detectionTypeMask & 2) != 0)
   {
     [v7 addObject:@"Vertical"];
   }
@@ -312,12 +312,12 @@
   return v4;
 }
 
-+ (float)_surfacePivotForPlane:(CV3DSurfaceDetectionPlane *)a3
++ (float)_surfacePivotForPlane:(CV3DSurfaceDetectionPlane *)plane
 {
   result = 0.0;
-  if (a3->var3 == 1)
+  if (plane->var3 == 1)
   {
-    var5 = a3->var5;
+    var5 = plane->var5;
     if (var5)
     {
       v25 = v9;
@@ -370,14 +370,14 @@
   return result;
 }
 
-+ (double)_surfaceToWorldTransformForPlane:(uint64_t)a3 pivot:(float64x2_t *)a4
++ (double)_surfaceToWorldTransformForPlane:(uint64_t)plane pivot:(float64x2_t *)pivot
 {
-  if (a1 == 0.0)
+  if (self == 0.0)
   {
-    return ARMatrix4x4MakeColumnMajorTransformFromArray(a4 + 3);
+    return ARMatrix4x4MakeColumnMajorTransformFromArray(pivot + 3);
   }
 
-  v5 = __sincosf_stret(a1 * 0.5);
+  v5 = __sincosf_stret(self * 0.5);
   v6 = vmulq_n_f32(xmmword_1C25C86A0, v5.__sinval);
   v6.i32[3] = LODWORD(v5.__cosval);
   *&v7 = simd_matrix4x4(v6);
@@ -385,7 +385,7 @@
   v18 = v7;
   v19 = v10;
   v20 = v9;
-  *v11.i64 = ARMatrix4x4MakeColumnMajorTransformFromArray(a4 + 3);
+  *v11.i64 = ARMatrix4x4MakeColumnMajorTransformFromArray(pivot + 3);
   v15 = 0;
   v21[0] = v18;
   v21[1] = v17;
@@ -401,18 +401,18 @@
   return *&v22;
 }
 
-+ (id)anchorForDetectionResult:(CV3DSurfaceDetectionResult *)a3
++ (id)anchorForDetectionResult:(CV3DSurfaceDetectionResult *)result
 {
-  v5 = [MEMORY[0x1E695DF70] array];
-  if (a3->var1)
+  array = [MEMORY[0x1E695DF70] array];
+  if (result->var1)
   {
     v6 = 0;
     do
     {
-      v7 = &a3->var0[v6];
+      v7 = &result->var0[v6];
       v8 = v7->var3 != 1;
-      [a1 _surfacePivotForPlane:v7];
-      [a1 _surfaceToWorldTransformForPlane:v7 pivot:?];
+      [self _surfacePivotForPlane:v7];
+      [self _surfaceToWorldTransformForPlane:v7 pivot:?];
       v39 = v10;
       v41 = v9;
       v35 = v12;
@@ -456,17 +456,17 @@
       v36 = *v50.i64;
       v38 = *v49.i64;
       v27 = [ARPlaneAnchor alloc];
-      v28 = [MEMORY[0x1E696AFB0] ar_zeroUUID];
-      v29 = [(ARPlaneAnchor *)v27 initWithIdentifier:v28 transform:v8 alignment:v42, v40, v38, v36];
+      ar_zeroUUID = [MEMORY[0x1E696AFB0] ar_zeroUUID];
+      v29 = [(ARPlaneAnchor *)v27 initWithIdentifier:ar_zeroUUID transform:v8 alignment:v42, v40, v38, v36];
 
-      [v5 addObject:v29];
+      [array addObject:v29];
       ++v6;
     }
 
-    while (v6 < a3->var1);
+    while (v6 < result->var1);
   }
 
-  return v5;
+  return array;
 }
 
 + (void)_surfacePivotForPlane:.cold.1()

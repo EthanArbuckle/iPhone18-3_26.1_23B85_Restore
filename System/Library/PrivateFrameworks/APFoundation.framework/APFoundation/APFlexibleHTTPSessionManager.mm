@@ -1,17 +1,17 @@
 @interface APFlexibleHTTPSessionManager
-- (APFlexibleHTTPSessionManager)initWithLookBackWindow:(double)a3 httpMaximumConnectionsPerHost:(int64_t)a4 httpMaximumConnectionsPerHostTempSession:(int64_t)a5;
-- (BOOL)cancelTasksForService:(id)a3 withCompletionHandler:(id)a4;
-- (id)_createNewSessionForService:(id)a3 temp:(BOOL)a4;
-- (id)sessionForService:(id)a3;
-- (id)temporarySessionForService:(id)a3;
-- (void)_onTimer:(double)a3;
+- (APFlexibleHTTPSessionManager)initWithLookBackWindow:(double)window httpMaximumConnectionsPerHost:(int64_t)host httpMaximumConnectionsPerHostTempSession:(int64_t)session;
+- (BOOL)cancelTasksForService:(id)service withCompletionHandler:(id)handler;
+- (id)_createNewSessionForService:(id)service temp:(BOOL)temp;
+- (id)sessionForService:(id)service;
+- (id)temporarySessionForService:(id)service;
+- (void)_onTimer:(double)timer;
 - (void)_setTimer;
 - (void)_startTimer;
 @end
 
 @implementation APFlexibleHTTPSessionManager
 
-- (APFlexibleHTTPSessionManager)initWithLookBackWindow:(double)a3 httpMaximumConnectionsPerHost:(int64_t)a4 httpMaximumConnectionsPerHostTempSession:(int64_t)a5
+- (APFlexibleHTTPSessionManager)initWithLookBackWindow:(double)window httpMaximumConnectionsPerHost:(int64_t)host httpMaximumConnectionsPerHostTempSession:(int64_t)session
 {
   v24.receiver = self;
   v24.super_class = APFlexibleHTTPSessionManager;
@@ -31,24 +31,24 @@
     weakSessions = v8->_weakSessions;
     v8->_weakSessions = v21;
 
-    v8->_lookBackWindow = a3;
-    v8->_httpMaximumConnectionsPerHost = a4;
-    v8->_httpMaximumConnectionsPerHostTempSession = a5;
+    v8->_lookBackWindow = window;
+    v8->_httpMaximumConnectionsPerHost = host;
+    v8->_httpMaximumConnectionsPerHostTempSession = session;
   }
 
   return v8;
 }
 
-- (id)sessionForService:(id)a3
+- (id)sessionForService:(id)service
 {
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6, v7))
+  serviceCopy = service;
+  if (objc_msgSend_length(serviceCopy, v5, v6, v7))
   {
     v11 = objc_msgSend_lock(self, v8, v9, v10);
     objc_msgSend_lock(v11, v12, v13, v14);
     v18 = objc_msgSend_now(MEMORY[0x1E695DF00], v15, v16, v17);
     objc_msgSend_timeIntervalSince1970(v18, v19, v20, v21);
-    v23 = objc_msgSend__sessionForService_now_temporarySession_(self, v22, v4, 0);
+    v23 = objc_msgSend__sessionForService_now_temporarySession_(self, v22, serviceCopy, 0);
 
     objc_msgSend_unlock(v11, v24, v25, v26);
   }
@@ -68,16 +68,16 @@
   return v23;
 }
 
-- (id)temporarySessionForService:(id)a3
+- (id)temporarySessionForService:(id)service
 {
-  v4 = a3;
-  if (objc_msgSend_length(v4, v5, v6, v7))
+  serviceCopy = service;
+  if (objc_msgSend_length(serviceCopy, v5, v6, v7))
   {
     v11 = objc_msgSend_lock(self, v8, v9, v10);
     objc_msgSend_lock(v11, v12, v13, v14);
     v18 = objc_msgSend_now(MEMORY[0x1E695DF00], v15, v16, v17);
     objc_msgSend_timeIntervalSince1970(v18, v19, v20, v21);
-    v23 = objc_msgSend__sessionForService_now_temporarySession_(self, v22, v4, 1);
+    v23 = objc_msgSend__sessionForService_now_temporarySession_(self, v22, serviceCopy, 1);
 
     objc_msgSend_unlock(v11, v24, v25, v26);
   }
@@ -97,11 +97,11 @@
   return v23;
 }
 
-- (id)_createNewSessionForService:(id)a3 temp:(BOOL)a4
+- (id)_createNewSessionForService:(id)service temp:(BOOL)temp
 {
-  v4 = a4;
-  v9 = a3;
-  if (v4)
+  tempCopy = temp;
+  serviceCopy = service;
+  if (tempCopy)
   {
     v10 = objc_msgSend_httpMaximumConnectionsPerHostTempSession(self, v6, v7, v8);
   }
@@ -116,7 +116,7 @@
   if (v18)
   {
     v19 = objc_msgSend_createSessionBlock(self, v15, v16, v17);
-    v20 = (v19)[2](v19, v9, v14);
+    v20 = (v19)[2](v19, serviceCopy, v14);
   }
 
   else
@@ -154,7 +154,7 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_onTimer:(double)a3
+- (void)_onTimer:(double)timer
 {
   v7 = objc_msgSend_lock(self, a2, v3, v4);
   objc_msgSend_lock(v7, v8, v9, v10);
@@ -186,7 +186,7 @@
     v61[1] = 3221225472;
     v61[2] = sub_1BAF8DF34;
     v61[3] = &unk_1E7F1CF90;
-    v65 = a3;
+    timerCopy = timer;
     v66 = v27;
     v63 = v71;
     v64 = &v67;
@@ -220,24 +220,24 @@
   }
 }
 
-- (BOOL)cancelTasksForService:(id)a3 withCompletionHandler:(id)a4
+- (BOOL)cancelTasksForService:(id)service withCompletionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  handlerCopy = handler;
   v11 = objc_msgSend_lock(self, v8, v9, v10);
   objc_msgSend_lock(v11, v12, v13, v14);
   v18 = objc_msgSend_weakSessions(self, v15, v16, v17);
-  v21 = objc_msgSend_objectForKey_(v18, v19, v6, v20);
+  v21 = objc_msgSend_objectForKey_(v18, v19, serviceCopy, v20);
 
   if (v21)
   {
-    objc_msgSend_cancelTaskWithCompletionHandler_(v21, v22, v7, v23);
+    objc_msgSend_cancelTaskWithCompletionHandler_(v21, v22, handlerCopy, v23);
     v24 = APLogForCategory(0x22uLL);
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
       v31 = 138543362;
-      v32 = v6;
+      v32 = serviceCopy;
       _os_log_impl(&dword_1BADC1000, v24, OS_LOG_TYPE_INFO, "All pending tasks of %{public}@ are canceled.", &v31, 0xCu);
     }
   }
@@ -248,11 +248,11 @@
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
     {
       v31 = 138543362;
-      v32 = v6;
+      v32 = serviceCopy;
       _os_log_impl(&dword_1BADC1000, v28, OS_LOG_TYPE_ERROR, "Service %{public}@ is not found.", &v31, 0xCu);
     }
 
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 
   objc_msgSend_unlock(v11, v25, v26, v27);

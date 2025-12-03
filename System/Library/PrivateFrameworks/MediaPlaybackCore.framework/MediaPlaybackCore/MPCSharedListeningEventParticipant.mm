@@ -1,20 +1,20 @@
 @interface MPCSharedListeningEventParticipant
-+ (MPCSharedListeningEventParticipant)participantWithSharedListeningIdentifier:(id)a3 externalIdentifier:(id)a4;
++ (MPCSharedListeningEventParticipant)participantWithSharedListeningIdentifier:(id)identifier externalIdentifier:(id)externalIdentifier;
 @end
 
 @implementation MPCSharedListeningEventParticipant
 
-+ (MPCSharedListeningEventParticipant)participantWithSharedListeningIdentifier:(id)a3 externalIdentifier:(id)a4
++ (MPCSharedListeningEventParticipant)participantWithSharedListeningIdentifier:(id)identifier externalIdentifier:(id)externalIdentifier
 {
-  v5 = a4;
-  v6 = a3;
+  externalIdentifierCopy = externalIdentifier;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(MPCSharedListeningEventParticipant);
-  v8 = [v6 copy];
+  v8 = [identifierCopy copy];
 
   sharedListeningIdentifier = v7->_sharedListeningIdentifier;
   v7->_sharedListeningIdentifier = v8;
 
-  v10 = [v5 copy];
+  v10 = [externalIdentifierCopy copy];
   externalIdentifier = v7->_externalIdentifier;
   v7->_externalIdentifier = v10;
 

@@ -1,39 +1,39 @@
 @interface HomeOutlineRecentsSectionController
-- (BOOL)_shouldShowClearButtonForItemSnapshots:(id)a3;
-- (HomeOutlineRecentsSectionController)initWithConfiguration:(id)a3;
+- (BOOL)_shouldShowClearButtonForItemSnapshots:(id)snapshots;
+- (HomeOutlineRecentsSectionController)initWithConfiguration:(id)configuration;
 - (MapsUIDiffableDataSourceViewModel)sectionHeaderViewModel;
 - (NSArray)dataProviders;
 - (NSArray)itemSnapshots;
-- (id)contextMenuForSnapshot:(id)a3;
-- (void)_deleteMarkedLocationSnapshot:(id)a3;
-- (void)_deleteRecentsSnapshots:(id)a3 deleteAll:(BOOL)a4;
-- (void)_deleteSnapshot:(id)a3;
+- (id)contextMenuForSnapshot:(id)snapshot;
+- (void)_deleteMarkedLocationSnapshot:(id)snapshot;
+- (void)_deleteRecentsSnapshots:(id)snapshots deleteAll:(BOOL)all;
+- (void)_deleteSnapshot:(id)snapshot;
 - (void)_presentAllRecents;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)sectionHeaderOutlineCell:(id)a3 accessoryTypeTapped:(int64_t)a4;
-- (void)smallButtonOutlineCellTapped:(id)a3;
-- (void)twoLinesOutlineCell:(id)a3 accessoryViewTapped:(id)a4 accessoryModel:(id)a5;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)sectionHeaderOutlineCell:(id)cell accessoryTypeTapped:(int64_t)tapped;
+- (void)smallButtonOutlineCellTapped:(id)tapped;
+- (void)twoLinesOutlineCell:(id)cell accessoryViewTapped:(id)tapped accessoryModel:(id)model;
 @end
 
 @implementation HomeOutlineRecentsSectionController
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   [GEOAPPortal captureUserAction:2064 target:8 value:0];
   v8.receiver = self;
   v8.super_class = HomeOutlineRecentsSectionController;
-  [(HomeOutlineSectionController *)&v8 collectionView:v7 didSelectItemAtIndexPath:v6];
+  [(HomeOutlineSectionController *)&v8 collectionView:viewCopy didSelectItemAtIndexPath:pathCopy];
 }
 
-- (void)twoLinesOutlineCell:(id)a3 accessoryViewTapped:(id)a4 accessoryModel:(id)a5
+- (void)twoLinesOutlineCell:(id)cell accessoryViewTapped:(id)tapped accessoryModel:(id)model
 {
-  v26 = a4;
-  v7 = [a3 cellModel];
-  if ([v7 conformsToProtocol:&OBJC_PROTOCOL___HomeRecentsItemCellModel])
+  tappedCopy = tapped;
+  cellModel = [cell cellModel];
+  if ([cellModel conformsToProtocol:&OBJC_PROTOCOL___HomeRecentsItemCellModel])
   {
-    v8 = v7;
+    v8 = cellModel;
   }
 
   else
@@ -45,10 +45,10 @@
 
   if (v9)
   {
-    v10 = [v9 homeRecentsItem];
+    homeRecentsItem = [v9 homeRecentsItem];
     v11 = &OBJC_PROTOCOL___MSPHistoryEntryTransitLineItem;
     objc_opt_class();
-    v12 = v10;
+    v12 = homeRecentsItem;
     if (objc_opt_isKindOfClass())
     {
       v13 = v12;
@@ -73,47 +73,47 @@
 
     if (v17)
     {
-      v18 = [v17 historyEntry];
-      v19 = [v18 lineItem];
+      historyEntry = [v17 historyEntry];
+      lineItem = [historyEntry lineItem];
 
-      v20 = [[IncompleteTransitLineItem alloc] initWithTransitLine:v19];
-      v21 = [(HomeOutlineSectionController *)self configuration];
-      v22 = [v21 actionCoordinator];
-      v23 = [(HomeOutlineSectionController *)self configuration];
-      v24 = [v23 homeActionDelegate];
-      v25 = [v24 homeContaineeViewController];
-      [v26 bounds];
-      [v22 viewController:v25 openTransitLineCard:v20 sourceView:v26 sourceRect:?];
+      v20 = [[IncompleteTransitLineItem alloc] initWithTransitLine:lineItem];
+      configuration = [(HomeOutlineSectionController *)self configuration];
+      actionCoordinator = [configuration actionCoordinator];
+      configuration2 = [(HomeOutlineSectionController *)self configuration];
+      homeActionDelegate = [configuration2 homeActionDelegate];
+      homeContaineeViewController = [homeActionDelegate homeContaineeViewController];
+      [tappedCopy bounds];
+      [actionCoordinator viewController:homeContaineeViewController openTransitLineCard:v20 sourceView:tappedCopy sourceRect:?];
     }
   }
 }
 
 - (void)_presentAllRecents
 {
-  v3 = [(HomeOutlineSectionController *)self configuration];
-  v2 = [v3 actionCoordinator];
-  [v2 toggleTopLevelRecents];
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  actionCoordinator = [configuration actionCoordinator];
+  [actionCoordinator toggleTopLevelRecents];
 }
 
-- (void)sectionHeaderOutlineCell:(id)a3 accessoryTypeTapped:(int64_t)a4
+- (void)sectionHeaderOutlineCell:(id)cell accessoryTypeTapped:(int64_t)tapped
 {
-  if (a4 == 3)
+  if (tapped == 3)
   {
     [(HomeOutlineRecentsSectionController *)self _presentAllRecents];
   }
 }
 
-- (void)smallButtonOutlineCellTapped:(id)a3
+- (void)smallButtonOutlineCellTapped:(id)tapped
 {
   v4 = +[NSMutableArray array];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(HomeOutlineSectionController *)self sectionSnapshot];
-  v6 = [v5 childSnapshots];
+  sectionSnapshot = [(HomeOutlineSectionController *)self sectionSnapshot];
+  childSnapshots = [sectionSnapshot childSnapshots];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [childSnapshots countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -124,14 +124,14 @@
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(childSnapshots);
         }
 
         v11 = *(*(&v15 + 1) + 8 * i);
-        v12 = [v11 viewModel];
-        v13 = [v12 conformsToProtocol:&OBJC_PROTOCOL___HomeRecentsItemCellModel];
+        viewModel = [v11 viewModel];
+        v13 = [viewModel conformsToProtocol:&OBJC_PROTOCOL___HomeRecentsItemCellModel];
 
-        if (v12)
+        if (viewModel)
         {
           v14 = v13 == 0;
         }
@@ -147,7 +147,7 @@
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v8 = [childSnapshots countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v8);
@@ -156,21 +156,21 @@
   [(HomeOutlineRecentsSectionController *)self _deleteRecentsSnapshots:v4 deleteAll:1];
 }
 
-- (void)_deleteRecentsSnapshots:(id)a3 deleteAll:(BOOL)a4
+- (void)_deleteRecentsSnapshots:(id)snapshots deleteAll:(BOOL)all
 {
-  v4 = a4;
-  v6 = a3;
+  allCopy = all;
+  snapshotsCopy = snapshots;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100DB4288;
   v17[3] = &unk_101654508;
   v17[4] = self;
-  v7 = sub_100021DB0(v6, v17);
+  v7 = sub_100021DB0(snapshotsCopy, v17);
   v8 = sub_100021DB0(v7, &stru_101654548);
   objc_initWeak(&location, self);
   [(HomeOutlineSectionController *)self beginDeletions:v7];
   recentsDataProvider = self->_recentsDataProvider;
-  if (v4)
+  if (allCopy)
   {
     v10 = v14;
     v14[0] = _NSConcreteStackBlock;
@@ -200,14 +200,14 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_deleteMarkedLocationSnapshot:(id)a3
+- (void)_deleteMarkedLocationSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [v4 viewModel];
+  snapshotCopy = snapshot;
+  viewModel = [snapshotCopy viewModel];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = viewModel;
   }
 
   else
@@ -217,62 +217,62 @@
 
   v7 = v6;
 
-  v8 = [v7 searchResult];
+  searchResult = [v7 searchResult];
 
-  if (v8)
+  if (searchResult)
   {
-    v9 = [(HomeOutlineSectionController *)self deletionWithSnapshot:v4];
+    v9 = [(HomeOutlineSectionController *)self deletionWithSnapshot:snapshotCopy];
     v13 = v9;
     v10 = [NSArray arrayWithObjects:&v13 count:1];
     [(HomeOutlineSectionController *)self beginDeletions:v10];
 
-    v11 = [(HomeOutlineSectionController *)self configuration];
-    v12 = [v11 actionCoordinator];
-    [v12 deleteMarkedLocation:v8];
+    configuration = [(HomeOutlineSectionController *)self configuration];
+    actionCoordinator = [configuration actionCoordinator];
+    [actionCoordinator deleteMarkedLocation:searchResult];
   }
 }
 
-- (void)_deleteSnapshot:(id)a3
+- (void)_deleteSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [(HomeOutlineSectionController *)self deletions];
-  v6 = [v4 identifierPath];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  snapshotCopy = snapshot;
+  deletions = [(HomeOutlineSectionController *)self deletions];
+  identifierPath = [snapshotCopy identifierPath];
+  v7 = [deletions objectForKeyedSubscript:identifierPath];
 
   if (!v7)
   {
-    v8 = [v4 viewModel];
-    v9 = [v8 conformsToProtocol:&OBJC_PROTOCOL___HomeRecentsItemCellModel];
+    viewModel = [snapshotCopy viewModel];
+    v9 = [viewModel conformsToProtocol:&OBJC_PROTOCOL___HomeRecentsItemCellModel];
 
-    if (v8 && v9)
+    if (viewModel && v9)
     {
-      v13 = v4;
+      v13 = snapshotCopy;
       v10 = [NSArray arrayWithObjects:&v13 count:1];
       [(HomeOutlineRecentsSectionController *)self _deleteRecentsSnapshots:v10 deleteAll:0];
     }
 
     else
     {
-      v11 = [v4 viewModel];
+      viewModel2 = [snapshotCopy viewModel];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
-      if ((isKindOfClass & 1) != 0 && v11)
+      if ((isKindOfClass & 1) != 0 && viewModel2)
       {
-        [(HomeOutlineRecentsSectionController *)self _deleteMarkedLocationSnapshot:v4];
+        [(HomeOutlineRecentsSectionController *)self _deleteMarkedLocationSnapshot:snapshotCopy];
       }
     }
   }
 }
 
-- (BOOL)_shouldShowClearButtonForItemSnapshots:(id)a3
+- (BOOL)_shouldShowClearButtonForItemSnapshots:(id)snapshots
 {
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  snapshotsCopy = snapshots;
+  v5 = [snapshotsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = v5;
@@ -283,14 +283,14 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(snapshotsCopy);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 viewModel];
-        v11 = [v10 conformsToProtocol:&OBJC_PROTOCOL___HomeRecentsItemCellModel];
+        viewModel = [v9 viewModel];
+        v11 = [viewModel conformsToProtocol:&OBJC_PROTOCOL___HomeRecentsItemCellModel];
 
-        if (v10)
+        if (viewModel)
         {
           v12 = v11 == 0;
         }
@@ -302,9 +302,9 @@
 
         if (!v12)
         {
-          v13 = [(HomeOutlineSectionController *)self deletions];
-          v14 = [v9 identifierPath];
-          v15 = [v13 objectForKeyedSubscript:v14];
+          deletions = [(HomeOutlineSectionController *)self deletions];
+          identifierPath = [v9 identifierPath];
+          v15 = [deletions objectForKeyedSubscript:identifierPath];
 
           if (!v15)
           {
@@ -314,7 +314,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v6 = [snapshotsCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v6)
       {
         continue;
@@ -330,14 +330,14 @@ LABEL_15:
   return v16;
 }
 
-- (id)contextMenuForSnapshot:(id)a3
+- (id)contextMenuForSnapshot:(id)snapshot
 {
-  v4 = a3;
+  snapshotCopy = snapshot;
   objc_initWeak(&location, self);
-  v5 = [v4 viewModel];
-  v6 = [v5 conformsToProtocol:&OBJC_PROTOCOL___TwoLinesOutlineCellModel];
+  viewModel = [snapshotCopy viewModel];
+  v6 = [viewModel conformsToProtocol:&OBJC_PROTOCOL___TwoLinesOutlineCellModel];
 
-  if (v5)
+  if (viewModel)
   {
     v7 = v6;
   }
@@ -354,7 +354,7 @@ LABEL_15:
     v12[2] = sub_100DB4AD0;
     v12[3] = &unk_101661340;
     objc_copyWeak(&v14, &location);
-    v13 = v4;
+    v13 = snapshotCopy;
     v8 = sub_100C64B44(v12);
     v16 = v8;
     v9 = [NSArray arrayWithObjects:&v16 count:1];
@@ -376,14 +376,14 @@ LABEL_15:
 - (NSArray)itemSnapshots
 {
   v3 = +[NSMutableArray array];
-  v4 = [(MarkedLocationDataProvider *)self->_markedLocationDataProvider markedLocation];
-  if (v4)
+  markedLocation = [(MarkedLocationDataProvider *)self->_markedLocationDataProvider markedLocation];
+  if (markedLocation)
   {
-    [v3 addObject:v4];
+    [v3 addObject:markedLocation];
   }
 
-  v5 = [(RecentsDataProvider *)self->_recentsDataProvider recents];
-  [v3 addObjectsFromArray:v5];
+  recents = [(RecentsDataProvider *)self->_recentsDataProvider recents];
+  [v3 addObjectsFromArray:recents];
 
   v6 = [(RecentsDataFilter *)self->_recentsDataFilter filteredRecents:v3 excludingDuplicatesOfEntries:&__NSArray0__struct];
   UInteger = GEOConfigGetUInteger();
@@ -394,8 +394,8 @@ LABEL_15:
     v6 = v8;
   }
 
-  v9 = [(HomeOutlineSectionController *)self configuration];
-  v10 = [v9 sectionIdentifier];
+  configuration = [(HomeOutlineSectionController *)self configuration];
+  sectionIdentifier = [configuration sectionIdentifier];
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_100DB4E3C;
@@ -406,7 +406,7 @@ LABEL_15:
   v22[2] = sub_100DB4EA8;
   v22[3] = &unk_101654460;
   v22[4] = self;
-  v11 = [HomeOutlineSectionBuilder itemSnapshotsWithItems:v6 sectionIdentifier:v10 sectionExpanded:[(HomeOutlineSectionController *)self expanded] itemIdentifierBlock:v23 viewModelBlock:v22 childItemsBlock:&stru_1016544A0 expandedBlock:&stru_1016544E0];
+  v11 = [HomeOutlineSectionBuilder itemSnapshotsWithItems:v6 sectionIdentifier:sectionIdentifier sectionExpanded:[(HomeOutlineSectionController *)self expanded] itemIdentifierBlock:v23 viewModelBlock:v22 childItemsBlock:&stru_1016544A0 expandedBlock:&stru_1016544E0];
 
   if ([(HomeOutlineRecentsSectionController *)self _shouldShowClearButtonForItemSnapshots:v11])
   {
@@ -416,8 +416,8 @@ LABEL_15:
     v15 = [(SmallButtonOutlineCellModel *)v12 initWithStyle:0 title:v14 image:0 hoverImage:0 delegate:self];
 
     v16 = [MapsUIDiffableDataSourceOutlineNodeSnapshot alloc];
-    v17 = [(HomeOutlineSectionController *)self sectionIdentifierPath];
-    v18 = [v17 identifierPathByAppendingIdentifier:@"ClearRecents"];
+    sectionIdentifierPath = [(HomeOutlineSectionController *)self sectionIdentifierPath];
+    v18 = [sectionIdentifierPath identifierPathByAppendingIdentifier:@"ClearRecents"];
     v19 = [(MapsUIDiffableDataSourceOutlineNodeSnapshot *)v16 initWithIdentifierPath:v18 viewModel:v15 childSnapshots:&__NSArray0__struct expanded:0];
 
     v20 = [v11 arrayByAddingObject:v19];
@@ -448,11 +448,11 @@ LABEL_15:
   return v3;
 }
 
-- (HomeOutlineRecentsSectionController)initWithConfiguration:(id)a3
+- (HomeOutlineRecentsSectionController)initWithConfiguration:(id)configuration
 {
   v11.receiver = self;
   v11.super_class = HomeOutlineRecentsSectionController;
-  v3 = [(HomeOutlineSectionController *)&v11 initWithConfiguration:a3];
+  v3 = [(HomeOutlineSectionController *)&v11 initWithConfiguration:configuration];
   if (v3)
   {
     v4 = objc_alloc_init(MarkedLocationDataProvider);

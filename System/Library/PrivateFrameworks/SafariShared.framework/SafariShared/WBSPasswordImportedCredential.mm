@@ -1,28 +1,28 @@
 @interface WBSPasswordImportedCredential
-- (BOOL)isEqual:(id)a3;
-- (WBSPasswordImportedCredential)initWithCoder:(id)a3;
-- (WBSPasswordImportedCredential)initWithUser:(id)a3 password:(id)a4 url:(id)a5 otpAuthURL:(id)a6 title:(id)a7 notesEntry:(id)a8 lineNumberFromSourceFile:(unint64_t)a9;
-- (int64_t)compare:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WBSPasswordImportedCredential)initWithCoder:(id)coder;
+- (WBSPasswordImportedCredential)initWithUser:(id)user password:(id)password url:(id)url otpAuthURL:(id)l title:(id)title notesEntry:(id)entry lineNumberFromSourceFile:(unint64_t)file;
+- (int64_t)compare:(id)compare;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WBSPasswordImportedCredential
 
-- (WBSPasswordImportedCredential)initWithUser:(id)a3 password:(id)a4 url:(id)a5 otpAuthURL:(id)a6 title:(id)a7 notesEntry:(id)a8 lineNumberFromSourceFile:(unint64_t)a9
+- (WBSPasswordImportedCredential)initWithUser:(id)user password:(id)password url:(id)url otpAuthURL:(id)l title:(id)title notesEntry:(id)entry lineNumberFromSourceFile:(unint64_t)file
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  userCopy = user;
+  passwordCopy = password;
+  urlCopy = url;
+  lCopy = l;
+  titleCopy = title;
+  entryCopy = entry;
   v36.receiver = self;
   v36.super_class = WBSPasswordImportedCredential;
   v21 = [(WBSPasswordImportedCredential *)&v36 init];
   if (v21)
   {
-    v22 = [v15 copy];
+    v22 = [userCopy copy];
     v23 = v22;
     if (v22)
     {
@@ -36,7 +36,7 @@
 
     objc_storeStrong(&v21->_user, v24);
 
-    v25 = [v16 copy];
+    v25 = [passwordCopy copy];
     v26 = v25;
     if (v25)
     {
@@ -50,30 +50,30 @@
 
     objc_storeStrong(&v21->_password, v27);
 
-    objc_storeStrong(&v21->_url, a5);
-    v28 = [v18 copy];
+    objc_storeStrong(&v21->_url, url);
+    v28 = [lCopy copy];
     otpAuthURL = v21->_otpAuthURL;
     v21->_otpAuthURL = v28;
 
-    v30 = [v19 copy];
+    v30 = [titleCopy copy];
     title = v21->_title;
     v21->_title = v30;
 
-    v32 = [v20 copy];
+    v32 = [entryCopy copy];
     notesEntry = v21->_notesEntry;
     v21->_notesEntry = v32;
 
-    v21->_lineNumberFromSourceFile = a9;
+    v21->_lineNumberFromSourceFile = file;
     v34 = v21;
   }
 
   return v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -83,20 +83,20 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(WBSPasswordImportedCredential *)v5 user];
+      v5 = equalCopy;
+      user = [(WBSPasswordImportedCredential *)v5 user];
       if (WBSIsEqual())
       {
-        v7 = [(WBSPasswordImportedCredential *)v5 otpAuthURL];
+        otpAuthURL = [(WBSPasswordImportedCredential *)v5 otpAuthURL];
         if (WBSIsEqual())
         {
-          v8 = [(WBSPasswordImportedCredential *)v5 notesEntry];
+          notesEntry = [(WBSPasswordImportedCredential *)v5 notesEntry];
           if (WBSIsEqual())
           {
-            v9 = [(WBSPasswordImportedCredential *)v5 title];
+            title = [(WBSPasswordImportedCredential *)v5 title];
             if (WBSIsEqual())
             {
-              v10 = [(WBSPasswordImportedCredential *)v5 password];
+              password = [(WBSPasswordImportedCredential *)v5 password];
               if (WBSIsEqual())
               {
                 v11 = [(WBSPasswordImportedCredential *)v5 url];
@@ -161,38 +161,38 @@
   return v6 ^ v7 ^ [(NSString *)self->_title hash]^ self->_lineNumberFromSourceFile;
 }
 
-- (WBSPasswordImportedCredential)initWithCoder:(id)a3
+- (WBSPasswordImportedCredential)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"user"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"password"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"otp"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"notes"];
-  v11 = [v4 decodeIntegerForKey:@"lineNumberFromSourceFile"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"user"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"password"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"otp"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"notes"];
+  v11 = [coderCopy decodeIntegerForKey:@"lineNumberFromSourceFile"];
 
   v12 = [(WBSPasswordImportedCredential *)self initWithUser:v5 password:v6 url:v7 otpAuthURL:v8 title:v9 notesEntry:v10 lineNumberFromSourceFile:v11];
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   user = self->_user;
-  v5 = a3;
-  [v5 encodeObject:user forKey:@"user"];
-  [v5 encodeObject:self->_password forKey:@"password"];
-  [v5 encodeObject:self->_url forKey:@"url"];
-  [v5 encodeObject:self->_otpAuthURL forKey:@"otp"];
-  [v5 encodeObject:self->_notesEntry forKey:@"notes"];
-  [v5 encodeObject:self->_title forKey:@"title"];
-  [v5 encodeInt:LODWORD(self->_lineNumberFromSourceFile) forKey:@"lineNumberFromSourceFile"];
+  coderCopy = coder;
+  [coderCopy encodeObject:user forKey:@"user"];
+  [coderCopy encodeObject:self->_password forKey:@"password"];
+  [coderCopy encodeObject:self->_url forKey:@"url"];
+  [coderCopy encodeObject:self->_otpAuthURL forKey:@"otp"];
+  [coderCopy encodeObject:self->_notesEntry forKey:@"notes"];
+  [coderCopy encodeObject:self->_title forKey:@"title"];
+  [coderCopy encodeInt:LODWORD(self->_lineNumberFromSourceFile) forKey:@"lineNumberFromSourceFile"];
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
   lineNumberFromSourceFile = self->_lineNumberFromSourceFile;
-  v4 = *(a3 + 7);
+  v4 = *(compare + 7);
   v5 = lineNumberFromSourceFile >= v4;
   v6 = lineNumberFromSourceFile > v4;
   if (v5)

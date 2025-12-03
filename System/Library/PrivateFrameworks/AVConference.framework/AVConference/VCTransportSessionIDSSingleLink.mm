@@ -1,23 +1,23 @@
 @interface VCTransportSessionIDSSingleLink
-- (VCTransportSessionIDSSingleLink)initWithNotificationQueue:(id)a3 reportingAgent:(opaqueRTCReporting *)a4;
+- (VCTransportSessionIDSSingleLink)initWithNotificationQueue:(id)queue reportingAgent:(opaqueRTCReporting *)agent;
 - (id)copyActiveConnection;
-- (int)createVFD:(int *)a3 forStreamType:(unsigned int)a4;
+- (int)createVFD:(int *)d forStreamType:(unsigned int)type;
 - (int)onStart;
-- (int)updateTransportStream:(OpaqueVCTransportStream *)a3;
+- (int)updateTransportStream:(OpaqueVCTransportStream *)stream;
 - (void)dealloc;
-- (void)handleLinkConnectedWithInfo:(id)a3;
-- (void)handleLinkDisconnectedWithInfo:(id)a3;
+- (void)handleLinkConnectedWithInfo:(id)info;
+- (void)handleLinkDisconnectedWithInfo:(id)info;
 - (void)onStart;
 @end
 
 @implementation VCTransportSessionIDSSingleLink
 
-- (VCTransportSessionIDSSingleLink)initWithNotificationQueue:(id)a3 reportingAgent:(opaqueRTCReporting *)a4
+- (VCTransportSessionIDSSingleLink)initWithNotificationQueue:(id)queue reportingAgent:(opaqueRTCReporting *)agent
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
   v5.super_class = VCTransportSessionIDSSingleLink;
-  return [(VCTransportSessionIDS *)&v5 initWithCallID:0 requireEncryptionInfo:0 reportingAgent:a4 notificationQueue:a3];
+  return [(VCTransportSessionIDS *)&v5 initWithCallID:0 requireEncryptionInfo:0 reportingAgent:agent notificationQueue:queue];
 }
 
 - (void)dealloc
@@ -29,7 +29,7 @@
   [(VCTransportSessionIDS *)&v3 dealloc];
 }
 
-- (void)handleLinkDisconnectedWithInfo:(id)a3
+- (void)handleLinkDisconnectedWithInfo:(id)info
 {
   v11 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -88,20 +88,20 @@ LABEL_7:
   return v7;
 }
 
-- (int)updateTransportStream:(OpaqueVCTransportStream *)a3
+- (int)updateTransportStream:(OpaqueVCTransportStream *)stream
 {
   v24 = *MEMORY[0x1E69E9840];
   v13 = 0;
-  CMBaseObject = VCPacketFilterGetCMBaseObject(a3, a2);
+  CMBaseObject = VCPacketFilterGetCMBaseObject(stream, a2);
   v6 = *(*(CMBaseObjectGetVTable() + 8) + 48);
   if (v6)
   {
     v7 = v6(CMBaseObject, @"UnderlyingVFD", *MEMORY[0x1E695E480], &v13);
     if ((v7 & 0x80000000) == 0)
     {
-      v8 = [v13 intValue];
+      intValue = [v13 intValue];
       v9 = VCDatagramChannelIDS_Token(self->super._datagramChannel);
-      if (VTP_SetSourceDestinationWithToken(v8, v9) == -1)
+      if (VTP_SetSourceDestinationWithToken(intValue, v9) == -1)
       {
         [VCTransportSessionIDSSingleLink updateTransportStream:buf];
         v7 = *buf;
@@ -131,7 +131,7 @@ LABEL_7:
       v20 = 2112;
       v21 = @"UnderlyingVFD";
       v22 = 2112;
-      v23 = a3;
+      streamCopy = stream;
       _os_log_error_impl(&dword_1DB56E000, v11, OS_LOG_TYPE_ERROR, " [%s] %s:%d Could not get property '%@' for transport stream '%@'", buf, 0x30u);
     }
   }
@@ -143,12 +143,12 @@ LABEL_9:
 
 - (id)copyActiveConnection
 {
-  v2 = [(VCTransportSessionIDSSingleLink *)self connection];
+  connection = [(VCTransportSessionIDSSingleLink *)self connection];
 
-  return v2;
+  return connection;
 }
 
-- (void)handleLinkConnectedWithInfo:(id)a3
+- (void)handleLinkConnectedWithInfo:(id)info
 {
   v15 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
@@ -163,18 +163,18 @@ LABEL_9:
     }
   }
 
-  v6 = [a3 objectForKeyedSubscript:*MEMORY[0x1E69A46B0]];
+  v6 = [info objectForKeyedSubscript:*MEMORY[0x1E69A46B0]];
   if (v6)
   {
-    v7 = [v6 firstObject];
+    firstObject = [v6 firstObject];
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       VRTraceErrorLogLevelToCSTR();
       if (OUTLINED_FUNCTION_23_7())
       {
-        if (v7)
+        if (firstObject)
         {
-          [objc_msgSend(v7 "description")];
+          [objc_msgSend(firstObject "description")];
         }
 
         OUTLINED_FUNCTION_0_30();
@@ -186,21 +186,21 @@ LABEL_9:
       }
     }
 
-    if (v7)
+    if (firstObject)
     {
-      self->_connection = [[VCConnectionIDS alloc] initWithLinkContext:v7 dataChannelToken:VCDatagramChannelIDS_Token(self->super._datagramChannel)];
+      self->_connection = [[VCConnectionIDS alloc] initWithLinkContext:firstObject dataChannelToken:VCDatagramChannelIDS_Token(self->super._datagramChannel)];
     }
   }
 }
 
-- (int)createVFD:(int *)a3 forStreamType:(unsigned int)a4
+- (int)createVFD:(int *)d forStreamType:(unsigned int)type
 {
   v27 = *MEMORY[0x1E69E9840];
   v4 = -2144665599;
   v18 = -1;
-  if (a3)
+  if (d)
   {
-    v7 = [VCTransportSession vtpPacketTypeForStreamType:*&a4];
+    v7 = [VCTransportSession vtpPacketTypeForStreamType:*&type];
     if (v7)
     {
       v4 = VCCreateVFDForIDS(v7, 43, &v18);
@@ -210,7 +210,7 @@ LABEL_9:
         v9 = VCDatagramChannelIDS_Token(self->super._datagramChannel);
         if (VTP_SetSourceDestinationWithToken(v8, v9) != -1)
         {
-          *a3 = v18;
+          *d = v18;
           v18 = -1;
           goto LABEL_6;
         }
@@ -281,7 +281,7 @@ LABEL_6:
       v12 = 1024;
       v13 = 62;
       v14 = 2112;
-      v15 = a1;
+      selfCopy = self;
       _os_log_error_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_ERROR, " [%s] %s:%d Failed to update transport stream '%@'", &v8, 0x26u);
     }
   }

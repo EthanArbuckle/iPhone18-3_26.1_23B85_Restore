@@ -1,12 +1,12 @@
 @interface SUUIURLActivityItemProvider
 + (id)placeholderItem;
-- (SUUIURLActivityItemProvider)initWithProductPageItem:(id)a3 clientContext:(id)a4;
-- (SUUIURLActivityItemProvider)initWithProductPageItemProvider:(id)a3 clientContext:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5;
-- (id)activityViewControllerLinkMetadata:(id)a3;
+- (SUUIURLActivityItemProvider)initWithProductPageItem:(id)item clientContext:(id)context;
+- (SUUIURLActivityItemProvider)initWithProductPageItemProvider:(id)provider clientContext:(id)context;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
 - (id)item;
-- (id)linkPresentationImageFor:(id)a3;
+- (id)linkPresentationImageFor:(id)for;
 @end
 
 @implementation SUUIURLActivityItemProvider
@@ -18,11 +18,11 @@
   return v2;
 }
 
-- (SUUIURLActivityItemProvider)initWithProductPageItemProvider:(id)a3 clientContext:(id)a4
+- (SUUIURLActivityItemProvider)initWithProductPageItemProvider:(id)provider clientContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[SUUIResourceLoader alloc] initWithClientContext:v6];
+  contextCopy = context;
+  providerCopy = provider;
+  v8 = [[SUUIResourceLoader alloc] initWithClientContext:contextCopy];
   resourceLoader = self->_resourceLoader;
   self->_resourceLoader = v8;
 
@@ -32,16 +32,16 @@
 
   v14.receiver = self;
   v14.super_class = SUUIURLActivityItemProvider;
-  v12 = [(SUUIDeferredActivityItemProvider *)&v14 initWithProductPageItemProvider:v7 clientContext:v6];
+  v12 = [(SUUIDeferredActivityItemProvider *)&v14 initWithProductPageItemProvider:providerCopy clientContext:contextCopy];
 
   return v12;
 }
 
-- (SUUIURLActivityItemProvider)initWithProductPageItem:(id)a3 clientContext:(id)a4
+- (SUUIURLActivityItemProvider)initWithProductPageItem:(id)item clientContext:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[SUUIResourceLoader alloc] initWithClientContext:v6];
+  contextCopy = context;
+  itemCopy = item;
+  v8 = [[SUUIResourceLoader alloc] initWithClientContext:contextCopy];
   resourceLoader = self->_resourceLoader;
   self->_resourceLoader = v8;
 
@@ -51,7 +51,7 @@
 
   v14.receiver = self;
   v14.super_class = SUUIURLActivityItemProvider;
-  v12 = [(SUUIDeferredActivityItemProvider *)&v14 initWithProductPageItem:v7 clientContext:v6];
+  v12 = [(SUUIDeferredActivityItemProvider *)&v14 initWithProductPageItem:itemCopy clientContext:contextCopy];
 
   return v12;
 }
@@ -65,40 +65,40 @@
   v15[1] = v3;
   v15[2] = *MEMORY[0x277D54720];
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:3];
-  v5 = [(UIActivityItemProvider *)self activityType];
-  v6 = [v4 containsObject:v5];
+  activityType = [(UIActivityItemProvider *)self activityType];
+  v6 = [v4 containsObject:activityType];
 
-  v7 = [(SUUIDeferredActivityItemProvider *)self productPageItem];
-  v8 = v7;
+  productPageItem = [(SUUIDeferredActivityItemProvider *)self productPageItem];
+  v8 = productPageItem;
   if (v6)
   {
-    v9 = [v7 productPageURLString];
+    productPageURLString = [productPageItem productPageURLString];
 
     NSLog(&cfstr_FetchedUrlItem.isa);
-    if (v9)
+    if (productPageURLString)
     {
 LABEL_3:
-      v10 = [MEMORY[0x277CBEBC0] URLWithString:v9];
+      v10 = [MEMORY[0x277CBEBC0] URLWithString:productPageURLString];
       goto LABEL_9;
     }
   }
 
   else
   {
-    v11 = [v7 shortenedProductPageURLString];
-    v12 = v11;
-    if (v11)
+    shortenedProductPageURLString = [productPageItem shortenedProductPageURLString];
+    v12 = shortenedProductPageURLString;
+    if (shortenedProductPageURLString)
     {
-      v9 = v11;
+      productPageURLString = shortenedProductPageURLString;
     }
 
     else
     {
-      v13 = [(SUUIDeferredActivityItemProvider *)self productPageItem];
-      v9 = [v13 productPageURLString];
+      productPageItem2 = [(SUUIDeferredActivityItemProvider *)self productPageItem];
+      productPageURLString = [productPageItem2 productPageURLString];
     }
 
-    if (v9)
+    if (productPageURLString)
     {
       goto LABEL_3;
     }
@@ -110,36 +110,36 @@ LABEL_9:
   return v10;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
-  v4 = [(SUUIDeferredActivityItemProvider *)self productPageItem:a3];
-  v5 = [v4 title];
+  v4 = [(SUUIDeferredActivityItemProvider *)self productPageItem:controller];
+  title = [v4 title];
 
-  return v5;
+  return title;
 }
 
-- (id)activityViewController:(id)a3 thumbnailImageForActivityType:(id)a4 suggestedSize:(CGSize)a5
+- (id)activityViewController:(id)controller thumbnailImageForActivityType:(id)type suggestedSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  v10 = a4;
+  height = size.height;
+  width = size.width;
+  controllerCopy = controller;
+  typeCopy = type;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
   v23 = __Block_byref_object_copy__28;
   v24 = __Block_byref_object_dispose__28;
   v25 = 0;
-  v11 = [(SUUIDeferredActivityItemProvider *)self productPageItem];
-  v12 = [v11 artworksProvider];
-  v13 = [v12 bestArtworkForScaledSize:{width, height}];
+  productPageItem = [(SUUIDeferredActivityItemProvider *)self productPageItem];
+  artworksProvider = [productPageItem artworksProvider];
+  v13 = [artworksProvider bestArtworkForScaledSize:{width, height}];
   v14 = [v13 URL];
 
   if (v14)
   {
     v15 = [objc_alloc(MEMORY[0x277D69CD8]) initWithURL:v14];
-    v16 = [SUUIStyledImageDataConsumer appIconConsumerWithSize:width, height];
-    [v15 setDataConsumer:v16];
+    height = [SUUIStyledImageDataConsumer appIconConsumerWithSize:width, height];
+    [v15 setDataConsumer:height];
 
     [v15 setITunesStoreRequest:0];
     v19[0] = MEMORY[0x277D85DD0];
@@ -158,38 +158,38 @@ LABEL_9:
   return v17;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = [(SUUIDeferredActivityItemProvider *)self productPageItem];
-  v5 = [v4 shortenedProductPageURLString];
-  v6 = v5;
-  if (v5)
+  productPageItem = [(SUUIDeferredActivityItemProvider *)self productPageItem];
+  shortenedProductPageURLString = [productPageItem shortenedProductPageURLString];
+  v6 = shortenedProductPageURLString;
+  if (shortenedProductPageURLString)
   {
-    v7 = v5;
+    productPageURLString = shortenedProductPageURLString;
   }
 
   else
   {
-    v8 = [(SUUIDeferredActivityItemProvider *)self productPageItem];
-    v7 = [v8 productPageURLString];
+    productPageItem2 = [(SUUIDeferredActivityItemProvider *)self productPageItem];
+    productPageURLString = [productPageItem2 productPageURLString];
   }
 
-  v9 = [MEMORY[0x277CBEBC0] URLWithString:v7];
-  v10 = [(SUUIDeferredActivityItemProvider *)self productPageItem];
-  v11 = v10;
+  v9 = [MEMORY[0x277CBEBC0] URLWithString:productPageURLString];
+  productPageItem3 = [(SUUIDeferredActivityItemProvider *)self productPageItem];
+  v11 = productPageItem3;
   v12 = 0;
-  if (v9 && v10)
+  if (v9 && productPageItem3)
   {
     v41 = v9;
-    v42 = v7;
-    v13 = [MEMORY[0x277CBEB18] array];
+    v42 = productPageURLString;
+    array = [MEMORY[0x277CBEB18] array];
     v43 = 0u;
     v44 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v14 = [v11 screenshots];
-    v15 = [v14 countByEnumeratingWithState:&v43 objects:v47 count:16];
+    screenshots = [v11 screenshots];
+    v15 = [screenshots countByEnumeratingWithState:&v43 objects:v47 count:16];
     if (v15)
     {
       v16 = v15;
@@ -200,45 +200,45 @@ LABEL_9:
         {
           if (*v44 != v17)
           {
-            objc_enumerationMutation(v14);
+            objc_enumerationMutation(screenshots);
           }
 
           v19 = [*(*(&v43 + 1) + 8 * i) URLForVariant:@"low-dpi"];
           if (v19)
           {
             v20 = [(SUUIURLActivityItemProvider *)self linkPresentationImageFor:v19];
-            [v13 addObject:v20];
+            [array addObject:v20];
           }
         }
 
-        v16 = [v14 countByEnumeratingWithState:&v43 objects:v47 count:16];
+        v16 = [screenshots countByEnumeratingWithState:&v43 objects:v47 count:16];
       }
 
       while (v16);
     }
 
-    v21 = [v11 videos];
-    v22 = [v21 firstObject];
+    videos = [v11 videos];
+    firstObject = [videos firstObject];
 
-    v23 = [v22 artworks];
-    v24 = [v23 bestArtworkForScaledSize:{300.0, 300.0}];
+    artworks = [firstObject artworks];
+    v24 = [artworks bestArtworkForScaledSize:{300.0, 300.0}];
     v40 = [v24 URL];
 
     v12 = objc_alloc_init(MEMORY[0x277CD46C8]);
     v9 = v41;
     [v12 setURL:v41];
-    v25 = [v11 title];
-    [v12 setTitle:v25];
+    title = [v11 title];
+    [v12 setTitle:title];
 
     v26 = objc_alloc_init(MEMORY[0x277CD4720]);
-    v27 = [v11 title];
-    [v26 setName:v27];
+    title2 = [v11 title];
+    [v26 setName:title2];
 
-    v28 = [v11 artistName];
-    [v26 setSubtitle:v28];
+    artistName = [v11 artistName];
+    [v26 setSubtitle:artistName];
 
-    v29 = [v11 artworksProvider];
-    v30 = [v29 bestArtworkForScaledSize:{40.0, 40.0}];
+    artworksProvider = [v11 artworksProvider];
+    v30 = [artworksProvider bestArtworkForScaledSize:{40.0, 40.0}];
     v31 = [v30 URL];
 
     if (v31)
@@ -247,19 +247,19 @@ LABEL_9:
       [v26 setIcon:v32];
     }
 
-    v33 = [v11 storeIdentifier];
-    v34 = [v33 stringValue];
-    [v26 setStoreIdentifier:v34];
+    storeIdentifier = [v11 storeIdentifier];
+    stringValue = [storeIdentifier stringValue];
+    [v26 setStoreIdentifier:stringValue];
 
-    v35 = [(SUUIDeferredActivityItemProvider *)self clientContext];
-    v36 = [v35 storeFrontIdentifier];
-    [v26 setStoreFrontIdentifier:v36];
+    clientContext = [(SUUIDeferredActivityItemProvider *)self clientContext];
+    storeFrontIdentifier = [clientContext storeFrontIdentifier];
+    [v26 setStoreFrontIdentifier:storeFrontIdentifier];
 
-    v37 = [v11 categoryName];
-    [v26 setGenre:v37];
+    categoryName = [v11 categoryName];
+    [v26 setGenre:categoryName];
 
     [v26 setPlatform:@"iOS"];
-    [v26 setScreenshots:v13];
+    [v26 setScreenshots:array];
     v38 = [objc_alloc(MEMORY[0x277CD4700]) initWithStreamingURL:v40 hasAudio:0];
     [v26 setPreviewVideo:v38];
 
@@ -267,16 +267,16 @@ LABEL_9:
     [v26 setMessagesAppIcon:0];
     [v12 setSpecialization:v26];
 
-    v7 = v42;
+    productPageURLString = v42;
   }
 
   return v12;
 }
 
-- (id)linkPresentationImageFor:(id)a3
+- (id)linkPresentationImageFor:(id)for
 {
-  v4 = a3;
-  v5 = [[SUUIArtworkItemProvider alloc] initWithURL:v4 usingResourceLoader:self->_resourceLoader];
+  forCopy = for;
+  v5 = [[SUUIArtworkItemProvider alloc] initWithURL:forCopy usingResourceLoader:self->_resourceLoader];
 
   v6 = [objc_alloc(MEMORY[0x277CD46B0]) initWithItemProvider:v5 properties:0 placeholderImage:0];
 

@@ -1,9 +1,9 @@
 @interface HKGlassesLensSpecification
-- (BOOL)isEqual:(id)a3;
-- (HKGlassesLensSpecification)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (HKGlassesLensSpecification)initWithCoder:(id)coder;
 - (HKGlassesLensSpecification)initWithSphere:(HKQuantity *)sphere cylinder:(HKQuantity *)cylinder axis:(HKQuantity *)axis addPower:(HKQuantity *)addPower vertexDistance:(HKQuantity *)vertexDistance prism:(HKVisionPrism *)prism farPupillaryDistance:(HKQuantity *)farPupillaryDistance nearPupillaryDistance:(HKQuantity *)nearPupillaryDistance;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKGlassesLensSpecification
@@ -51,10 +51,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -64,22 +64,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HKLensSpecification *)self sphere];
-      v8 = [(HKLensSpecification *)v6 sphere];
-      if (v7 != v8)
+      v6 = equalCopy;
+      sphere = [(HKLensSpecification *)self sphere];
+      sphere2 = [(HKLensSpecification *)v6 sphere];
+      if (sphere != sphere2)
       {
-        v80 = [(HKLensSpecification *)v6 sphere];
-        if (!v80)
+        sphere3 = [(HKLensSpecification *)v6 sphere];
+        if (!sphere3)
         {
           v10 = 0;
 
           goto LABEL_100;
         }
 
-        v3 = [(HKLensSpecification *)self sphere];
-        v9 = [(HKLensSpecification *)v6 sphere];
-        if (![v3 isEqual:v9])
+        sphere4 = [(HKLensSpecification *)self sphere];
+        sphere5 = [(HKLensSpecification *)v6 sphere];
+        if (![sphere4 isEqual:sphere5])
         {
           v10 = 0;
 LABEL_45:
@@ -88,37 +88,37 @@ LABEL_99:
           goto LABEL_100;
         }
 
-        v77 = v9;
+        v77 = sphere5;
       }
 
-      v11 = [(HKLensSpecification *)self cylinder];
-      v12 = [(HKLensSpecification *)v6 cylinder];
-      if (v11 != v12)
+      cylinder = [(HKLensSpecification *)self cylinder];
+      cylinder2 = [(HKLensSpecification *)v6 cylinder];
+      if (cylinder != cylinder2)
       {
-        v13 = [(HKLensSpecification *)v6 cylinder];
-        if (!v13)
+        cylinder3 = [(HKLensSpecification *)v6 cylinder];
+        if (!cylinder3)
         {
 
           v10 = 0;
           goto LABEL_97;
         }
 
-        v74 = v13;
-        v14 = [(HKLensSpecification *)self cylinder];
-        v75 = [(HKLensSpecification *)v6 cylinder];
-        v76 = v14;
-        if (![v14 isEqual:?])
+        v74 = cylinder3;
+        cylinder4 = [(HKLensSpecification *)self cylinder];
+        cylinder5 = [(HKLensSpecification *)v6 cylinder];
+        v76 = cylinder4;
+        if (![cylinder4 isEqual:?])
         {
           v10 = 0;
           goto LABEL_43;
         }
       }
 
-      v15 = [(HKLensSpecification *)self axis];
+      axis = [(HKLensSpecification *)self axis];
       [(HKLensSpecification *)v6 axis];
-      v79 = v78 = v15;
-      v16 = v15 == v79;
-      v17 = v15 != v79;
+      v79 = v78 = axis;
+      v16 = axis == v79;
+      v17 = axis != v79;
       if (v16)
       {
         v71 = v17;
@@ -126,12 +126,12 @@ LABEL_99:
 
       else
       {
-        v18 = [(HKLensSpecification *)v6 axis];
-        if (!v18)
+        axis2 = [(HKLensSpecification *)v6 axis];
+        if (!axis2)
         {
 
           v10 = 0;
-          if (v11 != v12)
+          if (cylinder != cylinder2)
           {
             LOBYTE(v24) = 1;
             goto LABEL_94;
@@ -148,11 +148,11 @@ LABEL_102:
         }
 
         v71 = v17;
-        v68 = v18;
-        v19 = [(HKLensSpecification *)self axis];
-        v69 = [(HKLensSpecification *)v6 axis];
-        v70 = v19;
-        if (![v19 isEqual:?])
+        v68 = axis2;
+        axis3 = [(HKLensSpecification *)self axis];
+        axis4 = [(HKLensSpecification *)v6 axis];
+        v70 = axis3;
+        if (![axis3 isEqual:?])
         {
           v10 = 0;
           v20 = v78;
@@ -160,19 +160,19 @@ LABEL_102:
         }
       }
 
-      v21 = [(HKLensSpecification *)self addPower];
-      v73 = [(HKLensSpecification *)v6 addPower];
-      v67 = v21 != v73;
-      if (v21 == v73)
+      addPower = [(HKLensSpecification *)self addPower];
+      addPower2 = [(HKLensSpecification *)v6 addPower];
+      v67 = addPower != addPower2;
+      if (addPower == addPower2)
       {
-        v72 = v21;
-        v66 = v3;
+        v72 = addPower;
+        v66 = sphere4;
       }
 
       else
       {
-        v22 = [(HKLensSpecification *)v6 addPower];
-        if (!v22)
+        addPower3 = [(HKLensSpecification *)v6 addPower];
+        if (!addPower3)
         {
 
           v10 = 0;
@@ -186,34 +186,34 @@ LABEL_102:
           goto LABEL_104;
         }
 
-        v62 = v22;
-        v23 = [(HKLensSpecification *)self addPower];
-        v63 = [(HKLensSpecification *)v6 addPower];
-        v64 = v23;
-        v72 = v21;
-        if (![v23 isEqual:?])
+        v62 = addPower3;
+        addPower4 = [(HKLensSpecification *)self addPower];
+        addPower5 = [(HKLensSpecification *)v6 addPower];
+        v64 = addPower4;
+        v72 = addPower;
+        if (![addPower4 isEqual:?])
         {
           v10 = 0;
           goto LABEL_41;
         }
 
-        v66 = v3;
+        v66 = sphere4;
       }
 
       vertexDistance = self->_vertexDistance;
-      v65 = [(HKGlassesLensSpecification *)v6 vertexDistance];
+      vertexDistance = [(HKGlassesLensSpecification *)v6 vertexDistance];
       v61 = vertexDistance;
-      v16 = vertexDistance == v65;
-      v26 = vertexDistance != v65;
+      v16 = vertexDistance == vertexDistance;
+      v26 = vertexDistance != vertexDistance;
       if (!v16)
       {
-        v27 = [(HKGlassesLensSpecification *)v6 vertexDistance];
-        if (!v27)
+        vertexDistance2 = [(HKGlassesLensSpecification *)v6 vertexDistance];
+        if (!vertexDistance2)
         {
 
           v10 = 0;
-          v3 = v66;
-          if (v72 != v73)
+          sphere4 = v66;
+          if (v72 != addPower2)
           {
             LOBYTE(v37) = 1;
             goto LABEL_88;
@@ -248,8 +248,8 @@ LABEL_92:
 
 LABEL_93:
 
-            v24 = v11 != v12;
-            if (v11 != v12)
+            v24 = cylinder != cylinder2;
+            if (cylinder != cylinder2)
             {
 LABEL_94:
 
@@ -258,7 +258,7 @@ LABEL_94:
 LABEL_96:
 
 LABEL_97:
-                if (v7 != v8)
+                if (sphere != sphere2)
                 {
 
                   goto LABEL_99;
@@ -280,31 +280,31 @@ LABEL_89:
           goto LABEL_90;
         }
 
-        v59 = v27;
+        v59 = vertexDistance2;
         v28 = self->_vertexDistance;
-        v60 = [(HKGlassesLensSpecification *)v6 vertexDistance];
+        vertexDistance3 = [(HKGlassesLensSpecification *)v6 vertexDistance];
         if (![(HKQuantity *)v28 isEqual:?])
         {
           v10 = 0;
-          v29 = v65;
+          v29 = vertexDistance;
           goto LABEL_32;
         }
       }
 
       prism = self->_prism;
-      v32 = [(HKGlassesLensSpecification *)v6 prism];
+      prism = [(HKGlassesLensSpecification *)v6 prism];
       v58 = prism;
-      v16 = prism == v32;
-      v33 = v32;
+      v16 = prism == prism;
+      v33 = prism;
       if (!v16)
       {
-        v34 = [(HKGlassesLensSpecification *)v6 prism];
-        if (!v34)
+        prism2 = [(HKGlassesLensSpecification *)v6 prism];
+        if (!prism2)
         {
 
           v10 = 0;
-          v29 = v65;
-          if (v61 != v65)
+          v29 = vertexDistance;
+          if (v61 != vertexDistance)
           {
             goto LABEL_82;
           }
@@ -312,14 +312,14 @@ LABEL_89:
           goto LABEL_85;
         }
 
-        v56 = v34;
+        v56 = prism2;
         v35 = self->_prism;
-        v55 = [(HKGlassesLensSpecification *)v6 prism];
+        prism3 = [(HKGlassesLensSpecification *)v6 prism];
         if (![(HKVisionPrism *)v35 isEqual:?])
         {
           v10 = 0;
           v36 = v33;
-          v29 = v65;
+          v29 = vertexDistance;
 LABEL_80:
 
           if (v61 != v29)
@@ -349,85 +349,85 @@ LABEL_85:
       }
 
       farPupillaryDistance = self->_farPupillaryDistance;
-      v57 = [(HKGlassesLensSpecification *)v6 farPupillaryDistance];
-      if (farPupillaryDistance == v57)
+      farPupillaryDistance = [(HKGlassesLensSpecification *)v6 farPupillaryDistance];
+      if (farPupillaryDistance == farPupillaryDistance)
       {
         v54 = farPupillaryDistance;
       }
 
       else
       {
-        v39 = [(HKGlassesLensSpecification *)v6 farPupillaryDistance];
-        if (!v39)
+        farPupillaryDistance2 = [(HKGlassesLensSpecification *)v6 farPupillaryDistance];
+        if (!farPupillaryDistance2)
         {
           v36 = v33;
           v10 = 0;
           goto LABEL_79;
         }
 
-        v53 = v39;
+        v53 = farPupillaryDistance2;
         v54 = farPupillaryDistance;
         v40 = self->_farPupillaryDistance;
-        v41 = [(HKGlassesLensSpecification *)v6 farPupillaryDistance];
-        if (![(HKQuantity *)v40 isEqual:v41])
+        farPupillaryDistance3 = [(HKGlassesLensSpecification *)v6 farPupillaryDistance];
+        if (![(HKQuantity *)v40 isEqual:farPupillaryDistance3])
         {
 
           v10 = 0;
           goto LABEL_66;
         }
 
-        v50 = v41;
+        v50 = farPupillaryDistance3;
       }
 
       nearPupillaryDistance = self->_nearPupillaryDistance;
-      v43 = [(HKGlassesLensSpecification *)v6 nearPupillaryDistance];
-      v10 = nearPupillaryDistance == v43;
+      nearPupillaryDistance = [(HKGlassesLensSpecification *)v6 nearPupillaryDistance];
+      v10 = nearPupillaryDistance == nearPupillaryDistance;
       if (v10)
       {
       }
 
       else
       {
-        v52 = v43;
-        v44 = [(HKGlassesLensSpecification *)v6 nearPupillaryDistance];
-        if (v44)
+        v52 = nearPupillaryDistance;
+        nearPupillaryDistance2 = [(HKGlassesLensSpecification *)v6 nearPupillaryDistance];
+        if (nearPupillaryDistance2)
         {
           v45 = self->_nearPupillaryDistance;
-          v46 = v44;
-          v47 = [(HKGlassesLensSpecification *)v6 nearPupillaryDistance];
-          v10 = [(HKQuantity *)v45 isEqual:v47];
+          v46 = nearPupillaryDistance2;
+          nearPupillaryDistance3 = [(HKGlassesLensSpecification *)v6 nearPupillaryDistance];
+          v10 = [(HKQuantity *)v45 isEqual:nearPupillaryDistance3];
 
-          if (v54 != v57)
+          if (v54 != farPupillaryDistance)
           {
           }
 
 LABEL_66:
-          v3 = v66;
+          sphere4 = v66;
           if (v58 != v33)
           {
           }
 
-          if (v61 != v65)
+          if (v61 != vertexDistance)
           {
           }
 
-          v48 = v73;
-          if (v72 != v73)
+          v48 = addPower2;
+          if (v72 != addPower2)
           {
 
-            v48 = v73;
+            v48 = addPower2;
           }
 
           if (v78 != v79)
           {
           }
 
-          if (v11 == v12)
+          if (cylinder == cylinder2)
           {
 LABEL_44:
 
-            v9 = v77;
-            if (v7 != v8)
+            sphere5 = v77;
+            if (sphere != sphere2)
             {
               goto LABEL_45;
             }
@@ -443,11 +443,11 @@ LABEL_43:
         }
       }
 
-      if (v54 == v57)
+      if (v54 == farPupillaryDistance)
       {
 
         v36 = v33;
-        v29 = v65;
+        v29 = vertexDistance;
         if (v58 != v33)
         {
           goto LABEL_80;
@@ -459,7 +459,7 @@ LABEL_43:
       v36 = v33;
 
 LABEL_79:
-      v29 = v65;
+      v29 = vertexDistance;
 
       if (v58 != v36)
       {
@@ -472,8 +472,8 @@ LABEL_109:
       {
 LABEL_32:
 
-        v3 = v66;
-        if (v72 == v73)
+        sphere4 = v66;
+        if (v72 == addPower2)
         {
           goto LABEL_90;
         }
@@ -485,7 +485,7 @@ LABEL_41:
         {
 LABEL_42:
 
-          if (v11 != v12)
+          if (cylinder != cylinder2)
           {
             goto LABEL_43;
           }
@@ -498,9 +498,9 @@ LABEL_42:
 
 LABEL_87:
 
-      v3 = v66;
+      sphere4 = v66;
       v37 = v67;
-      if (v72 != v73)
+      if (v72 != addPower2)
       {
 LABEL_88:
 
@@ -523,38 +523,38 @@ LABEL_101:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v8 = a3;
-  v4 = [(HKLensSpecification *)self sphere];
-  [v8 encodeObject:v4 forKey:@"Sphere"];
+  coderCopy = coder;
+  sphere = [(HKLensSpecification *)self sphere];
+  [coderCopy encodeObject:sphere forKey:@"Sphere"];
 
-  v5 = [(HKLensSpecification *)self cylinder];
-  [v8 encodeObject:v5 forKey:@"Cyclinder"];
+  cylinder = [(HKLensSpecification *)self cylinder];
+  [coderCopy encodeObject:cylinder forKey:@"Cyclinder"];
 
-  v6 = [(HKLensSpecification *)self axis];
-  [v8 encodeObject:v6 forKey:@"Axis"];
+  axis = [(HKLensSpecification *)self axis];
+  [coderCopy encodeObject:axis forKey:@"Axis"];
 
-  v7 = [(HKLensSpecification *)self addPower];
-  [v8 encodeObject:v7 forKey:@"AddPower"];
+  addPower = [(HKLensSpecification *)self addPower];
+  [coderCopy encodeObject:addPower forKey:@"AddPower"];
 
-  [v8 encodeObject:self->_vertexDistance forKey:@"VertexDistance"];
-  [v8 encodeObject:self->_prism forKey:@"Prism"];
-  [v8 encodeObject:self->_farPupillaryDistance forKey:@"FarPupillaryDistance"];
-  [v8 encodeObject:self->_nearPupillaryDistance forKey:@"NearPupillaryDistance"];
+  [coderCopy encodeObject:self->_vertexDistance forKey:@"VertexDistance"];
+  [coderCopy encodeObject:self->_prism forKey:@"Prism"];
+  [coderCopy encodeObject:self->_farPupillaryDistance forKey:@"FarPupillaryDistance"];
+  [coderCopy encodeObject:self->_nearPupillaryDistance forKey:@"NearPupillaryDistance"];
 }
 
-- (HKGlassesLensSpecification)initWithCoder:(id)a3
+- (HKGlassesLensSpecification)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Sphere"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Cyclinder"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Axis"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AddPower"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"VertexDistance"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Prism"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FarPupillaryDistance"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NearPupillaryDistance"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Sphere"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Cyclinder"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Axis"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AddPower"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"VertexDistance"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Prism"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FarPupillaryDistance"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NearPupillaryDistance"];
 
   v13 = [(HKGlassesLensSpecification *)self initWithSphere:v5 cylinder:v6 axis:v7 addPower:v8 vertexDistance:v9 prism:v10 farPupillaryDistance:v11 nearPupillaryDistance:v12];
   return v13;

@@ -1,6 +1,6 @@
 @interface IMThemeBookshelf
 - (IMThemeBookshelf)init;
-- (void)stylizeSegmentedControl:(id)a3;
+- (void)stylizeSegmentedControl:(id)control;
 @end
 
 @implementation IMThemeBookshelf
@@ -74,9 +74,9 @@
     [(IMThemeBookshelf *)v3 setShelfTopColor:v22];
 
     v23 = [UIColor colorWithRed:0.0156862754 green:0.0156862754 blue:0.0627451017 alpha:0.0];
-    v24 = [v23 CGColor];
+    cGColor = [v23 CGColor];
     v25 = [UIColor colorWithRed:0.0156862754 green:0.0156862754 blue:0.0627451017 alpha:0.100000001];
-    v26 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", v24, [v25 CGColor], 0);
+    v26 = +[NSArray arrayWithObjects:](NSArray, "arrayWithObjects:", cGColor, [v25 CGColor], 0);
 
     *locations = xmmword_2A4130;
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
@@ -111,8 +111,8 @@
     v36 = [UIColor colorWithRed:0.0 green:0.0 blue:0.0 alpha:0.5];
     [(IMTheme *)v3 setButtonTitleColorDisabled:v36];
 
-    v37 = [(IMTheme *)v3 contentTextColor];
-    [(IMTheme *)v3 setFooterTextColor:v37];
+    contentTextColor = [(IMTheme *)v3 contentTextColor];
+    [(IMTheme *)v3 setFooterTextColor:contentTextColor];
 
     v38 = [UIColor colorWithRed:0.780392157 green:0.780392157 blue:0.8 alpha:1.0];
     [(IMThemeBookshelf *)v3 setApplicationSnapshotScrimColor:v38];
@@ -121,19 +121,19 @@
   return v3;
 }
 
-- (void)stylizeSegmentedControl:(id)a3
+- (void)stylizeSegmentedControl:(id)control
 {
-  v4 = a3;
-  v5 = [(IMTheme *)self tintColor];
-  [v4 setTintColor:v5];
+  controlCopy = control;
+  tintColor = [(IMTheme *)self tintColor];
+  [controlCopy setTintColor:tintColor];
 
-  v6 = [v4 titleTextAttributesForState:4];
+  v6 = [controlCopy titleTextAttributesForState:4];
   v8 = [NSMutableDictionary dictionaryWithDictionary:v6];
 
-  v7 = [(IMThemeBookshelf *)self selectedSegmentTextColor];
-  [v8 setObject:v7 forKeyedSubscript:NSForegroundColorAttributeName];
+  selectedSegmentTextColor = [(IMThemeBookshelf *)self selectedSegmentTextColor];
+  [v8 setObject:selectedSegmentTextColor forKeyedSubscript:NSForegroundColorAttributeName];
 
-  [v4 setTitleTextAttributes:v8 forState:4];
+  [controlCopy setTitleTextAttributes:v8 forState:4];
 }
 
 @end

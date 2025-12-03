@@ -1,28 +1,28 @@
 @interface CSStingrayRecordClientMetadataKeyRegistry
-+ (id)parseFromKeyRegistryPlist:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromKeyRegistryPlist:(id)plist error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (id)convertToPList;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)addServiceEntry:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addServiceEntry:(id)entry;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CSStingrayRecordClientMetadataKeyRegistry
 
-+ (id)parseFromKeyRegistryPlist:(id)a3 error:(id *)a4
++ (id)parseFromKeyRegistryPlist:(id)plist error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  plistCopy = plist;
   v27 = objc_alloc_init(CSStingrayRecordClientMetadataKeyRegistry);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = objc_msgSend_allKeys(v4, v5, v6);
+  v7 = objc_msgSend_allKeys(plistCopy, v5, v6);
   v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v7, v8, &v28, v32, 16);
   if (v9)
   {
@@ -38,7 +38,7 @@
         }
 
         v14 = *(*(&v28 + 1) + 8 * i);
-        v15 = objc_msgSend_objectForKeyedSubscript_(v4, v10, v14);
+        v15 = objc_msgSend_objectForKeyedSubscript_(plistCopy, v10, v14);
         v17 = objc_msgSend_objectForKeyedSubscript_(v15, v16, @"PublicIdentities");
         if (v17)
         {
@@ -116,22 +116,22 @@
   return v4;
 }
 
-- (void)addServiceEntry:(id)a3
+- (void)addServiceEntry:(id)entry
 {
-  v4 = a3;
+  entryCopy = entry;
   serviceEntrys = self->_serviceEntrys;
-  v8 = v4;
+  v8 = entryCopy;
   if (!serviceEntrys)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_serviceEntrys;
     self->_serviceEntrys = v6;
 
-    v4 = v8;
+    entryCopy = v8;
     serviceEntrys = self->_serviceEntrys;
   }
 
-  objc_msgSend_addObject_(serviceEntrys, v4, v4);
+  objc_msgSend_addObject_(serviceEntrys, entryCopy, entryCopy);
 }
 
 - (id)description
@@ -192,10 +192,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -231,12 +231,12 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v16 = a3;
+  toCopy = to;
   if (objc_msgSend_serviceEntrysCount(self, v4, v5))
   {
-    objc_msgSend_clearServiceEntrys(v16, v6, v7);
+    objc_msgSend_clearServiceEntrys(toCopy, v6, v7);
     v10 = objc_msgSend_serviceEntrysCount(self, v8, v9);
     if (v10)
     {
@@ -244,17 +244,17 @@
       for (i = 0; i != v12; ++i)
       {
         v14 = objc_msgSend_serviceEntryAtIndex_(self, v11, i);
-        objc_msgSend_addServiceEntry_(v16, v15, v14);
+        objc_msgSend_addServiceEntry_(toCopy, v15, v14);
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
   v22 = 0u;
   v23 = 0u;
@@ -276,7 +276,7 @@
           objc_enumerationMutation(v11);
         }
 
-        v18 = objc_msgSend_copyWithZone_(*(*(&v22 + 1) + 8 * v17), v14, a3, v22);
+        v18 = objc_msgSend_copyWithZone_(*(*(&v22 + 1) + 8 * v17), v14, zone, v22);
         objc_msgSend_addServiceEntry_(v10, v19, v18);
 
         ++v17;
@@ -293,14 +293,14 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     serviceEntrys = self->_serviceEntrys;
-    v9 = v4[1];
+    v9 = equalCopy[1];
     if (serviceEntrys | v9)
     {
       isEqual = objc_msgSend_isEqual_(serviceEntrys, v7, v9);
@@ -320,14 +320,14 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = *(a3 + 1);
+  v4 = *(from + 1);
   v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v12, v16, 16);
   if (v6)
   {

@@ -1,21 +1,21 @@
 @interface WFSendEmailActionUIKitUserInterface
-- (void)cancelPresentationWithCompletionHandler:(id)a3;
-- (void)finishWithError:(id)a3;
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5;
-- (void)showWithEmailContent:(id)a3 preferredSendingEmailAddress:(id)a4 isManaged:(BOOL)a5 completionHandler:(id)a6;
+- (void)cancelPresentationWithCompletionHandler:(id)handler;
+- (void)finishWithError:(id)error;
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error;
+- (void)showWithEmailContent:(id)content preferredSendingEmailAddress:(id)address isManaged:(BOOL)managed completionHandler:(id)handler;
 @end
 
 @implementation WFSendEmailActionUIKitUserInterface
 
-- (void)mailComposeController:(id)a3 didFinishWithResult:(int64_t)a4 error:(id)a5
+- (void)mailComposeController:(id)controller didFinishWithResult:(int64_t)result error:(id)error
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __87__WFSendEmailActionUIKitUserInterface_mailComposeController_didFinishWithResult_error___block_invoke;
   v5[3] = &unk_278C374C0;
   v5[4] = self;
-  v5[5] = a4;
-  [a3 dismissViewControllerAnimated:1 completion:{v5, a5}];
+  v5[5] = result;
+  [controller dismissViewControllerAnimated:1 completion:{v5, error}];
 }
 
 void __87__WFSendEmailActionUIKitUserInterface_mailComposeController_didFinishWithResult_error___block_invoke(uint64_t a1)
@@ -41,18 +41,18 @@ LABEL_7:
   [*(a1 + 32) finishWithError:v4];
 }
 
-- (void)cancelPresentationWithCompletionHandler:(id)a3
+- (void)cancelPresentationWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __79__WFSendEmailActionUIKitUserInterface_cancelPresentationWithCompletionHandler___block_invoke;
   v7[3] = &unk_278C375C8;
   v7[4] = self;
-  v8 = v4;
+  v8 = handlerCopy;
   v6.receiver = self;
   v6.super_class = WFSendEmailActionUIKitUserInterface;
-  v5 = v4;
+  v5 = handlerCopy;
   [(WFEmbeddableActionUserInterface *)&v6 cancelPresentationWithCompletionHandler:v7];
 }
 
@@ -67,30 +67,30 @@ uint64_t __79__WFSendEmailActionUIKitUserInterface_cancelPresentationWithComplet
   return v4();
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v6 = a3;
-  v4 = [(WFSendEmailActionUIKitUserInterface *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(WFSendEmailActionUIKitUserInterface *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(WFSendEmailActionUIKitUserInterface *)self completionHandler];
-    (v5)[2](v5, 0, v6);
+    completionHandler2 = [(WFSendEmailActionUIKitUserInterface *)self completionHandler];
+    (completionHandler2)[2](completionHandler2, 0, errorCopy);
   }
 
   [(WFSendEmailActionUIKitUserInterface *)self setCompletionHandler:0];
 }
 
-- (void)showWithEmailContent:(id)a3 preferredSendingEmailAddress:(id)a4 isManaged:(BOOL)a5 completionHandler:(id)a6
+- (void)showWithEmailContent:(id)content preferredSendingEmailAddress:(id)address isManaged:(BOOL)managed completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = v13;
-  if (!v11)
+  contentCopy = content;
+  addressCopy = address;
+  handlerCopy = handler;
+  v14 = handlerCopy;
+  if (!contentCopy)
   {
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFSendEmailActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"emailContent"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFSendEmailActionUIKitUserInterface.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"emailContent"}];
 
     if (v14)
     {
@@ -98,13 +98,13 @@ uint64_t __79__WFSendEmailActionUIKitUserInterface_cancelPresentationWithComplet
     }
 
 LABEL_5:
-    v18 = [MEMORY[0x277CCA890] currentHandler];
-    [v18 handleFailureInMethod:a2 object:self file:@"WFSendEmailActionUIKitUserInterface.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFSendEmailActionUIKitUserInterface.m" lineNumber:26 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
     goto LABEL_3;
   }
 
-  if (!v13)
+  if (!handlerCopy)
   {
     goto LABEL_5;
   }
@@ -115,12 +115,12 @@ LABEL_3:
   block[1] = 3221225472;
   block[2] = __117__WFSendEmailActionUIKitUserInterface_showWithEmailContent_preferredSendingEmailAddress_isManaged_completionHandler___block_invoke;
   block[3] = &unk_278C36F40;
-  v22 = a5;
+  managedCopy = managed;
   block[4] = self;
-  v20 = v11;
-  v21 = v12;
-  v15 = v12;
-  v16 = v11;
+  v20 = contentCopy;
+  v21 = addressCopy;
+  v15 = addressCopy;
+  v16 = contentCopy;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 

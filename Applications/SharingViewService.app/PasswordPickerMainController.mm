@@ -2,24 +2,24 @@
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_handleHomeButtonPressed;
 - (void)_willAppearInRemoteViewController;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
-- (void)dismiss:(int)a3 completion:(id)a4;
-- (void)handleButtonActions:(id)a3;
-- (void)handlePasswordPicked:(id)a3;
-- (void)passwordViewController:(id)a3 selectedCredential:(id)a4;
-- (void)passwordViewControllerDidFinish:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)configureWithContext:(id)context completion:(id)completion;
+- (void)dismiss:(int)dismiss completion:(id)completion;
+- (void)handleButtonActions:(id)actions;
+- (void)handlePasswordPicked:(id)picked;
+- (void)passwordViewController:(id)controller selectedCredential:(id)credential;
+- (void)passwordViewControllerDidFinish:(id)finish;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PasswordPickerMainController
 
-- (void)passwordViewController:(id)a3 selectedCredential:(id)a4
+- (void)passwordViewController:(id)controller selectedCredential:(id)credential
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  credentialCopy = credential;
   vcPicker = self->_vcPicker;
-  v9 = v6;
+  v9 = controllerCopy;
   v10 = vcPicker;
   v11 = v10;
   if (v10 == v9)
@@ -54,14 +54,14 @@ LABEL_11:
   v14[2] = sub_10010B590;
   v14[3] = &unk_100195A70;
   v14[4] = self;
-  v15 = v7;
-  v13 = v7;
+  v15 = credentialCopy;
+  v13 = credentialCopy;
   dispatch_async(&_dispatch_main_q, v14);
 }
 
-- (void)passwordViewControllerDidFinish:(id)a3
+- (void)passwordViewControllerDidFinish:(id)finish
 {
-  v4 = a3;
+  finishCopy = finish;
   if (dword_1001BEB48 <= 30 && (dword_1001BEB48 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -70,9 +70,9 @@ LABEL_11:
   [(PasswordPickerMainController *)self dismiss:0];
 }
 
-- (void)handlePasswordPicked:(id)a3
+- (void)handlePasswordPicked:(id)picked
 {
-  v7 = a3;
+  pickedCopy = picked;
   if (dword_1001BEB48 <= 30 && (dword_1001BEB48 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -82,9 +82,9 @@ LABEL_11:
   helper = self->_helper;
   if (helper)
   {
-    v5 = [v7 user];
-    v6 = [v7 password];
-    [(SFRemoteAutoFillSessionHelper *)helper serverDidPickUsername:v5 password:v6 error:0];
+    user = [pickedCopy user];
+    password = [pickedCopy password];
+    [(SFRemoteAutoFillSessionHelper *)helper serverDidPickUsername:user password:password error:0];
   }
 
   else if (dword_1001BEB48 <= 60 && (dword_1001BEB48 != -1 || _LogCategory_Initialize()))
@@ -93,13 +93,13 @@ LABEL_11:
   }
 }
 
-- (void)dismiss:(int)a3 completion:(id)a4
+- (void)dismiss:(int)dismiss completion:(id)completion
 {
-  v4 = *&a3;
-  v6 = a4;
+  v4 = *&dismiss;
+  completionCopy = completion;
   if (!self->_dismissed)
   {
-    v11 = v6;
+    v11 = completionCopy;
     self->_dismissed = 1;
     if (dword_1001BEB48 <= 30 && (dword_1001BEB48 != -1 || _LogCategory_Initialize()))
     {
@@ -115,16 +115,16 @@ LABEL_11:
     }
 
     [(PasswordPickerMainController *)self dismissViewControllerAnimated:1 completion:v11, v10];
-    v9 = [(PasswordPickerMainController *)self _remoteViewControllerProxy];
-    [v9 dismiss];
+    _remoteViewControllerProxy = [(PasswordPickerMainController *)self _remoteViewControllerProxy];
+    [_remoteViewControllerProxy dismiss];
 
-    v6 = v11;
+    completionCopy = v11;
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BEB48 <= 30 && (dword_1001BEB48 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -159,17 +159,17 @@ LABEL_11:
   vcPicker = self->_vcPicker;
   self->_vcPicker = 0;
 
-  v11 = [(PasswordPickerMainController *)self _remoteViewControllerProxy];
-  [v11 setStatusBarHidden:0 withDuration:0.0];
+  _remoteViewControllerProxy = [(PasswordPickerMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setStatusBarHidden:0 withDuration:0.0];
 
   v12.receiver = self;
   v12.super_class = PasswordPickerMainController;
-  [(SVSBaseMainController *)&v12 viewDidDisappear:v3];
+  [(SVSBaseMainController *)&v12 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BEB48 <= 30 && (dword_1001BEB48 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -177,7 +177,7 @@ LABEL_11:
 
   v11.receiver = self;
   v11.super_class = PasswordPickerMainController;
-  [(PasswordPickerMainController *)&v11 viewDidAppear:v3];
+  [(PasswordPickerMainController *)&v11 viewDidAppear:appearCopy];
   v5 = objc_alloc_init(off_1001BEBB8());
   vcPicker = self->_vcPicker;
   self->_vcPicker = v5;
@@ -230,14 +230,14 @@ LABEL_11:
   [(PasswordPickerMainController *)self dismiss:4];
 }
 
-- (void)handleButtonActions:(id)a3
+- (void)handleButtonActions:(id)actions
 {
-  v4 = a3;
+  actionsCopy = actions;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -249,7 +249,7 @@ LABEL_11:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(actionsCopy);
         }
 
         if (([*(*(&v9 + 1) + 8 * v8) events] & 0x10) != 0)
@@ -261,19 +261,19 @@ LABEL_11:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [actionsCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v18 = a4;
-  v6 = [a3 userInfo];
+  completionCopy = completion;
+  userInfo = [context userInfo];
   userInfo = self->super._userInfo;
-  self->super._userInfo = v6;
+  self->super._userInfo = userInfo;
 
   if (dword_1001BEB48 <= 30 && (dword_1001BEB48 != -1 || _LogCategory_Initialize()))
   {
@@ -326,9 +326,9 @@ LABEL_11:
   self->_helper = v16;
 
   [(SFRemoteAutoFillSessionHelper *)self->_helper activateWithCompletion:&stru_100194FC0];
-  if (v18)
+  if (completionCopy)
   {
-    v18[2](v18);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -337,26 +337,26 @@ LABEL_11:
   v4.receiver = self;
   v4.super_class = PasswordPickerMainController;
   [(SVSBaseMainController *)&v4 _willAppearInRemoteViewController];
-  v3 = [(PasswordPickerMainController *)self _remoteViewControllerProxy];
-  [v3 setAllowsAlertItems:1];
-  [v3 setAllowsAlertStacking:1];
-  [v3 setStatusBarHidden:0 withDuration:0.0];
+  _remoteViewControllerProxy = [(PasswordPickerMainController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy setAllowsAlertItems:1];
+  [_remoteViewControllerProxy setAllowsAlertStacking:1];
+  [_remoteViewControllerProxy setStatusBarHidden:0 withDuration:0.0];
 }
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [(PasswordPickerMainController *)self view];
-  v3 = [v2 window];
+  view = [(PasswordPickerMainController *)self view];
+  window = [view window];
 
-  if (!v3)
+  if (!window)
   {
     return 30;
   }
 
   v4 = +[UIDevice currentDevice];
-  v5 = [v4 userInterfaceIdiom];
+  userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return (1 << [UIApp activeInterfaceOrientation]);
   }

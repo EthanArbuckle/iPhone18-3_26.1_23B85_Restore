@@ -1,15 +1,15 @@
 @interface WKUIRemoteView
 - (NSString)description;
-- (WKUIRemoteView)initWithFrame:(CGRect)a3 pid:(int)a4 contextID:(unsigned int)a5;
+- (WKUIRemoteView)initWithFrame:(CGRect)frame pid:(int)pid contextID:(unsigned int)d;
 @end
 
 @implementation WKUIRemoteView
 
-- (WKUIRemoteView)initWithFrame:(CGRect)a3 pid:(int)a4 contextID:(unsigned int)a5
+- (WKUIRemoteView)initWithFrame:(CGRect)frame pid:(int)pid contextID:(unsigned int)d
 {
   v6.receiver = self;
   v6.super_class = WKUIRemoteView;
-  return [(_UIRemoteView *)&v6 initWithFrame:*&a4 pid:*&a5 contextID:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  return [(_UIRemoteView *)&v6 initWithFrame:*&pid pid:*&d contextID:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
 }
 
 - (NSString)description
@@ -17,8 +17,8 @@
   v7.receiver = self;
   v7.super_class = WKUIRemoteView;
   v3 = [(WKUIRemoteView *)&v7 description];
-  v4 = [(WKUIRemoteView *)self layer];
-  return WebKit::RemoteLayerTreeNode::appendLayerDescription(v3, v4, v5);
+  layer = [(WKUIRemoteView *)self layer];
+  return WebKit::RemoteLayerTreeNode::appendLayerDescription(v3, layer, v5);
 }
 
 @end

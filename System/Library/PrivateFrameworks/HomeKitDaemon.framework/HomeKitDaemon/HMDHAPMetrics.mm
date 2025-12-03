@@ -1,5 +1,5 @@
 @interface HMDHAPMetrics
-- (HMDHAPMetrics)initWithHMDAccessory:(id)a3;
+- (HMDHAPMetrics)initWithHMDAccessory:(id)accessory;
 - (NSDictionary)coreAnalyticsEventDictionary;
 - (NSString)coreAnalyticsEventName;
 @end
@@ -32,17 +32,17 @@
   objc_exception_throw(v7);
 }
 
-- (HMDHAPMetrics)initWithHMDAccessory:(id)a3
+- (HMDHAPMetrics)initWithHMDAccessory:(id)accessory
 {
-  v4 = a3;
+  accessoryCopy = accessory;
   v9.receiver = self;
   v9.super_class = HMDHAPMetrics;
   v5 = [(HMMLogEvent *)&v9 init];
   if (v5)
   {
-    v6 = [v4 identifier];
+    identifier = [accessoryCopy identifier];
     accessoryIdentifier = v5->_accessoryIdentifier;
-    v5->_accessoryIdentifier = v6;
+    v5->_accessoryIdentifier = identifier;
   }
 
   return v5;

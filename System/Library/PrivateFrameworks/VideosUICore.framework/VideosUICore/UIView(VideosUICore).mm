@@ -19,11 +19,11 @@
 
 - (uint64_t)setVuiAlpha:()VideosUICore
 {
-  result = [a1 vuiAlpha];
+  result = [self vuiAlpha];
   if (v5 != a2)
   {
 
-    return [a1 setAlpha:a2];
+    return [self setAlpha:a2];
   }
 
   return result;
@@ -31,17 +31,17 @@
 
 - (unint64_t)vuiUserInterfaceStyle
 {
-  v1 = [a1 traitCollection];
-  v2 = [v1 userInterfaceStyle];
+  traitCollection = [self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  return [VUICoreUtilities vuiUserInterfaceStyleForInterfaceStyle:v2];
+  return [VUICoreUtilities vuiUserInterfaceStyleForInterfaceStyle:userInterfaceStyle];
 }
 
 - (unint64_t)vuiOverrideUserInterfaceStyle
 {
-  v1 = [a1 overrideUserInterfaceStyle];
+  overrideUserInterfaceStyle = [self overrideUserInterfaceStyle];
 
-  return [VUICoreUtilities vuiUserInterfaceStyleForInterfaceStyle:v1];
+  return [VUICoreUtilities vuiUserInterfaceStyleForInterfaceStyle:overrideUserInterfaceStyle];
 }
 
 - (uint64_t)vui_setOverrideUserInterfaceStyle:()VideosUICore
@@ -56,21 +56,21 @@
     v3 = 2 * (a3 == 2);
   }
 
-  return [a1 setOverrideUserInterfaceStyle:v3];
+  return [self setOverrideUserInterfaceStyle:v3];
 }
 
 - (unint64_t)vuiContentMode
 {
-  v1 = [a1 contentMode];
+  contentMode = [self contentMode];
 
-  return VUIViewContentModeFromUIContentMode(v1);
+  return VUIViewContentModeFromUIContentMode(contentMode);
 }
 
 - (uint64_t)setVuiContentMode:()VideosUICore
 {
   v4 = VUIUIViewContentModeFromVUIContentMode(a3);
 
-  return [a1 setContentMode:v4];
+  return [self setContentMode:v4];
 }
 
 - (uint64_t)vui_addSubview:()VideosUICore oldView:
@@ -82,12 +82,12 @@
   {
     if (v7)
     {
-      v10 = [v6 superview];
+      superview = [v6 superview];
 
-      if (!v10)
+      if (!superview)
       {
-        [a1 addSubview:v6];
-        if (![a1 vuiDebugUI])
+        [self addSubview:v6];
+        if (![self vuiDebugUI])
         {
           goto LABEL_11;
         }
@@ -100,16 +100,16 @@
   else if (v6 | v7)
   {
     [v7 vui_removeFromSuperView];
-    if (!v6 || ([v6 vui_isDescendantOfView:a1] & 1) != 0)
+    if (!v6 || ([v6 vui_isDescendantOfView:self] & 1) != 0)
     {
       v9 = 0;
 LABEL_12:
-      [a1 vui_setNeedsLayout];
+      [self vui_setNeedsLayout];
       goto LABEL_13;
     }
 
-    [a1 addSubview:v6];
-    if (([a1 vuiDebugUI] & 1) == 0)
+    [self addSubview:v6];
+    if (([self vuiDebugUI] & 1) == 0)
     {
 LABEL_11:
       v9 = 1;
@@ -145,10 +145,10 @@ LABEL_13:
     else
     {
       [v10 vui_removeFromSuperView];
-      if (v8 && ([v8 vui_isDescendantOfView:a1] & 1) == 0)
+      if (v8 && ([v8 vui_isDescendantOfView:self] & 1) == 0)
       {
-        [a1 insertSubview:v8 aboveSubview:v9];
-        if ([a1 vuiDebugUI])
+        [self insertSubview:v8 aboveSubview:v9];
+        if ([self vuiDebugUI])
         {
           v13 = +[VUICoreUtilities randomColor];
           [v8 setVuiBackgroundColor:v13];
@@ -162,13 +162,13 @@ LABEL_13:
         v12 = 0;
       }
 
-      [a1 vui_setNeedsLayout];
+      [self vui_setNeedsLayout];
     }
   }
 
   else
   {
-    v12 = [a1 vui_addSubview:v8 oldView:v10];
+    v12 = [self vui_addSubview:v8 oldView:v10];
   }
 
   return v12;
@@ -190,10 +190,10 @@ LABEL_13:
     else
     {
       [v10 vui_removeFromSuperView];
-      if (v8 && ([v8 vui_isDescendantOfView:a1] & 1) == 0)
+      if (v8 && ([v8 vui_isDescendantOfView:self] & 1) == 0)
       {
-        [a1 insertSubview:v8 belowSubview:v9];
-        if ([a1 vuiDebugUI])
+        [self insertSubview:v8 belowSubview:v9];
+        if ([self vuiDebugUI])
         {
           v13 = +[VUICoreUtilities randomColor];
           [v8 setVuiBackgroundColor:v13];
@@ -207,13 +207,13 @@ LABEL_13:
         v12 = 0;
       }
 
-      [a1 vui_setNeedsLayout];
+      [self vui_setNeedsLayout];
     }
   }
 
   else
   {
-    v12 = [a1 vui_addSubview:v8 oldView:v10];
+    v12 = [self vui_addSubview:v8 oldView:v10];
   }
 
   return v12;
@@ -221,26 +221,26 @@ LABEL_13:
 
 - (void)vui_removeFromSuperView
 {
-  v2 = [a1 superview];
+  superview = [self superview];
 
-  if (v2)
+  if (superview)
   {
 
-    [a1 removeFromSuperview];
+    [self removeFromSuperview];
   }
 }
 
 - (void)vui_performAsCurrentTraitCollection:()VideosUICore
 {
   v4 = a3;
-  v5 = [a1 traitCollection];
+  traitCollection = [self traitCollection];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __60__UIView_VideosUICore__vui_performAsCurrentTraitCollection___block_invoke;
   v7[3] = &unk_279E21370;
   v8 = v4;
   v6 = v4;
-  [v5 performAsCurrentTraitCollection:v7];
+  [traitCollection performAsCurrentTraitCollection:v7];
 }
 
 - (double)vui_layoutSubviews:()VideosUICore computationOnly:
@@ -250,7 +250,7 @@ LABEL_13:
     return *MEMORY[0x277CBF3A8];
   }
 
-  [a1 bounds];
+  [self bounds];
   return v3;
 }
 
@@ -258,7 +258,7 @@ LABEL_13:
 {
   v8 = a4;
   v6 = [VUITraitBaseClass uiTraitsFrom:a3];
-  v7 = [a1 registerForTraitChanges:v6 withHandler:v8];
+  v7 = [self registerForTraitChanges:v6 withHandler:v8];
 }
 
 + (id)_timingFuctionWithOptions:()VideosUICore

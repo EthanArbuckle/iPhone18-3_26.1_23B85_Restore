@@ -5,32 +5,32 @@
 - (NSDictionary)serverUtteranceConversationIds;
 - (SiriSharedUISAEViewModelChangeObserving)viewModelChangeObserver;
 - (SiriSharedUISAEViewModelController)init;
-- (SiriSharedUISAEViewModelController)initWithConversation:(id)a3 delegate:(id)a4;
+- (SiriSharedUISAEViewModelController)initWithConversation:(id)conversation delegate:(id)delegate;
 - (SiriSharedUISAEViewModelControllerDelegate)delegate;
-- (id)serverUtterancesToDisplayForConversation:(id)a3;
-- (id)userUtteranceForConversationItem:(id)a3;
+- (id)serverUtterancesToDisplayForConversation:(id)conversation;
+- (id)userUtteranceForConversationItem:(id)item;
 - (int64_t)inputType;
-- (unint64_t)_generateDiffFromViewModel:(id)a3 toViewModel:(id)a4;
-- (void)_notifyObserverOfViewModelChangeWithDiff:(unint64_t)a3;
-- (void)_processInitialConversationItemsForConversation:(id)a3;
-- (void)_processInsertedConversationItemsForConversationItems:(id)a3 forConversation:(id)a4;
-- (void)_processUpdatedConversationItemsAtIndexPaths:(id)a3;
+- (unint64_t)_generateDiffFromViewModel:(id)model toViewModel:(id)viewModel;
+- (void)_notifyObserverOfViewModelChangeWithDiff:(unint64_t)diff;
+- (void)_processInitialConversationItemsForConversation:(id)conversation;
+- (void)_processInsertedConversationItemsForConversationItems:(id)items forConversation:(id)conversation;
+- (void)_processUpdatedConversationItemsAtIndexPaths:(id)paths;
 - (void)clearLatencySummary;
 - (void)clearLatencySummaryWithoutViewUpdate;
-- (void)conversationDidChangeWithTransaction:(id)a3;
-- (void)didReceiveLatencyInformation:(id)a3;
+- (void)conversationDidChangeWithTransaction:(id)transaction;
+- (void)didReceiveLatencyInformation:(id)information;
 - (void)inputTypeDidChange;
-- (void)resetViewsAndClearASR:(BOOL)a3;
+- (void)resetViewsAndClearASR:(BOOL)r;
 - (void)revealLatencyView;
-- (void)revealUserUtterance:(id)a3 backingAceObject:(id)a4;
-- (void)revealUserUtterance:(id)a3 backingAceObject:(id)a4 asrAlternatives:(id)a5;
-- (void)setConversation:(id)a3;
-- (void)setPreviousConversation:(id)a3;
-- (void)setServerUtteranceConversationIds:(id)a3;
-- (void)setStoredTranscriptItems:(id)a3;
-- (void)setViewModel:(id)a3;
-- (void)setViewModelChangeObserver:(id)a3;
-- (void)updateCurrentRequestText:(id)a3;
+- (void)revealUserUtterance:(id)utterance backingAceObject:(id)object;
+- (void)revealUserUtterance:(id)utterance backingAceObject:(id)object asrAlternatives:(id)alternatives;
+- (void)setConversation:(id)conversation;
+- (void)setPreviousConversation:(id)conversation;
+- (void)setServerUtteranceConversationIds:(id)ids;
+- (void)setStoredTranscriptItems:(id)items;
+- (void)setViewModel:(id)model;
+- (void)setViewModelChangeObserver:(id)observer;
+- (void)updateCurrentRequestText:(id)text;
 @end
 
 @implementation SiriSharedUISAEViewModelController
@@ -42,11 +42,11 @@
   return Strong;
 }
 
-- (void)setConversation:(id)a3
+- (void)setConversation:(id)conversation
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUISAEViewModelController_conversation);
-  *(self + OBJC_IVAR___SiriSharedUISAEViewModelController_conversation) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___SiriSharedUISAEViewModelController_conversation) = conversation;
+  conversationCopy = conversation;
 }
 
 - (NSDictionary)serverUtteranceConversationIds
@@ -60,7 +60,7 @@
   return v2;
 }
 
-- (void)setServerUtteranceConversationIds:(id)a3
+- (void)setServerUtteranceConversationIds:(id)ids
 {
   sub_21E4DB698();
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27CEC5DD8);
@@ -77,17 +77,17 @@
   return v2;
 }
 
-- (void)setStoredTranscriptItems:(id)a3
+- (void)setStoredTranscriptItems:(id)items
 {
   sub_21E43F008(0, &qword_280C14128);
   *(self + OBJC_IVAR___SiriSharedUISAEViewModelController_storedTranscriptItems) = sub_21E4DD088();
 }
 
-- (SiriSharedUISAEViewModelController)initWithConversation:(id)a3 delegate:(id)a4
+- (SiriSharedUISAEViewModelController)initWithConversation:(id)conversation delegate:(id)delegate
 {
-  v4 = a3;
+  conversationCopy = conversation;
   swift_unknownObjectRetain();
-  return sub_21E46C9A8(v4);
+  return sub_21E46C9A8(conversationCopy);
 }
 
 - (AFConversation)previousConversation
@@ -97,11 +97,11 @@
   return *(self + v3);
 }
 
-- (void)setPreviousConversation:(id)a3
+- (void)setPreviousConversation:(id)conversation
 {
-  v5 = a3;
-  v6 = self;
-  SiriSharedUISAEViewModelController.previousConversation.setter(a3);
+  conversationCopy = conversation;
+  selfCopy = self;
+  SiriSharedUISAEViewModelController.previousConversation.setter(conversation);
 }
 
 - (SiriSharedUISAEViewModelChangeObserving)viewModelChangeObserver
@@ -112,102 +112,102 @@
   return Strong;
 }
 
-- (void)setViewModelChangeObserver:(id)a3
+- (void)setViewModelChangeObserver:(id)observer
 {
   swift_beginAccess();
   swift_unknownObjectWeakAssign();
   v4 = objc_allocWithZone(SiriSharedUISAEViewModel);
   swift_unknownObjectRetain();
-  v5 = self;
+  selfCopy = self;
   v6 = [v4 init];
-  v7 = [(SiriSharedUISAEViewModelController *)v5 viewModel];
-  v8 = [(SiriSharedUISAEViewModelController *)v5 _generateDiffFromViewModel:v6 toViewModel:v7];
+  viewModel = [(SiriSharedUISAEViewModelController *)selfCopy viewModel];
+  v8 = [(SiriSharedUISAEViewModelController *)selfCopy _generateDiffFromViewModel:v6 toViewModel:viewModel];
 
-  [(SiriSharedUISAEViewModelController *)v5 _notifyObserverOfViewModelChangeWithDiff:v8];
+  [(SiriSharedUISAEViewModelController *)selfCopy _notifyObserverOfViewModelChangeWithDiff:v8];
   swift_unknownObjectRelease();
 }
 
-- (void)_notifyObserverOfViewModelChangeWithDiff:(unint64_t)a3
+- (void)_notifyObserverOfViewModelChangeWithDiff:(unint64_t)diff
 {
-  if (a3)
+  if (diff)
   {
-    v7 = self;
-    v4 = [(SiriSharedUISAEViewModelController *)v7 viewModelChangeObserver];
-    if (v4)
+    selfCopy = self;
+    viewModelChangeObserver = [(SiriSharedUISAEViewModelController *)selfCopy viewModelChangeObserver];
+    if (viewModelChangeObserver)
     {
-      v5 = v4;
-      v6 = [(SiriSharedUISAEViewModelController *)v7 viewModel];
-      [(SiriSharedUISAEViewModelChangeObserving *)v5 saeViewModelDidChange:v6 withDiff:a3];
+      v5 = viewModelChangeObserver;
+      viewModel = [(SiriSharedUISAEViewModelController *)selfCopy viewModel];
+      [(SiriSharedUISAEViewModelChangeObserving *)v5 saeViewModelDidChange:viewModel withDiff:diff];
       swift_unknownObjectRelease();
     }
   }
 }
 
-- (unint64_t)_generateDiffFromViewModel:(id)a3 toViewModel:(id)a4
+- (unint64_t)_generateDiffFromViewModel:(id)model toViewModel:(id)viewModel
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v9 = sub_21E476F84(v6, v7);
+  modelCopy = model;
+  viewModelCopy = viewModel;
+  selfCopy = self;
+  v9 = sub_21E476F84(modelCopy, viewModelCopy);
 
   return v9;
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
   v4 = *(self + OBJC_IVAR___SiriSharedUISAEViewModelController_viewModel);
-  *(self + OBJC_IVAR___SiriSharedUISAEViewModelController_viewModel) = a3;
-  v5 = a3;
-  v6 = self;
-  [(SiriSharedUISAEViewModelController *)v6 _notifyObserverOfViewModelChangeWithDiff:[(SiriSharedUISAEViewModelController *)v6 _generateDiffFromViewModel:v4 toViewModel:v5]];
+  *(self + OBJC_IVAR___SiriSharedUISAEViewModelController_viewModel) = model;
+  modelCopy = model;
+  selfCopy = self;
+  [(SiriSharedUISAEViewModelController *)selfCopy _notifyObserverOfViewModelChangeWithDiff:[(SiriSharedUISAEViewModelController *)selfCopy _generateDiffFromViewModel:v4 toViewModel:modelCopy]];
 }
 
-- (void)_processInitialConversationItemsForConversation:(id)a3
+- (void)_processInitialConversationItemsForConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
-  sub_21E46D40C(v4);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_21E46D40C(conversationCopy);
 }
 
-- (void)conversationDidChangeWithTransaction:(id)a3
+- (void)conversationDidChangeWithTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = self;
-  sub_21E46D770(v4);
+  transactionCopy = transaction;
+  selfCopy = self;
+  sub_21E46D770(transactionCopy);
 }
 
-- (void)_processUpdatedConversationItemsAtIndexPaths:(id)a3
+- (void)_processUpdatedConversationItemsAtIndexPaths:(id)paths
 {
   sub_21E4DB6F8();
   v4 = sub_21E4DD088();
-  v5 = self;
+  selfCopy = self;
   sub_21E46E8C4(v4);
 }
 
-- (void)_processInsertedConversationItemsForConversationItems:(id)a3 forConversation:(id)a4
+- (void)_processInsertedConversationItemsForConversationItems:(id)items forConversation:(id)conversation
 {
   __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CEC5DE0);
   v6 = sub_21E4DD088();
-  v7 = a4;
-  v8 = self;
-  sub_21E46FF28(v6, v7);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_21E46FF28(v6, conversationCopy);
 }
 
-- (id)userUtteranceForConversationItem:(id)a3
+- (id)userUtteranceForConversationItem:(id)item
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = sub_21E477BA4(a3);
+  selfCopy = self;
+  v6 = sub_21E477BA4(item);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (id)serverUtterancesToDisplayForConversation:(id)a3
+- (id)serverUtterancesToDisplayForConversation:(id)conversation
 {
-  v4 = a3;
-  v5 = self;
-  sub_21E4720B8(v4);
+  conversationCopy = conversation;
+  selfCopy = self;
+  sub_21E4720B8(conversationCopy);
 
   sub_21E43F008(0, &unk_280C14130);
   v6 = sub_21E4DD078();
@@ -217,11 +217,11 @@
 
 - (int64_t)inputType
 {
-  v2 = self;
-  v3 = [(SiriSharedUISAEViewModelController *)v2 delegate];
-  if (v3)
+  selfCopy = self;
+  delegate = [(SiriSharedUISAEViewModelController *)selfCopy delegate];
+  if (delegate)
   {
-    v4 = [(SiriSharedUISAEViewModelControllerDelegate *)v3 inputTypeForSAEViewModelController:v2];
+    v4 = [(SiriSharedUISAEViewModelControllerDelegate *)delegate inputTypeForSAEViewModelController:selfCopy];
     swift_unknownObjectRelease();
   }
 
@@ -235,82 +235,82 @@
 
 - (void)inputTypeDidChange
 {
-  v4 = self;
-  v2 = [(SiriSharedUISAEViewModelController *)v4 viewModel];
-  v3 = [(SiriSharedUISAEViewModel *)v2 copyWithInputType:[(SiriSharedUISAEViewModelController *)v4 inputType]];
+  selfCopy = self;
+  viewModel = [(SiriSharedUISAEViewModelController *)selfCopy viewModel];
+  v3 = [(SiriSharedUISAEViewModel *)viewModel copyWithInputType:[(SiriSharedUISAEViewModelController *)selfCopy inputType]];
 
-  [(SiriSharedUISAEViewModelController *)v4 setViewModel:v3];
+  [(SiriSharedUISAEViewModelController *)selfCopy setViewModel:v3];
 }
 
-- (void)revealUserUtterance:(id)a3 backingAceObject:(id)a4
+- (void)revealUserUtterance:(id)utterance backingAceObject:(id)object
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_21E47344C(v6, a4);
+  utteranceCopy = utterance;
+  objectCopy = object;
+  selfCopy = self;
+  sub_21E47344C(utteranceCopy, object);
 }
 
-- (void)revealUserUtterance:(id)a3 backingAceObject:(id)a4 asrAlternatives:(id)a5
+- (void)revealUserUtterance:(id)utterance backingAceObject:(id)object asrAlternatives:(id)alternatives
 {
   v8 = sub_21E4DD088();
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  sub_21E47377C(v9, a4, v8);
+  utteranceCopy = utterance;
+  objectCopy = object;
+  selfCopy = self;
+  sub_21E47377C(utteranceCopy, object, v8);
 }
 
-- (void)resetViewsAndClearASR:(BOOL)a3
+- (void)resetViewsAndClearASR:(BOOL)r
 {
-  v4 = self;
-  sub_21E473B5C(a3);
+  selfCopy = self;
+  sub_21E473B5C(r);
 }
 
 - (void)revealLatencyView
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E473EA8();
 }
 
 - (void)clearLatencySummary
 {
-  v2 = self;
+  selfCopy = self;
   sub_21E4741D8();
 }
 
 - (void)clearLatencySummaryWithoutViewUpdate
 {
-  v6 = self;
-  v2 = [(SiriSharedUISAEViewModelController *)v6 viewModel];
-  v3 = [(SiriSharedUISAEViewModel *)v2 userUtterance];
+  selfCopy = self;
+  viewModel = [(SiriSharedUISAEViewModelController *)selfCopy viewModel];
+  userUtterance = [(SiriSharedUISAEViewModel *)viewModel userUtterance];
 
-  [(SiriSharedUISAEUserUtteranceViewModel *)v3 setLatencySummary:0];
-  v4 = [(SiriSharedUISAEViewModelController *)v6 viewModel];
-  v5 = [(SiriSharedUISAEViewModel *)v4 userUtterance];
+  [(SiriSharedUISAEUserUtteranceViewModel *)userUtterance setLatencySummary:0];
+  viewModel2 = [(SiriSharedUISAEViewModelController *)selfCopy viewModel];
+  userUtterance2 = [(SiriSharedUISAEViewModel *)viewModel2 userUtterance];
 
-  [(SiriSharedUISAEUserUtteranceViewModel *)v5 setShouldShow:0];
+  [(SiriSharedUISAEUserUtteranceViewModel *)userUtterance2 setShouldShow:0];
 }
 
-- (void)didReceiveLatencyInformation:(id)a3
+- (void)didReceiveLatencyInformation:(id)information
 {
-  v4 = a3;
-  v5 = self;
-  sub_21E474528(v4);
+  informationCopy = information;
+  selfCopy = self;
+  sub_21E474528(informationCopy);
 }
 
-- (void)updateCurrentRequestText:(id)a3
+- (void)updateCurrentRequestText:(id)text
 {
   sub_21E4DCF78();
-  v4 = self;
+  selfCopy = self;
   sub_21E47489C();
 }
 
 - (BOOL)alwaysShowRecognizedSpeech
 {
-  v2 = self;
-  v3 = [(SiriSharedUISAEViewModelController *)v2 delegate];
-  if (v3)
+  selfCopy = self;
+  delegate = [(SiriSharedUISAEViewModelController *)selfCopy delegate];
+  if (delegate)
   {
-    v4 = [(SiriSharedUISAEViewModelControllerDelegate *)v3 saeViewModelControllerShouldAlwaysShowRecognizedSpeech:v2];
+    v4 = [(SiriSharedUISAEViewModelControllerDelegate *)delegate saeViewModelControllerShouldAlwaysShowRecognizedSpeech:selfCopy];
     swift_unknownObjectRelease();
   }
 

@@ -6,23 +6,23 @@
 
 - (id)uuid
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = [v1 userData];
-  v3 = [v2 objectForKeyedSubscript:@"PHImportFileUUID"];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  userData = [selfCopy userData];
+  uUIDString = [userData objectForKeyedSubscript:@"PHImportFileUUID"];
 
-  if (!v3)
+  if (!uUIDString)
   {
-    v4 = [MEMORY[0x1E696AFB0] UUID];
-    v3 = [v4 UUIDString];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
 
-    v5 = [v1 userData];
-    [v5 setObject:v3 forKeyedSubscript:@"PHImportFileUUID"];
+    userData2 = [selfCopy userData];
+    [userData2 setObject:uUIDString forKeyedSubscript:@"PHImportFileUUID"];
   }
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
-  return v3;
+  return uUIDString;
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface VCPTrimAnalyzer
 - ($AFC8CF76A46F37F9FB23C20884F4FD99)bestTrimTimeRange;
-- (BOOL)checkTrimAt:(id *)a3 captureTime:(id *)a4;
-- (BOOL)isTimestampSkipable:(id *)a3;
-- (BOOL)shouldCutAt:(id *)a3 stillPTS:(id *)a4 withCut:(BOOL)a5;
+- (BOOL)checkTrimAt:(id *)at captureTime:(id *)time;
+- (BOOL)isTimestampSkipable:(id *)skipable;
+- (BOOL)shouldCutAt:(id *)at stillPTS:(id *)s withCut:(BOOL)cut;
 - (VCPTrimAnalyzer)init;
-- (float)calculateCandidateScoreWithRangeAdjust:(int)a3 endIdx:(int)a4 candidateTimeRange:(id *)a5 captureTime:(id *)a6;
-- (int)analyzeFrameWithTimeRange:(id *)a3 analysisData:(id)a4;
-- (int)finalizeWithDestructiveTrimStart:(id *)a3 trimEnd:(id *)a4 andCaptureTime:(id *)a5;
-- (int)generateInterestingTrimBasedOnCaptureTime:(id *)a3;
-- (int)prepareTrimmingWithTrimStart:(id *)a3 andTrimEnd:(id *)a4;
+- (float)calculateCandidateScoreWithRangeAdjust:(int)adjust endIdx:(int)idx candidateTimeRange:(id *)range captureTime:(id *)time;
+- (int)analyzeFrameWithTimeRange:(id *)range analysisData:(id)data;
+- (int)finalizeWithDestructiveTrimStart:(id *)start trimEnd:(id *)end andCaptureTime:(id *)time;
+- (int)generateInterestingTrimBasedOnCaptureTime:(id *)time;
+- (int)prepareTrimmingWithTrimStart:(id *)start andTrimEnd:(id *)end;
 - (void)generateCurationSegment;
-- (void)printSegments:(id)a3;
+- (void)printSegments:(id)segments;
 - (void)updateCurationThreshold;
 @end
 
@@ -23,9 +23,9 @@
   v2 = [(VCPTrimAnalyzer *)&v17 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v4 = *(v2 + 2);
-    *(v2 + 2) = v3;
+    *(v2 + 2) = array;
 
     v5 = objc_alloc_init(VCPActionAnalyzer);
     v6 = *(v2 + 1);
@@ -59,30 +59,30 @@
   return v2;
 }
 
-- (int)analyzeFrameWithTimeRange:(id *)a3 analysisData:(id)a4
+- (int)analyzeFrameWithTimeRange:(id *)range analysisData:(id)data
 {
-  v6 = [a4 objectForKeyedSubscript:@"subjectMotionScore"];
+  v6 = [data objectForKeyedSubscript:@"subjectMotionScore"];
   [v6 floatValue];
   v8 = v7;
 
   actionAnalyzer = self->_actionAnalyzer;
-  v10 = *&a3->var0.var3;
-  *time = *&a3->var0.var0;
+  v10 = *&range->var0.var3;
+  *time = *&range->var0.var0;
   *&time[16] = v10;
-  v15 = *&a3->var1.var1;
+  v15 = *&range->var1.var1;
   [(VCPActionAnalyzer *)actionAnalyzer analyzeFrameWithTimeRange:time andActionScore:COERCE_DOUBLE(__PAIR64__(DWORD1(v15), LODWORD(v8)))];
   if (self->_firstFrame)
   {
-    v11 = *&a3->var0.var0;
-    self->_inTrimStart.epoch = a3->var0.var3;
+    v11 = *&range->var0.var0;
+    self->_inTrimStart.epoch = range->var0.var3;
     *&self->_inTrimStart.value = v11;
     self->_firstFrame = 0;
   }
 
   if (self->_verbose)
   {
-    *time = *&a3->var0.var0;
-    *&time[16] = a3->var0.var3;
+    *time = *&range->var0.var0;
+    *&time[16] = range->var0.var3;
     Seconds = CMTimeGetSeconds(time);
     printf("Received action score %f - %f\n", Seconds, v8);
   }
@@ -126,33 +126,33 @@
   }
 }
 
-- (int)finalizeWithDestructiveTrimStart:(id *)a3 trimEnd:(id *)a4 andCaptureTime:(id *)a5
+- (int)finalizeWithDestructiveTrimStart:(id *)start trimEnd:(id *)end andCaptureTime:(id *)time
 {
   if (self->_verbose)
   {
-    time = *a3;
+    time = *start;
     Seconds = CMTimeGetSeconds(&time);
-    time = *a4;
+    time = *end;
     v10 = CMTimeGetSeconds(&time);
     printf("Destructive Trim Range: [%.2f - %.2f]\n", Seconds, v10);
   }
 
   actionAnalyzer = self->_actionAnalyzer;
-  time = *a3;
-  v13 = *&a4->var0;
-  var3 = a4->var3;
+  time = *start;
+  v13 = *&end->var0;
+  var3 = end->var3;
   [(VCPActionAnalyzer *)actionAnalyzer finalizeWithDestructiveTrimStart:&time trimEnd:&v13];
   [(VCPTrimAnalyzer *)self generateCurationSegment];
-  time = *a5;
+  time = *time;
   [(VCPTrimAnalyzer *)self generateInterestingTrimBasedOnCaptureTime:&time];
   return 0;
 }
 
-- (void)printSegments:(id)a3
+- (void)printSegments:(id)segments
 {
   if (self->_verbose)
   {
-    printf("=========%s==========\n", [a3 UTF8String]);
+    printf("=========%s==========\n", [segments UTF8String]);
     internalResults = self->_internalResults;
 
     [(NSMutableArray *)internalResults enumerateObjectsUsingBlock:&__block_literal_global_95];
@@ -196,8 +196,8 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(VCPActionAnalyzer *)self->_actionAnalyzer segments];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  segments = [(VCPActionAnalyzer *)self->_actionAnalyzer segments];
+  v4 = [segments countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -209,7 +209,7 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
       {
         if (*v13 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(segments);
         }
 
         v8 = *(*(&v12 + 1) + 8 * v7);
@@ -223,22 +223,22 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [segments countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);
   }
 
   activeSegment = self->_activeSegment;
-  v11 = [(VCPActionAnalyzer *)self->_actionAnalyzer activeSegment];
-  [(VCPSegment *)activeSegment copyFrom:v11];
+  activeSegment = [(VCPActionAnalyzer *)self->_actionAnalyzer activeSegment];
+  [(VCPSegment *)activeSegment copyFrom:activeSegment];
 
   [(VCPSegment *)self->_activeSegment score];
   [(VCPSegment *)self->_activeSegment setCurationScore:?];
   [(VCPTrimAnalyzer *)self updateCurationThreshold];
 }
 
-- (int)generateInterestingTrimBasedOnCaptureTime:(id *)a3
+- (int)generateInterestingTrimBasedOnCaptureTime:(id *)time
 {
   v5 = 0;
   do
@@ -261,8 +261,8 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
       memset(&range, 0, sizeof(range));
     }
 
-    *&time.start.value = *&a3->var0;
-    time.start.epoch = a3->var3;
+    *&time.start.value = *&time->var0;
+    time.start.epoch = time->var3;
     v9 = CMTimeRangeContainsTime(&range, &time.start);
     ++v5;
   }
@@ -283,15 +283,15 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
       memset(&range, 0, sizeof(range));
     }
 
-    *&time.start.value = *&a3->var0;
-    time.start.epoch = a3->var3;
+    *&time.start.value = *&time->var0;
+    time.start.epoch = time->var3;
     if (!CMTimeRangeContainsTime(&range, &time.start))
     {
       memset(&time, 0, 24);
-      *&range.start.value = *&a3->var0;
-      range.start.epoch = a3->var3;
+      *&range.start.value = *&time->var0;
+      range.start.epoch = time->var3;
       Seconds = CMTimeGetSeconds(&range.start);
-      CMTimeMakeWithSeconds(&time.start, Seconds + 0.300000012, a3->var1);
+      CMTimeMakeWithSeconds(&time.start, Seconds + 0.300000012, time->var1);
       if (v11)
       {
         [(VCPSegment *)v11 timeRange];
@@ -336,11 +336,11 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
     *&range.start.value = v42;
     range.start.epoch = v43;
     v15 = CMTimeGetSeconds(&range.start);
-    v16 = [(NSMutableArray *)self->_internalResults lastObject];
-    v17 = v16;
-    if (v16)
+    lastObject = [(NSMutableArray *)self->_internalResults lastObject];
+    v17 = lastObject;
+    if (lastObject)
     {
-      [v16 timeRange];
+      [lastObject timeRange];
     }
 
     else
@@ -371,14 +371,14 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
         *&time.start.value = v38;
         *&time.start.epoch = v37;
         *&time.duration.timescale = v36;
-        *&end.start.value = *&a3->var0;
-        end.start.epoch = a3->var3;
+        *&end.start.value = *&time->var0;
+        end.start.epoch = time->var3;
         [(VCPTrimAnalyzer *)self calculateCandidateScoreWithRangeAdjust:v19 endIdx:v21 candidateTimeRange:&time captureTime:&end];
         v23 = v22;
         if (v22 > v20)
         {
-          *&end.start.value = *&a3->var0;
-          end.start.epoch = a3->var3;
+          *&end.start.value = *&time->var0;
+          end.start.epoch = time->var3;
           v24 = CMTimeGetSeconds(&end.start);
           *&end.start.value = *&time.start.value;
           end.start.epoch = time.start.epoch;
@@ -398,8 +398,8 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
           end = time;
           CMTimeRangeGetEnd(&v40, &end);
           v27 = CMTimeGetSeconds(&v40);
-          *&end.start.value = *&a3->var0;
-          end.start.epoch = a3->var3;
+          *&end.start.value = *&time->var0;
+          end.start.epoch = time->var3;
           v28 = CMTimeGetSeconds(&end.start);
           printf("startIdx = %d, endIdx = %d, count = %d, [%f, %f] with score %f captureTime=%f\n", v19, v21, v25, v26, v27, v23, v28);
         }
@@ -427,11 +427,11 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
 
   if (v20 <= 0.05)
   {
-    *&time.start.value = *&a3->var0;
-    time.start.epoch = a3->var3;
+    *&time.start.value = *&time->var0;
+    time.start.epoch = time->var3;
     v33 = CMTimeGetSeconds(&time.start);
-    CMTimeMakeWithSeconds(&end.start, v33 + -1.5, a3->var1);
-    v40 = *a3;
+    CMTimeMakeWithSeconds(&end.start, v33 + -1.5, time->var1);
+    v40 = *time;
     CMTimeRangeFromTimeToTime(&time, &end.start, &v40);
     v34 = *&time.start.epoch;
     *&self->_bestTrimTimeRange.start.value = *&time.start.value;
@@ -456,7 +456,7 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
   return 0;
 }
 
-- (int)prepareTrimmingWithTrimStart:(id *)a3 andTrimEnd:(id *)a4
+- (int)prepareTrimmingWithTrimStart:(id *)start andTrimEnd:(id *)end
 {
   v33 = 0;
   v34 = &v33;
@@ -471,8 +471,8 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
   v26[1] = 3221225472;
   v26[2] = __59__VCPTrimAnalyzer_prepareTrimmingWithTrimStart_andTrimEnd___block_invoke;
   v26[3] = &unk_1E8351B38;
-  v27 = *a3;
-  v28 = *a4;
+  v27 = *start;
+  v28 = *end;
   v26[4] = &v33;
   v26[5] = &v29;
   [(NSMutableArray *)internalResults enumerateObjectsUsingBlock:v26];
@@ -489,8 +489,8 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
   }
 
   v11 = [(NSMutableArray *)v9 objectAtIndexedSubscript:?];
-  *&time.start.value = *&a4->var0;
-  time.start.epoch = a4->var3;
+  *&time.start.value = *&end->var0;
+  time.start.epoch = end->var3;
   [v11 trimSegment:&time fromStart:0];
 
   for (j = *(v34 + 6); j >= 1; [(NSMutableArray *)self->_internalResults removeObjectAtIndex:j])
@@ -499,8 +499,8 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
   }
 
   v13 = [(NSMutableArray *)self->_internalResults objectAtIndexedSubscript:0];
-  *&time.start.value = *&a3->var0;
-  time.start.epoch = a3->var3;
+  *&time.start.value = *&start->var0;
+  time.start.epoch = start->var3;
   [v13 trimSegment:&time fromStart:1];
 
   if (self->_verbose)
@@ -522,11 +522,11 @@ void __33__VCPTrimAnalyzer_printSegments___block_invoke(uint64_t a1, void *a2)
     *&time.start.value = v23;
     time.start.epoch = v24;
     Seconds = CMTimeGetSeconds(&time.start);
-    v17 = [(NSMutableArray *)self->_internalResults lastObject];
-    v18 = v17;
-    if (v17)
+    lastObject = [(NSMutableArray *)self->_internalResults lastObject];
+    v18 = lastObject;
+    if (lastObject)
     {
-      [v17 timeRange];
+      [lastObject timeRange];
     }
 
     else
@@ -581,10 +581,10 @@ void __59__VCPTrimAnalyzer_prepareTrimmingWithTrimStart_andTrimEnd___block_invok
   }
 }
 
-- (float)calculateCandidateScoreWithRangeAdjust:(int)a3 endIdx:(int)a4 candidateTimeRange:(id *)a5 captureTime:(id *)a6
+- (float)calculateCandidateScoreWithRangeAdjust:(int)adjust endIdx:(int)idx candidateTimeRange:(id *)range captureTime:(id *)time
 {
-  v10 = a3;
-  v11 = [(NSMutableArray *)self->_internalResults objectAtIndexedSubscript:a3];
+  adjustCopy = adjust;
+  v11 = [(NSMutableArray *)self->_internalResults objectAtIndexedSubscript:adjust];
   [v11 curationScore];
   v13 = v12;
   if (v11)
@@ -637,10 +637,10 @@ void __59__VCPTrimAnalyzer_prepareTrimmingWithTrimStart_andTrimEnd___block_invok
   v23 = CMTimeGetSeconds(&start);
   v24 = v23;
   v25 = v20;
-  if (a3 < a4)
+  if (adjust < idx)
   {
-    v26 = a4 - v10;
-    v27 = v10 + 1;
+    v26 = idx - adjustCopy;
+    v27 = adjustCopy + 1;
     do
     {
       v28 = v11;
@@ -694,8 +694,8 @@ void __59__VCPTrimAnalyzer_prepareTrimmingWithTrimStart_andTrimEnd___block_invok
     *&v23 = v17;
     if (![(VCPTrimAnalyzer *)self isCurated:v23]|| (*&v34 = v19, ![(VCPTrimAnalyzer *)self isCurated:v34]))
     {
-      v35 = [(NSMutableArray *)self->_internalResults objectAtIndexedSubscript:v10];
-      v36 = [(NSMutableArray *)self->_internalResults objectAtIndexedSubscript:a4];
+      v35 = [(NSMutableArray *)self->_internalResults objectAtIndexedSubscript:adjustCopy];
+      v36 = [(NSMutableArray *)self->_internalResults objectAtIndexedSubscript:idx];
       if (v35)
       {
         [v35 timeRange];
@@ -706,7 +706,7 @@ void __59__VCPTrimAnalyzer_prepareTrimmingWithTrimStart_andTrimEnd___block_invok
         memset(&time, 0, sizeof(time));
       }
 
-      start = *a6;
+      start = *time;
       v37 = CMTimeRangeContainsTime(&time, &start);
       if (v36)
       {
@@ -718,7 +718,7 @@ void __59__VCPTrimAnalyzer_prepareTrimmingWithTrimStart_andTrimEnd___block_invok
         memset(&time, 0, sizeof(time));
       }
 
-      start = *a6;
+      start = *time;
       v38 = CMTimeRangeContainsTime(&time, &start);
       if (!v38)
       {
@@ -776,13 +776,13 @@ LABEL_69:
         if (![(VCPTrimAnalyzer *)self isCurated:v39])
         {
           v42 = (v24 - v22) + -1.5;
-          *&time.start.value = *&a6->var0;
-          time.start.epoch = a6->var3;
+          *&time.start.value = *&time->var0;
+          time.start.epoch = time->var3;
           v41 = CMTimeGetSeconds(&time.start) - v22;
           if (v41 <= v42)
           {
-            *&time.start.value = *&a6->var0;
-            time.start.epoch = a6->var3;
+            *&time.start.value = *&time->var0;
+            time.start.epoch = time->var3;
             v41 = CMTimeGetSeconds(&time.start) - v22;
             v42 = v41;
           }
@@ -858,8 +858,8 @@ LABEL_69:
 
           CMTimeRangeGetEnd(&start, &time);
           v45 = CMTimeGetSeconds(&start);
-          *&time.start.value = *&a6->var0;
-          time.start.epoch = a6->var3;
+          *&time.start.value = *&time->var0;
+          time.start.epoch = time->var3;
           if (v45 - CMTimeGetSeconds(&time.start) <= v44)
           {
             if (v36)
@@ -874,8 +874,8 @@ LABEL_69:
 
             CMTimeRangeGetEnd(&start, &time);
             v46 = CMTimeGetSeconds(&start);
-            *&time.start.value = *&a6->var0;
-            time.start.epoch = a6->var3;
+            *&time.start.value = *&time->var0;
+            time.start.epoch = time->var3;
             v44 = v46 - CMTimeGetSeconds(&time.start);
           }
 
@@ -904,9 +904,9 @@ LABEL_70:
   CMTimeMakeWithSeconds(&end, v24, 600);
   CMTimeRangeFromTimeToTime(&time, &start, &end);
   v49 = *&time.start.epoch;
-  *&a5->var0.var0 = *&time.start.value;
-  *&a5->var0.var3 = v49;
-  *&a5->var1.var1 = *&time.duration.timescale;
+  *&range->var0.var0 = *&time.start.value;
+  *&range->var0.var3 = v49;
+  *&range->var1.var1 = *&time.duration.timescale;
 
   return v48;
 }
@@ -920,18 +920,18 @@ LABEL_70:
   return self;
 }
 
-- (BOOL)shouldCutAt:(id *)a3 stillPTS:(id *)a4 withCut:(BOOL)a5
+- (BOOL)shouldCutAt:(id *)at stillPTS:(id *)s withCut:(BOOL)cut
 {
-  if (a5)
+  if (cut)
   {
-    v18.start = *a3;
+    v18.start = *at;
     Seconds = CMTimeGetSeconds(&v18.start);
-    *&v18.start.value = *&a4->var0;
-    v18.start.epoch = a4->var3;
+    *&v18.start.value = *&s->var0;
+    v18.start.epoch = s->var3;
     if (Seconds <= CMTimeGetSeconds(&v18.start))
     {
-      v9 = *&a3->var0;
-      self->_inTrimStart.epoch = a3->var3;
+      v9 = *&at->var0;
+      self->_inTrimStart.epoch = at->var3;
       *&self->_inTrimStart.value = v9;
     }
 
@@ -940,10 +940,10 @@ LABEL_70:
 
   else
   {
-    if ((self->_captureTime.flags & 1) == 0 || (v18.start = self->_captureTime, time2 = *a4, CMTimeCompare(&v18.start, &time2)))
+    if ((self->_captureTime.flags & 1) == 0 || (v18.start = self->_captureTime, time2 = *s, CMTimeCompare(&v18.start, &time2)))
     {
-      v11 = *&a4->var0;
-      self->_captureTime.epoch = a4->var3;
+      v11 = *&s->var0;
+      self->_captureTime.epoch = s->var3;
       *&self->_captureTime.value = v11;
       v12 = MEMORY[0x1E6960C98];
       v13 = *(MEMORY[0x1E6960C98] + 16);
@@ -952,14 +952,14 @@ LABEL_70:
       *&self->_bestTrimTimeRange.duration.timescale = *(v12 + 32);
     }
 
-    *&v18.start.value = *&a3->var0;
-    v18.start.epoch = a3->var3;
+    *&v18.start.value = *&at->var0;
+    v18.start.epoch = at->var3;
     v14 = CMTimeGetSeconds(&v18.start);
-    *&v18.start.value = *&a4->var0;
-    v18.start.epoch = a4->var3;
+    *&v18.start.value = *&s->var0;
+    v18.start.epoch = s->var3;
     if (v14 >= CMTimeGetSeconds(&v18.start) || (self->_bestTrimTimeRange.start.flags & 1) == 0 || (self->_bestTrimTimeRange.duration.flags & 1) == 0 || self->_bestTrimTimeRange.duration.epoch || self->_bestTrimTimeRange.duration.value < 0)
     {
-      if ([(NSMutableArray *)self->_internalResults count]&& (*&v18.start.value = *&a3->var0, v18.start.epoch = a3->var3, [(VCPTrimAnalyzer *)self isTimestampSkipable:&v18]))
+      if ([(NSMutableArray *)self->_internalResults count]&& (*&v18.start.value = *&at->var0, v18.start.epoch = at->var3, [(VCPTrimAnalyzer *)self isTimestampSkipable:&v18]))
       {
         return 0;
       }
@@ -967,14 +967,14 @@ LABEL_70:
       else
       {
         actionAnalyzer = self->_actionAnalyzer;
-        *&v18.start.value = *&a4->var0;
-        v18.start.epoch = a4->var3;
+        *&v18.start.value = *&s->var0;
+        v18.start.epoch = s->var3;
         time2 = self->_inTrimStart;
         [(VCPActionAnalyzer *)actionAnalyzer postProcessSegmentsWithCaptureTime:&v18 trimStart:&time2];
         [(VCPTrimAnalyzer *)self generateCurationSegment];
-        *&v18.start.value = *&a3->var0;
-        v18.start.epoch = a3->var3;
-        time2 = *a4;
+        *&v18.start.value = *&at->var0;
+        v18.start.epoch = at->var3;
+        time2 = *s;
         return [(VCPTrimAnalyzer *)self checkTrimAt:&v18 captureTime:&time2];
       }
     }
@@ -984,16 +984,16 @@ LABEL_70:
       v16 = *&self->_bestTrimTimeRange.start.epoch;
       *&v18.start.value = *&self->_bestTrimTimeRange.start.value;
       *&v18.start.epoch = v16;
-      v17 = *&a3->var0;
+      v17 = *&at->var0;
       *&v18.duration.timescale = *&self->_bestTrimTimeRange.duration.timescale;
       *&time2.value = v17;
-      time2.epoch = a3->var3;
+      time2.epoch = at->var3;
       return CMTimeRangeContainsTime(&v18, &time2) == 0;
     }
   }
 }
 
-- (BOOL)isTimestampSkipable:(id *)a3
+- (BOOL)isTimestampSkipable:(id *)skipable
 {
   v5 = 0;
   v6 = [(NSMutableArray *)self->_internalResults count];
@@ -1018,14 +1018,14 @@ LABEL_70:
       memset(&range, 0, sizeof(range));
     }
 
-    time = *a3;
+    time = *skipable;
     if (CMTimeRangeContainsTime(&range, &time))
     {
       break;
     }
 
-    *&range.start.value = *&a3->var0;
-    range.start.epoch = a3->var3;
+    *&range.start.value = *&skipable->var0;
+    range.start.epoch = skipable->var3;
     Seconds = CMTimeGetSeconds(&range.start);
     if (v7)
     {
@@ -1042,8 +1042,8 @@ LABEL_70:
   }
 
   while (Seconds <= CMTimeGetSeconds(&time));
-  *&range.start.value = *&a3->var0;
-  range.start.epoch = a3->var3;
+  *&range.start.value = *&skipable->var0;
+  range.start.epoch = skipable->var3;
   v9 = CMTimeGetSeconds(&range.start);
   if (v7)
   {
@@ -1063,8 +1063,8 @@ LABEL_70:
     goto LABEL_22;
   }
 
-  *&range.start.value = *&a3->var0;
-  range.start.epoch = a3->var3;
+  *&range.start.value = *&skipable->var0;
+  range.start.epoch = skipable->var3;
   v11 = CMTimeGetSeconds(&range.start);
   if (v7)
   {
@@ -1093,35 +1093,35 @@ LABEL_23:
   return v10;
 }
 
-- (BOOL)checkTrimAt:(id *)a3 captureTime:(id *)a4
+- (BOOL)checkTrimAt:(id *)at captureTime:(id *)time
 {
-  time.start = *a3;
+  time.start = *at;
   Seconds = CMTimeGetSeconds(&time.start);
-  time.start = *a4;
+  time.start = *time;
   if (Seconds <= CMTimeGetSeconds(&time.start))
   {
-    *&time.start.value = *&a4->var0;
-    time.start.epoch = a4->var3;
+    *&time.start.value = *&time->var0;
+    time.start.epoch = time->var3;
     [(VCPTrimAnalyzer *)self generateInterestingTrimBasedOnCaptureTime:&time];
     v9 = *&self->_bestTrimTimeRange.start.epoch;
     *&time.start.value = *&self->_bestTrimTimeRange.start.value;
     *&time.start.epoch = v9;
     *&time.duration.timescale = *&self->_bestTrimTimeRange.duration.timescale;
-    v15 = *a3;
+    v15 = *at;
     return CMTimeRangeContainsTime(&time, &v15) == 0;
   }
 
   else
   {
-    *&time.start.value = *&a3->var0;
-    time.start.epoch = a3->var3;
+    *&time.start.value = *&at->var0;
+    time.start.epoch = at->var3;
     if ([(VCPTrimAnalyzer *)self isTimestampSkipable:&time])
     {
       return 0;
     }
 
-    *&time.start.value = *&a3->var0;
-    time.start.epoch = a3->var3;
+    *&time.start.value = *&at->var0;
+    time.start.epoch = at->var3;
     v10 = CMTimeGetSeconds(&time.start);
     activeSegment = self->_activeSegment;
     if (activeSegment)
@@ -1144,8 +1144,8 @@ LABEL_23:
 
     else
     {
-      *&time.start.value = *&a3->var0;
-      time.start.epoch = a3->var3;
+      *&time.start.value = *&at->var0;
+      time.start.epoch = at->var3;
       v12 = CMTimeGetSeconds(&time.start);
       *&time.start.value = *&self->_bestTrimTimeRange.start.value;
       time.start.epoch = self->_bestTrimTimeRange.start.epoch;

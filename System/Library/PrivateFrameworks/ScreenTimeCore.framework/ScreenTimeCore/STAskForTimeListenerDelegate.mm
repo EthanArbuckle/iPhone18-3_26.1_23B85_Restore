@@ -1,46 +1,46 @@
 @interface STAskForTimeListenerDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (STAskForTimeListenerDelegate)initWithAskForTimeManager:(id)a3;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (STAskForTimeListenerDelegate)initWithAskForTimeManager:(id)manager;
 @end
 
 @implementation STAskForTimeListenerDelegate
 
-- (STAskForTimeListenerDelegate)initWithAskForTimeManager:(id)a3
+- (STAskForTimeListenerDelegate)initWithAskForTimeManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = STAskForTimeListenerDelegate;
   v6 = [(STAskForTimeListenerDelegate *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_askForTimeManager, a3);
+    objc_storeStrong(&v6->_askForTimeManager, manager);
   }
 
   return v7;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = +[STLog screentime];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    sub_100111154(v5, v6);
+    sub_100111154(connectionCopy, v6);
   }
 
   v7 = STEntitlementScreenTimePrivate;
-  v8 = [v5 valueForEntitlement:STEntitlementScreenTimePrivate];
+  v8 = [connectionCopy valueForEntitlement:STEntitlementScreenTimePrivate];
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 && ([v8 BOOLValue])
   {
     v9 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___STAskForTimeInterface];
-    [v5 setExportedInterface:v9];
+    [connectionCopy setExportedInterface:v9];
 
-    v10 = [(STAskForTimeListenerDelegate *)self askForTimeManager];
-    [v5 setExportedObject:v10];
+    askForTimeManager = [(STAskForTimeListenerDelegate *)self askForTimeManager];
+    [connectionCopy setExportedObject:askForTimeManager];
 
-    [v5 resume];
+    [connectionCopy resume];
     v11 = 1;
   }
 
@@ -49,7 +49,7 @@
     v12 = +[STLog ask];
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      sub_1001111F8(v5, v7, v12);
+      sub_1001111F8(connectionCopy, v7, v12);
     }
 
     v11 = 0;

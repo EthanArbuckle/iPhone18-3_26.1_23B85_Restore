@@ -1,17 +1,17 @@
 @interface VOTUISystemPointerController
-- (BOOL)handlePointerEvent:(id)a3;
+- (BOOL)handlePointerEvent:(id)event;
 - (CGPoint)lastPointerEventPoint;
-- (VOTUISystemPointerController)initWithContextId:(unsigned int)a3;
+- (VOTUISystemPointerController)initWithContextId:(unsigned int)id;
 - (VOTUISystemPointerControllerDelegate)delegate;
 - (void)dealloc;
-- (void)movePointerToPoint:(CGPoint)a3 contextId:(unsigned int)a4;
+- (void)movePointerToPoint:(CGPoint)point contextId:(unsigned int)id;
 @end
 
 @implementation VOTUISystemPointerController
 
-- (VOTUISystemPointerController)initWithContextId:(unsigned int)a3
+- (VOTUISystemPointerController)initWithContextId:(unsigned int)id
 {
-  v3 = *&a3;
+  v3 = *&id;
   v16.receiver = self;
   v16.super_class = VOTUISystemPointerController;
   v4 = [(VOTUISystemPointerController *)&v16 init];
@@ -51,29 +51,29 @@
   [(VOTUISystemPointerController *)&v5 dealloc];
 }
 
-- (void)movePointerToPoint:(CGPoint)a3 contextId:(unsigned int)a4
+- (void)movePointerToPoint:(CGPoint)point contextId:(unsigned int)id
 {
-  v5 = [[BKSContextRelativePoint alloc] initWithPoint:*&a4 contextID:{a3.x, a3.y}];
+  v5 = [[BKSContextRelativePoint alloc] initWithPoint:*&id contextID:{point.x, point.y}];
   v4 = +[BKSMousePointerService sharedInstance];
   [v4 setContextRelativePointerPosition:v5 onDisplay:0 withAnimationParameters:0 restrictingToPID:0xFFFFFFFFLL];
 }
 
-- (BOOL)handlePointerEvent:(id)a3
+- (BOOL)handlePointerEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   Current = CFAbsoluteTimeGetCurrent();
   if (Current - *&qword_4B338 > 0.05)
   {
-    v6 = [v4 pointerControllerInfo];
-    v7 = [v6 pointerIsAbsolute];
+    pointerControllerInfo = [eventCopy pointerControllerInfo];
+    pointerIsAbsolute = [pointerControllerInfo pointerIsAbsolute];
 
-    if (v7)
+    if (pointerIsAbsolute)
     {
-      v8 = [v4 pointerControllerInfo];
-      [v8 pointerX];
+      pointerControllerInfo2 = [eventCopy pointerControllerInfo];
+      [pointerControllerInfo2 pointerX];
       v10 = v9;
-      v11 = [v4 pointerControllerInfo];
-      [v11 pointerY];
+      pointerControllerInfo3 = [eventCopy pointerControllerInfo];
+      [pointerControllerInfo3 pointerY];
       v13 = v12;
 
       [(VOTUISystemPointerController *)self lastPointerEventPoint];
@@ -86,8 +86,8 @@
         v18 = v17;
         v20 = v19;
 
-        v21 = [(VOTUISystemPointerController *)self delegate];
-        [v21 systemPointerController:self pointerDidMoveToGlobalPoint:{v18, v20}];
+        delegate = [(VOTUISystemPointerController *)self delegate];
+        [delegate systemPointerController:self pointerDidMoveToGlobalPoint:{v18, v20}];
       }
     }
   }

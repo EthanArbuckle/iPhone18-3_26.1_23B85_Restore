@@ -1,43 +1,43 @@
 @interface TSWPRenderer
 + (__CTFont)invisiblesFont;
-- (BOOL)p_canvasSelectionIncludesDrawableOfAttachmentAtCharIndex:(unint64_t)a3 state:(const void *)a4;
-- (BOOL)p_shouldClipFragment:(const void *)a3 drawingState:(const void *)a4 lineDrawFlags:(unsigned int)a5 updateRect:(CGRect)a6 outClipRect:(CGRect *)a7;
-- (CGSize)convertSizeToDeviceSpace:(CGSize)a3;
-- (TSWPRenderer)initWithContext:(CGContext *)a3;
+- (BOOL)p_canvasSelectionIncludesDrawableOfAttachmentAtCharIndex:(unint64_t)index state:(const void *)state;
+- (BOOL)p_shouldClipFragment:(const void *)fragment drawingState:(const void *)state lineDrawFlags:(unsigned int)flags updateRect:(CGRect)rect outClipRect:(CGRect *)clipRect;
+- (CGSize)convertSizeToDeviceSpace:(CGSize)space;
+- (TSWPRenderer)initWithContext:(CGContext *)context;
 - (void)dealloc;
-- (void)drawAdornmentRects:(const void *)a3 forColumn:(id)a4 foreground:(BOOL)a5;
-- (void)drawFragment:(const void *)a3 updateRect:(CGRect)a4 drawingState:(const void *)a5 runState:(id *)a6 lineDrawFlags:(unsigned int)a7;
-- (void)p_drawAdornmentGlyphs:(const void *)a3 lineFragment:(const void *)a4 state:(const void *)a5;
-- (void)p_drawAdornmentLine:(const TSWPAdornmentLine *)a3 drawingState:(const void *)a4 lineFragment:(const void *)a5 lineFragmentStart:(CGPoint)a6 vertical:(BOOL)a7;
-- (void)p_drawAdornmentLineBackgroundRect:(const TSWPAdornmentLine *)a3 lineDrawFlags:(unsigned int)a4 drawingState:(const void *)a5 bounds:(CGRect)a6;
-- (void)p_drawAdornments:(const void *)a3 lineFragment:(const void *)a4 state:(const void *)a5;
-- (void)p_drawAttachmentAdornments:(const void *)a3 lineFragment:(const void *)a4 state:(const void *)a5;
-- (void)p_drawAttachmentGlyphAtPosition:(id)a3 fragment:(const void *)a4;
-- (void)p_drawAutocorrectionMarkingsFragment:(const void *)a3 drawingState:(const void *)a4;
-- (void)p_drawDictationMarkingsFragment:(const void *)a3 drawingState:(const void *)a4;
-- (void)p_drawHiddenDeletionsAdornments:(const void *)a3 lineFragment:(const void *)a4 state:(const void *)a5;
-- (void)p_drawInvisiblesAdornments:(const void *)a3 lineFragment:(const void *)a4 state:(const void *)a5;
-- (void)p_drawInvisiblesBreakLine:(const TSWPAdornmentLine *)a3 lineFragment:(const void *)a4 state:(const void *)a5;
-- (void)p_drawListLabelForFragment:(const void *)a3 drawingState:(const void *)a4 lineDrawFlags:(unsigned int)a5;
-- (void)p_drawMisspelledWordMarkingsFragment:(const void *)a3 drawingState:(const void *)a4;
-- (void)p_drawTextInRunsForLine:(__CTLine *)a3 fragment:(const void *)a4 state:(const void *)a5 tateChuYoko:(BOOL)a6 baseRange:(_NSRange)a7 isFirstLineRef:(BOOL)a8;
-- (void)p_drawUngrammaticMarkingsFragment:(const void *)a3 drawingState:(const void *)a4;
-- (void)p_drawWordMarkingsForFragment:(const void *)a3 color:(id)a4 ranges:(const void *)a5 suppressRange:(_NSRange)a6 drawingState:(const void *)a7;
-- (void)p_strokeLineFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 width:(double)a5;
-- (void)p_strokeWavyLineFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 width:(double)a5;
-- (void)willRenderFragmentsWithDrawingState:(const void *)a3;
+- (void)drawAdornmentRects:(const void *)rects forColumn:(id)column foreground:(BOOL)foreground;
+- (void)drawFragment:(const void *)fragment updateRect:(CGRect)rect drawingState:(const void *)state runState:(id *)runState lineDrawFlags:(unsigned int)flags;
+- (void)p_drawAdornmentGlyphs:(const void *)glyphs lineFragment:(const void *)fragment state:(const void *)state;
+- (void)p_drawAdornmentLine:(const TSWPAdornmentLine *)line drawingState:(const void *)state lineFragment:(const void *)fragment lineFragmentStart:(CGPoint)start vertical:(BOOL)vertical;
+- (void)p_drawAdornmentLineBackgroundRect:(const TSWPAdornmentLine *)rect lineDrawFlags:(unsigned int)flags drawingState:(const void *)state bounds:(CGRect)bounds;
+- (void)p_drawAdornments:(const void *)adornments lineFragment:(const void *)fragment state:(const void *)state;
+- (void)p_drawAttachmentAdornments:(const void *)adornments lineFragment:(const void *)fragment state:(const void *)state;
+- (void)p_drawAttachmentGlyphAtPosition:(id)position fragment:(const void *)fragment;
+- (void)p_drawAutocorrectionMarkingsFragment:(const void *)fragment drawingState:(const void *)state;
+- (void)p_drawDictationMarkingsFragment:(const void *)fragment drawingState:(const void *)state;
+- (void)p_drawHiddenDeletionsAdornments:(const void *)adornments lineFragment:(const void *)fragment state:(const void *)state;
+- (void)p_drawInvisiblesAdornments:(const void *)adornments lineFragment:(const void *)fragment state:(const void *)state;
+- (void)p_drawInvisiblesBreakLine:(const TSWPAdornmentLine *)line lineFragment:(const void *)fragment state:(const void *)state;
+- (void)p_drawListLabelForFragment:(const void *)fragment drawingState:(const void *)state lineDrawFlags:(unsigned int)flags;
+- (void)p_drawMisspelledWordMarkingsFragment:(const void *)fragment drawingState:(const void *)state;
+- (void)p_drawTextInRunsForLine:(__CTLine *)line fragment:(const void *)fragment state:(const void *)state tateChuYoko:(BOOL)yoko baseRange:(_NSRange)range isFirstLineRef:(BOOL)ref;
+- (void)p_drawUngrammaticMarkingsFragment:(const void *)fragment drawingState:(const void *)state;
+- (void)p_drawWordMarkingsForFragment:(const void *)fragment color:(id)color ranges:(const void *)ranges suppressRange:(_NSRange)range drawingState:(const void *)state;
+- (void)p_strokeLineFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint width:(double)width;
+- (void)p_strokeWavyLineFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint width:(double)width;
+- (void)willRenderFragmentsWithDrawingState:(const void *)state;
 @end
 
 @implementation TSWPRenderer
 
-- (TSWPRenderer)initWithContext:(CGContext *)a3
+- (TSWPRenderer)initWithContext:(CGContext *)context
 {
   v6.receiver = self;
   v6.super_class = TSWPRenderer;
   v4 = [(TSWPRenderer *)&v6 init];
   if (v4)
   {
-    v4->_context = CGContextRetain(a3);
+    v4->_context = CGContextRetain(context);
   }
 
   return v4;
@@ -52,9 +52,9 @@
   [(TSWPRenderer *)&v3 dealloc];
 }
 
-- (CGSize)convertSizeToDeviceSpace:(CGSize)a3
+- (CGSize)convertSizeToDeviceSpace:(CGSize)space
 {
-  v5 = CGContextConvertSizeToDeviceSpace(self->_context, a3);
+  v5 = CGContextConvertSizeToDeviceSpace(self->_context, space);
   height = v5.height;
   width = v5.width;
   result.height = height;
@@ -62,11 +62,11 @@
   return result;
 }
 
-- (void)willRenderFragmentsWithDrawingState:(const void *)a3
+- (void)willRenderFragmentsWithDrawingState:(const void *)state
 {
   CGContextSaveGState(self->_context);
   context = self->_context;
-  v6 = *(a3 + 1);
+  v6 = *(state + 1);
   if (v6)
   {
     [v6 transformFromWP];
@@ -86,54 +86,54 @@
   CGContextSetTextMatrix(v7, &v9);
 }
 
-- (void)drawFragment:(const void *)a3 updateRect:(CGRect)a4 drawingState:(const void *)a5 runState:(id *)a6 lineDrawFlags:(unsigned int)a7
+- (void)drawFragment:(const void *)fragment updateRect:(CGRect)rect drawingState:(const void *)state runState:(id *)runState lineDrawFlags:(unsigned int)flags
 {
-  v7 = *&a7;
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  v7 = *&flags;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v79 = *MEMORY[0x277D85DE8];
-  if (!*a5)
+  if (!*state)
   {
-    v16 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPRenderer drawFragment:updateRect:drawingState:runState:lineDrawFlags:]"];
-    [v16 handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRenderer.mm"), 185, @"storage is nil"}];
+    [currentHandler handleFailureInFunction:v17 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRenderer.mm"), 185, @"storage is nil"}];
   }
 
-  v59 = *(a3 + 6);
+  v59 = *(fragment + 6);
   v82.origin.x = x;
   v82.origin.y = y;
   v82.size.width = width;
   v82.size.height = height;
-  v81 = CGRectIntersection(*(a3 + 80), v82);
+  v81 = CGRectIntersection(*(fragment + 80), v82);
   if (!CGRectIsEmpty(v81))
   {
-    v56 = *(a3 + 1);
-    v57 = *a3;
+    v56 = *(fragment + 1);
+    v57 = *fragment;
     v18 = *(MEMORY[0x277CBF3A0] + 16);
     v76.origin = *MEMORY[0x277CBF3A0];
     v76.size = v18;
-    v58 = [(TSWPRenderer *)self p_shouldClipFragment:a3 drawingState:a5 lineDrawFlags:v7 updateRect:&v76 outClipRect:x, y, width, height];
-    if (v58)
+    height = [(TSWPRenderer *)self p_shouldClipFragment:fragment drawingState:state lineDrawFlags:v7 updateRect:&v76 outClipRect:x, y, width, height];
+    if (height)
     {
       CGContextSaveGState(self->_context);
       CGContextClipToRect(self->_context, v76);
     }
 
-    v20 = *(a3 + 5);
-    v19 = *(a3 + 6);
-    v21 = *(a3 + 8);
-    v22 = *(a3 + 4);
+    v20 = *(fragment + 5);
+    v19 = *(fragment + 6);
+    v21 = *(fragment + 8);
+    v22 = *(fragment + 4);
     if (v7)
     {
-      v23 = *(a3 + 7);
-      v24 = *(a3 + 9);
-      v26 = *(a3 + 40);
-      v25 = *(a3 + 41);
+      v23 = *(fragment + 7);
+      v24 = *(fragment + 9);
+      v26 = *(fragment + 40);
+      v25 = *(fragment + 41);
       while (v26 != v25)
       {
-        [(TSWPRenderer *)self p_drawAdornmentLineBackgroundRect:v26 lineDrawFlags:v7 drawingState:a5 bounds:v19, v23, v21, v24];
+        [(TSWPRenderer *)self p_drawAdornmentLineBackgroundRect:v26 lineDrawFlags:v7 drawingState:state bounds:v19, v23, v21, v24];
         v26 += 80;
       }
 
@@ -141,7 +141,7 @@
       v75 = 0u;
       v72 = 0u;
       v73 = 0u;
-      v27 = *(a3 + 66);
+      v27 = *(fragment + 66);
       v28 = [v27 countByEnumeratingWithState:&v72 objects:v78 count:16];
       if (v28)
       {
@@ -158,7 +158,7 @@
             v31 = *(*(&v72 + 1) + 8 * i);
             if ([v31 isBackground])
             {
-              [v31 drawAdornmentForFragment:a3 inContext:self->_context withFlags:v7 state:a5 bounds:{v19, v23, v21, v24}];
+              [v31 drawAdornmentForFragment:fragment inContext:self->_context withFlags:v7 state:state bounds:{v19, v23, v21, v24}];
             }
           }
 
@@ -172,11 +172,11 @@
     v32 = v22 + v20;
     if ((v7 & 0x10000) != 0)
     {
-      v46 = *(a3 + 43);
-      v45 = *(a3 + 44);
+      v46 = *(fragment + 43);
+      v45 = *(fragment + 44);
       while (v46 != v45)
       {
-        [(TSWPRenderer *)self p_drawAdornmentLineBackgroundRect:v46 lineDrawFlags:v7 drawingState:a5 bounds:v19, v32 - *(a3 + 16), v21, *(a3 + 16) + *(a3 + 17)];
+        [(TSWPRenderer *)self p_drawAdornmentLineBackgroundRect:v46 lineDrawFlags:v7 drawingState:state bounds:v19, v32 - *(fragment + 16), v21, *(fragment + 16) + *(fragment + 17)];
         v46 += 80;
       }
     }
@@ -188,38 +188,38 @@
     {
       v80.length = v56;
       v80.location = v57;
-      if (NSIntersectionRange(v80, *(a5 + 216)).length)
+      if (NSIntersectionRange(v80, *(state + 216)).length)
       {
-        [(TSWPRenderer *)self p_calculateMarkAdornments:&v69 drawingState:a5 lineFragment:a3];
+        [(TSWPRenderer *)self p_calculateMarkAdornments:&v69 drawingState:state lineFragment:fragment];
       }
     }
 
     if ((v7 & 2) != 0)
     {
-      a6->var2 = v32;
+      runState->var2 = v32;
       if ((v7 & 8) != 0)
       {
-        [(TSWPRenderer *)self p_drawMisspelledWordMarkingsFragment:a3 drawingState:a5];
+        [(TSWPRenderer *)self p_drawMisspelledWordMarkingsFragment:fragment drawingState:state];
       }
 
       if ((v7 & 0x10) != 0)
       {
-        [(TSWPRenderer *)self p_drawUngrammaticMarkingsFragment:a3 drawingState:a5];
+        [(TSWPRenderer *)self p_drawUngrammaticMarkingsFragment:fragment drawingState:state];
       }
 
       if ((v7 & 0x200) != 0)
       {
-        [(TSWPRenderer *)self p_drawDictationMarkingsFragment:a3 drawingState:a5];
+        [(TSWPRenderer *)self p_drawDictationMarkingsFragment:fragment drawingState:state];
       }
 
       if ((v7 & 0x800) != 0)
       {
-        [(TSWPRenderer *)self p_drawAutocorrectionMarkingsFragment:a3 drawingState:a5];
+        [(TSWPRenderer *)self p_drawAutocorrectionMarkingsFragment:fragment drawingState:state];
       }
 
-      if (*(a3 + 22))
+      if (*(fragment + 22))
       {
-        [(TSWPRenderer *)self p_drawListLabelForFragment:a3 drawingState:a5 lineDrawFlags:v7];
+        [(TSWPRenderer *)self p_drawListLabelForFragment:fragment drawingState:state lineDrawFlags:v7];
       }
 
       v33 = v59 & 0x2000;
@@ -228,14 +228,14 @@
       v62 = __76__TSWPRenderer_drawFragment_updateRect_drawingState_runState_lineDrawFlags___block_invoke;
       v63 = &unk_279D4A230;
       v66 = v22 + v20;
-      v64 = self;
-      v65 = a3;
+      selfCopy = self;
+      fragmentCopy = fragment;
       v68 = v33 >> 13;
-      v67 = a5;
-      if ((((!*(a5 + 7) || !*(a5 + 25)) && (__76__TSWPRenderer_drawFragment_updateRect_drawingState_runState_lineDrawFlags___block_invoke(v61, a3 + 24, 0), !*(a5 + 7)) || *(a5 + 25)) && (v62(v61, a3 + 28, 0), !*(a5 + 7)) || !*(a5 + 25)) && (v62(v61, a3 + 31, 1), !*(a5 + 7)) || !*(a5 + 25))
+      stateCopy = state;
+      if ((((!*(state + 7) || !*(state + 25)) && (__76__TSWPRenderer_drawFragment_updateRect_drawingState_runState_lineDrawFlags___block_invoke(v61, fragment + 24, 0), !*(state + 7)) || *(state + 25)) && (v62(v61, fragment + 28, 0), !*(state + 7)) || !*(state + 25)) && (v62(v61, fragment + 31, 1), !*(state + 7)) || !*(state + 25))
       {
-        v35 = *(a3 + 46);
-        v34 = *(a3 + 47);
+        v35 = *(fragment + 46);
+        v34 = *(fragment + 47);
         v60 = v34;
         while (v35 != v34)
         {
@@ -248,25 +248,25 @@
           [v38 size];
           CGContextTranslateCTM(self->_context, v19 + v36, v37 + v32 - v40 - v41);
           CGContextSetShouldAntialias(self->_context, 1);
-          v42 = [v38 rendererForAttachment];
-          if (!v42)
+          rendererForAttachment = [v38 rendererForAttachment];
+          if (!rendererForAttachment)
           {
-            v43 = [MEMORY[0x277D6C290] currentHandler];
+            currentHandler2 = [MEMORY[0x277D6C290] currentHandler];
             v44 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPRenderer drawFragment:updateRect:drawingState:runState:lineDrawFlags:]"];
-            [v43 handleFailureInFunction:v44 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRenderer.mm"), 425, @"Nil TSWPGraphicalAttachmentRenderer for graphical attachment"}];
+            [currentHandler2 handleFailureInFunction:v44 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRenderer.mm"), 425, @"Nil TSWPGraphicalAttachmentRenderer for graphical attachment"}];
           }
 
-          [v42 drawAttachment:v38 inContext:self->_context selection:0];
+          [rendererForAttachment drawAttachment:v38 inContext:self->_context selection:0];
           CGContextRestoreGState(self->_context);
           v35 += 32;
           v34 = v60;
         }
 
-        v48 = *(a3 + 34);
-        v47 = *(a3 + 35);
+        v48 = *(fragment + 34);
+        v47 = *(fragment + 35);
         while (v48 != v47)
         {
-          [(TSWPRenderer *)self p_drawAdornmentLine:v48 drawingState:a5 lineFragment:a3 lineFragmentStart:v33 != 0 vertical:v19, v32];
+          [(TSWPRenderer *)self p_drawAdornmentLine:v48 drawingState:state lineFragment:fragment lineFragmentStart:v33 != 0 vertical:v19, v32];
           v48 += 80;
         }
 
@@ -276,37 +276,37 @@
           v54 = v70;
           while (v55 != v54)
           {
-            [(TSWPRenderer *)self p_drawAdornmentLine:v55 drawingState:a5 lineFragment:a3 lineFragmentStart:v33 != 0 vertical:v19, v32];
+            [(TSWPRenderer *)self p_drawAdornmentLine:v55 drawingState:state lineFragment:fragment lineFragmentStart:v33 != 0 vertical:v19, v32];
             v55 += 80;
           }
         }
 
-        v50 = *(a3 + 37);
-        v49 = *(a3 + 38);
+        v50 = *(fragment + 37);
+        v49 = *(fragment + 38);
         while (v50 != v49)
         {
-          [(TSWPRenderer *)self p_drawAdornmentLine:v50 drawingState:a5 lineFragment:a3 lineFragmentStart:v33 != 0 vertical:v19, v32];
+          [(TSWPRenderer *)self p_drawAdornmentLine:v50 drawingState:state lineFragment:fragment lineFragmentStart:v33 != 0 vertical:v19, v32];
           v50 += 80;
         }
 
         CGContextSetTextDrawingMode(self->_context, kCGTextFill);
-        v51 = *(a3 + 55);
-        v52 = *(a3 + 56);
+        v51 = *(fragment + 55);
+        v52 = *(fragment + 56);
         while (v51 != v52)
         {
-          [(TSWPRenderer *)self p_drawAdornments:v51 lineFragment:a3 state:a5];
+          [(TSWPRenderer *)self p_drawAdornments:v51 lineFragment:fragment state:state];
           v51 += 200;
         }
 
-        v53 = *(a3 + 58);
+        v53 = *(fragment + 58);
         if (v53)
         {
-          [(TSWPRenderer *)self p_drawInvisiblesBreakLine:v53 lineFragment:a3 state:a5];
+          [(TSWPRenderer *)self p_drawInvisiblesBreakLine:v53 lineFragment:fragment state:state];
         }
       }
     }
 
-    if (v58)
+    if (height)
     {
       CGContextRestoreGState(self->_context);
     }
@@ -362,14 +362,14 @@ LABEL_8:
   }
 }
 
-- (void)drawAdornmentRects:(const void *)a3 forColumn:(id)a4 foreground:(BOOL)a5
+- (void)drawAdornmentRects:(const void *)rects forColumn:(id)column foreground:(BOOL)foreground
 {
-  if (*(a3 + 1) != *a3)
+  if (*(rects + 1) != *rects)
   {
     CGContextSaveGState(self->_context);
-    v9 = *a3;
-    v10 = *(a3 + 1);
-    if (*a3 != v10)
+    v9 = *rects;
+    v10 = *(rects + 1);
+    if (*rects != v10)
     {
       do
       {
@@ -377,7 +377,7 @@ LABEL_8:
         v11 = *(v9 + 32);
         v13 = *(v9 + 40);
         v14 = *(v9 + 48);
-        if (a5)
+        if (foreground)
         {
           if (*(v9 + 8) && *v9 == 2)
           {
@@ -405,8 +405,8 @@ LABEL_8:
           if (*(v9 + 16) && *v9 == 3)
           {
             objc_opt_class();
-            v18 = [TSUDynamicCast() CGColor];
-            CGContextSetStrokeColorWithColor(self->_context, v18);
+            cGColor = [TSUDynamicCast() CGColor];
+            CGContextSetStrokeColorWithColor(self->_context, cGColor);
             CGContextSetShouldAntialias(self->_context, 1);
             [(TSWPRenderer *)self p_strokeLineFromPoint:v12 + v13 * 0.5 toPoint:v11 width:v12 + v13 * 0.5, v11 + v14, v13];
           }
@@ -463,9 +463,9 @@ LABEL_8:
         advances = 0;
         if (!CGFontGetGlyphAdvances(v6, v9, 1uLL, &advances))
         {
-          v12 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSWPRenderer invisiblesFont]"];
-          [v12 handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRenderer.mm"), 653, @"CGFontGetGlyphAdvances failed"}];
+          [currentHandler handleFailureInFunction:v13 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRenderer.mm"), 653, @"CGFontGetGlyphAdvances failed"}];
         }
 
         *(v9 - 3) = v4 * advances / UnitsPerEm;
@@ -484,25 +484,25 @@ LABEL_8:
   return result;
 }
 
-- (BOOL)p_shouldClipFragment:(const void *)a3 drawingState:(const void *)a4 lineDrawFlags:(unsigned int)a5 updateRect:(CGRect)a6 outClipRect:(CGRect *)a7
+- (BOOL)p_shouldClipFragment:(const void *)fragment drawingState:(const void *)state lineDrawFlags:(unsigned int)flags updateRect:(CGRect)rect outClipRect:(CGRect *)clipRect
 {
-  height = a6.size.height;
-  rect = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v11 = a5;
-  v14 = *(a4 + 2);
-  v15 = *(a4 + 3);
-  v16 = *(a4 + 4);
-  v49.size.height = *(a4 + 5);
+  height = rect.size.height;
+  rect = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  flagsCopy = flags;
+  v14 = *(state + 2);
+  v15 = *(state + 3);
+  v16 = *(state + 4);
+  v49.size.height = *(state + 5);
   v49.origin.x = v14;
   v49.origin.y = v15;
   v49.size.width = v16;
   v47 = v49.size.height;
   Width = CGRectGetWidth(v49);
-  v18 = TSWPLineFragment::glyphCount(a3);
+  v18 = TSWPLineFragment::glyphCount(fragment);
   v46 = 10000000.0;
-  if ((v18 == 1 || v18 == 2 && (*(a3 + 25) & 8) != 0) && rint(*(a3 + 27)) > rint(Width))
+  if ((v18 == 1 || v18 == 2 && (*(fragment + 25) & 8) != 0) && rint(*(fragment + 27)) > rint(Width))
   {
     v50.origin.x = v14;
     v50.origin.y = v15;
@@ -532,7 +532,7 @@ LABEL_8:
 
     y = fmax(y, -10000000.0);
     v22 = 1;
-    if ((v11 & 2) != 0)
+    if ((flagsCopy & 2) != 0)
     {
       goto LABEL_10;
     }
@@ -541,20 +541,20 @@ LABEL_8:
   else
   {
     v22 = 0;
-    if ((v11 & 2) != 0)
+    if ((flagsCopy & 2) != 0)
     {
 LABEL_10:
-      v23 = *(a3 + 4) + *(a3 + 5);
-      MaxY = v23 + *(a3 + 17);
+      v23 = *(fragment + 4) + *(fragment + 5);
+      MaxY = v23 + *(fragment + 17);
       goto LABEL_13;
     }
   }
 
-  MaxY = CGRectGetMaxY(*(a3 + 48));
-  v23 = *(a3 + 4) + *(a3 + 5);
+  MaxY = CGRectGetMaxY(*(fragment + 48));
+  v23 = *(fragment + 4) + *(fragment + 5);
 LABEL_13:
-  v25 = *(a3 + 18);
-  v26 = v23 - *(a3 + 16);
+  v25 = *(fragment + 18);
+  v26 = v23 - *(fragment + 16);
   if (v25 >= 0.0)
   {
     v27 = v26;
@@ -565,7 +565,7 @@ LABEL_13:
     v27 = v26 - v25;
   }
 
-  if ((*(a4 + 94) & 1) != 0 || (v29 = v14, v30 = height, v31 = rint(MaxY), v53.origin.x = v29, v53.origin.y = v15, v53.size.width = v16, v53.size.height = v47, v32 = v31 <= rint(CGRectGetMaxY(v53)), height = v30, v32) && (v54.origin.x = v29, v54.origin.y = v15, v54.size.width = v16, v54.size.height = v47, rint(v27) >= rint(CGRectGetMinY(v54))))
+  if ((*(state + 94) & 1) != 0 || (v29 = v14, v30 = height, v31 = rint(MaxY), v53.origin.x = v29, v53.origin.y = v15, v53.size.width = v16, v53.size.height = v47, v32 = v31 <= rint(CGRectGetMaxY(v53)), height = v30, v32) && (v54.origin.x = v29, v54.origin.y = v15, v54.size.width = v16, v54.size.height = v47, rint(v27) >= rint(CGRectGetMinY(v54))))
   {
     if (!v22)
     {
@@ -624,7 +624,7 @@ LABEL_13:
 
   v38 = x;
   v39 = y;
-  v40 = rect;
+  rectCopy = rect;
   v41 = CGRectGetMaxY(*(&v36 - 3));
   if (v41 >= v28)
   {
@@ -637,36 +637,36 @@ LABEL_13:
   rect = fmax(v43, 0.0);
   v44 = 1;
 LABEL_34:
-  result = (*(a3 + 6) & 0x1000000) == 0 && v44;
-  a7->origin.x = x;
-  a7->origin.y = y;
-  a7->size.width = rect;
-  a7->size.height = height;
+  result = (*(fragment + 6) & 0x1000000) == 0 && v44;
+  clipRect->origin.x = x;
+  clipRect->origin.y = y;
+  clipRect->size.width = rect;
+  clipRect->size.height = height;
   return result;
 }
 
-- (void)p_drawWordMarkingsForFragment:(const void *)a3 color:(id)a4 ranges:(const void *)a5 suppressRange:(_NSRange)a6 drawingState:(const void *)a7
+- (void)p_drawWordMarkingsForFragment:(const void *)fragment color:(id)color ranges:(const void *)ranges suppressRange:(_NSRange)range drawingState:(const void *)state
 {
-  length = a6.length;
-  range1 = a6.location;
+  length = range.length;
+  range1 = range.location;
   lengths[2] = *MEMORY[0x277D85DE8];
-  location = *a3;
-  v14 = *(a3 + 1);
-  v15 = v14 + *a3;
-  if (v15 > [*a7 characterCount])
+  location = *fragment;
+  v14 = *(fragment + 1);
+  v15 = v14 + *fragment;
+  if (v15 > [*state characterCount])
   {
     range1_8a = [MEMORY[0x277D6C290] currentHandler];
-    v16 = a4;
-    v17 = a5;
+    colorCopy = color;
+    rangesCopy = ranges;
     v18 = length;
     v19 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPRenderer p_drawWordMarkingsForFragment:color:ranges:suppressRange:drawingState:]"];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRenderer.mm"];
     v21 = v19;
     length = v18;
-    a5 = v17;
-    a4 = v16;
+    ranges = rangesCopy;
+    color = colorCopy;
     [range1_8a handleFailureInFunction:v21 file:v20 lineNumber:742 description:@"Invalid line fragment range"];
-    v52.location = [*a7 range];
+    v52.location = [*state range];
     v52.length = v22;
     v49.location = location;
     v49.length = v14;
@@ -676,17 +676,17 @@ LABEL_34:
   }
 
   CGContextSaveGState(self->_context);
-  CGContextSetStrokeColorWithColor(self->_context, [a4 CGColor]);
+  CGContextSetStrokeColorWithColor(self->_context, [color CGColor]);
   *&lengths[0] = gSpellDotWidth;
   lengths[1] = *&gSpellDotStride - *&gSpellDotWidth;
   CGContextSetLineDash(self->_context, 0.0, lengths, 2uLL);
-  range1_8 = *(a3 + 6);
-  v24 = *(a3 + 16);
-  v26 = *(a7 + 27);
-  v25 = *(a7 + 28);
+  range1_8 = *(fragment + 6);
+  v24 = *(fragment + 16);
+  v26 = *(state + 27);
+  v25 = *(state + 28);
   v27 = *(MEMORY[0x277D6C268] + 8);
   v28 = v26 == *MEMORY[0x277D6C268] && v25 == v27;
-  v47 = a7;
+  stateCopy = state;
   if (v28)
   {
     v25 = length;
@@ -699,15 +699,15 @@ LABEL_34:
     if (range1 != *MEMORY[0x277D6C268] || length != v27)
     {
       v29.length = length;
-      v31 = NSUnionRange(v29, *(a7 + 216));
+      v31 = NSUnionRange(v29, *(state + 216));
       v26 = v31.location;
       v25 = v31.length;
     }
   }
 
-  v33 = *a5;
-  v32 = *(a5 + 1);
-  if (*a5 != v32)
+  v33 = *ranges;
+  v32 = *(ranges + 1);
+  if (*ranges != v32)
   {
     do
     {
@@ -726,8 +726,8 @@ LABEL_34:
         v36 = NSIntersectionRange(v51, v54);
         if (v36.length)
         {
-          v37 = TSWPLineFragment::wpOffsetForCharIndex(a3, v36.location, 1, 1, 0);
-          v38 = rint(TSWPLineFragment::wpOffsetForCharIndex(a3, v36.location + v36.length, 1, 1, 0) - v37);
+          v37 = TSWPLineFragment::wpOffsetForCharIndex(fragment, v36.location, 1, 1, 0);
+          v38 = rint(TSWPLineFragment::wpOffsetForCharIndex(fragment, v36.location + v36.length, 1, 1, 0) - v37);
           if (v38 > 0.0)
           {
             v39 = *&gSpellDotStride;
@@ -742,7 +742,7 @@ LABEL_34:
               v41 = v39 - v40;
             }
 
-            v42 = TSWPLineFragment::lowestBaselineInRange(a3, v36, v47[1]);
+            v42 = TSWPLineFragment::lowestBaselineInRange(fragment, v36, stateCopy[1]);
             if ((range1_8 & 0x2000) != 0)
             {
               v43 = floor(v42 - v24);
@@ -767,13 +767,13 @@ LABEL_34:
   CGContextRestoreGState(self->_context);
 }
 
-- (void)p_drawMisspelledWordMarkingsFragment:(const void *)a3 drawingState:(const void *)a4
+- (void)p_drawMisspelledWordMarkingsFragment:(const void *)fragment drawingState:(const void *)state
 {
-  *&__p.__begin_ = *a3;
-  TSWPRangeVector::rangesIntersecting(a4 + 4, &v9);
-  if ([*a4 hasTrackedChanges] && *a4)
+  *&__p.__begin_ = *fragment;
+  TSWPRangeVector::rangesIntersecting(state + 4, &v9);
+  if ([*state hasTrackedChanges] && *state)
   {
-    [*a4 deletedRangeVectorInRange:{*a3, *(a3 + 1)}];
+    [*state deletedRangeVectorInRange:{*fragment, *(fragment + 1)}];
     begin = __p.__begin_;
     if (__p.__end_ != __p.__begin_)
     {
@@ -788,7 +788,7 @@ LABEL_34:
     }
   }
 
-  -[TSWPRenderer p_drawWordMarkingsForFragment:color:ranges:suppressRange:drawingState:](self, "p_drawWordMarkingsForFragment:color:ranges:suppressRange:drawingState:", a3, [MEMORY[0x277D6C2A8] redColor], &v9, *(a4 + 18), *(a4 + 19), a4);
+  -[TSWPRenderer p_drawWordMarkingsForFragment:color:ranges:suppressRange:drawingState:](self, "p_drawWordMarkingsForFragment:color:ranges:suppressRange:drawingState:", fragment, [MEMORY[0x277D6C2A8] redColor], &v9, *(state + 18), *(state + 19), state);
   if (v9.__begin_)
   {
     v9.__end_ = v9.__begin_;
@@ -796,16 +796,16 @@ LABEL_34:
   }
 }
 
-- (void)p_drawUngrammaticMarkingsFragment:(const void *)a3 drawingState:(const void *)a4
+- (void)p_drawUngrammaticMarkingsFragment:(const void *)fragment drawingState:(const void *)state
 {
-  *&v10.__begin_ = *a3;
-  TSWPRangeVector::rangesIntersecting(a4 + 5, &v11);
-  *&__p.__begin_ = *a3;
-  TSWPRangeVector::rangesIntersecting(a4 + 4, &v10);
+  *&v10.__begin_ = *fragment;
+  TSWPRangeVector::rangesIntersecting(state + 5, &v11);
+  *&__p.__begin_ = *fragment;
+  TSWPRangeVector::rangesIntersecting(state + 4, &v10);
   TSWPRangeVector::subtract(&v11, &v10);
-  if ([*a4 hasTrackedChanges] && *a4)
+  if ([*state hasTrackedChanges] && *state)
   {
-    [*a4 deletedRangeVectorInRange:{*a3, *(a3 + 1)}];
+    [*state deletedRangeVectorInRange:{*fragment, *(fragment + 1)}];
     begin = __p.__begin_;
     if (__p.__end_ != __p.__begin_)
     {
@@ -821,7 +821,7 @@ LABEL_34:
   }
 
   v8 = [MEMORY[0x277D6C2A8] colorWithRed:0.22 green:0.62 blue:0.2 alpha:{1.0, __p.__begin_}];
-  [(TSWPRenderer *)self p_drawWordMarkingsForFragment:a3 color:v8 ranges:&v11 suppressRange:*MEMORY[0x277D6C268] drawingState:*(MEMORY[0x277D6C268] + 8), a4];
+  [(TSWPRenderer *)self p_drawWordMarkingsForFragment:fragment color:v8 ranges:&v11 suppressRange:*MEMORY[0x277D6C268] drawingState:*(MEMORY[0x277D6C268] + 8), state];
   if (v10.__begin_)
   {
     v10.__end_ = v10.__begin_;
@@ -835,43 +835,43 @@ LABEL_34:
   }
 }
 
-- (void)p_drawDictationMarkingsFragment:(const void *)a3 drawingState:(const void *)a4
+- (void)p_drawDictationMarkingsFragment:(const void *)fragment drawingState:(const void *)state
 {
-  v7 = [MEMORY[0x277D6C2A8] blueColor];
-  v8 = *(a4 + 20);
+  blueColor = [MEMORY[0x277D6C2A8] blueColor];
+  v8 = *(state + 20);
   v9 = *MEMORY[0x277D6C268];
   v10 = *(MEMORY[0x277D6C268] + 8);
 
-  [(TSWPRenderer *)self p_drawWordMarkingsForFragment:a3 color:v7 ranges:v8 suppressRange:v9 drawingState:v10, a4];
+  [(TSWPRenderer *)self p_drawWordMarkingsForFragment:fragment color:blueColor ranges:v8 suppressRange:v9 drawingState:v10, state];
 }
 
-- (void)p_drawAutocorrectionMarkingsFragment:(const void *)a3 drawingState:(const void *)a4
+- (void)p_drawAutocorrectionMarkingsFragment:(const void *)fragment drawingState:(const void *)state
 {
-  v7 = [MEMORY[0x277D6C2A8] blueColor];
-  v8 = *(a4 + 21);
+  blueColor = [MEMORY[0x277D6C2A8] blueColor];
+  v8 = *(state + 21);
   v9 = *MEMORY[0x277D6C268];
   v10 = *(MEMORY[0x277D6C268] + 8);
 
-  [(TSWPRenderer *)self p_drawWordMarkingsForFragment:a3 color:v7 ranges:v8 suppressRange:v9 drawingState:v10, a4];
+  [(TSWPRenderer *)self p_drawWordMarkingsForFragment:fragment color:blueColor ranges:v8 suppressRange:v9 drawingState:v10, state];
 }
 
-- (void)p_drawAdornmentLine:(const TSWPAdornmentLine *)a3 drawingState:(const void *)a4 lineFragment:(const void *)a5 lineFragmentStart:(CGPoint)a6 vertical:(BOOL)a7
+- (void)p_drawAdornmentLine:(const TSWPAdornmentLine *)line drawingState:(const void *)state lineFragment:(const void *)fragment lineFragmentStart:(CGPoint)start vertical:(BOOL)vertical
 {
-  var3 = a3->var3;
-  v12 = a6.x + a3->var0.x;
-  y = a6.y + a3->var0.y;
-  var4 = a3->var4;
-  if (a3->var1 >= *(a5 + 8) - a3->var0.x)
+  var3 = line->var3;
+  v12 = start.x + line->var0.x;
+  y = start.y + line->var0.y;
+  var4 = line->var4;
+  if (line->var1 >= *(fragment + 8) - line->var0.x)
   {
-    var1 = *(a5 + 8) - a3->var0.x;
+    var1 = *(fragment + 8) - line->var0.x;
   }
 
   else
   {
-    var1 = a3->var1;
+    var1 = line->var1;
   }
 
-  if (*(a4 + 90) == 1)
+  if (*(state + 90) == 1)
   {
     memset(&v52, 0, sizeof(v52));
     CGContextGetCTM(&v52, self->_context);
@@ -883,8 +883,8 @@ LABEL_34:
       v16 = CGContextConvertSizeToDeviceSpace(self->_context, v54);
       if (v16.height >= 0.5)
       {
-        CGContextConvertPointToDeviceSpace(self->_context, *(a4 + 1));
-        CGContextConvertSizeToDeviceSpace(self->_context, *(a4 + 2));
+        CGContextConvertPointToDeviceSpace(self->_context, *(state + 1));
+        CGContextConvertSizeToDeviceSpace(self->_context, *(state + 2));
         v17 = fmax(rint(v16.height), 1.0);
         v55.x = v12;
         v55.y = y;
@@ -907,7 +907,7 @@ LABEL_34:
   }
 
   context = self->_context;
-  var9 = a3->var9;
+  var9 = line->var9;
   if (var9)
   {
     var2 = [var9 cgColor];
@@ -915,14 +915,14 @@ LABEL_34:
 
   else
   {
-    var2 = a3->var2;
+    var2 = line->var2;
   }
 
   v26 = fmax(var1, 0.0);
   CGContextSetStrokeColorWithColor(context, var2);
   v27 = *MEMORY[0x277CBF398];
   v28 = *(MEMORY[0x277CBF398] + 16);
-  v29 = *(a4 + 7);
+  v29 = *(state + 7);
   if (v29)
   {
     v30.location = [v29 range];
@@ -943,9 +943,9 @@ LABEL_34:
   v35 = !v34;
   if (!v34)
   {
-    v36 = *a5;
-    v37 = *(a5 + 1);
-    v53.location = *a5;
+    v36 = *fragment;
+    v37 = *(fragment + 1);
+    v53.location = *fragment;
     v53.length = v37;
     v38 = NSIntersectionRange(v30, v53);
     if (!v38.length)
@@ -955,7 +955,7 @@ LABEL_34:
 
     if (v38.location >= v36 && v38.location - v36 < v37)
     {
-      v39 = TSWPLineFragment::wpOffsetForCharIndex(a5, v38.location, 1, 1, 0);
+      v39 = TSWPLineFragment::wpOffsetForCharIndex(fragment, v38.location, 1, 1, 0);
       if (v12 >= v39)
       {
         v39 = v12;
@@ -968,7 +968,7 @@ LABEL_34:
     v41 = v38.location + v38.length - v36 < v37 && v40 >= v36;
     if (v41 || v40 == v37 + v36)
     {
-      v43 = TSWPLineFragment::wpOffsetForCharIndex(a5, v40, 1, 1, 0);
+      v43 = TSWPLineFragment::wpOffsetForCharIndex(fragment, v40, 1, 1, 0);
       if (v43 >= v33)
       {
         v43 = v33;
@@ -988,7 +988,7 @@ LABEL_34:
       v42 = 1;
     }
 
-    if (a3->var5 == 3)
+    if (line->var5 == 3)
     {
       WavyLineHalfAmplitude = GetWavyLineHalfAmplitude(var3);
       if (!v42)
@@ -1031,7 +1031,7 @@ LABEL_34:
     v50 = y;
     do
     {
-      if (a3->var5 == 3)
+      if (line->var5 == 3)
       {
         [(TSWPRenderer *)self p_strokeWavyLineFromPoint:v12 toPoint:y width:v33, v50, var3];
       }
@@ -1055,15 +1055,15 @@ LABEL_34:
   }
 }
 
-- (void)p_drawAdornmentLineBackgroundRect:(const TSWPAdornmentLine *)a3 lineDrawFlags:(unsigned int)a4 drawingState:(const void *)a5 bounds:(CGRect)a6
+- (void)p_drawAdornmentLineBackgroundRect:(const TSWPAdornmentLine *)rect lineDrawFlags:(unsigned int)flags drawingState:(const void *)state bounds:(CGRect)bounds
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  if ((a4 & 2) != 0)
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  if ((flags & 2) != 0)
   {
-    var9 = a3->var9;
+    var9 = rect->var9;
     if (var9)
     {
       var2 = [var9 cgColor];
@@ -1071,7 +1071,7 @@ LABEL_34:
 
     else
     {
-      var2 = a3->var2;
+      var2 = rect->var2;
     }
 
     CopyWithAlpha = CGColorCreateCopyWithAlpha(var2, 0.5);
@@ -1082,29 +1082,29 @@ LABEL_34:
   else
   {
     context = self->_context;
-    v13 = a3->var9;
+    v13 = rect->var9;
     if (v13)
     {
-      v14 = [v13 cgColor];
+      cgColor = [v13 cgColor];
     }
 
     else
     {
-      v14 = a3->var2;
+      cgColor = rect->var2;
     }
 
-    CGContextSetFillColorWithColor(context, v14);
+    CGContextSetFillColorWithColor(context, cgColor);
   }
 
-  var1 = width - a3->var0.x;
-  if (a3->var1 < var1)
+  var1 = width - rect->var0.x;
+  if (rect->var1 < var1)
   {
-    var1 = a3->var1;
+    var1 = rect->var1;
   }
 
   if (var1 > 0.0)
   {
-    v19 = x + a3->var0.x;
+    v19 = x + rect->var0.x;
     v20 = self->_context;
     v21 = y;
     v22 = height;
@@ -1113,13 +1113,13 @@ LABEL_34:
   }
 }
 
-- (void)p_strokeLineFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 width:(double)a5
+- (void)p_strokeLineFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint width:(double)width
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3.y;
-  v8 = a3.x;
-  CGContextSetLineWidth(self->_context, a5);
+  y = toPoint.y;
+  x = toPoint.x;
+  v7 = point.y;
+  v8 = point.x;
+  CGContextSetLineWidth(self->_context, width);
   CGContextMoveToPoint(self->_context, v8, v7);
   CGContextAddLineToPoint(self->_context, x, y);
   context = self->_context;
@@ -1127,14 +1127,14 @@ LABEL_34:
   CGContextStrokePath(context);
 }
 
-- (void)p_strokeWavyLineFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 width:(double)a5
+- (void)p_strokeWavyLineFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint width:(double)width
 {
-  x = a4.x;
-  y = a3.y;
-  v8 = a3.x;
+  x = toPoint.x;
+  y = point.y;
+  v8 = point.x;
   WavyLineRate = GetWavyLineRate();
-  WavyLineHalfAmplitude = GetWavyLineHalfAmplitude(a5);
-  WavyLineThickness = GetWavyLineThickness(a5);
+  WavyLineHalfAmplitude = GetWavyLineHalfAmplitude(width);
+  WavyLineThickness = GetWavyLineThickness(width);
   CGContextSaveGState(self->_context);
   v24.origin.y = y - (WavyLineHalfAmplitude + 1.0);
   v24.size.height = WavyLineHalfAmplitude + 1.0 + WavyLineHalfAmplitude + 1.0;
@@ -1173,17 +1173,17 @@ LABEL_34:
   CGContextRestoreGState(context);
 }
 
-- (void)p_drawTextInRunsForLine:(__CTLine *)a3 fragment:(const void *)a4 state:(const void *)a5 tateChuYoko:(BOOL)a6 baseRange:(_NSRange)a7 isFirstLineRef:(BOOL)a8
+- (void)p_drawTextInRunsForLine:(__CTLine *)line fragment:(const void *)fragment state:(const void *)state tateChuYoko:(BOOL)yoko baseRange:(_NSRange)range isFirstLineRef:(BOOL)ref
 {
-  length = a7.length;
-  location = a7.location;
-  v38 = a6;
+  length = range.length;
+  location = range.location;
+  yokoCopy = yoko;
   v51 = *MEMORY[0x277D85DE8];
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
-  obj = CTLineGetGlyphRuns(a3);
+  obj = CTLineGetGlyphRuns(line);
   v40 = [(__CFArray *)obj countByEnumeratingWithState:&v46 objects:v50 count:16];
   if (v40)
   {
@@ -1202,9 +1202,9 @@ LABEL_34:
         GlyphCount = CTRunGetGlyphCount(v12);
         if (GlyphCount - 65537 < 0xFFFFFFFFFFFF0000)
         {
-          v32 = [MEMORY[0x277D6C290] currentHandler];
+          currentHandler = [MEMORY[0x277D6C290] currentHandler];
           v33 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSWPRenderer p_drawTextInRunsForLine:fragment:state:tateChuYoko:baseRange:isFirstLineRef:]"];
-          [v32 handleFailureInFunction:v33 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRenderer.mm"), 1187, @"bad glyph count: %ld", GlyphCount}];
+          [currentHandler handleFailureInFunction:v33 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/text/TSWPRenderer.mm"), 1187, @"bad glyph count: %ld", GlyphCount}];
           return;
         }
 
@@ -1219,11 +1219,11 @@ LABEL_34:
           Status = CTRunGetStatus(v12);
           v19 = 0.0;
           v20 = 0.0;
-          if ((*(a4 + 25) & 0x20) != 0)
+          if ((*(fragment + 25) & 0x20) != 0)
           {
-            if (v38)
+            if (yokoCopy)
             {
-              CGContextTranslateCTM(self->_context, *(a3 + 1), *(a3 + 2));
+              CGContextTranslateCTM(self->_context, *(line + 1), *(line + 2));
               CGContextRotateCTM(self->_context, -1.57079633);
               goto LABEL_15;
             }
@@ -1248,16 +1248,16 @@ LABEL_15:
             }
           }
 
-          if ((*(a4 + 25) & 0x10) != 0 && a8)
+          if ((*(fragment + 25) & 0x10) != 0 && ref)
           {
-            v19 = *(a4 + 65);
+            v19 = *(fragment + 65);
           }
 
           CGContextSetTextPosition(self->_context, v19 + v45.tx, v20 + v17 + v45.ty);
           context = self->_context;
           CGAffineTransformMakeScale(&ascent, 1.0, -1.0);
           CGContextConcatCTM(context, &ascent);
-          if ((*(a5 + 89) & 1) == 0)
+          if ((*(state + 89) & 1) == 0)
           {
             v23 = [(TSWPLineFragment *)Attributes objectForKeyedSubscript:@"TSWPShadow"];
             if (v23)
@@ -1268,20 +1268,20 @@ LABEL_15:
 
           v43.location = 0;
           v43.length = 0;
-          v24 = *(a5 + 7);
+          v24 = *(state + 7);
           if (v24)
           {
-            v26 = [v24 superRange];
-            v43.location = v26;
+            superRange = [v24 superRange];
+            v43.location = superRange;
             v43.length = v25;
-            v27 = *(a5 + 7);
-            if (v27 && (v38 || (location < v26 || location - v26 >= v25) && (location != v26 || v25 != length)))
+            v27 = *(state + 7);
+            if (v27 && (yokoCopy || (location < superRange || location - superRange >= v25) && (location != superRange || v25 != length)))
             {
-              if (*(a5 + 24) == *MEMORY[0x277D6C268] && *(a5 + 25) == *(MEMORY[0x277D6C268] + 8))
+              if (*(state + 24) == *MEMORY[0x277D6C268] && *(state + 25) == *(MEMORY[0x277D6C268] + 8))
               {
                 if ([v27 visualRangeCount] >= 2)
                 {
-                  std::vector<CGPoint>::vector[abi:nn200100](&ascent, [*(a5 + 7) visualRanges]);
+                  std::vector<CGPoint>::vector[abi:nn200100](&ascent, [*(state + 7) visualRanges]);
                   memset(descent, 0, sizeof(descent));
                   std::vector<unsigned long>::__vallocate[abi:nn200100](descent, GlyphCount);
                 }
@@ -1293,7 +1293,7 @@ LABEL_15:
             else
             {
 LABEL_34:
-              v28 = *(a5 + 12);
+              v28 = *(state + 12);
               v29.location = 0;
               if (v28 != *MEMORY[0x277D6C268])
               {
@@ -1328,12 +1328,12 @@ LABEL_38:
   }
 }
 
-- (void)p_drawAttachmentGlyphAtPosition:(id)a3 fragment:(const void *)a4
+- (void)p_drawAttachmentGlyphAtPosition:(id)position fragment:(const void *)fragment
 {
-  v5 = floor(a3.var1) + 0.5;
-  v6 = -*(a4 + 16) - *(a4 + 18);
+  v5 = floor(position.var1) + 0.5;
+  v6 = -*(fragment + 16) - *(fragment + 18);
   v7 = v5 - 4.80000019 * 0.5;
-  [(TSWPRenderer *)self p_strokeLineFromPoint:a3.var0 toPoint:v5 width:v6, v5, *(a4 + 17) + *(a4 + 19) + *(a4 + 20), 1.0];
+  [(TSWPRenderer *)self p_strokeLineFromPoint:position.var0 toPoint:v5 width:v6, v5, *(fragment + 17) + *(fragment + 19) + *(fragment + 20), 1.0];
   context = self->_context;
   v9 = v7;
   v10 = v6;
@@ -1343,18 +1343,18 @@ LABEL_38:
   CGContextFillEllipseInRect(context, *&v9);
 }
 
-- (void)p_drawInvisiblesAdornments:(const void *)a3 lineFragment:(const void *)a4 state:(const void *)a5
+- (void)p_drawInvisiblesAdornments:(const void *)adornments lineFragment:(const void *)fragment state:(const void *)state
 {
-  v9 = *(a5 + 91);
-  v10 = *(a3 + 3);
-  v11 = *(a4 + 6);
-  v12 = *(a4 + 4) + *(a4 + 5);
+  v9 = *(state + 91);
+  v10 = *(adornments + 3);
+  v11 = *(fragment + 6);
+  v12 = *(fragment + 4) + *(fragment + 5);
   CGContextSaveGState(self->_context);
-  CGContextTranslateCTM(self->_context, v11 + *(*(a4 + 24) + 8), v12 + (*(a4 + 17) - *(a4 + 16) + *&qword_280CDBA28) * 0.5);
+  CGContextTranslateCTM(self->_context, v11 + *(*(fragment + 24) + 8), v12 + (*(fragment + 17) - *(fragment + 16) + *&qword_280CDBA28) * 0.5);
   CGContextSetTextPosition(self->_context, 0.0, 0.0);
-  CGContextSetFillColorWithColor(self->_context, *(a5 + 9));
-  v14 = *(a3 + 13);
-  v13 = *(a3 + 14);
+  CGContextSetFillColorWithColor(self->_context, *(state + 9));
+  v14 = *(adornments + 13);
+  v13 = *(adornments + 14);
   if (v9)
   {
     if (v13 != v14)
@@ -1363,20 +1363,20 @@ LABEL_3:
       context = self->_context;
       CGAffineTransformMakeScale(&v19, 1.0, -1.0);
       CGContextConcatCTM(context, &v19);
-      CTFontDrawGlyphs(v10, *(a3 + 7), *(a3 + 13), (v13 - v14) >> 4, self->_context);
+      CTFontDrawGlyphs(v10, *(adornments + 7), *(adornments + 13), (v13 - v14) >> 4, self->_context);
     }
   }
 
   else
   {
-    v16 = *(a4 + 1);
+    v16 = *(fragment + 1);
     if (v16)
     {
-      v17 = *a4;
-      v18 = *(a5 + 6);
+      v17 = *fragment;
+      v18 = *(state + 6);
       if ([v18 isValid])
       {
-        if ([v18 containsCharacterAtIndex:v16 + v17 - 1] && v13 != v14 && *a3 == 2)
+        if ([v18 containsCharacterAtIndex:v16 + v17 - 1] && v13 != v14 && *adornments == 2)
         {
           goto LABEL_3;
         }
@@ -1387,32 +1387,32 @@ LABEL_3:
   CGContextRestoreGState(self->_context);
 }
 
-- (void)p_drawHiddenDeletionsAdornments:(const void *)a3 lineFragment:(const void *)a4 state:(const void *)a5
+- (void)p_drawHiddenDeletionsAdornments:(const void *)adornments lineFragment:(const void *)fragment state:(const void *)state
 {
-  v8 = *(a3 + 3);
-  v9 = *(a4 + 6);
-  v10 = *(a4 + 4) + *(a4 + 5);
+  v8 = *(adornments + 3);
+  v9 = *(fragment + 6);
+  v10 = *(fragment + 4) + *(fragment + 5);
   CGContextSaveGState(self->_context);
-  CGContextTranslateCTM(self->_context, v9 + *(*(a4 + 24) + 8), v10);
+  CGContextTranslateCTM(self->_context, v9 + *(*(fragment + 24) + 8), v10);
   CGContextSetTextPosition(self->_context, 0.0, 0.0);
-  CGContextSetFillColorWithColor(self->_context, *(a3 + 2));
-  v11 = *(a3 + 14) - *(a3 + 13);
+  CGContextSetFillColorWithColor(self->_context, *(adornments + 2));
+  v11 = *(adornments + 14) - *(adornments + 13);
   if (v11)
   {
     v12 = v11 >> 4;
     context = self->_context;
     CGAffineTransformMakeScale(&v14, 1.0, -1.0);
     CGContextConcatCTM(context, &v14);
-    CTFontDrawGlyphs(v8, *(a3 + 7), *(a3 + 13), v12, self->_context);
+    CTFontDrawGlyphs(v8, *(adornments + 7), *(adornments + 13), v12, self->_context);
   }
 
   CGContextRestoreGState(self->_context);
 }
 
-- (BOOL)p_canvasSelectionIncludesDrawableOfAttachmentAtCharIndex:(unint64_t)a3 state:(const void *)a4
+- (BOOL)p_canvasSelectionIncludesDrawableOfAttachmentAtCharIndex:(unint64_t)index state:(const void *)state
 {
-  v6 = [*(a4 + 30) infos];
-  if (![v6 count])
+  infos = [*(state + 30) infos];
+  if (![infos count])
   {
     return 0;
   }
@@ -1427,37 +1427,37 @@ LABEL_3:
     }
   }
 
-  v8 = [*a4 attachmentAtCharIndex:a3];
+  v8 = [*state attachmentAtCharIndex:index];
   if (![v8 isDrawable] || !objc_msgSend(v8, "isAnchored") || (objc_msgSend(v8, "isPartitioned") & 1) != 0)
   {
     return 0;
   }
 
   objc_opt_class();
-  v10 = [TSUDynamicCast() drawable];
+  drawable = [TSUDynamicCast() drawable];
 
-  return [v6 containsObject:v10];
+  return [infos containsObject:drawable];
 }
 
-- (void)p_drawAttachmentAdornments:(const void *)a3 lineFragment:(const void *)a4 state:(const void *)a5
+- (void)p_drawAttachmentAdornments:(const void *)adornments lineFragment:(const void *)fragment state:(const void *)state
 {
-  v9 = *(a5 + 91);
-  v10 = *(a4 + 6);
-  v11 = *(a4 + 4) + *(a4 + 5);
+  v9 = *(state + 91);
+  v10 = *(fragment + 6);
+  v11 = *(fragment + 4) + *(fragment + 5);
   CGContextSaveGState(self->_context);
-  CGContextTranslateCTM(self->_context, v10 + *(*(a4 + 24) + 8), v11);
-  CGContextSetFillColorWithColor(self->_context, *(a5 + 9));
-  CGContextSetStrokeColorWithColor(self->_context, *(a5 + 9));
-  v12 = *(a3 + 16);
-  v13 = *(a3 + 17);
+  CGContextTranslateCTM(self->_context, v10 + *(*(fragment + 24) + 8), v11);
+  CGContextSetFillColorWithColor(self->_context, *(state + 9));
+  CGContextSetStrokeColorWithColor(self->_context, *(state + 9));
+  v12 = *(adornments + 16);
+  v13 = *(adornments + 17);
   if (v12 != v13)
   {
-    v14 = *(a5 + 6);
+    v14 = *(state + 6);
     do
     {
-      if ((v9 & 1) != 0 || ([v14 containsCharacterAtIndex:*v12], -[TSWPRenderer p_canvasSelectionIncludesDrawableOfAttachmentAtCharIndex:state:](self, "p_canvasSelectionIncludesDrawableOfAttachmentAtCharIndex:state:", *v12, a5)))
+      if ((v9 & 1) != 0 || ([v14 containsCharacterAtIndex:*v12], -[TSWPRenderer p_canvasSelectionIncludesDrawableOfAttachmentAtCharIndex:state:](self, "p_canvasSelectionIncludesDrawableOfAttachmentAtCharIndex:state:", *v12, state)))
       {
-        [(TSWPRenderer *)self p_drawAttachmentGlyphAtPosition:*v12 fragment:v12[1], a4];
+        [(TSWPRenderer *)self p_drawAttachmentGlyphAtPosition:*v12 fragment:v12[1], fragment];
       }
 
       v12 += 2;
@@ -1471,31 +1471,31 @@ LABEL_3:
   CGContextRestoreGState(context);
 }
 
-- (void)p_drawAdornmentGlyphs:(const void *)a3 lineFragment:(const void *)a4 state:(const void *)a5
+- (void)p_drawAdornmentGlyphs:(const void *)glyphs lineFragment:(const void *)fragment state:(const void *)state
 {
-  v9 = *(a3 + 2);
-  v8 = *(a3 + 3);
-  v10 = *(a4 + 6);
-  v11 = *(a4 + 4) + *(a4 + 5);
-  v13 = *(a3 + 22);
-  v12 = *(a3 + 23);
-  if (*(a3 + 192) == 1)
+  v9 = *(glyphs + 2);
+  v8 = *(glyphs + 3);
+  v10 = *(fragment + 6);
+  v11 = *(fragment + 4) + *(fragment + 5);
+  v13 = *(glyphs + 22);
+  v12 = *(glyphs + 23);
+  if (*(glyphs + 192) == 1)
   {
-    v15 = *(a3 + 13);
-    v14 = *(a3 + 14);
+    v15 = *(glyphs + 13);
+    v14 = *(glyphs + 14);
     if (v14 != v15)
     {
       v16 = 0;
       v17 = (v14 - v15) >> 4;
-      v18 = *(a3 + 19) + *(a3 + 20);
-      v19 = *(a3 + 21);
+      v18 = *(glyphs + 19) + *(glyphs + 20);
+      v19 = *(glyphs + 21);
       v20 = 1;
       v21 = MEMORY[0x277CBF348];
       do
       {
         CGContextSaveGState(self->_context);
         CGContextSetFillColorWithColor(self->_context, v9);
-        CGContextTranslateCTM(self->_context, *(*(a3 + 13) + 16 * v16) + v13 + v10 + *(*(a4 + 24) + 8), v11 + v12 + *(*(a3 + 13) + 16 * v16 + 8) - v18);
+        CGContextTranslateCTM(self->_context, *(*(glyphs + 13) + 16 * v16) + v13 + v10 + *(*(fragment + 24) + 8), v11 + v12 + *(*(glyphs + 13) + 16 * v16 + 8) - v18);
         CGContextSetTextPosition(self->_context, 0.0, 0.0);
         context = self->_context;
         CGAffineTransformMakeScale(&v28, 1.0, -1.0);
@@ -1507,7 +1507,7 @@ LABEL_3:
         CGAffineTransformMakeRotation(&v28, 1.57079633);
         CGContextConcatCTM(v24, &v28);
         *&v28.a = *v21;
-        CTFontDrawGlyphs(v8, (*(a3 + 7) + 2 * v16), &v28, 1uLL, self->_context);
+        CTFontDrawGlyphs(v8, (*(glyphs + 7) + 2 * v16), &v28, 1uLL, self->_context);
         CGContextRestoreGState(self->_context);
         v16 = v20;
       }
@@ -1520,34 +1520,34 @@ LABEL_3:
   {
     CGContextSaveGState(self->_context);
     CGContextSetFillColorWithColor(self->_context, v9);
-    CGContextTranslateCTM(self->_context, v13 + v10 + *(*(a4 + 24) + 8), v11 + v12);
+    CGContextTranslateCTM(self->_context, v13 + v10 + *(*(fragment + 24) + 8), v11 + v12);
     v26 = self->_context;
     CGAffineTransformMakeScale(&v28, 1.0, -1.0);
     CGContextConcatCTM(v26, &v28);
-    v27 = (*(a3 + 14) - *(a3 + 13)) >> 4;
+    v27 = (*(glyphs + 14) - *(glyphs + 13)) >> 4;
     CGContextSetTextPosition(self->_context, 0.0, 0.0);
-    CTFontDrawGlyphs(v8, *(a3 + 7), *(a3 + 13), v27, self->_context);
+    CTFontDrawGlyphs(v8, *(glyphs + 7), *(glyphs + 13), v27, self->_context);
     CGContextRestoreGState(self->_context);
   }
 }
 
-- (void)p_drawAdornments:(const void *)a3 lineFragment:(const void *)a4 state:(const void *)a5
+- (void)p_drawAdornments:(const void *)adornments lineFragment:(const void *)fragment state:(const void *)state
 {
-  v5 = *a3;
-  if ((*a3 - 1) >= 2)
+  v5 = *adornments;
+  if ((*adornments - 1) >= 2)
   {
     if (v5 == 3)
     {
-      if ((*(a5 + 88) & 1) == 0 && *(a5 + 90) == 1 && TSWPLineFragment::glyphCount(a4))
+      if ((*(state + 88) & 1) == 0 && *(state + 90) == 1 && TSWPLineFragment::glyphCount(fragment))
       {
 
-        [(TSWPRenderer *)self p_drawAttachmentAdornments:a3 lineFragment:a4 state:a5];
+        [(TSWPRenderer *)self p_drawAttachmentAdornments:adornments lineFragment:fragment state:state];
       }
     }
 
     else if (v5 == 6)
     {
-      if ((*(a5 + 88) & 1) == 0 && *(a5 + 90) == 1)
+      if ((*(state + 88) & 1) == 0 && *(state + 90) == 1)
       {
 
         [TSWPRenderer p_drawHiddenDeletionsAdornments:"p_drawHiddenDeletionsAdornments:lineFragment:state:" lineFragment:? state:?];
@@ -1562,15 +1562,15 @@ LABEL_3:
   }
 }
 
-- (void)p_drawInvisiblesBreakLine:(const TSWPAdornmentLine *)a3 lineFragment:(const void *)a4 state:(const void *)a5
+- (void)p_drawInvisiblesBreakLine:(const TSWPAdornmentLine *)line lineFragment:(const void *)fragment state:(const void *)state
 {
-  v5 = *(a4 + 1);
+  v5 = *(fragment + 1);
   if (v5)
   {
-    if (*(a5 + 91))
+    if (*(state + 91))
     {
       v10 = 0;
-      if (!a3)
+      if (!line)
       {
         return;
       }
@@ -1578,15 +1578,15 @@ LABEL_3:
 
     else
     {
-      v11 = *a4;
-      v12 = *(a5 + 6);
+      v11 = *fragment;
+      v12 = *(state + 6);
       if (![v12 isValid])
       {
         return;
       }
 
       v10 = [v12 containsCharacterAtIndex:v11 + v5 - 1] ^ 1;
-      if (!a3)
+      if (!line)
       {
         return;
       }
@@ -1594,14 +1594,14 @@ LABEL_3:
 
     if ((v10 & 1) == 0)
     {
-      v13 = *(a4 + 6);
-      v14 = *(a4 + 4) + *(a4 + 5);
+      v13 = *(fragment + 6);
+      v14 = *(fragment + 4) + *(fragment + 5);
       CGContextSaveGState(self->_context);
       CGContextTranslateCTM(self->_context, v13, v14);
-      v15 = *(a4 + 58);
+      v15 = *(fragment + 58);
       if (v15)
       {
-        v16 = *(a5 + 9);
+        v16 = *(state + 9);
         v19 = *v15;
         v20 = *(v15 + 2);
         color = v16;
@@ -1614,7 +1614,7 @@ LABEL_3:
         v27 = *(v15 + 9);
         CGColorRetain(v16);
         v18 = v27;
-        [(TSWPRenderer *)self p_drawAdornmentLine:&v19 drawingState:a5 lineFragment:a4 lineFragmentStart:0 vertical:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
+        [(TSWPRenderer *)self p_drawAdornmentLine:&v19 drawingState:state lineFragment:fragment lineFragmentStart:0 vertical:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8)];
         CGColorRelease(color);
       }
 
@@ -1623,14 +1623,14 @@ LABEL_3:
   }
 }
 
-- (void)p_drawListLabelForFragment:(const void *)a3 drawingState:(const void *)a4 lineDrawFlags:(unsigned int)a5
+- (void)p_drawListLabelForFragment:(const void *)fragment drawingState:(const void *)state lineDrawFlags:(unsigned int)flags
 {
-  v5 = a5;
-  v9 = *a3;
-  v10 = *(a3 + 1);
-  v11 = *(a3 + 22);
-  v12 = [*(a4 + 7) type];
-  if (![*(a4 + 7) isValid] || (objc_msgSend(*(a4 + 7), "containsCharacterAtIndex:", v9) ? (v13 = v12 == 2) : (v13 = 0), v13))
+  flagsCopy = flags;
+  v9 = *fragment;
+  v10 = *(fragment + 1);
+  v11 = *(fragment + 22);
+  type = [*(state + 7) type];
+  if (![*(state + 7) isValid] || (objc_msgSend(*(state + 7), "containsCharacterAtIndex:", v9) ? (v13 = type == 2) : (v13 = 0), v13))
   {
     v14 = 0;
     if (!v11)
@@ -1641,22 +1641,22 @@ LABEL_3:
 
   else
   {
-    if ([*(a4 + 7) start] != v9)
+    if ([*(state + 7) start] != v9)
     {
       return;
     }
 
-    v14 = (v12 - 3) < 0xFFFFFFFE;
+    v14 = (type - 3) < 0xFFFFFFFE;
     if (!v11)
     {
       return;
     }
   }
 
-  if (!v14 && (*(a4 + 93) != 1 || (v5 & 0x100) != 0 || v10 != 1 || (IsParagraphBreakingCharacter([*a4 characterAtIndex:v9]) & 1) == 0))
+  if (!v14 && (*(state + 93) != 1 || (flagsCopy & 0x100) != 0 || v10 != 1 || (IsParagraphBreakingCharacter([*state characterAtIndex:v9]) & 1) == 0))
   {
     CGContextSaveGState(self->_context);
-    if ((*(a4 + 89) & 1) == 0)
+    if ((*(state + 89) & 1) == 0)
     {
       v15 = *(v11 + 32);
       if (v15)
@@ -1671,11 +1671,11 @@ LABEL_3:
     v16 = *(v11 + 16);
     if (v16)
     {
-      v17 = TSWPLineFragment::labelTextPosition(a3);
+      v17 = TSWPLineFragment::labelTextPosition(fragment);
       CGContextTranslateCTM(self->_context, v17, v18);
       CGContextSetTextPosition(self->_context, 0.0, 0.0);
       LOBYTE(v27) = 0;
-      [(TSWPRenderer *)self p_drawTextInRunsForLine:v16 fragment:a3 state:a4 tateChuYoko:*(v11 + 81) baseRange:v9 isFirstLineRef:0, v27];
+      [(TSWPRenderer *)self p_drawTextInRunsForLine:v16 fragment:fragment state:state tateChuYoko:*(v11 + 81) baseRange:v9 isFirstLineRef:0, v27];
     }
 
     else
@@ -1683,11 +1683,11 @@ LABEL_3:
       v19 = *(v11 + 24);
       if (v19)
       {
-        TSWPLineFragment::labelRect(a3);
+        TSWPLineFragment::labelRect(fragment);
         v21 = v20;
         v23 = v22;
         CGContextTranslateCTM(self->_context, v24, v25);
-        if ((*(a3 + 25) & 0x20) != 0)
+        if ((*(fragment + 25) & 0x20) != 0)
         {
           CGContextTranslateCTM(self->_context, 0.0, v23);
           CGContextRotateCTM(self->_context, -1.57079633);

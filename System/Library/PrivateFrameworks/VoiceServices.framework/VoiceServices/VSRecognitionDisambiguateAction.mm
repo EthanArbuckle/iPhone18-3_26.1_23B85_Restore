@@ -1,17 +1,17 @@
 @interface VSRecognitionDisambiguateAction
-- (__VSRecognition)_createRecognitionInstanceWithCallbacks:(id *)a3 info:(void *)a4;
+- (__VSRecognition)_createRecognitionInstanceWithCallbacks:(id *)callbacks info:(void *)info;
 - (__VSRecognitionDisambiguationContext)_disambiguationContext;
 - (id)_actionForEmptyResults;
 - (id)_keywords;
-- (id)knownValueForClassIdentifier:(id)a3;
-- (id)knownValuesForClassIdentifier:(id)a3;
+- (id)knownValueForClassIdentifier:(id)identifier;
+- (id)knownValuesForClassIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)setAmbiguousValues:(id)a3 phoneticValues:(id)a4 forClassIdentifier:(id)a5;
-- (void)setKeywords:(id)a3;
-- (void)setKnownValue:(id)a3 phoneticValue:(id)a4 forClassIdentifier:(id)a5;
-- (void)setKnownValues:(id)a3 phoneticValues:(id)a4 forClassIdentifier:(id)a5;
-- (void)setRepeatedSpokenFeedbackString:(id)a3;
-- (void)setSequenceTag:(id)a3;
+- (void)setAmbiguousValues:(id)values phoneticValues:(id)phoneticValues forClassIdentifier:(id)identifier;
+- (void)setKeywords:(id)keywords;
+- (void)setKnownValue:(id)value phoneticValue:(id)phoneticValue forClassIdentifier:(id)identifier;
+- (void)setKnownValues:(id)values phoneticValues:(id)phoneticValues forClassIdentifier:(id)identifier;
+- (void)setRepeatedSpokenFeedbackString:(id)string;
+- (void)setSequenceTag:(id)tag;
 @end
 
 @implementation VSRecognitionDisambiguateAction
@@ -27,17 +27,17 @@
   return self;
 }
 
-- (__VSRecognition)_createRecognitionInstanceWithCallbacks:(id *)a3 info:(void *)a4
+- (__VSRecognition)_createRecognitionInstanceWithCallbacks:(id *)callbacks info:(void *)info
 {
-  v7 = [(VSRecognitionRecognizeAction *)self modelIdentifier];
+  modelIdentifier = [(VSRecognitionRecognizeAction *)self modelIdentifier];
   result = [(VSRecognitionDisambiguateAction *)self _disambiguationContext];
   if (result)
   {
     v9 = result;
     v10 = *MEMORY[0x277CBECE8];
-    if (v7)
+    if (modelIdentifier)
     {
-      v11 = v7;
+      v11 = modelIdentifier;
     }
 
     else
@@ -45,7 +45,7 @@
       v11 = @"_default";
     }
 
-    return _VSRecognitionCreate(v10, v11, v9, a3, a4);
+    return _VSRecognitionCreate(v10, v11, v9, callbacks, info);
   }
 
   return result;
@@ -61,13 +61,13 @@
   return self->_context;
 }
 
-- (void)setKeywords:(id)a3
+- (void)setKeywords:(id)keywords
 {
   keywords = self->super._keywords;
-  if (keywords != a3)
+  if (keywords != keywords)
   {
 
-    self->super._keywords = a3;
+    self->super._keywords = keywords;
   }
 }
 
@@ -127,9 +127,9 @@
   return result;
 }
 
-- (void)setAmbiguousValues:(id)a3 phoneticValues:(id)a4 forClassIdentifier:(id)a5
+- (void)setAmbiguousValues:(id)values phoneticValues:(id)phoneticValues forClassIdentifier:(id)identifier
 {
-  v9 = [a3 count];
+  v9 = [values count];
   ambiguousValues = self->_ambiguousValues;
   if (v9)
   {
@@ -139,8 +139,8 @@
       self->_ambiguousValues = ambiguousValues;
     }
 
-    [(NSMutableDictionary *)ambiguousValues setObject:a3 forKey:a5];
-    if ([a4 count] == v9)
+    [(NSMutableDictionary *)ambiguousValues setObject:values forKey:identifier];
+    if ([phoneticValues count] == v9)
     {
       ambiguousPhoneticValues = self->_ambiguousPhoneticValues;
       if (!ambiguousPhoneticValues)
@@ -149,22 +149,22 @@
         self->_ambiguousPhoneticValues = ambiguousPhoneticValues;
       }
 
-      [(NSMutableDictionary *)ambiguousPhoneticValues setObject:a4 forKey:a5];
+      [(NSMutableDictionary *)ambiguousPhoneticValues setObject:phoneticValues forKey:identifier];
     }
   }
 
   else
   {
-    [(NSMutableDictionary *)ambiguousValues removeObjectForKey:a5];
+    [(NSMutableDictionary *)ambiguousValues removeObjectForKey:identifier];
     v12 = self->_ambiguousPhoneticValues;
 
-    [(NSMutableDictionary *)v12 removeObjectForKey:a5];
+    [(NSMutableDictionary *)v12 removeObjectForKey:identifier];
   }
 }
 
-- (void)setKnownValues:(id)a3 phoneticValues:(id)a4 forClassIdentifier:(id)a5
+- (void)setKnownValues:(id)values phoneticValues:(id)phoneticValues forClassIdentifier:(id)identifier
 {
-  v9 = [a3 count];
+  v9 = [values count];
   knownValues = self->_knownValues;
   if (v9)
   {
@@ -174,8 +174,8 @@
       self->_knownValues = knownValues;
     }
 
-    [(NSMutableDictionary *)knownValues setObject:a3 forKey:a5];
-    v11 = [a4 count];
+    [(NSMutableDictionary *)knownValues setObject:values forKey:identifier];
+    v11 = [phoneticValues count];
     knownPhoneticValues = self->_knownPhoneticValues;
     if (v11)
     {
@@ -185,23 +185,23 @@
         self->_knownPhoneticValues = knownPhoneticValues;
       }
 
-      [(NSMutableDictionary *)knownPhoneticValues setObject:a4 forKey:a5];
+      [(NSMutableDictionary *)knownPhoneticValues setObject:phoneticValues forKey:identifier];
       return;
     }
   }
 
   else
   {
-    [(NSMutableDictionary *)knownValues removeObjectForKey:a5];
+    [(NSMutableDictionary *)knownValues removeObjectForKey:identifier];
     knownPhoneticValues = self->_knownPhoneticValues;
   }
 
-  [(NSMutableDictionary *)knownPhoneticValues removeObjectForKey:a5];
+  [(NSMutableDictionary *)knownPhoneticValues removeObjectForKey:identifier];
 }
 
-- (id)knownValuesForClassIdentifier:(id)a3
+- (id)knownValuesForClassIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_knownValues objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_knownValues objectForKey:identifier];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -213,9 +213,9 @@
   return [v4 arrayWithObject:v3];
 }
 
-- (void)setKnownValue:(id)a3 phoneticValue:(id)a4 forClassIdentifier:(id)a5
+- (void)setKnownValue:(id)value phoneticValue:(id)phoneticValue forClassIdentifier:(id)identifier
 {
-  v9 = [a3 length];
+  v9 = [value length];
   knownValues = self->_knownValues;
   if (v9)
   {
@@ -225,8 +225,8 @@
       self->_knownValues = knownValues;
     }
 
-    [(NSMutableDictionary *)knownValues setObject:a3 forKey:a5];
-    v11 = [a4 length];
+    [(NSMutableDictionary *)knownValues setObject:value forKey:identifier];
+    v11 = [phoneticValue length];
     knownPhoneticValues = self->_knownPhoneticValues;
     if (v11)
     {
@@ -236,23 +236,23 @@
         self->_knownPhoneticValues = knownPhoneticValues;
       }
 
-      [(NSMutableDictionary *)knownPhoneticValues setObject:a4 forKey:a5];
+      [(NSMutableDictionary *)knownPhoneticValues setObject:phoneticValue forKey:identifier];
       return;
     }
   }
 
   else
   {
-    [(NSMutableDictionary *)knownValues removeObjectForKey:a5];
+    [(NSMutableDictionary *)knownValues removeObjectForKey:identifier];
     knownPhoneticValues = self->_knownPhoneticValues;
   }
 
-  [(NSMutableDictionary *)knownPhoneticValues removeObjectForKey:a5];
+  [(NSMutableDictionary *)knownPhoneticValues removeObjectForKey:identifier];
 }
 
-- (id)knownValueForClassIdentifier:(id)a3
+- (id)knownValueForClassIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_knownValues objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_knownValues objectForKey:identifier];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -262,23 +262,23 @@
   return [v3 lastObject];
 }
 
-- (void)setSequenceTag:(id)a3
+- (void)setSequenceTag:(id)tag
 {
   sequenceTag = self->_sequenceTag;
-  if (sequenceTag != a3)
+  if (sequenceTag != tag)
   {
 
-    self->_sequenceTag = a3;
+    self->_sequenceTag = tag;
   }
 }
 
-- (void)setRepeatedSpokenFeedbackString:(id)a3
+- (void)setRepeatedSpokenFeedbackString:(id)string
 {
   repeatedSpokenFeedbackString = self->_repeatedSpokenFeedbackString;
-  if (repeatedSpokenFeedbackString != a3)
+  if (repeatedSpokenFeedbackString != string)
   {
 
-    self->_repeatedSpokenFeedbackString = a3;
+    self->_repeatedSpokenFeedbackString = string;
   }
 }
 

@@ -3,62 +3,62 @@
 - (BOOL)_isCompanionAvailable;
 - (BOOL)_isInMinimalConfiguration;
 - (RMSIDSClient)init;
-- (void)_handleAddToWishlistResponse:(id)a3;
-- (void)_handleAudioRoutesDidUpdate:(id)a3;
-- (void)_handleAvailableServicesDidUpdate:(id)a3;
-- (void)_handleBeginDiscoverySessionResponse:(id)a3;
-- (void)_handleBeginPairingSessionResponse:(id)a3;
-- (void)_handleConnectToServiceResponse:(id)a3;
-- (void)_handleDidBeginEditingText:(id)a3;
-- (void)_handleDidEndEditingText:(id)a3;
-- (void)_handleNowPlayingArtworkAvailable:(id)a3;
-- (void)_handleNowPlayingArtworkDataResponse:(id)a3;
-- (void)_handleNowPlayingInfoDidUpdate:(id)a3;
-- (void)_handlePairingChallengeRequest:(id)a3;
-- (void)_handlePairingDidFail:(id)a3;
-- (void)_handlePairingDidSucceed:(id)a3;
-- (void)_handlePickAudioRouteResponse:(id)a3;
-- (void)_handleResponseCodeMessage:(id)a3;
-- (void)_handleSendTextResponse:(id)a3;
-- (void)_handleSessionDidEnd:(id)a3;
-- (void)_handleSetLikedStateResponse:(id)a3;
-- (void)_handleTimeoutForMessageWithIdentifier:(id)a3;
-- (void)_handleUnpairServiceResponse:(id)a3;
-- (void)_handleVolumeDidUpdate:(id)a3;
-- (void)_handleWifiAvailabilityDidChange:(id)a3;
-- (void)_invokeArtworkDataResponseBlock:(id)a3 artworkData:(id)a4;
-- (void)_invokeBeginDiscoveryResponseBlock:(id)a3 success:(BOOL)a4 session:(int)a5;
-- (void)_invokeBeginPairingResponseBlock:(id)a3 responseCode:(int64_t)a4 session:(int)a5;
-- (void)_invokeCompletePairingChallengeResponseBlock:(id)a3 responseCode:(int64_t)a4 controlInterface:(id)a5;
-- (void)_invokeConnectToServiceResponseBlock:(id)a3 responseCode:(int64_t)a4 responseData:(int)a5 controlInterface:(id)a6 session:(int)a7;
-- (void)_invokeResponseCodeResponseBlock:(id)a3 responseCode:(int64_t)a4;
-- (void)_invokeSetTextResponseBlock:(id)a3 responseCode:(int64_t)a4 session:(int)a5;
-- (void)_sendMessage:(id)a3 type:(unsigned __int16)a4 sendTimeout:(int)a5 responseTimeout:(int)a6 queueOneID:(id)a7 priority:(int64_t)a8 inResponseToProtobuf:(id)a9 responseBlock:(id)a10;
+- (void)_handleAddToWishlistResponse:(id)response;
+- (void)_handleAudioRoutesDidUpdate:(id)update;
+- (void)_handleAvailableServicesDidUpdate:(id)update;
+- (void)_handleBeginDiscoverySessionResponse:(id)response;
+- (void)_handleBeginPairingSessionResponse:(id)response;
+- (void)_handleConnectToServiceResponse:(id)response;
+- (void)_handleDidBeginEditingText:(id)text;
+- (void)_handleDidEndEditingText:(id)text;
+- (void)_handleNowPlayingArtworkAvailable:(id)available;
+- (void)_handleNowPlayingArtworkDataResponse:(id)response;
+- (void)_handleNowPlayingInfoDidUpdate:(id)update;
+- (void)_handlePairingChallengeRequest:(id)request;
+- (void)_handlePairingDidFail:(id)fail;
+- (void)_handlePairingDidSucceed:(id)succeed;
+- (void)_handlePickAudioRouteResponse:(id)response;
+- (void)_handleResponseCodeMessage:(id)message;
+- (void)_handleSendTextResponse:(id)response;
+- (void)_handleSessionDidEnd:(id)end;
+- (void)_handleSetLikedStateResponse:(id)response;
+- (void)_handleTimeoutForMessageWithIdentifier:(id)identifier;
+- (void)_handleUnpairServiceResponse:(id)response;
+- (void)_handleVolumeDidUpdate:(id)update;
+- (void)_handleWifiAvailabilityDidChange:(id)change;
+- (void)_invokeArtworkDataResponseBlock:(id)block artworkData:(id)data;
+- (void)_invokeBeginDiscoveryResponseBlock:(id)block success:(BOOL)success session:(int)session;
+- (void)_invokeBeginPairingResponseBlock:(id)block responseCode:(int64_t)code session:(int)session;
+- (void)_invokeCompletePairingChallengeResponseBlock:(id)block responseCode:(int64_t)code controlInterface:(id)interface;
+- (void)_invokeConnectToServiceResponseBlock:(id)block responseCode:(int64_t)code responseData:(int)data controlInterface:(id)interface session:(int)session;
+- (void)_invokeResponseCodeResponseBlock:(id)block responseCode:(int64_t)code;
+- (void)_invokeSetTextResponseBlock:(id)block responseCode:(int64_t)code session:(int)session;
+- (void)_sendMessage:(id)message type:(unsigned __int16)type sendTimeout:(int)timeout responseTimeout:(int)responseTimeout queueOneID:(id)d priority:(int64_t)priority inResponseToProtobuf:(id)protobuf responseBlock:(id)self0;
 - (void)_updateCompanionAvailability;
-- (void)addToWishlist:(unint64_t)a3 databaseID:(unint64_t)a4 sessionIdentifier:(int)a5 completionHandler:(id)a6;
-- (void)beginDiscoverySessionWithDiscoveryTypes:(int)a3 pairedNetworkNames:(id)a4 completionHandler:(id)a5;
-- (void)beginObservingNowPlayingWithSessionIdentifier:(int)a3 completionHandler:(id)a4;
-- (void)beginPairingSessionWithPasscode:(id)a3 appName:(id)a4 deviceName:(id)a5 deviceModel:(id)a6 completionHandler:(id)a7;
-- (void)connectToService:(id)a3 pairingGUID:(id)a4 allowPairing:(BOOL)a5 completionHandler:(id)a6;
-- (void)endDiscoverySession:(int)a3;
-- (void)endObservingNowPlayingWithSessionIdentifier:(int)a3;
-- (void)endPairingSession:(int)a3;
-- (void)logoutWithSessionIdentifier:(int)a3;
-- (void)pickAudioRouteWithMacAddress:(unint64_t)a3 sessionIdentifier:(int)a4 completionHandler:(id)a5;
-- (void)requestArtworkDataForNowPlayingInfo:(id)a3 width:(unsigned int)a4 height:(unsigned int)a5 compressionQuality:(float)a6 completionHandler:(id)a7;
-- (void)seekToPlaybackTime:(int)a3 sessionIdentifier:(int)a4;
-- (void)sendHeartbeatWithSessionIdentifier:(int)a3 completionHandler:(id)a4;
-- (void)sendNavigationCommand:(int64_t)a3 sessionIdentifier:(int)a4;
-- (void)sendPlaybackCommand:(int64_t)a3 sessionIdentifier:(int)a4;
-- (void)sendText:(id)a3 sessionIdentifier:(int)a4 completionHandler:(id)a5;
-- (void)sendTouchEndWithDirection:(int64_t)a3 repeatCount:(unsigned int)a4 sessionIdentifier:(int)a5;
-- (void)sendTouchMoveWithDirection:(int64_t)a3 repeatCount:(unsigned int)a4 sessionIdentifier:(int)a5;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)setLikedState:(int64_t)a3 itemID:(unint64_t)a4 databaseID:(unint64_t)a5 sessionIdentifier:(int)a6 completionHandler:(id)a7;
-- (void)setVolume:(float)a3 sessionIdentifier:(int)a4;
-- (void)unpairService:(id)a3 sessionIdentifier:(int)a4 completionHandler:(id)a5;
-- (void)updatePairedNetworkNames:(id)a3 sessionIdentifier:(int)a4;
+- (void)addToWishlist:(unint64_t)wishlist databaseID:(unint64_t)d sessionIdentifier:(int)identifier completionHandler:(id)handler;
+- (void)beginDiscoverySessionWithDiscoveryTypes:(int)types pairedNetworkNames:(id)names completionHandler:(id)handler;
+- (void)beginObservingNowPlayingWithSessionIdentifier:(int)identifier completionHandler:(id)handler;
+- (void)beginPairingSessionWithPasscode:(id)passcode appName:(id)name deviceName:(id)deviceName deviceModel:(id)model completionHandler:(id)handler;
+- (void)connectToService:(id)service pairingGUID:(id)d allowPairing:(BOOL)pairing completionHandler:(id)handler;
+- (void)endDiscoverySession:(int)session;
+- (void)endObservingNowPlayingWithSessionIdentifier:(int)identifier;
+- (void)endPairingSession:(int)session;
+- (void)logoutWithSessionIdentifier:(int)identifier;
+- (void)pickAudioRouteWithMacAddress:(unint64_t)address sessionIdentifier:(int)identifier completionHandler:(id)handler;
+- (void)requestArtworkDataForNowPlayingInfo:(id)info width:(unsigned int)width height:(unsigned int)height compressionQuality:(float)quality completionHandler:(id)handler;
+- (void)seekToPlaybackTime:(int)time sessionIdentifier:(int)identifier;
+- (void)sendHeartbeatWithSessionIdentifier:(int)identifier completionHandler:(id)handler;
+- (void)sendNavigationCommand:(int64_t)command sessionIdentifier:(int)identifier;
+- (void)sendPlaybackCommand:(int64_t)command sessionIdentifier:(int)identifier;
+- (void)sendText:(id)text sessionIdentifier:(int)identifier completionHandler:(id)handler;
+- (void)sendTouchEndWithDirection:(int64_t)direction repeatCount:(unsigned int)count sessionIdentifier:(int)identifier;
+- (void)sendTouchMoveWithDirection:(int64_t)direction repeatCount:(unsigned int)count sessionIdentifier:(int)identifier;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)setLikedState:(int64_t)state itemID:(unint64_t)d databaseID:(unint64_t)iD sessionIdentifier:(int)identifier completionHandler:(id)handler;
+- (void)setVolume:(float)volume sessionIdentifier:(int)identifier;
+- (void)unpairService:(id)service sessionIdentifier:(int)identifier completionHandler:(id)handler;
+- (void)updatePairedNetworkNames:(id)names sessionIdentifier:(int)identifier;
 @end
 
 @implementation RMSIDSClient
@@ -135,117 +135,117 @@ uint64_t __28__RMSIDSClient_sharedClient__block_invoke()
   return v2;
 }
 
-- (void)beginDiscoverySessionWithDiscoveryTypes:(int)a3 pairedNetworkNames:(id)a4 completionHandler:(id)a5
+- (void)beginDiscoverySessionWithDiscoveryTypes:(int)types pairedNetworkNames:(id)names completionHandler:(id)handler
 {
-  v6 = *&a3;
-  v8 = a5;
-  v9 = a4;
+  v6 = *&types;
+  handlerCopy = handler;
+  namesCopy = names;
   v12 = objc_opt_new();
   [v12 setDiscoveryTypes:v6];
-  v10 = [v9 mutableCopy];
+  v10 = [namesCopy mutableCopy];
 
   [v12 setPairedNetworkNames:v10];
   [v12 setHasPairedNetworkNames:1];
-  v11 = MEMORY[0x266721590](v8);
+  v11 = MEMORY[0x266721590](handlerCopy);
 
   [(RMSIDSClient *)self _sendMessage:v12 type:1 timeout:10 queueOneID:0 priority:200 responseBlock:v11];
 }
 
-- (void)updatePairedNetworkNames:(id)a3 sessionIdentifier:(int)a4
+- (void)updatePairedNetworkNames:(id)names sessionIdentifier:(int)identifier
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&identifier;
+  namesCopy = names;
   v8 = objc_opt_new();
   [v8 setSessionIdentifier:v4];
-  v7 = [v6 mutableCopy];
+  v7 = [namesCopy mutableCopy];
 
   [v8 setPairedNetworkNames:v7];
   [(RMSIDSClient *)self _sendMessage:v8 type:39 timeout:10 queueOneID:@"UpdatePairedNetworkNames" priority:200 responseBlock:0];
 }
 
-- (void)_handleBeginDiscoverySessionResponse:(id)a3
+- (void)_handleBeginDiscoverySessionResponse:(id)response
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = [RMSSessionMessage alloc];
-  v6 = [v4 data];
-  v7 = [(RMSSessionMessage *)v5 initWithData:v6];
+  data = [responseCopy data];
+  v7 = [(RMSSessionMessage *)v5 initWithData:data];
 
-  v8 = [v4 context];
+  context = [responseCopy context];
 
-  v9 = [v8 incomingResponseIdentifier];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  v10 = [(RMSSessionMessage *)v7 sessionIdentifier];
+  sessionIdentifier = [(RMSSessionMessage *)v7 sessionIdentifier];
   v11 = RMSLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109120;
-    v12[1] = v10;
+    v12[1] = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v11, OS_LOG_TYPE_DEFAULT, "[Session %d] Received begin discovery response", v12, 8u);
   }
 
-  [(RMSIDSClient *)self _invokeBeginDiscoveryResponseBlock:v9 success:1 session:v10];
+  [(RMSIDSClient *)self _invokeBeginDiscoveryResponseBlock:incomingResponseIdentifier success:1 session:sessionIdentifier];
 }
 
-- (void)_invokeBeginDiscoveryResponseBlock:(id)a3 success:(BOOL)a4 session:(int)a5
+- (void)_invokeBeginDiscoveryResponseBlock:(id)block success:(BOOL)success session:(int)session
 {
-  v5 = *&a5;
-  v6 = a4;
-  v10 = a3;
+  v5 = *&session;
+  successCopy = success;
+  blockCopy = block;
   v8 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:?];
-  v9 = [v8 responseBlock];
+  responseBlock = [v8 responseBlock];
 
-  if (v9)
+  if (responseBlock)
   {
-    v9[2](v9, v6, v5);
+    responseBlock[2](responseBlock, successCopy, v5);
   }
 
-  else if (v6)
+  else if (successCopy)
   {
     [(RMSIDSClient *)self endDiscoverySession:v5];
   }
 
-  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:v10];
+  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:blockCopy];
 }
 
-- (void)_handleAvailableServicesDidUpdate:(id)a3
+- (void)_handleAvailableServicesDidUpdate:(id)update
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = [RMSAvailableServicesDidUpdateMessage alloc];
-  v6 = [v4 data];
+  data = [updateCopy data];
 
-  v7 = [(RMSAvailableServicesDidUpdateMessage *)v5 initWithData:v6];
-  v8 = [(RMSAvailableServicesDidUpdateMessage *)v7 sessionIdentifier];
+  v7 = [(RMSAvailableServicesDidUpdateMessage *)v5 initWithData:data];
+  sessionIdentifier = [(RMSAvailableServicesDidUpdateMessage *)v7 sessionIdentifier];
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v16[0] = 67109120;
-    v16[1] = v8;
+    v16[1] = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "[Session %d] Received discovery available services update", v16, 8u);
   }
 
   v10 = objc_opt_new();
-  v11 = [MEMORY[0x277CCABB0] numberWithInt:v8];
+  v11 = [MEMORY[0x277CCABB0] numberWithInt:sessionIdentifier];
   [v10 setObject:v11 forKeyedSubscript:@"RMSIDSClientSessionIdentifierNotificationKey"];
 
-  v12 = [(RMSAvailableServicesDidUpdateMessage *)v7 services];
+  services = [(RMSAvailableServicesDidUpdateMessage *)v7 services];
 
-  if (v12)
+  if (services)
   {
-    v13 = [(RMSAvailableServicesDidUpdateMessage *)v7 services];
-    v14 = [RMSService servicesFromProtobufs:v13];
+    services2 = [(RMSAvailableServicesDidUpdateMessage *)v7 services];
+    v14 = [RMSService servicesFromProtobufs:services2];
 
     [v10 setObject:v14 forKeyedSubscript:@"RMSIDSClientAvailableServicesNotificationKey"];
   }
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 postNotificationName:@"RMSIDSClientAvailableServicesDidUpdateNotification" object:self userInfo:v10];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RMSIDSClientAvailableServicesDidUpdateNotification" object:self userInfo:v10];
 }
 
-- (void)endDiscoverySession:(int)a3
+- (void)endDiscoverySession:(int)session
 {
-  v3 = *&a3;
+  v3 = *&session;
   v8 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   [v5 setSessionIdentifier:v3];
@@ -260,11 +260,11 @@ uint64_t __28__RMSIDSClient_sharedClient__block_invoke()
   [(RMSIDSClient *)self _sendMessage:v5 type:3 timeout:*MEMORY[0x277D18828] queueOneID:0 priority:200 responseBlock:0];
 }
 
-- (void)sendHeartbeatWithSessionIdentifier:(int)a3 completionHandler:(id)a4
+- (void)sendHeartbeatWithSessionIdentifier:(int)identifier completionHandler:(id)handler
 {
-  v4 = *&a3;
+  v4 = *&identifier;
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_opt_new();
   [v7 setSessionIdentifier:v4];
   v8 = RMSLogger();
@@ -275,88 +275,88 @@ uint64_t __28__RMSIDSClient_sharedClient__block_invoke()
     _os_log_impl(&dword_261E98000, v8, OS_LOG_TYPE_DEFAULT, "[Session %d] Sending heartbeat message", v10, 8u);
   }
 
-  v9 = MEMORY[0x266721590](v6);
+  v9 = MEMORY[0x266721590](handlerCopy);
   [(RMSIDSClient *)self _sendMessage:v7 type:16 timeout:20 queueOneID:0 priority:300 responseBlock:v9];
 }
 
-- (void)connectToService:(id)a3 pairingGUID:(id)a4 allowPairing:(BOOL)a5 completionHandler:(id)a6
+- (void)connectToService:(id)service pairingGUID:(id)d allowPairing:(BOOL)pairing completionHandler:(id)handler
 {
-  v6 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
+  pairingCopy = pairing;
+  handlerCopy = handler;
+  dCopy = d;
+  serviceCopy = service;
   v15 = objc_opt_new();
-  v13 = [v12 protobuf];
+  protobuf = [serviceCopy protobuf];
 
-  [v15 setService:v13];
-  [v15 setPairingGUID:v11];
+  [v15 setService:protobuf];
+  [v15 setPairingGUID:dCopy];
 
-  [v15 setAllowPairing:v6];
-  v14 = MEMORY[0x266721590](v10);
+  [v15 setAllowPairing:pairingCopy];
+  v14 = MEMORY[0x266721590](handlerCopy);
 
   [(RMSIDSClient *)self _sendMessage:v15 type:5 sendTimeout:15 responseTimeout:60 queueOneID:0 priority:300 responseBlock:v14];
 }
 
-- (void)_handleConnectToServiceResponse:(id)a3
+- (void)_handleConnectToServiceResponse:(id)response
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = [RMSConnectToServiceResponseMessage alloc];
-  v6 = [v4 data];
-  v7 = [(RMSConnectToServiceResponseMessage *)v5 initWithData:v6];
+  data = [responseCopy data];
+  v7 = [(RMSConnectToServiceResponseMessage *)v5 initWithData:data];
 
   v8 = [RMSControlInterface alloc];
-  v9 = [(RMSConnectToServiceResponseMessage *)v7 controlInterface];
-  v10 = [(RMSControlInterface *)v8 initWithProtobuf:v9];
+  controlInterface = [(RMSConnectToServiceResponseMessage *)v7 controlInterface];
+  v10 = [(RMSControlInterface *)v8 initWithProtobuf:controlInterface];
 
-  v11 = [(RMSConnectToServiceResponseMessage *)v7 sessionIdentifier];
+  sessionIdentifier = [(RMSConnectToServiceResponseMessage *)v7 sessionIdentifier];
   v12 = RMSLogger();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v15[0] = 67109120;
-    v15[1] = v11;
+    v15[1] = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v12, OS_LOG_TYPE_DEFAULT, "[Session %d] Received connection response", v15, 8u);
   }
 
-  v13 = [v4 context];
-  v14 = [v13 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  [(RMSIDSClient *)self _invokeConnectToServiceResponseBlock:v14 responseCode:[(RMSConnectToServiceResponseMessage *)v7 responseCode] responseData:[(RMSConnectToServiceResponseMessage *)v7 responseData] controlInterface:v10 session:v11];
+  [(RMSIDSClient *)self _invokeConnectToServiceResponseBlock:incomingResponseIdentifier responseCode:[(RMSConnectToServiceResponseMessage *)v7 responseCode] responseData:[(RMSConnectToServiceResponseMessage *)v7 responseData] controlInterface:v10 session:sessionIdentifier];
 }
 
-- (void)_handlePairingChallengeRequest:(id)a3
+- (void)_handlePairingChallengeRequest:(id)request
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = [RMSPairingChallengeRequestMessage alloc];
-  v6 = [v4 data];
-  v7 = [(RMSPairingChallengeRequestMessage *)v5 initWithData:v6];
+  data = [requestCopy data];
+  v7 = [(RMSPairingChallengeRequestMessage *)v5 initWithData:data];
 
-  v8 = [(RMSPairingChallengeRequestMessage *)v7 sessionIdentifier];
+  sessionIdentifier = [(RMSPairingChallengeRequestMessage *)v7 sessionIdentifier];
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 67109120;
-    HIDWORD(buf) = v8;
+    HIDWORD(buf) = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "[Session %d] Received pairing challenge request", &buf, 8u);
   }
 
   v10 = [RMSPairingCredentials alloc];
-  v11 = [(RMSPairingChallengeRequestMessage *)v7 pairingCredentials];
-  v12 = [(RMSPairingCredentials *)v10 initWithProtobuf:v11];
+  pairingCredentials = [(RMSPairingChallengeRequestMessage *)v7 pairingCredentials];
+  v12 = [(RMSPairingCredentials *)v10 initWithProtobuf:pairingCredentials];
 
   objc_initWeak(&buf, self);
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke;
   v19[3] = &unk_279B08B88;
-  v22 = v8;
+  v22 = sessionIdentifier;
   objc_copyWeak(&v21, &buf);
-  v13 = v4;
+  v13 = requestCopy;
   v20 = v13;
   v14 = MEMORY[0x266721590](v19);
   v23[0] = @"RMSIDSClientSessionIdentifierNotificationKey";
-  v15 = [MEMORY[0x277CCABB0] numberWithInt:v8];
+  v15 = [MEMORY[0x277CCABB0] numberWithInt:sessionIdentifier];
   v24[0] = v15;
   v24[1] = v12;
   v23[1] = @"RMSIDSClientPairingCredentialsNotificationKey";
@@ -365,8 +365,8 @@ uint64_t __28__RMSIDSClient_sharedClient__block_invoke()
   v24[2] = v16;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v24 forKeys:v23 count:3];
 
-  v18 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v18 postNotificationName:@"RMSIDSClientDidReceivePairingChallengeRequestNotification" object:self userInfo:v17];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RMSIDSClientDidReceivePairingChallengeRequestNotification" object:self userInfo:v17];
 
   objc_destroyWeak(&v21);
   objc_destroyWeak(&buf);
@@ -384,9 +384,9 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
   [WeakRetained _sendMessage:v7 type:41 timeout:15 queueOneID:0 priority:300 inResponseToProtobuf:*(a1 + 32)];
 }
 
-- (void)logoutWithSessionIdentifier:(int)a3
+- (void)logoutWithSessionIdentifier:(int)identifier
 {
-  v3 = *&a3;
+  v3 = *&identifier;
   v8 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   [v5 setSessionIdentifier:v3];
@@ -401,44 +401,44 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
   [(RMSIDSClient *)self _sendMessage:v5 type:7 timeout:*MEMORY[0x277D18828] queueOneID:0 priority:200 responseBlock:0];
 }
 
-- (void)_invokeConnectToServiceResponseBlock:(id)a3 responseCode:(int64_t)a4 responseData:(int)a5 controlInterface:(id)a6 session:(int)a7
+- (void)_invokeConnectToServiceResponseBlock:(id)block responseCode:(int64_t)code responseData:(int)data controlInterface:(id)interface session:(int)session
 {
-  v7 = *&a7;
-  v9 = *&a5;
-  v15 = a3;
-  v12 = a6;
-  v13 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:v15];
-  v14 = [v13 responseBlock];
+  v7 = *&session;
+  v9 = *&data;
+  blockCopy = block;
+  interfaceCopy = interface;
+  v13 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:blockCopy];
+  responseBlock = [v13 responseBlock];
 
-  if (v14)
+  if (responseBlock)
   {
-    (v14)[2](v14, a4, v9, v12, v7);
+    (responseBlock)[2](responseBlock, code, v9, interfaceCopy, v7);
   }
 
-  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:v15];
+  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:blockCopy];
 }
 
-- (void)_invokeCompletePairingChallengeResponseBlock:(id)a3 responseCode:(int64_t)a4 controlInterface:(id)a5
+- (void)_invokeCompletePairingChallengeResponseBlock:(id)block responseCode:(int64_t)code controlInterface:(id)interface
 {
-  v11 = a3;
-  v8 = a5;
-  v9 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:v11];
-  v10 = [v9 responseBlock];
+  blockCopy = block;
+  interfaceCopy = interface;
+  v9 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:blockCopy];
+  responseBlock = [v9 responseBlock];
 
-  if (v10)
+  if (responseBlock)
   {
-    (v10)[2](v10, a4, v8);
+    (responseBlock)[2](responseBlock, code, interfaceCopy);
   }
 
-  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:v11];
+  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:blockCopy];
 }
 
-- (void)sendPlaybackCommand:(int64_t)a3 sessionIdentifier:(int)a4
+- (void)sendPlaybackCommand:(int64_t)command sessionIdentifier:(int)identifier
 {
-  v4 = *&a4;
+  v4 = *&identifier;
   v10 = *MEMORY[0x277D85DE8];
   v7 = objc_opt_new();
-  [v7 setPlaybackCommand:a3];
+  [v7 setPlaybackCommand:command];
   [v7 setSessionIdentifier:v4];
   v8 = RMSLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -451,12 +451,12 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
   [(RMSIDSClient *)self _sendMessage:v7 type:8 timeout:5 queueOneID:0 priority:300 responseBlock:0];
 }
 
-- (void)setVolume:(float)a3 sessionIdentifier:(int)a4
+- (void)setVolume:(float)volume sessionIdentifier:(int)identifier
 {
-  v4 = *&a4;
+  v4 = *&identifier;
   v11 = *MEMORY[0x277D85DE8];
   v7 = objc_opt_new();
-  *&v8 = a3;
+  *&v8 = volume;
   [v7 setVolume:v8];
   [v7 setSessionIdentifier:v4];
   v9 = RMSLogger();
@@ -470,13 +470,13 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
   [(RMSIDSClient *)self _sendMessage:v7 type:20 timeout:5 queueOneID:@"SetVolume" priority:300 responseBlock:0];
 }
 
-- (void)pickAudioRouteWithMacAddress:(unint64_t)a3 sessionIdentifier:(int)a4 completionHandler:(id)a5
+- (void)pickAudioRouteWithMacAddress:(unint64_t)address sessionIdentifier:(int)identifier completionHandler:(id)handler
 {
-  v5 = *&a4;
+  v5 = *&identifier;
   v13 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  handlerCopy = handler;
   v9 = objc_opt_new();
-  [v9 setMacAddress:a3];
+  [v9 setMacAddress:address];
   [v9 setSessionIdentifier:v5];
   v10 = RMSLogger();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -486,13 +486,13 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
     _os_log_impl(&dword_261E98000, v10, OS_LOG_TYPE_DEFAULT, "[Session %d] Sending pick audio route message", v12, 8u);
   }
 
-  v11 = MEMORY[0x266721590](v8);
+  v11 = MEMORY[0x266721590](handlerCopy);
   [(RMSIDSClient *)self _sendMessage:v9 type:18 timeout:30 queueOneID:0 priority:200 responseBlock:v11];
 }
 
-- (void)_handlePickAudioRouteResponse:(id)a3
+- (void)_handlePickAudioRouteResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = RMSLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -500,13 +500,13 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
     _os_log_impl(&dword_261E98000, v5, OS_LOG_TYPE_DEFAULT, "Received pick audio route response", v6, 2u);
   }
 
-  [(RMSIDSClient *)self _handleResponseCodeMessage:v4];
+  [(RMSIDSClient *)self _handleResponseCodeMessage:responseCopy];
 }
 
-- (void)seekToPlaybackTime:(int)a3 sessionIdentifier:(int)a4
+- (void)seekToPlaybackTime:(int)time sessionIdentifier:(int)identifier
 {
-  v4 = *&a4;
-  v5 = *&a3;
+  v4 = *&identifier;
+  v5 = *&time;
   v10 = *MEMORY[0x277D85DE8];
   v7 = objc_opt_new();
   [v7 setPlaybackTime:v5];
@@ -522,15 +522,15 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
   [(RMSIDSClient *)self _sendMessage:v7 type:35 timeout:5 queueOneID:@"SeekToPlaybackTime" priority:300 responseBlock:0];
 }
 
-- (void)setLikedState:(int64_t)a3 itemID:(unint64_t)a4 databaseID:(unint64_t)a5 sessionIdentifier:(int)a6 completionHandler:(id)a7
+- (void)setLikedState:(int64_t)state itemID:(unint64_t)d databaseID:(unint64_t)iD sessionIdentifier:(int)identifier completionHandler:(id)handler
 {
-  v7 = *&a6;
+  v7 = *&identifier;
   v17 = *MEMORY[0x277D85DE8];
-  v12 = a7;
+  handlerCopy = handler;
   v13 = objc_opt_new();
-  [v13 setLikeState:a3];
-  [v13 setItemID:a4];
-  [v13 setDatabaseID:a5];
+  [v13 setLikeState:state];
+  [v13 setItemID:d];
+  [v13 setDatabaseID:iD];
   [v13 setSessionIdentifier:v7];
   v14 = RMSLogger();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -540,13 +540,13 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
     _os_log_impl(&dword_261E98000, v14, OS_LOG_TYPE_DEFAULT, "[Session %d] Sending set like state message", v16, 8u);
   }
 
-  v15 = MEMORY[0x266721590](v12);
+  v15 = MEMORY[0x266721590](handlerCopy);
   [(RMSIDSClient *)self _sendMessage:v13 type:31 timeout:10 queueOneID:0 priority:200 responseBlock:v15];
 }
 
-- (void)_handleSetLikedStateResponse:(id)a3
+- (void)_handleSetLikedStateResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = RMSLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -554,17 +554,17 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
     _os_log_impl(&dword_261E98000, v5, OS_LOG_TYPE_DEFAULT, "Received set like state response", v6, 2u);
   }
 
-  [(RMSIDSClient *)self _handleResponseCodeMessage:v4];
+  [(RMSIDSClient *)self _handleResponseCodeMessage:responseCopy];
 }
 
-- (void)addToWishlist:(unint64_t)a3 databaseID:(unint64_t)a4 sessionIdentifier:(int)a5 completionHandler:(id)a6
+- (void)addToWishlist:(unint64_t)wishlist databaseID:(unint64_t)d sessionIdentifier:(int)identifier completionHandler:(id)handler
 {
-  v6 = *&a5;
+  v6 = *&identifier;
   v15 = *MEMORY[0x277D85DE8];
-  v10 = a6;
+  handlerCopy = handler;
   v11 = objc_opt_new();
-  [v11 setItemID:a3];
-  [v11 setDatabaseID:a4];
+  [v11 setItemID:wishlist];
+  [v11 setDatabaseID:d];
   [v11 setSessionIdentifier:v6];
   v12 = RMSLogger();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -574,13 +574,13 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
     _os_log_impl(&dword_261E98000, v12, OS_LOG_TYPE_DEFAULT, "[Session %d] Sending add to wishlist message", v14, 8u);
   }
 
-  v13 = MEMORY[0x266721590](v10);
+  v13 = MEMORY[0x266721590](handlerCopy);
   [(RMSIDSClient *)self _sendMessage:v11 type:33 timeout:10 queueOneID:0 priority:200 responseBlock:v13];
 }
 
-- (void)_handleAddToWishlistResponse:(id)a3
+- (void)_handleAddToWishlistResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = RMSLogger();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -588,14 +588,14 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
     _os_log_impl(&dword_261E98000, v5, OS_LOG_TYPE_DEFAULT, "Received add to wishlist response", v6, 2u);
   }
 
-  [(RMSIDSClient *)self _handleResponseCodeMessage:v4];
+  [(RMSIDSClient *)self _handleResponseCodeMessage:responseCopy];
 }
 
-- (void)beginObservingNowPlayingWithSessionIdentifier:(int)a3 completionHandler:(id)a4
+- (void)beginObservingNowPlayingWithSessionIdentifier:(int)identifier completionHandler:(id)handler
 {
-  v4 = *&a3;
+  v4 = *&identifier;
   v11 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   v7 = objc_opt_new();
   [v7 setSessionIdentifier:v4];
   v8 = RMSLogger();
@@ -606,13 +606,13 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
     _os_log_impl(&dword_261E98000, v8, OS_LOG_TYPE_DEFAULT, "[Session %d] Sending begin observing now playing message", v10, 8u);
   }
 
-  v9 = MEMORY[0x266721590](v6);
+  v9 = MEMORY[0x266721590](handlerCopy);
   [(RMSIDSClient *)self _sendMessage:v7 type:9 timeout:10 queueOneID:0 priority:200 responseBlock:v9];
 }
 
-- (void)endObservingNowPlayingWithSessionIdentifier:(int)a3
+- (void)endObservingNowPlayingWithSessionIdentifier:(int)identifier
 {
-  v3 = *&a3;
+  v3 = *&identifier;
   v8 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   [v5 setSessionIdentifier:v3];
@@ -627,54 +627,54 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
   [(RMSIDSClient *)self _sendMessage:v5 type:11 timeout:*MEMORY[0x277D18828] queueOneID:0 priority:200 responseBlock:0];
 }
 
-- (void)_handleAudioRoutesDidUpdate:(id)a3
+- (void)_handleAudioRoutesDidUpdate:(id)update
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = [RMSAudioRoutesDidUpdateMessage alloc];
-  v6 = [v4 data];
+  data = [updateCopy data];
 
-  v7 = [(RMSAudioRoutesDidUpdateMessage *)v5 initWithData:v6];
-  v8 = [(RMSAudioRoutesDidUpdateMessage *)v7 sessionIdentifier];
+  v7 = [(RMSAudioRoutesDidUpdateMessage *)v5 initWithData:data];
+  sessionIdentifier = [(RMSAudioRoutesDidUpdateMessage *)v7 sessionIdentifier];
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v18 = v8;
+    v18 = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "[Session %d] Received now playing audio routes update", buf, 8u);
   }
 
-  v10 = [(RMSAudioRoutesDidUpdateMessage *)v7 audioRoutes];
-  v11 = [RMSAudioRoute audioRoutesFromProtobufs:v10];
+  audioRoutes = [(RMSAudioRoutesDidUpdateMessage *)v7 audioRoutes];
+  v11 = [RMSAudioRoute audioRoutesFromProtobufs:audioRoutes];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithInt:{v8, @"RMSIDSClientSessionIdentifierNotificationKey"}];
+  v12 = [MEMORY[0x277CCABB0] numberWithInt:{sessionIdentifier, @"RMSIDSClientSessionIdentifierNotificationKey"}];
   v15[1] = @"RMSIDSClientNowPlayingAudioRoutesNotificationKey";
   v16[0] = v12;
   v16[1] = v11;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 postNotificationName:@"RMSIDSClientNowPlayingAudioRoutesDidUpdateNotification" object:self userInfo:v13];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RMSIDSClientNowPlayingAudioRoutesDidUpdateNotification" object:self userInfo:v13];
 }
 
-- (void)_handleVolumeDidUpdate:(id)a3
+- (void)_handleVolumeDidUpdate:(id)update
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = [RMSVolumeDidUpdateMessage alloc];
-  v6 = [v4 data];
+  data = [updateCopy data];
 
-  v7 = [(RMSVolumeDidUpdateMessage *)v5 initWithData:v6];
-  v8 = [(RMSVolumeDidUpdateMessage *)v7 sessionIdentifier];
+  v7 = [(RMSVolumeDidUpdateMessage *)v5 initWithData:data];
+  sessionIdentifier = [(RMSVolumeDidUpdateMessage *)v7 sessionIdentifier];
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v18 = v8;
+    v18 = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "[Session %d] Received now playing volume update", buf, 8u);
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInt:{v8, @"RMSIDSClientSessionIdentifierNotificationKey"}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInt:{sessionIdentifier, @"RMSIDSClientSessionIdentifierNotificationKey"}];
   v15[1] = @"RMSIDSClientNowPlayingVolumeNotificationKey";
   v16[0] = v10;
   v11 = MEMORY[0x277CCABB0];
@@ -683,130 +683,130 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
   v16[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 postNotificationName:@"RMSIDSClientNowPlayingVolumeDidUpdateNotification" object:self userInfo:v13];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RMSIDSClientNowPlayingVolumeDidUpdateNotification" object:self userInfo:v13];
 }
 
-- (void)_handleNowPlayingInfoDidUpdate:(id)a3
+- (void)_handleNowPlayingInfoDidUpdate:(id)update
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   v5 = [RMSNowPlayingInfoDidUpdateMessage alloc];
-  v6 = [v4 data];
+  data = [updateCopy data];
 
-  v7 = [(RMSNowPlayingInfoDidUpdateMessage *)v5 initWithData:v6];
+  v7 = [(RMSNowPlayingInfoDidUpdateMessage *)v5 initWithData:data];
   v8 = [RMSNowPlayingInfo alloc];
-  v9 = [(RMSNowPlayingInfoDidUpdateMessage *)v7 nowPlayingInfo];
-  v10 = [(RMSNowPlayingInfo *)v8 initWithProtobuf:v9];
+  nowPlayingInfo = [(RMSNowPlayingInfoDidUpdateMessage *)v7 nowPlayingInfo];
+  v10 = [(RMSNowPlayingInfo *)v8 initWithProtobuf:nowPlayingInfo];
 
-  v11 = [(RMSNowPlayingInfoDidUpdateMessage *)v7 sessionIdentifier];
+  sessionIdentifier = [(RMSNowPlayingInfoDidUpdateMessage *)v7 sessionIdentifier];
   v12 = RMSLogger();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v19 = v11;
+    v19 = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v12, OS_LOG_TYPE_DEFAULT, "[Session %d] Received now playing info update", buf, 8u);
   }
 
-  v13 = [MEMORY[0x277CCABB0] numberWithInt:{v11, @"RMSIDSClientSessionIdentifierNotificationKey"}];
+  v13 = [MEMORY[0x277CCABB0] numberWithInt:{sessionIdentifier, @"RMSIDSClientSessionIdentifierNotificationKey"}];
   v16[1] = @"RMSIDSClientNowPlayingInfoNotificationKey";
   v17[0] = v13;
   v17[1] = v10;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 postNotificationName:@"RMSIDSClientNowPlayingInfoDidUpdateNotification" object:self userInfo:v14];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RMSIDSClientNowPlayingInfoDidUpdateNotification" object:self userInfo:v14];
 }
 
-- (void)_handleNowPlayingArtworkAvailable:(id)a3
+- (void)_handleNowPlayingArtworkAvailable:(id)available
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  availableCopy = available;
   v5 = [RMSNowPlayingArtworkAvailableMessage alloc];
-  v6 = [v4 data];
+  data = [availableCopy data];
 
-  v7 = [(RMSNowPlayingArtworkAvailableMessage *)v5 initWithData:v6];
-  v8 = [(RMSNowPlayingArtworkAvailableMessage *)v7 sessionIdentifier];
+  v7 = [(RMSNowPlayingArtworkAvailableMessage *)v5 initWithData:data];
+  sessionIdentifier = [(RMSNowPlayingArtworkAvailableMessage *)v7 sessionIdentifier];
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v17 = v8;
+    v17 = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "[Session %d] Received now playing artwork update", buf, 8u);
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInt:{v8, @"RMSIDSClientSessionIdentifierNotificationKey"}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInt:{sessionIdentifier, @"RMSIDSClientSessionIdentifierNotificationKey"}];
   v14[1] = @"RMSIDSClientNowPlayingArtworkIdentifierKey";
   v15[0] = v10;
-  v11 = [(RMSNowPlayingArtworkAvailableMessage *)v7 artworkIdentifier];
-  v15[1] = v11;
+  artworkIdentifier = [(RMSNowPlayingArtworkAvailableMessage *)v7 artworkIdentifier];
+  v15[1] = artworkIdentifier;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 postNotificationName:@"RMSIDSClientNowPlayingArtworkDidBecomeAvailableNotification" object:self userInfo:v12];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RMSIDSClientNowPlayingArtworkDidBecomeAvailableNotification" object:self userInfo:v12];
 }
 
-- (void)requestArtworkDataForNowPlayingInfo:(id)a3 width:(unsigned int)a4 height:(unsigned int)a5 compressionQuality:(float)a6 completionHandler:(id)a7
+- (void)requestArtworkDataForNowPlayingInfo:(id)info width:(unsigned int)width height:(unsigned int)height compressionQuality:(float)quality completionHandler:(id)handler
 {
-  v8 = *&a5;
-  v9 = *&a4;
-  v12 = a7;
-  v13 = a3;
+  v8 = *&height;
+  v9 = *&width;
+  handlerCopy = handler;
+  infoCopy = info;
   v17 = objc_opt_new();
-  v14 = [v13 artworkIdentifier];
+  artworkIdentifier = [infoCopy artworkIdentifier];
 
-  [v17 setArtworkIdentifier:v14];
+  [v17 setArtworkIdentifier:artworkIdentifier];
   [v17 setWidth:v9];
   [v17 setHeight:v8];
-  *&v15 = a6;
+  *&v15 = quality;
   [v17 setCompressionQuality:v15];
-  v16 = MEMORY[0x266721590](v12);
+  v16 = MEMORY[0x266721590](handlerCopy);
 
   [(RMSIDSClient *)self _sendMessage:v17 type:24 timeout:30 queueOneID:@"RequestArtworkData" priority:200 responseBlock:v16];
 }
 
-- (void)_handleNowPlayingArtworkDataResponse:(id)a3
+- (void)_handleNowPlayingArtworkDataResponse:(id)response
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [v5 incomingResponseIdentifier];
+  responseCopy = response;
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  v7 = [v4 data];
+  data = [responseCopy data];
   v8 = RMSLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134217984;
-    v11 = [v7 length];
+    v11 = [data length];
     _os_log_impl(&dword_261E98000, v8, OS_LOG_TYPE_DEFAULT, "Received artwork data, length=%zd", &v10, 0xCu);
   }
 
-  v9 = [v4 data];
-  [(RMSIDSClient *)self _invokeArtworkDataResponseBlock:v6 artworkData:v9];
+  data2 = [responseCopy data];
+  [(RMSIDSClient *)self _invokeArtworkDataResponseBlock:incomingResponseIdentifier artworkData:data2];
 }
 
-- (void)_invokeArtworkDataResponseBlock:(id)a3 artworkData:(id)a4
+- (void)_invokeArtworkDataResponseBlock:(id)block artworkData:(id)data
 {
-  v9 = a3;
-  v6 = a4;
-  v7 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:v9];
-  v8 = [v7 responseBlock];
+  blockCopy = block;
+  dataCopy = data;
+  v7 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:blockCopy];
+  responseBlock = [v7 responseBlock];
 
-  if (v8)
+  if (responseBlock)
   {
-    (v8)[2](v8, v6);
+    (responseBlock)[2](responseBlock, dataCopy);
   }
 
-  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:v9];
+  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:blockCopy];
 }
 
-- (void)sendTouchMoveWithDirection:(int64_t)a3 repeatCount:(unsigned int)a4 sessionIdentifier:(int)a5
+- (void)sendTouchMoveWithDirection:(int64_t)direction repeatCount:(unsigned int)count sessionIdentifier:(int)identifier
 {
-  v5 = *&a5;
-  v6 = *&a4;
+  v5 = *&identifier;
+  v6 = *&count;
   v12 = *MEMORY[0x277D85DE8];
   v9 = objc_opt_new();
-  [v9 setDirection:a3];
+  [v9 setDirection:direction];
   [v9 setRepeatCount:v6];
   [v9 setSessionIdentifier:v5];
   v10 = RMSLogger();
@@ -820,13 +820,13 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
   [(RMSIDSClient *)self _sendMessage:v9 type:21 timeout:5 queueOneID:0 priority:300 responseBlock:0];
 }
 
-- (void)sendTouchEndWithDirection:(int64_t)a3 repeatCount:(unsigned int)a4 sessionIdentifier:(int)a5
+- (void)sendTouchEndWithDirection:(int64_t)direction repeatCount:(unsigned int)count sessionIdentifier:(int)identifier
 {
-  v5 = *&a5;
-  v6 = *&a4;
+  v5 = *&identifier;
+  v6 = *&count;
   v12 = *MEMORY[0x277D85DE8];
   v9 = objc_opt_new();
-  [v9 setDirection:a3];
+  [v9 setDirection:direction];
   [v9 setRepeatCount:v6];
   [v9 setSessionIdentifier:v5];
   v10 = RMSLogger();
@@ -840,12 +840,12 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
   [(RMSIDSClient *)self _sendMessage:v9 type:22 timeout:5 queueOneID:0 priority:300 responseBlock:0];
 }
 
-- (void)sendNavigationCommand:(int64_t)a3 sessionIdentifier:(int)a4
+- (void)sendNavigationCommand:(int64_t)command sessionIdentifier:(int)identifier
 {
-  v4 = *&a4;
+  v4 = *&identifier;
   v10 = *MEMORY[0x277D85DE8];
   v7 = objc_opt_new();
-  [v7 setNavigationCommand:a3];
+  [v7 setNavigationCommand:command];
   [v7 setSessionIdentifier:v4];
   v8 = RMSLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -858,36 +858,36 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
   [(RMSIDSClient *)self _sendMessage:v7 type:23 timeout:5 queueOneID:0 priority:300 responseBlock:0];
 }
 
-- (void)beginPairingSessionWithPasscode:(id)a3 appName:(id)a4 deviceName:(id)a5 deviceModel:(id)a6 completionHandler:(id)a7
+- (void)beginPairingSessionWithPasscode:(id)passcode appName:(id)name deviceName:(id)deviceName deviceModel:(id)model completionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
+  passcodeCopy = passcode;
+  handlerCopy = handler;
+  modelCopy = model;
+  deviceNameCopy = deviceName;
+  nameCopy = name;
   v17 = objc_opt_new();
-  [v17 setPasscode:v12];
-  [v17 setAppName:v16];
+  [v17 setPasscode:passcodeCopy];
+  [v17 setAppName:nameCopy];
 
-  [v17 setDeviceName:v15];
-  [v17 setDeviceModel:v14];
+  [v17 setDeviceName:deviceNameCopy];
+  [v17 setDeviceModel:modelCopy];
 
   v18 = RMSLogger();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
     v20 = 138412290;
-    v21 = v12;
+    v21 = passcodeCopy;
     _os_log_impl(&dword_261E98000, v18, OS_LOG_TYPE_DEFAULT, "Sending begin pairing message with passcode [%@]", &v20, 0xCu);
   }
 
-  v19 = MEMORY[0x266721590](v13);
+  v19 = MEMORY[0x266721590](handlerCopy);
   [(RMSIDSClient *)self _sendMessage:v17 type:26 timeout:20 queueOneID:0 priority:200 responseBlock:v19];
 }
 
-- (void)endPairingSession:(int)a3
+- (void)endPairingSession:(int)session
 {
-  v3 = *&a3;
+  v3 = *&session;
   v8 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_new();
   [v5 setSessionIdentifier:v3];
@@ -902,247 +902,247 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
   [(RMSIDSClient *)self _sendMessage:v5 type:28 timeout:*MEMORY[0x277D18828] queueOneID:0 priority:200 responseBlock:0];
 }
 
-- (void)_handleBeginPairingSessionResponse:(id)a3
+- (void)_handleBeginPairingSessionResponse:(id)response
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = [RMSBeginPairingResponseMessage alloc];
-  v6 = [v4 data];
-  v7 = [(RMSBeginPairingResponseMessage *)v5 initWithData:v6];
+  data = [responseCopy data];
+  v7 = [(RMSBeginPairingResponseMessage *)v5 initWithData:data];
 
-  v8 = [(RMSBeginPairingResponseMessage *)v7 sessionIdentifier];
+  sessionIdentifier = [(RMSBeginPairingResponseMessage *)v7 sessionIdentifier];
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109120;
-    v12[1] = v8;
+    v12[1] = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "[Session %d] Received begin pairing response", v12, 8u);
   }
 
-  v10 = [v4 context];
-  v11 = [v10 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  [(RMSIDSClient *)self _invokeBeginPairingResponseBlock:v11 responseCode:[(RMSBeginPairingResponseMessage *)v7 responseCode] session:v8];
+  [(RMSIDSClient *)self _invokeBeginPairingResponseBlock:incomingResponseIdentifier responseCode:[(RMSBeginPairingResponseMessage *)v7 responseCode] session:sessionIdentifier];
 }
 
-- (void)_invokeBeginPairingResponseBlock:(id)a3 responseCode:(int64_t)a4 session:(int)a5
+- (void)_invokeBeginPairingResponseBlock:(id)block responseCode:(int64_t)code session:(int)session
 {
-  v5 = *&a5;
-  v10 = a3;
+  v5 = *&session;
+  blockCopy = block;
   v8 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:?];
-  v9 = [v8 responseBlock];
+  responseBlock = [v8 responseBlock];
 
-  if (v9)
+  if (responseBlock)
   {
-    v9[2](v9, a4, v5);
+    responseBlock[2](responseBlock, code, v5);
   }
 
-  else if (a4 == 1)
+  else if (code == 1)
   {
     [(RMSIDSClient *)self endPairingSession:v5];
   }
 
-  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:v10];
+  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:blockCopy];
 }
 
-- (void)_handlePairingDidSucceed:(id)a3
+- (void)_handlePairingDidSucceed:(id)succeed
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  succeedCopy = succeed;
   v5 = [RMSPairingSessionDidPairMessage alloc];
-  v6 = [v4 data];
+  data = [succeedCopy data];
 
-  v7 = [(RMSPairingSessionDidPairMessage *)v5 initWithData:v6];
-  v8 = [(RMSPairingSessionDidPairMessage *)v7 sessionIdentifier];
+  v7 = [(RMSPairingSessionDidPairMessage *)v5 initWithData:data];
+  sessionIdentifier = [(RMSPairingSessionDidPairMessage *)v7 sessionIdentifier];
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v18 = v8;
+    v18 = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "[Session %d] Received successful pairing", buf, 8u);
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInt:{v8, @"RMSIDSClientSessionIdentifierNotificationKey"}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInt:{sessionIdentifier, @"RMSIDSClientSessionIdentifierNotificationKey"}];
   v16[0] = v10;
   v15[1] = @"RMSIDSClientServiceNetworkNameNotificationKey";
-  v11 = [(RMSPairingSessionDidPairMessage *)v7 serviceNetworkName];
-  v16[1] = v11;
+  serviceNetworkName = [(RMSPairingSessionDidPairMessage *)v7 serviceNetworkName];
+  v16[1] = serviceNetworkName;
   v15[2] = @"RMSIDSClientPairingGUIDNotificationKey";
-  v12 = [(RMSPairingSessionDidPairMessage *)v7 pairingGUID];
-  v16[2] = v12;
+  pairingGUID = [(RMSPairingSessionDidPairMessage *)v7 pairingGUID];
+  v16[2] = pairingGUID;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:3];
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 postNotificationName:@"RMSIDSClientDidPairWithServiceNotification" object:self userInfo:v13];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RMSIDSClientDidPairWithServiceNotification" object:self userInfo:v13];
 }
 
-- (void)_handlePairingDidFail:(id)a3
+- (void)_handlePairingDidFail:(id)fail
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  failCopy = fail;
   v5 = [RMSSessionMessage alloc];
-  v6 = [v4 data];
+  data = [failCopy data];
 
-  v7 = [(RMSSessionMessage *)v5 initWithData:v6];
-  v8 = [(RMSSessionMessage *)v7 sessionIdentifier];
+  v7 = [(RMSSessionMessage *)v5 initWithData:data];
+  sessionIdentifier = [(RMSSessionMessage *)v7 sessionIdentifier];
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v16 = v8;
+    v16 = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "[Session %d] Received failure pairing", buf, 8u);
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInt:{v8, @"RMSIDSClientSessionIdentifierNotificationKey"}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInt:{sessionIdentifier, @"RMSIDSClientSessionIdentifierNotificationKey"}];
   v14 = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 postNotificationName:@"RMSIDSClientPairingDidFailNotification" object:self userInfo:v11];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RMSIDSClientPairingDidFailNotification" object:self userInfo:v11];
 }
 
-- (void)unpairService:(id)a3 sessionIdentifier:(int)a4 completionHandler:(id)a5
+- (void)unpairService:(id)service sessionIdentifier:(int)identifier completionHandler:(id)handler
 {
   v15 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  serviceCopy = service;
   v10 = objc_opt_new();
-  v11 = [v9 protobuf];
+  protobuf = [serviceCopy protobuf];
 
-  [v10 setService:v11];
+  [v10 setService:protobuf];
   v12 = RMSLogger();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v14[0] = 67109120;
-    v14[1] = a4;
+    v14[1] = identifier;
     _os_log_impl(&dword_261E98000, v12, OS_LOG_TYPE_DEFAULT, "[Session %d] Sending unpair service message", v14, 8u);
   }
 
-  v13 = MEMORY[0x266721590](v8);
+  v13 = MEMORY[0x266721590](handlerCopy);
   [(RMSIDSClient *)self _sendMessage:v10 type:46 timeout:10 queueOneID:0 priority:200 responseBlock:v13];
 }
 
-- (void)_handleSessionDidEnd:(id)a3
+- (void)_handleSessionDidEnd:(id)end
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  endCopy = end;
   v5 = [RMSSessionMessage alloc];
-  v6 = [v4 data];
+  data = [endCopy data];
 
-  v7 = [(RMSSessionMessage *)v5 initWithData:v6];
-  v8 = [(RMSSessionMessage *)v7 sessionIdentifier];
+  v7 = [(RMSSessionMessage *)v5 initWithData:data];
+  sessionIdentifier = [(RMSSessionMessage *)v7 sessionIdentifier];
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v16 = v8;
+    v16 = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "[Session %d] Received session did end", buf, 8u);
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInt:{v8, @"RMSIDSClientSessionIdentifierNotificationKey"}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInt:{sessionIdentifier, @"RMSIDSClientSessionIdentifierNotificationKey"}];
   v14 = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 postNotificationName:@"RMSIDSClientSessionDidEndNotification" object:self userInfo:v11];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RMSIDSClientSessionDidEndNotification" object:self userInfo:v11];
 }
 
-- (void)_handleWifiAvailabilityDidChange:(id)a3
+- (void)_handleWifiAvailabilityDidChange:(id)change
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = [RMSWifiAvailabilityDidChangeMessage alloc];
-  v6 = [v4 data];
+  data = [changeCopy data];
 
-  v7 = [(RMSWifiAvailabilityDidChangeMessage *)v5 initWithData:v6];
-  v8 = [(RMSWifiAvailabilityDidChangeMessage *)v7 sessionIdentifier];
+  v7 = [(RMSWifiAvailabilityDidChangeMessage *)v5 initWithData:data];
+  sessionIdentifier = [(RMSWifiAvailabilityDidChangeMessage *)v7 sessionIdentifier];
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(RMSWifiAvailabilityDidChangeMessage *)v7 wifiAvailable];
+    wifiAvailable = [(RMSWifiAvailabilityDidChangeMessage *)v7 wifiAvailable];
     v11 = @"unavailable";
-    if (v10)
+    if (wifiAvailable)
     {
       v11 = @"available";
     }
 
     *buf = 67109378;
-    v19 = v8;
+    v19 = sessionIdentifier;
     v20 = 2112;
     v21 = v11;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "[Session %d] Received wifi availability message: %@", buf, 0x12u);
   }
 
-  v12 = [MEMORY[0x277CCABB0] numberWithInt:{v8, @"RMSIDSClientSessionIdentifierNotificationKey"}];
+  v12 = [MEMORY[0x277CCABB0] numberWithInt:{sessionIdentifier, @"RMSIDSClientSessionIdentifierNotificationKey"}];
   v16[1] = @"RMSIDSClientWifiAvailabilityNotificationKey";
   v17[0] = v12;
   v13 = [MEMORY[0x277CCABB0] numberWithBool:{-[RMSWifiAvailabilityDidChangeMessage wifiAvailable](v7, "wifiAvailable")}];
   v17[1] = v13;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 postNotificationName:@"RMSIDSClientWifiAvailabilityDidChangeNotification" object:self userInfo:v14];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RMSIDSClientWifiAvailabilityDidChangeNotification" object:self userInfo:v14];
 }
 
-- (void)_handleDidBeginEditingText:(id)a3
+- (void)_handleDidBeginEditingText:(id)text
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  textCopy = text;
   v5 = [RMSSessionMessage alloc];
-  v6 = [v4 data];
+  data = [textCopy data];
 
-  v7 = [(RMSSessionMessage *)v5 initWithData:v6];
-  v8 = [(RMSSessionMessage *)v7 sessionIdentifier];
+  v7 = [(RMSSessionMessage *)v5 initWithData:data];
+  sessionIdentifier = [(RMSSessionMessage *)v7 sessionIdentifier];
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v16 = v8;
+    v16 = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "[Session %d] Received did begin editing text", buf, 8u);
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInt:{v8, @"RMSIDSClientSessionIdentifierNotificationKey"}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInt:{sessionIdentifier, @"RMSIDSClientSessionIdentifierNotificationKey"}];
   v14 = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 postNotificationName:@"RMSIDSClientDidBeginEditingTextNotification" object:self userInfo:v11];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RMSIDSClientDidBeginEditingTextNotification" object:self userInfo:v11];
 }
 
-- (void)_handleDidEndEditingText:(id)a3
+- (void)_handleDidEndEditingText:(id)text
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  textCopy = text;
   v5 = [RMSSessionMessage alloc];
-  v6 = [v4 data];
+  data = [textCopy data];
 
-  v7 = [(RMSSessionMessage *)v5 initWithData:v6];
-  v8 = [(RMSSessionMessage *)v7 sessionIdentifier];
+  v7 = [(RMSSessionMessage *)v5 initWithData:data];
+  sessionIdentifier = [(RMSSessionMessage *)v7 sessionIdentifier];
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v16 = v8;
+    v16 = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "[Session %d] Received did end editing text", buf, 8u);
   }
 
-  v10 = [MEMORY[0x277CCABB0] numberWithInt:{v8, @"RMSIDSClientSessionIdentifierNotificationKey"}];
+  v10 = [MEMORY[0x277CCABB0] numberWithInt:{sessionIdentifier, @"RMSIDSClientSessionIdentifierNotificationKey"}];
   v14 = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v14 forKeys:&v13 count:1];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 postNotificationName:@"RMSIDSClientDidEndEditingTextNotification" object:self userInfo:v11];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"RMSIDSClientDidEndEditingTextNotification" object:self userInfo:v11];
 }
 
-- (void)sendText:(id)a3 sessionIdentifier:(int)a4 completionHandler:(id)a5
+- (void)sendText:(id)text sessionIdentifier:(int)identifier completionHandler:(id)handler
 {
-  v5 = *&a4;
+  v5 = *&identifier;
   v15 = *MEMORY[0x277D85DE8];
-  v8 = a5;
-  v9 = a3;
+  handlerCopy = handler;
+  textCopy = text;
   v10 = objc_opt_new();
   [v10 setSessionIdentifier:v5];
-  [v10 setText:v9];
+  [v10 setText:textCopy];
 
   v11 = RMSLogger();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1153,54 +1153,54 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
   }
 
   v12 = *MEMORY[0x277D18828];
-  v13 = MEMORY[0x266721590](v8);
+  v13 = MEMORY[0x266721590](handlerCopy);
 
   [(RMSIDSClient *)self _sendMessage:v10 type:44 timeout:v12 queueOneID:0 priority:200 responseBlock:v13];
 }
 
-- (void)_handleSendTextResponse:(id)a3
+- (void)_handleSendTextResponse:(id)response
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = [RMSSendTextResponseMessage alloc];
-  v6 = [v4 data];
-  v7 = [(RMSSendTextResponseMessage *)v5 initWithData:v6];
+  data = [responseCopy data];
+  v7 = [(RMSSendTextResponseMessage *)v5 initWithData:data];
 
-  v8 = [(RMSSendTextResponseMessage *)v7 sessionIdentifier];
+  sessionIdentifier = [(RMSSendTextResponseMessage *)v7 sessionIdentifier];
   v9 = RMSLogger();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v12[0] = 67109120;
-    v12[1] = v8;
+    v12[1] = sessionIdentifier;
     _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "[Session %d] Received send text response", v12, 8u);
   }
 
-  v10 = [v4 context];
-  v11 = [v10 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  [(RMSIDSClient *)self _invokeSetTextResponseBlock:v11 responseCode:[(RMSSendTextResponseMessage *)v7 responseCode] session:v8];
+  [(RMSIDSClient *)self _invokeSetTextResponseBlock:incomingResponseIdentifier responseCode:[(RMSSendTextResponseMessage *)v7 responseCode] session:sessionIdentifier];
 }
 
-- (void)_invokeSetTextResponseBlock:(id)a3 responseCode:(int64_t)a4 session:(int)a5
+- (void)_invokeSetTextResponseBlock:(id)block responseCode:(int64_t)code session:(int)session
 {
-  v9 = a3;
+  blockCopy = block;
   v7 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:?];
-  v8 = [v7 responseBlock];
+  responseBlock = [v7 responseBlock];
 
-  if (v8)
+  if (responseBlock)
   {
-    v8[2](v8, a4);
+    responseBlock[2](responseBlock, code);
   }
 
-  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:v9];
+  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:blockCopy];
 }
 
-- (void)_handleUnpairServiceResponse:(id)a3
+- (void)_handleUnpairServiceResponse:(id)response
 {
-  v4 = a3;
+  responseCopy = response;
   v5 = [RMSResponseCodeMessage alloc];
-  v6 = [v4 data];
-  v7 = [(RMSResponseCodeMessage *)v5 initWithData:v6];
+  data = [responseCopy data];
+  v7 = [(RMSResponseCodeMessage *)v5 initWithData:data];
 
   v8 = RMSLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -1209,36 +1209,36 @@ void __47__RMSIDSClient__handlePairingChallengeRequest___block_invoke(uint64_t a
     _os_log_impl(&dword_261E98000, v8, OS_LOG_TYPE_DEFAULT, "Received unpair service response", v11, 2u);
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  [(RMSIDSClient *)self _invokeResponseCodeResponseBlock:v10 responseCode:[(RMSResponseCodeMessage *)v7 responseCode]];
+  [(RMSIDSClient *)self _invokeResponseCodeResponseBlock:incomingResponseIdentifier responseCode:[(RMSResponseCodeMessage *)v7 responseCode]];
 }
 
-- (void)_sendMessage:(id)a3 type:(unsigned __int16)a4 sendTimeout:(int)a5 responseTimeout:(int)a6 queueOneID:(id)a7 priority:(int64_t)a8 inResponseToProtobuf:(id)a9 responseBlock:(id)a10
+- (void)_sendMessage:(id)message type:(unsigned __int16)type sendTimeout:(int)timeout responseTimeout:(int)responseTimeout queueOneID:(id)d priority:(int64_t)priority inResponseToProtobuf:(id)protobuf responseBlock:(id)self0
 {
-  v16 = a3;
-  v17 = a7;
-  v18 = a9;
-  v19 = a10;
+  messageCopy = message;
+  dCopy = d;
+  protobufCopy = protobuf;
+  blockCopy = block;
   idsOutgoingQueue = self->_idsOutgoingQueue;
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __117__RMSIDSClient__sendMessage_type_sendTimeout_responseTimeout_queueOneID_priority_inResponseToProtobuf_responseBlock___block_invoke;
   v25[3] = &unk_279B08BD8;
-  v34 = a4;
-  v26 = v16;
-  v27 = v18;
-  v28 = v19;
-  v29 = v17;
-  v30 = self;
-  v31 = a8;
-  v32 = a5;
-  v33 = a6;
-  v21 = v17;
-  v22 = v19;
-  v23 = v18;
-  v24 = v16;
+  typeCopy = type;
+  v26 = messageCopy;
+  v27 = protobufCopy;
+  v28 = blockCopy;
+  v29 = dCopy;
+  selfCopy = self;
+  priorityCopy = priority;
+  timeoutCopy = timeout;
+  responseTimeoutCopy = responseTimeout;
+  v21 = dCopy;
+  v22 = blockCopy;
+  v23 = protobufCopy;
+  v24 = messageCopy;
   dispatch_async(idsOutgoingQueue, v25);
 }
 
@@ -1350,32 +1350,32 @@ void __117__RMSIDSClient__sendMessage_type_sendTimeout_responseTimeout_queueOneI
   [WeakRetained _handleTimeoutForMessageWithIdentifier:*(a1 + 32)];
 }
 
-- (void)_handleResponseCodeMessage:(id)a3
+- (void)_handleResponseCodeMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v5 = [RMSResponseCodeMessage alloc];
-  v6 = [v4 data];
-  v9 = [(RMSResponseCodeMessage *)v5 initWithData:v6];
+  data = [messageCopy data];
+  v9 = [(RMSResponseCodeMessage *)v5 initWithData:data];
 
-  v7 = [v4 context];
+  context = [messageCopy context];
 
-  v8 = [v7 incomingResponseIdentifier];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  [(RMSIDSClient *)self _invokeResponseCodeResponseBlock:v8 responseCode:[(RMSResponseCodeMessage *)v9 responseCode]];
+  [(RMSIDSClient *)self _invokeResponseCodeResponseBlock:incomingResponseIdentifier responseCode:[(RMSResponseCodeMessage *)v9 responseCode]];
 }
 
-- (void)_invokeResponseCodeResponseBlock:(id)a3 responseCode:(int64_t)a4
+- (void)_invokeResponseCodeResponseBlock:(id)block responseCode:(int64_t)code
 {
-  v8 = a3;
+  blockCopy = block;
   v6 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:?];
-  v7 = [v6 responseBlock];
+  responseBlock = [v6 responseBlock];
 
-  if (v7)
+  if (responseBlock)
   {
-    v7[2](v7, a4);
+    responseBlock[2](responseBlock, code);
   }
 
-  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:v8];
+  [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:blockCopy];
 }
 
 - (void)_updateCompanionAvailability
@@ -1477,42 +1477,42 @@ LABEL_14:
   return v4;
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
-  v7 = a5;
+  protobufCopy = protobuf;
   v8 = RMSLogger();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    [RMSIDSClient service:v7 account:v8 incomingUnhandledProtobuf:? fromID:? context:?];
+    [RMSIDSClient service:protobufCopy account:v8 incomingUnhandledProtobuf:? fromID:? context:?];
   }
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
   v17 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a7;
-  if (!a6)
+  identifierCopy = identifier;
+  errorCopy = error;
+  if (!success)
   {
     v12 = RMSLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = v10;
+      v14 = identifierCopy;
       v15 = 2112;
-      v16 = v11;
+      v16 = errorCopy;
       _os_log_impl(&dword_261E98000, v12, OS_LOG_TYPE_DEFAULT, "IDS message %@ failed with error: %@", &v13, 0x16u);
     }
 
-    [(RMSIDSClient *)self _handleTimeoutForMessageWithIdentifier:v10];
+    [(RMSIDSClient *)self _handleTimeoutForMessageWithIdentifier:identifierCopy];
   }
 }
 
-- (void)_handleTimeoutForMessageWithIdentifier:(id)a3
+- (void)_handleTimeoutForMessageWithIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_messageRecords objectForKeyedSubscript:identifierCopy];
   if (v5)
   {
     v6 = RMSLogger();
@@ -1524,36 +1524,36 @@ LABEL_14:
       _os_log_impl(&dword_261E98000, v6, OS_LOG_TYPE_DEFAULT, "Handling timeout for message type: %@", &v11, 0xCu);
     }
 
-    v8 = [v5 messageType];
-    if (v8 <= 0x21)
+    messageType = [v5 messageType];
+    if (messageType <= 0x21)
     {
-      if (((1 << v8) & 0x280050200) != 0)
+      if (((1 << messageType) & 0x280050200) != 0)
       {
-        [(RMSIDSClient *)self _invokeResponseCodeResponseBlock:v4 responseCode:-3];
+        [(RMSIDSClient *)self _invokeResponseCodeResponseBlock:identifierCopy responseCode:-3];
         goto LABEL_7;
       }
 
-      if (v8 == 25)
+      if (messageType == 25)
       {
-        [(RMSIDSClient *)self _invokeArtworkDataResponseBlock:v4 artworkData:0];
+        [(RMSIDSClient *)self _invokeArtworkDataResponseBlock:identifierCopy artworkData:0];
         goto LABEL_7;
       }
 
-      if (v8 == 26)
+      if (messageType == 26)
       {
-        [(RMSIDSClient *)self _invokeBeginPairingResponseBlock:v4 responseCode:-3 session:0];
+        [(RMSIDSClient *)self _invokeBeginPairingResponseBlock:identifierCopy responseCode:-3 session:0];
         goto LABEL_7;
       }
     }
 
-    if (v8 == 5)
+    if (messageType == 5)
     {
-      [(RMSIDSClient *)self _invokeConnectToServiceResponseBlock:v4 responseCode:-3 responseData:0 controlInterface:0 session:0];
+      [(RMSIDSClient *)self _invokeConnectToServiceResponseBlock:identifierCopy responseCode:-3 responseData:0 controlInterface:0 session:0];
     }
 
-    else if (v8 == 1)
+    else if (messageType == 1)
     {
-      [(RMSIDSClient *)self _invokeBeginDiscoveryResponseBlock:v4 success:0 session:0];
+      [(RMSIDSClient *)self _invokeBeginDiscoveryResponseBlock:identifierCopy success:0 session:0];
     }
 
     else
@@ -1567,7 +1567,7 @@ LABEL_14:
         _os_log_impl(&dword_261E98000, v9, OS_LOG_TYPE_DEFAULT, "No known timeout handler for message type %@", &v11, 0xCu);
       }
 
-      [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:v4];
+      [(NSMutableDictionary *)self->_messageRecords removeObjectForKey:identifierCopy];
     }
   }
 

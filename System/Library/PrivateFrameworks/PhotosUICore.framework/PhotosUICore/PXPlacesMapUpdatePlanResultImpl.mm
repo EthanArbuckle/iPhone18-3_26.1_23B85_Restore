@@ -14,25 +14,25 @@
   v5 = [v3 stringWithFormat:@"%@\n", v4];
 
   [v5 appendString:@"---------------------\n"];
-  v6 = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToAddImmediately];
-  v7 = [v6 count];
-  v8 = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToAddImmediately];
-  [v5 appendFormat:@"- Add Immediately: %lu:\n%@\n\n", v7, v8];
+  annotationsToAddImmediately = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToAddImmediately];
+  v7 = [annotationsToAddImmediately count];
+  annotationsToAddImmediately2 = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToAddImmediately];
+  [v5 appendFormat:@"- Add Immediately: %lu:\n%@\n\n", v7, annotationsToAddImmediately2];
 
-  v9 = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToRemoveImmediately];
-  v10 = [v9 count];
-  v11 = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToRemoveImmediately];
-  [v5 appendFormat:@"- Remove Immediately: %lu:\n%@\n\n", v10, v11];
+  annotationsToRemoveImmediately = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToRemoveImmediately];
+  v10 = [annotationsToRemoveImmediately count];
+  annotationsToRemoveImmediately2 = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToRemoveImmediately];
+  [v5 appendFormat:@"- Remove Immediately: %lu:\n%@\n\n", v10, annotationsToRemoveImmediately2];
 
-  v12 = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToRemoveAfterAnimationHasStarted];
-  v13 = [v12 count];
-  v14 = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToRemoveAfterAnimationHasStarted];
-  [v5 appendFormat:@"- Remove After Animation Started: %lu:\n%@\n\n", v13, v14];
+  annotationsToRemoveAfterAnimationHasStarted = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToRemoveAfterAnimationHasStarted];
+  v13 = [annotationsToRemoveAfterAnimationHasStarted count];
+  annotationsToRemoveAfterAnimationHasStarted2 = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToRemoveAfterAnimationHasStarted];
+  [v5 appendFormat:@"- Remove After Animation Started: %lu:\n%@\n\n", v13, annotationsToRemoveAfterAnimationHasStarted2];
 
-  v15 = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToRemoveAfterAnimationHasEnded];
-  v16 = [v15 count];
-  v17 = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToRemoveAfterAnimationHasEnded];
-  [v5 appendFormat:@"- Remove After Animation Ended: %lu:\n%@\n\n", v16, v17];
+  annotationsToRemoveAfterAnimationHasEnded = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToRemoveAfterAnimationHasEnded];
+  v16 = [annotationsToRemoveAfterAnimationHasEnded count];
+  annotationsToRemoveAfterAnimationHasEnded2 = [(PXPlacesMapUpdatePlanResultImpl *)self annotationsToRemoveAfterAnimationHasEnded];
+  [v5 appendFormat:@"- Remove After Animation Ended: %lu:\n%@\n\n", v16, annotationsToRemoveAfterAnimationHasEnded2];
 
   return v5;
 }

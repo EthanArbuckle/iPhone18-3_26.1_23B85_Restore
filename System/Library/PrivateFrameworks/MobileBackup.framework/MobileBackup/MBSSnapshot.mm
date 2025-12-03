@@ -1,16 +1,16 @@
 @interface MBSSnapshot
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasLastModified:(BOOL)a3;
-- (void)setHasQuotaReserved:(BOOL)a3;
-- (void)setHasSnapshotID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasLastModified:(BOOL)modified;
+- (void)setHasQuotaReserved:(BOOL)reserved;
+- (void)setHasSnapshotID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MBSSnapshot
@@ -23,9 +23,9 @@
   [(MBSSnapshot *)&v3 dealloc];
 }
 
-- (void)setHasSnapshotID:(BOOL)a3
+- (void)setHasSnapshotID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 8;
   }
@@ -38,9 +38,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasQuotaReserved:(BOOL)a3
+- (void)setHasQuotaReserved:(BOOL)reserved
 {
-  if (a3)
+  if (reserved)
   {
     v3 = 4;
   }
@@ -53,9 +53,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasLastModified:(BOOL)a3
+- (void)setHasLastModified:(BOOL)modified
 {
-  if (a3)
+  if (modified)
   {
     v3 = 2;
   }
@@ -122,7 +122,7 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
@@ -170,13 +170,13 @@ LABEL_5:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(a3 + 10) = self->_snapshotID;
-    *(a3 + 44) |= 8u;
+    *(to + 10) = self->_snapshotID;
+    *(to + 44) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -195,31 +195,31 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 3) = self->_quotaReserved;
-  *(a3 + 44) |= 4u;
+  *(to + 3) = self->_quotaReserved;
+  *(to + 44) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_4:
-    *(a3 + 2) = self->_lastModified;
-    *(a3 + 44) |= 2u;
+    *(to + 2) = self->_lastModified;
+    *(to + 44) |= 2u;
   }
 
 LABEL_5:
   if (self->_attributes)
   {
-    [a3 setAttributes:?];
+    [to setAttributes:?];
   }
 
   if (*&self->_has)
   {
-    *(a3 + 1) = self->_committed;
-    *(a3 + 44) |= 1u;
+    *(to + 1) = self->_committed;
+    *(to + 44) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 8) != 0)
@@ -255,7 +255,7 @@ LABEL_4:
 
 LABEL_5:
 
-  v6[4] = [(MBSSnapshotAttributes *)self->_attributes copyWithZone:a3];
+  v6[4] = [(MBSSnapshotAttributes *)self->_attributes copyWithZone:zone];
   if (*&self->_has)
   {
     v6[1] = self->_committed;
@@ -265,22 +265,22 @@ LABEL_5:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
-    v7 = *(a3 + 44);
+    v7 = *(equal + 44);
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 44) & 8) == 0 || self->_snapshotID != *(a3 + 10))
+      if ((*(equal + 44) & 8) == 0 || self->_snapshotID != *(equal + 10))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 44) & 8) != 0)
+    else if ((*(equal + 44) & 8) != 0)
     {
 LABEL_24:
       LOBYTE(v5) = 0;
@@ -289,32 +289,32 @@ LABEL_24:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 44) & 4) == 0 || self->_quotaReserved != *(a3 + 3))
+      if ((*(equal + 44) & 4) == 0 || self->_quotaReserved != *(equal + 3))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 44) & 4) != 0)
+    else if ((*(equal + 44) & 4) != 0)
     {
       goto LABEL_24;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 44) & 2) == 0 || self->_lastModified != *(a3 + 2))
+      if ((*(equal + 44) & 2) == 0 || self->_lastModified != *(equal + 2))
       {
         goto LABEL_24;
       }
     }
 
-    else if ((*(a3 + 44) & 2) != 0)
+    else if ((*(equal + 44) & 2) != 0)
     {
       goto LABEL_24;
     }
 
     attributes = self->_attributes;
-    if (attributes | *(a3 + 4))
+    if (attributes | *(equal + 4))
     {
       v5 = [(MBSSnapshotAttributes *)attributes isEqual:?];
       if (!v5)
@@ -323,13 +323,13 @@ LABEL_24:
       }
 
       has = self->_has;
-      v7 = *(a3 + 44);
+      v7 = *(equal + 44);
     }
 
     LOBYTE(v5) = (v7 & 1) == 0;
     if (has)
     {
-      if ((v7 & 1) == 0 || self->_committed != *(a3 + 1))
+      if ((v7 & 1) == 0 || self->_committed != *(equal + 1))
       {
         goto LABEL_24;
       }
@@ -393,14 +393,14 @@ LABEL_8:
   return v4 ^ v3 ^ v5 ^ v7 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 44);
+  v5 = *(from + 44);
   if ((v5 & 8) != 0)
   {
-    self->_snapshotID = *(a3 + 10);
+    self->_snapshotID = *(from + 10);
     *&self->_has |= 8u;
-    v5 = *(a3 + 44);
+    v5 = *(from + 44);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -413,23 +413,23 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 44) & 4) == 0)
+  else if ((*(from + 44) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_quotaReserved = *(a3 + 3);
+  self->_quotaReserved = *(from + 3);
   *&self->_has |= 4u;
-  if ((*(a3 + 44) & 2) != 0)
+  if ((*(from + 44) & 2) != 0)
   {
 LABEL_4:
-    self->_lastModified = *(a3 + 2);
+    self->_lastModified = *(from + 2);
     *&self->_has |= 2u;
   }
 
 LABEL_5:
   attributes = self->_attributes;
-  v7 = *(a3 + 4);
+  v7 = *(from + 4);
   if (attributes)
   {
     if (v7)
@@ -443,9 +443,9 @@ LABEL_5:
     [(MBSSnapshot *)self setAttributes:?];
   }
 
-  if (*(a3 + 44))
+  if (*(from + 44))
   {
-    self->_committed = *(a3 + 1);
+    self->_committed = *(from + 1);
     *&self->_has |= 1u;
   }
 }

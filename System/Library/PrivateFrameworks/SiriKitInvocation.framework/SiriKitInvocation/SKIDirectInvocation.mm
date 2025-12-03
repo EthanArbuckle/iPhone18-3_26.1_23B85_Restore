@@ -1,62 +1,62 @@
 @interface SKIDirectInvocation
-+ (id)makeParseWithDirectInvocationPayload:(id)a3;
-+ (id)runSiriKitExecutorCommandWithContext:(id)a3 parse:(id)a4 appBundleId:(id)a5;
-+ (id)runSiriKitExecutorCommandWithContext:(id)a3 payload:(id)a4;
-+ (id)wrapCommandInStartLocalRequest:(id)a3;
++ (id)makeParseWithDirectInvocationPayload:(id)payload;
++ (id)runSiriKitExecutorCommandWithContext:(id)context parse:(id)parse appBundleId:(id)id;
++ (id)runSiriKitExecutorCommandWithContext:(id)context payload:(id)payload;
++ (id)wrapCommandInStartLocalRequest:(id)request;
 @end
 
 @implementation SKIDirectInvocation
 
-+ (id)runSiriKitExecutorCommandWithContext:(id)a3 payload:(id)a4
++ (id)runSiriKitExecutorCommandWithContext:(id)context payload:(id)payload
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  contextCopy = context;
+  payloadCopy = payload;
+  if (!contextCopy)
   {
     +[SKIDirectInvocation runSiriKitExecutorCommandWithContext:payload:];
   }
 
-  v7 = v6;
-  if (!v6)
+  v7 = payloadCopy;
+  if (!payloadCopy)
   {
     +[SKIDirectInvocation runSiriKitExecutorCommandWithContext:payload:];
   }
 
-  v8 = [SKIDirectInvocation makeParseWithDirectInvocationPayload:v6];
-  v9 = [SKIDirectInvocation runSiriKitExecutorCommandWithContext:v5 parse:v8 appBundleId:0];
+  v8 = [SKIDirectInvocation makeParseWithDirectInvocationPayload:payloadCopy];
+  v9 = [SKIDirectInvocation runSiriKitExecutorCommandWithContext:contextCopy parse:v8 appBundleId:0];
 
   return v9;
 }
 
-+ (id)wrapCommandInStartLocalRequest:(id)a3
++ (id)wrapCommandInStartLocalRequest:(id)request
 {
   v34[1] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D47940];
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_alloc_init(v3);
-  v6 = [MEMORY[0x277CCAD78] UUID];
-  v7 = [v6 UUIDString];
-  [v5 setAceId:v7];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v5 setAceId:uUIDString];
 
-  v34[0] = v4;
+  v34[0] = requestCopy;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:1];
   [v5 setClientBoundCommands:v8];
 
   v9 = objc_alloc_init(MEMORY[0x277D476E8]);
-  v10 = [MEMORY[0x277CCAD78] UUID];
-  v11 = [v10 UUIDString];
-  [v9 setAceId:v11];
+  uUID2 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString2 = [uUID2 UUIDString];
+  [v9 setAceId:uUIDString2];
 
-  v12 = [v5 aceId];
-  [v9 setRefId:v12];
+  aceId = [v5 aceId];
+  [v9 setRefId:aceId];
 
   v13 = objc_alloc_init(MEMORY[0x277D476F0]);
-  v14 = [MEMORY[0x277CCAD78] UUID];
-  v15 = [v14 UUIDString];
-  [v13 setAceId:v15];
+  uUID3 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString3 = [uUID3 UUIDString];
+  [v13 setAceId:uUIDString3];
 
-  v16 = [v5 aceId];
-  [v13 setRefId:v16];
+  aceId2 = [v5 aceId];
+  [v13 setRefId:aceId2];
 
   [v13 setCode:0];
   v33 = v9;
@@ -64,20 +64,20 @@
   [v13 setCommands:v17];
 
   v18 = objc_alloc_init(MEMORY[0x277D47208]);
-  v19 = [MEMORY[0x277CCAD78] UUID];
-  v20 = [v19 UUIDString];
-  [v18 setAceId:v20];
+  uUID4 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString4 = [uUID4 UUIDString];
+  [v18 setAceId:uUIDString4];
 
-  v21 = [v5 aceId];
-  [v18 setRefId:v21];
+  aceId3 = [v5 aceId];
+  [v18 setRefId:aceId3];
 
   v22 = objc_alloc_init(MEMORY[0x277D476F0]);
-  v23 = [MEMORY[0x277CCAD78] UUID];
-  v24 = [v23 UUIDString];
-  [v22 setAceId:v24];
+  uUID5 = [MEMORY[0x277CCAD78] UUID];
+  uUIDString5 = [uUID5 UUIDString];
+  [v22 setAceId:uUIDString5];
 
-  v25 = [v5 aceId];
-  [v22 setRefId:v25];
+  aceId4 = [v5 aceId];
+  [v22 setRefId:aceId4];
 
   [v22 setCode:-1];
   v32 = v18;
@@ -87,26 +87,26 @@
   v31[0] = v13;
   v31[1] = v22;
   v27 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:2];
-  [v4 setCallbacks:v27];
+  [requestCopy setCallbacks:v27];
 
-  v28 = [v5 aceId];
-  [v4 setRefId:v28];
+  aceId5 = [v5 aceId];
+  [requestCopy setRefId:aceId5];
 
   v29 = *MEMORY[0x277D85DE8];
 
   return v5;
 }
 
-+ (id)runSiriKitExecutorCommandWithContext:(id)a3 parse:(id)a4 appBundleId:(id)a5
++ (id)runSiriKitExecutorCommandWithContext:(id)context parse:(id)parse appBundleId:(id)id
 {
-  v7 = a5;
+  idCopy = id;
   v8 = MEMORY[0x277D47438];
-  v9 = a4;
-  v10 = a3;
+  parseCopy = parse;
+  contextCopy = context;
   v11 = objc_alloc_init(v8);
-  v12 = [MEMORY[0x277CCAD78] UUID];
-  v13 = [v12 UUIDString];
-  [v11 setAceId:v13];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  [v11 setAceId:uUIDString];
 
   [v11 setParameterPrompts:MEMORY[0x277CBEBF8]];
   [v11 setMultiUser:0];
@@ -116,23 +116,23 @@
   v14 = objc_alloc_init(MEMORY[0x277D47460]);
   [v11 setRemoteExecution:v14];
 
-  [v11 setParse:v9];
-  [v11 setTextToSpeechEnabled:{objc_msgSend(v10, "isTextToSpeechEnabled")}];
-  [v11 setVoiceTriggerEnabled:{objc_msgSend(v10, "isVoiceTriggerEnabled")}];
-  v15 = [v10 interactionType];
-  [v11 setInteractionType:v15];
+  [v11 setParse:parseCopy];
+  [v11 setTextToSpeechEnabled:{objc_msgSend(contextCopy, "isTextToSpeechEnabled")}];
+  [v11 setVoiceTriggerEnabled:{objc_msgSend(contextCopy, "isVoiceTriggerEnabled")}];
+  interactionType = [contextCopy interactionType];
+  [v11 setInteractionType:interactionType];
 
-  v16 = [v10 inputOrigin];
-  [v11 setInputOrigin:v16];
+  inputOrigin = [contextCopy inputOrigin];
+  [v11 setInputOrigin:inputOrigin];
 
-  [v11 setEyesFree:{objc_msgSend(v10, "isEyesFree")}];
-  v17 = [v10 responseMode];
+  [v11 setEyesFree:{objc_msgSend(contextCopy, "isEyesFree")}];
+  responseMode = [contextCopy responseMode];
 
-  [v11 setMode:v17];
-  if (v7 && [v7 length])
+  [v11 setMode:responseMode];
+  if (idCopy && [idCopy length])
   {
     v18 = objc_alloc_init(MEMORY[0x277D47968]);
-    [v18 setBundleId:v7];
+    [v18 setBundleId:idCopy];
     v19 = objc_alloc_init(MEMORY[0x277D47448]);
     [v19 setRequestedApp:v18];
     [v11 setAppSelectionState:v19];
@@ -141,19 +141,19 @@
   return v11;
 }
 
-+ (id)makeParseWithDirectInvocationPayload:(id)a3
++ (id)makeParseWithDirectInvocationPayload:(id)payload
 {
   v3 = MEMORY[0x277D473B8];
-  v4 = a3;
+  payloadCopy = payload;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 identifier];
-  [v5 setInvocationIdentifier:v6];
+  identifier = [payloadCopy identifier];
+  [v5 setInvocationIdentifier:identifier];
 
   v7 = MEMORY[0x277CCAC58];
-  v8 = [v4 userData];
+  userData = [payloadCopy userData];
 
   v14 = 0;
-  v9 = [v7 dataWithPropertyList:v8 format:200 options:0 error:&v14];
+  v9 = [v7 dataWithPropertyList:userData format:200 options:0 error:&v14];
   v10 = v14;
   [v5 setData:v9];
 

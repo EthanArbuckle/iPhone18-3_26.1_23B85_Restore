@@ -1,20 +1,20 @@
 @interface PXAlbumStreamingUtilities
-+ (id)contactsViewControllerForParticipant:(id)a3 resendInvitationSelector:(SEL)a4 removeSubscriberSelector:(SEL)a5 target:(id)a6;
++ (id)contactsViewControllerForParticipant:(id)participant resendInvitationSelector:(SEL)selector removeSubscriberSelector:(SEL)subscriberSelector target:(id)target;
 @end
 
 @implementation PXAlbumStreamingUtilities
 
-+ (id)contactsViewControllerForParticipant:(id)a3 resendInvitationSelector:(SEL)a4 removeSubscriberSelector:(SEL)a5 target:(id)a6
++ (id)contactsViewControllerForParticipant:(id)participant resendInvitationSelector:(SEL)selector removeSubscriberSelector:(SEL)subscriberSelector target:(id)target
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v42 = a6;
-  v9 = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
-  v47[0] = v9;
+  participantCopy = participant;
+  targetCopy = target;
+  descriptorForRequiredKeys = [MEMORY[0x1E695D148] descriptorForRequiredKeys];
+  v47[0] = descriptorForRequiredKeys;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v47 count:1];
   v43 = 0;
   v44 = 0;
-  v11 = [v8 matchingContactWithKeysToFetch:v10 outMatchingKey:&v44 outMatchingIdentifier:&v43];
+  v11 = [participantCopy matchingContactWithKeysToFetch:v10 outMatchingKey:&v44 outMatchingIdentifier:&v43];
   v12 = v44;
   v13 = v43;
 
@@ -36,16 +36,16 @@
       [v14 highlightPropertyWithKey:v12 identifier:v13];
     }
 
-    v15 = [v14 contentViewController];
-    v16 = [v15 cardFooterGroup];
-    if (a4)
+    contentViewController = [v14 contentViewController];
+    cardFooterGroup = [contentViewController cardFooterGroup];
+    if (selector)
     {
-      [v15 addActionWithTitle:v41 target:v42 selector:a4 inGroup:v16 destructive:0];
+      [contentViewController addActionWithTitle:v41 target:targetCopy selector:selector inGroup:cardFooterGroup destructive:0];
     }
 
-    if (a5)
+    if (subscriberSelector)
     {
-      [v15 addActionWithTitle:v40 target:v42 selector:a5 inGroup:v16 destructive:1];
+      [contentViewController addActionWithTitle:v40 target:targetCopy selector:subscriberSelector inGroup:cardFooterGroup destructive:1];
     }
 
 LABEL_25:
@@ -54,75 +54,75 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v17 = [v8 emailAddressString];
-  if (v17)
+  emailAddressString = [participantCopy emailAddressString];
+  if (emailAddressString)
   {
 
 LABEL_14:
-    v36 = v9;
-    v15 = objc_alloc_init(MEMORY[0x1E695CF18]);
-    v19 = [v8 firstName];
-    [v15 setGivenName:v19];
+    v36 = descriptorForRequiredKeys;
+    contentViewController = objc_alloc_init(MEMORY[0x1E695CF18]);
+    firstName = [participantCopy firstName];
+    [contentViewController setGivenName:firstName];
 
-    v20 = [v8 lastName];
-    [v15 setFamilyName:v20];
+    lastName = [participantCopy lastName];
+    [contentViewController setFamilyName:lastName];
 
-    v21 = [v8 emailAddressString];
+    emailAddressString2 = [participantCopy emailAddressString];
 
-    if (v21)
+    if (emailAddressString2)
     {
       v22 = objc_alloc(MEMORY[0x1E695CEE0]);
       v23 = *MEMORY[0x1E695CB60];
-      v24 = [v8 emailAddressString];
-      v25 = [v22 initWithLabel:v23 value:v24];
+      emailAddressString3 = [participantCopy emailAddressString];
+      v25 = [v22 initWithLabel:v23 value:emailAddressString3];
 
       v46 = v25;
       v26 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v46 count:1];
-      [v15 setEmailAddresses:v26];
+      [contentViewController setEmailAddresses:v26];
     }
 
-    v27 = [v8 phoneNumberString];
+    phoneNumberString = [participantCopy phoneNumberString];
 
-    if (v27)
+    if (phoneNumberString)
     {
       v28 = MEMORY[0x1E695CF50];
-      v29 = [v8 phoneNumberString];
-      v30 = [v28 phoneNumberWithStringValue:v29];
+      phoneNumberString2 = [participantCopy phoneNumberString];
+      v30 = [v28 phoneNumberWithStringValue:phoneNumberString2];
 
       v31 = objc_alloc(MEMORY[0x1E695CEE0]);
       v32 = [v31 initWithLabel:*MEMORY[0x1E695CBC0] value:v30];
       v45 = v32;
       v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
-      [v15 setPhoneNumbers:v33];
+      [contentViewController setPhoneNumbers:v33];
     }
 
-    v14 = [MEMORY[0x1E695D148] viewControllerForUnknownContact:v15];
+    v14 = [MEMORY[0x1E695D148] viewControllerForUnknownContact:contentViewController];
     if (([MEMORY[0x1E695CE18] authorizationStatusForEntityType:0] - 1) <= 1)
     {
       [v14 setDisplayMode:1];
     }
 
     [v14 setAllowsActions:1];
-    v16 = [v14 contentViewController];
-    [v16 setAllowsAddingToAddressBook:1];
-    v34 = [v16 cardFooterGroup];
-    if (a4)
+    cardFooterGroup = [v14 contentViewController];
+    [cardFooterGroup setAllowsAddingToAddressBook:1];
+    v16CardFooterGroup = [cardFooterGroup cardFooterGroup];
+    if (selector)
     {
-      [v16 addActionWithTitle:v41 target:v42 selector:a4 inGroup:v34 destructive:0];
+      [cardFooterGroup addActionWithTitle:v41 target:targetCopy selector:selector inGroup:v16CardFooterGroup destructive:0];
     }
 
-    if (a5)
+    if (subscriberSelector)
     {
-      [v16 addActionWithTitle:v40 target:v42 selector:a5 inGroup:v34 destructive:1];
+      [cardFooterGroup addActionWithTitle:v40 target:targetCopy selector:subscriberSelector inGroup:v16CardFooterGroup destructive:1];
     }
 
-    v9 = v37;
+    descriptorForRequiredKeys = v37;
     goto LABEL_25;
   }
 
-  v18 = [v8 phoneNumberString];
+  phoneNumberString3 = [participantCopy phoneNumberString];
 
-  if (v18)
+  if (phoneNumberString3)
   {
     goto LABEL_14;
   }

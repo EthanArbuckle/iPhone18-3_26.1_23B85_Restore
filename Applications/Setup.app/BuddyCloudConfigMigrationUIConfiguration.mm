@@ -1,38 +1,38 @@
 @interface BuddyCloudConfigMigrationUIConfiguration
-- (BuddyCloudConfigMigrationUIConfiguration)initWithIsMandatory:(BOOL)a3 deadline:(id)a4 showsWiFiPickerButton:(BOOL)a5 pendingCloudConfig:(id)a6;
+- (BuddyCloudConfigMigrationUIConfiguration)initWithIsMandatory:(BOOL)mandatory deadline:(id)deadline showsWiFiPickerButton:(BOOL)button pendingCloudConfig:(id)config;
 @end
 
 @implementation BuddyCloudConfigMigrationUIConfiguration
 
-- (BuddyCloudConfigMigrationUIConfiguration)initWithIsMandatory:(BOOL)a3 deadline:(id)a4 showsWiFiPickerButton:(BOOL)a5 pendingCloudConfig:(id)a6
+- (BuddyCloudConfigMigrationUIConfiguration)initWithIsMandatory:(BOOL)mandatory deadline:(id)deadline showsWiFiPickerButton:(BOOL)button pendingCloudConfig:(id)config
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
+  mandatoryCopy = mandatory;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v14 = a5;
+  objc_storeStrong(&location, deadline);
+  buttonCopy = button;
   obj = 0;
-  objc_storeStrong(&obj, a6);
-  v8 = v18;
-  v18 = 0;
+  objc_storeStrong(&obj, config);
+  v8 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v8;
   v12.super_class = BuddyCloudConfigMigrationUIConfiguration;
   v9 = [(BuddyCloudConfigMigrationUIConfiguration *)&v12 init];
-  v18 = v9;
-  objc_storeStrong(&v18, v9);
+  selfCopy = v9;
+  objc_storeStrong(&selfCopy, v9);
   if (v9)
   {
-    *(v18 + 8) = v16;
-    objc_storeStrong(v18 + 2, location);
-    *(v18 + 9) = v14;
-    objc_storeStrong(v18 + 3, obj);
+    *(selfCopy + 8) = mandatoryCopy;
+    objc_storeStrong(selfCopy + 2, location);
+    *(selfCopy + 9) = buttonCopy;
+    objc_storeStrong(selfCopy + 3, obj);
   }
 
-  v10 = v18;
+  v10 = selfCopy;
   objc_storeStrong(&obj, 0);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v18, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v10;
 }
 

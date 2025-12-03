@@ -1,60 +1,60 @@
 @interface PKReportIssueViewController
-+ (BOOL)canReportIssueForTransaction:(id)a3 bankConnectInstitution:(id)a4 paymentPass:(id)a5;
-+ (BOOL)canSelectIssueTypeForTransaction:(id)a3;
-- (BOOL)_issueTypeEnabled:(int64_t)a3;
-- (BOOL)shouldMapSection:(unint64_t)a3;
-- (PKReportIssueViewController)initWithTransaction:(id)a3 transactionSourceCollection:(id)a4 paymentPass:(id)a5 familyCollection:(id)a6 account:(id)a7 accountUserCollection:(id)a8 bankConnectInstitution:(id)a9 physicalCards:(id)a10 detailViewStyle:(int64_t)a11 context:(unint64_t)a12;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)_commentsCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_createPrivacyFooterViewForContext:(unint64_t)a3;
-- (id)_disputeTypeCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_formattedStatementNameFromRawName:(id)a3;
-- (id)_issueTypeCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_mapsIssueCellForTableView:(id)a3 atIndexPath:(id)a4;
++ (BOOL)canReportIssueForTransaction:(id)transaction bankConnectInstitution:(id)institution paymentPass:(id)pass;
++ (BOOL)canSelectIssueTypeForTransaction:(id)transaction;
+- (BOOL)_issueTypeEnabled:(int64_t)enabled;
+- (BOOL)shouldMapSection:(unint64_t)section;
+- (PKReportIssueViewController)initWithTransaction:(id)transaction transactionSourceCollection:(id)collection paymentPass:(id)pass familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection bankConnectInstitution:(id)institution physicalCards:(id)self0 detailViewStyle:(int64_t)self1 context:(unint64_t)self2;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)_commentsCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_createPrivacyFooterViewForContext:(unint64_t)context;
+- (id)_disputeTypeCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_formattedStatementNameFromRawName:(id)name;
+- (id)_issueTypeCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_mapsIssueCellForTableView:(id)view atIndexPath:(id)path;
 - (id)_reportComments;
 - (id)_statementName;
-- (id)_statementNameCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)_transactionCellForTableView:(id)a3 atIndexPath:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4;
-- (int64_t)_issueTypeForRowIndex:(int64_t)a3;
-- (int64_t)_rowIndexForIssueType:(int64_t)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)_statementNameCellForTableView:(id)view atIndexPath:(id)path;
+- (id)_transactionCellForTableView:(id)view atIndexPath:(id)path;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section;
+- (int64_t)_issueTypeForRowIndex:(int64_t)index;
+- (int64_t)_rowIndexForIssueType:(int64_t)type;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (unint64_t)_numberOfIssueTypesEnabled;
-- (void)_cancelButtonTapped:(id)a3;
+- (void)_cancelButtonTapped:(id)tapped;
 - (void)_cancelPayment;
-- (void)_handleDisputeTypeSelectedInTableView:(id)a3 atIndexPath:(id)a4;
-- (void)_handleIssueTypeSelectedInTableView:(id)a3 atIndexPath:(id)a4;
-- (void)_handleMapsIssueTypeSelectedInTableView:(id)a3 atIndexPath:(id)a4;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 dismissAfter:(BOOL)a5;
+- (void)_handleDisputeTypeSelectedInTableView:(id)view atIndexPath:(id)path;
+- (void)_handleIssueTypeSelectedInTableView:(id)view atIndexPath:(id)path;
+- (void)_handleMapsIssueTypeSelectedInTableView:(id)view atIndexPath:(id)path;
+- (void)_presentAlertWithTitle:(id)title message:(id)message dismissAfter:(BOOL)after;
 - (void)_reportBankConnectIssueToMaps;
 - (void)_reportIssueInBusinessChat;
 - (void)_reportIssueToMaps;
-- (void)_reprocessTransactionMerchantWithIssueReportIdentifier:(id)a3 completion:(id)a4;
-- (void)_resetMapsMerchantAndBrandWithIssueReportIdentifier:(id)a3 completion:(id)a4;
-- (void)_submitBankConnectTicketToMaps:(id)a3 withCorrelationId:(id)a4;
-- (void)_submitButtonTapped:(id)a3;
+- (void)_reprocessTransactionMerchantWithIssueReportIdentifier:(id)identifier completion:(id)completion;
+- (void)_resetMapsMerchantAndBrandWithIssueReportIdentifier:(id)identifier completion:(id)completion;
+- (void)_submitBankConnectTicketToMaps:(id)maps withCorrelationId:(id)id;
+- (void)_submitButtonTapped:(id)tapped;
 - (void)_updateNavigationButtons;
 - (void)dealloc;
-- (void)didUpdateFamilyMembers:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)didUpdateFamilyMembers:(id)members;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation PKReportIssueViewController
 
-+ (BOOL)canReportIssueForTransaction:(id)a3 bankConnectInstitution:(id)a4 paymentPass:(id)a5
++ (BOOL)canReportIssueForTransaction:(id)transaction bankConnectInstitution:(id)institution paymentPass:(id)pass
 {
-  v7 = a3;
-  v8 = a5;
-  v9 = [a4 problemReportingEnabled];
-  v10 = [v7 bankConnectMetadata];
-  v11 = [v10 classifiedByMaps];
+  transactionCopy = transaction;
+  passCopy = pass;
+  problemReportingEnabled = [institution problemReportingEnabled];
+  bankConnectMetadata = [transactionCopy bankConnectMetadata];
+  classifiedByMaps = [bankConnectMetadata classifiedByMaps];
 
-  if ([v7 isBankConnectTransaction] && (v9 & v11) == 0 || objc_msgSend(v8, "associatedAccountFeatureIdentifier") == 4)
+  if ([transactionCopy isBankConnectTransaction] && (problemReportingEnabled & classifiedByMaps) == 0 || objc_msgSend(passCopy, "associatedAccountFeatureIdentifier") == 4)
   {
     v12 = 0;
   }
@@ -64,7 +64,7 @@
     v14 = 0;
     do
     {
-      v12 = PKPaymentTransactionSupportsIssueType(v14, v7, v8);
+      v12 = PKPaymentTransactionSupportsIssueType(v14, transactionCopy, passCopy);
       if (v12)
       {
         break;
@@ -77,19 +77,19 @@
   return v12;
 }
 
-+ (BOOL)canSelectIssueTypeForTransaction:(id)a3
++ (BOOL)canSelectIssueTypeForTransaction:(id)transaction
 {
-  v3 = a3;
-  v4 = [v3 transactionType];
+  transactionCopy = transaction;
+  transactionType = [transactionCopy transactionType];
   v5 = 1;
-  if (v4 <= 0x16)
+  if (transactionType <= 0x16)
   {
-    if (((1 << v4) & 0x7FFBFC) != 0)
+    if (((1 << transactionType) & 0x7FFBFC) != 0)
     {
       goto LABEL_3;
     }
 
-    if (v4 != 10)
+    if (transactionType != 10)
     {
       goto LABEL_4;
     }
@@ -102,12 +102,12 @@ LABEL_3:
 
     else
     {
-      v7 = [v3 payments];
-      v8 = [v7 firstObject];
+      payments = [transactionCopy payments];
+      firstObject = [payments firstObject];
 
-      if ([v8 isCurrentlyCancellable])
+      if ([firstObject isCurrentlyCancellable])
       {
-        v5 = [v3 transactionStatus] != 5;
+        v5 = [transactionCopy transactionStatus] != 5;
       }
 
       else
@@ -122,47 +122,47 @@ LABEL_4:
   return v5;
 }
 
-- (PKReportIssueViewController)initWithTransaction:(id)a3 transactionSourceCollection:(id)a4 paymentPass:(id)a5 familyCollection:(id)a6 account:(id)a7 accountUserCollection:(id)a8 bankConnectInstitution:(id)a9 physicalCards:(id)a10 detailViewStyle:(int64_t)a11 context:(unint64_t)a12
+- (PKReportIssueViewController)initWithTransaction:(id)transaction transactionSourceCollection:(id)collection paymentPass:(id)pass familyCollection:(id)familyCollection account:(id)account accountUserCollection:(id)userCollection bankConnectInstitution:(id)institution physicalCards:(id)self0 detailViewStyle:(int64_t)self1 context:(unint64_t)self2
 {
-  v19 = a3;
-  v44 = a4;
-  v43 = a5;
-  v42 = a6;
-  v41 = a7;
-  v40 = a8;
-  v39 = a9;
-  v20 = a10;
+  transactionCopy = transaction;
+  collectionCopy = collection;
+  passCopy = pass;
+  familyCollectionCopy = familyCollection;
+  accountCopy = account;
+  userCollectionCopy = userCollection;
+  institutionCopy = institution;
+  cardsCopy = cards;
   v45.receiver = self;
   v45.super_class = PKReportIssueViewController;
   v21 = -[PKSectionTableViewController initWithStyle:numberOfSections:](&v45, sel_initWithStyle_numberOfSections_, [MEMORY[0x1E69DD020] pkui_groupedStyleDefaultRoundedCornerBehavior], 6);
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_transaction, a3);
-    objc_storeStrong(&v22->_transactionSourceCollection, a4);
-    objc_storeStrong(&v22->_paymentPass, a5);
-    objc_storeStrong(&v22->_account, a7);
-    objc_storeStrong(&v22->_accountUserCollection, a8);
-    objc_storeStrong(&v22->_bankConnectInstitution, a9);
+    objc_storeStrong(&v21->_transaction, transaction);
+    objc_storeStrong(&v22->_transactionSourceCollection, collection);
+    objc_storeStrong(&v22->_paymentPass, pass);
+    objc_storeStrong(&v22->_account, account);
+    objc_storeStrong(&v22->_accountUserCollection, userCollection);
+    objc_storeStrong(&v22->_bankConnectInstitution, institution);
     v23 = objc_alloc_init(MEMORY[0x1E6967E18]);
     bankConnectPIIStringProcessor = v22->_bankConnectPIIStringProcessor;
     v22->_bankConnectPIIStringProcessor = v23;
 
-    v25 = [MEMORY[0x1E69B8DB8] paymentService];
+    paymentService = [MEMORY[0x1E69B8DB8] paymentService];
     paymentService = v22->_paymentService;
-    v22->_paymentService = v25;
+    v22->_paymentService = paymentService;
 
     [(PKPaymentService *)v22->_paymentService registerObserver:v22];
     v27 = [[PKPaymentTransactionCellController alloc] initWithContactResolver:0];
     transactionCellController = v22->_transactionCellController;
     v22->_transactionCellController = v27;
 
-    objc_storeStrong(&v22->_familyCollection, a6);
-    v29 = [v20 copy];
+    objc_storeStrong(&v22->_familyCollection, familyCollection);
+    v29 = [cardsCopy copy];
     physicalCards = v22->_physicalCards;
     v22->_physicalCards = v29;
 
-    v22->_context = a12;
+    v22->_context = context;
     v31 = [objc_alloc(MEMORY[0x1E69DC708]) initWithBarButtonSystemItem:1 target:v22 action:sel__cancelButtonTapped_];
     cancelButton = v22->_cancelButton;
     v22->_cancelButton = v31;
@@ -171,28 +171,28 @@ LABEL_4:
     submitButton = v22->_submitButton;
     v22->_submitButton = v33;
 
-    v35 = [(PKReportIssueViewController *)v22 navigationItem];
+    navigationItem = [(PKReportIssueViewController *)v22 navigationItem];
     if ((_UISolariumEnabled() & 1) == 0)
     {
-      [v35 pkui_setupScrollEdgeChromelessAppearance];
-      [v35 pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
+      [navigationItem pkui_setupScrollEdgeChromelessAppearance];
+      [navigationItem pkui_enableManualScrollEdgeAppearanceWithInitialProgress:0.0];
     }
 
-    if (a12 != 1)
+    if (context != 1)
     {
-      [v35 setLeftBarButtonItem:v22->_cancelButton];
+      [navigationItem setLeftBarButtonItem:v22->_cancelButton];
     }
 
-    [v35 setRightBarButtonItem:{v22->_submitButton, a6}];
+    [navigationItem setRightBarButtonItem:{v22->_submitButton, familyCollection}];
     v36 = PKLocalizedPaymentString(&cfstr_TransactionDet_44.isa);
-    [v35 setTitle:v36];
+    [navigationItem setTitle:v36];
 
-    v22->_canPerformUnrecognizedTransaction = PKPaymentTransactionSupportsIssueType(1, v19, v22->_paymentPass);
-    v22->_canPerformDispute = PKPaymentTransactionSupportsIssueType(0, v19, v22->_paymentPass);
-    v22->_canPerformOther = PKPaymentTransactionSupportsIssueType(5, v19, v22->_paymentPass);
-    v22->_canPerformIncorrectMerchant = PKPaymentTransactionSupportsIssueType(2, v19, v22->_paymentPass);
-    v22->_canPerformCancelAccountServicePayment = PKPaymentTransactionSupportsIssueType(3, v19, v22->_paymentPass);
-    if (a12 == 1)
+    v22->_canPerformUnrecognizedTransaction = PKPaymentTransactionSupportsIssueType(1, transactionCopy, v22->_paymentPass);
+    v22->_canPerformDispute = PKPaymentTransactionSupportsIssueType(0, transactionCopy, v22->_paymentPass);
+    v22->_canPerformOther = PKPaymentTransactionSupportsIssueType(5, transactionCopy, v22->_paymentPass);
+    v22->_canPerformIncorrectMerchant = PKPaymentTransactionSupportsIssueType(2, transactionCopy, v22->_paymentPass);
+    v22->_canPerformCancelAccountServicePayment = PKPaymentTransactionSupportsIssueType(3, transactionCopy, v22->_paymentPass);
+    if (context == 1)
     {
       v22->_selectedIssue = 2;
       v22->_hasIssueSelected = 1;
@@ -233,10 +233,10 @@ LABEL_15:
   v5.receiver = self;
   v5.super_class = PKReportIssueViewController;
   [(PKSectionTableViewController *)&v5 viewDidLoad];
-  v3 = [(PKReportIssueViewController *)self tableView];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"PKReportIssueCellReuseIdentifier"];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"PKTransactionCellReuseIdentifier"];
-  [v3 registerClass:objc_opt_class() forCellReuseIdentifier:@"PKTransactionCommentsCellReuseIdentifier"];
+  tableView = [(PKReportIssueViewController *)self tableView];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PKReportIssueCellReuseIdentifier"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PKTransactionCellReuseIdentifier"];
+  [tableView registerClass:objc_opt_class() forCellReuseIdentifier:@"PKTransactionCommentsCellReuseIdentifier"];
   if (self->_context != 1 && [(PKAccount *)self->_account feature]== 2 && ![PKReportIssueViewController canSelectIssueTypeForTransaction:self->_transaction])
   {
     self->_selectedIssue = 5;
@@ -244,8 +244,8 @@ LABEL_15:
     [(PKReportIssueViewController *)self _reportIssueInBusinessChat];
   }
 
-  v4 = [(PKReportIssueViewController *)self view];
-  [v4 setAccessibilityIdentifier:*MEMORY[0x1E69B9B68]];
+  view = [(PKReportIssueViewController *)self view];
+  [view setAccessibilityIdentifier:*MEMORY[0x1E69B9B68]];
 }
 
 - (void)viewWillLayoutSubviews
@@ -255,41 +255,41 @@ LABEL_15:
   [(PKReportIssueViewController *)&v5 viewWillLayoutSubviews];
   if ((_UISolariumEnabled() & 1) == 0)
   {
-    v3 = [(PKReportIssueViewController *)self tableView];
-    v4 = [(PKReportIssueViewController *)self navigationItem];
-    [v3 pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:v4];
+    tableView = [(PKReportIssueViewController *)self tableView];
+    navigationItem = [(PKReportIssueViewController *)self navigationItem];
+    [tableView pkui_adjustManualScrollEdgeAppearanceProgressForNavigationItem:navigationItem];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v3 = [(PKReportIssueViewController *)self view];
-  [v3 setNeedsLayout];
+  view = [(PKReportIssueViewController *)self view];
+  [view setNeedsLayout];
 }
 
-- (id)_createPrivacyFooterViewForContext:(unint64_t)a3
+- (id)_createPrivacyFooterViewForContext:(unint64_t)context
 {
-  v4 = [MEMORY[0x1E69B7D48] pk_privacyFlowForContext:a3];
+  v4 = [MEMORY[0x1E69B7D48] pk_privacyFlowForContext:context];
   if (v4)
   {
     v5 = PKLocalizedBankConnectString(&cfstr_BankConnectRap.isa);
-    v6 = [v4 localizedButtonTitle];
-    v7 = v6;
+    localizedButtonTitle = [v4 localizedButtonTitle];
+    v7 = localizedButtonTitle;
     if (v5)
     {
-      v8 = PKLocalizedBankConnectString(&cfstr_BankConnectRap_0.isa, &stru_1F3BD6370.isa, v5, v6);
+      v8 = PKLocalizedBankConnectString(&cfstr_BankConnectRap_0.isa, &stru_1F3BD6370.isa, v5, localizedButtonTitle);
     }
 
     else
     {
-      v8 = v6;
+      v8 = localizedButtonTitle;
     }
 
     v10 = v8;
     v11 = MEMORY[0x1E695DFF8];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = [v4 identifier];
-    v14 = [v12 stringWithFormat:@"onboarding:%@", v13];
+    identifier = [v4 identifier];
+    v14 = [v12 stringWithFormat:@"onboarding:%@", identifier];
     v15 = [v11 URLWithString:v14];
 
     v9 = objc_alloc_init(PKFooterHyperlinkView);
@@ -311,35 +311,35 @@ LABEL_15:
 
 - (id)_statementName
 {
-  v2 = [(PKPaymentTransaction *)self->_transaction merchant];
-  v3 = [v2 rawName];
-  v4 = v3;
-  if (v3)
+  merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+  rawName = [merchant rawName];
+  v4 = rawName;
+  if (rawName)
   {
-    v5 = v3;
+    name = rawName;
   }
 
   else
   {
-    v5 = [v2 name];
+    name = [merchant name];
   }
 
-  v6 = v5;
+  v6 = name;
 
   return v6;
 }
 
-- (BOOL)shouldMapSection:(unint64_t)a3
+- (BOOL)shouldMapSection:(unint64_t)section
 {
   v4 = 0;
   context = self->_context;
-  if (a3 <= 2)
+  if (section <= 2)
   {
-    if (a3)
+    if (section)
     {
-      if (a3 != 1)
+      if (section != 1)
       {
-        if (a3 != 2)
+        if (section != 2)
         {
           return v4;
         }
@@ -357,9 +357,9 @@ LABEL_15:
         return !v6;
       }
 
-      v7 = [(PKPaymentTransaction *)self->_transaction merchant];
-      v8 = [(PKReportIssueViewController *)self _statementName];
-      if (!v8)
+      merchant = [(PKPaymentTransaction *)self->_transaction merchant];
+      _statementName = [(PKReportIssueViewController *)self _statementName];
+      if (!_statementName)
       {
         v4 = 0;
 LABEL_33:
@@ -367,9 +367,9 @@ LABEL_33:
         return v4;
       }
 
-      v9 = [v7 displayName];
-      v10 = v8;
-      v11 = v9;
+      displayName = [merchant displayName];
+      v10 = _statementName;
+      v11 = displayName;
       v12 = v11;
       if (v10 == v11)
       {
@@ -402,9 +402,9 @@ LABEL_32:
     return !v6;
   }
 
-  if (a3 - 4 >= 2)
+  if (section - 4 >= 2)
   {
-    if (a3 != 3)
+    if (section != 3)
     {
       return v4;
     }
@@ -430,9 +430,9 @@ LABEL_32:
   return self->_hasIssueSelected && self->_selectedIssue == 2 || context == 1;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(PKSectionTableViewController *)self sectionForIndex:a4];
+  v5 = [(PKSectionTableViewController *)self sectionForIndex:section];
   result = 1;
   if (v5 > 2)
   {
@@ -462,24 +462,24 @@ LABEL_32:
   return [(PKReportIssueViewController *)self _numberOfIssueTypesEnabled];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v7 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v8 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   v9 = 0;
   if (v8 > 2)
   {
     switch(v8)
     {
       case 3:
-        v10 = [(PKReportIssueViewController *)self _disputeTypeCellForTableView:v6 atIndexPath:v7];
+        v10 = [(PKReportIssueViewController *)self _disputeTypeCellForTableView:viewCopy atIndexPath:pathCopy];
         break;
       case 4:
-        v10 = [(PKReportIssueViewController *)self _mapsIssueCellForTableView:v6 atIndexPath:v7];
+        v10 = [(PKReportIssueViewController *)self _mapsIssueCellForTableView:viewCopy atIndexPath:pathCopy];
         break;
       case 5:
-        v10 = [(PKReportIssueViewController *)self _commentsCellForTableView:v6 atIndexPath:v7];
+        v10 = [(PKReportIssueViewController *)self _commentsCellForTableView:viewCopy atIndexPath:pathCopy];
         break;
       default:
         goto LABEL_15;
@@ -490,7 +490,7 @@ LABEL_32:
   {
     if (v8 == 1)
     {
-      v10 = [(PKReportIssueViewController *)self _statementNameCellForTableView:v6 atIndexPath:v7];
+      v10 = [(PKReportIssueViewController *)self _statementNameCellForTableView:viewCopy atIndexPath:pathCopy];
     }
 
     else
@@ -500,13 +500,13 @@ LABEL_32:
         goto LABEL_15;
       }
 
-      v10 = [(PKReportIssueViewController *)self _issueTypeCellForTableView:v6 atIndexPath:v7];
+      v10 = [(PKReportIssueViewController *)self _issueTypeCellForTableView:viewCopy atIndexPath:pathCopy];
     }
   }
 
   else
   {
-    v10 = [(PKReportIssueViewController *)self _transactionCellForTableView:v6 atIndexPath:v7];
+    v10 = [(PKReportIssueViewController *)self _transactionCellForTableView:viewCopy atIndexPath:pathCopy];
   }
 
   v9 = v10;
@@ -515,9 +515,9 @@ LABEL_15:
   return v9;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v4 = [(PKSectionTableViewController *)self sectionForIndex:a4]- 1;
+  v4 = [(PKSectionTableViewController *)self sectionForIndex:section]- 1;
   if (v4 > 4)
   {
     v5 = 0;
@@ -531,28 +531,28 @@ LABEL_15:
   return v5;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [v6 section]);
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [pathCopy section]);
   switch(v7)
   {
     case 4uLL:
-      [(PKReportIssueViewController *)self _handleMapsIssueTypeSelectedInTableView:v8 atIndexPath:v6];
+      [(PKReportIssueViewController *)self _handleMapsIssueTypeSelectedInTableView:viewCopy atIndexPath:pathCopy];
       break;
     case 3uLL:
-      [(PKReportIssueViewController *)self _handleDisputeTypeSelectedInTableView:v8 atIndexPath:v6];
+      [(PKReportIssueViewController *)self _handleDisputeTypeSelectedInTableView:viewCopy atIndexPath:pathCopy];
       break;
     case 2uLL:
-      [(PKReportIssueViewController *)self _handleIssueTypeSelectedInTableView:v8 atIndexPath:v6];
+      [(PKReportIssueViewController *)self _handleIssueTypeSelectedInTableView:viewCopy atIndexPath:pathCopy];
       break;
   }
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v4 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [a4 section]);
+  v4 = -[PKSectionTableViewController sectionForIndex:](self, "sectionForIndex:", [path section]);
   result = *MEMORY[0x1E69DE3D0];
   if (v4 == 5)
   {
@@ -562,9 +562,9 @@ LABEL_15:
   return result;
 }
 
-- (id)tableView:(id)a3 viewForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view viewForFooterInSection:(int64_t)section
 {
-  if ([(PKSectionTableViewController *)self sectionForIndex:a4]== 5 && [(PKPaymentTransaction *)self->_transaction isBankConnectTransaction])
+  if ([(PKSectionTableViewController *)self sectionForIndex:section]== 5 && [(PKPaymentTransaction *)self->_transaction isBankConnectTransaction])
   {
     v5 = [(PKReportIssueViewController *)self _createPrivacyFooterViewForContext:1];
   }
@@ -577,16 +577,16 @@ LABEL_15:
   return v5;
 }
 
-- (void)didUpdateFamilyMembers:(id)a3
+- (void)didUpdateFamilyMembers:(id)members
 {
-  v4 = a3;
+  membersCopy = members;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__PKReportIssueViewController_didUpdateFamilyMembers___block_invoke;
   v6[3] = &unk_1E8010A10;
-  v7 = v4;
-  v8 = self;
-  v5 = v4;
+  v7 = membersCopy;
+  selfCopy = self;
+  v5 = membersCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v6);
 }
 
@@ -600,11 +600,11 @@ void __54__PKReportIssueViewController_didUpdateFamilyMembers___block_invoke(uin
   }
 }
 
-- (void)_handleIssueTypeSelectedInTableView:(id)a3 atIndexPath:(id)a4
+- (void)_handleIssueTypeSelectedInTableView:(id)view atIndexPath:(id)path
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = -[PKReportIssueViewController _issueTypeForRowIndex:](self, "_issueTypeForRowIndex:", [v6 row]);
+  viewCopy = view;
+  pathCopy = path;
+  v7 = -[PKReportIssueViewController _issueTypeForRowIndex:](self, "_issueTypeForRowIndex:", [pathCopy row]);
   v8 = v7;
   if (self->_hasIssueSelected)
   {
@@ -614,13 +614,13 @@ void __54__PKReportIssueViewController_didUpdateFamilyMembers___block_invoke(uin
     }
 
     v9 = [MEMORY[0x1E696AC88] indexPathForRow:-[PKReportIssueViewController _rowIndexForIssueType:](self inSection:{"_rowIndexForIssueType:"), -[PKSectionTableViewController indexForSection:](self, "indexForSection:", 2)}];
-    v10 = [v13 cellForRowAtIndexPath:v9];
+    v10 = [viewCopy cellForRowAtIndexPath:v9];
 
     [v10 setAccessoryType:0];
   }
 
   v11 = [MEMORY[0x1E696AC88] indexPathForRow:-[PKReportIssueViewController _rowIndexForIssueType:](self inSection:{"_rowIndexForIssueType:", v8), -[PKSectionTableViewController indexForSection:](self, "indexForSection:", 2)}];
-  v12 = [v13 cellForRowAtIndexPath:v11];
+  v12 = [viewCopy cellForRowAtIndexPath:v11];
 
   [v12 setAccessoryType:3];
   self->_hasIssueSelected = 1;
@@ -631,14 +631,14 @@ void __54__PKReportIssueViewController_didUpdateFamilyMembers___block_invoke(uin
   [(PKSectionTableViewController *)self updateSectionVisibilityAndReloadIfNecessaryForSections:&unk_1F3CC86A8];
 
 LABEL_5:
-  [v13 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)_handleDisputeTypeSelectedInTableView:(id)a3 atIndexPath:(id)a4
+- (void)_handleDisputeTypeSelectedInTableView:(id)view atIndexPath:(id)path
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [v6 row];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [pathCopy row];
   v8 = v7;
   if (self->_hasDisputeTypeSelected)
   {
@@ -649,13 +649,13 @@ LABEL_5:
     }
 
     v10 = [MEMORY[0x1E696AC88] indexPathForRow:selectedDisputeType inSection:{-[PKSectionTableViewController indexForSection:](self, "indexForSection:", 3)}];
-    v11 = [v14 cellForRowAtIndexPath:v10];
+    v11 = [viewCopy cellForRowAtIndexPath:v10];
 
     [v11 setAccessoryType:0];
   }
 
   v12 = [MEMORY[0x1E696AC88] indexPathForRow:v8 inSection:{-[PKSectionTableViewController indexForSection:](self, "indexForSection:", 3)}];
-  v13 = [v14 cellForRowAtIndexPath:v12];
+  v13 = [viewCopy cellForRowAtIndexPath:v12];
 
   [v13 setAccessoryType:3];
   self->_hasDisputeTypeSelected = 1;
@@ -663,14 +663,14 @@ LABEL_5:
   [(PKReportIssueViewController *)self _updateNavigationButtons];
 
 LABEL_5:
-  [v14 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (void)_handleMapsIssueTypeSelectedInTableView:(id)a3 atIndexPath:(id)a4
+- (void)_handleMapsIssueTypeSelectedInTableView:(id)view atIndexPath:(id)path
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [v6 row];
+  viewCopy = view;
+  pathCopy = path;
+  v7 = [pathCopy row];
   v8 = v7;
   if (self->_hasMapsIssueSelected)
   {
@@ -681,13 +681,13 @@ LABEL_5:
     }
 
     v10 = [MEMORY[0x1E696AC88] indexPathForRow:selectedMapsIssue inSection:{-[PKSectionTableViewController indexForSection:](self, "indexForSection:", 4)}];
-    v11 = [v14 cellForRowAtIndexPath:v10];
+    v11 = [viewCopy cellForRowAtIndexPath:v10];
 
     [v11 setAccessoryType:0];
   }
 
   v12 = [MEMORY[0x1E696AC88] indexPathForRow:v8 inSection:{-[PKSectionTableViewController indexForSection:](self, "indexForSection:", 4)}];
-  v13 = [v14 cellForRowAtIndexPath:v12];
+  v13 = [viewCopy cellForRowAtIndexPath:v12];
 
   [v13 setAccessoryType:3];
   self->_hasMapsIssueSelected = 1;
@@ -695,38 +695,38 @@ LABEL_5:
   [(PKReportIssueViewController *)self _updateNavigationButtons];
 
 LABEL_5:
-  [v14 deselectRowAtIndexPath:v6 animated:1];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
 }
 
-- (id)_transactionCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_transactionCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:@"PKTransactionCellReuseIdentifier" forIndexPath:a4];
+  v5 = [view dequeueReusableCellWithIdentifier:@"PKTransactionCellReuseIdentifier" forIndexPath:path];
   transactionSourceCollection = self->_transactionSourceCollection;
-  v7 = [(PKPaymentTransaction *)self->_transaction transactionSourceIdentifier];
-  v8 = [(PKTransactionSourceCollection *)transactionSourceCollection transactionSourceForTransactionSourceIdentifier:v7];
+  transactionSourceIdentifier = [(PKPaymentTransaction *)self->_transaction transactionSourceIdentifier];
+  v8 = [(PKTransactionSourceCollection *)transactionSourceCollection transactionSourceForTransactionSourceIdentifier:transactionSourceIdentifier];
 
   v9 = [(PKFamilyMemberCollection *)self->_familyCollection familyMemberForTransactionSource:v8];
   [(PKPaymentTransactionCellController *)self->_transactionCellController configureCell:v5 forTransaction:self->_transaction transactionSource:v8 familyMember:v9 account:self->_account detailStyle:0 deviceName:0 avatarViewDelegate:0];
-  v10 = [v5 transactionView];
-  [v10 setShowsDisclosureView:0];
+  transactionView = [v5 transactionView];
+  [transactionView setShowsDisclosureView:0];
 
   return v5;
 }
 
-- (id)_statementNameCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_statementNameCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:@"PKReportIssueCellReuseIdentifier" forIndexPath:a4];
+  v5 = [view dequeueReusableCellWithIdentifier:@"PKReportIssueCellReuseIdentifier" forIndexPath:path];
   if (!self->_statementName)
   {
-    v6 = [(PKReportIssueViewController *)self _statementName];
-    v7 = [(PKReportIssueViewController *)self _formattedStatementNameFromRawName:v6];
-    v8 = [v7 uppercaseString];
+    _statementName = [(PKReportIssueViewController *)self _statementName];
+    v7 = [(PKReportIssueViewController *)self _formattedStatementNameFromRawName:_statementName];
+    uppercaseString = [v7 uppercaseString];
     statementName = self->_statementName;
-    self->_statementName = v8;
+    self->_statementName = uppercaseString;
   }
 
-  v10 = [v5 textLabel];
-  [v10 setText:self->_statementName];
+  textLabel = [v5 textLabel];
+  [textLabel setText:self->_statementName];
 
   [v5 setAccessoryType:0];
   PKAccessibilityIDCellSet(v5, *MEMORY[0x1E69B9CB0]);
@@ -734,11 +734,11 @@ LABEL_5:
   return v5;
 }
 
-- (id)_issueTypeCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_issueTypeCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PKReportIssueCellReuseIdentifier" forIndexPath:v6];
-  v8 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKReportIssueCellReuseIdentifier" forIndexPath:pathCopy];
+  v8 = [pathCopy row];
 
   v9 = [(PKReportIssueViewController *)self _issueTypeForRowIndex:v8];
   v10 = v9;
@@ -755,8 +755,8 @@ LABEL_5:
     v13 = *v11;
   }
 
-  v14 = [v7 textLabel];
-  [v14 setText:v12];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v12];
 
   if (self->_hasIssueSelected)
   {
@@ -782,11 +782,11 @@ LABEL_5:
   return v7;
 }
 
-- (id)_disputeTypeCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_disputeTypeCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PKReportIssueCellReuseIdentifier" forIndexPath:v6];
-  v8 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKReportIssueCellReuseIdentifier" forIndexPath:pathCopy];
+  v8 = [pathCopy row];
 
   if (v8 > 3)
   {
@@ -801,8 +801,8 @@ LABEL_5:
     v11 = *v9;
   }
 
-  v12 = [v7 textLabel];
-  [v12 setText:v10];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v10];
 
   if (self->_hasDisputeTypeSelected)
   {
@@ -828,11 +828,11 @@ LABEL_5:
   return v7;
 }
 
-- (id)_mapsIssueCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_mapsIssueCellForTableView:(id)view atIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"PKReportIssueCellReuseIdentifier" forIndexPath:v6];
-  v8 = [v6 row];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"PKReportIssueCellReuseIdentifier" forIndexPath:pathCopy];
+  v8 = [pathCopy row];
 
   if (v8 > 2)
   {
@@ -847,8 +847,8 @@ LABEL_5:
     v11 = *v9;
   }
 
-  v12 = [v7 textLabel];
-  [v12 setText:v10];
+  textLabel = [v7 textLabel];
+  [textLabel setText:v10];
 
   if (self->_hasMapsIssueSelected)
   {
@@ -874,30 +874,30 @@ LABEL_5:
   return v7;
 }
 
-- (id)_commentsCellForTableView:(id)a3 atIndexPath:(id)a4
+- (id)_commentsCellForTableView:(id)view atIndexPath:(id)path
 {
-  v5 = [a3 dequeueReusableCellWithIdentifier:@"PKTransactionCommentsCellReuseIdentifier" forIndexPath:a4];
-  v6 = [v5 textView];
+  v5 = [view dequeueReusableCellWithIdentifier:@"PKTransactionCommentsCellReuseIdentifier" forIndexPath:path];
+  textView = [v5 textView];
   v7 = objc_alloc(MEMORY[0x1E696AAB0]);
   v8 = PKLocalizedPaymentString(&cfstr_TransactionDet_67.isa);
   v9 = [v7 initWithString:v8];
 
-  [v6 setAttributedPlaceholder:v9];
-  [v6 setDelegate:self];
-  [v6 setAccessibilityIdentifier:*MEMORY[0x1E69B9600]];
+  [textView setAttributedPlaceholder:v9];
+  [textView setDelegate:self];
+  [textView setAccessibilityIdentifier:*MEMORY[0x1E69B9600]];
 
   return v5;
 }
 
-- (id)_formattedStatementNameFromRawName:(id)a3
+- (id)_formattedStatementNameFromRawName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v5 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:v3];
-  v6 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-  [v5 setCharactersToBeSkipped:v6];
+  v5 = [objc_alloc(MEMORY[0x1E696AE88]) initWithString:nameCopy];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+  [v5 setCharactersToBeSkipped:whitespaceAndNewlineCharacterSet];
   v15 = 0;
-  v7 = [v5 scanUpToCharactersFromSet:v6 intoString:&v15];
+  v7 = [v5 scanUpToCharactersFromSet:whitespaceAndNewlineCharacterSet intoString:&v15];
   v8 = v15;
   v9 = v8;
   if (v7)
@@ -920,7 +920,7 @@ LABEL_5:
       }
 
       v15 = v9;
-      v11 = [v5 scanUpToCharactersFromSet:v6 intoString:&v15];
+      v11 = [v5 scanUpToCharactersFromSet:whitespaceAndNewlineCharacterSet intoString:&v15];
       v12 = v15;
 
       v9 = v12;
@@ -952,7 +952,7 @@ LABEL_5:
   return v4;
 }
 
-- (int64_t)_issueTypeForRowIndex:(int64_t)a3
+- (int64_t)_issueTypeForRowIndex:(int64_t)index
 {
   v5 = 0;
   v6 = 0;
@@ -960,7 +960,7 @@ LABEL_5:
   {
     if ([(PKReportIssueViewController *)self _issueTypeEnabled:v5])
     {
-      if (v6 == a3)
+      if (v6 == index)
       {
         return v5;
       }
@@ -975,7 +975,7 @@ LABEL_5:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (int64_t)_rowIndexForIssueType:(int64_t)a3
+- (int64_t)_rowIndexForIssueType:(int64_t)type
 {
   v5 = 0;
   v6 = 0;
@@ -983,7 +983,7 @@ LABEL_5:
   {
     if ([(PKReportIssueViewController *)self _issueTypeEnabled:v5])
     {
-      if (a3 == v5)
+      if (type == v5)
       {
         return v6;
       }
@@ -998,16 +998,16 @@ LABEL_5:
   return 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (BOOL)_issueTypeEnabled:(int64_t)a3
+- (BOOL)_issueTypeEnabled:(int64_t)enabled
 {
-  if (a3 > 5)
+  if (enabled > 5)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = *(&self->super.super.super.super.super.isa + *off_1E80214E0[a3]);
+    v3 = *(&self->super.super.super.super.super.isa + *off_1E80214E0[enabled]);
   }
 
   return v3 & 1;
@@ -1025,13 +1025,13 @@ LABEL_5:
       {
         if ([(PKSectionTableViewController *)self isSectionMapped:5])
         {
-          v7 = [(PKReportIssueViewController *)self tableView];
+          tableView = [(PKReportIssueViewController *)self tableView];
           v8 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:{-[PKSectionTableViewController indexForSection:](self, "indexForSection:", 5)}];
-          v9 = [v7 cellForRowAtIndexPath:v8];
+          v9 = [tableView cellForRowAtIndexPath:v8];
 
-          v10 = [v9 textView];
-          v11 = [v10 text];
-          v12 = [v11 length] != 0;
+          textView = [v9 textView];
+          text = [textView text];
+          v12 = [text length] != 0;
         }
 
         else
@@ -1062,27 +1062,27 @@ LABEL_5:
   [(UIBarButtonItem *)self->_submitButton setEnabled:hasDisputeTypeSelected & 1];
   if (self->_reportingIssue)
   {
-    v13 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
-    [v13 startAnimating];
-    v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v13];
-    v5 = [(PKReportIssueViewController *)self navigationItem];
-    [v5 setRightBarButtonItem:v4];
+    navigationItem2 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
+    [navigationItem2 startAnimating];
+    v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:navigationItem2];
+    navigationItem = [(PKReportIssueViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v4];
   }
 
   else
   {
-    v13 = [(PKReportIssueViewController *)self navigationItem];
-    [v13 setRightBarButtonItem:self->_submitButton];
+    navigationItem2 = [(PKReportIssueViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:self->_submitButton];
   }
 }
 
-- (void)_cancelButtonTapped:(id)a3
+- (void)_cancelButtonTapped:(id)tapped
 {
-  v3 = [(PKReportIssueViewController *)self presentingViewController];
-  [v3 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(PKReportIssueViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
-- (void)_submitButtonTapped:(id)a3
+- (void)_submitButtonTapped:(id)tapped
 {
   if (self->_hasIssueSelected)
   {
@@ -1105,9 +1105,9 @@ LABEL_5:
         self->_activityIndicator = v4;
 
         [(UIActivityIndicatorView *)self->_activityIndicator startAnimating];
-        v6 = [(PKReportIssueViewController *)self navigationItem];
+        navigationItem = [(PKReportIssueViewController *)self navigationItem];
         v7 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:self->_activityIndicator];
-        [v6 setRightBarButtonItem:v7];
+        [navigationItem setRightBarButtonItem:v7];
 
         v8 = MEMORY[0x1E69DC650];
         v9 = PKLocalizedFeatureString();
@@ -1168,26 +1168,26 @@ uint64_t __51__PKReportIssueViewController__submitButtonTapped___block_invoke_2(
 
 - (void)_cancelPayment
 {
-  v3 = [(PKPaymentTransaction *)self->_transaction payments];
-  v4 = [v3 firstObject];
+  payments = [(PKPaymentTransaction *)self->_transaction payments];
+  firstObject = [payments firstObject];
 
   v5 = objc_alloc_init(MEMORY[0x1E69B8480]);
-  v6 = [(PKAccount *)self->_account accountIdentifier];
-  [v5 setAccountIdentifier:v6];
+  accountIdentifier = [(PKAccount *)self->_account accountIdentifier];
+  [v5 setAccountIdentifier:accountIdentifier];
 
-  v7 = [(PKAccount *)self->_account accountBaseURL];
-  [v5 setBaseURL:v7];
+  accountBaseURL = [(PKAccount *)self->_account accountBaseURL];
+  [v5 setBaseURL:accountBaseURL];
 
-  v8 = [v4 referenceIdentifier];
-  [v5 setPaymentReferenceIdentifier:v8];
+  referenceIdentifier = [firstObject referenceIdentifier];
+  [v5 setPaymentReferenceIdentifier:referenceIdentifier];
 
   objc_initWeak(&location, self);
   paymentWebService = self->_paymentWebService;
   if (!paymentWebService)
   {
-    v10 = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
     v11 = self->_paymentWebService;
-    self->_paymentWebService = v10;
+    self->_paymentWebService = mEMORY[0x1E69B8EF8];
 
     paymentWebService = self->_paymentWebService;
   }
@@ -1349,12 +1349,12 @@ void __45__PKReportIssueViewController__cancelPayment__block_invoke_4(uint64_t a
     [(PKReportIssueViewController *)self _updateNavigationButtons];
     v6 = [(PKAccountUserCollection *)self->_accountUserCollection accountUserForTransaction:self->_transaction];
     familyCollection = self->_familyCollection;
-    v8 = [v6 altDSID];
-    v9 = [(PKFamilyMemberCollection *)familyCollection familyMemberForAltDSID:v8];
+    altDSID = [v6 altDSID];
+    v9 = [(PKFamilyMemberCollection *)familyCollection familyMemberForAltDSID:altDSID];
 
     v10 = [PKBusinessChatTransactionDisputeContext alloc];
-    v11 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
-    v12 = [(PKBusinessChatTransactionDisputeContext *)v10 initWithPaymentPass:v11 transaction:self->_transaction account:self->_account accountUser:v6 familyMember:v9 physicalCards:self->_physicalCards intent:v4];
+    paymentPass = [(PKTransactionSourceCollection *)self->_transactionSourceCollection paymentPass];
+    v12 = [(PKBusinessChatTransactionDisputeContext *)v10 initWithPaymentPass:paymentPass transaction:self->_transaction account:self->_account accountUser:v6 familyMember:v9 physicalCards:self->_physicalCards intent:v4];
 
     if (!self->_businessChatController)
     {
@@ -1416,21 +1416,21 @@ void __57__PKReportIssueViewController__reportIssueInBusinessChat__block_invoke_
   }
 }
 
-- (void)_resetMapsMerchantAndBrandWithIssueReportIdentifier:(id)a3 completion:(id)a4
+- (void)_resetMapsMerchantAndBrandWithIssueReportIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   paymentService = self->_paymentService;
   transaction = self->_transaction;
-  v9 = a3;
-  v10 = [(PKPaymentTransaction *)transaction identifier];
-  v11 = [(PKPaymentTransaction *)self->_transaction transactionSourceIdentifier];
+  identifierCopy = identifier;
+  identifier = [(PKPaymentTransaction *)transaction identifier];
+  transactionSourceIdentifier = [(PKPaymentTransaction *)self->_transaction transactionSourceIdentifier];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __94__PKReportIssueViewController__resetMapsMerchantAndBrandWithIssueReportIdentifier_completion___block_invoke;
   v13[3] = &unk_1E8021350;
-  v14 = v6;
-  v12 = v6;
-  [(PKPaymentService *)paymentService removeMapsDataForTransactionWithIdentifier:v10 forTransactionSourceIdentifier:v11 issueReportIdentifier:v9 completion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(PKPaymentService *)paymentService removeMapsDataForTransactionWithIdentifier:identifier forTransactionSourceIdentifier:transactionSourceIdentifier issueReportIdentifier:identifierCopy completion:v13];
 }
 
 uint64_t __94__PKReportIssueViewController__resetMapsMerchantAndBrandWithIssueReportIdentifier_completion___block_invoke(uint64_t a1, uint64_t a2)
@@ -1444,18 +1444,18 @@ uint64_t __94__PKReportIssueViewController__resetMapsMerchantAndBrandWithIssueRe
   return result;
 }
 
-- (void)_reprocessTransactionMerchantWithIssueReportIdentifier:(id)a3 completion:(id)a4
+- (void)_reprocessTransactionMerchantWithIssueReportIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PKPaymentTransaction *)self->_transaction transactionSourceIdentifier];
-  v9 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceForTransactionSourceIdentifier:v8];
-  v10 = [v9 paymentPass];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  transactionSourceIdentifier = [(PKPaymentTransaction *)self->_transaction transactionSourceIdentifier];
+  v9 = [(PKTransactionSourceCollection *)self->_transactionSourceCollection transactionSourceForTransactionSourceIdentifier:transactionSourceIdentifier];
+  paymentPass = [v9 paymentPass];
 
   v11 = objc_alloc(MEMORY[0x1E69B92D8]);
   transaction = self->_transaction;
-  v13 = [v10 devicePrimaryPaymentApplication];
-  v14 = [v11 initWithTransaction:transaction paymentApplication:v13];
+  devicePrimaryPaymentApplication = [paymentPass devicePrimaryPaymentApplication];
+  v14 = [v11 initWithTransaction:transaction paymentApplication:devicePrimaryPaymentApplication];
 
   v15 = [objc_alloc(MEMORY[0x1E69B89B0]) initWithSource:v14];
   v19[0] = MEMORY[0x1E69E9820];
@@ -1463,12 +1463,12 @@ uint64_t __94__PKReportIssueViewController__resetMapsMerchantAndBrandWithIssueRe
   v19[2] = __97__PKReportIssueViewController__reprocessTransactionMerchantWithIssueReportIdentifier_completion___block_invoke;
   v19[3] = &unk_1E8021378;
   v19[4] = self;
-  v20 = v6;
-  v21 = v8;
-  v22 = v7;
-  v16 = v7;
-  v17 = v8;
-  v18 = v6;
+  v20 = identifierCopy;
+  v21 = transactionSourceIdentifier;
+  v22 = completionCopy;
+  v16 = completionCopy;
+  v17 = transactionSourceIdentifier;
+  v18 = identifierCopy;
   [v15 startLookupWithCompletion:v19];
 }
 
@@ -1580,23 +1580,23 @@ uint64_t __97__PKReportIssueViewController__reprocessTransactionMerchantWithIssu
 
   transaction = self->_transaction;
   bankConnectInstitution = self->_bankConnectInstitution;
-  v6 = [(PKReportIssueViewController *)self _reportComments];
+  _reportComments = [(PKReportIssueViewController *)self _reportComments];
   bankConnectPIIStringProcessor = self->_bankConnectPIIStringProcessor;
   paymentPass = self->_paymentPass;
   v9 = transaction;
   v10 = bankConnectInstitution;
-  v120 = v6;
+  v120 = _reportComments;
   v11 = bankConnectPIIStringProcessor;
   v12 = paymentPass;
-  v13 = [(PKPaymentTransaction *)v9 merchant];
-  v14 = [v13 mapsMerchant];
-  v123 = [v13 mapsBrand];
-  v15 = [v14 postalAddress];
-  if (v15)
+  merchant = [(PKPaymentTransaction *)v9 merchant];
+  mapsMerchant = [merchant mapsMerchant];
+  mapsBrand = [merchant mapsBrand];
+  postalAddress = [mapsMerchant postalAddress];
+  if (postalAddress)
   {
     v16 = MEMORY[0x1E695CF68];
-    v17 = [v14 postalAddress];
-    v18 = [v16 stringFromPostalAddress:v17 style:0];
+    postalAddress2 = [mapsMerchant postalAddress];
+    v18 = [v16 stringFromPostalAddress:postalAddress2 style:0];
   }
 
   else
@@ -1604,30 +1604,30 @@ uint64_t __97__PKReportIssueViewController__reprocessTransactionMerchantWithIssu
     v18 = 0;
   }
 
-  v19 = [(PKPaymentTransaction *)v9 location];
-  [v19 coordinate];
+  location = [(PKPaymentTransaction *)v9 location];
+  [location coordinate];
   v21 = v20;
   v23 = v22;
 
   v112 = objc_alloc(off_1EE9A1E60());
-  v111 = [v13 industryCode];
-  if ([v14 identifier])
+  industryCode = [merchant industryCode];
+  if ([mapsMerchant identifier])
   {
-    v24 = v14;
+    v24 = mapsMerchant;
   }
 
   else
   {
-    v24 = v123;
+    v24 = mapsBrand;
   }
 
-  v109 = [v24 identifier];
-  v115 = [v13 name];
-  v114 = [v13 rawName];
-  v113 = [v13 industryCategory];
-  v119 = v13;
-  v110 = [v13 originURL];
-  v108 = [v110 absoluteString];
+  identifier = [v24 identifier];
+  name = [merchant name];
+  rawName = [merchant rawName];
+  industryCategory = [merchant industryCategory];
+  v119 = merchant;
+  originURL = [merchant originURL];
+  absoluteString = [originURL absoluteString];
   v25 = &stru_1F3BD7330;
   v117 = v18;
   if (v18)
@@ -1636,8 +1636,8 @@ uint64_t __97__PKReportIssueViewController__reprocessTransactionMerchantWithIssu
   }
 
   v105 = v25;
-  v107 = [(PKPaymentTransaction *)v9 transactionDate];
-  [v107 timeIntervalSince1970];
+  transactionDate = [(PKPaymentTransaction *)v9 transactionDate];
+  [transactionDate timeIntervalSince1970];
   v27 = v26;
   [(PKPaymentTransaction *)v9 transactionType];
   v106 = PKPaymentTransactionTypeToString();
@@ -1645,62 +1645,62 @@ uint64_t __97__PKReportIssueViewController__reprocessTransactionMerchantWithIssu
   v29 = v11;
   v30 = v12;
   v116 = v10;
-  v31 = [(PKPaymentTransaction *)v28 bankConnectMetadata];
+  bankConnectMetadata = [(PKPaymentTransaction *)v28 bankConnectMetadata];
   v32 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v33 = [(PKPaymentPass *)v30 issuerCountryCode];
-  v34 = [v32 initWithObjects:{v33, 0}];
+  issuerCountryCode = [(PKPaymentPass *)v30 issuerCountryCode];
+  v34 = [v32 initWithObjects:{issuerCountryCode, 0}];
 
-  v35 = [(PKPaymentTransaction *)v28 merchantProvidedDescription];
-  v100 = [(FKPIIStringProcessor *)v29 redactFromString:v35 forCountryCodes:v34];
+  merchantProvidedDescription = [(PKPaymentTransaction *)v28 merchantProvidedDescription];
+  v100 = [(FKPIIStringProcessor *)v29 redactFromString:merchantProvidedDescription forCountryCodes:v34];
 
-  v36 = [v31 originalTransactionDescription];
+  originalTransactionDescription = [bankConnectMetadata originalTransactionDescription];
   v101 = v34;
-  v37 = [(FKPIIStringProcessor *)v29 redactFromString:v36 forCountryCodes:v34];
+  v37 = [(FKPIIStringProcessor *)v29 redactFromString:originalTransactionDescription forCountryCodes:v34];
 
   v38 = objc_alloc_init(off_1EE9A1E68());
-  v39 = [(PKPaymentTransaction *)v28 transactionType];
+  transactionType = [(PKPaymentTransaction *)v28 transactionType];
   v40 = 0;
-  if (v39 <= 0x16)
+  if (transactionType <= 0x16)
   {
-    v40 = qword_1BE116648[v39];
+    v40 = qword_1BE116648[transactionType];
   }
 
   [v38 setTransactionType:v40];
   [v38 setBankTransactionDescription:v37];
-  v41 = [(PKPaymentTransaction *)v28 transactionDate];
-  [v41 timeIntervalSinceReferenceDate];
+  transactionDate2 = [(PKPaymentTransaction *)v28 transactionDate];
+  [transactionDate2 timeIntervalSinceReferenceDate];
   [v38 setTransactionTimestamp:?];
 
-  v42 = [v31 bankMerchantCategoryCode];
-  v43 = [v42 integerValue];
-  v104 = v31;
-  if (v43)
+  bankMerchantCategoryCode = [bankConnectMetadata bankMerchantCategoryCode];
+  integerValue = [bankMerchantCategoryCode integerValue];
+  v104 = bankConnectMetadata;
+  if (integerValue)
   {
-    [v38 setIndustryCode:v43];
+    [v38 setIndustryCode:integerValue];
   }
 
   else
   {
-    v44 = [(PKPaymentTransaction *)v28 merchant];
-    [v38 setIndustryCode:{objc_msgSend(v44, "industryCode")}];
+    merchant2 = [(PKPaymentTransaction *)v28 merchant];
+    [v38 setIndustryCode:{objc_msgSend(merchant2, "industryCode")}];
   }
 
   [v38 setEnableBrandMuidFallback:1];
-  v45 = [(PKPaymentTransaction *)v28 currencyCode];
-  [v38 setTransactionCurrencyCode:v45];
+  currencyCode = [(PKPaymentTransaction *)v28 currencyCode];
+  [v38 setTransactionCurrencyCode:currencyCode];
 
-  v46 = [(PKPaymentTransaction *)v28 transactionStatus];
-  v118 = v14;
+  transactionStatus = [(PKPaymentTransaction *)v28 transactionStatus];
+  v118 = mapsMerchant;
   v99 = v37;
-  v121 = self;
-  if (v46 > 3)
+  selfCopy = self;
+  if (transactionStatus > 3)
   {
     v47 = 0;
   }
 
   else
   {
-    v47 = qword_1BE116700[v46];
+    v47 = qword_1BE116700[transactionStatus];
   }
 
   [v38 setTransactionStatus:v47];
@@ -1709,63 +1709,63 @@ uint64_t __97__PKReportIssueViewController__reprocessTransactionMerchantWithIssu
   v50 = v29;
   v51 = v30;
   v52 = objc_alloc_init(v49());
-  v53 = [(PKPaymentTransaction *)v48 bankConnectMetadata];
+  bankConnectMetadata2 = [(PKPaymentTransaction *)v48 bankConnectMetadata];
   v102 = v48;
-  v54 = [(PKPaymentTransaction *)v48 merchant];
-  v55 = [v53 bankMerchantAddress];
-  v56 = [v53 bankMerchantName];
+  merchant3 = [(PKPaymentTransaction *)v48 merchant];
+  bankMerchantAddress = [bankConnectMetadata2 bankMerchantAddress];
+  bankMerchantName = [bankConnectMetadata2 bankMerchantName];
   v57 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v58 = [(PKPaymentPass *)v51 issuerCountryCode];
+  issuerCountryCode2 = [(PKPaymentPass *)v51 issuerCountryCode];
   v122 = v51;
 
-  v59 = [v57 initWithObjects:{v58, 0}];
-  v60 = [(FKPIIStringProcessor *)v50 redactFromString:v56 forCountryCodes:v59];
+  v59 = [v57 initWithObjects:{issuerCountryCode2, 0}];
+  v60 = [(FKPIIStringProcessor *)v50 redactFromString:bankMerchantName forCountryCodes:v59];
   v103 = v50;
 
-  v98 = v53;
-  v61 = [v53 bankMerchantNumber];
-  [v52 setMerchantId:v61];
+  v98 = bankConnectMetadata2;
+  bankMerchantNumber = [bankConnectMetadata2 bankMerchantNumber];
+  [v52 setMerchantId:bankMerchantNumber];
 
   [v52 setMerchantDoingBusinessAsName:v60];
   [v52 setMerchantEnhancedName:v60];
-  v62 = [v55 city];
-  if (v62)
+  city = [bankMerchantAddress city];
+  if (city)
   {
-    [v52 setMerchantCity:v62];
+    [v52 setMerchantCity:city];
   }
 
   else
   {
-    v63 = [v54 city];
-    [v52 setMerchantCity:v63];
+    city2 = [merchant3 city];
+    [v52 setMerchantCity:city2];
   }
 
-  v64 = v54;
+  v64 = merchant3;
 
-  v65 = [v54 rawCity];
-  [v52 setMerchantRawCity:v65];
+  rawCity = [merchant3 rawCity];
+  [v52 setMerchantRawCity:rawCity];
 
-  v66 = v55;
-  v67 = [v55 state];
-  v68 = v121;
-  if (v67)
+  v66 = bankMerchantAddress;
+  state = [bankMerchantAddress state];
+  v68 = selfCopy;
+  if (state)
   {
-    [v52 setMerchantState:v67];
+    [v52 setMerchantState:state];
   }
 
   else
   {
-    v69 = [v64 state];
-    [v52 setMerchantState:v69];
+    state2 = [v64 state];
+    [v52 setMerchantState:state2];
   }
 
-  v70 = [v64 rawState];
-  [v52 setMerchantRawState:v70];
+  rawState = [v64 rawState];
+  [v52 setMerchantRawState:rawState];
 
-  v71 = [v66 postalCode];
-  if (v71)
+  postalCode = [v66 postalCode];
+  if (postalCode)
   {
-    [v52 setMerchantZip:v71];
+    [v52 setMerchantZip:postalCode];
   }
 
   else
@@ -1774,25 +1774,25 @@ uint64_t __97__PKReportIssueViewController__reprocessTransactionMerchantWithIssu
     [v52 setMerchantZip:v72];
   }
 
-  v73 = [v66 street];
-  [v52 setMerchantAddress:v73];
+  street = [v66 street];
+  [v52 setMerchantAddress:street];
 
-  v74 = [v66 street];
-  [v52 setMerchantRawAddress:v74];
+  street2 = [v66 street];
+  [v52 setMerchantRawAddress:street2];
 
   [v52 setMerchantCleanConfidenceLevel:{objc_msgSend(v64, "cleanConfidenceLevel")}];
-  v75 = [v64 rawCANL];
-  [v52 setMerchantCanl:v75];
+  rawCANL = [v64 rawCANL];
+  [v52 setMerchantCanl:rawCANL];
 
-  v76 = [(PKPaymentTransaction *)v102 clearingNetworkData];
+  clearingNetworkData = [(PKPaymentTransaction *)v102 clearingNetworkData];
 
-  if (v76)
+  if (clearingNetworkData)
   {
     v77 = MEMORY[0x1E696ACB0];
-    v78 = [(PKPaymentTransaction *)v102 clearingNetworkData];
+    clearingNetworkData2 = [(PKPaymentTransaction *)v102 clearingNetworkData];
 LABEL_36:
-    v80 = v78;
-    v81 = [v78 dataUsingEncoding:4];
+    v80 = clearingNetworkData2;
+    v81 = [clearingNetworkData2 dataUsingEncoding:4];
     v82 = [v77 JSONObjectWithData:v81 options:0 error:0];
 
     if (v82)
@@ -1810,7 +1810,7 @@ LABEL_36:
             v85 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:v84 encoding:4];
             [v52 setMerchantAdditionalData:v85];
 
-            v68 = v121;
+            v68 = selfCopy;
           }
         }
 
@@ -1825,12 +1825,12 @@ LABEL_36:
     goto LABEL_43;
   }
 
-  v79 = [(PKPaymentTransaction *)v102 authNetworkData];
+  authNetworkData = [(PKPaymentTransaction *)v102 authNetworkData];
 
-  if (v79)
+  if (authNetworkData)
   {
     v77 = MEMORY[0x1E696ACB0];
-    v78 = [(PKPaymentTransaction *)v102 authNetworkData];
+    clearingNetworkData2 = [(PKPaymentTransaction *)v102 authNetworkData];
     goto LABEL_36;
   }
 
@@ -1839,60 +1839,60 @@ LABEL_43:
 
   [v38 setMerchantInformation:v52];
   [v38 setBankTransactionDescriptionClean:v100];
-  v88 = [(FKInstitution *)v116 institutionIdentifier];
+  institutionIdentifier = [(FKInstitution *)v116 institutionIdentifier];
 
-  [v38 setBankIdentifier:v88];
-  v125 = [v112 initForMerchantIssue:v124 merchantIndustryCode:v111 mapsIdentifier:v109 merchantName:v115 merchantRawName:v114 merchantIndustryCategory:v113 merchantURL:v27 merchantFormattedAddress:v21 transactionTime:v23 transactionType:v108 transactionLocation:v105 bankTransactionInformation:{v106, v38}];
+  [v38 setBankIdentifier:institutionIdentifier];
+  v125 = [v112 initForMerchantIssue:v124 merchantIndustryCode:industryCode mapsIdentifier:identifier merchantName:name merchantRawName:rawName merchantIndustryCategory:industryCategory merchantURL:v27 merchantFormattedAddress:v21 transactionTime:v23 transactionType:absoluteString transactionLocation:v105 bankTransactionInformation:{v106, v38}];
 
   if (v125)
   {
-    v89 = [(PKPaymentTransaction *)v102 issueReportIdentifier];
-    if (![v89 length])
+    issueReportIdentifier = [(PKPaymentTransaction *)v102 issueReportIdentifier];
+    if (![issueReportIdentifier length])
     {
-      v90 = [MEMORY[0x1E696AFB0] UUID];
-      v91 = [v90 UUIDString];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
 
-      v89 = v91;
+      issueReportIdentifier = uUIDString;
     }
 
     [v125 setIsAppleCard:0];
-    v92 = [(PKPaymentTransaction *)v102 transactionSource];
+    transactionSource = [(PKPaymentTransaction *)v102 transactionSource];
     [(PKPaymentTransaction *)v102 transactionType];
-    if ((v92 - 1) > 7)
+    if ((transactionSource - 1) > 7)
     {
       v93 = 0;
     }
 
     else
     {
-      v93 = qword_1BE116720[v92 - 1];
+      v93 = qword_1BE116720[transactionSource - 1];
     }
 
     [v125 setLookupTransactionType:v93];
     if ([(PKPaymentTransaction *)v102 hasEffectiveTransactionSource])
     {
       v94 = [MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v119, "adamIdentifier")}];
-      v95 = [v94 stringValue];
-      [v125 setMerchantAdamId:v95];
+      stringValue = [v94 stringValue];
+      [v125 setMerchantAdamId:stringValue];
     }
 
-    [v125 setCorrelationId:v89];
+    [v125 setCorrelationId:issueReportIdentifier];
     [v125 setReportersComment:v120];
   }
 
   v96 = _MergedGlobals_19_0(v125, 1);
-  v97 = [v125 correlationId];
-  [(PKReportIssueViewController *)v68 _submitBankConnectTicketToMaps:v96 withCorrelationId:v97];
+  correlationId = [v125 correlationId];
+  [(PKReportIssueViewController *)v68 _submitBankConnectTicketToMaps:v96 withCorrelationId:correlationId];
 }
 
-- (void)_submitBankConnectTicketToMaps:(id)a3 withCorrelationId:(id)a4
+- (void)_submitBankConnectTicketToMaps:(id)maps withCorrelationId:(id)id
 {
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __80__PKReportIssueViewController__submitBankConnectTicketToMaps_withCorrelationId___block_invoke;
   v4[3] = &unk_1E80213A0;
   v4[4] = self;
-  [a3 submitWithHandler:v4 networkActivity:0];
+  [maps submitWithHandler:v4 networkActivity:0];
 }
 
 void __80__PKReportIssueViewController__submitBankConnectTicketToMaps_withCorrelationId___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, void *a4)
@@ -1967,10 +1967,10 @@ void __80__PKReportIssueViewController__submitBankConnectTicketToMaps_withCorrel
       v4 = qword_1BE116760[selectedMapsIssue];
     }
 
-    v5 = [(PKReportIssueViewController *)self _reportComments];
-    v6 = [objc_alloc(MEMORY[0x1E696F448]) initForMerchantIssue:v4 transaction:self->_transaction account:self->_account comments:v5];
-    v7 = [MEMORY[0x1E696F298] sharedService];
-    v8 = [v7 feedbackTicketForWalletRAPReport:v6];
+    _reportComments = [(PKReportIssueViewController *)self _reportComments];
+    v6 = [objc_alloc(MEMORY[0x1E696F448]) initForMerchantIssue:v4 transaction:self->_transaction account:self->_account comments:_reportComments];
+    mEMORY[0x1E696F298] = [MEMORY[0x1E696F298] sharedService];
+    v8 = [mEMORY[0x1E696F298] feedbackTicketForWalletRAPReport:v6];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __49__PKReportIssueViewController__reportIssueToMaps__block_invoke;
@@ -2079,38 +2079,38 @@ void __49__PKReportIssueViewController__reportIssueToMaps__block_invoke_2_192(ui
 {
   if ([(PKSectionTableViewController *)self isSectionMapped:5])
   {
-    v3 = [(PKReportIssueViewController *)self tableView];
+    tableView = [(PKReportIssueViewController *)self tableView];
     v4 = [MEMORY[0x1E696AC88] indexPathForRow:0 inSection:{-[PKSectionTableViewController indexForSection:](self, "indexForSection:", 5)}];
-    v5 = [v3 cellForRowAtIndexPath:v4];
+    v5 = [tableView cellForRowAtIndexPath:v4];
 
-    v6 = [v5 textView];
-    v7 = [v6 text];
+    textView = [v5 textView];
+    text = [textView text];
 
-    if (!v7 || ![v7 length])
+    if (!text || ![text length])
     {
 
-      v7 = 0;
+      text = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    text = 0;
   }
 
-  return v7;
+  return text;
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 dismissAfter:(BOOL)a5
+- (void)_presentAlertWithTitle:(id)title message:(id)message dismissAfter:(BOOL)after
 {
-  v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:a3 message:a4 preferredStyle:1];
+  v7 = [MEMORY[0x1E69DC650] alertControllerWithTitle:title message:message preferredStyle:1];
   v8 = MEMORY[0x1E69DC648];
   v9 = PKLocalizedPaymentString(&cfstr_TransactionDet_45.isa);
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __75__PKReportIssueViewController__presentAlertWithTitle_message_dismissAfter___block_invoke;
   v11[3] = &unk_1E8016148;
-  v12 = a5;
+  afterCopy = after;
   v11[4] = self;
   v10 = [v8 actionWithTitle:v9 style:0 handler:v11];
   [v7 addAction:v10];

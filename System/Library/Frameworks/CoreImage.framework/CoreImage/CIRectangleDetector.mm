@@ -1,27 +1,27 @@
 @interface CIRectangleDetector
-- (CIRectangleDetector)initWithContext:(id)a3 options:(id)a4;
-- (id)featuresInImage:(id)a3 options:(id)a4;
+- (CIRectangleDetector)initWithContext:(id)context options:(id)options;
+- (id)featuresInImage:(id)image options:(id)options;
 - (void)dealloc;
 - (void)releaseResources;
 @end
 
 @implementation CIRectangleDetector
 
-- (CIRectangleDetector)initWithContext:(id)a3 options:(id)a4
+- (CIRectangleDetector)initWithContext:(id)context options:(id)options
 {
   v15.receiver = self;
   v15.super_class = CIRectangleDetector;
   v6 = [(CIDetector *)&v15 init];
   if (v6)
   {
-    if (!a3)
+    if (!context)
     {
-      a3 = +[CIContext _singletonContext];
+      context = +[CIContext _singletonContext];
     }
 
-    [(CIRectangleDetector *)v6 setContext:a3];
+    [(CIRectangleDetector *)v6 setContext:context];
     v6->featureOptions = [MEMORY[0x1E695DF90] dictionary];
-    v7 = [a4 objectForKey:@"CIDetectorAccuracy"];
+    v7 = [options objectForKey:@"CIDetectorAccuracy"];
     if ([v7 isEqual:@"CIDetectorAccuracyHigh"])
     {
       [(NSMutableDictionary *)v6->featureOptions setObject:@"CIDetectorAccuracyHigh" forKey:@"CIDetectorAccuracy"];
@@ -32,7 +32,7 @@
       NSLog(&cfstr_UnknownCidetec.isa);
     }
 
-    v8 = [a4 objectForKey:@"CIDetectorMinFeatureSize"];
+    v8 = [options objectForKey:@"CIDetectorMinFeatureSize"];
     if (v8)
     {
       v9 = v8;
@@ -48,7 +48,7 @@
       }
     }
 
-    v12 = [a4 objectForKey:@"CIDetectorMaxFeatureCount"];
+    v12 = [options objectForKey:@"CIDetectorMaxFeatureCount"];
     if (v12)
     {
       v13 = v12;
@@ -84,7 +84,7 @@
   [(CIRectangleDetector *)&v3 dealloc];
 }
 
-- (id)featuresInImage:(id)a3 options:(id)a4
+- (id)featuresInImage:(id)image options:(id)options
 {
   v76[1] = *MEMORY[0x1E69E9840];
   v7 = ci_signpost_log_detector();
@@ -102,10 +102,10 @@
   v70[1] = 3221225472;
   v71 = __47__CIRectangleDetector_featuresInImage_options___block_invoke;
   v72 = &__block_descriptor_40_e5_v8__0l;
-  v73 = self;
-  if (a3)
+  selfCopy = self;
+  if (image)
   {
-    [a3 extent];
+    [image extent];
     x = v77.origin.x;
     y = v77.origin.y;
     width = v77.size.width;
@@ -113,7 +113,7 @@
     if (CGRectIsEmpty(v77))
     {
 LABEL_58:
-      a3 = MEMORY[0x1E695E0F0];
+      image = MEMORY[0x1E695E0F0];
       goto LABEL_59;
     }
 
@@ -154,7 +154,7 @@ LABEL_58:
       goto LABEL_58;
     }
 
-    v15 = [a4 objectForKey:@"CIDetectorAccuracy"];
+    v15 = [options objectForKey:@"CIDetectorAccuracy"];
     if (!v15)
     {
       v16 = [(NSMutableDictionary *)self->featureOptions objectForKey:@"CIDetectorAccuracy"];
@@ -169,19 +169,19 @@ LABEL_58:
       }
     }
 
-    v17 = [a4 objectForKey:@"CIDetectorMinFeatureSize"];
+    v17 = [options objectForKey:@"CIDetectorMinFeatureSize"];
     if (!v17)
     {
       v17 = [(NSMutableDictionary *)self->featureOptions objectForKey:@"CIDetectorMinFeatureSize"];
     }
 
-    v18 = [a4 objectForKey:@"CIDetectorMaxFeatureCount"];
+    v18 = [options objectForKey:@"CIDetectorMaxFeatureCount"];
     if (!v18)
     {
       v18 = [(NSMutableDictionary *)self->featureOptions objectForKey:@"CIDetectorMaxFeatureCount"];
     }
 
-    v19 = [a4 objectForKey:@"CIDetectorAspectRatio"];
+    v19 = [options objectForKey:@"CIDetectorAspectRatio"];
     if (!v19)
     {
       v19 = [(NSMutableDictionary *)self->featureOptions objectForKey:@"CIDetectorAspectRatio"];
@@ -193,15 +193,15 @@ LABEL_58:
     [v14 setQuadratureTolerance:v21];
     if (v18)
     {
-      v22 = [v18 intValue];
+      intValue = [v18 intValue];
     }
 
     else
     {
-      v22 = 1;
+      intValue = 1;
     }
 
-    [v14 setMaximumObservations:v22];
+    [v14 setMaximumObservations:intValue];
     if (v17)
     {
       [v17 floatValue];
@@ -242,7 +242,7 @@ LABEL_58:
       [v14 setMaximumAspectRatio:v26];
     }
 
-    v27 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     if ([(CIRectangleDetector *)self context])
     {
       context = self->context;
@@ -272,12 +272,12 @@ LABEL_58:
         __break(1u);
       }
 
-      [v27 setObject:context forKey:*v29];
+      [dictionary setObject:context forKey:*v29];
     }
 
     if (([(__CFString *)v15 isEqual:@"CIDetectorAccuracyHigh"]& 1) == 0)
     {
-      [v27 setObject:@"VNRequestOptionDetectionLevel_Fast" forKey:@"VNRequestOptionDetectionLevel"];
+      [dictionary setObject:@"VNRequestOptionDetectionLevel_Fast" forKey:@"VNRequestOptionDetectionLevel"];
     }
 
     buf.a = 0.0;
@@ -299,7 +299,7 @@ LABEL_58:
     }
 
     _Block_object_dispose(&buf, 8);
-    v33 = [[v32 alloc] initWithCIImage:a3 options:v27];
+    v33 = [[v32 alloc] initWithCIImage:image options:dictionary];
     v34 = v33;
     v76[0] = v14;
     if (([v33 performRequests:objc_msgSend(MEMORY[0x1E695DEC8] error:{"arrayWithObjects:count:", v76, 1), &v69}] & 1) == 0)
@@ -307,18 +307,18 @@ LABEL_58:
       goto LABEL_58;
     }
 
-    v35 = [v14 results];
-    if (![v35 count])
+    results = [v14 results];
+    if (![results count])
     {
       goto LABEL_58;
     }
 
-    a3 = [MEMORY[0x1E695DF70] array];
+    image = [MEMORY[0x1E695DF70] array];
     v67 = 0u;
     v68 = 0u;
     v65 = 0u;
     v66 = 0u;
-    v36 = [v35 countByEnumeratingWithState:&v65 objects:v75 count:16];
+    v36 = [results countByEnumeratingWithState:&v65 objects:v75 count:16];
     if (v36)
     {
       v37 = *v66;
@@ -330,7 +330,7 @@ LABEL_58:
         {
           if (*v66 != v37)
           {
-            objc_enumerationMutation(v35);
+            objc_enumerationMutation(results);
           }
 
           v39 = *(*(&v65 + 1) + 8 * i);
@@ -358,14 +358,14 @@ LABEL_58:
           v56 = [[CIRectangleFeature alloc] initWithBounds:v80.origin.x topLeft:v80.origin.y topRight:v80.size.width bottomLeft:v80.size.height bottomRight:*&v55 + v43 * *&v54 + a * v41, *(&v55 + 1) + v43 * *(&v54 + 1) + b * v41, *&v55 + v47 * *&v54 + a * v45, *(&v55 + 1) + v47 * *(&v54 + 1) + b * v45, *&v55 + v62 * *&v54 + a * v63, *(&v55 + 1) + v62 * *(&v54 + 1) + b * v63, *&v55 + v60 * *&v54 + a * v61, *(&v55 + 1) + v60 * *(&v54 + 1) + b * v61];
           if (v56)
           {
-            [a3 addObject:v56];
+            [image addObject:v56];
           }
 
           height = v58;
           width = v59;
         }
 
-        v36 = [v35 countByEnumeratingWithState:&v65 objects:v75 count:16];
+        v36 = [results countByEnumeratingWithState:&v65 objects:v75 count:16];
       }
 
       while (v36);
@@ -374,7 +374,7 @@ LABEL_58:
 
 LABEL_59:
   v71(v70);
-  return a3;
+  return image;
 }
 
 void __47__CIRectangleDetector_featuresInImage_options___block_invoke(uint64_t a1)

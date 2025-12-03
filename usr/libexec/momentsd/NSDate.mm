@@ -1,23 +1,23 @@
 @interface NSDate
 + (id)dateFormatter;
 + (id)dayNameFormatterInEnglish;
-+ (id)firstSaturdayBeforeReferenceDate:(id)a3;
++ (id)firstSaturdayBeforeReferenceDate:(id)date;
 + (id)monthDayFormatter;
 + (id)relativeBundleDateFormatter;
-- (BOOL)betweenDate:(id)a3 andDate:(id)a4;
-- (BOOL)isFollowingDayAfterDate:(id)a3;
-- (BOOL)isFollowingMonthAfterDate:(id)a3;
-- (BOOL)isFollowingWeekAfterDate:(id)a3;
-- (BOOL)isFollowingYearAfterDate:(id)a3;
-- (BOOL)isSameDayWithDate:(id)a3;
-- (BOOL)isSameDayWithDate:(id)a3 timeZone:(id)a4;
-- (BOOL)isSameMonthWithDate:(id)a3;
-- (BOOL)isSameWeekWithDate:(id)a3;
-- (BOOL)isSameYearWithDate:(id)a3;
+- (BOOL)betweenDate:(id)date andDate:(id)andDate;
+- (BOOL)isFollowingDayAfterDate:(id)date;
+- (BOOL)isFollowingMonthAfterDate:(id)date;
+- (BOOL)isFollowingWeekAfterDate:(id)date;
+- (BOOL)isFollowingYearAfterDate:(id)date;
+- (BOOL)isSameDayWithDate:(id)date;
+- (BOOL)isSameDayWithDate:(id)date timeZone:(id)zone;
+- (BOOL)isSameMonthWithDate:(id)date;
+- (BOOL)isSameWeekWithDate:(id)date;
+- (BOOL)isSameYearWithDate:(id)date;
 - (id)getBundleRelativeDate;
 - (id)snapToTheDay;
 - (id)startOfDay;
-- (id)startOfDayWithBoundaryOfADay:(double)a3;
+- (id)startOfDayWithBoundaryOfADay:(double)day;
 - (id)stringFromDate;
 - (unint64_t)hours;
 - (unint64_t)minutes;
@@ -36,17 +36,17 @@
   return v7;
 }
 
-- (BOOL)betweenDate:(id)a3 andDate:(id)a4
+- (BOOL)betweenDate:(id)date andDate:(id)andDate
 {
   result = 0;
-  if (a3 && a4)
+  if (date && andDate)
   {
-    v7 = a4;
-    [a3 timeIntervalSinceReferenceDate];
+    andDateCopy = andDate;
+    [date timeIntervalSinceReferenceDate];
     v9 = v8;
     [(NSDate *)self timeIntervalSinceReferenceDate];
     v11 = v10;
-    [v7 timeIntervalSinceReferenceDate];
+    [andDateCopy timeIntervalSinceReferenceDate];
     v13 = v12;
 
     if (v9 <= v13)
@@ -74,7 +74,7 @@
 
   if ([v4 hour] > 2)
   {
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -83,87 +83,87 @@
     v5 = +[NSCalendar currentCalendar];
     v6 = [v5 dateFromComponents:v4];
 
-    v7 = [v6 dateByAddingTimeInterval:-1.0];
+    selfCopy = [v6 dateByAddingTimeInterval:-1.0];
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (BOOL)isSameDayWithDate:(id)a3 timeZone:(id)a4
+- (BOOL)isSameDayWithDate:(id)date timeZone:(id)zone
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  zoneCopy = zone;
   v8 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   v9 = v8;
-  if (v7)
+  if (zoneCopy)
   {
-    [v8 setTimeZone:v7];
+    [v8 setTimeZone:zoneCopy];
   }
 
-  v10 = [v9 isDate:self inSameDayAsDate:v6];
+  v10 = [v9 isDate:self inSameDayAsDate:dateCopy];
 
   return v10;
 }
 
-- (BOOL)isSameDayWithDate:(id)a3
+- (BOOL)isSameDayWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
+  v5 = +[NSCalendar currentCalendar];
+  LOBYTE(self) = [v5 isDate:self inSameDayAsDate:dateCopy];
+
+  return self;
+}
+
+- (BOOL)isFollowingDayAfterDate:(id)date
+{
+  v4 = [date dateByAddingTimeInterval:86400.0];
   v5 = +[NSCalendar currentCalendar];
   LOBYTE(self) = [v5 isDate:self inSameDayAsDate:v4];
 
   return self;
 }
 
-- (BOOL)isFollowingDayAfterDate:(id)a3
+- (BOOL)isSameWeekWithDate:(id)date
 {
-  v4 = [a3 dateByAddingTimeInterval:86400.0];
+  dateCopy = date;
   v5 = +[NSCalendar currentCalendar];
-  LOBYTE(self) = [v5 isDate:self inSameDayAsDate:v4];
+  LOBYTE(self) = [v5 isDate:self equalToDate:dateCopy toUnitGranularity:0x2000];
 
   return self;
 }
 
-- (BOOL)isSameWeekWithDate:(id)a3
+- (BOOL)isFollowingWeekAfterDate:(id)date
 {
-  v4 = a3;
-  v5 = +[NSCalendar currentCalendar];
-  LOBYTE(self) = [v5 isDate:self equalToDate:v4 toUnitGranularity:0x2000];
-
-  return self;
-}
-
-- (BOOL)isFollowingWeekAfterDate:(id)a3
-{
-  v4 = [a3 dateByAddingTimeInterval:604800.0];
+  v4 = [date dateByAddingTimeInterval:604800.0];
   v5 = +[NSCalendar currentCalendar];
   LOBYTE(self) = [v5 isDate:self equalToDate:v4 toUnitGranularity:0x2000];
 
   return self;
 }
 
-- (BOOL)isSameMonthWithDate:(id)a3
+- (BOOL)isSameMonthWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[NSCalendar currentCalendar];
-  LOBYTE(self) = [v5 isDate:self equalToDate:v4 toUnitGranularity:8];
+  LOBYTE(self) = [v5 isDate:self equalToDate:dateCopy toUnitGranularity:8];
 
   return self;
 }
 
-- (BOOL)isFollowingMonthAfterDate:(id)a3
+- (BOOL)isFollowingMonthAfterDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[NSCalendar currentCalendar];
   v6 = [v5 components:12 fromDate:self];
 
   v7 = +[NSCalendar currentCalendar];
-  v8 = [v7 components:12 fromDate:v4];
+  v8 = [v7 components:12 fromDate:dateCopy];
 
-  v9 = [v6 month];
-  v10 = [v6 year];
-  if (v9 == 1)
+  month = [v6 month];
+  year = [v6 year];
+  if (month == 1)
   {
-    if (v10 - 1 == [v8 year])
+    if (year - 1 == [v8 year])
     {
       v11 = [v8 month] == 1;
       goto LABEL_6;
@@ -174,7 +174,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (v10 != [v8 year])
+  if (year != [v8 year])
   {
     goto LABEL_9;
   }
@@ -188,18 +188,18 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)isSameYearWithDate:(id)a3
+- (BOOL)isSameYearWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v5 = +[NSCalendar currentCalendar];
-  LOBYTE(self) = [v5 isDate:self equalToDate:v4 toUnitGranularity:4];
+  LOBYTE(self) = [v5 isDate:self equalToDate:dateCopy toUnitGranularity:4];
 
   return self;
 }
 
-- (BOOL)isFollowingYearAfterDate:(id)a3
+- (BOOL)isFollowingYearAfterDate:(id)date
 {
-  v4 = [a3 dateByAddingTimeInterval:31536000.0];
+  v4 = [date dateByAddingTimeInterval:31536000.0];
   v5 = +[NSCalendar currentCalendar];
   LOBYTE(self) = [v5 isDate:self equalToDate:v4 toUnitGranularity:4];
 
@@ -217,11 +217,11 @@ LABEL_10:
   return v6;
 }
 
-- (id)startOfDayWithBoundaryOfADay:(double)a3
+- (id)startOfDayWithBoundaryOfADay:(double)day
 {
-  v4 = [(NSDate *)self dateByAddingTimeInterval:-a3];
-  v5 = [v4 startOfDay];
-  v6 = [v5 dateByAddingTimeInterval:a3];
+  v4 = [(NSDate *)self dateByAddingTimeInterval:-day];
+  startOfDay = [v4 startOfDay];
+  v6 = [startOfDay dateByAddingTimeInterval:day];
 
   return v6;
 }
@@ -269,17 +269,17 @@ void __37__NSDate_MOExtensions__dateFormatter__block_invoke(id a1)
   [v4 setTimeStyle:3];
 }
 
-+ (id)firstSaturdayBeforeReferenceDate:(id)a3
++ (id)firstSaturdayBeforeReferenceDate:(id)date
 {
-  v3 = a3;
-  if (!v3)
+  dateCopy = date;
+  if (!dateCopy)
   {
     v7 = 0;
     goto LABEL_9;
   }
 
   v4 = +[NSDate distantPast];
-  v5 = [v3 isEqualToDate:v4];
+  v5 = [dateCopy isEqualToDate:v4];
 
   if (v5)
   {
@@ -290,7 +290,7 @@ LABEL_7:
   }
 
   v8 = +[NSDate distantFuture];
-  v9 = [v3 isEqualToDate:v8];
+  v9 = [dateCopy isEqualToDate:v8];
 
   if (v9)
   {
@@ -299,11 +299,11 @@ LABEL_7:
   }
 
   v10 = +[NSCalendar currentCalendar];
-  v11 = [v10 components:512 fromDate:v3];
-  v12 = [v11 weekday];
+  v11 = [v10 components:512 fromDate:dateCopy];
+  weekday = [v11 weekday];
   v13 = objc_alloc_init(NSDateComponents);
-  [v13 setDay:7 * (v12 / 7) - v12];
-  v14 = [v10 dateByAddingComponents:v13 toDate:v3 options:0];
+  [v13 setDay:7 * (weekday / 7) - weekday];
+  v14 = [v10 dateByAddingComponents:v13 toDate:dateCopy options:0];
   v15 = [v10 components:28 fromDate:v14];
   [v15 setHour:0];
   [v15 setMinute:0];

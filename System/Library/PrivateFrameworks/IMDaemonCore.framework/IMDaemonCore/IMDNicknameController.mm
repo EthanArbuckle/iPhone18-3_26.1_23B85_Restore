@@ -1,14 +1,14 @@
 @interface IMDNicknameController
 + (id)sharedInstance;
 - (BOOL)_deviceUnderFirstUnlock;
-- (BOOL)_isActiveForNickname:(id)a3;
+- (BOOL)_isActiveForNickname:(id)nickname;
 - (BOOL)_isNicknamesSharingEnabled;
 - (BOOL)_isUnderScrutiny;
-- (BOOL)_populateNicknameDictionary:(id)a3 forKVStore:(id)a4 limitToLoad:(unint64_t)a5;
-- (BOOL)_requestingToSendLocalNicknameInfo:(id)a3;
-- (BOOL)_sendMessageDictionary:(id)a3 toDevice:(id)a4 sendType:(unint64_t)a5;
+- (BOOL)_populateNicknameDictionary:(id)dictionary forKVStore:(id)store limitToLoad:(unint64_t)load;
+- (BOOL)_requestingToSendLocalNicknameInfo:(id)info;
+- (BOOL)_sendMessageDictionary:(id)dictionary toDevice:(id)device sendType:(unint64_t)type;
 - (BOOL)evaluateAccountStateForFeatureEligibility;
-- (BOOL)replacedNicknameForHandleIDInHandledMapIfNeeded:(id)a3 nickname:(id)a4;
+- (BOOL)replacedNicknameForHandleIDInHandledMapIfNeeded:(id)needed nickname:(id)nickname;
 - (IMDNicknameController)init;
 - (NSDictionary)activeRecords;
 - (NSDictionary)ignoredRecords;
@@ -17,131 +17,131 @@
 - (NSSet)allowListedHandlesForSharing;
 - (NSSet)denyListedHandlesForSharing;
 - (NSSet)transitionedHandles;
-- (id)_diffActiveRecords:(id)a3 againstPrevious:(id)a4;
+- (id)_diffActiveRecords:(id)records againstPrevious:(id)previous;
 - (id)_getPendingNicknameForUpload;
-- (id)_idsDeviceFromPushToken:(id)a3;
+- (id)_idsDeviceFromPushToken:(id)token;
 - (id)_typeOfNicknameUpdateToShare;
 - (id)allNicknames;
 - (id)avatarRecipeTag;
-- (id)loadListForKey:(id)a3 list:(id)a4;
+- (id)loadListForKey:(id)key list:(id)list;
 - (id)lowResWallpaperDataTag;
 - (id)messageDictionaryWithPersonalRecordIDAndVersion;
 - (id)newNicknameInfoToSend;
 - (id)nickNameDecryptionKey;
 - (id)nickNameRecordID;
-- (id)nicknameForHandle:(id)a3;
-- (id)nicknameForHandleURI:(id)a3;
-- (id)nicknameForRecordID:(id)a3;
-- (id)nicknameForRecordID:(id)a3 handle:(id)a4;
+- (id)nicknameForHandle:(id)handle;
+- (id)nicknameForHandleURI:(id)i;
+- (id)nicknameForRecordID:(id)d;
+- (id)nicknameForRecordID:(id)d handle:(id)handle;
 - (id)pendingPersonalNickname;
 - (id)storedPersonalNickname;
-- (id)substringRecordIDForNickname:(id)a3;
-- (id)unknownSenderRecordInfoFor:(id)a3;
+- (id)substringRecordIDForNickname:(id)nickname;
+- (id)unknownSenderRecordInfoFor:(id)for;
 - (id)wallpaperDataTag;
 - (id)wallpaperMetadataTag;
 - (unint64_t)_reuploadLocalProfileVersionNumber;
-- (void)NicknameWithRecordID:(id)a3 URI:(id)a4 decryptionKey:(id)a5 wallpaperDataTag:(id)a6 wallpaperLowResDataTag:(id)a7 wallpaperMetadataTag:(id)a8 avatarRecipeDataTag:(id)a9 hasWallpaperUpdate:(BOOL)a10 dropNicknameForUnknownContacts:(BOOL)a11 withCompletionBlock:(id)a12;
-- (void)_beginNicknameUpload:(id)a3;
+- (void)NicknameWithRecordID:(id)d URI:(id)i decryptionKey:(id)key wallpaperDataTag:(id)tag wallpaperLowResDataTag:(id)dataTag wallpaperMetadataTag:(id)metadataTag avatarRecipeDataTag:(id)recipeDataTag hasWallpaperUpdate:(BOOL)self0 dropNicknameForUnknownContacts:(BOOL)self1 withCompletionBlock:(id)self2;
+- (void)_beginNicknameUpload:(id)upload;
 - (void)_broadcastActiveListChanged;
 - (void)_broadcastNicknamesMapChanged;
 - (void)_clearActiveNicknameRecords;
 - (void)_clearIgnoredNicknameRecords;
 - (void)_clearSharingLists;
 - (void)_clearTransitionedList;
-- (void)_deleteAvatarForNickname:(id)a3;
+- (void)_deleteAvatarForNickname:(id)nickname;
 - (void)_deleteDataUnderScrutiny;
-- (void)_deleteHandleIDFromArchivedMap:(id)a3;
-- (void)_deleteHandleIDFromHandledMap:(id)a3;
-- (void)_deleteHandleIDFromPendingMap:(id)a3;
-- (void)_deleteNicknameFromPendingMap:(id)a3;
-- (void)_deleteOnDiskDataIfNeededForNickname:(id)a3 withNewNickname:(id)a4;
+- (void)_deleteHandleIDFromArchivedMap:(id)map;
+- (void)_deleteHandleIDFromHandledMap:(id)map;
+- (void)_deleteHandleIDFromPendingMap:(id)map;
+- (void)_deleteNicknameFromPendingMap:(id)map;
+- (void)_deleteOnDiskDataIfNeededForNickname:(id)nickname withNewNickname:(id)newNickname;
 - (void)_deletePendingNicknameForUpload;
 - (void)_deletePublicNicknameLocationAndKey;
 - (void)_endNicknameUpload;
 - (void)_evaluateIfAccountHasMultiplePhoneNumbers;
-- (void)_getDevicesForBothNicknameServices:(id)a3 removeNewServiceURIsFromIMessageList:(BOOL)a4 completionHandler:(id)a5;
+- (void)_getDevicesForBothNicknameServices:(id)services removeNewServiceURIsFromIMessageList:(BOOL)list completionHandler:(id)handler;
 - (void)_loadAllInfoFromDiskIfAble;
 - (void)_makeAllNicknameContentsClassC;
-- (void)_markCurrentNicknameAsArchived:(id)a3 incrementPendingNicknameVersion:(BOOL)a4;
-- (void)_markNicknamePhotoAsUpdated:(id)a3;
-- (void)_newDeviceDidSignIntoiMessageWithRetryCount:(unint64_t)a3;
-- (void)_removeFromList:(id)a3 withKey:(id)a4;
-- (void)_removeFromTransitionedList:(id)a3;
-- (void)_replaceUnknownSenderRecordInfoListWithInfo:(id)a3 purgeIfNeeded:(BOOL)a4;
+- (void)_markCurrentNicknameAsArchived:(id)archived incrementPendingNicknameVersion:(BOOL)version;
+- (void)_markNicknamePhotoAsUpdated:(id)updated;
+- (void)_newDeviceDidSignIntoiMessageWithRetryCount:(unint64_t)count;
+- (void)_removeFromList:(id)list withKey:(id)key;
+- (void)_removeFromTransitionedList:(id)list;
+- (void)_replaceUnknownSenderRecordInfoListWithInfo:(id)info purgeIfNeeded:(BOOL)needed;
 - (void)_resetHandleSharingList;
-- (void)_showDebugAlertWithHeader:(id)a3 message:(id)a4;
-- (void)_storePendingNicknameForUpload:(id)a3;
-- (void)_storePublicNickname:(id)a3 nicknameLocation:(id)a4 encryptionKey:(id)a5 wallpaperDataTag:(id)a6 wallpaperLowResDataTag:(id)a7 wallpaperMetadataTag:(id)a8 avatarRecipeDataTag:(id)a9;
+- (void)_showDebugAlertWithHeader:(id)header message:(id)message;
+- (void)_storePendingNicknameForUpload:(id)upload;
+- (void)_storePublicNickname:(id)nickname nicknameLocation:(id)location encryptionKey:(id)key wallpaperDataTag:(id)tag wallpaperLowResDataTag:(id)dataTag wallpaperMetadataTag:(id)metadataTag avatarRecipeDataTag:(id)recipeDataTag;
 - (void)_syncActiveNicknameRecordsToOtherDevices;
 - (void)_syncHandleAllowDenyListToOtherDevices;
 - (void)_syncHandleTransitionedListToOtherDevices;
 - (void)_syncIgnoredNicknameRecordsToOtherDevices;
-- (void)_tryToReuploadPersonalNicknameWithRetryCount:(unint64_t)a3 reuploadVersion:(unint64_t)a4;
-- (void)_updateActiveList:(id)a3 withRecords:(id)a4 broadcastUpdates:(BOOL)a5;
-- (void)_updateActiveNicknameRecordsListIfNeeded:(id)a3;
-- (void)_updateCloudKitRecordIDAndDecryptionKeyIfNeeded:(id)a3;
+- (void)_tryToReuploadPersonalNicknameWithRetryCount:(unint64_t)count reuploadVersion:(unint64_t)version;
+- (void)_updateActiveList:(id)list withRecords:(id)records broadcastUpdates:(BOOL)updates;
+- (void)_updateActiveNicknameRecordsListIfNeeded:(id)needed;
+- (void)_updateCloudKitRecordIDAndDecryptionKeyIfNeeded:(id)needed;
 - (void)_updateDenyAllowListHandlesVersion;
-- (void)_updateHandleDenyAllowListIfNeeded:(id)a3;
-- (void)_updateHandleList:(id)a3 withHandles:(id)a4 forKey:(id)a5 broadcastUpdates:(BOOL)a6;
-- (void)_updateHandleTransitionedListIfNeeded:(id)a3;
-- (void)_updateIgnoredList:(id)a3 withRecords:(id)a4 broadcastUpdates:(BOOL)a5;
-- (void)_updateIgnoredNicknameRecordsListIfNeeded:(id)a3;
+- (void)_updateHandleDenyAllowListIfNeeded:(id)needed;
+- (void)_updateHandleList:(id)list withHandles:(id)handles forKey:(id)key broadcastUpdates:(BOOL)updates;
+- (void)_updateHandleTransitionedListIfNeeded:(id)needed;
+- (void)_updateIgnoredList:(id)list withRecords:(id)records broadcastUpdates:(BOOL)updates;
+- (void)_updateIgnoredNicknameRecordsListIfNeeded:(id)needed;
 - (void)_updateIsActiveListHandlesVersion;
 - (void)_updateIsIgnoredListHandlesVersion;
-- (void)_updateMessageDictionaryWithNicknameUpdateRecordIDs:(id)a3;
-- (void)_updateMessageDictionaryWithPendingNicknameUpdates:(id)a3;
-- (void)_updateNameOnlyUpdateForMessage:(id)a3 fromHandleID:(id)a4;
-- (void)_updateNicknameInArchivedMap:(id)a3;
-- (void)_updateNicknameListsIfNeeded:(id)a3;
+- (void)_updateMessageDictionaryWithNicknameUpdateRecordIDs:(id)ds;
+- (void)_updateMessageDictionaryWithPendingNicknameUpdates:(id)updates;
+- (void)_updateNameOnlyUpdateForMessage:(id)message fromHandleID:(id)d;
+- (void)_updateNicknameInArchivedMap:(id)map;
+- (void)_updateNicknameListsIfNeeded:(id)needed;
 - (void)_updatePendingNicknameVersion;
-- (void)_updateSharingPreferencesIfNeededFromMadridMessage:(id)a3;
-- (void)_updateTransitionList:(id)a3 withHandles:(id)a4 forKey:(id)a5 broadcastUpdates:(BOOL)a6;
+- (void)_updateSharingPreferencesIfNeededFromMadridMessage:(id)message;
+- (void)_updateTransitionList:(id)list withHandles:(id)handles forKey:(id)key broadcastUpdates:(BOOL)updates;
 - (void)_updateTransitionedListHandlesVersion;
 - (void)_uploadPendingNicknameIfNecessary;
-- (void)_writeNicknameToKVStore:(id)a3 nickname:(id)a4;
-- (void)acceptPendingNicknameForHandleID:(id)a3 updateType:(unint64_t)a4;
-- (void)addNicknameToPendingUpdates:(id)a3;
-- (void)allowHandlesForSharing:(id)a3 onChatGUIDs:(id)a4 fromHandle:(id)a5 forceSend:(BOOL)a6;
+- (void)_writeNicknameToKVStore:(id)store nickname:(id)nickname;
+- (void)acceptPendingNicknameForHandleID:(id)d updateType:(unint64_t)type;
+- (void)addNicknameToPendingUpdates:(id)updates;
+- (void)allowHandlesForSharing:(id)sharing onChatGUIDs:(id)ds fromHandle:(id)handle forceSend:(BOOL)send;
 - (void)broadcastHandlesSharingNicknamesDidChange;
 - (void)broadcastTransitionedHandlesDidChange;
-- (void)cleanUpNicknameForIDs:(id)a3;
-- (void)clearPendingNicknameForHandleID:(id)a3;
-- (void)clearPendingNicknamePhotoForHandleID:(id)a3;
-- (void)currentPersonalNicknameWithRecordID:(id)a3 decryptionKey:(id)a4 wallpaperDataTag:(id)a5 wallpaperLowResDataTag:(id)a6 wallpaperMetadataTag:(id)a7 avatarRecipeDataTag:(id)a8 completionBlock:(id)a9;
-- (void)currentPersonalNicknamewithCompletionBlock:(id)a3;
+- (void)cleanUpNicknameForIDs:(id)ds;
+- (void)clearPendingNicknameForHandleID:(id)d;
+- (void)clearPendingNicknamePhotoForHandleID:(id)d;
+- (void)currentPersonalNicknameWithRecordID:(id)d decryptionKey:(id)key wallpaperDataTag:(id)tag wallpaperLowResDataTag:(id)dataTag wallpaperMetadataTag:(id)metadataTag avatarRecipeDataTag:(id)recipeDataTag completionBlock:(id)block;
+- (void)currentPersonalNicknamewithCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)deleteAllPersonalNicknames:(BOOL)a3 withCompletion:(id)a4;
-- (void)denyHandlesForSharing:(id)a3;
+- (void)deleteAllPersonalNicknames:(BOOL)nicknames withCompletion:(id)completion;
+- (void)denyHandlesForSharing:(id)sharing;
 - (void)deviceSignedOutOfiMessage;
-- (void)displayTapToRadarNotificationWithError:(id)a3 invalidData:(id)a4;
-- (void)getNicknameWithRecordID:(id)a3 decryptionKey:(id)a4 wallpaperDataTag:(id)a5 wallpaperLowResDataTag:(id)a6 wallpaperMetadataTag:(id)a7 avatarRecipeDataTag:(id)a8 isKnownSender:(BOOL)a9 shouldDecodeImageFields:(BOOL)a10 completionBlock:(id)a11;
-- (void)handleNicknameUpdatesFromPeerDevice:(id)a3 fromPeerDevice:(id)a4;
-- (void)ignorePendingNicknameForHandleID:(id)a3;
+- (void)displayTapToRadarNotificationWithError:(id)error invalidData:(id)data;
+- (void)getNicknameWithRecordID:(id)d decryptionKey:(id)key wallpaperDataTag:(id)tag wallpaperLowResDataTag:(id)dataTag wallpaperMetadataTag:(id)metadataTag avatarRecipeDataTag:(id)recipeDataTag isKnownSender:(BOOL)sender shouldDecodeImageFields:(BOOL)self0 completionBlock:(id)self1;
+- (void)handleNicknameUpdatesFromPeerDevice:(id)device fromPeerDevice:(id)peerDevice;
+- (void)ignorePendingNicknameForHandleID:(id)d;
 - (void)loadHandledTransitioned;
 - (void)loadNicknamesFromKVStore;
 - (void)loadPersonalNicknameIfNeeded;
 - (void)loadSharingHandlesPrefs;
 - (void)loadUnknownSenderRecordInfoFromKVStore;
 - (void)markAllNicknamesAsPending;
-- (void)markHandlesAsAllowed:(id)a3;
-- (void)markNicknameAsUpdated:(id)a3;
-- (void)markNicknamesAsTransitionedForHandleIDs:(id)a3 isAutoUpdate:(BOOL)a4;
-- (void)markProfileRecords:(id)a3 asActive:(BOOL)a4;
+- (void)markHandlesAsAllowed:(id)allowed;
+- (void)markNicknameAsUpdated:(id)updated;
+- (void)markNicknamesAsTransitionedForHandleIDs:(id)ds isAutoUpdate:(BOOL)update;
+- (void)markProfileRecords:(id)records asActive:(BOOL)active;
 - (void)purgeUnknownSenderRecordInfoIfNeeded;
-- (void)queueChatToSendNicknamePostUploadIfNeeded:(id)a3;
+- (void)queueChatToSendNicknamePostUploadIfNeeded:(id)needed;
 - (void)reuploadProfileIfNeeded;
-- (void)saveNicknameForRecordID:(id)a3 handleID:(id)a4 userNickname:(id)a5;
-- (void)sendNameOnlyToHandleIDs:(id)a3 fromHandleID:(id)a4;
+- (void)saveNicknameForRecordID:(id)d handleID:(id)iD userNickname:(id)nickname;
+- (void)sendNameOnlyToHandleIDs:(id)ds fromHandleID:(id)d;
 - (void)sendNicknamePreferencesDidChange;
 - (void)sendPendingNicknameUpdatesDidChange;
-- (void)sendPersonalNicknameRecordIDAndVersionRequestedByDevice:(id)a3;
+- (void)sendPersonalNicknameRecordIDAndVersionRequestedByDevice:(id)device;
 - (void)sendPersonalNicknameRecordIDAndVersionToAllPeers;
-- (void)sendPersonalNicknameToRecipients:(id)a3 chatGUID:(id)a4 fromHandle:(id)a5 onlyUseNicknameSendingService:(BOOL)a6 onlySendToThoseLoggedOutOfIMessage:(BOOL)a7;
-- (void)service:(id)a3 account:(id)a4 incomingTopLevelMessage:(id)a5 fromID:(id)a6 messageContext:(id)a7;
-- (void)setPersonalNickname:(id)a3;
-- (void)setPersonalNickname:(id)a3 completionBlock:(id)a4;
+- (void)sendPersonalNicknameToRecipients:(id)recipients chatGUID:(id)d fromHandle:(id)handle onlyUseNicknameSendingService:(BOOL)service onlySendToThoseLoggedOutOfIMessage:(BOOL)message;
+- (void)service:(id)service account:(id)account incomingTopLevelMessage:(id)message fromID:(id)d messageContext:(id)context;
+- (void)setPersonalNickname:(id)nickname;
+- (void)setPersonalNickname:(id)nickname completionBlock:(id)block;
 - (void)systemDidLeaveFirstDataProtectionLock;
-- (void)verifyTruncatedRecordIDMatchesPersonalNickname:(id)a3 forChat:(id)a4;
+- (void)verifyTruncatedRecordIDMatchesPersonalNickname:(id)nickname forChat:(id)chat;
 @end
 
 @implementation IMDNicknameController
@@ -160,24 +160,24 @@
 
 - (NSSet)transitionedHandles
 {
-  v2 = [(IMDNicknameController *)self handleTransitionedList];
-  v3 = [v2 copy];
+  handleTransitionedList = [(IMDNicknameController *)self handleTransitionedList];
+  v3 = [handleTransitionedList copy];
 
   return v3;
 }
 
 - (NSSet)allowListedHandlesForSharing
 {
-  v2 = [(IMDNicknameController *)self handleAllowList];
-  v3 = [v2 copy];
+  handleAllowList = [(IMDNicknameController *)self handleAllowList];
+  v3 = [handleAllowList copy];
 
   return v3;
 }
 
 - (NSSet)denyListedHandlesForSharing
 {
-  v2 = [(IMDNicknameController *)self handleDenyList];
-  v3 = [v2 copy];
+  handleDenyList = [(IMDNicknameController *)self handleDenyList];
+  v3 = [handleDenyList copy];
 
   return v3;
 }
@@ -199,8 +199,8 @@
 
 - (NSDictionary)ignoredRecords
 {
-  v2 = [(IMDNicknameController *)self ignoredNicknameRecords];
-  v3 = [v2 copy];
+  ignoredNicknameRecords = [(IMDNicknameController *)self ignoredNicknameRecords];
+  v3 = [ignoredNicknameRecords copy];
 
   return v3;
 }
@@ -222,8 +222,8 @@
 
 - (NSDictionary)activeRecords
 {
-  v2 = [(IMDNicknameController *)self activeNicknameRecords];
-  v3 = [v2 copy];
+  activeNicknameRecords = [(IMDNicknameController *)self activeNicknameRecords];
+  v3 = [activeNicknameRecords copy];
 
   return v3;
 }
@@ -243,62 +243,62 @@
       {
         v4 = *MEMORY[0x277D1A390];
         v5 = [*MEMORY[0x277D1A390] stringByAppendingPathComponent:@"nickNameKeyStore.db"];
-        v6 = [v4 stringByResolvingAndStandardizingPath];
+        stringByResolvingAndStandardizingPath = [v4 stringByResolvingAndStandardizingPath];
         IMSharedHelperEnsureDirectoryExistsAtPath();
 
-        v7 = [v5 stringByResolvingAndStandardizingPath];
+        stringByResolvingAndStandardizingPath2 = [v5 stringByResolvingAndStandardizingPath];
 
-        v8 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:v7 storeName:@"nicknamekeystore" dataProtectionClass:0];
+        v8 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:stringByResolvingAndStandardizingPath2 storeName:@"nicknamekeystore" dataProtectionClass:0];
         cloudkitRecordsKVStore = v3->_cloudkitRecordsKVStore;
         v3->_cloudkitRecordsKVStore = v8;
 
         v10 = [v4 stringByAppendingString:@"pendingNicknamesKeyStore.db"];
-        v11 = [v10 stringByResolvingAndStandardizingPath];
+        stringByResolvingAndStandardizingPath3 = [v10 stringByResolvingAndStandardizingPath];
 
-        v12 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:v11 storeName:@"pendingNicknameUpdatesStore" dataProtectionClass:0];
+        v12 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:stringByResolvingAndStandardizingPath3 storeName:@"pendingNicknameUpdatesStore" dataProtectionClass:0];
         pendingNicknameUpdatesKVStore = v3->_pendingNicknameUpdatesKVStore;
         v3->_pendingNicknameUpdatesKVStore = v12;
 
         v14 = [v4 stringByAppendingString:@"handledNicknamesKeyStore.db"];
-        v15 = [v14 stringByResolvingAndStandardizingPath];
+        stringByResolvingAndStandardizingPath4 = [v14 stringByResolvingAndStandardizingPath];
 
-        v16 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:v15 storeName:@"handledNicknamesStore" dataProtectionClass:0];
+        v16 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:stringByResolvingAndStandardizingPath4 storeName:@"handledNicknamesStore" dataProtectionClass:0];
         handledNicknamesKVStore = v3->_handledNicknamesKVStore;
         v3->_handledNicknamesKVStore = v16;
 
         v18 = [v4 stringByAppendingString:@"archivedNicknamesKeyStore.db"];
-        v19 = [v18 stringByResolvingAndStandardizingPath];
+        stringByResolvingAndStandardizingPath5 = [v18 stringByResolvingAndStandardizingPath];
 
-        v20 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:v19 storeName:@"archivedNicknamesStore" dataProtectionClass:0];
+        v20 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:stringByResolvingAndStandardizingPath5 storeName:@"archivedNicknamesStore" dataProtectionClass:0];
         archivedNicknamesKVStore = v3->_archivedNicknamesKVStore;
         v3->_archivedNicknamesKVStore = v20;
 
         v22 = [v4 stringByAppendingString:@"handleSharingPreferences.db"];
-        v23 = [v22 stringByResolvingAndStandardizingPath];
+        stringByResolvingAndStandardizingPath6 = [v22 stringByResolvingAndStandardizingPath];
 
-        v24 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:v23 storeName:@"handleSharingPreferences" dataProtectionClass:0];
+        v24 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:stringByResolvingAndStandardizingPath6 storeName:@"handleSharingPreferences" dataProtectionClass:0];
         handleSharingKVStore = v3->_handleSharingKVStore;
         v3->_handleSharingKVStore = v24;
 
         v26 = [v4 stringByAppendingString:@"nicknameRecordsStore.db"];
-        v27 = [v26 stringByResolvingAndStandardizingPath];
+        stringByResolvingAndStandardizingPath7 = [v26 stringByResolvingAndStandardizingPath];
 
-        v28 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:v27 storeName:@"nicknameRecordsStore" dataProtectionClass:0];
+        v28 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:stringByResolvingAndStandardizingPath7 storeName:@"nicknameRecordsStore" dataProtectionClass:0];
         nicknameRecordsKVStore = v3->_nicknameRecordsKVStore;
         v3->_nicknameRecordsKVStore = v28;
 
         v30 = [v4 stringByAppendingString:@"unknownSenderRecordInfoStore.db"];
-        v31 = [v30 stringByResolvingAndStandardizingPath];
+        stringByResolvingAndStandardizingPath8 = [v30 stringByResolvingAndStandardizingPath];
 
-        v32 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:v31 storeName:@"unknownSenderRecordInfoStore" dataProtectionClass:0];
+        v32 = [objc_alloc(MEMORY[0x277D18AD0]) initWithPath:stringByResolvingAndStandardizingPath8 storeName:@"unknownSenderRecordInfoStore" dataProtectionClass:0];
         unknownSenderRecordInfoKVStore = v3->_unknownSenderRecordInfoKVStore;
         v3->_unknownSenderRecordInfoKVStore = v32;
 
-        v34 = [MEMORY[0x277D1ACB8] sharedInstance];
-        [v34 addListener:v3];
+        mEMORY[0x277D1ACB8] = [MEMORY[0x277D1ACB8] sharedInstance];
+        [mEMORY[0x277D1ACB8] addListener:v3];
 
-        v35 = [MEMORY[0x277CCAB98] defaultCenter];
-        [v35 addObserver:v3 selector:sel__ckAccountChanged_ name:*MEMORY[0x277CBBF00] object:0];
+        defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+        [defaultCenter addObserver:v3 selector:sel__ckAccountChanged_ name:*MEMORY[0x277CBBF00] object:0];
 
         [(IMDNicknameController *)v3 _loadAllInfoFromDiskIfAble];
         [(IMDNicknameController *)v3 purgeUnknownSenderRecordInfoIfNeeded];
@@ -307,8 +307,8 @@
         v3->_nicknameService = v36;
 
         [(IDSService *)v3->_nicknameService addDelegate:v3 queue:MEMORY[0x277D85CD0]];
-        v38 = [MEMORY[0x277D18728] sharedInstance];
-        [v38 addListenerID:@"IMDNicknameController" forService:@"com.apple.private.alloy.nameandphoto"];
+        mEMORY[0x277D18728] = [MEMORY[0x277D18728] sharedInstance];
+        [mEMORY[0x277D18728] addListenerID:@"IMDNicknameController" forService:@"com.apple.private.alloy.nameandphoto"];
 
         v39 = objc_alloc_init(MEMORY[0x277CF7D40]);
         callHistoryManager = v3->_callHistoryManager;
@@ -320,11 +320,11 @@ LABEL_8:
 
     else if (IMOSLoggingEnabled())
     {
-      v7 = OSLogHandleForIMFoundationCategory();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+      stringByResolvingAndStandardizingPath2 = OSLogHandleForIMFoundationCategory();
+      if (os_log_type_enabled(stringByResolvingAndStandardizingPath2, OS_LOG_TYPE_INFO))
       {
         *v42 = 0;
-        _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Nickname feature is turned off, don't load nickname info into memory", v42, 2u);
+        _os_log_impl(&dword_22B4CC000, stringByResolvingAndStandardizingPath2, OS_LOG_TYPE_INFO, "Nickname feature is turned off, don't load nickname info into memory", v42, 2u);
       }
 
       goto LABEL_8;
@@ -337,12 +337,12 @@ LABEL_8:
 - (void)purgeUnknownSenderRecordInfoIfNeeded
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self unknownSenderRecordInfo];
-  if (v3)
+  unknownSenderRecordInfo = [(IMDNicknameController *)self unknownSenderRecordInfo];
+  if (unknownSenderRecordInfo)
   {
-    v4 = v3;
-    v5 = [(IMDNicknameController *)self unknownSenderRecordInfo];
-    v6 = [v5 count];
+    v4 = unknownSenderRecordInfo;
+    unknownSenderRecordInfo2 = [(IMDNicknameController *)self unknownSenderRecordInfo];
+    v6 = [unknownSenderRecordInfo2 count];
 
     if (v6)
     {
@@ -351,14 +351,14 @@ LABEL_8:
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v7 = [(IMDNicknameController *)self unknownSenderRecordInfo];
-      v8 = [v7 countByEnumeratingWithState:&v27 objects:v31 count:16];
+      unknownSenderRecordInfo3 = [(IMDNicknameController *)self unknownSenderRecordInfo];
+      v8 = [unknownSenderRecordInfo3 countByEnumeratingWithState:&v27 objects:v31 count:16];
       if (v8)
       {
         v9 = v8;
         LOBYTE(v10) = 0;
         v11 = *v28;
-        obj = v7;
+        obj = unknownSenderRecordInfo3;
         do
         {
           for (i = 0; i != v9; ++i)
@@ -369,8 +369,8 @@ LABEL_8:
             }
 
             v13 = *(*(&v27 + 1) + 8 * i);
-            v14 = [(IMDNicknameController *)self unknownSenderRecordInfo];
-            v15 = [v14 objectForKey:v13];
+            unknownSenderRecordInfo4 = [(IMDNicknameController *)self unknownSenderRecordInfo];
+            v15 = [unknownSenderRecordInfo4 objectForKey:v13];
 
             v16 = +[IMDChatRegistry sharedInstance];
             v17 = [v16 _hasSavedContactCardForHandle:v13];
@@ -424,11 +424,11 @@ LABEL_8:
 {
   if ((IMIsRunningInUnitTesting() & 1) == 0)
   {
-    v3 = [MEMORY[0x277D1ACB8] sharedInstance];
-    [v3 removeListener:self];
+    mEMORY[0x277D1ACB8] = [MEMORY[0x277D1ACB8] sharedInstance];
+    [mEMORY[0x277D1ACB8] removeListener:self];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
   }
 
   v5.receiver = self;
@@ -439,28 +439,28 @@ LABEL_8:
 - (BOOL)evaluateAccountStateForFeatureEligibility
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v4 = [v3 isNameAndPhotoC3Enabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isNameAndPhotoC3Enabled = [mEMORY[0x277D1A9B8] isNameAndPhotoC3Enabled];
 
   v5 = +[IMDCKUtilities sharedInstance];
   v6 = v5;
-  if (v4)
+  if (isNameAndPhotoC3Enabled)
   {
-    v7 = [v5 signedIntoiCloudAccount];
+    signedIntoiCloudAccount = [v5 signedIntoiCloudAccount];
   }
 
   else
   {
-    v7 = [v5 signedIntoiCloudAndiMessageAndiCloudAccountMatchesiMessageAccount];
+    signedIntoiCloudAccount = [v5 signedIntoiCloudAndiMessageAndiCloudAccountMatchesiMessageAccount];
   }
 
-  v8 = v7;
+  v8 = signedIntoiCloudAccount;
 
-  v9 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v10 = *MEMORY[0x277D1A3C0];
   v11 = *MEMORY[0x277D1A438];
-  v12 = [v9 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A438]];
-  v13 = [v12 BOOLValue];
+  v12 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A438]];
+  bOOLValue = [v12 BOOLValue];
 
   if (IMOSLoggingEnabled())
   {
@@ -478,7 +478,7 @@ LABEL_8:
         v16 = @"NO";
       }
 
-      if (v13)
+      if (bOOLValue)
       {
         v15 = @"YES";
       }
@@ -491,11 +491,11 @@ LABEL_8:
     }
   }
 
-  if (v8 != v13)
+  if (v8 != bOOLValue)
   {
-    v17 = [(IMDNicknameController *)self defaults];
+    defaults2 = [(IMDNicknameController *)self defaults];
     v18 = [MEMORY[0x277CCABB0] numberWithBool:v8];
-    [v17 setValue:v18 forDomain:v10 forKey:v11];
+    [defaults2 setValue:v18 forDomain:v10 forKey:v11];
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -534,10 +534,10 @@ LABEL_8:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v13 = [v12 idsAccount];
-          v14 = [v13 accountType];
+          idsAccount = [v12 idsAccount];
+          accountType = [idsAccount accountType];
 
-          if (v14 == 1)
+          if (accountType == 1)
           {
             -[IMDNicknameController aliasesDidChange:](self, "aliasesDidChange:", [v12 multiplePhoneNumbersTiedToAccount]);
             goto LABEL_12;
@@ -562,29 +562,29 @@ LABEL_12:
 
 - (unint64_t)_reuploadLocalProfileVersionNumber
 {
-  v2 = 1;
+  unsignedIntegerValue = 1;
   v3 = [MEMORY[0x277D18A10] sharedInstanceForBagType:1];
   v4 = [v3 objectForKey:@"nickname-reupload-profile-version"];
 
   if (v4)
   {
-    v2 = [v4 unsignedIntegerValue];
+    unsignedIntegerValue = [v4 unsignedIntegerValue];
   }
 
-  v5 = [MEMORY[0x277D1A990] sharedInstance];
-  v6 = [v5 getBoolFromDomain:*MEMORY[0x277D1A3C0] forKey:@"UseOldProfilesContainer"];
+  mEMORY[0x277D1A990] = [MEMORY[0x277D1A990] sharedInstance];
+  v6 = [mEMORY[0x277D1A990] getBoolFromDomain:*MEMORY[0x277D1A3C0] forKey:@"UseOldProfilesContainer"];
 
   if (v6)
   {
-    v2 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
-- (void)_tryToReuploadPersonalNicknameWithRetryCount:(unint64_t)a3 reuploadVersion:(unint64_t)a4
+- (void)_tryToReuploadPersonalNicknameWithRetryCount:(unint64_t)count reuploadVersion:(unint64_t)version
 {
-  if (a3 > 2)
+  if (count > 2)
   {
     if (IMOSLoggingEnabled())
     {
@@ -596,23 +596,23 @@ LABEL_12:
       }
     }
 
-    v9 = [(IMDNicknameController *)self defaults];
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
-    [v9 setValue:v10 forDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A418]];
+    defaults = [(IMDNicknameController *)self defaults];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:version];
+    [defaults setValue:v10 forDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A418]];
   }
 
   else
   {
     objc_initWeak(location, self);
-    v7 = [(IMDNicknameController *)self personalNickname];
+    personalNickname = [(IMDNicknameController *)self personalNickname];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = sub_22B5C0DD0;
     v11[3] = &unk_278705C00;
     objc_copyWeak(v12, location);
-    v12[1] = a4;
-    v12[2] = a3;
-    [(IMDNicknameController *)self setPersonalNickname:v7 completionBlock:v11];
+    v12[1] = version;
+    v12[2] = count;
+    [(IMDNicknameController *)self setPersonalNickname:personalNickname completionBlock:v11];
 
     objc_destroyWeak(v12);
     objc_destroyWeak(location);
@@ -621,34 +621,34 @@ LABEL_12:
 
 - (void)reuploadProfileIfNeeded
 {
-  v3 = [(IMDNicknameController *)self defaults];
-  v4 = [v3 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A418]];
-  v5 = [v4 unsignedIntegerValue];
+  defaults = [(IMDNicknameController *)self defaults];
+  v4 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A418]];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  v6 = [(IMDNicknameController *)self _reuploadLocalProfileVersionNumber];
-  if (v5 < v6)
+  _reuploadLocalProfileVersionNumber = [(IMDNicknameController *)self _reuploadLocalProfileVersionNumber];
+  if (unsignedIntegerValue < _reuploadLocalProfileVersionNumber)
   {
 
-    [(IMDNicknameController *)self _tryToReuploadPersonalNicknameWithRetryCount:0 reuploadVersion:v6];
+    [(IMDNicknameController *)self _tryToReuploadPersonalNicknameWithRetryCount:0 reuploadVersion:_reuploadLocalProfileVersionNumber];
   }
 }
 
-- (void)_newDeviceDidSignIntoiMessageWithRetryCount:(unint64_t)a3
+- (void)_newDeviceDidSignIntoiMessageWithRetryCount:(unint64_t)count
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = [(IMDNicknameController *)self defaults];
-  v5 = [v4 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A410]];
-  v6 = [v5 BOOLValue];
+  defaults = [(IMDNicknameController *)self defaults];
+  v5 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A410]];
+  bOOLValue = [v5 BOOLValue];
 
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
       v9 = v8;
       v10 = @"NO";
-      if (v6)
+      if (bOOLValue)
       {
         v10 = @"YES";
       }
@@ -661,7 +661,7 @@ LABEL_12:
     }
   }
 
-  if ((v6 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     im_dispatch_after();
   }
@@ -681,48 +681,48 @@ LABEL_12:
     }
   }
 
-  v4 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v5 = *MEMORY[0x277D1A3C0];
-  [v4 setValue:0 forDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A410]];
+  [defaults setValue:0 forDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A410]];
 
-  v6 = [(IMDNicknameController *)self defaults];
-  [v6 setValue:MEMORY[0x277CBEC28] forDomain:v5 forKey:*MEMORY[0x277D1A3E0]];
+  defaults2 = [(IMDNicknameController *)self defaults];
+  [defaults2 setValue:MEMORY[0x277CBEC28] forDomain:v5 forKey:*MEMORY[0x277D1A3E0]];
 
-  v7 = [(IMDNicknameController *)self defaults];
-  [v7 setValue:&unk_283F4E978 forDomain:v5 forKey:*MEMORY[0x277D1A428]];
+  defaults3 = [(IMDNicknameController *)self defaults];
+  [defaults3 setValue:&unk_283F4E978 forDomain:v5 forKey:*MEMORY[0x277D1A428]];
 
   [(IMDNicknameController *)self _deletePublicNicknameLocationAndKey];
 }
 
-- (void)verifyTruncatedRecordIDMatchesPersonalNickname:(id)a3 forChat:(id)a4
+- (void)verifyTruncatedRecordIDMatchesPersonalNickname:(id)nickname forChat:(id)chat
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (-[IMDNicknameController _nicknameFeatureEnabled](self, "_nicknameFeatureEnabled") && [v7 style] == 45)
+  nicknameCopy = nickname;
+  chatCopy = chat;
+  if (-[IMDNicknameController _nicknameFeatureEnabled](self, "_nicknameFeatureEnabled") && [chatCopy style] == 45)
   {
-    v8 = [(IMDNicknameController *)self personalNickname];
-    v9 = [(IMDNicknameController *)self substringRecordIDForNickname:v8];
+    personalNickname = [(IMDNicknameController *)self personalNickname];
+    v9 = [(IMDNicknameController *)self substringRecordIDForNickname:personalNickname];
 
-    v10 = [v9 isEqualToString:v6];
+    v10 = [v9 isEqualToString:nicknameCopy];
     if (IMOSLoggingEnabled())
     {
       v11 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
       {
-        v12 = [(IMDNicknameController *)self personalNickname];
-        v13 = [v12 recordID];
-        v14 = v13;
+        personalNickname2 = [(IMDNicknameController *)self personalNickname];
+        recordID = [personalNickname2 recordID];
+        v14 = recordID;
         v15 = @"NO";
         *v18 = 138413058;
-        *&v18[4] = v6;
+        *&v18[4] = nicknameCopy;
         if (v10)
         {
           v15 = @"YES";
         }
 
         *&v18[12] = 2112;
-        *&v18[14] = v13;
+        *&v18[14] = recordID;
         v19 = 2112;
         v20 = v9;
         v21 = 2112;
@@ -743,7 +743,7 @@ LABEL_12:
         }
       }
 
-      [v7 meCardHasUpdated];
+      [chatCopy meCardHasUpdated];
     }
 
 LABEL_19:
@@ -768,9 +768,9 @@ LABEL_20:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_beginNicknameUpload:(id)a3
+- (void)_beginNicknameUpload:(id)upload
 {
-  v4 = a3;
+  uploadCopy = upload;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -782,7 +782,7 @@ LABEL_20:
   }
 
   self->_nicknameIsUploadingToCK = 1;
-  [(IMDNicknameController *)self _storePendingNicknameForUpload:v4];
+  [(IMDNicknameController *)self _storePendingNicknameForUpload:uploadCopy];
   im_dispatch_after();
 }
 
@@ -805,8 +805,8 @@ LABEL_20:
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = [(IMDNicknameController *)self chatsToSendNicknameInfoTo];
-  v5 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
+  chatsToSendNicknameInfoTo = [(IMDNicknameController *)self chatsToSendNicknameInfoTo];
+  v5 = [chatsToSendNicknameInfoTo countByEnumeratingWithState:&v19 objects:v25 count:16];
   if (v5)
   {
     v7 = *v20;
@@ -819,7 +819,7 @@ LABEL_20:
       {
         if (*v20 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(chatsToSendNicknameInfoTo);
         }
 
         v9 = *(*(&v19 + 1) + 8 * v8);
@@ -828,10 +828,10 @@ LABEL_20:
 
         if (v11)
         {
-          v12 = [v11 participants];
-          v13 = [v11 guid];
-          v14 = [v11 lastAddressedLocalHandle];
-          [(IMDNicknameController *)self sendPersonalNicknameToRecipients:v12 chatGUID:v13 fromHandle:v14];
+          participants = [v11 participants];
+          guid = [v11 guid];
+          lastAddressedLocalHandle = [v11 lastAddressedLocalHandle];
+          [(IMDNicknameController *)self sendPersonalNicknameToRecipients:participants chatGUID:guid fromHandle:lastAddressedLocalHandle];
         }
 
         else if (IMOSLoggingEnabled())
@@ -849,51 +849,51 @@ LABEL_20:
       }
 
       while (v5 != v8);
-      v5 = [v4 countByEnumeratingWithState:&v19 objects:v25 count:16];
+      v5 = [chatsToSendNicknameInfoTo countByEnumeratingWithState:&v19 objects:v25 count:16];
     }
 
     while (v5);
   }
 
-  v16 = [(IMDNicknameController *)self chatsToSendNicknameInfoTo];
-  [v16 removeAllObjects];
+  chatsToSendNicknameInfoTo2 = [(IMDNicknameController *)self chatsToSendNicknameInfoTo];
+  [chatsToSendNicknameInfoTo2 removeAllObjects];
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setPersonalNickname:(id)a3
+- (void)setPersonalNickname:(id)nickname
 {
-  v5 = a3;
+  nicknameCopy = nickname;
   personalNickname = self->_personalNickname;
   p_personalNickname = &self->_personalNickname;
-  if (personalNickname != v5)
+  if (personalNickname != nicknameCopy)
   {
-    v10 = v5;
-    objc_storeStrong(p_personalNickname, a3);
+    v10 = nicknameCopy;
+    objc_storeStrong(p_personalNickname, nickname);
     v8 = +[IMDBroadcastController sharedProvider];
-    v9 = [v8 broadcasterForAccountListeners];
-    [v9 updatePersonalNickname:*p_personalNickname];
+    broadcasterForAccountListeners = [v8 broadcasterForAccountListeners];
+    [broadcasterForAccountListeners updatePersonalNickname:*p_personalNickname];
 
-    v5 = v10;
+    nicknameCopy = v10;
   }
 }
 
-- (void)setPersonalNickname:(id)a3 completionBlock:(id)a4
+- (void)setPersonalNickname:(id)nickname completionBlock:(id)block
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nicknameCopy = nickname;
+  blockCopy = block;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v6 avatar];
-      v10 = [v9 imageFilePath];
+      avatar = [nicknameCopy avatar];
+      imageFilePath = [avatar imageFilePath];
       *buf = 138412546;
-      v28 = v6;
+      v28 = nicknameCopy;
       v29 = 2112;
-      v30 = v10;
+      v30 = imageFilePath;
       _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Client request to store new personal nickname %@ path%@", buf, 0x16u);
     }
   }
@@ -904,18 +904,18 @@ LABEL_20:
     aBlock[1] = 3221225472;
     aBlock[2] = sub_22B5C21DC;
     aBlock[3] = &unk_278702930;
-    v26 = v7;
+    v26 = blockCopy;
     v11 = _Block_copy(aBlock);
-    v12 = [(IMDNicknameController *)self transferServicesController];
+    transferServicesController = [(IMDNicknameController *)self transferServicesController];
     v13 = objc_opt_respondsToSelector();
 
-    [(IMDNicknameController *)self _beginNicknameUpload:v6];
-    v14 = [(IMDNicknameController *)self nickNameRecordID];
-    v15 = [v6 description];
+    [(IMDNicknameController *)self _beginNicknameUpload:nicknameCopy];
+    nickNameRecordID = [(IMDNicknameController *)self nickNameRecordID];
+    v15 = [nicknameCopy description];
     [(IMDNicknameController *)self _showDebugAlertWithHeader:@"Uploading Personal Nickname" message:v15];
 
     objc_initWeak(buf, self);
-    v16 = [(IMDNicknameController *)self transferServicesController];
+    transferServicesController2 = [(IMDNicknameController *)self transferServicesController];
     if (v13)
     {
       v22[0] = MEMORY[0x277D85DD0];
@@ -924,7 +924,7 @@ LABEL_20:
       v22[3] = &unk_278705C28;
       objc_copyWeak(&v24, buf);
       v23 = v11;
-      [v16 setPersonalNickname:v6 oldRecordID:v14 completionBlockWithWallpaperAndRecipeDataTags:v22];
+      [transferServicesController2 setPersonalNickname:nicknameCopy oldRecordID:nickNameRecordID completionBlockWithWallpaperAndRecipeDataTags:v22];
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(buf);
@@ -938,7 +938,7 @@ LABEL_20:
       v19[3] = &unk_278705C50;
       objc_copyWeak(&v21, buf);
       v20 = v11;
-      [v16 setPersonalNickname:v6 oldRecordID:v14 completionBlockWithWallpaperTags:v19];
+      [transferServicesController2 setPersonalNickname:nicknameCopy oldRecordID:nickNameRecordID completionBlockWithWallpaperTags:v19];
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(buf);
@@ -957,9 +957,9 @@ LABEL_20:
       }
     }
 
-    if (v7)
+    if (blockCopy)
     {
-      (*(v7 + 2))(v7, 0, 0);
+      (*(blockCopy + 2))(blockCopy, 0, 0);
     }
   }
 
@@ -969,9 +969,9 @@ LABEL_20:
 - (void)_uploadPendingNicknameIfNecessary
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self _getPendingNicknameForUpload];
+  _getPendingNicknameForUpload = [(IMDNicknameController *)self _getPendingNicknameForUpload];
   v4 = IMOSLoggingEnabled();
-  if (v3)
+  if (_getPendingNicknameForUpload)
   {
     if (v4)
     {
@@ -979,15 +979,15 @@ LABEL_20:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v9 = 138412290;
-        v10 = v3;
+        v10 = _getPendingNicknameForUpload;
         _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Loaded pending nickname from disk: %@ and uploading", &v9, 0xCu);
       }
     }
 
-    v6 = [v3 description];
+    v6 = [_getPendingNicknameForUpload description];
     [(IMDNicknameController *)self _showDebugAlertWithHeader:@"Found Pending Nickname Upload" message:v6];
 
-    [(IMDNicknameController *)self setPersonalNickname:v3 completionBlock:0];
+    [(IMDNicknameController *)self setPersonalNickname:_getPendingNicknameForUpload completionBlock:0];
   }
 
   else if (v4)
@@ -1019,33 +1019,33 @@ LABEL_20:
   [(IMDNicknameController *)self _updateDenyAllowListHandlesVersion];
   [(IMDNicknameController *)self _syncHandleAllowDenyListToOtherDevices];
   v4 = +[IMDBroadcastController sharedProvider];
-  v5 = [v4 broadcasterForAccountListeners];
-  v6 = [(IMDNicknameController *)self allowListedHandlesForSharing];
-  v7 = [(IMDNicknameController *)self denyListedHandlesForSharing];
-  [v5 updateNicknameHandlesForSharing:v6 blocked:v7];
+  broadcasterForAccountListeners = [v4 broadcasterForAccountListeners];
+  allowListedHandlesForSharing = [(IMDNicknameController *)self allowListedHandlesForSharing];
+  denyListedHandlesForSharing = [(IMDNicknameController *)self denyListedHandlesForSharing];
+  [broadcasterForAccountListeners updateNicknameHandlesForSharing:allowListedHandlesForSharing blocked:denyListedHandlesForSharing];
 }
 
 - (void)_clearSharingLists
 {
-  v3 = [(IMDNicknameController *)self handleAllowList];
-  [v3 removeAllObjects];
+  handleAllowList = [(IMDNicknameController *)self handleAllowList];
+  [handleAllowList removeAllObjects];
 
-  v4 = [(IMDNicknameController *)self handleDenyList];
-  [v4 removeAllObjects];
+  handleDenyList = [(IMDNicknameController *)self handleDenyList];
+  [handleDenyList removeAllObjects];
 
-  v5 = [(IMDNicknameController *)self handleSharingKVStore];
-  [v5 deleteDatabase];
+  handleSharingKVStore = [(IMDNicknameController *)self handleSharingKVStore];
+  [handleSharingKVStore deleteDatabase];
 }
 
 - (void)_clearTransitionedList
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self handleTransitionedList];
-  [v3 removeAllObjects];
+  handleTransitionedList = [(IMDNicknameController *)self handleTransitionedList];
+  [handleTransitionedList removeAllObjects];
 
-  v4 = [(IMDNicknameController *)self nicknameRecordsKVStore];
+  nicknameRecordsKVStore = [(IMDNicknameController *)self nicknameRecordsKVStore];
   v8 = 0;
-  [v4 persistData:0 forKey:@"handleTransitionedList" error:&v8];
+  [nicknameRecordsKVStore persistData:0 forKey:@"handleTransitionedList" error:&v8];
   v5 = v8;
 
   if (IMOSLoggingEnabled())
@@ -1065,12 +1065,12 @@ LABEL_20:
 - (void)_clearActiveNicknameRecords
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self activeNicknameRecords];
-  [v3 removeAllObjects];
+  activeNicknameRecords = [(IMDNicknameController *)self activeNicknameRecords];
+  [activeNicknameRecords removeAllObjects];
 
-  v4 = [(IMDNicknameController *)self nicknameRecordsKVStore];
+  nicknameRecordsKVStore = [(IMDNicknameController *)self nicknameRecordsKVStore];
   v8 = 0;
-  [v4 persistData:0 forKey:@"activeNicknameRecords" error:&v8];
+  [nicknameRecordsKVStore persistData:0 forKey:@"activeNicknameRecords" error:&v8];
   v5 = v8;
 
   if (IMOSLoggingEnabled())
@@ -1090,12 +1090,12 @@ LABEL_20:
 - (void)_clearIgnoredNicknameRecords
 {
   v11 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self ignoredNicknameRecords];
-  [v3 removeAllObjects];
+  ignoredNicknameRecords = [(IMDNicknameController *)self ignoredNicknameRecords];
+  [ignoredNicknameRecords removeAllObjects];
 
-  v4 = [(IMDNicknameController *)self nicknameRecordsKVStore];
+  nicknameRecordsKVStore = [(IMDNicknameController *)self nicknameRecordsKVStore];
   v8 = 0;
-  [v4 persistData:0 forKey:@"ignoredNicknameRecords" error:&v8];
+  [nicknameRecordsKVStore persistData:0 forKey:@"ignoredNicknameRecords" error:&v8];
   v5 = v8;
 
   if (IMOSLoggingEnabled())
@@ -1112,27 +1112,27 @@ LABEL_20:
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentPersonalNicknamewithCompletionBlock:(id)a3
+- (void)currentPersonalNicknamewithCompletionBlock:(id)block
 {
-  v4 = a3;
-  v10 = [(IMDNicknameController *)self nickNameRecordID];
-  v5 = [(IMDNicknameController *)self nickNameDecryptionKey];
-  v6 = [(IMDNicknameController *)self wallpaperDataTag];
-  v7 = [(IMDNicknameController *)self lowResWallpaperDataTag];
-  v8 = [(IMDNicknameController *)self wallpaperDataTag];
-  v9 = [(IMDNicknameController *)self avatarRecipeTag];
-  [(IMDNicknameController *)self currentPersonalNicknameWithRecordID:v10 decryptionKey:v5 wallpaperDataTag:v6 wallpaperLowResDataTag:v7 wallpaperMetadataTag:v8 avatarRecipeDataTag:v9 completionBlock:v4];
+  blockCopy = block;
+  nickNameRecordID = [(IMDNicknameController *)self nickNameRecordID];
+  nickNameDecryptionKey = [(IMDNicknameController *)self nickNameDecryptionKey];
+  wallpaperDataTag = [(IMDNicknameController *)self wallpaperDataTag];
+  lowResWallpaperDataTag = [(IMDNicknameController *)self lowResWallpaperDataTag];
+  wallpaperDataTag2 = [(IMDNicknameController *)self wallpaperDataTag];
+  avatarRecipeTag = [(IMDNicknameController *)self avatarRecipeTag];
+  [(IMDNicknameController *)self currentPersonalNicknameWithRecordID:nickNameRecordID decryptionKey:nickNameDecryptionKey wallpaperDataTag:wallpaperDataTag wallpaperLowResDataTag:lowResWallpaperDataTag wallpaperMetadataTag:wallpaperDataTag2 avatarRecipeDataTag:avatarRecipeTag completionBlock:blockCopy];
 }
 
-- (void)currentPersonalNicknameWithRecordID:(id)a3 decryptionKey:(id)a4 wallpaperDataTag:(id)a5 wallpaperLowResDataTag:(id)a6 wallpaperMetadataTag:(id)a7 avatarRecipeDataTag:(id)a8 completionBlock:(id)a9
+- (void)currentPersonalNicknameWithRecordID:(id)d decryptionKey:(id)key wallpaperDataTag:(id)tag wallpaperLowResDataTag:(id)dataTag wallpaperMetadataTag:(id)metadataTag avatarRecipeDataTag:(id)recipeDataTag completionBlock:(id)block
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  dCopy = d;
+  keyCopy = key;
+  tagCopy = tag;
+  dataTagCopy = dataTag;
+  metadataTagCopy = metadataTag;
+  recipeDataTagCopy = recipeDataTag;
+  blockCopy = block;
   if (IMOSLoggingEnabled())
   {
     v22 = OSLogHandleForIMFoundationCategory();
@@ -1147,40 +1147,40 @@ LABEL_20:
   aBlock[1] = 3221225472;
   aBlock[2] = sub_22B5C3384;
   aBlock[3] = &unk_278705C78;
-  v23 = v21;
+  v23 = blockCopy;
   v42 = v23;
   v24 = _Block_copy(aBlock);
   if ([(IMDNicknameController *)self _nicknameFeatureEnabled])
   {
-    if ([v15 length] && objc_msgSend(v16, "length"))
+    if ([dCopy length] && objc_msgSend(keyCopy, "length"))
     {
       objc_initWeak(buf, self);
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = sub_22B5C339C;
       v35[3] = &unk_278705CA0;
-      v36 = v15;
+      v36 = dCopy;
       objc_copyWeak(&v39, buf);
-      v34 = v16;
-      v25 = v16;
-      v26 = v20;
-      v27 = v19;
-      v28 = v18;
-      v29 = v17;
+      v34 = keyCopy;
+      v25 = keyCopy;
+      v26 = recipeDataTagCopy;
+      v27 = metadataTagCopy;
+      v28 = dataTagCopy;
+      v29 = tagCopy;
       v30 = v25;
       v37 = v25;
       v38 = v24;
       LOWORD(v33) = 257;
       v31 = v30;
-      v17 = v29;
-      v18 = v28;
-      v19 = v27;
-      v20 = v26;
-      [(IMDNicknameController *)self getNicknameWithRecordID:v36 decryptionKey:v31 wallpaperDataTag:v17 wallpaperLowResDataTag:v18 wallpaperMetadataTag:v19 avatarRecipeDataTag:v26 isKnownSender:v33 shouldDecodeImageFields:v35 completionBlock:?];
+      tagCopy = v29;
+      dataTagCopy = v28;
+      metadataTagCopy = v27;
+      recipeDataTagCopy = v26;
+      [(IMDNicknameController *)self getNicknameWithRecordID:v36 decryptionKey:v31 wallpaperDataTag:tagCopy wallpaperLowResDataTag:dataTagCopy wallpaperMetadataTag:metadataTagCopy avatarRecipeDataTag:v26 isKnownSender:v33 shouldDecodeImageFields:v35 completionBlock:?];
 
       objc_destroyWeak(&v39);
       objc_destroyWeak(buf);
-      v16 = v34;
+      keyCopy = v34;
     }
   }
 
@@ -1203,22 +1203,22 @@ LABEL_20:
   }
 }
 
-- (void)getNicknameWithRecordID:(id)a3 decryptionKey:(id)a4 wallpaperDataTag:(id)a5 wallpaperLowResDataTag:(id)a6 wallpaperMetadataTag:(id)a7 avatarRecipeDataTag:(id)a8 isKnownSender:(BOOL)a9 shouldDecodeImageFields:(BOOL)a10 completionBlock:(id)a11
+- (void)getNicknameWithRecordID:(id)d decryptionKey:(id)key wallpaperDataTag:(id)tag wallpaperLowResDataTag:(id)dataTag wallpaperMetadataTag:(id)metadataTag avatarRecipeDataTag:(id)recipeDataTag isKnownSender:(BOOL)sender shouldDecodeImageFields:(BOOL)self0 completionBlock:(id)self1
 {
-  v17 = a5;
-  v48 = a6;
-  v18 = a7;
-  v46 = a8;
-  v19 = a11;
+  tagCopy = tag;
+  dataTagCopy = dataTag;
+  metadataTagCopy = metadataTag;
+  recipeDataTagCopy = recipeDataTag;
+  blockCopy = block;
   v20 = MEMORY[0x277D192C0];
-  v45 = a4;
-  v47 = a3;
+  keyCopy = key;
+  dCopy = d;
   v21 = objc_alloc_init(v20);
   [v21 startTimingForKey:@"Nickname Download"];
-  v22 = [(IMDNicknameController *)self transferServicesController];
+  transferServicesController = [(IMDNicknameController *)self transferServicesController];
   v23 = objc_opt_respondsToSelector();
 
-  v24 = [(IMDNicknameController *)self transferServicesController];
+  transferServicesController2 = [(IMDNicknameController *)self transferServicesController];
   if (v23)
   {
     v55[0] = MEMORY[0x277D85DD0];
@@ -1227,25 +1227,25 @@ LABEL_20:
     v55[3] = &unk_278705CC8;
     v43 = &v60;
     v44 = &v56;
-    v59 = v18;
-    v60 = v19;
+    v59 = metadataTagCopy;
+    v60 = blockCopy;
     v56 = v21;
-    v57 = v17;
+    v57 = tagCopy;
     v41 = &v58;
     v42 = &v57;
     v25 = &v59;
-    v58 = v48;
-    v26 = v18;
-    v27 = v48;
-    v28 = v17;
-    v29 = v17;
-    v30 = v19;
+    v58 = dataTagCopy;
+    v26 = metadataTagCopy;
+    v27 = dataTagCopy;
+    v28 = tagCopy;
+    v29 = tagCopy;
+    v30 = blockCopy;
     v31 = v21;
-    LOWORD(v40) = __PAIR16__(a10, a9);
-    v32 = v45;
+    LOWORD(v40) = __PAIR16__(fields, sender);
+    v32 = keyCopy;
     v33 = v26;
-    v34 = v46;
-    [v24 getNicknameWithRecordID:v47 decryptionKey:v45 wallpaperDataTag:v29 wallpaperLowResDataTag:v27 wallpaperMetadataTag:v33 avatarRecipeDataTag:v46 isKnownSender:v40 shouldDecodeImageFields:v55 completionBlock:?];
+    v34 = recipeDataTagCopy;
+    [transferServicesController2 getNicknameWithRecordID:dCopy decryptionKey:keyCopy wallpaperDataTag:v29 wallpaperLowResDataTag:v27 wallpaperMetadataTag:v33 avatarRecipeDataTag:recipeDataTagCopy isKnownSender:v40 shouldDecodeImageFields:v55 completionBlock:?];
   }
 
   else
@@ -1256,58 +1256,58 @@ LABEL_20:
     v49[3] = &unk_278705CC8;
     v43 = &v54;
     v44 = &v50;
-    v53 = v18;
-    v54 = v19;
+    v53 = metadataTagCopy;
+    v54 = blockCopy;
     v50 = v21;
-    v51 = v17;
+    v51 = tagCopy;
     v41 = &v52;
     v42 = &v51;
     v25 = &v53;
-    v52 = v48;
-    v35 = v18;
-    v36 = v48;
-    v28 = v17;
-    v37 = v17;
-    v38 = v19;
+    v52 = dataTagCopy;
+    v35 = metadataTagCopy;
+    v36 = dataTagCopy;
+    v28 = tagCopy;
+    v37 = tagCopy;
+    v38 = blockCopy;
     v39 = v21;
-    v32 = v45;
-    [v24 getNicknameWithRecordID:v47 decryptionKey:v45 wallpaperDataTag:v37 wallpaperLowResDataTag:v36 wallpaperMetadataTag:v35 isKnownSender:a9 completionBlock:v49];
-    v34 = v46;
+    v32 = keyCopy;
+    [transferServicesController2 getNicknameWithRecordID:dCopy decryptionKey:keyCopy wallpaperDataTag:v37 wallpaperLowResDataTag:v36 wallpaperMetadataTag:v35 isKnownSender:sender completionBlock:v49];
+    v34 = recipeDataTagCopy;
   }
 }
 
-- (void)NicknameWithRecordID:(id)a3 URI:(id)a4 decryptionKey:(id)a5 wallpaperDataTag:(id)a6 wallpaperLowResDataTag:(id)a7 wallpaperMetadataTag:(id)a8 avatarRecipeDataTag:(id)a9 hasWallpaperUpdate:(BOOL)a10 dropNicknameForUnknownContacts:(BOOL)a11 withCompletionBlock:(id)a12
+- (void)NicknameWithRecordID:(id)d URI:(id)i decryptionKey:(id)key wallpaperDataTag:(id)tag wallpaperLowResDataTag:(id)dataTag wallpaperMetadataTag:(id)metadataTag avatarRecipeDataTag:(id)recipeDataTag hasWallpaperUpdate:(BOOL)self0 dropNicknameForUnknownContacts:(BOOL)self1 withCompletionBlock:(id)self2
 {
   v77 = *MEMORY[0x277D85DE8];
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v59 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a12;
+  dCopy = d;
+  iCopy = i;
+  keyCopy = key;
+  tagCopy = tag;
+  dataTagCopy = dataTag;
+  metadataTagCopy = metadataTag;
+  recipeDataTagCopy = recipeDataTag;
+  blockCopy = block;
   if (IMOSLoggingEnabled())
   {
     v25 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v72 = v18;
+      v72 = dCopy;
       v73 = 2112;
-      *v74 = v19;
+      *v74 = iCopy;
       _os_log_impl(&dword_22B4CC000, v25, OS_LOG_TYPE_INFO, "Asked to fetch nickname with recordID %@, sender URI: %@", buf, 0x16u);
     }
   }
 
   if ([(IMDNicknameController *)self _nicknameFeatureEnabled])
   {
-    if (-[__CFString length](v18, "length") && [v19 length] && objc_msgSend(v20, "length"))
+    if (-[__CFString length](dCopy, "length") && [iCopy length] && objc_msgSend(keyCopy, "length"))
     {
-      v58 = [v19 _stripFZIDPrefix];
-      v57 = [(IMDNicknameController *)self nicknameForRecordID:v18 handle:v58];
+      _stripFZIDPrefix = [iCopy _stripFZIDPrefix];
+      v57 = [(IMDNicknameController *)self nicknameForRecordID:dCopy handle:_stripFZIDPrefix];
       v26 = +[IMDChatRegistry sharedInstance];
-      v56 = [v26 _hasSavedContactCardForHandle:v58];
+      v56 = [v26 _hasSavedContactCardForHandle:_stripFZIDPrefix];
 
       if (IMOSLoggingEnabled())
       {
@@ -1321,7 +1321,7 @@ LABEL_20:
           }
 
           *buf = 138412546;
-          v72 = v58;
+          v72 = _stripFZIDPrefix;
           v73 = 2112;
           *v74 = v28;
           _os_log_impl(&dword_22B4CC000, v27, OS_LOG_TYPE_INFO, "Is %@ a known sender: %@", buf, 0x16u);
@@ -1330,14 +1330,14 @@ LABEL_20:
 
       v55 = [MEMORY[0x277D18A10] sharedInstanceForBagType:0];
       v54 = [v55 objectForKey:@"disable-SNaP-downloads-for-unknown-senders"];
-      v29 = [v54 BOOLValue];
+      bOOLValue = [v54 BOOLValue];
       if (IMOSLoggingEnabled())
       {
         v30 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
         {
           v31 = @"NO";
-          if (v29)
+          if (bOOLValue)
           {
             v31 = @"YES";
           }
@@ -1348,22 +1348,22 @@ LABEL_20:
         }
       }
 
-      if (v56 & 1 | (((a11 | v29) & 1) == 0))
+      if (v56 & 1 | (((contacts | bOOLValue) & 1) == 0))
       {
         if (v57)
         {
-          v32 = [v57 wallpaper];
-          if (v32)
+          wallpaper = [v57 wallpaper];
+          if (wallpaper)
           {
-            v33 = 0;
+            updateCopy = 0;
           }
 
           else
           {
-            v33 = a10;
+            updateCopy = update;
           }
 
-          v49 = v33 & v56;
+          v49 = updateCopy & v56;
         }
 
         else
@@ -1375,7 +1375,7 @@ LABEL_20:
         aBlock[1] = 3221225472;
         aBlock[2] = sub_22B5C4748;
         aBlock[3] = &unk_278705CF0;
-        v37 = v58;
+        v37 = _stripFZIDPrefix;
         v70 = v37;
         v52 = _Block_copy(aBlock);
         v66[0] = MEMORY[0x277D85DD0];
@@ -1384,7 +1384,7 @@ LABEL_20:
         v66[3] = &unk_278705D18;
         v50 = v37;
         v67 = v50;
-        v68 = self;
+        selfCopy = self;
         v51 = _Block_copy(v66);
         if (v56 & 1) != 0 || (v52[2]())
         {
@@ -1398,10 +1398,10 @@ LABEL_20:
 
         if (v57)
         {
-          v38 = [v57 avatar];
-          v39 = [v38 hasImage];
+          avatar = [v57 avatar];
+          hasImage = [avatar hasImage];
 
-          v40 = (v39 ^ 1) & v53;
+          v40 = (hasImage ^ 1) & v53;
         }
 
         else
@@ -1426,7 +1426,7 @@ LABEL_20:
           }
         }
 
-        if (v57 && (([v57 avatarRecipe], (v43 = objc_claimAutoreleasedReturnValue()) == 0) ? (v23 ? (v44 = v53) : (v44 = 0)) : (v44 = 0), v43, ((v40 | v49 | v44) & 1) == 0))
+        if (v57 && (([v57 avatarRecipe], (v43 = objc_claimAutoreleasedReturnValue()) == 0) ? (recipeDataTagCopy ? (v44 = v53) : (v44 = 0)) : (v44 = 0), v43, ((v40 | v49 | v44) & 1) == 0))
         {
           if (IMOSLoggingEnabled())
           {
@@ -1434,20 +1434,20 @@ LABEL_20:
             if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
             {
               *buf = 138413314;
-              v72 = v18;
+              v72 = dCopy;
               v73 = 1024;
               *v74 = v56;
               *&v74[4] = 1024;
               *&v74[6] = 1;
               LOWORD(v75) = 1024;
-              *(&v75 + 2) = a10;
+              *(&v75 + 2) = update;
               HIWORD(v75) = 2112;
               v76 = v57;
               _os_log_impl(&dword_22B4CC000, v46, OS_LOG_TYPE_INFO, "Already have this one, no need to grab it again from CloudKit with recordID %@, knownSender: %i, shouldAttemptWallpaperFetch: %i, hasWallpaperUpdate: %i, existingNickname: %@", buf, 0x28u);
             }
           }
 
-          v24[2](v24, v57, 1, 0, 1);
+          blockCopy[2](blockCopy, v57, 1, 0, 1);
         }
 
         else
@@ -1458,7 +1458,7 @@ LABEL_20:
             if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v72 = v18;
+              v72 = dCopy;
               _os_log_impl(&dword_22B4CC000, v45, OS_LOG_TYPE_INFO, "Retrieving nickname from IMTransferAgent with recordID %@", buf, 0xCu);
             }
           }
@@ -1470,12 +1470,12 @@ LABEL_20:
           v60[3] = &unk_278705D40;
           objc_copyWeak(&v65, buf);
           v61 = v50;
-          v62 = v19;
-          v63 = v18;
-          v64 = v24;
+          v62 = iCopy;
+          v63 = dCopy;
+          v64 = blockCopy;
           BYTE1(v48) = v53;
           LOBYTE(v48) = v56;
-          [(IMDNicknameController *)self getNicknameWithRecordID:v63 decryptionKey:v20 wallpaperDataTag:v59 wallpaperLowResDataTag:v21 wallpaperMetadataTag:v22 avatarRecipeDataTag:v23 isKnownSender:v48 shouldDecodeImageFields:v60 completionBlock:?];
+          [(IMDNicknameController *)self getNicknameWithRecordID:v63 decryptionKey:keyCopy wallpaperDataTag:tagCopy wallpaperLowResDataTag:dataTagCopy wallpaperMetadataTag:metadataTagCopy avatarRecipeDataTag:recipeDataTagCopy isKnownSender:v48 shouldDecodeImageFields:v60 completionBlock:?];
 
           objc_destroyWeak(&v65);
           objc_destroyWeak(buf);
@@ -1494,9 +1494,9 @@ LABEL_20:
           }
         }
 
-        if (v24)
+        if (blockCopy)
         {
-          v24[2](v24, 0, 0, 0, 1);
+          blockCopy[2](blockCopy, 0, 0, 0, 1);
         }
       }
 
@@ -1509,17 +1509,17 @@ LABEL_20:
       if (os_log_type_enabled(v35, OS_LOG_TYPE_INFO))
       {
         *buf = 138412802;
-        v72 = v18;
+        v72 = dCopy;
         v73 = 2112;
-        *v74 = v19;
+        *v74 = iCopy;
         *&v74[8] = 2112;
-        v75 = v20;
+        v75 = keyCopy;
         _os_log_impl(&dword_22B4CC000, v35, OS_LOG_TYPE_INFO, "We are missing parameters to fetch the CloudKit record (recordID: %@) (URI: %@) (decryptionKey: %@)", buf, 0x20u);
       }
     }
 
 LABEL_32:
-    v24[2](v24, 0, 0, 0, 1);
+    blockCopy[2](blockCopy, 0, 0, 0, 1);
     goto LABEL_77;
   }
 
@@ -1533,7 +1533,7 @@ LABEL_32:
     }
   }
 
-  if (v24)
+  if (blockCopy)
   {
     goto LABEL_32;
   }
@@ -1543,12 +1543,12 @@ LABEL_77:
   v47 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteAllPersonalNicknames:(BOOL)a3 withCompletion:(id)a4
+- (void)deleteAllPersonalNicknames:(BOOL)nicknames withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(IMDNicknameController *)self _nicknameFeatureEnabled];
+  completionCopy = completion;
+  _nicknameFeatureEnabled = [(IMDNicknameController *)self _nicknameFeatureEnabled];
   v8 = IMOSLoggingEnabled();
-  if (v7)
+  if (_nicknameFeatureEnabled)
   {
     if (v8)
     {
@@ -1560,21 +1560,21 @@ LABEL_77:
       }
     }
 
-    v10 = [(IMDNicknameController *)self transferServicesController];
+    transferServicesController = [(IMDNicknameController *)self transferServicesController];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
       objc_initWeak(buf, self);
-      v12 = [(IMDNicknameController *)self transferServicesController];
+      transferServicesController2 = [(IMDNicknameController *)self transferServicesController];
       v14[0] = MEMORY[0x277D85DD0];
       v14[1] = 3221225472;
       v14[2] = sub_22B5C4E90;
       v14[3] = &unk_278705D68;
       objc_copyWeak(&v16, buf);
-      v17 = a3;
-      v15 = v6;
-      [v12 deleteAllPersonalNicknamesWithCompletion:v14];
+      nicknamesCopy = nicknames;
+      v15 = completionCopy;
+      [transferServicesController2 deleteAllPersonalNicknamesWithCompletion:v14];
 
       objc_destroyWeak(&v16);
       objc_destroyWeak(buf);
@@ -1592,16 +1592,16 @@ LABEL_77:
   }
 }
 
-- (void)_updateSharingPreferencesIfNeededFromMadridMessage:(id)a3
+- (void)_updateSharingPreferencesIfNeededFromMadridMessage:(id)message
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   if ([(IMDNicknameController *)self _nicknameFeatureEnabled])
   {
-    v5 = [v4 objectForKey:MessageDictionaryMeCardSharingAudienceKey];
-    v6 = [v4 objectForKey:MessageDictionaryMeCardSharingEnabledKey];
-    v7 = [v4 objectForKey:MessageDictionaryMeCardSharingNameForkedKey];
-    v8 = [v4 objectForKey:MessageDictionaryMeCardSharingImageForkedKey];
+    v5 = [messageCopy objectForKey:MessageDictionaryMeCardSharingAudienceKey];
+    v6 = [messageCopy objectForKey:MessageDictionaryMeCardSharingEnabledKey];
+    v7 = [messageCopy objectForKey:MessageDictionaryMeCardSharingNameForkedKey];
+    v8 = [messageCopy objectForKey:MessageDictionaryMeCardSharingImageForkedKey];
     v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"audienceValue %@ enabledValue %@ nameForked %@ imageForked %@", v5, v6, v7, v8];
     if (IMOSLoggingEnabled())
     {
@@ -1622,12 +1622,12 @@ LABEL_77:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v5 integerValue];
-          if (v11 <= 2)
+          integerValue = [v5 integerValue];
+          if (integerValue <= 2)
           {
-            v12 = [(IMDNicknameController *)self defaults];
-            v13 = [MEMORY[0x277CCABB0] numberWithInteger:v11];
-            [v12 setValue:v13 forDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3D8]];
+            defaults = [(IMDNicknameController *)self defaults];
+            v13 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
+            [defaults setValue:v13 forDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3D8]];
           }
         }
       }
@@ -1637,9 +1637,9 @@ LABEL_77:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v14 = [(IMDNicknameController *)self defaults];
+          defaults2 = [(IMDNicknameController *)self defaults];
           v15 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v7, "BOOLValue")}];
-          [v14 setValue:v15 forDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3F0]];
+          [defaults2 setValue:v15 forDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3F0]];
         }
       }
 
@@ -1648,9 +1648,9 @@ LABEL_77:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 = [(IMDNicknameController *)self defaults];
+          defaults3 = [(IMDNicknameController *)self defaults];
           v17 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v8, "BOOLValue")}];
-          [v16 setValue:v17 forDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3E8]];
+          [defaults3 setValue:v17 forDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3E8]];
         }
       }
 
@@ -1659,9 +1659,9 @@ LABEL_77:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v18 = [(IMDNicknameController *)self defaults];
+          defaults4 = [(IMDNicknameController *)self defaults];
           v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "BOOLValue")}];
-          [v18 setValue:v19 forDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3E0]];
+          [defaults4 setValue:v19 forDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3E0]];
 
           if (([v6 BOOLValue] & 1) == 0)
           {
@@ -1696,54 +1696,54 @@ LABEL_77:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateMessageDictionaryWithPendingNicknameUpdates:(id)a3
+- (void)_updateMessageDictionaryWithPendingNicknameUpdates:(id)updates
 {
-  v4 = a3;
-  v5 = [(IMDNicknameController *)self defaults];
-  v6 = [v5 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A408]];
-  v7 = [v6 unsignedIntegerValue];
+  updatesCopy = updates;
+  defaults = [(IMDNicknameController *)self defaults];
+  v6 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A408]];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [(IMDNicknameController *)self pendingNicknameUpdates];
-  v10 = [v8 allKeys];
+  pendingNicknameUpdates = [(IMDNicknameController *)self pendingNicknameUpdates];
+  allKeys = [pendingNicknameUpdates allKeys];
 
-  if (!v10)
+  if (!allKeys)
   {
-    v10 = [MEMORY[0x277CBEA60] array];
+    allKeys = [MEMORY[0x277CBEA60] array];
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
-  [v4 setObject:v9 forKey:MessageDictionaryPendingNicknameUpdatesVersionKey];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+  [updatesCopy setObject:v9 forKey:MessageDictionaryPendingNicknameUpdatesVersionKey];
 
-  [v4 setObject:v10 forKey:MessageDictionaryPendingNicknameUpdatesHandlesKey];
+  [updatesCopy setObject:allKeys forKey:MessageDictionaryPendingNicknameUpdatesHandlesKey];
 }
 
-- (void)_updateMessageDictionaryWithNicknameUpdateRecordIDs:(id)a3
+- (void)_updateMessageDictionaryWithNicknameUpdateRecordIDs:(id)ds
 {
   v60 = *MEMORY[0x277D85DE8];
-  v44 = a3;
-  v4 = [(IMDNicknameController *)self defaults];
-  v5 = [v4 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A408]];
-  v43 = [v5 unsignedIntegerValue];
+  dsCopy = ds;
+  defaults = [(IMDNicknameController *)self defaults];
+  v5 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A408]];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v6 = [(IMDNicknameController *)self pendingNicknameUpdates];
-  v7 = [v6 allValues];
+  pendingNicknameUpdates = [(IMDNicknameController *)self pendingNicknameUpdates];
+  allValues = [pendingNicknameUpdates allValues];
 
-  v8 = [(IMDNicknameController *)self handledNicknames];
-  v9 = [v8 allValues];
+  handledNicknames = [(IMDNicknameController *)self handledNicknames];
+  allValues2 = [handledNicknames allValues];
 
-  v10 = [(IMDNicknameController *)self archivedNicknames];
-  v11 = [v10 allValues];
+  archivedNicknames = [(IMDNicknameController *)self archivedNicknames];
+  allValues3 = [archivedNicknames allValues];
 
-  if (v7)
+  if (allValues)
   {
-    if (v9)
+    if (allValues2)
     {
       goto LABEL_3;
     }
 
 LABEL_33:
-    v9 = [MEMORY[0x277CBEA60] array];
-    if (v11)
+    allValues2 = [MEMORY[0x277CBEA60] array];
+    if (allValues3)
     {
       goto LABEL_4;
     }
@@ -1751,27 +1751,27 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  v7 = [MEMORY[0x277CBEA60] array];
-  if (!v9)
+  allValues = [MEMORY[0x277CBEA60] array];
+  if (!allValues2)
   {
     goto LABEL_33;
   }
 
 LABEL_3:
-  if (v11)
+  if (allValues3)
   {
     goto LABEL_4;
   }
 
 LABEL_34:
-  v11 = [MEMORY[0x277CBEA60] array];
+  allValues3 = [MEMORY[0x277CBEA60] array];
 LABEL_4:
-  v12 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v13 = v7;
+  v13 = allValues;
   v14 = [v13 countByEnumeratingWithState:&v53 objects:v59 count:16];
   if (v14)
   {
@@ -1792,7 +1792,7 @@ LABEL_4:
         if (v19)
         {
           v20 = [v18 objectForKeyedSubscript:@"rid"];
-          [v12 addObject:v20];
+          [array addObject:v20];
         }
       }
 
@@ -1803,14 +1803,14 @@ LABEL_4:
   }
 
   v41 = v13;
-  v42 = v12;
+  v42 = array;
 
-  v21 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
-  v22 = v9;
+  v22 = allValues2;
   v23 = [v22 countByEnumeratingWithState:&v49 objects:v58 count:16];
   if (v23)
   {
@@ -1831,7 +1831,7 @@ LABEL_4:
         if (v28)
         {
           v29 = [v27 objectForKeyedSubscript:@"rid"];
-          [v21 addObject:v29];
+          [array2 addObject:v29];
         }
       }
 
@@ -1841,12 +1841,12 @@ LABEL_4:
     while (v24);
   }
 
-  v30 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  v31 = v11;
+  v31 = allValues3;
   v32 = [v31 countByEnumeratingWithState:&v45 objects:v57 count:16];
   if (v32)
   {
@@ -1867,7 +1867,7 @@ LABEL_4:
         if (v37)
         {
           v38 = [v36 objectForKeyedSubscript:@"rid"];
-          [v30 addObject:v38];
+          [array3 addObject:v38];
         }
       }
 
@@ -1877,12 +1877,12 @@ LABEL_4:
     while (v33);
   }
 
-  v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v43];
-  [v44 setObject:v39 forKey:MessageDictionaryPendingNicknameUpdatesVersionKey];
+  v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+  [dsCopy setObject:v39 forKey:MessageDictionaryPendingNicknameUpdatesVersionKey];
 
-  [v44 setObject:v42 forKey:MessageDictionaryPendingNicknameUpdatesRecordIDsKey];
-  [v44 setObject:v21 forKey:MessageDictionaryCurrentNicknameUpdatesRecordIDsKey];
-  [v44 setObject:v30 forKey:MessageDictionaryArchivedNicknameUpdatesRecordIDsKey];
+  [dsCopy setObject:v42 forKey:MessageDictionaryPendingNicknameUpdatesRecordIDsKey];
+  [dsCopy setObject:array2 forKey:MessageDictionaryCurrentNicknameUpdatesRecordIDsKey];
+  [dsCopy setObject:array3 forKey:MessageDictionaryArchivedNicknameUpdatesRecordIDsKey];
 
   v40 = *MEMORY[0x277D85DE8];
 }
@@ -1908,64 +1908,64 @@ LABEL_4:
     }
   }
 
-  v5 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v6 = *MEMORY[0x277D1A3C0];
-  v25 = [v5 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3D8]];
+  v25 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3D8]];
 
   if (v25)
   {
     CFDictionarySetValue(v3, MessageDictionaryMeCardSharingAudienceKey, v25);
   }
 
-  v7 = [(IMDNicknameController *)self defaults];
-  v24 = [v7 getValueFromDomain:v6 forKey:*MEMORY[0x277D1A400]];
+  defaults2 = [(IMDNicknameController *)self defaults];
+  v24 = [defaults2 getValueFromDomain:v6 forKey:*MEMORY[0x277D1A400]];
 
-  v8 = [(IMDNicknameController *)self nickNameDecryptionKey];
-  v9 = [(IMDNicknameController *)self wallpaperDataTag];
-  v10 = [(IMDNicknameController *)self lowResWallpaperDataTag];
-  v11 = [(IMDNicknameController *)self wallpaperMetadataTag];
-  v12 = [(IMDNicknameController *)self nickNameRecordID];
+  nickNameDecryptionKey = [(IMDNicknameController *)self nickNameDecryptionKey];
+  wallpaperDataTag = [(IMDNicknameController *)self wallpaperDataTag];
+  lowResWallpaperDataTag = [(IMDNicknameController *)self lowResWallpaperDataTag];
+  wallpaperMetadataTag = [(IMDNicknameController *)self wallpaperMetadataTag];
+  nickNameRecordID = [(IMDNicknameController *)self nickNameRecordID];
   if (v24)
   {
     CFDictionarySetValue(v3, MessageDictionaryNicknameVersionKey, v24);
   }
 
-  if (v12)
+  if (nickNameRecordID)
   {
-    CFDictionarySetValue(v3, MessageDictionaryPersonalNicknameRecordIDKey, v12);
+    CFDictionarySetValue(v3, MessageDictionaryPersonalNicknameRecordIDKey, nickNameRecordID);
   }
 
-  if (v8)
+  if (nickNameDecryptionKey)
   {
-    CFDictionarySetValue(v3, MessageDictionaryPersonalNicknameDecryptKeyKey, v8);
+    CFDictionarySetValue(v3, MessageDictionaryPersonalNicknameDecryptKeyKey, nickNameDecryptionKey);
   }
 
-  if (v9)
+  if (wallpaperDataTag)
   {
-    CFDictionarySetValue(v3, MessageDictionaryNicknameWallpaperTagKey, v9);
+    CFDictionarySetValue(v3, MessageDictionaryNicknameWallpaperTagKey, wallpaperDataTag);
   }
 
-  if (v10)
+  if (lowResWallpaperDataTag)
   {
-    CFDictionarySetValue(v3, MessageDictionaryNicknameLowResWallpaperTagKey, v10);
+    CFDictionarySetValue(v3, MessageDictionaryNicknameLowResWallpaperTagKey, lowResWallpaperDataTag);
   }
 
-  if (v11)
+  if (wallpaperMetadataTag)
   {
-    CFDictionarySetValue(v3, MessageDictionaryNicknameWallpaperMetadataTagKey, v11);
+    CFDictionarySetValue(v3, MessageDictionaryNicknameWallpaperMetadataTagKey, wallpaperMetadataTag);
   }
 
-  v13 = [(IMDNicknameController *)self avatarRecipeTag];
-  if (v13)
+  avatarRecipeTag = [(IMDNicknameController *)self avatarRecipeTag];
+  if (avatarRecipeTag)
   {
-    CFDictionarySetValue(v3, MessageDictionaryNicknameAvatarRecipeDataTagKey, v13);
+    CFDictionarySetValue(v3, MessageDictionaryNicknameAvatarRecipeDataTagKey, avatarRecipeTag);
   }
 
-  v14 = [(IMDNicknameController *)self defaults];
-  v15 = [v14 getValueFromDomain:v6 forKey:*MEMORY[0x277D1A3F0]];
+  defaults3 = [(IMDNicknameController *)self defaults];
+  v15 = [defaults3 getValueFromDomain:v6 forKey:*MEMORY[0x277D1A3F0]];
 
-  v16 = [(IMDNicknameController *)self defaults];
-  v17 = [v16 getValueFromDomain:v6 forKey:*MEMORY[0x277D1A3E8]];
+  defaults4 = [(IMDNicknameController *)self defaults];
+  v17 = [defaults4 getValueFromDomain:v6 forKey:*MEMORY[0x277D1A3E8]];
 
   if (v15)
   {
@@ -1982,7 +1982,7 @@ LABEL_4:
     v18 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
-      v19 = [v8 length];
+      v19 = [nickNameDecryptionKey length];
       v20 = @"YES";
       *buf = 138413570;
       v27 = v25;
@@ -1996,7 +1996,7 @@ LABEL_4:
       v30 = 2112;
       v31 = v20;
       v32 = 2112;
-      v33 = v12;
+      v33 = nickNameRecordID;
       v34 = 2112;
       v35 = v15;
       v36 = 2112;
@@ -2010,12 +2010,12 @@ LABEL_4:
   return v3;
 }
 
-- (void)acceptPendingNicknameForHandleID:(id)a3 updateType:(unint64_t)a4
+- (void)acceptPendingNicknameForHandleID:(id)d updateType:(unint64_t)type
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(IMDNicknameController *)self pendingNicknameUpdates];
-  v8 = [v7 objectForKey:v6];
+  dCopy = d;
+  pendingNicknameUpdates = [(IMDNicknameController *)self pendingNicknameUpdates];
+  v8 = [pendingNicknameUpdates objectForKey:dCopy];
 
   if (v8)
   {
@@ -2031,29 +2031,29 @@ LABEL_4:
       }
     }
 
-    [(IMDNicknameController *)self _markPendingNicknameAsCurrent:v9 incrementPendingNicknameVersion:1 updateType:a4 broadcastUpdates:1];
+    [(IMDNicknameController *)self _markPendingNicknameAsCurrent:v9 incrementPendingNicknameVersion:1 updateType:type broadcastUpdates:1];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateNicknameListsIfNeeded:(id)a3
+- (void)_updateNicknameListsIfNeeded:(id)needed
 {
   v150 = *MEMORY[0x277D85DE8];
-  v102 = a3;
-  v4 = [v102 objectForKey:MessageDictionaryPendingNicknameUpdatesVersionKey];
-  v101 = [v4 unsignedIntegerValue];
+  neededCopy = needed;
+  v4 = [neededCopy objectForKey:MessageDictionaryPendingNicknameUpdatesVersionKey];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  v5 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v6 = *MEMORY[0x277D1A408];
   v100 = *MEMORY[0x277D1A3C0];
-  v7 = [v5 getValueFromDomain:? forKey:?];
-  v8 = [v7 unsignedIntegerValue];
+  v7 = [defaults getValueFromDomain:? forKey:?];
+  unsignedIntegerValue2 = [v7 unsignedIntegerValue];
 
-  v9 = [(IMDNicknameController *)self defaults];
+  defaults2 = [(IMDNicknameController *)self defaults];
   v97 = *MEMORY[0x277D1A3C8];
-  v10 = [v9 getValueFromDomain:v100 forKey:?];
-  v11 = [v10 unsignedIntegerValue];
+  v10 = [defaults2 getValueFromDomain:v100 forKey:?];
+  unsignedIntegerValue3 = [v10 unsignedIntegerValue];
 
   if (IMOSLoggingEnabled())
   {
@@ -2061,8 +2061,8 @@ LABEL_4:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v13 = v6;
-      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v101];
-      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
+      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+      v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue2];
       *buf = 138412546;
       v147 = v14;
       v148 = 2112;
@@ -2073,22 +2073,22 @@ LABEL_4:
     }
   }
 
-  if (v8 < v101 || v11 < v101)
+  if (unsignedIntegerValue2 < unsignedIntegerValue || unsignedIntegerValue3 < unsignedIntegerValue)
   {
-    v99 = [v102 objectForKey:MessageDictionaryPendingNicknameUpdatesHandlesKey];
+    v99 = [neededCopy objectForKey:MessageDictionaryPendingNicknameUpdatesHandlesKey];
     if (v99)
     {
-      v19 = [(IMDNicknameController *)self pendingNicknameUpdates];
-      v107 = [v19 allKeys];
+      pendingNicknameUpdates = [(IMDNicknameController *)self pendingNicknameUpdates];
+      allKeys = [pendingNicknameUpdates allKeys];
 
-      v20 = [v107 arrayByExcludingObjectsInArray:v99];
+      v20 = [allKeys arrayByExcludingObjectsInArray:v99];
       if (IMOSLoggingEnabled())
       {
         v21 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v147 = v107;
+          v147 = allKeys;
           v148 = 2112;
           v149 = v99;
           _os_log_impl(&dword_22B4CC000, v21, OS_LOG_TYPE_INFO, "Our current pending handles %@ our incoming pending handles %@", buf, 0x16u);
@@ -2127,8 +2127,8 @@ LABEL_4:
             }
 
             v26 = *(*(&v133 + 1) + 8 * i);
-            v27 = [(IMDNicknameController *)self pendingNicknameUpdates];
-            v28 = [v27 objectForKey:v26];
+            pendingNicknameUpdates2 = [(IMDNicknameController *)self pendingNicknameUpdates];
+            v28 = [pendingNicknameUpdates2 objectForKey:v26];
 
             v29 = [v28 objectForKeyedSubscript:@"rid"];
 
@@ -2148,31 +2148,31 @@ LABEL_4:
         while (v23);
       }
 
-      v106 = [(IMDNicknameController *)self defaults];
-      v105 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v101];
-      [v106 setValue:v105 forDomain:v100 forKey:v6];
+      defaults3 = [(IMDNicknameController *)self defaults];
+      v105 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+      [defaults3 setValue:v105 forDomain:v100 forKey:v6];
     }
 
     else
     {
-      v107 = [v102 objectForKey:MessageDictionaryPendingNicknameUpdatesRecordIDsKey];
-      obj = [v102 objectForKey:MessageDictionaryCurrentNicknameUpdatesRecordIDsKey];
-      v98 = [v102 objectForKey:MessageDictionaryArchivedNicknameUpdatesRecordIDsKey];
-      if (!v107 || !obj || !v98)
+      allKeys = [neededCopy objectForKey:MessageDictionaryPendingNicknameUpdatesRecordIDsKey];
+      obj = [neededCopy objectForKey:MessageDictionaryCurrentNicknameUpdatesRecordIDsKey];
+      v98 = [neededCopy objectForKey:MessageDictionaryArchivedNicknameUpdatesRecordIDsKey];
+      if (!allKeys || !obj || !v98)
       {
 
         goto LABEL_91;
       }
 
-      v106 = [MEMORY[0x277CBEB58] set];
+      defaults3 = [MEMORY[0x277CBEB58] set];
       v131 = 0u;
       v132 = 0u;
       v129 = 0u;
       v130 = 0u;
-      v32 = [(IMDNicknameController *)self archivedNicknames];
-      v33 = [v32 allValues];
+      archivedNicknames = [(IMDNicknameController *)self archivedNicknames];
+      allValues = [archivedNicknames allValues];
 
-      v34 = [v33 countByEnumeratingWithState:&v129 objects:v142 count:16];
+      v34 = [allValues countByEnumeratingWithState:&v129 objects:v142 count:16];
       if (v34)
       {
         v35 = *v130;
@@ -2182,7 +2182,7 @@ LABEL_4:
           {
             if (*v130 != v35)
             {
-              objc_enumerationMutation(v33);
+              objc_enumerationMutation(allValues);
             }
 
             v37 = *(*(&v129 + 1) + 8 * j);
@@ -2191,11 +2191,11 @@ LABEL_4:
             if (v38)
             {
               v39 = [v37 objectForKeyedSubscript:@"rid"];
-              [v106 addObject:v39];
+              [defaults3 addObject:v39];
             }
           }
 
-          v34 = [v33 countByEnumeratingWithState:&v129 objects:v142 count:16];
+          v34 = [allValues countByEnumeratingWithState:&v129 objects:v142 count:16];
         }
 
         while (v34);
@@ -2206,10 +2206,10 @@ LABEL_4:
       v128 = 0u;
       v125 = 0u;
       v126 = 0u;
-      v40 = [(IMDNicknameController *)self handledNicknames];
-      v41 = [v40 allValues];
+      handledNicknames = [(IMDNicknameController *)self handledNicknames];
+      allValues2 = [handledNicknames allValues];
 
-      v42 = [v41 countByEnumeratingWithState:&v125 objects:v141 count:16];
+      v42 = [allValues2 countByEnumeratingWithState:&v125 objects:v141 count:16];
       if (v42)
       {
         v43 = *v126;
@@ -2219,7 +2219,7 @@ LABEL_4:
           {
             if (*v126 != v43)
             {
-              objc_enumerationMutation(v41);
+              objc_enumerationMutation(allValues2);
             }
 
             v45 = *(*(&v125 + 1) + 8 * k);
@@ -2232,7 +2232,7 @@ LABEL_4:
             }
           }
 
-          v42 = [v41 countByEnumeratingWithState:&v125 objects:v141 count:16];
+          v42 = [allValues2 countByEnumeratingWithState:&v125 objects:v141 count:16];
         }
 
         while (v42);
@@ -2243,10 +2243,10 @@ LABEL_4:
       v124 = 0u;
       v121 = 0u;
       v122 = 0u;
-      v48 = [(IMDNicknameController *)self pendingNicknameUpdates];
-      v49 = [v48 allValues];
+      pendingNicknameUpdates3 = [(IMDNicknameController *)self pendingNicknameUpdates];
+      allValues3 = [pendingNicknameUpdates3 allValues];
 
-      v50 = [v49 countByEnumeratingWithState:&v121 objects:v140 count:16];
+      v50 = [allValues3 countByEnumeratingWithState:&v121 objects:v140 count:16];
       if (v50)
       {
         v51 = *v122;
@@ -2256,7 +2256,7 @@ LABEL_4:
           {
             if (*v122 != v51)
             {
-              objc_enumerationMutation(v49);
+              objc_enumerationMutation(allValues3);
             }
 
             v53 = *(*(&v121 + 1) + 8 * m);
@@ -2269,17 +2269,17 @@ LABEL_4:
             }
           }
 
-          v50 = [v49 countByEnumeratingWithState:&v121 objects:v140 count:16];
+          v50 = [allValues3 countByEnumeratingWithState:&v121 objects:v140 count:16];
         }
 
         while (v50);
       }
 
       v96 = [MEMORY[0x277CBEB98] setWithArray:v98];
-      v56 = [v106 mutableCopy];
+      v56 = [defaults3 mutableCopy];
       [v56 minusSet:v96];
       v94 = [v96 mutableCopy];
-      [v94 minusSet:v106];
+      [v94 minusSet:defaults3];
       v119 = 0u;
       v120 = 0u;
       v117 = 0u;
@@ -2300,20 +2300,20 @@ LABEL_4:
 
             v60 = *(*(&v117 + 1) + 8 * n);
             v61 = [(IMDNicknameController *)self nicknameForRecordID:v60];
-            v62 = [v61 handle];
+            handle = [v61 handle];
 
-            if (v62)
+            if (handle)
             {
-              v63 = [(IMDNicknameController *)self archivedNicknames];
-              v64 = [v61 handle];
-              [v63 setValue:0 forKey:v64];
+              archivedNicknames2 = [(IMDNicknameController *)self archivedNicknames];
+              handle2 = [v61 handle];
+              [archivedNicknames2 setValue:0 forKey:handle2];
 
-              v65 = [v61 handle];
-              [(IMDNicknameController *)self _deleteHandleIDFromArchivedMap:v65];
+              handle3 = [v61 handle];
+              [(IMDNicknameController *)self _deleteHandleIDFromArchivedMap:handle3];
 
-              v66 = [(IMDNicknameController *)self activeRecords];
-              v67 = [v61 handle];
-              v68 = [v66 objectForKey:v67];
+              activeRecords = [(IMDNicknameController *)self activeRecords];
+              handle4 = [v61 handle];
+              v68 = [activeRecords objectForKey:handle4];
               v69 = [v68 isEqualToString:v60];
 
               if ((v69 & 1) == 0)
@@ -2348,17 +2348,17 @@ LABEL_4:
             }
 
             v74 = [(IMDNicknameController *)self nicknameForRecordID:*(*(&v113 + 1) + 8 * ii)];
-            v75 = [v74 handle];
+            handle5 = [v74 handle];
 
-            if (v75)
+            if (handle5)
             {
               [(IMDNicknameController *)self _markCurrentNicknameAsArchived:v74 incrementPendingNicknameVersion:0];
-              v76 = [(IMDNicknameController *)self handledNicknames];
-              v77 = [v74 handle];
-              [v76 setValue:0 forKey:v77];
+              handledNicknames2 = [(IMDNicknameController *)self handledNicknames];
+              handle6 = [v74 handle];
+              [handledNicknames2 setValue:0 forKey:handle6];
 
-              v78 = [v74 handle];
-              [(IMDNicknameController *)self _deleteHandleIDFromHandledMap:v78];
+              handle7 = [v74 handle];
+              [(IMDNicknameController *)self _deleteHandleIDFromHandledMap:handle7];
             }
           }
 
@@ -2394,7 +2394,7 @@ LABEL_4:
 
             v85 = *(*(&v109 + 1) + 8 * jj);
             v86 = [(IMDNicknameController *)self nicknameForRecordID:v85];
-            v87 = [v107 containsObject:v85];
+            v87 = [allKeys containsObject:v85];
             v88 = *v83;
             if (v87)
             {
@@ -2416,9 +2416,9 @@ LABEL_4:
       }
 
       [(IMDNicknameController *)self _broadcastNicknamesMapChanged];
-      v90 = [(IMDNicknameController *)self defaults];
-      v91 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v101];
-      [v90 setValue:v91 forDomain:v100 forKey:v97];
+      defaults4 = [(IMDNicknameController *)self defaults];
+      v91 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+      [defaults4 setValue:v91 forDomain:v100 forKey:v97];
     }
   }
 
@@ -2427,8 +2427,8 @@ LABEL_4:
     v16 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
-      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v101];
-      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
+      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+      v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue2];
       *buf = 138412546;
       v147 = v17;
       v148 = 2112;
@@ -2442,18 +2442,18 @@ LABEL_91:
   v92 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_showDebugAlertWithHeader:(id)a3 message:(id)a4
+- (void)_showDebugAlertWithHeader:(id)header message:(id)message
 {
   v12 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  headerCopy = header;
+  messageCopy = message;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v5;
+      v11 = headerCopy;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Alert header: %@", &v10, 0xCu);
     }
   }
@@ -2464,28 +2464,28 @@ LABEL_91:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v6;
+      v11 = messageCopy;
       _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Alert message: %@", &v10, 0xCu);
     }
   }
 
   if (IMEnableNicknamesDebug())
   {
-    CFUserNotificationDisplayNotice(0.0, 0, 0, 0, 0, v5, v6, @"OK");
+    CFUserNotificationDisplayNotice(0.0, 0, 0, 0, 0, headerCopy, messageCopy, @"OK");
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateCloudKitRecordIDAndDecryptionKeyIfNeeded:(id)a3
+- (void)_updateCloudKitRecordIDAndDecryptionKeyIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:MessageDictionaryPersonalNicknameDecryptKeyKey];
-  v6 = [v4 objectForKeyedSubscript:MessageDictionaryNicknameWallpaperTagKey];
-  v7 = [v4 objectForKeyedSubscript:MessageDictionaryNicknameLowResWallpaperTagKey];
-  v8 = [v4 objectForKeyedSubscript:MessageDictionaryNicknameWallpaperMetadataTagKey];
-  v9 = [v4 objectForKeyedSubscript:MessageDictionaryPersonalNicknameRecordIDKey];
-  v10 = [v4 objectForKeyedSubscript:MessageDictionaryNicknameAvatarRecipeDataTagKey];
+  neededCopy = needed;
+  v5 = [neededCopy objectForKeyedSubscript:MessageDictionaryPersonalNicknameDecryptKeyKey];
+  v6 = [neededCopy objectForKeyedSubscript:MessageDictionaryNicknameWallpaperTagKey];
+  v7 = [neededCopy objectForKeyedSubscript:MessageDictionaryNicknameLowResWallpaperTagKey];
+  v8 = [neededCopy objectForKeyedSubscript:MessageDictionaryNicknameWallpaperMetadataTagKey];
+  v9 = [neededCopy objectForKeyedSubscript:MessageDictionaryPersonalNicknameRecordIDKey];
+  v10 = [neededCopy objectForKeyedSubscript:MessageDictionaryNicknameAvatarRecipeDataTagKey];
   objc_initWeak(&location, self);
   if (v9)
   {
@@ -2508,20 +2508,20 @@ LABEL_91:
   objc_destroyWeak(&location);
 }
 
-- (void)_updateHandleDenyAllowListIfNeeded:(id)a3
+- (void)_updateHandleDenyAllowListIfNeeded:(id)needed
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:MessageDictionaryNicknameDenyAllowListVersionKey];
-  v6 = [v5 unsignedIntegerValue];
+  neededCopy = needed;
+  v5 = [neededCopy objectForKey:MessageDictionaryNicknameDenyAllowListVersionKey];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v8 = *MEMORY[0x277D1A3C0];
   v9 = *MEMORY[0x277D1A3B8];
-  v10 = [v7 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3B8]];
-  v11 = [v10 unsignedIntegerValue];
+  v10 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3B8]];
+  unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
-  if (v11 >= v6)
+  if (unsignedIntegerValue2 >= unsignedIntegerValue)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2529,9 +2529,9 @@ LABEL_91:
       if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
       {
         *buf = 134218240;
-        v47 = v6;
+        v47 = unsignedIntegerValue;
         v48 = 2048;
-        v49 = v11;
+        v49 = unsignedIntegerValue2;
         _os_log_impl(&dword_22B4CC000, v40, OS_LOG_TYPE_INFO, "Received older version number (%lu, old: %lu), dropping deny/allow list update", buf, 0x16u);
       }
     }
@@ -2539,17 +2539,17 @@ LABEL_91:
 
   else
   {
-    v45 = [v4 objectForKeyedSubscript:MessageDictionaryNicknameDenyListKey];
-    v44 = [v4 objectForKeyedSubscript:MessageDictionaryNicknameAllowListKey];
+    v45 = [neededCopy objectForKeyedSubscript:MessageDictionaryNicknameDenyListKey];
+    v44 = [neededCopy objectForKeyedSubscript:MessageDictionaryNicknameAllowListKey];
     if (IMOSLoggingEnabled())
     {
       v12 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         *buf = 134218240;
-        v47 = v6;
+        v47 = unsignedIntegerValue;
         v48 = 2048;
-        v49 = v11;
+        v49 = unsignedIntegerValue2;
         _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Received newer version number (%lu, old: %lu), updating the deny/allow list store", buf, 0x16u);
       }
     }
@@ -2557,21 +2557,21 @@ LABEL_91:
     if (IMEnableNicknamesDebug())
     {
       v13 = [MEMORY[0x277CCAB68] stringWithString:&stru_283F23018];
-      v14 = [(IMDNicknameController *)self handleDenyList];
-      v15 = [v14 allObjects];
-      v43 = [v45 arrayByExcludingObjectsInArray:v15];
+      handleDenyList = [(IMDNicknameController *)self handleDenyList];
+      allObjects = [handleDenyList allObjects];
+      v43 = [v45 arrayByExcludingObjectsInArray:allObjects];
 
-      v16 = [(IMDNicknameController *)self handleDenyList];
-      v17 = [v16 allObjects];
-      v42 = [v17 arrayByExcludingObjectsInArray:v45];
+      handleDenyList2 = [(IMDNicknameController *)self handleDenyList];
+      allObjects2 = [handleDenyList2 allObjects];
+      v42 = [allObjects2 arrayByExcludingObjectsInArray:v45];
 
-      v18 = [(IMDNicknameController *)self handleAllowList];
-      v19 = [v18 allObjects];
-      v20 = [v44 arrayByExcludingObjectsInArray:v19];
+      handleAllowList = [(IMDNicknameController *)self handleAllowList];
+      allObjects3 = [handleAllowList allObjects];
+      v20 = [v44 arrayByExcludingObjectsInArray:allObjects3];
 
-      v21 = [(IMDNicknameController *)self handleAllowList];
-      v22 = [v21 allObjects];
-      v23 = [v22 arrayByExcludingObjectsInArray:v44];
+      handleAllowList2 = [(IMDNicknameController *)self handleAllowList];
+      allObjects4 = [handleAllowList2 allObjects];
+      v23 = [allObjects4 arrayByExcludingObjectsInArray:v44];
 
       if ([v43 count])
       {
@@ -2636,13 +2636,13 @@ LABEL_91:
     }
 
     [(IMDNicknameController *)self _clearSharingLists];
-    v29 = [(IMDNicknameController *)self handleDenyList];
+    handleDenyList3 = [(IMDNicknameController *)self handleDenyList];
     v30 = [MEMORY[0x277CBEB98] setWithArray:v45];
-    [(IMDNicknameController *)self _updateHandleList:v29 withHandles:v30 forKey:@"handleBlacklist" broadcastUpdates:0];
+    [(IMDNicknameController *)self _updateHandleList:handleDenyList3 withHandles:v30 forKey:@"handleBlacklist" broadcastUpdates:0];
 
-    v31 = [(IMDNicknameController *)self handleAllowList];
+    handleAllowList3 = [(IMDNicknameController *)self handleAllowList];
     v32 = [MEMORY[0x277CBEB98] setWithArray:v44];
-    [(IMDNicknameController *)self _updateHandleList:v31 withHandles:v32 forKey:@"handleWhitelist" broadcastUpdates:0];
+    [(IMDNicknameController *)self _updateHandleList:handleAllowList3 withHandles:v32 forKey:@"handleWhitelist" broadcastUpdates:0];
 
     if (IMOSLoggingEnabled())
     {
@@ -2655,34 +2655,34 @@ LABEL_91:
     }
 
     v34 = +[IMDBroadcastController sharedProvider];
-    v35 = [v34 broadcasterForAccountListeners];
-    v36 = [(IMDNicknameController *)self allowListedHandlesForSharing];
-    v37 = [(IMDNicknameController *)self denyListedHandlesForSharing];
-    [v35 updateNicknameHandlesForSharing:v36 blocked:v37];
+    broadcasterForAccountListeners = [v34 broadcasterForAccountListeners];
+    allowListedHandlesForSharing = [(IMDNicknameController *)self allowListedHandlesForSharing];
+    denyListedHandlesForSharing = [(IMDNicknameController *)self denyListedHandlesForSharing];
+    [broadcasterForAccountListeners updateNicknameHandlesForSharing:allowListedHandlesForSharing blocked:denyListedHandlesForSharing];
 
-    v38 = [(IMDNicknameController *)self defaults];
-    v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
-    [v38 setValue:v39 forDomain:v8 forKey:v9];
+    defaults2 = [(IMDNicknameController *)self defaults];
+    v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+    [defaults2 setValue:v39 forDomain:v8 forKey:v9];
   }
 
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateHandleTransitionedListIfNeeded:(id)a3
+- (void)_updateHandleTransitionedListIfNeeded:(id)needed
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:MessageDictionaryNicknameTransitionedListVersionKey];
-  v6 = [v5 unsignedIntegerValue];
+  neededCopy = needed;
+  v5 = [neededCopy objectForKey:MessageDictionaryNicknameTransitionedListVersionKey];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v8 = *MEMORY[0x277D1A3C0];
   v9 = *MEMORY[0x277D1A430];
-  v10 = [v7 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A430]];
-  v11 = [v10 unsignedIntegerValue];
+  v10 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A430]];
+  unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
-  v12 = [v4 objectForKeyedSubscript:MessageDictionaryNicknameTransitionedListKey];
-  if (v11 >= v6)
+  v12 = [neededCopy objectForKeyedSubscript:MessageDictionaryNicknameTransitionedListKey];
+  if (unsignedIntegerValue2 >= unsignedIntegerValue)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2690,9 +2690,9 @@ LABEL_91:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v20 = 134218240;
-        v21 = v6;
+        v21 = unsignedIntegerValue;
         v22 = 2048;
-        v23 = v11;
+        v23 = unsignedIntegerValue2;
         _os_log_impl(&dword_22B4CC000, v18, OS_LOG_TYPE_INFO, "Received older version number (%lu, old: %lu), dropping transitioned list update", &v20, 0x16u);
       }
     }
@@ -2701,9 +2701,9 @@ LABEL_91:
   else
   {
     [(IMDNicknameController *)self _clearTransitionedList];
-    v13 = [(IMDNicknameController *)self handleTransitionedList];
+    handleTransitionedList = [(IMDNicknameController *)self handleTransitionedList];
     v14 = [MEMORY[0x277CBEB98] setWithArray:v12];
-    [(IMDNicknameController *)self _updateTransitionList:v13 withHandles:v14 forKey:@"handleTransitionedList" broadcastUpdates:0];
+    [(IMDNicknameController *)self _updateTransitionList:handleTransitionedList withHandles:v14 forKey:@"handleTransitionedList" broadcastUpdates:0];
 
     if (IMOSLoggingEnabled())
     {
@@ -2716,29 +2716,29 @@ LABEL_91:
     }
 
     [(IMDNicknameController *)self broadcastTransitionedHandlesDidChange];
-    v16 = [(IMDNicknameController *)self defaults];
-    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
-    [v16 setValue:v17 forDomain:v8 forKey:v9];
+    defaults2 = [(IMDNicknameController *)self defaults];
+    v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+    [defaults2 setValue:v17 forDomain:v8 forKey:v9];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateActiveNicknameRecordsListIfNeeded:(id)a3
+- (void)_updateActiveNicknameRecordsListIfNeeded:(id)needed
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:MessageDictionaryNicknameActiveListVersionKey];
-  v6 = [v5 unsignedIntegerValue];
+  neededCopy = needed;
+  v5 = [neededCopy objectForKey:MessageDictionaryNicknameActiveListVersionKey];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v8 = *MEMORY[0x277D1A3C0];
   v9 = *MEMORY[0x277D1A3B0];
-  v10 = [v7 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3B0]];
-  v11 = [v10 unsignedIntegerValue];
+  v10 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3B0]];
+  unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
-  v12 = [v4 objectForKeyedSubscript:MessageDictionaryNicknameActiveListKey];
-  if (v11 >= v6)
+  v12 = [neededCopy objectForKeyedSubscript:MessageDictionaryNicknameActiveListKey];
+  if (unsignedIntegerValue2 >= unsignedIntegerValue)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2746,9 +2746,9 @@ LABEL_91:
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         v22 = 134218240;
-        v23 = v6;
+        v23 = unsignedIntegerValue;
         v24 = 2048;
-        v25 = v11;
+        v25 = unsignedIntegerValue2;
         _os_log_impl(&dword_22B4CC000, v20, OS_LOG_TYPE_INFO, "Received older version number (%lu, old: %lu), dropping active list update", &v22, 0x16u);
       }
     }
@@ -2757,8 +2757,8 @@ LABEL_91:
   else
   {
     [(IMDNicknameController *)self _clearActiveNicknameRecords];
-    v13 = [(IMDNicknameController *)self activeNicknameRecords];
-    [(IMDNicknameController *)self _updateActiveList:v13 withRecords:v12 broadcastUpdates:0];
+    activeNicknameRecords = [(IMDNicknameController *)self activeNicknameRecords];
+    [(IMDNicknameController *)self _updateActiveList:activeNicknameRecords withRecords:v12 broadcastUpdates:0];
 
     if (IMOSLoggingEnabled())
     {
@@ -2771,33 +2771,33 @@ LABEL_91:
     }
 
     v15 = +[IMDBroadcastController sharedProvider];
-    v16 = [v15 broadcasterForAccountListeners];
-    v17 = [(IMDNicknameController *)self activeRecords];
-    [v16 updateActiveNicknameRecords:v17];
+    broadcasterForAccountListeners = [v15 broadcasterForAccountListeners];
+    activeRecords = [(IMDNicknameController *)self activeRecords];
+    [broadcasterForAccountListeners updateActiveNicknameRecords:activeRecords];
 
-    v18 = [(IMDNicknameController *)self defaults];
-    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
-    [v18 setValue:v19 forDomain:v8 forKey:v9];
+    defaults2 = [(IMDNicknameController *)self defaults];
+    v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+    [defaults2 setValue:v19 forDomain:v8 forKey:v9];
   }
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateIgnoredNicknameRecordsListIfNeeded:(id)a3
+- (void)_updateIgnoredNicknameRecordsListIfNeeded:(id)needed
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 objectForKey:MessageDictionaryNicknameIgnoredListVersionKey];
-  v6 = [v5 unsignedIntegerValue];
+  neededCopy = needed;
+  v5 = [neededCopy objectForKey:MessageDictionaryNicknameIgnoredListVersionKey];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  v7 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v8 = *MEMORY[0x277D1A3C0];
   v9 = *MEMORY[0x277D1A3D0];
-  v10 = [v7 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3D0]];
-  v11 = [v10 unsignedIntegerValue];
+  v10 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3D0]];
+  unsignedIntegerValue2 = [v10 unsignedIntegerValue];
 
-  v12 = [v4 objectForKeyedSubscript:MessageDictionaryNicknameIgnoredListKey];
-  if (v11 >= v6)
+  v12 = [neededCopy objectForKeyedSubscript:MessageDictionaryNicknameIgnoredListKey];
+  if (unsignedIntegerValue2 >= unsignedIntegerValue)
   {
     if (IMOSLoggingEnabled())
     {
@@ -2805,9 +2805,9 @@ LABEL_91:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
       {
         v27 = 134218240;
-        v28 = v6;
+        v28 = unsignedIntegerValue;
         v29 = 2048;
-        v30 = v11;
+        v30 = unsignedIntegerValue2;
         _os_log_impl(&dword_22B4CC000, v18, OS_LOG_TYPE_INFO, "Received older version number (%lu, old: %lu), dropping ignored list update", &v27, 0x16u);
       }
     }
@@ -2815,8 +2815,8 @@ LABEL_91:
 
   else
   {
-    v13 = [(IMDNicknameController *)self ignoredNicknameRecords];
-    v14 = [v13 isEqualToDictionary:v12];
+    ignoredNicknameRecords = [(IMDNicknameController *)self ignoredNicknameRecords];
+    v14 = [ignoredNicknameRecords isEqualToDictionary:v12];
 
     if (v14)
     {
@@ -2830,16 +2830,16 @@ LABEL_91:
         }
       }
 
-      v16 = [(IMDNicknameController *)self defaults];
-      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
-      [v16 setValue:v17 forDomain:v8 forKey:v9];
+      defaults2 = [(IMDNicknameController *)self defaults];
+      v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+      [defaults2 setValue:v17 forDomain:v8 forKey:v9];
     }
 
     else
     {
       [(IMDNicknameController *)self _clearIgnoredNicknameRecords];
-      v19 = [(IMDNicknameController *)self ignoredNicknameRecords];
-      [(IMDNicknameController *)self _updateIgnoredList:v19 withRecords:v12 broadcastUpdates:0];
+      ignoredNicknameRecords2 = [(IMDNicknameController *)self ignoredNicknameRecords];
+      [(IMDNicknameController *)self _updateIgnoredList:ignoredNicknameRecords2 withRecords:v12 broadcastUpdates:0];
 
       if (IMOSLoggingEnabled())
       {
@@ -2852,43 +2852,43 @@ LABEL_91:
       }
 
       v21 = +[IMDBroadcastController sharedProvider];
-      v22 = [v21 broadcasterForAccountListeners];
-      v23 = [(IMDNicknameController *)self ignoredRecords];
-      [v22 updateIgnoredNicknameRecords:v23];
+      broadcasterForAccountListeners = [v21 broadcasterForAccountListeners];
+      ignoredRecords = [(IMDNicknameController *)self ignoredRecords];
+      [broadcasterForAccountListeners updateIgnoredNicknameRecords:ignoredRecords];
 
-      v24 = [(IMDNicknameController *)self defaults];
-      v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
-      [v24 setValue:v25 forDomain:v8 forKey:v9];
+      defaults3 = [(IMDNicknameController *)self defaults];
+      v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+      [defaults3 setValue:v25 forDomain:v8 forKey:v9];
     }
   }
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_diffActiveRecords:(id)a3 againstPrevious:(id)a4
+- (id)_diffActiveRecords:(id)records againstPrevious:(id)previous
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  recordsCopy = records;
+  previousCopy = previous;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v26 = v5;
+      v26 = recordsCopy;
       v27 = 2112;
-      v28 = v6;
+      v28 = previousCopy;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "Checking new active list: %@, against previous active list: %@", buf, 0x16u);
     }
   }
 
-  v8 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v9 = v5;
+  v9 = recordsCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -2904,10 +2904,10 @@ LABEL_91:
 
         v13 = *(*(&v20 + 1) + 8 * i);
         v14 = [v9 objectForKeyedSubscript:{v13, v20}];
-        v15 = [v6 objectForKeyedSubscript:v13];
+        v15 = [previousCopy objectForKeyedSubscript:v13];
         if (!v15 || ([v14 isEqualToString:v15] & 1) == 0)
         {
-          [v8 setObject:v14 forKeyedSubscript:v13];
+          [dictionary setObject:v14 forKeyedSubscript:v13];
         }
       }
 
@@ -2923,12 +2923,12 @@ LABEL_91:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v26 = v8;
+      v26 = dictionary;
       _os_log_impl(&dword_22B4CC000, v16, OS_LOG_TYPE_INFO, "Sending active records diff: %@", buf, 0xCu);
     }
   }
 
-  v17 = [v8 copy];
+  v17 = [dictionary copy];
 
   v18 = *MEMORY[0x277D85DE8];
 
@@ -2938,22 +2938,22 @@ LABEL_91:
 - (void)_updateDenyAllowListHandlesVersion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v4 = *MEMORY[0x277D1A3C0];
   v5 = *MEMORY[0x277D1A3B8];
-  v6 = [v3 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3B8]];
-  v7 = [v6 unsignedIntegerValue];
+  v6 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3B8]];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [(IMDNicknameController *)self defaults];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 + 1];
-  [v8 setValue:v9 forDomain:v4 forKey:v5];
+  defaults2 = [(IMDNicknameController *)self defaults];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  [defaults2 setValue:v9 forDomain:v4 forKey:v5];
 
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 + 1];
+      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
       v13 = 138412290;
       v14 = v11;
       _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Updated allow list handles version to %@", &v13, 0xCu);
@@ -2966,22 +2966,22 @@ LABEL_91:
 - (void)_updateTransitionedListHandlesVersion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v4 = *MEMORY[0x277D1A3C0];
   v5 = *MEMORY[0x277D1A430];
-  v6 = [v3 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A430]];
-  v7 = [v6 unsignedIntegerValue];
+  v6 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A430]];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [(IMDNicknameController *)self defaults];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 + 1];
-  [v8 setValue:v9 forDomain:v4 forKey:v5];
+  defaults2 = [(IMDNicknameController *)self defaults];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  [defaults2 setValue:v9 forDomain:v4 forKey:v5];
 
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 + 1];
+      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
       v13 = 138412290;
       v14 = v11;
       _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Updated transitioned list handles version to %@", &v13, 0xCu);
@@ -2994,22 +2994,22 @@ LABEL_91:
 - (void)_updateIsActiveListHandlesVersion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v4 = *MEMORY[0x277D1A3C0];
   v5 = *MEMORY[0x277D1A3B0];
-  v6 = [v3 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3B0]];
-  v7 = [v6 unsignedIntegerValue];
+  v6 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3B0]];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [(IMDNicknameController *)self defaults];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 + 1];
-  [v8 setValue:v9 forDomain:v4 forKey:v5];
+  defaults2 = [(IMDNicknameController *)self defaults];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  [defaults2 setValue:v9 forDomain:v4 forKey:v5];
 
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 + 1];
+      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
       v13 = 138412290;
       v14 = v11;
       _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Updated active list handles version to %@", &v13, 0xCu);
@@ -3022,22 +3022,22 @@ LABEL_91:
 - (void)_updateIsIgnoredListHandlesVersion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v4 = *MEMORY[0x277D1A3C0];
   v5 = *MEMORY[0x277D1A3D0];
-  v6 = [v3 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3D0]];
-  v7 = [v6 unsignedIntegerValue];
+  v6 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3D0]];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [(IMDNicknameController *)self defaults];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 + 1];
-  [v8 setValue:v9 forDomain:v4 forKey:v5];
+  defaults2 = [(IMDNicknameController *)self defaults];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  [defaults2 setValue:v9 forDomain:v4 forKey:v5];
 
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 + 1];
+      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
       v13 = 138412290;
       v14 = v11;
       _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Updated ignored list handles version to %@", &v13, 0xCu);
@@ -3050,41 +3050,41 @@ LABEL_91:
 - (void)_syncHandleAllowDenyListToOtherDevices
 {
   v14[3] = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self handleAllowList];
-  v4 = [v3 allObjects];
+  handleAllowList = [(IMDNicknameController *)self handleAllowList];
+  allObjects = [handleAllowList allObjects];
 
-  v5 = [(IMDNicknameController *)self handleDenyList];
-  v6 = [v5 allObjects];
+  handleDenyList = [(IMDNicknameController *)self handleDenyList];
+  allObjects2 = [handleDenyList allObjects];
 
-  if (!v4)
+  if (!allObjects)
   {
-    v4 = [MEMORY[0x277CBEA60] array];
-    if (v6)
+    allObjects = [MEMORY[0x277CBEA60] array];
+    if (allObjects2)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v6 = [MEMORY[0x277CBEA60] array];
+    allObjects2 = [MEMORY[0x277CBEA60] array];
     goto LABEL_3;
   }
 
-  if (!v6)
+  if (!allObjects2)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v7 = [(IMDNicknameController *)self defaults];
-  v8 = [v7 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3B8]];
-  v9 = [v8 unsignedIntegerValue];
+  defaults = [(IMDNicknameController *)self defaults];
+  v8 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3B8]];
+  unsignedIntegerValue = [v8 unsignedIntegerValue];
 
   v13[0] = MessageDictionaryNicknameDenyListKey;
   v13[1] = MessageDictionaryNicknameAllowListKey;
-  v14[0] = v6;
-  v14[1] = v4;
+  v14[0] = allObjects2;
+  v14[1] = allObjects;
   v13[2] = MessageDictionaryNicknameDenyAllowListVersionKey;
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v9];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
   v14[2] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
 
@@ -3095,22 +3095,22 @@ LABEL_3:
 - (void)_syncHandleTransitionedListToOtherDevices
 {
   v12[2] = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self handleTransitionedList];
-  v4 = [v3 allObjects];
+  handleTransitionedList = [(IMDNicknameController *)self handleTransitionedList];
+  allObjects = [handleTransitionedList allObjects];
 
-  if (!v4)
+  if (!allObjects)
   {
-    v4 = [MEMORY[0x277CBEA60] array];
+    allObjects = [MEMORY[0x277CBEA60] array];
   }
 
-  v5 = [(IMDNicknameController *)self defaults];
-  v6 = [v5 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A430]];
-  v7 = [v6 unsignedIntegerValue];
+  defaults = [(IMDNicknameController *)self defaults];
+  v6 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A430]];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
   v11[0] = MessageDictionaryNicknameTransitionedListKey;
   v11[1] = MessageDictionaryNicknameTransitionedListVersionKey;
-  v12[0] = v4;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7];
+  v12[0] = allObjects;
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:v11 count:2];
 
@@ -3121,20 +3121,20 @@ LABEL_3:
 - (void)_syncActiveNicknameRecordsToOtherDevices
 {
   v11[2] = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self activeNicknameRecords];
-  if (!v3)
+  activeNicknameRecords = [(IMDNicknameController *)self activeNicknameRecords];
+  if (!activeNicknameRecords)
   {
-    v3 = [MEMORY[0x277CBEAC0] dictionary];
+    activeNicknameRecords = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  v4 = [(IMDNicknameController *)self defaults];
-  v5 = [v4 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3B0]];
-  v6 = [v5 unsignedIntegerValue];
+  defaults = [(IMDNicknameController *)self defaults];
+  v5 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3B0]];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
   v10[0] = MessageDictionaryNicknameActiveListKey;
   v10[1] = MessageDictionaryNicknameActiveListVersionKey;
-  v11[0] = v3;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
+  v11[0] = activeNicknameRecords;
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
   v11[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
@@ -3145,20 +3145,20 @@ LABEL_3:
 - (void)_syncIgnoredNicknameRecordsToOtherDevices
 {
   v14[2] = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self ignoredNicknameRecords];
-  if (!v3)
+  ignoredNicknameRecords = [(IMDNicknameController *)self ignoredNicknameRecords];
+  if (!ignoredNicknameRecords)
   {
-    v3 = [MEMORY[0x277CBEAC0] dictionary];
+    ignoredNicknameRecords = [MEMORY[0x277CBEAC0] dictionary];
   }
 
-  v4 = [(IMDNicknameController *)self defaults];
-  v5 = [v4 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3D0]];
-  v6 = [v5 unsignedIntegerValue];
+  defaults = [(IMDNicknameController *)self defaults];
+  v5 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3D0]];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
   v13[0] = MessageDictionaryNicknameIgnoredListKey;
   v13[1] = MessageDictionaryNicknameIgnoredListVersionKey;
-  v14[0] = v3;
-  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v6];
+  v14[0] = ignoredNicknameRecords;
+  v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
   v14[1] = v7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:2];
 
@@ -3168,7 +3168,7 @@ LABEL_3:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 134217984;
-      v12 = v6;
+      v12 = unsignedIntegerValue;
       _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "Sending ignored list to peer devices, with current version: %lu", &v11, 0xCu);
     }
   }
@@ -3178,25 +3178,25 @@ LABEL_3:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_requestingToSendLocalNicknameInfo:(id)a3
+- (BOOL)_requestingToSendLocalNicknameInfo:(id)info
 {
-  v3 = [a3 objectForKey:MessageDictionaryNicknameRequestPersonalNicknameInfoKey];
-  v4 = [v3 BOOLValue];
+  v3 = [info objectForKey:MessageDictionaryNicknameRequestPersonalNicknameInfoKey];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)handleNicknameUpdatesFromPeerDevice:(id)a3 fromPeerDevice:(id)a4
+- (void)handleNicknameUpdatesFromPeerDevice:(id)device fromPeerDevice:(id)peerDevice
 {
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  deviceCopy = device;
+  peerDeviceCopy = peerDevice;
   if ([(IMDNicknameController *)self _nicknameFeatureEnabled])
   {
-    v8 = [v6 description];
+    v8 = [deviceCopy description];
     [(IMDNicknameController *)self _showDebugAlertWithHeader:@"Nickname Updates from Peer Device" message:v8];
 
-    if ([(IMDNicknameController *)self _requestingToSendLocalNicknameInfo:v6])
+    if ([(IMDNicknameController *)self _requestingToSendLocalNicknameInfo:deviceCopy])
     {
       if (IMOSLoggingEnabled())
       {
@@ -3204,23 +3204,23 @@ LABEL_3:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
         {
           v12 = 138412290;
-          v13 = v7;
+          v13 = peerDeviceCopy;
           _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "We got a request to send nickname info to a specific device %@", &v12, 0xCu);
         }
       }
 
-      [(IMDNicknameController *)self sendPersonalNicknameRecordIDAndVersionRequestedByDevice:v7];
+      [(IMDNicknameController *)self sendPersonalNicknameRecordIDAndVersionRequestedByDevice:peerDeviceCopy];
     }
 
     else
     {
-      [(IMDNicknameController *)self _updateSharingPreferencesIfNeededFromMadridMessage:v6];
-      [(IMDNicknameController *)self _updateCloudKitRecordIDAndDecryptionKeyIfNeeded:v6];
-      [(IMDNicknameController *)self _updateNicknameListsIfNeeded:v6];
-      [(IMDNicknameController *)self _updateHandleDenyAllowListIfNeeded:v6];
-      [(IMDNicknameController *)self _updateHandleTransitionedListIfNeeded:v6];
-      [(IMDNicknameController *)self _updateActiveNicknameRecordsListIfNeeded:v6];
-      [(IMDNicknameController *)self _updateIgnoredNicknameRecordsListIfNeeded:v6];
+      [(IMDNicknameController *)self _updateSharingPreferencesIfNeededFromMadridMessage:deviceCopy];
+      [(IMDNicknameController *)self _updateCloudKitRecordIDAndDecryptionKeyIfNeeded:deviceCopy];
+      [(IMDNicknameController *)self _updateNicknameListsIfNeeded:deviceCopy];
+      [(IMDNicknameController *)self _updateHandleDenyAllowListIfNeeded:deviceCopy];
+      [(IMDNicknameController *)self _updateHandleTransitionedListIfNeeded:deviceCopy];
+      [(IMDNicknameController *)self _updateActiveNicknameRecordsListIfNeeded:deviceCopy];
+      [(IMDNicknameController *)self _updateIgnoredNicknameRecordsListIfNeeded:deviceCopy];
     }
   }
 
@@ -3237,11 +3237,11 @@ LABEL_3:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateNameOnlyUpdateForMessage:(id)a3 fromHandleID:(id)a4
+- (void)_updateNameOnlyUpdateForMessage:(id)message fromHandleID:(id)d
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  dCopy = d;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -3250,24 +3250,24 @@ LABEL_3:
       v27 = 136315650;
       v28 = "[IMDNicknameController _updateNameOnlyUpdateForMessage:fromHandleID:]";
       v29 = 2112;
-      v30 = v7;
+      v30 = dCopy;
       v31 = 2112;
-      v32 = v6;
+      v32 = messageCopy;
       _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "%s fromHandleID: %@, message: %@", &v27, 0x20u);
     }
   }
 
   if ([(IMDNicknameController *)self _nicknameFeatureEnabled])
   {
-    v9 = [v6 objectForKey:@"FirstName"];
-    v10 = [v6 objectForKey:@"LastName"];
+    v9 = [messageCopy objectForKey:@"FirstName"];
+    v10 = [messageCopy objectForKey:@"LastName"];
     if (v9 | v10)
     {
-      v11 = [(IMDNicknameController *)self pendingNicknameUpdates];
-      v12 = [v11 objectForKey:v7];
+      pendingNicknameUpdates = [(IMDNicknameController *)self pendingNicknameUpdates];
+      v12 = [pendingNicknameUpdates objectForKey:dCopy];
 
-      v13 = [(IMDNicknameController *)self handledNicknames];
-      v14 = [v13 objectForKey:v7];
+      handledNicknames = [(IMDNicknameController *)self handledNicknames];
+      v14 = [handledNicknames objectForKey:dCopy];
 
       v15 = v12;
       if ((v12 || (v15 = v14) != 0) && (v16 = [objc_alloc(MEMORY[0x277D1AAD0]) initWithDictionaryRepresentation:v15], (v17 = v16) != 0))
@@ -3287,7 +3287,7 @@ LABEL_3:
             }
           }
 
-          [(IMDNicknameController *)self _deleteHandleIDFromPendingMap:v7];
+          [(IMDNicknameController *)self _deleteHandleIDFromPendingMap:dCopy];
         }
 
         else if (v18)
@@ -3317,11 +3317,11 @@ LABEL_3:
       }
 
       pendingNicknameUpdates = self->_pendingNicknameUpdates;
-      v23 = [v17 persistedDictionaryRepresentation];
-      [(NSMutableDictionary *)pendingNicknameUpdates setObject:v23 forKey:v7];
+      persistedDictionaryRepresentation = [v17 persistedDictionaryRepresentation];
+      [(NSMutableDictionary *)pendingNicknameUpdates setObject:persistedDictionaryRepresentation forKey:dCopy];
 
-      v24 = [(IMDNicknameController *)self pendingNicknameUpdatesKVStore];
-      [(IMDNicknameController *)self _writeNicknameToKVStore:v24 nickname:v17];
+      pendingNicknameUpdatesKVStore = [(IMDNicknameController *)self pendingNicknameUpdatesKVStore];
+      [(IMDNicknameController *)self _writeNicknameToKVStore:pendingNicknameUpdatesKVStore nickname:v17];
 
       [(IMDNicknameController *)self _updatePendingNicknameVersion];
       [(IMDNicknameController *)self _broadcastNicknamesMapChanged];
@@ -3362,27 +3362,27 @@ LABEL_3:
 
 - (BOOL)_isNicknamesSharingEnabled
 {
-  v3 = [(IMDNicknameController *)self defaults];
-  v4 = [v3 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3E0]];
+  defaults = [(IMDNicknameController *)self defaults];
+  v4 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A3E0]];
   if ([v4 BOOLValue])
   {
-    v5 = [(IMDNicknameController *)self _nicknameFeatureEnabled];
+    _nicknameFeatureEnabled = [(IMDNicknameController *)self _nicknameFeatureEnabled];
   }
 
   else
   {
-    v5 = 0;
+    _nicknameFeatureEnabled = 0;
   }
 
-  return v5;
+  return _nicknameFeatureEnabled;
 }
 
 - (void)sendNicknamePreferencesDidChange
 {
   if ([(IMDNicknameController *)self _isNicknamesSharingEnabled])
   {
-    v3 = [(IMDNicknameController *)self nickNameRecordID];
-    v4 = [v3 length];
+    nickNameRecordID = [(IMDNicknameController *)self nickNameRecordID];
+    v4 = [nickNameRecordID length];
 
     if (v4)
     {
@@ -3412,8 +3412,8 @@ LABEL_3:
       }
     }
 
-    v7 = [(IMDNicknameController *)self storedPersonalNickname];
-    if (v7)
+    storedPersonalNickname = [(IMDNicknameController *)self storedPersonalNickname];
+    if (storedPersonalNickname)
     {
       [(IMDNicknameController *)self deleteAllPersonalNicknames:1 withCompletion:0];
     }
@@ -3430,16 +3430,16 @@ LABEL_3:
   }
 }
 
-- (void)sendPersonalNicknameRecordIDAndVersionRequestedByDevice:(id)a3
+- (void)sendPersonalNicknameRecordIDAndVersionRequestedByDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(IMDNicknameController *)self messageDictionaryWithPersonalRecordIDAndVersion];
-  [(IMDNicknameController *)self _sendMessageDictionary:v5 toDevice:v4];
+  deviceCopy = device;
+  messageDictionaryWithPersonalRecordIDAndVersion = [(IMDNicknameController *)self messageDictionaryWithPersonalRecordIDAndVersion];
+  [(IMDNicknameController *)self _sendMessageDictionary:messageDictionaryWithPersonalRecordIDAndVersion toDevice:deviceCopy];
 }
 
 - (void)sendPersonalNicknameRecordIDAndVersionToAllPeers
 {
-  v3 = [(IMDNicknameController *)self messageDictionaryWithPersonalRecordIDAndVersion];
+  messageDictionaryWithPersonalRecordIDAndVersion = [(IMDNicknameController *)self messageDictionaryWithPersonalRecordIDAndVersion];
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
@@ -3450,25 +3450,25 @@ LABEL_3:
     }
   }
 
-  [(IMDNicknameController *)self _sendMessageDictionary:v3 toDevice:0];
+  [(IMDNicknameController *)self _sendMessageDictionary:messageDictionaryWithPersonalRecordIDAndVersion toDevice:0];
 }
 
-- (BOOL)_sendMessageDictionary:(id)a3 toDevice:(id)a4 sendType:(unint64_t)a5
+- (BOOL)_sendMessageDictionary:(id)dictionary toDevice:(id)device sendType:(unint64_t)type
 {
   v96 = *MEMORY[0x277D85DE8];
-  v63 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  deviceCopy = device;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412802;
-      v91 = v7;
+      v91 = deviceCopy;
       v92 = 2048;
-      v93 = a5;
+      typeCopy = type;
       v94 = 2112;
-      v95 = v63;
+      v95 = dictionaryCopy;
       _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Asked to send dictionary to device: %@, send type: %lu, dict: %@", buf, 0x20u);
     }
   }
@@ -3492,7 +3492,7 @@ LABEL_25:
     goto LABEL_94;
   }
 
-  if (!v63)
+  if (!dictionaryCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -3511,15 +3511,15 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  v9 = [(IDSService *)self->_nicknameService devices];
-  v10 = v9;
-  if (v7)
+  devices = [(IDSService *)self->_nicknameService devices];
+  v10 = devices;
+  if (deviceCopy)
   {
     v81 = 0u;
     v82 = 0u;
     v79 = 0u;
     v80 = 0u;
-    v11 = v9;
+    v11 = devices;
     v12 = [v11 countByEnumeratingWithState:&v79 objects:v89 count:16];
     if (!v12)
     {
@@ -3543,8 +3543,8 @@ LABEL_10:
       v78 = 0;
       v16 = IDSCopyTokenAndIDForTokenWithID();
       v17 = 0;
-      v18 = [v15 pushToken];
-      v19 = [v18 isEqualToData:v17];
+      pushToken = [v15 pushToken];
+      v19 = [pushToken isEqualToData:v17];
 
       if (v19)
       {
@@ -3566,21 +3566,21 @@ LABEL_10:
     v88 = v15;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:&v88 count:1];
 
-    if ((a5 & 2) == 0)
+    if ((type & 2) == 0)
     {
       goto LABEL_47;
     }
 
-    LOBYTE(a5) = 0;
+    LOBYTE(type) = 0;
     goto LABEL_29;
   }
 
-  if ((a5 & 2) != 0)
+  if ((type & 2) != 0)
   {
 LABEL_29:
     if ([v10 count])
     {
-      v22 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v63];
+      v22 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:dictionaryCopy];
       [v22 setObject:qword_27D8CC188 forKey:qword_27D8CC170];
       v86[0] = *MEMORY[0x277D18650];
       v23 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D18828]];
@@ -3653,7 +3653,7 @@ LABEL_52:
           *buf = 138412546;
           v91 = v31;
           v92 = 2112;
-          v93 = v24;
+          typeCopy = v24;
           _os_log_impl(&dword_22B4CC000, v34, OS_LOG_TYPE_INFO, "Successfully sent nickname to message (%@) to destinations %@", buf, 0x16u);
         }
       }
@@ -3675,18 +3675,18 @@ LABEL_47:
   LOBYTE(v21) = 0;
   v11 = v10;
 LABEL_53:
-  if (a5)
+  if (type)
   {
     v35 = objc_alloc(MEMORY[0x277D18778]);
     v36 = [v35 initWithService:*MEMORY[0x277D186B0]];
-    v58 = [v36 devices];
+    devices2 = [v36 devices];
 
     v37 = +[IMDAccountController sharedAccountController];
     v60 = [v37 anySessionForServiceName:*MEMORY[0x277D1A620]];
 
-    if (v60 && [v63 count])
+    if (v60 && [dictionaryCopy count])
     {
-      v62 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v38 = [MEMORY[0x277CBEB98] setWithArray:v11];
       v39 = [MEMORY[0x277CBEB58] set];
       v70 = 0u;
@@ -3725,7 +3725,7 @@ LABEL_53:
       v67 = 0u;
       v64 = 0u;
       v65 = 0u;
-      v46 = v58;
+      v46 = devices2;
       v47 = [v46 countByEnumeratingWithState:&v64 objects:v83 count:16];
       if (v47)
       {
@@ -3754,11 +3754,11 @@ LABEL_53:
 
             if ((v53 & 1) == 0)
             {
-              if (v7)
+              if (deviceCopy)
               {
-                if ([v51 isEqualToString:v7])
+                if ([v51 isEqualToString:deviceCopy])
                 {
-                  [v62 addObject:v51];
+                  [array addObject:v51];
 
                   goto LABEL_85;
                 }
@@ -3766,7 +3766,7 @@ LABEL_53:
 
               else
               {
-                [v62 addObject:v51];
+                [array addObject:v51];
               }
             }
           }
@@ -3779,7 +3779,7 @@ LABEL_53:
 
 LABEL_85:
 
-      if ([v62 count])
+      if ([array count])
       {
         if (IMOSLoggingEnabled())
         {
@@ -3787,12 +3787,12 @@ LABEL_85:
           if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v91 = v62;
+            v91 = array;
             _os_log_impl(&dword_22B4CC000, v55, OS_LOG_TYPE_INFO, "Sending nickname info to destinations %@", buf, 0xCu);
           }
         }
 
-        LOBYTE(v21) = [v60 sendNicknameUpdatesToPeerDevices:v63 toDestinations:v62];
+        LOBYTE(v21) = [v60 sendNicknameUpdatesToPeerDevices:dictionaryCopy toDestinations:array];
       }
     }
 
@@ -3804,7 +3804,7 @@ LABEL_85:
         *buf = 138412546;
         v91 = v60;
         v92 = 2112;
-        v93 = v63;
+        typeCopy = dictionaryCopy;
         _os_log_impl(&dword_22B4CC000, v54, OS_LOG_TYPE_INFO, "We could not find a service session for imessage to send the nickname info or no contents in message dictionary %@ %@", buf, 0x16u);
       }
     }
@@ -3815,25 +3815,25 @@ LABEL_94:
   return v21;
 }
 
-- (void)sendNameOnlyToHandleIDs:(id)a3 fromHandleID:(id)a4
+- (void)sendNameOnlyToHandleIDs:(id)ds fromHandleID:(id)d
 {
   v51 = *MEMORY[0x277D85DE8];
-  v33 = a3;
-  v32 = a4;
-  v6 = [(IMDNicknameController *)self _nicknameFeatureEnabled];
+  dsCopy = ds;
+  dCopy = d;
+  _nicknameFeatureEnabled = [(IMDNicknameController *)self _nicknameFeatureEnabled];
   v7 = IMOSLoggingEnabled();
-  if (v6)
+  if (_nicknameFeatureEnabled)
   {
-    v31 = self;
+    selfCopy = self;
     if (v7)
     {
       v8 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v48 = v33;
+        v48 = dsCopy;
         v49 = 2112;
-        v50 = v32;
+        v50 = dCopy;
         _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Sending name only to: %@ from: %@", buf, 0x16u);
       }
     }
@@ -3843,7 +3843,7 @@ LABEL_94:
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v10 = v33;
+    v10 = dsCopy;
     v11 = [v10 countByEnumeratingWithState:&v41 objects:v46 count:16];
     if (v11)
     {
@@ -3888,11 +3888,11 @@ LABEL_94:
 
           v20 = *(*(&v37 + 1) + 8 * j);
           v21 = [v20 ID];
-          v22 = [v21 _appearsToBePhoneNumber];
+          _appearsToBePhoneNumber = [v21 _appearsToBePhoneNumber];
 
           v23 = [v20 ID];
           v24 = v23;
-          if (v22)
+          if (_appearsToBePhoneNumber)
           {
             v25 = IDSCopyIDForPhoneNumber();
             [v15 setObject:v20 forKey:v25];
@@ -3900,9 +3900,9 @@ LABEL_94:
 
           else
           {
-            v26 = [v23 _appearsToBeEmail];
+            _appearsToBeEmail = [v23 _appearsToBeEmail];
 
-            if (v26)
+            if (_appearsToBeEmail)
             {
               v24 = [v20 ID];
               v27 = MEMORY[0x231896500]();
@@ -3926,14 +3926,14 @@ LABEL_94:
       while (v17);
     }
 
-    v28 = [v15 allKeys];
+    allKeys = [v15 allKeys];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = sub_22B5CAB24;
     v34[3] = &unk_278705DB8;
-    v35 = v32;
-    v36 = v31;
-    [(IMDNicknameController *)v31 _getDevicesForBothNicknameServices:v28 removeNewServiceURIsFromIMessageList:0 completionHandler:v34];
+    v35 = dCopy;
+    v36 = selfCopy;
+    [(IMDNicknameController *)selfCopy _getDevicesForBothNicknameServices:allKeys removeNewServiceURIsFromIMessageList:0 completionHandler:v34];
   }
 
   else if (v7)
@@ -3949,10 +3949,10 @@ LABEL_94:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)queueChatToSendNicknamePostUploadIfNeeded:(id)a3
+- (void)queueChatToSendNicknamePostUploadIfNeeded:(id)needed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   if ([(IMDNicknameController *)self nicknameIsUploadingToCK])
   {
     if (IMOSLoggingEnabled())
@@ -3960,9 +3960,9 @@ LABEL_94:
       v5 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
-        v6 = [v4 guid];
+        guid = [neededCopy guid];
         v12 = 138412290;
-        v13 = v6;
+        v13 = guid;
         _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "We are still uploading the nickname to iCloud, queue to send info out of band for chat %@", &v12, 0xCu);
       }
     }
@@ -3974,20 +3974,20 @@ LABEL_94:
       self->_chatsToSendNicknameInfoTo = v7;
     }
 
-    v9 = [(IMDNicknameController *)self chatsToSendNicknameInfoTo];
-    v10 = [v4 guid];
-    [v9 addObject:v10];
+    chatsToSendNicknameInfoTo = [(IMDNicknameController *)self chatsToSendNicknameInfoTo];
+    guid2 = [neededCopy guid];
+    [chatsToSendNicknameInfoTo addObject:guid2];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getDevicesForBothNicknameServices:(id)a3 removeNewServiceURIsFromIMessageList:(BOOL)a4 completionHandler:(id)a5
+- (void)_getDevicesForBothNicknameServices:(id)services removeNewServiceURIsFromIMessageList:(BOOL)list completionHandler:(id)handler
 {
   v33 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
-  if (![v6 count])
+  servicesCopy = services;
+  handlerCopy = handler;
+  if (![servicesCopy count])
   {
     if (IMOSLoggingEnabled())
     {
@@ -4000,7 +4000,7 @@ LABEL_94:
       }
     }
 
-    v7[2](v7, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -4017,7 +4017,7 @@ LABEL_94:
   v29 = v14;
   v15 = v11;
   v30 = v15;
-  [v13 currentRemoteDevicesForDestinations:v6 service:@"com.apple.private.alloy.nameandphoto" listenerID:@"IMDNicknameController" queue:v12 completionBlock:v28];
+  [v13 currentRemoteDevicesForDestinations:servicesCopy service:@"com.apple.private.alloy.nameandphoto" listenerID:@"IMDNicknameController" queue:v12 completionBlock:v28];
   dispatch_group_enter(v15);
   v16 = MEMORY[0x277D1AA00];
   v17 = *MEMORY[0x277D186B0];
@@ -4029,10 +4029,10 @@ LABEL_94:
   v26 = v18;
   v27 = v15;
   v19 = v15;
-  [v16 currentRemoteDevicesForDestinations:v6 service:v17 listenerID:@"MessageServiceSession" queue:v12 completionBlock:v25];
+  [v16 currentRemoteDevicesForDestinations:servicesCopy service:v17 listenerID:@"MessageServiceSession" queue:v12 completionBlock:v25];
   dispatch_time(0, 60000000000);
-  v24 = v7;
-  v20 = v7;
+  v24 = handlerCopy;
+  v20 = handlerCopy;
   v21 = v14;
   v22 = v18;
   IMDispatchGroupNotifyWithTimeout();
@@ -4040,31 +4040,31 @@ LABEL_94:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendPersonalNicknameToRecipients:(id)a3 chatGUID:(id)a4 fromHandle:(id)a5 onlyUseNicknameSendingService:(BOOL)a6 onlySendToThoseLoggedOutOfIMessage:(BOOL)a7
+- (void)sendPersonalNicknameToRecipients:(id)recipients chatGUID:(id)d fromHandle:(id)handle onlyUseNicknameSendingService:(BOOL)service onlySendToThoseLoggedOutOfIMessage:(BOOL)message
 {
-  v7 = a7;
+  messageCopy = message;
   v54 = *MEMORY[0x277D85DE8];
-  v34 = a3;
-  v33 = a4;
-  v12 = a5;
+  recipientsCopy = recipients;
+  dCopy = d;
+  handleCopy = handle;
   if ([(IMDNicknameController *)self _nicknameFeatureEnabled])
   {
-    v32 = [(IMDNicknameController *)self newNicknameInfoToSend];
-    if (v32)
+    newNicknameInfoToSend = [(IMDNicknameController *)self newNicknameInfoToSend];
+    if (newNicknameInfoToSend)
     {
-      v30 = a6;
-      v31 = v7;
+      serviceCopy = service;
+      v31 = messageCopy;
       if (IMOSLoggingEnabled())
       {
         v13 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
         {
           *buf = 138412802;
-          v49 = v34;
+          v49 = recipientsCopy;
           v50 = 2112;
-          v51 = v33;
+          v51 = dCopy;
           v52 = 2112;
-          v53 = v12;
+          v53 = handleCopy;
           _os_log_impl(&dword_22B4CC000, v13, OS_LOG_TYPE_INFO, "Attempting to send nickname to recipients: %@ on chat %@ from handle: %@", buf, 0x20u);
         }
       }
@@ -4074,7 +4074,7 @@ LABEL_94:
       v46 = 0u;
       v43 = 0u;
       v44 = 0u;
-      v15 = v34;
+      v15 = recipientsCopy;
       v16 = [v15 countByEnumeratingWithState:&v43 objects:v47 count:16];
       if (v16)
       {
@@ -4092,20 +4092,20 @@ LABEL_94:
             if (v19)
             {
               v20 = [*(*(&v43 + 1) + 8 * i) ID];
-              v21 = [v20 _appearsToBePhoneNumber];
+              _appearsToBePhoneNumber = [v20 _appearsToBePhoneNumber];
 
               v22 = [v19 ID];
               v23 = v22;
-              if (v21)
+              if (_appearsToBePhoneNumber)
               {
                 v24 = IDSCopyIDForPhoneNumber();
               }
 
               else
               {
-                v25 = [v22 _appearsToBeEmail];
+                _appearsToBeEmail = [v22 _appearsToBeEmail];
 
-                if (!v25)
+                if (!_appearsToBeEmail)
                 {
                   continue;
                 }
@@ -4127,19 +4127,19 @@ LABEL_94:
         while (v16);
       }
 
-      v27 = [v14 allKeys];
+      allKeys = [v14 allKeys];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = sub_22B5CBDC8;
       v35[3] = &unk_278705E08;
-      v36 = v12;
+      v36 = handleCopy;
       v41 = v31;
-      v37 = v33;
-      v38 = v32;
-      v39 = self;
+      v37 = dCopy;
+      v38 = newNicknameInfoToSend;
+      selfCopy = self;
       v40 = v15;
-      v42 = v30;
-      [(IMDNicknameController *)self _getDevicesForBothNicknameServices:v27 removeNewServiceURIsFromIMessageList:!v31 completionHandler:v35];
+      v42 = serviceCopy;
+      [(IMDNicknameController *)self _getDevicesForBothNicknameServices:allKeys removeNewServiceURIsFromIMessageList:!v31 completionHandler:v35];
     }
 
     else
@@ -4174,35 +4174,35 @@ LABEL_94:
 
 - (id)newNicknameInfoToSend
 {
-  v3 = [(IMDNicknameController *)self nickNameDecryptionKey];
-  v4 = [(IMDNicknameController *)self wallpaperDataTag];
-  v5 = [(IMDNicknameController *)self lowResWallpaperDataTag];
-  v6 = [(IMDNicknameController *)self wallpaperMetadataTag];
-  v7 = [(IMDNicknameController *)self nickNameRecordID];
-  if ([v3 length] && objc_msgSend(v7, "length"))
+  nickNameDecryptionKey = [(IMDNicknameController *)self nickNameDecryptionKey];
+  wallpaperDataTag = [(IMDNicknameController *)self wallpaperDataTag];
+  lowResWallpaperDataTag = [(IMDNicknameController *)self lowResWallpaperDataTag];
+  wallpaperMetadataTag = [(IMDNicknameController *)self wallpaperMetadataTag];
+  nickNameRecordID = [(IMDNicknameController *)self nickNameRecordID];
+  if ([nickNameDecryptionKey length] && objc_msgSend(nickNameRecordID, "length"))
   {
     v8 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v9 = v8;
-    if (v7)
+    if (nickNameRecordID)
     {
-      CFDictionarySetValue(v8, MessageDictionaryNicknameCloudKitRecordKey, v7);
+      CFDictionarySetValue(v8, MessageDictionaryNicknameCloudKitRecordKey, nickNameRecordID);
     }
 
-    if (v3)
+    if (nickNameDecryptionKey)
     {
-      CFDictionarySetValue(v9, MessageDictionaryNicknameCloudKitDecryptionRecordKey, v3);
+      CFDictionarySetValue(v9, MessageDictionaryNicknameCloudKitDecryptionRecordKey, nickNameDecryptionKey);
     }
 
-    v10 = [(IMDNicknameController *)self _typeOfNicknameUpdateToShare];
-    if (v10)
+    _typeOfNicknameUpdateToShare = [(IMDNicknameController *)self _typeOfNicknameUpdateToShare];
+    if (_typeOfNicknameUpdateToShare)
     {
-      CFDictionarySetValue(v9, MessageDictionaryNicknameUpdateInfoIncluded, v10);
+      CFDictionarySetValue(v9, MessageDictionaryNicknameUpdateInfoIncluded, _typeOfNicknameUpdateToShare);
     }
 
-    v11 = [(IMDNicknameController *)self personalNickname];
-    v12 = [v11 wallpaper];
+    personalNickname = [(IMDNicknameController *)self personalNickname];
+    wallpaper = [personalNickname wallpaper];
 
-    if (v12)
+    if (wallpaper)
     {
       v13 = NSStringFromBOOL();
       if (v13)
@@ -4210,26 +4210,26 @@ LABEL_94:
         CFDictionarySetValue(v9, MessageDictionaryWallpaperUpdateKey, v13);
       }
 
-      if (v4)
+      if (wallpaperDataTag)
       {
-        CFDictionarySetValue(v9, MessageDictionaryNicknameWallpaperTagKey, v4);
+        CFDictionarySetValue(v9, MessageDictionaryNicknameWallpaperTagKey, wallpaperDataTag);
       }
 
-      if (v5)
+      if (lowResWallpaperDataTag)
       {
-        CFDictionarySetValue(v9, MessageDictionaryNicknameLowResWallpaperTagKey, v5);
+        CFDictionarySetValue(v9, MessageDictionaryNicknameLowResWallpaperTagKey, lowResWallpaperDataTag);
       }
 
-      if (v6)
+      if (wallpaperMetadataTag)
       {
-        CFDictionarySetValue(v9, MessageDictionaryNicknameWallpaperMetadataTagKey, v6);
+        CFDictionarySetValue(v9, MessageDictionaryNicknameWallpaperMetadataTagKey, wallpaperMetadataTag);
       }
     }
 
-    v14 = [(IMDNicknameController *)self avatarRecipeTag];
-    if (v14)
+    avatarRecipeTag = [(IMDNicknameController *)self avatarRecipeTag];
+    if (avatarRecipeTag)
     {
-      CFDictionarySetValue(v9, MessageDictionaryNicknameAvatarRecipeDataTagKey, v14);
+      CFDictionarySetValue(v9, MessageDictionaryNicknameAvatarRecipeDataTagKey, avatarRecipeTag);
     }
   }
 
@@ -4251,18 +4251,18 @@ LABEL_94:
   return v9;
 }
 
-- (id)_idsDeviceFromPushToken:(id)a3
+- (id)_idsDeviceFromPushToken:(id)token
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokenCopy = token;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [(IMDNicknameController *)self nicknameService];
-  v6 = [v5 devices];
+  nicknameService = [(IMDNicknameController *)self nicknameService];
+  devices = [nicknameService devices];
 
-  v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v7 = [devices countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
     v8 = *v16;
@@ -4272,12 +4272,12 @@ LABEL_94:
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(devices);
         }
 
         v10 = *(*(&v15 + 1) + 8 * i);
-        v11 = [v10 pushToken];
-        v12 = [v11 isEqualToData:v4];
+        pushToken = [v10 pushToken];
+        v12 = [pushToken isEqualToData:tokenCopy];
 
         if (v12)
         {
@@ -4286,7 +4286,7 @@ LABEL_94:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [devices countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v7)
       {
         continue;
@@ -4303,28 +4303,28 @@ LABEL_11:
   return v7;
 }
 
-- (void)displayTapToRadarNotificationWithError:(id)a3 invalidData:(id)a4
+- (void)displayTapToRadarNotificationWithError:(id)error invalidData:(id)data
 {
   v28[1] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x277D19268] sharedInstance];
-  v8 = [v7 isInternalInstall];
+  errorCopy = error;
+  dataCopy = data;
+  mEMORY[0x277D19268] = [MEMORY[0x277D19268] sharedInstance];
+  isInternalInstall = [mEMORY[0x277D19268] isInternalInstall];
 
-  if (v8)
+  if (isInternalInstall)
   {
     v9 = MEMORY[0x277CBEBC0];
     v10 = NSTemporaryDirectory();
     v11 = [v9 fileURLWithPath:v10];
 
-    v12 = [MEMORY[0x277CCAD78] UUID];
-    v13 = [v12 UUIDString];
-    v14 = [v13 stringByAppendingString:@"-nicknameData"];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    uUIDString = [uUID UUIDString];
+    v14 = [uUIDString stringByAppendingString:@"-nicknameData"];
 
     v15 = [v11 URLByAppendingPathComponent:v14];
-    v16 = [v15 path];
+    path = [v15 path];
     v27 = 0;
-    v17 = [v6 writeToFile:v16 options:1 error:&v27];
+    v17 = [dataCopy writeToFile:path options:1 error:&v27];
     v18 = v27;
 
     if ((v17 & 1) == 0)
@@ -4337,9 +4337,9 @@ LABEL_11:
     }
 
     v20 = MEMORY[0x277CCACA8];
-    v21 = [v5 description];
-    v22 = [v5 localizedDescription];
-    v23 = [v20 stringWithFormat:@"I encountered a BlastDoor explosion when receiving a Name and Photo payload. Error: %@. Localized description: %@", v21, v22];
+    v21 = [errorCopy description];
+    localizedDescription = [errorCopy localizedDescription];
+    v23 = [v20 stringWithFormat:@"I encountered a BlastDoor explosion when receiving a Name and Photo payload. Error: %@. Localized description: %@", v21, localizedDescription];
 
     v24 = MEMORY[0x277D1AC88];
     v28[0] = v15;
@@ -4350,18 +4350,18 @@ LABEL_11:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingTopLevelMessage:(id)a5 fromID:(id)a6 messageContext:(id)a7
+- (void)service:(id)service account:(id)account incomingTopLevelMessage:(id)message fromID:(id)d messageContext:(id)context
 {
   v73 = *MEMORY[0x277D85DE8];
-  v65 = a3;
-  v66 = a4;
-  v12 = a5;
-  v13 = a6;
-  v67 = a7;
-  v14 = [v12 objectForKey:*MEMORY[0x277D187F8]];
-  v15 = [v12 objectForKey:*MEMORY[0x277D18810]];
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
+  v14 = [messageCopy objectForKey:*MEMORY[0x277D187F8]];
+  v15 = [messageCopy objectForKey:*MEMORY[0x277D18810]];
   v16 = +[IMDChatRegistry sharedInstance];
-  v17 = [v16 _hasSavedContactCardForHandle:v13];
+  v17 = [v16 _hasSavedContactCardForHandle:dCopy];
 
   v18 = [MEMORY[0x277D1AB80] contextWithKnownSender:v17];
   if (IMOSLoggingEnabled())
@@ -4370,7 +4370,7 @@ LABEL_11:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v70 = v13;
+      v70 = dCopy;
       _os_log_impl(&dword_22B4CC000, v19, OS_LOG_TYPE_INFO, "Received a nickname update from: %@, attempting to blast-door.", buf, 0xCu);
     }
   }
@@ -4387,7 +4387,7 @@ LABEL_11:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v70 = v13;
+        v70 = dCopy;
         v71 = 2112;
         v72 = v20;
         _os_log_impl(&dword_22B4CC000, v24, OS_LOG_TYPE_INFO, "Received a nickname update from: %@, with message: %@", buf, 0x16u);
@@ -4396,7 +4396,7 @@ LABEL_11:
 
     if (IMSharedHelperNickNameEnabled())
     {
-      if ([(__CFString *)v13 length])
+      if ([(__CFString *)dCopy length])
       {
         v25 = [v20 _stringForKey:qword_27D8CC170];
         v57 = [v25 isEqualToString:qword_27D8CC188];
@@ -4441,7 +4441,7 @@ LABEL_11:
             if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v70 = v13;
+              v70 = dCopy;
               _os_log_impl(&dword_22B4CC000, v33, OS_LOG_TYPE_INFO, "This is a personal nickname update from: %@", buf, 0xCu);
             }
           }
@@ -4451,7 +4451,7 @@ LABEL_11:
           v36 = [(IMDNicknameController *)self _idsDeviceFromPushToken:v35];
           if (v36)
           {
-            [(IMDNicknameController *)self handleNicknameUpdatesFromPeerDevice:v20 fromPeerDevice:v13];
+            [(IMDNicknameController *)self handleNicknameUpdatesFromPeerDevice:v20 fromPeerDevice:dCopy];
           }
 
           else
@@ -4472,7 +4472,7 @@ LABEL_11:
             if (os_log_type_enabled(v45, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v70 = v13;
+              v70 = dCopy;
               _os_log_impl(&dword_22B4CC000, v45, OS_LOG_TYPE_INFO, "This is a name only nickname update from: %@", buf, 0xCu);
             }
           }
@@ -4491,7 +4491,7 @@ LABEL_11:
             if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
             {
               *buf = 138412290;
-              v70 = v13;
+              v70 = dCopy;
               _os_log_impl(&dword_22B4CC000, v48, OS_LOG_TYPE_INFO, "This is a nickname update from: %@", buf, 0xCu);
             }
           }
@@ -4519,7 +4519,7 @@ LABEL_11:
           BYTE1(v55) = v50 ^ 1;
           LOBYTE(v55) = v56;
           [(IMDNicknameController *)self NicknameWithRecordID:v63 URI:v49 decryptionKey:v62 wallpaperDataTag:v61 wallpaperLowResDataTag:v60 wallpaperMetadataTag:v59 avatarRecipeDataTag:v58 hasWallpaperUpdate:v55 dropNicknameForUnknownContacts:&unk_283F1A128 withCompletionBlock:?];
-          v13 = v49;
+          dCopy = v49;
         }
       }
 
@@ -4551,66 +4551,66 @@ LABEL_11:
 - (void)broadcastHandlesSharingNicknamesDidChange
 {
   v6 = +[IMDBroadcastController sharedProvider];
-  v3 = [v6 broadcasterForAccountListeners];
-  v4 = [(IMDNicknameController *)self allowListedHandlesForSharing];
-  v5 = [(IMDNicknameController *)self denyListedHandlesForSharing];
-  [v3 updateNicknameHandlesForSharing:v4 blocked:v5];
+  broadcasterForAccountListeners = [v6 broadcasterForAccountListeners];
+  allowListedHandlesForSharing = [(IMDNicknameController *)self allowListedHandlesForSharing];
+  denyListedHandlesForSharing = [(IMDNicknameController *)self denyListedHandlesForSharing];
+  [broadcasterForAccountListeners updateNicknameHandlesForSharing:allowListedHandlesForSharing blocked:denyListedHandlesForSharing];
 }
 
 - (void)broadcastTransitionedHandlesDidChange
 {
   v5 = +[IMDBroadcastController sharedProvider];
-  v3 = [v5 broadcasterForAccountListeners];
-  v4 = [(IMDNicknameController *)self transitionedHandles];
-  [v3 updateTransitionedNicknameHandles:v4];
+  broadcasterForAccountListeners = [v5 broadcasterForAccountListeners];
+  transitionedHandles = [(IMDNicknameController *)self transitionedHandles];
+  [broadcasterForAccountListeners updateTransitionedNicknameHandles:transitionedHandles];
 }
 
-- (void)allowHandlesForSharing:(id)a3 onChatGUIDs:(id)a4 fromHandle:(id)a5 forceSend:(BOOL)a6
+- (void)allowHandlesForSharing:(id)sharing onChatGUIDs:(id)ds fromHandle:(id)handle forceSend:(BOOL)send
 {
-  v6 = a6;
+  sendCopy = send;
   v85 = *MEMORY[0x277D85DE8];
-  v55 = a3;
-  v54 = a4;
-  v10 = a5;
+  sharingCopy = sharing;
+  dsCopy = ds;
+  handleCopy = handle;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138413058;
-      v78 = v55;
+      v78 = sharingCopy;
       v79 = 2112;
-      v80 = v54;
+      v80 = dsCopy;
       v81 = 2112;
-      v82 = v10;
+      v82 = handleCopy;
       v83 = 1024;
-      v84 = v6;
+      v84 = sendCopy;
       _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Asked to allow handles: %@, on chatGUIDS: %@, from handle: %@, forceSend: %{BOOL}d", buf, 0x26u);
     }
   }
 
-  if (v6 || (-[IMDNicknameController allowListedHandlesForSharing](self, "allowListedHandlesForSharing"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [v55 isSubsetOfSet:v12], v12, !v13))
+  if (sendCopy || (-[IMDNicknameController allowListedHandlesForSharing](self, "allowListedHandlesForSharing"), v12 = objc_claimAutoreleasedReturnValue(), v13 = [sharingCopy isSubsetOfSet:v12], v12, !v13))
   {
     if (IMOSLoggingEnabled())
     {
       v15 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = [v55 count];
+        v16 = [sharingCopy count];
         *buf = 134217984;
         v78 = v16;
         _os_log_impl(&dword_22B4CC000, v15, OS_LOG_TYPE_INFO, "Writing %lu nicknames to allow list", buf, 0xCu);
       }
     }
 
-    [(IMDNicknameController *)self markHandlesAsAllowed:v55, v54];
-    if (v54 && [v54 count])
+    [(IMDNicknameController *)self markHandlesAsAllowed:sharingCopy, dsCopy];
+    if (dsCopy && [dsCopy count])
     {
       v71 = 0u;
       v72 = 0u;
       v69 = 0u;
       v70 = 0u;
-      v17 = v54;
+      v17 = dsCopy;
       v18 = [v17 countByEnumeratingWithState:&v69 objects:v76 count:16];
       if (v18)
       {
@@ -4639,9 +4639,9 @@ LABEL_11:
               }
             }
 
-            v25 = [v23 participants];
-            v26 = [v23 guid];
-            [(IMDNicknameController *)self sendPersonalNicknameToRecipients:v25 chatGUID:v26 fromHandle:v10];
+            participants = [v23 participants];
+            guid = [v23 guid];
+            [(IMDNicknameController *)self sendPersonalNicknameToRecipients:participants chatGUID:guid fromHandle:handleCopy];
           }
 
           v18 = [v17 countByEnumeratingWithState:&v69 objects:v76 count:16];
@@ -4651,14 +4651,14 @@ LABEL_11:
       }
     }
 
-    else if (v55)
+    else if (sharingCopy)
     {
       v27 = objc_alloc_init(MEMORY[0x277CBEB18]);
       v67 = 0u;
       v68 = 0u;
       v65 = 0u;
       v66 = 0u;
-      v28 = v55;
+      v28 = sharingCopy;
       v29 = [v28 countByEnumeratingWithState:&v65 objects:v75 count:16];
       if (v29)
       {
@@ -4730,7 +4730,7 @@ LABEL_11:
       }
 
       v42 = [v56 count];
-      if (!v10 || v42)
+      if (!handleCopy || v42)
       {
         v59 = 0u;
         v60 = 0u;
@@ -4752,7 +4752,7 @@ LABEL_11:
               }
 
               v48 = *(*(&v57 + 1) + 8 * v47);
-              if (v10 || ([*(*(&v57 + 1) + 8 * v47) lastAddressedLocalHandle], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
+              if (handleCopy || ([*(*(&v57 + 1) + 8 * v47) lastAddressedLocalHandle], (handleCopy = objc_claimAutoreleasedReturnValue()) != 0))
               {
                 if (IMOSLoggingEnabled())
                 {
@@ -4764,8 +4764,8 @@ LABEL_11:
                   }
                 }
 
-                v50 = [v48 guid];
-                [(IMDNicknameController *)self sendPersonalNicknameToRecipients:v33 chatGUID:v50 fromHandle:v10];
+                guid2 = [v48 guid];
+                [(IMDNicknameController *)self sendPersonalNicknameToRecipients:v33 chatGUID:guid2 fromHandle:handleCopy];
               }
 
               else
@@ -4780,7 +4780,7 @@ LABEL_11:
                   }
                 }
 
-                v10 = 0;
+                handleCopy = 0;
               }
 
               ++v47;
@@ -4807,7 +4807,7 @@ LABEL_11:
           }
         }
 
-        [(IMDNicknameController *)self sendPersonalNicknameToRecipients:v33 chatGUID:0 fromHandle:v10];
+        [(IMDNicknameController *)self sendPersonalNicknameToRecipients:v33 chatGUID:0 fromHandle:handleCopy];
       }
     }
   }
@@ -4818,7 +4818,7 @@ LABEL_11:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v78 = v55;
+      v78 = sharingCopy;
       _os_log_impl(&dword_22B4CC000, v14, OS_LOG_TYPE_INFO, "We tried to allow handle(s) that have already been allowed, bailing. Handles: %@", buf, 0xCu);
     }
   }
@@ -4826,12 +4826,12 @@ LABEL_11:
   v53 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markHandlesAsAllowed:(id)a3
+- (void)markHandlesAsAllowed:(id)allowed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IMDNicknameController *)self allowListedHandlesForSharing];
-  v6 = [v4 isSubsetOfSet:v5];
+  allowedCopy = allowed;
+  allowListedHandlesForSharing = [(IMDNicknameController *)self allowListedHandlesForSharing];
+  v6 = [allowedCopy isSubsetOfSet:allowListedHandlesForSharing];
 
   v7 = IMOSLoggingEnabled();
   if (v6)
@@ -4842,7 +4842,7 @@ LABEL_11:
       if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
       {
         v12 = 138412290;
-        v13 = v4;
+        v13 = allowedCopy;
         _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Given handles are already in our allow list, no need to do anything. Handles: %@", &v12, 0xCu);
       }
     }
@@ -4856,13 +4856,13 @@ LABEL_11:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
       {
         v12 = 134217984;
-        v13 = [v4 count];
+        v13 = [allowedCopy count];
         _os_log_impl(&dword_22B4CC000, v9, OS_LOG_TYPE_INFO, "Writing %lu nicknames to allow list", &v12, 0xCu);
       }
     }
 
-    v10 = [(IMDNicknameController *)self handleAllowList];
-    [(IMDNicknameController *)self _updateHandleList:v10 withHandles:v4 forKey:@"handleWhitelist" broadcastUpdates:1];
+    handleAllowList = [(IMDNicknameController *)self handleAllowList];
+    [(IMDNicknameController *)self _updateHandleList:handleAllowList withHandles:allowedCopy forKey:@"handleWhitelist" broadcastUpdates:1];
 
     [(IMDNicknameController *)self broadcastHandlesSharingNicknamesDidChange];
   }
@@ -4870,41 +4870,41 @@ LABEL_11:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)denyHandlesForSharing:(id)a3
+- (void)denyHandlesForSharing:(id)sharing
 {
   v10 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sharingCopy = sharing;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v8 = 134217984;
-      v9 = [v4 count];
+      v9 = [sharingCopy count];
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Writing %lu nicknames to deny list", &v8, 0xCu);
     }
   }
 
-  v6 = [(IMDNicknameController *)self handleDenyList];
-  [(IMDNicknameController *)self _updateHandleList:v6 withHandles:v4 forKey:@"handleBlacklist" broadcastUpdates:1];
+  handleDenyList = [(IMDNicknameController *)self handleDenyList];
+  [(IMDNicknameController *)self _updateHandleList:handleDenyList withHandles:sharingCopy forKey:@"handleBlacklist" broadcastUpdates:1];
 
   [(IMDNicknameController *)self broadcastHandlesSharingNicknamesDidChange];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markNicknamesAsTransitionedForHandleIDs:(id)a3 isAutoUpdate:(BOOL)a4
+- (void)markNicknamesAsTransitionedForHandleIDs:(id)ds isAutoUpdate:(BOOL)update
 {
-  v4 = a4;
+  updateCopy = update;
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v21 = v6;
-  if (v6)
+  dsCopy = ds;
+  v21 = dsCopy;
+  if (dsCopy)
   {
     v24 = 0u;
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = v6;
+    v7 = dsCopy;
     v8 = [v7 countByEnumeratingWithState:&v22 objects:v28 count:16];
     if (v8)
     {
@@ -4920,7 +4920,7 @@ LABEL_11:
 
           v11 = *(*(&v22 + 1) + 8 * i);
           v12 = IMOSLoggingEnabled();
-          if (v4)
+          if (updateCopy)
           {
             if (v12)
             {
@@ -4966,8 +4966,8 @@ LABEL_11:
       }
     }
 
-    v17 = [(IMDNicknameController *)self handleTransitionedList];
-    [(IMDNicknameController *)self _updateTransitionList:v17 withHandles:v7 forKey:@"handleTransitionedList" broadcastUpdates:1];
+    handleTransitionedList = [(IMDNicknameController *)self handleTransitionedList];
+    [(IMDNicknameController *)self _updateTransitionList:handleTransitionedList withHandles:v7 forKey:@"handleTransitionedList" broadcastUpdates:1];
 
     if (IMOSLoggingEnabled())
     {
@@ -4994,15 +4994,15 @@ LABEL_11:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markProfileRecords:(id)a3 asActive:(BOOL)a4
+- (void)markProfileRecords:(id)records asActive:(BOOL)active
 {
-  v4 = a4;
+  activeCopy = active;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  recordsCopy = records;
+  if (recordsCopy)
   {
     v7 = IMOSLoggingEnabled();
-    if (v4)
+    if (activeCopy)
     {
       if (v7)
       {
@@ -5010,13 +5010,13 @@ LABEL_11:
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
           v16 = 134217984;
-          v17 = [v6 count];
+          v17 = [recordsCopy count];
           _os_log_impl(&dword_22B4CC000, v8, OS_LOG_TYPE_INFO, "Writing record IDs %lu to active list", &v16, 0xCu);
         }
       }
 
-      v9 = [(IMDNicknameController *)self activeNicknameRecords];
-      [(IMDNicknameController *)self _updateActiveList:v9 withRecords:v6 broadcastUpdates:1];
+      activeNicknameRecords = [(IMDNicknameController *)self activeNicknameRecords];
+      [(IMDNicknameController *)self _updateActiveList:activeNicknameRecords withRecords:recordsCopy broadcastUpdates:1];
     }
 
     else
@@ -5027,13 +5027,13 @@ LABEL_11:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
         {
           v16 = 134217984;
-          v17 = [v6 count];
+          v17 = [recordsCopy count];
           _os_log_impl(&dword_22B4CC000, v11, OS_LOG_TYPE_INFO, "Removing record IDs %lu from active list", &v16, 0xCu);
         }
       }
 
-      v9 = [v6 allKeys];
-      [(IMDNicknameController *)self _removeFromList:v9 withKey:@"activeNicknameRecords"];
+      activeNicknameRecords = [recordsCopy allKeys];
+      [(IMDNicknameController *)self _removeFromList:activeNicknameRecords withKey:@"activeNicknameRecords"];
     }
 
     if (IMOSLoggingEnabled())
@@ -5047,9 +5047,9 @@ LABEL_11:
     }
 
     v10 = +[IMDBroadcastController sharedProvider];
-    v13 = [v10 broadcasterForAccountListeners];
-    v14 = [(IMDNicknameController *)self activeRecords];
-    [v13 updateActiveNicknameRecords:v14];
+    broadcasterForAccountListeners = [v10 broadcasterForAccountListeners];
+    activeRecords = [(IMDNicknameController *)self activeRecords];
+    [broadcasterForAccountListeners updateActiveNicknameRecords:activeRecords];
   }
 
   else
@@ -5064,14 +5064,14 @@ LABEL_11:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateHandleList:(id)a3 withHandles:(id)a4 forKey:(id)a5 broadcastUpdates:(BOOL)a6
+- (void)_updateHandleList:(id)list withHandles:(id)handles forKey:(id)key broadcastUpdates:(BOOL)updates
 {
-  v6 = a6;
+  updatesCopy = updates;
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v11 isSubsetOfSet:v10])
+  listCopy = list;
+  handlesCopy = handles;
+  keyCopy = key;
+  if ([handlesCopy isSubsetOfSet:listCopy])
   {
     if (IMOSLoggingEnabled())
     {
@@ -5079,9 +5079,9 @@ LABEL_11:
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v25 = v11;
+        v25 = handlesCopy;
         v26 = 2112;
-        v27 = v12;
+        v27 = keyCopy;
         _os_log_impl(&dword_22B4CC000, v13, OS_LOG_TYPE_INFO, "Given handles are already in our list, no need to do anything. Handles: %@, key: %@", buf, 0x16u);
       }
     }
@@ -5089,9 +5089,9 @@ LABEL_11:
 
   else
   {
-    [v10 unionSet:v11];
+    [listCopy unionSet:handlesCopy];
     v23 = 0;
-    v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v23];
+    v14 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:listCopy requiringSecureCoding:1 error:&v23];
     v15 = v23;
     v16 = v15;
     if (!v14 || v15)
@@ -5102,7 +5102,7 @@ LABEL_11:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v25 = v12;
+          v25 = keyCopy;
           v26 = 2112;
           v27 = v16;
           _os_log_impl(&dword_22B4CC000, v20, OS_LOG_TYPE_INFO, "Nicknames - We had a problem archiving handle list for key %@ error %@", buf, 0x16u);
@@ -5112,9 +5112,9 @@ LABEL_11:
 
     else
     {
-      v17 = [(IMDNicknameController *)self handleSharingKVStore];
+      handleSharingKVStore = [(IMDNicknameController *)self handleSharingKVStore];
       v22 = 0;
-      [v17 persistData:v14 forKey:v12 error:&v22];
+      [handleSharingKVStore persistData:v14 forKey:keyCopy error:&v22];
       v18 = v22;
 
       if (v18 && IMOSLoggingEnabled())
@@ -5123,7 +5123,7 @@ LABEL_11:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v25 = v12;
+          v25 = keyCopy;
           v26 = 2112;
           v27 = v18;
           _os_log_impl(&dword_22B4CC000, v19, OS_LOG_TYPE_INFO, "Nicknames - We had a problem writing a handle list update with key %@ -  %@", buf, 0x16u);
@@ -5131,7 +5131,7 @@ LABEL_11:
       }
     }
 
-    if (v6)
+    if (updatesCopy)
     {
       [(IMDNicknameController *)self _updateDenyAllowListHandlesVersion];
       [(IMDNicknameController *)self _syncHandleAllowDenyListToOtherDevices];
@@ -5141,16 +5141,16 @@ LABEL_11:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateTransitionList:(id)a3 withHandles:(id)a4 forKey:(id)a5 broadcastUpdates:(BOOL)a6
+- (void)_updateTransitionList:(id)list withHandles:(id)handles forKey:(id)key broadcastUpdates:(BOOL)updates
 {
-  v6 = a6;
+  updatesCopy = updates;
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  [v10 unionSet:v11];
+  listCopy = list;
+  handlesCopy = handles;
+  keyCopy = key;
+  [listCopy unionSet:handlesCopy];
   v23 = 0;
-  v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v23];
+  v13 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:listCopy requiringSecureCoding:1 error:&v23];
   v14 = v23;
   v15 = v14;
   if (v13)
@@ -5165,9 +5165,9 @@ LABEL_11:
 
   if (v16)
   {
-    v19 = [(IMDNicknameController *)self nicknameRecordsKVStore];
+    nicknameRecordsKVStore = [(IMDNicknameController *)self nicknameRecordsKVStore];
     v22 = 0;
-    [v19 persistData:v13 forKey:v12 error:&v22];
+    [nicknameRecordsKVStore persistData:v13 forKey:keyCopy error:&v22];
     v20 = v22;
 
     if (v20 && IMOSLoggingEnabled())
@@ -5176,7 +5176,7 @@ LABEL_11:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v25 = v12;
+        v25 = keyCopy;
         v26 = 2112;
         v27 = v20;
         _os_log_impl(&dword_22B4CC000, v21, OS_LOG_TYPE_INFO, "Nicknames - We had a problem writing a transitioned list update with key %@ -  %@", buf, 0x16u);
@@ -5190,14 +5190,14 @@ LABEL_11:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v25 = v12;
+      v25 = keyCopy;
       v26 = 2112;
       v27 = v15;
       _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "Nicknames - We had a problem archiving transitioned list for key %@ error %@", buf, 0x16u);
     }
   }
 
-  if (v6)
+  if (updatesCopy)
   {
     [(IMDNicknameController *)self _updateTransitionedListHandlesVersion];
     [(IMDNicknameController *)self _syncHandleTransitionedListToOtherDevices];
@@ -5206,30 +5206,30 @@ LABEL_11:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateActiveList:(id)a3 withRecords:(id)a4 broadcastUpdates:(BOOL)a5
+- (void)_updateActiveList:(id)list withRecords:(id)records broadcastUpdates:(BOOL)updates
 {
-  v5 = a5;
+  updatesCopy = updates;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  listCopy = list;
+  recordsCopy = records;
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v22 = v9;
+      v22 = recordsCopy;
       v23 = 2112;
-      v24 = v8;
+      v24 = listCopy;
       _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Saving new active list: %@, after previous active list: %@", buf, 0x16u);
     }
   }
 
-  if (v8)
+  if (listCopy)
   {
-    [v8 addEntriesFromDictionary:v9];
+    [listCopy addEntriesFromDictionary:recordsCopy];
     v20 = 0;
-    v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v20];
+    v11 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:listCopy requiringSecureCoding:1 error:&v20];
     v12 = v20;
     v13 = v12;
     if (!v11 || v12)
@@ -5250,9 +5250,9 @@ LABEL_11:
 
     else
     {
-      v14 = [(IMDNicknameController *)self nicknameRecordsKVStore];
+      nicknameRecordsKVStore = [(IMDNicknameController *)self nicknameRecordsKVStore];
       v19 = 0;
-      [v14 persistData:v11 forKey:@"activeNicknameRecords" error:&v19];
+      [nicknameRecordsKVStore persistData:v11 forKey:@"activeNicknameRecords" error:&v19];
       v15 = v19;
 
       if (v15 && IMOSLoggingEnabled())
@@ -5269,7 +5269,7 @@ LABEL_11:
       }
     }
 
-    if (v5)
+    if (updatesCopy)
     {
       [(IMDNicknameController *)self _updateIsActiveListHandlesVersion];
       [(IMDNicknameController *)self _syncActiveNicknameRecordsToOtherDevices];
@@ -5279,17 +5279,17 @@ LABEL_11:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateIgnoredList:(id)a3 withRecords:(id)a4 broadcastUpdates:(BOOL)a5
+- (void)_updateIgnoredList:(id)list withRecords:(id)records broadcastUpdates:(BOOL)updates
 {
-  v5 = a5;
+  updatesCopy = updates;
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  listCopy = list;
+  recordsCopy = records;
+  if (listCopy)
   {
-    [v8 addEntriesFromDictionary:v9];
+    [listCopy addEntriesFromDictionary:recordsCopy];
     v20 = 0;
-    v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v8 requiringSecureCoding:1 error:&v20];
+    v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:listCopy requiringSecureCoding:1 error:&v20];
     v11 = v20;
     v12 = v11;
     if (v10)
@@ -5304,9 +5304,9 @@ LABEL_11:
 
     if (v13)
     {
-      v16 = [(IMDNicknameController *)self nicknameRecordsKVStore];
+      nicknameRecordsKVStore = [(IMDNicknameController *)self nicknameRecordsKVStore];
       v19 = 0;
-      [v16 persistData:v10 forKey:@"ignoredNicknameRecords" error:&v19];
+      [nicknameRecordsKVStore persistData:v10 forKey:@"ignoredNicknameRecords" error:&v19];
       v17 = v19;
 
       if (v17 && IMOSLoggingEnabled())
@@ -5336,7 +5336,7 @@ LABEL_11:
       }
     }
 
-    if (v5)
+    if (updatesCopy)
     {
       [(IMDNicknameController *)self _updateIsIgnoredListHandlesVersion];
       [(IMDNicknameController *)self _syncIgnoredNicknameRecordsToOtherDevices];
@@ -5346,29 +5346,29 @@ LABEL_11:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (id)unknownSenderRecordInfoFor:(id)a3
+- (id)unknownSenderRecordInfoFor:(id)for
 {
-  v4 = a3;
-  v5 = [(IMDNicknameController *)self unknownSenderRecordInfo];
-  v6 = [v5 objectForKey:v4];
+  forCopy = for;
+  unknownSenderRecordInfo = [(IMDNicknameController *)self unknownSenderRecordInfo];
+  v6 = [unknownSenderRecordInfo objectForKey:forCopy];
 
   v7 = [MEMORY[0x277D1AAD0] processSetOfUnknownSenderRecords:v6];
 
   return v7;
 }
 
-- (void)_replaceUnknownSenderRecordInfoListWithInfo:(id)a3 purgeIfNeeded:(BOOL)a4
+- (void)_replaceUnknownSenderRecordInfoListWithInfo:(id)info purgeIfNeeded:(BOOL)needed
 {
-  v4 = a4;
+  neededCopy = needed;
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (v6)
+  infoCopy = info;
+  if (infoCopy)
   {
-    [(IMDNicknameController *)self setUnknownSenderRecordInfo:v6];
+    [(IMDNicknameController *)self setUnknownSenderRecordInfo:infoCopy];
     v7 = MEMORY[0x277CCAAB0];
     v8 = MEMORY[0x277CBEAC0];
-    v9 = [(IMDNicknameController *)self unknownSenderRecordInfo];
-    v10 = [v8 dictionaryWithDictionary:v9];
+    unknownSenderRecordInfo = [(IMDNicknameController *)self unknownSenderRecordInfo];
+    v10 = [v8 dictionaryWithDictionary:unknownSenderRecordInfo];
     v22 = 0;
     v11 = [v7 archivedDataWithRootObject:v10 requiringSecureCoding:1 error:&v22];
     v12 = v22;
@@ -5391,9 +5391,9 @@ LABEL_11:
 
     else
     {
-      v13 = [(IMDNicknameController *)self unknownSenderRecordInfoKVStore];
+      unknownSenderRecordInfoKVStore = [(IMDNicknameController *)self unknownSenderRecordInfoKVStore];
       v21 = 0;
-      [v13 persistData:v11 forKey:@"unknownSenderRecordInfoKey" error:&v21];
+      [unknownSenderRecordInfoKVStore persistData:v11 forKey:@"unknownSenderRecordInfoKey" error:&v21];
       v14 = v21;
 
       if (v14 && IMOSLoggingEnabled())
@@ -5410,46 +5410,46 @@ LABEL_11:
       }
     }
 
-    if (v4)
+    if (neededCopy)
     {
       [(IMDNicknameController *)self purgeUnknownSenderRecordInfoIfNeeded];
     }
 
     v17 = +[IMDBroadcastController sharedProvider];
-    v18 = [v17 broadcasterForAccountListeners];
-    v19 = [(IMDNicknameController *)self unknownSenderRecordInfo];
-    [v18 updateUnknownSenderRecords:v19];
+    broadcasterForAccountListeners = [v17 broadcasterForAccountListeners];
+    unknownSenderRecordInfo2 = [(IMDNicknameController *)self unknownSenderRecordInfo];
+    [broadcasterForAccountListeners updateUnknownSenderRecords:unknownSenderRecordInfo2];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeFromTransitionedList:(id)a3
+- (void)_removeFromTransitionedList:(id)list
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  listCopy = list;
   if ([(IMDNicknameController *)self _nicknameFeatureEnabled])
   {
-    v5 = [(__CFString *)v4 handle];
-    if (v5)
+    handle = [(__CFString *)listCopy handle];
+    if (handle)
     {
-      v6 = [(IMDNicknameController *)self handleTransitionedList];
-      v7 = [v6 count];
+      handleTransitionedList = [(IMDNicknameController *)self handleTransitionedList];
+      v7 = [handleTransitionedList count];
 
       if (v7)
       {
-        v8 = [(IMDNicknameController *)self handleTransitionedList];
-        v9 = [v8 containsObject:v5];
+        handleTransitionedList2 = [(IMDNicknameController *)self handleTransitionedList];
+        v9 = [handleTransitionedList2 containsObject:handle];
 
         if (v9)
         {
-          v10 = [(IMDNicknameController *)self handleTransitionedList];
-          [v10 removeObject:v5];
+          handleTransitionedList3 = [(IMDNicknameController *)self handleTransitionedList];
+          [handleTransitionedList3 removeObject:handle];
 
           v11 = MEMORY[0x277CCAAB0];
-          v12 = [(IMDNicknameController *)self handleTransitionedList];
+          handleTransitionedList4 = [(IMDNicknameController *)self handleTransitionedList];
           v23 = 0;
-          v13 = [v11 archivedDataWithRootObject:v12 requiringSecureCoding:1 error:&v23];
+          v13 = [v11 archivedDataWithRootObject:handleTransitionedList4 requiringSecureCoding:1 error:&v23];
           v14 = v23;
 
           if (!v13 || v14)
@@ -5470,9 +5470,9 @@ LABEL_11:
 
           else
           {
-            v15 = [(IMDNicknameController *)self nicknameRecordsKVStore];
+            nicknameRecordsKVStore = [(IMDNicknameController *)self nicknameRecordsKVStore];
             v22 = 0;
-            [v15 persistData:v13 forKey:@"handleTransitionedList" error:&v22];
+            [nicknameRecordsKVStore persistData:v13 forKey:@"handleTransitionedList" error:&v22];
             v16 = v22;
 
             if (v16 && IMOSLoggingEnabled())
@@ -5502,7 +5502,7 @@ LABEL_11:
           if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
           {
             *buf = 138412290;
-            v25 = v4;
+            v25 = listCopy;
             _os_log_impl(&dword_22B4CC000, v19, OS_LOG_TYPE_INFO, "handleTransitionedList doesn't contain nickname %@", buf, 0xCu);
           }
 
@@ -5517,7 +5517,7 @@ LABEL_20:
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v25 = v4;
+        v25 = listCopy;
         _os_log_impl(&dword_22B4CC000, v19, OS_LOG_TYPE_INFO, "No handle id for nickname %@", buf, 0xCu);
       }
 
@@ -5544,11 +5544,11 @@ LABEL_31:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_removeFromList:(id)a3 withKey:(id)a4
+- (void)_removeFromList:(id)list withKey:(id)key
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listCopy = list;
+  keyCopy = key;
   if (![(IMDNicknameController *)self _nicknameFeatureEnabled])
   {
     if (!IMOSLoggingEnabled())
@@ -5568,7 +5568,7 @@ LABEL_8:
     goto LABEL_46;
   }
 
-  if (![v6 count])
+  if (![listCopy count])
   {
     if (!IMOSLoggingEnabled())
     {
@@ -5585,29 +5585,29 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if ([v7 isEqualToString:@"ignoredNicknameRecords"])
+  if ([keyCopy isEqualToString:@"ignoredNicknameRecords"])
   {
-    v8 = [(IMDNicknameController *)self ignoredNicknameRecords];
+    ignoredNicknameRecords = [(IMDNicknameController *)self ignoredNicknameRecords];
   }
 
   else
   {
-    if (![v7 isEqualToString:@"activeNicknameRecords"])
+    if (![keyCopy isEqualToString:@"activeNicknameRecords"])
     {
       goto LABEL_46;
     }
 
-    v8 = [(IMDNicknameController *)self activeNicknameRecords];
+    ignoredNicknameRecords = [(IMDNicknameController *)self activeNicknameRecords];
   }
 
-  v10 = v8;
-  if (v8)
+  v10 = ignoredNicknameRecords;
+  if (ignoredNicknameRecords)
   {
     v30 = 0u;
     v31 = 0u;
     v28 = 0u;
     v29 = 0u;
-    v11 = v6;
+    v11 = listCopy;
     v12 = [v11 countByEnumeratingWithState:&v28 objects:v36 count:16];
     if (v12)
     {
@@ -5666,7 +5666,7 @@ LABEL_8:
         if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v33 = v7;
+          v33 = keyCopy;
           v34 = 2112;
           v35 = v11;
           _os_log_impl(&dword_22B4CC000, v24, OS_LOG_TYPE_INFO, "Nicknames - We had a problem archiving list for key %@ error %@", buf, 0x16u);
@@ -5676,9 +5676,9 @@ LABEL_8:
 
     else
     {
-      v20 = [(IMDNicknameController *)self nicknameRecordsKVStore];
+      nicknameRecordsKVStore = [(IMDNicknameController *)self nicknameRecordsKVStore];
       v26 = 0;
-      [v20 persistData:v18 forKey:v7 error:&v26];
+      [nicknameRecordsKVStore persistData:v18 forKey:keyCopy error:&v26];
       v21 = v26;
 
       if (v21 && IMOSLoggingEnabled())
@@ -5687,7 +5687,7 @@ LABEL_8:
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
           *buf = 138412546;
-          v33 = v7;
+          v33 = keyCopy;
           v34 = 2112;
           v35 = v21;
           _os_log_impl(&dword_22B4CC000, v22, OS_LOG_TYPE_INFO, "Nicknames - We had a problem writing list update with key %@ -  %@", buf, 0x16u);
@@ -5695,13 +5695,13 @@ LABEL_8:
       }
     }
 
-    if ([v7 isEqualToString:@"ignoredNicknameRecords"])
+    if ([keyCopy isEqualToString:@"ignoredNicknameRecords"])
     {
       [(IMDNicknameController *)self _updateIsIgnoredListHandlesVersion];
       [(IMDNicknameController *)self _syncIgnoredNicknameRecordsToOtherDevices];
     }
 
-    else if ([v7 isEqualToString:@"activeNicknameRecords"])
+    else if ([keyCopy isEqualToString:@"activeNicknameRecords"])
     {
       [(IMDNicknameController *)self _updateIsActiveListHandlesVersion];
       [(IMDNicknameController *)self _syncActiveNicknameRecordsToOtherDevices];
@@ -5718,22 +5718,22 @@ LABEL_46:
 - (void)_updatePendingNicknameVersion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v3 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v4 = *MEMORY[0x277D1A3C0];
   v5 = *MEMORY[0x277D1A408];
-  v6 = [v3 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A408]];
-  v7 = [v6 unsignedIntegerValue];
+  v6 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A408]];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  v8 = [(IMDNicknameController *)self defaults];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 + 1];
-  [v8 setValue:v9 forDomain:v4 forKey:v5];
+  defaults2 = [(IMDNicknameController *)self defaults];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
+  [defaults2 setValue:v9 forDomain:v4 forKey:v5];
 
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
-      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v7 + 1];
+      v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue + 1];
       v13 = 138412290;
       v14 = v11;
       _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "Updated pending nickname version to %@", &v13, 0xCu);
@@ -5743,14 +5743,14 @@ LABEL_46:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)saveNicknameForRecordID:(id)a3 handleID:(id)a4 userNickname:(id)a5
+- (void)saveNicknameForRecordID:(id)d handleID:(id)iD userNickname:(id)nickname
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v10 setRecordID:v8];
-  [v10 setHandle:v9];
-  v11 = [(IMDNicknameController *)self replacedNicknameForHandleIDInHandledMapIfNeeded:v9 nickname:v10];
+  dCopy = d;
+  iDCopy = iD;
+  nicknameCopy = nickname;
+  [nicknameCopy setRecordID:dCopy];
+  [nicknameCopy setHandle:iDCopy];
+  v11 = [(IMDNicknameController *)self replacedNicknameForHandleIDInHandledMapIfNeeded:iDCopy nickname:nicknameCopy];
   v12 = IMOSLoggingEnabled();
   if (v11)
   {
@@ -5777,15 +5777,15 @@ LABEL_46:
       }
     }
 
-    [(IMDNicknameController *)self addNicknameToPendingUpdates:v10];
+    [(IMDNicknameController *)self addNicknameToPendingUpdates:nicknameCopy];
   }
 
-  v15 = [v10 preBlastDoorPayloadData];
+  preBlastDoorPayloadData = [nicknameCopy preBlastDoorPayloadData];
 
-  if (v9 && v15)
+  if (iDCopy && preBlastDoorPayloadData)
   {
-    v16 = [(IMDNicknameController *)self unknownSenderRecordInfo];
-    v17 = [v16 objectForKey:v9];
+    unknownSenderRecordInfo = [(IMDNicknameController *)self unknownSenderRecordInfo];
+    v17 = [unknownSenderRecordInfo objectForKey:iDCopy];
     v18 = [v17 mutableCopy];
     v19 = v18;
     if (v18)
@@ -5800,8 +5800,8 @@ LABEL_46:
 
     v21 = v20;
 
-    v22 = [v10 preBlastDoorPayloadData];
-    v23 = [v22 mutableCopy];
+    preBlastDoorPayloadData2 = [nicknameCopy preBlastDoorPayloadData];
+    v23 = [preBlastDoorPayloadData2 mutableCopy];
 
     v24 = [MEMORY[0x277CBEAA8] now];
     [v23 setObject:v24 forKey:@"date"];
@@ -5809,10 +5809,10 @@ LABEL_46:
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v23];
     [v21 addObject:v25];
 
-    v26 = [(IMDNicknameController *)self unknownSenderRecordInfo];
-    v27 = [v26 mutableCopy];
+    unknownSenderRecordInfo2 = [(IMDNicknameController *)self unknownSenderRecordInfo];
+    v27 = [unknownSenderRecordInfo2 mutableCopy];
 
-    [v27 setObject:v21 forKey:v9];
+    [v27 setObject:v21 forKey:iDCopy];
     [(IMDNicknameController *)self _replaceUnknownSenderRecordInfoListWithInfo:v27 purgeIfNeeded:1];
   }
 
@@ -5822,11 +5822,11 @@ LABEL_46:
   }
 }
 
-- (void)clearPendingNicknameForHandleID:(id)a3
+- (void)clearPendingNicknameForHandleID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_pendingNicknameUpdates objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_pendingNicknameUpdates objectForKey:dCopy];
   v6 = [v5 count];
   v7 = IMOSLoggingEnabled();
   if (v6)
@@ -5852,7 +5852,7 @@ LABEL_46:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = dCopy;
       _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "We don't have a pending nickname to clear for handle ID %@", &v12, 0xCu);
     }
   }
@@ -5860,11 +5860,11 @@ LABEL_46:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)ignorePendingNicknameForHandleID:(id)a3
+- (void)ignorePendingNicknameForHandleID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_pendingNicknameUpdates objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_pendingNicknameUpdates objectForKey:dCopy];
   v6 = [v5 count];
   v7 = IMOSLoggingEnabled();
   if (v6)
@@ -5898,7 +5898,7 @@ LABEL_46:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v14 = 138412290;
-      v15 = v4;
+      v15 = dCopy;
       _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "We don't have a malicious pending nickname to clear for handle ID %@", &v14, 0xCu);
     }
   }
@@ -5906,11 +5906,11 @@ LABEL_46:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)clearPendingNicknamePhotoForHandleID:(id)a3
+- (void)clearPendingNicknamePhotoForHandleID:(id)d
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_pendingNicknameUpdates objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_pendingNicknameUpdates objectForKey:dCopy];
   v6 = [v5 count];
   v7 = IMOSLoggingEnabled();
   if (v6)
@@ -5938,7 +5938,7 @@ LABEL_46:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v12 = 138412290;
-      v13 = v4;
+      v13 = dCopy;
       _os_log_impl(&dword_22B4CC000, v10, OS_LOG_TYPE_INFO, "We don't have a pending nickname to clear for handle ID %@", &v12, 0xCu);
     }
   }
@@ -5946,48 +5946,48 @@ LABEL_46:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_markNicknamePhotoAsUpdated:(id)a3
+- (void)_markNicknamePhotoAsUpdated:(id)updated
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updatedCopy = updated;
   v5 = IMOSLoggingEnabled();
-  if (v4)
+  if (updatedCopy)
   {
     if (v5)
     {
       v6 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [v4 handle];
+        handle = [updatedCopy handle];
         v21 = 138412290;
-        v22 = v7;
+        v22 = handle;
         _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "Marking nickname photo %@ as handled", &v21, 0xCu);
       }
     }
 
     pendingNicknameUpdates = self->_pendingNicknameUpdates;
-    v9 = [v4 handle];
-    [(NSMutableDictionary *)pendingNicknameUpdates removeObjectForKey:v9];
+    handle2 = [updatedCopy handle];
+    [(NSMutableDictionary *)pendingNicknameUpdates removeObjectForKey:handle2];
 
-    [(IMDNicknameController *)self _deleteNicknameFromPendingMap:v4];
+    [(IMDNicknameController *)self _deleteNicknameFromPendingMap:updatedCopy];
     v10 = objc_alloc(MEMORY[0x277D1AAD0]);
-    v11 = [v4 firstName];
-    v12 = [v4 lastName];
-    v13 = [v4 pronouns];
-    v14 = [v10 initWithFirstName:v11 lastName:v12 avatar:0 pronouns:v13];
+    firstName = [updatedCopy firstName];
+    lastName = [updatedCopy lastName];
+    pronouns = [updatedCopy pronouns];
+    v14 = [v10 initWithFirstName:firstName lastName:lastName avatar:0 pronouns:pronouns];
 
-    if ([v14 isUpdateFromNickname:v4 withOptions:20])
+    if ([v14 isUpdateFromNickname:updatedCopy withOptions:20])
     {
-      v15 = [v14 persistedDictionaryRepresentation];
+      persistedDictionaryRepresentation = [v14 persistedDictionaryRepresentation];
       v16 = self->_pendingNicknameUpdates;
-      v17 = [v4 handle];
-      [(NSMutableDictionary *)v16 setObject:v15 forKey:v17];
+      handle3 = [updatedCopy handle];
+      [(NSMutableDictionary *)v16 setObject:persistedDictionaryRepresentation forKey:handle3];
 
-      v18 = [(IMDNicknameController *)self pendingNicknameUpdatesKVStore];
-      [(IMDNicknameController *)self _writeNicknameToKVStore:v18 nickname:v14];
+      pendingNicknameUpdatesKVStore = [(IMDNicknameController *)self pendingNicknameUpdatesKVStore];
+      [(IMDNicknameController *)self _writeNicknameToKVStore:pendingNicknameUpdatesKVStore nickname:v14];
     }
 
-    [(IMDNicknameController *)self _updateNicknameInHandledMap:v4 updateType:*MEMORY[0x277D1A3A0] broadcastUpdates:1];
+    [(IMDNicknameController *)self _updateNicknameInHandledMap:updatedCopy updateType:*MEMORY[0x277D1A3A0] broadcastUpdates:1];
     [(IMDNicknameController *)self _updatePendingNicknameVersion];
     [(IMDNicknameController *)self _broadcastNicknamesMapChanged];
   }
@@ -6008,32 +6008,32 @@ LABEL_46:
 - (void)_broadcastNicknamesMapChanged
 {
   v10 = +[IMDBroadcastController sharedProvider];
-  v3 = [v10 broadcasterForAccountListeners];
-  v4 = [(IMDNicknameController *)self pendingNicknameUpdates];
-  v5 = [v4 copy];
-  v6 = [(IMDNicknameController *)self handledNicknames];
-  v7 = [v6 copy];
-  v8 = [(IMDNicknameController *)self archivedNicknames];
-  v9 = [v8 copy];
-  [v3 updatePendingNicknameUpdates:v5 handledNicknames:v7 archivedNicknames:v9];
+  broadcasterForAccountListeners = [v10 broadcasterForAccountListeners];
+  pendingNicknameUpdates = [(IMDNicknameController *)self pendingNicknameUpdates];
+  v5 = [pendingNicknameUpdates copy];
+  handledNicknames = [(IMDNicknameController *)self handledNicknames];
+  v7 = [handledNicknames copy];
+  archivedNicknames = [(IMDNicknameController *)self archivedNicknames];
+  v9 = [archivedNicknames copy];
+  [broadcasterForAccountListeners updatePendingNicknameUpdates:v5 handledNicknames:v7 archivedNicknames:v9];
 }
 
 - (void)_broadcastActiveListChanged
 {
   v5 = +[IMDBroadcastController sharedProvider];
-  v3 = [v5 broadcasterForAccountListeners];
-  v4 = [(IMDNicknameController *)self activeRecords];
-  [v3 updateActiveNicknameRecords:v4];
+  broadcasterForAccountListeners = [v5 broadcasterForAccountListeners];
+  activeRecords = [(IMDNicknameController *)self activeRecords];
+  [broadcasterForAccountListeners updateActiveNicknameRecords:activeRecords];
 }
 
-- (void)addNicknameToPendingUpdates:(id)a3
+- (void)addNicknameToPendingUpdates:(id)updates
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  updatesCopy = updates;
+  v5 = updatesCopy;
   if (self->_pendingNicknameUpdates)
   {
-    if (v4)
+    if (updatesCopy)
     {
       goto LABEL_3;
     }
@@ -6066,9 +6066,9 @@ LABEL_23:
   }
 
 LABEL_3:
-  v6 = [v5 handle];
+  handle = [v5 handle];
 
-  if (!v6)
+  if (!handle)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -6086,10 +6086,10 @@ LABEL_3:
     goto LABEL_23;
   }
 
-  v7 = [v5 avatar];
-  v8 = [v7 hasImage];
+  avatar = [v5 avatar];
+  hasImage = [avatar hasImage];
 
-  if (v8)
+  if (hasImage)
   {
     goto LABEL_11;
   }
@@ -6105,18 +6105,18 @@ LABEL_3:
     }
   }
 
-  v10 = [(IMDNicknameController *)self handledNicknames];
-  v11 = [v5 handle];
-  v12 = [v10 objectForKey:v11];
+  handledNicknames = [(IMDNicknameController *)self handledNicknames];
+  handle2 = [v5 handle];
+  v12 = [handledNicknames objectForKey:handle2];
 
   v13 = [objc_alloc(MEMORY[0x277D1AAD0]) initWithDictionaryRepresentation:v12];
   if ([v5 isUpdateFromNickname:v13 withOptions:4])
   {
 
 LABEL_11:
-    v14 = [(IMDNicknameController *)self pendingNicknameUpdates];
-    v15 = [v5 handle];
-    v16 = [v14 objectForKey:v15];
+    pendingNicknameUpdates = [(IMDNicknameController *)self pendingNicknameUpdates];
+    handle3 = [v5 handle];
+    v16 = [pendingNicknameUpdates objectForKey:handle3];
 
     v17 = [objc_alloc(MEMORY[0x277D1AAD0]) initWithDictionaryRepresentation:v16];
     if (v17 && ([v5 isUpdateFromNickname:v17 withOptions:8] & 1) == 0)
@@ -6136,9 +6136,9 @@ LABEL_11:
     else
     {
       v18 = self->_pendingNicknameUpdates;
-      v19 = [v5 persistedDictionaryRepresentation];
-      v20 = [v5 handle];
-      [(NSMutableDictionary *)v18 setObject:v19 forKey:v20];
+      persistedDictionaryRepresentation = [v5 persistedDictionaryRepresentation];
+      handle4 = [v5 handle];
+      [(NSMutableDictionary *)v18 setObject:persistedDictionaryRepresentation forKey:handle4];
 
       if (IMOSLoggingEnabled())
       {
@@ -6155,8 +6155,8 @@ LABEL_11:
       }
 
       [(IMDNicknameController *)self _removeFromTransitionedList:v5];
-      v23 = [(IMDNicknameController *)self pendingNicknameUpdatesKVStore];
-      [(IMDNicknameController *)self _writeNicknameToKVStore:v23 nickname:v5];
+      pendingNicknameUpdatesKVStore = [(IMDNicknameController *)self pendingNicknameUpdatesKVStore];
+      [(IMDNicknameController *)self _writeNicknameToKVStore:pendingNicknameUpdatesKVStore nickname:v5];
 
       [(IMDNicknameController *)self _updatePendingNicknameVersion];
       [(IMDNicknameController *)self _broadcastNicknamesMapChanged];
@@ -6176,28 +6176,28 @@ LABEL_11:
     }
   }
 
-  v28 = [v5 recordID];
-  [v13 setRecordID:v28];
+  recordID = [v5 recordID];
+  [v13 setRecordID:recordID];
 
   handledNicknames = self->_handledNicknames;
-  v30 = [v13 persistedDictionaryRepresentation];
-  v31 = [v13 handle];
-  [(NSMutableDictionary *)handledNicknames setObject:v30 forKey:v31];
+  persistedDictionaryRepresentation2 = [v13 persistedDictionaryRepresentation];
+  handle5 = [v13 handle];
+  [(NSMutableDictionary *)handledNicknames setObject:persistedDictionaryRepresentation2 forKey:handle5];
 
-  v32 = [(IMDNicknameController *)self handledNicknamesKVStore];
-  [(IMDNicknameController *)self _writeNicknameToKVStore:v32 nickname:v13];
+  handledNicknamesKVStore = [(IMDNicknameController *)self handledNicknamesKVStore];
+  [(IMDNicknameController *)self _writeNicknameToKVStore:handledNicknamesKVStore nickname:v13];
 
 LABEL_33:
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)replacedNicknameForHandleIDInHandledMapIfNeeded:(id)a3 nickname:(id)a4
+- (BOOL)replacedNicknameForHandleIDInHandledMapIfNeeded:(id)needed nickname:(id)nickname
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IMDNicknameController *)self handledNicknames];
-  v9 = [v8 objectForKey:v6];
+  neededCopy = needed;
+  nicknameCopy = nickname;
+  handledNicknames = [(IMDNicknameController *)self handledNicknames];
+  v9 = [handledNicknames objectForKey:neededCopy];
 
   v10 = [objc_alloc(MEMORY[0x277D1AAD0]) initWithDictionaryRepresentation:v9];
   if (!v10)
@@ -6205,7 +6205,7 @@ LABEL_33:
     goto LABEL_9;
   }
 
-  v11 = [v7 isUpdateFromNickname:v10 withOptions:8];
+  v11 = [nicknameCopy isUpdateFromNickname:v10 withOptions:8];
   if (IMOSLoggingEnabled())
   {
     v12 = OSLogHandleForIMFoundationCategory();
@@ -6220,7 +6220,7 @@ LABEL_33:
         v13 = @"YES";
       }
 
-      v20 = v7;
+      v20 = nicknameCopy;
       v21 = 2112;
       v22 = v13;
       _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Existing nickname %@ and new nickname %@ are different %@", &v17, 0x20u);
@@ -6229,7 +6229,7 @@ LABEL_33:
 
   if ((v11 & 1) == 0)
   {
-    [(IMDNicknameController *)self _updateNicknameInHandledMap:v7 updateType:*MEMORY[0x277D1A3A0] broadcastUpdates:1];
+    [(IMDNicknameController *)self _updateNicknameInHandledMap:nicknameCopy updateType:*MEMORY[0x277D1A3A0] broadcastUpdates:1];
     [(IMDNicknameController *)self _updatePendingNicknameVersion];
     [(IMDNicknameController *)self _broadcastNicknamesMapChanged];
     v14 = 1;
@@ -6245,26 +6245,26 @@ LABEL_9:
   return v14;
 }
 
-- (void)_markCurrentNicknameAsArchived:(id)a3 incrementPendingNicknameVersion:(BOOL)a4
+- (void)_markCurrentNicknameAsArchived:(id)archived incrementPendingNicknameVersion:(BOOL)version
 {
   v14 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  archivedCopy = archived;
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      v7 = [v5 handle];
+      handle = [archivedCopy handle];
       v12 = 138412290;
-      v13 = v7;
+      v13 = handle;
       _os_log_impl(&dword_22B4CC000, v6, OS_LOG_TYPE_INFO, "Marking nickname %@ as archived", &v12, 0xCu);
     }
   }
 
-  v8 = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
-  v9 = [v8 isNameAndPhotoC3Enabled];
+  mEMORY[0x277D1A9B8] = [MEMORY[0x277D1A9B8] sharedFeatureFlags];
+  isNameAndPhotoC3Enabled = [mEMORY[0x277D1A9B8] isNameAndPhotoC3Enabled];
 
-  if ((v9 & 1) == 0)
+  if ((isNameAndPhotoC3Enabled & 1) == 0)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -6283,7 +6283,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v5)
+  if (!archivedCopy)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -6300,39 +6300,39 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  [(IMDNicknameController *)self _updateNicknameInArchivedMap:v5];
+  [(IMDNicknameController *)self _updateNicknameInArchivedMap:archivedCopy];
 LABEL_16:
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteOnDiskDataIfNeededForNickname:(id)a3 withNewNickname:(id)a4
+- (void)_deleteOnDiskDataIfNeededForNickname:(id)nickname withNewNickname:(id)newNickname
 {
   v43 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 avatar];
-  v8 = [v7 imageFilePath];
+  nicknameCopy = nickname;
+  newNicknameCopy = newNickname;
+  avatar = [nicknameCopy avatar];
+  imageFilePath = [avatar imageFilePath];
 
-  if ([v8 length] && (objc_msgSend(v6, "avatar"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "imageFilePath"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v8, "isEqualToString:", v10), v10, v9, (v11 & 1) == 0))
+  if ([imageFilePath length] && (objc_msgSend(newNicknameCopy, "avatar"), v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "imageFilePath"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(imageFilePath, "isEqualToString:", v10), v10, v9, (v11 & 1) == 0))
   {
     if (IMOSLoggingEnabled())
     {
       v13 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
       {
-        v14 = [v6 handle];
+        handle = [newNicknameCopy handle];
         *buf = 138412546;
-        v40 = v14;
+        v40 = handle;
         v41 = 2112;
-        v42 = v8;
+        v42 = imageFilePath;
         _os_log_impl(&dword_22B4CC000, v13, OS_LOG_TYPE_INFO, "For nickname %@, deleting old avatar image at path during mark as updated %@", buf, 0x16u);
       }
     }
 
-    v15 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v38 = 0;
-    [v15 removeItemAtPath:v8 error:&v38];
+    [defaultManager removeItemAtPath:imageFilePath error:&v38];
     v12 = v38;
 
     if (v12)
@@ -6350,14 +6350,14 @@ LABEL_16:
     v12 = 0;
   }
 
-  v17 = [v5 wallpaper];
-  v18 = [v17 filePath];
+  wallpaper = [nicknameCopy wallpaper];
+  filePath = [wallpaper filePath];
 
-  if ([v18 length])
+  if ([filePath length])
   {
-    v19 = [v6 wallpaper];
-    v20 = [v19 filePath];
-    v21 = [v18 isEqualToString:v20];
+    wallpaper2 = [newNicknameCopy wallpaper];
+    filePath2 = [wallpaper2 filePath];
+    v21 = [filePath isEqualToString:filePath2];
 
     if ((v21 & 1) == 0)
     {
@@ -6366,18 +6366,18 @@ LABEL_16:
         v22 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
         {
-          v23 = [v6 handle];
+          handle2 = [newNicknameCopy handle];
           *buf = 138412546;
-          v40 = v23;
+          v40 = handle2;
           v41 = 2112;
-          v42 = v18;
+          v42 = filePath;
           _os_log_impl(&dword_22B4CC000, v22, OS_LOG_TYPE_INFO, "For nickname %@, deleting old wallpaper image at path during mark as updated %@", buf, 0x16u);
         }
       }
 
-      v24 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
       v37 = 0;
-      [v24 removeItemAtPath:v18 error:&v37];
+      [defaultManager2 removeItemAtPath:filePath error:&v37];
       v12 = v37;
 
       if (v12)
@@ -6391,14 +6391,14 @@ LABEL_16:
     }
   }
 
-  v26 = [v5 wallpaper];
-  v27 = [v26 lowResFilePath];
+  wallpaper3 = [nicknameCopy wallpaper];
+  lowResFilePath = [wallpaper3 lowResFilePath];
 
-  if ([v27 length])
+  if ([lowResFilePath length])
   {
-    v28 = [v6 wallpaper];
-    v29 = [v28 lowResFilePath];
-    v30 = [v27 isEqualToString:v29];
+    wallpaper4 = [newNicknameCopy wallpaper];
+    lowResFilePath2 = [wallpaper4 lowResFilePath];
+    v30 = [lowResFilePath isEqualToString:lowResFilePath2];
 
     if ((v30 & 1) == 0)
     {
@@ -6407,18 +6407,18 @@ LABEL_16:
         v31 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
         {
-          v32 = [v6 handle];
+          handle3 = [newNicknameCopy handle];
           *buf = 138412546;
-          v40 = v32;
+          v40 = handle3;
           v41 = 2112;
-          v42 = v8;
+          v42 = imageFilePath;
           _os_log_impl(&dword_22B4CC000, v31, OS_LOG_TYPE_INFO, "For nickname %@, deleting old watch wallpaper image at path during mark as updated %@", buf, 0x16u);
         }
       }
 
-      v33 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
       v36 = 0;
-      [v33 removeItemAtPath:v27 error:&v36];
+      [defaultManager3 removeItemAtPath:lowResFilePath error:&v36];
       v12 = v36;
 
       if (v12)
@@ -6435,10 +6435,10 @@ LABEL_16:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateNicknameInArchivedMap:(id)a3
+- (void)_updateNicknameInArchivedMap:(id)map
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mapCopy = map;
   if (!self->_archivedNicknames)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
@@ -6447,14 +6447,14 @@ LABEL_16:
   }
 
   handledNicknames = self->_handledNicknames;
-  v8 = [v4 handle];
-  v9 = [(NSMutableDictionary *)handledNicknames objectForKey:v8];
+  handle = [mapCopy handle];
+  v9 = [(NSMutableDictionary *)handledNicknames objectForKey:handle];
 
   if (v9)
   {
     v10 = self->_archivedNicknames;
-    v11 = [v4 handle];
-    v12 = [(NSMutableDictionary *)v10 objectForKey:v11];
+    handle2 = [mapCopy handle];
+    v12 = [(NSMutableDictionary *)v10 objectForKey:handle2];
 
     if (v12)
     {
@@ -6482,20 +6482,20 @@ LABEL_16:
         v17 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
         {
-          v18 = [v4 handle];
-          v19 = [v13 recordID];
-          v20 = [v4 recordID];
+          handle3 = [mapCopy handle];
+          recordID = [v13 recordID];
+          recordID2 = [mapCopy recordID];
           v27 = 138412802;
-          v28 = v18;
+          v28 = handle3;
           v29 = 2112;
-          v30 = v19;
+          v30 = recordID;
           v31 = 2112;
-          v32 = v20;
+          v32 = recordID2;
           _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "Replacing archived nickname for handle id %@ from record id %@ to new record id %@", &v27, 0x20u);
         }
       }
 
-      [(IMDNicknameController *)self _deleteOnDiskDataIfNeededForNickname:v13 withNewNickname:v4];
+      [(IMDNicknameController *)self _deleteOnDiskDataIfNeededForNickname:v13 withNewNickname:mapCopy];
     }
 
     v13 = [objc_alloc(MEMORY[0x277D1AAD0]) initWithDictionaryRepresentation:v9];
@@ -6503,12 +6503,12 @@ LABEL_16:
     [v13 setArchivedDate:v21];
 
     v22 = self->_archivedNicknames;
-    v23 = [v13 persistedDictionaryRepresentation];
-    v24 = [v4 handle];
-    [(NSMutableDictionary *)v22 setObject:v23 forKey:v24];
+    persistedDictionaryRepresentation = [v13 persistedDictionaryRepresentation];
+    handle4 = [mapCopy handle];
+    [(NSMutableDictionary *)v22 setObject:persistedDictionaryRepresentation forKey:handle4];
 
-    v25 = [(IMDNicknameController *)self archivedNicknamesKVStore];
-    [(IMDNicknameController *)self _writeNicknameToKVStore:v25 nickname:v13];
+    archivedNicknamesKVStore = [(IMDNicknameController *)self archivedNicknamesKVStore];
+    [(IMDNicknameController *)self _writeNicknameToKVStore:archivedNicknamesKVStore nickname:v13];
 
 LABEL_18:
     goto LABEL_19;
@@ -6517,7 +6517,7 @@ LABEL_18:
   v12 = IMLogHandleForCategory();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    sub_22B7D52F8(v4);
+    sub_22B7D52F8(mapCopy);
   }
 
 LABEL_19:
@@ -6525,17 +6525,17 @@ LABEL_19:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isActiveForNickname:(id)a3
+- (BOOL)_isActiveForNickname:(id)nickname
 {
-  v4 = a3;
-  v5 = [(IMDNicknameController *)self activeRecords];
-  v6 = [v4 handle];
-  v7 = [v5 objectForKey:v6];
+  nicknameCopy = nickname;
+  activeRecords = [(IMDNicknameController *)self activeRecords];
+  handle = [nicknameCopy handle];
+  v7 = [activeRecords objectForKey:handle];
 
   if (v7)
   {
-    v8 = [v4 recordID];
-    v9 = [v7 isEqualToString:v8];
+    recordID = [nicknameCopy recordID];
+    v9 = [v7 isEqualToString:recordID];
   }
 
   else
@@ -6546,17 +6546,17 @@ LABEL_19:
   return v9;
 }
 
-- (void)markNicknameAsUpdated:(id)a3
+- (void)markNicknameAsUpdated:(id)updated
 {
-  v12 = a3;
-  v4 = [(IMDNicknameController *)self handledNicknames];
-  v5 = [v12 handle];
-  v6 = [v4 objectForKey:v5];
+  updatedCopy = updated;
+  handledNicknames = [(IMDNicknameController *)self handledNicknames];
+  handle = [updatedCopy handle];
+  v6 = [handledNicknames objectForKey:handle];
 
   if (v6)
   {
     v7 = [objc_alloc(MEMORY[0x277D1AAD0]) initWithDictionaryRepresentation:v6];
-    if ([v12 isUpdateFromNickname:v7 withOptions:4])
+    if ([updatedCopy isUpdateFromNickname:v7 withOptions:4])
     {
       v8 = 2;
     }
@@ -6566,7 +6566,7 @@ LABEL_19:
       v8 = 0;
     }
 
-    if ([v12 isUpdateFromNickname:v7 withOptions:2])
+    if ([updatedCopy isUpdateFromNickname:v7 withOptions:2])
     {
       v9 = v8 | 4;
     }
@@ -6576,8 +6576,8 @@ LABEL_19:
       v9 = v8;
     }
 
-    v10 = [v12 isUpdateFromNickname:v7 withOptions:32];
-    if (([v12 isUpdateFromNickname:v7 withOptions:16] | v10))
+    v10 = [updatedCopy isUpdateFromNickname:v7 withOptions:32];
+    if (([updatedCopy isUpdateFromNickname:v7 withOptions:16] | v10))
     {
       v11 = v9 | 8;
     }
@@ -6593,31 +6593,31 @@ LABEL_19:
     v11 = *MEMORY[0x277D1A3A0];
   }
 
-  [(IMDNicknameController *)self _markPendingNicknameAsCurrent:v12 incrementPendingNicknameVersion:1 updateType:v11 broadcastUpdates:1];
+  [(IMDNicknameController *)self _markPendingNicknameAsCurrent:updatedCopy incrementPendingNicknameVersion:1 updateType:v11 broadcastUpdates:1];
 }
 
-- (void)_writeNicknameToKVStore:(id)a3 nickname:(id)a4
+- (void)_writeNicknameToKVStore:(id)store nickname:(id)nickname
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  storeCopy = store;
+  nicknameCopy = nickname;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v20 = v6;
+      v20 = nicknameCopy;
       v21 = 2112;
-      v22 = v5;
+      v22 = storeCopy;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "writing nickname %@ to kvstore %@", buf, 0x16u);
     }
   }
 
   v8 = MEMORY[0x277CCAAB0];
-  v9 = [v6 persistedDictionaryRepresentation];
+  persistedDictionaryRepresentation = [nicknameCopy persistedDictionaryRepresentation];
   v18 = 0;
-  v10 = [v8 archivedDataWithRootObject:v9 requiringSecureCoding:1 error:&v18];
+  v10 = [v8 archivedDataWithRootObject:persistedDictionaryRepresentation requiringSecureCoding:1 error:&v18];
   v11 = v18;
 
   if (!v10 || v11)
@@ -6636,9 +6636,9 @@ LABEL_19:
 
   else
   {
-    v12 = [v6 handle];
+    handle = [nicknameCopy handle];
     v17 = 0;
-    [v5 persistData:v10 forKey:v12 error:&v17];
+    [storeCopy persistData:v10 forKey:handle error:&v17];
     v13 = v17;
 
     if (v13 && IMOSLoggingEnabled())
@@ -6656,19 +6656,19 @@ LABEL_19:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteNicknameFromPendingMap:(id)a3
+- (void)_deleteNicknameFromPendingMap:(id)map
 {
-  v4 = [a3 handle];
-  [(IMDNicknameController *)self _deleteHandleIDFromPendingMap:v4];
+  handle = [map handle];
+  [(IMDNicknameController *)self _deleteHandleIDFromPendingMap:handle];
 }
 
-- (void)_deleteHandleIDFromPendingMap:(id)a3
+- (void)_deleteHandleIDFromPendingMap:(id)map
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IMDNicknameController *)self pendingNicknameUpdatesKVStore];
+  mapCopy = map;
+  pendingNicknameUpdatesKVStore = [(IMDNicknameController *)self pendingNicknameUpdatesKVStore];
   v9 = 0;
-  [v5 persistData:0 forKey:v4 error:&v9];
+  [pendingNicknameUpdatesKVStore persistData:0 forKey:mapCopy error:&v9];
   v6 = v9;
 
   if (v6 && IMOSLoggingEnabled())
@@ -6677,7 +6677,7 @@ LABEL_19:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v11 = v4;
+      v11 = mapCopy;
       v12 = 2112;
       v13 = v6;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "We got an error trying to remove %@ from the pending map %@", buf, 0x16u);
@@ -6687,13 +6687,13 @@ LABEL_19:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteHandleIDFromHandledMap:(id)a3
+- (void)_deleteHandleIDFromHandledMap:(id)map
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IMDNicknameController *)self handledNicknamesKVStore];
+  mapCopy = map;
+  handledNicknamesKVStore = [(IMDNicknameController *)self handledNicknamesKVStore];
   v9 = 0;
-  [v5 persistData:0 forKey:v4 error:&v9];
+  [handledNicknamesKVStore persistData:0 forKey:mapCopy error:&v9];
   v6 = v9;
 
   if (v6 && IMOSLoggingEnabled())
@@ -6702,7 +6702,7 @@ LABEL_19:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v11 = v4;
+      v11 = mapCopy;
       v12 = 2112;
       v13 = v6;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "We got an error trying to remove %@ from the handled map %@", buf, 0x16u);
@@ -6712,13 +6712,13 @@ LABEL_19:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_deleteHandleIDFromArchivedMap:(id)a3
+- (void)_deleteHandleIDFromArchivedMap:(id)map
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IMDNicknameController *)self archivedNicknamesKVStore];
+  mapCopy = map;
+  archivedNicknamesKVStore = [(IMDNicknameController *)self archivedNicknamesKVStore];
   v9 = 0;
-  [v5 persistData:0 forKey:v4 error:&v9];
+  [archivedNicknamesKVStore persistData:0 forKey:mapCopy error:&v9];
   v6 = v9;
 
   if (v6 && IMOSLoggingEnabled())
@@ -6727,7 +6727,7 @@ LABEL_19:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v11 = v4;
+      v11 = mapCopy;
       v12 = 2112;
       v13 = v6;
       _os_log_impl(&dword_22B4CC000, v7, OS_LOG_TYPE_INFO, "We got an error trying to remove %@ from the handled map %@", buf, 0x16u);
@@ -6737,12 +6737,12 @@ LABEL_19:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cleanUpNicknameForIDs:(id)a3
+- (void)cleanUpNicknameForIDs:(id)ds
 {
   v52 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 count])
+  dsCopy = ds;
+  v5 = dsCopy;
+  if (dsCopy && [dsCopy count])
   {
     if (IMOSLoggingEnabled())
     {
@@ -6776,8 +6776,8 @@ LABEL_19:
           }
 
           v12 = *(*(&v44 + 1) + 8 * i);
-          v13 = [(IMDNicknameController *)self handleAllowList];
-          v14 = [v13 containsObject:v12];
+          handleAllowList = [(IMDNicknameController *)self handleAllowList];
+          v14 = [handleAllowList containsObject:v12];
 
           if (v14)
           {
@@ -6792,18 +6792,18 @@ LABEL_19:
               }
             }
 
-            v16 = [(IMDNicknameController *)self handleAllowList];
-            [v16 removeObject:v12];
+            handleAllowList2 = [(IMDNicknameController *)self handleAllowList];
+            [handleAllowList2 removeObject:v12];
 
-            v17 = [(IMDNicknameController *)self handleAllowList];
+            handleAllowList3 = [(IMDNicknameController *)self handleAllowList];
             v18 = [MEMORY[0x277CBEB98] set];
-            [(IMDNicknameController *)self _updateHandleList:v17 withHandles:v18 forKey:@"handleWhitelist" broadcastUpdates:0];
+            [(IMDNicknameController *)self _updateHandleList:handleAllowList3 withHandles:v18 forKey:@"handleWhitelist" broadcastUpdates:0];
 
             v9 = 1;
           }
 
-          v19 = [(IMDNicknameController *)self handleDenyList];
-          v20 = [v19 containsObject:v12];
+          handleDenyList = [(IMDNicknameController *)self handleDenyList];
+          v20 = [handleDenyList containsObject:v12];
 
           if (v20)
           {
@@ -6818,12 +6818,12 @@ LABEL_19:
               }
             }
 
-            v22 = [(IMDNicknameController *)self handleDenyList];
-            [v22 removeObject:v12];
+            handleDenyList2 = [(IMDNicknameController *)self handleDenyList];
+            [handleDenyList2 removeObject:v12];
 
-            v23 = [(IMDNicknameController *)self handleDenyList];
+            handleDenyList3 = [(IMDNicknameController *)self handleDenyList];
             v24 = [MEMORY[0x277CBEB98] set];
-            [(IMDNicknameController *)self _updateHandleList:v23 withHandles:v24 forKey:@"handleBlacklist" broadcastUpdates:0];
+            [(IMDNicknameController *)self _updateHandleList:handleDenyList3 withHandles:v24 forKey:@"handleBlacklist" broadcastUpdates:0];
 
             v9 = 1;
           }
@@ -6965,19 +6965,19 @@ LABEL_64:
 
 - (BOOL)_deviceUnderFirstUnlock
 {
-  v2 = [MEMORY[0x277D1ACB8] sharedInstance];
-  v3 = [v2 isUnderFirstDataProtectionLock];
+  mEMORY[0x277D1ACB8] = [MEMORY[0x277D1ACB8] sharedInstance];
+  isUnderFirstDataProtectionLock = [mEMORY[0x277D1ACB8] isUnderFirstDataProtectionLock];
 
-  return v3;
+  return isUnderFirstDataProtectionLock;
 }
 
 - (BOOL)_isUnderScrutiny
 {
-  v2 = [(IMDNicknameController *)self defaults];
-  v3 = [v2 getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A420]];
-  v4 = [v3 BOOLValue];
+  defaults = [(IMDNicknameController *)self defaults];
+  v3 = [defaults getValueFromDomain:*MEMORY[0x277D1A3C0] forKey:*MEMORY[0x277D1A420]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)_deleteDataUnderScrutiny
@@ -6998,8 +6998,8 @@ LABEL_64:
     }
   }
 
-  v5 = [(IMDNicknameController *)self pendingNicknameUpdatesKVStore];
-  [v5 deleteDatabase];
+  pendingNicknameUpdatesKVStore = [(IMDNicknameController *)self pendingNicknameUpdatesKVStore];
+  [pendingNicknameUpdatesKVStore deleteDatabase];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -7010,8 +7010,8 @@ LABEL_64:
     }
   }
 
-  v7 = [(IMDNicknameController *)self handledNicknamesKVStore];
-  [v7 deleteDatabase];
+  handledNicknamesKVStore = [(IMDNicknameController *)self handledNicknamesKVStore];
+  [handledNicknamesKVStore deleteDatabase];
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
@@ -7022,8 +7022,8 @@ LABEL_64:
     }
   }
 
-  v9 = [(IMDNicknameController *)self archivedNicknamesKVStore];
-  [v9 deleteDatabase];
+  archivedNicknamesKVStore = [(IMDNicknameController *)self archivedNicknamesKVStore];
+  [archivedNicknamesKVStore deleteDatabase];
   if (IMOSLoggingEnabled())
   {
     v10 = OSLogHandleForIMFoundationCategory();
@@ -7041,9 +7041,9 @@ LABEL_64:
 {
   if ([(IMDNicknameController *)self _nicknameFeatureEnabled])
   {
-    v3 = [(IMDNicknameController *)self _deviceUnderFirstUnlock];
+    _deviceUnderFirstUnlock = [(IMDNicknameController *)self _deviceUnderFirstUnlock];
     v4 = IMOSLoggingEnabled();
-    if (v3)
+    if (_deviceUnderFirstUnlock)
     {
       if (v4)
       {
@@ -7091,12 +7091,12 @@ LABEL_64:
       [(IMDNicknameController *)self loadSharingHandlesPrefs];
       [(IMDNicknameController *)self loadHandledTransitioned];
       [(IMDNicknameController *)self loadUnknownSenderRecordInfoFromKVStore];
-      v9 = [(IMDNicknameController *)self activeNicknameRecords];
-      v10 = [(IMDNicknameController *)self loadListForKey:@"activeNicknameRecords" list:v9];
+      activeNicknameRecords = [(IMDNicknameController *)self activeNicknameRecords];
+      v10 = [(IMDNicknameController *)self loadListForKey:@"activeNicknameRecords" list:activeNicknameRecords];
       [(IMDNicknameController *)self setActiveNicknameRecords:v10];
 
-      v11 = [(IMDNicknameController *)self ignoredNicknameRecords];
-      v12 = [(IMDNicknameController *)self loadListForKey:@"ignoredNicknameRecords" list:v11];
+      ignoredNicknameRecords = [(IMDNicknameController *)self ignoredNicknameRecords];
+      v12 = [(IMDNicknameController *)self loadListForKey:@"ignoredNicknameRecords" list:ignoredNicknameRecords];
       [(IMDNicknameController *)self setIgnoredNicknameRecords:v12];
 
       [(IMDNicknameController *)self evaluateAccountStateForFeatureEligibility];
@@ -7121,17 +7121,17 @@ LABEL_64:
 {
   if ([(IMDNicknameController *)self _nicknameFeatureEnabled])
   {
-    v3 = [(IMDNicknameController *)self storedPersonalNickname];
-    if (v3)
+    storedPersonalNickname = [(IMDNicknameController *)self storedPersonalNickname];
+    if (storedPersonalNickname)
     {
-      [(IMDNicknameController *)self setPersonalNickname:v3];
+      [(IMDNicknameController *)self setPersonalNickname:storedPersonalNickname];
     }
 
     else
     {
-      v4 = [(IMDNicknameController *)self nickNameRecordID];
+      nickNameRecordID = [(IMDNicknameController *)self nickNameRecordID];
 
-      if (v4)
+      if (nickNameRecordID)
       {
         objc_initWeak(buf, self);
         v5[0] = MEMORY[0x277D85DD0];
@@ -7153,11 +7153,11 @@ LABEL_64:
       return;
     }
 
-    v3 = OSLogHandleForIMFoundationCategory();
-    if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
+    storedPersonalNickname = OSLogHandleForIMFoundationCategory();
+    if (os_log_type_enabled(storedPersonalNickname, OS_LOG_TYPE_INFO))
     {
       LOWORD(buf[0]) = 0;
-      _os_log_impl(&dword_22B4CC000, v3, OS_LOG_TYPE_INFO, "Not going to load personal nickname, feature is disabled", buf, 2u);
+      _os_log_impl(&dword_22B4CC000, storedPersonalNickname, OS_LOG_TYPE_INFO, "Not going to load personal nickname, feature is disabled", buf, 2u);
     }
   }
 }
@@ -7210,16 +7210,16 @@ LABEL_64:
 
   [(IMDNicknameController *)self _setUnderScrutiny:1];
   v12 = self->_pendingNicknameUpdates;
-  v13 = [(IMDNicknameController *)self pendingNicknameUpdatesKVStore];
-  v14 = [(IMDNicknameController *)self _populateNicknameDictionary:v12 forKVStore:v13 limitToLoad:0x7FFFFFFFLL];
+  pendingNicknameUpdatesKVStore = [(IMDNicknameController *)self pendingNicknameUpdatesKVStore];
+  v14 = [(IMDNicknameController *)self _populateNicknameDictionary:v12 forKVStore:pendingNicknameUpdatesKVStore limitToLoad:0x7FFFFFFFLL];
 
   v15 = self->_handledNicknames;
-  v16 = [(IMDNicknameController *)self handledNicknamesKVStore];
-  v17 = [(IMDNicknameController *)self _populateNicknameDictionary:v15 forKVStore:v16 limitToLoad:0x7FFFFFFFLL];
+  handledNicknamesKVStore = [(IMDNicknameController *)self handledNicknamesKVStore];
+  v17 = [(IMDNicknameController *)self _populateNicknameDictionary:v15 forKVStore:handledNicknamesKVStore limitToLoad:0x7FFFFFFFLL];
 
   v18 = self->_archivedNicknames;
-  v19 = [(IMDNicknameController *)self archivedNicknamesKVStore];
-  v20 = [(IMDNicknameController *)self _populateNicknameDictionary:v18 forKVStore:v19 limitToLoad:0x7FFFFFFFLL];
+  archivedNicknamesKVStore = [(IMDNicknameController *)self archivedNicknamesKVStore];
+  v20 = [(IMDNicknameController *)self _populateNicknameDictionary:v18 forKVStore:archivedNicknamesKVStore limitToLoad:0x7FFFFFFFLL];
 
   if (IMOSLoggingEnabled())
   {
@@ -7322,9 +7322,9 @@ LABEL_64:
     self->_handleTransitionedList = v3;
   }
 
-  v5 = [(IMDNicknameController *)self nicknameRecordsKVStore];
+  nicknameRecordsKVStore = [(IMDNicknameController *)self nicknameRecordsKVStore];
   v24 = 0;
-  v6 = [v5 dataForKey:@"handleTransitionedList" error:&v24];
+  v6 = [nicknameRecordsKVStore dataForKey:@"handleTransitionedList" error:&v24];
   v7 = v24;
 
   if (v7)
@@ -7364,8 +7364,8 @@ LABEL_64:
         }
       }
 
-      v17 = [(IMDNicknameController *)self handleTransitionedList];
-      [v17 unionSet:v14];
+      handleTransitionedList = [(IMDNicknameController *)self handleTransitionedList];
+      [handleTransitionedList unionSet:v14];
     }
 
     else
@@ -7389,8 +7389,8 @@ LABEL_64:
       v19 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
-        v20 = [(IMDNicknameController *)self handleTransitionedList];
-        v21 = [v20 count];
+        handleTransitionedList2 = [(IMDNicknameController *)self handleTransitionedList];
+        v21 = [handleTransitionedList2 count];
         *buf = 134217984;
         v26 = v21;
         _os_log_impl(&dword_22B4CC000, v19, OS_LOG_TYPE_INFO, "Successfully loaded %lu transitioned list handles", buf, 0xCu);
@@ -7401,20 +7401,20 @@ LABEL_64:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)loadListForKey:(id)a3 list:(id)a4
+- (id)loadListForKey:(id)key list:(id)list
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  Mutable = a4;
+  keyCopy = key;
+  Mutable = list;
   v8 = [MEMORY[0x277CBEC10] mutableCopy];
   if (!Mutable)
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   }
 
-  v9 = [(IMDNicknameController *)self nicknameRecordsKVStore];
+  nicknameRecordsKVStore = [(IMDNicknameController *)self nicknameRecordsKVStore];
   v26 = 0;
-  v10 = [v9 dataForKey:v6 error:&v26];
+  v10 = [nicknameRecordsKVStore dataForKey:keyCopy error:&v26];
   v11 = v26;
 
   if (v11)
@@ -7522,16 +7522,16 @@ LABEL_9:
     self->_handleDenyList = v5;
   }
 
-  v7 = [(IMDNicknameController *)self handleSharingKVStore];
+  handleSharingKVStore = [(IMDNicknameController *)self handleSharingKVStore];
   v38 = 0;
-  v8 = [v7 dataForKey:@"handleWhitelist" error:&v38];
+  v8 = [handleSharingKVStore dataForKey:@"handleWhitelist" error:&v38];
   v9 = v38;
 
   if (!v9)
   {
-    v11 = [(IMDNicknameController *)self handleSharingKVStore];
+    handleSharingKVStore2 = [(IMDNicknameController *)self handleSharingKVStore];
     v37 = 0;
-    v12 = [v11 dataForKey:@"handleBlacklist" error:&v37];
+    v12 = [handleSharingKVStore2 dataForKey:@"handleBlacklist" error:&v37];
     v9 = v37;
 
     if (v9)
@@ -7573,8 +7573,8 @@ LABEL_43:
         }
       }
 
-      v21 = [(IMDNicknameController *)self handleAllowList];
-      [v21 unionSet:v34];
+      handleAllowList = [(IMDNicknameController *)self handleAllowList];
+      [handleAllowList unionSet:v34];
 
       if (v12)
       {
@@ -7594,8 +7594,8 @@ LABEL_22:
           }
         }
 
-        v25 = [(IMDNicknameController *)self handleDenyList];
-        [v25 unionSet:v22];
+        handleDenyList = [(IMDNicknameController *)self handleDenyList];
+        [handleDenyList unionSet:v22];
 
 LABEL_38:
         if (IMOSLoggingEnabled())
@@ -7603,10 +7603,10 @@ LABEL_38:
           v28 = OSLogHandleForIMFoundationCategory();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
           {
-            v29 = [(IMDNicknameController *)self handleAllowList];
-            v30 = [v29 count];
-            v31 = [(IMDNicknameController *)self handleDenyList];
-            v32 = [v31 count];
+            handleAllowList2 = [(IMDNicknameController *)self handleAllowList];
+            v30 = [handleAllowList2 count];
+            handleDenyList2 = [(IMDNicknameController *)self handleDenyList];
+            v32 = [handleDenyList2 count];
             *buf = 134218240;
             v40 = v30;
             v41 = 2048;
@@ -7680,9 +7680,9 @@ LABEL_44:
     self->_unknownSenderRecordInfo = Mutable;
   }
 
-  v5 = [(IMDNicknameController *)self unknownSenderRecordInfoKVStore];
+  unknownSenderRecordInfoKVStore = [(IMDNicknameController *)self unknownSenderRecordInfoKVStore];
   v28 = 0;
-  v25 = [v5 dataForKey:@"unknownSenderRecordInfoKey" error:&v28];
+  v25 = [unknownSenderRecordInfoKVStore dataForKey:@"unknownSenderRecordInfoKey" error:&v28];
   v26 = v28;
 
   if (v26)
@@ -7745,8 +7745,8 @@ LABEL_44:
       v21 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
-        v22 = [(IMDNicknameController *)self unknownSenderRecordInfo];
-        v23 = [v22 count];
+        unknownSenderRecordInfo = [(IMDNicknameController *)self unknownSenderRecordInfo];
+        v23 = [unknownSenderRecordInfo count];
         *buf = 134217984;
         v30 = v23;
         _os_log_impl(&dword_22B4CC000, v21, OS_LOG_TYPE_INFO, "Successfully loaded %lu unknown sender payload list handles", buf, 0xCu);
@@ -7757,13 +7757,13 @@ LABEL_44:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_populateNicknameDictionary:(id)a3 forKVStore:(id)a4 limitToLoad:(unint64_t)a5
+- (BOOL)_populateNicknameDictionary:(id)dictionary forKVStore:(id)store limitToLoad:(unint64_t)load
 {
   v39 = *MEMORY[0x277D85DE8];
-  v27 = a3;
+  dictionaryCopy = dictionary;
   v33 = 0;
-  v24 = a4;
-  v25 = [v24 datasUpToLimit:a5 deleteContext:0 error:&v33];
+  storeCopy = store;
+  v25 = [storeCopy datasUpToLimit:load deleteContext:0 error:&v33];
   v26 = v33;
   if (v26)
   {
@@ -7820,22 +7820,22 @@ LABEL_44:
           if (v17)
           {
             v19 = [objc_alloc(MEMORY[0x277D1AAD0]) initWithDictionaryRepresentation:v15];
-            v20 = [v19 handle];
+            handle = [v19 handle];
 
-            if (v20)
+            if (handle)
             {
-              v21 = [v19 handle];
-              [v27 setObject:v15 forKey:v21];
+              handle2 = [v19 handle];
+              [dictionaryCopy setObject:v15 forKey:handle2];
             }
 
             else
             {
-              v21 = IMLogHandleForCategory();
-              if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+              handle2 = IMLogHandleForCategory();
+              if (os_log_type_enabled(handle2, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
                 v35 = v19;
-                _os_log_error_impl(&dword_22B4CC000, v21, OS_LOG_TYPE_ERROR, "Nickname does not have a handle %@", buf, 0xCu);
+                _os_log_error_impl(&dword_22B4CC000, handle2, OS_LOG_TYPE_ERROR, "Nickname does not have a handle %@", buf, 0xCu);
               }
             }
           }
@@ -7871,10 +7871,10 @@ LABEL_44:
 - (void)_makeAllNicknameContentsClassC
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v2 = [(IMDNicknameController *)self defaults];
+  defaults = [(IMDNicknameController *)self defaults];
   v3 = *MEMORY[0x277D1A3C0];
   v22 = *MEMORY[0x277D1A388];
-  v4 = [v2 getBoolFromDomain:*MEMORY[0x277D1A3C0] forKey:?];
+  v4 = [defaults getBoolFromDomain:*MEMORY[0x277D1A3C0] forKey:?];
 
   if ((v4 & 1) == 0)
   {
@@ -7889,24 +7889,24 @@ LABEL_44:
       }
     }
 
-    v6 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v7 = *MEMORY[0x277D1A390];
-    v8 = [v6 enumeratorAtPath:*MEMORY[0x277D1A390]];
+    v8 = [defaultManager enumeratorAtPath:*MEMORY[0x277D1A390]];
 
-    v9 = [v8 nextObject];
-    if (v9)
+    nextObject = [v8 nextObject];
+    if (nextObject)
     {
       v10 = *MEMORY[0x277CCA1B0];
       v11 = *MEMORY[0x277CCA1A0];
       do
       {
-        v12 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
         v29 = v10;
         v30[0] = v11;
         v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-        v14 = [v7 stringByAppendingPathComponent:v9];
+        v14 = [v7 stringByAppendingPathComponent:nextObject];
         v24 = 0;
-        v15 = [v12 setAttributes:v13 ofItemAtPath:v14 error:&v24];
+        v15 = [defaultManager2 setAttributes:v13 ofItemAtPath:v14 error:&v24];
         v16 = v24;
 
         if ((v15 & 1) == 0 && IMOSLoggingEnabled())
@@ -7915,61 +7915,61 @@ LABEL_44:
           if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
           {
             *buf = 138412546;
-            v26 = v9;
+            v26 = nextObject;
             v27 = 2112;
             v28 = v16;
             _os_log_impl(&dword_22B4CC000, v17, OS_LOG_TYPE_INFO, "Failed making file class C: %@ with error %@", buf, 0x16u);
           }
         }
 
-        v18 = [v8 nextObject];
+        nextObject2 = [v8 nextObject];
 
-        v9 = v18;
+        nextObject = nextObject2;
       }
 
-      while (v18);
+      while (nextObject2);
     }
 
-    v19 = [(IMDNicknameController *)self defaults];
-    [v19 setBool:1 forDomain:v21 forKey:v22];
+    defaults2 = [(IMDNicknameController *)self defaults];
+    [defaults2 setBool:1 forDomain:v21 forKey:v22];
   }
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_storePublicNickname:(id)a3 nicknameLocation:(id)a4 encryptionKey:(id)a5 wallpaperDataTag:(id)a6 wallpaperLowResDataTag:(id)a7 wallpaperMetadataTag:(id)a8 avatarRecipeDataTag:(id)a9
+- (void)_storePublicNickname:(id)nickname nicknameLocation:(id)location encryptionKey:(id)key wallpaperDataTag:(id)tag wallpaperLowResDataTag:(id)dataTag wallpaperMetadataTag:(id)metadataTag avatarRecipeDataTag:(id)recipeDataTag
 {
   v55 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v45 = a6;
-  v44 = a7;
-  v43 = a8;
-  v42 = a9;
+  nicknameCopy = nickname;
+  locationCopy = location;
+  keyCopy = key;
+  tagCopy = tag;
+  dataTagCopy = dataTag;
+  metadataTagCopy = metadataTag;
+  recipeDataTagCopy = recipeDataTag;
   if (IMOSLoggingEnabled())
   {
     v18 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       *buf = 138412546;
-      v50 = v15;
+      v50 = nicknameCopy;
       v51 = 2112;
-      v52 = v16;
+      v52 = locationCopy;
       _os_log_impl(&dword_22B4CC000, v18, OS_LOG_TYPE_INFO, "Storing personal nickname %@ and recordID %@ on disk", buf, 0x16u);
     }
   }
 
-  v19 = [v16 dataUsingEncoding:4];
-  v20 = [v15 dataRepresentation];
+  v19 = [locationCopy dataUsingEncoding:4];
+  dataRepresentation = [nicknameCopy dataRepresentation];
   if (IMOSLoggingEnabled())
   {
     v21 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
-      v22 = [v20 length];
+      v22 = [dataRepresentation length];
       v23 = [v19 length];
-      v24 = [v17 length];
+      v24 = [keyCopy length];
       *buf = 134218496;
       v50 = v22;
       v51 = 2048;
@@ -7980,34 +7980,34 @@ LABEL_44:
     }
   }
 
-  if (v20)
+  if (dataRepresentation)
   {
-    v25 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+    cloudkitRecordsKVStore = [(IMDNicknameController *)self cloudkitRecordsKVStore];
     v48 = 0;
-    [v25 persistData:v19 forKey:@"NicknameRecordID" error:&v48];
+    [cloudkitRecordsKVStore persistData:v19 forKey:@"NicknameRecordID" error:&v48];
     v26 = v48;
 
-    v27 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+    cloudkitRecordsKVStore2 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
     v47 = 0;
-    [v27 persistData:v17 forKey:@"NicknameRecordKey" error:&v47];
+    [cloudkitRecordsKVStore2 persistData:keyCopy forKey:@"NicknameRecordKey" error:&v47];
     v28 = v47;
 
-    v29 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+    cloudkitRecordsKVStore3 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
     v46 = 0;
-    [v29 persistData:v20 forKey:@"NicknameDataKey" error:&v46];
+    [cloudkitRecordsKVStore3 persistData:dataRepresentation forKey:@"NicknameDataKey" error:&v46];
     v30 = v46;
 
-    v31 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
-    [v31 persistData:v45 forKey:@"NicknameWallpaperDataTag" error:0];
+    cloudkitRecordsKVStore4 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+    [cloudkitRecordsKVStore4 persistData:tagCopy forKey:@"NicknameWallpaperDataTag" error:0];
 
-    v32 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
-    [v32 persistData:v44 forKey:@"NicknameLowResWallpaperDataTag" error:0];
+    cloudkitRecordsKVStore5 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+    [cloudkitRecordsKVStore5 persistData:dataTagCopy forKey:@"NicknameLowResWallpaperDataTag" error:0];
 
-    v33 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
-    [v33 persistData:v43 forKey:@"NicknameWallpaperMetadataTag" error:0];
+    cloudkitRecordsKVStore6 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+    [cloudkitRecordsKVStore6 persistData:metadataTagCopy forKey:@"NicknameWallpaperMetadataTag" error:0];
 
-    v34 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
-    [v34 persistData:v42 forKey:@"NicknameAvatarRecipeDataTag" error:0];
+    cloudkitRecordsKVStore7 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+    [cloudkitRecordsKVStore7 persistData:recipeDataTagCopy forKey:@"NicknameAvatarRecipeDataTag" error:0];
 
     if (v26 | v28)
     {
@@ -8017,11 +8017,11 @@ LABEL_44:
         sub_22B7D5430();
       }
 
-      v36 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
-      [v36 persistData:0 forKey:@"NicknameRecordKey" error:0];
+      cloudkitRecordsKVStore8 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+      [cloudkitRecordsKVStore8 persistData:0 forKey:@"NicknameRecordKey" error:0];
 
-      v37 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
-      [v37 persistData:0 forKey:@"NicknameRecordID" error:0];
+      cloudkitRecordsKVStore9 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+      [cloudkitRecordsKVStore9 persistData:0 forKey:@"NicknameRecordID" error:0];
     }
 
     if (v30)
@@ -8032,8 +8032,8 @@ LABEL_44:
         sub_22B7D54A0();
       }
 
-      v39 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
-      [v39 persistData:0 forKey:@"NicknameDataKey" error:0];
+      cloudkitRecordsKVStore10 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+      [cloudkitRecordsKVStore10 persistData:0 forKey:@"NicknameDataKey" error:0];
     }
   }
 
@@ -8057,27 +8057,27 @@ LABEL_44:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_storePendingNicknameForUpload:(id)a3
+- (void)_storePendingNicknameForUpload:(id)upload
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uploadCopy = upload;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = uploadCopy;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "Storing pending nickname %@ while waiting on upload", buf, 0xCu);
     }
   }
 
-  v6 = [v4 dataRepresentation];
-  if (v6)
+  dataRepresentation = [uploadCopy dataRepresentation];
+  if (dataRepresentation)
   {
-    v7 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+    cloudkitRecordsKVStore = [(IMDNicknameController *)self cloudkitRecordsKVStore];
     v12 = 0;
-    [v7 persistData:v6 forKey:@"NicknamePendingKey" error:&v12];
+    [cloudkitRecordsKVStore persistData:dataRepresentation forKey:@"NicknamePendingKey" error:&v12];
     v8 = v12;
 
     if (v8)
@@ -8088,8 +8088,8 @@ LABEL_44:
         sub_22B7D5508();
       }
 
-      v10 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
-      [v10 persistData:0 forKey:@"NicknamePendingKey" error:0];
+      cloudkitRecordsKVStore2 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+      [cloudkitRecordsKVStore2 persistData:0 forKey:@"NicknamePendingKey" error:0];
     }
   }
 
@@ -8098,9 +8098,9 @@ LABEL_44:
 
 - (id)_getPendingNicknameForUpload
 {
-  v2 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v15 = 0;
-  v3 = [v2 dataForKey:@"NicknamePendingKey" error:&v15];
+  v3 = [cloudkitRecordsKVStore dataForKey:@"NicknamePendingKey" error:&v15];
   v4 = v15;
 
   if (v4)
@@ -8158,9 +8158,9 @@ LABEL_11:
 - (void)_deletePendingNicknameForUpload
 {
   v9 = *MEMORY[0x277D85DE8];
-  v2 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v6 = 0;
-  [v2 persistData:0 forKey:@"NicknamePendingKey" error:&v6];
+  [cloudkitRecordsKVStore persistData:0 forKey:@"NicknamePendingKey" error:&v6];
   v3 = v6;
 
   if (v3 && IMOSLoggingEnabled())
@@ -8179,34 +8179,34 @@ LABEL_11:
 
 - (void)_deletePublicNicknameLocationAndKey
 {
-  v3 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v21 = 0;
-  [v3 persistData:0 forKey:@"NicknameRecordID" error:&v21];
+  [cloudkitRecordsKVStore persistData:0 forKey:@"NicknameRecordID" error:&v21];
   v4 = v21;
 
-  v5 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore2 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v20 = v4;
-  [v5 persistData:0 forKey:@"NicknameRecordKey" error:&v20];
+  [cloudkitRecordsKVStore2 persistData:0 forKey:@"NicknameRecordKey" error:&v20];
   v6 = v20;
 
-  v7 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore3 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v19 = v6;
-  [v7 persistData:0 forKey:@"NicknameDataKey" error:&v19];
+  [cloudkitRecordsKVStore3 persistData:0 forKey:@"NicknameDataKey" error:&v19];
   v8 = v19;
 
-  v9 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore4 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v18 = v8;
-  [v9 persistData:0 forKey:@"NicknameWallpaperDataTag" error:&v18];
+  [cloudkitRecordsKVStore4 persistData:0 forKey:@"NicknameWallpaperDataTag" error:&v18];
   v10 = v18;
 
-  v11 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore5 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v17 = v10;
-  [v11 persistData:0 forKey:@"NicknameLowResWallpaperDataTag" error:&v17];
+  [cloudkitRecordsKVStore5 persistData:0 forKey:@"NicknameLowResWallpaperDataTag" error:&v17];
   v12 = v17;
 
-  v13 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore6 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v16 = v12;
-  [v13 persistData:0 forKey:@"NicknameWallpaperMetadataTag" error:&v16];
+  [cloudkitRecordsKVStore6 persistData:0 forKey:@"NicknameWallpaperMetadataTag" error:&v16];
   v14 = v16;
 
   [(IMDNicknameController *)self setPersonalNickname:0];
@@ -8222,9 +8222,9 @@ LABEL_11:
 
 - (id)nickNameDecryptionKey
 {
-  v2 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v7 = 0;
-  v3 = [v2 dataForKey:@"NicknameRecordKey" error:&v7];
+  v3 = [cloudkitRecordsKVStore dataForKey:@"NicknameRecordKey" error:&v7];
   v4 = v7;
 
   if (v4)
@@ -8244,9 +8244,9 @@ LABEL_11:
 
 - (id)wallpaperDataTag
 {
-  v2 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v7 = 0;
-  v3 = [v2 dataForKey:@"NicknameWallpaperDataTag" error:&v7];
+  v3 = [cloudkitRecordsKVStore dataForKey:@"NicknameWallpaperDataTag" error:&v7];
   v4 = v7;
 
   if (v4)
@@ -8266,9 +8266,9 @@ LABEL_11:
 
 - (id)lowResWallpaperDataTag
 {
-  v2 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v7 = 0;
-  v3 = [v2 dataForKey:@"NicknameLowResWallpaperDataTag" error:&v7];
+  v3 = [cloudkitRecordsKVStore dataForKey:@"NicknameLowResWallpaperDataTag" error:&v7];
   v4 = v7;
 
   if (v4)
@@ -8288,9 +8288,9 @@ LABEL_11:
 
 - (id)wallpaperMetadataTag
 {
-  v2 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v7 = 0;
-  v3 = [v2 dataForKey:@"NicknameWallpaperMetadataTag" error:&v7];
+  v3 = [cloudkitRecordsKVStore dataForKey:@"NicknameWallpaperMetadataTag" error:&v7];
   v4 = v7;
 
   if (v4)
@@ -8310,9 +8310,9 @@ LABEL_11:
 
 - (id)avatarRecipeTag
 {
-  v2 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v7 = 0;
-  v3 = [v2 dataForKey:@"NicknameAvatarRecipeDataTag" error:&v7];
+  v3 = [cloudkitRecordsKVStore dataForKey:@"NicknameAvatarRecipeDataTag" error:&v7];
   v4 = v7;
 
   if (v4)
@@ -8332,9 +8332,9 @@ LABEL_11:
 
 - (id)nickNameRecordID
 {
-  v2 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v8 = 0;
-  v3 = [v2 dataForKey:@"NicknameRecordID" error:&v8];
+  v3 = [cloudkitRecordsKVStore dataForKey:@"NicknameRecordID" error:&v8];
   v4 = v8;
 
   if (v3)
@@ -8369,9 +8369,9 @@ LABEL_8:
 
 - (id)storedPersonalNickname
 {
-  v3 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v21 = 0;
-  v4 = [v3 dataForKey:@"NicknameDataKey" error:&v21];
+  v4 = [cloudkitRecordsKVStore dataForKey:@"NicknameDataKey" error:&v21];
   v5 = v21;
 
   if (v5)
@@ -8437,9 +8437,9 @@ LABEL_5:
 LABEL_19:
   }
 
-  v15 = [v8 recordID];
+  recordID = [v8 recordID];
 
-  if (!v15)
+  if (!recordID)
   {
     if (IMOSLoggingEnabled())
     {
@@ -8451,10 +8451,10 @@ LABEL_19:
       }
     }
 
-    v17 = [(IMDNicknameController *)self nickNameRecordID];
-    if (v17)
+    nickNameRecordID = [(IMDNicknameController *)self nickNameRecordID];
+    if (nickNameRecordID)
     {
-      [v8 setRecordID:v17];
+      [v8 setRecordID:nickNameRecordID];
     }
   }
 
@@ -8465,9 +8465,9 @@ LABEL_29:
 
 - (id)pendingPersonalNickname
 {
-  v2 = [(IMDNicknameController *)self cloudkitRecordsKVStore];
+  cloudkitRecordsKVStore = [(IMDNicknameController *)self cloudkitRecordsKVStore];
   v13 = 0;
-  v3 = [v2 dataForKey:@"NicknamePendingKey" error:&v13];
+  v3 = [cloudkitRecordsKVStore dataForKey:@"NicknamePendingKey" error:&v13];
   v4 = v13;
 
   if (v4)
@@ -8506,14 +8506,14 @@ LABEL_29:
   return v5;
 }
 
-- (void)_deleteAvatarForNickname:(id)a3
+- (void)_deleteAvatarForNickname:(id)nickname
 {
-  v3 = [a3 avatar];
-  v4 = [v3 imageFilePath];
+  avatar = [nickname avatar];
+  imageFilePath = [avatar imageFilePath];
 
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v8 = 0;
-  [v5 removeItemAtPath:v4 error:&v8];
+  [defaultManager removeItemAtPath:imageFilePath error:&v8];
   v6 = v8;
 
   if (v6)
@@ -8528,33 +8528,33 @@ LABEL_29:
 
 - (id)allNicknames
 {
-  v3 = [(IMDNicknameController *)self handledNicknames];
-  v4 = [v3 allValues];
+  handledNicknames = [(IMDNicknameController *)self handledNicknames];
+  allValues = [handledNicknames allValues];
 
-  v5 = [(IMDNicknameController *)self pendingNicknameUpdates];
-  v6 = [v5 allValues];
+  pendingNicknameUpdates = [(IMDNicknameController *)self pendingNicknameUpdates];
+  allValues2 = [pendingNicknameUpdates allValues];
 
-  v7 = [(IMDNicknameController *)self archivedNicknames];
-  v8 = [v7 allValues];
+  archivedNicknames = [(IMDNicknameController *)self archivedNicknames];
+  allValues3 = [archivedNicknames allValues];
 
-  v9 = [v6 arrayByAddingObjectsFromArray:v4];
-  v10 = [v9 arrayByAddingObjectsFromArray:v8];
+  v9 = [allValues2 arrayByAddingObjectsFromArray:allValues];
+  v10 = [v9 arrayByAddingObjectsFromArray:allValues3];
 
   return v10;
 }
 
-- (id)nicknameForRecordID:(id)a3
+- (id)nicknameForRecordID:(id)d
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 length])
+  dCopy = d;
+  if ([dCopy length])
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v5 = [(IMDNicknameController *)self allNicknames];
-    v6 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
+    allNicknames = [(IMDNicknameController *)self allNicknames];
+    v6 = [allNicknames countByEnumeratingWithState:&v16 objects:v22 count:16];
     if (v6)
     {
       v7 = *v17;
@@ -8564,12 +8564,12 @@ LABEL_29:
         {
           if (*v17 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allNicknames);
           }
 
           v9 = [objc_alloc(MEMORY[0x277D1AAD0]) initWithDictionaryRepresentation:*(*(&v16 + 1) + 8 * i)];
-          v10 = [v9 recordID];
-          v11 = [v10 isEqualToString:v4];
+          recordID = [v9 recordID];
+          v11 = [recordID isEqualToString:dCopy];
 
           if (v11)
           {
@@ -8578,7 +8578,7 @@ LABEL_29:
           }
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v16 objects:v22 count:16];
+        v6 = [allNicknames countByEnumeratingWithState:&v16 objects:v22 count:16];
         if (v6)
         {
           continue;
@@ -8594,7 +8594,7 @@ LABEL_29:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v21 = v4;
+        v21 = dCopy;
         _os_log_impl(&dword_22B4CC000, v12, OS_LOG_TYPE_INFO, "Did not find nickname for recordID %@", buf, 0xCu);
       }
     }
@@ -8618,16 +8618,16 @@ LABEL_20:
   return v9;
 }
 
-- (id)nicknameForRecordID:(id)a3 handle:(id)a4
+- (id)nicknameForRecordID:(id)d handle:(id)handle
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length])
+  dCopy = d;
+  handleCopy = handle;
+  if ([handleCopy length])
   {
-    v8 = [(IMDNicknameController *)self nicknameForHandle:v7];
+    v8 = [(IMDNicknameController *)self nicknameForHandle:handleCopy];
     v9 = v8;
-    if (v8 && ([v8 recordID], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v6, "isEqualToString:", v10), v10, v11))
+    if (v8 && ([v8 recordID], v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(dCopy, "isEqualToString:", v10), v10, v11))
     {
       v12 = v9;
       if (IMOSLoggingEnabled())
@@ -8649,7 +8649,7 @@ LABEL_20:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
           v17 = 138412290;
-          v18 = v7;
+          v18 = handleCopy;
           _os_log_impl(&dword_22B4CC000, v14, OS_LOG_TYPE_INFO, "No nickname for handle %@", &v17, 0xCu);
         }
       }
@@ -8660,7 +8660,7 @@ LABEL_20:
 
   else
   {
-    v12 = [(IMDNicknameController *)self nicknameForRecordID:v6];
+    v12 = [(IMDNicknameController *)self nicknameForRecordID:dCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -8668,37 +8668,37 @@ LABEL_20:
   return v12;
 }
 
-- (id)nicknameForHandleURI:(id)a3
+- (id)nicknameForHandleURI:(id)i
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  iCopy = i;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = iCopy;
       _os_log_impl(&dword_22B4CC000, v5, OS_LOG_TYPE_INFO, "I'm being asked for handleURI %@", &v10, 0xCu);
     }
   }
 
-  v6 = [v4 _stripFZIDPrefix];
+  _stripFZIDPrefix = [iCopy _stripFZIDPrefix];
 
-  v7 = [(IMDNicknameController *)self nicknameForHandle:v6];
+  v7 = [(IMDNicknameController *)self nicknameForHandle:_stripFZIDPrefix];
 
   v8 = *MEMORY[0x277D85DE8];
 
   return v7;
 }
 
-- (id)nicknameForHandle:(id)a3
+- (id)nicknameForHandle:(id)handle
 {
-  v4 = a3;
-  v5 = [(IMDNicknameController *)self pendingNicknameUpdates];
-  v6 = [v5 objectForKey:v4];
+  handleCopy = handle;
+  pendingNicknameUpdates = [(IMDNicknameController *)self pendingNicknameUpdates];
+  v6 = [pendingNicknameUpdates objectForKey:handleCopy];
 
-  if (v6 || (-[IMDNicknameController handledNicknames](self, "handledNicknames"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKey:v4], v6 = objc_claimAutoreleasedReturnValue(), v7, v6))
+  if (v6 || (-[IMDNicknameController handledNicknames](self, "handledNicknames"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKey:handleCopy], v6 = objc_claimAutoreleasedReturnValue(), v7, v6))
   {
     v8 = [objc_alloc(MEMORY[0x277D1AAD0]) initWithDictionaryRepresentation:v6];
   }
@@ -8711,11 +8711,11 @@ LABEL_20:
   return v8;
 }
 
-- (id)substringRecordIDForNickname:(id)a3
+- (id)substringRecordIDForNickname:(id)nickname
 {
-  v3 = a3;
-  v4 = [v3 recordID];
-  v5 = [v4 length];
+  nicknameCopy = nickname;
+  recordID = [nicknameCopy recordID];
+  v5 = [recordID length];
 
   if (v5 < 5)
   {
@@ -8724,8 +8724,8 @@ LABEL_20:
 
   else
   {
-    v6 = [v3 recordID];
-    v7 = [v6 substringToIndex:3];
+    recordID2 = [nicknameCopy recordID];
+    v7 = [recordID2 substringToIndex:3];
   }
 
   return v7;
@@ -8754,11 +8754,11 @@ LABEL_20:
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(IMDNicknameController *)self handledNicknames];
-  v4 = [v3 allKeys];
+  handledNicknames = [(IMDNicknameController *)self handledNicknames];
+  allKeys = [handledNicknames allKeys];
 
-  obj = v4;
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  obj = allKeys;
+  v5 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -8774,8 +8774,8 @@ LABEL_20:
         }
 
         v9 = *(*(&v15 + 1) + 8 * v8);
-        v10 = [(IMDNicknameController *)self handledNicknames];
-        v11 = [v10 objectForKey:v9];
+        handledNicknames2 = [(IMDNicknameController *)self handledNicknames];
+        v11 = [handledNicknames2 objectForKey:v9];
 
         v12 = [objc_alloc(MEMORY[0x277D1AAD0]) initWithDictionaryRepresentation:v11];
         [(IMDNicknameController *)self _deleteHandleIDFromHandledMap:v9];

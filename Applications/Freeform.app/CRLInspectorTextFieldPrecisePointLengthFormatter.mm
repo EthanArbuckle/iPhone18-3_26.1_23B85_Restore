@@ -1,16 +1,16 @@
 @interface CRLInspectorTextFieldPrecisePointLengthFormatter
-- (BOOL)p_getObjectValue:(id *)a3 forString:(id)a4 withMinimum:(id)a5 andMaximum:(id)a6 originalValue:(id)a7 errorDescription:(id *)a8 valueObjectWasAdjusted:(BOOL *)a9;
-- (id)stringForObjectValue:(id)a3;
+- (BOOL)p_getObjectValue:(id *)value forString:(id)string withMinimum:(id)minimum andMaximum:(id)maximum originalValue:(id)originalValue errorDescription:(id *)description valueObjectWasAdjusted:(BOOL *)adjusted;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation CRLInspectorTextFieldPrecisePointLengthFormatter
 
-- (BOOL)p_getObjectValue:(id *)a3 forString:(id)a4 withMinimum:(id)a5 andMaximum:(id)a6 originalValue:(id)a7 errorDescription:(id *)a8 valueObjectWasAdjusted:(BOOL *)a9
+- (BOOL)p_getObjectValue:(id *)value forString:(id)string withMinimum:(id)minimum andMaximum:(id)maximum originalValue:(id)originalValue errorDescription:(id *)description valueObjectWasAdjusted:(BOOL *)adjusted
 {
-  v24 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  stringCopy = string;
+  minimumCopy = minimum;
+  maximumCopy = maximum;
+  originalValueCopy = originalValue;
   v30[0] = qword_101A35410;
   v30[1] = qword_101A35420;
   v30[2] = qword_101A35428;
@@ -34,7 +34,7 @@
           objc_enumerationMutation(v17);
         }
 
-        if ([*(*(&v25 + 1) + 8 * i) p_getObjectValue:a3 forString:v24 withMinimum:v14 andMaximum:v15 originalValue:v16 errorDescription:a8 valueObjectWasAdjusted:a9])
+        if ([*(*(&v25 + 1) + 8 * i) p_getObjectValue:value forString:stringCopy withMinimum:minimumCopy andMaximum:maximumCopy originalValue:originalValueCopy errorDescription:description valueObjectWasAdjusted:adjusted])
         {
           v22 = 1;
           goto LABEL_11;
@@ -57,12 +57,12 @@ LABEL_11:
   return v22;
 }
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
   v4 = qword_101A35410;
-  v5 = a3;
-  v6 = [(CRLInspectorTextFieldClampNumberFormatter *)self valueBeforeEditing];
-  v7 = [v4 stringForObjectValue:v5 originalValue:v6];
+  valueCopy = value;
+  valueBeforeEditing = [(CRLInspectorTextFieldClampNumberFormatter *)self valueBeforeEditing];
+  v7 = [v4 stringForObjectValue:valueCopy originalValue:valueBeforeEditing];
 
   return v7;
 }

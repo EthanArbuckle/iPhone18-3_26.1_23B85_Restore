@@ -1,51 +1,51 @@
 @interface UserNavigationDropInteraction
-- (UserNavigationDropInteraction)initWithOpensNewTab:(BOOL)a3 tabOrder:(int64_t)a4 navigationHandler:(id)a5;
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4;
-- (void)dropInteraction:(id)a3 performDrop:(id)a4;
+- (UserNavigationDropInteraction)initWithOpensNewTab:(BOOL)tab tabOrder:(int64_t)order navigationHandler:(id)handler;
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update;
+- (void)dropInteraction:(id)interaction performDrop:(id)drop;
 @end
 
 @implementation UserNavigationDropInteraction
 
-- (UserNavigationDropInteraction)initWithOpensNewTab:(BOOL)a3 tabOrder:(int64_t)a4 navigationHandler:(id)a5
+- (UserNavigationDropInteraction)initWithOpensNewTab:(BOOL)tab tabOrder:(int64_t)order navigationHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v14.receiver = self;
   v14.super_class = UserNavigationDropInteraction;
   v9 = [(UIDropInteraction *)&v14 initWithDelegate:self];
   if (v9)
   {
-    v10 = _Block_copy(v8);
+    v10 = _Block_copy(handlerCopy);
     navigationHandler = v9->_navigationHandler;
     v9->_navigationHandler = v10;
 
-    v9->_opensNewTab = a3;
-    v9->_tabOrder = a4;
+    v9->_opensNewTab = tab;
+    v9->_tabOrder = order;
     v12 = v9;
   }
 
   return v9;
 }
 
-- (id)dropInteraction:(id)a3 sessionDidUpdate:(id)a4
+- (id)dropInteraction:(id)interaction sessionDidUpdate:(id)update
 {
   v4 = [objc_alloc(MEMORY[0x277D754A8]) initWithDropOperation:2];
 
   return v4;
 }
 
-- (void)dropInteraction:(id)a3 performDrop:(id)a4
+- (void)dropInteraction:(id)interaction performDrop:(id)drop
 {
   v5 = MEMORY[0x277D28F40];
-  v6 = a4;
-  v7 = [v5 builder];
-  [v7 setPrefersOpenInNewTab:self->_opensNewTab];
-  [v7 setPreferredTabOrder:self->_tabOrder];
+  dropCopy = drop;
+  builder = [v5 builder];
+  [builder setPrefersOpenInNewTab:self->_opensNewTab];
+  [builder setPreferredTabOrder:self->_tabOrder];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __61__UserNavigationDropInteraction_dropInteraction_performDrop___block_invoke;
   v8[3] = &unk_2781D5D00;
   v8[4] = self;
-  [v7 buildNavigationIntentForDropSession:v6 completionHandler:v8];
+  [builder buildNavigationIntentForDropSession:dropCopy completionHandler:v8];
 }
 
 uint64_t __61__UserNavigationDropInteraction_dropInteraction_performDrop___block_invoke(uint64_t result, uint64_t a2)

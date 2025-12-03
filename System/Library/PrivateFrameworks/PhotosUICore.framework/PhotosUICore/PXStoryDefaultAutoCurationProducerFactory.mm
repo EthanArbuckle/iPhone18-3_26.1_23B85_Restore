@@ -1,30 +1,30 @@
 @interface PXStoryDefaultAutoCurationProducerFactory
-- (id)autoCurationProducerForConfiguration:(id)a3;
+- (id)autoCurationProducerForConfiguration:(id)configuration;
 @end
 
 @implementation PXStoryDefaultAutoCurationProducerFactory
 
-- (id)autoCurationProducerForConfiguration:(id)a3
+- (id)autoCurationProducerForConfiguration:(id)configuration
 {
-  v3 = a3;
-  v4 = [v3 autoCurationProducer];
-  if (v4)
+  configurationCopy = configuration;
+  autoCurationProducer = [configurationCopy autoCurationProducer];
+  if (autoCurationProducer)
   {
-    v5 = v4;
+    v5 = autoCurationProducer;
     goto LABEL_9;
   }
 
   v6 = [PXStoryDefaultAutoCurationProducer alloc];
-  v7 = [v3 originalCurationContext];
-  v5 = [(PXStoryDefaultAutoCurationProducer *)v6 initWithCurationContext:v7];
+  originalCurationContext = [configurationCopy originalCurationContext];
+  v5 = [(PXStoryDefaultAutoCurationProducer *)v6 initWithCurationContext:originalCurationContext];
 
   if (!v5)
   {
-    v8 = [v3 assetCollection];
+    assetCollection = [configurationCopy assetCollection];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [[PXStoryMemoryAutoCurationProducer alloc] initWithMemory:v8];
+      v5 = [[PXStoryMemoryAutoCurationProducer alloc] initWithMemory:assetCollection];
 
       if (v5)
       {
@@ -37,8 +37,8 @@
     }
 
     v5 = objc_alloc_init(PXStoryPassthroughAutoCurationProducer);
-    v9 = [v3 assets];
-    [(PXStoryMemoryAutoCurationProducer *)v5 setAssets:v9];
+    assets = [configurationCopy assets];
+    [(PXStoryMemoryAutoCurationProducer *)v5 setAssets:assets];
   }
 
 LABEL_9:

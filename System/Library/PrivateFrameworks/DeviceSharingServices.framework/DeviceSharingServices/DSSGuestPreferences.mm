@@ -1,6 +1,6 @@
 @interface DSSGuestPreferences
 - (DSSGuestPreferences)init;
-- (DSSGuestPreferences)initWithCoder:(id)a3;
+- (DSSGuestPreferences)initWithCoder:(id)coder;
 @end
 
 @implementation DSSGuestPreferences
@@ -20,15 +20,15 @@
   return v2;
 }
 
-- (DSSGuestPreferences)initWithCoder:(id)a3
+- (DSSGuestPreferences)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = DSSGuestPreferences;
   v5 = [(DSSGuestPreferences *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"store"];
+    v6 = [coderCopy decodeObjectForKey:@"store"];
     store = v5->_store;
     v5->_store = v6;
   }

@@ -54,7 +54,7 @@ uint64_t __33__BuddyFeatureFlags_currentFlags__block_invoke()
 {
   v4 = *MEMORY[0x1E69E9840];
   v3[0] = 67109120;
-  v3[1] = a1 & 1;
+  v3[1] = self & 1;
   _os_log_debug_impl(&dword_1B862F000, a2, OS_LOG_TYPE_DEBUG, "UseCDPContextSecretInsteadOfSBDSecret = %{BOOL}d", v3, 8u);
   v2 = *MEMORY[0x1E69E9840];
 }

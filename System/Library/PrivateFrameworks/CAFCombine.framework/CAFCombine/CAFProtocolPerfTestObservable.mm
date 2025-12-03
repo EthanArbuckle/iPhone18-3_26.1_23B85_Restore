@@ -1,19 +1,19 @@
 @interface CAFProtocolPerfTestObservable
 - (NSString)description;
-- (void)protocolPerfTestService:(id)a3 didUpdateTestInt16:(signed __int16)a4;
-- (void)protocolPerfTestService:(id)a3 didUpdateTestInt32:(int)a4;
-- (void)protocolPerfTestService:(id)a3 didUpdateTestUInt16:(unsigned __int16)a4;
-- (void)protocolPerfTestService:(id)a3 didUpdateTestUInt32:(unsigned int)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)protocolPerfTestService:(id)service didUpdateTestInt16:(signed __int16)int16;
+- (void)protocolPerfTestService:(id)service didUpdateTestInt32:(int)int32;
+- (void)protocolPerfTestService:(id)service didUpdateTestUInt16:(unsigned __int16)int16;
+- (void)protocolPerfTestService:(id)service didUpdateTestUInt32:(unsigned int)int32;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFProtocolPerfTestObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFProtocolPerfTestObservable.description.getter();
   v5 = v4;
 
@@ -22,53 +22,53 @@
   return v6;
 }
 
-- (void)protocolPerfTestService:(id)a3 didUpdateTestInt32:(int)a4
+- (void)protocolPerfTestService:(id)service didUpdateTestInt32:(int)int32
 {
-  v6 = a3;
-  v7 = self;
-  CAFProtocolPerfTestObservable.protocolPerfTestService(_:didUpdateTestInt32:)(v7, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFProtocolPerfTestObservable.protocolPerfTestService(_:didUpdateTestInt32:)(selfCopy, int32);
 }
 
-- (void)protocolPerfTestService:(id)a3 didUpdateTestInt16:(signed __int16)a4
+- (void)protocolPerfTestService:(id)service didUpdateTestInt16:(signed __int16)int16
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFProtocolPerfTestObservable.protocolPerfTestService(_:didUpdateTestInt16:)();
 }
 
-- (void)protocolPerfTestService:(id)a3 didUpdateTestUInt32:(unsigned int)a4
+- (void)protocolPerfTestService:(id)service didUpdateTestUInt32:(unsigned int)int32
 {
-  v6 = a3;
-  v7 = self;
-  CAFProtocolPerfTestObservable.protocolPerfTestService(_:didUpdateTestUInt32:)(v7, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFProtocolPerfTestObservable.protocolPerfTestService(_:didUpdateTestUInt32:)(selfCopy, int32);
 }
 
-- (void)protocolPerfTestService:(id)a3 didUpdateTestUInt16:(unsigned __int16)a4
+- (void)protocolPerfTestService:(id)service didUpdateTestUInt16:(unsigned __int16)int16
 {
-  v5 = a3;
-  v6 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFProtocolPerfTestObservable.protocolPerfTestService(_:didUpdateTestUInt16:)();
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFProtocolPerfTestObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFProtocolPerfTestObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFProtocolPerfTestObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFProtocolPerfTestObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFProtocolPerfTestObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

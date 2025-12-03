@@ -1,32 +1,32 @@
 @interface ATSACCAClockDevice
-- (ATSACCAClockDevice)initWithClockIdentifier:(unint64_t)a3 withPlugin:(id)a4;
-- (ATSACCAClockDevice)initWithDeviceUID:(id)a3 withPlugin:(id)a4;
-- (BOOL)changeSamplingRate:(double)a3;
+- (ATSACCAClockDevice)initWithClockIdentifier:(unint64_t)identifier withPlugin:(id)plugin;
+- (ATSACCAClockDevice)initWithDeviceUID:(id)d withPlugin:(id)plugin;
+- (BOOL)changeSamplingRate:(double)rate;
 - (id).cxx_construct;
 - (int)performStartIO;
 - (int)performStopIO;
 - (void)dealloc;
-- (void)didBeginClockGrandmasterChangeForClock:(id)a3;
-- (void)didChangeClockMasterForClock:(id)a3;
-- (void)didChangeLockStateTo:(int)a3 forClock:(id)a4;
-- (void)didEndClockGrandmasterChangeForClock:(id)a3;
-- (void)initializeFirstTimestamp:(id)a3;
+- (void)didBeginClockGrandmasterChangeForClock:(id)clock;
+- (void)didChangeClockMasterForClock:(id)clock;
+- (void)didChangeLockStateTo:(int)to forClock:(id)clock;
+- (void)didEndClockGrandmasterChangeForClock:(id)clock;
+- (void)initializeFirstTimestamp:(id)timestamp;
 @end
 
 @implementation ATSACCAClockDevice
 
-- (ATSACCAClockDevice)initWithDeviceUID:(id)a3 withPlugin:(id)a4
+- (ATSACCAClockDevice)initWithDeviceUID:(id)d withPlugin:(id)plugin
 {
-  v5 = [NSString stringWithUTF8String:"[ATSACCAClockDevice initWithDeviceUID:withPlugin:]", a4];
-  [NSException raise:NSInvalidArgumentException format:@"Do not call %@", v5];
+  plugin = [NSString stringWithUTF8String:"[ATSACCAClockDevice initWithDeviceUID:withPlugin:]", plugin];
+  [NSException raise:NSInvalidArgumentException format:@"Do not call %@", plugin];
 
   return 0;
 }
 
-- (ATSACCAClockDevice)initWithClockIdentifier:(unint64_t)a3 withPlugin:(id)a4
+- (ATSACCAClockDevice)initWithClockIdentifier:(unint64_t)identifier withPlugin:(id)plugin
 {
-  v6 = a4;
-  if (TSNullClockIdentifier == a3)
+  pluginCopy = plugin;
+  if (TSNullClockIdentifier == identifier)
   {
 
     v7 = 0;
@@ -34,14 +34,14 @@
 
   else
   {
-    v8 = [TSClockManager timeSyncAudioClockDeviceUIDForClockIdentifier:a3];
+    v8 = [TSClockManager timeSyncAudioClockDeviceUIDForClockIdentifier:identifier];
     v44.receiver = self;
     v44.super_class = ATSACCAClockDevice;
-    v9 = [(ATSACCAClockDevice *)&v44 initWithDeviceUID:v8 withPlugin:v6];
+    v9 = [(ATSACCAClockDevice *)&v44 initWithDeviceUID:v8 withPlugin:pluginCopy];
     v7 = v9;
     if (v9)
     {
-      v9->_clockIdentifier = a3;
+      v9->_clockIdentifier = identifier;
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       v12 = [NSString stringWithFormat:@"com.apple.AppleTimeSyncAudioClock.%@.%@.workloop", v11, v8];
@@ -71,8 +71,8 @@
       loggingQueue = v7->_loggingQueue;
       v7->_loggingQueue = v26;
 
-      v28 = [NSString stringWithFormat:@"TimeSync Clock 0x%016llx", a3];
-      [(ATSACCAClockDevice *)v7 setDeviceName:v28];
+      identifier = [NSString stringWithFormat:@"TimeSync Clock 0x%016llx", identifier];
+      [(ATSACCAClockDevice *)v7 setDeviceName:identifier];
 
       [(ATSACCAClockDevice *)v7 setManufacturerName:@"Apple Inc."];
       [(ATSACCAClockDevice *)v7 setModelName:@"TimeSync Audio Clock"];
@@ -86,7 +86,7 @@
       v43 = 0;
       v30 = +[TSClockManager sharedClockManager];
       v42 = 0;
-      v31 = [v30 addMappingFromClockID:a3 toCoreAudioClockDomain:&v43 error:&v42];
+      v31 = [v30 addMappingFromClockID:identifier toCoreAudioClockDomain:&v43 error:&v42];
       v32 = v42;
 
       if (v31)
@@ -153,9 +153,9 @@
     }
 
     v3 = +[TSClockManager sharedClockManager];
-    v4 = [v3 timeSyncClock];
+    timeSyncClock = [v3 timeSyncClock];
     clock = self->_clock;
-    self->_clock = v4;
+    self->_clock = timeSyncClock;
   }
 
   else
@@ -168,9 +168,9 @@
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(ATSACCAClockDevice *)self clockIdentifier];
+    clockIdentifier = [(ATSACCAClockDevice *)self clockIdentifier];
     *buf = 134217984;
-    v40 = v9;
+    v40 = clockIdentifier;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%016llx: starting IO\n", buf, 0xCu);
   }
 
@@ -219,9 +219,9 @@
   {
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [(ATSACCAClockDevice *)self clockIdentifier];
+      clockIdentifier2 = [(ATSACCAClockDevice *)self clockIdentifier];
       *buf = 134217984;
-      v40 = v23;
+      v40 = clockIdentifier2;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%016llx: Failed to start the timer running, took too long to lock the clock.\n", buf, 0xCu);
     }
 
@@ -243,7 +243,7 @@
     self->_lastLockState = 0;
     dispatch_source_set_event_handler(v20, &stru_C5D0);
     dispatch_resume(v20);
-    v27 = 2003329396;
+    performStartIO = 2003329396;
   }
 
   else
@@ -251,14 +251,14 @@
     dispatch_resume(v20);
     v32.receiver = self;
     v32.super_class = ATSACCAClockDevice;
-    v27 = [(ATSACCAClockDevice *)&v32 performStartIO];
+    performStartIO = [(ATSACCAClockDevice *)&v32 performStartIO];
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
     {
-      v28 = [(ATSACCAClockDevice *)self clockIdentifier];
+      clockIdentifier3 = [(ATSACCAClockDevice *)self clockIdentifier];
       *buf = 134218240;
-      v40 = v28;
+      v40 = clockIdentifier3;
       v41 = 1024;
-      v42 = v27;
+      v42 = performStartIO;
       _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%016llx: started IO 0x%08x\n", buf, 0x12u);
     }
   }
@@ -266,7 +266,7 @@
   v29 = self->_startSemaphore;
   self->_startSemaphore = 0;
 
-  return v27;
+  return performStartIO;
 }
 
 - (int)performStopIO
@@ -274,13 +274,13 @@
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v12 = [(ATSACCAClockDevice *)self clockIdentifier];
+    clockIdentifier = [(ATSACCAClockDevice *)self clockIdentifier];
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%016llx: stopping IO\n", buf, 0xCu);
   }
 
   v10.receiver = self;
   v10.super_class = ATSACCAClockDevice;
-  v3 = [(ATSACCAClockDevice *)&v10 performStopIO];
+  performStopIO = [(ATSACCAClockDevice *)&v10 performStopIO];
   [(TSClock *)self->_clock removeClient:self];
   dispatch_source_cancel(self->_timerSource);
   dispatch_source_set_event_handler(self->_timerSource, 0);
@@ -300,89 +300,89 @@
   self->_lastLockState = 0;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(ATSACCAClockDevice *)self clockIdentifier];
+    clockIdentifier2 = [(ATSACCAClockDevice *)self clockIdentifier];
     *buf = 134218240;
-    v12 = v7;
+    clockIdentifier = clockIdentifier2;
     v13 = 1024;
-    v14 = v3;
+    v14 = performStopIO;
     _os_log_impl(&dword_0, &_os_log_default, OS_LOG_TYPE_DEFAULT, "%016llx: stopped IO 0x%08x\n", buf, 0x12u);
   }
 
-  return v3;
+  return performStopIO;
 }
 
-- (BOOL)changeSamplingRate:(double)a3
+- (BOOL)changeSamplingRate:(double)rate
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_44C4;
   v4[3] = &unk_C5F8;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = rate;
   [(ATSACCAClockDevice *)self requestConfigurationChange:v4];
   return 1;
 }
 
-- (void)didChangeClockMasterForClock:(id)a3
+- (void)didChangeClockMasterForClock:(id)clock
 {
-  v4 = a3;
+  clockCopy = clock;
   timerQueue = self->_timerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_45E4;
   v7[3] = &unk_C588;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clockCopy;
+  v6 = clockCopy;
   dispatch_async(timerQueue, v7);
 }
 
-- (void)didChangeLockStateTo:(int)a3 forClock:(id)a4
+- (void)didChangeLockStateTo:(int)to forClock:(id)clock
 {
-  v6 = a4;
+  clockCopy = clock;
   timerQueue = self->_timerQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_481C;
   block[3] = &unk_C648;
-  v11 = a3;
+  toCopy = to;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = clockCopy;
+  v8 = clockCopy;
   dispatch_async(timerQueue, block);
 }
 
-- (void)didBeginClockGrandmasterChangeForClock:(id)a3
+- (void)didBeginClockGrandmasterChangeForClock:(id)clock
 {
-  v4 = a3;
+  clockCopy = clock;
   timerQueue = self->_timerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_4AC8;
   v7[3] = &unk_C588;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clockCopy;
+  v6 = clockCopy;
   dispatch_async(timerQueue, v7);
 }
 
-- (void)didEndClockGrandmasterChangeForClock:(id)a3
+- (void)didEndClockGrandmasterChangeForClock:(id)clock
 {
-  v4 = a3;
+  clockCopy = clock;
   timerQueue = self->_timerQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_4CF4;
   v7[3] = &unk_C588;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = clockCopy;
+  v6 = clockCopy;
   dispatch_async(timerQueue, v7);
 }
 
-- (void)initializeFirstTimestamp:(id)a3
+- (void)initializeFirstTimestamp:(id)timestamp
 {
-  v4 = a3;
+  timestampCopy = timestamp;
   v5 = mach_absolute_time();
   clock = self->_clock;
   objc_opt_class();
@@ -429,7 +429,7 @@
       v16 = v60[0];
       if (v60[0] == v59 && v58 == v57)
       {
-        v17 = v15;
+        290000000 = v15;
       }
 
       else
@@ -445,7 +445,7 @@
         v56 = v57;
         dispatch_async(v18, block);
         self->_lastMachTimestamp = [(TSClock *)self->_clock convertFromDomainToMachAbsoluteTime:self->_lastDomainTimestamp grandmasterUsed:v60 portNumber:&v58];
-        v17 = [(TSClock *)self->_clock convertFromDomainToMachAbsoluteTime:self->_lastDomainTimestamp + 290000000 grandmasterUsed:&v59 portNumber:&v57];
+        290000000 = [(TSClock *)self->_clock convertFromDomainToMachAbsoluteTime:self->_lastDomainTimestamp + 290000000 grandmasterUsed:&v59 portNumber:&v57];
         v16 = v60[0];
         if (v60[0] != v59 || v58 != v57)
         {
@@ -470,7 +470,7 @@
         v20 = [(TSClock *)self->_clock convertFromDomainToMachAbsoluteTime:self->_lastDomainTimestamp + 290000000 grandmasterUsed:&v59 portNumber:&v57];
         if (v60[0] == v59 && v58 == v57)
         {
-          v17 = v20;
+          290000000 = v20;
         }
 
         else
@@ -486,7 +486,7 @@
           v50 = v57;
           dispatch_async(v21, v48);
           self->_lastMachTimestamp = [(TSClock *)self->_clock convertFromDomainToMachAbsoluteTime:self->_lastDomainTimestamp grandmasterUsed:v60 portNumber:&v58];
-          v17 = [(TSClock *)self->_clock convertFromDomainToMachAbsoluteTime:self->_lastDomainTimestamp + 290000000 grandmasterUsed:&v59 portNumber:&v57];
+          290000000 = [(TSClock *)self->_clock convertFromDomainToMachAbsoluteTime:self->_lastDomainTimestamp + 290000000 grandmasterUsed:&v59 portNumber:&v57];
           if (v60[0] != v59 || v58 != v57)
           {
             v22 = self->_loggingQueue;
@@ -509,7 +509,7 @@
     else
     {
       self->_lastMachTimestamp = [(TSClock *)self->_clock convertFromDomainToMachAbsoluteTime:self->_lastDomainTimestamp];
-      v17 = [(TSClock *)self->_clock convertFromDomainToMachAbsoluteTime:self->_lastDomainTimestamp + 290000000];
+      290000000 = [(TSClock *)self->_clock convertFromDomainToMachAbsoluteTime:self->_lastDomainTimestamp + 290000000];
     }
 
     self->_lastSampleTime = 0;
@@ -554,8 +554,8 @@
     v39 = +[TSClockManager sharedClockManager];
     self->_lastMachInterval = [v39 machAbsoluteNanosecondsToTicks:260000000];
 
-    self->_dispatchTime = v17;
-    dispatch_source_set_timer(v4, v17, 0xFFFFFFFFFFFFFFFFLL, 0);
+    self->_dispatchTime = 290000000;
+    dispatch_source_set_timer(timestampCopy, 290000000, 0xFFFFFFFFFFFFFFFFLL, 0);
     startSemaphore = self->_startSemaphore;
     if (startSemaphore)
     {

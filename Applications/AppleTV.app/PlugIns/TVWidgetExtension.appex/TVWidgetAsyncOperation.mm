@@ -21,7 +21,7 @@
 
 - (BOOL)isExecuting
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100017C78();
 
   return v3 & 1;
@@ -29,7 +29,7 @@
 
 - (BOOL)isFinished
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_100017D94();
 
   return v3 & 1;
@@ -37,7 +37,7 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_100017F48();
 }
 

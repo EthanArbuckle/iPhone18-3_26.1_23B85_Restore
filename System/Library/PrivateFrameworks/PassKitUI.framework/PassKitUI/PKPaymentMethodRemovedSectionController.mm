@@ -1,27 +1,27 @@
 @interface PKPaymentMethodRemovedSectionController
-- (PKPaymentMethodRemovedSectionController)initWithPaymentMethodName:(id)a3 paymentMethodIdentifier:(id)a4;
-- (id)cellRegistrationForItem:(id)a3;
+- (PKPaymentMethodRemovedSectionController)initWithPaymentMethodName:(id)name paymentMethodIdentifier:(id)identifier;
+- (id)cellRegistrationForItem:(id)item;
 - (id)identifiers;
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4;
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier;
 @end
 
 @implementation PKPaymentMethodRemovedSectionController
 
-- (PKPaymentMethodRemovedSectionController)initWithPaymentMethodName:(id)a3 paymentMethodIdentifier:(id)a4
+- (PKPaymentMethodRemovedSectionController)initWithPaymentMethodName:(id)name paymentMethodIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = PKPaymentMethodRemovedSectionController;
   v9 = [(PKPaymentMethodRemovedSectionController *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_removedPaymentMethodName, a3);
-    objc_storeStrong(&v10->_removedPaymentMethodIdentifier, a4);
+    objc_storeStrong(&v9->_removedPaymentMethodName, name);
+    objc_storeStrong(&v10->_removedPaymentMethodIdentifier, identifier);
     v11 = PKLocalizedPaymentString(&cfstr_PassDetailsAut_3.isa);
-    v12 = [v11 pk_uppercaseStringForPreferredLocale];
-    [(PKDynamicListSectionController *)v10 setHeaderText:v12];
+    pk_uppercaseStringForPreferredLocale = [v11 pk_uppercaseStringForPreferredLocale];
+    [(PKDynamicListSectionController *)v10 setHeaderText:pk_uppercaseStringForPreferredLocale];
   }
 
   return v10;
@@ -36,7 +36,7 @@
   return v2;
 }
 
-- (id)snapshotWithPreviousSnapshot:(id)a3 forSectionIdentifier:(id)a4
+- (id)snapshotWithPreviousSnapshot:(id)snapshot forSectionIdentifier:(id)identifier
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
@@ -52,7 +52,7 @@
   return v5;
 }
 
-- (id)cellRegistrationForItem:(id)a3
+- (id)cellRegistrationForItem:(id)item
 {
   v3 = MEMORY[0x1E69DC800];
   v4 = objc_opt_class();

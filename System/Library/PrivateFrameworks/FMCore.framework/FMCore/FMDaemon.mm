@@ -1,9 +1,9 @@
 @interface FMDaemon
-- (id)verifyLaunchEventsConfiguration:(id)a3 withExclusions:(id)a4;
+- (id)verifyLaunchEventsConfiguration:(id)configuration withExclusions:(id)exclusions;
 - (void)initialize;
 - (void)registerXPCEventHandlers;
 - (void)run;
-- (void)startupWithCompletion:(id)a3;
+- (void)startupWithCompletion:(id)completion;
 @end
 
 @implementation FMDaemon
@@ -16,8 +16,8 @@
   v3[3] = &unk_278FD9780;
   v3[4] = self;
   [(FMDaemon *)self startupWithCompletion:v3];
-  v2 = [MEMORY[0x277CBEB88] mainRunLoop];
-  [v2 run];
+  mainRunLoop = [MEMORY[0x277CBEB88] mainRunLoop];
+  [mainRunLoop run];
 }
 
 - (void)initialize
@@ -30,43 +30,43 @@
   [(FMDaemon *)self startupWithCompletion:v2];
 }
 
-- (void)startupWithCompletion:(id)a3
+- (void)startupWithCompletion:(id)completion
 {
-  v5 = a3;
+  completionCopy = completion;
   [(FMDaemon *)self startup];
-  v4 = v5;
-  if (v5)
+  v4 = completionCopy;
+  if (completionCopy)
   {
-    (*(v5 + 2))(v5);
-    v4 = v5;
+    (*(completionCopy + 2))(completionCopy);
+    v4 = completionCopy;
   }
 }
 
 - (void)registerXPCEventHandlers
 {
-  v4 = [(FMDaemon *)self xpcDarwinEventHandlers];
-  if (v4)
+  xpcDarwinEventHandlers = [(FMDaemon *)self xpcDarwinEventHandlers];
+  if (xpcDarwinEventHandlers)
   {
-    [FMXPCNotificationsUtil handleDarwinNotificationsWithHandlers:v4];
+    [FMXPCNotificationsUtil handleDarwinNotificationsWithHandlers:xpcDarwinEventHandlers];
   }
 
-  v3 = [(FMDaemon *)self xpcDistributedEventHandlers];
-  if (v3)
+  xpcDistributedEventHandlers = [(FMDaemon *)self xpcDistributedEventHandlers];
+  if (xpcDistributedEventHandlers)
   {
-    [FMXPCNotificationsUtil handleDistributedNotificationsWithHandlers:v3];
+    [FMXPCNotificationsUtil handleDistributedNotificationsWithHandlers:xpcDistributedEventHandlers];
   }
 }
 
-- (id)verifyLaunchEventsConfiguration:(id)a3 withExclusions:(id)a4
+- (id)verifyLaunchEventsConfiguration:(id)configuration withExclusions:(id)exclusions
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB98] setWithArray:a4];
-  v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:v6];
+  configurationCopy = configuration;
+  v7 = [MEMORY[0x277CBEB98] setWithArray:exclusions];
+  v8 = [MEMORY[0x277CBEAC0] dictionaryWithContentsOfFile:configurationCopy];
   v9 = v8;
   if (v8)
   {
-    v51 = self;
+    selfCopy = self;
     v53 = v8;
     v54 = v7;
     v10 = [v8 objectForKeyedSubscript:@"LaunchEvents"];
@@ -100,7 +100,7 @@
           if (![v18 isEqualToString:v20])
           {
             v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"Darwin event key %@ does not match with its notification name %@", v18, v20];
-            v21 = v13;
+            xpcDarwinEventHandlers = v13;
             v9 = v53;
             v7 = v54;
             goto LABEL_37;
@@ -119,7 +119,7 @@
 
     v7 = v54;
     [v12 minusSet:v54];
-    v21 = [(FMDaemon *)v51 xpcDarwinEventHandlers];
+    xpcDarwinEventHandlers = [(FMDaemon *)selfCopy xpcDarwinEventHandlers];
     v22 = [MEMORY[0x277CBEB58] set];
     v62[0] = MEMORY[0x277D85DD0];
     v62[1] = 3221225472;
@@ -127,14 +127,14 @@
     v62[3] = &unk_278FD97A8;
     v20 = v22;
     v63 = v20;
-    [v21 enumerateKeysAndObjectsUsingBlock:v62];
+    [xpcDarwinEventHandlers enumerateKeysAndObjectsUsingBlock:v62];
     [v20 minusSet:v54];
-    v23 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v24 = [v12 mutableCopy];
     [v24 minusSet:v20];
     if ([v24 count])
     {
-      [v23 appendFormat:@"launchd plist has these darwin notifications that don't have a handler defined in code: %@\n", v24];
+      [string appendFormat:@"launchd plist has these darwin notifications that don't have a handler defined in code: %@\n", v24];
     }
 
     v25 = [v20 mutableCopy];
@@ -142,21 +142,21 @@
     v9 = v53;
     if ([v25 count])
     {
-      [v23 appendFormat:@"launchd plist does not have these darwin notifications but, they have a handler defined in code: %@\n", v25];
+      [string appendFormat:@"launchd plist does not have these darwin notifications but, they have a handler defined in code: %@\n", v25];
     }
 
     v50 = v25;
-    if ([v23 length])
+    if ([string length])
     {
-      v26 = v23;
+      v26 = string;
     }
 
     else
     {
       v46 = v24;
-      v47 = v23;
-      v48 = v21;
-      v49 = v6;
+      v47 = string;
+      v48 = xpcDarwinEventHandlers;
+      v49 = configurationCopy;
       v27 = [v53 objectForKeyedSubscript:@"LaunchEvents"];
       v28 = [v27 objectForKeyedSubscript:@"com.apple.distnoted.matching"];
 
@@ -207,7 +207,7 @@
 
       v7 = v54;
       [v55 minusSet:v54];
-      v37 = [(FMDaemon *)v51 xpcDistributedEventHandlers];
+      xpcDistributedEventHandlers = [(FMDaemon *)selfCopy xpcDistributedEventHandlers];
       v38 = [MEMORY[0x277CBEB58] set];
       v56[0] = MEMORY[0x277D85DD0];
       v56[1] = 3221225472;
@@ -215,15 +215,15 @@
       v56[3] = &unk_278FD97A8;
       v36 = v38;
       v57 = v36;
-      v52 = v37;
-      [v37 enumerateKeysAndObjectsUsingBlock:v56];
+      v52 = xpcDistributedEventHandlers;
+      [xpcDistributedEventHandlers enumerateKeysAndObjectsUsingBlock:v56];
       [v36 minusSet:v54];
-      v39 = [MEMORY[0x277CCAB68] string];
+      string2 = [MEMORY[0x277CCAB68] string];
       v40 = [v55 mutableCopy];
       [v40 minusSet:v36];
       if ([v40 count])
       {
-        [v39 appendFormat:@"launchd plist has these distributed notifications that don't have a handler defined in code: %@\n", v40];
+        [string2 appendFormat:@"launchd plist has these distributed notifications that don't have a handler defined in code: %@\n", v40];
       }
 
       v45 = v40;
@@ -231,13 +231,13 @@
       [v41 minusSet:v55];
       if ([v41 count])
       {
-        [v39 appendFormat:@"launchd plist does not have these distributed notifications but, they have a handler defined in code: %@\n", v41];
+        [string2 appendFormat:@"launchd plist does not have these distributed notifications but, they have a handler defined in code: %@\n", v41];
       }
 
       v24 = v46;
-      if ([v39 length])
+      if ([string2 length])
       {
-        v26 = v39;
+        v26 = string2;
       }
 
       else
@@ -248,10 +248,10 @@
       v42 = v52;
 LABEL_35:
 
-      v21 = v48;
-      v6 = v49;
+      xpcDarwinEventHandlers = v48;
+      configurationCopy = v49;
       v9 = v53;
-      v23 = v47;
+      string = v47;
     }
 
 LABEL_37:

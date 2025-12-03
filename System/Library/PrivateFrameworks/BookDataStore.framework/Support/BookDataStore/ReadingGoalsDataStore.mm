@@ -1,10 +1,10 @@
 @interface ReadingGoalsDataStore
-- (void)handleCloudChangeNotification:(id)a3;
+- (void)handleCloudChangeNotification:(id)notification;
 @end
 
 @implementation ReadingGoalsDataStore
 
-- (void)handleCloudChangeNotification:(id)a3
+- (void)handleCloudChangeNotification:(id)notification
 {
   v3 = sub_1001C4868();
   v4 = *(v3 - 8);

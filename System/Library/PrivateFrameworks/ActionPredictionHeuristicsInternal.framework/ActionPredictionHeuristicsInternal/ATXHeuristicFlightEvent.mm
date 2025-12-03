@@ -1,5 +1,5 @@
 @interface ATXHeuristicFlightEvent
-- (id)heuristicResultWithEnvironment:(id)a3;
+- (id)heuristicResultWithEnvironment:(id)environment;
 - (id)permanentRefreshTriggers;
 @end
 
@@ -20,47 +20,47 @@
   return v9;
 }
 
-- (id)heuristicResultWithEnvironment:(id)a3
+- (id)heuristicResultWithEnvironment:(id)environment
 {
-  v3 = a3;
+  environmentCopy = environment;
   v4 = objc_opt_new();
   v5 = objc_opt_new();
   v6 = objc_autoreleasePoolPush();
-  v7 = [v3 heuristicDevice];
-  v8 = [ATXHeuristicUpcomingFlightEventUtilities suggestionsForFlightsWithHeuristicDevice:v7];
+  heuristicDevice = [environmentCopy heuristicDevice];
+  v8 = [ATXHeuristicUpcomingFlightEventUtilities suggestionsForFlightsWithHeuristicDevice:heuristicDevice];
 
   objc_autoreleasePoolPop(v6);
-  v9 = [v8 suggestions];
-  [v4 addObjectsFromArray:v9];
+  suggestions = [v8 suggestions];
+  [v4 addObjectsFromArray:suggestions];
 
-  v10 = [v8 additionalRefreshTriggers];
-  [v5 unionSet:v10];
+  additionalRefreshTriggers = [v8 additionalRefreshTriggers];
+  [v5 unionSet:additionalRefreshTriggers];
 
   v11 = objc_autoreleasePoolPush();
-  v12 = [v3 heuristicDevice];
-  v13 = [ATXHeuristicOngoingFlightEventUtilities suggestionsForFlightsWithHeuristicDevice:v12];
+  heuristicDevice2 = [environmentCopy heuristicDevice];
+  v13 = [ATXHeuristicOngoingFlightEventUtilities suggestionsForFlightsWithHeuristicDevice:heuristicDevice2];
 
   objc_autoreleasePoolPop(v11);
-  v14 = [v13 suggestions];
-  [v4 addObjectsFromArray:v14];
+  suggestions2 = [v13 suggestions];
+  [v4 addObjectsFromArray:suggestions2];
 
-  v15 = [v13 additionalRefreshTriggers];
-  [v5 unionSet:v15];
+  additionalRefreshTriggers2 = [v13 additionalRefreshTriggers];
+  [v5 unionSet:additionalRefreshTriggers2];
 
   v16 = objc_autoreleasePoolPush();
-  v17 = [v3 heuristicDevice];
-  v18 = [ATXHeuristicConcludedFlightEventUtilities suggestionsForFlightsWithHeuristicDevice:v17];
+  heuristicDevice3 = [environmentCopy heuristicDevice];
+  v18 = [ATXHeuristicConcludedFlightEventUtilities suggestionsForFlightsWithHeuristicDevice:heuristicDevice3];
 
   objc_autoreleasePoolPop(v16);
-  v19 = [v18 suggestions];
-  [v4 addObjectsFromArray:v19];
+  suggestions3 = [v18 suggestions];
+  [v4 addObjectsFromArray:suggestions3];
 
-  v20 = [v18 additionalRefreshTriggers];
-  [v5 unionSet:v20];
+  additionalRefreshTriggers3 = [v18 additionalRefreshTriggers];
+  [v5 unionSet:additionalRefreshTriggers3];
 
   v21 = [ATXInformationHeuristicRefreshTimeTrigger alloc];
-  v22 = [v3 heuristicDevice];
-  v23 = [v22 now];
+  heuristicDevice4 = [environmentCopy heuristicDevice];
+  v23 = [heuristicDevice4 now];
   v24 = [v23 dateByAddingTimeInterval:7200.0];
   v25 = [(ATXInformationHeuristicRefreshTimeTrigger *)v21 initWithFireDate:v24];
 

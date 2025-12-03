@@ -1,13 +1,13 @@
 @interface TSDFPSCounter
 - (TSDFPSCounter)init;
-- (double)p_standardDeviationFromArray:(id)a3 mean:(double)a4;
-- (id)formatInfoForLog:(id)a3 identifier:(id)a4 type:(id)a5 testName:(id)a6 direction:(id)a7 duration:(double)a8 slide:(int64_t)a9;
+- (double)p_standardDeviationFromArray:(id)array mean:(double)mean;
+- (id)formatInfoForLog:(id)log identifier:(id)identifier type:(id)type testName:(id)name direction:(id)direction duration:(double)duration slide:(int64_t)slide;
 - (id)p_fpsInfo;
-- (id)p_fpsSummaryStringIncludingGraph:(BOOL)a3;
-- (id)p_modeFromArray:(id)a3;
+- (id)p_fpsSummaryStringIncludingGraph:(BOOL)graph;
+- (id)p_modeFromArray:(id)array;
 - (void)addFrame;
-- (void)addFrameAtDrawTime:(double)a3 duration:(double)a4;
-- (void)addSample:(id)a3;
+- (void)addFrameAtDrawTime:(double)time duration:(double)duration;
+- (void)addSample:(id)sample;
 - (void)reset;
 @end
 
@@ -42,15 +42,15 @@
   MEMORY[0x2821F9670](self, sel_addFrameAtDrawTime_duration_, v4);
 }
 
-- (void)addFrameAtDrawTime:(double)a3 duration:(double)a4
+- (void)addFrameAtDrawTime:(double)time duration:(double)duration
 {
-  v7 = objc_msgSend_sampleWithTime_duration_(TSDFPSCounterSample, a2, v4, a3, a4);
+  v7 = objc_msgSend_sampleWithTime_duration_(TSDFPSCounterSample, a2, v4, time, duration);
   objc_msgSend_addSample_(self, v6, v7);
 }
 
-- (void)addSample:(id)a3
+- (void)addSample:(id)sample
 {
-  v9 = a3;
+  sampleCopy = sample;
   if (self->_startTimeInterval == 0.0)
   {
     objc_msgSend_timeIntervalSinceReferenceDate(MEMORY[0x277CBEAA8], v4, v5);
@@ -59,12 +59,12 @@
 
   objc_msgSend_timeIntervalSinceReferenceDate(MEMORY[0x277CBEAA8], v4, v5);
   self->_endTimeInterval = v7;
-  objc_msgSend_addObject_(self->_sampleArray, v8, v9);
+  objc_msgSend_addObject_(self->_sampleArray, v8, sampleCopy);
 }
 
-- (id)p_fpsSummaryStringIncludingGraph:(BOOL)a3
+- (id)p_fpsSummaryStringIncludingGraph:(BOOL)graph
 {
-  v3 = a3;
+  graphCopy = graph;
   v116 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc(MEMORY[0x277CCAB68]);
   v7 = objc_msgSend_initWithString_(v5, v6, &stru_28857D120);
@@ -77,7 +77,7 @@
       goto LABEL_52;
     }
 
-    if (v3)
+    if (graphCopy)
     {
       objc_msgSend_appendString_(v7, v15, @"\n===== FPS LOGGING BEGIN =====\n");
     }
@@ -164,7 +164,7 @@
               v33 = v33 + v56;
             }
 
-            if (v3)
+            if (graphCopy)
             {
               v107 = v34;
               v108 = v35;
@@ -172,7 +172,7 @@
               v58 = v31;
               v59 = v33;
               v60 = v23;
-              v61 = v3;
+              v61 = graphCopy;
               if (v44 / 120.0 <= 1.0)
               {
                 v62 = v44 / 120.0;
@@ -235,7 +235,7 @@ LABEL_35:
                   v31 = v58;
                   objc_msgSend_appendFormat_(v7, v76, @"%@%@\n", v73, v86);
 
-                  v3 = v61;
+                  graphCopy = v61;
                   v23 = v60;
                   v34 = v107;
                   v35 = v108;
@@ -284,7 +284,7 @@ LABEL_35:
       objc_msgSend_appendFormat_(v7, v103, @"\nDuration(min/avg/max): %0.0f/%0.0f/%0.0fms (%d frames)", *&v88, *&v99, *&v89, (v102 - 1));
     }
 
-    if (v3)
+    if (graphCopy)
     {
       objc_msgSend_appendString_(v7, v97, @"\n=============================");
     }
@@ -300,35 +300,35 @@ LABEL_52:
   return v7;
 }
 
-- (id)formatInfoForLog:(id)a3 identifier:(id)a4 type:(id)a5 testName:(id)a6 direction:(id)a7 duration:(double)a8 slide:(int64_t)a9
+- (id)formatInfoForLog:(id)log identifier:(id)identifier type:(id)type testName:(id)name direction:(id)direction duration:(double)duration slide:(int64_t)slide
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  logCopy = log;
+  identifierCopy = identifier;
+  typeCopy = type;
+  nameCopy = name;
+  directionCopy = direction;
   v23 = objc_msgSend_p_fpsInfo(self, v21, v22);
   v26 = v23;
   v27 = 0;
-  if (v19)
+  if (nameCopy)
   {
     if (v23)
     {
       v27 = objc_msgSend_mutableCopy(v23, v24, v25);
       objc_msgSend_removeObjectForKey_(v27, v28, @"array");
-      objc_msgSend_setObject_forKeyedSubscript_(v27, v29, v16, @"name");
-      objc_msgSend_setObject_forKeyedSubscript_(v27, v30, v18, @"type");
-      v32 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v31, a9);
+      objc_msgSend_setObject_forKeyedSubscript_(v27, v29, logCopy, @"name");
+      objc_msgSend_setObject_forKeyedSubscript_(v27, v30, typeCopy, @"type");
+      v32 = objc_msgSend_numberWithInteger_(MEMORY[0x277CCABB0], v31, slide);
       objc_msgSend_setObject_forKeyedSubscript_(v27, v33, v32, @"slide");
 
-      v36 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v34, v35, a8);
+      v36 = objc_msgSend_numberWithDouble_(MEMORY[0x277CCABB0], v34, v35, duration);
       objc_msgSend_setObject_forKeyedSubscript_(v27, v37, v36, @"duration");
 
-      objc_msgSend_setObject_forKeyedSubscript_(v27, v38, v17, @"identifier");
-      objc_msgSend_setObject_forKeyedSubscript_(v27, v39, v19, @"testName");
-      if (v20)
+      objc_msgSend_setObject_forKeyedSubscript_(v27, v38, identifierCopy, @"identifier");
+      objc_msgSend_setObject_forKeyedSubscript_(v27, v39, nameCopy, @"testName");
+      if (directionCopy)
       {
-        objc_msgSend_setObject_forKeyedSubscript_(v27, v40, v20, @"direction");
+        objc_msgSend_setObject_forKeyedSubscript_(v27, v40, directionCopy, @"direction");
       }
     }
   }
@@ -336,11 +336,11 @@ LABEL_52:
   return v27;
 }
 
-- (id)p_modeFromArray:(id)a3
+- (id)p_modeFromArray:(id)array
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v5 = objc_msgSend_setWithArray_(MEMORY[0x277CCA940], v4, v3);
+  arrayCopy = array;
+  v5 = objc_msgSend_setWithArray_(MEMORY[0x277CCA940], v4, arrayCopy);
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -387,15 +387,15 @@ LABEL_52:
   return v10;
 }
 
-- (double)p_standardDeviationFromArray:(id)a3 mean:(double)a4
+- (double)p_standardDeviationFromArray:(id)array mean:(double)mean
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  arrayCopy = array;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v6, &v17, v21, 16);
+  v7 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v6, &v17, v21, 16);
   if (v7)
   {
     v10 = v7;
@@ -407,14 +407,14 @@ LABEL_52:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(arrayCopy);
         }
 
         objc_msgSend_doubleValue(*(*(&v17 + 1) + 8 * i), v8, v9);
-        v12 = v12 + (v14 - a4) * (v14 - a4);
+        v12 = v12 + (v14 - mean) * (v14 - mean);
       }
 
-      v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(v5, v8, &v17, v21, 16);
+      v10 = objc_msgSend_countByEnumeratingWithState_objects_count_(arrayCopy, v8, &v17, v21, 16);
     }
 
     while (v10);
@@ -425,7 +425,7 @@ LABEL_52:
     v12 = 0.0;
   }
 
-  v15 = objc_msgSend_count(v5, v8, v9);
+  v15 = objc_msgSend_count(arrayCopy, v8, v9);
 
   return sqrt(v12 / (v15 - 1));
 }

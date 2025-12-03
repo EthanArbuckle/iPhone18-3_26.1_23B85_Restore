@@ -1,35 +1,35 @@
 @interface REMTemplateStorage
 + (id)newObjectID;
-+ (id)objectIDWithUUID:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)objectIDWithUUID:(id)d;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isUnsupported;
 - (REMResolutionTokenMap)resolutionTokenMap;
-- (REMTemplateStorage)initWithCoder:(id)a3;
-- (REMTemplateStorage)initWithObjectID:(id)a3 accountID:(id)a4 name:(id)a5;
+- (REMTemplateStorage)initWithCoder:(id)coder;
+- (REMTemplateStorage)initWithObjectID:(id)d accountID:(id)iD name:(id)name;
 - (id)cdKeyToStorageKeyMap;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)resolutionTokenMap;
-- (void)setStoreGenerationIfNeeded:(unint64_t)a3;
+- (void)setStoreGenerationIfNeeded:(unint64_t)needed;
 @end
 
 @implementation REMTemplateStorage
 
-- (REMTemplateStorage)initWithObjectID:(id)a3 accountID:(id)a4 name:(id)a5
+- (REMTemplateStorage)initWithObjectID:(id)d accountID:(id)iD name:(id)name
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  nameCopy = name;
   v32.receiver = self;
   v32.super_class = REMTemplateStorage;
   v12 = [(REMTemplateStorage *)&v32 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_objectID, a3);
-    objc_storeStrong(&v13->_accountID, a4);
+    objc_storeStrong(&v12->_objectID, d);
+    objc_storeStrong(&v13->_accountID, iD);
     parentAccountID = v13->_parentAccountID;
     v13->_parentAccountID = 0;
 
@@ -40,7 +40,7 @@
     configuration = v13->_configuration;
     v13->_configuration = 0;
 
-    objc_storeStrong(&v13->_name, a5);
+    objc_storeStrong(&v13->_name, name);
     color = v13->_color;
     v13->_color = 0;
 
@@ -73,9 +73,9 @@
     resolutionTokenMap = v13->_resolutionTokenMap;
     v13->_resolutionTokenMap = v27;
 
-    v29 = [MEMORY[0x1E695DEF0] data];
+    data = [MEMORY[0x1E695DEF0] data];
     resolutionTokenMapData = v13->_resolutionTokenMapData;
-    v13->_resolutionTokenMapData = v29;
+    v13->_resolutionTokenMapData = data;
 
     v13->_storeGeneration = 0;
     v13->_copyGeneration = 0;
@@ -86,8 +86,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(REMTemplateStorage *)self objectID];
-  v3 = [v2 hash];
+  objectID = [(REMTemplateStorage *)self objectID];
+  v3 = [objectID hash];
 
   return v3;
 }
@@ -96,33 +96,33 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMTemplateStorage *)self objectID];
-  v6 = [v3 stringWithFormat:@"<%@: %p objectID: %@", v4, self, v5];
+  objectID = [(REMTemplateStorage *)self objectID];
+  v6 = [v3 stringWithFormat:@"<%@: %p objectID: %@", v4, self, objectID];
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v122 = *MEMORY[0x1E69E9840];
-  if (a3 != self)
+  if (equal != self)
   {
-    v4 = a3;
+    equalCopy = equal;
     v5 = objc_opt_class();
-    v6 = REMDynamicCast(v5, v4);
+    v6 = REMDynamicCast(v5, equalCopy);
 
-    v7 = [(REMTemplateStorage *)self objectID];
-    v8 = [v6 objectID];
-    v9 = v8;
-    if (v7 == v8)
+    objectID = [(REMTemplateStorage *)self objectID];
+    objectID2 = [v6 objectID];
+    v9 = objectID2;
+    if (objectID == objectID2)
     {
     }
 
     else
     {
-      v10 = [(REMTemplateStorage *)self objectID];
-      v11 = [v6 objectID];
-      v12 = [v10 isEqual:v11];
+      objectID3 = [(REMTemplateStorage *)self objectID];
+      objectID4 = [v6 objectID];
+      v12 = [objectID3 isEqual:objectID4];
 
       if (!v12)
       {
@@ -130,18 +130,18 @@
       }
     }
 
-    v14 = [(REMTemplateStorage *)self accountID];
-    v15 = [v6 accountID];
-    v16 = v15;
-    if (v14 == v15)
+    accountID = [(REMTemplateStorage *)self accountID];
+    accountID2 = [v6 accountID];
+    v16 = accountID2;
+    if (accountID == accountID2)
     {
     }
 
     else
     {
-      v17 = [(REMTemplateStorage *)self accountID];
-      v18 = [v6 accountID];
-      v19 = [v17 isEqual:v18];
+      accountID3 = [(REMTemplateStorage *)self accountID];
+      accountID4 = [v6 accountID];
+      v19 = [accountID3 isEqual:accountID4];
 
       if (!v19)
       {
@@ -149,18 +149,18 @@
       }
     }
 
-    v20 = [(REMTemplateStorage *)self parentAccountID];
-    v21 = [v6 parentAccountID];
-    v22 = v21;
-    if (v20 == v21)
+    parentAccountID = [(REMTemplateStorage *)self parentAccountID];
+    parentAccountID2 = [v6 parentAccountID];
+    v22 = parentAccountID2;
+    if (parentAccountID == parentAccountID2)
     {
     }
 
     else
     {
-      v23 = [(REMTemplateStorage *)self parentAccountID];
-      v24 = [v6 parentAccountID];
-      v25 = [v23 isEqual:v24];
+      parentAccountID3 = [(REMTemplateStorage *)self parentAccountID];
+      parentAccountID4 = [v6 parentAccountID];
+      v25 = [parentAccountID3 isEqual:parentAccountID4];
 
       if (!v25)
       {
@@ -168,18 +168,18 @@
       }
     }
 
-    v26 = [(REMTemplateStorage *)self configuration];
-    v27 = [v6 configuration];
-    v28 = v27;
-    if (v26 == v27)
+    configuration = [(REMTemplateStorage *)self configuration];
+    configuration2 = [v6 configuration];
+    v28 = configuration2;
+    if (configuration == configuration2)
     {
     }
 
     else
     {
-      v29 = [(REMTemplateStorage *)self configuration];
-      v30 = [v6 configuration];
-      v31 = [v29 isEqual:v30];
+      configuration3 = [(REMTemplateStorage *)self configuration];
+      configuration4 = [v6 configuration];
+      v31 = [configuration3 isEqual:configuration4];
 
       if (!v31)
       {
@@ -187,18 +187,18 @@
       }
     }
 
-    v32 = [(REMTemplateStorage *)self name];
-    v33 = [v6 name];
-    v34 = v33;
-    if (v32 == v33)
+    name = [(REMTemplateStorage *)self name];
+    name2 = [v6 name];
+    v34 = name2;
+    if (name == name2)
     {
     }
 
     else
     {
-      v35 = [(REMTemplateStorage *)self name];
-      v36 = [v6 name];
-      v37 = [v35 isEqual:v36];
+      name3 = [(REMTemplateStorage *)self name];
+      name4 = [v6 name];
+      v37 = [name3 isEqual:name4];
 
       if (!v37)
       {
@@ -206,18 +206,18 @@
       }
     }
 
-    v38 = [(REMTemplateStorage *)self color];
-    v39 = [v6 color];
-    v40 = v39;
-    if (v38 == v39)
+    color = [(REMTemplateStorage *)self color];
+    color2 = [v6 color];
+    v40 = color2;
+    if (color == color2)
     {
     }
 
     else
     {
-      v41 = [(REMTemplateStorage *)self color];
-      v42 = [v6 color];
-      v43 = [v41 isEqual:v42];
+      color3 = [(REMTemplateStorage *)self color];
+      color4 = [v6 color];
+      v43 = [color3 isEqual:color4];
 
       if (!v43)
       {
@@ -225,18 +225,18 @@
       }
     }
 
-    v44 = [(REMTemplateStorage *)self badgeEmblem];
-    v45 = [v6 badgeEmblem];
-    v46 = v45;
-    if (v44 == v45)
+    badgeEmblem = [(REMTemplateStorage *)self badgeEmblem];
+    badgeEmblem2 = [v6 badgeEmblem];
+    v46 = badgeEmblem2;
+    if (badgeEmblem == badgeEmblem2)
     {
     }
 
     else
     {
-      v47 = [(REMTemplateStorage *)self badgeEmblem];
-      v48 = [v6 badgeEmblem];
-      v49 = [v47 isEqual:v48];
+      badgeEmblem3 = [(REMTemplateStorage *)self badgeEmblem];
+      badgeEmblem4 = [v6 badgeEmblem];
+      v49 = [badgeEmblem3 isEqual:badgeEmblem4];
 
       if (!v49)
       {
@@ -244,21 +244,21 @@
       }
     }
 
-    v50 = [(REMTemplateStorage *)self showingLargeAttachments];
-    if (v50 == [v6 showingLargeAttachments])
+    showingLargeAttachments = [(REMTemplateStorage *)self showingLargeAttachments];
+    if (showingLargeAttachments == [v6 showingLargeAttachments])
     {
-      v51 = [(REMTemplateStorage *)self sortingStyle];
-      v52 = [v6 sortingStyle];
-      v53 = v52;
-      if (v51 == v52)
+      sortingStyle = [(REMTemplateStorage *)self sortingStyle];
+      sortingStyle2 = [v6 sortingStyle];
+      v53 = sortingStyle2;
+      if (sortingStyle == sortingStyle2)
       {
       }
 
       else
       {
-        v54 = [(REMTemplateStorage *)self sortingStyle];
-        v55 = [v6 sortingStyle];
-        v56 = [v54 isEqual:v55];
+        sortingStyle3 = [(REMTemplateStorage *)self sortingStyle];
+        sortingStyle4 = [v6 sortingStyle];
+        v56 = [sortingStyle3 isEqual:sortingStyle4];
 
         if (!v56)
         {
@@ -266,18 +266,18 @@
         }
       }
 
-      v57 = [(REMTemplateStorage *)self unsavedManualOrdering];
-      v58 = [v6 unsavedManualOrdering];
-      v59 = v58;
-      if (v57 == v58)
+      unsavedManualOrdering = [(REMTemplateStorage *)self unsavedManualOrdering];
+      unsavedManualOrdering2 = [v6 unsavedManualOrdering];
+      v59 = unsavedManualOrdering2;
+      if (unsavedManualOrdering == unsavedManualOrdering2)
       {
       }
 
       else
       {
-        v60 = [(REMTemplateStorage *)self unsavedManualOrdering];
-        v61 = [v6 unsavedManualOrdering];
-        v62 = [v60 isEqual:v61];
+        unsavedManualOrdering3 = [(REMTemplateStorage *)self unsavedManualOrdering];
+        unsavedManualOrdering4 = [v6 unsavedManualOrdering];
+        v62 = [unsavedManualOrdering3 isEqual:unsavedManualOrdering4];
 
         if (!v62)
         {
@@ -285,21 +285,21 @@
         }
       }
 
-      v63 = [(REMTemplateStorage *)self shouldUpdateSectionsOrdering];
-      if (v63 == [v6 shouldUpdateSectionsOrdering])
+      shouldUpdateSectionsOrdering = [(REMTemplateStorage *)self shouldUpdateSectionsOrdering];
+      if (shouldUpdateSectionsOrdering == [v6 shouldUpdateSectionsOrdering])
       {
-        v64 = [(REMTemplateStorage *)self unsavedSectionIDsOrdering];
-        v65 = [v6 unsavedSectionIDsOrdering];
-        v66 = v65;
-        if (v64 == v65)
+        unsavedSectionIDsOrdering = [(REMTemplateStorage *)self unsavedSectionIDsOrdering];
+        unsavedSectionIDsOrdering2 = [v6 unsavedSectionIDsOrdering];
+        v66 = unsavedSectionIDsOrdering2;
+        if (unsavedSectionIDsOrdering == unsavedSectionIDsOrdering2)
         {
         }
 
         else
         {
-          v67 = [(REMTemplateStorage *)self unsavedSectionIDsOrdering];
-          v68 = [v6 unsavedSectionIDsOrdering];
-          v69 = [v67 isEqual:v68];
+          unsavedSectionIDsOrdering3 = [(REMTemplateStorage *)self unsavedSectionIDsOrdering];
+          unsavedSectionIDsOrdering4 = [v6 unsavedSectionIDsOrdering];
+          v69 = [unsavedSectionIDsOrdering3 isEqual:unsavedSectionIDsOrdering4];
 
           if (!v69)
           {
@@ -307,18 +307,18 @@
           }
         }
 
-        v70 = [(REMTemplateStorage *)self unsavedMembershipsOfRemindersInSections];
-        v71 = [v6 unsavedMembershipsOfRemindersInSections];
-        v72 = v71;
-        if (v70 == v71)
+        unsavedMembershipsOfRemindersInSections = [(REMTemplateStorage *)self unsavedMembershipsOfRemindersInSections];
+        unsavedMembershipsOfRemindersInSections2 = [v6 unsavedMembershipsOfRemindersInSections];
+        v72 = unsavedMembershipsOfRemindersInSections2;
+        if (unsavedMembershipsOfRemindersInSections == unsavedMembershipsOfRemindersInSections2)
         {
         }
 
         else
         {
-          v73 = [(REMTemplateStorage *)self unsavedMembershipsOfRemindersInSections];
-          v74 = [v6 unsavedMembershipsOfRemindersInSections];
-          v75 = [v73 isEqual:v74];
+          unsavedMembershipsOfRemindersInSections3 = [(REMTemplateStorage *)self unsavedMembershipsOfRemindersInSections];
+          unsavedMembershipsOfRemindersInSections4 = [v6 unsavedMembershipsOfRemindersInSections];
+          v75 = [unsavedMembershipsOfRemindersInSections3 isEqual:unsavedMembershipsOfRemindersInSections4];
 
           if (!v75)
           {
@@ -326,18 +326,18 @@
           }
         }
 
-        v76 = [(REMTemplateStorage *)self sectionIDsToUndelete];
-        v77 = [v6 sectionIDsToUndelete];
-        v78 = v77;
-        if (v76 == v77)
+        sectionIDsToUndelete = [(REMTemplateStorage *)self sectionIDsToUndelete];
+        sectionIDsToUndelete2 = [v6 sectionIDsToUndelete];
+        v78 = sectionIDsToUndelete2;
+        if (sectionIDsToUndelete == sectionIDsToUndelete2)
         {
         }
 
         else
         {
-          v79 = [(REMTemplateStorage *)self sectionIDsToUndelete];
-          v80 = [v6 sectionIDsToUndelete];
-          v81 = [v79 isEqual:v80];
+          sectionIDsToUndelete3 = [(REMTemplateStorage *)self sectionIDsToUndelete];
+          sectionIDsToUndelete4 = [v6 sectionIDsToUndelete];
+          v81 = [sectionIDsToUndelete3 isEqual:sectionIDsToUndelete4];
 
           if (!v81)
           {
@@ -345,18 +345,18 @@
           }
         }
 
-        v82 = [(REMTemplateStorage *)self mostRecentPublicLinkUpdateRequestDate];
-        v83 = [v6 mostRecentPublicLinkUpdateRequestDate];
-        v84 = v83;
-        if (v82 == v83)
+        mostRecentPublicLinkUpdateRequestDate = [(REMTemplateStorage *)self mostRecentPublicLinkUpdateRequestDate];
+        mostRecentPublicLinkUpdateRequestDate2 = [v6 mostRecentPublicLinkUpdateRequestDate];
+        v84 = mostRecentPublicLinkUpdateRequestDate2;
+        if (mostRecentPublicLinkUpdateRequestDate == mostRecentPublicLinkUpdateRequestDate2)
         {
         }
 
         else
         {
-          v85 = [(REMTemplateStorage *)self mostRecentPublicLinkUpdateRequestDate];
-          v86 = [v6 mostRecentPublicLinkUpdateRequestDate];
-          v87 = [v85 isEqual:v86];
+          mostRecentPublicLinkUpdateRequestDate3 = [(REMTemplateStorage *)self mostRecentPublicLinkUpdateRequestDate];
+          mostRecentPublicLinkUpdateRequestDate4 = [v6 mostRecentPublicLinkUpdateRequestDate];
+          v87 = [mostRecentPublicLinkUpdateRequestDate3 isEqual:mostRecentPublicLinkUpdateRequestDate4];
 
           if (!v87)
           {
@@ -364,18 +364,18 @@
           }
         }
 
-        v88 = [(REMTemplateStorage *)self publicLink];
-        v89 = [v6 publicLink];
-        v90 = v89;
-        if (v88 == v89)
+        publicLink = [(REMTemplateStorage *)self publicLink];
+        publicLink2 = [v6 publicLink];
+        v90 = publicLink2;
+        if (publicLink == publicLink2)
         {
         }
 
         else
         {
-          v91 = [(REMTemplateStorage *)self publicLink];
-          v92 = [v6 publicLink];
-          v93 = [v91 isEqual:v92];
+          publicLink3 = [(REMTemplateStorage *)self publicLink];
+          publicLink4 = [v6 publicLink];
+          v93 = [publicLink3 isEqual:publicLink4];
 
           if (!v93)
           {
@@ -383,21 +383,21 @@
           }
         }
 
-        v94 = [(REMTemplateStorage *)self isPersisted];
-        if (v94 == [v6 isPersisted])
+        isPersisted = [(REMTemplateStorage *)self isPersisted];
+        if (isPersisted == [v6 isPersisted])
         {
-          v95 = [(REMTemplateStorage *)self accountCapabilities];
-          v96 = [v6 accountCapabilities];
-          v97 = v96;
-          if (v95 == v96)
+          accountCapabilities = [(REMTemplateStorage *)self accountCapabilities];
+          accountCapabilities2 = [v6 accountCapabilities];
+          v97 = accountCapabilities2;
+          if (accountCapabilities == accountCapabilities2)
           {
           }
 
           else
           {
-            v98 = [(REMTemplateStorage *)self accountCapabilities];
-            v99 = [v6 accountCapabilities];
-            v100 = [v98 isEqual:v99];
+            accountCapabilities3 = [(REMTemplateStorage *)self accountCapabilities];
+            accountCapabilities4 = [v6 accountCapabilities];
+            v100 = [accountCapabilities3 isEqual:accountCapabilities4];
 
             if (!v100)
             {
@@ -424,18 +424,18 @@
             }
           }
 
-          v102 = [(REMTemplateStorage *)self resolutionTokenMap];
-          v103 = [v6 resolutionTokenMap];
-          v104 = v103;
-          if (v102 == v103)
+          resolutionTokenMap = [(REMTemplateStorage *)self resolutionTokenMap];
+          resolutionTokenMap2 = [v6 resolutionTokenMap];
+          v104 = resolutionTokenMap2;
+          if (resolutionTokenMap == resolutionTokenMap2)
           {
           }
 
           else
           {
-            v105 = [(REMTemplateStorage *)self resolutionTokenMap];
-            v106 = [v6 resolutionTokenMap];
-            v107 = [v105 isEqual:v106];
+            resolutionTokenMap3 = [(REMTemplateStorage *)self resolutionTokenMap];
+            resolutionTokenMap4 = [v6 resolutionTokenMap];
+            v107 = [resolutionTokenMap3 isEqual:resolutionTokenMap4];
 
             if (!v107)
             {
@@ -443,11 +443,11 @@
             }
           }
 
-          v108 = [(REMTemplateStorage *)self minimumSupportedVersion];
-          if (v108 == [v6 minimumSupportedVersion])
+          minimumSupportedVersion = [(REMTemplateStorage *)self minimumSupportedVersion];
+          if (minimumSupportedVersion == [v6 minimumSupportedVersion])
           {
-            v109 = [(REMTemplateStorage *)self effectiveMinimumSupportedVersion];
-            v13 = v109 == [v6 effectiveMinimumSupportedVersion];
+            effectiveMinimumSupportedVersion = [(REMTemplateStorage *)self effectiveMinimumSupportedVersion];
+            v13 = effectiveMinimumSupportedVersion == [v6 effectiveMinimumSupportedVersion];
 LABEL_78:
 
             goto LABEL_79;
@@ -469,68 +469,68 @@ LABEL_79:
 
 + (id)newObjectID
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [a1 objectIDWithUUID:v3];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  v4 = [self objectIDWithUUID:uUID];
 
   return v4;
 }
 
-+ (id)objectIDWithUUID:(id)a3
++ (id)objectIDWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [a1 cdEntityName];
-  v6 = [REMObjectID objectIDWithUUID:v4 entityName:v5];
+  dCopy = d;
+  cdEntityName = [self cdEntityName];
+  v6 = [REMObjectID objectIDWithUUID:dCopy entityName:cdEntityName];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [REMTemplateStorage alloc];
-  v5 = [(REMTemplateStorage *)self objectID];
-  v6 = [(REMTemplateStorage *)self accountID];
-  v7 = [(REMTemplateStorage *)self name];
-  v8 = [(REMTemplateStorage *)v4 initWithObjectID:v5 accountID:v6 name:v7];
+  objectID = [(REMTemplateStorage *)self objectID];
+  accountID = [(REMTemplateStorage *)self accountID];
+  name = [(REMTemplateStorage *)self name];
+  v8 = [(REMTemplateStorage *)v4 initWithObjectID:objectID accountID:accountID name:name];
 
-  v9 = [(REMTemplateStorage *)self parentAccountID];
-  [(REMTemplateStorage *)v8 setParentAccountID:v9];
+  parentAccountID = [(REMTemplateStorage *)self parentAccountID];
+  [(REMTemplateStorage *)v8 setParentAccountID:parentAccountID];
 
-  v10 = [(REMTemplateStorage *)self configuration];
-  v11 = [v10 copy];
+  configuration = [(REMTemplateStorage *)self configuration];
+  v11 = [configuration copy];
   [(REMTemplateStorage *)v8 setConfiguration:v11];
 
-  v12 = [(REMTemplateStorage *)self color];
-  [(REMTemplateStorage *)v8 setColor:v12];
+  color = [(REMTemplateStorage *)self color];
+  [(REMTemplateStorage *)v8 setColor:color];
 
-  v13 = [(REMTemplateStorage *)self badgeEmblem];
-  [(REMTemplateStorage *)v8 setBadgeEmblem:v13];
+  badgeEmblem = [(REMTemplateStorage *)self badgeEmblem];
+  [(REMTemplateStorage *)v8 setBadgeEmblem:badgeEmblem];
 
   [(REMTemplateStorage *)v8 setShowingLargeAttachments:[(REMTemplateStorage *)self showingLargeAttachments]];
-  v14 = [(REMTemplateStorage *)self sortingStyle];
-  [(REMTemplateStorage *)v8 setSortingStyle:v14];
+  sortingStyle = [(REMTemplateStorage *)self sortingStyle];
+  [(REMTemplateStorage *)v8 setSortingStyle:sortingStyle];
 
-  v15 = [(REMTemplateStorage *)self unsavedManualOrdering];
-  v16 = [v15 copy];
+  unsavedManualOrdering = [(REMTemplateStorage *)self unsavedManualOrdering];
+  v16 = [unsavedManualOrdering copy];
   [(REMTemplateStorage *)v8 setUnsavedManualOrdering:v16];
 
   [(REMTemplateStorage *)v8 setShouldUpdateSectionsOrdering:[(REMTemplateStorage *)self shouldUpdateSectionsOrdering]];
-  v17 = [(REMTemplateStorage *)self unsavedSectionIDsOrdering];
-  v18 = [v17 copy];
+  unsavedSectionIDsOrdering = [(REMTemplateStorage *)self unsavedSectionIDsOrdering];
+  v18 = [unsavedSectionIDsOrdering copy];
   [(REMTemplateStorage *)v8 setUnsavedSectionIDsOrdering:v18];
 
-  v19 = [(REMTemplateStorage *)self unsavedMembershipsOfRemindersInSections];
-  v20 = [v19 copy];
+  unsavedMembershipsOfRemindersInSections = [(REMTemplateStorage *)self unsavedMembershipsOfRemindersInSections];
+  v20 = [unsavedMembershipsOfRemindersInSections copy];
   [(REMTemplateStorage *)v8 setUnsavedMembershipsOfRemindersInSections:v20];
 
-  v21 = [(REMTemplateStorage *)self sectionIDsToUndelete];
-  v22 = [v21 copy];
+  sectionIDsToUndelete = [(REMTemplateStorage *)self sectionIDsToUndelete];
+  v22 = [sectionIDsToUndelete copy];
   [(REMTemplateStorage *)v8 setSectionIDsToUndelete:v22];
 
-  v23 = [(REMTemplateStorage *)self mostRecentPublicLinkUpdateRequestDate];
-  [(REMTemplateStorage *)v8 setMostRecentPublicLinkUpdateRequestDate:v23];
+  mostRecentPublicLinkUpdateRequestDate = [(REMTemplateStorage *)self mostRecentPublicLinkUpdateRequestDate];
+  [(REMTemplateStorage *)v8 setMostRecentPublicLinkUpdateRequestDate:mostRecentPublicLinkUpdateRequestDate];
 
-  v24 = [(REMTemplateStorage *)self publicLink];
-  v25 = [v24 copy];
+  publicLink = [(REMTemplateStorage *)self publicLink];
+  v25 = [publicLink copy];
   [(REMTemplateStorage *)v8 setPublicLink:v25];
 
   [(REMTemplateStorage *)v8 setIsPersisted:[(REMTemplateStorage *)self isPersisted]];
@@ -538,8 +538,8 @@ LABEL_79:
   resolutionTokenMap = v8->_resolutionTokenMap;
   v8->_resolutionTokenMap = v26;
 
-  v28 = [(REMTemplateStorage *)self resolutionTokenMapData];
-  [(REMTemplateStorage *)v8 setResolutionTokenMapData:v28];
+  resolutionTokenMapData = [(REMTemplateStorage *)self resolutionTokenMapData];
+  [(REMTemplateStorage *)v8 setResolutionTokenMapData:resolutionTokenMapData];
 
   [(REMTemplateStorage *)v8 setMinimumSupportedVersion:[(REMTemplateStorage *)self minimumSupportedVersion]];
   [(REMTemplateStorage *)v8 setEffectiveMinimumSupportedVersion:[(REMTemplateStorage *)self effectiveMinimumSupportedVersion]];
@@ -548,79 +548,79 @@ LABEL_79:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v21 = a3;
-  v4 = [(REMTemplateStorage *)self objectID];
-  [v21 encodeObject:v4 forKey:@"objectID"];
+  coderCopy = coder;
+  objectID = [(REMTemplateStorage *)self objectID];
+  [coderCopy encodeObject:objectID forKey:@"objectID"];
 
-  v5 = [(REMTemplateStorage *)self accountID];
-  [v21 encodeObject:v5 forKey:@"accountID"];
+  accountID = [(REMTemplateStorage *)self accountID];
+  [coderCopy encodeObject:accountID forKey:@"accountID"];
 
-  v6 = [(REMTemplateStorage *)self parentAccountID];
-  [v21 encodeObject:v6 forKey:@"parentAccountID"];
+  parentAccountID = [(REMTemplateStorage *)self parentAccountID];
+  [coderCopy encodeObject:parentAccountID forKey:@"parentAccountID"];
 
-  v7 = [(REMTemplateStorage *)self configuration];
-  [v21 encodeObject:v7 forKey:@"configuration"];
+  configuration = [(REMTemplateStorage *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"configuration"];
 
-  v8 = [(REMTemplateStorage *)self name];
-  [v21 encodeObject:v8 forKey:@"name"];
+  name = [(REMTemplateStorage *)self name];
+  [coderCopy encodeObject:name forKey:@"name"];
 
-  v9 = [(REMTemplateStorage *)self color];
-  [v21 encodeObject:v9 forKey:@"color"];
+  color = [(REMTemplateStorage *)self color];
+  [coderCopy encodeObject:color forKey:@"color"];
 
-  v10 = [(REMTemplateStorage *)self badgeEmblem];
-  [v21 encodeObject:v10 forKey:@"badgeEmblem"];
+  badgeEmblem = [(REMTemplateStorage *)self badgeEmblem];
+  [coderCopy encodeObject:badgeEmblem forKey:@"badgeEmblem"];
 
-  [v21 encodeBool:-[REMTemplateStorage showingLargeAttachments](self forKey:{"showingLargeAttachments"), @"showingLargeAttachments"}];
-  v11 = [(REMTemplateStorage *)self sortingStyle];
-  [v21 encodeObject:v11 forKey:@"sortingStyle"];
+  [coderCopy encodeBool:-[REMTemplateStorage showingLargeAttachments](self forKey:{"showingLargeAttachments"), @"showingLargeAttachments"}];
+  sortingStyle = [(REMTemplateStorage *)self sortingStyle];
+  [coderCopy encodeObject:sortingStyle forKey:@"sortingStyle"];
 
-  v12 = [(REMTemplateStorage *)self unsavedManualOrdering];
-  [v21 encodeObject:v12 forKey:@"unsavedManualOrdering"];
+  unsavedManualOrdering = [(REMTemplateStorage *)self unsavedManualOrdering];
+  [coderCopy encodeObject:unsavedManualOrdering forKey:@"unsavedManualOrdering"];
 
-  [v21 encodeBool:-[REMTemplateStorage shouldUpdateSectionsOrdering](self forKey:{"shouldUpdateSectionsOrdering"), @"shouldUpdateSectionsOrdering"}];
-  v13 = [(REMTemplateStorage *)self unsavedSectionIDsOrdering];
-  [v21 encodeObject:v13 forKey:@"unsavedSectionIDsOrdering"];
+  [coderCopy encodeBool:-[REMTemplateStorage shouldUpdateSectionsOrdering](self forKey:{"shouldUpdateSectionsOrdering"), @"shouldUpdateSectionsOrdering"}];
+  unsavedSectionIDsOrdering = [(REMTemplateStorage *)self unsavedSectionIDsOrdering];
+  [coderCopy encodeObject:unsavedSectionIDsOrdering forKey:@"unsavedSectionIDsOrdering"];
 
-  v14 = [(REMTemplateStorage *)self unsavedMembershipsOfRemindersInSections];
-  [v21 encodeObject:v14 forKey:@"unsavedMembershipsOfRemindersInSections"];
+  unsavedMembershipsOfRemindersInSections = [(REMTemplateStorage *)self unsavedMembershipsOfRemindersInSections];
+  [coderCopy encodeObject:unsavedMembershipsOfRemindersInSections forKey:@"unsavedMembershipsOfRemindersInSections"];
 
-  v15 = [(REMTemplateStorage *)self sectionIDsToUndelete];
-  v16 = [v15 allObjects];
-  [v21 encodeObject:v16 forKey:@"sectionIDsToUndelete"];
+  sectionIDsToUndelete = [(REMTemplateStorage *)self sectionIDsToUndelete];
+  allObjects = [sectionIDsToUndelete allObjects];
+  [coderCopy encodeObject:allObjects forKey:@"sectionIDsToUndelete"];
 
-  v17 = [(REMTemplateStorage *)self mostRecentPublicLinkUpdateRequestDate];
-  [v21 encodeObject:v17 forKey:@"mostRecentPublicLinkUpdateRequestDate"];
+  mostRecentPublicLinkUpdateRequestDate = [(REMTemplateStorage *)self mostRecentPublicLinkUpdateRequestDate];
+  [coderCopy encodeObject:mostRecentPublicLinkUpdateRequestDate forKey:@"mostRecentPublicLinkUpdateRequestDate"];
 
-  v18 = [(REMTemplateStorage *)self publicLink];
-  [v21 encodeObject:v18 forKey:@"publicLink"];
+  publicLink = [(REMTemplateStorage *)self publicLink];
+  [coderCopy encodeObject:publicLink forKey:@"publicLink"];
 
-  [v21 encodeBool:-[REMTemplateStorage isPersisted](self forKey:{"isPersisted"), @"isPersisted"}];
+  [coderCopy encodeBool:-[REMTemplateStorage isPersisted](self forKey:{"isPersisted"), @"isPersisted"}];
   resolutionTokenMap = self->_resolutionTokenMap;
   if (resolutionTokenMap)
   {
-    [v21 encodeObject:resolutionTokenMap forKey:@"resolutionTokenMap"];
-    [v21 encodeObject:0 forKey:@"resolutionTokenMapData"];
+    [coderCopy encodeObject:resolutionTokenMap forKey:@"resolutionTokenMap"];
+    [coderCopy encodeObject:0 forKey:@"resolutionTokenMapData"];
   }
 
   else
   {
-    [v21 encodeObject:0 forKey:@"resolutionTokenMap"];
-    v20 = [(REMTemplateStorage *)self resolutionTokenMapData];
-    [v21 encodeObject:v20 forKey:@"resolutionTokenMapData"];
+    [coderCopy encodeObject:0 forKey:@"resolutionTokenMap"];
+    resolutionTokenMapData = [(REMTemplateStorage *)self resolutionTokenMapData];
+    [coderCopy encodeObject:resolutionTokenMapData forKey:@"resolutionTokenMapData"];
   }
 
-  [v21 encodeInteger:-[REMTemplateStorage minimumSupportedVersion](self forKey:{"minimumSupportedVersion"), @"minimumSupportedVersion"}];
-  [v21 encodeInteger:-[REMTemplateStorage effectiveMinimumSupportedVersion](self forKey:{"effectiveMinimumSupportedVersion"), @"effectiveMinimumSupportedVersion"}];
+  [coderCopy encodeInteger:-[REMTemplateStorage minimumSupportedVersion](self forKey:{"minimumSupportedVersion"), @"minimumSupportedVersion"}];
+  [coderCopy encodeInteger:-[REMTemplateStorage effectiveMinimumSupportedVersion](self forKey:{"effectiveMinimumSupportedVersion"), @"effectiveMinimumSupportedVersion"}];
 }
 
-- (REMTemplateStorage)initWithCoder:(id)a3
+- (REMTemplateStorage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectID"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accountID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
   v8 = v7;
   if (v5)
   {
@@ -634,7 +634,7 @@ LABEL_79:
 
   if (v9 || v7 == 0)
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -643,62 +643,62 @@ LABEL_79:
     v13 = v12;
     if (v12)
     {
-      v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentAccountID"];
+      v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentAccountID"];
       parentAccountID = v13->_parentAccountID;
       v13->_parentAccountID = v14;
 
-      v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
+      v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configuration"];
       configuration = v13->_configuration;
       v13->_configuration = v16;
 
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"color"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"color"];
       color = v13->_color;
       v13->_color = v18;
 
-      v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"badgeEmblem"];
+      v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"badgeEmblem"];
       badgeEmblem = v13->_badgeEmblem;
       v13->_badgeEmblem = v20;
 
-      v13->_showingLargeAttachments = [v4 decodeBoolForKey:@"showingLargeAttachments"];
-      v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unsavedManualOrdering"];
+      v13->_showingLargeAttachments = [coderCopy decodeBoolForKey:@"showingLargeAttachments"];
+      v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unsavedManualOrdering"];
       unsavedManualOrdering = v13->_unsavedManualOrdering;
       v13->_unsavedManualOrdering = v22;
 
-      v13->_shouldUpdateSectionsOrdering = [v4 decodeBoolForKey:@"shouldUpdateSectionsOrdering"];
+      v13->_shouldUpdateSectionsOrdering = [coderCopy decodeBoolForKey:@"shouldUpdateSectionsOrdering"];
       v24 = MEMORY[0x1E695DFD8];
       v25 = objc_opt_class();
       v26 = [v24 setWithObjects:{v25, objc_opt_class(), 0}];
-      v27 = [v4 decodeObjectOfClasses:v26 forKey:@"unsavedSectionIDsOrdering"];
+      v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"unsavedSectionIDsOrdering"];
       unsavedSectionIDsOrdering = v13->_unsavedSectionIDsOrdering;
       v13->_unsavedSectionIDsOrdering = v27;
 
-      v29 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unsavedMembershipsOfRemindersInSections"];
+      v29 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unsavedMembershipsOfRemindersInSections"];
       unsavedMembershipsOfRemindersInSections = v13->_unsavedMembershipsOfRemindersInSections;
       v13->_unsavedMembershipsOfRemindersInSections = v29;
 
       v31 = MEMORY[0x1E695DFD8];
       v32 = objc_opt_class();
       v33 = [v31 setWithObjects:{v32, objc_opt_class(), 0}];
-      v34 = [v4 decodeObjectOfClasses:v33 forKey:@"sectionIDsToUndelete"];
+      v34 = [coderCopy decodeObjectOfClasses:v33 forKey:@"sectionIDsToUndelete"];
 
       v35 = [MEMORY[0x1E695DFD8] setWithArray:v34];
       sectionIDsToUndelete = v13->_sectionIDsToUndelete;
       v13->_sectionIDsToUndelete = v35;
 
-      v37 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentPublicLinkUpdateRequestDate"];
+      v37 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mostRecentPublicLinkUpdateRequestDate"];
       mostRecentPublicLinkUpdateRequestDate = v13->_mostRecentPublicLinkUpdateRequestDate;
       v13->_mostRecentPublicLinkUpdateRequestDate = v37;
 
-      v39 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"publicLink"];
+      v39 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"publicLink"];
       publicLink = v13->_publicLink;
       v13->_publicLink = v39;
 
-      v13->_isPersisted = [v4 decodeBoolForKey:@"isPersisted"];
-      v41 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sortingStyle"];
+      v13->_isPersisted = [coderCopy decodeBoolForKey:@"isPersisted"];
+      v41 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sortingStyle"];
       [(REMTemplateStorage *)v13 setSortingStyle:v41];
 
-      v42 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resolutionTokenMapData"];
-      v43 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"resolutionTokenMap"];
+      v42 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resolutionTokenMapData"];
+      v43 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"resolutionTokenMap"];
       if (v43)
       {
         objc_storeStrong(&v13->_resolutionTokenMap, v43);
@@ -716,22 +716,22 @@ LABEL_79:
         v13->_resolutionTokenMapData = v46;
       }
 
-      -[REMTemplateStorage setMinimumSupportedVersion:](v13, "setMinimumSupportedVersion:", [v4 decodeIntegerForKey:@"minimumSupportedVersion"]);
-      -[REMTemplateStorage setEffectiveMinimumSupportedVersion:](v13, "setEffectiveMinimumSupportedVersion:", [v4 decodeIntegerForKey:@"effectiveMinimumSupportedVersion"]);
+      -[REMTemplateStorage setMinimumSupportedVersion:](v13, "setMinimumSupportedVersion:", [coderCopy decodeIntegerForKey:@"minimumSupportedVersion"]);
+      -[REMTemplateStorage setEffectiveMinimumSupportedVersion:](v13, "setEffectiveMinimumSupportedVersion:", [coderCopy decodeIntegerForKey:@"effectiveMinimumSupportedVersion"]);
     }
 
     self = v13;
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
 - (BOOL)isUnsupported
 {
-  v2 = [(REMTemplateStorage *)self effectiveMinimumSupportedVersion];
+  effectiveMinimumSupportedVersion = [(REMTemplateStorage *)self effectiveMinimumSupportedVersion];
 
-  return rem_isUnsupportedVersionByRuntime(v2);
+  return rem_isUnsupportedVersionByRuntime(effectiveMinimumSupportedVersion);
 }
 
 - (id)cdKeyToStorageKeyMap
@@ -757,8 +757,8 @@ LABEL_79:
 
   else
   {
-    v6 = [(REMTemplateStorage *)self resolutionTokenMapData];
-    if (!v6)
+    resolutionTokenMapData = [(REMTemplateStorage *)self resolutionTokenMapData];
+    if (!resolutionTokenMapData)
     {
       v7 = +[REMLogStore read];
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -767,8 +767,8 @@ LABEL_79:
       }
     }
 
-    v8 = [(REMTemplateStorage *)self cdKeyToStorageKeyMap];
-    v9 = [REMResolutionTokenMap resolutionTokenMapWithJSONData:v6 keyMap:v8];
+    cdKeyToStorageKeyMap = [(REMTemplateStorage *)self cdKeyToStorageKeyMap];
+    v9 = [REMResolutionTokenMap resolutionTokenMapWithJSONData:resolutionTokenMapData keyMap:cdKeyToStorageKeyMap];
 
     objc_storeStrong(p_resolutionTokenMap, v9);
     v5 = v9;
@@ -777,11 +777,11 @@ LABEL_79:
   return v5;
 }
 
-- (void)setStoreGenerationIfNeeded:(unint64_t)a3
+- (void)setStoreGenerationIfNeeded:(unint64_t)needed
 {
   if (!self->_storeGeneration)
   {
-    self->_storeGeneration = a3;
+    self->_storeGeneration = needed;
   }
 }
 
@@ -789,7 +789,7 @@ LABEL_79:
 {
   v5 = *MEMORY[0x1E69E9840];
   v3 = 138412290;
-  v4 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_19A0DB000, a2, OS_LOG_TYPE_ERROR, "Nil resolutionTokenMapData when reading resolutionTokenMap from template storage. Initialize an empty map {template: %@}", &v3, 0xCu);
   v2 = *MEMORY[0x1E69E9840];
 }

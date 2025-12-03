@@ -1,18 +1,18 @@
 @interface PXLayoutEngine
-- (PXLayoutEngine)initWithLayoutGenerator:(id)a3 dataSourceSnapshot:(id)a4;
+- (PXLayoutEngine)initWithLayoutGenerator:(id)generator dataSourceSnapshot:(id)snapshot;
 - (PXLayoutEngineDelegate)delegate;
 - (id)computeLayoutSnapshot;
-- (id)performChangesAndWait:(id)a3;
+- (id)performChangesAndWait:(id)wait;
 - (void)_publishChanges;
 - (void)_updateIfNeeded;
 - (void)_updateLayoutDataIfNeeded;
 - (void)_updateLayoutSnapshotIfNeeded;
-- (void)performChanges:(id)a3;
-- (void)setDataSourceSnapshot:(id)a3;
-- (void)setDataSourceSnapshot:(id)a3 withChangeDetails:(id)a4;
-- (void)setLayoutSnapshot:(id)a3;
-- (void)setSeedItem:(id)a3;
-- (void)updateLayoutDataWithChangeDetails:(id)a3;
+- (void)performChanges:(id)changes;
+- (void)setDataSourceSnapshot:(id)snapshot;
+- (void)setDataSourceSnapshot:(id)snapshot withChangeDetails:(id)details;
+- (void)setLayoutSnapshot:(id)snapshot;
+- (void)setSeedItem:(id)item;
+- (void)updateLayoutDataWithChangeDetails:(id)details;
 @end
 
 @implementation PXLayoutEngine
@@ -26,16 +26,16 @@
 
 - (id)computeLayoutSnapshot
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXLayoutEngine.m" lineNumber:189 description:@"-computeLayoutSnapshot: must be overriden"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXLayoutEngine.m" lineNumber:189 description:@"-computeLayoutSnapshot: must be overriden"];
 
   return 0;
 }
 
-- (void)updateLayoutDataWithChangeDetails:(id)a3
+- (void)updateLayoutDataWithChangeDetails:(id)details
 {
-  v5 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v5 handleFailureInMethod:a2 object:self file:@"PXLayoutEngine.m" lineNumber:185 description:@"-updateLayoutDataWithChangeDetails: must be overriden"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXLayoutEngine.m" lineNumber:185 description:@"-updateLayoutDataWithChangeDetails: must be overriden"];
 }
 
 - (void)_publishChanges
@@ -61,44 +61,44 @@ void __33__PXLayoutEngine__publishChanges__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setLayoutSnapshot:(id)a3
+- (void)setLayoutSnapshot:(id)snapshot
 {
-  v6 = a3;
-  if (!v6)
+  snapshotCopy = snapshot;
+  if (!snapshotCopy)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v8 handleFailureInMethod:a2 object:self file:@"PXLayoutEngine.m" lineNumber:152 description:@"layoutSnapshot cannot be nil"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXLayoutEngine.m" lineNumber:152 description:@"layoutSnapshot cannot be nil"];
 
-    v6 = 0;
+    snapshotCopy = 0;
   }
 
   p_layoutSnapshot = &self->_layoutSnapshot;
-  if (self->_layoutSnapshot != v6)
+  if (self->_layoutSnapshot != snapshotCopy)
   {
-    v9 = v6;
-    objc_storeStrong(p_layoutSnapshot, a3);
+    v9 = snapshotCopy;
+    objc_storeStrong(p_layoutSnapshot, snapshot);
     [(PXLayoutSnapshot *)self->_layoutSnapshot setDataSourceSnapshot:self->_dataSourceSnapshot];
     p_layoutSnapshot = [(PXLayoutEngine *)self _publishChanges];
-    v6 = v9;
+    snapshotCopy = v9;
   }
 
-  MEMORY[0x1EEE66BB8](p_layoutSnapshot, v6);
+  MEMORY[0x1EEE66BB8](p_layoutSnapshot, snapshotCopy);
 }
 
-- (void)setDataSourceSnapshot:(id)a3 withChangeDetails:(id)a4
+- (void)setDataSourceSnapshot:(id)snapshot withChangeDetails:(id)details
 {
-  v6 = a4;
-  [(PXLayoutEngine *)self setDataSourceSnapshot:a3];
-  [(PXLayoutEngine *)self setChangeDetails:v6];
+  detailsCopy = details;
+  [(PXLayoutEngine *)self setDataSourceSnapshot:snapshot];
+  [(PXLayoutEngine *)self setChangeDetails:detailsCopy];
 
   [(PXLayoutEngine *)self invalidateLayoutData];
 }
 
-- (void)setDataSourceSnapshot:(id)a3
+- (void)setDataSourceSnapshot:(id)snapshot
 {
-  if (self->_dataSourceSnapshot != a3)
+  if (self->_dataSourceSnapshot != snapshot)
   {
-    v5 = [a3 copyWithZone:0];
+    v5 = [snapshot copyWithZone:0];
     dataSourceSnapshot = self->_dataSourceSnapshot;
     self->_dataSourceSnapshot = v5;
 
@@ -106,24 +106,24 @@ void __33__PXLayoutEngine__publishChanges__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setSeedItem:(id)a3
+- (void)setSeedItem:(id)item
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_seedItem != v5)
+  itemCopy = item;
+  v6 = itemCopy;
+  if (self->_seedItem != itemCopy)
   {
-    v7 = v5;
-    v5 = [v5 isEqual:?];
+    v7 = itemCopy;
+    itemCopy = [itemCopy isEqual:?];
     v6 = v7;
-    if ((v5 & 1) == 0)
+    if ((itemCopy & 1) == 0)
     {
-      objc_storeStrong(&self->_seedItem, a3);
-      v5 = [(PXLayoutEngine *)self invalidateLayoutSnapshot];
+      objc_storeStrong(&self->_seedItem, item);
+      itemCopy = [(PXLayoutEngine *)self invalidateLayoutSnapshot];
       v6 = v7;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](itemCopy, v6);
 }
 
 - (void)_updateLayoutDataIfNeeded
@@ -144,16 +144,16 @@ void __33__PXLayoutEngine__publishChanges__block_invoke(uint64_t a1)
     self->_needsUpdateFlags.layoutSnapshot = 0;
     if ([(PXLayoutEngine *)self canComputeLayoutSnapshot])
     {
-      v3 = [(PXLayoutEngine *)self computeLayoutSnapshot];
-      v4 = v3;
-      if (v3)
+      computeLayoutSnapshot = [(PXLayoutEngine *)self computeLayoutSnapshot];
+      v4 = computeLayoutSnapshot;
+      if (computeLayoutSnapshot)
       {
-        v5 = v3;
-        v3 = [(PXLayoutEngine *)self setLayoutSnapshot:v3];
+        v5 = computeLayoutSnapshot;
+        computeLayoutSnapshot = [(PXLayoutEngine *)self setLayoutSnapshot:computeLayoutSnapshot];
         v4 = v5;
       }
 
-      MEMORY[0x1EEE66BB8](v3, v4);
+      MEMORY[0x1EEE66BB8](computeLayoutSnapshot, v4);
     }
   }
 }
@@ -166,23 +166,23 @@ void __33__PXLayoutEngine__publishChanges__block_invoke(uint64_t a1)
     [(PXLayoutEngine *)self _updateLayoutSnapshotIfNeeded];
     if ([(PXLayoutEngine *)self _needsUpdate])
     {
-      v4 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v4 handleFailureInMethod:a2 object:self file:@"PXLayoutEngine.m" lineNumber:90 description:@"updates still needed after an update cycle"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXLayoutEngine.m" lineNumber:90 description:@"updates still needed after an update cycle"];
     }
   }
 }
 
-- (id)performChangesAndWait:(id)a3
+- (id)performChangesAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   internalWorkQueue = self->_internalWorkQueue;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __40__PXLayoutEngine_performChangesAndWait___block_invoke;
   v10[3] = &unk_1E7BB7DA8;
   v10[4] = self;
-  v11 = v4;
-  v6 = v4;
+  v11 = waitCopy;
+  v6 = waitCopy;
   dispatch_sync(internalWorkQueue, v10);
   layoutSnapshot = self->_layoutSnapshot;
   v8 = layoutSnapshot;
@@ -190,9 +190,9 @@ void __33__PXLayoutEngine__publishChanges__block_invoke(uint64_t a1)
   return layoutSnapshot;
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   objc_initWeak(&location, self);
   internalWorkQueue = self->_internalWorkQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -200,8 +200,8 @@ void __33__PXLayoutEngine__publishChanges__block_invoke(uint64_t a1)
   block[2] = __33__PXLayoutEngine_performChanges___block_invoke;
   block[3] = &unk_1E7BB6AB0;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = changesCopy;
+  v6 = changesCopy;
   dispatch_async(internalWorkQueue, block);
 
   objc_destroyWeak(&v9);
@@ -214,10 +214,10 @@ void __33__PXLayoutEngine_performChanges___block_invoke(uint64_t a1)
   _InternalWorkQueue_PerformChanges(WeakRetained, *(a1 + 32));
 }
 
-- (PXLayoutEngine)initWithLayoutGenerator:(id)a3 dataSourceSnapshot:(id)a4
+- (PXLayoutEngine)initWithLayoutGenerator:(id)generator dataSourceSnapshot:(id)snapshot
 {
-  v6 = a3;
-  v7 = a4;
+  generatorCopy = generator;
+  snapshotCopy = snapshot;
   v16.receiver = self;
   v16.super_class = PXLayoutEngine;
   v8 = [(PXLayoutEngine *)&v16 init];
@@ -230,11 +230,11 @@ void __33__PXLayoutEngine_performChanges___block_invoke(uint64_t a1)
     internalWorkQueue = v8->_internalWorkQueue;
     v8->_internalWorkQueue = v11;
 
-    v13 = [v6 copy];
+    v13 = [generatorCopy copy];
     layoutGenerator = v8->_layoutGenerator;
     v8->_layoutGenerator = v13;
 
-    [(PXLayoutEngine *)v8 setDataSourceSnapshot:v7 withChangeDetails:0];
+    [(PXLayoutEngine *)v8 setDataSourceSnapshot:snapshotCopy withChangeDetails:0];
   }
 
   return v8;

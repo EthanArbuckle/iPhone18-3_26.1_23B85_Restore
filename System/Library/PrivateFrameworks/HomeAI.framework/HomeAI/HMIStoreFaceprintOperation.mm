@@ -1,22 +1,22 @@
 @interface HMIStoreFaceprintOperation
-- (HMIStoreFaceprintOperation)initWithDataSource:(id)a3 faceprint:(id)a4;
+- (HMIStoreFaceprintOperation)initWithDataSource:(id)source faceprint:(id)faceprint;
 - (void)main;
 @end
 
 @implementation HMIStoreFaceprintOperation
 
-- (HMIStoreFaceprintOperation)initWithDataSource:(id)a3 faceprint:(id)a4
+- (HMIStoreFaceprintOperation)initWithDataSource:(id)source faceprint:(id)faceprint
 {
-  v7 = a3;
-  v8 = a4;
+  sourceCopy = source;
+  faceprintCopy = faceprint;
   v12.receiver = self;
   v12.super_class = HMIStoreFaceprintOperation;
   v9 = [(HMFOperation *)&v12 initWithTimeout:10.0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataSource, a3);
-    objc_storeStrong(&v10->_faceprint, a4);
+    objc_storeStrong(&v9->_dataSource, source);
+    objc_storeStrong(&v10->_faceprint, faceprint);
   }
 
   return v10;
@@ -25,16 +25,16 @@
 - (void)main
 {
   objc_initWeak(&location, self);
-  v3 = [(HMIStoreFaceprintOperation *)self dataSource];
+  dataSource = [(HMIStoreFaceprintOperation *)self dataSource];
   v4 = MEMORY[0x277CBEB98];
-  v5 = [(HMIStoreFaceprintOperation *)self faceprint];
-  v6 = [v4 setWithObject:v5];
+  faceprint = [(HMIStoreFaceprintOperation *)self faceprint];
+  v6 = [v4 setWithObject:faceprint];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__HMIStoreFaceprintOperation_main__block_invoke;
   v7[3] = &unk_2787528E0;
   objc_copyWeak(&v8, &location);
-  [v3 addFaceprints:v6 completion:v7];
+  [dataSource addFaceprints:v6 completion:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);

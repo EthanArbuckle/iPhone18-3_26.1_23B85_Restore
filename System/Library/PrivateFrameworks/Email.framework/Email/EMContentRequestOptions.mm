@@ -1,36 +1,36 @@
 @interface EMContentRequestOptions
-+ (id)optionsWithRequestedRepresentationType:(id)a3 networkUsage:(int64_t)a4;
-+ (id)optionsWithRequestedRepresentationType:(id)a3 networkUsage:(int64_t)a4 includeSuggestions:(int64_t)a5;
-- (EMContentRequestOptions)initWithBuilder:(id)a3;
-- (EMContentRequestOptions)initWithCoder:(id)a3;
-- (id)copyWithBuilder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)optionsWithRequestedRepresentationType:(id)type networkUsage:(int64_t)usage;
++ (id)optionsWithRequestedRepresentationType:(id)type networkUsage:(int64_t)usage includeSuggestions:(int64_t)suggestions;
+- (EMContentRequestOptions)initWithBuilder:(id)builder;
+- (EMContentRequestOptions)initWithCoder:(id)coder;
+- (id)copyWithBuilder:(id)builder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation EMContentRequestOptions
 
-+ (id)optionsWithRequestedRepresentationType:(id)a3 networkUsage:(int64_t)a4
++ (id)optionsWithRequestedRepresentationType:(id)type networkUsage:(int64_t)usage
 {
-  v4 = [EMContentRequestOptions optionsWithRequestedRepresentationType:a3 networkUsage:a4 includeSuggestions:0];
+  v4 = [EMContentRequestOptions optionsWithRequestedRepresentationType:type networkUsage:usage includeSuggestions:0];
 
   return v4;
 }
 
-+ (id)optionsWithRequestedRepresentationType:(id)a3 networkUsage:(int64_t)a4 includeSuggestions:(int64_t)a5
++ (id)optionsWithRequestedRepresentationType:(id)type networkUsage:(int64_t)usage includeSuggestions:(int64_t)suggestions
 {
-  v8 = a3;
-  v9 = [a1 alloc];
+  typeCopy = type;
+  v9 = [self alloc];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __98__EMContentRequestOptions_optionsWithRequestedRepresentationType_networkUsage_includeSuggestions___block_invoke;
   v13[3] = &unk_1E826C9C0;
-  v10 = v8;
+  v10 = typeCopy;
   v14 = v10;
-  v15 = a4;
-  v16 = a5;
+  usageCopy = usage;
+  suggestionsCopy = suggestions;
   v11 = [v9 initWithBuilder:v13];
 
   return v11;
@@ -44,15 +44,15 @@ void __98__EMContentRequestOptions_optionsWithRequestedRepresentationType_networ
   [v3 setIncludeSuggestionItems:a1[6]];
 }
 
-- (EMContentRequestOptions)initWithBuilder:(id)a3
+- (EMContentRequestOptions)initWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7.receiver = self;
   v7.super_class = EMContentRequestOptions;
   v5 = [(EMContentRequestOptions *)&v7 init];
   if (v5)
   {
-    v4[2](v4, v5);
+    builderCopy[2](builderCopy, v5);
   }
 
   return v5;
@@ -66,11 +66,11 @@ void __31__EMContentRequestOptions_init__block_invoke(uint64_t a1, void *a2)
   [v2 setIncludeSuggestionItems:0];
 }
 
-- (id)copyWithBuilder:(id)a3
+- (id)copyWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v5 = [(EMContentRequestOptions *)self copy];
-  v4[2](v4, v5);
+  builderCopy[2](builderCopy, v5);
 
   return v5;
 }
@@ -79,8 +79,8 @@ void __31__EMContentRequestOptions_init__block_invoke(uint64_t a1, void *a2)
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(EMContentRequestOptions *)self requestedRepresentation];
-  v6 = [v3 initWithFormat:@"<%@: %p> requestedRepresentation=%@, networkUsage=%ld", v4, self, v5, -[EMContentRequestOptions networkUsage](self, "networkUsage")];
+  requestedRepresentation = [(EMContentRequestOptions *)self requestedRepresentation];
+  v6 = [v3 initWithFormat:@"<%@: %p> requestedRepresentation=%@, networkUsage=%ld", v4, self, requestedRepresentation, -[EMContentRequestOptions networkUsage](self, "networkUsage")];
 
   return v6;
 }
@@ -89,63 +89,63 @@ void __31__EMContentRequestOptions_init__block_invoke(uint64_t a1, void *a2)
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
-  v5 = [(EMContentRequestOptions *)self requestedRepresentation];
-  v6 = [(EMContentRequestOptions *)self networkUsage];
-  v7 = [(EMContentRequestOptions *)self requestAllHeaders];
-  v8 = [(EMContentRequestOptions *)self requestedHeaderKeys];
-  v9 = [v3 initWithFormat:@"<%@: %p> requestedRepresentation=%@, networkUsage=%d, requestAllHeaders=%d, requestedHeaders=%@, includeCachedMetadataJSON=%d, maximumNumberOfOriginalContentMessagesToRequest=%lu, cacheBehavior=%ld, urlBehavior=%ld", v4, self, v5, v6, v7, v8, -[EMContentRequestOptions includeCachedMetadataJSON](self, "includeCachedMetadataJSON"), -[EMContentRequestOptions maximumNumberOfOriginalContentMessagesToRequest](self, "maximumNumberOfOriginalContentMessagesToRequest"), -[EMContentRequestOptions cacheBehavior](self, "cacheBehavior"), -[EMContentRequestOptions urlBehavior](self, "urlBehavior")];
+  requestedRepresentation = [(EMContentRequestOptions *)self requestedRepresentation];
+  networkUsage = [(EMContentRequestOptions *)self networkUsage];
+  requestAllHeaders = [(EMContentRequestOptions *)self requestAllHeaders];
+  requestedHeaderKeys = [(EMContentRequestOptions *)self requestedHeaderKeys];
+  v9 = [v3 initWithFormat:@"<%@: %p> requestedRepresentation=%@, networkUsage=%d, requestAllHeaders=%d, requestedHeaders=%@, includeCachedMetadataJSON=%d, maximumNumberOfOriginalContentMessagesToRequest=%lu, cacheBehavior=%ld, urlBehavior=%ld", v4, self, requestedRepresentation, networkUsage, requestAllHeaders, requestedHeaderKeys, -[EMContentRequestOptions includeCachedMetadataJSON](self, "includeCachedMetadataJSON"), -[EMContentRequestOptions maximumNumberOfOriginalContentMessagesToRequest](self, "maximumNumberOfOriginalContentMessagesToRequest"), -[EMContentRequestOptions cacheBehavior](self, "cacheBehavior"), -[EMContentRequestOptions urlBehavior](self, "urlBehavior")];
 
   return v9;
 }
 
-- (EMContentRequestOptions)initWithCoder:(id)a3
+- (EMContentRequestOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(EMContentRequestOptions *)self init];
   if (v5)
   {
-    v5->_networkUsage = [v4 decodeIntegerForKey:@"EFPropertyKey_networkUsage"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_requestedRepresentation"];
+    v5->_networkUsage = [coderCopy decodeIntegerForKey:@"EFPropertyKey_networkUsage"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EFPropertyKey_requestedRepresentation"];
     requestedRepresentation = v5->_requestedRepresentation;
     v5->_requestedRepresentation = v6;
 
-    v5->_includeSuggestionItems = [v4 decodeIntegerForKey:@"EFPropertyKey_includeSuggestionItems"];
-    v5->_requestAllHeaders = [v4 decodeBoolForKey:@"EFPropertyKey_requestAllHeaders"];
+    v5->_includeSuggestionItems = [coderCopy decodeIntegerForKey:@"EFPropertyKey_includeSuggestionItems"];
+    v5->_requestAllHeaders = [coderCopy decodeBoolForKey:@"EFPropertyKey_requestAllHeaders"];
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"EFPropertyKey_requestedHeaderKeys"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"EFPropertyKey_requestedHeaderKeys"];
     requestedHeaderKeys = v5->_requestedHeaderKeys;
     v5->_requestedHeaderKeys = v11;
 
-    v5->_includeCachedMetadataJSON = [v4 decodeBoolForKey:@"EFPropertyKey_includeCachedMetadataJSON"];
-    v5->_maximumNumberOfOriginalContentMessagesToRequest = [v4 decodeIntegerForKey:@"EFPropertyKey_maximumNumberOfOriginalContentMessagesToRequest"];
-    v5->_cacheBehavior = [v4 decodeIntegerForKey:@"EFPropertyKey_cacheBehavior"];
-    v5->_urlBehavior = [v4 decodeIntegerForKey:@"EFPropertyKey_urlBehavior"];
+    v5->_includeCachedMetadataJSON = [coderCopy decodeBoolForKey:@"EFPropertyKey_includeCachedMetadataJSON"];
+    v5->_maximumNumberOfOriginalContentMessagesToRequest = [coderCopy decodeIntegerForKey:@"EFPropertyKey_maximumNumberOfOriginalContentMessagesToRequest"];
+    v5->_cacheBehavior = [coderCopy decodeIntegerForKey:@"EFPropertyKey_cacheBehavior"];
+    v5->_urlBehavior = [coderCopy decodeIntegerForKey:@"EFPropertyKey_urlBehavior"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  [v6 encodeInteger:-[EMContentRequestOptions networkUsage](self forKey:{"networkUsage"), @"EFPropertyKey_networkUsage"}];
-  v4 = [(EMContentRequestOptions *)self requestedRepresentation];
-  [v6 encodeObject:v4 forKey:@"EFPropertyKey_requestedRepresentation"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[EMContentRequestOptions networkUsage](self forKey:{"networkUsage"), @"EFPropertyKey_networkUsage"}];
+  requestedRepresentation = [(EMContentRequestOptions *)self requestedRepresentation];
+  [coderCopy encodeObject:requestedRepresentation forKey:@"EFPropertyKey_requestedRepresentation"];
 
-  [v6 encodeInteger:-[EMContentRequestOptions includeSuggestionItems](self forKey:{"includeSuggestionItems"), @"EFPropertyKey_includeSuggestionItems"}];
-  [v6 encodeBool:-[EMContentRequestOptions requestAllHeaders](self forKey:{"requestAllHeaders"), @"EFPropertyKey_requestAllHeaders"}];
-  v5 = [(EMContentRequestOptions *)self requestedHeaderKeys];
-  [v6 encodeObject:v5 forKey:@"EFPropertyKey_requestedHeaderKeys"];
+  [coderCopy encodeInteger:-[EMContentRequestOptions includeSuggestionItems](self forKey:{"includeSuggestionItems"), @"EFPropertyKey_includeSuggestionItems"}];
+  [coderCopy encodeBool:-[EMContentRequestOptions requestAllHeaders](self forKey:{"requestAllHeaders"), @"EFPropertyKey_requestAllHeaders"}];
+  requestedHeaderKeys = [(EMContentRequestOptions *)self requestedHeaderKeys];
+  [coderCopy encodeObject:requestedHeaderKeys forKey:@"EFPropertyKey_requestedHeaderKeys"];
 
-  [v6 encodeBool:-[EMContentRequestOptions includeCachedMetadataJSON](self forKey:{"includeCachedMetadataJSON"), @"EFPropertyKey_includeCachedMetadataJSON"}];
-  [v6 encodeInteger:-[EMContentRequestOptions maximumNumberOfOriginalContentMessagesToRequest](self forKey:{"maximumNumberOfOriginalContentMessagesToRequest"), @"EFPropertyKey_maximumNumberOfOriginalContentMessagesToRequest"}];
-  [v6 encodeInteger:-[EMContentRequestOptions cacheBehavior](self forKey:{"cacheBehavior"), @"EFPropertyKey_cacheBehavior"}];
-  [v6 encodeInteger:-[EMContentRequestOptions urlBehavior](self forKey:{"urlBehavior"), @"EFPropertyKey_urlBehavior"}];
+  [coderCopy encodeBool:-[EMContentRequestOptions includeCachedMetadataJSON](self forKey:{"includeCachedMetadataJSON"), @"EFPropertyKey_includeCachedMetadataJSON"}];
+  [coderCopy encodeInteger:-[EMContentRequestOptions maximumNumberOfOriginalContentMessagesToRequest](self forKey:{"maximumNumberOfOriginalContentMessagesToRequest"), @"EFPropertyKey_maximumNumberOfOriginalContentMessagesToRequest"}];
+  [coderCopy encodeInteger:-[EMContentRequestOptions cacheBehavior](self forKey:{"cacheBehavior"), @"EFPropertyKey_cacheBehavior"}];
+  [coderCopy encodeInteger:-[EMContentRequestOptions urlBehavior](self forKey:{"urlBehavior"), @"EFPropertyKey_urlBehavior"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   v6[0] = MEMORY[0x1E69E9820];

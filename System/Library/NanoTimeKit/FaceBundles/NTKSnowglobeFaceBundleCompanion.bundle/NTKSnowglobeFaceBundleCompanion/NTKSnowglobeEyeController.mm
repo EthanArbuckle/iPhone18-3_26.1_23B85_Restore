@@ -1,65 +1,65 @@
 @interface NTKSnowglobeEyeController
-- ($599F175E452E455E49EC8439362DB023)_weightForState:(SEL)a3;
-- (NTKSnowglobeEyeController)initWithLeftNode:(id)a3 rightNode:(id)a4 digitProfile:(id)a5;
-- (void)_decideNextSquintChange:(double)a3;
-- (void)_updateIdleStateForTime:(double)a3;
+- ($599F175E452E455E49EC8439362DB023)_weightForState:(SEL)state;
+- (NTKSnowglobeEyeController)initWithLeftNode:(id)node rightNode:(id)rightNode digitProfile:(id)profile;
+- (void)_decideNextSquintChange:(double)change;
+- (void)_updateIdleStateForTime:(double)time;
 - (void)_updateWeights;
-- (void)transitionToState:(unint64_t)a3 withDuration:(double)a4;
-- (void)transitionToState:(unint64_t)a3 withFraction:(double)a4;
-- (void)updateAtTime:(double)a3;
+- (void)transitionToState:(unint64_t)state withDuration:(double)duration;
+- (void)transitionToState:(unint64_t)state withFraction:(double)fraction;
+- (void)updateAtTime:(double)time;
 @end
 
 @implementation NTKSnowglobeEyeController
 
-- (NTKSnowglobeEyeController)initWithLeftNode:(id)a3 rightNode:(id)a4 digitProfile:(id)a5
+- (NTKSnowglobeEyeController)initWithLeftNode:(id)node rightNode:(id)rightNode digitProfile:(id)profile
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  nodeCopy = node;
+  rightNodeCopy = rightNode;
+  profileCopy = profile;
   v15.receiver = self;
   v15.super_class = NTKSnowglobeEyeController;
   v12 = [(NTKSnowglobeEyeController *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_leftEyeNode, a3);
-    objc_storeStrong(&v13->_rightEyeNode, a4);
+    objc_storeStrong(&v12->_leftEyeNode, node);
+    objc_storeStrong(&v13->_rightEyeNode, rightNode);
     v13->_state = 0;
     v13->_idleState.nextBlink = 0.0;
     v13->_idleState.squint = arc4random() / 4294967300.0 < 0.5;
-    objc_storeStrong(&v13->_profile, a5);
+    objc_storeStrong(&v13->_profile, profile);
   }
 
   return v13;
 }
 
-- (void)transitionToState:(unint64_t)a3 withDuration:(double)a4
+- (void)transitionToState:(unint64_t)state withDuration:(double)duration
 {
-  if (self->_state != a3 && (self->_transitionState != a3 || self->_transitionFraction <= 0.0))
+  if (self->_state != state && (self->_transitionState != state || self->_transitionFraction <= 0.0))
   {
     self->_transitionAutomatic = 1;
-    self->_transitionState = a3;
+    self->_transitionState = state;
     self->_transitionFraction = 0.0;
-    self->_transitionDuration = a4;
+    self->_transitionDuration = duration;
   }
 }
 
-- (void)transitionToState:(unint64_t)a3 withFraction:(double)a4
+- (void)transitionToState:(unint64_t)state withFraction:(double)fraction
 {
-  if (self->_state != a3)
+  if (self->_state != state)
   {
     self->_transitionAutomatic = 0;
-    self->_transitionFraction = a4;
-    self->_transitionState = a3;
+    self->_transitionFraction = fraction;
+    self->_transitionState = state;
     MEMORY[0x2821F9670]();
   }
 }
 
-- (void)updateAtTime:(double)a3
+- (void)updateAtTime:(double)time
 {
   if (!self->_state || !self->_transitionState)
   {
-    [(NTKSnowglobeEyeController *)self _updateIdleStateForTime:a3];
+    [(NTKSnowglobeEyeController *)self _updateIdleStateForTime:time];
   }
 
   if (self->_transitionAutomatic)
@@ -136,41 +136,41 @@ LABEL_7:
     v21 = 0.0;
   }
 
-  v22 = [(SCNNode *)self->_leftEyeNode morpher];
+  morpher = [(SCNNode *)self->_leftEyeNode morpher];
   v23 = v10;
-  [v22 setWeight:@"eyeContent_LShape" forTargetNamed:v23];
+  [morpher setWeight:@"eyeContent_LShape" forTargetNamed:v23];
 
-  v24 = [(SCNNode *)self->_leftEyeNode morpher];
+  morpher2 = [(SCNNode *)self->_leftEyeNode morpher];
   v25 = v7;
-  [v24 setWeight:@"eyeAngry_LShape" forTargetNamed:v25];
+  [morpher2 setWeight:@"eyeAngry_LShape" forTargetNamed:v25];
 
-  v26 = [(SCNNode *)self->_leftEyeNode morpher];
+  morpher3 = [(SCNNode *)self->_leftEyeNode morpher];
   v27 = v13;
-  [v26 setWeight:@"eyeFullBlink_LShape" forTargetNamed:v27];
+  [morpher3 setWeight:@"eyeFullBlink_LShape" forTargetNamed:v27];
 
-  v28 = [(SCNNode *)self->_leftEyeNode morpher];
-  [v28 setWeight:@"eyeHalfSquint_LShape" forTargetNamed:v20];
+  morpher4 = [(SCNNode *)self->_leftEyeNode morpher];
+  [morpher4 setWeight:@"eyeHalfSquint_LShape" forTargetNamed:v20];
 
-  v29 = [(SCNNode *)self->_leftEyeNode morpher];
-  [v29 setWeight:@"eyeSquint_LShape" forTargetNamed:v21];
+  morpher5 = [(SCNNode *)self->_leftEyeNode morpher];
+  [morpher5 setWeight:@"eyeSquint_LShape" forTargetNamed:v21];
 
-  v30 = [(SCNNode *)self->_rightEyeNode morpher];
-  [v30 setWeight:@"eyeContent_RShape" forTargetNamed:v23];
+  morpher6 = [(SCNNode *)self->_rightEyeNode morpher];
+  [morpher6 setWeight:@"eyeContent_RShape" forTargetNamed:v23];
 
-  v31 = [(SCNNode *)self->_rightEyeNode morpher];
-  [v31 setWeight:@"eyeAngry_RShape" forTargetNamed:v25];
+  morpher7 = [(SCNNode *)self->_rightEyeNode morpher];
+  [morpher7 setWeight:@"eyeAngry_RShape" forTargetNamed:v25];
 
-  v32 = [(SCNNode *)self->_rightEyeNode morpher];
-  [v32 setWeight:@"eyeFullBlink_RShape" forTargetNamed:v27];
+  morpher8 = [(SCNNode *)self->_rightEyeNode morpher];
+  [morpher8 setWeight:@"eyeFullBlink_RShape" forTargetNamed:v27];
 
-  v33 = [(SCNNode *)self->_rightEyeNode morpher];
-  [v33 setWeight:@"eyeHalfSquint_RShape" forTargetNamed:v20];
+  morpher9 = [(SCNNode *)self->_rightEyeNode morpher];
+  [morpher9 setWeight:@"eyeHalfSquint_RShape" forTargetNamed:v20];
 
-  v34 = [(SCNNode *)self->_rightEyeNode morpher];
-  [v34 setWeight:@"eyeSquint_RShape" forTargetNamed:v21];
+  morpher10 = [(SCNNode *)self->_rightEyeNode morpher];
+  [morpher10 setWeight:@"eyeSquint_RShape" forTargetNamed:v21];
 }
 
-- ($599F175E452E455E49EC8439362DB023)_weightForState:(SEL)a3
+- ($599F175E452E455E49EC8439362DB023)_weightForState:(SEL)state
 {
   if (a4 <= 1)
   {
@@ -216,25 +216,25 @@ LABEL_7:
   return self;
 }
 
-- (void)_updateIdleStateForTime:(double)a3
+- (void)_updateIdleStateForTime:(double)time
 {
   if (self->_idleState.nextBlink == 0.0)
   {
-    [(NTKSnowglobeEyeController *)self _decideNextBlink:a3];
+    [(NTKSnowglobeEyeController *)self _decideNextBlink:time];
   }
 
   if (self->_animationEnabled)
   {
     nextBlink = self->_idleState.nextBlink;
     v6 = 0.0;
-    if (nextBlink < a3)
+    if (nextBlink < time)
     {
-      v7 = a3 - nextBlink;
+      v7 = time - nextBlink;
       [(NTKSnowglobeDigitProfile *)self->_profile blinkDuration];
       v9 = v7 / v8;
       if (v9 >= 1.0)
       {
-        [(NTKSnowglobeEyeController *)self _decideNextBlink:a3];
+        [(NTKSnowglobeEyeController *)self _decideNextBlink:time];
       }
 
       else
@@ -250,7 +250,7 @@ LABEL_7:
     }
 
     self->_idleState.blinkProgress = v6;
-    if (self->_idleState.nextSquintChange >= a3)
+    if (self->_idleState.nextSquintChange >= time)
     {
       squintChange = self->_idleState.squintChange;
       squint = self->_idleState.squint;
@@ -258,14 +258,14 @@ LABEL_7:
 
     else
     {
-      [(NTKSnowglobeEyeController *)self _decideNextSquintChange:a3];
-      self->_idleState.squintChange = a3;
+      [(NTKSnowglobeEyeController *)self _decideNextSquintChange:time];
+      self->_idleState.squintChange = time;
       squint = !self->_idleState.squint;
       self->_idleState.squint = squint;
-      squintChange = a3;
+      squintChange = time;
     }
 
-    v14 = fmin((a3 - squintChange) / 0.2, 1.0);
+    v14 = fmin((time - squintChange) / 0.2, 1.0);
     if (!squint)
     {
       v14 = 1.0 - v14;
@@ -283,7 +283,7 @@ LABEL_7:
   self->_idleState.squintProgress = v11;
 }
 
-- (void)_decideNextSquintChange:(double)a3
+- (void)_decideNextSquintChange:(double)change
 {
   [(NTKSnowglobeDigitProfile *)self->_profile squintRatio];
   v6 = v5;
@@ -314,7 +314,7 @@ LABEL_7:
     v10 = v8;
   }
 
-  self->_idleState.nextSquintChange = a3 + (v7 / 4294967300.0 * 2.0 + 1.0) * v10;
+  self->_idleState.nextSquintChange = change + (v7 / 4294967300.0 * 2.0 + 1.0) * v10;
 }
 
 @end

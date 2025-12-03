@@ -1,72 +1,72 @@
 @interface SXImageComponentView
-- (BOOL)usesThumbnailWithImageIdentifier:(id)a3;
+- (BOOL)usesThumbnailWithImageIdentifier:(id)identifier;
 - (CGRect)imageFrame;
 - (CGRect)transitionContentFrame;
 - (NSString)description;
-- (SXImageComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 imageViewFactory:(id)a9 mediaSharingPolicyProvider:(id)a10;
-- (id)contentViewForBehavior:(id)a3;
+- (SXImageComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor imageViewFactory:(id)viewFactory mediaSharingPolicyProvider:(id)self0;
+- (id)contentViewForBehavior:(id)behavior;
 - (id)imageResource;
 - (void)dealloc;
 - (void)discardContents;
-- (void)imageView:(id)a3 didLoadAnimatedImage:(id)a4;
+- (void)imageView:(id)view didLoadAnimatedImage:(id)image;
 - (void)layoutImageView;
-- (void)loadComponent:(id)a3;
-- (void)presentComponentWithChanges:(id)a3;
+- (void)loadComponent:(id)component;
+- (void)presentComponentWithChanges:(id)changes;
 - (void)renderContents;
-- (void)visibilityStateDidChangeFromState:(int64_t)a3;
+- (void)visibilityStateDidChangeFromState:(int64_t)state;
 @end
 
 @implementation SXImageComponentView
 
-- (SXImageComponentView)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegate:(id)a5 componentStyleRendererFactory:(id)a6 analyticsReporting:(id)a7 appStateMonitor:(id)a8 imageViewFactory:(id)a9 mediaSharingPolicyProvider:(id)a10
+- (SXImageComponentView)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegate:(id)delegate componentStyleRendererFactory:(id)factory analyticsReporting:(id)reporting appStateMonitor:(id)monitor imageViewFactory:(id)viewFactory mediaSharingPolicyProvider:(id)self0
 {
-  v21 = a9;
-  v17 = a10;
+  viewFactoryCopy = viewFactory;
+  policyProviderCopy = policyProvider;
   v22.receiver = self;
   v22.super_class = SXImageComponentView;
-  v18 = [(SXMediaComponentView *)&v22 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegate:a5 componentStyleRendererFactory:a6 analyticsReporting:a7 appStateMonitor:a8];
+  v18 = [(SXMediaComponentView *)&v22 initWithDOMObjectProvider:provider viewport:viewport presentationDelegate:delegate componentStyleRendererFactory:factory analyticsReporting:reporting appStateMonitor:monitor];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_imageViewFactory, a9);
-    objc_storeStrong(&v19->_mediaSharingPolicyProvider, a10);
+    objc_storeStrong(&v18->_imageViewFactory, viewFactory);
+    objc_storeStrong(&v19->_mediaSharingPolicyProvider, policyProvider);
   }
 
   return v19;
 }
 
-- (void)loadComponent:(id)a3
+- (void)loadComponent:(id)component
 {
   v20.receiver = self;
   v20.super_class = SXImageComponentView;
-  [(SXComponentView *)&v20 loadComponent:a3];
+  [(SXComponentView *)&v20 loadComponent:component];
   if (!self->_imageView)
   {
-    v4 = [(SXComponentView *)self DOMObjectProvider];
-    v5 = [(SXComponentView *)self component];
-    v6 = [v5 imageIdentifier];
-    v7 = [v4 imageResourceForIdentifier:v6];
+    dOMObjectProvider = [(SXComponentView *)self DOMObjectProvider];
+    component = [(SXComponentView *)self component];
+    imageIdentifier = [component imageIdentifier];
+    v7 = [dOMObjectProvider imageResourceForIdentifier:imageIdentifier];
 
-    v8 = [(SXImageComponentView *)self imageViewFactory];
-    v9 = [v8 imageViewForResource:v7];
+    imageViewFactory = [(SXImageComponentView *)self imageViewFactory];
+    v9 = [imageViewFactory imageViewForResource:v7];
     imageView = self->_imageView;
     self->_imageView = v9;
 
     [(SXImageView *)self->_imageView setDelegate:self];
-    v11 = [(SXComponentView *)self contentView];
-    v12 = [(SXImageComponentView *)self imageView];
-    [v11 addSubview:v12];
+    contentView = [(SXComponentView *)self contentView];
+    imageView = [(SXImageComponentView *)self imageView];
+    [contentView addSubview:imageView];
 
-    v13 = [(SXComponentView *)self component];
-    -[SXImageView setIsAccessibilityElement:](self->_imageView, "setIsAccessibilityElement:", [v13 shouldBeExposedToAssistiveTechnology]);
+    component2 = [(SXComponentView *)self component];
+    -[SXImageView setIsAccessibilityElement:](self->_imageView, "setIsAccessibilityElement:", [component2 shouldBeExposedToAssistiveTechnology]);
 
-    v14 = [(SXComponentView *)self component];
-    v15 = [v14 captionWithLocalizedRoleForSpeaking];
-    [(SXImageView *)self->_imageView setAccessibilityLabel:v15];
+    component3 = [(SXComponentView *)self component];
+    captionWithLocalizedRoleForSpeaking = [component3 captionWithLocalizedRoleForSpeaking];
+    [(SXImageView *)self->_imageView setAccessibilityLabel:captionWithLocalizedRoleForSpeaking];
 
     v16 = [SXDragManager alloc];
-    v17 = [(SXImageComponentView *)self mediaSharingPolicyProvider];
-    v18 = -[SXDragManager initWithSharingPolicy:dataSource:](v16, "initWithSharingPolicy:dataSource:", [v17 mediaSharingPolicy], self);
+    mediaSharingPolicyProvider = [(SXImageComponentView *)self mediaSharingPolicyProvider];
+    v18 = -[SXDragManager initWithSharingPolicy:dataSource:](v16, "initWithSharingPolicy:dataSource:", [mediaSharingPolicyProvider mediaSharingPolicy], self);
     dragManager = self->_dragManager;
     self->_dragManager = v18;
 
@@ -76,9 +76,9 @@
 
 - (void)layoutImageView
 {
-  v3 = [(SXImageComponentView *)self imageView];
+  imageView = [(SXImageComponentView *)self imageView];
   [(SXImageComponentView *)self imageFrame];
-  [v3 setFrame:?];
+  [imageView setFrame:?];
 }
 
 - (CGRect)imageFrame
@@ -88,8 +88,8 @@
   y = v5;
   Width = v7;
   height = v9;
-  v11 = [(SXComponentView *)self componentLayout];
-  [v11 maximumContentWidth];
+  componentLayout = [(SXComponentView *)self componentLayout];
+  [componentLayout maximumContentWidth];
   v13 = v12;
 
   if (v13)
@@ -99,10 +99,10 @@
     v37.size.width = Width;
     v37.size.height = height;
     Width = CGRectGetWidth(v37);
-    v14 = [(SXComponentView *)self unitConverter];
-    v15 = [(SXComponentView *)self componentLayout];
-    v16 = [v15 maximumContentWidth];
-    [v14 convertValueToPoints:{v16, v17}];
+    unitConverter = [(SXComponentView *)self unitConverter];
+    componentLayout2 = [(SXComponentView *)self componentLayout];
+    maximumContentWidth = [componentLayout2 maximumContentWidth];
+    [unitConverter convertValueToPoints:{maximumContentWidth, v17}];
     v19 = v18;
 
     if (Width >= v19)
@@ -111,12 +111,12 @@
     }
   }
 
-  v20 = [(SXImageComponentView *)self imageResource];
-  [v20 dimensions];
+  imageResource = [(SXImageComponentView *)self imageResource];
+  [imageResource dimensions];
   if (v21 > 0.0)
   {
-    v22 = [(SXImageComponentView *)self imageResource];
-    [v22 dimensions];
+    imageResource2 = [(SXImageComponentView *)self imageResource];
+    [imageResource2 dimensions];
     v24 = v23;
 
     if (v24 <= 0.0)
@@ -124,8 +124,8 @@
       goto LABEL_8;
     }
 
-    v20 = [(SXImageComponentView *)self imageResource];
-    [v20 dimensions];
+    imageResource = [(SXImageComponentView *)self imageResource];
+    [imageResource dimensions];
     v45.origin.x = x;
     v45.origin.y = y;
     v45.size.width = Width;
@@ -138,8 +138,8 @@
   }
 
 LABEL_8:
-  v25 = [(SXComponentView *)self componentLayout];
-  if (![v25 horizontalContentAlignment])
+  componentLayout3 = [(SXComponentView *)self componentLayout];
+  if (![componentLayout3 horizontalContentAlignment])
   {
 
 LABEL_13:
@@ -155,12 +155,12 @@ LABEL_13:
     goto LABEL_15;
   }
 
-  v26 = [(SXComponentView *)self componentLayout];
-  v27 = [v26 horizontalContentAlignment];
+  componentLayout4 = [(SXComponentView *)self componentLayout];
+  horizontalContentAlignment = [componentLayout4 horizontalContentAlignment];
 
-  if (v27 != 1)
+  if (horizontalContentAlignment != 1)
   {
-    if (v27 == 3)
+    if (horizontalContentAlignment == 3)
     {
       [(SXComponentView *)self contentFrame];
       MaxX = CGRectGetMaxX(v39);
@@ -184,16 +184,16 @@ LABEL_15:
   return CGRectIntegral(*&v29);
 }
 
-- (void)presentComponentWithChanges:(id)a3
+- (void)presentComponentWithChanges:(id)changes
 {
   v8.receiver = self;
   v8.super_class = SXImageComponentView;
-  [(SXComponentView *)&v8 presentComponentWithChanges:*&a3.var0 & 0xFFFFFFLL];
+  [(SXComponentView *)&v8 presentComponentWithChanges:*&changes.var0 & 0xFFFFFFLL];
   [(SXImageComponentView *)self layoutImageView];
-  v4 = [(SXImageComponentView *)self imageView];
-  v5 = [(SXImageComponentView *)self imageView];
-  [v5 bounds];
-  [v4 setPreferredImageSize:{v6, v7}];
+  imageView = [(SXImageComponentView *)self imageView];
+  imageView2 = [(SXImageComponentView *)self imageView];
+  [imageView2 bounds];
+  [imageView setPreferredImageSize:{v6, v7}];
 }
 
 - (void)renderContents
@@ -201,8 +201,8 @@ LABEL_15:
   v4.receiver = self;
   v4.super_class = SXImageComponentView;
   [(SXComponentView *)&v4 renderContents];
-  v3 = [(SXImageComponentView *)self imageView];
-  [v3 addInterestInImageQuality:0 forObject:self];
+  imageView = [(SXImageComponentView *)self imageView];
+  [imageView addInterestInImageQuality:0 forObject:self];
 }
 
 - (void)discardContents
@@ -210,65 +210,65 @@ LABEL_15:
   v7.receiver = self;
   v7.super_class = SXImageComponentView;
   [(SXComponentView *)&v7 discardContents];
-  v3 = [(SXImageComponentView *)self imageView];
-  v4 = [v3 objectHasQualityInterest:self quality:0];
+  imageView = [(SXImageComponentView *)self imageView];
+  v4 = [imageView objectHasQualityInterest:self quality:0];
 
   if (v4)
   {
-    v5 = [(SXImageComponentView *)self imageView];
-    [v5 giveUpInterestForObject:self];
+    imageView2 = [(SXImageComponentView *)self imageView];
+    [imageView2 giveUpInterestForObject:self];
   }
 
-  v6 = [(SXImageComponentView *)self imageView];
-  [v6 setImage:0];
+  imageView3 = [(SXImageComponentView *)self imageView];
+  [imageView3 setImage:0];
 }
 
-- (void)visibilityStateDidChangeFromState:(int64_t)a3
+- (void)visibilityStateDidChangeFromState:(int64_t)state
 {
   v15.receiver = self;
   v15.super_class = SXImageComponentView;
   [(SXMediaComponentView *)&v15 visibilityStateDidChangeFromState:?];
   if ([(SXComponentView *)self visibilityState]== 1)
   {
-    v5 = [(SXImageComponentView *)self animatedImageController];
+    animatedImageController = [(SXImageComponentView *)self animatedImageController];
 
-    if (v5)
+    if (animatedImageController)
     {
-      v6 = [(SXImageComponentView *)self animatedImageController];
-      [(SXAnimatedImageController *)v6 registerForViewportChanges];
+      animatedImageController2 = [(SXImageComponentView *)self animatedImageController];
+      [(SXAnimatedImageController *)animatedImageController2 registerForViewportChanges];
     }
 
-    v7 = [(SXComponentView *)self component];
-    v8 = [v7 userControllable];
+    component = [(SXComponentView *)self component];
+    userControllable = [component userControllable];
 
-    if ((v8 & 1) == 0)
+    if ((userControllable & 1) == 0)
     {
-      v9 = [(SXImageComponentView *)self imageView];
-      [v9 resume];
+      imageView = [(SXImageComponentView *)self imageView];
+      [imageView resume];
 LABEL_12:
     }
   }
 
   else
   {
-    v10 = [(SXComponentView *)self visibilityState];
-    if (a3 == 1 && v10 == 2)
+    visibilityState = [(SXComponentView *)self visibilityState];
+    if (state == 1 && visibilityState == 2)
     {
-      v11 = [(SXImageComponentView *)self animatedImageController];
+      animatedImageController3 = [(SXImageComponentView *)self animatedImageController];
 
-      if (v11)
+      if (animatedImageController3)
       {
-        v12 = [(SXImageComponentView *)self animatedImageController];
-        [(SXAnimatedImageController *)v12 unregisterForViewportChanges];
+        animatedImageController4 = [(SXImageComponentView *)self animatedImageController];
+        [(SXAnimatedImageController *)animatedImageController4 unregisterForViewportChanges];
       }
 
-      v13 = [(SXComponentView *)self component];
-      v14 = [v13 userControllable];
+      component2 = [(SXComponentView *)self component];
+      userControllable2 = [component2 userControllable];
 
-      if ((v14 & 1) == 0)
+      if ((userControllable2 & 1) == 0)
       {
-        v9 = [(SXImageComponentView *)self imageView];
-        [v9 pause];
+        imageView = [(SXImageComponentView *)self imageView];
+        [imageView pause];
         goto LABEL_12;
       }
     }
@@ -277,8 +277,8 @@ LABEL_12:
 
 - (CGRect)transitionContentFrame
 {
-  v2 = [(SXImageComponentView *)self imageView];
-  [v2 frame];
+  imageView = [(SXImageComponentView *)self imageView];
+  [imageView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -295,60 +295,60 @@ LABEL_12:
   return result;
 }
 
-- (BOOL)usesThumbnailWithImageIdentifier:(id)a3
+- (BOOL)usesThumbnailWithImageIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SXComponentView *)self component];
-  v6 = [v5 imageIdentifier];
-  v7 = [v4 isEqualToString:v6];
+  identifierCopy = identifier;
+  component = [(SXComponentView *)self component];
+  imageIdentifier = [component imageIdentifier];
+  v7 = [identifierCopy isEqualToString:imageIdentifier];
 
   return v7;
 }
 
-- (void)imageView:(id)a3 didLoadAnimatedImage:(id)a4
+- (void)imageView:(id)view didLoadAnimatedImage:(id)image
 {
-  v14 = a3;
-  v5 = [(SXComponentView *)self component];
-  v6 = [v5 userControllable];
+  viewCopy = view;
+  component = [(SXComponentView *)self component];
+  userControllable = [component userControllable];
 
-  if (v6)
+  if (userControllable)
   {
-    v7 = [(SXImageComponentView *)self animatedImageController];
+    animatedImageController = [(SXImageComponentView *)self animatedImageController];
 
-    if (!v7)
+    if (!animatedImageController)
     {
       v8 = [SXAnimatedImageController alloc];
-      v9 = [(SXComponentView *)self viewport];
-      v10 = [(SXImageComponentView *)self imageView];
-      v11 = [(SXAnimatedImageController *)&v8->super.isa initWithImageComponentView:v9 viewport:v10 imageView:?];
+      viewport = [(SXComponentView *)self viewport];
+      imageView = [(SXImageComponentView *)self imageView];
+      v11 = [(SXAnimatedImageController *)&v8->super.isa initWithImageComponentView:viewport viewport:imageView imageView:?];
 
       [(SXImageComponentView *)self setAnimatedImageController:v11];
-      [v14 setAutoPlayEnabled:0];
+      [viewCopy setAutoPlayEnabled:0];
       if ([(SXComponentView *)self visibilityState]== 1)
       {
-        v12 = [(SXImageComponentView *)self animatedImageController];
-        [(SXAnimatedImageController *)v12 registerForViewportChanges];
+        animatedImageController2 = [(SXImageComponentView *)self animatedImageController];
+        [(SXAnimatedImageController *)animatedImageController2 registerForViewportChanges];
       }
     }
   }
 
   else if ([(SXComponentView *)self visibilityState]== 1)
   {
-    [v14 setAutoPlayEnabled:1];
-    [v14 resume];
+    [viewCopy setAutoPlayEnabled:1];
+    [viewCopy resume];
   }
 
   [(SXMediaComponentView *)self setIsDisplayingMedia:1];
-  v13 = [(SXImageComponentView *)self imageView];
-  [v13 setScrubbingEnabled:1];
+  imageView2 = [(SXImageComponentView *)self imageView];
+  [imageView2 setScrubbingEnabled:1];
 }
 
-- (id)contentViewForBehavior:(id)a3
+- (id)contentViewForBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   v11.receiver = self;
   v11.super_class = SXImageComponentView;
-  v5 = [(SXComponentView *)&v11 contentViewForBehavior:v4];
+  v5 = [(SXComponentView *)&v11 contentViewForBehavior:behaviorCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -361,22 +361,22 @@ LABEL_12:
     goto LABEL_7;
   }
 
-  v7 = [(SXComponentView *)self componentLayout];
-  [v7 maximumContentWidth];
+  componentLayout = [(SXComponentView *)self componentLayout];
+  [componentLayout maximumContentWidth];
   v9 = v8;
 
   if (!v9)
   {
 LABEL_2:
-    v6 = [(SXImageComponentView *)self imageView];
+    imageView = [(SXImageComponentView *)self imageView];
   }
 
   else
   {
-    v6 = 0;
+    imageView = 0;
   }
 
-  v5 = v6;
+  v5 = imageView;
 LABEL_7:
 
   return v5;
@@ -384,35 +384,35 @@ LABEL_7:
 
 - (id)imageResource
 {
-  v2 = [(SXImageComponentView *)self imageView];
-  v3 = [v2 imageResource];
+  imageView = [(SXImageComponentView *)self imageView];
+  imageResource = [imageView imageResource];
 
-  return v3;
+  return imageResource;
 }
 
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(SXComponentView *)self component];
-  v6 = [v5 identifier];
-  v7 = [(SXImageComponentView *)self imageResource];
-  [v7 dimensions];
+  component = [(SXComponentView *)self component];
+  identifier = [component identifier];
+  imageResource = [(SXImageComponentView *)self imageResource];
+  [imageResource dimensions];
   v8 = NSStringFromCGSize(v12);
-  v9 = [v3 stringWithFormat:@"<%@: %p identifier: %@>: %@", v4, self, v6, v8];;
+  v9 = [v3 stringWithFormat:@"<%@: %p identifier: %@>: %@", v4, self, identifier, v8];;
 
   return v9;
 }
 
 - (void)dealloc
 {
-  v3 = [(SXImageComponentView *)self imageView];
-  v4 = [v3 objectHasQualityInterest:self quality:0];
+  imageView = [(SXImageComponentView *)self imageView];
+  v4 = [imageView objectHasQualityInterest:self quality:0];
 
   if (v4)
   {
-    v5 = [(SXImageComponentView *)self imageView];
-    [v5 giveUpInterestForObject:self];
+    imageView2 = [(SXImageComponentView *)self imageView];
+    [imageView2 giveUpInterestForObject:self];
   }
 
   v6.receiver = self;

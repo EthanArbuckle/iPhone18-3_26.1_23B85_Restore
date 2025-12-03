@@ -1,26 +1,26 @@
 @interface ChargeModel
 - (_TtC6Charge11ChargeModel)init;
-- (void)carDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
-- (void)carDidUpdateAccessories:(id)a3;
-- (void)chargingRateService:(id)a3 didUpdateChargingSpeed:(id)a4;
-- (void)chargingStatusService:(void *)a1 didUpdateChargingState:;
-- (void)dimensionManager:(id)a3 didUpdateMeasurementSystem:(unint64_t)a4;
+- (void)carDidUpdate:(id)update receivedAllValues:(BOOL)values;
+- (void)carDidUpdateAccessories:(id)accessories;
+- (void)chargingRateService:(id)service didUpdateChargingSpeed:(id)speed;
+- (void)chargingStatusService:(void *)service didUpdateChargingState:;
+- (void)dimensionManager:(id)manager didUpdateMeasurementSystem:(unint64_t)system;
 @end
 
 @implementation ChargeModel
 
-- (void)carDidUpdateAccessories:(id)a3
+- (void)carDidUpdateAccessories:(id)accessories
 {
-  v3 = self;
+  selfCopy = self;
   sub_1000077DC(0xD000000000000020, 0x8000000100017B90, 0xD00000000000001BLL, 0x8000000100017BC0, 54);
   sub_100013D10();
 }
 
-- (void)carDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)carDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v4 = a4;
-  v5 = self;
-  if (v4)
+  valuesCopy = values;
+  selfCopy = self;
+  if (valuesCopy)
   {
     sub_1000077DC(0xD00000000000001FLL, 0x8000000100017B70, 0xD000000000000022, 0x8000000100017B40, 64);
     sub_100013D10();
@@ -32,19 +32,19 @@
   }
 }
 
-- (void)chargingStatusService:(void *)a1 didUpdateChargingState:
+- (void)chargingStatusService:(void *)service didUpdateChargingState:
 {
-  v1 = a1;
+  serviceCopy = service;
   sub_1000144C8();
 }
 
-- (void)chargingRateService:(id)a3 didUpdateChargingSpeed:(id)a4
+- (void)chargingRateService:(id)service didUpdateChargingSpeed:(id)speed
 {
   v5 = sub_100005790(&qword_100027300, &qword_10001A848);
   v6 = *(*(v5 - 8) + 64);
   __chkstk_darwin(v5 - 8);
   v8 = &v11 - v7;
-  if (a4)
+  if (speed)
   {
     sub_100005F24(0, &unk_100027310, NSUnitSpeed_ptr);
     static Measurement._unconditionallyBridgeFromObjectiveC(_:)();
@@ -61,9 +61,9 @@
   sub_100005EC4(v8, &qword_100027300, &qword_10001A848);
 }
 
-- (void)dimensionManager:(id)a3 didUpdateMeasurementSystem:(unint64_t)a4
+- (void)dimensionManager:(id)manager didUpdateMeasurementSystem:(unint64_t)system
 {
-  v4 = self;
+  selfCopy = self;
   sub_100014618();
 }
 

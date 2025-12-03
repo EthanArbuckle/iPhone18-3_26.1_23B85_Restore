@@ -1,23 +1,23 @@
 @interface MADAutoAssetLookupGrant
-- (MADAutoAssetLookupGrant)initWithCoder:(id)a3;
+- (MADAutoAssetLookupGrant)initWithCoder:(id)coder;
 - (id)description;
-- (id)initForAssetType:(id)a3;
+- (id)initForAssetType:(id)type;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoAssetLookupGrant
 
-- (id)initForAssetType:(id)a3
+- (id)initForAssetType:(id)type
 {
-  v5 = a3;
+  typeCopy = type;
   v12.receiver = self;
   v12.super_class = MADAutoAssetLookupGrant;
   v6 = [(MADAutoAssetLookupGrant *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_assetType, a3);
+    objc_storeStrong(&v6->_assetType, type);
     holderJobUUID = v7->_holderJobUUID;
     v7->_holderJobUUID = 0;
 
@@ -29,9 +29,9 @@
   return v7;
 }
 
-- (MADAutoAssetLookupGrant)initWithCoder:(id)a3
+- (MADAutoAssetLookupGrant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MADAutoAssetLookupGrant;
   v5 = [(MADAutoAssetLookupGrant *)&v15 init];
@@ -42,15 +42,15 @@
     v6 = [NSArray arrayWithObjects:v16 count:2];
     v7 = [NSSet setWithArray:v6];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assetType"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assetType"];
     assetType = v5->_assetType;
     v5->_assetType = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"holderJobUUID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"holderJobUUID"];
     holderJobUUID = v5->_holderJobUUID;
     v5->_holderJobUUID = v10;
 
-    v12 = [v4 decodeObjectOfClasses:v7 forKey:@"awaitingExclusiveGrant"];
+    v12 = [coderCopy decodeObjectOfClasses:v7 forKey:@"awaitingExclusiveGrant"];
     awaitingExclusiveGrant = v5->_awaitingExclusiveGrant;
     v5->_awaitingExclusiveGrant = v12;
   }
@@ -58,17 +58,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MADAutoAssetLookupGrant *)self assetType];
-  [v4 encodeObject:v5 forKey:@"assetType"];
+  coderCopy = coder;
+  assetType = [(MADAutoAssetLookupGrant *)self assetType];
+  [coderCopy encodeObject:assetType forKey:@"assetType"];
 
-  v6 = [(MADAutoAssetLookupGrant *)self holderJobUUID];
-  [v4 encodeObject:v6 forKey:@"holderJobUUID"];
+  holderJobUUID = [(MADAutoAssetLookupGrant *)self holderJobUUID];
+  [coderCopy encodeObject:holderJobUUID forKey:@"holderJobUUID"];
 
-  v7 = [(MADAutoAssetLookupGrant *)self awaitingExclusiveGrant];
-  [v4 encodeObject:v7 forKey:@"awaitingExclusiveGrant"];
+  awaitingExclusiveGrant = [(MADAutoAssetLookupGrant *)self awaitingExclusiveGrant];
+  [coderCopy encodeObject:awaitingExclusiveGrant forKey:@"awaitingExclusiveGrant"];
 }
 
 - (id)description
@@ -77,8 +77,8 @@
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v2 = [(MADAutoAssetLookupGrant *)self awaitingExclusiveGrant];
-  v3 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  awaitingExclusiveGrant = [(MADAutoAssetLookupGrant *)self awaitingExclusiveGrant];
+  v3 = [awaitingExclusiveGrant countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v3)
   {
     v4 = v3;
@@ -93,7 +93,7 @@
       {
         if (*v16 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(awaitingExclusiveGrant);
         }
 
         v7 = [[NSString alloc] initWithFormat:@"%@%@%@", v9, v5, *(*(&v15 + 1) + 8 * v8)];
@@ -104,7 +104,7 @@
       }
 
       while (v4 != v8);
-      v4 = [v2 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v4 = [awaitingExclusiveGrant countByEnumeratingWithState:&v15 objects:v19 count:16];
       v5 = @"|";
       v10 = v7;
     }
@@ -118,30 +118,30 @@
     v7 = @"NONE";
   }
 
-  v11 = [(MADAutoAssetLookupGrant *)self summary];
-  v12 = [NSString stringWithFormat:@"%@|awaiting:[%@]", v11, v7];
+  summary = [(MADAutoAssetLookupGrant *)self summary];
+  v12 = [NSString stringWithFormat:@"%@|awaiting:[%@]", summary, v7];
 
   return v12;
 }
 
 - (id)summary
 {
-  v3 = [(MADAutoAssetLookupGrant *)self assetType];
-  v4 = [(MADAutoAssetLookupGrant *)self holderJobUUID];
-  if (v4)
+  assetType = [(MADAutoAssetLookupGrant *)self assetType];
+  holderJobUUID = [(MADAutoAssetLookupGrant *)self holderJobUUID];
+  if (holderJobUUID)
   {
-    v5 = [(MADAutoAssetLookupGrant *)self holderJobUUID];
+    holderJobUUID2 = [(MADAutoAssetLookupGrant *)self holderJobUUID];
   }
 
   else
   {
-    v5 = @"N";
+    holderJobUUID2 = @"N";
   }
 
-  v6 = [(MADAutoAssetLookupGrant *)self awaitingExclusiveGrant];
-  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"[assetType:%@|holderJobUUID:%@|awaitingGrant:%ld]", v3, v5, [v6 count]);
+  awaitingExclusiveGrant = [(MADAutoAssetLookupGrant *)self awaitingExclusiveGrant];
+  v7 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"[assetType:%@|holderJobUUID:%@|awaitingGrant:%ld]", assetType, holderJobUUID2, [awaitingExclusiveGrant count]);
 
-  if (v4)
+  if (holderJobUUID)
   {
   }
 

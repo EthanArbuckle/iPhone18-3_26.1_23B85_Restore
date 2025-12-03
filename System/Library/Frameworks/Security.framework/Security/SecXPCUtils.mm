@@ -1,19 +1,19 @@
 @interface SecXPCUtils
 + (BOOL)clientCanEditPreferenceOwnership;
 + (__CFString)copyApplicationIdentifier;
-+ (__CFString)copyApplicationIdentifierFromConnection:(id)a3;
++ (__CFString)copyApplicationIdentifierFromConnection:(id)connection;
 + (__CFString)copyApplicationIdentifierFromSelf;
-+ (__CFString)copySigningIdentifier:(id)a3;
++ (__CFString)copySigningIdentifier:(id)identifier;
 @end
 
 @implementation SecXPCUtils
 
 + (__CFString)copyApplicationIdentifier
 {
-  v2 = [MEMORY[0x1E696B0B8] currentConnection];
-  if (v2)
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  if (currentConnection)
   {
-    v3 = [SecXPCUtils copyApplicationIdentifierFromConnection:v2];
+    v3 = [SecXPCUtils copyApplicationIdentifierFromConnection:currentConnection];
   }
 
   else
@@ -26,10 +26,10 @@
   return v4;
 }
 
-+ (__CFString)copyApplicationIdentifierFromConnection:(id)a3
++ (__CFString)copyApplicationIdentifierFromConnection:(id)connection
 {
-  v3 = a3;
-  v4 = [v3 valueForEntitlement:@"application-identifier"];
+  connectionCopy = connection;
+  v4 = [connectionCopy valueForEntitlement:@"application-identifier"];
   if (v4)
   {
     v5 = v4;
@@ -37,11 +37,11 @@
 
   else
   {
-    v5 = [v3 valueForEntitlement:@"com.apple.application-identifier"];
+    v5 = [connectionCopy valueForEntitlement:@"com.apple.application-identifier"];
     if (!v5)
     {
 LABEL_6:
-      Copy = [SecXPCUtils copySigningIdentifier:v3];
+      Copy = [SecXPCUtils copySigningIdentifier:connectionCopy];
       goto LABEL_7;
     }
   }
@@ -99,13 +99,13 @@ LABEL_8:
   return [SecXPCUtils copySigningIdentifier:0];
 }
 
-+ (__CFString)copySigningIdentifier:(id)a3
++ (__CFString)copySigningIdentifier:(id)identifier
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  identifierCopy = identifier;
+  v4 = identifierCopy;
+  if (identifierCopy)
   {
-    [v3 auditToken];
+    [identifierCopy auditToken];
     v5 = SecTaskCreateWithAuditToken(0, &v9);
   }
 
@@ -131,11 +131,11 @@ LABEL_8:
 
 + (BOOL)clientCanEditPreferenceOwnership
 {
-  v2 = [MEMORY[0x1E696B0B8] currentConnection];
-  v3 = v2;
-  if (v2)
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
+  v3 = currentConnection;
+  if (currentConnection)
   {
-    v4 = [v2 valueForEntitlement:@"keychain-access-groups"];
+    v4 = [currentConnection valueForEntitlement:@"keychain-access-groups"];
     if (v4 && [v4 isMemberOfClass:objc_opt_class()] && (objc_msgSend(v4, "containsObject:", @"*") & 1) != 0)
     {
 

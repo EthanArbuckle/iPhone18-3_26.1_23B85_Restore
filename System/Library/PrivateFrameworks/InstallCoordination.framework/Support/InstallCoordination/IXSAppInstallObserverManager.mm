@@ -2,34 +2,34 @@
 + (id)sharedInstance;
 - (IXSAppInstallObserverManager)init;
 - (NSURL)saveURL;
-- (id)_onQueue_connectionForObserverEndpoint:(id)a3;
-- (id)_onQueue_connectionForServiceName:(id)a3;
-- (void)_callHandlerForClientConnections:(id)a3;
-- (void)_messageInterestedServicesForClientIDs:(id)a3 forMethod:(unint64_t)a4 callMethodOnProxy:(id)a5;
-- (void)_messageInterestedServicesForMethod:(unint64_t)a3 callMethodOnProxy:(id)a4;
-- (void)_onQueue_callRemoteObjectProxyForServiceEndpoint:(id)a3 errorHandler:(id)a4 callHandler:(id)a5;
-- (void)_onQueue_callRemoteObjectProxyForServiceName:(id)a3 errorHandler:(id)a4 callHandler:(id)a5;
-- (void)_onQueue_messageMachServices:(id)a3 forMethod:(unint64_t)a4 callMethodOnProxy:(id)a5 exceptServices:(id)a6;
-- (void)_onQueue_messageXPCListenerEndpoints:(id)a3 forMethod:(unint64_t)a4 callMethodOnProxy:(id)a5 exceptEndpoints:(id)a6;
+- (id)_onQueue_connectionForObserverEndpoint:(id)endpoint;
+- (id)_onQueue_connectionForServiceName:(id)name;
+- (void)_callHandlerForClientConnections:(id)connections;
+- (void)_messageInterestedServicesForClientIDs:(id)ds forMethod:(unint64_t)method callMethodOnProxy:(id)proxy;
+- (void)_messageInterestedServicesForMethod:(unint64_t)method callMethodOnProxy:(id)proxy;
+- (void)_onQueue_callRemoteObjectProxyForServiceEndpoint:(id)endpoint errorHandler:(id)handler callHandler:(id)callHandler;
+- (void)_onQueue_callRemoteObjectProxyForServiceName:(id)name errorHandler:(id)handler callHandler:(id)callHandler;
+- (void)_onQueue_messageMachServices:(id)services forMethod:(unint64_t)method callMethodOnProxy:(id)proxy exceptServices:(id)exceptServices;
+- (void)_onQueue_messageXPCListenerEndpoints:(id)endpoints forMethod:(unint64_t)method callMethodOnProxy:(id)proxy exceptEndpoints:(id)exceptEndpoints;
 - (void)_saveMapping;
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5;
-- (void)coordinator:(id)a3 configuredPromiseDidBeginFulfillment:(unint64_t)a4;
-- (void)coordinator:(id)a3 didUpdateProgress:(double)a4 forPhase:(unint64_t)a5 overallProgress:(double)a6;
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forRecordPromise:(id)a4;
-- (void)coordinatorDidInstallPlaceholder:(id)a3 forRecordPromise:(id)a4;
-- (void)coordinatorShouldBeginPostProcessing:(id)a3 forRecordPromise:(id)a4;
-- (void)coordinatorShouldBeginRestoringUserData:(id)a3;
-- (void)coordinatorShouldPause:(id)a3;
-- (void)coordinatorShouldPrioritize:(id)a3;
-- (void)coordinatorShouldResume:(id)a3;
-- (void)mayUninstallAppWithIdentity:(id)a3;
-- (void)promise:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5;
-- (void)promiseDidCompleteSuccessfully:(id)a3;
-- (void)registerClientConnection:(id)a3;
-- (void)registerListenerEndpoint:(id)a3 forClientIDs:(id)a4 respondingToSelectors:(unint64_t)a5;
-- (void)registerMachServiceName:(id)a3 forClientIDs:(id)a4 respondingToSelectors:(unint64_t)a5;
-- (void)shouldPrioritizeAppWithIdentity:(id)a3 forClientIDs:(id)a4;
-- (void)unregisterClientConnection:(id)a3;
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client;
+- (void)coordinator:(id)coordinator configuredPromiseDidBeginFulfillment:(unint64_t)fulfillment;
+- (void)coordinator:(id)coordinator didUpdateProgress:(double)progress forPhase:(unint64_t)phase overallProgress:(double)overallProgress;
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forRecordPromise:(id)promise;
+- (void)coordinatorDidInstallPlaceholder:(id)placeholder forRecordPromise:(id)promise;
+- (void)coordinatorShouldBeginPostProcessing:(id)processing forRecordPromise:(id)promise;
+- (void)coordinatorShouldBeginRestoringUserData:(id)data;
+- (void)coordinatorShouldPause:(id)pause;
+- (void)coordinatorShouldPrioritize:(id)prioritize;
+- (void)coordinatorShouldResume:(id)resume;
+- (void)mayUninstallAppWithIdentity:(id)identity;
+- (void)promise:(id)promise canceledWithReason:(id)reason client:(unint64_t)client;
+- (void)promiseDidCompleteSuccessfully:(id)successfully;
+- (void)registerClientConnection:(id)connection;
+- (void)registerListenerEndpoint:(id)endpoint forClientIDs:(id)ds respondingToSelectors:(unint64_t)selectors;
+- (void)registerMachServiceName:(id)name forClientIDs:(id)ds respondingToSelectors:(unint64_t)selectors;
+- (void)shouldPrioritizeAppWithIdentity:(id)identity forClientIDs:(id)ds;
+- (void)unregisterClientConnection:(id)connection;
 @end
 
 @implementation IXSAppInstallObserverManager
@@ -40,7 +40,7 @@
   block[1] = 3221225472;
   block[2] = sub_10002BA9C;
   block[3] = &unk_100100D40;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100121D10 != -1)
   {
     dispatch_once(&qword_100121D10, block);
@@ -54,9 +54,9 @@
 - (NSURL)saveURL
 {
   v2 = +[IXGlobalConfiguration sharedInstance];
-  v3 = [v2 dataDirectoryAbortingOnError];
+  dataDirectoryAbortingOnError = [v2 dataDirectoryAbortingOnError];
 
-  v4 = [v3 URLByAppendingPathComponent:@"ObserverRegistry.plist" isDirectory:0];
+  v4 = [dataDirectoryAbortingOnError URLByAppendingPathComponent:@"ObserverRegistry.plist" isDirectory:0];
 
   return v4;
 }
@@ -73,9 +73,9 @@
     internalQueue = v2->_internalQueue;
     v2->_internalQueue = v4;
 
-    v6 = [(IXSAppInstallObserverManager *)v2 saveURL];
+    saveURL = [(IXSAppInstallObserverManager *)v2 saveURL];
     v83 = 0;
-    v7 = [NSData dataWithContentsOfURL:v6 options:3 error:&v83];
+    v7 = [NSData dataWithContentsOfURL:saveURL options:3 error:&v83];
     v8 = v83;
 
     v9 = &MKBDeviceUnlockedSinceBoot_ptr;
@@ -221,8 +221,8 @@ LABEL_29:
           v2->_serviceRespondsToMap = v59;
 
           v61 = +[IXFileManager defaultManager];
-          v62 = [(IXSAppInstallObserverManager *)v2 saveURL];
-          [v61 removeItemAtURL:v62 error:0];
+          saveURL2 = [(IXSAppInstallObserverManager *)v2 saveURL];
+          [v61 removeItemAtURL:saveURL2 error:0];
 
           v11 = v8;
           goto LABEL_30;
@@ -267,19 +267,19 @@ LABEL_29:
 - (void)_saveMapping
 {
   v3 = [[NSKeyedArchiver alloc] initRequiringSecureCoding:1];
-  v4 = [(IXSAppInstallObserverManager *)self clientToObserverServiceNameMap];
-  [v3 encodeObject:v4 forKey:@"ClientObserverMap"];
+  clientToObserverServiceNameMap = [(IXSAppInstallObserverManager *)self clientToObserverServiceNameMap];
+  [v3 encodeObject:clientToObserverServiceNameMap forKey:@"ClientObserverMap"];
 
-  v5 = [(IXSAppInstallObserverManager *)self serviceRespondsToMap];
-  [v3 encodeObject:v5 forKey:@"RespondsToMap"];
+  serviceRespondsToMap = [(IXSAppInstallObserverManager *)self serviceRespondsToMap];
+  [v3 encodeObject:serviceRespondsToMap forKey:@"RespondsToMap"];
 
-  v6 = [v3 encodedData];
+  encodedData = [v3 encodedData];
 
-  if (v6)
+  if (encodedData)
   {
-    v7 = [(IXSAppInstallObserverManager *)self saveURL];
+    saveURL = [(IXSAppInstallObserverManager *)self saveURL];
     v13 = 0;
-    v8 = [v6 writeToURL:v7 options:268435457 error:&v13];
+    v8 = [encodedData writeToURL:saveURL options:268435457 error:&v13];
     v9 = v13;
 
     if ((v8 & 1) == 0)
@@ -287,12 +287,12 @@ LABEL_29:
       v10 = sub_1000031B0(off_100121958);
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [(IXSAppInstallObserverManager *)self saveURL];
-        v12 = [v11 path];
+        saveURL2 = [(IXSAppInstallObserverManager *)self saveURL];
+        path = [saveURL2 path];
         *buf = 136315650;
         v15 = "[IXSAppInstallObserverManager _saveMapping]";
         v16 = 2112;
-        v17 = v12;
+        v17 = path;
         v18 = 2112;
         v19 = v9;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s: Failed to write observer map to %@ : %@", buf, 0x20u);
@@ -301,81 +301,81 @@ LABEL_29:
   }
 }
 
-- (void)registerMachServiceName:(id)a3 forClientIDs:(id)a4 respondingToSelectors:(unint64_t)a5
+- (void)registerMachServiceName:(id)name forClientIDs:(id)ds respondingToSelectors:(unint64_t)selectors
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(IXSAppInstallObserverManager *)self internalQueue];
+  nameCopy = name;
+  dsCopy = ds;
+  internalQueue = [(IXSAppInstallObserverManager *)self internalQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10002C93C;
   v13[3] = &unk_1001015A0;
-  v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v17 = a5;
-  v11 = v8;
-  v12 = v9;
-  dispatch_sync(v10, v13);
+  v14 = dsCopy;
+  selfCopy = self;
+  v16 = nameCopy;
+  selectorsCopy = selectors;
+  v11 = nameCopy;
+  v12 = dsCopy;
+  dispatch_sync(internalQueue, v13);
 }
 
-- (void)registerListenerEndpoint:(id)a3 forClientIDs:(id)a4 respondingToSelectors:(unint64_t)a5
+- (void)registerListenerEndpoint:(id)endpoint forClientIDs:(id)ds respondingToSelectors:(unint64_t)selectors
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [(IXSAppInstallObserverManager *)self internalQueue];
+  endpointCopy = endpoint;
+  dsCopy = ds;
+  internalQueue = [(IXSAppInstallObserverManager *)self internalQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10002CC50;
   v13[3] = &unk_1001015A0;
-  v14 = v9;
-  v15 = self;
-  v16 = v8;
-  v17 = a5;
-  v11 = v8;
-  v12 = v9;
-  dispatch_sync(v10, v13);
+  v14 = dsCopy;
+  selfCopy = self;
+  v16 = endpointCopy;
+  selectorsCopy = selectors;
+  v11 = endpointCopy;
+  v12 = dsCopy;
+  dispatch_sync(internalQueue, v13);
 }
 
-- (void)registerClientConnection:(id)a3
+- (void)registerClientConnection:(id)connection
 {
-  v4 = a3;
-  v5 = [(IXSAppInstallObserverManager *)self internalQueue];
+  connectionCopy = connection;
+  internalQueue = [(IXSAppInstallObserverManager *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002CEF0;
   v7[3] = &unk_100100ED8;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = connectionCopy;
+  selfCopy = self;
+  v6 = connectionCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)unregisterClientConnection:(id)a3
+- (void)unregisterClientConnection:(id)connection
 {
-  v4 = a3;
-  if (v4)
+  connectionCopy = connection;
+  if (connectionCopy)
   {
-    v5 = [(IXSAppInstallObserverManager *)self internalQueue];
+    internalQueue = [(IXSAppInstallObserverManager *)self internalQueue];
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_10002D088;
     v6[3] = &unk_100100ED8;
-    v7 = v4;
-    v8 = self;
-    dispatch_async(v5, v6);
+    v7 = connectionCopy;
+    selfCopy = self;
+    dispatch_async(internalQueue, v6);
   }
 }
 
-- (id)_onQueue_connectionForServiceName:(id)a3
+- (id)_onQueue_connectionForServiceName:(id)name
 {
-  v4 = a3;
-  v5 = [(IXSAppInstallObserverManager *)self serviceToConnectionMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  nameCopy = name;
+  serviceToConnectionMap = [(IXSAppInstallObserverManager *)self serviceToConnectionMap];
+  v6 = [serviceToConnectionMap objectForKeyedSubscript:nameCopy];
 
   if (!v6)
   {
-    v7 = [[NSXPCConnection alloc] initWithMachServiceName:v4 options:4096];
+    v7 = [[NSXPCConnection alloc] initWithMachServiceName:nameCopy options:4096];
     if (v7)
     {
       v8 = v7;
@@ -387,7 +387,7 @@ LABEL_29:
       v19[1] = 3221225472;
       v19[2] = sub_10002D460;
       v19[3] = &unk_100101A68;
-      v10 = v4;
+      v10 = nameCopy;
       v20 = v10;
       objc_copyWeak(&v21, location);
       [v8 setInterruptionHandler:v19];
@@ -401,8 +401,8 @@ LABEL_29:
       objc_copyWeak(&v17, &from);
       [v8 setInvalidationHandler:v15];
       [v8 resume];
-      v12 = [(IXSAppInstallObserverManager *)self serviceToConnectionMap];
-      [v12 setObject:v8 forKeyedSubscript:v11];
+      serviceToConnectionMap2 = [(IXSAppInstallObserverManager *)self serviceToConnectionMap];
+      [serviceToConnectionMap2 setObject:v8 forKeyedSubscript:v11];
 
       v13 = v8;
       objc_destroyWeak(&v17);
@@ -422,7 +422,7 @@ LABEL_29:
         *location = 136315394;
         *&location[4] = "[IXSAppInstallObserverManager _onQueue_connectionForServiceName:]";
         v23 = 2112;
-        v24 = v4;
+        v24 = nameCopy;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s: Failed to create NSXPCConnection for service %@", location, 0x16u);
       }
 
@@ -433,16 +433,16 @@ LABEL_29:
   return v6;
 }
 
-- (void)_onQueue_callRemoteObjectProxyForServiceName:(id)a3 errorHandler:(id)a4 callHandler:(id)a5
+- (void)_onQueue_callRemoteObjectProxyForServiceName:(id)name errorHandler:(id)handler callHandler:(id)callHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(IXSAppInstallObserverManager *)self _onQueue_connectionForServiceName:a3];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
+  callHandlerCopy = callHandler;
+  handlerCopy = handler;
+  v10 = [(IXSAppInstallObserverManager *)self _onQueue_connectionForServiceName:name];
+  v11 = [v10 remoteObjectProxyWithErrorHandler:handlerCopy];
 
   if (v11)
   {
-    v8[2](v8, v11);
+    callHandlerCopy[2](callHandlerCopy, v11);
   }
 
   else
@@ -459,10 +459,10 @@ LABEL_29:
   }
 }
 
-- (id)_onQueue_connectionForObserverEndpoint:(id)a3
+- (id)_onQueue_connectionForObserverEndpoint:(id)endpoint
 {
-  v3 = a3;
-  v4 = [[NSXPCConnection alloc] initWithListenerEndpoint:v3];
+  endpointCopy = endpoint;
+  v4 = [[NSXPCConnection alloc] initWithListenerEndpoint:endpointCopy];
   if (v4)
   {
     v5 = +[IXAppInstallObserverProtocolInterface interface];
@@ -472,7 +472,7 @@ LABEL_29:
     v15[1] = 3221225472;
     v15[2] = sub_10002DA20;
     v15[3] = &unk_1001010A0;
-    v6 = v3;
+    v6 = endpointCopy;
     v16 = v6;
     [v4 setInterruptionHandler:v15];
     v10 = _NSConcreteStackBlock;
@@ -495,7 +495,7 @@ LABEL_29:
       *buf = 136315394;
       v18 = "[IXSAppInstallObserverManager _onQueue_connectionForObserverEndpoint:]";
       v19 = 2112;
-      v20 = v3;
+      v20 = endpointCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s: Failed to create NSXPCConnection for endpoint %@", buf, 0x16u);
     }
   }
@@ -503,16 +503,16 @@ LABEL_29:
   return v4;
 }
 
-- (void)_onQueue_callRemoteObjectProxyForServiceEndpoint:(id)a3 errorHandler:(id)a4 callHandler:(id)a5
+- (void)_onQueue_callRemoteObjectProxyForServiceEndpoint:(id)endpoint errorHandler:(id)handler callHandler:(id)callHandler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = [(IXSAppInstallObserverManager *)self _onQueue_connectionForObserverEndpoint:a3];
-  v11 = [v10 remoteObjectProxyWithErrorHandler:v9];
+  callHandlerCopy = callHandler;
+  handlerCopy = handler;
+  v10 = [(IXSAppInstallObserverManager *)self _onQueue_connectionForObserverEndpoint:endpoint];
+  v11 = [v10 remoteObjectProxyWithErrorHandler:handlerCopy];
 
   if (v11)
   {
-    v8[2](v8, v11);
+    callHandlerCopy[2](callHandlerCopy, v11);
   }
 
   else
@@ -531,19 +531,19 @@ LABEL_29:
   [v10 invalidate];
 }
 
-- (void)_onQueue_messageMachServices:(id)a3 forMethod:(unint64_t)a4 callMethodOnProxy:(id)a5 exceptServices:(id)a6
+- (void)_onQueue_messageMachServices:(id)services forMethod:(unint64_t)method callMethodOnProxy:(id)proxy exceptServices:(id)exceptServices
 {
-  v10 = a3;
-  v27 = a5;
-  v11 = a6;
-  v12 = [(IXSAppInstallObserverManager *)self internalQueue];
-  dispatch_assert_queue_V2(v12);
+  servicesCopy = services;
+  proxyCopy = proxy;
+  exceptServicesCopy = exceptServices;
+  internalQueue = [(IXSAppInstallObserverManager *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v10;
+  obj = servicesCopy;
   v13 = [obj countByEnumeratingWithState:&v30 objects:v40 count:16];
   if (v13)
   {
@@ -561,19 +561,19 @@ LABEL_29:
         }
 
         v18 = *(*(&v30 + 1) + 8 * i);
-        if (([v11 containsObject:{v18, v26}] & 1) == 0)
+        if (([exceptServicesCopy containsObject:{v18, v26}] & 1) == 0)
         {
-          v19 = [(IXSAppInstallObserverManager *)self serviceRespondsToMap];
-          v20 = [v19 objectForKeyedSubscript:v18];
-          v21 = [v20 unsignedIntegerValue];
+          serviceRespondsToMap = [(IXSAppInstallObserverManager *)self serviceRespondsToMap];
+          v20 = [serviceRespondsToMap objectForKeyedSubscript:v18];
+          unsignedIntegerValue = [v20 unsignedIntegerValue];
 
           v22 = sub_1000031B0(off_100121958);
           v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
-          if ((v21 & a4) != 0)
+          if ((unsignedIntegerValue & method) != 0)
           {
             if (v23)
             {
-              v24 = sub_10002C2F0(a4);
+              v24 = sub_10002C2F0(method);
               *buf = v26;
               v35 = "[IXSAppInstallObserverManager _onQueue_messageMachServices:forMethod:callMethodOnProxy:exceptServices:]";
               v36 = 2112;
@@ -588,16 +588,16 @@ LABEL_29:
             v29[2] = sub_10002DF8C;
             v29[3] = &unk_100101A90;
             v29[4] = v18;
-            v29[5] = a4;
-            [(IXSAppInstallObserverManager *)self _onQueue_callRemoteObjectProxyForServiceName:v18 errorHandler:v29 callHandler:v27];
-            [v11 addObject:v18];
+            v29[5] = method;
+            [(IXSAppInstallObserverManager *)self _onQueue_callRemoteObjectProxyForServiceName:v18 errorHandler:v29 callHandler:proxyCopy];
+            [exceptServicesCopy addObject:v18];
           }
 
           else
           {
             if (v23)
             {
-              v25 = sub_10002C2F0(a4);
+              v25 = sub_10002C2F0(method);
               *buf = v26;
               v35 = "[IXSAppInstallObserverManager _onQueue_messageMachServices:forMethod:callMethodOnProxy:exceptServices:]";
               v36 = 2112;
@@ -617,20 +617,20 @@ LABEL_29:
   }
 }
 
-- (void)_onQueue_messageXPCListenerEndpoints:(id)a3 forMethod:(unint64_t)a4 callMethodOnProxy:(id)a5 exceptEndpoints:(id)a6
+- (void)_onQueue_messageXPCListenerEndpoints:(id)endpoints forMethod:(unint64_t)method callMethodOnProxy:(id)proxy exceptEndpoints:(id)exceptEndpoints
 {
-  v10 = a3;
-  v29 = a5;
-  v11 = a6;
-  v31 = self;
-  v12 = [(IXSAppInstallObserverManager *)self internalQueue];
-  dispatch_assert_queue_V2(v12);
+  endpointsCopy = endpoints;
+  proxyCopy = proxy;
+  exceptEndpointsCopy = exceptEndpoints;
+  selfCopy = self;
+  internalQueue = [(IXSAppInstallObserverManager *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v36 = 0u;
   v37 = 0u;
   v34 = 0u;
   v35 = 0u;
-  obj = v10;
+  obj = endpointsCopy;
   v13 = [obj countByEnumeratingWithState:&v34 objects:v44 count:16];
   if (v13)
   {
@@ -649,20 +649,20 @@ LABEL_29:
         }
 
         v18 = *(*(&v34 + 1) + 8 * i);
-        if (([v11 containsObject:{v18, v27, v28}] & 1) == 0)
+        if (([exceptEndpointsCopy containsObject:{v18, v27, v28}] & 1) == 0)
         {
-          v19 = [(IXSAppInstallObserverManager *)v31 listenerRespondsToMap];
+          listenerRespondsToMap = [(IXSAppInstallObserverManager *)selfCopy listenerRespondsToMap];
           v20 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v18 hash]);
-          v21 = [v19 objectForKeyedSubscript:v20];
-          v22 = [v21 unsignedIntegerValue];
+          v21 = [listenerRespondsToMap objectForKeyedSubscript:v20];
+          unsignedIntegerValue = [v21 unsignedIntegerValue];
 
           v23 = sub_1000031B0(off_100121958);
           v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT);
-          if ((v22 & a4) != 0)
+          if ((unsignedIntegerValue & method) != 0)
           {
             if (v24)
             {
-              v25 = sub_10002C2F0(a4);
+              v25 = sub_10002C2F0(method);
               *buf = v27;
               v39 = "[IXSAppInstallObserverManager _onQueue_messageXPCListenerEndpoints:forMethod:callMethodOnProxy:exceptEndpoints:]";
               v40 = 2112;
@@ -677,16 +677,16 @@ LABEL_29:
             v33[0] = sub_10002E334;
             v33[1] = &unk_100101A90;
             v33[2] = v18;
-            v33[3] = a4;
-            [(IXSAppInstallObserverManager *)v31 _onQueue_callRemoteObjectProxyForServiceEndpoint:v18 errorHandler:v32 callHandler:v29];
-            [v11 addObject:v18];
+            v33[3] = method;
+            [(IXSAppInstallObserverManager *)selfCopy _onQueue_callRemoteObjectProxyForServiceEndpoint:v18 errorHandler:v32 callHandler:proxyCopy];
+            [exceptEndpointsCopy addObject:v18];
           }
 
           else
           {
             if (v24)
             {
-              v26 = sub_10002C2F0(a4);
+              v26 = sub_10002C2F0(method);
               *buf = v27;
               v39 = "[IXSAppInstallObserverManager _onQueue_messageXPCListenerEndpoints:forMethod:callMethodOnProxy:exceptEndpoints:]";
               v40 = 2112;
@@ -706,65 +706,65 @@ LABEL_29:
   }
 }
 
-- (void)_messageInterestedServicesForMethod:(unint64_t)a3 callMethodOnProxy:(id)a4
+- (void)_messageInterestedServicesForMethod:(unint64_t)method callMethodOnProxy:(id)proxy
 {
-  v6 = a4;
-  v7 = [(IXSAppInstallObserverManager *)self internalQueue];
+  proxyCopy = proxy;
+  internalQueue = [(IXSAppInstallObserverManager *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002E460;
   block[3] = &unk_100101AB8;
-  v10 = v6;
-  v11 = a3;
+  v10 = proxyCopy;
+  methodCopy = method;
   block[4] = self;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v8 = proxyCopy;
+  dispatch_sync(internalQueue, block);
 }
 
-- (void)_messageInterestedServicesForClientIDs:(id)a3 forMethod:(unint64_t)a4 callMethodOnProxy:(id)a5
+- (void)_messageInterestedServicesForClientIDs:(id)ds forMethod:(unint64_t)method callMethodOnProxy:(id)proxy
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [(IXSAppInstallObserverManager *)self internalQueue];
+  dsCopy = ds;
+  proxyCopy = proxy;
+  internalQueue = [(IXSAppInstallObserverManager *)self internalQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10002E734;
   v13[3] = &unk_100101AE0;
-  v14 = v8;
-  v15 = self;
-  v16 = v9;
-  v17 = a4;
-  v11 = v9;
-  v12 = v8;
-  dispatch_sync(v10, v13);
+  v14 = dsCopy;
+  selfCopy = self;
+  v16 = proxyCopy;
+  methodCopy = method;
+  v11 = proxyCopy;
+  v12 = dsCopy;
+  dispatch_sync(internalQueue, v13);
 }
 
-- (void)_callHandlerForClientConnections:(id)a3
+- (void)_callHandlerForClientConnections:(id)connections
 {
-  v4 = a3;
-  v5 = [(IXSAppInstallObserverManager *)self internalQueue];
+  connectionsCopy = connections;
+  internalQueue = [(IXSAppInstallObserverManager *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002EA08;
   v7[3] = &unk_100101B08;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = connectionsCopy;
+  v6 = connectionsCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
-- (void)coordinatorShouldPrioritize:(id)a3
+- (void)coordinatorShouldPrioritize:(id)prioritize
 {
-  v4 = a3;
-  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 creator]);
-  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 appAssetPromiseDRI]);
+  prioritizeCopy = prioritize;
+  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [prioritizeCopy creator]);
+  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [prioritizeCopy appAssetPromiseDRI]);
   v7 = [NSSet setWithObjects:v5, v6, 0];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10002EC98;
   v12[3] = &unk_100101B30;
-  v13 = v4;
-  v8 = v4;
+  v13 = prioritizeCopy;
+  v8 = prioritizeCopy;
   [(IXSAppInstallObserverManager *)self _messageInterestedServicesForClientIDs:v7 forMethod:1 callMethodOnProxy:v12];
 
   [v8 uniqueIdentifier];
@@ -776,48 +776,48 @@ LABEL_29:
   [(IXSAppInstallObserverManager *)self _callHandlerForClientConnections:v10];
 }
 
-- (void)shouldPrioritizeAppWithIdentity:(id)a3 forClientIDs:(id)a4
+- (void)shouldPrioritizeAppWithIdentity:(id)identity forClientIDs:(id)ds
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10002EE20;
   v11[3] = &unk_100101B30;
-  v6 = a3;
-  v12 = v6;
-  v7 = a4;
-  [(IXSAppInstallObserverManager *)self _messageInterestedServicesForClientIDs:v7 forMethod:128 callMethodOnProxy:v11];
+  identityCopy = identity;
+  v12 = identityCopy;
+  dsCopy = ds;
+  [(IXSAppInstallObserverManager *)self _messageInterestedServicesForClientIDs:dsCopy forMethod:128 callMethodOnProxy:v11];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10002EE84;
   v9[3] = &unk_100101B30;
-  v10 = v6;
-  v8 = v6;
-  [(IXSAppInstallObserverManager *)self _messageInterestedServicesForClientIDs:v7 forMethod:0x2000 callMethodOnProxy:v9];
+  v10 = identityCopy;
+  v8 = identityCopy;
+  [(IXSAppInstallObserverManager *)self _messageInterestedServicesForClientIDs:dsCopy forMethod:0x2000 callMethodOnProxy:v9];
 }
 
-- (void)mayUninstallAppWithIdentity:(id)a3
+- (void)mayUninstallAppWithIdentity:(id)identity
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10002EF28;
   v5[3] = &unk_100101B30;
-  v6 = a3;
-  v4 = v6;
+  identityCopy = identity;
+  v4 = identityCopy;
   [(IXSAppInstallObserverManager *)self _messageInterestedServicesForMethod:0x8000 callMethodOnProxy:v5];
 }
 
-- (void)coordinatorShouldResume:(id)a3
+- (void)coordinatorShouldResume:(id)resume
 {
-  v4 = a3;
-  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 creator]);
-  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 appAssetPromiseDRI]);
+  resumeCopy = resume;
+  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [resumeCopy creator]);
+  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [resumeCopy appAssetPromiseDRI]);
   v7 = [NSSet setWithObjects:v5, v6, 0];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10002F0C4;
   v12[3] = &unk_100101B30;
-  v13 = v4;
-  v8 = v4;
+  v13 = resumeCopy;
+  v8 = resumeCopy;
   [(IXSAppInstallObserverManager *)self _messageInterestedServicesForClientIDs:v7 forMethod:2 callMethodOnProxy:v12];
 
   [v8 uniqueIdentifier];
@@ -829,18 +829,18 @@ LABEL_29:
   [(IXSAppInstallObserverManager *)self _callHandlerForClientConnections:v10];
 }
 
-- (void)coordinatorShouldPause:(id)a3
+- (void)coordinatorShouldPause:(id)pause
 {
-  v4 = a3;
-  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 creator]);
-  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 appAssetPromiseDRI]);
+  pauseCopy = pause;
+  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [pauseCopy creator]);
+  v6 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [pauseCopy appAssetPromiseDRI]);
   v7 = [NSSet setWithObjects:v5, v6, 0];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10002F2C4;
   v12[3] = &unk_100101B30;
-  v13 = v4;
-  v8 = v4;
+  v13 = pauseCopy;
+  v8 = pauseCopy;
   [(IXSAppInstallObserverManager *)self _messageInterestedServicesForClientIDs:v7 forMethod:4 callMethodOnProxy:v12];
 
   [v8 uniqueIdentifier];
@@ -852,19 +852,19 @@ LABEL_29:
   [(IXSAppInstallObserverManager *)self _callHandlerForClientConnections:v10];
 }
 
-- (void)coordinator:(id)a3 configuredPromiseDidBeginFulfillment:(unint64_t)a4
+- (void)coordinator:(id)coordinator configuredPromiseDidBeginFulfillment:(unint64_t)fulfillment
 {
-  v6 = a3;
-  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 creator]);
-  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 appAssetPromiseDRI]);
+  coordinatorCopy = coordinator;
+  v7 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [coordinatorCopy creator]);
+  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [coordinatorCopy appAssetPromiseDRI]);
   v9 = [NSSet setWithObjects:v7, v8, 0];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10002F4C8;
   v15[3] = &unk_100101B80;
-  v16 = v6;
-  v17 = a4;
-  v10 = v6;
+  v16 = coordinatorCopy;
+  fulfillmentCopy = fulfillment;
+  v10 = coordinatorCopy;
   [(IXSAppInstallObserverManager *)self _messageInterestedServicesForClientIDs:v9 forMethod:8 callMethodOnProxy:v15];
 
   [v10 uniqueIdentifier];
@@ -872,22 +872,22 @@ LABEL_29:
   v12[1] = 3221225472;
   v12[2] = sub_10002F53C;
   v13 = v12[3] = &unk_100101BA8;
-  v14 = a4;
+  fulfillmentCopy2 = fulfillment;
   v11 = v13;
   [(IXSAppInstallObserverManager *)self _callHandlerForClientConnections:v12];
 }
 
-- (void)coordinatorShouldBeginRestoringUserData:(id)a3
+- (void)coordinatorShouldBeginRestoringUserData:(id)data
 {
-  v4 = a3;
-  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v4 creator]);
+  dataCopy = data;
+  v5 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [dataCopy creator]);
   v6 = [NSSet setWithObjects:&off_10010DD80, v5, 0];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10002F6B0;
   v11[3] = &unk_100101B30;
-  v12 = v4;
-  v7 = v4;
+  v12 = dataCopy;
+  v7 = dataCopy;
   [(IXSAppInstallObserverManager *)self _messageInterestedServicesForClientIDs:v6 forMethod:256 callMethodOnProxy:v11];
 
   [v7 uniqueIdentifier];
@@ -899,21 +899,21 @@ LABEL_29:
   [(IXSAppInstallObserverManager *)self _callHandlerForClientConnections:v9];
 }
 
-- (void)coordinatorDidInstallPlaceholder:(id)a3 forRecordPromise:(id)a4
+- (void)coordinatorDidInstallPlaceholder:(id)placeholder forRecordPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 creator]);
-  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 appAssetPromiseDRI]);
+  placeholderCopy = placeholder;
+  promiseCopy = promise;
+  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [placeholderCopy creator]);
+  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [placeholderCopy appAssetPromiseDRI]);
   v10 = [NSSet setWithObjects:v8, v9, 0];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10002F8EC;
   v18[3] = &unk_100101BD0;
-  v19 = v6;
-  v11 = v7;
+  v19 = placeholderCopy;
+  v11 = promiseCopy;
   v20 = v11;
-  v12 = v6;
+  v12 = placeholderCopy;
   [(IXSAppInstallObserverManager *)self _messageInterestedServicesForClientIDs:v10 forMethod:2064 callMethodOnProxy:v18];
 
   [v12 uniqueIdentifier];
@@ -927,20 +927,20 @@ LABEL_29:
   [(IXSAppInstallObserverManager *)self _callHandlerForClientConnections:v15];
 }
 
-- (void)coordinatorShouldBeginPostProcessing:(id)a3 forRecordPromise:(id)a4
+- (void)coordinatorShouldBeginPostProcessing:(id)processing forRecordPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 creator]);
+  processingCopy = processing;
+  promiseCopy = promise;
+  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [processingCopy creator]);
   v9 = [NSSet setWithObjects:v8, &off_10010DD98, &off_10010DDB0, 0];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10002FB28;
   v17[3] = &unk_100101BD0;
-  v18 = v6;
-  v10 = v7;
+  v18 = processingCopy;
+  v10 = promiseCopy;
   v19 = v10;
-  v11 = v6;
+  v11 = processingCopy;
   [(IXSAppInstallObserverManager *)self _messageInterestedServicesForClientIDs:v9 forMethod:0x4000 callMethodOnProxy:v17];
 
   [v11 uniqueIdentifier];
@@ -954,21 +954,21 @@ LABEL_29:
   [(IXSAppInstallObserverManager *)self _callHandlerForClientConnections:v14];
 }
 
-- (void)coordinatorDidCompleteSuccessfully:(id)a3 forRecordPromise:(id)a4
+- (void)coordinatorDidCompleteSuccessfully:(id)successfully forRecordPromise:(id)promise
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 creator]);
-  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v6 appAssetPromiseDRI]);
+  successfullyCopy = successfully;
+  promiseCopy = promise;
+  v8 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [successfullyCopy creator]);
+  v9 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [successfullyCopy appAssetPromiseDRI]);
   v10 = [NSSet setWithObjects:v8, v9, 0];
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10002FD74;
   v18[3] = &unk_100101BD0;
-  v19 = v6;
-  v11 = v7;
+  v19 = successfullyCopy;
+  v11 = promiseCopy;
   v20 = v11;
-  v12 = v6;
+  v12 = successfullyCopy;
   [(IXSAppInstallObserverManager *)self _messageInterestedServicesForClientIDs:v10 forMethod:4128 callMethodOnProxy:v18];
 
   [v12 uniqueIdentifier];
@@ -982,22 +982,22 @@ LABEL_29:
   [(IXSAppInstallObserverManager *)self _callHandlerForClientConnections:v15];
 }
 
-- (void)coordinator:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5
+- (void)coordinator:(id)coordinator canceledWithReason:(id)reason client:(unint64_t)client
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 creator]);
-  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v8 appAssetPromiseDRI]);
+  coordinatorCopy = coordinator;
+  reasonCopy = reason;
+  v10 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [coordinatorCopy creator]);
+  v11 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [coordinatorCopy appAssetPromiseDRI]);
   v12 = [NSSet setWithObjects:v10, v11, 0];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10002FFD0;
   v21[3] = &unk_100101C20;
-  v22 = v8;
-  v13 = v9;
+  v22 = coordinatorCopy;
+  v13 = reasonCopy;
   v23 = v13;
-  v24 = a5;
-  v14 = v8;
+  clientCopy = client;
+  v14 = coordinatorCopy;
   [(IXSAppInstallObserverManager *)self _messageInterestedServicesForClientIDs:v12 forMethod:64 callMethodOnProxy:v21];
 
   [v14 uniqueIdentifier];
@@ -1006,29 +1006,29 @@ LABEL_29:
   v17[2] = sub_100030044;
   v18 = v17[3] = &unk_100101C48;
   v19 = v13;
-  v20 = a5;
+  clientCopy2 = client;
   v15 = v13;
   v16 = v18;
   [(IXSAppInstallObserverManager *)self _callHandlerForClientConnections:v17];
 }
 
-- (void)coordinator:(id)a3 didUpdateProgress:(double)a4 forPhase:(unint64_t)a5 overallProgress:(double)a6
+- (void)coordinator:(id)coordinator didUpdateProgress:(double)progress forPhase:(unint64_t)phase overallProgress:(double)overallProgress
 {
-  [a3 uniqueIdentifier];
+  [coordinator uniqueIdentifier];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100030110;
   v12 = v11[3] = &unk_100101C70;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
+  progressCopy = progress;
+  phaseCopy = phase;
+  overallProgressCopy = overallProgress;
   v10 = v12;
   [(IXSAppInstallObserverManager *)self _callHandlerForClientConnections:v11];
 }
 
-- (void)promiseDidCompleteSuccessfully:(id)a3
+- (void)promiseDidCompleteSuccessfully:(id)successfully
 {
-  [a3 uniqueIdentifier];
+  [successfully uniqueIdentifier];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1000301C4;
@@ -1037,17 +1037,17 @@ LABEL_29:
   [(IXSAppInstallObserverManager *)self _callHandlerForClientConnections:v5];
 }
 
-- (void)promise:(id)a3 canceledWithReason:(id)a4 client:(unint64_t)a5
+- (void)promise:(id)promise canceledWithReason:(id)reason client:(unint64_t)client
 {
-  v8 = a4;
-  [a3 uniqueIdentifier];
+  reasonCopy = reason;
+  [promise uniqueIdentifier];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000302A0;
   v12 = v11[3] = &unk_100101C48;
-  v13 = v8;
-  v14 = a5;
-  v9 = v8;
+  v13 = reasonCopy;
+  clientCopy = client;
+  v9 = reasonCopy;
   v10 = v12;
   [(IXSAppInstallObserverManager *)self _callHandlerForClientConnections:v11];
 }

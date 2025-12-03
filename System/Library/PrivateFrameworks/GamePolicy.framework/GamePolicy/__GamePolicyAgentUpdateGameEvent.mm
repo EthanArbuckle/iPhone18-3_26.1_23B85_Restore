@@ -1,15 +1,15 @@
 @interface __GamePolicyAgentUpdateGameEvent
 - (__GamePolicyAgentUpdateGameEvent)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation __GamePolicyAgentUpdateGameEvent
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_24E5CD4B4(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_24E5CD4B4(coderCopy);
 }
 
 - (__GamePolicyAgentUpdateGameEvent)init

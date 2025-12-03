@@ -1,44 +1,44 @@
 @interface AXCaptionSizeCell
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation AXCaptionSizeCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v25.receiver = self;
   v25.super_class = AXCaptionSizeCell;
-  [(AXCaptionSizeCell *)&v25 refreshCellContentsWithSpecifier:v4];
-  v5 = [(AXCaptionSizeCell *)self defaultContentConfiguration];
-  v6 = [v4 propertyForKey:@"isDefault"];
-  v7 = [v6 BOOLValue];
+  [(AXCaptionSizeCell *)&v25 refreshCellContentsWithSpecifier:specifierCopy];
+  defaultContentConfiguration = [(AXCaptionSizeCell *)self defaultContentConfiguration];
+  v6 = [specifierCopy propertyForKey:@"isDefault"];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = settingsLocString(@"default.choice", @"CaptioningStyle");
-    v9 = [v4 name];
-    v10 = [NSString stringWithFormat:v8, v9];
-    [v5 setText:v10];
+    name2 = settingsLocString(@"default.choice", @"CaptioningStyle");
+    name = [specifierCopy name];
+    v10 = [NSString stringWithFormat:name2, name];
+    [defaultContentConfiguration setText:v10];
   }
 
   else
   {
-    v8 = [v4 name];
-    [v5 setText:v8];
+    name2 = [specifierCopy name];
+    [defaultContentConfiguration setText:name2];
   }
 
-  v11 = [v5 textProperties];
-  v12 = [v11 font];
-  v13 = [v12 fontName];
+  textProperties = [defaultContentConfiguration textProperties];
+  font = [textProperties font];
+  fontName = [font fontName];
 
-  v14 = [v13 isEqual:MACaptionAppearanceSystemFontIdentifier];
-  v15 = [v13 isEqual:MACaptionAppearanceMonoSystemFontIdentifier];
-  v16 = [v13 isEqual:MACaptionAppearanceMediumSystemFontIdentifier];
-  v17 = [(AXCaptionSizeCell *)self specifier];
-  v18 = [v17 propertyForKey:@"fontSize"];
+  v14 = [fontName isEqual:MACaptionAppearanceSystemFontIdentifier];
+  v15 = [fontName isEqual:MACaptionAppearanceMonoSystemFontIdentifier];
+  v16 = [fontName isEqual:MACaptionAppearanceMediumSystemFontIdentifier];
+  specifier = [(AXCaptionSizeCell *)self specifier];
+  v18 = [specifier propertyForKey:@"fontSize"];
   [v18 floatValue];
   v20 = v19;
 
@@ -62,16 +62,16 @@
 
     else
     {
-      [UIFont fontWithName:v13 size:v21];
+      [UIFont fontWithName:fontName size:v21];
     }
     v22 = ;
   }
 
   v23 = v22;
-  v24 = [v5 textProperties];
-  [v24 setFont:v23];
+  textProperties2 = [defaultContentConfiguration textProperties];
+  [textProperties2 setFont:v23];
 
-  [(AXCaptionSizeCell *)self setContentConfiguration:v5];
+  [(AXCaptionSizeCell *)self setContentConfiguration:defaultContentConfiguration];
 }
 
 - (void)prepareForReuse
@@ -87,8 +87,8 @@
   v11.receiver = self;
   v11.super_class = AXCaptionSizeCell;
   [(AXCaptionSizeCell *)&v11 layoutSubviews];
-  v3 = [(AXCaptionSizeCell *)self textLabel];
-  [v3 frame];
+  textLabel = [(AXCaptionSizeCell *)self textLabel];
+  [textLabel frame];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -98,7 +98,7 @@
   v12.size.width = v7;
   v12.size.height = v9;
   v13 = CGRectIntegral(v12);
-  [v3 setFrame:{v13.origin.x, v13.origin.y, v13.size.width, v13.size.height}];
+  [textLabel setFrame:{v13.origin.x, v13.origin.y, v13.size.width, v13.size.height}];
 }
 
 @end

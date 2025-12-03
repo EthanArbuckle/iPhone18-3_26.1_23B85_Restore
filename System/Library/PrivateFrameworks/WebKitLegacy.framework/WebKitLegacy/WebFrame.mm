@@ -1,14 +1,14 @@
 @interface WebFrame
-+ (Ref<WebCore::LocalFrame,)_createFrameWithPage:(void *)a3 frameName:(const void *)a4 frameView:(id)a5 ownerElement:(void *)a6;
-+ (Ref<WebCore::LocalFrame,)_createSubframeWithOwnerElement:(void *)a3 page:(void *)a4 frameName:(const void *)a5 frameView:(id)a6;
-+ (id)stringWithData:(id)a3 textEncodingName:(id)a4;
-+ (void)_createMainFrameWithPage:(void *)a3 frameName:(const void *)a4 frameView:(id)a5;
-+ (void)_createMainFrameWithSimpleHTMLDocumentWithPage:(void *)a3 frameView:(id)a4 style:(id)a5;
-- (BOOL)_allowsFollowingLink:(id)a3;
++ (Ref<WebCore::LocalFrame,)_createFrameWithPage:(void *)page frameName:(const void *)name frameView:(id)view ownerElement:(void *)element;
++ (Ref<WebCore::LocalFrame,)_createSubframeWithOwnerElement:(void *)element page:(void *)page frameName:(const void *)name frameView:(id)view;
++ (id)stringWithData:(id)data textEncodingName:(id)name;
++ (void)_createMainFrameWithPage:(void *)page frameName:(const void *)name frameView:(id)view;
++ (void)_createMainFrameWithSimpleHTMLDocumentWithPage:(void *)page frameView:(id)view style:(id)style;
+- (BOOL)_allowsFollowingLink:(id)link;
 - (BOOL)_canProvideDocumentSource;
-- (BOOL)_getVisibleRect:(CGRect *)a3;
+- (BOOL)_getVisibleRect:(CGRect *)rect;
 - (BOOL)_hasSelection;
-- (BOOL)_isDescendantOfFrame:(id)a3;
+- (BOOL)_isDescendantOfFrame:(id)frame;
 - (BOOL)_isDisplayingStandaloneImage;
 - (BOOL)_isFrameSet;
 - (BOOL)_isIncludedInWebKitStatistics;
@@ -18,135 +18,135 @@
 - (BOOL)hasRichlyEditableDragCaret;
 - (BOOL)isTelephoneNumberParsingAllowed;
 - (BOOL)isTelephoneNumberParsingEnabled;
-- (BOOL)renderedCharactersExceed:(unint64_t)a3;
+- (BOOL)renderedCharactersExceed:(unint64_t)exceed;
 - (BOOL)selectionAtDocumentStart;
 - (BOOL)selectionAtSentenceStart;
 - (BOOL)selectionAtWordStart;
-- (BOOL)setRangedSelectionExtentPoint:(CGPoint)a3 baseIsStart:(BOOL)a4 allowFlipping:(BOOL)a5;
-- (BOOL)setSelectionWithBasePoint:(CGPoint)a3 extentPoint:(CGPoint)a4 baseIsStart:(BOOL)a5 allowFlipping:(BOOL)a6;
-- (BOOL)spaceFollowsWordInRange:(id)a3;
+- (BOOL)setRangedSelectionExtentPoint:(CGPoint)point baseIsStart:(BOOL)start allowFlipping:(BOOL)flipping;
+- (BOOL)setSelectionWithBasePoint:(CGPoint)point extentPoint:(CGPoint)extentPoint baseIsStart:(BOOL)start allowFlipping:(BOOL)flipping;
+- (BOOL)spaceFollowsWordInRange:(id)range;
 - (CGColor)_bodyBackgroundColor;
 - (CGColor)caretColor;
-- (CGRect)_caretRectAtPosition:(const void *)a3 affinity:(unint64_t)a4;
-- (CGRect)_firstRectForDOMRange:(id)a3;
+- (CGRect)_caretRectAtPosition:(const void *)position affinity:(unint64_t)affinity;
+- (CGRect)_firstRectForDOMRange:(id)range;
 - (CGRect)caretRect;
-- (CGRect)caretRectAtNode:(id)a3 offset:(int)a4 affinity:(unint64_t)a5;
-- (CGRect)caretRectForPosition:(id)a3;
-- (CGRect)closestCaretRectInMarkedTextRangeForPoint:(CGPoint)a3;
-- (CGRect)elementRectAtPoint:(CGPoint)a3;
+- (CGRect)caretRectAtNode:(id)node offset:(int)offset affinity:(unint64_t)affinity;
+- (CGRect)caretRectForPosition:(id)position;
+- (CGRect)closestCaretRectInMarkedTextRangeForPoint:(CGPoint)point;
+- (CGRect)elementRectAtPoint:(CGPoint)point;
 - (CGRect)rectForScrollToVisible;
-- (CGRect)renderRectForPoint:(CGPoint)a3 isReplaced:(BOOL *)a4 fontSize:(float *)a5;
-- (CGSize)renderedSizeOfNode:(id)a3 constrainedToWidth:(float)a4;
+- (CGRect)renderRectForPoint:(CGPoint)point isReplaced:(BOOL *)replaced fontSize:(float *)size;
+- (CGSize)renderedSizeOfNode:(id)node constrainedToWidth:(float)width;
 - (DOMDocument)DOMDocument;
 - (DOMHTMLElement)frameElement;
 - (JSContext)javaScriptContext;
 - (JSGlobalContextRef)globalContext;
 - (NSArray)childFrames;
 - (NSString)name;
-- (OpaqueJSContext)_globalContextForScriptWorld:(id)a3;
-- (OpaqueJSValue)jsWrapperForNode:(id)a3 inScriptWorld:(id)a4;
-- (OptionSet<WebCore::PaintBehavior>)_paintBehaviorForDestinationContext:(CGContext *)a3;
-- (VisiblePosition)_visiblePositionForPoint:(SEL)a3;
-- (VisiblePosition)closestWordBoundary:(SEL)a3;
-- (VisiblePosition)visiblePositionForPoint:(SEL)a3;
+- (OpaqueJSContext)_globalContextForScriptWorld:(id)world;
+- (OpaqueJSValue)jsWrapperForNode:(id)node inScriptWorld:(id)world;
+- (OptionSet<WebCore::PaintBehavior>)_paintBehaviorForDestinationContext:(CGContext *)context;
+- (VisiblePosition)_visiblePositionForPoint:(SEL)point;
+- (VisiblePosition)closestWordBoundary:(SEL)boundary;
+- (VisiblePosition)visiblePositionForPoint:(SEL)point;
 - (WebDataSource)dataSource;
 - (WebDataSource)provisionalDataSource;
 - (WebFrame)findFrameNamed:(NSString *)name;
 - (WebFrame)parentFrame;
 - (WebScriptObject)windowObject;
 - (WebView)webView;
-- (_NSRange)_convertDOMRangeToNSRange:(id)a3;
-- (_NSRange)_convertToNSRange:(const void *)a3;
+- (_NSRange)_convertDOMRangeToNSRange:(id)range;
+- (_NSRange)_convertToNSRange:(const void *)range;
 - (_NSRange)_selectedNSRange;
-- (__CTFont)fontForSelection:(BOOL *)a3;
+- (__CTFont)fontForSelection:(BOOL *)selection;
 - (id)_cacheabilityDictionary;
-- (id)_characterRangeAtPoint:(CGPoint)a3;
-- (id)_computePageRectsWithPrintScaleFactor:(float)a3 pageSize:(CGSize)a4;
-- (id)_convertNSRangeToDOMRange:(_NSRange)a3;
+- (id)_characterRangeAtPoint:(CGPoint)point;
+- (id)_computePageRectsWithPrintScaleFactor:(float)factor pageSize:(CGSize)size;
+- (id)_convertNSRangeToDOMRange:(_NSRange)range;
 - (id)_dataSource;
-- (id)_documentFragmentForImageData:(id)a3 withRelativeURLPart:(id)a4 andMIMEType:(id)a5;
-- (id)_documentFragmentForText:(id)a3;
-- (id)_documentFragmentForWebArchive:(id)a3;
-- (id)_documentFragmentWithMarkupString:(id)a3 baseURLString:(id)a4;
-- (id)_documentFragmentWithNodesAsParagraphs:(id)a3;
+- (id)_documentFragmentForImageData:(id)data withRelativeURLPart:(id)part andMIMEType:(id)type;
+- (id)_documentFragmentForText:(id)text;
+- (id)_documentFragmentForWebArchive:(id)archive;
+- (id)_documentFragmentWithMarkupString:(id)string baseURLString:(id)lString;
+- (id)_documentFragmentWithNodesAsParagraphs:(id)paragraphs;
 - (id)_findFrameWithSelection;
-- (id)_initWithWebFrameView:(id)a3 webView:(id)a4;
-- (id)_javaScriptContextForScriptWorld:(id)a3;
+- (id)_initWithWebFrameView:(id)view webView:(id)webView;
+- (id)_javaScriptContextForScriptWorld:(id)world;
 - (id)_layerTreeAsText;
 - (id)_markDOMRange;
-- (id)_rectsForRange:(id)a3;
+- (id)_rectsForRange:(id)range;
 - (id)_selectedString;
-- (id)_selectionRangeForFirstPoint:(CGPoint)a3 secondPoint:(CGPoint)a4;
-- (id)_selectionRangeForPoint:(CGPoint)a3;
-- (id)_stringByEvaluatingJavaScriptFromString:(id)a3 forceUserGesture:(BOOL)a4;
-- (id)_stringByEvaluatingJavaScriptFromString:(id)a3 withGlobalObject:(OpaqueJSValue *)a4 inScriptWorld:(id)a5;
-- (id)_stringForRange:(id)a3;
+- (id)_selectionRangeForFirstPoint:(CGPoint)point secondPoint:(CGPoint)secondPoint;
+- (id)_selectionRangeForPoint:(CGPoint)point;
+- (id)_stringByEvaluatingJavaScriptFromString:(id)string forceUserGesture:(BOOL)gesture;
+- (id)_stringByEvaluatingJavaScriptFromString:(id)string withGlobalObject:(OpaqueJSValue *)object inScriptWorld:(id)world;
+- (id)_stringForRange:(id)range;
 - (id)_typingStyle;
 - (id)_unreachableURL;
 - (id)_webHTMLDocumentView;
 - (id)accessibilityRoot;
-- (id)approximateNodeAtViewportLocation:(CGPoint *)a3;
-- (id)deepestNodeAtViewportLocation:(CGPoint)a3;
-- (id)dictationResultMetadataForRange:(id)a3;
+- (id)approximateNodeAtViewportLocation:(CGPoint *)location;
+- (id)deepestNodeAtViewportLocation:(CGPoint)location;
+- (id)dictationResultMetadataForRange:(id)range;
 - (id)documentView;
-- (id)elementAtPoint:(CGPoint)a3;
+- (id)elementAtPoint:(CGPoint)point;
 - (id)elementRangeContainingCaretSelection;
 - (id)endPosition;
 - (id)interpretationsForCurrentRoot;
 - (id)markedTextDOMRange;
-- (id)rangeByExtendingCurrentSelection:(int)a3;
-- (id)rangeByMovingCurrentSelection:(int)a3;
+- (id)rangeByExtendingCurrentSelection:(int)selection;
+- (id)rangeByMovingCurrentSelection:(int)selection;
 - (id)renderTreeAsExternalRepresentationForPrinting;
-- (id)renderTreeAsExternalRepresentationWithOptions:(unint64_t)a3;
-- (id)scrollableNodeAtViewportLocation:(CGPoint)a3;
+- (id)renderTreeAsExternalRepresentationWithOptions:(unint64_t)options;
+- (id)scrollableNodeAtViewportLocation:(CGPoint)location;
 - (id)selectedDOMRange;
 - (id)selectionRects;
-- (id)selectionRectsForCoreRange:(const void *)a3;
-- (id)selectionRectsForRange:(id)a3;
+- (id)selectionRectsForCoreRange:(const void *)range;
+- (id)selectionRectsForRange:(id)range;
 - (id)startPosition;
-- (id)webVisiblePositionForPoint:(CGPoint)a3;
-- (id)wordAtPoint:(CGPoint)a3;
-- (id)wordInRange:(id)a3;
+- (id)webVisiblePositionForPoint:(CGPoint)point;
+- (id)wordAtPoint:(CGPoint)point;
+- (id)wordInRange:(id)range;
 - (id)wordRangeContainingCaretSelection;
 - (id)wordsInCurrentParagraph;
 - (int)_loadType;
-- (int)innerLineHeight:(id)a3;
+- (int)innerLineHeight:(id)height;
 - (int)layoutCount;
-- (int)numberOfPagesWithPageWidth:(float)a3 pageHeight:(float)a4;
+- (int)numberOfPagesWithPageWidth:(float)width pageHeight:(float)height;
 - (int)preferredHeight;
 - (int)selectionBaseWritingDirection;
 - (int)selectionState;
-- (int)wordOffsetInRange:(id)a3;
-- (optional<WebCore::SimpleRange>)_convertToDOMRange:(SEL)a3;
-- (optional<WebCore::SimpleRange>)_convertToDOMRange:(SEL)a3 rangeIsRelativeTo:(_NSRange)a4;
+- (int)wordOffsetInRange:(id)range;
+- (optional<WebCore::SimpleRange>)_convertToDOMRange:(SEL)range;
+- (optional<WebCore::SimpleRange>)_convertToDOMRange:(SEL)range rangeIsRelativeTo:(_NSRange)to;
 - (unsigned)characterAfterCaretSelection;
 - (unsigned)characterBeforeCaretSelection;
 - (void)_attachScriptDebugger;
 - (void)_clearOpener;
 - (void)_clearSelection;
 - (void)_clearSelectionInOtherFrames;
-- (void)_commitData:(id)a3;
+- (void)_commitData:(id)data;
 - (void)_createCaptionPreferencesTestingModeToken;
 - (void)_detachScriptDebugger;
-- (void)_dispatchDidReceiveTitle:(id)a3;
-- (void)_drawRect:(CGRect)a3 contentsOnly:(BOOL)a4;
-- (void)_generateTestReport:(id)a3 withGroup:(id)a4;
+- (void)_dispatchDidReceiveTitle:(id)title;
+- (void)_drawRect:(CGRect)rect contentsOnly:(BOOL)only;
+- (void)_generateTestReport:(id)report withGroup:(id)group;
 - (void)_insertParagraphSeparatorInQuotedContent;
-- (void)_loadData:(id)a3 MIMEType:(id)a4 textEncodingName:(id)a5 baseURL:(id)a6 unreachableURL:(id)a7;
-- (void)_loadHTMLString:(id)a3 baseURL:(id)a4 unreachableURL:(id)a5;
-- (void)_replaceSelectionWithFragment:(id)a3 selectReplacement:(BOOL)a4 smartReplace:(BOOL)a5 matchStyle:(BOOL)a6;
-- (void)_replaceSelectionWithMarkupString:(id)a3 baseURLString:(id)a4 selectReplacement:(BOOL)a5 smartReplace:(BOOL)a6;
-- (void)_replaceSelectionWithNode:(id)a3 selectReplacement:(BOOL)a4 smartReplace:(BOOL)a5 matchStyle:(BOOL)a6;
-- (void)_replaceSelectionWithText:(id)a3 selectReplacement:(BOOL)a4 smartReplace:(BOOL)a5;
-- (void)_replaceSelectionWithText:(id)a3 selectReplacement:(BOOL)a4 smartReplace:(BOOL)a5 matchStyle:(BOOL)a6;
-- (void)_replaceSelectionWithWebArchive:(id)a3 selectReplacement:(BOOL)a4 smartReplace:(BOOL)a5;
+- (void)_loadData:(id)data MIMEType:(id)type textEncodingName:(id)name baseURL:(id)l unreachableURL:(id)rL;
+- (void)_loadHTMLString:(id)string baseURL:(id)l unreachableURL:(id)rL;
+- (void)_replaceSelectionWithFragment:(id)fragment selectReplacement:(BOOL)replacement smartReplace:(BOOL)replace matchStyle:(BOOL)style;
+- (void)_replaceSelectionWithMarkupString:(id)string baseURLString:(id)lString selectReplacement:(BOOL)replacement smartReplace:(BOOL)replace;
+- (void)_replaceSelectionWithNode:(id)node selectReplacement:(BOOL)replacement smartReplace:(BOOL)replace matchStyle:(BOOL)style;
+- (void)_replaceSelectionWithText:(id)text selectReplacement:(BOOL)replacement smartReplace:(BOOL)replace;
+- (void)_replaceSelectionWithText:(id)text selectReplacement:(BOOL)replacement smartReplace:(BOOL)replace matchStyle:(BOOL)style;
+- (void)_replaceSelectionWithWebArchive:(id)archive selectReplacement:(BOOL)replacement smartReplace:(BOOL)replace;
 - (void)_saveViewState;
-- (void)_scrollDOMRangeToVisible:(id)a3;
-- (void)_scrollDOMRangeToVisible:(id)a3 withInset:(double)a4;
-- (void)_selectNSRange:(_NSRange)a3;
-- (void)_setCaptionDisplayMode:(id)a3;
-- (void)_setTextAutosizingWidth:(double)a3;
-- (void)_setTypingStyle:(id)a3 withUndoAction:(unsigned __int8)a4;
+- (void)_scrollDOMRangeToVisible:(id)visible;
+- (void)_scrollDOMRangeToVisible:(id)visible withInset:(double)inset;
+- (void)_selectNSRange:(_NSRange)range;
+- (void)_setCaptionDisplayMode:(id)mode;
+- (void)_setTextAutosizingWidth:(double)width;
+- (void)_setTypingStyle:(id)style withUndoAction:(unsigned __int8)action;
 - (void)_unmarkAllBadGrammar;
 - (void)_updateBackgroundAndUpdatesWhileOffscreen;
 - (void)_userScrolled;
@@ -154,49 +154,49 @@
 - (void)clearRangedSelectionInitialExtent;
 - (void)clearSelection;
 - (void)collapseSelection;
-- (void)confirmMarkedText:(id)a3;
+- (void)confirmMarkedText:(id)text;
 - (void)dealloc;
-- (void)ensureRangedSelectionContainsInitialStartPoint:(CGPoint)a3 initialEndPoint:(CGPoint)a4;
+- (void)ensureRangedSelectionContainsInitialStartPoint:(CGPoint)point initialEndPoint:(CGPoint)endPoint;
 - (void)expandSelectionToSentence;
-- (void)extendSelection:(BOOL)a3;
-- (void)forceLayoutAdjustingViewSize:(BOOL)a3;
-- (void)getDictationResultRanges:(id *)a3 andMetadatas:(id *)a4;
+- (void)extendSelection:(BOOL)selection;
+- (void)forceLayoutAdjustingViewSize:(BOOL)size;
+- (void)getDictationResultRanges:(id *)ranges andMetadatas:(id *)metadatas;
 - (void)loadAlternateHTMLString:(NSString *)string baseURL:(NSURL *)baseURL forUnreachableURL:(NSURL *)unreachableURL;
 - (void)loadArchive:(WebArchive *)archive;
 - (void)loadData:(NSData *)data MIMEType:(NSString *)MIMEType textEncodingName:(NSString *)encodingName baseURL:(NSURL *)URL;
 - (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)URL;
 - (void)loadRequest:(NSURLRequest *)request;
 - (void)moveSelectionToEnd;
-- (void)moveSelectionToPoint:(CGPoint)a3;
+- (void)moveSelectionToPoint:(CGPoint)point;
 - (void)moveSelectionToStart;
 - (void)prepareForPause;
-- (void)printToCGContext:(CGContext *)a3 pageWidth:(float)a4 pageHeight:(float)a5;
-- (void)recursiveSetUpdateAppearanceEnabled:(BOOL)a3;
+- (void)printToCGContext:(CGContext *)context pageWidth:(float)width pageHeight:(float)height;
+- (void)recursiveSetUpdateAppearanceEnabled:(BOOL)enabled;
 - (void)removeUnchangeableStyles;
 - (void)resetTextAutosizingBeforeLayout;
 - (void)resumeFromPause;
-- (void)selectNSRange:(_NSRange)a3 onElement:(id)a4;
-- (void)selectWithoutClosingTypingNSRange:(_NSRange)a3;
-- (void)setAccessibleName:(id)a3;
-- (void)setBaseWritingDirection:(int)a3;
-- (void)setCaretColor:(CGColor *)a3;
-- (void)setDictationPhrases:(id)a3 metadata:(id)a4 asChildOfElement:(id)a5;
-- (void)setMarkedText:(id)a3 forCandidates:(BOOL)a4;
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4;
+- (void)selectNSRange:(_NSRange)range onElement:(id)element;
+- (void)selectWithoutClosingTypingNSRange:(_NSRange)range;
+- (void)setAccessibleName:(id)name;
+- (void)setBaseWritingDirection:(int)direction;
+- (void)setCaretColor:(CGColor *)color;
+- (void)setDictationPhrases:(id)phrases metadata:(id)metadata asChildOfElement:(id)element;
+- (void)setMarkedText:(id)text forCandidates:(BOOL)candidates;
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range;
 - (void)setNeedsLayout;
-- (void)setPluginsPaused:(BOOL)a3;
+- (void)setPluginsPaused:(BOOL)paused;
 - (void)setRangedSelectionBaseToCurrentSelection;
 - (void)setRangedSelectionBaseToCurrentSelectionEnd;
 - (void)setRangedSelectionBaseToCurrentSelectionStart;
 - (void)setRangedSelectionInitialExtentToCurrentSelectionEnd;
 - (void)setRangedSelectionInitialExtentToCurrentSelectionStart;
-- (void)setRangedSelectionWithExtentPoint:(CGPoint)a3;
-- (void)setSelectedDOMRange:(id)a3 affinity:(unint64_t)a4 closeTyping:(BOOL)a5 userTriggered:(BOOL)a6;
-- (void)setSelectionChangeCallbacksDisabled:(BOOL)a3;
-- (void)setSelectionWithFirstPoint:(CGPoint)a3 secondPoint:(CGPoint)a4;
-- (void)setText:(id)a3 asChildOfElement:(id)a4;
-- (void)setTimeoutsPaused:(BOOL)a3;
-- (void)smartExtendRangedSelection:(int)a3;
+- (void)setRangedSelectionWithExtentPoint:(CGPoint)point;
+- (void)setSelectedDOMRange:(id)range affinity:(unint64_t)affinity closeTyping:(BOOL)typing userTriggered:(BOOL)triggered;
+- (void)setSelectionChangeCallbacksDisabled:(BOOL)disabled;
+- (void)setSelectionWithFirstPoint:(CGPoint)point secondPoint:(CGPoint)secondPoint;
+- (void)setText:(id)text asChildOfElement:(id)element;
+- (void)setTimeoutsPaused:(BOOL)paused;
+- (void)smartExtendRangedSelection:(int)selection;
 - (void)stopLoading;
 - (void)toggleBaseWritingDirection;
 - (void)updateLayout;
@@ -204,21 +204,21 @@
 
 @implementation WebFrame
 
-+ (Ref<WebCore::LocalFrame,)_createFrameWithPage:(void *)a3 frameName:(const void *)a4 frameView:(id)a5 ownerElement:(void *)a6
++ (Ref<WebCore::LocalFrame,)_createFrameWithPage:(void *)page frameName:(const void *)name frameView:(id)view ownerElement:(void *)element
 {
   v11 = v6;
-  if ((*(**(*(a3 + 7) + 16) + 1440))(*(*(a3 + 7) + 16), a2))
+  if ((*(**(*(page + 7) + 16) + 1440))(*(*(page + 7) + 16), a2))
   {
     Weak = 0;
   }
 
   else
   {
-    Weak = objc_loadWeak((*(*(a3 + 7) + 16) + 16));
+    Weak = objc_loadWeak((*(*(page + 7) + 16) + 16));
   }
 
-  v13 = [[a1 alloc] _initWithWebFrameView:a5 webView:Weak];
-  v14 = *(*(*(a6 + 6) + 8) + 552);
+  v13 = [[self alloc] _initWithWebFrameView:view webView:Weak];
+  v14 = *(*(*(element + 6) + 8) + 552);
   if (!v14 || (v15 = *(v14 + 8)) == 0)
   {
 LABEL_8:
@@ -309,29 +309,29 @@ LABEL_18:
   WebCore::LocalFrame::init(*v11);
   [Weak _realZoomMultiplier];
   v23 = v22;
-  v24 = [Weak _realZoomMultiplierIsTextOnly];
+  _realZoomMultiplierIsTextOnly = [Weak _realZoomMultiplierIsTextOnly];
   LODWORD(v25) = v23;
-  [Weak _setZoomMultiplier:v24 isTextOnly:v25];
+  [Weak _setZoomMultiplier:_realZoomMultiplierIsTextOnly isTextOnly:v25];
 
   return v26;
 }
 
-+ (void)_createMainFrameWithPage:(void *)a3 frameName:(const void *)a4 frameView:(id)a5
++ (void)_createMainFrameWithPage:(void *)page frameName:(const void *)name frameView:(id)view
 {
-  if (a3)
+  if (page)
   {
-    v7 = a1;
-    if ((*(**(*(a3 + 7) + 16) + 1440))(*(*(a3 + 7) + 16), a2, a3, a4))
+    selfCopy = self;
+    if ((*(**(*(page + 7) + 16) + 1440))(*(*(page + 7) + 16), a2, page, name))
     {
       Weak = 0;
     }
 
     else
     {
-      Weak = objc_loadWeak((*(*(a3 + 7) + 16) + 16));
+      Weak = objc_loadWeak((*(*(page + 7) + 16) + 16));
     }
 
-    a1 = v7;
+    self = selfCopy;
   }
 
   else
@@ -339,8 +339,8 @@ LABEL_18:
     Weak = 0;
   }
 
-  v17 = [[a1 alloc] _initWithWebFrameView:a5 webView:Weak];
-  v9 = *(a3 + 22);
+  v17 = [[self alloc] _initWithWebFrameView:view webView:Weak];
+  v9 = *(page + 22);
   if (!v9 || (*(v9 + 136) & 1) != 0)
   {
     if (!v17)
@@ -364,17 +364,17 @@ LABEL_18:
     WebCore::LocalFrame::init(v9);
     [Weak _realZoomMultiplier];
     v14 = v13;
-    v15 = [Weak _realZoomMultiplierIsTextOnly];
+    _realZoomMultiplierIsTextOnly = [Weak _realZoomMultiplierIsTextOnly];
     LODWORD(v16) = v14;
-    [Weak _setZoomMultiplier:v15 isTextOnly:v16];
+    [Weak _setZoomMultiplier:_realZoomMultiplierIsTextOnly isTextOnly:v16];
   }
 }
 
-+ (Ref<WebCore::LocalFrame,)_createSubframeWithOwnerElement:(void *)a3 page:(void *)a4 frameName:(const void *)a5 frameView:(id)a6
++ (Ref<WebCore::LocalFrame,)_createSubframeWithOwnerElement:(void *)element page:(void *)page frameName:(const void *)name frameView:(id)view
 {
-  if (a1)
+  if (self)
   {
-    return [a1 _createFrameWithPage:a4 frameName:a5 frameView:a6 ownerElement:a3];
+    return [self _createFrameWithPage:page frameName:name frameView:view ownerElement:element];
   }
 
   else
@@ -382,7 +382,7 @@ LABEL_18:
     *v6 = 0;
   }
 
-  return a1;
+  return self;
 }
 
 - (BOOL)_isIncludedInWebKitStatistics
@@ -396,22 +396,22 @@ LABEL_18:
   return v2 & 1;
 }
 
-+ (void)_createMainFrameWithSimpleHTMLDocumentWithPage:(void *)a3 frameView:(id)a4 style:(id)a5
++ (void)_createMainFrameWithSimpleHTMLDocumentWithPage:(void *)page frameView:(id)view style:(id)style
 {
-  v5 = *(a3 + 22);
+  v5 = *(page + 22);
   if (v5 && (*(v5 + 136) & 1) == 0)
   {
-    if ((*(**(*(a3 + 7) + 16) + 1440))(*(*(a3 + 7) + 16), a2))
+    if ((*(**(*(page + 7) + 16) + 1440))(*(*(page + 7) + 16), a2))
     {
       Weak = 0;
     }
 
     else
     {
-      Weak = objc_loadWeak((*(*(a3 + 7) + 16) + 16));
+      Weak = objc_loadWeak((*(*(page + 7) + 16) + 16));
     }
 
-    v11 = [[a1 alloc] _initWithWebFrameView:a4 webView:Weak];
+    v11 = [[self alloc] _initWithWebFrameView:view webView:Weak];
     *(v11[1] + 8) = v5;
     v12 = *(*(v5 + 208) + 16);
     v13 = v11;
@@ -421,7 +421,7 @@ LABEL_18:
     {
     }
 
-    WTF::AtomStringImpl::add(v20, a5, v14);
+    WTF::AtomStringImpl::add(v20, style, v14);
     v21 = v20[0];
     UniqueWebDataURL = createUniqueWebDataURL();
     MEMORY[0x1CCA63960](v20, UniqueWebDataURL);
@@ -565,7 +565,7 @@ LABEL_6:
   }
 }
 
-- (id)_initWithWebFrameView:(id)a3 webView:(id)a4
+- (id)_initWithWebFrameView:(id)view webView:(id)webView
 {
   v8.receiver = self;
   v8.super_class = WebFrame;
@@ -573,17 +573,17 @@ LABEL_6:
   if (v5)
   {
     v5->_private = objc_alloc_init(WebFramePrivate);
-    v6 = [objc_opt_class() shouldIncludeInWebKitStatistics];
-    v5->_private->includedInWebKitStatistics = v6;
-    if (v6)
+    shouldIncludeInWebKitStatistics = [objc_opt_class() shouldIncludeInWebKitStatistics];
+    v5->_private->includedInWebKitStatistics = shouldIncludeInWebKitStatistics;
+    if (shouldIncludeInWebKitStatistics)
     {
       ++WebFrameCount;
     }
 
-    if (a3)
+    if (view)
     {
-      [(WebFramePrivate *)v5->_private setWebFrameView:a3];
-      [a3 _setWebFrame:v5];
+      [(WebFramePrivate *)v5->_private setWebFrameView:view];
+      [view _setWebFrame:v5];
     }
 
     v5->_private->shouldCreateRenderers = 1;
@@ -594,11 +594,11 @@ LABEL_6:
 
 - (id)_webHTMLDocumentView
 {
-  v2 = [(WebFrameView *)self->_private->webFrameView.m_ptr documentView];
+  documentView = [(WebFrameView *)self->_private->webFrameView.m_ptr documentView];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    return v2;
+    return documentView;
   }
 
   else
@@ -644,13 +644,13 @@ LABEL_6:
   }
 
 LABEL_7:
-  v6 = [Weak drawsBackground];
-  v7 = [Weak backgroundColor];
+  drawsBackground = [Weak drawsBackground];
+  backgroundColor = [Weak backgroundColor];
   v8 = self->_private;
   v9 = v8->coreFrame.m_ptr;
   if (v9)
   {
-    v10 = v7;
+    v10 = backgroundColor;
     v11 = v8->coreFrame.m_ptr;
     while ((*(v11 + 136) & 1) != 0)
     {
@@ -666,7 +666,7 @@ LABEL_9:
     if ((*(*v12 + 1032))(v12))
     {
       v13 = 0;
-      if (v6)
+      if (drawsBackground)
       {
         goto LABEL_16;
       }
@@ -675,7 +675,7 @@ LABEL_9:
     else
     {
       v13 = v12[3];
-      if (v6)
+      if (drawsBackground)
       {
 LABEL_16:
         v14 = *(v11 + 216);
@@ -740,7 +740,7 @@ LABEL_16:
 
 - (BOOL)_hasSelection
 {
-  v3 = [(WebFrameView *)self->_private->webFrameView.m_ptr documentView];
+  documentView = [(WebFrameView *)self->_private->webFrameView.m_ptr documentView];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (m_ptr = self->_private->coreFrame.m_ptr) != 0)
   {
@@ -749,10 +749,10 @@ LABEL_16:
 
   else
   {
-    v5 = [(NSView *)v3 conformsToProtocol:&unk_1F475AAC0];
+    v5 = [(NSView *)documentView conformsToProtocol:&unk_1F475AAC0];
     if (v5)
     {
-      LOBYTE(v5) = [-[NSView selectedString](v3 "selectedString")] != 0;
+      LOBYTE(v5) = [-[NSView selectedString](documentView "selectedString")] != 0;
     }
   }
 
@@ -761,11 +761,11 @@ LABEL_16:
 
 - (void)_clearSelection
 {
-  v2 = [(WebFrameView *)self->_private->webFrameView.m_ptr documentView];
-  if ([(NSView *)v2 conformsToProtocol:&unk_1F475AAC0])
+  documentView = [(WebFrameView *)self->_private->webFrameView.m_ptr documentView];
+  if ([(NSView *)documentView conformsToProtocol:&unk_1F475AAC0])
   {
 
-    [(NSView *)v2 deselectAll];
+    [(NSView *)documentView deselectAll];
   }
 }
 
@@ -810,12 +810,12 @@ LABEL_16:
 
 - (void)_clearSelectionInOtherFrames
 {
-  v2 = self;
+  selfCopy = self;
   if (!self)
   {
 LABEL_9:
     v6 = [-[WebFrame mainFrame](self "mainFrame")];
-    if (v6 == v2)
+    if (v6 == selfCopy)
     {
       return;
     }
@@ -828,7 +828,7 @@ LABEL_9:
   {
 LABEL_6:
     v6 = [objc_msgSend(0 "mainFrame")];
-    if (v6 == v2)
+    if (v6 == selfCopy)
     {
       return;
     }
@@ -849,7 +849,7 @@ LABEL_6:
   }
 
   v6 = [objc_msgSend(objc_loadWeak((*(*(v5 + 56) + 16) + 16)) "mainFrame")];
-  if (v6 == v2)
+  if (v6 == selfCopy)
   {
     return;
   }
@@ -946,10 +946,10 @@ LABEL_10:
   return v8;
 }
 
-- (id)_stringForRange:(id)a3
+- (id)_stringForRange:(id)range
 {
   v3 = &stru_1F472E7E8;
-  if (!a3)
+  if (!range)
   {
     return v3;
   }
@@ -1026,14 +1026,14 @@ LABEL_15:
   return v3;
 }
 
-- (OptionSet<WebCore::PaintBehavior>)_paintBehaviorForDestinationContext:(CGContext *)a3
+- (OptionSet<WebCore::PaintBehavior>)_paintBehaviorForDestinationContext:(CGContext *)context
 {
   if (CGContextGetType() == 4 || CGContextGetType() == 6)
   {
-    v4 = [(WebFrame *)self _webHTMLDocumentView];
-    if (v4)
+    _webHTMLDocumentView = [(WebFrame *)self _webHTMLDocumentView];
+    if (_webHTMLDocumentView)
     {
-      if ([objc_msgSend(v4 "window")])
+      if ([objc_msgSend(_webHTMLDocumentView "window")])
       {
         return 0x20000;
       }
@@ -1056,11 +1056,11 @@ LABEL_15:
   }
 }
 
-- (void)_drawRect:(CGRect)a3 contentsOnly:(BOOL)a4
+- (void)_drawRect:(CGRect)rect contentsOnly:(BOOL)only
 {
-  v4 = a4;
+  onlyCopy = only;
   v12 = *MEMORY[0x1E69E9840];
-  v10 = a3;
+  rectCopy = rect;
   v6 = WKGetCurrentGraphicsContext();
   WebCore::GraphicsContextCG::GraphicsContextCG();
   WebCore::LocalFrameView::paintBehavior(*(self->_private->coreFrame.m_ptr + 27));
@@ -1080,8 +1080,8 @@ LABEL_15:
   }
 
   WebCore::LocalFrameView::setPaintBehavior();
-  WebCore::enclosingIntRect(&v10, v9);
-  if (v4)
+  WebCore::enclosingIntRect(&rectCopy, v9);
+  if (onlyCopy)
   {
     WebCore::LocalFrameView::paintContents();
   }
@@ -1095,7 +1095,7 @@ LABEL_15:
   WebCore::GraphicsContextCG::~GraphicsContextCG(v11);
 }
 
-- (BOOL)_getVisibleRect:(CGRect *)a3
+- (BOOL)_getVisibleRect:(CGRect *)rect
 {
   v4 = WebCore::Frame::ownerRenderer(self->_private->coreFrame.m_ptr);
   if (v4)
@@ -1111,10 +1111,10 @@ LABEL_15:
       WebCore::RenderObject::pixelSnappedAbsoluteClippedOverflowRect(v4);
       WebCore::IntRect::operator CGRect();
       v4 = v6;
-      a3->origin.x = v7;
-      a3->origin.y = v8;
-      a3->size.width = v9;
-      a3->size.height = v10;
+      rect->origin.x = v7;
+      rect->origin.y = v8;
+      rect->size.width = v9;
+      rect->size.height = v10;
       v5 = 1;
     }
   }
@@ -1122,9 +1122,9 @@ LABEL_15:
   return (v4 != 0) & v5;
 }
 
-- (id)_stringByEvaluatingJavaScriptFromString:(id)a3 forceUserGesture:(BOOL)a4
+- (id)_stringByEvaluatingJavaScriptFromString:(id)string forceUserGesture:(BOOL)gesture
 {
-  if (!a3)
+  if (!string)
   {
     return &stru_1F472E7E8;
   }
@@ -1141,7 +1141,7 @@ LABEL_15:
     v8 = WebCore::mainThreadNormalWorldSingleton(isMainThread);
     WebCore::ScriptController::jsWindowProxy(v7, v8);
     JSC::JSLockHolder::JSLockHolder();
-    MEMORY[0x1CCA63A40](v20, a3);
+    MEMORY[0x1CCA63A40](v20, string);
     v10 = WebCore::ScriptController::executeScriptIgnoringException();
     v20[1] = v10;
     v11 = v20[0];
@@ -1243,7 +1243,7 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)_caretRectAtPosition:(const void *)a3 affinity:(unint64_t)a4
+- (CGRect)_caretRectAtPosition:(const void *)position affinity:(unint64_t)affinity
 {
   WebCore::VisiblePosition::VisiblePosition();
   WebCore::VisiblePosition::absoluteCaretBounds(&v13, 0);
@@ -1278,9 +1278,9 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)_firstRectForDOMRange:(id)a3
+- (CGRect)_firstRectForDOMRange:(id)range
 {
-  if (!a3)
+  if (!range)
   {
     v5 = *MEMORY[0x1E696AA80];
     v6 = *(MEMORY[0x1E696AA80] + 8);
@@ -1377,17 +1377,17 @@ LABEL_18:
   return result;
 }
 
-- (void)_scrollDOMRangeToVisible:(id)a3
+- (void)_scrollDOMRangeToVisible:(id)visible
 {
   [(WebFrame *)self _firstRectForDOMRange:?];
   v13[0] = v5;
   v13[1] = v6;
   v13[2] = v7;
   v13[3] = v8;
-  v9 = [a3 startContainer];
-  if (v9)
+  startContainer = [visible startContainer];
+  if (startContainer)
   {
-    v10 = *(v9 + 16);
+    v10 = *(startContainer + 16);
     if (v10)
     {
       v11 = *(v10 + 72);
@@ -1405,14 +1405,14 @@ LABEL_18:
   }
 }
 
-- (void)_scrollDOMRangeToVisible:(id)a3 withInset:(double)a4
+- (void)_scrollDOMRangeToVisible:(id)visible withInset:(double)inset
 {
   [(WebFrame *)self _firstRectForDOMRange:?];
-  v13 = NSInsetRect(v14, a4, a4);
-  v7 = [a3 startContainer];
-  if (v7)
+  v13 = NSInsetRect(v14, inset, inset);
+  startContainer = [visible startContainer];
+  if (startContainer)
   {
-    v8 = *(v7 + 16);
+    v8 = *(startContainer + 16);
     if (v8)
     {
       v9 = *(v8 + 72);
@@ -1449,7 +1449,7 @@ LABEL_18:
   return v2;
 }
 
-- (_NSRange)_convertToNSRange:(const void *)a3
+- (_NSRange)_convertToNSRange:(const void *)range
 {
   m_ptr = self->_private->coreFrame.m_ptr;
   if (!m_ptr || (v5 = WebCore::FrameSelection::rootEditableElementOrDocumentElement(*(*(m_ptr + 28) + 3208))) == 0)
@@ -1464,7 +1464,7 @@ LABEL_10:
   *(v5 + 28) += 2;
   v15.var0.var0 = v5;
   v15.var1 = 0;
-  WebCore::SimpleRange::SimpleRange(&v16, &v15, a3);
+  WebCore::SimpleRange::SimpleRange(&v16, &v15, range);
   v6 = WebCore::characterCount();
   v7 = WebCore::characterCount();
   v8 = v17;
@@ -1536,7 +1536,7 @@ LABEL_19:
   return result;
 }
 
-- (optional<WebCore::SimpleRange>)_convertToDOMRange:(SEL)a3
+- (optional<WebCore::SimpleRange>)_convertToDOMRange:(SEL)range
 {
   if (self)
   {
@@ -1549,9 +1549,9 @@ LABEL_19:
   return self;
 }
 
-- (optional<WebCore::SimpleRange>)_convertToDOMRange:(SEL)a3 rangeIsRelativeTo:(_NSRange)a4
+- (optional<WebCore::SimpleRange>)_convertToDOMRange:(SEL)range rangeIsRelativeTo:(_NSRange)to
 {
-  if (a4.location == 0x7FFFFFFFFFFFFFFFLL)
+  if (to.location == 0x7FFFFFFFFFFFFFFFLL)
   {
     goto LABEL_26;
   }
@@ -1786,11 +1786,11 @@ LABEL_9:
   return self;
 }
 
-- (id)_convertNSRangeToDOMRange:(_NSRange)a3
+- (id)_convertNSRangeToDOMRange:(_NSRange)range
 {
   if (self)
   {
-    [(WebFrame *)self _convertToDOMRange:a3.location, a3.length];
+    [(WebFrame *)self _convertToDOMRange:range.location, range.length];
   }
 
   else
@@ -1845,9 +1845,9 @@ LABEL_9:
   return result;
 }
 
-- (_NSRange)_convertDOMRangeToNSRange:(id)a3
+- (_NSRange)_convertDOMRangeToNSRange:(id)range
 {
-  if (!a3)
+  if (!range)
   {
     v5 = 0;
     v4 = 0x7FFFFFFFFFFFFFFFLL;
@@ -1984,7 +1984,7 @@ LABEL_12:
   return result;
 }
 
-- (id)_documentFragmentWithMarkupString:(id)a3 baseURLString:(id)a4
+- (id)_documentFragmentWithMarkupString:(id)string baseURLString:(id)lString
 {
   m_ptr = self->_private->coreFrame.m_ptr;
   if (!m_ptr || !*(m_ptr + 28))
@@ -1992,8 +1992,8 @@ LABEL_12:
     return 0;
   }
 
-  MEMORY[0x1CCA63A40](&v15, a3);
-  MEMORY[0x1CCA63A40](&v14, a4);
+  MEMORY[0x1CCA63A40](&v15, string);
+  MEMORY[0x1CCA63A40](&v14, lString);
   WebCore::createFragmentFromMarkup();
   result = kit(v16);
   v8 = v16;
@@ -2049,7 +2049,7 @@ LABEL_9:
   return result;
 }
 
-- (id)_documentFragmentWithNodesAsParagraphs:(id)a3
+- (id)_documentFragmentWithNodesAsParagraphs:(id)paragraphs
 {
   m_ptr = self->_private->coreFrame.m_ptr;
   if (!m_ptr)
@@ -2063,19 +2063,19 @@ LABEL_9:
     return 0;
   }
 
-  v5 = [a3 objectEnumerator];
+  objectEnumerator = [paragraphs objectEnumerator];
   v6 = 0;
   v7 = 0;
   v32 = 0;
   for (i = 0; ; HIDWORD(i) = v7)
   {
-    v8 = [v5 nextObject];
-    if (!v8)
+    nextObject = [objectEnumerator nextObject];
+    if (!nextObject)
     {
       break;
     }
 
-    v9 = *(v8 + 16);
+    v9 = *(nextObject + 16);
     v31 = v9;
     if (v7 == i)
     {
@@ -2186,11 +2186,11 @@ LABEL_30:
   return result;
 }
 
-- (void)_replaceSelectionWithNode:(id)a3 selectReplacement:(BOOL)a4 smartReplace:(BOOL)a5 matchStyle:(BOOL)a6
+- (void)_replaceSelectionWithNode:(id)node selectReplacement:(BOOL)replacement smartReplace:(BOOL)replace matchStyle:(BOOL)style
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  styleCopy = style;
+  replaceCopy = replace;
+  replacementCopy = replacement;
   WebCore::Document::createDocumentFragment(&v13, *(self->_private->coreFrame.m_ptr + 28));
   v11 = kit(v13);
   v12 = v13;
@@ -2208,8 +2208,8 @@ LABEL_30:
     }
   }
 
-  [v11 appendChild:a3];
-  [(WebFrame *)self _replaceSelectionWithFragment:v11 selectReplacement:v8 smartReplace:v7 matchStyle:v6];
+  [v11 appendChild:node];
+  [(WebFrame *)self _replaceSelectionWithFragment:v11 selectReplacement:replacementCopy smartReplace:replaceCopy matchStyle:styleCopy];
 }
 
 - (void)_insertParagraphSeparatorInQuotedContent
@@ -2235,7 +2235,7 @@ LABEL_30:
   }
 }
 
-- (VisiblePosition)_visiblePositionForPoint:(SEL)a3
+- (VisiblePosition)_visiblePositionForPoint:(SEL)point
 {
   v7 = a4;
   m_ptr = self->_private->coreFrame.m_ptr;
@@ -2243,11 +2243,11 @@ LABEL_30:
   return WebCore::LocalFrame::visiblePositionForPoint(m_ptr, v6);
 }
 
-- (id)_characterRangeAtPoint:(CGPoint)a3
+- (id)_characterRangeAtPoint:(CGPoint)point
 {
-  v13 = a3;
+  pointCopy = point;
   m_ptr = self->_private->coreFrame.m_ptr;
-  WebCore::IntPoint::IntPoint(&v9, &v13);
+  WebCore::IntPoint::IntPoint(&v9, &pointCopy);
   WebCore::LocalFrame::rangeForPoint(&v10, m_ptr, &v9);
   result = kit();
   if (v12 == 1)
@@ -2334,16 +2334,16 @@ LABEL_6:
   return result;
 }
 
-- (void)_setTypingStyle:(id)a3 withUndoAction:(unsigned __int8)a4
+- (void)_setTypingStyle:(id)style withUndoAction:(unsigned __int8)action
 {
-  if (a3)
+  if (style)
   {
     if (self->_private->coreFrame.m_ptr)
     {
-      v5 = *(a3 + 2);
+      v5 = *(style + 2);
       if (v5)
       {
-        if (!(*(*v5 + 32))(*(a3 + 2), a2))
+        if (!(*(*v5 + 32))(*(style + 2), a2))
         {
           (**v5)(v5);
           (*(*v5 + 184))(&v10, v5);
@@ -2442,11 +2442,11 @@ LABEL_6:
   return v9;
 }
 
-- (void)_commitData:(id)a3
+- (void)_commitData:(id)data
 {
-  v6 = a3;
+  dataCopy = data;
   WebCore::Document::setShouldCreateRenderers(*(self->_private->coreFrame.m_ptr + 28));
-  WebCore::SharedBuffer::create<NSData *&>(&v6, v3, &v5);
+  WebCore::SharedBuffer::create<NSData *&>(&dataCopy, v3, &v5);
   WebCore::DocumentLoader::commitData();
   v4 = v5;
   v5 = 0;
@@ -2460,7 +2460,7 @@ LABEL_6:
   }
 }
 
-- (BOOL)_isDescendantOfFrame:(id)a3
+- (BOOL)_isDescendantOfFrame:(id)frame
 {
   m_ptr = self->_private->coreFrame.m_ptr;
   if (!m_ptr)
@@ -2468,9 +2468,9 @@ LABEL_6:
     return 0;
   }
 
-  if (a3)
+  if (frame)
   {
-    v4 = *(*(a3 + 1) + 8);
+    v4 = *(*(frame + 1) + 8);
   }
 
   else
@@ -2578,11 +2578,11 @@ LABEL_12:
   }
 }
 
-- (id)_rectsForRange:(id)a3
+- (id)_rectsForRange:(id)range
 {
-  if (a3)
+  if (range)
   {
-    return [a3 textRects];
+    return [range textRects];
   }
 
   else
@@ -2591,13 +2591,13 @@ LABEL_12:
   }
 }
 
-- (id)_selectionRangeForFirstPoint:(CGPoint)a3 secondPoint:(CGPoint)a4
+- (id)_selectionRangeForFirstPoint:(CGPoint)point secondPoint:(CGPoint)secondPoint
 {
   if (self)
   {
-    y = a4.y;
-    x = a4.x;
-    [(WebFrame *)self _visiblePositionForPoint:a3.x, a3.y];
+    y = secondPoint.y;
+    x = secondPoint.x;
+    [(WebFrame *)self _visiblePositionForPoint:point.x, point.y];
     [(WebFrame *)self _visiblePositionForPoint:x, y];
   }
 
@@ -2697,11 +2697,11 @@ LABEL_20:
   return v7;
 }
 
-- (id)_selectionRangeForPoint:(CGPoint)a3
+- (id)_selectionRangeForPoint:(CGPoint)point
 {
   if (self)
   {
-    [(WebFrame *)self _visiblePositionForPoint:a3.x, a3.y];
+    [(WebFrame *)self _visiblePositionForPoint:point.x, point.y];
   }
 
   else
@@ -2840,11 +2840,11 @@ LABEL_14:
   return result;
 }
 
-- (void)_selectNSRange:(_NSRange)a3
+- (void)_selectNSRange:(_NSRange)range
 {
   if (self)
   {
-    [(WebFrame *)self _convertToDOMRange:a3.location, a3.length];
+    [(WebFrame *)self _convertToDOMRange:range.location, range.length];
     if (v8)
     {
       WebCore::VisibleSelection::VisibleSelection();
@@ -2910,7 +2910,7 @@ LABEL_8:
   return v3;
 }
 
-- (void)setTimeoutsPaused:(BOOL)a3
+- (void)setTimeoutsPaused:(BOOL)paused
 {
   if ([(WebFrame *)self _webHTMLDocumentView]&& self->_private->coreFrame.m_ptr)
   {
@@ -2919,7 +2919,7 @@ LABEL_8:
   }
 }
 
-- (void)setPluginsPaused:(BOOL)a3
+- (void)setPluginsPaused:(BOOL)paused
 {
   if (self)
   {
@@ -2932,13 +2932,13 @@ LABEL_8:
         v5 = *(v4 + 8);
         if (v5)
         {
-          v6 = a3;
+          pausedCopy = paused;
           if (((*(**(*(v5 + 56) + 16) + 1440))(*(*(v5 + 56) + 16), a2) & 1) == 0)
           {
             Weak = objc_loadWeak((*(*(v5 + 56) + 16) + 16));
             if (Weak)
             {
-              if (v6)
+              if (pausedCopy)
               {
 
                 [Weak _stopAllPlugIns];
@@ -2975,11 +2975,11 @@ LABEL_8:
   }
 }
 
-- (void)selectWithoutClosingTypingNSRange:(_NSRange)a3
+- (void)selectWithoutClosingTypingNSRange:(_NSRange)range
 {
   if (self)
   {
-    [(WebFrame *)self _convertToDOMRange:a3.location, a3.length];
+    [(WebFrame *)self _convertToDOMRange:range.location, range.length];
     if (v12)
     {
       WebCore::VisibleSelection::VisibleSelection();
@@ -3052,9 +3052,9 @@ LABEL_14:
   }
 }
 
-- (void)forceLayoutAdjustingViewSize:(BOOL)a3
+- (void)forceLayoutAdjustingViewSize:(BOOL)size
 {
-  v4 = !a3;
+  v4 = !size;
   WebCore::LocalFrameView::forceLayout(*(self->_private->coreFrame.m_ptr + 27));
   if (!v4)
   {
@@ -3120,21 +3120,21 @@ LABEL_7:
   }
 }
 
-- (CGSize)renderedSizeOfNode:(id)a3 constrainedToWidth:(float)a4
+- (CGSize)renderedSizeOfNode:(id)node constrainedToWidth:(float)width
 {
   v5 = 0.0;
-  if (a3 && (v6 = *(a3 + 2)) != 0 && (v7 = *(v6 + 72)) != 0)
+  if (node && (v6 = *(node + 2)) != 0 && (v7 = *(v6 + 72)) != 0)
   {
     v8 = 0.0;
     if ((*(v7 + 45) & 4) != 0)
     {
-      v9 = vcvts_n_f32_s32((*(*v7 + 1232))(v7, a2, 0.0, 0.0), 6uLL);
-      if (v9 > a4)
+      widthCopy = vcvts_n_f32_s32((*(*v7 + 1232))(v7, a2, 0.0, 0.0), 6uLL);
+      if (widthCopy > width)
       {
-        v9 = a4;
+        widthCopy = width;
       }
 
-      v5 = v9;
+      v5 = widthCopy;
       v8 = vcvtd_n_f64_s32(*(v7 + 164), 6uLL);
     }
   }
@@ -3149,9 +3149,9 @@ LABEL_7:
   return result;
 }
 
-- (id)deepestNodeAtViewportLocation:(CGPoint)a3
+- (id)deepestNodeAtViewportLocation:(CGPoint)location
 {
-  v7 = a3;
+  locationCopy = location;
   if (self)
   {
     m_ptr = self->_private->coreFrame.m_ptr;
@@ -3162,14 +3162,14 @@ LABEL_7:
     m_ptr = 0;
   }
 
-  WebCore::FloatPoint::FloatPoint(v6, &v7);
+  WebCore::FloatPoint::FloatPoint(v6, &locationCopy);
   v4 = WebCore::LocalFrame::deepestNodeAtLocation(m_ptr, v6);
   return kit(v4);
 }
 
-- (id)scrollableNodeAtViewportLocation:(CGPoint)a3
+- (id)scrollableNodeAtViewportLocation:(CGPoint)location
 {
-  v7 = a3;
+  locationCopy = location;
   if (self)
   {
     m_ptr = self->_private->coreFrame.m_ptr;
@@ -3180,12 +3180,12 @@ LABEL_7:
     m_ptr = 0;
   }
 
-  WebCore::FloatPoint::FloatPoint(v6, &v7);
+  WebCore::FloatPoint::FloatPoint(v6, &locationCopy);
   v4 = WebCore::LocalFrame::nodeRespondingToScrollWheelEvents(m_ptr, v6);
   return kit(v4);
 }
 
-- (id)approximateNodeAtViewportLocation:(CGPoint *)a3
+- (id)approximateNodeAtViewportLocation:(CGPoint *)location
 {
   if (self)
   {
@@ -3197,16 +3197,16 @@ LABEL_7:
     m_ptr = 0;
   }
 
-  WebCore::FloatPoint::FloatPoint(v10, a3);
+  WebCore::FloatPoint::FloatPoint(v10, location);
   v9 = 0;
   v5 = WebCore::LocalFrame::approximateNodeAtViewportLocationLegacy(m_ptr, v10, &v9);
   WebCore::FloatPoint::operator CGPoint();
-  a3->x = v6;
-  a3->y = v7;
+  location->x = v6;
+  location->y = v7;
   return kit(v5);
 }
 
-- (CGRect)renderRectForPoint:(CGPoint)a3 isReplaced:(BOOL *)a4 fontSize:(float *)a5
+- (CGRect)renderRectForPoint:(CGPoint)point isReplaced:(BOOL *)replaced fontSize:(float *)size
 {
   if (self)
   {
@@ -3214,8 +3214,8 @@ LABEL_7:
   }
 
   v10 = 0;
-  WebCore::LocalFrame::renderRectForPoint(self, a3, &v10, a5);
-  *a4 = v10;
+  WebCore::LocalFrame::renderRectForPoint(self, point, &v10, size);
+  *replaced = v10;
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -3233,14 +3233,14 @@ LABEL_7:
   return MEMORY[0x1EEE5BFA0](self, a2);
 }
 
-- (int)innerLineHeight:(id)a3
+- (int)innerLineHeight:(id)height
 {
-  if (!a3)
+  if (!height)
   {
     return 0;
   }
 
-  v3 = *(a3 + 2);
+  v3 = *(height + 2);
   WebCore::Document::updateLayout();
   v4 = *(v3 + 72);
   if (!v4)
@@ -3263,14 +3263,14 @@ LABEL_7:
   MEMORY[0x1EEE5BF88](self, a2);
 }
 
-- (void)setSelectionChangeCallbacksDisabled:(BOOL)a3
+- (void)setSelectionChangeCallbacksDisabled:(BOOL)disabled
 {
   if (self)
   {
     self = self->_private->coreFrame.m_ptr;
   }
 
-  MEMORY[0x1EEE53F30](self, a3);
+  MEMORY[0x1EEE53F30](self, disabled);
 }
 
 - (CGRect)caretRect
@@ -3305,11 +3305,11 @@ LABEL_7:
   return result;
 }
 
-- (void)setCaretColor:(CGColor *)a3
+- (void)setCaretColor:(CGColor *)color
 {
-  if (a3)
+  if (color)
   {
-    v3 = WebCore::roundAndClampToSRGBALossy(a3, a2);
+    v3 = WebCore::roundAndClampToSRGBALossy(color, a2);
     v4 = (bswap32(v3) | 0x1104000000000000) & (v3 << 31 >> 63);
   }
 
@@ -3424,9 +3424,9 @@ LABEL_18:
     if (atomic_fetch_add(v9, 0xFFFFFFFF) == 1)
     {
       atomic_store(1u, v9);
-      v10 = self;
+      selfCopy = self;
       WTF::fastFree(v9, v7);
-      return v10;
+      return selfCopy;
     }
   }
 
@@ -3438,9 +3438,9 @@ LABEL_18:
   if (!self)
   {
 LABEL_5:
-    v4 = [(WebFrame *)self frameView];
+    frameView = [(WebFrame *)self frameView];
 
-    return [(WebFrameView *)v4 documentView];
+    return [(WebFrameView *)frameView documentView];
   }
 
   m_ptr = self->_private->coreFrame.m_ptr;
@@ -3453,15 +3453,15 @@ LABEL_5:
       goto LABEL_5;
     }
 
-    v4 = [v3[3] frameView];
+    frameView = [v3[3] frameView];
   }
 
   else
   {
-    v4 = [0 frameView];
+    frameView = [0 frameView];
   }
 
-  return [(WebFrameView *)v4 documentView];
+  return [(WebFrameView *)frameView documentView];
 }
 
 - (int)layoutCount
@@ -3555,7 +3555,7 @@ LABEL_6:
   return result;
 }
 
-- (void)setSelectedDOMRange:(id)a3 affinity:(unint64_t)a4 closeTyping:(BOOL)a5 userTriggered:(BOOL)a6
+- (void)setSelectedDOMRange:(id)range affinity:(unint64_t)affinity closeTyping:(BOOL)typing userTriggered:(BOOL)triggered
 {
   if (self)
   {
@@ -3627,7 +3627,7 @@ LABEL_13:
     }
 
 LABEL_18:
-    if (!a5)
+    if (!typing)
     {
       v11 = *(m_ptr + 28);
       if (v11)
@@ -3782,9 +3782,9 @@ LABEL_12:
       {
         if (*(v2 + 7) == 2)
         {
-          v3 = self;
+          selfCopy = self;
           WebCore::Node::removedLastRef(v2);
-          LOWORD(self) = v3;
+          LOWORD(self) = selfCopy;
         }
 
         else
@@ -3855,9 +3855,9 @@ LABEL_6:
   return result;
 }
 
-- (id)wordInRange:(id)a3
+- (id)wordInRange:(id)range
 {
-  if (a3)
+  if (range)
   {
     return [(WebFrame *)self _stringForRange:?];
   }
@@ -3868,9 +3868,9 @@ LABEL_6:
   }
 }
 
-- (int)wordOffsetInRange:(id)a3
+- (int)wordOffsetInRange:(id)range
 {
-  if (!a3)
+  if (!range)
   {
     return -1;
   }
@@ -3943,7 +3943,7 @@ LABEL_6:
       v12 = v29;
     }
 
-    v15 = v12 - *(*(a3 + 2) + 40);
+    v15 = v12 - *(*(range + 2) + 40);
     v14 = v15 & ~(v15 >> 31);
   }
 
@@ -3956,9 +3956,9 @@ LABEL_6:
   return v14;
 }
 
-- (BOOL)spaceFollowsWordInRange:(id)a3
+- (BOOL)spaceFollowsWordInRange:(id)range
 {
-  if (!a3)
+  if (!range)
   {
     return 0;
   }
@@ -4100,9 +4100,9 @@ LABEL_25:
       {
         if (*(v3 + 7) == 2)
         {
-          v4 = self;
+          selfCopy = self;
           WebCore::Node::removedLastRef(v3);
-          LOBYTE(self) = v4;
+          LOBYTE(self) = selfCopy;
         }
 
         else
@@ -4173,7 +4173,7 @@ LABEL_3:
   return MEMORY[0x1EEE5C9B0](v3);
 }
 
-- (id)rangeByMovingCurrentSelection:(int)a3
+- (id)rangeByMovingCurrentSelection:(int)selection
 {
   WebCore::FrameSelection::rangeByMovingCurrentSelection(*(*(self->_private->coreFrame.m_ptr + 28) + 3208));
   result = kit();
@@ -4221,7 +4221,7 @@ LABEL_6:
   return result;
 }
 
-- (id)rangeByExtendingCurrentSelection:(int)a3
+- (id)rangeByExtendingCurrentSelection:(int)selection
 {
   WebCore::FrameSelection::rangeByExtendingCurrentSelection(*(*(self->_private->coreFrame.m_ptr + 28) + 3208));
   result = kit();
@@ -4269,11 +4269,11 @@ LABEL_6:
   return result;
 }
 
-- (void)selectNSRange:(_NSRange)a3 onElement:(id)a4
+- (void)selectNSRange:(_NSRange)range onElement:(id)element
 {
-  if (self && a4 && self->_private->coreFrame.m_ptr)
+  if (self && element && self->_private->coreFrame.m_ptr)
   {
-    v6 = core(a4);
+    v6 = core(element);
     *(v6 + 7) += 4;
     WebCore::SimpleRange::SimpleRange();
     WebCore::VisibleSelection::VisibleSelection();
@@ -4389,9 +4389,9 @@ LABEL_17:
       {
         if (*(v6 + 7) == 2)
         {
-          v8 = self;
+          selfCopy = self;
           WebCore::Node::removedLastRef(v6);
-          self = v8;
+          self = selfCopy;
           v7 = v10;
           v10 = 0;
           if (!v7)
@@ -4415,9 +4415,9 @@ LABEL_17:
 LABEL_16:
       if (*(v7 + 7) == 2)
       {
-        v9 = self;
+        selfCopy2 = self;
         WebCore::Node::removedLastRef(v7);
-        return v9;
+        return selfCopy2;
       }
 
       else
@@ -4430,7 +4430,7 @@ LABEL_16:
   return self;
 }
 
-- (void)setMarkedText:(id)a3 selectedRange:(_NSRange)a4
+- (void)setMarkedText:(id)text selectedRange:(_NSRange)range
 {
   if (self)
   {
@@ -4460,7 +4460,7 @@ LABEL_16:
         }
       }
 
-      MEMORY[0x1CCA63A40](&v17, a3);
+      MEMORY[0x1CCA63A40](&v17, text);
       WebCore::Editor::setComposition();
       v8 = v17;
       v17 = 0;
@@ -4508,7 +4508,7 @@ LABEL_16:
   }
 }
 
-- (void)setMarkedText:(id)a3 forCandidates:(BOOL)a4
+- (void)setMarkedText:(id)text forCandidates:(BOOL)candidates
 {
   if (self)
   {
@@ -4537,8 +4537,8 @@ LABEL_16:
         }
       }
 
-      MEMORY[0x1CCA63A40](&v15, a3);
-      [a3 length];
+      MEMORY[0x1CCA63A40](&v15, text);
+      [text length];
       WebCore::Editor::setComposition();
       v8 = v15;
       v15 = 0;
@@ -4584,7 +4584,7 @@ LABEL_16:
   }
 }
 
-- (void)confirmMarkedText:(id)a3
+- (void)confirmMarkedText:(id)text
 {
   if (!self)
   {
@@ -4630,7 +4630,7 @@ LABEL_11:
   v8 = *(*(*(*(m_ptr + 3) + 8) + 56) + 16);
   (*(*v8 + 696))(v8);
   v9 = *(m_ptr + 28);
-  if (a3)
+  if (text)
   {
     if (v9)
     {
@@ -4651,7 +4651,7 @@ LABEL_11:
       }
     }
 
-    MEMORY[0x1CCA63A40](&v16, a3);
+    MEMORY[0x1CCA63A40](&v16, text);
     WebCore::Editor::confirmComposition(v10, &v16);
     v13 = v16;
     v16 = 0;
@@ -4694,11 +4694,11 @@ LABEL_11:
   (*(*v15 + 704))(v15);
 }
 
-- (void)setText:(id)a3 asChildOfElement:(id)a4
+- (void)setText:(id)text asChildOfElement:(id)element
 {
   if (self)
   {
-    if (a4)
+    if (element)
     {
       m_ptr = self->_private->coreFrame.m_ptr;
       if (m_ptr)
@@ -4718,8 +4718,8 @@ LABEL_11:
             *(v5 + 7) -= 2;
           }
 
-          MEMORY[0x1CCA63A40](&v10, a3);
-          core(a4);
+          MEMORY[0x1CCA63A40](&v10, text);
+          core(element);
           WebCore::Editor::setTextAsChildOfElement();
           v9 = v10;
           v10 = 0;
@@ -4736,11 +4736,11 @@ LABEL_11:
   }
 }
 
-- (void)setDictationPhrases:(id)a3 metadata:(id)a4 asChildOfElement:(id)a5
+- (void)setDictationPhrases:(id)phrases metadata:(id)metadata asChildOfElement:(id)element
 {
   if (self)
   {
-    if (a5)
+    if (element)
     {
       m_ptr = self->_private->coreFrame.m_ptr;
       if (m_ptr)
@@ -4765,8 +4765,8 @@ LABEL_11:
           }
         }
 
-        vectorForDictationPhrasesArray(a3, &v16);
-        core(a5);
+        vectorForDictationPhrasesArray(phrases, &v16);
+        core(element);
         WebCore::Editor::setDictationPhrasesAsChildOfElement();
         v10 = v16;
         if (v18)
@@ -4831,22 +4831,22 @@ LABEL_11:
   return MEMORY[0x1EEE5BFE0](self, a2);
 }
 
-- (void)getDictationResultRanges:(id *)a3 andMetadatas:(id *)a4
+- (void)getDictationResultRanges:(id *)ranges andMetadatas:(id *)metadatas
 {
-  if (!a3)
+  if (!ranges)
   {
     return;
   }
 
-  *a3 = 0;
-  if (!a4)
+  *ranges = 0;
+  if (!metadatas)
   {
     return;
   }
 
-  *a4 = 0;
-  v7 = [MEMORY[0x1E695DF70] array];
-  v8 = [MEMORY[0x1E695DF70] array];
+  *metadatas = 0;
+  array = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v9 = *(self->_private->coreFrame.m_ptr + 28);
   v10 = *(v9 + 401);
   if (*(v10 + 153))
@@ -4858,8 +4858,8 @@ LABEL_11:
     }
 
 LABEL_50:
-    *a3 = v7;
-    *a4 = v8;
+    *ranges = array;
+    *metadatas = array2;
     return;
   }
 
@@ -4870,8 +4870,8 @@ LABEL_50:
   }
 
 LABEL_5:
-  v25 = a3;
-  v26 = a4;
+  rangesCopy = ranges;
+  metadatasCopy = metadatas;
   v12 = 0;
   v13 = 0;
   v27 = v9;
@@ -4949,15 +4949,15 @@ LABEL_29:
           v28 = 0;
           if (v19 == v12)
           {
-            [v7 removeLastObject];
+            [array removeLastObject];
             [v13 setEnd:objc_msgSend(v20 offset:{"startContainer"), objc_msgSend(v20, "startOffset")}];
-            v15 = [v7 addObject:v13];
+            v15 = [array addObject:v13];
           }
 
           else
           {
-            [v8 addObject:{v19, v25, v26}];
-            v15 = [v7 addObject:v20];
+            [array2 addObject:{v19, rangesCopy, metadatasCopy}];
+            v15 = [array addObject:v20];
             if (v20)
             {
               v15 = v20;
@@ -5037,16 +5037,16 @@ LABEL_42:
     break;
   }
 
-  *v25 = v7;
-  *v26 = v8;
+  *rangesCopy = array;
+  *metadatasCopy = array2;
   if (v13)
   {
   }
 }
 
-- (id)dictationResultMetadataForRange:(id)a3
+- (id)dictationResultMetadataForRange:(id)range
 {
-  if (!a3)
+  if (!range)
   {
     return 0;
   }
@@ -5166,7 +5166,7 @@ LABEL_25:
   return result;
 }
 
-- (void)recursiveSetUpdateAppearanceEnabled:(BOOL)a3
+- (void)recursiveSetUpdateAppearanceEnabled:(BOOL)enabled
 {
   if (self)
   {
@@ -5177,9 +5177,9 @@ LABEL_25:
   }
 }
 
-+ (id)stringWithData:(id)a3 textEncodingName:(id)a4
++ (id)stringWithData:(id)data textEncodingName:(id)name
 {
-  MEMORY[0x1CCA63A40](&v16, a4);
+  MEMORY[0x1CCA63A40](&v16, name);
   PAL::TextEncoding::TextEncoding(v17, &v16);
   v6 = v16;
   v16 = 0;
@@ -5190,7 +5190,7 @@ LABEL_25:
 
   if (*(&v18 + 1))
   {
-    if (!a3)
+    if (!data)
     {
       goto LABEL_8;
     }
@@ -5202,11 +5202,11 @@ LABEL_25:
   v8 = *(v7 + 24);
   v18 = *(v7 + 8);
   v19 = v8;
-  if (a3)
+  if (data)
   {
 LABEL_6:
-    [a3 bytes];
-    [a3 length];
+    [data bytes];
+    [data length];
   }
 
 LABEL_8:
@@ -5248,11 +5248,11 @@ LABEL_8:
   return v10;
 }
 
-- (CGRect)caretRectAtNode:(id)a3 offset:(int)a4 affinity:(unint64_t)a5
+- (CGRect)caretRectAtNode:(id)node offset:(int)offset affinity:(unint64_t)affinity
 {
-  if (a3)
+  if (node)
   {
-    v7 = *(a3 + 2);
+    v7 = *(node + 2);
     if (v7)
     {
       *(v7 + 7) += 2;
@@ -5266,7 +5266,7 @@ LABEL_8:
 
   v22 = v7;
   WebCore::Position::Position();
-  [(WebFrame *)self _caretRectAtPosition:&v23 affinity:a5];
+  [(WebFrame *)self _caretRectAtPosition:&v23 affinity:affinity];
   v12 = v23;
   v23 = 0;
   if (!v12)
@@ -5329,7 +5329,7 @@ LABEL_15:
   return result;
 }
 
-- (__CTFont)fontForSelection:(BOOL *)a3
+- (__CTFont)fontForSelection:(BOOL *)selection
 {
   v14 = 0;
   m_ptr = self->_private->coreFrame.m_ptr;
@@ -5357,7 +5357,7 @@ LABEL_7:
 
 LABEL_12:
     result = 0;
-    if (!a3)
+    if (!selection)
     {
       return result;
     }
@@ -5389,7 +5389,7 @@ LABEL_8:
     v11 = MEMORY[0x1CCA66FC0](v7);
     WTF::fastFree(v11, v12);
     result = v10;
-    if (!a3)
+    if (!selection)
     {
       return result;
     }
@@ -5398,14 +5398,14 @@ LABEL_8:
   else
   {
     --*v7;
-    if (!a3)
+    if (!selection)
     {
       return result;
     }
   }
 
 LABEL_13:
-  *a3 = v14;
+  *selection = v14;
   return result;
 }
 
@@ -5417,11 +5417,11 @@ LABEL_13:
   }
 }
 
-- (void)_replaceSelectionWithText:(id)a3 selectReplacement:(BOOL)a4 smartReplace:(BOOL)a5 matchStyle:(BOOL)a6
+- (void)_replaceSelectionWithText:(id)text selectReplacement:(BOOL)replacement smartReplace:(BOOL)replace matchStyle:(BOOL)style
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
+  styleCopy = style;
+  replaceCopy = replace;
+  replacementCopy = replacement;
   WebCore::VisibleSelection::toNormalizedRange(v22, (*(*(self->_private->coreFrame.m_ptr + 28) + 3208) + 56));
   if (v24 != 1)
   {
@@ -5429,7 +5429,7 @@ LABEL_13:
     goto LABEL_9;
   }
 
-  MEMORY[0x1CCA63A40](&v20, a3);
+  MEMORY[0x1CCA63A40](&v20, text);
   WebCore::createFragmentFromText(&v21, v22, &v20, v11);
   v13 = kit(v21);
   v14 = v21;
@@ -5470,7 +5470,7 @@ LABEL_6:
   }
 
 LABEL_9:
-  [(WebFrame *)self _replaceSelectionWithFragment:v13 selectReplacement:v8 smartReplace:v7 matchStyle:v6];
+  [(WebFrame *)self _replaceSelectionWithFragment:v13 selectReplacement:replacementCopy smartReplace:replaceCopy matchStyle:styleCopy];
   if (v24 != 1)
   {
     return;
@@ -5515,17 +5515,17 @@ LABEL_14:
   }
 }
 
-- (void)_replaceSelectionWithWebArchive:(id)a3 selectReplacement:(BOOL)a4 smartReplace:(BOOL)a5
+- (void)_replaceSelectionWithWebArchive:(id)archive selectReplacement:(BOOL)replacement smartReplace:(BOOL)replace
 {
-  v5 = a5;
-  v6 = a4;
+  replaceCopy = replace;
+  replacementCopy = replacement;
   v20 = *MEMORY[0x1E69E9840];
-  v9 = [a3 subresources];
+  subresources = [archive subresources];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v10 = [subresources countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v10)
   {
     v11 = v10;
@@ -5539,7 +5539,7 @@ LABEL_14:
         {
           if (*v16 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(subresources);
           }
 
           v14 = *(*(&v15 + 1) + 8 * v13);
@@ -5560,21 +5560,21 @@ LABEL_14:
 
       while (v11 != v13);
 LABEL_3:
-      v11 = [v9 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v11 = [subresources countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v11);
   }
 
-  [(WebFrame *)self _replaceSelectionWithFragment:[(WebDataSource *)[(WebFrame *)self dataSource] _documentFragmentWithArchive:a3] selectReplacement:v6 smartReplace:v5 matchStyle:0];
+  [(WebFrame *)self _replaceSelectionWithFragment:[(WebDataSource *)[(WebFrame *)self dataSource] _documentFragmentWithArchive:archive] selectReplacement:replacementCopy smartReplace:replaceCopy matchStyle:0];
 }
 
 - (void)resetTextAutosizingBeforeLayout
 {
-  v3 = [(WebFrame *)self _webHTMLDocumentView];
+  _webHTMLDocumentView = [(WebFrame *)self _webHTMLDocumentView];
   if (self)
   {
-    if (v3)
+    if (_webHTMLDocumentView)
     {
       v4 = self->_private;
       m_ptr = v4->coreFrame.m_ptr;
@@ -5607,7 +5607,7 @@ LABEL_3:
   }
 }
 
-- (void)_setTextAutosizingWidth:(double)a3
+- (void)_setTextAutosizingWidth:(double)width
 {
   v3 = *(self->_private->coreFrame.m_ptr + 3);
   if (v3)
@@ -5615,8 +5615,8 @@ LABEL_3:
     v4 = *(v3 + 8);
     if (v4)
     {
-      v5 = a3;
-      *(v4 + 432) = v5;
+      widthCopy = width;
+      *(v4 + 432) = widthCopy;
     }
   }
 }
@@ -5711,7 +5711,7 @@ LABEL_9:
   }
 }
 
-- (void)_setCaptionDisplayMode:(id)a3
+- (void)_setCaptionDisplayMode:(id)mode
 {
   v3 = *(self->_private->coreFrame.m_ptr + 3);
   if (!v3)
@@ -5727,7 +5727,7 @@ LABEL_9:
 
   v6 = WebCore::Page::group(v4);
   v7 = WebCore::PageGroup::ensureCaptionPreferences(v6);
-  MEMORY[0x1CCA63A40](&v18, a3);
+  MEMORY[0x1CCA63A40](&v18, mode);
   v9 = v18;
   if (!v18)
   {
@@ -5947,16 +5947,16 @@ LABEL_89:
   }
 }
 
-- (void)_replaceSelectionWithFragment:(id)a3 selectReplacement:(BOOL)a4 smartReplace:(BOOL)a5 matchStyle:(BOOL)a6
+- (void)_replaceSelectionWithFragment:(id)fragment selectReplacement:(BOOL)replacement smartReplace:(BOOL)replace matchStyle:(BOOL)style
 {
-  if (a3)
+  if (fragment)
   {
     v6 = *(self->_private->coreFrame.m_ptr + 28);
     if (*(*(v6 + 3208) + 153))
     {
-      v7 = a6;
-      v8 = a5;
-      v9 = a4;
+      styleCopy = style;
+      replaceCopy = replace;
+      replacementCopy = replacement;
       *(v6 + 28) += 2;
       v11 = WebCore::Document::editor(v6);
       if (*(v6 + 28) == 2)
@@ -5971,9 +5971,9 @@ LABEL_89:
         *(v6 + 28) -= 2;
       }
 
-      v13 = *(a3 + 2);
+      v13 = *(fragment + 2);
 
-      MEMORY[0x1EEE5AD00](v11, v13, v9, v8, v7, 14, 0);
+      MEMORY[0x1EEE5AD00](v11, v13, replacementCopy, replaceCopy, styleCopy, 14, 0);
     }
   }
 }
@@ -6004,10 +6004,10 @@ LABEL_6:
   WebCore::Node::removedLastRef(v2);
   v3 = v4;
 
-- (void)_replaceSelectionWithText:(id)a3 selectReplacement:(BOOL)a4 smartReplace:(BOOL)a5
+- (void)_replaceSelectionWithText:(id)text selectReplacement:(BOOL)replacement smartReplace:(BOOL)replace
 {
-  v5 = a5;
-  v6 = a4;
+  replaceCopy = replace;
+  replacementCopy = replacement;
   WebCore::VisibleSelection::toNormalizedRange(v20, (*(*(self->_private->coreFrame.m_ptr + 28) + 3208) + 56));
   if (v22 != 1)
   {
@@ -6015,7 +6015,7 @@ LABEL_6:
     goto LABEL_9;
   }
 
-  MEMORY[0x1CCA63A40](&v18, a3);
+  MEMORY[0x1CCA63A40](&v18, text);
   WebCore::createFragmentFromText(&v19, v20, &v18, v9);
   v11 = kit(v19);
   v12 = v19;
@@ -6056,7 +6056,7 @@ LABEL_6:
   }
 
 LABEL_9:
-  [(WebFrame *)self _replaceSelectionWithFragment:v11 selectReplacement:v6 smartReplace:v5 matchStyle:1];
+  [(WebFrame *)self _replaceSelectionWithFragment:v11 selectReplacement:replacementCopy smartReplace:replaceCopy matchStyle:1];
   if (v22 != 1)
   {
     return;
@@ -6101,38 +6101,38 @@ LABEL_14:
   }
 }
 
-- (void)_replaceSelectionWithMarkupString:(id)a3 baseURLString:(id)a4 selectReplacement:(BOOL)a5 smartReplace:(BOOL)a6
+- (void)_replaceSelectionWithMarkupString:(id)string baseURLString:(id)lString selectReplacement:(BOOL)replacement smartReplace:(BOOL)replace
 {
-  v6 = a6;
-  v7 = a5;
-  v9 = [(WebFrame *)self _documentFragmentWithMarkupString:a3 baseURLString:a4];
+  replaceCopy = replace;
+  replacementCopy = replacement;
+  v9 = [(WebFrame *)self _documentFragmentWithMarkupString:string baseURLString:lString];
 
-  [(WebFrame *)self _replaceSelectionWithFragment:v9 selectReplacement:v7 smartReplace:v6 matchStyle:0];
+  [(WebFrame *)self _replaceSelectionWithFragment:v9 selectReplacement:replacementCopy smartReplace:replaceCopy matchStyle:0];
 }
 
 - (id)_cacheabilityDictionary
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   v5 = *(self->_private->coreFrame.m_ptr + 26);
   v6 = *(v5 + 96);
   if (v6 && *(v6 + 1604))
   {
-    v3 = [v3 setObject:MEMORY[0x1CCA691D0](v6 + 1544) forKey:WebFrameMainDocumentError];
+    dictionary = [dictionary setObject:MEMORY[0x1CCA691D0](v6 + 1544) forKey:WebFrameMainDocumentError];
   }
 
   if (**(v5 + 64) == 1)
   {
-    v3 = [v4 setObject:MEMORY[0x1E695E118] forKey:WebFrameHasPlugins];
+    dictionary = [v4 setObject:MEMORY[0x1E695E118] forKey:WebFrameHasPlugins];
   }
 
   v7 = *(*(self->_private->coreFrame.m_ptr + 28) + 736);
   if (v7)
   {
     v8 = *(_ReadStatusReg(ARM64_SYSREG(3, 3, 13, 0, 3)) + 736);
-    if (v8 && (v3 = *(v8 + 96)) != 0)
+    if (v8 && (dictionary = *(v8 + 96)) != 0)
     {
-      if (v3[5])
+      if (dictionary[5])
       {
         goto LABEL_10;
       }
@@ -6140,8 +6140,8 @@ LABEL_14:
 
     else
     {
-      v3 = WebCore::threadGlobalDataSlow(v3);
-      if (v3[5])
+      dictionary = WebCore::threadGlobalDataSlow(dictionary);
+      if (dictionary[5])
       {
 LABEL_10:
         if ((*(v7 + 16) & 0x1000000000000) == 0)
@@ -6153,17 +6153,17 @@ LABEL_10:
       }
     }
 
-    v3 = WebCore::ThreadGlobalData::initializeEventNames(v3);
+    dictionary = WebCore::ThreadGlobalData::initializeEventNames(dictionary);
     if ((*(v7 + 16) & 0x1000000000000) == 0)
     {
       goto LABEL_13;
     }
 
 LABEL_11:
-    v3 = WebCore::EventListenerMap::find();
-    if (v3)
+    dictionary = WebCore::EventListenerMap::find();
+    if (dictionary)
     {
-      v3 = [v4 setObject:MEMORY[0x1E695E118] forKey:WebFrameHasUnloadListener];
+      dictionary = [v4 setObject:MEMORY[0x1E695E118] forKey:WebFrameHasUnloadListener];
     }
   }
 
@@ -6171,7 +6171,7 @@ LABEL_13:
   v9 = *(self->_private->coreFrame.m_ptr + 28);
   if (v9)
   {
-    v10 = WebCore::DatabaseManager::singleton(v3);
+    v10 = WebCore::DatabaseManager::singleton(dictionary);
     if (WebCore::DatabaseManager::hasOpenDatabases(v10, v9))
     {
       [v4 setObject:MEMORY[0x1E695E118] forKey:WebFrameUsesDatabases];
@@ -6181,7 +6181,7 @@ LABEL_13:
   return v4;
 }
 
-- (BOOL)_allowsFollowingLink:(id)a3
+- (BOOL)_allowsFollowingLink:(id)link
 {
   m_ptr = self->_private->coreFrame.m_ptr;
   if (!m_ptr)
@@ -6190,7 +6190,7 @@ LABEL_13:
   }
 
   WebCore::SecurityContext::securityOrigin((*(m_ptr + 28) + 208));
-  v5 = MEMORY[0x1CCA63960](&v10, a3);
+  v5 = MEMORY[0x1CCA63960](&v10, link);
   WebCore::OriginAccessPatternsForWebProcess::singleton(v5);
   result = WebCore::SecurityOrigin::canDisplay();
   v8 = v10;
@@ -6208,10 +6208,10 @@ LABEL_13:
   return result;
 }
 
-- (id)_stringByEvaluatingJavaScriptFromString:(id)a3 withGlobalObject:(OpaqueJSValue *)a4 inScriptWorld:(id)a5
+- (id)_stringByEvaluatingJavaScriptFromString:(id)string withGlobalObject:(OpaqueJSValue *)object inScriptWorld:(id)world
 {
   v5 = &stru_1F472E7E8;
-  if (!a3 || !a5)
+  if (!string || !world)
   {
     return v5;
   }
@@ -6219,9 +6219,9 @@ LABEL_13:
   v9 = *(self->_private->coreFrame.m_ptr + 29);
   v10 = WebCore::mainThreadNormalWorldSingleton(self);
   v11 = *(WebCore::ScriptController::jsWindowProxy(v9, v10) + 16);
-  if (!strcmp(*(16 * *(16 * (*a4 & 0xFFFFFFFE) + 0x4C)), "JSWindowProxy"))
+  if (!strcmp(*(16 * *(16 * (*object & 0xFFFFFFFE) + 0x4C)), "JSWindowProxy"))
   {
-    v11 = *(a4 + 2);
+    v11 = *(object + 2);
     v12 = *(16 * (*v11 & 0xFFFFFFFE) + 0x4C);
     v13 = *(16 * (*v11 & 0xFFFFFFFE) + 0x4C) != 0;
     v14 = 16 * v12;
@@ -6278,8 +6278,8 @@ LABEL_20:
   v22 = 0;
 LABEL_21:
   v23 = *(v18 + 232);
-  v24 = *(*(a5 + 1) + 8);
-  MEMORY[0x1CCA63A40](v36, a3);
+  v24 = *(*(world + 1) + 8);
+  MEMORY[0x1CCA63A40](v36, string);
   v26 = WebCore::ScriptController::executeUserAgentScriptInWorldIgnoringException(v23, v24, v36);
   v36[1] = v26;
   v27 = v36[0];
@@ -6381,15 +6381,15 @@ LABEL_49:
   return v5;
 }
 
-- (OpaqueJSContext)_globalContextForScriptWorld:(id)a3
+- (OpaqueJSContext)_globalContextForScriptWorld:(id)world
 {
   result = 0;
-  if (a3)
+  if (world)
   {
     m_ptr = self->_private->coreFrame.m_ptr;
     if (m_ptr)
     {
-      v6 = *(*(a3 + 1) + 8);
+      v6 = *(*(world + 1) + 8);
       if (v6)
       {
         return *(WebCore::ScriptController::jsWindowProxy(*(m_ptr + 29), v6) + 16);
@@ -6405,9 +6405,9 @@ LABEL_49:
   return result;
 }
 
-- (id)_javaScriptContextForScriptWorld:(id)a3
+- (id)_javaScriptContextForScriptWorld:(id)world
 {
-  result = [(WebFrame *)self _globalContextForScriptWorld:a3];
+  result = [(WebFrame *)self _globalContextForScriptWorld:world];
   if (result)
   {
     v4 = result;
@@ -6419,7 +6419,7 @@ LABEL_49:
   return result;
 }
 
-- (void)setAccessibleName:(id)a3
+- (void)setAccessibleName:(id)name
 {
   v3 = atomic_load(MEMORY[0x1E69E2500]);
   if (v3)
@@ -6434,9 +6434,9 @@ LABEL_49:
         v9 = WebCore::AXObjectCache::rootObjectForFrame(v8, self->_private->coreFrame.m_ptr);
         if (v9)
         {
-          v11 = a3;
+          nameCopy = name;
           v12 = v9;
-          WTF::AtomStringImpl::add(&v15, v11, v10);
+          WTF::AtomStringImpl::add(&v15, nameCopy, v10);
           (*(*v12 + 1184))(v12, &v15);
           v14 = v15;
           v15 = 0;
@@ -6565,9 +6565,9 @@ LABEL_49:
   }
 }
 
-- (id)_computePageRectsWithPrintScaleFactor:(float)a3 pageSize:(CGSize)a4
+- (id)_computePageRectsWithPrintScaleFactor:(float)factor pageSize:(CGSize)size
 {
-  if (a3 <= 0.0)
+  if (factor <= 0.0)
   {
     return MEMORY[0x1E695E0F0];
   }
@@ -6589,14 +6589,14 @@ LABEL_49:
     return MEMORY[0x1E695E0F0];
   }
 
-  width = a4.width;
-  height = a4.height;
+  width = size.width;
+  height = size.height;
   if (!WebCore::ScrollView::documentView(v5))
   {
     return MEMORY[0x1E695E0F0];
   }
 
-  v10 = self;
+  selfCopy = self;
   v11 = *(self->_private->coreFrame.m_ptr + 28);
   v12 = *(v11 + 2024);
   if (!v12)
@@ -6604,7 +6604,7 @@ LABEL_49:
     return MEMORY[0x1E695E0F0];
   }
 
-  v13 = v10;
+  v13 = selfCopy;
   WebCore::RenderView::documentRect(*(v11 + 2024));
   v16 = height;
   if (*(v12 + 120))
@@ -6614,12 +6614,12 @@ LABEL_49:
 
   else
   {
-    v17 = v14 / a3;
+    v17 = v14 / factor;
   }
 
   if (*(v12 + 120))
   {
-    v18 = v15 / a3;
+    v18 = v15 / factor;
   }
 
   else
@@ -6661,7 +6661,7 @@ LABEL_49:
   return v20;
 }
 
-- (id)_documentFragmentForText:(id)a3
+- (id)_documentFragmentForText:(id)text
 {
   WebCore::VisibleSelection::toNormalizedRange(v17, (*(*(self->_private->coreFrame.m_ptr + 28) + 3208) + 56));
   if (v19 != 1)
@@ -6669,7 +6669,7 @@ LABEL_49:
     return 0;
   }
 
-  MEMORY[0x1CCA63A40](&v15, a3);
+  MEMORY[0x1CCA63A40](&v15, text);
   WebCore::createFragmentFromText(&v16, v17, &v15, v4);
   result = kit(v16);
   v7 = v16;
@@ -6760,20 +6760,20 @@ LABEL_13:
   return result;
 }
 
-- (id)_documentFragmentForWebArchive:(id)a3
+- (id)_documentFragmentForWebArchive:(id)archive
 {
-  v4 = [(WebFrame *)self dataSource];
+  dataSource = [(WebFrame *)self dataSource];
 
-  return [(WebDataSource *)v4 _documentFragmentWithArchive:a3];
+  return [(WebDataSource *)dataSource _documentFragmentWithArchive:archive];
 }
 
-- (id)_documentFragmentForImageData:(id)a3 withRelativeURLPart:(id)a4 andMIMEType:(id)a5
+- (id)_documentFragmentForImageData:(id)data withRelativeURLPart:(id)part andMIMEType:(id)type
 {
   v9 = [WebResource alloc];
-  MEMORY[0x1CCA63A40](&v17, a4);
+  MEMORY[0x1CCA63A40](&v17, part);
   WTF::URL::fakeURLWithRelativePart();
   WTF::URL::createCFURL(&v19, &v18);
-  v11 = [(WebResource *)v9 initWithData:a3 URL:v19 MIMEType:a5 textEncodingName:0 frameName:0];
+  v11 = [(WebResource *)v9 initWithData:data URL:v19 MIMEType:type textEncodingName:0 frameName:0];
   v12 = v19;
   v19 = 0;
   if (v12)
@@ -6932,13 +6932,13 @@ LABEL_27:
   return result;
 }
 
-- (void)_dispatchDidReceiveTitle:(id)a3
+- (void)_dispatchDidReceiveTitle:(id)title
 {
   m_ptr = self->_private->coreFrame.m_ptr;
   if (m_ptr)
   {
     v4 = *(*(m_ptr + 26) + 16);
-    MEMORY[0x1CCA63A40](&v7, a3);
+    MEMORY[0x1CCA63A40](&v7, title);
     v8 = 0;
     (*(*v4 + 320))(v4, &v7);
     v6 = v7;
@@ -6953,17 +6953,17 @@ LABEL_27:
   }
 }
 
-- (OpaqueJSValue)jsWrapperForNode:(id)a3 inScriptWorld:(id)a4
+- (OpaqueJSValue)jsWrapperForNode:(id)node inScriptWorld:(id)world
 {
   Wrapper = 0;
-  if (a4)
+  if (world)
   {
     m_ptr = self->_private->coreFrame.m_ptr;
     if (m_ptr)
     {
-      v7 = *(WebCore::ScriptController::jsWindowProxy(*(m_ptr + 29), *(*(a4 + 1) + 8)) + 16);
+      v7 = *(WebCore::ScriptController::jsWindowProxy(*(m_ptr + 29), *(*(world + 1) + 8)) + 16);
       JSC::JSLockHolder::JSLockHolder();
-      if (a3 && (v8 = *(a3 + 2)) != 0)
+      if (node && (v8 = *(node + 2)) != 0)
       {
         if (*(v7 + 3448))
         {
@@ -6993,7 +6993,7 @@ LABEL_8:
 
         else
         {
-          v12 = *(a3 + 2);
+          v12 = *(node + 2);
           Wrapper = WebCore::getOutOfLineCachedWrapper();
           v8 = v12;
           if (!Wrapper)
@@ -7015,16 +7015,16 @@ LABEL_8:
   return Wrapper;
 }
 
-- (id)elementAtPoint:(CGPoint)a3
+- (id)elementAtPoint:(CGPoint)point
 {
-  v11 = a3;
+  pointCopy = point;
   if (!self->_private->coreFrame.m_ptr)
   {
     return 0;
   }
 
   v3 = [WebElementDictionary alloc];
-  WebCore::IntPoint::IntPoint(v9, &v11);
+  WebCore::IntPoint::IntPoint(v9, &pointCopy);
   v4 = vcgt_s32(v9[0], 0xFE000000FE000000);
   v9[1] = vorr_s8((*&v4 & 0x7FFFFFFF7FFFFFFFLL), vbic_s8(vbsl_s8(vcgt_s32(0xFE000000FE000000, v9[0]), 0x8000000080000000, vshl_n_s32(v9[0], 6uLL)), v4));
   WebCore::EventHandler::hitTestResultAtPoint();
@@ -7041,12 +7041,12 @@ LABEL_8:
 
 - (id)_unreachableURL
 {
-  v2 = [(WebFrame *)self _dataSource];
+  _dataSource = [(WebFrame *)self _dataSource];
 
-  return [v2 unreachableURL];
+  return [_dataSource unreachableURL];
 }
 
-- (void)_generateTestReport:(id)a3 withGroup:(id)a4
+- (void)_generateTestReport:(id)report withGroup:(id)group
 {
   m_ptr = self->_private->coreFrame.m_ptr;
   if (m_ptr)
@@ -7060,8 +7060,8 @@ LABEL_8:
         WebCore::Document::ensureReportingScope(v5);
       }
 
-      MEMORY[0x1CCA63A40](&v12, a3);
-      MEMORY[0x1CCA63A40](&v11, a4);
+      MEMORY[0x1CCA63A40](&v12, report);
+      MEMORY[0x1CCA63A40](&v11, group);
       WebCore::ReportingScope::generateTestReport();
       v9 = v11;
       v11 = 0;
@@ -7383,16 +7383,16 @@ LABEL_25:
   WebCore::ResourceRequestBase::RequestData::~RequestData(v27, v11);
 }
 
-- (void)_loadData:(id)a3 MIMEType:(id)a4 textEncodingName:(id)a5 baseURL:(id)a6 unreachableURL:(id)a7
+- (void)_loadData:(id)data MIMEType:(id)type textEncodingName:(id)name baseURL:(id)l unreachableURL:(id)rL
 {
-  v115 = a3;
-  if (a6)
+  dataCopy = data;
+  if (l)
   {
-    v11 = [a6 absoluteURL];
-    v12 = v11;
-    if (v11)
+    absoluteURL = [l absoluteURL];
+    v12 = absoluteURL;
+    if (absoluteURL)
     {
-      v13 = v11;
+      v13 = absoluteURL;
     }
 
     v14 = 0;
@@ -7413,7 +7413,7 @@ LABEL_25:
     v12 = v16;
   }
 
-  MEMORY[0x1CCA63A40](&v112, a4);
+  MEMORY[0x1CCA63A40](&v112, type);
   if (((WebCore::MIMETypeRegistry::isSupportedNonImageMIMEType(&v112, v19) & 1) != 0 || (WebCore::MIMETypeRegistry::isSupportedImageMIMEType(&v112, v20) & 1) != 0 || (MEMORY[0x1CCA639B0](v112, "text/css", 8) & 1) != 0 || MEMORY[0x1CCA639B0](v112, "application/pdf", 15)) && (MEMORY[0x1CCA639B0](v112, "text/plain", 10) & 1) == 0 && (MEMORY[0x1CCA639B0](v112, "text/xml", 8) & 1) == 0)
   {
     v23 = MEMORY[0x1CCA639B0](v112, "application/xml", 15);
@@ -7459,7 +7459,7 @@ LABEL_21:
       v26 = v25;
     }
 
-    WebCore::registerQLPreviewConverterIfNeeded(v94, v25, a4, v115, v22);
+    WebCore::registerQLPreviewConverterIfNeeded(v94, v25, type, dataCopy, v22);
     if (v94[0])
     {
       m_ptr = self->_private->coreFrame.m_ptr;
@@ -7601,9 +7601,9 @@ LABEL_87:
   }
 
   MEMORY[0x1CCA63960](&v112, v14);
-  MEMORY[0x1CCA63A40](&v103, a4);
-  [(NSString *)v115 length];
-  MEMORY[0x1CCA63A40](&v70, a5);
+  MEMORY[0x1CCA63A40](&v103, type);
+  [(NSString *)dataCopy length];
+  MEMORY[0x1CCA63A40](&v70, name);
   WebCore::ResourceResponseBase::ResourceResponseBase();
   v92 = 0;
   v93 = 0;
@@ -7629,10 +7629,10 @@ LABEL_87:
     WTF::StringImpl::destroy(v42, v39);
   }
 
-  WebCore::SharedBuffer::create<NSData *&>(&v115, v39, &v70);
+  WebCore::SharedBuffer::create<NSData *&>(&dataCopy, v39, &v70);
   v43 = v70;
   v70 = 0;
-  MEMORY[0x1CCA63960](&v112, [a7 absoluteURL]);
+  MEMORY[0x1CCA63960](&v112, [rL absoluteURL]);
   v44 = v112;
   v112 = 0;
   *&v103 = v43;
@@ -7814,40 +7814,40 @@ LABEL_96:
     v9 = @"text/html";
   }
 
-  v10 = [(NSURL *)URL _webkit_URLFromURLOrSchemelessFileURL];
+  _webkit_URLFromURLOrSchemelessFileURL = [(NSURL *)URL _webkit_URLFromURLOrSchemelessFileURL];
 
-  [(WebFrame *)self _loadData:data MIMEType:v9 textEncodingName:encodingName baseURL:v10 unreachableURL:0];
+  [(WebFrame *)self _loadData:data MIMEType:v9 textEncodingName:encodingName baseURL:_webkit_URLFromURLOrSchemelessFileURL unreachableURL:0];
 }
 
-- (void)_loadHTMLString:(id)a3 baseURL:(id)a4 unreachableURL:(id)a5
+- (void)_loadHTMLString:(id)string baseURL:(id)l unreachableURL:(id)rL
 {
-  v8 = [a3 dataUsingEncoding:4];
+  v8 = [string dataUsingEncoding:4];
 
-  [(WebFrame *)self _loadData:v8 MIMEType:@"text/html" textEncodingName:@"UTF-8" baseURL:a4 unreachableURL:a5];
+  [(WebFrame *)self _loadData:v8 MIMEType:@"text/html" textEncodingName:@"UTF-8" baseURL:l unreachableURL:rL];
 }
 
 - (void)loadHTMLString:(NSString *)string baseURL:(NSURL *)URL
 {
-  v6 = [(NSURL *)URL _webkit_URLFromURLOrSchemelessFileURL];
+  _webkit_URLFromURLOrSchemelessFileURL = [(NSURL *)URL _webkit_URLFromURLOrSchemelessFileURL];
 
-  [(WebFrame *)self _loadHTMLString:string baseURL:v6 unreachableURL:0];
+  [(WebFrame *)self _loadHTMLString:string baseURL:_webkit_URLFromURLOrSchemelessFileURL unreachableURL:0];
 }
 
 - (void)loadAlternateHTMLString:(NSString *)string baseURL:(NSURL *)baseURL forUnreachableURL:(NSURL *)unreachableURL
 {
-  v8 = [(NSURL *)baseURL _webkit_URLFromURLOrSchemelessFileURL];
-  v9 = [(NSURL *)unreachableURL _webkit_URLFromURLOrSchemelessFileURL];
+  _webkit_URLFromURLOrSchemelessFileURL = [(NSURL *)baseURL _webkit_URLFromURLOrSchemelessFileURL];
+  _webkit_URLFromURLOrSchemelessFileURL2 = [(NSURL *)unreachableURL _webkit_URLFromURLOrSchemelessFileURL];
 
-  [(WebFrame *)self _loadHTMLString:string baseURL:v8 unreachableURL:v9];
+  [(WebFrame *)self _loadHTMLString:string baseURL:_webkit_URLFromURLOrSchemelessFileURL unreachableURL:_webkit_URLFromURLOrSchemelessFileURL2];
 }
 
 - (void)loadArchive:(WebArchive *)archive
 {
-  v3 = [(WebArchive *)archive _coreLegacyWebArchive];
-  if (v3)
+  _coreLegacyWebArchive = [(WebArchive *)archive _coreLegacyWebArchive];
+  if (_coreLegacyWebArchive)
   {
-    ++v3[2];
-    v4 = v3;
+    ++_coreLegacyWebArchive[2];
+    v4 = _coreLegacyWebArchive;
     WebCore::FrameLoader::loadArchive();
     if (v4[2] == 1)
     {
@@ -8067,7 +8067,7 @@ LABEL_7:
   return v3;
 }
 
-- (id)renderTreeAsExternalRepresentationWithOptions:(unint64_t)a3
+- (id)renderTreeAsExternalRepresentationWithOptions:(unint64_t)options
 {
   WebCore::externalRepresentation();
   if (v9)
@@ -8106,7 +8106,7 @@ LABEL_7:
   return v4;
 }
 
-- (int)numberOfPagesWithPageWidth:(float)a3 pageHeight:(float)a4
+- (int)numberOfPagesWithPageWidth:(float)width pageHeight:(float)height
 {
   m_ptr = self->_private->coreFrame.m_ptr;
   if (!m_ptr)
@@ -8114,12 +8114,12 @@ LABEL_7:
     return -1;
   }
 
-  *v7 = a3;
-  *&v7[1] = a4;
+  *v7 = width;
+  *&v7[1] = height;
   return WebCore::PrintContext::numberOfPages(m_ptr, v7, v4);
 }
 
-- (void)printToCGContext:(CGContext *)a3 pageWidth:(float)a4 pageHeight:(float)a5
+- (void)printToCGContext:(CGContext *)context pageWidth:(float)width pageHeight:(float)height
 {
   v6 = *MEMORY[0x1E69E9840];
   if (self->_private->coreFrame.m_ptr)
@@ -8130,7 +8130,7 @@ LABEL_7:
   }
 }
 
-- (VisiblePosition)visiblePositionForPoint:(SEL)a3
+- (VisiblePosition)visiblePositionForPoint:(SEL)point
 {
   if (self)
   {
@@ -8143,7 +8143,7 @@ LABEL_7:
   return self;
 }
 
-- (VisiblePosition)closestWordBoundary:(SEL)a3
+- (VisiblePosition)closestWordBoundary:(SEL)boundary
 {
   WebCore::startOfWord();
   WebCore::endOfWord();
@@ -8373,10 +8373,10 @@ LABEL_65:
 
 - (void)clearSelection
 {
-  v2 = [(WebFrame *)self coreFrame];
-  if (v2)
+  coreFrame = [(WebFrame *)self coreFrame];
+  if (coreFrame)
   {
-    v3 = *(v2[28] + 3208);
+    v3 = *(coreFrame[28] + 3208);
 
     MEMORY[0x1EEE555F8](v3);
   }
@@ -8396,11 +8396,11 @@ LABEL_65:
   }
 }
 
-- (CGRect)caretRectForPosition:(id)a3
+- (CGRect)caretRectForPosition:(id)position
 {
-  if (a3)
+  if (position)
   {
-    [a3 _visiblePosition];
+    [position _visiblePosition];
     v13[3] = WebCore::VisiblePosition::absoluteCaretBounds(v13, 0);
     v13[4] = v3;
     WebCore::IntRect::operator CGRect();
@@ -8443,13 +8443,13 @@ LABEL_65:
   return result;
 }
 
-- (CGRect)closestCaretRectInMarkedTextRangeForPoint:(CGPoint)a3
+- (CGRect)closestCaretRectInMarkedTextRangeForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(WebFrame *)self coreFrame];
+  y = point.y;
+  x = point.x;
+  coreFrame = [(WebFrame *)self coreFrame];
   v7 = 0.0;
-  if (!v6)
+  if (!coreFrame)
   {
     v9 = 0.0;
     v10 = 0.0;
@@ -8457,11 +8457,11 @@ LABEL_65:
     goto LABEL_71;
   }
 
-  v8 = v6;
+  v8 = coreFrame;
   v9 = 0.0;
   v10 = 0.0;
   v11 = 0.0;
-  if (v6[28])
+  if (coreFrame[28])
   {
     WebCore::Document::updateLayout();
     v12 = v8[28];
@@ -8810,16 +8810,16 @@ LABEL_71:
   }
 }
 
-- (void)extendSelection:(BOOL)a3
+- (void)extendSelection:(BOOL)selection
 {
-  v3 = a3;
+  selectionCopy = selection;
   if ([(WebFrame *)self selectionState]!= 2)
   {
     return;
   }
 
   [(WebFrame *)self coreFrame];
-  if (v3)
+  if (selectionCopy)
   {
     WebCore::VisiblePosition::VisiblePosition();
     WebCore::startOfWord();
@@ -8887,9 +8887,9 @@ LABEL_19:
   }
 }
 
-- (id)selectionRectsForCoreRange:(const void *)a3
+- (id)selectionRectsForCoreRange:(const void *)range
 {
-  WebCore::RenderObject::collectSelectionGeometries(&v14, a3, a2);
+  WebCore::RenderObject::collectSelectionGeometries(&v14, range, a2);
   v3 = objc_alloc(MEMORY[0x1E695DF70]);
   v5 = [v3 initWithCapacity:v16];
   if (v16)
@@ -8946,9 +8946,9 @@ LABEL_19:
   return v5;
 }
 
-- (id)selectionRectsForRange:(id)a3
+- (id)selectionRectsForRange:(id)range
 {
-  if (a3)
+  if (range)
   {
     WebCore::makeSimpleRange();
     if (v11 == 1)
@@ -9074,11 +9074,11 @@ LABEL_7:
   return result;
 }
 
-- (id)wordAtPoint:(CGPoint)a3
+- (id)wordAtPoint:(CGPoint)point
 {
   if (self)
   {
-    [(WebFrame *)self visiblePositionForPoint:a3.x, a3.y];
+    [(WebFrame *)self visiblePositionForPoint:point.x, point.y];
   }
 
   else
@@ -9217,11 +9217,11 @@ LABEL_30:
   return v3;
 }
 
-- (id)webVisiblePositionForPoint:(CGPoint)a3
+- (id)webVisiblePositionForPoint:(CGPoint)point
 {
   if (self)
   {
-    [(WebFrame *)self visiblePositionForPoint:a3.x, a3.y];
+    [(WebFrame *)self visiblePositionForPoint:point.x, point.y];
   }
 
   else
@@ -9252,56 +9252,56 @@ LABEL_30:
 
 - (void)setRangedSelectionBaseToCurrentSelection
 {
-  v2 = [(WebFrame *)self coreFrame];
+  coreFrame = [(WebFrame *)self coreFrame];
 
-  MEMORY[0x1EEE53F50](v2);
+  MEMORY[0x1EEE53F50](coreFrame);
 }
 
 - (void)setRangedSelectionBaseToCurrentSelectionStart
 {
-  v2 = [(WebFrame *)self coreFrame];
+  coreFrame = [(WebFrame *)self coreFrame];
 
-  MEMORY[0x1EEE53F60](v2);
+  MEMORY[0x1EEE53F60](coreFrame);
 }
 
 - (void)setRangedSelectionBaseToCurrentSelectionEnd
 {
-  v2 = [(WebFrame *)self coreFrame];
+  coreFrame = [(WebFrame *)self coreFrame];
 
-  MEMORY[0x1EEE53F58](v2);
+  MEMORY[0x1EEE53F58](coreFrame);
 }
 
 - (void)clearRangedSelectionInitialExtent
 {
-  v2 = [(WebFrame *)self coreFrame];
+  coreFrame = [(WebFrame *)self coreFrame];
 
-  MEMORY[0x1EEE53F10](v2);
+  MEMORY[0x1EEE53F10](coreFrame);
 }
 
 - (void)setRangedSelectionInitialExtentToCurrentSelectionStart
 {
-  v2 = [(WebFrame *)self coreFrame];
+  coreFrame = [(WebFrame *)self coreFrame];
 
-  MEMORY[0x1EEE53F78](v2);
+  MEMORY[0x1EEE53F78](coreFrame);
 }
 
 - (void)setRangedSelectionInitialExtentToCurrentSelectionEnd
 {
-  v2 = [(WebFrame *)self coreFrame];
+  coreFrame = [(WebFrame *)self coreFrame];
 
-  MEMORY[0x1EEE53F70](v2);
+  MEMORY[0x1EEE53F70](coreFrame);
 }
 
-- (void)setRangedSelectionWithExtentPoint:(CGPoint)a3
+- (void)setRangedSelectionWithExtentPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(WebFrame *)self coreFrame];
+  y = point.y;
+  x = point.x;
+  coreFrame = [(WebFrame *)self coreFrame];
   if (self)
   {
-    v7 = v6;
+    v7 = coreFrame;
     [(WebFrame *)self visiblePositionForPoint:x, y];
-    v6 = v7;
+    coreFrame = v7;
   }
 
   else
@@ -9311,7 +9311,7 @@ LABEL_30:
     v16 = 0;
   }
 
-  WebCore::LocalFrame::rangedSelectionBase(v12, v6);
+  WebCore::LocalFrame::rangedSelectionBase(v12, coreFrame);
   if (!v14 || v13 != 2)
   {
 LABEL_16:
@@ -9385,12 +9385,12 @@ LABEL_17:
   }
 }
 
-- (BOOL)setRangedSelectionExtentPoint:(CGPoint)a3 baseIsStart:(BOOL)a4 allowFlipping:(BOOL)a5
+- (BOOL)setRangedSelectionExtentPoint:(CGPoint)point baseIsStart:(BOOL)start allowFlipping:(BOOL)flipping
 {
-  v5 = a5;
-  v6 = a4;
-  y = a3.y;
-  x = a3.x;
+  flippingCopy = flipping;
+  startCopy = start;
+  y = point.y;
+  x = point.x;
   WebCore::LocalFrame::rangedSelectionBase(v70, [(WebFrame *)self coreFrame]);
   WebCore::VisiblePosition::VisiblePosition();
   v62 = 0;
@@ -9462,12 +9462,12 @@ LABEL_10:
   if (WebCore::operator<=>() == 0xFF && WebCore::operator<=>() == 0xFF)
   {
     WebCore::FrameSelection::moveTo();
-    LOBYTE(v6) = 0;
+    LOBYTE(startCopy) = 0;
     goto LABEL_84;
   }
 
 LABEL_12:
-  if (v6)
+  if (startCopy)
   {
     v12 = &v66;
   }
@@ -9480,10 +9480,10 @@ LABEL_12:
   v56 = WebCore::VisiblePosition::absoluteCaretBounds(v12, 0);
   v57 = v13;
   WebCore::IntRect::operator CGRect();
-  if (!v5)
+  if (!flippingCopy)
   {
     v16 = 0;
-    if (!v6)
+    if (!startCopy)
     {
       goto LABEL_31;
     }
@@ -9494,7 +9494,7 @@ LABEL_12:
   if (vabdd_f64(v14, x) <= 30.0)
   {
     v16 = vabdd_f64(v15, y) > 30.0;
-    if (!v6)
+    if (!startCopy)
     {
       goto LABEL_31;
     }
@@ -9631,7 +9631,7 @@ LABEL_58:
   }
 
   v16 = 1;
-  if (v6)
+  if (startCopy)
   {
     goto LABEL_20;
   }
@@ -9777,7 +9777,7 @@ LABEL_80:
   LOBYTE(v61) = v55;
 LABEL_81:
   WebCore::FrameSelection::moveTo();
-  LOBYTE(v6) = v19 ^ v6;
+  LOBYTE(startCopy) = v19 ^ startCopy;
   v42 = v56;
   v56 = 0;
   if (!v42)
@@ -9858,23 +9858,23 @@ LABEL_95:
 
 LABEL_98:
   WebCore::VisibleSelection::~VisibleSelection(v70);
-  return v6;
+  return startCopy;
 }
 
-- (BOOL)setSelectionWithBasePoint:(CGPoint)a3 extentPoint:(CGPoint)a4 baseIsStart:(BOOL)a5 allowFlipping:(BOOL)a6
+- (BOOL)setSelectionWithBasePoint:(CGPoint)point extentPoint:(CGPoint)extentPoint baseIsStart:(BOOL)start allowFlipping:(BOOL)flipping
 {
-  v6 = a6;
-  v7 = a5;
-  y = a4.y;
-  x = a4.x;
-  v10 = a3.y;
-  v11 = a3.x;
+  flippingCopy = flipping;
+  startCopy = start;
+  y = extentPoint.y;
+  x = extentPoint.x;
+  v10 = point.y;
+  v11 = point.x;
   [(WebFrame *)self coreFrame];
   if (self)
   {
     [(WebFrame *)self visiblePositionForPoint:v11, v10];
     [(WebFrame *)self visiblePositionForPoint:x, y];
-    if (v6)
+    if (flippingCopy)
     {
       goto LABEL_3;
     }
@@ -9888,13 +9888,13 @@ LABEL_8:
   v25 = 0;
   v26 = 0;
   v27 = 0;
-  if (!v6)
+  if (!flippingCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v7)
+  if (startCopy)
   {
     v13 = y <= v10 + -30.0 || x <= v11 + -30.0;
   }
@@ -9907,7 +9907,7 @@ LABEL_3:
 LABEL_12:
   if (WebCore::operator==(&v25, v28))
   {
-    if (v7)
+    if (startCopy)
     {
 LABEL_14:
       WebCore::VisiblePosition::next();
@@ -9917,7 +9917,7 @@ LABEL_14:
 
   else
   {
-    if (v7)
+    if (startCopy)
     {
       v14 = WebCore::operator<=>();
       v15 = v14 == 255;
@@ -9973,7 +9973,7 @@ LABEL_27:
       v28[0] = 0;
       if (!v19)
       {
-        return v15 ^ v7;
+        return v15 ^ startCopy;
       }
 
       goto LABEL_33;
@@ -9986,7 +9986,7 @@ LABEL_27:
   v28[0] = 0;
   if (!v19)
   {
-    return v15 ^ v7;
+    return v15 ^ startCopy;
   }
 
 LABEL_33:
@@ -10000,16 +10000,16 @@ LABEL_33:
     *(v19 + 7) -= 2;
   }
 
-  return v15 ^ v7;
+  return v15 ^ startCopy;
 }
 
-- (void)setSelectionWithFirstPoint:(CGPoint)a3 secondPoint:(CGPoint)a4
+- (void)setSelectionWithFirstPoint:(CGPoint)point secondPoint:(CGPoint)secondPoint
 {
   if (self)
   {
-    y = a4.y;
-    x = a4.x;
-    [(WebFrame *)self visiblePositionForPoint:a3.x, a3.y];
+    y = secondPoint.y;
+    x = secondPoint.x;
+    [(WebFrame *)self visiblePositionForPoint:point.x, point.y];
     [(WebFrame *)self visiblePositionForPoint:x, y];
   }
 
@@ -10058,12 +10058,12 @@ LABEL_10:
   }
 }
 
-- (void)ensureRangedSelectionContainsInitialStartPoint:(CGPoint)a3 initialEndPoint:(CGPoint)a4
+- (void)ensureRangedSelectionContainsInitialStartPoint:(CGPoint)point initialEndPoint:(CGPoint)endPoint
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = endPoint.y;
+  x = endPoint.x;
+  v6 = point.y;
+  v7 = point.x;
   v9 = *(*([(WebFrame *)self coreFrame]+ 224) + 3208);
   if (!self)
   {
@@ -10710,16 +10710,16 @@ LABEL_12:
   [(WebFrame *)self setBaseWritingDirection:v3];
 }
 
-- (void)setBaseWritingDirection:(int)a3
+- (void)setBaseWritingDirection:(int)direction
 {
-  v5 = [(WebFrame *)self selectionBaseWritingDirection];
-  v6 = [(WebFrame *)self coreFrame];
-  if (!WebCore::VisibleSelection::isContentEditable((*(v6[28] + 3208) + 56)))
+  selectionBaseWritingDirection = [(WebFrame *)self selectionBaseWritingDirection];
+  coreFrame = [(WebFrame *)self coreFrame];
+  if (!WebCore::VisibleSelection::isContentEditable((*(coreFrame[28] + 3208) + 56)))
   {
     return;
   }
 
-  if (a3 == 1)
+  if (direction == 1)
   {
     v7 = 2;
   }
@@ -10729,7 +10729,7 @@ LABEL_12:
     v7 = 1;
   }
 
-  if (a3 == -1)
+  if (direction == -1)
   {
     v8 = 0;
   }
@@ -10739,7 +10739,7 @@ LABEL_12:
     v8 = v7;
   }
 
-  v9 = v6[28];
+  v9 = coreFrame[28];
   if (v9)
   {
     *(v9 + 7) += 2;
@@ -10752,7 +10752,7 @@ LABEL_12:
     {
       WebCore::Node::removedLastRef(v9);
       WebCore::Editor::setBaseWritingDirection();
-      if (v5 == [(WebFrame *)self selectionBaseWritingDirection])
+      if (selectionBaseWritingDirection == [(WebFrame *)self selectionBaseWritingDirection])
       {
         return;
       }
@@ -10764,13 +10764,13 @@ LABEL_12:
   }
 
   WebCore::Editor::setBaseWritingDirection();
-  if (v5 == [(WebFrame *)self selectionBaseWritingDirection])
+  if (selectionBaseWritingDirection == [(WebFrame *)self selectionBaseWritingDirection])
   {
     return;
   }
 
 LABEL_16:
-  v10 = v6[28];
+  v10 = coreFrame[28];
   if (v10)
   {
     *(v10 + 7) += 2;
@@ -10797,8 +10797,8 @@ LABEL_16:
 
 - (void)moveSelectionToStart
 {
-  v2 = [(WebFrame *)self coreFrame];
-  WebCore::startOfDocument(&v5, v2[28], v3);
+  coreFrame = [(WebFrame *)self coreFrame];
+  WebCore::startOfDocument(&v5, coreFrame[28], v3);
   WebCore::FrameSelection::moveTo();
   v4 = v5;
   v5 = 0;
@@ -10818,8 +10818,8 @@ LABEL_16:
 
 - (void)moveSelectionToEnd
 {
-  v2 = [(WebFrame *)self coreFrame];
-  WebCore::endOfDocument(&v5, v2[28], v3);
+  coreFrame = [(WebFrame *)self coreFrame];
+  WebCore::endOfDocument(&v5, coreFrame[28], v3);
   WebCore::FrameSelection::moveTo();
   v4 = v5;
   v5 = 0;
@@ -10837,10 +10837,10 @@ LABEL_16:
   }
 }
 
-- (void)moveSelectionToPoint:(CGPoint)a3
+- (void)moveSelectionToPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(WebFrame *)self coreFrame];
   if (self)
   {
@@ -10867,14 +10867,14 @@ LABEL_16:
   }
 }
 
-- (void)smartExtendRangedSelection:(int)a3
+- (void)smartExtendRangedSelection:(int)selection
 {
   if ([(WebFrame *)self selectionState]== 2)
   {
-    v5 = [(WebFrame *)self coreFrame];
+    coreFrame = [(WebFrame *)self coreFrame];
     WebCore::VisiblePosition::VisiblePosition();
     WebCore::VisiblePosition::VisiblePosition();
-    WebCore::LocalFrame::rangedSelectionBase(v95, v5);
+    WebCore::LocalFrame::rangedSelectionBase(v95, coreFrame);
     WebCore::VisiblePosition::VisiblePosition();
     WebCore::VisibleSelection::~VisibleSelection(v95);
     if (!WebCore::operator==(v97, &v102) && !WebCore::operator==(v97, &v98))
@@ -11002,9 +11002,9 @@ LABEL_9:
     }
 
     WebCore::VisibleSelection::VisibleSelection(v95);
-    if (a3)
+    if (selection)
     {
-      WebCore::LocalFrame::rangedSelectionInitialExtent(&v90, v5);
+      WebCore::LocalFrame::rangedSelectionInitialExtent(&v90, coreFrame);
       WebCore::VisibleSelection::operator=(v95, &v90);
       WebCore::VisibleSelection::~VisibleSelection(&v90);
     }
@@ -11922,8 +11922,8 @@ LABEL_119:
 
 - (id)startPosition
 {
-  v2 = [(WebFrame *)self coreFrame];
-  WebCore::startOfDocument(v7, v2[28], v3);
+  coreFrame = [(WebFrame *)self coreFrame];
+  WebCore::startOfDocument(v7, coreFrame[28], v3);
   result = [WebVisiblePosition _wrapVisiblePosition:v7];
   v5 = v7[0];
   v7[0] = 0;
@@ -11947,8 +11947,8 @@ LABEL_119:
 
 - (id)endPosition
 {
-  v2 = [(WebFrame *)self coreFrame];
-  WebCore::endOfDocument(v7, v2[28], v3);
+  coreFrame = [(WebFrame *)self coreFrame];
+  WebCore::endOfDocument(v7, coreFrame[28], v3);
   result = [WebVisiblePosition _wrapVisiblePosition:v7];
   v5 = v7[0];
   v7[0] = 0;
@@ -11970,18 +11970,18 @@ LABEL_119:
   return result;
 }
 
-- (BOOL)renderedCharactersExceed:(unint64_t)a3
+- (BOOL)renderedCharactersExceed:(unint64_t)exceed
 {
   v4 = *([(WebFrame *)self coreFrame]+ 216);
 
-  return MEMORY[0x1EEE55790](v4, a3);
+  return MEMORY[0x1EEE55790](v4, exceed);
 }
 
-- (CGRect)elementRectAtPoint:(CGPoint)a3
+- (CGRect)elementRectAtPoint:(CGPoint)point
 {
-  v18 = a3;
+  pointCopy = point;
   [(WebFrame *)self coreFrame];
-  WebCore::FloatPoint::FloatPoint(&v16, &v18);
+  WebCore::FloatPoint::FloatPoint(&v16, &pointCopy);
   WebCore::ScrollView::windowToContents();
   WebCore::EventHandler::hitTestResultAtPoint();
   v3 = v17;

@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 - (APSTokenWatcher)init;
 - (NSArray)tokenList;
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4;
+- (void)connection:(id)connection didReceivePublicToken:(id)token;
 @end
 
 @implementation APSTokenWatcher
@@ -41,15 +41,15 @@
     v4 = [v3 initWithEnvironmentName:APSEnvironmentProduction namedDelegatePort:@"com.apple.icloud.fmflocatord.APSTokenWatcher.prod" queue:&_dispatch_main_q];
     [(APSTokenWatcher *)v2 setProdConnection:v4];
 
-    v5 = [(APSTokenWatcher *)v2 prodConnection];
-    [v5 setDelegate:v2];
+    prodConnection = [(APSTokenWatcher *)v2 prodConnection];
+    [prodConnection setDelegate:v2];
 
     v6 = [APSConnection alloc];
     v7 = [v6 initWithEnvironmentName:APSEnvironmentDevelopment namedDelegatePort:@"com.apple.icloud.fmflocatord.APSTokenWatcher.dev" queue:&_dispatch_main_q];
     [(APSTokenWatcher *)v2 setDevConnection:v7];
 
-    v8 = [(APSTokenWatcher *)v2 devConnection];
-    [v8 setDelegate:v2];
+    devConnection = [(APSTokenWatcher *)v2 devConnection];
+    [devConnection setDelegate:v2];
   }
 
   return v2;
@@ -58,20 +58,20 @@
 - (NSArray)tokenList
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(APSTokenWatcher *)self prodToken];
+  prodToken = [(APSTokenWatcher *)self prodToken];
 
-  if (v4)
+  if (prodToken)
   {
-    v5 = [(APSTokenWatcher *)self prodToken];
-    [v3 addObject:v5];
+    prodToken2 = [(APSTokenWatcher *)self prodToken];
+    [v3 addObject:prodToken2];
   }
 
-  v6 = [(APSTokenWatcher *)self devToken];
+  devToken = [(APSTokenWatcher *)self devToken];
 
-  if (v6)
+  if (devToken)
   {
-    v7 = [(APSTokenWatcher *)self devToken];
-    [v3 addObject:v7];
+    devToken2 = [(APSTokenWatcher *)self devToken];
+    [v3 addObject:devToken2];
   }
 
   v8 = [v3 copy];
@@ -79,21 +79,21 @@
   return v8;
 }
 
-- (void)connection:(id)a3 didReceivePublicToken:(id)a4
+- (void)connection:(id)connection didReceivePublicToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APSTokenWatcher *)self prodConnection];
+  connectionCopy = connection;
+  tokenCopy = token;
+  prodConnection = [(APSTokenWatcher *)self prodConnection];
 
-  if (v8 == v6)
+  if (prodConnection == connectionCopy)
   {
-    v11 = [v7 fm_hexString];
-    v12 = [(APSTokenWatcher *)self prodToken];
-    if (v12)
+    fm_hexString = [tokenCopy fm_hexString];
+    prodToken = [(APSTokenWatcher *)self prodToken];
+    if (prodToken)
     {
-      v13 = v12;
-      v14 = [(APSTokenWatcher *)self prodToken];
-      v15 = [v14 isEqualToString:v11];
+      v13 = prodToken;
+      prodToken2 = [(APSTokenWatcher *)self prodToken];
+      v15 = [prodToken2 isEqualToString:fm_hexString];
 
       if (v15)
       {
@@ -101,7 +101,7 @@
       }
     }
 
-    [(APSTokenWatcher *)self setProdToken:v11];
+    [(APSTokenWatcher *)self setProdToken:fm_hexString];
 LABEL_12:
 
     v10 = [NSNotification notificationWithName:@"kAPSTokenWatcherUpdatedNotification" object:self userInfo:0];
@@ -112,24 +112,24 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v9 = [(APSTokenWatcher *)self devConnection];
+  devConnection = [(APSTokenWatcher *)self devConnection];
 
-  if (v9 != v6)
+  if (devConnection != connectionCopy)
   {
     v10 = sub_100002830();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      sub_100038EF8(v6, v10);
+      sub_100038EF8(connectionCopy, v10);
     }
 
     goto LABEL_13;
   }
 
-  v11 = [v7 fm_hexString];
-  v16 = [(APSTokenWatcher *)self devToken];
-  if (!v16 || (v17 = v16, -[APSTokenWatcher devToken](self, "devToken"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 isEqualToString:v11], v18, v17, (v19 & 1) == 0))
+  fm_hexString = [tokenCopy fm_hexString];
+  devToken = [(APSTokenWatcher *)self devToken];
+  if (!devToken || (v17 = devToken, -[APSTokenWatcher devToken](self, "devToken"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 isEqualToString:fm_hexString], v18, v17, (v19 & 1) == 0))
   {
-    [(APSTokenWatcher *)self setDevToken:v11];
+    [(APSTokenWatcher *)self setDevToken:fm_hexString];
     goto LABEL_12;
   }
 

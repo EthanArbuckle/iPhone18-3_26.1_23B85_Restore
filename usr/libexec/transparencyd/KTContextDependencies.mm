@@ -1,51 +1,51 @@
 @interface KTContextDependencies
-- (KTContextDependencies)initWithOperationDependencies:(id)a3 application:(id)a4;
+- (KTContextDependencies)initWithOperationDependencies:(id)dependencies application:(id)application;
 - (KTContextStore)contextStore;
 - (KTSMManager)stateMachine;
 @end
 
 @implementation KTContextDependencies
 
-- (KTContextDependencies)initWithOperationDependencies:(id)a3 application:(id)a4
+- (KTContextDependencies)initWithOperationDependencies:(id)dependencies application:(id)application
 {
-  v6 = a3;
-  v7 = a4;
+  dependenciesCopy = dependencies;
+  applicationCopy = application;
   v22.receiver = self;
   v22.super_class = KTContextDependencies;
   v8 = [(KTContextDependencies *)&v22 init];
   if (v8)
   {
-    v9 = [v6 publicKeyStore];
-    v10 = [v9 applicationPublicKeyStore:v7];
+    publicKeyStore = [dependenciesCopy publicKeyStore];
+    v10 = [publicKeyStore applicationPublicKeyStore:applicationCopy];
     [(KTContextDependencies *)v8 setApplicationKeyStore:v10];
 
-    v11 = [v6 dataStore];
-    [(KTContextDependencies *)v8 setDataStore:v11];
+    dataStore = [dependenciesCopy dataStore];
+    [(KTContextDependencies *)v8 setDataStore:dataStore];
 
-    v12 = [v6 staticKeyStore];
-    [(KTContextDependencies *)v8 setStaticKeyStore:v12];
+    staticKeyStore = [dependenciesCopy staticKeyStore];
+    [(KTContextDependencies *)v8 setStaticKeyStore:staticKeyStore];
 
-    v13 = [v6 logClient];
-    [(KTContextDependencies *)v8 setLogClient:v13];
+    logClient = [dependenciesCopy logClient];
+    [(KTContextDependencies *)v8 setLogClient:logClient];
 
-    v14 = [v6 contextStore];
-    [(KTContextDependencies *)v8 setContextStore:v14];
+    contextStore = [dependenciesCopy contextStore];
+    [(KTContextDependencies *)v8 setContextStore:contextStore];
 
-    v15 = [v6 accountKeyService];
-    v16 = [v15 accountKeyService:v7];
+    accountKeyService = [dependenciesCopy accountKeyService];
+    v16 = [accountKeyService accountKeyService:applicationCopy];
     [(KTContextDependencies *)v8 setAccountKeyServer:v16];
 
-    v17 = [v6 kvs];
+    v17 = [dependenciesCopy kvs];
     [(KTContextDependencies *)v8 setKvs:v17];
 
-    v18 = [v6 followup];
-    [(KTContextDependencies *)v8 setFollowup:v18];
+    followup = [dependenciesCopy followup];
+    [(KTContextDependencies *)v8 setFollowup:followup];
 
-    v19 = [v6 cloudRecords];
-    [(KTContextDependencies *)v8 setCloudRecords:v19];
+    cloudRecords = [dependenciesCopy cloudRecords];
+    [(KTContextDependencies *)v8 setCloudRecords:cloudRecords];
 
-    v20 = [v6 settings];
-    [(KTContextDependencies *)v8 setSettings:v20];
+    settings = [dependenciesCopy settings];
+    [(KTContextDependencies *)v8 setSettings:settings];
   }
 
   return v8;

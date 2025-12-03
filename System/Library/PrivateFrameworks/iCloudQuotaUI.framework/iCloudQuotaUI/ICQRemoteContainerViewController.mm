@@ -1,23 +1,23 @@
 @interface ICQRemoteContainerViewController
 - (ICQRemoteContainerViewController)init;
-- (ICQRemoteContainerViewController)initWithCoder:(id)a3;
-- (ICQRemoteContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (ICQRemoteContainerViewController)initWithRootViewController:(id)a3;
+- (ICQRemoteContainerViewController)initWithCoder:(id)coder;
+- (ICQRemoteContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (ICQRemoteContainerViewController)initWithRootViewController:(id)controller;
 - (unint64_t)supportedInterfaceOrientations;
 @end
 
 @implementation ICQRemoteContainerViewController
 
-- (ICQRemoteContainerViewController)initWithRootViewController:(id)a3
+- (ICQRemoteContainerViewController)initWithRootViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = objc_opt_class();
   if (v6 == objc_opt_class())
   {
-    v10 = [MEMORY[0x277D75418] currentDevice];
-    v11 = [v10 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v11 == 1)
+    if (userInterfaceIdiom == 1)
     {
       v12 = ICQRemoteContaineriPadViewController;
     }
@@ -27,7 +27,7 @@
       v12 = ICQRemoteContaineriPhoneViewController;
     }
 
-    v9 = [[v12 alloc] initWithRootViewController:v5];
+    v9 = [[v12 alloc] initWithRootViewController:controllerCopy];
   }
 
   else
@@ -38,7 +38,7 @@
     v8 = v7;
     if (v7)
     {
-      objc_storeStrong(&v7->_rootViewController, a3);
+      objc_storeStrong(&v7->_rootViewController, controller);
     }
 
     v9 = v8;
@@ -57,14 +57,14 @@
   return 0;
 }
 
-- (ICQRemoteContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ICQRemoteContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  [(ICQRemoteContainerViewController *)self doesNotRecognizeSelector:a2, a4];
+  [(ICQRemoteContainerViewController *)self doesNotRecognizeSelector:a2, bundle];
 
   return 0;
 }
 
-- (ICQRemoteContainerViewController)initWithCoder:(id)a3
+- (ICQRemoteContainerViewController)initWithCoder:(id)coder
 {
   [(ICQRemoteContainerViewController *)self doesNotRecognizeSelector:a2];
 
@@ -73,10 +73,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (v3 == 1)
+  if (userInterfaceIdiom == 1)
   {
     return 30;
   }

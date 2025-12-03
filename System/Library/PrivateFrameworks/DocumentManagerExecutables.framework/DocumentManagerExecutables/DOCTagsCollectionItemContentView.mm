@@ -1,15 +1,15 @@
 @interface DOCTagsCollectionItemContentView
 - (CGSize)intrinsicContentSize;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3;
-- (DOCTagsCollectionItemContentView)initWithFrame:(CGRect)a3;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size;
+- (DOCTagsCollectionItemContentView)initWithFrame:(CGRect)frame;
 - (DOCTagsCollectionItemContentViewDelegate)delegate;
 - (UIMenu)menuForContextMenuPresentation;
 - (id)fontForTagSizing;
 - (void)layoutSubviews;
-- (void)removeTag:(id)a3;
-- (void)setIsMixed:(BOOL)a3;
-- (void)setMaxWidth:(double)a3;
-- (void)setTagValue:(id)a3;
+- (void)removeTag:(id)tag;
+- (void)setIsMixed:(BOOL)mixed;
+- (void)setMaxWidth:(double)width;
+- (void)setTagValue:(id)value;
 - (void)updateAttributedString;
 - (void)updateColors;
 - (void)updateForChangedTraitsAffectingFonts;
@@ -17,11 +17,11 @@
 
 @implementation DOCTagsCollectionItemContentView
 
-- (DOCTagsCollectionItemContentView)initWithFrame:(CGRect)a3
+- (DOCTagsCollectionItemContentView)initWithFrame:(CGRect)frame
 {
   v18.receiver = self;
   v18.super_class = DOCTagsCollectionItemContentView;
-  v3 = [(DOCTagsCollectionItemContentView *)&v18 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(DOCTagsCollectionItemContentView *)&v18 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[DOCTagAppearance infoCollection];
@@ -34,28 +34,28 @@
     tagNameLabel = v3->_tagNameLabel;
     v3->_tagNameLabel = v5;
 
-    v7 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v3->_tagNameLabel setTextColor:v7];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v3->_tagNameLabel setTextColor:secondaryLabelColor];
 
     v8 = MEMORY[0x277D74300];
     v9 = *MEMORY[0x277D76968];
-    v10 = [(DOCTagsCollectionItemContentView *)v3 traitCollection];
-    v11 = [v8 preferredFontForTextStyle:v9 compatibleWithTraitCollection:v10];
+    traitCollection = [(DOCTagsCollectionItemContentView *)v3 traitCollection];
+    v11 = [v8 preferredFontForTextStyle:v9 compatibleWithTraitCollection:traitCollection];
 
-    v12 = [v11 fontDescriptor];
-    v13 = [v12 fontDescriptorWithSymbolicTraits:2];
+    fontDescriptor = [v11 fontDescriptor];
+    v13 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
     v14 = [MEMORY[0x277D74300] fontWithDescriptor:v13 size:0.0];
     [(UILabel *)v3->_tagNameLabel setFont:v14];
     [(UILabel *)v3->_tagNameLabel setAdjustsFontForContentSizeCategory:1];
     [(DOCTagsCollectionItemContentView *)v3 addSubview:v3->_tagNameLabel];
-    v15 = [MEMORY[0x277D75C80] doc_traitsAffectingFonts];
-    v16 = [(DOCTagsCollectionItemContentView *)v3 registerForTraitChanges:v15 withAction:sel_updateForChangedTraitsAffectingFonts];
+    doc_traitsAffectingFonts = [MEMORY[0x277D75C80] doc_traitsAffectingFonts];
+    v16 = [(DOCTagsCollectionItemContentView *)v3 registerForTraitChanges:doc_traitsAffectingFonts withAction:sel_updateForChangedTraitsAffectingFonts];
   }
 
   return v3;
 }
 
-- (void)removeTag:(id)a3
+- (void)removeTag:(id)tag
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   tagValue = self->_tagValue;
@@ -77,25 +77,25 @@
   }
 }
 
-- (void)setTagValue:(id)a3
+- (void)setTagValue:(id)value
 {
-  v5 = a3;
-  if (self->_tagValue != v5)
+  valueCopy = value;
+  if (self->_tagValue != valueCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_tagValue, a3);
+    v6 = valueCopy;
+    objc_storeStrong(&self->_tagValue, value);
     [(DOCTagsCollectionItemContentView *)self updateColors];
     [(DOCTagsCollectionItemContentView *)self updateAttributedString];
     [(DOCTagsCollectionItemContentView *)self invalidateIntrinsicContentSize];
-    v5 = v6;
+    valueCopy = v6;
   }
 }
 
-- (void)setMaxWidth:(double)a3
+- (void)setMaxWidth:(double)width
 {
-  if (self->_maxWidth != a3)
+  if (self->_maxWidth != width)
   {
-    self->_maxWidth = a3;
+    self->_maxWidth = width;
     [(DOCTagsCollectionItemContentView *)self invalidateIntrinsicContentSize];
   }
 }
@@ -121,8 +121,8 @@
   v16 = v10 - (v13 + v15);
   v18 = v8 + v17;
   v20 = v12 - (v17 + v19);
-  v21 = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
-  [v21 setFrame:{v14, v18, v16, v20}];
+  tagNameLabel = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
+  [tagNameLabel setFrame:{v14, v18, v16, v20}];
 }
 
 - (CGSize)intrinsicContentSize
@@ -134,8 +134,8 @@
   v9 = v8;
   v11 = v10;
 
-  v12 = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
-  [v12 intrinsicContentSize];
+  tagNameLabel = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
+  [tagNameLabel intrinsicContentSize];
   v14 = v13;
   v16 = v15;
 
@@ -152,10 +152,10 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v6 = +[DOCTagAppearance infoCollection];
   [v6 cellContentInsets];
   v8 = v7;
@@ -163,8 +163,8 @@
   v12 = v11;
   v14 = v13;
 
-  v15 = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
-  [v15 systemLayoutSizeFittingSize:{width, height}];
+  tagNameLabel = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
+  [tagNameLabel systemLayoutSizeFittingSize:{width, height}];
   v17 = v16;
   v19 = v18;
 
@@ -181,11 +181,11 @@
   return result;
 }
 
-- (void)setIsMixed:(BOOL)a3
+- (void)setIsMixed:(BOOL)mixed
 {
-  if (self->_isMixed != a3)
+  if (self->_isMixed != mixed)
   {
-    self->_isMixed = a3;
+    self->_isMixed = mixed;
     [(DOCTagsCollectionItemContentView *)self updateColors];
 
     [(DOCTagsCollectionItemContentView *)self updateAttributedString];
@@ -196,81 +196,81 @@
 {
   if ([(DOCTagsCollectionItemContentView *)self isMixed])
   {
-    v3 = [MEMORY[0x277D75348] secondaryLabelColor];
-    v4 = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
-    [v4 setTextColor:v3];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    tagNameLabel = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
+    [tagNameLabel setTextColor:secondaryLabelColor];
 
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(DOCTagsCollectionItemContentView *)self setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(DOCTagsCollectionItemContentView *)self setBackgroundColor:clearColor];
 
-    v6 = [(DOCTagsCollectionItemContentView *)self tagValue];
-    v7 = [v6 tagBackgroundColor];
-    v8 = [v7 CGColor];
-    v9 = [(DOCTagsCollectionItemContentView *)self layer];
-    [v9 setBorderColor:v8];
+    tagValue = [(DOCTagsCollectionItemContentView *)self tagValue];
+    tagBackgroundColor = [tagValue tagBackgroundColor];
+    cGColor = [tagBackgroundColor CGColor];
+    layer = [(DOCTagsCollectionItemContentView *)self layer];
+    [layer setBorderColor:cGColor];
 
-    v21 = [(DOCTagsCollectionItemContentView *)self layer];
-    [v21 setBorderWidth:1.0];
+    layer2 = [(DOCTagsCollectionItemContentView *)self layer];
+    [layer2 setBorderWidth:1.0];
   }
 
   else
   {
-    v10 = [(DOCTagsCollectionItemContentView *)self tagValue];
-    v21 = [v10 tagColor];
+    tagValue2 = [(DOCTagsCollectionItemContentView *)self tagValue];
+    layer2 = [tagValue2 tagColor];
 
-    v11 = [MEMORY[0x277D75348] clearColor];
-    v12 = [v21 isEqual:v11];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    v12 = [layer2 isEqual:clearColor2];
 
     if (v12)
     {
-      v13 = [MEMORY[0x277D75348] secondaryLabelColor];
-      v14 = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
-      [v14 setTextColor:v13];
+      secondaryLabelColor2 = [MEMORY[0x277D75348] secondaryLabelColor];
+      tagNameLabel2 = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
+      [tagNameLabel2 setTextColor:secondaryLabelColor2];
     }
 
     else
     {
-      v13 = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
-      [v13 setTextColor:v21];
+      secondaryLabelColor2 = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
+      [secondaryLabelColor2 setTextColor:layer2];
     }
 
-    v15 = [(DOCTagsCollectionItemContentView *)self tagValue];
-    v16 = [v15 tagBackgroundColor];
-    [(DOCTagsCollectionItemContentView *)self setBackgroundColor:v16];
+    tagValue3 = [(DOCTagsCollectionItemContentView *)self tagValue];
+    tagBackgroundColor2 = [tagValue3 tagBackgroundColor];
+    [(DOCTagsCollectionItemContentView *)self setBackgroundColor:tagBackgroundColor2];
 
-    v17 = [MEMORY[0x277D75348] clearColor];
-    v18 = [v17 CGColor];
-    v19 = [(DOCTagsCollectionItemContentView *)self layer];
-    [v19 setBorderColor:v18];
+    clearColor3 = [MEMORY[0x277D75348] clearColor];
+    cGColor2 = [clearColor3 CGColor];
+    layer3 = [(DOCTagsCollectionItemContentView *)self layer];
+    [layer3 setBorderColor:cGColor2];
 
-    v20 = [(DOCTagsCollectionItemContentView *)self layer];
-    [v20 setBorderWidth:0.0];
+    layer4 = [(DOCTagsCollectionItemContentView *)self layer];
+    [layer4 setBorderWidth:0.0];
   }
 }
 
 - (id)fontForTagSizing
 {
-  v2 = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
-  v3 = [v2 font];
-  v4 = [v3 _fontAdjustedForCurrentContentSizeCategory];
+  tagNameLabel = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
+  font = [tagNameLabel font];
+  _fontAdjustedForCurrentContentSizeCategory = [font _fontAdjustedForCurrentContentSizeCategory];
 
-  return v4;
+  return _fontAdjustedForCurrentContentSizeCategory;
 }
 
 - (void)updateAttributedString
 {
   v20[1] = *MEMORY[0x277D85DE8];
   v19 = *MEMORY[0x277D740A8];
-  v3 = [(DOCTagsCollectionItemContentView *)self fontForTagSizing];
-  v20[0] = v3;
+  fontForTagSizing = [(DOCTagsCollectionItemContentView *)self fontForTagSizing];
+  v20[0] = fontForTagSizing;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:&v19 count:1];
 
   if ([(DOCTagsCollectionItemContentView *)self isMixed])
   {
     v5 = +[DOCTagAppearance renderingAppearance];
-    v6 = [v5 outlineTagsToIndicateMixedState];
+    outlineTagsToIndicateMixedState = [v5 outlineTagsToIndicateMixedState];
 
-    v7 = v6 & 1;
+    v7 = outlineTagsToIndicateMixedState & 1;
   }
 
   else
@@ -278,15 +278,15 @@
     v7 = 0;
   }
 
-  v8 = [(DOCTagsCollectionItemContentView *)self fontForTagSizing];
-  [v8 capHeight];
+  fontForTagSizing2 = [(DOCTagsCollectionItemContentView *)self fontForTagSizing];
+  [fontForTagSizing2 capHeight];
   v10 = v9 + 0.0;
 
-  v11 = [(DOCTagsCollectionItemContentView *)self tagValue];
-  v12 = [v11 displayName];
+  tagValue = [(DOCTagsCollectionItemContentView *)self tagValue];
+  displayName = [tagValue displayName];
 
-  v13 = [(DOCTagsCollectionItemContentView *)self tagValue];
-  v14 = [DOCTagStringRenderingRequest requestForTag:v13 tagDimension:v12 text:v4 textAttributes:v7 variant:v10];
+  tagValue2 = [(DOCTagsCollectionItemContentView *)self tagValue];
+  v14 = [DOCTagStringRenderingRequest requestForTag:tagValue2 tagDimension:displayName text:v4 textAttributes:v7 variant:v10];
 
   [v14 setAllowUnsizedSymbolImages:1];
   v15 = +[DOCTagAppearance infoCollection];
@@ -295,10 +295,10 @@
 
   [v14 setLayoutDirection:{-[DOCTagsCollectionItemContentView effectiveUserInterfaceLayoutDirection](self, "effectiveUserInterfaceLayoutDirection")}];
   [v14 setClearTagRenderingMode:1];
-  v16 = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
+  tagNameLabel = [(DOCTagsCollectionItemContentView *)self tagNameLabel];
   v17 = +[DOCTagRenderer shared];
   v18 = [v17 renderAttributedStringWithRequest:v14 titleHighlighter:&__block_literal_global_10];
-  [v16 setAttributedText:v18];
+  [tagNameLabel setAttributedText:v18];
 }
 
 id __58__DOCTagsCollectionItemContentView_updateAttributedString__block_invoke(uint64_t a1, void *a2)

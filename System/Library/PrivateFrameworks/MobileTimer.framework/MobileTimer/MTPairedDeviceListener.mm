@@ -1,16 +1,16 @@
 @interface MTPairedDeviceListener
 + (MTPairedDeviceListener)sharedListener;
 + (id)_handledNotifications;
-- (BOOL)handlesNotification:(id)a3 ofType:(int64_t)a4;
-- (BOOL)hasActivePairedDeviceCheckSyncing:(BOOL)a3;
+- (BOOL)handlesNotification:(id)notification ofType:(int64_t)type;
+- (BOOL)hasActivePairedDeviceCheckSyncing:(BOOL)syncing;
 - (BOOL)hasActivePairedDeviceSupportingAlarmKit;
 - (MTPairedDeviceListener)init;
 - (NSString)pairedDeviceVersion;
 - (void)_registerForLocalNotifications;
-- (void)didReceiveNotification:(id)a3;
-- (void)didReceiveNotificationNamed:(id)a3;
-- (void)handleNotification:(id)a3 ofType:(int64_t)a4 completion:(id)a5;
-- (void)notifyObserversWithBlock:(id)a3;
+- (void)didReceiveNotification:(id)notification;
+- (void)didReceiveNotificationNamed:(id)named;
+- (void)handleNotification:(id)notification ofType:(int64_t)type completion:(id)completion;
+- (void)notifyObserversWithBlock:(id)block;
 - (void)printDiagnostics;
 - (void)updateActiveDeviceInfo;
 @end
@@ -75,31 +75,31 @@ uint64_t __40__MTPairedDeviceListener_sharedListener__block_invoke()
 
 - (void)_registerForLocalNotifications
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_didReceiveNotification_ name:*MEMORY[0x1E69B3678] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_didReceiveNotification_ name:*MEMORY[0x1E69B3678] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel_didReceiveNotification_ name:*MEMORY[0x1E69B3660] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel_didReceiveNotification_ name:*MEMORY[0x1E69B3660] object:0];
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 addObserver:self selector:sel_didReceiveNotification_ name:*MEMORY[0x1E69B3688] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel_didReceiveNotification_ name:*MEMORY[0x1E69B3688] object:0];
 
-  v6 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v6 addObserver:self selector:sel_didReceiveNotification_ name:*MEMORY[0x1E69B3668] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel_didReceiveNotification_ name:*MEMORY[0x1E69B3668] object:0];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 addObserver:self selector:sel_didReceiveNotification_ name:@"MTPairedDevicePreferencesChanged" object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel_didReceiveNotification_ name:@"MTPairedDevicePreferencesChanged" object:0];
 }
 
 - (void)updateActiveDeviceInfo
 {
-  v3 = [(MTPairedDeviceListener *)self serializer];
+  serializer = [(MTPairedDeviceListener *)self serializer];
   v4[0] = MEMORY[0x1E69E9820];
   v4[1] = 3221225472;
   v4[2] = __48__MTPairedDeviceListener_updateActiveDeviceInfo__block_invoke;
   v4[3] = &unk_1E7B0C9D8;
   v4[4] = self;
-  [v3 performBlock:v4];
+  [serializer performBlock:v4];
 }
 
 void __48__MTPairedDeviceListener_updateActiveDeviceInfo__block_invoke(uint64_t a1)
@@ -160,44 +160,44 @@ void __47__MTPairedDeviceListener__handledNotifications__block_invoke()
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)handlesNotification:(id)a3 ofType:(int64_t)a4
+- (BOOL)handlesNotification:(id)notification ofType:(int64_t)type
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _handledNotifications];
-  v6 = [v5 containsObject:v4];
+  notificationCopy = notification;
+  _handledNotifications = [objc_opt_class() _handledNotifications];
+  v6 = [_handledNotifications containsObject:notificationCopy];
 
   return v6;
 }
 
-- (void)handleNotification:(id)a3 ofType:(int64_t)a4 completion:(id)a5
+- (void)handleNotification:(id)notification ofType:(int64_t)type completion:(id)completion
 {
-  v8 = a5;
-  [(MTPairedDeviceListener *)self didReceiveNotificationNamed:a3];
-  v7 = v8;
-  if (v8)
+  completionCopy = completion;
+  [(MTPairedDeviceListener *)self didReceiveNotificationNamed:notification];
+  v7 = completionCopy;
+  if (completionCopy)
   {
-    (*(v8 + 2))(v8);
-    v7 = v8;
+    (*(completionCopy + 2))(completionCopy);
+    v7 = completionCopy;
   }
 }
 
-- (void)didReceiveNotification:(id)a3
+- (void)didReceiveNotification:(id)notification
 {
-  v4 = [a3 name];
-  [(MTPairedDeviceListener *)self didReceiveNotificationNamed:v4];
+  name = [notification name];
+  [(MTPairedDeviceListener *)self didReceiveNotificationNamed:name];
 }
 
-- (void)didReceiveNotificationNamed:(id)a3
+- (void)didReceiveNotificationNamed:(id)named
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  namedCopy = named;
   v5 = MTLogForCategory(6);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543618;
-    v8 = self;
+    selfCopy = self;
     v9 = 2114;
-    v10 = v4;
+    v10 = namedCopy;
     _os_log_impl(&dword_1B1F9F000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@ received %{public}@", &v7, 0x16u);
   }
 
@@ -238,7 +238,7 @@ void __45__MTPairedDeviceListener_pairedDeviceVersion__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (BOOL)hasActivePairedDeviceCheckSyncing:(BOOL)a3
+- (BOOL)hasActivePairedDeviceCheckSyncing:(BOOL)syncing
 {
   v8 = 0;
   v9 = &v8;
@@ -251,7 +251,7 @@ void __45__MTPairedDeviceListener_pairedDeviceVersion__block_invoke(uint64_t a1)
   block[3] = &unk_1E7B0CEB0;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  syncingCopy = syncing;
   dispatch_sync(serializerQueue, block);
   v4 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -395,11 +395,11 @@ void __65__MTPairedDeviceListener_hasActivePairedDeviceSupportingAlarmKit__block
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)notifyObserversWithBlock:(id)a3
+- (void)notifyObserversWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(MTPairedDeviceListener *)self observers];
-  [v5 enumerateObserversWithBlock:v4];
+  blockCopy = block;
+  observers = [(MTPairedDeviceListener *)self observers];
+  [observers enumerateObserversWithBlock:blockCopy];
 }
 
 - (void)printDiagnostics
@@ -415,12 +415,12 @@ void __65__MTPairedDeviceListener_hasActivePairedDeviceSupportingAlarmKit__block
   v4 = MTLogForCategory(6);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(MTPairedDeviceListener *)self pairedDevice];
-    v6 = [v5 valueForProperty:*MEMORY[0x1E69B3598]];
-    v7 = [(MTPairedDeviceListener *)self pairedDevice];
-    v8 = [v7 valueForProperty:*MEMORY[0x1E69B3640]];
-    v9 = [(MTPairedDeviceListener *)self pairedDevice];
-    v10 = [v9 valueForProperty:*MEMORY[0x1E69B3628]];
+    pairedDevice = [(MTPairedDeviceListener *)self pairedDevice];
+    v6 = [pairedDevice valueForProperty:*MEMORY[0x1E69B3598]];
+    pairedDevice2 = [(MTPairedDeviceListener *)self pairedDevice];
+    v8 = [pairedDevice2 valueForProperty:*MEMORY[0x1E69B3640]];
+    pairedDevice3 = [(MTPairedDeviceListener *)self pairedDevice];
+    v10 = [pairedDevice3 valueForProperty:*MEMORY[0x1E69B3628]];
     v14 = 138543874;
     v15 = v6;
     v16 = 2114;
@@ -433,9 +433,9 @@ void __65__MTPairedDeviceListener_hasActivePairedDeviceSupportingAlarmKit__block
   v11 = MTLogForCategory(6);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(MTPairedDeviceListener *)self pairedDevice];
+    pairedDevice4 = [(MTPairedDeviceListener *)self pairedDevice];
     v14 = 67240192;
-    LODWORD(v15) = v12 != 0;
+    LODWORD(v15) = pairedDevice4 != 0;
     _os_log_impl(&dword_1B1F9F000, v11, OS_LOG_TYPE_DEFAULT, "Paired Device Active: %{public}d", &v14, 8u);
   }
 

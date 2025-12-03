@@ -1,11 +1,11 @@
 @interface TTSMauiVoice
 - (TTSMauiVoice)init;
-- (TTSMauiVoice)initWithIdentifier:(id)a3 language:(id)a4 path:(id)a5;
+- (TTSMauiVoice)initWithIdentifier:(id)identifier language:(id)language path:(id)path;
 @end
 
 @implementation TTSMauiVoice
 
-- (TTSMauiVoice)initWithIdentifier:(id)a3 language:(id)a4 path:(id)a5
+- (TTSMauiVoice)initWithIdentifier:(id)identifier language:(id)language path:(id)path
 {
   v6 = sub_26ECC5838();
   v8 = v7;

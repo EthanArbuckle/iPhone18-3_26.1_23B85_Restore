@@ -1,38 +1,38 @@
 @interface ATXAVRoutingSessionHelper
 - (ATXAVRouteInfo)predictedRouteInfo;
-- (ATXAVRoutingSessionHelper)initWithAcceptThreshold:(float)a3 avRoutingSessionManager:(id)a4;
-- (id)_atxAVRouteInfoWithRoute:(id)a3;
-- (id)_filterTopRouteFromRoutes:(id)a3 withAcceptThreshold:(float)a4;
-- (id)_predictedRouteInfoWithAcceptThreshold:(float)a3 prefersLikelyDestinationsOverCurrentRoutingSession:(BOOL)a4;
-- (id)_predictedRouteWithAcceptThreshold:(float)a3;
+- (ATXAVRoutingSessionHelper)initWithAcceptThreshold:(float)threshold avRoutingSessionManager:(id)manager;
+- (id)_atxAVRouteInfoWithRoute:(id)route;
+- (id)_filterTopRouteFromRoutes:(id)routes withAcceptThreshold:(float)threshold;
+- (id)_predictedRouteInfoWithAcceptThreshold:(float)threshold prefersLikelyDestinationsOverCurrentRoutingSession:(BOOL)session;
+- (id)_predictedRouteWithAcceptThreshold:(float)threshold;
 - (id)_selectedOrPendingRoute;
 - (void)_selectedOrPendingRoute;
 @end
 
 @implementation ATXAVRoutingSessionHelper
 
-- (ATXAVRoutingSessionHelper)initWithAcceptThreshold:(float)a3 avRoutingSessionManager:(id)a4
+- (ATXAVRoutingSessionHelper)initWithAcceptThreshold:(float)threshold avRoutingSessionManager:(id)manager
 {
-  v6 = a4;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = ATXAVRoutingSessionHelper;
   v7 = [(ATXAVRoutingSessionHelper *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_threshold = a3;
-    if (v6)
+    v7->_threshold = threshold;
+    if (managerCopy)
     {
-      v9 = v6;
+      longFormVideoRoutingSessionManager = managerCopy;
     }
 
     else
     {
-      v9 = [ATXAVFoundationRoutingSessionManager() longFormVideoRoutingSessionManager];
+      longFormVideoRoutingSessionManager = [ATXAVFoundationRoutingSessionManager() longFormVideoRoutingSessionManager];
     }
 
     avRoutingSessionManager = v8->_avRoutingSessionManager;
-    v8->_avRoutingSessionManager = v9;
+    v8->_avRoutingSessionManager = longFormVideoRoutingSessionManager;
   }
 
   return v8;
@@ -44,9 +44,9 @@
   if (!internalPredictedRouteInfo)
   {
     threshold = self->_threshold;
-    v5 = [(AVRoutingSessionManager *)self->_avRoutingSessionManager prefersLikelyDestinationsOverCurrentRoutingSession];
+    prefersLikelyDestinationsOverCurrentRoutingSession = [(AVRoutingSessionManager *)self->_avRoutingSessionManager prefersLikelyDestinationsOverCurrentRoutingSession];
     *&v6 = threshold;
-    v7 = [(ATXAVRoutingSessionHelper *)self _predictedRouteInfoWithAcceptThreshold:v5 prefersLikelyDestinationsOverCurrentRoutingSession:v6];
+    v7 = [(ATXAVRoutingSessionHelper *)self _predictedRouteInfoWithAcceptThreshold:prefersLikelyDestinationsOverCurrentRoutingSession prefersLikelyDestinationsOverCurrentRoutingSession:v6];
     v8 = self->_internalPredictedRouteInfo;
     self->_internalPredictedRouteInfo = v7;
 
@@ -56,65 +56,65 @@
   return internalPredictedRouteInfo;
 }
 
-- (id)_predictedRouteInfoWithAcceptThreshold:(float)a3 prefersLikelyDestinationsOverCurrentRoutingSession:(BOOL)a4
+- (id)_predictedRouteInfoWithAcceptThreshold:(float)threshold prefersLikelyDestinationsOverCurrentRoutingSession:(BOOL)session
 {
-  v4 = a4;
+  sessionCopy = session;
   v7 = __atxlog_handle_default();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    [ATXAVRoutingSessionHelper _predictedRouteInfoWithAcceptThreshold:v4 prefersLikelyDestinationsOverCurrentRoutingSession:v7];
+    [ATXAVRoutingSessionHelper _predictedRouteInfoWithAcceptThreshold:sessionCopy prefersLikelyDestinationsOverCurrentRoutingSession:v7];
   }
 
-  if (v4)
+  if (sessionCopy)
   {
-    *&v8 = a3;
-    v9 = [(ATXAVRoutingSessionHelper *)self _predictedRouteWithAcceptThreshold:v8];
-    if (!v9)
+    *&v8 = threshold;
+    _selectedOrPendingRoute = [(ATXAVRoutingSessionHelper *)self _predictedRouteWithAcceptThreshold:v8];
+    if (!_selectedOrPendingRoute)
     {
-      v9 = [(ATXAVRoutingSessionHelper *)self _selectedOrPendingRoute];
+      _selectedOrPendingRoute = [(ATXAVRoutingSessionHelper *)self _selectedOrPendingRoute];
     }
   }
 
   else
   {
-    v9 = [(ATXAVRoutingSessionHelper *)self _selectedOrPendingRoute];
-    if (!v9)
+    _selectedOrPendingRoute = [(ATXAVRoutingSessionHelper *)self _selectedOrPendingRoute];
+    if (!_selectedOrPendingRoute)
     {
-      *&v10 = a3;
-      v9 = [(ATXAVRoutingSessionHelper *)self _predictedRouteWithAcceptThreshold:v10];
+      *&v10 = threshold;
+      _selectedOrPendingRoute = [(ATXAVRoutingSessionHelper *)self _predictedRouteWithAcceptThreshold:v10];
     }
   }
 
-  v11 = v9;
-  v12 = [(ATXAVRoutingSessionHelper *)self _atxAVRouteInfoWithRoute:v9];
+  v11 = _selectedOrPendingRoute;
+  v12 = [(ATXAVRoutingSessionHelper *)self _atxAVRouteInfoWithRoute:_selectedOrPendingRoute];
 
   return v12;
 }
 
-- (id)_predictedRouteWithAcceptThreshold:(float)a3
+- (id)_predictedRouteWithAcceptThreshold:(float)threshold
 {
   v5 = __atxlog_handle_default();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(ATXAVRoutingSessionHelper *)v5 _predictedRouteWithAcceptThreshold:a3];
+    [(ATXAVRoutingSessionHelper *)v5 _predictedRouteWithAcceptThreshold:threshold];
   }
 
-  v6 = [(AVRoutingSessionManager *)self->_avRoutingSessionManager allLikelyDestinations];
-  *&v7 = a3;
-  v8 = [(ATXAVRoutingSessionHelper *)self _filterTopRouteFromRoutes:v6 withAcceptThreshold:v7];
+  allLikelyDestinations = [(AVRoutingSessionManager *)self->_avRoutingSessionManager allLikelyDestinations];
+  *&v7 = threshold;
+  v8 = [(ATXAVRoutingSessionHelper *)self _filterTopRouteFromRoutes:allLikelyDestinations withAcceptThreshold:v7];
 
   return v8;
 }
 
 - (id)_selectedOrPendingRoute
 {
-  v2 = [(AVRoutingSessionManager *)self->_avRoutingSessionManager currentRoutingSession];
-  v3 = v2;
-  if (v2)
+  currentRoutingSession = [(AVRoutingSessionManager *)self->_avRoutingSessionManager currentRoutingSession];
+  v3 = currentRoutingSession;
+  if (currentRoutingSession)
   {
-    v4 = [v2 destination];
+    destination = [currentRoutingSession destination];
 
-    if (v4)
+    if (destination)
     {
       v5 = __atxlog_handle_default();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -122,28 +122,28 @@
         [(ATXAVRoutingSessionHelper *)v3 _selectedOrPendingRoute];
       }
 
-      v4 = [v3 destination];
+      destination = [v3 destination];
     }
   }
 
   else
   {
-    v4 = 0;
+    destination = 0;
   }
 
-  return v4;
+  return destination;
 }
 
-- (id)_filterTopRouteFromRoutes:(id)a3 withAcceptThreshold:(float)a4
+- (id)_filterTopRouteFromRoutes:(id)routes withAcceptThreshold:(float)threshold
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5 && [v5 count])
+  routesCopy = routes;
+  v6 = routesCopy;
+  if (routesCopy && [routesCopy count])
   {
     v7 = [v6 objectAtIndexedSubscript:0];
     [v7 probability];
     v8 = 0;
-    if (v9 > a4)
+    if (v9 > threshold)
     {
       v8 = v7;
     }
@@ -157,46 +157,46 @@
   return v8;
 }
 
-- (id)_atxAVRouteInfoWithRoute:(id)a3
+- (id)_atxAVRouteInfoWithRoute:(id)route
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  routeCopy = route;
+  v4 = routeCopy;
+  if (!routeCopy)
   {
     v12 = 0;
     goto LABEL_14;
   }
 
-  v5 = [v3 outputDeviceDescriptions];
-  if ([v5 count])
+  outputDeviceDescriptions = [routeCopy outputDeviceDescriptions];
+  if ([outputDeviceDescriptions count])
   {
-    v6 = [v5 objectAtIndexedSubscript:0];
+    v6 = [outputDeviceDescriptions objectAtIndexedSubscript:0];
     ATXAVFoundationOutputDevice();
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v8 = [v5 objectAtIndexedSubscript:0];
-      v9 = [v8 name];
+      v8 = [outputDeviceDescriptions objectAtIndexedSubscript:0];
+      name = [v8 name];
 
-      v10 = [v5 objectAtIndexedSubscript:0];
-      v11 = [v10 deviceID];
+      v10 = [outputDeviceDescriptions objectAtIndexedSubscript:0];
+      deviceID = [v10 deviceID];
 
-      if (!v9)
+      if (!name)
       {
         goto LABEL_11;
       }
 
       v12 = 0;
-      if (![v9 length] || !v11)
+      if (![name length] || !deviceID)
       {
         goto LABEL_12;
       }
 
-      if ([v11 length])
+      if ([deviceID length])
       {
-        v12 = -[ATXAVRouteInfo initWithDeviceName:deviceID:isExternalRoute:]([ATXAVRouteInfo alloc], "initWithDeviceName:deviceID:isExternalRoute:", v9, v11, [v4 providesExternalVideoPlayback]);
+        v12 = -[ATXAVRouteInfo initWithDeviceName:deviceID:isExternalRoute:]([ATXAVRouteInfo alloc], "initWithDeviceName:deviceID:isExternalRoute:", name, deviceID, [v4 providesExternalVideoPlayback]);
       }
 
       else
@@ -238,10 +238,10 @@ LABEL_14:
 - (void)_selectedOrPendingRoute
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [a1 destination];
-  v4 = [v3 outputDeviceDescriptions];
+  destination = [self destination];
+  outputDeviceDescriptions = [destination outputDeviceDescriptions];
   v5 = 138412290;
-  v6 = v4;
+  v6 = outputDeviceDescriptions;
   _os_log_debug_impl(&dword_1BF549000, a2, OS_LOG_TYPE_DEBUG, "Found selected / pending route: %@", &v5, 0xCu);
 }
 

@@ -1,6 +1,6 @@
 @interface BPSAggregations
 + (id)approxPercentile;
-+ (id)approxPercentileWithDigestCapacity:(unint64_t)a3;
++ (id)approxPercentileWithDigestCapacity:(unint64_t)capacity;
 + (id)approximateDistinctCount;
 + (id)avg;
 + (id)count;
@@ -167,10 +167,10 @@ id __35__BPSAggregations_approxPercentile__block_invoke(uint64_t a1, void *a2, v
   return v4;
 }
 
-+ (id)approxPercentileWithDigestCapacity:(unint64_t)a3
++ (id)approxPercentileWithDigestCapacity:(unint64_t)capacity
 {
   v4 = [BPSAggregator alloc];
-  v5 = [[BPSApproxPercentileDigest alloc] initWithCapacity:a3];
+  v5 = [[BPSApproxPercentileDigest alloc] initWithCapacity:capacity];
   v6 = [(BPSAggregator *)v4 initWithAccumulator:v5 closure:&__block_literal_global_34];
 
   return v6;

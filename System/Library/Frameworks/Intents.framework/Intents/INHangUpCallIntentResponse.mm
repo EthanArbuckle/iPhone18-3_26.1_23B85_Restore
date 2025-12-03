@@ -1,18 +1,18 @@
 @interface INHangUpCallIntentResponse
-+ (int)_errorCodeFromCode:(int64_t)a3;
-+ (int)_typeFromCode:(int64_t)a3;
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5;
-- (INHangUpCallIntentResponse)initWithBackingStore:(id)a3;
++ (int)_errorCodeFromCode:(int64_t)code;
++ (int)_typeFromCode:(int64_t)code;
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested;
+- (INHangUpCallIntentResponse)initWithBackingStore:(id)store;
 - (INHangUpCallIntentResponse)initWithCode:(INHangUpCallIntentResponseCode)code userActivity:(NSUserActivity *)userActivity;
-- (INHangUpCallIntentResponse)initWithCoder:(id)a3;
+- (INHangUpCallIntentResponse)initWithCoder:(id)coder;
 - (INHangUpCallIntentResponseCode)code;
 - (id)_dictionaryRepresentation;
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4;
-- (int64_t)_codeWithName:(id)a3;
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity;
+- (int64_t)_codeWithName:(id)name;
 - (int64_t)_intentResponseCode;
 - (int64_t)hungUpCallType;
-- (void)encodeWithCoder:(id)a3;
-- (void)setHungUpCallType:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setHungUpCallType:(int64_t)type;
 @end
 
 @implementation INHangUpCallIntentResponse
@@ -21,21 +21,21 @@
 {
   v10[1] = *MEMORY[0x1E69E9840];
   v9 = @"code";
-  v2 = [(INHangUpCallIntentResponse *)self code];
-  v3 = v2;
-  if (v2 < (INHangUpCallIntentResponseCodeFailureNoCallToHangUp|INHangUpCallIntentResponseCodeReady))
+  code = [(INHangUpCallIntentResponse *)self code];
+  v3 = code;
+  if (code < (INHangUpCallIntentResponseCodeFailureNoCallToHangUp|INHangUpCallIntentResponseCodeReady))
   {
-    v4 = off_1E7286F80[v2];
-    v5 = v4;
+    null = off_1E7286F80[code];
+    v5 = null;
   }
 
   else
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
     v5 = 0;
   }
 
-  v10[0] = v4;
+  v10[0] = null;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:&v9 count:1];
   if (v3 >= 7)
   {
@@ -46,40 +46,40 @@
   return v6;
 }
 
-- (void)setHungUpCallType:(int64_t)a3
+- (void)setHungUpCallType:(int64_t)type
 {
   v4 = 0x7FFFFFFFLL;
-  if ((a3 - 1) <= 7)
+  if ((type - 1) <= 7)
   {
-    v4 = dword_18EE5EA60[a3 - 1];
+    v4 = dword_18EE5EA60[type - 1];
   }
 
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = v5;
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  v6 = _responseMessagePBRepresentation;
   if (v4 == 0x7FFFFFFF)
   {
-    [v5 setHasHungUpCallType:0];
+    [_responseMessagePBRepresentation setHasHungUpCallType:0];
   }
 
   else
   {
-    [v5 setHungUpCallType:v4];
+    [_responseMessagePBRepresentation setHungUpCallType:v4];
   }
 
-  v8 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v7 = [v8 data];
-  [(INIntentResponse *)self _setPayloadResponseMessageData:v7];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  data = [_responseMessagePBRepresentation2 data];
+  [(INIntentResponse *)self _setPayloadResponseMessageData:data];
 }
 
 - (int64_t)hungUpCallType
 {
-  v3 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v4 = [v3 hasHungUpCallType];
-  v5 = [(INIntentResponse *)self _responseMessagePBRepresentation];
-  v6 = [v5 hungUpCallType];
-  if (v4 && (v6 - 2) <= 8)
+  _responseMessagePBRepresentation = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  hasHungUpCallType = [_responseMessagePBRepresentation hasHungUpCallType];
+  _responseMessagePBRepresentation2 = [(INIntentResponse *)self _responseMessagePBRepresentation];
+  hungUpCallType = [_responseMessagePBRepresentation2 hungUpCallType];
+  if (hasHungUpCallType && (hungUpCallType - 2) <= 8)
   {
-    v7 = qword_18EE5EA80[v6 - 2];
+    v7 = qword_18EE5EA80[hungUpCallType - 2];
   }
 
   else
@@ -90,27 +90,27 @@
   return v7;
 }
 
-- (int64_t)_codeWithName:(id)a3
+- (int64_t)_codeWithName:(id)name
 {
-  v3 = a3;
-  [v3 isEqualToString:@"INHangUpCallIntentResponseCodeUnspecified"];
-  v4 = [v3 isEqualToString:@"INHangUpCallIntentResponseCodeReady"];
-  if ([v3 isEqualToString:@"INHangUpCallIntentResponseCodeInProgress"])
+  nameCopy = name;
+  [nameCopy isEqualToString:@"INHangUpCallIntentResponseCodeUnspecified"];
+  v4 = [nameCopy isEqualToString:@"INHangUpCallIntentResponseCodeReady"];
+  if ([nameCopy isEqualToString:@"INHangUpCallIntentResponseCodeInProgress"])
   {
     v4 = 2;
   }
 
-  if ([v3 isEqualToString:@"INHangUpCallIntentResponseCodeSuccess"])
+  if ([nameCopy isEqualToString:@"INHangUpCallIntentResponseCodeSuccess"])
   {
     v4 = 3;
   }
 
-  if ([v3 isEqualToString:@"INHangUpCallIntentResponseCodeFailure"])
+  if ([nameCopy isEqualToString:@"INHangUpCallIntentResponseCodeFailure"])
   {
     v4 = 4;
   }
 
-  if ([v3 isEqualToString:@"INHangUpCallIntentResponseCodeFailureRequiringAppLaunch"])
+  if ([nameCopy isEqualToString:@"INHangUpCallIntentResponseCodeFailureRequiringAppLaunch"])
   {
     v5 = 5;
   }
@@ -120,7 +120,7 @@
     v5 = v4;
   }
 
-  v6 = [v3 isEqualToString:@"INHangUpCallIntentResponseCodeFailureNoCallToHangUp"];
+  v6 = [nameCopy isEqualToString:@"INHangUpCallIntentResponseCodeFailureNoCallToHangUp"];
 
   if (v6)
   {
@@ -135,30 +135,30 @@
 
 - (int64_t)_intentResponseCode
 {
-  v2 = [(INHangUpCallIntentResponse *)self code];
-  if ((v2 - 1) > 5)
+  code = [(INHangUpCallIntentResponse *)self code];
+  if ((code - 1) > 5)
   {
     return 0;
   }
 
   else
   {
-    return qword_18EE5F580[v2 - 1];
+    return qword_18EE5F580[code - 1];
   }
 }
 
-- (INHangUpCallIntentResponse)initWithCoder:(id)a3
+- (INHangUpCallIntentResponse)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = INHangUpCallIntentResponse;
-  return [(INIntentResponse *)&v4 initWithCoder:a3];
+  return [(INIntentResponse *)&v4 initWithCoder:coder];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = INHangUpCallIntentResponse;
-  [(INIntentResponse *)&v3 encodeWithCoder:a3];
+  [(INIntentResponse *)&v3 encodeWithCoder:coder];
 }
 
 - (INHangUpCallIntentResponseCode)code
@@ -168,18 +168,18 @@
   return [(INIntentResponse *)&v3 code];
 }
 
-- (INHangUpCallIntentResponse)initWithBackingStore:(id)a3
+- (INHangUpCallIntentResponse)initWithBackingStore:(id)store
 {
   v4.receiver = self;
   v4.super_class = INHangUpCallIntentResponse;
-  return [(INIntentResponse *)&v4 initWithBackingStore:a3];
+  return [(INIntentResponse *)&v4 initWithBackingStore:store];
 }
 
-- (id)_initWithCode:(int64_t)a3 userActivity:(id)a4
+- (id)_initWithCode:(int64_t)code userActivity:(id)activity
 {
   v5.receiver = self;
   v5.super_class = INHangUpCallIntentResponse;
-  return [(INIntentResponse *)&v5 _initWithCode:a3 userActivity:a4];
+  return [(INIntentResponse *)&v5 _initWithCode:code userActivity:activity];
 }
 
 - (INHangUpCallIntentResponse)initWithCode:(INHangUpCallIntentResponseCode)code userActivity:(NSUserActivity *)userActivity
@@ -220,9 +220,9 @@
   return v11;
 }
 
-+ (int)_errorCodeFromCode:(int64_t)a3
++ (int)_errorCodeFromCode:(int64_t)code
 {
-  if (a3 == 6)
+  if (code == 6)
   {
     return 1;
   }
@@ -233,50 +233,50 @@
   }
 }
 
-+ (int)_typeFromCode:(int64_t)a3
++ (int)_typeFromCode:(int64_t)code
 {
-  if ((a3 - 1) > 5)
+  if ((code - 1) > 5)
   {
     return 3;
   }
 
   else
   {
-    return dword_18EE5F568[a3 - 1];
+    return dword_18EE5F568[code - 1];
   }
 }
 
-+ (int64_t)_codeFromType:(int)a3 errorCode:(int)a4 appLaunchRequested:(BOOL)a5
++ (int64_t)_codeFromType:(int)type errorCode:(int)code appLaunchRequested:(BOOL)requested
 {
   v5 = 2;
-  if (a3 != 2)
+  if (type != 2)
   {
-    v5 = a3 == 5;
+    v5 = type == 5;
   }
 
   v6 = 3;
   v7 = 4;
-  if (a5)
+  if (requested)
   {
     v7 = 5;
   }
 
-  if (a4 == 1)
+  if (code == 1)
   {
     v7 = 6;
   }
 
-  if (a3 != 1)
+  if (type != 1)
   {
     v7 = 0;
   }
 
-  if (a3)
+  if (type)
   {
     v6 = v7;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
     return v6;
   }

@@ -1,17 +1,17 @@
 @interface RDXPCHandler
 - (RDXPCHandler)init;
 - (void)clearStatusSharedWithPeers;
-- (void)createCacheDirAtPath:(id)a3;
+- (void)createCacheDirAtPath:(id)path;
 - (void)createNewDataCache;
 - (void)ping;
 - (void)shareStatusWithPeers;
 - (void)triggerUpdateToEligibilityEngine;
-- (void)update:(int64_t)a3 withCountryCode:(id)a4;
-- (void)update:(int64_t)a3 withDict:(id)a4;
-- (void)update:(int64_t)a3 withListOfCountryCodes:(id)a4;
-- (void)updatePeer:(id)a3 withCountryCode:(id)a4 priority:(int)a5 andTimestamp:(id)a6;
-- (void)updatePeer:(id)a3 withEstimate:(id)a4;
-- (void)updatePeer:(id)a3 withInfo:(id)a4;
+- (void)update:(int64_t)update withCountryCode:(id)code;
+- (void)update:(int64_t)update withDict:(id)dict;
+- (void)update:(int64_t)update withListOfCountryCodes:(id)codes;
+- (void)updatePeer:(id)peer withCountryCode:(id)code priority:(int)priority andTimestamp:(id)timestamp;
+- (void)updatePeer:(id)peer withEstimate:(id)estimate;
+- (void)updatePeer:(id)peer withInfo:(id)info;
 @end
 
 @implementation RDXPCHandler
@@ -72,9 +72,9 @@
   return v2;
 }
 
-- (void)update:(int64_t)a3 withDict:(id)a4
+- (void)update:(int64_t)update withDict:(id)dict
 {
-  v6 = a4;
+  dictCopy = dict;
   if (!sub_1000016F8())
   {
     goto LABEL_44;
@@ -82,9 +82,9 @@
 
   if (!sub_100001930())
   {
-    v8 = [v6 objectForKeyedSubscript:kRDUpdateKeyCountryCodes];
-    v9 = [v6 objectForKeyedSubscript:kRDUpdateKeyInDisputedArea];
-    v10 = [v9 BOOLValueSafe];
+    v8 = [dictCopy objectForKeyedSubscript:kRDUpdateKeyCountryCodes];
+    v9 = [dictCopy objectForKeyedSubscript:kRDUpdateKeyInDisputedArea];
+    bOOLValueSafe = [v9 BOOLValueSafe];
 
     if (v8)
     {
@@ -139,9 +139,9 @@
     }
 
     v11 = v8;
-    if (a3 > 1)
+    if (update > 1)
     {
-      if (a3 == 2)
+      if (update == 2)
       {
         if (qword_100019008 != -1)
         {
@@ -160,12 +160,12 @@
           _os_log_impl(&dword_100000000, v23, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:ServingCell info update, countryCodes:%{public, location:escape_only}@}", &v24, 0x1Cu);
         }
 
-        v13 = [(RDXPCHandler *)self dataCache];
-        [v13 setCountriesFromServingCell:v11];
+        dataCache = [(RDXPCHandler *)self dataCache];
+        [dataCache setCountriesFromServingCell:v11];
         goto LABEL_41;
       }
 
-      if (a3 == 3)
+      if (update == 3)
       {
         if (qword_100019008 != -1)
         {
@@ -184,15 +184,15 @@
           _os_log_impl(&dword_100000000, v14, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:WiFi AP info update, countryCodes:%{public, location:escape_only}@}", &v24, 0x1Cu);
         }
 
-        v13 = [(RDXPCHandler *)self dataCache];
-        [v13 setCountriesFromWiFiAPs:v11];
+        dataCache = [(RDXPCHandler *)self dataCache];
+        [dataCache setCountriesFromWiFiAPs:v11];
         goto LABEL_41;
       }
     }
 
     else
     {
-      if (!a3)
+      if (!update)
       {
         if (qword_100019008 != -1)
         {
@@ -209,16 +209,16 @@
           v28 = 2114;
           v29 = v11;
           v30 = 1026;
-          LODWORD(v31) = v10;
+          LODWORD(v31) = bOOLValueSafe;
           _os_log_impl(&dword_100000000, v22, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Location info update, countryCodes:%{public, location:escape_only}@, isDisputed:%{public}hhd}", &v24, 0x22u);
         }
 
-        v13 = [(RDXPCHandler *)self dataCache];
-        [v13 setCountriesFromLocation:v11 isInDisputedArea:v10];
+        dataCache = [(RDXPCHandler *)self dataCache];
+        [dataCache setCountriesFromLocation:v11 isInDisputedArea:bOOLValueSafe];
         goto LABEL_41;
       }
 
-      if (a3 == 1)
+      if (update == 1)
       {
         if (qword_100019008 != -1)
         {
@@ -237,8 +237,8 @@
           _os_log_impl(&dword_100000000, v12, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:NearbyCell info update, countryCodes:%{public, location:escape_only}@}", &v24, 0x1Cu);
         }
 
-        v13 = [(RDXPCHandler *)self dataCache];
-        [v13 setCountriesFromNearbyCells:v11];
+        dataCache = [(RDXPCHandler *)self dataCache];
+        [dataCache setCountriesFromNearbyCells:v11];
 LABEL_41:
       }
     }
@@ -265,9 +265,9 @@ LABEL_43:
 LABEL_44:
 }
 
-- (void)update:(int64_t)a3 withListOfCountryCodes:(id)a4
+- (void)update:(int64_t)update withListOfCountryCodes:(id)codes
 {
-  v6 = a4;
+  codesCopy = codes;
   if (!sub_1000016F8())
   {
     goto LABEL_51;
@@ -296,11 +296,11 @@ LABEL_7:
     goto LABEL_51;
   }
 
-  if (a3 <= 2)
+  if (update <= 2)
   {
-    if (a3)
+    if (update)
     {
-      if (a3 == 1)
+      if (update == 1)
       {
         if (qword_100019008 != -1)
         {
@@ -315,17 +315,17 @@ LABEL_7:
           v18 = 2082;
           v19 = "";
           v20 = 2114;
-          v21 = v6;
+          v21 = codesCopy;
           _os_log_impl(&dword_100000000, v15, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:NearbyCell update, countryCodes:%{public, location:escape_only}@}", &v16, 0x1Cu);
         }
 
-        v10 = [(RDXPCHandler *)self dataCache];
-        [v10 setCountriesFromNearbyCells:v6];
+        dataCache = [(RDXPCHandler *)self dataCache];
+        [dataCache setCountriesFromNearbyCells:codesCopy];
       }
 
       else
       {
-        if (a3 != 2)
+        if (update != 2)
         {
           goto LABEL_51;
         }
@@ -343,12 +343,12 @@ LABEL_7:
           v18 = 2082;
           v19 = "";
           v20 = 2114;
-          v21 = v6;
+          v21 = codesCopy;
           _os_log_impl(&dword_100000000, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:ServingCell update, countryCodes:%{public, location:escape_only}@}", &v16, 0x1Cu);
         }
 
-        v10 = [(RDXPCHandler *)self dataCache];
-        [v10 setCountriesFromServingCell:v6];
+        dataCache = [(RDXPCHandler *)self dataCache];
+        [dataCache setCountriesFromServingCell:codesCopy];
       }
     }
 
@@ -367,12 +367,12 @@ LABEL_7:
         v18 = 2082;
         v19 = "";
         v20 = 2114;
-        v21 = v6;
+        v21 = codesCopy;
         _os_log_impl(&dword_100000000, v13, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Location update, countryCodes:%{public, location:escape_only}@}", &v16, 0x1Cu);
       }
 
-      v10 = [(RDXPCHandler *)self dataCache];
-      [v10 setCountriesFromLocation:v6];
+      dataCache = [(RDXPCHandler *)self dataCache];
+      [dataCache setCountriesFromLocation:codesCopy];
     }
 
 LABEL_50:
@@ -380,9 +380,9 @@ LABEL_50:
     goto LABEL_51;
   }
 
-  if (a3 <= 4)
+  if (update <= 4)
   {
-    if (a3 == 3)
+    if (update == 3)
     {
       if (qword_100019008 != -1)
       {
@@ -397,12 +397,12 @@ LABEL_50:
         v18 = 2082;
         v19 = "";
         v20 = 2114;
-        v21 = v6;
+        v21 = codesCopy;
         _os_log_impl(&dword_100000000, v14, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:WiFi AP update, countryCodes:%{public, location:escape_only}@}", &v16, 0x1Cu);
       }
 
-      v10 = [(RDXPCHandler *)self dataCache];
-      [v10 setCountriesFromWiFiAPs:v6];
+      dataCache = [(RDXPCHandler *)self dataCache];
+      [dataCache setCountriesFromWiFiAPs:codesCopy];
     }
 
     else
@@ -420,20 +420,20 @@ LABEL_50:
         v18 = 2082;
         v19 = "";
         v20 = 2114;
-        v21 = v6;
+        v21 = codesCopy;
         _os_log_impl(&dword_100000000, v9, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Geo IP update, countryCodes:%{public, location:escape_only}@}", &v16, 0x1Cu);
       }
 
-      v10 = [(RDXPCHandler *)self dataCache];
-      [v10 setCountriesFromGeoIP:v6];
+      dataCache = [(RDXPCHandler *)self dataCache];
+      [dataCache setCountriesFromGeoIP:codesCopy];
     }
 
     goto LABEL_50;
   }
 
-  if (a3 != 5)
+  if (update != 5)
   {
-    if (a3 != 6)
+    if (update != 6)
     {
       goto LABEL_51;
     }
@@ -453,8 +453,8 @@ LABEL_50:
       _os_log_impl(&dword_100000000, v12, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:forcing a recompute}", &v16, 0x12u);
     }
 
-    v10 = [(RDXPCHandler *)self dataCache];
-    [v10 recompute];
+    dataCache = [(RDXPCHandler *)self dataCache];
+    [dataCache recompute];
     goto LABEL_50;
   }
 
@@ -477,9 +477,9 @@ LABEL_50:
 LABEL_51:
 }
 
-- (void)update:(int64_t)a3 withCountryCode:(id)a4
+- (void)update:(int64_t)update withCountryCode:(id)code
 {
-  v6 = a4;
+  codeCopy = code;
   if (!sub_1000016F8())
   {
     goto LABEL_41;
@@ -508,11 +508,11 @@ LABEL_7:
     goto LABEL_41;
   }
 
-  if (a3 <= 3)
+  if (update <= 3)
   {
-    if (a3)
+    if (update)
     {
-      if (a3 == 2)
+      if (update == 2)
       {
         if (qword_100019008 != -1)
         {
@@ -522,24 +522,24 @@ LABEL_7:
         v21 = qword_100019010;
         if (os_log_type_enabled(qword_100019010, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = v6;
+          v22 = codeCopy;
           v23 = v21;
           *buf = 68289282;
           v26 = 0;
           v27 = 2082;
           v28 = "";
           v29 = 2082;
-          v30 = [v6 UTF8String];
+          uTF8String = [codeCopy UTF8String];
           _os_log_impl(&dword_100000000, v23, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:MCC update, countryCode:%{public, location:escape_only}s}", buf, 0x1Cu);
         }
 
-        v12 = [(RDXPCHandler *)self dataCache];
-        [v12 setCountryFromMCC:v6];
+        dataCache = [(RDXPCHandler *)self dataCache];
+        [dataCache setCountryFromMCC:codeCopy];
       }
 
       else
       {
-        if (a3 != 3)
+        if (update != 3)
         {
           goto LABEL_41;
         }
@@ -552,19 +552,19 @@ LABEL_7:
         v9 = qword_100019010;
         if (os_log_type_enabled(qword_100019010, OS_LOG_TYPE_DEFAULT))
         {
-          v10 = v6;
+          v10 = codeCopy;
           v11 = v9;
           *buf = 68289282;
           v26 = 0;
           v27 = 2082;
           v28 = "";
           v29 = 2082;
-          v30 = [v6 UTF8String];
+          uTF8String = [codeCopy UTF8String];
           _os_log_impl(&dword_100000000, v11, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:WiFi AP update, countryCode:%{public, location:escape_only}s}", buf, 0x1Cu);
         }
 
-        v12 = [(RDXPCHandler *)self dataCache];
-        [v12 setCountryFromWiFiAPs:v6];
+        dataCache = [(RDXPCHandler *)self dataCache];
+        [dataCache setCountryFromWiFiAPs:codeCopy];
       }
     }
 
@@ -578,19 +578,19 @@ LABEL_7:
       v14 = qword_100019010;
       if (os_log_type_enabled(qword_100019010, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = v6;
+        v15 = codeCopy;
         v16 = v14;
         *buf = 68289282;
         v26 = 0;
         v27 = 2082;
         v28 = "";
         v29 = 2082;
-        v30 = [v6 UTF8String];
+        uTF8String = [codeCopy UTF8String];
         _os_log_impl(&dword_100000000, v16, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Location update, countryCode:%{public, location:escape_only}s}", buf, 0x1Cu);
       }
 
-      v12 = [(RDXPCHandler *)self dataCache];
-      [v12 setCountryFromLocation:v6];
+      dataCache = [(RDXPCHandler *)self dataCache];
+      [dataCache setCountryFromLocation:codeCopy];
     }
 
 LABEL_40:
@@ -598,7 +598,7 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  if (a3 == 4)
+  if (update == 4)
   {
     if (qword_100019008 != -1)
     {
@@ -608,28 +608,28 @@ LABEL_40:
     v17 = qword_100019010;
     if (os_log_type_enabled(qword_100019010, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = v6;
+      v18 = codeCopy;
       v19 = v17;
       *buf = 68289282;
       v26 = 0;
       v27 = 2082;
       v28 = "";
       v29 = 2082;
-      v30 = [v6 UTF8String];
+      uTF8String = [codeCopy UTF8String];
       _os_log_impl(&dword_100000000, v19, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:Geo IP update, countryCode:%{public, location:escape_only}s}", buf, 0x1Cu);
     }
 
-    v12 = [(RDXPCHandler *)self dataCache];
-    v24 = v6;
+    dataCache = [(RDXPCHandler *)self dataCache];
+    v24 = codeCopy;
     v20 = [NSArray arrayWithObjects:&v24 count:1];
-    [v12 setCountriesFromGeoIP:v20];
+    [dataCache setCountriesFromGeoIP:v20];
 
     goto LABEL_40;
   }
 
-  if (a3 != 5)
+  if (update != 5)
   {
-    if (a3 != 6)
+    if (update != 6)
     {
       goto LABEL_41;
     }
@@ -649,8 +649,8 @@ LABEL_40:
       _os_log_impl(&dword_100000000, v13, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:forcing a recompute}", buf, 0x12u);
     }
 
-    v12 = [(RDXPCHandler *)self dataCache];
-    [v12 recompute];
+    dataCache = [(RDXPCHandler *)self dataCache];
+    [dataCache recompute];
     goto LABEL_40;
   }
 
@@ -673,11 +673,11 @@ LABEL_40:
 LABEL_41:
 }
 
-- (void)updatePeer:(id)a3 withCountryCode:(id)a4 priority:(int)a5 andTimestamp:(id)a6
+- (void)updatePeer:(id)peer withCountryCode:(id)code priority:(int)priority andTimestamp:(id)timestamp
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  peerCopy = peer;
+  codeCopy = code;
+  timestampCopy = timestamp;
   if (sub_100001930())
   {
     if (qword_100019008 != -1)
@@ -698,19 +698,19 @@ LABEL_41:
 
   else
   {
-    if (kRDPriorityGEOIP + 1 < a5)
+    if (kRDPriorityGEOIP + 1 < priority)
     {
-      v14 = kRDPriorityGEOIP + 1;
+      priorityCopy = kRDPriorityGEOIP + 1;
     }
 
     else
     {
-      v14 = a5;
+      priorityCopy = priority;
     }
 
-    if (a5 >= 0)
+    if (priority >= 0)
     {
-      v15 = v14;
+      v15 = priorityCopy;
     }
 
     else
@@ -718,15 +718,15 @@ LABEL_41:
       v15 = 0;
     }
 
-    v16 = [[RDEstimate alloc] initWithCountryCode:v11 priority:v15 timestamp:v12 inDisputedArea:0];
-    [(RDXPCHandler *)self updatePeer:v10 withEstimate:v16];
+    v16 = [[RDEstimate alloc] initWithCountryCode:codeCopy priority:v15 timestamp:timestampCopy inDisputedArea:0];
+    [(RDXPCHandler *)self updatePeer:peerCopy withEstimate:v16];
   }
 }
 
-- (void)updatePeer:(id)a3 withInfo:(id)a4
+- (void)updatePeer:(id)peer withInfo:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  infoCopy = info;
   if (sub_100001930())
   {
     if (qword_100019008 != -1)
@@ -745,25 +745,25 @@ LABEL_41:
     }
   }
 
-  else if (v6)
+  else if (peerCopy)
   {
     if (sub_1000016F8())
     {
-      v9 = [v7 firstObject];
-      v10 = [v9 objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.priority"];
-      v11 = [v10 integerValue];
+      firstObject = [infoCopy firstObject];
+      v10 = [firstObject objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.priority"];
+      integerValue = [v10 integerValue];
 
-      if (kRDPriorityGEOIP + 1 < v11)
+      if (kRDPriorityGEOIP + 1 < integerValue)
       {
         v12 = kRDPriorityGEOIP + 1;
       }
 
       else
       {
-        v12 = v11;
+        v12 = integerValue;
       }
 
-      if (v11 >= 0)
+      if (integerValue >= 0)
       {
         v13 = v12;
       }
@@ -782,26 +782,26 @@ LABEL_41:
       if (os_log_type_enabled(qword_100019010, OS_LOG_TYPE_DEFAULT))
       {
         log = v14;
-        v27 = [v9 objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.priority"];
-        v29 = [v9 objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.priority"];
-        v15 = [v29 integerValue];
-        [v9 objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.isDisputed"];
+        v27 = [firstObject objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.priority"];
+        v29 = [firstObject objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.priority"];
+        integerValue2 = [v29 integerValue];
+        [firstObject objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.isDisputed"];
         v16 = v30 = v13;
-        v17 = [v16 BOOLValue];
-        v18 = [v9 objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.countryCode"];
-        v19 = [v9 objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.timestamp"];
+        bOOLValue = [v16 BOOLValue];
+        v18 = [firstObject objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.countryCode"];
+        v19 = [firstObject objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.timestamp"];
         *buf = 68290562;
         v32 = 0;
         v33 = 2082;
         v34 = "";
         v35 = 2114;
-        v36 = v9;
+        v36 = firstObject;
         v37 = 2114;
         v38 = v27;
         v39 = 2050;
-        v40 = v15;
+        v40 = integerValue2;
         v41 = 1026;
-        v42 = v17;
+        v42 = bOOLValue;
         v43 = 2114;
         v44 = v18;
         v45 = 2114;
@@ -812,12 +812,12 @@ LABEL_41:
       }
 
       v20 = [RDEstimate alloc];
-      v21 = [v9 objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.countryCode"];
-      v22 = [v9 objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.timestamp"];
-      v23 = [v9 objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.isDisputed"];
+      v21 = [firstObject objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.countryCode"];
+      v22 = [firstObject objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.timestamp"];
+      v23 = [firstObject objectForKeyedSubscript:@"com.apple.RegulatoryDomain.peer_status.isDisputed"];
       v24 = [v20 initWithCountryCode:v21 priority:v13 timestamp:v22 inDisputedArea:{objc_msgSend(v23, "BOOLValue")}];
 
-      [(RDXPCHandler *)self updatePeer:v6 withEstimate:v24];
+      [(RDXPCHandler *)self updatePeer:peerCopy withEstimate:v24];
     }
   }
 
@@ -854,10 +854,10 @@ LABEL_41:
   }
 }
 
-- (void)updatePeer:(id)a3 withEstimate:(id)a4
+- (void)updatePeer:(id)peer withEstimate:(id)estimate
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  estimateCopy = estimate;
   if (sub_100001930())
   {
     if (qword_100019008 != -1)
@@ -876,7 +876,7 @@ LABEL_41:
     }
   }
 
-  else if (v6)
+  else if (peerCopy)
   {
     if (sub_1000016F8())
     {
@@ -890,9 +890,9 @@ LABEL_41:
       block[1] = 3221225472;
       block[2] = sub_10000BD7C;
       block[3] = &unk_100014A18;
-      v13 = v7;
-      v14 = self;
-      v15 = v6;
+      v13 = estimateCopy;
+      selfCopy = self;
+      v15 = peerCopy;
       dispatch_async(v9, block);
     }
   }
@@ -932,16 +932,16 @@ LABEL_41:
 
 - (void)shareStatusWithPeers
 {
-  v3 = [(RDXPCHandler *)self dataCache];
-  v7 = [v3 getLocalOnlyEstimates];
+  dataCache = [(RDXPCHandler *)self dataCache];
+  getLocalOnlyEstimates = [dataCache getLocalOnlyEstimates];
 
-  v4 = [v7 firstObject];
-  v5 = [v4 dictionary];
+  firstObject = [getLocalOnlyEstimates firstObject];
+  dictionary = [firstObject dictionary];
 
-  if (v5 && [v5 count])
+  if (dictionary && [dictionary count])
   {
-    v6 = [(RDXPCHandler *)self sharer];
-    [v6 shareStatusesWithEstimates:v7 completionHandler:&stru_100014A58];
+    sharer = [(RDXPCHandler *)self sharer];
+    [sharer shareStatusesWithEstimates:getLocalOnlyEstimates completionHandler:&stru_100014A58];
   }
 
   else
@@ -952,8 +952,8 @@ LABEL_41:
 
 - (void)clearStatusSharedWithPeers
 {
-  v2 = [(RDXPCHandler *)self sharer];
-  [v2 shareStatusWithEstimate:0 completionHandler:&stru_100014A78];
+  sharer = [(RDXPCHandler *)self sharer];
+  [sharer shareStatusWithEstimate:0 completionHandler:&stru_100014A78];
 }
 
 - (void)ping
@@ -974,9 +974,9 @@ LABEL_41:
   }
 }
 
-- (void)createCacheDirAtPath:(id)a3
+- (void)createCacheDirAtPath:(id)path
 {
-  v3 = a3;
+  pathCopy = path;
   if (qword_100019008 != -1)
   {
     dispatch_once(&qword_100019008, &stru_100014A98);
@@ -1024,8 +1024,8 @@ LABEL_41:
     _os_log_impl(&dword_100000000, v3, OS_LOG_TYPE_DEFAULT, "{msg%{public}.0s:triggering update to eligibility engine}", v5, 0x12u);
   }
 
-  v4 = [(RDXPCHandler *)self dataCache];
-  [v4 postResultsToEligibilityEngine];
+  dataCache = [(RDXPCHandler *)self dataCache];
+  [dataCache postResultsToEligibilityEngine];
 }
 
 @end

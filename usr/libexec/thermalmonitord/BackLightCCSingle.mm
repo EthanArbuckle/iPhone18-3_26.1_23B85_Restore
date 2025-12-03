@@ -1,6 +1,6 @@
 @interface BackLightCCSingle
 - (BOOL)findBacklightServices;
-- (BackLightCCSingle)initWithParams:(__CFDictionary *)a3;
+- (BackLightCCSingle)initWithParams:(__CFDictionary *)params;
 - (int)numberOfFields;
 - (void)refreshFunctionalTelemetry;
 - (void)updateSensorExchangeTelemetry;
@@ -193,11 +193,11 @@ LABEL_41:
   return [(BackLightCC *)&v3 numberOfFields]+ 2;
 }
 
-- (BackLightCCSingle)initWithParams:(__CFDictionary *)a3
+- (BackLightCCSingle)initWithParams:(__CFDictionary *)params
 {
   v10.receiver = self;
   v10.super_class = BackLightCCSingle;
-  v3 = [(BackLightCC *)&v10 initWithParams:a3];
+  v3 = [(BackLightCC *)&v10 initWithParams:params];
   v4 = v3;
   if (v3)
   {

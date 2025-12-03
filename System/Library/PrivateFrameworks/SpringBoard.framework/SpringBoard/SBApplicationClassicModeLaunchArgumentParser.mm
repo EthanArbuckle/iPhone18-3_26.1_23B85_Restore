@@ -1,29 +1,29 @@
 @interface SBApplicationClassicModeLaunchArgumentParser
-- (SBApplicationClassicModeLaunchArgumentParser)initWithApplication:(id)a3;
-- (int64_t)classicModeForLaunchArgument:(id)a3 error:(id *)a4;
+- (SBApplicationClassicModeLaunchArgumentParser)initWithApplication:(id)application;
+- (int64_t)classicModeForLaunchArgument:(id)argument error:(id *)error;
 @end
 
 @implementation SBApplicationClassicModeLaunchArgumentParser
 
-- (SBApplicationClassicModeLaunchArgumentParser)initWithApplication:(id)a3
+- (SBApplicationClassicModeLaunchArgumentParser)initWithApplication:(id)application
 {
-  v5 = a3;
+  applicationCopy = application;
   v9.receiver = self;
   v9.super_class = SBApplicationClassicModeLaunchArgumentParser;
   v6 = [(SBApplicationClassicModeLaunchArgumentParser *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_application, a3);
+    objc_storeStrong(&v6->_application, application);
   }
 
   return v7;
 }
 
-- (int64_t)classicModeForLaunchArgument:(id)a3 error:(id *)a4
+- (int64_t)classicModeForLaunchArgument:(id)argument error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  argumentCopy = argument;
+  if (argumentCopy)
   {
     v7 = SBHScreenTypeForCurrentDevice();
     v8 = SBHScreenTypeForShortString();
@@ -36,7 +36,7 @@
     {
       v10 = v8;
       v9 = [SBApplication _bestClassicModeForScreenType:v8];
-      if (v10 == 1 && ![&unk_28336DDE8 containsObject:v6])
+      if (v10 == 1 && ![&unk_28336DDE8 containsObject:argumentCopy])
       {
         v9 = -1;
       }
@@ -61,7 +61,7 @@
       v12 = -1;
     }
 
-    if (!a4)
+    if (!error)
     {
       v9 = v12;
       goto LABEL_22;
@@ -70,8 +70,8 @@
     if (!v11)
     {
       v13 = SBApplicationClassicModeDescription(v9);
-      v15 = [(SBApplication *)self->_application bundleIdentifier];
-      *a4 = FBSOpenApplicationErrorCreate();
+      bundleIdentifier = [(SBApplication *)self->_application bundleIdentifier];
+      *error = FBSOpenApplicationErrorCreate();
 
 LABEL_20:
       v9 = -1;
@@ -79,7 +79,7 @@ LABEL_20:
     }
   }
 
-  else if (!a4)
+  else if (!error)
   {
     goto LABEL_22;
   }
@@ -91,7 +91,7 @@ LABEL_20:
       [SBApplicationClassicModeLaunchArgumentParser classicModeForLaunchArgument:error:];
     }
 
-    *a4 = FBSOpenApplicationErrorCreate();
+    *error = FBSOpenApplicationErrorCreate();
     goto LABEL_20;
   }
 

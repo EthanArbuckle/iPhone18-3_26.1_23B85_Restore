@@ -1,16 +1,16 @@
 @interface PHAssetCollectionChangeRequest
-+ (id)npto_creationRequestForAssetCollectionWithUUID:(id)a3;
++ (id)npto_creationRequestForAssetCollectionWithUUID:(id)d;
 @end
 
 @implementation PHAssetCollectionChangeRequest
 
-+ (id)npto_creationRequestForAssetCollectionWithUUID:(id)a3
++ (id)npto_creationRequestForAssetCollectionWithUUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = [PHAssetCollectionChangeRequest alloc];
-  v5 = [v3 UUIDString];
+  uUIDString = [dCopy UUIDString];
 
-  v6 = [v4 initWithUUID:v5 objectID:0];
+  v6 = [v4 initWithUUID:uUIDString objectID:0];
 
   return v6;
 }

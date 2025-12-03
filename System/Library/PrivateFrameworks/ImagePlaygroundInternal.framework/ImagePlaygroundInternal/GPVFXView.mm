@@ -1,9 +1,9 @@
 @interface GPVFXView
 - (CGRect)frame;
 - (_TtC23ImagePlaygroundInternal9GPVFXView)init;
-- (_TtC23ImagePlaygroundInternal9GPVFXView)initWithFrame:(CGRect)a3;
-- (_TtC23ImagePlaygroundInternal9GPVFXView)initWithFrame:(CGRect)a3 options:(id)a4;
-- (void)setFrame:(CGRect)a3;
+- (_TtC23ImagePlaygroundInternal9GPVFXView)initWithFrame:(CGRect)frame;
+- (_TtC23ImagePlaygroundInternal9GPVFXView)initWithFrame:(CGRect)frame options:(id)options;
+- (void)setFrame:(CGRect)frame;
 @end
 
 @implementation GPVFXView
@@ -19,19 +19,19 @@
   return v3;
 }
 
-- (_TtC23ImagePlaygroundInternal9GPVFXView)initWithFrame:(CGRect)a3 options:(id)a4
+- (_TtC23ImagePlaygroundInternal9GPVFXView)initWithFrame:(CGRect)frame options:(id)options
 {
-  if (a4)
+  if (options)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    y = a3.origin.y;
-    x = a3.origin.x;
+    height = frame.size.height;
+    width = frame.size.width;
+    y = frame.origin.y;
+    x = frame.origin.x;
     v8 = sub_1D2877E98();
-    a3.origin.x = x;
-    a3.origin.y = y;
-    a3.size.width = width;
-    a3.size.height = height;
+    frame.origin.x = x;
+    frame.origin.y = y;
+    frame.size.width = width;
+    frame.size.height = height;
   }
 
   else
@@ -39,7 +39,7 @@
     v8 = 0;
   }
 
-  return sub_1D277AC70(v8, a3.origin.x, a3.origin.y, a3.size.width, a3.size.height);
+  return sub_1D277AC70(v8, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height);
 }
 
 - (CGRect)frame
@@ -54,17 +54,17 @@
   return result;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  v21 = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  v21 = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v23.receiver = self;
   v23.super_class = ObjectType;
-  v9 = self;
+  selfCopy = self;
   [(GPVFXView *)&v23 frame];
   v11 = v10;
   v13 = v12;
@@ -90,13 +90,13 @@
     v20 = 2;
   }
 
-  [(GPVFXView *)v9 setContentMode:v20];
-  v22.receiver = v9;
+  [(GPVFXView *)selfCopy setContentMode:v20];
+  v22.receiver = selfCopy;
   v22.super_class = ObjectType;
   [(GPVFXView *)&v22 setFrame:x, y, v21, v18];
 }
 
-- (_TtC23ImagePlaygroundInternal9GPVFXView)initWithFrame:(CGRect)a3
+- (_TtC23ImagePlaygroundInternal9GPVFXView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,10 +1,10 @@
 @interface UARPDynamicAssetTmapEvent
 - (UARPDynamicAssetTmapEvent)init;
-- (UARPDynamicAssetTmapEvent)initWithCoder:(id)a3;
-- (UARPDynamicAssetTmapEvent)initWithEventFields:(id)a3 eventID:(unsigned int)a4 endian:(id)a5;
+- (UARPDynamicAssetTmapEvent)initWithCoder:(id)coder;
+- (UARPDynamicAssetTmapEvent)initWithEventFields:(id)fields eventID:(unsigned int)d endian:(id)endian;
 - (id)description;
-- (id)expandMticData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)expandMticData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPDynamicAssetTmapEvent
@@ -16,11 +16,11 @@
   return 0;
 }
 
-- (UARPDynamicAssetTmapEvent)initWithEventFields:(id)a3 eventID:(unsigned int)a4 endian:(id)a5
+- (UARPDynamicAssetTmapEvent)initWithEventFields:(id)fields eventID:(unsigned int)d endian:(id)endian
 {
   v60 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  fieldsCopy = fields;
+  endianCopy = endian;
   v58.receiver = self;
   v58.super_class = UARPDynamicAssetTmapEvent;
   v10 = [(UARPDynamicAssetTmapEvent *)&v58 init];
@@ -35,8 +35,8 @@ LABEL_17:
   log = v10->_log;
   v10->_log = v11;
 
-  v10->_eventID = a4;
-  v13 = [v8 objectForKeyedSubscript:@"EventName"];
+  v10->_eventID = d;
+  v13 = [fieldsCopy objectForKeyedSubscript:@"EventName"];
   v14 = [v13 copy];
   eventName = v10->_eventName;
   v10->_eventName = v14;
@@ -69,8 +69,8 @@ LABEL_17:
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
-  v53 = v8;
-  v17 = [v8 objectForKeyedSubscript:@"EventFields"];
+  v53 = fieldsCopy;
+  v17 = [fieldsCopy objectForKeyedSubscript:@"EventFields"];
   v18 = [v17 countByEnumeratingWithState:&v54 objects:v59 count:16];
   if (v18)
   {
@@ -99,7 +99,7 @@ LABEL_17:
           goto LABEL_22;
         }
 
-        v23 = [[TmapFieldTLV alloc] initWithDictionary:v22 endian:v9];
+        v23 = [[TmapFieldTLV alloc] initWithDictionary:v22 endian:endianCopy];
         [v16 addObject:v23];
       }
 
@@ -119,24 +119,24 @@ LABEL_17:
 
   v26 = v10;
 LABEL_22:
-  v8 = v53;
+  fieldsCopy = v53;
 
 LABEL_18:
   v43 = *MEMORY[0x277D85DE8];
   return v26;
 }
 
-- (UARPDynamicAssetTmapEvent)initWithCoder:(id)a3
+- (UARPDynamicAssetTmapEvent)initWithCoder:(id)coder
 {
   v19[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = UARPDynamicAssetTmapEvent;
   v5 = [(UARPDynamicAssetTmapEvent *)&v18 init];
   if (v5)
   {
-    v5->_eventID = [v4 decodeIntForKey:@"EventID"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EventName"];
+    v5->_eventID = [coderCopy decodeIntForKey:@"EventID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EventName"];
     eventName = v5->_eventName;
     v5->_eventName = v6;
 
@@ -145,7 +145,7 @@ LABEL_18:
     v19[1] = objc_opt_class();
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
     v10 = [v8 setWithArray:v9];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"EventFields"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"EventFields"];
     eventFields = v5->_eventFields;
     v5->_eventFields = v11;
 
@@ -160,19 +160,19 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   eventID = self->_eventID;
-  v5 = a3;
-  [v5 encodeInteger:eventID forKey:@"EventID"];
-  [v5 encodeObject:self->_eventName forKey:@"EventName"];
-  [v5 encodeObject:self->_eventFields forKey:@"EventFields"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:eventID forKey:@"EventID"];
+  [coderCopy encodeObject:self->_eventName forKey:@"EventName"];
+  [coderCopy encodeObject:self->_eventFields forKey:@"EventFields"];
 }
 
-- (id)expandMticData:(id)a3
+- (id)expandMticData:(id)data
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dataCopy = data;
   v5 = objc_opt_new();
   v6 = [(NSString *)self->_eventName copy];
   [v5 setObject:v6 forKeyedSubscript:@"EventName"];
@@ -199,7 +199,7 @@ LABEL_18:
         }
 
         v14 = *(*(&v20 + 1) + 8 * i);
-        if (((v7 & 1) != 0 || ([*(*(&v20 + 1) + 8 * i) isFieldPrivacyRestricted] & 1) == 0) && !objc_msgSend(v14, "expandFieldData:withOffset:inCoreAnalytics:", v4, v11, v5) || (v19 = 0, !objc_msgSend(v14, "getNextOffset:fromStart:", &v19, v11)))
+        if (((v7 & 1) != 0 || ([*(*(&v20 + 1) + 8 * i) isFieldPrivacyRestricted] & 1) == 0) && !objc_msgSend(v14, "expandFieldData:withOffset:inCoreAnalytics:", dataCopy, v11, v5) || (v19 = 0, !objc_msgSend(v14, "getNextOffset:fromStart:", &v19, v11)))
         {
 
           goto LABEL_19;
@@ -223,7 +223,7 @@ LABEL_18:
     v11 = 0;
   }
 
-  if (v11 == [v4 length])
+  if (v11 == [dataCopy length])
   {
     v15 = [v5 copy];
   }
@@ -233,7 +233,7 @@ LABEL_18:
     log = self->_log;
     if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
     {
-      [(UARPDynamicAssetTmapEvent *)log expandMticData:v4, v11];
+      [(UARPDynamicAssetTmapEvent *)log expandMticData:dataCopy, v11];
     }
 
 LABEL_19:

@@ -1,11 +1,11 @@
 @interface NotificationServiceClient.ExportedObject
 - (_TtCC24FaceTimeNotificationCore25NotificationServiceClient14ExportedObject)init;
-- (void)receivedActionWithAlertIdentifier:(id)a3 action:(id)a4;
+- (void)receivedActionWithAlertIdentifier:(id)identifier action:(id)action;
 @end
 
 @implementation NotificationServiceClient.ExportedObject
 
-- (void)receivedActionWithAlertIdentifier:(id)a3 action:(id)a4
+- (void)receivedActionWithAlertIdentifier:(id)identifier action:(id)action
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_27EF82898, &qword_24AA00D88);
   v8 = *(*(v7 - 8) + 64);
@@ -16,11 +16,11 @@
   v13 = *(&self->super.isa + OBJC_IVAR____TtCC24FaceTimeNotificationCore25NotificationServiceClient14ExportedObject_onReceiveAction);
   v12 = *&self->onReceiveAction[OBJC_IVAR____TtCC24FaceTimeNotificationCore25NotificationServiceClient14ExportedObject_onReceiveAction];
   sub_24A9FED20();
-  v14 = a3;
-  v15 = a4;
-  v16 = v14;
-  v17 = v15;
-  v18 = self;
+  identifierCopy = identifier;
+  actionCopy = action;
+  v16 = identifierCopy;
+  v17 = actionCopy;
+  selfCopy = self;
 
   v19 = sub_24A9FED10();
   v20 = swift_allocObject();

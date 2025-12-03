@@ -1,62 +1,62 @@
 @interface ADRequestDispatcherService
 - (ADRequestDispatcherService)init;
-- (ADRequestDispatcherService)initWithBridgeConnectionListeners:(id)a3;
-- (ADRequestDispatcherService)initWithRequestDispatcher:(id)a3;
-- (id)_getDefaultAssistantIdForAssistantId:(id)a3;
-- (id)sanitizeVoiceTriggerEventInfo:(id)a3;
-- (void)_logPowerContextForRequest:(id)a3;
-- (void)announceNotificationHandlingStateUpdatedWithAssistantId:(id)a3 toState:(int64_t)a4;
-- (void)cancelOperationsForRequestID:(id)a3 forAssistantID:(id)a4 fromRemote:(BOOL)a5 reason:(int64_t)a6;
-- (void)emitAIREventForSiriAvailabiltyWithLocale:(id)a3 countryCode:(id)a4 isAvailable:(BOOL)a5 orchestrationMode:(unint64_t)a6 unavailabilityReasons:(unint64_t)a7;
-- (void)emitAIREventsForSiriRequestWithRequestId:(id)a3 missingAssets:(unint64_t)a4;
-- (void)endDictationSessionWithAssistantId:(id)a3;
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6;
-- (void)pauseDictationRecognitionWithAssistantId:(id)a3 requestId:(id)a4;
-- (void)requestCompletedWithAssistantId:(id)a3 requestId:(id)a4;
-- (void)requestFailedWithAssistantId:(id)a3 requestId:(id)a4;
-- (void)resumeDictationRecognitionWithAssistantId:(id)a3 requestId:(id)a4 prefixText:(id)a5 postfixText:(id)a6 selectedText:(id)a7;
-- (void)startCorrectionSpeechRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 utterance:(id)a6 previousUtterance:(id)a7 requestContextData:(id)a8;
-- (void)startDictationRequestWithAssistantId:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 dictationOptions:(id)a6;
-- (void)startDictationSessionWithAssistantId:(id)a3 languageCode:(id)a4 recognitionOnDevice:(BOOL)a5 shouldClassifyIntent:(BOOL)a6 understandingOnDevice:(BOOL)a7;
-- (void)startDirectActionRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 utterance:(id)a6 directAction:(id)a7 requestExecutionParameters:(id)a8 requestContextData:(id)a9;
-- (void)startLocalRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 requestContextData:(id)a6;
-- (void)startSessionIfNeededWithConfiguration:(id)a3;
-- (void)startSpeechRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 location:(id)a6 asrOnServer:(BOOL)a7 requestContextData:(id)a8;
-- (void)startTextRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 utterance:(id)a6 requestContextData:(id)a7;
-- (void)startUnderstandingOnServerRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5;
-- (void)startUnderstandingOnServerTextRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 utterance:(id)a6 requestContextData:(id)a7;
-- (void)updateConversationContextForRemoteResponseWithAssistantId:(id)a3 requestId:(id)a4 fullSpeak:(id)a5 redactedFullSpeak:(id)a6 fullPrint:(id)a7 redactedFullPrint:(id)a8 listenAfterSpeaking:(BOOL)a9;
-- (void)updateVoiceCommandContextWithAssistantId:(id)a3 requestId:(id)a4 prefixText:(id)a5 postfixText:(id)a6 selectedText:(id)a7 disambiguationActive:(id)a8 cursorInVisibleText:(id)a9 favorCommandSuppression:(id)a10 abortCommandSuppression:(id)a11 undoEvent:(id)a12;
+- (ADRequestDispatcherService)initWithBridgeConnectionListeners:(id)listeners;
+- (ADRequestDispatcherService)initWithRequestDispatcher:(id)dispatcher;
+- (id)_getDefaultAssistantIdForAssistantId:(id)id;
+- (id)sanitizeVoiceTriggerEventInfo:(id)info;
+- (void)_logPowerContextForRequest:(id)request;
+- (void)announceNotificationHandlingStateUpdatedWithAssistantId:(id)id toState:(int64_t)state;
+- (void)cancelOperationsForRequestID:(id)d forAssistantID:(id)iD fromRemote:(BOOL)remote reason:(int64_t)reason;
+- (void)emitAIREventForSiriAvailabiltyWithLocale:(id)locale countryCode:(id)code isAvailable:(BOOL)available orchestrationMode:(unint64_t)mode unavailabilityReasons:(unint64_t)reasons;
+- (void)emitAIREventsForSiriRequestWithRequestId:(id)id missingAssets:(unint64_t)assets;
+- (void)endDictationSessionWithAssistantId:(id)id;
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply;
+- (void)pauseDictationRecognitionWithAssistantId:(id)id requestId:(id)requestId;
+- (void)requestCompletedWithAssistantId:(id)id requestId:(id)requestId;
+- (void)requestFailedWithAssistantId:(id)id requestId:(id)requestId;
+- (void)resumeDictationRecognitionWithAssistantId:(id)id requestId:(id)requestId prefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText;
+- (void)startCorrectionSpeechRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin utterance:(id)utterance previousUtterance:(id)previousUtterance requestContextData:(id)data;
+- (void)startDictationRequestWithAssistantId:(id)id requestId:(id)requestId inputOrigin:(id)origin dictationOptions:(id)options;
+- (void)startDictationSessionWithAssistantId:(id)id languageCode:(id)code recognitionOnDevice:(BOOL)device shouldClassifyIntent:(BOOL)intent understandingOnDevice:(BOOL)onDevice;
+- (void)startDirectActionRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin utterance:(id)utterance directAction:(id)action requestExecutionParameters:(id)parameters requestContextData:(id)data;
+- (void)startLocalRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin requestContextData:(id)data;
+- (void)startSessionIfNeededWithConfiguration:(id)configuration;
+- (void)startSpeechRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin location:(id)location asrOnServer:(BOOL)server requestContextData:(id)data;
+- (void)startTextRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin utterance:(id)utterance requestContextData:(id)data;
+- (void)startUnderstandingOnServerRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin;
+- (void)startUnderstandingOnServerTextRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin utterance:(id)utterance requestContextData:(id)data;
+- (void)updateConversationContextForRemoteResponseWithAssistantId:(id)id requestId:(id)requestId fullSpeak:(id)speak redactedFullSpeak:(id)fullSpeak fullPrint:(id)print redactedFullPrint:(id)fullPrint listenAfterSpeaking:(BOOL)speaking;
+- (void)updateVoiceCommandContextWithAssistantId:(id)id requestId:(id)requestId prefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText disambiguationActive:(id)active cursorInVisibleText:(id)visibleText favorCommandSuppression:(id)self0 abortCommandSuppression:(id)self1 undoEvent:(id)self2;
 @end
 
 @implementation ADRequestDispatcherService
 
-- (void)emitAIREventForSiriAvailabiltyWithLocale:(id)a3 countryCode:(id)a4 isAvailable:(BOOL)a5 orchestrationMode:(unint64_t)a6 unavailabilityReasons:(unint64_t)a7
+- (void)emitAIREventForSiriAvailabiltyWithLocale:(id)locale countryCode:(id)code isAvailable:(BOOL)available orchestrationMode:(unint64_t)mode unavailabilityReasons:(unint64_t)reasons
 {
-  v9 = a5;
-  v13 = a3;
-  v12 = a4;
+  availableCopy = available;
+  localeCopy = locale;
+  codeCopy = code;
   if (objc_opt_respondsToSelector())
   {
-    [(AFRequestDispatcher *)self->_requestDispatcher emitAIREventForSiriAvailabiltyWithLocale:v13 countryCode:v12 isAvailable:v9 orchestrationMode:a6 unavailabilityReasons:a7];
+    [(AFRequestDispatcher *)self->_requestDispatcher emitAIREventForSiriAvailabiltyWithLocale:localeCopy countryCode:codeCopy isAvailable:availableCopy orchestrationMode:mode unavailabilityReasons:reasons];
   }
 }
 
-- (void)emitAIREventsForSiriRequestWithRequestId:(id)a3 missingAssets:(unint64_t)a4
+- (void)emitAIREventsForSiriRequestWithRequestId:(id)id missingAssets:(unint64_t)assets
 {
-  v6 = a3;
+  idCopy = id;
   if (objc_opt_respondsToSelector())
   {
-    [(AFRequestDispatcher *)self->_requestDispatcher emitAIREventsForSiriRequestWithRequestId:v6 missingAssets:a4];
+    [(AFRequestDispatcher *)self->_requestDispatcher emitAIREventsForSiriRequestWithRequestId:idCopy missingAssets:assets];
   }
 }
 
-- (id)sanitizeVoiceTriggerEventInfo:(id)a3
+- (id)sanitizeVoiceTriggerEventInfo:(id)info
 {
-  v3 = a3;
-  if (v3)
+  infoCopy = info;
+  if (infoCopy)
   {
-    v4 = v3;
+    v4 = infoCopy;
     +[NSMutableDictionary dictionary];
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
@@ -75,10 +75,10 @@
   return v6;
 }
 
-- (id)_getDefaultAssistantIdForAssistantId:(id)a3
+- (id)_getDefaultAssistantIdForAssistantId:(id)id
 {
-  v4 = a3;
-  v5 = v4;
+  idCopy = id;
+  v5 = idCopy;
   defaultDictationAssistantId = self->_defaultDictationAssistantId;
   if (defaultDictationAssistantId)
   {
@@ -97,9 +97,9 @@
     goto LABEL_7;
   }
 
-  if (v4)
+  if (idCopy)
   {
-    v8 = v4;
+    v8 = idCopy;
 LABEL_7:
     v9 = v8;
     goto LABEL_8;
@@ -119,12 +119,12 @@ LABEL_8:
   return v9;
 }
 
-- (void)announceNotificationHandlingStateUpdatedWithAssistantId:(id)a3 toState:(int64_t)a4
+- (void)announceNotificationHandlingStateUpdatedWithAssistantId:(id)id toState:(int64_t)state
 {
-  v6 = [(ADRequestDispatcherService *)self _getDefaultAssistantIdForAssistantId:a3];
+  v6 = [(ADRequestDispatcherService *)self _getDefaultAssistantIdForAssistantId:id];
   if (objc_opt_respondsToSelector())
   {
-    [(AFRequestDispatcher *)self->_requestDispatcher announceNotificationHandlingStateUpdatedWithAssistantId:v6 toState:a4];
+    [(AFRequestDispatcher *)self->_requestDispatcher announceNotificationHandlingStateUpdatedWithAssistantId:v6 toState:state];
   }
 
   else
@@ -139,18 +139,18 @@ LABEL_8:
   }
 }
 
-- (void)updateConversationContextForRemoteResponseWithAssistantId:(id)a3 requestId:(id)a4 fullSpeak:(id)a5 redactedFullSpeak:(id)a6 fullPrint:(id)a7 redactedFullPrint:(id)a8 listenAfterSpeaking:(BOOL)a9
+- (void)updateConversationContextForRemoteResponseWithAssistantId:(id)id requestId:(id)requestId fullSpeak:(id)speak redactedFullSpeak:(id)fullSpeak fullPrint:(id)print redactedFullPrint:(id)fullPrint listenAfterSpeaking:(BOOL)speaking
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  idCopy = id;
+  requestIdCopy = requestId;
+  speakCopy = speak;
+  fullSpeakCopy = fullSpeak;
+  printCopy = print;
+  fullPrintCopy = fullPrint;
   if (objc_opt_respondsToSelector())
   {
-    LOBYTE(v22) = a9;
-    [(AFRequestDispatcher *)self->_requestDispatcher updateConversationContextForRemoteResponseWithAssistantId:v15 requestId:v16 fullSpeak:v17 redactedFullSpeak:v18 fullPrint:v19 redactedFullPrint:v20 listenAfterSpeaking:v22];
+    LOBYTE(v22) = speaking;
+    [(AFRequestDispatcher *)self->_requestDispatcher updateConversationContextForRemoteResponseWithAssistantId:idCopy requestId:requestIdCopy fullSpeak:speakCopy redactedFullSpeak:fullSpeakCopy fullPrint:printCopy redactedFullPrint:fullPrintCopy listenAfterSpeaking:v22];
   }
 
   else
@@ -165,34 +165,34 @@ LABEL_8:
   }
 }
 
-- (void)updateVoiceCommandContextWithAssistantId:(id)a3 requestId:(id)a4 prefixText:(id)a5 postfixText:(id)a6 selectedText:(id)a7 disambiguationActive:(id)a8 cursorInVisibleText:(id)a9 favorCommandSuppression:(id)a10 abortCommandSuppression:(id)a11 undoEvent:(id)a12
+- (void)updateVoiceCommandContextWithAssistantId:(id)id requestId:(id)requestId prefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText disambiguationActive:(id)active cursorInVisibleText:(id)visibleText favorCommandSuppression:(id)self0 abortCommandSuppression:(id)self1 undoEvent:(id)self2
 {
-  v27 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a10;
-  v23 = a11;
-  v24 = a12;
-  v26 = [(ADRequestDispatcherService *)self _getDefaultAssistantIdForAssistantId:a3];
+  requestIdCopy = requestId;
+  textCopy = text;
+  postfixTextCopy = postfixText;
+  selectedTextCopy = selectedText;
+  activeCopy = active;
+  visibleTextCopy = visibleText;
+  suppressionCopy = suppression;
+  commandSuppressionCopy = commandSuppression;
+  eventCopy = event;
+  v26 = [(ADRequestDispatcherService *)self _getDefaultAssistantIdForAssistantId:id];
   if (objc_opt_respondsToSelector())
   {
-    [(AFRequestDispatcher *)self->_requestDispatcher updateVoiceCommandContextWithAssistantId:v26 requestId:v27 prefixText:v17 postfixText:v18 selectedText:v19 disambiguationActive:v20 cursorInVisibleText:v21 favorCommandSuppression:v22 abortCommandSuppression:v23 undoEvent:v24];
+    [(AFRequestDispatcher *)self->_requestDispatcher updateVoiceCommandContextWithAssistantId:v26 requestId:requestIdCopy prefixText:textCopy postfixText:postfixTextCopy selectedText:selectedTextCopy disambiguationActive:activeCopy cursorInVisibleText:visibleTextCopy favorCommandSuppression:suppressionCopy abortCommandSuppression:commandSuppressionCopy undoEvent:eventCopy];
   }
 }
 
-- (void)resumeDictationRecognitionWithAssistantId:(id)a3 requestId:(id)a4 prefixText:(id)a5 postfixText:(id)a6 selectedText:(id)a7
+- (void)resumeDictationRecognitionWithAssistantId:(id)id requestId:(id)requestId prefixText:(id)text postfixText:(id)postfixText selectedText:(id)selectedText
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [(ADRequestDispatcherService *)self _getDefaultAssistantIdForAssistantId:a3];
+  requestIdCopy = requestId;
+  textCopy = text;
+  postfixTextCopy = postfixText;
+  selectedTextCopy = selectedText;
+  v16 = [(ADRequestDispatcherService *)self _getDefaultAssistantIdForAssistantId:id];
   if (objc_opt_respondsToSelector())
   {
-    [(AFRequestDispatcher *)self->_requestDispatcher resumeDictationRecognitionWithAssistantId:v16 requestId:v12 prefixText:v13 postfixText:v14 selectedText:v15];
+    [(AFRequestDispatcher *)self->_requestDispatcher resumeDictationRecognitionWithAssistantId:v16 requestId:requestIdCopy prefixText:textCopy postfixText:postfixTextCopy selectedText:selectedTextCopy];
   }
 
   else
@@ -207,13 +207,13 @@ LABEL_8:
   }
 }
 
-- (void)pauseDictationRecognitionWithAssistantId:(id)a3 requestId:(id)a4
+- (void)pauseDictationRecognitionWithAssistantId:(id)id requestId:(id)requestId
 {
-  v6 = a4;
-  v7 = [(ADRequestDispatcherService *)self _getDefaultAssistantIdForAssistantId:a3];
+  requestIdCopy = requestId;
+  v7 = [(ADRequestDispatcherService *)self _getDefaultAssistantIdForAssistantId:id];
   if (objc_opt_respondsToSelector())
   {
-    [(AFRequestDispatcher *)self->_requestDispatcher pauseDictationRecognitionWithAssistantId:v7 requestId:v6];
+    [(AFRequestDispatcher *)self->_requestDispatcher pauseDictationRecognitionWithAssistantId:v7 requestId:requestIdCopy];
   }
 
   else
@@ -228,9 +228,9 @@ LABEL_8:
   }
 }
 
-- (void)endDictationSessionWithAssistantId:(id)a3
+- (void)endDictationSessionWithAssistantId:(id)id
 {
-  v4 = [(ADRequestDispatcherService *)self _getDefaultAssistantIdForAssistantId:a3];
+  v4 = [(ADRequestDispatcherService *)self _getDefaultAssistantIdForAssistantId:id];
   v5 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
@@ -259,17 +259,17 @@ LABEL_8:
   }
 }
 
-- (void)startDictationRequestWithAssistantId:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 dictationOptions:(id)a6
+- (void)startDictationRequestWithAssistantId:(id)id requestId:(id)requestId inputOrigin:(id)origin dictationOptions:(id)options
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [(ADRequestDispatcherService *)self _getDefaultAssistantIdForAssistantId:a3];
-  if (![v12 shouldClassifyIntent])
+  requestIdCopy = requestId;
+  originCopy = origin;
+  optionsCopy = options;
+  v13 = [(ADRequestDispatcherService *)self _getDefaultAssistantIdForAssistantId:id];
+  if (![optionsCopy shouldClassifyIntent])
   {
     if (objc_opt_respondsToSelector())
     {
-      [(AFRequestDispatcher *)self->_requestDispatcher startSpeechDictationRequestWithAssistantId:v13 requestId:v10 inputOrigin:v11 dictationOptions:v12];
+      [(AFRequestDispatcher *)self->_requestDispatcher startSpeechDictationRequestWithAssistantId:v13 requestId:requestIdCopy inputOrigin:originCopy dictationOptions:optionsCopy];
       goto LABEL_9;
     }
 
@@ -301,19 +301,19 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  [(AFRequestDispatcher *)self->_requestDispatcher startUnderstandingDictationRequestWithAssistantId:v13 requestId:v10 inputOrigin:v11 dictationOptions:v12];
+  [(AFRequestDispatcher *)self->_requestDispatcher startUnderstandingDictationRequestWithAssistantId:v13 requestId:requestIdCopy inputOrigin:originCopy dictationOptions:optionsCopy];
 LABEL_9:
 }
 
-- (void)startDictationSessionWithAssistantId:(id)a3 languageCode:(id)a4 recognitionOnDevice:(BOOL)a5 shouldClassifyIntent:(BOOL)a6 understandingOnDevice:(BOOL)a7
+- (void)startDictationSessionWithAssistantId:(id)id languageCode:(id)code recognitionOnDevice:(BOOL)device shouldClassifyIntent:(BOOL)intent understandingOnDevice:(BOOL)onDevice
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
+  onDeviceCopy = onDevice;
+  intentCopy = intent;
+  deviceCopy = device;
+  idCopy = id;
+  codeCopy = code;
   defaultDictationAssistantId = self->_defaultDictationAssistantId;
-  if (v12)
+  if (idCopy)
   {
     if (defaultDictationAssistantId)
     {
@@ -346,12 +346,12 @@ LABEL_9:
     }
 
     v17 = +[NSUUID UUID];
-    v18 = [v17 UUIDString];
-    v19 = [v18 stringByAppendingString:@"-defaultDictationAssistantId"];
+    uUIDString = [v17 UUIDString];
+    v19 = [uUIDString stringByAppendingString:@"-defaultDictationAssistantId"];
     v20 = self->_defaultDictationAssistantId;
     self->_defaultDictationAssistantId = v19;
 
-    v12 = self->_defaultDictationAssistantId;
+    idCopy = self->_defaultDictationAssistantId;
     v21 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
     {
@@ -364,11 +364,11 @@ LABEL_9:
     }
   }
 
-  if (!v8)
+  if (!intentCopy)
   {
     if (objc_opt_respondsToSelector())
     {
-      [(AFRequestDispatcher *)self->_requestDispatcher startSpeechDictationSessionWithAssistantId:v12 languageCode:v13 recognitionOnDevice:v9];
+      [(AFRequestDispatcher *)self->_requestDispatcher startSpeechDictationSessionWithAssistantId:idCopy languageCode:codeCopy recognitionOnDevice:deviceCopy];
       goto LABEL_19;
     }
 
@@ -400,16 +400,16 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  [(AFRequestDispatcher *)self->_requestDispatcher startUnderstandingDictationSessionWithAssistantId:v12 languageCode:v13 understandingOnDevice:v7];
+  [(AFRequestDispatcher *)self->_requestDispatcher startUnderstandingDictationSessionWithAssistantId:idCopy languageCode:codeCopy understandingOnDevice:onDeviceCopy];
 LABEL_19:
 }
 
-- (void)startSessionIfNeededWithConfiguration:(id)a3
+- (void)startSessionIfNeededWithConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   requestDispatcher = self->_requestDispatcher;
-  v6 = [v4 assistantId];
-  v7 = [(AFRequestDispatcher *)requestDispatcher sessionExistsForAssistantId:v6];
+  assistantId = [configurationCopy assistantId];
+  v7 = [(AFRequestDispatcher *)requestDispatcher sessionExistsForAssistantId:assistantId];
 
   v8 = AFSiriLogContextDaemon;
   v9 = os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG);
@@ -418,11 +418,11 @@ LABEL_19:
     if (v9)
     {
       v10 = v8;
-      v11 = [v4 assistantId];
+      assistantId2 = [configurationCopy assistantId];
       v14 = 136315394;
       v15 = "[ADRequestDispatcherService startSessionIfNeededWithConfiguration:]";
       v16 = 2112;
-      v17 = v11;
+      v17 = assistantId2;
       _os_log_debug_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "%s session for assistantId: %@ exists not creating one", &v14, 0x16u);
     }
   }
@@ -432,112 +432,112 @@ LABEL_19:
     if (v9)
     {
       v12 = v8;
-      v13 = [v4 assistantId];
+      assistantId3 = [configurationCopy assistantId];
       v14 = 136315394;
       v15 = "[ADRequestDispatcherService startSessionIfNeededWithConfiguration:]";
       v16 = 2112;
-      v17 = v13;
+      v17 = assistantId3;
       _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s session for assistantId: %@ not exists creating one", &v14, 0x16u);
     }
 
-    [(ADRequestDispatcherService *)self startSessionWithConfiguration:v4];
+    [(ADRequestDispatcherService *)self startSessionWithConfiguration:configurationCopy];
   }
 }
 
-- (void)startUnderstandingOnServerTextRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 utterance:(id)a6 requestContextData:(id)a7
+- (void)startUnderstandingOnServerTextRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin utterance:(id)utterance requestContextData:(id)data
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  [(ADRequestDispatcherService *)self startSessionIfNeededWithConfiguration:v16];
+  dataCopy = data;
+  utteranceCopy = utterance;
+  originCopy = origin;
+  idCopy = id;
+  configurationCopy = configuration;
+  [(ADRequestDispatcherService *)self startSessionIfNeededWithConfiguration:configurationCopy];
   requestDispatcher = self->_requestDispatcher;
-  v18 = [v16 assistantId];
+  assistantId = [configurationCopy assistantId];
 
-  [(AFRequestDispatcher *)requestDispatcher startUnderstandingOnServerTextRequestWithAssistantId:v18 requestId:v15 inputOrigin:v14 utterance:v13 requestContextData:v12];
+  [(AFRequestDispatcher *)requestDispatcher startUnderstandingOnServerTextRequestWithAssistantId:assistantId requestId:idCopy inputOrigin:originCopy utterance:utteranceCopy requestContextData:dataCopy];
 }
 
-- (void)startTextRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 utterance:(id)a6 requestContextData:(id)a7
+- (void)startTextRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin utterance:(id)utterance requestContextData:(id)data
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  [(ADRequestDispatcherService *)self startSessionIfNeededWithConfiguration:v16];
+  dataCopy = data;
+  utteranceCopy = utterance;
+  originCopy = origin;
+  idCopy = id;
+  configurationCopy = configuration;
+  [(ADRequestDispatcherService *)self startSessionIfNeededWithConfiguration:configurationCopy];
   requestDispatcher = self->_requestDispatcher;
-  v18 = [v16 assistantId];
+  assistantId = [configurationCopy assistantId];
 
-  [(AFRequestDispatcher *)requestDispatcher startTextRequestWithAssistantId:v18 requestId:v15 inputOrigin:v14 utterance:v13 requestContextData:v12];
+  [(AFRequestDispatcher *)requestDispatcher startTextRequestWithAssistantId:assistantId requestId:idCopy inputOrigin:originCopy utterance:utteranceCopy requestContextData:dataCopy];
 }
 
-- (void)startDirectActionRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 utterance:(id)a6 directAction:(id)a7 requestExecutionParameters:(id)a8 requestContextData:(id)a9
+- (void)startDirectActionRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin utterance:(id)utterance directAction:(id)action requestExecutionParameters:(id)parameters requestContextData:(id)data
 {
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  v21 = a4;
-  v22 = a3;
-  [(ADRequestDispatcherService *)self startSessionIfNeededWithConfiguration:v22];
+  dataCopy = data;
+  parametersCopy = parameters;
+  actionCopy = action;
+  utteranceCopy = utterance;
+  originCopy = origin;
+  idCopy = id;
+  configurationCopy = configuration;
+  [(ADRequestDispatcherService *)self startSessionIfNeededWithConfiguration:configurationCopy];
   requestDispatcher = self->_requestDispatcher;
-  v24 = [v22 assistantId];
+  assistantId = [configurationCopy assistantId];
 
-  [(AFRequestDispatcher *)requestDispatcher startDirectActionRequestWithAssistantId:v24 requestId:v21 inputOrigin:v20 utterance:v19 directAction:v18 requestExecutionParameters:v17 requestContextData:v16];
+  [(AFRequestDispatcher *)requestDispatcher startDirectActionRequestWithAssistantId:assistantId requestId:idCopy inputOrigin:originCopy utterance:utteranceCopy directAction:actionCopy requestExecutionParameters:parametersCopy requestContextData:dataCopy];
 }
 
-- (void)startUnderstandingOnServerRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5
+- (void)startUnderstandingOnServerRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [(ADRequestDispatcherService *)self startSessionIfNeededWithConfiguration:v10];
+  originCopy = origin;
+  idCopy = id;
+  configurationCopy = configuration;
+  [(ADRequestDispatcherService *)self startSessionIfNeededWithConfiguration:configurationCopy];
   requestDispatcher = self->_requestDispatcher;
-  v12 = [v10 assistantId];
+  assistantId = [configurationCopy assistantId];
 
-  [(AFRequestDispatcher *)requestDispatcher startUnderstandingOnServerRequestWithAssistantId:v12 requestId:v9 inputOrigin:v8];
+  [(AFRequestDispatcher *)requestDispatcher startUnderstandingOnServerRequestWithAssistantId:assistantId requestId:idCopy inputOrigin:originCopy];
 }
 
-- (void)startCorrectionSpeechRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 utterance:(id)a6 previousUtterance:(id)a7 requestContextData:(id)a8
+- (void)startCorrectionSpeechRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin utterance:(id)utterance previousUtterance:(id)previousUtterance requestContextData:(id)data
 {
   requestDispatcher = self->_requestDispatcher;
-  v14 = a8;
-  v15 = a7;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = [a3 assistantId];
-  [(AFRequestDispatcher *)requestDispatcher startCorrectionSpeechRequestWithAssistantId:v19 requestId:v18 inputOrigin:v17 utterance:v16 previousUtterance:v15 requestContextData:v14];
+  dataCopy = data;
+  previousUtteranceCopy = previousUtterance;
+  utteranceCopy = utterance;
+  originCopy = origin;
+  idCopy = id;
+  assistantId = [configuration assistantId];
+  [(AFRequestDispatcher *)requestDispatcher startCorrectionSpeechRequestWithAssistantId:assistantId requestId:idCopy inputOrigin:originCopy utterance:utteranceCopy previousUtterance:previousUtteranceCopy requestContextData:dataCopy];
 }
 
-- (void)startLocalRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 requestContextData:(id)a6
+- (void)startLocalRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin requestContextData:(id)data
 {
   requestDispatcher = self->_requestDispatcher;
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = [a3 assistantId];
-  [(AFRequestDispatcher *)requestDispatcher startLocalRequestWithAssistantId:v13 requestId:v12 inputOrigin:v11 requestContextData:v10];
+  dataCopy = data;
+  originCopy = origin;
+  idCopy = id;
+  assistantId = [configuration assistantId];
+  [(AFRequestDispatcher *)requestDispatcher startLocalRequestWithAssistantId:assistantId requestId:idCopy inputOrigin:originCopy requestContextData:dataCopy];
 }
 
-- (void)startSpeechRequestWithConfiguration:(id)a3 requestId:(id)a4 inputOrigin:(id)a5 location:(id)a6 asrOnServer:(BOOL)a7 requestContextData:(id)a8
+- (void)startSpeechRequestWithConfiguration:(id)configuration requestId:(id)id inputOrigin:(id)origin location:(id)location asrOnServer:(BOOL)server requestContextData:(id)data
 {
-  v8 = a7;
-  v14 = a8;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  [(ADRequestDispatcherService *)self startSessionIfNeededWithConfiguration:v18];
+  serverCopy = server;
+  dataCopy = data;
+  locationCopy = location;
+  originCopy = origin;
+  idCopy = id;
+  configurationCopy = configuration;
+  [(ADRequestDispatcherService *)self startSessionIfNeededWithConfiguration:configurationCopy];
   requestDispatcher = self->_requestDispatcher;
-  v20 = [v18 assistantId];
+  assistantId = [configurationCopy assistantId];
 
-  [(AFRequestDispatcher *)requestDispatcher startSpeechRequestWithAssistantId:v20 requestId:v17 inputOrigin:v16 location:v15 asrOnServer:v8 requestContextData:v14];
+  [(AFRequestDispatcher *)requestDispatcher startSpeechRequestWithAssistantId:assistantId requestId:idCopy inputOrigin:originCopy location:locationCopy asrOnServer:serverCopy requestContextData:dataCopy];
 }
 
-- (void)_logPowerContextForRequest:(id)a3
+- (void)_logPowerContextForRequest:(id)request
 {
   v3 = [(AFPowerContextClient *)self->_powerContext currentPowerPolicyWithError:0];
   v4 = AFSiriLogContextDaemon;
@@ -570,9 +570,9 @@ LABEL_19:
         goto LABEL_15;
       }
 
-      v9 = [v3 thermalMitigationLevel];
+      thermalMitigationLevel = [v3 thermalMitigationLevel];
       v18 = 67109120;
-      LODWORD(v19) = v9;
+      LODWORD(v19) = thermalMitigationLevel;
       v10 = "%d";
       v11 = v6;
       v12 = v8;
@@ -617,80 +617,80 @@ LABEL_15:
   }
 }
 
-- (void)requestFailedWithAssistantId:(id)a3 requestId:(id)a4
+- (void)requestFailedWithAssistantId:(id)id requestId:(id)requestId
 {
-  v7 = a3;
-  v6 = a4;
+  idCopy = id;
+  requestIdCopy = requestId;
   if (objc_opt_respondsToSelector())
   {
-    [(AFRequestDispatcher *)self->_requestDispatcher requestFailedWithAssistantId:v7 requestId:v6];
+    [(AFRequestDispatcher *)self->_requestDispatcher requestFailedWithAssistantId:idCopy requestId:requestIdCopy];
   }
 
-  [(ADRequestDispatcherService *)self _logPowerContextForRequest:v6];
+  [(ADRequestDispatcherService *)self _logPowerContextForRequest:requestIdCopy];
 }
 
-- (void)requestCompletedWithAssistantId:(id)a3 requestId:(id)a4
+- (void)requestCompletedWithAssistantId:(id)id requestId:(id)requestId
 {
   requestDispatcher = self->_requestDispatcher;
-  v7 = a4;
-  [(AFRequestDispatcher *)requestDispatcher requestCompletedWithAssistantId:a3 requestId:v7];
-  [(ADRequestDispatcherService *)self _logPowerContextForRequest:v7];
+  requestIdCopy = requestId;
+  [(AFRequestDispatcher *)requestDispatcher requestCompletedWithAssistantId:id requestId:requestIdCopy];
+  [(ADRequestDispatcherService *)self _logPowerContextForRequest:requestIdCopy];
 }
 
-- (void)handleCommand:(id)a3 forDomain:(id)a4 executionContext:(id)a5 reply:(id)a6
+- (void)handleCommand:(id)command forDomain:(id)domain executionContext:(id)context reply:(id)reply
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  commandCopy = command;
+  domainCopy = domain;
+  contextCopy = context;
+  replyCopy = reply;
+  v14 = replyCopy;
   requestDispatcher = self->_requestDispatcher;
   if (requestDispatcher)
   {
-    v16 = [v12 info];
+    info = [contextCopy info];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1002355A0;
     v18[3] = &unk_10051CD88;
     v19 = v14;
-    [(AFRequestDispatcher *)requestDispatcher handleCommand:v10 executionContextInfo:v16 reply:v18];
+    [(AFRequestDispatcher *)requestDispatcher handleCommand:commandCopy executionContextInfo:info reply:v18];
   }
 
-  else if (v13)
+  else if (replyCopy)
   {
     v17 = [AFError errorWithCode:44];
     (v14)[2](v14, 0, v17);
   }
 }
 
-- (void)cancelOperationsForRequestID:(id)a3 forAssistantID:(id)a4 fromRemote:(BOOL)a5 reason:(int64_t)a6
+- (void)cancelOperationsForRequestID:(id)d forAssistantID:(id)iD fromRemote:(BOOL)remote reason:(int64_t)reason
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  remoteCopy = remote;
+  dCopy = d;
+  iDCopy = iD;
   v12 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     v13 = 136315650;
     v14 = "[ADRequestDispatcherService cancelOperationsForRequestID:forAssistantID:fromRemote:reason:]";
     v15 = 2112;
-    v16 = v10;
+    v16 = dCopy;
     v17 = 1024;
-    v18 = v7;
+    v18 = remoteCopy;
     _os_log_debug_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "%s request Id: %@, from remote: %d", &v13, 0x1Cu);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(AFRequestDispatcher *)self->_requestDispatcher cancelRequestWithAssistantId:v11 requestId:v10 reason:a6];
+    [(AFRequestDispatcher *)self->_requestDispatcher cancelRequestWithAssistantId:iDCopy requestId:dCopy reason:reason];
   }
 
-  [(ADRequestDispatcherService *)self _logPowerContextForRequest:v10];
+  [(ADRequestDispatcherService *)self _logPowerContextForRequest:dCopy];
 }
 
-- (ADRequestDispatcherService)initWithRequestDispatcher:(id)a3
+- (ADRequestDispatcherService)initWithRequestDispatcher:(id)dispatcher
 {
-  v5 = a3;
+  dispatcherCopy = dispatcher;
   v11.receiver = self;
   v11.super_class = ADRequestDispatcherService;
   v6 = [(ADRequestDispatcherService *)&v11 init];
@@ -698,7 +698,7 @@ LABEL_15:
   if (v6)
   {
     [(ADService *)v6 setIdentifier:@"RequestDispatcherService"];
-    objc_storeStrong(&v7->_requestDispatcher, a3);
+    objc_storeStrong(&v7->_requestDispatcher, dispatcher);
     v8 = objc_opt_new();
     powerContext = v7->_powerContext;
     v7->_powerContext = v8;
@@ -707,16 +707,16 @@ LABEL_15:
   return v7;
 }
 
-- (ADRequestDispatcherService)initWithBridgeConnectionListeners:(id)a3
+- (ADRequestDispatcherService)initWithBridgeConnectionListeners:(id)listeners
 {
-  v4 = a3;
+  listenersCopy = listeners;
   v5 = [SRDRequestDispatcher alloc];
   v6 = objc_opt_respondsToSelector();
   v7 = v5;
   v8 = objc_alloc_init(ADRequestDispatcherServiceHelper);
   if (v6)
   {
-    v9 = [v7 initWithRequestDispatcherServiceHelper:v8 bridgeConnectionListeners:v4];
+    v9 = [v7 initWithRequestDispatcherServiceHelper:v8 bridgeConnectionListeners:listenersCopy];
   }
 
   else

@@ -1,99 +1,99 @@
 @interface TSDCommentStorage
-+ (id)p_sanitizedCommentTextForString:(id)a3;
-- (BOOL)isEqualToCommentStorage:(id)a3;
-- (BOOL)p_canDeleteCommentStorageWithAuthor:(id)a3 docIsReadOnly:(BOOL)a4;
-- (BOOL)p_canModifyCommentStorageWithAuthor:(id)a3 docIsReadOnly:(BOOL)a4;
-- (BOOL)p_matchesCommentStorage:(id)a3;
-- (TSDCommentStorage)initWithContext:(id)a3 author:(id)a4;
-- (TSDCommentStorage)initWithContext:(id)a3 text:(id)a4 creationDate:(id)a5 author:(id)a6 replies:(id)a7 storageUUID:(id)a8;
++ (id)p_sanitizedCommentTextForString:(id)string;
+- (BOOL)isEqualToCommentStorage:(id)storage;
+- (BOOL)p_canDeleteCommentStorageWithAuthor:(id)author docIsReadOnly:(BOOL)only;
+- (BOOL)p_canModifyCommentStorageWithAuthor:(id)author docIsReadOnly:(BOOL)only;
+- (BOOL)p_matchesCommentStorage:(id)storage;
+- (TSDCommentStorage)initWithContext:(id)context author:(id)author;
+- (TSDCommentStorage)initWithContext:(id)context text:(id)text creationDate:(id)date author:(id)author replies:(id)replies storageUUID:(id)d;
 - (TSDCommentStorage)parent;
-- (TSDCommentStorage)storageWithUUID:(id)a3;
-- (id)copyByAppendingText:(id)a3;
-- (id)copyWithAuthor:(id)a3;
-- (id)copyWithContext:(id)a3 preserveStorageUUID:(BOOL)a4;
-- (id)copyWithDate:(id)a3;
-- (id)copyWithDeletedReply:(id)a3;
-- (id)copyWithEditedReply:(id)a3;
-- (id)copyWithInsertedReply:(id)a3;
-- (id)copyWithReplies:(id)a3;
-- (id)copyWithText:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TSDCommentStorage)storageWithUUID:(id)d;
+- (id)copyByAppendingText:(id)text;
+- (id)copyWithAuthor:(id)author;
+- (id)copyWithContext:(id)context preserveStorageUUID:(BOOL)d;
+- (id)copyWithDate:(id)date;
+- (id)copyWithDeletedReply:(id)reply;
+- (id)copyWithEditedReply:(id)reply;
+- (id)copyWithInsertedReply:(id)reply;
+- (id)copyWithReplies:(id)replies;
+- (id)copyWithText:(id)text;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)creationDateString;
 - (id)creationDateStringShort;
 - (id)description;
-- (id)matchingReply:(id)a3;
+- (id)matchingReply:(id)reply;
 - (void)commentWillBeAddedToDocumentRoot;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4;
-- (void)loadFromUnarchiver:(id)a3;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)saveToArchiver:(id)a3;
-- (void)setAuthor:(id)a3;
-- (void)setCreationDate:(id)a3;
-- (void)setReplies:(id)a3;
-- (void)setStorageUUID:(id)a3;
-- (void)setText:(id)a3;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver;
+- (void)loadFromUnarchiver:(id)unarchiver;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)saveToArchiver:(id)archiver;
+- (void)setAuthor:(id)author;
+- (void)setCreationDate:(id)date;
+- (void)setReplies:(id)replies;
+- (void)setStorageUUID:(id)d;
+- (void)setText:(id)text;
 @end
 
 @implementation TSDCommentStorage
 
-- (void)setCreationDate:(id)a3
+- (void)setCreationDate:(id)date
 {
-  v4 = a3;
-  if (self->_creationDate != v4)
+  dateCopy = date;
+  if (self->_creationDate != dateCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = dateCopy;
+    objc_msgSend_willModify(self, dateCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_creationDate, v8);
-    v4 = v8;
+    dateCopy = v8;
   }
 }
 
-- (void)setAuthor:(id)a3
+- (void)setAuthor:(id)author
 {
-  v7 = a3;
-  if (self->_author != v7)
+  authorCopy = author;
+  if (self->_author != authorCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
-    objc_storeStrong(&self->_author, a3);
+    objc_storeStrong(&self->_author, author);
   }
 }
 
-- (void)setReplies:(id)a3
+- (void)setReplies:(id)replies
 {
-  v7 = a3;
-  if (self->_replies != v7)
+  repliesCopy = replies;
+  if (self->_replies != repliesCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
-    objc_storeStrong(&self->_replies, a3);
+    objc_storeStrong(&self->_replies, replies);
   }
 }
 
-- (void)setStorageUUID:(id)a3
+- (void)setStorageUUID:(id)d
 {
-  v4 = a3;
-  if (self->_storageUUID != v4)
+  dCopy = d;
+  if (self->_storageUUID != dCopy)
   {
-    v9 = v4;
-    objc_msgSend_willModify(self, v4, v5);
+    v9 = dCopy;
+    objc_msgSend_willModify(self, dCopy, v5);
     v8 = objc_msgSend_copy(v9, v6, v7);
 
     objc_storeStrong(&self->_storageUUID, v8);
-    v4 = v8;
+    dCopy = v8;
   }
 }
 
-- (TSDCommentStorage)initWithContext:(id)a3 text:(id)a4 creationDate:(id)a5 author:(id)a6 replies:(id)a7 storageUUID:(id)a8
+- (TSDCommentStorage)initWithContext:(id)context text:(id)text creationDate:(id)date author:(id)author replies:(id)replies storageUUID:(id)d
 {
   v60 = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v14 = a4;
-  v52 = a5;
-  v53 = a6;
-  v50 = a7;
-  v16 = a8;
-  if (!v14)
+  contextCopy = context;
+  textCopy = text;
+  dateCopy = date;
+  authorCopy = author;
+  repliesCopy = replies;
+  dCopy = d;
+  if (!textCopy)
   {
     v17 = MEMORY[0x277D81150];
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[TSDCommentStorage initWithContext:text:creationDate:author:replies:storageUUID:]");
@@ -103,7 +103,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v22, v23);
   }
 
-  if (!v52)
+  if (!dateCopy)
   {
     v24 = MEMORY[0x277D81150];
     v25 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[TSDCommentStorage initWithContext:text:creationDate:author:replies:storageUUID:]");
@@ -113,7 +113,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v29, v30);
   }
 
-  if (!v53)
+  if (!authorCopy)
   {
     v31 = MEMORY[0x277D81150];
     v32 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "[TSDCommentStorage initWithContext:text:creationDate:author:replies:storageUUID:]");
@@ -125,14 +125,14 @@
 
   v58.receiver = self;
   v58.super_class = TSDCommentStorage;
-  v38 = [(TSDCommentStorage *)&v58 initWithContext:v51];
+  v38 = [(TSDCommentStorage *)&v58 initWithContext:contextCopy];
   v40 = v38;
   if (v38)
   {
-    objc_msgSend_setText_(v38, v39, v14);
-    objc_storeStrong(&v40->_creationDate, a5);
-    objc_storeStrong(&v40->_author, a6);
-    objc_storeStrong(&v40->_replies, a7);
+    objc_msgSend_setText_(v38, v39, textCopy);
+    objc_storeStrong(&v40->_creationDate, date);
+    objc_storeStrong(&v40->_author, author);
+    objc_storeStrong(&v40->_replies, replies);
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
@@ -162,23 +162,23 @@
       while (v44);
     }
 
-    if (!v16)
+    if (!dCopy)
     {
-      v16 = objc_msgSend_UUID(MEMORY[0x277CCAD78], v47, v48);
+      dCopy = objc_msgSend_UUID(MEMORY[0x277CCAD78], v47, v48);
     }
 
-    objc_storeStrong(&v40->_storageUUID, v16);
+    objc_storeStrong(&v40->_storageUUID, dCopy);
   }
 
   return v40;
 }
 
-- (TSDCommentStorage)initWithContext:(id)a3 author:(id)a4
+- (TSDCommentStorage)initWithContext:(id)context author:(id)author
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  authorCopy = author;
   v10 = objc_msgSend_date(MEMORY[0x277CBEAA8], v8, v9);
-  v12 = objc_msgSend_initWithContext_text_creationDate_author_replies_storageUUID_(self, v11, v6, &stru_28857D120, v10, v7, 0, 0);
+  v12 = objc_msgSend_initWithContext_text_creationDate_author_replies_storageUUID_(self, v11, contextCopy, &stru_28857D120, v10, authorCopy, 0, 0);
 
   return v12;
 }
@@ -298,25 +298,25 @@
   }
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver
 {
-  v7 = a4;
-  v8 = *(a3 + 4);
+  unarchiverCopy = unarchiver;
+  v8 = *(archive + 4);
   if (v8)
   {
     v9 = objc_alloc(MEMORY[0x277CCACA8]);
-    v11 = objc_msgSend_tsp_initWithProtobufString_(v9, v10, *(a3 + 6) & 0xFFFFFFFFFFFFFFFELL);
+    v11 = objc_msgSend_tsp_initWithProtobufString_(v9, v10, *(archive + 6) & 0xFFFFFFFFFFFFFFFELL);
     objc_msgSend_setText_(self, v12, v11);
 
-    v8 = *(a3 + 4);
+    v8 = *(archive + 4);
   }
 
   if ((v8 & 2) != 0)
   {
     v13 = objc_alloc(MEMORY[0x277CBEAA8]);
-    if (*(a3 + 7))
+    if (*(archive + 7))
     {
-      v15 = objc_msgSend_tsp_initWithMessage_(v13, v14, *(a3 + 7));
+      v15 = objc_msgSend_tsp_initWithMessage_(v13, v14, *(archive + 7));
     }
 
     else
@@ -327,18 +327,18 @@
     v17 = v15;
     objc_msgSend_setCreationDate_(self, v16, v15);
 
-    v8 = *(a3 + 4);
+    v8 = *(archive + 4);
   }
 
   if ((v8 & 4) != 0)
   {
-    v18 = *(a3 + 8);
+    v18 = *(archive + 8);
     v33[0] = MEMORY[0x277D85DD0];
     v33[1] = 3221225472;
     v33[2] = sub_2767B7E68;
     v33[3] = &unk_27A6CDE40;
     v33[4] = self;
-    v19 = v7;
+    v19 = unarchiverCopy;
     v20 = objc_opt_class();
     objc_msgSend_readReferenceMessage_class_protocol_completion_(v19, v21, v18, v20, 0, v33);
 
@@ -350,24 +350,24 @@
     objc_msgSend_addFinalizeHandler_(v19, v22, v32);
   }
 
-  if (*(a3 + 8) >= 1)
+  if (*(archive + 8) >= 1)
   {
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;
     v31[2] = sub_2767B7FC0;
     v31[3] = &unk_27A6CC598;
     v31[4] = self;
-    v23 = v7;
+    v23 = unarchiverCopy;
     v24 = objc_opt_class();
-    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v23, v25, a3 + 24, v24, 0, v31);
+    objc_msgSend_readRepeatedReferenceMessage_class_protocol_completion_(v23, v25, archive + 24, v24, 0, v31);
   }
 
-  if ((*(a3 + 16) & 8) != 0)
+  if ((*(archive + 16) & 8) != 0)
   {
     v26 = objc_alloc(MEMORY[0x277CCAD78]);
-    if (*(a3 + 9))
+    if (*(archive + 9))
     {
-      v28 = objc_msgSend_tsp_initWithMessage_(v26, v27, *(a3 + 9));
+      v28 = objc_msgSend_tsp_initWithMessage_(v26, v27, *(archive + 9));
     }
 
     else
@@ -386,23 +386,23 @@
     v30[2] = sub_2767B80E4;
     v30[3] = &unk_27A6CC790;
     v30[4] = self;
-    objc_msgSend_addFinalizeHandler_(v7, v6, v30);
+    objc_msgSend_addFinalizeHandler_(unarchiverCopy, v6, v30);
   }
 }
 
-- (id)copyWithReplies:(id)a3
+- (id)copyWithReplies:(id)replies
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  repliesCopy = replies;
   v7 = objc_msgSend_context(self, v5, v6);
   v9 = objc_msgSend_copyWithContext_(self, v8, v7);
 
-  objc_msgSend_setReplies_(v9, v10, v4);
+  objc_msgSend_setReplies_(v9, v10, repliesCopy);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = v4;
+  v11 = repliesCopy;
   v14 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v18, v22, 16);
   if (v14)
   {
@@ -430,45 +430,45 @@
   return v9;
 }
 
-- (id)copyWithText:(id)a3
+- (id)copyWithText:(id)text
 {
-  v4 = a3;
+  textCopy = text;
   v7 = objc_msgSend_context(self, v5, v6);
   v9 = objc_msgSend_copyWithContext_(self, v8, v7);
 
-  objc_msgSend_setText_(v9, v10, v4);
+  objc_msgSend_setText_(v9, v10, textCopy);
   return v9;
 }
 
-+ (id)p_sanitizedCommentTextForString:(id)a3
++ (id)p_sanitizedCommentTextForString:(id)string
 {
-  v3 = a3;
-  v6 = objc_msgSend_length(v3, v4, v5);
+  stringCopy = string;
+  v6 = objc_msgSend_length(stringCopy, v4, v5);
   if (v6 >= 0x3D090)
   {
-    objc_msgSend_substringToIndex_(v3, v7, 250000);
+    objc_msgSend_substringToIndex_(stringCopy, v7, 250000);
   }
 
   else
   {
-    objc_msgSend_substringToIndex_(v3, v7, v6);
+    objc_msgSend_substringToIndex_(stringCopy, v7, v6);
   }
   v8 = ;
 
   return v8;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
-  v7 = a3;
-  v5 = objc_msgSend_p_sanitizedCommentTextForString_(TSDCommentStorage, v4, v7);
+  textCopy = text;
+  v5 = objc_msgSend_p_sanitizedCommentTextForString_(TSDCommentStorage, v4, textCopy);
   text = self->_text;
   self->_text = v5;
 }
 
-- (id)copyWithInsertedReply:(id)a3
+- (id)copyWithInsertedReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v7 = objc_msgSend_context(self, v5, v6);
   v9 = objc_msgSend_copyWithContext_(self, v8, v7);
 
@@ -476,26 +476,26 @@
   v13 = objc_msgSend_replies(v9, v11, v12);
   v15 = objc_msgSend_arrayWithArray_(v10, v14, v13);
 
-  objc_msgSend_setParent_(v4, v16, v9);
-  objc_msgSend_addObject_(v15, v17, v4);
+  objc_msgSend_setParent_(replyCopy, v16, v9);
+  objc_msgSend_addObject_(v15, v17, replyCopy);
   objc_msgSend_sortUsingComparator_(v15, v18, &unk_288579A68);
   objc_msgSend_setReplies_(v9, v19, v15);
 
   return v9;
 }
 
-- (id)copyWithEditedReply:(id)a3
+- (id)copyWithEditedReply:(id)reply
 {
-  v4 = a3;
-  v6 = objc_msgSend_copyWithDeletedReply_(self, v5, v4);
-  v8 = objc_msgSend_copyWithInsertedReply_(v6, v7, v4);
+  replyCopy = reply;
+  v6 = objc_msgSend_copyWithDeletedReply_(self, v5, replyCopy);
+  v8 = objc_msgSend_copyWithInsertedReply_(v6, v7, replyCopy);
 
   return v8;
 }
 
-- (id)copyWithDeletedReply:(id)a3
+- (id)copyWithDeletedReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = objc_alloc(objc_opt_class());
   v8 = objc_msgSend_context(self, v6, v7);
   v11 = objc_msgSend_text(self, v9, v10);
@@ -509,9 +509,9 @@
   v33[1] = 3221225472;
   v33[2] = sub_2767B8888;
   v33[3] = &unk_27A6CDE68;
-  v26 = v4;
+  v26 = replyCopy;
   v34 = v26;
-  v35 = self;
+  selfCopy = self;
   v27 = v22;
   v36 = v27;
   v29 = objc_msgSend_tsu_arrayByTransformingWithBlock_(v25, v28, v33);
@@ -522,10 +522,10 @@
   return v31;
 }
 
-- (id)copyByAppendingText:(id)a3
+- (id)copyByAppendingText:(id)text
 {
-  v6 = a3;
-  if (!v6)
+  textCopy = text;
+  if (!textCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSDCommentStorage copyByAppendingText:]");
@@ -542,14 +542,14 @@
   if (!v20)
   {
     v25 = v14;
-    v14 = v6;
+    v14 = textCopy;
     goto LABEL_7;
   }
 
-  if (objc_msgSend_length(v6, v21, v22))
+  if (objc_msgSend_length(textCopy, v21, v22))
   {
     v25 = objc_msgSend_text(self, v23, v24);
-    v27 = objc_msgSend_stringByAppendingFormat_(v25, v26, @"\n%@", v6);
+    v27 = objc_msgSend_stringByAppendingFormat_(v25, v26, @"\n%@", textCopy);
 
     v14 = v27;
 LABEL_7:
@@ -560,10 +560,10 @@ LABEL_7:
   return v28;
 }
 
-- (id)copyWithAuthor:(id)a3
+- (id)copyWithAuthor:(id)author
 {
-  v6 = a3;
-  if (!v6)
+  authorCopy = author;
+  if (!authorCopy)
   {
     v7 = MEMORY[0x277D81150];
     v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v4, "[TSDCommentStorage copyWithAuthor:]");
@@ -576,25 +576,25 @@ LABEL_7:
   v14 = objc_msgSend_context(self, v4, v5);
   v16 = objc_msgSend_copyWithContext_(self, v15, v14);
 
-  objc_msgSend_setAuthor_(v16, v17, v6);
+  objc_msgSend_setAuthor_(v16, v17, authorCopy);
   return v16;
 }
 
-- (id)copyWithDate:(id)a3
+- (id)copyWithDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v7 = objc_msgSend_context(self, v5, v6);
   v9 = objc_msgSend_copyWithContext_(self, v8, v7);
 
-  objc_msgSend_setCreationDate_(v9, v10, v4);
+  objc_msgSend_setCreationDate_(v9, v10, dateCopy);
   return v9;
 }
 
-- (id)copyWithContext:(id)a3 preserveStorageUUID:(BOOL)a4
+- (id)copyWithContext:(id)context preserveStorageUUID:(BOOL)d
 {
-  v4 = a4;
-  v8 = a3;
-  if (v4)
+  dCopy = d;
+  contextCopy = context;
+  if (dCopy)
   {
     objc_msgSend_storageUUID(self, v6, v7);
   }
@@ -608,14 +608,14 @@ LABEL_7:
   v13 = objc_msgSend_text(self, v11, v12);
   v16 = objc_msgSend_creationDate(self, v14, v15);
   v19 = objc_msgSend_author(self, v17, v18);
-  v21 = objc_msgSend_initWithContext_text_creationDate_author_replies_storageUUID_(v10, v20, v8, v13, v16, v19, 0, v9);
+  v21 = objc_msgSend_initWithContext_text_creationDate_author_replies_storageUUID_(v10, v20, contextCopy, v13, v16, v19, 0, v9);
 
   v24 = objc_msgSend_replies(self, v22, v23);
   v32 = MEMORY[0x277D85DD0];
   v33 = 3221225472;
   v34 = sub_2767B8ECC;
   v35 = &unk_27A6CDE90;
-  v25 = v8;
+  v25 = contextCopy;
   v36 = v25;
   v26 = v21;
   v37 = v26;
@@ -627,35 +627,35 @@ LABEL_7:
   return v30;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = objc_msgSend_context(self, a2, a3);
+  v4 = objc_msgSend_context(self, a2, zone);
   v6 = objc_msgSend_copyWithContext_(self, v5, v4);
 
   return v6;
 }
 
-- (void)loadFromUnarchiver:(id)a3
+- (void)loadFromUnarchiver:(id)unarchiver
 {
-  v7 = a3;
+  unarchiverCopy = unarchiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithDescriptor_(v7, v4, off_2812F5188[118]);
+  v5 = objc_msgSend_messageWithDescriptor_(unarchiverCopy, v4, off_2812F5188[118]);
 
-  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, v7);
+  objc_msgSend_loadFromArchive_unarchiver_(self, v6, v5, unarchiverCopy);
 }
 
-- (void)saveToArchiver:(id)a3
+- (void)saveToArchiver:(id)archiver
 {
-  v7 = a3;
+  archiverCopy = archiver;
   google::protobuf::internal::AssignDescriptors();
-  v5 = objc_msgSend_messageWithNewFunction_descriptor_(v7, v4, sub_2767B9EB4, off_2812F5188[118]);
+  v5 = objc_msgSend_messageWithNewFunction_descriptor_(archiverCopy, v4, sub_2767B9EB4, off_2812F5188[118]);
 
-  objc_msgSend_saveToArchive_archiver_(self, v6, v5, v7);
+  objc_msgSend_saveToArchive_archiver_(self, v6, v5, archiverCopy);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v45 = a4;
+  archiverCopy = archiver;
   v8 = objc_msgSend_text(self, v6, v7);
 
   if (v8)
@@ -663,7 +663,7 @@ LABEL_7:
     v11 = objc_msgSend_text(self, v9, v10);
     v12 = v11;
     v15 = objc_msgSend_UTF8String(v12, v13, v14);
-    sub_2767B9330(a3, v15);
+    sub_2767B9330(archive, v15);
   }
 
   v16 = objc_msgSend_creationDate(self, v9, v10);
@@ -671,18 +671,18 @@ LABEL_7:
   if (v16)
   {
     v20 = objc_msgSend_creationDate(self, v17, v18);
-    *(a3 + 4) |= 2u;
-    v21 = *(a3 + 7);
+    *(archive + 4) |= 2u;
+    v21 = *(archive + 7);
     if (!v21)
     {
-      v22 = *(a3 + 1);
+      v22 = *(archive + 1);
       if (v22)
       {
         v22 = *(v22 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v21 = MEMORY[0x277C9BAB0](v22);
-      *(a3 + 7) = v21;
+      *(archive + 7) = v21;
     }
 
     objc_msgSend_tsp_saveToMessage_(v20, v19, v21);
@@ -693,21 +693,21 @@ LABEL_7:
   if (v23)
   {
     v27 = objc_msgSend_author(self, v24, v25);
-    *(a3 + 4) |= 4u;
-    v28 = *(a3 + 8);
+    *(archive + 4) |= 4u;
+    v28 = *(archive + 8);
     if (!v28)
     {
-      v29 = *(a3 + 1);
+      v29 = *(archive + 1);
       if (v29)
       {
         v29 = *(v29 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v28 = MEMORY[0x277C9BB20](v29);
-      *(a3 + 8) = v28;
+      *(archive + 8) = v28;
     }
 
-    objc_msgSend_setStrongReference_message_(v45, v26, v27, v28);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v26, v27, v28);
   }
 
   v30 = objc_msgSend_replies(self, v24, v25);
@@ -716,7 +716,7 @@ LABEL_7:
   if (v33)
   {
     v36 = objc_msgSend_replies(self, v34, v35);
-    objc_msgSend_setStrongReferenceArray_message_(v45, v37, v36, a3 + 24);
+    objc_msgSend_setStrongReferenceArray_message_(archiverCopy, v37, v36, archive + 24);
   }
 
   v38 = objc_msgSend_storageUUID(self, v34, v35);
@@ -724,28 +724,28 @@ LABEL_7:
   if (v38)
   {
     v42 = objc_msgSend_storageUUID(self, v39, v40);
-    *(a3 + 4) |= 8u;
-    v43 = *(a3 + 9);
+    *(archive + 4) |= 8u;
+    v43 = *(archive + 9);
     if (!v43)
     {
-      v44 = *(a3 + 1);
+      v44 = *(archive + 1);
       if (v44)
       {
         v44 = *(v44 & 0xFFFFFFFFFFFFFFFELL);
       }
 
       v43 = MEMORY[0x277C9BAE0](v44);
-      *(a3 + 9) = v43;
+      *(archive + 9) = v43;
     }
 
     objc_msgSend_tsp_saveToMessage_(v42, v41, v43);
   }
 }
 
-- (BOOL)p_canModifyCommentStorageWithAuthor:(id)a3 docIsReadOnly:(BOOL)a4
+- (BOOL)p_canModifyCommentStorageWithAuthor:(id)author docIsReadOnly:(BOOL)only
 {
-  v8 = a3;
-  if (a4)
+  authorCopy = author;
+  if (only)
   {
     v9 = 0;
   }
@@ -754,7 +754,7 @@ LABEL_7:
   {
     v18 = MEMORY[0x277D800A8];
     v19 = objc_msgSend_author(self, v16, v17);
-    v9 = objc_msgSend_author_matchesAuthor_(v18, v20, v19, v8);
+    v9 = objc_msgSend_author_matchesAuthor_(v18, v20, v19, authorCopy);
   }
 
   else
@@ -765,10 +765,10 @@ LABEL_7:
   return v9;
 }
 
-- (BOOL)p_canDeleteCommentStorageWithAuthor:(id)a3 docIsReadOnly:(BOOL)a4
+- (BOOL)p_canDeleteCommentStorageWithAuthor:(id)author docIsReadOnly:(BOOL)only
 {
-  v8 = a3;
-  if (a4)
+  authorCopy = author;
+  if (only)
   {
     v9 = 0;
   }
@@ -777,7 +777,7 @@ LABEL_7:
   {
     v24 = MEMORY[0x277D800A8];
     v25 = objc_msgSend_author(self, v21, v22);
-    v9 = objc_msgSend_author_matchesAuthor_(v24, v26, v25, v8);
+    v9 = objc_msgSend_author_matchesAuthor_(v24, v26, v25, authorCopy);
   }
 
   else
@@ -788,9 +788,9 @@ LABEL_7:
   return v9;
 }
 
-- (id)matchingReply:(id)a3
+- (id)matchingReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -802,7 +802,7 @@ LABEL_7:
   v12[1] = 3221225472;
   v12[2] = sub_2767B979C;
   v12[3] = &unk_27A6CDEB8;
-  v8 = v4;
+  v8 = replyCopy;
   v13 = v8;
   v14 = &v15;
   objc_msgSend_enumerateObjectsUsingBlock_(v7, v9, v12);
@@ -813,12 +813,12 @@ LABEL_7:
   return v10;
 }
 
-- (TSDCommentStorage)storageWithUUID:(id)a3
+- (TSDCommentStorage)storageWithUUID:(id)d
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v7 = objc_msgSend_storageUUID(self, v5, v6);
-  v8 = v4;
+  v8 = dCopy;
   v9 = v7;
   if (v8 | v9 && (v11 = v9, isEqual = objc_msgSend_isEqual_(v8, v10, v9), v11, v8, v11, !isEqual))
   {
@@ -840,8 +840,8 @@ LABEL_6:
           objc_enumerationMutation(v16);
         }
 
-        v15 = objc_msgSend_storageWithUUID_(*(*(&v23 + 1) + 8 * v21), v18, v8);
-        if (v15)
+        selfCopy = objc_msgSend_storageWithUUID_(*(*(&v23 + 1) + 8 * v21), v18, v8);
+        if (selfCopy)
         {
           break;
         }
@@ -862,30 +862,30 @@ LABEL_6:
     else
     {
 LABEL_12:
-      v15 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v15 = self;
+    selfCopy = self;
   }
 
-  return v15;
+  return selfCopy;
 }
 
-- (BOOL)p_matchesCommentStorage:(id)a3
+- (BOOL)p_matchesCommentStorage:(id)storage
 {
-  v6 = a3;
-  if (v6)
+  storageCopy = storage;
+  if (storageCopy)
   {
     v7 = MEMORY[0x277D800A8];
     v8 = objc_msgSend_author(self, v4, v5);
-    v11 = objc_msgSend_author(v6, v9, v10);
+    v11 = objc_msgSend_author(storageCopy, v9, v10);
     if (objc_msgSend_author_matchesAuthor_(v7, v12, v8, v11))
     {
       v15 = objc_msgSend_creationDate(self, v13, v14);
-      v18 = objc_msgSend_creationDate(v6, v16, v17);
+      v18 = objc_msgSend_creationDate(storageCopy, v16, v17);
       isEqualToDate = objc_msgSend_tsu_isEqualToDate_(v15, v19, v18);
     }
 
@@ -909,22 +909,22 @@ LABEL_12:
   return isEqualToDate;
 }
 
-- (BOOL)isEqualToCommentStorage:(id)a3
+- (BOOL)isEqualToCommentStorage:(id)storage
 {
-  v6 = a3;
-  if (v6)
+  storageCopy = storage;
+  if (storageCopy)
   {
     v7 = MEMORY[0x277D800A8];
     v8 = objc_msgSend_author(self, v4, v5);
-    v11 = objc_msgSend_author(v6, v9, v10);
+    v11 = objc_msgSend_author(storageCopy, v9, v10);
     if (objc_msgSend_author_matchesAuthor_(v7, v12, v8, v11))
     {
       v15 = objc_msgSend_creationDate(self, v13, v14);
-      v18 = objc_msgSend_creationDate(v6, v16, v17);
+      v18 = objc_msgSend_creationDate(storageCopy, v16, v17);
       if (objc_msgSend_tsu_isEqualToDate_(v15, v19, v18))
       {
         v22 = objc_msgSend_text(self, v20, v21);
-        v25 = objc_msgSend_text(v6, v23, v24);
+        v25 = objc_msgSend_text(storageCopy, v23, v24);
         isEqualToString = objc_msgSend_isEqualToString_(v22, v26, v25);
       }
 

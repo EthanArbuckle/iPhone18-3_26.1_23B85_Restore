@@ -1,35 +1,35 @@
 @interface CSDNDBedtimeController
 - (BOOL)isGreetingDisabled;
 - (CSDNDBedtimeController)init;
-- (CSDNDBedtimeController)initWithStateService:(id)a3 initialObserver:(id)a4;
+- (CSDNDBedtimeController)initWithStateService:(id)service initialObserver:(id)observer;
 - (void)_cleanUpGreetingGracePeriodTimer;
-- (void)_setShouldShowGreeting:(BOOL)a3 forceUpdateObservers:(BOOL)a4;
-- (void)addObserver:(id)a3;
+- (void)_setShouldShowGreeting:(BOOL)greeting forceUpdateObservers:(BOOL)observers;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
 - (void)isGreetingDisabled;
-- (void)setActive:(BOOL)a3;
-- (void)sleepStore:(id)a3 sleepSettingsDidChange:(id)a4;
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4;
+- (void)setActive:(BOOL)active;
+- (void)sleepStore:(id)store sleepSettingsDidChange:(id)change;
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update;
 @end
 
 @implementation CSDNDBedtimeController
 
-- (CSDNDBedtimeController)initWithStateService:(id)a3 initialObserver:(id)a4
+- (CSDNDBedtimeController)initWithStateService:(id)service initialObserver:(id)observer
 {
-  v7 = a3;
-  v8 = a4;
+  serviceCopy = service;
+  observerCopy = observer;
   v18.receiver = self;
   v18.super_class = CSDNDBedtimeController;
   v9 = [(CSDNDBedtimeController *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    if (v8)
+    if (observerCopy)
     {
-      [(CSDNDBedtimeController *)v9 addObserver:v8];
+      [(CSDNDBedtimeController *)v9 addObserver:observerCopy];
     }
 
-    objc_storeStrong(&v10->_stateService, a3);
+    objc_storeStrong(&v10->_stateService, service);
     [(DNDStateService *)v10->_stateService addStateUpdateListener:v10 withCompletionHandler:0];
     stateService = v10->_stateService;
     v16[0] = MEMORY[0x277D85DD0];
@@ -87,33 +87,33 @@ uint64_t __63__CSDNDBedtimeController_initWithStateService_initialObserver___blo
   [(CSDNDBedtimeController *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
-    v6 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     v7 = self->_observers;
-    self->_observers = v6;
+    self->_observers = weakObjectsHashTable;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  if (![(NSHashTable *)observers containsObject:v4])
+  if (![(NSHashTable *)observers containsObject:observerCopy])
   {
     [(NSHashTable *)self->_observers addObject:v8];
   }
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
   v21 = *MEMORY[0x277D85DE8];
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -202,7 +202,7 @@ void __36__CSDNDBedtimeController_setActive___block_invoke(uint64_t a1)
 
   if (v8)
   {
-    v9 = [(HKSPSleepSettings *)v7 springBoardGreetingDisabled];
+    springBoardGreetingDisabled = [(HKSPSleepSettings *)v7 springBoardGreetingDisabled];
   }
 
   else
@@ -213,7 +213,7 @@ void __36__CSDNDBedtimeController_setActive___block_invoke(uint64_t a1)
       [(CSDNDBedtimeController *)v5 isGreetingDisabled];
     }
 
-    v9 = 1;
+    springBoardGreetingDisabled = 1;
   }
 
   v12 = SBLogDoNotDisturbBedtime();
@@ -225,10 +225,10 @@ void __36__CSDNDBedtimeController_setActive___block_invoke(uint64_t a1)
     _os_log_impl(&dword_21EB05000, v12, OS_LOG_TYPE_DEFAULT, "Greeting is disabled: %@", buf, 0xCu);
   }
 
-  return v9;
+  return springBoardGreetingDisabled;
 }
 
-- (void)sleepStore:(id)a3 sleepSettingsDidChange:(id)a4
+- (void)sleepStore:(id)store sleepSettingsDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -256,16 +256,16 @@ uint64_t __60__CSDNDBedtimeController_sleepStore_sleepSettingsDidChange___block_
   return result;
 }
 
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update
 {
-  v5 = a4;
+  updateCopy = update;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__CSDNDBedtimeController_stateService_didReceiveDoNotDisturbStateUpdate___block_invoke;
   v7[3] = &unk_27838B838;
-  v8 = v5;
-  v9 = self;
-  v6 = v5;
+  v8 = updateCopy;
+  selfCopy = self;
+  v6 = updateCopy;
   dispatch_async(MEMORY[0x277D85CD0], v7);
 }
 
@@ -314,12 +314,12 @@ uint64_t __73__CSDNDBedtimeController_stateService_didReceiveDoNotDisturbStateUp
   return [v15 setActive:v3];
 }
 
-- (void)_setShouldShowGreeting:(BOOL)a3 forceUpdateObservers:(BOOL)a4
+- (void)_setShouldShowGreeting:(BOOL)greeting forceUpdateObservers:(BOOL)observers
 {
   v20 = *MEMORY[0x277D85DE8];
-  if (self->_shouldShowGreeting == a3)
+  if (self->_shouldShowGreeting == greeting)
   {
-    if (!a4)
+    if (!observers)
     {
       return;
     }
@@ -327,7 +327,7 @@ uint64_t __73__CSDNDBedtimeController_stateService_didReceiveDoNotDisturbStateUp
 
   else
   {
-    self->_shouldShowGreeting = a3;
+    self->_shouldShowGreeting = greeting;
   }
 
   v15 = 0u;
@@ -384,7 +384,7 @@ uint64_t __73__CSDNDBedtimeController_stateService_didReceiveDoNotDisturbStateUp
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_21EB05000, a2, OS_LOG_TYPE_ERROR, "isGreetingDisabled - Failed to retrieve Sleep settings with error: %@", &v2, 0xCu);
 }
 

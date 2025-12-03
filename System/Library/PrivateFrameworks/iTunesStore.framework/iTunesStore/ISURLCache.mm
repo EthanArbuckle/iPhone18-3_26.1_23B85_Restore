@@ -1,17 +1,17 @@
 @interface ISURLCache
 + (id)cacheDirectoryPath;
-- (ISURLCache)initWithCacheConfiguration:(id)a3;
+- (ISURLCache)initWithCacheConfiguration:(id)configuration;
 - (void)dealloc;
 - (void)purgeMemoryCache;
-- (void)reloadWithCacheConfiguration:(id)a3;
+- (void)reloadWithCacheConfiguration:(id)configuration;
 - (void)saveMemoryCacheToDisk;
 @end
 
 @implementation ISURLCache
 
-- (ISURLCache)initWithCacheConfiguration:(id)a3
+- (ISURLCache)initWithCacheConfiguration:(id)configuration
 {
-  if (!a3)
+  if (!configuration)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Must provide a configuration"];
   }
@@ -22,7 +22,7 @@
   v6 = v5;
   if (v5)
   {
-    [(ISURLCache *)v5 reloadWithCacheConfiguration:a3];
+    [(ISURLCache *)v5 reloadWithCacheConfiguration:configuration];
   }
 
   return v6;
@@ -53,46 +53,46 @@
   return result;
 }
 
-- (void)reloadWithCacheConfiguration:(id)a3
+- (void)reloadWithCacheConfiguration:(id)configuration
 {
   v24 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!configuration)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"Must provide a configuration"];
   }
 
-  if (self->_configuration != a3)
+  if (self->_configuration != configuration)
   {
-    v5 = [a3 persistentIdentifier];
+    persistentIdentifier = [configuration persistentIdentifier];
     if (self->_cache)
     {
-      v6 = [(NSString *)[(ISURLCache *)self persistentIdentifier] isEqualToString:v5];
+      v6 = [(NSString *)[(ISURLCache *)self persistentIdentifier] isEqualToString:persistentIdentifier];
       cache = self->_cache;
       if (v6)
       {
-        -[NSURLCache setDiskCapacity:](cache, "setDiskCapacity:", [a3 diskCapacity]);
-        -[NSURLCache setMemoryCapacity:](self->_cache, "setMemoryCapacity:", [a3 memoryCapacity]);
+        -[NSURLCache setDiskCapacity:](cache, "setDiskCapacity:", [configuration diskCapacity]);
+        -[NSURLCache setMemoryCapacity:](self->_cache, "setMemoryCapacity:", [configuration memoryCapacity]);
 LABEL_9:
 
-        self->_configuration = [a3 copy];
-        v9 = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
-        if (!v9)
+        self->_configuration = [configuration copy];
+        mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharediTunesStoreConfig];
+        if (!mEMORY[0x277D69B38])
         {
-          v9 = [MEMORY[0x277D69B38] sharedConfig];
+          mEMORY[0x277D69B38] = [MEMORY[0x277D69B38] sharedConfig];
         }
 
-        v10 = [v9 shouldLog];
-        if ([v9 shouldLogToDisk])
+        shouldLog = [mEMORY[0x277D69B38] shouldLog];
+        if ([mEMORY[0x277D69B38] shouldLogToDisk])
         {
-          v11 = v10 | 2;
+          v11 = shouldLog | 2;
         }
 
         else
         {
-          v11 = v10;
+          v11 = shouldLog;
         }
 
-        if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_INFO))
+        if (!os_log_type_enabled([mEMORY[0x277D69B38] OSLogObject], OS_LOG_TYPE_INFO))
         {
           v11 &= 2u;
         }
@@ -102,11 +102,11 @@ LABEL_9:
           v16 = 138413058;
           v17 = objc_opt_class();
           v18 = 2112;
-          v19 = v5;
+          v19 = persistentIdentifier;
           v20 = 2048;
-          v21 = [a3 diskCapacity];
+          diskCapacity = [configuration diskCapacity];
           v22 = 2048;
-          v23 = [a3 memoryCapacity];
+          memoryCapacity = [configuration memoryCapacity];
           LODWORD(v15) = 42;
           v12 = _os_log_send_and_compose_impl();
           if (v12)
@@ -127,7 +127,7 @@ LABEL_9:
       cache = 0;
     }
 
-    v8 = [objc_alloc(MEMORY[0x277CCACD8]) initWithMemoryCapacity:objc_msgSend(a3 diskCapacity:"memoryCapacity") diskPath:{objc_msgSend(a3, "diskCapacity"), v5}];
+    v8 = [objc_alloc(MEMORY[0x277CCACD8]) initWithMemoryCapacity:objc_msgSend(configuration diskCapacity:"memoryCapacity") diskPath:{objc_msgSend(configuration, "diskCapacity"), persistentIdentifier}];
     self->_cache = v8;
     [(NSURLCache *)v8 _CFURLCache];
     _CFURLCacheLoadMemoryFromDiskNow();
@@ -140,16 +140,16 @@ LABEL_19:
 
 - (void)purgeMemoryCache
 {
-  v2 = [(NSURLCache *)self->_cache _CFURLCache];
+  _CFURLCache = [(NSURLCache *)self->_cache _CFURLCache];
 
-  MEMORY[0x28210D1A0](v2);
+  MEMORY[0x28210D1A0](_CFURLCache);
 }
 
 - (void)saveMemoryCacheToDisk
 {
-  v2 = [(NSURLCache *)self->_cache _CFURLCache];
+  _CFURLCache = [(NSURLCache *)self->_cache _CFURLCache];
 
-  MEMORY[0x28210D198](v2);
+  MEMORY[0x28210D198](_CFURLCache);
 }
 
 @end

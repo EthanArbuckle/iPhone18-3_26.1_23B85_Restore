@@ -1,28 +1,28 @@
 @interface THAEHelper
-- (BOOL)acknowledgeAnnotationProvider:(id)a3 willMergeAnnotationsWithAssetVersionMismatch:(id)a4 assetID:(id)a5 assetURL:(id)a6;
-- (BOOL)helperValidateBookAuthorizationWithError:(id *)a3 needsCoordination:(BOOL)a4;
-- (THAEHelper)initWithURL:(id)a3 withOptions:(id)a4;
+- (BOOL)acknowledgeAnnotationProvider:(id)provider willMergeAnnotationsWithAssetVersionMismatch:(id)mismatch assetID:(id)d assetURL:(id)l;
+- (BOOL)helperValidateBookAuthorizationWithError:(id *)error needsCoordination:(BOOL)coordination;
+- (THAEHelper)initWithURL:(id)l withOptions:(id)options;
 - (id)bookCoverDescription;
 - (id)bookDescription;
 - (id)helperCoverImage;
-- (id)helperMetadataForKey:(id)a3 needsCoordination:(BOOL)a4;
+- (id)helperMetadataForKey:(id)key needsCoordination:(BOOL)coordination;
 - (id)helperMinifiedController;
 - (void)dealloc;
 - (void)helperDeletePersistentCache;
-- (void)helperViewControllerWithOptions:(id)a3 completion:(id)a4;
+- (void)helperViewControllerWithOptions:(id)options completion:(id)completion;
 @end
 
 @implementation THAEHelper
 
-- (THAEHelper)initWithURL:(id)a3 withOptions:(id)a4
+- (THAEHelper)initWithURL:(id)l withOptions:(id)options
 {
   v8.receiver = self;
   v8.super_class = THAEHelper;
   v6 = [(THAEHelper *)&v8 init];
   if (v6)
   {
-    v6->mURL = a3;
-    v6->mOptions = a4;
+    v6->mURL = l;
+    v6->mOptions = options;
   }
 
   return v6;
@@ -99,14 +99,14 @@
   return result;
 }
 
-- (id)helperMetadataForKey:(id)a3 needsCoordination:(BOOL)a4
+- (id)helperMetadataForKey:(id)key needsCoordination:(BOOL)coordination
 {
-  v4 = a4;
-  if ([a3 isEqualToString:AEHelperStringMetadataAssetIDKey])
+  coordinationCopy = coordination;
+  if ([key isEqualToString:AEHelperStringMetadataAssetIDKey])
   {
-    v7 = [(THAEHelper *)self bookDescription];
+    bookDescription = [(THAEHelper *)self bookDescription];
 
-    return [v7 annotationID];
+    return [bookDescription annotationID];
   }
 
   else
@@ -115,7 +115,7 @@
     if (v9)
     {
       v10 = v9;
-      if ([a3 isEqualToString:AEHelperStringMetadataAuthorKey])
+      if ([key isEqualToString:AEHelperStringMetadataAuthorKey])
       {
         result = [IMLibraryPlist authorFromPlistEntry:v10];
         if (result)
@@ -124,7 +124,7 @@
         }
       }
 
-      else if ([a3 isEqualToString:AEHelperStringMetadataTitleKey])
+      else if ([key isEqualToString:AEHelperStringMetadataTitleKey])
       {
         result = [IMLibraryPlist titleFromPlistEntry:v10];
         if (result)
@@ -133,7 +133,7 @@
         }
       }
 
-      else if ([a3 isEqualToString:AEHelperStringMetadataGenreKey])
+      else if ([key isEqualToString:AEHelperStringMetadataGenreKey])
       {
         result = [IMLibraryPlist genreFromPlistEntry:v10];
         if (result)
@@ -147,19 +147,19 @@
     if (result)
     {
       v11 = result;
-      if ([a3 isEqualToString:AEHelperStringMetadataAuthorKey])
+      if ([key isEqualToString:AEHelperStringMetadataAuthorKey])
       {
 
         return [v11 bookAuthor];
       }
 
-      else if ([a3 isEqualToString:AEHelperStringMetadataTitleKey])
+      else if ([key isEqualToString:AEHelperStringMetadataTitleKey])
       {
 
         return [v11 bookTitle];
       }
 
-      else if ([a3 isEqualToString:AEHelperStringMetadataGenreKey])
+      else if ([key isEqualToString:AEHelperStringMetadataGenreKey])
       {
 
         return [v11 genre];
@@ -200,28 +200,28 @@
   return v2;
 }
 
-- (void)helperViewControllerWithOptions:(id)a3 completion:(id)a4
+- (void)helperViewControllerWithOptions:(id)options completion:(id)completion
 {
   v7 = +[THApplePubAssetPlugin sharedPlugin];
 
-  [v7 helper:self viewControllerWithOptions:a3 completion:a4];
+  [v7 helper:self viewControllerWithOptions:options completion:completion];
 }
 
-- (BOOL)helperValidateBookAuthorizationWithError:(id *)a3 needsCoordination:(BOOL)a4
+- (BOOL)helperValidateBookAuthorizationWithError:(id *)error needsCoordination:(BOOL)coordination
 {
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
     v6 = objc_autoreleasePoolPush();
     v7 = [objc_msgSend(-[THAEHelper bookDescription](self "bookDescription")];
     if (!v7 || (v8 = v7, ![v7 length]))
     {
       v22 = [NSError alloc];
       v23 = 0;
-      *a3 = [v22 initWithDomain:AssetEngineErrorDomain code:1001 userInfo:0];
+      *error = [v22 initWithDomain:AssetEngineErrorDomain code:1001 userInfo:0];
 LABEL_23:
       objc_autoreleasePoolPop(v6);
-      v27 = *a3;
+      v27 = *error;
       return v23;
     }
 
@@ -240,20 +240,20 @@ LABEL_23:
     if (v12)
     {
       [(PFDContext *)v12 dataRepresentationForEntryName:@"OPS/assets/ncxExtensions.xml" error:&v29];
-      v14 = [v29 domain];
-      v15 = [v29 code];
-      if ([v14 isEqualToString:@"ibookserrors"])
+      domain = [v29 domain];
+      code = [v29 code];
+      if ([domain isEqualToString:@"ibookserrors"])
       {
-        if (v15 + 42597 > 2)
+        if (code + 42597 > 2)
         {
-          if (![PFDContext isBagRefetchRequiredForStatus:v15])
+          if (![PFDContext isBagRefetchRequiredForStatus:code])
           {
             goto LABEL_16;
           }
 
           v25 = [NSError alloc];
           v26 = AssetEngineErrorDomain;
-          v18 = [v29 userInfo];
+          userInfo = [v29 userInfo];
           v19 = v25;
           v20 = v26;
           v21 = 2002;
@@ -263,13 +263,13 @@ LABEL_23:
         {
           v16 = [NSError alloc];
           v17 = AssetEngineErrorDomain;
-          v18 = [v29 userInfo];
+          userInfo = [v29 userInfo];
           v19 = v16;
           v20 = v17;
           v21 = 2003;
         }
 
-        *a3 = [v19 initWithDomain:v20 code:v21 userInfo:v18];
+        *error = [v19 initWithDomain:v20 code:v21 userInfo:userInfo];
       }
     }
 
@@ -294,12 +294,12 @@ LABEL_19:
   return 0;
 }
 
-- (BOOL)acknowledgeAnnotationProvider:(id)a3 willMergeAnnotationsWithAssetVersionMismatch:(id)a4 assetID:(id)a5 assetURL:(id)a6
+- (BOOL)acknowledgeAnnotationProvider:(id)provider willMergeAnnotationsWithAssetVersionMismatch:(id)mismatch assetID:(id)d assetURL:(id)l
 {
-  if (a5)
+  if (d)
   {
     v11 = [-[THAEHelper bookDescription](self "bookDescription")];
-    -[THAnnotationSerializationManager handleAnnotationProvider:willMergeVersionMismatchedAnnotationsWithIncomingAnnotationAssetVersion:assetAssetVersion:assetID:assetURL:](+[THAnnotationSerializationManager annotationSerializationManagerWithAssetID:assetURL:bookVersionString:pathToAssetContextDirectory:isManagedBook:](THAnnotationSerializationManager, "annotationSerializationManagerWithAssetID:assetURL:bookVersionString:pathToAssetContextDirectory:isManagedBook:", a5, a6, v11, [-[THAEHelper bookDescription](self "bookDescription")], objc_msgSend(objc_msgSend(-[THAEHelper bookDescription](self, "bookDescription"), "asset"), "isManagedBook")), "handleAnnotationProvider:willMergeVersionMismatchedAnnotationsWithIncomingAnnotationAssetVersion:assetAssetVersion:assetID:assetURL:", a3, +[THBookVersion bookVersionWithVersionString:](THBookVersion, "bookVersionWithVersionString:", a4), +[THBookVersion bookVersionWithVersionString:](THBookVersion, "bookVersionWithVersionString:", v11), a5, a6);
+    -[THAnnotationSerializationManager handleAnnotationProvider:willMergeVersionMismatchedAnnotationsWithIncomingAnnotationAssetVersion:assetAssetVersion:assetID:assetURL:](+[THAnnotationSerializationManager annotationSerializationManagerWithAssetID:assetURL:bookVersionString:pathToAssetContextDirectory:isManagedBook:](THAnnotationSerializationManager, "annotationSerializationManagerWithAssetID:assetURL:bookVersionString:pathToAssetContextDirectory:isManagedBook:", d, l, v11, [-[THAEHelper bookDescription](self "bookDescription")], objc_msgSend(objc_msgSend(-[THAEHelper bookDescription](self, "bookDescription"), "asset"), "isManagedBook")), "handleAnnotationProvider:willMergeVersionMismatchedAnnotationsWithIncomingAnnotationAssetVersion:assetAssetVersion:assetID:assetURL:", provider, +[THBookVersion bookVersionWithVersionString:](THBookVersion, "bookVersionWithVersionString:", mismatch), +[THBookVersion bookVersionWithVersionString:](THBookVersion, "bookVersionWithVersionString:", v11), d, l);
   }
 
   else

@@ -1,21 +1,21 @@
 @interface AMSUIContentImageFetchOperation
-- (AMSUIContentImageFetchOperation)initWithURL:(id)a3;
-- (void)_fallbackWithURL:(id)a3;
+- (AMSUIContentImageFetchOperation)initWithURL:(id)l;
+- (void)_fallbackWithURL:(id)l;
 - (void)main;
 @end
 
 @implementation AMSUIContentImageFetchOperation
 
-- (AMSUIContentImageFetchOperation)initWithURL:(id)a3
+- (AMSUIContentImageFetchOperation)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v9.receiver = self;
   v9.super_class = AMSUIContentImageFetchOperation;
   v6 = [(AMSUIContentImageFetchOperation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_imageURL, a3);
+    objc_storeStrong(&v6->_imageURL, l);
   }
 
   return v7;
@@ -26,15 +26,15 @@
   v50 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v4 = objc_alloc(MEMORY[0x1E696AF20]);
-  v5 = [(AMSUIContentImageFetchOperation *)self imageURL];
-  v6 = [v4 initWithURL:v5 resolvingAgainstBaseURL:0];
+  imageURL = [(AMSUIContentImageFetchOperation *)self imageURL];
+  v6 = [v4 initWithURL:imageURL resolvingAgainstBaseURL:0];
 
   v43 = 0u;
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v7 = [v6 queryItems];
-  v8 = [v7 countByEnumeratingWithState:&v41 objects:v49 count:16];
+  queryItems = [v6 queryItems];
+  v8 = [queryItems countByEnumeratingWithState:&v41 objects:v49 count:16];
   if (v8)
   {
     v9 = v8;
@@ -45,30 +45,30 @@
       {
         if (*v42 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(queryItems);
         }
 
         v12 = *(*(&v41 + 1) + 8 * i);
-        v13 = [v12 value];
-        if (v13)
+        value = [v12 value];
+        if (value)
         {
-          v14 = [v12 name];
-          [v3 setObject:v13 forKey:v14];
+          name = [v12 name];
+          [v3 setObject:value forKey:name];
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v41 objects:v49 count:16];
+      v9 = [queryItems countByEnumeratingWithState:&v41 objects:v49 count:16];
     }
 
     while (v9);
   }
 
   v15 = [v3 objectForKey:@"fallbackURL"];
-  v16 = [v15 stringByRemovingPercentEncoding];
+  stringByRemovingPercentEncoding = [v15 stringByRemovingPercentEncoding];
 
-  if (v16)
+  if (stringByRemovingPercentEncoding)
   {
-    v17 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v16];
+    v17 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:stringByRemovingPercentEncoding];
   }
 
   else
@@ -105,14 +105,14 @@
 
     else
     {
-      v29 = [MEMORY[0x1E698C968] sharedConfig];
-      if (!v29)
+      mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
+      if (!mEMORY[0x1E698C968])
       {
-        v29 = [MEMORY[0x1E698C968] sharedConfig];
+        mEMORY[0x1E698C968] = [MEMORY[0x1E698C968] sharedConfig];
       }
 
-      v30 = [v29 OSLogObject];
-      if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
+      oSLogObject = [mEMORY[0x1E698C968] OSLogObject];
+      if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
       {
         v31 = objc_opt_class();
         v34 = v31;
@@ -122,7 +122,7 @@
         v46 = v31;
         v47 = 2114;
         v48 = v32;
-        _os_log_impl(&dword_1BB036000, v30, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Missing content cache key", buf, 0x16u);
+        _os_log_impl(&dword_1BB036000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Missing content cache key", buf, 0x16u);
 
         v6 = v36;
       }
@@ -133,14 +133,14 @@
 
   else
   {
-    v24 = [MEMORY[0x1E698C968] sharedConfig];
-    if (!v24)
+    mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
+    if (!mEMORY[0x1E698C968]2)
     {
-      v24 = [MEMORY[0x1E698C968] sharedConfig];
+      mEMORY[0x1E698C968]2 = [MEMORY[0x1E698C968] sharedConfig];
     }
 
-    v25 = [v24 OSLogObject];
-    if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
+    oSLogObject2 = [mEMORY[0x1E698C968]2 OSLogObject];
+    if (os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_ERROR))
     {
       v26 = objc_opt_class();
       v35 = v6;
@@ -150,7 +150,7 @@
       v46 = v26;
       v47 = 2114;
       v48 = v28;
-      _os_log_impl(&dword_1BB036000, v25, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Missing application identifier", buf, 0x16u);
+      _os_log_impl(&dword_1BB036000, oSLogObject2, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] Missing application identifier", buf, 0x16u);
 
       v6 = v35;
     }
@@ -248,12 +248,12 @@ LABEL_12:
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_fallbackWithURL:(id)a3
+- (void)_fallbackWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [(AMSUIContentImageFetchOperation *)self fallbackBlock];
-  v6 = v5;
-  if (v4 && v5 && ((*(v5 + 16))(v5, v4), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+  lCopy = l;
+  fallbackBlock = [(AMSUIContentImageFetchOperation *)self fallbackBlock];
+  v6 = fallbackBlock;
+  if (lCopy && fallbackBlock && ((*(fallbackBlock + 16))(fallbackBlock, lCopy), (v7 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v8 = v7;
     v9[0] = MEMORY[0x1E69E9820];

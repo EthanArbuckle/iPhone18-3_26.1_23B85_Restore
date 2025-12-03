@@ -1,38 +1,38 @@
 @interface NTKBasePhotosFaceView
 - (BOOL)_curtainViewVisible;
 - (Class)photosFaceClass;
-- (NTKBasePhotosFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5;
-- (double)_backgroundImageAlphaForEditMode:(int64_t)a3;
-- (double)_editSpeedForCustomEditMode:(int64_t)a3 slot:(id)a4;
-- (double)_foregroundAlphaForEditMode:(int64_t)a3;
-- (double)_foregroundAlphaForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3;
-- (double)_timeLabelAlphaForEditMode:(int64_t)a3;
+- (NTKBasePhotosFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier;
+- (double)_backgroundImageAlphaForEditMode:(int64_t)mode;
+- (double)_editSpeedForCustomEditMode:(int64_t)mode slot:(id)slot;
+- (double)_foregroundAlphaForEditMode:(int64_t)mode;
+- (double)_foregroundAlphaForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot;
+- (double)_timeLabelAlphaForEditMode:(int64_t)mode;
 - (double)_timeTravelYAdjustment;
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4;
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds;
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
 - (id)_selectedContentView;
 - (id)createFaceColorPalette;
-- (int64_t)_utilitySlotForSlot:(id)a3;
+- (int64_t)_utilitySlotForSlot:(id)slot;
 - (unint64_t)dateAlignment;
 - (void)_animateIn;
 - (void)_applyAlignment;
-- (void)_applyComplicationContentSpecificAttributesAnimated:(BOOL)a3;
+- (void)_applyComplicationContentSpecificAttributesAnimated:(BOOL)animated;
 - (void)_applyDataMode;
-- (void)_applyForegroundAlphaForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_applyForegroundAlphaForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_applyFrozen;
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyPhotosColorFrom:(id)a3 to:(id)a4 fraction:(double)a5;
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (void)_applyScrubbingForegroundColor:(id)a3 shadowColor:(id)a4;
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyPhotosColorFrom:(id)from to:(id)to fraction:(double)fraction;
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (void)_applyScrubbingForegroundColor:(id)color shadowColor:(id)shadowColor;
 - (void)_applySlow;
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7;
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (void)_cleanupAfterEditing;
-- (void)_cleanupAfterOrb:(BOOL)a3;
+- (void)_cleanupAfterOrb:(BOOL)orb;
 - (void)_configureComplicationFactory;
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4;
-- (void)_configureForEditMode:(int64_t)a3;
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5;
+- (void)_configureComplicationView:(id)view forSlot:(id)slot;
+- (void)_configureForEditMode:(int64_t)mode;
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode;
 - (void)_handleScreenWake;
 - (void)_hideCurtainView;
 - (void)_layoutForegroundContainerView;
@@ -41,34 +41,34 @@
 - (void)_playPhoto;
 - (void)_playStill;
 - (void)_playVideo;
-- (void)_playVideoForScreenWake:(id)a3;
+- (void)_playVideoForScreenWake:(id)wake;
 - (void)_prepareForEditing;
 - (void)_prepareForOrb;
 - (void)_scheduleSleepPreloadTask;
-- (void)_setComplicationsHidden:(BOOL)a3;
-- (void)_setDateAttributes:(id)a3 animated:(BOOL)a4;
+- (void)_setComplicationsHidden:(BOOL)hidden;
+- (void)_setDateAttributes:(id)attributes animated:(BOOL)animated;
 - (void)_showCurtainView;
 - (void)_startScrubbingAnimationFromUIViewAnimateWithDuration;
 - (void)_unloadSnapshotContentViews;
 - (void)_unpauseFromSwitcher;
 - (void)_updatePaused;
-- (void)applyPhotosColorRamp:(id)a3 photosMonoColorRamp:(id)a4 monochromeColorMatrix:(id)a5 toPhotosImageView:(id)a6;
+- (void)applyPhotosColorRamp:(id)ramp photosMonoColorRamp:(id)colorRamp monochromeColorMatrix:(id)matrix toPhotosImageView:(id)view;
 - (void)dealloc;
-- (void)imageViewDidBeginPlaying:(id)a3;
+- (void)imageViewDidBeginPlaying:(id)playing;
 - (void)layoutSubviews;
-- (void)setMonochromeColorMatrix:(id)a3;
-- (void)setNoPhotosViewVisible:(BOOL)a3;
-- (void)updateWithColorPalette:(id)a3;
+- (void)setMonochromeColorMatrix:(id)matrix;
+- (void)setNoPhotosViewVisible:(BOOL)visible;
+- (void)updateWithColorPalette:(id)palette;
 @end
 
 @implementation NTKBasePhotosFaceView
 
-- (NTKBasePhotosFaceView)initWithFaceStyle:(int64_t)a3 forDevice:(id)a4 clientIdentifier:(id)a5
+- (NTKBasePhotosFaceView)initWithFaceStyle:(int64_t)style forDevice:(id)device clientIdentifier:(id)identifier
 {
-  v8 = a4;
+  deviceCopy = device;
   v22.receiver = self;
   v22.super_class = NTKBasePhotosFaceView;
-  v9 = [(NTKFaceView *)&v22 initWithFaceStyle:a3 forDevice:v8 clientIdentifier:a5];
+  v9 = [(NTKFaceView *)&v22 initWithFaceStyle:style forDevice:deviceCopy clientIdentifier:identifier];
   if (v9)
   {
     if (CLKIsClockFaceApp())
@@ -78,21 +78,21 @@
       v9->_taskScheduler = v10;
     }
 
-    v12 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     foregroundColor = v9->_foregroundColor;
-    v9->_foregroundColor = v12;
+    v9->_foregroundColor = whiteColor;
 
     v14 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:*off_27877BE58];
     shadowColor = v9->_shadowColor;
     v9->_shadowColor = v14;
 
-    v16 = [[NTKUtilityComplicationFactory alloc] initForDevice:v8];
+    v16 = [[NTKUtilityComplicationFactory alloc] initForDevice:deviceCopy];
     complicationFactory = v9->_complicationFactory;
     v9->_complicationFactory = v16;
 
     [(NTKBasePhotosFaceView *)v9 _configureComplicationFactory];
-    v18 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v18 addObserver:v9 selector:sel__unpauseFromSwitcher name:@"NTKFaceLibraryDismissedNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__unpauseFromSwitcher name:@"NTKFaceLibraryDismissedNotification" object:0];
 
     v19 = NTKDefaultMonochromeColorMatrix();
     monochromeColorMatrix = v9->_monochromeColorMatrix;
@@ -104,8 +104,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"NTKFaceLibraryDismissedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"NTKFaceLibraryDismissedNotification" object:0];
 
   [(NSTimer *)self->_playOnWakeTimeout invalidate];
   [(NTKBasePhotosFaceView *)self _unloadSnapshotContentViews];
@@ -127,8 +127,8 @@
   v12.receiver = self;
   v12.super_class = NTKBasePhotosFaceView;
   [(NTKDigitalFaceView *)&v12 layoutSubviews];
-  v3 = [(NTKFaceView *)self foregroundContainerView];
-  [v3 bounds];
+  foregroundContainerView = [(NTKFaceView *)self foregroundContainerView];
+  [foregroundContainerView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -154,9 +154,9 @@
 
 - (double)_timeTravelYAdjustment
 {
-  v3 = [(NTKBasePhotosFaceView *)self dateAlignment];
+  dateAlignment = [(NTKBasePhotosFaceView *)self dateAlignment];
   result = 0.0;
-  if (v3 != 1)
+  if (dateAlignment != 1)
   {
     v5.receiver = self;
     v5.super_class = NTKBasePhotosFaceView;
@@ -166,18 +166,18 @@
   return result;
 }
 
-- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)a3 faceBounds:(CGRect)a4
+- (id)_digitalTimeLabelStyleFromViewMode:(int64_t)mode faceBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v28[9] = *MEMORY[0x277D85DE8];
   if ([(NTKBasePhotosFaceView *)self dateAlignment]== 1)
   {
     [(NTKBasePhotosFaceView *)self bounds];
-    v10 = [(NTKFaceView *)self device];
-    v11 = [MEMORY[0x277CBBAF8] metricsWithDevice:v10 identitySizeClass:2];
+    device = [(NTKFaceView *)self device];
+    v11 = [MEMORY[0x277CBBAF8] metricsWithDevice:device identitySizeClass:2];
     v27[0] = &unk_284182308;
     v27[1] = &unk_284182320;
     v28[0] = &unk_2841881D8;
@@ -204,20 +204,20 @@
     v16 = v15;
     v18 = v17;
     v20 = v19;
-    v21 = [(NTKFaceView *)self device];
-    v22 = NTKDigitalTimeLabelStyleWideRightSideMargin(v21);
-    v23 = [(NTKFaceView *)self device];
-    v24 = [NTKDigitalTimeLabelStyle defaultStyleForBounds:1 withRightSideMargin:v23 applyAdvanceFudge:v14 forDevice:v16, v18, v20, v22];
+    device2 = [(NTKFaceView *)self device];
+    v22 = NTKDigitalTimeLabelStyleWideRightSideMargin(device2);
+    device3 = [(NTKFaceView *)self device];
+    height = [NTKDigitalTimeLabelStyle defaultStyleForBounds:1 withRightSideMargin:device3 applyAdvanceFudge:v14 forDevice:v16, v18, v20, v22];
   }
 
   else
   {
     v26.receiver = self;
     v26.super_class = NTKBasePhotosFaceView;
-    v24 = [(NTKBackgroundImageFaceView *)&v26 _digitalTimeLabelStyleFromViewMode:a3 faceBounds:x, y, width, height];
+    height = [(NTKBackgroundImageFaceView *)&v26 _digitalTimeLabelStyleFromViewMode:mode faceBounds:x, y, width, height];
   }
 
-  return v24;
+  return height;
 }
 
 - (void)_layoutForegroundContainerView
@@ -227,18 +227,18 @@
   [(NTKFaceView *)&v2 _layoutForegroundContainerView];
 }
 
-- (void)setNoPhotosViewVisible:(BOOL)a3
+- (void)setNoPhotosViewVisible:(BOOL)visible
 {
-  if (self->_noPhotosViewVisible != a3)
+  if (self->_noPhotosViewVisible != visible)
   {
-    v3 = a3;
+    visibleCopy = visible;
     [(UIView *)self->_currentGradientView removeFromSuperview];
     currentGradientView = self->_currentGradientView;
     self->_currentGradientView = 0;
 
-    v6 = [(NTKBasePhotosFaceView *)self dateAlignment];
-    self->_noPhotosViewVisible = v3;
-    if (v3)
+    dateAlignment = [(NTKBasePhotosFaceView *)self dateAlignment];
+    self->_noPhotosViewVisible = visibleCopy;
+    if (visibleCopy)
     {
       if (self->_noPhotosView)
       {
@@ -248,8 +248,8 @@
       else
       {
         v8 = [NTKAlbumEmptyView alloc];
-        v9 = [(NTKFaceView *)self device];
-        v10 = [(NTKAlbumEmptyView *)v8 initForDevice:v9];
+        device = [(NTKFaceView *)self device];
+        v10 = [(NTKAlbumEmptyView *)v8 initForDevice:device];
         noPhotosView = self->_noPhotosView;
         self->_noPhotosView = v10;
 
@@ -266,21 +266,21 @@
 
     [(NTKAlbumEmptyView *)self->_noPhotosView setHidden:v7];
     [(NTKPhotoImageView *)self->_posterImageView setHidden:self->_noPhotosViewVisible];
-    v12 = [(NTKFaceView *)self timeView];
-    [v12 setHidden:self->_noPhotosViewVisible];
+    timeView = [(NTKFaceView *)self timeView];
+    [timeView setHidden:self->_noPhotosViewVisible];
 
-    if ([(NTKBasePhotosFaceView *)self dateAlignment]!= v6)
+    if ([(NTKBasePhotosFaceView *)self dateAlignment]!= dateAlignment)
     {
       [(NTKBasePhotosFaceView *)self _applyAlignment];
     }
 
-    if (self->_noPhotosViewVisible != v3)
+    if (self->_noPhotosViewVisible != visibleCopy)
     {
       [(NTKBasePhotosFaceView *)self _applyPhotosColor];
-      LOBYTE(v3) = self->_noPhotosViewVisible;
+      LOBYTE(visibleCopy) = self->_noPhotosViewVisible;
     }
 
-    [(NTKBasePhotosFaceView *)self _setComplicationsHidden:v3];
+    [(NTKBasePhotosFaceView *)self _setComplicationsHidden:visibleCopy];
     if (self->_noPhotosViewVisible)
     {
       v13 = +[NTKPhotoAnalysis defaultAnalysis];
@@ -343,25 +343,25 @@
   }
 }
 
-- (id)_newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)_newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
   complicationFactory = self->_complicationFactory;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(NTKUtilityComplicationFactory *)complicationFactory newViewForComplication:v10 family:a4 forSlot:[(NTKBasePhotosFaceView *)self _utilitySlotForSlot:v9]];
+  slotCopy = slot;
+  complicationCopy = complication;
+  v11 = [(NTKUtilityComplicationFactory *)complicationFactory newViewForComplication:complicationCopy family:family forSlot:[(NTKBasePhotosFaceView *)self _utilitySlotForSlot:slotCopy]];
 
-  [(NTKBasePhotosFaceView *)self _configureComplicationView:v11 forSlot:v9];
+  [(NTKBasePhotosFaceView *)self _configureComplicationView:v11 forSlot:slotCopy];
   return v11;
 }
 
-- (void)_configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)_configureComplicationView:(id)view forSlot:(id)slot
 {
-  v10 = a3;
-  v6 = a4;
-  if ([v10 conformsToProtocol:&unk_28A859958])
+  viewCopy = view;
+  slotCopy = slot;
+  if ([viewCopy conformsToProtocol:&unk_28A859958])
   {
     v7 = *MEMORY[0x277D74420];
-    v8 = v10;
+    v8 = viewCopy;
     [v8 setFontWeight:v7];
     [v8 setForegroundColor:self->_foregroundColor];
     [v8 setShadowColor:self->_shadowColor];
@@ -370,18 +370,18 @@
     [(NTKUtilityComplicationFactory *)self->_complicationFactory foregroundImageAlphaForEditing:[(NTKFaceView *)self editing]];
     [v8 setForegroundImageAlpha:?];
     [v8 setUsesLegibility:(*(self + 1184) >> 2) & 1];
-    [v8 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKBasePhotosFaceView _utilitySlotForSlot:](self, "_utilitySlotForSlot:", v6))}];
+    [v8 setPlacement:{+[NTKUtilityComplicationFactory placementForSlot:](NTKUtilityComplicationFactory, "placementForSlot:", -[NTKBasePhotosFaceView _utilitySlotForSlot:](self, "_utilitySlotForSlot:", slotCopy))}];
     [v8 setSuppressesInternalColorOverrides:1];
     [v8 setHidden:self->_noPhotosViewVisible];
-    v9 = [MEMORY[0x277D75348] clearColor];
-    [v8 setBackgroundColor:v9];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [v8 setBackgroundColor:clearColor];
   }
 }
 
-- (double)_foregroundAlphaForEditMode:(int64_t)a3
+- (double)_foregroundAlphaForEditMode:(int64_t)mode
 {
   result = 0.2;
-  if (a3 != 10)
+  if (mode != 10)
   {
     return 1.0;
   }
@@ -389,18 +389,18 @@
   return result;
 }
 
-- (double)_foregroundAlphaForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (double)_foregroundAlphaForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  [(NTKBasePhotosFaceView *)self _foregroundAlphaForEditMode:a4];
-  [(NTKBasePhotosFaceView *)self _foregroundAlphaForEditMode:a5];
+  [(NTKBasePhotosFaceView *)self _foregroundAlphaForEditMode:mode];
+  [(NTKBasePhotosFaceView *)self _foregroundAlphaForEditMode:editMode];
 
   CLKInterpolateBetweenFloatsClipped();
   return result;
 }
 
-- (void)_applyForegroundAlphaForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_applyForegroundAlphaForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
-  [(NTKBasePhotosFaceView *)self _foregroundAlphaForTransitionFraction:a4 fromEditMode:a5 toEditMode:a3];
+  [(NTKBasePhotosFaceView *)self _foregroundAlphaForTransitionFraction:mode fromEditMode:editMode toEditMode:fraction];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __92__NTKBasePhotosFaceView__applyForegroundAlphaForTransitionFraction_fromEditMode_toEditMode___block_invoke;
@@ -419,13 +419,13 @@ void __92__NTKBasePhotosFaceView__applyForegroundAlphaForTransitionFraction_from
   }
 }
 
-- (void)_applyComplicationContentSpecificAttributesAnimated:(BOOL)a3
+- (void)_applyComplicationContentSpecificAttributesAnimated:(BOOL)animated
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __77__NTKBasePhotosFaceView__applyComplicationContentSpecificAttributesAnimated___block_invoke;
   v3[3] = &unk_278780230;
-  v4 = a3;
+  animatedCopy = animated;
   v3[4] = self;
   [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v3];
 }
@@ -471,11 +471,11 @@ void __77__NTKBasePhotosFaceView__applyComplicationContentSpecificAttributesAnim
   [v2 performWithoutAnimation:v5];
 }
 
-- (void)_setComplicationsHidden:(BOOL)a3
+- (void)_setComplicationsHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v4 = [(NTKFaceView *)self complicationContainerView];
-  [v4 setHidden:v3];
+  hiddenCopy = hidden;
+  complicationContainerView = [(NTKFaceView *)self complicationContainerView];
+  [complicationContainerView setHidden:hiddenCopy];
 }
 
 - (void)_prepareForEditing
@@ -496,10 +496,10 @@ void __77__NTKBasePhotosFaceView__applyComplicationContentSpecificAttributesAnim
   [(NTKBackgroundImageFaceView *)&v3 _cleanupAfterEditing];
 }
 
-- (double)_backgroundImageAlphaForEditMode:(int64_t)a3
+- (double)_backgroundImageAlphaForEditMode:(int64_t)mode
 {
   result = 0.5;
-  if (a3 != 14)
+  if (mode != 14)
   {
     v7 = v3;
     v8 = v4;
@@ -511,15 +511,15 @@ void __77__NTKBasePhotosFaceView__applyComplicationContentSpecificAttributesAnim
   return result;
 }
 
-- (double)_timeLabelAlphaForEditMode:(int64_t)a3
+- (double)_timeLabelAlphaForEditMode:(int64_t)mode
 {
-  if (a3 == 10)
+  if (mode == 10)
   {
     return 0.2;
   }
 
   result = 1.0;
-  if (a3 == 1)
+  if (mode == 1)
   {
     return 0.2;
   }
@@ -527,25 +527,25 @@ void __77__NTKBasePhotosFaceView__applyComplicationContentSpecificAttributesAnim
   return result;
 }
 
-- (int64_t)_utilitySlotForSlot:(id)a3
+- (int64_t)_utilitySlotForSlot:(id)slot
 {
-  v4 = a3;
-  v5 = [(NTKBasePhotosFaceView *)self dateAlignment];
-  if ([v4 isEqual:@"top"])
+  slotCopy = slot;
+  dateAlignment = [(NTKBasePhotosFaceView *)self dateAlignment];
+  if ([slotCopy isEqual:@"top"])
   {
-    v6 = v5 == 0;
+    v6 = dateAlignment == 0;
     v7 = 5;
   }
 
   else
   {
-    if (![v4 isEqual:@"bottom"])
+    if (![slotCopy isEqual:@"bottom"])
     {
       v8 = 0;
       goto LABEL_9;
     }
 
-    v6 = v5 == 0;
+    v6 = dateAlignment == 0;
     v7 = 7;
   }
 
@@ -564,10 +564,10 @@ LABEL_9:
   return v8;
 }
 
-- (double)_keylineCornerRadiusForComplicationSlot:(id)a3
+- (double)_keylineCornerRadiusForComplicationSlot:(id)slot
 {
   complicationFactory = self->_complicationFactory;
-  v4 = [(NTKBasePhotosFaceView *)self _utilitySlotForSlot:a3];
+  v4 = [(NTKBasePhotosFaceView *)self _utilitySlotForSlot:slot];
 
   [(NTKUtilityComplicationFactory *)complicationFactory keylineCornerRadiusForSlot:v4];
   return result;
@@ -589,48 +589,48 @@ LABEL_9:
 
   [(NTKBasePhotosFaceView *)self _loadLayoutRules];
   [(NTKBasePhotosFaceView *)self setNeedsLayout];
-  v4 = [(NTKFaceView *)self foregroundContainerView];
-  [v4 setNeedsLayout];
+  foregroundContainerView = [(NTKFaceView *)self foregroundContainerView];
+  [foregroundContainerView setNeedsLayout];
 
   [(NTKDigitalFaceView *)self invalidateDigitalTimeLabelStyle];
-  v5 = [(NTKFaceView *)self delegate];
-  [v5 faceViewWantsComplicationKeylineFramesReloaded];
+  delegate = [(NTKFaceView *)self delegate];
+  [delegate faceViewWantsComplicationKeylineFramesReloaded];
 }
 
-- (void)_applyOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v13 = a3;
-  v8 = a5;
-  if (a4 == 10)
+  optionCopy = option;
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v9 = [(NTKBasePhotosFaceView *)self palette];
-    [(NTKBasePhotosFaceView *)self updateWithColorPalette:v9];
+    palette = [(NTKBasePhotosFaceView *)self palette];
+    [(NTKBasePhotosFaceView *)self updateWithColorPalette:palette];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  if (a4 != 14)
+  if (mode != 14)
   {
-    if (a4 != 12)
+    if (mode != 12)
     {
       goto LABEL_15;
     }
 
-    v9 = NTKCompanionClockFaceLocalizedString(@"PHOTOS_FACE_NO_CUSTOM_PHOTOS_TEXT_COMPANION", @"No photos");
+    palette = NTKCompanionClockFaceLocalizedString(@"PHOTOS_FACE_NO_CUSTOM_PHOTOS_TEXT_COMPANION", @"No photos");
     v10 = NTKCompanionClockFaceLocalizedString(@"PHOTOS_FACE_NO_SYNCED_ALBUM_TEXT_COMPANION", @"No synced photos");
     v11 = NTKCompanionClockFaceLocalizedString(@"PHOTOS_FACE_NO_MEMORIES_TEXT_COMPANION", @"No memories");
-    if ([v13 photosContent] == 1)
+    if ([optionCopy photosContent] == 1)
     {
-      [(NTKAlbumEmptyView *)self->_noPhotosView setBodyLabelText:v9];
+      [(NTKAlbumEmptyView *)self->_noPhotosView setBodyLabelText:palette];
     }
 
-    if (![v13 photosContent])
+    if (![optionCopy photosContent])
     {
       [(NTKAlbumEmptyView *)self->_noPhotosView setBodyLabelText:v10];
     }
 
-    if ([v13 photosContent] == 2)
+    if ([optionCopy photosContent] == 2)
     {
       [(NTKAlbumEmptyView *)self->_noPhotosView setBodyLabelText:v11];
     }
@@ -638,9 +638,9 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v12 = [(NTKBasePhotosFaceView *)self dateAlignment];
-  self->_dateAlignment = [v13 alignment];
-  if ([(NTKBasePhotosFaceView *)self dateAlignment]!= v12)
+  dateAlignment = [(NTKBasePhotosFaceView *)self dateAlignment];
+  self->_dateAlignment = [optionCopy alignment];
+  if ([(NTKBasePhotosFaceView *)self dateAlignment]!= dateAlignment)
   {
     [(NTKBasePhotosFaceView *)self _applyAlignment];
   }
@@ -648,35 +648,35 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)updateWithColorPalette:(id)a3
+- (void)updateWithColorPalette:(id)palette
 {
-  v4 = a3;
-  v5 = [v4 colorRampImage];
+  paletteCopy = palette;
+  colorRampImage = [paletteCopy colorRampImage];
   photosColorRamp = self->_photosColorRamp;
-  self->_photosColorRamp = v5;
+  self->_photosColorRamp = colorRampImage;
 
-  v7 = [v4 monocolorRampImage];
+  monocolorRampImage = [paletteCopy monocolorRampImage];
 
   photosMonoColorRamp = self->_photosMonoColorRamp;
-  self->_photosMonoColorRamp = v7;
+  self->_photosMonoColorRamp = monocolorRampImage;
 
   [(NTKBasePhotosFaceView *)self _applyPhotosColor];
 }
 
-- (void)applyPhotosColorRamp:(id)a3 photosMonoColorRamp:(id)a4 monochromeColorMatrix:(id)a5 toPhotosImageView:(id)a6
+- (void)applyPhotosColorRamp:(id)ramp photosMonoColorRamp:(id)colorRamp monochromeColorMatrix:(id)matrix toPhotosImageView:(id)view
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  if (NTKIsDefaultMonochromeColorMatrix(v9))
+  matrixCopy = matrix;
+  viewCopy = view;
+  colorRampCopy = colorRamp;
+  rampCopy = ramp;
+  if (NTKIsDefaultMonochromeColorMatrix(matrixCopy))
   {
-    v13 = v11;
+    v13 = colorRampCopy;
   }
 
   else
   {
-    v13 = v12;
+    v13 = rampCopy;
   }
 
   v14 = v13;
@@ -685,15 +685,15 @@ LABEL_15:
   block[2] = __106__NTKBasePhotosFaceView_applyPhotosColorRamp_photosMonoColorRamp_monochromeColorMatrix_toPhotosImageView___block_invoke;
   block[3] = &unk_27877E238;
   v19 = v14;
-  v20 = v9;
-  v21 = v10;
-  v15 = v10;
-  v16 = v9;
+  v20 = matrixCopy;
+  v21 = viewCopy;
+  v15 = viewCopy;
+  v16 = matrixCopy;
   v17 = v14;
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)_applyPhotosColorFrom:(id)a3 to:(id)a4 fraction:(double)a5
+- (void)_applyPhotosColorFrom:(id)from to:(id)to fraction:(double)fraction
 {
   monochromeColorMatrix = self->_monochromeColorMatrix;
   v8[0] = MEMORY[0x277D85DD0];
@@ -701,7 +701,7 @@ LABEL_15:
   v8[2] = __59__NTKBasePhotosFaceView__applyPhotosColorFrom_to_fraction___block_invoke;
   v8[3] = &unk_278780280;
   v8[4] = self;
-  [NTKPhotosColorPalette colorRampForMonochromeColorMatrix:monochromeColorMatrix fromPalette:a3 toPalette:a4 transitionFraction:v8 completion:a5];
+  [NTKPhotosColorPalette colorRampForMonochromeColorMatrix:monochromeColorMatrix fromPalette:from toPalette:to transitionFraction:v8 completion:fraction];
 }
 
 void __59__NTKBasePhotosFaceView__applyPhotosColorFrom_to_fraction___block_invoke(uint64_t a1, void *a2, void *a3, double a4)
@@ -721,54 +721,54 @@ void __59__NTKBasePhotosFaceView__applyPhotosColorFrom_to_fraction___block_invok
   dispatch_async(MEMORY[0x277D85CD0], v11);
 }
 
-- (void)_applyRubberBandingFraction:(double)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (void)_applyRubberBandingFraction:(double)fraction forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a4 == 14)
+  if (mode == 14)
   {
-    v6 = NTKScaleForRubberBandingFraction(a3);
-    v7 = [(NTKFaceView *)self foregroundContainerView];
+    v6 = NTKScaleForRubberBandingFraction(fraction);
+    foregroundContainerView = [(NTKFaceView *)self foregroundContainerView];
     CGAffineTransformMakeScale(&v9, v6, v6);
-    [v7 setTransform:&v9];
+    [foregroundContainerView setTransform:&v9];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NTKBasePhotosFaceView;
-    [(NTKBackgroundImageFaceView *)&v8 _applyRubberBandingFraction:a4 forCustomEditMode:a5 slot:a3];
+    [(NTKBackgroundImageFaceView *)&v8 _applyRubberBandingFraction:mode forCustomEditMode:slot slot:fraction];
   }
 }
 
-- (void)_applyTransitionFraction:(double)a3 fromOption:(id)a4 toOption:(id)a5 forCustomEditMode:(int64_t)a6 slot:(id)a7
+- (void)_applyTransitionFraction:(double)fraction fromOption:(id)option toOption:(id)toOption forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (a6 == 10)
+  optionCopy = option;
+  toOptionCopy = toOption;
+  slotCopy = slot;
+  if (mode == 10)
   {
-    v18 = [(NTKFaceView *)self interpolatedColorPalette];
-    v19 = [v18 fromPalette];
-    v20 = [(NTKFaceView *)self interpolatedColorPalette];
-    v21 = [v20 toPalette];
-    [(NTKBasePhotosFaceView *)self _applyPhotosColorFrom:v19 to:v21 fraction:a3];
+    interpolatedColorPalette = [(NTKFaceView *)self interpolatedColorPalette];
+    fromPalette = [interpolatedColorPalette fromPalette];
+    interpolatedColorPalette2 = [(NTKFaceView *)self interpolatedColorPalette];
+    toPalette = [interpolatedColorPalette2 toPalette];
+    [(NTKBasePhotosFaceView *)self _applyPhotosColorFrom:fromPalette to:toPalette fraction:fraction];
   }
 
-  else if (a6 == 14)
+  else if (mode == 14)
   {
-    if (a3 >= 0.5)
+    if (fraction >= 0.5)
     {
-      v15 = v13;
+      v15 = toOptionCopy;
     }
 
     else
     {
-      v15 = v12;
+      v15 = optionCopy;
     }
 
-    [(NTKBasePhotosFaceView *)self _applyOption:v15 forCustomEditMode:14 slot:v14];
-    v16 = (a3 * -2.0 + 1.0) * (a3 * -2.0 + 1.0) * (fabs(a3 * -2.0 + 1.0) * -2.0 + 3.0);
-    v17 = [(NTKFaceView *)self timeView];
-    [v17 setAlpha:v16];
+    [(NTKBasePhotosFaceView *)self _applyOption:v15 forCustomEditMode:14 slot:slotCopy];
+    v16 = (fraction * -2.0 + 1.0) * (fraction * -2.0 + 1.0) * (fabs(fraction * -2.0 + 1.0) * -2.0 + 3.0);
+    timeView = [(NTKFaceView *)self timeView];
+    [timeView setAlpha:v16];
 
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -786,9 +786,9 @@ void __93__NTKBasePhotosFaceView__applyTransitionFraction_fromOption_toOption_fo
   [v4 setAlpha:v3];
 }
 
-- (double)_editSpeedForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (double)_editSpeedForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 14)
+  if (mode == 14)
   {
     return 150.0;
   }
@@ -797,7 +797,7 @@ void __93__NTKBasePhotosFaceView__applyTransitionFraction_fromOption_toOption_fo
   v9 = v5;
   v7.receiver = self;
   v7.super_class = NTKBasePhotosFaceView;
-  [(NTKFaceView *)&v7 _editSpeedForCustomEditMode:a3 slot:a4];
+  [(NTKFaceView *)&v7 _editSpeedForCustomEditMode:mode slot:slot];
   return result;
 }
 
@@ -851,11 +851,11 @@ void __93__NTKBasePhotosFaceView__applyTransitionFraction_fromOption_toOption_fo
   [(NTKBasePhotosFaceView *)self _updatePaused];
 }
 
-- (void)_cleanupAfterOrb:(BOOL)a3
+- (void)_cleanupAfterOrb:(BOOL)orb
 {
   v4.receiver = self;
   v4.super_class = NTKBasePhotosFaceView;
-  [(NTKFaceView *)&v4 _cleanupAfterOrb:a3];
+  [(NTKFaceView *)&v4 _cleanupAfterOrb:orb];
   [(NTKBasePhotosFaceView *)self _updatePaused];
 }
 
@@ -939,7 +939,7 @@ void __93__NTKBasePhotosFaceView__applyTransitionFraction_fromOption_toOption_fo
   }
 }
 
-- (void)_playVideoForScreenWake:(id)a3
+- (void)_playVideoForScreenWake:(id)wake
 {
   [(NSTimer *)self->_playOnWakeTimeout invalidate];
   if (self->_shouldPlayOnWake && !self->_preLoadingPhotoOnSleep)
@@ -987,24 +987,24 @@ void __93__NTKBasePhotosFaceView__applyTransitionFraction_fromOption_toOption_fo
     v7 = v6;
     v9 = v8;
     v11 = v10;
-    v12 = [(NTKFaceView *)self device];
-    v13 = [(NTKPhotoImageView *)v3 initWithFrame:v12 forDevice:v5, v7, v9, v11];
+    device = [(NTKFaceView *)self device];
+    v13 = [(NTKPhotoImageView *)v3 initWithFrame:device forDevice:v5, v7, v9, v11];
     posterImageView = self->_posterImageView;
     self->_posterImageView = v13;
 
     [(NTKBasePhotosFaceView *)self _applyPhotosColor];
     [(NTKPhotoImageView *)self->_posterImageView setDelegate:self];
-    v15 = [(NTKPhotoImageView *)self->_posterImageView layer];
-    [v15 setAllowsEdgeAntialiasing:0];
+    layer = [(NTKPhotoImageView *)self->_posterImageView layer];
+    [layer setAllowsEdgeAntialiasing:0];
 
-    v16 = [(NTKPhotoImageView *)self->_posterImageView layer];
-    [v16 setAllowsGroupOpacity:0];
+    layer2 = [(NTKPhotoImageView *)self->_posterImageView layer];
+    [layer2 setAllowsGroupOpacity:0];
 
-    v17 = [(NTKFaceView *)self contentView];
-    [v17 addSubview:self->_posterImageView];
+    contentView = [(NTKFaceView *)self contentView];
+    [contentView addSubview:self->_posterImageView];
 
-    v18 = [(NTKFaceView *)self contentView];
-    [v18 sendSubviewToBack:self->_posterImageView];
+    contentView2 = [(NTKFaceView *)self contentView];
+    [contentView2 sendSubviewToBack:self->_posterImageView];
 
     v19 = [NTKRoundedCornerOverlayView alloc];
     [(NTKBasePhotosFaceView *)self bounds];
@@ -1012,13 +1012,13 @@ void __93__NTKBasePhotosFaceView__applyTransitionFraction_fromOption_toOption_fo
     v23 = v22;
     v25 = v24;
     v27 = v26;
-    v28 = [(NTKFaceView *)self device];
-    v29 = [(NTKRoundedCornerOverlayView *)v19 initWithFrame:v28 forDeviceCornerRadius:v21, v23, v25, v27];
+    device2 = [(NTKFaceView *)self device];
+    v29 = [(NTKRoundedCornerOverlayView *)v19 initWithFrame:device2 forDeviceCornerRadius:v21, v23, v25, v27];
     cornerView = self->_cornerView;
     self->_cornerView = v29;
 
-    v31 = [(NTKFaceView *)self contentView];
-    [v31 insertSubview:self->_cornerView aboveSubview:self->_posterImageView];
+    contentView3 = [(NTKFaceView *)self contentView];
+    [contentView3 insertSubview:self->_cornerView aboveSubview:self->_posterImageView];
 
     *(self + 1184) |= 1u;
     *(self + 1184) |= 2u;
@@ -1059,22 +1059,22 @@ void __93__NTKBasePhotosFaceView__applyTransitionFraction_fromOption_toOption_fo
   v7.receiver = self;
   v7.super_class = NTKBasePhotosFaceView;
   [(NTKFaceView *)&v7 _applyDataMode];
-  v3 = [(NTKFaceView *)self dataMode];
-  v4 = v3;
-  if ((v3 - 3) >= 3)
+  dataMode = [(NTKFaceView *)self dataMode];
+  v4 = dataMode;
+  if ((dataMode - 3) >= 3)
   {
-    if (v3 == 2)
+    if (dataMode == 2)
     {
-      v5 = [(NTKFaceView *)self device];
-      if ([v5 isLocked])
+      device = [(NTKFaceView *)self device];
+      if ([device isLocked])
       {
       }
 
       else
       {
-        v6 = [(NTKBasePhotosFaceView *)self screenWillGoDark];
+        screenWillGoDark = [(NTKBasePhotosFaceView *)self screenWillGoDark];
 
-        if (v6)
+        if (screenWillGoDark)
         {
           [(NTKTaskScheduler *)self->_taskScheduler cancelAllTasks];
           [(NTKBasePhotosFaceView *)self _scheduleSleepPreloadTask];
@@ -1084,7 +1084,7 @@ void __93__NTKBasePhotosFaceView__applyTransitionFraction_fromOption_toOption_fo
 
     else
     {
-      if (v3 != 1)
+      if (dataMode != 1)
       {
         goto LABEL_3;
       }
@@ -1202,14 +1202,14 @@ uint64_t __35__NTKBasePhotosFaceView__animateIn__block_invoke_2(uint64_t a1)
     v6 = self->_blackView;
     self->_blackView = v5;
 
-    v7 = [MEMORY[0x277D75348] blackColor];
-    [(UIView *)self->_blackView setBackgroundColor:v7];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(UIView *)self->_blackView setBackgroundColor:blackColor];
 
     blackView = self->_blackView;
   }
 
-  v8 = [(NTKFaceView *)self foregroundContainerView];
-  [(NTKBasePhotosFaceView *)self insertSubview:blackView belowSubview:v8];
+  foregroundContainerView = [(NTKFaceView *)self foregroundContainerView];
+  [(NTKBasePhotosFaceView *)self insertSubview:blackView belowSubview:foregroundContainerView];
 }
 
 - (void)_hideCurtainView
@@ -1221,58 +1221,58 @@ uint64_t __35__NTKBasePhotosFaceView__animateIn__block_invoke_2(uint64_t a1)
 
 - (BOOL)_curtainViewVisible
 {
-  v2 = [(UIView *)self->_blackView superview];
-  v3 = v2 != 0;
+  superview = [(UIView *)self->_blackView superview];
+  v3 = superview != 0;
 
   return v3;
 }
 
-- (void)_configureForTransitionFraction:(double)a3 fromEditMode:(int64_t)a4 toEditMode:(int64_t)a5
+- (void)_configureForTransitionFraction:(double)fraction fromEditMode:(int64_t)mode toEditMode:(int64_t)editMode
 {
   v9.receiver = self;
   v9.super_class = NTKBasePhotosFaceView;
   [NTKBackgroundImageFaceView _configureForTransitionFraction:sel__configureForTransitionFraction_fromEditMode_toEditMode_ fromEditMode:? toEditMode:?];
-  [(NTKBasePhotosFaceView *)self _applyForegroundAlphaForTransitionFraction:a4 fromEditMode:a5 toEditMode:a3];
+  [(NTKBasePhotosFaceView *)self _applyForegroundAlphaForTransitionFraction:mode fromEditMode:editMode toEditMode:fraction];
 }
 
-- (void)_configureForEditMode:(int64_t)a3
+- (void)_configureForEditMode:(int64_t)mode
 {
   v6.receiver = self;
   v6.super_class = NTKBasePhotosFaceView;
   [(NTKBackgroundImageFaceView *)&v6 _configureForEditMode:?];
-  if (a3 == 14 || a3 == 1)
+  if (mode == 14 || mode == 1)
   {
     v5 = +[NTKPhotoAnalysis defaultAnalysis];
     [(NTKBasePhotosFaceView *)self _setDateAttributes:v5 animated:1];
   }
 
-  [(NTKBasePhotosFaceView *)self _applyForegroundAlphaForTransitionFraction:a3 fromEditMode:a3 toEditMode:0.0];
+  [(NTKBasePhotosFaceView *)self _applyForegroundAlphaForTransitionFraction:mode fromEditMode:mode toEditMode:0.0];
 }
 
-- (void)setMonochromeColorMatrix:(id)a3
+- (void)setMonochromeColorMatrix:(id)matrix
 {
-  objc_storeStrong(&self->_monochromeColorMatrix, a3);
-  v4 = [(NTKBasePhotosFaceView *)self palette];
-  v5 = [v4 isOriginalColor];
+  objc_storeStrong(&self->_monochromeColorMatrix, matrix);
+  palette = [(NTKBasePhotosFaceView *)self palette];
+  isOriginalColor = [palette isOriginalColor];
 
-  if ((v5 & 1) == 0)
+  if ((isOriginalColor & 1) == 0)
   {
 
     [(NTKBasePhotosFaceView *)self _applyPhotosColor];
   }
 }
 
-- (void)_setDateAttributes:(id)a3 animated:(BOOL)a4
+- (void)_setDateAttributes:(id)attributes animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v60 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  attributesCopy = attributes;
   v7 = _NTKLoggingObjectForDomain(6, "NTKLoggingDomainPhoto");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(NTKBasePhotosFaceView *)self dateAlignment];
+    dateAlignment = [(NTKBasePhotosFaceView *)self dateAlignment];
     v9 = @"Bottom";
-    if (!v8)
+    if (!dateAlignment)
     {
       v9 = @"Top";
     }
@@ -1282,65 +1282,65 @@ uint64_t __35__NTKBasePhotosFaceView__animateIn__block_invoke_2(uint64_t a1)
     _os_log_impl(&dword_22D9C5000, v7, OS_LOG_TYPE_DEFAULT, "Applying color analysis for %@", buf, 0xCu);
   }
 
-  v10 = [MEMORY[0x277D75348] whiteColor];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
   legibilityGradientColor = self->_legibilityGradientColor;
   self->_legibilityGradientColor = 0;
 
-  if ([v6 isComplexBackground])
+  if ([attributesCopy isComplexBackground])
   {
     v12 = MEMORY[0x277D75348];
-    [v6 bgHue];
+    [attributesCopy bgHue];
     v14 = v13;
-    [v6 bgSaturation];
+    [attributesCopy bgSaturation];
     v16 = v15;
-    [v6 bgBrightness];
+    [attributesCopy bgBrightness];
     v18 = [v12 colorWithHue:v14 saturation:v16 brightness:v17 alpha:0.7];
     v19 = self->_legibilityGradientColor;
     self->_legibilityGradientColor = v18;
   }
 
-  else if ([v6 isColoredText])
+  else if ([attributesCopy isColoredText])
   {
     v20 = MEMORY[0x277D75348];
-    [v6 textHue];
+    [attributesCopy textHue];
     v22 = v21;
-    [v6 textSaturation];
+    [attributesCopy textSaturation];
     v24 = v23;
-    [v6 textBrightness];
+    [attributesCopy textBrightness];
     v26 = [v20 colorWithHue:v22 saturation:v24 brightness:v25 alpha:1.0];
 
     v27 = 0;
     v28 = 0;
     v29 = 0;
-    v10 = v26;
+    whiteColor = v26;
     goto LABEL_10;
   }
 
   v30 = MEMORY[0x277D75348];
-  [v6 shadowHue];
+  [attributesCopy shadowHue];
   v32 = v31;
-  [v6 shadowSaturation];
+  [attributesCopy shadowSaturation];
   v34 = v33;
-  [v6 shadowBrightness];
+  [attributesCopy shadowBrightness];
   v29 = [v30 colorWithHue:v32 saturation:v34 brightness:v35 alpha:*off_27877BE58];
   v28 = 4;
   v27 = 1;
 LABEL_10:
-  objc_storeStrong(&self->_foregroundColor, v10);
+  objc_storeStrong(&self->_foregroundColor, whiteColor);
   *(self + 1184) = *(self + 1184) & 0xFB | v28;
   objc_storeStrong(&self->_shadowColor, v29);
-  v36 = [(NTKFaceView *)self timeView];
-  v37 = v36;
-  if (v4)
+  timeView = [(NTKFaceView *)self timeView];
+  v37 = timeView;
+  if (animatedCopy)
   {
     v38 = MEMORY[0x277D75D18];
     v52[0] = MEMORY[0x277D85DD0];
     v52[1] = 3221225472;
     v52[2] = __53__NTKBasePhotosFaceView__setDateAttributes_animated___block_invoke;
     v52[3] = &unk_2787802D0;
-    v53 = v36;
-    v54 = v10;
-    v55 = self;
+    v53 = timeView;
+    v54 = whiteColor;
+    selfCopy = self;
     v57 = v27;
     v56 = v29;
     [v38 transitionWithView:v53 duration:5242880 options:v52 animations:0 completion:0.5];
@@ -1379,12 +1379,12 @@ LABEL_10:
       [MEMORY[0x277D75D18] animateWithDuration:v47 animations:0.5];
     }
 
-    v4 = v4;
+    animatedCopy = animatedCopy;
   }
 
   else
   {
-    [v36 setColor:v10];
+    [timeView setColor:whiteColor];
     [v37 setUsesLegibility:{v27 & -[NTKBasePhotosFaceView _timeLabelUsesLegibility](self, "_timeLabelUsesLegibility")}];
     [v37 setShadowColor:v29];
     [(UIView *)self->_currentGradientView removeFromSuperview];
@@ -1402,7 +1402,7 @@ LABEL_10:
     }
   }
 
-  [(NTKBasePhotosFaceView *)self _applyComplicationContentSpecificAttributesAnimated:v4];
+  [(NTKBasePhotosFaceView *)self _applyComplicationContentSpecificAttributesAnimated:animatedCopy];
   [(NTKBasePhotosFaceView *)self setNeedsLayout];
 }
 
@@ -1426,7 +1426,7 @@ uint64_t __53__NTKBasePhotosFaceView__setDateAttributes_animated___block_invoke(
   return [v3 setShadowColor:v4];
 }
 
-- (void)imageViewDidBeginPlaying:(id)a3
+- (void)imageViewDidBeginPlaying:(id)playing
 {
   if (self->_isStartingPlaybackOnSingleTap)
   {
@@ -1446,21 +1446,21 @@ uint64_t __53__NTKBasePhotosFaceView__setDateAttributes_animated___block_invoke(
   }
 }
 
-- (void)_applyScrubbingForegroundColor:(id)a3 shadowColor:(id)a4
+- (void)_applyScrubbingForegroundColor:(id)color shadowColor:(id)shadowColor
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKFaceView *)self timeView];
-  [v8 setColor:v6];
-  [v8 setShadowColor:v7];
+  colorCopy = color;
+  shadowColorCopy = shadowColor;
+  timeView = [(NTKFaceView *)self timeView];
+  [timeView setColor:colorCopy];
+  [timeView setShadowColor:shadowColorCopy];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __68__NTKBasePhotosFaceView__applyScrubbingForegroundColor_shadowColor___block_invoke;
   v11[3] = &unk_27877F148;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = colorCopy;
+  v13 = shadowColorCopy;
+  v9 = shadowColorCopy;
+  v10 = colorCopy;
   [(NTKFaceView *)self enumerateComplicationDisplayWrappersWithBlock:v11];
 }
 
@@ -1473,9 +1473,9 @@ void __68__NTKBasePhotosFaceView__applyScrubbingForegroundColor_shadowColor___bl
 
 - (void)_startScrubbingAnimationFromUIViewAnimateWithDuration
 {
-  v4 = [MEMORY[0x277D75348] whiteColor];
-  v3 = [MEMORY[0x277D75348] clearColor];
-  [(NTKBasePhotosFaceView *)self _applyScrubbingForegroundColor:v4 shadowColor:v3];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [(NTKBasePhotosFaceView *)self _applyScrubbingForegroundColor:whiteColor shadowColor:clearColor];
 }
 
 - (Class)photosFaceClass

@@ -1,20 +1,20 @@
 @interface HUNamedWallpaperFactory
 + (id)_defaultBlackWallpaperImage;
-+ (id)_gradientWallpaperImageForIdentifier:(id)a3;
-- (id)allWallpaperThumbnailsForCollection:(int64_t)a3;
-- (id)allWallpapersForCollection:(int64_t)a3;
-- (id)defaultWallpaperForCollection:(int64_t)a3;
-- (id)imageForWallpaper:(id)a3;
++ (id)_gradientWallpaperImageForIdentifier:(id)identifier;
+- (id)allWallpaperThumbnailsForCollection:(int64_t)collection;
+- (id)allWallpapersForCollection:(int64_t)collection;
+- (id)defaultWallpaperForCollection:(int64_t)collection;
+- (id)imageForWallpaper:(id)wallpaper;
 @end
 
 @implementation HUNamedWallpaperFactory
 
-- (id)allWallpapersForCollection:(int64_t)a3
+- (id)allWallpapersForCollection:(int64_t)collection
 {
   v11[9] = *MEMORY[0x277D85DE8];
-  if (a3 > 1)
+  if (collection > 1)
   {
-    NSLog(&cfstr_UnknownCollect.isa, a2, a3);
+    NSLog(&cfstr_UnknownCollect.isa, a2, collection);
     v8 = 0;
   }
 
@@ -64,10 +64,10 @@ id __54__HUNamedWallpaperFactory_allWallpapersForCollection___block_invoke_2(uin
   return v4;
 }
 
-- (id)allWallpaperThumbnailsForCollection:(int64_t)a3
+- (id)allWallpaperThumbnailsForCollection:(int64_t)collection
 {
   v11[9] = *MEMORY[0x277D85DE8];
-  if (a3 > 1)
+  if (collection > 1)
   {
     v8 = 0;
   }
@@ -118,11 +118,11 @@ id __63__HUNamedWallpaperFactory_allWallpaperThumbnailsForCollection___block_inv
   return v4;
 }
 
-- (id)defaultWallpaperForCollection:(int64_t)a3
+- (id)defaultWallpaperForCollection:(int64_t)collection
 {
-  if (a3 > 1)
+  if (collection > 1)
   {
-    NSLog(&cfstr_UnknownCollect.isa, a2, a3);
+    NSLog(&cfstr_UnknownCollect.isa, a2, collection);
     v3 = 0;
   }
 
@@ -134,22 +134,22 @@ id __63__HUNamedWallpaperFactory_allWallpaperThumbnailsForCollection___block_inv
   return v3;
 }
 
-- (id)imageForWallpaper:(id)a3
+- (id)imageForWallpaper:(id)wallpaper
 {
-  v3 = a3;
-  if ([v3 type] != 2 || (v4 = objc_opt_class(), objc_msgSend(v3, "assetIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "_gradientWallpaperImageForIdentifier:", v5), v6 = objc_claimAutoreleasedReturnValue(), v5, !v6))
+  wallpaperCopy = wallpaper;
+  if ([wallpaperCopy type] != 2 || (v4 = objc_opt_class(), objc_msgSend(wallpaperCopy, "assetIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "_gradientWallpaperImageForIdentifier:", v5), _defaultBlackWallpaperImage = objc_claimAutoreleasedReturnValue(), v5, !_defaultBlackWallpaperImage))
   {
-    v7 = [v3 assetIdentifier];
-    v6 = HUImageNamed(v7);
+    assetIdentifier = [wallpaperCopy assetIdentifier];
+    _defaultBlackWallpaperImage = HUImageNamed(assetIdentifier);
 
-    if (!v6)
+    if (!_defaultBlackWallpaperImage)
     {
-      NSLog(&cfstr_UnableToFindNa.isa, v3);
-      v6 = [objc_opt_class() _defaultBlackWallpaperImage];
+      NSLog(&cfstr_UnableToFindNa.isa, wallpaperCopy);
+      _defaultBlackWallpaperImage = [objc_opt_class() _defaultBlackWallpaperImage];
     }
   }
 
-  return v6;
+  return _defaultBlackWallpaperImage;
 }
 
 + (id)_defaultBlackWallpaperImage
@@ -194,22 +194,22 @@ void __54__HUNamedWallpaperFactory__defaultBlackWallpaperImage__block_invoke()
   UIGraphicsEndImageContext();
 }
 
-+ (id)_gradientWallpaperImageForIdentifier:(id)a3
++ (id)_gradientWallpaperImageForIdentifier:(id)identifier
 {
   v23[2] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277D759A0] mainScreen];
+  identifierCopy = identifier;
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
   if ([MEMORY[0x277D14CE8] isAMac])
   {
-    [v4 scale];
+    [mainScreen scale];
     Width = 2880.0 / v5;
   }
 
   else
   {
-    [v4 bounds];
+    [mainScreen bounds];
     Width = CGRectGetWidth(v27);
-    [v4 bounds];
+    [mainScreen bounds];
     Height = CGRectGetHeight(v28);
     if (Width < Height)
     {
@@ -217,7 +217,7 @@ void __54__HUNamedWallpaperFactory__defaultBlackWallpaperImage__block_invoke()
     }
   }
 
-  if ([v3 isEqualToString:@"HUGradientColorBlue"])
+  if ([identifierCopy isEqualToString:@"HUGradientColorBlue"])
   {
     v8 = [MEMORY[0x277D75348] colorWithRed:0.0 green:0.37254902 blue:1.0 alpha:1.0];
     v23[0] = [v8 CGColor];
@@ -227,7 +227,7 @@ LABEL_11:
     v10[1] = [v9 CGColor];
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
 
-    [v4 scale];
+    [mainScreen scale];
     v13 = v12;
     v25.width = 1.0;
     v25.height = Width;
@@ -239,7 +239,7 @@ LABEL_11:
     v26.x = 0.0;
     v26.y = Width;
     CGContextDrawLinearGradient(CurrentContext, v16, *MEMORY[0x277CBF348], v26, 0);
-    v17 = UIGraphicsGetImageFromCurrentImageContext();
+    _defaultBlackWallpaperImage = UIGraphicsGetImageFromCurrentImageContext();
     CGGradientRelease(v16);
     CGColorSpaceRelease(DeviceRGB);
     UIGraphicsEndImageContext();
@@ -247,21 +247,21 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if ([v3 isEqualToString:@"HUGradientColorOrange"])
+  if ([identifierCopy isEqualToString:@"HUGradientColorOrange"])
   {
     v8 = [MEMORY[0x277D75348] colorWithRed:0.992156863 green:0.580392157 blue:0.0196078431 alpha:1.0];
-    v22 = [v8 CGColor];
+    cGColor = [v8 CGColor];
     v9 = [MEMORY[0x277D75348] colorWithRed:1.0 green:0.921568627 blue:0.439215686 alpha:1.0];
-    v10 = &v22;
+    v10 = &cGColor;
     goto LABEL_11;
   }
 
-  if ([v3 isEqualToString:@"HUGradientColorGreen"])
+  if ([identifierCopy isEqualToString:@"HUGradientColorGreen"])
   {
     v8 = [MEMORY[0x277D75348] colorWithRed:0.176470588 green:0.729411765 blue:0.270588235 alpha:1.0];
-    v21 = [v8 CGColor];
+    cGColor2 = [v8 CGColor];
     v9 = [MEMORY[0x277D75348] colorWithRed:0.725490196 green:0.811764706 blue:0.392156863 alpha:1.0];
-    v10 = &v21;
+    v10 = &cGColor2;
     goto LABEL_11;
   }
 
@@ -269,14 +269,14 @@ LABEL_11:
   if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
   {
     LODWORD(v20) = 138412290;
-    *(&v20 + 4) = v3;
+    *(&v20 + 4) = identifierCopy;
     _os_log_error_impl(&dword_20CEB6000, v19, OS_LOG_TYPE_ERROR, "Unknown identifier specified: %@, defaulting to black", &v20, 0xCu);
   }
 
-  v17 = [objc_opt_class() _defaultBlackWallpaperImage];
+  _defaultBlackWallpaperImage = [objc_opt_class() _defaultBlackWallpaperImage];
 LABEL_12:
 
-  return v17;
+  return _defaultBlackWallpaperImage;
 }
 
 @end

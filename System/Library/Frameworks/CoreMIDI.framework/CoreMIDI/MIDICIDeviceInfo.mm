@@ -1,30 +1,30 @@
 @interface MIDICIDeviceInfo
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MIDICIDeviceIdentification)asDeviceIDStruct;
-- (MIDICIDeviceInfo)initWithCoder:(id)a3;
+- (MIDICIDeviceInfo)initWithCoder:(id)coder;
 - (MIDICIDeviceInfo)initWithDestination:(MIDIEntityRef)midiDestination manufacturer:(NSData *)manufacturer family:(NSData *)family model:(NSData *)modelNumber revision:(NSData *)revisionLevel;
-- (MIDICIDeviceInfo)initWithDestination:(unsigned int)a3 deviceID:(MIDICIDeviceIdentification *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (MIDICIDeviceInfo)initWithDestination:(unsigned int)destination deviceID:(MIDICIDeviceIdentification *)d;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MIDICIDeviceInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 midiDestination] == self->_midiDestination)
+  equalCopy = equal;
+  if ([equalCopy midiDestination] == self->_midiDestination)
   {
-    v5 = [v4 manufacturerID];
-    if ([v5 isEqualToData:self->_manufacturerID])
+    manufacturerID = [equalCopy manufacturerID];
+    if ([manufacturerID isEqualToData:self->_manufacturerID])
     {
-      v6 = [v4 family];
-      if ([v6 isEqualToData:self->_family])
+      family = [equalCopy family];
+      if ([family isEqualToData:self->_family])
       {
-        v7 = [v4 modelNumber];
-        if ([v7 isEqualToData:self->_model])
+        modelNumber = [equalCopy modelNumber];
+        if ([modelNumber isEqualToData:self->_model])
         {
-          v8 = [v4 revisionLevel];
-          v9 = [v8 isEqualToData:self->_revision];
+          revisionLevel = [equalCopy revisionLevel];
+          v9 = [revisionLevel isEqualToData:self->_revision];
         }
 
         else
@@ -53,41 +53,41 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_manufacturerID forKey:@"manufacturerID"];
-  [v4 encodeObject:self->_family forKey:@"family"];
-  [v4 encodeObject:self->_model forKey:@"model"];
-  [v4 encodeObject:self->_revision forKey:@"revision"];
-  [v4 encodeInt32:self->_midiDestination forKey:@"midiDestination"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_manufacturerID forKey:@"manufacturerID"];
+  [coderCopy encodeObject:self->_family forKey:@"family"];
+  [coderCopy encodeObject:self->_model forKey:@"model"];
+  [coderCopy encodeObject:self->_revision forKey:@"revision"];
+  [coderCopy encodeInt32:self->_midiDestination forKey:@"midiDestination"];
 }
 
-- (MIDICIDeviceInfo)initWithCoder:(id)a3
+- (MIDICIDeviceInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = MIDICIDeviceInfo;
   v5 = [(MIDICIDeviceInfo *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"manufacturerID"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"manufacturerID"];
     manufacturerID = v5->_manufacturerID;
     v5->_manufacturerID = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"family"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"family"];
     family = v5->_family;
     v5->_family = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"model"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"model"];
     model = v5->_model;
     v5->_model = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"revision"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"revision"];
     revision = v5->_revision;
     v5->_revision = v12;
 
-    v5->_midiDestination = [v4 decodeInt32ForKey:@"midiDestination"];
+    v5->_midiDestination = [coderCopy decodeInt32ForKey:@"midiDestination"];
   }
 
   return v5;
@@ -133,13 +133,13 @@
   return result;
 }
 
-- (MIDICIDeviceInfo)initWithDestination:(unsigned int)a3 deviceID:(MIDICIDeviceIdentification *)a4
+- (MIDICIDeviceInfo)initWithDestination:(unsigned int)destination deviceID:(MIDICIDeviceIdentification *)d
 {
-  v5 = *&a3;
-  v7 = [MEMORY[0x277CBEA90] dataWithBytes:a4 length:3];
-  v8 = [MEMORY[0x277CBEA90] dataWithBytes:a4->family length:2];
-  v9 = [MEMORY[0x277CBEA90] dataWithBytes:a4->modelNumber length:2];
-  v10 = [MEMORY[0x277CBEA90] dataWithBytes:a4->revisionLevel length:4];
+  v5 = *&destination;
+  v7 = [MEMORY[0x277CBEA90] dataWithBytes:d length:3];
+  v8 = [MEMORY[0x277CBEA90] dataWithBytes:d->family length:2];
+  v9 = [MEMORY[0x277CBEA90] dataWithBytes:d->modelNumber length:2];
+  v10 = [MEMORY[0x277CBEA90] dataWithBytes:d->revisionLevel length:4];
   v11 = [(MIDICIDeviceInfo *)self initWithDestination:v5 manufacturer:v7 family:v8 model:v9 revision:v10];
 
   return v11;
@@ -163,7 +163,7 @@
   {
     self = 0;
 LABEL_9:
-    v19 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
@@ -174,10 +174,10 @@ LABEL_9:
   objc_storeStrong(p_isa + 3, modelNumber);
   objc_storeStrong(p_isa + 4, revisionLevel);
   self = p_isa;
-  v19 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v19;
+  return selfCopy;
 }
 
 @end

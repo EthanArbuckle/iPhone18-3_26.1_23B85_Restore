@@ -1,61 +1,61 @@
 @interface BMItem
-+ (id)itemWithType:(id)a3 UUIDValue:(id)a4;
-+ (id)itemWithType:(id)a3 numberValue:(id)a4;
-+ (id)itemWithType:(id)a3 stringValue:(id)a4;
-- (BMItem)initWithCoder:(id)a3;
-- (BMItem)initWithType:(id)a3 normalizedValue:(id)a4;
-- (BMItem)initWithType:(id)a3 value:(id)a4 absoluteSupport:(unint64_t)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)itemWithType:(id)type UUIDValue:(id)value;
++ (id)itemWithType:(id)type numberValue:(id)value;
++ (id)itemWithType:(id)type stringValue:(id)value;
+- (BMItem)initWithCoder:(id)coder;
+- (BMItem)initWithType:(id)type normalizedValue:(id)value;
+- (BMItem)initWithType:(id)type value:(id)value absoluteSupport:(unint64_t)support;
+- (BOOL)isEqual:(id)equal;
 - (NSString)uniformIdentifier;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)value;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BMItem
 
-+ (id)itemWithType:(id)a3 stringValue:(id)a4
++ (id)itemWithType:(id)type stringValue:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BMItem alloc] initWithType:v6 value:v5];
+  valueCopy = value;
+  typeCopy = type;
+  v7 = [[BMItem alloc] initWithType:typeCopy value:valueCopy];
 
   return v7;
 }
 
-+ (id)itemWithType:(id)a3 numberValue:(id)a4
++ (id)itemWithType:(id)type numberValue:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BMItem alloc] initWithType:v6 value:v5];
+  valueCopy = value;
+  typeCopy = type;
+  v7 = [[BMItem alloc] initWithType:typeCopy value:valueCopy];
 
   return v7;
 }
 
-+ (id)itemWithType:(id)a3 UUIDValue:(id)a4
++ (id)itemWithType:(id)type UUIDValue:(id)value
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[BMItem alloc] initWithType:v6 value:v5];
+  valueCopy = value;
+  typeCopy = type;
+  v7 = [[BMItem alloc] initWithType:typeCopy value:valueCopy];
 
   return v7;
 }
 
-- (BMItem)initWithType:(id)a3 value:(id)a4 absoluteSupport:(unint64_t)a5
+- (BMItem)initWithType:(id)type value:(id)value absoluteSupport:(unint64_t)support
 {
-  v9 = a3;
-  v10 = a4;
+  typeCopy = type;
+  valueCopy = value;
   v16.receiver = self;
   v16.super_class = BMItem;
   v11 = [(BMItem *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_type, a3);
-    v12->_absoluteSupport = a5;
-    v13 = BMItemNormalizedValueFromValue(v10);
+    objc_storeStrong(&v11->_type, type);
+    v12->_absoluteSupport = support;
+    v13 = BMItemNormalizedValueFromValue(valueCopy);
     normalizedValue = v12->_normalizedValue;
     v12->_normalizedValue = v13;
   }
@@ -63,21 +63,21 @@
   return v12;
 }
 
-- (BMItem)initWithType:(id)a3 normalizedValue:(id)a4
+- (BMItem)initWithType:(id)type normalizedValue:(id)value
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = BMItemValueFromNormalizedValue(v6, [v7 valueClass]);
+  valueCopy = value;
+  typeCopy = type;
+  v8 = BMItemValueFromNormalizedValue(valueCopy, [typeCopy valueClass]);
 
-  v9 = [(BMItem *)self initWithType:v7 value:v8];
+  v9 = [(BMItem *)self initWithType:typeCopy value:v8];
   return v9;
 }
 
 - (id)value
 {
-  v3 = [(BMItem *)self normalizedValue];
-  v4 = [(BMItem *)self type];
-  v5 = BMItemValueFromNormalizedValue(v3, [v4 valueClass]);
+  normalizedValue = [(BMItem *)self normalizedValue];
+  type = [(BMItem *)self type];
+  v5 = BMItemValueFromNormalizedValue(normalizedValue, [type valueClass]);
 
   return v5;
 }
@@ -85,18 +85,18 @@
 - (NSString)uniformIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(BMItem *)self type];
-  v5 = [v4 identifier];
-  v6 = [(BMItem *)self normalizedValue];
-  v7 = [v3 stringWithFormat:@"%@:%@", v5, v6];
+  type = [(BMItem *)self type];
+  identifier = [type identifier];
+  normalizedValue = [(BMItem *)self normalizedValue];
+  v7 = [v3 stringWithFormat:@"%@:%@", identifier, normalizedValue];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -106,14 +106,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(BMItem *)self type];
-      v7 = [(BMItem *)v5 type];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      type = [(BMItem *)self type];
+      type2 = [(BMItem *)v5 type];
+      if ([type isEqual:type2])
       {
-        v8 = [(BMItem *)self normalizedValue];
-        v9 = [(BMItem *)v5 normalizedValue];
-        v10 = [v8 isEqualToString:v9];
+        normalizedValue = [(BMItem *)self normalizedValue];
+        normalizedValue2 = [(BMItem *)v5 normalizedValue];
+        v10 = [normalizedValue isEqualToString:normalizedValue2];
       }
 
       else
@@ -133,10 +133,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(BMItem *)self type];
-  v4 = [v3 hash];
-  v5 = [(BMItem *)self normalizedValue];
-  v6 = [v5 hash];
+  type = [(BMItem *)self type];
+  v4 = [type hash];
+  normalizedValue = [(BMItem *)self normalizedValue];
+  v6 = [normalizedValue hash];
 
   return v6 ^ v4;
 }
@@ -144,37 +144,37 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(BMItem *)self type];
-  v5 = [v4 identifier];
-  v6 = [(BMItem *)self value];
-  v7 = [v3 stringWithFormat:@"{%@: %@}", v5, v6];
+  type = [(BMItem *)self type];
+  identifier = [type identifier];
+  value = [(BMItem *)self value];
+  v7 = [v3 stringWithFormat:@"{%@: %@}", identifier, value];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(BMItem *)self type];
-  v6 = [(BMItem *)self value];
-  v7 = [v4 initWithType:v5 value:v6];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  type = [(BMItem *)self type];
+  value = [(BMItem *)self value];
+  v7 = [v4 initWithType:type value:value];
 
   return v7;
 }
 
-- (BMItem)initWithCoder:(id)a3
+- (BMItem)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"type"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"type"];
   if ([objc_msgSend(v5 "valueClass")])
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     v7 = [objc_opt_class() itemWithType:v5 stringValue:v6];
   }
 
   else if ([objc_msgSend(v5 "valueClass")])
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     v7 = [objc_opt_class() itemWithType:v5 numberValue:v6];
   }
 
@@ -186,7 +186,7 @@
       goto LABEL_8;
     }
 
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     v7 = [objc_opt_class() itemWithType:v5 UUIDValue:v6];
   }
 
@@ -196,13 +196,13 @@ LABEL_8:
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeObject:type forKey:@"type"];
-  v6 = [(BMItem *)self value];
-  [v5 encodeObject:v6 forKey:@"value"];
+  coderCopy = coder;
+  [coderCopy encodeObject:type forKey:@"type"];
+  value = [(BMItem *)self value];
+  [coderCopy encodeObject:value forKey:@"value"];
 }
 
 @end

@@ -3,10 +3,10 @@
 - (id)stream;
 - (int)index;
 - (void)dealloc;
-- (void)setDescription:(id)a3;
-- (void)setDisplayName:(id)a3;
-- (void)setParentPlug:(id)a3;
-- (void)setUUID:(id)a3;
+- (void)setDescription:(id)description;
+- (void)setDisplayName:(id)name;
+- (void)setParentPlug:(id)plug;
+- (void)setUUID:(id)d;
 @end
 
 @implementation FxPin
@@ -102,14 +102,14 @@
   return -1;
 }
 
-- (void)setParentPlug:(id)a3
+- (void)setParentPlug:(id)plug
 {
   var0 = self->_priv->var0;
   if (var0)
   {
   }
 
-  self->_priv->var0 = a3;
+  self->_priv->var0 = plug;
 }
 
 - (id)stream
@@ -126,34 +126,34 @@
   return result;
 }
 
-- (void)setUUID:(id)a3
+- (void)setUUID:(id)d
 {
   var3 = self->_priv->var3;
   if (var3)
   {
   }
 
-  self->_priv->var3 = a3;
+  self->_priv->var3 = d;
 }
 
-- (void)setDisplayName:(id)a3
+- (void)setDisplayName:(id)name
 {
   var4 = self->_priv->var4;
   if (var4)
   {
   }
 
-  self->_priv->var4 = a3;
+  self->_priv->var4 = name;
 }
 
-- (void)setDescription:(id)a3
+- (void)setDescription:(id)description
 {
   var5 = self->_priv->var5;
   if (var5)
   {
   }
 
-  self->_priv->var5 = a3;
+  self->_priv->var5 = description;
 }
 
 @end

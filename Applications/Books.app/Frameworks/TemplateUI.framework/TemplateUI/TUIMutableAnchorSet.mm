@@ -1,21 +1,21 @@
 @interface TUIMutableAnchorSet
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)appendLogicalScrollAnchor:(id)a3 withOffset:(double)a4;
-- (void)appendScrollAnchor:(double)a3;
-- (void)appendTriggerAnchorWithOffset:(double)a3 trigger:(id)a4 axis:(unint64_t)a5;
-- (void)finalizeWithContentsScale:(double)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)appendLogicalScrollAnchor:(id)anchor withOffset:(double)offset;
+- (void)appendScrollAnchor:(double)anchor;
+- (void)appendTriggerAnchorWithOffset:(double)offset trigger:(id)trigger axis:(unint64_t)axis;
+- (void)finalizeWithContentsScale:(double)scale;
 @end
 
 @implementation TUIMutableAnchorSet
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TUIAnchorSet alloc];
 
   return [(TUIAnchorSet *)v4 initWithAnchorSet:self];
 }
 
-- (void)finalizeWithContentsScale:(double)a3
+- (void)finalizeWithContentsScale:(double)scale
 {
   begin = self->super._verticalTriggerAnchors.__begin_;
   end = self->super._verticalTriggerAnchors.__end_;
@@ -51,7 +51,7 @@
   {
     do
     {
-      *v14 = TUIFloatRoundedForScale(*v14, a3);
+      *v14 = TUIFloatRoundedForScale(*v14, scale);
       v14 += 2;
       v13 = self->super._logicalScrollAnchors.__end_;
     }
@@ -75,10 +75,10 @@
   std::__sort<std::__less<double,double> &,double *>();
 }
 
-- (void)appendScrollAnchor:(double)a3
+- (void)appendScrollAnchor:(double)anchor
 {
   [(TUIAnchorSet *)self offset];
-  v6 = a3 - v5 + self->_translationOffset;
+  v6 = anchor - v5 + self->_translationOffset;
   end = self->super._scrollAnchors.__end_;
   cap = self->super._scrollAnchors.__cap_;
   if (end >= cap)
@@ -135,30 +135,30 @@
   self->super._scrollAnchors.__end_ = v9;
 }
 
-- (void)appendTriggerAnchorWithOffset:(double)a3 trigger:(id)a4 axis:(unint64_t)a5
+- (void)appendTriggerAnchorWithOffset:(double)offset trigger:(id)trigger axis:(unint64_t)axis
 {
-  v8 = a4;
-  v10 = self->_translationOffset + a3;
-  v11 = v8;
-  if (a5 == 2)
+  triggerCopy = trigger;
+  v10 = self->_translationOffset + offset;
+  v11 = triggerCopy;
+  if (axis == 2)
   {
-    v9 = v8;
+    v9 = triggerCopy;
     sub_141160(&self->super._verticalTriggerAnchors.__begin_, &v10);
   }
 
   else
   {
-    v9 = v8;
+    v9 = triggerCopy;
     sub_141160(&self->super._horizontalTriggerAnchors.__begin_, &v10);
   }
 }
 
-- (void)appendLogicalScrollAnchor:(id)a3 withOffset:(double)a4
+- (void)appendLogicalScrollAnchor:(id)anchor withOffset:(double)offset
 {
-  v6 = a3;
-  v8 = self->_translationOffset + a4;
-  v9 = v6;
-  v7 = v6;
+  anchorCopy = anchor;
+  v8 = self->_translationOffset + offset;
+  v9 = anchorCopy;
+  v7 = anchorCopy;
   sub_14123C(&self->super._logicalScrollAnchors.__begin_, &v8);
 }
 

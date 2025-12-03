@@ -20,10 +20,10 @@
     v8[1] = 3221225472;
     v8[2] = __83__MPSectionedCollection_MPCModelQueueFeederAdditions__mpc_indexPathForIdentifiers___block_invoke;
     v8[3] = &unk_1E8234B60;
-    v10 = a1;
+    selfCopy = self;
     v11 = &v12;
     v9 = v4;
-    [a1 enumerateSectionIdentifiersUsingBlock:v8];
+    [self enumerateSectionIdentifiersUsingBlock:v8];
     v6 = v13[5];
 
     _Block_object_dispose(&v12, 8);

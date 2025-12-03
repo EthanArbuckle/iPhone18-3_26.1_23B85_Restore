@@ -1,32 +1,32 @@
 @interface ICNoteLockManager
-- (ICNoteLockManager)initWithNote:(id)a3;
+- (ICNoteLockManager)initWithNote:(id)note;
 - (UIWindow)window;
-- (void)addLockWithCompletionHandler:(id)a3;
-- (void)removeLockWithCompletionHandler:(id)a3;
-- (void)toggleLockWithCompletionHandler:(id)a3;
-- (void)unsafelyToggleLockWithCompletionHandler:(id)a3;
-- (void)updateDivergedAttachmentsWithConfiguration:(id)a3 completion:(id)a4;
-- (void)updateDivergedAttachmentsWithPassphrase:(id)a3 completion:(id)a4;
+- (void)addLockWithCompletionHandler:(id)handler;
+- (void)removeLockWithCompletionHandler:(id)handler;
+- (void)toggleLockWithCompletionHandler:(id)handler;
+- (void)unsafelyToggleLockWithCompletionHandler:(id)handler;
+- (void)updateDivergedAttachmentsWithConfiguration:(id)configuration completion:(id)completion;
+- (void)updateDivergedAttachmentsWithPassphrase:(id)passphrase completion:(id)completion;
 @end
 
 @implementation ICNoteLockManager
 
-- (ICNoteLockManager)initWithNote:(id)a3
+- (ICNoteLockManager)initWithNote:(id)note
 {
-  v5 = a3;
+  noteCopy = note;
   v11.receiver = self;
   v11.super_class = ICNoteLockManager;
   v6 = [(ICNoteLockManager *)&v11 init];
   if (v6)
   {
-    v7 = [v5 account];
+    account = [noteCopy account];
     account = v6->_account;
-    v6->_account = v7;
+    v6->_account = account;
 
-    objc_storeStrong(&v6->_note, a3);
-    v9 = [(ICNoteLockManager *)v6 account];
+    objc_storeStrong(&v6->_note, note);
+    account2 = [(ICNoteLockManager *)v6 account];
 
-    if (!v9)
+    if (!account2)
     {
       [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"((self.account) != nil)" functionName:"-[ICNoteLockManager initWithNote:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "self.account"}];
     }
@@ -35,49 +35,49 @@
   return v6;
 }
 
-- (void)toggleLockWithCompletionHandler:(id)a3
+- (void)toggleLockWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICNoteLockManager toggleLockWithCompletionHandler:?];
   }
 
-  v6 = [(ICNoteLockManager *)self note];
-  v7 = [v6 isPasswordProtected];
+  note = [(ICNoteLockManager *)self note];
+  isPasswordProtected = [note isPasswordProtected];
 
-  if (v7)
+  if (isPasswordProtected)
   {
-    [(ICNoteLockManager *)self removeLockWithCompletionHandler:v4];
+    [(ICNoteLockManager *)self removeLockWithCompletionHandler:handlerCopy];
   }
 
   else
   {
-    [(ICNoteLockManager *)self addLockWithCompletionHandler:v4];
+    [(ICNoteLockManager *)self addLockWithCompletionHandler:handlerCopy];
   }
 }
 
-- (void)addLockWithCompletionHandler:(id)a3
+- (void)addLockWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICNoteLockManager addLockWithCompletionHandler:?];
   }
 
-  v6 = [(ICNoteLockManager *)self window];
+  window = [(ICNoteLockManager *)self window];
 
-  if (!v6)
+  if (!window)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"((self.window) != nil)" functionName:"-[ICNoteLockManager addLockWithCompletionHandler:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "self.window"}];
   }
 
-  v7 = [(ICNoteLockManager *)self note];
-  v8 = [v7 isPasswordProtected];
+  note = [(ICNoteLockManager *)self note];
+  isPasswordProtected = [note isPasswordProtected];
 
-  if (v8)
+  if (isPasswordProtected)
   {
     v9 = os_log_create("com.apple.notes", "Crypto");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -85,18 +85,18 @@
       [ICNoteLockManager addLockWithCompletionHandler:v9];
     }
 
-    if (v4)
+    if (handlerCopy)
     {
-      v4[2](v4, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
   else
   {
-    v10 = [(ICNoteLockManager *)self note];
-    v11 = [v10 preventLockReason];
+    note2 = [(ICNoteLockManager *)self note];
+    preventLockReason = [note2 preventLockReason];
 
-    if (v11)
+    if (preventLockReason)
     {
       v12 = os_log_create("com.apple.notes", "Crypto");
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -104,31 +104,31 @@
         [ICNoteLockManager addLockWithCompletionHandler:?];
       }
 
-      v13 = [(ICNoteLockManager *)self note];
-      v14 = +[ICAuthenticationAlert cannotLockInfoAlertWithReason:](ICAuthenticationAlert, "cannotLockInfoAlertWithReason:", [v13 preventLockReason]);
+      note3 = [(ICNoteLockManager *)self note];
+      v14 = +[ICAuthenticationAlert cannotLockInfoAlertWithReason:](ICAuthenticationAlert, "cannotLockInfoAlertWithReason:", [note3 preventLockReason]);
 
-      v15 = [(ICNoteLockManager *)self window];
+      window2 = [(ICNoteLockManager *)self window];
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __50__ICNoteLockManager_addLockWithCompletionHandler___block_invoke;
       v23[3] = &unk_1E84690D0;
-      v24 = v4;
-      [v14 presentInWindow:v15 completionHandler:v23];
+      v24 = handlerCopy;
+      [v14 presentInWindow:window2 completionHandler:v23];
     }
 
     else
     {
       objc_initWeak(&location, self);
       v16 = +[ICLockedNotesModeMigrator sharedMigrator];
-      v17 = [(ICNoteLockManager *)self account];
-      v18 = [(ICNoteLockManager *)self window];
+      account = [(ICNoteLockManager *)self account];
+      window3 = [(ICNoteLockManager *)self window];
       v19[0] = MEMORY[0x1E69E9820];
       v19[1] = 3221225472;
       v19[2] = __50__ICNoteLockManager_addLockWithCompletionHandler___block_invoke_2;
       v19[3] = &unk_1E846DE10;
       objc_copyWeak(&v21, &location);
-      v20 = v4;
-      [v16 presentLockedNotesMigrationPromptIfNeededForAccount:v17 window:v18 completionHandler:v19];
+      v20 = handlerCopy;
+      [v16 presentLockedNotesMigrationPromptIfNeededForAccount:account window:window3 completionHandler:v19];
 
       objc_destroyWeak(&v21);
       objc_destroyWeak(&location);
@@ -317,40 +317,40 @@ void __50__ICNoteLockManager_addLockWithCompletionHandler___block_invoke_5(uint6
   [WeakRetained unsafelyToggleLockWithCompletionHandler:*(a1 + 32)];
 }
 
-- (void)removeLockWithCompletionHandler:(id)a3
+- (void)removeLockWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICNoteLockManager removeLockWithCompletionHandler:?];
   }
 
-  v6 = [(ICNoteLockManager *)self window];
+  window = [(ICNoteLockManager *)self window];
 
-  if (!v6)
+  if (!window)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"((self.window) != nil)" functionName:"-[ICNoteLockManager removeLockWithCompletionHandler:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "self.window"}];
   }
 
-  v7 = [(ICNoteLockManager *)self note];
-  v8 = [v7 isPasswordProtected];
+  note = [(ICNoteLockManager *)self note];
+  isPasswordProtected = [note isPasswordProtected];
 
-  if (v8)
+  if (isPasswordProtected)
   {
     objc_initWeak(&location, self);
-    v9 = [(ICNoteLockManager *)self note];
-    v10 = [ICAuthenticationPrompt promptForIntent:3 object:v9];
+    note2 = [(ICNoteLockManager *)self note];
+    v10 = [ICAuthenticationPrompt promptForIntent:3 object:note2];
 
     v11 = +[ICAuthentication shared];
-    v12 = [(ICNoteLockManager *)self window];
+    window2 = [(ICNoteLockManager *)self window];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __53__ICNoteLockManager_removeLockWithCompletionHandler___block_invoke;
     v14[3] = &unk_1E846DE38;
     objc_copyWeak(&v16, &location);
-    v15 = v4;
-    [v11 authenticateWithPrompt:v10 displayWindow:v12 completionHandler:v14];
+    v15 = handlerCopy;
+    [v11 authenticateWithPrompt:v10 displayWindow:window2 completionHandler:v14];
 
     objc_destroyWeak(&v16);
     objc_destroyWeak(&location);
@@ -364,9 +364,9 @@ void __50__ICNoteLockManager_addLockWithCompletionHandler___block_invoke_5(uint6
       [ICNoteLockManager removeLockWithCompletionHandler:v13];
     }
 
-    if (v4)
+    if (handlerCopy)
     {
-      (*(v4 + 2))(v4, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0);
     }
   }
 }
@@ -391,21 +391,21 @@ void __53__ICNoteLockManager_removeLockWithCompletionHandler___block_invoke(uint
   }
 }
 
-- (void)unsafelyToggleLockWithCompletionHandler:(id)a3
+- (void)unsafelyToggleLockWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:@"ICNoteLockManagerWillToggleLock" object:self];
+  handlerCopy = handler;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"ICNoteLockManagerWillToggleLock" object:self];
 
-  v6 = [(ICNoteLockManager *)self note];
-  [v6 persistPendingChangesRecursively];
+  note = [(ICNoteLockManager *)self note];
+  [note persistPendingChangesRecursively];
 
-  v7 = [(ICNoteLockManager *)self note];
-  v8 = [v7 managedObjectContext];
-  [v8 ic_saveWithLogDescription:@"Saving before toggling lock"];
+  note2 = [(ICNoteLockManager *)self note];
+  managedObjectContext = [note2 managedObjectContext];
+  [managedObjectContext ic_saveWithLogDescription:@"Saving before toggling lock"];
 
-  v9 = [(ICNoteLockManager *)self note];
-  if ([v9 isPasswordProtected])
+  note3 = [(ICNoteLockManager *)self note];
+  if ([note3 isPasswordProtected])
   {
     v10 = @"Removing Lock…";
   }
@@ -425,8 +425,8 @@ void __53__ICNoteLockManager_removeLockWithCompletionHandler___block_invoke(uint
   v22[4] = __Block_byref_object_dispose__71;
   v23 = 0;
   v12 = [ICLongRunningTaskController alloc];
-  v13 = [(ICNoteLockManager *)self window];
-  v14 = [(ICLongRunningTaskController *)v12 initWithWindow:v13 intervalBeforeOpeningProgressDialog:1.0];
+  window = [(ICNoteLockManager *)self window];
+  v14 = [(ICLongRunningTaskController *)v12 initWithWindow:window intervalBeforeOpeningProgressDialog:1.0];
 
   [(ICLongRunningTaskController *)v14 setIndeterminate:1];
   [(ICLongRunningTaskController *)v14 setProgressString:v11];
@@ -442,7 +442,7 @@ void __53__ICNoteLockManager_removeLockWithCompletionHandler___block_invoke(uint
   v16[3] = &unk_1E846DEB0;
   objc_copyWeak(&v19, &location);
   v18 = v22;
-  v15 = v4;
+  v15 = handlerCopy;
   v17 = v15;
   [(ICLongRunningTaskController *)v14 startTask:v20 completionBlock:v16];
 
@@ -542,46 +542,46 @@ void __61__ICNoteLockManager_unsafelyToggleLockWithCompletionHandler___block_inv
   }
 }
 
-- (void)updateDivergedAttachmentsWithPassphrase:(id)a3 completion:(id)a4
+- (void)updateDivergedAttachmentsWithPassphrase:(id)passphrase completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  passphraseCopy = passphrase;
+  completionCopy = completion;
   v8 = os_log_create("com.apple.notes", "Crypto");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [ICNoteLockManager updateDivergedAttachmentsWithPassphrase:? completion:?];
   }
 
-  v9 = [(ICNoteLockManager *)self window];
+  window = [(ICNoteLockManager *)self window];
 
-  if (!v9)
+  if (!window)
   {
     [MEMORY[0x1E69B7A38] handleFailedAssertWithCondition:"((self.window) != nil)" functionName:"-[ICNoteLockManager updateDivergedAttachmentsWithPassphrase:completion:]" simulateCrash:1 showAlert:0 format:{@"Expected non-nil value for '%s'", "self.window"}];
   }
 
-  v10 = [(ICNoteLockManager *)self note];
-  v11 = [v10 isAuthenticated];
+  note = [(ICNoteLockManager *)self note];
+  isAuthenticated = [note isAuthenticated];
 
-  if (v11)
+  if (isAuthenticated)
   {
-    v12 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v13 = *MEMORY[0x1E69B73C0];
-    v14 = [(ICNoteLockManager *)self account];
-    [v12 postNotificationName:v13 object:v14];
+    account = [(ICNoteLockManager *)self account];
+    [defaultCenter postNotificationName:v13 object:account];
 
-    v15 = [MEMORY[0x1E69B7800] sharedContext];
-    v16 = [v15 crossProcessChangeCoordinator];
-    [v16 postCrossProcessNotificationName:v13];
+    mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+    crossProcessChangeCoordinator = [mEMORY[0x1E69B7800] crossProcessChangeCoordinator];
+    [crossProcessChangeCoordinator postCrossProcessNotificationName:v13];
 
     v17 = objc_alloc_init(MEMORY[0x1E69B7720]);
-    [v17 setDivergedPassphrase:v6];
+    [v17 setDivergedPassphrase:passphraseCopy];
     [v17 setUserInitiated:1];
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __72__ICNoteLockManager_updateDivergedAttachmentsWithPassphrase_completion___block_invoke;
     v19[3] = &unk_1E846C850;
     v19[4] = self;
-    v20 = v7;
+    v20 = completionCopy;
     [(ICNoteLockManager *)self updateDivergedAttachmentsWithConfiguration:v17 completion:v19];
   }
 
@@ -593,9 +593,9 @@ void __61__ICNoteLockManager_unsafelyToggleLockWithCompletionHandler___block_inv
       [ICNoteLockManager updateDivergedAttachmentsWithPassphrase:? completion:?];
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -622,10 +622,10 @@ uint64_t __72__ICNoteLockManager_updateDivergedAttachmentsWithPassphrase_complet
   return result;
 }
 
-- (void)updateDivergedAttachmentsWithConfiguration:(id)a3 completion:(id)a4
+- (void)updateDivergedAttachmentsWithConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = *MEMORY[0x1E69DDA98];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
@@ -636,18 +636,18 @@ uint64_t __72__ICNoteLockManager_updateDivergedAttachmentsWithPassphrase_complet
   v28[2] = 0x2020000000;
   v29 = 0;
   v12 = [ICLongRunningTaskController alloc];
-  v13 = [(ICNoteLockManager *)self window];
-  v14 = [(ICLongRunningTaskController *)v12 initWithWindow:v13 intervalBeforeOpeningProgressDialog:1.0];
+  window = [(ICNoteLockManager *)self window];
+  v14 = [(ICLongRunningTaskController *)v12 initWithWindow:window intervalBeforeOpeningProgressDialog:1.0];
 
   v15 = __ICLocalizedFrameworkString_impl(@"Changing Password…", @"Changing Password…", 0, 1);
   [(ICLongRunningTaskController *)v14 setProgressString:v15];
 
   [(ICLongRunningTaskController *)v14 setIndeterminate:1];
   [(ICLongRunningTaskController *)v14 setShouldShowCircularProgress:1];
-  v16 = [(ICNoteLockManager *)self window];
-  v17 = [v16 rootViewController];
-  v18 = [v17 ic_topViewController];
-  [(ICLongRunningTaskController *)v14 setViewControllerToPresentFrom:v18];
+  window2 = [(ICNoteLockManager *)self window];
+  rootViewController = [window2 rootViewController];
+  ic_topViewController = [rootViewController ic_topViewController];
+  [(ICLongRunningTaskController *)v14 setViewControllerToPresentFrom:ic_topViewController];
 
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -655,14 +655,14 @@ uint64_t __72__ICNoteLockManager_updateDivergedAttachmentsWithPassphrase_complet
   v25[3] = &unk_1E846D870;
   v27 = v28;
   v25[4] = self;
-  v19 = v6;
+  v19 = configurationCopy;
   v26 = v19;
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __75__ICNoteLockManager_updateDivergedAttachmentsWithConfiguration_completion___block_invoke_2;
   v21[3] = &unk_1E846D898;
   v24 = v11;
-  v20 = v7;
+  v20 = completionCopy;
   v22 = v20;
   v23 = v28;
   [(ICLongRunningTaskController *)v14 startTask:v25 completionBlock:v21];

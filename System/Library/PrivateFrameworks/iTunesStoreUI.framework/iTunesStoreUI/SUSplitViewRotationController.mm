@@ -1,10 +1,10 @@
 @interface SUSplitViewRotationController
 - (id)_firstRotationController;
 - (id)_secondRotationController;
-- (void)animateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4;
+- (void)animateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration;
 - (void)dealloc;
-- (void)finishRotationFromInterfaceOrientation:(int64_t)a3;
-- (void)prepareToRotateToInterfaceOrientation:(int64_t)a3;
+- (void)finishRotationFromInterfaceOrientation:(int64_t)orientation;
+- (void)prepareToRotateToInterfaceOrientation:(int64_t)orientation;
 @end
 
 @implementation SUSplitViewRotationController
@@ -24,15 +24,15 @@
   [(SURotationController *)&v5 dealloc];
 }
 
-- (void)animateRotationToInterfaceOrientation:(int64_t)a3 duration:(double)a4
+- (void)animateRotationToInterfaceOrientation:(int64_t)orientation duration:(double)duration
 {
   [-[SUSplitViewRotationController _firstRotationController](self "_firstRotationController")];
-  v7 = [(SUSplitViewRotationController *)self _secondRotationController];
+  _secondRotationController = [(SUSplitViewRotationController *)self _secondRotationController];
 
-  [v7 animateRotationToInterfaceOrientation:a3 duration:a4];
+  [_secondRotationController animateRotationToInterfaceOrientation:orientation duration:duration];
 }
 
-- (void)finishRotationFromInterfaceOrientation:(int64_t)a3
+- (void)finishRotationFromInterfaceOrientation:(int64_t)orientation
 {
   [-[SUSplitViewRotationController _firstRotationController](self "_firstRotationController")];
   [(SURotationController *)self->_firstRotationController setViewController:0];
@@ -42,30 +42,30 @@
   [(SURotationController *)self->_secondRotationController setViewController:0];
   v6 = self->_secondRotationController;
   self->_secondRotationController = 0;
-  v7 = [(SUViewController *)self->super._viewController view];
-  v8 = [(SUViewController *)self->super._viewController _splitView];
-  [v8 setAutoresizingMask:18];
-  [v7 bounds];
-  [v8 setFrame:?];
-  [objc_msgSend(v8 "layer")];
+  view = [(SUViewController *)self->super._viewController view];
+  _splitView = [(SUViewController *)self->super._viewController _splitView];
+  [_splitView setAutoresizingMask:18];
+  [view bounds];
+  [_splitView setFrame:?];
+  [objc_msgSend(_splitView "layer")];
 
-  [v7 addSubview:v8];
+  [view addSubview:_splitView];
 }
 
-- (void)prepareToRotateToInterfaceOrientation:(int64_t)a3
+- (void)prepareToRotateToInterfaceOrientation:(int64_t)orientation
 {
   [-[SUSplitViewRotationController _firstRotationController](self "_firstRotationController")];
   [-[SUSplitViewRotationController _secondRotationController](self "_secondRotationController")];
-  v5 = [(SUViewController *)self->super._viewController _splitView];
+  _splitView = [(SUViewController *)self->super._viewController _splitView];
   [MEMORY[0x1E6979518] begin];
-  [(SURotationController *)self viewFrameForInterfaceOrientation:a3];
+  [(SURotationController *)self viewFrameForInterfaceOrientation:orientation];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  [v5 setAutoresizingMask:0];
-  [v5 setFrame:{v7, v9, v11, v13}];
-  [objc_msgSend(v5 "layer")];
+  [_splitView setAutoresizingMask:0];
+  [_splitView setFrame:{v7, v9, v11, v13}];
+  [objc_msgSend(_splitView "layer")];
   v14 = MEMORY[0x1E6979518];
 
   [v14 commit];
@@ -73,11 +73,11 @@
 
 - (id)_firstRotationController
 {
-  v3 = [(SUViewController *)self->super._viewController firstViewController];
+  firstViewController = [(SUViewController *)self->super._viewController firstViewController];
   firstRotationController = self->_firstRotationController;
   if (firstRotationController)
   {
-    if ([(SURotationController *)firstRotationController viewController]== v3)
+    if ([(SURotationController *)firstRotationController viewController]== firstViewController)
     {
       return self->_firstRotationController;
     }
@@ -92,8 +92,8 @@
 
   if (objc_opt_respondsToSelector())
   {
-    self->_firstRotationController = [v3 newRotationController];
-    v6 = v3;
+    self->_firstRotationController = [firstViewController newRotationController];
+    v6 = firstViewController;
   }
 
   else
@@ -108,11 +108,11 @@
 
 - (id)_secondRotationController
 {
-  v3 = [(SUViewController *)self->super._viewController secondViewController];
+  secondViewController = [(SUViewController *)self->super._viewController secondViewController];
   secondRotationController = self->_secondRotationController;
   if (secondRotationController)
   {
-    if ([(SURotationController *)secondRotationController viewController]== v3)
+    if ([(SURotationController *)secondRotationController viewController]== secondViewController)
     {
       return self->_secondRotationController;
     }
@@ -127,8 +127,8 @@
 
   if (objc_opt_respondsToSelector())
   {
-    self->_secondRotationController = [v3 newRotationController];
-    v6 = v3;
+    self->_secondRotationController = [secondViewController newRotationController];
+    v6 = secondViewController;
   }
 
   else

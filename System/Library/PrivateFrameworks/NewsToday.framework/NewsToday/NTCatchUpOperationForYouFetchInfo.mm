@@ -1,6 +1,6 @@
 @interface NTCatchUpOperationForYouFetchInfo
 - (NTCatchUpOperationForYouFetchInfo)init;
-- (NTCatchUpOperationForYouFetchInfo)initWithAttemptedCachedOnly:(BOOL)a3 feedContextByFeedID:(id)a4;
+- (NTCatchUpOperationForYouFetchInfo)initWithAttemptedCachedOnly:(BOOL)only feedContextByFeedID:(id)d;
 @end
 
 @implementation NTCatchUpOperationForYouFetchInfo
@@ -31,10 +31,10 @@
   objc_exception_throw(v6);
 }
 
-- (NTCatchUpOperationForYouFetchInfo)initWithAttemptedCachedOnly:(BOOL)a3 feedContextByFeedID:(id)a4
+- (NTCatchUpOperationForYouFetchInfo)initWithAttemptedCachedOnly:(BOOL)only feedContextByFeedID:(id)d
 {
-  v6 = a4;
-  if (!v6 && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
+  dCopy = d;
+  if (!dCopy && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
     [NTCatchUpOperationForYouFetchInfo initWithAttemptedCachedOnly:feedContextByFeedID:];
   }
@@ -45,8 +45,8 @@
   v8 = v7;
   if (v7)
   {
-    v7->_attemptedCachedOnly = a3;
-    v9 = [v6 copy];
+    v7->_attemptedCachedOnly = only;
+    v9 = [dCopy copy];
     feedContextByFeedID = v8->_feedContextByFeedID;
     v8->_feedContextByFeedID = v9;
   }

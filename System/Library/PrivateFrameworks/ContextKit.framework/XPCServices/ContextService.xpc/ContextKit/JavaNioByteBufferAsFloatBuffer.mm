@@ -2,13 +2,13 @@
 - (BOOL)isDirect;
 - (BOOL)isReadOnly;
 - (float)get;
-- (float)getWithInt:(int)a3;
+- (float)getWithInt:(int)int;
 - (id)asReadOnlyBuffer;
 - (id)compact;
 - (id)duplicate;
 - (id)order;
-- (id)putWithFloat:(float)a3;
-- (id)putWithInt:(int)a3 withFloat:(float)a4;
+- (id)putWithFloat:(float)float;
+- (id)putWithInt:(int)int withFloat:(float)float;
 - (id)slice;
 - (void)dealloc;
 @end
@@ -23,9 +23,9 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(JavaNioByteBuffer *)byteBuffer asReadOnlyBuffer];
+  asReadOnlyBuffer = [(JavaNioByteBuffer *)byteBuffer asReadOnlyBuffer];
   v5 = [JavaNioByteBufferAsFloatBuffer alloc];
-  JavaNioByteBufferAsFloatBuffer_initWithJavaNioByteBuffer_(v5, v4);
+  JavaNioByteBufferAsFloatBuffer_initWithJavaNioByteBuffer_(v5, asReadOnlyBuffer);
   v6 = v5;
   v6->super.super.limit_ = self->super.super.limit_;
   v6->super.super.position_ = self->super.super.position_;
@@ -97,7 +97,7 @@
   return result;
 }
 
-- (float)getWithInt:(int)a3
+- (float)getWithInt:(int)int
 {
   [(JavaNioBuffer *)self checkIndexWithInt:?];
   byteBuffer = self->byteBuffer_;
@@ -106,7 +106,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaNioByteBuffer *)byteBuffer getFloatWithInt:(4 * a3)];
+  [(JavaNioByteBuffer *)byteBuffer getFloatWithInt:(4 * int)];
   return result;
 }
 
@@ -143,7 +143,7 @@
   return [(JavaNioByteBuffer *)byteBuffer order];
 }
 
-- (id)putWithFloat:(float)a3
+- (id)putWithFloat:(float)float
 {
   position = self->super.super.position_;
   if (position == self->super.super.limit_)
@@ -163,7 +163,7 @@
   return self;
 }
 
-- (id)putWithInt:(int)a3 withFloat:(float)a4
+- (id)putWithInt:(int)int withFloat:(float)float
 {
   [(JavaNioBuffer *)self checkIndexWithInt:?];
   byteBuffer = self->byteBuffer_;
@@ -172,8 +172,8 @@
     JreThrowNullPointerException();
   }
 
-  *&v7 = a4;
-  [(JavaNioByteBuffer *)byteBuffer putFloatWithInt:(4 * a3) withFloat:v7];
+  *&v7 = float;
+  [(JavaNioByteBuffer *)byteBuffer putFloatWithInt:(4 * int) withFloat:v7];
   return self;
 }
 

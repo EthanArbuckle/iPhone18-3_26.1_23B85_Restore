@@ -1,33 +1,33 @@
 @interface WBSPageZoomPreferenceManager
-- (BOOL)_canChangePageZoom:(BOOL)a3 fromStep:(int64_t)a4;
-- (WBSPageZoomPreferenceManager)initWithPerSitePreferencesStore:(id)a3;
-- (double)_pageZoomStepToZoomFactor:(int64_t)a3;
-- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)a3;
-- (id)localizedStringForValue:(id)a3 inPreference:(id)a4;
+- (BOOL)_canChangePageZoom:(BOOL)zoom fromStep:(int64_t)step;
+- (WBSPageZoomPreferenceManager)initWithPerSitePreferencesStore:(id)store;
+- (double)_pageZoomStepToZoomFactor:(int64_t)factor;
+- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)customized;
+- (id)localizedStringForValue:(id)value inPreference:(id)preference;
 - (id)preferences;
-- (void)_getDefaultZoomStep:(id)a3;
-- (void)_getZoomStepForDomain:(id)a3 usingBlock:(id)a4;
-- (void)_incrementOrDecreaseZoomStep:(BOOL)a3 forURL:(id)a4 completionHandler:(id)a5;
-- (void)didUpdatePreference:(id)a3 toValue:(id)a4 forDomain:(id)a5;
-- (void)getAvailableActionsForURL:(id)a3 usingBlock:(id)a4;
-- (void)getPageZoomFactorForURL:(id)a3 usingBlock:(id)a4;
+- (void)_getDefaultZoomStep:(id)step;
+- (void)_getZoomStepForDomain:(id)domain usingBlock:(id)block;
+- (void)_incrementOrDecreaseZoomStep:(BOOL)step forURL:(id)l completionHandler:(id)handler;
+- (void)didUpdatePreference:(id)preference toValue:(id)value forDomain:(id)domain;
+- (void)getAvailableActionsForURL:(id)l usingBlock:(id)block;
+- (void)getPageZoomFactorForURL:(id)l usingBlock:(id)block;
 - (void)removeAllPageZoomPreferences;
-- (void)removePageZoomPreferencesForHostnames:(id)a3;
-- (void)resetZoomLevelOnURL:(id)a3 completionHandler:(id)a4;
+- (void)removePageZoomPreferencesForHostnames:(id)hostnames;
+- (void)resetZoomLevelOnURL:(id)l completionHandler:(id)handler;
 @end
 
 @implementation WBSPageZoomPreferenceManager
 
-- (WBSPageZoomPreferenceManager)initWithPerSitePreferencesStore:(id)a3
+- (WBSPageZoomPreferenceManager)initWithPerSitePreferencesStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   v12.receiver = self;
   v12.super_class = WBSPageZoomPreferenceManager;
   v6 = [(WBSPageZoomPreferenceManager *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_perSitePreferencesStore, a3);
+    objc_storeStrong(&v6->_perSitePreferencesStore, store);
     v8 = [[WBSPerSitePreference alloc] initWithIdentifier:@"ZoomPreference"];
     pageZoomPreference = v7->_pageZoomPreference;
     v7->_pageZoomPreference = v8;
@@ -40,21 +40,21 @@
   return v7;
 }
 
-- (void)getPageZoomFactorForURL:(id)a3 usingBlock:(id)a4
+- (void)getPageZoomFactorForURL:(id)l usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  blockCopy = block;
   objc_initWeak(&location, self);
-  v8 = [v6 safari_userVisibleHostWithoutWWWSubdomain];
-  if ([v8 length])
+  safari_userVisibleHostWithoutWWWSubdomain = [lCopy safari_userVisibleHostWithoutWWWSubdomain];
+  if ([safari_userVisibleHostWithoutWWWSubdomain length])
   {
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __67__WBSPageZoomPreferenceManager_getPageZoomFactorForURL_usingBlock___block_invoke_2;
     v9[3] = &unk_1E7FC8D08;
     objc_copyWeak(&v11, &location);
-    v10 = v7;
-    [(WBSPageZoomPreferenceManager *)self _getZoomStepForDomain:v8 usingBlock:v9];
+    v10 = blockCopy;
+    [(WBSPageZoomPreferenceManager *)self _getZoomStepForDomain:safari_userVisibleHostWithoutWWWSubdomain usingBlock:v9];
 
     objc_destroyWeak(&v11);
   }
@@ -65,7 +65,7 @@
     v12[1] = 3221225472;
     v12[2] = __67__WBSPageZoomPreferenceManager_getPageZoomFactorForURL_usingBlock___block_invoke;
     v12[3] = &unk_1E7FC8CE0;
-    v13 = v7;
+    v13 = blockCopy;
     objc_copyWeak(&v14, &location);
     [(WBSPageZoomPreferenceManager *)self _getDefaultZoomStep:v12];
     objc_destroyWeak(&v14);
@@ -100,19 +100,19 @@ uint64_t __67__WBSPageZoomPreferenceManager_getPageZoomFactorForURL_usingBlock__
   return (*(*(a1 + 32) + 16))(v6);
 }
 
-- (void)resetZoomLevelOnURL:(id)a3 completionHandler:(id)a4
+- (void)resetZoomLevelOnURL:(id)l completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __70__WBSPageZoomPreferenceManager_resetZoomLevelOnURL_completionHandler___block_invoke;
   v10[3] = &unk_1E7FC8D58;
   v10[4] = self;
-  v11 = v6;
-  v12 = v7;
-  v8 = v7;
-  v9 = v6;
+  v11 = lCopy;
+  v12 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = lCopy;
   [(WBSPageZoomPreferenceManager *)self _getDefaultZoomStep:v10];
 }
 
@@ -162,12 +162,12 @@ uint64_t __70__WBSPageZoomPreferenceManager_resetZoomLevelOnURL_completionHandle
   return (*(*(a1 + 40) + 16))(*(a1 + 48));
 }
 
-- (void)getAvailableActionsForURL:(id)a3 usingBlock:(id)a4
+- (void)getAvailableActionsForURL:(id)l usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 safari_userVisibleHostWithoutWWWSubdomain];
-  if ([v8 length])
+  lCopy = l;
+  blockCopy = block;
+  safari_userVisibleHostWithoutWWWSubdomain = [lCopy safari_userVisibleHostWithoutWWWSubdomain];
+  if ([safari_userVisibleHostWithoutWWWSubdomain length])
   {
     objc_initWeak(&location, self);
     v9[0] = MEMORY[0x1E69E9820];
@@ -175,8 +175,8 @@ uint64_t __70__WBSPageZoomPreferenceManager_resetZoomLevelOnURL_completionHandle
     v9[2] = __69__WBSPageZoomPreferenceManager_getAvailableActionsForURL_usingBlock___block_invoke;
     v9[3] = &unk_1E7FC8DA8;
     objc_copyWeak(&v12, &location);
-    v10 = v8;
-    v11 = v7;
+    v10 = safari_userVisibleHostWithoutWWWSubdomain;
+    v11 = blockCopy;
     [(WBSPageZoomPreferenceManager *)self _getDefaultZoomStep:v9];
 
     objc_destroyWeak(&v12);
@@ -185,7 +185,7 @@ uint64_t __70__WBSPageZoomPreferenceManager_resetZoomLevelOnURL_completionHandle
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(blockCopy + 2))(blockCopy, 0);
   }
 }
 
@@ -221,16 +221,16 @@ void __69__WBSPageZoomPreferenceManager_getAvailableActionsForURL_usingBlock___b
   }
 }
 
-- (void)removePageZoomPreferencesForHostnames:(id)a3
+- (void)removePageZoomPreferencesForHostnames:(id)hostnames
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  hostnamesCopy = hostnames;
   v5 = [MEMORY[0x1E695DFA8] set];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = hostnamesCopy;
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
   {
@@ -246,8 +246,8 @@ void __69__WBSPageZoomPreferenceManager_getAvailableActionsForURL_usingBlock___b
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v12 + 1) + 8 * v10) safari_stringByRemovingWwwDotPrefix];
-        [v5 addObject:v11];
+        safari_stringByRemovingWwwDotPrefix = [*(*(&v12 + 1) + 8 * v10) safari_stringByRemovingWwwDotPrefix];
+        [v5 addObject:safari_stringByRemovingWwwDotPrefix];
 
         ++v10;
       }
@@ -269,16 +269,16 @@ void __69__WBSPageZoomPreferenceManager_getAvailableActionsForURL_usingBlock___b
   [(WBSPerSitePreferencesSQLiteStore *)perSitePreferencesStore removeAllPreferenceValuesFromPreference:v3 completionHandler:0];
 }
 
-- (void)_getDefaultZoomStep:(id)a3
+- (void)_getDefaultZoomStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   pageZoomPreference = self->_pageZoomPreference;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __52__WBSPageZoomPreferenceManager__getDefaultZoomStep___block_invoke;
   v7[3] = &unk_1E7FC8DD0;
-  v8 = v4;
-  v6 = v4;
+  v8 = stepCopy;
+  v6 = stepCopy;
   [(WBSPerSitePreferenceManager *)self getDefaultPreferenceValueForPreference:pageZoomPreference completionHandler:v7];
 }
 
@@ -291,10 +291,10 @@ uint64_t __52__WBSPageZoomPreferenceManager__getDefaultZoomStep___block_invoke(u
   return v4(v2, v3);
 }
 
-- (void)_getZoomStepForDomain:(id)a3 usingBlock:(id)a4
+- (void)_getZoomStepForDomain:(id)domain usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  domainCopy = domain;
+  blockCopy = block;
   v8 = WBS_LOG_CHANNEL_PREFIXPerSitePreferences();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -304,7 +304,7 @@ uint64_t __52__WBSPageZoomPreferenceManager__getDefaultZoomStep___block_invoke(u
   v9 = WBS_LOG_CHANNEL_PREFIXPerSitePreferences();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
-    [WBSPageZoomPreferenceManager _getZoomStepForDomain:v6 usingBlock:v9];
+    [WBSPageZoomPreferenceManager _getZoomStepForDomain:domainCopy usingBlock:v9];
   }
 
   pageZoomPreference = self->_pageZoomPreference;
@@ -313,10 +313,10 @@ uint64_t __52__WBSPageZoomPreferenceManager__getDefaultZoomStep___block_invoke(u
   v13[2] = __65__WBSPageZoomPreferenceManager__getZoomStepForDomain_usingBlock___block_invoke;
   v13[3] = &unk_1E7FC8E48;
   v13[4] = self;
-  v14 = v6;
-  v15 = v7;
-  v11 = v7;
-  v12 = v6;
+  v14 = domainCopy;
+  v15 = blockCopy;
+  v11 = blockCopy;
+  v12 = domainCopy;
   [(WBSPerSitePreferenceManager *)self getValueOfPreference:pageZoomPreference forDomain:v12 withTimeout:0 usingBlock:v13];
 }
 
@@ -380,22 +380,22 @@ uint64_t __65__WBSPageZoomPreferenceManager__getZoomStepForDomain_usingBlock___b
   return v3(v1, v2);
 }
 
-- (void)_incrementOrDecreaseZoomStep:(BOOL)a3 forURL:(id)a4 completionHandler:(id)a5
+- (void)_incrementOrDecreaseZoomStep:(BOOL)step forURL:(id)l completionHandler:(id)handler
 {
-  v8 = a4;
-  v9 = a5;
+  lCopy = l;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v10 = [v8 safari_userVisibleHostWithoutWWWSubdomain];
-  if ([v10 length])
+  safari_userVisibleHostWithoutWWWSubdomain = [lCopy safari_userVisibleHostWithoutWWWSubdomain];
+  if ([safari_userVisibleHostWithoutWWWSubdomain length])
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __86__WBSPageZoomPreferenceManager__incrementOrDecreaseZoomStep_forURL_completionHandler___block_invoke_2;
     v11[3] = &unk_1E7FC8EC0;
     objc_copyWeak(&v14, &location);
-    v13 = v9;
-    v15 = a3;
-    v12 = v10;
+    v13 = handlerCopy;
+    stepCopy = step;
+    v12 = safari_userVisibleHostWithoutWWWSubdomain;
     [(WBSPageZoomPreferenceManager *)self _getZoomStepForDomain:v12 usingBlock:v11];
 
     objc_destroyWeak(&v14);
@@ -407,7 +407,7 @@ uint64_t __65__WBSPageZoomPreferenceManager__getZoomStepForDomain_usingBlock___b
     v16[1] = 3221225472;
     v16[2] = __86__WBSPageZoomPreferenceManager__incrementOrDecreaseZoomStep_forURL_completionHandler___block_invoke;
     v16[3] = &unk_1E7FC8CE0;
-    v17 = v9;
+    v17 = handlerCopy;
     objc_copyWeak(&v18, &location);
     [(WBSPageZoomPreferenceManager *)self _getDefaultZoomStep:v16];
     objc_destroyWeak(&v18);
@@ -517,24 +517,24 @@ uint64_t __86__WBSPageZoomPreferenceManager__incrementOrDecreaseZoomStep_forURL_
   return (*(*(a1 + 32) + 16))(v6);
 }
 
-- (BOOL)_canChangePageZoom:(BOOL)a3 fromStep:(int64_t)a4
+- (BOOL)_canChangePageZoom:(BOOL)zoom fromStep:(int64_t)step
 {
-  if (a3)
+  if (zoom)
   {
-    v4 = [&unk_1F3A9B2B8 count] - 1 <= a4;
+    v4 = [&unk_1F3A9B2B8 count] - 1 <= step;
   }
 
   else
   {
-    v4 = a4 <= 0;
+    v4 = step <= 0;
   }
 
   return !v4;
 }
 
-- (double)_pageZoomStepToZoomFactor:(int64_t)a3
+- (double)_pageZoomStepToZoomFactor:(int64_t)factor
 {
-  v3 = [&unk_1F3A9B2B8 objectAtIndexedSubscript:a3];
+  v3 = [&unk_1F3A9B2B8 objectAtIndexedSubscript:factor];
   [v3 doubleValue];
   v5 = v4;
 
@@ -550,36 +550,36 @@ uint64_t __86__WBSPageZoomPreferenceManager__incrementOrDecreaseZoomStep_forURL_
   return v2;
 }
 
-- (id)localizedStringForValue:(id)a3 inPreference:(id)a4
+- (id)localizedStringForValue:(id)value inPreference:(id)preference
 {
-  v4 = [&unk_1F3A9B2B8 objectAtIndexedSubscript:{objc_msgSend(a3, "integerValue")}];
+  v4 = [&unk_1F3A9B2B8 objectAtIndexedSubscript:{objc_msgSend(value, "integerValue")}];
   v5 = [MEMORY[0x1E696ADA0] localizedStringFromNumber:v4 numberStyle:3];
 
   return v5;
 }
 
-- (void)didUpdatePreference:(id)a3 toValue:(id)a4 forDomain:(id)a5
+- (void)didUpdatePreference:(id)preference toValue:(id)value forDomain:(id)domain
 {
   v16[2] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E696AD88];
-  v8 = a5;
-  v9 = a4;
-  v10 = [v7 defaultCenter];
+  domainCopy = domain;
+  valueCopy = value;
+  defaultCenter = [v7 defaultCenter];
   v15[0] = @"domainWithModifiedPageZoomPreference";
   v15[1] = @"pageZoomFactor";
-  v16[0] = v8;
+  v16[0] = domainCopy;
   v11 = MEMORY[0x1E696AD98];
-  v12 = [v9 integerValue];
+  integerValue = [valueCopy integerValue];
 
-  [(WBSPageZoomPreferenceManager *)self _pageZoomStepToZoomFactor:v12];
+  [(WBSPageZoomPreferenceManager *)self _pageZoomStepToZoomFactor:integerValue];
   v13 = [v11 numberWithDouble:?];
   v16[1] = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
-  [v10 postNotificationName:@"perSitePageZoomPreferenceDidChange" object:self userInfo:v14];
+  [defaultCenter postNotificationName:@"perSitePageZoomPreferenceDidChange" object:self userInfo:v14];
 }
 
-- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)a3
+- (id)defaultPreferenceValueForPreferenceIfNotCustomized:(id)customized
 {
   v3 = [&unk_1F3A9B2B8 indexOfObject:&unk_1F3A9B510];
   v4 = MEMORY[0x1E696AD98];

@@ -1,7 +1,7 @@
 @interface PMLTrainingDatabaseMigrations
-+ (id)mockMigrationsByAddingQueries:(id)a3;
++ (id)mockMigrationsByAddingQueries:(id)queries;
 - (PMLTrainingDatabaseMigrations)init;
-- (PMLTrainingDatabaseMigrations)initWithMigrations:(id)a3;
+- (PMLTrainingDatabaseMigrations)initWithMigrations:(id)migrations;
 - (unsigned)maxVersion;
 @end
 
@@ -9,13 +9,13 @@
 
 - (unsigned)maxVersion
 {
-  v2 = [(PMLTrainingDatabaseMigrations *)self migrations];
-  v3 = [v2 allKeys];
+  migrations = [(PMLTrainingDatabaseMigrations *)self migrations];
+  allKeys = [migrations allKeys];
 
-  v4 = [v3 valueForKeyPath:@"@max.unsignedIntValue"];
-  v5 = [v4 unsignedIntValue];
+  v4 = [allKeys valueForKeyPath:@"@max.unsignedIntValue"];
+  unsignedIntValue = [v4 unsignedIntValue];
 
-  return v5;
+  return unsignedIntValue;
 }
 
 - (PMLTrainingDatabaseMigrations)init
@@ -85,32 +85,32 @@
   return v8;
 }
 
-- (PMLTrainingDatabaseMigrations)initWithMigrations:(id)a3
+- (PMLTrainingDatabaseMigrations)initWithMigrations:(id)migrations
 {
-  v5 = a3;
+  migrationsCopy = migrations;
   v9.receiver = self;
   v9.super_class = PMLTrainingDatabaseMigrations;
   v6 = [(PMLTrainingDatabaseMigrations *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_migrations, a3);
+    objc_storeStrong(&v6->_migrations, migrations);
   }
 
   return v7;
 }
 
-+ (id)mockMigrationsByAddingQueries:(id)a3
++ (id)mockMigrationsByAddingQueries:(id)queries
 {
-  v4 = a3;
+  queriesCopy = queries;
   v5 = objc_opt_new();
-  v6 = [v5 migrations];
-  v7 = [v6 mutableCopy];
+  migrations = [v5 migrations];
+  v7 = [migrations mutableCopy];
 
   v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{objc_msgSend(v5, "maxVersion") + 1}];
-  [v7 setObject:v4 forKeyedSubscript:v8];
+  [v7 setObject:queriesCopy forKeyedSubscript:v8];
 
-  v9 = [[a1 alloc] initWithMigrations:v7];
+  v9 = [[self alloc] initWithMigrations:v7];
 
   return v9;
 }

@@ -1,25 +1,25 @@
 @interface REMClockElementList
-+ (BOOL)list:(id)a3 isCompatibleToList:(id)a4;
-+ (int64_t)compareList:(id)a3 toList:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (REMClockElementList)initWithCRVectorTimestampElements:(id)a3;
-- (REMClockElementList)initWithEntryArchive:(const void *)a3;
-- (REMClockElementList)initWithTTVectorTimestampElements:(id)a3;
++ (BOOL)list:(id)list isCompatibleToList:(id)toList;
++ (int64_t)compareList:(id)list toList:(id)toList;
+- (BOOL)isEqual:(id)equal;
+- (REMClockElementList)initWithCRVectorTimestampElements:(id)elements;
+- (REMClockElementList)initWithEntryArchive:(const void *)archive;
+- (REMClockElementList)initWithTTVectorTimestampElements:(id)elements;
 - (id)description;
-- (void)encodeIntoEntryArchive:(void *)a3;
+- (void)encodeIntoEntryArchive:(void *)archive;
 @end
 
 @implementation REMClockElementList
 
-- (REMClockElementList)initWithCRVectorTimestampElements:(id)a3
+- (REMClockElementList)initWithCRVectorTimestampElements:(id)elements
 {
-  v4 = a3;
+  elementsCopy = elements;
   v9.receiver = self;
   v9.super_class = REMClockElementList;
   v5 = [(REMClockElementList *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [elementsCopy copy];
     elements = v5->_elements;
     v5->_elements = v6;
   }
@@ -27,16 +27,16 @@
   return v5;
 }
 
-- (REMClockElementList)initWithTTVectorTimestampElements:(id)a3
+- (REMClockElementList)initWithTTVectorTimestampElements:(id)elements
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  elementsCopy = elements;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(elementsCopy, "count")}];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = elementsCopy;
   v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v7)
   {
@@ -72,39 +72,39 @@
   return v12;
 }
 
-+ (BOOL)list:(id)a3 isCompatibleToList:(id)a4
++ (BOOL)list:(id)list isCompatibleToList:(id)toList
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  listCopy = list;
+  toListCopy = toList;
+  v7 = toListCopy;
   v8 = 1;
-  if (v5 && v6)
+  if (listCopy && toListCopy)
   {
-    v9 = [v5 elements];
-    v10 = [v9 count];
-    v11 = [v7 elements];
-    v8 = v10 == [v11 count];
+    elements = [listCopy elements];
+    v10 = [elements count];
+    elements2 = [v7 elements];
+    v8 = v10 == [elements2 count];
   }
 
   return v8;
 }
 
-+ (int64_t)compareList:(id)a3 toList:(id)a4
++ (int64_t)compareList:(id)list toList:(id)toList
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 | v6)
+  listCopy = list;
+  toListCopy = toList;
+  v7 = toListCopy;
+  if (listCopy | toListCopy)
   {
-    if (v5 || !v6)
+    if (listCopy || !toListCopy)
     {
-      if (!v5 || v6)
+      if (!listCopy || toListCopy)
       {
-        v10 = [v5 elements];
-        v8 = [v10 count];
+        elements = [listCopy elements];
+        v8 = [elements count];
 
-        v11 = [v7 elements];
-        v12 = [v11 count];
+        elements2 = [v7 elements];
+        v12 = [elements2 count];
 
         if (v8 == v12)
         {
@@ -126,11 +126,11 @@
 
         for (i = 0; i != v8; ++i)
         {
-          v14 = [v5 elements];
-          v15 = [v14 objectAtIndexedSubscript:i];
+          elements3 = [listCopy elements];
+          v15 = [elements3 objectAtIndexedSubscript:i];
 
-          v16 = [v7 elements];
-          v17 = [v16 objectAtIndexedSubscript:i];
+          elements4 = [v7 elements];
+          v17 = [elements4 objectAtIndexedSubscript:i];
 
           v18 = [v15 rem_compareToVectorTimestampElement:v17];
         }
@@ -168,18 +168,18 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     v7 = (objc_opt_isKindOfClass() & 1) != 0 && [REMClockElementList list:self isCompatibleToList:v6]&& [REMClockElementList compareList:self toList:v6]== 0;
   }
@@ -191,15 +191,15 @@ LABEL_6:
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E695DF70];
-  v4 = [(REMClockElementList *)self elements];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  elements = [(REMClockElementList *)self elements];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(elements, "count")}];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(REMClockElementList *)self elements];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  elements2 = [(REMClockElementList *)self elements];
+  v7 = [elements2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -209,14 +209,14 @@ LABEL_6:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(elements2);
         }
 
         v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu.%llu", objc_msgSend(*(*(&v16 + 1) + 8 * i), "clock"), objc_msgSend(*(*(&v16 + 1) + 8 * i), "subclock")];
         [v5 addObject:v10];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [elements2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
@@ -224,30 +224,30 @@ LABEL_6:
 
   if ([v5 count] == 1)
   {
-    v11 = [v5 firstObject];
+    firstObject = [v5 firstObject];
   }
 
   else
   {
     v12 = MEMORY[0x1E696AEC0];
     v13 = [v5 componentsJoinedByString:{@", "}];
-    v11 = [v12 stringWithFormat:@"[%@]", v13];
+    firstObject = [v12 stringWithFormat:@"[%@]", v13];
   }
 
   v14 = *MEMORY[0x1E69E9840];
 
-  return v11;
+  return firstObject;
 }
 
-- (void)encodeIntoEntryArchive:(void *)a3
+- (void)encodeIntoEntryArchive:(void *)archive
 {
   v21 = *MEMORY[0x1E69E9840];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v4 = [(REMClockElementList *)self elements];
-  v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  elements = [(REMClockElementList *)self elements];
+  v5 = [elements countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v5)
   {
     v6 = *v17;
@@ -258,36 +258,36 @@ LABEL_6:
       {
         if (*v17 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(elements);
         }
 
         v8 = *(*(&v16 + 1) + 8 * v7);
-        v9 = *(a3 + 15);
-        v10 = *(a3 + 14);
+        v9 = *(archive + 15);
+        v10 = *(archive + 14);
         if (v10 >= v9)
         {
-          if (v9 == *(a3 + 16))
+          if (v9 == *(archive + 16))
           {
-            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(a3 + 6, v9 + 1);
+            google::protobuf::internal::RepeatedPtrFieldBase::Reserve(archive + 6, v9 + 1);
           }
 
           google::protobuf::internal::GenericTypeHandler<replica_manager::VectorTimestampElement>::New();
         }
 
-        v11 = *(a3 + 6);
-        *(a3 + 14) = v10 + 1;
+        v11 = *(archive + 6);
+        *(archive + 14) = v10 + 1;
         v12 = *(v11 + 8 * v10);
-        v13 = [v8 clock];
+        clock = [v8 clock];
         *(v12 + 32) |= 1u;
-        *(v12 + 40) = v13;
-        v14 = [v8 subclock];
+        *(v12 + 40) = clock;
+        subclock = [v8 subclock];
         *(v12 + 32) |= 2u;
-        *(v12 + 48) = v14;
+        *(v12 + 48) = subclock;
         ++v7;
       }
 
       while (v5 != v7);
-      v5 = [v4 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v5 = [elements countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v5);
@@ -296,15 +296,15 @@ LABEL_6:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (REMClockElementList)initWithEntryArchive:(const void *)a3
+- (REMClockElementList)initWithEntryArchive:(const void *)archive
 {
-  v4 = *(a3 + 14);
+  v4 = *(archive + 14);
   if (v4)
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:*(a3 + 14)];
+    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:*(archive + 14)];
     for (i = 0; i != v4; ++i)
     {
-      v8 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<replica_manager::VectorTimestampElement>::TypeHandler>(a3 + 48, i);
+      v8 = google::protobuf::internal::RepeatedPtrFieldBase::Get<google::protobuf::RepeatedPtrField<replica_manager::VectorTimestampElement>::TypeHandler>(archive + 48, i);
       replica_manager::VectorTimestampElement::VectorTimestampElement(v12, v8);
       v9 = objc_alloc_init(CRVectorTimestampElement);
       [(CRVectorTimestampElement *)v9 setClock:v13];
@@ -316,15 +316,15 @@ LABEL_6:
 
     self = [(REMClockElementList *)self initWithCRVectorTimestampElements:v6];
 
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
 + (void)compareList:(uint64_t)a3 toList:.cold.1(NSObject *a1, uint64_t a2, uint64_t a3)

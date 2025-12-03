@@ -1,32 +1,32 @@
 @interface CRKInMemoryCertificate
 - (BOOL)isCertificateAuthority;
 - (BOOL)isTemporallyValid;
-- (CRKInMemoryCertificate)initWithCoder:(id)a3;
-- (CRKInMemoryCertificate)initWithConfiguration:(id)a3 validityDateInterval:(id)a4;
+- (CRKInMemoryCertificate)initWithCoder:(id)coder;
+- (CRKInMemoryCertificate)initWithConfiguration:(id)configuration validityDateInterval:(id)interval;
 - (NSArray)commonNames;
 - (NSString)fingerprint;
 - (__SecCertificate)underlyingCertificate;
 - (int64_t)keySizeInBits;
 - (unsigned)hashingAlgorithm;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKInMemoryCertificate
 
-- (CRKInMemoryCertificate)initWithConfiguration:(id)a3 validityDateInterval:(id)a4
+- (CRKInMemoryCertificate)initWithConfiguration:(id)configuration validityDateInterval:(id)interval
 {
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  intervalCopy = interval;
   v12.receiver = self;
   v12.super_class = CRKInMemoryCertificate;
   v8 = [(CRKInMemoryCertificate *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [configurationCopy copy];
     configuration = v8->_configuration;
     v8->_configuration = v9;
 
-    objc_storeStrong(&v8->_validityDateInterval, a4);
+    objc_storeStrong(&v8->_validityDateInterval, interval);
   }
 
   return v8;
@@ -35,9 +35,9 @@
 - (NSArray)commonNames
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [(CRKInMemoryCertificate *)self configuration];
-  v3 = [v2 commonName];
-  v6[0] = v3;
+  configuration = [(CRKInMemoryCertificate *)self configuration];
+  commonName = [configuration commonName];
+  v6[0] = commonName;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
 
   return v4;
@@ -45,77 +45,77 @@
 
 - (NSString)fingerprint
 {
-  v2 = [(CRKInMemoryCertificate *)self configuration];
-  v3 = [v2 commonName];
+  configuration = [(CRKInMemoryCertificate *)self configuration];
+  commonName = [configuration commonName];
 
-  return v3;
+  return commonName;
 }
 
 - (__SecCertificate)underlyingCertificate
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"CRKInMemoryCertificate.m" lineNumber:58 description:@"Reconsider what you are trying to test"];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"CRKInMemoryCertificate.m" lineNumber:58 description:@"Reconsider what you are trying to test"];
 
   return 0;
 }
 
 - (BOOL)isTemporallyValid
 {
-  v2 = [(CRKInMemoryCertificate *)self validityDateInterval];
-  v3 = [v2 crk_containsCurrentDate];
+  validityDateInterval = [(CRKInMemoryCertificate *)self validityDateInterval];
+  crk_containsCurrentDate = [validityDateInterval crk_containsCurrentDate];
 
-  return v3;
+  return crk_containsCurrentDate;
 }
 
 - (BOOL)isCertificateAuthority
 {
-  v2 = [(CRKInMemoryCertificate *)self configuration];
-  v3 = [v2 createsCertificateAuthority];
+  configuration = [(CRKInMemoryCertificate *)self configuration];
+  createsCertificateAuthority = [configuration createsCertificateAuthority];
 
-  return v3;
+  return createsCertificateAuthority;
 }
 
 - (unsigned)hashingAlgorithm
 {
-  v2 = [(CRKInMemoryCertificate *)self configuration];
-  v3 = [v2 hashingAlgorithm];
+  configuration = [(CRKInMemoryCertificate *)self configuration];
+  hashingAlgorithm = [configuration hashingAlgorithm];
 
-  return v3;
+  return hashingAlgorithm;
 }
 
 - (int64_t)keySizeInBits
 {
-  v2 = [(CRKInMemoryCertificate *)self configuration];
-  v3 = [v2 keySizeInBits];
+  configuration = [(CRKInMemoryCertificate *)self configuration];
+  keySizeInBits = [configuration keySizeInBits];
 
-  return v3;
+  return keySizeInBits;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRKInMemoryCertificate *)self validityDateInterval];
-  [v4 encodeObject:v5 forKey:@"validityDateInterval"];
+  coderCopy = coder;
+  validityDateInterval = [(CRKInMemoryCertificate *)self validityDateInterval];
+  [coderCopy encodeObject:validityDateInterval forKey:@"validityDateInterval"];
 
-  v6 = [(CRKInMemoryCertificate *)self configuration];
-  [v4 encodeObject:v6 forKey:@"configuration"];
+  configuration = [(CRKInMemoryCertificate *)self configuration];
+  [coderCopy encodeObject:configuration forKey:@"configuration"];
 }
 
-- (CRKInMemoryCertificate)initWithCoder:(id)a3
+- (CRKInMemoryCertificate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = CRKInMemoryCertificate;
   v5 = [(CRKInMemoryCertificate *)&v13 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"validityDateInterval"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"validityDateInterval"];
     validityDateInterval = v5->_validityDateInterval;
     v5->_validityDateInterval = v7;
 
     v9 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"configuration"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"configuration"];
     configuration = v5->_configuration;
     v5->_configuration = v10;
   }

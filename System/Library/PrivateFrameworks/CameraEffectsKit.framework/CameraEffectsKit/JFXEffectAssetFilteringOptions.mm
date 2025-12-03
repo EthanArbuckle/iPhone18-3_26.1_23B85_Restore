@@ -1,6 +1,6 @@
 @interface JFXEffectAssetFilteringOptions
 - (JFXEffectAssetFilteringOptions)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -21,9 +21,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 6) = self->_filteringMode;
   *(result + 2) = self->_aspectRatio;
   *(result + 4) = self->_colorDynamicRange;
@@ -35,9 +35,9 @@
 
 - (id)description
 {
-  v3 = [(JFXEffectAssetFilteringOptions *)self filteringMode];
+  filteringMode = [(JFXEffectAssetFilteringOptions *)self filteringMode];
   v4 = @"close";
-  if (v3 == 1)
+  if (filteringMode == 1)
   {
     v4 = @"exact";
   }

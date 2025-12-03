@@ -1,34 +1,34 @@
 @interface COMessagingClientInfo
 - (COCoordinationServiceClient)client;
-- (COMessagingClientInfo)initWithTopic:(id)a3 cluster:(id)a4 handledClasses:(id)a5 client:(id)a6 activateCompletionHanlder:(id)a7;
+- (COMessagingClientInfo)initWithTopic:(id)topic cluster:(id)cluster handledClasses:(id)classes client:(id)client activateCompletionHanlder:(id)hanlder;
 @end
 
 @implementation COMessagingClientInfo
 
-- (COMessagingClientInfo)initWithTopic:(id)a3 cluster:(id)a4 handledClasses:(id)a5 client:(id)a6 activateCompletionHanlder:(id)a7
+- (COMessagingClientInfo)initWithTopic:(id)topic cluster:(id)cluster handledClasses:(id)classes client:(id)client activateCompletionHanlder:(id)hanlder
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  topicCopy = topic;
+  clusterCopy = cluster;
+  classesCopy = classes;
+  clientCopy = client;
+  hanlderCopy = hanlder;
   v25.receiver = self;
   v25.super_class = COMessagingClientInfo;
   v18 = [(COMessagingClientInfo *)&v25 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_topic, a3);
-    objc_storeStrong(&v19->_cluster, a4);
-    objc_storeStrong(&v19->_handledClasses, a5);
-    v20 = MEMORY[0x245D5FF10](v17);
+    objc_storeStrong(&v18->_topic, topic);
+    objc_storeStrong(&v19->_cluster, cluster);
+    objc_storeStrong(&v19->_handledClasses, classes);
+    v20 = MEMORY[0x245D5FF10](hanlderCopy);
     completionHandler = v19->_completionHandler;
     v19->_completionHandler = v20;
 
-    objc_storeWeak(&v19->_client, v16);
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeWeak(&v19->_client, clientCopy);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     sessions = v19->_sessions;
-    v19->_sessions = v22;
+    v19->_sessions = dictionary;
   }
 
   return v19;

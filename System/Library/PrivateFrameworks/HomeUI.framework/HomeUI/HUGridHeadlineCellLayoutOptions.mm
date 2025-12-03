@@ -1,33 +1,33 @@
 @interface HUGridHeadlineCellLayoutOptions
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3;
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3 viewSizeSubclass:(int64_t)a4 viewWidth:(double)a5 containerLeadingMargin:(double)a6 containerTrailingMargin:(double)a7;
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass;
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass viewSizeSubclass:(int64_t)sizeSubclass viewWidth:(double)width containerLeadingMargin:(double)margin containerTrailingMargin:(double)trailingMargin;
 - (double)cellInnerMargin;
 - (double)editingBackgroundMinimumWidth;
 - (double)headlineBaselineOffset;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation HUGridHeadlineCellLayoutOptions
 
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_defaultOptionsForCellSizeSubclass_viewSizeSubclass_viewWidth_containerLeadingMargin_containerTrailingMargin_);
-  [v5 handleFailureInMethod:a2 object:a1 file:@"HUGridLayoutOptions.m" lineNumber:779 description:{@"%s is unavailable; use %@ instead", "+[HUGridHeadlineCellLayoutOptions defaultOptionsForCellSizeSubclass:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUGridLayoutOptions.m" lineNumber:779 description:{@"%s is unavailable; use %@ instead", "+[HUGridHeadlineCellLayoutOptions defaultOptionsForCellSizeSubclass:]", v6}];
 
   return 0;
 }
 
-+ (id)defaultOptionsForCellSizeSubclass:(int64_t)a3 viewSizeSubclass:(int64_t)a4 viewWidth:(double)a5 containerLeadingMargin:(double)a6 containerTrailingMargin:(double)a7
++ (id)defaultOptionsForCellSizeSubclass:(int64_t)subclass viewSizeSubclass:(int64_t)sizeSubclass viewWidth:(double)width containerLeadingMargin:(double)margin containerTrailingMargin:(double)trailingMargin
 {
   v21[4] = *MEMORY[0x277D85DE8];
-  v17.receiver = a1;
+  v17.receiver = self;
   v17.super_class = &OBJC_METACLASS___HUGridHeadlineCellLayoutOptions;
   v12 = objc_msgSendSuper2(&v17, sel_defaultOptionsForCellSizeSubclass_);
-  *(v12 + 160) = a4;
-  *(v12 + 168) = a5;
-  *(v12 + 176) = a6;
-  *(v12 + 184) = a7;
+  *(v12 + 160) = sizeSubclass;
+  *(v12 + 168) = width;
+  *(v12 + 176) = margin;
+  *(v12 + 184) = trailingMargin;
   v13 = [MEMORY[0x277D180C8] preferredFontForTextStyle:*MEMORY[0x277D769A8] traits:32770];
   [v12 setFont:v13];
 
@@ -41,7 +41,7 @@
   v21[2] = &unk_2824936B0;
   v21[3] = &unk_2824936A0;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:4];
-  [v12 setMinimumFontSize:{HUConstantForCellSizeSubclass(a3, v14)}];
+  [v12 setMinimumFontSize:{HUConstantForCellSizeSubclass(subclass, v14)}];
 
   v18[0] = &unk_282492288;
   v18[1] = &unk_282492270;
@@ -58,16 +58,16 @@
   v18[6] = &unk_2824922E8;
   v19[6] = &unk_2824936D0;
   v15 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v19 forKeys:v18 count:7];
-  [v12 setEditingBackgroundHeight:{HUConstantFloatForViewSizeSubclass(a4, v15)}];
+  [v12 setEditingBackgroundHeight:{HUConstantFloatForViewSizeSubclass(sizeSubclass, v15)}];
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v9.receiver = self;
   v9.super_class = HUGridHeadlineCellLayoutOptions;
-  v4 = [(HUGridCellLayoutOptions *)&v9 copyWithZone:a3];
+  v4 = [(HUGridCellLayoutOptions *)&v9 copyWithZone:zone];
   v4[20] = [(HUGridHeadlineCellLayoutOptions *)self viewSizeSubclass];
   [(HUGridHeadlineCellLayoutOptions *)self viewWidth];
   v4[21] = v5;
@@ -90,7 +90,7 @@
   headlineBaselineOffset = self->_headlineBaselineOffset;
   if ([(HUGridHeadlineCellLayoutOptions *)self isEditing])
   {
-    v4 = [(HUGridHeadlineCellLayoutOptions *)self viewSizeSubclass];
+    viewSizeSubclass = [(HUGridHeadlineCellLayoutOptions *)self viewSizeSubclass];
     v7[0] = &unk_282492288;
     v7[1] = &unk_2824922B8;
     v8[0] = &unk_282493710;
@@ -100,7 +100,7 @@
     v8[2] = &unk_282493660;
     v8[3] = &unk_282493690;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v8 forKeys:v7 count:4];
-    headlineBaselineOffset = headlineBaselineOffset + HUConstantFloatForViewSizeSubclass(v4, v5);
+    headlineBaselineOffset = headlineBaselineOffset + HUConstantFloatForViewSizeSubclass(viewSizeSubclass, v5);
   }
 
   return headlineBaselineOffset;
@@ -108,10 +108,10 @@
 
 - (double)editingBackgroundMinimumWidth
 {
-  v3 = [(HUGridHeadlineCellLayoutOptions *)self viewSizeSubclass];
+  viewSizeSubclass = [(HUGridHeadlineCellLayoutOptions *)self viewSizeSubclass];
   [(HUGridHeadlineCellLayoutOptions *)self viewWidth];
   v5 = v4;
-  if (v3 < 4)
+  if (viewSizeSubclass < 4)
   {
     [(HUGridHeadlineCellLayoutOptions *)self containerLeadingMargin];
     v6 = v5 - v8;
@@ -129,9 +129,9 @@
 
 - (double)cellInnerMargin
 {
-  v2 = [(HUGridHeadlineCellLayoutOptions *)self isEditing];
+  isEditing = [(HUGridHeadlineCellLayoutOptions *)self isEditing];
   result = 0.0;
-  if (v2)
+  if (isEditing)
   {
     return 14.0;
   }

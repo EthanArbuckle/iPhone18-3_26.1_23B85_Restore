@@ -1,27 +1,27 @@
 @interface TSPExternalReferenceDataStorage
-- (BOOL)archiveInfoMessage:(void *)a3 archiver:(id)a4 packageWriter:(id)a5;
-- (TSPExternalReferenceDataStorage)initWithBookmarkData:(id)a3 context:(id)a4;
-- (TSPExternalReferenceDataStorage)initWithURL:(id)a3;
+- (BOOL)archiveInfoMessage:(void *)message archiver:(id)archiver packageWriter:(id)writer;
+- (TSPExternalReferenceDataStorage)initWithBookmarkData:(id)data context:(id)context;
+- (TSPExternalReferenceDataStorage)initWithURL:(id)l;
 @end
 
 @implementation TSPExternalReferenceDataStorage
 
-- (TSPExternalReferenceDataStorage)initWithURL:(id)a3
+- (TSPExternalReferenceDataStorage)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v28.receiver = self;
   v28.super_class = TSPExternalReferenceDataStorage;
   v7 = [(TSPExternalReferenceDataStorage *)&v28 init];
   if (v7)
   {
-    if (objc_msgSend_isFileReferenceURL(v4, v5, v6))
+    if (objc_msgSend_isFileReferenceURL(lCopy, v5, v6))
     {
-      v10 = v4;
+      v10 = lCopy;
     }
 
     else
     {
-      if (!objc_msgSend_isFileURL(v4, v8, v9))
+      if (!objc_msgSend_isFileURL(lCopy, v8, v9))
       {
         v20 = MEMORY[0x277D81150];
         v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSPExternalReferenceDataStorage initWithURL:]");
@@ -33,7 +33,7 @@
         goto LABEL_11;
       }
 
-      v10 = objc_msgSend_fileReferenceURL(v4, v11, v12);
+      v10 = objc_msgSend_fileReferenceURL(lCopy, v11, v12);
     }
 
     URL = v7->_URL;
@@ -56,50 +56,50 @@ LABEL_11:
   return v18;
 }
 
-- (TSPExternalReferenceDataStorage)initWithBookmarkData:(id)a3 context:(id)a4
+- (TSPExternalReferenceDataStorage)initWithBookmarkData:(id)data context:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  dataCopy = data;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = TSPExternalReferenceDataStorage;
   v9 = [(TSPExternalReferenceDataStorage *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_bookmarkData, a3);
-    objc_storeWeak(&v10->_context, v8);
+    objc_storeStrong(&v9->_bookmarkData, data);
+    objc_storeWeak(&v10->_context, contextCopy);
     v10->_isReachable = 0;
   }
 
   return v10;
 }
 
-- (BOOL)archiveInfoMessage:(void *)a3 archiver:(id)a4 packageWriter:(id)a5
+- (BOOL)archiveInfoMessage:(void *)message archiver:(id)archiver packageWriter:(id)writer
 {
-  v8 = a4;
-  v9 = a5;
-  v12 = objc_msgSend_relativeURLForExternalData(v8, v10, v11);
+  archiverCopy = archiver;
+  writerCopy = writer;
+  v12 = objc_msgSend_relativeURLForExternalData(archiverCopy, v10, v11);
 
   if (!v12)
   {
     goto LABEL_8;
   }
 
-  v15 = objc_msgSend_bookmarkDataForArchiver_(self, v13, v8);
+  v15 = objc_msgSend_bookmarkDataForArchiver_(self, v13, archiverCopy);
   v16 = v15;
   if (v15)
   {
     v17 = v15;
     v20 = objc_msgSend_bytes(v17, v18, v19);
     v23 = objc_msgSend_length(v16, v21, v22);
-    sub_276AF458C(a3, v20, v23);
+    sub_276AF458C(message, v20, v23);
 
 LABEL_14:
     v24 = 1;
     goto LABEL_15;
   }
 
-  if (!v9 || !self->_isReachable || objc_msgSend_updateType(v9, v13, v14) != 2)
+  if (!writerCopy || !self->_isReachable || objc_msgSend_updateType(writerCopy, v13, v14) != 2)
   {
 LABEL_8:
     bookmarkData = self->_bookmarkData;
@@ -107,21 +107,21 @@ LABEL_8:
     {
       v26 = objc_msgSend_bytes(bookmarkData, v13, v14);
       v29 = objc_msgSend_length(self->_bookmarkData, v27, v28);
-      sub_276AF458C(a3, v26, v29);
+      sub_276AF458C(message, v26, v29);
     }
 
     else
     {
-      *(a3 + 4) |= 0x10u;
+      *(message + 4) |= 0x10u;
       v33 = 0;
       __p.n128_u8[0] = 0;
-      v30 = *(a3 + 1);
+      v30 = *(message + 1);
       if (v30)
       {
         v30 = *(v30 & 0xFFFFFFFFFFFFFFFELL);
       }
 
-      google::protobuf::internal::ArenaStringPtr::Set(a3 + 7, &__p, v30);
+      google::protobuf::internal::ArenaStringPtr::Set(message + 7, &__p, v30);
       if (v33 < 0)
       {
         operator delete(__p.n128_u64[0]);

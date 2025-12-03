@@ -1,30 +1,30 @@
 @interface ATXPBModeConfigurationUIFlowLoggingEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
-- (id)modeConfigurationEntityTypeAsString:(int)a3;
-- (id)modeConfigurationTypeAsString:(int)a3;
-- (id)modeConfigurationUIAsString:(int)a3;
-- (int)StringAsModeConfigurationEntityType:(id)a3;
-- (int)StringAsModeConfigurationType:(id)a3;
-- (int)StringAsModeConfigurationUI:(id)a3;
+- (id)modeConfigurationEntityTypeAsString:(int)string;
+- (id)modeConfigurationTypeAsString:(int)string;
+- (id)modeConfigurationUIAsString:(int)string;
+- (int)StringAsModeConfigurationEntityType:(id)type;
+- (int)StringAsModeConfigurationType:(id)type;
+- (int)StringAsModeConfigurationUI:(id)i;
 - (int)modeConfigurationEntityType;
 - (int)modeConfigurationType;
 - (int)modeConfigurationUI;
 - (unint64_t)hash;
-- (void)addCandidateEntityIdentifiers:(id)a3;
-- (void)addCurrentEntityIdentifiers:(id)a3;
-- (void)addPreviousEntityIdentifiers:(id)a3;
-- (void)addSuggestedEntityIdentifiers:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasModeConfigurationEntityType:(BOOL)a3;
-- (void)setHasModeConfigurationType:(BOOL)a3;
-- (void)setHasModeConfigurationUI:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addCandidateEntityIdentifiers:(id)identifiers;
+- (void)addCurrentEntityIdentifiers:(id)identifiers;
+- (void)addPreviousEntityIdentifiers:(id)identifiers;
+- (void)addSuggestedEntityIdentifiers:(id)identifiers;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasModeConfigurationEntityType:(BOOL)type;
+- (void)setHasModeConfigurationType:(BOOL)type;
+- (void)setHasModeConfigurationUI:(BOOL)i;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBModeConfigurationUIFlowLoggingEvent
@@ -42,9 +42,9 @@
   }
 }
 
-- (void)setHasModeConfigurationUI:(BOOL)a3
+- (void)setHasModeConfigurationUI:(BOOL)i
 {
-  if (a3)
+  if (i)
   {
     v3 = 8;
   }
@@ -57,40 +57,40 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (id)modeConfigurationUIAsString:(int)a3
+- (id)modeConfigurationUIAsString:(int)string
 {
-  if (a3 >= 4)
+  if (string >= 4)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C23A0[a3];
+    v4 = off_1E80C23A0[string];
   }
 
   return v4;
 }
 
-- (int)StringAsModeConfigurationUI:(id)a3
+- (int)StringAsModeConfigurationUI:(id)i
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Setup"])
+  iCopy = i;
+  if ([iCopy isEqualToString:@"Setup"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Settings"])
+  else if ([iCopy isEqualToString:@"Settings"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"OnBoarding"])
+  else if ([iCopy isEqualToString:@"OnBoarding"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([iCopy isEqualToString:@"Total"])
   {
     v4 = 3;
   }
@@ -116,9 +116,9 @@
   }
 }
 
-- (void)setHasModeConfigurationEntityType:(BOOL)a3
+- (void)setHasModeConfigurationEntityType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -131,35 +131,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)modeConfigurationEntityTypeAsString:(int)a3
+- (id)modeConfigurationEntityTypeAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C23C0[a3];
+    v4 = off_1E80C23C0[string];
   }
 
   return v4;
 }
 
-- (int)StringAsModeConfigurationEntityType:(id)a3
+- (int)StringAsModeConfigurationEntityType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Apps"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Apps"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Contacts"])
+  else if ([typeCopy isEqualToString:@"Contacts"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([typeCopy isEqualToString:@"Total"])
   {
     v4 = 2;
   }
@@ -172,58 +172,58 @@
   return v4;
 }
 
-- (void)addPreviousEntityIdentifiers:(id)a3
+- (void)addPreviousEntityIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   previousEntityIdentifiers = self->_previousEntityIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!previousEntityIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_previousEntityIdentifiers;
     self->_previousEntityIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     previousEntityIdentifiers = self->_previousEntityIdentifiers;
   }
 
-  [(NSMutableArray *)previousEntityIdentifiers addObject:v4];
+  [(NSMutableArray *)previousEntityIdentifiers addObject:identifiersCopy];
 }
 
-- (void)addSuggestedEntityIdentifiers:(id)a3
+- (void)addSuggestedEntityIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   suggestedEntityIdentifiers = self->_suggestedEntityIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!suggestedEntityIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_suggestedEntityIdentifiers;
     self->_suggestedEntityIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     suggestedEntityIdentifiers = self->_suggestedEntityIdentifiers;
   }
 
-  [(NSMutableArray *)suggestedEntityIdentifiers addObject:v4];
+  [(NSMutableArray *)suggestedEntityIdentifiers addObject:identifiersCopy];
 }
 
-- (void)addCurrentEntityIdentifiers:(id)a3
+- (void)addCurrentEntityIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   currentEntityIdentifiers = self->_currentEntityIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!currentEntityIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_currentEntityIdentifiers;
     self->_currentEntityIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     currentEntityIdentifiers = self->_currentEntityIdentifiers;
   }
 
-  [(NSMutableArray *)currentEntityIdentifiers addObject:v4];
+  [(NSMutableArray *)currentEntityIdentifiers addObject:identifiersCopy];
 }
 
 - (int)modeConfigurationType
@@ -239,9 +239,9 @@
   }
 }
 
-- (void)setHasModeConfigurationType:(BOOL)a3
+- (void)setHasModeConfigurationType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -254,35 +254,35 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)modeConfigurationTypeAsString:(int)a3
+- (id)modeConfigurationTypeAsString:(int)string
 {
-  if (a3 >= 3)
+  if (string >= 3)
   {
-    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = off_1E80C23D8[a3];
+    v4 = off_1E80C23D8[string];
   }
 
   return v4;
 }
 
-- (int)StringAsModeConfigurationType:(id)a3
+- (int)StringAsModeConfigurationType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Allow"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"Allow"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Deny"])
+  else if ([typeCopy isEqualToString:@"Deny"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Total"])
+  else if ([typeCopy isEqualToString:@"Total"])
   {
     v4 = 2;
   }
@@ -295,22 +295,22 @@
   return v4;
 }
 
-- (void)addCandidateEntityIdentifiers:(id)a3
+- (void)addCandidateEntityIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   candidateEntityIdentifiers = self->_candidateEntityIdentifiers;
-  v8 = v4;
+  v8 = identifiersCopy;
   if (!candidateEntityIdentifiers)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_candidateEntityIdentifiers;
     self->_candidateEntityIdentifiers = v6;
 
-    v4 = v8;
+    identifiersCopy = v8;
     candidateEntityIdentifiers = self->_candidateEntityIdentifiers;
   }
 
-  [(NSMutableArray *)candidateEntityIdentifiers addObject:v4];
+  [(NSMutableArray *)candidateEntityIdentifiers addObject:identifiersCopy];
 }
 
 - (id)description
@@ -319,25 +319,25 @@
   v8.receiver = self;
   v8.super_class = ATXPBModeConfigurationUIFlowLoggingEvent;
   v4 = [(ATXPBModeConfigurationUIFlowLoggingEvent *)&v8 description];
-  v5 = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_secondsSinceReferenceDate];
-    [v3 setObject:v4 forKey:@"secondsSinceReferenceDate"];
+    [dictionary setObject:v4 forKey:@"secondsSinceReferenceDate"];
   }
 
   dndModeUUID = self->_dndModeUUID;
   if (dndModeUUID)
   {
-    [v3 setObject:dndModeUUID forKey:@"dndModeUUID"];
+    [dictionary setObject:dndModeUUID forKey:@"dndModeUUID"];
   }
 
   has = self->_has;
@@ -354,7 +354,7 @@
       v8 = off_1E80C23A0[modeConfigurationUI];
     }
 
-    [v3 setObject:v8 forKey:@"modeConfigurationUI"];
+    [dictionary setObject:v8 forKey:@"modeConfigurationUI"];
 
     has = self->_has;
   }
@@ -372,25 +372,25 @@
       v10 = off_1E80C23C0[modeConfigurationEntityType];
     }
 
-    [v3 setObject:v10 forKey:@"modeConfigurationEntityType"];
+    [dictionary setObject:v10 forKey:@"modeConfigurationEntityType"];
   }
 
   previousEntityIdentifiers = self->_previousEntityIdentifiers;
   if (previousEntityIdentifiers)
   {
-    [v3 setObject:previousEntityIdentifiers forKey:@"previousEntityIdentifiers"];
+    [dictionary setObject:previousEntityIdentifiers forKey:@"previousEntityIdentifiers"];
   }
 
   suggestedEntityIdentifiers = self->_suggestedEntityIdentifiers;
   if (suggestedEntityIdentifiers)
   {
-    [v3 setObject:suggestedEntityIdentifiers forKey:@"suggestedEntityIdentifiers"];
+    [dictionary setObject:suggestedEntityIdentifiers forKey:@"suggestedEntityIdentifiers"];
   }
 
   currentEntityIdentifiers = self->_currentEntityIdentifiers;
   if (currentEntityIdentifiers)
   {
-    [v3 setObject:currentEntityIdentifiers forKey:@"currentEntityIdentifiers"];
+    [dictionary setObject:currentEntityIdentifiers forKey:@"currentEntityIdentifiers"];
   }
 
   if ((*&self->_has & 4) != 0)
@@ -406,22 +406,22 @@
       v15 = off_1E80C23D8[modeConfigurationType];
     }
 
-    [v3 setObject:v15 forKey:@"modeConfigurationType"];
+    [dictionary setObject:v15 forKey:@"modeConfigurationType"];
   }
 
   candidateEntityIdentifiers = self->_candidateEntityIdentifiers;
   if (candidateEntityIdentifiers)
   {
-    [v3 setObject:candidateEntityIdentifiers forKey:@"candidateEntityIdentifiers"];
+    [dictionary setObject:candidateEntityIdentifiers forKey:@"candidateEntityIdentifiers"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteDoubleField();
@@ -562,43 +562,43 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_secondsSinceReferenceDate;
-    *(v4 + 72) |= 1u;
+    toCopy[1] = *&self->_secondsSinceReferenceDate;
+    *(toCopy + 72) |= 1u;
   }
 
-  v22 = v4;
+  v22 = toCopy;
   if (self->_dndModeUUID)
   {
-    [v4 setDndModeUUID:?];
-    v4 = v22;
+    [toCopy setDndModeUUID:?];
+    toCopy = v22;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 12) = self->_modeConfigurationUI;
-    *(v4 + 72) |= 8u;
+    *(toCopy + 12) = self->_modeConfigurationUI;
+    *(toCopy + 72) |= 8u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 10) = self->_modeConfigurationEntityType;
-    *(v4 + 72) |= 2u;
+    *(toCopy + 10) = self->_modeConfigurationEntityType;
+    *(toCopy + 72) |= 2u;
   }
 
   if ([(ATXPBModeConfigurationUIFlowLoggingEvent *)self previousEntityIdentifiersCount])
   {
     [v22 clearPreviousEntityIdentifiers];
-    v6 = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self previousEntityIdentifiersCount];
-    if (v6)
+    previousEntityIdentifiersCount = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self previousEntityIdentifiersCount];
+    if (previousEntityIdentifiersCount)
     {
-      v7 = v6;
+      v7 = previousEntityIdentifiersCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self previousEntityIdentifiersAtIndex:i];
@@ -610,10 +610,10 @@
   if ([(ATXPBModeConfigurationUIFlowLoggingEvent *)self suggestedEntityIdentifiersCount])
   {
     [v22 clearSuggestedEntityIdentifiers];
-    v10 = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self suggestedEntityIdentifiersCount];
-    if (v10)
+    suggestedEntityIdentifiersCount = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self suggestedEntityIdentifiersCount];
+    if (suggestedEntityIdentifiersCount)
     {
-      v11 = v10;
+      v11 = suggestedEntityIdentifiersCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self suggestedEntityIdentifiersAtIndex:j];
@@ -625,10 +625,10 @@
   if ([(ATXPBModeConfigurationUIFlowLoggingEvent *)self currentEntityIdentifiersCount])
   {
     [v22 clearCurrentEntityIdentifiers];
-    v14 = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self currentEntityIdentifiersCount];
-    if (v14)
+    currentEntityIdentifiersCount = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self currentEntityIdentifiersCount];
+    if (currentEntityIdentifiersCount)
     {
-      v15 = v14;
+      v15 = currentEntityIdentifiersCount;
       for (k = 0; k != v15; ++k)
       {
         v17 = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self currentEntityIdentifiersAtIndex:k];
@@ -646,10 +646,10 @@
   if ([(ATXPBModeConfigurationUIFlowLoggingEvent *)self candidateEntityIdentifiersCount])
   {
     [v22 clearCandidateEntityIdentifiers];
-    v18 = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self candidateEntityIdentifiersCount];
-    if (v18)
+    candidateEntityIdentifiersCount = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self candidateEntityIdentifiersCount];
+    if (candidateEntityIdentifiersCount)
     {
-      v19 = v18;
+      v19 = candidateEntityIdentifiersCount;
       for (m = 0; m != v19; ++m)
       {
         v21 = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self candidateEntityIdentifiersAtIndex:m];
@@ -659,10 +659,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v55 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -670,7 +670,7 @@
     *(v5 + 72) |= 1u;
   }
 
-  v7 = [(NSString *)self->_dndModeUUID copyWithZone:a3];
+  v7 = [(NSString *)self->_dndModeUUID copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
@@ -707,7 +707,7 @@
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v47 + 1) + 8 * i) copyWithZone:a3];
+        v15 = [*(*(&v47 + 1) + 8 * i) copyWithZone:zone];
         [v6 addPreviousEntityIdentifiers:v15];
       }
 
@@ -736,7 +736,7 @@
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v43 + 1) + 8 * j) copyWithZone:a3];
+        v21 = [*(*(&v43 + 1) + 8 * j) copyWithZone:zone];
         [v6 addSuggestedEntityIdentifiers:v21];
       }
 
@@ -765,7 +765,7 @@
           objc_enumerationMutation(v22);
         }
 
-        v27 = [*(*(&v39 + 1) + 8 * k) copyWithZone:a3];
+        v27 = [*(*(&v39 + 1) + 8 * k) copyWithZone:zone];
         [v6 addCurrentEntityIdentifiers:v27];
       }
 
@@ -800,7 +800,7 @@
           objc_enumerationMutation(v28);
         }
 
-        v33 = [*(*(&v35 + 1) + 8 * m) copyWithZone:{a3, v35}];
+        v33 = [*(*(&v35 + 1) + 8 * m) copyWithZone:{zone, v35}];
         [v6 addCandidateEntityIdentifiers:v33];
       }
 
@@ -813,10 +813,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
@@ -824,19 +824,19 @@
   has = self->_has;
   if (has)
   {
-    if ((*(v4 + 72) & 1) == 0 || self->_secondsSinceReferenceDate != *(v4 + 1))
+    if ((*(equalCopy + 72) & 1) == 0 || self->_secondsSinceReferenceDate != *(equalCopy + 1))
     {
       goto LABEL_33;
     }
   }
 
-  else if (*(v4 + 72))
+  else if (*(equalCopy + 72))
   {
     goto LABEL_33;
   }
 
   dndModeUUID = self->_dndModeUUID;
-  if (dndModeUUID | *(v4 + 4))
+  if (dndModeUUID | *(equalCopy + 4))
   {
     if (![(NSString *)dndModeUUID isEqual:?])
     {
@@ -850,38 +850,38 @@ LABEL_33:
 
   if ((has & 8) != 0)
   {
-    if ((*(v4 + 72) & 8) == 0 || self->_modeConfigurationUI != *(v4 + 12))
+    if ((*(equalCopy + 72) & 8) == 0 || self->_modeConfigurationUI != *(equalCopy + 12))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 72) & 8) != 0)
+  else if ((*(equalCopy + 72) & 8) != 0)
   {
     goto LABEL_33;
   }
 
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 72) & 2) == 0 || self->_modeConfigurationEntityType != *(v4 + 10))
+    if ((*(equalCopy + 72) & 2) == 0 || self->_modeConfigurationEntityType != *(equalCopy + 10))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 72) & 2) != 0)
+  else if ((*(equalCopy + 72) & 2) != 0)
   {
     goto LABEL_33;
   }
 
   previousEntityIdentifiers = self->_previousEntityIdentifiers;
-  if (previousEntityIdentifiers | *(v4 + 7) && ![(NSMutableArray *)previousEntityIdentifiers isEqual:?])
+  if (previousEntityIdentifiers | *(equalCopy + 7) && ![(NSMutableArray *)previousEntityIdentifiers isEqual:?])
   {
     goto LABEL_33;
   }
 
   suggestedEntityIdentifiers = self->_suggestedEntityIdentifiers;
-  if (suggestedEntityIdentifiers | *(v4 + 8))
+  if (suggestedEntityIdentifiers | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)suggestedEntityIdentifiers isEqual:?])
     {
@@ -890,7 +890,7 @@ LABEL_33:
   }
 
   currentEntityIdentifiers = self->_currentEntityIdentifiers;
-  if (currentEntityIdentifiers | *(v4 + 3))
+  if (currentEntityIdentifiers | *(equalCopy + 3))
   {
     if (![(NSMutableArray *)currentEntityIdentifiers isEqual:?])
     {
@@ -900,19 +900,19 @@ LABEL_33:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 72) & 4) == 0 || self->_modeConfigurationType != *(v4 + 11))
+    if ((*(equalCopy + 72) & 4) == 0 || self->_modeConfigurationType != *(equalCopy + 11))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 72) & 4) != 0)
+  else if ((*(equalCopy + 72) & 4) != 0)
   {
     goto LABEL_33;
   }
 
   candidateEntityIdentifiers = self->_candidateEntityIdentifiers;
-  if (candidateEntityIdentifiers | *(v4 + 2))
+  if (candidateEntityIdentifiers | *(equalCopy + 2))
   {
     v11 = [(NSMutableArray *)candidateEntityIdentifiers isEqual:?];
   }
@@ -1001,18 +1001,18 @@ LABEL_14:
   return v9 ^ v5 ^ v10 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ [(NSMutableArray *)self->_candidateEntityIdentifiers hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4[9])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[9])
   {
-    self->_secondsSinceReferenceDate = v4[1];
+    self->_secondsSinceReferenceDate = fromCopy[1];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(ATXPBModeConfigurationUIFlowLoggingEvent *)self setDndModeUUID:?];
   }
@@ -1150,16 +1150,16 @@ LABEL_14:
   }
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
-  v4 = a3;
+  nCopy = n;
   v5 = [(ATXPBModeConfigurationUIFlowLoggingEvent *)self init];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v4;
+      v6 = nCopy;
       v7 = [v6 objectForKeyedSubscript:@"dndModeUUID"];
       [(ATXPBModeConfigurationUIFlowLoggingEvent *)v5 setDndModeUUID:v7];
 

@@ -2,7 +2,7 @@
 + (BKAppDelegate)delegate;
 + (id)anySceneController;
 + (id)currentSceneController;
-+ (id)sceneControllerForViewController:(id)a3;
++ (id)sceneControllerForViewController:(id)controller;
 + (id)sceneManager;
 - (BAAnalyticsController)primaryAnalyticsController;
 - (BDSLiverpoolStatusMonitor)liverpoolStatusMonitor;
@@ -14,10 +14,10 @@
 - (BKReachability)networkReachability;
 - (BKServiceCenter)serviceCenter;
 - (BKStoreController)storeController;
-- (BOOL)annotationProvider:(id)a3 acknowledgeMergingAnnotationsWithAssetVersionMismatch:(id)a4 assetID:(id)a5;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4;
-- (BOOL)applicationOpenURL:(id)a3 options:(id)a4 sceneController:(id)a5;
+- (BOOL)annotationProvider:(id)provider acknowledgeMergingAnnotationsWithAssetVersionMismatch:(id)mismatch assetID:(id)d;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options;
+- (BOOL)applicationOpenURL:(id)l options:(id)options sceneController:(id)controller;
 - (BOOL)isConnectedToInternet;
 - (BOOL)isStoreAllowed;
 - (UIWindow)window;
@@ -25,33 +25,33 @@
 - (id)_analyticsSessionHost;
 - (id)_engagementManagerDirectory;
 - (id)_primarySceneControllerAnalyticsManager;
-- (id)analyticsTrackerForStoreServices:(id)a3;
-- (id)contentPrivateIDForContentID:(id)a3;
-- (id)contentUserIDForContentID:(id)a3;
+- (id)analyticsTrackerForStoreServices:(id)services;
+- (id)contentPrivateIDForContentID:(id)d;
+- (id)contentUserIDForContentID:(id)d;
 - (id)flowControllers;
 - (id)keyWindowAnalyticsTracker;
-- (id)targetForAction:(SEL)a3 withSender:(id)a4;
-- (unint64_t)bl_beginBackgroundTaskWithName:(id)a3 expirationHandler:(id)a4;
-- (unint64_t)ec_beginBackgroundTaskWithName:(id)a3 expirationHandler:(id)a4;
+- (id)targetForAction:(SEL)action withSender:(id)sender;
+- (unint64_t)bl_beginBackgroundTaskWithName:(id)name expirationHandler:(id)handler;
+- (unint64_t)ec_beginBackgroundTaskWithName:(id)name expirationHandler:(id)handler;
 - (void)_analyticsForceEndSessionOnViewControllers;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_applicationDidBecomeFrontmost:(id)a3;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationOpenURL:(id)a3 options:(id)a4 sceneController:(id)a5;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_applicationWillResignActive:(id)a3;
-- (void)_applicationWillTerminate:(id)a3;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_applicationDidBecomeFrontmost:(id)frontmost;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationOpenURL:(id)l options:(id)options sceneController:(id)controller;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_applicationWillResignActive:(id)active;
+- (void)_applicationWillTerminate:(id)terminate;
 - (void)_beginObservingICloudRestoreStatus;
 - (void)_cleanup;
 - (void)_createBackgroundTaskAssertionForLaunch;
-- (void)_createCoverCacheForcingEmptyPPTCache:(BOOL)a3;
-- (void)_didFinishUpgradingWithOptions:(id)a3;
-- (void)_dieIfUnacknowledgediCloudLogoutOcccurredWithCompletion:(id)a3;
+- (void)_createCoverCacheForcingEmptyPPTCache:(BOOL)cache;
+- (void)_didFinishUpgradingWithOptions:(id)options;
+- (void)_dieIfUnacknowledgediCloudLogoutOcccurredWithCompletion:(id)completion;
 - (void)_endObservingNotifications;
-- (void)_extendedLaunchComplete:(id)a3;
+- (void)_extendedLaunchComplete:(id)complete;
 - (void)_finishLaunching;
 - (void)_iCloudStatusChanged;
-- (void)_logIfError:(id)a3 operation:(id)a4;
+- (void)_logIfError:(id)error operation:(id)operation;
 - (void)_observeExtendedLaunchComplete;
 - (void)_prewarmAEPluginRegistry;
 - (void)_reloadLibraryForLaunch;
@@ -60,57 +60,57 @@
 - (void)_setupUbiquity;
 - (void)_setupUserEngagement;
 - (void)_showMainViewControllerOrWelcomeScreen;
-- (void)_showWelcomeScreenIfNeeded:(id)a3 completion:(id)a4;
+- (void)_showWelcomeScreenIfNeeded:(id)needed completion:(id)completion;
 - (void)_signalEnableSyncCheck;
 - (void)_signalExtendedLaunchComplete;
 - (void)_startLibraryReloadForLaunchWhenNeeded;
 - (void)_startObservingNotifications;
 - (void)_updateEnableSync;
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4;
-- (void)appGlobalActionHandler:(id)a3 open:(id)a4;
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4;
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4;
-- (void)application:(id)a3 handleIntent:(id)a4 completionHandler:(id)a5;
-- (void)applicationWillTerminate:(id)a3;
-- (void)bl_endBackgroundTask:(unint64_t)a3;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)clearReadingGoals:(id)a3;
-- (void)clientDetectedPredicateChange:(id)a3;
-- (void)clientDetectedPurchaseServerClientExpired:(id)a3;
-- (void)clientDetectedStoreChange:(id)a3;
-- (void)clientDetectedStoreChangeAndAccountChange:(id)a3;
-- (void)clientRequestITunesAuthentication:(id)a3 withCompletion:(id)a4;
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason;
+- (void)appGlobalActionHandler:(id)handler open:(id)open;
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions;
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification;
+- (void)application:(id)application handleIntent:(id)intent completionHandler:(id)handler;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)bl_endBackgroundTask:(unint64_t)task;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)clearReadingGoals:(id)goals;
+- (void)clientDetectedPredicateChange:(id)change;
+- (void)clientDetectedPurchaseServerClientExpired:(id)expired;
+- (void)clientDetectedStoreChange:(id)change;
+- (void)clientDetectedStoreChangeAndAccountChange:(id)change;
+- (void)clientRequestITunesAuthentication:(id)authentication withCompletion:(id)completion;
 - (void)cloudStorageUpgradeSheetWasDismissed;
-- (void)deleteCloudDataWithCompletion:(id)a3;
-- (void)didMigrateBooksCollection:(id)a3;
-- (void)ec_endBackgroundTask:(unint64_t)a3;
-- (void)flushJetMetricsWithCompletionHandler:(id)a3;
+- (void)deleteCloudDataWithCompletion:(id)completion;
+- (void)didMigrateBooksCollection:(id)collection;
+- (void)ec_endBackgroundTask:(unint64_t)task;
+- (void)flushJetMetricsWithCompletionHandler:(id)handler;
 - (void)importMigratedBooks;
 - (void)initialDataSourceFetchInitiated;
-- (void)libraryAssetStatusController:(id)a3 makeAccountPrimaryAndSignedIn:(id)a4 completion:(id)a5;
-- (void)libraryDidReload:(id)a3;
+- (void)libraryAssetStatusController:(id)controller makeAccountPrimaryAndSignedIn:(id)in completion:(id)completion;
+- (void)libraryDidReload:(id)reload;
 - (void)listeningSessionWillEnd;
 - (void)mergeSyncSidecar;
-- (void)networkReachabilityChanged:(id)a3;
-- (void)orderFrontStandardAboutPanel:(id)a3;
-- (void)performActionForShortcutItem:(id)a3 sceneController:(id)a4 completionHandler:(id)a5;
-- (void)playSessionDidEnd:(id)a3 playTime:(double)a4;
+- (void)networkReachabilityChanged:(id)changed;
+- (void)orderFrontStandardAboutPanel:(id)panel;
+- (void)performActionForShortcutItem:(id)item sceneController:(id)controller completionHandler:(id)handler;
+- (void)playSessionDidEnd:(id)end playTime:(double)time;
 - (void)q_deleteLocaliCloudDataIfUserLoggedOutFromiCloud;
 - (void)q_setupLibrary;
-- (void)readSessionDidEnd:(id)a3 readTime:(double)a4;
+- (void)readSessionDidEnd:(id)end readTime:(double)time;
 - (void)registerAppIntentsDependencies;
-- (void)resetAnalyticsIdentifier:(id)a3;
-- (void)resetOnlineContentAccess:(id)a3;
-- (void)saveStateClosing:(BOOL)a3;
-- (void)seriesCoversForSeriesIdsChanged:(id)a3;
+- (void)resetAnalyticsIdentifier:(id)identifier;
+- (void)resetOnlineContentAccess:(id)access;
+- (void)saveStateClosing:(BOOL)closing;
+- (void)seriesCoversForSeriesIdsChanged:(id)changed;
 - (void)setupAEAssetFactory;
 - (void)showConfigurationErrorAndQuit;
 - (void)sq_kickoffFinishLaunching;
 - (void)startDownloadPurchaseMonitor;
-- (void)storeChangedNotification:(id)a3;
-- (void)ubiquityStatusChangedToAvailableWithNewIdentity:(id)a3 oldIdentity:(id)a4;
-- (void)userDefaultsChanged:(id)a3;
-- (void)willMarkAsset:(id)a3 finished:(BOOL)a4 finishedDate:(id)a5;
+- (void)storeChangedNotification:(id)notification;
+- (void)ubiquityStatusChangedToAvailableWithNewIdentity:(id)identity oldIdentity:(id)oldIdentity;
+- (void)userDefaultsChanged:(id)changed;
+- (void)willMarkAsset:(id)asset finished:(BOOL)finished finishedDate:(id)date;
 @end
 
 @implementation BKAppDelegate
@@ -232,29 +232,29 @@
     v47 = objc_alloc_init(BKTUIOfflineCacheProvider);
     [TUIOfflineCache setProvider:v47];
 
-    v48 = [v43 workloopUserInitiatedQueue];
+    workloopUserInitiatedQueue = [v43 workloopUserInitiatedQueue];
     v62[0] = _NSConcreteStackBlock;
     v62[1] = 3221225472;
     v62[2] = sub_1001C65C4;
     v62[3] = &unk_100A033C8;
     v49 = v43;
     v63 = v49;
-    dispatch_async(v48, v62);
+    dispatch_async(workloopUserInitiatedQueue, v62);
 
-    v50 = [v49 workloopUserInitiatedQueue];
-    dispatch_async(v50, &stru_100A0ABF0);
+    workloopUserInitiatedQueue2 = [v49 workloopUserInitiatedQueue];
+    dispatch_async(workloopUserInitiatedQueue2, &stru_100A0ABF0);
 
-    v51 = [v49 workloopUserInitiatedQueue];
+    workloopUserInitiatedQueue3 = [v49 workloopUserInitiatedQueue];
     v60[0] = _NSConcreteStackBlock;
     v60[1] = 3221225472;
     v60[2] = sub_1001C66C4;
     v60[3] = &unk_100A033C8;
     v52 = v49;
     v61 = v52;
-    dispatch_async(v51, v60);
+    dispatch_async(workloopUserInitiatedQueue3, v60);
 
-    v53 = [v52 workloopUserInitiatedQueue];
-    dispatch_async(v53, &stru_100A0AC10);
+    workloopUserInitiatedQueue4 = [v52 workloopUserInitiatedQueue];
+    dispatch_async(workloopUserInitiatedQueue4, &stru_100A0AC10);
 
     dispatch_async(*(v2 + 40), &stru_100A0AC30);
     v54 = +[BCAnalyticsVisibilityPresentationNotifier sharedInstance];
@@ -307,123 +307,123 @@
   self->_ubiquityStatusMonitor = v8;
 
   [(IMUbiquityStatusMonitor *)self->_ubiquityStatusMonitor registerCoordinatingObserver:self];
-  v10 = [(BKAppDelegate *)self liverpoolStatusMonitor];
-  [v10 registerCoordinatingObserver:self];
+  liverpoolStatusMonitor = [(BKAppDelegate *)self liverpoolStatusMonitor];
+  [liverpoolStatusMonitor registerCoordinatingObserver:self];
 
   v11 = [BKUbiquityOptInController alloc];
   v12 = self->_ubiquityStatusMonitor;
-  v13 = [(BKAppDelegate *)self liverpoolStatusMonitor];
-  v14 = [(BKUbiquityOptInController *)v11 initWithStatusMonitor:v12 liverpoolStatusMonitor:v13];
+  liverpoolStatusMonitor2 = [(BKAppDelegate *)self liverpoolStatusMonitor];
+  v14 = [(BKUbiquityOptInController *)v11 initWithStatusMonitor:v12 liverpoolStatusMonitor:liverpoolStatusMonitor2];
   ubiquityOptInController = self->_ubiquityOptInController;
   self->_ubiquityOptInController = v14;
 
   v16 = +[BDSLiverpoolStatusMonitor makeOSStateHandler];
   [(BKAppDelegate *)self setSyncUserDefaultsStateHandler:v16];
 
-  v17 = [(IMUbiquityStatusMonitor *)self->_ubiquityStatusMonitor makeOSStateHandler];
-  [(BKAppDelegate *)self setUbiquityStatusMonitorStateHandler:v17];
+  makeOSStateHandler = [(IMUbiquityStatusMonitor *)self->_ubiquityStatusMonitor makeOSStateHandler];
+  [(BKAppDelegate *)self setUbiquityStatusMonitorStateHandler:makeOSStateHandler];
 }
 
 - (void)_finishLaunching
 {
-  v3 = [(BKAppDelegate *)self workloopUtilityQueue];
-  dispatch_async(v3, &stru_100A0AC98);
+  workloopUtilityQueue = [(BKAppDelegate *)self workloopUtilityQueue];
+  dispatch_async(workloopUtilityQueue, &stru_100A0AC98);
 
   kdebug_trace();
   kdebug_trace();
   [(BKAppDelegate *)self _setupUbiquity];
   kdebug_trace();
   v4 = +[BCLayerRenderer sharedInstance];
-  v5 = [(BKAppDelegate *)self preLaunchQueue];
+  preLaunchQueue = [(BKAppDelegate *)self preLaunchQueue];
   v36[0] = _NSConcreteStackBlock;
   v36[1] = 3221225472;
   v36[2] = sub_100006C00;
   v36[3] = &unk_100A033C8;
   v36[4] = self;
-  [v5 addOperationWithBlock:v36];
+  [preLaunchQueue addOperationWithBlock:v36];
 
-  v6 = [(BKAppDelegate *)self preLaunchQueue];
-  [v6 addOperationWithBlock:&stru_100A0ACB8];
+  preLaunchQueue2 = [(BKAppDelegate *)self preLaunchQueue];
+  [preLaunchQueue2 addOperationWithBlock:&stru_100A0ACB8];
 
-  v7 = [(BKAppDelegate *)self preLaunchQueue];
-  [v7 addOperationWithBlock:&stru_100A0ACD8];
+  preLaunchQueue3 = [(BKAppDelegate *)self preLaunchQueue];
+  [preLaunchQueue3 addOperationWithBlock:&stru_100A0ACD8];
 
-  v8 = [(BKAppDelegate *)self preLaunchQueue];
-  [v8 addOperationWithBlock:&stru_100A0ACF8];
+  preLaunchQueue4 = [(BKAppDelegate *)self preLaunchQueue];
+  [preLaunchQueue4 addOperationWithBlock:&stru_100A0ACF8];
 
-  v9 = [(BKAppDelegate *)self preLaunchQueue];
+  preLaunchQueue5 = [(BKAppDelegate *)self preLaunchQueue];
   v35[0] = _NSConcreteStackBlock;
   v35[1] = 3221225472;
   v35[2] = sub_100012208;
   v35[3] = &unk_100A033C8;
   v35[4] = self;
-  [v9 addOperationWithBlock:v35];
+  [preLaunchQueue5 addOperationWithBlock:v35];
 
-  v10 = [(BKAppDelegate *)self preLaunchQueue];
+  preLaunchQueue6 = [(BKAppDelegate *)self preLaunchQueue];
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_100009274;
   v34[3] = &unk_100A033C8;
   v34[4] = self;
-  [v10 addOperationWithBlock:v34];
+  [preLaunchQueue6 addOperationWithBlock:v34];
 
-  v11 = [(BKAppDelegate *)self workloopUserInitiatedQueue];
-  dispatch_async(v11, &stru_100A0AD18);
+  workloopUserInitiatedQueue = [(BKAppDelegate *)self workloopUserInitiatedQueue];
+  dispatch_async(workloopUserInitiatedQueue, &stru_100A0AD18);
 
-  v12 = [(BKAppDelegate *)self preLaunchQueue];
+  preLaunchQueue7 = [(BKAppDelegate *)self preLaunchQueue];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_100012CF4;
   v33[3] = &unk_100A033C8;
   v33[4] = self;
-  [v12 addOperationWithBlock:v33];
+  [preLaunchQueue7 addOperationWithBlock:v33];
 
-  v13 = [(BKAppDelegate *)self preLaunchQueue];
+  preLaunchQueue8 = [(BKAppDelegate *)self preLaunchQueue];
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_100012E5C;
   v32[3] = &unk_100A033C8;
   v32[4] = self;
-  [v13 addOperationWithBlock:v32];
+  [preLaunchQueue8 addOperationWithBlock:v32];
 
-  v14 = [(BKAppDelegate *)self preLaunchQueue];
-  [v14 addOperationWithBlock:&stru_100A0AD38];
+  preLaunchQueue9 = [(BKAppDelegate *)self preLaunchQueue];
+  [preLaunchQueue9 addOperationWithBlock:&stru_100A0AD38];
 
-  v15 = [(BKAppDelegate *)self preLaunchQueue];
+  preLaunchQueue10 = [(BKAppDelegate *)self preLaunchQueue];
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_100013E70;
   v31[3] = &unk_100A033C8;
   v31[4] = self;
-  [v15 addOperationWithBlock:v31];
+  [preLaunchQueue10 addOperationWithBlock:v31];
 
-  v16 = [(BKAppDelegate *)self preLaunchQueue];
+  preLaunchQueue11 = [(BKAppDelegate *)self preLaunchQueue];
   v30[0] = _NSConcreteStackBlock;
   v30[1] = 3221225472;
   v30[2] = sub_100013FC0;
   v30[3] = &unk_100A033C8;
   v30[4] = self;
-  [v16 addOperationWithBlock:v30];
+  [preLaunchQueue11 addOperationWithBlock:v30];
 
-  v17 = [(BKAppDelegate *)self preLaunchQueue];
-  [v17 addOperationWithBlock:&stru_100A0AD58];
+  preLaunchQueue12 = [(BKAppDelegate *)self preLaunchQueue];
+  [preLaunchQueue12 addOperationWithBlock:&stru_100A0AD58];
 
-  v18 = [(BKAppDelegate *)self preLaunchQueue];
-  [v18 addOperationWithBlock:&stru_100A0AD78];
+  preLaunchQueue13 = [(BKAppDelegate *)self preLaunchQueue];
+  [preLaunchQueue13 addOperationWithBlock:&stru_100A0AD78];
 
-  v19 = [(BKAppDelegate *)self preLaunchQueue];
-  [v19 addOperationWithBlock:&stru_100A0AD98];
+  preLaunchQueue14 = [(BKAppDelegate *)self preLaunchQueue];
+  [preLaunchQueue14 addOperationWithBlock:&stru_100A0AD98];
 
-  v20 = [(BKAppDelegate *)self preLaunchQueue];
+  preLaunchQueue15 = [(BKAppDelegate *)self preLaunchQueue];
   v29[0] = _NSConcreteStackBlock;
   v29[1] = 3221225472;
   v29[2] = sub_100018890;
   v29[3] = &unk_100A033C8;
   v29[4] = self;
-  [v20 addOperationWithBlock:v29];
+  [preLaunchQueue15 addOperationWithBlock:v29];
 
-  v21 = [(BKAppDelegate *)self preLaunchQueue];
-  [v21 addOperationWithBlock:&stru_100A0ADD8];
+  preLaunchQueue16 = [(BKAppDelegate *)self preLaunchQueue];
+  [preLaunchQueue16 addOperationWithBlock:&stru_100A0ADD8];
 
   v22 = [BUNetworkMonitor alloc];
   v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -434,13 +434,13 @@
   v26 = +[BCSyncUserDefaults makeOSStateHandler];
   [(BKAppDelegate *)self setBcSyncUserDefaultsStateHandler:v26];
 
-  v27 = [(BKAppDelegate *)self preLaunchQueue];
+  preLaunchQueue17 = [(BKAppDelegate *)self preLaunchQueue];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_1001C76E8;
   v28[3] = &unk_100A033C8;
   v28[4] = self;
-  [v27 addOperationWithBlock:v28];
+  [preLaunchQueue17 addOperationWithBlock:v28];
 
   kdebug_trace();
 }
@@ -459,8 +459,8 @@
 
 - (_TtP5Books20BKStartupTaskManager_)bkStartupTaskManager
 {
-  v2 = self;
-  v3 = [(BKAppDelegate *)v2 containerHost];
+  selfCopy = self;
+  containerHost = [(BKAppDelegate *)selfCopy containerHost];
   sub_1000076D8(v6);
 
   sub_10000E3E8(v6, v6[3]);
@@ -486,8 +486,8 @@
 - (BKContainerHost)containerHost
 {
   swift_beginAccess();
-  v3 = self;
-  v4 = objc_getAssociatedObject(v3, &unk_100B23078);
+  selfCopy = self;
+  v4 = objc_getAssociatedObject(selfCopy, &unk_100B23078);
   result = swift_endAccess();
   if (v4)
   {
@@ -517,9 +517,9 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "q_deleteLocaliCloudDataIfUserLoggedOutFromiCloudWithCompletion:", buf, 2u);
   }
 
-  v4 = [(BKAppDelegate *)self iCloudIdentityTokenTracker];
-  [v4 fetchCurrentToken];
-  if ([v4 didUnacknowledgediCloudLogoutOccur])
+  iCloudIdentityTokenTracker = [(BKAppDelegate *)self iCloudIdentityTokenTracker];
+  [iCloudIdentityTokenTracker fetchCurrentToken];
+  if ([iCloudIdentityTokenTracker didUnacknowledgediCloudLogoutOccur])
   {
     v5 = BDSCloudKitLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -533,7 +533,7 @@
     v9[1] = 3221225472;
     v9[2] = sub_1001D13B4;
     v9[3] = &unk_100A034F8;
-    v10 = v4;
+    v10 = iCloudIdentityTokenTracker;
     v11 = v6;
     v7 = v6;
     [(BKAppDelegate *)self deleteCloudDataWithCompletion:v9];
@@ -543,13 +543,13 @@
 
   else
   {
-    [v4 acknowledgeiCloudIdentity];
+    [iCloudIdentityTokenTracker acknowledgeiCloudIdentity];
   }
 }
 
 - (void)registerAppIntentsDependencies
 {
-  v2 = self;
+  selfCopy = self;
   BKAppDelegate.registerAppIntentsDependencies()();
 }
 
@@ -564,41 +564,41 @@
   v8[3] = sub_1001CCEB4;
   v8[4] = sub_1001CCEE0;
   v9 = &stru_100A0B138;
-  v4 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator = [(BKAppDelegate *)self appLaunchCoordinator];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001CD3AC;
   v7[3] = &unk_100A0B160;
   v7[4] = v8;
-  [v4 appLaunchCoordinatorOnConditionMask:32 blockID:@"releaseLaunchAssertion launched" performBlock:v7];
+  [appLaunchCoordinator appLaunchCoordinatorOnConditionMask:32 blockID:@"releaseLaunchAssertion launched" performBlock:v7];
 
-  v5 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator2 = [(BKAppDelegate *)self appLaunchCoordinator];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1001CD424;
   v6[3] = &unk_100A0B160;
   v6[4] = v8;
-  [v5 appLaunchCoordinatorOnConditionMask:0x2000 blockID:@"releaseLaunchAssertion libraryDidFinish" performBlock:v6];
+  [appLaunchCoordinator2 appLaunchCoordinatorOnConditionMask:0x2000 blockID:@"releaseLaunchAssertion libraryDidFinish" performBlock:v6];
 
   _Block_object_dispose(v8, 8);
 }
 
 - (void)q_setupLibrary
 {
-  v3 = [(BKAppDelegate *)self librarySetupQueue];
+  librarySetupQueue = [(BKAppDelegate *)self librarySetupQueue];
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10001402C;
   v4[3] = &unk_100A033C8;
   v4[4] = self;
-  [v3 addOperationWithBlock:v4];
+  [librarySetupQueue addOperationWithBlock:v4];
 }
 
 + (BKAppDelegate)delegate
 {
   objc_opt_class();
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
   v4 = BUDynamicCast();
 
   return v4;
@@ -607,21 +607,21 @@
 + (id)sceneManager
 {
   v2 = +[BKAppDelegate delegate];
-  v3 = [v2 sceneManager];
+  sceneManager = [v2 sceneManager];
 
-  return v3;
+  return sceneManager;
 }
 
 - (UIWindow)window
 {
-  v3 = [(BKAppDelegate *)self sceneManager];
-  v4 = [v3 currentSceneController];
+  sceneManager = [(BKAppDelegate *)self sceneManager];
+  currentSceneController = [sceneManager currentSceneController];
 
-  if (v4)
+  if (currentSceneController)
   {
-    v5 = [(BKAppDelegate *)self sceneManager];
-    v6 = [v5 currentSceneController];
-    v7 = [v6 bk_window];
+    sceneManager2 = [(BKAppDelegate *)self sceneManager];
+    currentSceneController2 = [sceneManager2 currentSceneController];
+    bk_window = [currentSceneController2 bk_window];
   }
 
   else
@@ -632,10 +632,10 @@
       sub_10079404C();
     }
 
-    v7 = 0;
+    bk_window = 0;
   }
 
-  return v7;
+  return bk_window;
 }
 
 - (BKLibraryManager)libraryManager
@@ -647,25 +647,25 @@
 
 - (BAAnalyticsController)primaryAnalyticsController
 {
-  v2 = [(BKAppDelegate *)self _primarySceneControllerAnalyticsManager];
-  v3 = [v2 analyticsController];
+  _primarySceneControllerAnalyticsManager = [(BKAppDelegate *)self _primarySceneControllerAnalyticsManager];
+  analyticsController = [_primarySceneControllerAnalyticsManager analyticsController];
 
-  return v3;
+  return analyticsController;
 }
 
 - (id)_primarySceneControllerAnalyticsManager
 {
   objc_opt_class();
-  v3 = [(BKAppDelegate *)self sceneManager];
-  v4 = [v3 primarySceneController];
+  sceneManager = [(BKAppDelegate *)self sceneManager];
+  primarySceneController = [sceneManager primarySceneController];
   v5 = BUDynamicCast();
 
-  v6 = [v5 analyticsManager];
+  analyticsManager = [v5 analyticsManager];
 
-  return v6;
+  return analyticsManager;
 }
 
-- (void)orderFrontStandardAboutPanel:(id)a3
+- (void)orderFrontStandardAboutPanel:(id)panel
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
@@ -681,8 +681,8 @@
   [v4 appendAttributedString:v7];
 
   v8 = +[BCAppKitBundleLoader appKitBundleClass];
-  v9 = [v8 aboutPanelOptionCreditsKey];
-  v12 = v9;
+  aboutPanelOptionCreditsKey = [v8 aboutPanelOptionCreditsKey];
+  v12 = aboutPanelOptionCreditsKey;
   v13 = v4;
   v10 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
 
@@ -707,49 +707,49 @@
 
 - (id)flowControllers
 {
-  v2 = [(BKAppDelegate *)self sceneManager];
+  sceneManager = [(BKAppDelegate *)self sceneManager];
   v3 = BUProtocolCast();
-  v4 = [v3 flowControllers];
+  flowControllers = [v3 flowControllers];
 
-  return v4;
+  return flowControllers;
 }
 
-- (BOOL)applicationOpenURL:(id)a3 options:(id)a4 sceneController:(id)a5
+- (BOOL)applicationOpenURL:(id)l options:(id)options sceneController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  optionsCopy = options;
+  controllerCopy = controller;
   kdebug_trace();
   v11 = BCSceneLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v10 scene];
-    v13 = [v12 session];
-    v14 = [v13 persistentIdentifier];
+    scene = [controllerCopy scene];
+    session = [scene session];
+    persistentIdentifier = [session persistentIdentifier];
     *buf = 138412802;
-    v26 = v8;
+    v26 = lCopy;
     v27 = 2112;
-    v28 = v9;
+    v28 = optionsCopy;
     v29 = 2112;
-    v30 = v14;
+    v30 = persistentIdentifier;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "applicationOpenURL: url=%@, options=%@, withSceneID=%@", buf, 0x20u);
   }
 
   [(BKAppDelegate *)self setSuppressOpenLastBook:1];
   objc_initWeak(buf, self);
-  v15 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator = [(BKAppDelegate *)self appLaunchCoordinator];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1001C6EB0;
   v20[3] = &unk_100A03C50;
   objc_copyWeak(&v24, buf);
-  v16 = v8;
+  v16 = lCopy;
   v21 = v16;
-  v17 = v9;
+  v17 = optionsCopy;
   v22 = v17;
-  v18 = v10;
+  v18 = controllerCopy;
   v23 = v18;
-  [v15 appLaunchCoordinatorPerformWhenLaunched:@"app openURL" block:v20];
+  [appLaunchCoordinator appLaunchCoordinatorPerformWhenLaunched:@"app openURL" block:v20];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(buf);
@@ -757,38 +757,38 @@
   return 1;
 }
 
-- (void)_applicationOpenURL:(id)a3 options:(id)a4 sceneController:(id)a5
+- (void)_applicationOpenURL:(id)l options:(id)options sceneController:(id)controller
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (v10)
+  lCopy = l;
+  optionsCopy = options;
+  controllerCopy = controller;
+  v11 = controllerCopy;
+  if (controllerCopy)
   {
-    v12 = v10;
+    currentSceneController = controllerCopy;
   }
 
   else
   {
-    v13 = [(BKAppDelegate *)self sceneManager];
-    v12 = [v13 currentSceneController];
+    sceneManager = [(BKAppDelegate *)self sceneManager];
+    currentSceneController = [sceneManager currentSceneController];
   }
 
-  v52 = [v12 newShowURLTransaction];
+  newShowURLTransaction = [currentSceneController newShowURLTransaction];
   objc_opt_class();
-  v14 = [v9 objectForKeyedSubscript:UIApplicationOpenURLOptionsSourceApplicationKey];
+  v14 = [optionsCopy objectForKeyedSubscript:UIApplicationOpenURLOptionsSourceApplicationKey];
   v15 = BUDynamicCast();
 
-  v50 = [v9 objectForKeyedSubscript:UIApplicationOpenURLOptionsAnnotationKey];
-  v53 = self;
+  v50 = [optionsCopy objectForKeyedSubscript:UIApplicationOpenURLOptionsAnnotationKey];
+  selfCopy = self;
   val = [(BKAppDelegate *)self _primarySceneControllerAnalyticsManager];
-  [val analyticsSetReferralURL:v8 app:v15];
+  [val analyticsSetReferralURL:lCopy app:v15];
   v51 = v15;
   if ([v15 isEqualToString:@"com.apple.iBooks.BooksWidget"])
   {
-    v47 = v8;
-    v16 = [v8 query];
-    v17 = [NSURL bu_dictionaryForQueryString:v16 unescapedValues:0];
+    v47 = lCopy;
+    query = [lCopy query];
+    v17 = [NSURL bu_dictionaryForQueryString:query unescapedValues:0];
 
     objc_opt_class();
     v18 = [v17 objectForKeyedSubscript:@"widgetFamily"];
@@ -825,14 +825,14 @@
     objc_opt_class();
     v27 = [v17 objectForKeyedSubscript:@"hasAssets"];
     v28 = BUDynamicCast();
-    v29 = [v28 BOOLValue];
+    bOOLValue = [v28 BOOLValue];
 
     objc_opt_class();
     v30 = [v17 objectForKeyedSubscript:@"isStreakExposed"];
     v31 = BUDynamicCast();
-    v32 = [v31 BOOLValue];
+    bOOLValue2 = [v31 BOOLValue];
 
-    v33 = [[BAWidgetData alloc] initWithWidgetFamily:v48 displayMode:v26 isContentExposed:v29 isStreakExposed:v32];
+    v33 = [[BAWidgetData alloc] initWithWidgetFamily:v48 displayMode:v26 isContentExposed:bOOLValue isStreakExposed:bOOLValue2];
     objc_initWeak(&location, val);
     v55[0] = _NSConcreteStackBlock;
     v55[1] = 3221225472;
@@ -846,67 +846,67 @@
     objc_destroyWeak(&v57);
     objc_destroyWeak(&location);
 
-    v8 = v47;
+    lCopy = v47;
   }
 
-  v35 = [v9 objectForKeyedSubscript:@"BKApplicationOpenURLOptionsOpenAfterImportKey"];
+  v35 = [optionsCopy objectForKeyedSubscript:@"BKApplicationOpenURLOptionsOpenAfterImportKey"];
   v36 = v35;
   if (v35)
   {
-    v37 = [v35 BOOLValue];
+    bOOLValue3 = [v35 BOOLValue];
   }
 
   else
   {
-    v37 = 1;
+    bOOLValue3 = 1;
   }
 
   v49 = v11;
-  v38 = [v9 objectForKeyedSubscript:@"BKApplicationImportInPlaceKey"];
+  v38 = [optionsCopy objectForKeyedSubscript:@"BKApplicationImportInPlaceKey"];
   v39 = v38;
   if (v38)
   {
-    v40 = [v38 BOOLValue];
+    bOOLValue4 = [v38 BOOLValue];
   }
 
   else
   {
-    v40 = 0;
+    bOOLValue4 = 0;
   }
 
-  v41 = v8;
-  v42 = [v9 objectForKeyedSubscript:@"BKApplicationShowLibraryAllCollectionKey"];
+  v41 = lCopy;
+  v42 = [optionsCopy objectForKeyedSubscript:@"BKApplicationShowLibraryAllCollectionKey"];
   v43 = v42;
   if (v42)
   {
-    v44 = [v42 BOOLValue];
+    bOOLValue5 = [v42 BOOLValue];
   }
 
   else
   {
-    v44 = 0;
+    bOOLValue5 = 0;
   }
 
-  v45 = [(BKAppDelegate *)v53 sceneManager];
+  sceneManager2 = [(BKAppDelegate *)selfCopy sceneManager];
   BYTE2(v46) = 1;
-  BYTE1(v46) = v44;
-  LOBYTE(v46) = v40;
-  [v45 handleApplicationURL:v41 sourceApplication:v51 annotation:v50 likelyUserInitiated:0 canImport:1 openAfterImport:v37 importInPlace:v46 showLibraryAllCollection:v52 switchToLibrary:0 transaction:? completion:?];
+  BYTE1(v46) = bOOLValue5;
+  LOBYTE(v46) = bOOLValue4;
+  [sceneManager2 handleApplicationURL:v41 sourceApplication:v51 annotation:v50 likelyUserInitiated:0 canImport:1 openAfterImport:bOOLValue3 importInPlace:v46 showLibraryAllCollection:newShowURLTransaction switchToLibrary:0 transaction:? completion:?];
 }
 
 - (void)_signalEnableSyncCheck
 {
-  v2 = [(BKAppDelegate *)self coalescedUpdateEnableSync];
-  [v2 signalWithCompletion:&stru_100A0AC78];
+  coalescedUpdateEnableSync = [(BKAppDelegate *)self coalescedUpdateEnableSync];
+  [coalescedUpdateEnableSync signalWithCompletion:&stru_100A0AC78];
 }
 
 - (void)_updateEnableSync
 {
   +[BCSyncUserDefaults syncDefaultsWithTCC];
-  v3 = [(BKAppDelegate *)self liverpoolStatusMonitor];
-  v4 = [v3 isCloudKitEnabled];
+  liverpoolStatusMonitor = [(BKAppDelegate *)self liverpoolStatusMonitor];
+  isCloudKitEnabled = [liverpoolStatusMonitor isCloudKitEnabled];
 
-  if (v4)
+  if (isCloudKitEnabled)
   {
     v5 = +[BCSyncUserDefaults isCollectionSyncOptedIn];
     v6 = +[BCSyncUserDefaults isReadingNowSyncOptedIn];
@@ -936,46 +936,46 @@
   v12 = +[BDSSecureManager sharedManager];
   [v12 setEnableCloudSync:v5];
 
-  v13 = [(BKAppDelegate *)self libraryManager];
-  v14 = [v13 assetDetailsManager];
-  [v14 setEnableReadingNowSync:v6];
+  libraryManager = [(BKAppDelegate *)self libraryManager];
+  assetDetailsManager = [libraryManager assetDetailsManager];
+  [assetDetailsManager setEnableReadingNowSync:v6];
 
-  v16 = [(BKAppDelegate *)self serviceCenter];
-  v15 = [v16 readingActivityService];
-  [v15 setEnableCloudSync:v4];
+  serviceCenter = [(BKAppDelegate *)self serviceCenter];
+  readingActivityService = [serviceCenter readingActivityService];
+  [readingActivityService setEnableCloudSync:isCloudKitEnabled];
 }
 
 - (id)_engagementManagerDirectory
 {
   v2 = +[BUAppGroup books];
-  v3 = [v2 containerURL];
-  v4 = [v3 URLByAppendingPathComponent:@"EngagementCollector" isDirectory:1];
+  containerURL = [v2 containerURL];
+  v4 = [containerURL URLByAppendingPathComponent:@"EngagementCollector" isDirectory:1];
 
   return v4;
 }
 
 - (void)_setupUserEngagement
 {
-  v7 = [(BKAppDelegate *)self _engagementManagerDirectory];
-  v3 = [[BMManagerConfiguration alloc] initWithDirectory:v7 shouldRunUpdatesOnSchedule:0 shouldPurgeOutdatedData:1];
+  _engagementManagerDirectory = [(BKAppDelegate *)self _engagementManagerDirectory];
+  v3 = [[BMManagerConfiguration alloc] initWithDirectory:_engagementManagerDirectory shouldRunUpdatesOnSchedule:0 shouldPurgeOutdatedData:1];
   v4 = [BKEngagementManager alloc];
   v5 = +[BCRCDataContainer defaultContainer];
   v6 = [(BKEngagementManager *)v4 initWithConfiguration:v3 configurationContainer:v5];
   [(BKAppDelegate *)self setEngagementManager:v6];
 }
 
-- (BOOL)application:(id)a3 willFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application willFinishLaunchingWithOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   v8 = [BKContainerHost alloc];
-  v9 = [(BKAppDelegate *)self appLaunchCoordinator];
-  v10 = [(BKContainerHost *)v8 initWithLaunchCoordinator:v9];
+  appLaunchCoordinator = [(BKAppDelegate *)self appLaunchCoordinator];
+  v10 = [(BKContainerHost *)v8 initWithLaunchCoordinator:appLaunchCoordinator];
   [(BKAppDelegate *)self setContainerHost:v10];
 
   v11 = [BKAppLifecycleObserver alloc];
-  v12 = [(BKAppDelegate *)self appLaunchCoordinator];
-  v13 = [(BKAppLifecycleObserver *)v11 initWithCoordinator:v12];
+  appLaunchCoordinator2 = [(BKAppDelegate *)self appLaunchCoordinator];
+  v13 = [(BKAppLifecycleObserver *)v11 initWithCoordinator:appLaunchCoordinator2];
 
   [(BKAppDelegate *)self setAppLifecycleObserver:v13];
   objc_initWeak(location, self);
@@ -984,7 +984,7 @@
   v41[2] = sub_1001C820C;
   v41[3] = &unk_100A070B8;
   objc_copyWeak(&v43, location);
-  v14 = v6;
+  v14 = applicationCopy;
   v42 = v14;
   [(BKAppLifecycleObserver *)v13 setOnWillEnterForeground:v41];
   v38[0] = _NSConcreteStackBlock;
@@ -1032,17 +1032,17 @@
     [v19 observeExtendedLaunchTestCompletion];
   }
 
-  v20 = [(BKAppDelegate *)self preLaunchQueue];
+  preLaunchQueue = [(BKAppDelegate *)self preLaunchQueue];
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_1001C83EC;
   v24[3] = &unk_100A033C8;
   v21 = v19;
   v25 = v21;
-  [v20 addOperationWithBlock:v24];
+  [preLaunchQueue addOperationWithBlock:v24];
 
-  v22 = [(BKAppDelegate *)self bkStartupTaskManager];
-  [v22 startAllTasksInPhase:0];
+  bkStartupTaskManager = [(BKAppDelegate *)self bkStartupTaskManager];
+  [bkStartupTaskManager startAllTasksInPhase:0];
 
   objc_destroyWeak(&v28);
   objc_destroyWeak(&v31);
@@ -1084,24 +1084,24 @@
 - (void)sq_kickoffFinishLaunching
 {
   kdebug_trace();
-  v3 = [(BKAppDelegate *)self preLaunchQueue];
-  [v3 waitUntilAllOperationsAreFinished];
+  preLaunchQueue = [(BKAppDelegate *)self preLaunchQueue];
+  [preLaunchQueue waitUntilAllOperationsAreFinished];
 
   kdebug_trace();
   preLaunchQueue = self->_preLaunchQueue;
   self->_preLaunchQueue = 0;
 
   kdebug_trace();
-  v5 = [(BKAppDelegate *)self librarySetupQueue];
-  [v5 waitUntilAllOperationsAreFinished];
+  librarySetupQueue = [(BKAppDelegate *)self librarySetupQueue];
+  [librarySetupQueue waitUntilAllOperationsAreFinished];
 
   kdebug_trace();
   librarySetupQueue = self->_librarySetupQueue;
   self->_librarySetupQueue = 0;
 
   kdebug_trace();
-  v7 = [(BKAppDelegate *)self ubiquityOptInController];
-  [v7 finalizeSetup];
+  ubiquityOptInController = [(BKAppDelegate *)self ubiquityOptInController];
+  [ubiquityOptInController finalizeSetup];
 
   v8 = +[BKCloudQuotaUIServices sharedInstance];
   [v8 addObserver:self];
@@ -1118,29 +1118,29 @@
   v9 = +[BSUIStoreServices sharedInstance];
   [v9 setDelegate:self];
   [(BKAppDelegate *)self startDownloadPurchaseMonitor];
-  v10 = [(BKAppDelegate *)self libraryManager];
-  v11 = [v10 assetDetailsManager];
+  libraryManager = [(BKAppDelegate *)self libraryManager];
+  assetDetailsManager = [libraryManager assetDetailsManager];
   v12 = +[BCAnnotationSyncManager sharedInstance];
-  [v12 setDelegate:v11];
+  [v12 setDelegate:assetDetailsManager];
 
   kdebug_trace();
   objc_initWeak(&location, self);
-  v13 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator = [(BKAppDelegate *)self appLaunchCoordinator];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1001C8AFC;
   v14[3] = &unk_100A03B10;
   objc_copyWeak(&v15, &location);
-  [v13 appLaunchCoordinatorOnConditionMask:512 blockID:@"clearWidgetImageCacheIfNeeded" performBlock:v14];
+  [appLaunchCoordinator appLaunchCoordinatorOnConditionMask:512 blockID:@"clearWidgetImageCacheIfNeeded" performBlock:v14];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v6 = a3;
-  v7 = a4;
+  applicationCopy = application;
+  optionsCopy = options;
   kdebug_trace();
   v8 = +[NSUserDefaults standardUserDefaults];
   v9 = +[BKReadingActivityService includePDFsDefaultsKey];
@@ -1155,7 +1155,7 @@
   v13 = [v11 objectForKey:v12];
 
   v14 = +[BUAppGroup books];
-  v15 = [v14 userDefaults];
+  userDefaults = [v14 userDefaults];
   v16 = +[BKReadingActivityService readingGoalsUserDefaultsKey];
   v90 = v16;
   v17 = &__kCFBooleanTrue;
@@ -1166,7 +1166,7 @@
 
   v91 = v17;
   v18 = [NSDictionary dictionaryWithObjects:&v91 forKeys:&v90 count:1];
-  [v15 registerDefaults:v18];
+  [userDefaults registerDefaults:v18];
 
   if (v13)
   {
@@ -1212,7 +1212,7 @@
     [v34 setTintColor:v33];
   }
 
-  [v6 setMinimumBackgroundFetchInterval:3600.0];
+  [applicationCopy setMinimumBackgroundFetchInterval:3600.0];
   [INPreferences requestSiriAuthorization:&stru_100A0AF10];
   v35 = sub_1000122C0();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_DEFAULT))
@@ -1223,196 +1223,196 @@
 
   [(BKAppDelegate *)self registerAppIntentsDependencies];
   [(BKAppDelegate *)self _createBackgroundTaskAssertionForLaunch];
-  [(BKAppDelegate *)self setLaunchOptions:v7];
+  [(BKAppDelegate *)self setLaunchOptions:optionsCopy];
   v36 = BCIMLog();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138477827;
-    v89 = v7;
+    v89 = optionsCopy;
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_DEFAULT, "Books launching with launchOptions=%{private}@", buf, 0xCu);
   }
 
-  v37 = [(BKAppDelegate *)self startupQueue];
+  startupQueue = [(BKAppDelegate *)self startupQueue];
   v87[0] = _NSConcreteStackBlock;
   v87[1] = 3221225472;
   v87[2] = sub_1001C98D8;
   v87[3] = &unk_100A033C8;
   v87[4] = self;
-  [v37 addOperationWithBlock:v87];
+  [startupQueue addOperationWithBlock:v87];
 
-  v38 = [(BKAppDelegate *)self startupQueue];
+  startupQueue2 = [(BKAppDelegate *)self startupQueue];
   v86[0] = _NSConcreteStackBlock;
   v86[1] = 3221225472;
   v86[2] = sub_1001C9A20;
   v86[3] = &unk_100A033C8;
   v86[4] = self;
-  [v38 addOperationWithBlock:v86];
+  [startupQueue2 addOperationWithBlock:v86];
 
-  v39 = [(BKAppDelegate *)self startupQueue];
+  startupQueue3 = [(BKAppDelegate *)self startupQueue];
   v85[0] = _NSConcreteStackBlock;
   v85[1] = 3221225472;
   v85[2] = sub_1001C9AF4;
   v85[3] = &unk_100A033C8;
   v85[4] = self;
-  [v39 addOperationWithBlock:v85];
+  [startupQueue3 addOperationWithBlock:v85];
 
-  v40 = [(BKAppDelegate *)self startupQueue];
+  startupQueue4 = [(BKAppDelegate *)self startupQueue];
   v84[0] = _NSConcreteStackBlock;
   v84[1] = 3221225472;
   v84[2] = sub_1001C9B60;
   v84[3] = &unk_100A033C8;
   v84[4] = self;
-  [v40 addOperationWithBlock:v84];
+  [startupQueue4 addOperationWithBlock:v84];
 
-  v41 = [(BKAppDelegate *)self startupQueue];
-  [v41 addOperationWithBlock:&stru_100A0AF30];
+  startupQueue5 = [(BKAppDelegate *)self startupQueue];
+  [startupQueue5 addOperationWithBlock:&stru_100A0AF30];
 
-  v42 = [(BKAppDelegate *)self startupQueue];
+  startupQueue6 = [(BKAppDelegate *)self startupQueue];
   v83[0] = _NSConcreteStackBlock;
   v83[1] = 3221225472;
   v83[2] = sub_1001C9C40;
   v83[3] = &unk_100A033C8;
   v83[4] = self;
-  [v42 addOperationWithBlock:v83];
+  [startupQueue6 addOperationWithBlock:v83];
 
-  v43 = [(BKAppDelegate *)self startupQueue];
+  startupQueue7 = [(BKAppDelegate *)self startupQueue];
   v82[0] = _NSConcreteStackBlock;
   v82[1] = 3221225472;
   v82[2] = sub_1001C9CD4;
   v82[3] = &unk_100A033C8;
   v82[4] = self;
-  [v43 addOperationWithBlock:v82];
+  [startupQueue7 addOperationWithBlock:v82];
 
-  v44 = [(BKAppDelegate *)self startupQueue];
+  startupQueue8 = [(BKAppDelegate *)self startupQueue];
   v81[0] = _NSConcreteStackBlock;
   v81[1] = 3221225472;
   v81[2] = sub_1001C9D40;
   v81[3] = &unk_100A033C8;
   v81[4] = self;
-  [v44 addOperationWithBlock:v81];
+  [startupQueue8 addOperationWithBlock:v81];
 
-  v45 = [(BKAppDelegate *)self startupQueue];
+  startupQueue9 = [(BKAppDelegate *)self startupQueue];
   v80[0] = _NSConcreteStackBlock;
   v80[1] = 3221225472;
   v80[2] = sub_1001C9DBC;
   v80[3] = &unk_100A033C8;
   v80[4] = self;
-  [v45 addOperationWithBlock:v80];
+  [startupQueue9 addOperationWithBlock:v80];
 
-  v46 = [(BKAppDelegate *)self startupQueue];
+  startupQueue10 = [(BKAppDelegate *)self startupQueue];
   v79[0] = _NSConcreteStackBlock;
   v79[1] = 3221225472;
   v79[2] = sub_1001C9EC0;
   v79[3] = &unk_100A033C8;
   v79[4] = self;
-  [v46 addOperationWithBlock:v79];
+  [startupQueue10 addOperationWithBlock:v79];
 
-  v47 = [(BKAppDelegate *)self startupQueue];
+  startupQueue11 = [(BKAppDelegate *)self startupQueue];
   v78[0] = _NSConcreteStackBlock;
   v78[1] = 3221225472;
   v78[2] = sub_1001C9F3C;
   v78[3] = &unk_100A033C8;
   v78[4] = self;
-  [v47 addOperationWithBlock:v78];
+  [startupQueue11 addOperationWithBlock:v78];
 
-  v48 = [(BKAppDelegate *)self startupQueue];
+  startupQueue12 = [(BKAppDelegate *)self startupQueue];
   v77[0] = _NSConcreteStackBlock;
   v77[1] = 3221225472;
   v77[2] = sub_1001C9FB8;
   v77[3] = &unk_100A033C8;
   v77[4] = self;
-  [v48 addOperationWithBlock:v77];
+  [startupQueue12 addOperationWithBlock:v77];
 
-  v49 = [(BKAppDelegate *)self startupQueue];
+  startupQueue13 = [(BKAppDelegate *)self startupQueue];
   v75[0] = _NSConcreteStackBlock;
   v75[1] = 3221225472;
   v75[2] = sub_1001CA068;
   v75[3] = &unk_100A03440;
   v75[4] = self;
-  v76 = v7;
-  v50 = v7;
-  [v49 addOperationWithBlock:v75];
+  v76 = optionsCopy;
+  v50 = optionsCopy;
+  [startupQueue13 addOperationWithBlock:v75];
 
-  v51 = [(BKAppDelegate *)self startupQueue];
+  startupQueue14 = [(BKAppDelegate *)self startupQueue];
   v74[0] = _NSConcreteStackBlock;
   v74[1] = 3221225472;
   v74[2] = sub_1001CA15C;
   v74[3] = &unk_100A033C8;
   v74[4] = self;
-  [v51 addOperationWithBlock:v74];
+  [startupQueue14 addOperationWithBlock:v74];
 
-  v52 = [(BKAppDelegate *)self startupQueue];
+  startupQueue15 = [(BKAppDelegate *)self startupQueue];
   v73[0] = _NSConcreteStackBlock;
   v73[1] = 3221225472;
   v73[2] = sub_1001CA1FC;
   v73[3] = &unk_100A033C8;
   v73[4] = self;
-  [v52 addOperationWithBlock:v73];
+  [startupQueue15 addOperationWithBlock:v73];
 
   dispatch_async(&_dispatch_main_q, &stru_100A0AF50);
-  [v6 registerForRemoteNotifications];
+  [applicationCopy registerForRemoteNotifications];
   v53 = +[BAAppManager sharedManager];
   [v53 startAppSessionWithApplicationGroupIdentifier:BUBooksGroupContainerIdentifier enableUploads:1];
 
-  v54 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator = [(BKAppDelegate *)self appLaunchCoordinator];
   v71[0] = _NSConcreteStackBlock;
   v71[1] = 3221225472;
   v71[2] = sub_1001CA240;
   v71[3] = &unk_100A03E30;
   v71[4] = self;
-  v72 = v6;
-  v55 = v6;
-  [v54 appLaunchCoordinatorOnConditionMask:512 blockID:@"actionHandler initialization" performBlock:v71];
+  v72 = applicationCopy;
+  v55 = applicationCopy;
+  [appLaunchCoordinator appLaunchCoordinatorOnConditionMask:512 blockID:@"actionHandler initialization" performBlock:v71];
 
   v56 = [BKMenuController alloc];
-  v57 = [(BKAppDelegate *)self appLaunchCoordinator];
-  v58 = [(BKAppDelegate *)self sceneManager];
-  v59 = [(BKMenuController *)v56 initWithAppLaunchCoordinator:v57 sceneManager:v58];
+  appLaunchCoordinator2 = [(BKAppDelegate *)self appLaunchCoordinator];
+  sceneManager = [(BKAppDelegate *)self sceneManager];
+  v59 = [(BKMenuController *)v56 initWithAppLaunchCoordinator:appLaunchCoordinator2 sceneManager:sceneManager];
   menuController = self->_menuController;
   self->_menuController = v59;
 
-  v61 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator3 = [(BKAppDelegate *)self appLaunchCoordinator];
   v70[0] = _NSConcreteStackBlock;
   v70[1] = 3221225472;
   v70[2] = sub_1001CA38C;
   v70[3] = &unk_100A038D0;
   v70[4] = self;
-  [v61 appLaunchCoordinatorOnConditionMask:512 blockID:@"audioBookController initialization" performBlock:v70];
+  [appLaunchCoordinator3 appLaunchCoordinatorOnConditionMask:512 blockID:@"audioBookController initialization" performBlock:v70];
 
-  v62 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator4 = [(BKAppDelegate *)self appLaunchCoordinator];
   v69[0] = _NSConcreteStackBlock;
   v69[1] = 3221225472;
   v69[2] = sub_1001CA5F0;
   v69[3] = &unk_100A038D0;
   v69[4] = self;
-  [v62 appLaunchCoordinatorOnConditionMask:512 blockID:@"jsaBridge startEviction" performBlock:v69];
+  [appLaunchCoordinator4 appLaunchCoordinatorOnConditionMask:512 blockID:@"jsaBridge startEviction" performBlock:v69];
 
-  v63 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator5 = [(BKAppDelegate *)self appLaunchCoordinator];
   v68[0] = _NSConcreteStackBlock;
   v68[1] = 3221225472;
   v68[2] = sub_1001CA6C4;
   v68[3] = &unk_100A038D0;
   v68[4] = self;
-  [v63 appLaunchCoordinatorOnConditionMask:512 blockID:@"SnapshotManager cleanup" performBlock:v68];
+  [appLaunchCoordinator5 appLaunchCoordinatorOnConditionMask:512 blockID:@"SnapshotManager cleanup" performBlock:v68];
 
-  v64 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator6 = [(BKAppDelegate *)self appLaunchCoordinator];
   v67[0] = _NSConcreteStackBlock;
   v67[1] = 3221225472;
   v67[2] = sub_1001CA6CC;
   v67[3] = &unk_100A038D0;
   v67[4] = self;
-  [v64 appLaunchCoordinatorOnConditionMask:512 blockID:@"Start after-launching tasks" performBlock:v67];
+  [appLaunchCoordinator6 appLaunchCoordinatorOnConditionMask:512 blockID:@"Start after-launching tasks" performBlock:v67];
 
-  v65 = [(BKAppDelegate *)self bkStartupTaskManager];
-  [v65 startAllTasksInPhase:1];
+  bkStartupTaskManager = [(BKAppDelegate *)self bkStartupTaskManager];
+  [bkStartupTaskManager startAllTasksInPhase:1];
 
   kdebug_trace();
   return 1;
 }
 
-- (void)_createCoverCacheForcingEmptyPPTCache:(BOOL)a3
+- (void)_createCoverCacheForcingEmptyPPTCache:(BOOL)cache
 {
-  if (a3)
+  if (cache)
   {
     v16 = objc_opt_new();
   }
@@ -1434,23 +1434,23 @@
     v13 = [BCCacheManager defaultClassDefinitionsWithProtocolHandler:v11 stackDecomposer:v12];
 
     v14 = [BCCacheManager alloc];
-    v15 = [(BKAppDelegate *)self libraryManager];
-    v16 = [v14 initWithClassDefinitions:v13 highPriorityGeneralQueue:v7 lowPriorityGeneralQueue:v8 highPriorityTargetQueue:v9 backgroundTargetQueue:v10 delegate:v15];
+    libraryManager = [(BKAppDelegate *)self libraryManager];
+    v16 = [v14 initWithClassDefinitions:v13 highPriorityGeneralQueue:v7 lowPriorityGeneralQueue:v8 highPriorityTargetQueue:v9 backgroundTargetQueue:v10 delegate:libraryManager];
   }
 
   [BCCacheManager setDefaultCacheManager:v16];
 }
 
-- (void)application:(id)a3 handleIntent:(id)a4 completionHandler:(id)a5
+- (void)application:(id)application handleIntent:(id)intent completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  applicationCopy = application;
+  intentCopy = intent;
+  handlerCopy = handler;
   v11 = BooksSiriLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v9;
+    *(&buf + 4) = intentCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Handling Siri Intent: %@", &buf, 0xCu);
   }
 
@@ -1471,84 +1471,84 @@
   v25[3] = &unk_100A0B008;
   p_buf = &buf;
   v25[4] = self;
-  v12 = v10;
+  v12 = handlerCopy;
   v26 = v12;
   v13 = objc_retainBlock(v25);
   objc_opt_class();
   v14 = BUDynamicCast();
-  v15 = [v14 mediaItems];
-  v16 = [v15 lastObject];
+  mediaItems = [v14 mediaItems];
+  lastObject = [mediaItems lastObject];
 
-  v17 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator = [(BKAppDelegate *)self appLaunchCoordinator];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_1001CB240;
   v20[3] = &unk_100A0B058;
-  v18 = v16;
+  v18 = lastObject;
   v21 = v18;
   v24 = &buf;
   v19 = v13;
-  v22 = self;
+  selfCopy = self;
   v23 = v19;
-  [v17 appLaunchCoordinatorPerformWhenLaunched:@"tryToShowAudiobook" block:v20];
+  [appLaunchCoordinator appLaunchCoordinatorPerformWhenLaunched:@"tryToShowAudiobook" block:v20];
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)performActionForShortcutItem:(id)a3 sceneController:(id)a4 completionHandler:(id)a5
+- (void)performActionForShortcutItem:(id)item sceneController:(id)controller completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  controllerCopy = controller;
+  handlerCopy = handler;
   v11 = BCSceneLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
-    v12 = [v9 scene];
-    v13 = [v12 session];
-    v14 = [v13 persistentIdentifier];
+    scene = [controllerCopy scene];
+    session = [scene session];
+    persistentIdentifier = [session persistentIdentifier];
     *buf = 138412546;
-    v23 = v8;
+    v23 = itemCopy;
     v24 = 2112;
-    v25 = v14;
+    v25 = persistentIdentifier;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Performing shortcut: shortcutItem=%@, withSceneID=%@", buf, 0x16u);
   }
 
   kdebug_trace();
-  v15 = [(BKAppDelegate *)self primaryAnalyticsController];
-  [v15 setLaunchedFromShortcutItem];
+  primaryAnalyticsController = [(BKAppDelegate *)self primaryAnalyticsController];
+  [primaryAnalyticsController setLaunchedFromShortcutItem];
 
-  v16 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator = [(BKAppDelegate *)self appLaunchCoordinator];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1001CB81C;
   v19[3] = &unk_100A05218;
   v19[4] = self;
-  v20 = v8;
-  v21 = v10;
-  v17 = v10;
-  v18 = v8;
-  [v16 appLaunchCoordinatorOnConditionMask:6 blockID:@"performActionForShortcutItem" performBlock:v19];
+  v20 = itemCopy;
+  v21 = handlerCopy;
+  v17 = handlerCopy;
+  v18 = itemCopy;
+  [appLaunchCoordinator appLaunchCoordinatorOnConditionMask:6 blockID:@"performActionForShortcutItem" performBlock:v19];
 }
 
-- (void)application:(id)a3 didDiscardSceneSessions:(id)a4
+- (void)application:(id)application didDiscardSceneSessions:(id)sessions
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BKAppDelegate *)self sceneManager];
-  [v8 application:v7 didDiscardSceneSessions:v6];
+  sessionsCopy = sessions;
+  applicationCopy = application;
+  sceneManager = [(BKAppDelegate *)self sceneManager];
+  [sceneManager application:applicationCopy didDiscardSceneSessions:sessionsCopy];
 }
 
 - (void)_reloadLibraryForLaunch
 {
-  v3 = [(BKAppDelegate *)self libraryManager];
-  [v3 initializeMostRecentPurchaseDateCacheIfNeeded];
+  libraryManager = [(BKAppDelegate *)self libraryManager];
+  [libraryManager initializeMostRecentPurchaseDateCacheIfNeeded];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001CC150;
   v5[3] = &unk_100A03440;
   v5[4] = self;
-  v6 = v3;
-  v4 = v3;
+  v6 = libraryManager;
+  v4 = libraryManager;
   [v4 reloadWithCompletion:v5];
 }
 
@@ -1569,31 +1569,31 @@
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v3 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator = [(BKAppDelegate *)self appLaunchCoordinator];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001CCEF0;
   v13[3] = &unk_100A0B118;
   v13[4] = &v14;
   v13[5] = v19;
-  [v3 appLaunchCoordinatorOnConditionMask:512 blockID:@"_startLibraryReloadForLaunchWhenNeeded extended reloadLibrary" performBlock:v13];
+  [appLaunchCoordinator appLaunchCoordinatorOnConditionMask:512 blockID:@"_startLibraryReloadForLaunchWhenNeeded extended reloadLibrary" performBlock:v13];
 
-  v4 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator2 = [(BKAppDelegate *)self appLaunchCoordinator];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_1001CD064;
   v12[3] = &unk_100A0B118;
   v12[4] = &v14;
   v12[5] = v19;
-  [v4 appLaunchCoordinatorOnConditionMask:256 blockID:@"_startLibraryReloadForLaunchWhenNeeded carPlay reloadLibrary" performBlock:v12];
+  [appLaunchCoordinator2 appLaunchCoordinatorOnConditionMask:256 blockID:@"_startLibraryReloadForLaunchWhenNeeded carPlay reloadLibrary" performBlock:v12];
 
   v5 = sub_1000122C0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = +[UIApplication sharedApplication];
-    v7 = [v6 applicationState];
+    applicationState = [v6 applicationState];
     *buf = 134217984;
-    v22 = v7;
+    v22 = applicationState;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Library Reload: Initial applicationState: %ld", buf, 0xCu);
   }
 
@@ -1622,7 +1622,7 @@
   _Block_object_dispose(v19, 8);
 }
 
-- (void)_didFinishUpgradingWithOptions:(id)a3
+- (void)_didFinishUpgradingWithOptions:(id)options
 {
   v4 = +[BKSeriesCoverManager sharedInstance];
   [v4 addSeriesCoverObserver:self];
@@ -1632,26 +1632,26 @@
 
   +[BKPDFModernBookViewController setupModernPDF];
   objc_opt_class();
-  v6 = [(BKAppDelegate *)self mainLibrary];
+  mainLibrary = [(BKAppDelegate *)self mainLibrary];
   v7 = BUDynamicCast();
 
   v8 = [BKLibraryAssetIsNewManager alloc];
-  v9 = [(BKAppDelegate *)self sharedAnnotationProvider];
-  v10 = [(BKAppDelegate *)self workloopBackgroundQueue];
-  v11 = [(BKLibraryAssetIsNewManager *)v8 initWithLibraryManager:v7 annotationProvider:v9 queue:v10];
+  sharedAnnotationProvider = [(BKAppDelegate *)self sharedAnnotationProvider];
+  workloopBackgroundQueue = [(BKAppDelegate *)self workloopBackgroundQueue];
+  v11 = [(BKLibraryAssetIsNewManager *)v8 initWithLibraryManager:v7 annotationProvider:sharedAnnotationProvider queue:workloopBackgroundQueue];
   [(BKAppDelegate *)self setLibraryAssetIsNewManager:v11];
 
-  v12 = [(BKAppDelegate *)self libraryAssetIsNewManager];
-  [v12 setDelegate:self];
+  libraryAssetIsNewManager = [(BKAppDelegate *)self libraryAssetIsNewManager];
+  [libraryAssetIsNewManager setDelegate:self];
 
   [(BKAppDelegate *)self _startLibraryReloadForLaunchWhenNeeded];
   v13 = +[NSUserDefaults standardUserDefaults];
-  LOBYTE(v9) = [v13 BOOLForKey:@"BKTestEPubLayout"];
+  LOBYTE(sharedAnnotationProvider) = [v13 BOOLForKey:@"BKTestEPubLayout"];
 
   v14 = +[NSUserDefaults standardUserDefaults];
   v15 = [v14 BOOLForKey:@"BKTestEPubPowerConsumption"];
 
-  if ((v9 & 1) != 0 || v15)
+  if ((sharedAnnotationProvider & 1) != 0 || v15)
   {
     dispatch_async(&_dispatch_main_q, &stru_100A0B180);
   }
@@ -1669,77 +1669,77 @@
   dispatch_after(v17, &_dispatch_main_q, block);
 }
 
-- (id)targetForAction:(SEL)a3 withSender:(id)a4
+- (id)targetForAction:(SEL)action withSender:(id)sender
 {
-  v6 = a4;
-  v7 = [(BKAppDelegate *)self appAccountActionHandler];
-  v8 = [v7 canPerformAction:a3 withSender:v6];
+  senderCopy = sender;
+  appAccountActionHandler = [(BKAppDelegate *)self appAccountActionHandler];
+  v8 = [appAccountActionHandler canPerformAction:action withSender:senderCopy];
 
   if (v8)
   {
-    v9 = [(BKAppDelegate *)self appAccountActionHandler];
+    appAccountActionHandler2 = [(BKAppDelegate *)self appAccountActionHandler];
   }
 
   else
   {
-    v10 = [(BKAppDelegate *)self appGlobalActionHandler];
-    v11 = [v10 canPerformAction:a3 withSender:v6];
+    appGlobalActionHandler = [(BKAppDelegate *)self appGlobalActionHandler];
+    v11 = [appGlobalActionHandler canPerformAction:action withSender:senderCopy];
 
     if (v11)
     {
-      v9 = [(BKAppDelegate *)self appGlobalActionHandler];
+      appAccountActionHandler2 = [(BKAppDelegate *)self appGlobalActionHandler];
     }
 
     else
     {
-      v12 = [(BKAppDelegate *)self appInternalActionHandler];
-      v13 = [v12 canPerformAction:a3 withSender:v6];
+      appInternalActionHandler = [(BKAppDelegate *)self appInternalActionHandler];
+      v13 = [appInternalActionHandler canPerformAction:action withSender:senderCopy];
 
       if (v13)
       {
-        v9 = [(BKAppDelegate *)self appInternalActionHandler];
+        appAccountActionHandler2 = [(BKAppDelegate *)self appInternalActionHandler];
       }
 
       else
       {
-        v14 = [(BKAppDelegate *)self audiobookController];
-        v15 = [v14 canPerformAction:a3 withSender:v6];
+        audiobookController = [(BKAppDelegate *)self audiobookController];
+        v15 = [audiobookController canPerformAction:action withSender:senderCopy];
 
         if (v15)
         {
-          v9 = [(BKAppDelegate *)self audiobookController];
+          appAccountActionHandler2 = [(BKAppDelegate *)self audiobookController];
         }
 
         else
         {
           v18.receiver = self;
           v18.super_class = BKAppDelegate;
-          v9 = [(BKAppDelegate *)&v18 targetForAction:a3 withSender:v6];
+          appAccountActionHandler2 = [(BKAppDelegate *)&v18 targetForAction:action withSender:senderCopy];
         }
       }
     }
   }
 
-  v16 = v9;
+  v16 = appAccountActionHandler2;
 
   return v16;
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v8 = a3;
-  v4 = [v8 system];
+  builderCopy = builder;
+  system = [builderCopy system];
   v5 = +[UIMenuSystem mainSystem];
 
-  if (v4 == v5)
+  if (system == v5)
   {
-    v6 = [(BKAppDelegate *)self menuController];
-    [v6 buildWithBuilder:v8];
+    menuController = [(BKAppDelegate *)self menuController];
+    [menuController buildWithBuilder:builderCopy];
 
     if (+[JSADevice isInternalBuild])
     {
-      v7 = [(BKAppDelegate *)self menuController];
-      [v7 buildInternalWithBuilder:v8];
+      menuController2 = [(BKAppDelegate *)self menuController];
+      [menuController2 buildInternalWithBuilder:builderCopy];
     }
   }
 }
@@ -1775,19 +1775,19 @@
   objc_destroyWeak(&location);
 }
 
-- (void)_showWelcomeScreenIfNeeded:(id)a3 completion:(id)a4
+- (void)_showWelcomeScreenIfNeeded:(id)needed completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  neededCopy = needed;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001CDDE0;
   v13[3] = &unk_100A074A8;
   objc_copyWeak(&v16, &location);
-  v8 = v6;
+  v8 = neededCopy;
   v14 = v8;
-  v9 = v7;
+  v9 = completionCopy;
   v15 = v9;
   v10 = objc_retainBlock(v13);
   if (v10)
@@ -1815,13 +1815,13 @@
 - (void)_reloadUbiquityDataSources
 {
   v3 = +[BKLibraryManager defaultManager];
-  v4 = [(BKAppDelegate *)self ubiquityiOSDataSource];
+  ubiquityiOSDataSource = [(BKAppDelegate *)self ubiquityiOSDataSource];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001CE044;
   v5[3] = &unk_100A033C8;
   v5[4] = self;
-  [v3 reloadDataSource:v4 completion:v5];
+  [v3 reloadDataSource:ubiquityiOSDataSource completion:v5];
 }
 
 - (void)_resumeFromBackground
@@ -1834,7 +1834,7 @@
   [(BKAppDelegate *)self _dieIfUnacknowledgediCloudLogoutOcccurredWithCompletion:v2];
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   v4 = +[BKUserActivityManager sharedInstance];
   [v4 willEnterForeground];
@@ -1845,7 +1845,7 @@
   [v5 scrubRecents];
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
   +[IMSleepManager didEnterBackground];
   v4 = +[BKUserActivityManager sharedInstance];
@@ -1856,12 +1856,12 @@
   [v5 saveCurrentBookState];
 
   [(BKAppDelegate *)self setAnalyticsApplicationState:0];
-  v6 = [(BKAppDelegate *)self sceneManager];
-  [v6 analyticsVisibilityDidDisappear];
+  sceneManager = [(BKAppDelegate *)self sceneManager];
+  [sceneManager analyticsVisibilityDidDisappear];
 
-  v7 = [(BKAppDelegate *)self finishedAssetManager];
+  finishedAssetManager = [(BKAppDelegate *)self finishedAssetManager];
   [(BKAppDelegate *)self finishedAssetRemovalThreshold];
-  [v7 removeFinishedDownloadsWithThreshhold:?];
+  [finishedAssetManager removeFinishedDownloadsWithThreshhold:?];
 
   v8 = +[BCBackgroundTaskAssertion sharedAssertion];
   [v8 claimAssertionForIdentifier:@"kBackgroundAppIdentifier" description:@"Backgrounding in progress"];
@@ -1876,7 +1876,7 @@
   +[BKApplicationShortcutController performUpdate];
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
   v4 = sub_1000122C0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1889,25 +1889,25 @@
   [v5 releaseAssertionForIdentifier:@"kApplicationInactiveIdentifier"];
 
   +[JSAApplication didBecomeActive];
-  v6 = [(BKAppDelegate *)self sceneManager];
-  v7 = [v6 appStoreReviewManager];
-  [v7 applicationDidForeground];
+  sceneManager = [(BKAppDelegate *)self sceneManager];
+  appStoreReviewManager = [sceneManager appStoreReviewManager];
+  [appStoreReviewManager applicationDidForeground];
 
   v8 = +[BCCloudKitController sharedInstance];
   [v8 applicationDidBecomeActive];
 
   if ([(BKAppDelegate *)self analyticsApplicationState]== 1)
   {
-    v9 = [(BKAppDelegate *)self sceneManager];
-    [v9 analyticsVisibilityDidDisappear];
+    sceneManager2 = [(BKAppDelegate *)self sceneManager];
+    [sceneManager2 analyticsVisibilityDidDisappear];
   }
 
   [(BKAppDelegate *)self setAnalyticsApplicationState:2];
-  v10 = [(BKAppDelegate *)self sceneManager];
-  [v10 analyticsVisibilityUpdate];
+  sceneManager3 = [(BKAppDelegate *)self sceneManager];
+  [sceneManager3 analyticsVisibilityUpdate];
 }
 
-- (void)_applicationDidBecomeFrontmost:(id)a3
+- (void)_applicationDidBecomeFrontmost:(id)frontmost
 {
   v4 = _os_activity_create(&_mh_execute_header, "BKAppLaunchJaliscoUpdate", &_os_activity_none, OS_ACTIVITY_FLAG_DEFAULT);
   block[0] = _NSConcreteStackBlock;
@@ -1916,11 +1916,11 @@
   block[3] = &unk_100A033C8;
   block[4] = self;
   os_activity_apply(v4, block);
-  v5 = [(BKAppDelegate *)self menuController];
-  [v5 updateKeyWindow];
+  menuController = [(BKAppDelegate *)self menuController];
+  [menuController updateKeyWindow];
 }
 
-- (void)_applicationWillResignActive:(id)a3
+- (void)_applicationWillResignActive:(id)active
 {
   v4 = sub_1000122C0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -1936,31 +1936,31 @@
   [v6 removeObjectForKey:@"BKGenerateOfflineCache"];
 
   [(BKAppDelegate *)self setAnalyticsApplicationState:1];
-  v7 = [(BKAppDelegate *)self sceneManager];
-  [v7 analyticsVisibilityWillDisappear];
+  sceneManager = [(BKAppDelegate *)self sceneManager];
+  [sceneManager analyticsVisibilityWillDisappear];
 
   +[JSAApplication willResignActive];
   [(BKAppDelegate *)self flushJetMetricsWithCompletionHandler:&stru_100A0B1E0];
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v4 = a3;
+  terminateCopy = terminate;
   v5 = +[NSDate now];
   [(BKAppDelegate *)self setAnalyticsTimeoutStart:v5];
 
-  v6 = [(BKAppDelegate *)self appLaunchCoordinator];
+  appLaunchCoordinator = [(BKAppDelegate *)self appLaunchCoordinator];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001CEA78;
   v8[3] = &unk_100A03E30;
   v8[4] = self;
-  v9 = v4;
-  v7 = v4;
-  [v6 appLaunchCoordinatorOnConditionMask:1 blockID:@"applicationWillTerminate" performBlock:v8];
+  v9 = terminateCopy;
+  v7 = terminateCopy;
+  [appLaunchCoordinator appLaunchCoordinatorOnConditionMask:1 blockID:@"applicationWillTerminate" performBlock:v8];
 }
 
-- (void)_applicationWillTerminate:(id)a3
+- (void)_applicationWillTerminate:(id)terminate
 {
   [(BKAppDelegate *)self _analyticsForceEndSessionOnViewControllers];
   +[JSAApplication willTerminate];
@@ -1968,8 +1968,8 @@
   [(BKAppDelegate *)self saveStateClosing:1];
   [(BKAppDelegate *)self _cleanup];
   v4 = +[NSDate now];
-  v5 = [(BKAppDelegate *)self analyticsTimeoutStart];
-  [v4 timeIntervalSinceDate:v5];
+  analyticsTimeoutStart = [(BKAppDelegate *)self analyticsTimeoutStart];
+  [v4 timeIntervalSinceDate:analyticsTimeoutStart];
   v7 = v6;
 
   if (2.0 - v7 >= 0.0)
@@ -1982,27 +1982,27 @@
     v8 = 0.0;
   }
 
-  v9 = [(BKAppDelegate *)self sceneManager];
+  sceneManager = [(BKAppDelegate *)self sceneManager];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001CECA8;
   v11[3] = &unk_100A0B220;
   *&v11[4] = v8;
-  [v9 enumerateSceneController:v11 includeHidden:1];
+  [sceneManager enumerateSceneController:v11 includeHidden:1];
 
   v10 = +[BAAppManager sharedManager];
   [v10 appSessionDidTerminate];
 }
 
-- (void)_extendedLaunchComplete:(id)a3
+- (void)_extendedLaunchComplete:(id)complete
 {
-  v4 = a3;
+  completeCopy = complete;
   v5 = sub_1000122C0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 name];
+    name = [completeCopy name];
     *buf = 138412290;
-    v17 = v6;
+    v17 = name;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received %@. Marking extended launch as complete.", buf, 0xCu);
   }
 
@@ -2021,8 +2021,8 @@
   v13 = +[BKRootBarCoordinator rootViewControllerDidDisappearNotification];
   [v12 removeObserver:self name:v13 object:0];
 
-  v14 = [v4 name];
-  LODWORD(v8) = [v14 isEqualToString:v8];
+  name2 = [completeCopy name];
+  LODWORD(v8) = [name2 isEqualToString:v8];
 
   if (v8)
   {
@@ -2050,41 +2050,41 @@
   }
 }
 
-- (void)clearReadingGoals:(id)a3
+- (void)clearReadingGoals:(id)goals
 {
-  v4 = [(BKAppDelegate *)self serviceCenter];
-  v3 = [v4 readingActivityService];
-  [v3 clearData];
+  serviceCenter = [(BKAppDelegate *)self serviceCenter];
+  readingActivityService = [serviceCenter readingActivityService];
+  [readingActivityService clearData];
 }
 
-- (void)resetOnlineContentAccess:(id)a3
+- (void)resetOnlineContentAccess:(id)access
 {
   v3 = +[NSUserDefaults standardUserDefaults];
   [v3 setBool:1 forKey:BEDocumentExternalLoadApprovalCacheDefaultsClearKey];
 }
 
-- (void)resetAnalyticsIdentifier:(id)a3
+- (void)resetAnalyticsIdentifier:(id)identifier
 {
   v3 = +[NSUserDefaults standardUserDefaults];
   [v3 setBool:1 forKey:kBAResetAnalyticsUserID];
 }
 
-- (void)willMarkAsset:(id)a3 finished:(BOOL)a4 finishedDate:(id)a5
+- (void)willMarkAsset:(id)asset finished:(BOOL)finished finishedDate:(id)date
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
-  v11 = [(BKAppDelegate *)self serviceCenter];
-  v10 = [v11 readingActivityService];
-  [v10 willMarkAsset:v9 finished:v5 finishedDate:v8];
+  finishedCopy = finished;
+  dateCopy = date;
+  assetCopy = asset;
+  serviceCenter = [(BKAppDelegate *)self serviceCenter];
+  readingActivityService = [serviceCenter readingActivityService];
+  [readingActivityService willMarkAsset:assetCopy finished:finishedCopy finishedDate:dateCopy];
 }
 
 - (BOOL)isStoreAllowed
 {
   v2 = +[BURestrictionsProvider sharedInstance];
-  v3 = [v2 isBookStoreAllowed];
+  isBookStoreAllowed = [v2 isBookStoreAllowed];
 
-  return v3;
+  return isBookStoreAllowed;
 }
 
 - (void)initialDataSourceFetchInitiated
@@ -2097,19 +2097,19 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)didMigrateBooksCollection:(id)a3
+- (void)didMigrateBooksCollection:(id)collection
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_1001CF3C8;
   v4[3] = &unk_100A03440;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  collectionCopy = collection;
+  v3 = collectionCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)libraryDidReload:(id)a3
+- (void)libraryDidReload:(id)reload
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2158,10 +2158,10 @@
 
 - (BOOL)isConnectedToInternet
 {
-  v2 = [(BKAppDelegate *)self networkReachability];
-  if ([v2 currentReachabilityStatus])
+  networkReachability = [(BKAppDelegate *)self networkReachability];
+  if ([networkReachability currentReachabilityStatus])
   {
-    v3 = [v2 connectionRequired] ^ 1;
+    v3 = [networkReachability connectionRequired] ^ 1;
   }
 
   else
@@ -2197,14 +2197,14 @@
   dispatch_async(&_dispatch_main_q, block);
   [(BKAppDelegate *)self _beginObservingICloudRestoreStatus];
   out_token = -1;
-  v7 = [@"com.apple.tcc.access.changed" UTF8String];
+  uTF8String = [@"com.apple.tcc.access.changed" UTF8String];
   workloopUserInitiatedQueue = self->_workloopUserInitiatedQueue;
   handler[0] = _NSConcreteStackBlock;
   handler[1] = 3221225472;
   handler[2] = sub_1001CFCD0;
   handler[3] = &unk_100A0B248;
   handler[4] = self;
-  if (notify_register_dispatch(v7, &out_token, workloopUserInitiatedQueue, handler))
+  if (notify_register_dispatch(uTF8String, &out_token, workloopUserInitiatedQueue, handler))
   {
     v9 = 0xFFFFFFFFLL;
   }
@@ -2230,8 +2230,8 @@
     dispatch_async(&_dispatch_main_q, v12);
   }
 
-  v11 = [(BKAppDelegate *)self networkMonitor];
-  [v11 start];
+  networkMonitor = [(BKAppDelegate *)self networkMonitor];
+  [networkMonitor start];
 }
 
 - (void)_endObservingNotifications
@@ -2245,8 +2245,8 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(BKAppDelegate *)self networkReachability];
-  [v4 stopNotifier];
+  networkReachability = [(BKAppDelegate *)self networkReachability];
+  [networkReachability stopNotifier];
 
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   if (DarwinNotifyCenter)
@@ -2260,14 +2260,14 @@
   v7 = +[BUAccountsProvider sharedProvider];
   [v7 removeObserver:self accountTypes:1];
 
-  v8 = [(BKAppDelegate *)self networkMonitor];
-  [v8 stop];
+  networkMonitor = [(BKAppDelegate *)self networkMonitor];
+  [networkMonitor stop];
 }
 
-- (void)storeChangedNotification:(id)a3
+- (void)storeChangedNotification:(id)notification
 {
-  v3 = [(BKAppDelegate *)self storeController];
-  [v3 refreshUpdateCountAsync];
+  storeController = [(BKAppDelegate *)self storeController];
+  [storeController refreshUpdateCountAsync];
 }
 
 - (void)setupAEAssetFactory
@@ -2282,8 +2282,8 @@
   v23 = objc_opt_new();
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(BKAppDelegate *)self sharedAnnotationProvider];
-    [v23 setSharedAnnotationProvider:v6];
+    sharedAnnotationProvider = [(BKAppDelegate *)self sharedAnnotationProvider];
+    [v23 setSharedAnnotationProvider:sharedAnnotationProvider];
   }
 
   v7 = +[BKLibraryManager defaultManager];
@@ -2291,28 +2291,28 @@
   [v23 setSharedBookCoverResetter:v8];
 
   v9 = [REEpubPlugin alloc];
-  v10 = [(BKAppDelegate *)self storeController];
-  v11 = [(BKAppDelegate *)self engagementManager];
-  v12 = [(REEpubPlugin *)v9 initWithStoreController:v10 engagementManager:v11];
+  storeController = [(BKAppDelegate *)self storeController];
+  engagementManager = [(BKAppDelegate *)self engagementManager];
+  v12 = [(REEpubPlugin *)v9 initWithStoreController:storeController engagementManager:engagementManager];
 
   if (objc_opt_respondsToSelector())
   {
-    v13 = [(BKAppDelegate *)self sharedAnnotationProvider];
-    [(REEpubPlugin *)v12 setSharedAnnotationProvider:v13];
+    sharedAnnotationProvider2 = [(BKAppDelegate *)self sharedAnnotationProvider];
+    [(REEpubPlugin *)v12 setSharedAnnotationProvider:sharedAnnotationProvider2];
   }
 
   v14 = objc_opt_new();
   if (objc_opt_respondsToSelector())
   {
-    v15 = [(BKAppDelegate *)self sharedAnnotationProvider];
-    [v14 setSharedAnnotationProvider:v15];
+    sharedAnnotationProvider3 = [(BKAppDelegate *)self sharedAnnotationProvider];
+    [v14 setSharedAnnotationProvider:sharedAnnotationProvider3];
   }
 
   v16 = objc_opt_new();
   if (objc_opt_respondsToSelector())
   {
-    v17 = [(BKAppDelegate *)self sharedAnnotationProvider];
-    [v16 setSharedAnnotationProvider:v17];
+    sharedAnnotationProvider4 = [(BKAppDelegate *)self sharedAnnotationProvider];
+    [v16 setSharedAnnotationProvider:sharedAnnotationProvider4];
   }
 
   if (qword_100AF7858 != -1)
@@ -2330,14 +2330,14 @@
     v19 = NSClassFromString(@"THApplePubAssetPluginProvider");
     if (v19)
     {
-      v20 = [(objc_class *)v19 sharedPlugin];
-      v21 = v20;
-      if (v20 && [v20 conformsToProtocol:&OBJC_PROTOCOL___AEPlugin])
+      sharedPlugin = [(objc_class *)v19 sharedPlugin];
+      v21 = sharedPlugin;
+      if (sharedPlugin && [sharedPlugin conformsToProtocol:&OBJC_PROTOCOL___AEPlugin])
       {
         if (objc_opt_respondsToSelector())
         {
-          v22 = [(BKAppDelegate *)self sharedAnnotationProvider];
-          [v21 setSharedAnnotationProvider:v22];
+          sharedAnnotationProvider5 = [(BKAppDelegate *)self sharedAnnotationProvider];
+          [v21 setSharedAnnotationProvider:sharedAnnotationProvider5];
         }
 
         [v18 registerAssetEnginePlugin:v21];
@@ -2367,8 +2367,8 @@
   v4 = +[NSBundle mainBundle];
   v5 = [v4 localizedStringForKey:@"There is a problem with the configuration of your %@.\nPlease restore with iTunes or redownload Apple Books." value:&stru_100A30A68 table:0];
   v6 = +[UIDevice currentDevice];
-  v7 = [v6 localizedModel];
-  v8 = [NSString stringWithFormat:v5, v7];
+  localizedModel = [v6 localizedModel];
+  v8 = [NSString stringWithFormat:v5, localizedModel];
   v15 = [UIAlertController alertControllerWithTitle:v3 message:v8 preferredStyle:1];
 
   v9 = +[NSBundle mainBundle];
@@ -2376,25 +2376,25 @@
   v11 = [UIAlertAction actionWithTitle:v10 style:1 handler:&stru_100A0B2A8];
   [v15 addAction:v11];
 
-  v12 = [(BKAppDelegate *)self sceneManager];
-  v13 = [v12 currentSceneController];
-  [v13 presentViewController:v15 animated:1 completion:0];
+  sceneManager = [(BKAppDelegate *)self sceneManager];
+  currentSceneController = [sceneManager currentSceneController];
+  [currentSceneController presentViewController:v15 animated:1 completion:0];
 }
 
-- (void)application:(id)a3 didReceiveRemoteNotification:(id)a4
+- (void)application:(id)application didReceiveRemoteNotification:(id)notification
 {
-  v5 = a4;
-  v6 = [(BKAppDelegate *)self appLaunchCoordinator];
+  notificationCopy = notification;
+  appLaunchCoordinator = [(BKAppDelegate *)self appLaunchCoordinator];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001D052C;
   v8[3] = &unk_100A038D0;
-  v9 = v5;
-  v7 = v5;
-  [v6 appLaunchCoordinatorOnConditionMask:1 blockID:@"handleRemoteNotification" performBlock:v8];
+  v9 = notificationCopy;
+  v7 = notificationCopy;
+  [appLaunchCoordinator appLaunchCoordinatorOnConditionMask:1 blockID:@"handleRemoteNotification" performBlock:v8];
 }
 
-- (void)userDefaultsChanged:(id)a3
+- (void)userDefaultsChanged:(id)changed
 {
   workloopUserInitiatedQueue = self->_workloopUserInitiatedQueue;
   block[0] = _NSConcreteStackBlock;
@@ -2405,19 +2405,19 @@
   dispatch_async(workloopUserInitiatedQueue, block);
 }
 
-- (void)networkReachabilityChanged:(id)a3
+- (void)networkReachabilityChanged:(id)changed
 {
-  v4 = [a3 object];
+  object = [changed object];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v4 currentReachabilityStatus] && (objc_msgSend(v4, "connectionRequired") & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [object currentReachabilityStatus] && (objc_msgSend(object, "connectionRequired") & 1) == 0)
   {
     v5 = sub_1000122C0();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(BKAppDelegate *)self liverpoolStatusMonitor];
-      v7 = [v6 isCloudKitEnabled];
+      liverpoolStatusMonitor = [(BKAppDelegate *)self liverpoolStatusMonitor];
+      isCloudKitEnabled = [liverpoolStatusMonitor isCloudKitEnabled];
       v8 = "NO";
-      if (v7)
+      if (isCloudKitEnabled)
       {
         v8 = "YES";
       }
@@ -2427,10 +2427,10 @@
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Network now reachable.  Is user opted in: %s", &v11, 0xCu);
     }
 
-    v9 = [(BKAppDelegate *)self ubiquityStatusMonitor];
-    v10 = [v9 isICloudDriveEnabled];
+    ubiquityStatusMonitor = [(BKAppDelegate *)self ubiquityStatusMonitor];
+    isICloudDriveEnabled = [ubiquityStatusMonitor isICloudDriveEnabled];
 
-    if (v10)
+    if (isICloudDriveEnabled)
     {
       [(BKAppDelegate *)self _reloadUbiquityDataSources];
     }
@@ -2470,8 +2470,8 @@
   v14[3] = v6;
 
   v7 = [BKDatabaseBackupFileManager alloc];
-  v8 = [(BKAppDelegate *)self sharedAnnotationProvider];
-  v9 = [(BKDatabaseBackupFileManager *)v7 initWithLibraryManager:0 annotationProvider:v8];
+  sharedAnnotationProvider = [(BKAppDelegate *)self sharedAnnotationProvider];
+  v9 = [(BKDatabaseBackupFileManager *)v7 initWithLibraryManager:0 annotationProvider:sharedAnnotationProvider];
 
   [(BKDatabaseBackupFileManager *)v9 mergeSyncSidecarWithCompletionBlock:v5];
   _Block_object_dispose(&v13, 8);
@@ -2490,11 +2490,11 @@
   }
 }
 
-- (BOOL)annotationProvider:(id)a3 acknowledgeMergingAnnotationsWithAssetVersionMismatch:(id)a4 assetID:(id)a5
+- (BOOL)annotationProvider:(id)provider acknowledgeMergingAnnotationsWithAssetVersionMismatch:(id)mismatch assetID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  mismatchCopy = mismatch;
+  dCopy = d;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
@@ -2505,12 +2505,12 @@
   v16[2] = sub_1001D0E20;
   v16[3] = &unk_100A0B2F8;
   v16[4] = self;
-  v12 = v10;
+  v12 = dCopy;
   v17 = v12;
   v20 = &v21;
-  v13 = v8;
+  v13 = providerCopy;
   v18 = v13;
-  v14 = v9;
+  v14 = mismatchCopy;
   v19 = v14;
   [v11 performBackgroundReadOnlyBlockAndWait:v16];
 
@@ -2520,9 +2520,9 @@
   return v11;
 }
 
-- (void)libraryAssetStatusController:(id)a3 makeAccountPrimaryAndSignedIn:(id)a4 completion:(id)a5
+- (void)libraryAssetStatusController:(id)controller makeAccountPrimaryAndSignedIn:(id)in completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -2533,17 +2533,17 @@
 
 - (void)cloudStorageUpgradeSheetWasDismissed
 {
-  v3 = [(BKAppDelegate *)self ubiquityStatusMonitor];
-  v4 = [v3 isICloudDriveEnabled];
+  ubiquityStatusMonitor = [(BKAppDelegate *)self ubiquityStatusMonitor];
+  isICloudDriveEnabled = [ubiquityStatusMonitor isICloudDriveEnabled];
 
-  if (v4)
+  if (isICloudDriveEnabled)
   {
 
     [(BKAppDelegate *)self _reloadUbiquityDataSources];
   }
 }
 
-- (void)ubiquityStatusChangedToAvailableWithNewIdentity:(id)a3 oldIdentity:(id)a4
+- (void)ubiquityStatusChangedToAvailableWithNewIdentity:(id)identity oldIdentity:(id)oldIdentity
 {
   v5 = BDSCloudKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -2560,9 +2560,9 @@
   [(BKAppDelegate *)self _dieIfUnacknowledgediCloudLogoutOcccurredWithCompletion:v6];
 }
 
-- (void)_dieIfUnacknowledgediCloudLogoutOcccurredWithCompletion:(id)a3
+- (void)_dieIfUnacknowledgediCloudLogoutOcccurredWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = BDSCloudKitLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2570,9 +2570,9 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "_dieIfUnacknowledgediCloudLogoutOcccurredWithCompletion:", buf, 2u);
   }
 
-  v6 = [(BKAppDelegate *)self iCloudIdentityTokenTracker];
-  [v6 fetchCurrentToken];
-  if ([v6 didUnacknowledgediCloudLogoutOccur])
+  iCloudIdentityTokenTracker = [(BKAppDelegate *)self iCloudIdentityTokenTracker];
+  [iCloudIdentityTokenTracker fetchCurrentToken];
+  if ([iCloudIdentityTokenTracker didUnacknowledgediCloudLogoutOccur])
   {
     v7 = BDSCloudKitLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2586,11 +2586,11 @@
 
   else
   {
-    v8 = [(BKAppDelegate *)self iCloudIdentityTokenTracker];
-    [v8 acknowledgeiCloudIdentity];
+    iCloudIdentityTokenTracker2 = [(BKAppDelegate *)self iCloudIdentityTokenTracker];
+    [iCloudIdentityTokenTracker2 acknowledgeiCloudIdentity];
   }
 
-  v9 = objc_retainBlock(v4);
+  v9 = objc_retainBlock(completionCopy);
 
   if (v9)
   {
@@ -2598,11 +2598,11 @@
   }
 }
 
-- (void)saveStateClosing:(BOOL)a3
+- (void)saveStateClosing:(BOOL)closing
 {
-  v3 = a3;
-  v5 = [(BKAppDelegate *)self sceneManager];
-  [v5 saveStateClosing:v3];
+  closingCopy = closing;
+  sceneManager = [(BKAppDelegate *)self sceneManager];
+  [sceneManager saveStateClosing:closingCopy];
 
   v6 = +[NSUserDefaults standardUserDefaults];
   [v6 synchronize];
@@ -2627,20 +2627,20 @@
   v10 = [v8 beginBackgroundTaskWithName:@"BKAppDelegate SaveState" expirationHandler:v19];
   v23[3] = v10;
 
-  v11 = [(BKAppDelegate *)self libraryManager];
-  if (v11)
+  libraryManager = [(BKAppDelegate *)self libraryManager];
+  if (libraryManager)
   {
-    v12 = [(BKAppDelegate *)self sharedAnnotationProvider];
-    v13 = [(BKAppDelegate *)self workloopUtilityQueue];
+    sharedAnnotationProvider = [(BKAppDelegate *)self sharedAnnotationProvider];
+    workloopUtilityQueue = [(BKAppDelegate *)self workloopUtilityQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1001D1870;
     block[3] = &unk_100A049A0;
-    v16 = v11;
-    v17 = v12;
+    v16 = libraryManager;
+    v17 = sharedAnnotationProvider;
     v18 = v9;
-    v14 = v12;
-    dispatch_async(v13, block);
+    v14 = sharedAnnotationProvider;
+    dispatch_async(workloopUtilityQueue, block);
   }
 
   else
@@ -2655,46 +2655,46 @@
   _Block_object_dispose(&v22, 8);
 }
 
-- (void)seriesCoversForSeriesIdsChanged:(id)a3
+- (void)seriesCoversForSeriesIdsChanged:(id)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v4 = +[BCCacheManager defaultCacheManager];
-  [v4 incrementVersionForIdentifiers:v3];
+  [v4 incrementVersionForIdentifiers:changedCopy];
 }
 
 + (id)currentSceneController
 {
   v2 = +[BKAppDelegate sceneManager];
-  v3 = [v2 currentSceneController];
+  currentSceneController = [v2 currentSceneController];
 
-  return v3;
+  return currentSceneController;
 }
 
 + (id)anySceneController
 {
   v2 = +[BKAppDelegate sceneManager];
-  v3 = [v2 anySceneController];
+  anySceneController = [v2 anySceneController];
 
-  return v3;
+  return anySceneController;
 }
 
-+ (id)sceneControllerForViewController:(id)a3
++ (id)sceneControllerForViewController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   v4 = +[BKAppDelegate sceneManager];
-  v5 = [v4 sceneControllerForViewController:v3];
+  v5 = [v4 sceneControllerForViewController:controllerCopy];
 
   return v5;
 }
 
-- (void)clientDetectedStoreChangeAndAccountChange:(id)a3
+- (void)clientDetectedStoreChangeAndAccountChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = sub_1000122C0();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v12 = v4;
+    v12 = changeCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "BKAppDelegate clientDetectedStoreChangeAndAccountChange:%@", buf, 0xCu);
   }
 
@@ -2707,19 +2707,19 @@
   v9[2] = sub_1001D1BC8;
   v9[3] = &unk_100A03440;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = changeCopy;
+  v8 = changeCopy;
   os_activity_apply(v7, v9);
 }
 
-- (void)clientDetectedStoreChange:(id)a3
+- (void)clientDetectedStoreChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = sub_1000122C0();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v3;
+    v11 = changeCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "BKAppDelegate clientDetectedStoreChange:%@", buf, 0xCu);
   }
 
@@ -2731,19 +2731,19 @@
   block[1] = 3221225472;
   block[2] = sub_1001D20CC;
   block[3] = &unk_100A033C8;
-  v9 = v3;
-  v7 = v3;
+  v9 = changeCopy;
+  v7 = changeCopy;
   os_activity_apply(v6, block);
 }
 
-- (void)clientDetectedPredicateChange:(id)a3
+- (void)clientDetectedPredicateChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v4 = +[BKLibraryDataSourceJaliscoDAAPClientProxy sharedproxy];
-  [v4 clientDetectedPredicateChange:v3];
+  [v4 clientDetectedPredicateChange:changeCopy];
 }
 
-- (void)clientDetectedPurchaseServerClientExpired:(id)a3
+- (void)clientDetectedPurchaseServerClientExpired:(id)expired
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
@@ -2753,30 +2753,30 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)clientRequestITunesAuthentication:(id)a3 withCompletion:(id)a4
+- (void)clientRequestITunesAuthentication:(id)authentication withCompletion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = +[BKAuthenticationAlertRequest sharedRequester];
-  [v5 requestAuthenticationPolitely:1 completion:v4];
+  [v5 requestAuthenticationPolitely:1 completion:completionCopy];
 }
 
-- (void)_logIfError:(id)a3 operation:(id)a4
+- (void)_logIfError:(id)error operation:(id)operation
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  errorCopy = error;
+  operationCopy = operation;
+  if (errorCopy)
   {
     v7 = sub_1000122C0();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100794080(v6, v5, v7);
+      sub_100794080(operationCopy, errorCopy, v7);
     }
   }
 }
 
-- (void)deleteCloudDataWithCompletion:(id)a3
+- (void)deleteCloudDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v6 = dispatch_queue_create("com.apple.iBooks.BKAppDelegate.CloudDataDeletion", v5);
 
@@ -2787,8 +2787,8 @@
   v32[3] = sub_1000274EC;
   v32[4] = sub_1000276A0;
   v33 = 0;
-  v8 = [(BKAppDelegate *)self _engagementManagerDirectory];
-  [BKEngagementManager destroyPersistentStorageInDirectory:v8];
+  _engagementManagerDirectory = [(BKAppDelegate *)self _engagementManagerDirectory];
+  [BKEngagementManager destroyPersistentStorageInDirectory:_engagementManagerDirectory];
 
   v34[0] = objc_opt_class();
   v34[1] = objc_opt_class();
@@ -2805,18 +2805,18 @@
   v28 = v10;
   v11 = v6;
   v29 = v11;
-  v30 = self;
+  selfCopy = self;
   v31 = v32;
   [v9 enumerateObjectsUsingBlock:v27];
 
   v12 = +[NSMutableArray array];
-  v13 = [(BKAppDelegate *)self serviceCenter];
-  v14 = [(BKAppDelegate *)self serviceCenter];
-  v15 = v14 == 0;
+  serviceCenter = [(BKAppDelegate *)self serviceCenter];
+  serviceCenter2 = [(BKAppDelegate *)self serviceCenter];
+  v15 = serviceCenter2 == 0;
 
   if (!v15)
   {
-    [v12 addObject:v13];
+    [v12 addObject:serviceCenter];
   }
 
   v22[0] = _NSConcreteStackBlock;
@@ -2827,204 +2827,204 @@
   v23 = v16;
   v17 = v11;
   v24 = v17;
-  v25 = self;
+  selfCopy2 = self;
   v26 = v32;
   [v12 enumerateObjectsUsingBlock:v22];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001D2D80;
   block[3] = &unk_100A0B4B0;
-  v20 = v4;
+  v20 = completionCopy;
   v21 = v32;
-  v18 = v4;
+  v18 = completionCopy;
   dispatch_group_notify(v16, v17, block);
 
   _Block_object_dispose(v32, 8);
 }
 
-- (void)account:(unint64_t)a3 didChangeWithReason:(unint64_t)a4
+- (void)account:(unint64_t)account didChangeWithReason:(unint64_t)reason
 {
-  v19 = [(BKAppDelegate *)self currentLocalAccountIdentifier];
+  currentLocalAccountIdentifier = [(BKAppDelegate *)self currentLocalAccountIdentifier];
   v7 = +[BUAccountsProvider sharedProvider];
-  v8 = [v7 localStoreAccount];
-  v9 = [v8 identifier];
+  localStoreAccount = [v7 localStoreAccount];
+  identifier = [localStoreAccount identifier];
 
-  LOBYTE(v10) = v19 | v9;
-  if (v19 | v9)
+  LOBYTE(v10) = currentLocalAccountIdentifier | identifier;
+  if (currentLocalAccountIdentifier | identifier)
   {
-    v10 = [v19 isEqual:v9] ^ 1;
+    v10 = [currentLocalAccountIdentifier isEqual:identifier] ^ 1;
   }
 
-  v11 = ((a4 & 0xFFFFFFFFFFFFFFFDLL) == 100) | v10;
-  if (a4 == 100 || a4 == 102)
+  v11 = ((reason & 0xFFFFFFFFFFFFFFFDLL) == 100) | v10;
+  if (reason == 100 || reason == 102)
   {
-    v12 = [(BKAppDelegate *)self libraryManager];
-    [v12 updateMostRecentPurchaseDateCacheFromLibrary];
+    libraryManager = [(BKAppDelegate *)self libraryManager];
+    [libraryManager updateMostRecentPurchaseDateCacheFromLibrary];
     goto LABEL_8;
   }
 
-  if (a4 == 101)
+  if (reason == 101)
   {
-    v12 = [(BKAppDelegate *)self libraryManager];
-    [v12 clearMostRecentPurchaseDateCache];
+    libraryManager = [(BKAppDelegate *)self libraryManager];
+    [libraryManager clearMostRecentPurchaseDateCache];
 LABEL_8:
   }
 
   if (v11)
   {
-    v13 = [(BKAppDelegate *)self sceneManager];
-    v14 = [v13 welcomeScreenManager];
+    sceneManager = [(BKAppDelegate *)self sceneManager];
+    welcomeScreenManager = [sceneManager welcomeScreenManager];
 
-    if (!v14)
+    if (!welcomeScreenManager)
     {
-      if (a4)
+      if (reason)
       {
         v15 = objc_alloc_init(BKWelcomeGDPRItem);
         [(BKAppDelegate *)self _showWelcomeScreenIfNeeded:v15 completion:&stru_100A0B4D0];
       }
 
-      [(BKAppDelegate *)self setCurrentLocalAccountIdentifier:v9];
+      [(BKAppDelegate *)self setCurrentLocalAccountIdentifier:identifier];
     }
   }
 
   v16 = +[BAEventReporter sharedReporter];
-  v17 = [(BKAppDelegate *)self primaryAnalyticsController];
-  v18 = [v17 applicationTracker];
-  [v16 emitAccountDidChangeEventWithTracker:v18 type:a3 reason:a4];
+  primaryAnalyticsController = [(BKAppDelegate *)self primaryAnalyticsController];
+  applicationTracker = [primaryAnalyticsController applicationTracker];
+  [v16 emitAccountDidChangeEventWithTracker:applicationTracker type:account reason:reason];
 }
 
-- (id)analyticsTrackerForStoreServices:(id)a3
+- (id)analyticsTrackerForStoreServices:(id)services
 {
-  v3 = [(BKAppDelegate *)self primaryAnalyticsController];
-  v4 = [v3 applicationTracker];
+  primaryAnalyticsController = [(BKAppDelegate *)self primaryAnalyticsController];
+  applicationTracker = [primaryAnalyticsController applicationTracker];
 
-  return v4;
+  return applicationTracker;
 }
 
 - (id)_analyticsSessionHost
 {
   objc_opt_class();
-  v3 = [(BKAppDelegate *)self sceneManager];
-  v4 = [v3 primarySceneController];
+  sceneManager = [(BKAppDelegate *)self sceneManager];
+  primarySceneController = [sceneManager primarySceneController];
   v5 = BUDynamicCast();
-  v6 = [v5 analyticsSessionHost];
+  analyticsSessionHost = [v5 analyticsSessionHost];
 
-  return v6;
+  return analyticsSessionHost;
 }
 
 - (id)keyWindowAnalyticsTracker
 {
   objc_opt_class();
-  v3 = [(BKAppDelegate *)self sceneManager];
-  v4 = [v3 currentSceneController];
+  sceneManager = [(BKAppDelegate *)self sceneManager];
+  currentSceneController = [sceneManager currentSceneController];
   v5 = BUDynamicCast();
 
-  v6 = [(BKAppDelegate *)self sceneManager];
-  v7 = [v6 primarySceneController];
+  sceneManager2 = [(BKAppDelegate *)self sceneManager];
+  primarySceneController = [sceneManager2 primarySceneController];
 
-  if (v5 == v7)
+  if (v5 == primarySceneController)
   {
-    v8 = [v5 rootBarCoordinator];
-    [v8 hostingViewController];
+    rootBarCoordinator = [v5 rootBarCoordinator];
+    [rootBarCoordinator hostingViewController];
   }
 
   else
   {
-    v8 = [v5 bk_window];
-    [v8 rootViewController];
+    rootBarCoordinator = [v5 bk_window];
+    [rootBarCoordinator rootViewController];
   }
   v9 = ;
 
   v10 = [v9 ba_deepestVisibleChildViewControllerIncludePresented:1];
-  v11 = [v10 ba_effectiveAnalyticsTracker];
+  ba_effectiveAnalyticsTracker = [v10 ba_effectiveAnalyticsTracker];
 
-  return v11;
+  return ba_effectiveAnalyticsTracker;
 }
 
 - (void)listeningSessionWillEnd
 {
-  v2 = [(BKAppDelegate *)self _analyticsSessionHost];
-  [v2 listeningSessionWillEnd];
+  _analyticsSessionHost = [(BKAppDelegate *)self _analyticsSessionHost];
+  [_analyticsSessionHost listeningSessionWillEnd];
 }
 
-- (void)readSessionDidEnd:(id)a3 readTime:(double)a4
+- (void)readSessionDidEnd:(id)end readTime:(double)time
 {
-  v6 = a3;
-  v7 = [(BKAppDelegate *)self _analyticsSessionHost];
-  [v7 readSessionDidEnd:v6 readTime:a4];
+  endCopy = end;
+  _analyticsSessionHost = [(BKAppDelegate *)self _analyticsSessionHost];
+  [_analyticsSessionHost readSessionDidEnd:endCopy readTime:time];
 }
 
-- (void)playSessionDidEnd:(id)a3 playTime:(double)a4
+- (void)playSessionDidEnd:(id)end playTime:(double)time
 {
-  v6 = a3;
-  v7 = [(BKAppDelegate *)self _analyticsSessionHost];
-  [v7 playSessionDidEnd:v6 playTime:a4];
+  endCopy = end;
+  _analyticsSessionHost = [(BKAppDelegate *)self _analyticsSessionHost];
+  [_analyticsSessionHost playSessionDidEnd:endCopy playTime:time];
 }
 
-- (id)contentPrivateIDForContentID:(id)a3
+- (id)contentPrivateIDForContentID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKAppDelegate *)self _analyticsSessionHost];
-  v6 = [v5 contentPrivateIDForContentID:v4];
+  dCopy = d;
+  _analyticsSessionHost = [(BKAppDelegate *)self _analyticsSessionHost];
+  v6 = [_analyticsSessionHost contentPrivateIDForContentID:dCopy];
 
   return v6;
 }
 
-- (id)contentUserIDForContentID:(id)a3
+- (id)contentUserIDForContentID:(id)d
 {
-  v4 = a3;
-  v5 = [(BKAppDelegate *)self _analyticsSessionHost];
-  v6 = [v5 contentUserIDForContentID:v4];
+  dCopy = d;
+  _analyticsSessionHost = [(BKAppDelegate *)self _analyticsSessionHost];
+  v6 = [_analyticsSessionHost contentUserIDForContentID:dCopy];
 
   return v6;
 }
 
 - (void)_analyticsForceEndSessionOnViewControllers
 {
-  v2 = [(BKAppDelegate *)self sceneManager];
-  [v2 analyticsForceEndSession];
+  sceneManager = [(BKAppDelegate *)self sceneManager];
+  [sceneManager analyticsForceEndSession];
 }
 
-- (unint64_t)bl_beginBackgroundTaskWithName:(id)a3 expirationHandler:(id)a4
+- (unint64_t)bl_beginBackgroundTaskWithName:(id)name expirationHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  nameCopy = name;
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 beginBackgroundTaskWithName:v6 expirationHandler:v5];
+  v8 = [v7 beginBackgroundTaskWithName:nameCopy expirationHandler:handlerCopy];
 
   return v8;
 }
 
-- (void)bl_endBackgroundTask:(unint64_t)a3
+- (void)bl_endBackgroundTask:(unint64_t)task
 {
   v4 = +[UIApplication sharedApplication];
-  [v4 endBackgroundTask:a3];
+  [v4 endBackgroundTask:task];
 }
 
-- (unint64_t)ec_beginBackgroundTaskWithName:(id)a3 expirationHandler:(id)a4
+- (unint64_t)ec_beginBackgroundTaskWithName:(id)name expirationHandler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  nameCopy = name;
   v7 = +[UIApplication sharedApplication];
-  v8 = [v7 beginBackgroundTaskWithName:v6 expirationHandler:v5];
+  v8 = [v7 beginBackgroundTaskWithName:nameCopy expirationHandler:handlerCopy];
 
   return v8;
 }
 
-- (void)ec_endBackgroundTask:(unint64_t)a3
+- (void)ec_endBackgroundTask:(unint64_t)task
 {
   v4 = +[UIApplication sharedApplication];
-  [v4 endBackgroundTask:a3];
+  [v4 endBackgroundTask:task];
 }
 
-- (void)appGlobalActionHandler:(id)a3 open:(id)a4
+- (void)appGlobalActionHandler:(id)handler open:(id)open
 {
   v4 = sub_1007969B4();
   v5 = *(v4 - 8);
   __chkstk_darwin(v4);
   v7 = &v13 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_100796974();
-  v8 = [objc_opt_self() sharedApplication];
+  sharedApplication = [objc_opt_self() sharedApplication];
   sub_100796944(v9);
   v11 = v10;
   sub_1001ED2F8(_swiftEmptyArrayStorage);
@@ -3032,14 +3032,14 @@ LABEL_8:
   sub_10023D404(&qword_100AE01C0, type metadata accessor for OpenExternalURLOptionsKey);
   isa = sub_1007A2024().super.isa;
 
-  [v8 openURL:v11 options:isa completionHandler:0];
+  [sharedApplication openURL:v11 options:isa completionHandler:0];
 
   (*(v5 + 8))(v7, v4);
 }
 
 - (BKEngagementManager)engagementManager
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BKAppDelegate.engagementManager.getter();
 
   return v3;
@@ -3047,7 +3047,7 @@ LABEL_8:
 
 - (BKObjectGraphHost)objectGraphHost
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BKAppDelegate.objectGraphHost.getter();
 
   return v3;
@@ -3055,18 +3055,18 @@ LABEL_8:
 
 - (BKServiceCenter)serviceCenter
 {
-  v2 = self;
+  selfCopy = self;
   v3 = BKAppDelegate.serviceCenter.getter();
 
   return v3;
 }
 
-- (void)flushJetMetricsWithCompletionHandler:(id)a3
+- (void)flushJetMetricsWithCompletionHandler:(id)handler
 {
   v5 = sub_1001F1160(&qword_100AD67D0);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -3082,13 +3082,13 @@ LABEL_8:
   v12[3] = 0;
   v12[4] = &unk_10081C0F0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_10069E794(0, 0, v7, &unk_1008344D0, v12);
 }
 
 - (void)startDownloadPurchaseMonitor
 {
-  v2 = self;
+  selfCopy = self;
   BKAppDelegate.startDownloadPurchaseMonitor()();
 }
 

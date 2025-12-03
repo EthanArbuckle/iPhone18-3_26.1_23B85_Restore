@@ -1,21 +1,21 @@
 @interface CSConnectionMessage
 - (BOOL)isReply;
-- (CSConnectionMessage)initWithConnectionMessage:(shared_ptr<CLConnectionMessage>)a3;
+- (CSConnectionMessage)initWithConnectionMessage:(shared_ptr<CLConnectionMessage>)message;
 - (NSSecureCoding)payloadObject;
 - (NSString)name;
 - (id).cxx_construct;
 - (shared_ptr<CLConnectionMessage>)message;
-- (void)sendReply:(id)a3;
+- (void)sendReply:(id)reply;
 @end
 
 @implementation CSConnectionMessage
 
-- (CSConnectionMessage)initWithConnectionMessage:(shared_ptr<CLConnectionMessage>)a3
+- (CSConnectionMessage)initWithConnectionMessage:(shared_ptr<CLConnectionMessage>)message
 {
-  ptr = a3.__ptr_;
+  ptr = message.__ptr_;
   v10.receiver = self;
   v10.super_class = CSConnectionMessage;
-  v4 = [(CSConnectionMessage *)&v10 init:a3.__ptr_];
+  v4 = [(CSConnectionMessage *)&v10 init:message.__ptr_];
   v5 = v4;
   if (v4)
   {
@@ -111,9 +111,9 @@
   return v3;
 }
 
-- (void)sendReply:(id)a3
+- (void)sendReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   [(CSConnectionMessage *)self message];
   if (v6)
   {

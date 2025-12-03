@@ -1,10 +1,10 @@
 @interface SnapshotComplicationLayoutProvider
-- (id)complicationLayoutForPreviewIdentifier:(id)a3;
+- (id)complicationLayoutForPreviewIdentifier:(id)identifier;
 @end
 
 @implementation SnapshotComplicationLayoutProvider
 
-- (id)complicationLayoutForPreviewIdentifier:(id)a3
+- (id)complicationLayoutForPreviewIdentifier:(id)identifier
 {
   sub_21B6C8DA4();
 

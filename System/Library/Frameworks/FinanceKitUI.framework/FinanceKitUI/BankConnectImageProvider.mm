@@ -1,6 +1,6 @@
 @interface BankConnectImageProvider
 - (_TtC12FinanceKitUI24BankConnectImageProvider)init;
-- (void)logoFor:(NSString *)a3 size:(CGSize)a4 scale:(double)a5 completionHandler:(id)a6;
+- (void)logoFor:(NSString *)for size:(CGSize)size scale:(double)scale completionHandler:(id)handler;
 @end
 
 @implementation BankConnectImageProvider
@@ -15,20 +15,20 @@
   return [(BankConnectImageProvider *)&v5 init];
 }
 
-- (void)logoFor:(NSString *)a3 size:(CGSize)a4 scale:(double)a5 completionHandler:(id)a6
+- (void)logoFor:(NSString *)for size:(CGSize)size scale:(double)scale completionHandler:(id)handler
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v12 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27DF09920, &qword_238764D80);
   v13 = *(*(v12 - 8) + 64);
   MEMORY[0x28223BE20](v12 - 8);
   v15 = &v23 - v14;
-  v16 = _Block_copy(a6);
+  v16 = _Block_copy(handler);
   v17 = swift_allocObject();
-  *(v17 + 16) = a3;
+  *(v17 + 16) = for;
   *(v17 + 24) = width;
   *(v17 + 32) = height;
-  *(v17 + 40) = a5;
+  *(v17 + 40) = scale;
   *(v17 + 48) = v16;
   *(v17 + 56) = self;
   v18 = sub_23875ED80();
@@ -43,8 +43,8 @@
   v20[3] = 0;
   v20[4] = &unk_2387735A0;
   v20[5] = v19;
-  v21 = a3;
-  v22 = self;
+  forCopy = for;
+  selfCopy = self;
   sub_2386E65D8(0, 0, v15, &unk_238764DA0, v20);
 }
 

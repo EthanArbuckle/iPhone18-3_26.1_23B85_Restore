@@ -1,59 +1,59 @@
 @interface _UISpringLoadedBlinkingEffect
 - (CALayer)blinkLayer;
 - (id)blinkAnimation;
-- (void)_prepareLayer:(id)a3 forView:(id)a4;
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4;
+- (void)_prepareLayer:(id)layer forView:(id)view;
+- (void)interaction:(id)interaction didChangeWithContext:(id)context;
 @end
 
 @implementation _UISpringLoadedBlinkingEffect
 
-- (void)interaction:(id)a3 didChangeWithContext:(id)a4
+- (void)interaction:(id)interaction didChangeWithContext:(id)context
 {
-  v11 = a4;
-  v5 = [(_UISpringLoadedBlinkingEffect *)self blinkLayer];
-  v6 = [v11 targetView];
-  if (v6)
+  contextCopy = context;
+  blinkLayer = [(_UISpringLoadedBlinkingEffect *)self blinkLayer];
+  targetView = [contextCopy targetView];
+  if (targetView)
   {
-    v7 = [v11 state];
-    if (v7 > 1)
+    state = [contextCopy state];
+    if (state > 1)
     {
-      if (v7 == 2)
+      if (state == 2)
       {
-        v9 = [v5 superlayer];
+        superlayer = [blinkLayer superlayer];
 
-        if (!v9)
+        if (!superlayer)
         {
-          [(_UISpringLoadedBlinkingEffect *)self _prepareLayer:v5 forView:v6];
-          v10 = [v6 layer];
-          [v10 addSublayer:v5];
+          [(_UISpringLoadedBlinkingEffect *)self _prepareLayer:blinkLayer forView:targetView];
+          layer = [targetView layer];
+          [layer addSublayer:blinkLayer];
         }
 
         blinkLayer = [(_UISpringLoadedBlinkingEffect *)self blinkAnimation];
-        [v5 addAnimation:blinkLayer forKey:@"blinkingAnimation"];
+        [blinkLayer addAnimation:blinkLayer forKey:@"blinkingAnimation"];
         goto LABEL_9;
       }
 
-      if (v7 != 3)
+      if (state != 3)
       {
         goto LABEL_10;
       }
     }
 
-    else if (v7)
+    else if (state)
     {
-      if (v7 != 1)
+      if (state != 1)
       {
         goto LABEL_10;
       }
 
-      [(_UISpringLoadedBlinkingEffect *)self _prepareLayer:v5 forView:v6];
-      blinkLayer = [v6 layer];
-      [blinkLayer addSublayer:v5];
+      [(_UISpringLoadedBlinkingEffect *)self _prepareLayer:blinkLayer forView:targetView];
+      blinkLayer = [targetView layer];
+      [blinkLayer addSublayer:blinkLayer];
       goto LABEL_9;
     }
   }
 
-  [v5 removeFromSuperlayer];
+  [blinkLayer removeFromSuperlayer];
   blinkLayer = self->_blinkLayer;
   self->_blinkLayer = 0;
 LABEL_9:
@@ -61,23 +61,23 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)_prepareLayer:(id)a3 forView:(id)a4
+- (void)_prepareLayer:(id)layer forView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  v16 = [v5 layer];
-  [v5 bounds];
+  viewCopy = view;
+  layerCopy = layer;
+  layer = [viewCopy layer];
+  [viewCopy bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  [v6 setFrame:{v8, v10, v12, v14}];
-  v15 = [v16 cornerCurve];
-  [v6 setCornerCurve:v15];
+  [layerCopy setFrame:{v8, v10, v12, v14}];
+  cornerCurve = [layer cornerCurve];
+  [layerCopy setCornerCurve:cornerCurve];
 
-  [v16 cornerRadius];
-  [v6 setCornerRadius:?];
+  [layer cornerRadius];
+  [layerCopy setCornerRadius:?];
 }
 
 - (CALayer)blinkLayer

@@ -1,14 +1,14 @@
 @interface MUTransitFooterActionsSectionController
 - (CGRect)impressionsFrame;
-- (MUTransitFooterActionsSectionController)initWithTransitLineItem:(id)a3 actionManager:(id)a4;
+- (MUTransitFooterActionsSectionController)initWithTransitLineItem:(id)item actionManager:(id)manager;
 @end
 
 @implementation MUTransitFooterActionsSectionController
 
 - (CGRect)impressionsFrame
 {
-  v2 = [(MUTransitFooterActionsSectionController *)self sectionView];
-  [v2 frame];
+  sectionView = [(MUTransitFooterActionsSectionController *)self sectionView];
+  [sectionView frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -25,15 +25,15 @@
   return result;
 }
 
-- (MUTransitFooterActionsSectionController)initWithTransitLineItem:(id)a3 actionManager:(id)a4
+- (MUTransitFooterActionsSectionController)initWithTransitLineItem:(id)item actionManager:(id)manager
 {
-  v6 = a4;
+  managerCopy = manager;
   v11.receiver = self;
   v11.super_class = MUTransitFooterActionsSectionController;
-  v7 = [(MUTransitLineItemSectionController *)&v11 initWithTransitLineItem:a3];
+  v7 = [(MUTransitLineItemSectionController *)&v11 initWithTransitLineItem:item];
   if (v7)
   {
-    v8 = [[MUFooterActionsSectionController alloc] initWithActionManager:v6];
+    v8 = [[MUFooterActionsSectionController alloc] initWithActionManager:managerCopy];
     underlyingSectionController = v7->_underlyingSectionController;
     v7->_underlyingSectionController = v8;
   }

@@ -1,32 +1,32 @@
 @interface IMPriorityMessageCommandProcessingPipelineComponent
-- (IMPriorityMessageCommandProcessingPipelineComponent)initWithPipelineResources:(id)a3;
-- (id)runIndividuallyWithInput:(id)a3;
+- (IMPriorityMessageCommandProcessingPipelineComponent)initWithPipelineResources:(id)resources;
+- (id)runIndividuallyWithInput:(id)input;
 @end
 
 @implementation IMPriorityMessageCommandProcessingPipelineComponent
 
-- (IMPriorityMessageCommandProcessingPipelineComponent)initWithPipelineResources:(id)a3
+- (IMPriorityMessageCommandProcessingPipelineComponent)initWithPipelineResources:(id)resources
 {
-  v5 = a3;
+  resourcesCopy = resources;
   v9.receiver = self;
   v9.super_class = IMPriorityMessageCommandProcessingPipelineComponent;
   v6 = [(IMPriorityMessageCommandProcessingPipelineComponent *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pipelineResources, a3);
+    objc_storeStrong(&v6->_pipelineResources, resources);
   }
 
   return v7;
 }
 
-- (id)runIndividuallyWithInput:(id)a3
+- (id)runIndividuallyWithInput:(id)input
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 priorityMessageGUIDs];
-  v6 = v5;
-  if (!v5 || ![v5 count])
+  inputCopy = input;
+  priorityMessageGUIDs = [inputCopy priorityMessageGUIDs];
+  v6 = priorityMessageGUIDs;
+  if (!priorityMessageGUIDs || ![priorityMessageGUIDs count])
   {
     if (IMOSLoggingEnabled())
     {
@@ -52,7 +52,7 @@
     }
   }
 
-  if (([v4 isFromMe] & 1) == 0)
+  if (([inputCopy isFromMe] & 1) == 0)
   {
     if (IMOSLoggingEnabled())
     {
@@ -66,16 +66,16 @@
     }
 
 LABEL_20:
-    v17 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+    v17 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
     goto LABEL_21;
   }
 
-  v8 = [(IMPriorityMessageCommandProcessingPipelineComponent *)self pipelineResources];
-  v9 = [v8 service];
-  v10 = [v9 __im_localDevice];
-  v11 = [v10 pushToken];
+  pipelineResources = [(IMPriorityMessageCommandProcessingPipelineComponent *)self pipelineResources];
+  service = [pipelineResources service];
+  __im_localDevice = [service __im_localDevice];
+  pushToken = [__im_localDevice pushToken];
 
-  if (v11 && ([v4 fromToken], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqual:", v11), v12, (v13 & 1) != 0))
+  if (pushToken && ([inputCopy fromToken], v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqual:", pushToken), v12, (v13 & 1) != 0))
   {
     v14 = +[IMDFilteringController sharedInstance];
     [v14 priorityMessagesReceived:v6 forService:*MEMORY[0x277D1A620]];
@@ -92,7 +92,7 @@ LABEL_20:
     }
   }
 
-  v17 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:v4];
+  v17 = [objc_alloc(MEMORY[0x277D18E08]) initWithValue:inputCopy];
 
 LABEL_21:
   v18 = *MEMORY[0x277D85DE8];

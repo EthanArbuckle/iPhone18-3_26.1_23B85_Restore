@@ -3,7 +3,7 @@
 - (id)preferredFocusEnvironments;
 - (int64_t)_overrideInterfaceOrientationMechanics;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SBSwitcherViewController
@@ -22,47 +22,47 @@
   v9.super_class = SBSwitcherViewController;
   [(SBSwitcherViewController *)&v9 viewDidLoad];
   v3 = objc_alloc(MEMORY[0x277CF0D78]);
-  v4 = [(SBSwitcherViewController *)self view];
-  [v4 bounds];
+  view = [(SBSwitcherViewController *)self view];
+  [view bounds];
   v5 = [v3 initWithFrame:?];
   contentWrapperView = self->_contentWrapperView;
   self->_contentWrapperView = v5;
 
   [(BSUIOrientationTransformWrapperView *)self->_contentWrapperView setAutoresizingMask:18];
-  v7 = [(SBSwitcherViewController *)self view];
-  [v7 addSubview:self->_contentWrapperView];
+  view2 = [(SBSwitcherViewController *)self view];
+  [view2 addSubview:self->_contentWrapperView];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained viewDidLoadForSwitcherViewController:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v6.receiver = self;
   v6.super_class = SBSwitcherViewController;
   [(SBSwitcherViewController *)&v6 viewWillAppear:?];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained viewWillAppearForSwitcherViewController:self animated:v3];
+  [WeakRetained viewWillAppearForSwitcherViewController:self animated:appearCopy];
 }
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [(SBSwitcherViewController *)self childViewControllers];
+  childViewControllers = [(SBSwitcherViewController *)self childViewControllers];
 
-  if (v3)
+  if (childViewControllers)
   {
-    v4 = [(SBSwitcherViewController *)self childViewControllers];
+    childViewControllers2 = [(SBSwitcherViewController *)self childViewControllers];
   }
 
   else
   {
     v6.receiver = self;
     v6.super_class = SBSwitcherViewController;
-    v4 = [(SBSwitcherViewController *)&v6 preferredFocusEnvironments];
+    childViewControllers2 = [(SBSwitcherViewController *)&v6 preferredFocusEnvironments];
   }
 
-  return v4;
+  return childViewControllers2;
 }
 
 - (SBSwitcherViewControllerDelegate)delegate

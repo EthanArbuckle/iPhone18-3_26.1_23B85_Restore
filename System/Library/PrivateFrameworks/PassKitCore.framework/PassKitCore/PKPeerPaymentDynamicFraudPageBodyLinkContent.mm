@@ -1,30 +1,30 @@
 @interface PKPeerPaymentDynamicFraudPageBodyLinkContent
-- (BOOL)isEqual:(id)a3;
-- (PKPeerPaymentDynamicFraudPageBodyLinkContent)initWithCoder:(id)a3;
-- (PKPeerPaymentDynamicFraudPageBodyLinkContent)initWithDictionary:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPeerPaymentDynamicFraudPageBodyLinkContent)initWithCoder:(id)coder;
+- (PKPeerPaymentDynamicFraudPageBodyLinkContent)initWithDictionary:(id)dictionary;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPeerPaymentDynamicFraudPageBodyLinkContent
 
-- (PKPeerPaymentDynamicFraudPageBodyLinkContent)initWithDictionary:(id)a3
+- (PKPeerPaymentDynamicFraudPageBodyLinkContent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = PKPeerPaymentDynamicFraudPageBodyLinkContent;
-  v5 = [(PKPeerPaymentDynamicFraudPageBodyContent *)&v12 initWithDictionary:v4];
+  v5 = [(PKPeerPaymentDynamicFraudPageBodyContent *)&v12 initWithDictionary:dictionaryCopy];
   if (v5)
   {
-    v6 = [v4 PKDictionaryForKey:@"text"];
+    v6 = [dictionaryCopy PKDictionaryForKey:@"text"];
     v7 = [PKPeerPaymentDynamicFraudPageBodyContent bodyContentWithDictionary:v6];
     if ([v7 type] == 1)
     {
       objc_storeStrong(&v5->_textContent, v7);
     }
 
-    v8 = [v4 PKURLForKey:@"url"];
+    v8 = [dictionaryCopy PKURLForKey:@"url"];
     url = v5->_url;
     v5->_url = v8;
 
@@ -42,19 +42,19 @@ LABEL_8:
   return v10;
 }
 
-- (PKPeerPaymentDynamicFraudPageBodyLinkContent)initWithCoder:(id)a3
+- (PKPeerPaymentDynamicFraudPageBodyLinkContent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = PKPeerPaymentDynamicFraudPageBodyLinkContent;
-  v5 = [(PKPeerPaymentDynamicFraudPageBodyContent *)&v11 initWithCoder:v4];
+  v5 = [(PKPeerPaymentDynamicFraudPageBodyContent *)&v11 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"textContent"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"textContent"];
     textContent = v5->_textContent;
     v5->_textContent = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"url"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"url"];
     url = v5->_url;
     v5->_url = v8;
   }
@@ -62,28 +62,28 @@ LABEL_8:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = PKPeerPaymentDynamicFraudPageBodyLinkContent;
-  v4 = a3;
-  [(PKPeerPaymentDynamicFraudPageBodyContent *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_textContent forKey:{@"textContent", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_url forKey:@"url"];
+  coderCopy = coder;
+  [(PKPeerPaymentDynamicFraudPageBodyContent *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_textContent forKey:{@"textContent", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_url forKey:@"url"];
 }
 
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@: %p ", objc_opt_class(), self];;
-  v4 = [(PKPeerPaymentDynamicFraudPageBodyContent *)self type];
-  if (v4 - 1 > 2)
+  type = [(PKPeerPaymentDynamicFraudPageBodyContent *)self type];
+  if (type - 1 > 2)
   {
     v5 = @"unknown";
   }
 
   else
   {
-    v5 = off_1E79CDA10[v4 - 1];
+    v5 = off_1E79CDA10[type - 1];
   }
 
   [v3 appendFormat:@"type: '%@'; ", v5];
@@ -94,9 +94,9 @@ LABEL_8:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -105,13 +105,13 @@ LABEL_8:
 
   v13.receiver = self;
   v13.super_class = PKPeerPaymentDynamicFraudPageBodyLinkContent;
-  if (![(PKPeerPaymentDynamicFraudPageBodyContent *)&v13 isEqual:v4])
+  if (![(PKPeerPaymentDynamicFraudPageBodyContent *)&v13 isEqual:equalCopy])
   {
     goto LABEL_9;
   }
 
   textContent = self->_textContent;
-  v6 = v4[2];
+  v6 = equalCopy[2];
   if (textContent)
   {
     v7 = v6 == 0;
@@ -141,7 +141,7 @@ LABEL_9:
 
 LABEL_12:
   url = self->_url;
-  v11 = v4[3];
+  v11 = equalCopy[3];
   if (url)
   {
     v12 = v11 == 0;
@@ -169,10 +169,10 @@ LABEL_10:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_textContent];
-  [v3 safelyAddObject:self->_url];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_textContent];
+  [array safelyAddObject:self->_url];
+  v4 = PKCombinedHash(17, array);
   v7.receiver = self;
   v7.super_class = PKPeerPaymentDynamicFraudPageBodyLinkContent;
   v5 = [(PKPeerPaymentDynamicFraudPageBodyContent *)&v7 hash]+ 32 * v4 - v4;

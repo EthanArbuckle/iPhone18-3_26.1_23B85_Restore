@@ -1,22 +1,22 @@
 @interface CRLIOUtils
-+ (CGDataProvider)newCGDataProviderForInputStream:(id)a3 outInfo:(void *)a4 outCallbacks:(const CGDataProviderSequentialCallbacks *)a5;
-+ (CGDataProvider)newCGDataProviderForReadChannel:(id)a3 length:(unint64_t)a4 outInfo:(void *)a5 outCallbacks:(const CGDataProviderSequentialCallbacks *)a6;
-+ (void)readAllFromChannel:(id)a3 completion:(id)a4;
-+ (void)readAllFromChannel:(id)a3 offset:(int64_t)a4 length:(unint64_t)a5 completion:(id)a6;
-+ (void)readFromOffsetAndWait:(id)a3 offset:(int64_t)a4 length:(unint64_t)a5 handler:(id)a6;
-+ (void)readWithHandlerAndWait:(id)a3 handler:(id)a4;
++ (CGDataProvider)newCGDataProviderForInputStream:(id)stream outInfo:(void *)info outCallbacks:(const CGDataProviderSequentialCallbacks *)callbacks;
++ (CGDataProvider)newCGDataProviderForReadChannel:(id)channel length:(unint64_t)length outInfo:(void *)info outCallbacks:(const CGDataProviderSequentialCallbacks *)callbacks;
++ (void)readAllFromChannel:(id)channel completion:(id)completion;
++ (void)readAllFromChannel:(id)channel offset:(int64_t)offset length:(unint64_t)length completion:(id)completion;
++ (void)readFromOffsetAndWait:(id)wait offset:(int64_t)offset length:(unint64_t)length handler:(id)handler;
++ (void)readWithHandlerAndWait:(id)wait handler:(id)handler;
 @end
 
 @implementation CRLIOUtils
 
-+ (void)readAllFromChannel:(id)a3 offset:(int64_t)a4 length:(unint64_t)a5 completion:(id)a6
++ (void)readAllFromChannel:(id)channel offset:(int64_t)offset length:(unint64_t)length completion:(id)completion
 {
-  v9 = a3;
-  v10 = a6;
-  v11 = v10;
-  if (v9)
+  channelCopy = channel;
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (channelCopy)
   {
-    if (v10)
+    if (completionCopy)
     {
       goto LABEL_22;
     }
@@ -95,19 +95,19 @@ LABEL_22:
   v22 = v23;
   v19 = v11;
   v21 = v19;
-  [v9 readFromOffset:a4 length:a5 handler:v20];
+  [channelCopy readFromOffset:offset length:length handler:v20];
 
   _Block_object_dispose(v23, 8);
 }
 
-+ (void)readAllFromChannel:(id)a3 completion:(id)a4
++ (void)readAllFromChannel:(id)channel completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  channelCopy = channel;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (channelCopy)
   {
-    if (v6)
+    if (completionCopy)
     {
       goto LABEL_22;
     }
@@ -186,48 +186,48 @@ LABEL_22:
   v18 = v19;
   v15 = v7;
   v17 = v15;
-  [v5 readWithHandler:v16];
+  [channelCopy readWithHandler:v16];
 
   _Block_object_dispose(v19, 8);
 }
 
-+ (CGDataProvider)newCGDataProviderForInputStream:(id)a3 outInfo:(void *)a4 outCallbacks:(const CGDataProviderSequentialCallbacks *)a5
++ (CGDataProvider)newCGDataProviderForInputStream:(id)stream outInfo:(void *)info outCallbacks:(const CGDataProviderSequentialCallbacks *)callbacks
 {
-  if (!a3)
+  if (!stream)
   {
     return 0;
   }
 
-  v7 = a3;
-  CFRetain(v7);
-  if (a4)
+  streamCopy = stream;
+  CFRetain(streamCopy);
+  if (info)
   {
-    *a4 = v7;
+    *info = streamCopy;
   }
 
-  if (a5)
+  if (callbacks)
   {
-    *a5 = &unk_101864C20;
+    *callbacks = &unk_101864C20;
   }
 
-  Sequential = CGDataProviderCreateSequential(v7, &unk_101864C20);
+  Sequential = CGDataProviderCreateSequential(streamCopy, &unk_101864C20);
 
   return Sequential;
 }
 
-+ (CGDataProvider)newCGDataProviderForReadChannel:(id)a3 length:(unint64_t)a4 outInfo:(void *)a5 outCallbacks:(const CGDataProviderSequentialCallbacks *)a6
++ (CGDataProvider)newCGDataProviderForReadChannel:(id)channel length:(unint64_t)length outInfo:(void *)info outCallbacks:(const CGDataProviderSequentialCallbacks *)callbacks
 {
-  if (!a3)
+  if (!channel)
   {
     return 0;
   }
 
-  v10 = a3;
-  v11 = [[CRLReadChannelInputStreamAdapter alloc] initWithReadChannel:v10 length:a4];
+  channelCopy = channel;
+  v11 = [[CRLReadChannelInputStreamAdapter alloc] initWithReadChannel:channelCopy length:length];
 
   if ([(CRLReadChannelInputStreamAdapter *)v11 canSeek])
   {
-    v12 = [a1 newCGDataProviderForInputStream:v11 outInfo:a5 outCallbacks:a6];
+    v12 = [self newCGDataProviderForInputStream:v11 outInfo:info outCallbacks:callbacks];
   }
 
   else
@@ -264,36 +264,36 @@ LABEL_22:
   return v12;
 }
 
-+ (void)readWithHandlerAndWait:(id)a3 handler:(id)a4
++ (void)readWithHandlerAndWait:(id)wait handler:(id)handler
 {
-  v5 = a4;
-  v6 = a3;
+  handlerCopy = handler;
+  waitCopy = wait;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10046368C;
   v9[3] = &unk_101864C90;
-  v11 = v5;
+  v11 = handlerCopy;
   v7 = dispatch_semaphore_create(0);
   v10 = v7;
-  v8 = v5;
-  [v6 readWithHandler:v9];
+  v8 = handlerCopy;
+  [waitCopy readWithHandler:v9];
 
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
 }
 
-+ (void)readFromOffsetAndWait:(id)a3 offset:(int64_t)a4 length:(unint64_t)a5 handler:(id)a6
++ (void)readFromOffsetAndWait:(id)wait offset:(int64_t)offset length:(unint64_t)length handler:(id)handler
 {
-  v9 = a6;
-  v10 = a3;
+  handlerCopy = handler;
+  waitCopy = wait;
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1004637D4;
   v13[3] = &unk_101864C90;
-  v15 = v9;
+  v15 = handlerCopy;
   v11 = dispatch_semaphore_create(0);
   v14 = v11;
-  v12 = v9;
-  [v10 readFromOffset:a4 length:a5 handler:v13];
+  v12 = handlerCopy;
+  [waitCopy readFromOffset:offset length:length handler:v13];
 
   dispatch_semaphore_wait(v11, 0xFFFFFFFFFFFFFFFFLL);
 }

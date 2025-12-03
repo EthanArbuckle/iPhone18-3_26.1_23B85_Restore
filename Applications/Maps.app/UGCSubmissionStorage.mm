@@ -1,47 +1,47 @@
 @interface UGCSubmissionStorage
-+ (unint64_t)muidForClientSubmissionIdentifier:(id)a3;
-+ (void)removeClientSubmissionIdentifier:(id)a3;
-+ (void)setMUIDAndSubmissionIdentifierWithCorrectionsRequest:(id)a3;
++ (unint64_t)muidForClientSubmissionIdentifier:(id)identifier;
++ (void)removeClientSubmissionIdentifier:(id)identifier;
++ (void)setMUIDAndSubmissionIdentifierWithCorrectionsRequest:(id)request;
 @end
 
 @implementation UGCSubmissionStorage
 
-+ (void)removeClientSubmissionIdentifier:(id)a3
++ (void)removeClientSubmissionIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v7 = +[NSUserDefaults standardUserDefaults];
   v4 = [v7 objectForKey:@"UGCPendingSubmissions"];
   v5 = [v4 mutableCopy];
 
-  [v5 removeObjectForKey:v3];
+  [v5 removeObjectForKey:identifierCopy];
   v6 = [v5 copy];
   [v7 setObject:v6 forKey:@"UGCPendingSubmissions"];
 }
 
-+ (void)setMUIDAndSubmissionIdentifierWithCorrectionsRequest:(id)a3
++ (void)setMUIDAndSubmissionIdentifierWithCorrectionsRequest:(id)request
 {
-  v3 = a3;
-  v4 = [v3 feedbackRequestParameters];
-  v5 = [v4 submissionParameters];
-  v6 = [v5 type];
+  requestCopy = request;
+  feedbackRequestParameters = [requestCopy feedbackRequestParameters];
+  submissionParameters = [feedbackRequestParameters submissionParameters];
+  type = [submissionParameters type];
 
-  if (v6 == 10)
+  if (type == 10)
   {
-    v7 = [v3 feedbackRequestParameters];
-    v8 = [v7 submissionParameters];
-    v9 = [v8 details];
-    v10 = [v9 poiEnrichmentUpdate];
+    feedbackRequestParameters2 = [requestCopy feedbackRequestParameters];
+    submissionParameters2 = [feedbackRequestParameters2 submissionParameters];
+    details = [submissionParameters2 details];
+    poiEnrichmentUpdate = [details poiEnrichmentUpdate];
 
-    if ([v10 hasPlaceContext])
+    if ([poiEnrichmentUpdate hasPlaceContext])
     {
-      v11 = [v10 placeContext];
-      v12 = [v11 muid];
+      placeContext = [poiEnrichmentUpdate placeContext];
+      muid = [placeContext muid];
 
-      v13 = [v3 feedbackRequestParameters];
-      v14 = [v13 submissionParameters];
-      v15 = [v14 clientSubmissionUuid];
+      feedbackRequestParameters3 = [requestCopy feedbackRequestParameters];
+      submissionParameters3 = [feedbackRequestParameters3 submissionParameters];
+      clientSubmissionUuid = [submissionParameters3 clientSubmissionUuid];
 
-      if (v12 && [v15 length])
+      if (muid && [clientSubmissionUuid length])
       {
         v16 = +[NSUserDefaults standardUserDefaults];
         v17 = [v16 dictionaryForKey:@"UGCPendingSubmissions"];
@@ -52,10 +52,10 @@
           v18 = objc_alloc_init(NSMutableDictionary);
         }
 
-        if ([v15 length])
+        if ([clientSubmissionUuid length])
         {
-          v19 = [NSNumber numberWithUnsignedLongLong:v12];
-          [v18 setObject:v19 forKey:v15];
+          v19 = [NSNumber numberWithUnsignedLongLong:muid];
+          [v18 setObject:v19 forKey:clientSubmissionUuid];
         }
 
         v20 = [v18 copy];
@@ -77,24 +77,24 @@
   }
 }
 
-+ (unint64_t)muidForClientSubmissionIdentifier:(id)a3
++ (unint64_t)muidForClientSubmissionIdentifier:(id)identifier
 {
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = +[NSUserDefaults standardUserDefaults];
   v5 = [v4 dictionaryForKey:@"UGCPendingSubmissions"];
-  v6 = [v5 objectForKey:v3];
+  v6 = [v5 objectForKey:identifierCopy];
 
   if (v6)
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 0;
+    unsignedIntegerValue = 0;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 @end

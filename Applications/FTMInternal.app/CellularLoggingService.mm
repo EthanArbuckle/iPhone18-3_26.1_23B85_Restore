@@ -1,8 +1,8 @@
 @interface CellularLoggingService
-- (void)configurationListAvailable:(id)a3;
+- (void)configurationListAvailable:(id)available;
 - (void)dealloc;
-- (void)didCollectLogs:(id)a3 errorCode:(id)a4;
-- (void)didStateChanged:(int64_t)a3 errorCode:(id)a4 config:(id)a5;
+- (void)didCollectLogs:(id)logs errorCode:(id)code;
+- (void)didStateChanged:(int64_t)changed errorCode:(id)code config:(id)config;
 @end
 
 @implementation CellularLoggingService
@@ -10,18 +10,18 @@
 - (void)dealloc
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 defaultCenter];
-  [v5 removeObserver:UIApplicationWillTerminateNotification];
+  selfCopy = self;
+  defaultCenter = [v3 defaultCenter];
+  [defaultCenter removeObserver:UIApplicationWillTerminateNotification];
 
-  v6.receiver = v4;
+  v6.receiver = selfCopy;
   v6.super_class = type metadata accessor for CellularLoggingService();
   [(CellularLoggingService *)&v6 dealloc];
 }
 
-- (void)didCollectLogs:(id)a3 errorCode:(id)a4
+- (void)didCollectLogs:(id)logs errorCode:(id)code
 {
-  if (a3)
+  if (logs)
   {
     v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -31,22 +31,22 @@
     v6 = 0;
   }
 
-  v7 = a4;
-  v8 = self;
-  sub_100283300(v6, a4);
+  codeCopy = code;
+  selfCopy = self;
+  sub_100283300(v6, code);
 }
 
-- (void)didStateChanged:(int64_t)a3 errorCode:(id)a4 config:(id)a5
+- (void)didStateChanged:(int64_t)changed errorCode:(id)code config:(id)config
 {
-  v9 = a5;
-  v10 = self;
-  v11 = a4;
-  sub_10028358C(a3, a4, a5);
+  configCopy = config;
+  selfCopy = self;
+  codeCopy = code;
+  sub_10028358C(changed, code, config);
 }
 
-- (void)configurationListAvailable:(id)a3
+- (void)configurationListAvailable:(id)available
 {
-  if (a3)
+  if (available)
   {
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -56,7 +56,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_100283958(v4);
 }
 

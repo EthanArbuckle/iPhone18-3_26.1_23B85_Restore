@@ -8,7 +8,7 @@
 {
   v27 = *MEMORY[0x1E69E9840];
   v25 = 0;
-  v2 = [a1 findUnsealedDataWithError:&v25];
+  v2 = [self findUnsealedDataWithError:&v25];
   v3 = v25;
   v4 = v3;
   if (!v2 || v3)

@@ -1,12 +1,12 @@
 @interface BLOSTransaction
-- (BLOSTransaction)initWithTransactionName:(const char *)a3;
+- (BLOSTransaction)initWithTransactionName:(const char *)name;
 - (void)dealloc;
 - (void)endTransaction;
 @end
 
 @implementation BLOSTransaction
 
-- (BLOSTransaction)initWithTransactionName:(const char *)a3
+- (BLOSTransaction)initWithTransactionName:(const char *)name
 {
   v9.receiver = self;
   v9.super_class = BLOSTransaction;
@@ -21,7 +21,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       *buf = 136446466;
-      v11 = a3;
+      nameCopy = name;
       v12 = 2048;
       v13 = v4;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[Transaction]: Created transaction %{public}s(%p)", buf, 0x16u);
@@ -40,9 +40,9 @@
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v7 = 136446466;
-      v8 = v3;
+      selfCopy2 = v3;
       v9 = 2048;
-      v10 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[Transaction]: Ending transaction %{public}s(%p)", &v7, 0x16u);
     }
 
@@ -58,7 +58,7 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v7 = 134217984;
-      v8 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[Transaction]: EndTransaction was called but transaction was already nil.(%p)", &v7, 0xCu);
     }
   }
@@ -78,7 +78,7 @@
       *buf = 136446466;
       v7 = v3;
       v8 = 2048;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[Transaction]: Ending transaction %{public}s(%p)", buf, 0x16u);
     }
 

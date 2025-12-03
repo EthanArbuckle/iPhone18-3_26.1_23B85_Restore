@@ -1,42 +1,42 @@
 @interface NLSessionActivityNonMachineElapsedTimeAccumulator
-- (BOOL)shouldRecalibrateTimerBasedOnDuration:(double)a3;
-- (NLSessionActivityNonMachineElapsedTimeAccumulator)initWithBuilder:(id)a3;
+- (BOOL)shouldRecalibrateTimerBasedOnDuration:(double)duration;
+- (NLSessionActivityNonMachineElapsedTimeAccumulator)initWithBuilder:(id)builder;
 - (double)elapsedTime;
-- (double)elapsedTimeAtPresentationTime:(id)a3;
+- (double)elapsedTimeAtPresentationTime:(id)time;
 - (double)timeSinceLastSecond;
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4;
-- (void)activityTimerFired:(id)a3;
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler;
+- (void)activityTimerFired:(id)fired;
 - (void)recalibrateTimer;
 - (void)resetTimer;
 @end
 
 @implementation NLSessionActivityNonMachineElapsedTimeAccumulator
 
-- (NLSessionActivityNonMachineElapsedTimeAccumulator)initWithBuilder:(id)a3
+- (NLSessionActivityNonMachineElapsedTimeAccumulator)initWithBuilder:(id)builder
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v11;
-  v11 = 0;
+  objc_storeStrong(location, builder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v3;
   v9.super_class = NLSessionActivityNonMachineElapsedTimeAccumulator;
   v8 = [(NLSessionActivityBuilderAccumulator *)&v9 initWithBuilder:location[0]];
-  v11 = v8;
-  objc_storeStrong(&v11, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
     v4 = [[NLSessionActivityTimer alloc] initWithFireInterval:1.0];
-    timer = v11->_timer;
-    v11->_timer = v4;
+    timer = selfCopy->_timer;
+    selfCopy->_timer = v4;
     MEMORY[0x277D82BD8](timer);
-    [(NLSessionActivityTimer *)v11->_timer setDelegate:v11];
+    [(NLSessionActivityTimer *)selfCopy->_timer setDelegate:selfCopy];
   }
 
-  v7 = MEMORY[0x277D82BE0](v11);
+  v7 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v7;
 }
 
@@ -51,40 +51,40 @@
   [(NLSessionActivityTimer *)self->_timer setDelegate:self];
 }
 
-- (void)accumulatorDidStartWithStartDate:(id)a3 handler:(id)a4
+- (void)accumulatorDidStartWithStartDate:(id)date handler:(id)handler
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   v5 = 0;
-  objc_storeStrong(&v5, a4);
-  [(NLSessionActivityDataAccumulator *)v7 setUpdateHandler:v5];
-  [(NLSessionActivityTimer *)v7->_timer start];
+  objc_storeStrong(&v5, handler);
+  [(NLSessionActivityDataAccumulator *)selfCopy setUpdateHandler:v5];
+  [(NLSessionActivityTimer *)selfCopy->_timer start];
   objc_storeStrong(&v5, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)activityTimerFired:(id)a3
+- (void)activityTimerFired:(id)fired
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = v7;
-  [(NLSessionActivityNonMachineElapsedTimeAccumulator *)v7 elapsedTime];
+  objc_storeStrong(location, fired);
+  v5 = selfCopy;
+  [(NLSessionActivityNonMachineElapsedTimeAccumulator *)selfCopy elapsedTime];
   if ([(NLSessionActivityNonMachineElapsedTimeAccumulator *)v5 shouldRecalibrateTimerBasedOnDuration:?])
   {
-    [(NLSessionActivityNonMachineElapsedTimeAccumulator *)v7 recalibrateTimer];
+    [(NLSessionActivityNonMachineElapsedTimeAccumulator *)selfCopy recalibrateTimer];
   }
 
-  v4 = [(NLSessionActivityDataAccumulator *)v7 updateHandler];
-  MEMORY[0x277D82BD8](v4);
-  if (v4)
+  updateHandler = [(NLSessionActivityDataAccumulator *)selfCopy updateHandler];
+  MEMORY[0x277D82BD8](updateHandler);
+  if (updateHandler)
   {
-    v3 = [(NLSessionActivityDataAccumulator *)v7 updateHandler];
-    v3[2]();
-    MEMORY[0x277D82BD8](v3);
+    updateHandler2 = [(NLSessionActivityDataAccumulator *)selfCopy updateHandler];
+    updateHandler2[2]();
+    MEMORY[0x277D82BD8](updateHandler2);
   }
 
   objc_storeStrong(location, 0);
@@ -92,10 +92,10 @@
 
 - (double)timeSinceLastSecond
 {
-  v4 = [(NLSessionActivityBuilderAccumulator *)self builder];
-  [(HKLiveWorkoutBuilder *)v4 elapsedTime];
+  builder = [(NLSessionActivityBuilderAccumulator *)self builder];
+  [(HKLiveWorkoutBuilder *)builder elapsedTime];
   v5 = v2;
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](builder);
   return v5 - floor(v5);
 }
 
@@ -109,10 +109,10 @@
 
   else
   {
-    v5 = [(NLSessionActivityBuilderAccumulator *)self builder];
-    [(HKLiveWorkoutBuilder *)v5 elapsedTime];
+    builder = [(NLSessionActivityBuilderAccumulator *)self builder];
+    [(HKLiveWorkoutBuilder *)builder elapsedTime];
     v7 = v3;
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](builder);
   }
 
   return v7;
@@ -120,7 +120,7 @@
 
 - (void)recalibrateTimer
 {
-  v23 = self;
+  selfCopy = self;
   location[1] = a2;
   _HKInitializeLogging();
   location[0] = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
@@ -134,8 +134,8 @@
   }
 
   objc_storeStrong(location, 0);
-  [(NLSessionActivityTimer *)v23->_timer stop];
-  [(NLSessionActivityNonMachineElapsedTimeAccumulator *)v23 elapsedTime];
+  [(NLSessionActivityTimer *)selfCopy->_timer stop];
+  [(NLSessionActivityNonMachineElapsedTimeAccumulator *)selfCopy elapsedTime];
   v19 = v2;
   v18 = ceil(v2) - v2;
   v17 = [objc_alloc(MEMORY[0x277CF0B50]) initWithIdentifier:@"non-machine elapsed time recalibration timer"];
@@ -149,7 +149,7 @@
   v12 = 0;
   v13 = __69__NLSessionActivityNonMachineElapsedTimeAccumulator_recalibrateTimer__block_invoke;
   v14 = &unk_277D88F68;
-  v15 = MEMORY[0x277D82BE0](v23);
+  v15 = MEMORY[0x277D82BE0](selfCopy);
   v16 = MEMORY[0x277D82BE0](v17);
   [v6 scheduleWithFireInterval:v7 leewayInterval:&v10 queue:v5 handler:0.025];
   MEMORY[0x277D82BD8](v7);
@@ -190,22 +190,22 @@ void __69__NLSessionActivityNonMachineElapsedTimeAccumulator_recalibrateTimer__b
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)shouldRecalibrateTimerBasedOnDuration:(double)a3
+- (BOOL)shouldRecalibrateTimerBasedOnDuration:(double)duration
 {
-  v5 = [(NLSessionActivityBuilderAccumulator *)self builder];
-  v4 = [(HKLiveWorkoutBuilder *)v5 workoutSession];
-  v6 = [(HKWorkoutSession *)v4 state];
-  MEMORY[0x277D82BD8](v4);
-  MEMORY[0x277D82BD8](v5);
-  return v6 == 2 && a3 - floor(a3) > 0.1;
+  builder = [(NLSessionActivityBuilderAccumulator *)self builder];
+  workoutSession = [(HKLiveWorkoutBuilder *)builder workoutSession];
+  state = [(HKWorkoutSession *)workoutSession state];
+  MEMORY[0x277D82BD8](workoutSession);
+  MEMORY[0x277D82BD8](builder);
+  return state == 2 && duration - floor(duration) > 0.1;
 }
 
-- (double)elapsedTimeAtPresentationTime:(id)a3
+- (double)elapsedTimeAtPresentationTime:(id)time
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, time);
   if (+[NLSessionActivityFakeDataManager shouldShowFakeData])
   {
     +[NLSessionActivityFakeDataManager fakeValueForDuration];
@@ -215,8 +215,8 @@ void __69__NLSessionActivityNonMachineElapsedTimeAccumulator_recalibrateTimer__b
 
   else
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
-    [location[0] timeIntervalSinceDate:v9];
+    date = [MEMORY[0x277CBEAA8] date];
+    [location[0] timeIntervalSinceDate:date];
     if (v4 >= 0)
     {
       v8 = v4;
@@ -227,12 +227,12 @@ void __69__NLSessionActivityNonMachineElapsedTimeAccumulator_recalibrateTimer__b
       v8 = 0;
     }
 
-    v7 = [(NLSessionActivityBuilderAccumulator *)v12 builder];
-    [(HKLiveWorkoutBuilder *)v7 elapsedTime];
+    builder = [(NLSessionActivityBuilderAccumulator *)selfCopy builder];
+    [(HKLiveWorkoutBuilder *)builder elapsedTime];
     v13 = v5 + v8;
-    MEMORY[0x277D82BD8](v7);
+    MEMORY[0x277D82BD8](builder);
     v10 = 1;
-    objc_storeStrong(&v9, 0);
+    objc_storeStrong(&date, 0);
   }
 
   objc_storeStrong(location, 0);

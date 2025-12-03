@@ -1,18 +1,18 @@
 @interface CKLargeTitleAccessoryViewAccessibility
 + (id)newComposeButton;
 + (id)newOptionsButton;
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CKLargeTitleAccessoryViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CKLargeTitleAccessoryView" hasInstanceMethod:@"accessoryButtons" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKLargeTitleAccessoryView" hasClassMethod:@"newComposeButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"CKLargeTitleAccessoryView" hasClassMethod:@"newOptionsButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CKLargeTitleAccessoryView" hasInstanceMethod:@"accessoryButtons" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKLargeTitleAccessoryView" hasClassMethod:@"newComposeButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"CKLargeTitleAccessoryView" hasClassMethod:@"newOptionsButton" withFullSignature:{"@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -41,20 +41,20 @@
         }
 
         v8 = *(*(&v17 + 1) + 8 * i);
-        v9 = [v8 accessibilityIdentifier];
-        v10 = [v9 isEqualToString:@"composeButton"];
+        accessibilityIdentifier = [v8 accessibilityIdentifier];
+        v10 = [accessibilityIdentifier isEqualToString:@"composeButton"];
 
         v11 = @"compose.button.text";
         if ((v10 & 1) == 0)
         {
-          v12 = [v8 accessibilityIdentifier];
-          v13 = [v12 isEqualToString:@"optionsButton"];
+          accessibilityIdentifier2 = [v8 accessibilityIdentifier];
+          v13 = [accessibilityIdentifier2 isEqualToString:@"optionsButton"];
 
           v11 = @"more.button.text";
           if ((v13 & 1) == 0)
           {
-            v14 = [v8 accessibilityIdentifier];
-            v15 = [v14 isEqualToString:@"quickHideButton"];
+            accessibilityIdentifier3 = [v8 accessibilityIdentifier];
+            v15 = [accessibilityIdentifier3 isEqualToString:@"quickHideButton"];
 
             v11 = @"quickhide.button.text";
             if (!v15)
@@ -77,7 +77,7 @@
 
 + (id)newComposeButton
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CKLargeTitleAccessoryViewAccessibility;
   v2 = objc_msgSendSuper2(&v5, sel_newComposeButton);
   v3 = accessibilityLocalizedString(@"compose.button.text");
@@ -88,7 +88,7 @@
 
 + (id)newOptionsButton
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CKLargeTitleAccessoryViewAccessibility;
   v2 = objc_msgSendSuper2(&v5, sel_newOptionsButton);
   v3 = accessibilityLocalizedString(@"more.button.text");

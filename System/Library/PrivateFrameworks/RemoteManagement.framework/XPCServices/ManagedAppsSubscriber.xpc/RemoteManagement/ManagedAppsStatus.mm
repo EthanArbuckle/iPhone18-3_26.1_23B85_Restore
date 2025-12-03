@@ -1,7 +1,7 @@
 @interface ManagedAppsStatus
 + (id)supportedStatusKeys;
 - (_TtC21ManagedAppsSubscriber17ManagedAppsStatus)init;
-- (void)queryForStatusWithKeyPaths:(NSArray *)a3 store:(RMSubscriberStore *)a4 completionHandler:(id)a5;
+- (void)queryForStatusWithKeyPaths:(NSArray *)paths store:(RMSubscriberStore *)store completionHandler:(id)handler;
 @end
 
 @implementation ManagedAppsStatus
@@ -17,16 +17,16 @@
   return v4.super.isa;
 }
 
-- (void)queryForStatusWithKeyPaths:(NSArray *)a3 store:(RMSubscriberStore *)a4 completionHandler:(id)a5
+- (void)queryForStatusWithKeyPaths:(NSArray *)paths store:(RMSubscriberStore *)store completionHandler:(id)handler
 {
   v9 = sub_100001658(&qword_100020CC8, &qword_100017E28);
   v10 = *(*(v9 - 8) + 64);
   __chkstk_darwin(v9 - 8);
   v12 = &v21 - v11;
-  v13 = _Block_copy(a5);
+  v13 = _Block_copy(handler);
   v14 = swift_allocObject();
-  v14[2] = a3;
-  v14[3] = a4;
+  v14[2] = paths;
+  v14[3] = store;
   v14[4] = v13;
   v14[5] = self;
   v15 = sub_100016FA0();
@@ -41,9 +41,9 @@
   v17[3] = 0;
   v17[4] = &unk_100017E40;
   v17[5] = v16;
-  v18 = a3;
-  v19 = a4;
-  v20 = self;
+  pathsCopy = paths;
+  storeCopy = store;
+  selfCopy = self;
   sub_10000FD6C(0, 0, v12, &unk_100017E48, v17);
 }
 

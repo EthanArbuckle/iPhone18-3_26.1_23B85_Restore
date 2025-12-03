@@ -1,138 +1,138 @@
 @interface UARPAssetSubscriptionMobileAsset
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualForAnyDomain:(id)a3;
-- (UARPAssetSubscriptionMobileAsset)initWithAppleModelNumber:(id)a3 hwFusing:(id)a4 domain:(id)a5;
-- (UARPAssetSubscriptionMobileAsset)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualForAnyDomain:(id)domain;
+- (UARPAssetSubscriptionMobileAsset)initWithAppleModelNumber:(id)number hwFusing:(id)fusing domain:(id)domain;
+- (UARPAssetSubscriptionMobileAsset)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UARPAssetSubscriptionMobileAsset
 
-- (UARPAssetSubscriptionMobileAsset)initWithAppleModelNumber:(id)a3 hwFusing:(id)a4 domain:(id)a5
+- (UARPAssetSubscriptionMobileAsset)initWithAppleModelNumber:(id)number hwFusing:(id)fusing domain:(id)domain
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, number);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
+  objc_storeStrong(&v14, fusing);
   v13 = 0;
-  objc_storeStrong(&v13, a5);
-  v5 = v16;
-  v16 = 0;
+  objc_storeStrong(&v13, domain);
+  v5 = selfCopy;
+  selfCopy = 0;
   v12.receiver = v5;
   v12.super_class = UARPAssetSubscriptionMobileAsset;
-  v16 = [(UARPAssetSubscription *)&v12 initWithIdentifier:location[0] domain:v13];
-  objc_storeStrong(&v16, v16);
-  if (v16)
+  selfCopy = [(UARPAssetSubscription *)&v12 initWithIdentifier:location[0] domain:v13];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v6 = [v14 copy];
-    hwFusing = v16->_hwFusing;
-    v16->_hwFusing = v6;
+    hwFusing = selfCopy->_hwFusing;
+    selfCopy->_hwFusing = v6;
   }
 
-  v9 = v16;
+  v9 = selfCopy;
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (UARPAssetSubscriptionMobileAsset)initWithCoder:(id)a3
+- (UARPAssetSubscriptionMobileAsset)initWithCoder:(id)coder
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v16;
-  v16 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v14.receiver = v3;
   v14.super_class = UARPAssetSubscriptionMobileAsset;
-  v16 = [(UARPAssetSubscription *)&v14 initWithCoder:location[0]];
-  objc_storeStrong(&v16, v16);
-  if (v16)
+  selfCopy = [(UARPAssetSubscription *)&v14 initWithCoder:location[0]];
+  objc_storeStrong(&selfCopy, selfCopy);
+  if (selfCopy)
   {
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"hwFusing"];
-    hwFusing = v16->_hwFusing;
-    v16->_hwFusing = v4;
+    hwFusing = selfCopy->_hwFusing;
+    selfCopy->_hwFusing = v4;
 
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"assetURL"];
-    assetURL = v16->_assetURL;
-    v16->_assetURL = v6;
+    assetURL = selfCopy->_assetURL;
+    selfCopy->_assetURL = v6;
 
     v8 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"assetAudience"];
-    assetAudience = v16->_assetAudience;
-    v16->_assetAudience = v8;
+    assetAudience = selfCopy->_assetAudience;
+    selfCopy->_assetAudience = v8;
 
     v10 = [location[0] decodeBoolForKey:@"internalAsset"];
-    v16->_internalAsset = v10;
+    selfCopy->_internalAsset = v10;
     v11 = [location[0] decodeBoolForKey:@"suAsset"];
-    v16->_softwareUpdateAsset = v11;
+    selfCopy->_softwareUpdateAsset = v11;
   }
 
-  v13 = v16;
+  v13 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v16, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v13;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3.receiver = v5;
+  objc_storeStrong(location, coder);
+  v3.receiver = selfCopy;
   v3.super_class = UARPAssetSubscriptionMobileAsset;
   [(UARPAssetSubscription *)&v3 encodeWithCoder:location[0]];
-  [location[0] encodeObject:v5->_hwFusing forKey:@"hwFusing"];
-  [location[0] encodeObject:v5->_assetURL forKey:@"assetURL"];
-  [location[0] encodeObject:v5->_assetAudience forKey:@"assetAudience"];
-  [location[0] encodeBool:v5->_internalAsset forKey:@"internalAsset"];
-  [location[0] encodeBool:v5->_softwareUpdateAsset forKey:@"suAsset"];
+  [location[0] encodeObject:selfCopy->_hwFusing forKey:@"hwFusing"];
+  [location[0] encodeObject:selfCopy->_assetURL forKey:@"assetURL"];
+  [location[0] encodeObject:selfCopy->_assetAudience forKey:@"assetAudience"];
+  [location[0] encodeBool:selfCopy->_internalAsset forKey:@"internalAsset"];
+  [location[0] encodeBool:selfCopy->_softwareUpdateAsset forKey:@"suAsset"];
   objc_storeStrong(location, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v14 = self;
+  selfCopy = self;
   v13[2] = a2;
-  v13[1] = a3;
+  v13[1] = zone;
   v6 = [UARPAssetSubscriptionMobileAsset alloc];
-  v9 = [(UARPAssetSubscription *)v14 identifier];
-  v8 = [(UARPAssetSubscriptionMobileAsset *)v14 hwFusing];
-  v7 = [(UARPAssetSubscription *)v14 domain];
-  v13[0] = [(UARPAssetSubscriptionMobileAsset *)v6 initWithAppleModelNumber:v9 hwFusing:v8 domain:?];
+  identifier = [(UARPAssetSubscription *)selfCopy identifier];
+  hwFusing = [(UARPAssetSubscriptionMobileAsset *)selfCopy hwFusing];
+  domain = [(UARPAssetSubscription *)selfCopy domain];
+  v13[0] = [(UARPAssetSubscriptionMobileAsset *)v6 initWithAppleModelNumber:identifier hwFusing:hwFusing domain:?];
 
-  v10 = [(UARPAssetSubscriptionMobileAsset *)v14 assetURL];
+  assetURL = [(UARPAssetSubscriptionMobileAsset *)selfCopy assetURL];
   [v13[0] setAssetURL:?];
 
-  v11 = [(UARPAssetSubscriptionMobileAsset *)v14 assetAudience];
+  assetAudience = [(UARPAssetSubscriptionMobileAsset *)selfCopy assetAudience];
   [v13[0] setAssetAudience:?];
 
-  v3 = [(UARPAssetSubscriptionMobileAsset *)v14 internalAsset];
-  [v13[0] setInternalAsset:v3];
-  v4 = [(UARPAssetSubscriptionMobileAsset *)v14 softwareUpdateAsset];
-  [v13[0] setSoftwareUpdateAsset:v4];
+  internalAsset = [(UARPAssetSubscriptionMobileAsset *)selfCopy internalAsset];
+  [v13[0] setInternalAsset:internalAsset];
+  softwareUpdateAsset = [(UARPAssetSubscriptionMobileAsset *)selfCopy softwareUpdateAsset];
+  [v13[0] setSoftwareUpdateAsset:softwareUpdateAsset];
   v12 = v13[0];
   objc_storeStrong(v13, 0);
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, equal);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v20 == location[0])
+    if (selfCopy == location[0])
     {
       v21 = 1;
       v18 = 1;
@@ -141,7 +141,7 @@
     else
     {
       v17 = location[0];
-      v16.receiver = v20;
+      v16.receiver = selfCopy;
       v16.super_class = UARPAssetSubscriptionMobileAsset;
       v14 = 0;
       v12 = 0;
@@ -149,29 +149,29 @@
       v9 = 0;
       if ([(UARPAssetSubscription *)&v16 isEqual:location[0]])
       {
-        hwFusing = v20->_hwFusing;
-        v15 = [v17 hwFusing];
+        hwFusing = selfCopy->_hwFusing;
+        hwFusing = [v17 hwFusing];
         v14 = 1;
         v9 = 0;
-        if (nullableObjectsAreEqual(hwFusing, v15) == 1)
+        if (nullableObjectsAreEqual(hwFusing, hwFusing) == 1)
         {
-          assetURL = v20->_assetURL;
-          v13 = [v17 assetURL];
+          assetURL = selfCopy->_assetURL;
+          assetURL = [v17 assetURL];
           v12 = 1;
           v9 = 0;
-          if (nullableObjectsAreEqual(assetURL, v13) == 1)
+          if (nullableObjectsAreEqual(assetURL, assetURL) == 1)
           {
-            assetAudience = v20->_assetAudience;
-            v11 = [v17 assetAudience];
+            assetAudience = selfCopy->_assetAudience;
+            assetAudience = [v17 assetAudience];
             v10 = 1;
             v9 = 0;
-            if (nullableObjectsAreEqual(assetAudience, v11) == 1)
+            if (nullableObjectsAreEqual(assetAudience, assetAudience) == 1)
             {
-              softwareUpdateAsset = v20->_softwareUpdateAsset;
+              softwareUpdateAsset = selfCopy->_softwareUpdateAsset;
               v9 = 0;
               if (softwareUpdateAsset == [v17 softwareUpdateAsset])
               {
-                internalAsset = v20->_internalAsset;
+                internalAsset = selfCopy->_internalAsset;
                 v9 = internalAsset == [v17 internalAsset];
               }
             }
@@ -207,16 +207,16 @@
   return v21 & 1;
 }
 
-- (BOOL)isEqualForAnyDomain:(id)a3
+- (BOOL)isEqualForAnyDomain:(id)domain
 {
-  v20 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, domain);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    if (v20 == location[0])
+    if (selfCopy == location[0])
     {
       v21 = 1;
       v18 = 1;
@@ -225,7 +225,7 @@
     else
     {
       v17 = location[0];
-      v16.receiver = v20;
+      v16.receiver = selfCopy;
       v16.super_class = UARPAssetSubscriptionMobileAsset;
       v14 = 0;
       v12 = 0;
@@ -233,29 +233,29 @@
       v9 = 0;
       if ([(UARPAssetSubscription *)&v16 isEqualForAnyDomain:location[0]])
       {
-        hwFusing = v20->_hwFusing;
-        v15 = [v17 hwFusing];
+        hwFusing = selfCopy->_hwFusing;
+        hwFusing = [v17 hwFusing];
         v14 = 1;
         v9 = 0;
-        if (nullableObjectsAreEqual(hwFusing, v15) == 1)
+        if (nullableObjectsAreEqual(hwFusing, hwFusing) == 1)
         {
-          assetURL = v20->_assetURL;
-          v13 = [v17 assetURL];
+          assetURL = selfCopy->_assetURL;
+          assetURL = [v17 assetURL];
           v12 = 1;
           v9 = 0;
-          if (nullableObjectsAreEqual(assetURL, v13) == 1)
+          if (nullableObjectsAreEqual(assetURL, assetURL) == 1)
           {
-            assetAudience = v20->_assetAudience;
-            v11 = [v17 assetAudience];
+            assetAudience = selfCopy->_assetAudience;
+            assetAudience = [v17 assetAudience];
             v10 = 1;
             v9 = 0;
-            if (nullableObjectsAreEqual(assetAudience, v11) == 1)
+            if (nullableObjectsAreEqual(assetAudience, assetAudience) == 1)
             {
-              softwareUpdateAsset = v20->_softwareUpdateAsset;
+              softwareUpdateAsset = selfCopy->_softwareUpdateAsset;
               v9 = 0;
               if (softwareUpdateAsset == [v17 softwareUpdateAsset])
               {
-                internalAsset = v20->_internalAsset;
+                internalAsset = selfCopy->_internalAsset;
                 v9 = internalAsset == [v17 internalAsset];
               }
             }
@@ -303,32 +303,32 @@
 {
   v2 = objc_opt_class();
   v8 = NSStringFromClass(v2);
-  v9 = [(UARPAssetSubscription *)self identifier];
-  v10 = [(UARPAssetSubscriptionMobileAsset *)self hwFusing];
-  v11 = [(UARPAssetSubscriptionMobileAsset *)self assetAudience];
+  identifier = [(UARPAssetSubscription *)self identifier];
+  hwFusing = [(UARPAssetSubscriptionMobileAsset *)self hwFusing];
+  assetAudience = [(UARPAssetSubscriptionMobileAsset *)self assetAudience];
   v16 = 0;
   v14 = 0;
   v12 = 0;
-  if (v11)
+  if (assetAudience)
   {
-    v17 = [(UARPAssetSubscriptionMobileAsset *)self assetAudience];
+    assetAudience2 = [(UARPAssetSubscriptionMobileAsset *)self assetAudience];
     v16 = 1;
-    v7 = v17;
+    v7 = assetAudience2;
   }
 
   else
   {
-    v15 = [(UARPAssetSubscriptionMobileAsset *)self assetURL];
+    assetURL = [(UARPAssetSubscriptionMobileAsset *)self assetURL];
     v14 = 1;
-    v13 = [(NSURL *)v15 absoluteString];
+    absoluteString = [(NSURL *)assetURL absoluteString];
     v12 = 1;
-    v7 = v13;
+    v7 = absoluteString;
   }
 
-  v4 = [(UARPAssetSubscriptionMobileAsset *)self internalAsset];
-  v5 = [(UARPAssetSubscriptionMobileAsset *)self softwareUpdateAsset];
-  v6 = [(UARPAssetSubscription *)self domain];
-  v19 = [NSString stringWithFormat:@"<%@: modelNumber=%@, hwFusing=%@ assetLocation=%@ internal/su=%u/%u domain=%@>", v8, v9, v10, v7, v4 & 1, v5 & 1, v6];
+  internalAsset = [(UARPAssetSubscriptionMobileAsset *)self internalAsset];
+  softwareUpdateAsset = [(UARPAssetSubscriptionMobileAsset *)self softwareUpdateAsset];
+  domain = [(UARPAssetSubscription *)self domain];
+  v19 = [NSString stringWithFormat:@"<%@: modelNumber=%@, hwFusing=%@ assetLocation=%@ internal/su=%u/%u domain=%@>", v8, identifier, hwFusing, v7, internalAsset & 1, softwareUpdateAsset & 1, domain];
 
   if (v12)
   {

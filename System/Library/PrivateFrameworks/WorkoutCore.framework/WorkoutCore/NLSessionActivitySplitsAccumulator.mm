@@ -1,187 +1,187 @@
 @interface NLSessionActivitySplitsAccumulator
-- (NLSessionActivitySplitsAccumulator)initWithBuilder:(id)a3 activityType:(id)a4 unit:(id)a5 distancePerUnit:(double)a6 measurementSystem:(int64_t)a7 isCustomSplit:(BOOL)a8 powerAccumulator:(id)a9;
+- (NLSessionActivitySplitsAccumulator)initWithBuilder:(id)builder activityType:(id)type unit:(id)unit distancePerUnit:(double)perUnit measurementSystem:(int64_t)system isCustomSplit:(BOOL)split powerAccumulator:(id)accumulator;
 - (NLWorkoutEventPersistenceDelegate)eventPersistenceDelegate;
 - (NSDate)splitStartDate;
-- (double)surplusTimeForLastSampleInSplit:(BOOL)a3 distanceSinceLastSplit:(double)a4;
-- (id)_updateGeneratingPartialSplits:(BOOL)a3;
-- (id)endDateForSplit:(BOOL)a3 distanceSinceLastSplit:(double)a4;
+- (double)surplusTimeForLastSampleInSplit:(BOOL)split distanceSinceLastSplit:(double)lastSplit;
+- (id)_updateGeneratingPartialSplits:(BOOL)splits;
+- (id)endDateForSplit:(BOOL)split distanceSinceLastSplit:(double)lastSplit;
 - (id)removeAllSplitObservers;
-- (void)_finishLastSplitWithActivity:(id)a3 elapsedTime:(double)a4;
-- (void)_generateSplitsEventsIncludingPartials:(BOOL)a3;
-- (void)addSplitObserver:(id)a3;
-- (void)recoverFrom:(id)a3;
-- (void)removeSplitObserver:(id)a3;
-- (void)stopAccumulatingWithActivity:(id)a3 elapsedTime:(double)a4;
-- (void)updateWithStatistics:(id)a3 elapsedTime:(double)a4;
+- (void)_finishLastSplitWithActivity:(id)activity elapsedTime:(double)time;
+- (void)_generateSplitsEventsIncludingPartials:(BOOL)partials;
+- (void)addSplitObserver:(id)observer;
+- (void)recoverFrom:(id)from;
+- (void)removeSplitObserver:(id)observer;
+- (void)stopAccumulatingWithActivity:(id)activity elapsedTime:(double)time;
+- (void)updateWithStatistics:(id)statistics elapsedTime:(double)time;
 @end
 
 @implementation NLSessionActivitySplitsAccumulator
 
-- (NLSessionActivitySplitsAccumulator)initWithBuilder:(id)a3 activityType:(id)a4 unit:(id)a5 distancePerUnit:(double)a6 measurementSystem:(int64_t)a7 isCustomSplit:(BOOL)a8 powerAccumulator:(id)a9
+- (NLSessionActivitySplitsAccumulator)initWithBuilder:(id)builder activityType:(id)type unit:(id)unit distancePerUnit:(double)perUnit measurementSystem:(int64_t)system isCustomSplit:(BOOL)split powerAccumulator:(id)accumulator
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, builder);
   v40 = 0;
-  objc_storeStrong(&v40, a4);
+  objc_storeStrong(&v40, type);
   v39 = 0;
-  objc_storeStrong(&v39, a5);
-  v38 = a6;
-  v37 = a7;
-  v36 = a8;
+  objc_storeStrong(&v39, unit);
+  perUnitCopy = perUnit;
+  systemCopy = system;
+  splitCopy = split;
   v35 = 0;
-  objc_storeStrong(&v35, a9);
-  v9 = v42;
-  v42 = 0;
+  objc_storeStrong(&v35, accumulator);
+  v9 = selfCopy;
+  selfCopy = 0;
   v34.receiver = v9;
   v34.super_class = NLSessionActivitySplitsAccumulator;
   v33 = [(NLSessionActivityBuilderAccumulator *)&v34 initWithBuilder:location[0]];
-  v42 = v33;
-  objc_storeStrong(&v42, v33);
+  selfCopy = v33;
+  objc_storeStrong(&selfCopy, v33);
   if (v33)
   {
     [v40 effectiveTypeIdentifier];
     v10 = _HKWorkoutDistanceTypeForActivityType();
-    expectedQuantityType = v42->_expectedQuantityType;
-    v42->_expectedQuantityType = v10;
+    expectedQuantityType = selfCopy->_expectedQuantityType;
+    selfCopy->_expectedQuantityType = v10;
     MEMORY[0x277D82BD8](expectedQuantityType);
-    objc_storeStrong(&v42->_unit, v39);
-    v26 = [MEMORY[0x277CCD7E8] quantityWithUnit:v39 doubleValue:v38];
-    v25 = [MEMORY[0x277CCDAB0] meterUnit];
+    objc_storeStrong(&selfCopy->_unit, v39);
+    v26 = [MEMORY[0x277CCD7E8] quantityWithUnit:v39 doubleValue:perUnitCopy];
+    meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
     [v26 doubleValueForUnit:?];
-    v42->_definedDistance = v12;
-    MEMORY[0x277D82BD8](v25);
-    v13 = [MEMORY[0x277CBEB18] array];
-    splitEvents = v42->_splitEvents;
-    v42->_splitEvents = v13;
-    v15 = [MEMORY[0x277CBEB18] array];
-    completedSplits = v42->_completedSplits;
-    v42->_completedSplits = v15;
+    selfCopy->_definedDistance = v12;
+    MEMORY[0x277D82BD8](meterUnit);
+    array = [MEMORY[0x277CBEB18] array];
+    splitEvents = selfCopy->_splitEvents;
+    selfCopy->_splitEvents = array;
+    array2 = [MEMORY[0x277CBEB18] array];
+    completedSplits = selfCopy->_completedSplits;
+    selfCopy->_completedSplits = array2;
     *&v17 = MEMORY[0x277D82BD8](completedSplits).n128_u64[0];
-    v42->_measurementSystem = v37;
-    v42->_isCustomSplit = v36;
-    v18 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
-    observers = v42->_observers;
-    v42->_observers = v18;
+    selfCopy->_measurementSystem = systemCopy;
+    selfCopy->_isCustomSplit = splitCopy;
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    observers = selfCopy->_observers;
+    selfCopy->_observers = weakObjectsHashTable;
     MEMORY[0x277D82BD8](observers);
     if (v35)
     {
       v20 = [WOAveragePowerAccumulator alloc];
       v21 = [(WOAveragePowerAccumulator *)v20 initWithPowerAccumulator:v35];
-      averagePowerAccumulator = v42->_averagePowerAccumulator;
-      v42->_averagePowerAccumulator = v21;
+      averagePowerAccumulator = selfCopy->_averagePowerAccumulator;
+      selfCopy->_averagePowerAccumulator = v21;
       MEMORY[0x277D82BD8](averagePowerAccumulator);
     }
   }
 
-  v24 = MEMORY[0x277D82BE0](v42);
+  v24 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v35, 0);
   objc_storeStrong(&v39, 0);
   objc_storeStrong(&v40, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v42, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v24;
 }
 
 - (NSDate)splitStartDate
 {
-  v4 = [(NSMutableArray *)self->_splitEvents lastObject];
-  v5 = [v4 dateInterval];
-  v6 = [v5 endDate];
+  lastObject = [(NSMutableArray *)self->_splitEvents lastObject];
+  dateInterval = [lastObject dateInterval];
+  endDate = [dateInterval endDate];
   v9 = 0;
   v7 = 0;
-  if (v6)
+  if (endDate)
   {
-    v2 = MEMORY[0x277D82BE0](v6);
+    v2 = MEMORY[0x277D82BE0](endDate);
   }
 
   else
   {
-    v10 = [(NLSessionActivityBuilderAccumulator *)self builder];
+    builder = [(NLSessionActivityBuilderAccumulator *)self builder];
     v9 = 1;
-    v8 = [(HKLiveWorkoutBuilder *)v10 nl_currentActivityStartDate];
+    nl_currentActivityStartDate = [(HKLiveWorkoutBuilder *)builder nl_currentActivityStartDate];
     v7 = 1;
-    v2 = MEMORY[0x277D82BE0](v8);
+    v2 = MEMORY[0x277D82BE0](nl_currentActivityStartDate);
   }
 
   v12 = v2;
   if (v7)
   {
-    MEMORY[0x277D82BD8](v8);
+    MEMORY[0x277D82BD8](nl_currentActivityStartDate);
   }
 
   if (v9)
   {
-    MEMORY[0x277D82BD8](v10);
+    MEMORY[0x277D82BD8](builder);
   }
 
-  MEMORY[0x277D82BD8](v6);
-  MEMORY[0x277D82BD8](v5);
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](endDate);
+  MEMORY[0x277D82BD8](dateInterval);
+  MEMORY[0x277D82BD8](lastObject);
 
   return v12;
 }
 
-- (id)endDateForSplit:(BOOL)a3 distanceSinceLastSplit:(double)a4
+- (id)endDateForSplit:(BOOL)split distanceSinceLastSplit:(double)lastSplit
 {
   v36 = *MEMORY[0x277D85DE8];
-  v33 = self;
+  selfCopy = self;
   v32 = a2;
-  v31 = a3;
-  v30 = a4;
-  if (a3)
+  splitCopy = split;
+  lastSplitCopy = lastSplit;
+  if (split)
   {
-    v29 = [(HKStatistics *)v33->_lastSeenStatistics endDate];
-    v18 = [(NLSessionActivityBuilderAccumulator *)v33 builder];
-    v28 = [(HKLiveWorkoutBuilder *)v18 endDate];
-    *&v4 = MEMORY[0x277D82BD8](v18).n128_u64[0];
-    if (v28 && ([v28 hk_isBeforeOrEqualToDate:{v29, v4}] & 1) != 0)
+    endDate = [(HKStatistics *)selfCopy->_lastSeenStatistics endDate];
+    builder = [(NLSessionActivityBuilderAccumulator *)selfCopy builder];
+    endDate2 = [(HKLiveWorkoutBuilder *)builder endDate];
+    *&v4 = MEMORY[0x277D82BD8](builder).n128_u64[0];
+    if (endDate2 && ([endDate2 hk_isBeforeOrEqualToDate:{endDate, v4}] & 1) != 0)
     {
       _HKInitializeLogging();
       location = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
       v26 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(location, OS_LOG_TYPE_DEFAULT))
       {
-        __os_log_helper_16_2_2_8_64_8_64(v35, v28, v29);
+        __os_log_helper_16_2_2_8_64_8_64(v35, endDate2, endDate);
         _os_log_impl(&dword_20AEA4000, location, v26, "Returning builder end date because it (%@) is before or equal to stats end date (%@)", v35, 0x16u);
       }
 
       objc_storeStrong(&location, 0);
-      v34 = MEMORY[0x277D82BE0](v28);
+      v34 = MEMORY[0x277D82BE0](endDate2);
       v25 = 1;
     }
 
     else
     {
-      v34 = MEMORY[0x277D82BE0](v29);
+      v34 = MEMORY[0x277D82BE0](endDate);
       v25 = 1;
     }
 
-    objc_storeStrong(&v28, 0);
-    objc_storeStrong(&v29, 0);
+    objc_storeStrong(&endDate2, 0);
+    objc_storeStrong(&endDate, 0);
   }
 
   else
   {
-    v24 = [(HKStatistics *)v33->_lastSeenStatistics mostRecentQuantity];
-    v23 = [(HKStatistics *)v33->_lastSeenStatistics mostRecentQuantityDateInterval];
+    mostRecentQuantity = [(HKStatistics *)selfCopy->_lastSeenStatistics mostRecentQuantity];
+    mostRecentQuantityDateInterval = [(HKStatistics *)selfCopy->_lastSeenStatistics mostRecentQuantityDateInterval];
     v11 = MEMORY[0x277CCD800];
-    expectedQuantityType = v33->_expectedQuantityType;
-    v10 = v24;
-    v13 = [(NSDateInterval *)v23 startDate];
-    v12 = [(NSDateInterval *)v23 endDate];
-    v22 = [v11 quantitySampleWithType:expectedQuantityType quantity:v10 startDate:v13 endDate:?];
-    MEMORY[0x277D82BD8](v12);
-    *&v5 = MEMORY[0x277D82BD8](v13).n128_u64[0];
+    expectedQuantityType = selfCopy->_expectedQuantityType;
+    v10 = mostRecentQuantity;
+    startDate = [(NSDateInterval *)mostRecentQuantityDateInterval startDate];
+    endDate3 = [(NSDateInterval *)mostRecentQuantityDateInterval endDate];
+    v22 = [v11 quantitySampleWithType:expectedQuantityType quantity:v10 startDate:startDate endDate:?];
+    MEMORY[0x277D82BD8](endDate3);
+    *&v5 = MEMORY[0x277D82BD8](startDate).n128_u64[0];
     v14 = MEMORY[0x277CCD7E8];
-    v15 = [MEMORY[0x277CCDAB0] meterUnit];
-    v21 = [v14 quantityWithUnit:v30 doubleValue:?];
-    *&v6 = MEMORY[0x277D82BD8](v15).n128_u64[0];
+    meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+    v21 = [v14 quantityWithUnit:lastSplitCopy doubleValue:?];
+    *&v6 = MEMORY[0x277D82BD8](meterUnit).n128_u64[0];
     v16 = MEMORY[0x277CCD7E8];
-    v17 = [MEMORY[0x277CCDAB0] meterUnit];
-    v20 = [v16 quantityWithUnit:v33->_definedDistance doubleValue:?];
-    MEMORY[0x277D82BD8](v17);
+    meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
+    v20 = [v16 quantityWithUnit:selfCopy->_definedDistance doubleValue:?];
+    MEMORY[0x277D82BD8](meterUnit2);
     v19 = FIThresholdDateInsideSample();
     v34 = MEMORY[0x277D82BE0](v19);
     v25 = 1;
@@ -189,8 +189,8 @@
     objc_storeStrong(&v20, 0);
     objc_storeStrong(&v21, 0);
     objc_storeStrong(&v22, 0);
-    objc_storeStrong(&v23, 0);
-    objc_storeStrong(&v24, 0);
+    objc_storeStrong(&mostRecentQuantityDateInterval, 0);
+    objc_storeStrong(&mostRecentQuantity, 0);
   }
 
   *MEMORY[0x277D85DE8];
@@ -199,60 +199,60 @@
   return v7;
 }
 
-- (double)surplusTimeForLastSampleInSplit:(BOOL)a3 distanceSinceLastSplit:(double)a4
+- (double)surplusTimeForLastSampleInSplit:(BOOL)split distanceSinceLastSplit:(double)lastSplit
 {
-  if (a3)
+  if (split)
   {
     return 0.0;
   }
 
-  v8 = [(HKStatistics *)self->_lastSeenStatistics mostRecentQuantity];
-  v7 = [MEMORY[0x277CCDAB0] meterUnit];
-  [(HKQuantity *)v8 doubleValueForUnit:?];
+  mostRecentQuantity = [(HKStatistics *)self->_lastSeenStatistics mostRecentQuantity];
+  meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+  [(HKQuantity *)mostRecentQuantity doubleValueForUnit:?];
   v9 = v4;
-  MEMORY[0x277D82BD8](v7);
-  MEMORY[0x277D82BD8](v8);
-  v12 = (v9 - (a4 - self->_definedDistance)) / v9;
-  v10 = [(HKStatistics *)self->_lastSeenStatistics mostRecentQuantityDateInterval];
-  [(NSDateInterval *)v10 duration];
+  MEMORY[0x277D82BD8](meterUnit);
+  MEMORY[0x277D82BD8](mostRecentQuantity);
+  v12 = (v9 - (lastSplit - self->_definedDistance)) / v9;
+  mostRecentQuantityDateInterval = [(HKStatistics *)self->_lastSeenStatistics mostRecentQuantityDateInterval];
+  [(NSDateInterval *)mostRecentQuantityDateInterval duration];
   v11 = v5;
-  MEMORY[0x277D82BD8](v10);
+  MEMORY[0x277D82BD8](mostRecentQuantityDateInterval);
   return v11 - v12 * v11;
 }
 
-- (id)_updateGeneratingPartialSplits:(BOOL)a3
+- (id)_updateGeneratingPartialSplits:(BOOL)splits
 {
   v91 = *MEMORY[0x277D85DE8];
-  v84 = self;
+  selfCopy = self;
   v83 = a2;
-  v82 = a3;
+  splitsCopy = splits;
   if (self->_lastSeenStatistics)
   {
-    v45 = [(HKStatistics *)v84->_lastSeenStatistics sumQuantity];
-    v44 = [MEMORY[0x277CCDAB0] meterUnit];
-    [(HKQuantity *)v45 doubleValueForUnit:?];
+    sumQuantity = [(HKStatistics *)selfCopy->_lastSeenStatistics sumQuantity];
+    meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
+    [(HKQuantity *)sumQuantity doubleValueForUnit:?];
     v46 = v3;
-    MEMORY[0x277D82BD8](v44);
-    MEMORY[0x277D82BD8](v45);
+    MEMORY[0x277D82BD8](meterUnit);
+    MEMORY[0x277D82BD8](sumQuantity);
     v78 = v46;
-    v77 = v46 - v84->_lastDistanceInMeters;
-    v76 = v84->_lastDistanceInMeters + v84->_definedDistance;
-    if (v84->_lastSeenElapsedTime > 2.22044605e-16 && v78 >= 2.22044605e-16)
+    v77 = v46 - selfCopy->_lastDistanceInMeters;
+    v76 = selfCopy->_lastDistanceInMeters + selfCopy->_definedDistance;
+    if (selfCopy->_lastSeenElapsedTime > 2.22044605e-16 && v78 >= 2.22044605e-16)
     {
-      if (v82)
+      if (splitsCopy)
       {
-        v43 = [(NSMutableArray *)v84->_splitEvents count]!= 0;
+        v43 = [(NSMutableArray *)selfCopy->_splitEvents count]!= 0;
       }
 
       else
       {
-        v43 = v77 >= v84->_definedDistance;
+        v43 = v77 >= selfCopy->_definedDistance;
       }
 
       v75 = v43;
       if (v43)
       {
-        v4 = v77 < v84->_definedDistance;
+        v4 = v77 < selfCopy->_definedDistance;
         v74 = v4;
         if (v4)
         {
@@ -261,7 +261,7 @@
 
         else
         {
-          definedDistance = v84->_definedDistance;
+          definedDistance = selfCopy->_definedDistance;
         }
 
         v73 = definedDistance;
@@ -279,21 +279,21 @@
 
         v69 = v41;
         v72 = v41;
-        [(NLSessionActivitySplitsAccumulator *)v84 surplusTimeForLastSampleInSplit:v74 distanceSinceLastSplit:v77];
+        [(NLSessionActivitySplitsAccumulator *)selfCopy surplusTimeForLastSampleInSplit:v74 distanceSinceLastSplit:v77];
         v68 = v5;
-        v67 = v84->_lastSeenElapsedTime - v84->_lastElapsedTime - v5;
-        v66 = [(NLSessionActivitySplitsAccumulator *)v84 endDateForSplit:v74 distanceSinceLastSplit:v77];
-        v65 = [(NLSessionActivitySplitsAccumulator *)v84 splitStartDate];
-        if (v65)
+        v67 = selfCopy->_lastSeenElapsedTime - selfCopy->_lastElapsedTime - v5;
+        v66 = [(NLSessionActivitySplitsAccumulator *)selfCopy endDateForSplit:v74 distanceSinceLastSplit:v77];
+        splitStartDate = [(NLSessionActivitySplitsAccumulator *)selfCopy splitStartDate];
+        if (splitStartDate)
         {
-          if ([v66 hk_isBeforeOrEqualToDate:v65])
+          if ([v66 hk_isBeforeOrEqualToDate:splitStartDate])
           {
             _HKInitializeLogging();
             v60 = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
             v59 = OS_LOG_TYPE_ERROR;
             if (os_log_type_enabled(v60, OS_LOG_TYPE_ERROR))
             {
-              __os_log_helper_16_2_2_8_64_8_64(v90, v65, v66);
+              __os_log_helper_16_2_2_8_64_8_64(v90, splitStartDate, v66);
               _os_log_error_impl(&dword_20AEA4000, v60, v59, "[workoutsplits] Split date interval is zero! startDate=%@ endDate=%@", v90, 0x16u);
             }
 
@@ -304,10 +304,10 @@
 
           else
           {
-            v58 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v65 endDate:v66];
-            v6 = [(NLSessionActivitySplitsAccumulator *)v84 isCustomSplit];
+            v58 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:splitStartDate endDate:v66];
+            isCustomSplit = [(NLSessionActivitySplitsAccumulator *)selfCopy isCustomSplit];
             v7 = 3;
-            if (!v6)
+            if (!isCustomSplit)
             {
               v7 = 1;
             }
@@ -317,16 +317,16 @@
             v38 = [MEMORY[0x277CCABB0] numberWithInteger:v7];
             v89[0] = v38;
             v88[1] = *MEMORY[0x277D0A768];
-            v37 = [MEMORY[0x277CCABB0] numberWithInteger:v84->_measurementSystem];
+            v37 = [MEMORY[0x277CCABB0] numberWithInteger:selfCopy->_measurementSystem];
             v89[1] = v37;
             v88[2] = *MEMORY[0x277D0A760];
             v26 = MEMORY[0x277CCD7E8];
-            v36 = [MEMORY[0x277CCDAB0] meterUnit];
+            meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
             v35 = [v26 quantityWithUnit:v73 doubleValue:?];
             v89[2] = v35;
             v88[3] = *MEMORY[0x277D0A770];
             v27 = MEMORY[0x277CCD7E8];
-            v34 = [MEMORY[0x277CCDAB0] meterUnit];
+            meterUnit3 = [MEMORY[0x277CCDAB0] meterUnit];
             v33 = [v27 quantityWithUnit:v72 doubleValue:?];
             v89[3] = v33;
             v88[4] = *MEMORY[0x277D0A708];
@@ -334,26 +334,26 @@
             v89[4] = v32;
             v88[5] = *MEMORY[0x277D0A750];
             v28 = MEMORY[0x277CCD7E8];
-            v31 = [MEMORY[0x277CCDAB0] secondUnit];
+            secondUnit = [MEMORY[0x277CCDAB0] secondUnit];
             v30 = [v28 quantityWithUnit:v67 doubleValue:?];
             v89[5] = v30;
             v29 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v89 forKeys:v88 count:6];
             v57[0] = [v29 mutableCopy];
             MEMORY[0x277D82BD8](v29);
             MEMORY[0x277D82BD8](v30);
-            MEMORY[0x277D82BD8](v31);
+            MEMORY[0x277D82BD8](secondUnit);
             MEMORY[0x277D82BD8](v32);
             MEMORY[0x277D82BD8](v33);
-            MEMORY[0x277D82BD8](v34);
+            MEMORY[0x277D82BD8](meterUnit3);
             MEMORY[0x277D82BD8](v35);
-            MEMORY[0x277D82BD8](v36);
+            MEMORY[0x277D82BD8](meterUnit2);
             MEMORY[0x277D82BD8](v37);
             *&v8 = MEMORY[0x277D82BD8](v38).n128_u64[0];
-            if (v84->_averagePowerAccumulator)
+            if (selfCopy->_averagePowerAccumulator)
             {
-              v56 = [(WOAveragePowerAccumulator *)v84->_averagePowerAccumulator averagePower];
-              [v57[0] setObject:v56 forKeyedSubscript:*MEMORY[0x277D0A758]];
-              objc_storeStrong(&v56, 0);
+              averagePower = [(WOAveragePowerAccumulator *)selfCopy->_averagePowerAccumulator averagePower];
+              [v57[0] setObject:averagePower forKeyedSubscript:*MEMORY[0x277D0A758]];
+              objc_storeStrong(&averagePower, 0);
             }
 
             v55 = [MEMORY[0x277CCDC68] workoutEventWithType:7 dateInterval:v58 metadata:{v57[0], v8}];
@@ -364,8 +364,8 @@
             {
               v20 = v54;
               v21 = v53;
-              v25 = [v55 metadata];
-              v24 = [v25 objectForKeyedSubscript:*MEMORY[0x277D0A768]];
+              metadata = [v55 metadata];
+              v24 = [metadata objectForKeyedSubscript:*MEMORY[0x277D0A768]];
               v23 = MEMORY[0x20F2E8470]([v24 integerValue]);
               v19 = MEMORY[0x277D82BE0](v23);
               v52 = v19;
@@ -375,20 +375,20 @@
               MEMORY[0x277D82BD8](v22);
               MEMORY[0x277D82BD8](v23);
               MEMORY[0x277D82BD8](v24);
-              MEMORY[0x277D82BD8](v25);
+              MEMORY[0x277D82BD8](metadata);
               objc_storeStrong(&v52, 0);
             }
 
             objc_storeStrong(&v54, 0);
-            [(NSMutableArray *)v84->_splitEvents addObject:v55];
+            [(NSMutableArray *)selfCopy->_splitEvents addObject:v55];
             v9 = objc_alloc(MEMORY[0x277D0A830]);
             v51 = [v9 initWithEvent:v55];
-            [(NSMutableArray *)v84->_completedSplits addObject:v51];
-            v84->_lastDistanceInMeters = v84->_lastDistanceInMeters + v84->_definedDistance;
-            v84->_lastElapsedTime = v84->_lastElapsedTime + v67;
-            [(WOAveragePowerAccumulator *)v84->_averagePowerAccumulator resetWith:v66];
+            [(NSMutableArray *)selfCopy->_completedSplits addObject:v51];
+            selfCopy->_lastDistanceInMeters = selfCopy->_lastDistanceInMeters + selfCopy->_definedDistance;
+            selfCopy->_lastElapsedTime = selfCopy->_lastElapsedTime + v67;
+            [(WOAveragePowerAccumulator *)selfCopy->_averagePowerAccumulator resetWith:v66];
             memset(__b, 0, sizeof(__b));
-            obj = MEMORY[0x277D82BE0](v84->_observers);
+            obj = MEMORY[0x277D82BE0](selfCopy->_observers);
             v18 = [obj countByEnumeratingWithState:__b objects:v86 count:16];
             if (v18)
             {
@@ -404,7 +404,7 @@
                 }
 
                 v50 = *(__b[1] + 8 * v15);
-                [v50 splitComplete:v51 currentSplitEvents:v84->_splitEvents];
+                [v50 splitComplete:v51 currentSplitEvents:selfCopy->_splitEvents];
                 ++v15;
                 if (v13 + 1 >= v16)
                 {
@@ -419,7 +419,7 @@
             }
 
             *&v10 = MEMORY[0x277D82BD8](obj).n128_u64[0];
-            [(NLSessionActivityBuilderAccumulator *)v84 update];
+            [(NLSessionActivityBuilderAccumulator *)selfCopy update];
             v85 = MEMORY[0x277D82BE0](v55);
             v61 = 1;
             objc_storeStrong(&v51, 0);
@@ -447,7 +447,7 @@
           v61 = 1;
         }
 
-        objc_storeStrong(&v65, 0);
+        objc_storeStrong(&splitStartDate, 0);
         objc_storeStrong(&v66, 0);
       }
 
@@ -486,17 +486,17 @@
   return v11;
 }
 
-- (void)_generateSplitsEventsIncludingPartials:(BOOL)a3
+- (void)_generateSplitsEventsIncludingPartials:(BOOL)partials
 {
   v16 = *MEMORY[0x277D85DE8];
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
-  v12 = a3;
-  v11 = [MEMORY[0x277CBEB18] array];
+  partialsCopy = partials;
+  array = [MEMORY[0x277CBEB18] array];
   location = 0;
   while (1)
   {
-    v8 = [(NLSessionActivitySplitsAccumulator *)v14 _updateGeneratingPartialSplits:v12];
+    v8 = [(NLSessionActivitySplitsAccumulator *)selfCopy _updateGeneratingPartialSplits:partialsCopy];
     v3 = location;
     location = v8;
     *&v4 = MEMORY[0x277D82BD8](v3).n128_u64[0];
@@ -505,7 +505,7 @@
       break;
     }
 
-    [v11 addObject:{location, v4}];
+    [array addObject:{location, v4}];
     _HKInitializeLogging();
     if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_INFO))
     {
@@ -513,7 +513,7 @@
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
       {
         log = oslog;
-        if (v12)
+        if (partialsCopy)
         {
           v5 = "yes";
         }
@@ -531,44 +531,44 @@
     }
   }
 
-  v6 = [(NLSessionActivitySplitsAccumulator *)v14 eventPersistenceDelegate];
-  [(NLWorkoutEventPersistenceDelegate *)v6 addWorkoutEvents:v11];
-  MEMORY[0x277D82BD8](v6);
+  eventPersistenceDelegate = [(NLSessionActivitySplitsAccumulator *)selfCopy eventPersistenceDelegate];
+  [(NLWorkoutEventPersistenceDelegate *)eventPersistenceDelegate addWorkoutEvents:array];
+  MEMORY[0x277D82BD8](eventPersistenceDelegate);
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v11, 0);
+  objc_storeStrong(&array, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)updateWithStatistics:(id)a3 elapsedTime:(double)a4
+- (void)updateWithStatistics:(id)statistics elapsedTime:(double)time
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [location[0] quantityType];
-  v6 = [v5 isEqual:v8->_expectedQuantityType];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(location, statistics);
+  quantityType = [location[0] quantityType];
+  v6 = [quantityType isEqual:selfCopy->_expectedQuantityType];
+  MEMORY[0x277D82BD8](quantityType);
   if (v6)
   {
-    objc_storeStrong(&v8->_lastSeenStatistics, location[0]);
-    v8->_lastSeenElapsedTime = a4;
-    [(NLSessionActivitySplitsAccumulator *)v8 _generateSplitsEventsIncludingPartials:0];
+    objc_storeStrong(&selfCopy->_lastSeenStatistics, location[0]);
+    selfCopy->_lastSeenElapsedTime = time;
+    [(NLSessionActivitySplitsAccumulator *)selfCopy _generateSplitsEventsIncludingPartials:0];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (void)_finishLastSplitWithActivity:(id)a3 elapsedTime:(double)a4
+- (void)_finishLastSplitWithActivity:(id)activity elapsedTime:(double)time
 {
   v17 = *MEMORY[0x277D85DE8];
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v13 = a4;
+  objc_storeStrong(location, activity);
+  timeCopy = time;
   if (location[0])
   {
-    v12 = [location[0] statisticsForType:v15->_expectedQuantityType];
+    v12 = [location[0] statisticsForType:selfCopy->_expectedQuantityType];
     if (v12)
     {
       _HKInitializeLogging();
@@ -585,8 +585,8 @@
         objc_storeStrong(&v11, 0);
       }
 
-      objc_storeStrong(&v15->_lastSeenStatistics, v12);
-      v15->_lastSeenElapsedTime = v13;
+      objc_storeStrong(&selfCopy->_lastSeenStatistics, v12);
+      selfCopy->_lastSeenElapsedTime = timeCopy;
     }
 
     else
@@ -608,77 +608,77 @@
     objc_storeStrong(&v12, 0);
   }
 
-  [(NLSessionActivitySplitsAccumulator *)v15 _generateSplitsEventsIncludingPartials:1, v4];
+  [(NLSessionActivitySplitsAccumulator *)selfCopy _generateSplitsEventsIncludingPartials:1, v4];
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
 
-- (void)stopAccumulatingWithActivity:(id)a3 elapsedTime:(double)a4
+- (void)stopAccumulatingWithActivity:(id)activity elapsedTime:(double)time
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = a4;
-  if ([(NLSessionActivityDataAccumulator *)v8 isAccumulating])
+  objc_storeStrong(location, activity);
+  timeCopy = time;
+  if ([(NLSessionActivityDataAccumulator *)selfCopy isAccumulating])
   {
-    [(NLSessionActivitySplitsAccumulator *)v8 _finishLastSplitWithActivity:location[0] elapsedTime:v6];
+    [(NLSessionActivitySplitsAccumulator *)selfCopy _finishLastSplitWithActivity:location[0] elapsedTime:timeCopy];
   }
 
-  v5.receiver = v8;
+  v5.receiver = selfCopy;
   v5.super_class = NLSessionActivitySplitsAccumulator;
   [(NLSessionActivityDataAccumulator *)&v5 stopAccumulating];
   objc_storeStrong(location, 0);
 }
 
-- (void)recoverFrom:(id)a3
+- (void)recoverFrom:(id)from
 {
   v65 = *MEMORY[0x277D85DE8];
-  v62 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if ([(NLSessionActivitySplitsAccumulator *)v62 isCustomSplit])
+  objc_storeStrong(location, from);
+  if ([(NLSessionActivitySplitsAccumulator *)selfCopy isCustomSplit])
   {
     v39 = MEMORY[0x20F2E82E0](location[0]);
     v3 = [v39 mutableCopy];
-    splitEvents = v62->_splitEvents;
-    v62->_splitEvents = v3;
+    splitEvents = selfCopy->_splitEvents;
+    selfCopy->_splitEvents = v3;
     MEMORY[0x277D82BD8](splitEvents);
     v5 = MEMORY[0x277D82BD8](v39).n128_u64[0];
   }
 
   else
   {
-    v38 = MEMORY[0x20F2E8440](location[0], v62->_measurementSystem);
+    v38 = MEMORY[0x20F2E8440](location[0], selfCopy->_measurementSystem);
     v6 = [v38 mutableCopy];
-    v7 = v62->_splitEvents;
-    v62->_splitEvents = v6;
+    v7 = selfCopy->_splitEvents;
+    selfCopy->_splitEvents = v6;
     MEMORY[0x277D82BD8](v7);
     v5 = MEMORY[0x277D82BD8](v38).n128_u64[0];
   }
 
-  [(NSMutableArray *)v62->_splitEvents sortUsingComparator:&__block_literal_global_14, *&v5];
-  v37 = [(NLSessionActivityBuilderAccumulator *)v62 builder];
-  v60 = [(HKLiveWorkoutBuilder *)v37 nl_currentActivityStartDate];
-  MEMORY[0x277D82BD8](v37);
-  if (v60)
+  [(NSMutableArray *)selfCopy->_splitEvents sortUsingComparator:&__block_literal_global_14, *&v5];
+  builder = [(NLSessionActivityBuilderAccumulator *)selfCopy builder];
+  nl_currentActivityStartDate = [(HKLiveWorkoutBuilder *)builder nl_currentActivityStartDate];
+  MEMORY[0x277D82BD8](builder);
+  if (nl_currentActivityStartDate)
   {
-    v30 = v62->_splitEvents;
+    v30 = selfCopy->_splitEvents;
     v50 = MEMORY[0x277D85DD0];
     v51 = -1073741824;
     v52 = 0;
     v53 = __50__NLSessionActivitySplitsAccumulator_recoverFrom___block_invoke_310;
     v54 = &unk_277D89458;
-    v55 = MEMORY[0x277D82BE0](v60);
+    v55 = MEMORY[0x277D82BE0](nl_currentActivityStartDate);
     [(NSMutableArray *)v30 hk_removeObjectsPassingTest:&v50];
     v31 = MEMORY[0x277CCD7E8];
-    v32 = [MEMORY[0x277CCDAB0] meterUnit];
+    meterUnit = [MEMORY[0x277CCDAB0] meterUnit];
     v49 = [v31 quantityWithUnit:? doubleValue:?];
-    MEMORY[0x277D82BD8](v32);
+    MEMORY[0x277D82BD8](meterUnit);
     v48 = 0.0;
     memset(__b, 0, sizeof(__b));
-    obj = MEMORY[0x277D82BE0](v62->_splitEvents);
+    obj = MEMORY[0x277D82BE0](selfCopy->_splitEvents);
     v34 = [obj countByEnumeratingWithState:__b objects:v64 count:16];
     if (v34)
     {
@@ -694,10 +694,10 @@
         }
 
         v47 = *(__b[1] + 8 * v28);
-        v45 = [v47 fiui_splitDistance];
-        if (v45)
+        fiui_splitDistance = [v47 fiui_splitDistance];
+        if (fiui_splitDistance)
         {
-          v8 = [v49 _quantityByAddingQuantity:v45];
+          v8 = [v49 _quantityByAddingQuantity:fiui_splitDistance];
           v9 = v49;
           v49 = v8;
           *&v10 = MEMORY[0x277D82BD8](v9).n128_u64[0];
@@ -705,20 +705,20 @@
           v44 = v11;
           v48 = v48 + v11;
           v23 = objc_alloc(MEMORY[0x277D0A830]);
-          v20 = v45;
-          v25 = [MEMORY[0x277CCDAB0] meterUnit];
+          v20 = fiui_splitDistance;
+          meterUnit2 = [MEMORY[0x277CCDAB0] meterUnit];
           [v20 doubleValueForUnit:?];
           v21 = v12;
           v22 = v44;
-          v24 = [v47 dateInterval];
+          dateInterval = [v47 dateInterval];
           v43 = [v23 initWithDistance:v21 duration:v22 dateInterval:?];
-          MEMORY[0x277D82BD8](v24);
-          *&v13 = MEMORY[0x277D82BD8](v25).n128_u64[0];
-          [(NSMutableArray *)v62->_completedSplits addObject:v43, v13];
+          MEMORY[0x277D82BD8](dateInterval);
+          *&v13 = MEMORY[0x277D82BD8](meterUnit2).n128_u64[0];
+          [(NSMutableArray *)selfCopy->_completedSplits addObject:v43, v13];
           objc_storeStrong(&v43, 0);
         }
 
-        objc_storeStrong(&v45, 0);
+        objc_storeStrong(&fiui_splitDistance, 0);
         ++v28;
         if (v26 + 1 >= v29)
         {
@@ -734,30 +734,30 @@
 
     *&v14 = MEMORY[0x277D82BD8](obj).n128_u64[0];
     v18 = v49;
-    v19 = [MEMORY[0x277CCDAB0] meterUnit];
+    meterUnit3 = [MEMORY[0x277CCDAB0] meterUnit];
     [v18 doubleValueForUnit:?];
-    v62->_lastDistanceInMeters = v15;
-    MEMORY[0x277D82BD8](v19);
-    v62->_lastElapsedTime = v48;
+    selfCopy->_lastDistanceInMeters = v15;
+    MEMORY[0x277D82BD8](meterUnit3);
+    selfCopy->_lastElapsedTime = v48;
     _HKInitializeLogging();
     oslog = MEMORY[0x277D82BE0](*MEMORY[0x277CCC330]);
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [(NSMutableArray *)v62->_splitEvents count];
+      v17 = [(NSMutableArray *)selfCopy->_splitEvents count];
       v40 = 0;
-      if ([(NLSessionActivitySplitsAccumulator *)v62 isCustomSplit])
+      if ([(NLSessionActivitySplitsAccumulator *)selfCopy isCustomSplit])
       {
         v16 = @"Custom";
       }
 
       else
       {
-        v41 = MEMORY[0x20F2E8470](v62->_measurementSystem);
+        v41 = MEMORY[0x20F2E8470](selfCopy->_measurementSystem);
         v40 = 1;
         v16 = v41;
       }
 
-      __os_log_helper_16_2_4_8_0_8_64_8_0_8_0(v63, v17, v16, *&v62->_lastDistanceInMeters, *&v62->_lastElapsedTime);
+      __os_log_helper_16_2_4_8_0_8_64_8_0_8_0(v63, v17, v16, *&selfCopy->_lastDistanceInMeters, *&selfCopy->_lastElapsedTime);
       _os_log_impl(&dword_20AEA4000, oslog, OS_LOG_TYPE_DEFAULT, "[workoutsplits] Recovered %ld %@ Splits with lastDistance=%f lastElapsedTime=%f", v63, 0x2Au);
       if (v40)
       {
@@ -788,7 +788,7 @@
     v56 = 1;
   }
 
-  objc_storeStrong(&v60, 0);
+  objc_storeStrong(&nl_currentActivityStartDate, 0);
   objc_storeStrong(location, 0);
   *MEMORY[0x277D85DE8];
 }
@@ -850,32 +850,32 @@ BOOL __50__NLSessionActivitySplitsAccumulator_recoverFrom___block_invoke_310(voi
   return v12;
 }
 
-- (void)addSplitObserver:(id)a3
+- (void)addSplitObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSHashTable *)v4->_observers addObject:location[0]];
+  objc_storeStrong(location, observer);
+  [(NSHashTable *)selfCopy->_observers addObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)removeSplitObserver:(id)a3
+- (void)removeSplitObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(NSHashTable *)v4->_observers removeObject:location[0]];
+  objc_storeStrong(location, observer);
+  [(NSHashTable *)selfCopy->_observers removeObject:location[0]];
   objc_storeStrong(location, 0);
 }
 
 - (id)removeAllSplitObservers
 {
-  v5 = self;
+  selfCopy = self;
   v4[1] = a2;
   v4[0] = [(NSHashTable *)self->_observers allObjects];
-  [(NSHashTable *)v5->_observers removeAllObjects];
+  [(NSHashTable *)selfCopy->_observers removeAllObjects];
   v3 = MEMORY[0x277D82BE0](v4[0]);
   objc_storeStrong(v4, 0);
 

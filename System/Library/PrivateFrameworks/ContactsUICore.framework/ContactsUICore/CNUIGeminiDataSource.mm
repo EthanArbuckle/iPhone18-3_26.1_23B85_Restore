@@ -1,11 +1,11 @@
 @interface CNUIGeminiDataSource
-- (CNUIGeminiDataSource)initWithGeminiManager:(id)a3;
+- (CNUIGeminiDataSource)initWithGeminiManager:(id)manager;
 - (CNUIGeminiDataSourceDelegate)delegate;
 - (NSString)channelIdentifier;
-- (void)applicationWillEnterForeground:(id)a3;
-- (void)channelsDidChangeForGeminiManager:(id)a3;
+- (void)applicationWillEnterForeground:(id)foreground;
+- (void)channelsDidChangeForGeminiManager:(id)manager;
 - (void)resetDataSource;
-- (void)setContact:(id)a3;
+- (void)setContact:(id)contact;
 @end
 
 @implementation CNUIGeminiDataSource
@@ -17,28 +17,28 @@
   return WeakRetained;
 }
 
-- (CNUIGeminiDataSource)initWithGeminiManager:(id)a3
+- (CNUIGeminiDataSource)initWithGeminiManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v13.receiver = self;
   v13.super_class = CNUIGeminiDataSource;
   v6 = [(CNUIGeminiDataSource *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_geminiManager, a3);
+    objc_storeStrong(&v6->_geminiManager, manager);
     v7->_substituteDanglingChannel = 0;
-    v8 = [MEMORY[0x1E69DC938] currentDevice];
-    v9 = [v8 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v9)
+    if (userInterfaceIdiom)
     {
       v7->_substituteDanglingChannel = 1;
     }
 
-    [v5 addDelegate:v7 queue:0];
-    v10 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v10 addObserver:v7 selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
+    [managerCopy addDelegate:v7 queue:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v7 selector:sel_applicationWillEnterForeground_ name:*MEMORY[0x1E69DDBC0] object:0];
 
     v11 = v7;
   }
@@ -55,66 +55,66 @@
   self->_geminiResult = 0;
 }
 
-- (void)setContact:(id)a3
+- (void)setContact:(id)contact
 {
-  v11 = a3;
-  v5 = [(CNContact *)self->_contact identifier];
-  v6 = [v11 identifier];
-  v7 = [v5 isEqualToString:v6];
+  contactCopy = contact;
+  identifier = [(CNContact *)self->_contact identifier];
+  identifier2 = [contactCopy identifier];
+  v7 = [identifier isEqualToString:identifier2];
 
   if ((v7 & 1) == 0)
   {
-    objc_storeStrong(&self->_contact, a3);
-    v8 = [(CNUIGeminiDataSource *)self geminiManager];
-    v9 = [v8 remoteGeminiResultForContact:v11 substituteDefaultForDangling:-[CNUIGeminiDataSource substituteDanglingChannel](self error:{"substituteDanglingChannel"), 0}];
+    objc_storeStrong(&self->_contact, contact);
+    geminiManager = [(CNUIGeminiDataSource *)self geminiManager];
+    v9 = [geminiManager remoteGeminiResultForContact:contactCopy substituteDefaultForDangling:-[CNUIGeminiDataSource substituteDanglingChannel](self error:{"substituteDanglingChannel"), 0}];
     [(CNUIGeminiDataSource *)self setGeminiResult:v9];
 
-    v10 = [(CNUIGeminiDataSource *)self delegate];
-    [v10 geminiDataSourceDidUpdate:self];
+    delegate = [(CNUIGeminiDataSource *)self delegate];
+    [delegate geminiDataSourceDidUpdate:self];
   }
 }
 
-- (void)applicationWillEnterForeground:(id)a3
+- (void)applicationWillEnterForeground:(id)foreground
 {
   v4 = *MEMORY[0x1E6996568];
-  v5 = [(CNUIGeminiDataSource *)self contact];
-  v6 = [v5 preferredChannel];
-  LODWORD(v4) = (*(v4 + 16))(v4, v6);
+  contact = [(CNUIGeminiDataSource *)self contact];
+  preferredChannel = [contact preferredChannel];
+  LODWORD(v4) = (*(v4 + 16))(v4, preferredChannel);
 
   if (v4)
   {
-    v7 = [(CNUIGeminiDataSource *)self geminiManager];
-    [(CNUIGeminiDataSource *)self channelsDidChangeForGeminiManager:v7];
+    geminiManager = [(CNUIGeminiDataSource *)self geminiManager];
+    [(CNUIGeminiDataSource *)self channelsDidChangeForGeminiManager:geminiManager];
   }
 }
 
 - (NSString)channelIdentifier
 {
-  v3 = [(CNUIGeminiDataSource *)self selectedChannelIdentifier];
-  if (v3 && (v4 = v3, -[CNUIGeminiDataSource selectedChannelIdentifier](self, "selectedChannelIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
+  selectedChannelIdentifier = [(CNUIGeminiDataSource *)self selectedChannelIdentifier];
+  if (selectedChannelIdentifier && (v4 = selectedChannelIdentifier, -[CNUIGeminiDataSource selectedChannelIdentifier](self, "selectedChannelIdentifier"), v5 = objc_claimAutoreleasedReturnValue(), v6 = [v5 length], v5, v4, v6))
   {
-    v7 = [(CNUIGeminiDataSource *)self selectedChannelIdentifier];
+    selectedChannelIdentifier2 = [(CNUIGeminiDataSource *)self selectedChannelIdentifier];
   }
 
   else
   {
-    v8 = [(CNUIGeminiDataSource *)self geminiResult];
-    v9 = [v8 channel];
-    v7 = [v9 channelIdentifier];
+    geminiResult = [(CNUIGeminiDataSource *)self geminiResult];
+    channel = [geminiResult channel];
+    selectedChannelIdentifier2 = [channel channelIdentifier];
   }
 
-  return v7;
+  return selectedChannelIdentifier2;
 }
 
-- (void)channelsDidChangeForGeminiManager:(id)a3
+- (void)channelsDidChangeForGeminiManager:(id)manager
 {
-  v4 = [(CNUIGeminiDataSource *)self geminiManager];
-  v5 = [(CNUIGeminiDataSource *)self contact];
-  v6 = [v4 remoteGeminiResultForContact:v5 substituteDefaultForDangling:-[CNUIGeminiDataSource substituteDanglingChannel](self error:{"substituteDanglingChannel"), 0}];
+  geminiManager = [(CNUIGeminiDataSource *)self geminiManager];
+  contact = [(CNUIGeminiDataSource *)self contact];
+  v6 = [geminiManager remoteGeminiResultForContact:contact substituteDefaultForDangling:-[CNUIGeminiDataSource substituteDanglingChannel](self error:{"substituteDanglingChannel"), 0}];
   [(CNUIGeminiDataSource *)self setGeminiResult:v6];
 
-  v7 = [(CNUIGeminiDataSource *)self delegate];
-  [v7 geminiDataSourceDidUpdate:self];
+  delegate = [(CNUIGeminiDataSource *)self delegate];
+  [delegate geminiDataSourceDidUpdate:self];
 }
 
 @end

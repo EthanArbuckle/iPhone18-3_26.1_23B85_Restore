@@ -1,12 +1,12 @@
 @interface AddPregnancyFeedItemGenerator
-- (void)pregnancyModelDidUpdate:(id)a3;
+- (void)pregnancyModelDidUpdate:(id)update;
 @end
 
 @implementation AddPregnancyFeedItemGenerator
 
-- (void)pregnancyModelDidUpdate:(id)a3
+- (void)pregnancyModelDidUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
 
   sub_29E2C10C4();
 }

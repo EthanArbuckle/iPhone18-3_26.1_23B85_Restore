@@ -1,47 +1,47 @@
 @interface _UIWindowAnimationController
-+ (_UIWindowAnimationController)animationControllerWithWindow:(id)a3;
-- (_UIWindowAnimationController)initWithWindow:(id)a3;
-- (void)_performCrossfadeAnimationWithContext:(id)a3 windowGeometryUpdatingBlock:(id)a4;
-- (void)_performLayoutAnimationWithContext:(id)a3 windowGeometryUpdatingBlock:(id)a4;
-- (void)animateTransition:(id)a3;
++ (_UIWindowAnimationController)animationControllerWithWindow:(id)window;
+- (_UIWindowAnimationController)initWithWindow:(id)window;
+- (void)_performCrossfadeAnimationWithContext:(id)context windowGeometryUpdatingBlock:(id)block;
+- (void)_performLayoutAnimationWithContext:(id)context windowGeometryUpdatingBlock:(id)block;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation _UIWindowAnimationController
 
-+ (_UIWindowAnimationController)animationControllerWithWindow:(id)a3
++ (_UIWindowAnimationController)animationControllerWithWindow:(id)window
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithWindow:v3];
+  windowCopy = window;
+  v4 = [objc_alloc(objc_opt_class()) initWithWindow:windowCopy];
 
   return v4;
 }
 
-- (_UIWindowAnimationController)initWithWindow:(id)a3
+- (_UIWindowAnimationController)initWithWindow:(id)window
 {
-  v4 = a3;
+  windowCopy = window;
   v8.receiver = self;
   v8.super_class = _UIWindowAnimationController;
   v5 = [(_UIWindowAnimationController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(_UIWindowAnimationController *)v5 setWindow:v4];
-    [v4 _setAnimationController:v6];
+    [(_UIWindowAnimationController *)v5 setWindow:windowCopy];
+    [windowCopy _setAnimationController:v6];
   }
 
   return v6;
 }
 
-- (void)_performCrossfadeAnimationWithContext:(id)a3 windowGeometryUpdatingBlock:(id)a4
+- (void)_performCrossfadeAnimationWithContext:(id)context windowGeometryUpdatingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 containerView];
+  contextCopy = context;
+  blockCopy = block;
+  containerView = [contextCopy containerView];
   v9 = [UIWindow alloc];
-  [v8 frame];
+  [containerView frame];
   v10 = [(UIWindow *)v9 initWithFrame:?];
   [v10 setHidden:0];
-  [v8 level];
+  [containerView level];
   [v10 setLevel:v11 + 1.0];
   v12 = objc_alloc_init(UIViewController);
   if (!_UIAppUseModernRotationAndPresentationBehaviors())
@@ -53,7 +53,7 @@
   objc_storeWeak((v10 + 440), v12);
   [v10 _updateTransformLayer];
   v13 = *(v10 + 536);
-  v14 = v8[67];
+  v14 = containerView[67];
   if (v14)
   {
     [v14 affineTransform];
@@ -67,49 +67,49 @@
   }
 
   [v13 setAffineTransform:&v34];
-  [v8 frame];
+  [containerView frame];
   [v10 setFrame:?];
-  v15 = [v8 snapshotView];
-  [v15 setAutoresizingMask:18];
-  v16 = [(UIViewController *)v12 view];
-  [v16 addSubview:v15];
+  snapshotView = [containerView snapshotView];
+  [snapshotView setAutoresizingMask:18];
+  view = [(UIViewController *)v12 view];
+  [view addSubview:snapshotView];
 
-  v7[2](v7);
-  [v6 __runAlongsideAnimations];
+  blockCopy[2](blockCopy);
+  [contextCopy __runAlongsideAnimations];
   v35 = 0u;
   v36 = 0u;
   v34 = 0u;
-  [v8 transform];
+  [containerView transform];
   CGAffineTransformMakeScale(&v33, 0.0, 0.0);
-  [v8 setTransform:&v33];
+  [containerView setTransform:&v33];
   v17 = UIApp;
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __98___UIWindowAnimationController__performCrossfadeAnimationWithContext_windowGeometryUpdatingBlock___block_invoke;
   v23[3] = &unk_1E7104C80;
-  v24 = v8;
-  v25 = v15;
+  v24 = containerView;
+  v25 = snapshotView;
   v26 = v12;
-  v27 = self;
-  v28 = v6;
+  selfCopy = self;
+  v28 = contextCopy;
   v29 = v10;
   v30 = v34;
   v31 = v35;
   v32 = v36;
   v18 = v10;
-  v19 = v6;
+  v19 = contextCopy;
   v20 = v12;
-  v21 = v15;
-  v22 = v8;
+  v21 = snapshotView;
+  v22 = containerView;
   [v17 _performBlockAfterCATransactionCommits:v23];
 }
 
-- (void)_performLayoutAnimationWithContext:(id)a3 windowGeometryUpdatingBlock:(id)a4
+- (void)_performLayoutAnimationWithContext:(id)context windowGeometryUpdatingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
-  v9 = [v8 containerView];
+  contextCopy = context;
+  blockCopy = block;
+  v8 = contextCopy;
+  containerView = [v8 containerView];
   [(_UIWindowAnimationController *)self transitionDuration:v8];
   v11 = v10;
   v12 = [v8 _completionCurve] << 16;
@@ -117,7 +117,7 @@
   v19[1] = 3221225472;
   v19[2] = __95___UIWindowAnimationController__performLayoutAnimationWithContext_windowGeometryUpdatingBlock___block_invoke;
   v19[3] = &unk_1E70F4A50;
-  v21 = v7;
+  v21 = blockCopy;
   v13 = v8;
   v20 = v13;
   v16[0] = MEMORY[0x1E69E9820];
@@ -125,29 +125,29 @@
   v16[2] = __95___UIWindowAnimationController__performLayoutAnimationWithContext_windowGeometryUpdatingBlock___block_invoke_2;
   v16[3] = &unk_1E70F3C60;
   v17 = v13;
-  v18 = v9;
-  v14 = v9;
-  v15 = v7;
+  v18 = containerView;
+  v14 = containerView;
+  v15 = blockCopy;
   [UIView animateWithDuration:v12 delay:v19 options:v16 animations:v11 completion:0.0];
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:@"UITransitionContextToViewController"];
-  [v4 finalFrameForViewController:v5];
+  transitionCopy = transition;
+  v5 = [transitionCopy viewControllerForKey:@"UITransitionContextToViewController"];
+  [transitionCopy finalFrameForViewController:v5];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v4 containerView];
-  if ([v4 isAnimated])
+  containerView = [transitionCopy containerView];
+  if ([transitionCopy isAnimated])
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __50___UIWindowAnimationController_animateTransition___block_invoke;
     aBlock[3] = &unk_1E70F3B20;
-    v17 = v14;
+    v17 = containerView;
     v18 = v7;
     v19 = v9;
     v20 = v11;
@@ -155,24 +155,24 @@
     v15 = _Block_copy(aBlock);
     if ([(_UIWindowAnimationController *)self shouldCrossfade])
     {
-      [(_UIWindowAnimationController *)self _performCrossfadeAnimationWithContext:v4 windowGeometryUpdatingBlock:v15];
+      [(_UIWindowAnimationController *)self _performCrossfadeAnimationWithContext:transitionCopy windowGeometryUpdatingBlock:v15];
     }
 
     else
     {
-      [(_UIWindowAnimationController *)self _performLayoutAnimationWithContext:v4 windowGeometryUpdatingBlock:v15];
+      [(_UIWindowAnimationController *)self _performLayoutAnimationWithContext:transitionCopy windowGeometryUpdatingBlock:v15];
     }
 
-    [v4 _setTransitionIsInFlight:1];
+    [transitionCopy _setTransitionIsInFlight:1];
   }
 
   else
   {
-    [v14 setFrame:{v7, v9, v11, v13}];
-    [v4 __runAlongsideAnimations];
-    [v4 completeTransition:1];
-    [v4 _setAnimator:0];
-    [v14 _setAnimationController:0];
+    [containerView setFrame:{v7, v9, v11, v13}];
+    [transitionCopy __runAlongsideAnimations];
+    [transitionCopy completeTransition:1];
+    [transitionCopy _setAnimator:0];
+    [containerView _setAnimationController:0];
   }
 }
 

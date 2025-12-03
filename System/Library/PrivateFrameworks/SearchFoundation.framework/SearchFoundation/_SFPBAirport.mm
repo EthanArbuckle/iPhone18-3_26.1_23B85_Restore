@@ -1,121 +1,121 @@
 @interface _SFPBAirport
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBAirport)initWithDictionary:(id)a3;
-- (_SFPBAirport)initWithFacade:(id)a3;
-- (_SFPBAirport)initWithJSON:(id)a3;
+- (_SFPBAirport)initWithDictionary:(id)dictionary;
+- (_SFPBAirport)initWithFacade:(id)facade;
+- (_SFPBAirport)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setCity:(id)a3;
-- (void)setCode:(id)a3;
-- (void)setCountry:(id)a3;
-- (void)setCountryCode:(id)a3;
-- (void)setDistrict:(id)a3;
-- (void)setName:(id)a3;
-- (void)setPostalCode:(id)a3;
-- (void)setState:(id)a3;
-- (void)setStreet:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCity:(id)city;
+- (void)setCode:(id)code;
+- (void)setCountry:(id)country;
+- (void)setCountryCode:(id)code;
+- (void)setDistrict:(id)district;
+- (void)setName:(id)name;
+- (void)setPostalCode:(id)code;
+- (void)setState:(id)state;
+- (void)setStreet:(id)street;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBAirport
 
-- (_SFPBAirport)initWithFacade:(id)a3
+- (_SFPBAirport)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBAirport *)self init];
   if (v5)
   {
-    v6 = [v4 code];
+    code = [facadeCopy code];
 
-    if (v6)
+    if (code)
     {
-      v7 = [v4 code];
-      [(_SFPBAirport *)v5 setCode:v7];
+      code2 = [facadeCopy code];
+      [(_SFPBAirport *)v5 setCode:code2];
     }
 
-    v8 = [v4 timezone];
+    timezone = [facadeCopy timezone];
 
-    if (v8)
+    if (timezone)
     {
       v9 = [_SFPBTimeZone alloc];
-      v10 = [v4 timezone];
-      v11 = [(_SFPBTimeZone *)v9 initWithNSTimeZone:v10];
+      timezone2 = [facadeCopy timezone];
+      v11 = [(_SFPBTimeZone *)v9 initWithNSTimeZone:timezone2];
       [(_SFPBAirport *)v5 setTimezone:v11];
     }
 
-    v12 = [v4 location];
+    location = [facadeCopy location];
 
-    if (v12)
+    if (location)
     {
       v13 = [_SFPBLatLng alloc];
-      v14 = [v4 location];
-      v15 = [(_SFPBLatLng *)v13 initWithFacade:v14];
+      location2 = [facadeCopy location];
+      v15 = [(_SFPBLatLng *)v13 initWithFacade:location2];
       [(_SFPBAirport *)v5 setLocation:v15];
     }
 
-    v16 = [v4 city];
+    city = [facadeCopy city];
 
-    if (v16)
+    if (city)
     {
-      v17 = [v4 city];
-      [(_SFPBAirport *)v5 setCity:v17];
+      city2 = [facadeCopy city];
+      [(_SFPBAirport *)v5 setCity:city2];
     }
 
-    v18 = [v4 street];
+    street = [facadeCopy street];
 
-    if (v18)
+    if (street)
     {
-      v19 = [v4 street];
-      [(_SFPBAirport *)v5 setStreet:v19];
+      street2 = [facadeCopy street];
+      [(_SFPBAirport *)v5 setStreet:street2];
     }
 
-    v20 = [v4 district];
+    district = [facadeCopy district];
 
-    if (v20)
+    if (district)
     {
-      v21 = [v4 district];
-      [(_SFPBAirport *)v5 setDistrict:v21];
+      district2 = [facadeCopy district];
+      [(_SFPBAirport *)v5 setDistrict:district2];
     }
 
-    v22 = [v4 state];
+    state = [facadeCopy state];
 
-    if (v22)
+    if (state)
     {
-      v23 = [v4 state];
-      [(_SFPBAirport *)v5 setState:v23];
+      state2 = [facadeCopy state];
+      [(_SFPBAirport *)v5 setState:state2];
     }
 
-    v24 = [v4 postalCode];
+    postalCode = [facadeCopy postalCode];
 
-    if (v24)
+    if (postalCode)
     {
-      v25 = [v4 postalCode];
-      [(_SFPBAirport *)v5 setPostalCode:v25];
+      postalCode2 = [facadeCopy postalCode];
+      [(_SFPBAirport *)v5 setPostalCode:postalCode2];
     }
 
-    v26 = [v4 countryCode];
+    countryCode = [facadeCopy countryCode];
 
-    if (v26)
+    if (countryCode)
     {
-      v27 = [v4 countryCode];
-      [(_SFPBAirport *)v5 setCountryCode:v27];
+      countryCode2 = [facadeCopy countryCode];
+      [(_SFPBAirport *)v5 setCountryCode:countryCode2];
     }
 
-    v28 = [v4 country];
+    country = [facadeCopy country];
 
-    if (v28)
+    if (country)
     {
-      v29 = [v4 country];
-      [(_SFPBAirport *)v5 setCountry:v29];
+      country2 = [facadeCopy country];
+      [(_SFPBAirport *)v5 setCountry:country2];
     }
 
-    v30 = [v4 name];
+    name = [facadeCopy name];
 
-    if (v30)
+    if (name)
     {
-      v31 = [v4 name];
-      [(_SFPBAirport *)v5 setName:v31];
+      name2 = [facadeCopy name];
+      [(_SFPBAirport *)v5 setName:name2];
     }
 
     v32 = v5;
@@ -124,15 +124,15 @@
   return v5;
 }
 
-- (_SFPBAirport)initWithDictionary:(id)a3
+- (_SFPBAirport)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v34.receiver = self;
   v34.super_class = _SFPBAirport;
   v5 = [(_SFPBAirport *)&v34 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"code"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"code"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -141,7 +141,7 @@
     }
 
     v33 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"timezone"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"timezone"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -149,7 +149,7 @@
       [(_SFPBAirport *)v5 setTimezone:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"location"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"location"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -158,7 +158,7 @@
     }
 
     v31 = v10;
-    v12 = [v4 objectForKeyedSubscript:@"city"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"city"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -166,7 +166,7 @@
       [(_SFPBAirport *)v5 setCity:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"street"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"street"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -174,7 +174,7 @@
       [(_SFPBAirport *)v5 setStreet:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"district"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"district"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -182,7 +182,7 @@
       [(_SFPBAirport *)v5 setDistrict:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"state"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"state"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -190,7 +190,7 @@
       [(_SFPBAirport *)v5 setState:v19];
     }
 
-    v20 = [v4 objectForKeyedSubscript:{@"postalCode", v12}];
+    v20 = [dictionaryCopy objectForKeyedSubscript:{@"postalCode", v12}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -199,7 +199,7 @@
     }
 
     v32 = v8;
-    v22 = [v4 objectForKeyedSubscript:@"countryCode"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"countryCode"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -207,7 +207,7 @@
       [(_SFPBAirport *)v5 setCountryCode:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"country"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"country"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -215,7 +215,7 @@
       [(_SFPBAirport *)v5 setCountry:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"name"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"name"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -229,30 +229,30 @@
   return v5;
 }
 
-- (_SFPBAirport)initWithJSON:(id)a3
+- (_SFPBAirport)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBAirport *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBAirport *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBAirport *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -265,103 +265,103 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_city)
   {
-    v4 = [(_SFPBAirport *)self city];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"city"];
+    city = [(_SFPBAirport *)self city];
+    v5 = [city copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"city"];
   }
 
   if (self->_code)
   {
-    v6 = [(_SFPBAirport *)self code];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"code"];
+    code = [(_SFPBAirport *)self code];
+    v7 = [code copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"code"];
   }
 
   if (self->_country)
   {
-    v8 = [(_SFPBAirport *)self country];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"country"];
+    country = [(_SFPBAirport *)self country];
+    v9 = [country copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"country"];
   }
 
   if (self->_countryCode)
   {
-    v10 = [(_SFPBAirport *)self countryCode];
-    v11 = [v10 copy];
-    [v3 setObject:v11 forKeyedSubscript:@"countryCode"];
+    countryCode = [(_SFPBAirport *)self countryCode];
+    v11 = [countryCode copy];
+    [dictionary setObject:v11 forKeyedSubscript:@"countryCode"];
   }
 
   if (self->_district)
   {
-    v12 = [(_SFPBAirport *)self district];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"district"];
+    district = [(_SFPBAirport *)self district];
+    v13 = [district copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"district"];
   }
 
   if (self->_location)
   {
-    v14 = [(_SFPBAirport *)self location];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    location = [(_SFPBAirport *)self location];
+    dictionaryRepresentation = [location dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"location"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"location"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"location"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"location"];
     }
   }
 
   if (self->_name)
   {
-    v17 = [(_SFPBAirport *)self name];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"name"];
+    name = [(_SFPBAirport *)self name];
+    v18 = [name copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"name"];
   }
 
   if (self->_postalCode)
   {
-    v19 = [(_SFPBAirport *)self postalCode];
-    v20 = [v19 copy];
-    [v3 setObject:v20 forKeyedSubscript:@"postalCode"];
+    postalCode = [(_SFPBAirport *)self postalCode];
+    v20 = [postalCode copy];
+    [dictionary setObject:v20 forKeyedSubscript:@"postalCode"];
   }
 
   if (self->_state)
   {
-    v21 = [(_SFPBAirport *)self state];
-    v22 = [v21 copy];
-    [v3 setObject:v22 forKeyedSubscript:@"state"];
+    state = [(_SFPBAirport *)self state];
+    v22 = [state copy];
+    [dictionary setObject:v22 forKeyedSubscript:@"state"];
   }
 
   if (self->_street)
   {
-    v23 = [(_SFPBAirport *)self street];
-    v24 = [v23 copy];
-    [v3 setObject:v24 forKeyedSubscript:@"street"];
+    street = [(_SFPBAirport *)self street];
+    v24 = [street copy];
+    [dictionary setObject:v24 forKeyedSubscript:@"street"];
   }
 
   if (self->_timezone)
   {
-    v25 = [(_SFPBAirport *)self timezone];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    timezone = [(_SFPBAirport *)self timezone];
+    dictionaryRepresentation2 = [timezone dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"timezone"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"timezone"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"timezone"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"timezone"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -379,28 +379,28 @@
   return v9 ^ v12 ^ [(NSString *)self->_name hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_57;
   }
 
-  v5 = [(_SFPBAirport *)self code];
-  v6 = [v4 code];
-  if ((v5 != 0) == (v6 == 0))
+  code = [(_SFPBAirport *)self code];
+  code2 = [equalCopy code];
+  if ((code != 0) == (code2 == 0))
   {
     goto LABEL_56;
   }
 
-  v7 = [(_SFPBAirport *)self code];
-  if (v7)
+  code3 = [(_SFPBAirport *)self code];
+  if (code3)
   {
-    v8 = v7;
-    v9 = [(_SFPBAirport *)self code];
-    v10 = [v4 code];
-    v11 = [v9 isEqual:v10];
+    v8 = code3;
+    code4 = [(_SFPBAirport *)self code];
+    code5 = [equalCopy code];
+    v11 = [code4 isEqual:code5];
 
     if (!v11)
     {
@@ -412,20 +412,20 @@
   {
   }
 
-  v5 = [(_SFPBAirport *)self timezone];
-  v6 = [v4 timezone];
-  if ((v5 != 0) == (v6 == 0))
+  code = [(_SFPBAirport *)self timezone];
+  code2 = [equalCopy timezone];
+  if ((code != 0) == (code2 == 0))
   {
     goto LABEL_56;
   }
 
-  v12 = [(_SFPBAirport *)self timezone];
-  if (v12)
+  timezone = [(_SFPBAirport *)self timezone];
+  if (timezone)
   {
-    v13 = v12;
-    v14 = [(_SFPBAirport *)self timezone];
-    v15 = [v4 timezone];
-    v16 = [v14 isEqual:v15];
+    v13 = timezone;
+    timezone2 = [(_SFPBAirport *)self timezone];
+    timezone3 = [equalCopy timezone];
+    v16 = [timezone2 isEqual:timezone3];
 
     if (!v16)
     {
@@ -437,20 +437,20 @@
   {
   }
 
-  v5 = [(_SFPBAirport *)self location];
-  v6 = [v4 location];
-  if ((v5 != 0) == (v6 == 0))
+  code = [(_SFPBAirport *)self location];
+  code2 = [equalCopy location];
+  if ((code != 0) == (code2 == 0))
   {
     goto LABEL_56;
   }
 
-  v17 = [(_SFPBAirport *)self location];
-  if (v17)
+  location = [(_SFPBAirport *)self location];
+  if (location)
   {
-    v18 = v17;
-    v19 = [(_SFPBAirport *)self location];
-    v20 = [v4 location];
-    v21 = [v19 isEqual:v20];
+    v18 = location;
+    location2 = [(_SFPBAirport *)self location];
+    location3 = [equalCopy location];
+    v21 = [location2 isEqual:location3];
 
     if (!v21)
     {
@@ -462,20 +462,20 @@
   {
   }
 
-  v5 = [(_SFPBAirport *)self city];
-  v6 = [v4 city];
-  if ((v5 != 0) == (v6 == 0))
+  code = [(_SFPBAirport *)self city];
+  code2 = [equalCopy city];
+  if ((code != 0) == (code2 == 0))
   {
     goto LABEL_56;
   }
 
-  v22 = [(_SFPBAirport *)self city];
-  if (v22)
+  city = [(_SFPBAirport *)self city];
+  if (city)
   {
-    v23 = v22;
-    v24 = [(_SFPBAirport *)self city];
-    v25 = [v4 city];
-    v26 = [v24 isEqual:v25];
+    v23 = city;
+    city2 = [(_SFPBAirport *)self city];
+    city3 = [equalCopy city];
+    v26 = [city2 isEqual:city3];
 
     if (!v26)
     {
@@ -487,20 +487,20 @@
   {
   }
 
-  v5 = [(_SFPBAirport *)self street];
-  v6 = [v4 street];
-  if ((v5 != 0) == (v6 == 0))
+  code = [(_SFPBAirport *)self street];
+  code2 = [equalCopy street];
+  if ((code != 0) == (code2 == 0))
   {
     goto LABEL_56;
   }
 
-  v27 = [(_SFPBAirport *)self street];
-  if (v27)
+  street = [(_SFPBAirport *)self street];
+  if (street)
   {
-    v28 = v27;
-    v29 = [(_SFPBAirport *)self street];
-    v30 = [v4 street];
-    v31 = [v29 isEqual:v30];
+    v28 = street;
+    street2 = [(_SFPBAirport *)self street];
+    street3 = [equalCopy street];
+    v31 = [street2 isEqual:street3];
 
     if (!v31)
     {
@@ -512,20 +512,20 @@
   {
   }
 
-  v5 = [(_SFPBAirport *)self district];
-  v6 = [v4 district];
-  if ((v5 != 0) == (v6 == 0))
+  code = [(_SFPBAirport *)self district];
+  code2 = [equalCopy district];
+  if ((code != 0) == (code2 == 0))
   {
     goto LABEL_56;
   }
 
-  v32 = [(_SFPBAirport *)self district];
-  if (v32)
+  district = [(_SFPBAirport *)self district];
+  if (district)
   {
-    v33 = v32;
-    v34 = [(_SFPBAirport *)self district];
-    v35 = [v4 district];
-    v36 = [v34 isEqual:v35];
+    v33 = district;
+    district2 = [(_SFPBAirport *)self district];
+    district3 = [equalCopy district];
+    v36 = [district2 isEqual:district3];
 
     if (!v36)
     {
@@ -537,20 +537,20 @@
   {
   }
 
-  v5 = [(_SFPBAirport *)self state];
-  v6 = [v4 state];
-  if ((v5 != 0) == (v6 == 0))
+  code = [(_SFPBAirport *)self state];
+  code2 = [equalCopy state];
+  if ((code != 0) == (code2 == 0))
   {
     goto LABEL_56;
   }
 
-  v37 = [(_SFPBAirport *)self state];
-  if (v37)
+  state = [(_SFPBAirport *)self state];
+  if (state)
   {
-    v38 = v37;
-    v39 = [(_SFPBAirport *)self state];
-    v40 = [v4 state];
-    v41 = [v39 isEqual:v40];
+    v38 = state;
+    state2 = [(_SFPBAirport *)self state];
+    state3 = [equalCopy state];
+    v41 = [state2 isEqual:state3];
 
     if (!v41)
     {
@@ -562,20 +562,20 @@
   {
   }
 
-  v5 = [(_SFPBAirport *)self postalCode];
-  v6 = [v4 postalCode];
-  if ((v5 != 0) == (v6 == 0))
+  code = [(_SFPBAirport *)self postalCode];
+  code2 = [equalCopy postalCode];
+  if ((code != 0) == (code2 == 0))
   {
     goto LABEL_56;
   }
 
-  v42 = [(_SFPBAirport *)self postalCode];
-  if (v42)
+  postalCode = [(_SFPBAirport *)self postalCode];
+  if (postalCode)
   {
-    v43 = v42;
-    v44 = [(_SFPBAirport *)self postalCode];
-    v45 = [v4 postalCode];
-    v46 = [v44 isEqual:v45];
+    v43 = postalCode;
+    postalCode2 = [(_SFPBAirport *)self postalCode];
+    postalCode3 = [equalCopy postalCode];
+    v46 = [postalCode2 isEqual:postalCode3];
 
     if (!v46)
     {
@@ -587,20 +587,20 @@
   {
   }
 
-  v5 = [(_SFPBAirport *)self countryCode];
-  v6 = [v4 countryCode];
-  if ((v5 != 0) == (v6 == 0))
+  code = [(_SFPBAirport *)self countryCode];
+  code2 = [equalCopy countryCode];
+  if ((code != 0) == (code2 == 0))
   {
     goto LABEL_56;
   }
 
-  v47 = [(_SFPBAirport *)self countryCode];
-  if (v47)
+  countryCode = [(_SFPBAirport *)self countryCode];
+  if (countryCode)
   {
-    v48 = v47;
-    v49 = [(_SFPBAirport *)self countryCode];
-    v50 = [v4 countryCode];
-    v51 = [v49 isEqual:v50];
+    v48 = countryCode;
+    countryCode2 = [(_SFPBAirport *)self countryCode];
+    countryCode3 = [equalCopy countryCode];
+    v51 = [countryCode2 isEqual:countryCode3];
 
     if (!v51)
     {
@@ -612,20 +612,20 @@
   {
   }
 
-  v5 = [(_SFPBAirport *)self country];
-  v6 = [v4 country];
-  if ((v5 != 0) == (v6 == 0))
+  code = [(_SFPBAirport *)self country];
+  code2 = [equalCopy country];
+  if ((code != 0) == (code2 == 0))
   {
     goto LABEL_56;
   }
 
-  v52 = [(_SFPBAirport *)self country];
-  if (v52)
+  country = [(_SFPBAirport *)self country];
+  if (country)
   {
-    v53 = v52;
-    v54 = [(_SFPBAirport *)self country];
-    v55 = [v4 country];
-    v56 = [v54 isEqual:v55];
+    v53 = country;
+    country2 = [(_SFPBAirport *)self country];
+    country3 = [equalCopy country];
+    v56 = [country2 isEqual:country3];
 
     if (!v56)
     {
@@ -637,12 +637,12 @@
   {
   }
 
-  v5 = [(_SFPBAirport *)self name];
-  v6 = [v4 name];
-  if ((v5 != 0) != (v6 == 0))
+  code = [(_SFPBAirport *)self name];
+  code2 = [equalCopy name];
+  if ((code != 0) != (code2 == 0))
   {
-    v57 = [(_SFPBAirport *)self name];
-    if (!v57)
+    name = [(_SFPBAirport *)self name];
+    if (!name)
     {
 
 LABEL_60:
@@ -650,10 +650,10 @@ LABEL_60:
       goto LABEL_58;
     }
 
-    v58 = v57;
-    v59 = [(_SFPBAirport *)self name];
-    v60 = [v4 name];
-    v61 = [v59 isEqual:v60];
+    v58 = name;
+    name2 = [(_SFPBAirport *)self name];
+    name3 = [equalCopy name];
+    v61 = [name2 isEqual:name3];
 
     if (v61)
     {
@@ -673,151 +673,151 @@ LABEL_58:
   return v62;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v15 = a3;
-  v4 = [(_SFPBAirport *)self code];
-  if (v4)
+  toCopy = to;
+  code = [(_SFPBAirport *)self code];
+  if (code)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBAirport *)self timezone];
-  if (v5)
+  timezone = [(_SFPBAirport *)self timezone];
+  if (timezone)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(_SFPBAirport *)self location];
-  if (v6)
+  location = [(_SFPBAirport *)self location];
+  if (location)
   {
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(_SFPBAirport *)self city];
-  if (v7)
+  city = [(_SFPBAirport *)self city];
+  if (city)
   {
     PBDataWriterWriteStringField();
   }
 
-  v8 = [(_SFPBAirport *)self street];
-  if (v8)
+  street = [(_SFPBAirport *)self street];
+  if (street)
   {
     PBDataWriterWriteStringField();
   }
 
-  v9 = [(_SFPBAirport *)self district];
-  if (v9)
+  district = [(_SFPBAirport *)self district];
+  if (district)
   {
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(_SFPBAirport *)self state];
-  if (v10)
+  state = [(_SFPBAirport *)self state];
+  if (state)
   {
     PBDataWriterWriteStringField();
   }
 
-  v11 = [(_SFPBAirport *)self postalCode];
-  if (v11)
+  postalCode = [(_SFPBAirport *)self postalCode];
+  if (postalCode)
   {
     PBDataWriterWriteStringField();
   }
 
-  v12 = [(_SFPBAirport *)self countryCode];
-  if (v12)
+  countryCode = [(_SFPBAirport *)self countryCode];
+  if (countryCode)
   {
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(_SFPBAirport *)self country];
-  if (v13)
+  country = [(_SFPBAirport *)self country];
+  if (country)
   {
     PBDataWriterWriteStringField();
   }
 
-  v14 = [(_SFPBAirport *)self name];
-  if (v14)
+  name = [(_SFPBAirport *)self name];
+  if (name)
   {
     PBDataWriterWriteStringField();
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   name = self->_name;
   self->_name = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCountry:(id)a3
+- (void)setCountry:(id)country
 {
-  v4 = [a3 copy];
+  v4 = [country copy];
   country = self->_country;
   self->_country = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCountryCode:(id)a3
+- (void)setCountryCode:(id)code
 {
-  v4 = [a3 copy];
+  v4 = [code copy];
   countryCode = self->_countryCode;
   self->_countryCode = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setPostalCode:(id)a3
+- (void)setPostalCode:(id)code
 {
-  v4 = [a3 copy];
+  v4 = [code copy];
   postalCode = self->_postalCode;
   self->_postalCode = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setState:(id)a3
+- (void)setState:(id)state
 {
-  v4 = [a3 copy];
+  v4 = [state copy];
   state = self->_state;
   self->_state = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setDistrict:(id)a3
+- (void)setDistrict:(id)district
 {
-  v4 = [a3 copy];
+  v4 = [district copy];
   district = self->_district;
   self->_district = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setStreet:(id)a3
+- (void)setStreet:(id)street
 {
-  v4 = [a3 copy];
+  v4 = [street copy];
   street = self->_street;
   self->_street = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCity:(id)a3
+- (void)setCity:(id)city
 {
-  v4 = [a3 copy];
+  v4 = [city copy];
   city = self->_city;
   self->_city = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCode:(id)a3
+- (void)setCode:(id)code
 {
-  v4 = [a3 copy];
+  v4 = [code copy];
   code = self->_code;
   self->_code = v4;
 

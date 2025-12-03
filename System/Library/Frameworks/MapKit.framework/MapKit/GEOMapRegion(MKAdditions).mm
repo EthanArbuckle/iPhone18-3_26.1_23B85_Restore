@@ -13,7 +13,7 @@
     v8 = 0;
     if (a4 >= 0.0 && a4 <= 180.0 && a5 >= 0.0 && a5 <= 360.0)
     {
-      v8 = [a1 _geo_mapRegionForGEOCoordinateRegion:v5];
+      v8 = [self _geo_mapRegionForGEOCoordinateRegion:v5];
     }
   }
 

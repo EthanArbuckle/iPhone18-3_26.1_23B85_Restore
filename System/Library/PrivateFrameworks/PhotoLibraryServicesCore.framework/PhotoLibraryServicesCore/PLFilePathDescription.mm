@@ -1,7 +1,7 @@
 @interface PLFilePathDescription
-+ (id)descriptionWithFileURL:(id)a3;
-+ (id)descriptionWithPath:(id)a3;
-- (PLFilePathDescription)initWithPath:(id)a3;
++ (id)descriptionWithFileURL:(id)l;
++ (id)descriptionWithPath:(id)path;
+- (PLFilePathDescription)initWithPath:(id)path;
 - (id)description;
 @end
 
@@ -20,15 +20,15 @@
   }
 }
 
-- (PLFilePathDescription)initWithPath:(id)a3
+- (PLFilePathDescription)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = PLFilePathDescription;
   v5 = [(PLFilePathDescription *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [pathCopy copy];
     path = v5->_path;
     v5->_path = v6;
 
@@ -38,21 +38,21 @@
   return v5;
 }
 
-+ (id)descriptionWithFileURL:(id)a3
++ (id)descriptionWithFileURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 path];
+  lCopy = l;
+  v5 = [self alloc];
+  path = [lCopy path];
 
-  v7 = [v5 initWithPath:v6];
+  v7 = [v5 initWithPath:path];
 
   return v7;
 }
 
-+ (id)descriptionWithPath:(id)a3
++ (id)descriptionWithPath:(id)path
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPath:v4];
+  pathCopy = path;
+  v5 = [[self alloc] initWithPath:pathCopy];
 
   return v5;
 }

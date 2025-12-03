@@ -1,62 +1,62 @@
 @interface AVMediaSelectionTableViewController
-- (AVMediaSelectionTableViewController)initWithStyle:(int64_t)a3;
-- (BOOL)_isSelectedOrCurrentAudioMediaSelectionOption:(id)a3;
-- (BOOL)_isSelectedOrCurrentLegibleMediaSelectionOption:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (AVMediaSelectionTableViewController)initWithStyle:(int64_t)style;
+- (BOOL)_isSelectedOrCurrentAudioMediaSelectionOption:(id)option;
+- (BOOL)_isSelectedOrCurrentLegibleMediaSelectionOption:(id)option;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)dealloc;
-- (void)playerControllerMediaSelectionChanged:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)playerControllerMediaSelectionChanged:(id)changed;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AVMediaSelectionTableViewController
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v40 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  v9 = [(AVMediaSelectionTableViewController *)self playerController];
-  [v8 removeObserver:self name:@"AVPlayerControllerSelectedMediaOptionDidChangeNotification" object:v9];
+  viewCopy = view;
+  pathCopy = path;
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  playerController = [(AVMediaSelectionTableViewController *)self playerController];
+  [defaultCenter removeObserver:self name:@"AVPlayerControllerSelectedMediaOptionDidChangeNotification" object:playerController];
 
-  v10 = self;
-  v11 = [(AVMediaSelectionTableViewController *)self playerController];
-  if (v11)
+  selfCopy = self;
+  playerController2 = [(AVMediaSelectionTableViewController *)self playerController];
+  if (playerController2)
   {
-    v12 = [v6 cellForRowAtIndexPath:v7];
-    v13 = [v12 representedObject];
+    v12 = [viewCopy cellForRowAtIndexPath:pathCopy];
+    representedObject = [v12 representedObject];
 
-    v14 = v11;
-    v32 = v13;
-    v33 = v7;
-    if ([v11 hasAudioMediaSelectionOptions] && !objc_msgSend(v7, "section"))
+    v14 = playerController2;
+    v32 = representedObject;
+    v33 = pathCopy;
+    if ([playerController2 hasAudioMediaSelectionOptions] && !objc_msgSend(pathCopy, "section"))
     {
-      selectedAudioMediaSelectionOption = v10->_selectedAudioMediaSelectionOption;
-      v10->_selectedAudioMediaSelectionOption = 0;
+      selectedAudioMediaSelectionOption = selfCopy->_selectedAudioMediaSelectionOption;
+      selfCopy->_selectedAudioMediaSelectionOption = 0;
 
-      [v11 setCurrentAudioMediaSelectionOption:v13];
+      [playerController2 setCurrentAudioMediaSelectionOption:representedObject];
     }
 
     else
     {
-      selectedLegibleMediaSelectionOption = v10->_selectedLegibleMediaSelectionOption;
-      v10->_selectedLegibleMediaSelectionOption = 0;
+      selectedLegibleMediaSelectionOption = selfCopy->_selectedLegibleMediaSelectionOption;
+      selfCopy->_selectedLegibleMediaSelectionOption = 0;
 
-      [v11 setCurrentLegibleMediaSelectionOption:v13];
+      [playerController2 setCurrentLegibleMediaSelectionOption:representedObject];
     }
 
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    obj = [v6 visibleCells];
+    obj = [viewCopy visibleCells];
     v16 = [obj countByEnumeratingWithState:&v35 objects:v39 count:16];
     if (v16)
     {
@@ -73,15 +73,15 @@
           }
 
           v20 = *(*(&v35 + 1) + 8 * v19);
-          v21 = [v20 representedObject];
-          if ([v14 hasAudioMediaSelectionOptions] && (objc_msgSend(v6, "indexPathForCell:", v20), v22 = v14, v23 = v6, v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "section"), v24, v6 = v23, v14 = v22, !v25))
+          representedObject2 = [v20 representedObject];
+          if ([v14 hasAudioMediaSelectionOptions] && (objc_msgSend(viewCopy, "indexPathForCell:", v20), v22 = v14, v23 = viewCopy, v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "section"), v24, viewCopy = v23, v14 = v22, !v25))
           {
-            v26 = [(AVMediaSelectionTableViewController *)v10 _isSelectedOrCurrentAudioMediaSelectionOption:v21];
+            v26 = [(AVMediaSelectionTableViewController *)selfCopy _isSelectedOrCurrentAudioMediaSelectionOption:representedObject2];
           }
 
           else
           {
-            v26 = [(AVMediaSelectionTableViewController *)v10 _isSelectedOrCurrentLegibleMediaSelectionOption:v21];
+            v26 = [(AVMediaSelectionTableViewController *)selfCopy _isSelectedOrCurrentLegibleMediaSelectionOption:representedObject2];
           }
 
           if (v26)
@@ -107,32 +107,32 @@
       while (v28);
     }
 
-    v7 = v33;
-    v11 = v14;
+    pathCopy = v33;
+    playerController2 = v14;
   }
 
-  [v6 deselectRowAtIndexPath:v7 animated:1];
-  v29 = [MEMORY[0x1E696AD88] defaultCenter];
-  v30 = [(AVMediaSelectionTableViewController *)v10 playerController];
-  [v29 addObserver:v10 selector:sel_playerControllerMediaSelectionChanged_ name:@"AVPlayerControllerSelectedMediaOptionDidChangeNotification" object:v30];
+  [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  playerController3 = [(AVMediaSelectionTableViewController *)selfCopy playerController];
+  [defaultCenter2 addObserver:selfCopy selector:sel_playerControllerMediaSelectionChanged_ name:@"AVPlayerControllerSelectedMediaOptionDidChangeNotification" object:playerController3];
 }
 
-- (void)tableView:(id)a3 willDisplayHeaderView:(id)a4 forSection:(int64_t)a5
+- (void)tableView:(id)view willDisplayHeaderView:(id)headerView forSection:(int64_t)section
 {
-  v6 = a4;
-  v5 = [v6 textLabel];
-  [AVBackdropView applySecondaryGlyphTintToView:v5];
+  headerViewCopy = headerView;
+  textLabel = [headerViewCopy textLabel];
+  [AVBackdropView applySecondaryGlyphTintToView:textLabel];
 
-  [AVBackdropView applySecondaryGlyphTintToView:v6];
+  [AVBackdropView applySecondaryGlyphTintToView:headerViewCopy];
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  v5 = [(AVMediaSelectionTableViewController *)self playerController];
-  v6 = v5;
-  if (v5)
+  playerController = [(AVMediaSelectionTableViewController *)self playerController];
+  v6 = playerController;
+  if (playerController)
   {
-    if (((a4 == 0) & [v5 hasAudioMediaSelectionOptions]) != 0)
+    if (((section == 0) & [playerController hasAudioMediaSelectionOptions]) != 0)
     {
       v7 = @"MEDIA_SELECTION_VIEW_CONTROLLER_AUDIO_OPTIONS_HEADER_TITLE";
     }
@@ -153,14 +153,14 @@
   return v8;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(AVMediaSelectionTableViewController *)self playerController];
-  v4 = v3;
-  if (v3)
+  playerController = [(AVMediaSelectionTableViewController *)self playerController];
+  v4 = playerController;
+  if (playerController)
   {
-    v5 = [v3 hasAudioMediaSelectionOptions];
-    v6 = [v4 hasLegibleMediaSelectionOptions] + v5;
+    hasAudioMediaSelectionOptions = [playerController hasAudioMediaSelectionOptions];
+    v6 = [v4 hasLegibleMediaSelectionOptions] + hasAudioMediaSelectionOptions;
   }
 
   else
@@ -171,25 +171,25 @@
   return v6;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"AVMediaSelectionViewControllerCellReuseIdentifier" forIndexPath:v6];
-  v8 = [(AVMediaSelectionTableViewController *)self playerController];
-  v9 = v8;
-  if (v8)
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"AVMediaSelectionViewControllerCellReuseIdentifier" forIndexPath:pathCopy];
+  playerController = [(AVMediaSelectionTableViewController *)self playerController];
+  v9 = playerController;
+  if (playerController)
   {
-    if ([v8 hasAudioMediaSelectionOptions] && !objc_msgSend(v6, "section"))
+    if ([playerController hasAudioMediaSelectionOptions] && !objc_msgSend(pathCopy, "section"))
     {
-      v10 = [v9 audioMediaSelectionOptions];
-      v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+      audioMediaSelectionOptions = [v9 audioMediaSelectionOptions];
+      v11 = [audioMediaSelectionOptions objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
       v12 = [(AVMediaSelectionTableViewController *)self _isSelectedOrCurrentAudioMediaSelectionOption:v11];
     }
 
     else
     {
-      v10 = [v9 legibleMediaSelectionOptions];
-      v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "row")}];
+      audioMediaSelectionOptions = [v9 legibleMediaSelectionOptions];
+      v11 = [audioMediaSelectionOptions objectAtIndexedSubscript:{objc_msgSend(pathCopy, "row")}];
       v12 = [(AVMediaSelectionTableViewController *)self _isSelectedOrCurrentLegibleMediaSelectionOption:v11];
     }
 
@@ -210,36 +210,36 @@
 
     [v7 setAccessoryType:v15];
     [v7 setRepresentedObject:v11];
-    v16 = [v7 textLabel];
-    v17 = [v11 localizedDisplayName];
-    [v16 setText:v17];
+    textLabel = [v7 textLabel];
+    localizedDisplayName = [v11 localizedDisplayName];
+    [textLabel setText:localizedDisplayName];
 
-    v18 = [MEMORY[0x1E69DC888] whiteColor];
-    [v7 setTintColor:v18];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v7 setTintColor:whiteColor];
   }
 
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v5 = [(AVMediaSelectionTableViewController *)self playerController];
-  v6 = v5;
-  if (v5)
+  playerController = [(AVMediaSelectionTableViewController *)self playerController];
+  v6 = playerController;
+  if (playerController)
   {
-    v7 = [v5 hasAudioMediaSelectionOptions];
-    if (a4 || !v7)
+    hasAudioMediaSelectionOptions = [playerController hasAudioMediaSelectionOptions];
+    if (section || !hasAudioMediaSelectionOptions)
     {
-      v8 = [v6 legibleMediaSelectionOptions];
+      legibleMediaSelectionOptions = [v6 legibleMediaSelectionOptions];
     }
 
     else
     {
-      v8 = [v6 audioMediaSelectionOptions];
+      legibleMediaSelectionOptions = [v6 audioMediaSelectionOptions];
     }
 
-    v10 = v8;
-    v9 = [v8 count];
+    v10 = legibleMediaSelectionOptions;
+    v9 = [legibleMediaSelectionOptions count];
   }
 
   else
@@ -250,65 +250,65 @@
   return v9;
 }
 
-- (BOOL)_isSelectedOrCurrentLegibleMediaSelectionOption:(id)a3
+- (BOOL)_isSelectedOrCurrentLegibleMediaSelectionOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   selectedLegibleMediaSelectionOption = self->_selectedLegibleMediaSelectionOption;
   if (selectedLegibleMediaSelectionOption)
   {
-    v6 = selectedLegibleMediaSelectionOption;
+    currentLegibleMediaSelectionOption = selectedLegibleMediaSelectionOption;
   }
 
   else
   {
-    v7 = [(AVMediaSelectionTableViewController *)self playerController];
-    v6 = [v7 currentLegibleMediaSelectionOption];
+    playerController = [(AVMediaSelectionTableViewController *)self playerController];
+    currentLegibleMediaSelectionOption = [playerController currentLegibleMediaSelectionOption];
   }
 
-  objc_storeStrong(&self->_selectedLegibleMediaSelectionOption, v6);
-  if (v6 == v4)
+  objc_storeStrong(&self->_selectedLegibleMediaSelectionOption, currentLegibleMediaSelectionOption);
+  if (currentLegibleMediaSelectionOption == optionCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = [(AVMediaSelectionOption *)v4 isEqual:v6];
+    v8 = [(AVMediaSelectionOption *)optionCopy isEqual:currentLegibleMediaSelectionOption];
   }
 
   return v8;
 }
 
-- (BOOL)_isSelectedOrCurrentAudioMediaSelectionOption:(id)a3
+- (BOOL)_isSelectedOrCurrentAudioMediaSelectionOption:(id)option
 {
-  v4 = a3;
+  optionCopy = option;
   selectedAudioMediaSelectionOption = self->_selectedAudioMediaSelectionOption;
   if (selectedAudioMediaSelectionOption)
   {
-    v6 = selectedAudioMediaSelectionOption;
+    currentAudioMediaSelectionOption = selectedAudioMediaSelectionOption;
   }
 
   else
   {
-    v7 = [(AVMediaSelectionTableViewController *)self playerController];
-    v6 = [v7 currentAudioMediaSelectionOption];
+    playerController = [(AVMediaSelectionTableViewController *)self playerController];
+    currentAudioMediaSelectionOption = [playerController currentAudioMediaSelectionOption];
   }
 
-  objc_storeStrong(&self->_selectedAudioMediaSelectionOption, v6);
-  if (v6 == v4)
+  objc_storeStrong(&self->_selectedAudioMediaSelectionOption, currentAudioMediaSelectionOption);
+  if (currentAudioMediaSelectionOption == optionCopy)
   {
     v8 = 1;
   }
 
   else
   {
-    v8 = [(AVMediaSelectionOption *)v4 isEqual:v6];
+    v8 = [(AVMediaSelectionOption *)optionCopy isEqual:currentAudioMediaSelectionOption];
   }
 
   return v8;
 }
 
-- (void)playerControllerMediaSelectionChanged:(id)a3
+- (void)playerControllerMediaSelectionChanged:(id)changed
 {
   selectedAudioMediaSelectionOption = self->_selectedAudioMediaSelectionOption;
   self->_selectedAudioMediaSelectionOption = 0;
@@ -316,59 +316,59 @@
   selectedLegibleMediaSelectionOption = self->_selectedLegibleMediaSelectionOption;
   self->_selectedLegibleMediaSelectionOption = 0;
 
-  v6 = [(AVMediaSelectionTableViewController *)self tableView];
-  [v6 reloadData];
+  tableView = [(AVMediaSelectionTableViewController *)self tableView];
+  [tableView reloadData];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = AVMediaSelectionTableViewController;
-  [(AVMediaSelectionTableViewController *)&v5 viewDidAppear:a3];
-  v4 = [(AVMediaSelectionTableViewController *)self tableView];
-  [v4 flashScrollIndicators];
+  [(AVMediaSelectionTableViewController *)&v5 viewDidAppear:appear];
+  tableView = [(AVMediaSelectionTableViewController *)self tableView];
+  [tableView flashScrollIndicators];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v15.receiver = self;
   v15.super_class = AVMediaSelectionTableViewController;
   [(AVMediaSelectionTableViewController *)&v15 viewWillAppear:?];
-  v5 = [(AVMediaSelectionTableViewController *)self tableView];
-  v6 = [v5 numberOfSections];
+  tableView = [(AVMediaSelectionTableViewController *)self tableView];
+  numberOfSections = [tableView numberOfSections];
 
-  if (v6)
+  if (numberOfSections)
   {
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __54__AVMediaSelectionTableViewController_viewWillAppear___block_invoke;
     aBlock[3] = &unk_1E7208B88;
     aBlock[4] = self;
-    v14 = a3;
-    v7 = _Block_copy(aBlock);
-    v8 = [(AVMediaSelectionTableViewController *)self transitionCoordinator];
-    v9 = v8;
-    if (v8 && [v8 initiallyInteractive])
+    appearCopy = appear;
+    tableView2 = _Block_copy(aBlock);
+    transitionCoordinator = [(AVMediaSelectionTableViewController *)self transitionCoordinator];
+    v9 = transitionCoordinator;
+    if (transitionCoordinator && [transitionCoordinator initiallyInteractive])
     {
       v10[0] = MEMORY[0x1E69E9820];
       v10[1] = 3221225472;
       v10[2] = __54__AVMediaSelectionTableViewController_viewWillAppear___block_invoke_2;
       v10[3] = &unk_1E7208720;
       v11 = v9;
-      v12 = v7;
+      v12 = tableView2;
       [v11 notifyWhenInteractionChangesUsingBlock:v10];
     }
 
     else
     {
-      v7[2](v7);
+      tableView2[2](tableView2);
     }
   }
 
   else
   {
-    v7 = [(AVMediaSelectionTableViewController *)self tableView];
-    [v7 reloadData];
+    tableView2 = [(AVMediaSelectionTableViewController *)self tableView];
+    [tableView2 reloadData];
   }
 }
 
@@ -431,9 +431,9 @@ uint64_t __54__AVMediaSelectionTableViewController_viewWillAppear___block_invoke
   v25.receiver = self;
   v25.super_class = AVMediaSelectionTableViewController;
   [(AVMediaSelectionTableViewController *)&v25 viewDidLoad];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  v4 = [(AVMediaSelectionTableViewController *)self playerController];
-  [v3 addObserver:self selector:sel_playerControllerMediaSelectionChanged_ name:@"AVPlayerControllerSelectedMediaOptionDidChangeNotification" object:v4];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  playerController = [(AVMediaSelectionTableViewController *)self playerController];
+  [defaultCenter addObserver:self selector:sel_playerControllerMediaSelectionChanged_ name:@"AVPlayerControllerSelectedMediaOptionDidChangeNotification" object:playerController];
 
   v5 = [MEMORY[0x1E69DC898] colorEffectSaturate:1.8];
   v6 = [MEMORY[0x1E69DC730] effectWithBlurRadius:30.0];
@@ -451,29 +451,29 @@ uint64_t __54__AVMediaSelectionTableViewController_viewWillAppear___block_invoke
   v14 = [v12 layerWithFillColor:v13 opacity:*MEMORY[0x1E6979D40] filterType:0.5];
 
   v15 = [MEMORY[0x1E69DD840] configWithContentConfig:v14];
-  v16 = [v15 contentConfig];
-  [v16 configureLayerView:v11];
+  contentConfig = [v15 contentConfig];
+  [contentConfig configureLayerView:v11];
 
-  v17 = [v10 contentView];
-  [v17 addSubview:v11];
+  contentView = [v10 contentView];
+  [contentView addSubview:v11];
 
-  v18 = [(AVMediaSelectionTableViewController *)self tableView];
-  [v18 setBackgroundView:v10];
+  tableView = [(AVMediaSelectionTableViewController *)self tableView];
+  [tableView setBackgroundView:v10];
 
-  v19 = [(AVMediaSelectionTableViewController *)self tableView];
-  [v19 registerClass:objc_opt_class() forCellReuseIdentifier:@"AVMediaSelectionViewControllerCellReuseIdentifier"];
+  tableView2 = [(AVMediaSelectionTableViewController *)self tableView];
+  [tableView2 registerClass:objc_opt_class() forCellReuseIdentifier:@"AVMediaSelectionViewControllerCellReuseIdentifier"];
 
-  v20 = [(AVMediaSelectionTableViewController *)self tableView];
-  v21 = [MEMORY[0x1E69DC888] clearColor];
-  [v20 setBackgroundColor:v21];
+  tableView3 = [(AVMediaSelectionTableViewController *)self tableView];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [tableView3 setBackgroundColor:clearColor];
 
-  v22 = [(AVMediaSelectionTableViewController *)self tableView];
+  tableView4 = [(AVMediaSelectionTableViewController *)self tableView];
   v23 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDCF8]];
   [v23 lineHeight];
-  [v22 setEstimatedRowHeight:?];
+  [tableView4 setEstimatedRowHeight:?];
 
-  v24 = [(AVMediaSelectionTableViewController *)self tableView];
-  [v24 setSeparatorStyle:1];
+  tableView5 = [(AVMediaSelectionTableViewController *)self tableView];
+  [tableView5 setSeparatorStyle:1];
 }
 
 - (void)dealloc
@@ -487,20 +487,20 @@ uint64_t __54__AVMediaSelectionTableViewController_viewWillAppear___block_invoke
     v9 = 1024;
     v10 = 93;
     v11 = 2048;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B49C000, v3, OS_LOG_TYPE_DEFAULT, "%s %d %p", buf, 0x1Cu);
   }
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  v5 = [(AVMediaSelectionTableViewController *)self playerController];
-  [v4 removeObserver:self name:@"AVPlayerControllerSelectedMediaOptionDidChangeNotification" object:v5];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  playerController = [(AVMediaSelectionTableViewController *)self playerController];
+  [defaultCenter removeObserver:self name:@"AVPlayerControllerSelectedMediaOptionDidChangeNotification" object:playerController];
 
   v6.receiver = self;
   v6.super_class = AVMediaSelectionTableViewController;
   [(AVMediaSelectionTableViewController *)&v6 dealloc];
 }
 
-- (AVMediaSelectionTableViewController)initWithStyle:(int64_t)a3
+- (AVMediaSelectionTableViewController)initWithStyle:(int64_t)style
 {
   v16 = *MEMORY[0x1E69E9840];
   v5 = _AVLog();
@@ -511,13 +511,13 @@ uint64_t __54__AVMediaSelectionTableViewController_viewWillAppear___block_invoke
     v12 = 1024;
     v13 = 79;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&dword_18B49C000, v5, OS_LOG_TYPE_DEFAULT, "%s %d %p", buf, 0x1Cu);
   }
 
   v9.receiver = self;
   v9.super_class = AVMediaSelectionTableViewController;
-  v6 = [(AVMediaSelectionTableViewController *)&v9 initWithStyle:a3];
+  v6 = [(AVMediaSelectionTableViewController *)&v9 initWithStyle:style];
   if (v6)
   {
     v7 = AVLocalizedString(@"MEDIA_SELECTION_VIEW_CONTROLLER_NAVIGATION_ITEM_TITLE");

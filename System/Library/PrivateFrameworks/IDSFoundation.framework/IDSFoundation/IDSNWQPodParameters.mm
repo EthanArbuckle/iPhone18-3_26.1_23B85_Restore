@@ -1,6 +1,6 @@
 @interface IDSNWQPodParameters
-- (IDSNWQPodParameters)initWithClientConnectionID:(unsigned int)a3 serverConnectionID:(unsigned int)a4 clientSecret:(id)a5 serverSecret:(id)a6 isServer:(BOOL)a7;
-- (IDSNWQPodParameters)initWithDictionary:(id)a3;
+- (IDSNWQPodParameters)initWithClientConnectionID:(unsigned int)d serverConnectionID:(unsigned int)iD clientSecret:(id)secret serverSecret:(id)serverSecret isServer:(BOOL)server;
+- (IDSNWQPodParameters)initWithDictionary:(id)dictionary;
 - (OS_dispatch_data)clientConnectionIDDispatchData;
 - (OS_dispatch_data)clientSecretDispatchData;
 - (OS_dispatch_data)serverConnectionIDDispatchData;
@@ -10,38 +10,38 @@
 
 @implementation IDSNWQPodParameters
 
-- (IDSNWQPodParameters)initWithClientConnectionID:(unsigned int)a3 serverConnectionID:(unsigned int)a4 clientSecret:(id)a5 serverSecret:(id)a6 isServer:(BOOL)a7
+- (IDSNWQPodParameters)initWithClientConnectionID:(unsigned int)d serverConnectionID:(unsigned int)iD clientSecret:(id)secret serverSecret:(id)serverSecret isServer:(BOOL)server
 {
-  v13 = a5;
-  v14 = a6;
+  secretCopy = secret;
+  serverSecretCopy = serverSecret;
   v18.receiver = self;
   v18.super_class = IDSNWQPodParameters;
   v15 = [(IDSNWQPodParameters *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    v15->_clientConnectionID = a3;
-    v15->_serverConnectionID = a4;
-    objc_storeStrong(&v15->_clientSecret, a5);
-    objc_storeStrong(&v16->_serverSecret, a6);
-    v16->_isServer = a7;
+    v15->_clientConnectionID = d;
+    v15->_serverConnectionID = iD;
+    objc_storeStrong(&v15->_clientSecret, secret);
+    objc_storeStrong(&v16->_serverSecret, serverSecret);
+    v16->_isServer = server;
   }
 
   return v16;
 }
 
-- (IDSNWQPodParameters)initWithDictionary:(id)a3
+- (IDSNWQPodParameters)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"ccid"];
-  v6 = [v5 unsignedIntValue];
-  v7 = [v4 objectForKeyedSubscript:@"scid"];
-  v8 = [v7 unsignedIntValue];
-  v9 = [v4 objectForKeyedSubscript:@"csecret"];
-  v10 = [v4 objectForKeyedSubscript:@"ssecret"];
-  v11 = [v4 objectForKeyedSubscript:@"isServer"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"ccid"];
+  unsignedIntValue = [v5 unsignedIntValue];
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"scid"];
+  unsignedIntValue2 = [v7 unsignedIntValue];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"csecret"];
+  v10 = [dictionaryCopy objectForKeyedSubscript:@"ssecret"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"isServer"];
 
-  v12 = -[IDSNWQPodParameters initWithClientConnectionID:serverConnectionID:clientSecret:serverSecret:isServer:](self, "initWithClientConnectionID:serverConnectionID:clientSecret:serverSecret:isServer:", v6, v8, v9, v10, [v11 BOOLValue]);
+  v12 = -[IDSNWQPodParameters initWithClientConnectionID:serverConnectionID:clientSecret:serverSecret:isServer:](self, "initWithClientConnectionID:serverConnectionID:clientSecret:serverSecret:isServer:", unsignedIntValue, unsignedIntValue2, v9, v10, [v11 BOOLValue]);
   return v12;
 }
 

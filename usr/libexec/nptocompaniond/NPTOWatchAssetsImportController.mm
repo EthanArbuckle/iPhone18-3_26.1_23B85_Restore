@@ -1,14 +1,14 @@
 @interface NPTOWatchAssetsImportController
-- (void)handleIncomingFile:(id)a3;
+- (void)handleIncomingFile:(id)file;
 @end
 
 @implementation NPTOWatchAssetsImportController
 
-- (void)handleIncomingFile:(id)a3
+- (void)handleIncomingFile:(id)file
 {
-  v4 = a3;
-  v5 = self;
-  sub_100044DEC(v4);
+  fileCopy = file;
+  selfCopy = self;
+  sub_100044DEC(fileCopy);
 }
 
 @end

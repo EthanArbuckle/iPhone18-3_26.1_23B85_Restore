@@ -1,45 +1,45 @@
 @interface PHASESharedEntityDebugInfo
-- (BOOL)isEqual:(id)a3;
-- (PHASESharedEntityDebugInfo)initWithCoder:(id)a3;
-- (__n128)setTransform:(__n128)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (PHASESharedEntityDebugInfo)initWithCoder:(id)coder;
+- (__n128)setTransform:(__n128)transform;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PHASESharedEntityDebugInfo
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   [(PHASESharedEntityDebugInfo *)self transform];
   v15 = v6;
   v16 = v5;
   v18 = v7;
   v17 = v8;
-  [v4 transform];
+  [equalCopy transform];
   LODWORD(self) = vminvq_u32(vandq_s8(vandq_s8(vceqq_f32(v16, v9), vceqq_f32(v15, v10)), vandq_s8(vceqq_f32(v18, v11), vceqq_f32(v17, v12))));
 
   return self >> 31;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   v4 = [MEMORY[0x277CBEA90] dataWithBytes:&self[1] length:64];
-  [v5 encodeObject:v4 forKey:@"transform"];
+  [coderCopy encodeObject:v4 forKey:@"transform"];
 
-  [v5 encodeInt:self->_referenceCount forKey:@"referenceCount"];
+  [coderCopy encodeInt:self->_referenceCount forKey:@"referenceCount"];
 }
 
-- (PHASESharedEntityDebugInfo)initWithCoder:(id)a3
+- (PHASESharedEntityDebugInfo)initWithCoder:(id)coder
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PHASESharedEntityDebugInfo;
   v5 = [(PHASESharedEntityDebugInfo *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transform"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transform"];
     v7 = v6;
     if (v6)
     {
@@ -67,16 +67,16 @@
       v5[4] = v9;
     }
 
-    v5->_referenceCount = [v4 decodeIntForKey:@"referenceCount"];
+    v5->_referenceCount = [coderCopy decodeIntForKey:@"referenceCount"];
   }
 
   return v5;
 }
 
-- (__n128)setTransform:(__n128)a3
+- (__n128)setTransform:(__n128)transform
 {
   result[1] = a2;
-  result[2] = a3;
+  result[2] = transform;
   result[3] = a4;
   result[4] = a5;
   return result;

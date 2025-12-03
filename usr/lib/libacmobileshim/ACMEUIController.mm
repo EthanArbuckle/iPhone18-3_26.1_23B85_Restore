@@ -8,18 +8,18 @@
 - (id)createCustomWidget;
 - (id)createStandardWidget;
 - (unint64_t)signInDialogContentStyle;
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4;
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index;
 - (void)cancelSignInWidget;
 - (void)dealloc;
-- (void)hideSignInWidgetWithParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)onIForgot:(id)a3;
-- (void)onManageAppleID:(id)a3;
-- (void)onSignIn:(id)a3;
-- (void)onSignInCancel:(id)a3;
-- (void)setPassword:(id)a3;
-- (void)setWidgetEnabled:(BOOL)a3;
-- (void)showAlertWithAlertMessage:(id)a3 buttonTitle:(id)a4 cancelButtonTitle:(id)a5 errorTag:(int64_t)a6;
-- (void)showSignInWidgetWithParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)hideSignInWidgetWithParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)onIForgot:(id)forgot;
+- (void)onManageAppleID:(id)d;
+- (void)onSignIn:(id)in;
+- (void)onSignInCancel:(id)cancel;
+- (void)setPassword:(id)password;
+- (void)setWidgetEnabled:(BOOL)enabled;
+- (void)showAlertWithAlertMessage:(id)message buttonTitle:(id)title cancelButtonTitle:(id)buttonTitle errorTag:(int64_t)tag;
+- (void)showSignInWidgetWithParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)signInDialogDidBecomeDisabled;
 - (void)signInDialogDidBecomeEnabled;
 - (void)signInDialogWillBecomeDisabled;
@@ -58,37 +58,37 @@
   [(ACMEUIController *)&v3 dealloc];
 }
 
-- (void)setWidgetEnabled:(BOOL)a3
+- (void)setWidgetEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  self->_widgetEnabled = a3;
-  v4 = [(ACMEUIController *)self signInDialog];
+  enabledCopy = enabled;
+  self->_widgetEnabled = enabled;
+  signInDialog = [(ACMEUIController *)self signInDialog];
 
-  [(ACMSignInDialogProtocol *)v4 disableControls:!v3];
+  [(ACMSignInDialogProtocol *)signInDialog disableControls:!enabledCopy];
 }
 
 - (NSString)password
 {
-  v2 = [(ACMEUIController *)self signInDialog];
+  signInDialog = [(ACMEUIController *)self signInDialog];
 
-  return [(ACMSignInDialogProtocol *)v2 passwordString];
+  return [(ACMSignInDialogProtocol *)signInDialog passwordString];
 }
 
-- (void)setPassword:(id)a3
+- (void)setPassword:(id)password
 {
-  v4 = [(ACMEUIController *)self signInDialog];
+  signInDialog = [(ACMEUIController *)self signInDialog];
 
-  [(ACMSignInDialogProtocol *)v4 setPasswordString:a3];
+  [(ACMSignInDialogProtocol *)signInDialog setPasswordString:password];
 }
 
 - (id)createAlertDialog
 {
-  v3 = [(ACMEUIController *)self request];
+  request = [(ACMEUIController *)self request];
   [(ACMEUIController *)self iTunesSignInClass];
   v4 = objc_opt_new();
   [v4 setDelegate:self];
-  [v4 setIsUserNameEditable:{objc_msgSend(-[ACMBaseAuthenticationRequest userName](v3, "userName"), "length") == 0}];
-  [v4 setAlertViewPrompt:{-[ACMBaseAuthenticationRequest alertViewPrompt](v3, "alertViewPrompt")}];
+  [v4 setIsUserNameEditable:{objc_msgSend(-[ACMBaseAuthenticationRequest userName](request, "userName"), "length") == 0}];
+  [v4 setAlertViewPrompt:{-[ACMBaseAuthenticationRequest alertViewPrompt](request, "alertViewPrompt")}];
   return v4;
 }
 
@@ -121,10 +121,10 @@
     [v3 setWidgetAccountLabel:{-[ACMEUIController widgetAccountLabel](self, "widgetAccountLabel")}];
   }
 
-  v4 = [(ACMEUIController *)self signInButton];
-  if (v4)
+  signInButton = [(ACMEUIController *)self signInButton];
+  if (signInButton)
   {
-    v5 = v4;
+    v5 = signInButton;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -143,10 +143,10 @@
     [v3 setShouldAuthenticateOnUserInput:{-[ACMEUIController shouldAuthenticateOnUserInput](self, "shouldAuthenticateOnUserInput")}];
   }
 
-  v6 = [(ACMEUIController *)self cancelButton];
-  if (v6)
+  cancelButton = [(ACMEUIController *)self cancelButton];
+  if (cancelButton)
   {
-    v7 = v6;
+    v7 = cancelButton;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -175,20 +175,20 @@
   {
     if ([(ACMEUIController *)self useAlertView])
     {
-      v4 = [(ACMEUIController *)self createAlertDialog];
+      createAlertDialog = [(ACMEUIController *)self createAlertDialog];
     }
 
     else if ([(ACMEUIController *)self useCustomWidget])
     {
-      v4 = [(ACMEUIController *)self createCustomWidget];
+      createAlertDialog = [(ACMEUIController *)self createCustomWidget];
     }
 
     else
     {
-      v4 = [(ACMEUIController *)self createStandardWidget];
+      createAlertDialog = [(ACMEUIController *)self createStandardWidget];
     }
 
-    self->_signInDialog = v4;
+    self->_signInDialog = createAlertDialog;
     [(ACMSignInDialogProtocol *)self->_signInDialog setRequestedUserName:[(ACMBaseAuthenticationRequest *)[(ACMEUIController *)self request] userName]];
     return self->_signInDialog;
   }
@@ -196,53 +196,53 @@
   return result;
 }
 
-- (void)showSignInWidgetWithParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)showSignInWidgetWithParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = [(ACMEUIController *)self signInDialog];
+  animatedCopy = animated;
+  signInDialog = [(ACMEUIController *)self signInDialog];
 
-  [(ACMSignInDialogProtocol *)v8 showWithParentViewController:a3 animated:v6 completion:a5];
+  [(ACMSignInDialogProtocol *)signInDialog showWithParentViewController:controller animated:animatedCopy completion:completion];
 }
 
-- (void)hideSignInWidgetWithParentViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)hideSignInWidgetWithParentViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v8 = [(ACMEUIController *)self signInDialog];
+  animatedCopy = animated;
+  signInDialog = [(ACMEUIController *)self signInDialog];
 
-  [(ACMSignInDialogProtocol *)v8 hideWithParentViewController:a3 animated:v6 completion:a5];
+  [(ACMSignInDialogProtocol *)signInDialog hideWithParentViewController:controller animated:animatedCopy completion:completion];
 }
 
 - (void)cancelSignInWidget
 {
   while ([(NSMutableSet *)[(ACMEUIController *)self shownAlerts] count])
   {
-    v3 = [(NSMutableSet *)[(ACMEUIController *)self shownAlerts] anyObject];
-    [v3 dismissWithClickedButtonIndex:objc_msgSend(v3 animated:{"tag") == -100102, 0}];
-    [(NSMutableSet *)[(ACMEUIController *)self shownAlerts] removeObject:v3];
+    anyObject = [(NSMutableSet *)[(ACMEUIController *)self shownAlerts] anyObject];
+    [anyObject dismissWithClickedButtonIndex:objc_msgSend(anyObject animated:{"tag") == -100102, 0}];
+    [(NSMutableSet *)[(ACMEUIController *)self shownAlerts] removeObject:anyObject];
   }
 
-  v4 = [(ACMEUIController *)self signInDialog];
+  signInDialog = [(ACMEUIController *)self signInDialog];
 
-  [(ACMSignInDialogProtocol *)v4 cancel];
+  [(ACMSignInDialogProtocol *)signInDialog cancel];
 }
 
-- (void)showAlertWithAlertMessage:(id)a3 buttonTitle:(id)a4 cancelButtonTitle:(id)a5 errorTag:(int64_t)a6
+- (void)showAlertWithAlertMessage:(id)message buttonTitle:(id)title cancelButtonTitle:(id)buttonTitle errorTag:(int64_t)tag
 {
-  v8 = [objc_alloc(MEMORY[0x29EDC7930]) initWithTitle:&stru_2A1EB91A0 message:a3 delegate:self cancelButtonTitle:a5 otherButtonTitles:{a4, 0}];
-  [v8 setTag:a6];
+  v8 = [objc_alloc(MEMORY[0x29EDC7930]) initWithTitle:&stru_2A1EB91A0 message:message delegate:self cancelButtonTitle:buttonTitle otherButtonTitles:{title, 0}];
+  [v8 setTag:tag];
   [(ACMEUIController *)self setWidgetEnabled:0];
   [(NSMutableSet *)[(ACMEUIController *)self shownAlerts] addObject:v8];
   [v8 show];
 }
 
-- (void)alertView:(id)a3 didDismissWithButtonIndex:(int64_t)a4
+- (void)alertView:(id)view didDismissWithButtonIndex:(int64_t)index
 {
-  if ([a3 cancelButtonIndex] == a4 && objc_msgSend(a3, "tag") == -100102)
+  if ([view cancelButtonIndex] == index && objc_msgSend(view, "tag") == -100102)
   {
     [(ACMEUIController *)self onIForgot:self];
   }
 
-  [(NSMutableSet *)[(ACMEUIController *)self shownAlerts] removeObject:a3];
+  [(NSMutableSet *)[(ACMEUIController *)self shownAlerts] removeObject:view];
 
   [(ACMEUIController *)self setWidgetEnabled:1];
 }
@@ -255,9 +255,9 @@
     return 0;
   }
 
-  v3 = [(ACMEUIController *)self delegate];
+  delegate = [(ACMEUIController *)self delegate];
 
-  return [(ACMUIControllerDelegate *)v3 uiControllerSignInDialogContentStyle:self];
+  return [(ACMUIControllerDelegate *)delegate uiControllerSignInDialogContentStyle:self];
 }
 
 - (UIView)managerApprovalDialogSummaryView
@@ -268,53 +268,53 @@
     return 0;
   }
 
-  v3 = [(ACMEUIController *)self delegate];
+  delegate = [(ACMEUIController *)self delegate];
 
-  return [(ACMUIControllerDelegate *)v3 uiControllerManagerApprovalDialogSummaryView:self];
+  return [(ACMUIControllerDelegate *)delegate uiControllerManagerApprovalDialogSummaryView:self];
 }
 
-- (void)onSignIn:(id)a3
+- (void)onSignIn:(id)in
 {
-  v4 = [(ACMSignInDialogProtocol *)[(ACMEUIController *)self signInDialog] userNameString];
-  -[ACMBaseAuthenticationRequest setUserName:](-[ACMEUIController request](self, "request"), "setUserName:", [objc_msgSend(v4 stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x29EDB9F50], "whitespaceCharacterSet")), "lowercaseString"}]);
+  userNameString = [(ACMSignInDialogProtocol *)[(ACMEUIController *)self signInDialog] userNameString];
+  -[ACMBaseAuthenticationRequest setUserName:](-[ACMEUIController request](self, "request"), "setUserName:", [objc_msgSend(userNameString stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x29EDB9F50], "whitespaceCharacterSet")), "lowercaseString"}]);
   [(ACMEUIController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(ACMEUIController *)self delegate];
-    v6 = [(ACMSignInDialogProtocol *)[(ACMEUIController *)self signInDialog] passwordString];
+    delegate = [(ACMEUIController *)self delegate];
+    passwordString = [(ACMSignInDialogProtocol *)[(ACMEUIController *)self signInDialog] passwordString];
 
-    [(ACMUIControllerDelegate *)v5 uiControllerOnSignIn:self withPassword:v6];
+    [(ACMUIControllerDelegate *)delegate uiControllerOnSignIn:self withPassword:passwordString];
   }
 }
 
-- (void)onSignInCancel:(id)a3
-{
-  [(ACMEUIController *)self delegate];
-  if (objc_opt_respondsToSelector())
-  {
-    v4 = [(ACMEUIController *)self delegate];
-
-    [(ACMUIControllerDelegate *)v4 uiControllerOnSignInCancel:self];
-  }
-}
-
-- (void)onIForgot:(id)a3
+- (void)onSignInCancel:(id)cancel
 {
   [(ACMEUIController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(ACMEUIController *)self delegate];
+    delegate = [(ACMEUIController *)self delegate];
 
-    [(ACMUIControllerDelegate *)v4 uiControllerOnSignIForgot:self];
+    [(ACMUIControllerDelegate *)delegate uiControllerOnSignInCancel:self];
   }
 }
 
-- (void)onManageAppleID:(id)a3
+- (void)onIForgot:(id)forgot
 {
-  v4 = [(ACMEUIController *)self delegate];
-  v5 = [(ACMBaseAuthenticationRequest *)[(ACMEUIController *)self request] realm];
+  [(ACMEUIController *)self delegate];
+  if (objc_opt_respondsToSelector())
+  {
+    delegate = [(ACMEUIController *)self delegate];
 
-  [(ACMUIControllerDelegate *)v4 onManageAppleIDForRealm:v5];
+    [(ACMUIControllerDelegate *)delegate uiControllerOnSignIForgot:self];
+  }
+}
+
+- (void)onManageAppleID:(id)d
+{
+  delegate = [(ACMEUIController *)self delegate];
+  realm = [(ACMBaseAuthenticationRequest *)[(ACMEUIController *)self request] realm];
+
+  [(ACMUIControllerDelegate *)delegate onManageAppleIDForRealm:realm];
 }
 
 - (void)signInDialogWillBecomeEnabled
@@ -322,9 +322,9 @@
   [(ACMEUIController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(ACMEUIController *)self delegate];
+    delegate = [(ACMEUIController *)self delegate];
 
-    [(ACMUIControllerDelegate *)v3 uiControllerWillEnableSignInDialog:self];
+    [(ACMUIControllerDelegate *)delegate uiControllerWillEnableSignInDialog:self];
   }
 }
 
@@ -333,9 +333,9 @@
   [(ACMEUIController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(ACMEUIController *)self delegate];
+    delegate = [(ACMEUIController *)self delegate];
 
-    [(ACMUIControllerDelegate *)v3 uiControllerDidEnableSignInDialog:self];
+    [(ACMUIControllerDelegate *)delegate uiControllerDidEnableSignInDialog:self];
   }
 }
 
@@ -344,9 +344,9 @@
   [(ACMEUIController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(ACMEUIController *)self delegate];
+    delegate = [(ACMEUIController *)self delegate];
 
-    [(ACMUIControllerDelegate *)v3 uiControllerWillDisableSignInDialog:self];
+    [(ACMUIControllerDelegate *)delegate uiControllerWillDisableSignInDialog:self];
   }
 }
 
@@ -355,9 +355,9 @@
   [(ACMEUIController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(ACMEUIController *)self delegate];
+    delegate = [(ACMEUIController *)self delegate];
 
-    [(ACMUIControllerDelegate *)v3 uiControllerDidDisableSignInDialog:self];
+    [(ACMUIControllerDelegate *)delegate uiControllerDidDisableSignInDialog:self];
   }
 }
 

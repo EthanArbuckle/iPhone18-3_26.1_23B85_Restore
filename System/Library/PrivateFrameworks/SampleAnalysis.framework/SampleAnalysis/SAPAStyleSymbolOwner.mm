@@ -1,20 +1,20 @@
 @interface SAPAStyleSymbolOwner
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4;
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5;
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length;
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary;
 - (unint64_t)sizeInBytesForSerializedVersion;
-- (void)addSelfToSerializationDictionary:(id)a3;
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6;
+- (void)addSelfToSerializationDictionary:(id)dictionary;
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary;
 @end
 
 @implementation SAPAStyleSymbolOwner
 
-- (BOOL)addSelfToBuffer:(void *)a3 bufferLength:(unint64_t)a4 withCompletedSerializationDictionary:(id)a5
+- (BOOL)addSelfToBuffer:(void *)buffer bufferLength:(unint64_t)length withCompletedSerializationDictionary:(id)dictionary
 {
   v5 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleSymbolOwner" userInfo:0];
   objc_exception_throw(v5);
 }
 
-- (void)addSelfToSerializationDictionary:(id)a3
+- (void)addSelfToSerializationDictionary:(id)dictionary
 {
   v3 = [SAException exceptionWithName:@"Encoding failure" reason:@"Trying to encode SAPAStyleSymbolOwner" userInfo:0];
   objc_exception_throw(v3);
@@ -26,64 +26,64 @@
   objc_exception_throw(v2);
 }
 
-+ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)a3 bufferLength:(unint64_t)a4
++ (id)newInstanceWithoutReferencesFromSerializedBuffer:(const void *)buffer bufferLength:(unint64_t)length
 {
-  if ((*a3 - 4293844428) >= 2 && *a3 != 287454020)
+  if ((*buffer - 4293844428) >= 2 && *buffer != 287454020)
   {
     v8 = [SAException exceptionWithName:@"Decoding failure" reason:@"Bad PASymbolOwner magic" userInfo:0];
     objc_exception_throw(v8);
   }
 
   result = objc_alloc_init(SAPAStyleSymbolOwner);
-  *(result + 2) = *(a3 + 4);
-  if (*a3 < 0xFFEEDDCDuLL)
+  *(result + 2) = *(buffer + 4);
+  if (*buffer < 0xFFEEDDCDuLL)
   {
     v7 = 0;
   }
 
   else
   {
-    v7 = *(a3 + 80);
+    v7 = *(buffer + 80);
   }
 
   *(result + 8) = v7;
   return result;
 }
 
-- (void)populateReferencesUsingBuffer:(const void *)a3 bufferLength:(unint64_t)a4 andDeserializationDictionary:(id)a5 andDataBufferDictionary:(id)a6
+- (void)populateReferencesUsingBuffer:(const void *)buffer bufferLength:(unint64_t)length andDeserializationDictionary:(id)dictionary andDataBufferDictionary:(id)bufferDictionary
 {
   v105 = *MEMORY[0x1E69E9840];
-  if ((*a3 - 4293844428) >= 2 && *a3 != 287454020)
+  if ((*buffer - 4293844428) >= 2 && *buffer != 287454020)
   {
 LABEL_70:
     v79 = @"Bad PASymbolOwner magic";
     goto LABEL_72;
   }
 
-  v11 = *(a3 + 3);
+  v11 = *(buffer + 3);
   v12 = objc_opt_class();
-  v13 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v11, a5, a6, v12, 0);
+  v13 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v11, dictionary, bufferDictionary, v12, 0);
   if (v13)
   {
-    v14 = *(a3 + 1);
+    v14 = *(buffer + 1);
     v87 = v13;
     v15 = objc_opt_class();
-    v82 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v14, a5, a6, v15, 0);
-    v16 = *(a3 + 2);
+    v82 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v14, dictionary, bufferDictionary, v15, 0);
+    v16 = *(buffer + 2);
     v17 = objc_opt_class();
-    v18 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v16, a5, a6, v17, 0);
-    v19 = *(a3 + 5);
+    v18 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v16, dictionary, bufferDictionary, v17, 0);
+    v19 = *(buffer + 5);
     v20 = objc_opt_class();
-    v85 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v19, a5, a6, v20, 0);
-    v21 = *(a3 + 6);
+    v85 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v19, dictionary, bufferDictionary, v20, 0);
+    v21 = *(buffer + 6);
     v22 = objc_opt_class();
-    v84 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v21, a5, a6, v22, 0);
-    v23 = *(a3 + 7);
+    v84 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v21, dictionary, bufferDictionary, v22, 0);
+    v23 = *(buffer + 7);
     v24 = objc_opt_class();
-    v83 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v23, a5, a6, v24, 0);
-    v25 = *(a3 + 8);
+    v83 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v23, dictionary, bufferDictionary, v24, 0);
+    v25 = *(buffer + 8);
     v26 = objc_opt_class();
-    v27 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v25, a5, a6, v26, 0);
+    v27 = _SASerializableInstanceForIndexUsingDeserializationDictionaryAndDataBufferDictionaryAndClass(v25, dictionary, bufferDictionary, v26, 0);
     newValue = v18;
     if ([v18 isAbsolutePath])
     {
@@ -111,59 +111,59 @@ LABEL_70:
       v92 = 1;
     }
 
-    v31 = [v30 name];
+    name = [v30 name];
 
-    if (!v31)
+    if (!name)
     {
       [(SABinary *)v30 setName:v82];
     }
 
-    v32 = [v30 path];
+    path = [v30 path];
 
     v34 = v30;
-    if (!v32 && v30)
+    if (!path && v30)
     {
       objc_setProperty_atomic_copy(v30, v33, newValue, 80);
       v34 = selfa;
     }
 
-    v35 = [v34 bundleIdentifier];
+    bundleIdentifier = [v34 bundleIdentifier];
 
     v37 = selfa;
-    if (!v35 && selfa)
+    if (!bundleIdentifier && selfa)
     {
       objc_setProperty_atomic_copy(selfa, v36, v85, 88);
       v37 = selfa;
     }
 
-    v38 = [v37 bundleVersion];
+    bundleVersion = [v37 bundleVersion];
 
     v40 = selfa;
-    if (!v38 && selfa)
+    if (!bundleVersion && selfa)
     {
       objc_setProperty_atomic_copy(selfa, v39, v84, 96);
       v40 = selfa;
     }
 
-    v41 = [v40 bundleShortVersion];
+    bundleShortVersion = [v40 bundleShortVersion];
 
     v43 = selfa;
-    if (!v41 && selfa)
+    if (!bundleShortVersion && selfa)
     {
       objc_setProperty_atomic_copy(selfa, v42, v83, 104);
       v43 = selfa;
     }
 
     v44 = v43;
-    v45 = [v43 binaryVersion];
+    binaryVersion = [v43 binaryVersion];
 
-    if (!v45 && v44)
+    if (!binaryVersion && v44)
     {
       objc_setProperty_atomic_copy(v44, v46, v27, 112);
     }
 
-    v47 = *a3;
-    if (*a3 < 0xFFEEDDCCuLL)
+    v47 = *buffer;
+    if (*buffer < 0xFFEEDDCCuLL)
     {
       goto LABEL_70;
     }
@@ -180,18 +180,18 @@ LABEL_70:
       {
         v79 = @"Bad PASerializedSymbolOwner magic";
 LABEL_72:
-        v80 = [SAException exceptionWithName:@"Decoding failure" reason:v79 userInfo:0, a6, v81];
+        v80 = [SAException exceptionWithName:@"Decoding failure" reason:v79 userInfo:0, bufferDictionary, v81];
         objc_exception_throw(v80);
       }
 
       v48 = 81;
     }
 
-    v49 = *(a3 + 9);
+    v49 = *(buffer + 9);
     if (v49)
     {
       v50 = objc_opt_class();
-      SASerializableNewMutableArrayFromIndexList(a3 + v48, v49, a5, a6, v50);
+      SASerializableNewMutableArrayFromIndexList(buffer + v48, v49, dictionary, bufferDictionary, v50);
       v99 = 0u;
       v100 = 0u;
       v101 = 0u;

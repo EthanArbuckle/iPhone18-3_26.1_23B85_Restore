@@ -1,21 +1,21 @@
 @interface _SBDefaultScreenshotProvider
-- (_SBDefaultScreenshotProvider)initWithScreen:(id)a3;
+- (_SBDefaultScreenshotProvider)initWithScreen:(id)screen;
 - (id)captureScreenshot;
 @end
 
 @implementation _SBDefaultScreenshotProvider
 
-- (_SBDefaultScreenshotProvider)initWithScreen:(id)a3
+- (_SBDefaultScreenshotProvider)initWithScreen:(id)screen
 {
-  v5 = a3;
+  screenCopy = screen;
   v11.receiver = self;
   v11.super_class = _SBDefaultScreenshotProvider;
   v6 = [(_SBDefaultScreenshotProvider *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_screen, a3);
-    v8 = [[SBScreenFlash alloc] initWithScreen:v5];
+    objc_storeStrong(&v6->_screen, screen);
+    v8 = [[SBScreenFlash alloc] initWithScreen:screenCopy];
     flasher = v7->_flasher;
     v7->_flasher = v8;
   }

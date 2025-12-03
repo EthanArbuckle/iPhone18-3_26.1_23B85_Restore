@@ -1,16 +1,16 @@
 @interface PKNavigationBar
-- (void)didAddSubview:(id)a3;
+- (void)didAddSubview:(id)subview;
 @end
 
 @implementation PKNavigationBar
 
-- (void)didAddSubview:(id)a3
+- (void)didAddSubview:(id)subview
 {
   v4.receiver = self;
   v4.super_class = PKNavigationBar;
-  v3 = a3;
-  [(PKNavigationBar *)&v4 didAddSubview:v3];
-  [v3 setExclusiveTouch:{1, v4.receiver, v4.super_class}];
+  subviewCopy = subview;
+  [(PKNavigationBar *)&v4 didAddSubview:subviewCopy];
+  [subviewCopy setExclusiveTouch:{1, v4.receiver, v4.super_class}];
 }
 
 @end

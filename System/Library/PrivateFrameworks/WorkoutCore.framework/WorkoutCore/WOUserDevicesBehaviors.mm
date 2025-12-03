@@ -1,10 +1,10 @@
 @interface WOUserDevicesBehaviors
 + (WOUserDevicesBehaviors)shared;
-+ (void)setShared:(id)a3;
++ (void)setShared:(id)shared;
 - (BOOL)supportsHeartRateZones;
 - (void)dealloc;
-- (void)didUpdateKeyValueDomain:(id)a3;
-- (void)workoutHealthDataAllowedWhenLockedWithCompletion:(id)a3;
+- (void)didUpdateKeyValueDomain:(id)domain;
+- (void)workoutHealthDataAllowedWhenLockedWithCompletion:(id)completion;
 @end
 
 @implementation WOUserDevicesBehaviors
@@ -31,10 +31,10 @@
   return static UserDevicesBehaviors.shared;
 }
 
-+ (void)setShared:(id)a3
++ (void)setShared:(id)shared
 {
   v3 = one-time initialization token for shared;
-  v4 = a3;
+  sharedCopy = shared;
   if (v3 != -1)
   {
     swift_once();
@@ -42,31 +42,31 @@
 
   swift_beginAccess();
   v5 = static UserDevicesBehaviors.shared;
-  static UserDevicesBehaviors.shared = v4;
+  static UserDevicesBehaviors.shared = sharedCopy;
 }
 
 - (void)dealloc
 {
   v2 = *(&self->super.isa + OBJC_IVAR___WOUserDevicesBehaviors_domain);
-  v3 = self;
+  selfCopy = self;
   [v2 stopObservation_];
-  v4.receiver = v3;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for UserDevicesBehaviors();
   [(WOUserDevicesBehaviors *)&v4 dealloc];
 }
 
-- (void)workoutHealthDataAllowedWhenLockedWithCompletion:(id)a3
+- (void)workoutHealthDataAllowedWhenLockedWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   UserDevicesBehaviors.workoutHealthDataAllowedWhenLocked(completion:)(_s10ObjectiveC8ObjCBoolVIeyBy_SbIegy_TRTA_0, v5);
 }
 
-- (void)didUpdateKeyValueDomain:(id)a3
+- (void)didUpdateKeyValueDomain:(id)domain
 {
-  v3 = self;
+  selfCopy = self;
   UserDevicesBehaviors.backgroundFetchWorkoutHealthDataAllowed()();
 }
 

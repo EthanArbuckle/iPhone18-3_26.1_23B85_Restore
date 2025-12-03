@@ -1,129 +1,129 @@
 @interface SPHandle
-+ (SPHandle)handleWithEmailAddress:(id)a3;
-+ (SPHandle)handleWithPhoneNumber:(id)a3;
-+ (SPHandle)handleWithRecipient:(id)a3;
-+ (SPHandle)handleWithString:(id)a3;
-+ (SPHandle)handleWithString:(id)a3 formattedName:(id)a4;
-+ (SPHandle)handleWithWeb:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SPHandle)initWithCoder:(id)a3;
-- (SPHandle)initWithType:(int64_t)a3 destination:(id)a4;
-- (SPHandle)initWithType:(int64_t)a3 destination:(id)a4 formattedName:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (SPHandle)handleWithEmailAddress:(id)address;
++ (SPHandle)handleWithPhoneNumber:(id)number;
++ (SPHandle)handleWithRecipient:(id)recipient;
++ (SPHandle)handleWithString:(id)string;
++ (SPHandle)handleWithString:(id)string formattedName:(id)name;
++ (SPHandle)handleWithWeb:(id)web;
+- (BOOL)isEqual:(id)equal;
+- (SPHandle)initWithCoder:(id)coder;
+- (SPHandle)initWithType:(int64_t)type destination:(id)destination;
+- (SPHandle)initWithType:(int64_t)type destination:(id)destination formattedName:(id)name;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SPHandle
 
-+ (SPHandle)handleWithString:(id)a3
++ (SPHandle)handleWithString:(id)string
 {
-  v3 = a3;
-  if ([v3 containsString:@"@"])
+  stringCopy = string;
+  if ([stringCopy containsString:@"@"])
   {
-    [SPHandle handleWithEmailAddress:v3];
+    [SPHandle handleWithEmailAddress:stringCopy];
   }
 
   else
   {
-    [SPHandle handleWithPhoneNumber:v3];
+    [SPHandle handleWithPhoneNumber:stringCopy];
   }
   v4 = ;
 
   return v4;
 }
 
-+ (SPHandle)handleWithString:(id)a3 formattedName:(id)a4
++ (SPHandle)handleWithString:(id)string formattedName:(id)name
 {
-  v5 = a4;
-  v6 = a3;
-  if ([v6 containsString:@"@"])
+  nameCopy = name;
+  stringCopy = string;
+  if ([stringCopy containsString:@"@"])
   {
-    [SPHandle handleWithEmailAddress:v6];
+    [SPHandle handleWithEmailAddress:stringCopy];
   }
 
   else
   {
-    [SPHandle handleWithPhoneNumber:v6];
+    [SPHandle handleWithPhoneNumber:stringCopy];
   }
   v7 = ;
 
-  [v7 setFormattedName:v5];
+  [v7 setFormattedName:nameCopy];
 
   return v7;
 }
 
-+ (SPHandle)handleWithEmailAddress:(id)a3
++ (SPHandle)handleWithEmailAddress:(id)address
 {
-  v3 = a3;
-  v4 = [[SPHandle alloc] initWithType:0 destination:v3];
+  addressCopy = address;
+  v4 = [[SPHandle alloc] initWithType:0 destination:addressCopy];
 
   return v4;
 }
 
-+ (SPHandle)handleWithPhoneNumber:(id)a3
++ (SPHandle)handleWithPhoneNumber:(id)number
 {
-  v3 = a3;
-  v4 = [[SPHandle alloc] initWithType:1 destination:v3];
+  numberCopy = number;
+  v4 = [[SPHandle alloc] initWithType:1 destination:numberCopy];
 
   return v4;
 }
 
-+ (SPHandle)handleWithWeb:(id)a3
++ (SPHandle)handleWithWeb:(id)web
 {
-  v3 = a3;
-  v4 = [[SPHandle alloc] initWithType:2 destination:v3];
+  webCopy = web;
+  v4 = [[SPHandle alloc] initWithType:2 destination:webCopy];
 
   return v4;
 }
 
-+ (SPHandle)handleWithRecipient:(id)a3
++ (SPHandle)handleWithRecipient:(id)recipient
 {
-  v3 = a3;
-  v4 = [[SPHandle alloc] initWithType:3 destination:v3];
+  recipientCopy = recipient;
+  v4 = [[SPHandle alloc] initWithType:3 destination:recipientCopy];
 
   return v4;
 }
 
-- (SPHandle)initWithType:(int64_t)a3 destination:(id)a4
+- (SPHandle)initWithType:(int64_t)type destination:(id)destination
 {
-  v7 = a4;
+  destinationCopy = destination;
   v11.receiver = self;
   v11.super_class = SPHandle;
   v8 = [(SPHandle *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_destination, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_destination, destination);
   }
 
   return v9;
 }
 
-- (SPHandle)initWithType:(int64_t)a3 destination:(id)a4 formattedName:(id)a5
+- (SPHandle)initWithType:(int64_t)type destination:(id)destination formattedName:(id)name
 {
-  v9 = a4;
-  v10 = a5;
+  destinationCopy = destination;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = SPHandle;
   v11 = [(SPHandle *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_type = a3;
-    objc_storeStrong(&v11->_destination, a4);
-    objc_storeStrong(&v12->_formattedName, a5);
+    v11->_type = type;
+    objc_storeStrong(&v11->_destination, destination);
+    objc_storeStrong(&v12->_formattedName, name);
   }
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -133,17 +133,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SPHandle *)self type];
-      if (v6 == [(SPHandle *)v5 type])
+      v5 = equalCopy;
+      type = [(SPHandle *)self type];
+      if (type == [(SPHandle *)v5 type])
       {
-        v7 = [(SPHandle *)self destination];
-        v8 = [(SPHandle *)v5 destination];
-        if ([v7 isEqualToString:v8])
+        destination = [(SPHandle *)self destination];
+        destination2 = [(SPHandle *)v5 destination];
+        if ([destination isEqualToString:destination2])
         {
-          v9 = [(SPHandle *)self formattedName];
-          v10 = [(SPHandle *)v5 formattedName];
-          v11 = [v9 isEqualToString:v10];
+          formattedName = [(SPHandle *)self formattedName];
+          formattedName2 = [(SPHandle *)v5 formattedName];
+          v11 = [formattedName isEqualToString:formattedName2];
         }
 
         else
@@ -169,44 +169,44 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SPHandle *)self destination];
-  v4 = [v3 hash];
+  destination = [(SPHandle *)self destination];
+  v4 = [destination hash];
   v5 = [(SPHandle *)self type]^ v4;
-  v6 = [(SPHandle *)self formattedName];
-  v7 = [v6 hash];
+  formattedName = [(SPHandle *)self formattedName];
+  v7 = [formattedName hash];
 
   return v5 ^ v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SPHandle alloc];
-  v5 = [(SPHandle *)self type];
-  v6 = [(SPHandle *)self destination];
-  v7 = [(SPHandle *)self formattedName];
-  v8 = [(SPHandle *)v4 initWithType:v5 destination:v6 formattedName:v7];
+  type = [(SPHandle *)self type];
+  destination = [(SPHandle *)self destination];
+  formattedName = [(SPHandle *)self formattedName];
+  v8 = [(SPHandle *)v4 initWithType:type destination:destination formattedName:formattedName];
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeObject:self->_destination forKey:@"destination"];
-  [v5 encodeObject:self->_formattedName forKey:@"formattedName"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_destination forKey:@"destination"];
+  [coderCopy encodeObject:self->_formattedName forKey:@"formattedName"];
 }
 
-- (SPHandle)initWithCoder:(id)a3
+- (SPHandle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  self->_type = [v4 decodeIntegerForKey:@"type"];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
+  coderCopy = coder;
+  self->_type = [coderCopy decodeIntegerForKey:@"type"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destination"];
   destination = self->_destination;
   self->_destination = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"formattedName"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"formattedName"];
 
   formattedName = self->_formattedName;
   self->_formattedName = v7;
@@ -218,10 +218,10 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(SPHandle *)self type];
-  v6 = [(SPHandle *)self destination];
-  v7 = [(SPHandle *)self formattedName];
-  v8 = [v3 stringWithFormat:@"<%@: %p %ld:%@ %@>", v4, self, v5, v6, v7];
+  type = [(SPHandle *)self type];
+  destination = [(SPHandle *)self destination];
+  formattedName = [(SPHandle *)self formattedName];
+  v8 = [v3 stringWithFormat:@"<%@: %p %ld:%@ %@>", v4, self, type, destination, formattedName];
 
   return v8;
 }

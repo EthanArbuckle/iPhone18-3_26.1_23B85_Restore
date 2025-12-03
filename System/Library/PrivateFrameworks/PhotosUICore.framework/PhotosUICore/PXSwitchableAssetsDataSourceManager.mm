@@ -1,7 +1,7 @@
 @interface PXSwitchableAssetsDataSourceManager
 - (BOOL)forceAccurateAllSectionsIfNeeded;
-- (BOOL)forceAccurateSection:(int64_t)a3 andSectionsBeforeAndAfter:(int64_t)a4;
-- (BOOL)forceAccurateSectionsIfNeeded:(id)a3;
+- (BOOL)forceAccurateSection:(int64_t)section andSectionsBeforeAndAfter:(int64_t)after;
+- (BOOL)forceAccurateSectionsIfNeeded:(id)needed;
 - (BOOL)includeOthersInSocialGroupAssets;
 - (BOOL)isBackgroundFetching;
 - (BOOL)isLoadingInitialDataSource;
@@ -12,59 +12,59 @@
 - (PXAssetsDataSourceManager)currentDataSourceManager;
 - (PXPhotosViewLens)currentLens;
 - (PXSwitchableAssetsDataSourceManager)init;
-- (PXSwitchableAssetsDataSourceManager)initWithDataSourceManagerByKey:(id)a3 currentKey:(id)a4;
-- (id)createDataSourceManagerForAsset:(id)a3;
-- (id)createDataSourceManagerForAssetsInSectionOfAsset:(id)a3 usingNewTransientAssetCollection:(BOOL)a4;
+- (PXSwitchableAssetsDataSourceManager)initWithDataSourceManagerByKey:(id)key currentKey:(id)currentKey;
+- (id)createDataSourceManagerForAsset:(id)asset;
+- (id)createDataSourceManagerForAssetsInSectionOfAsset:(id)asset usingNewTransientAssetCollection:(BOOL)collection;
 - (id)createInitialDataSource;
 - (id)createReverselySortedDataSourceManager;
 - (id)filterPredicate;
 - (id)localizedEmptyPlaceholderAttributedMessage;
 - (id)localizedEmptyPlaceholderTitle;
 - (id)localizedLoadingInitialDataSourceMessage;
-- (id)pauseChangeDeliveryWithTimeout:(double)a3 identifier:(id)a4;
+- (id)pauseChangeDeliveryWithTimeout:(double)timeout identifier:(id)identifier;
 - (id)sharedLibraryStatusProvider;
 - (id)sortDescriptors;
 - (int64_t)backgroundFetchOriginSection;
-- (void)_enumerateAllDataSourceManagers:(id)a3;
+- (void)_enumerateAllDataSourceManagers:(id)managers;
 - (void)_invalidateCurrentDataSource;
 - (void)_updateCurrentDataSource;
-- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)a3;
-- (void)assetsDataSourceManagerDidFinishLoadingInitialDataSource:(id)a3;
+- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)fetching;
+- (void)assetsDataSourceManagerDidFinishLoadingInitialDataSource:(id)source;
 - (void)didPerformChanges;
 - (void)ensureLastSectionHasContent;
 - (void)ensureStartingSectionHasContent;
-- (void)excludeAssetsAtIndexPaths:(id)a3;
-- (void)forceIncludeAssetsAtIndexPaths:(id)a3;
+- (void)excludeAssetsAtIndexPaths:(id)paths;
+- (void)forceIncludeAssetsAtIndexPaths:(id)paths;
 - (void)markContentAsViewed;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)refreshResultsForAssetCollection:(id)a3;
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3;
-- (void)setAllowedUUIDs:(id)a3;
-- (void)setAllowedUUIDs:(id)a3 manualOrderUUIDs:(id)a4 forAssetCollections:(id)a5;
-- (void)setAllowedUUIDs:(id)a3 provideIncrementalChangeDetailsForAssetCollections:(id)a4;
-- (void)setBackgroundFetchOriginSection:(int64_t)a3;
-- (void)setCurationEnabled:(BOOL)a3 forAssetCollection:(id)a4;
-- (void)setCurationEnabledForAllCollections:(BOOL)a3 curationLength:(int64_t)a4 collectionsToDiff:(id)a5;
-- (void)setCurrentKey:(id)a3;
-- (void)setFilterPredicate:(id)a3;
-- (void)setFilterPredicate:(id)a3 provideIncrementalChangeDetailsForAssetCollections:(id)a4;
-- (void)setFilteringDisabled:(BOOL)a3 forAssetCollection:(id)a4;
-- (void)setIncludeOthersInSocialGroupAssets:(BOOL)a3;
-- (void)setIncludeOthersInSocialGroupAssets:(BOOL)a3 provideIncrementalChangeDetailsForAssetCollections:(id)a4;
-- (void)setReverseSortOrder:(BOOL)a3;
-- (void)setSortDescriptors:(id)a3;
-- (void)stopExcludingAssets:(id)a3;
-- (void)waitForAvailabilityOfAsset:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)refreshResultsForAssetCollection:(id)collection;
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading;
+- (void)setAllowedUUIDs:(id)ds;
+- (void)setAllowedUUIDs:(id)ds manualOrderUUIDs:(id)iDs forAssetCollections:(id)collections;
+- (void)setAllowedUUIDs:(id)ds provideIncrementalChangeDetailsForAssetCollections:(id)collections;
+- (void)setBackgroundFetchOriginSection:(int64_t)section;
+- (void)setCurationEnabled:(BOOL)enabled forAssetCollection:(id)collection;
+- (void)setCurationEnabledForAllCollections:(BOOL)collections curationLength:(int64_t)length collectionsToDiff:(id)diff;
+- (void)setCurrentKey:(id)key;
+- (void)setFilterPredicate:(id)predicate;
+- (void)setFilterPredicate:(id)predicate provideIncrementalChangeDetailsForAssetCollections:(id)collections;
+- (void)setFilteringDisabled:(BOOL)disabled forAssetCollection:(id)collection;
+- (void)setIncludeOthersInSocialGroupAssets:(BOOL)assets;
+- (void)setIncludeOthersInSocialGroupAssets:(BOOL)assets provideIncrementalChangeDetailsForAssetCollections:(id)collections;
+- (void)setReverseSortOrder:(BOOL)order;
+- (void)setSortDescriptors:(id)descriptors;
+- (void)stopExcludingAssets:(id)assets;
+- (void)waitForAvailabilityOfAsset:(id)asset timeout:(double)timeout completionHandler:(id)handler;
 @end
 
 @implementation PXSwitchableAssetsDataSourceManager
 
-- (void)assetsDataSourceManagerDidFinishLoadingInitialDataSource:(id)a3
+- (void)assetsDataSourceManagerDidFinishLoadingInitialDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  sourceCopy = source;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
 
-  if (v5 == v4)
+  if (currentDataSourceManager == sourceCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -84,12 +84,12 @@ void __96__PXSwitchableAssetsDataSourceManager_assetsDataSourceManagerDidFinishL
   }
 }
 
-- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)a3
+- (void)assetsDataSourceManagerDidFinishBackgroundFetching:(id)fetching
 {
-  v4 = a3;
-  v5 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  fetchingCopy = fetching;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
 
-  if (v5 == v4)
+  if (currentDataSourceManager == fetchingCopy)
   {
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
@@ -109,20 +109,20 @@ void __90__PXSwitchableAssetsDataSourceManager_assetsDataSourceManagerDidFinishB
   }
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v6 = a4;
-  v9 = a3;
-  if (PXChildDataSourceManagerObservationContext != a5)
+  changeCopy = change;
+  observableCopy = observable;
+  if (PXChildDataSourceManagerObservationContext != context)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:357 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:357 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v10 = v9;
-  if (v6)
+  v10 = observableCopy;
+  if (changeCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
@@ -135,26 +135,26 @@ void __90__PXSwitchableAssetsDataSourceManager_assetsDataSourceManagerDidFinishB
 
 - (void)_updateCurrentDataSource
 {
-  v8 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSource];
-  v3 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v4 = [v3 dataSource];
-  [(PXSwitchableAssetsDataSourceManager *)self setCurrentDataSource:v4];
-  v5 = [(PXSwitchableAssetsDataSourceManager *)self currentKey];
-  [(PXSwitchableAssetsDataSourceManager *)self setCurrentDataSourceKey:v5];
+  currentDataSource = [(PXSwitchableAssetsDataSourceManager *)self currentDataSource];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  dataSource = [currentDataSourceManager dataSource];
+  [(PXSwitchableAssetsDataSourceManager *)self setCurrentDataSource:dataSource];
+  currentKey = [(PXSwitchableAssetsDataSourceManager *)self currentKey];
+  [(PXSwitchableAssetsDataSourceManager *)self setCurrentDataSourceKey:currentKey];
 
-  if (v8 != v4 && ([v8 isEqual:v4] & 1) == 0)
+  if (currentDataSource != dataSource && ([currentDataSource isEqual:dataSource] & 1) == 0)
   {
-    v6 = [v3 changeHistory];
-    v7 = [v6 changeDetailsFromDataSourceIdentifier:objc_msgSend(v8 toDataSourceIdentifier:{"identifier"), objc_msgSend(v4, "identifier")}];
+    changeHistory = [currentDataSourceManager changeHistory];
+    v7 = [changeHistory changeDetailsFromDataSourceIdentifier:objc_msgSend(currentDataSource toDataSourceIdentifier:{"identifier"), objc_msgSend(dataSource, "identifier")}];
 
-    [(PXSectionedDataSourceManager *)self setDataSource:v4 changeDetailsArray:v7];
+    [(PXSectionedDataSourceManager *)self setDataSource:dataSource changeDetailsArray:v7];
   }
 }
 
 - (void)_invalidateCurrentDataSource
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateCurrentDataSource];
+  updater = [(PXSwitchableAssetsDataSourceManager *)self updater];
+  [updater setNeedsUpdateOf:sel__updateCurrentDataSource];
 }
 
 - (void)didPerformChanges
@@ -162,369 +162,369 @@ void __90__PXSwitchableAssetsDataSourceManager_assetsDataSourceManagerDidFinishB
   v4.receiver = self;
   v4.super_class = PXSwitchableAssetsDataSourceManager;
   [(PXSwitchableAssetsDataSourceManager *)&v4 didPerformChanges];
-  v3 = [(PXSwitchableAssetsDataSourceManager *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXSwitchableAssetsDataSourceManager *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)_enumerateAllDataSourceManagers:(id)a3
+- (void)_enumerateAllDataSourceManagers:(id)managers
 {
-  v4 = a3;
+  managersCopy = managers;
   dataSourceManagerByKey = self->_dataSourceManagerByKey;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __71__PXSwitchableAssetsDataSourceManager__enumerateAllDataSourceManagers___block_invoke;
   v7[3] = &unk_1E7732ED8;
-  v8 = v4;
-  v6 = v4;
+  v8 = managersCopy;
+  v6 = managersCopy;
   [(NSDictionary *)dataSourceManagerByKey enumerateKeysAndObjectsUsingBlock:v7];
 }
 
 - (PXAssetsDataSourceManager)currentDataSourceManager
 {
   dataSourceManagerByKey = self->_dataSourceManagerByKey;
-  v3 = [(PXSwitchableAssetsDataSourceManager *)self currentKey];
-  v4 = [(NSDictionary *)dataSourceManagerByKey objectForKeyedSubscript:v3];
+  currentKey = [(PXSwitchableAssetsDataSourceManager *)self currentKey];
+  v4 = [(NSDictionary *)dataSourceManagerByKey objectForKeyedSubscript:currentKey];
 
   return v4;
 }
 
-- (void)setAllowedUUIDs:(id)a3 manualOrderUUIDs:(id)a4 forAssetCollections:(id)a5
+- (void)setAllowedUUIDs:(id)ds manualOrderUUIDs:(id)iDs forAssetCollections:(id)collections
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v11 setAllowedUUIDs:v10 manualOrderUUIDs:v9 forAssetCollections:v8];
+  collectionsCopy = collections;
+  iDsCopy = iDs;
+  dsCopy = ds;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager setAllowedUUIDs:dsCopy manualOrderUUIDs:iDsCopy forAssetCollections:collectionsCopy];
 }
 
-- (void)setAllowedUUIDs:(id)a3 provideIncrementalChangeDetailsForAssetCollections:(id)a4
+- (void)setAllowedUUIDs:(id)ds provideIncrementalChangeDetailsForAssetCollections:(id)collections
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v8 setAllowedUUIDs:v7 provideIncrementalChangeDetailsForAssetCollections:v6];
+  collectionsCopy = collections;
+  dsCopy = ds;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager setAllowedUUIDs:dsCopy provideIncrementalChangeDetailsForAssetCollections:collectionsCopy];
 }
 
-- (void)setAllowedUUIDs:(id)a3
+- (void)setAllowedUUIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v5 setAllowedUUIDs:v4];
+  dsCopy = ds;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager setAllowedUUIDs:dsCopy];
 }
 
-- (void)setFilteringDisabled:(BOOL)a3 forAssetCollection:(id)a4
+- (void)setFilteringDisabled:(BOOL)disabled forAssetCollection:(id)collection
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v7 setFilteringDisabled:v4 forAssetCollection:v6];
+  disabledCopy = disabled;
+  collectionCopy = collection;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager setFilteringDisabled:disabledCopy forAssetCollection:collectionCopy];
 }
 
-- (void)setIncludeOthersInSocialGroupAssets:(BOOL)a3 provideIncrementalChangeDetailsForAssetCollections:(id)a4
+- (void)setIncludeOthersInSocialGroupAssets:(BOOL)assets provideIncrementalChangeDetailsForAssetCollections:(id)collections
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v7 setIncludeOthersInSocialGroupAssets:v4 provideIncrementalChangeDetailsForAssetCollections:v6];
+  assetsCopy = assets;
+  collectionsCopy = collections;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager setIncludeOthersInSocialGroupAssets:assetsCopy provideIncrementalChangeDetailsForAssetCollections:collectionsCopy];
 }
 
-- (void)setIncludeOthersInSocialGroupAssets:(BOOL)a3
+- (void)setIncludeOthersInSocialGroupAssets:(BOOL)assets
 {
-  v3 = a3;
-  v4 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v4 setIncludeOthersInSocialGroupAssets:v3];
+  assetsCopy = assets;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager setIncludeOthersInSocialGroupAssets:assetsCopy];
 }
 
-- (void)setFilterPredicate:(id)a3 provideIncrementalChangeDetailsForAssetCollections:(id)a4
+- (void)setFilterPredicate:(id)predicate provideIncrementalChangeDetailsForAssetCollections:(id)collections
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v8 setFilterPredicate:v7 provideIncrementalChangeDetailsForAssetCollections:v6];
+  collectionsCopy = collections;
+  predicateCopy = predicate;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager setFilterPredicate:predicateCopy provideIncrementalChangeDetailsForAssetCollections:collectionsCopy];
 }
 
-- (void)setReverseSortOrder:(BOOL)a3
+- (void)setReverseSortOrder:(BOOL)order
 {
-  v3 = a3;
-  v4 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v4 setReverseSortOrder:v3];
+  orderCopy = order;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager setReverseSortOrder:orderCopy];
 }
 
-- (void)setSortDescriptors:(id)a3
+- (void)setSortDescriptors:(id)descriptors
 {
-  v4 = a3;
-  v5 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v5 setSortDescriptors:v4];
+  descriptorsCopy = descriptors;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager setSortDescriptors:descriptorsCopy];
 }
 
-- (void)setFilterPredicate:(id)a3
+- (void)setFilterPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v5 setFilterPredicate:v4];
+  predicateCopy = predicate;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager setFilterPredicate:predicateCopy];
 }
 
-- (void)refreshResultsForAssetCollection:(id)a3
+- (void)refreshResultsForAssetCollection:(id)collection
 {
-  v4 = a3;
-  v5 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v5 refreshResultsForAssetCollection:v4];
+  collectionCopy = collection;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager refreshResultsForAssetCollection:collectionCopy];
 }
 
-- (void)stopExcludingAssets:(id)a3
+- (void)stopExcludingAssets:(id)assets
 {
-  v4 = a3;
-  v5 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v5 stopExcludingAssets:v4];
+  assetsCopy = assets;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager stopExcludingAssets:assetsCopy];
 }
 
-- (void)excludeAssetsAtIndexPaths:(id)a3
+- (void)excludeAssetsAtIndexPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v5 excludeAssetsAtIndexPaths:v4];
+  pathsCopy = paths;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager excludeAssetsAtIndexPaths:pathsCopy];
 }
 
-- (void)forceIncludeAssetsAtIndexPaths:(id)a3
+- (void)forceIncludeAssetsAtIndexPaths:(id)paths
 {
-  v4 = a3;
-  v5 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v5 forceIncludeAssetsAtIndexPaths:v4];
+  pathsCopy = paths;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager forceIncludeAssetsAtIndexPaths:pathsCopy];
 }
 
 - (int64_t)backgroundFetchOriginSection
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 backgroundFetchOriginSection];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  backgroundFetchOriginSection = [currentDataSourceManager backgroundFetchOriginSection];
 
-  return v3;
+  return backgroundFetchOriginSection;
 }
 
-- (void)setBackgroundFetchOriginSection:(int64_t)a3
+- (void)setBackgroundFetchOriginSection:(int64_t)section
 {
-  v4 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v4 setBackgroundFetchOriginSection:a3];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager setBackgroundFetchOriginSection:section];
 }
 
 - (void)ensureStartingSectionHasContent
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v2 ensureStartingSectionHasContent];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager ensureStartingSectionHasContent];
 }
 
 - (void)ensureLastSectionHasContent
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v2 ensureLastSectionHasContent];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager ensureLastSectionHasContent];
 }
 
-- (BOOL)forceAccurateSection:(int64_t)a3 andSectionsBeforeAndAfter:(int64_t)a4
+- (BOOL)forceAccurateSection:(int64_t)section andSectionsBeforeAndAfter:(int64_t)after
 {
-  v6 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  LOBYTE(a4) = [v6 forceAccurateSection:a3 andSectionsBeforeAndAfter:a4];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  LOBYTE(after) = [currentDataSourceManager forceAccurateSection:section andSectionsBeforeAndAfter:after];
 
-  return a4;
+  return after;
 }
 
-- (BOOL)forceAccurateSectionsIfNeeded:(id)a3
+- (BOOL)forceAccurateSectionsIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v6 = [v5 forceAccurateSectionsIfNeeded:v4];
+  neededCopy = needed;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  v6 = [currentDataSourceManager forceAccurateSectionsIfNeeded:neededCopy];
 
   return v6;
 }
 
 - (BOOL)forceAccurateAllSectionsIfNeeded
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 forceAccurateAllSectionsIfNeeded];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  forceAccurateAllSectionsIfNeeded = [currentDataSourceManager forceAccurateAllSectionsIfNeeded];
 
-  return v3;
+  return forceAccurateAllSectionsIfNeeded;
 }
 
-- (void)setCurationEnabled:(BOOL)a3 forAssetCollection:(id)a4
+- (void)setCurationEnabled:(BOOL)enabled forAssetCollection:(id)collection
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v7 setCurationEnabled:v4 forAssetCollection:v6];
+  enabledCopy = enabled;
+  collectionCopy = collection;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager setCurationEnabled:enabledCopy forAssetCollection:collectionCopy];
 }
 
-- (void)setCurationEnabledForAllCollections:(BOOL)a3 curationLength:(int64_t)a4 collectionsToDiff:(id)a5
+- (void)setCurationEnabledForAllCollections:(BOOL)collections curationLength:(int64_t)length collectionsToDiff:(id)diff
 {
-  v6 = a3;
-  v8 = a5;
-  v9 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v9 setCurationEnabledForAllCollections:v6 curationLength:a4 collectionsToDiff:v8];
+  collectionsCopy = collections;
+  diffCopy = diff;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager setCurationEnabledForAllCollections:collectionsCopy curationLength:length collectionsToDiff:diffCopy];
 }
 
 - (void)markContentAsViewed
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v2 markContentAsViewed];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager markContentAsViewed];
 }
 
 - (id)createReverselySortedDataSourceManager
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 createReverselySortedDataSourceManager];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  createReverselySortedDataSourceManager = [currentDataSourceManager createReverselySortedDataSourceManager];
 
-  return v3;
+  return createReverselySortedDataSourceManager;
 }
 
-- (id)createDataSourceManagerForAsset:(id)a3
+- (id)createDataSourceManagerForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v6 = [v5 createDataSourceManagerForAsset:v4];
+  assetCopy = asset;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  v6 = [currentDataSourceManager createDataSourceManagerForAsset:assetCopy];
 
   return v6;
 }
 
-- (id)createDataSourceManagerForAssetsInSectionOfAsset:(id)a3 usingNewTransientAssetCollection:(BOOL)a4
+- (id)createDataSourceManagerForAssetsInSectionOfAsset:(id)asset usingNewTransientAssetCollection:(BOOL)collection
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v8 = [v7 createDataSourceManagerForAssetsInSectionOfAsset:v6 usingNewTransientAssetCollection:v4];
+  collectionCopy = collection;
+  assetCopy = asset;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  v8 = [currentDataSourceManager createDataSourceManagerForAssetsInSectionOfAsset:assetCopy usingNewTransientAssetCollection:collectionCopy];
 
   return v8;
 }
 
-- (void)waitForAvailabilityOfAsset:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)waitForAvailabilityOfAsset:(id)asset timeout:(double)timeout completionHandler:(id)handler
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  [v10 waitForAvailabilityOfAsset:v9 timeout:v8 completionHandler:a4];
+  handlerCopy = handler;
+  assetCopy = asset;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  [currentDataSourceManager waitForAvailabilityOfAsset:assetCopy timeout:handlerCopy completionHandler:timeout];
 }
 
 - (BOOL)isReverseSortOrder
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 isReverseSortOrder];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  isReverseSortOrder = [currentDataSourceManager isReverseSortOrder];
 
-  return v3;
+  return isReverseSortOrder;
 }
 
 - (id)sortDescriptors
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 sortDescriptors];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  sortDescriptors = [currentDataSourceManager sortDescriptors];
 
-  return v3;
+  return sortDescriptors;
 }
 
 - (BOOL)includeOthersInSocialGroupAssets
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 includeOthersInSocialGroupAssets];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  includeOthersInSocialGroupAssets = [currentDataSourceManager includeOthersInSocialGroupAssets];
 
-  return v3;
+  return includeOthersInSocialGroupAssets;
 }
 
 - (id)filterPredicate
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 filterPredicate];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  filterPredicate = [currentDataSourceManager filterPredicate];
 
-  return v3;
+  return filterPredicate;
 }
 
 - (BOOL)supportsFiltering
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 supportsFiltering];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  supportsFiltering = [currentDataSourceManager supportsFiltering];
 
-  return v3;
+  return supportsFiltering;
 }
 
 - (BOOL)supportsCurationToggling
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 supportsCurationToggling];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  supportsCurationToggling = [currentDataSourceManager supportsCurationToggling];
 
-  return v3;
+  return supportsCurationToggling;
 }
 
 - (BOOL)isBackgroundFetching
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 isBackgroundFetching];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  isBackgroundFetching = [currentDataSourceManager isBackgroundFetching];
 
-  return v3;
+  return isBackgroundFetching;
 }
 
 - (BOOL)isLoadingInitialDataSource
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 isLoadingInitialDataSource];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  isLoadingInitialDataSource = [currentDataSourceManager isLoadingInitialDataSource];
 
-  return v3;
+  return isLoadingInitialDataSource;
 }
 
 - (id)localizedLoadingInitialDataSourceMessage
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 localizedLoadingInitialDataSourceMessage];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  localizedLoadingInitialDataSourceMessage = [currentDataSourceManager localizedLoadingInitialDataSourceMessage];
 
-  return v3;
+  return localizedLoadingInitialDataSourceMessage;
 }
 
 - (id)localizedEmptyPlaceholderAttributedMessage
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 localizedEmptyPlaceholderAttributedMessage];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  localizedEmptyPlaceholderAttributedMessage = [currentDataSourceManager localizedEmptyPlaceholderAttributedMessage];
 
-  return v3;
+  return localizedEmptyPlaceholderAttributedMessage;
 }
 
 - (id)localizedEmptyPlaceholderTitle
 {
-  v2 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v3 = [v2 localizedEmptyPlaceholderTitle];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  localizedEmptyPlaceholderTitle = [currentDataSourceManager localizedEmptyPlaceholderTitle];
 
-  return v3;
+  return localizedEmptyPlaceholderTitle;
 }
 
 - (id)sharedLibraryStatusProvider
 {
-  v4 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 sharedLibraryStatusProvider];
-    if (v5)
+    sharedLibraryStatusProvider = [currentDataSourceManager sharedLibraryStatusProvider];
+    if (sharedLibraryStatusProvider)
     {
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v6 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v7 = objc_opt_class();
         v8 = NSStringFromClass(v7);
-        v9 = [v5 px_descriptionForAssertionMessage];
-        [v6 handleFailureInMethod:a2 object:self file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:128 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[(id<_PXStatusProviderWorkaround>)currentDataSourceManager sharedLibraryStatusProvider]", v8, v9}];
+        px_descriptionForAssertionMessage = [sharedLibraryStatusProvider px_descriptionForAssertionMessage];
+        [currentHandler handleFailureInMethod:a2 object:self file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:128 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"[(id<_PXStatusProviderWorkaround>)currentDataSourceManager sharedLibraryStatusProvider]", v8, px_descriptionForAssertionMessage}];
       }
     }
   }
 
   else
   {
-    v5 = 0;
+    sharedLibraryStatusProvider = 0;
   }
 
-  return v5;
+  return sharedLibraryStatusProvider;
 }
 
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading
 {
-  v5 = a3;
-  if (!v5)
+  loadingCopy = loading;
+  if (!loadingCopy)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v6 handleFailureInMethod:a2 object:self file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:112 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"token", v8}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:112 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"token", v8}];
 LABEL_6:
 
     goto LABEL_3;
@@ -533,11 +533,11 @@ LABEL_6:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = objc_opt_class();
     v8 = NSStringFromClass(v9);
-    v10 = [v5 px_descriptionForAssertionMessage];
-    [v6 handleFailureInMethod:a2 object:self file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:112 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"token", v8, v10}];
+    px_descriptionForAssertionMessage = [loadingCopy px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:112 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"token", v8, px_descriptionForAssertionMessage}];
 
     goto LABEL_6;
   }
@@ -548,7 +548,7 @@ LABEL_3:
   v11[2] = __80__PXSwitchableAssetsDataSourceManager_resumeChangeDeliveryAndBackgroundLoading___block_invoke;
   v11[3] = &unk_1E7732E90;
   v11[4] = self;
-  [v5 enumerateKeysAndObjectsUsingBlock:v11];
+  [loadingCopy enumerateKeysAndObjectsUsingBlock:v11];
 }
 
 void __80__PXSwitchableAssetsDataSourceManager_resumeChangeDeliveryAndBackgroundLoading___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -559,19 +559,19 @@ void __80__PXSwitchableAssetsDataSourceManager_resumeChangeDeliveryAndBackground
   [v6 resumeChangeDeliveryAndBackgroundLoading:v5];
 }
 
-- (id)pauseChangeDeliveryWithTimeout:(double)a3 identifier:(id)a4
+- (id)pauseChangeDeliveryWithTimeout:(double)timeout identifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __81__PXSwitchableAssetsDataSourceManager_pauseChangeDeliveryWithTimeout_identifier___block_invoke;
   v13[3] = &unk_1E7732E68;
   v8 = v7;
-  v16 = a3;
+  timeoutCopy = timeout;
   v14 = v8;
-  v15 = v6;
-  v9 = v6;
+  v15 = identifierCopy;
+  v9 = identifierCopy;
   [(PXSwitchableAssetsDataSourceManager *)self _enumerateAllDataSourceManagers:v13];
   v10 = v15;
   v11 = v8;
@@ -590,45 +590,45 @@ void __81__PXSwitchableAssetsDataSourceManager_pauseChangeDeliveryWithTimeout_id
 
 - (id)createInitialDataSource
 {
-  v3 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v4 = [v3 dataSource];
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  dataSource = [currentDataSourceManager dataSource];
 
-  objc_storeStrong(&self->_currentDataSource, v4);
+  objc_storeStrong(&self->_currentDataSource, dataSource);
 
-  return v4;
+  return dataSource;
 }
 
 - (PXPhotosViewLens)currentLens
 {
-  v4 = [(PXSwitchableAssetsDataSourceManager *)self currentKey];
-  if (v4)
+  currentKey = [(PXSwitchableAssetsDataSourceManager *)self currentKey];
+  if (currentKey)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = objc_opt_class();
       v8 = NSStringFromClass(v7);
-      v9 = [v4 px_descriptionForAssertionMessage];
-      [v6 handleFailureInMethod:a2 object:self file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:86 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.currentKey", v8, v9}];
+      px_descriptionForAssertionMessage = [currentKey px_descriptionForAssertionMessage];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:86 description:{@"%@ should be nil or an instance inheriting from %@, but it is %@", @"self.currentKey", v8, px_descriptionForAssertionMessage}];
     }
   }
 
-  return v4;
+  return currentKey;
 }
 
-- (void)setCurrentKey:(id)a3
+- (void)setCurrentKey:(id)key
 {
-  v5 = a3;
+  keyCopy = key;
   v6 = self->_currentKey;
   v7 = v6;
-  if (v6 == v5)
+  if (v6 == keyCopy)
   {
   }
 
   else
   {
-    v8 = [(NSCopying *)v6 isEqual:v5];
+    v8 = [(NSCopying *)v6 isEqual:keyCopy];
 
     if ((v8 & 1) == 0)
     {
@@ -637,7 +637,7 @@ void __81__PXSwitchableAssetsDataSourceManager_pauseChangeDeliveryWithTimeout_id
       v9[2] = __53__PXSwitchableAssetsDataSourceManager_setCurrentKey___block_invoke;
       v9[3] = &unk_1E7732E40;
       v9[4] = self;
-      v10 = v5;
+      v10 = keyCopy;
       v11 = a2;
       [(PXSwitchableAssetsDataSourceManager *)self performChanges:v9];
     }
@@ -669,25 +669,25 @@ uint64_t __53__PXSwitchableAssetsDataSourceManager_setCurrentKey___block_invoke(
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
-  v7 = [v3 stringWithFormat:@"<%@:%p currentDataSourceManager:%@>", v5, self, v6];;
+  currentDataSourceManager = [(PXSwitchableAssetsDataSourceManager *)self currentDataSourceManager];
+  v7 = [v3 stringWithFormat:@"<%@:%p currentDataSourceManager:%@>", v5, self, currentDataSourceManager];;
 
   return v7;
 }
 
 - (PXSwitchableAssetsDataSourceManager)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:55 description:{@"%s is not available as initializer", "-[PXSwitchableAssetsDataSourceManager init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:55 description:{@"%s is not available as initializer", "-[PXSwitchableAssetsDataSourceManager init]"}];
 
   abort();
 }
 
-- (PXSwitchableAssetsDataSourceManager)initWithDataSourceManagerByKey:(id)a3 currentKey:(id)a4
+- (PXSwitchableAssetsDataSourceManager)initWithDataSourceManagerByKey:(id)key currentKey:(id)currentKey
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  currentKeyCopy = currentKey;
   v32.receiver = self;
   v32.super_class = PXSwitchableAssetsDataSourceManager;
   v9 = [(PXSectionedDataSourceManager *)&v32 init];
@@ -696,40 +696,40 @@ uint64_t __53__PXSwitchableAssetsDataSourceManager_setCurrentKey___block_invoke(
     goto LABEL_12;
   }
 
-  if (![v7 count])
+  if (![keyCopy count])
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v26 handleFailureInMethod:a2 object:v9 file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"dataSourceManagers.count >= 1"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:v9 file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:39 description:{@"Invalid parameter not satisfying: %@", @"dataSourceManagers.count >= 1"}];
 
-    if (v8)
+    if (currentKeyCopy)
     {
       goto LABEL_4;
     }
 
 LABEL_14:
-    v27 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v27 handleFailureInMethod:a2 object:v9 file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"currentKey != nil"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:v9 file:@"PXSwitchableAssetsDataSourceManager.m" lineNumber:40 description:{@"Invalid parameter not satisfying: %@", @"currentKey != nil"}];
 
     goto LABEL_4;
   }
 
-  if (!v8)
+  if (!currentKeyCopy)
   {
     goto LABEL_14;
   }
 
 LABEL_4:
-  v10 = [v7 copy];
+  v10 = [keyCopy copy];
   dataSourceManagerByKey = v9->_dataSourceManagerByKey;
   v9->_dataSourceManagerByKey = v10;
 
-  v12 = [v8 copyWithZone:0];
+  v12 = [currentKeyCopy copyWithZone:0];
   currentKey = v9->_currentKey;
   v9->_currentKey = v12;
 
   v14 = objc_alloc(MEMORY[0x1E695DFD8]);
-  v15 = [v7 allKeys];
-  v16 = [v14 initWithArray:v15];
+  allKeys = [keyCopy allKeys];
+  v16 = [v14 initWithArray:allKeys];
   allKeys = v9->_allKeys;
   v9->_allKeys = v16;
 
@@ -742,8 +742,8 @@ LABEL_4:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v20 = [v7 allValues];
-  v21 = [v20 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  allValues = [keyCopy allValues];
+  v21 = [allValues countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v21)
   {
     v22 = v21;
@@ -755,14 +755,14 @@ LABEL_4:
       {
         if (*v29 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v28 + 1) + 8 * v24++) registerChangeObserver:v9 context:PXChildDataSourceManagerObservationContext];
       }
 
       while (v22 != v24);
-      v22 = [v20 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v22 = [allValues countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v22);

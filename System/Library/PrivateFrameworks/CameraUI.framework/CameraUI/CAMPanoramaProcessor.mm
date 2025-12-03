@@ -1,28 +1,28 @@
 @interface CAMPanoramaProcessor
-- (CAMPanoramaProcessor)initWithDelegate:(id)a3 encodingBehavior:(int64_t)a4;
+- (CAMPanoramaProcessor)initWithDelegate:(id)delegate encodingBehavior:(int64_t)behavior;
 - (CAMPanoramaProcessorDelegate)delegate;
 - (CGSize)previewSize;
 - (void)dealloc;
 - (void)invalidate;
-- (void)processPanoramaCaptureWithRequest:(id)a3 completionHandler:(id)a4;
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (void)setDirection:(int64_t)a3;
-- (void)startPanoramaCaptureWithRequest:(id)a3;
+- (void)processPanoramaCaptureWithRequest:(id)request completionHandler:(id)handler;
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (void)setDirection:(int64_t)direction;
+- (void)startPanoramaCaptureWithRequest:(id)request;
 - (void)stopPanoramaCapture;
 @end
 
 @implementation CAMPanoramaProcessor
 
-- (CAMPanoramaProcessor)initWithDelegate:(id)a3 encodingBehavior:(int64_t)a4
+- (CAMPanoramaProcessor)initWithDelegate:(id)delegate encodingBehavior:(int64_t)behavior
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v38.receiver = self;
   v38.super_class = CAMPanoramaProcessor;
   v7 = [(CAMPanoramaProcessor *)&v38 init];
   v8 = v7;
   if (v7)
   {
-    v7->_photoEncodingBehavior = a4;
+    v7->_photoEncodingBehavior = behavior;
     v7->_direction = 1;
     v9 = objc_alloc_init(MEMORY[0x1E695DF90]);
     initialMetadataByRequestUUID = v8->__initialMetadataByRequestUUID;
@@ -44,13 +44,13 @@
         [v16 setObject:v18 forKey:*MEMORY[0x1E6985F28]];
       }
 
-      if (a4 == 1)
+      if (behavior == 1)
       {
         [v16 setObject:MEMORY[0x1E695E118] forKey:*MEMORY[0x1E6985F48]];
       }
 
-      v19 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v19 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
 
       +[CAMPanoramaUtilities defaultPreviewSize];
       v20 = *MEMORY[0x1E695E480];
@@ -107,7 +107,7 @@
             CFRelease(v34);
           }
 
-          objc_storeWeak(&v8->_delegate, v6);
+          objc_storeWeak(&v8->_delegate, delegateCopy);
           v32 = v35;
           v8->_previewSize.width = valuePtr;
           v8->_previewSize.height = v32;
@@ -163,13 +163,13 @@ LABEL_16:
   [(CAMPanoramaProcessor *)&v4 dealloc];
 }
 
-- (void)setDirection:(int64_t)a3
+- (void)setDirection:(int64_t)direction
 {
-  if (self->_direction != a3)
+  if (self->_direction != direction)
   {
-    self->_direction = a3;
+    self->_direction = direction;
     [(CAMPanoramaProcessor *)self _processor];
-    v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v4 = [MEMORY[0x1E696AD98] numberWithInteger:direction];
     FigBaseObject = FigSampleBufferProcessorGetFigBaseObject();
     v6 = *(*(CMBaseObjectGetVTable() + 8) + 56);
     if (v6)
@@ -181,9 +181,9 @@ LABEL_16:
   }
 }
 
-- (void)startPanoramaCaptureWithRequest:(id)a3
+- (void)startPanoramaCaptureWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   if ([(CAMPanoramaProcessor *)self isCapturingPanorama])
   {
     v5 = os_log_create("com.apple.camera", "Camera");
@@ -196,8 +196,8 @@ LABEL_16:
 
   else
   {
-    v6 = [v4 photoEncodingBehavior];
-    if (v6 == [(CAMPanoramaProcessor *)self photoEncodingBehavior])
+    photoEncodingBehavior = [requestCopy photoEncodingBehavior];
+    if (photoEncodingBehavior == [(CAMPanoramaProcessor *)self photoEncodingBehavior])
     {
       [(CAMPanoramaProcessor *)self _greenTeaLogger];
       v7 = getCTGreenTeaOsLogHandle();
@@ -208,11 +208,11 @@ LABEL_16:
         _os_log_impl(&dword_1A3640000, v8, OS_LOG_TYPE_INFO, "Take a photo", v11, 2u);
       }
 
-      [(CAMPanoramaProcessor *)self _setRequest:v4];
-      v5 = [CAMCaptureMetadataUtilities metadataFromPanoramaRequest:v4];
-      v9 = [(CAMPanoramaProcessor *)self _initialMetadataByRequestUUID];
-      v10 = [v4 persistenceUUID];
-      [v9 setObject:v5 forKeyedSubscript:v10];
+      [(CAMPanoramaProcessor *)self _setRequest:requestCopy];
+      v5 = [CAMCaptureMetadataUtilities metadataFromPanoramaRequest:requestCopy];
+      _initialMetadataByRequestUUID = [(CAMPanoramaProcessor *)self _initialMetadataByRequestUUID];
+      persistenceUUID = [requestCopy persistenceUUID];
+      [_initialMetadataByRequestUUID setObject:v5 forKeyedSubscript:persistenceUUID];
 
       [(CAMPanoramaProcessor *)self _processor];
       if ([(CAMPanoramaProcessor *)self photoEncodingBehavior]== 1)
@@ -261,11 +261,11 @@ LABEL_16:
   }
 }
 
-- (void)processPanoramaCaptureWithRequest:(id)a3 completionHandler:(id)a4
+- (void)processPanoramaCaptureWithRequest:(id)request completionHandler:(id)handler
 {
-  v42 = a4;
-  v6 = a3;
-  v7 = [v6 persistenceUUID];
+  handlerCopy = handler;
+  requestCopy = request;
+  persistenceUUID = [requestCopy persistenceUUID];
   [(CAMPanoramaProcessor *)self _processor];
   v43 = 0;
   FigBaseObject = FigSampleBufferProcessorGetFigBaseObject();
@@ -282,10 +282,10 @@ LABEL_16:
     v10 = 0;
   }
 
-  v11 = [(CAMPanoramaProcessor *)self _initialMetadataByRequestUUID];
-  v12 = [v11 objectForKeyedSubscript:v7];
-  v41 = v11;
-  [v11 setObject:0 forKeyedSubscript:v7];
+  _initialMetadataByRequestUUID = [(CAMPanoramaProcessor *)self _initialMetadataByRequestUUID];
+  v12 = [_initialMetadataByRequestUUID objectForKeyedSubscript:persistenceUUID];
+  v41 = _initialMetadataByRequestUUID;
+  [_initialMetadataByRequestUUID setObject:0 forKeyedSubscript:persistenceUUID];
   v40 = v12;
   v13 = [v12 mutableCopy];
   v14 = *MEMORY[0x1E696D9B0];
@@ -316,17 +316,17 @@ LABEL_16:
 
   v22 = [v10 objectForKey:@"JPEG"];
   v23 = [v10 objectForKey:*MEMORY[0x1E6985ED0]];
-  v24 = [v23 unsignedLongValue];
+  unsignedLongValue = [v23 unsignedLongValue];
 
   AllocSize = IOSurfaceGetAllocSize(v22);
-  if (v24 - 1 >= AllocSize)
+  if (unsignedLongValue - 1 >= AllocSize)
   {
     v26 = AllocSize;
   }
 
   else
   {
-    v26 = v24;
+    v26 = unsignedLongValue;
   }
 
   v37 = v26;
@@ -342,7 +342,7 @@ LABEL_16:
   }
 
   v39 = v15;
-  v29 = v7;
+  v29 = persistenceUUID;
   if (v22)
   {
     v30 = 0;
@@ -360,17 +360,17 @@ LABEL_16:
   v34 = [[CAMCaptureCoordinationInfo alloc] initWithIdentifier:v29 allExpectedResultSpecifiers:v33 resultSpecifiers:0];
   LOBYTE(v36) = 0;
   v35 = [[CAMStillImageCaptureResult alloc] initWithFullsizeSurface:v22 size:v37 unfilteredPreviewSurface:IOSurface filteredPreviewSurface:0 metadata:v13 expectingPairedVideo:0 shouldPersistAdjustmentSidecar:v36 adjustmentFilters:0 persistenceUUID:v29 coordinationInfo:v34 error:v30];
-  if (v42)
+  if (handlerCopy)
   {
-    v42[2](v42, v35);
+    handlerCopy[2](handlerCopy, v35);
   }
 }
 
-- (void)processSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (void)processSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
-  v4 = [(CAMPanoramaProcessor *)self _processor];
+  _processor = [(CAMPanoramaProcessor *)self _processor];
   v5 = *(*(CMBaseObjectGetVTable() + 16) + 16);
-  if (!v5 || v5(v4, a3))
+  if (!v5 || v5(_processor, buffer))
   {
     v6 = os_log_create("com.apple.camera", "Camera");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))

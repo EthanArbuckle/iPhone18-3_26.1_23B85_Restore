@@ -1,5 +1,5 @@
 @interface TDThemeBitSource
-- (id)fileURLWithDocument:(id)a3;
+- (id)fileURLWithDocument:(id)document;
 - (id)name;
 @end
 
@@ -7,24 +7,24 @@
 
 - (id)name
 {
-  v2 = [(TDThemeBitSource *)self path];
+  path = [(TDThemeBitSource *)self path];
 
-  return [v2 lastPathComponent];
+  return [path lastPathComponent];
 }
 
-- (id)fileURLWithDocument:(id)a3
+- (id)fileURLWithDocument:(id)document
 {
-  v4 = [a3 rootPathForProductionData];
-  v5 = [(TDThemeBitSource *)self path];
-  if (v4)
+  rootPathForProductionData = [document rootPathForProductionData];
+  path = [(TDThemeBitSource *)self path];
+  if (rootPathForProductionData)
   {
-    v5 = [v4 stringByAppendingPathComponent:v5];
+    path = [rootPathForProductionData stringByAppendingPathComponent:path];
   }
 
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [v5 td_stringByStandardizingPath];
+  td_stringByStandardizingPath = [path td_stringByStandardizingPath];
 
-  return [v6 fileURLWithPath:v7 isDirectory:0];
+  return [v6 fileURLWithPath:td_stringByStandardizingPath isDirectory:0];
 }
 
 @end

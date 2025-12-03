@@ -1,26 +1,26 @@
 @interface FollowingViewController
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4;
-- (_TtC7NewsUI223FollowingViewController)initWithCoder:(id)a3;
-- (_TtC7NewsUI223FollowingViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender;
+- (_TtC7NewsUI223FollowingViewController)initWithCoder:(id)coder;
+- (_TtC7NewsUI223FollowingViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)contentScrollView;
 - (void)dealloc;
-- (void)delete:(id)a3;
-- (void)scrollToTopAnimated:(BOOL)a3;
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4;
-- (void)tabBarControllerDidDoubleTapBarButtonItem:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)delete:(id)delete;
+- (void)scrollToTopAnimated:(BOOL)animated;
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated;
+- (void)tabBarControllerDidDoubleTapBarButtonItem:(id)item;
+- (void)traitCollectionDidChange:(id)change;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation FollowingViewController
 
-- (_TtC7NewsUI223FollowingViewController)initWithCoder:(id)a3
+- (_TtC7NewsUI223FollowingViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC7NewsUI223FollowingViewController_previousSelectedIndexPath;
   v5 = sub_219BDC104();
@@ -34,47 +34,47 @@
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
 
   sub_219BE58F4();
 
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(FollowingViewController *)&v5 dealloc];
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_2198FC478();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2198FD37C(a3);
+  selfCopy = self;
+  sub_2198FD37C(appear);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_2198FD604(a3);
+  selfCopy = self;
+  sub_2198FD604(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v5.receiver = self;
   v5.super_class = swift_getObjectType();
   v4 = v5.receiver;
-  [(FollowingViewController *)&v5 viewWillDisappear:v3];
+  [(FollowingViewController *)&v5 viewWillDisappear:disappearCopy];
   sub_219BE5904();
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_2198FD914(a3);
+  selfCopy = self;
+  sub_2198FD914(disappear);
 }
 
 - (void)viewWillLayoutSubviews
@@ -83,15 +83,15 @@
   v15.super_class = swift_getObjectType();
   v2 = v15.receiver;
   [(FollowingViewController *)&v15 viewWillLayoutSubviews];
-  v3 = [*&v2[OBJC_IVAR____TtC7NewsUI223FollowingViewController_blueprintViewController] view];
-  if (v3)
+  view = [*&v2[OBJC_IVAR____TtC7NewsUI223FollowingViewController_blueprintViewController] view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [v2 view];
-    if (v5)
+    v4 = view;
+    view2 = [v2 view];
+    if (view2)
     {
-      v6 = v5;
-      [v5 bounds];
+      v6 = view2;
+      [view2 bounds];
       v8 = v7;
       v10 = v9;
       v12 = v11;
@@ -112,42 +112,42 @@
 
 - (void)viewSafeAreaInsetsDidChange
 {
-  v2 = self;
+  selfCopy = self;
   sub_2198FDF00();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
+  changeCopy = change;
   v5 = v7.receiver;
-  [(FollowingViewController *)&v7 traitCollectionDidChange:v4];
-  v6 = [v5 traitCollection];
-  sub_2198FCD94(v6);
+  [(FollowingViewController *)&v7 traitCollectionDidChange:changeCopy];
+  traitCollection = [v5 traitCollection];
+  sub_2198FCD94(traitCollection);
 }
 
 - (id)contentScrollView
 {
-  v2 = self;
+  selfCopy = self;
   sub_219BE8664();
   v3 = sub_219BE7BC4();
 
   return v3;
 }
 
-- (void)setEditing:(BOOL)a3 animated:(BOOL)a4
+- (void)setEditing:(BOOL)editing animated:(BOOL)animated
 {
-  v5 = a3;
-  v6 = self;
-  sub_2198FDA8C(v5, a4);
+  editingCopy = editing;
+  selfCopy = self;
+  sub_2198FDA8C(editingCopy, animated);
 }
 
-- (void)delete:(id)a3
+- (void)delete:(id)delete
 {
-  if (a3)
+  if (delete)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_219BF70B4();
     swift_unknownObjectRelease();
@@ -156,7 +156,7 @@
   else
   {
     memset(v6, 0, sizeof(v6));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   sub_2198FE34C();
@@ -164,11 +164,11 @@
   sub_2199013BC(v6, sub_21880702C);
 }
 
-- (BOOL)canPerformAction:(SEL)a3 withSender:(id)a4
+- (BOOL)canPerformAction:(SEL)action withSender:(id)sender
 {
-  if (a4)
+  if (sender)
   {
-    v6 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_219BF70B4();
     swift_unknownObjectRelease();
@@ -177,39 +177,39 @@
   else
   {
     memset(v10, 0, sizeof(v10));
-    v7 = self;
+    selfCopy2 = self;
   }
 
-  v8 = sub_2198FEB30(a3, v10);
+  v8 = sub_2198FEB30(action, v10);
 
   sub_2199013BC(v10, sub_21880702C);
   return v8 & 1;
 }
 
-- (_TtC7NewsUI223FollowingViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NewsUI223FollowingViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)tabBarControllerDidDoubleTapBarButtonItem:(id)a3
+- (void)tabBarControllerDidDoubleTapBarButtonItem:(id)item
 {
-  v4 = self;
+  selfCopy = self;
   sub_219BE8664();
   v3 = sub_219BE7BC4();
 
   [v3 scrollRectToVisible:1 animated:{0.0, 0.0, 1.0, 1.0}];
 }
 
-- (void)scrollToTopAnimated:(BOOL)a3
+- (void)scrollToTopAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = self;
+  animatedCopy = animated;
+  selfCopy = self;
   sub_219BE8664();
   v4 = sub_219BE7BC4();
 
-  [v4 ts:v3 scrollToTop:?];
+  [v4 ts:animatedCopy scrollToTop:?];
 }
 
 @end

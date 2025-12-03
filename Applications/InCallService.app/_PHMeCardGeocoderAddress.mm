@@ -1,33 +1,33 @@
 @interface _PHMeCardGeocoderAddress
 - (BOOL)checkGeocodeAfterDateForSanity;
 - (BOOL)expired;
-- (_PHMeCardGeocoderAddress)initWithCoder:(id)a3;
-- (_PHMeCardGeocoderAddress)initWithLabeledValue:(id)a3 entityID:(id)a4;
+- (_PHMeCardGeocoderAddress)initWithCoder:(id)coder;
+- (_PHMeCardGeocoderAddress)initWithLabeledValue:(id)value entityID:(id)d;
 - (id)createGeocodeAfterDate;
 - (id)debugDescription;
 - (id)nextGeocodeAttempt;
-- (void)attemptGeocodeWithCompletionBlock:(id)a3;
+- (void)attemptGeocodeWithCompletionBlock:(id)block;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)recalculateGeocodeAfterDate;
 @end
 
 @implementation _PHMeCardGeocoderAddress
 
-- (_PHMeCardGeocoderAddress)initWithLabeledValue:(id)a3 entityID:(id)a4
+- (_PHMeCardGeocoderAddress)initWithLabeledValue:(id)value entityID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  valueCopy = value;
+  dCopy = d;
   v15.receiver = self;
   v15.super_class = _PHMeCardGeocoderAddress;
   v9 = [(_PHMeCardGeocoderAddress *)&v15 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [dCopy copy];
     entityID = v9->_entityID;
     v9->_entityID = v10;
 
-    objc_storeStrong(&v9->_labeledValue, a3);
+    objc_storeStrong(&v9->_labeledValue, value);
     v12 = objc_alloc_init(CLGeocoder);
     geocoder = v9->_geocoder;
     v9->_geocoder = v12;
@@ -46,9 +46,9 @@
   [(_PHMeCardGeocoderAddress *)&v3 dealloc];
 }
 
-- (_PHMeCardGeocoderAddress)initWithCoder:(id)a3
+- (_PHMeCardGeocoderAddress)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = _PHMeCardGeocoderAddress;
   v5 = [(_PHMeCardGeocoderAddress *)&v22 init];
@@ -57,17 +57,17 @@
     v6 = objc_opt_class();
     v7 = [NSSet setWithObjects:v6, objc_opt_class(), 0];
     v8 = NSStringFromSelector("labeledValue");
-    v9 = [v4 decodeObjectOfClasses:v7 forKey:v8];
+    v9 = [coderCopy decodeObjectOfClasses:v7 forKey:v8];
 
     if (!v9)
     {
       v10 = objc_opt_class();
       v11 = [NSSet setWithObjects:v10, objc_opt_class(), 0];
-      v12 = [v4 decodeObjectOfClasses:v11 forKey:@"AddressDictionary"];
+      v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"AddressDictionary"];
 
       if (v12)
       {
-        v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
+        v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Label"];
         v14 = [CNPostalAddress postalAddressWithAddressBookDictionaryRepresentation:v12];
         if (v14)
         {
@@ -86,7 +86,7 @@
       }
     }
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"EntityID"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"EntityID"];
     entityID = v5->_entityID;
     v5->_entityID = v15;
 
@@ -94,9 +94,9 @@
     v5->_labeledValue = v9;
     v18 = v9;
 
-    v5->_state = [v4 decodeIntForKey:@"State"];
-    v5->_tries = [v4 decodeIntForKey:@"Tries"];
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"LastGeocodeAttempt"];
+    v5->_state = [coderCopy decodeIntForKey:@"State"];
+    v5->_tries = [coderCopy decodeIntForKey:@"Tries"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"LastGeocodeAttempt"];
     lastGeocodeAttempt = v5->_lastGeocodeAttempt;
     v5->_lastGeocodeAttempt = v19;
   }
@@ -104,20 +104,20 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   entityID = self->_entityID;
-  v7 = a3;
-  [v7 encodeObject:entityID forKey:@"EntityID"];
+  coderCopy = coder;
+  [coderCopy encodeObject:entityID forKey:@"EntityID"];
   labeledValue = self->_labeledValue;
   v6 = NSStringFromSelector("labeledValue");
-  [v7 encodeObject:labeledValue forKey:v6];
+  [coderCopy encodeObject:labeledValue forKey:v6];
 
-  [v7 encodeInt:self->_state forKey:@"State"];
-  [v7 encodeInt:self->_tries forKey:@"Tries"];
-  [v7 encodeObject:self->_lastGeocodeAttempt forKey:@"LastGeocodeAttempt"];
-  [v7 encodeObject:self->_locationDictionary forKey:@"LocationDictionary"];
-  [v7 encodeObject:self->_geocodeAfter forKey:@"GeocodeAfter"];
+  [coderCopy encodeInt:self->_state forKey:@"State"];
+  [coderCopy encodeInt:self->_tries forKey:@"Tries"];
+  [coderCopy encodeObject:self->_lastGeocodeAttempt forKey:@"LastGeocodeAttempt"];
+  [coderCopy encodeObject:self->_locationDictionary forKey:@"LocationDictionary"];
+  [coderCopy encodeObject:self->_geocodeAfter forKey:@"GeocodeAfter"];
 }
 
 - (id)createGeocodeAfterDate
@@ -134,11 +134,11 @@
   srandom(v4);
   v5 = random();
   v6 = +[_PHMeCardGeocoderPreferences sharedPreferences];
-  v7 = [v6 isActivelyUsing];
+  isActivelyUsing = [v6 isActivelyUsing];
 
   v8 = sub_100004F84();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
-  if (v7)
+  if (isActivelyUsing)
   {
     if (v9)
     {
@@ -181,7 +181,7 @@
 - (BOOL)checkGeocodeAfterDateForSanity
 {
   v3 = +[_PHMeCardGeocoderPreferences sharedPreferences];
-  v4 = [v3 isActivelyUsing];
+  isActivelyUsing = [v3 isActivelyUsing];
 
   geocodeAfter = self->_geocodeAfter;
   v6 = +[NSDate date];
@@ -189,7 +189,7 @@
   v8 = v7;
   v9 = +[_PHMeCardGeocoderPreferences sharedPreferences];
   v10 = v9;
-  if (v4)
+  if (isActivelyUsing)
   {
     [v9 activeUsagePeriodLength];
     v12 = v11;
@@ -246,17 +246,17 @@ LABEL_9:
   _objc_release_x1();
 }
 
-- (void)attemptGeocodeWithCompletionBlock:(id)a3
+- (void)attemptGeocodeWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if ([(CLGeocoder *)self->_geocoder isGeocoding])
   {
-    v4[2](v4, 0, self);
+    blockCopy[2](blockCopy, 0, self);
   }
 
   else if (self->_state == 2)
   {
-    v4[2](v4, 1, self);
+    blockCopy[2](blockCopy, 1, self);
   }
 
   else
@@ -269,12 +269,12 @@ LABEL_9:
     v11 = 3221225472;
     v12 = sub_1000B45DC;
     v13 = &unk_100358C20;
-    v14 = self;
-    v15 = v4;
+    selfCopy = self;
+    v15 = blockCopy;
     v7 = objc_retainBlock(&v10);
     v8 = [(_PHMeCardGeocoderAddress *)self geocoder:v10];
-    v9 = [(_PHMeCardGeocoderAddress *)self postalAddress];
-    [v8 geocodePostalAddress:v9 completionHandler:v7];
+    postalAddress = [(_PHMeCardGeocoderAddress *)self postalAddress];
+    [v8 geocodePostalAddress:postalAddress completionHandler:v7];
   }
 }
 
@@ -336,12 +336,12 @@ LABEL_9:
 
 - (BOOL)expired
 {
-  v3 = [(_PHMeCardGeocoderAddress *)self lastGeocodeAttempt];
-  if (v3)
+  lastGeocodeAttempt = [(_PHMeCardGeocoderAddress *)self lastGeocodeAttempt];
+  if (lastGeocodeAttempt)
   {
     v4 = +[NSDate date];
-    v5 = [(_PHMeCardGeocoderAddress *)self lastGeocodeAttempt];
-    [v4 timeIntervalSinceDate:v5];
+    lastGeocodeAttempt2 = [(_PHMeCardGeocoderAddress *)self lastGeocodeAttempt];
+    [v4 timeIntervalSinceDate:lastGeocodeAttempt2];
     v7 = v6 > 2592000.0;
   }
 
@@ -355,22 +355,22 @@ LABEL_9:
 
 - (id)debugDescription
 {
-  v3 = [(_PHMeCardGeocoderAddress *)self state];
-  if (v3 > 2)
+  state = [(_PHMeCardGeocoderAddress *)self state];
+  if (state > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = off_100358CD8[v3];
+    v4 = off_100358CD8[state];
   }
 
   v5 = objc_alloc_init(NSMutableString);
   [v5 appendFormat:@"<%@ %p ", objc_opt_class(), self];
   v6 = NSStringFromSelector("labeledValue");
-  v7 = [(_PHMeCardGeocoderAddress *)self labeledValue];
-  [v5 appendFormat:@"%@=%@", v6, v7];
+  labeledValue = [(_PHMeCardGeocoderAddress *)self labeledValue];
+  [v5 appendFormat:@"%@=%@", v6, labeledValue];
 
   [v5 appendFormat:@", "];
   v8 = NSStringFromSelector("state");
@@ -382,19 +382,19 @@ LABEL_9:
 
   [v5 appendFormat:@", "];
   v10 = NSStringFromSelector("lastGeocodeAttempt");
-  v11 = [(_PHMeCardGeocoderAddress *)self lastGeocodeAttempt];
-  [v5 appendFormat:@"%@=%@", v10, v11];
+  lastGeocodeAttempt = [(_PHMeCardGeocoderAddress *)self lastGeocodeAttempt];
+  [v5 appendFormat:@"%@=%@", v10, lastGeocodeAttempt];
 
   [v5 appendFormat:@", "];
   v12 = NSStringFromSelector("geocodeAfter");
-  v13 = [(_PHMeCardGeocoderAddress *)self geocodeAfter];
-  [v5 appendFormat:@"%@=%@", v12, v13];
+  geocodeAfter = [(_PHMeCardGeocoderAddress *)self geocodeAfter];
+  [v5 appendFormat:@"%@=%@", v12, geocodeAfter];
 
   [v5 appendFormat:@", "];
   v14 = NSStringFromSelector("expired");
-  v15 = [(_PHMeCardGeocoderAddress *)self expired];
+  expired = [(_PHMeCardGeocoderAddress *)self expired];
   v16 = @"NO";
-  if (v15)
+  if (expired)
   {
     v16 = @"YES";
   }
@@ -403,8 +403,8 @@ LABEL_9:
 
   [v5 appendFormat:@", "];
   v17 = NSStringFromSelector("locationDictionary");
-  v18 = [(_PHMeCardGeocoderAddress *)self locationDictionary];
-  [v5 appendFormat:@"%@=%@", v17, v18];
+  locationDictionary = [(_PHMeCardGeocoderAddress *)self locationDictionary];
+  [v5 appendFormat:@"%@=%@", v17, locationDictionary];
 
   [v5 appendFormat:@">"];
   v19 = [v5 copy];

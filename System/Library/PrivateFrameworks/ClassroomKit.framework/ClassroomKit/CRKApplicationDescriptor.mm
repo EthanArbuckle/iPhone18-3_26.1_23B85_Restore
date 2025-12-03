@@ -1,27 +1,27 @@
 @interface CRKApplicationDescriptor
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToApplicationDescriptor:(id)a3;
-- (CRKApplicationDescriptor)initWithBundleIdentifier:(id)a3 includeIcon:(BOOL)a4 includeBadgeIcon:(BOOL)a5;
-- (CRKApplicationDescriptor)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToApplicationDescriptor:(id)descriptor;
+- (CRKApplicationDescriptor)initWithBundleIdentifier:(id)identifier includeIcon:(BOOL)icon includeBadgeIcon:(BOOL)badgeIcon;
+- (CRKApplicationDescriptor)initWithCoder:(id)coder;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CRKApplicationDescriptor
 
-- (CRKApplicationDescriptor)initWithBundleIdentifier:(id)a3 includeIcon:(BOOL)a4 includeBadgeIcon:(BOOL)a5
+- (CRKApplicationDescriptor)initWithBundleIdentifier:(id)identifier includeIcon:(BOOL)icon includeBadgeIcon:(BOOL)badgeIcon
 {
-  v9 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = CRKApplicationDescriptor;
   v10 = [(CRKApplicationDescriptor *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_bundleIdentifier, a3);
-    v11->_includeIcon = a4;
-    v11->_includeBadgeIcon = a5;
+    objc_storeStrong(&v10->_bundleIdentifier, identifier);
+    v11->_includeIcon = icon;
+    v11->_includeBadgeIcon = badgeIcon;
   }
 
   return v11;
@@ -29,20 +29,20 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CRKApplicationDescriptor *)self bundleIdentifier];
-  v4 = [v3 hash];
+  bundleIdentifier = [(CRKApplicationDescriptor *)self bundleIdentifier];
+  v4 = [bundleIdentifier hash];
   v5 = v4 ^ [(CRKApplicationDescriptor *)self includeIcon];
-  v6 = [(CRKApplicationDescriptor *)self includeBadgeIcon];
+  includeBadgeIcon = [(CRKApplicationDescriptor *)self includeBadgeIcon];
 
-  return v5 ^ v6;
+  return v5 ^ includeBadgeIcon;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(CRKApplicationDescriptor *)self isEqualToApplicationDescriptor:v4];
+    v5 = [(CRKApplicationDescriptor *)self isEqualToApplicationDescriptor:equalCopy];
   }
 
   else
@@ -53,17 +53,17 @@
   return v5;
 }
 
-- (BOOL)isEqualToApplicationDescriptor:(id)a3
+- (BOOL)isEqualToApplicationDescriptor:(id)descriptor
 {
-  v4 = a3;
-  if (v4)
+  descriptorCopy = descriptor;
+  if (descriptorCopy)
   {
-    v5 = [(CRKApplicationDescriptor *)self bundleIdentifier];
-    v6 = [v4 bundleIdentifier];
-    if ((!(v5 | v6) || [v5 isEqual:v6]) && (v7 = -[CRKApplicationDescriptor includeIcon](self, "includeIcon"), v7 == objc_msgSend(v4, "includeIcon")))
+    bundleIdentifier = [(CRKApplicationDescriptor *)self bundleIdentifier];
+    bundleIdentifier2 = [descriptorCopy bundleIdentifier];
+    if ((!(bundleIdentifier | bundleIdentifier2) || [bundleIdentifier isEqual:bundleIdentifier2]) && (v7 = -[CRKApplicationDescriptor includeIcon](self, "includeIcon"), v7 == objc_msgSend(descriptorCopy, "includeIcon")))
     {
-      v9 = [(CRKApplicationDescriptor *)self includeBadgeIcon];
-      v8 = v9 ^ [v4 includeBadgeIcon] ^ 1;
+      includeBadgeIcon = [(CRKApplicationDescriptor *)self includeBadgeIcon];
+      v8 = includeBadgeIcon ^ [descriptorCopy includeBadgeIcon] ^ 1;
     }
 
     else
@@ -84,7 +84,7 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(CRKApplicationDescriptor *)self bundleIdentifier];
+  bundleIdentifier = [(CRKApplicationDescriptor *)self bundleIdentifier];
   if ([(CRKApplicationDescriptor *)self includeIcon])
   {
     v6 = @"YES";
@@ -106,45 +106,45 @@
     v8 = @"NO";
   }
 
-  v9 = [v3 stringWithFormat:@"<%@: %p { bundleIdentifier = %@, includeIcon = %@, includeBadgeIcon = %@ }>", v4, self, v5, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p { bundleIdentifier = %@, includeIcon = %@, includeBadgeIcon = %@ }>", v4, self, bundleIdentifier, v7, v8];
 
   return v9;
 }
 
-- (CRKApplicationDescriptor)initWithCoder:(id)a3
+- (CRKApplicationDescriptor)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CRKApplicationDescriptor;
   v5 = [(CRKApplicationDescriptor *)&v12 init];
   if (v5)
   {
     v6 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"bundleIdentifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"bundleIdentifier"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"includeIcon"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"includeIcon"];
     v5->_includeIcon = [v9 BOOLValue];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"includeBadgeIcon"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"includeBadgeIcon"];
     v5->_includeBadgeIcon = [v10 BOOLValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CRKApplicationDescriptor *)self bundleIdentifier];
-  [v4 encodeObject:v5 forKey:@"bundleIdentifier"];
+  coderCopy = coder;
+  bundleIdentifier = [(CRKApplicationDescriptor *)self bundleIdentifier];
+  [coderCopy encodeObject:bundleIdentifier forKey:@"bundleIdentifier"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKApplicationDescriptor includeIcon](self, "includeIcon")}];
-  [v4 encodeObject:v6 forKey:@"includeIcon"];
+  [coderCopy encodeObject:v6 forKey:@"includeIcon"];
 
   v7 = [MEMORY[0x277CCABB0] numberWithBool:{-[CRKApplicationDescriptor includeBadgeIcon](self, "includeBadgeIcon")}];
-  [v4 encodeObject:v7 forKey:@"includeBadgeIcon"];
+  [coderCopy encodeObject:v7 forKey:@"includeBadgeIcon"];
 }
 
 @end

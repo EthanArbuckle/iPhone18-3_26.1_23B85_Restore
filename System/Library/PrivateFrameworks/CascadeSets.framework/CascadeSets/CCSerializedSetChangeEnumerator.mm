@@ -1,36 +1,36 @@
 @interface CCSerializedSetChangeEnumerator
-- (BOOL)beginWithBookmark:(id)a3 error:(id *)a4;
-- (BOOL)isBookmarkUpToDate:(id)a3;
-- (CCSerializedSetChangeEnumerator)initWithSetMessage:(id)a3;
-- (id)_nextWithError:(id *)a3;
-- (id)itemInstanceCount:(id *)a3;
+- (BOOL)beginWithBookmark:(id)bookmark error:(id *)error;
+- (BOOL)isBookmarkUpToDate:(id)date;
+- (CCSerializedSetChangeEnumerator)initWithSetMessage:(id)message;
+- (id)_nextWithError:(id *)error;
+- (id)itemInstanceCount:(id *)count;
 - (id)next;
-- (id)sharedItemCount:(id *)a3;
+- (id)sharedItemCount:(id *)count;
 - (void)next;
 @end
 
 @implementation CCSerializedSetChangeEnumerator
 
-- (CCSerializedSetChangeEnumerator)initWithSetMessage:(id)a3
+- (CCSerializedSetChangeEnumerator)initWithSetMessage:(id)message
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  messageCopy = message;
   v32.receiver = self;
   v32.super_class = CCSerializedSetChangeEnumerator;
   v6 = [(CCSerializedSetChangeEnumerator *)&v32 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_setMessage, a3);
-    v8 = [(CCSerializedSetMessage *)v7->_setMessage items];
+    objc_storeStrong(&v6->_setMessage, message);
+    items = [(CCSerializedSetMessage *)v7->_setMessage items];
     items = v7->_items;
-    v7->_items = v8;
+    v7->_items = items;
 
-    v10 = [(CCSerializedSetMessage *)v7->_setMessage localDevice];
-    v11 = v10;
-    if (v10)
+    localDevice = [(CCSerializedSetMessage *)v7->_setMessage localDevice];
+    v11 = localDevice;
+    if (localDevice)
     {
-      v12 = _decodeDevice(v10);
+      v12 = _decodeDevice(localDevice);
       localDevice = v7->_localDevice;
       v7->_localDevice = v12;
 
@@ -43,15 +43,15 @@ LABEL_17:
       }
     }
 
-    v14 = [(CCSerializedSetMessage *)v7->_setMessage remoteDevices];
-    if ([v14 count])
+    remoteDevices = [(CCSerializedSetMessage *)v7->_setMessage remoteDevices];
+    if ([remoteDevices count])
     {
-      v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v14, "count")}];
+      v15 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(remoteDevices, "count")}];
       v28 = 0u;
       v29 = 0u;
       v30 = 0u;
       v31 = 0u;
-      v16 = v14;
+      v16 = remoteDevices;
       v17 = [v16 countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v17)
       {
@@ -104,11 +104,11 @@ LABEL_18:
   return v25;
 }
 
-- (BOOL)beginWithBookmark:(id)a3 error:(id *)a4
+- (BOOL)beginWithBookmark:(id)bookmark error:(id *)error
 {
   v20[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (v6)
+  bookmarkCopy = bookmark;
+  if (bookmarkCopy)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -124,13 +124,13 @@ LABEL_18:
       v20[0] = v14;
       v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v20 forKeys:&v19 count:1];
       v16 = [v8 initWithDomain:@"com.apple.CascadeSets.Set" code:2 userInfo:v15];
-      CCSetError(a4, v16);
+      CCSetError(error, v16);
 
       v7 = 0;
       goto LABEL_7;
     }
 
-    self->_index = [v6 unsignedIntegerValue];
+    self->_index = [bookmarkCopy unsignedIntegerValue];
   }
 
   else
@@ -145,16 +145,16 @@ LABEL_7:
   return v7;
 }
 
-- (id)_nextWithError:(id *)a3
+- (id)_nextWithError:(id *)error
 {
   if ([(CCSerializedSetChangeEnumerator *)self hasNext])
   {
     items = self->_items;
     ++self->_index;
     v6 = [(NSArray *)items objectAtIndexedSubscript:?];
-    v7 = [v6 itemType];
-    v8 = [v6 content];
-    v9 = [CCItemMessage contentMessageForItemType:v7 data:v8 error:a3];
+    itemType = [v6 itemType];
+    content = [v6 content];
+    v9 = [CCItemMessage contentMessageForItemType:itemType data:content error:error];
 
     if (v9)
     {
@@ -162,13 +162,13 @@ LABEL_7:
       v11 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v6, "sharedIdentifier")}];
       v24 = [(CCSharedItem *)v10 initWithSharedIdentifier:v11 content:v9];
 
-      v12 = [v6 localMetaContent];
+      localMetaContent = [v6 localMetaContent];
       v43 = 0;
       v44 = &v43;
       v45 = 0x3032000000;
       v46 = __Block_byref_object_copy__0;
       v47 = __Block_byref_object_dispose__0;
-      v23 = [v12 count];
+      v23 = [localMetaContent count];
       v48 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v23];
       v42[0] = 0;
       v42[1] = v42;
@@ -180,21 +180,21 @@ LABEL_7:
       v39 = __Block_byref_object_copy__0;
       v40 = __Block_byref_object_dispose__0;
       v41 = 0;
-      v13 = [v6 localInstanceIdentifiers];
+      localInstanceIdentifiers = [v6 localInstanceIdentifiers];
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __50__CCSerializedSetChangeEnumerator__nextWithError___block_invoke;
       v28[3] = &unk_1E7C8AE88;
       v32 = &v43;
-      v35 = v7;
-      v14 = v12;
+      v35 = itemType;
+      v14 = localMetaContent;
       v29 = v14;
       v33 = v42;
       v34 = &v36;
       v15 = v24;
       v30 = v15;
       v31 = v9;
-      [v13 enumerateInt64ValuesWithBlock:v28];
+      [localInstanceIdentifiers enumerateInt64ValuesWithBlock:v28];
 
       if (v44[5])
       {
@@ -205,15 +205,15 @@ LABEL_7:
           [v16 addObject:self->_localDevice];
         }
 
-        v18 = [v6 remoteDeviceIndices];
+        remoteDeviceIndices = [v6 remoteDeviceIndices];
         v25[0] = MEMORY[0x1E69E9820];
         v25[1] = 3221225472;
         v25[2] = __50__CCSerializedSetChangeEnumerator__nextWithError___block_invoke_2;
         v25[3] = &unk_1E7C8AEB0;
         v19 = v17;
         v26 = v19;
-        v27 = self;
-        [v18 enumerateUInt32ValuesWithBlock:v25];
+        selfCopy = self;
+        [remoteDeviceIndices enumerateUInt32ValuesWithBlock:v25];
 
         v20 = [CCSetChange alloc];
         v21 = [CCSetChange initWithSharedItem:v20 sharedItemChangeType:"initWithSharedItem:sharedItemChangeType:allDevices:addedDevices:removedDevices:allLocalInstances:addedLocalInstances:removedLocalInstances:" allDevices:v15 addedDevices:0 removedDevices:v19 allLocalInstances:v19 addedLocalInstances:v44[5] removedLocalInstances:MEMORY[0x1E695E0F0]];
@@ -221,7 +221,7 @@ LABEL_7:
 
       else
       {
-        CCSetError(a3, v37[5]);
+        CCSetError(error, v37[5]);
         v21 = 0;
       }
 
@@ -300,30 +300,30 @@ void __50__CCSerializedSetChangeEnumerator__nextWithError___block_invoke_2(uint6
   return v2;
 }
 
-- (id)sharedItemCount:(id *)a3
+- (id)sharedItemCount:(id *)count
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [(CCSerializedSetMessage *)self->_setMessage sharedItemCount];
+  sharedItemCount = [(CCSerializedSetMessage *)self->_setMessage sharedItemCount];
 
-  return [v3 numberWithUnsignedInt:v4];
+  return [v3 numberWithUnsignedInt:sharedItemCount];
 }
 
-- (id)itemInstanceCount:(id *)a3
+- (id)itemInstanceCount:(id *)count
 {
   v3 = MEMORY[0x1E696AD98];
-  v4 = [(CCSerializedSetMessage *)self->_setMessage localItemInstanceCount];
+  localItemInstanceCount = [(CCSerializedSetMessage *)self->_setMessage localItemInstanceCount];
 
-  return [v3 numberWithUnsignedInt:v4];
+  return [v3 numberWithUnsignedInt:localItemInstanceCount];
 }
 
-- (BOOL)isBookmarkUpToDate:(id)a3
+- (BOOL)isBookmarkUpToDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 unsignedIntegerValue];
-    v6 = v5 == [(NSArray *)self->_items count];
+    unsignedIntegerValue = [dateCopy unsignedIntegerValue];
+    v6 = unsignedIntegerValue == [(NSArray *)self->_items count];
   }
 
   else

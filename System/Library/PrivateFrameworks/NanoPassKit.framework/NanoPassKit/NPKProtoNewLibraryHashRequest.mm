@@ -1,21 +1,21 @@
 @interface NPKProtoNewLibraryHashRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasResyncID:(BOOL)a3;
-- (void)setHasSyncID:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasResyncID:(BOOL)d;
+- (void)setHasSyncID:(BOOL)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoNewLibraryHashRequest
 
-- (void)setHasResyncID:(BOOL)a3
+- (void)setHasResyncID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 2;
   }
@@ -28,9 +28,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasSyncID:(BOOL)a3
+- (void)setHasSyncID:(BOOL)d
 {
-  if (a3)
+  if (d)
   {
     v3 = 4;
   }
@@ -49,27 +49,27 @@
   v8.receiver = self;
   v8.super_class = NPKProtoNewLibraryHashRequest;
   v4 = [(NPKProtoNewLibraryHashRequest *)&v8 description];
-  v5 = [(NPKProtoNewLibraryHashRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoNewLibraryHashRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   libraryHash = self->_libraryHash;
   if (libraryHash)
   {
-    v5 = [(NPKProtoHash *)libraryHash dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"libraryHash"];
+    dictionaryRepresentation = [(NPKProtoHash *)libraryHash dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"libraryHash"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_resyncID];
-    [v3 setObject:v9 forKey:@"resyncID"];
+    [dictionary setObject:v9 forKey:@"resyncID"];
 
     has = self->_has;
     if ((has & 1) == 0)
@@ -90,29 +90,29 @@ LABEL_5:
   }
 
   v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_lastKnownResyncID];
-  [v3 setObject:v10 forKey:@"lastKnownResyncID"];
+  [dictionary setObject:v10 forKey:@"lastKnownResyncID"];
 
   if ((*&self->_has & 4) != 0)
   {
 LABEL_6:
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_syncID];
-    [v3 setObject:v7 forKey:@"syncID"];
+    [dictionary setObject:v7 forKey:@"syncID"];
   }
 
 LABEL_7:
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_libraryHash)
   {
     [NPKProtoNewLibraryHashRequest writeTo:];
   }
 
-  v10 = v4;
+  v10 = toCopy;
   PBDataWriterWriteSubmessage();
   has = self->_has;
   if ((has & 2) != 0)
@@ -138,15 +138,15 @@ LABEL_7:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v5 = a3;
-  [v5 setLibraryHash:self->_libraryHash];
+  toCopy = to;
+  [toCopy setLibraryHash:self->_libraryHash];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v5 + 6) = self->_resyncID;
-    *(v5 + 32) |= 2u;
+    *(toCopy + 6) = self->_resyncID;
+    *(toCopy + 32) |= 2u;
     has = self->_has;
     if ((has & 1) == 0)
     {
@@ -165,22 +165,22 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(v5 + 2) = self->_lastKnownResyncID;
-  *(v5 + 32) |= 1u;
+  *(toCopy + 2) = self->_lastKnownResyncID;
+  *(toCopy + 32) |= 1u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_4:
-    *(v5 + 7) = self->_syncID;
-    *(v5 + 32) |= 4u;
+    *(toCopy + 7) = self->_syncID;
+    *(toCopy + 32) |= 4u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NPKProtoHash *)self->_libraryHash copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NPKProtoHash *)self->_libraryHash copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -222,16 +222,16 @@ LABEL_4:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   libraryHash = self->_libraryHash;
-  if (libraryHash | *(v4 + 2))
+  if (libraryHash | *(equalCopy + 2))
   {
     if (![(NPKProtoHash *)libraryHash isEqual:?])
     {
@@ -241,13 +241,13 @@ LABEL_4:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_resyncID != *(v4 + 6))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_resyncID != *(equalCopy + 6))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
 LABEL_18:
     v6 = 0;
@@ -256,21 +256,21 @@ LABEL_18:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_lastKnownResyncID != *(v4 + 2))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_lastKnownResyncID != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_18;
   }
 
-  v6 = (*(v4 + 32) & 4) == 0;
+  v6 = (*(equalCopy + 32) & 4) == 0;
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 32) & 4) == 0 || self->_syncID != *(v4 + 7))
+    if ((*(equalCopy + 32) & 4) == 0 || self->_syncID != *(equalCopy + 7))
     {
       goto LABEL_18;
     }
@@ -324,11 +324,11 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   libraryHash = self->_libraryHash;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   if (libraryHash)
   {
     if (!v6)
@@ -336,7 +336,7 @@ LABEL_4:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(NPKProtoHash *)libraryHash mergeFrom:?];
   }
 
@@ -347,18 +347,18 @@ LABEL_4:
       goto LABEL_7;
     }
 
-    v8 = v4;
+    v8 = fromCopy;
     [(NPKProtoNewLibraryHashRequest *)self setLibraryHash:?];
   }
 
-  v4 = v8;
+  fromCopy = v8;
 LABEL_7:
-  v7 = *(v4 + 32);
+  v7 = *(fromCopy + 32);
   if ((v7 & 2) != 0)
   {
-    self->_resyncID = *(v4 + 6);
+    self->_resyncID = *(fromCopy + 6);
     *&self->_has |= 2u;
-    v7 = *(v4 + 32);
+    v7 = *(fromCopy + 32);
     if ((v7 & 1) == 0)
     {
 LABEL_9:
@@ -371,17 +371,17 @@ LABEL_9:
     }
   }
 
-  else if ((*(v4 + 32) & 1) == 0)
+  else if ((*(fromCopy + 32) & 1) == 0)
   {
     goto LABEL_9;
   }
 
-  self->_lastKnownResyncID = *(v4 + 2);
+  self->_lastKnownResyncID = *(fromCopy + 2);
   *&self->_has |= 1u;
-  if ((*(v4 + 32) & 4) != 0)
+  if ((*(fromCopy + 32) & 4) != 0)
   {
 LABEL_10:
-    self->_syncID = *(v4 + 7);
+    self->_syncID = *(fromCopy + 7);
     *&self->_has |= 4u;
   }
 

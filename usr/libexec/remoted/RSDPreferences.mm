@@ -1,24 +1,24 @@
 @interface RSDPreferences
-- (RSDPreferences)initWithPrefDomain:(id)a3;
-- (id)valueForKey:(id)a3;
+- (RSDPreferences)initWithPrefDomain:(id)domain;
+- (id)valueForKey:(id)key;
 - (void)eraseAll;
 - (void)migrateContentsOnDisk;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (void)setValue:(id)value forKey:(id)key;
 - (void)synchronize;
 @end
 
 @implementation RSDPreferences
 
-- (RSDPreferences)initWithPrefDomain:(id)a3
+- (RSDPreferences)initWithPrefDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v10.receiver = self;
   v10.super_class = RSDPreferences;
   v6 = [(RSDPreferences *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_prefDomain, a3);
+    objc_storeStrong(&v6->_prefDomain, domain);
     prefDomain = v7->_prefDomain;
     _CFPreferencesSetBackupDisabled();
   }
@@ -51,39 +51,39 @@
 
 - (void)eraseAll
 {
-  v3 = [(RSDPreferences *)self prefDomain];
-  v4 = CFPreferencesCopyKeyList(v3, kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
+  prefDomain = [(RSDPreferences *)self prefDomain];
+  v4 = CFPreferencesCopyKeyList(prefDomain, kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
 
   if (v4)
   {
-    v5 = [(RSDPreferences *)self prefDomain];
-    CFPreferencesSetMultiple(0, v4, v5, kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
+    prefDomain2 = [(RSDPreferences *)self prefDomain];
+    CFPreferencesSetMultiple(0, v4, prefDomain2, kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
 
     CFRelease(v4);
   }
 }
 
-- (id)valueForKey:(id)a3
+- (id)valueForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(RSDPreferences *)self prefDomain];
-  v6 = CFPreferencesCopyValue(v4, v5, kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
+  keyCopy = key;
+  prefDomain = [(RSDPreferences *)self prefDomain];
+  v6 = CFPreferencesCopyValue(keyCopy, prefDomain, kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(RSDPreferences *)self prefDomain];
-  CFPreferencesSetValue(v6, v7, v8, kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
+  keyCopy = key;
+  valueCopy = value;
+  prefDomain = [(RSDPreferences *)self prefDomain];
+  CFPreferencesSetValue(keyCopy, valueCopy, prefDomain, kCFPreferencesCurrentUser, kCFPreferencesCurrentHost);
 }
 
 - (void)synchronize
 {
-  v2 = [(RSDPreferences *)self prefDomain];
-  CFPreferencesAppSynchronize(v2);
+  prefDomain = [(RSDPreferences *)self prefDomain];
+  CFPreferencesAppSynchronize(prefDomain);
 }
 
 @end

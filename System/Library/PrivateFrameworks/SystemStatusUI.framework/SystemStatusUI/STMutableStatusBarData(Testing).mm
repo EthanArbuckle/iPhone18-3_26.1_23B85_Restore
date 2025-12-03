@@ -65,8 +65,8 @@
   v29 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v19 = [a1 entryKeys];
-  v20 = [v19 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  entryKeys = [self entryKeys];
+  v20 = [entryKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v20)
   {
     v21 = v20;
@@ -77,7 +77,7 @@
       {
         if (*v27 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(entryKeys);
         }
 
         v24 = *(*(&v26 + 1) + 8 * i);
@@ -87,7 +87,7 @@
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v21 = [entryKeys countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v21);
@@ -99,8 +99,8 @@
 + (id)subsetOfEntryKeys:()Testing withPercentage:
 {
   v6 = a4;
-  v7 = [a1 orderedEntryKeys];
-  v8 = llroundf([v7 count] * a2);
+  orderedEntryKeys = [self orderedEntryKeys];
+  v8 = llroundf([orderedEntryKeys count] * a2);
   v9 = [MEMORY[0x277CBEB58] setWithCapacity:v8];
   if (v8 >= 1)
   {
@@ -111,7 +111,7 @@
     v12 = v6;
     v13 = v9;
     v14 = v8;
-    [v7 enumerateObjectsUsingBlock:v11];
+    [orderedEntryKeys enumerateObjectsUsingBlock:v11];
   }
 
   return v9;
@@ -119,17 +119,17 @@
 
 + (id)_sampleCellularEntryWithSeed:()Testing key:entryKeys:enabledEntryKeys:
 {
-  v9 = (roundf(a1 * 25.0) + 97.0);
+  v9 = (roundf(self * 25.0) + 97.0);
   v10 = MEMORY[0x277D6BA88];
-  v11 = (roundf(a1 * 5.0) + 1.0);
+  v11 = (roundf(self * 5.0) + 1.0);
   v12 = MEMORY[0x277CCACA8];
-  v13 = llroundf(a1 * 9.0) + 1;
+  v13 = llroundf(self * 9.0) + 1;
   v14 = a6;
   v15 = a5;
   v16 = a4;
   v17 = [v12 stringWithFormat:@"Carrier Name %ld", v13];
-  v18 = a1 * 4.0;
-  if ((a1 * 4.0) >= 1.5 || v18 <= 1.25)
+  v18 = self * 4.0;
+  if ((self * 4.0) >= 1.5 || v18 <= 1.25)
   {
     v20 = 0;
   }
@@ -141,12 +141,12 @@
 
   v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%c", v9];
   v22 = llroundf(v18);
-  LOBYTE(v28) = a1 > 0.9;
-  LOBYTE(v27) = a1 < 0.2;
-  BYTE2(v26) = a1 < 0.1;
-  BYTE1(v26) = a1 < 0.4;
+  LOBYTE(v28) = self > 0.9;
+  LOBYTE(v27) = self < 0.2;
+  BYTE2(v26) = self < 0.1;
+  BYTE1(v26) = self < 0.4;
   LOBYTE(v26) = v18 > 1.0;
-  v23 = [v10 entryWithType:v11 stringValue:v17 crossfadeStringValue:v20 badgeStringValue:v21 wifiCalling:a1 > 0.75 callForwarding:a1 < 0.3 showsSOSWhenDisabled:v26 sosAvailable:v22 isBootstrapCellular:v27 status:llroundf(a1 * 1000.0) lowDataMode:v22 rawValue:v28 displayValue:? displayRawValue:?];
+  v23 = [v10 entryWithType:v11 stringValue:v17 crossfadeStringValue:v20 badgeStringValue:v21 wifiCalling:self > 0.75 callForwarding:self < 0.3 showsSOSWhenDisabled:v26 sosAvailable:v22 isBootstrapCellular:v27 status:llroundf(self * 1000.0) lowDataMode:v22 rawValue:v28 displayValue:? displayRawValue:?];
 
   v24 = [MEMORY[0x277D6BA88] entryWithKey:v16 updatedKeys:v15 enabledKeys:v14 populatedEntry:v23];
 
@@ -157,12 +157,12 @@
 {
   v8 = a4;
   v9 = a5;
-  v10 = objc_alloc_init(a1);
+  v10 = objc_alloc_init(self);
   if (!v8)
   {
-    v100 = [(objc_class *)a1 entryKeys];
+    entryKeys = [(objc_class *)self entryKeys];
     *&v101 = a2;
-    v8 = [(objc_class *)a1 subsetOfEntryKeys:v100 withPercentage:v101];
+    v8 = [(objc_class *)self subsetOfEntryKeys:entryKeys withPercentage:v101];
 
     if (v9)
     {
@@ -171,7 +171,7 @@
 
 LABEL_46:
     *&v11 = a2;
-    v9 = [(objc_class *)a1 subsetOfEntryKeys:v8 withPercentage:v11];
+    v9 = [(objc_class *)self subsetOfEntryKeys:v8 withPercentage:v11];
     goto LABEL_3;
   }
 
@@ -222,7 +222,7 @@ LABEL_3:
 
   [v10 setDeviceNameEntry:v32];
   *&v33 = a2;
-  v34 = [(objc_class *)a1 _sampleCellularEntryWithSeed:*MEMORY[0x277D6BD90] key:v8 entryKeys:v9 enabledEntryKeys:v33];
+  v34 = [(objc_class *)self _sampleCellularEntryWithSeed:*MEMORY[0x277D6BD90] key:v8 entryKeys:v9 enabledEntryKeys:v33];
   [v10 setCellularEntry:v34];
 
   v35 = -0.5;
@@ -233,7 +233,7 @@ LABEL_3:
 
   v36 = v35 + v16;
   *&v36 = v36;
-  v37 = [(objc_class *)a1 _sampleCellularEntryWithSeed:*MEMORY[0x277D6BE38] key:v8 entryKeys:v9 enabledEntryKeys:v36];
+  v37 = [(objc_class *)self _sampleCellularEntryWithSeed:*MEMORY[0x277D6BE38] key:v8 entryKeys:v9 enabledEntryKeys:v36];
   [v10 setSecondaryCellularEntry:v37];
 
   v38 = [MEMORY[0x277D6BB18] entryWithType:v16 > 0.9 status:llroundf(a2 * 4.0) lowDataMode:a2 < 0.2 rawValue:llroundf(a2 * 1000.0) displayValue:llroundf(a2 * 3.0) displayRawValue:v16 > 0.9];
@@ -419,8 +419,8 @@ LABEL_3:
 
   v95 = STUIBackgroundActivityIdentifiersForStyleOverrides(-1);
   v96 = vcvtas_u32_f32([v95 count] * a2);
-  v97 = [v95 allObjects];
-  v98 = [v97 objectAtIndexedSubscript:v96];
+  allObjects = [v95 allObjects];
+  v98 = [allObjects objectAtIndexedSubscript:v96];
 
   if ([*MEMORY[0x277D6BC60] isEqualToString:v98])
   {
@@ -475,15 +475,15 @@ LABEL_3:
 
   [v10 setBackgroundActivityEntry:v106];
   v107 = MEMORY[0x277D6BAF0];
-  v108 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@App %ld", v104, v119];
-  v109 = [v107 entryWithStringValue:v108];
+  v119 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@App %ld", v104, v119];
+  v109 = [v107 entryWithStringValue:v119];
 
   v110 = [MEMORY[0x277D6BAF0] entryWithKey:*MEMORY[0x277D6BD70] updatedKeys:v8 enabledKeys:v9 populatedEntry:v109];
 
   [v10 setBackNavigationEntry:v110];
   v111 = MEMORY[0x277D6BAF0];
-  v112 = [MEMORY[0x277CCACA8] stringWithFormat:@"Safari %ld", v119];
-  v113 = [v111 entryWithStringValue:v112];
+  v1192 = [MEMORY[0x277CCACA8] stringWithFormat:@"Safari %ld", v119];
+  v113 = [v111 entryWithStringValue:v1192];
 
   v114 = [MEMORY[0x277D6BAF0] entryWithKey:*MEMORY[0x277D6BDE0] updatedKeys:v8 enabledKeys:v9 populatedEntry:v113];
 
@@ -495,41 +495,41 @@ LABEL_3:
 - (id)subDataWithSupportedLegacyEntries
 {
   v2 = [MEMORY[0x277CBEB98] setWithObjects:{*MEMORY[0x277D6BE70], *MEMORY[0x277D6BE48], *MEMORY[0x277D6BDA0], *MEMORY[0x277D6BE08], *MEMORY[0x277D6BE00], *MEMORY[0x277D6BD80], *MEMORY[0x277D6BE68], *MEMORY[0x277D6BD38], *MEMORY[0x277D6BE60], *MEMORY[0x277D6BDF8], *MEMORY[0x277D6BE10], *MEMORY[0x277D6BDB8], *MEMORY[0x277D6BE18], *MEMORY[0x277D6BE28], *MEMORY[0x277D6BDF0], *MEMORY[0x277D6BD50], *MEMORY[0x277D6BE58], *MEMORY[0x277D6BD68], *MEMORY[0x277D6BE50], *MEMORY[0x277D6BE78], *MEMORY[0x277D6BE80], *MEMORY[0x277D6BD48], *MEMORY[0x277D6BD88], *MEMORY[0x277D6BD58], *MEMORY[0x277D6BD60], 0}];
-  v3 = [a1 dataByApplyingUpdate:a1 keys:v2];
-  v4 = [v3 lockEntry];
-  v5 = [v4 isEnabled];
+  v3 = [self dataByApplyingUpdate:self keys:v2];
+  lockEntry = [v3 lockEntry];
+  isEnabled = [lockEntry isEnabled];
 
-  if (v5)
+  if (isEnabled)
   {
     v6 = [MEMORY[0x277D6BAC8] entryWithUnlockFailureCount:0];
     [v3 setLockEntry:v6];
   }
 
-  v7 = [v3 bluetoothEntry];
-  v8 = [v7 batteryEntry];
-  v9 = [v8 isEnabled];
+  bluetoothEntry = [v3 bluetoothEntry];
+  batteryEntry = [bluetoothEntry batteryEntry];
+  isEnabled2 = [batteryEntry isEnabled];
 
-  if (v9)
+  if (isEnabled2)
   {
     v25 = MEMORY[0x277D6BA60];
-    v27 = [v3 bluetoothEntry];
-    v26 = [v27 batteryEntry];
-    v24 = [v26 capacity];
-    v10 = [v3 bluetoothEntry];
-    v11 = [v10 batteryEntry];
-    v12 = [v11 saverModeActive];
-    v13 = [v3 bluetoothEntry];
-    v14 = [v13 batteryEntry];
-    v15 = [v14 prominentlyShowsDetailString];
+    bluetoothEntry2 = [v3 bluetoothEntry];
+    batteryEntry2 = [bluetoothEntry2 batteryEntry];
+    capacity = [batteryEntry2 capacity];
+    bluetoothEntry3 = [v3 bluetoothEntry];
+    batteryEntry3 = [bluetoothEntry3 batteryEntry];
+    saverModeActive = [batteryEntry3 saverModeActive];
+    bluetoothEntry4 = [v3 bluetoothEntry];
+    batteryEntry4 = [bluetoothEntry4 batteryEntry];
+    prominentlyShowsDetailString = [batteryEntry4 prominentlyShowsDetailString];
     [v3 bluetoothEntry];
     v16 = v28 = v2;
-    v17 = [v16 batteryEntry];
-    v18 = [v17 detailString];
-    v19 = [v25 entryWithCapacity:v24 state:0 saverMode:v12 prominentlyShowsDetailString:v15 detailString:v18];
+    batteryEntry5 = [v16 batteryEntry];
+    detailString = [batteryEntry5 detailString];
+    v19 = [v25 entryWithCapacity:capacity state:0 saverMode:saverModeActive prominentlyShowsDetailString:prominentlyShowsDetailString detailString:detailString];
 
     v20 = MEMORY[0x277D6BA68];
-    v21 = [v3 bluetoothEntry];
-    v22 = [v20 entryWithState:objc_msgSend(v21 batteryEntry:{"state"), v19}];
+    bluetoothEntry5 = [v3 bluetoothEntry];
+    v22 = [v20 entryWithState:objc_msgSend(bluetoothEntry5 batteryEntry:{"state"), v19}];
     [v3 setBluetoothEntry:v22];
 
     v2 = v28;
@@ -550,57 +550,57 @@ LABEL_3:
   aBlock[3] = &unk_279D38218;
   aBlock[4] = &v143;
   v2 = _Block_copy(aBlock);
-  v3 = [a1 shortTimeEntry];
-  v4 = v2[2](v2, 0, v3);
+  shortTimeEntry = [self shortTimeEntry];
+  v4 = v2[2](v2, 0, shortTimeEntry);
 
   if (v4)
   {
     v5 = v144[3];
-    v6 = [a1 timeEntry];
-    v7 = [v6 stringValue];
-    strncpy((v5 + 46), [v7 UTF8String], 0x40uLL);
+    timeEntry = [self timeEntry];
+    stringValue = [timeEntry stringValue];
+    strncpy((v5 + 46), [stringValue UTF8String], 0x40uLL);
 
     v8 = v144[3];
-    v9 = [a1 shortTimeEntry];
-    v10 = [v9 stringValue];
-    strncpy((v8 + 110), [v10 UTF8String], 0x40uLL);
+    shortTimeEntry2 = [self shortTimeEntry];
+    stringValue2 = [shortTimeEntry2 stringValue];
+    strncpy((v8 + 110), [stringValue2 UTF8String], 0x40uLL);
   }
 
-  v11 = [a1 dateEntry];
-  v12 = v2[2](v2, 1, v11);
+  dateEntry = [self dateEntry];
+  v12 = v2[2](v2, 1, dateEntry);
 
   if (v12)
   {
     v13 = v144[3];
-    v14 = [a1 dateEntry];
-    v15 = [v14 stringValue];
-    strncpy((v13 + 174), [v15 UTF8String], 0x100uLL);
+    dateEntry2 = [self dateEntry];
+    stringValue3 = [dateEntry2 stringValue];
+    strncpy((v13 + 174), [stringValue3 UTF8String], 0x100uLL);
   }
 
-  v16 = [a1 personNameEntry];
-  v17 = v2[2](v2, 8, v16);
+  personNameEntry = [self personNameEntry];
+  v17 = v2[2](v2, 8, personNameEntry);
 
   if (v17)
   {
     v18 = v144[3];
-    v19 = [a1 personNameEntry];
-    v20 = [v19 stringValue];
-    strncpy((v18 + 3049), [v20 UTF8String], 0x64uLL);
+    personNameEntry2 = [self personNameEntry];
+    stringValue4 = [personNameEntry2 stringValue];
+    strncpy((v18 + 3049), [stringValue4 UTF8String], 0x64uLL);
   }
 
-  v21 = [a1 cellularEntry];
-  v22 = v21;
-  if (!v21 || ![v21 isEnabled])
+  cellularEntry = [self cellularEntry];
+  v22 = cellularEntry;
+  if (!cellularEntry || ![cellularEntry isEnabled])
   {
     v26 = 0;
     goto LABEL_43;
   }
 
   *(v144[3] + 4) = 1;
-  v23 = [v22 status];
-  if (v23 > 2)
+  status = [v22 status];
+  if (status > 2)
   {
-    switch(v23)
+    switch(status)
     {
       case 3:
         v24 = v144[3];
@@ -618,13 +618,13 @@ LABEL_3:
 
   else
   {
-    if (!v23)
+    if (!status)
     {
       *(v144[3] + 4) = 0;
       goto LABEL_23;
     }
 
-    if (v23 == 1 || v23 == 2)
+    if (status == 1 || status == 2)
     {
       v24 = v144[3];
       v25 = 1;
@@ -636,14 +636,14 @@ LABEL_22:
 LABEL_23:
   if ([v22 isBootstrapCellular])
   {
-    v27 = [v22 status];
-    if (v27 == 2)
+    status2 = [v22 status];
+    if (status2 == 2)
     {
       v28 = 8;
       goto LABEL_28;
     }
 
-    if (v27 == 5)
+    if (status2 == 5)
     {
       v28 = 7;
 LABEL_28:
@@ -658,38 +658,38 @@ LABEL_28:
     *(v144[3] + 2096) = dword_26C5815D0[v29];
   }
 
-  v30 = [v22 string];
+  string = [v22 string];
 
-  if (v30)
+  if (string)
   {
     *(v144[3] + 6) = 1;
     v31 = v144[3];
-    v32 = [v22 string];
-    strncpy((v31 + 448), [v32 UTF8String], 0x64uLL);
+    string2 = [v22 string];
+    strncpy((v31 + 448), [string2 UTF8String], 0x64uLL);
 
-    v33 = [v22 crossfadeString];
+    crossfadeString = [v22 crossfadeString];
 
-    if (v33)
+    if (crossfadeString)
     {
       v34 = v144[3];
-      v35 = [v22 crossfadeString];
-      strncpy((v34 + 648), [v35 UTF8String], 0x64uLL);
+      crossfadeString2 = [v22 crossfadeString];
+      strncpy((v34 + 648), [crossfadeString2 UTF8String], 0x64uLL);
     }
 
-    v36 = [v22 badgeString];
+    badgeString = [v22 badgeString];
 
-    if (v36)
+    if (badgeString)
     {
       v37 = v144[3];
-      v38 = [v22 badgeString];
-      strncpy((v37 + 3161), [v38 UTF8String], 0x64uLL);
+      badgeString2 = [v22 badgeString];
+      strncpy((v37 + 3161), [badgeString2 UTF8String], 0x64uLL);
     }
   }
 
-  v39 = [v22 rawValue];
-  *(v144[3] + 432) = v39;
-  v40 = [v22 displayValue];
-  *(v144[3] + 440) = v40;
+  rawValue = [v22 rawValue];
+  *(v144[3] + 432) = rawValue;
+  displayValue = [v22 displayValue];
+  *(v144[3] + 440) = displayValue;
   if ([v22 displayRawValue])
   {
     v41 = 2;
@@ -701,8 +701,8 @@ LABEL_28:
   }
 
   *(v144[3] + 2529) = *(v144[3] + 2529) & 0xFD | v41;
-  v42 = [v22 showsSOSWhenDisabled];
-  *(v144[3] + 3160) = *(v144[3] + 3160) & 0xFE | v42;
+  showsSOSWhenDisabled = [v22 showsSOSWhenDisabled];
+  *(v144[3] + 3160) = *(v144[3] + 3160) & 0xFE | showsSOSWhenDisabled;
   if ([v22 sosAvailable])
   {
     v43 = 2;
@@ -714,18 +714,18 @@ LABEL_28:
   }
 
   *(v144[3] + 3160) = *(v144[3] + 3160) & 0xFD | v43;
-  v44 = [v22 callForwardingEnabled];
-  *(v144[3] + 30) = v44;
+  callForwardingEnabled = [v22 callForwardingEnabled];
+  *(v144[3] + 30) = callForwardingEnabled;
 LABEL_43:
-  v45 = [a1 wifiEntry];
-  v46 = v45;
-  if (!v45 || ![v45 isEnabled])
+  wifiEntry = [self wifiEntry];
+  v46 = wifiEntry;
+  if (!wifiEntry || ![wifiEntry isEnabled])
   {
     goto LABEL_62;
   }
 
-  v47 = [v46 status];
-  switch(v47)
+  status3 = [v46 status];
+  switch(status3)
   {
     case 3:
       v48 = v144[3];
@@ -743,24 +743,24 @@ LABEL_52:
       break;
   }
 
-  v50 = [v46 type];
-  if (!v50)
+  type = [v46 type];
+  if (!type)
   {
     v51 = 5;
     goto LABEL_57;
   }
 
-  if (v50 == 1)
+  if (type == 1)
   {
     v51 = 6;
 LABEL_57:
     *(v144[3] + 2096) = v51;
   }
 
-  v52 = [v46 rawValue];
-  *(v144[3] + 2084) = v52;
-  v53 = [v46 displayValue];
-  *(v144[3] + 2088) = v53;
+  rawValue2 = [v46 rawValue];
+  *(v144[3] + 2084) = rawValue2;
+  displayValue2 = [v46 displayValue];
+  *(v144[3] + 2088) = displayValue2;
   if ([v46 displayRawValue])
   {
     v54 = 4;
@@ -774,121 +774,121 @@ LABEL_57:
   *(v144[3] + 2529) = *(v144[3] + 2529) & 0xFB | v54;
 LABEL_62:
   *(v144[3] + 9) = v26;
-  v55 = [a1 mainBatteryEntry];
-  v56 = v2[2](v2, 12, v55);
+  mainBatteryEntry = [self mainBatteryEntry];
+  v56 = v2[2](v2, 12, mainBatteryEntry);
 
   if (v56)
   {
-    v57 = [a1 mainBatteryEntry];
-    v58 = [v57 capacity];
-    *(v144[3] + 2104) = v58;
+    mainBatteryEntry2 = [self mainBatteryEntry];
+    capacity = [mainBatteryEntry2 capacity];
+    *(v144[3] + 2104) = capacity;
 
-    v59 = [a1 mainBatteryEntry];
-    v60 = [v59 state];
-    *(v144[3] + 2108) = v60;
+    mainBatteryEntry3 = [self mainBatteryEntry];
+    state = [mainBatteryEntry3 state];
+    *(v144[3] + 2108) = state;
 
-    v61 = [a1 mainBatteryEntry];
-    v62 = [v61 saverModeActive];
-    *(v144[3] + 2536) = *(v144[3] + 2536) & 0xFE | v62;
+    mainBatteryEntry4 = [self mainBatteryEntry];
+    saverModeActive = [mainBatteryEntry4 saverModeActive];
+    *(v144[3] + 2536) = *(v144[3] + 2536) & 0xFE | saverModeActive;
 
-    v63 = [a1 mainBatteryEntry];
-    v64 = [v63 detailString];
+    mainBatteryEntry5 = [self mainBatteryEntry];
+    detailString = [mainBatteryEntry5 detailString];
 
-    if (v64)
+    if (detailString)
     {
       v65 = v144[3];
-      v66 = [a1 mainBatteryEntry];
-      v67 = [v66 detailString];
-      strncpy((v65 + 2112), [v67 UTF8String], 0x96uLL);
+      mainBatteryEntry6 = [self mainBatteryEntry];
+      detailString2 = [mainBatteryEntry6 detailString];
+      strncpy((v65 + 2112), [detailString2 UTF8String], 0x96uLL);
     }
   }
 
-  v68 = [a1 bluetoothEntry];
-  v69 = v2[2](v2, 16, v68);
+  bluetoothEntry = [self bluetoothEntry];
+  v69 = v2[2](v2, 16, bluetoothEntry);
 
   if (v69)
   {
-    v70 = [a1 bluetoothEntry];
-    v71 = [v70 state];
+    bluetoothEntry2 = [self bluetoothEntry];
+    state2 = [bluetoothEntry2 state];
 
-    if (v71 == 2)
+    if (state2 == 2)
     {
       v72 = v144;
       *(v144[3] + 2529) |= 1u;
       *(v72[3] + 42) = 1;
     }
 
-    else if (v71 == 1)
+    else if (state2 == 1)
     {
       *(v144[3] + 2529) |= 1u;
     }
 
-    v73 = [a1 bluetoothEntry];
-    v74 = [v73 batteryEntry];
+    bluetoothEntry3 = [self bluetoothEntry];
+    batteryEntry = [bluetoothEntry3 batteryEntry];
 
-    if (v74)
+    if (batteryEntry)
     {
-      v75 = [v74 isEnabled];
-      *(v144[3] + 15) = v75;
-      v76 = [v74 capacity];
-      *(v144[3] + 2264) = v76;
+      isEnabled = [batteryEntry isEnabled];
+      *(v144[3] + 15) = isEnabled;
+      capacity2 = [batteryEntry capacity];
+      *(v144[3] + 2264) = capacity2;
     }
   }
 
-  v77 = [a1 thermalEntry];
-  v78 = v2[2](v2, 33, v77);
+  thermalEntry = [self thermalEntry];
+  v78 = v2[2](v2, 33, thermalEntry);
 
   if (v78)
   {
-    v79 = [a1 thermalEntry];
-    v80 = [v79 color];
+    thermalEntry2 = [self thermalEntry];
+    color = [thermalEntry2 color];
 
-    if (v80 <= 5)
+    if (color <= 5)
     {
-      *(v144[3] + 2268) = v80 + 1;
+      *(v144[3] + 2268) = color + 1;
     }
 
-    v81 = [a1 thermalEntry];
-    v82 = [v81 sunlightMode];
-    *(v144[3] + 2272) = *(v144[3] + 2272) & 0xFE | v82;
+    thermalEntry3 = [self thermalEntry];
+    sunlightMode = [thermalEntry3 sunlightMode];
+    *(v144[3] + 2272) = *(v144[3] + 2272) & 0xFE | sunlightMode;
   }
 
-  v83 = [a1 activityEntry];
-  v84 = v2[2](v2, 32, v83);
+  activityEntry = [self activityEntry];
+  v84 = v2[2](v2, 32, activityEntry);
 
   if (v84)
   {
-    v85 = [a1 activityEntry];
-    v86 = [v85 type];
+    activityEntry2 = [self activityEntry];
+    type2 = [activityEntry2 type];
 
-    if ((v86 & 2) != 0)
+    if ((type2 & 2) != 0)
     {
       *(v144[3] + 2272) |= 2u;
     }
 
-    if (v86)
+    if (type2)
     {
       *(v144[3] + 2272) |= 4u;
     }
 
-    v87 = [a1 activityEntry];
-    v88 = [v87 displayId];
+    activityEntry3 = [self activityEntry];
+    displayId = [activityEntry3 displayId];
 
-    if (v88)
+    if (displayId)
     {
       v89 = v144[3];
-      v90 = [a1 activityEntry];
-      v91 = [v90 displayId];
-      strncpy((v89 + 2273), [v91 UTF8String], 0x100uLL);
+      activityEntry4 = [self activityEntry];
+      displayId2 = [activityEntry4 displayId];
+      strncpy((v89 + 2273), [displayId2 UTF8String], 0x100uLL);
     }
   }
 
-  v92 = [a1 tetheringEntry];
-  if ([v92 isEnabled])
+  tetheringEntry = [self tetheringEntry];
+  if ([tetheringEntry isEnabled])
   {
-    v93 = [a1 tetheringEntry];
-    v94 = [v93 connectionCount];
-    *(v144[3] + 2532) = v94;
+    tetheringEntry2 = [self tetheringEntry];
+    connectionCount = [tetheringEntry2 connectionCount];
+    *(v144[3] + 2532) = connectionCount;
   }
 
   else
@@ -896,23 +896,23 @@ LABEL_62:
     *(v144[3] + 2532) = 0;
   }
 
-  v95 = [a1 locationEntry];
-  v96 = v2[2](v2, 21, v95);
+  locationEntry = [self locationEntry];
+  v96 = v2[2](v2, 21, locationEntry);
 
   if (v96)
   {
-    v97 = [a1 locationEntry];
-    v98 = [v97 type];
-    *(v144[3] + 2529) = *(v144[3] + 2529) & 0xE7 | (8 * (v98 & 3));
+    locationEntry2 = [self locationEntry];
+    type3 = [locationEntry2 type];
+    *(v144[3] + 2529) = *(v144[3] + 2529) & 0xE7 | (8 * (type3 & 3));
   }
 
-  v99 = [a1 quietModeEntry];
-  v100 = v2[2](v2, 2, v99);
+  quietModeEntry = [self quietModeEntry];
+  v100 = v2[2](v2, 2, quietModeEntry);
 
   if (v100)
   {
-    v101 = [a1 quietModeEntry];
-    if ([v101 BOOLValue])
+    quietModeEntry2 = [self quietModeEntry];
+    if ([quietModeEntry2 BOOLValue])
     {
       v102 = 0;
     }
@@ -925,23 +925,23 @@ LABEL_62:
     *(v144[3] + 2529) = v102 & 0x80 | *(v144[3] + 2529) & 0x7F;
   }
 
-  v103 = [a1 electronicTollCollectionEntry];
-  v104 = v2[2](v2, 35, v103);
+  electronicTollCollectionEntry = [self electronicTollCollectionEntry];
+  v104 = v2[2](v2, 35, electronicTollCollectionEntry);
 
   if (v104)
   {
-    v105 = [a1 electronicTollCollectionEntry];
-    v106 = [v105 BOOLValue];
-    *(v144[3] + 3149) = *(v144[3] + 3149) & 0xFE | v106;
+    electronicTollCollectionEntry2 = [self electronicTollCollectionEntry];
+    bOOLValue = [electronicTollCollectionEntry2 BOOLValue];
+    *(v144[3] + 3149) = *(v144[3] + 3149) & 0xFE | bOOLValue;
   }
 
-  v107 = [a1 radarEntry];
-  v108 = v2[2](v2, 34, v107);
+  radarEntry = [self radarEntry];
+  v108 = v2[2](v2, 34, radarEntry);
 
   if (v108)
   {
-    v109 = [a1 radarEntry];
-    if ([v109 BOOLValue])
+    radarEntry2 = [self radarEntry];
+    if ([radarEntry2 BOOLValue])
     {
       v110 = 2;
     }
@@ -954,63 +954,63 @@ LABEL_62:
     *(v144[3] + 3149) = *(v144[3] + 3149) & 0xFD | v110;
   }
 
-  v111 = [a1 lockEntry];
-  v2[2](v2, 39, v111);
+  lockEntry = [self lockEntry];
+  v2[2](v2, 39, lockEntry);
 
-  v112 = [a1 rotationLockEntry];
-  v2[2](v2, 22, v112);
+  rotationLockEntry = [self rotationLockEntry];
+  v2[2](v2, 22, rotationLockEntry);
 
-  v113 = [a1 airplaneModeEntry];
-  v2[2](v2, 3, v113);
+  airplaneModeEntry = [self airplaneModeEntry];
+  v2[2](v2, 3, airplaneModeEntry);
 
-  v114 = [a1 ttyEntry];
-  v2[2](v2, 17, v114);
+  ttyEntry = [self ttyEntry];
+  v2[2](v2, 17, ttyEntry);
 
-  v115 = [a1 nikeEntry];
-  v2[2](v2, 19, v115);
+  nikeEntry = [self nikeEntry];
+  v2[2](v2, 19, nikeEntry);
 
-  v116 = [a1 assistantEntry];
-  v2[2](v2, 25, v116);
+  assistantEntry = [self assistantEntry];
+  v2[2](v2, 25, assistantEntry);
 
-  v117 = [a1 studentEntry];
-  v2[2](v2, 27, v117);
+  studentEntry = [self studentEntry];
+  v2[2](v2, 27, studentEntry);
 
-  v118 = [a1 vpnEntry];
-  v2[2](v2, 29, v118);
+  vpnEntry = [self vpnEntry];
+  v2[2](v2, 29, vpnEntry);
 
-  v119 = [a1 liquidDetectionEntry];
-  v2[2](v2, 40, v119);
+  liquidDetectionEntry = [self liquidDetectionEntry];
+  v2[2](v2, 40, liquidDetectionEntry);
 
-  v120 = [a1 displayWarningEntry];
-  v2[2](v2, 44, v120);
+  displayWarningEntry = [self displayWarningEntry];
+  v2[2](v2, 44, displayWarningEntry);
 
-  v121 = [a1 voiceControlEntry];
-  v2[2](v2, 41, v121);
+  voiceControlEntry = [self voiceControlEntry];
+  v2[2](v2, 41, voiceControlEntry);
 
-  v122 = [a1 airPlayEntry];
-  v2[2](v2, 24, v122);
+  airPlayEntry = [self airPlayEntry];
+  v2[2](v2, 24, airPlayEntry);
 
-  v123 = [a1 carPlayEntry];
-  v2[2](v2, 26, v123);
+  carPlayEntry = [self carPlayEntry];
+  v2[2](v2, 26, carPlayEntry);
 
-  v124 = [a1 alarmEntry];
-  v2[2](v2, 18, v124);
+  alarmEntry = [self alarmEntry];
+  v2[2](v2, 18, alarmEntry);
 
-  v125 = [a1 satelliteEntry];
-  v2[2](v2, 45, v125);
+  satelliteEntry = [self satelliteEntry];
+  v2[2](v2, 45, satelliteEntry);
 
-  v126 = [a1 sensorActivityEntry];
-  v2[2](v2, 28, v126);
+  sensorActivityEntry = [self sensorActivityEntry];
+  v2[2](v2, 28, sensorActivityEntry);
 
-  v127 = [a1 announceNotificationsEntry];
-  v2[2](v2, 38, v127);
+  announceNotificationsEntry = [self announceNotificationsEntry];
+  v2[2](v2, 38, announceNotificationsEntry);
 
-  v128 = [a1 backNavigationEntry];
-  if ([v128 isEnabled])
+  backNavigationEntry = [self backNavigationEntry];
+  if ([backNavigationEntry isEnabled])
   {
-    v129 = [a1 backNavigationEntry];
-    v130 = [v129 stringValue];
-    v131 = [v130 length];
+    backNavigationEntry2 = [self backNavigationEntry];
+    stringValue5 = [backNavigationEntry2 stringValue];
+    v131 = [stringValue5 length];
 
     if (!v131)
     {
@@ -1018,30 +1018,30 @@ LABEL_62:
     }
 
     v132 = v144[3];
-    v128 = [a1 backNavigationEntry];
-    v133 = [v128 stringValue];
-    strncpy((v132 + 2537), [v133 UTF8String], 0x100uLL);
+    backNavigationEntry = [self backNavigationEntry];
+    stringValue6 = [backNavigationEntry stringValue];
+    strncpy((v132 + 2537), [stringValue6 UTF8String], 0x100uLL);
   }
 
 LABEL_105:
-  v134 = [a1 forwardNavigationEntry];
-  if (![v134 isEnabled])
+  forwardNavigationEntry = [self forwardNavigationEntry];
+  if (![forwardNavigationEntry isEnabled])
   {
 LABEL_108:
 
     goto LABEL_109;
   }
 
-  v135 = [a1 forwardNavigationEntry];
-  v136 = [v135 stringValue];
-  v137 = [v136 length];
+  forwardNavigationEntry2 = [self forwardNavigationEntry];
+  stringValue7 = [forwardNavigationEntry2 stringValue];
+  v137 = [stringValue7 length];
 
   if (v137)
   {
     v138 = v144[3];
-    v134 = [a1 forwardNavigationEntry];
-    v139 = [v134 stringValue];
-    strncpy((v138 + 2793), [v139 UTF8String], 0x100uLL);
+    forwardNavigationEntry = [self forwardNavigationEntry];
+    stringValue8 = [forwardNavigationEntry stringValue];
+    strncpy((v138 + 2793), [stringValue8 UTF8String], 0x100uLL);
 
     goto LABEL_108;
   }

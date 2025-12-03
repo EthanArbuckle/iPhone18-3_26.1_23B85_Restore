@@ -1,22 +1,22 @@
 @interface PXNewMagazineChunk
-- (PXNewMagazineChunk)initWithStartY:(int64_t)a3 startIndexOfInputs:(int64_t)a4 rectsArray:(id)a5;
+- (PXNewMagazineChunk)initWithStartY:(int64_t)y startIndexOfInputs:(int64_t)inputs rectsArray:(id)array;
 @end
 
 @implementation PXNewMagazineChunk
 
-- (PXNewMagazineChunk)initWithStartY:(int64_t)a3 startIndexOfInputs:(int64_t)a4 rectsArray:(id)a5
+- (PXNewMagazineChunk)initWithStartY:(int64_t)y startIndexOfInputs:(int64_t)inputs rectsArray:(id)array
 {
-  v9 = a5;
+  arrayCopy = array;
   v14.receiver = self;
   v14.super_class = PXNewMagazineChunk;
   v10 = [(PXNewMagazineChunk *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v10->_startY = a3;
-    v10->_numOfRects = [v9 count];
-    objc_storeStrong(&v11->_rectsArray, a5);
-    v11->_startIndexOfInputs = a4;
+    v10->_startY = y;
+    v10->_numOfRects = [arrayCopy count];
+    objc_storeStrong(&v11->_rectsArray, array);
+    v11->_startIndexOfInputs = inputs;
     rectsArray = v11->_rectsArray;
     if (rectsArray)
     {

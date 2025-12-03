@@ -1,44 +1,44 @@
 @interface TSWPTypesetterTextSource
-- (BOOL)adjustRangesByDelta:(int64_t)a3 startingAt:(unint64_t)a4;
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3;
-- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)a3;
+- (BOOL)adjustRangesByDelta:(int64_t)delta startingAt:(unint64_t)at;
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index;
+- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)index;
 - (NSString)string;
-- (TSWPTypesetterTextSource)initWithSource:(id)a3 subRange:(_NSRange)a4;
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3;
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3;
-- (_NSRange)charRangeRemappedFromStorage:(_NSRange)a3;
-- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)a3;
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4;
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4 includeHyphenation:(BOOL)a5;
+- (TSWPTypesetterTextSource)initWithSource:(id)source subRange:(_NSRange)range;
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage;
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage;
+- (_NSRange)charRangeRemappedFromStorage:(_NSRange)storage;
+- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)index;
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word;
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word includeHyphenation:(BOOL)hyphenation;
 - (id).cxx_construct;
-- (id)attachmentAtCharIndex:(unint64_t)a3;
-- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)a3;
-- (id)characterStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)characterStyleForDropCapAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)dropCapStyleAtCharIndex:(unint64_t)a3;
-- (id)footnoteReferenceAtCharIndex:(unint64_t)a3;
-- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)a3 forAttributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4;
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5;
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 intersectingRange:(_NSRange)a4;
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(id)a5 hyphenChar:(unsigned int *)a6;
-- (unint64_t)charIndexMappedFromStorage:(unint64_t)a3;
-- (unint64_t)charIndexMappedToStorage:(unint64_t)a3;
-- (unint64_t)charIndexRemappedFromStorage:(unint64_t)a3;
-- (unsigned)characterAtIndex:(unint64_t)a3;
-- (unsigned)composedCharacterAtCharIndex:(unint64_t)a3 isSurrogatePair:(BOOL *)a4;
-- (void)attributesAtCharIndex:(unint64_t)a3 attributesOfInterest:(BOOL)a4[23] attributesTable:(id)a5[23] effectiveRange:(_NSRange *)a6;
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4;
+- (id)attachmentAtCharIndex:(unint64_t)index;
+- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)index;
+- (id)characterStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)characterStyleForDropCapAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)dropCapStyleAtCharIndex:(unint64_t)index;
+- (id)footnoteReferenceAtCharIndex:(unint64_t)index;
+- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)index forAttributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range;
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range;
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range;
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind intersectingRange:(_NSRange)range;
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(id)locale hyphenChar:(unsigned int *)char;
+- (unint64_t)charIndexMappedFromStorage:(unint64_t)storage;
+- (unint64_t)charIndexMappedToStorage:(unint64_t)storage;
+- (unint64_t)charIndexRemappedFromStorage:(unint64_t)storage;
+- (unsigned)characterAtIndex:(unint64_t)index;
+- (unsigned)composedCharacterAtCharIndex:(unint64_t)index isSurrogatePair:(BOOL *)pair;
+- (void)attributesAtCharIndex:(unint64_t)index attributesOfInterest:(BOOL)interest[23] attributesTable:(id)table[23] effectiveRange:(_NSRange *)range;
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range;
 @end
 
 @implementation TSWPTypesetterTextSource
 
-- (TSWPTypesetterTextSource)initWithSource:(id)a3 subRange:(_NSRange)a4
+- (TSWPTypesetterTextSource)initWithSource:(id)source subRange:(_NSRange)range
 {
-  range2 = a4.length;
-  range.location = a4.location;
+  range2 = range.length;
+  range.location = range.location;
   v159[2] = *MEMORY[0x277D85DE8];
-  v124 = a3;
+  sourceCopy = source;
   v145.receiver = self;
   v145.super_class = TSWPTypesetterTextSource;
   v125 = [(TSWPTypesetterTextSource *)&v145 init];
@@ -47,7 +47,7 @@
     goto LABEL_70;
   }
 
-  if (!v124 || range.location > objc_msgSend_length(v124, v6, v7) || (v130 = range.location + range2, range.location + range2 > objc_msgSend_length(v124, v8, v9)))
+  if (!sourceCopy || range.location > objc_msgSend_length(sourceCopy, v6, v7) || (v130 = range.location + range2, range.location + range2 > objc_msgSend_length(sourceCopy, v8, v9)))
   {
     TSUSetCrashReporterInfo();
     v116 = MEMORY[0x277D81150];
@@ -59,7 +59,7 @@
     goto LABEL_74;
   }
 
-  objc_storeStrong(&v125->_source, a3);
+  objc_storeStrong(&v125->_source, source);
   source = v125->_source;
   v138 = MEMORY[0x277D85DD0];
   v139 = 3221225472;
@@ -381,29 +381,29 @@ LABEL_66:
   v134->_rangeMap = isBackwardAffinities;
 
   v134->_length = range2 + *p_end - p_spaceCharIndexes->__begin_;
-  v134->_storageChangeCount = objc_msgSend_changeCount(v124, v95, v96);
+  v134->_storageChangeCount = objc_msgSend_changeCount(sourceCopy, v95, v96);
 
 LABEL_70:
   return v125;
 }
 
-- (unsigned)composedCharacterAtCharIndex:(unint64_t)a3 isSurrogatePair:(BOOL *)a4
+- (unsigned)composedCharacterAtCharIndex:(unint64_t)index isSurrogatePair:(BOOL *)pair
 {
-  *a4 = 0;
-  v7 = objc_msgSend_length(self->_source, a2, a3);
+  *pair = 0;
+  v7 = objc_msgSend_length(self->_source, a2, index);
   v9 = 0;
-  if (v7 > a3)
+  if (v7 > index)
   {
     v10 = v7;
-    v9 = objc_msgSend_characterAtIndex_(self->_source, v8, a3);
-    v12 = a3 + 1;
-    if (a3 + 1 < v10)
+    v9 = objc_msgSend_characterAtIndex_(self->_source, v8, index);
+    v12 = index + 1;
+    if (index + 1 < v10)
     {
-      v13 = objc_msgSend_characterAtIndex_(self->_source, v11, a3);
+      v13 = objc_msgSend_characterAtIndex_(self->_source, v11, index);
       v15 = objc_msgSend_characterAtIndex_(self->_source, v14, v12);
       if ((v13 & 0xFC00) == 0xD800 && (v15 & 0xFC00) == 56320)
       {
-        *a4 = 1;
+        *pair = 1;
         return v15 + (v13 << 10) - 56613888;
       }
     }
@@ -412,10 +412,10 @@ LABEL_70:
   return v9;
 }
 
-- (BOOL)adjustRangesByDelta:(int64_t)a3 startingAt:(unint64_t)a4
+- (BOOL)adjustRangesByDelta:(int64_t)delta startingAt:(unint64_t)at
 {
-  v9 = objc_msgSend_adjustRangesByDelta_startingAt_(self->_source, a2, a3);
-  if (a3)
+  v9 = objc_msgSend_adjustRangesByDelta_startingAt_(self->_source, a2, delta);
+  if (delta)
   {
     storageChangeCount = self->_storageChangeCount;
     if (storageChangeCount != objc_msgSend_changeCount(self->_source, v7, v8))
@@ -423,7 +423,7 @@ LABEL_70:
       self->_storageChangeCount = objc_msgSend_changeCount(self->_source, v11, v12);
       if ((v9 & 1) == 0)
       {
-        objc_msgSend_adjustByDelta_startingAt_(self->_rangeMap, v13, a3, a4);
+        objc_msgSend_adjustByDelta_startingAt_(self->_rangeMap, v13, delta, at);
       }
 
       return 1;
@@ -435,17 +435,17 @@ LABEL_70:
 
 - (NSString)string
 {
-  v2 = self;
+  selfCopy = self;
   location = objc_msgSend_unmappedCharRange_(self->_rangeMap, a2, 0, self->_length);
   v5 = v4;
-  v7 = objc_msgSend_string(v2->_source, v4, v6);
+  v7 = objc_msgSend_string(selfCopy->_source, v4, v6);
   v10 = objc_msgSend_length(v7, v8, v9);
 
-  if (v2->_spaceCharIndexes.__end_ != v2->_spaceCharIndexes.__begin_)
+  if (selfCopy->_spaceCharIndexes.__end_ != selfCopy->_spaceCharIndexes.__begin_)
   {
     v13 = objc_msgSend_string(MEMORY[0x277CCAB68], length, v12);
-    begin = v2->_spaceCharIndexes.__begin_;
-    end = v2->_spaceCharIndexes.__end_;
+    begin = selfCopy->_spaceCharIndexes.__begin_;
+    end = selfCopy->_spaceCharIndexes.__end_;
     if (begin != end)
     {
       v95 = v5;
@@ -485,7 +485,7 @@ LABEL_70:
           v33 = v18;
         }
 
-        source = v2->_source;
+        source = selfCopy->_source;
         if (v17 <= v33)
         {
           v35 = v33;
@@ -521,19 +521,19 @@ LABEL_70:
     goto LABEL_57;
   }
 
-  if (v2->_bidiCharIndexes.__end_ != v2->_bidiCharIndexes.__begin_)
+  if (selfCopy->_bidiCharIndexes.__end_ != selfCopy->_bidiCharIndexes.__begin_)
   {
     v13 = objc_msgSend_string(MEMORY[0x277CCAB68], length, v12);
-    v40 = v2->_bidiCharIndexes.__begin_;
-    v97 = v2->_bidiCharIndexes.__end_;
+    v40 = selfCopy->_bidiCharIndexes.__begin_;
+    v97 = selfCopy->_bidiCharIndexes.__end_;
     if (v40 != v97)
     {
       v95 = v5;
       v96 = location;
-      v98 = v2;
+      v98 = selfCopy;
       v100 = v13;
       v41 = 0;
-      v42 = v2->_bidiDirectionMarkIsRTLVector.__begin_;
+      v42 = selfCopy->_bidiDirectionMarkIsRTLVector.__begin_;
       v43 = location;
       do
       {
@@ -618,7 +618,7 @@ LABEL_70:
       }
 
       while (v40 != v97);
-      v2 = v98;
+      selfCopy = v98;
       v39 = v100;
 LABEL_43:
       v5 = v95;
@@ -647,7 +647,7 @@ LABEL_44:
           v73 = v65;
         }
 
-        v74 = v2->_source;
+        v74 = selfCopy->_source;
         if (v33 <= v73)
         {
           v75 = v73;
@@ -693,13 +693,13 @@ LABEL_58:
 
   if (!location)
   {
-    v80 = objc_msgSend_string(v2->_source, length, v12);
+    v80 = objc_msgSend_string(selfCopy->_source, length, v12);
     v83 = objc_msgSend_length(v80, v81, v82);
 
     if (v5 == v83)
     {
       v39 = 0;
-      v78 = objc_msgSend_string(v2->_source, length, v84);
+      v78 = objc_msgSend_string(selfCopy->_source, length, v84);
 LABEL_56:
       v79 = v78;
       goto LABEL_65;
@@ -725,16 +725,16 @@ LABEL_56:
     v5 = v93.length;
   }
 
-  v79 = objc_msgSend_substringWithRange_(v2->_source, length, location, v5);
+  v79 = objc_msgSend_substringWithRange_(selfCopy->_source, length, location, v5);
   v39 = 0;
 LABEL_65:
 
   return v79;
 }
 
-- (void)getCharacters:(unsigned __int16 *)a3 range:(_NSRange)a4
+- (void)getCharacters:(unsigned __int16 *)characters range:(_NSRange)range
 {
-  v6 = objc_msgSend_unmappedCharRange_(self->_rangeMap, a2, a4.location, a4.length);
+  v6 = objc_msgSend_unmappedCharRange_(self->_rangeMap, a2, range.location, range.length);
   v34 = v7;
   v35 = v6;
   begin = self->_spaceCharIndexes.__begin_;
@@ -780,7 +780,7 @@ LABEL_65:
         }
 
         v28 = v26 - v27;
-        objc_msgSend_getCharacters_range_(self->_source, v7, a3, v34, v35);
+        objc_msgSend_getCharacters_range_(self->_source, v7, characters, v34, v35);
         if (v24)
         {
           v29 = 8207;
@@ -791,9 +791,9 @@ LABEL_65:
           v29 = 8206;
         }
 
-        v30 = &a3[v28];
+        v30 = &characters[v28];
         *v30 = v29;
-        a3 = v30 + 1;
+        characters = v30 + 1;
         v21 += v20 == 63;
         if (v20 == 63)
         {
@@ -841,10 +841,10 @@ LABEL_65:
       }
 
       v16 = v14 - v15;
-      objc_msgSend_getCharacters_range_(self->_source, v7, a3, v34, v35);
-      v17 = &a3[v16];
+      objc_msgSend_getCharacters_range_(self->_source, v7, characters, v34, v35);
+      v17 = &characters[v16];
       *v17 = 8209;
-      a3 = v17 + 1;
+      characters = v17 + 1;
       v10 = v11;
     }
 
@@ -872,122 +872,122 @@ LABEL_65:
     v33 = v11;
   }
 
-  objc_msgSend_getCharacters_range_(source, v7, a3, v33, v32 - v33);
+  objc_msgSend_getCharacters_range_(source, v7, characters, v33, v32 - v33);
 }
 
-- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasColumnBreakAtCharIndex:(unint64_t)index
 {
   source = self->_source;
-  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
+  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
 
   return objc_msgSend_hasColumnBreakAtCharIndex_(source, v4, v5);
 }
 
-- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)a3
+- (BOOL)hasColumnStyleForParagraphBreakAtCharIndex:(unint64_t)index
 {
   source = self->_source;
-  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
+  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
 
   return objc_msgSend_hasColumnStyleForParagraphBreakAtCharIndex_(source, v4, v5);
 }
 
-- (void)attributesAtCharIndex:(unint64_t)a3 attributesOfInterest:(BOOL)a4[23] attributesTable:(id)a5[23] effectiveRange:(_NSRange *)a6
+- (void)attributesAtCharIndex:(unint64_t)index attributesOfInterest:(BOOL)interest[23] attributesTable:(id)table[23] effectiveRange:(_NSRange *)range
 {
   v15 = xmmword_276F98AE0;
   source = self->_source;
-  v11 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
-  objc_msgSend_attributesAtCharIndex_attributesOfInterest_attributesTable_effectiveRange_(source, v12, v11, a4, a5, &v15);
-  if (a6)
+  v11 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
+  objc_msgSend_attributesAtCharIndex_attributesOfInterest_attributesTable_effectiveRange_(source, v12, v11, interest, table, &v15);
+  if (range)
   {
-    a6->location = objc_msgSend_mappedCharRange_(self->_rangeMap, v13, v15, *(&v15 + 1));
-    a6->length = v14;
+    range->location = objc_msgSend_mappedCharRange_(self->_rangeMap, v13, v15, *(&v15 + 1));
+    range->length = v14;
   }
 }
 
-- (id)smartFieldAtCharIndex:(unint64_t)a3 attributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)smartFieldAtCharIndex:(unint64_t)index attributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range
 {
   v17 = xmmword_276F98AE0;
   source = self->_source;
-  v10 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
-  v12 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(source, v11, v10, a4, &v17);
+  v10 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
+  v12 = objc_msgSend_smartFieldAtCharIndex_attributeKind_effectiveRange_(source, v11, v10, kind, &v17);
   *&v17 = objc_msgSend_mappedCharRange_(self->_rangeMap, v13, v17, *(&v17 + 1));
   *(&v17 + 1) = v14;
-  if (a3 < v17 || a3 - v17 >= v14)
+  if (index < v17 || index - v17 >= v14)
   {
 
     v12 = 0;
     v17 = xmmword_276F98AE0;
   }
 
-  if (a5)
+  if (range)
   {
-    *a5 = v17;
+    *range = v17;
   }
 
   return v12;
 }
 
-- (id)smartFieldsWithAttributeKind:(unint64_t)a3 intersectingRange:(_NSRange)a4
+- (id)smartFieldsWithAttributeKind:(unint64_t)kind intersectingRange:(_NSRange)range
 {
   source = self->_source;
-  v7 = objc_msgSend_unmappedCharRange_(self->_rangeMap, a2, a4.location, a4.length);
+  v7 = objc_msgSend_unmappedCharRange_(self->_rangeMap, a2, range.location, range.length);
 
-  return objc_msgSend_smartFieldsWithAttributeKind_intersectingRange_(source, v6, a3, v7, v6);
+  return objc_msgSend_smartFieldsWithAttributeKind_intersectingRange_(source, v6, kind, v7, v6);
 }
 
-- (id)footnoteReferenceAtCharIndex:(unint64_t)a3
+- (id)footnoteReferenceAtCharIndex:(unint64_t)index
 {
   source = self->_source;
-  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
+  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
 
   return objc_msgSend_footnoteReferenceAtCharIndex_(source, v4, v5);
 }
 
-- (id)attachmentAtCharIndex:(unint64_t)a3
+- (id)attachmentAtCharIndex:(unint64_t)index
 {
   source = self->_source;
-  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
+  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
 
   return objc_msgSend_attachmentAtCharIndex_(source, v4, v5);
 }
 
-- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)a3
+- (id)attachmentOrFootnoteAtCharIndex:(unint64_t)index
 {
   source = self->_source;
-  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
+  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
 
   return objc_msgSend_attachmentOrFootnoteAtCharIndex_(source, v4, v5);
 }
 
-- (id)paragraphStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)paragraphStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v13 = xmmword_276F98AE0;
   source = self->_source;
-  v7 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
+  v7 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
   v10 = objc_msgSend_paragraphStyleAtCharIndex_effectiveRange_(source, v8, v7, &v13);
-  if (a4)
+  if (range)
   {
-    a4->location = objc_msgSend_mappedCharRange_(self->_rangeMap, v9, v13, *(&v13 + 1));
-    a4->length = v11;
+    range->location = objc_msgSend_mappedCharRange_(self->_rangeMap, v9, v13, *(&v13 + 1));
+    range->length = v11;
   }
 
   return v10;
 }
 
-- (id)characterStyleForDropCapAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)characterStyleForDropCapAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   source = self->_source;
-  v7 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
+  v7 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
 
-  return objc_msgSend_characterStyleForDropCapAtCharIndex_effectiveRange_(source, v6, v7, a4);
+  return objc_msgSend_characterStyleForDropCapAtCharIndex_effectiveRange_(source, v6, v7, range);
 }
 
-- (id)characterStyleAtCharIndex:(unint64_t)a3 effectiveRange:(_NSRange *)a4
+- (id)characterStyleAtCharIndex:(unint64_t)index effectiveRange:(_NSRange *)range
 {
   v13 = xmmword_276F98AE0;
   source = self->_source;
-  v8 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
-  if (a4)
+  v8 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
+  if (range)
   {
     objc_msgSend_characterStyleAtCharIndex_effectiveRange_(source, v7, v8, &v13);
   }
@@ -997,28 +997,28 @@ LABEL_65:
     objc_msgSend_characterStyleAtCharIndex_effectiveRange_(source, v7, v8, 0);
   }
   v10 = ;
-  if (a4)
+  if (range)
   {
-    a4->location = objc_msgSend_mappedCharRange_(self->_rangeMap, v9, v13, *(&v13 + 1));
-    a4->length = v11;
+    range->location = objc_msgSend_mappedCharRange_(self->_rangeMap, v9, v13, *(&v13 + 1));
+    range->length = v11;
   }
 
   return v10;
 }
 
-- (id)dropCapStyleAtCharIndex:(unint64_t)a3
+- (id)dropCapStyleAtCharIndex:(unint64_t)index
 {
   source = self->_source;
-  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
+  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
 
   return objc_msgSend_dropCapStyleAtCharIndex_(source, v4, v5);
 }
 
-- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)a3
+- (_NSRange)rangeOfDropCapAtCharIndex:(unint64_t)index
 {
   v4 = *MEMORY[0x277D81490];
   v5 = *(MEMORY[0x277D81490] + 8);
-  v6 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
+  v6 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
   v9 = objc_msgSend_dropCapStyleAtCharIndex_(self->_source, v7, v6);
   if (v9)
   {
@@ -1065,12 +1065,12 @@ LABEL_65:
   return result;
 }
 
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word
 {
-  v4 = a4;
+  wordCopy = word;
   source = self->_source;
-  v7 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
-  v10 = objc_msgSend_wordAtCharIndex_includePreviousWord_(source, v8, v7, v4);
+  v7 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
+  v10 = objc_msgSend_wordAtCharIndex_includePreviousWord_(source, v8, v7, wordCopy);
   rangeMap = self->_rangeMap;
 
   v12 = objc_msgSend_mappedCharRange_(rangeMap, v9, v10, v9);
@@ -1079,13 +1079,13 @@ LABEL_65:
   return result;
 }
 
-- (_NSRange)wordAtCharIndex:(unint64_t)a3 includePreviousWord:(BOOL)a4 includeHyphenation:(BOOL)a5
+- (_NSRange)wordAtCharIndex:(unint64_t)index includePreviousWord:(BOOL)word includeHyphenation:(BOOL)hyphenation
 {
-  v5 = a5;
-  v6 = a4;
+  hyphenationCopy = hyphenation;
+  wordCopy = word;
   source = self->_source;
-  v9 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
-  v12 = objc_msgSend_wordAtCharIndex_includePreviousWord_includeHyphenation_(source, v10, v9, v6, v5);
+  v9 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
+  v12 = objc_msgSend_wordAtCharIndex_includePreviousWord_includeHyphenation_(source, v10, v9, wordCopy, hyphenationCopy);
   rangeMap = self->_rangeMap;
 
   v14 = objc_msgSend_mappedCharRange_(rangeMap, v11, v12, v11);
@@ -1094,26 +1094,26 @@ LABEL_65:
   return result;
 }
 
-- (unsigned)characterAtIndex:(unint64_t)a3
+- (unsigned)characterAtIndex:(unint64_t)index
 {
   source = self->_source;
-  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
+  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
 
   return objc_msgSend_characterAtIndex_(source, v4, v5);
 }
 
-- (int64_t)hyphenationLocationBeforeIndex:(int64_t)a3 inRange:(_NSRange)a4 locale:(id)a5 hyphenChar:(unsigned int *)a6
+- (int64_t)hyphenationLocationBeforeIndex:(int64_t)index inRange:(_NSRange)range locale:(id)locale hyphenChar:(unsigned int *)char
 {
-  length = a4.length;
-  location = a4.location;
-  v11 = a5;
-  v13 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, v12, a3);
+  length = range.length;
+  location = range.location;
+  localeCopy = locale;
+  v13 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, v12, index);
   v15 = objc_msgSend_unmappedCharRange_(self->_rangeMap, v14, location, length);
   v17 = v16;
   v19 = objc_msgSend_string(self->_source, v16, v18);
   v24.location = v15;
   v24.length = v17;
-  HyphenationLocationBeforeIndex = CFStringGetHyphenationLocationBeforeIndex(v19, v13, v24, 0, v11, a6);
+  HyphenationLocationBeforeIndex = CFStringGetHyphenationLocationBeforeIndex(v19, v13, v24, 0, localeCopy, char);
 
   if (HyphenationLocationBeforeIndex == -1)
   {
@@ -1122,11 +1122,11 @@ LABEL_65:
 
   else
   {
-    while (a3 > HyphenationLocationBeforeIndex)
+    while (index > HyphenationLocationBeforeIndex)
     {
-      if (objc_msgSend_characterAtIndex_(self, v21, --a3) == 173)
+      if (objc_msgSend_characterAtIndex_(self, v21, --index) == 173)
       {
-        HyphenationLocationBeforeIndex = a3 + 1;
+        HyphenationLocationBeforeIndex = index + 1;
         break;
       }
     }
@@ -1137,40 +1137,40 @@ LABEL_65:
   return v22;
 }
 
-- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)a3 forAttributeKind:(unint64_t)a4 effectiveRange:(_NSRange *)a5
+- (id)objectAtLocationPriorToMappedCharIndex:(unint64_t)index forAttributeKind:(unint64_t)kind effectiveRange:(_NSRange *)range
 {
   source = self->_source;
-  v9 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
-  v12 = objc_msgSend_objectAtLocationPriorToMappedCharIndex_forAttributeKind_effectiveRange_(source, v10, v9, a4, a5);
-  if (a5)
+  v9 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, index);
+  v12 = objc_msgSend_objectAtLocationPriorToMappedCharIndex_forAttributeKind_effectiveRange_(source, v10, v9, kind, range);
+  if (range)
   {
-    a5->location = objc_msgSend_mappedCharRange_(self->_rangeMap, v11, a5->location, a5->length);
-    a5->length = v13;
+    range->location = objc_msgSend_mappedCharRange_(self->_rangeMap, v11, range->location, range->length);
+    range->length = v13;
   }
 
   return v12;
 }
 
-- (unint64_t)charIndexMappedToStorage:(unint64_t)a3
+- (unint64_t)charIndexMappedToStorage:(unint64_t)storage
 {
   source = self->_source;
-  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, a3);
+  v5 = objc_msgSend_unmappedCharIndex_(self->_rangeMap, a2, storage);
 
   return objc_msgSend_charIndexMappedToStorage_(source, v4, v5);
 }
 
-- (unint64_t)charIndexMappedFromStorage:(unint64_t)a3
+- (unint64_t)charIndexMappedFromStorage:(unint64_t)storage
 {
   rangeMap = self->_rangeMap;
-  v5 = objc_msgSend_charIndexMappedFromStorage_(self->_source, a2, a3);
+  v5 = objc_msgSend_charIndexMappedFromStorage_(self->_source, a2, storage);
 
   return objc_msgSend_mappedCharIndex_(rangeMap, v4, v5);
 }
 
-- (_NSRange)charRangeMappedToStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedToStorage:(_NSRange)storage
 {
   source = self->_source;
-  v5 = objc_msgSend_unmappedCharRange_(self->_rangeMap, a2, a3.location, a3.length);
+  v5 = objc_msgSend_unmappedCharRange_(self->_rangeMap, a2, storage.location, storage.length);
 
   v6 = objc_msgSend_charRangeMappedToStorage_(source, v4, v5, v4);
   result.length = v7;
@@ -1178,10 +1178,10 @@ LABEL_65:
   return result;
 }
 
-- (_NSRange)charRangeMappedFromStorage:(_NSRange)a3
+- (_NSRange)charRangeMappedFromStorage:(_NSRange)storage
 {
   rangeMap = self->_rangeMap;
-  v5 = objc_msgSend_charRangeMappedFromStorage_(self->_source, a2, a3.location, a3.length);
+  v5 = objc_msgSend_charRangeMappedFromStorage_(self->_source, a2, storage.location, storage.length);
 
   v6 = objc_msgSend_mappedCharRange_(rangeMap, v4, v5, v4);
   result.length = v7;
@@ -1189,18 +1189,18 @@ LABEL_65:
   return result;
 }
 
-- (unint64_t)charIndexRemappedFromStorage:(unint64_t)a3
+- (unint64_t)charIndexRemappedFromStorage:(unint64_t)storage
 {
-  v5 = objc_msgSend_charIndexMappedFromStorage_(self, a2, a3);
+  v5 = objc_msgSend_charIndexMappedFromStorage_(self, a2, storage);
 
   return objc_msgSend_charIndexMappedToStorage_(self, v4, v5);
 }
 
-- (_NSRange)charRangeRemappedFromStorage:(_NSRange)a3
+- (_NSRange)charRangeRemappedFromStorage:(_NSRange)storage
 {
-  length = a3.length;
-  location = a3.location;
-  v6 = objc_msgSend_charIndexRemappedFromStorage_(self, a2, a3.location);
+  length = storage.length;
+  location = storage.location;
+  v6 = objc_msgSend_charIndexRemappedFromStorage_(self, a2, storage.location);
   v8 = objc_msgSend_charIndexRemappedFromStorage_(self, v7, location + length) - v6;
   v9 = v6;
   result.length = v8;

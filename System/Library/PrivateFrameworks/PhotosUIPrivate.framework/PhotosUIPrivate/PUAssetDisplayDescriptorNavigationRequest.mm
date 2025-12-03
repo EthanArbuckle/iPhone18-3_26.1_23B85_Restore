@@ -10,11 +10,11 @@
 - (void)_invalidateArrived;
 - (void)_invalidateDone;
 - (void)_invalidateFoundTargetAssetReference;
-- (void)_setArrived:(BOOL)a3;
-- (void)_setFoundTargetAssetReference:(id)a3;
+- (void)_setArrived:(BOOL)arrived;
+- (void)_setFoundTargetAssetReference:(id)reference;
 - (void)_setNeedsUpdate;
-- (void)_setSeeked:(BOOL)a3;
-- (void)_setTimedOut:(BOOL)a3;
+- (void)_setSeeked:(BOOL)seeked;
+- (void)_setTimedOut:(BOOL)out;
 - (void)_updateArrivedIfNeeded;
 - (void)_updateCurrentAssetReference;
 - (void)_updateDoneIfNeeded;
@@ -22,14 +22,14 @@
 - (void)_updateIfNeeded;
 - (void)_updateSeeking;
 - (void)dealloc;
-- (void)performChanges:(id)a3;
-- (void)setCompletionHandler:(id)a3;
-- (void)setTargetAssetReference:(id)a3;
-- (void)setTargetModificationDate:(id)a3;
-- (void)setTargetSeekTime:(id *)a3;
-- (void)setTimeOut:(double)a3;
-- (void)setViewModel:(id)a3;
-- (void)viewModel:(id)a3 didChange:(id)a4;
+- (void)performChanges:(id)changes;
+- (void)setCompletionHandler:(id)handler;
+- (void)setTargetAssetReference:(id)reference;
+- (void)setTargetModificationDate:(id)date;
+- (void)setTargetSeekTime:(id *)time;
+- (void)setTimeOut:(double)out;
+- (void)setViewModel:(id)model;
+- (void)viewModel:(id)model didChange:(id)change;
 @end
 
 @implementation PUAssetDisplayDescriptorNavigationRequest
@@ -149,12 +149,12 @@
 - (void)_finishRequest
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(PUAssetDisplayDescriptorNavigationRequest *)self _navigationRequestError];
-  v4 = [(PUAssetDisplayDescriptorNavigationRequest *)self _arrived];
-  v5 = [(PUAssetDisplayDescriptorNavigationRequest *)self _infoMessage];
+  _navigationRequestError = [(PUAssetDisplayDescriptorNavigationRequest *)self _navigationRequestError];
+  _arrived = [(PUAssetDisplayDescriptorNavigationRequest *)self _arrived];
+  _infoMessage = [(PUAssetDisplayDescriptorNavigationRequest *)self _infoMessage];
   v6 = PLOneUpGetLog();
   v7 = v6;
-  if (v3 || !v4)
+  if (_navigationRequestError || !_arrived)
   {
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -162,7 +162,7 @@
     }
 
     *buf = 138412290;
-    v15 = v5;
+    v15 = _infoMessage;
     v8 = v7;
     v9 = OS_LOG_TYPE_ERROR;
   }
@@ -175,7 +175,7 @@
     }
 
     *buf = 138412290;
-    v15 = v5;
+    v15 = _infoMessage;
     v8 = v7;
     v9 = OS_LOG_TYPE_DEFAULT;
   }
@@ -188,7 +188,7 @@ LABEL_8:
   if (v10)
   {
     v13 = v10;
-    v12 = v3;
+    v12 = _navigationRequestError;
     px_dispatch_on_main_queue();
   }
 
@@ -220,19 +220,19 @@ LABEL_8:
   if ([(PUAssetDisplayDescriptorNavigationRequest *)self _needsUpdateArrived])
   {
     [(PUAssetDisplayDescriptorNavigationRequest *)self _setNeedsUpdateArrived:0];
-    v3 = [(PUAssetDisplayDescriptorNavigationRequest *)self _foundTargetAssetReference];
+    _foundTargetAssetReference = [(PUAssetDisplayDescriptorNavigationRequest *)self _foundTargetAssetReference];
 
-    if (v3)
+    if (_foundTargetAssetReference)
     {
-      v4 = [(PUAssetDisplayDescriptorNavigationRequest *)self _seeked];
+      _seeked = [(PUAssetDisplayDescriptorNavigationRequest *)self _seeked];
     }
 
     else
     {
-      v4 = 0;
+      _seeked = 0;
     }
 
-    [(PUAssetDisplayDescriptorNavigationRequest *)self _setArrived:v4];
+    [(PUAssetDisplayDescriptorNavigationRequest *)self _setArrived:_seeked];
   }
 }
 
@@ -248,24 +248,24 @@ LABEL_8:
   if ([(PUAssetDisplayDescriptorNavigationRequest *)self _needsUpdateFoundTargetAssetReference])
   {
     [(PUAssetDisplayDescriptorNavigationRequest *)self _setNeedsUpdateFoundTargetAssetReference:0];
-    v3 = [(PUAssetDisplayDescriptorNavigationRequest *)self _foundTargetAssetReference];
-    if (!v3)
+    _foundTargetAssetReference = [(PUAssetDisplayDescriptorNavigationRequest *)self _foundTargetAssetReference];
+    if (!_foundTargetAssetReference)
     {
-      v4 = [(PUBrowsingViewModel *)self->_viewModel assetsDataSource];
-      v5 = [v4 assetReferenceForAssetReference:self->_targetAssetReference];
+      assetsDataSource = [(PUBrowsingViewModel *)self->_viewModel assetsDataSource];
+      v5 = [assetsDataSource assetReferenceForAssetReference:self->_targetAssetReference];
       v6 = v5;
       if (v5)
       {
         if (self->_targetModificationDate)
         {
-          v7 = [v5 asset];
-          v8 = [v7 modificationDate];
-          v9 = [v8 compare:self->_targetModificationDate];
+          asset = [v5 asset];
+          modificationDate = [asset modificationDate];
+          v9 = [modificationDate compare:self->_targetModificationDate];
 
           v10 = v9 == 1;
           if (v10)
           {
-            v3 = v6;
+            _foundTargetAssetReference = v6;
           }
 
           else
@@ -274,11 +274,11 @@ LABEL_8:
             v12 = 3221225472;
             v13 = __85__PUAssetDisplayDescriptorNavigationRequest__updateFoundTargetAssetReferenceIfNeeded__block_invoke;
             v14 = &unk_1E7B80C38;
-            v15 = self;
+            selfCopy = self;
             v16 = v6;
             [(PUAssetDisplayDescriptorNavigationRequest *)self performChanges:&v11];
 
-            v3 = 0;
+            _foundTargetAssetReference = 0;
           }
 
           self->_hasSeenContentChange = v10;
@@ -286,17 +286,17 @@ LABEL_8:
 
         else
         {
-          v3 = v5;
+          _foundTargetAssetReference = v5;
         }
       }
 
       else
       {
-        v3 = 0;
+        _foundTargetAssetReference = 0;
       }
     }
 
-    [(PUAssetDisplayDescriptorNavigationRequest *)self _setFoundTargetAssetReference:v3, v11, v12, v13, v14, v15];
+    [(PUAssetDisplayDescriptorNavigationRequest *)self _setFoundTargetAssetReference:_foundTargetAssetReference, v11, v12, v13, v14, selfCopy];
   }
 }
 
@@ -311,8 +311,8 @@ LABEL_8:
 {
   if (![(PUAssetDisplayDescriptorNavigationRequest *)self _isUpdating]&& ![(PUAssetDisplayDescriptorNavigationRequest *)self _isPerformingChanges])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUAssetDisplayDescriptorNavigationRequest.m" lineNumber:284 description:@"not within a change block or update"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetDisplayDescriptorNavigationRequest.m" lineNumber:284 description:@"not within a change block or update"];
   }
 }
 
@@ -330,29 +330,29 @@ LABEL_8:
 {
   if ([(PUAssetDisplayDescriptorNavigationRequest *)self _needsUpdate])
   {
-    v4 = [(PUAssetDisplayDescriptorNavigationRequest *)self _isUpdating];
+    _isUpdating = [(PUAssetDisplayDescriptorNavigationRequest *)self _isUpdating];
     [(PUAssetDisplayDescriptorNavigationRequest *)self _setUpdating:1];
     [(PUAssetDisplayDescriptorNavigationRequest *)self _updateFoundTargetAssetReferenceIfNeeded];
     [(PUAssetDisplayDescriptorNavigationRequest *)self _updateArrivedIfNeeded];
     [(PUAssetDisplayDescriptorNavigationRequest *)self _updateDoneIfNeeded];
-    [(PUAssetDisplayDescriptorNavigationRequest *)self _setUpdating:v4];
+    [(PUAssetDisplayDescriptorNavigationRequest *)self _setUpdating:_isUpdating];
     if ([(PUAssetDisplayDescriptorNavigationRequest *)self _needsUpdate])
     {
-      v5 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v5 handleFailureInMethod:a2 object:self file:@"PUAssetDisplayDescriptorNavigationRequest.m" lineNumber:271 description:@"updates still needed after an update cycle"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetDisplayDescriptorNavigationRequest.m" lineNumber:271 description:@"updates still needed after an update cycle"];
     }
   }
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
-  v4 = a3;
-  v5 = [(PUAssetDisplayDescriptorNavigationRequest *)self _isPerformingChanges];
+  changesCopy = changes;
+  _isPerformingChanges = [(PUAssetDisplayDescriptorNavigationRequest *)self _isPerformingChanges];
   [(PUAssetDisplayDescriptorNavigationRequest *)self _setPerformingChanges:1];
-  v4[2](v4);
+  changesCopy[2](changesCopy);
 
-  [(PUAssetDisplayDescriptorNavigationRequest *)self _setPerformingChanges:v5];
-  if (!v5)
+  [(PUAssetDisplayDescriptorNavigationRequest *)self _setPerformingChanges:_isPerformingChanges];
+  if (!_isPerformingChanges)
   {
 
     [(PUAssetDisplayDescriptorNavigationRequest *)self _updateIfNeeded];
@@ -363,8 +363,8 @@ LABEL_8:
 {
   if (![(PUAssetDisplayDescriptorNavigationRequest *)self _isUpdating])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUAssetDisplayDescriptorNavigationRequest.m" lineNumber:244 description:@"not withing update"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetDisplayDescriptorNavigationRequest.m" lineNumber:244 description:@"not withing update"];
   }
 }
 
@@ -372,14 +372,14 @@ LABEL_8:
 {
   if (![(PUAssetDisplayDescriptorNavigationRequest *)self _isPerformingChanges])
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PUAssetDisplayDescriptorNavigationRequest.m" lineNumber:239 description:@"not within a change block"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAssetDisplayDescriptorNavigationRequest.m" lineNumber:239 description:@"not within a change block"];
   }
 }
 
-- (void)viewModel:(id)a3 didChange:(id)a4
+- (void)viewModel:(id)model didChange:(id)change
 {
-  if ([a4 assetsDataSourceDidChange])
+  if ([change assetsDataSourceDidChange])
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -401,85 +401,85 @@ uint64_t __65__PUAssetDisplayDescriptorNavigationRequest_viewModel_didChange___b
   return [v1 performChanges:v3];
 }
 
-- (void)_setArrived:(BOOL)a3
+- (void)_setArrived:(BOOL)arrived
 {
-  v3 = a3;
+  arrivedCopy = arrived;
   [(PUAssetDisplayDescriptorNavigationRequest *)self _assertInsideUpdate];
-  if (self->__arrived != v3)
+  if (self->__arrived != arrivedCopy)
   {
-    self->__arrived = v3;
+    self->__arrived = arrivedCopy;
 
     [(PUAssetDisplayDescriptorNavigationRequest *)self _invalidateDone];
   }
 }
 
-- (void)_setTimedOut:(BOOL)a3
+- (void)_setTimedOut:(BOOL)out
 {
-  v3 = a3;
+  outCopy = out;
   [(PUAssetDisplayDescriptorNavigationRequest *)self _assertInsideChangeBlock];
-  if (self->__timedOut != v3)
+  if (self->__timedOut != outCopy)
   {
-    self->__timedOut = v3;
+    self->__timedOut = outCopy;
 
     [(PUAssetDisplayDescriptorNavigationRequest *)self _invalidateDone];
   }
 }
 
-- (void)_setSeeked:(BOOL)a3
+- (void)_setSeeked:(BOOL)seeked
 {
-  v3 = a3;
+  seekedCopy = seeked;
   [(PUAssetDisplayDescriptorNavigationRequest *)self _assertInsideChangeBlock];
-  if (self->__seeked != v3)
+  if (self->__seeked != seekedCopy)
   {
-    self->__seeked = v3;
+    self->__seeked = seekedCopy;
 
     [(PUAssetDisplayDescriptorNavigationRequest *)self _invalidateArrived];
   }
 }
 
-- (void)_setFoundTargetAssetReference:(id)a3
+- (void)_setFoundTargetAssetReference:(id)reference
 {
-  v7 = a3;
-  v5 = [(PUAssetDisplayDescriptorNavigationRequest *)self _assertInsideUpdate];
-  v6 = v7;
-  if (self->__foundTargetAssetReference != v7)
+  referenceCopy = reference;
+  _assertInsideUpdate = [(PUAssetDisplayDescriptorNavigationRequest *)self _assertInsideUpdate];
+  v6 = referenceCopy;
+  if (self->__foundTargetAssetReference != referenceCopy)
   {
-    v5 = [(PUAssetReference *)v7 isEqual:?];
-    v6 = v7;
-    if ((v5 & 1) == 0)
+    _assertInsideUpdate = [(PUAssetReference *)referenceCopy isEqual:?];
+    v6 = referenceCopy;
+    if ((_assertInsideUpdate & 1) == 0)
     {
-      objc_storeStrong(&self->__foundTargetAssetReference, a3);
+      objc_storeStrong(&self->__foundTargetAssetReference, reference);
       [(PUAssetDisplayDescriptorNavigationRequest *)self _updateCurrentAssetReference];
       [(PUAssetDisplayDescriptorNavigationRequest *)self _updateSeeking];
-      v5 = [(PUAssetDisplayDescriptorNavigationRequest *)self _invalidateArrived];
-      v6 = v7;
+      _assertInsideUpdate = [(PUAssetDisplayDescriptorNavigationRequest *)self _invalidateArrived];
+      v6 = referenceCopy;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](_assertInsideUpdate, v6);
 }
 
 - (void)_updateSeeking
 {
-  v3 = [(PUAssetDisplayDescriptorNavigationRequest *)self _foundTargetAssetReference];
-  v4 = v3;
-  if (v3)
+  _foundTargetAssetReference = [(PUAssetDisplayDescriptorNavigationRequest *)self _foundTargetAssetReference];
+  v4 = _foundTargetAssetReference;
+  if (_foundTargetAssetReference)
   {
-    v5 = [v3 asset];
-    v6 = [v5 mediaType];
+    asset = [_foundTargetAssetReference asset];
+    mediaType = [asset mediaType];
 
-    if (v6 == 2 && (self->_targetSeekTime.flags & 1) != 0)
+    if (mediaType == 2 && (self->_targetSeekTime.flags & 1) != 0)
     {
-      v7 = [(PUAssetDisplayDescriptorNavigationRequest *)self viewModel];
+      viewModel = [(PUAssetDisplayDescriptorNavigationRequest *)self viewModel];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __59__PUAssetDisplayDescriptorNavigationRequest__updateSeeking__block_invoke;
       v17[3] = &unk_1E7B80DD0;
-      v8 = v7;
+      v8 = viewModel;
       v18 = v8;
       [v8 performChanges:v17];
       v9 = [v8 assetViewModelForAssetReference:v4];
-      v10 = [v9 videoPlayer];
+      videoPlayer = [v9 videoPlayer];
 
       objc_initWeak(&location, self);
       v14[0] = MEMORY[0x1E69E9820];
@@ -489,7 +489,7 @@ uint64_t __65__PUAssetDisplayDescriptorNavigationRequest_viewModel_didChange___b
       objc_copyWeak(&v15, &location);
       v12 = *&self->_targetSeekTime.value;
       epoch = self->_targetSeekTime.epoch;
-      [v10 seekToTime:&v12 completionHandler:v14];
+      [videoPlayer seekToTime:&v12 completionHandler:v14];
       objc_destroyWeak(&v15);
       objc_destroyWeak(&location);
     }
@@ -531,29 +531,29 @@ void __59__PUAssetDisplayDescriptorNavigationRequest__updateSeeking__block_invok
 
 - (void)_updateCurrentAssetReference
 {
-  v3 = [(PUAssetDisplayDescriptorNavigationRequest *)self _foundTargetAssetReference];
-  if (v3)
+  _foundTargetAssetReference = [(PUAssetDisplayDescriptorNavigationRequest *)self _foundTargetAssetReference];
+  if (_foundTargetAssetReference)
   {
-    v4 = [(PUAssetDisplayDescriptorNavigationRequest *)self viewModel];
-    v5 = [v4 currentAssetReference];
-    if (([v3 isEqual:v5] & 1) == 0)
+    viewModel = [(PUAssetDisplayDescriptorNavigationRequest *)self viewModel];
+    currentAssetReference = [viewModel currentAssetReference];
+    if (([_foundTargetAssetReference isEqual:currentAssetReference] & 1) == 0)
     {
       v6[0] = MEMORY[0x1E69E9820];
       v6[1] = 3221225472;
       v6[2] = __73__PUAssetDisplayDescriptorNavigationRequest__updateCurrentAssetReference__block_invoke;
       v6[3] = &unk_1E7B80C38;
-      v7 = v4;
-      v8 = v3;
+      v7 = viewModel;
+      v8 = _foundTargetAssetReference;
       [v7 performChanges:v6];
     }
   }
 }
 
-- (void)setCompletionHandler:(id)a3
+- (void)setCompletionHandler:(id)handler
 {
-  if (self->_completionHandler != a3)
+  if (self->_completionHandler != handler)
   {
-    v5 = [a3 copy];
+    v5 = [handler copy];
     completionHandler = self->_completionHandler;
     self->_completionHandler = v5;
 
@@ -561,14 +561,14 @@ void __59__PUAssetDisplayDescriptorNavigationRequest__updateSeeking__block_invok
   }
 }
 
-- (void)setTimeOut:(double)a3
+- (void)setTimeOut:(double)out
 {
   [(PUAssetDisplayDescriptorNavigationRequest *)self _assertInsideChangeBlock];
   [(NSTimer *)self->_timeOutTimer invalidate];
   timeOutTimer = self->_timeOutTimer;
   self->_timeOutTimer = 0;
 
-  self->_timeOut = a3;
+  self->_timeOut = out;
   objc_initWeak(&location, self);
   v6 = MEMORY[0x1E695DFF0];
   v9[0] = MEMORY[0x1E69E9820];
@@ -577,7 +577,7 @@ void __59__PUAssetDisplayDescriptorNavigationRequest__updateSeeking__block_invok
   v9[3] = &unk_1E7B80610;
   objc_copyWeak(&v10, &location);
   v9[4] = self;
-  v7 = [v6 pu_scheduledTimerWithTimeInterval:0 repeats:v9 block:a3];
+  v7 = [v6 pu_scheduledTimerWithTimeInterval:0 repeats:v9 block:out];
   v8 = self->_timeOutTimer;
   self->_timeOutTimer = v7;
 
@@ -600,60 +600,60 @@ void __56__PUAssetDisplayDescriptorNavigationRequest_setTimeOut___block_invoke(u
   *(v4 + 8) = 0;
 }
 
-- (void)setTargetSeekTime:(id *)a3
+- (void)setTargetSeekTime:(id *)time
 {
   [(PUAssetDisplayDescriptorNavigationRequest *)self _assertInsideChangeBlock];
-  time1 = *a3;
+  time1 = *time;
   targetSeekTime = self->_targetSeekTime;
   if (CMTimeCompare(&time1, &targetSeekTime))
   {
-    v5 = *&a3->var0;
-    self->_targetSeekTime.epoch = a3->var3;
+    v5 = *&time->var0;
+    self->_targetSeekTime.epoch = time->var3;
     *&self->_targetSeekTime.value = v5;
     [(PUAssetDisplayDescriptorNavigationRequest *)self _setSeeked:0];
   }
 }
 
-- (void)setTargetModificationDate:(id)a3
+- (void)setTargetModificationDate:(id)date
 {
-  v7 = a3;
-  v5 = [(PUAssetDisplayDescriptorNavigationRequest *)self _assertInsideChangeBlock];
-  v6 = v7;
-  if (self->_targetModificationDate != v7)
+  dateCopy = date;
+  _assertInsideChangeBlock = [(PUAssetDisplayDescriptorNavigationRequest *)self _assertInsideChangeBlock];
+  v6 = dateCopy;
+  if (self->_targetModificationDate != dateCopy)
   {
-    v5 = [(NSDate *)v7 isEqual:?];
-    v6 = v7;
-    if ((v5 & 1) == 0)
+    _assertInsideChangeBlock = [(NSDate *)dateCopy isEqual:?];
+    v6 = dateCopy;
+    if ((_assertInsideChangeBlock & 1) == 0)
     {
-      objc_storeStrong(&self->_targetModificationDate, a3);
-      v5 = [(PUAssetDisplayDescriptorNavigationRequest *)self _invalidateFoundTargetAssetReference];
-      v6 = v7;
+      objc_storeStrong(&self->_targetModificationDate, date);
+      _assertInsideChangeBlock = [(PUAssetDisplayDescriptorNavigationRequest *)self _invalidateFoundTargetAssetReference];
+      v6 = dateCopy;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v5, v6);
+  MEMORY[0x1EEE66BB8](_assertInsideChangeBlock, v6);
 }
 
-- (void)setTargetAssetReference:(id)a3
+- (void)setTargetAssetReference:(id)reference
 {
-  v5 = a3;
+  referenceCopy = reference;
   [(PUAssetDisplayDescriptorNavigationRequest *)self _assertInsideChangeBlock];
-  if (self->_targetAssetReference != v5)
+  if (self->_targetAssetReference != referenceCopy)
   {
-    objc_storeStrong(&self->_targetAssetReference, a3);
+    objc_storeStrong(&self->_targetAssetReference, reference);
     [(PUAssetDisplayDescriptorNavigationRequest *)self _invalidateFoundTargetAssetReference];
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v6 = a3;
+  modelCopy = model;
   [(PUAssetDisplayDescriptorNavigationRequest *)self _assertInsideChangeBlock];
   viewModel = self->_viewModel;
-  if (viewModel != v6)
+  if (viewModel != modelCopy)
   {
     [(PUBrowsingViewModel *)viewModel unregisterChangeObserver:self];
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(PUBrowsingViewModel *)self->_viewModel registerChangeObserver:self];
     [(PUAssetDisplayDescriptorNavigationRequest *)self _invalidateFoundTargetAssetReference];
   }

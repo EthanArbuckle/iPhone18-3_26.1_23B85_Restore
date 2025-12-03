@@ -1,24 +1,24 @@
 @interface NSSymbolEffectOptions
 + (NSSymbolEffectOptions)options;
 + (NSSymbolEffectOptions)optionsWithNonRepeating;
-+ (NSSymbolEffectOptions)optionsWithRepeatBehavior:(id)a3;
++ (NSSymbolEffectOptions)optionsWithRepeatBehavior:(id)behavior;
 + (NSSymbolEffectOptions)optionsWithRepeatCount:(NSInteger)count;
-+ (NSSymbolEffectOptions)optionsWithRepeatCount:(int64_t)a3 delay:(double)a4;
++ (NSSymbolEffectOptions)optionsWithRepeatCount:(int64_t)count delay:(double)delay;
 + (NSSymbolEffectOptions)optionsWithRepeating;
-+ (NSSymbolEffectOptions)optionsWithRepeatingDelay:(double)a3;
++ (NSSymbolEffectOptions)optionsWithRepeatingDelay:(double)delay;
 + (NSSymbolEffectOptions)optionsWithSpeed:(double)speed;
-+ (id)_optionsWithRepeatStyle:(id)a3;
-- (NSSymbolEffectOptions)initWithCoder:(id)a3;
++ (id)_optionsWithRepeatStyle:(id)style;
+- (NSSymbolEffectOptions)initWithCoder:(id)coder;
 - (NSSymbolEffectOptions)optionsWithNonRepeating;
-- (NSSymbolEffectOptions)optionsWithRepeatBehavior:(id)a3;
+- (NSSymbolEffectOptions)optionsWithRepeatBehavior:(id)behavior;
 - (NSSymbolEffectOptions)optionsWithRepeatCount:(NSInteger)count;
-- (NSSymbolEffectOptions)optionsWithRepeatCount:(int64_t)a3 delay:(double)a4;
+- (NSSymbolEffectOptions)optionsWithRepeatCount:(int64_t)count delay:(double)delay;
 - (NSSymbolEffectOptions)optionsWithRepeating;
-- (NSSymbolEffectOptions)optionsWithRepeatingDelay:(double)a3;
+- (NSSymbolEffectOptions)optionsWithRepeatingDelay:(double)delay;
 - (NSSymbolEffectOptions)optionsWithSpeed:(double)speed;
-- (id)_optionsWithRepeatStyle:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)_optionsWithRepeatStyle:(id)style;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NSSymbolEffectOptions
@@ -37,10 +37,10 @@
 
 + (NSSymbolEffectOptions)optionsWithRepeating
 {
-  v2 = [a1 options];
-  [v2 set_repeatBehavior:1];
+  options = [self options];
+  [options set_repeatBehavior:1];
 
-  return v2;
+  return options;
 }
 
 - (NSSymbolEffectOptions)optionsWithRepeating
@@ -54,10 +54,10 @@
 
 + (NSSymbolEffectOptions)optionsWithNonRepeating
 {
-  v2 = [a1 options];
-  [v2 set_repeatBehavior:2];
+  options = [self options];
+  [options set_repeatBehavior:2];
 
-  return v2;
+  return options;
 }
 
 - (NSSymbolEffectOptions)optionsWithNonRepeating
@@ -72,11 +72,11 @@
 
 + (NSSymbolEffectOptions)optionsWithRepeatCount:(NSInteger)count
 {
-  v4 = [a1 options];
-  [v4 set_repeatBehavior:2];
-  [v4 set_repeatCount:count];
+  options = [self options];
+  [options set_repeatBehavior:2];
+  [options set_repeatCount:count];
 
-  return v4;
+  return options;
 }
 
 - (NSSymbolEffectOptions)optionsWithRepeatCount:(NSInteger)count
@@ -91,10 +91,10 @@
 
 + (NSSymbolEffectOptions)optionsWithSpeed:(double)speed
 {
-  v4 = [a1 options];
-  [v4 set_speed:speed];
+  options = [self options];
+  [options set_speed:speed];
 
-  return v4;
+  return options;
 }
 
 - (NSSymbolEffectOptions)optionsWithSpeed:(double)speed
@@ -105,23 +105,23 @@
   return v4;
 }
 
-+ (NSSymbolEffectOptions)optionsWithRepeatingDelay:(double)a3
++ (NSSymbolEffectOptions)optionsWithRepeatingDelay:(double)delay
 {
-  v4 = [a1 options];
-  [v4 set_repeatBehavior:1];
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v4 set_repeatDelay:v5];
+  options = [self options];
+  [options set_repeatBehavior:1];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:delay];
+  [options set_repeatDelay:v5];
 
-  [v4 set_prefersContinuous:0];
+  [options set_prefersContinuous:0];
 
-  return v4;
+  return options;
 }
 
-- (NSSymbolEffectOptions)optionsWithRepeatingDelay:(double)a3
+- (NSSymbolEffectOptions)optionsWithRepeatingDelay:(double)delay
 {
   v4 = [(NSSymbolEffectOptions *)self copyWithZone:0];
   [v4 set_repeatBehavior:1];
-  v5 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
+  v5 = [MEMORY[0x1E696AD98] numberWithDouble:delay];
   [v4 set_repeatDelay:v5];
 
   [v4 set_prefersContinuous:0];
@@ -129,25 +129,25 @@
   return v4;
 }
 
-+ (NSSymbolEffectOptions)optionsWithRepeatCount:(int64_t)a3 delay:(double)a4
++ (NSSymbolEffectOptions)optionsWithRepeatCount:(int64_t)count delay:(double)delay
 {
-  v6 = [a1 options];
-  [v6 set_repeatBehavior:2];
-  [v6 set_repeatCount:a3];
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
-  [v6 set_repeatDelay:v7];
+  options = [self options];
+  [options set_repeatBehavior:2];
+  [options set_repeatCount:count];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:delay];
+  [options set_repeatDelay:v7];
 
-  [v6 set_prefersContinuous:0];
+  [options set_prefersContinuous:0];
 
-  return v6;
+  return options;
 }
 
-- (NSSymbolEffectOptions)optionsWithRepeatCount:(int64_t)a3 delay:(double)a4
+- (NSSymbolEffectOptions)optionsWithRepeatCount:(int64_t)count delay:(double)delay
 {
   v6 = [(NSSymbolEffectOptions *)self copyWithZone:0];
   [v6 set_repeatBehavior:2];
-  [v6 set_repeatCount:a3];
-  v7 = [MEMORY[0x1E696AD98] numberWithDouble:a4];
+  [v6 set_repeatCount:count];
+  v7 = [MEMORY[0x1E696AD98] numberWithDouble:delay];
   [v6 set_repeatDelay:v7];
 
   [v6 set_prefersContinuous:0];
@@ -155,98 +155,98 @@
   return v6;
 }
 
-+ (id)_optionsWithRepeatStyle:(id)a3
++ (id)_optionsWithRepeatStyle:(id)style
 {
-  v4 = [a3 _backing];
-  v5 = [a1 optionsWithRepeatBehavior:v4];
+  _backing = [style _backing];
+  v5 = [self optionsWithRepeatBehavior:_backing];
 
   return v5;
 }
 
-- (id)_optionsWithRepeatStyle:(id)a3
+- (id)_optionsWithRepeatStyle:(id)style
 {
-  v4 = [a3 _backing];
-  v5 = [(NSSymbolEffectOptions *)self optionsWithRepeatBehavior:v4];
+  _backing = [style _backing];
+  v5 = [(NSSymbolEffectOptions *)self optionsWithRepeatBehavior:_backing];
 
   return v5;
 }
 
-+ (NSSymbolEffectOptions)optionsWithRepeatBehavior:(id)a3
++ (NSSymbolEffectOptions)optionsWithRepeatBehavior:(id)behavior
 {
-  v4 = a3;
-  v5 = [a1 options];
-  [v5 set_repeatBehavior:{objc_msgSend(v4, "_repeatBehavior")}];
-  [v5 set_repeatCount:{objc_msgSend(v4, "_repeatCount")}];
-  v6 = [v4 _repeatDelay];
-  [v5 set_repeatDelay:v6];
+  behaviorCopy = behavior;
+  options = [self options];
+  [options set_repeatBehavior:{objc_msgSend(behaviorCopy, "_repeatBehavior")}];
+  [options set_repeatCount:{objc_msgSend(behaviorCopy, "_repeatCount")}];
+  _repeatDelay = [behaviorCopy _repeatDelay];
+  [options set_repeatDelay:_repeatDelay];
 
-  v7 = [v4 _prefersContinuous];
-  [v5 set_prefersContinuous:v7];
+  _prefersContinuous = [behaviorCopy _prefersContinuous];
+  [options set_prefersContinuous:_prefersContinuous];
 
-  return v5;
+  return options;
 }
 
-- (NSSymbolEffectOptions)optionsWithRepeatBehavior:(id)a3
+- (NSSymbolEffectOptions)optionsWithRepeatBehavior:(id)behavior
 {
-  v4 = a3;
+  behaviorCopy = behavior;
   v5 = [(NSSymbolEffectOptions *)self copy];
-  [v5 set_repeatBehavior:{objc_msgSend(v4, "_repeatBehavior")}];
-  [v5 set_repeatCount:{objc_msgSend(v4, "_repeatCount")}];
-  v6 = [v4 _repeatDelay];
-  [v5 set_repeatDelay:v6];
+  [v5 set_repeatBehavior:{objc_msgSend(behaviorCopy, "_repeatBehavior")}];
+  [v5 set_repeatCount:{objc_msgSend(behaviorCopy, "_repeatCount")}];
+  _repeatDelay = [behaviorCopy _repeatDelay];
+  [v5 set_repeatDelay:_repeatDelay];
 
-  v7 = [v4 _prefersContinuous];
-  [v5 set_prefersContinuous:v7];
+  _prefersContinuous = [behaviorCopy _prefersContinuous];
+  [v5 set_prefersContinuous:_prefersContinuous];
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() options];
+  options = [objc_opt_class() options];
   [(NSSymbolEffectOptions *)self _speed];
-  [v4 set_speed:?];
-  [v4 set_prefersContinuous:{-[NSSymbolEffectOptions _prefersContinuous](self, "_prefersContinuous")}];
-  [v4 set_repeatBehavior:{-[NSSymbolEffectOptions _repeatBehavior](self, "_repeatBehavior")}];
-  [v4 set_repeatCount:{-[NSSymbolEffectOptions _repeatCount](self, "_repeatCount")}];
-  v5 = [(NSSymbolEffectOptions *)self _repeatDelay];
-  v6 = [v5 copyWithZone:0];
-  [v4 set_repeatDelay:v6];
+  [options set_speed:?];
+  [options set_prefersContinuous:{-[NSSymbolEffectOptions _prefersContinuous](self, "_prefersContinuous")}];
+  [options set_repeatBehavior:{-[NSSymbolEffectOptions _repeatBehavior](self, "_repeatBehavior")}];
+  [options set_repeatCount:{-[NSSymbolEffectOptions _repeatCount](self, "_repeatCount")}];
+  _repeatDelay = [(NSSymbolEffectOptions *)self _repeatDelay];
+  v6 = [_repeatDelay copyWithZone:0];
+  [options set_repeatDelay:v6];
 
-  return v4;
+  return options;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
+  coderCopy = coder;
   [(NSSymbolEffectOptions *)self _speed];
-  [v5 encodeDouble:@"_speed" forKey:?];
-  [v5 encodeInteger:-[NSSymbolEffectOptions _repeatBehavior](self forKey:{"_repeatBehavior"), @"_repeatBehavior"}];
-  [v5 encodeInteger:-[NSSymbolEffectOptions _repeatCount](self forKey:{"_repeatCount"), @"_repeatCount"}];
-  v4 = [(NSSymbolEffectOptions *)self _repeatDelay];
-  [v5 encodeObject:v4 forKey:@"_repeatDelay"];
+  [coderCopy encodeDouble:@"_speed" forKey:?];
+  [coderCopy encodeInteger:-[NSSymbolEffectOptions _repeatBehavior](self forKey:{"_repeatBehavior"), @"_repeatBehavior"}];
+  [coderCopy encodeInteger:-[NSSymbolEffectOptions _repeatCount](self forKey:{"_repeatCount"), @"_repeatCount"}];
+  _repeatDelay = [(NSSymbolEffectOptions *)self _repeatDelay];
+  [coderCopy encodeObject:_repeatDelay forKey:@"_repeatDelay"];
 
-  [v5 encodeBool:-[NSSymbolEffectOptions _prefersContinuous](self forKey:{"_prefersContinuous"), @"_prefersContinuous"}];
+  [coderCopy encodeBool:-[NSSymbolEffectOptions _prefersContinuous](self forKey:{"_prefersContinuous"), @"_prefersContinuous"}];
 }
 
-- (NSSymbolEffectOptions)initWithCoder:(id)a3
+- (NSSymbolEffectOptions)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   objc_opt_class();
   v5 = objc_opt_new();
 
   if (v5)
   {
-    [v4 decodeDoubleForKey:@"_speed"];
+    [coderCopy decodeDoubleForKey:@"_speed"];
     [(NSSymbolEffectOptions *)v5 set_speed:?];
-    -[NSSymbolEffectOptions set_repeatBehavior:](v5, "set_repeatBehavior:", [v4 decodeIntegerForKey:@"_repeatBehavior"]);
-    -[NSSymbolEffectOptions set_repeatCount:](v5, "set_repeatCount:", [v4 decodeIntegerForKey:@"_repeatCount"]);
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_repeatDelay"];
+    -[NSSymbolEffectOptions set_repeatBehavior:](v5, "set_repeatBehavior:", [coderCopy decodeIntegerForKey:@"_repeatBehavior"]);
+    -[NSSymbolEffectOptions set_repeatCount:](v5, "set_repeatCount:", [coderCopy decodeIntegerForKey:@"_repeatCount"]);
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_repeatDelay"];
     [(NSSymbolEffectOptions *)v5 set_repeatDelay:v6];
 
-    if ([v4 containsValueForKey:@"_prefersContinuous"])
+    if ([coderCopy containsValueForKey:@"_prefersContinuous"])
     {
-      v7 = [v4 decodeBoolForKey:@"_prefersContinuous"];
+      v7 = [coderCopy decodeBoolForKey:@"_prefersContinuous"];
     }
 
     else

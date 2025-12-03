@@ -1,10 +1,10 @@
 @interface ClientMediaFirstPartyViewModel
-- (_TtC9MomentsUI30ClientMediaFirstPartyViewModel)initWithCoder:(id)a3;
+- (_TtC9MomentsUI30ClientMediaFirstPartyViewModel)initWithCoder:(id)coder;
 @end
 
 @implementation ClientMediaFirstPartyViewModel
 
-- (_TtC9MomentsUI30ClientMediaFirstPartyViewModel)initWithCoder:(id)a3
+- (_TtC9MomentsUI30ClientMediaFirstPartyViewModel)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC9MomentsUI30ClientMediaFirstPartyViewModel_listener) = 0;
   swift_weakInit();

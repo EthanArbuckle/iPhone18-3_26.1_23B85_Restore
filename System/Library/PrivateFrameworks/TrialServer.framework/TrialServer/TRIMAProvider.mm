@@ -1,124 +1,124 @@
 @interface TRIMAProvider
 - (BOOL)_shouldMockMobileAssets;
 - (id)_sqliteMADatabase;
-- (id)createAutoAssetWithId:(id)a3 decryptionKey:(id)a4 error:(id *)a5;
-- (id)downloadAssets:(id)a3 attribution:(id)a4 aggregateProgress:(id)a5 group:(id)a6 completion:(id)a7;
-- (id)endAllPreviousLocksOfReasonSync:(id)a3 forClientName:(id)a4 forAssetSelector:(id)a5;
-- (id)endAllPreviousLocksOfSelectorSync:(id)a3 forClientName:(id)a4;
-- (id)installedAssetsMatchingFullAssetIds:(id)a3;
-- (void)cancelActivityForSelector:(id)a3 completion:(id)a4;
-- (void)eliminateAllForSelector:(id)a3 completion:(id)a4;
-- (void)eliminatePromotedNeverLockedForSelector:(id)a3 completion:(id)a4;
+- (id)createAutoAssetWithId:(id)id decryptionKey:(id)key error:(id *)error;
+- (id)downloadAssets:(id)assets attribution:(id)attribution aggregateProgress:(id)progress group:(id)group completion:(id)completion;
+- (id)endAllPreviousLocksOfReasonSync:(id)sync forClientName:(id)name forAssetSelector:(id)selector;
+- (id)endAllPreviousLocksOfSelectorSync:(id)sync forClientName:(id)name;
+- (id)installedAssetsMatchingFullAssetIds:(id)ids;
+- (void)cancelActivityForSelector:(id)selector completion:(id)completion;
+- (void)eliminateAllForSelector:(id)selector completion:(id)completion;
+- (void)eliminatePromotedNeverLockedForSelector:(id)selector completion:(id)completion;
 @end
 
 @implementation TRIMAProvider
 
-- (id)endAllPreviousLocksOfReasonSync:(id)a3 forClientName:(id)a4 forAssetSelector:(id)a5
+- (id)endAllPreviousLocksOfReasonSync:(id)sync forClientName:(id)name forAssetSelector:(id)selector
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  syncCopy = sync;
+  nameCopy = name;
+  selectorCopy = selector;
   if ([(TRIMAProvider *)self _shouldMockMobileAssets])
   {
-    v11 = [(TRIMAProvider *)self _sqliteMADatabase];
-    [v11 endAllPreviousLocksOfReasonSync:v8 forAssetSelector:v10];
+    _sqliteMADatabase = [(TRIMAProvider *)self _sqliteMADatabase];
+    [_sqliteMADatabase endAllPreviousLocksOfReasonSync:syncCopy forAssetSelector:selectorCopy];
 
     v12 = 0;
   }
 
   else
   {
-    v12 = [MEMORY[0x277D289E0] endAllPreviousLocksOfReasonSync:v8 forClientName:v9 forAssetSelector:v10];
+    v12 = [MEMORY[0x277D289E0] endAllPreviousLocksOfReasonSync:syncCopy forClientName:nameCopy forAssetSelector:selectorCopy];
   }
 
   return v12;
 }
 
-- (id)endAllPreviousLocksOfSelectorSync:(id)a3 forClientName:(id)a4
+- (id)endAllPreviousLocksOfSelectorSync:(id)sync forClientName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  syncCopy = sync;
+  nameCopy = name;
   if ([(TRIMAProvider *)self _shouldMockMobileAssets])
   {
-    v8 = [(TRIMAProvider *)self _sqliteMADatabase];
-    [v8 endAllPreviousLocksOfSelectorSync:v6 forClientName:v7];
+    _sqliteMADatabase = [(TRIMAProvider *)self _sqliteMADatabase];
+    [_sqliteMADatabase endAllPreviousLocksOfSelectorSync:syncCopy forClientName:nameCopy];
 
     v9 = 0;
   }
 
   else
   {
-    v9 = [MEMORY[0x277D289E0] endAllPreviousLocksOfSelectorSync:v6 forClientName:v7];
+    v9 = [MEMORY[0x277D289E0] endAllPreviousLocksOfSelectorSync:syncCopy forClientName:nameCopy];
   }
 
   return v9;
 }
 
-- (void)cancelActivityForSelector:(id)a3 completion:(id)a4
+- (void)cancelActivityForSelector:(id)selector completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  selectorCopy = selector;
+  completionCopy = completion;
   if ([(TRIMAProvider *)self _shouldMockMobileAssets])
   {
-    v7 = [(TRIMAProvider *)self _sqliteMADatabase];
-    [v7 cancelActivityForSelector:v8 completion:v6];
+    _sqliteMADatabase = [(TRIMAProvider *)self _sqliteMADatabase];
+    [_sqliteMADatabase cancelActivityForSelector:selectorCopy completion:completionCopy];
   }
 
   else
   {
-    [MEMORY[0x277D289E0] cancelActivityForSelector:v8 completion:v6];
+    [MEMORY[0x277D289E0] cancelActivityForSelector:selectorCopy completion:completionCopy];
   }
 }
 
-- (void)eliminateAllForSelector:(id)a3 completion:(id)a4
+- (void)eliminateAllForSelector:(id)selector completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  selectorCopy = selector;
+  completionCopy = completion;
   if ([(TRIMAProvider *)self _shouldMockMobileAssets])
   {
-    v7 = [(TRIMAProvider *)self _sqliteMADatabase];
-    [v7 eliminateAllForSelector:v8 completion:v6];
+    _sqliteMADatabase = [(TRIMAProvider *)self _sqliteMADatabase];
+    [_sqliteMADatabase eliminateAllForSelector:selectorCopy completion:completionCopy];
   }
 
   else
   {
-    [MEMORY[0x277D289E0] eliminateAllForSelector:v8 completion:v6];
+    [MEMORY[0x277D289E0] eliminateAllForSelector:selectorCopy completion:completionCopy];
   }
 }
 
-- (void)eliminatePromotedNeverLockedForSelector:(id)a3 completion:(id)a4
+- (void)eliminatePromotedNeverLockedForSelector:(id)selector completion:(id)completion
 {
-  v8 = a3;
-  v6 = a4;
+  selectorCopy = selector;
+  completionCopy = completion;
   if ([(TRIMAProvider *)self _shouldMockMobileAssets])
   {
-    v7 = [(TRIMAProvider *)self _sqliteMADatabase];
-    [v7 eliminatePromotedNeverLockedForSelector:v8 completion:v6];
+    _sqliteMADatabase = [(TRIMAProvider *)self _sqliteMADatabase];
+    [_sqliteMADatabase eliminatePromotedNeverLockedForSelector:selectorCopy completion:completionCopy];
   }
 
   else
   {
-    [MEMORY[0x277D289E0] eliminatePromotedNeverLockedForSelector:v8 completion:v6];
+    [MEMORY[0x277D289E0] eliminatePromotedNeverLockedForSelector:selectorCopy completion:completionCopy];
   }
 }
 
-- (id)createAutoAssetWithId:(id)a3 decryptionKey:(id)a4 error:(id *)a5
+- (id)createAutoAssetWithId:(id)id decryptionKey:(id)key error:(id *)error
 {
   obj = 0;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(TRIMAProvider *)self _shouldMockMobileAssets];
+  keyCopy = key;
+  idCopy = id;
+  _shouldMockMobileAssets = [(TRIMAProvider *)self _shouldMockMobileAssets];
   v11 = off_279DDE118;
-  if (!v10)
+  if (!_shouldMockMobileAssets)
   {
     v11 = off_279DDDEF0;
   }
 
-  v12 = [objc_alloc(*v11) initWithAssetId:v9 decryptionKey:v8 error:&obj];
+  v12 = [objc_alloc(*v11) initWithAssetId:idCopy decryptionKey:keyCopy error:&obj];
 
-  if (a5 && !v12)
+  if (error && !v12)
   {
-    objc_storeStrong(a5, obj);
+    objc_storeStrong(error, obj);
   }
 
   return v12;
@@ -131,24 +131,24 @@
   {
     if (sqliteMADatabasePaths)
     {
-      v5 = sqliteMADatabasePaths;
+      mEMORY[0x277D737E0] = sqliteMADatabasePaths;
     }
 
     else
     {
-      v5 = [MEMORY[0x277D737E0] sharedPaths];
+      mEMORY[0x277D737E0] = [MEMORY[0x277D737E0] sharedPaths];
     }
 
-    v6 = v5;
-    v7 = [v5 trialRootDir];
-    v8 = [v7 stringByAppendingPathComponent:@"MASQLiteMock"];
+    v6 = mEMORY[0x277D737E0];
+    trialRootDir = [mEMORY[0x277D737E0] trialRootDir];
+    v8 = [trialRootDir stringByAppendingPathComponent:@"MASQLiteMock"];
 
     v9 = [v8 stringByAppendingPathComponent:@"Database"];
     v10 = [[TRISQLiteMADatabase alloc] initWithParentDir:v9];
     if (!v10)
     {
-      v13 = [MEMORY[0x277CCA890] currentHandler];
-      [v13 handleFailureInMethod:a2 object:self file:@"TRIMAProviding.m" lineNumber:435 description:{@"Expression was unexpectedly nil/false: %@", @"[[TRISQLiteMADatabase alloc] initWithParentDir:parentDir]"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRIMAProviding.m" lineNumber:435 description:{@"Expression was unexpectedly nil/false: %@", @"[[TRISQLiteMADatabase alloc] initWithParentDir:parentDir]"}];
     }
 
     v11 = self->_db;
@@ -162,15 +162,15 @@
 
 - (BOOL)_shouldMockMobileAssets
 {
-  v2 = [MEMORY[0x277CBEBD0] standardUserDefaults];
-  v3 = [v2 BOOLForKey:@"com.apple.triald.ma.sqliteMock"];
+  standardUserDefaults = [MEMORY[0x277CBEBD0] standardUserDefaults];
+  v3 = [standardUserDefaults BOOLForKey:@"com.apple.triald.ma.sqliteMock"];
 
   return v3;
 }
 
-- (id)installedAssetsMatchingFullAssetIds:(id)a3
+- (id)installedAssetsMatchingFullAssetIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   v5 = objc_autoreleasePoolPush();
   v13 = 0;
   v14 = &v13;
@@ -185,7 +185,7 @@
   v12 = &v13;
   v7 = v6;
   v11 = v7;
-  [v4 enumerateObjectsUsingBlock:v10];
+  [idsCopy enumerateObjectsUsingBlock:v10];
   [v7 enumerateKeysAndObjectsUsingBlock:&__block_literal_global_516_1];
   if (v14[3])
   {
@@ -283,14 +283,14 @@ void __53__TRIMAProvider_installedAssetsMatchingFullAssetIds___block_invoke(uint
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)downloadAssets:(id)a3 attribution:(id)a4 aggregateProgress:(id)a5 group:(id)a6 completion:(id)a7
+- (id)downloadAssets:(id)assets attribution:(id)attribution aggregateProgress:(id)progress group:(id)group completion:(id)completion
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v13, "count")}];
+  assetsCopy = assets;
+  attributionCopy = attribution;
+  progressCopy = progress;
+  groupCopy = group;
+  completionCopy = completion;
+  v18 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(assetsCopy, "count")}];
   v68 = 0;
   v69 = &v68;
   v70 = 0x2020000000;
@@ -300,44 +300,44 @@ void __53__TRIMAProvider_installedAssetsMatchingFullAssetIds___block_invoke(uint
   v63[2] = __79__TRIMAProvider_downloadAssets_attribution_aggregateProgress_group_completion___block_invoke;
   v63[3] = &unk_279DE2F88;
   v63[4] = self;
-  v19 = v17;
+  v19 = completionCopy;
   v66 = v19;
-  v20 = v14;
+  v20 = attributionCopy;
   v64 = v20;
   v67 = &v68;
   v21 = v18;
   v65 = v21;
-  [v13 enumerateKeysAndObjectsUsingBlock:v63];
+  [assetsCopy enumerateKeysAndObjectsUsingBlock:v63];
   if (v69[3])
   {
-    v38 = v15;
+    v38 = progressCopy;
     v22 = objc_opt_new();
-    v23 = [v20 networkOptions];
-    v24 = [v23 discretionaryBehavior];
+    networkOptions = [v20 networkOptions];
+    discretionaryBehavior = [networkOptions discretionaryBehavior];
 
-    if (!v24)
+    if (!discretionaryBehavior)
     {
       [v22 setUserInitiated:1];
     }
 
     v37 = v22;
     v25 = objc_alloc_init(TRICancelableMAOperation);
-    if (v16)
+    if (groupCopy)
     {
-      dispatch_group_enter(v16);
+      dispatch_group_enter(groupCopy);
     }
 
     v59 = 0;
     v60 = &v59;
     v61 = 0x2020000000;
     v62 = 0;
-    v26 = [v20 networkOptions];
-    v27 = [v26 activity];
+    networkOptions2 = [v20 networkOptions];
+    activity = [networkOptions2 activity];
 
-    if (v27)
+    if (activity)
     {
-      v28 = [v20 networkOptions];
-      v29 = [v28 activity];
+      networkOptions3 = [v20 networkOptions];
+      activity2 = [networkOptions3 activity];
       v50 = MEMORY[0x277D85DD0];
       v51 = 3221225472;
       v52 = __79__TRIMAProvider_downloadAssets_attribution_aggregateProgress_group_completion___block_invoke_520;
@@ -346,11 +346,11 @@ void __53__TRIMAProvider_installedAssetsMatchingFullAssetIds___block_invoke(uint
       v58 = &v59;
       v57 = v19;
       v55 = v20;
-      v56 = v16;
+      v56 = groupCopy;
       v60[3] = xpc_activity_add_eligibility_changed_handler();
     }
 
-    v36 = v13;
+    v36 = assetsCopy;
     v30 = [MEMORY[0x277D425A0] autoreleasingSerialQueueWithLabel:"com.apple.triald.MADownloadQueue" qosClass:qos_class_self()];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -361,20 +361,20 @@ void __53__TRIMAProvider_installedAssetsMatchingFullAssetIds___block_invoke(uint
     v41 = v31;
     v42 = v37;
     v49 = a2;
-    v43 = self;
+    selfCopy = self;
     v44 = v38;
     v48 = &v59;
     v47 = v19;
     v45 = v20;
-    v46 = v16;
+    v46 = groupCopy;
     v32 = v37;
     dispatch_async(v30, block);
     v33 = v46;
     v34 = v31;
 
-    v15 = v38;
+    progressCopy = v38;
     _Block_object_dispose(&v59, 8);
-    v13 = v36;
+    assetsCopy = v36;
   }
 
   else

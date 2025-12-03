@@ -1,20 +1,20 @@
 @interface BCLayoutConfiguration
-- (BCLayoutConfiguration)initWithViewController:(id)a3 configurationEnvironment:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToLayoutConfiguration:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BCLayoutConfiguration)initWithViewController:(id)controller configurationEnvironment:(id)environment;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToLayoutConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation BCLayoutConfiguration
 
-- (BCLayoutConfiguration)initWithViewController:(id)a3 configurationEnvironment:(id)a4
+- (BCLayoutConfiguration)initWithViewController:(id)controller configurationEnvironment:(id)environment
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  controllerCopy = controller;
+  environmentCopy = environment;
+  if (!environmentCopy)
   {
-    v7 = [[BCLayoutConfigurationEnvironment alloc] initWithViewController:v6];
+    environmentCopy = [[BCLayoutConfigurationEnvironment alloc] initWithViewController:controllerCopy];
   }
 
   v11.receiver = self;
@@ -23,33 +23,33 @@
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_environment, v7);
-    objc_storeWeak(&v9->_viewController, v6);
+    objc_storeStrong(&v8->_environment, environmentCopy);
+    objc_storeWeak(&v9->_viewController, controllerCopy);
   }
 
   return v9;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v7 = [(BCLayoutConfiguration *)self environment];
-  v8 = [v7 copyWithZone:a3];
+  environment = [(BCLayoutConfiguration *)self environment];
+  v8 = [environment copyWithZone:zone];
   v9 = [v5 initWithViewController:WeakRetained configurationEnvironment:v8];
 
   return v9;
 }
 
-- (BOOL)isEqualToLayoutConfiguration:(id)a3
+- (BOOL)isEqualToLayoutConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v6 = objc_loadWeakRetained(v4 + 1);
+  v6 = objc_loadWeakRetained(configurationCopy + 1);
   if (WeakRetained == v6)
   {
     environment = self->_environment;
-    if (environment == v4[2])
+    if (environment == configurationCopy[2])
     {
       v7 = 1;
     }
@@ -68,10 +68,10 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -81,7 +81,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(BCLayoutConfiguration *)self isEqualToLayoutConfiguration:v4];
+      v5 = [(BCLayoutConfiguration *)self isEqualToLayoutConfiguration:equalCopy];
     }
 
     else
@@ -97,11 +97,11 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BCLayoutConfiguration *)self environment];
+  environment = [(BCLayoutConfiguration *)self environment];
   WeakRetained = objc_loadWeakRetained(&self->_viewController);
-  v7 = [NSString stringWithFormat:@"<%@:%p environment:%@, viewController:%@>", v4, self, v5, WeakRetained];
+  weakRetained = [NSString stringWithFormat:@"<%@:%p environment:%@, viewController:%@>", v4, self, environment, WeakRetained];
 
-  return v7;
+  return weakRetained;
 }
 
 @end

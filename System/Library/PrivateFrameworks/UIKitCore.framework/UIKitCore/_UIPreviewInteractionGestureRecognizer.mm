@@ -1,8 +1,8 @@
 @interface _UIPreviewInteractionGestureRecognizer
 - (void)cancel;
 - (void)recognize;
-- (void)setDelegate:(id)a3;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
+- (void)setDelegate:(id)delegate;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
 @end
 
 @implementation _UIPreviewInteractionGestureRecognizer
@@ -18,23 +18,23 @@
 
 - (void)cancel
 {
-  v3 = [(UIGestureRecognizer *)self state];
-  if (v3 <= UIGestureRecognizerStateChanged)
+  state = [(UIGestureRecognizer *)self state];
+  if (state <= UIGestureRecognizerStateChanged)
   {
-    v4 = qword_18A680C80[v3];
+    v4 = qword_18A680C80[state];
 
     [(UIGestureRecognizer *)self setState:v4];
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v15 = *MEMORY[0x1E69E9840];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(UIGestureRecognizer *)self _allActiveTouches:a3];
+  v5 = [(UIGestureRecognizer *)self _allActiveTouches:ended];
   v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
@@ -73,15 +73,15 @@
   [(_UIPreviewInteractionGestureRecognizer *)self cancel];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v5.receiver = self;
     v5.super_class = _UIPreviewInteractionGestureRecognizer;
-    [(UIGestureRecognizer *)&v5 setDelegate:v4];
+    [(UIGestureRecognizer *)&v5 setDelegate:delegateCopy];
   }
 
   else if (dyld_program_sdk_at_least())

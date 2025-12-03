@@ -1,22 +1,22 @@
 @interface SBIconViewSnapshotProvider
-- (SBIconViewSnapshotProvider)initWithSnapshotView:(id)a3 invalidation:(id)a4;
+- (SBIconViewSnapshotProvider)initWithSnapshotView:(id)view invalidation:(id)invalidation;
 - (void)invalidate;
 @end
 
 @implementation SBIconViewSnapshotProvider
 
-- (SBIconViewSnapshotProvider)initWithSnapshotView:(id)a3 invalidation:(id)a4
+- (SBIconViewSnapshotProvider)initWithSnapshotView:(id)view invalidation:(id)invalidation
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  invalidationCopy = invalidation;
   v14.receiver = self;
   v14.super_class = SBIconViewSnapshotProvider;
   v9 = [(SBIconViewSnapshotProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_snapshotView, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_snapshotView, view);
+    v11 = [invalidationCopy copy];
     invalidationBlock = v10->_invalidationBlock;
     v10->_invalidationBlock = v11;
   }

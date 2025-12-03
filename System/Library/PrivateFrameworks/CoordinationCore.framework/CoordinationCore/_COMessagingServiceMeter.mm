@@ -1,11 +1,11 @@
 @interface _COMessagingServiceMeter
-- (BOOL)clientIdentifier:(id)a3 canReceiveLength:(unint64_t)a4;
-- (BOOL)clientIdentifier:(id)a3 canSendLength:(unint64_t)a4;
-- (BOOL)isEvaluatingIdentifier:(id)a3;
+- (BOOL)clientIdentifier:(id)identifier canReceiveLength:(unint64_t)length;
+- (BOOL)clientIdentifier:(id)identifier canSendLength:(unint64_t)length;
+- (BOOL)isEvaluatingIdentifier:(id)identifier;
 - (_COMessagingServiceMeter)init;
-- (unint64_t)receiveLimitForIdentifier:(id)a3;
-- (unint64_t)sendLimitForIdentifier:(id)a3;
-- (void)_withLock:(id)a3;
+- (unint64_t)receiveLimitForIdentifier:(id)identifier;
+- (unint64_t)sendLimitForIdentifier:(id)identifier;
+- (void)_withLock:(id)lock;
 - (void)dealloc;
 @end
 
@@ -23,16 +23,16 @@
     v38 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v38 setObject:&unk_2857C88C8 forKey:@"com.apple.homepodsettingsd"];
     [v38 setObject:&unk_2857C88E0 forKey:@"com.apple.coordinated"];
-    v2 = [MEMORY[0x277CCAC38] processInfo];
-    v36 = [v2 arguments];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    arguments = [processInfo arguments];
 
-    v3 = [v36 indexOfObject:@"--limits"];
-    if (v3 != 0x7FFFFFFFFFFFFFFFLL && v3 + 1 < [v36 count])
+    v3 = [arguments indexOfObject:@"--limits"];
+    if (v3 != 0x7FFFFFFFFFFFFFFFLL && v3 + 1 < [arguments count])
     {
-      v4 = [v36 objectAtIndex:?];
+      v4 = [arguments objectAtIndex:?];
       v5 = [v4 componentsSeparatedByString:{@", "}];
 
-      v6 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
       v48 = 0u;
       v49 = 0u;
       v46 = 0u;
@@ -51,26 +51,26 @@
               objc_enumerationMutation(v7);
             }
 
-            v11 = [*(*(&v46 + 1) + 8 * i) stringByTrimmingCharactersInSet:v6];
+            v11 = [*(*(&v46 + 1) + 8 * i) stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
             if ([v11 length])
             {
               v12 = [v11 componentsSeparatedByString:@"="];
               if ([v12 count] == 2)
               {
                 v13 = [v12 objectAtIndex:0];
-                v14 = [v13 stringByTrimmingCharactersInSet:v6];
+                v14 = [v13 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
                 v15 = [v12 objectAtIndex:1];
-                v16 = [v15 stringByTrimmingCharactersInSet:v6];
+                v16 = [v15 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
                 if ([v14 length])
                 {
                   if ([v16 length])
                   {
-                    v17 = [v16 integerValue];
-                    if (v17 >= 1)
+                    integerValue = [v16 integerValue];
+                    if (integerValue >= 1)
                     {
-                      v18 = [MEMORY[0x277CCABB0] numberWithInteger:v17];
+                      v18 = [MEMORY[0x277CCABB0] numberWithInteger:integerValue];
                       [v38 setObject:v18 forKey:v14];
                     }
                   }
@@ -86,17 +86,17 @@
       }
     }
 
-    v19 = [v36 indexOfObject:@"--evaluating"];
-    if (v19 != 0x7FFFFFFFFFFFFFFFLL && v19 + 1 < [v36 count])
+    v19 = [arguments indexOfObject:@"--evaluating"];
+    if (v19 != 0x7FFFFFFFFFFFFFFFLL && v19 + 1 < [arguments count])
     {
       v20 = objc_alloc_init(MEMORY[0x277CBEB38]);
       peaks = val->_peaks;
       val->_peaks = v20;
 
-      v22 = [v36 objectAtIndex:v19 + 1];
+      v22 = [arguments objectAtIndex:v19 + 1];
       v23 = [v22 componentsSeparatedByString:{@", "}];
 
-      v24 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+      whitespaceAndNewlineCharacterSet2 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
@@ -116,7 +116,7 @@
             }
 
             v29 = *(*(&v42 + 1) + 8 * j);
-            v30 = [v29 stringByTrimmingCharactersInSet:v24];
+            v30 = [v29 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet2];
             if ([v30 length])
             {
               [(NSMutableDictionary *)val->_peaks setObject:&unk_2857C88F8 forKey:v29];
@@ -154,10 +154,10 @@
 
 - (void)dealloc
 {
-  v3 = [(_COMessagingServiceMeter *)self registration];
-  if (notify_is_valid_token(v3))
+  registration = [(_COMessagingServiceMeter *)self registration];
+  if (notify_is_valid_token(registration))
   {
-    notify_cancel(v3);
+    notify_cancel(registration);
   }
 
   v4.receiver = self;
@@ -165,57 +165,57 @@
   [(_COMessagingServiceMeter *)&v4 dealloc];
 }
 
-- (void)_withLock:(id)a3
+- (void)_withLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   os_unfair_lock_lock(&self->_lock);
-  v4[2](v4);
+  lockCopy[2](lockCopy);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)clientIdentifier:(id)a3 canSendLength:(unint64_t)a4
+- (BOOL)clientIdentifier:(id)identifier canSendLength:(unint64_t)length
 {
-  v6 = a3;
-  v7 = [(_COMessagingServiceMeter *)self sendLimitForIdentifier:v6];
-  if ([(_COMessagingServiceMeter *)self isEvaluatingIdentifier:v6])
+  identifierCopy = identifier;
+  v7 = [(_COMessagingServiceMeter *)self sendLimitForIdentifier:identifierCopy];
+  if ([(_COMessagingServiceMeter *)self isEvaluatingIdentifier:identifierCopy])
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __59___COMessagingServiceMeter_clientIdentifier_canSendLength___block_invoke;
     v9[3] = &unk_278E17FD8;
     v9[4] = self;
-    v10 = v6;
-    v11 = a4;
+    v10 = identifierCopy;
+    lengthCopy = length;
     [(_COMessagingServiceMeter *)self _withLock:v9];
   }
 
-  return v7 > a4;
+  return v7 > length;
 }
 
-- (BOOL)clientIdentifier:(id)a3 canReceiveLength:(unint64_t)a4
+- (BOOL)clientIdentifier:(id)identifier canReceiveLength:(unint64_t)length
 {
-  v6 = a3;
-  v7 = [(_COMessagingServiceMeter *)self receiveLimitForIdentifier:v6];
-  if ([(_COMessagingServiceMeter *)self isEvaluatingIdentifier:v6])
+  identifierCopy = identifier;
+  v7 = [(_COMessagingServiceMeter *)self receiveLimitForIdentifier:identifierCopy];
+  if ([(_COMessagingServiceMeter *)self isEvaluatingIdentifier:identifierCopy])
   {
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __62___COMessagingServiceMeter_clientIdentifier_canReceiveLength___block_invoke;
     v9[3] = &unk_278E17FD8;
     v9[4] = self;
-    v10 = v6;
-    v11 = a4;
+    v10 = identifierCopy;
+    lengthCopy = length;
     [(_COMessagingServiceMeter *)self _withLock:v9];
   }
 
-  return v7 > a4;
+  return v7 > length;
 }
 
-- (BOOL)isEvaluatingIdentifier:(id)a3
+- (BOOL)isEvaluatingIdentifier:(id)identifier
 {
-  v4 = a3;
-  if ([(_COMessagingServiceMeter *)self sendLimitForIdentifier:v4]== -1)
+  identifierCopy = identifier;
+  if ([(_COMessagingServiceMeter *)self sendLimitForIdentifier:identifierCopy]== -1)
   {
     v10 = 0;
     v11 = &v10;
@@ -227,7 +227,7 @@
     v7[3] = &unk_278E15A18;
     v9 = &v10;
     v7[4] = self;
-    v8 = v4;
+    v8 = identifierCopy;
     [(_COMessagingServiceMeter *)self _withLock:v7];
     v5 = *(v11 + 24);
 
@@ -242,42 +242,42 @@
   return v5 & 1;
 }
 
-- (unint64_t)sendLimitForIdentifier:(id)a3
+- (unint64_t)sendLimitForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_COMessagingServiceMeter *)self limits];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  limits = [(_COMessagingServiceMeter *)self limits];
+  v6 = [limits objectForKey:identifierCopy];
 
   if (v6)
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 10240;
+    unsignedIntegerValue = 10240;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)receiveLimitForIdentifier:(id)a3
+- (unint64_t)receiveLimitForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(_COMessagingServiceMeter *)self limits];
-  v6 = [v5 objectForKey:v4];
+  identifierCopy = identifier;
+  limits = [(_COMessagingServiceMeter *)self limits];
+  v6 = [limits objectForKey:identifierCopy];
 
   if (v6)
   {
-    v7 = [v6 unsignedIntegerValue];
+    unsignedIntegerValue = [v6 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 10240;
+    unsignedIntegerValue = 10240;
   }
 
-  return v7;
+  return unsignedIntegerValue;
 }
 
 @end

@@ -1,11 +1,11 @@
 @interface SBOverridableUserInterfaceStyleProvider
 - (SBOverridableUserInterfaceStyleProvider)init;
 - (int64_t)currentStyle;
-- (void)_notifyObserversCurrentStyleChangedWithCompletion:(id)a3;
-- (void)addObserver:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setOverrideStyle:(int64_t)a3 completion:(id)a4;
-- (void)userInterfaceStyleProvider:(id)a3 didUpdateStyle:(int64_t)a4 preferredAnimationSettings:(id)a5 completion:(id)a6;
+- (void)_notifyObserversCurrentStyleChangedWithCompletion:(id)completion;
+- (void)addObserver:(id)observer;
+- (void)removeObserver:(id)observer;
+- (void)setOverrideStyle:(int64_t)style completion:(id)completion;
+- (void)userInterfaceStyleProvider:(id)provider didUpdateStyle:(int64_t)style preferredAnimationSettings:(id)settings completion:(id)completion;
 @end
 
 @implementation SBOverridableUserInterfaceStyleProvider
@@ -31,17 +31,17 @@
   return v2;
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers addObject:?];
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  if (a3)
+  if (observer)
   {
     [(NSHashTable *)self->_observers removeObject:?];
   }
@@ -60,28 +60,28 @@
   }
 }
 
-- (void)setOverrideStyle:(int64_t)a3 completion:(id)a4
+- (void)setOverrideStyle:(int64_t)style completion:(id)completion
 {
-  v6 = a4;
-  if (self->_overrideStyle == a3)
+  completionCopy = completion;
+  if (self->_overrideStyle == style)
   {
-    if (!v6)
+    if (!completionCopy)
     {
       goto LABEL_10;
     }
 
-    v8 = v6;
-    v6[2](v6);
+    v8 = completionCopy;
+    completionCopy[2](completionCopy);
   }
 
   else
   {
-    v8 = v6;
-    v7 = [(SBOverridableUserInterfaceStyleProvider *)self currentStyle];
-    self->_overrideStyle = a3;
-    if (v7 == [(SBOverridableUserInterfaceStyleProvider *)self currentStyle])
+    v8 = completionCopy;
+    currentStyle = [(SBOverridableUserInterfaceStyleProvider *)self currentStyle];
+    self->_overrideStyle = style;
+    if (currentStyle == [(SBOverridableUserInterfaceStyleProvider *)self currentStyle])
     {
-      v6 = v8;
+      completionCopy = v8;
       if (!v8)
       {
         goto LABEL_10;
@@ -96,23 +96,23 @@
     }
   }
 
-  v6 = v8;
+  completionCopy = v8;
 LABEL_10:
 }
 
-- (void)userInterfaceStyleProvider:(id)a3 didUpdateStyle:(int64_t)a4 preferredAnimationSettings:(id)a5 completion:(id)a6
+- (void)userInterfaceStyleProvider:(id)provider didUpdateStyle:(int64_t)style preferredAnimationSettings:(id)settings completion:(id)completion
 {
   if (!self->_overrideStyle)
   {
-    [(SBOverridableUserInterfaceStyleProvider *)self _notifyObserversCurrentStyleChangedWithCompletion:a6, a4, a5];
+    [(SBOverridableUserInterfaceStyleProvider *)self _notifyObserversCurrentStyleChangedWithCompletion:completion, style, settings];
   }
 }
 
-- (void)_notifyObserversCurrentStyleChangedWithCompletion:(id)a3
+- (void)_notifyObserversCurrentStyleChangedWithCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v4 = [(SBOverridableUserInterfaceStyleProvider *)self currentStyle];
+  completionCopy = completion;
+  currentStyle = [(SBOverridableUserInterfaceStyleProvider *)self currentStyle];
   v5 = dispatch_group_create();
   v18 = 0u;
   v19 = 0u;
@@ -141,7 +141,7 @@ LABEL_10:
         v16[2] = __93__SBOverridableUserInterfaceStyleProvider__notifyObserversCurrentStyleChangedWithCompletion___block_invoke;
         v16[3] = &unk_2783A8C18;
         v17 = v5;
-        [v10 userInterfaceStyleProvider:self didUpdateStyle:v4 preferredAnimationSettings:0 completion:v16];
+        [v10 userInterfaceStyleProvider:self didUpdateStyle:currentStyle preferredAnimationSettings:0 completion:v16];
 
         ++v9;
       }
@@ -157,8 +157,8 @@ LABEL_10:
   block[1] = 3221225472;
   block[2] = __93__SBOverridableUserInterfaceStyleProvider__notifyObserversCurrentStyleChangedWithCompletion___block_invoke_2;
   block[3] = &unk_2783A9348;
-  v15 = v12;
-  v11 = v12;
+  v15 = completionCopy;
+  v11 = completionCopy;
   dispatch_group_notify(v5, MEMORY[0x277D85CD0], block);
 }
 

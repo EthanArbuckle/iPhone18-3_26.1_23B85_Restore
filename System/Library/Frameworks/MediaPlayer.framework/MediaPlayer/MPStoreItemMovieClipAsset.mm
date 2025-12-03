@@ -1,5 +1,5 @@
 @interface MPStoreItemMovieClipAsset
-- (MPStoreItemMovieClipAsset)initWithLookupDictionary:(id)a3;
+- (MPStoreItemMovieClipAsset)initWithLookupDictionary:(id)dictionary;
 - (NSString)flavor;
 - (NSURL)hlsURL;
 - (NSURL)url;
@@ -69,14 +69,14 @@
   return v3;
 }
 
-- (MPStoreItemMovieClipAsset)initWithLookupDictionary:(id)a3
+- (MPStoreItemMovieClipAsset)initWithLookupDictionary:(id)dictionary
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   v6 = [(MPStoreItemMovieClipAsset *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lookupDictionary, a3);
+    objc_storeStrong(&v6->_lookupDictionary, dictionary);
   }
 
   return v7;

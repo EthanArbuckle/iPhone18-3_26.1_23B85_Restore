@@ -1,13 +1,13 @@
 @interface AAFamilyInvite
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 @end
 
 @implementation AAFamilyInvite
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -17,8 +17,8 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(AAFamilyInvite *)v4 code];
-      v6 = [v5 isEqualToString:self->_code];
+      code = [(AAFamilyInvite *)equalCopy code];
+      v6 = [code isEqualToString:self->_code];
     }
 
     else

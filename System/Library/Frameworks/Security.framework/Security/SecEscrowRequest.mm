@@ -1,21 +1,21 @@
 @interface SecEscrowRequest
-+ (id)request:(id *)a3;
-- (BOOL)cachePrerecord:(id)a3 serializedPrerecord:(id)a4 error:(id *)a5;
-- (BOOL)escrowCompletedWithinLastSeconds:(double)a3;
-- (BOOL)pendingEscrowUpload:(id *)a3;
-- (BOOL)resetAllRequests:(id *)a3;
-- (BOOL)triggerEscrowUpdate:(id)a3 options:(id)a4 error:(id *)a5;
-- (SecEscrowRequest)initWithConnection:(id)a3;
-- (id)fetchPrerecord:(id)a3 error:(id *)a4;
-- (id)fetchRequestWaitingOnPasscode:(id *)a3;
-- (id)fetchStatuses:(id *)a3;
-- (unint64_t)storePrerecordsInEscrow:(id *)a3;
++ (id)request:(id *)request;
+- (BOOL)cachePrerecord:(id)prerecord serializedPrerecord:(id)serializedPrerecord error:(id *)error;
+- (BOOL)escrowCompletedWithinLastSeconds:(double)seconds;
+- (BOOL)pendingEscrowUpload:(id *)upload;
+- (BOOL)resetAllRequests:(id *)requests;
+- (BOOL)triggerEscrowUpdate:(id)update options:(id)options error:(id *)error;
+- (SecEscrowRequest)initWithConnection:(id)connection;
+- (id)fetchPrerecord:(id)prerecord error:(id *)error;
+- (id)fetchRequestWaitingOnPasscode:(id *)passcode;
+- (id)fetchStatuses:(id *)statuses;
+- (unint64_t)storePrerecordsInEscrow:(id *)escrow;
 - (void)dealloc;
 @end
 
 @implementation SecEscrowRequest
 
-- (BOOL)escrowCompletedWithinLastSeconds:(double)a3
+- (BOOL)escrowCompletedWithinLastSeconds:(double)seconds
 {
   v11 = 0;
   v12 = &v11;
@@ -27,13 +27,13 @@
   v9[3] = __Block_byref_object_copy__3604;
   v9[4] = __Block_byref_object_dispose__3605;
   v10 = 0;
-  v4 = [(SecEscrowRequest *)self connection];
+  connection = [(SecEscrowRequest *)self connection];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __53__SecEscrowRequest_escrowCompletedWithinLastSeconds___block_invoke;
   v8[3] = &unk_1E70E0B18;
   v8[4] = v9;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v8];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v8];
 
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
@@ -41,12 +41,12 @@
   v7[3] = &unk_1E70D6E18;
   v7[4] = &v11;
   v7[5] = v9;
-  [v5 escrowCompletedWithinLastSeconds:v7 reply:a3];
-  LOBYTE(v4) = *(v12 + 24);
+  [v5 escrowCompletedWithinLastSeconds:v7 reply:seconds];
+  LOBYTE(connection) = *(v12 + 24);
 
   _Block_object_dispose(v9, 8);
   _Block_object_dispose(&v11, 8);
-  return v4;
+  return connection;
 }
 
 void __53__SecEscrowRequest_escrowCompletedWithinLastSeconds___block_invoke(uint64_t a1, void *a2)
@@ -82,7 +82,7 @@ void __53__SecEscrowRequest_escrowCompletedWithinLastSeconds___block_invoke_99(u
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)pendingEscrowUpload:(id *)a3
+- (BOOL)pendingEscrowUpload:(id *)upload
 {
   v26 = *MEMORY[0x1E69E9840];
   v22 = 0;
@@ -98,11 +98,11 @@ void __53__SecEscrowRequest_escrowCompletedWithinLastSeconds___block_invoke_99(u
       _os_log_impl(&dword_1887D2000, v6, OS_LOG_TYPE_DEFAULT, "failed to fetch escrow statuses: %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (upload)
     {
       v7 = v5;
       v8 = 0;
-      *a3 = v5;
+      *upload = v5;
       goto LABEL_23;
     }
 
@@ -121,8 +121,8 @@ LABEL_20:
   v18 = 0u;
   v19 = 0u;
   v17 = v4;
-  v9 = [v4 allValues];
-  v10 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
+  allValues = [v4 allValues];
+  v10 = [allValues countByEnumeratingWithState:&v18 objects:v23 count:16];
   if (v10)
   {
     v11 = v10;
@@ -134,7 +134,7 @@ LABEL_20:
       {
         if (*v19 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(allValues);
         }
 
         v14 = *(*(&v18 + 1) + 8 * i);
@@ -144,7 +144,7 @@ LABEL_20:
         }
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v18 objects:v23 count:16];
+      v11 = [allValues countByEnumeratingWithState:&v18 objects:v23 count:16];
     }
 
     while (v11);
@@ -162,7 +162,7 @@ LABEL_23:
   return v8 & 1;
 }
 
-- (unint64_t)storePrerecordsInEscrow:(id *)a3
+- (unint64_t)storePrerecordsInEscrow:(id *)escrow
 {
   v15 = 0;
   v16 = &v15;
@@ -170,13 +170,13 @@ LABEL_23:
   v18 = __Block_byref_object_copy__3604;
   v19 = __Block_byref_object_dispose__3605;
   v20 = 0;
-  v4 = [(SecEscrowRequest *)self connection];
+  connection = [(SecEscrowRequest *)self connection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __44__SecEscrowRequest_storePrerecordsInEscrow___block_invoke;
   v14[3] = &unk_1E70E0B18;
   v14[4] = &v15;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v14];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v14];
 
   v10 = 0;
   v11 = &v10;
@@ -189,12 +189,12 @@ LABEL_23:
   v9[4] = &v10;
   v9[5] = &v15;
   [v5 storePrerecordsInEscrow:v9];
-  if (a3)
+  if (escrow)
   {
     v6 = v16[5];
     if (v6)
     {
-      *a3 = v6;
+      *escrow = v6;
     }
   }
 
@@ -240,7 +240,7 @@ void __44__SecEscrowRequest_storePrerecordsInEscrow___block_invoke_97(uint64_t a
   v8 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)resetAllRequests:(id *)a3
+- (BOOL)resetAllRequests:(id *)requests
 {
   v12 = 0;
   v13 = &v12;
@@ -248,13 +248,13 @@ void __44__SecEscrowRequest_storePrerecordsInEscrow___block_invoke_97(uint64_t a
   v15 = __Block_byref_object_copy__3604;
   v16 = __Block_byref_object_dispose__3605;
   v17 = 0;
-  v4 = [(SecEscrowRequest *)self connection];
+  connection = [(SecEscrowRequest *)self connection];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __37__SecEscrowRequest_resetAllRequests___block_invoke;
   v11[3] = &unk_1E70E0B18;
   v11[4] = &v12;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v11];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v11];
 
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -263,12 +263,12 @@ void __44__SecEscrowRequest_storePrerecordsInEscrow___block_invoke_97(uint64_t a
   v10[4] = &v12;
   [v5 resetAllRequests:v10];
   v6 = v13;
-  if (a3)
+  if (requests)
   {
     v7 = v13[5];
     if (v7)
     {
-      *a3 = v7;
+      *requests = v7;
       v6 = v13;
     }
   }
@@ -311,7 +311,7 @@ void __37__SecEscrowRequest_resetAllRequests___block_invoke_96(uint64_t a1, void
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fetchStatuses:(id *)a3
+- (id)fetchStatuses:(id *)statuses
 {
   v17 = 0;
   v18 = &v17;
@@ -325,13 +325,13 @@ void __37__SecEscrowRequest_resetAllRequests___block_invoke_96(uint64_t a1, void
   v14 = __Block_byref_object_copy__3604;
   v15 = __Block_byref_object_dispose__3605;
   v16 = 0;
-  v4 = [(SecEscrowRequest *)self connection];
+  connection = [(SecEscrowRequest *)self connection];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __34__SecEscrowRequest_fetchStatuses___block_invoke;
   v10[3] = &unk_1E70E0B18;
   v10[4] = &v17;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v10];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v10];
 
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
@@ -340,12 +340,12 @@ void __37__SecEscrowRequest_resetAllRequests___block_invoke_96(uint64_t a1, void
   v9[4] = &v11;
   v9[5] = &v17;
   [v5 fetchRequestStatuses:v9];
-  if (a3)
+  if (statuses)
   {
     v6 = v18[5];
     if (v6)
     {
-      *a3 = v6;
+      *statuses = v6;
     }
   }
 
@@ -394,7 +394,7 @@ void __34__SecEscrowRequest_fetchStatuses___block_invoke_94(uint64_t a1, void *a
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fetchRequestWaitingOnPasscode:(id *)a3
+- (id)fetchRequestWaitingOnPasscode:(id *)passcode
 {
   v17 = 0;
   v18 = &v17;
@@ -402,13 +402,13 @@ void __34__SecEscrowRequest_fetchStatuses___block_invoke_94(uint64_t a1, void *a
   v20 = __Block_byref_object_copy__3604;
   v21 = __Block_byref_object_dispose__3605;
   v22 = 0;
-  v4 = [(SecEscrowRequest *)self connection];
+  connection = [(SecEscrowRequest *)self connection];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __50__SecEscrowRequest_fetchRequestWaitingOnPasscode___block_invoke;
   v16[3] = &unk_1E70E0B18;
   v16[4] = &v17;
-  v5 = [v4 synchronousRemoteObjectProxyWithErrorHandler:v16];
+  v5 = [connection synchronousRemoteObjectProxyWithErrorHandler:v16];
 
   v10 = 0;
   v11 = &v10;
@@ -423,12 +423,12 @@ void __34__SecEscrowRequest_fetchStatuses___block_invoke_94(uint64_t a1, void *a
   v9[4] = &v10;
   v9[5] = &v17;
   [v5 fetchRequestWaitingOnPasscode:v9];
-  if (a3)
+  if (passcode)
   {
     v6 = v18[5];
     if (v6)
     {
-      *a3 = v6;
+      *passcode = v6;
     }
   }
 
@@ -476,22 +476,22 @@ void __50__SecEscrowRequest_fetchRequestWaitingOnPasscode___block_invoke_92(uint
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)fetchPrerecord:(id)a3 error:(id *)a4
+- (id)fetchPrerecord:(id)prerecord error:(id *)error
 {
-  v6 = a3;
+  prerecordCopy = prerecord;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
   v27 = __Block_byref_object_copy__3604;
   v28 = __Block_byref_object_dispose__3605;
   v29 = 0;
-  v7 = [(SecEscrowRequest *)self connection];
+  connection = [(SecEscrowRequest *)self connection];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __41__SecEscrowRequest_fetchPrerecord_error___block_invoke;
   v23[3] = &unk_1E70E0B18;
   v23[4] = &v24;
-  v8 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v23];
+  v8 = [connection synchronousRemoteObjectProxyWithErrorHandler:v23];
 
   v17 = 0;
   v18 = &v17;
@@ -505,15 +505,15 @@ void __50__SecEscrowRequest_fetchRequestWaitingOnPasscode___block_invoke_92(uint
   v13[3] = &unk_1E70D5110;
   v15 = &v17;
   v16 = &v24;
-  v9 = v6;
+  v9 = prerecordCopy;
   v14 = v9;
   [v8 fetchPrerecord:v9 reply:v13];
-  if (a4)
+  if (error)
   {
     v10 = v25[5];
     if (v10)
     {
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -562,39 +562,39 @@ void __41__SecEscrowRequest_fetchPrerecord_error___block_invoke_90(void *a1, voi
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)cachePrerecord:(id)a3 serializedPrerecord:(id)a4 error:(id *)a5
+- (BOOL)cachePrerecord:(id)prerecord serializedPrerecord:(id)serializedPrerecord error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  prerecordCopy = prerecord;
+  serializedPrerecordCopy = serializedPrerecord;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__3604;
   v25 = __Block_byref_object_dispose__3605;
   v26 = 0;
-  v10 = [(SecEscrowRequest *)self connection];
+  connection = [(SecEscrowRequest *)self connection];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __61__SecEscrowRequest_cachePrerecord_serializedPrerecord_error___block_invoke;
   v20[3] = &unk_1E70E0B18;
   v20[4] = &v21;
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v20];
+  v11 = [connection synchronousRemoteObjectProxyWithErrorHandler:v20];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __61__SecEscrowRequest_cachePrerecord_serializedPrerecord_error___block_invoke_89;
   v17[3] = &unk_1E70D6DA0;
   v19 = &v21;
-  v12 = v8;
+  v12 = prerecordCopy;
   v18 = v12;
-  [v11 cachePrerecord:v12 serializedPrerecord:v9 reply:v17];
+  [v11 cachePrerecord:v12 serializedPrerecord:serializedPrerecordCopy reply:v17];
   v13 = v22;
-  if (a5)
+  if (error)
   {
     v14 = v22[5];
     if (v14)
     {
-      *a5 = v14;
+      *error = v14;
       v13 = v22;
     }
   }
@@ -640,39 +640,39 @@ void __61__SecEscrowRequest_cachePrerecord_serializedPrerecord_error___block_inv
   v7 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)triggerEscrowUpdate:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)triggerEscrowUpdate:(id)update options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  updateCopy = update;
+  optionsCopy = options;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
   v24 = __Block_byref_object_copy__3604;
   v25 = __Block_byref_object_dispose__3605;
   v26 = 0;
-  v10 = [(SecEscrowRequest *)self connection];
+  connection = [(SecEscrowRequest *)self connection];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __54__SecEscrowRequest_triggerEscrowUpdate_options_error___block_invoke;
   v20[3] = &unk_1E70E0B18;
   v20[4] = &v21;
-  v11 = [v10 synchronousRemoteObjectProxyWithErrorHandler:v20];
+  v11 = [connection synchronousRemoteObjectProxyWithErrorHandler:v20];
 
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __54__SecEscrowRequest_triggerEscrowUpdate_options_error___block_invoke_88;
   v17[3] = &unk_1E70D6DA0;
   v19 = &v21;
-  v12 = v8;
+  v12 = updateCopy;
   v18 = v12;
-  [v11 triggerEscrowUpdate:v12 options:v9 reply:v17];
+  [v11 triggerEscrowUpdate:v12 options:optionsCopy reply:v17];
   v13 = v22;
-  if (a5)
+  if (error)
   {
     v14 = v22[5];
     if (v14)
     {
-      *a5 = v14;
+      *error = v14;
       v13 = v22;
     }
   }
@@ -720,30 +720,30 @@ void __54__SecEscrowRequest_triggerEscrowUpdate_options_error___block_invoke_88(
 
 - (void)dealloc
 {
-  v3 = [(SecEscrowRequest *)self connection];
-  [v3 invalidate];
+  connection = [(SecEscrowRequest *)self connection];
+  [connection invalidate];
 
   v4.receiver = self;
   v4.super_class = SecEscrowRequest;
   [(SecEscrowRequest *)&v4 dealloc];
 }
 
-- (SecEscrowRequest)initWithConnection:(id)a3
+- (SecEscrowRequest)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v9.receiver = self;
   v9.super_class = SecEscrowRequest;
   v6 = [(SecEscrowRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
   }
 
   return v7;
 }
 
-+ (id)request:(id *)a3
++ (id)request:(id *)request
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v4 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.security.escrow-update" options:0];
@@ -755,23 +755,23 @@ void __54__SecEscrowRequest_triggerEscrowUpdate_options_error___block_invoke_88(
 
     [v4 setRemoteObjectInterface:v5];
     [v4 resume];
-    a3 = [[SecEscrowRequest alloc] initWithConnection:v4];
+    request = [[SecEscrowRequest alloc] initWithConnection:v4];
   }
 
-  else if (a3)
+  else if (request)
   {
     v6 = MEMORY[0x1E696ABC0];
     v10 = *MEMORY[0x1E696A578];
     v11[0] = @"Couldn't create connection (no reason given)";
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-    *a3 = [v6 errorWithDomain:@"securityd" code:-1 userInfo:v7];
+    *request = [v6 errorWithDomain:@"securityd" code:-1 userInfo:v7];
 
-    a3 = 0;
+    request = 0;
   }
 
   v8 = *MEMORY[0x1E69E9840];
 
-  return a3;
+  return request;
 }
 
 @end

@@ -1,19 +1,19 @@
 @interface SFTabSnapshotPool
 - (NSArray)sortedSnapshotIdentifiers;
 - (id)contentProvider;
-- (id)registrationForIdentifier:(id)a3;
+- (id)registrationForIdentifier:(id)identifier;
 - (id)sortedSnapshotIdentifiersDidChangeHandler;
-- (id)visibilityForIdentifier:(id)a3;
-- (void)contentDidChangeForSnapshotsWithIdentifier:(id)a3;
-- (void)discardRegistration:(id)a3;
-- (void)setSortedSnapshotIdentifiersDidChangeHandler:(id)a3;
+- (id)visibilityForIdentifier:(id)identifier;
+- (void)contentDidChangeForSnapshotsWithIdentifier:(id)identifier;
+- (void)discardRegistration:(id)registration;
+- (void)setSortedSnapshotIdentifiersDidChangeHandler:(id)handler;
 @end
 
 @implementation SFTabSnapshotPool
 
-- (void)setSortedSnapshotIdentifiersDidChangeHandler:(id)a3
+- (void)setSortedSnapshotIdentifiersDidChangeHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
   v6 = *(self + OBJC_IVAR___SFTabSnapshotPool_wrapped);
@@ -65,37 +65,37 @@
   return v5;
 }
 
-- (void)contentDidChangeForSnapshotsWithIdentifier:(id)a3
+- (void)contentDidChangeForSnapshotsWithIdentifier:(id)identifier
 {
   v4 = sub_18BC1EC08();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1EBE8();
-  v8 = self;
+  selfCopy = self;
   sub_18BC1E1A8();
   sub_18BA773E4(v7);
 
   (*(v5 + 8))(v7, v4);
 }
 
-- (void)discardRegistration:(id)a3
+- (void)discardRegistration:(id)registration
 {
-  v4 = a3;
-  v6 = self;
+  registrationCopy = registration;
+  selfCopy = self;
   sub_18BC1E1A8();
   v5 = sub_18BC1E1A8();
   sub_18BA7832C(v5);
 }
 
-- (id)registrationForIdentifier:(id)a3
+- (id)registrationForIdentifier:(id)identifier
 {
   v4 = sub_18BC1EC08();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v14 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1EBE8();
-  v8 = self;
+  selfCopy = self;
   sub_18BC1E1A8();
   v9 = sub_18B856BBC(v7);
 
@@ -114,14 +114,14 @@
   return v12;
 }
 
-- (id)visibilityForIdentifier:(id)a3
+- (id)visibilityForIdentifier:(id)identifier
 {
   v4 = sub_18BC1EC08();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v11 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_18BC1EBE8();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_18BC0E784(v7);
 
   (*(v5 + 8))(v7, v4);

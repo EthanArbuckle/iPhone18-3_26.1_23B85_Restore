@@ -30,32 +30,32 @@
 
 - (id)build
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if ([(CNUICoreContactPropertyFilterBuilder *)self excludeNickname])
   {
     v4 = +[CNUICoreContactPropertyValueFilterFactory nicknameFilter];
-    [v3 addObject:v4];
+    [array addObject:v4];
   }
 
   if ([(CNUICoreContactPropertyFilterBuilder *)self excludePhoto])
   {
     v5 = +[CNUICoreContactPropertyValueFilterFactory photoFilter];
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
   if ([(CNUICoreContactPropertyFilterBuilder *)self excludeNote])
   {
     v6 = +[CNUICoreContactPropertyValueFilterFactory noteFilter];
-    [v3 addObject:v6];
+    [array addObject:v6];
   }
 
   if ([(CNUICoreContactPropertyFilterBuilder *)self excludeRelationships])
   {
     v7 = +[CNUICoreContactPropertyValueFilterFactory relationshipsFilter];
-    [v3 addObject:v7];
+    [array addObject:v7];
   }
 
-  v8 = [CNUICoreContactPropertyValueFilterFactory aggregatePropertyValueFilterWithValueFilters:v3];
+  v8 = [CNUICoreContactPropertyValueFilterFactory aggregatePropertyValueFilterWithValueFilters:array];
 
   return v8;
 }

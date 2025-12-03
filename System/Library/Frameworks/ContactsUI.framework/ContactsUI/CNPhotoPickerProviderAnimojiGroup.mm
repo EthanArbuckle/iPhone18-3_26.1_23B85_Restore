@@ -1,7 +1,7 @@
 @interface CNPhotoPickerProviderAnimojiGroup
 - (BOOL)allowAddItem;
 - (BOOL)canCreateMemoji;
-- (CNPhotoPickerProviderAnimojiGroup)initWithProviders:(id)a3 environment:(id)a4 allowAddItem:(BOOL)a5;
+- (CNPhotoPickerProviderAnimojiGroup)initWithProviders:(id)providers environment:(id)environment allowAddItem:(BOOL)item;
 @end
 
 @implementation CNPhotoPickerProviderAnimojiGroup
@@ -10,31 +10,31 @@
 {
   v5.receiver = self;
   v5.super_class = CNPhotoPickerProviderAnimojiGroup;
-  v3 = [(CNPhotoPickerProviderGroup *)&v5 allowAddItem];
-  if (v3)
+  allowAddItem = [(CNPhotoPickerProviderGroup *)&v5 allowAddItem];
+  if (allowAddItem)
   {
-    LOBYTE(v3) = [(CNPhotoPickerProviderAnimojiGroup *)self canCreateMemoji];
+    LOBYTE(allowAddItem) = [(CNPhotoPickerProviderAnimojiGroup *)self canCreateMemoji];
   }
 
-  return v3;
+  return allowAddItem;
 }
 
 - (BOOL)canCreateMemoji
 {
-  v2 = [(CNPhotoPickerProviderGroup *)self providers];
-  v3 = [v2 _cn_firstObjectPassingTest:&__block_literal_global_11480];
+  providers = [(CNPhotoPickerProviderGroup *)self providers];
+  v3 = [providers _cn_firstObjectPassingTest:&__block_literal_global_11480];
 
   if (v3)
   {
-    v4 = [v3 canCreateMemoji];
+    canCreateMemoji = [v3 canCreateMemoji];
   }
 
   else
   {
-    v4 = 0;
+    canCreateMemoji = 0;
   }
 
-  return v4;
+  return canCreateMemoji;
 }
 
 uint64_t __52__CNPhotoPickerProviderAnimojiGroup_canCreateMemoji__block_invoke(uint64_t a1, void *a2)
@@ -46,11 +46,11 @@ uint64_t __52__CNPhotoPickerProviderAnimojiGroup_canCreateMemoji__block_invoke(u
   return isKindOfClass & 1;
 }
 
-- (CNPhotoPickerProviderAnimojiGroup)initWithProviders:(id)a3 environment:(id)a4 allowAddItem:(BOOL)a5
+- (CNPhotoPickerProviderAnimojiGroup)initWithProviders:(id)providers environment:(id)environment allowAddItem:(BOOL)item
 {
   v9.receiver = self;
   v9.super_class = CNPhotoPickerProviderAnimojiGroup;
-  v5 = [(CNPhotoPickerProviderGroup *)&v9 initWithProviders:a3 groupType:2 environment:a4 allowAddItem:a5];
+  v5 = [(CNPhotoPickerProviderGroup *)&v9 initWithProviders:providers groupType:2 environment:environment allowAddItem:item];
   v6 = v5;
   if (v5)
   {

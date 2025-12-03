@@ -1,8 +1,8 @@
 @interface CKSendMenuPopoverPresentationDimmingView
 - (CKSendMenuPopoverPresentationDimmingView)init;
 - (CKSendMenuPopoverPresentationDimmingViewDelegate)delegate;
-- (void)_handleTap:(id)a3;
-- (void)setActive:(BOOL)a3;
+- (void)_handleTap:(id)tap;
+- (void)setActive:(BOOL)active;
 @end
 
 @implementation CKSendMenuPopoverPresentationDimmingView
@@ -14,12 +14,12 @@
   v2 = [(CKSendMenuPopoverPresentationDimmingView *)&v6 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   if (v2)
   {
-    v3 = [MEMORY[0x1E69DC888] clearColor];
-    [(CKSendMenuPopoverPresentationDimmingView *)v2 setBackgroundColor:v3];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CKSendMenuPopoverPresentationDimmingView *)v2 setBackgroundColor:clearColor];
 
     [(CKSendMenuPopoverPresentationDimmingView *)v2 setOpaque:0];
-    v4 = [(CKSendMenuPopoverPresentationDimmingView *)v2 layer];
-    [v4 setHitTestsAsOpaque:1];
+    layer = [(CKSendMenuPopoverPresentationDimmingView *)v2 layer];
+    [layer setHitTestsAsOpaque:1];
 
     [(CKSendMenuPopoverPresentationDimmingView *)v2 setUserInteractionEnabled:1];
     v2->_active = 0;
@@ -28,11 +28,11 @@
   return v2;
 }
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
+    self->_active = active;
     v4 = +[CKUIBehavior sharedBehaviors];
     v9 = v4;
     if (self->_active)
@@ -59,9 +59,9 @@
   }
 }
 
-- (void)_handleTap:(id)a3
+- (void)_handleTap:(id)tap
 {
-  if (self->_dismissGestureRecognizer == a3 && [a3 state] == 3)
+  if (self->_dismissGestureRecognizer == tap && [tap state] == 3)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained sendMenuPopoverPresentationDimmingViewDidReceiveTap:self];

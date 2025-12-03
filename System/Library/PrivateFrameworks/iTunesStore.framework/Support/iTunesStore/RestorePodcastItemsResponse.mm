@@ -1,7 +1,7 @@
 @interface RestorePodcastItemsResponse
-- (id)errorForItemIdentifier:(id)a3;
+- (id)errorForItemIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)setError:(id)a3 forItemIdentifier:(id)a4;
+- (void)setError:(id)error forItemIdentifier:(id)identifier;
 @end
 
 @implementation RestorePodcastItemsResponse
@@ -13,17 +13,17 @@
   [(RestorePodcastItemsResponse *)&v3 dealloc];
 }
 
-- (id)errorForItemIdentifier:(id)a3
+- (id)errorForItemIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_itemErrors objectForKey:a3];
+  v3 = [(NSMutableDictionary *)self->_itemErrors objectForKey:identifier];
 
   return v3;
 }
 
-- (void)setError:(id)a3 forItemIdentifier:(id)a4
+- (void)setError:(id)error forItemIdentifier:(id)identifier
 {
   itemErrors = self->_itemErrors;
-  if (a3)
+  if (error)
   {
     if (!itemErrors)
     {
@@ -31,13 +31,13 @@
       self->_itemErrors = itemErrors;
     }
 
-    [(NSMutableDictionary *)itemErrors setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)itemErrors setObject:error forKey:identifier];
   }
 
   else
   {
 
-    [(NSMutableDictionary *)itemErrors removeObjectForKey:a4];
+    [(NSMutableDictionary *)itemErrors removeObjectForKey:identifier];
   }
 }
 

@@ -1,5 +1,5 @@
 @interface APLatencyVisualizationTrackingController
-- (id)init:(id)a3;
+- (id)init:(id)init;
 - (void)dealloc;
 - (void)draw;
 @end
@@ -31,14 +31,14 @@ void __51__APLatencyVisualizationTrackingController_dealloc__block_invoke(uint64
   dispatch_release(v2);
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
   v11.receiver = self;
   v11.super_class = APLatencyVisualizationTrackingController;
   v4 = [(APLatencyVisualizationTrackingController *)&v11 init];
   if (v4)
   {
-    *(v4 + 1) = a3;
+    *(v4 + 1) = init;
     v5 = dispatch_queue_create("com.apple.airplay.receiver.latencyTracker", 0);
     *(v4 + 3) = v5;
     v6 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v5);

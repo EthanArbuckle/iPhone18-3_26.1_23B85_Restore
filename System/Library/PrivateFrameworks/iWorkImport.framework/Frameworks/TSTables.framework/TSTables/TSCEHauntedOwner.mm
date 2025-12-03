@@ -1,80 +1,80 @@
 @interface TSCEHauntedOwner
-+ (TSCECellRef)anyHeaderNameChangedPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)filteringChangedPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)formulaDefinitionPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)geometryPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)groupByChangedPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)localePrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)nowPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)pivotRulesChangedPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)pivotSortChangedPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)randomPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)sheetTableNamePrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)spillBlockedByBeingVerticalPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)spillBlockedByContentPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)spillBlockedByMergePrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)spillPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)subtotalPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)summaryModelIsCleanForSortPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)summaryModelIsCleanPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)todayPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)uniqueDistinctPrecedentForTableUID:(SEL)a3;
-+ (TSCECellRef)userHiddenChangedPrecedentForTableUID:(SEL)a3;
-- (TSCEHauntedOwner)initWithArchive:(const void *)a3 unarchiver:(id)a4 forBaseTableUID:(const TSKUIDStruct *)a5;
-- (TSCEHauntedOwner)initWithBaseTableUID:(const TSKUIDStruct *)a3;
-- (TSCEHauntedOwner)initWithBaseTableUID:(const TSKUIDStruct *)a3 ownerUID:(const TSKUIDStruct *)a4;
++ (TSCECellRef)anyHeaderNameChangedPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)filteringChangedPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)formulaDefinitionPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)geometryPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)groupByChangedPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)localePrecedentForTableUID:(SEL)d;
++ (TSCECellRef)nowPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)pivotRulesChangedPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)pivotSortChangedPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)randomPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)sheetTableNamePrecedentForTableUID:(SEL)d;
++ (TSCECellRef)spillBlockedByBeingVerticalPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)spillBlockedByContentPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)spillBlockedByMergePrecedentForTableUID:(SEL)d;
++ (TSCECellRef)spillPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)subtotalPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)summaryModelIsCleanForSortPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)summaryModelIsCleanPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)todayPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)uniqueDistinctPrecedentForTableUID:(SEL)d;
++ (TSCECellRef)userHiddenChangedPrecedentForTableUID:(SEL)d;
+- (TSCEHauntedOwner)initWithArchive:(const void *)archive unarchiver:(id)unarchiver forBaseTableUID:(const TSKUIDStruct *)d;
+- (TSCEHauntedOwner)initWithBaseTableUID:(const TSKUIDStruct *)d;
+- (TSCEHauntedOwner)initWithBaseTableUID:(const TSKUIDStruct *)d ownerUID:(const TSKUIDStruct *)iD;
 - (TSKUIDStruct)baseTableUID;
 - (TSKUIDStruct)formulaOwnerUID;
 - (TSKUIDStruct)ownerUID;
-- (int)registerWithCalcEngine:(id)a3;
+- (int)registerWithCalcEngine:(id)engine;
 - (void)dirtyGeometryVolatileCells;
 - (void)dirtyNowAndTodayVolatileCells;
 - (void)dirtyNowVolatileCells;
 - (void)dirtyRandomVolatileCells;
 - (void)dirtySheetTableNameVolatileCells;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setBaseTableUID:(TSKUIDStruct)a3;
-- (void)setCalcEngine:(id)a3;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setBaseTableUID:(TSKUIDStruct)d;
+- (void)setCalcEngine:(id)engine;
 - (void)unregisterFromCalcEngine;
 @end
 
 @implementation TSCEHauntedOwner
 
-- (TSCEHauntedOwner)initWithBaseTableUID:(const TSKUIDStruct *)a3 ownerUID:(const TSKUIDStruct *)a4
+- (TSCEHauntedOwner)initWithBaseTableUID:(const TSKUIDStruct *)d ownerUID:(const TSKUIDStruct *)iD
 {
   v7.receiver = self;
   v7.super_class = TSCEHauntedOwner;
   result = [(TSCEHauntedOwner *)&v7 init];
   if (result)
   {
-    result->_baseTableUID = *a3;
-    result->_ownerUID = *a4;
+    result->_baseTableUID = *d;
+    result->_ownerUID = *iD;
   }
 
   return result;
 }
 
-- (void)setBaseTableUID:(TSKUIDStruct)a3
+- (void)setBaseTableUID:(TSKUIDStruct)d
 {
-  v6 = a3;
-  self->_baseTableUID = a3;
-  self->_ownerUID._lower = sub_2212C4930(&v6, 0x23, a3._lower, a3._upper, v3);
+  dCopy = d;
+  self->_baseTableUID = d;
+  self->_ownerUID._lower = sub_2212C4930(&dCopy, 0x23, d._lower, d._upper, v3);
   self->_ownerUID._upper = v5;
 }
 
-- (TSCEHauntedOwner)initWithBaseTableUID:(const TSKUIDStruct *)a3
+- (TSCEHauntedOwner)initWithBaseTableUID:(const TSKUIDStruct *)d
 {
-  v10[0] = sub_2212C4930(a3, 0x23, a3, v3, v4);
+  v10[0] = sub_2212C4930(d, 0x23, d, v3, v4);
   v10[1] = v7;
-  return objc_msgSend_initWithBaseTableUID_ownerUID_(self, v7, a3, v10, v8);
+  return objc_msgSend_initWithBaseTableUID_ownerUID_(self, v7, d, v10, v8);
 }
 
-- (void)setCalcEngine:(id)a3
+- (void)setCalcEngine:(id)engine
 {
-  v8 = a3;
+  engineCopy = engine;
   if (!self->_calcEngine)
   {
-    objc_storeStrong(&self->_calcEngine, a3);
+    objc_storeStrong(&self->_calcEngine, engine);
     objc_msgSend_registerWithCalcEngine_(self, v5, self->_calcEngine, v6, v7);
   }
 }
@@ -88,7 +88,7 @@
   return result;
 }
 
-+ (TSCECellRef)nowPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)nowPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x100000000;
@@ -97,7 +97,7 @@
   return result;
 }
 
-+ (TSCECellRef)todayPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)todayPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x200000000;
@@ -106,7 +106,7 @@
   return result;
 }
 
-+ (TSCECellRef)randomPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)randomPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x300000000;
@@ -115,7 +115,7 @@
   return result;
 }
 
-+ (TSCECellRef)subtotalPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)subtotalPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0xA00000000;
@@ -124,7 +124,7 @@
   return result;
 }
 
-+ (TSCECellRef)filteringChangedPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)filteringChangedPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0xB00000000;
@@ -133,7 +133,7 @@
   return result;
 }
 
-+ (TSCECellRef)userHiddenChangedPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)userHiddenChangedPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0xC00000000;
@@ -142,7 +142,7 @@
   return result;
 }
 
-+ (TSCECellRef)formulaDefinitionPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)formulaDefinitionPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0xE00000000;
@@ -151,7 +151,7 @@
   return result;
 }
 
-+ (TSCECellRef)groupByChangedPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)groupByChangedPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0xF00000000;
@@ -160,7 +160,7 @@
   return result;
 }
 
-+ (TSCECellRef)geometryPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)geometryPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x400000000;
@@ -169,7 +169,7 @@
   return result;
 }
 
-+ (TSCECellRef)localePrecedentForTableUID:(SEL)a3
++ (TSCECellRef)localePrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x500000000;
@@ -178,7 +178,7 @@
   return result;
 }
 
-+ (TSCECellRef)sheetTableNamePrecedentForTableUID:(SEL)a3
++ (TSCECellRef)sheetTableNamePrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x600000000;
@@ -187,7 +187,7 @@
   return result;
 }
 
-+ (TSCECellRef)anyHeaderNameChangedPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)anyHeaderNameChangedPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0xD00000000;
@@ -196,7 +196,7 @@
   return result;
 }
 
-+ (TSCECellRef)summaryModelIsCleanPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)summaryModelIsCleanPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x1100000000;
@@ -205,7 +205,7 @@
   return result;
 }
 
-+ (TSCECellRef)summaryModelIsCleanForSortPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)summaryModelIsCleanForSortPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x1000000000;
@@ -214,7 +214,7 @@
   return result;
 }
 
-+ (TSCECellRef)pivotRulesChangedPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)pivotRulesChangedPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x1200000000;
@@ -223,7 +223,7 @@
   return result;
 }
 
-+ (TSCECellRef)uniqueDistinctPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)uniqueDistinctPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x1300000000;
@@ -232,7 +232,7 @@
   return result;
 }
 
-+ (TSCECellRef)pivotSortChangedPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)pivotSortChangedPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x1400000000;
@@ -241,7 +241,7 @@
   return result;
 }
 
-+ (TSCECellRef)spillPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)spillPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x1600000000;
@@ -250,7 +250,7 @@
   return result;
 }
 
-+ (TSCECellRef)spillBlockedByContentPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)spillBlockedByContentPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x100000001;
@@ -259,7 +259,7 @@
   return result;
 }
 
-+ (TSCECellRef)spillBlockedByMergePrecedentForTableUID:(SEL)a3
++ (TSCECellRef)spillBlockedByMergePrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x100000002;
@@ -268,7 +268,7 @@
   return result;
 }
 
-+ (TSCECellRef)spillBlockedByBeingVerticalPrecedentForTableUID:(SEL)a3
++ (TSCECellRef)spillBlockedByBeingVerticalPrecedentForTableUID:(SEL)d
 {
   result = sub_2212C4930(a4, 0x23, a4, v4, v5);
   retstr->coordinate = 0x100000003;
@@ -315,11 +315,11 @@
   objc_msgSend_markCellRefAsDirty_(calcEngine, v5, v8, v6, v7);
 }
 
-- (TSCEHauntedOwner)initWithArchive:(const void *)a3 unarchiver:(id)a4 forBaseTableUID:(const TSKUIDStruct *)a5
+- (TSCEHauntedOwner)initWithArchive:(const void *)archive unarchiver:(id)unarchiver forBaseTableUID:(const TSKUIDStruct *)d
 {
-  if (*(a3 + 3))
+  if (*(archive + 3))
   {
-    v7 = *(a3 + 3);
+    v7 = *(archive + 3);
   }
 
   else
@@ -329,38 +329,38 @@
 
   v11[0] = TSKUIDStruct::loadFromMessage(v7, a2);
   v11[1] = v8;
-  return objc_msgSend_initWithBaseTableUID_ownerUID_(self, v8, a5, v11, v9);
+  return objc_msgSend_initWithBaseTableUID_ownerUID_(self, v8, d, v11, v9);
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
-  v8 = a4;
-  *(a3 + 4) |= 1u;
-  v6 = *(a3 + 3);
+  archiverCopy = archiver;
+  *(archive + 4) |= 1u;
+  v6 = *(archive + 3);
   if (!v6)
   {
-    v7 = *(a3 + 1);
+    v7 = *(archive + 1);
     if (v7)
     {
       v7 = *(v7 & 0xFFFFFFFFFFFFFFFELL);
     }
 
     v6 = MEMORY[0x223DA0360](v7);
-    *(a3 + 3) = v6;
+    *(archive + 3) = v6;
   }
 
   TSKUIDStruct::saveToMessage(&self->_ownerUID, v6);
 }
 
-- (int)registerWithCalcEngine:(id)a3
+- (int)registerWithCalcEngine:(id)engine
 {
-  v4 = self;
-  objc_storeStrong(&self->_calcEngine, a3);
-  v5 = a3;
+  selfCopy = self;
+  objc_storeStrong(&self->_calcEngine, engine);
+  engineCopy = engine;
   v8 = 35;
-  LODWORD(v4) = objc_msgSend_registerOwnerWithOwnerUID_owner_referenceResolver_baseOwnerUID_ownerKind_(v4->_calcEngine, v6, v4->_ownerUID._lower, v4->_ownerUID._upper, v4, 0, v4->_baseTableUID._lower, v4->_baseTableUID._upper, v8);
+  LODWORD(selfCopy) = objc_msgSend_registerOwnerWithOwnerUID_owner_referenceResolver_baseOwnerUID_ownerKind_(selfCopy->_calcEngine, v6, selfCopy->_ownerUID._lower, selfCopy->_ownerUID._upper, selfCopy, 0, selfCopy->_baseTableUID._lower, selfCopy->_baseTableUID._upper, v8);
 
-  return v4;
+  return selfCopy;
 }
 
 - (void)unregisterFromCalcEngine

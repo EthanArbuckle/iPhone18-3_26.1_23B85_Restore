@@ -1,22 +1,22 @@
 @interface HMMediaContentProfileAccessControl
-+ (BOOL)isAccessorySupported:(id)a3;
++ (BOOL)isAccessorySupported:(id)supported;
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
-- (HMMediaContentProfileAccessControl)initWithUser:(id)a3 accessories:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (HMMediaContentProfileAccessControl)initWithUser:(id)user accessories:(id)accessories;
 - (NSArray)accessories;
-- (id)descriptionWithPointer:(BOOL)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)descriptionWithPointer:(BOOL)pointer;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)shortDescription;
 @end
 
 @implementation HMMediaContentProfileAccessControl
 
-- (id)descriptionWithPointer:(BOOL)a3
+- (id)descriptionWithPointer:(BOOL)pointer
 {
-  v3 = a3;
+  pointerCopy = pointer;
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [objc_opt_class() shortDescription];
-  if (v3)
+  shortDescription = [objc_opt_class() shortDescription];
+  if (pointerCopy)
   {
     v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@" %p", self];
   }
@@ -26,19 +26,19 @@
     v7 = &stru_1F0E92498;
   }
 
-  v8 = [(HMMediaContentProfileAccessControl *)self accessories];
-  if ([v8 count])
+  accessories = [(HMMediaContentProfileAccessControl *)self accessories];
+  if ([accessories count])
   {
-    v9 = [(HMMediaContentProfileAccessControl *)self accessories];
-    v10 = [v5 stringWithFormat:@"<%@%@, Accessories = %@>", v6, v7, v9];
+    accessories2 = [(HMMediaContentProfileAccessControl *)self accessories];
+    v10 = [v5 stringWithFormat:@"<%@%@, Accessories = %@>", shortDescription, v7, accessories2];
   }
 
   else
   {
-    v10 = [v5 stringWithFormat:@"<%@%@, Accessories = %@>", v6, v7, @"None"];
+    v10 = [v5 stringWithFormat:@"<%@%@, Accessories = %@>", shortDescription, v7, @"None"];
   }
 
-  if (v3)
+  if (pointerCopy)
   {
   }
 
@@ -52,10 +52,10 @@
   return [v2 shortDescription];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -64,9 +64,9 @@
   {
     v16.receiver = self;
     v16.super_class = HMMediaContentProfileAccessControl;
-    if ([(HMAccessControl *)&v16 isEqual:v4])
+    if ([(HMAccessControl *)&v16 isEqual:equalCopy])
     {
-      v5 = v4;
+      v5 = equalCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -83,12 +83,12 @@
       if (v7)
       {
         v8 = MEMORY[0x1E695DFD8];
-        v9 = [(HMMediaContentProfileAccessControl *)self accessories];
-        v10 = [v8 setWithArray:v9];
+        accessories = [(HMMediaContentProfileAccessControl *)self accessories];
+        v10 = [v8 setWithArray:accessories];
 
         v11 = MEMORY[0x1E695DFD8];
-        v12 = [(HMMediaContentProfileAccessControl *)v7 accessories];
-        v13 = [v11 setWithArray:v12];
+        accessories2 = [(HMMediaContentProfileAccessControl *)v7 accessories];
+        v13 = [v11 setWithArray:accessories2];
 
         v14 = [v10 isEqualToSet:v13];
       }
@@ -108,12 +108,12 @@
   return v14;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [HMMutableMediaContentProfileAccessControl allocWithZone:a3];
-  v5 = [(HMAccessControl *)self user];
-  v6 = [(HMMediaContentProfileAccessControl *)self accessories];
-  v7 = [(HMMediaContentProfileAccessControl *)v4 initWithUser:v5 accessories:v6];
+  v4 = [HMMutableMediaContentProfileAccessControl allocWithZone:zone];
+  user = [(HMAccessControl *)self user];
+  accessories = [(HMMediaContentProfileAccessControl *)self accessories];
+  v7 = [(HMMediaContentProfileAccessControl *)v4 initWithUser:user accessories:accessories];
 
   return v7;
 }
@@ -125,20 +125,20 @@
   return NSStringFromClass(v2);
 }
 
-+ (BOOL)isAccessorySupported:(id)a3
++ (BOOL)isAccessorySupported:(id)supported
 {
-  v3 = a3;
-  v4 = [v3 category];
-  v5 = [v4 categoryType];
-  if (![v5 isEqualToString:@"F6D2A2AC-3A6E-4E6F-8196-678ABE909D8E"])
+  supportedCopy = supported;
+  category = [supportedCopy category];
+  categoryType = [category categoryType];
+  if (![categoryType isEqualToString:@"F6D2A2AC-3A6E-4E6F-8196-678ABE909D8E"])
   {
 
     goto LABEL_5;
   }
 
-  v6 = [v3 supportsMediaContentProfile];
+  supportsMediaContentProfile = [supportedCopy supportsMediaContentProfile];
 
-  if ((v6 & 1) == 0)
+  if ((supportsMediaContentProfile & 1) == 0)
   {
 LABEL_5:
     v7 = 0;
@@ -154,21 +154,21 @@ LABEL_6:
 - (NSArray)accessories
 {
   os_unfair_lock_lock_with_options();
-  v3 = [(NSMutableSet *)self->_internalAccessories allObjects];
+  allObjects = [(NSMutableSet *)self->_internalAccessories allObjects];
   os_unfair_lock_unlock(&self->super._lock);
 
-  return v3;
+  return allObjects;
 }
 
-- (HMMediaContentProfileAccessControl)initWithUser:(id)a3 accessories:(id)a4
+- (HMMediaContentProfileAccessControl)initWithUser:(id)user accessories:(id)accessories
 {
-  v6 = a4;
+  accessoriesCopy = accessories;
   v11.receiver = self;
   v11.super_class = HMMediaContentProfileAccessControl;
-  v7 = [(HMAccessControl *)&v11 initWithUser:a3];
+  v7 = [(HMAccessControl *)&v11 initWithUser:user];
   if (v7)
   {
-    v8 = [MEMORY[0x1E695DFA8] setWithArray:v6];
+    v8 = [MEMORY[0x1E695DFA8] setWithArray:accessoriesCopy];
     internalAccessories = v7->_internalAccessories;
     v7->_internalAccessories = v8;
   }

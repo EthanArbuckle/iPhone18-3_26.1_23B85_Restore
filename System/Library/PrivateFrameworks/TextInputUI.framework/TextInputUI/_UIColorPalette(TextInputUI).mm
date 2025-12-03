@@ -10,9 +10,9 @@
 - (id)_tui_scaledColorSpaceForAmbientText
 {
   v2 = objc_alloc(MEMORY[0x1E69DD400]);
-  v3 = [a1 colors];
-  v4 = [a1 colorSpaceName];
-  v5 = [v2 initWithColors:v3 locations:&unk_1F03D8ED0 colorSpaceName:v4];
+  colors = [self colors];
+  colorSpaceName = [self colorSpaceName];
+  v5 = [v2 initWithColors:colors locations:&unk_1F03D8ED0 colorSpaceName:colorSpaceName];
 
   return v5;
 }
@@ -28,10 +28,10 @@
     [v8 addObject:v6];
   }
 
-  v10 = [a1 _tui_warmColors:1];
+  v10 = [self _tui_warmColors:1];
   [v9 addObjectsFromArray:v10];
 
-  v11 = [a1 _tui_coolColors:1];
+  v11 = [self _tui_coolColors:1];
   [v9 addObjectsFromArray:v11];
 
   if (v7)
@@ -39,7 +39,7 @@
     [v9 addObject:v7];
   }
 
-  v12 = [[a1 alloc] initWithColors:v9];
+  v12 = [[self alloc] initWithColors:v9];
 
   return v12;
 }

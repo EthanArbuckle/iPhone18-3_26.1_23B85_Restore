@@ -1,40 +1,40 @@
 @interface ICSStructuredLocation
-- (BOOL)shouldObscureParameter:(id)a3;
+- (BOOL)shouldObscureParameter:(id)parameter;
 - (NSString)address;
 - (NSString)title;
 - (double)radius;
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4;
-- (void)setAddress:(id)a3;
-- (void)setRadius:(double)a3;
-- (void)setTitle:(id)a3;
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string;
+- (void)setAddress:(id)address;
+- (void)setRadius:(double)radius;
+- (void)setTitle:(id)title;
 @end
 
 @implementation ICSStructuredLocation
 
-- (void)_ICSStringWithOptions:(unint64_t)a3 appendingToString:(id)a4
+- (void)_ICSStringWithOptions:(unint64_t)options appendingToString:(id)string
 {
-  v9 = a4;
-  v6 = [(ICSProperty *)self value];
+  stringCopy = string;
+  value = [(ICSProperty *)self value];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 absoluteString];
+    absoluteString = [value absoluteString];
   }
 
   else
   {
-    v7 = 0;
+    absoluteString = 0;
   }
 
   v8 = [MEMORY[0x277CBEB38] dictionaryWithObject:@"URI" forKey:@"VALUE"];
-  [(ICSProperty *)self _ICSStringWithOptions:a3 appendingToString:v9 additionalParameters:v8];
-  [v9 appendString:@":"];
-  if ((a3 & 0x10) != 0 && [(ICSStructuredLocation *)self shouldObscureValue])
+  [(ICSProperty *)self _ICSStringWithOptions:options appendingToString:stringCopy additionalParameters:v8];
+  [stringCopy appendString:@":"];
+  if ((options & 0x10) != 0 && [(ICSStructuredLocation *)self shouldObscureValue])
   {
-    a3 |= 0x20uLL;
+    options |= 0x20uLL;
   }
 
-  [v7 _ICSStringWithOptions:a3 appendingToString:v9];
+  [absoluteString _ICSStringWithOptions:options appendingToString:stringCopy];
 }
 
 - (NSString)title
@@ -54,9 +54,9 @@
   return v3;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  if (a3)
+  if (title)
   {
     v4 = [MEMORY[0x277CCAB68] stringWithString:?];
     [v4 replaceOccurrencesOfString:@"\n" withString:@"\\n" options:0 range:{0, objc_msgSend(v4, "length")}];
@@ -79,11 +79,11 @@
   return v4;
 }
 
-- (void)setRadius:(double)a3
+- (void)setRadius:(double)radius
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
-  v4 = [v5 stringValue];
-  [(ICSProperty *)self setParameterValue:v4 forName:@"X-APPLE-RADIUS"];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
+  stringValue = [v5 stringValue];
+  [(ICSProperty *)self setParameterValue:stringValue forName:@"X-APPLE-RADIUS"];
 }
 
 - (NSString)address
@@ -103,9 +103,9 @@
   return v3;
 }
 
-- (void)setAddress:(id)a3
+- (void)setAddress:(id)address
 {
-  if (a3)
+  if (address)
   {
     v4 = [MEMORY[0x277CCAB68] stringWithString:?];
     [v4 replaceOccurrencesOfString:@"\n" withString:@"\\n" options:0 range:{0, objc_msgSend(v4, "length")}];
@@ -119,12 +119,12 @@
   }
 }
 
-- (BOOL)shouldObscureParameter:(id)a3
+- (BOOL)shouldObscureParameter:(id)parameter
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = a3;
+  parameterCopy = parameter;
   v5 = [v3 setWithObjects:{@"X-FMTTYPE", @"X-TYPE", @"X-APPLE-ABUID", @"X-APPLE-RADIUS", 0}];
-  v6 = [v5 containsObject:v4];
+  v6 = [v5 containsObject:parameterCopy];
 
   return v6 ^ 1;
 }

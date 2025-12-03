@@ -1,5 +1,5 @@
 @interface CNPhotoPickerActionButtonBlockHandler
-- (CNPhotoPickerActionButtonBlockHandler)initWithActionBlock:(id)a3;
+- (CNPhotoPickerActionButtonBlockHandler)initWithActionBlock:(id)block;
 - (void)performAction;
 @end
 
@@ -7,24 +7,24 @@
 
 - (void)performAction
 {
-  v3 = [(CNPhotoPickerActionButtonBlockHandler *)self actionBlock];
+  actionBlock = [(CNPhotoPickerActionButtonBlockHandler *)self actionBlock];
 
-  if (v3)
+  if (actionBlock)
   {
-    v4 = [(CNPhotoPickerActionButtonBlockHandler *)self actionBlock];
-    v4[2]();
+    actionBlock2 = [(CNPhotoPickerActionButtonBlockHandler *)self actionBlock];
+    actionBlock2[2]();
   }
 }
 
-- (CNPhotoPickerActionButtonBlockHandler)initWithActionBlock:(id)a3
+- (CNPhotoPickerActionButtonBlockHandler)initWithActionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v9.receiver = self;
   v9.super_class = CNPhotoPickerActionButtonBlockHandler;
   v5 = [(CNPhotoPickerActionButtonBlockHandler *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [blockCopy copy];
     actionBlock = v5->_actionBlock;
     v5->_actionBlock = v6;
   }

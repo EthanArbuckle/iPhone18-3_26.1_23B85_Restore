@@ -1,75 +1,75 @@
 @interface WXText
-+ (id)addNewSectionTo:(id)a3 state:(id)a4;
-+ (void)createChildren:(_xmlNode *)a3 baseStyle:(id)a4 to:(id)a5 state:(id)a6;
-+ (void)createChildrenFromStream:(_xmlTextReader *)a3 baseStyle:(id)a4 to:(id)a5 state:(id)a6;
-+ (void)readFrom:(_xmlNode *)a3 state:(id)a4;
-+ (void)readFromParagraph:(_xmlNode *)a3 baseStyle:(id)a4 to:(id)a5 state:(id)a6;
-+ (void)readFromStream:(_xmlTextReader *)a3 state:(id)a4;
-+ (void)readFromString:(id)a3 to:(id)a4;
-+ (void)readFromTable:(_xmlNode *)a3 baseStyle:(id)a4 to:(id)a5 state:(id)a6;
-+ (void)updateTextBoxIdsFromState:(id)a3;
++ (id)addNewSectionTo:(id)to state:(id)state;
++ (void)createChildren:(_xmlNode *)children baseStyle:(id)style to:(id)to state:(id)state;
++ (void)createChildrenFromStream:(_xmlTextReader *)stream baseStyle:(id)style to:(id)to state:(id)state;
++ (void)readFrom:(_xmlNode *)from state:(id)state;
++ (void)readFromParagraph:(_xmlNode *)paragraph baseStyle:(id)style to:(id)to state:(id)state;
++ (void)readFromStream:(_xmlTextReader *)stream state:(id)state;
++ (void)readFromString:(id)string to:(id)to;
++ (void)readFromTable:(_xmlNode *)table baseStyle:(id)style to:(id)to state:(id)state;
++ (void)updateTextBoxIdsFromState:(id)state;
 @end
 
 @implementation WXText
 
-+ (void)readFrom:(_xmlNode *)a3 state:(id)a4
++ (void)readFrom:(_xmlNode *)from state:(id)state
 {
-  v8 = a4;
-  v5 = [v8 document];
-  v6 = [v5 addSection];
-  v7 = [v6 text];
-  [WXText readFrom:a3 baseStyle:0 to:v7 state:v8];
+  stateCopy = state;
+  document = [stateCopy document];
+  addSection = [document addSection];
+  text = [addSection text];
+  [WXText readFrom:from baseStyle:0 to:text state:stateCopy];
 
-  [WXText updateTextBoxIdsFromState:v8];
+  [WXText updateTextBoxIdsFromState:stateCopy];
 }
 
-+ (void)readFromStream:(_xmlTextReader *)a3 state:(id)a4
++ (void)readFromStream:(_xmlTextReader *)stream state:(id)state
 {
-  v8 = a4;
-  v5 = [v8 document];
-  v6 = [v5 addSection];
-  v7 = [v6 text];
-  [WXText readFromStream:a3 baseStyle:0 to:v7 state:v8];
+  stateCopy = state;
+  document = [stateCopy document];
+  addSection = [document addSection];
+  text = [addSection text];
+  [WXText readFromStream:stream baseStyle:0 to:text state:stateCopy];
 
-  [WXText updateTextBoxIdsFromState:v8];
+  [WXText updateTextBoxIdsFromState:stateCopy];
 }
 
-+ (void)readFromString:(id)a3 to:(id)a4
++ (void)readFromString:(id)string to:(id)to
 {
-  v6 = a3;
-  v5 = [a4 addParagraph];
-  [WXParagraph readFromString:v6 to:v5];
+  stringCopy = string;
+  addParagraph = [to addParagraph];
+  [WXParagraph readFromString:stringCopy to:addParagraph];
 }
 
-+ (void)createChildren:(_xmlNode *)a3 baseStyle:(id)a4 to:(id)a5 state:(id)a6
++ (void)createChildren:(_xmlNode *)children baseStyle:(id)style to:(id)to state:(id)state
 {
-  v25 = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = OCXFirstChild(a3);
+  styleCopy = style;
+  toCopy = to;
+  stateCopy = state;
+  v11 = OCXFirstChild(children);
   v12 = 0;
   while (v11)
   {
-    if ([v10 isNewSectionRequested])
+    if ([stateCopy isNewSectionRequested])
     {
-      v13 = [WXText addNewSectionTo:v9 state:v10];
+      v13 = [WXText addNewSectionTo:toCopy state:stateCopy];
 
-      v9 = v13;
+      toCopy = v13;
     }
 
     name = v11->name;
     if (xmlStrEqual(name, "p"))
     {
-      [WXText readFromParagraph:v11 baseStyle:v25 to:v9 state:v10];
+      [WXText readFromParagraph:v11 baseStyle:styleCopy to:toCopy state:stateCopy];
       ++v12;
       HIDWORD(v15) = 429496728 - 858993459 * v12;
       LODWORD(v15) = HIDWORD(v15);
       if ((v15 >> 2) <= 0xCCCCCCC)
       {
-        v16 = [v10 cancelDelegate];
-        v17 = [v16 isCancelled];
+        cancelDelegate = [stateCopy cancelDelegate];
+        isCancelled = [cancelDelegate isCancelled];
 
-        if (v17)
+        if (isCancelled)
         {
           [TCMessageException raiseUntaggedMessage:@"TCUserCancelled", 0];
         }
@@ -80,19 +80,19 @@
     {
       if (xmlStrEqual(name, "tbl"))
       {
-        [WXText readFromTable:v11 baseStyle:v25 to:v9 state:v10];
+        [WXText readFromTable:v11 baseStyle:styleCopy to:toCopy state:stateCopy];
         goto LABEL_11;
       }
 
       if (xmlStrEqual(name, "sdt"))
       {
         [TCMessageContext reportWarning:WXFormsNotSupported];
-        v18 = [v10 WXMainNamespace];
-        v19 = OCXFindChild(v11, v18, "sdtContent");
+        wXMainNamespace = [stateCopy WXMainNamespace];
+        v19 = OCXFindChild(v11, wXMainNamespace, "sdtContent");
 
         if (v19)
         {
-          [WXText createChildren:v19 baseStyle:v25 to:v9 state:v10];
+          [WXText createChildren:v19 baseStyle:styleCopy to:toCopy state:stateCopy];
         }
       }
 
@@ -100,53 +100,53 @@
       {
         if (xmlStrEqual(name, "subSection") || xmlStrEqual(name, "pBdrGroup"))
         {
-          [WXText createChildren:v11 baseStyle:v25 to:v9 state:v10];
+          [WXText createChildren:v11 baseStyle:styleCopy to:toCopy state:stateCopy];
           goto LABEL_11;
         }
 
         if (xmlStrEqual(name, "annotation"))
         {
-          [v10 addText:v9 node:v11];
+          [stateCopy addText:toCopy node:v11];
           goto LABEL_11;
         }
 
         if (xmlStrEqual(name, "sectPr"))
         {
-          v20 = [v10 cancelDelegate];
-          v21 = [v20 isCancelled];
+          cancelDelegate2 = [stateCopy cancelDelegate];
+          isCancelled2 = [cancelDelegate2 isCancelled];
 
-          if (v21)
+          if (isCancelled2)
           {
             [TCMessageException raiseUntaggedMessage:@"TCUserCancelled", 0];
           }
 
-          v24 = [v10 document];
-          v22 = [v24 lastSection];
-          [WXSection readFrom:v11 to:v22 state:v10];
+          document = [stateCopy document];
+          lastSection = [document lastSection];
+          [WXSection readFrom:v11 to:lastSection state:stateCopy];
 LABEL_24:
 
-          v23 = v24;
+          lastBlock = document;
           goto LABEL_25;
         }
 
         if (xmlStrEqual(name, "bookmarkStart"))
         {
-          [v10 addPendingBookmark:v11];
+          [stateCopy addPendingBookmark:v11];
         }
 
         else if (xmlStrEqual(name, "bookmarkEnd"))
         {
-          v23 = [v9 lastBlock];
+          lastBlock = [toCopy lastBlock];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v24 = v23;
-            v22 = [v23 addBookmark];
-            [WXBookmark readFrom:v11 to:v22 state:v10];
+            document = lastBlock;
+            lastSection = [lastBlock addBookmark];
+            [WXBookmark readFrom:v11 to:lastSection state:stateCopy];
             goto LABEL_24;
           }
 
-          [v10 addPendingBookmark:v11];
+          [stateCopy addPendingBookmark:v11];
 LABEL_25:
         }
       }
@@ -157,37 +157,37 @@ LABEL_11:
   }
 }
 
-+ (void)createChildrenFromStream:(_xmlTextReader *)a3 baseStyle:(id)a4 to:(id)a5 state:(id)a6
++ (void)createChildrenFromStream:(_xmlTextReader *)stream baseStyle:(id)style to:(id)to state:(id)state
 {
-  v32 = a4;
-  v9 = a5;
-  v10 = a6;
+  styleCopy = style;
+  toCopy = to;
+  stateCopy = state;
   v11 = objc_alloc_init(OCXSStream);
-  v12 = xmlTextReaderDepth(a3);
-  [(OCXSStream *)v11 pushLevel:v12 name:xmlTextReaderConstLocalName(a3)];
+  v12 = xmlTextReaderDepth(stream);
+  [(OCXSStream *)v11 pushLevel:v12 name:xmlTextReaderConstLocalName(stream)];
   v13 = 0;
-  while ([OCXStreamUtility readStream:a3 streamState:v11])
+  while ([OCXStreamUtility readStream:stream streamState:v11])
   {
-    v14 = xmlTextReaderConstLocalName(a3);
-    if ([v10 isNewSectionRequested])
+    v14 = xmlTextReaderConstLocalName(stream);
+    if ([stateCopy isNewSectionRequested])
     {
-      v15 = [WXText addNewSectionTo:v9 state:v10];
+      v15 = [WXText addNewSectionTo:toCopy state:stateCopy];
 
-      v9 = v15;
+      toCopy = v15;
     }
 
     if (xmlStrEqual(v14, "p"))
     {
-      [WXText readFromParagraph:xmlTextReaderExpand(a3) baseStyle:v32 to:v9 state:v10];
+      [WXText readFromParagraph:xmlTextReaderExpand(stream) baseStyle:styleCopy to:toCopy state:stateCopy];
       ++v13;
       HIDWORD(v16) = -858993459 * v13 + 429496728;
       LODWORD(v16) = HIDWORD(v16);
       if ((v16 >> 2) <= 0xCCCCCCC)
       {
-        v17 = [v10 cancelDelegate];
-        v18 = [v17 isCancelled];
+        cancelDelegate = [stateCopy cancelDelegate];
+        isCancelled = [cancelDelegate isCancelled];
 
-        if (v18)
+        if (isCancelled)
         {
           [TCMessageException raiseUntaggedMessage:@"TCUserCancelled", 0];
         }
@@ -196,7 +196,7 @@ LABEL_11:
 
     else if (xmlStrEqual(v14, "tbl"))
     {
-      [WXText readFromTable:xmlTextReaderExpand(a3) baseStyle:v32 to:v9 state:v10];
+      [WXText readFromTable:xmlTextReaderExpand(stream) baseStyle:styleCopy to:toCopy state:stateCopy];
     }
 
     else
@@ -204,15 +204,15 @@ LABEL_11:
       if (xmlStrEqual(v14, "sdt"))
       {
         [TCMessageContext reportWarning:WXFormsNotSupported];
-        v19 = objc_alloc_init(OCXSStream);
-        v20 = xmlTextReaderDepth(a3);
-        [(OCXSStream *)v19 pushLevel:v20 name:xmlTextReaderConstLocalName(a3)];
-        while ([OCXStreamUtility readStream:a3 streamState:v19])
+        document = objc_alloc_init(OCXSStream);
+        v20 = xmlTextReaderDepth(stream);
+        [(OCXSStream *)document pushLevel:v20 name:xmlTextReaderConstLocalName(stream)];
+        while ([OCXStreamUtility readStream:stream streamState:document])
         {
-          v21 = xmlTextReaderConstLocalName(a3);
+          v21 = xmlTextReaderConstLocalName(stream);
           if (xmlStrEqual(v21, "sdtContent"))
           {
-            [WXText createChildrenFromStream:a3 baseStyle:v32 to:v9 state:v10];
+            [WXText createChildrenFromStream:stream baseStyle:styleCopy to:toCopy state:stateCopy];
             goto LABEL_16;
           }
         }
@@ -222,54 +222,54 @@ LABEL_11:
 
       if (xmlStrEqual(v14, "subSection") || xmlStrEqual(v14, "pBdrGroup"))
       {
-        [WXText createChildrenFromStream:a3 baseStyle:v32 to:v9 state:v10];
+        [WXText createChildrenFromStream:stream baseStyle:styleCopy to:toCopy state:stateCopy];
       }
 
       else if (xmlStrEqual(v14, "annotation"))
       {
-        [v10 addText:v9 node:xmlTextReaderExpand(a3)];
+        [stateCopy addText:toCopy node:xmlTextReaderExpand(stream)];
       }
 
       else
       {
         if (xmlStrEqual(v14, "sectPr"))
         {
-          v22 = [v10 cancelDelegate];
-          v23 = [v22 isCancelled];
+          cancelDelegate2 = [stateCopy cancelDelegate];
+          isCancelled2 = [cancelDelegate2 isCancelled];
 
-          if (v23)
+          if (isCancelled2)
           {
             [TCMessageException raiseUntaggedMessage:@"TCUserCancelled", 0];
           }
 
-          v24 = xmlTextReaderExpand(a3);
-          v19 = [v10 document];
-          v25 = [(OCXSStream *)v19 lastSection];
+          v24 = xmlTextReaderExpand(stream);
+          document = [stateCopy document];
+          lastSection = [(OCXSStream *)document lastSection];
           v26 = v24;
-          v27 = v25;
-          [WXSection readFrom:v26 to:v25 state:v10];
+          addBookmark = lastSection;
+          [WXSection readFrom:v26 to:lastSection state:stateCopy];
           goto LABEL_26;
         }
 
         if (xmlStrEqual(v14, "bookmarkStart"))
         {
-          [v10 addPendingBookmark:xmlTextReaderExpand(a3)];
+          [stateCopy addPendingBookmark:xmlTextReaderExpand(stream)];
         }
 
         else if (xmlStrEqual(v14, "bookmarkEnd"))
         {
-          v19 = [v9 lastBlock];
+          document = [toCopy lastBlock];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v27 = [(OCXSStream *)v19 addBookmark];
-            [WXBookmark readFrom:xmlTextReaderExpand(a3) to:v27 state:v10];
+            addBookmark = [(OCXSStream *)document addBookmark];
+            [WXBookmark readFrom:xmlTextReaderExpand(stream) to:addBookmark state:stateCopy];
 LABEL_26:
 
             goto LABEL_16;
           }
 
-          [v10 addPendingBookmark:xmlTextReaderExpand(a3)];
+          [stateCopy addPendingBookmark:xmlTextReaderExpand(stream)];
 LABEL_16:
         }
 
@@ -278,30 +278,30 @@ LABEL_16:
           if (xmlStrEqual(v14, "commentRangeStart"))
           {
             v28 = objc_opt_class();
-            v29 = [v9 lastBlock];
-            v19 = TSUDynamicCast(v28, v29);
+            lastBlock = [toCopy lastBlock];
+            document = TSUDynamicCast(v28, lastBlock);
 
-            if (!v19)
+            if (!document)
             {
-              v19 = [v9 addParagraph];
+              document = [toCopy addParagraph];
             }
 
-            [WXAnnotation readFrom:xmlTextReaderExpand(a3) to:v19 type:0 state:v10];
+            [WXAnnotation readFrom:xmlTextReaderExpand(stream) to:document type:0 state:stateCopy];
             goto LABEL_16;
           }
 
           if (xmlStrEqual(v14, "commentRangeEnd"))
           {
             v30 = objc_opt_class();
-            v31 = [v9 lastBlock];
-            v19 = TSUDynamicCast(v30, v31);
+            lastBlock2 = [toCopy lastBlock];
+            document = TSUDynamicCast(v30, lastBlock2);
 
-            if (!v19)
+            if (!document)
             {
-              v19 = [v9 addParagraph];
+              document = [toCopy addParagraph];
             }
 
-            [WXAnnotation readFrom:xmlTextReaderExpand(a3) to:v19 type:1 state:v10];
+            [WXAnnotation readFrom:xmlTextReaderExpand(stream) to:document type:1 state:stateCopy];
             goto LABEL_16;
           }
         }
@@ -310,77 +310,77 @@ LABEL_16:
   }
 }
 
-+ (id)addNewSectionTo:(id)a3 state:(id)a4
++ (id)addNewSectionTo:(id)to state:(id)state
 {
-  v5 = a4;
-  v6 = [a3 lastBlock];
-  if ([v6 blockType])
+  stateCopy = state;
+  lastBlock = [to lastBlock];
+  if ([lastBlock blockType])
   {
-    [v6 blockType];
+    [lastBlock blockType];
   }
 
   else
   {
-    [WXParagraph readFromString:@"\f" to:v6];
+    [WXParagraph readFromString:@"\f" to:lastBlock];
   }
 
-  [v5 setNewSectionRequested:0];
-  v7 = [v5 document];
-  v8 = [v7 addSection];
-  v9 = [v8 text];
+  [stateCopy setNewSectionRequested:0];
+  document = [stateCopy document];
+  addSection = [document addSection];
+  text = [addSection text];
 
-  return v9;
+  return text;
 }
 
-+ (void)updateTextBoxIdsFromState:(id)a3
++ (void)updateTextBoxIdsFromState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 wxoavState];
-  v5 = [v4 nextVmlShapeIdToTextBoxMap];
-  v28 = [v5 keyEnumerator];
+  stateCopy = state;
+  wxoavState = [stateCopy wxoavState];
+  nextVmlShapeIdToTextBoxMap = [wxoavState nextVmlShapeIdToTextBoxMap];
+  keyEnumerator = [nextVmlShapeIdToTextBoxMap keyEnumerator];
   v6 = 1;
   while (1)
   {
 
-    v4 = [v28 nextObject];
-    if (!v4)
+    wxoavState = [keyEnumerator nextObject];
+    if (!wxoavState)
     {
       break;
     }
 
-    v7 = [v3 wxoavState];
-    v8 = [v7 nextVmlShapeIdToTextBoxMap];
-    v5 = [v8 objectForKey:v4];
+    wxoavState2 = [stateCopy wxoavState];
+    nextVmlShapeIdToTextBoxMap2 = [wxoavState2 nextVmlShapeIdToTextBoxMap];
+    nextVmlShapeIdToTextBoxMap = [nextVmlShapeIdToTextBoxMap2 objectForKey:wxoavState];
 
-    v9 = [v3 wxoavState];
-    v10 = [v9 officeArtShapeIdWithVmlShapeId:v4];
+    wxoavState3 = [stateCopy wxoavState];
+    v10 = [wxoavState3 officeArtShapeIdWithVmlShapeId:wxoavState];
 
-    [v5 setNextTextBoxId:v10];
+    [nextVmlShapeIdToTextBoxMap setNextTextBoxId:v10];
     v11 = objc_opt_class();
-    v12 = [v3 drawingState];
-    v13 = [v12 drawableForShapeId:{objc_msgSend(v5, "nextTextBoxId")}];
-    v14 = [v13 clientData];
-    v15 = TSUDynamicCast(v11, v14);
+    drawingState = [stateCopy drawingState];
+    v13 = [drawingState drawableForShapeId:{objc_msgSend(nextVmlShapeIdToTextBoxMap, "nextTextBoxId")}];
+    clientData = [v13 clientData];
+    v15 = TSUDynamicCast(v11, clientData);
 
     v16 = objc_opt_class();
-    v17 = [v15 textBox];
-    v18 = TSUDynamicCast(v16, v17);
+    textBox = [v15 textBox];
+    v18 = TSUDynamicCast(v16, textBox);
 
-    v19 = [v5 nextTextBoxId];
-    v20 = [v5 parent];
-    v21 = [v20 drawable];
-    v22 = [v21 id];
+    nextTextBoxId = [nextVmlShapeIdToTextBoxMap nextTextBoxId];
+    parent = [nextVmlShapeIdToTextBoxMap parent];
+    drawable = [parent drawable];
+    v22 = [drawable id];
 
-    if (v19 == v22 || v18 == v5)
+    if (nextTextBoxId == v22 || v18 == nextVmlShapeIdToTextBoxMap)
     {
-      [v5 setNextTextBoxId:{0, v28}];
+      [nextVmlShapeIdToTextBoxMap setNextTextBoxId:{0, keyEnumerator}];
     }
 
-    v23 = [v5 flowId];
-    if (v23)
+    flowId = [nextVmlShapeIdToTextBoxMap flowId];
+    if (flowId)
     {
-      v24 = [v5 flowSequence];
-      v25 = v24 == 0;
+      flowSequence = [nextVmlShapeIdToTextBoxMap flowSequence];
+      v25 = flowSequence == 0;
 
       v6 &= v25;
     }
@@ -388,14 +388,14 @@ LABEL_16:
 
   if (v6)
   {
-    v26 = [v3 wxoavState];
-    v27 = [v26 nextVmlShapeIdToTextBoxMap];
+    wxoavState4 = [stateCopy wxoavState];
+    nextVmlShapeIdToTextBoxMap3 = [wxoavState4 nextVmlShapeIdToTextBoxMap];
     v29[0] = MEMORY[0x277D85DD0];
     v29[1] = 3221225472;
     v29[2] = __45__WXText_Private__updateTextBoxIdsFromState___block_invoke;
     v29[3] = &unk_2799CDA68;
-    v30 = v3;
-    [v27 enumerateKeysAndObjectsUsingBlock:v29];
+    v30 = stateCopy;
+    [nextVmlShapeIdToTextBoxMap3 enumerateKeysAndObjectsUsingBlock:v29];
   }
 }
 
@@ -442,27 +442,27 @@ void __45__WXText_Private__updateTextBoxIdsFromState___block_invoke(uint64_t a1,
   }
 }
 
-+ (void)readFromParagraph:(_xmlNode *)a3 baseStyle:(id)a4 to:(id)a5 state:(id)a6
++ (void)readFromParagraph:(_xmlNode *)paragraph baseStyle:(id)style to:(id)to state:(id)state
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v25 = a5;
-  v10 = a6;
-  v26 = v9;
-  if ([v9 type] != 1)
+  styleCopy = style;
+  toCopy = to;
+  stateCopy = state;
+  v26 = styleCopy;
+  if ([styleCopy type] != 1)
   {
 
     v26 = 0;
   }
 
-  if (a3)
+  if (paragraph)
   {
-    v11 = [v25 addParagraph];
-    v12 = [v10 pendingComments];
-    v24 = [v12 copy];
-    v23 = a3;
+    addParagraph = [toCopy addParagraph];
+    pendingComments = [stateCopy pendingComments];
+    v24 = [pendingComments copy];
+    paragraphCopy = paragraph;
 
-    [v10 clearPendingComments];
+    [stateCopy clearPendingComments];
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
@@ -481,7 +481,7 @@ void __45__WXText_Private__updateTextBoxIdsFromState___block_invoke(uint64_t a1,
             objc_enumerationMutation(v13);
           }
 
-          +[WXAnnotation readFrom:to:type:state:](WXAnnotation, "readFrom:to:type:state:", [*(*(&v31 + 1) + 8 * i) pointerValue], v11, 0, v10);
+          +[WXAnnotation readFrom:to:type:state:](WXAnnotation, "readFrom:to:type:state:", [*(*(&v31 + 1) + 8 * i) pointerValue], addParagraph, 0, stateCopy);
         }
 
         v14 = [v13 countByEnumeratingWithState:&v31 objects:v36 count:16];
@@ -490,7 +490,7 @@ void __45__WXText_Private__updateTextBoxIdsFromState___block_invoke(uint64_t a1,
       while (v14);
     }
 
-    [v10 pendingBookmarks];
+    [stateCopy pendingBookmarks];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
@@ -508,9 +508,9 @@ void __45__WXText_Private__updateTextBoxIdsFromState___block_invoke(uint64_t a1,
             objc_enumerationMutation(v17);
           }
 
-          v21 = [*(*(&v27 + 1) + 8 * j) pointerValue];
-          v22 = [v11 addBookmark];
-          [WXBookmark readFrom:v21 to:v22 state:v10];
+          pointerValue = [*(*(&v27 + 1) + 8 * j) pointerValue];
+          addBookmark = [addParagraph addBookmark];
+          [WXBookmark readFrom:pointerValue to:addBookmark state:stateCopy];
         }
 
         v18 = [v17 countByEnumeratingWithState:&v27 objects:v35 count:16];
@@ -519,23 +519,23 @@ void __45__WXText_Private__updateTextBoxIdsFromState___block_invoke(uint64_t a1,
       while (v18);
     }
 
-    [v10 clearPendingBookmarks];
-    [WXParagraph readFrom:v23 baseStyle:v26 to:v11 state:v10];
+    [stateCopy clearPendingBookmarks];
+    [WXParagraph readFrom:paragraphCopy baseStyle:v26 to:addParagraph state:stateCopy];
   }
 }
 
-+ (void)readFromTable:(_xmlNode *)a3 baseStyle:(id)a4 to:(id)a5 state:(id)a6
++ (void)readFromTable:(_xmlNode *)table baseStyle:(id)style to:(id)to state:(id)state
 {
-  v12 = a4;
-  v9 = a5;
-  v10 = a6;
-  if (!a3)
+  styleCopy = style;
+  toCopy = to;
+  stateCopy = state;
+  if (!table)
   {
     [TCMessageException raise:TCInvalidFileFormatMessage];
   }
 
-  v11 = [v9 addTable];
-  [WXTable readFrom:a3 to:v11 state:v10];
+  addTable = [toCopy addTable];
+  [WXTable readFrom:table to:addTable state:stateCopy];
 }
 
 @end

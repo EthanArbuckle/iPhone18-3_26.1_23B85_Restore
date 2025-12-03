@@ -1,12 +1,12 @@
 @interface _UIFindNavigatorSearchFieldButton
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
 @end
 
 @implementation _UIFindNavigatorSearchFieldButton
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  [(UIButton *)self intrinsicContentSize:a3.width];
+  [(UIButton *)self intrinsicContentSize:size.width];
   v7 = v6;
   v9 = v8;
   if ([(_UIFindNavigatorSearchFieldButton *)self usesSquareIntrinsicSize])

@@ -1,18 +1,18 @@
 @interface ASAObject
 - (ASAObject)init;
-- (ASAObject)initWithAudioObjectID:(unsigned int)a3;
-- (BOOL)getProperty:(unsigned int)a3 scope:(unsigned int)a4 ofElement:(unsigned int)a5 withData:(void *)a6 ofSize:(unsigned int *)a7 withQualifier:(void *)a8 ofSize:(unsigned int)inQualifierDataSize;
-- (BOOL)hasProperty:(unsigned int)a3 scope:(unsigned int)a4 ofElement:(unsigned int)a5;
-- (BOOL)isPropertySettable:(unsigned int)a3 scope:(unsigned int)a4 ofElement:(unsigned int)a5;
-- (BOOL)onQueue:(id)a3 forProperty:(unsigned int)a4 scope:(unsigned int)a5 ofElement:(unsigned int)a6 addListener:(id)a7;
-- (BOOL)onQueue:(id)a3 forProperty:(unsigned int)a4 scope:(unsigned int)a5 ofElement:(unsigned int)a6 removeListener:(id)a7;
-- (BOOL)setProperty:(unsigned int)a3 scope:(unsigned int)a4 ofElement:(unsigned int)a5 withData:(void *)a6 ofSize:(unsigned int)a7 withQualifier:(void *)a8 ofSize:(unsigned int)a9;
+- (ASAObject)initWithAudioObjectID:(unsigned int)d;
+- (BOOL)getProperty:(unsigned int)property scope:(unsigned int)scope ofElement:(unsigned int)element withData:(void *)data ofSize:(unsigned int *)size withQualifier:(void *)qualifier ofSize:(unsigned int)inQualifierDataSize;
+- (BOOL)hasProperty:(unsigned int)property scope:(unsigned int)scope ofElement:(unsigned int)element;
+- (BOOL)isPropertySettable:(unsigned int)settable scope:(unsigned int)scope ofElement:(unsigned int)element;
+- (BOOL)onQueue:(id)queue forProperty:(unsigned int)property scope:(unsigned int)scope ofElement:(unsigned int)element addListener:(id)listener;
+- (BOOL)onQueue:(id)queue forProperty:(unsigned int)property scope:(unsigned int)scope ofElement:(unsigned int)element removeListener:(id)listener;
+- (BOOL)setProperty:(unsigned int)property scope:(unsigned int)scope ofElement:(unsigned int)element withData:(void *)data ofSize:(unsigned int)size withQualifier:(void *)qualifier ofSize:(unsigned int)ofSize;
 - (NSArray)ownedObjectIDs;
-- (id)diagnosticDescriptionWithIndent:(id)a3 walkTree:(BOOL)a4;
+- (id)diagnosticDescriptionWithIndent:(id)indent walkTree:(BOOL)tree;
 - (unsigned)baseClass;
 - (unsigned)objectClass;
 - (unsigned)ownerID;
-- (unsigned)sizeOfProperty:(unsigned int)a3 scope:(unsigned int)a4 ofElement:(unsigned int)a5 withQualifier:(void *)a6 ofSize:(unsigned int)a7;
+- (unsigned)sizeOfProperty:(unsigned int)property scope:(unsigned int)scope ofElement:(unsigned int)element withQualifier:(void *)qualifier ofSize:(unsigned int)size;
 @end
 
 @implementation ASAObject
@@ -27,16 +27,16 @@
   return 0;
 }
 
-- (ASAObject)initWithAudioObjectID:(unsigned int)a3
+- (ASAObject)initWithAudioObjectID:(unsigned int)d
 {
   v5.receiver = self;
   v5.super_class = ASAObject;
   result = [(ASAObject *)&v5 init];
   if (result)
   {
-    if (a3)
+    if (d)
     {
-      result->_objectID = a3;
+      result->_objectID = d;
     }
 
     else
@@ -49,25 +49,25 @@
   return result;
 }
 
-- (BOOL)hasProperty:(unsigned int)a3 scope:(unsigned int)a4 ofElement:(unsigned int)a5
+- (BOOL)hasProperty:(unsigned int)property scope:(unsigned int)scope ofElement:(unsigned int)element
 {
-  inAddress.mSelector = a3;
-  inAddress.mScope = a4;
-  inAddress.mElement = a5;
+  inAddress.mSelector = property;
+  inAddress.mScope = scope;
+  inAddress.mElement = element;
   return AudioObjectHasProperty(self->_objectID, &inAddress) != 0;
 }
 
-- (unsigned)sizeOfProperty:(unsigned int)a3 scope:(unsigned int)a4 ofElement:(unsigned int)a5 withQualifier:(void *)a6 ofSize:(unsigned int)a7
+- (unsigned)sizeOfProperty:(unsigned int)property scope:(unsigned int)scope ofElement:(unsigned int)element withQualifier:(void *)qualifier ofSize:(unsigned int)size
 {
   v29 = *MEMORY[0x277D85DE8];
-  v17.mElement = a5;
+  v17.mElement = element;
   outDataSize = 0;
-  v17.mSelector = a3;
-  v17.mScope = a4;
+  v17.mSelector = property;
+  v17.mScope = scope;
   result = AudioObjectHasProperty(self->_objectID, &v17);
   if (result)
   {
-    PropertyDataSize = AudioObjectGetPropertyDataSize(self->_objectID, &v17, a7, a6, &outDataSize);
+    PropertyDataSize = AudioObjectGetPropertyDataSize(self->_objectID, &v17, size, qualifier, &outDataSize);
     if (PropertyDataSize)
     {
       outDataSize = 0;
@@ -79,11 +79,11 @@
       *buf = 67110144;
       v20 = objectID;
       v21 = 1024;
-      v22 = a3;
+      propertyCopy = property;
       v23 = 1024;
-      v24 = a4;
+      scopeCopy = scope;
       v25 = 1024;
-      v26 = a5;
+      elementCopy = element;
       v27 = 1024;
       v28 = PropertyDataSize;
       _os_log_debug_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "object %u sizeOfProperty {%u, %u, %u} returned status %u", buf, 0x20u);
@@ -96,15 +96,15 @@
   return result;
 }
 
-- (BOOL)getProperty:(unsigned int)a3 scope:(unsigned int)a4 ofElement:(unsigned int)a5 withData:(void *)a6 ofSize:(unsigned int *)a7 withQualifier:(void *)a8 ofSize:(unsigned int)inQualifierDataSize
+- (BOOL)getProperty:(unsigned int)property scope:(unsigned int)scope ofElement:(unsigned int)element withData:(void *)data ofSize:(unsigned int *)size withQualifier:(void *)qualifier ofSize:(unsigned int)inQualifierDataSize
 {
   v32 = *MEMORY[0x277D85DE8];
-  inAddress.mSelector = a3;
-  inAddress.mScope = a4;
-  inAddress.mElement = a5;
+  inAddress.mSelector = property;
+  inAddress.mScope = scope;
+  inAddress.mElement = element;
   if (AudioObjectHasProperty(self->_objectID, &inAddress))
   {
-    PropertyData = AudioObjectGetPropertyData(self->_objectID, &inAddress, inQualifierDataSize, a8, a7, a6);
+    PropertyData = AudioObjectGetPropertyData(self->_objectID, &inAddress, inQualifierDataSize, qualifier, size, data);
     v17 = PropertyData == 0;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -112,11 +112,11 @@
       *buf = 67110144;
       v23 = objectID;
       v24 = 1024;
-      v25 = a3;
+      propertyCopy = property;
       v26 = 1024;
-      v27 = a4;
+      scopeCopy = scope;
       v28 = 1024;
-      v29 = a5;
+      elementCopy = element;
       v30 = 1024;
       v31 = PropertyData;
       _os_log_debug_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "object %u getProperty {%u, %u, %u} returned status %u", buf, 0x20u);
@@ -126,9 +126,9 @@
   else
   {
     v17 = 0;
-    if (a6 && a7)
+    if (data && size)
     {
-      bzero(a6, *a7);
+      bzero(data, *size);
       v17 = 0;
     }
   }
@@ -137,12 +137,12 @@
   return v17;
 }
 
-- (BOOL)setProperty:(unsigned int)a3 scope:(unsigned int)a4 ofElement:(unsigned int)a5 withData:(void *)a6 ofSize:(unsigned int)a7 withQualifier:(void *)a8 ofSize:(unsigned int)a9
+- (BOOL)setProperty:(unsigned int)property scope:(unsigned int)scope ofElement:(unsigned int)element withData:(void *)data ofSize:(unsigned int)size withQualifier:(void *)qualifier ofSize:(unsigned int)ofSize
 {
   v33 = *MEMORY[0x277D85DE8];
-  inAddress.mSelector = a3;
-  inAddress.mScope = a4;
-  inAddress.mElement = a5;
+  inAddress.mSelector = property;
+  inAddress.mScope = scope;
+  inAddress.mElement = element;
   if (AudioObjectHasProperty(self->_objectID, &inAddress))
   {
     outIsSettable = 0;
@@ -159,7 +159,7 @@
 
     if (!v16)
     {
-      v17 = AudioObjectSetPropertyData(self->_objectID, &inAddress, 0, 0, a7, a6);
+      v17 = AudioObjectSetPropertyData(self->_objectID, &inAddress, 0, 0, size, data);
       v15 = v17 == 0;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
       {
@@ -167,11 +167,11 @@
         *buf = 67110144;
         v24 = objectID;
         v25 = 1024;
-        v26 = a3;
+        propertyCopy = property;
         v27 = 1024;
-        v28 = a4;
+        scopeCopy = scope;
         v29 = 1024;
-        v30 = a5;
+        elementCopy = element;
         v31 = 1024;
         v32 = v17;
         _os_log_debug_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "object %u setProperty {%u, %u, %u} returned status %u", buf, 0x20u);
@@ -188,13 +188,13 @@
   return v15;
 }
 
-- (BOOL)isPropertySettable:(unsigned int)a3 scope:(unsigned int)a4 ofElement:(unsigned int)a5
+- (BOOL)isPropertySettable:(unsigned int)settable scope:(unsigned int)scope ofElement:(unsigned int)element
 {
   v28 = *MEMORY[0x277D85DE8];
   outIsSettable = 0;
-  v16.mSelector = a3;
-  v16.mScope = a4;
-  v16.mElement = a5;
+  v16.mSelector = settable;
+  v16.mScope = scope;
+  v16.mElement = element;
   if (AudioObjectHasProperty(self->_objectID, &v16))
   {
     IsPropertySettable = AudioObjectIsPropertySettable(self->_objectID, &v16, &outIsSettable);
@@ -216,11 +216,11 @@
       *buf = 67110144;
       v19 = objectID;
       v20 = 1024;
-      v21 = a3;
+      settableCopy = settable;
       v22 = 1024;
-      v23 = a4;
+      scopeCopy = scope;
       v24 = 1024;
-      v25 = a5;
+      elementCopy = element;
       v26 = 1024;
       v27 = v10;
       _os_log_debug_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "object %u isPropertySettable {%u, %u, %u} returned status %u", buf, 0x20u);
@@ -236,17 +236,17 @@
   return v12;
 }
 
-- (BOOL)onQueue:(id)a3 forProperty:(unsigned int)a4 scope:(unsigned int)a5 ofElement:(unsigned int)a6 addListener:(id)a7
+- (BOOL)onQueue:(id)queue forProperty:(unsigned int)property scope:(unsigned int)scope ofElement:(unsigned int)element addListener:(id)listener
 {
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a7;
-  inAddress.mSelector = a4;
-  inAddress.mScope = a5;
-  inAddress.mElement = a6;
-  if (a4 == 707406378 || AudioObjectHasProperty(self->_objectID, &inAddress))
+  queueCopy = queue;
+  listenerCopy = listener;
+  inAddress.mSelector = property;
+  inAddress.mScope = scope;
+  inAddress.mElement = element;
+  if (property == 707406378 || AudioObjectHasProperty(self->_objectID, &inAddress))
   {
-    v14 = AudioObjectAddPropertyListenerBlock(self->_objectID, &inAddress, v12, v13);
+    v14 = AudioObjectAddPropertyListenerBlock(self->_objectID, &inAddress, queueCopy, listenerCopy);
     v15 = v14 == 0;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -254,11 +254,11 @@
       *buf = 67110144;
       v21 = objectID;
       v22 = 1024;
-      v23 = a4;
+      propertyCopy = property;
       v24 = 1024;
-      v25 = a5;
+      scopeCopy = scope;
       v26 = 1024;
-      v27 = a6;
+      elementCopy = element;
       v28 = 1024;
       v29 = v14;
       _os_log_debug_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "object %u addListener {%u, %u, %u} returned status %u", buf, 0x20u);
@@ -274,17 +274,17 @@
   return v15;
 }
 
-- (BOOL)onQueue:(id)a3 forProperty:(unsigned int)a4 scope:(unsigned int)a5 ofElement:(unsigned int)a6 removeListener:(id)a7
+- (BOOL)onQueue:(id)queue forProperty:(unsigned int)property scope:(unsigned int)scope ofElement:(unsigned int)element removeListener:(id)listener
 {
   v30 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a7;
-  inAddress.mSelector = a4;
-  inAddress.mScope = a5;
-  inAddress.mElement = a6;
-  if (a4 == 707406378 || AudioObjectHasProperty(self->_objectID, &inAddress))
+  queueCopy = queue;
+  listenerCopy = listener;
+  inAddress.mSelector = property;
+  inAddress.mScope = scope;
+  inAddress.mElement = element;
+  if (property == 707406378 || AudioObjectHasProperty(self->_objectID, &inAddress))
   {
-    v14 = AudioObjectRemovePropertyListenerBlock(self->_objectID, &inAddress, v12, v13);
+    v14 = AudioObjectRemovePropertyListenerBlock(self->_objectID, &inAddress, queueCopy, listenerCopy);
     v15 = v14 == 0;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
     {
@@ -292,11 +292,11 @@
       *buf = 67110144;
       v21 = objectID;
       v22 = 1024;
-      v23 = a4;
+      propertyCopy = property;
       v24 = 1024;
-      v25 = a5;
+      scopeCopy = scope;
       v26 = 1024;
-      v27 = a6;
+      elementCopy = element;
       v28 = 1024;
       v29 = v14;
       _os_log_debug_impl(&dword_2415BC000, MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG, "object %u removeListener {%u, %u, %u} returned status %u", buf, 0x20u);
@@ -360,11 +360,11 @@
     v6 = v5;
     bzero(v5, v4);
     v7 = [(ASAObject *)self getMainGlobalProperty:1870098020 withData:v6 ofSize:&v15 withQualifier:0 ofSize:0];
-    v8 = 0;
+    array = 0;
     if (v7)
     {
       v9 = v15;
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v9 >= 4)
       {
         v10 = v9 >> 2;
@@ -373,7 +373,7 @@
         {
           v12 = *v11++;
           v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v12];
-          [v8 addObject:v13];
+          [array addObject:v13];
 
           --v10;
         }
@@ -387,24 +387,24 @@
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
-- (id)diagnosticDescriptionWithIndent:(id)a3 walkTree:(BOOL)a4
+- (id)diagnosticDescriptionWithIndent:(id)indent walkTree:(BOOL)tree
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CCAB68] string];
-  v7 = [(ASAObject *)self coreAudioClassName];
-  [v6 appendFormat:@"%@+%s\n", v5, objc_msgSend(v7, "UTF8String")];
+  indentCopy = indent;
+  string = [MEMORY[0x277CCAB68] string];
+  coreAudioClassName = [(ASAObject *)self coreAudioClassName];
+  [string appendFormat:@"%@+%s\n", indentCopy, objc_msgSend(coreAudioClassName, "UTF8String")];
 
-  [v6 appendFormat:@"%@|    Object ID: %u\n", v5, -[ASAObject objectID](self, "objectID")];
-  v8 = [(ASAObject *)self baseClass];
-  LODWORD(v9) = v8 >> 24;
-  if (((v8 >> 24) - 32) >= 0x5F)
+  [string appendFormat:@"%@|    Object ID: %u\n", indentCopy, -[ASAObject objectID](self, "objectID")];
+  baseClass = [(ASAObject *)self baseClass];
+  LODWORD(v9) = baseClass >> 24;
+  if (((baseClass >> 24) - 32) >= 0x5F)
   {
     v9 = 32;
   }
@@ -414,7 +414,7 @@
     v9 = v9;
   }
 
-  LODWORD(v10) = v8 << 8 >> 24;
+  LODWORD(v10) = baseClass << 8 >> 24;
   if ((v10 - 32) >= 0x5F)
   {
     v10 = 32;
@@ -425,7 +425,7 @@
     v10 = v10;
   }
 
-  LODWORD(v11) = v8 >> 8;
+  LODWORD(v11) = baseClass >> 8;
   if ((v11 - 32) >= 0x5F)
   {
     v11 = 32;
@@ -436,20 +436,20 @@
     v11 = v11;
   }
 
-  if ((v8 - 32) >= 0x5F)
+  if ((baseClass - 32) >= 0x5F)
   {
     v12 = 32;
   }
 
   else
   {
-    v12 = v8;
+    v12 = baseClass;
   }
 
-  [v6 appendFormat:@"%@|    Base Class: %c%c%c%c\n", v5, v9, v10, v11, v12];
-  v13 = [(ASAObject *)self objectClass];
-  LODWORD(v14) = v13 >> 24;
-  if (((v13 >> 24) - 32) >= 0x5F)
+  [string appendFormat:@"%@|    Base Class: %c%c%c%c\n", indentCopy, v9, v10, v11, v12];
+  objectClass = [(ASAObject *)self objectClass];
+  LODWORD(v14) = objectClass >> 24;
+  if (((objectClass >> 24) - 32) >= 0x5F)
   {
     v14 = 32;
   }
@@ -459,7 +459,7 @@
     v14 = v14;
   }
 
-  LODWORD(v15) = v13 << 8 >> 24;
+  LODWORD(v15) = objectClass << 8 >> 24;
   if ((v15 - 32) >= 0x5F)
   {
     v15 = 32;
@@ -470,7 +470,7 @@
     v15 = v15;
   }
 
-  LODWORD(v16) = v13 >> 8;
+  LODWORD(v16) = objectClass >> 8;
   if ((v16 - 32) >= 0x5F)
   {
     v16 = 32;
@@ -481,27 +481,27 @@
     v16 = v16;
   }
 
-  if ((v13 - 32) >= 0x5F)
+  if ((objectClass - 32) >= 0x5F)
   {
     v17 = 32;
   }
 
   else
   {
-    v17 = v13;
+    v17 = objectClass;
   }
 
-  [v6 appendFormat:@"%@|    Object Class: %c%c%c%c\n", v5, v14, v15, v16, v17];
-  [v6 appendFormat:@"%@|    Owner ID: %u\n", v5, -[ASAObject ownerID](self, "ownerID")];
-  v18 = [(ASAObject *)self ownedObjectIDs];
-  if ([v18 count])
+  [string appendFormat:@"%@|    Object Class: %c%c%c%c\n", indentCopy, v14, v15, v16, v17];
+  [string appendFormat:@"%@|    Owner ID: %u\n", indentCopy, -[ASAObject ownerID](self, "ownerID")];
+  ownedObjectIDs = [(ASAObject *)self ownedObjectIDs];
+  if ([ownedObjectIDs count])
   {
-    [v6 appendFormat:@"%@|    Owned Objects:\n", v5];
+    [string appendFormat:@"%@|    Owned Objects:\n", indentCopy];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v19 = v18;
+    v19 = ownedObjectIDs;
     v20 = [v19 countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v20)
     {
@@ -517,7 +517,7 @@
             objc_enumerationMutation(v19);
           }
 
-          [v6 appendFormat:@"%@|        %u: %u\n", v5, v22, objc_msgSend(*(*(&v27 + 1) + 8 * i), "unsignedIntValue")];
+          [string appendFormat:@"%@|        %u: %u\n", indentCopy, v22, objc_msgSend(*(*(&v27 + 1) + 8 * i), "unsignedIntValue")];
           v22 = (v22 + 1);
         }
 
@@ -530,7 +530,7 @@
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return string;
 }
 
 @end

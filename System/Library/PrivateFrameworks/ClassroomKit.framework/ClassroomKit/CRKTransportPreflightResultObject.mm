@@ -1,5 +1,5 @@
 @interface CRKTransportPreflightResultObject
-- (CRKTransportPreflightResultObject)initWithTransport:(id)a3 shouldResetBackoff:(BOOL)a4;
+- (CRKTransportPreflightResultObject)initWithTransport:(id)transport shouldResetBackoff:(BOOL)backoff;
 - (id)takeTransport;
 - (void)dealloc;
 @end
@@ -30,17 +30,17 @@
   [(CRKTransportPreflightResultObject *)&v4 dealloc];
 }
 
-- (CRKTransportPreflightResultObject)initWithTransport:(id)a3 shouldResetBackoff:(BOOL)a4
+- (CRKTransportPreflightResultObject)initWithTransport:(id)transport shouldResetBackoff:(BOOL)backoff
 {
-  v7 = a3;
+  transportCopy = transport;
   v11.receiver = self;
   v11.super_class = CRKTransportPreflightResultObject;
   v8 = [(CRKTransportPreflightResultObject *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_transport, a3);
-    v9->_shouldResetBackoff = a4;
+    objc_storeStrong(&v8->_transport, transport);
+    v9->_shouldResetBackoff = backoff;
   }
 
   return v9;
@@ -48,10 +48,10 @@
 
 - (id)takeTransport
 {
-  v3 = [(CRKTransportPreflightResultObject *)self transport];
+  transport = [(CRKTransportPreflightResultObject *)self transport];
   [(CRKTransportPreflightResultObject *)self setTransport:0];
 
-  return v3;
+  return transport;
 }
 
 @end

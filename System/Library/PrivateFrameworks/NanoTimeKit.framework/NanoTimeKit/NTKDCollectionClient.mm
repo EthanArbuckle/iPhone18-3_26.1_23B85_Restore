@@ -1,28 +1,28 @@
 @interface NTKDCollectionClient
 + (id)_sharedCollectionStoreQueue;
-- (NTKDCollectionClient)initWithConnection:(id)a3;
+- (NTKDCollectionClient)initWithConnection:(id)connection;
 - (void)_handleInvalidation;
-- (void)_onQueue:(id)a3;
-- (void)_performOrEnqueueAction:(id)a3;
-- (void)addFaceInstanceDescriptor:(id)a3 forUUID:(id)a4;
-- (void)collectionStore:(id)a3 didAddFace:(id)a4 forUUID:(id)a5 seqId:(id)a6;
-- (void)collectionStore:(id)a3 didRemoveFaceOfStyle:(int64_t)a4 forUUID:(id)a5 seqId:(id)a6 acknowledge:(id)a7;
-- (void)collectionStore:(id)a3 didUpdateFaceForUUID:(id)a4 withConfiguration:(id)a5 seqId:(id)a6;
-- (void)collectionStore:(id)a3 didUpdateFaceForUUID:(id)a4 withResourceDirectory:(id)a5 seqId:(id)a6 acknowledge:(id)a7;
-- (void)collectionStore:(id)a3 didUpdateOrderedUUIDs:(id)a4 seqId:(id)a5;
-- (void)collectionStore:(id)a3 didUpdateSelectedUUID:(id)a4 seqId:(id)a5;
-- (void)collectionStore:(id)a3 didUpgradeFace:(id)a4 forUUID:(id)a5 seqId:(id)a6;
-- (void)collectionStore:(id)a3 loadOrderedUUIDs:(id)a4 selectedUUID:(id)a5 facesByUUID:(id)a6 seqId:(id)a7 acknowledge:(id)a8;
-- (void)flushUpdatesWithIdentifier:(id)a3;
-- (void)registerForCollectionIdentifier:(id)a3 deviceUUID:(id)a4 withSeqId:(id)a5;
-- (void)removeFaceForUUID:(id)a3;
+- (void)_onQueue:(id)queue;
+- (void)_performOrEnqueueAction:(id)action;
+- (void)addFaceInstanceDescriptor:(id)descriptor forUUID:(id)d;
+- (void)collectionStore:(id)store didAddFace:(id)face forUUID:(id)d seqId:(id)id;
+- (void)collectionStore:(id)store didRemoveFaceOfStyle:(int64_t)style forUUID:(id)d seqId:(id)id acknowledge:(id)acknowledge;
+- (void)collectionStore:(id)store didUpdateFaceForUUID:(id)d withConfiguration:(id)configuration seqId:(id)id;
+- (void)collectionStore:(id)store didUpdateFaceForUUID:(id)d withResourceDirectory:(id)directory seqId:(id)id acknowledge:(id)acknowledge;
+- (void)collectionStore:(id)store didUpdateOrderedUUIDs:(id)ds seqId:(id)id;
+- (void)collectionStore:(id)store didUpdateSelectedUUID:(id)d seqId:(id)id;
+- (void)collectionStore:(id)store didUpgradeFace:(id)face forUUID:(id)d seqId:(id)id;
+- (void)collectionStore:(id)store loadOrderedUUIDs:(id)ds selectedUUID:(id)d facesByUUID:(id)iD seqId:(id)id acknowledge:(id)acknowledge;
+- (void)flushUpdatesWithIdentifier:(id)identifier;
+- (void)registerForCollectionIdentifier:(id)identifier deviceUUID:(id)d withSeqId:(id)id;
+- (void)removeFaceForUUID:(id)d;
 - (void)resetCollection;
-- (void)resetCollectionStore:(id)a3 acknowledge:(id)a4;
-- (void)setOrderedFaceUUIDs:(id)a3;
-- (void)setSelectedFaceUUID:(id)a3 suppressingCallback:(BOOL)a4;
-- (void)updateFaceForUUID:(id)a3 withConfigurationJSONRepresentation:(id)a4;
-- (void)updateFaceForUUID:(id)a3 withResourceDirectory:(id)a4;
-- (void)upgradeFaceInstanceDescriptor:(id)a3 forUUID:(id)a4;
+- (void)resetCollectionStore:(id)store acknowledge:(id)acknowledge;
+- (void)setOrderedFaceUUIDs:(id)ds;
+- (void)setSelectedFaceUUID:(id)d suppressingCallback:(BOOL)callback;
+- (void)updateFaceForUUID:(id)d withConfigurationJSONRepresentation:(id)representation;
+- (void)updateFaceForUUID:(id)d withResourceDirectory:(id)directory;
+- (void)upgradeFaceInstanceDescriptor:(id)descriptor forUUID:(id)d;
 @end
 
 @implementation NTKDCollectionClient
@@ -39,9 +39,9 @@
   return v3;
 }
 
-- (NTKDCollectionClient)initWithConnection:(id)a3
+- (NTKDCollectionClient)initWithConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v20.receiver = self;
   v20.super_class = NTKDCollectionClient;
   v6 = [(NTKDCollectionClient *)&v20 init];
@@ -51,7 +51,7 @@
     queue = v6->_queue;
     v6->_queue = v7;
 
-    objc_storeStrong(&v6->_connection, a3);
+    objc_storeStrong(&v6->_connection, connection);
     connection = v6->_connection;
     v10 = NTKCollectionClientInterface();
     [(NSXPCConnection *)connection setRemoteObjectInterface:v10];
@@ -91,37 +91,37 @@
   dispatch_async(queue, block);
 }
 
-- (void)registerForCollectionIdentifier:(id)a3 deviceUUID:(id)a4 withSeqId:(id)a5
+- (void)registerForCollectionIdentifier:(id)identifier deviceUUID:(id)d withSeqId:(id)id
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  idCopy = id;
   sub_100007294(@"com.apple.ntkd.collectionclient.register");
   queue = self->_queue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100009FE0;
   v15[3] = &unk_10005CFC0;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
-  v19 = self;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v16 = identifierCopy;
+  v17 = dCopy;
+  v18 = idCopy;
+  selfCopy = self;
+  v12 = idCopy;
+  v13 = dCopy;
+  v14 = identifierCopy;
   dispatch_async(queue, v15);
 }
 
-- (void)_performOrEnqueueAction:(id)a3
+- (void)_performOrEnqueueAction:(id)action
 {
-  v4 = a3;
+  actionCopy = action;
   sub_100007294(@"com.apple.ntkd.collectionclient.busy");
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000A448;
   v11[3] = &unk_10005CB10;
-  v12 = v4;
-  v5 = v4;
+  v12 = actionCopy;
+  v5 = actionCopy;
   v6 = objc_retainBlock(v11);
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -134,36 +134,36 @@
   dispatch_async(queue, block);
 }
 
-- (void)_onQueue:(id)a3
+- (void)_onQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   sub_100007294(@"com.apple.ntkd.collectionclient.busy");
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10000A5A8;
   block[3] = &unk_10005CB10;
-  v8 = v4;
-  v6 = v4;
+  v8 = queueCopy;
+  v6 = queueCopy;
   dispatch_async(queue, block);
 }
 
-- (void)setSelectedFaceUUID:(id)a3 suppressingCallback:(BOOL)a4
+- (void)setSelectedFaceUUID:(id)d suppressingCallback:(BOOL)callback
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10000A680;
   v6[3] = &unk_10005CFE8;
-  v7 = self;
-  v8 = a3;
-  v9 = a4;
-  v5 = v8;
-  [(NTKDCollectionClient *)v7 _performOrEnqueueAction:v6];
+  selfCopy = self;
+  dCopy = d;
+  callbackCopy = callback;
+  v5 = dCopy;
+  [(NTKDCollectionClient *)selfCopy _performOrEnqueueAction:v6];
 }
 
-- (void)setOrderedFaceUUIDs:(id)a3
+- (void)setOrderedFaceUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   objc_opt_class();
   NTKValidateArray();
   v6[0] = _NSConcreteStackBlock;
@@ -171,79 +171,79 @@
   v6[2] = sub_10000A860;
   v6[3] = &unk_10005CA98;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = dsCopy;
+  v5 = dsCopy;
   [(NTKDCollectionClient *)self _performOrEnqueueAction:v6];
 }
 
-- (void)updateFaceForUUID:(id)a3 withConfigurationJSONRepresentation:(id)a4
+- (void)updateFaceForUUID:(id)d withConfigurationJSONRepresentation:(id)representation
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000AA2C;
   v7[3] = &unk_10005CC38;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(NTKDCollectionClient *)v8 _performOrEnqueueAction:v7];
+  selfCopy = self;
+  dCopy = d;
+  representationCopy = representation;
+  v5 = representationCopy;
+  v6 = dCopy;
+  [(NTKDCollectionClient *)selfCopy _performOrEnqueueAction:v7];
 }
 
-- (void)updateFaceForUUID:(id)a3 withResourceDirectory:(id)a4
+- (void)updateFaceForUUID:(id)d withResourceDirectory:(id)directory
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000ACD8;
   v7[3] = &unk_10005CC38;
-  v8 = self;
-  v9 = a3;
-  v10 = a4;
-  v5 = v10;
-  v6 = v9;
-  [(NTKDCollectionClient *)v8 _performOrEnqueueAction:v7];
+  selfCopy = self;
+  dCopy = d;
+  directoryCopy = directory;
+  v5 = directoryCopy;
+  v6 = dCopy;
+  [(NTKDCollectionClient *)selfCopy _performOrEnqueueAction:v7];
 }
 
-- (void)upgradeFaceInstanceDescriptor:(id)a3 forUUID:(id)a4
+- (void)upgradeFaceInstanceDescriptor:(id)descriptor forUUID:(id)d
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000AEB4;
   v9[3] = &unk_10005CC38;
   v9[4] = self;
-  v10 = a4;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
+  dCopy = d;
+  v11 = descriptorCopy;
+  v7 = descriptorCopy;
+  v8 = dCopy;
   [(NTKDCollectionClient *)self _performOrEnqueueAction:v9];
 }
 
-- (void)addFaceInstanceDescriptor:(id)a3 forUUID:(id)a4
+- (void)addFaceInstanceDescriptor:(id)descriptor forUUID:(id)d
 {
-  v6 = a3;
+  descriptorCopy = descriptor;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10000B0AC;
   v9[3] = &unk_10005CC38;
   v9[4] = self;
-  v10 = a4;
-  v11 = v6;
-  v7 = v6;
-  v8 = v10;
+  dCopy = d;
+  v11 = descriptorCopy;
+  v7 = descriptorCopy;
+  v8 = dCopy;
   [(NTKDCollectionClient *)self _performOrEnqueueAction:v9];
 }
 
-- (void)removeFaceForUUID:(id)a3
+- (void)removeFaceForUUID:(id)d
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000B274;
   v4[3] = &unk_10005CA98;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(NTKDCollectionClient *)v5 _performOrEnqueueAction:v4];
+  selfCopy = self;
+  dCopy = d;
+  v3 = dCopy;
+  [(NTKDCollectionClient *)selfCopy _performOrEnqueueAction:v4];
 }
 
 - (void)resetCollection
@@ -256,179 +256,179 @@
   [(NTKDCollectionClient *)self _performOrEnqueueAction:v2];
 }
 
-- (void)flushUpdatesWithIdentifier:(id)a3
+- (void)flushUpdatesWithIdentifier:(id)identifier
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_10000B598;
   v4[3] = &unk_10005CA98;
-  v5 = self;
-  v6 = a3;
-  v3 = v6;
-  [(NTKDCollectionClient *)v5 _performOrEnqueueAction:v4];
+  selfCopy = self;
+  identifierCopy = identifier;
+  v3 = identifierCopy;
+  [(NTKDCollectionClient *)selfCopy _performOrEnqueueAction:v4];
 }
 
-- (void)collectionStore:(id)a3 loadOrderedUUIDs:(id)a4 selectedUUID:(id)a5 facesByUUID:(id)a6 seqId:(id)a7 acknowledge:(id)a8
+- (void)collectionStore:(id)store loadOrderedUUIDs:(id)ds selectedUUID:(id)d facesByUUID:(id)iD seqId:(id)id acknowledge:(id)acknowledge
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  storeCopy = store;
+  dsCopy = ds;
+  dCopy = d;
   v23[0] = _NSConcreteStackBlock;
   v23[1] = 3221225472;
   v23[2] = sub_10000B950;
   v23[3] = &unk_10005D038;
-  v24 = v14;
-  v25 = a6;
-  v26 = a7;
-  v27 = self;
-  v29 = v16;
-  v30 = a8;
-  v28 = v15;
-  v17 = v16;
-  v18 = v15;
-  v19 = v30;
-  v20 = v26;
-  v21 = v25;
-  v22 = v14;
+  v24 = storeCopy;
+  iDCopy = iD;
+  idCopy = id;
+  selfCopy = self;
+  v29 = dCopy;
+  acknowledgeCopy = acknowledge;
+  v28 = dsCopy;
+  v17 = dCopy;
+  v18 = dsCopy;
+  v19 = acknowledgeCopy;
+  v20 = idCopy;
+  v21 = iDCopy;
+  v22 = storeCopy;
   [(NTKDCollectionClient *)self _onQueue:v23];
 }
 
-- (void)collectionStore:(id)a3 didUpdateSelectedUUID:(id)a4 seqId:(id)a5
+- (void)collectionStore:(id)store didUpdateSelectedUUID:(id)d seqId:(id)id
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000BD94;
   v11[3] = &unk_10005CFC0;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = self;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  storeCopy = store;
+  dCopy = d;
+  idCopy = id;
+  selfCopy = self;
+  v8 = idCopy;
+  v9 = dCopy;
+  v10 = storeCopy;
   [(NTKDCollectionClient *)self _onQueue:v11];
 }
 
-- (void)collectionStore:(id)a3 didUpdateOrderedUUIDs:(id)a4 seqId:(id)a5
+- (void)collectionStore:(id)store didUpdateOrderedUUIDs:(id)ds seqId:(id)id
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10000BF94;
   v11[3] = &unk_10005CFC0;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = self;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  storeCopy = store;
+  dsCopy = ds;
+  idCopy = id;
+  selfCopy = self;
+  v8 = idCopy;
+  v9 = dsCopy;
+  v10 = storeCopy;
   [(NTKDCollectionClient *)self _onQueue:v11];
 }
 
-- (void)collectionStore:(id)a3 didUpdateFaceForUUID:(id)a4 withConfiguration:(id)a5 seqId:(id)a6
+- (void)collectionStore:(id)store didUpdateFaceForUUID:(id)d withConfiguration:(id)configuration seqId:(id)id
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000C1C0;
   v14[3] = &unk_10005D060;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = self;
-  v10 = v18;
-  v11 = v17;
-  v12 = v16;
-  v13 = v15;
+  storeCopy = store;
+  dCopy = d;
+  configurationCopy = configuration;
+  idCopy = id;
+  selfCopy = self;
+  v10 = idCopy;
+  v11 = configurationCopy;
+  v12 = dCopy;
+  v13 = storeCopy;
   [(NTKDCollectionClient *)self _onQueue:v14];
 }
 
-- (void)collectionStore:(id)a3 didUpdateFaceForUUID:(id)a4 withResourceDirectory:(id)a5 seqId:(id)a6 acknowledge:(id)a7
+- (void)collectionStore:(id)store didUpdateFaceForUUID:(id)d withResourceDirectory:(id)directory seqId:(id)id acknowledge:(id)acknowledge
 {
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10000C490;
   v17[3] = &unk_10005D088;
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = self;
-  v23 = a7;
-  v12 = v23;
-  v13 = v21;
-  v14 = v20;
-  v15 = v19;
-  v16 = v18;
+  storeCopy = store;
+  dCopy = d;
+  directoryCopy = directory;
+  idCopy = id;
+  selfCopy = self;
+  acknowledgeCopy = acknowledge;
+  v12 = acknowledgeCopy;
+  v13 = idCopy;
+  v14 = directoryCopy;
+  v15 = dCopy;
+  v16 = storeCopy;
   [(NTKDCollectionClient *)self _onQueue:v17];
 }
 
-- (void)collectionStore:(id)a3 didUpgradeFace:(id)a4 forUUID:(id)a5 seqId:(id)a6
+- (void)collectionStore:(id)store didUpgradeFace:(id)face forUUID:(id)d seqId:(id)id
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000C7C0;
   v14[3] = &unk_10005D060;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = self;
-  v10 = v18;
-  v11 = v17;
-  v12 = v16;
-  v13 = v15;
+  storeCopy = store;
+  faceCopy = face;
+  dCopy = d;
+  idCopy = id;
+  selfCopy = self;
+  v10 = idCopy;
+  v11 = dCopy;
+  v12 = faceCopy;
+  v13 = storeCopy;
   [(NTKDCollectionClient *)self _onQueue:v14];
 }
 
-- (void)collectionStore:(id)a3 didAddFace:(id)a4 forUUID:(id)a5 seqId:(id)a6
+- (void)collectionStore:(id)store didAddFace:(id)face forUUID:(id)d seqId:(id)id
 {
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10000CA14;
   v14[3] = &unk_10005D060;
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = self;
-  v10 = v18;
-  v11 = v17;
-  v12 = v16;
-  v13 = v15;
+  storeCopy = store;
+  faceCopy = face;
+  dCopy = d;
+  idCopy = id;
+  selfCopy = self;
+  v10 = idCopy;
+  v11 = dCopy;
+  v12 = faceCopy;
+  v13 = storeCopy;
   [(NTKDCollectionClient *)self _onQueue:v14];
 }
 
-- (void)collectionStore:(id)a3 didRemoveFaceOfStyle:(int64_t)a4 forUUID:(id)a5 seqId:(id)a6 acknowledge:(id)a7
+- (void)collectionStore:(id)store didRemoveFaceOfStyle:(int64_t)style forUUID:(id)d seqId:(id)id acknowledge:(id)acknowledge
 {
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10000CC6C;
   v16[3] = &unk_10005D0B0;
-  v17 = a3;
-  v18 = a5;
-  v19 = a6;
-  v20 = self;
-  v21 = a7;
-  v22 = a4;
-  v12 = v21;
-  v13 = v19;
-  v14 = v18;
-  v15 = v17;
+  storeCopy = store;
+  dCopy = d;
+  idCopy = id;
+  selfCopy = self;
+  acknowledgeCopy = acknowledge;
+  styleCopy = style;
+  v12 = acknowledgeCopy;
+  v13 = idCopy;
+  v14 = dCopy;
+  v15 = storeCopy;
   [(NTKDCollectionClient *)self _onQueue:v16];
 }
 
-- (void)resetCollectionStore:(id)a3 acknowledge:(id)a4
+- (void)resetCollectionStore:(id)store acknowledge:(id)acknowledge
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_10000CF58;
   v8[3] = &unk_10005D0D8;
-  v9 = a3;
-  v10 = self;
-  v11 = a4;
-  v6 = v11;
-  v7 = v9;
+  storeCopy = store;
+  selfCopy = self;
+  acknowledgeCopy = acknowledge;
+  v6 = acknowledgeCopy;
+  v7 = storeCopy;
   [(NTKDCollectionClient *)self _onQueue:v8];
 }
 

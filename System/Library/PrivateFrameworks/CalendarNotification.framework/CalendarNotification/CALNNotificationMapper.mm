@@ -1,35 +1,35 @@
 @interface CALNNotificationMapper
-+ (id)notificationFromNotificationRecord:(id)a3;
-+ (id)notificationRecordFromNotificationRequest:(id)a3;
-+ (id)notificationRecordsFromNotifications:(id)a3;
-+ (id)notificationRequestFromNotificationRecord:(id)a3;
++ (id)notificationFromNotificationRecord:(id)record;
++ (id)notificationRecordFromNotificationRequest:(id)request;
++ (id)notificationRecordsFromNotifications:(id)notifications;
++ (id)notificationRequestFromNotificationRecord:(id)record;
 @end
 
 @implementation CALNNotificationMapper
 
-+ (id)notificationRequestFromNotificationRecord:(id)a3
++ (id)notificationRequestFromNotificationRecord:(id)record
 {
-  v3 = a3;
+  recordCopy = record;
   v4 = +[CALNLogSubsystem defaultCategory];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(CALNNotificationMapper *)v3 notificationRequestFromNotificationRecord:v4, v5, v6, v7, v8, v9, v10];
+    [(CALNNotificationMapper *)recordCopy notificationRequestFromNotificationRecord:v4, v5, v6, v7, v8, v9, v10];
   }
 
   v11 = [CALNNotificationIdentifier alloc];
-  v12 = [v3 sourceIdentifier];
-  v13 = [v3 sourceClientIdentifier];
-  v14 = [(CALNNotificationIdentifier *)v11 initWithSourceIdentifier:v12 sourceClientIdentifier:v13];
+  sourceIdentifier = [recordCopy sourceIdentifier];
+  sourceClientIdentifier = [recordCopy sourceClientIdentifier];
+  v14 = [(CALNNotificationIdentifier *)v11 initWithSourceIdentifier:sourceIdentifier sourceClientIdentifier:sourceClientIdentifier];
 
-  v15 = [(CALNNotificationIdentifier *)v14 stringRepresentation];
-  v16 = [v3 content];
-  if (!v16)
+  stringRepresentation = [(CALNNotificationIdentifier *)v14 stringRepresentation];
+  content = [recordCopy content];
+  if (!content)
   {
     v17 = objc_alloc_init(CALNMutableNotificationContent);
-    v16 = [(CALNMutableNotificationContent *)v17 copy];
+    content = [(CALNMutableNotificationContent *)v17 copy];
   }
 
-  v18 = [CALNNotificationRequest requestWithIdentifier:v15 content:v16];
+  v18 = [CALNNotificationRequest requestWithIdentifier:stringRepresentation content:content];
   v19 = +[CALNLogSubsystem defaultCategory];
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
@@ -39,26 +39,26 @@
   return v18;
 }
 
-+ (id)notificationRecordFromNotificationRequest:(id)a3
++ (id)notificationRecordFromNotificationRequest:(id)request
 {
-  v3 = a3;
+  requestCopy = request;
   v4 = +[CALNLogSubsystem defaultCategory];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    [(CALNNotificationMapper *)v3 notificationRecordFromNotificationRequest:v4, v5, v6, v7, v8, v9, v10];
+    [(CALNNotificationMapper *)requestCopy notificationRecordFromNotificationRequest:v4, v5, v6, v7, v8, v9, v10];
   }
 
   v11 = [CALNNotificationIdentifier alloc];
-  v12 = [v3 identifier];
-  v13 = [(CALNNotificationIdentifier *)v11 initWithStringRepresentation:v12];
+  identifier = [requestCopy identifier];
+  v13 = [(CALNNotificationIdentifier *)v11 initWithStringRepresentation:identifier];
 
   if (v13)
   {
-    v14 = [(CALNNotificationIdentifier *)v13 sourceIdentifier];
-    v15 = [(CALNNotificationIdentifier *)v13 sourceClientIdentifier];
+    sourceIdentifier = [(CALNNotificationIdentifier *)v13 sourceIdentifier];
+    sourceClientIdentifier = [(CALNNotificationIdentifier *)v13 sourceClientIdentifier];
     v16 = [CALNNotificationRecord alloc];
-    v17 = [v3 content];
-    v18 = [(CALNNotificationRecord *)v16 initWithSourceIdentifier:v14 sourceClientIdentifier:v15 content:v17];
+    content = [requestCopy content];
+    v18 = [(CALNNotificationRecord *)v16 initWithSourceIdentifier:sourceIdentifier sourceClientIdentifier:sourceClientIdentifier content:content];
 
     v19 = +[CALNLogSubsystem defaultCategory];
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -69,10 +69,10 @@
 
   else
   {
-    v14 = +[CALNLogSubsystem defaultCategory];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+    sourceIdentifier = +[CALNLogSubsystem defaultCategory];
+    if (os_log_type_enabled(sourceIdentifier, OS_LOG_TYPE_ERROR))
     {
-      [CALNNotificationMapper notificationRecordFromNotificationRequest:v14];
+      [CALNNotificationMapper notificationRecordFromNotificationRequest:sourceIdentifier];
     }
 
     v18 = 0;
@@ -81,20 +81,20 @@
   return v18;
 }
 
-+ (id)notificationFromNotificationRecord:(id)a3
++ (id)notificationFromNotificationRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   v5 = +[CALNLogSubsystem defaultCategory];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    [(CALNNotificationMapper *)v4 notificationFromNotificationRecord:v5, v6, v7, v8, v9, v10, v11];
+    [(CALNNotificationMapper *)recordCopy notificationFromNotificationRecord:v5, v6, v7, v8, v9, v10, v11];
   }
 
-  v12 = [a1 notificationRequestFromNotificationRecord:v4];
-  v13 = [v4 content];
-  v14 = [v13 date];
+  v12 = [self notificationRequestFromNotificationRecord:recordCopy];
+  content = [recordCopy content];
+  date = [content date];
 
-  v15 = [CALNNotification notificationWithRequest:v12 date:v14];
+  v15 = [CALNNotification notificationWithRequest:v12 date:date];
   v16 = +[CALNLogSubsystem defaultCategory];
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
@@ -104,19 +104,19 @@
   return v15;
 }
 
-+ (id)notificationRecordsFromNotifications:(id)a3
++ (id)notificationRecordsFromNotifications:(id)notifications
 {
   v4 = MEMORY[0x277CBEB18];
-  v5 = a3;
-  v6 = [v4 array];
+  notificationsCopy = notifications;
+  array = [v4 array];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __63__CALNNotificationMapper_notificationRecordsFromNotifications___block_invoke;
   v13 = &unk_278D6F438;
-  v14 = v6;
-  v15 = a1;
-  v7 = v6;
-  [v5 enumerateObjectsUsingBlock:&v10];
+  v14 = array;
+  selfCopy = self;
+  v7 = array;
+  [notificationsCopy enumerateObjectsUsingBlock:&v10];
 
   v8 = [v7 copy];
 

@@ -1,6 +1,6 @@
 @interface CKMessageSnippetContentViewAccessibility
 - (id)accessibilityLabel;
-- (void)setBalloonType:(int64_t)a3;
+- (void)setBalloonType:(int64_t)type;
 @end
 
 @implementation CKMessageSnippetContentViewAccessibility
@@ -28,12 +28,12 @@
   return v11;
 }
 
-- (void)setBalloonType:(int64_t)a3
+- (void)setBalloonType:(int64_t)type
 {
   v7.receiver = self;
   v7.super_class = CKMessageSnippetContentViewAccessibility;
   [(CKMessageSnippetContentViewAccessibility *)&v7 setBalloonType:?];
-  if (a3 == 1)
+  if (type == 1)
   {
     v5 = @"message.snippet.status.sent";
   }

@@ -1,25 +1,25 @@
 @interface SyncXPCServer
-- (BOOL)canAccessListenerInterfaceSelector:(SEL)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)canAccessListenerInterfaceSelector:(SEL)selector;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (CloudKit)cloudKit;
 - (SyncEngine)syncEngine;
 - (SyncXPCServer)init;
 - (TransactionLog)transactionLog;
 - (void)activateCloudKit;
 - (void)activateDataStoreMaintenance;
-- (void)appendTransactions:(id)a3;
-- (void)bootUp:(id)a3;
-- (void)configurationAggregator:(id)a3 didChangeConfiguration:(id)a4;
+- (void)appendTransactions:(id)transactions;
+- (void)bootUp:(id)up;
+- (void)configurationAggregator:(id)aggregator didChangeConfiguration:(id)configuration;
 - (void)deactivateCloudKit;
 - (void)deactivateDataStoreMaintenance;
 - (void)dealloc;
 - (void)moveCallsFromTempDatabase;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)resetCallTimers:(id)a3;
-- (void)setCloudKit:(id)a3;
-- (void)setSyncEngine:(id)a3;
-- (void)setTransactionLog:(id)a3;
-- (void)sync:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)resetCallTimers:(id)timers;
+- (void)setCloudKit:(id)kit;
+- (void)setSyncEngine:(id)engine;
+- (void)setTransactionLog:(id)log;
+- (void)sync:(id)sync;
 - (void)updateCloudKitActivation;
 - (void)updateDataStoreMaintenance;
 @end
@@ -58,8 +58,8 @@
     database = v2->_database;
     v2->_database = v14;
 
-    v16 = [(CallHistoryDBClientHandle *)v2->_database manager];
-    [v16 addObserver:v2 forKeyPath:kCallDBManagerDataStoreType options:5 context:&off_100051BE0];
+    manager = [(CallHistoryDBClientHandle *)v2->_database manager];
+    [manager addObserver:v2 forKeyPath:kCallDBManagerDataStoreType options:5 context:&off_100051BE0];
 
     v17 = objc_alloc_init(CHInteraction);
     interactionManager = v2->_interactionManager;
@@ -83,11 +83,11 @@
     v26 = +[NSDistributedNotificationCenter defaultCenter];
     [v26 postNotificationName:@"kCallHistorySyncHelperReadyNotification" object:0 userInfo:0];
 
-    v27 = [(SyncXPCServer *)v2 logHandle];
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(SyncXPCServer *)v2 logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       *v29 = 0;
-      _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Call History sync helper is ready", v29, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Call History sync helper is ready", v29, 2u);
     }
   }
 
@@ -96,8 +96,8 @@
 
 - (void)dealloc
 {
-  v3 = [(CallHistoryDBClientHandle *)self->_database manager];
-  [v3 removeObserver:self forKeyPath:kCallDBManagerDataStoreType context:&off_100051BE0];
+  manager = [(CallHistoryDBClientHandle *)self->_database manager];
+  [manager removeObserver:self forKeyPath:kCallDBManagerDataStoreType context:&off_100051BE0];
 
   v4.receiver = self;
   v4.super_class = SyncXPCServer;
@@ -113,13 +113,13 @@
   return v3;
 }
 
-- (void)setCloudKit:(id)a3
+- (void)setCloudKit:(id)kit
 {
-  v5 = a3;
+  kitCopy = kit;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_cloudKit != v5)
+  if (self->_cloudKit != kitCopy)
   {
-    objc_storeStrong(&self->_cloudKit, a3);
+    objc_storeStrong(&self->_cloudKit, kit);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -134,13 +134,13 @@
   return v3;
 }
 
-- (void)setSyncEngine:(id)a3
+- (void)setSyncEngine:(id)engine
 {
-  v5 = a3;
+  engineCopy = engine;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_syncEngine != v5)
+  if (self->_syncEngine != engineCopy)
   {
-    objc_storeStrong(&self->_syncEngine, a3);
+    objc_storeStrong(&self->_syncEngine, engine);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -155,13 +155,13 @@
   return v3;
 }
 
-- (void)setTransactionLog:(id)a3
+- (void)setTransactionLog:(id)log
 {
-  v5 = a3;
+  logCopy = log;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_transactionLog != v5)
+  if (self->_transactionLog != logCopy)
   {
-    objc_storeStrong(&self->_transactionLog, a3);
+    objc_storeStrong(&self->_transactionLog, log);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -217,20 +217,20 @@
 
 - (void)updateCloudKitActivation
 {
-  v3 = [(SyncXPCServer *)self configurationAggregator];
-  if ([v3 isCloudKitEnabled])
+  configurationAggregator = [(SyncXPCServer *)self configurationAggregator];
+  if ([configurationAggregator isCloudKitEnabled])
   {
-    v4 = [(SyncXPCServer *)self database];
-    v5 = [v4 manager];
-    v6 = [v5 dataStoreType];
+    database = [(SyncXPCServer *)self database];
+    manager = [database manager];
+    dataStoreType = [manager dataStoreType];
 
-    if (v6 == 1)
+    if (dataStoreType == 1)
     {
-      v7 = [(SyncXPCServer *)self logHandle];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      logHandle = [(SyncXPCServer *)self logHandle];
+      if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Data store changed to permanent; activating iCloud.", buf, 2u);
+        _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Data store changed to permanent; activating iCloud.", buf, 2u);
       }
 
       [(SyncXPCServer *)self activateCloudKit];
@@ -242,11 +242,11 @@
   {
   }
 
-  v8 = [(SyncXPCServer *)self logHandle];
-  if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+  logHandle2 = [(SyncXPCServer *)self logHandle];
+  if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
   {
     *v9 = 0;
-    _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Data store changed to temporary; deactivating iCloud.", v9, 2u);
+    _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "Data store changed to temporary; deactivating iCloud.", v9, 2u);
   }
 
   [(SyncXPCServer *)self deactivateCloudKit];
@@ -264,10 +264,10 @@
       goto LABEL_7;
     }
 
-    v3 = objc_alloc_init(CHUserConfiguration);
+    database = objc_alloc_init(CHUserConfiguration);
     v4 = [CHDataStoreMaintenanceController alloc];
     dbPrivacyPruner = [(SyncXPCServer *)obj database];
-    v6 = [(CHDataStoreMaintenanceController *)v4 initWithDataStore:dbPrivacyPruner configuration:v3];
+    v6 = [(CHDataStoreMaintenanceController *)v4 initWithDataStore:dbPrivacyPruner configuration:database];
     dataStoreMaintenanceController = obj->_dataStoreMaintenanceController;
     obj->_dataStoreMaintenanceController = v6;
   }
@@ -281,8 +281,8 @@
     }
 
     v8 = [CallHistoryDBPrivacyPruner alloc];
-    v3 = [(SyncXPCServer *)obj database];
-    v9 = [(CallHistoryDBPrivacyPruner *)v8 initWithDBHandle:v3 interactionManager:obj->_interactionManager];
+    database = [(SyncXPCServer *)obj database];
+    v9 = [(CallHistoryDBPrivacyPruner *)v8 initWithDBHandle:database interactionManager:obj->_interactionManager];
     dbPrivacyPruner = obj->_dbPrivacyPruner;
     obj->_dbPrivacyPruner = v9;
   }
@@ -307,18 +307,18 @@ LABEL_7:
 
 - (void)updateDataStoreMaintenance
 {
-  v3 = [(SyncXPCServer *)self database];
-  v4 = [v3 manager];
-  v5 = [v4 dataStoreType];
+  database = [(SyncXPCServer *)self database];
+  manager = [database manager];
+  dataStoreType = [manager dataStoreType];
 
-  v6 = [(SyncXPCServer *)self logHandle];
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5 == 1)
+  logHandle = [(SyncXPCServer *)self logHandle];
+  v7 = os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT);
+  if (dataStoreType == 1)
   {
     if (v7)
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Data store changed to permanent; activating data store maintenance.", buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Data store changed to permanent; activating data store maintenance.", buf, 2u);
     }
 
     [(SyncXPCServer *)self activateDataStoreMaintenance];
@@ -329,76 +329,76 @@ LABEL_7:
     if (v7)
     {
       *v8 = 0;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Data store changed to temporary; deactivating data store maintenance.", v8, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Data store changed to temporary; deactivating data store maintenance.", v8, 2u);
     }
 
     [(SyncXPCServer *)self deactivateDataStoreMaintenance];
   }
 }
 
-- (BOOL)canAccessListenerInterfaceSelector:(SEL)a3
+- (BOOL)canAccessListenerInterfaceSelector:(SEL)selector
 {
-  v5 = [(SyncXPCServer *)self database];
-  v6 = [v5 manager];
-  if ([v6 dataStoreType] == 1 || sel_isEqual(a3, "appendTransactions:"))
+  database = [(SyncXPCServer *)self database];
+  manager = [database manager];
+  if ([manager dataStoreType] == 1 || sel_isEqual(selector, "appendTransactions:"))
   {
 
     return 1;
   }
 
-  isEqual = sel_isEqual(a3, "bootUp:");
+  isEqual = sel_isEqual(selector, "bootUp:");
 
   if (isEqual)
   {
     return 1;
   }
 
-  v9 = [(SyncXPCServer *)self logHandle];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+  logHandle = [(SyncXPCServer *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = NSStringFromSelector(a3);
+    v10 = NSStringFromSelector(selector);
     v11 = +[NSXPCConnection currentConnection];
     v12 = 138543618;
     v13 = v10;
     v14 = 2114;
     v15 = v11;
-    _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Device has not been unlocked since boot; rejecting access to %{public}@ from connection %{public}@", &v12, 0x16u);
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Device has not been unlocked since boot; rejecting access to %{public}@ from connection %{public}@", &v12, 0x16u);
   }
 
   return 0;
 }
 
-- (void)bootUp:(id)a3
+- (void)bootUp:(id)up
 {
-  v5 = a3;
+  upCopy = up;
   if ([(SyncXPCServer *)self canAccessListenerInterfaceSelector:a2])
   {
-    v6 = [(CallHistoryDBClientHandle *)self->_database manager];
-    [v6 createDataStore];
+    manager = [(CallHistoryDBClientHandle *)self->_database manager];
+    [manager createDataStore];
 
-    v7 = [(CallHistoryDBClientHandle *)self->_database manager];
-    v8 = [v7 dataStoreType];
+    manager2 = [(CallHistoryDBClientHandle *)self->_database manager];
+    dataStoreType = [manager2 dataStoreType];
 
-    if (v8 == 1)
+    if (dataStoreType == 1)
     {
       v9 = 1;
     }
 
     else
     {
-      v9 = 2 * (v8 != 0);
+      v9 = 2 * (dataStoreType != 0);
     }
 
-    v10 = [(SyncXPCServer *)self logHandle];
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(SyncXPCServer *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       v11 = sub_100027298(v9);
       v12 = 138543362;
       v13 = v11;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "BootUp result: %{public}@", &v12, 0xCu);
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "BootUp result: %{public}@", &v12, 0xCu);
     }
 
-    v5[2](v5, v9);
+    upCopy[2](upCopy, v9);
   }
 }
 
@@ -406,29 +406,29 @@ LABEL_7:
 {
   if ([(SyncXPCServer *)self canAccessListenerInterfaceSelector:a2])
   {
-    v3 = [(CallHistoryDBClientHandle *)self->_database manager];
-    [v3 moveCallsFromTempDatabase];
+    manager = [(CallHistoryDBClientHandle *)self->_database manager];
+    [manager moveCallsFromTempDatabase];
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
-  v6 = [(SyncXPCServer *)self logHandle];
-  if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  connectionCopy = connection;
+  logHandle = [(SyncXPCServer *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109120;
-    v15 = [v5 processIdentifier];
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Accepting new connection from pid %d", buf, 8u);
+    processIdentifier = [connectionCopy processIdentifier];
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Accepting new connection from pid %d", buf, 8u);
   }
 
-  v7 = [v5 valueForEntitlement:@"com.apple.CallHistory.sync.allow"];
+  v7 = [connectionCopy valueForEntitlement:@"com.apple.CallHistory.sync.allow"];
   if (!v7)
   {
-    v8 = [(SyncXPCServer *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    logHandle2 = [(SyncXPCServer *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_ERROR))
     {
-      sub_100034C20(v8);
+      sub_100034C20(logHandle2);
     }
 
     goto LABEL_14;
@@ -436,13 +436,13 @@ LABEL_7:
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v8 = [(SyncXPCServer *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(SyncXPCServer *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v12 = "Entitlement is not a BOOLean";
 LABEL_13:
-      _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, v12, buf, 2u);
+      _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, v12, buf, 2u);
     }
 
 LABEL_14:
@@ -452,8 +452,8 @@ LABEL_14:
 
   if (([v7 BOOLValue] & 1) == 0)
   {
-    v8 = [(SyncXPCServer *)self logHandle];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    logHandle2 = [(SyncXPCServer *)self logHandle];
+    if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
       v12 = "Entitlement found but expected value YES";
@@ -463,13 +463,13 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___SyncProtocol];
+  logHandle2 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___SyncProtocol];
   v9 = objc_opt_class();
   v10 = [NSSet setWithObjects:v9, objc_opt_class(), 0];
-  [v8 setClasses:v10 forSelector:"appendTransactions:" argumentIndex:0 ofReply:0];
-  [v5 setExportedInterface:v8];
-  [v5 setExportedObject:self];
-  [v5 resume];
+  [logHandle2 setClasses:v10 forSelector:"appendTransactions:" argumentIndex:0 ofReply:0];
+  [connectionCopy setExportedInterface:logHandle2];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy resume];
 
   v11 = 1;
 LABEL_15:
@@ -477,133 +477,133 @@ LABEL_15:
   return v11;
 }
 
-- (void)appendTransactions:(id)a3
+- (void)appendTransactions:(id)transactions
 {
-  v5 = a3;
+  transactionsCopy = transactions;
   if ([(SyncXPCServer *)self canAccessListenerInterfaceSelector:a2])
   {
-    v6 = [(SyncXPCServer *)self logHandle];
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    logHandle = [(SyncXPCServer *)self logHandle];
+    if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134217984;
-      v15 = [v5 count];
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Appending %lu transactions", &v14, 0xCu);
+      v15 = [transactionsCopy count];
+      _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Appending %lu transactions", &v14, 0xCu);
     }
 
-    if (v5 && [v5 count])
+    if (transactionsCopy && [transactionsCopy count])
     {
-      v7 = DeserializeTransactions();
+      logHandle2 = DeserializeTransactions();
       interactionManager = self->_interactionManager;
       HandleInteractionsForDeserializedTransactions();
-      [(CHIDSServiceDelegate *)self->_idsService update:v5];
+      [(CHIDSServiceDelegate *)self->_idsService update:transactionsCopy];
       if ([(CHFeatureFlags *)self->_featureFlags callHistorySearchEnabled])
       {
         v9 = +[CHSpotlightIndexManager sharedInstance];
-        [v9 indexTransactions:v5];
+        [v9 indexTransactions:transactionsCopy];
       }
 
-      v10 = [(SyncXPCServer *)self cloudKit];
-      v11 = [v10 isActive];
+      cloudKit = [(SyncXPCServer *)self cloudKit];
+      isActive = [cloudKit isActive];
 
-      if (v11)
+      if (isActive)
       {
-        v12 = [(SyncXPCServer *)self transactionLog];
-        [v12 append:v5];
+        transactionLog = [(SyncXPCServer *)self transactionLog];
+        [transactionLog append:transactionsCopy];
       }
 
       else
       {
-        v12 = [(SyncXPCServer *)self logHandle];
-        if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+        transactionLog = [(SyncXPCServer *)self logHandle];
+        if (os_log_type_enabled(transactionLog, OS_LOG_TYPE_DEFAULT))
         {
-          v13 = [v5 count];
+          v13 = [transactionsCopy count];
           v14 = 134217984;
           v15 = v13;
-          _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Dropping %lu transactions because no iCloud account is active", &v14, 0xCu);
+          _os_log_impl(&_mh_execute_header, transactionLog, OS_LOG_TYPE_DEFAULT, "Dropping %lu transactions because no iCloud account is active", &v14, 0xCu);
         }
       }
     }
 
     else
     {
-      v7 = [(SyncXPCServer *)self logHandle];
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+      logHandle2 = [(SyncXPCServer *)self logHandle];
+      if (os_log_type_enabled(logHandle2, OS_LOG_TYPE_DEFAULT))
       {
         LOWORD(v14) = 0;
-        _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "No transactions!", &v14, 2u);
+        _os_log_impl(&_mh_execute_header, logHandle2, OS_LOG_TYPE_DEFAULT, "No transactions!", &v14, 2u);
       }
     }
   }
 }
 
-- (void)sync:(id)a3
+- (void)sync:(id)sync
 {
-  v5 = a3;
+  syncCopy = sync;
   if ([(SyncXPCServer *)self canAccessListenerInterfaceSelector:a2])
   {
-    v6 = [(SyncXPCServer *)self syncEngine];
+    syncEngine = [(SyncXPCServer *)self syncEngine];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100028778;
     v7[3] = &unk_100051BF0;
     v7[4] = self;
-    v8 = v5;
-    [v6 begin:v7];
+    v8 = syncCopy;
+    [syncEngine begin:v7];
   }
 }
 
-- (void)resetCallTimers:(id)a3
+- (void)resetCallTimers:(id)timers
 {
-  v5 = a3;
+  timersCopy = timers;
   if ([(SyncXPCServer *)self canAccessListenerInterfaceSelector:a2])
   {
-    v5[2](v5, [(CallHistoryDBClientHandle *)self->_database resetAllTimers]);
+    timersCopy[2](timersCopy, [(CallHistoryDBClientHandle *)self->_database resetAllTimers]);
   }
 }
 
-- (void)configurationAggregator:(id)a3 didChangeConfiguration:(id)a4
+- (void)configurationAggregator:(id)aggregator didChangeConfiguration:(id)configuration
 {
-  v5 = [(SyncXPCServer *)self queue:a3];
+  v5 = [(SyncXPCServer *)self queue:aggregator];
   dispatch_assert_queue_V2(v5);
 
   [(SyncXPCServer *)self updateCloudKitActivation];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [(SyncXPCServer *)self logHandle];
-  if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  logHandle = [(SyncXPCServer *)self logHandle];
+  if (os_log_type_enabled(logHandle, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543618;
-    v20 = v10;
+    v20 = pathCopy;
     v21 = 2114;
-    v22 = v11;
-    _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Received a key-value observing notification for key path (%{public}@), object (%{public}@).", buf, 0x16u);
+    v22 = objectCopy;
+    _os_log_impl(&_mh_execute_header, logHandle, OS_LOG_TYPE_DEFAULT, "Received a key-value observing notification for key path (%{public}@), object (%{public}@).", buf, 0x16u);
   }
 
-  if (a6 == &off_100051BE0)
+  if (context == &off_100051BE0)
   {
-    v14 = [v12 objectForKeyedSubscript:NSKeyValueChangeKindKey];
+    v14 = [changeCopy objectForKeyedSubscript:NSKeyValueChangeKindKey];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v14 unsignedIntegerValue] == 1)
     {
-      v15 = [(SyncXPCServer *)self database];
-      v16 = [v15 manager];
+      database = [(SyncXPCServer *)self database];
+      manager = [database manager];
 
-      if (v16 == v11)
+      if (manager == objectCopy)
       {
-        if ([v10 isEqualToString:kCallDBManagerDataStoreType])
+        if ([pathCopy isEqualToString:kCallDBManagerDataStoreType])
         {
-          v17 = [(SyncXPCServer *)self queue];
+          queue = [(SyncXPCServer *)self queue];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_100028B44;
           block[3] = &unk_100050FA0;
           block[4] = self;
-          dispatch_async(v17, block);
+          dispatch_async(queue, block);
         }
       }
     }

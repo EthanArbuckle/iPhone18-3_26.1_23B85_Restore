@@ -1,26 +1,26 @@
 @interface SiriAlternativeParaphraseAlternativeResultView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SiriAlternativeParaphraseAlternativeResultView)initWithAlternativeResult:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SiriAlternativeParaphraseAlternativeResultView)initWithAlternativeResult:(id)result;
 - (UIEdgeInsets)edgeInsets;
 - (void)updateConstraints;
 @end
 
 @implementation SiriAlternativeParaphraseAlternativeResultView
 
-- (SiriAlternativeParaphraseAlternativeResultView)initWithAlternativeResult:(id)a3
+- (SiriAlternativeParaphraseAlternativeResultView)initWithAlternativeResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v25.receiver = self;
   v25.super_class = SiriAlternativeParaphraseAlternativeResultView;
   v5 = [(SiriAlternativeParaphraseAlternativeResultView *)&v25 init];
   if (v5)
   {
-    v6 = [v4 command];
+    command = [resultCopy command];
 
-    if (v6)
+    if (command)
     {
-      v7 = [v4 command];
-      v26 = v7;
+      command2 = [resultCopy command];
+      v26 = command2;
       v8 = [NSArray arrayWithObjects:&v26 count:1];
       [(SiriAlternativeParaphraseAlternativeResultView *)v5 setCommands:v8];
     }
@@ -30,15 +30,15 @@
       v9 = AFSiriLogContextConnection;
       if (os_log_type_enabled(AFSiriLogContextConnection, OS_LOG_TYPE_ERROR))
       {
-        sub_C798(v4, v9);
+        sub_C798(resultCopy, v9);
       }
 
       [(SiriAlternativeParaphraseAlternativeResultView *)v5 setCommands:&__NSArray0__struct];
     }
 
-    v10 = [v4 displayText];
+    displayText = [resultCopy displayText];
     v11 = +[NSCharacterSet punctuationCharacterSet];
-    v12 = [v10 stringByTrimmingCharactersInSet:v11];
+    v12 = [displayText stringByTrimmingCharactersInSet:v11];
     [(SiriAlternativeParaphraseAlternativeResultView *)v5 setResponseText:v12];
 
     v13 = objc_alloc_init(UIView);
@@ -47,9 +47,9 @@
 
     [(SiriAlternativeParaphraseAlternativeResultView *)v5 addSubview:v5->_containerView];
     [(UIView *)v5->_containerView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [v4 displayText];
+    displayText2 = [resultCopy displayText];
 
-    if (v15)
+    if (displayText2)
     {
       v16 = +[SiriSharedUIContentLabel label];
       displayTextLabel = v5->_displayTextLabel;
@@ -61,8 +61,8 @@
       [(UILabel *)v18 setFont:v19];
 
       v20 = v5->_displayTextLabel;
-      v21 = [v4 displayText];
-      [(UILabel *)v20 setText:v21];
+      displayText3 = [resultCopy displayText];
+      [(UILabel *)v20 setText:displayText3];
 
       v22 = v5->_displayTextLabel;
       v23 = +[UIColor siriui_textColor];
@@ -90,10 +90,10 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(UILabel *)self->_displayTextLabel sizeThatFits:a3.width, 1.79769313e308];
+  width = fits.width;
+  [(UILabel *)self->_displayTextLabel sizeThatFits:fits.width, 1.79769313e308];
   v5 = v4 + 24.0;
   v6 = SiriUIPlatterStyle[26];
   if (v5 >= v6)

@@ -1,8 +1,8 @@
 @interface SPIndexStorageUsageCollector
 - (NSDictionary)storageUsage;
 - (SPIndexStorageUsageCollector)init;
-- (void)collectAtPath:(id)a3 completionBlock:(id)a4;
-- (void)sendToCoreAnalyticsWithLiveDocCount:(unint64_t)a3 deadDocCount:(unint64_t)a4;
+- (void)collectAtPath:(id)path completionBlock:(id)block;
+- (void)sendToCoreAnalyticsWithLiveDocCount:(unint64_t)count deadDocCount:(unint64_t)docCount;
 @end
 
 @implementation SPIndexStorageUsageCollector
@@ -14,13 +14,13 @@
   v2 = [(SPIndexStorageUsageCollector *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     visitedInodes = v2->_visitedInodes;
-    v2->_visitedInodes = v3;
+    v2->_visitedInodes = dictionary;
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     storageUsage = v2->_storageUsage;
-    v2->_storageUsage = v5;
+    v2->_storageUsage = dictionary2;
   }
 
   return v2;
@@ -33,10 +33,10 @@
   return v2;
 }
 
-- (void)collectAtPath:(id)a3 completionBlock:(id)a4
+- (void)collectAtPath:(id)path completionBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  blockCopy = block;
   if (collectAtPath_completionBlock__onceToken != -1)
   {
     [SPIndexStorageUsageCollector collectAtPath:completionBlock:];
@@ -47,11 +47,11 @@
   block[1] = 3221225472;
   block[2] = __62__SPIndexStorageUsageCollector_collectAtPath_completionBlock___block_invoke_2;
   block[3] = &unk_2789356A0;
-  v12 = v6;
-  v13 = v7;
+  v12 = pathCopy;
+  v13 = blockCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
+  v9 = pathCopy;
+  v10 = blockCopy;
   dispatch_async(v8, block);
 }
 
@@ -557,13 +557,13 @@ uint64_t __62__SPIndexStorageUsageCollector_collectAtPath_completionBlock___bloc
   return 0;
 }
 
-- (void)sendToCoreAnalyticsWithLiveDocCount:(unint64_t)a3 deadDocCount:(unint64_t)a4
+- (void)sendToCoreAnalyticsWithLiveDocCount:(unint64_t)count deadDocCount:(unint64_t)docCount
 {
   v63 = *MEMORY[0x277D85DE8];
   if (![(SPIndexStorageUsageCollector *)self canceled])
   {
-    v45 = a3;
-    v46 = a4;
+    countCopy = count;
+    docCountCopy = docCount;
     v52 = 0u;
     v53 = 0u;
     v50 = 0u;
@@ -610,13 +610,13 @@ uint64_t __62__SPIndexStorageUsageCollector_collectAtPath_completionBlock___bloc
     v16 = self->_storageUsage;
     v17 = objc_opt_new();
     v48 = v16;
-    v18 = [(NSMutableDictionary *)v16 allKeys];
+    allKeys = [(NSMutableDictionary *)v16 allKeys];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    obj = v18;
-    v19 = [v18 countByEnumeratingWithState:&v54 objects:buf count:16];
+    obj = allKeys;
+    v19 = [allKeys countByEnumeratingWithState:&v54 objects:buf count:16];
     if (v19)
     {
       v20 = v19;
@@ -660,27 +660,27 @@ uint64_t __62__SPIndexStorageUsageCollector_collectAtPath_completionBlock___bloc
 
     v28 = MEMORY[0x277CCABB0];
     v29 = [v17 objectForKeyedSubscript:@"total"];
-    v30 = [v29 unsignedIntegerValue];
+    unsignedIntegerValue = [v29 unsignedIntegerValue];
     v31 = [v17 objectForKeyedSubscript:@"purgeable"];
-    v32 = [v28 numberWithUnsignedInteger:{v30 - objc_msgSend(v31, "unsignedIntegerValue")}];
+    v32 = [v28 numberWithUnsignedInteger:{unsignedIntegerValue - objc_msgSend(v31, "unsignedIntegerValue")}];
     [v17 setObject:v32 forKeyedSubscript:@"nonPurgeable"];
 
     v33 = MEMORY[0x277CCABB0];
     v34 = [v17 objectForKeyedSubscript:@"embedding"];
-    v35 = [v34 unsignedIntegerValue];
+    unsignedIntegerValue2 = [v34 unsignedIntegerValue];
     v36 = [v17 objectForKeyedSubscript:@"embeddingPurgeable"];
-    v37 = [v33 numberWithUnsignedInteger:{v35 - objc_msgSend(v36, "unsignedIntegerValue")}];
+    v37 = [v33 numberWithUnsignedInteger:{unsignedIntegerValue2 - objc_msgSend(v36, "unsignedIntegerValue")}];
     [v17 setObject:v37 forKeyedSubscript:@"embeddingNonPurgeable"];
 
-    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v45];
+    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:countCopy];
     [v17 setObject:v38 forKeyedSubscript:@"liveDocCount"];
 
-    v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:v46];
+    v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:docCountCopy];
     [v17 setObject:v39 forKeyedSubscript:@"deletedDocCount"];
 
     v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(MEMORY[0x277D65768], "version")}];
-    v41 = [v40 stringValue];
-    [v17 setObject:v41 forKeyedSubscript:@"embeddingModelVersion"];
+    stringValue = [v40 stringValue];
+    [v17 setObject:stringValue forKeyedSubscript:@"embeddingModelVersion"];
 
     v42 = [v17 copy];
     v49 = v42;

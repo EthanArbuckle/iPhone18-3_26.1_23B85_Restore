@@ -1,18 +1,18 @@
 @interface SWSystemActivityAssertion
 - (BOOL)isActive;
 - (NSString)description;
-- (SWSystemActivityAssertion)initWithIdentifier:(id)a3 configurator:(id)a4;
-- (SWSystemActivityAssertion)initWithIdentifier:(id)a3 internalConfigurator:(id)a4;
-- (void)_checkIfCompleteForAction:(uint64_t)a1;
-- (void)acquireWithTimeout:(double)a3 handler:(id)a4;
-- (void)callbackAcquisitionHandlerWithError:(uint64_t)a1;
+- (SWSystemActivityAssertion)initWithIdentifier:(id)identifier configurator:(id)configurator;
+- (SWSystemActivityAssertion)initWithIdentifier:(id)identifier internalConfigurator:(id)configurator;
+- (void)_checkIfCompleteForAction:(uint64_t)action;
+- (void)acquireWithTimeout:(double)timeout handler:(id)handler;
+- (void)callbackAcquisitionHandlerWithError:(uint64_t)error;
 - (void)dealloc;
 - (void)invalidate;
-- (void)invalidateWithReason:(uint64_t)a1;
-- (void)setAcquireWaitsToAbortSleepImminent:(BOOL)a3;
-- (void)setAcquireWaitsToAbortSleepRequested:(BOOL)a3;
-- (void)setSleepMonitor:(id)a3;
-- (void)setSystemActivityProvider:(id)a3;
+- (void)invalidateWithReason:(uint64_t)reason;
+- (void)setAcquireWaitsToAbortSleepImminent:(BOOL)imminent;
+- (void)setAcquireWaitsToAbortSleepRequested:(BOOL)requested;
+- (void)setSleepMonitor:(id)monitor;
+- (void)setSystemActivityProvider:(id)provider;
 @end
 
 @implementation SWSystemActivityAssertion
@@ -25,9 +25,9 @@
   v5 = [v3 appendBool:self->_acquireWaitsToAbortSleepRequested withName:@"waitsForAbortSleep" ifEqualTo:1];
   v6 = [v3 appendBool:self->_lock_acquisitionHandler != 0 withName:@"pendingAcquisition" ifEqualTo:1];
   v7 = [v3 appendUnsignedInt:self->_lock_assertionID withName:@"assertionID"];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 void __48__SWSystemActivityAssertion_initWithIdentifier___block_invoke(uint64_t a1, void *a2)
@@ -42,16 +42,16 @@ void __48__SWSystemActivityAssertion_initWithIdentifier___block_invoke(uint64_t 
   [v4 setSystemActivityProvider:v3];
 }
 
-- (SWSystemActivityAssertion)initWithIdentifier:(id)a3 configurator:(id)a4
+- (SWSystemActivityAssertion)initWithIdentifier:(id)identifier configurator:(id)configurator
 {
-  v6 = a4;
+  configuratorCopy = configurator;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __61__SWSystemActivityAssertion_initWithIdentifier_configurator___block_invoke;
   v10[3] = &unk_279D432E0;
-  v11 = v6;
-  v7 = v6;
-  v8 = [(SWSystemActivityAssertion *)self initWithIdentifier:a3 internalConfigurator:v10];
+  v11 = configuratorCopy;
+  v7 = configuratorCopy;
+  v8 = [(SWSystemActivityAssertion *)self initWithIdentifier:identifier internalConfigurator:v10];
 
   return v8;
 }
@@ -72,10 +72,10 @@ void __61__SWSystemActivityAssertion_initWithIdentifier_configurator___block_inv
   [v6 setSystemActivityProvider:v5];
 }
 
-- (SWSystemActivityAssertion)initWithIdentifier:(id)a3 internalConfigurator:(id)a4
+- (SWSystemActivityAssertion)initWithIdentifier:(id)identifier internalConfigurator:(id)configurator
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  configuratorCopy = configurator;
   v13.receiver = self;
   v13.super_class = SWSystemActivityAssertion;
   v9 = [(SWSystemActivityAssertion *)&v13 init];
@@ -84,8 +84,8 @@ void __61__SWSystemActivityAssertion_initWithIdentifier_configurator___block_inv
   {
     *&v9->_lock_assertionID = 0;
     v9->_lock_state = 0;
-    objc_storeStrong(&v9->_identifier, a3);
-    v11 = v8;
+    objc_storeStrong(&v9->_identifier, identifier);
+    v11 = configuratorCopy;
     v10->_initializing = 1;
     v11[2](v11, v10);
     v10->_initializing = 0;
@@ -111,7 +111,7 @@ void __61__SWSystemActivityAssertion_initWithIdentifier_configurator___block_inv
       v13 = 2114;
       v14 = v8;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2114;
       v18 = @"SWSystemActivityAssertion.m";
       v19 = 1024;
@@ -143,18 +143,18 @@ void __61__SWSystemActivityAssertion_initWithIdentifier_configurator___block_inv
   return v3;
 }
 
-- (void)acquireWithTimeout:(double)a3 handler:(id)a4
+- (void)acquireWithTimeout:(double)timeout handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = +[SWPreventSystemSleepAssertion sharedHighPriorityQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__SWSystemActivityAssertion_acquireWithTimeout_handler___block_invoke;
   block[3] = &unk_279D43308;
-  v11 = a3;
+  timeoutCopy = timeout;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = handlerCopy;
+  v8 = handlerCopy;
   dispatch_async(v7, block);
 }
 
@@ -600,16 +600,16 @@ LABEL_30:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)callbackAcquisitionHandlerWithError:(uint64_t)a1
+- (void)callbackAcquisitionHandlerWithError:(uint64_t)error
 {
   v21 = *MEMORY[0x277D85DE8];
   v3 = a2;
   v4 = SWLogPower();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
-    v14 = *(a1 + 8);
+    v14 = *(error + 8);
     v15 = 134218498;
-    v16 = a1;
+    errorCopy = error;
     v17 = 2114;
     v18 = v14;
     v19 = 2114;
@@ -617,20 +617,20 @@ LABEL_30:
     _os_log_debug_impl(&dword_26C657000, v4, OS_LOG_TYPE_DEBUG, "%p system activity assertion (%{public}@) callback with error:%{public}@", &v15, 0x20u);
   }
 
-  os_unfair_lock_lock((a1 + 44));
-  v5 = MEMORY[0x26D6A63C0](*(a1 + 48));
-  v6 = *(a1 + 48);
-  *(a1 + 48) = 0;
+  os_unfair_lock_lock((error + 44));
+  v5 = MEMORY[0x26D6A63C0](*(error + 48));
+  v6 = *(error + 48);
+  *(error + 48) = 0;
 
-  v7 = *(a1 + 40);
-  v8 = *(a1 + 83);
-  v9 = *(a1 + 84);
-  v10 = [*(a1 + 32) getMachContinuousKernelWakeTime];
-  v11 = *(a1 + 56);
-  os_unfair_lock_unlock((a1 + 44));
+  v7 = *(error + 40);
+  v8 = *(error + 83);
+  v9 = *(error + 84);
+  getMachContinuousKernelWakeTime = [*(error + 32) getMachContinuousKernelWakeTime];
+  v11 = *(error + 56);
+  os_unfair_lock_unlock((error + 44));
   if (v5)
   {
-    v12 = [[SWSystemActivityAcquisitionDetails alloc] initWithAfterPendingSleepWasAlreadyInitiated:v8 afterFailingToRevertPendingSleep:v9 afterSleepOfNonZeroDuration:v11 != v10];
+    v12 = [[SWSystemActivityAcquisitionDetails alloc] initWithAfterPendingSleepWasAlreadyInitiated:v8 afterFailingToRevertPendingSleep:v9 afterSleepOfNonZeroDuration:v11 != getMachContinuousKernelWakeTime];
     (v5)[2](v5, v7 != 0, v3, v12);
   }
 
@@ -669,27 +669,27 @@ void __57__SWSystemActivityAssertion__queue_declareSystemActivity__block_invoke(
   [(SWSystemActivityAssertion *)self invalidateWithReason:?];
 }
 
-- (void)invalidateWithReason:(uint64_t)a1
+- (void)invalidateWithReason:(uint64_t)reason
 {
   v52 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!reason)
   {
     goto LABEL_20;
   }
 
-  os_unfair_lock_lock((a1 + 44));
-  [*(a1 + 16) invalidate];
-  v4 = *(a1 + 16);
-  *(a1 + 16) = 0;
+  os_unfair_lock_lock((reason + 44));
+  [*(reason + 16) invalidate];
+  v4 = *(reason + 16);
+  *(reason + 16) = 0;
 
-  v5 = *(a1 + 48);
+  v5 = *(reason + 48);
   v6 = SWLogPower();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = *(a1 + 8);
-    v8 = *(a1 + 64);
+    v7 = *(reason + 8);
+    v8 = *(reason + 64);
     *buf = 134218754;
-    v42 = a1;
+    reasonCopy2 = reason;
     v43 = 2114;
     v44 = v7;
     v45 = 1024;
@@ -699,35 +699,35 @@ void __57__SWSystemActivityAssertion__queue_declareSystemActivity__block_invoke(
     _os_log_impl(&dword_26C657000, v6, OS_LOG_TYPE_INFO, "%p system activity assertion invalidated; id:%{public}@ state:%u hasUncalledAcquisitionHandler:%{BOOL}u", buf, 0x22u);
   }
 
-  if (*(a1 + 64) == 5)
+  if (*(reason + 64) == 5)
   {
     v9 = SWLogPower();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v23 = *(a1 + 8);
+      v23 = *(reason + 8);
       *buf = 134218242;
-      v42 = a1;
+      reasonCopy2 = reason;
       v43 = 2114;
       v44 = v23;
       _os_log_debug_impl(&dword_26C657000, v9, OS_LOG_TYPE_DEBUG, "%p system activity assertion already invalid; id:%{public}@", buf, 0x16u);
     }
 
-    v10 = *(a1 + 40);
+    v10 = *(reason + 40);
     if (v10)
     {
-      v24 = *(a1 + 8);
-      v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p system activity assertion marked invalid but has non-null asssertionID:%u id:%@ state:%u", a1, v10, v24, *(a1 + 64)];;
+      v24 = *(reason + 8);
+      v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p system activity assertion marked invalid but has non-null asssertionID:%u id:%@ state:%u", reason, v10, v24, *(reason + 64)];;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v26 = NSStringFromSelector(sel_invalidateWithReason_);
         v27 = objc_opt_class();
         v28 = NSStringFromClass(v27);
         *buf = 138544642;
-        v42 = v26;
+        reasonCopy2 = v26;
         v43 = 2114;
         v44 = v28;
         v45 = 2048;
-        *v46 = a1;
+        *v46 = reason;
         *&v46[8] = 2114;
         v47 = @"SWSystemActivityAssertion.m";
         v48 = 1024;
@@ -746,19 +746,19 @@ void __57__SWSystemActivityAssertion__queue_declareSystemActivity__block_invoke(
 
     if (v5)
     {
-      v30 = *(a1 + 8);
-      v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p system activity assertion marked invalid but has hasUncalledAcquisitionHandler id:%@ state:%u", a1, v30, *(a1 + 64)];;
+      v30 = *(reason + 8);
+      v31 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p system activity assertion marked invalid but has hasUncalledAcquisitionHandler id:%@ state:%u", reason, v30, *(reason + 64)];;
       if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
       {
         v32 = NSStringFromSelector(sel_invalidateWithReason_);
         v33 = objc_opt_class();
         v34 = NSStringFromClass(v33);
         *buf = 138544642;
-        v42 = v32;
+        reasonCopy2 = v32;
         v43 = 2114;
         v44 = v34;
         v45 = 2048;
-        *v46 = a1;
+        *v46 = reason;
         *&v46[8] = 2114;
         v47 = @"SWSystemActivityAssertion.m";
         v48 = 1024;
@@ -775,16 +775,16 @@ void __57__SWSystemActivityAssertion__queue_declareSystemActivity__block_invoke(
       JUMPOUT(0x26C65F48CLL);
     }
 
-    *(a1 + 64) = 5;
-    v11 = *(a1 + 32);
-    *(a1 + 40) = 0;
+    *(reason + 64) = 5;
+    v11 = *(reason + 32);
+    *(reason + 40) = 0;
     goto LABEL_12;
   }
 
-  v12 = *(a1 + 40);
-  *(a1 + 64) = 5;
-  v11 = *(a1 + 32);
-  *(a1 + 40) = 0;
+  v12 = *(reason + 40);
+  *(reason + 64) = 5;
+  v11 = *(reason + 32);
+  *(reason + 40) = 0;
   if (!v12)
   {
 LABEL_12:
@@ -804,38 +804,38 @@ LABEL_12:
 
   v14 = 0;
 LABEL_13:
-  v15 = *(a1 + 24);
-  [v15 removeObserver:a1];
-  v16 = *(a1 + 24);
-  *(a1 + 24) = 0;
+  v15 = *(reason + 24);
+  [v15 removeObserver:reason];
+  v16 = *(reason + 24);
+  *(reason + 24) = 0;
 
-  os_unfair_lock_unlock((a1 + 44));
+  os_unfair_lock_unlock((reason + 44));
   if ((v14 & 1) == 0)
   {
-    [v15 unregisterInactiveSystemActivity:a1];
+    [v15 unregisterInactiveSystemActivity:reason];
   }
 
   if (v5)
   {
     if (a2 == 1)
     {
-      os_unfair_lock_lock((a1 + 44));
-      v17 = *(a1 + 48);
-      *(a1 + 48) = 0;
+      os_unfair_lock_lock((reason + 44));
+      v17 = *(reason + 48);
+      *(reason + 48) = 0;
 
-      os_unfair_lock_unlock((a1 + 44));
+      os_unfair_lock_unlock((reason + 44));
     }
 
     else
     {
       v18 = MEMORY[0x277CCA9B8];
       v39 = *MEMORY[0x277CCA450];
-      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p system activity assertion timed out before acquisition id:%@", a1, *(a1 + 8)];;
+      v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"%p system activity assertion timed out before acquisition id:%@", reason, *(reason + 8)];;
       v40 = v19;
       v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v40 forKeys:&v39 count:1];
       v21 = [v18 errorWithDomain:@"BSSystemActivityDomain" code:1 userInfo:v20];
 
-      [(SWSystemActivityAssertion *)a1 callbackAcquisitionHandlerWithError:v21];
+      [(SWSystemActivityAssertion *)reason callbackAcquisitionHandlerWithError:v21];
     }
   }
 
@@ -843,7 +843,7 @@ LABEL_20:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAcquireWaitsToAbortSleepRequested:(BOOL)a3
+- (void)setAcquireWaitsToAbortSleepRequested:(BOOL)requested
 {
   v25 = *MEMORY[0x277D85DE8];
   if (!self->_initializing)
@@ -862,7 +862,7 @@ LABEL_20:
       v15 = 2114;
       v16 = v11;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"SWSystemActivityAssertion.m";
       v21 = 1024;
@@ -879,11 +879,11 @@ LABEL_20:
     JUMPOUT(0x26C65F694);
   }
 
-  self->_acquireWaitsToAbortSleepRequested = a3;
+  self->_acquireWaitsToAbortSleepRequested = requested;
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setAcquireWaitsToAbortSleepImminent:(BOOL)a3
+- (void)setAcquireWaitsToAbortSleepImminent:(BOOL)imminent
 {
   v25 = *MEMORY[0x277D85DE8];
   if (!self->_initializing)
@@ -902,7 +902,7 @@ LABEL_20:
       v15 = 2114;
       v16 = v11;
       v17 = 2048;
-      v18 = self;
+      selfCopy = self;
       v19 = 2114;
       v20 = @"SWSystemActivityAssertion.m";
       v21 = 1024;
@@ -919,14 +919,14 @@ LABEL_20:
     JUMPOUT(0x26C65F84CLL);
   }
 
-  self->_acquireWaitsToAbortSleepImminent = a3;
+  self->_acquireWaitsToAbortSleepImminent = imminent;
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSleepMonitor:(id)a3
+- (void)setSleepMonitor:(id)monitor
 {
   v27 = *MEMORY[0x277D85DE8];
-  v14 = a3;
+  monitorCopy = monitor;
   if (!self->_initializing)
   {
     v7 = MEMORY[0x277CCACA8];
@@ -943,7 +943,7 @@ LABEL_20:
       v17 = 2114;
       v18 = v12;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = @"SWSystemActivityAssertion.m";
       v23 = 1024;
@@ -960,15 +960,15 @@ LABEL_20:
     JUMPOUT(0x26C65FA38);
   }
 
-  objc_storeStrong(&self->_sleepMonitor, a3);
-  [v14 addObserver:self];
+  objc_storeStrong(&self->_sleepMonitor, monitor);
+  [monitorCopy addObserver:self];
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setSystemActivityProvider:(id)a3
+- (void)setSystemActivityProvider:(id)provider
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  providerCopy = provider;
   if (!self->_initializing)
   {
     v8 = MEMORY[0x277CCACA8];
@@ -985,7 +985,7 @@ LABEL_20:
       v17 = 2114;
       v18 = v13;
       v19 = 2048;
-      v20 = self;
+      selfCopy = self;
       v21 = 2114;
       v22 = @"SWSystemActivityAssertion.m";
       v23 = 1024;
@@ -1003,31 +1003,31 @@ LABEL_20:
   }
 
   provider = self->_provider;
-  self->_provider = v5;
+  self->_provider = providerCopy;
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_checkIfCompleteForAction:(uint64_t)a1
+- (void)_checkIfCompleteForAction:(uint64_t)action
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (!a1)
+  if (!action)
   {
     goto LABEL_14;
   }
 
-  os_unfair_lock_lock((a1 + 44));
-  v4 = *(a1 + 64);
+  os_unfair_lock_lock((action + 44));
+  v4 = *(action + 64);
   if (v4 == 1)
   {
     v9 = SWLogPower();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
     {
-      v12 = *(a1 + 40);
-      v13 = *(a1 + 8);
-      v14 = *(a1 + 16);
+      v12 = *(action + 40);
+      v13 = *(action + 8);
+      v14 = *(action + 16);
       v19 = 134219010;
-      v20 = a1;
+      actionCopy3 = action;
       v21 = 2114;
       *v22 = v3;
       *&v22[8] = 2114;
@@ -1039,7 +1039,7 @@ LABEL_20:
       _os_log_debug_impl(&dword_26C657000, v9, OS_LOG_TYPE_DEBUG, "%p system activity assertion woke while still acquiring, waiting for acquisition to complete (%{public}@); id:%{public}@ assertionID:%lu timer:%{public}@", &v19, 0x34u);
     }
 
-    *(a1 + 64) = 3;
+    *(action + 64) = 3;
     goto LABEL_13;
   }
 
@@ -1048,12 +1048,12 @@ LABEL_20:
     v10 = SWLogPower();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
-      v15 = *(a1 + 64);
-      v16 = *(a1 + 40);
-      v17 = *(a1 + 8);
-      v18 = *(a1 + 16);
+      v15 = *(action + 64);
+      v16 = *(action + 40);
+      v17 = *(action + 8);
+      v18 = *(action + 16);
       v19 = 134219266;
-      v20 = a1;
+      actionCopy3 = action;
       v21 = 1024;
       *v22 = v15;
       *&v22[4] = 2114;
@@ -1068,19 +1068,19 @@ LABEL_20:
     }
 
 LABEL_13:
-    os_unfair_lock_unlock((a1 + 44));
+    os_unfair_lock_unlock((action + 44));
     goto LABEL_14;
   }
 
-  *(a1 + 64) = 4;
+  *(action + 64) = 4;
   v5 = SWLogPower();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = *(a1 + 40);
-    v7 = *(a1 + 8);
-    v8 = *(a1 + 16);
+    v6 = *(action + 40);
+    v7 = *(action + 8);
+    v8 = *(action + 16);
     v19 = 134219010;
-    v20 = a1;
+    actionCopy3 = action;
     v21 = 2114;
     *v22 = v3;
     *&v22[8] = 2114;
@@ -1092,8 +1092,8 @@ LABEL_13:
     _os_log_impl(&dword_26C657000, v5, OS_LOG_TYPE_INFO, "%p system activity assertion now valid (%{public}@); id:%{public}@ assertionID:%lu timer:%{public}@", &v19, 0x34u);
   }
 
-  os_unfair_lock_unlock((a1 + 44));
-  [(SWSystemActivityAssertion *)a1 callbackAcquisitionHandlerWithError:?];
+  os_unfair_lock_unlock((action + 44));
+  [(SWSystemActivityAssertion *)action callbackAcquisitionHandlerWithError:?];
 LABEL_14:
 
   v11 = *MEMORY[0x277D85DE8];

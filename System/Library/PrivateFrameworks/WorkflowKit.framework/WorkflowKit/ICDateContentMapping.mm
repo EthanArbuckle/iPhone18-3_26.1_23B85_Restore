@@ -1,21 +1,21 @@
 @interface ICDateContentMapping
-- (ICDateContentMapping)initWithDefinition:(id)a3;
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5;
+- (ICDateContentMapping)initWithDefinition:(id)definition;
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters;
 @end
 
 @implementation ICDateContentMapping
 
-- (void)getStringRepresentation:(id)a3 withInput:(id)a4 parameters:(id)a5
+- (void)getStringRepresentation:(id)representation withInput:(id)input parameters:(id)parameters
 {
-  v8 = a3;
+  representationCopy = representation;
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __69__ICDateContentMapping_getStringRepresentation_withInput_parameters___block_invoke;
   v10[3] = &unk_1E8378930;
   v10[4] = self;
-  v11 = v8;
-  v9 = v8;
-  [(WFInterchangeContentMapping *)self getContentCollection:v10 withInput:a4 parameters:a5];
+  v11 = representationCopy;
+  v9 = representationCopy;
+  [(WFInterchangeContentMapping *)self getContentCollection:v10 withInput:input parameters:parameters];
 }
 
 void __69__ICDateContentMapping_getStringRepresentation_withInput_parameters___block_invoke(uint64_t a1, void *a2)
@@ -51,19 +51,19 @@ void __69__ICDateContentMapping_getStringRepresentation_withInput_parameters___b
   (*(v5 + 16))(v5, v9, v7);
 }
 
-- (ICDateContentMapping)initWithDefinition:(id)a3
+- (ICDateContentMapping)initWithDefinition:(id)definition
 {
-  v4 = a3;
+  definitionCopy = definition;
   v11.receiver = self;
   v11.super_class = ICDateContentMapping;
-  v5 = [(WFInterchangeContentMapping *)&v11 initWithDefinition:v4];
+  v5 = [(WFInterchangeContentMapping *)&v11 initWithDefinition:definitionCopy];
   if (v5)
   {
     v6 = objc_opt_new();
     dateFormatter = v5->_dateFormatter;
     v5->_dateFormatter = v6;
 
-    v8 = [v4 objectForKey:@"DateFormat"];
+    v8 = [definitionCopy objectForKey:@"DateFormat"];
     [(NSDateFormatter *)v5->_dateFormatter setDateFormat:v8];
 
     v9 = v5;

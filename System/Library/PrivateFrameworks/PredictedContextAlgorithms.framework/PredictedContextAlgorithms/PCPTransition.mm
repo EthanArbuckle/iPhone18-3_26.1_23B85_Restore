@@ -1,20 +1,20 @@
 @interface PCPTransition
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStopTimeCFAbsolute:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStopTimeCFAbsolute:(BOOL)absolute;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PCPTransition
 
-- (void)setHasStopTimeCFAbsolute:(BOOL)a3
+- (void)setHasStopTimeCFAbsolute:(BOOL)absolute
 {
-  if (a3)
+  if (absolute)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = PCPTransition;
   v4 = [(PCPTransition *)&v8 description];
-  v5 = [(PCPTransition *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PCPTransition *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   visitIdentifierOrigin = self->_visitIdentifierOrigin;
   if (visitIdentifierOrigin)
   {
-    [v3 setObject:visitIdentifierOrigin forKey:@"visitIdentifierOrigin"];
+    [dictionary setObject:visitIdentifierOrigin forKey:@"visitIdentifierOrigin"];
   }
 
   visitIdentifierDestination = self->_visitIdentifierDestination;
@@ -73,27 +73,27 @@
   predominantMotionActivity = self->_predominantMotionActivity;
   if (predominantMotionActivity)
   {
-    v11 = [(PCPMotionActivity *)predominantMotionActivity dictionaryRepresentation];
-    [v4 setObject:v11 forKey:@"predominantMotionActivity"];
+    dictionaryRepresentation = [(PCPMotionActivity *)predominantMotionActivity dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"predominantMotionActivity"];
   }
 
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v8 = v4;
+  toCopy = to;
+  v8 = toCopy;
   if (self->_visitIdentifierOrigin)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_visitIdentifierDestination)
   {
     PBDataWriterWriteDataField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   has = self->_has;
@@ -101,7 +101,7 @@
   {
     startTimeCFAbsolute = self->_startTimeCFAbsolute;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -109,61 +109,61 @@
   {
     stopTimeCFAbsolute = self->_stopTimeCFAbsolute;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_predominantMotionActivity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_visitIdentifierOrigin)
   {
-    [v4 setVisitIdentifierOrigin:?];
-    v4 = v6;
+    [toCopy setVisitIdentifierOrigin:?];
+    toCopy = v6;
   }
 
   if (self->_visitIdentifierDestination)
   {
     [v6 setVisitIdentifierDestination:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_startTimeCFAbsolute;
-    *(v4 + 48) |= 1u;
+    *(toCopy + 1) = *&self->_startTimeCFAbsolute;
+    *(toCopy + 48) |= 1u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    *(v4 + 2) = *&self->_stopTimeCFAbsolute;
-    *(v4 + 48) |= 2u;
+    *(toCopy + 2) = *&self->_stopTimeCFAbsolute;
+    *(toCopy + 48) |= 2u;
   }
 
   if (self->_predominantMotionActivity)
   {
     [v6 setPredominantMotionActivity:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_visitIdentifierOrigin copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_visitIdentifierOrigin copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSData *)self->_visitIdentifierDestination copyWithZone:a3];
+  v8 = [(NSData *)self->_visitIdentifierDestination copyWithZone:zone];
   v9 = *(v5 + 32);
   *(v5 + 32) = v8;
 
@@ -181,23 +181,23 @@
     *(v5 + 48) |= 2u;
   }
 
-  v11 = [(PCPMotionActivity *)self->_predominantMotionActivity copyWithZone:a3];
+  v11 = [(PCPMotionActivity *)self->_predominantMotionActivity copyWithZone:zone];
   v12 = *(v5 + 24);
   *(v5 + 24) = v11;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_18;
   }
 
   visitIdentifierOrigin = self->_visitIdentifierOrigin;
-  if (visitIdentifierOrigin | *(v4 + 5))
+  if (visitIdentifierOrigin | *(equalCopy + 5))
   {
     if (![(NSData *)visitIdentifierOrigin isEqual:?])
     {
@@ -206,7 +206,7 @@
   }
 
   visitIdentifierDestination = self->_visitIdentifierDestination;
-  if (visitIdentifierDestination | *(v4 + 4))
+  if (visitIdentifierDestination | *(equalCopy + 4))
   {
     if (![(NSData *)visitIdentifierDestination isEqual:?])
     {
@@ -214,16 +214,16 @@
     }
   }
 
-  v7 = *(v4 + 48);
+  v7 = *(equalCopy + 48);
   if (*&self->_has)
   {
-    if ((*(v4 + 48) & 1) == 0 || self->_startTimeCFAbsolute != *(v4 + 1))
+    if ((*(equalCopy + 48) & 1) == 0 || self->_startTimeCFAbsolute != *(equalCopy + 1))
     {
       goto LABEL_18;
     }
   }
 
-  else if (*(v4 + 48))
+  else if (*(equalCopy + 48))
   {
 LABEL_18:
     v9 = 0;
@@ -232,19 +232,19 @@ LABEL_18:
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 48) & 2) == 0 || self->_stopTimeCFAbsolute != *(v4 + 2))
+    if ((*(equalCopy + 48) & 2) == 0 || self->_stopTimeCFAbsolute != *(equalCopy + 2))
     {
       goto LABEL_18;
     }
   }
 
-  else if ((*(v4 + 48) & 2) != 0)
+  else if ((*(equalCopy + 48) & 2) != 0)
   {
     goto LABEL_18;
   }
 
   predominantMotionActivity = self->_predominantMotionActivity;
-  if (predominantMotionActivity | *(v4 + 3))
+  if (predominantMotionActivity | *(equalCopy + 3))
   {
     v9 = [(PCPMotionActivity *)predominantMotionActivity isEqual:?];
   }
@@ -333,38 +333,38 @@ LABEL_19:
   return v4 ^ v3 ^ v7 ^ v11 ^ [(PCPMotionActivity *)self->_predominantMotionActivity hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v8 = v4;
-  if (*(v4 + 5))
+  fromCopy = from;
+  v8 = fromCopy;
+  if (*(fromCopy + 5))
   {
     [(PCPTransition *)self setVisitIdentifierOrigin:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(PCPTransition *)self setVisitIdentifierDestination:?];
-    v4 = v8;
+    fromCopy = v8;
   }
 
-  v5 = *(v4 + 48);
+  v5 = *(fromCopy + 48);
   if (v5)
   {
-    self->_startTimeCFAbsolute = v4[1];
+    self->_startTimeCFAbsolute = fromCopy[1];
     *&self->_has |= 1u;
-    v5 = *(v4 + 48);
+    v5 = *(fromCopy + 48);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_stopTimeCFAbsolute = v4[2];
+    self->_stopTimeCFAbsolute = fromCopy[2];
     *&self->_has |= 2u;
   }
 
   predominantMotionActivity = self->_predominantMotionActivity;
-  v7 = *(v4 + 3);
+  v7 = *(fromCopy + 3);
   if (predominantMotionActivity)
   {
     if (v7)

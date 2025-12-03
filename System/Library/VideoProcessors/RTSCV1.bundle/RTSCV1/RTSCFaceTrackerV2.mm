@@ -1,19 +1,19 @@
 @interface RTSCFaceTrackerV2
-- (BOOL)_getFaceOrientationInDictionary:(id)a3 asQuaternion:(id *)a4;
-- (RTSCFaceTrackerV2)initWithTimeConstant:(float)a3;
-- (__n128)_findPositionOfMatchedDetection:(uint64_t)a3 bufferSize:(void *)a4;
-- (double)predictFaceBoxAtTimeOffset:(uint64_t)a1;
-- (id)_updateFilterWithFaceBox:(float32x4_t)a3 facePose:(double)a4 atTime:;
-- (void)_updateTrackedFacePose:(float32x4_t *)a1;
-- (void)_updateTrackingStateFromPrevFrame:(RTSCFaceTrackerV2 *)self atTime:(SEL)a2 bufferSize:(double)a3;
+- (BOOL)_getFaceOrientationInDictionary:(id)dictionary asQuaternion:(id *)quaternion;
+- (RTSCFaceTrackerV2)initWithTimeConstant:(float)constant;
+- (__n128)_findPositionOfMatchedDetection:(uint64_t)detection bufferSize:(void *)size;
+- (double)predictFaceBoxAtTimeOffset:(uint64_t)offset;
+- (id)_updateFilterWithFaceBox:(float32x4_t)box facePose:(double)pose atTime:;
+- (void)_updateTrackedFacePose:(float32x4_t *)pose;
+- (void)_updateTrackingStateFromPrevFrame:(RTSCFaceTrackerV2 *)self atTime:(SEL)time bufferSize:(double)size;
 - (void)dealloc;
 - (void)reset;
-- (void)trackFaceBoxesWithDetectedObjects:(RTSCFaceTrackerV2 *)self atTime:(SEL)a2 bufferSize:(id)a3 changeFromPrevFrame:(double)a4;
+- (void)trackFaceBoxesWithDetectedObjects:(RTSCFaceTrackerV2 *)self atTime:(SEL)time bufferSize:(id)size changeFromPrevFrame:(double)frame;
 @end
 
 @implementation RTSCFaceTrackerV2
 
-- (RTSCFaceTrackerV2)initWithTimeConstant:(float)a3
+- (RTSCFaceTrackerV2)initWithTimeConstant:(float)constant
 {
   v14.receiver = self;
   v14.super_class = RTSCFaceTrackerV2;
@@ -21,7 +21,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_timeConstant = a3;
+    v4->_timeConstant = constant;
     *&v4->_initVariance[4] = vdupq_n_s32(0x42C80000u);
     v6 = objc_alloc_init(RTSCKalmanFilter4DOF);
     kalmanFilter = v5->_kalmanFilter;
@@ -89,7 +89,7 @@ LABEL_6:
   [(RTSCFaceDataCovarianceEstimator *)covarianceEstimator reset];
 }
 
-- (void)_updateTrackedFacePose:(float32x4_t *)a1
+- (void)_updateTrackedFacePose:(float32x4_t *)pose
 {
   v2 = vmulq_f32(a2, a2);
   v3 = vadd_f32(*v2.i8, *&vextq_s8(v2, v2, 8uLL));
@@ -98,15 +98,15 @@ LABEL_6:
     v5 = vadd_f32(v3, vdup_lane_s32(v3, 1)).u32[0];
     v6 = vrsqrte_f32(v5);
     v7 = vmulq_n_f32(a2, vmul_f32(v6, vrsqrts_f32(v5, vmul_f32(v6, v6))).f32[0]);
-    if (a1[2].i32[0] < 0 || (v8 = a1[5].f32[0], v8 <= 0.0))
+    if (pose[2].i32[0] < 0 || (v8 = pose[5].f32[0], v8 <= 0.0))
     {
-      a1[7] = v7;
+      pose[7] = v7;
     }
 
     else
     {
-      v9 = a1[6].f32[0] / (v8 + a1[6].f32[0]);
-      v10 = a1[7];
+      v9 = pose[6].f32[0] / (v8 + pose[6].f32[0]);
+      v10 = pose[7];
       v11 = vmulq_f32(v7, v10);
       v12 = vextq_s8(v11, v11, 8uLL);
       *v11.f32 = vadd_f32(*v11.f32, *v12.f32);
@@ -172,16 +172,16 @@ LABEL_6:
         v35 = vmulq_n_f32(v32, vmul_f32(v38, vrsqrts_f32(v36, vmul_f32(v38, v38))).f32[0]);
       }
 
-      a1[7] = v35;
+      pose[7] = v35;
     }
   }
 }
 
-- (id)_updateFilterWithFaceBox:(float32x4_t)a3 facePose:(double)a4 atTime:
+- (id)_updateFilterWithFaceBox:(float32x4_t)box facePose:(double)pose atTime:
 {
   v5 = vmulq_f32(a2, a2);
   v6 = vmulq_f32(vmulq_n_f32(xmmword_11AE0, sqrtf(v5.f32[2] + v5.f32[3]) * 0.5), xmmword_11CD0);
-  v7 = vmulq_f32(a3, xmmword_11B60);
+  v7 = vmulq_f32(box, xmmword_11B60);
   v8 = vnegq_f32(v7);
   v9 = vtrn2q_s32(v7, vtrn1q_s32(v7, v8));
   v10 = vmlaq_n_f32(vmulq_lane_f32(vextq_s8(v7, v8, 8uLL), *v6.f32, 1), vextq_s8(v9, v9, 8uLL), v6.f32[0]);
@@ -191,21 +191,21 @@ LABEL_6:
   v12 = vmlaq_laneq_f32(v10, v11, v6, 2);
   _Q4 = vnegq_f32(v12);
   v14 = vtrn2q_s32(v12, vtrn1q_s32(v12, _Q4));
-  v9.i64[0] = vmlaq_n_f32(vmulq_lane_f32(vextq_s8(v12, _Q4, 8uLL), *a3.f32, 1), vextq_s8(v14, v14, 8uLL), a3.f32[0]).u64[0];
+  v9.i64[0] = vmlaq_n_f32(vmulq_lane_f32(vextq_s8(v12, _Q4, 8uLL), *box.f32, 1), vextq_s8(v14, v14, 8uLL), box.f32[0]).u64[0];
   v15 = vrev64q_s32(v12);
   v15.i32[0] = _Q4.i32[1];
   v15.i32[3] = _Q4.i32[2];
   __asm { FMOV            V4.2S, #1.0 }
 
-  v26 = COERCE_DOUBLE(vadd_f32(*a2.f32, vsub_f32(vmul_f32(*v6.f32, COERCE_FLOAT32X2_T(-*_Q4.i64)), vadd_f32(*&vmlaq_laneq_f32(vmulq_laneq_f32(v12, a3, 3), v15, a3, 2), *v9.i8))));
-  [*(a1 + 136) updateCovarianceWithFaceBox:v26 atTime:a4];
-  v20 = *(a1 + 128);
-  [*(a1 + 136) measurementCovariance];
+  v26 = COERCE_DOUBLE(vadd_f32(*a2.f32, vsub_f32(vmul_f32(*v6.f32, COERCE_FLOAT32X2_T(-*_Q4.i64)), vadd_f32(*&vmlaq_laneq_f32(vmulq_laneq_f32(v12, box, 3), v15, box, 2), *v9.i8))));
+  [*(self + 136) updateCovarianceWithFaceBox:v26 atTime:pose];
+  v20 = *(self + 128);
+  [*(self + 136) measurementCovariance];
 
   return [v20 updateWithPosition:v26 noiseCovariance:{v21, v22, v23, v24}];
 }
 
-- (void)_updateTrackingStateFromPrevFrame:(RTSCFaceTrackerV2 *)self atTime:(SEL)a2 bufferSize:(double)a3
+- (void)_updateTrackingStateFromPrevFrame:(RTSCFaceTrackerV2 *)self atTime:(SEL)time bufferSize:(double)size
 {
   v5 = v3;
   if (self->_trackedGroupID < 0)
@@ -265,12 +265,12 @@ LABEL_6:
 
     while (v12 != 3);
     [RTSCKalmanFilter4DOF predictTimeStep:"predictTimeStep:input:processCovariance:" input:v45 processCovariance:?];
-    [(RTSCFaceDataCovarianceEstimator *)self->_covarianceEstimator updateWithChangeFromPrevFrame:a3];
+    [(RTSCFaceDataCovarianceEstimator *)self->_covarianceEstimator updateWithChangeFromPrevFrame:size];
     [(RTSCKalmanFilter4DOF *)self->_kalmanFilter observePosition];
     *&self->_trackedFaceBox[4] = v25;
     v26 = *&self->_prevBodyPosition[4];
     *&self->_prevBodyPosition[12] = DWORD2(v26);
-    *&self->_prevBodyPosition[4] = vadd_f32(*&a3, *&v26);
+    *&self->_prevBodyPosition[4] = vadd_f32(*&size, *&v26);
     v25.f32[0] = vmuls_lane_f32(v25.f32[2], v25, 3) * 0.01;
     *&v26 = vmulq_n_f32(xmmword_11CF0, v25.f32[0]).u64[0];
     v27.i64[0] = 0;
@@ -291,14 +291,14 @@ LABEL_6:
   self->_prevTime = v5;
 }
 
-- (void)trackFaceBoxesWithDetectedObjects:(RTSCFaceTrackerV2 *)self atTime:(SEL)a2 bufferSize:(id)a3 changeFromPrevFrame:(double)a4
+- (void)trackFaceBoxesWithDetectedObjects:(RTSCFaceTrackerV2 *)self atTime:(SEL)time bufferSize:(id)size changeFromPrevFrame:(double)frame
 {
   v70 = v5;
   v6 = v4;
-  v9 = a3;
-  [(RTSCFaceTrackerV2 *)self _updateTrackingStateFromPrevFrame:v70 atTime:a4 bufferSize:v6];
-  v61 = v9;
-  v10 = [v9 objectForKeyedSubscript:kFigCaptureStreamDetectedObjectsInfoKey_HumanFaces];
+  sizeCopy = size;
+  [(RTSCFaceTrackerV2 *)self _updateTrackingStateFromPrevFrame:v70 atTime:frame bufferSize:v6];
+  v61 = sizeCopy;
+  v10 = [sizeCopy objectForKeyedSubscript:kFigCaptureStreamDetectedObjectsInfoKey_HumanFaces];
   v60 = kFigCaptureStreamDetectedObjectsKey_ObjectsArray;
   v11 = [v10 objectForKeyedSubscript:?];
 
@@ -341,16 +341,16 @@ LABEL_6:
         v67 = v24;
         v25 = [v11 objectAtIndexedSubscript:v17];
         v26 = [v25 objectForKeyedSubscript:v19];
-        v27 = [v26 intValue];
+        intValue = [v26 intValue];
 
         v28 = vsubq_f32(v67, *&self->_trackedFaceBox[4]);
         v29 = vmulq_f32(v28, vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v66, v28.f32[0]), v65, *v28.f32, 1), v64, v28, 2), v63, v28, 3));
         v30 = sqrtf(vaddv_f32(vadd_f32(*v29.i8, *&vextq_s8(v29, v29, 8uLL))));
         trackedGroupID = self->_trackedGroupID;
-        if (v27 == trackedGroupID || v30 < v76[0])
+        if (intValue == trackedGroupID || v30 < v76[0])
         {
           v75.origin = v67;
-          *v76 = __PAIR64__(v27, LODWORD(v30));
+          *v76 = __PAIR64__(intValue, LODWORD(v30));
           v32 = [v11 objectAtIndexedSubscript:v17];
           v33 = [v32 objectForKeyedSubscript:v62];
 
@@ -365,7 +365,7 @@ LABEL_6:
           trackedGroupID = self->_trackedGroupID;
         }
 
-        if (v27 == trackedGroupID)
+        if (intValue == trackedGroupID)
         {
           break;
         }
@@ -390,8 +390,8 @@ LABEL_13:
   v37 = self->_trackedGroupID;
   if (v37 < 0)
   {
-    self->_startTrackTime = a4;
-    startTrackTime = a4;
+    self->_startTrackTime = frame;
+    startTrackTime = frame;
   }
 
   else
@@ -404,7 +404,7 @@ LABEL_13:
     startTrackTime = self->_startTrackTime;
   }
 
-  if (a4 - startTrackTime < 0.25)
+  if (frame - startTrackTime < 0.25)
   {
     rect = v75;
     v74 = *v76;
@@ -439,9 +439,9 @@ LABEL_22:
   *v48.i8 = vrsqrte_f32(*v51.f32);
   *v48.i8 = vmul_f32(*v48.i8, vrsqrts_f32(v51.u32[0], vmul_f32(*v48.i8, *v48.i8)));
   *&self->_topOfFaceDirection[4] = vmul_n_f32(*v52.f32, vmul_f32(*v48.i8, vrsqrts_f32(v51.u32[0], vmul_f32(*v48.i8, *v48.i8))).f32[0]);
-  [(RTSCFaceTrackerV2 *)self _updateFilterWithFaceBox:v75.origin.x facePose:v75.size.width atTime:a4];
+  [(RTSCFaceTrackerV2 *)self _updateFilterWithFaceBox:v75.origin.x facePose:v75.size.width atTime:frame];
   *&self->_trackedGroupID = *&v76[1];
-  self->_latestTrackTime = a4;
+  self->_latestTrackTime = frame;
   v40 = 1;
 LABEL_24:
   if ((self->_trackedGroupID & 0x80000000) == 0)
@@ -478,19 +478,19 @@ LABEL_24:
     [(RTSCKalmanFilter4DOF *)self->_kalmanFilter observePosition];
     *&self->_trackedFaceBox[4] = v59;
     *&self->_prevBodyPosition[4] = v72;
-    *&v59 = a4 - self->_latestTrackTime;
+    *&v59 = frame - self->_latestTrackTime;
     LODWORD(self->_trackingStaleTime) = v59;
   }
 }
 
-- (__n128)_findPositionOfMatchedDetection:(uint64_t)a3 bufferSize:(void *)a4
+- (__n128)_findPositionOfMatchedDetection:(uint64_t)detection bufferSize:(void *)size
 {
-  v6 = a4;
-  v7 = [v6 count];
+  sizeCopy = size;
+  v7 = [sizeCopy count];
   size = CGRectNull.size;
   origin = CGRectNull.origin;
   rect.origin = CGRectNull.origin;
-  v24 = size;
+  sizeCopy2 = size;
   rect.size = size;
   if (v7 >= 1)
   {
@@ -499,11 +499,11 @@ LABEL_24:
     v11 = v7 & 0x7FFFFFFF;
     while (1)
     {
-      v12 = [v6 objectAtIndexedSubscript:{v9, v24}];
+      v12 = [sizeCopy objectAtIndexedSubscript:{v9, sizeCopy2}];
       v13 = [v12 objectForKeyedSubscript:v10];
-      v14 = [v13 intValue];
+      intValue = [v13 intValue];
 
-      if (v14 == *(a1 + 36))
+      if (intValue == *(self + 36))
       {
         break;
       }
@@ -514,13 +514,13 @@ LABEL_24:
       }
     }
 
-    v15 = [v6 objectAtIndexedSubscript:v9];
+    v15 = [sizeCopy objectAtIndexedSubscript:v9];
     v16 = [v15 objectForKeyedSubscript:kFigCaptureStreamMetadata_Rect];
 
     if (!CGRectMakeWithDictionaryRepresentation(v16, &rect))
     {
       rect.origin = origin;
-      rect.size = v24;
+      rect.size = sizeCopy2;
     }
   }
 
@@ -539,13 +539,13 @@ LABEL_9:
   return v26;
 }
 
-- (BOOL)_getFaceOrientationInDictionary:(id)a3 asQuaternion:(id *)a4
+- (BOOL)_getFaceOrientationInDictionary:(id)dictionary asQuaternion:(id *)quaternion
 {
   v5 = kFigCaptureStreamMetadata_AngleInfoRoll;
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:v5];
-  v8 = [v6 objectForKeyedSubscript:kFigCaptureStreamMetadata_AngleInfoPitch];
-  v9 = [v6 objectForKeyedSubscript:kFigCaptureStreamMetadata_AngleInfoYaw];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:v5];
+  v8 = [dictionaryCopy objectForKeyedSubscript:kFigCaptureStreamMetadata_AngleInfoPitch];
+  v9 = [dictionaryCopy objectForKeyedSubscript:kFigCaptureStreamMetadata_AngleInfoYaw];
 
   if (v7)
   {
@@ -600,16 +600,16 @@ LABEL_9:
     v32 = vrev64q_s32(v29);
     v32.i32[0] = v30.i32[1];
     v32.i32[3] = v30.i32[2];
-    *a4 = vaddq_f32(vmlaq_f32(vmulq_f32(v29, 0), 0, v32), vaddq_f32(vextq_s8(v31, v31, 8uLL), vmulq_f32(vextq_s8(v29, v30, 8uLL), 0)));
+    *quaternion = vaddq_f32(vmlaq_f32(vmulq_f32(v29, 0), 0, v32), vaddq_f32(vextq_s8(v31, v31, 8uLL), vmulq_f32(vextq_s8(v29, v30, 8uLL), 0)));
   }
 
   return v12;
 }
 
-- (double)predictFaceBoxAtTimeOffset:(uint64_t)a1
+- (double)predictFaceBoxAtTimeOffset:(uint64_t)offset
 {
-  v4 = *(a1 + 224);
-  [*(a1 + 128) observeVelocity];
+  v4 = *(offset + 224);
+  [*(offset + 128) observeVelocity];
   *&result = vmlaq_n_f32(v4, v2, a2).u64[0];
   return result;
 }

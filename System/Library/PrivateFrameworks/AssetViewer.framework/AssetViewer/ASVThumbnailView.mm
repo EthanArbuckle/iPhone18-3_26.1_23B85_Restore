@@ -1,25 +1,25 @@
 @interface ASVThumbnailView
-- (ASVThumbnailView)initWithCoder:(id)a3;
-- (ASVThumbnailView)initWithFrame:(CGRect)a3;
+- (ASVThumbnailView)initWithCoder:(id)coder;
+- (ASVThumbnailView)initWithFrame:(CGRect)frame;
 - (ASVThumbnailViewDelegate)delegate;
 - (CGSize)maxThumbnailSize;
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4;
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item;
 - (void)_commonInit;
 - (void)previewCurrentItem;
-- (void)setMaxThumbnailSize:(CGSize)a3;
-- (void)setThumbnailItem:(id)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setMaxThumbnailSize:(CGSize)size;
+- (void)setThumbnailItem:(id)item;
+- (void)traitCollectionDidChange:(id)change;
 - (void)updateThumbnailIfNeeded;
 @end
 
 @implementation ASVThumbnailView
 
-- (ASVThumbnailView)initWithFrame:(CGRect)a3
+- (ASVThumbnailView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = AssetViewerLogHandleForCategory(2);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -29,20 +29,20 @@
 
   v13.receiver = self;
   v13.super_class = ASVThumbnailView;
-  v9 = [(ASVThumbnailView *)&v13 initWithFrame:x, y, width, height];
-  v10 = v9;
-  if (v9)
+  height = [(ASVThumbnailView *)&v13 initWithFrame:x, y, width, height];
+  v10 = height;
+  if (height)
   {
-    [(ASVThumbnailView *)v9 _commonInit];
+    [(ASVThumbnailView *)height _commonInit];
     v11 = v10;
   }
 
   return v10;
 }
 
-- (ASVThumbnailView)initWithCoder:(id)a3
+- (ASVThumbnailView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = AssetViewerLogHandleForCategory(2);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -52,7 +52,7 @@
 
   v9.receiver = self;
   v9.super_class = ASVThumbnailView;
-  v6 = [(ASVThumbnailView *)&v9 initWithCoder:v4];
+  v6 = [(ASVThumbnailView *)&v9 initWithCoder:coderCopy];
 
   if (v6)
   {
@@ -86,13 +86,13 @@
   [(ASVThumbnailButton *)self->_button addTarget:self action:sel_previewCurrentItem forControlEvents:64];
   [(ASVThumbnailView *)self addSubview:self->_button];
   [(ASVThumbnailButton *)self->_button setTranslatesAutoresizingMaskIntoConstraints:0];
-  v11 = [(ASVThumbnailButton *)self->_button widthAnchor];
-  v12 = [v11 constraintEqualToConstant:p_maxThumbnailSize->width];
+  widthAnchor = [(ASVThumbnailButton *)self->_button widthAnchor];
+  v12 = [widthAnchor constraintEqualToConstant:p_maxThumbnailSize->width];
   widthButtonConstraint = self->_widthButtonConstraint;
   self->_widthButtonConstraint = v12;
 
-  v14 = [(ASVThumbnailButton *)self->_button heightAnchor];
-  v15 = [v14 constraintEqualToConstant:p_maxThumbnailSize->height];
+  heightAnchor = [(ASVThumbnailButton *)self->_button heightAnchor];
+  v15 = [heightAnchor constraintEqualToConstant:p_maxThumbnailSize->height];
   heightButtonConstraint = self->_heightButtonConstraint;
   self->_heightButtonConstraint = v15;
 
@@ -101,29 +101,29 @@
   LODWORD(v18) = 1144750080;
   [(NSLayoutConstraint *)self->_heightButtonConstraint setPriority:v18];
   v32 = MEMORY[0x277CCAAD0];
-  v39 = [(ASVThumbnailButton *)self->_button centerYAnchor];
-  v38 = [(ASVThumbnailView *)self centerYAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  centerYAnchor = [(ASVThumbnailButton *)self->_button centerYAnchor];
+  centerYAnchor2 = [(ASVThumbnailView *)self centerYAnchor];
+  v37 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v40[0] = v37;
-  v36 = [(ASVThumbnailButton *)self->_button centerXAnchor];
-  v35 = [(ASVThumbnailView *)self centerXAnchor];
-  v34 = [v36 constraintEqualToAnchor:v35];
+  centerXAnchor = [(ASVThumbnailButton *)self->_button centerXAnchor];
+  centerXAnchor2 = [(ASVThumbnailView *)self centerXAnchor];
+  v34 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v40[1] = v34;
-  v33 = [(ASVThumbnailButton *)self->_button leadingAnchor];
-  v31 = [(ASVThumbnailView *)self leadingAnchor];
-  v30 = [v33 constraintGreaterThanOrEqualToAnchor:v31];
+  leadingAnchor = [(ASVThumbnailButton *)self->_button leadingAnchor];
+  leadingAnchor2 = [(ASVThumbnailView *)self leadingAnchor];
+  v30 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v40[2] = v30;
-  v29 = [(ASVThumbnailButton *)self->_button trailingAnchor];
-  v28 = [(ASVThumbnailView *)self trailingAnchor];
-  v19 = [v29 constraintLessThanOrEqualToAnchor:v28];
+  trailingAnchor = [(ASVThumbnailButton *)self->_button trailingAnchor];
+  trailingAnchor2 = [(ASVThumbnailView *)self trailingAnchor];
+  v19 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v40[3] = v19;
-  v20 = [(ASVThumbnailButton *)self->_button topAnchor];
-  v21 = [(ASVThumbnailView *)self topAnchor];
-  v22 = [v20 constraintGreaterThanOrEqualToAnchor:v21];
+  topAnchor = [(ASVThumbnailButton *)self->_button topAnchor];
+  topAnchor2 = [(ASVThumbnailView *)self topAnchor];
+  v22 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2];
   v40[4] = v22;
-  v23 = [(ASVThumbnailButton *)self->_button bottomAnchor];
-  v24 = [(ASVThumbnailView *)self bottomAnchor];
-  v25 = [v23 constraintLessThanOrEqualToAnchor:v24];
+  bottomAnchor = [(ASVThumbnailButton *)self->_button bottomAnchor];
+  bottomAnchor2 = [(ASVThumbnailView *)self bottomAnchor];
+  v25 = [bottomAnchor constraintLessThanOrEqualToAnchor:bottomAnchor2];
   v26 = self->_widthButtonConstraint;
   v40[5] = v25;
   v40[6] = v26;
@@ -132,24 +132,24 @@
   [v32 activateConstraints:v27];
 }
 
-- (void)setThumbnailItem:(id)a3
+- (void)setThumbnailItem:(id)item
 {
-  objc_storeStrong(&self->_thumbnailItem, a3);
+  objc_storeStrong(&self->_thumbnailItem, item);
 
   [(ASVThumbnailView *)self updateThumbnailIfNeeded];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v10.receiver = self;
   v10.super_class = ASVThumbnailView;
-  v4 = a3;
-  [(ASVThumbnailView *)&v10 traitCollectionDidChange:v4];
-  [v4 displayScale];
+  changeCopy = change;
+  [(ASVThumbnailView *)&v10 traitCollectionDidChange:changeCopy];
+  [changeCopy displayScale];
   v6 = v5;
 
-  v7 = [(ASVThumbnailView *)self traitCollection];
-  [v7 displayScale];
+  traitCollection = [(ASVThumbnailView *)self traitCollection];
+  [traitCollection displayScale];
   v9 = v8;
 
   if (v6 != v9)
@@ -158,11 +158,11 @@
   }
 }
 
-- (void)setMaxThumbnailSize:(CGSize)a3
+- (void)setMaxThumbnailSize:(CGSize)size
 {
-  if (a3.width != self->_maxThumbnailSize.width || a3.height != self->_maxThumbnailSize.height)
+  if (size.width != self->_maxThumbnailSize.width || size.height != self->_maxThumbnailSize.height)
   {
-    self->_maxThumbnailSize = a3;
+    self->_maxThumbnailSize = size;
     [(ASVThumbnailView *)self updateThumbnailIfNeeded];
   }
 }
@@ -177,8 +177,8 @@
     _os_log_impl(&dword_241215000, v3, OS_LOG_TYPE_DEFAULT, "ARQL ASVThumbnailView updateThumbnailIfNeeded() called", buf, 2u);
   }
 
-  v4 = [(ASVThumbnailView *)self traitCollection];
-  [v4 displayScale];
+  traitCollection = [(ASVThumbnailView *)self traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
 
   [(ASVThumbnailView *)self maxThumbnailSize];
@@ -188,8 +188,8 @@
     v10 = v8;
     if (v7 != *MEMORY[0x277CBF3A8] || v8 != *(MEMORY[0x277CBF3A8] + 8))
     {
-      v12 = [(ASVThumbnailView *)self thumbnailItem];
-      v13 = v12 == 0;
+      thumbnailItem = [(ASVThumbnailView *)self thumbnailItem];
+      v13 = thumbnailItem == 0;
 
       if (!v13)
       {
@@ -198,16 +198,16 @@
         self->_lastRequestedThumbnailSize.width = v9;
         self->_lastRequestedThumbnailSize.height = v10;
         self->_lastRequestedThumbnailScale = *&v6;
-        v14 = [(ASVThumbnailView *)self thumbnailItem];
+        thumbnailItem2 = [(ASVThumbnailView *)self thumbnailItem];
         objc_initWeak(&location, self);
         v15 = AssetViewerLogHandleForCategory(2);
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
         {
-          v16 = [v14 previewItemURL];
+          previewItemURL = [thumbnailItem2 previewItemURL];
           *buf = 138412546;
-          v25 = v14;
+          v25 = thumbnailItem2;
           v26 = 2112;
-          v27 = v16;
+          v27 = previewItemURL;
           _os_log_impl(&dword_241215000, v15, OS_LOG_TYPE_DEFAULT, "ARQL ASVThumbnailView generating thumbnail at %@, %@", buf, 0x16u);
         }
 
@@ -217,9 +217,9 @@
         v19[2] = __43__ASVThumbnailView_updateThumbnailIfNeeded__block_invoke;
         v19[3] = &unk_278CCB7F8;
         objc_copyWeak(v22, &location);
-        v18 = v14;
+        v18 = thumbnailItem2;
         v20 = v18;
-        v21 = self;
+        selfCopy = self;
         v22[1] = v6;
         v22[2] = *&v9;
         v22[3] = *&v10;
@@ -324,54 +324,54 @@ void __43__ASVThumbnailView_updateThumbnailIfNeeded__block_invoke_45(uint64_t a1
 - (void)previewCurrentItem
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [(ASVThumbnailView *)self delegate];
+  delegate = [(ASVThumbnailView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(ASVThumbnailView *)self thumbnailItem];
+    thumbnailItem = [(ASVThumbnailView *)self thumbnailItem];
 
-    if (v5)
+    if (thumbnailItem)
     {
       v6 = AssetViewerLogHandleForCategory(2);
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
-        v7 = [(ASVThumbnailView *)self thumbnailItem];
-        v8 = [v7 previewItemURL];
-        v9 = [(ASVThumbnailView *)self thumbnailItem];
-        v10 = [v9 previewItemURL];
+        thumbnailItem2 = [(ASVThumbnailView *)self thumbnailItem];
+        previewItemURL = [thumbnailItem2 previewItemURL];
+        thumbnailItem3 = [(ASVThumbnailView *)self thumbnailItem];
+        previewItemURL2 = [thumbnailItem3 previewItemURL];
         *buf = 138412546;
-        v19 = v8;
+        v19 = previewItemURL;
         v20 = 2112;
-        v21 = v10;
+        v21 = previewItemURL2;
         _os_log_impl(&dword_241215000, v6, OS_LOG_TYPE_DEFAULT, "ARQL ASVThumbnailView preview current item, path: %@,  obj: %@", buf, 0x16u);
       }
 
       v11 = objc_alloc(MEMORY[0x277CDAA58]);
-      v12 = [(ASVThumbnailView *)self thumbnailItem];
-      v17 = v12;
+      thumbnailItem4 = [(ASVThumbnailView *)self thumbnailItem];
+      v17 = thumbnailItem4;
       v13 = [MEMORY[0x277CBEA60] arrayWithObjects:&v17 count:1];
       v14 = [v11 initWithPreviewItems:v13];
 
       [v14 setDelegate:self];
-      v15 = [(ASVThumbnailView *)self delegate];
-      v16 = [(ASVThumbnailView *)self thumbnailItem];
-      [v15 thumbnailView:self wantsToPresentPreviewController:v14 forItem:v16];
+      delegate2 = [(ASVThumbnailView *)self delegate];
+      thumbnailItem5 = [(ASVThumbnailView *)self thumbnailItem];
+      [delegate2 thumbnailView:self wantsToPresentPreviewController:v14 forItem:thumbnailItem5];
     }
   }
 }
 
-- (id)previewController:(id)a3 transitionViewForPreviewItem:(id)a4
+- (id)previewController:(id)controller transitionViewForPreviewItem:(id)item
 {
-  v4 = self;
-  v5 = [(ASVThumbnailButton *)self->_button thumbnail:a3];
+  selfCopy = self;
+  v5 = [(ASVThumbnailButton *)self->_button thumbnail:controller];
 
   if (v5)
   {
-    v4 = v4->_button;
+    selfCopy = selfCopy->_button;
   }
 
-  v6 = v4;
+  v6 = selfCopy;
 
   return v6;
 }

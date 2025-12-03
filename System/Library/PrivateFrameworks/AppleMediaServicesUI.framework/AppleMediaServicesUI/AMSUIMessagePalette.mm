@@ -1,39 +1,39 @@
 @interface AMSUIMessagePalette
-- (AMSUIMessagePalette)initWithRequest:(id)a3 bag:(id)a4 account:(id)a5;
-- (AMSUIMessagePalette)initWithServiceType:(id)a3 placement:(id)a4 bag:(id)a5 account:(id)a6 context:(id)a7;
+- (AMSUIMessagePalette)initWithRequest:(id)request bag:(id)bag account:(id)account;
+- (AMSUIMessagePalette)initWithServiceType:(id)type placement:(id)placement bag:(id)bag account:(id)account context:(id)context;
 - (id)widthProvider;
 - (void)enqueueImpressionMetrics;
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4;
-- (void)messageViewController:(id)a3 didLoadDialogRequest:(id)a4;
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4;
-- (void)messageViewController:(id)a3 didUpdateSize:(CGSize)a4;
-- (void)setWidthProvider:(id)a3;
+- (void)messageViewController:(id)controller didFailWithError:(id)error;
+- (void)messageViewController:(id)controller didLoadDialogRequest:(id)request;
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result;
+- (void)messageViewController:(id)controller didUpdateSize:(CGSize)size;
+- (void)setWidthProvider:(id)provider;
 @end
 
 @implementation AMSUIMessagePalette
 
-- (AMSUIMessagePalette)initWithRequest:(id)a3 bag:(id)a4 account:(id)a5
+- (AMSUIMessagePalette)initWithRequest:(id)request bag:(id)bag account:(id)account
 {
-  v7 = a3;
+  requestCopy = request;
   swift_unknownObjectRetain();
-  v8 = a5;
-  return UIMessagePalette.init(request:bag:account:)(v7, a4, a5);
+  accountCopy = account;
+  return UIMessagePalette.init(request:bag:account:)(requestCopy, bag, account);
 }
 
-- (AMSUIMessagePalette)initWithServiceType:(id)a3 placement:(id)a4 bag:(id)a5 account:(id)a6 context:(id)a7
+- (AMSUIMessagePalette)initWithServiceType:(id)type placement:(id)placement bag:(id)bag account:(id)account context:(id)context
 {
   v10 = sub_1BB1DD378();
   v12 = v11;
   v13 = sub_1BB1DD378();
   v15 = v14;
-  if (a7)
+  if (context)
   {
-    a7 = sub_1BB1DD2D8();
+    context = sub_1BB1DD2D8();
   }
 
   swift_unknownObjectRetain();
-  v16 = a6;
-  return UIMessagePalette.init(serviceType:placement:bag:account:context:)(v10, v12, v13, v15, a5, a6, a7);
+  accountCopy = account;
+  return UIMessagePalette.init(serviceType:placement:bag:account:context:)(v10, v12, v13, v15, bag, account, context);
 }
 
 - (id)widthProvider
@@ -58,9 +58,9 @@
   return v4;
 }
 
-- (void)setWidthProvider:(id)a3
+- (void)setWidthProvider:(id)provider
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(provider);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -73,47 +73,47 @@
     v5 = 0;
   }
 
-  v6 = self;
+  selfCopy = self;
   sub_1BB12A7C4(v4, v5);
 }
 
 - (void)enqueueImpressionMetrics
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BB12A978();
 }
 
-- (void)messageViewController:(id)a3 didLoadDialogRequest:(id)a4
+- (void)messageViewController:(id)controller didLoadDialogRequest:(id)request
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  UIMessagePalette.messageViewController(_:didLoad:)(v6, v7);
+  controllerCopy = controller;
+  requestCopy = request;
+  selfCopy = self;
+  UIMessagePalette.messageViewController(_:didLoad:)(controllerCopy, requestCopy);
 }
 
-- (void)messageViewController:(id)a3 didUpdateSize:(CGSize)a4
+- (void)messageViewController:(id)controller didUpdateSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  v8 = self;
-  UIMessagePalette.messageViewController(_:didUpdate:)(v7, width, height);
+  height = size.height;
+  width = size.width;
+  controllerCopy = controller;
+  selfCopy = self;
+  UIMessagePalette.messageViewController(_:didUpdate:)(controllerCopy, width, height);
 }
 
-- (void)messageViewController:(id)a3 didSelectActionWithDialogResult:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithDialogResult:(id)result
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  UIMessagePalette.messageViewController(_:didSelectActionWith:)(v6, v7);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  UIMessagePalette.messageViewController(_:didSelectActionWith:)(controllerCopy, resultCopy);
 }
 
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4
+- (void)messageViewController:(id)controller didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  UIMessagePalette.messageViewController(_:didFailWithError:)(v6, a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  errorCopy = error;
+  UIMessagePalette.messageViewController(_:didFailWithError:)(controllerCopy, error);
 }
 
 @end

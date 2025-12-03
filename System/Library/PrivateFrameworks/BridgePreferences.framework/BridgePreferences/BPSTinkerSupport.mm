@@ -2,15 +2,15 @@
 + (id)sharedInstance;
 - (BOOL)isActiveTinker;
 - (BPSTinkerSupport)init;
-- (id)cachedProfilePictureForFamilyMember:(id)a3;
+- (id)cachedProfilePictureForFamilyMember:(id)member;
 - (id)cachedTinkerAKDevice;
 - (id)cachedTinkerFamilyMemeber;
-- (id)familyMemberMatchingAccount:(id)a3 inCircle:(id)a4;
+- (id)familyMemberMatchingAccount:(id)account inCircle:(id)circle;
 - (void)fetchFamilyDetails;
 - (void)fetchProfilePictures;
-- (void)getActiveTinkerFamilyDetailsWithCompletion:(id)a3;
-- (void)getActiveTinkerFamilyMemberDetailsWithCompletion:(id)a3;
-- (void)getActiveTinkerFamilyMemberWithCompletion:(id)a3;
+- (void)getActiveTinkerFamilyDetailsWithCompletion:(id)completion;
+- (void)getActiveTinkerFamilyMemberDetailsWithCompletion:(id)completion;
+- (void)getActiveTinkerFamilyMemberWithCompletion:(id)completion;
 - (void)resetCachedDeviceValues;
 @end
 
@@ -289,16 +289,16 @@ void __40__BPSTinkerSupport_fetchProfilePictures__block_invoke_51()
   self->_currentTinkerAKDevice = 0;
 }
 
-- (id)cachedProfilePictureForFamilyMember:(id)a3
+- (id)cachedProfilePictureForFamilyMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   profilePictureStore = self->_profilePictureStore;
-  if (profilePictureStore && ([(FAProfilePictureStore *)profilePictureStore profilePictureForFamilyMember:v4 pictureDiameter:36.0], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (profilePictureStore && ([(FAProfilePictureStore *)profilePictureStore profilePictureForFamilyMember:memberCopy pictureDiameter:36.0], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     v8 = MEMORY[0x277D755B8];
-    v9 = [MEMORY[0x277D759A0] mainScreen];
-    [v9 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v10 = [v8 imageWithData:v7 scale:?];
   }
 
@@ -325,27 +325,27 @@ void __40__BPSTinkerSupport_fetchProfilePictures__block_invoke_51()
   return v3;
 }
 
-- (void)getActiveTinkerFamilyMemberWithCompletion:(id)a3
+- (void)getActiveTinkerFamilyMemberWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__BPSTinkerSupport_getActiveTinkerFamilyMemberWithCompletion___block_invoke;
   v6[3] = &unk_278D231D8;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(BPSTinkerSupport *)self getActiveTinkerFamilyMemberDetailsWithCompletion:v6];
 }
 
-- (void)getActiveTinkerFamilyMemberDetailsWithCompletion:(id)a3
+- (void)getActiveTinkerFamilyMemberDetailsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __69__BPSTinkerSupport_getActiveTinkerFamilyMemberDetailsWithCompletion___block_invoke;
   v6[3] = &unk_278D23200;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   [(BPSTinkerSupport *)self getActiveTinkerFamilyDetailsWithCompletion:v6];
 }
 
@@ -358,11 +358,11 @@ void __69__BPSTinkerSupport_getActiveTinkerFamilyMemberDetailsWithCompletion___b
   (*(v6 + 16))(v6, v9, v8, v7);
 }
 
-- (void)getActiveTinkerFamilyDetailsWithCompletion:(id)a3
+- (void)getActiveTinkerFamilyDetailsWithCompletion:(id)completion
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"nil replyBlock"];
   }
@@ -370,7 +370,7 @@ void __69__BPSTinkerSupport_getActiveTinkerFamilyMemberDetailsWithCompletion___b
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(completionCopy);
     *buf = 138412290;
     v12 = v6;
     _os_log_impl(&dword_241E74000, v5, OS_LOG_TYPE_DEFAULT, "Reply block: %@", buf, 0xCu);
@@ -382,8 +382,8 @@ void __69__BPSTinkerSupport_getActiveTinkerFamilyMemberDetailsWithCompletion___b
   v9[2] = __63__BPSTinkerSupport_getActiveTinkerFamilyDetailsWithCompletion___block_invoke;
   v9[3] = &unk_278D232C8;
   v9[4] = self;
-  v10 = v4;
-  v8 = v4;
+  v10 = completionCopy;
+  v8 = completionCopy;
   dispatch_async(queue, v9);
 }
 
@@ -812,15 +812,15 @@ void __63__BPSTinkerSupport_getActiveTinkerFamilyDetailsWithCompletion___block_i
   }
 }
 
-- (id)familyMemberMatchingAccount:(id)a3 inCircle:(id)a4
+- (id)familyMemberMatchingAccount:(id)account inCircle:(id)circle
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  accountCopy = account;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = [a4 members];
+  obj = [circle members];
   v27 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v27)
   {
@@ -835,26 +835,26 @@ void __63__BPSTinkerSupport_getActiveTinkerFamilyDetailsWithCompletion___block_i
         }
 
         v7 = *(*(&v29 + 1) + 8 * i);
-        v8 = [v7 altDSID];
+        altDSID = [v7 altDSID];
         v9 = getkNSSAccountAltDSIDKey();
-        v10 = [v5 objectForKeyedSubscript:v9];
-        v11 = [v8 isEqualToString:v10];
+        v10 = [accountCopy objectForKeyedSubscript:v9];
+        v11 = [altDSID isEqualToString:v10];
 
         if (v11)
         {
           goto LABEL_15;
         }
 
-        v12 = [v7 dsid];
-        v13 = [v12 stringValue];
-        if (v13)
+        dsid = [v7 dsid];
+        stringValue = [dsid stringValue];
+        if (stringValue)
         {
-          v14 = v13;
-          v15 = [v7 dsid];
-          v16 = [v15 stringValue];
+          v14 = stringValue;
+          dsid2 = [v7 dsid];
+          stringValue2 = [dsid2 stringValue];
           v17 = getkNSSAccountDSIDKey();
-          v18 = [v5 objectForKeyedSubscript:v17];
-          v19 = [v16 isEqualToString:v18];
+          v18 = [accountCopy objectForKeyedSubscript:v17];
+          v19 = [stringValue2 isEqualToString:v18];
 
           if (v19)
           {
@@ -866,10 +866,10 @@ void __63__BPSTinkerSupport_getActiveTinkerFamilyDetailsWithCompletion___block_i
         {
         }
 
-        v20 = [v7 appleID];
+        appleID = [v7 appleID];
         v21 = getkNSSAccountUsernameKey();
-        v22 = [v5 objectForKeyedSubscript:v21];
-        v23 = [v20 isEqualToString:v22];
+        v22 = [accountCopy objectForKeyedSubscript:v21];
+        v23 = [appleID isEqualToString:v22];
 
         if (v23)
         {

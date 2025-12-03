@@ -1,15 +1,15 @@
 @interface FaceTimePushHandler
 + (id)commandToHandlerBlock;
-- (FaceTimePushHandler)initWithTopics:(id)a3;
+- (FaceTimePushHandler)initWithTopics:(id)topics;
 - (NSData)pushToken;
 - (void)_acceptIncomingPushes;
 - (void)_ignoreIncomingPushes;
 - (void)_updateListenerIfNeeded;
-- (void)addListener:(id)a3;
-- (void)configureAsMacNotificationCenterObserver:(id)a3;
+- (void)addListener:(id)listener;
+- (void)configureAsMacNotificationCenterObserver:(id)observer;
 - (void)dealloc;
-- (void)handler:(id)a3 didReceiveMessage:(id)a4 forTopic:(id)a5 fromID:(id)a6 messageContext:(id)a7;
-- (void)removeListener:(id)a3;
+- (void)handler:(id)handler didReceiveMessage:(id)message forTopic:(id)topic fromID:(id)d messageContext:(id)context;
+- (void)removeListener:(id)listener;
 @end
 
 @implementation FaceTimePushHandler
@@ -24,14 +24,14 @@
   return qword_2814228B0;
 }
 
-- (FaceTimePushHandler)initWithTopics:(id)a3
+- (FaceTimePushHandler)initWithTopics:(id)topics
 {
   v6.receiver = self;
   v6.super_class = FaceTimePushHandler;
   v4 = [(FaceTimePushHandler *)&v6 init];
   if (v4)
   {
-    v4->_topics = a3;
+    v4->_topics = topics;
   }
 
   return v4;
@@ -144,16 +144,16 @@
   }
 }
 
-- (void)configureAsMacNotificationCenterObserver:(id)a3
+- (void)configureAsMacNotificationCenterObserver:(id)observer
 {
-  v6 = objc_msgSend_sharedInstance(MEMORY[0x277D18A00], a2, a3, v3, v4);
+  v6 = objc_msgSend_sharedInstance(MEMORY[0x277D18A00], a2, observer, v3, v4);
 
-  objc_msgSend_configureAsMacNotificationCenterObserver_(v6, v7, a3, v8, v9);
+  objc_msgSend_configureAsMacNotificationCenterObserver_(v6, v7, observer, v8, v9);
 }
 
-- (void)addListener:(id)a3
+- (void)addListener:(id)listener
 {
-  if ((objc_msgSend_containsObjectIdenticalTo_(self->_handlers, a2, a3, v3, v4) & 1) == 0)
+  if ((objc_msgSend_containsObjectIdenticalTo_(self->_handlers, a2, listener, v3, v4) & 1) == 0)
   {
     handlers = self->_handlers;
     if (!handlers)
@@ -162,13 +162,13 @@
       self->_handlers = handlers;
     }
 
-    objc_msgSend_addObject_(handlers, v7, a3, v9, v10);
+    objc_msgSend_addObject_(handlers, v7, listener, v9, v10);
   }
 }
 
-- (void)removeListener:(id)a3
+- (void)removeListener:(id)listener
 {
-  objc_msgSend_removeObjectIdenticalTo_(self->_handlers, a2, a3, v3, v4);
+  objc_msgSend_removeObjectIdenticalTo_(self->_handlers, a2, listener, v3, v4);
   if (!objc_msgSend_count(self->_handlers, v6, v7, v8, v9))
   {
 
@@ -176,10 +176,10 @@
   }
 }
 
-- (void)handler:(id)a3 didReceiveMessage:(id)a4 forTopic:(id)a5 fromID:(id)a6 messageContext:(id)a7
+- (void)handler:(id)handler didReceiveMessage:(id)message forTopic:(id)topic fromID:(id)d messageContext:(id)context
 {
   v77 = *MEMORY[0x277D85DE8];
-  v10 = objc_msgSend_objectForKey_(a4, a2, @"c", a4, a5, a6, a7);
+  v10 = objc_msgSend_objectForKey_(message, a2, @"c", message, topic, d, context);
   if (v10)
   {
     v15 = v10;
@@ -191,7 +191,7 @@
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v76 = a4;
+        messageCopy = message;
         _os_log_impl(&dword_23BC9F000, v27, OS_LOG_TYPE_DEFAULT, "dropping push message: %@ for IMAV because lockdown mode is enabled", buf, 0xCu);
       }
 
@@ -229,7 +229,7 @@
         if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
         {
           *buf = 67109120;
-          LODWORD(v76) = v37;
+          LODWORD(messageCopy) = v37;
           _os_log_impl(&dword_23BC9F000, v38, OS_LOG_TYPE_INFO, "shouldNotSunsetValue %d", buf, 8u);
         }
       }
@@ -237,7 +237,7 @@
       if (!v37 && _os_feature_enabled_impl())
       {
         v39 = objc_opt_class();
-        v43 = objc_msgSend_objectForKey_(a4, v40, @"W", v41, v42);
+        v43 = objc_msgSend_objectForKey_(message, v40, @"W", v41, v42);
         if ((objc_opt_isKindOfClass() & 1) == 0 && v43)
         {
           v48 = objc_msgSend_registration(MEMORY[0x277D19298], v44, v45, v46, v47);
@@ -260,7 +260,7 @@
             if (os_log_type_enabled(v63, OS_LOG_TYPE_INFO))
             {
               *buf = 67109120;
-              LODWORD(v76) = v58;
+              LODWORD(messageCopy) = v58;
               _os_log_impl(&dword_23BC9F000, v63, OS_LOG_TYPE_INFO, "isValid: %d", buf, 8u);
             }
           }
@@ -277,7 +277,7 @@
       v73 = objc_msgSend_objectForKey_(v69, v70, v15, v71, v72);
       if (v73)
       {
-        (*(v73 + 16))(v73, self, a5, a4);
+        (*(v73 + 16))(v73, self, topic, message);
       }
     }
   }

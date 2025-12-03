@@ -1,37 +1,37 @@
 @interface PIParallaxInactiveStyleEngine
-+ (void)learnStyleFromPixelBuffer:(__CVBuffer *)a3 rect:(CGRect)a4 toPixelBuffer:(__CVBuffer *)a5 rect:(CGRect)a6 completion:(id)a7;
-+ (void)learnStyleFromPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 completion:(id)a5;
-- (BOOL)beginPartialApplyStyleWithPixelBuffer:(__CVBuffer *)a3 intensity:(float)a4 error:(id *)a5;
-- (BOOL)beginPartialApplyStyleWithPixelBuffer:(__CVBuffer *)a3 rect:(CGRect)a4 intensity:(float)a5 error:(id *)a6;
-- (BOOL)beginPartialApplyStyleWithTexture:(id)a3 intensity:(float)a4 error:(id *)a5;
-- (BOOL)beginPartialApplyStyleWithTexture:(id)a3 rect:(CGRect)a4 intensity:(float)a5 error:(id *)specific;
-- (BOOL)partialApplyStyleToPixelBuffer:(__CVBuffer *)a3 at:(CGPoint)a4 error:(id *)a5;
-- (BOOL)partialApplyStyleToPixelBuffer:(__CVBuffer *)a3 at:(CGPoint)a4 subrect:(CGRect)a5 error:(id *)a6;
-- (BOOL)partialApplyStyleToTexture:(id)a3 at:(CGPoint)a4 error:(id *)a5;
-- (BOOL)partialApplyStyleToTexture:(id)a3 at:(CGPoint)a4 subrect:(CGRect)a5 error:(id *)specific;
-- (BOOL)prepareForApplyingStyle:(id)a3 error:(id *)a4;
-- (BOOL)prepareForLearningWithImageSize:(CGSize)a3 error:(id *)a4;
-- (PIParallaxInactiveStyleEngine)initWithMetalDevice:(id)a3 commandQueue:(id)a4;
-- (id)cachedTextureForPixelBuffer:(__CVBuffer *)a3 error:(id *)a4;
-- (void)_beginPartialApplyStyleWithIntensity:(float)a3;
-- (void)applyStyleToPixelBuffer:(__CVBuffer *)a3 intensity:(float)a4 completion:(id)a5;
-- (void)applyStyleToPixelBuffer:(__CVBuffer *)a3 rect:(CGRect)a4 intensity:(float)a5 completion:(id)a6;
-- (void)applyStyleToTexture:(id)a3 intensity:(float)a4 completion:(id)a5;
-- (void)applyStyleToTexture:(id)a3 rect:(CGRect)a4 intensity:(float)a5 completion:(id)a6;
-- (void)endPartialApplyStyleWithCompletion:(id)a3;
-- (void)generateStyleDataFromStyleBuffer:(id)a3 completion:(id)a4;
-- (void)learnStyleFromPixelBuffer:(__CVBuffer *)a3 rect:(CGRect)a4 toPixelBuffer:(__CVBuffer *)a5 rect:(CGRect)a6 completion:(id)a7;
-- (void)learnStyleFromPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 completion:(id)a5;
-- (void)learnStyleFromTexture:(id)a3 rect:(CGRect)a4 toTexture:(id)a5 rect:(CGRect)a6 completion:(id)a7;
-- (void)learnStyleFromTexture:(id)a3 toTexture:(id)a4 completion:(id)a5;
++ (void)learnStyleFromPixelBuffer:(__CVBuffer *)buffer rect:(CGRect)rect toPixelBuffer:(__CVBuffer *)pixelBuffer rect:(CGRect)a6 completion:(id)completion;
++ (void)learnStyleFromPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer completion:(id)completion;
+- (BOOL)beginPartialApplyStyleWithPixelBuffer:(__CVBuffer *)buffer intensity:(float)intensity error:(id *)error;
+- (BOOL)beginPartialApplyStyleWithPixelBuffer:(__CVBuffer *)buffer rect:(CGRect)rect intensity:(float)intensity error:(id *)error;
+- (BOOL)beginPartialApplyStyleWithTexture:(id)texture intensity:(float)intensity error:(id *)error;
+- (BOOL)beginPartialApplyStyleWithTexture:(id)texture rect:(CGRect)rect intensity:(float)intensity error:(id *)specific;
+- (BOOL)partialApplyStyleToPixelBuffer:(__CVBuffer *)buffer at:(CGPoint)at error:(id *)error;
+- (BOOL)partialApplyStyleToPixelBuffer:(__CVBuffer *)buffer at:(CGPoint)at subrect:(CGRect)subrect error:(id *)error;
+- (BOOL)partialApplyStyleToTexture:(id)texture at:(CGPoint)at error:(id *)error;
+- (BOOL)partialApplyStyleToTexture:(id)texture at:(CGPoint)at subrect:(CGRect)subrect error:(id *)specific;
+- (BOOL)prepareForApplyingStyle:(id)style error:(id *)error;
+- (BOOL)prepareForLearningWithImageSize:(CGSize)size error:(id *)error;
+- (PIParallaxInactiveStyleEngine)initWithMetalDevice:(id)device commandQueue:(id)queue;
+- (id)cachedTextureForPixelBuffer:(__CVBuffer *)buffer error:(id *)error;
+- (void)_beginPartialApplyStyleWithIntensity:(float)intensity;
+- (void)applyStyleToPixelBuffer:(__CVBuffer *)buffer intensity:(float)intensity completion:(id)completion;
+- (void)applyStyleToPixelBuffer:(__CVBuffer *)buffer rect:(CGRect)rect intensity:(float)intensity completion:(id)completion;
+- (void)applyStyleToTexture:(id)texture intensity:(float)intensity completion:(id)completion;
+- (void)applyStyleToTexture:(id)texture rect:(CGRect)rect intensity:(float)intensity completion:(id)completion;
+- (void)endPartialApplyStyleWithCompletion:(id)completion;
+- (void)generateStyleDataFromStyleBuffer:(id)buffer completion:(id)completion;
+- (void)learnStyleFromPixelBuffer:(__CVBuffer *)buffer rect:(CGRect)rect toPixelBuffer:(__CVBuffer *)pixelBuffer rect:(CGRect)a6 completion:(id)completion;
+- (void)learnStyleFromPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer completion:(id)completion;
+- (void)learnStyleFromTexture:(id)texture rect:(CGRect)rect toTexture:(id)toTexture rect:(CGRect)a6 completion:(id)completion;
+- (void)learnStyleFromTexture:(id)texture toTexture:(id)toTexture completion:(id)completion;
 @end
 
 @implementation PIParallaxInactiveStyleEngine
 
-- (void)endPartialApplyStyleWithCompletion:(id)a3
+- (void)endPartialApplyStyleWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completionCopy = completion;
   if (!self->_isApplyingStyle)
   {
     v8 = NUAssertLogger_4909();
@@ -54,8 +54,8 @@
         v16 = dispatch_get_specific(*v10);
         v17 = MEMORY[0x1E696AF00];
         v18 = v16;
-        v19 = [v17 callStackSymbols];
-        v20 = [v19 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v17 callStackSymbols];
+        v20 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v24 = v16;
         v25 = 2114;
@@ -66,8 +66,8 @@
 
     else if (v13)
     {
-      v14 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v15;
       _os_log_error_impl(&dword_1C7694000, v12, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -76,17 +76,17 @@
     _NUAssertFailHandler();
   }
 
-  v5 = v4;
-  if (v4)
+  v5 = completionCopy;
+  if (completionCopy)
   {
-    v6 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __68__PIParallaxInactiveStyleEngine_endPartialApplyStyleWithCompletion___block_invoke;
     v21[3] = &unk_1E82AA218;
     v22 = v5;
-    [v6 addCompletedHandler:v21];
-    [v6 commit];
+    [commandBuffer addCompletedHandler:v21];
+    [commandBuffer commit];
   }
 
   thumbnailBuffer = self->_thumbnailBuffer;
@@ -95,17 +95,17 @@
   self->_isApplyingStyle = 0;
 }
 
-- (BOOL)partialApplyStyleToTexture:(id)a3 at:(CGPoint)a4 subrect:(CGRect)a5 error:(id *)specific
+- (BOOL)partialApplyStyleToTexture:(id)texture at:(CGPoint)at subrect:(CGRect)subrect error:(id *)specific
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a4.y;
-  v14 = a4.x;
+  height = subrect.size.height;
+  width = subrect.size.width;
+  y = subrect.origin.y;
+  x = subrect.origin.x;
+  v13 = at.y;
+  v14 = at.x;
   v82 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  if (!v16)
+  textureCopy = texture;
+  if (!textureCopy)
   {
     v35 = NUAssertLogger_4909();
     v36 = "texture != nil";
@@ -113,7 +113,7 @@
     {
       v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid parameter not satisfying: %s", "texture != nil"];
       *buf = 138543362;
-      v79 = v37;
+      selfCopy6 = v37;
       _os_log_error_impl(&dword_1C7694000, v35, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -131,7 +131,7 @@
         self = [v54 callStackSymbols];
         v56 = [(PIParallaxInactiveStyleEngine *)self componentsJoinedByString:@"\n"];
         *buf = 138543618;
-        v79 = specific;
+        selfCopy6 = specific;
         v80 = 2114;
         v81 = v56;
         _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
@@ -143,7 +143,7 @@
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
       self = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v79 = self;
+      selfCopy6 = self;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -159,7 +159,7 @@
     {
       v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid parameter not satisfying: %s", "error != NULL"];
       *buf = 138543362;
-      v79 = v40;
+      selfCopy6 = v40;
       _os_log_error_impl(&dword_1C7694000, v39, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -174,7 +174,7 @@
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
         self = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v79 = self;
+        selfCopy6 = self;
         _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -194,7 +194,7 @@ LABEL_52:
       self = [v57 callStackSymbols];
       v59 = [(PIParallaxInactiveStyleEngine *)self componentsJoinedByString:@"\n"];
       *buf = 138543618;
-      v79 = specific;
+      selfCopy6 = specific;
       v80 = 2114;
       v81 = v59;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
@@ -210,7 +210,7 @@ LABEL_52:
     {
       v43 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Not prepared"];
       *buf = 138543362;
-      v79 = v43;
+      selfCopy6 = v43;
       _os_log_error_impl(&dword_1C7694000, v42, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -225,7 +225,7 @@ LABEL_52:
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
         self = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v79 = self;
+        selfCopy6 = self;
         _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -244,7 +244,7 @@ LABEL_55:
       self = [v60 callStackSymbols];
       v62 = [(PIParallaxInactiveStyleEngine *)self componentsJoinedByString:@"\n"];
       *buf = 138543618;
-      v79 = specific;
+      selfCopy6 = specific;
       v80 = 2114;
       v81 = v62;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
@@ -260,7 +260,7 @@ LABEL_55:
     {
       v46 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing style buffer"];
       *buf = 138543362;
-      v79 = v46;
+      selfCopy6 = v46;
       _os_log_error_impl(&dword_1C7694000, v45, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -275,7 +275,7 @@ LABEL_55:
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
         self = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v79 = self;
+        selfCopy6 = self;
         _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -294,7 +294,7 @@ LABEL_58:
       self = [v63 callStackSymbols];
       v65 = [(PIParallaxInactiveStyleEngine *)self componentsJoinedByString:@"\n"];
       *buf = 138543618;
-      v79 = specific;
+      selfCopy6 = specific;
       v80 = 2114;
       v81 = v65;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
@@ -310,7 +310,7 @@ LABEL_58:
     {
       v49 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Not applying style"];
       *buf = 138543362;
-      v79 = v49;
+      selfCopy6 = v49;
       _os_log_error_impl(&dword_1C7694000, v48, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -325,7 +325,7 @@ LABEL_58:
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
         self = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v79 = self;
+        selfCopy6 = self;
         _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -344,7 +344,7 @@ LABEL_61:
       self = [v66 callStackSymbols];
       v68 = [(PIParallaxInactiveStyleEngine *)self componentsJoinedByString:@"\n"];
       *buf = 138543618;
-      v79 = specific;
+      selfCopy6 = specific;
       v80 = 2114;
       v81 = v68;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
@@ -360,7 +360,7 @@ LABEL_61:
     {
       v52 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing thumbnail texture"];
       *buf = 138543362;
-      v79 = v52;
+      selfCopy6 = v52;
       _os_log_error_impl(&dword_1C7694000, v51, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -375,7 +375,7 @@ LABEL_61:
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
         self = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v79 = self;
+        selfCopy6 = self;
         _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -396,7 +396,7 @@ LABEL_64:
       self = [v69 callStackSymbols];
       v71 = [(PIParallaxInactiveStyleEngine *)self componentsJoinedByString:@"\n"];
       *buf = 138543618;
-      v79 = specific;
+      selfCopy6 = specific;
       v80 = 2114;
       v81 = v71;
       _os_log_error_impl(&dword_1C7694000, v17, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
@@ -405,7 +405,7 @@ LABEL_64:
     goto LABEL_66;
   }
 
-  v17 = v16;
+  v17 = textureCopy;
   v7 = -v14;
   v6 = -v13;
   v14 = self->_actualImageSize.width;
@@ -445,7 +445,7 @@ LABEL_9:
     *&v76[3] = v13;
     v34 = [MEMORY[0x1E696B098] valueWithBytes:v76 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
     *buf = 138412546;
-    v79 = v33;
+    selfCopy6 = v33;
     v80 = 2112;
     v81 = v34;
     _os_log_error_impl(&dword_1C7694000, v32, OS_LOG_TYPE_ERROR, "Invalid image rect: %@, extent: %@", buf, 0x16u);
@@ -465,9 +465,9 @@ LABEL_9:
   width = v85.size.width;
   height = v85.size.height;
 LABEL_12:
-  v19 = [MEMORY[0x1E69B3CD0] supportsIntensity];
+  supportsIntensity = [MEMORY[0x1E69B3CD0] supportsIntensity];
   styleEngine = self->_styleEngine;
-  if (v19)
+  if (supportsIntensity)
   {
     styleBuffer = self->_styleBuffer;
     thumbnailTexture = self->_thumbnailTexture;
@@ -502,10 +502,10 @@ LABEL_12:
   return v29;
 }
 
-- (BOOL)partialApplyStyleToPixelBuffer:(__CVBuffer *)a3 at:(CGPoint)a4 subrect:(CGRect)a5 error:(id *)a6
+- (BOOL)partialApplyStyleToPixelBuffer:(__CVBuffer *)buffer at:(CGPoint)at subrect:(CGRect)subrect error:(id *)error
 {
   v81 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!buffer)
   {
     v35 = NUAssertLogger_4909();
     v36 = "inoutBuffer != nil";
@@ -517,42 +517,42 @@ LABEL_12:
       _os_log_error_impl(&dword_1C7694000, v35, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v16 = MEMORY[0x1E69B38E8];
+    bufferCopy = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v14 = NUAssertLogger_4909();
-    v38 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
+    errorCopy = NUAssertLogger_4909();
+    v38 = os_log_type_enabled(errorCopy, OS_LOG_TYPE_ERROR);
     if (specific)
     {
       if (v38)
       {
-        specific = dispatch_get_specific(*v16);
+        specific = dispatch_get_specific(*bufferCopy);
         v54 = MEMORY[0x1E696AF00];
         v55 = specific;
-        v16 = [v54 callStackSymbols];
-        v56 = [v16 componentsJoinedByString:@"\n"];
+        bufferCopy = [v54 callStackSymbols];
+        v56 = [bufferCopy componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v78 = specific;
         v79 = 2114;
         v80 = v56;
-        _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+        _os_log_error_impl(&dword_1C7694000, errorCopy, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
       }
     }
 
     else if (v38)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [specific componentsJoinedByString:@"\n"];
+      bufferCopy = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v78 = v16;
-      _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+      v78 = bufferCopy;
+      _os_log_error_impl(&dword_1C7694000, errorCopy, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
     v41 = _NUAssertFailHandler();
     goto LABEL_52;
   }
 
-  v14 = a6;
-  if (!a6)
+  errorCopy = error;
+  if (!error)
   {
     v39 = NUAssertLogger_4909();
     v36 = "error != NULL";
@@ -564,19 +564,19 @@ LABEL_12:
       _os_log_error_impl(&dword_1C7694000, v39, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v16 = MEMORY[0x1E69B38E8];
+    bufferCopy = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v14 = NUAssertLogger_4909();
-    v41 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
+    errorCopy = NUAssertLogger_4909();
+    v41 = os_log_type_enabled(errorCopy, OS_LOG_TYPE_ERROR);
     if (!specific)
     {
       if (v41)
       {
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [specific componentsJoinedByString:@"\n"];
+        bufferCopy = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v78 = v16;
-        _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+        v78 = bufferCopy;
+        _os_log_error_impl(&dword_1C7694000, errorCopy, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
 LABEL_54:
@@ -589,16 +589,16 @@ LABEL_54:
 LABEL_52:
     if (v41)
     {
-      specific = dispatch_get_specific(*v16);
+      specific = dispatch_get_specific(*bufferCopy);
       v57 = MEMORY[0x1E696AF00];
       v58 = specific;
-      v16 = [v57 callStackSymbols];
-      v59 = [v16 componentsJoinedByString:@"\n"];
+      bufferCopy = [v57 callStackSymbols];
+      v59 = [bufferCopy componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v78 = specific;
       v79 = 2114;
       v80 = v59;
-      _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+      _os_log_error_impl(&dword_1C7694000, errorCopy, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
     }
 
     goto LABEL_54;
@@ -616,19 +616,19 @@ LABEL_52:
       _os_log_error_impl(&dword_1C7694000, v42, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v16 = MEMORY[0x1E69B38E8];
+    bufferCopy = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v14 = NUAssertLogger_4909();
-    v44 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
+    errorCopy = NUAssertLogger_4909();
+    v44 = os_log_type_enabled(errorCopy, OS_LOG_TYPE_ERROR);
     if (!specific)
     {
       if (v44)
       {
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [specific componentsJoinedByString:@"\n"];
+        bufferCopy = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v78 = v16;
-        _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+        v78 = bufferCopy;
+        _os_log_error_impl(&dword_1C7694000, errorCopy, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
 LABEL_57:
@@ -640,16 +640,16 @@ LABEL_57:
 LABEL_55:
     if (v44)
     {
-      specific = dispatch_get_specific(*v16);
+      specific = dispatch_get_specific(*bufferCopy);
       v60 = MEMORY[0x1E696AF00];
       v61 = specific;
-      v16 = [v60 callStackSymbols];
-      v62 = [v16 componentsJoinedByString:@"\n"];
+      bufferCopy = [v60 callStackSymbols];
+      v62 = [bufferCopy componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v78 = specific;
       v79 = 2114;
       v80 = v62;
-      _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+      _os_log_error_impl(&dword_1C7694000, errorCopy, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
     }
 
     goto LABEL_57;
@@ -666,19 +666,19 @@ LABEL_55:
       _os_log_error_impl(&dword_1C7694000, v45, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v16 = MEMORY[0x1E69B38E8];
+    bufferCopy = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v14 = NUAssertLogger_4909();
-    v47 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
+    errorCopy = NUAssertLogger_4909();
+    v47 = os_log_type_enabled(errorCopy, OS_LOG_TYPE_ERROR);
     if (!specific)
     {
       if (v47)
       {
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [specific componentsJoinedByString:@"\n"];
+        bufferCopy = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v78 = v16;
-        _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+        v78 = bufferCopy;
+        _os_log_error_impl(&dword_1C7694000, errorCopy, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
 LABEL_60:
@@ -690,16 +690,16 @@ LABEL_60:
 LABEL_58:
     if (v47)
     {
-      specific = dispatch_get_specific(*v16);
+      specific = dispatch_get_specific(*bufferCopy);
       v63 = MEMORY[0x1E696AF00];
       v64 = specific;
-      v16 = [v63 callStackSymbols];
-      v65 = [v16 componentsJoinedByString:@"\n"];
+      bufferCopy = [v63 callStackSymbols];
+      v65 = [bufferCopy componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v78 = specific;
       v79 = 2114;
       v80 = v65;
-      _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+      _os_log_error_impl(&dword_1C7694000, errorCopy, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
     }
 
     goto LABEL_60;
@@ -716,19 +716,19 @@ LABEL_58:
       _os_log_error_impl(&dword_1C7694000, v48, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v16 = MEMORY[0x1E69B38E8];
+    bufferCopy = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v14 = NUAssertLogger_4909();
-    v50 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
+    errorCopy = NUAssertLogger_4909();
+    v50 = os_log_type_enabled(errorCopy, OS_LOG_TYPE_ERROR);
     if (!specific)
     {
       if (v50)
       {
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [specific componentsJoinedByString:@"\n"];
+        bufferCopy = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v78 = v16;
-        _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+        v78 = bufferCopy;
+        _os_log_error_impl(&dword_1C7694000, errorCopy, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
 LABEL_63:
@@ -740,16 +740,16 @@ LABEL_63:
 LABEL_61:
     if (v50)
     {
-      specific = dispatch_get_specific(*v16);
+      specific = dispatch_get_specific(*bufferCopy);
       v66 = MEMORY[0x1E696AF00];
       v67 = specific;
-      v16 = [v66 callStackSymbols];
-      v68 = [v16 componentsJoinedByString:@"\n"];
+      bufferCopy = [v66 callStackSymbols];
+      v68 = [bufferCopy componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v78 = specific;
       v79 = 2114;
       v80 = v68;
-      _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+      _os_log_error_impl(&dword_1C7694000, errorCopy, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
     }
 
     goto LABEL_63;
@@ -766,19 +766,19 @@ LABEL_61:
       _os_log_error_impl(&dword_1C7694000, v51, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v16 = MEMORY[0x1E69B38E8];
+    bufferCopy = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    v14 = NUAssertLogger_4909();
-    v53 = os_log_type_enabled(v14, OS_LOG_TYPE_ERROR);
+    errorCopy = NUAssertLogger_4909();
+    v53 = os_log_type_enabled(errorCopy, OS_LOG_TYPE_ERROR);
     if (!specific)
     {
       if (v53)
       {
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
-        v16 = [specific componentsJoinedByString:@"\n"];
+        bufferCopy = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v78 = v16;
-        _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+        v78 = bufferCopy;
+        _os_log_error_impl(&dword_1C7694000, errorCopy, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
 LABEL_66:
@@ -792,32 +792,32 @@ LABEL_67:
 LABEL_64:
     if (v53)
     {
-      specific = dispatch_get_specific(*v16);
+      specific = dispatch_get_specific(*bufferCopy);
       v69 = MEMORY[0x1E696AF00];
       v70 = specific;
-      v16 = [v69 callStackSymbols];
-      v71 = [v16 componentsJoinedByString:@"\n"];
+      bufferCopy = [v69 callStackSymbols];
+      v71 = [bufferCopy componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v78 = specific;
       v79 = 2114;
       v80 = v71;
-      _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+      _os_log_error_impl(&dword_1C7694000, errorCopy, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
     }
 
     goto LABEL_66;
   }
 
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v16 = a3;
-  v13 = -a4.x;
-  v12 = -a4.y;
+  height = subrect.size.height;
+  width = subrect.size.width;
+  y = subrect.origin.y;
+  x = subrect.origin.x;
+  bufferCopy = buffer;
+  v13 = -at.x;
+  v12 = -at.y;
   v11 = self->_actualImageSize.width;
   v10 = self->_actualImageSize.height;
-  v82.origin.x = -a4.x;
-  v82.origin.y = -a4.y;
+  v82.origin.x = -at.x;
+  v82.origin.y = -at.y;
   v82.size.width = v11;
   v82.size.height = v10;
   v85.origin.x = x;
@@ -871,10 +871,10 @@ LABEL_9:
   width = v84.size.width;
   height = v84.size.height;
 LABEL_12:
-  v18 = [objc_alloc(MEMORY[0x1E69B39C0]) initWithCVPixelBuffer:v16];
-  v19 = [MEMORY[0x1E69B3CD0] supportsIntensity];
+  v18 = [objc_alloc(MEMORY[0x1E69B39C0]) initWithCVPixelBuffer:bufferCopy];
+  supportsIntensity = [MEMORY[0x1E69B3CD0] supportsIntensity];
   v20 = *(specific + 8);
-  if (v19)
+  if (supportsIntensity)
   {
     v21 = *(specific + 40);
     v22 = *(specific + 96);
@@ -903,62 +903,62 @@ LABEL_12:
   else
   {
     [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to apply style with intensity" object:specific underlyingError:v28];
-    v14->isa = v29 = 0;
+    errorCopy->isa = v29 = 0;
   }
 
   return v29;
 }
 
-- (BOOL)partialApplyStyleToTexture:(id)a3 at:(CGPoint)a4 error:(id *)a5
+- (BOOL)partialApplyStyleToTexture:(id)texture at:(CGPoint)at error:(id *)error
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a3;
-  LOBYTE(a5) = -[PIParallaxInactiveStyleEngine partialApplyStyleToTexture:at:subrect:error:](self, "partialApplyStyleToTexture:at:subrect:error:", v9, a5, x, y, 0.0, 0.0, [v9 width], objc_msgSend(v9, "height"));
+  y = at.y;
+  x = at.x;
+  textureCopy = texture;
+  LOBYTE(error) = -[PIParallaxInactiveStyleEngine partialApplyStyleToTexture:at:subrect:error:](self, "partialApplyStyleToTexture:at:subrect:error:", textureCopy, error, x, y, 0.0, 0.0, [textureCopy width], objc_msgSend(textureCopy, "height"));
 
-  return a5;
+  return error;
 }
 
-- (BOOL)partialApplyStyleToPixelBuffer:(__CVBuffer *)a3 at:(CGPoint)a4 error:(id *)a5
+- (BOOL)partialApplyStyleToPixelBuffer:(__CVBuffer *)buffer at:(CGPoint)at error:(id *)error
 {
-  y = a4.y;
-  x = a4.x;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
+  y = at.y;
+  x = at.x;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
 
-  return [(PIParallaxInactiveStyleEngine *)self partialApplyStyleToPixelBuffer:a3 at:a5 subrect:x error:y, 0.0, 0.0, Width, Height];
+  return [(PIParallaxInactiveStyleEngine *)self partialApplyStyleToPixelBuffer:buffer at:error subrect:x error:y, 0.0, 0.0, Width, Height];
 }
 
-- (void)_beginPartialApplyStyleWithIntensity:(float)a3
+- (void)_beginPartialApplyStyleWithIntensity:(float)intensity
 {
   if (([MEMORY[0x1E69B3CD0] supportsIntensity] & 1) == 0)
   {
-    v5 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
-    *&v6 = a3;
-    [MEMORY[0x1E69B3B80] mixTexture:self->_identityTexture withTexture:self->_styleTexture factor:self->_mixedTexture intoTexture:v5 withCommandBuffer:v6];
-    [v5 commit];
+    commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+    *&v6 = intensity;
+    [MEMORY[0x1E69B3B80] mixTexture:self->_identityTexture withTexture:self->_styleTexture factor:self->_mixedTexture intoTexture:commandBuffer withCommandBuffer:v6];
+    [commandBuffer commit];
   }
 
-  self->_styleIntensity = a3;
+  self->_styleIntensity = intensity;
   self->_isApplyingStyle = 1;
 }
 
-- (BOOL)beginPartialApplyStyleWithTexture:(id)a3 rect:(CGRect)a4 intensity:(float)a5 error:(id *)specific
+- (BOOL)beginPartialApplyStyleWithTexture:(id)texture rect:(CGRect)rect intensity:(float)intensity error:(id *)specific
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v64 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  if (!v13)
+  textureCopy = texture;
+  if (!textureCopy)
   {
     v30 = NUAssertLogger_4909();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
     {
       v31 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Invalid parameter not satisfying: %s", "texture != nil"];
       *buf = 138543362;
-      v57 = v31;
+      selfCopy4 = v31;
       _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -976,7 +976,7 @@ LABEL_12:
         self = [v42 callStackSymbols];
         v44 = [(PIParallaxInactiveStyleEngine *)self componentsJoinedByString:@"\n"];
         *buf = 138543618;
-        v57 = specific;
+        selfCopy4 = specific;
         v58 = 2114;
         v59 = *&v44;
         _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
@@ -988,7 +988,7 @@ LABEL_12:
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
       self = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v57 = self;
+      selfCopy4 = self;
       _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -997,7 +997,7 @@ LABEL_12:
     goto LABEL_37;
   }
 
-  v14 = v13;
+  v14 = textureCopy;
   styleEngine = self->_styleEngine;
   if (!styleEngine)
   {
@@ -1006,7 +1006,7 @@ LABEL_12:
     {
       v34 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Not prepared"];
       *buf = 138543362;
-      v57 = v34;
+      selfCopy4 = v34;
       _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -1021,7 +1021,7 @@ LABEL_12:
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
         self = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v57 = self;
+        selfCopy4 = self;
         _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -1040,7 +1040,7 @@ LABEL_37:
       self = [v45 callStackSymbols];
       v47 = [(PIParallaxInactiveStyleEngine *)self componentsJoinedByString:@"\n"];
       *buf = 138543618;
-      v57 = specific;
+      selfCopy4 = specific;
       v58 = 2114;
       v59 = *&v47;
       _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
@@ -1056,7 +1056,7 @@ LABEL_37:
     {
       v37 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Missing style buffer"];
       *buf = 138543362;
-      v57 = v37;
+      selfCopy4 = v37;
       _os_log_error_impl(&dword_1C7694000, v36, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -1071,7 +1071,7 @@ LABEL_37:
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
         self = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v57 = self;
+        selfCopy4 = self;
         _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -1090,7 +1090,7 @@ LABEL_40:
       self = [v48 callStackSymbols];
       v50 = [(PIParallaxInactiveStyleEngine *)self componentsJoinedByString:@"\n"];
       *buf = 138543618;
-      v57 = specific;
+      selfCopy4 = specific;
       v58 = 2114;
       v59 = *&v50;
       _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
@@ -1106,7 +1106,7 @@ LABEL_40:
     {
       v40 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Already partial applying style"];
       *buf = 138543362;
-      v57 = v40;
+      selfCopy4 = v40;
       _os_log_error_impl(&dword_1C7694000, v39, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
@@ -1121,7 +1121,7 @@ LABEL_40:
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
         self = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v57 = self;
+        selfCopy4 = self;
         _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -1142,7 +1142,7 @@ LABEL_43:
       self = [v51 callStackSymbols];
       v53 = [(PIParallaxInactiveStyleEngine *)self componentsJoinedByString:@"\n"];
       *buf = 138543618;
-      v57 = specific;
+      selfCopy4 = specific;
       v58 = 2114;
       v59 = *&v53;
       _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
@@ -1172,7 +1172,7 @@ LABEL_7:
     v28 = self->_expectedImageSize.width;
     v29 = self->_expectedImageSize.height;
     *buf = 134218752;
-    v57 = *&v26;
+    selfCopy4 = *&v26;
     v58 = 2048;
     v59 = v27;
     v60 = 2048;
@@ -1190,7 +1190,7 @@ LABEL_10:
   if (v18)
   {
     v19 = v55;
-    *&v20 = a5;
+    *&v20 = intensity;
     [(PIParallaxInactiveStyleEngine *)self _beginPartialApplyStyleWithIntensity:v20];
   }
 
@@ -1207,10 +1207,10 @@ LABEL_10:
   return v18;
 }
 
-- (BOOL)beginPartialApplyStyleWithPixelBuffer:(__CVBuffer *)a3 rect:(CGRect)a4 intensity:(float)a5 error:(id *)a6
+- (BOOL)beginPartialApplyStyleWithPixelBuffer:(__CVBuffer *)buffer rect:(CGRect)rect intensity:(float)intensity error:(id *)error
 {
   v67 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!buffer)
   {
     v28 = NUAssertLogger_4909();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -1221,43 +1221,43 @@ LABEL_10:
       _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v14 = MEMORY[0x1E69B38E8];
+    bufferCopy = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    a6 = NUAssertLogger_4909();
-    v30 = os_log_type_enabled(a6, OS_LOG_TYPE_ERROR);
+    error = NUAssertLogger_4909();
+    v30 = os_log_type_enabled(error, OS_LOG_TYPE_ERROR);
     if (specific)
     {
       if (v30)
       {
-        specific = dispatch_get_specific(*v14);
+        specific = dispatch_get_specific(*bufferCopy);
         v43 = MEMORY[0x1E696AF00];
         v44 = specific;
-        v14 = [v43 callStackSymbols];
-        v45 = [v14 componentsJoinedByString:@"\n"];
+        bufferCopy = [v43 callStackSymbols];
+        v45 = [bufferCopy componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v60 = specific;
         v61 = 2114;
         v62 = v45;
-        _os_log_error_impl(&dword_1C7694000, a6, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+        _os_log_error_impl(&dword_1C7694000, error, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
       }
     }
 
     else if (v30)
     {
       specific = [MEMORY[0x1E696AF00] callStackSymbols];
-      v14 = [specific componentsJoinedByString:@"\n"];
+      bufferCopy = [specific componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v60 = v14;
-      _os_log_error_impl(&dword_1C7694000, a6, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+      v60 = bufferCopy;
+      _os_log_error_impl(&dword_1C7694000, error, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
     v33 = _NUAssertFailHandler();
     goto LABEL_45;
   }
 
-  v6 = a5;
-  x = a4.origin.x;
-  if (a5 < 0.0 || a5 > 1.0)
+  intensityCopy = intensity;
+  x = rect.origin.x;
+  if (intensity < 0.0 || intensity > 1.0)
   {
     v31 = NUAssertLogger_4909();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
@@ -1268,19 +1268,19 @@ LABEL_10:
       _os_log_error_impl(&dword_1C7694000, v31, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v14 = MEMORY[0x1E69B38E8];
+    bufferCopy = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    a6 = NUAssertLogger_4909();
-    v33 = os_log_type_enabled(a6, OS_LOG_TYPE_ERROR);
+    error = NUAssertLogger_4909();
+    v33 = os_log_type_enabled(error, OS_LOG_TYPE_ERROR);
     if (!specific)
     {
       if (v33)
       {
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
-        v14 = [specific componentsJoinedByString:@"\n"];
+        bufferCopy = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v60 = v14;
-        _os_log_error_impl(&dword_1C7694000, a6, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+        v60 = bufferCopy;
+        _os_log_error_impl(&dword_1C7694000, error, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
 LABEL_47:
@@ -1292,16 +1292,16 @@ LABEL_47:
 LABEL_45:
     if (v33)
     {
-      specific = dispatch_get_specific(*v14);
+      specific = dispatch_get_specific(*bufferCopy);
       v46 = MEMORY[0x1E696AF00];
       v47 = specific;
-      v14 = [v46 callStackSymbols];
-      v48 = [v14 componentsJoinedByString:@"\n"];
+      bufferCopy = [v46 callStackSymbols];
+      v48 = [bufferCopy componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v60 = specific;
       v61 = 2114;
       v62 = v48;
-      _os_log_error_impl(&dword_1C7694000, a6, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+      _os_log_error_impl(&dword_1C7694000, error, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
     }
 
     goto LABEL_47;
@@ -1319,19 +1319,19 @@ LABEL_45:
       _os_log_error_impl(&dword_1C7694000, v34, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v14 = MEMORY[0x1E69B38E8];
+    bufferCopy = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    a6 = NUAssertLogger_4909();
-    v36 = os_log_type_enabled(a6, OS_LOG_TYPE_ERROR);
+    error = NUAssertLogger_4909();
+    v36 = os_log_type_enabled(error, OS_LOG_TYPE_ERROR);
     if (!specific)
     {
       if (v36)
       {
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
-        v14 = [specific componentsJoinedByString:@"\n"];
+        bufferCopy = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v60 = v14;
-        _os_log_error_impl(&dword_1C7694000, a6, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+        v60 = bufferCopy;
+        _os_log_error_impl(&dword_1C7694000, error, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
 LABEL_50:
@@ -1343,16 +1343,16 @@ LABEL_50:
 LABEL_48:
     if (v36)
     {
-      specific = dispatch_get_specific(*v14);
+      specific = dispatch_get_specific(*bufferCopy);
       v49 = MEMORY[0x1E696AF00];
       v50 = specific;
-      v14 = [v49 callStackSymbols];
-      v51 = [v14 componentsJoinedByString:@"\n"];
+      bufferCopy = [v49 callStackSymbols];
+      v51 = [bufferCopy componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v60 = specific;
       v61 = 2114;
       v62 = v51;
-      _os_log_error_impl(&dword_1C7694000, a6, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+      _os_log_error_impl(&dword_1C7694000, error, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
     }
 
     goto LABEL_50;
@@ -1369,19 +1369,19 @@ LABEL_48:
       _os_log_error_impl(&dword_1C7694000, v37, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v14 = MEMORY[0x1E69B38E8];
+    bufferCopy = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    a6 = NUAssertLogger_4909();
-    v39 = os_log_type_enabled(a6, OS_LOG_TYPE_ERROR);
+    error = NUAssertLogger_4909();
+    v39 = os_log_type_enabled(error, OS_LOG_TYPE_ERROR);
     if (!specific)
     {
       if (v39)
       {
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
-        v14 = [specific componentsJoinedByString:@"\n"];
+        bufferCopy = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v60 = v14;
-        _os_log_error_impl(&dword_1C7694000, a6, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+        v60 = bufferCopy;
+        _os_log_error_impl(&dword_1C7694000, error, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
 LABEL_53:
@@ -1393,16 +1393,16 @@ LABEL_53:
 LABEL_51:
     if (v39)
     {
-      specific = dispatch_get_specific(*v14);
+      specific = dispatch_get_specific(*bufferCopy);
       v52 = MEMORY[0x1E696AF00];
       v53 = specific;
-      v14 = [v52 callStackSymbols];
-      v54 = [v14 componentsJoinedByString:@"\n"];
+      bufferCopy = [v52 callStackSymbols];
+      v54 = [bufferCopy componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v60 = specific;
       v61 = 2114;
       v62 = v54;
-      _os_log_error_impl(&dword_1C7694000, a6, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+      _os_log_error_impl(&dword_1C7694000, error, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
     }
 
     goto LABEL_53;
@@ -1419,19 +1419,19 @@ LABEL_51:
       _os_log_error_impl(&dword_1C7694000, v40, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v14 = MEMORY[0x1E69B38E8];
+    bufferCopy = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
-    a6 = NUAssertLogger_4909();
-    v42 = os_log_type_enabled(a6, OS_LOG_TYPE_ERROR);
+    error = NUAssertLogger_4909();
+    v42 = os_log_type_enabled(error, OS_LOG_TYPE_ERROR);
     if (!specific)
     {
       if (v42)
       {
         specific = [MEMORY[0x1E696AF00] callStackSymbols];
-        v14 = [specific componentsJoinedByString:@"\n"];
+        bufferCopy = [specific componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v60 = v14;
-        _os_log_error_impl(&dword_1C7694000, a6, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
+        v60 = bufferCopy;
+        _os_log_error_impl(&dword_1C7694000, error, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
 LABEL_56:
@@ -1445,28 +1445,28 @@ LABEL_57:
 LABEL_54:
     if (v42)
     {
-      specific = dispatch_get_specific(*v14);
+      specific = dispatch_get_specific(*bufferCopy);
       v55 = MEMORY[0x1E696AF00];
       v56 = specific;
-      v14 = [v55 callStackSymbols];
-      v57 = [v14 componentsJoinedByString:@"\n"];
+      bufferCopy = [v55 callStackSymbols];
+      v57 = [bufferCopy componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v60 = specific;
       v61 = 2114;
       v62 = v57;
-      _os_log_error_impl(&dword_1C7694000, a6, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
+      _os_log_error_impl(&dword_1C7694000, error, OS_LOG_TYPE_ERROR, "job: %{public}@\nTrace:\n%{public}@", buf, 0x16u);
     }
 
     goto LABEL_56;
   }
 
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  v14 = a3;
-  self->_actualImageSize.width = a4.size.width;
-  self->_actualImageSize.height = a4.size.height;
-  if (fabs(a4.size.width * self->_expectedImageSize.height / (a4.size.height * self->_expectedImageSize.width) + -1.0) <= 0.001)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  bufferCopy = buffer;
+  self->_actualImageSize.width = rect.size.width;
+  self->_actualImageSize.height = rect.size.height;
+  if (fabs(rect.size.width * self->_expectedImageSize.height / (rect.size.height * self->_expectedImageSize.width) + -1.0) <= 0.001)
   {
     goto LABEL_13;
   }
@@ -1496,7 +1496,7 @@ LABEL_11:
   }
 
 LABEL_13:
-  v16 = [objc_alloc(MEMORY[0x1E69B39C0]) initWithCVPixelBuffer:v14];
+  v16 = [objc_alloc(MEMORY[0x1E69B39C0]) initWithCVPixelBuffer:bufferCopy];
   v17 = specific[1];
   v58 = 0;
   v18 = [v17 generateThumbnailFromBuffer:v16 rect:&v58 error:{x, y, width, height}];
@@ -1507,98 +1507,98 @@ LABEL_13:
   v22 = specific[12];
   if (v22)
   {
-    *&v21 = v6;
+    *&v21 = intensityCopy;
     [specific _beginPartialApplyStyleWithIntensity:v21];
   }
 
   else
   {
-    *a6 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to generate thumbnail" object:specific underlyingError:v19];
+    *error = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to generate thumbnail" object:specific underlyingError:v19];
   }
 
   return v22 != 0;
 }
 
-- (BOOL)beginPartialApplyStyleWithTexture:(id)a3 intensity:(float)a4 error:(id *)a5
+- (BOOL)beginPartialApplyStyleWithTexture:(id)texture intensity:(float)intensity error:(id *)error
 {
-  v8 = a3;
-  v9 = [v8 width];
-  v10 = [v8 height];
-  *&v11 = a4;
-  LOBYTE(a5) = [(PIParallaxInactiveStyleEngine *)self beginPartialApplyStyleWithTexture:v8 rect:a5 intensity:0.0 error:0.0, v9, v10, v11];
+  textureCopy = texture;
+  width = [textureCopy width];
+  height = [textureCopy height];
+  *&v11 = intensity;
+  LOBYTE(error) = [(PIParallaxInactiveStyleEngine *)self beginPartialApplyStyleWithTexture:textureCopy rect:error intensity:0.0 error:0.0, width, height, v11];
 
-  return a5;
+  return error;
 }
 
-- (BOOL)beginPartialApplyStyleWithPixelBuffer:(__CVBuffer *)a3 intensity:(float)a4 error:(id *)a5
+- (BOOL)beginPartialApplyStyleWithPixelBuffer:(__CVBuffer *)buffer intensity:(float)intensity error:(id *)error
 {
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  *&v11 = a4;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  *&v11 = intensity;
 
-  return [(PIParallaxInactiveStyleEngine *)self beginPartialApplyStyleWithPixelBuffer:a3 rect:a5 intensity:0.0 error:0.0, Width, Height, v11];
+  return [(PIParallaxInactiveStyleEngine *)self beginPartialApplyStyleWithPixelBuffer:buffer rect:error intensity:0.0 error:0.0, Width, Height, v11];
 }
 
-- (void)applyStyleToTexture:(id)a3 rect:(CGRect)a4 intensity:(float)a5 completion:(id)a6
+- (void)applyStyleToTexture:(id)texture rect:(CGRect)rect intensity:(float)intensity completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v13 = a3;
-  v14 = a6;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  textureCopy = texture;
+  completionCopy = completion;
   v21 = 0;
-  *&v15 = a5;
-  v16 = [(PIParallaxInactiveStyleEngine *)self beginPartialApplyStyleWithTexture:v13 rect:&v21 intensity:x error:y, width, height, v15];
+  *&v15 = intensity;
+  v16 = [(PIParallaxInactiveStyleEngine *)self beginPartialApplyStyleWithTexture:textureCopy rect:&v21 intensity:x error:y, width, height, v15];
   v17 = v21;
   if (v16)
   {
     v20 = 0;
-    v18 = [(PIParallaxInactiveStyleEngine *)self partialApplyStyleToTexture:v13 at:&v20 subrect:-x error:-y, x, y, width, height];
+    height = [(PIParallaxInactiveStyleEngine *)self partialApplyStyleToTexture:textureCopy at:&v20 subrect:-x error:-y, x, y, width, height];
     v19 = v20;
 
-    if (v18)
+    if (height)
     {
-      [(PIParallaxInactiveStyleEngine *)self endPartialApplyStyleWithCompletion:v14];
+      [(PIParallaxInactiveStyleEngine *)self endPartialApplyStyleWithCompletion:completionCopy];
     }
 
     else
     {
       [(PIParallaxInactiveStyleEngine *)self endPartialApplyStyleWithCompletion:0];
-      if (v14)
+      if (completionCopy)
       {
-        v14[2](v14, 0, v19);
+        completionCopy[2](completionCopy, 0, v19);
       }
     }
 
     v17 = v19;
   }
 
-  else if (v14)
+  else if (completionCopy)
   {
-    v14[2](v14, 0, v17);
+    completionCopy[2](completionCopy, 0, v17);
   }
 }
 
-- (void)applyStyleToTexture:(id)a3 intensity:(float)a4 completion:(id)a5
+- (void)applyStyleToTexture:(id)texture intensity:(float)intensity completion:(id)completion
 {
-  v8 = a5;
-  v12 = a3;
-  v9 = [v12 width];
-  v10 = [v12 height];
-  *&v11 = a4;
-  [(PIParallaxInactiveStyleEngine *)self applyStyleToTexture:v12 rect:v8 intensity:0.0 completion:0.0, v9, v10, v11];
+  completionCopy = completion;
+  textureCopy = texture;
+  width = [textureCopy width];
+  height = [textureCopy height];
+  *&v11 = intensity;
+  [(PIParallaxInactiveStyleEngine *)self applyStyleToTexture:textureCopy rect:completionCopy intensity:0.0 completion:0.0, width, height, v11];
 }
 
-- (void)applyStyleToPixelBuffer:(__CVBuffer *)a3 rect:(CGRect)a4 intensity:(float)a5 completion:(id)a6
+- (void)applyStyleToPixelBuffer:(__CVBuffer *)buffer rect:(CGRect)rect intensity:(float)intensity completion:(id)completion
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v39 = *MEMORY[0x1E69E9840];
-  v13 = a6;
-  if (!a3)
+  completionCopy = completion;
+  if (!buffer)
   {
     v20 = NUAssertLogger_4909();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -1620,8 +1620,8 @@ LABEL_13:
         v28 = dispatch_get_specific(*v22);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v31 = [v29 callStackSymbols];
-        v32 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v32 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v36 = v28;
         v37 = 2114;
@@ -1632,8 +1632,8 @@ LABEL_13:
 
     else if (v25)
     {
-      v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v27 = [v26 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v36 = v27;
       _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1642,18 +1642,18 @@ LABEL_13:
     _NUAssertFailHandler();
   }
 
-  v15 = v13;
+  v15 = completionCopy;
   v34 = 0;
-  *&v14 = a5;
-  v16 = [(PIParallaxInactiveStyleEngine *)self beginPartialApplyStyleWithPixelBuffer:a3 rect:&v34 intensity:x error:y, width, height, v14];
+  *&v14 = intensity;
+  v16 = [(PIParallaxInactiveStyleEngine *)self beginPartialApplyStyleWithPixelBuffer:buffer rect:&v34 intensity:x error:y, width, height, v14];
   v17 = v34;
   if (v16)
   {
     v33 = 0;
-    v18 = [(PIParallaxInactiveStyleEngine *)self partialApplyStyleToPixelBuffer:a3 at:&v33 subrect:-x error:-y, x, y, width, height];
+    height = [(PIParallaxInactiveStyleEngine *)self partialApplyStyleToPixelBuffer:buffer at:&v33 subrect:-x error:-y, x, y, width, height];
     v19 = v33;
 
-    if (v18)
+    if (height)
     {
       [(PIParallaxInactiveStyleEngine *)self endPartialApplyStyleWithCompletion:v15];
     }
@@ -1676,20 +1676,20 @@ LABEL_13:
   }
 }
 
-- (void)applyStyleToPixelBuffer:(__CVBuffer *)a3 intensity:(float)a4 completion:(id)a5
+- (void)applyStyleToPixelBuffer:(__CVBuffer *)buffer intensity:(float)intensity completion:(id)completion
 {
-  v11 = a5;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  *&v10 = a4;
-  [(PIParallaxInactiveStyleEngine *)self applyStyleToPixelBuffer:a3 rect:v11 intensity:0.0 completion:0.0, Width, Height, v10];
+  completionCopy = completion;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  *&v10 = intensity;
+  [(PIParallaxInactiveStyleEngine *)self applyStyleToPixelBuffer:buffer rect:completionCopy intensity:0.0 completion:0.0, Width, Height, v10];
 }
 
-- (BOOL)prepareForApplyingStyle:(id)a3 error:(id *)a4
+- (BOOL)prepareForApplyingStyle:(id)style error:(id *)error
 {
   v85 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  styleCopy = style;
+  if (!styleCopy)
   {
     v48 = NUAssertLogger_4909();
     if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
@@ -1700,7 +1700,7 @@ LABEL_13:
       _os_log_error_impl(&dword_1C7694000, v48, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v50 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v52 = NUAssertLogger_4909();
     v53 = os_log_type_enabled(v52, OS_LOG_TYPE_ERROR);
@@ -1708,11 +1708,11 @@ LABEL_13:
     {
       if (v53)
       {
-        v66 = dispatch_get_specific(*v50);
+        v66 = dispatch_get_specific(*callStackSymbols);
         v67 = MEMORY[0x1E696AF00];
         v68 = v66;
-        v50 = [v67 callStackSymbols];
-        v69 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v67 callStackSymbols];
+        v69 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v82 = v66;
         v83 = 2114;
@@ -1723,10 +1723,10 @@ LABEL_13:
 
     else if (v53)
     {
-      v54 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v50 = [v54 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v82 = v50;
+      v82 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v52, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -1734,7 +1734,7 @@ LABEL_13:
     goto LABEL_49;
   }
 
-  if (!a4)
+  if (!error)
   {
     v55 = NUAssertLogger_4909();
     if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
@@ -1745,7 +1745,7 @@ LABEL_13:
       _os_log_error_impl(&dword_1C7694000, v55, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v50 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v57 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v52 = NUAssertLogger_4909();
     v58 = os_log_type_enabled(v52, OS_LOG_TYPE_ERROR);
@@ -1753,10 +1753,10 @@ LABEL_13:
     {
       if (v58)
       {
-        v59 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v50 = [v59 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v82 = v50;
+        v82 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v52, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -1769,11 +1769,11 @@ LABEL_51:
 LABEL_49:
     if (v58)
     {
-      v70 = dispatch_get_specific(*v50);
+      v70 = dispatch_get_specific(*callStackSymbols);
       v71 = MEMORY[0x1E696AF00];
       v72 = v70;
-      v50 = [v71 callStackSymbols];
-      v73 = [v50 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v71 callStackSymbols];
+      v73 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v82 = v70;
       v83 = 2114;
@@ -1795,7 +1795,7 @@ LABEL_49:
       _os_log_error_impl(&dword_1C7694000, v60, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v50 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v62 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v52 = NUAssertLogger_4909();
     v63 = os_log_type_enabled(v52, OS_LOG_TYPE_ERROR);
@@ -1803,8 +1803,8 @@ LABEL_49:
     {
       if (v63)
       {
-        v64 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v65 = [v64 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v65 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v82 = v65;
         _os_log_error_impl(&dword_1C7694000, v52, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1816,11 +1816,11 @@ LABEL_49:
 LABEL_52:
     if (v63)
     {
-      v74 = dispatch_get_specific(*v50);
+      v74 = dispatch_get_specific(*callStackSymbols);
       v75 = MEMORY[0x1E696AF00];
       v76 = v74;
-      v77 = [v75 callStackSymbols];
-      v78 = [v77 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v75 callStackSymbols];
+      v78 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v82 = v74;
       v83 = 2114;
@@ -1833,9 +1833,9 @@ LABEL_54:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v8 = [v6 data];
-  v9 = -[MTLDevice newBufferWithBytes:length:options:](self->_device, "newBufferWithBytes:length:options:", [v8 bytes], objc_msgSend(v8, "length"), 0);
+  v7 = styleCopy;
+  data = [styleCopy data];
+  v9 = -[MTLDevice newBufferWithBytes:length:options:](self->_device, "newBufferWithBytes:length:options:", [data bytes], objc_msgSend(data, "length"), 0);
   styleBuffer = self->_styleBuffer;
   self->_styleBuffer = v9;
 
@@ -1844,9 +1844,9 @@ LABEL_54:
     [v7 imageSize];
     self->_expectedImageSize.width = v11;
     self->_expectedImageSize.height = v12;
-    v13 = [v7 configuration];
-    v14 = [v7 tuningParameters];
-    v15 = [MEMORY[0x1E69B3CD0] styleEngineForUsage:1 withMetalCommandQueue:self->_commandQueue configuration:v13 tuningParams:v14];
+    configuration = [v7 configuration];
+    tuningParameters = [v7 tuningParameters];
+    v15 = [MEMORY[0x1E69B3CD0] styleEngineForUsage:1 withMetalCommandQueue:self->_commandQueue configuration:configuration tuningParams:tuningParameters];
     styleEngine = self->_styleEngine;
     self->_styleEngine = v15;
 
@@ -1860,14 +1860,14 @@ LABEL_54:
       self->_styleEngine = 0;
 
       [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to prepare engine" object:self underlyingError:v19];
-      *a4 = v26 = 0;
+      *error = v26 = 0;
 LABEL_29:
 
       goto LABEL_30;
     }
 
-    v21 = [(NUStyleEngine *)v20 thumbnailTextureSize];
-    v23 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:115 width:v21 height:v22 mipmapped:0];
+    thumbnailTextureSize = [(NUStyleEngine *)v20 thumbnailTextureSize];
+    v23 = [MEMORY[0x1E69741C0] texture2DDescriptorWithPixelFormat:115 width:thumbnailTextureSize height:v22 mipmapped:0];
     [v23 setUsage:3];
     [v23 setStorageMode:2];
     v24 = [(MTLDevice *)self->_device newTextureWithDescriptor:v23];
@@ -1894,12 +1894,12 @@ LABEL_29:
 
           if (self->_mixedBuffer)
           {
-            v33 = [v13 objectForKeyedSubscript:@"useFloat16"];
-            v34 = [v33 BOOLValue];
+            v33 = [configuration objectForKeyedSubscript:@"useFloat16"];
+            bOOLValue = [v33 BOOLValue];
 
             v35 = MEMORY[0x1E69741C0];
-            v36 = [v8 length];
-            if (v34)
+            v36 = [data length];
+            if (bOOLValue)
             {
               v37 = 25;
             }
@@ -1910,21 +1910,21 @@ LABEL_29:
             }
 
             v38 = 1;
-            if (!v34)
+            if (!bOOLValue)
             {
               v38 = 2;
             }
 
             v39 = [v35 texture2DDescriptorWithPixelFormat:v37 width:v36 >> v38 height:1 mipmapped:0];
-            v40 = -[MTLBuffer newTextureWithDescriptor:offset:bytesPerRow:](self->_styleBuffer, "newTextureWithDescriptor:offset:bytesPerRow:", v39, 0, [v8 length]);
+            v40 = -[MTLBuffer newTextureWithDescriptor:offset:bytesPerRow:](self->_styleBuffer, "newTextureWithDescriptor:offset:bytesPerRow:", v39, 0, [data length]);
             styleTexture = self->_styleTexture;
             self->_styleTexture = v40;
 
-            v42 = -[MTLBuffer newTextureWithDescriptor:offset:bytesPerRow:](self->_identityBuffer, "newTextureWithDescriptor:offset:bytesPerRow:", v39, 0, [v8 length]);
+            v42 = -[MTLBuffer newTextureWithDescriptor:offset:bytesPerRow:](self->_identityBuffer, "newTextureWithDescriptor:offset:bytesPerRow:", v39, 0, [data length]);
             identityTexture = self->_identityTexture;
             self->_identityTexture = v42;
 
-            v44 = -[MTLBuffer newTextureWithDescriptor:offset:bytesPerRow:](self->_mixedBuffer, "newTextureWithDescriptor:offset:bytesPerRow:", v39, 0, [v8 length]);
+            v44 = -[MTLBuffer newTextureWithDescriptor:offset:bytesPerRow:](self->_mixedBuffer, "newTextureWithDescriptor:offset:bytesPerRow:", v39, 0, [data length]);
             mixedTexture = self->_mixedTexture;
             self->_mixedTexture = v44;
 
@@ -1936,7 +1936,7 @@ LABEL_29:
 
             else
             {
-              *a4 = [MEMORY[0x1E69B3A48] failureError:@"Failed to allocate style textures" object:self];
+              *error = [MEMORY[0x1E69B3A48] failureError:@"Failed to allocate style textures" object:self];
 
               v26 = 0;
             }
@@ -1953,7 +1953,7 @@ LABEL_29:
         }
 
         v26 = 0;
-        *a4 = v46;
+        *error = v46;
 LABEL_28:
 
         v19 = v27;
@@ -1966,7 +1966,7 @@ LABEL_28:
     else
     {
       [MEMORY[0x1E69B3A48] failureError:@"Failed to allocate thumbnail texture" object:self];
-      *a4 = v26 = 0;
+      *error = v26 = 0;
     }
 
     v27 = v19;
@@ -1974,27 +1974,27 @@ LABEL_28:
   }
 
   [MEMORY[0x1E69B3A48] failureError:@"Failed to allocate style buffer" object:self];
-  *a4 = v26 = 0;
+  *error = v26 = 0;
 LABEL_30:
 
   return v26;
 }
 
-- (void)learnStyleFromTexture:(id)a3 rect:(CGRect)a4 toTexture:(id)a5 rect:(CGRect)a6 completion:(id)a7
+- (void)learnStyleFromTexture:(id)texture rect:(CGRect)rect toTexture:(id)toTexture rect:(CGRect)a6 completion:(id)completion
 {
   height = a6.size.height;
   width = a6.size.width;
   y = a6.origin.y;
   x = a6.origin.x;
-  v13 = a4.size.height;
-  v14 = a4.size.width;
-  v15 = a4.origin.y;
-  v16 = a4.origin.x;
+  v13 = rect.size.height;
+  v14 = rect.size.width;
+  v15 = rect.origin.y;
+  v16 = rect.origin.x;
   v76 = *MEMORY[0x1E69E9840];
-  v18 = a3;
-  v19 = a5;
-  v20 = a7;
-  if (!v18)
+  textureCopy = texture;
+  toTextureCopy = toTexture;
+  completionCopy = completion;
+  if (!textureCopy)
   {
     v29 = NUAssertLogger_4909();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -2005,7 +2005,7 @@ LABEL_30:
       _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_4909();
     v34 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -2013,11 +2013,11 @@ LABEL_30:
     {
       if (v34)
       {
-        v52 = dispatch_get_specific(*v31);
+        v52 = dispatch_get_specific(*callStackSymbols);
         v53 = MEMORY[0x1E696AF00];
         v54 = v52;
-        v31 = [v53 callStackSymbols];
-        v55 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v53 callStackSymbols];
+        v55 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v73 = v52;
         v74 = 2114;
@@ -2028,10 +2028,10 @@ LABEL_30:
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v73 = v31;
+      v73 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -2039,7 +2039,7 @@ LABEL_30:
     goto LABEL_37;
   }
 
-  if (!v19)
+  if (!toTextureCopy)
   {
     v36 = NUAssertLogger_4909();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -2050,7 +2050,7 @@ LABEL_30:
       _os_log_error_impl(&dword_1C7694000, v36, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v38 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_4909();
     v39 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -2058,10 +2058,10 @@ LABEL_30:
     {
       if (v39)
       {
-        v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v31 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v73 = v31;
+        v73 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -2074,11 +2074,11 @@ LABEL_39:
 LABEL_37:
     if (v39)
     {
-      v56 = dispatch_get_specific(*v31);
+      v56 = dispatch_get_specific(*callStackSymbols);
       v57 = MEMORY[0x1E696AF00];
       v58 = v56;
-      v31 = [v57 callStackSymbols];
-      v59 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v57 callStackSymbols];
+      v59 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v73 = v56;
       v74 = 2114;
@@ -2089,8 +2089,8 @@ LABEL_37:
     goto LABEL_39;
   }
 
-  v21 = v20;
-  if (!v20)
+  v21 = completionCopy;
+  if (!completionCopy)
   {
     v41 = NUAssertLogger_4909();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -2101,7 +2101,7 @@ LABEL_37:
       _os_log_error_impl(&dword_1C7694000, v41, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v43 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_4909();
     v44 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -2109,10 +2109,10 @@ LABEL_37:
     {
       if (v44)
       {
-        v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v31 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v73 = v31;
+        v73 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -2125,11 +2125,11 @@ LABEL_42:
 LABEL_40:
     if (v44)
     {
-      v60 = dispatch_get_specific(*v31);
+      v60 = dispatch_get_specific(*callStackSymbols);
       v61 = MEMORY[0x1E696AF00];
       v62 = v60;
-      v31 = [v61 callStackSymbols];
-      v63 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v61 callStackSymbols];
+      v63 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v73 = v60;
       v74 = 2114;
@@ -2152,7 +2152,7 @@ LABEL_40:
       _os_log_error_impl(&dword_1C7694000, v46, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v48 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_4909();
     v49 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -2160,8 +2160,8 @@ LABEL_40:
     {
       if (v49)
       {
-        v50 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v51 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v51 = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v73 = v51;
         _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2173,11 +2173,11 @@ LABEL_40:
 LABEL_43:
     if (v49)
     {
-      v64 = dispatch_get_specific(*v31);
+      v64 = dispatch_get_specific(*callStackSymbols);
       v65 = MEMORY[0x1E696AF00];
       v66 = v64;
-      v67 = [v65 callStackSymbols];
-      v68 = [v67 componentsJoinedByString:@"\n"];
+      callStackSymbols6 = [v65 callStackSymbols];
+      v68 = [callStackSymbols6 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v73 = v64;
       v74 = 2114;
@@ -2201,9 +2201,9 @@ LABEL_45:
     v25 = [MEMORY[0x1E696B098] valueWithBytes:v71 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
     v26 = @"Source aspect ratio mismatch";
 LABEL_9:
-    v27 = [v24 mismatchError:v26 object:v25];
+    height = [v24 mismatchError:v26 object:v25];
 
-    (v21)[2](v21, 0, v27);
+    (v21)[2](v21, 0, height);
     goto LABEL_10;
   }
 
@@ -2220,10 +2220,10 @@ LABEL_9:
   }
 
   v69 = 0;
-  v27 = [(NUStyleEngine *)styleEngine learnStyleFromTexture:v18 rect:v19 toTexture:&v69 rect:v16 error:v15, v14, v13, x, y, width, height];
-  if (v27)
+  height = [(NUStyleEngine *)styleEngine learnStyleFromTexture:textureCopy rect:toTextureCopy toTexture:&v69 rect:v16 error:v15, v14, v13, x, y, width, height];
+  if (height)
   {
-    [(PIParallaxInactiveStyleEngine *)self generateStyleDataFromStyleBuffer:v27 completion:v21];
+    [(PIParallaxInactiveStyleEngine *)self generateStyleDataFromStyleBuffer:height completion:v21];
   }
 
   else
@@ -2235,38 +2235,38 @@ LABEL_9:
 LABEL_10:
 }
 
-- (void)learnStyleFromTexture:(id)a3 toTexture:(id)a4 completion:(id)a5
+- (void)learnStyleFromTexture:(id)texture toTexture:(id)toTexture completion:(id)completion
 {
   v8 = *MEMORY[0x1E695EFF8];
   v9 = *(MEMORY[0x1E695EFF8] + 8);
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  -[PIParallaxInactiveStyleEngine learnStyleFromTexture:rect:toTexture:rect:completion:](self, "learnStyleFromTexture:rect:toTexture:rect:completion:", v12, v11, v10, v8, v9, [v12 width], objc_msgSend(v12, "height"), v8, v9, objc_msgSend(v11, "width"), objc_msgSend(v11, "height"));
+  completionCopy = completion;
+  toTextureCopy = toTexture;
+  textureCopy = texture;
+  -[PIParallaxInactiveStyleEngine learnStyleFromTexture:rect:toTexture:rect:completion:](self, "learnStyleFromTexture:rect:toTexture:rect:completion:", textureCopy, toTextureCopy, completionCopy, v8, v9, [textureCopy width], objc_msgSend(textureCopy, "height"), v8, v9, objc_msgSend(toTextureCopy, "width"), objc_msgSend(toTextureCopy, "height"));
 }
 
-- (void)generateStyleDataFromStyleBuffer:(id)a3 completion:(id)a4
+- (void)generateStyleDataFromStyleBuffer:(id)buffer completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  bufferCopy = buffer;
+  completionCopy = completion;
   expectedImageSize = self->_expectedImageSize;
-  v8 = [(NUStyleEngine *)self->_styleEngine configuration];
-  v9 = [(NUStyleEngine *)self->_styleEngine tuningParameters];
-  v10 = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
+  configuration = [(NUStyleEngine *)self->_styleEngine configuration];
+  tuningParameters = [(NUStyleEngine *)self->_styleEngine tuningParameters];
+  commandBuffer = [(MTLCommandQueue *)self->_commandQueue commandBuffer];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __77__PIParallaxInactiveStyleEngine_generateStyleDataFromStyleBuffer_completion___block_invoke;
   v18 = &unk_1E82AA1F0;
-  v19 = v6;
-  v20 = v8;
-  v21 = v9;
-  v22 = v7;
-  v11 = v7;
-  v12 = v9;
-  v13 = v8;
-  v14 = v6;
-  [v10 addCompletedHandler:&v15];
-  [v10 commit];
+  v19 = bufferCopy;
+  v20 = configuration;
+  v21 = tuningParameters;
+  v22 = completionCopy;
+  v11 = completionCopy;
+  v12 = tuningParameters;
+  v13 = configuration;
+  v14 = bufferCopy;
+  [commandBuffer addCompletedHandler:&v15];
+  [commandBuffer commit];
 }
 
 void __77__PIParallaxInactiveStyleEngine_generateStyleDataFromStyleBuffer_completion___block_invoke(uint64_t a1)
@@ -2279,19 +2279,19 @@ void __77__PIParallaxInactiveStyleEngine_generateStyleDataFromStyleBuffer_comple
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)learnStyleFromPixelBuffer:(__CVBuffer *)a3 rect:(CGRect)a4 toPixelBuffer:(__CVBuffer *)a5 rect:(CGRect)a6 completion:(id)a7
+- (void)learnStyleFromPixelBuffer:(__CVBuffer *)buffer rect:(CGRect)rect toPixelBuffer:(__CVBuffer *)pixelBuffer rect:(CGRect)a6 completion:(id)completion
 {
   height = a6.size.height;
   width = a6.size.width;
   y = a6.origin.y;
   x = a6.origin.x;
-  v12 = a4.size.height;
-  v13 = a4.size.width;
-  v14 = a4.origin.y;
-  v15 = a4.origin.x;
+  v12 = rect.size.height;
+  v13 = rect.size.width;
+  v14 = rect.origin.y;
+  v15 = rect.origin.x;
   v94 = *MEMORY[0x1E69E9840];
-  v18 = a7;
-  if (!a3)
+  completionCopy = completion;
+  if (!buffer)
   {
     v29 = NUAssertLogger_4909();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
@@ -2302,7 +2302,7 @@ void __77__PIParallaxInactiveStyleEngine_generateStyleDataFromStyleBuffer_comple
       _os_log_error_impl(&dword_1C7694000, v29, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_4909();
     v34 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -2310,11 +2310,11 @@ void __77__PIParallaxInactiveStyleEngine_generateStyleDataFromStyleBuffer_comple
     {
       if (v34)
       {
-        v62 = dispatch_get_specific(*v31);
+        v62 = dispatch_get_specific(*callStackSymbols);
         v63 = MEMORY[0x1E696AF00];
         v64 = v62;
-        v31 = [v63 callStackSymbols];
-        v65 = [v31 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v63 callStackSymbols];
+        v65 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v91 = v62;
         v92 = 2114;
@@ -2325,10 +2325,10 @@ void __77__PIParallaxInactiveStyleEngine_generateStyleDataFromStyleBuffer_comple
 
     else if (v34)
     {
-      v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v91 = v31;
+      v91 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -2336,7 +2336,7 @@ void __77__PIParallaxInactiveStyleEngine_generateStyleDataFromStyleBuffer_comple
     goto LABEL_49;
   }
 
-  if (!a5)
+  if (!pixelBuffer)
   {
     v36 = NUAssertLogger_4909();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
@@ -2347,7 +2347,7 @@ void __77__PIParallaxInactiveStyleEngine_generateStyleDataFromStyleBuffer_comple
       _os_log_error_impl(&dword_1C7694000, v36, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v38 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_4909();
     v39 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -2355,10 +2355,10 @@ void __77__PIParallaxInactiveStyleEngine_generateStyleDataFromStyleBuffer_comple
     {
       if (v39)
       {
-        v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v31 = [v40 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v91 = v31;
+        v91 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -2371,11 +2371,11 @@ LABEL_51:
 LABEL_49:
     if (v39)
     {
-      v66 = dispatch_get_specific(*v31);
+      v66 = dispatch_get_specific(*callStackSymbols);
       v67 = MEMORY[0x1E696AF00];
       v68 = v66;
-      v31 = [v67 callStackSymbols];
-      v69 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v67 callStackSymbols];
+      v69 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v91 = v66;
       v92 = 2114;
@@ -2386,8 +2386,8 @@ LABEL_49:
     goto LABEL_51;
   }
 
-  v19 = v18;
-  if (!v18)
+  v19 = completionCopy;
+  if (!completionCopy)
   {
     v41 = NUAssertLogger_4909();
     if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
@@ -2398,7 +2398,7 @@ LABEL_49:
       _os_log_error_impl(&dword_1C7694000, v41, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v43 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_4909();
     v44 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -2406,10 +2406,10 @@ LABEL_49:
     {
       if (v44)
       {
-        v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v31 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v91 = v31;
+        v91 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -2422,11 +2422,11 @@ LABEL_54:
 LABEL_52:
     if (v44)
     {
-      v70 = dispatch_get_specific(*v31);
+      v70 = dispatch_get_specific(*callStackSymbols);
       v71 = MEMORY[0x1E696AF00];
       v72 = v70;
-      v31 = [v71 callStackSymbols];
-      v73 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v71 callStackSymbols];
+      v73 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v91 = v70;
       v92 = 2114;
@@ -2452,7 +2452,7 @@ LABEL_52:
       _os_log_error_impl(&dword_1C7694000, v46, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v48 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_4909();
     v49 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -2460,10 +2460,10 @@ LABEL_52:
     {
       if (v49)
       {
-        v50 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v31 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v91 = v31;
+        v91 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -2476,11 +2476,11 @@ LABEL_57:
 LABEL_55:
     if (v49)
     {
-      v74 = dispatch_get_specific(*v31);
+      v74 = dispatch_get_specific(*callStackSymbols);
       v75 = MEMORY[0x1E696AF00];
       v76 = v74;
-      v31 = [v75 callStackSymbols];
-      v77 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v75 callStackSymbols];
+      v77 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v91 = v74;
       v92 = 2114;
@@ -2506,7 +2506,7 @@ LABEL_55:
       _os_log_error_impl(&dword_1C7694000, v51, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v53 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_4909();
     v54 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -2514,10 +2514,10 @@ LABEL_55:
     {
       if (v54)
       {
-        v55 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v31 = [v55 componentsJoinedByString:@"\n"];
+        callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols6 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v91 = v31;
+        v91 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -2530,11 +2530,11 @@ LABEL_60:
 LABEL_58:
     if (v54)
     {
-      v78 = dispatch_get_specific(*v31);
+      v78 = dispatch_get_specific(*callStackSymbols);
       v79 = MEMORY[0x1E696AF00];
       v80 = v78;
-      v31 = [v79 callStackSymbols];
-      v81 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v79 callStackSymbols];
+      v81 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v91 = v78;
       v92 = 2114;
@@ -2556,7 +2556,7 @@ LABEL_58:
       _os_log_error_impl(&dword_1C7694000, v56, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v31 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v58 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v33 = NUAssertLogger_4909();
     v59 = os_log_type_enabled(v33, OS_LOG_TYPE_ERROR);
@@ -2564,8 +2564,8 @@ LABEL_58:
     {
       if (v59)
       {
-        v60 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v61 = [v60 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v61 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v91 = v61;
         _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2577,11 +2577,11 @@ LABEL_58:
 LABEL_61:
     if (v59)
     {
-      v82 = dispatch_get_specific(*v31);
+      v82 = dispatch_get_specific(*callStackSymbols);
       v83 = MEMORY[0x1E696AF00];
       v84 = v82;
-      v85 = [v83 callStackSymbols];
-      v86 = [v85 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [v83 callStackSymbols];
+      v86 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v91 = v82;
       v92 = 2114;
@@ -2594,8 +2594,8 @@ LABEL_63:
     _NUAssertFailHandler();
   }
 
-  v20 = [objc_alloc(MEMORY[0x1E69B39C0]) initWithCVPixelBuffer:a3];
-  v21 = [objc_alloc(MEMORY[0x1E69B39C0]) initWithCVPixelBuffer:a5];
+  v20 = [objc_alloc(MEMORY[0x1E69B39C0]) initWithCVPixelBuffer:buffer];
+  v21 = [objc_alloc(MEMORY[0x1E69B39C0]) initWithCVPixelBuffer:pixelBuffer];
   v22 = self->_expectedImageSize.width / self->_expectedImageSize.height;
   if (fabs(v13 / v12 / v22 + -1.0) > 0.001)
   {
@@ -2607,9 +2607,9 @@ LABEL_63:
     v24 = [MEMORY[0x1E696B098] valueWithBytes:v89 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
     v25 = @"Source aspect ratio mismatch";
 LABEL_11:
-    v26 = [v23 mismatchError:v25 object:v24];
+    height = [v23 mismatchError:v25 object:v24];
 
-    (v19)[2](v19, 0, v26);
+    (v19)[2](v19, 0, height);
     goto LABEL_12;
   }
 
@@ -2627,10 +2627,10 @@ LABEL_11:
 
   styleEngine = self->_styleEngine;
   v87 = 0;
-  v26 = [(NUStyleEngine *)styleEngine learnStyleFromBuffer:v20 rect:v21 toBuffer:&v87 rect:v15 error:v14, v13, v12, x, y, width, height];
-  if (v26)
+  height = [(NUStyleEngine *)styleEngine learnStyleFromBuffer:v20 rect:v21 toBuffer:&v87 rect:v15 error:v14, v13, v12, x, y, width, height];
+  if (height)
   {
-    [(PIParallaxInactiveStyleEngine *)self generateStyleDataFromStyleBuffer:v26 completion:v19];
+    [(PIParallaxInactiveStyleEngine *)self generateStyleDataFromStyleBuffer:height completion:v19];
   }
 
   else
@@ -2642,21 +2642,21 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)learnStyleFromPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 completion:(id)a5
+- (void)learnStyleFromPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer completion:(id)completion
 {
   v8 = *MEMORY[0x1E695EFF8];
   v9 = *(MEMORY[0x1E695EFF8] + 8);
-  v13 = a5;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v12 = CVPixelBufferGetWidth(a4);
-  [(PIParallaxInactiveStyleEngine *)self learnStyleFromPixelBuffer:a3 rect:a4 toPixelBuffer:v13 rect:v8 completion:v9, Width, Height, v8, v9, v12, CVPixelBufferGetHeight(a4)];
+  completionCopy = completion;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  v12 = CVPixelBufferGetWidth(pixelBuffer);
+  [(PIParallaxInactiveStyleEngine *)self learnStyleFromPixelBuffer:buffer rect:pixelBuffer toPixelBuffer:completionCopy rect:v8 completion:v9, Width, Height, v8, v9, v12, CVPixelBufferGetHeight(pixelBuffer)];
 }
 
-- (id)cachedTextureForPixelBuffer:(__CVBuffer *)a3 error:(id *)a4
+- (id)cachedTextureForPixelBuffer:(__CVBuffer *)buffer error:(id *)error
 {
   v33 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!buffer)
   {
     v17 = NUAssertLogger_4909();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -2678,8 +2678,8 @@ LABEL_12:
         v25 = dispatch_get_specific(*v19);
         v26 = MEMORY[0x1E696AF00];
         v27 = v25;
-        v28 = [v26 callStackSymbols];
-        v29 = [v28 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v26 callStackSymbols];
+        v29 = [callStackSymbols componentsJoinedByString:@"\n"];
         *image = 138543618;
         *&image[4] = v25;
         v31 = 2114;
@@ -2690,8 +2690,8 @@ LABEL_12:
 
     else if (v22)
     {
-      v23 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v24 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v24 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *image = 138543362;
       *&image[4] = v24;
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", image, 0xCu);
@@ -2708,7 +2708,7 @@ LABEL_12:
     {
       v10 = MEMORY[0x1E69B3A48];
       v11 = @"Failed to create texture cache";
-      v12 = 0;
+      bufferCopy = 0;
       goto LABEL_7;
     }
 
@@ -2716,18 +2716,18 @@ LABEL_12:
   }
 
   *image = 0;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  if (CVMetalTextureCacheCreateTextureFromImage(0, textureCache, a3, 0, MTLPixelFormatBGRA8Unorm, Width, Height, 0, image))
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  if (CVMetalTextureCacheCreateTextureFromImage(0, textureCache, buffer, 0, MTLPixelFormatBGRA8Unorm, Width, Height, 0, image))
   {
     v10 = MEMORY[0x1E69B3A48];
     v11 = @"Failed to create texture";
-    v12 = a3;
+    bufferCopy = buffer;
 LABEL_7:
-    v13 = [v10 failureError:v11 object:v12];
+    v13 = [v10 failureError:v11 object:bufferCopy];
     v14 = v13;
     v15 = 0;
-    *a4 = v13;
+    *error = v13;
     goto LABEL_9;
   }
 
@@ -2737,10 +2737,10 @@ LABEL_9:
   return v15;
 }
 
-- (BOOL)prepareForLearningWithImageSize:(CGSize)a3 error:(id *)a4
+- (BOOL)prepareForLearningWithImageSize:(CGSize)size error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  if (a3.width <= 0.0 || a3.height <= 0.0)
+  if (size.width <= 0.0 || size.height <= 0.0)
   {
     v19 = NUAssertLogger_4909();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -2751,7 +2751,7 @@ LABEL_9:
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v21 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v23 = NUAssertLogger_4909();
     v24 = os_log_type_enabled(v23, OS_LOG_TYPE_ERROR);
@@ -2759,11 +2759,11 @@ LABEL_9:
     {
       if (v24)
       {
-        v37 = dispatch_get_specific(*v21);
+        v37 = dispatch_get_specific(*callStackSymbols);
         v38 = MEMORY[0x1E696AF00];
         v39 = v37;
-        v21 = [v38 callStackSymbols];
-        v40 = [v21 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v38 callStackSymbols];
+        v40 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v52 = v37;
         v53 = 2114;
@@ -2774,10 +2774,10 @@ LABEL_9:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v52 = v21;
+      v52 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -2785,7 +2785,7 @@ LABEL_9:
     goto LABEL_26;
   }
 
-  if (!a4)
+  if (!error)
   {
     v26 = NUAssertLogger_4909();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
@@ -2796,7 +2796,7 @@ LABEL_9:
       _os_log_error_impl(&dword_1C7694000, v26, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v21 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v28 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v23 = NUAssertLogger_4909();
     v29 = os_log_type_enabled(v23, OS_LOG_TYPE_ERROR);
@@ -2804,10 +2804,10 @@ LABEL_9:
     {
       if (v29)
       {
-        v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v21 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v52 = v21;
+        v52 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -2820,11 +2820,11 @@ LABEL_28:
 LABEL_26:
     if (v29)
     {
-      v41 = dispatch_get_specific(*v21);
+      v41 = dispatch_get_specific(*callStackSymbols);
       v42 = MEMORY[0x1E696AF00];
       v43 = v41;
-      v21 = [v42 callStackSymbols];
-      v44 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v42 callStackSymbols];
+      v44 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v52 = v41;
       v53 = 2114;
@@ -2846,7 +2846,7 @@ LABEL_26:
       _os_log_error_impl(&dword_1C7694000, v31, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v21 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v33 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v23 = NUAssertLogger_4909();
     v34 = os_log_type_enabled(v23, OS_LOG_TYPE_ERROR);
@@ -2854,8 +2854,8 @@ LABEL_26:
     {
       if (v34)
       {
-        v35 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v36 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v52 = v36;
         _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2867,11 +2867,11 @@ LABEL_26:
 LABEL_29:
     if (v34)
     {
-      v45 = dispatch_get_specific(*v21);
+      v45 = dispatch_get_specific(*callStackSymbols);
       v46 = MEMORY[0x1E696AF00];
       v47 = v45;
-      v48 = [v46 callStackSymbols];
-      v49 = [v48 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v46 callStackSymbols];
+      v49 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v52 = v45;
       v53 = 2114;
@@ -2884,8 +2884,8 @@ LABEL_31:
     _NUAssertFailHandler();
   }
 
-  self->_expectedImageSize = a3;
-  v6 = [MEMORY[0x1E69B3CD8] semanticStyleVideoSettingsForScale:*MEMORY[0x1E69B3918] aspectRatio:{*(MEMORY[0x1E69B3918] + 8), a3.width, a3.height}];
+  self->_expectedImageSize = size;
+  v6 = [MEMORY[0x1E69B3CD8] semanticStyleVideoSettingsForScale:*MEMORY[0x1E69B3918] aspectRatio:{*(MEMORY[0x1E69B3918] + 8), size.width, size.height}];
   v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B3930]];
   v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E69B3940]];
   v9 = [MEMORY[0x1E69B3CD0] styleEngineForUsage:0 withMetalCommandQueue:self->_commandQueue configuration:v7 tuningParams:v8];
@@ -2905,18 +2905,18 @@ LABEL_31:
     v16 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Failed to prepare engine" object:self underlyingError:v15];
     v17 = v16;
 
-    *a4 = v16;
+    *error = v16;
   }
 
   return v12;
 }
 
-- (PIParallaxInactiveStyleEngine)initWithMetalDevice:(id)a3 commandQueue:(id)a4
+- (PIParallaxInactiveStyleEngine)initWithMetalDevice:(id)device commandQueue:(id)queue
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  deviceCopy = device;
+  queueCopy = queue;
+  if (!deviceCopy)
   {
     v14 = NUAssertLogger_4909();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -2938,8 +2938,8 @@ LABEL_31:
         v22 = dispatch_get_specific(*v16);
         v23 = MEMORY[0x1E696AF00];
         v24 = v22;
-        v25 = [v23 callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v23 callStackSymbols];
+        v26 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v29 = v22;
         v30 = 2114;
@@ -2950,8 +2950,8 @@ LABEL_31:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v21 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v21 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v21;
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -2960,40 +2960,40 @@ LABEL_31:
     _NUAssertFailHandler();
   }
 
-  v9 = v8;
+  v9 = queueCopy;
   v27.receiver = self;
   v27.super_class = PIParallaxInactiveStyleEngine;
   v10 = [(PIParallaxInactiveStyleEngine *)&v27 init];
-  objc_storeStrong(&v10->_device, a3);
+  objc_storeStrong(&v10->_device, device);
   if (v9)
   {
-    v11 = v9;
+    newCommandQueue = v9;
   }
 
   else
   {
-    v11 = [v7 newCommandQueue];
+    newCommandQueue = [deviceCopy newCommandQueue];
   }
 
   commandQueue = v10->_commandQueue;
-  v10->_commandQueue = v11;
+  v10->_commandQueue = newCommandQueue;
 
   return v10;
 }
 
-+ (void)learnStyleFromPixelBuffer:(__CVBuffer *)a3 rect:(CGRect)a4 toPixelBuffer:(__CVBuffer *)a5 rect:(CGRect)a6 completion:(id)a7
++ (void)learnStyleFromPixelBuffer:(__CVBuffer *)buffer rect:(CGRect)rect toPixelBuffer:(__CVBuffer *)pixelBuffer rect:(CGRect)a6 completion:(id)completion
 {
   height = a6.size.height;
   width = a6.size.width;
   y = a6.origin.y;
   x = a6.origin.x;
-  v12 = a4.size.height;
-  v13 = a4.size.width;
-  v14 = a4.origin.y;
-  v15 = a4.origin.x;
+  v12 = rect.size.height;
+  v13 = rect.size.width;
+  v14 = rect.origin.y;
+  v15 = rect.origin.x;
   v84 = *MEMORY[0x1E69E9840];
-  v17 = a7;
-  if (!a3)
+  completionCopy = completion;
+  if (!buffer)
   {
     v21 = NUAssertLogger_4909();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -3004,7 +3004,7 @@ LABEL_31:
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v23 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v25 = NUAssertLogger_4909();
     v26 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
@@ -3012,11 +3012,11 @@ LABEL_31:
     {
       if (v26)
       {
-        v54 = dispatch_get_specific(*v23);
+        v54 = dispatch_get_specific(*callStackSymbols);
         v55 = MEMORY[0x1E696AF00];
         v56 = v54;
-        v23 = [v55 callStackSymbols];
-        v57 = [v23 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v55 callStackSymbols];
+        v57 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v81 = v54;
         v82 = 2114;
@@ -3027,10 +3027,10 @@ LABEL_31:
 
     else if (v26)
     {
-      v27 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v23 = [v27 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v81 = v23;
+      v81 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -3038,7 +3038,7 @@ LABEL_31:
     goto LABEL_44;
   }
 
-  if (!a5)
+  if (!pixelBuffer)
   {
     v28 = NUAssertLogger_4909();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -3049,7 +3049,7 @@ LABEL_31:
       _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v23 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v30 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v25 = NUAssertLogger_4909();
     v31 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
@@ -3057,10 +3057,10 @@ LABEL_31:
     {
       if (v31)
       {
-        v32 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v23 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v81 = v23;
+        v81 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -3073,11 +3073,11 @@ LABEL_46:
 LABEL_44:
     if (v31)
     {
-      v58 = dispatch_get_specific(*v23);
+      v58 = dispatch_get_specific(*callStackSymbols);
       v59 = MEMORY[0x1E696AF00];
       v60 = v58;
-      v23 = [v59 callStackSymbols];
-      v61 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v59 callStackSymbols];
+      v61 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v81 = v58;
       v82 = 2114;
@@ -3088,8 +3088,8 @@ LABEL_44:
     goto LABEL_46;
   }
 
-  v18 = v17;
-  if (!v17)
+  v18 = completionCopy;
+  if (!completionCopy)
   {
     v33 = NUAssertLogger_4909();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -3100,7 +3100,7 @@ LABEL_44:
       _os_log_error_impl(&dword_1C7694000, v33, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v23 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v35 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v25 = NUAssertLogger_4909();
     v36 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
@@ -3108,10 +3108,10 @@ LABEL_44:
     {
       if (v36)
       {
-        v37 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v23 = [v37 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v81 = v23;
+        v81 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -3124,11 +3124,11 @@ LABEL_49:
 LABEL_47:
     if (v36)
     {
-      v62 = dispatch_get_specific(*v23);
+      v62 = dispatch_get_specific(*callStackSymbols);
       v63 = MEMORY[0x1E696AF00];
       v64 = v62;
-      v23 = [v63 callStackSymbols];
-      v65 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v63 callStackSymbols];
+      v65 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v81 = v62;
       v82 = 2114;
@@ -3154,7 +3154,7 @@ LABEL_47:
       _os_log_error_impl(&dword_1C7694000, v38, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v23 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v40 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v25 = NUAssertLogger_4909();
     v41 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
@@ -3162,10 +3162,10 @@ LABEL_47:
     {
       if (v41)
       {
-        v42 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v23 = [v42 componentsJoinedByString:@"\n"];
+        callStackSymbols5 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols5 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v81 = v23;
+        v81 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -3178,11 +3178,11 @@ LABEL_52:
 LABEL_50:
     if (v41)
     {
-      v66 = dispatch_get_specific(*v23);
+      v66 = dispatch_get_specific(*callStackSymbols);
       v67 = MEMORY[0x1E696AF00];
       v68 = v66;
-      v23 = [v67 callStackSymbols];
-      v69 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v67 callStackSymbols];
+      v69 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v81 = v66;
       v82 = 2114;
@@ -3208,7 +3208,7 @@ LABEL_50:
       _os_log_error_impl(&dword_1C7694000, v43, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v23 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v45 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v25 = NUAssertLogger_4909();
     v46 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
@@ -3216,10 +3216,10 @@ LABEL_50:
     {
       if (v46)
       {
-        v47 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v23 = [v47 componentsJoinedByString:@"\n"];
+        callStackSymbols6 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols6 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v81 = v23;
+        v81 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -3232,11 +3232,11 @@ LABEL_55:
 LABEL_53:
     if (v46)
     {
-      v70 = dispatch_get_specific(*v23);
+      v70 = dispatch_get_specific(*callStackSymbols);
       v71 = MEMORY[0x1E696AF00];
       v72 = v70;
-      v23 = [v71 callStackSymbols];
-      v73 = [v23 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v71 callStackSymbols];
+      v73 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v81 = v70;
       v82 = 2114;
@@ -3258,7 +3258,7 @@ LABEL_53:
       _os_log_error_impl(&dword_1C7694000, v48, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v23 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v50 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v25 = NUAssertLogger_4909();
     v51 = os_log_type_enabled(v25, OS_LOG_TYPE_ERROR);
@@ -3266,8 +3266,8 @@ LABEL_53:
     {
       if (v51)
       {
-        v52 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v53 = [v52 componentsJoinedByString:@"\n"];
+        callStackSymbols7 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v53 = [callStackSymbols7 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v81 = v53;
         _os_log_error_impl(&dword_1C7694000, v25, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -3279,11 +3279,11 @@ LABEL_53:
 LABEL_56:
     if (v51)
     {
-      v74 = dispatch_get_specific(*v23);
+      v74 = dispatch_get_specific(*callStackSymbols);
       v75 = MEMORY[0x1E696AF00];
       v76 = v74;
-      v77 = [v75 callStackSymbols];
-      v78 = [v77 componentsJoinedByString:@"\n"];
+      callStackSymbols8 = [v75 callStackSymbols];
+      v78 = [callStackSymbols8 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v81 = v74;
       v82 = 2114;
@@ -3301,7 +3301,7 @@ LABEL_58:
   v79 = 0;
   if ([(PIParallaxInactiveStyleEngine *)v20 prepareForLearningWithImageSize:&v79 error:v13, v12])
   {
-    [(PIParallaxInactiveStyleEngine *)v20 learnStyleFromPixelBuffer:a3 rect:a5 toPixelBuffer:v18 rect:v15 completion:v14, v13, v12, x, y, width, height];
+    [(PIParallaxInactiveStyleEngine *)v20 learnStyleFromPixelBuffer:buffer rect:pixelBuffer toPixelBuffer:v18 rect:v15 completion:v14, v13, v12, x, y, width, height];
   }
 
   else
@@ -3310,11 +3310,11 @@ LABEL_58:
   }
 }
 
-+ (void)learnStyleFromPixelBuffer:(__CVBuffer *)a3 toPixelBuffer:(__CVBuffer *)a4 completion:(id)a5
++ (void)learnStyleFromPixelBuffer:(__CVBuffer *)buffer toPixelBuffer:(__CVBuffer *)pixelBuffer completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (!a3)
+  completionCopy = completion;
+  if (!buffer)
   {
     v14 = NUAssertLogger_4909();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -3325,7 +3325,7 @@ LABEL_58:
       _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v16 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v18 = NUAssertLogger_4909();
     v19 = os_log_type_enabled(v18, OS_LOG_TYPE_ERROR);
@@ -3333,11 +3333,11 @@ LABEL_58:
     {
       if (v19)
       {
-        v27 = dispatch_get_specific(*v16);
+        v27 = dispatch_get_specific(*callStackSymbols);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v16 = [v28 callStackSymbols];
-        v30 = [v16 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v30 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v38 = v27;
         v39 = 2114;
@@ -3348,10 +3348,10 @@ LABEL_58:
 
     else if (v19)
     {
-      v20 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v16 = [v20 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v38 = v16;
+      v38 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -3359,7 +3359,7 @@ LABEL_58:
     goto LABEL_19;
   }
 
-  if (!a4)
+  if (!pixelBuffer)
   {
     v21 = NUAssertLogger_4909();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -3370,7 +3370,7 @@ LABEL_58:
       _os_log_error_impl(&dword_1C7694000, v21, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v16 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v23 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v18 = NUAssertLogger_4909();
     v24 = os_log_type_enabled(v18, OS_LOG_TYPE_ERROR);
@@ -3378,8 +3378,8 @@ LABEL_58:
     {
       if (v24)
       {
-        v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v26 = [v25 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v26 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v38 = v26;
         _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -3391,11 +3391,11 @@ LABEL_58:
 LABEL_19:
     if (v24)
     {
-      v31 = dispatch_get_specific(*v16);
+      v31 = dispatch_get_specific(*callStackSymbols);
       v32 = MEMORY[0x1E696AF00];
       v33 = v31;
-      v34 = [v32 callStackSymbols];
-      v35 = [v34 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v32 callStackSymbols];
+      v35 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v38 = v31;
       v39 = 2114;
@@ -3410,11 +3410,11 @@ LABEL_21:
 
   v9 = *MEMORY[0x1E695EFF8];
   v10 = *(MEMORY[0x1E695EFF8] + 8);
-  v36 = v8;
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  v13 = CVPixelBufferGetWidth(a4);
-  [a1 learnStyleFromPixelBuffer:a3 rect:a4 toPixelBuffer:v36 rect:v9 completion:{v10, Width, Height, v9, v10, v13, CVPixelBufferGetHeight(a4)}];
+  v36 = completionCopy;
+  Width = CVPixelBufferGetWidth(buffer);
+  Height = CVPixelBufferGetHeight(buffer);
+  v13 = CVPixelBufferGetWidth(pixelBuffer);
+  [self learnStyleFromPixelBuffer:buffer rect:pixelBuffer toPixelBuffer:v36 rect:v9 completion:{v10, Width, Height, v9, v10, v13, CVPixelBufferGetHeight(pixelBuffer)}];
 }
 
 @end

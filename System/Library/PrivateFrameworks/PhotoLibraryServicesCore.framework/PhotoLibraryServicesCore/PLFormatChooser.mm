@@ -1,9 +1,9 @@
 @interface PLFormatChooser
-+ (CGSize)_desiredImageSizeForRequestedViewSizeInPixels:(CGSize)a3;
++ (CGSize)_desiredImageSizeForRequestedViewSizeInPixels:(CGSize)pixels;
 + (id)defaultFormatChooser;
 - (CGSize)posterThumbnailSize;
-- (PLFormatChooser)initWithDeviceConfiguration:(id)a3;
-- (id)_derivativeFormatThatFitsSize:(CGSize)a3;
+- (PLFormatChooser)initWithDeviceConfiguration:(id)configuration;
+- (id)_derivativeFormatThatFitsSize:(CGSize)size;
 @end
 
 @implementation PLFormatChooser
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __39__PLFormatChooser_defaultFormatChooser__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (defaultFormatChooser_onceToken != -1)
   {
     dispatch_once(&defaultFormatChooser_onceToken, block);
@@ -41,10 +41,10 @@ void __39__PLFormatChooser_defaultFormatChooser__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)_derivativeFormatThatFitsSize:(CGSize)a3
+- (id)_derivativeFormatThatFitsSize:(CGSize)size
 {
   v19 = *MEMORY[0x1E69E9840];
-  [objc_opt_class() _desiredImageSizeForRequestedViewSizeInPixels:{a3.width, a3.height}];
+  [objc_opt_class() _desiredImageSizeForRequestedViewSizeInPixels:{size.width, size.height}];
   v5 = v4;
   v7 = v6;
   v14 = 0u;
@@ -88,23 +88,23 @@ LABEL_11:
   return v9;
 }
 
-- (PLFormatChooser)initWithDeviceConfiguration:(id)a3
+- (PLFormatChooser)initWithDeviceConfiguration:(id)configuration
 {
   v62 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  configurationCopy = configuration;
   v60.receiver = self;
   v60.super_class = PLFormatChooser;
   v7 = [(PLFormatChooser *)&v60 init];
   if (v7)
   {
-    obj = a3;
+    obj = configuration;
     v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v10 = [PLThumbnailManagerCore supportedThumbnailFormatIDsForDeviceConfiguration:v6];
+    v10 = [PLThumbnailManagerCore supportedThumbnailFormatIDsForDeviceConfiguration:configurationCopy];
     [v9 addObjectsFromArray:v10];
 
-    v11 = [objc_opt_class() _suppportedFullSizeFormatIDs];
-    [v9 addObjectsFromArray:v11];
+    _suppportedFullSizeFormatIDs = [objc_opt_class() _suppportedFullSizeFormatIDs];
+    [v9 addObjectsFromArray:_suppportedFullSizeFormatIDs];
 
     p_indexSheetUnbakedFormat = &v7->_indexSheetUnbakedFormat;
     indexSheetUnbakedFormat = v7->_indexSheetUnbakedFormat;
@@ -161,19 +161,19 @@ LABEL_11:
     v53->_supportedDerivativeFormats = v22;
 
     objc_storeStrong(&v53->_deviceConfiguration, obj);
-    [v6 logicalScreenSize];
+    [configurationCopy logicalScreenSize];
     v24 = [(PLFormatChooser *)v53 _derivativeFormatThatFitsSize:?];
-    v25 = [objc_opt_class() _suppportedFullSizeFormatIDs];
-    v26 = [v25 lastObject];
-    v27 = [v26 integerValue];
+    _suppportedFullSizeFormatIDs2 = [objc_opt_class() _suppportedFullSizeFormatIDs];
+    lastObject = [_suppportedFullSizeFormatIDs2 lastObject];
+    integerValue = [lastObject integerValue];
 
-    if (!v27)
+    if (!integerValue)
     {
-      v50 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v50 handleFailureInMethod:a2 object:v53 file:@"PLFormatChooser.m" lineNumber:102 description:@"can't determine largest supported format."];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v53 file:@"PLFormatChooser.m" lineNumber:102 description:@"can't determine largest supported format."];
     }
 
-    v28 = [PLImageFormat formatWithID:v27];
+    v28 = [PLImageFormat formatWithID:integerValue];
     if (!v24 || [(PLImageFormat *)v24 compare:v28]== 1)
     {
       v29 = v28;
@@ -181,17 +181,17 @@ LABEL_11:
       v24 = v29;
     }
 
-    v30 = [objc_opt_class() _suppportedFullSizeFormatIDs];
-    v31 = [v30 firstObject];
-    v32 = [v31 integerValue];
+    _suppportedFullSizeFormatIDs3 = [objc_opt_class() _suppportedFullSizeFormatIDs];
+    firstObject = [_suppportedFullSizeFormatIDs3 firstObject];
+    integerValue2 = [firstObject integerValue];
 
-    if (!v32)
+    if (!integerValue2)
     {
-      v51 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v51 handleFailureInMethod:a2 object:v53 file:@"PLFormatChooser.m" lineNumber:112 description:@"can't determine smallest supported format."];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:v53 file:@"PLFormatChooser.m" lineNumber:112 description:@"can't determine smallest supported format."];
     }
 
-    v33 = [PLImageFormat formatWithID:v32];
+    v33 = [PLImageFormat formatWithID:integerValue2];
     if ([(PLImageFormat *)v24 compare:v33]== -1)
     {
       v34 = v33;
@@ -271,14 +271,14 @@ void __47__PLFormatChooser_initWithDeviceConfiguration___block_invoke_2(uint64_t
   }
 }
 
-+ (CGSize)_desiredImageSizeForRequestedViewSizeInPixels:(CGSize)a3
++ (CGSize)_desiredImageSizeForRequestedViewSizeInPixels:(CGSize)pixels
 {
-  if (a3.width / a3.height > 1.0 && a3.height > 0.0)
+  if (pixels.width / pixels.height > 1.0 && pixels.height > 0.0)
   {
-    a3.width = a3.height;
+    pixels.width = pixels.height;
   }
 
-  v4 = round(a3.width);
+  v4 = round(pixels.width);
   v5 = v4;
   result.height = v5;
   result.width = v4;

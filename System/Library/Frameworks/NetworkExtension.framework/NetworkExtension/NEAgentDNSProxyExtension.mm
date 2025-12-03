@@ -1,15 +1,15 @@
 @interface NEAgentDNSProxyExtension
 - (id)driverInterface;
-- (void)setSystemDNSSettings:(id)a3;
+- (void)setSystemDNSSettings:(id)settings;
 @end
 
 @implementation NEAgentDNSProxyExtension
 
-- (void)setSystemDNSSettings:(id)a3
+- (void)setSystemDNSSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(NEAgentExtension *)self sessionContext];
-  [v5 setSystemDNSSettings:v4];
+  settingsCopy = settings;
+  sessionContext = [(NEAgentExtension *)self sessionContext];
+  [sessionContext setSystemDNSSettings:settingsCopy];
 }
 
 - (id)driverInterface

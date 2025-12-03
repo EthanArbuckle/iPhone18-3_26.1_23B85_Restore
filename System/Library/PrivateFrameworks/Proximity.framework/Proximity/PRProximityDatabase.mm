@@ -1,7 +1,7 @@
 @interface PRProximityDatabase
-+ (BOOL)getProximityDeviceParameters:(id *)a3 forDeviceModel:(id)a4 withError:(id *)a5;
++ (BOOL)getProximityDeviceParameters:(id *)parameters forDeviceModel:(id)model withError:(id *)error;
 + (id)getDeviceData;
-+ (int64_t)getPRDeviceModelFromModelId:(id)a3;
++ (int64_t)getPRDeviceModelFromModelId:(id)id;
 + (int64_t)getScannerDeviceModel;
 - (PRProximityDatabase)init;
 @end
@@ -841,12 +841,12 @@ void __36__PRProximityDatabase_getDeviceData__block_invoke()
   v11 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)getProximityDeviceParameters:(id *)a3 forDeviceModel:(id)a4 withError:(id *)a5
++ (BOOL)getProximityDeviceParameters:(id *)parameters forDeviceModel:(id)model withError:(id *)error
 {
   v32[1] = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  modelCopy = model;
   v8 = +[PRProximityDatabase getScannerDeviceModel];
-  v9 = [PRProximityDatabase getPRDeviceModelFromModelId:v7];
+  v9 = [PRProximityDatabase getPRDeviceModelFromModelId:modelCopy];
   v10 = v9;
   if (v8)
   {
@@ -866,7 +866,7 @@ void __36__PRProximityDatabase_getDeviceData__block_invoke()
       {
         v12 = 0;
         v13 = 0;
-        if (!a5)
+        if (!error)
         {
           goto LABEL_23;
         }
@@ -884,7 +884,7 @@ void __36__PRProximityDatabase_getDeviceData__block_invoke()
 
     [MEMORY[0x277CCACA8] stringWithFormat:v22];
     v12 = v13 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_23;
     }
@@ -896,7 +896,7 @@ LABEL_21:
       v31 = *MEMORY[0x277CCA450];
       v32[0] = v12;
       v24 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:&v31 count:1];
-      *a5 = [v23 errorWithDomain:@"com.apple.Proximity.ErrorDomain" code:999 userInfo:v24];
+      *error = [v23 errorWithDomain:@"com.apple.Proximity.ErrorDomain" code:999 userInfo:v24];
     }
 
     goto LABEL_23;
@@ -918,10 +918,10 @@ LABEL_21:
       v29 = [v17 objectForKeyedSubscript:@"Algo"];
       v18 = *(&btFilters + [v29 intValue]);
       v27 = [v17 objectForKeyedSubscript:@"sampSize"];
-      v19 = [v27 unsignedIntegerValue];
+      unsignedIntegerValue = [v27 unsignedIntegerValue];
       v20 = [v17 objectForKeyedSubscript:@"rssiImmediate"];
       v21 = [v17 objectForKeyedSubscript:@"rssiNear"];
-      *a3 = [(PRProximityDeviceParameters *)v28 initWithFilter:v18 sampleSize:v19 rssiImmediate:v20 rssiNear:v21];
+      *parameters = [(PRProximityDeviceParameters *)v28 initWithFilter:v18 sampleSize:unsignedIntegerValue rssiImmediate:v20 rssiNear:v21];
 
       v12 = 0;
     }
@@ -938,7 +938,7 @@ LABEL_21:
     v13 = 0;
   }
 
-  if (a5)
+  if (error)
   {
     goto LABEL_21;
   }
@@ -949,13 +949,13 @@ LABEL_23:
   return v13;
 }
 
-+ (int64_t)getPRDeviceModelFromModelId:(id)a3
++ (int64_t)getPRDeviceModelFromModelId:(id)id
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  idCopy = id;
+  v4 = idCopy;
+  if (idCopy)
   {
-    if ([v3 containsString:@"AirPods"])
+    if ([idCopy containsString:@"AirPods"])
     {
       v5 = 3;
     }

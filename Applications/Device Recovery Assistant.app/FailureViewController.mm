@@ -1,8 +1,8 @@
 @interface FailureViewController
 - (FailureViewController)init;
 - (FailureViewControllerDelegate)delegate;
-- (void)_didTapInfoButton:(id)a3;
-- (void)_didTapShutdownButton:(id)a3;
+- (void)_didTapInfoButton:(id)button;
+- (void)_didTapShutdownButton:(id)button;
 - (void)viewDidLoad;
 @end
 
@@ -27,15 +27,15 @@
     v10 = +[OBBoldTrayButton boldButton];
     [v10 setTitle:v8 forState:0];
     [v10 addTarget:v9 action:"_didTapShutdownButton:" forControlEvents:0x2000];
-    v11 = [(FailureViewController *)v9 buttonTray];
-    [v11 addButton:v10];
+    buttonTray = [(FailureViewController *)v9 buttonTray];
+    [buttonTray addButton:v10];
 
     v12 = [UIBarButtonItem alloc];
     v13 = [UIImage systemImageNamed:@"info.circle"];
     v14 = [v12 initWithTitle:0 image:v13 target:v9 action:"_didTapInfoButton:" menu:0];
 
-    v15 = [(FailureViewController *)v9 navigationItem];
-    [v15 setRightBarButtonItem:v14];
+    navigationItem = [(FailureViewController *)v9 navigationItem];
+    [navigationItem setRightBarButtonItem:v14];
   }
 
   return v9;
@@ -48,7 +48,7 @@
   [(FailureViewController *)&v2 viewDidLoad];
 }
 
-- (void)_didTapInfoButton:(id)a3
+- (void)_didTapInfoButton:(id)button
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -59,11 +59,11 @@
   }
 
   v5 = objc_alloc_init(DetailsViewController);
-  v6 = [(FailureViewController *)self navigationController];
-  [v6 pushViewController:v5 animated:1];
+  navigationController = [(FailureViewController *)self navigationController];
+  [navigationController pushViewController:v5 animated:1];
 }
 
-- (void)_didTapShutdownButton:(id)a3
+- (void)_didTapShutdownButton:(id)button
 {
   v4 = sub_100012608();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -73,12 +73,12 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%{public}s: Reboot button pushed on failure view of device.", &v7, 0xCu);
   }
 
-  v5 = [(FailureViewController *)self delegate];
+  delegate = [(FailureViewController *)self delegate];
 
-  if (v5)
+  if (delegate)
   {
-    v6 = [(FailureViewController *)self delegate];
-    [v6 failureViewControllerDidReboot:self];
+    delegate2 = [(FailureViewController *)self delegate];
+    [delegate2 failureViewControllerDidReboot:self];
   }
 }
 

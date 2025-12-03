@@ -1,47 +1,47 @@
 @interface FCModifyNotificationsForTopicsCommand
-- (BOOL)canCoalesceWithCommand:(id)a3;
-- (FCModifyNotificationsForTopicsCommand)initWithCoder:(id)a3;
-- (FCModifyNotificationsForTopicsCommand)initWithTopicIDsToAdd:(id)a3 topicIDsToRemove:(id)a4 withTopicGroupingID:(id)a5 fromChannelID:(id)a6 userID:(id)a7 deviceToken:(id)a8 storefrontID:(id)a9 deviceDigestMode:(int)a10;
-- (void)coalesceWithCommand:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)executeWithContext:(id)a3 delegate:(id)a4 qualityOfService:(int64_t)a5;
+- (BOOL)canCoalesceWithCommand:(id)command;
+- (FCModifyNotificationsForTopicsCommand)initWithCoder:(id)coder;
+- (FCModifyNotificationsForTopicsCommand)initWithTopicIDsToAdd:(id)add topicIDsToRemove:(id)remove withTopicGroupingID:(id)d fromChannelID:(id)iD userID:(id)userID deviceToken:(id)token storefrontID:(id)storefrontID deviceDigestMode:(int)self0;
+- (void)coalesceWithCommand:(id)command;
+- (void)encodeWithCoder:(id)coder;
+- (void)executeWithContext:(id)context delegate:(id)delegate qualityOfService:(int64_t)service;
 @end
 
 @implementation FCModifyNotificationsForTopicsCommand
 
-- (FCModifyNotificationsForTopicsCommand)initWithTopicIDsToAdd:(id)a3 topicIDsToRemove:(id)a4 withTopicGroupingID:(id)a5 fromChannelID:(id)a6 userID:(id)a7 deviceToken:(id)a8 storefrontID:(id)a9 deviceDigestMode:(int)a10
+- (FCModifyNotificationsForTopicsCommand)initWithTopicIDsToAdd:(id)add topicIDsToRemove:(id)remove withTopicGroupingID:(id)d fromChannelID:(id)iD userID:(id)userID deviceToken:(id)token storefrontID:(id)storefrontID deviceDigestMode:(int)self0
 {
-  v17 = a3;
-  v18 = a4;
-  v30 = a5;
-  v29 = a6;
-  obj = a7;
-  v19 = a7;
-  v28 = a8;
-  v20 = a8;
-  v21 = a9;
-  v31 = v17;
-  if ([v17 count])
+  addCopy = add;
+  removeCopy = remove;
+  dCopy = d;
+  iDCopy = iD;
+  obj = userID;
+  userIDCopy = userID;
+  tokenCopy = token;
+  tokenCopy2 = token;
+  storefrontIDCopy = storefrontID;
+  v31 = addCopy;
+  if ([addCopy count])
   {
-    if (!v19)
+    if (!userIDCopy)
     {
-      v22 = 0;
+      selfCopy = 0;
       goto LABEL_11;
     }
   }
 
   else
   {
-    v23 = [v18 count];
-    v22 = 0;
-    if (!v19 || !v23)
+    v23 = [removeCopy count];
+    selfCopy = 0;
+    if (!userIDCopy || !v23)
     {
       goto LABEL_11;
     }
   }
 
-  v22 = 0;
-  if (v20 && v21)
+  selfCopy = 0;
+  if (tokenCopy2 && storefrontIDCopy)
   {
     v32.receiver = self;
     v32.super_class = FCModifyNotificationsForTopicsCommand;
@@ -49,39 +49,39 @@
     v25 = v24;
     if (v24)
     {
-      objc_storeStrong(&v24->_topicIDsToAdd, a3);
-      objc_storeStrong(&v25->_topicIDsToRemove, a4);
-      objc_storeStrong(&v25->_topicGroupingID, a5);
-      objc_storeStrong(&v25->_channelID, a6);
+      objc_storeStrong(&v24->_topicIDsToAdd, add);
+      objc_storeStrong(&v25->_topicIDsToRemove, remove);
+      objc_storeStrong(&v25->_topicGroupingID, d);
+      objc_storeStrong(&v25->_channelID, iD);
       objc_storeStrong(&v25->_userID, obj);
-      objc_storeStrong(&v25->_deviceToken, v28);
-      objc_storeStrong(&v25->_storefrontID, a9);
-      v25->_deviceDigestMode = a10;
+      objc_storeStrong(&v25->_deviceToken, tokenCopy);
+      objc_storeStrong(&v25->_storefrontID, storefrontID);
+      v25->_deviceDigestMode = mode;
     }
 
     self = v25;
-    v22 = self;
+    selfCopy = self;
   }
 
 LABEL_11:
 
-  return v22;
+  return selfCopy;
 }
 
-- (FCModifyNotificationsForTopicsCommand)initWithCoder:(id)a3
+- (FCModifyNotificationsForTopicsCommand)initWithCoder:(id)coder
 {
   v3 = MEMORY[0x1E695DFD8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = [v3 setWithObjects:{v5, objc_opt_class(), 0}];
-  v7 = [v4 decodeObjectOfClasses:v6 forKey:@"TopicIDsToAddKey"];
-  v8 = [v4 decodeObjectOfClasses:v6 forKey:@"TopicIDsToRemoveKey"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"TopicGroupingID"];
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"FromChannelIDKey"];
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UserIDKey"];
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DeviceTokenKey"];
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StorefrontIDKey"];
-  v14 = [v4 decodeIntForKey:@"DigestModeKey"];
+  v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"TopicIDsToAddKey"];
+  v8 = [coderCopy decodeObjectOfClasses:v6 forKey:@"TopicIDsToRemoveKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"TopicGroupingID"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FromChannelIDKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UserIDKey"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DeviceTokenKey"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StorefrontIDKey"];
+  v14 = [coderCopy decodeIntForKey:@"DigestModeKey"];
 
   LODWORD(v17) = v14;
   v15 = [(FCModifyNotificationsForTopicsCommand *)self initWithTopicIDsToAdd:v7 topicIDsToRemove:v8 withTopicGroupingID:v9 fromChannelID:v10 userID:v11 deviceToken:v12 storefrontID:v13 deviceDigestMode:v17];
@@ -89,38 +89,38 @@ LABEL_11:
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToAdd];
-  [v11 encodeObject:v4 forKey:@"TopicIDsToAddKey"];
+  coderCopy = coder;
+  topicIDsToAdd = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToAdd];
+  [coderCopy encodeObject:topicIDsToAdd forKey:@"TopicIDsToAddKey"];
 
-  v5 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToRemove];
-  [v11 encodeObject:v5 forKey:@"TopicIDsToRemoveKey"];
+  topicIDsToRemove = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToRemove];
+  [coderCopy encodeObject:topicIDsToRemove forKey:@"TopicIDsToRemoveKey"];
 
-  v6 = [(FCModifyNotificationsForTopicsCommand *)self topicGroupingID];
-  [v11 encodeObject:v6 forKey:@"TopicGroupingID"];
+  topicGroupingID = [(FCModifyNotificationsForTopicsCommand *)self topicGroupingID];
+  [coderCopy encodeObject:topicGroupingID forKey:@"TopicGroupingID"];
 
-  v7 = [(FCModifyNotificationsForTopicsCommand *)self channelID];
-  [v11 encodeObject:v7 forKey:@"FromChannelIDKey"];
+  channelID = [(FCModifyNotificationsForTopicsCommand *)self channelID];
+  [coderCopy encodeObject:channelID forKey:@"FromChannelIDKey"];
 
-  v8 = [(FCModifyNotificationsForTopicsCommand *)self userID];
-  [v11 encodeObject:v8 forKey:@"UserIDKey"];
+  userID = [(FCModifyNotificationsForTopicsCommand *)self userID];
+  [coderCopy encodeObject:userID forKey:@"UserIDKey"];
 
-  v9 = [(FCModifyNotificationsForTopicsCommand *)self deviceToken];
-  [v11 encodeObject:v9 forKey:@"DeviceTokenKey"];
+  deviceToken = [(FCModifyNotificationsForTopicsCommand *)self deviceToken];
+  [coderCopy encodeObject:deviceToken forKey:@"DeviceTokenKey"];
 
-  v10 = [(FCModifyNotificationsForTopicsCommand *)self storefrontID];
-  [v11 encodeObject:v10 forKey:@"StorefrontIDKey"];
+  storefrontID = [(FCModifyNotificationsForTopicsCommand *)self storefrontID];
+  [coderCopy encodeObject:storefrontID forKey:@"StorefrontIDKey"];
 
-  [v11 encodeInt:-[FCModifyNotificationsForTopicsCommand deviceDigestMode](self forKey:{"deviceDigestMode"), @"DigestModeKey"}];
+  [coderCopy encodeInt:-[FCModifyNotificationsForTopicsCommand deviceDigestMode](self forKey:{"deviceDigestMode"), @"DigestModeKey"}];
 }
 
-- (void)executeWithContext:(id)a3 delegate:(id)a4 qualityOfService:(int64_t)a5
+- (void)executeWithContext:(id)context delegate:(id)delegate qualityOfService:(int64_t)service
 {
   v76 = *MEMORY[0x1E69E9840];
-  v43 = a3;
-  v42 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v7 = FCPushNotificationsLog;
   if (os_log_type_enabled(FCPushNotificationsLog, OS_LOG_TYPE_DEFAULT))
   {
@@ -128,8 +128,8 @@ LABEL_11:
     _os_log_impl(&dword_1B63EF000, v7, OS_LOG_TYPE_DEFAULT, "modifyNotificationsForTopicsCommand: executing command", buf, 2u);
   }
 
-  v8 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToAdd];
-  if ([v8 count])
+  topicIDsToAdd = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToAdd];
+  if ([topicIDsToAdd count])
   {
 
 LABEL_6:
@@ -154,32 +154,32 @@ LABEL_6:
     v60[3] = __Block_byref_object_copy__83;
     v60[4] = __Block_byref_object_dispose__83;
     v61 = 0;
-    v11 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToAdd];
-    v12 = [v11 count] == 0;
+    topicIDsToAdd2 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToAdd];
+    v12 = [topicIDsToAdd2 count] == 0;
 
     if (!v12)
     {
       v13 = FCPushNotificationsLog;
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToAdd];
-        v15 = [(FCModifyNotificationsForTopicsCommand *)self topicGroupingID];
+        topicIDsToAdd3 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToAdd];
+        topicGroupingID = [(FCModifyNotificationsForTopicsCommand *)self topicGroupingID];
         *v72 = 138543618;
-        v73 = v14;
+        v73 = topicIDsToAdd3;
         v74 = 2114;
-        v75 = v15;
+        v75 = topicGroupingID;
         _os_log_impl(&dword_1B63EF000, v13, OS_LOG_TYPE_DEFAULT, "modifyNotificationsForTopicsCommand: adding topicIDs: %{public}@ groupingID: %{public}@", v72, 0x16u);
       }
 
       dispatch_group_enter(group);
-      v16 = [v43 notificationsEndpointConnection];
-      v17 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToAdd];
-      v18 = [(FCModifyNotificationsForTopicsCommand *)self topicGroupingID];
-      v19 = [(FCModifyNotificationsForTopicsCommand *)self channelID];
-      v20 = [(FCModifyNotificationsForTopicsCommand *)self userID];
-      v21 = [(FCModifyNotificationsForTopicsCommand *)self deviceToken];
-      v22 = [(FCModifyNotificationsForTopicsCommand *)self storefrontID];
-      v40 = [(FCModifyNotificationsForTopicsCommand *)self deviceDigestMode];
+      notificationsEndpointConnection = [contextCopy notificationsEndpointConnection];
+      topicIDsToAdd4 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToAdd];
+      topicGroupingID2 = [(FCModifyNotificationsForTopicsCommand *)self topicGroupingID];
+      channelID = [(FCModifyNotificationsForTopicsCommand *)self channelID];
+      userID = [(FCModifyNotificationsForTopicsCommand *)self userID];
+      deviceToken = [(FCModifyNotificationsForTopicsCommand *)self deviceToken];
+      storefrontID = [(FCModifyNotificationsForTopicsCommand *)self storefrontID];
+      deviceDigestMode = [(FCModifyNotificationsForTopicsCommand *)self deviceDigestMode];
       v23 = dispatch_get_global_queue(-2, 0);
       v56[0] = MEMORY[0x1E69E9820];
       v56[1] = 3221225472;
@@ -188,36 +188,36 @@ LABEL_6:
       v58 = v70;
       v59 = buf;
       v57 = group;
-      LODWORD(v39) = v40;
-      [v16 subscribeNotificationsForTopicIDs:v17 withTopicGroupingID:v18 fromChannelID:v19 userID:v20 deviceToken:v21 storefrontID:v22 deviceDigestMode:v39 callbackQueue:v23 completion:v56];
+      LODWORD(v39) = deviceDigestMode;
+      [notificationsEndpointConnection subscribeNotificationsForTopicIDs:topicIDsToAdd4 withTopicGroupingID:topicGroupingID2 fromChannelID:channelID userID:userID deviceToken:deviceToken storefrontID:storefrontID deviceDigestMode:v39 callbackQueue:v23 completion:v56];
     }
 
-    v24 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToRemove];
-    v25 = [v24 count] == 0;
+    topicIDsToRemove = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToRemove];
+    v25 = [topicIDsToRemove count] == 0;
 
     if (!v25)
     {
       v26 = FCPushNotificationsLog;
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
-        v27 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToRemove];
-        v28 = [(FCModifyNotificationsForTopicsCommand *)self topicGroupingID];
+        topicIDsToRemove2 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToRemove];
+        topicGroupingID3 = [(FCModifyNotificationsForTopicsCommand *)self topicGroupingID];
         *v72 = 138543618;
-        v73 = v27;
+        v73 = topicIDsToRemove2;
         v74 = 2114;
-        v75 = v28;
+        v75 = topicGroupingID3;
         _os_log_impl(&dword_1B63EF000, v26, OS_LOG_TYPE_DEFAULT, "modifyNotificationsForTopicsCommand: removing topicIDs: %{public}@ groupingID: %{public}@", v72, 0x16u);
       }
 
       dispatch_group_enter(group);
-      v29 = [v43 notificationsEndpointConnection];
-      v30 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToRemove];
-      v31 = [(FCModifyNotificationsForTopicsCommand *)self topicGroupingID];
-      v32 = [(FCModifyNotificationsForTopicsCommand *)self channelID];
-      v33 = [(FCModifyNotificationsForTopicsCommand *)self userID];
-      v34 = [(FCModifyNotificationsForTopicsCommand *)self deviceToken];
-      v35 = [(FCModifyNotificationsForTopicsCommand *)self storefrontID];
-      v41 = [(FCModifyNotificationsForTopicsCommand *)self deviceDigestMode];
+      notificationsEndpointConnection2 = [contextCopy notificationsEndpointConnection];
+      topicIDsToRemove3 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToRemove];
+      topicGroupingID4 = [(FCModifyNotificationsForTopicsCommand *)self topicGroupingID];
+      channelID2 = [(FCModifyNotificationsForTopicsCommand *)self channelID];
+      userID2 = [(FCModifyNotificationsForTopicsCommand *)self userID];
+      deviceToken2 = [(FCModifyNotificationsForTopicsCommand *)self deviceToken];
+      storefrontID2 = [(FCModifyNotificationsForTopicsCommand *)self storefrontID];
+      deviceDigestMode2 = [(FCModifyNotificationsForTopicsCommand *)self deviceDigestMode];
       v36 = dispatch_get_global_queue(-2, 0);
       v52[0] = MEMORY[0x1E69E9820];
       v52[1] = 3221225472;
@@ -226,8 +226,8 @@ LABEL_6:
       v54 = v68;
       v55 = v60;
       v53 = group;
-      LODWORD(v39) = v41;
-      [v29 unsubscribeNotificationsForTopicIDs:v30 withTopicGroupingID:v31 fromChannelID:v32 userID:v33 deviceToken:v34 storefrontID:v35 deviceDigestMode:v39 callbackQueue:v36 completion:v52];
+      LODWORD(v39) = deviceDigestMode2;
+      [notificationsEndpointConnection2 unsubscribeNotificationsForTopicIDs:topicIDsToRemove3 withTopicGroupingID:topicGroupingID4 fromChannelID:channelID2 userID:userID2 deviceToken:deviceToken2 storefrontID:storefrontID2 deviceDigestMode:v39 callbackQueue:v36 completion:v52];
     }
 
     block[0] = MEMORY[0x1E69E9820];
@@ -236,8 +236,8 @@ LABEL_6:
     block[3] = &unk_1E7C3B9D8;
     v48 = v70;
     v49 = v68;
-    v46 = v42;
-    v47 = self;
+    v46 = delegateCopy;
+    selfCopy = self;
     v50 = buf;
     v51 = v60;
     dispatch_group_notify(group, MEMORY[0x1E69E96A0], block);
@@ -251,8 +251,8 @@ LABEL_6:
     goto LABEL_15;
   }
 
-  v9 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToRemove];
-  v10 = [v9 count] == 0;
+  topicIDsToRemove4 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToRemove];
+  v10 = [topicIDsToRemove4 count] == 0;
 
   if (!v10)
   {
@@ -266,7 +266,7 @@ LABEL_6:
     _os_log_impl(&dword_1B63EF000, v38, OS_LOG_TYPE_INFO, "modifyNotificationsForTopicsCommand: no topics to add or remove", buf, 2u);
   }
 
-  [v42 command:self didFinishWithStatus:0];
+  [delegateCopy command:self didFinishWithStatus:0];
 LABEL_15:
 
   v37 = *MEMORY[0x1E69E9840];
@@ -363,18 +363,18 @@ uint64_t __86__FCModifyNotificationsForTopicsCommand_executeWithContext_delegate
   }
 }
 
-- (BOOL)canCoalesceWithCommand:(id)a3
+- (BOOL)canCoalesceWithCommand:(id)command
 {
-  v4 = a3;
+  commandCopy = command;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     objc_opt_class();
-    if (v4)
+    if (commandCopy)
     {
       if (objc_opt_isKindOfClass())
       {
-        v5 = v4;
+        v5 = commandCopy;
       }
 
       else
@@ -389,9 +389,9 @@ uint64_t __86__FCModifyNotificationsForTopicsCommand_executeWithContext_delegate
     }
 
     v7 = v5;
-    v8 = [(FCModifyNotificationsForTopicsCommand *)self channelID];
-    v9 = [v7 channelID];
-    v6 = [v8 isEqual:v9];
+    channelID = [(FCModifyNotificationsForTopicsCommand *)self channelID];
+    channelID2 = [v7 channelID];
+    v6 = [channelID isEqual:channelID2];
   }
 
   else
@@ -402,16 +402,16 @@ uint64_t __86__FCModifyNotificationsForTopicsCommand_executeWithContext_delegate
   return v6;
 }
 
-- (void)coalesceWithCommand:(id)a3
+- (void)coalesceWithCommand:(id)command
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  commandCopy = command;
   objc_opt_class();
-  if (v4)
+  if (commandCopy)
   {
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = commandCopy;
     }
 
     else
@@ -427,18 +427,18 @@ uint64_t __86__FCModifyNotificationsForTopicsCommand_executeWithContext_delegate
 
   v6 = v5;
   v7 = [MEMORY[0x1E695DFA8] set];
-  v8 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToAdd];
-  [v7 addObjectsFromArray:v8];
+  topicIDsToAdd = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToAdd];
+  [v7 addObjectsFromArray:topicIDsToAdd];
 
-  v9 = [v6 topicIDsToAdd];
-  [v7 addObjectsFromArray:v9];
+  topicIDsToAdd2 = [v6 topicIDsToAdd];
+  [v7 addObjectsFromArray:topicIDsToAdd2];
 
   v10 = [MEMORY[0x1E695DFA8] set];
-  v11 = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToRemove];
-  [v10 addObjectsFromArray:v11];
+  topicIDsToRemove = [(FCModifyNotificationsForTopicsCommand *)self topicIDsToRemove];
+  [v10 addObjectsFromArray:topicIDsToRemove];
 
-  v12 = [v6 topicIDsToRemove];
-  [v10 addObjectsFromArray:v12];
+  topicIDsToRemove2 = [v6 topicIDsToRemove];
+  [v10 addObjectsFromArray:topicIDsToRemove2];
 
   v24 = 0u;
   v25 = 0u;
@@ -473,11 +473,11 @@ uint64_t __86__FCModifyNotificationsForTopicsCommand_executeWithContext_delegate
     while (v15);
   }
 
-  v19 = [v7 allObjects];
-  [(FCModifyNotificationsForTopicsCommand *)self setTopicIDsToAdd:v19];
+  allObjects = [v7 allObjects];
+  [(FCModifyNotificationsForTopicsCommand *)self setTopicIDsToAdd:allObjects];
 
-  v20 = [v10 allObjects];
-  [(FCModifyNotificationsForTopicsCommand *)self setTopicIDsToRemove:v20];
+  allObjects2 = [v10 allObjects];
+  [(FCModifyNotificationsForTopicsCommand *)self setTopicIDsToRemove:allObjects2];
 
   v21 = *MEMORY[0x1E69E9840];
 }

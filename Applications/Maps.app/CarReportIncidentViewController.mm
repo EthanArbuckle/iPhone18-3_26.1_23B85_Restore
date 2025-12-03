@@ -1,12 +1,12 @@
 @interface CarReportIncidentViewController
 - (NSArray)incidentLayoutItems;
-- (_TtC4Maps31CarReportIncidentViewController)initWithCoder:(id)a3;
-- (_TtC4Maps31CarReportIncidentViewController)initWithDelegate:(id)a3;
-- (_TtC4Maps31CarReportIncidentViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC4Maps31CarReportIncidentViewController)initWithCoder:(id)coder;
+- (_TtC4Maps31CarReportIncidentViewController)initWithDelegate:(id)delegate;
+- (_TtC4Maps31CarReportIncidentViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (_TtP4Maps39CarReportIncidentViewControllerDelegate_)delegate;
-- (void)didSelectWithItem:(id)a3;
-- (void)setIncidentLayoutItems:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)didSelectWithItem:(id)item;
+- (void)setIncidentLayoutItems:(id)items;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CarReportIncidentViewController
@@ -18,7 +18,7 @@
   return Strong;
 }
 
-- (_TtC4Maps31CarReportIncidentViewController)initWithDelegate:(id)a3
+- (_TtC4Maps31CarReportIncidentViewController)initWithDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
   v3 = sub_10030FA90();
@@ -26,7 +26,7 @@
   return v3;
 }
 
-- (_TtC4Maps31CarReportIncidentViewController)initWithCoder:(id)a3
+- (_TtC4Maps31CarReportIncidentViewController)initWithCoder:(id)coder
 {
   v4 = sub_1000CE6B8(&qword_101919440);
   v5 = *(v4 - 8);
@@ -43,15 +43,15 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
   v4 = v7.receiver;
-  [(CarReportIncidentViewController *)&v7 viewWillAppear:v3];
-  v5 = [objc_opt_self() sharedInstance];
-  v6 = [v5 currentIncidentsLayout];
+  [(CarReportIncidentViewController *)&v7 viewWillAppear:appearCopy];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  currentIncidentsLayout = [sharedInstance currentIncidentsLayout];
 
   sub_100014C84(0, &qword_101919470);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
@@ -65,7 +65,7 @@
 {
   swift_getKeyPath();
   swift_getKeyPath();
-  v3 = self;
+  selfCopy = self;
   static Published.subscript.getter();
 
   sub_100014C84(0, &qword_101919470);
@@ -74,28 +74,28 @@
   return v4.super.isa;
 }
 
-- (void)setIncidentLayoutItems:(id)a3
+- (void)setIncidentLayoutItems:(id)items
 {
   sub_100014C84(0, &qword_101919470);
   static Array._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getKeyPath();
   swift_getKeyPath();
-  v4 = self;
+  selfCopy = self;
   static Published.subscript.setter();
 }
 
-- (void)didSelectWithItem:(id)a3
+- (void)didSelectWithItem:(id)item
 {
   Strong = swift_unknownObjectWeakLoadStrong();
   if (Strong)
   {
-    [Strong reportIncidentViewController:self didSelectReport:a3];
+    [Strong reportIncidentViewController:self didSelectReport:item];
 
     swift_unknownObjectRelease();
   }
 }
 
-- (_TtC4Maps31CarReportIncidentViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC4Maps31CarReportIncidentViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

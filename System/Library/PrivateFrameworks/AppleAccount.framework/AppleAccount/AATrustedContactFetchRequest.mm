@@ -1,14 +1,14 @@
 @interface AATrustedContactFetchRequest
-- (AATrustedContactFetchRequest)initWithCoder:(id)a3;
-- (AATrustedContactFetchRequest)initWithContactType:(unint64_t)a3 cachePolicy:(unint64_t)a4;
+- (AATrustedContactFetchRequest)initWithCoder:(id)coder;
+- (AATrustedContactFetchRequest)initWithContactType:(unint64_t)type cachePolicy:(unint64_t)policy;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)includeContactsWithStatus:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)includeContactsWithStatus:(int64_t)status;
 @end
 
 @implementation AATrustedContactFetchRequest
 
-- (AATrustedContactFetchRequest)initWithContactType:(unint64_t)a3 cachePolicy:(unint64_t)a4
+- (AATrustedContactFetchRequest)initWithContactType:(unint64_t)type cachePolicy:(unint64_t)policy
 {
   v11.receiver = self;
   v11.super_class = AATrustedContactFetchRequest;
@@ -16,8 +16,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_contactType = a3;
-    v6->_cachePolicy = a4;
+    v6->_contactType = type;
+    v6->_cachePolicy = policy;
     v8 = objc_alloc_init(MEMORY[0x1E695DFA8]);
     includedStatuses = v7->_includedStatuses;
     v7->_includedStatuses = v8;
@@ -28,19 +28,19 @@
   return v7;
 }
 
-- (AATrustedContactFetchRequest)initWithCoder:(id)a3
+- (AATrustedContactFetchRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(AATrustedContactFetchRequest *)self init];
   if (v5)
   {
-    v5->_contactType = [v4 decodeIntegerForKey:@"_contactType"];
-    v5->_cachePolicy = [v4 decodeIntegerForKey:@"_cachePolicy"];
-    v5->_shouldLookUpContactInAddressBook = [v4 decodeBoolForKey:@"_shouldLookUpContactInAddressBook"];
+    v5->_contactType = [coderCopy decodeIntegerForKey:@"_contactType"];
+    v5->_cachePolicy = [coderCopy decodeIntegerForKey:@"_cachePolicy"];
+    v5->_shouldLookUpContactInAddressBook = [coderCopy decodeBoolForKey:@"_shouldLookUpContactInAddressBook"];
     v6 = MEMORY[0x1E695DFD8];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_includedStatuses"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_includedStatuses"];
     if (v9)
     {
       v10 = [MEMORY[0x1E695DFA8] setWithSet:v9];
@@ -58,37 +58,37 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contactType = self->_contactType;
-  v5 = a3;
-  [v5 encodeInteger:contactType forKey:@"_contactType"];
-  [v5 encodeObject:self->_includedStatuses forKey:@"_includedStatuses"];
-  [v5 encodeInteger:self->_cachePolicy forKey:@"_cachePolicy"];
-  [v5 encodeBool:self->_shouldLookUpContactInAddressBook forKey:@"_shouldLookUpContactInAddressBook"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:contactType forKey:@"_contactType"];
+  [coderCopy encodeObject:self->_includedStatuses forKey:@"_includedStatuses"];
+  [coderCopy encodeInteger:self->_cachePolicy forKey:@"_cachePolicy"];
+  [coderCopy encodeBool:self->_shouldLookUpContactInAddressBook forKey:@"_shouldLookUpContactInAddressBook"];
 }
 
-- (void)includeContactsWithStatus:(int64_t)a3
+- (void)includeContactsWithStatus:(int64_t)status
 {
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  v4 = [(AATrustedContactFetchRequest *)self includedStatuses];
-  [v4 addObject:v5];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:status];
+  includedStatuses = [(AATrustedContactFetchRequest *)self includedStatuses];
+  [includedStatuses addObject:v5];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AATrustedContactFetchRequest *)self contactType];
-  v5 = [(AATrustedContactFetchRequest *)self includedStatuses];
-  v6 = [(AATrustedContactFetchRequest *)self cachePolicy];
-  v7 = [(AATrustedContactFetchRequest *)self shouldLookUpContactInAddressBook];
+  contactType = [(AATrustedContactFetchRequest *)self contactType];
+  includedStatuses = [(AATrustedContactFetchRequest *)self includedStatuses];
+  cachePolicy = [(AATrustedContactFetchRequest *)self cachePolicy];
+  shouldLookUpContactInAddressBook = [(AATrustedContactFetchRequest *)self shouldLookUpContactInAddressBook];
   v8 = @"NO";
-  if (v7)
+  if (shouldLookUpContactInAddressBook)
   {
     v8 = @"YES";
   }
 
-  v9 = [v3 stringWithFormat:@"<TrustedContactFetchRequest: contactType: %ld, includedStatuses: %@, cachePolicy: %ld, shouldLookupAddressBook: %@>", v4, v5, v6, v8];
+  v9 = [v3 stringWithFormat:@"<TrustedContactFetchRequest: contactType: %ld, includedStatuses: %@, cachePolicy: %ld, shouldLookupAddressBook: %@>", contactType, includedStatuses, cachePolicy, v8];
 
   return v9;
 }

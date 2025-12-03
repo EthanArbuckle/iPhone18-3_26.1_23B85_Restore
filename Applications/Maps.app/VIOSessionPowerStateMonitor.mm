@@ -1,6 +1,6 @@
 @interface VIOSessionPowerStateMonitor
 - (BOOL)isLowPowerModeEnabled;
-- (VIOSessionPowerStateMonitor)initWithStateManager:(id)a3 platformController:(id)a4;
+- (VIOSessionPowerStateMonitor)initWithStateManager:(id)manager platformController:(id)controller;
 - (void)dealloc;
 - (void)reportStateToStateManager;
 @end
@@ -23,9 +23,9 @@
 - (BOOL)isLowPowerModeEnabled
 {
   v2 = +[NSProcessInfo processInfo];
-  v3 = [v2 isLowPowerModeEnabled];
+  isLowPowerModeEnabled = [v2 isLowPowerModeEnabled];
 
-  return v3;
+  return isLowPowerModeEnabled;
 }
 
 - (void)dealloc
@@ -36,7 +36,7 @@
     v4 = objc_opt_class();
     v5 = NSStringFromClass(v4);
     *buf = 134349314;
-    v8 = self;
+    selfCopy = self;
     v9 = 2112;
     v10 = v5;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Disabling %@", buf, 0x16u);
@@ -47,11 +47,11 @@
   [(VIOSessionPowerStateMonitor *)&v6 dealloc];
 }
 
-- (VIOSessionPowerStateMonitor)initWithStateManager:(id)a3 platformController:(id)a4
+- (VIOSessionPowerStateMonitor)initWithStateManager:(id)manager platformController:(id)controller
 {
   v10.receiver = self;
   v10.super_class = VIOSessionPowerStateMonitor;
-  v4 = [(VIOSessionMonitor *)&v10 initWithStateManager:a3 platformController:a4];
+  v4 = [(VIOSessionMonitor *)&v10 initWithStateManager:manager platformController:controller];
   if (v4)
   {
     v5 = sub_100A20194();

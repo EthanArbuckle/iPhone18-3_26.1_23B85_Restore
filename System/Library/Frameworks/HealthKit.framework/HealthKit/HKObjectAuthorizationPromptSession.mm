@@ -1,47 +1,47 @@
 @interface HKObjectAuthorizationPromptSession
-- (HKObjectAuthorizationPromptSession)initWithCoder:(id)a3;
-- (id)initForBundleIdentifier:(id)a3 sessionIdentifier:(id)a4 objectType:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (HKObjectAuthorizationPromptSession)initWithCoder:(id)coder;
+- (id)initForBundleIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier objectType:(id)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKObjectAuthorizationPromptSession
 
-- (id)initForBundleIdentifier:(id)a3 sessionIdentifier:(id)a4 objectType:(id)a5
+- (id)initForBundleIdentifier:(id)identifier sessionIdentifier:(id)sessionIdentifier objectType:(id)type
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  identifierCopy = identifier;
+  sessionIdentifierCopy = sessionIdentifier;
+  typeCopy = type;
   v15.receiver = self;
   v15.super_class = HKObjectAuthorizationPromptSession;
   v12 = [(HKObjectAuthorizationPromptSession *)&v15 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_sessionIdentifier, a4);
-    objc_storeStrong(p_isa + 2, a3);
-    objc_storeStrong(p_isa + 3, a5);
+    objc_storeStrong(&v12->_sessionIdentifier, sessionIdentifier);
+    objc_storeStrong(p_isa + 2, identifier);
+    objc_storeStrong(p_isa + 3, type);
   }
 
   return p_isa;
 }
 
-- (HKObjectAuthorizationPromptSession)initWithCoder:(id)a3
+- (HKObjectAuthorizationPromptSession)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = HKObjectAuthorizationPromptSession;
   v5 = [(HKObjectAuthorizationPromptSession *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sid"];
     sessionIdentifier = v5->_sessionIdentifier;
     v5->_sessionIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bid"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bid"];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"objectType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"objectType"];
     objectType = v5->_objectType;
     v5->_objectType = v10;
   }
@@ -49,13 +49,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   sessionIdentifier = self->_sessionIdentifier;
-  v5 = a3;
-  [v5 encodeObject:sessionIdentifier forKey:@"sid"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bid"];
-  [v5 encodeObject:self->_objectType forKey:@"objectType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:sessionIdentifier forKey:@"sid"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bid"];
+  [coderCopy encodeObject:self->_objectType forKey:@"objectType"];
 }
 
 @end

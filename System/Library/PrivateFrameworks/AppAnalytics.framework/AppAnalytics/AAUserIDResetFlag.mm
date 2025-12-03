@@ -1,7 +1,7 @@
 @interface AAUserIDResetFlag
 - (AAUserIDResetFlag)init;
-- (AAUserIDResetFlag)initWithSuiteName:(id)a3;
-- (AAUserIDResetFlag)initWithSuiteName:(id)a3 userDataIDsResetKey:(id)a4;
+- (AAUserIDResetFlag)initWithSuiteName:(id)name;
+- (AAUserIDResetFlag)initWithSuiteName:(id)name userDataIDsResetKey:(id)key;
 - (NSString)suiteName;
 - (NSString)userDataIDsResetKey;
 @end
@@ -36,12 +36,12 @@
   return v4;
 }
 
-- (AAUserIDResetFlag)initWithSuiteName:(id)a3 userDataIDsResetKey:(id)a4
+- (AAUserIDResetFlag)initWithSuiteName:(id)name userDataIDsResetKey:(id)key
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
-    a3 = sub_1B6AB92E0();
+    name = sub_1B6AB92E0();
     v8 = v7;
   }
 
@@ -52,7 +52,7 @@
 
   v9 = sub_1B6AB92E0();
   v10 = (&self->super.isa + OBJC_IVAR___AAUserIDResetFlag_userIDResetFlag);
-  *v10 = a3;
+  *v10 = name;
   v10[1] = v8;
   v10[2] = v9;
   v10[3] = v11;
@@ -61,10 +61,10 @@
   return [(AAUserIDResetFlag *)&v13 init];
 }
 
-- (AAUserIDResetFlag)initWithSuiteName:(id)a3
+- (AAUserIDResetFlag)initWithSuiteName:(id)name
 {
   ObjectType = swift_getObjectType();
-  if (a3)
+  if (name)
   {
     v6 = sub_1B6AB92E0();
   }

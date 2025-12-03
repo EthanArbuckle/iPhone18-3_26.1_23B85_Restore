@@ -1,10 +1,10 @@
 @interface MutableMotionActivityViewModel
-- (_TtC9MomentsUI30MutableMotionActivityViewModel)initWithCoder:(id)a3;
+- (_TtC9MomentsUI30MutableMotionActivityViewModel)initWithCoder:(id)coder;
 @end
 
 @implementation MutableMotionActivityViewModel
 
-- (_TtC9MomentsUI30MutableMotionActivityViewModel)initWithCoder:(id)a3
+- (_TtC9MomentsUI30MutableMotionActivityViewModel)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.isa + OBJC_IVAR____TtC9MomentsUI30MutableMotionActivityViewModel_subtitle);
   *v3 = 0;

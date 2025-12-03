@@ -1,20 +1,20 @@
 @interface CASDFVisualizationEffect
 + (id)defaultValues;
-- (void)configureLayer:(void *)a3 transaction:(void *)a4;
+- (void)configureLayer:(void *)layer transaction:(void *)transaction;
 @end
 
 @implementation CASDFVisualizationEffect
 
-- (void)configureLayer:(void *)a3 transaction:(void *)a4
+- (void)configureLayer:(void *)layer transaction:(void *)transaction
 {
-  *(a3 + 136) = 0;
-  *(a3 + 120) = 0u;
-  *(a3 + 104) = 0u;
-  *(a3 + 88) = 0u;
-  *(a3 + 72) = 0u;
-  *(a3 + 56) = 0u;
-  *(a3 + 40) = 0u;
-  *(a3 + 24) = 0u;
+  *(layer + 136) = 0;
+  *(layer + 120) = 0u;
+  *(layer + 104) = 0u;
+  *(layer + 88) = 0u;
+  *(layer + 72) = 0u;
+  *(layer + 56) = 0u;
+  *(layer + 40) = 0u;
+  *(layer + 24) = 0u;
 }
 
 + (id)defaultValues

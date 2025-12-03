@@ -1,55 +1,55 @@
 @interface RemoteViewController
-- (_TtC19DiagnosticsReporter20RemoteViewController)initWithCoder:(id)a3;
-- (_TtC19DiagnosticsReporter20RemoteViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)configureWithContext:(id)a3 completion:(id)a4;
+- (_TtC19DiagnosticsReporter20RemoteViewController)initWithCoder:(id)coder;
+- (_TtC19DiagnosticsReporter20RemoteViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)configureWithContext:(id)context completion:(id)completion;
 - (void)didInvalidateForRemoteAlert;
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewWillDisappear:;
 @end
 
 @implementation RemoteViewController
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = self;
+  selfCopy = self;
   sub_1000096C8();
 }
 
-- (void)prepareForActivationWithContext:(id)a3 completion:(id)a4
+- (void)prepareForActivationWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_100009E50;
   }
 
-  v7 = a3;
-  v8 = self;
+  contextCopy = context;
+  selfCopy = self;
   sub_100009A98(v6);
   sub_100009D7C(v6);
 }
 
-- (void)configureWithContext:(id)a3 completion:(id)a4
+- (void)configureWithContext:(id)context completion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   if (v6)
   {
     *(swift_allocObject() + 16) = v6;
     v6 = sub_100009E50;
   }
 
-  v7 = a3;
-  v8 = self;
-  sub_1000088E4(a3, v6);
+  contextCopy = context;
+  selfCopy = self;
+  sub_1000088E4(context, v6);
   sub_100009D7C(v6);
 }
 
-- (void)dismissViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   if (v5)
   {
     *(swift_allocObject() + 16) = v5;
@@ -61,14 +61,14 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_100009BF0();
   sub_100009D7C(v6);
 }
 
-- (_TtC19DiagnosticsReporter20RemoteViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC19DiagnosticsReporter20RemoteViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = &self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC19DiagnosticsReporter20RemoteViewController_diagnosticsLog];
@@ -76,7 +76,7 @@
     *(v6 + 1) = 0u;
     *(v6 + 4) = 0;
     *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC19DiagnosticsReporter20RemoteViewController_feedbackController] = 0;
-    v7 = a4;
+    bundleCopy = bundle;
     v8 = String._bridgeToObjectiveC()();
   }
 
@@ -87,18 +87,18 @@
     *(v9 + 1) = 0u;
     *(v9 + 4) = 0;
     *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC19DiagnosticsReporter20RemoteViewController_feedbackController] = 0;
-    v10 = a4;
+    bundleCopy2 = bundle;
     v8 = 0;
   }
 
   v13.receiver = self;
   v13.super_class = type metadata accessor for RemoteViewController();
-  v11 = [(RemoteViewController *)&v13 initWithNibName:v8 bundle:a4];
+  v11 = [(RemoteViewController *)&v13 initWithNibName:v8 bundle:bundle];
 
   return v11;
 }
 
-- (_TtC19DiagnosticsReporter20RemoteViewController)initWithCoder:(id)a3
+- (_TtC19DiagnosticsReporter20RemoteViewController)initWithCoder:(id)coder
 {
   v4 = &self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC19DiagnosticsReporter20RemoteViewController_diagnosticsLog];
   *v4 = 0u;
@@ -107,8 +107,8 @@
   *&self->SBUIRemoteAlertServiceViewController_opaque[OBJC_IVAR____TtC19DiagnosticsReporter20RemoteViewController_feedbackController] = 0;
   v8.receiver = self;
   v8.super_class = type metadata accessor for RemoteViewController();
-  v5 = a3;
-  v6 = [(RemoteViewController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(RemoteViewController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

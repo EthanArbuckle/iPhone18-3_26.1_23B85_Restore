@@ -1,11 +1,11 @@
 @interface SKUIViewControllerContainerCollectionView
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (void)_beginDynamicHysteresisIncreaseWithCompetingScrollView:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (void)_beginDynamicHysteresisIncreaseWithCompetingScrollView:(id)view;
 - (void)_endDynamicHysteresisIncrease;
 - (void)_updateStateForDynamicHysteresisIncrease;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation SKUIViewControllerContainerCollectionView
@@ -18,11 +18,11 @@
   [(SKUIViewControllerContainerCollectionView *)&v3 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -35,10 +35,10 @@
     }
   }
 
-  if (_SKUIViewControllerContainerCollectionViewPanGestureRecognizerStateObservationContext == a6)
+  if (_SKUIViewControllerContainerCollectionViewPanGestureRecognizerStateObservationContext == context)
   {
-    v21 = [(SKUIViewControllerContainerCollectionView *)self panGestureRecognizer];
-    if (([v21 state] - 3) <= 2)
+    panGestureRecognizer = [(SKUIViewControllerContainerCollectionView *)self panGestureRecognizer];
+    if (([panGestureRecognizer state] - 3) <= 2)
     {
       [(SKUIViewControllerContainerCollectionView *)self _endDynamicHysteresisIncrease];
     }
@@ -48,14 +48,14 @@
   {
     v22.receiver = self;
     v22.super_class = SKUIViewControllerContainerCollectionView;
-    [(SKUIViewControllerContainerCollectionView *)&v22 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(SKUIViewControllerContainerCollectionView *)&v22 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldBeRequiredToFailByGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldBeRequiredToFailByGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = a3;
-  v8 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -68,20 +68,20 @@
     }
   }
 
-  v17 = [(SKUIViewControllerContainerCollectionView *)self panGestureRecognizer];
+  panGestureRecognizer = [(SKUIViewControllerContainerCollectionView *)self panGestureRecognizer];
 
-  if (v17 == v7)
+  if (panGestureRecognizer == recognizerCopy)
   {
-    v18 = [v8 delegate];
-    if (v18 != self)
+    delegate = [gestureRecognizerCopy delegate];
+    if (delegate != self)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v19 = v18;
-        v20 = [(SKUIViewControllerContainerCollectionView *)v19 panGestureRecognizer];
+        v19 = delegate;
+        panGestureRecognizer2 = [(SKUIViewControllerContainerCollectionView *)v19 panGestureRecognizer];
 
-        if (v20 == v8 && _SKUIScrollViewIsCompetingWithScrollView(self, v19) && (_SKUIScrollViewWantsToBeginTrackingImmediately(v19) & 1) != 0)
+        if (panGestureRecognizer2 == gestureRecognizerCopy && _SKUIScrollViewIsCompetingWithScrollView(self, v19) && (_SKUIScrollViewWantsToBeginTrackingImmediately(v19) & 1) != 0)
         {
           [(SKUIViewControllerContainerCollectionView *)self _beginDynamicHysteresisIncreaseWithCompetingScrollView:v19];
 
@@ -96,7 +96,7 @@
   {
     v23.receiver = self;
     v23.super_class = SKUIViewControllerContainerCollectionView;
-    v21 = [(SKUIViewControllerContainerCollectionView *)&v23 gestureRecognizer:v7 shouldBeRequiredToFailByGestureRecognizer:v8];
+    v21 = [(SKUIViewControllerContainerCollectionView *)&v23 gestureRecognizer:recognizerCopy shouldBeRequiredToFailByGestureRecognizer:gestureRecognizerCopy];
   }
 
   else
@@ -109,10 +109,10 @@ LABEL_17:
   return v21;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  v7 = a3;
-  v8 = a4;
+  recognizerCopy = recognizer;
+  gestureRecognizerCopy = gestureRecognizer;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -125,15 +125,15 @@ LABEL_17:
     }
   }
 
-  v17 = [(SKUIViewControllerContainerCollectionView *)self panGestureRecognizer];
+  panGestureRecognizer = [(SKUIViewControllerContainerCollectionView *)self panGestureRecognizer];
 
-  if (v17 != v7)
+  if (panGestureRecognizer != recognizerCopy)
   {
     goto LABEL_14;
   }
 
-  v18 = [v8 delegate];
-  if (v18 == self)
+  delegate = [gestureRecognizerCopy delegate];
+  if (delegate == self)
   {
     goto LABEL_13;
   }
@@ -144,10 +144,10 @@ LABEL_17:
     goto LABEL_13;
   }
 
-  v19 = v18;
-  v20 = [(SKUIViewControllerContainerCollectionView *)v19 panGestureRecognizer];
+  v19 = delegate;
+  panGestureRecognizer2 = [(SKUIViewControllerContainerCollectionView *)v19 panGestureRecognizer];
 
-  if (v20 != v8 || !_SKUIScrollViewIsCompetingWithScrollView(self, v19))
+  if (panGestureRecognizer2 != gestureRecognizerCopy || !_SKUIScrollViewIsCompetingWithScrollView(self, v19))
   {
 
 LABEL_13:
@@ -167,7 +167,7 @@ LABEL_14:
   {
     v24.receiver = self;
     v24.super_class = SKUIViewControllerContainerCollectionView;
-    v22 = [(SKUIViewControllerContainerCollectionView *)&v24 gestureRecognizer:v7 shouldRequireFailureOfGestureRecognizer:v8];
+    v22 = [(SKUIViewControllerContainerCollectionView *)&v24 gestureRecognizer:recognizerCopy shouldRequireFailureOfGestureRecognizer:gestureRecognizerCopy];
   }
 
   else
@@ -180,21 +180,21 @@ LABEL_17:
   return v22;
 }
 
-- (void)_beginDynamicHysteresisIncreaseWithCompetingScrollView:(id)a3
+- (void)_beginDynamicHysteresisIncreaseWithCompetingScrollView:(id)view
 {
-  v4 = a3;
-  v5 = v4;
+  viewCopy = view;
+  v5 = viewCopy;
   if (!self->_forcingIncreasedPanGestureRecognizerHysteresis)
   {
-    v6 = [v4 panGestureRecognizer];
-    [v6 _hysteresis];
+    panGestureRecognizer = [viewCopy panGestureRecognizer];
+    [panGestureRecognizer _hysteresis];
     self->_competingScrollViewPanGestureRecognizerHysteresis = v7;
 
-    v8 = [(SKUIViewControllerContainerCollectionView *)self panGestureRecognizer];
-    [v8 _hysteresis];
+    panGestureRecognizer2 = [(SKUIViewControllerContainerCollectionView *)self panGestureRecognizer];
+    [panGestureRecognizer2 _hysteresis];
     self->_originalPanGestureRecognizerHysteresis = v9;
-    [v8 _setHysteresis:88.0];
-    [v8 addObserver:self forKeyPath:@"state" options:0 context:_SKUIViewControllerContainerCollectionViewPanGestureRecognizerStateObservationContext];
+    [panGestureRecognizer2 _setHysteresis:88.0];
+    [panGestureRecognizer2 addObserver:self forKeyPath:@"state" options:0 context:_SKUIViewControllerContainerCollectionViewPanGestureRecognizerStateObservationContext];
     self->_forcingIncreasedPanGestureRecognizerHysteresis = 1;
     objc_initWeak(&location, self);
     v10 = *MEMORY[0x277CBECE8];
@@ -223,9 +223,9 @@ void __100__SKUIViewControllerContainerCollectionView__beginDynamicHysteresisInc
   if (self->_forcingIncreasedPanGestureRecognizerHysteresis)
   {
     self->_competingScrollViewPanGestureRecognizerHysteresis = 0.0;
-    v4 = [(SKUIViewControllerContainerCollectionView *)self panGestureRecognizer];
-    [v4 _setHysteresis:self->_originalPanGestureRecognizerHysteresis];
-    [v4 removeObserver:self forKeyPath:@"state" context:&_SKUIViewControllerContainerCollectionViewPanGestureRecognizerStateObservationContext];
+    panGestureRecognizer = [(SKUIViewControllerContainerCollectionView *)self panGestureRecognizer];
+    [panGestureRecognizer _setHysteresis:self->_originalPanGestureRecognizerHysteresis];
+    [panGestureRecognizer removeObserver:self forKeyPath:@"state" context:&_SKUIViewControllerContainerCollectionViewPanGestureRecognizerStateObservationContext];
     self->_originalPanGestureRecognizerHysteresis = 0.0;
     self->_forcingIncreasedPanGestureRecognizerHysteresis = 0;
     if (self->_runLoopObserver)
@@ -241,15 +241,15 @@ void __100__SKUIViewControllerContainerCollectionView__beginDynamicHysteresisInc
 
 - (void)_updateStateForDynamicHysteresisIncrease
 {
-  v7 = [(SKUIViewControllerContainerCollectionView *)self panGestureRecognizer];
-  if (![v7 state])
+  panGestureRecognizer = [(SKUIViewControllerContainerCollectionView *)self panGestureRecognizer];
+  if (![panGestureRecognizer state])
   {
-    [v7 translationInView:self];
+    [panGestureRecognizer translationInView:self];
     v4 = fabs(v3);
     v6 = fabs(v5);
     if (v6 > v4 && v6 > self->_competingScrollViewPanGestureRecognizerHysteresis)
     {
-      [v7 setState:5];
+      [panGestureRecognizer setState:5];
     }
   }
 }

@@ -1,9 +1,9 @@
 @interface CTRegistrationDisplayStatus
-- (CTRegistrationDisplayStatus)initWithCoder:(id)a3;
+- (CTRegistrationDisplayStatus)initWithCoder:(id)coder;
 - (NSString)ct_shortDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTRegistrationDisplayStatus
@@ -11,8 +11,8 @@
 - (id)description
 {
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"<%@ %p", objc_opt_class(), self];
-  v4 = [(CTRegistrationDisplayStatus *)self registrationDisplayStatus];
-  [v3 appendFormat:@", registrationDisplayStatus=%@", v4];
+  registrationDisplayStatus = [(CTRegistrationDisplayStatus *)self registrationDisplayStatus];
+  [v3 appendFormat:@", registrationDisplayStatus=%@", registrationDisplayStatus];
 
   [v3 appendFormat:@", isInHomeCountry=%d", -[CTRegistrationDisplayStatus isInHomeCountry](self, "isInHomeCountry")];
   [v3 appendFormat:@", changedDueToSimRemoval=%d", -[CTRegistrationDisplayStatus changedDueToSimRemoval](self, "changedDueToSimRemoval")];
@@ -23,11 +23,11 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(CTRegistrationDisplayStatus *)self registrationDisplayStatus];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  registrationDisplayStatus = [(CTRegistrationDisplayStatus *)self registrationDisplayStatus];
+  v6 = [registrationDisplayStatus copy];
   [v4 setRegistrationDisplayStatus:v6];
 
   [v4 setIsInHomeCountry:{-[CTRegistrationDisplayStatus isInHomeCountry](self, "isInHomeCountry")}];
@@ -37,34 +37,34 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(CTRegistrationDisplayStatus *)self registrationDisplayStatus];
-  [v5 encodeObject:v4 forKey:@"display_status"];
+  coderCopy = coder;
+  registrationDisplayStatus = [(CTRegistrationDisplayStatus *)self registrationDisplayStatus];
+  [coderCopy encodeObject:registrationDisplayStatus forKey:@"display_status"];
 
-  [v5 encodeBool:-[CTRegistrationDisplayStatus isInHomeCountry](self forKey:{"isInHomeCountry"), @"home_country"}];
-  [v5 encodeBool:-[CTRegistrationDisplayStatus changedDueToSimRemoval](self forKey:{"changedDueToSimRemoval"), @"sim_removal"}];
-  [v5 encodeBool:-[CTRegistrationDisplayStatus isRegistrationForcedHome](self forKey:{"isRegistrationForcedHome"), @"forced_home"}];
-  [v5 encodeBool:-[CTRegistrationDisplayStatus isSatelliteSystem](self forKey:{"isSatelliteSystem"), @"is_satellite_system"}];
+  [coderCopy encodeBool:-[CTRegistrationDisplayStatus isInHomeCountry](self forKey:{"isInHomeCountry"), @"home_country"}];
+  [coderCopy encodeBool:-[CTRegistrationDisplayStatus changedDueToSimRemoval](self forKey:{"changedDueToSimRemoval"), @"sim_removal"}];
+  [coderCopy encodeBool:-[CTRegistrationDisplayStatus isRegistrationForcedHome](self forKey:{"isRegistrationForcedHome"), @"forced_home"}];
+  [coderCopy encodeBool:-[CTRegistrationDisplayStatus isSatelliteSystem](self forKey:{"isSatelliteSystem"), @"is_satellite_system"}];
 }
 
-- (CTRegistrationDisplayStatus)initWithCoder:(id)a3
+- (CTRegistrationDisplayStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CTRegistrationDisplayStatus;
   v5 = [(CTRegistrationDisplayStatus *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"display_status"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"display_status"];
     registrationDisplayStatus = v5->_registrationDisplayStatus;
     v5->_registrationDisplayStatus = v6;
 
-    v5->_isInHomeCountry = [v4 decodeBoolForKey:@"home_country"];
-    v5->_changedDueToSimRemoval = [v4 decodeBoolForKey:@"sim_removal"];
-    v5->_isRegistrationForcedHome = [v4 decodeBoolForKey:@"forced_home"];
-    v5->_isSatelliteSystem = [v4 decodeBoolForKey:@"is_satellite_system"];
+    v5->_isInHomeCountry = [coderCopy decodeBoolForKey:@"home_country"];
+    v5->_changedDueToSimRemoval = [coderCopy decodeBoolForKey:@"sim_removal"];
+    v5->_isRegistrationForcedHome = [coderCopy decodeBoolForKey:@"forced_home"];
+    v5->_isSatelliteSystem = [coderCopy decodeBoolForKey:@"is_satellite_system"];
   }
 
   return v5;
@@ -73,11 +73,11 @@
 - (NSString)ct_shortDescription
 {
   v3 = MEMORY[0x1E696AD60];
-  v4 = [(CTRegistrationDisplayStatus *)self ct_shortName];
-  v5 = [v3 stringWithFormat:@"<%@ ", v4];
+  ct_shortName = [(CTRegistrationDisplayStatus *)self ct_shortName];
+  v5 = [v3 stringWithFormat:@"<%@ ", ct_shortName];
 
-  v6 = [(CTRegistrationDisplayStatus *)self registrationDisplayStatus];
-  [v5 appendFormat:@", status=%@", v6];
+  registrationDisplayStatus = [(CTRegistrationDisplayStatus *)self registrationDisplayStatus];
+  [v5 appendFormat:@", status=%@", registrationDisplayStatus];
 
   [v5 appendFormat:@", homeCountry=%d", -[CTRegistrationDisplayStatus isInHomeCountry](self, "isInHomeCountry")];
   [v5 appendFormat:@", removal=%d", -[CTRegistrationDisplayStatus changedDueToSimRemoval](self, "changedDueToSimRemoval")];

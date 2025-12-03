@@ -1,44 +1,44 @@
 @interface PRUISInlinePosterEditingViewController
 - (BOOL)prefersStatusBarHidden;
-- (PRUISInlinePosterEditingViewController)initWithEntryPoint:(id)a3;
+- (PRUISInlinePosterEditingViewController)initWithEntryPoint:(id)point;
 - (PRUISInlinePosterEditingViewControllerDelegate)delegate;
 - (int64_t)preferredStatusBarStyle;
 - (int64_t)preferredStatusBarUpdateAnimation;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)_getEditingViewControllerIfPossible;
-- (void)_shared_didDismissWithResponse:(id)a3;
-- (void)_shared_willDismissWithResponse:(id)a3;
-- (void)modalRemoteViewController:(id)a3 didDismissWithResponse:(id)a4;
-- (void)modalRemoteViewController:(id)a3 willDismissWithResponse:(id)a4;
+- (void)_shared_didDismissWithResponse:(id)response;
+- (void)_shared_willDismissWithResponse:(id)response;
+- (void)modalRemoteViewController:(id)controller didDismissWithResponse:(id)response;
+- (void)modalRemoteViewController:(id)controller willDismissWithResponse:(id)response;
 - (void)sendRequestDismissalAction;
-- (void)setDisplayConfiguration:(id)a3;
+- (void)setDisplayConfiguration:(id)configuration;
 - (void)viewDidLoad;
 @end
 
 @implementation PRUISInlinePosterEditingViewController
 
-- (PRUISInlinePosterEditingViewController)initWithEntryPoint:(id)a3
+- (PRUISInlinePosterEditingViewController)initWithEntryPoint:(id)point
 {
-  v5 = a3;
+  pointCopy = point;
   v9.receiver = self;
   v9.super_class = PRUISInlinePosterEditingViewController;
   v6 = [(PRUISInlinePosterEditingViewController *)&v9 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entryPoint, a3);
+    objc_storeStrong(&v6->_entryPoint, point);
   }
 
   return v7;
 }
 
-- (void)setDisplayConfiguration:(id)a3
+- (void)setDisplayConfiguration:(id)configuration
 {
-  v5 = a3;
+  configurationCopy = configuration;
   if (([(FBSDisplayConfiguration *)self->_displayConfiguration isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_displayConfiguration, a3);
-    [(PRUISModalRemoteViewController *)self->_fallbackViewController setDisplayConfiguration:v5];
+    objc_storeStrong(&self->_displayConfiguration, configuration);
+    [(PRUISModalRemoteViewController *)self->_fallbackViewController setDisplayConfiguration:configurationCopy];
   }
 }
 
@@ -72,7 +72,7 @@
       v19 = v10;
       v11 = v6;
       v17 = v11;
-      v18 = self;
+      selfCopy = self;
       [(PRUISExternallyHostedPosterEditingService *)v11 beginEditingWithRequest:v9 completion:v16];
       v12 = dispatch_time(0, 3000000000);
       v13[0] = MEMORY[0x1E69E9820];
@@ -271,10 +271,10 @@ void __77__PRUISInlinePosterEditingViewController__getEditingViewControllerIfPos
   }
 }
 
-- (void)modalRemoteViewController:(id)a3 willDismissWithResponse:(id)a4
+- (void)modalRemoteViewController:(id)controller willDismissWithResponse:(id)response
 {
-  v7 = a4;
-  if (self->_fallbackViewController != a3)
+  responseCopy = response;
+  if (self->_fallbackViewController != controller)
   {
     [PRUISInlinePosterEditingViewController modalRemoteViewController:a2 willDismissWithResponse:self];
   }
@@ -282,10 +282,10 @@ void __77__PRUISInlinePosterEditingViewController__getEditingViewControllerIfPos
   [(PRUISInlinePosterEditingViewController *)self _shared_willDismissWithResponse:?];
 }
 
-- (void)modalRemoteViewController:(id)a3 didDismissWithResponse:(id)a4
+- (void)modalRemoteViewController:(id)controller didDismissWithResponse:(id)response
 {
-  v7 = a4;
-  if (self->_fallbackViewController != a3)
+  responseCopy = response;
+  if (self->_fallbackViewController != controller)
   {
     [PRUISInlinePosterEditingViewController modalRemoteViewController:a2 didDismissWithResponse:self];
   }
@@ -293,25 +293,25 @@ void __77__PRUISInlinePosterEditingViewController__getEditingViewControllerIfPos
   [(PRUISInlinePosterEditingViewController *)self _shared_didDismissWithResponse:?];
 }
 
-- (void)_shared_willDismissWithResponse:(id)a3
+- (void)_shared_willDismissWithResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   BSDispatchQueueAssertMain();
-  v4 = [(PRUISInlinePosterEditingViewController *)self delegate];
+  delegate = [(PRUISInlinePosterEditingViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 inlineEditingViewController:self willDismissWithResponse:v5];
+    [delegate inlineEditingViewController:self willDismissWithResponse:responseCopy];
   }
 }
 
-- (void)_shared_didDismissWithResponse:(id)a3
+- (void)_shared_didDismissWithResponse:(id)response
 {
-  v5 = a3;
+  responseCopy = response;
   BSDispatchQueueAssertMain();
-  v4 = [(PRUISInlinePosterEditingViewController *)self delegate];
+  delegate = [(PRUISInlinePosterEditingViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 inlineEditingViewController:self didDismissWithResponse:v5];
+    [delegate inlineEditingViewController:self didDismissWithResponse:responseCopy];
   }
 
   [(PRUISExternallyHostedPosterEditingService *)self->_remoteEditingService invalidate];

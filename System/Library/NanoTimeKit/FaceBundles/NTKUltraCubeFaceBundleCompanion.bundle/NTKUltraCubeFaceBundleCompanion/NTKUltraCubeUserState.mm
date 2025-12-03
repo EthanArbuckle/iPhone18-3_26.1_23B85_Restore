@@ -1,7 +1,7 @@
 @interface NTKUltraCubeUserState
 + (id)userState;
 - (id)_init;
-- (void)_userDidAddFaceToLibrary:(id)a3;
+- (void)_userDidAddFaceToLibrary:(id)library;
 @end
 
 @implementation NTKUltraCubeUserState
@@ -48,9 +48,9 @@
   return v2;
 }
 
-- (void)_userDidAddFaceToLibrary:(id)a3
+- (void)_userDidAddFaceToLibrary:(id)library
 {
-  v4 = [a3 object];
+  object = [library object];
   if (!self->_hasUserEverAddedFaceToLibrary)
   {
     objc_opt_class();

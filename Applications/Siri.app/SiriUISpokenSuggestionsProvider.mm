@@ -1,16 +1,16 @@
 @interface SiriUISpokenSuggestionsProvider
-+ (void)fetchTopSpokenSuggestionFrom:(id)a3 completion:(id)a4;
++ (void)fetchTopSpokenSuggestionFrom:(id)from completion:(id)completion;
 - (_TtC4Siri31SiriUISpokenSuggestionsProvider)init;
 @end
 
 @implementation SiriUISpokenSuggestionsProvider
 
-+ (void)fetchTopSpokenSuggestionFrom:(id)a3 completion:(id)a4
++ (void)fetchTopSpokenSuggestionFrom:(id)from completion:(id)completion
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(completion);
   _Block_copy(v5);
-  v6 = a3;
-  sub_1000AFD94(v6, v5);
+  fromCopy = from;
+  sub_1000AFD94(fromCopy, v5);
   _Block_release(v5);
   _Block_release(v5);
 }

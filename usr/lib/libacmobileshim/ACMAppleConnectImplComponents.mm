@@ -3,18 +3,18 @@
 - (ACMAppleConnectPreferences)preferences;
 - (ACMSystemInfoProtocol)systemInfo;
 - (id)createAuthenticationRequest;
-- (id)createHandlerWithClass:(Class)a3 context:(id)a4;
+- (id)createHandlerWithClass:(Class)class context:(id)context;
 - (id)createTicketVerificationRequest;
 - (void)cleanupOnMemoryWarning;
 - (void)dealloc;
-- (void)setUIControllerDelegate:(id)a3;
+- (void)setUIControllerDelegate:(id)delegate;
 @end
 
 @implementation ACMAppleConnectImplComponents
 
 + (id)components
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___ACMAppleConnectImplComponents;
   return objc_msgSendSuper2(&v3, sel_components);
 }
@@ -81,11 +81,11 @@
   return systemInfo;
 }
 
-- (void)setUIControllerDelegate:(id)a3
+- (void)setUIControllerDelegate:(id)delegate
 {
-  if (self->_uiControllerDelegate != a3)
+  if (self->_uiControllerDelegate != delegate)
   {
-    self->_uiControllerDelegate = a3;
+    self->_uiControllerDelegate = delegate;
     [(ACMUIControllerProtocol *)self->_uiController setDelegate:?];
   }
 }
@@ -104,9 +104,9 @@
   return v2;
 }
 
-- (id)createHandlerWithClass:(Class)a3 context:(id)a4
+- (id)createHandlerWithClass:(Class)class context:(id)context
 {
-  v4 = [[a3 alloc] initWithContext:a4];
+  v4 = [[class alloc] initWithContext:context];
 
   return v4;
 }

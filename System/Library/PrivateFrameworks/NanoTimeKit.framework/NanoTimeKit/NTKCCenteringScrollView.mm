@@ -1,34 +1,34 @@
 @interface NTKCCenteringScrollView
 - (CGRect)cropRect;
 - (CGSize)minimumDisplaySize;
-- (NTKCCenteringScrollView)initWithFrame:(CGRect)a3;
+- (NTKCCenteringScrollView)initWithFrame:(CGRect)frame;
 - (NTKCCenteringScrollViewDelegate)ntk_delegate;
 - (void)_centerOnCrop;
 - (void)_updateCrop;
 - (void)_updateInsets;
 - (void)_updateZoomScales;
 - (void)safeAreaInsetsDidChange;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4;
-- (void)setBounds:(CGRect)a3;
-- (void)setCenteredView:(id)a3;
-- (void)setCropRect:(CGRect)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setMaximumZoomRatio:(double)a3;
-- (void)setMinimumDisplaySize:(CGSize)a3 withCropRectCushion:(double)a4;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view;
+- (void)setBounds:(CGRect)bounds;
+- (void)setCenteredView:(id)view;
+- (void)setCropRect:(CGRect)rect;
+- (void)setFrame:(CGRect)frame;
+- (void)setMaximumZoomRatio:(double)ratio;
+- (void)setMinimumDisplaySize:(CGSize)size withCropRectCushion:(double)cushion;
 @end
 
 @implementation NTKCCenteringScrollView
 
-- (NTKCCenteringScrollView)initWithFrame:(CGRect)a3
+- (NTKCCenteringScrollView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = NTKCCenteringScrollView;
-  v3 = [(NTKCCenteringScrollView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(NTKCCenteringScrollView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -39,21 +39,21 @@
     [(NTKCCenteringScrollView *)v4 setBouncesZoom:1];
     [(NTKCCenteringScrollView *)v4 setDecelerationRate:*MEMORY[0x277D76EB8]];
     [(NTKCCenteringScrollView *)v4 setDelegate:v4];
-    v5 = [MEMORY[0x277D75348] blackColor];
-    [(NTKCCenteringScrollView *)v4 setBackgroundColor:v5];
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    [(NTKCCenteringScrollView *)v4 setBackgroundColor:blackColor];
   }
 
   return v4;
 }
 
-- (void)setCenteredView:(id)a3
+- (void)setCenteredView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   centeredView = self->_centeredView;
-  if (centeredView != v5)
+  if (centeredView != viewCopy)
   {
     [(UIView *)centeredView removeFromSuperview];
-    objc_storeStrong(&self->_centeredView, a3);
+    objc_storeStrong(&self->_centeredView, view);
     v7 = self->_centeredView;
     v8 = *(MEMORY[0x277CBF2C0] + 16);
     v11[0] = *MEMORY[0x277CBF2C0];
@@ -69,14 +69,14 @@
   }
 }
 
-- (void)setCropRect:(CGRect)a3
+- (void)setCropRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   p_cropRect = &self->_cropRect;
-  if (!CGRectEqualToRect(a3, self->_cropRect))
+  if (!CGRectEqualToRect(rect, self->_cropRect))
   {
     p_cropRect->origin.x = x;
     p_cropRect->origin.y = y;
@@ -90,12 +90,12 @@
   }
 }
 
-- (void)setMinimumDisplaySize:(CGSize)a3 withCropRectCushion:(double)a4
+- (void)setMinimumDisplaySize:(CGSize)size withCropRectCushion:(double)cushion
 {
-  self->_minimumDisplaySize = a3;
-  if (a4 > 0.0 && self->_cropRectCushion != a4)
+  self->_minimumDisplaySize = size;
+  if (cushion > 0.0 && self->_cropRectCushion != cushion)
   {
-    self->_cropRectCushion = a4;
+    self->_cropRectCushion = cushion;
   }
 
   [(NTKCCenteringScrollView *)self _updateZoomScales];
@@ -104,92 +104,92 @@
   [(NTKCCenteringScrollView *)self _centerOnCrop];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = NTKCCenteringScrollView;
-  [(NTKCCenteringScrollView *)&v4 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NTKCCenteringScrollView *)&v4 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   [(NTKCCenteringScrollView *)self _updateZoomScales];
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
   v4.receiver = self;
   v4.super_class = NTKCCenteringScrollView;
-  [(NTKCCenteringScrollView *)&v4 setBounds:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(NTKCCenteringScrollView *)&v4 setBounds:bounds.origin.x, bounds.origin.y, bounds.size.width, bounds.size.height];
   [(NTKCCenteringScrollView *)self _updateZoomScales];
 }
 
-- (void)setMaximumZoomRatio:(double)a3
+- (void)setMaximumZoomRatio:(double)ratio
 {
-  if (self->_maximumZoomRatio != a3)
+  if (self->_maximumZoomRatio != ratio)
   {
-    self->_maximumZoomRatio = fmax(a3, 1.0);
+    self->_maximumZoomRatio = fmax(ratio, 1.0);
     [(NTKCCenteringScrollView *)self _updateZoomScales];
   }
 }
 
-- (void)scrollViewWillBeginZooming:(id)a3 withView:(id)a4
+- (void)scrollViewWillBeginZooming:(id)zooming withView:(id)view
 {
-  v5 = [(NTKCCenteringScrollView *)self ntk_delegate:a3];
+  v5 = [(NTKCCenteringScrollView *)self ntk_delegate:zooming];
   [v5 scrollViewWillBeginInteraction:self];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(NTKCCenteringScrollView *)self ntk_delegate];
-  [v4 scrollViewWillBeginInteraction:self];
+  ntk_delegate = [(NTKCCenteringScrollView *)self ntk_delegate];
+  [ntk_delegate scrollViewWillBeginInteraction:self];
 }
 
-- (void)scrollViewDidEndZooming:(id)a3 withView:(id)a4 atScale:(double)a5
+- (void)scrollViewDidEndZooming:(id)zooming withView:(id)view atScale:(double)scale
 {
-  [(NTKCCenteringScrollView *)self _updateCrop:a3];
-  v6 = [(NTKCCenteringScrollView *)self ntk_delegate];
-  [v6 scrollViewDidSettleFromInteracting:self];
+  [(NTKCCenteringScrollView *)self _updateCrop:zooming];
+  ntk_delegate = [(NTKCCenteringScrollView *)self ntk_delegate];
+  [ntk_delegate scrollViewDidSettleFromInteracting:self];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  v6 = a3;
-  if (!a4)
+  draggingCopy = dragging;
+  if (!decelerate)
   {
-    v9 = v6;
+    v9 = draggingCopy;
     [(NTKCCenteringScrollView *)self _updateCrop];
-    v7 = [v9 isZoomBouncing];
-    v6 = v9;
-    if ((v7 & 1) == 0)
+    isZoomBouncing = [v9 isZoomBouncing];
+    draggingCopy = v9;
+    if ((isZoomBouncing & 1) == 0)
     {
-      v8 = [(NTKCCenteringScrollView *)self ntk_delegate];
-      [v8 scrollViewDidSettleFromInteracting:self];
+      ntk_delegate = [(NTKCCenteringScrollView *)self ntk_delegate];
+      [ntk_delegate scrollViewDidSettleFromInteracting:self];
 
-      v6 = v9;
+      draggingCopy = v9;
     }
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v4 = a3;
+  deceleratingCopy = decelerating;
   [(NTKCCenteringScrollView *)self _updateCrop];
-  v5 = [v4 isZoomBouncing];
+  isZoomBouncing = [deceleratingCopy isZoomBouncing];
 
-  if ((v5 & 1) == 0)
+  if ((isZoomBouncing & 1) == 0)
   {
-    v6 = [(NTKCCenteringScrollView *)self ntk_delegate];
-    [v6 scrollViewDidSettleFromInteracting:self];
+    ntk_delegate = [(NTKCCenteringScrollView *)self ntk_delegate];
+    [ntk_delegate scrollViewDidSettleFromInteracting:self];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  v4 = [(NTKCCenteringScrollView *)self ntk_delegate];
+  ntk_delegate = [(NTKCCenteringScrollView *)self ntk_delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
     [(NTKCCenteringScrollView *)self _updateCrop];
-    v6 = [(NTKCCenteringScrollView *)self ntk_delegate];
-    [v6 scrollViewDidScroll:self];
+    ntk_delegate2 = [(NTKCCenteringScrollView *)self ntk_delegate];
+    [ntk_delegate2 scrollViewDidScroll:self];
   }
 }
 

@@ -1,5 +1,5 @@
 @interface CXExtensionProvider
-- (void)beginRequestWithExtensionContext:(id)a3;
+- (void)beginRequestWithExtensionContext:(id)context;
 - (void)invalidate;
 @end
 
@@ -7,14 +7,14 @@
 
 - (void)invalidate
 {
-  v3 = [(CXProvider *)self abstractProvider];
-  v4 = [v3 queue];
+  abstractProvider = [(CXProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __33__CXExtensionProvider_invalidate__block_invoke;
   block[3] = &unk_1E7C06CA8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __33__CXExtensionProvider_invalidate__block_invoke(uint64_t a1)
@@ -35,19 +35,19 @@ void __33__CXExtensionProvider_invalidate__block_invoke(uint64_t a1)
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)beginRequestWithExtensionContext:(id)a3
+- (void)beginRequestWithExtensionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CXProvider *)self abstractProvider];
-  v6 = [v5 queue];
+  contextCopy = context;
+  abstractProvider = [(CXProvider *)self abstractProvider];
+  queue = [abstractProvider queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __56__CXExtensionProvider_beginRequestWithExtensionContext___block_invoke;
   v8[3] = &unk_1E7C06BE0;
-  v9 = v4;
-  v10 = self;
-  v7 = v4;
-  dispatch_sync(v6, v8);
+  v9 = contextCopy;
+  selfCopy = self;
+  v7 = contextCopy;
+  dispatch_sync(queue, v8);
 }
 
 void __56__CXExtensionProvider_beginRequestWithExtensionContext___block_invoke(uint64_t a1)

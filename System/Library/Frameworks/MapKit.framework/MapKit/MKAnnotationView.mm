@@ -1,34 +1,34 @@
 @interface MKAnnotationView
 + (BOOL)_isInitiallyHiddenWhenAdded;
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3;
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key;
 + (id)_compactCalloutAccessory;
 + (id)_disclosureCalloutButton;
 + (id)_fullCalloutAccessory;
 + (id)_openInMapsAccessory;
-+ (id)_sheetAccessoryWithViewController:(id)a3;
-- (BOOL)_canShowSelectionAccessory:(id)a3;
++ (id)_sheetAccessoryWithViewController:(id)controller;
+- (BOOL)_canShowSelectionAccessory:(id)accessory;
 - (BOOL)_isProvidingVKLabelContents;
 - (BOOL)_isSelectable;
 - (BOOL)_shouldShowCalloutIfSelected;
 - (BOOL)_titleRequiresCustomFeature;
-- (BOOL)isCollidingWithAnnotationView:(id)a3 previouslyCollided:(BOOL)a4;
+- (BOOL)isCollidingWithAnnotationView:(id)view previouslyCollided:(BOOL)collided;
 - (BOOL)isProvidingCustomFeature;
 - (BOOL)shouldShowCallout;
-- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)a3;
+- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)animated;
 - (CGPoint)_anchorPoint;
-- (CGPoint)_anchorPointForCalloutAnchorPosition:(int64_t)a3;
+- (CGPoint)_anchorPointForCalloutAnchorPosition:(int64_t)position;
 - (CGPoint)_bottomCalloutOffset;
-- (CGPoint)_calculateMapOffsetForPresentationFrame:(CGRect)a3;
-- (CGPoint)_offsetToAnnotationView:(id)a3;
+- (CGPoint)_calculateMapOffsetForPresentationFrame:(CGRect)frame;
+- (CGPoint)_offsetToAnnotationView:(id)view;
 - (CGPoint)_openInMapsAnchorPoint;
 - (CGPoint)accessoryOffset;
 - (CGPoint)calloutOffset;
 - (CGPoint)centerOffset;
 - (CGPoint)leftCalloutOffset;
 - (CGPoint)rightCalloutOffset;
-- (CGRect)_calculateAccessoryFrameForSize:(CGSize)a3 anchorPosition:(int64_t)a4 anchorPoint:(CGPoint)a5 pointerHeight:(double)a6;
-- (CGRect)_calculatePresentationFrameForCalloutView:(id)a3;
-- (CGRect)_calculatePresentationFrameForOpenInMapsView:(id)a3;
+- (CGRect)_calculateAccessoryFrameForSize:(CGSize)size anchorPosition:(int64_t)position anchorPoint:(CGPoint)point pointerHeight:(double)height;
+- (CGRect)_calculatePresentationFrameForCalloutView:(id)view;
+- (CGRect)_calculatePresentationFrameForOpenInMapsView:(id)view;
 - (CGRect)_collisionFrame;
 - (CGRect)_labelDisplayFrame;
 - (CGRect)_mapkit_visibleRect;
@@ -39,7 +39,7 @@
 - (MKAnnotationView)clusterAnnotationView;
 - (MKAnnotationView)initWithAnnotation:(id)annotation reuseIdentifier:(NSString *)reuseIdentifier;
 - (MKAnnotationView)initWithCoder:(NSCoder *)aDecoder;
-- (MKAnnotationView)initWithFrame:(CGRect)a3;
+- (MKAnnotationView)initWithFrame:(CGRect)frame;
 - (MKUsageCounter)_usageCounter;
 - (MKUserLocationAnnotationViewProxy)_userLocationProxy;
 - (UIEdgeInsets)_annotationTrackingInsets;
@@ -49,92 +49,92 @@
 - (VKAnchorWrapper)anchor;
 - (_MKStaticMapView)_staticMapView;
 - (double)_labelDisplayHeight;
-- (double)_pointsForDistance:(double)a3;
-- (float)_clampZPriority:(float)a3;
+- (double)_pointsForDistance:(double)distance;
+- (float)_clampZPriority:(float)priority;
 - (float)_defaultSelectedZPriority;
 - (float)_defaultZPriority;
 - (float)_effectiveZPriority;
 - (id)_annotationContainer;
 - (id)_containerView;
 - (id)_effectiveSubtitle;
-- (id)_effectiveTitleIsCollidable:(BOOL *)a3;
-- (id)_getPopover:(id)a3;
-- (id)_hitTest:(CGPoint)a3 view:(id)a4 withEvent:(id)a5;
+- (id)_effectiveTitleIsCollidable:(BOOL *)collidable;
+- (id)_getPopover:(id)popover;
+- (id)_hitTest:(CGPoint)test view:(id)view withEvent:(id)event;
 - (id)_mapItem;
 - (id)_mapView;
-- (id)_resolvedAccessoryFor:(id)a3;
+- (id)_resolvedAccessoryFor:(id)for;
 - (id)_resolvedAutomaticCalloutStyle;
-- (id)_resolvedAutomaticStyleWithViewController:(id)a3;
+- (id)_resolvedAutomaticStyleWithViewController:(id)controller;
 - (id)_urlForOpenInMaps;
 - (id)customFeatureAnnotation;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates;
 - (int64_t)_calloutAnchorPositionForCurrentFrame;
 - (int64_t)_effectiveCalloutStyle;
-- (int64_t)compareForClustering:(id)a3;
-- (int64_t)compareForCollision:(id)a3;
-- (unint64_t)_reasonToDeferSelectionAccessoryPresentationStyle:(id)a3;
+- (int64_t)compareForClustering:(id)clustering;
+- (int64_t)compareForCollision:(id)collision;
+- (unint64_t)_reasonToDeferSelectionAccessoryPresentationStyle:(id)style;
 - (void)_addAnnotationObservation;
 - (void)_commonInit;
-- (void)_dismissCallout:(BOOL)a3;
-- (void)_dismissPresentedSelectionAccessoryFromViewController:(id)a3 animated:(BOOL)a4;
-- (void)_dismissSelectionAccessoryAnimated:(BOOL)a3;
-- (void)_dismissSelectionAccessoryPresentation:(id)a3 animated:(BOOL)a4;
-- (void)_dismissSelectionAccessoryViewAnimated:(BOOL)a3;
-- (void)_enableRotationForHeadingMode:(double)a3;
+- (void)_dismissCallout:(BOOL)callout;
+- (void)_dismissPresentedSelectionAccessoryFromViewController:(id)controller animated:(BOOL)animated;
+- (void)_dismissSelectionAccessoryAnimated:(BOOL)animated;
+- (void)_dismissSelectionAccessoryPresentation:(id)presentation animated:(BOOL)animated;
+- (void)_dismissSelectionAccessoryViewAnimated:(BOOL)animated;
+- (void)_enableRotationForHeadingMode:(double)mode;
 - (void)_fetchMapItemForSelectionAccessoryView;
 - (void)_invalidateCachedCoordinate;
-- (void)_invalidateCustomFeatureForced:(BOOL)a3 coordinates:(CLLocationCoordinate2D *)a4 count:(unint64_t)a5;
-- (void)_layoutCalloutSelectionAccessoryView:(id)a3;
+- (void)_invalidateCustomFeatureForced:(BOOL)forced coordinates:(CLLocationCoordinate2D *)coordinates count:(unint64_t)count;
+- (void)_layoutCalloutSelectionAccessoryView:(id)view;
 - (void)_layoutOpenInMapsAccessory;
 - (void)_mapVisibleCenteringRectChanged;
 - (void)_metricsDidChange;
-- (void)_mkObserveValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)_mkObserveValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)_performHideAnimationIfNeeded;
 - (void)_performOffsetAnimationIfNeeded;
 - (void)_performStateUpdatesIfNeeded;
-- (void)_presentSelectionAccessorySheetFromViewController:(id)a3 animated:(BOOL)a4;
+- (void)_presentSelectionAccessorySheetFromViewController:(id)controller animated:(BOOL)animated;
 - (void)_removeAnnotationObservation;
 - (void)_removePopover;
-- (void)_setAnimatingToCoordinate:(BOOL)a3;
-- (void)_setCanDisplayDisclosureInCallout:(BOOL)a3;
-- (void)_setCanDisplayPlacemarkInCallout:(BOOL)a3;
-- (void)_setDirection:(double)a3;
-- (void)_setDragState:(unint64_t)a3 animated:(BOOL)a4;
-- (void)_setHidden:(BOOL)a3 forReason:(unint64_t)a4 animated:(BOOL)a5 completion:(id)a6;
-- (void)_setMapRotationRadians:(double)a3;
-- (void)_setPositionOffset:(CGPoint)a3 animated:(BOOL)a4;
-- (void)_setPresentationCoordinate:(CLLocationCoordinate2D)a3;
-- (void)_setRotationRadians:(double)a3 withAnimation:(id)a4;
-- (void)_setSelected:(BOOL)a3 animated:(BOOL)a4;
-- (void)_setSelectedZPriority:(float)a3;
-- (void)_setTracking:(BOOL)a3;
-- (void)_setZIndex:(unint64_t)a3;
-- (void)_setZPriority:(float)a3;
-- (void)_showCallout:(BOOL)a3;
-- (void)_showCalloutSelectionAccessoryView:(id)a3 animated:(BOOL)a4;
-- (void)_showDeferredSelectionAccessoryForReasonIfNeeded:(unint64_t)a3;
-- (void)_showMapItemDetailCalloutAccessory:(id)a3 animated:(BOOL)a4;
-- (void)_showMapItemDetailOpenInMapsAccessory:(id)a3 animated:(BOOL)a4;
-- (void)_showMapItemDetailSheetAccessory:(id)a3 animated:(BOOL)a4;
-- (void)_showSelectionAccessory:(id)a3 animated:(BOOL)a4;
-- (void)_showSelectionAccessoryWithStyle:(id)a3 animated:(BOOL)a4;
-- (void)_updateAnchorPosition:(CGPoint)a3 alignToPixels:(BOOL)a4;
+- (void)_setAnimatingToCoordinate:(BOOL)coordinate;
+- (void)_setCanDisplayDisclosureInCallout:(BOOL)callout;
+- (void)_setCanDisplayPlacemarkInCallout:(BOOL)callout;
+- (void)_setDirection:(double)direction;
+- (void)_setDragState:(unint64_t)state animated:(BOOL)animated;
+- (void)_setHidden:(BOOL)hidden forReason:(unint64_t)reason animated:(BOOL)animated completion:(id)completion;
+- (void)_setMapRotationRadians:(double)radians;
+- (void)_setPositionOffset:(CGPoint)offset animated:(BOOL)animated;
+- (void)_setPresentationCoordinate:(CLLocationCoordinate2D)coordinate;
+- (void)_setRotationRadians:(double)radians withAnimation:(id)animation;
+- (void)_setSelected:(BOOL)selected animated:(BOOL)animated;
+- (void)_setSelectedZPriority:(float)priority;
+- (void)_setTracking:(BOOL)tracking;
+- (void)_setZIndex:(unint64_t)index;
+- (void)_setZPriority:(float)priority;
+- (void)_showCallout:(BOOL)callout;
+- (void)_showCalloutSelectionAccessoryView:(id)view animated:(BOOL)animated;
+- (void)_showDeferredSelectionAccessoryForReasonIfNeeded:(unint64_t)needed;
+- (void)_showMapItemDetailCalloutAccessory:(id)accessory animated:(BOOL)animated;
+- (void)_showMapItemDetailOpenInMapsAccessory:(id)accessory animated:(BOOL)animated;
+- (void)_showMapItemDetailSheetAccessory:(id)accessory animated:(BOOL)animated;
+- (void)_showSelectionAccessory:(id)accessory animated:(BOOL)animated;
+- (void)_showSelectionAccessoryWithStyle:(id)style animated:(BOOL)animated;
+- (void)_updateAnchorPosition:(CGPoint)position alignToPixels:(BOOL)pixels;
 - (void)_updateEffectiveZPriority;
 - (void)_updateFromMap;
-- (void)_updateSelectionAccessoryIfNeededAnimated:(BOOL)a3;
+- (void)_updateSelectionAccessoryIfNeededAnimated:(BOOL)animated;
 - (void)_updateSelectionAccessoryViewContent;
-- (void)_userTrackingModeDidChange:(id)a3;
-- (void)configureCustomFeature:(id)a3;
+- (void)_userTrackingModeDidChange:(id)change;
+- (void)configureCustomFeature:(id)feature;
 - (void)dealloc;
 - (void)didMoveToSuperview;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)selectionAccessoryViewDidRequestDismissal:(id)a3;
-- (void)setAlpha:(double)a3;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)selectionAccessoryViewDidRequestDismissal:(id)dismissal;
+- (void)setAlpha:(double)alpha;
 - (void)setAnnotation:(id)annotation;
-- (void)setBounds:(CGRect)a3;
+- (void)setBounds:(CGRect)bounds;
 - (void)setCalloutOffset:(CGPoint)calloutOffset;
 - (void)setCanShowCallout:(BOOL)canShowCallout;
 - (void)setCenterOffset:(CGPoint)centerOffset;
@@ -144,7 +144,7 @@
 - (void)setDisplayPriority:(MKFeatureDisplayPriority)displayPriority;
 - (void)setDraggable:(BOOL)draggable;
 - (void)setEnabled:(BOOL)enabled;
-- (void)setHidden:(BOOL)a3;
+- (void)setHidden:(BOOL)hidden;
 - (void)setHighlighted:(BOOL)highlighted;
 - (void)setImage:(UIImage *)image;
 - (void)setLeftCalloutAccessoryView:(UIView *)leftCalloutAccessoryView;
@@ -152,8 +152,8 @@
 - (void)setSelected:(BOOL)selected;
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated;
 - (void)setSelectedZPriority:(MKAnnotationViewZPriority)selectedZPriority;
-- (void)setSubtitleVisibility:(int64_t)a3;
-- (void)setTitleVisibility:(int64_t)a3;
+- (void)setSubtitleVisibility:(int64_t)visibility;
+- (void)setTitleVisibility:(int64_t)visibility;
 - (void)setZPriority:(MKAnnotationViewZPriority)zPriority;
 @end
 
@@ -226,8 +226,8 @@
 
 - (id)_mapView
 {
-  v2 = [(MKAnnotationView *)self superview];
-  if (v2)
+  superview = [(MKAnnotationView *)self superview];
+  if (superview)
   {
     do
     {
@@ -237,34 +237,34 @@
         break;
       }
 
-      v3 = [v2 superview];
+      v2Superview = [superview superview];
 
-      v2 = v3;
+      superview = v2Superview;
     }
 
-    while (v3);
+    while (v2Superview);
   }
 
-  return v2;
+  return superview;
 }
 
 - (void)_metricsDidChange
 {
-  v3 = [(MKAnnotationView *)self _annotationContainer];
-  [v3 annotationViewDidChangeMetrics:self];
+  _annotationContainer = [(MKAnnotationView *)self _annotationContainer];
+  [_annotationContainer annotationViewDidChangeMetrics:self];
 
-  v4 = [(MKAnnotationView *)self isProvidingCustomFeature];
+  isProvidingCustomFeature = [(MKAnnotationView *)self isProvidingCustomFeature];
 
-  [(MKAnnotationView *)self invalidateCustomFeatureForced:v4];
+  [(MKAnnotationView *)self invalidateCustomFeatureForced:isProvidingCustomFeature];
 }
 
 - (id)_annotationContainer
 {
-  v2 = [(MKAnnotationView *)self superview];
+  superview = [(MKAnnotationView *)self superview];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = superview;
   }
 
   else
@@ -303,8 +303,8 @@
     return 1;
   }
 
-  v3 = [(MKAnnotationView *)self _mapItem];
-  v4 = v3 != 0;
+  _mapItem = [(MKAnnotationView *)self _mapItem];
+  v4 = _mapItem != 0;
 
   return v4;
 }
@@ -313,24 +313,24 @@
 {
   if (objc_opt_respondsToSelector())
   {
-    v3 = [(MKAnnotation *)self->_annotation _representedMapItem];
+    _representedMapItem = [(MKAnnotation *)self->_annotation _representedMapItem];
   }
 
   else
   {
-    v3 = 0;
+    _representedMapItem = 0;
   }
 
-  return v3;
+  return _representedMapItem;
 }
 
 - (id)_containerView
 {
-  v2 = [(MKAnnotationView *)self superview];
+  superview = [(MKAnnotationView *)self superview];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = superview;
   }
 
   else
@@ -364,8 +364,8 @@
   [(MKAnnotationView *)&v4 layoutSubviews];
   if (self->_imageLayer)
   {
-    v3 = [(MKAnnotationView *)self layer];
-    [v3 bounds];
+    layer = [(MKAnnotationView *)self layer];
+    [layer bounds];
     [(CALayer *)self->_imageLayer setFrame:?];
   }
 
@@ -400,8 +400,8 @@
   p_coordinate = &self->_coordinate;
   latitude = self->_coordinate.latitude;
   longitude = self->_coordinate.longitude;
-  v6 = [(MKAnnotationView *)self annotation];
-  [v6 coordinate];
+  annotation = [(MKAnnotationView *)self annotation];
+  [annotation coordinate];
   p_coordinate->latitude = v7;
   p_coordinate->longitude = v8;
 
@@ -500,9 +500,9 @@
 - (void)_performStateUpdatesIfNeeded
 {
   hiddenReasons = self->_hiddenReasons;
-  v4 = [(MKAnnotationView *)self superview];
+  superview = [(MKAnnotationView *)self superview];
 
-  if (v4 && (hiddenReasons & 0xFFFFFFFE) == 2)
+  if (superview && (hiddenReasons & 0xFFFFFFFE) == 2)
   {
     [(MKAnnotationView *)self prepareForDisplay];
   }
@@ -580,10 +580,10 @@
   if ((*&self->_flags & 0x2000) != 0)
   {
     *&self->_flags &= ~0x2000u;
-    v3 = [(MKAnnotationView *)self isHidden];
-    v4 = v3;
+    isHidden = [(MKAnnotationView *)self isHidden];
+    v4 = isHidden;
     v5 = 0.3;
-    if (!v3)
+    if (!isHidden)
     {
       v5 = 0.5;
     }
@@ -681,23 +681,23 @@
   return result;
 }
 
-- (void)configureCustomFeature:(id)a3
+- (void)configureCustomFeature:(id)feature
 {
-  v4 = a3;
+  featureCopy = feature;
   v8 = 0;
   v5 = [(MKAnnotationView *)self _effectiveTitleIsCollidable:&v8];
-  v6 = [(MKAnnotationView *)self _effectiveSubtitle];
+  _effectiveSubtitle = [(MKAnnotationView *)self _effectiveSubtitle];
   if ([v5 length])
   {
-    [v4 setText:v5 locale:0];
+    [featureCopy setText:v5 locale:0];
   }
 
-  if ([v6 length])
+  if ([_effectiveSubtitle length])
   {
-    [v4 setAnnotationText:v6 locale:0];
+    [featureCopy setAnnotationText:_effectiveSubtitle locale:0];
   }
 
-  if ([v6 length] || objc_msgSend(v5, "length"))
+  if ([_effectiveSubtitle length] || objc_msgSend(v5, "length"))
   {
     if (v8)
     {
@@ -709,7 +709,7 @@
       v7 = 2;
     }
 
-    [v4 setTextDisplayMode:v7];
+    [featureCopy setTextDisplayMode:v7];
   }
 
   if ([(_MKDeferredSelectionAccessoryPresentation *)self->_deferredSelectionAccessory reason]== 2)
@@ -720,25 +720,25 @@
 
 - (id)_effectiveSubtitle
 {
-  v3 = [(MKAnnotationView *)self annotation];
+  annotation = [(MKAnnotationView *)self annotation];
   if (![(MKAnnotationView *)self isSelected]|| ![(MKAnnotationView *)self canShowCallout]) && (objc_opt_respondsToSelector() & 1) != 0 && ((subtitleVisibility = self->_subtitleVisibility, subtitleVisibility == 2) || !subtitleVisibility && ([(MKAnnotationView *)self isSelected]|| (objc_opt_class(), (objc_opt_isKindOfClass()))))
   {
-    v5 = [v3 subtitle];
+    subtitle = [annotation subtitle];
   }
 
   else
   {
-    v5 = 0;
+    subtitle = 0;
   }
 
-  return v5;
+  return subtitle;
 }
 
-- (id)_effectiveTitleIsCollidable:(BOOL *)a3
+- (id)_effectiveTitleIsCollidable:(BOOL *)collidable
 {
   if (![(MKAnnotationView *)self isSelected]|| ![(MKAnnotationView *)self canShowCallout])
   {
-    v5 = [(MKAnnotationView *)self annotation];
+    annotation = [(MKAnnotationView *)self annotation];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
@@ -747,18 +747,18 @@
       if (titleVisibility == 2)
       {
 LABEL_9:
-        v9 = [(MKAnnotationView *)self annotation];
-        v10 = [v9 title];
+        annotation2 = [(MKAnnotationView *)self annotation];
+        title = [annotation2 title];
 
         goto LABEL_11;
       }
 
       if (!titleVisibility)
       {
-        v8 = [(MKAnnotationView *)self isSelected];
-        if (a3 && !v8)
+        isSelected = [(MKAnnotationView *)self isSelected];
+        if (collidable && !isSelected)
         {
-          *a3 = 1;
+          *collidable = 1;
         }
 
         goto LABEL_9;
@@ -766,10 +766,10 @@ LABEL_9:
     }
   }
 
-  v10 = 0;
+  title = 0;
 LABEL_11:
 
-  return v10;
+  return title;
 }
 
 - (BOOL)_isProvidingVKLabelContents
@@ -815,7 +815,7 @@ LABEL_10:
   return isKindOfClass & 1;
 }
 
-- (void)_invalidateCustomFeatureForced:(BOOL)a3 coordinates:(CLLocationCoordinate2D *)a4 count:(unint64_t)a5
+- (void)_invalidateCustomFeatureForced:(BOOL)forced coordinates:(CLLocationCoordinate2D *)coordinates count:(unint64_t)count
 {
   customFeatureAnnotation = self->_customFeatureAnnotation;
   if (customFeatureAnnotation)
@@ -825,16 +825,16 @@ LABEL_10:
 
   else
   {
-    v6 = !a3;
+    v6 = !forced;
   }
 
   if (!v6)
   {
     self->_customFeatureAnnotation = 0;
 
-    if (a5)
+    if (count)
     {
-      p_longitude = &a4->longitude;
+      p_longitude = &coordinates->longitude;
       do
       {
         if (fabs(*p_longitude) <= 180.0 && fabs(*(p_longitude - 1)) <= 90.0)
@@ -852,10 +852,10 @@ LABEL_10:
         }
 
         p_longitude += 2;
-        --a5;
+        --count;
       }
 
-      while (a5);
+      while (count);
     }
   }
 }
@@ -876,20 +876,20 @@ LABEL_10:
   return customFeatureAnnotation;
 }
 
-- (void)setSubtitleVisibility:(int64_t)a3
+- (void)setSubtitleVisibility:(int64_t)visibility
 {
-  if (self->_subtitleVisibility != a3)
+  if (self->_subtitleVisibility != visibility)
   {
-    self->_subtitleVisibility = a3;
+    self->_subtitleVisibility = visibility;
     [(MKAnnotationView *)self invalidateCustomFeatureForced:1];
   }
 }
 
-- (void)setTitleVisibility:(int64_t)a3
+- (void)setTitleVisibility:(int64_t)visibility
 {
-  if (self->_titleVisibility != a3)
+  if (self->_titleVisibility != visibility)
   {
-    self->_titleVisibility = a3;
+    self->_titleVisibility = visibility;
     [(MKAnnotationView *)self invalidateCustomFeatureForced:1];
   }
 }
@@ -916,17 +916,17 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)isCollidingWithAnnotationView:(id)a3 previouslyCollided:(BOOL)a4
+- (BOOL)isCollidingWithAnnotationView:(id)view previouslyCollided:(BOOL)collided
 {
   x = self->_collisionFrame.origin.x;
   y = self->_collisionFrame.origin.y;
   width = self->_collisionFrame.size.width;
   height = self->_collisionFrame.size.height;
-  v11 = *(a3 + 82);
-  v10 = *(a3 + 83);
-  v13 = *(a3 + 84);
-  v12 = *(a3 + 85);
-  if (!a4)
+  v11 = *(view + 82);
+  v10 = *(view + 83);
+  v13 = *(view + 84);
+  v12 = *(view + 85);
+  if (!collided)
   {
     v61 = CGRectInset(self->_collisionFrame, 5.0, 5.0);
     x = v61.origin.x;
@@ -945,7 +945,7 @@ LABEL_10:
   }
 
   collisionMode = self->_collisionMode;
-  v15 = *(a3 + 88);
+  v15 = *(view + 88);
   if (collisionMode == 2 || v15 == 2)
   {
     return 0;
@@ -1171,9 +1171,9 @@ LABEL_10:
   return CGRectIntersectsRect(*&v40, *&v44);
 }
 
-- (void)_mkObserveValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)_mkObserveValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (MKAnnotationKVOContext == a6)
+  if (MKAnnotationKVOContext == context)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
@@ -1228,68 +1228,68 @@ void __70__MKAnnotationView__mkObserveValueForKeyPath_ofObject_change_context___
   }
 }
 
-- (double)_pointsForDistance:(double)a3
+- (double)_pointsForDistance:(double)distance
 {
-  v4 = [(MKAnnotationView *)self anchor];
-  [v4 pointOffsetForDistanceOffset:a3];
+  anchor = [(MKAnnotationView *)self anchor];
+  [anchor pointOffsetForDistanceOffset:distance];
   v6 = v5;
 
   return v6;
 }
 
-- (void)_setRotationRadians:(double)a3 withAnimation:(id)a4
+- (void)_setRotationRadians:(double)radians withAnimation:(id)animation
 {
-  v6 = a4;
-  if (vabdd_f64(a3, self->_rotationRadians) >= 0.000001 && (*&self->_flags & 0x300) != 0x100)
+  animationCopy = animation;
+  if (vabdd_f64(radians, self->_rotationRadians) >= 0.000001 && (*&self->_flags & 0x300) != 0x100)
   {
-    CGAffineTransformMakeRotation(&v11, a3);
-    v7 = [(MKAnnotationView *)self _contentLayer];
+    CGAffineTransformMakeRotation(&v11, radians);
+    _contentLayer = [(MKAnnotationView *)self _contentLayer];
     v10 = v11;
-    [v7 setAffineTransform:&v10];
+    [_contentLayer setAffineTransform:&v10];
 
     *&self->_flags |= 0x200u;
-    self->_rotationRadians = a3;
-    v8 = [(MKAnnotationView *)self _contentLayer];
-    v9 = v8;
-    if (v6)
+    self->_rotationRadians = radians;
+    _contentLayer2 = [(MKAnnotationView *)self _contentLayer];
+    v9 = _contentLayer2;
+    if (animationCopy)
     {
-      [v8 addAnimation:v6 forKey:@"rotation"];
+      [_contentLayer2 addAnimation:animationCopy forKey:@"rotation"];
     }
 
     else
     {
-      [v8 removeAnimationForKey:@"rotation"];
+      [_contentLayer2 removeAnimationForKey:@"rotation"];
     }
   }
 }
 
-- (void)_userTrackingModeDidChange:(id)a3
+- (void)_userTrackingModeDidChange:(id)change
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [a3 object];
-  v5 = v4;
-  if ((*&self->_flags & 0x100) != 0 && [v4 userTrackingMode] == 2)
+  object = [change object];
+  v5 = object;
+  if ((*&self->_flags & 0x100) != 0 && [object userTrackingMode] == 2)
   {
     v6 = MKGetAnnotationsLog();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v8 = 138477827;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A2EA0000, v6, OS_LOG_TYPE_DEBUG, "A custom transform was applied to '%{private}@' and is not supported with MKUserTrackingModeFollowWithHeading.", &v8, 0xCu);
     }
 
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 removeObserver:self name:@"MKMapViewUserTrackingModeDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"MKMapViewUserTrackingModeDidChangeNotification" object:0];
   }
 }
 
-- (void)_enableRotationForHeadingMode:(double)a3
+- (void)_enableRotationForHeadingMode:(double)mode
 {
-  v5 = [(MKAnnotationView *)self _contentLayer];
-  v6 = v5;
-  if (v5)
+  _contentLayer = [(MKAnnotationView *)self _contentLayer];
+  defaultCenter = _contentLayer;
+  if (_contentLayer)
   {
-    [v5 affineTransform];
+    [_contentLayer affineTransform];
   }
 
   else
@@ -1307,20 +1307,20 @@ void __70__MKAnnotationView__mkObserveValueForKeyPath_ofObject_change_context___
   if ((flags & 0x200) == 0)
   {
     *&self->_flags |= 0x100u;
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:self selector:sel__userTrackingModeDidChange_ name:@"MKMapViewUserTrackingModeDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__userTrackingModeDidChange_ name:@"MKMapViewUserTrackingModeDidChangeNotification" object:0];
 LABEL_7:
   }
 
-  [(MKAnnotationView *)self _setRotationRadians:0 withAnimation:a3, *&v8.a, *&v8.c, *&v8.tx];
+  [(MKAnnotationView *)self _setRotationRadians:0 withAnimation:mode, *&v8.a, *&v8.c, *&v8.tx];
 }
 
-- (CGPoint)_offsetToAnnotationView:(id)a3
+- (CGPoint)_offsetToAnnotationView:(id)view
 {
   [(MKAnnotationView *)self center];
   v5 = v4;
   v7 = v6;
-  [a3 center];
+  [view center];
   v9 = v8 - v5;
   v11 = v10 - v7;
   result.y = v11;
@@ -1328,16 +1328,16 @@ LABEL_7:
   return result;
 }
 
-- (void)_setPositionOffset:(CGPoint)a3 animated:(BOOL)a4
+- (void)_setPositionOffset:(CGPoint)offset animated:(BOOL)animated
 {
-  if (self->_realOffset.x != a3.x || self->_realOffset.y != a3.y)
+  if (self->_realOffset.x != offset.x || self->_realOffset.y != offset.y)
   {
     v11 = v4;
     v12 = v5;
-    self->_realOffset = a3;
+    self->_realOffset = offset;
     flags = self->_flags;
     *&self->_flags = flags & 0xEFFF;
-    if (a4)
+    if (animated)
     {
       *&self->_flags = flags | 0x1000;
     }
@@ -1345,24 +1345,24 @@ LABEL_7:
     else
     {
       memset(&v10, 0, sizeof(v10));
-      CGAffineTransformMakeTranslation(&v10, a3.x, a3.y);
+      CGAffineTransformMakeTranslation(&v10, offset.x, offset.y);
       v9 = v10;
       [(MKAnnotationView *)self setTransform:&v9];
     }
   }
 }
 
-- (void)_setHidden:(BOOL)a3 forReason:(unint64_t)a4 animated:(BOOL)a5 completion:(id)a6
+- (void)_setHidden:(BOOL)hidden forReason:(unint64_t)reason animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v8 = a3;
+  animatedCopy = animated;
+  reasonCopy = reason;
+  hiddenCopy = hidden;
   v36 = *MEMORY[0x1E69E9840];
-  v10 = a6;
-  v11 = v10;
+  completionCopy = completion;
+  v11 = completionCopy;
   hiddenReasons = self->_hiddenReasons;
-  v13 = 1 << v7;
-  if (v8)
+  v13 = 1 << reasonCopy;
+  if (hiddenCopy)
   {
     self->_hiddenReasons = hiddenReasons | v13;
     if (hiddenReasons)
@@ -1384,19 +1384,19 @@ LABEL_7:
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
     hiddenCompletionBlocks = self->_hiddenCompletionBlocks;
     if (hiddenCompletionBlocks)
     {
-      v17 = MEMORY[0x1A58E9F30](v10);
+      v17 = MEMORY[0x1A58E9F30](completionCopy);
       [(NSMutableArray *)hiddenCompletionBlocks addObject:v17];
     }
 
     else
     {
       v18 = MEMORY[0x1E695DF70];
-      v17 = MEMORY[0x1A58E9F30](v10);
+      v17 = MEMORY[0x1A58E9F30](completionCopy);
       v19 = [v18 arrayWithObject:v17];
       v20 = self->_hiddenCompletionBlocks;
       self->_hiddenCompletionBlocks = v19;
@@ -1405,7 +1405,7 @@ LABEL_7:
 
   flags = self->_flags;
   *&self->_flags = flags & 0xDFFF;
-  if (v6)
+  if (animatedCopy)
   {
     *&self->_flags = flags | 0x2000;
   }
@@ -1456,8 +1456,8 @@ LABEL_7:
   }
 
   [(MKAnnotationView *)self invalidateCustomFeatureForced:[(MKAnnotationView *)self isProvidingCustomFeature]];
-  v28 = [(MKAnnotationView *)self _annotationContainer];
-  [v28 annotationViewDidChangeHidden:self];
+  _annotationContainer = [(MKAnnotationView *)self _annotationContainer];
+  [_annotationContainer annotationViewDidChangeHidden:self];
 
 LABEL_23:
 }
@@ -1522,66 +1522,66 @@ uint64_t __49__MKAnnotationView__performHideAnimationIfNeeded__block_invoke_2(ui
   return [*(*(a1 + 32) + 504) removeAllObjects];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
-  self->_realAlpha = a3;
+  self->_realAlpha = alpha;
   v3.receiver = self;
   v3.super_class = MKAnnotationView;
   [(MKAnnotationView *)&v3 setAlpha:?];
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69DD250] _mapkit_shouldAdoptImplicitAnimationParameters];
+  hiddenCopy = hidden;
+  _mapkit_shouldAdoptImplicitAnimationParameters = [MEMORY[0x1E69DD250] _mapkit_shouldAdoptImplicitAnimationParameters];
 
-  [(MKAnnotationView *)self _setHidden:v3 forReason:0 animated:v5];
+  [(MKAnnotationView *)self _setHidden:hiddenCopy forReason:0 animated:_mapkit_shouldAdoptImplicitAnimationParameters];
 }
 
-- (id)snapshotViewAfterScreenUpdates:(BOOL)a3
+- (id)snapshotViewAfterScreenUpdates:(BOOL)updates
 {
-  v3 = a3;
+  updatesCopy = updates;
   [(MKAnnotationView *)self prepareForSnapshotting];
 
-  return [(MKAnnotationView *)self snapshotViewAfterScreenUpdates:v3];
+  return [(MKAnnotationView *)self snapshotViewAfterScreenUpdates:updatesCopy];
 }
 
 - (void)didMoveToSuperview
 {
-  v3 = [(MKAnnotationView *)self superview];
-  if (v3)
+  superview = [(MKAnnotationView *)self superview];
+  if (superview)
   {
-    v5 = v3;
+    v5 = superview;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    v3 = v5;
+    superview = v5;
     if ((isKindOfClass & 1) == 0)
     {
       [(MKAnnotationView *)self prepareForSnapshotting];
-      v3 = v5;
+      superview = v5;
     }
   }
 }
 
 - (void)_updateEffectiveZPriority
 {
-  v3 = [(MKAnnotationView *)self _containerView];
-  [v3 annotationViewDidChangeZPriority:self];
+  _containerView = [(MKAnnotationView *)self _containerView];
+  [_containerView annotationViewDidChangeZPriority:self];
 }
 
-- (void)_setZIndex:(unint64_t)a3
+- (void)_setZIndex:(unint64_t)index
 {
-  if (self->_zIndex != a3)
+  if (self->_zIndex != index)
   {
-    self->_zIndex = a3;
-    *&v3 = vcvts_n_f32_u64(a3, 0x1FuLL) * 1000.0;
+    self->_zIndex = index;
+    *&v3 = vcvts_n_f32_u64(index, 0x1FuLL) * 1000.0;
     [(MKAnnotationView *)self setZPriority:v3];
   }
 }
 
-- (void)_setCanDisplayPlacemarkInCallout:(BOOL)a3
+- (void)_setCanDisplayPlacemarkInCallout:(BOOL)callout
 {
-  if (a3)
+  if (callout)
   {
     v3 = 64;
   }
@@ -1594,9 +1594,9 @@ uint64_t __49__MKAnnotationView__performHideAnimationIfNeeded__block_invoke_2(ui
   *&self->_flags = *&self->_flags & 0xFFBF | v3;
 }
 
-- (void)_setCanDisplayDisclosureInCallout:(BOOL)a3
+- (void)_setCanDisplayDisclosureInCallout:(BOOL)callout
 {
-  if (a3)
+  if (callout)
   {
     v3 = 32;
   }
@@ -1609,22 +1609,22 @@ uint64_t __49__MKAnnotationView__performHideAnimationIfNeeded__block_invoke_2(ui
   *&self->_flags = *&self->_flags & 0xFFDF | v3;
 }
 
-- (void)_setDragState:(unint64_t)a3 animated:(BOOL)a4
+- (void)_setDragState:(unint64_t)state animated:(BOOL)animated
 {
   dragState = self->_dragState;
-  self->_dragState = a3;
+  self->_dragState = state;
   [(MKAnnotationView *)self _updateEffectiveZPriority];
-  if (a3 == 1 || !a3 && dragState)
+  if (state == 1 || !state && dragState)
   {
-    [(MKAnnotationView *)self invalidateCustomFeatureForced:a3 != 1];
+    [(MKAnnotationView *)self invalidateCustomFeatureForced:state != 1];
   }
 
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v7 = MEMORY[0x1E695DF20];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:dragState];
-  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:state];
   v10 = [v7 dictionaryWithObjectsAndKeys:{v8, @"oldValue", v9, @"newValue", 0}];
-  [v11 postNotificationName:@"MKAnnotationViewDragStateChangedNotification" object:self userInfo:v10];
+  [defaultCenter postNotificationName:@"MKAnnotationViewDragStateChangedNotification" object:self userInfo:v10];
 }
 
 - (void)setDraggable:(BOOL)draggable
@@ -1703,12 +1703,12 @@ uint64_t __49__MKAnnotationView__performHideAnimationIfNeeded__block_invoke_2(ui
   y = v5;
   width = v7;
   height = v9;
-  v11 = [(MKAnnotationView *)self _calloutView];
+  _calloutView = [(MKAnnotationView *)self _calloutView];
 
-  if (v11)
+  if (_calloutView)
   {
-    v12 = [(MKAnnotationView *)self _calloutView];
-    [v12 frame];
+    _calloutView2 = [(MKAnnotationView *)self _calloutView];
+    [_calloutView2 frame];
     v24.origin.x = v13;
     v24.origin.y = v14;
     v24.size.width = v15;
@@ -1735,14 +1735,14 @@ uint64_t __49__MKAnnotationView__performHideAnimationIfNeeded__block_invoke_2(ui
   return result;
 }
 
-- (void)_setTracking:(BOOL)a3
+- (void)_setTracking:(BOOL)tracking
 {
-  if (self->_tracking != a3)
+  if (self->_tracking != tracking)
   {
-    v3 = a3;
+    trackingCopy = tracking;
     [(MKAnnotationView *)self _presentationCoordinate];
-    self->_tracking = v3;
-    if (v3)
+    self->_tracking = trackingCopy;
+    if (trackingCopy)
     {
       self->_presentationCoordinate.latitude = v5;
       self->_presentationCoordinate.longitude = v6;
@@ -1750,14 +1750,14 @@ uint64_t __49__MKAnnotationView__performHideAnimationIfNeeded__block_invoke_2(ui
   }
 }
 
-- (void)_setAnimatingToCoordinate:(BOOL)a3
+- (void)_setAnimatingToCoordinate:(BOOL)coordinate
 {
-  if (self->_animatingToCoordinate != a3)
+  if (self->_animatingToCoordinate != coordinate)
   {
-    v3 = a3;
+    coordinateCopy = coordinate;
     [(MKAnnotationView *)self _presentationCoordinate];
-    self->_animatingToCoordinate = v3;
-    if (v3)
+    self->_animatingToCoordinate = coordinateCopy;
+    if (coordinateCopy)
     {
       self->_presentationCoordinate.latitude = v5;
       self->_presentationCoordinate.longitude = v6;
@@ -1765,34 +1765,34 @@ uint64_t __49__MKAnnotationView__performHideAnimationIfNeeded__block_invoke_2(ui
   }
 }
 
-- (void)_setPresentationCoordinate:(CLLocationCoordinate2D)a3
+- (void)_setPresentationCoordinate:(CLLocationCoordinate2D)coordinate
 {
-  self->_presentationCoordinate = a3;
-  v4 = [(MKAnnotationView *)self _presentationCoordinateChangedCallback];
+  self->_presentationCoordinate = coordinate;
+  _presentationCoordinateChangedCallback = [(MKAnnotationView *)self _presentationCoordinateChangedCallback];
 
-  if (v4)
+  if (_presentationCoordinateChangedCallback)
   {
-    v5 = [(MKAnnotationView *)self _presentationCoordinateChangedCallback];
-    v5[2]();
+    _presentationCoordinateChangedCallback2 = [(MKAnnotationView *)self _presentationCoordinateChangedCallback];
+    _presentationCoordinateChangedCallback2[2]();
   }
 }
 
-- (void)_setDirection:(double)a3
+- (void)_setDirection:(double)direction
 {
-  self->_direction = a3;
-  CGAffineTransformMakeRotation(&v4, -(self->_mapRotationRadians - a3 * 0.0174532925));
+  self->_direction = direction;
+  CGAffineTransformMakeRotation(&v4, -(self->_mapRotationRadians - direction * 0.0174532925));
   [(MKAnnotationView *)self setTransform:&v4];
 }
 
-- (void)_setMapRotationRadians:(double)a3
+- (void)_setMapRotationRadians:(double)radians
 {
-  self->_mapRotationRadians = a3;
+  self->_mapRotationRadians = radians;
   direction = self->_direction;
   if (direction > 0.0)
   {
     v8 = v3;
     v9 = v4;
-    CGAffineTransformMakeRotation(&v7, -(a3 - direction * 0.0174532925));
+    CGAffineTransformMakeRotation(&v7, -(radians - direction * 0.0174532925));
     [(MKAnnotationView *)self setTransform:&v7];
   }
 }
@@ -1862,9 +1862,9 @@ uint64_t __49__MKAnnotationView__performHideAnimationIfNeeded__block_invoke_2(ui
   }
 }
 
-- (void)_dismissCallout:(BOOL)a3
+- (void)_dismissCallout:(BOOL)callout
 {
-  v3 = a3;
+  calloutCopy = callout;
   v5 = self->_calloutView;
   if (v5)
   {
@@ -1876,13 +1876,13 @@ uint64_t __49__MKAnnotationView__performHideAnimationIfNeeded__block_invoke_2(ui
     v7[2] = __36__MKAnnotationView__dismissCallout___block_invoke;
     v7[3] = &unk_1E76CDB38;
     v8 = v5;
-    [(MKCalloutView *)v8 dismissAnimated:v3 completionBlock:v7];
+    [(MKCalloutView *)v8 dismissAnimated:calloutCopy completionBlock:v7];
   }
 }
 
-- (void)_showCallout:(BOOL)a3
+- (void)_showCallout:(BOOL)callout
 {
-  v3 = a3;
+  calloutCopy = callout;
   if (!self->_calloutView)
   {
     [(MKAnnotationView *)self _effectiveCalloutStyle];
@@ -1892,12 +1892,12 @@ uint64_t __49__MKAnnotationView__performHideAnimationIfNeeded__block_invoke_2(ui
     self->_calloutView = v5;
   }
 
-  v7 = [(MKAnnotationView *)self _mapView];
-  v8 = [v7 _calloutShowAnimationGroup];
+  _mapView = [(MKAnnotationView *)self _mapView];
+  _calloutShowAnimationGroup = [_mapView _calloutShowAnimationGroup];
 
-  if (v8)
+  if (_calloutShowAnimationGroup)
   {
-    dispatch_group_enter(v8);
+    dispatch_group_enter(_calloutShowAnimationGroup);
   }
 
   v9 = self->_calloutView;
@@ -1905,9 +1905,9 @@ uint64_t __49__MKAnnotationView__performHideAnimationIfNeeded__block_invoke_2(ui
   v11[1] = 3221225472;
   v11[2] = __33__MKAnnotationView__showCallout___block_invoke;
   v11[3] = &unk_1E76CDB38;
-  v12 = v8;
-  v10 = v8;
-  [(MKCalloutView *)v9 showAnimated:v3 completionBlock:v11];
+  v12 = _calloutShowAnimationGroup;
+  v10 = _calloutShowAnimationGroup;
+  [(MKCalloutView *)v9 showAnimated:calloutCopy completionBlock:v11];
 }
 
 void __33__MKAnnotationView__showCallout___block_invoke(uint64_t a1)
@@ -1965,11 +1965,11 @@ void __58__MKAnnotationView__fetchMapItemForSelectionAccessoryView__block_invoke
 
 - (void)_updateSelectionAccessoryViewContent
 {
-  v3 = [(MKAnnotationView *)self _mapItem];
-  v4 = v3;
-  if (v3)
+  _mapItem = [(MKAnnotationView *)self _mapItem];
+  v4 = _mapItem;
+  if (_mapItem)
   {
-    [(MKSelectionAccessoryView *)self->_selectionAccessoryView displayMapItem:v3];
+    [(MKSelectionAccessoryView *)self->_selectionAccessoryView displayMapItem:_mapItem];
   }
 
   else
@@ -1978,11 +1978,11 @@ void __58__MKAnnotationView__fetchMapItemForSelectionAccessoryView__block_invoke
   }
 }
 
-- (void)_dismissSelectionAccessoryViewAnimated:(BOOL)a3
+- (void)_dismissSelectionAccessoryViewAnimated:(BOOL)animated
 {
-  v4 = [(MKSelectionAccessoryView *)self->_selectionAccessoryView superview];
+  superview = [(MKSelectionAccessoryView *)self->_selectionAccessoryView superview];
 
-  if (v4)
+  if (superview)
   {
     [(MKSelectionAccessoryView *)self->_selectionAccessoryView removeFromSuperview];
   }
@@ -1994,43 +1994,43 @@ void __58__MKAnnotationView__fetchMapItemForSelectionAccessoryView__block_invoke
   self->_selectionAccessoryViewController = 0;
 }
 
-- (void)_dismissSelectionAccessoryPresentation:(id)a3 animated:(BOOL)a4
+- (void)_dismissSelectionAccessoryPresentation:(id)presentation animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
-  v6 = [v8 _presentationViewController];
+  animatedCopy = animated;
+  presentationCopy = presentation;
+  _presentationViewController = [presentationCopy _presentationViewController];
 
-  if (v6)
+  if (_presentationViewController)
   {
-    v7 = [v8 _presentationViewController];
-    [(MKAnnotationView *)self _dismissPresentedSelectionAccessoryFromViewController:v7 animated:v4];
+    _presentationViewController2 = [presentationCopy _presentationViewController];
+    [(MKAnnotationView *)self _dismissPresentedSelectionAccessoryFromViewController:_presentationViewController2 animated:animatedCopy];
   }
 }
 
-- (CGRect)_calculateAccessoryFrameForSize:(CGSize)a3 anchorPosition:(int64_t)a4 anchorPoint:(CGPoint)a5 pointerHeight:(double)a6
+- (CGRect)_calculateAccessoryFrameForSize:(CGSize)size anchorPosition:(int64_t)position anchorPoint:(CGPoint)point pointerHeight:(double)height
 {
-  y = a5.y;
-  x = a5.x;
-  height = a3.height;
-  width = a3.width;
+  y = point.y;
+  x = point.x;
+  height = size.height;
+  width = size.width;
   v11 = 0.0;
-  if (a4 > 2)
+  if (position > 2)
   {
-    if (a4 == 3)
+    if (position == 3)
     {
-      [(MKAnnotationView *)self _horizontalAccessoryDisplayPadding:a3.width];
+      [(MKAnnotationView *)self _horizontalAccessoryDisplayPadding:size.width];
       v13 = x + v23;
     }
 
     else
     {
       v13 = 0.0;
-      if (a4 != 4)
+      if (position != 4)
       {
         goto LABEL_11;
       }
 
-      [(MKAnnotationView *)self _horizontalAccessoryDisplayPadding:a3.width];
+      [(MKAnnotationView *)self _horizontalAccessoryDisplayPadding:size.width];
       v13 = x - v18 - width;
     }
 
@@ -2042,50 +2042,50 @@ void __58__MKAnnotationView__fetchMapItemForSelectionAccessoryView__block_invoke
     goto LABEL_11;
   }
 
-  if (a4 == 1)
+  if (position == 1)
   {
     v19 = 0;
     v20 = width;
-    v21 = height;
+    heightCopy = height;
     v13 = x - CGRectGetMidX(*(&v11 - 1));
     [(MKAnnotationView *)self _verticalAccessoryDisplayPadding];
-    v11 = y + v22 + a6;
+    v11 = y + v22 + height;
   }
 
   else
   {
     v13 = 0.0;
-    if (a4 == 2)
+    if (position == 2)
     {
       v14 = 0;
       v15 = width;
-      v16 = height;
+      heightCopy2 = height;
       v13 = x - CGRectGetMidX(*(&v11 - 1));
       [(MKAnnotationView *)self _verticalAccessoryDisplayPadding];
-      v11 = y - v17 - a6 - height;
+      v11 = y - v17 - height - height;
     }
   }
 
 LABEL_11:
   v24 = v13;
   v25 = width;
-  v26 = height;
-  result.size.height = v26;
+  heightCopy3 = height;
+  result.size.height = heightCopy3;
   result.size.width = v25;
   result.origin.y = v11;
   result.origin.x = v24;
   return result;
 }
 
-- (CGPoint)_calculateMapOffsetForPresentationFrame:(CGRect)a3
+- (CGPoint)_calculateMapOffsetForPresentationFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(MKAnnotationView *)self _containerView];
-  v9 = [(MKAnnotationView *)self _containerView];
-  [v8 _visibleCenteringRectInView:v9];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _containerView = [(MKAnnotationView *)self _containerView];
+  _containerView2 = [(MKAnnotationView *)self _containerView];
+  [_containerView _visibleCenteringRectInView:_containerView2];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -2188,23 +2188,23 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)_calculatePresentationFrameForCalloutView:(id)a3
+- (CGRect)_calculatePresentationFrameForCalloutView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(MKAnnotationView *)self _frameForSelectionAdjustment];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v4 calloutStyle];
-  if (v13 == 1)
+  calloutStyle = [viewCopy calloutStyle];
+  if (calloutStyle == 1)
   {
     v14 = off_1E76C4678;
   }
 
   else
   {
-    if (v13 != 2)
+    if (calloutStyle != 2)
     {
       v16 = *MEMORY[0x1E695F060];
       v18 = *(MEMORY[0x1E695F060] + 8);
@@ -2218,18 +2218,18 @@ LABEL_11:
   v16 = v15;
   v18 = v17;
 LABEL_7:
-  -[MKAnnotationView _anchorPointForCalloutAnchorPosition:](self, "_anchorPointForCalloutAnchorPosition:", [v4 pointerEdge]);
+  -[MKAnnotationView _anchorPointForCalloutAnchorPosition:](self, "_anchorPointForCalloutAnchorPosition:", [viewCopy pointerEdge]);
   v20 = v19;
   v22 = v21;
-  v23 = [v4 pointerEdge];
+  pointerEdge = [viewCopy pointerEdge];
   +[MKCalloutSelectionAccessoryView pointerHeight];
-  [(MKAnnotationView *)self _calculateAccessoryFrameForSize:v23 anchorPosition:v16 anchorPoint:v18 pointerHeight:v20, v22, v24];
+  [(MKAnnotationView *)self _calculateAccessoryFrameForSize:pointerEdge anchorPosition:v16 anchorPoint:v18 pointerHeight:v20, v22, v24];
   v26 = v25;
   v28 = v27;
   v30 = v29;
   v32 = v31;
-  v33 = [(MKAnnotationView *)self superview];
-  [(MKAnnotationView *)self convertRect:v33 toView:v26, v28, v30, v32];
+  superview = [(MKAnnotationView *)self superview];
+  [(MKAnnotationView *)self convertRect:superview toView:v26, v28, v30, v32];
   v49.origin.x = v34;
   v49.origin.y = v35;
   v49.size.width = v36;
@@ -2255,11 +2255,11 @@ LABEL_7:
   return result;
 }
 
-- (void)_showCalloutSelectionAccessoryView:(id)a3 animated:(BOOL)a4
+- (void)_showCalloutSelectionAccessoryView:(id)view animated:(BOOL)animated
 {
-  v6 = a3;
-  objc_storeStrong(&self->_selectionAccessoryView, a3);
-  [(MKAnnotationView *)self _calculatePresentationFrameForCalloutView:v6];
+  viewCopy = view;
+  objc_storeStrong(&self->_selectionAccessoryView, view);
+  [(MKAnnotationView *)self _calculatePresentationFrameForCalloutView:viewCopy];
   [(MKAnnotationView *)self _calculateMapOffsetForPresentationFrame:?];
   v8 = v7;
   v10 = v9;
@@ -2269,7 +2269,7 @@ LABEL_7:
   v25[2] = __64__MKAnnotationView__showCalloutSelectionAccessoryView_animated___block_invoke;
   v25[3] = &unk_1E76C87B8;
   objc_copyWeak(&v27, &location);
-  v11 = v6;
+  v11 = viewCopy;
   v26 = v11;
   v12 = MEMORY[0x1A58E9F30](v25);
   v13 = v12;
@@ -2280,8 +2280,8 @@ LABEL_7:
 
   else
   {
-    v15 = [(MKAnnotationView *)self _mapView];
-    v16 = [(MKAnnotationView *)self _annotationContainer];
+    _mapView = [(MKAnnotationView *)self _mapView];
+    _annotationContainer = [(MKAnnotationView *)self _annotationContainer];
     [(MKAnnotationView *)self coordinate];
     v18 = v17;
     v20 = v19;
@@ -2290,9 +2290,9 @@ LABEL_7:
     v21[2] = __64__MKAnnotationView__showCalloutSelectionAccessoryView_animated___block_invoke_2;
     v21[3] = &unk_1E76CAA70;
     v22 = v11;
-    v23 = self;
+    selfCopy = self;
     v24 = v13;
-    [v15 annotationContainer:v16 scrollToRevealCalloutWithOffset:v21 annotationCoordinate:v8 completionHandler:{v10, v18, v20}];
+    [_mapView annotationContainer:_annotationContainer scrollToRevealCalloutWithOffset:v21 annotationCoordinate:v8 completionHandler:{v10, v18, v20}];
   }
 
   objc_destroyWeak(&v27);
@@ -2318,21 +2318,21 @@ void *__64__MKAnnotationView__showCalloutSelectionAccessoryView_animated___block
   return result;
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = [(MKAnnotationView *)self _mapView];
-  [v4 deselectAnnotation:self->_annotation animated:1];
+  _mapView = [(MKAnnotationView *)self _mapView];
+  [_mapView deselectAnnotation:self->_annotation animated:1];
 }
 
-- (void)selectionAccessoryViewDidRequestDismissal:(id)a3
+- (void)selectionAccessoryViewDidRequestDismissal:(id)dismissal
 {
-  v4 = [(MKAnnotationView *)self _mapView];
-  [v4 deselectAnnotation:self->_annotation animated:1];
+  _mapView = [(MKAnnotationView *)self _mapView];
+  [_mapView deselectAnnotation:self->_annotation animated:1];
 }
 
-- (void)_dismissPresentedSelectionAccessoryFromViewController:(id)a3 animated:(BOOL)a4
+- (void)_dismissPresentedSelectionAccessoryFromViewController:(id)controller animated:(BOOL)animated
 {
-  [a3 dismissViewControllerAnimated:a4 completion:0];
+  [controller dismissViewControllerAnimated:animated completion:0];
   selectionAccessoryView = self->_selectionAccessoryView;
   self->_selectionAccessoryView = 0;
 
@@ -2340,33 +2340,33 @@ void *__64__MKAnnotationView__showCalloutSelectionAccessoryView_animated___block
   self->_selectionAccessoryViewController = 0;
 }
 
-- (void)_presentSelectionAccessorySheetFromViewController:(id)a3 animated:(BOOL)a4
+- (void)_presentSelectionAccessorySheetFromViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [[MKFullDeveloperPlaceCardSelectionAccessoryView alloc] initAsAccessory];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  initAsAccessory = [[MKFullDeveloperPlaceCardSelectionAccessoryView alloc] initAsAccessory];
   selectionAccessoryView = self->_selectionAccessoryView;
-  self->_selectionAccessoryView = v7;
-  v12 = v7;
+  self->_selectionAccessoryView = initAsAccessory;
+  v12 = initAsAccessory;
 
   [(MKSelectionAccessoryView *)self->_selectionAccessoryView setDelegate:self];
   [(MKAnnotationView *)self _updateSelectionAccessoryViewContent];
   v9 = [[MKPresentableSelectionAccessoryViewController alloc] initWithSelectionAccessoryView:v12];
   [(MKPresentableSelectionAccessoryViewController *)v9 setModalPresentationStyle:2];
-  v10 = [(MKPresentableSelectionAccessoryViewController *)v9 sheetPresentationController];
-  [v10 setDelegate:self];
+  sheetPresentationController = [(MKPresentableSelectionAccessoryViewController *)v9 sheetPresentationController];
+  [sheetPresentationController setDelegate:self];
 
-  [v6 presentViewController:v9 animated:v4 completion:0];
+  [controllerCopy presentViewController:v9 animated:animatedCopy completion:0];
   selectionAccessoryViewController = self->_selectionAccessoryViewController;
   self->_selectionAccessoryViewController = v9;
 }
 
-- (void)_dismissSelectionAccessoryAnimated:(BOOL)a3
+- (void)_dismissSelectionAccessoryAnimated:(BOOL)animated
 {
   activeSelectionAccessory = self->_activeSelectionAccessory;
   if (activeSelectionAccessory)
   {
-    v5 = a3;
+    animatedCopy = animated;
     if (![(MKSelectionAccessory *)activeSelectionAccessory _style])
     {
       [(MKMapItemRequest *)self->_selectionAccessoryMapItemRequest cancel];
@@ -2384,12 +2384,12 @@ void *__64__MKAnnotationView__showCalloutSelectionAccessoryView_animated___block
         deferredSelectionAccessory = [(MKSelectionAccessory *)self->_resolvedSelectionAccessory _mapItemDetailPresentationStyle];
         if ([deferredSelectionAccessory _style] == 2)
         {
-          [(MKAnnotationView *)self _dismissSelectionAccessoryPresentation:deferredSelectionAccessory animated:v5];
+          [(MKAnnotationView *)self _dismissSelectionAccessoryPresentation:deferredSelectionAccessory animated:animatedCopy];
         }
 
         else
         {
-          [(MKAnnotationView *)self _dismissSelectionAccessoryViewAnimated:v5];
+          [(MKAnnotationView *)self _dismissSelectionAccessoryViewAnimated:animatedCopy];
         }
       }
 
@@ -2402,41 +2402,41 @@ void *__64__MKAnnotationView__showCalloutSelectionAccessoryView_animated___block
   }
 }
 
-- (void)_showMapItemDetailCalloutAccessory:(id)a3 animated:(BOOL)a4
+- (void)_showMapItemDetailCalloutAccessory:(id)accessory animated:(BOOL)animated
 {
-  v4 = a4;
-  v11 = a3;
-  v6 = [v11 _calloutStyle];
-  if (v6 == 2)
+  animatedCopy = animated;
+  accessoryCopy = accessory;
+  _calloutStyle = [accessoryCopy _calloutStyle];
+  if (_calloutStyle == 2)
   {
     v8 = [MKCompactDeveloperPlaceCardSelectionAccessoryView alloc];
-    v7 = [(MKViewSwitchingSelectionAccessoryView *)v8 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
+    initAsAccessory = [(MKViewSwitchingSelectionAccessoryView *)v8 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   }
 
   else
   {
-    if (v6 != 1)
+    if (_calloutStyle != 1)
     {
       goto LABEL_6;
     }
 
-    v7 = [[MKFullDeveloperPlaceCardSelectionAccessoryView alloc] initAsAccessory];
+    initAsAccessory = [[MKFullDeveloperPlaceCardSelectionAccessoryView alloc] initAsAccessory];
   }
 
-  v9 = v7;
-  v10 = -[MKCalloutSelectionAccessoryView initWithSelectionAccessoryView:style:pointerEdge:pointerUnitLocation:]([MKCalloutSelectionAccessoryView alloc], "initWithSelectionAccessoryView:style:pointerEdge:pointerUnitLocation:", v7, [v11 _calloutStyle], -[MKAnnotationView _calloutAnchorPositionForCurrentFrame](self, "_calloutAnchorPositionForCurrentFrame"), 0.5);
-  [(MKAnnotationView *)self _showCalloutSelectionAccessoryView:v10 animated:v4];
+  v9 = initAsAccessory;
+  v10 = -[MKCalloutSelectionAccessoryView initWithSelectionAccessoryView:style:pointerEdge:pointerUnitLocation:]([MKCalloutSelectionAccessoryView alloc], "initWithSelectionAccessoryView:style:pointerEdge:pointerUnitLocation:", initAsAccessory, [accessoryCopy _calloutStyle], -[MKAnnotationView _calloutAnchorPositionForCurrentFrame](self, "_calloutAnchorPositionForCurrentFrame"), 0.5);
+  [(MKAnnotationView *)self _showCalloutSelectionAccessoryView:v10 animated:animatedCopy];
 
 LABEL_6:
 }
 
 - (int64_t)_calloutAnchorPositionForCurrentFrame
 {
-  v3 = [(MKAnnotationView *)self _mapView];
-  [v3 bounds];
+  _mapView = [(MKAnnotationView *)self _mapView];
+  [_mapView bounds];
   v5 = v4;
-  v6 = [(MKAnnotationView *)self _mapView];
-  [v6 bounds];
+  _mapView2 = [(MKAnnotationView *)self _mapView];
+  [_mapView2 bounds];
   v8 = v7;
   v10 = v9;
 
@@ -2467,9 +2467,9 @@ LABEL_6:
   return v15;
 }
 
-- (CGRect)_calculatePresentationFrameForOpenInMapsView:(id)a3
+- (CGRect)_calculatePresentationFrameForOpenInMapsView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(MKAnnotationView *)self _frameForSelectionAdjustment];
   v6 = v5;
   v8 = v7;
@@ -2478,7 +2478,7 @@ LABEL_6:
   [(MKAnnotationView *)self _openInMapsAnchorPoint];
   v14 = v13;
   v16 = v15;
-  [v4 systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  [viewCopy systemLayoutSizeFittingSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v18 = v17;
   v20 = v19;
 
@@ -2487,8 +2487,8 @@ LABEL_6:
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  v29 = [(MKAnnotationView *)self superview];
-  [(MKAnnotationView *)self convertRect:v29 toView:v22, v24, v26, v28];
+  superview = [(MKAnnotationView *)self superview];
+  [(MKAnnotationView *)self convertRect:superview toView:v22, v24, v26, v28];
   v45.origin.x = v30;
   v45.origin.y = v31;
   v45.size.width = v32;
@@ -2514,9 +2514,9 @@ LABEL_6:
   return result;
 }
 
-- (void)_showMapItemDetailOpenInMapsAccessory:(id)a3 animated:(BOOL)a4
+- (void)_showMapItemDetailOpenInMapsAccessory:(id)accessory animated:(BOOL)animated
 {
-  v5 = [(MKAnnotationView *)self _urlForOpenInMaps:a3];
+  v5 = [(MKAnnotationView *)self _urlForOpenInMaps:accessory];
   if (v5)
   {
     v6 = [[MKOpenInMapsSelectionAccessoryView alloc] initWithURL:v5];
@@ -2532,8 +2532,8 @@ LABEL_6:
 
     else
     {
-      v12 = [(MKAnnotationView *)self _mapView];
-      v13 = [(MKAnnotationView *)self _annotationContainer];
+      _mapView = [(MKAnnotationView *)self _mapView];
+      _annotationContainer = [(MKAnnotationView *)self _annotationContainer];
       [(MKAnnotationView *)self coordinate];
       v15 = v14;
       v17 = v16;
@@ -2542,8 +2542,8 @@ LABEL_6:
       v18[2] = __67__MKAnnotationView__showMapItemDetailOpenInMapsAccessory_animated___block_invoke;
       v18[3] = &unk_1E76CD810;
       v19 = v6;
-      v20 = self;
-      [v12 annotationContainer:v13 scrollToRevealCalloutWithOffset:v18 annotationCoordinate:v9 completionHandler:{v10, v15, v17}];
+      selfCopy = self;
+      [_mapView annotationContainer:_annotationContainer scrollToRevealCalloutWithOffset:v18 annotationCoordinate:v9 completionHandler:{v10, v15, v17}];
     }
   }
 }
@@ -2562,10 +2562,10 @@ void *__67__MKAnnotationView__showMapItemDetailOpenInMapsAccessory_animated___bl
 
 - (id)_urlForOpenInMaps
 {
-  v3 = [(MKAnnotationView *)self _mapItem];
-  if (v3)
+  _mapItem = [(MKAnnotationView *)self _mapItem];
+  if (_mapItem)
   {
-    v4 = [MKMapItem urlForMapItem:v3 options:0];
+    muid = [MKMapItem urlForMapItem:_mapItem options:0];
   }
 
   else
@@ -2573,25 +2573,25 @@ void *__67__MKAnnotationView__showMapItemDetailOpenInMapsAccessory_animated___bl
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(MKAnnotation *)self->_annotation marker];
-      v6 = [v5 identifier];
-      v4 = [v6 muid];
+      marker = [(MKAnnotation *)self->_annotation marker];
+      identifier = [marker identifier];
+      muid = [identifier muid];
 
-      if (v4)
+      if (muid)
       {
         v7 = MEMORY[0x1E695DFF8];
-        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"maps://?auid=%llu", v4];
-        v4 = [v7 URLWithString:v8];
+        v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"maps://?auid=%llu", muid];
+        muid = [v7 URLWithString:v8];
       }
     }
 
     else
     {
-      v4 = 0;
+      muid = 0;
     }
   }
 
-  return v4;
+  return muid;
 }
 
 - (CGRect)_labelDisplayFrame
@@ -2599,12 +2599,12 @@ void *__67__MKAnnotationView__showMapItemDetailOpenInMapsAccessory_animated___bl
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(MKAnnotationView *)self annotation];
-    v4 = [v3 marker];
+    annotation = [(MKAnnotationView *)self annotation];
+    marker = [annotation marker];
 
-    v5 = [(MKAnnotationView *)self _mapView];
-    [v4 screenBounds];
-    [v5 convertRect:self toView:?];
+    _mapView = [(MKAnnotationView *)self _mapView];
+    [marker screenBounds];
+    [_mapView convertRect:self toView:?];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -2613,11 +2613,11 @@ void *__67__MKAnnotationView__showMapItemDetailOpenInMapsAccessory_animated___bl
 
   else if ([(MKAnnotationView *)self _isProvidingVKLabelContents])
   {
-    v14 = [(MKAnnotationView *)self _mapView];
-    v15 = v14[83];
-    v16 = [(MKAnnotationView *)self customFeatureAnnotation];
-    v17 = [(MKAnnotationView *)self _annotationContainer];
-    v18 = [v15 labelMarkerForCustomFeatureAnnotation:v16 dataSource:v17];
+    _mapView2 = [(MKAnnotationView *)self _mapView];
+    v15 = _mapView2[83];
+    customFeatureAnnotation = [(MKAnnotationView *)self customFeatureAnnotation];
+    _annotationContainer = [(MKAnnotationView *)self _annotationContainer];
+    v18 = [v15 labelMarkerForCustomFeatureAnnotation:customFeatureAnnotation dataSource:_annotationContainer];
 
     [v18 screenCollisionBounds];
     v23 = v22;
@@ -2634,8 +2634,8 @@ void *__67__MKAnnotationView__showMapItemDetailOpenInMapsAccessory_animated___bl
       v25 = v19;
       v26 = v20;
       v27 = v21;
-      v28 = [(MKAnnotationView *)self _mapView];
-      [v28 convertRect:self toView:{v23, v25, v26, v27}];
+      _mapView3 = [(MKAnnotationView *)self _mapView];
+      [_mapView3 convertRect:self toView:{v23, v25, v26, v27}];
       v7 = v29;
       v9 = v30;
       v11 = v31;
@@ -2664,9 +2664,9 @@ void *__67__MKAnnotationView__showMapItemDetailOpenInMapsAccessory_animated___bl
 
 - (double)_labelDisplayHeight
 {
-  v2 = [(MKAnnotationView *)self _isProvidingVKLabelContents];
+  _isProvidingVKLabelContents = [(MKAnnotationView *)self _isProvidingVKLabelContents];
   result = 0.0;
-  if (v2)
+  if (_isProvidingVKLabelContents)
   {
     return 25.0;
   }
@@ -2674,59 +2674,59 @@ void *__67__MKAnnotationView__showMapItemDetailOpenInMapsAccessory_animated___bl
   return result;
 }
 
-- (void)_showMapItemDetailSheetAccessory:(id)a3 animated:(BOOL)a4
+- (void)_showMapItemDetailSheetAccessory:(id)accessory animated:(BOOL)animated
 {
-  v4 = a4;
-  v8 = a3;
-  v6 = [v8 _presentationViewController];
+  animatedCopy = animated;
+  accessoryCopy = accessory;
+  _presentationViewController = [accessoryCopy _presentationViewController];
 
-  if (v6)
+  if (_presentationViewController)
   {
-    v7 = [v8 _presentationViewController];
-    [(MKAnnotationView *)self _presentSelectionAccessorySheetFromViewController:v7 animated:v4];
+    _presentationViewController2 = [accessoryCopy _presentationViewController];
+    [(MKAnnotationView *)self _presentSelectionAccessorySheetFromViewController:_presentationViewController2 animated:animatedCopy];
   }
 }
 
-- (void)_showSelectionAccessoryWithStyle:(id)a3 animated:(BOOL)a4
+- (void)_showSelectionAccessoryWithStyle:(id)style animated:(BOOL)animated
 {
-  v4 = a4;
-  v9 = a3;
-  v6 = [v9 _style];
-  if (v6 == 1)
+  animatedCopy = animated;
+  styleCopy = style;
+  _style = [styleCopy _style];
+  if (_style == 1)
   {
-    [(MKAnnotationView *)self _showMapItemDetailCalloutAccessory:v9 animated:v4];
+    [(MKAnnotationView *)self _showMapItemDetailCalloutAccessory:styleCopy animated:animatedCopy];
     goto LABEL_8;
   }
 
-  if (v6 == 3)
+  if (_style == 3)
   {
-    [(MKAnnotationView *)self _showMapItemDetailOpenInMapsAccessory:v9 animated:v4];
+    [(MKAnnotationView *)self _showMapItemDetailOpenInMapsAccessory:styleCopy animated:animatedCopy];
     goto LABEL_8;
   }
 
-  v7 = v6 == 2;
-  v8 = v9;
+  v7 = _style == 2;
+  v8 = styleCopy;
   if (v7)
   {
-    [(MKAnnotationView *)self _showMapItemDetailSheetAccessory:v9 animated:v4];
+    [(MKAnnotationView *)self _showMapItemDetailSheetAccessory:styleCopy animated:animatedCopy];
 LABEL_8:
-    v8 = v9;
+    v8 = styleCopy;
   }
 }
 
-- (void)_showSelectionAccessory:(id)a3 animated:(BOOL)a4
+- (void)_showSelectionAccessory:(id)accessory animated:(BOOL)animated
 {
-  v4 = a4;
-  v14 = a3;
-  if ([(MKAnnotationView *)self _canShowSelectionAccessory:v14])
+  animatedCopy = animated;
+  accessoryCopy = accessory;
+  if ([(MKAnnotationView *)self _canShowSelectionAccessory:accessoryCopy])
   {
-    v7 = [(MKAnnotationView *)self _resolvedAccessoryFor:v14];
-    v8 = [(MKSelectionAccessory *)v7 _mapItemDetailPresentationStyle];
-    v9 = [(MKAnnotationView *)self _reasonToDeferSelectionAccessoryPresentationStyle:v8];
+    v7 = [(MKAnnotationView *)self _resolvedAccessoryFor:accessoryCopy];
+    _mapItemDetailPresentationStyle = [(MKSelectionAccessory *)v7 _mapItemDetailPresentationStyle];
+    v9 = [(MKAnnotationView *)self _reasonToDeferSelectionAccessoryPresentationStyle:_mapItemDetailPresentationStyle];
     if (v9)
     {
       v10 = v9;
-      v11 = [[_MKDeferredSelectionAccessoryPresentation alloc] initWithReason:v9 animated:v4];
+      v11 = [[_MKDeferredSelectionAccessoryPresentation alloc] initWithReason:v9 animated:animatedCopy];
       deferredSelectionAccessory = self->_deferredSelectionAccessory;
       self->_deferredSelectionAccessory = v11;
 
@@ -2735,10 +2735,10 @@ LABEL_8:
 
     else
     {
-      [(MKAnnotationView *)self _showSelectionAccessoryWithStyle:v8 animated:v4];
+      [(MKAnnotationView *)self _showSelectionAccessoryWithStyle:_mapItemDetailPresentationStyle animated:animatedCopy];
     }
 
-    objc_storeStrong(&self->_activeSelectionAccessory, a3);
+    objc_storeStrong(&self->_activeSelectionAccessory, accessory);
     resolvedSelectionAccessory = self->_resolvedSelectionAccessory;
     self->_resolvedSelectionAccessory = v7;
   }
@@ -2746,15 +2746,15 @@ LABEL_8:
   MEMORY[0x1EEE66BE0]();
 }
 
-- (BOOL)_canShowSelectionAccessory:(id)a3
+- (BOOL)_canShowSelectionAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && ![v4 _style])
+  accessoryCopy = accessory;
+  v5 = accessoryCopy;
+  if (accessoryCopy && ![accessoryCopy _style])
   {
-    v8 = [(MKAnnotationView *)self _mapItem];
+    _mapItem = [(MKAnnotationView *)self _mapItem];
 
-    if (v8)
+    if (_mapItem)
     {
       isKindOfClass = 1;
     }
@@ -2774,21 +2774,21 @@ LABEL_8:
   return isKindOfClass & 1;
 }
 
-- (void)_showDeferredSelectionAccessoryForReasonIfNeeded:(unint64_t)a3
+- (void)_showDeferredSelectionAccessoryForReasonIfNeeded:(unint64_t)needed
 {
-  if ([(_MKDeferredSelectionAccessoryPresentation *)self->_deferredSelectionAccessory reason]== a3)
+  if ([(_MKDeferredSelectionAccessoryPresentation *)self->_deferredSelectionAccessory reason]== needed)
   {
-    v4 = [(MKSelectionAccessory *)self->_resolvedSelectionAccessory _mapItemDetailPresentationStyle];
-    [(MKAnnotationView *)self _showSelectionAccessoryWithStyle:v4 animated:[(_MKDeferredSelectionAccessoryPresentation *)self->_deferredSelectionAccessory animated]];
+    _mapItemDetailPresentationStyle = [(MKSelectionAccessory *)self->_resolvedSelectionAccessory _mapItemDetailPresentationStyle];
+    [(MKAnnotationView *)self _showSelectionAccessoryWithStyle:_mapItemDetailPresentationStyle animated:[(_MKDeferredSelectionAccessoryPresentation *)self->_deferredSelectionAccessory animated]];
 
     deferredSelectionAccessory = self->_deferredSelectionAccessory;
     self->_deferredSelectionAccessory = 0;
   }
 }
 
-- (unint64_t)_reasonToDeferSelectionAccessoryPresentationStyle:(id)a3
+- (unint64_t)_reasonToDeferSelectionAccessoryPresentationStyle:(id)style
 {
-  if (([a3 _style] | 2) != 3)
+  if (([style _style] | 2) != 3)
   {
     return 0;
   }
@@ -2803,11 +2803,11 @@ LABEL_8:
 
 - (CGSize)_effectiveMapViewportSize
 {
-  v2 = [(MKAnnotationView *)self _mapView];
-  [v2 bounds];
+  _mapView = [(MKAnnotationView *)self _mapView];
+  [_mapView bounds];
   v4 = v3;
   v6 = v5;
-  [v2 _edgeInsets];
+  [_mapView _edgeInsets];
   v9 = v4 - (v7 + v8);
   v12 = v6 - (v10 + v11);
 
@@ -2821,39 +2821,39 @@ LABEL_8:
 - (id)_resolvedAutomaticCalloutStyle
 {
   v3 = +[MKSystemController sharedInstance];
-  v4 = [v3 userInterfaceIdiom];
+  userInterfaceIdiom = [v3 userInterfaceIdiom];
 
-  if (v4 && [(MKAnnotationView *)self _viewportCanDisplayFullCalloutAccessory])
+  if (userInterfaceIdiom && [(MKAnnotationView *)self _viewportCanDisplayFullCalloutAccessory])
   {
-    v5 = [objc_opt_class() _fullCalloutAccessory];
+    _fullCalloutAccessory = [objc_opt_class() _fullCalloutAccessory];
   }
 
   else
   {
-    v5 = [objc_opt_class() _compactCalloutAccessory];
+    _fullCalloutAccessory = [objc_opt_class() _compactCalloutAccessory];
   }
 
-  return v5;
+  return _fullCalloutAccessory;
 }
 
-- (id)_resolvedAutomaticStyleWithViewController:(id)a3
+- (id)_resolvedAutomaticStyleWithViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = +[MKSystemController sharedInstance];
-  v6 = [v5 userInterfaceIdiom];
+  userInterfaceIdiom = [v5 userInterfaceIdiom];
 
-  if (v6)
+  if (userInterfaceIdiom)
   {
     if ([(MKAnnotationView *)self _viewportCanDisplayFullCalloutAccessory])
     {
-      v7 = [objc_opt_class() _fullCalloutAccessory];
+      _fullCalloutAccessory = [objc_opt_class() _fullCalloutAccessory];
       goto LABEL_10;
     }
 
 LABEL_6:
-    v8 = [(MKAnnotationView *)self _viewportCanDisplayCompactCalloutAccessory];
+    _viewportCanDisplayCompactCalloutAccessory = [(MKAnnotationView *)self _viewportCanDisplayCompactCalloutAccessory];
     v9 = objc_opt_class();
-    if (v8)
+    if (_viewportCanDisplayCompactCalloutAccessory)
     {
       [v9 _compactCalloutAccessory];
     }
@@ -2862,68 +2862,68 @@ LABEL_6:
     {
       [v9 _openInMapsAccessory];
     }
-    v7 = ;
+    _fullCalloutAccessory = ;
     goto LABEL_10;
   }
 
-  if (!v4)
+  if (!controllerCopy)
   {
     goto LABEL_6;
   }
 
-  v7 = [objc_opt_class() _sheetAccessoryWithViewController:v4];
+  _fullCalloutAccessory = [objc_opt_class() _sheetAccessoryWithViewController:controllerCopy];
 LABEL_10:
-  v10 = v7;
+  v10 = _fullCalloutAccessory;
 
   return v10;
 }
 
-- (id)_resolvedAccessoryFor:(id)a3
+- (id)_resolvedAccessoryFor:(id)for
 {
-  v4 = a3;
-  v5 = [v4 _mapItemDetailPresentationStyle];
-  v6 = [v5 _style];
+  forCopy = for;
+  _mapItemDetailPresentationStyle = [forCopy _mapItemDetailPresentationStyle];
+  _style = [_mapItemDetailPresentationStyle _style];
 
-  v7 = v4;
-  if (!v6)
+  v7 = forCopy;
+  if (!_style)
   {
-    v8 = [v4 _mapItemDetailPresentationStyle];
-    v9 = [v8 _presentationViewController];
-    v7 = [(MKAnnotationView *)self _resolvedAutomaticStyleWithViewController:v9];
+    _mapItemDetailPresentationStyle2 = [forCopy _mapItemDetailPresentationStyle];
+    _presentationViewController = [_mapItemDetailPresentationStyle2 _presentationViewController];
+    v7 = [(MKAnnotationView *)self _resolvedAutomaticStyleWithViewController:_presentationViewController];
   }
 
-  v10 = [v7 _mapItemDetailPresentationStyle];
-  v11 = [v10 _style];
+  _mapItemDetailPresentationStyle3 = [v7 _mapItemDetailPresentationStyle];
+  _style2 = [_mapItemDetailPresentationStyle3 _style];
 
-  if (v11 == 1)
+  if (_style2 == 1)
   {
-    v12 = [v7 _mapItemDetailPresentationStyle];
-    v13 = v12;
-    if (!v12 || ![v12 _calloutStyle])
+    _mapItemDetailPresentationStyle4 = [v7 _mapItemDetailPresentationStyle];
+    v13 = _mapItemDetailPresentationStyle4;
+    if (!_mapItemDetailPresentationStyle4 || ![_mapItemDetailPresentationStyle4 _calloutStyle])
     {
-      v14 = [(MKAnnotationView *)self _resolvedAutomaticCalloutStyle];
+      _resolvedAutomaticCalloutStyle = [(MKAnnotationView *)self _resolvedAutomaticCalloutStyle];
 
-      v7 = v14;
+      v7 = _resolvedAutomaticCalloutStyle;
     }
   }
 
   return v7;
 }
 
-- (void)_updateSelectionAccessoryIfNeededAnimated:(BOOL)a3
+- (void)_updateSelectionAccessoryIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(MKAnnotationView *)self isSelected];
+  animatedCopy = animated;
+  isSelected = [(MKAnnotationView *)self isSelected];
   activeSelectionAccessory = self->_activeSelectionAccessory;
-  if (v5)
+  if (isSelected)
   {
     if (!activeSelectionAccessory)
     {
-      v7 = [(MKAnnotationView *)self _mapView];
-      v8 = [v7 delegate];
+      _mapView = [(MKAnnotationView *)self _mapView];
+      delegate = [_mapView delegate];
       if (objc_opt_respondsToSelector())
       {
-        v9 = [v8 mapViewShouldDelaySelectionAccessoryPresentation:v7];
+        v9 = [delegate mapViewShouldDelaySelectionAccessoryPresentation:_mapView];
       }
 
       else
@@ -2935,12 +2935,12 @@ LABEL_10:
       v14[1] = 3221225472;
       v14[2] = __62__MKAnnotationView__updateSelectionAccessoryIfNeededAnimated___block_invoke;
       v14[3] = &unk_1E76C8790;
-      v15 = v8;
-      v16 = self;
-      v17 = v7;
-      v18 = v3;
-      v10 = v7;
-      v11 = v8;
+      v15 = delegate;
+      selfCopy = self;
+      v17 = _mapView;
+      v18 = animatedCopy;
+      v10 = _mapView;
+      v11 = delegate;
       v12 = MEMORY[0x1A58E9F30](v14);
       v13 = v12;
       if (v9)
@@ -2958,7 +2958,7 @@ LABEL_10:
   else if (activeSelectionAccessory)
   {
 
-    [(MKAnnotationView *)self _dismissSelectionAccessoryAnimated:v3];
+    [(MKAnnotationView *)self _dismissSelectionAccessoryAnimated:animatedCopy];
   }
 }
 
@@ -2972,14 +2972,14 @@ void __62__MKAnnotationView__updateSelectionAccessoryIfNeededAnimated___block_in
   }
 }
 
-- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)a3
+- (BOOL)updateCalloutViewIfNeededAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if ([(MKAnnotationView *)self isSelected]&& [(MKAnnotationView *)self _shouldShowCalloutIfSelected])
   {
     if (![(MKCalloutView *)self->_calloutView isVisible])
     {
-      [(MKAnnotationView *)self _showCallout:v3];
+      [(MKAnnotationView *)self _showCallout:animatedCopy];
     }
 
     LOBYTE(v5) = 1;
@@ -2988,7 +2988,7 @@ void __62__MKAnnotationView__updateSelectionAccessoryIfNeededAnimated___block_in
   else if ([(MKCalloutView *)self->_calloutView isVisible]|| (v5 = [(MKCalloutView *)self->_calloutView hasPendingVisibility]))
   {
     [(MKAnnotationView *)self setHighlighted:0];
-    [(MKAnnotationView *)self _dismissCallout:v3];
+    [(MKAnnotationView *)self _dismissCallout:animatedCopy];
     LOBYTE(v5) = 0;
   }
 
@@ -2999,8 +2999,8 @@ void __62__MKAnnotationView__updateSelectionAccessoryIfNeededAnimated___block_in
 {
   if ((self->_allowedCalloutEdges & 0xF) != 0 && ([(MKAnnotationView *)self _effectiveCalloutStyle]!= 1 || [(MKAnnotationView *)self conformsToProtocol:&unk_1F1673870]) && [(MKAnnotationView *)self _allowedToShowCallout]&& [(MKAnnotationView *)self shouldShowCallout])
   {
-    v3 = [(MKAnnotationView *)self _containerView];
-    v4 = [v3 suppressCallout] ^ 1;
+    _containerView = [(MKAnnotationView *)self _containerView];
+    v4 = [_containerView suppressCallout] ^ 1;
   }
 
   else
@@ -3013,8 +3013,8 @@ void __62__MKAnnotationView__updateSelectionAccessoryIfNeededAnimated___block_in
 
 - (int64_t)_effectiveCalloutStyle
 {
-  v3 = [objc_opt_class() calloutViewClass];
-  if (v3 && v3 == objc_opt_class())
+  calloutViewClass = [objc_opt_class() calloutViewClass];
+  if (calloutViewClass && calloutViewClass == objc_opt_class())
   {
     return 1;
   }
@@ -3076,20 +3076,20 @@ void __62__MKAnnotationView__updateSelectionAccessoryIfNeededAnimated___block_in
   }
 }
 
-- (void)_setSelected:(BOOL)a3 animated:(BOOL)a4
+- (void)_setSelected:(BOOL)selected animated:(BOOL)animated
 {
   flags = self->_flags;
-  if (((((flags & 4) == 0) ^ a3) & 1) == 0)
+  if (((((flags & 4) == 0) ^ selected) & 1) == 0)
   {
-    v7 = a3;
+    selectedCopy = selected;
     if ((flags & 0xC000) != 0x8000)
     {
       *&self->_flags = flags & 0x3FFF | 0x4000;
-      [(MKAnnotationView *)self setSelected:a3 animated:a4];
+      [(MKAnnotationView *)self setSelected:selected animated:animated];
       flags = self->_flags;
     }
 
-    if (v7)
+    if (selectedCopy)
     {
       v8 = 4;
     }
@@ -3100,7 +3100,7 @@ void __62__MKAnnotationView__updateSelectionAccessoryIfNeededAnimated___block_in
     }
 
     *&self->_flags = flags & 0xFFFB | v8;
-    if (v7)
+    if (selectedCopy)
     {
       [(MKAnnotationView *)self _addAnnotationObservation];
     }
@@ -3115,7 +3115,7 @@ void __62__MKAnnotationView__updateSelectionAccessoryIfNeededAnimated___block_in
     v10[2] = __42__MKAnnotationView__setSelected_animated___block_invoke;
     v10[3] = &unk_1E76CA760;
     v10[4] = self;
-    v11 = a4;
+    animatedCopy = animated;
     v9 = MEMORY[0x1A58E9F30](v10);
     if ([MEMORY[0x1E69DD250] _mapkit_shouldAdoptImplicitAnimationParameters])
     {
@@ -3258,15 +3258,15 @@ uint64_t __42__MKAnnotationView__setSelected_animated___block_invoke(uint64_t a1
   }
 }
 
-- (void)_setSelectedZPriority:(float)a3
+- (void)_setSelectedZPriority:(float)priority
 {
-  if (self->_selectedZPriority != a3)
+  if (self->_selectedZPriority != priority)
   {
-    self->_selectedZPriority = a3;
+    self->_selectedZPriority = priority;
     if ([(MKAnnotationView *)self isSelected])
     {
-      v4 = [(MKAnnotationView *)self _containerView];
-      [v4 annotationViewDidChangeZPriority:self];
+      _containerView = [(MKAnnotationView *)self _containerView];
+      [_containerView annotationViewDidChangeZPriority:self];
     }
   }
 }
@@ -3278,15 +3278,15 @@ uint64_t __42__MKAnnotationView__setSelected_animated___block_invoke(uint64_t a1
   [(MKAnnotationView *)self _setSelectedZPriority:?];
 }
 
-- (void)_setZPriority:(float)a3
+- (void)_setZPriority:(float)priority
 {
-  if (self->_zPriority != a3)
+  if (self->_zPriority != priority)
   {
-    self->_zPriority = a3;
+    self->_zPriority = priority;
     if (![(MKAnnotationView *)self isSelected])
     {
-      v4 = [(MKAnnotationView *)self _containerView];
-      [v4 annotationViewDidChangeZPriority:self];
+      _containerView = [(MKAnnotationView *)self _containerView];
+      [_containerView annotationViewDidChangeZPriority:self];
     }
   }
 }
@@ -3298,19 +3298,19 @@ uint64_t __42__MKAnnotationView__setSelected_animated___block_invoke(uint64_t a1
   [(MKAnnotationView *)self _setZPriority:?];
 }
 
-- (float)_clampZPriority:(float)a3
+- (float)_clampZPriority:(float)priority
 {
-  v3 = 1000.0;
-  if (a3 <= 1000.0)
+  priorityCopy = 1000.0;
+  if (priority <= 1000.0)
   {
-    v3 = a3;
+    priorityCopy = priority;
   }
 
-  v4 = a3 < 0.0;
+  v4 = priority < 0.0;
   result = 0.0;
   if (!v4)
   {
-    return v3;
+    return priorityCopy;
   }
 
   return result;
@@ -3322,8 +3322,8 @@ uint64_t __42__MKAnnotationView__setSelected_animated___block_invoke(uint64_t a1
   {
     self->_displayPriority = displayPriority;
     [(MKAnnotationView *)self invalidateCustomFeatureForced:[(MKAnnotationView *)self isProvidingCustomFeature]];
-    v4 = [(MKAnnotationView *)self _containerView];
-    [v4 annotationViewDidChangeDisplayPriority:self];
+    _containerView = [(MKAnnotationView *)self _containerView];
+    [_containerView annotationViewDidChangeDisplayPriority:self];
 
     WeakRetained = objc_loadWeakRetained(&self->_usageCounter);
     if (WeakRetained)
@@ -3358,12 +3358,12 @@ uint64_t __42__MKAnnotationView__setSelected_animated___block_invoke(uint64_t a1
       p_imageLayer = &self->_imageLayer;
       if (!self->_imageLayer)
       {
-        v10 = [MEMORY[0x1E6979398] layer];
+        layer = [MEMORY[0x1E6979398] layer];
         v11 = *p_imageLayer;
-        *p_imageLayer = v10;
+        *p_imageLayer = layer;
 
-        v12 = [(MKAnnotationView *)self layer];
-        [v12 insertSublayer:*p_imageLayer atIndex:0];
+        layer2 = [(MKAnnotationView *)self layer];
+        [layer2 insertSublayer:*p_imageLayer atIndex:0];
 
         [(MKAnnotationView *)self setOpaque:0];
       }
@@ -3374,8 +3374,8 @@ uint64_t __42__MKAnnotationView__setSelected_animated___block_invoke(uint64_t a1
       p_imageLayer = &self->_imageLayer;
     }
 
-    v13 = [(MKAnnotationView *)self layer];
-    [v13 bounds];
+    layer3 = [(MKAnnotationView *)self layer];
+    [layer3 bounds];
     [(CALayer *)*p_imageLayer setFrame:?];
 
     v14 = v15;
@@ -3384,18 +3384,18 @@ uint64_t __42__MKAnnotationView__setSelected_animated___block_invoke(uint64_t a1
   }
 }
 
-- (id)_hitTest:(CGPoint)a3 view:(id)a4 withEvent:(id)a5
+- (id)_hitTest:(CGPoint)test view:(id)view withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 superview];
+  y = test.y;
+  x = test.x;
+  viewCopy = view;
+  eventCopy = event;
+  superview = [viewCopy superview];
 
-  if (v11)
+  if (superview)
   {
-    [v9 convertPoint:self fromView:{x, y}];
-    v12 = [v9 hitTest:v10 withEvent:?];
+    [viewCopy convertPoint:self fromView:{x, y}];
+    v12 = [viewCopy hitTest:eventCopy withEvent:?];
   }
 
   else
@@ -3406,20 +3406,20 @@ uint64_t __42__MKAnnotationView__setSelected_animated___block_invoke(uint64_t a1
   return v12;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = MKAnnotationView;
-  v8 = [(MKAnnotationView *)&v11 hitTest:v7 withEvent:x, y];
+  v8 = [(MKAnnotationView *)&v11 hitTest:eventCopy withEvent:x, y];
   if (!v8)
   {
-    v8 = [(MKAnnotationView *)self _hitTest:self->_calloutView view:v7 withEvent:x, y];
+    v8 = [(MKAnnotationView *)self _hitTest:self->_calloutView view:eventCopy withEvent:x, y];
     if (!v8)
     {
-      v8 = [(MKAnnotationView *)self _hitTest:self->_selectionAccessoryView view:v7 withEvent:x, y];
+      v8 = [(MKAnnotationView *)self _hitTest:self->_selectionAccessoryView view:eventCopy withEvent:x, y];
     }
   }
 
@@ -3436,8 +3436,8 @@ uint64_t __42__MKAnnotationView__setSelected_animated___block_invoke(uint64_t a1
     v7 = v5;
     objc_storeStrong(&self->_annotation, annotation);
     [(MKAnnotationView *)self _invalidateCachedCoordinate];
-    v6 = [(MKAnnotationView *)self _vkNavigationPuckMarker];
-    [v6 setAnnotation:v7];
+    _vkNavigationPuckMarker = [(MKAnnotationView *)self _vkNavigationPuckMarker];
+    [_vkNavigationPuckMarker setAnnotation:v7];
 
     v5 = v7;
   }
@@ -3454,16 +3454,16 @@ uint64_t __42__MKAnnotationView__setSelected_animated___block_invoke(uint64_t a1
   }
 }
 
-- (id)_getPopover:(id)a3
+- (id)_getPopover:(id)popover
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  popoverCopy = popover;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 subviews];
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  subviews = [popoverCopy subviews];
+  v6 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -3477,14 +3477,14 @@ uint64_t __42__MKAnnotationView__setSelected_animated___block_invoke(uint64_t a1
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(subviews);
         }
 
         v12 = *(*(&v14 + 1) + 8 * v10);
         NSClassFromString(&cfstr_Mkpopoverembed.isa);
         if (objc_opt_isKindOfClass())
         {
-          v8 = v4;
+          v8 = popoverCopy;
 
           goto LABEL_12;
         }
@@ -3496,7 +3496,7 @@ uint64_t __42__MKAnnotationView__setSelected_animated___block_invoke(uint64_t a1
       }
 
       while (v7 != v10);
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [subviews countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;
@@ -3546,8 +3546,8 @@ LABEL_12:
 - (void)dealloc
 {
   [(_MKKVOProxy *)self->_annotationObserver removeObserverForObject:self forKeyPath:@"annotation.title" context:MKAnnotationKVOContext];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(MKUserLocationAnnotationViewProxy *)self->_userLocationProxy setAnnotationView:0];
   [(_MKAnnotationViewAnchor *)self->_anchor setAnnotationView:0];
@@ -3599,12 +3599,12 @@ LABEL_12:
   return v4;
 }
 
-- (MKAnnotationView)initWithFrame:(CGRect)a3
+- (MKAnnotationView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if (_MKLinkedOnOrAfterReleaseSet(1283))
   {
     v8 = [(MKAnnotationView *)self initWithAnnotation:0 reuseIdentifier:0];
@@ -3622,19 +3622,19 @@ LABEL_12:
   return v8;
 }
 
-- (void)_layoutCalloutSelectionAccessoryView:(id)a3
+- (void)_layoutCalloutSelectionAccessoryView:(id)view
 {
-  v14 = a3;
-  v4 = [v14 pointerEdge];
-  [(MKAnnotationView *)self _anchorPointForCalloutAnchorPosition:v4];
+  viewCopy = view;
+  pointerEdge = [viewCopy pointerEdge];
+  [(MKAnnotationView *)self _anchorPointForCalloutAnchorPosition:pointerEdge];
   v6 = v5;
   v8 = v7;
-  [v14 bounds];
+  [viewCopy bounds];
   v10 = v9;
   v12 = v11;
   +[MKCalloutSelectionAccessoryView pointerHeight];
-  [(MKAnnotationView *)self _calculateAccessoryFrameForSize:v4 anchorPosition:v10 anchorPoint:v12 pointerHeight:v6, v8, v13];
-  [v14 setFrame:?];
+  [(MKAnnotationView *)self _calculateAccessoryFrameForSize:pointerEdge anchorPosition:v10 anchorPoint:v12 pointerHeight:v6, v8, v13];
+  [viewCopy setFrame:?];
 }
 
 - (void)_layoutOpenInMapsAccessory
@@ -3657,16 +3657,16 @@ LABEL_12:
   return result;
 }
 
-- (CGPoint)_anchorPointForCalloutAnchorPosition:(int64_t)a3
+- (CGPoint)_anchorPointForCalloutAnchorPosition:(int64_t)position
 {
-  switch(a3)
+  switch(position)
   {
     case 4:
       [(MKAnnotationView *)self center];
       v17 = v16;
       v19 = v18;
-      v20 = [(MKAnnotationView *)self superview];
-      [(MKAnnotationView *)self convertPoint:v20 fromView:v17, v19];
+      superview = [(MKAnnotationView *)self superview];
+      [(MKAnnotationView *)self convertPoint:superview fromView:v17, v19];
       v11 = v21;
       v13 = v22;
 
@@ -3677,8 +3677,8 @@ LABEL_12:
       [(MKAnnotationView *)self center];
       v6 = v5;
       v8 = v7;
-      v9 = [(MKAnnotationView *)self superview];
-      [(MKAnnotationView *)self convertPoint:v9 fromView:v6, v8];
+      superview2 = [(MKAnnotationView *)self superview];
+      [(MKAnnotationView *)self convertPoint:superview2 fromView:v6, v8];
       v11 = v10;
       v13 = v12;
 
@@ -3717,10 +3717,10 @@ LABEL_8:
   return result;
 }
 
-- (int64_t)compareForCollision:(id)a3
+- (int64_t)compareForCollision:(id)collision
 {
   v3 = (*&self->_flags >> 2) & 1;
-  v4 = (*(a3 + 428) >> 2) & 1;
+  v4 = (*(collision + 428) >> 2) & 1;
   if (v3 < v4)
   {
     return 1;
@@ -3732,7 +3732,7 @@ LABEL_8:
   }
 
   displayPriority = self->_displayPriority;
-  v9 = *(a3 + 162);
+  v9 = *(collision + 162);
   if (displayPriority < v9)
   {
     return 1;
@@ -3745,7 +3745,7 @@ LABEL_8:
 
   [(MKAnnotationView *)self _collisionFrame];
   v11 = v10;
-  [a3 _collisionFrame];
+  [collision _collisionFrame];
   if (v11 < v12)
   {
     return 1;
@@ -3756,8 +3756,8 @@ LABEL_8:
     return -1;
   }
 
-  v13 = self - a3;
-  if (self - a3 >= 1)
+  v13 = self - collision;
+  if (self - collision >= 1)
   {
     v13 = 1;
   }
@@ -3773,19 +3773,19 @@ LABEL_8:
   }
 }
 
-- (int64_t)compareForClustering:(id)a3
+- (int64_t)compareForClustering:(id)clustering
 {
   annotation = self->_annotation;
-  v6 = *(a3 + 80);
-  if (!v6)
+  annotation = *(clustering + 80);
+  if (!annotation)
   {
-    v6 = [a3 annotation];
+    annotation = [clustering annotation];
   }
 
   [(MKAnnotation *)annotation coordinate];
   v8 = v7;
   v10 = v9;
-  [v6 coordinate];
+  [annotation coordinate];
   if (v8 < v11)
   {
     return -1;
@@ -3806,8 +3806,8 @@ LABEL_8:
     return 1;
   }
 
-  v14 = self - a3;
-  if (self - a3 >= 1)
+  v14 = self - clustering;
+  if (self - clustering >= 1)
   {
     v14 = 1;
   }
@@ -3823,12 +3823,12 @@ LABEL_8:
   }
 }
 
-- (void)_updateAnchorPosition:(CGPoint)a3 alignToPixels:(BOOL)a4
+- (void)_updateAnchorPosition:(CGPoint)position alignToPixels:(BOOL)pixels
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  self->_anchorPoint = a3;
+  pixelsCopy = pixels;
+  y = position.y;
+  x = position.x;
+  self->_anchorPoint = position;
   [(MKAnnotationView *)self centerOffset];
   v9 = x + v8;
   v11 = y + v10;
@@ -3842,7 +3842,7 @@ LABEL_8:
   self->_collisionFrame.origin.y = v19 + v17 + -5.0;
   self->_collisionFrame.size.width = v13 - (v18 + v20) + 10.0;
   self->_collisionFrame.size.height = v15 - (v19 + v21) + 10.0;
-  if (v4 && ![(MKAnnotationView *)self isHidden])
+  if (pixelsCopy && ![(MKAnnotationView *)self isHidden])
   {
     [(UIView *)self _mapkit_currentScreenScale];
     v9 = MKIntegralCenterForViewWithScale(self, v9, v11, v22);
@@ -3859,16 +3859,16 @@ LABEL_8:
 
     if ([(MKAnnotationView *)self isSelected])
     {
-      v25 = [(MKAnnotationView *)self leftCalloutAccessoryView];
-      if (v25 || ([(MKAnnotationView *)self rightCalloutAccessoryView], (v25 = objc_claimAutoreleasedReturnValue()) != 0))
+      leftCalloutAccessoryView = [(MKAnnotationView *)self leftCalloutAccessoryView];
+      if (leftCalloutAccessoryView || ([(MKAnnotationView *)self rightCalloutAccessoryView], (leftCalloutAccessoryView = objc_claimAutoreleasedReturnValue()) != 0))
       {
 
         goto LABEL_11;
       }
 
-      v29 = [(MKAnnotationView *)self detailCalloutAccessoryView];
+      detailCalloutAccessoryView = [(MKAnnotationView *)self detailCalloutAccessoryView];
 
-      if (v29)
+      if (detailCalloutAccessoryView)
       {
 LABEL_11:
         [(MKAnnotationView *)self center];
@@ -3886,14 +3886,14 @@ LABEL_22:
       }
     }
 
-    v30 = [(MKAnnotationView *)self layer];
-    [v30 position];
+    layer = [(MKAnnotationView *)self layer];
+    [layer position];
     if (v32 == v9 && v31 == v11)
     {
       return;
     }
 
-    [v30 setPosition:{v9, v11}];
+    [layer setPosition:{v9, v11}];
     goto LABEL_22;
   }
 
@@ -3905,12 +3905,12 @@ LABEL_22:
   }
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(MKAnnotationView *)self bounds];
   v9 = v8;
   v11 = v10;
@@ -3956,16 +3956,16 @@ LABEL_22:
     return 1;
   }
 
-  v3 = [(MKAnnotation *)self->_annotation title];
-  if ([v3 length])
+  title = [(MKAnnotation *)self->_annotation title];
+  if ([title length])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(MKAnnotationView *)self detailCalloutAccessoryView];
-    v4 = v5 != 0;
+    detailCalloutAccessoryView = [(MKAnnotationView *)self detailCalloutAccessoryView];
+    v4 = detailCalloutAccessoryView != 0;
   }
 
   return v4;
@@ -3973,11 +3973,11 @@ LABEL_22:
 
 - (BOOL)shouldShowCallout
 {
-  v3 = [(MKAnnotationView *)self annotation];
+  annotation = [(MKAnnotationView *)self annotation];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 title];
-    v5 = [v4 length] != 0;
+    title = [annotation title];
+    v5 = [title length] != 0;
   }
 
   else
@@ -3993,9 +3993,9 @@ LABEL_22:
   return v5;
 }
 
-+ (id)_sheetAccessoryWithViewController:(id)a3
++ (id)_sheetAccessoryWithViewController:(id)controller
 {
-  v3 = [MKMapItemDetailSelectionAccessoryPresentationStyle sheetPresentedFromViewController:a3];
+  v3 = [MKMapItemDetailSelectionAccessoryPresentationStyle sheetPresentedFromViewController:controller];
   v4 = [MKSelectionAccessory mapItemDetailWithPresentationStyle:v3];
 
   return v4;
@@ -4052,9 +4052,9 @@ LABEL_22:
   {
     v3 = [MEMORY[0x1E69DC738] buttonWithType:2];
     v4 = +[MKSystemController sharedInstance];
-    v5 = [v4 userInterfaceIdiom];
+    userInterfaceIdiom = [v4 userInterfaceIdiom];
 
-    if (v5)
+    if (userInterfaceIdiom)
     {
       v6 = [MEMORY[0x1E69DCAB8] _mapkit_imageNamed:@"ShowInfo.png"];
       [v3 setImage:v6 forState:0];
@@ -4072,19 +4072,19 @@ LABEL_22:
   return v2;
 }
 
-+ (BOOL)automaticallyNotifiesObserversForKey:(id)a3
++ (BOOL)automaticallyNotifiesObserversForKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"calloutOffset"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"calloutOffset"])
   {
     v5 = 0;
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___MKAnnotationView;
-    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, v4);
+    v5 = objc_msgSendSuper2(&v7, sel_automaticallyNotifiesObserversForKey_, keyCopy);
   }
 
   return v5;

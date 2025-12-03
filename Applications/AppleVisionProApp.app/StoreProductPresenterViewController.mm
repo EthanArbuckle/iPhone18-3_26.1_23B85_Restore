@@ -1,13 +1,13 @@
 @interface StoreProductPresenterViewController
-- (_TtC17AppleVisionProApp35StoreProductPresenterViewController)initWithCoder:(id)a3;
-- (_TtC17AppleVisionProApp35StoreProductPresenterViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (_TtC17AppleVisionProApp35StoreProductPresenterViewController)initWithCoder:(id)coder;
+- (_TtC17AppleVisionProApp35StoreProductPresenterViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation StoreProductPresenterViewController
 
-- (_TtC17AppleVisionProApp35StoreProductPresenterViewController)initWithCoder:(id)a3
+- (_TtC17AppleVisionProApp35StoreProductPresenterViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC17AppleVisionProApp35StoreProductPresenterViewController_cardOpenedDate;
   v5 = type metadata accessor for Date();
@@ -20,19 +20,19 @@
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_10003A0FC(a3);
+  selfCopy = self;
+  sub_10003A0FC(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_10003B4B4(a3);
+  selfCopy = self;
+  sub_10003B4B4(disappear);
 }
 
-- (_TtC17AppleVisionProApp35StoreProductPresenterViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17AppleVisionProApp35StoreProductPresenterViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

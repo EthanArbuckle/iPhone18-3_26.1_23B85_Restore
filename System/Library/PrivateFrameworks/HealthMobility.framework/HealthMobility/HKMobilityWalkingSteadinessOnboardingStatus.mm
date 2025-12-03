@@ -1,38 +1,38 @@
 @interface HKMobilityWalkingSteadinessOnboardingStatus
-- (BOOL)isEqual:(id)a3;
-- (HKMobilityWalkingSteadinessOnboardingStatus)initWithCoder:(id)a3;
-- (HKMobilityWalkingSteadinessOnboardingStatus)initWithState:(int64_t)a3 unavailableReasons:(int64_t)a4 dateOnboarded:(id)a5 shouldOnboardingTileBeAdvertised:(BOOL)a6 isLocaleValidOnLocalDevice:(BOOL)a7 isClassificationAvailable:(BOOL)a8;
+- (BOOL)isEqual:(id)equal;
+- (HKMobilityWalkingSteadinessOnboardingStatus)initWithCoder:(id)coder;
+- (HKMobilityWalkingSteadinessOnboardingStatus)initWithState:(int64_t)state unavailableReasons:(int64_t)reasons dateOnboarded:(id)onboarded shouldOnboardingTileBeAdvertised:(BOOL)advertised isLocaleValidOnLocalDevice:(BOOL)device isClassificationAvailable:(BOOL)available;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKMobilityWalkingSteadinessOnboardingStatus
 
-- (HKMobilityWalkingSteadinessOnboardingStatus)initWithState:(int64_t)a3 unavailableReasons:(int64_t)a4 dateOnboarded:(id)a5 shouldOnboardingTileBeAdvertised:(BOOL)a6 isLocaleValidOnLocalDevice:(BOOL)a7 isClassificationAvailable:(BOOL)a8
+- (HKMobilityWalkingSteadinessOnboardingStatus)initWithState:(int64_t)state unavailableReasons:(int64_t)reasons dateOnboarded:(id)onboarded shouldOnboardingTileBeAdvertised:(BOOL)advertised isLocaleValidOnLocalDevice:(BOOL)device isClassificationAvailable:(BOOL)available
 {
-  v15 = a5;
+  onboardedCopy = onboarded;
   v20.receiver = self;
   v20.super_class = HKMobilityWalkingSteadinessOnboardingStatus;
   v16 = [(HKMobilityWalkingSteadinessOnboardingStatus *)&v20 init];
   v17 = v16;
   if (v16)
   {
-    v16->_state = a3;
-    v16->_onboardingUnavailableReasons = a4;
-    objc_storeStrong(&v16->_dateOnboarded, a5);
-    v17->_shouldAdvertiseOnboarding = a6;
-    v17->_isLocaleValidOnLocalDevice = a7;
-    v17->_isClassificationAvailable = a8;
+    v16->_state = state;
+    v16->_onboardingUnavailableReasons = reasons;
+    objc_storeStrong(&v16->_dateOnboarded, onboarded);
+    v17->_shouldAdvertiseOnboarding = advertised;
+    v17->_isLocaleValidOnLocalDevice = device;
+    v17->_isClassificationAvailable = available;
     v18 = v17;
   }
 
   return v17;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -42,7 +42,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = v5;
       v7 = self->_state == v5->_state && self->_onboardingUnavailableReasons == v5->_onboardingUnavailableReasons && [(NSDate *)self->_dateOnboarded isEqual:v5->_dateOnboarded]&& self->_shouldAdvertiseOnboarding == v6[8] && self->_isLocaleValidOnLocalDevice == v6[9] && self->_isClassificationAvailable == v6[10];
     }
@@ -70,35 +70,35 @@
   return v6 ^ v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   state = self->_state;
-  v5 = a3;
-  [v5 encodeInteger:state forKey:@"State"];
-  [v5 encodeInteger:self->_onboardingUnavailableReasons forKey:@"OnboardingUnavailableReasons"];
-  [v5 encodeObject:self->_dateOnboarded forKey:@"DateOnboarded"];
-  [v5 encodeBool:self->_shouldAdvertiseOnboarding forKey:@"ShouldAdvertiseOnboarding"];
-  [v5 encodeBool:self->_isLocaleValidOnLocalDevice forKey:@"IsLocaleValidOnLocalDevice"];
-  [v5 encodeBool:self->_isClassificationAvailable forKey:@"IsClassificationAvailableKey"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:state forKey:@"State"];
+  [coderCopy encodeInteger:self->_onboardingUnavailableReasons forKey:@"OnboardingUnavailableReasons"];
+  [coderCopy encodeObject:self->_dateOnboarded forKey:@"DateOnboarded"];
+  [coderCopy encodeBool:self->_shouldAdvertiseOnboarding forKey:@"ShouldAdvertiseOnboarding"];
+  [coderCopy encodeBool:self->_isLocaleValidOnLocalDevice forKey:@"IsLocaleValidOnLocalDevice"];
+  [coderCopy encodeBool:self->_isClassificationAvailable forKey:@"IsClassificationAvailableKey"];
 }
 
-- (HKMobilityWalkingSteadinessOnboardingStatus)initWithCoder:(id)a3
+- (HKMobilityWalkingSteadinessOnboardingStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = HKMobilityWalkingSteadinessOnboardingStatus;
   v5 = [(HKMobilityWalkingSteadinessOnboardingStatus *)&v9 init];
   if (v5)
   {
-    v5->_state = [v4 decodeIntegerForKey:@"State"];
-    v5->_onboardingUnavailableReasons = [v4 decodeIntegerForKey:@"OnboardingUnavailableReasons"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DateOnboarded"];
+    v5->_state = [coderCopy decodeIntegerForKey:@"State"];
+    v5->_onboardingUnavailableReasons = [coderCopy decodeIntegerForKey:@"OnboardingUnavailableReasons"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DateOnboarded"];
     dateOnboarded = v5->_dateOnboarded;
     v5->_dateOnboarded = v6;
 
-    v5->_shouldAdvertiseOnboarding = [v4 decodeBoolForKey:@"ShouldAdvertiseOnboarding"];
-    v5->_isLocaleValidOnLocalDevice = [v4 decodeBoolForKey:@"IsLocaleValidOnLocalDevice"];
-    v5->_isClassificationAvailable = [v4 decodeBoolForKey:@"IsClassificationAvailableKey"];
+    v5->_shouldAdvertiseOnboarding = [coderCopy decodeBoolForKey:@"ShouldAdvertiseOnboarding"];
+    v5->_isLocaleValidOnLocalDevice = [coderCopy decodeBoolForKey:@"IsLocaleValidOnLocalDevice"];
+    v5->_isClassificationAvailable = [coderCopy decodeBoolForKey:@"IsClassificationAvailableKey"];
   }
 
   return v5;

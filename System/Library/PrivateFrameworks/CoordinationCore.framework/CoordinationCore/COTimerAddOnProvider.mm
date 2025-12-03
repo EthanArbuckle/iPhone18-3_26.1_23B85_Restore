@@ -1,25 +1,25 @@
 @interface COTimerAddOnProvider
 - (COTimerAddOnProvider)init;
-- (COTimerAddOnProvider)initWithTimerManager:(id)a3 homekitAdapter:(id)a4 hubAdapter:(id)a5;
+- (COTimerAddOnProvider)initWithTimerManager:(id)manager homekitAdapter:(id)adapter hubAdapter:(id)hubAdapter;
 - (id)serviceAddOn;
 @end
 
 @implementation COTimerAddOnProvider
 
-- (COTimerAddOnProvider)initWithTimerManager:(id)a3 homekitAdapter:(id)a4 hubAdapter:(id)a5
+- (COTimerAddOnProvider)initWithTimerManager:(id)manager homekitAdapter:(id)adapter hubAdapter:(id)hubAdapter
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  managerCopy = manager;
+  adapterCopy = adapter;
+  hubAdapterCopy = hubAdapter;
   v15.receiver = self;
   v15.super_class = COTimerAddOnProvider;
   v12 = [(COTimerAddOnProvider *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_timerManager, a3);
-    objc_storeStrong(&v13->_homekit, a4);
-    objc_storeStrong(&v13->_homehub, a5);
+    objc_storeStrong(&v12->_timerManager, manager);
+    objc_storeStrong(&v13->_homekit, adapter);
+    objc_storeStrong(&v13->_homehub, hubAdapter);
   }
 
   return v13;
@@ -38,10 +38,10 @@
 - (id)serviceAddOn
 {
   v3 = [COMeshTimerAddOn alloc];
-  v4 = [(COTimerAddOnProvider *)self timerManager];
-  v5 = [(COTimerAddOnProvider *)self homekit];
-  v6 = [(COTimerAddOnProvider *)self homehub];
-  v7 = [(COMeshTimerAddOn *)v3 initWithTimerManager:v4 homekitAdapter:v5 hubAdapter:v6];
+  timerManager = [(COTimerAddOnProvider *)self timerManager];
+  homekit = [(COTimerAddOnProvider *)self homekit];
+  homehub = [(COTimerAddOnProvider *)self homehub];
+  v7 = [(COMeshTimerAddOn *)v3 initWithTimerManager:timerManager homekitAdapter:homekit hubAdapter:homehub];
 
   return v7;
 }

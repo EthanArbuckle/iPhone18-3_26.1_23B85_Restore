@@ -1,40 +1,40 @@
 @interface PHScreenSharingContainerViewController
 - (PHPIPController)pipController;
-- (PHScreenSharingContainerViewController)initWithCallDisplayStyleManager:(id)a3;
+- (PHScreenSharingContainerViewController)initWithCallDisplayStyleManager:(id)manager;
 - (id)makeScreenShareViewController;
-- (void)handlePIPViewControllerRestoredAfterPIPStopped:(id)a3;
-- (void)overlayViewTapped:(id)a3;
-- (void)pipStateDidChangeNotification:(id)a3;
-- (void)setShowingOverlay:(BOOL)a3 animated:(BOOL)a4;
+- (void)handlePIPViewControllerRestoredAfterPIPStopped:(id)stopped;
+- (void)overlayViewTapped:(id)tapped;
+- (void)pipStateDidChangeNotification:(id)notification;
+- (void)setShowingOverlay:(BOOL)overlay animated:(BOOL)animated;
 - (void)setupOverlayDismissTimerIfNeeded;
 - (void)updatePresenterNameAndAvatar;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
 
 @implementation PHScreenSharingContainerViewController
 
-- (PHScreenSharingContainerViewController)initWithCallDisplayStyleManager:(id)a3
+- (PHScreenSharingContainerViewController)initWithCallDisplayStyleManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v15.receiver = self;
   v15.super_class = PHScreenSharingContainerViewController;
   v6 = [(PHScreenSharingContainerViewController *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_callDisplayStyleManager, a3);
+    objc_storeStrong(&v6->_callDisplayStyleManager, manager);
     v8 = objc_opt_new();
     [(PHScreenSharingContainerViewController *)v7 setInfoViewFactory:v8];
 
-    v9 = [(PHScreenSharingContainerViewController *)v7 makeScreenShareViewController];
-    [(PHScreenSharingContainerViewController *)v7 setSharedContentViewController:v9];
+    makeScreenShareViewController = [(PHScreenSharingContainerViewController *)v7 makeScreenShareViewController];
+    [(PHScreenSharingContainerViewController *)v7 setSharedContentViewController:makeScreenShareViewController];
 
     [(PHScreenSharingContainerViewController *)v7 setShowingOverlay:1];
     v10 = +[UIColor blackColor];
-    v11 = [(PHScreenSharingContainerViewController *)v7 view];
-    [v11 setBackgroundColor:v10];
+    view = [(PHScreenSharingContainerViewController *)v7 view];
+    [view setBackgroundColor:v10];
 
     v12 = +[NSNotificationCenter defaultCenter];
     [v12 addObserver:v7 selector:"pipStateDidChangeNotification:" name:@"PHPIPControllerStateDidChangeNotification" object:0];
@@ -45,44 +45,44 @@
   return v7;
 }
 
-- (void)handlePIPViewControllerRestoredAfterPIPStopped:(id)a3
+- (void)handlePIPViewControllerRestoredAfterPIPStopped:(id)stopped
 {
-  v4 = a3;
-  v5 = [(PHScreenSharingContainerViewController *)self view];
-  [v5 bounds];
+  stoppedCopy = stopped;
+  view = [(PHScreenSharingContainerViewController *)self view];
+  [view bounds];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [v4 view];
-  [v14 setFrame:{v7, v9, v11, v13}];
+  view2 = [stoppedCopy view];
+  [view2 setFrame:{v7, v9, v11, v13}];
 
-  v15 = [v4 view];
-  [v15 setAutoresizingMask:18];
+  view3 = [stoppedCopy view];
+  [view3 setAutoresizingMask:18];
 
-  v17 = [(PHScreenSharingContainerViewController *)self view];
-  v16 = [v4 view];
+  view4 = [(PHScreenSharingContainerViewController *)self view];
+  view5 = [stoppedCopy view];
 
-  [v17 sendSubviewToBack:v16];
+  [view4 sendSubviewToBack:view5];
 }
 
-- (void)setShowingOverlay:(BOOL)a3 animated:(BOOL)a4
+- (void)setShowingOverlay:(BOOL)overlay animated:(BOOL)animated
 {
-  if (self->_showingOverlay != a3)
+  if (self->_showingOverlay != overlay)
   {
     v22 = v7;
     v23 = v6;
     v24 = v4;
     v25 = v5;
-    self->_showingOverlay = a3;
+    self->_showingOverlay = overlay;
     [(PHScreenSharingContainerViewController *)self overlayView];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_10010B30C;
     v11 = v18[3] = &unk_1003583B0;
-    v21 = a3;
+    overlayCopy = overlay;
     v19 = v11;
-    v20 = self;
+    selfCopy = self;
     v12 = objc_retainBlock(v18);
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
@@ -91,7 +91,7 @@
     v17[4] = self;
     v13 = objc_retainBlock(v17);
     v14 = v13;
-    if (a4)
+    if (animated)
     {
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
@@ -114,31 +114,31 @@
   v99.receiver = self;
   v99.super_class = PHScreenSharingContainerViewController;
   [(PHScreenSharingContainerViewController *)&v99 viewDidLoad];
-  v3 = [(PHScreenSharingContainerViewController *)self sharedContentViewController];
-  v4 = [(PHScreenSharingContainerViewController *)self view];
-  [v4 bounds];
+  sharedContentViewController = [(PHScreenSharingContainerViewController *)self sharedContentViewController];
+  view = [(PHScreenSharingContainerViewController *)self view];
+  [view bounds];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [v3 view];
-  [v13 setFrame:{v6, v8, v10, v12}];
+  view2 = [sharedContentViewController view];
+  [view2 setFrame:{v6, v8, v10, v12}];
 
-  v14 = v3;
-  v98 = v3;
-  v15 = [v3 view];
-  [v15 setAutoresizingMask:18];
+  v14 = sharedContentViewController;
+  v98 = sharedContentViewController;
+  view3 = [sharedContentViewController view];
+  [view3 setAutoresizingMask:18];
 
-  [v3 willMoveToParentViewController:self];
-  v16 = [(PHScreenSharingContainerViewController *)self view];
-  v17 = [v14 view];
-  [v16 addSubview:v17];
+  [sharedContentViewController willMoveToParentViewController:self];
+  view4 = [(PHScreenSharingContainerViewController *)self view];
+  view5 = [v14 view];
+  [view4 addSubview:view5];
 
   [(PHScreenSharingContainerViewController *)self addChildViewController:v14];
   [v14 didMoveToParentViewController:self];
-  [v16 setAutoresizingMask:18];
+  [view4 setAutoresizingMask:18];
   v97 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"overlayViewTapped:"];
-  [v16 addGestureRecognizer:v97];
+  [view4 addGestureRecognizer:v97];
   v18 = objc_alloc_init(UIView);
   [(PHScreenSharingContainerViewController *)self setOverlayView:v18];
   v19 = +[UIColor clearColor];
@@ -147,7 +147,7 @@
   [v18 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v18 setUserInteractionEnabled:0];
   [v18 setHidden:{-[PHScreenSharingContainerViewController showingOverlay](self, "showingOverlay") ^ 1}];
-  [v16 addSubview:v18];
+  [view4 addSubview:v18];
   v96 = [UIBlurEffect effectWithStyle:17];
   v20 = [[UIVisualEffectView alloc] initWithEffect:v96];
   [v20 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -157,124 +157,124 @@
   [v18 addSubview:v21];
   [v20 _setGroupName:@"PHScreenSharingContainerViewController.blurGroupName"];
   [v21 _setGroupName:@"PHScreenSharingContainerViewController.blurGroupName"];
-  v95 = self;
-  v22 = [(CNKParticipantScreenShareInfoViewFactory *)self->_infoViewFactory makeParticipantView];
-  [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v22 preferredHeight];
-  [v22 setCustomCornerRadius:v23 * 0.5];
-  [(PHScreenSharingContainerViewController *)self setInfoView:v22];
-  [v18 addSubview:v22];
+  selfCopy = self;
+  makeParticipantView = [(CNKParticipantScreenShareInfoViewFactory *)self->_infoViewFactory makeParticipantView];
+  [makeParticipantView setTranslatesAutoresizingMaskIntoConstraints:0];
+  [makeParticipantView preferredHeight];
+  [makeParticipantView setCustomCornerRadius:v23 * 0.5];
+  [(PHScreenSharingContainerViewController *)self setInfoView:makeParticipantView];
+  [v18 addSubview:makeParticipantView];
   [(PHScreenSharingContainerViewController *)self updatePresenterNameAndAvatar];
-  v94 = [v18 leadingAnchor];
-  v93 = [v16 leadingAnchor];
-  v92 = [v94 constraintEqualToAnchor:v93];
+  leadingAnchor = [v18 leadingAnchor];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v92 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v100[0] = v92;
-  v90 = [v18 trailingAnchor];
-  v89 = [v16 trailingAnchor];
-  v88 = [v90 constraintEqualToAnchor:v89];
+  trailingAnchor = [v18 trailingAnchor];
+  trailingAnchor2 = [view4 trailingAnchor];
+  v88 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v100[1] = v88;
-  v87 = [v18 topAnchor];
-  v86 = [v16 topAnchor];
-  v85 = [v87 constraintEqualToAnchor:v86];
+  topAnchor = [v18 topAnchor];
+  topAnchor2 = [view4 topAnchor];
+  v85 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v100[2] = v85;
-  v84 = [v18 bottomAnchor];
-  v83 = [v16 bottomAnchor];
-  v82 = [v84 constraintEqualToAnchor:v83];
+  bottomAnchor = [v18 bottomAnchor];
+  bottomAnchor2 = [view4 bottomAnchor];
+  v82 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v100[3] = v82;
   v91 = v18;
-  v81 = [v18 widthAnchor];
-  v80 = [v16 widthAnchor];
-  v79 = [v81 constraintEqualToAnchor:v80];
+  widthAnchor = [v18 widthAnchor];
+  widthAnchor2 = [view4 widthAnchor];
+  v79 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v100[4] = v79;
-  v78 = [v18 heightAnchor];
-  v77 = [v16 heightAnchor];
-  v76 = [v78 constraintEqualToAnchor:v77];
+  heightAnchor = [v18 heightAnchor];
+  heightAnchor2 = [view4 heightAnchor];
+  v76 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
   v100[5] = v76;
-  v74 = [v22 leadingAnchor];
-  v75 = [v16 safeAreaLayoutGuide];
-  v72 = [v75 leadingAnchor];
-  v71 = [v74 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:v72 multiplier:1.0];
+  leadingAnchor3 = [makeParticipantView leadingAnchor];
+  safeAreaLayoutGuide = [view4 safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide leadingAnchor];
+  v71 = [leadingAnchor3 constraintGreaterThanOrEqualToSystemSpacingAfterAnchor:leadingAnchor4 multiplier:1.0];
   v100[6] = v71;
-  v73 = v22;
-  v69 = [v22 trailingAnchor];
-  v70 = [v16 safeAreaLayoutGuide];
-  v68 = [v70 trailingAnchor];
-  v67 = [v69 constraintLessThanOrEqualToSystemSpacingAfterAnchor:v68 multiplier:1.0];
+  v73 = makeParticipantView;
+  trailingAnchor3 = [makeParticipantView trailingAnchor];
+  safeAreaLayoutGuide2 = [view4 safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide2 trailingAnchor];
+  v67 = [trailingAnchor3 constraintLessThanOrEqualToSystemSpacingAfterAnchor:trailingAnchor4 multiplier:1.0];
   v100[7] = v67;
-  v64 = [v22 topAnchor];
-  v65 = [v16 safeAreaLayoutGuide];
-  v63 = [v65 topAnchor];
-  v62 = [v64 constraintGreaterThanOrEqualToAnchor:v63];
+  topAnchor3 = [makeParticipantView topAnchor];
+  safeAreaLayoutGuide3 = [view4 safeAreaLayoutGuide];
+  topAnchor4 = [safeAreaLayoutGuide3 topAnchor];
+  v62 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4];
   v100[8] = v62;
-  v61 = [v22 topAnchor];
-  v60 = [v21 bottomAnchor];
-  v59 = [v61 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:v60 multiplier:1.0];
+  topAnchor5 = [makeParticipantView topAnchor];
+  bottomAnchor3 = [v21 bottomAnchor];
+  v59 = [topAnchor5 constraintGreaterThanOrEqualToSystemSpacingBelowAnchor:bottomAnchor3 multiplier:1.0];
   v100[9] = v59;
-  v57 = [v22 widthAnchor];
-  v56 = [v16 widthAnchor];
-  v55 = [v57 constraintLessThanOrEqualToAnchor:v56];
+  widthAnchor3 = [makeParticipantView widthAnchor];
+  widthAnchor4 = [view4 widthAnchor];
+  v55 = [widthAnchor3 constraintLessThanOrEqualToAnchor:widthAnchor4];
   v100[10] = v55;
-  v54 = [v22 heightAnchor];
-  [v22 preferredHeight];
-  v53 = [v54 constraintGreaterThanOrEqualToConstant:?];
+  heightAnchor3 = [makeParticipantView heightAnchor];
+  [makeParticipantView preferredHeight];
+  v53 = [heightAnchor3 constraintGreaterThanOrEqualToConstant:?];
   v100[11] = v53;
-  v24 = [v22 leadingAnchor];
-  v25 = [v16 safeAreaLayoutGuide];
-  v26 = [v25 leadingAnchor];
-  v27 = [v24 constraintEqualToAnchor:v26];
+  leadingAnchor5 = [makeParticipantView leadingAnchor];
+  safeAreaLayoutGuide4 = [view4 safeAreaLayoutGuide];
+  leadingAnchor6 = [safeAreaLayoutGuide4 leadingAnchor];
+  v27 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
 
   LODWORD(v28) = 1144750080;
   v52 = v27;
   [v27 setPriority:v28];
   v100[12] = v27;
-  v51 = [v20 bottomAnchor];
-  v50 = [v16 bottomAnchor];
-  v49 = [v51 constraintEqualToAnchor:v50];
+  bottomAnchor4 = [v20 bottomAnchor];
+  bottomAnchor5 = [view4 bottomAnchor];
+  v49 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
   v100[13] = v49;
   v66 = v20;
-  v48 = [v20 widthAnchor];
-  v47 = [v16 widthAnchor];
-  v46 = [v48 constraintEqualToAnchor:v47];
+  widthAnchor5 = [v20 widthAnchor];
+  widthAnchor6 = [view4 widthAnchor];
+  v46 = [widthAnchor5 constraintEqualToAnchor:widthAnchor6];
   v100[14] = v46;
-  v44 = [v20 topAnchor];
-  v45 = [v16 safeAreaLayoutGuide];
-  v43 = [v45 bottomAnchor];
-  v42 = [v44 constraintEqualToAnchor:v43];
+  topAnchor6 = [v20 topAnchor];
+  safeAreaLayoutGuide5 = [view4 safeAreaLayoutGuide];
+  bottomAnchor6 = [safeAreaLayoutGuide5 bottomAnchor];
+  v42 = [topAnchor6 constraintEqualToAnchor:bottomAnchor6];
   v100[15] = v42;
-  v41 = [v21 topAnchor];
-  v40 = [v16 topAnchor];
-  v29 = [v41 constraintEqualToAnchor:v40];
+  topAnchor7 = [v21 topAnchor];
+  topAnchor8 = [view4 topAnchor];
+  v29 = [topAnchor7 constraintEqualToAnchor:topAnchor8];
   v100[16] = v29;
   v58 = v21;
-  v30 = [v21 widthAnchor];
-  v31 = [v16 widthAnchor];
-  v32 = [v30 constraintEqualToAnchor:v31];
+  widthAnchor7 = [v21 widthAnchor];
+  widthAnchor8 = [view4 widthAnchor];
+  v32 = [widthAnchor7 constraintEqualToAnchor:widthAnchor8];
   v100[17] = v32;
-  v33 = [v21 bottomAnchor];
-  v34 = [v16 safeAreaLayoutGuide];
-  v35 = [v34 topAnchor];
-  v36 = [v33 constraintGreaterThanOrEqualToAnchor:v35];
+  bottomAnchor7 = [v21 bottomAnchor];
+  safeAreaLayoutGuide6 = [view4 safeAreaLayoutGuide];
+  topAnchor9 = [safeAreaLayoutGuide6 topAnchor];
+  v36 = [bottomAnchor7 constraintGreaterThanOrEqualToAnchor:topAnchor9];
   v100[18] = v36;
   v37 = [NSArray arrayWithObjects:v100 count:19];
   [NSLayoutConstraint activateConstraints:v37];
 
-  v38 = [(PHScreenSharingContainerViewController *)v95 pipController];
-  [v38 updatePIPSize];
+  pipController = [(PHScreenSharingContainerViewController *)selfCopy pipController];
+  [pipController updatePIPSize];
 
-  v39 = [(PHScreenSharingContainerViewController *)v95 pipController];
-  [v39 updatePIPFrame];
+  pipController2 = [(PHScreenSharingContainerViewController *)selfCopy pipController];
+  [pipController2 updatePIPFrame];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = PHScreenSharingContainerViewController;
-  [(PHScreenSharingContainerViewController *)&v6 viewDidAppear:a3];
-  v4 = [(PHScreenSharingContainerViewController *)self pipController];
-  [v4 updatePIPSize];
+  [(PHScreenSharingContainerViewController *)&v6 viewDidAppear:appear];
+  pipController = [(PHScreenSharingContainerViewController *)self pipController];
+  [pipController updatePIPSize];
 
-  v5 = [(PHScreenSharingContainerViewController *)self pipController];
-  [v5 updatePIPFrame];
+  pipController2 = [(PHScreenSharingContainerViewController *)self pipController];
+  [pipController2 updatePIPFrame];
 }
 
 - (void)viewDidLayoutSubviews
@@ -282,31 +282,31 @@
   v6.receiver = self;
   v6.super_class = PHScreenSharingContainerViewController;
   [(PHScreenSharingContainerViewController *)&v6 viewDidLayoutSubviews];
-  v3 = [(PHScreenSharingContainerViewController *)self infoView];
-  [v3 frame];
+  infoView = [(PHScreenSharingContainerViewController *)self infoView];
+  [infoView frame];
   Height = CGRectGetHeight(v7);
 
-  v5 = [(PHScreenSharingContainerViewController *)self infoView];
-  [v5 setCustomCornerRadius:Height * 0.5];
+  infoView2 = [(PHScreenSharingContainerViewController *)self infoView];
+  [infoView2 setCustomCornerRadius:Height * 0.5];
 }
 
-- (void)pipStateDidChangeNotification:(id)a3
+- (void)pipStateDidChangeNotification:(id)notification
 {
-  v4 = [a3 object];
-  v5 = [(PHScreenSharingContainerViewController *)self pipController];
+  object = [notification object];
+  pipController = [(PHScreenSharingContainerViewController *)self pipController];
 
-  if (v4 == v5)
+  if (object == pipController)
   {
-    v6 = [(PHScreenSharingContainerViewController *)self pipController];
-    v7 = [v6 isPipped];
+    pipController2 = [(PHScreenSharingContainerViewController *)self pipController];
+    isPipped = [pipController2 isPipped];
 
-    v8 = [(PHScreenSharingContainerViewController *)self sharedContentViewController];
-    [v8 setIsPipped:v7];
+    sharedContentViewController = [(PHScreenSharingContainerViewController *)self sharedContentViewController];
+    [sharedContentViewController setIsPipped:isPipped];
 
-    if (v7)
+    if (isPipped)
     {
-      v9 = [(PHScreenSharingContainerViewController *)self overlayDismissTimer];
-      [v9 invalidate];
+      overlayDismissTimer = [(PHScreenSharingContainerViewController *)self overlayDismissTimer];
+      [overlayDismissTimer invalidate];
     }
 
     else
@@ -317,7 +317,7 @@
   }
 }
 
-- (void)overlayViewTapped:(id)a3
+- (void)overlayViewTapped:(id)tapped
 {
   v4 = [(PHScreenSharingContainerViewController *)self showingOverlay]^ 1;
 
@@ -327,24 +327,24 @@
 - (void)updatePresenterNameAndAvatar
 {
   objc_initWeak(&location, self);
-  v3 = [(PHScreenSharingContainerViewController *)self sharedContentViewController];
-  v4 = [v3 sharedContentSourceName];
+  sharedContentViewController = [(PHScreenSharingContainerViewController *)self sharedContentViewController];
+  sharedContentSourceName = [sharedContentViewController sharedContentSourceName];
 
-  v5 = [(PHScreenSharingContainerViewController *)self infoView];
-  [v5 configureWith:v4 isFullScreenMode:0];
+  infoView = [(PHScreenSharingContainerViewController *)self infoView];
+  [infoView configureWith:sharedContentSourceName isFullScreenMode:0];
 
-  v6 = [(PHScreenSharingContainerViewController *)self pipController];
-  [v6 setScreenSharingTitle:v4 andAvatarIfNeeded:0];
+  pipController = [(PHScreenSharingContainerViewController *)self pipController];
+  [pipController setScreenSharingTitle:sharedContentSourceName andAvatarIfNeeded:0];
 
-  v7 = [(PHScreenSharingContainerViewController *)self sharedContentViewController];
+  sharedContentViewController2 = [(PHScreenSharingContainerViewController *)self sharedContentViewController];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10010C1C4;
   v9[3] = &unk_100359A48;
   objc_copyWeak(&v11, &location);
-  v8 = v4;
+  v8 = sharedContentSourceName;
   v10 = v8;
-  [v7 getSharedContentSourceAvatarWithImageHandler:v9];
+  [sharedContentViewController2 getSharedContentSourceAvatarWithImageHandler:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -352,8 +352,8 @@
 
 - (void)setupOverlayDismissTimerIfNeeded
 {
-  v3 = [(PHScreenSharingContainerViewController *)self overlayDismissTimer];
-  [v3 invalidate];
+  overlayDismissTimer = [(PHScreenSharingContainerViewController *)self overlayDismissTimer];
+  [overlayDismissTimer invalidate];
 
   if ([(PHScreenSharingContainerViewController *)self showingOverlay])
   {
@@ -380,7 +380,7 @@
 
 - (id)makeScreenShareViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PHScreenSharingContainerViewController.makeScreenShareViewController()();
 
   return v3;

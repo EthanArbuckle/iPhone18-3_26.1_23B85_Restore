@@ -1,20 +1,20 @@
 @interface HMDCHIPXPCClientConnection
 + (id)logCategory;
 - (BOOL)allowsOperation;
-- (HMDCHIPXPCClientConnection)initWithRemoteObjectProxy:(id)a3 homeManager:(id)a4 pid:(int)a5 processInfo:(id)a6 backgroundModeEntitled:(BOOL)a7 workQueue:(id)a8;
+- (HMDCHIPXPCClientConnection)initWithRemoteObjectProxy:(id)proxy homeManager:(id)manager pid:(int)pid processInfo:(id)info backgroundModeEntitled:(BOOL)entitled workQueue:(id)queue;
 - (HMDHomeManager)homeManager;
-- (void)_getDeviceControllerWithFabricId:(unint64_t)a3 accessories:(id)a4 home:(id)a5 remainingHomes:(id)a6 completion:(id)a7;
-- (void)_registerReportHandlerWithHomeWithUUID:(id)a3;
+- (void)_getDeviceControllerWithFabricId:(unint64_t)id accessories:(id)accessories home:(id)home remainingHomes:(id)homes completion:(id)completion;
+- (void)_registerReportHandlerWithHomeWithUUID:(id)d;
 - (void)deregisterReportHandlers;
-- (void)downloadLogWithController:(id)a3 nodeId:(id)a4 type:(int64_t)a5 timeout:(double)a6 completion:(id)a7;
-- (void)getAnyDeviceControllerWithCompletion:(id)a3;
-- (void)invokeCommandWithController:(id)a3 nodeId:(unint64_t)a4 endpointId:(id)a5 clusterId:(id)a6 commandId:(id)a7 fields:(id)a8 timedInvokeTimeout:(id)a9 completion:(id)a10;
-- (void)readAttributeCacheWithController:(id)a3 nodeId:(unint64_t)a4 endpointId:(id)a5 clusterId:(id)a6 attributeId:(id)a7 completion:(id)a8;
-- (void)readAttributeWithController:(id)a3 nodeId:(unint64_t)a4 endpointId:(id)a5 clusterId:(id)a6 attributeId:(id)a7 params:(id)a8 completion:(id)a9;
-- (void)stopReportsWithController:(id)a3 nodeId:(unint64_t)a4 completion:(id)a5;
-- (void)subscribeAttributeWithController:(id)a3 nodeId:(unint64_t)a4 endpointId:(id)a5 clusterId:(id)a6 attributeId:(id)a7 minInterval:(id)a8 maxInterval:(id)a9 params:(id)a10 establishedHandler:(id)a11;
-- (void)subscribeWithController:(id)a3 nodeId:(unint64_t)a4 minInterval:(id)a5 maxInterval:(id)a6 params:(id)a7 shouldCache:(BOOL)a8 completion:(id)a9;
-- (void)writeAttributeWithController:(id)a3 nodeId:(unint64_t)a4 endpointId:(id)a5 clusterId:(id)a6 attributeId:(id)a7 value:(id)a8 timedWriteTimeout:(id)a9 completion:(id)a10;
+- (void)downloadLogWithController:(id)controller nodeId:(id)id type:(int64_t)type timeout:(double)timeout completion:(id)completion;
+- (void)getAnyDeviceControllerWithCompletion:(id)completion;
+- (void)invokeCommandWithController:(id)controller nodeId:(unint64_t)id endpointId:(id)endpointId clusterId:(id)clusterId commandId:(id)commandId fields:(id)fields timedInvokeTimeout:(id)timeout completion:(id)self0;
+- (void)readAttributeCacheWithController:(id)controller nodeId:(unint64_t)id endpointId:(id)endpointId clusterId:(id)clusterId attributeId:(id)attributeId completion:(id)completion;
+- (void)readAttributeWithController:(id)controller nodeId:(unint64_t)id endpointId:(id)endpointId clusterId:(id)clusterId attributeId:(id)attributeId params:(id)params completion:(id)completion;
+- (void)stopReportsWithController:(id)controller nodeId:(unint64_t)id completion:(id)completion;
+- (void)subscribeAttributeWithController:(id)controller nodeId:(unint64_t)id endpointId:(id)endpointId clusterId:(id)clusterId attributeId:(id)attributeId minInterval:(id)interval maxInterval:(id)maxInterval params:(id)self0 establishedHandler:(id)self1;
+- (void)subscribeWithController:(id)controller nodeId:(unint64_t)id minInterval:(id)interval maxInterval:(id)maxInterval params:(id)params shouldCache:(BOOL)cache completion:(id)completion;
+- (void)writeAttributeWithController:(id)controller nodeId:(unint64_t)id endpointId:(id)endpointId clusterId:(id)clusterId attributeId:(id)attributeId value:(id)value timedWriteTimeout:(id)timeout completion:(id)self0;
 @end
 
 @implementation HMDCHIPXPCClientConnection
@@ -26,29 +26,29 @@
   return WeakRetained;
 }
 
-- (void)downloadLogWithController:(id)a3 nodeId:(id)a4 type:(int64_t)a5 timeout:(double)a6 completion:(id)a7
+- (void)downloadLogWithController:(id)controller nodeId:(id)id type:(int64_t)type timeout:(double)timeout completion:(id)completion
 {
   v50 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(HMDCHIPXPCClientConnection *)self workQueue];
-  dispatch_assert_queue_V2(v15);
+  controllerCopy = controller;
+  idCopy = id;
+  completionCopy = completion;
+  workQueue = [(HMDCHIPXPCClientConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = HMFGetLogIdentifier();
-    v20 = [MEMORY[0x277CCABB0] numberWithInteger:a5];
-    v21 = [MEMORY[0x277CCABB0] numberWithDouble:a6];
+    v20 = [MEMORY[0x277CCABB0] numberWithInteger:type];
+    v21 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
     v40 = 138544386;
     v41 = v19;
     v42 = 2112;
-    v43 = v12;
+    v43 = controllerCopy;
     v44 = 2112;
-    v45 = v13;
+    v45 = idCopy;
     v46 = 2112;
     v47 = v20;
     v48 = 2112;
@@ -57,7 +57,7 @@
   }
 
   objc_autoreleasePoolPop(v16);
-  v22 = v12;
+  v22 = controllerCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -74,15 +74,15 @@
   if (v24)
   {
     v25 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v24];
-    if (v25 && (-[HMDCHIPXPCClientConnection homeManager](v17, "homeManager"), v26 = objc_claimAutoreleasedReturnValue(), [v26 _homeWithUUID:v25], v27 = objc_claimAutoreleasedReturnValue(), v26, v27))
+    if (v25 && (-[HMDCHIPXPCClientConnection homeManager](selfCopy, "homeManager"), v26 = objc_claimAutoreleasedReturnValue(), [v26 _homeWithUUID:v25], v27 = objc_claimAutoreleasedReturnValue(), v26, v27))
     {
-      [v27 downloadLogWithController:v22 nodeId:v13 type:a5 timeout:v14 completion:a6];
+      [v27 downloadLogWithController:v22 nodeId:idCopy type:type timeout:completionCopy completion:timeout];
     }
 
     else
     {
       v28 = objc_autoreleasePoolPush();
-      v29 = v17;
+      v29 = selfCopy;
       v30 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
       {
@@ -95,7 +95,7 @@
       }
 
       objc_autoreleasePoolPop(v28);
-      v27 = _Block_copy(v14);
+      v27 = _Block_copy(completionCopy);
       if (v27)
       {
         v32 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
@@ -107,7 +107,7 @@
   }
 
   v33 = objc_autoreleasePoolPush();
-  v34 = v17;
+  v34 = selfCopy;
   v35 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
   {
@@ -124,7 +124,7 @@
   }
 
   objc_autoreleasePoolPop(v33);
-  v25 = _Block_copy(v14);
+  v25 = _Block_copy(completionCopy);
   if (v25)
   {
     v27 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
@@ -135,19 +135,19 @@ LABEL_18:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readAttributeCacheWithController:(id)a3 nodeId:(unint64_t)a4 endpointId:(id)a5 clusterId:(id)a6 attributeId:(id)a7 completion:(id)a8
+- (void)readAttributeCacheWithController:(id)controller nodeId:(unint64_t)id endpointId:(id)endpointId clusterId:(id)clusterId attributeId:(id)attributeId completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = [(HMDCHIPXPCClientConnection *)self workQueue];
-  dispatch_assert_queue_V2(v19);
+  controllerCopy = controller;
+  endpointIdCopy = endpointId;
+  clusterIdCopy = clusterId;
+  attributeIdCopy = attributeId;
+  completionCopy = completion;
+  workQueue = [(HMDCHIPXPCClientConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
@@ -155,32 +155,32 @@ LABEL_18:
     v26 = 138543874;
     v27 = v23;
     v28 = 2112;
-    v29 = v14;
+    v29 = controllerCopy;
     v30 = 2048;
-    v31 = a4;
+    idCopy = id;
     _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_ERROR, "%{public}@Not reading attribute cache with controller: %@, nodeID: 0x%llx: Unsupported", &v26, 0x20u);
   }
 
   objc_autoreleasePoolPop(v20);
   v24 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-  v18[2](v18, 0, v24);
+  completionCopy[2](completionCopy, 0, v24);
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeWithController:(id)a3 nodeId:(unint64_t)a4 minInterval:(id)a5 maxInterval:(id)a6 params:(id)a7 shouldCache:(BOOL)a8 completion:(id)a9
+- (void)subscribeWithController:(id)controller nodeId:(unint64_t)id minInterval:(id)interval maxInterval:(id)maxInterval params:(id)params shouldCache:(BOOL)cache completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a9;
-  v19 = [(HMDCHIPXPCClientConnection *)self workQueue];
-  dispatch_assert_queue_V2(v19);
+  controllerCopy = controller;
+  intervalCopy = interval;
+  maxIntervalCopy = maxInterval;
+  paramsCopy = params;
+  completionCopy = completion;
+  workQueue = [(HMDCHIPXPCClientConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
@@ -188,29 +188,29 @@ LABEL_18:
     v26 = 138543874;
     v27 = v23;
     v28 = 2112;
-    v29 = v14;
+    v29 = controllerCopy;
     v30 = 2048;
-    v31 = a4;
+    idCopy = id;
     _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_ERROR, "%{public}@Not subscribing with controller: %@, nodeID: 0x%llx: Unsupported", &v26, 0x20u);
   }
 
   objc_autoreleasePoolPop(v20);
   v24 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-  v18[2](v18, v24);
+  completionCopy[2](completionCopy, v24);
 
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopReportsWithController:(id)a3 nodeId:(unint64_t)a4 completion:(id)a5
+- (void)stopReportsWithController:(id)controller nodeId:(unint64_t)id completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(HMDCHIPXPCClientConnection *)self workQueue];
-  dispatch_assert_queue_V2(v10);
+  controllerCopy = controller;
+  completionCopy = completion;
+  workQueue = [(HMDCHIPXPCClientConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
@@ -218,34 +218,34 @@ LABEL_18:
     v16 = 138543874;
     v17 = v14;
     v18 = 2112;
-    v19 = v8;
+    v19 = controllerCopy;
     v20 = 2048;
-    v21 = a4;
+    idCopy = id;
     _os_log_impl(&dword_229538000, v13, OS_LOG_TYPE_DEBUG, "%{public}@Stop reports with controller %@, nodeId 0x%llx", &v16, 0x20u);
   }
 
   objc_autoreleasePoolPop(v11);
-  v9[2](v9);
+  completionCopy[2](completionCopy);
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeAttributeWithController:(id)a3 nodeId:(unint64_t)a4 endpointId:(id)a5 clusterId:(id)a6 attributeId:(id)a7 minInterval:(id)a8 maxInterval:(id)a9 params:(id)a10 establishedHandler:(id)a11
+- (void)subscribeAttributeWithController:(id)controller nodeId:(unint64_t)id endpointId:(id)endpointId clusterId:(id)clusterId attributeId:(id)attributeId minInterval:(id)interval maxInterval:(id)maxInterval params:(id)self0 establishedHandler:(id)self1
 {
   v55 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v36 = a5;
-  v35 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v34 = a11;
-  v22 = [(HMDCHIPXPCClientConnection *)self workQueue];
-  dispatch_assert_queue_V2(v22);
+  controllerCopy = controller;
+  endpointIdCopy = endpointId;
+  clusterIdCopy = clusterId;
+  attributeIdCopy = attributeId;
+  intervalCopy = interval;
+  maxIntervalCopy = maxInterval;
+  paramsCopy = params;
+  handlerCopy = handler;
+  workQueue = [(HMDCHIPXPCClientConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
   {
@@ -253,27 +253,27 @@ LABEL_18:
     *buf = 138545410;
     v38 = v26;
     v39 = 2112;
-    v40 = v17;
+    v40 = controllerCopy;
     v41 = 2048;
-    v42 = a4;
+    idCopy = id;
     v43 = 2112;
-    v44 = v36;
+    v44 = endpointIdCopy;
     v45 = 2112;
-    v46 = v35;
+    v46 = clusterIdCopy;
     v47 = 2112;
-    v48 = v18;
+    v48 = attributeIdCopy;
     v49 = 2112;
-    v50 = v19;
+    v50 = intervalCopy;
     v51 = 2112;
-    v52 = v20;
+    v52 = maxIntervalCopy;
     v53 = 2112;
-    v54 = v21;
+    v54 = paramsCopy;
     _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_DEBUG, "%{public}@Subscribing attribute via controller %@, nodeId 0x%llx, endpointId %@, clusterId %@, attributeId %@ minInterval %@, maxInterval %@, params %@", buf, 0x5Cu);
   }
 
   objc_autoreleasePoolPop(v23);
   v27 = objc_autoreleasePoolPush();
-  v28 = v24;
+  v28 = selfCopy;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
@@ -284,30 +284,30 @@ LABEL_18:
   }
 
   objc_autoreleasePoolPop(v27);
-  v31 = [(HMDCHIPXPCClientConnection *)v28 remoteObjectProxy];
+  remoteObjectProxy = [(HMDCHIPXPCClientConnection *)v28 remoteObjectProxy];
   v32 = [MEMORY[0x277CCA9B8] hmErrorWithCode:48];
-  [v31 handleReportWithController:v17 nodeId:a4 values:0 error:v32];
+  [remoteObjectProxy handleReportWithController:controllerCopy nodeId:id values:0 error:v32];
 
   v33 = *MEMORY[0x277D85DE8];
 }
 
-- (void)invokeCommandWithController:(id)a3 nodeId:(unint64_t)a4 endpointId:(id)a5 clusterId:(id)a6 commandId:(id)a7 fields:(id)a8 timedInvokeTimeout:(id)a9 completion:(id)a10
+- (void)invokeCommandWithController:(id)controller nodeId:(unint64_t)id endpointId:(id)endpointId clusterId:(id)clusterId commandId:(id)commandId fields:(id)fields timedInvokeTimeout:(id)timeout completion:(id)self0
 {
   v83 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = v17;
-  v66 = v18;
-  v20 = a7;
-  v21 = a8;
-  v65 = a9;
-  v22 = a10;
-  v23 = [(HMDCHIPXPCClientConnection *)self workQueue];
-  dispatch_assert_queue_V2(v23);
+  controllerCopy = controller;
+  endpointIdCopy = endpointId;
+  clusterIdCopy = clusterId;
+  v19 = endpointIdCopy;
+  v66 = clusterIdCopy;
+  commandIdCopy = commandId;
+  fieldsCopy = fields;
+  timeoutCopy = timeout;
+  completionCopy = completion;
+  workQueue = [(HMDCHIPXPCClientConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v24 = objc_autoreleasePoolPush();
-  v25 = self;
+  selfCopy = self;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
@@ -315,26 +315,26 @@ LABEL_18:
     *buf = 138545154;
     v68 = v27;
     v69 = 2112;
-    v70 = v16;
+    v70 = controllerCopy;
     v71 = 2048;
-    v72 = a4;
+    idCopy = id;
     v73 = 2112;
     v74 = v19;
     v75 = 2112;
     v76 = v66;
     v77 = 2112;
-    v78 = v20;
+    v78 = commandIdCopy;
     v79 = 2112;
-    v80 = v21;
+    v80 = fieldsCopy;
     v81 = 2112;
-    v82 = v65;
+    v82 = timeoutCopy;
     _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_DEBUG, "%{public}@Invoking command via controller %@, nodeId 0x%llx, endpointId %@, clusterId %@, commandId %@, fields %@, timedInvokeTimeout %@", buf, 0x52u);
   }
 
   objc_autoreleasePoolPop(v24);
-  if ([(HMDCHIPXPCClientConnection *)v25 allowsOperation])
+  if ([(HMDCHIPXPCClientConnection *)selfCopy allowsOperation])
   {
-    v28 = v16;
+    v28 = controllerCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -351,7 +351,7 @@ LABEL_18:
     if (!v30)
     {
       v40 = objc_autoreleasePoolPush();
-      v41 = v25;
+      v41 = selfCopy;
       v42 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
       {
@@ -363,7 +363,7 @@ LABEL_18:
         v69 = 2112;
         v70 = v28;
         v71 = 2112;
-        v72 = v44;
+        idCopy = v44;
         v45 = v44;
         _os_log_impl(&dword_229538000, v42, OS_LOG_TYPE_ERROR, "%{public}@CHIP invoke command called with controller of unexpected class: %@ (%@)", buf, 0x20u);
 
@@ -372,35 +372,35 @@ LABEL_18:
 
       objc_autoreleasePoolPop(v40);
       v31 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      v22[2](v22, 0, v31);
+      completionCopy[2](completionCopy, 0, v31);
       goto LABEL_38;
     }
 
     v31 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v30];
     if (v31)
     {
-      if (v19 && v66 && v20 && v21)
+      if (v19 && v66 && commandIdCopy && fieldsCopy)
       {
         v62 = v19;
-        v32 = [(HMDCHIPXPCClientConnection *)v25 homeManager];
-        v33 = [v32 _homeWithUUID:v31];
+        homeManager = [(HMDCHIPXPCClientConnection *)selfCopy homeManager];
+        v33 = [homeManager _homeWithUUID:v31];
 
         if (v33)
         {
-          v61 = [(HMDCHIPXPCClientConnection *)v25 processInfo];
-          v60 = [v61 mainBundle];
-          v34 = [v60 bundlePath];
-          if (HMDIsSiriClientIdentifier(v34))
+          processInfo = [(HMDCHIPXPCClientConnection *)selfCopy processInfo];
+          mainBundle = [processInfo mainBundle];
+          bundlePath = [mainBundle bundlePath];
+          if (HMDIsSiriClientIdentifier(bundlePath))
           {
             v35 = 1;
           }
 
-          else if ([v34 isEqualToString:@"BackgroundShortcutRunner"])
+          else if ([bundlePath isEqualToString:@"BackgroundShortcutRunner"])
           {
             v35 = 10;
           }
 
-          else if (HMDIsFirstPartyClientIdentifier(v34))
+          else if (HMDIsFirstPartyClientIdentifier(bundlePath))
           {
             v35 = 5;
           }
@@ -412,13 +412,13 @@ LABEL_18:
 
           v59 = v35;
           v19 = v62;
-          [v33 invokeCommandWithNodeId:a4 endpointId:v62 clusterId:v66 commandId:v20 fields:v21 timedInvokeTimeout:v65 source:v59 completion:v22];
+          [v33 invokeCommandWithNodeId:id endpointId:v62 clusterId:v66 commandId:commandIdCopy fields:fieldsCopy timedInvokeTimeout:timeoutCopy source:v59 completion:completionCopy];
         }
 
         else
         {
           v53 = objc_autoreleasePoolPush();
-          v54 = v25;
+          v54 = selfCopy;
           v55 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
           {
@@ -432,7 +432,7 @@ LABEL_18:
 
           objc_autoreleasePoolPop(v53);
           v57 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-          v22[2](v22, 0, v57);
+          completionCopy[2](completionCopy, 0, v57);
 
           v33 = 0;
           v19 = v62;
@@ -442,7 +442,7 @@ LABEL_18:
       }
 
       v46 = objc_autoreleasePoolPush();
-      v47 = v25;
+      v47 = selfCopy;
       v48 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
       {
@@ -460,7 +460,7 @@ LABEL_18:
     else
     {
       v46 = objc_autoreleasePoolPush();
-      v47 = v25;
+      v47 = selfCopy;
       v48 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
       {
@@ -482,7 +482,7 @@ LABEL_26:
 
     objc_autoreleasePoolPop(v46);
     v33 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    v22[2](v22, 0, v33);
+    completionCopy[2](completionCopy, 0, v33);
 LABEL_37:
 
 LABEL_38:
@@ -490,7 +490,7 @@ LABEL_38:
   }
 
   v36 = objc_autoreleasePoolPush();
-  v37 = v25;
+  v37 = selfCopy;
   v38 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
   {
@@ -502,29 +502,29 @@ LABEL_38:
 
   objc_autoreleasePoolPop(v36);
   v30 = [MEMORY[0x277CCA9B8] hmErrorWithCode:17];
-  v22[2](v22, 0, v30);
+  completionCopy[2](completionCopy, 0, v30);
 LABEL_39:
 
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (void)writeAttributeWithController:(id)a3 nodeId:(unint64_t)a4 endpointId:(id)a5 clusterId:(id)a6 attributeId:(id)a7 value:(id)a8 timedWriteTimeout:(id)a9 completion:(id)a10
+- (void)writeAttributeWithController:(id)controller nodeId:(unint64_t)id endpointId:(id)endpointId clusterId:(id)clusterId attributeId:(id)attributeId value:(id)value timedWriteTimeout:(id)timeout completion:(id)self0
 {
   v78 = *MEMORY[0x277D85DE8];
-  v16 = a3;
-  v17 = a5;
-  v18 = a6;
-  v19 = v17;
-  v61 = v18;
-  v20 = a7;
-  v21 = a8;
-  v60 = a9;
-  v22 = a10;
-  v23 = [(HMDCHIPXPCClientConnection *)self workQueue];
-  dispatch_assert_queue_V2(v23);
+  controllerCopy = controller;
+  endpointIdCopy = endpointId;
+  clusterIdCopy = clusterId;
+  v19 = endpointIdCopy;
+  v61 = clusterIdCopy;
+  attributeIdCopy = attributeId;
+  valueCopy = value;
+  timeoutCopy = timeout;
+  completionCopy = completion;
+  workQueue = [(HMDCHIPXPCClientConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v24 = objc_autoreleasePoolPush();
-  v25 = self;
+  selfCopy = self;
   v26 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
   {
@@ -532,26 +532,26 @@ LABEL_39:
     *buf = 138545154;
     v63 = v27;
     v64 = 2112;
-    v65 = v16;
+    v65 = controllerCopy;
     v66 = 2048;
-    v67 = a4;
+    idCopy = id;
     v68 = 2112;
     v69 = v19;
     v70 = 2112;
     v71 = v61;
     v72 = 2112;
-    v73 = v20;
+    v73 = attributeIdCopy;
     v74 = 2112;
-    v75 = v21;
+    v75 = valueCopy;
     v76 = 2112;
-    v77 = v60;
+    v77 = timeoutCopy;
     _os_log_impl(&dword_229538000, v26, OS_LOG_TYPE_DEBUG, "%{public}@Writing attribute via controller %@, nodeId 0x%llx, endpointId %@, clusterId %@, attributeId %@, value %@, timedWriteTimeout %@", buf, 0x52u);
   }
 
   objc_autoreleasePoolPop(v24);
-  if ([(HMDCHIPXPCClientConnection *)v25 allowsOperation])
+  if ([(HMDCHIPXPCClientConnection *)selfCopy allowsOperation])
   {
-    v28 = v16;
+    v28 = controllerCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -568,7 +568,7 @@ LABEL_39:
     if (!v30)
     {
       v38 = objc_autoreleasePoolPush();
-      v39 = v25;
+      v39 = selfCopy;
       v40 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
       {
@@ -580,7 +580,7 @@ LABEL_39:
         v64 = 2112;
         v65 = v28;
         v66 = 2112;
-        v67 = v42;
+        idCopy = v42;
         v43 = v42;
         _os_log_impl(&dword_229538000, v40, OS_LOG_TYPE_ERROR, "%{public}@CHIP write attribute called with controller of unexpected class: %@ (%@)", buf, 0x20u);
 
@@ -589,29 +589,29 @@ LABEL_39:
 
       objc_autoreleasePoolPop(v38);
       v31 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      v22[2](v22, 0, v31);
+      completionCopy[2](completionCopy, 0, v31);
       goto LABEL_28;
     }
 
     v31 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v30];
     if (v31)
     {
-      if (v19 && v61 && v20 && v21)
+      if (v19 && v61 && attributeIdCopy && valueCopy)
       {
         v57 = v19;
-        v32 = [(HMDCHIPXPCClientConnection *)v25 homeManager];
-        v33 = [v32 _homeWithUUID:v31];
+        homeManager = [(HMDCHIPXPCClientConnection *)selfCopy homeManager];
+        v33 = [homeManager _homeWithUUID:v31];
 
         if (v33)
         {
           v19 = v57;
-          [v33 writeAttributeWithNodeId:a4 endpointId:v57 clusterId:v61 attributeId:v20 value:v21 timedWriteTimeout:v60 completion:v22];
+          [v33 writeAttributeWithNodeId:id endpointId:v57 clusterId:v61 attributeId:attributeIdCopy value:valueCopy timedWriteTimeout:timeoutCopy completion:completionCopy];
         }
 
         else
         {
           v52 = objc_autoreleasePoolPush();
-          v53 = v25;
+          v53 = selfCopy;
           v54 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v54, OS_LOG_TYPE_ERROR))
           {
@@ -625,7 +625,7 @@ LABEL_39:
 
           objc_autoreleasePoolPop(v52);
           v56 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-          v22[2](v22, 0, v56);
+          completionCopy[2](completionCopy, 0, v56);
 
           v33 = 0;
           v19 = v57;
@@ -635,7 +635,7 @@ LABEL_39:
       }
 
       v44 = objc_autoreleasePoolPush();
-      v45 = v25;
+      v45 = selfCopy;
       v46 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
       {
@@ -653,7 +653,7 @@ LABEL_39:
     else
     {
       v44 = objc_autoreleasePoolPush();
-      v45 = v25;
+      v45 = selfCopy;
       v46 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
       {
@@ -675,7 +675,7 @@ LABEL_25:
 
     objc_autoreleasePoolPop(v44);
     v33 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-    v22[2](v22, 0, v33);
+    completionCopy[2](completionCopy, 0, v33);
 LABEL_27:
 
 LABEL_28:
@@ -683,7 +683,7 @@ LABEL_28:
   }
 
   v34 = objc_autoreleasePoolPush();
-  v35 = v25;
+  v35 = selfCopy;
   v36 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
   {
@@ -695,30 +695,30 @@ LABEL_28:
 
   objc_autoreleasePoolPop(v34);
   v30 = [MEMORY[0x277CCA9B8] hmErrorWithCode:17];
-  v22[2](v22, 0, v30);
+  completionCopy[2](completionCopy, 0, v30);
 LABEL_29:
 
   v51 = *MEMORY[0x277D85DE8];
 }
 
-- (void)readAttributeWithController:(id)a3 nodeId:(unint64_t)a4 endpointId:(id)a5 clusterId:(id)a6 attributeId:(id)a7 params:(id)a8 completion:(id)a9
+- (void)readAttributeWithController:(id)controller nodeId:(unint64_t)id endpointId:(id)endpointId clusterId:(id)clusterId attributeId:(id)attributeId params:(id)params completion:(id)completion
 {
   v76 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a5;
-  v17 = a6;
-  v18 = v16;
-  v19 = v17;
-  v20 = a7;
+  controllerCopy = controller;
+  endpointIdCopy = endpointId;
+  clusterIdCopy = clusterId;
+  v18 = endpointIdCopy;
+  v19 = clusterIdCopy;
+  attributeIdCopy = attributeId;
   v21 = v19;
-  v61 = v20;
-  v22 = a8;
-  v23 = a9;
-  v24 = [(HMDCHIPXPCClientConnection *)self workQueue];
-  dispatch_assert_queue_V2(v24);
+  v61 = attributeIdCopy;
+  paramsCopy = params;
+  completionCopy = completion;
+  workQueue = [(HMDCHIPXPCClientConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v25 = objc_autoreleasePoolPush();
-  v26 = self;
+  selfCopy = self;
   v27 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
   {
@@ -726,9 +726,9 @@ LABEL_29:
     *buf = 138544898;
     v63 = v28;
     v64 = 2112;
-    v65 = v15;
+    v65 = controllerCopy;
     v66 = 2048;
-    v67 = a4;
+    idCopy = id;
     v68 = 2112;
     v69 = v18;
     v70 = 2112;
@@ -736,14 +736,14 @@ LABEL_29:
     v72 = 2112;
     v73 = v61;
     v74 = 2112;
-    v75 = v22;
+    v75 = paramsCopy;
     _os_log_impl(&dword_229538000, v27, OS_LOG_TYPE_DEBUG, "%{public}@Reading attribute via controller %@, nodeId 0x%llx, endpointId %@, clusterId %@, attributeId %@, params %@", buf, 0x48u);
   }
 
   objc_autoreleasePoolPop(v25);
-  if ([(HMDCHIPXPCClientConnection *)v26 allowsOperation])
+  if ([(HMDCHIPXPCClientConnection *)selfCopy allowsOperation])
   {
-    v29 = v15;
+    v29 = controllerCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -764,21 +764,21 @@ LABEL_29:
       {
         v58 = v21;
         v33 = v18;
-        v34 = [(HMDCHIPXPCClientConnection *)v26 homeManager];
-        v35 = [v34 _homeWithUUID:v32];
+        homeManager = [(HMDCHIPXPCClientConnection *)selfCopy homeManager];
+        v35 = [homeManager _homeWithUUID:v32];
 
         if (v35)
         {
           v18 = v33;
           v36 = v33;
           v21 = v58;
-          [v35 readAttributeWithNodeId:a4 endpointId:v36 clusterId:v58 attributeId:v61 params:v22 completion:v23];
+          [v35 readAttributeWithNodeId:id endpointId:v36 clusterId:v58 attributeId:v61 params:paramsCopy completion:completionCopy];
         }
 
         else
         {
           v51 = objc_autoreleasePoolPush();
-          v52 = v26;
+          v52 = selfCopy;
           v53 = HMFGetOSLogHandle();
           v18 = v33;
           if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
@@ -796,7 +796,7 @@ LABEL_29:
 
           objc_autoreleasePoolPop(v51);
           v56 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-          v23[2](v23, 0, v56);
+          completionCopy[2](completionCopy, 0, v56);
 
           v35 = 0;
           v21 = v58;
@@ -806,7 +806,7 @@ LABEL_29:
       else
       {
         v47 = objc_autoreleasePoolPush();
-        v48 = v26;
+        v48 = selfCopy;
         v49 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
         {
@@ -823,14 +823,14 @@ LABEL_29:
 
         objc_autoreleasePoolPop(v47);
         v35 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-        v23[2](v23, 0, v35);
+        completionCopy[2](completionCopy, 0, v35);
       }
     }
 
     else
     {
       v41 = objc_autoreleasePoolPush();
-      v42 = v26;
+      v42 = selfCopy;
       v43 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
@@ -842,7 +842,7 @@ LABEL_29:
         v64 = 2112;
         v65 = v29;
         v66 = 2112;
-        v67 = v45;
+        idCopy = v45;
         v46 = v45;
         _os_log_impl(&dword_229538000, v43, OS_LOG_TYPE_ERROR, "%{public}@CHIP Read attribute called with controller of unexpected class: %@ (%@)", buf, 0x20u);
 
@@ -851,14 +851,14 @@ LABEL_29:
 
       objc_autoreleasePoolPop(v41);
       v32 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3];
-      v23[2](v23, 0, v32);
+      completionCopy[2](completionCopy, 0, v32);
     }
   }
 
   else
   {
     v37 = objc_autoreleasePoolPush();
-    v38 = v26;
+    v38 = selfCopy;
     v39 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
     {
@@ -870,21 +870,21 @@ LABEL_29:
 
     objc_autoreleasePoolPop(v37);
     v31 = [MEMORY[0x277CCA9B8] hmErrorWithCode:17];
-    v23[2](v23, 0, v31);
+    completionCopy[2](completionCopy, 0, v31);
   }
 
   v57 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getAnyDeviceControllerWithCompletion:(id)a3
+- (void)getAnyDeviceControllerWithCompletion:(id)completion
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPXPCClientConnection *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  completionCopy = completion;
+  workQueue = [(HMDCHIPXPCClientConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
@@ -899,38 +899,38 @@ LABEL_29:
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v10 = [(HMDCHIPXPCClientConnection *)v7 homeManager];
-  v11 = [v10 homes];
+  homeManager = [(HMDCHIPXPCClientConnection *)selfCopy homeManager];
+  homes = [homeManager homes];
 
-  v12 = [v11 countByEnumeratingWithState:&v48 objects:v57 count:16];
+  v12 = [homes countByEnumeratingWithState:&v48 objects:v57 count:16];
   if (v12)
   {
     v13 = v12;
-    v42 = v4;
-    obj = v11;
-    v41 = v7;
-    v14 = 0;
+    v42 = completionCopy;
+    obj = homes;
+    v41 = selfCopy;
+    uuid = 0;
     v15 = 0;
     v16 = *v49;
     do
     {
       for (i = 0; i != v13; ++i)
       {
-        v18 = v14;
+        v18 = uuid;
         if (*v49 != v16)
         {
           objc_enumerationMutation(obj);
         }
 
         v19 = *(*(&v48 + 1) + 8 * i);
-        v14 = [v19 uuid];
+        uuid = [v19 uuid];
 
         v46 = 0u;
         v47 = 0u;
         v44 = 0u;
         v45 = 0u;
-        v20 = [v19 hapAccessories];
-        v21 = [v20 countByEnumeratingWithState:&v44 objects:v56 count:16];
+        hapAccessories = [v19 hapAccessories];
+        v21 = [hapAccessories countByEnumeratingWithState:&v44 objects:v56 count:16];
         if (v21)
         {
           v22 = v21;
@@ -941,19 +941,19 @@ LABEL_29:
             {
               if (*v45 != v23)
               {
-                objc_enumerationMutation(v20);
+                objc_enumerationMutation(hapAccessories);
               }
 
               if ([*(*(&v44 + 1) + 8 * j) supportsCHIP])
               {
-                v25 = [v19 uuid];
+                uuid2 = [v19 uuid];
 
-                v15 = v25;
+                v15 = uuid2;
                 goto LABEL_18;
               }
             }
 
-            v22 = [v20 countByEnumeratingWithState:&v44 objects:v56 count:16];
+            v22 = [hapAccessories countByEnumeratingWithState:&v44 objects:v56 count:16];
             if (v22)
             {
               continue;
@@ -976,7 +976,7 @@ LABEL_18:
       v26 = objc_autoreleasePoolPush();
       v27 = v41;
       v28 = HMFGetOSLogHandle();
-      v4 = v42;
+      completionCopy = v42;
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
         v29 = HMFGetLogIdentifier();
@@ -988,15 +988,15 @@ LABEL_18:
       }
 
       objc_autoreleasePoolPop(v26);
-      v30 = [v15 UUIDString];
-      (v42)[2](v42, v30, 0);
+      uUIDString = [v15 UUIDString];
+      (v42)[2](v42, uUIDString, 0);
 
       goto LABEL_32;
     }
 
-    v7 = v41;
-    v4 = v42;
-    if (v14)
+    selfCopy = v41;
+    completionCopy = v42;
+    if (uuid)
     {
       v35 = objc_autoreleasePoolPush();
       v36 = v41;
@@ -1007,15 +1007,15 @@ LABEL_18:
         *buf = 138543618;
         v53 = v38;
         v54 = 2112;
-        v55 = v14;
+        v55 = uuid;
         _os_log_impl(&dword_229538000, v37, OS_LOG_TYPE_INFO, "%{public}@Retrieved shared remote controller with no paired CHIP accessory: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v35);
-      v39 = [v14 UUIDString];
-      (v42)[2](v42, v39, 0);
+      uUIDString2 = [uuid UUIDString];
+      (v42)[2](v42, uUIDString2, 0);
 
-      v15 = v14;
+      v15 = uuid;
       goto LABEL_32;
     }
   }
@@ -1025,7 +1025,7 @@ LABEL_18:
   }
 
   v31 = objc_autoreleasePoolPush();
-  v32 = v7;
+  v32 = selfCopy;
   v33 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
   {
@@ -1037,7 +1037,7 @@ LABEL_18:
 
   objc_autoreleasePoolPop(v31);
   v15 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-  v4[2](v4, 0, v15);
+  completionCopy[2](completionCopy, 0, v15);
 LABEL_32:
 
   v40 = *MEMORY[0x277D85DE8];
@@ -1046,14 +1046,14 @@ LABEL_32:
 - (BOOL)allowsOperation
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCHIPXPCClientConnection *)self processInfo];
-  v4 = [v3 isForegrounded];
+  processInfo = [(HMDCHIPXPCClientConnection *)self processInfo];
+  isForegrounded = [processInfo isForegrounded];
 
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (isForegrounded)
   {
     if (v8)
     {
@@ -1072,7 +1072,7 @@ LABEL_32:
     if (v8)
     {
       v11 = HMFGetLogIdentifier();
-      [(HMDCHIPXPCClientConnection *)v6 backgroundModeEntitled];
+      [(HMDCHIPXPCClientConnection *)selfCopy backgroundModeEntitled];
       v12 = HMFBooleanToString();
       v14 = 138543618;
       v15 = v11;
@@ -1082,76 +1082,76 @@ LABEL_32:
     }
 
     objc_autoreleasePoolPop(v5);
-    result = [(HMDCHIPXPCClientConnection *)v6 backgroundModeEntitled];
+    result = [(HMDCHIPXPCClientConnection *)selfCopy backgroundModeEntitled];
   }
 
   v13 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)_getDeviceControllerWithFabricId:(unint64_t)a3 accessories:(id)a4 home:(id)a5 remainingHomes:(id)a6 completion:(id)a7
+- (void)_getDeviceControllerWithFabricId:(unint64_t)id accessories:(id)accessories home:(id)home remainingHomes:(id)homes completion:(id)completion
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  accessoriesCopy = accessories;
+  homeCopy = home;
+  homesCopy = homes;
+  completionCopy = completion;
   while (1)
   {
-    while ([v12 count])
+    while ([accessoriesCopy count])
     {
-      v16 = [v12 lastObject];
-      [v12 removeLastObject];
-      if ([v16 supportsCHIP])
+      lastObject = [accessoriesCopy lastObject];
+      [accessoriesCopy removeLastObject];
+      if ([lastObject supportsCHIP])
       {
         v21 = objc_alloc(MEMORY[0x277D0F820]);
-        v22 = [v16 uuid];
-        v23 = [v21 initWithTarget:v22];
+        uuid = [lastObject uuid];
+        v23 = [v21 initWithTarget:uuid];
 
         v24 = [MEMORY[0x277D0F848] messageWithName:*MEMORY[0x277CCEAB0] destination:v23 payload:0];
         v31 = MEMORY[0x277D85DD0];
         v32 = 3221225472;
         v33 = __106__HMDCHIPXPCClientConnection__getDeviceControllerWithFabricId_accessories_home_remainingHomes_completion___block_invoke;
         v34 = &unk_278681920;
-        v40 = a3;
-        v35 = self;
-        v36 = v13;
-        v39 = v15;
-        v20 = v12;
+        idCopy = id;
+        selfCopy = self;
+        v36 = homeCopy;
+        v39 = completionCopy;
+        v20 = accessoriesCopy;
         v37 = v20;
-        v38 = v14;
-        v25 = v13;
+        v38 = homesCopy;
+        v25 = homeCopy;
         [v24 setResponseHandler:&v31];
-        [v16 handleFetchCHIPPairingsMessage:{v24, v31, v32, v33, v34, v35}];
+        [lastObject handleFetchCHIPPairingsMessage:{v24, v31, v32, v33, v34, selfCopy}];
 
         goto LABEL_9;
       }
     }
 
-    if (![v14 count])
+    if (![homesCopy count])
     {
       break;
     }
 
-    v17 = [v14 lastObject];
+    lastObject2 = [homesCopy lastObject];
 
     v18 = MEMORY[0x277CBEB18];
-    v19 = [v17 hapAccessories];
-    v20 = [v18 arrayWithArray:v19];
+    hapAccessories = [lastObject2 hapAccessories];
+    v20 = [v18 arrayWithArray:hapAccessories];
 
-    [v14 removeLastObject];
-    v13 = v17;
-    v12 = v20;
-    if (!v17)
+    [homesCopy removeLastObject];
+    homeCopy = lastObject2;
+    accessoriesCopy = v20;
+    if (!lastObject2)
     {
       goto LABEL_11;
     }
   }
 
-  v20 = v12;
+  v20 = accessoriesCopy;
 LABEL_11:
   v27 = objc_autoreleasePoolPush();
-  v28 = self;
+  selfCopy2 = self;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
   {
@@ -1159,13 +1159,13 @@ LABEL_11:
     *buf = 138543618;
     v42 = v30;
     v43 = 2048;
-    v44 = a3;
+    idCopy2 = id;
     _os_log_impl(&dword_229538000, v29, OS_LOG_TYPE_ERROR, "%{public}@Failed to retrieve remote controller with fabric Id %llu", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v27);
   v25 = [MEMORY[0x277CCA9B8] hmErrorWithCode:2];
-  (*(v15 + 2))(v15, 0, v25);
+  (*(completionCopy + 2))(completionCopy, 0, v25);
 LABEL_9:
 
   v26 = *MEMORY[0x277D85DE8];
@@ -1293,25 +1293,25 @@ LABEL_17:
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_registerReportHandlerWithHomeWithUUID:(id)a3
+- (void)_registerReportHandlerWithHomeWithUUID:(id)d
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDCHIPXPCClientConnection *)self workQueue];
-  dispatch_assert_queue_V2(v5);
+  dCopy = d;
+  workQueue = [(HMDCHIPXPCClientConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
-  v6 = [(HMDCHIPXPCClientConnection *)self homeManager];
-  v7 = [v6 _homeWithUUID:v4];
+  homeManager = [(HMDCHIPXPCClientConnection *)self homeManager];
+  v7 = [homeManager _homeWithUUID:dCopy];
 
   if (v7)
   {
-    v8 = [(HMDCHIPXPCClientConnection *)self subscribedHomeUUIDs];
-    v9 = [v8 containsObject:v4];
+    subscribedHomeUUIDs = [(HMDCHIPXPCClientConnection *)self subscribedHomeUUIDs];
+    v9 = [subscribedHomeUUIDs containsObject:dCopy];
 
     if ((v9 & 1) == 0)
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = self;
+      selfCopy = self;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -1319,21 +1319,21 @@ LABEL_17:
         *buf = 138543618;
         v24 = v13;
         v25 = 2112;
-        v26 = v4;
+        v26 = dCopy;
         _os_log_impl(&dword_229538000, v12, OS_LOG_TYPE_INFO, "%{public}@Registering report handler with home with UUID: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v10);
-      v14 = [(HMDCHIPXPCClientConnection *)v11 subscribedHomeUUIDs];
-      [v14 addObject:v4];
+      subscribedHomeUUIDs2 = [(HMDCHIPXPCClientConnection *)selfCopy subscribedHomeUUIDs];
+      [subscribedHomeUUIDs2 addObject:dCopy];
 
-      v15 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMDCHIPXPCClientConnection pid](v11, "pid")}];
+      v15 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMDCHIPXPCClientConnection pid](selfCopy, "pid")}];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __69__HMDCHIPXPCClientConnection__registerReportHandlerWithHomeWithUUID___block_invoke;
       v21[3] = &unk_2786818F8;
-      v21[4] = v11;
-      v22 = v4;
+      v21[4] = selfCopy;
+      v22 = dCopy;
       [v7 setCHIPReportHandlerWithSubscriber:v15 handler:v21];
     }
   }
@@ -1341,7 +1341,7 @@ LABEL_17:
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -1349,7 +1349,7 @@ LABEL_17:
       *buf = 138543618;
       v24 = v19;
       v25 = 2112;
-      v26 = v4;
+      v26 = dCopy;
       _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_ERROR, "%{public}@Could not register report handler using unknown home UUID: %@", buf, 0x16u);
     }
 
@@ -1389,23 +1389,23 @@ void __69__HMDCHIPXPCClientConnection__registerReportHandlerWithHomeWithUUID___b
 
 - (void)deregisterReportHandlers
 {
-  v2 = self;
+  selfCopy = self;
   v34 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDCHIPXPCClientConnection *)self workQueue];
-  dispatch_assert_queue_V2(v3);
+  workQueue = [(HMDCHIPXPCClientConnection *)self workQueue];
+  dispatch_assert_queue_V2(workQueue);
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = [(HMDCHIPXPCClientConnection *)v2 subscribedHomeUUIDs];
+  obj = [(HMDCHIPXPCClientConnection *)selfCopy subscribedHomeUUIDs];
   v4 = [obj countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v4)
   {
     v5 = v4;
     v6 = *v26;
     v7 = 0x277CCA000uLL;
-    v23 = v2;
+    v23 = selfCopy;
     do
     {
       for (i = 0; i != v5; ++i)
@@ -1416,13 +1416,13 @@ void __69__HMDCHIPXPCClientConnection__registerReportHandlerWithHomeWithUUID___b
         }
 
         v9 = *(*(&v25 + 1) + 8 * i);
-        v10 = [(HMDCHIPXPCClientConnection *)v2 homeManager];
-        v11 = [v10 _homeWithUUID:v9];
+        homeManager = [(HMDCHIPXPCClientConnection *)selfCopy homeManager];
+        v11 = [homeManager _homeWithUUID:v9];
 
         if (v11)
         {
           v12 = objc_autoreleasePoolPush();
-          v13 = v2;
+          v13 = selfCopy;
           v14 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
@@ -1430,17 +1430,17 @@ void __69__HMDCHIPXPCClientConnection__registerReportHandlerWithHomeWithUUID___b
             v15 = v5;
             v16 = v6;
             v18 = v17 = v7;
-            v19 = [v11 shortDescription];
+            shortDescription = [v11 shortDescription];
             *buf = 138543618;
             v30 = v18;
             v31 = 2112;
-            v32 = v19;
+            v32 = shortDescription;
             _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_INFO, "%{public}@Deregistering report handlers from home: %@", buf, 0x16u);
 
             v7 = v17;
             v6 = v16;
             v5 = v15;
-            v2 = v23;
+            selfCopy = v23;
           }
 
           objc_autoreleasePoolPop(v12);
@@ -1455,34 +1455,34 @@ void __69__HMDCHIPXPCClientConnection__registerReportHandlerWithHomeWithUUID___b
     while (v5);
   }
 
-  v21 = [(HMDCHIPXPCClientConnection *)v2 subscribedHomeUUIDs];
-  [v21 removeAllObjects];
+  subscribedHomeUUIDs = [(HMDCHIPXPCClientConnection *)selfCopy subscribedHomeUUIDs];
+  [subscribedHomeUUIDs removeAllObjects];
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDCHIPXPCClientConnection)initWithRemoteObjectProxy:(id)a3 homeManager:(id)a4 pid:(int)a5 processInfo:(id)a6 backgroundModeEntitled:(BOOL)a7 workQueue:(id)a8
+- (HMDCHIPXPCClientConnection)initWithRemoteObjectProxy:(id)proxy homeManager:(id)manager pid:(int)pid processInfo:(id)info backgroundModeEntitled:(BOOL)entitled workQueue:(id)queue
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  v18 = a8;
+  proxyCopy = proxy;
+  managerCopy = manager;
+  infoCopy = info;
+  queueCopy = queue;
   v24.receiver = self;
   v24.super_class = HMDCHIPXPCClientConnection;
   v19 = [(HMDCHIPXPCClientConnection *)&v24 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_remoteObjectProxy, a3);
-    objc_storeWeak(&v20->_homeManager, v16);
-    v20->_pid = a5;
-    objc_storeStrong(&v20->_processInfo, a6);
-    objc_storeStrong(&v20->_workQueue, a8);
+    objc_storeStrong(&v19->_remoteObjectProxy, proxy);
+    objc_storeWeak(&v20->_homeManager, managerCopy);
+    v20->_pid = pid;
+    objc_storeStrong(&v20->_processInfo, info);
+    objc_storeStrong(&v20->_workQueue, queue);
     v21 = objc_alloc_init(MEMORY[0x277CBEB58]);
     subscribedHomeUUIDs = v20->_subscribedHomeUUIDs;
     v20->_subscribedHomeUUIDs = v21;
 
-    v20->_backgroundModeEntitled = a7;
+    v20->_backgroundModeEntitled = entitled;
   }
 
   return v20;

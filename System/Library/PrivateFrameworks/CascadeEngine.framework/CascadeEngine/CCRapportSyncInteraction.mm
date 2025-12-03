@@ -1,36 +1,36 @@
 @interface CCRapportSyncInteraction
-- (CCRapportSyncInteraction)initWithQueue:(id)a3 reason:(unsigned __int8)a4 device:(id)a5 index:(unint64_t)a6 type:(unsigned __int8)a7 options:(unsigned __int16)a8 completion:(id)a9;
+- (CCRapportSyncInteraction)initWithQueue:(id)queue reason:(unsigned __int8)reason device:(id)device index:(unint64_t)index type:(unsigned __int8)type options:(unsigned __int16)options completion:(id)completion;
 - (id)description;
 - (id)detailedDescription;
 - (void)cancelRapportRequestTimeout;
 - (void)complete;
-- (void)setTimeoutForRapportRequest:(id)a3;
+- (void)setTimeoutForRapportRequest:(id)request;
 @end
 
 @implementation CCRapportSyncInteraction
 
-- (CCRapportSyncInteraction)initWithQueue:(id)a3 reason:(unsigned __int8)a4 device:(id)a5 index:(unint64_t)a6 type:(unsigned __int8)a7 options:(unsigned __int16)a8 completion:(id)a9
+- (CCRapportSyncInteraction)initWithQueue:(id)queue reason:(unsigned __int8)reason device:(id)device index:(unint64_t)index type:(unsigned __int8)type options:(unsigned __int16)options completion:(id)completion
 {
-  v16 = a3;
-  v17 = a5;
-  v18 = a9;
+  queueCopy = queue;
+  deviceCopy = device;
+  completionCopy = completion;
   v26.receiver = self;
   v26.super_class = CCRapportSyncInteraction;
   v19 = [(CCRapportSyncInteraction *)&v26 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_queue, a3);
-    v20->_reason = a4;
-    objc_storeStrong(&v20->_device, a5);
-    v20->_type = a7;
-    v20->_options = a8;
-    v21 = MEMORY[0x1DA74EA40](v18);
+    objc_storeStrong(&v19->_queue, queue);
+    v20->_reason = reason;
+    objc_storeStrong(&v20->_device, device);
+    v20->_type = type;
+    v20->_options = options;
+    v21 = MEMORY[0x1DA74EA40](completionCopy);
     completion = v20->_completion;
     v20->_completion = v21;
 
     v20->_state = 1;
-    v20->_index = a6;
+    v20->_index = index;
     v23 = objc_opt_new();
     discoveredResources = v20->_discoveredResources;
     v20->_discoveredResources = v23;
@@ -45,8 +45,8 @@
   index = self->_index;
   v5 = CCRapportSyncInteractionTypeDescription(self->_type);
   v6 = CCSyncReasonDescription(self->_reason);
-  v7 = [(CCRapportDevice *)self->_device prefix];
-  v8 = [v3 stringWithFormat:@"%lu-%@-%@-%@", index, v5, v6, v7];
+  prefix = [(CCRapportDevice *)self->_device prefix];
+  v8 = [v3 stringWithFormat:@"%lu-%@-%@-%@", index, v5, v6, prefix];
 
   return v8;
 }
@@ -83,9 +83,9 @@
   return v11;
 }
 
-- (void)setTimeoutForRapportRequest:(id)a3
+- (void)setTimeoutForRapportRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   dispatch_assert_queue_V2(self->_queue);
   if (!self->_requestTimeout)
   {
@@ -95,7 +95,7 @@
     block[2] = __56__CCRapportSyncInteraction_setTimeoutForRapportRequest___block_invoke;
     block[3] = &unk_1E85C2B58;
     objc_copyWeak(&v10, &location);
-    v9 = v4;
+    v9 = requestCopy;
     v5 = dispatch_block_create(0, block);
     requestTimeout = self->_requestTimeout;
     self->_requestTimeout = v5;
@@ -150,7 +150,7 @@ uint64_t __56__CCRapportSyncInteraction_setTimeoutForRapportRequest___block_invo
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DA444000, v3, OS_LOG_TYPE_DEFAULT, "Completing interaction: %@", &v6, 0xCu);
     }
 

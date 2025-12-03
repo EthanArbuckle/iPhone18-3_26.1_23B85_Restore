@@ -1,41 +1,41 @@
 @interface VCPBWorkflow
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsRemoteQuarantineStatus:(id)a3;
+- (int)StringAsRemoteQuarantineStatus:(id)status;
 - (int)remoteQuarantineStatus;
 - (unint64_t)hash;
-- (void)addInputClasses:(id)a3;
-- (void)addWorkflowTypes:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasIconColor:(BOOL)a3;
-- (void)setHasIconGlyph:(BOOL)a3;
-- (void)setHasIntegerLastMigratedClientVersion:(BOOL)a3;
-- (void)setHasIntegerMinimumClientVersion:(BOOL)a3;
-- (void)setHasModificationDate:(BOOL)a3;
-- (void)setHasRemoteQuarantineStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addInputClasses:(id)classes;
+- (void)addWorkflowTypes:(id)types;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasIconColor:(BOOL)color;
+- (void)setHasIconGlyph:(BOOL)glyph;
+- (void)setHasIntegerLastMigratedClientVersion:(BOOL)version;
+- (void)setHasIntegerMinimumClientVersion:(BOOL)version;
+- (void)setHasModificationDate:(BOOL)date;
+- (void)setHasRemoteQuarantineStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPBWorkflow
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (*(v4 + 12))
+  fromCopy = from;
+  if (*(fromCopy + 12))
   {
     [(VCPBWorkflow *)self setName:?];
   }
 
-  v5 = *(v4 + 128);
+  v5 = *(fromCopy + 128);
   if ((v5 & 0x10) != 0)
   {
-    self->_iconColor = *(v4 + 14);
+    self->_iconColor = *(fromCopy + 14);
     *&self->_has |= 0x10u;
-    v5 = *(v4 + 128);
+    v5 = *(fromCopy + 128);
     if ((v5 & 0x20) == 0)
     {
 LABEL_5:
@@ -48,14 +48,14 @@ LABEL_5:
     }
   }
 
-  else if ((*(v4 + 128) & 0x20) == 0)
+  else if ((*(fromCopy + 128) & 0x20) == 0)
   {
     goto LABEL_5;
   }
 
-  self->_iconGlyph = *(v4 + 15);
+  self->_iconGlyph = *(fromCopy + 15);
   *&self->_has |= 0x20u;
-  v5 = *(v4 + 128);
+  v5 = *(fromCopy + 128);
   if ((v5 & 1) == 0)
   {
 LABEL_6:
@@ -68,12 +68,12 @@ LABEL_6:
   }
 
 LABEL_43:
-  self->_creationDate = *(v4 + 1);
+  self->_creationDate = *(fromCopy + 1);
   *&self->_has |= 1u;
-  if ((*(v4 + 128) & 8) != 0)
+  if ((*(fromCopy + 128) & 8) != 0)
   {
 LABEL_7:
-    self->_modificationDate = *(v4 + 4);
+    self->_modificationDate = *(fromCopy + 4);
     *&self->_has |= 8u;
   }
 
@@ -82,7 +82,7 @@ LABEL_8:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = *(v4 + 15);
+  v6 = *(fromCopy + 15);
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v7)
   {
@@ -110,7 +110,7 @@ LABEL_8:
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v11 = *(v4 + 9);
+  v11 = *(fromCopy + 9);
   v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
   if (v12)
   {
@@ -134,52 +134,52 @@ LABEL_8:
     while (v13);
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(VCPBWorkflow *)self setActionsData:?];
   }
 
-  if (*(v4 + 8))
+  if (*(fromCopy + 8))
   {
     [(VCPBWorkflow *)self setImportQuestionsData:?];
   }
 
-  v16 = *(v4 + 128);
+  v16 = *(fromCopy + 128);
   if ((v16 & 4) != 0)
   {
-    self->_integerMinimumClientVersion = *(v4 + 3);
+    self->_integerMinimumClientVersion = *(fromCopy + 3);
     *&self->_has |= 4u;
-    v16 = *(v4 + 128);
+    v16 = *(fromCopy + 128);
   }
 
   if ((v16 & 2) != 0)
   {
-    self->_integerLastMigratedClientVersion = *(v4 + 2);
+    self->_integerLastMigratedClientVersion = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 11))
+  if (*(fromCopy + 11))
   {
     [(VCPBWorkflow *)self setMinimumClientVersion:?];
   }
 
-  if (*(v4 + 10))
+  if (*(fromCopy + 10))
   {
     [(VCPBWorkflow *)self setLastMigratedClientVersion:?];
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(VCPBWorkflow *)self setAccessResourcePerWorkflowStateData:?];
   }
 
-  if ((*(v4 + 128) & 0x40) != 0)
+  if ((*(fromCopy + 128) & 0x40) != 0)
   {
-    self->_remoteQuarantineStatus = *(v4 + 26);
+    self->_remoteQuarantineStatus = *(fromCopy + 26);
     *&self->_has |= 0x40u;
   }
 
-  if (*(v4 + 14))
+  if (*(fromCopy + 14))
   {
     [(VCPBWorkflow *)self setSubtitle:?];
   }
@@ -327,16 +327,16 @@ LABEL_26:
   return v26 ^ v27 ^ v25 ^ v24 ^ v9 ^ v23 ^ v22 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ [(NSString *)self->_subtitle hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_55;
   }
 
   name = self->_name;
-  if (name | *(v4 + 12))
+  if (name | *(equalCopy + 12))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -344,16 +344,16 @@ LABEL_26:
     }
   }
 
-  v6 = *(v4 + 128);
+  v6 = *(equalCopy + 128);
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 128) & 0x10) == 0 || self->_iconColor != *(v4 + 14))
+    if ((*(equalCopy + 128) & 0x10) == 0 || self->_iconColor != *(equalCopy + 14))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 128) & 0x10) != 0)
+  else if ((*(equalCopy + 128) & 0x10) != 0)
   {
 LABEL_55:
     v17 = 0;
@@ -362,51 +362,51 @@ LABEL_55:
 
   if ((*&self->_has & 0x20) != 0)
   {
-    if ((*(v4 + 128) & 0x20) == 0 || self->_iconGlyph != *(v4 + 15))
+    if ((*(equalCopy + 128) & 0x20) == 0 || self->_iconGlyph != *(equalCopy + 15))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 128) & 0x20) != 0)
+  else if ((*(equalCopy + 128) & 0x20) != 0)
   {
     goto LABEL_55;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 128) & 1) == 0 || self->_creationDate != *(v4 + 1))
+    if ((*(equalCopy + 128) & 1) == 0 || self->_creationDate != *(equalCopy + 1))
     {
       goto LABEL_55;
     }
   }
 
-  else if (*(v4 + 128))
+  else if (*(equalCopy + 128))
   {
     goto LABEL_55;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 128) & 8) == 0 || self->_modificationDate != *(v4 + 4))
+    if ((*(equalCopy + 128) & 8) == 0 || self->_modificationDate != *(equalCopy + 4))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 128) & 8) != 0)
+  else if ((*(equalCopy + 128) & 8) != 0)
   {
     goto LABEL_55;
   }
 
   workflowTypes = self->_workflowTypes;
-  if (workflowTypes | *(v4 + 15) && ![(NSMutableArray *)workflowTypes isEqual:?])
+  if (workflowTypes | *(equalCopy + 15) && ![(NSMutableArray *)workflowTypes isEqual:?])
   {
     goto LABEL_55;
   }
 
   inputClasses = self->_inputClasses;
-  if (inputClasses | *(v4 + 9))
+  if (inputClasses | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)inputClasses isEqual:?])
     {
@@ -415,7 +415,7 @@ LABEL_55:
   }
 
   actionsData = self->_actionsData;
-  if (actionsData | *(v4 + 6))
+  if (actionsData | *(equalCopy + 6))
   {
     if (![(NSData *)actionsData isEqual:?])
     {
@@ -424,7 +424,7 @@ LABEL_55:
   }
 
   importQuestionsData = self->_importQuestionsData;
-  if (importQuestionsData | *(v4 + 8))
+  if (importQuestionsData | *(equalCopy + 8))
   {
     if (![(NSData *)importQuestionsData isEqual:?])
     {
@@ -432,41 +432,41 @@ LABEL_55:
     }
   }
 
-  v11 = *(v4 + 128);
+  v11 = *(equalCopy + 128);
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 128) & 4) == 0 || self->_integerMinimumClientVersion != *(v4 + 3))
+    if ((*(equalCopy + 128) & 4) == 0 || self->_integerMinimumClientVersion != *(equalCopy + 3))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 128) & 4) != 0)
+  else if ((*(equalCopy + 128) & 4) != 0)
   {
     goto LABEL_55;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 128) & 2) == 0 || self->_integerLastMigratedClientVersion != *(v4 + 2))
+    if ((*(equalCopy + 128) & 2) == 0 || self->_integerLastMigratedClientVersion != *(equalCopy + 2))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 128) & 2) != 0)
+  else if ((*(equalCopy + 128) & 2) != 0)
   {
     goto LABEL_55;
   }
 
   minimumClientVersion = self->_minimumClientVersion;
-  if (minimumClientVersion | *(v4 + 11) && ![(NSString *)minimumClientVersion isEqual:?])
+  if (minimumClientVersion | *(equalCopy + 11) && ![(NSString *)minimumClientVersion isEqual:?])
   {
     goto LABEL_55;
   }
 
   lastMigratedClientVersion = self->_lastMigratedClientVersion;
-  if (lastMigratedClientVersion | *(v4 + 10))
+  if (lastMigratedClientVersion | *(equalCopy + 10))
   {
     if (![(NSString *)lastMigratedClientVersion isEqual:?])
     {
@@ -475,7 +475,7 @@ LABEL_55:
   }
 
   accessResourcePerWorkflowStateData = self->_accessResourcePerWorkflowStateData;
-  if (accessResourcePerWorkflowStateData | *(v4 + 5))
+  if (accessResourcePerWorkflowStateData | *(equalCopy + 5))
   {
     if (![(NSData *)accessResourcePerWorkflowStateData isEqual:?])
     {
@@ -483,22 +483,22 @@ LABEL_55:
     }
   }
 
-  v15 = *(v4 + 128);
+  v15 = *(equalCopy + 128);
   if ((*&self->_has & 0x40) != 0)
   {
-    if ((*(v4 + 128) & 0x40) == 0 || self->_remoteQuarantineStatus != *(v4 + 26))
+    if ((*(equalCopy + 128) & 0x40) == 0 || self->_remoteQuarantineStatus != *(equalCopy + 26))
     {
       goto LABEL_55;
     }
   }
 
-  else if ((*(v4 + 128) & 0x40) != 0)
+  else if ((*(equalCopy + 128) & 0x40) != 0)
   {
     goto LABEL_55;
   }
 
   subtitle = self->_subtitle;
-  if (subtitle | *(v4 + 14))
+  if (subtitle | *(equalCopy + 14))
   {
     v17 = [(NSString *)subtitle isEqual:?];
   }
@@ -513,11 +513,11 @@ LABEL_56:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = *(v5 + 96);
   *(v5 + 96) = v6;
 
@@ -588,7 +588,7 @@ LABEL_6:
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v40 + 1) + 8 * i) copyWithZone:a3];
+        v14 = [*(*(&v40 + 1) + 8 * i) copyWithZone:zone];
         [v5 addWorkflowTypes:v14];
       }
 
@@ -617,7 +617,7 @@ LABEL_6:
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v36 + 1) + 8 * j) copyWithZone:{a3, v36}];
+        v20 = [*(*(&v36 + 1) + 8 * j) copyWithZone:{zone, v36}];
         [v5 addInputClasses:v20];
       }
 
@@ -627,11 +627,11 @@ LABEL_6:
     while (v17);
   }
 
-  v21 = [(NSData *)self->_actionsData copyWithZone:a3];
+  v21 = [(NSData *)self->_actionsData copyWithZone:zone];
   v22 = *(v5 + 48);
   *(v5 + 48) = v21;
 
-  v23 = [(NSData *)self->_importQuestionsData copyWithZone:a3];
+  v23 = [(NSData *)self->_importQuestionsData copyWithZone:zone];
   v24 = *(v5 + 64);
   *(v5 + 64) = v23;
 
@@ -649,15 +649,15 @@ LABEL_6:
     *(v5 + 128) |= 2u;
   }
 
-  v26 = [(NSString *)self->_minimumClientVersion copyWithZone:a3, v36];
+  v26 = [(NSString *)self->_minimumClientVersion copyWithZone:zone, v36];
   v27 = *(v5 + 88);
   *(v5 + 88) = v26;
 
-  v28 = [(NSString *)self->_lastMigratedClientVersion copyWithZone:a3];
+  v28 = [(NSString *)self->_lastMigratedClientVersion copyWithZone:zone];
   v29 = *(v5 + 80);
   *(v5 + 80) = v28;
 
-  v30 = [(NSData *)self->_accessResourcePerWorkflowStateData copyWithZone:a3];
+  v30 = [(NSData *)self->_accessResourcePerWorkflowStateData copyWithZone:zone];
   v31 = *(v5 + 40);
   *(v5 + 40) = v30;
 
@@ -667,7 +667,7 @@ LABEL_6:
     *(v5 + 128) |= 0x40u;
   }
 
-  v32 = [(NSString *)self->_subtitle copyWithZone:a3];
+  v32 = [(NSString *)self->_subtitle copyWithZone:zone];
   v33 = *(v5 + 112);
   *(v5 + 112) = v32;
 
@@ -675,21 +675,21 @@ LABEL_6:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v16 = v4;
+  toCopy = to;
+  v16 = toCopy;
   if (self->_name)
   {
-    [v4 setName:?];
-    v4 = v16;
+    [toCopy setName:?];
+    toCopy = v16;
   }
 
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(v4 + 14) = self->_iconColor;
-    *(v4 + 128) |= 0x10u;
+    *(toCopy + 14) = self->_iconColor;
+    *(toCopy + 128) |= 0x10u;
     has = self->_has;
     if ((has & 0x20) == 0)
     {
@@ -700,8 +700,8 @@ LABEL_5:
       }
 
 LABEL_39:
-      *(v4 + 1) = *&self->_creationDate;
-      *(v4 + 128) |= 1u;
+      *(toCopy + 1) = *&self->_creationDate;
+      *(toCopy + 128) |= 1u;
       if ((*&self->_has & 8) == 0)
       {
         goto LABEL_8;
@@ -716,8 +716,8 @@ LABEL_39:
     goto LABEL_5;
   }
 
-  *(v4 + 15) = self->_iconGlyph;
-  *(v4 + 128) |= 0x20u;
+  *(toCopy + 15) = self->_iconGlyph;
+  *(toCopy + 128) |= 0x20u;
   has = self->_has;
   if (has)
   {
@@ -728,18 +728,18 @@ LABEL_6:
   if ((has & 8) != 0)
   {
 LABEL_7:
-    *(v4 + 4) = *&self->_modificationDate;
-    *(v4 + 128) |= 8u;
+    *(toCopy + 4) = *&self->_modificationDate;
+    *(toCopy + 128) |= 8u;
   }
 
 LABEL_8:
   if ([(VCPBWorkflow *)self workflowTypesCount])
   {
     [v16 clearWorkflowTypes];
-    v6 = [(VCPBWorkflow *)self workflowTypesCount];
-    if (v6)
+    workflowTypesCount = [(VCPBWorkflow *)self workflowTypesCount];
+    if (workflowTypesCount)
     {
-      v7 = v6;
+      v7 = workflowTypesCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(VCPBWorkflow *)self workflowTypesAtIndex:i];
@@ -751,10 +751,10 @@ LABEL_8:
   if ([(VCPBWorkflow *)self inputClassesCount])
   {
     [v16 clearInputClasses];
-    v10 = [(VCPBWorkflow *)self inputClassesCount];
-    if (v10)
+    inputClassesCount = [(VCPBWorkflow *)self inputClassesCount];
+    if (inputClassesCount)
     {
-      v11 = v10;
+      v11 = inputClassesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(VCPBWorkflow *)self inputClassesAtIndex:j];
@@ -820,10 +820,10 @@ LABEL_8:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_name)
   {
     PBDataWriterWriteStringField();
@@ -990,12 +990,12 @@ LABEL_8:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   has = self->_has;
@@ -1137,26 +1137,26 @@ LABEL_8:
   v8.receiver = self;
   v8.super_class = VCPBWorkflow;
   v4 = [(VCPBWorkflow *)&v8 description];
-  v5 = [(VCPBWorkflow *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPBWorkflow *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (int)StringAsRemoteQuarantineStatus:(id)a3
+- (int)StringAsRemoteQuarantineStatus:(id)status
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"NotQuarantined"])
+  statusCopy = status;
+  if ([statusCopy isEqualToString:@"NotQuarantined"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Quarantined"])
+  else if ([statusCopy isEqualToString:@"Quarantined"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"QuarantinedAllowedByUser"])
+  else if ([statusCopy isEqualToString:@"QuarantinedAllowedByUser"])
   {
     v4 = 3;
   }
@@ -1169,9 +1169,9 @@ LABEL_8:
   return v4;
 }
 
-- (void)setHasRemoteQuarantineStatus:(BOOL)a3
+- (void)setHasRemoteQuarantineStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 64;
   }
@@ -1197,9 +1197,9 @@ LABEL_8:
   }
 }
 
-- (void)setHasIntegerLastMigratedClientVersion:(BOOL)a3
+- (void)setHasIntegerLastMigratedClientVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -1212,9 +1212,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasIntegerMinimumClientVersion:(BOOL)a3
+- (void)setHasIntegerMinimumClientVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 4;
   }
@@ -1227,45 +1227,45 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)addInputClasses:(id)a3
+- (void)addInputClasses:(id)classes
 {
-  v4 = a3;
+  classesCopy = classes;
   inputClasses = self->_inputClasses;
-  v8 = v4;
+  v8 = classesCopy;
   if (!inputClasses)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_inputClasses;
     self->_inputClasses = v6;
 
-    v4 = v8;
+    classesCopy = v8;
     inputClasses = self->_inputClasses;
   }
 
-  [(NSMutableArray *)inputClasses addObject:v4];
+  [(NSMutableArray *)inputClasses addObject:classesCopy];
 }
 
-- (void)addWorkflowTypes:(id)a3
+- (void)addWorkflowTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   workflowTypes = self->_workflowTypes;
-  v8 = v4;
+  v8 = typesCopy;
   if (!workflowTypes)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_workflowTypes;
     self->_workflowTypes = v6;
 
-    v4 = v8;
+    typesCopy = v8;
     workflowTypes = self->_workflowTypes;
   }
 
-  [(NSMutableArray *)workflowTypes addObject:v4];
+  [(NSMutableArray *)workflowTypes addObject:typesCopy];
 }
 
-- (void)setHasModificationDate:(BOOL)a3
+- (void)setHasModificationDate:(BOOL)date
 {
-  if (a3)
+  if (date)
   {
     v3 = 8;
   }
@@ -1278,9 +1278,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasIconGlyph:(BOOL)a3
+- (void)setHasIconGlyph:(BOOL)glyph
 {
-  if (a3)
+  if (glyph)
   {
     v3 = 32;
   }
@@ -1293,9 +1293,9 @@ LABEL_8:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasIconColor:(BOOL)a3
+- (void)setHasIconColor:(BOOL)color
 {
-  if (a3)
+  if (color)
   {
     v3 = 16;
   }

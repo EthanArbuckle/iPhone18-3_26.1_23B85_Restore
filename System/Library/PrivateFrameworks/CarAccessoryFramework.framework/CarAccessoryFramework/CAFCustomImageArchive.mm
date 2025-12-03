@@ -5,26 +5,26 @@
 - (CAFGetImageArchiveControl)getImageArchiveControl;
 - (CAFStringCharacteristic)identifierCharacteristic;
 - (NSString)identifier;
-- (void)getImageArchiveWithCompletion:(id)a3;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)getImageArchiveWithCompletion:(id)completion;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation CAFCustomImageArchive
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFCustomImageArchive;
   objc_msgSendSuper2(&v2, sel_load);
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -37,12 +37,12 @@
   [(CAFService *)&v6 registerObserver:v5];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&unk_28468B230])
+  observerCopy = observer;
+  if ([observerCopy conformsToProtocol:&unk_28468B230])
   {
-    v5 = v4;
+    v5 = observerCopy;
   }
 
   else
@@ -58,13 +58,13 @@
 - (CAFStringCharacteristic)identifierCharacteristic
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  [v6 validateRegisteredForAccessory:v8 service:v9 characteristic:@"0x0000000030000019"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  [registrations validateRegisteredForAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000019"];
 
   objc_opt_class();
   v10 = [(CAFService *)self characteristicForType:@"0x0000000030000019"];
@@ -83,10 +83,10 @@
 
 - (NSString)identifier
 {
-  v2 = [(CAFCustomImageArchive *)self identifierCharacteristic];
-  v3 = [v2 stringValue];
+  identifierCharacteristic = [(CAFCustomImageArchive *)self identifierCharacteristic];
+  stringValue = [identifierCharacteristic stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 - (CAFGetImageArchiveControl)getImageArchiveControl
@@ -106,24 +106,24 @@
   return v4;
 }
 
-- (void)getImageArchiveWithCompletion:(id)a3
+- (void)getImageArchiveWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(CAFCustomImageArchive *)self getImageArchiveControl];
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  getImageArchiveControl = [(CAFCustomImageArchive *)self getImageArchiveControl];
+  v6 = getImageArchiveControl;
+  if (getImageArchiveControl)
   {
-    [v5 getImageArchiveWithCompletion:v4];
+    [getImageArchiveControl getImageArchiveWithCompletion:completionCopy];
   }
 
-  else if (v4)
+  else if (completionCopy)
   {
     v7 = dispatch_get_global_queue(33, 0);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __55__CAFCustomImageArchive_getImageArchiveWithCompletion___block_invoke;
     block[3] = &unk_27890D5E8;
-    v9 = v4;
+    v9 = completionCopy;
     dispatch_async(v7, block);
   }
 }
@@ -139,13 +139,13 @@ void __55__CAFCustomImageArchive_getImageArchiveWithCompletion___block_invoke(ui
 - (BOOL)registeredForIdentifier
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 characteristic:@"0x0000000030000019"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier characteristic:@"0x0000000030000019"];
 
   return v10;
 }
@@ -153,13 +153,13 @@ void __55__CAFCustomImageArchive_getImageArchiveWithCompletion___block_invoke(ui
 - (BOOL)registeredForGetImageArchive
 {
   v3 = [(CAFService *)self car];
-  v4 = [v3 carManager];
-  v5 = [v4 config];
-  v6 = [v5 registrations];
-  v7 = [(CAFService *)self accessory];
-  v8 = [objc_opt_class() accessoryIdentifier];
-  v9 = [objc_opt_class() serviceIdentifier];
-  v10 = [v6 hasAccessory:v8 service:v9 control:@"0x0000000048000008"];
+  carManager = [v3 carManager];
+  config = [carManager config];
+  registrations = [config registrations];
+  accessory = [(CAFService *)self accessory];
+  accessoryIdentifier = [objc_opt_class() accessoryIdentifier];
+  serviceIdentifier = [objc_opt_class() serviceIdentifier];
+  v10 = [registrations hasAccessory:accessoryIdentifier service:serviceIdentifier control:@"0x0000000048000008"];
 
   return v10;
 }

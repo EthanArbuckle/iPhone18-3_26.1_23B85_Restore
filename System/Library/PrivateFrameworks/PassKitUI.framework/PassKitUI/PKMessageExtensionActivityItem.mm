@@ -1,7 +1,7 @@
 @interface PKMessageExtensionActivityItem
 - (PKMessageExtensionActivityItem)init;
 - (void)performActivity;
-- (void)prepareWithActivityItems:(id)a3;
+- (void)prepareWithActivityItems:(id)items;
 @end
 
 @implementation PKMessageExtensionActivityItem
@@ -13,19 +13,19 @@
   return [(UIActivity *)&v3 init];
 }
 
-- (void)prepareWithActivityItems:(id)a3
+- (void)prepareWithActivityItems:(id)items
 {
   v9.receiver = self;
   v9.super_class = PKMessageExtensionActivityItem;
-  v4 = a3;
-  [(UIMessageActivity *)&v9 prepareWithActivityItems:v4];
+  itemsCopy = items;
+  [(UIMessageActivity *)&v9 prepareWithActivityItems:itemsCopy];
   v5 = [(UIMessageActivity *)self messageComposeViewController:v9.receiver];
-  v6 = [v4 firstObject];
+  firstObject = [itemsCopy firstObject];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v5 setMessage:v6];
+    [v5 setMessage:firstObject];
   }
 
   else
@@ -33,9 +33,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
-      v8 = [v7 dataRepresentation];
-      [v5 addRichLinkData:v8 withWebpageURL:v7];
+      v7 = firstObject;
+      dataRepresentation = [v7 dataRepresentation];
+      [v5 addRichLinkData:dataRepresentation withWebpageURL:v7];
 
       [v5 setBody:0];
     }

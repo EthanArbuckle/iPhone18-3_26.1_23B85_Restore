@@ -1,6 +1,6 @@
 @interface PAProcessStateMonitor
 + (id)sharedInstance;
-- (id)startMonitoringVisibilityStateForBundleIdentifiers:(id)a3 onQueue:(id)a4 withDelegate:(id)a5;
+- (id)startMonitoringVisibilityStateForBundleIdentifiers:(id)identifiers onQueue:(id)queue withDelegate:(id)delegate;
 @end
 
 @implementation PAProcessStateMonitor
@@ -24,21 +24,21 @@ uint64_t __39__PAProcessStateMonitor_sharedInstance__block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (id)startMonitoringVisibilityStateForBundleIdentifiers:(id)a3 onQueue:(id)a4 withDelegate:(id)a5
+- (id)startMonitoringVisibilityStateForBundleIdentifiers:(id)identifiers onQueue:(id)queue withDelegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v7 count])
+  identifiersCopy = identifiers;
+  queueCopy = queue;
+  delegateCopy = delegate;
+  if ([identifiersCopy count])
   {
-    objc_initWeak(&location, v9);
+    objc_initWeak(&location, delegateCopy);
     v10 = MEMORY[0x1E69C75F8];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __97__PAProcessStateMonitor_startMonitoringVisibilityStateForBundleIdentifiers_onQueue_withDelegate___block_invoke;
     v13[3] = &unk_1E86ABE40;
-    v14 = v7;
-    v15 = v8;
+    v14 = identifiersCopy;
+    v15 = queueCopy;
     objc_copyWeak(&v16, &location);
     v11 = [v10 monitorWithConfiguration:v13];
     objc_destroyWeak(&v16);

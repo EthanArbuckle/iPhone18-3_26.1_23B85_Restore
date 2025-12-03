@@ -7,9 +7,9 @@
 - (NSString)synchAnchorRepresentation
 {
   v2 = [NSNumber numberWithUnsignedInteger:[(NSURLRequest *)self hash]];
-  v3 = [v2 stringValue];
+  stringValue = [v2 stringValue];
 
-  return v3;
+  return stringValue;
 }
 
 @end

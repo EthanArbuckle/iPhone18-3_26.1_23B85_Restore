@@ -2,7 +2,7 @@
 - (FCPersonalizationBundleIDMapping)bundleIDMapping;
 - (FCPersonalizationURLMapping)urlMapping;
 - (FCPersonalizationWhitelist)allowlist;
-- (unint64_t)allowlistLevelForTagID:(id)a3;
+- (unint64_t)allowlistLevelForTagID:(id)d;
 @end
 
 @implementation RecipeAutoFavoritesResourceManager
@@ -16,7 +16,7 @@
   return v4;
 }
 
-- (unint64_t)allowlistLevelForTagID:(id)a3
+- (unint64_t)allowlistLevelForTagID:(id)d
 {
   v3 = sub_1C6D795A0();
   v5 = v4;

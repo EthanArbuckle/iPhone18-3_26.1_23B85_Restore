@@ -1,7 +1,7 @@
 @interface MRUMediaSuggestionsCache
 + (MRUMediaSuggestionsCache)sharedCache;
 - (MRUMediaSuggestionsCache)init;
-- (id)artworkForMediaSuggestion:(id)a3;
+- (id)artworkForMediaSuggestion:(id)suggestion;
 @end
 
 @implementation MRUMediaSuggestionsCache
@@ -42,32 +42,32 @@ uint64_t __39__MRUMediaSuggestionsCache_sharedCache__block_invoke()
   return v2;
 }
 
-- (id)artworkForMediaSuggestion:(id)a3
+- (id)artworkForMediaSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  imageCache = v5->_imageCache;
-  v7 = [v4 identifier];
-  v8 = [(NSCache *)imageCache objectForKey:v7];
+  suggestionCopy = suggestion;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  imageCache = selfCopy->_imageCache;
+  identifier = [suggestionCopy identifier];
+  v8 = [(NSCache *)imageCache objectForKey:identifier];
 
   if (!v8)
   {
-    v10 = [v4 artwork];
-    v11 = [v10 imageData];
+    artwork = [suggestionCopy artwork];
+    imageData = [artwork imageData];
 
-    if (v11)
+    if (imageData)
     {
       v12 = objc_alloc(MEMORY[0x1E69DCAB8]);
-      v13 = [v4 artwork];
-      v14 = [v13 imageData];
-      v8 = [v12 initWithData:v14];
+      artwork2 = [suggestionCopy artwork];
+      imageData2 = [artwork2 imageData];
+      v8 = [v12 initWithData:imageData2];
 
       if (v8)
       {
-        v15 = v5->_imageCache;
-        v16 = [v4 identifier];
-        [(NSCache *)v15 setObject:v8 forKey:v16];
+        v15 = selfCopy->_imageCache;
+        identifier2 = [suggestionCopy identifier];
+        [(NSCache *)v15 setObject:v8 forKey:identifier2];
       }
     }
 
@@ -77,7 +77,7 @@ uint64_t __39__MRUMediaSuggestionsCache_sharedCache__block_invoke()
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v8;
 }

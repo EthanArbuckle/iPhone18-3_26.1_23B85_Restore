@@ -3,14 +3,14 @@
 - (BOOL)_flushCache;
 - (NTKComplicationNoContentImageFileCache)init;
 - (id)_makeMutableCacheCopy;
-- (id)imageForClientIdentifier:(id)a3 family:(int64_t)a4;
-- (id)noContentImagesForClientIdentifier:(id)a3;
+- (id)imageForClientIdentifier:(id)identifier family:(int64_t)family;
+- (id)noContentImagesForClientIdentifier:(id)identifier;
 - (void)_dirtyCache;
 - (void)dealloc;
 - (void)init;
-- (void)removeAllEntriesExceptThoseWithClientIdentifiers:(id)a3;
-- (void)setImage:(id)a3 forClientIdentifier:(id)a4 family:(int64_t)a5;
-- (void)setNoContentImages:(id)a3 forClientIdentifier:(id)a4;
+- (void)removeAllEntriesExceptThoseWithClientIdentifiers:(id)identifiers;
+- (void)setImage:(id)image forClientIdentifier:(id)identifier family:(int64_t)family;
+- (void)setNoContentImages:(id)images forClientIdentifier:(id)identifier;
 @end
 
 @implementation NTKComplicationNoContentImageFileCache
@@ -21,7 +21,7 @@
   block[1] = 3221225472;
   block[2] = __56__NTKComplicationNoContentImageFileCache_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_22 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_22, block);
@@ -57,19 +57,19 @@ void __56__NTKComplicationNoContentImageFileCache_sharedInstance__block_invoke()
       v8 = objc_opt_class();
       v9 = objc_opt_class();
       v10 = [v6 setWithObjects:{v7, v8, v9, objc_opt_class(), 0}];
-      v11 = [v5 decodeObjectOfClasses:v10 forKey:*MEMORY[0x277CCA308]];
+      dictionary = [v5 decodeObjectOfClasses:v10 forKey:*MEMORY[0x277CCA308]];
       v12 = objc_opt_class();
       v13 = objc_opt_class();
-      NTKValidateDictionary(v11, v12, v13);
+      NTKValidateDictionary(dictionary, v12, v13);
     }
 
     else
     {
-      v11 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
     queue_complicationNoContentImages = v2->_queue_complicationNoContentImages;
-    v2->_queue_complicationNoContentImages = v11;
+    v2->_queue_complicationNoContentImages = dictionary;
 
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v16 = dispatch_queue_create("com.apple.NanoTimeKit.NTKComplicationNoContentImageFileCache.access", v15);
@@ -102,11 +102,11 @@ void __56__NTKComplicationNoContentImageFileCache_sharedInstance__block_invoke()
   [(NTKComplicationNoContentImageFileCache *)&v3 dealloc];
 }
 
-- (id)imageForClientIdentifier:(id)a3 family:(int64_t)a4
+- (id)imageForClientIdentifier:(id)identifier family:(int64_t)family
 {
-  v6 = a3;
-  v7 = v6;
-  if (v6)
+  identifierCopy = identifier;
+  v7 = identifierCopy;
+  if (identifierCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -121,8 +121,8 @@ void __56__NTKComplicationNoContentImageFileCache_sharedInstance__block_invoke()
     v11[3] = &unk_278786578;
     v11[4] = self;
     v13 = &v15;
-    v14 = a4;
-    v12 = v6;
+    familyCopy = family;
+    v12 = identifierCopy;
     dispatch_sync(cacheQueue, v11);
     v9 = v16[5];
 
@@ -186,11 +186,11 @@ void __74__NTKComplicationNoContentImageFileCache_imageForClientIdentifier_famil
 LABEL_11:
 }
 
-- (void)setImage:(id)a3 forClientIdentifier:(id)a4 family:(int64_t)a5
+- (void)setImage:(id)image forClientIdentifier:(id)identifier family:(int64_t)family
 {
-  v8 = a3;
-  v9 = a4;
-  if (v9)
+  imageCopy = image;
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
     objc_initWeak(&location, self);
     cacheQueue = self->_cacheQueue;
@@ -199,9 +199,9 @@ LABEL_11:
     block[2] = __78__NTKComplicationNoContentImageFileCache_setImage_forClientIdentifier_family___block_invoke;
     block[3] = &unk_2787865A0;
     objc_copyWeak(v14, &location);
-    v12 = v9;
-    v14[1] = a5;
-    v13 = v8;
+    v12 = identifierCopy;
+    v14[1] = family;
+    v13 = imageCopy;
     dispatch_async(cacheQueue, block);
 
     objc_destroyWeak(v14);
@@ -259,11 +259,11 @@ LABEL_13:
   }
 }
 
-- (id)noContentImagesForClientIdentifier:(id)a3
+- (id)noContentImagesForClientIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (identifierCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -278,7 +278,7 @@ LABEL_13:
     block[3] = &unk_278780498;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = identifierCopy;
     dispatch_sync(cacheQueue, block);
     v7 = v13[5];
 
@@ -302,10 +302,10 @@ void __77__NTKComplicationNoContentImageFileCache_noContentImagesForClientIdenti
   *(v3 + 40) = v2;
 }
 
-- (void)setNoContentImages:(id)a3 forClientIdentifier:(id)a4
+- (void)setNoContentImages:(id)images forClientIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  imagesCopy = images;
+  identifierCopy = identifier;
   objc_initWeak(&location, self);
   cacheQueue = self->_cacheQueue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -313,10 +313,10 @@ void __77__NTKComplicationNoContentImageFileCache_noContentImagesForClientIdenti
   v11[2] = __81__NTKComplicationNoContentImageFileCache_setNoContentImages_forClientIdentifier___block_invoke;
   v11[3] = &unk_27877F668;
   objc_copyWeak(&v14, &location);
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = identifierCopy;
+  v13 = imagesCopy;
+  v9 = imagesCopy;
+  v10 = identifierCopy;
   dispatch_async(cacheQueue, v11);
 
   objc_destroyWeak(&v14);
@@ -351,9 +351,9 @@ LABEL_7:
   }
 }
 
-- (void)removeAllEntriesExceptThoseWithClientIdentifiers:(id)a3
+- (void)removeAllEntriesExceptThoseWithClientIdentifiers:(id)identifiers
 {
-  v4 = a3;
+  identifiersCopy = identifiers;
   objc_initWeak(&location, self);
   cacheQueue = self->_cacheQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -361,8 +361,8 @@ LABEL_7:
   block[2] = __91__NTKComplicationNoContentImageFileCache_removeAllEntriesExceptThoseWithClientIdentifiers___block_invoke;
   block[3] = &unk_27877F610;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = identifiersCopy;
+  v6 = identifiersCopy;
   dispatch_async(cacheQueue, block);
 
   objc_destroyWeak(&v9);
@@ -540,7 +540,7 @@ void __53__NTKComplicationNoContentImageFileCache__flushCache__block_invoke(uint
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138412290;
-  v3 = a1;
+  selfCopy = self;
   _os_log_error_impl(&dword_22D9C5000, a2, OS_LOG_TYPE_ERROR, "Error decoding complication no content images: %@", &v2, 0xCu);
 }
 

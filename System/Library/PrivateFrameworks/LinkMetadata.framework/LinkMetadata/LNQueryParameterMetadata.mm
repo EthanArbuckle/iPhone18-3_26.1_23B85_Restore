@@ -1,35 +1,35 @@
 @interface LNQueryParameterMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNQueryParameterMetadata)initWithCoder:(id)a3;
-- (LNQueryParameterMetadata)initWithPropertyIdentifier:(id)a3 localizedTitle:(id)a4 comparators:(id)a5;
-- (LNQueryParameterMetadata)initWithPropertyIdentifier:(id)a3 title:(id)a4 comparators:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNQueryParameterMetadata)initWithCoder:(id)coder;
+- (LNQueryParameterMetadata)initWithPropertyIdentifier:(id)identifier localizedTitle:(id)title comparators:(id)comparators;
+- (LNQueryParameterMetadata)initWithPropertyIdentifier:(id)identifier title:(id)title comparators:(id)comparators;
 - (NSString)title;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNQueryParameterMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(comparators3) = 0;
 LABEL_27:
 
       goto LABEL_28;
     }
 
-    v7 = [(LNQueryParameterMetadata *)self propertyIdentifier];
-    v8 = [(LNQueryParameterMetadata *)v6 propertyIdentifier];
-    v9 = v7;
-    v10 = v8;
+    propertyIdentifier = [(LNQueryParameterMetadata *)self propertyIdentifier];
+    propertyIdentifier2 = [(LNQueryParameterMetadata *)v6 propertyIdentifier];
+    v9 = propertyIdentifier;
+    v10 = propertyIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -37,7 +37,7 @@ LABEL_27:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(comparators3) = 0;
       v13 = v10;
       v14 = v9;
       if (!v9 || !v10)
@@ -49,17 +49,17 @@ LABEL_27:
 
       if (!v15)
       {
-        LOBYTE(v12) = 0;
+        LOBYTE(comparators3) = 0;
 LABEL_26:
 
         goto LABEL_27;
       }
     }
 
-    v16 = [(LNQueryParameterMetadata *)self localizedTitle];
-    v17 = [(LNQueryParameterMetadata *)v6 localizedTitle];
-    v14 = v16;
-    v18 = v17;
+    localizedTitle = [(LNQueryParameterMetadata *)self localizedTitle];
+    localizedTitle2 = [(LNQueryParameterMetadata *)v6 localizedTitle];
+    v14 = localizedTitle;
+    v18 = localizedTitle2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -67,73 +67,73 @@ LABEL_26:
 
     else
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(comparators3) = 0;
       v19 = v18;
-      v20 = v14;
+      comparators5 = v14;
       if (!v14 || !v18)
       {
         goto LABEL_22;
       }
 
-      LODWORD(v12) = [v14 isEqual:v18];
+      LODWORD(comparators3) = [v14 isEqual:v18];
 
-      if (!v12)
+      if (!comparators3)
       {
         goto LABEL_25;
       }
     }
 
-    v21 = [(LNQueryParameterMetadata *)self comparators];
-    v22 = [(LNQueryParameterMetadata *)v6 comparators];
+    comparators = [(LNQueryParameterMetadata *)self comparators];
+    comparators2 = [(LNQueryParameterMetadata *)v6 comparators];
 
-    if (v21 == v22)
+    if (comparators == comparators2)
     {
-      LOBYTE(v12) = 1;
+      LOBYTE(comparators3) = 1;
       goto LABEL_25;
     }
 
-    v12 = [(LNQueryParameterMetadata *)self comparators];
-    if (!v12)
+    comparators3 = [(LNQueryParameterMetadata *)self comparators];
+    if (!comparators3)
     {
 LABEL_25:
 
       goto LABEL_26;
     }
 
-    v23 = [(LNQueryParameterMetadata *)v6 comparators];
+    comparators4 = [(LNQueryParameterMetadata *)v6 comparators];
 
-    if (!v23)
+    if (!comparators4)
     {
-      LOBYTE(v12) = 0;
+      LOBYTE(comparators3) = 0;
       goto LABEL_25;
     }
 
     v24 = MEMORY[0x1E695DFD8];
-    v20 = [(LNQueryParameterMetadata *)self comparators];
-    v19 = [v24 setWithArray:v20];
-    v12 = MEMORY[0x1E695DFD8];
-    v27 = [(LNQueryParameterMetadata *)v6 comparators];
-    v25 = [v12 setWithArray:v27];
-    LOBYTE(v12) = [v19 isEqualToSet:v25];
+    comparators5 = [(LNQueryParameterMetadata *)self comparators];
+    v19 = [v24 setWithArray:comparators5];
+    comparators3 = MEMORY[0x1E695DFD8];
+    comparators6 = [(LNQueryParameterMetadata *)v6 comparators];
+    v25 = [comparators3 setWithArray:comparators6];
+    LOBYTE(comparators3) = [v19 isEqualToSet:v25];
 
 LABEL_22:
     goto LABEL_25;
   }
 
-  LOBYTE(v12) = 1;
+  LOBYTE(comparators3) = 1;
 LABEL_28:
 
-  return v12;
+  return comparators3;
 }
 
 - (unint64_t)hash
 {
-  v3 = [(LNQueryParameterMetadata *)self propertyIdentifier];
-  v4 = [v3 hash];
-  v5 = [(LNQueryParameterMetadata *)self title];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNQueryParameterMetadata *)self comparators];
-  v8 = [v7 hash];
+  propertyIdentifier = [(LNQueryParameterMetadata *)self propertyIdentifier];
+  v4 = [propertyIdentifier hash];
+  title = [(LNQueryParameterMetadata *)self title];
+  v6 = [title hash] ^ v4;
+  comparators = [(LNQueryParameterMetadata *)self comparators];
+  v8 = [comparators hash];
 
   return v6 ^ v8;
 }
@@ -143,58 +143,58 @@ LABEL_28:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNQueryParameterMetadata *)self propertyIdentifier];
-  v7 = [(LNQueryParameterMetadata *)self localizedTitle];
-  v8 = [(LNQueryParameterMetadata *)self comparators];
-  v9 = [v8 valueForKeyPath:@"description"];
+  propertyIdentifier = [(LNQueryParameterMetadata *)self propertyIdentifier];
+  localizedTitle = [(LNQueryParameterMetadata *)self localizedTitle];
+  comparators = [(LNQueryParameterMetadata *)self comparators];
+  v9 = [comparators valueForKeyPath:@"description"];
   v10 = [v9 componentsJoinedByString:{@", "}];
-  v11 = [v3 stringWithFormat:@"<%@: %p, propertyIdentifier: %@, localizedTitle: %@, comparators: [%@]>", v5, self, v6, v7, v10];
+  v11 = [v3 stringWithFormat:@"<%@: %p, propertyIdentifier: %@, localizedTitle: %@, comparators: [%@]>", v5, self, propertyIdentifier, localizedTitle, v10];
 
   return v11;
 }
 
-- (LNQueryParameterMetadata)initWithCoder:(id)a3
+- (LNQueryParameterMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"propertyIdentifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"propertyIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedTitle"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"comparators"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"comparators"];
 
-  v11 = 0;
+  selfCopy = 0;
   if (v6 && v10)
   {
     self = [(LNQueryParameterMetadata *)self initWithPropertyIdentifier:v5 localizedTitle:v6 comparators:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNQueryParameterMetadata *)self propertyIdentifier];
-  [v4 encodeObject:v5 forKey:@"propertyIdentifier"];
+  coderCopy = coder;
+  propertyIdentifier = [(LNQueryParameterMetadata *)self propertyIdentifier];
+  [coderCopy encodeObject:propertyIdentifier forKey:@"propertyIdentifier"];
 
-  v6 = [(LNQueryParameterMetadata *)self localizedTitle];
-  [v4 encodeObject:v6 forKey:@"localizedTitle"];
+  localizedTitle = [(LNQueryParameterMetadata *)self localizedTitle];
+  [coderCopy encodeObject:localizedTitle forKey:@"localizedTitle"];
 
-  v7 = [(LNQueryParameterMetadata *)self comparators];
-  [v4 encodeObject:v7 forKey:@"comparators"];
+  comparators = [(LNQueryParameterMetadata *)self comparators];
+  [coderCopy encodeObject:comparators forKey:@"comparators"];
 }
 
-- (LNQueryParameterMetadata)initWithPropertyIdentifier:(id)a3 localizedTitle:(id)a4 comparators:(id)a5
+- (LNQueryParameterMetadata)initWithPropertyIdentifier:(id)identifier localizedTitle:(id)title comparators:(id)comparators
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  identifierCopy = identifier;
+  titleCopy = title;
+  comparatorsCopy = comparators;
+  v12 = comparatorsCopy;
+  if (titleCopy)
   {
-    if (v11)
+    if (comparatorsCopy)
     {
       goto LABEL_3;
     }
@@ -202,8 +202,8 @@ LABEL_28:
 
   else
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"LNQueryParameterMetadata.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"title"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNQueryParameterMetadata.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"title"}];
 
     if (v12)
     {
@@ -211,8 +211,8 @@ LABEL_28:
     }
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"LNQueryParameterMetadata.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"comparators"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNQueryParameterMetadata.m" lineNumber:24 description:{@"Invalid parameter not satisfying: %@", @"comparators"}];
 
 LABEL_3:
   v24.receiver = self;
@@ -220,11 +220,11 @@ LABEL_3:
   v13 = [(LNQueryParameterMetadata *)&v24 init];
   if (v13)
   {
-    v14 = [v9 copy];
+    v14 = [identifierCopy copy];
     propertyIdentifier = v13->_propertyIdentifier;
     v13->_propertyIdentifier = v14;
 
-    v16 = [v10 copy];
+    v16 = [titleCopy copy];
     localizedTitle = v13->_localizedTitle;
     v13->_localizedTitle = v16;
 
@@ -238,21 +238,21 @@ LABEL_3:
   return v13;
 }
 
-- (LNQueryParameterMetadata)initWithPropertyIdentifier:(id)a3 title:(id)a4 comparators:(id)a5
+- (LNQueryParameterMetadata)initWithPropertyIdentifier:(id)identifier title:(id)title comparators:(id)comparators
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[LNStaticDeferredLocalizedString alloc] initWithLocalizedKey:v9 bundleIdentifier:0 bundleURL:0 table:0];
+  comparatorsCopy = comparators;
+  titleCopy = title;
+  identifierCopy = identifier;
+  v11 = [[LNStaticDeferredLocalizedString alloc] initWithLocalizedKey:titleCopy bundleIdentifier:0 bundleURL:0 table:0];
 
-  v12 = [(LNQueryParameterMetadata *)self initWithPropertyIdentifier:v10 localizedTitle:v11 comparators:v8];
+  v12 = [(LNQueryParameterMetadata *)self initWithPropertyIdentifier:identifierCopy localizedTitle:v11 comparators:comparatorsCopy];
   return v12;
 }
 
 - (NSString)title
 {
-  v2 = [(LNQueryParameterMetadata *)self localizedTitle];
-  v3 = [v2 key];
+  localizedTitle = [(LNQueryParameterMetadata *)self localizedTitle];
+  v3 = [localizedTitle key];
 
   return v3;
 }

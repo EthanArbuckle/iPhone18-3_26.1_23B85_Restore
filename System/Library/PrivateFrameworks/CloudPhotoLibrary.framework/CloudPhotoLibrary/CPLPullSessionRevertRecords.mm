@@ -1,33 +1,33 @@
 @interface CPLPullSessionRevertRecords
-- (BOOL)applyToStore:(id)a3 error:(id *)a4;
-- (BOOL)discardFromStore:(id)a3 error:(id *)a4;
-- (CPLPullSessionRevertRecords)initWithCoder:(id)a3;
-- (CPLPullSessionRevertRecords)initWithStore:(id)a3 revertedChangesBatch:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)applyToStore:(id)store error:(id *)error;
+- (BOOL)discardFromStore:(id)store error:(id *)error;
+- (CPLPullSessionRevertRecords)initWithCoder:(id)coder;
+- (CPLPullSessionRevertRecords)initWithStore:(id)store revertedChangesBatch:(id)batch;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLPullSessionRevertRecords
 
-- (BOOL)discardFromStore:(id)a3 error:(id *)a4
+- (BOOL)discardFromStore:(id)store error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = CPLPullSessionRevertRecords;
-  return [(CPLChangeSessionUpdate *)&v5 discardFromStore:a3 error:a4];
+  return [(CPLChangeSessionUpdate *)&v5 discardFromStore:store error:error];
 }
 
-- (BOOL)applyToStore:(id)a3 error:(id *)a4
+- (BOOL)applyToStore:(id)store error:(id *)error
 {
   v47 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  storeCopy = store;
   v42.receiver = self;
   v42.super_class = CPLPullSessionRevertRecords;
   v43 = 0;
-  v7 = [(CPLChangeSessionUpdate *)&v42 applyToStore:v6 error:&v43];
+  v7 = [(CPLChangeSessionUpdate *)&v42 applyToStore:storeCopy error:&v43];
   v8 = v43;
   if (!v7)
   {
     v26 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_26;
     }
@@ -35,7 +35,7 @@
     goto LABEL_24;
   }
 
-  v32 = a4;
+  errorCopy = error;
   if ((_CPLSilentLogging & 1) == 0)
   {
     v9 = __CPLPushSessionOSLogDomain();
@@ -48,14 +48,14 @@
     }
   }
 
-  v11 = [v6 quarantinedRecords];
-  v31 = v6;
-  v34 = [v6 idMapping];
+  quarantinedRecords = [storeCopy quarantinedRecords];
+  v31 = storeCopy;
+  idMapping = [storeCopy idMapping];
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v30 = self;
+  selfCopy = self;
   v12 = self->_revertedChangesBatch;
   v13 = [(CPLChangeBatch *)v12 countByEnumeratingWithState:&v38 objects:v44 count:16];
   if (v13)
@@ -74,9 +74,9 @@ LABEL_8:
 
       v17 = *(*(&v38 + 1) + 8 * v16);
       v18 = objc_autoreleasePoolPush();
-      v19 = [v17 scopedIdentifier];
+      scopedIdentifier = [v17 scopedIdentifier];
       v37 = v8;
-      v20 = [v11 removeQuarantinedRecordWithScopedIdentifier:v19 notify:0 error:&v37];
+      v20 = [quarantinedRecords removeQuarantinedRecordWithScopedIdentifier:scopedIdentifier notify:0 error:&v37];
       v21 = v37;
 
       if ((v20 & 1) == 0)
@@ -86,9 +86,9 @@ LABEL_8:
 
       if ([v17 isDelete])
       {
-        v22 = [v17 scopedIdentifier];
+        scopedIdentifier2 = [v17 scopedIdentifier];
         v36 = v21;
-        v23 = [v34 addDeleteEventForRecordWithLocalScopedIdentifier:v22 direction:0 error:&v36];
+        v23 = [idMapping addDeleteEventForRecordWithLocalScopedIdentifier:scopedIdentifier2 direction:0 error:&v36];
         v8 = v36;
 
         objc_autoreleasePoolPop(v18);
@@ -97,8 +97,8 @@ LABEL_8:
           v26 = 0;
           v21 = v8;
 LABEL_22:
-          v6 = v31;
-          v24 = obj;
+          storeCopy = v31;
+          revertRecords = obj;
           goto LABEL_23;
         }
       }
@@ -129,23 +129,23 @@ LABEL_22:
 
 LABEL_18:
 
-  v6 = v31;
-  v24 = [v31 revertRecords];
-  v25 = v30->_revertedChangesBatch;
+  storeCopy = v31;
+  revertRecords = [v31 revertRecords];
+  v25 = selfCopy->_revertedChangesBatch;
   v35 = v8;
-  v26 = [v24 deleteRecordsToRevertFromBatch:v25 error:&v35];
+  v26 = [revertRecords deleteRecordsToRevertFromBatch:v25 error:&v35];
   v21 = v35;
 
 LABEL_23:
   v8 = v21;
-  a4 = v32;
-  if (v32)
+  error = errorCopy;
+  if (errorCopy)
   {
 LABEL_24:
     if ((v26 & 1) == 0)
     {
       v27 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -155,24 +155,24 @@ LABEL_26:
   return v26;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = CPLPullSessionRevertRecords;
-  v4 = a3;
-  [(CPLChangeSessionUpdate *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_revertedChangesBatch forKey:{@"rrb", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(CPLChangeSessionUpdate *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_revertedChangesBatch forKey:{@"rrb", v5.receiver, v5.super_class}];
 }
 
-- (CPLPullSessionRevertRecords)initWithCoder:(id)a3
+- (CPLPullSessionRevertRecords)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CPLPullSessionRevertRecords;
-  v5 = [(CPLChangeSessionUpdate *)&v9 initWithCoder:v4];
+  v5 = [(CPLChangeSessionUpdate *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rrb"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rrb"];
     revertedChangesBatch = v5->_revertedChangesBatch;
     v5->_revertedChangesBatch = v6;
   }
@@ -180,16 +180,16 @@ LABEL_26:
   return v5;
 }
 
-- (CPLPullSessionRevertRecords)initWithStore:(id)a3 revertedChangesBatch:(id)a4
+- (CPLPullSessionRevertRecords)initWithStore:(id)store revertedChangesBatch:(id)batch
 {
-  v7 = a4;
+  batchCopy = batch;
   v11.receiver = self;
   v11.super_class = CPLPullSessionRevertRecords;
-  v8 = [(CPLChangeSessionUpdate *)&v11 initWithStore:a3];
+  v8 = [(CPLChangeSessionUpdate *)&v11 initWithStore:store];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_revertedChangesBatch, a4);
+    objc_storeStrong(&v8->_revertedChangesBatch, batch);
   }
 
   return v9;

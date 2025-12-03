@@ -1,5 +1,5 @@
 @interface TapActionGestureRecognizer
-- (_TtC22SubscribePageExtension26TapActionGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (_TtC22SubscribePageExtension26TapActionGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (void)execute;
 @end
 
@@ -7,13 +7,13 @@
 
 - (void)execute
 {
-  v2 = self;
+  selfCopy = self;
   sub_10058CB30();
 }
 
-- (_TtC22SubscribePageExtension26TapActionGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (_TtC22SubscribePageExtension26TapActionGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
-  if (a3)
+  if (target)
   {
     swift_unknownObjectRetain();
     sub_100754314();

@@ -1,9 +1,9 @@
 @interface RBSLegacyAttribute
-+ (id)attributeWithReason:(unint64_t)a3 flags:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (RBSLegacyAttribute)initWithRBSXPCCoder:(id)a3;
++ (id)attributeWithReason:(unint64_t)reason flags:(unint64_t)flags;
+- (BOOL)isEqual:(id)equal;
+- (RBSLegacyAttribute)initWithRBSXPCCoder:(id)coder;
 - (id)description;
-- (void)encodeWithRBSXPCCoder:(id)a3;
+- (void)encodeWithRBSXPCCoder:(id)coder;
 @end
 
 @implementation RBSLegacyAttribute
@@ -20,44 +20,44 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v7.receiver = self;
   v7.super_class = RBSLegacyAttribute;
-  v5 = [(RBSAttribute *)&v7 isEqual:v4]&& self->_requestedReason == v4[2] && self->_reason == v4[1] && self->_flags == v4[3];
+  v5 = [(RBSAttribute *)&v7 isEqual:equalCopy]&& self->_requestedReason == equalCopy[2] && self->_reason == equalCopy[1] && self->_flags == equalCopy[3];
 
   return v5;
 }
 
-- (void)encodeWithRBSXPCCoder:(id)a3
+- (void)encodeWithRBSXPCCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = RBSLegacyAttribute;
-  v4 = a3;
-  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:v4];
-  [v4 encodeInt64:-[RBSLegacyAttribute requestedReason](self forKey:{"requestedReason", v5.receiver, v5.super_class), @"requestedReason"}];
-  [v4 encodeInt64:-[RBSLegacyAttribute reason](self forKey:{"reason"), @"reason"}];
-  [v4 encodeInt64:-[RBSLegacyAttribute flags](self forKey:{"flags"), @"flags"}];
+  coderCopy = coder;
+  [(RBSAttribute *)&v5 encodeWithRBSXPCCoder:coderCopy];
+  [coderCopy encodeInt64:-[RBSLegacyAttribute requestedReason](self forKey:{"requestedReason", v5.receiver, v5.super_class), @"requestedReason"}];
+  [coderCopy encodeInt64:-[RBSLegacyAttribute reason](self forKey:{"reason"), @"reason"}];
+  [coderCopy encodeInt64:-[RBSLegacyAttribute flags](self forKey:{"flags"), @"flags"}];
 }
 
-- (RBSLegacyAttribute)initWithRBSXPCCoder:(id)a3
+- (RBSLegacyAttribute)initWithRBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = RBSLegacyAttribute;
-  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:v4];
+  v5 = [(RBSAttribute *)&v7 initWithRBSXPCCoder:coderCopy];
   if (v5)
   {
-    v5->_requestedReason = [v4 decodeInt64ForKey:@"requestedReason"];
-    -[RBSLegacyAttribute setReason:](v5, "setReason:", [v4 decodeInt64ForKey:@"reason"]);
-    v5->_flags = [v4 decodeInt64ForKey:@"flags"];
+    v5->_requestedReason = [coderCopy decodeInt64ForKey:@"requestedReason"];
+    -[RBSLegacyAttribute setReason:](v5, "setReason:", [coderCopy decodeInt64ForKey:@"reason"]);
+    v5->_flags = [coderCopy decodeInt64ForKey:@"flags"];
   }
 
   return v5;
 }
 
-+ (id)attributeWithReason:(unint64_t)a3 flags:(unint64_t)a4
++ (id)attributeWithReason:(unint64_t)reason flags:(unint64_t)flags
 {
   v6 = [RBSLegacyAttribute alloc];
   if (v6)
@@ -67,9 +67,9 @@
     v6 = objc_msgSendSuper2(&v8, sel__init);
     if (v6)
     {
-      v6->_requestedReason = a3;
-      v6->_reason = a3;
-      v6->_flags = a4;
+      v6->_requestedReason = reason;
+      v6->_reason = reason;
+      v6->_flags = flags;
     }
   }
 

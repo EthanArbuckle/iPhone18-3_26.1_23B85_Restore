@@ -8,7 +8,7 @@
 - (id)_faceNamesStringForAsset
 {
   v26 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:a1];
+  v2 = [MEMORY[0x1E6978830] fetchOptionsWithPhotoLibrary:0 orObject:self];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -20,10 +20,10 @@
   v18[2] = __62__PHAsset_PhotosUICoreAccessibility___faceNamesStringForAsset__block_invoke;
   v18[3] = &unk_1E773EF38;
   v18[4] = &v19;
-  [PXPeopleUtilities peopleFaceTilesForAsset:a1 options:v2 completion:v18];
+  [PXPeopleUtilities peopleFaceTilesForAsset:self options:v2 completion:v18];
   if ([v20[5] count])
   {
-    v3 = [MEMORY[0x1E695DFA0] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
     v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v16 = 0u;
     v17 = 0u;
@@ -43,18 +43,18 @@
             objc_enumerationMutation(v5);
           }
 
-          v9 = [*(*(&v14 + 1) + 8 * i) person];
-          if (v9)
+          person = [*(*(&v14 + 1) + 8 * i) person];
+          if (person)
           {
-            [v4 addObject:v9];
-            v10 = [v9 px_localizedName];
-            if ([v10 length])
+            [v4 addObject:person];
+            px_localizedName = [person px_localizedName];
+            if ([px_localizedName length])
             {
-              [v3 addObject:v10];
+              [orderedSet addObject:px_localizedName];
             }
           }
 
-          v11 = [v3 count] < 2;
+          v11 = [orderedSet count] < 2;
 
           if (!v11)
           {
@@ -70,23 +70,23 @@
 
 LABEL_14:
 
-    v12 = [v3 count];
+    v12 = [orderedSet count];
     if (v12)
     {
       if (v12 == 1)
       {
         PXLocalizedStringFromTable(@"PXFace1NamedPerson", @"PhotosUICore");
         objc_claimAutoreleasedReturnValue();
-        [v3 objectAtIndexedSubscript:0];
+        [orderedSet objectAtIndexedSubscript:0];
         objc_claimAutoreleasedReturnValue();
         PXLocalizedStringWithValidatedFormat();
       }
 
       PXLocalizedStringFromTable(@"PXFace2NamedPeople", @"PhotosUICore");
       objc_claimAutoreleasedReturnValue();
-      [v3 objectAtIndexedSubscript:0];
+      [orderedSet objectAtIndexedSubscript:0];
       objc_claimAutoreleasedReturnValue();
-      [v3 objectAtIndexedSubscript:1];
+      [orderedSet objectAtIndexedSubscript:1];
       objc_claimAutoreleasedReturnValue();
       PXLocalizedStringWithValidatedFormat();
     }
@@ -103,27 +103,27 @@ LABEL_14:
 
 - (id)px_accessibilityLabelForStyles:()PhotosUICoreAccessibility
 {
-  v5 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   if (a3)
   {
-    v6 = [a1 title];
+    title = [self title];
 
-    if (v6)
+    if (title)
     {
-      v7 = [a1 title];
-      [v5 addObject:v7];
+      title2 = [self title];
+      [array addObject:title2];
     }
   }
 
   if ((a3 & 8) != 0)
   {
     v8 = MEMORY[0x1E696AB78];
-    v9 = [a1 creationDate];
-    v10 = [v8 localizedStringFromDate:v9 dateStyle:2 timeStyle:1];
+    creationDate = [self creationDate];
+    v10 = [v8 localizedStringFromDate:creationDate dateStyle:2 timeStyle:1];
 
     if (v10)
     {
-      [v5 addObject:v10];
+      [array addObject:v10];
     }
 
     if ((a3 & 4) == 0)
@@ -143,18 +143,18 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v11 = [a1 _faceNamesStringForAsset];
-  if (v11)
+  _faceNamesStringForAsset = [self _faceNamesStringForAsset];
+  if (_faceNamesStringForAsset)
   {
-    [v5 addObject:v11];
+    [array addObject:_faceNamesStringForAsset];
   }
 
   if ((a3 & 0x10) != 0)
   {
 LABEL_14:
-    if ([a1 mediaType] == 2)
+    if ([self mediaType] == 2)
     {
-      [a1 duration];
+      [self duration];
       v13 = (v12 / 3600.0);
       v14 = v12 - (3600 * v13);
       v15 = (v14 / 60.0);
@@ -172,23 +172,23 @@ LABEL_14:
       v18 = ;
       if ([v18 length])
       {
-        [v5 addObject:v18];
+        [array addObject:v18];
       }
     }
   }
 
 LABEL_21:
-  v19 = [a1 isFavorite];
-  if ((a3 & 2) != 0 && v19)
+  isFavorite = [self isFavorite];
+  if ((a3 & 2) != 0 && isFavorite)
   {
     v20 = PXLocalizedStringFromTable(@"PXFavoritedBadgeAXLabel", @"PhotosUICore");
-    [v5 addObject:v20];
+    [array addObject:v20];
   }
 
   if ((a3 & 0x40) != 0)
   {
-    v21 = [a1 pixelWidth];
-    if (v21 >= [a1 pixelHeight])
+    pixelWidth = [self pixelWidth];
+    if (pixelWidth >= [self pixelHeight])
     {
       v22 = @"PXAXStringOrientationNormal";
     }
@@ -199,22 +199,22 @@ LABEL_21:
     }
 
     v23 = PXLocalizedStringFromTable(v22, @"PhotosUICore");
-    [v5 addObject:v23];
+    [array addObject:v23];
   }
 
   if ((a3 & 0x20) != 0)
   {
-    [a1 fetchPropertySetsIfNeeded];
-    v24 = [a1 photosOneUpProperties];
-    v25 = [v24 localizedGeoDescriptionIsHome:0];
+    [self fetchPropertySetsIfNeeded];
+    photosOneUpProperties = [self photosOneUpProperties];
+    v25 = [photosOneUpProperties localizedGeoDescriptionIsHome:0];
 
     if (v25)
     {
-      [v5 addObject:v25];
+      [array addObject:v25];
     }
   }
 
-  v26 = [v5 componentsJoinedByString:{@", "}];
+  v26 = [array componentsJoinedByString:{@", "}];
 
   return v26;
 }

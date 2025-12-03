@@ -1,5 +1,5 @@
 @interface AUHelperFunctions
-+ (id)localizedDisplayNameForTCCService:(const __CFString *)a3;
++ (id)localizedDisplayNameForTCCService:(const __CFString *)service;
 - (_TtC19AppSystemSettingsUI17AUHelperFunctions)init;
 @end
 
@@ -12,10 +12,10 @@
   return result;
 }
 
-+ (id)localizedDisplayNameForTCCService:(const __CFString *)a3
++ (id)localizedDisplayNameForTCCService:(const __CFString *)service
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
+  serviceCopy = service;
   sub_21BB20B5C();
   v6 = v5;
 

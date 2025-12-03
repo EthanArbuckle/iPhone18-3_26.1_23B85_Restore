@@ -1,18 +1,18 @@
 @interface VisionCoreISPInferenceNetworkHandObject
-- (VisionCoreISPInferenceNetworkHandObject)initWithANSTHand:(id)a3;
+- (VisionCoreISPInferenceNetworkHandObject)initWithANSTHand:(id)hand;
 @end
 
 @implementation VisionCoreISPInferenceNetworkHandObject
 
-- (VisionCoreISPInferenceNetworkHandObject)initWithANSTHand:(id)a3
+- (VisionCoreISPInferenceNetworkHandObject)initWithANSTHand:(id)hand
 {
-  v4 = a3;
+  handCopy = hand;
   v8.receiver = self;
   v8.super_class = VisionCoreISPInferenceNetworkHandObject;
-  v5 = [(VisionCoreISPInferenceNetworkObject *)&v8 initWithANSTObject:v4];
+  v5 = [(VisionCoreISPInferenceNetworkObject *)&v8 initWithANSTObject:handCopy];
   if (v5)
   {
-    if ([v4 chirality] == 1)
+    if ([handCopy chirality] == 1)
     {
       v6 = 1;
 LABEL_6:
@@ -20,7 +20,7 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    if ([v4 chirality] == 2)
+    if ([handCopy chirality] == 2)
     {
       v6 = 2;
       goto LABEL_6;

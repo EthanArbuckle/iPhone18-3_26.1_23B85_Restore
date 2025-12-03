@@ -1,26 +1,26 @@
 @interface PLCloudSharedComment
 + (id)_syncablePredicate;
-+ (id)cloudSharedCommentWithGUID:(id)a3 inLibrary:(id)a4;
-+ (id)cloudSharedCommentsWithCommentDate:(id)a3 inManagedObjectContext:(id)a4;
-+ (id)cloudSharedCommentsWithGUIDs:(id)a3 inLibrary:(id)a4;
-+ (id)commentsMatchingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(int64_t)a5 inManagedObjectContext:(id)a6;
-+ (id)commentsToUploadInManagedObjectContext:(id)a3 limit:(int64_t)a4;
-+ (id)insertNewCommentIntoAsset:(id)a3 commentDate:(id)a4 withText:(id)a5 isLike:(BOOL)a6 isMyComment:(BOOL)a7 inLibrary:(id)a8;
-+ (id)insertNewCommentWithCommentText:(id)a3 commentDate:(id)a4 isLike:(BOOL)a5 isMyComment:(BOOL)a6 inLibrary:(id)a7;
-+ (int64_t)cloudDeletionTypeForTombstone:(id)a3;
++ (id)cloudSharedCommentWithGUID:(id)d inLibrary:(id)library;
++ (id)cloudSharedCommentsWithCommentDate:(id)date inManagedObjectContext:(id)context;
++ (id)cloudSharedCommentsWithGUIDs:(id)ds inLibrary:(id)library;
++ (id)commentsMatchingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(int64_t)limit inManagedObjectContext:(id)context;
++ (id)commentsToUploadInManagedObjectContext:(id)context limit:(int64_t)limit;
++ (id)insertNewCommentIntoAsset:(id)asset commentDate:(id)date withText:(id)text isLike:(BOOL)like isMyComment:(BOOL)comment inLibrary:(id)library;
++ (id)insertNewCommentWithCommentText:(id)text commentDate:(id)date isLike:(BOOL)like isMyComment:(BOOL)comment inLibrary:(id)library;
++ (int64_t)cloudDeletionTypeForTombstone:(id)tombstone;
 - (BOOL)_isInterestingToUser;
 - (BOOL)_relationshipsInInvalidState;
-- (BOOL)_validateRelationshipConstraintForInsert:(BOOL)a3 error:(id *)a4;
+- (BOOL)_validateRelationshipConstraintForInsert:(BOOL)insert error:(id *)error;
 - (BOOL)canBeDeletedByUser;
 - (BOOL)isInterestingForAlbumsSorting;
 - (BOOL)isLikeBoolValue;
 - (BOOL)isSyncableChange;
-- (BOOL)matchesCommentText:(id)a3 isLike:(BOOL)a4;
-- (BOOL)shouldNotifyAsNotificationWithMediaStreamInfo:(id)a3 asCaptionOnly:(BOOL *)a4;
+- (BOOL)matchesCommentText:(id)text isLike:(BOOL)like;
+- (BOOL)shouldNotifyAsNotificationWithMediaStreamInfo:(id)info asCaptionOnly:(BOOL *)only;
 - (BOOL)supportsCloudUpload;
-- (BOOL)updateWithCPLCommentChange:(id)a3 inPhotoLibrary:(id)a4;
-- (BOOL)validateForInsert:(id *)a3;
-- (BOOL)validateForUpdate:(id *)a3;
+- (BOOL)updateWithCPLCommentChange:(id)change inPhotoLibrary:(id)library;
+- (BOOL)validateForInsert:(id *)insert;
+- (BOOL)validateForUpdate:(id *)update;
 - (NSString)commenterEmail;
 - (NSString)commenterFirstName;
 - (NSString)commenterFullName;
@@ -42,45 +42,45 @@
 
 @implementation PLCloudSharedComment
 
-- (BOOL)validateForUpdate:(id *)a3
+- (BOOL)validateForUpdate:(id *)update
 {
   v7.receiver = self;
   v7.super_class = PLCloudSharedComment;
   v5 = [(PLCloudSharedComment *)&v7 validateForUpdate:?];
   if (v5)
   {
-    LOBYTE(v5) = [(PLCloudSharedComment *)self _validateRelationshipConstraintForInsert:0 error:a3];
+    LOBYTE(v5) = [(PLCloudSharedComment *)self _validateRelationshipConstraintForInsert:0 error:update];
   }
 
   return v5;
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v7.receiver = self;
   v7.super_class = PLCloudSharedComment;
   v5 = [(PLCloudSharedComment *)&v7 validateForInsert:?];
   if (v5)
   {
-    LOBYTE(v5) = [(PLCloudSharedComment *)self _validateRelationshipConstraintForInsert:1 error:a3];
+    LOBYTE(v5) = [(PLCloudSharedComment *)self _validateRelationshipConstraintForInsert:1 error:insert];
   }
 
   return v5;
 }
 
-- (BOOL)_validateRelationshipConstraintForInsert:(BOOL)a3 error:(id *)a4
+- (BOOL)_validateRelationshipConstraintForInsert:(BOOL)insert error:(id *)error
 {
-  v5 = a3;
+  insertCopy = insert;
   v18[1] = *MEMORY[0x1E69E9840];
-  v7 = [(PLCloudSharedComment *)self _relationshipsInInvalidState];
-  v8 = v7;
-  if (a4 && v7)
+  _relationshipsInInvalidState = [(PLCloudSharedComment *)self _relationshipsInInvalidState];
+  v8 = _relationshipsInInvalidState;
+  if (error && _relationshipsInInvalidState)
   {
     v9 = MEMORY[0x1E696ABC0];
     v10 = *MEMORY[0x1E69BFF48];
     v17 = *MEMORY[0x1E696A578];
     v11 = MEMORY[0x1E696AEC0];
-    if (v5)
+    if (insertCopy)
     {
       v12 = @"insert";
     }
@@ -90,11 +90,11 @@
       v12 = @"update";
     }
 
-    v13 = [(PLCloudSharedComment *)self cloudGUID];
-    v14 = [v11 stringWithFormat:@"Attempting to %@ an orphaned CloudSharedComment. A CloudSharedComment object should always have an Asset relationship: %@", v12, v13];
+    cloudGUID = [(PLCloudSharedComment *)self cloudGUID];
+    v14 = [v11 stringWithFormat:@"Attempting to %@ an orphaned CloudSharedComment. A CloudSharedComment object should always have an Asset relationship: %@", v12, cloudGUID];
     v18[0] = v14;
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
-    *a4 = [v9 errorWithDomain:v10 code:71001 userInfo:v15];
+    *error = [v9 errorWithDomain:v10 code:71001 userInfo:v15];
   }
 
   return !v8;
@@ -107,16 +107,16 @@
     return 0;
   }
 
-  v3 = [(PLCloudSharedComment *)self likedAsset];
-  if (v3)
+  likedAsset = [(PLCloudSharedComment *)self likedAsset];
+  if (likedAsset)
   {
     v4 = 0;
   }
 
   else
   {
-    v5 = [(PLCloudSharedComment *)self commentedAsset];
-    v4 = v5 == 0;
+    commentedAsset = [(PLCloudSharedComment *)self commentedAsset];
+    v4 = commentedAsset == 0;
   }
 
   return v4;
@@ -124,8 +124,8 @@
 
 - (int64_t)cloudDeletionType
 {
-  v2 = [(PLCloudSharedComment *)self isLike];
-  if (v2)
+  isLike = [(PLCloudSharedComment *)self isLike];
+  if (isLike)
   {
     v3 = 16;
   }
@@ -143,9 +143,9 @@
   if ([(PLCloudSharedComment *)self supportsCloudUpload])
   {
     v3 = objc_alloc(MEMORY[0x1E6994BB8]);
-    v4 = [(PLCloudSharedComment *)self scopeIdentifier];
-    v5 = [(PLCloudSharedComment *)self cloudGUID];
-    v6 = [v3 initWithScopeIdentifier:v4 identifier:v5];
+    scopeIdentifier = [(PLCloudSharedComment *)self scopeIdentifier];
+    cloudGUID = [(PLCloudSharedComment *)self cloudGUID];
+    v6 = [v3 initWithScopeIdentifier:scopeIdentifier identifier:cloudGUID];
   }
 
   else
@@ -160,32 +160,32 @@
 {
   if ([(PLCloudSharedComment *)self supportsCloudUpload])
   {
-    v3 = [(PLCloudSharedComment *)self collectionShare];
+    collectionShare = [(PLCloudSharedComment *)self collectionShare];
   }
 
   else
   {
-    v3 = 0;
+    collectionShare = 0;
   }
 
-  v4 = [v3 scopeIdentifier];
+  scopeIdentifier = [collectionShare scopeIdentifier];
 
-  return v4;
+  return scopeIdentifier;
 }
 
-- (BOOL)updateWithCPLCommentChange:(id)a3 inPhotoLibrary:(id)a4
+- (BOOL)updateWithCPLCommentChange:(id)change inPhotoLibrary:(id)library
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  changeCopy = change;
+  libraryCopy = library;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = changeCopy;
     [(PLCloudSharedComment *)self setIsLike:0];
-    v9 = [v8 commentText];
+    commentText = [v8 commentText];
 
-    [(PLCloudSharedComment *)self setCommentText:v9];
+    [(PLCloudSharedComment *)self setCommentText:commentText];
   }
 
   else
@@ -198,24 +198,24 @@
     }
   }
 
-  v10 = [v6 commentDate];
-  [(PLCloudSharedComment *)self setCommentDate:v10];
+  commentDate = [changeCopy commentDate];
+  [(PLCloudSharedComment *)self setCommentDate:commentDate];
 
-  v11 = [(PLCloudSharedComment *)self asset];
-  if (v11)
+  asset = [(PLCloudSharedComment *)self asset];
+  if (asset)
   {
-    v12 = v11;
+    v12 = asset;
   }
 
   else
   {
     v13 = objc_alloc(MEMORY[0x1E6994BB8]);
-    v14 = [v6 scopedIdentifier];
-    v15 = [v14 scopeIdentifier];
-    v16 = [v6 assetIdentifier];
-    v17 = [v13 initWithScopeIdentifier:v15 identifier:v16];
+    scopedIdentifier = [changeCopy scopedIdentifier];
+    scopeIdentifier = [scopedIdentifier scopeIdentifier];
+    assetIdentifier = [changeCopy assetIdentifier];
+    v17 = [v13 initWithScopeIdentifier:scopeIdentifier identifier:assetIdentifier];
 
-    v12 = [PLManagedAsset assetWithScopedIdentifier:v17 inLibrary:v7 prefetchResources:0];
+    v12 = [PLManagedAsset assetWithScopedIdentifier:v17 inLibrary:libraryCopy prefetchResources:0];
 
     if (!v12)
     {
@@ -224,17 +224,17 @@
     }
   }
 
-  v18 = [v12 collectionShare];
-  v19 = [v6 contributorUserIdentifier];
-  v26[0] = v19;
+  collectionShare = [v12 collectionShare];
+  contributorUserIdentifier = [changeCopy contributorUserIdentifier];
+  v26[0] = contributorUserIdentifier;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
-  v21 = [PLShareParticipant participantsWithUserIdentifiers:v20 inScope:v18 inPhotoLibrary:v7];
+  v21 = [PLShareParticipant participantsWithUserIdentifiers:v20 inScope:collectionShare inPhotoLibrary:libraryCopy];
 
-  v22 = [v21 firstObject];
-  if (v22)
+  firstObject = [v21 firstObject];
+  if (firstObject)
   {
-    [(PLCloudSharedComment *)self setShareParticipant:v22];
-    v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v22, "isCurrentUser")}];
+    [(PLCloudSharedComment *)self setShareParticipant:firstObject];
+    v23 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(firstObject, "isCurrentUser")}];
     [(PLCloudSharedComment *)self setIsMyComment:v23];
   }
 
@@ -248,29 +248,29 @@ LABEL_11:
 
 - (id)cplCommentChange
 {
-  v3 = [(PLCloudSharedComment *)self scopedIdentifier];
-  if (v3)
+  scopedIdentifier = [(PLCloudSharedComment *)self scopedIdentifier];
+  if (scopedIdentifier)
   {
     if ([(PLCloudSharedComment *)self isLikeBoolValue])
     {
-      v4 = [MEMORY[0x1E6994B58] newChangeWithScopedIdentifier:v3 changeType:0];
+      v4 = [MEMORY[0x1E6994B58] newChangeWithScopedIdentifier:scopedIdentifier changeType:0];
       [(PLCloudSharedComment *)self likedAsset];
     }
 
     else
     {
-      v4 = [MEMORY[0x1E6994C20] newChangeWithScopedIdentifier:v3 changeType:0];
-      v5 = [(PLCloudSharedComment *)self commentText];
-      [v4 setCommentText:v5];
+      v4 = [MEMORY[0x1E6994C20] newChangeWithScopedIdentifier:scopedIdentifier changeType:0];
+      commentText = [(PLCloudSharedComment *)self commentText];
+      [v4 setCommentText:commentText];
 
       [(PLCloudSharedComment *)self commentedAsset];
     }
     v6 = ;
-    v7 = [v6 cloudAssetGUID];
-    [v4 setAssetIdentifier:v7];
+    cloudAssetGUID = [v6 cloudAssetGUID];
+    [v4 setAssetIdentifier:cloudAssetGUID];
 
-    v8 = [(PLCloudSharedComment *)self commentDate];
-    [v4 setCommentDate:v8];
+    commentDate = [(PLCloudSharedComment *)self commentDate];
+    [v4 setCommentDate:commentDate];
   }
 
   else
@@ -290,14 +290,14 @@ LABEL_11:
     v13 = 3221225472;
     v14 = __40__PLCloudSharedComment_isSyncableChange__block_invoke;
     v15 = &unk_1E75781E8;
-    v16 = self;
+    selfCopy = self;
     pl_dispatch_once();
     v10 = 0u;
     v11 = 0u;
     v8 = 0u;
     v9 = 0u;
-    v3 = [(PLCloudSharedComment *)self changedValues];
-    v4 = [v3 countByEnumeratingWithState:&v8 objects:v17 count:16];
+    changedValues = [(PLCloudSharedComment *)self changedValues];
+    v4 = [changedValues countByEnumeratingWithState:&v8 objects:v17 count:16];
     if (v4)
     {
       v5 = *v9;
@@ -307,7 +307,7 @@ LABEL_11:
         {
           if (*v9 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(changedValues);
           }
 
           if ([isSyncableChange_syncedProperties_86339 containsObject:*(*(&v8 + 1) + 8 * i)])
@@ -317,7 +317,7 @@ LABEL_11:
           }
         }
 
-        v4 = [v3 countByEnumeratingWithState:&v8 objects:v17 count:16];
+        v4 = [changedValues countByEnumeratingWithState:&v8 objects:v17 count:16];
         if (v4)
         {
           continue;
@@ -347,18 +347,18 @@ void __40__PLCloudSharedComment_isSyncableChange__block_invoke()
 
 - (BOOL)supportsCloudUpload
 {
-  v2 = [(PLCloudSharedComment *)self collectionShare];
-  v3 = [v2 collectionShareKind] == 1;
+  collectionShare = [(PLCloudSharedComment *)self collectionShare];
+  v3 = [collectionShare collectionShareKind] == 1;
 
   return v3;
 }
 
 - (PLCollectionShare)collectionShare
 {
-  v2 = [(PLCloudSharedComment *)self asset];
-  v3 = [v2 collectionShare];
+  asset = [(PLCloudSharedComment *)self asset];
+  collectionShare = [asset collectionShare];
 
-  return v3;
+  return collectionShare;
 }
 
 - (void)prepareForDeletion
@@ -366,43 +366,43 @@ void __40__PLCloudSharedComment_isSyncableChange__block_invoke()
   v6.receiver = self;
   v6.super_class = PLCloudSharedComment;
   [(PLCloudSharedComment *)&v6 prepareForDeletion];
-  v3 = [(PLCloudSharedComment *)self managedObjectContext];
+  managedObjectContext = [(PLCloudSharedComment *)self managedObjectContext];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 mergingChanges] & 1) == 0 && -[PLCloudSharedComment supportsCloudUpload](self, "supportsCloudUpload"))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([managedObjectContext mergingChanges] & 1) == 0 && -[PLCloudSharedComment supportsCloudUpload](self, "supportsCloudUpload"))
   {
-    v4 = [(PLCloudSharedComment *)self scopedIdentifier];
-    v5 = [v4 stringRepresentation];
-    [(PLCloudSharedComment *)self setCloudGUID:v5];
+    scopedIdentifier = [(PLCloudSharedComment *)self scopedIdentifier];
+    stringRepresentation = [scopedIdentifier stringRepresentation];
+    [(PLCloudSharedComment *)self setCloudGUID:stringRepresentation];
 
-    [v3 recordCloudDeletionForObject:self];
+    [managedObjectContext recordCloudDeletionForObject:self];
   }
 }
 
-- (BOOL)matchesCommentText:(id)a3 isLike:(BOOL)a4
+- (BOOL)matchesCommentText:(id)text isLike:(BOOL)like
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4 && [(PLCloudSharedComment *)self isLikeBoolValue])
+  likeCopy = like;
+  textCopy = text;
+  if (likeCopy && [(PLCloudSharedComment *)self isLikeBoolValue])
   {
     goto LABEL_6;
   }
 
-  v7 = [(PLCloudSharedComment *)self commentText];
-  v8 = v7;
-  if (!v6 || !v7)
+  commentText = [(PLCloudSharedComment *)self commentText];
+  v8 = commentText;
+  if (!textCopy || !commentText)
   {
 
     goto LABEL_8;
   }
 
-  v9 = [(PLCloudSharedComment *)self commentText];
-  v10 = [v9 isEqualToString:v6];
+  commentText2 = [(PLCloudSharedComment *)self commentText];
+  v10 = [commentText2 isEqualToString:textCopy];
 
   if ((v10 & 1) == 0)
   {
 LABEL_8:
-    v12 = [(PLCloudSharedComment *)self commentText];
-    v13 = v6 | v12;
+    commentText3 = [(PLCloudSharedComment *)self commentText];
+    v13 = textCopy | commentText3;
 
     v11 = v13 == 0;
     goto LABEL_9;
@@ -417,97 +417,97 @@ LABEL_9:
 
 - (NSString)commenterFullName
 {
-  v3 = [(PLCloudSharedComment *)self shareParticipant];
-  v4 = v3;
-  if (v3)
+  shareParticipant = [(PLCloudSharedComment *)self shareParticipant];
+  v4 = shareParticipant;
+  if (shareParticipant)
   {
-    v5 = [v3 fullName];
+    fullName = [shareParticipant fullName];
   }
 
   else
   {
-    v6 = [(PLManagedObject *)self photoLibrary];
-    v7 = [v6 personInfoManager];
-    v8 = [(PLCloudSharedComment *)self commenterHashedPersonID];
-    v5 = [v7 fullNameForPersonID:v8];
+    photoLibrary = [(PLManagedObject *)self photoLibrary];
+    personInfoManager = [photoLibrary personInfoManager];
+    commenterHashedPersonID = [(PLCloudSharedComment *)self commenterHashedPersonID];
+    fullName = [personInfoManager fullNameForPersonID:commenterHashedPersonID];
   }
 
-  return v5;
+  return fullName;
 }
 
 - (NSString)commenterLastName
 {
-  v3 = [(PLCloudSharedComment *)self shareParticipant];
-  v4 = v3;
-  if (v3)
+  shareParticipant = [(PLCloudSharedComment *)self shareParticipant];
+  v4 = shareParticipant;
+  if (shareParticipant)
   {
-    v5 = [v3 nameComponents];
-    v6 = [v5 familyName];
+    nameComponents = [shareParticipant nameComponents];
+    familyName = [nameComponents familyName];
   }
 
   else
   {
-    v5 = [(PLManagedObject *)self photoLibrary];
-    v7 = [v5 personInfoManager];
-    v8 = [(PLCloudSharedComment *)self commenterHashedPersonID];
-    v6 = [v7 lastNameForPersonID:v8];
+    nameComponents = [(PLManagedObject *)self photoLibrary];
+    personInfoManager = [nameComponents personInfoManager];
+    commenterHashedPersonID = [(PLCloudSharedComment *)self commenterHashedPersonID];
+    familyName = [personInfoManager lastNameForPersonID:commenterHashedPersonID];
   }
 
-  return v6;
+  return familyName;
 }
 
 - (NSString)commenterFirstName
 {
-  v3 = [(PLCloudSharedComment *)self shareParticipant];
-  v4 = v3;
-  if (v3)
+  shareParticipant = [(PLCloudSharedComment *)self shareParticipant];
+  v4 = shareParticipant;
+  if (shareParticipant)
   {
-    v5 = [v3 nameComponents];
-    v6 = [v5 givenName];
+    nameComponents = [shareParticipant nameComponents];
+    givenName = [nameComponents givenName];
   }
 
   else
   {
-    v5 = [(PLManagedObject *)self photoLibrary];
-    v7 = [v5 personInfoManager];
-    v8 = [(PLCloudSharedComment *)self commenterHashedPersonID];
-    v6 = [v7 firstNameForPersonID:v8];
+    nameComponents = [(PLManagedObject *)self photoLibrary];
+    personInfoManager = [nameComponents personInfoManager];
+    commenterHashedPersonID = [(PLCloudSharedComment *)self commenterHashedPersonID];
+    givenName = [personInfoManager firstNameForPersonID:commenterHashedPersonID];
   }
 
-  return v6;
+  return givenName;
 }
 
 - (NSString)commenterEmail
 {
-  v3 = [(PLCloudSharedComment *)self shareParticipant];
-  v4 = v3;
-  if (v3)
+  shareParticipant = [(PLCloudSharedComment *)self shareParticipant];
+  v4 = shareParticipant;
+  if (shareParticipant)
   {
-    v5 = [v3 emailAddress];
+    emailAddress = [shareParticipant emailAddress];
   }
 
   else
   {
-    v6 = [(PLManagedObject *)self photoLibrary];
-    v7 = [v6 personInfoManager];
-    v8 = [(PLCloudSharedComment *)self commenterHashedPersonID];
-    v5 = [v7 emailForPersonID:v8];
+    photoLibrary = [(PLManagedObject *)self photoLibrary];
+    personInfoManager = [photoLibrary personInfoManager];
+    commenterHashedPersonID = [(PLCloudSharedComment *)self commenterHashedPersonID];
+    emailAddress = [personInfoManager emailForPersonID:commenterHashedPersonID];
   }
 
-  return v5;
+  return emailAddress;
 }
 
 - (void)performDelete
 {
   if ([(PLCloudSharedComment *)self canBeDeletedByUser])
   {
-    v3 = [(PLManagedObject *)self photoLibrary];
+    photoLibrary = [(PLManagedObject *)self photoLibrary];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __37__PLCloudSharedComment_performDelete__block_invoke;
     v4[3] = &unk_1E75781E8;
     v4[4] = self;
-    [v3 performTransaction:v4];
+    [photoLibrary performTransaction:v4];
   }
 }
 
@@ -519,44 +519,44 @@ void __37__PLCloudSharedComment_performDelete__block_invoke(uint64_t a1)
 
 - (BOOL)canBeDeletedByUser
 {
-  v3 = [(PLCloudSharedComment *)self isDeletable];
-  if ([v3 BOOLValue])
+  isDeletable = [(PLCloudSharedComment *)self isDeletable];
+  if ([isDeletable BOOLValue])
   {
-    v4 = 1;
+    cloudIsMyAsset = 1;
   }
 
   else
   {
-    v5 = [(PLCloudSharedComment *)self asset];
-    v4 = [v5 cloudIsMyAsset];
+    asset = [(PLCloudSharedComment *)self asset];
+    cloudIsMyAsset = [asset cloudIsMyAsset];
   }
 
-  return v4;
+  return cloudIsMyAsset;
 }
 
 - (id)commenterDisplayName
 {
-  v3 = [(PLCloudSharedComment *)self commenterFirstName];
-  v4 = [(PLCloudSharedComment *)self commenterLastName];
-  v5 = [(PLCloudSharedComment *)self commenterFullName];
-  if ([v5 length])
+  commenterFirstName = [(PLCloudSharedComment *)self commenterFirstName];
+  commenterLastName = [(PLCloudSharedComment *)self commenterLastName];
+  commenterFullName = [(PLCloudSharedComment *)self commenterFullName];
+  if ([commenterFullName length])
   {
-    v6 = v5;
+    commenterEmail = commenterFullName;
   }
 
-  else if ([v3 length] || objc_msgSend(v4, "length"))
+  else if ([commenterFirstName length] || objc_msgSend(commenterLastName, "length"))
   {
-    v6 = PLLocalizedNameWithFirstAndLastName();
+    commenterEmail = PLLocalizedNameWithFirstAndLastName();
   }
 
   else
   {
-    v6 = [(PLCloudSharedComment *)self commenterEmail];
+    commenterEmail = [(PLCloudSharedComment *)self commenterEmail];
   }
 
-  if (v6)
+  if (commenterEmail)
   {
-    v7 = v6;
+    v7 = commenterEmail;
   }
 
   else
@@ -569,10 +569,10 @@ void __37__PLCloudSharedComment_performDelete__block_invoke(uint64_t a1)
 
 - (BOOL)isInterestingForAlbumsSorting
 {
-  v3 = [(PLCloudSharedComment *)self isMyComment];
-  v4 = [v3 BOOLValue];
+  isMyComment = [(PLCloudSharedComment *)self isMyComment];
+  bOOLValue = [isMyComment BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     return 1;
   }
@@ -580,19 +580,19 @@ void __37__PLCloudSharedComment_performDelete__block_invoke(uint64_t a1)
   return [(PLCloudSharedComment *)self _isInterestingToUser];
 }
 
-- (BOOL)shouldNotifyAsNotificationWithMediaStreamInfo:(id)a3 asCaptionOnly:(BOOL *)a4
+- (BOOL)shouldNotifyAsNotificationWithMediaStreamInfo:(id)info asCaptionOnly:(BOOL *)only
 {
-  v6 = a3;
-  v7 = [(PLCloudSharedComment *)self isCaption];
-  v8 = [v7 BOOLValue];
+  infoCopy = info;
+  isCaption = [(PLCloudSharedComment *)self isCaption];
+  bOOLValue = [isCaption BOOLValue];
 
-  v9 = [v6 valueForKey:*MEMORY[0x1E6998038]];
+  v9 = [infoCopy valueForKey:*MEMORY[0x1E6998038]];
 
-  LODWORD(v6) = [v9 BOOLValue];
-  if (!v6)
+  LODWORD(infoCopy) = [v9 BOOLValue];
+  if (!infoCopy)
   {
     result = [(PLCloudSharedComment *)self _isInterestingToUser];
-    if (!a4)
+    if (!only)
     {
       return result;
     }
@@ -602,7 +602,7 @@ void __37__PLCloudSharedComment_performDelete__block_invoke(uint64_t a1)
 
   v10 = PLPhotoSharingGetLog();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
-  if (v8)
+  if (bOOLValue)
   {
     if (!v11)
     {
@@ -630,7 +630,7 @@ void __37__PLCloudSharedComment_performDelete__block_invoke(uint64_t a1)
 LABEL_10:
 
   result = 0;
-  if (!a4)
+  if (!only)
   {
     return result;
   }
@@ -638,7 +638,7 @@ LABEL_10:
 LABEL_11:
   if (!result)
   {
-    *a4 = v8;
+    *only = bOOLValue;
   }
 
   return result;
@@ -647,14 +647,14 @@ LABEL_11:
 - (BOOL)_isInterestingToUser
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(PLCloudSharedComment *)self asset];
-  if (![v3 isCloudSharedAsset])
+  asset = [(PLCloudSharedComment *)self asset];
+  if (![asset isCloudSharedAsset])
   {
     v7 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v14 = 138412290;
-      v15 = v3;
+      v15 = asset;
       v8 = "Comment marked as not interesting because it's not for a cloudSharedAsset: %@.";
       v9 = v7;
       v10 = OS_LOG_TYPE_ERROR;
@@ -667,11 +667,11 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v4 = [v3 cloudIsMyAsset];
-  v5 = [(PLCloudSharedComment *)self isMyComment];
-  v6 = [v5 BOOLValue];
+  cloudIsMyAsset = [asset cloudIsMyAsset];
+  isMyComment = [(PLCloudSharedComment *)self isMyComment];
+  bOOLValue = [isMyComment BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v7 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -689,13 +689,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if (v4)
+  if (cloudIsMyAsset)
   {
     LOBYTE(v12) = 1;
     goto LABEL_10;
   }
 
-  if ([v3 cloudHasCommentsByMe])
+  if ([asset cloudHasCommentsByMe])
   {
     v12 = ![(PLCloudSharedComment *)self isLikeBoolValue];
     goto LABEL_10;
@@ -710,10 +710,10 @@ LABEL_10:
 
 - (BOOL)isLikeBoolValue
 {
-  v2 = [(PLCloudSharedComment *)self isLike];
-  v3 = [v2 BOOLValue];
+  isLike = [(PLCloudSharedComment *)self isLike];
+  bOOLValue = [isLike BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (PLCloudFeedCommentsEntry)cloudFeedEntry
@@ -734,10 +734,10 @@ LABEL_10:
 
 - (id)asset
 {
-  v3 = [(PLCloudSharedComment *)self isLike];
-  v4 = [v3 BOOLValue];
+  isLike = [(PLCloudSharedComment *)self isLike];
+  bOOLValue = [isLike BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     [(PLCloudSharedComment *)self likedAsset];
   }
@@ -756,12 +756,12 @@ LABEL_10:
   v5.receiver = self;
   v5.super_class = PLCloudSharedComment;
   [(PLManagedObject *)&v5 willSave];
-  v3 = [(PLCloudSharedComment *)self managedObjectContext];
+  managedObjectContext = [(PLCloudSharedComment *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 delayedSaveActions];
-    [v4 recordCommentForCloudFeedUpdate:self];
+    delayedSaveActions = [managedObjectContext delayedSaveActions];
+    [delayedSaveActions recordCommentForCloudFeedUpdate:self];
   }
 }
 
@@ -770,8 +770,8 @@ LABEL_10:
   v4.receiver = self;
   v4.super_class = PLCloudSharedComment;
   [(PLCloudSharedComment *)&v4 awakeFromInsert];
-  v3 = [MEMORY[0x1E69BF320] UUIDString];
-  [(PLCloudSharedComment *)self setCloudGUID:v3];
+  uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+  [(PLCloudSharedComment *)self setCloudGUID:uUIDString];
 }
 
 - (PLCloudSharedComment)init
@@ -781,12 +781,12 @@ LABEL_10:
   return [(PLCloudSharedComment *)&v3 init];
 }
 
-+ (int64_t)cloudDeletionTypeForTombstone:(id)a3
++ (int64_t)cloudDeletionTypeForTombstone:(id)tombstone
 {
-  v3 = [a3 objectForKeyedSubscript:@"isLike"];
-  v4 = [v3 BOOLValue];
+  v3 = [tombstone objectForKeyedSubscript:@"isLike"];
+  bOOLValue = [v3 BOOLValue];
 
-  if (v4)
+  if (bOOLValue)
   {
     return 16;
   }
@@ -813,11 +813,11 @@ LABEL_10:
   return v8;
 }
 
-+ (id)commentsMatchingPredicate:(id)a3 sortDescriptors:(id)a4 limit:(int64_t)a5 inManagedObjectContext:(id)a6
++ (id)commentsMatchingPredicate:(id)predicate sortDescriptors:(id)descriptors limit:(int64_t)limit inManagedObjectContext:(id)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  predicateCopy = predicate;
+  descriptorsCopy = descriptors;
+  contextCopy = context;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -828,14 +828,14 @@ LABEL_10:
   v18[1] = 3221225472;
   v18[2] = __95__PLCloudSharedComment_commentsMatchingPredicate_sortDescriptors_limit_inManagedObjectContext___block_invoke;
   v18[3] = &unk_1E7576DD0;
-  v23 = a1;
-  v13 = v10;
+  selfCopy = self;
+  v13 = predicateCopy;
   v19 = v13;
-  v14 = v11;
-  v24 = a5;
+  v14 = descriptorsCopy;
+  limitCopy = limit;
   v20 = v14;
   v22 = &v25;
-  v15 = v12;
+  v15 = contextCopy;
   v21 = v15;
   [v15 performBlockAndWait:v18];
   v16 = v26[5];
@@ -884,14 +884,14 @@ void __95__PLCloudSharedComment_commentsMatchingPredicate_sortDescriptors_limit_
   }
 }
 
-+ (id)commentsToUploadInManagedObjectContext:(id)a3 limit:(int64_t)a4
++ (id)commentsToUploadInManagedObjectContext:(id)context limit:(int64_t)limit
 {
   v17[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 _syncablePredicate];
+  contextCopy = context;
+  _syncablePredicate = [self _syncablePredicate];
   v8 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %d", @"cloudLocalState", 0];
   v9 = MEMORY[0x1E696AB28];
-  v17[0] = v7;
+  v17[0] = _syncablePredicate;
   v17[1] = v8;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:2];
   v11 = [v9 andPredicateWithSubpredicates:v10];
@@ -900,30 +900,30 @@ void __95__PLCloudSharedComment_commentsMatchingPredicate_sortDescriptors_limit_
   v16 = v12;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
 
-  v14 = [a1 commentsMatchingPredicate:v11 sortDescriptors:v13 limit:a4 inManagedObjectContext:v6];
+  v14 = [self commentsMatchingPredicate:v11 sortDescriptors:v13 limit:limit inManagedObjectContext:contextCopy];
 
   return v14;
 }
 
-+ (id)cloudSharedCommentsWithCommentDate:(id)a3 inManagedObjectContext:(id)a4
++ (id)cloudSharedCommentsWithCommentDate:(id)date inManagedObjectContext:(id)context
 {
   v6 = MEMORY[0x1E696AE18];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"%K == %@", @"commentDate", a3];
-  v9 = [a1 commentsMatchingPredicate:v8 sortDescriptors:0 limit:0 inManagedObjectContext:v7];
+  contextCopy = context;
+  date = [v6 predicateWithFormat:@"%K == %@", @"commentDate", date];
+  v9 = [self commentsMatchingPredicate:date sortDescriptors:0 limit:0 inManagedObjectContext:contextCopy];
 
   return v9;
 }
 
-+ (id)cloudSharedCommentWithGUID:(id)a3 inLibrary:(id)a4
++ (id)cloudSharedCommentWithGUID:(id)d inLibrary:(id)library
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v18[0] = v6;
+  dCopy = d;
+  v18[0] = dCopy;
   v7 = MEMORY[0x1E695DEC8];
-  v8 = a4;
+  libraryCopy = library;
   v9 = [v7 arrayWithObjects:v18 count:1];
-  v10 = [a1 cloudSharedCommentsWithGUIDs:v9 inLibrary:v8];
+  v10 = [self cloudSharedCommentsWithGUIDs:v9 inLibrary:libraryCopy];
 
   if ([v10 count] >= 2)
   {
@@ -931,57 +931,57 @@ void __95__PLCloudSharedComment_commentsMatchingPredicate_sortDescriptors_limit_
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412546;
-      v15 = v6;
+      v15 = dCopy;
       v16 = 2112;
       v17 = v10;
       _os_log_impl(&dword_19BF1F000, v11, OS_LOG_TYPE_DEFAULT, "WARNING: Found more than one comment with cloudGUID %@, returning last one in array %@", &v14, 0x16u);
     }
   }
 
-  v12 = [v10 lastObject];
+  lastObject = [v10 lastObject];
 
-  return v12;
+  return lastObject;
 }
 
-+ (id)cloudSharedCommentsWithGUIDs:(id)a3 inLibrary:(id)a4
++ (id)cloudSharedCommentsWithGUIDs:(id)ds inLibrary:(id)library
 {
   v6 = MEMORY[0x1E696AE18];
-  v7 = a4;
-  v8 = [v6 predicateWithFormat:@"%K IN %@", @"cloudGUID", a3];
-  v9 = [v7 managedObjectContext];
+  libraryCopy = library;
+  v8 = [v6 predicateWithFormat:@"%K IN %@", @"cloudGUID", ds];
+  managedObjectContext = [libraryCopy managedObjectContext];
 
-  v10 = [a1 commentsMatchingPredicate:v8 sortDescriptors:0 limit:0 inManagedObjectContext:v9];
+  v10 = [self commentsMatchingPredicate:v8 sortDescriptors:0 limit:0 inManagedObjectContext:managedObjectContext];
 
   return v10;
 }
 
-+ (id)insertNewCommentWithCommentText:(id)a3 commentDate:(id)a4 isLike:(BOOL)a5 isMyComment:(BOOL)a6 inLibrary:(id)a7
++ (id)insertNewCommentWithCommentText:(id)text commentDate:(id)date isLike:(BOOL)like isMyComment:(BOOL)comment inLibrary:(id)library
 {
-  v8 = a6;
-  v9 = a5;
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [a1 entityName];
-  v16 = [v14 managedObjectContext];
+  commentCopy = comment;
+  likeCopy = like;
+  textCopy = text;
+  dateCopy = date;
+  libraryCopy = library;
+  entityName = [self entityName];
+  managedObjectContext = [libraryCopy managedObjectContext];
 
-  v17 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v15, v16, 0);
+  v17 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(entityName, managedObjectContext, 0);
 
-  if (v13)
+  if (dateCopy)
   {
-    [v17 setCommentDate:v13];
+    [v17 setCommentDate:dateCopy];
   }
 
   else
   {
-    v18 = [MEMORY[0x1E695DF00] date];
-    [v17 setCommentDate:v18];
+    date = [MEMORY[0x1E695DF00] date];
+    [v17 setCommentDate:date];
   }
 
-  v19 = [MEMORY[0x1E696AD98] numberWithBool:v8];
+  v19 = [MEMORY[0x1E696AD98] numberWithBool:commentCopy];
   [v17 setIsMyComment:v19];
 
-  if (v9)
+  if (likeCopy)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithBool:1];
     [v17 setIsLike:v20];
@@ -989,57 +989,57 @@ void __95__PLCloudSharedComment_commentsMatchingPredicate_sortDescriptors_limit_
 
   else
   {
-    [v17 setCommentText:v12];
+    [v17 setCommentText:textCopy];
   }
 
   return v17;
 }
 
-+ (id)insertNewCommentIntoAsset:(id)a3 commentDate:(id)a4 withText:(id)a5 isLike:(BOOL)a6 isMyComment:(BOOL)a7 inLibrary:(id)a8
++ (id)insertNewCommentIntoAsset:(id)asset commentDate:(id)date withText:(id)text isLike:(BOOL)like isMyComment:(BOOL)comment inLibrary:(id)library
 {
-  v9 = a7;
-  v10 = a6;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if (v14 && ([v14 isCloudSharedAsset] & 1) == 0)
+  commentCopy = comment;
+  likeCopy = like;
+  assetCopy = asset;
+  dateCopy = date;
+  textCopy = text;
+  libraryCopy = library;
+  if (assetCopy && ([assetCopy isCloudSharedAsset] & 1) == 0)
   {
     v27 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Cannot insert a comment in an asset that is not a CloudSharedAsset" userInfo:0];
     objc_exception_throw(v27);
   }
 
-  v18 = [a1 entityName];
-  v19 = [v17 managedObjectContext];
-  v20 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v18, v19, 0);
+  entityName = [self entityName];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  v20 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(entityName, managedObjectContext, 0);
 
-  if (v15)
+  if (dateCopy)
   {
-    [v20 setCommentDate:v15];
+    [v20 setCommentDate:dateCopy];
   }
 
   else
   {
-    v21 = [MEMORY[0x1E695DF00] date];
-    [v20 setCommentDate:v21];
+    date = [MEMORY[0x1E695DF00] date];
+    [v20 setCommentDate:date];
   }
 
-  v22 = [MEMORY[0x1E696AD98] numberWithBool:v9];
+  v22 = [MEMORY[0x1E696AD98] numberWithBool:commentCopy];
   [v20 setIsMyComment:v22];
 
-  if (v9)
+  if (commentCopy)
   {
-    v23 = [v14 collectionShare];
-    v24 = [v23 currentUserParticipant];
-    [v20 setShareParticipant:v24];
+    collectionShare = [assetCopy collectionShare];
+    currentUserParticipant = [collectionShare currentUserParticipant];
+    [v20 setShareParticipant:currentUserParticipant];
   }
 
-  if (v10)
+  if (likeCopy)
   {
     v25 = [MEMORY[0x1E696AD98] numberWithBool:1];
     [v20 setIsLike:v25];
 
-    if (!v14)
+    if (!assetCopy)
     {
       goto LABEL_14;
     }
@@ -1047,8 +1047,8 @@ void __95__PLCloudSharedComment_commentsMatchingPredicate_sortDescriptors_limit_
 
   else
   {
-    [v20 setCommentText:v16];
-    if (!v14)
+    [v20 setCommentText:textCopy];
+    if (!assetCopy)
     {
       goto LABEL_14;
     }
@@ -1056,7 +1056,7 @@ void __95__PLCloudSharedComment_commentsMatchingPredicate_sortDescriptors_limit_
 
   if (v20)
   {
-    [v14 addComment:v20];
+    [assetCopy addComment:v20];
   }
 
 LABEL_14:

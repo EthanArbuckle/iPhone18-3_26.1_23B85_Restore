@@ -1,36 +1,36 @@
 @interface MPSGraphExecutableEntryPoint
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualTo:(id)a3;
-- (BOOL)isEqualToEntryPoint:(id)a3;
-- (MPSGraphExecutableEntryPoint)initWithEntryFunctionName:(id)a3 inputTypes:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualTo:(id)to;
+- (BOOL)isEqualToEntryPoint:(id)point;
+- (MPSGraphExecutableEntryPoint)initWithEntryFunctionName:(id)name inputTypes:(id)types;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MPSGraphExecutableEntryPoint
 
-- (MPSGraphExecutableEntryPoint)initWithEntryFunctionName:(id)a3 inputTypes:(id)a4
+- (MPSGraphExecutableEntryPoint)initWithEntryFunctionName:(id)name inputTypes:(id)types
 {
-  v7 = a3;
-  v8 = a4;
+  nameCopy = name;
+  typesCopy = types;
   v12.receiver = self;
   v12.super_class = MPSGraphExecutableEntryPoint;
   v9 = [(MPSGraphExecutableEntryPoint *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_entryFunctionName, a3);
-    objc_storeStrong(&v10->_inputTypes, a4);
+    objc_storeStrong(&v9->_entryFunctionName, name);
+    objc_storeStrong(&v10->_inputTypes, types);
   }
 
   return v10;
 }
 
-- (BOOL)isEqualTo:(id)a3
+- (BOOL)isEqualTo:(id)to
 {
-  v4 = a3;
-  if (v4)
+  toCopy = to;
+  if (toCopy)
   {
-    v5 = [(MPSGraphExecutableEntryPoint *)self isEqual:v4];
+    v5 = [(MPSGraphExecutableEntryPoint *)self isEqual:toCopy];
 
     return v5;
   }
@@ -42,17 +42,17 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
 
     return 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     v6 = [(MPSGraphExecutableEntryPoint *)self isEqualToEntryPoint:v5];
 
@@ -66,25 +66,25 @@
   }
 }
 
-- (BOOL)isEqualToEntryPoint:(id)a3
+- (BOOL)isEqualToEntryPoint:(id)point
 {
-  v4 = a3;
-  if (self == v4)
+  pointCopy = point;
+  if (self == pointCopy)
   {
     v10 = 1;
   }
 
   else
   {
-    v5 = [(MPSGraphExecutableEntryPoint *)self entryFunctionName];
-    v6 = [(MPSGraphExecutableEntryPoint *)v4 entryFunctionName];
-    v7 = [v5 isEqualToString:v6];
+    entryFunctionName = [(MPSGraphExecutableEntryPoint *)self entryFunctionName];
+    entryFunctionName2 = [(MPSGraphExecutableEntryPoint *)pointCopy entryFunctionName];
+    v7 = [entryFunctionName isEqualToString:entryFunctionName2];
 
     if (v7)
     {
-      v8 = [(MPSGraphExecutableEntryPoint *)self inputTypes];
-      v9 = [(MPSGraphExecutableEntryPoint *)v4 inputTypes];
-      v10 = [v8 isEqualToArray:v9];
+      inputTypes = [(MPSGraphExecutableEntryPoint *)self inputTypes];
+      inputTypes2 = [(MPSGraphExecutableEntryPoint *)pointCopy inputTypes];
+      v10 = [inputTypes isEqualToArray:inputTypes2];
     }
 
     else
@@ -96,14 +96,14 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [MPSGraphExecutableEntryPoint alloc];
-  v6 = [(NSString *)self->_entryFunctionName copyWithZone:a3];
+  v6 = [(NSString *)self->_entryFunctionName copyWithZone:zone];
   entryFunctionName = v5->_entryFunctionName;
   v5->_entryFunctionName = v6;
 
-  v8 = [(NSArray *)self->_inputTypes copyWithZone:a3];
+  v8 = [(NSArray *)self->_inputTypes copyWithZone:zone];
   inputTypes = v5->_inputTypes;
   v5->_inputTypes = v8;
 

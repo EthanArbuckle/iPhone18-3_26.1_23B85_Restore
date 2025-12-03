@@ -1,27 +1,27 @@
 @interface SCLInterruptEventBehavior
-- (BOOL)isEqual:(id)a3;
-- (SCLInterruptEventBehavior)initWithCoder:(id)a3;
-- (SCLInterruptEventBehavior)initWithEvent:(id)a3 interruptEligibility:(unint64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (SCLInterruptEventBehavior)initWithCoder:(id)coder;
+- (SCLInterruptEventBehavior)initWithEvent:(id)event interruptEligibility:(unint64_t)eligibility;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SCLInterruptEventBehavior
 
-- (SCLInterruptEventBehavior)initWithEvent:(id)a3 interruptEligibility:(unint64_t)a4
+- (SCLInterruptEventBehavior)initWithEvent:(id)event interruptEligibility:(unint64_t)eligibility
 {
-  v6 = a3;
+  eventCopy = event;
   v11.receiver = self;
   v11.super_class = SCLInterruptEventBehavior;
   v7 = [(SCLInterruptEventBehavior *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [eventCopy copy];
     event = v7->_event;
     v7->_event = v8;
 
-    v7->_eligibility = a4;
+    v7->_eligibility = eligibility;
   }
 
   return v7;
@@ -29,17 +29,17 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SCLInterruptEventBehavior *)self event];
-  v4 = [v3 hash];
-  v5 = [(SCLInterruptEventBehavior *)self eligibility];
+  event = [(SCLInterruptEventBehavior *)self event];
+  v4 = [event hash];
+  eligibility = [(SCLInterruptEventBehavior *)self eligibility];
 
-  return v5 ^ v4;
+  return eligibility ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -49,13 +49,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(SCLInterruptEventBehavior *)self event];
-      v7 = [(SCLInterruptEventBehavior *)v5 event];
-      if ([v6 isEqual:v7])
+      v5 = equalCopy;
+      event = [(SCLInterruptEventBehavior *)self event];
+      event2 = [(SCLInterruptEventBehavior *)v5 event];
+      if ([event isEqual:event2])
       {
-        v8 = [(SCLInterruptEventBehavior *)self eligibility];
-        v9 = v8 == [(SCLInterruptEventBehavior *)v5 eligibility];
+        eligibility = [(SCLInterruptEventBehavior *)self eligibility];
+        v9 = eligibility == [(SCLInterruptEventBehavior *)v5 eligibility];
       }
 
       else
@@ -76,17 +76,17 @@
 - (id)description
 {
   v3 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v4 = [(SCLInterruptEventBehavior *)self event];
-  v5 = [v3 appendObject:v4 withName:@"event" skipIfNil:1];
+  event = [(SCLInterruptEventBehavior *)self event];
+  v5 = [v3 appendObject:event withName:@"event" skipIfNil:1];
 
-  v6 = [(SCLInterruptEventBehavior *)self eligibility];
+  eligibility = [(SCLInterruptEventBehavior *)self eligibility];
   v7 = @"<unknown>";
-  if (v6 == 1)
+  if (eligibility == 1)
   {
     v7 = @"eligible";
   }
 
-  if (v6)
+  if (eligibility)
   {
     v8 = v7;
   }
@@ -97,28 +97,28 @@
   }
 
   [v3 appendString:v8 withName:@"eligibleToInterrupt"];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
-- (SCLInterruptEventBehavior)initWithCoder:(id)a3
+- (SCLInterruptEventBehavior)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"event"];
-  v6 = [v4 decodeIntegerForKey:@"interruptEligible"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"event"];
+  v6 = [coderCopy decodeIntegerForKey:@"interruptEligible"];
 
   v7 = [(SCLInterruptEventBehavior *)self initWithEvent:v5 interruptEligibility:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(SCLInterruptEventBehavior *)self event];
-  [v5 encodeObject:v4 forKey:@"event"];
+  coderCopy = coder;
+  event = [(SCLInterruptEventBehavior *)self event];
+  [coderCopy encodeObject:event forKey:@"event"];
 
-  [v5 encodeInteger:-[SCLInterruptEventBehavior eligibility](self forKey:{"eligibility"), @"interruptEligible"}];
+  [coderCopy encodeInteger:-[SCLInterruptEventBehavior eligibility](self forKey:{"eligibility"), @"interruptEligible"}];
 }
 
 @end

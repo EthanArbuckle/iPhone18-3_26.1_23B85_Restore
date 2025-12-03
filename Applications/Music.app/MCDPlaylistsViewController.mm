@@ -1,22 +1,22 @@
 @interface MCDPlaylistsViewController
-+ (id)madeForYouViewControllerWithIdentifier:(id)a3 showLocalContent:(BOOL)a4;
-+ (id)playlistsViewControllerForFolder:(id)a3 showLocalContent:(BOOL)a4;
-- (MCDPlaylistsViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4;
++ (id)madeForYouViewControllerWithIdentifier:(id)identifier showLocalContent:(BOOL)content;
++ (id)playlistsViewControllerForFolder:(id)folder showLocalContent:(BOOL)content;
+- (MCDPlaylistsViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content;
 - (id)filteringPreferenceKey;
 - (id)legacyFilteringPreferenceKey;
 - (id)sortingPreferenceKey;
-- (id)textForHeaderViewInContentManager:(id)a3;
+- (id)textForHeaderViewInContentManager:(id)manager;
 - (void)viewDidLoad;
 @end
 
 @implementation MCDPlaylistsViewController
 
-- (MCDPlaylistsViewController)initWithIdentifier:(id)a3 showLocalContent:(BOOL)a4
+- (MCDPlaylistsViewController)initWithIdentifier:(id)identifier showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v6 = a3;
+  contentCopy = content;
+  identifierCopy = identifier;
   v7 = objc_opt_new();
-  v8 = [(MCDLibraryTableViewController *)self initWithIdentifier:v6 showLocalContent:v4 dataSource:v7];
+  v8 = [(MCDLibraryTableViewController *)self initWithIdentifier:identifierCopy showLocalContent:contentCopy dataSource:v7];
 
   if (v8)
   {
@@ -26,32 +26,32 @@
   return v8;
 }
 
-+ (id)madeForYouViewControllerWithIdentifier:(id)a3 showLocalContent:(BOOL)a4
++ (id)madeForYouViewControllerWithIdentifier:(id)identifier showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = a3;
+  contentCopy = content;
+  identifierCopy = identifier;
   v6 = [MCDPlaylistsViewController alloc];
   v7 = objc_opt_new();
-  v8 = [(MCDLibraryTableViewController *)v6 initWithIdentifier:v5 showLocalContent:v4 dataSource:v7];
+  v8 = [(MCDLibraryTableViewController *)v6 initWithIdentifier:identifierCopy showLocalContent:contentCopy dataSource:v7];
 
   [(MCDPlaylistsViewController *)v8 setPlayActivityFeatureName:@"made_for_you"];
 
   return v8;
 }
 
-+ (id)playlistsViewControllerForFolder:(id)a3 showLocalContent:(BOOL)a4
++ (id)playlistsViewControllerForFolder:(id)folder showLocalContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = a3;
+  contentCopy = content;
+  folderCopy = folder;
   v6 = [MCDPlaylistsViewController alloc];
   v7 = MCDPlaylistsViewControllerIdentifier;
-  v8 = [[MCDPlaylistDataSource alloc] initWithPlaylist:v5];
-  v9 = [(MCDLibraryTableViewController *)v6 initWithIdentifier:v7 showLocalContent:v4 dataSource:v8];
+  v8 = [[MCDPlaylistDataSource alloc] initWithPlaylist:folderCopy];
+  v9 = [(MCDLibraryTableViewController *)v6 initWithIdentifier:v7 showLocalContent:contentCopy dataSource:v8];
 
   [(MCDPlaylistsViewController *)v9 setPlayActivityFeatureName:@"playlists"];
-  v10 = [v5 name];
+  name = [folderCopy name];
 
-  [(MCDPlaylistsViewController *)v9 setTitle:v10];
+  [(MCDPlaylistsViewController *)v9 setTitle:name];
 
   return v9;
 }
@@ -70,12 +70,12 @@
   objc_destroyWeak(&location);
 }
 
-- (id)textForHeaderViewInContentManager:(id)a3
+- (id)textForHeaderViewInContentManager:(id)manager
 {
-  v4 = [(MCDPlaylistsViewController *)self traitCollection];
-  v5 = [v4 shouldLimitMusicLists];
+  traitCollection = [(MCDPlaylistsViewController *)self traitCollection];
+  shouldLimitMusicLists = [traitCollection shouldLimitMusicLists];
 
-  if (v5)
+  if (shouldLimitMusicLists)
   {
     v6 = MCDCarDisplayBundle();
     v7 = [v6 localizedStringForKey:@"RECENTLY_PLAYED_PLAYLISTS" value:&stru_101107168 table:@"MusicCarDisplayUI"];
@@ -96,7 +96,7 @@
 
 - (id)sortingPreferenceKey
 {
-  v2 = [(MCDLibraryTableViewController *)self dataSource];
+  dataSource = [(MCDLibraryTableViewController *)self dataSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -113,7 +113,7 @@
 
 - (id)filteringPreferenceKey
 {
-  v2 = [(MCDLibraryTableViewController *)self dataSource];
+  dataSource = [(MCDLibraryTableViewController *)self dataSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -130,7 +130,7 @@
 
 - (id)legacyFilteringPreferenceKey
 {
-  v2 = [(MCDLibraryTableViewController *)self dataSource];
+  dataSource = [(MCDLibraryTableViewController *)self dataSource];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 

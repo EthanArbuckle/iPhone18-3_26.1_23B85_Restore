@@ -1,15 +1,15 @@
 @interface VNImageAnalyzerMultiDetectorSceneprintConfiguration
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unsigned)analysisTypes;
 @end
 
 @implementation VNImageAnalyzerMultiDetectorSceneprintConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5.receiver = self;
   v5.super_class = VNImageAnalyzerMultiDetectorSceneprintConfiguration;
-  result = [(VNImageAnalyzerMultiDetectorAnalysisConfiguration *)&v5 copyWithZone:a3];
+  result = [(VNImageAnalyzerMultiDetectorAnalysisConfiguration *)&v5 copyWithZone:zone];
   if (result)
   {
     *(result + 16) = self->_includeLabelsAndConfidences;

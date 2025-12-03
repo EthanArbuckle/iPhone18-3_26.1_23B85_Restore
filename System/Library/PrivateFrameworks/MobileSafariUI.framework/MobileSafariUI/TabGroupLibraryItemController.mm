@@ -1,15 +1,15 @@
 @interface TabGroupLibraryItemController
 - (BOOL)_isPrivateBrowsingAndLocked;
-- (BOOL)_sessionContainsLocalTabs:(id)a3;
-- (BOOL)_sessionContainsTabGroup:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)_sessionContainsLocalTabs:(id)tabs;
+- (BOOL)_sessionContainsTabGroup:(id)group;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpanded;
 - (BOOL)isSelected;
 - (BOOL)shouldPersistSelection;
-- (TabGroupLibraryItemController)initWithConfiguration:(id)a3 tabGroup:(id)a4;
+- (TabGroupLibraryItemController)initWithConfiguration:(id)configuration tabGroup:(id)group;
 - (id)accessibilityIdentifier;
 - (id)accessories;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)disclosureAccessory;
 - (id)dragItem;
@@ -17,12 +17,12 @@
 - (id)subitems;
 - (id)swipeActionsConfiguration;
 - (id)tabGroupProvider;
-- (int64_t)dropIntentForSession:(id)a3;
-- (unint64_t)dropOperationForSession:(id)a3;
+- (int64_t)dropIntentForSession:(id)session;
+- (unint64_t)dropOperationForSession:(id)session;
 - (unint64_t)hash;
 - (void)didSelectItem;
-- (void)performDropWithProposal:(id)a3 session:(id)a4 inViewController:(id)a5;
-- (void)updateListContentConfiguration:(id)a3;
+- (void)performDropWithProposal:(id)proposal session:(id)session inViewController:(id)controller;
+- (void)updateListContentConfiguration:(id)configuration;
 - (void)willToggleExpansionState;
 @end
 
@@ -30,24 +30,24 @@
 
 - (unint64_t)hash
 {
-  v2 = [(WBTabGroup *)self->_tabGroup uuid];
-  v3 = [v2 hash];
+  uuid = [(WBTabGroup *)self->_tabGroup uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
 - (id)subitems
 {
-  v3 = [MEMORY[0x277CBEB40] orderedSet];
-  v4 = [(LibraryItemController *)self configuration];
-  v5 = [(WBTabGroup *)self->_tabGroup tabs];
-  v6 = [v4 pinnedTabsManager];
+  orderedSet = [MEMORY[0x277CBEB40] orderedSet];
+  configuration = [(LibraryItemController *)self configuration];
+  tabs = [(WBTabGroup *)self->_tabGroup tabs];
+  pinnedTabsManager = [configuration pinnedTabsManager];
   if ([(WBTabGroup *)self->_tabGroup isLocal])
   {
-    v7 = [v6 pinnedTabs];
+    pinnedTabs = [pinnedTabsManager pinnedTabs];
 LABEL_5:
-    v8 = v7;
-    [v3 addObjectsFromArray:v7];
+    profileIdentifier = pinnedTabs;
+    [orderedSet addObjectsFromArray:pinnedTabs];
 LABEL_6:
 
     goto LABEL_7;
@@ -55,33 +55,33 @@ LABEL_6:
 
   if ([(WBTabGroup *)self->_tabGroup isPrivateBrowsing])
   {
-    v7 = [v6 privatePinnedTabs];
+    pinnedTabs = [pinnedTabsManager privatePinnedTabs];
     goto LABEL_5;
   }
 
   if ([(WBTabGroup *)self->_tabGroup isUnnamed])
   {
-    v8 = [(WBTabGroup *)self->_tabGroup profileIdentifier];
-    v14 = [PinnedTabsContainer containerWithActiveProfileIdentifier:v8];
-    v15 = [v6 pinnedTabsInContainer:v14];
-    [v3 addObjectsFromArray:v15];
+    profileIdentifier = [(WBTabGroup *)self->_tabGroup profileIdentifier];
+    v14 = [PinnedTabsContainer containerWithActiveProfileIdentifier:profileIdentifier];
+    v15 = [pinnedTabsManager pinnedTabsInContainer:v14];
+    [orderedSet addObjectsFromArray:v15];
 
     goto LABEL_6;
   }
 
 LABEL_7:
-  v9 = [v5 safari_partionedArrayUsingCondition:&__block_literal_global_36];
+  v9 = [tabs safari_partionedArrayUsingCondition:&__block_literal_global_36];
 
-  [v3 addObjectsFromArray:v9];
-  v10 = [v3 array];
+  [orderedSet addObjectsFromArray:v9];
+  array = [orderedSet array];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __41__TabGroupLibraryItemController_subitems__block_invoke_2;
   v16[3] = &unk_2781D94E8;
-  v17 = v4;
-  v18 = self;
-  v11 = v4;
-  v12 = [v10 safari_mapObjectsUsingBlock:v16];
+  v17 = configuration;
+  selfCopy = self;
+  v11 = configuration;
+  v12 = [array safari_mapObjectsUsingBlock:v16];
 
   return v12;
 }
@@ -103,16 +103,16 @@ TabLibraryItemController *__41__TabGroupLibraryItemController_subitems__block_in
 
   if ([MEMORY[0x277D49A08] isEnhancedVerticalTabsEnabled])
   {
-    v4 = [(LibraryItemController *)self configuration];
-    v5 = [v4 isTabGroupExpanded];
-    v6 = (v5)[2](v5, self->_tabGroup);
+    configuration = [(LibraryItemController *)self configuration];
+    isTabGroupExpanded = [configuration isTabGroupExpanded];
+    v6 = (isTabGroupExpanded)[2](isTabGroupExpanded, self->_tabGroup);
   }
 
   else
   {
-    v4 = [(TabGroupLibraryItemController *)self tabGroupProvider];
-    v5 = [(WBTabGroup *)self->_tabGroup uuid];
-    v6 = [v4 isTabGroupUUIDExpanded:v5];
+    configuration = [(TabGroupLibraryItemController *)self tabGroupProvider];
+    isTabGroupExpanded = [(WBTabGroup *)self->_tabGroup uuid];
+    v6 = [configuration isTabGroupUUIDExpanded:isTabGroupExpanded];
   }
 
   v3 = v6;
@@ -122,28 +122,28 @@ TabLibraryItemController *__41__TabGroupLibraryItemController_subitems__block_in
 
 - (BOOL)_isPrivateBrowsingAndLocked
 {
-  v2 = [(WBTabGroup *)self->_tabGroup isPrivateBrowsing];
-  if (v2)
+  isPrivateBrowsing = [(WBTabGroup *)self->_tabGroup isPrivateBrowsing];
+  if (isPrivateBrowsing)
   {
     v3 = +[Application sharedApplication];
-    v4 = [v3 isPrivateBrowsingLocked];
+    isPrivateBrowsingLocked = [v3 isPrivateBrowsingLocked];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(isPrivateBrowsing) = isPrivateBrowsingLocked;
   }
 
-  return v2;
+  return isPrivateBrowsing;
 }
 
-- (TabGroupLibraryItemController)initWithConfiguration:(id)a3 tabGroup:(id)a4
+- (TabGroupLibraryItemController)initWithConfiguration:(id)configuration tabGroup:(id)group
 {
-  v7 = a4;
+  groupCopy = group;
   v12.receiver = self;
   v12.super_class = TabGroupLibraryItemController;
-  v8 = [(LibraryItemController *)&v12 initWithConfiguration:a3];
+  v8 = [(LibraryItemController *)&v12 initWithConfiguration:configuration];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_tabGroup, a4);
+    objc_storeStrong(&v8->_tabGroup, group);
     v10 = v9;
   }
 
@@ -152,22 +152,22 @@ TabLibraryItemController *__41__TabGroupLibraryItemController_subitems__block_in
 
 - (id)swipeActionsConfiguration
 {
-  v3 = [(TabGroupLibraryItemController *)self tabGroupProvider];
-  v4 = [v3 swipeActionsConfigurationForTabGroup:self->_tabGroup forPickerSheet:0];
+  tabGroupProvider = [(TabGroupLibraryItemController *)self tabGroupProvider];
+  v4 = [tabGroupProvider swipeActionsConfigurationForTabGroup:self->_tabGroup forPickerSheet:0];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WBTabGroup *)self->_tabGroup uuid];
-    v6 = [v4 tabGroup];
-    v7 = [v6 uuid];
-    v8 = [v5 isEqualToString:v7];
+    uuid = [(WBTabGroup *)self->_tabGroup uuid];
+    tabGroup = [equalCopy tabGroup];
+    uuid2 = [tabGroup uuid];
+    v8 = [uuid isEqualToString:uuid2];
   }
 
   else
@@ -180,41 +180,41 @@ TabLibraryItemController *__41__TabGroupLibraryItemController_subitems__block_in
 
 - (id)tabGroupProvider
 {
-  v2 = [(LibraryItemController *)self configuration];
-  v3 = [v2 tabGroupProvider];
+  configuration = [(LibraryItemController *)self configuration];
+  tabGroupProvider = [configuration tabGroupProvider];
 
-  return v3;
+  return tabGroupProvider;
 }
 
-- (void)updateListContentConfiguration:(id)a3
+- (void)updateListContentConfiguration:(id)configuration
 {
-  v17 = a3;
-  v4 = [(TabGroupLibraryItemController *)self tabGroupProvider];
-  v5 = [v4 imageForTabGroup:self->_tabGroup];
-  [v17 setImage:v5];
+  configurationCopy = configuration;
+  tabGroupProvider = [(TabGroupLibraryItemController *)self tabGroupProvider];
+  v5 = [tabGroupProvider imageForTabGroup:self->_tabGroup];
+  [configurationCopy setImage:v5];
 
   v6 = *MEMORY[0x277CBF3A8];
   v7 = *(MEMORY[0x277CBF3A8] + 8);
-  v8 = [v17 imageProperties];
-  [v8 setMaximumSize:{v6, v7}];
+  imageProperties = [configurationCopy imageProperties];
+  [imageProperties setMaximumSize:{v6, v7}];
 
-  v9 = [v17 imageProperties];
-  [v9 setReservedLayoutSize:{v6, v7}];
+  imageProperties2 = [configurationCopy imageProperties];
+  [imageProperties2 setReservedLayoutSize:{v6, v7}];
 
-  v10 = [(WBTabGroup *)self->_tabGroup displayTitle];
-  [v17 setText:v10];
+  displayTitle = [(WBTabGroup *)self->_tabGroup displayTitle];
+  [configurationCopy setText:displayTitle];
 
-  if (([MEMORY[0x277D49A08] isSolariumEnabled] & 1) == 0 && objc_msgSend(v4, "hasMultipleProfiles") && (-[WBTabGroup isNamed](self->_tabGroup, "isNamed") & 1) == 0 && (-[WBTabGroup isPrivateBrowsing](self->_tabGroup, "isPrivateBrowsing") & 1) == 0)
+  if (([MEMORY[0x277D49A08] isSolariumEnabled] & 1) == 0 && objc_msgSend(tabGroupProvider, "hasMultipleProfiles") && (-[WBTabGroup isNamed](self->_tabGroup, "isNamed") & 1) == 0 && (-[WBTabGroup isPrivateBrowsing](self->_tabGroup, "isPrivateBrowsing") & 1) == 0)
   {
-    v11 = [v4 activeProfile];
+    activeProfile = [tabGroupProvider activeProfile];
     tabGroup = self->_tabGroup;
-    v13 = [v17 secondaryTextProperties];
-    v14 = [v13 resolvedColor];
-    v15 = [ToolbarItemConfiguration attributedTitleForTabGroup:tabGroup inProfile:v11 primaryColor:0 secondaryColor:v14];
-    [v17 setAttributedText:v15];
+    secondaryTextProperties = [configurationCopy secondaryTextProperties];
+    resolvedColor = [secondaryTextProperties resolvedColor];
+    v15 = [ToolbarItemConfiguration attributedTitleForTabGroup:tabGroup inProfile:activeProfile primaryColor:0 secondaryColor:resolvedColor];
+    [configurationCopy setAttributedText:v15];
 
-    v16 = [v11 symbolImage];
-    [v17 setImage:v16];
+    symbolImage = [activeProfile symbolImage];
+    [configurationCopy setImage:symbolImage];
   }
 }
 
@@ -231,8 +231,8 @@ TabLibraryItemController *__41__TabGroupLibraryItemController_subitems__block_in
     v9 = self->_lockedAccessory;
     self->_lockedAccessory = v8;
 
-    v10 = [(ActionCellAccessory *)self->_lockedAccessory customView];
-    [v10 setUserInteractionEnabled:0];
+    customView = [(ActionCellAccessory *)self->_lockedAccessory customView];
+    [customView setUserInteractionEnabled:0];
 
     v11 = [MEMORY[0x277D755D0] configurationWithTextStyle:*MEMORY[0x277D76918] scale:2];
     [(ActionCellAccessory *)self->_lockedAccessory setPreferredSymbolConfiguration:v11];
@@ -250,8 +250,8 @@ TabLibraryItemController *__41__TabGroupLibraryItemController_subitems__block_in
   v2 = objc_alloc_init(MEMORY[0x277D75270]);
   [v2 setDisplayedState:0];
   [v2 setStyle:2];
-  v3 = [MEMORY[0x277D75348] tertiaryLabelColor];
-  [v2 setTintColor:v3];
+  tertiaryLabelColor = [MEMORY[0x277D75348] tertiaryLabelColor];
+  [v2 setTintColor:tertiaryLabelColor];
 
   return v2;
 }
@@ -261,8 +261,8 @@ TabLibraryItemController *__41__TabGroupLibraryItemController_subitems__block_in
   v8[1] = *MEMORY[0x277D85DE8];
   if ([(TabGroupLibraryItemController *)self _isPrivateBrowsingAndLocked])
   {
-    v3 = [(TabGroupLibraryItemController *)self lockedAccessory];
-    v8[0] = v3;
+    lockedAccessory = [(TabGroupLibraryItemController *)self lockedAccessory];
+    v8[0] = lockedAccessory;
     v4 = v8;
 LABEL_3:
     v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v4 count:1];
@@ -272,8 +272,8 @@ LABEL_3:
 
   if ([MEMORY[0x277D49A08] isEnhancedVerticalTabsEnabled] && -[TabGroupLibraryItemController hasSubitems](self, "hasSubitems"))
   {
-    v3 = [(TabGroupLibraryItemController *)self disclosureAccessory];
-    v7 = v3;
+    lockedAccessory = [(TabGroupLibraryItemController *)self disclosureAccessory];
+    v7 = lockedAccessory;
     v4 = &v7;
     goto LABEL_3;
   }
@@ -288,17 +288,17 @@ LABEL_8:
 {
   if ([(WBTabGroup *)self->_tabGroup isLocal])
   {
-    v3 = [MEMORY[0x277D499B8] sharedLogger];
-    v4 = v3;
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    v4 = mEMORY[0x277D499B8];
     v5 = 0;
   }
 
   else
   {
-    v6 = [(WBTabGroup *)self->_tabGroup isPrivateBrowsing];
-    v3 = [MEMORY[0x277D499B8] sharedLogger];
-    v4 = v3;
-    if (v6)
+    isPrivateBrowsing = [(WBTabGroup *)self->_tabGroup isPrivateBrowsing];
+    mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+    v4 = mEMORY[0x277D499B8];
+    if (isPrivateBrowsing)
     {
       v5 = 1;
     }
@@ -309,16 +309,16 @@ LABEL_8:
     }
   }
 
-  [v3 didUseSidebarAction:v5];
+  [mEMORY[0x277D499B8] didUseSidebarAction:v5];
 
-  v7 = [MEMORY[0x277D499B8] sharedLogger];
-  [v7 didSwitchToTabGroupFromLocation:0];
+  mEMORY[0x277D499B8]2 = [MEMORY[0x277D499B8] sharedLogger];
+  [mEMORY[0x277D499B8]2 didSwitchToTabGroupFromLocation:0];
 
-  v9 = [(TabGroupLibraryItemController *)self tabGroupProvider];
-  if (([v9 scrollTabSwitcherToTabGroupIfShowing:self->_tabGroup] & 1) == 0)
+  tabGroupProvider = [(TabGroupLibraryItemController *)self tabGroupProvider];
+  if (([tabGroupProvider scrollTabSwitcherToTabGroupIfShowing:self->_tabGroup] & 1) == 0)
   {
-    v8 = [(WBTabGroup *)self->_tabGroup uuid];
-    [v9 setActiveTabGroupUUID:v8];
+    uuid = [(WBTabGroup *)self->_tabGroup uuid];
+    [tabGroupProvider setActiveTabGroupUUID:uuid];
   }
 }
 
@@ -329,17 +329,17 @@ LABEL_8:
     return 0;
   }
 
-  v3 = [(TabGroupLibraryItemController *)self tabGroupProvider];
-  v4 = [(WBTabGroup *)self->_tabGroup uuid];
-  v5 = [v3 isTabGroupUUIDExpanded:v4];
+  tabGroupProvider = [(TabGroupLibraryItemController *)self tabGroupProvider];
+  uuid = [(WBTabGroup *)self->_tabGroup uuid];
+  v5 = [tabGroupProvider isTabGroupUUIDExpanded:uuid];
 
   if (v5)
   {
     return 0;
   }
 
-  v6 = [(TabGroupLibraryItemController *)self tabGroupProvider];
-  v7 = [v6 activeTabGroupOrTabGroupVisibleInSwitcher];
+  tabGroupProvider2 = [(TabGroupLibraryItemController *)self tabGroupProvider];
+  activeTabGroupOrTabGroupVisibleInSwitcher = [tabGroupProvider2 activeTabGroupOrTabGroupVisibleInSwitcher];
   v8 = WBSIsEqual();
 
   if (!v8)
@@ -347,9 +347,9 @@ LABEL_8:
     return 0;
   }
 
-  v9 = [(TabGroupLibraryItemController *)self tabGroupProvider];
-  v10 = [v9 activeLibraryType];
-  v11 = v10 == 0;
+  tabGroupProvider3 = [(TabGroupLibraryItemController *)self tabGroupProvider];
+  activeLibraryType = [tabGroupProvider3 activeLibraryType];
+  v11 = activeLibraryType == 0;
 
   return v11;
 }
@@ -358,16 +358,16 @@ LABEL_8:
 {
   if ([MEMORY[0x277D49A08] isEnhancedVerticalTabsEnabled])
   {
-    v3 = [(LibraryItemController *)self configuration];
-    v4 = [v3 isTabGroupExpanded];
-    v5 = (v4)[2](v4, self->_tabGroup);
+    configuration = [(LibraryItemController *)self configuration];
+    isTabGroupExpanded = [configuration isTabGroupExpanded];
+    v5 = (isTabGroupExpanded)[2](isTabGroupExpanded, self->_tabGroup);
   }
 
   else
   {
-    v3 = [(TabGroupLibraryItemController *)self tabGroupProvider];
-    v4 = [(WBTabGroup *)self->_tabGroup uuid];
-    v5 = [v3 isTabGroupUUIDExpanded:v4];
+    configuration = [(TabGroupLibraryItemController *)self tabGroupProvider];
+    isTabGroupExpanded = [(WBTabGroup *)self->_tabGroup uuid];
+    v5 = [configuration isTabGroupUUIDExpanded:isTabGroupExpanded];
   }
 
   v6 = v5;
@@ -412,16 +412,16 @@ LABEL_8:
 {
   if ([MEMORY[0x277D49A08] isEnhancedVerticalTabsEnabled])
   {
-    v4 = [(LibraryItemController *)self configuration];
-    v3 = [v4 setTabGroupExpanded];
-    (v3)[2](v3, self->_tabGroup, [(TabGroupLibraryItemController *)self isExpanded]^ 1);
+    configuration = [(LibraryItemController *)self configuration];
+    setTabGroupExpanded = [configuration setTabGroupExpanded];
+    (setTabGroupExpanded)[2](setTabGroupExpanded, self->_tabGroup, [(TabGroupLibraryItemController *)self isExpanded]^ 1);
   }
 
   else
   {
-    v4 = [(TabGroupLibraryItemController *)self tabGroupProvider];
-    v3 = [(WBTabGroup *)self->_tabGroup uuid];
-    [v4 toggleTabGroupUUIDExpanded:v3];
+    configuration = [(TabGroupLibraryItemController *)self tabGroupProvider];
+    setTabGroupExpanded = [(WBTabGroup *)self->_tabGroup uuid];
+    [configuration toggleTabGroupUUIDExpanded:setTabGroupExpanded];
   }
 }
 
@@ -440,10 +440,10 @@ LABEL_8:
   return v3;
 }
 
-- (unint64_t)dropOperationForSession:(id)a3
+- (unint64_t)dropOperationForSession:(id)session
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   if ([(TabGroupLibraryItemController *)self _isPrivateBrowsingAndLocked])
   {
     v5 = 1;
@@ -451,7 +451,7 @@ LABEL_8:
 
   else
   {
-    [v4 items];
+    [sessionCopy items];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
@@ -474,29 +474,29 @@ LABEL_8:
           v11 = *(*(&v20 + 1) + 8 * i);
           if ([(TabGroupLibraryItemController *)self isTabGroupSynced])
           {
-            v12 = [v11 _sf_localTabGroup];
+            _sf_localTabGroup = [v11 _sf_localTabGroup];
 
-            if (v12)
+            if (_sf_localTabGroup)
             {
               v5 = 3;
               goto LABEL_25;
             }
           }
 
-          v13 = [v11 _sf_localBookmark];
+          _sf_localBookmark = [v11 _sf_localBookmark];
 
-          if (v13)
+          if (_sf_localBookmark)
           {
             v5 = 2;
           }
 
           else
           {
-            v14 = [v11 safari_localWBTab];
-            v15 = v14;
-            if (v14)
+            safari_localWBTab = [v11 safari_localWBTab];
+            v15 = safari_localWBTab;
+            if (safari_localWBTab)
             {
-              if (([v14 isPinned] & 1) != 0 || (v16 = objc_msgSend(v15, "isPrivateBrowsing"), v16 != -[WBTabGroup isPrivateBrowsing](self->_tabGroup, "isPrivateBrowsing")))
+              if (([safari_localWBTab isPinned] & 1) != 0 || (v16 = objc_msgSend(v15, "isPrivateBrowsing"), v16 != -[WBTabGroup isPrivateBrowsing](self->_tabGroup, "isPrivateBrowsing")))
               {
 
                 goto LABEL_24;
@@ -507,8 +507,8 @@ LABEL_8:
 
             else
             {
-              v17 = [v11 itemProvider];
-              v18 = [v17 canLoadObjectOfClass:objc_opt_class()];
+              itemProvider = [v11 itemProvider];
+              v18 = [itemProvider canLoadObjectOfClass:objc_opt_class()];
 
               if (v18)
               {
@@ -540,9 +540,9 @@ LABEL_25:
   return v5;
 }
 
-- (int64_t)dropIntentForSession:(id)a3
+- (int64_t)dropIntentForSession:(id)session
 {
-  if ([(TabGroupLibraryItemController *)self _sessionContainsTabGroup:a3])
+  if ([(TabGroupLibraryItemController *)self _sessionContainsTabGroup:session])
   {
     return 1;
   }
@@ -553,14 +553,14 @@ LABEL_25:
   }
 }
 
-- (void)performDropWithProposal:(id)a3 session:(id)a4 inViewController:(id)a5
+- (void)performDropWithProposal:(id)proposal session:(id)session inViewController:(id)controller
 {
   v39 = *MEMORY[0x277D85DE8];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = [a4 items];
+  obj = [session items];
   v6 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v6)
   {
@@ -579,41 +579,41 @@ LABEL_25:
         }
 
         v12 = *(*(&v33 + 1) + 8 * v11);
-        v13 = [v12 _sf_localTabGroup];
-        if (v13)
+        _sf_localTabGroup = [v12 _sf_localTabGroup];
+        if (_sf_localTabGroup)
         {
-          v28 = v13;
-          v29 = [(TabGroupLibraryItemController *)self tabGroupProvider];
-          [v29 moveTabGroup:v28 beforeOrAfterTabGroup:*(&self->super.super.isa + v10[918])];
+          v28 = _sf_localTabGroup;
+          tabGroupProvider = [(TabGroupLibraryItemController *)self tabGroupProvider];
+          [tabGroupProvider moveTabGroup:v28 beforeOrAfterTabGroup:*(&self->super.super.isa + v10[918])];
 
-          v30 = [MEMORY[0x277D499B8] sharedLogger];
-          [v30 didUseSidebarAction:17];
+          mEMORY[0x277D499B8] = [MEMORY[0x277D499B8] sharedLogger];
+          [mEMORY[0x277D499B8] didUseSidebarAction:17];
 
           goto LABEL_20;
         }
 
-        v14 = [v12 _sf_localBookmark];
-        if (v14)
+        _sf_localBookmark = [v12 _sf_localBookmark];
+        if (_sf_localBookmark)
         {
-          v15 = v14;
-          v16 = [(TabGroupLibraryItemController *)self tabGroupProvider];
-          [v16 openBookmark:v15 inTabGroup:*(&self->super.super.isa + v10[918])];
+          safari_localWBTab = _sf_localBookmark;
+          tabGroupProvider2 = [(TabGroupLibraryItemController *)self tabGroupProvider];
+          [tabGroupProvider2 openBookmark:safari_localWBTab inTabGroup:*(&self->super.super.isa + v10[918])];
 
-          v17 = [MEMORY[0x277D499B8] sharedLogger];
-          [v17 didUseSidebarAction:19];
+          mEMORY[0x277D499B8]2 = [MEMORY[0x277D499B8] sharedLogger];
+          [mEMORY[0x277D499B8]2 didUseSidebarAction:19];
 LABEL_11:
 
           goto LABEL_12;
         }
 
-        v15 = [v12 safari_localWBTab];
-        if (v15)
+        safari_localWBTab = [v12 safari_localWBTab];
+        if (safari_localWBTab)
         {
-          v17 = [(TabGroupLibraryItemController *)self tabGroupProvider];
-          v18 = [v15 tabGroupUUID];
+          mEMORY[0x277D499B8]2 = [(TabGroupLibraryItemController *)self tabGroupProvider];
+          tabGroupUUID = [safari_localWBTab tabGroupUUID];
           [*(&self->super.super.isa + v10[918]) uuid];
           v20 = v19 = v9;
-          [v17 moveTab:v15 fromTabGroupWithUUID:v18 toTabGroupWithUUID:v20 afterTab:0];
+          [mEMORY[0x277D499B8]2 moveTab:safari_localWBTab fromTabGroupWithUUID:tabGroupUUID toTabGroupWithUUID:v20 afterTab:0];
 
           v9 = v19;
           v10 = &OBJC_IVAR___SFHistoryViewDataSource__filteringQueue;
@@ -621,9 +621,9 @@ LABEL_11:
           goto LABEL_11;
         }
 
-        v21 = [v12 itemProvider];
+        itemProvider = [v12 itemProvider];
         v22 = v9;
-        v23 = [v21 canLoadObjectOfClass:objc_opt_class()];
+        v23 = [itemProvider canLoadObjectOfClass:objc_opt_class()];
 
         if (v23)
         {
@@ -637,8 +637,8 @@ LABEL_11:
           v32[4] = self;
           [v24 _sf_urlsFromDragItems:v25 completionHandler:v32];
 
-          v26 = [MEMORY[0x277D499B8] sharedLogger];
-          [v26 didUseSidebarAction:19];
+          mEMORY[0x277D499B8]3 = [MEMORY[0x277D499B8] sharedLogger];
+          [mEMORY[0x277D499B8]3 didUseSidebarAction:19];
         }
 
         v9 = v22;
@@ -697,10 +697,10 @@ void __82__TabGroupLibraryItemController_performDropWithProposal_session_inViewC
   }
 }
 
-- (BOOL)_sessionContainsLocalTabs:(id)a3
+- (BOOL)_sessionContainsLocalTabs:(id)tabs
 {
-  v3 = [a3 items];
-  v4 = [v3 safari_containsObjectPassingTest:&__block_literal_global_44_1];
+  items = [tabs items];
+  v4 = [items safari_containsObjectPassingTest:&__block_literal_global_44_1];
 
   return v4;
 }
@@ -723,10 +723,10 @@ BOOL __59__TabGroupLibraryItemController__sessionContainsLocalTabs___block_invok
   return v4;
 }
 
-- (BOOL)_sessionContainsTabGroup:(id)a3
+- (BOOL)_sessionContainsTabGroup:(id)group
 {
-  v3 = [a3 items];
-  v4 = [v3 safari_containsObjectPassingTest:&__block_literal_global_46];
+  items = [group items];
+  v4 = [items safari_containsObjectPassingTest:&__block_literal_global_46];
 
   return v4;
 }
@@ -749,11 +749,11 @@ BOOL __58__TabGroupLibraryItemController__sessionContainsTabGroup___block_invoke
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TabGroupLibraryItemController alloc];
-  v5 = [(LibraryItemController *)self configuration];
-  v6 = [(TabGroupLibraryItemController *)v4 initWithConfiguration:v5 tabGroup:self->_tabGroup];
+  configuration = [(LibraryItemController *)self configuration];
+  v6 = [(TabGroupLibraryItemController *)v4 initWithConfiguration:configuration tabGroup:self->_tabGroup];
 
   return v6;
 }

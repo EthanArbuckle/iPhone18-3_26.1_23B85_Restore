@@ -2,46 +2,46 @@
 - (unsigned)maximumValue;
 - (unsigned)minimumValue;
 - (unsigned)stepValue;
-- (unsigned)valueRoundedToNearestStepValue:(unsigned int)a3;
+- (unsigned)valueRoundedToNearestStepValue:(unsigned int)value;
 @end
 
 @implementation CAFUInt32Range
 
 - (unsigned)minimumValue
 {
-  v2 = [(CAFRange *)self minimum];
-  v3 = [v2 unsignedIntValue];
+  minimum = [(CAFRange *)self minimum];
+  unsignedIntValue = [minimum unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)maximumValue
 {
-  v2 = [(CAFRange *)self maximum];
-  v3 = [v2 unsignedIntValue];
+  maximum = [(CAFRange *)self maximum];
+  unsignedIntValue = [maximum unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)stepValue
 {
-  v2 = [(CAFRange *)self step];
-  v3 = [v2 unsignedIntValue];
+  step = [(CAFRange *)self step];
+  unsignedIntValue = [step unsignedIntValue];
 
-  return v3;
+  return unsignedIntValue;
 }
 
-- (unsigned)valueRoundedToNearestStepValue:(unsigned int)a3
+- (unsigned)valueRoundedToNearestStepValue:(unsigned int)value
 {
   if ([(CAFUInt32Range *)self stepValue])
   {
-    v5 = a3 - [(CAFUInt32Range *)self minimumValue];
+    v5 = value - [(CAFUInt32Range *)self minimumValue];
     v6 = v5 / [(CAFUInt32Range *)self stepValue];
-    v7 = [(CAFUInt32Range *)self minimumValue];
-    return v7 + [(CAFUInt32Range *)self stepValue]* v6;
+    minimumValue = [(CAFUInt32Range *)self minimumValue];
+    return minimumValue + [(CAFUInt32Range *)self stepValue]* v6;
   }
 
-  return a3;
+  return value;
 }
 
 @end

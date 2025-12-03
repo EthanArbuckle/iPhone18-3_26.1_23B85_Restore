@@ -1,22 +1,22 @@
 @interface SUComposeReviewViewController
-- (SUComposeReviewViewController)initWithCompositionURL:(id)a3;
+- (SUComposeReviewViewController)initWithCompositionURL:(id)l;
 - (id)copyScriptViewController;
 - (void)_showRemoteView;
 - (void)dealloc;
 - (void)loadView;
-- (void)prepareWithCompletionBlock:(id)a3;
+- (void)prepareWithCompletionBlock:(id)block;
 @end
 
 @implementation SUComposeReviewViewController
 
-- (SUComposeReviewViewController)initWithCompositionURL:(id)a3
+- (SUComposeReviewViewController)initWithCompositionURL:(id)l
 {
   v6.receiver = self;
   v6.super_class = SUComposeReviewViewController;
   v4 = [(SUViewController *)&v6 init];
   if (v4)
   {
-    v4->_compositionURL = [a3 copy];
+    v4->_compositionURL = [l copy];
     [(SUComposeReviewViewController *)v4 setContainmentSupport:1];
     if ([objc_msgSend(MEMORY[0x1E69DC938] "currentDevice")] == 1)
     {
@@ -43,7 +43,7 @@
   return v3;
 }
 
-- (void)prepareWithCompletionBlock:(id)a3
+- (void)prepareWithCompletionBlock:(id)block
 {
   if (!self->_remoteViewController)
   {
@@ -53,7 +53,7 @@
     self->_remoteViewController = v6;
     [(SKComposeReviewViewController *)v6 setDelegate:self];
     [(SUComposeReviewViewController *)self addChildViewController:self->_remoteViewController];
-    [(SKComposeReviewViewController *)self->_remoteViewController prepareWithCompletionBlock:a3];
+    [(SKComposeReviewViewController *)self->_remoteViewController prepareWithCompletionBlock:block];
     if ([(SUComposeReviewViewController *)self isViewLoaded])
     {
 
@@ -74,13 +74,13 @@
 
 - (void)_showRemoteView
 {
-  v3 = [(SUComposeReviewViewController *)self view];
-  v4 = [(SKComposeReviewViewController *)self->_remoteViewController view];
-  [v4 setAutoresizingMask:18];
-  [v3 frame];
-  [v4 setFrame:?];
+  view = [(SUComposeReviewViewController *)self view];
+  view2 = [(SKComposeReviewViewController *)self->_remoteViewController view];
+  [view2 setAutoresizingMask:18];
+  [view frame];
+  [view2 setFrame:?];
 
-  [v3 addSubview:v4];
+  [view addSubview:view2];
 }
 
 @end

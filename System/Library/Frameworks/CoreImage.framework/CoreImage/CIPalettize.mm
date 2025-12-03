@@ -57,12 +57,12 @@
       inputPerceptual = self->inputPerceptual;
       if (inputPerceptual)
       {
-        v11 = [(NSNumber *)inputPerceptual BOOLValue];
+        bOOLValue = [(NSNumber *)inputPerceptual BOOLValue];
       }
 
       else
       {
-        v11 = 0;
+        bOOLValue = 0;
       }
 
       v12 = v9;
@@ -71,20 +71,20 @@
       v16 = v15;
       v18 = v17;
       v20 = v19;
-      v21 = [(CIPalettize *)self _kernelApplyPalette];
+      _kernelApplyPalette = [(CIPalettize *)self _kernelApplyPalette];
       inputPaletteImage = self->inputPaletteImage;
       [(CIImage *)inputPaletteImage extent];
       v24 = -v23;
       [(CIImage *)self->inputPaletteImage extent];
       CGAffineTransformMakeTranslation(&v33, v24, -v25);
       v26 = [(CIImage *)inputPaletteImage imageByApplyingTransform:&v33];
-      if (v11)
+      if (bOOLValue)
       {
         inputImage = [(CIImage *)inputImage imageByApplyingFilter:@"CILinearToSRGBToneCurve"];
         v26 = [(CIImage *)v26 imageByApplyingFilter:@"CILinearToSRGBToneCurve"];
       }
 
-      v27 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+      imageByUnpremultiplyingAlpha = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
       v28 = *MEMORY[0x1E695F040];
       v29 = *(MEMORY[0x1E695F040] + 8);
       v30 = *(MEMORY[0x1E695F040] + 16);
@@ -94,11 +94,11 @@
       v32[2] = __26__CIPalettize_outputImage__block_invoke;
       v32[3] = &__block_descriptor_40_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l;
       v32[4] = v12;
-      v34[0] = v27;
+      v34[0] = imageByUnpremultiplyingAlpha;
       v34[1] = v26;
       v34[2] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:v12];
-      result = [objc_msgSend(objc_msgSend(v21 applyWithExtent:v32 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v34, 3), v28, v29, v30, v31), "imageByCroppingToRect:", v14, v16, v18, v20), "imageByPremultiplyingAlpha"}];
-      if (v11)
+      result = [objc_msgSend(objc_msgSend(_kernelApplyPalette applyWithExtent:v32 roiCallback:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v34, 3), v28, v29, v30, v31), "imageByCroppingToRect:", v14, v16, v18, v20), "imageByPremultiplyingAlpha"}];
+      if (bOOLValue)
       {
         return [result imageByApplyingFilter:@"CISRGBToneCurveToLinear"];
       }
@@ -127,9 +127,9 @@ double __26__CIPalettize_outputImage__block_invoke(uint64_t a1, int a2)
 - (void)outputImage
 {
   v13 = *MEMORY[0x1E69E9840];
-  [*a1 extent];
+  [*self extent];
   v5 = v4;
-  [*a1 extent];
+  [*self extent];
   v7 = 136446722;
   v8 = "[CIPalettize outputImage]";
   v9 = 2048;

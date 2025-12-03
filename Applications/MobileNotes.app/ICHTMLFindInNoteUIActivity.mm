@@ -1,5 +1,5 @@
 @interface ICHTMLFindInNoteUIActivity
-- (ICHTMLFindInNoteUIActivity)initWithDelegate:(id)a3;
+- (ICHTMLFindInNoteUIActivity)initWithDelegate:(id)delegate;
 - (ICHTMLFindInNoteUIActivityDelegate)delegate;
 - (id)activityTitle;
 - (void)performActivity;
@@ -7,16 +7,16 @@
 
 @implementation ICHTMLFindInNoteUIActivity
 
-- (ICHTMLFindInNoteUIActivity)initWithDelegate:(id)a3
+- (ICHTMLFindInNoteUIActivity)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = ICHTMLFindInNoteUIActivity;
   v5 = [(ICHTMLFindInNoteUIActivity *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = v6;
   }
 
@@ -33,17 +33,17 @@
 
 - (void)performActivity
 {
-  v3 = [(ICHTMLFindInNoteUIActivity *)self delegate];
-  if (v3)
+  delegate = [(ICHTMLFindInNoteUIActivity *)self delegate];
+  if (delegate)
   {
-    v4 = v3;
-    v5 = [(ICHTMLFindInNoteUIActivity *)self delegate];
+    v4 = delegate;
+    delegate2 = [(ICHTMLFindInNoteUIActivity *)self delegate];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(ICHTMLFindInNoteUIActivity *)self delegate];
-      [v7 performFindInNoteUIActivity:self];
+      delegate3 = [(ICHTMLFindInNoteUIActivity *)self delegate];
+      [delegate3 performFindInNoteUIActivity:self];
     }
   }
 }

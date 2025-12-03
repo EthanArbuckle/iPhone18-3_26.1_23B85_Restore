@@ -10,8 +10,8 @@
   v4.receiver = self;
   v4.super_class = HUCCCompactModulePropertyAnimator;
   [(UIViewPropertyAnimator *)&v4 startAnimation];
-  v3 = [(HUCCCompactModulePropertyAnimator *)self delegate];
-  [v3 propertyAnimatorDidStartAnimating:self];
+  delegate = [(HUCCCompactModulePropertyAnimator *)self delegate];
+  [delegate propertyAnimatorDidStartAnimating:self];
 }
 
 - (HUCCCompactModulePropertyAnimatorDelegate)delegate

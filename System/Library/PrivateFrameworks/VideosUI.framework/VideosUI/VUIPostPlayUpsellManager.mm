@@ -2,14 +2,14 @@
 + (id)sharedInstance;
 - (BOOL)_isFullScreenPlaybackUIShown;
 - (VUIPostPlayUpsellManager)init;
-- (void)_currentMediaItemWillChange:(id)a3;
+- (void)_currentMediaItemWillChange:(id)change;
 - (void)_handleDeferredMediaItemUpsellIfNeeded;
-- (void)_handleUpsellForMediaItem:(id)a3 elapsedTimeInterval:(double)a4;
-- (void)_isPlaybackUIBeingShownDidChange:(id)a3;
-- (void)_playbackStateWillChange:(id)a3;
+- (void)_handleUpsellForMediaItem:(id)item elapsedTimeInterval:(double)interval;
+- (void)_isPlaybackUIBeingShownDidChange:(id)change;
+- (void)_playbackStateWillChange:(id)change;
 - (void)_registerStateMachineHandlers;
 - (void)_reset;
-- (void)handleRouterDataSourceIfNeeded:(id)a3;
+- (void)handleRouterDataSourceIfNeeded:(id)needed;
 @end
 
 @implementation VUIPostPlayUpsellManager
@@ -40,10 +40,10 @@ void __42__VUIPostPlayUpsellManager_sharedInstance__block_invoke()
   v2 = [(VUIPostPlayUpsellManager *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v3 addObserver:v2 selector:sel__isPlaybackUIBeingShownDidChange_ name:VUIPlaybackManagerIsPlaybackUIBeingShownDidChange[0] object:0];
-    [v3 addObserver:v2 selector:sel__currentMediaItemWillChange_ name:*MEMORY[0x1E69D5F18] object:0];
-    [v3 addObserver:v2 selector:sel__playbackStateWillChange_ name:*MEMORY[0x1E69D60A8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__isPlaybackUIBeingShownDidChange_ name:VUIPlaybackManagerIsPlaybackUIBeingShownDidChange[0] object:0];
+    [defaultCenter addObserver:v2 selector:sel__currentMediaItemWillChange_ name:*MEMORY[0x1E69D5F18] object:0];
+    [defaultCenter addObserver:v2 selector:sel__playbackStateWillChange_ name:*MEMORY[0x1E69D60A8] object:0];
     v4 = objc_alloc(MEMORY[0x1E69D5A60]);
     v5 = objc_opt_class();
     v6 = NSStringFromClass(v5);
@@ -67,22 +67,22 @@ void __42__VUIPostPlayUpsellManager_sharedInstance__block_invoke()
 - (void)_registerStateMachineHandlers
 {
   objc_initWeak(&location, self);
-  v3 = [(VUIPostPlayUpsellManager *)self stateMachine];
+  stateMachine = [(VUIPostPlayUpsellManager *)self stateMachine];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __57__VUIPostPlayUpsellManager__registerStateMachineHandlers__block_invoke;
   v7[3] = &unk_1E872FAD8;
   objc_copyWeak(&v8, &location);
-  [v3 registerDefaultHandlerForEvent:@"Player started Live playback" withBlock:v7];
+  [stateMachine registerDefaultHandlerForEvent:@"Player started Live playback" withBlock:v7];
 
-  v4 = [(VUIPostPlayUpsellManager *)self stateMachine];
+  stateMachine2 = [(VUIPostPlayUpsellManager *)self stateMachine];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __57__VUIPostPlayUpsellManager__registerStateMachineHandlers__block_invoke_2;
   v5[3] = &unk_1E8735D58;
   objc_copyWeak(&v6, &location);
   v5[4] = self;
-  [v4 registerHandlerForEvent:@"Anything other than live playback started" onState:@"PlayingLiveStream" withBlock:v5];
+  [stateMachine2 registerHandlerForEvent:@"Anything other than live playback started" onState:@"PlayingLiveStream" withBlock:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&v8);
@@ -139,26 +139,26 @@ __CFString *__57__VUIPostPlayUpsellManager__registerStateMachineHandlers__block_
 - (BOOL)_isFullScreenPlaybackUIShown
 {
   v2 = +[VUIPlaybackManager sharedInstance];
-  v3 = [v2 isFullscreenPlaybackUIBeingShown];
+  isFullscreenPlaybackUIBeingShown = [v2 isFullscreenPlaybackUIBeingShown];
 
-  return v3;
+  return isFullscreenPlaybackUIBeingShown;
 }
 
-- (void)_playbackStateWillChange:(id)a3
+- (void)_playbackStateWillChange:(id)change
 {
-  v12 = a3;
-  v4 = [v12 object];
-  [v4 duration];
+  changeCopy = change;
+  object = [changeCopy object];
+  [object duration];
   if (v5 == *MEMORY[0x1E69D5A78])
   {
-    v6 = [v12 userInfo];
-    v7 = [v6 objectForKey:*MEMORY[0x1E69D6098]];
+    userInfo = [changeCopy userInfo];
+    v7 = [userInfo objectForKey:*MEMORY[0x1E69D6098]];
 
-    v8 = [MEMORY[0x1E69D5A40] playing];
+    playing = [MEMORY[0x1E69D5A40] playing];
 
-    v9 = [(VUIPostPlayUpsellManager *)self stateMachine];
-    v10 = v9;
-    if (v7 == v8)
+    stateMachine = [(VUIPostPlayUpsellManager *)self stateMachine];
+    v10 = stateMachine;
+    if (v7 == playing)
     {
       v11 = @"Player started Live playback";
     }
@@ -168,32 +168,32 @@ __CFString *__57__VUIPostPlayUpsellManager__registerStateMachineHandlers__block_
       v11 = @"Anything other than live playback started";
     }
 
-    [v9 postEvent:v11 withContext:v4];
+    [stateMachine postEvent:v11 withContext:object];
   }
 
   else
   {
-    [v4 elapsedTime];
+    [object elapsedTime];
     [(VUIPostPlayUpsellManager *)self setElapsedTime:?];
   }
 }
 
-- (void)_currentMediaItemWillChange:(id)a3
+- (void)_currentMediaItemWillChange:(id)change
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = [v5 currentMediaItem];
-  v7 = [v6 mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellRouterDataSource"];
+  changeCopy = change;
+  object = [changeCopy object];
+  currentMediaItem = [object currentMediaItem];
+  v7 = [currentMediaItem mediaItemMetadataForProperty:@"VUIMediaItemMetadataKeyPlaybackExitUpsellRouterDataSource"];
   v8 = v7;
-  if (v6 && v7)
+  if (currentMediaItem && v7)
   {
-    v9 = [v4 userInfo];
-    v10 = [v9 objectForKey:*MEMORY[0x1E69D5F08]];
+    userInfo = [changeCopy userInfo];
+    v10 = [userInfo objectForKey:*MEMORY[0x1E69D5F08]];
     v11 = VUIDefaultLogObject();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [v6 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
+      v12 = [currentMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
       v19 = 138412546;
       v20 = v12;
       v21 = 2112;
@@ -214,7 +214,7 @@ __CFString *__57__VUIPostPlayUpsellManager__registerStateMachineHandlers__block_
           _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_DEFAULT, "VUIPostPlayUpsellManager - Defer the processing of this media item upsell", &v19, 2u);
         }
 
-        [(VUIPostPlayUpsellManager *)self setDeferredMediaItem:v6];
+        [(VUIPostPlayUpsellManager *)self setDeferredMediaItem:currentMediaItem];
         [(VUIPostPlayUpsellManager *)self setDeferredElapsedTime:v14];
       }
     }
@@ -231,7 +231,7 @@ __CFString *__57__VUIPostPlayUpsellManager__registerStateMachineHandlers__block_
 
       if (v14 >= 0.0)
       {
-        [(VUIPostPlayUpsellManager *)self _handleUpsellForMediaItem:v6 elapsedTimeInterval:v14];
+        [(VUIPostPlayUpsellManager *)self _handleUpsellForMediaItem:currentMediaItem elapsedTimeInterval:v14];
       }
 
       else
@@ -249,12 +249,12 @@ __CFString *__57__VUIPostPlayUpsellManager__registerStateMachineHandlers__block_
   }
 }
 
-- (void)_isPlaybackUIBeingShownDidChange:(id)a3
+- (void)_isPlaybackUIBeingShownDidChange:(id)change
 {
   v4 = +[VUIPlaybackManager sharedInstance];
-  v5 = [v4 isPlaybackUIBeingShown];
+  isPlaybackUIBeingShown = [v4 isPlaybackUIBeingShown];
 
-  if ((v5 & 1) == 0)
+  if ((isPlaybackUIBeingShown & 1) == 0)
   {
 
     [(VUIPostPlayUpsellManager *)self _handleDeferredMediaItemUpsellIfNeeded];
@@ -264,36 +264,36 @@ __CFString *__57__VUIPostPlayUpsellManager__registerStateMachineHandlers__block_
 - (void)_handleDeferredMediaItemUpsellIfNeeded
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(VUIPostPlayUpsellManager *)self deferredMediaItem];
-  if (v3 && ![(VUIPostPlayUpsellManager *)self _isFullScreenPlaybackUIShown])
+  deferredMediaItem = [(VUIPostPlayUpsellManager *)self deferredMediaItem];
+  if (deferredMediaItem && ![(VUIPostPlayUpsellManager *)self _isFullScreenPlaybackUIShown])
   {
     v4 = VUIDefaultLogObject();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
-      v5 = [v3 mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
+      v5 = [deferredMediaItem mediaItemMetadataForProperty:*MEMORY[0x1E69D5DC0]];
       v6 = 138412290;
       v7 = v5;
       _os_log_impl(&dword_1E323F000, v4, OS_LOG_TYPE_DEFAULT, "VUIPostPlayUpsellManager - _handleDeferredMediaItemUpsellIfNeeded: %@", &v6, 0xCu);
     }
 
     [(VUIPostPlayUpsellManager *)self deferredElapsedTime];
-    [(VUIPostPlayUpsellManager *)self _handleUpsellForMediaItem:v3 elapsedTimeInterval:?];
+    [(VUIPostPlayUpsellManager *)self _handleUpsellForMediaItem:deferredMediaItem elapsedTimeInterval:?];
   }
 }
 
-- (void)_handleUpsellForMediaItem:(id)a3 elapsedTimeInterval:(double)a4
+- (void)_handleUpsellForMediaItem:(id)item elapsedTimeInterval:(double)interval
 {
-  v6 = a3;
-  if (v6)
+  itemCopy = item;
+  if (itemCopy)
   {
     v7 = +[VUIPostPlayUpsellConfig sharedInstance];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __74__VUIPostPlayUpsellManager__handleUpsellForMediaItem_elapsedTimeInterval___block_invoke;
     v8[3] = &unk_1E872E9C8;
-    v9 = v6;
-    v10 = self;
-    [v7 canShowUpsellForMediaItem:v9 withElapsedTime:v8 completion:a4];
+    v9 = itemCopy;
+    selfCopy = self;
+    [v7 canShowUpsellForMediaItem:v9 withElapsedTime:v8 completion:interval];
   }
 }
 
@@ -325,20 +325,20 @@ void __74__VUIPostPlayUpsellManager__handleUpsellForMediaItem_elapsedTimeInterva
   [(VUIPostPlayUpsellManager *)self setCumulativeLivePlaybacktime:0.0];
 }
 
-- (void)handleRouterDataSourceIfNeeded:(id)a3
+- (void)handleRouterDataSourceIfNeeded:(id)needed
 {
-  if (a3)
+  if (needed)
   {
-    v3 = a3;
+    neededCopy = needed;
     v4 = +[VUIAppReviewManager sharedInstance];
     [v4 isFeatureEnabled:&__block_literal_global_32_1];
 
     +[_TtC8VideosUI8VideosUI markLastPlaybackEventasUpsellPresented];
     v5 = +[VUITVAppLauncher sharedInstance];
-    v7 = [v5 appController];
+    appController = [v5 appController];
 
-    v6 = [v7 appContext];
-    [VUIApplicationRouter handleEvent:*MEMORY[0x1E69D59D0] targetResponder:0 appContext:v6 routerDataSource:v3 supplementaryData:0 extraInfo:0];
+    appContext = [appController appContext];
+    [VUIApplicationRouter handleEvent:*MEMORY[0x1E69D59D0] targetResponder:0 appContext:appContext routerDataSource:neededCopy supplementaryData:0 extraInfo:0];
   }
 }
 

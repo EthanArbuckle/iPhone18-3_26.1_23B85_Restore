@@ -1,12 +1,12 @@
 @interface ASCodableRelationshipStorage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ASCodableRelationshipStorage
@@ -17,133 +17,133 @@
   v8.receiver = self;
   v8.super_class = ASCodableRelationshipStorage;
   v4 = [(ASCodableRelationshipStorage *)&v8 description];
-  v5 = [(ASCodableRelationshipStorage *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ASCodableRelationshipStorage *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   legacyRelationshipContainer = self->_legacyRelationshipContainer;
   if (legacyRelationshipContainer)
   {
-    v5 = [(ASCodableRelationshipContainer *)legacyRelationshipContainer dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"legacyRelationshipContainer"];
+    dictionaryRepresentation = [(ASCodableRelationshipContainer *)legacyRelationshipContainer dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"legacyRelationshipContainer"];
   }
 
   legacyRemoteRelationshipContainer = self->_legacyRemoteRelationshipContainer;
   if (legacyRemoteRelationshipContainer)
   {
-    v7 = [(ASCodableRelationshipContainer *)legacyRemoteRelationshipContainer dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"legacyRemoteRelationshipContainer"];
+    dictionaryRepresentation2 = [(ASCodableRelationshipContainer *)legacyRemoteRelationshipContainer dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"legacyRemoteRelationshipContainer"];
   }
 
   secureCloudRelationshipContainer = self->_secureCloudRelationshipContainer;
   if (secureCloudRelationshipContainer)
   {
-    v9 = [(ASCodableRelationshipContainer *)secureCloudRelationshipContainer dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"secureCloudRelationshipContainer"];
+    dictionaryRepresentation3 = [(ASCodableRelationshipContainer *)secureCloudRelationshipContainer dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"secureCloudRelationshipContainer"];
   }
 
   secureCloudRemoteRelationshipContainer = self->_secureCloudRemoteRelationshipContainer;
   if (secureCloudRemoteRelationshipContainer)
   {
-    v11 = [(ASCodableRelationshipContainer *)secureCloudRemoteRelationshipContainer dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"secureCloudRemoteRelationshipContainer"];
+    dictionaryRepresentation4 = [(ASCodableRelationshipContainer *)secureCloudRemoteRelationshipContainer dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"secureCloudRemoteRelationshipContainer"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_legacyRelationshipContainer)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_legacyRemoteRelationshipContainer)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_secureCloudRelationshipContainer)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_secureCloudRemoteRelationshipContainer)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_legacyRelationshipContainer)
   {
-    [v4 setLegacyRelationshipContainer:?];
-    v4 = v5;
+    [toCopy setLegacyRelationshipContainer:?];
+    toCopy = v5;
   }
 
   if (self->_legacyRemoteRelationshipContainer)
   {
     [v5 setLegacyRemoteRelationshipContainer:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_secureCloudRelationshipContainer)
   {
     [v5 setSecureCloudRelationshipContainer:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_secureCloudRemoteRelationshipContainer)
   {
     [v5 setSecureCloudRemoteRelationshipContainer:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(ASCodableRelationshipContainer *)self->_legacyRelationshipContainer copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(ASCodableRelationshipContainer *)self->_legacyRelationshipContainer copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(ASCodableRelationshipContainer *)self->_legacyRemoteRelationshipContainer copyWithZone:a3];
+  v8 = [(ASCodableRelationshipContainer *)self->_legacyRemoteRelationshipContainer copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(ASCodableRelationshipContainer *)self->_secureCloudRelationshipContainer copyWithZone:a3];
+  v10 = [(ASCodableRelationshipContainer *)self->_secureCloudRelationshipContainer copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(ASCodableRelationshipContainer *)self->_secureCloudRemoteRelationshipContainer copyWithZone:a3];
+  v12 = [(ASCodableRelationshipContainer *)self->_secureCloudRemoteRelationshipContainer copyWithZone:zone];
   v13 = v5[4];
   v5[4] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((legacyRelationshipContainer = self->_legacyRelationshipContainer, !(legacyRelationshipContainer | v4[1])) || -[ASCodableRelationshipContainer isEqual:](legacyRelationshipContainer, "isEqual:")) && ((legacyRemoteRelationshipContainer = self->_legacyRemoteRelationshipContainer, !(legacyRemoteRelationshipContainer | v4[2])) || -[ASCodableRelationshipContainer isEqual:](legacyRemoteRelationshipContainer, "isEqual:")) && ((secureCloudRelationshipContainer = self->_secureCloudRelationshipContainer, !(secureCloudRelationshipContainer | v4[3])) || -[ASCodableRelationshipContainer isEqual:](secureCloudRelationshipContainer, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((legacyRelationshipContainer = self->_legacyRelationshipContainer, !(legacyRelationshipContainer | equalCopy[1])) || -[ASCodableRelationshipContainer isEqual:](legacyRelationshipContainer, "isEqual:")) && ((legacyRemoteRelationshipContainer = self->_legacyRemoteRelationshipContainer, !(legacyRemoteRelationshipContainer | equalCopy[2])) || -[ASCodableRelationshipContainer isEqual:](legacyRemoteRelationshipContainer, "isEqual:")) && ((secureCloudRelationshipContainer = self->_secureCloudRelationshipContainer, !(secureCloudRelationshipContainer | equalCopy[3])) || -[ASCodableRelationshipContainer isEqual:](secureCloudRelationshipContainer, "isEqual:")))
   {
     secureCloudRemoteRelationshipContainer = self->_secureCloudRemoteRelationshipContainer;
-    if (secureCloudRemoteRelationshipContainer | v4[4])
+    if (secureCloudRemoteRelationshipContainer | equalCopy[4])
     {
       v9 = [(ASCodableRelationshipContainer *)secureCloudRemoteRelationshipContainer isEqual:?];
     }
@@ -170,12 +170,12 @@
   return v4 ^ v5 ^ [(ASCodableRelationshipContainer *)self->_secureCloudRemoteRelationshipContainer hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   legacyRelationshipContainer = self->_legacyRelationshipContainer;
-  v13 = v4;
-  v6 = v4[1];
+  v13 = fromCopy;
+  v6 = fromCopy[1];
   if (legacyRelationshipContainer)
   {
     if (v6)

@@ -1,27 +1,27 @@
 @interface NTKParameciumFaceBundle
-- (id)_galleryEditOptionsForDevice:(id)a3;
+- (id)_galleryEditOptionsForDevice:(id)device;
 - (id)complicationTypesBySlot;
-- (id)defaultFaceForDevice:(id)a3;
-- (id)galleryFacesForDevice:(id)a3;
-- (id)galleryRowPrioritiesForDevice:(id)a3;
-- (id)galleryTitleForDevice:(id)a3;
-- (id)heroFacesForDevice:(id)a3;
-- (id)prideFacesForDevice:(id)a3;
+- (id)defaultFaceForDevice:(id)device;
+- (id)galleryFacesForDevice:(id)device;
+- (id)galleryRowPrioritiesForDevice:(id)device;
+- (id)galleryTitleForDevice:(id)device;
+- (id)heroFacesForDevice:(id)device;
+- (id)prideFacesForDevice:(id)device;
 @end
 
 @implementation NTKParameciumFaceBundle
 
-- (id)defaultFaceForDevice:(id)a3
+- (id)defaultFaceForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [objc_opt_class() identifier];
-  v5 = [objc_opt_class() analyticsIdentifier];
-  v6 = [NTKParameciumFace bundledFaceWithIdentifier:v4 analyticsIdentifier:v5 forDevice:v3 initCustomization:0];
+  deviceCopy = device;
+  identifier = [objc_opt_class() identifier];
+  analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+  v6 = [NTKParameciumFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
   return v6;
 }
 
-- (id)galleryTitleForDevice:(id)a3
+- (id)galleryTitleForDevice:(id)device
 {
   if (NTKShowGalleryLiteUI())
   {
@@ -36,19 +36,19 @@
   return v3;
 }
 
-- (id)prideFacesForDevice:(id)a3
+- (id)prideFacesForDevice:(id)device
 {
-  v4 = a3;
-  if (([(objc_class *)[(NTKParameciumFaceBundle *)self faceClass] isRestrictedForDevice:v4]& 1) != 0)
+  deviceCopy = device;
+  if (([(objc_class *)[(NTKParameciumFaceBundle *)self faceClass] isRestrictedForDevice:deviceCopy]& 1) != 0)
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [objc_opt_class() identifier];
-    v7 = [objc_opt_class() analyticsIdentifier];
-    v8 = [NTKParameciumFace bundledFaceWithIdentifier:v6 analyticsIdentifier:v7 forDevice:v4 initCustomization:0];
+    identifier = [objc_opt_class() identifier];
+    analyticsIdentifier = [objc_opt_class() analyticsIdentifier];
+    v8 = [NTKParameciumFace bundledFaceWithIdentifier:identifier analyticsIdentifier:analyticsIdentifier forDevice:deviceCopy initCustomization:0];
 
     v9 = [[NTKFaceBundleSortableGalleryFace alloc] initWithFace:v8 priority:1000];
     v11 = v9;
@@ -58,7 +58,7 @@
   return v5;
 }
 
-- (id)galleryRowPrioritiesForDevice:(id)a3
+- (id)galleryRowPrioritiesForDevice:(id)device
 {
   v5 = &off_14D90;
   v6 = &off_14DA8;
@@ -67,13 +67,13 @@
   return v3;
 }
 
-- (id)galleryFacesForDevice:(id)a3
+- (id)galleryFacesForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   if (NTKShowGalleryLiteUI())
   {
     v5 = +[NSMutableArray array];
-    v6 = [(NTKParameciumFaceBundle *)self _galleryEditOptionsForDevice:v4];
+    v6 = [(NTKParameciumFaceBundle *)self _galleryEditOptionsForDevice:deviceCopy];
     v7 = [v6 objectForKeyedSubscript:&off_14DC0];
     v8 = [v6 objectForKeyedSubscript:&off_14DD8];
     v14[0] = _NSConcreteStackBlock;
@@ -81,7 +81,7 @@
     v14[2] = sub_85A0;
     v14[3] = &unk_14678;
     v14[4] = self;
-    v15 = v4;
+    v15 = deviceCopy;
     v16 = v8;
     v9 = v5;
     v17 = v9;
@@ -99,9 +99,9 @@
   return v12;
 }
 
-- (id)_galleryEditOptionsForDevice:(id)a3
+- (id)_galleryEditOptionsForDevice:(id)device
 {
-  if ([a3 isRunningNapiliGMOrLater])
+  if ([device isRunningNapiliGMOrLater])
   {
     v5[0] = &off_14DD8;
     v5[1] = &off_14DC0;
@@ -118,22 +118,22 @@
   return v3;
 }
 
-- (id)heroFacesForDevice:(id)a3
+- (id)heroFacesForDevice:(id)device
 {
-  v4 = a3;
-  if ([v4 supportsPDRCapability:3887189377])
+  deviceCopy = device;
+  if ([deviceCopy supportsPDRCapability:3887189377])
   {
     v5 = &__NSArray0__struct;
   }
 
   else
   {
-    v6 = [(NTKParameciumFaceBundle *)self prideFacesForDevice:v4];
-    v7 = [v6 firstObject];
+    v6 = [(NTKParameciumFaceBundle *)self prideFacesForDevice:deviceCopy];
+    firstObject = [v6 firstObject];
 
     v8 = [NTKFaceBundleSortableGalleryFace alloc];
-    v9 = [v7 face];
-    v10 = [v8 initWithFace:v9 priority:1400];
+    face = [firstObject face];
+    v10 = [v8 initWithFace:face priority:1400];
 
     v12 = v10;
     v5 = [NSArray arrayWithObjects:&v12 count:1];

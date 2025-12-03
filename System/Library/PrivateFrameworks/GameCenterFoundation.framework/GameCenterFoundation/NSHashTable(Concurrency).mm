@@ -9,27 +9,27 @@
 - (void)_gkSafeAddObject:()Concurrency
 {
   v5 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
-  [v4 addObject:v5];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [selfCopy addObject:v5];
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_gkSafeRemoveObject:()Concurrency
 {
   v5 = a3;
-  v4 = a1;
-  objc_sync_enter(v4);
-  [v4 removeObject:v5];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [selfCopy removeObject:v5];
+  objc_sync_exit(selfCopy);
 }
 
 - (id)_gkSafeCopy
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = [v1 copy];
-  objc_sync_exit(v1);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = [selfCopy copy];
+  objc_sync_exit(selfCopy);
 
   return v2;
 }

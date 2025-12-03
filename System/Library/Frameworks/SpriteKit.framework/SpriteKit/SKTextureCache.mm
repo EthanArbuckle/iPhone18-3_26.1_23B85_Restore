@@ -6,7 +6,7 @@
 - (shared_ptr<jet_texture>)backingTexture;
 - (void)_reset;
 - (void)dealloc;
-- (void)setBackingTexture:(shared_ptr<jet_texture>)a3;
+- (void)setBackingTexture:(shared_ptr<jet_texture>)texture;
 @end
 
 @implementation SKTextureCache
@@ -105,10 +105,10 @@
   return result;
 }
 
-- (void)setBackingTexture:(shared_ptr<jet_texture>)a3
+- (void)setBackingTexture:(shared_ptr<jet_texture>)texture
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *texture.__ptr_;
+  v3 = *(texture.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

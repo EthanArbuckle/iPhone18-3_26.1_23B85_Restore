@@ -1,22 +1,22 @@
 @interface NSCountedSet
 - (NSCountedSet)initWithArray:(NSArray *)array;
 - (NSCountedSet)initWithCapacity:(NSUInteger)numItems;
-- (NSCountedSet)initWithCoder:(id)a3;
-- (NSCountedSet)initWithObjects:(const void *)a3 count:(unint64_t)a4;
+- (NSCountedSet)initWithCoder:(id)coder;
+- (NSCountedSet)initWithObjects:(const void *)objects count:(unint64_t)count;
 - (NSCountedSet)initWithSet:(NSSet *)set;
-- (NSCountedSet)initWithSet:(id)a3 copyItems:(BOOL)a4;
+- (NSCountedSet)initWithSet:(id)set copyItems:(BOOL)items;
 - (NSEnumerator)objectEnumerator;
 - (NSUInteger)countForObject:(id)object;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)descriptionWithLocale:(id)a3;
-- (id)member:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)descriptionWithLocale:(id)locale;
+- (id)member:(id)member;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)count;
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5;
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count;
 - (void)addObject:(id)object;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)getObjects:(id *)a3 count:(unint64_t)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)getObjects:(id *)objects count:(unint64_t)count;
 - (void)removeAllObjects;
 - (void)removeObject:(id)object;
 @end
@@ -90,9 +90,9 @@
   }
 }
 
-- (id)member:(id)a3
+- (id)member:(id)member
 {
-  if (!a3)
+  if (!member)
   {
     return 0;
   }
@@ -102,7 +102,7 @@
   {
     table = self->_table;
 
-    return CFBagGetValue(table, a3);
+    return CFBagGetValue(table, member);
   }
 
   else if (CFDictionaryGetKeyIfPresent())
@@ -190,21 +190,21 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_allocWithZone(objc_opt_class());
 
   return [v4 initWithSet:self copyItems:0];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_allocWithZone(objc_opt_class());
 
   return [v4 initWithSet:self copyItems:0];
 }
 
-- (unint64_t)countByEnumeratingWithState:(id *)a3 objects:(id *)a4 count:(unint64_t)a5
+- (unint64_t)countByEnumeratingWithState:(id *)state objects:(id *)objects count:(unint64_t)count
 {
   v13 = *MEMORY[0x1E69E9840];
   TypeID = CFBagGetTypeID();
@@ -213,7 +213,7 @@
     v10 = _CFBagFastEnumeration();
     if (!_CFExecutableLinkedOnOrAfter())
     {
-      a3->var2 = &countByEnumeratingWithState_objects_count__mut;
+      state->var2 = &countByEnumeratingWithState_objects_count__mut;
     }
   }
 
@@ -221,13 +221,13 @@
   {
     v12.receiver = self;
     v12.super_class = NSCountedSet;
-    return [(NSCountedSet *)&v12 countByEnumeratingWithState:a3 objects:a4 count:a5];
+    return [(NSCountedSet *)&v12 countByEnumeratingWithState:state objects:objects count:count];
   }
 
   return v10;
 }
 
-- (void)getObjects:(id *)a3 count:(unint64_t)a4
+- (void)getObjects:(id *)objects count:(unint64_t)count
 {
   v16 = *MEMORY[0x1E69E9840];
   v12 = 0u;
@@ -248,16 +248,16 @@ LABEL_3:
         objc_enumerationMutation(self);
       }
 
-      if (a4 == v10)
+      if (count == v10)
       {
         break;
       }
 
-      *a3++ = *(*(&v12 + 1) + 8 * v10);
+      *objects++ = *(*(&v12 + 1) + 8 * v10);
       if (v8 == ++v10)
       {
         v8 = [(NSCountedSet *)self countByEnumeratingWithState:&v12 objects:v11 count:16];
-        a4 -= v10;
+        count -= v10;
         if (v8)
         {
           goto LABEL_3;
@@ -269,36 +269,36 @@ LABEL_3:
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = [a3 allowsKeyedCoding];
+  allowsKeyedCoding = [coder allowsKeyedCoding];
   v6 = [(NSCountedSet *)self count];
   v7 = v6;
-  if (v5)
+  if (allowsKeyedCoding)
   {
-    [a3 encodeInt64:v6 forKey:@"NS.count"];
-    v8 = [(NSCountedSet *)self objectEnumerator];
-    v9 = [(NSEnumerator *)v8 nextObject];
-    if (v9)
+    [coder encodeInt64:v6 forKey:@"NS.count"];
+    objectEnumerator = [(NSCountedSet *)self objectEnumerator];
+    nextObject = [(NSEnumerator *)objectEnumerator nextObject];
+    if (nextObject)
     {
-      v10 = v9;
+      nextObject2 = nextObject;
       v11 = 0;
       do
       {
-        [a3 encodeObject:v10 forKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"NS.object%qd", v11)}];
-        [a3 encodeInt64:-[NSCountedSet countForObject:](self forKey:{"countForObject:", v10), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"NS.count%qd", v11++)}];
-        v10 = [(NSEnumerator *)v8 nextObject];
+        [coder encodeObject:nextObject2 forKey:{+[NSString stringWithFormat:](NSString, "stringWithFormat:", @"NS.object%qd", v11)}];
+        [coder encodeInt64:-[NSCountedSet countForObject:](self forKey:{"countForObject:", nextObject2), +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"NS.count%qd", v11++)}];
+        nextObject2 = [(NSEnumerator *)objectEnumerator nextObject];
       }
 
-      while (v10);
+      while (nextObject2);
     }
   }
 
   else
   {
     v20 = v6;
-    v12 = [a3 encodeValueOfObjCType:"I" at:&v20];
+    v12 = [coder encodeValueOfObjCType:"I" at:&v20];
     if (v7 >= 1)
     {
       if (v7 >> 60)
@@ -326,9 +326,9 @@ LABEL_3:
       [(NSCountedSet *)self getObjects:v15 count:v7, v13];
       do
       {
-        [a3 encodeBycopyObject:*v15];
+        [coder encodeBycopyObject:*v15];
         v20 = [(NSCountedSet *)self countForObject:*v15];
-        [a3 encodeValueOfObjCType:"I" at:&v20];
+        [coder encodeValueOfObjCType:"I" at:&v20];
         ++v15;
         --v7;
       }
@@ -339,12 +339,12 @@ LABEL_3:
   }
 }
 
-- (NSCountedSet)initWithCoder:(id)a3
+- (NSCountedSet)initWithCoder:(id)coder
 {
   v40[1] = *MEMORY[0x1E69E9840];
-  if ([a3 allowsKeyedCoding])
+  if ([coder allowsKeyedCoding])
   {
-    v6 = [a3 decodeInt64ForKey:@"NS.count"];
+    v6 = [coder decodeInt64ForKey:@"NS.count"];
     if (v6 >> 60)
     {
       v7 = [NSString stringWithFormat:@"%@: cannot decode set with %qd elements in this version", _NSMethodExceptionProem(self, a2), v6];
@@ -356,7 +356,7 @@ LABEL_3:
       v10 = v40;
       v11 = &v39;
 LABEL_4:
-      [a3 failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v8, 4864, objc_msgSend(v9, "dictionaryWithObjects:forKeys:count:", v10, v11, 1))}];
+      [coder failWithError:{+[NSError errorWithDomain:code:userInfo:](NSError, "errorWithDomain:code:userInfo:", v8, 4864, objc_msgSend(v9, "dictionaryWithObjects:forKeys:count:", v10, v11, 1))}];
       return 0;
     }
 
@@ -368,7 +368,7 @@ LABEL_4:
       {
         v17 = [NSString stringWithFormat:@"NS.object%qd", v16];
         v18 = [NSString stringWithFormat:@"NS.count%qd", v16];
-        if (![a3 containsValueForKey:v17] || !objc_msgSend(a3, "containsValueForKey:", v18))
+        if (![coder containsValueForKey:v17] || !objc_msgSend(coder, "containsValueForKey:", v18))
         {
           v24 = [NSString stringWithFormat:@"%@: mismatch in count stored (%llu) vs count present (%llu)", _NSMethodExceptionProem(v12, a2), v6, v16];
 
@@ -381,7 +381,7 @@ LABEL_4:
           goto LABEL_4;
         }
 
-        v19 = [a3 decodeObjectForKey:v17];
+        v19 = [coder decodeObjectForKey:v17];
         if (!v19)
         {
           v25 = [NSString stringWithFormat:@"%@: decode failure at index %llu - item nil", _NSMethodExceptionProem(v12, a2), v16];
@@ -396,7 +396,7 @@ LABEL_4:
         }
 
         v20 = v19;
-        v21 = [a3 decodeInt64ForKey:v18];
+        v21 = [coder decodeInt64ForKey:v18];
         if (!v21)
         {
           v26 = [NSString stringWithFormat:@"%@: decode failure at index %llu -- itemCount zero", _NSMethodExceptionProem(v12, a2), v16];
@@ -443,7 +443,7 @@ LABEL_4:
 
   else
   {
-    v13 = [a3 versionForClassName:@"NSCountedSet"];
+    v13 = [coder versionForClassName:@"NSCountedSet"];
     if (v13 > 1)
     {
       v28 = [NSString stringWithFormat:@"%@: NSCountedSet cannot decode class version %lu", _NSMethodExceptionProem(self, a2), v13];
@@ -452,7 +452,7 @@ LABEL_4:
     }
 
     v30 = 0;
-    [a3 decodeValueOfObjCType:"I" at:&v30 size:4];
+    [coder decodeValueOfObjCType:"I" at:&v30 size:4];
     v14 = v30;
     _NSSetCheckSize(self, a2, v30, "count");
     v12 = [(NSCountedSet *)self initWithCapacity:v14];
@@ -461,8 +461,8 @@ LABEL_4:
       do
       {
         v29 = 0;
-        [a3 decodeValueOfObjCType:"@" at:&v29 size:8];
-        [a3 decodeValueOfObjCType:"I" at:&v30 size:4];
+        [coder decodeValueOfObjCType:"@" at:&v29 size:8];
+        [coder decodeValueOfObjCType:"I" at:&v30 size:4];
         v15 = v30;
         if (v30)
         {
@@ -485,7 +485,7 @@ LABEL_4:
   return v12;
 }
 
-- (id)descriptionWithLocale:(id)a3
+- (id)descriptionWithLocale:(id)locale
 {
   v21[3] = *MEMORY[0x1E69E9840];
   v5 = [(NSCountedSet *)self count];
@@ -530,7 +530,7 @@ LABEL_4:
       if (objc_opt_respondsToSelector())
       {
         v17 = [v7 length];
-        v18 = [*v12 descriptionWithLocale:a3];
+        v18 = [*v12 descriptionWithLocale:locale];
       }
 
       else
@@ -598,47 +598,47 @@ LABEL_4:
   return self;
 }
 
-- (NSCountedSet)initWithObjects:(const void *)a3 count:(unint64_t)a4
+- (NSCountedSet)initWithObjects:(const void *)objects count:(unint64_t)count
 {
-  v4 = a4;
-  _NSSetCheckSize(self, a2, a4, "count");
-  for (i = [(NSCountedSet *)self initWithCapacity:v4]; v4; ++a3)
+  countCopy = count;
+  _NSSetCheckSize(self, a2, count, "count");
+  for (i = [(NSCountedSet *)self initWithCapacity:countCopy]; countCopy; ++objects)
   {
-    if (!*a3)
+    if (!*objects)
     {
       _NSSetRaiseInsertNilException(i, a2);
     }
 
-    --v4;
+    --countCopy;
     [(NSCountedSet *)i addObject:?];
   }
 
   return i;
 }
 
-- (NSCountedSet)initWithSet:(id)a3 copyItems:(BOOL)a4
+- (NSCountedSet)initWithSet:(id)set copyItems:(BOOL)items
 {
-  v4 = a4;
-  v7 = [a3 count];
+  itemsCopy = items;
+  v7 = [set count];
   v8 = [(NSCountedSet *)self initWithCapacity:v7];
   if (v7)
   {
-    v9 = [a3 objectEnumerator];
-    v10 = [v9 nextObject];
-    if (v10)
+    objectEnumerator = [set objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
+    if (nextObject)
     {
-      v11 = v10;
+      nextObject2 = nextObject;
       do
       {
-        v12 = [a3 countForObject:v11];
-        if (v4)
+        v12 = [set countForObject:nextObject2];
+        if (itemsCopy)
         {
-          v13 = [v11 copyWithZone:0];
+          v13 = [nextObject2 copyWithZone:0];
         }
 
         else
         {
-          v13 = v11;
+          v13 = nextObject2;
         }
 
         v14 = v13;
@@ -648,10 +648,10 @@ LABEL_4:
           [(NSCountedSet *)v8 addObject:v14];
         }
 
-        v11 = [v9 nextObject];
+        nextObject2 = [objectEnumerator nextObject];
       }
 
-      while (v11);
+      while (nextObject2);
     }
   }
 

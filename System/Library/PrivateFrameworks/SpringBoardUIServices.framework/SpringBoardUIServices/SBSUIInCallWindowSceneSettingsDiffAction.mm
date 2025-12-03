@@ -1,33 +1,33 @@
 @interface SBSUIInCallWindowSceneSettingsDiffAction
 - (id)_inCallSceneSettingsDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
 @end
 
 @implementation SBSUIInCallWindowSceneSettingsDiffAction
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a7;
-  v16 = a5;
+  sceneCopy = scene;
+  sSceneCopy = sScene;
+  contextCopy = context;
+  diffCopy = diff;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     [SBSUIInCallWindowSceneSettingsDiffAction _performActionsForUIScene:a2 withUpdatedFBSScene:self settingsDiff:? fromSettings:? transitionContext:? lifecycleActionType:?];
   }
 
-  v17 = v13;
+  v17 = sceneCopy;
   v26 = 0;
   v25 = 0;
-  v18 = [(SBSUIInCallWindowSceneSettingsDiffAction *)self _inCallSceneSettingsDiffInspector];
-  [v18 inspectDiff:v16 withContext:&v25];
+  _inCallSceneSettingsDiffInspector = [(SBSUIInCallWindowSceneSettingsDiffAction *)self _inCallSceneSettingsDiffInspector];
+  [_inCallSceneSettingsDiffInspector inspectDiff:diffCopy withContext:&v25];
 
   if (v25 == 1)
   {
-    v22 = v14;
+    v22 = sSceneCopy;
     v23 = v17;
-    v24 = v15;
+    v24 = contextCopy;
     _UISceneSettingsDiffActionPerformChangesWithTransitionContext();
   }
 
@@ -39,10 +39,10 @@
 
   if (v26 == 1)
   {
-    v19 = [v14 settings];
-    v20 = [v19 isAttachedToWindowedAccessory];
-    [v19 windowedAccessoryCutoutFrameInScreen];
-    [v17 _setAttachedToWindowedAccessory:v20 windowedAccessoryCutoutFrameInScreen:?];
+    settings = [sSceneCopy settings];
+    isAttachedToWindowedAccessory = [settings isAttachedToWindowedAccessory];
+    [settings windowedAccessoryCutoutFrameInScreen];
+    [v17 _setAttachedToWindowedAccessory:isAttachedToWindowedAccessory windowedAccessoryCutoutFrameInScreen:?];
   }
 }
 

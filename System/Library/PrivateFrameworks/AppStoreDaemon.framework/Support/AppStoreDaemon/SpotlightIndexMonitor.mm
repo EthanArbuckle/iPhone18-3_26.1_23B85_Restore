@@ -1,8 +1,8 @@
 @interface SpotlightIndexMonitor
 - (SpotlightIndexMonitor)init;
 - (void)dealloc;
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4;
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5;
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler;
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler;
 @end
 
 @implementation SpotlightIndexMonitor
@@ -44,7 +44,7 @@
       v13[2] = sub_1002BCDB4;
       v13[3] = &unk_10051DFC8;
       self = self;
-      v14 = self;
+      selfCopy = self;
       [(BagService *)bagService recentBagNoTimeoutWithCompletionHandler:v13];
 
       objc_destroyWeak(&v16);
@@ -64,16 +64,16 @@
   [(SpotlightIndexMonitor *)&v3 dealloc];
 }
 
-- (void)searchableIndex:(id)a3 reindexAllSearchableItemsWithAcknowledgementHandler:(id)a4
+- (void)searchableIndex:(id)index reindexAllSearchableItemsWithAcknowledgementHandler:(id)handler
 {
-  (*(a4 + 2))(a4, a2, a3);
+  (*(handler + 2))(handler, a2, index);
 
   sub_1002BD094(self);
 }
 
-- (void)searchableIndex:(id)a3 reindexSearchableItemsWithIdentifiers:(id)a4 acknowledgementHandler:(id)a5
+- (void)searchableIndex:(id)index reindexSearchableItemsWithIdentifiers:(id)identifiers acknowledgementHandler:(id)handler
 {
-  (*(a5 + 2))(a5, a2, a3, a4);
+  (*(handler + 2))(handler, a2, index, identifiers);
 
   sub_1002BD094(self);
 }

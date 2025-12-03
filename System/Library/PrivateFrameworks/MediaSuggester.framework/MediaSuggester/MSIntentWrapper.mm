@@ -1,6 +1,6 @@
 @interface MSIntentWrapper
 - (MSMediaIntentProtocol)intent;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MSIntentWrapper
@@ -12,11 +12,11 @@
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  MSIntentWrapper.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  MSIntentWrapper.encode(with:)(coderCopy);
 }
 
 @end

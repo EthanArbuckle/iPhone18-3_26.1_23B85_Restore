@@ -1,6 +1,6 @@
 @interface MSDInstallableFileDownloadOperation
 - (BOOL)_downloadInstallableFile;
-- (BOOL)_downloadInstallableFile:(id)a3 ofHash:(id)a4 toPath:(id)a5;
+- (BOOL)_downloadInstallableFile:(id)file ofHash:(id)hash toPath:(id)path;
 - (id)methodSelectors;
 @end
 
@@ -17,26 +17,26 @@
 - (BOOL)_downloadInstallableFile
 {
   v3 = +[MSDContentCacheManager sharedInstance];
-  v4 = [(MSDOperation *)self context];
-  v5 = [v4 identifier];
+  context = [(MSDOperation *)self context];
+  identifier = [context identifier];
 
-  v6 = [(MSDOperation *)self context];
-  v7 = [v6 fileHash];
+  context2 = [(MSDOperation *)self context];
+  fileHash = [context2 fileHash];
 
   v8 = +[MSDOperationContext downloadOnly];
-  v9 = [v3 findFileInCache:v7];
+  v9 = [v3 findFileInCache:fileHash];
 
   if (v9)
   {
     v10 = sub_100063BEC();
-    v11 = [(MSDOperation *)self signpostId];
-    if (v11 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId = [(MSDOperation *)self signpostId];
+    if (signpostId - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v12 = v11;
+      v12 = signpostId;
       if (os_signpost_enabled(v10))
       {
         *v28 = 138412290;
-        *&v28[4] = v7;
+        *&v28[4] = fileHash;
         _os_signpost_emit_with_name_impl(&_mh_execute_header, v10, OS_SIGNPOST_EVENT, v12, "File Cache Hit", "File cache hit: %{xcode:string}@", v28, 0xCu);
       }
     }
@@ -47,27 +47,27 @@ LABEL_16:
   }
 
   v13 = [v3 fileCachePathFromSourcePath:0 forBackgroundDownload:v8];
-  v10 = [v13 stringByAppendingPathComponent:v7];
+  v10 = [v13 stringByAppendingPathComponent:fileHash];
 
   v14 = sub_100063BEC();
-  v15 = [(MSDOperation *)self signpostId];
-  if (v15 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId2 = [(MSDOperation *)self signpostId];
+  if (signpostId2 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v16 = v15;
+    v16 = signpostId2;
     if (os_signpost_enabled(v14))
     {
       *v28 = 138412290;
-      *&v28[4] = v7;
+      *&v28[4] = fileHash;
       _os_signpost_emit_with_name_impl(&_mh_execute_header, v14, OS_SIGNPOST_INTERVAL_BEGIN, v16, "Download File", "File download hash: %{xcode:string}@", v28, 0xCu);
     }
   }
 
-  v17 = [(MSDInstallableFileDownloadOperation *)self _downloadInstallableFile:v5 ofHash:v7 toPath:v10];
+  v17 = [(MSDInstallableFileDownloadOperation *)self _downloadInstallableFile:identifier ofHash:fileHash toPath:v10];
   v18 = sub_100063BEC();
-  v19 = [(MSDOperation *)self signpostId];
-  if (v19 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostId3 = [(MSDOperation *)self signpostId];
+  if (signpostId3 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v20 = v19;
+    v20 = signpostId3;
     if (os_signpost_enabled(v18))
     {
       *v28 = 67109120;
@@ -78,12 +78,12 @@ LABEL_16:
 
   if (v17)
   {
-    v21 = [v3 fileSizeInCache:v7];
+    v21 = [v3 fileSizeInCache:fileHash];
     v22 = sub_100063BEC();
-    v23 = [(MSDOperation *)self signpostId];
-    if (v23 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
+    signpostId4 = [(MSDOperation *)self signpostId];
+    if (signpostId4 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
     {
-      v24 = v23;
+      v24 = signpostId4;
       if (os_signpost_enabled(v22))
       {
         *v28 = 134217984;
@@ -109,33 +109,33 @@ LABEL_18:
   return v25;
 }
 
-- (BOOL)_downloadInstallableFile:(id)a3 ofHash:(id)a4 toPath:(id)a5
+- (BOOL)_downloadInstallableFile:(id)file ofHash:(id)hash toPath:(id)path
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(MSDOperation *)self context];
-  v12 = [v11 originServer];
+  pathCopy = path;
+  hashCopy = hash;
+  fileCopy = file;
+  context = [(MSDOperation *)self context];
+  originServer = [context originServer];
 
   v13 = objc_alloc_init(MSDDownloadFileRequest);
-  v14 = [(MSDDownloadFileRequest *)v13 fileInfo];
-  [v14 setFile:v10];
+  fileInfo = [(MSDDownloadFileRequest *)v13 fileInfo];
+  [fileInfo setFile:fileCopy];
 
-  v15 = [(MSDDownloadFileRequest *)v13 fileInfo];
-  [v15 setFileHash:v9];
+  fileInfo2 = [(MSDDownloadFileRequest *)v13 fileInfo];
+  [fileInfo2 setFileHash:hashCopy];
 
-  [(MSDServerRequest *)v13 setSavePath:v8];
-  [(MSDCDNServerRequest *)v13 setOriginServer:v12];
+  [(MSDServerRequest *)v13 setSavePath:pathCopy];
+  [(MSDCDNServerRequest *)v13 setOriginServer:originServer];
   v16 = +[MSDServerRequestHandler sharedInstance];
   v17 = [v16 handleRequestSync:v13];
 
-  v18 = [v17 error];
-  if (v18)
+  error = [v17 error];
+  if (error)
   {
-    [(MSDOperation *)self setError:v18];
+    [(MSDOperation *)self setError:error];
   }
 
-  return v18 == 0;
+  return error == 0;
 }
 
 @end

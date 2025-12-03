@@ -1,10 +1,10 @@
 @interface CSDFocusStateManager
 + (CSDFocusStateManager)sharedManager;
-- (BOOL)contactInDeniedContactsList:(id)a3;
+- (BOOL)contactInDeniedContactsList:(id)list;
 - (CSDFocusStateManager)init;
 - (DNDConfiguration)dndConfiguration;
 - (DNDStateService)dndStateService;
-- (id)dndContactHandleForAddress:(id)a3;
+- (id)dndContactHandleForAddress:(id)address;
 - (void)dealloc;
 @end
 
@@ -47,7 +47,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "CSDFocusStateManager dealloc: %p", buf, 0xCu);
   }
 
@@ -73,13 +73,13 @@
 
 - (DNDConfiguration)dndConfiguration
 {
-  v3 = [(CSDFocusStateManager *)self dndStateService];
+  dndStateService = [(CSDFocusStateManager *)self dndStateService];
   v12 = 0;
-  v4 = [v3 queryCurrentStateWithError:&v12];
+  v4 = [dndStateService queryCurrentStateWithError:&v12];
   v5 = v12;
 
-  v6 = sub_100004778();
-  v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
+  dndState = sub_100004778();
+  v7 = os_log_type_enabled(dndState, OS_LOG_TYPE_DEFAULT);
   if (v5)
   {
     v8 = 1;
@@ -96,10 +96,10 @@
     {
       *buf = 138412290;
       v14 = v5;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "simFocus: Error querying DND state: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, dndState, OS_LOG_TYPE_DEFAULT, "simFocus: Error querying DND state: %@", buf, 0xCu);
     }
 
-    v9 = 0;
+    configuration = 0;
   }
 
   else
@@ -108,29 +108,29 @@
     {
       *buf = 138412290;
       v14 = v4;
-      _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "simFocus: DND state is: %@", buf, 0xCu);
+      _os_log_impl(&_mh_execute_header, dndState, OS_LOG_TYPE_DEFAULT, "simFocus: DND state is: %@", buf, 0xCu);
     }
 
     [(CSDFocusStateManager *)self setDndState:v4];
-    v6 = [(CSDFocusStateManager *)self dndState];
-    v10 = [v6 activeModeConfiguration];
-    v9 = [v10 configuration];
+    dndState = [(CSDFocusStateManager *)self dndState];
+    activeModeConfiguration = [dndState activeModeConfiguration];
+    configuration = [activeModeConfiguration configuration];
   }
 
-  return v9;
+  return configuration;
 }
 
-- (BOOL)contactInDeniedContactsList:(id)a3
+- (BOOL)contactInDeniedContactsList:(id)list
 {
-  v4 = a3;
-  v5 = [(CSDFocusStateManager *)self dndConfiguration];
-  v6 = v5;
-  if (v5 && ([v5 senderConfiguration], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
+  listCopy = list;
+  dndConfiguration = [(CSDFocusStateManager *)self dndConfiguration];
+  v6 = dndConfiguration;
+  if (dndConfiguration && ([dndConfiguration senderConfiguration], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [v6 senderConfiguration];
-    v9 = [v8 deniedContacts];
+    senderConfiguration = [v6 senderConfiguration];
+    deniedContacts = [senderConfiguration deniedContacts];
 
-    v10 = [v9 count];
+    v10 = [deniedContacts count];
     v11 = sub_100004778();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
     if (v10)
@@ -138,16 +138,16 @@
       if (v12)
       {
         *buf = 138412290;
-        v25 = v4;
+        v25 = listCopy;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "simFocus: check if contact (%@) is in denied list", buf, 0xCu);
       }
 
-      v11 = [(CSDFocusStateManager *)self dndContactHandleForAddress:v4];
+      v11 = [(CSDFocusStateManager *)self dndContactHandleForAddress:listCopy];
       v19 = 0u;
       v20 = 0u;
       v21 = 0u;
       v22 = 0u;
-      v13 = v9;
+      v13 = deniedContacts;
       v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v14)
       {
@@ -203,11 +203,11 @@ LABEL_19:
 
   else
   {
-    v9 = sub_100004778();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
+    deniedContacts = sub_100004778();
+    if (os_log_type_enabled(deniedContacts, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 0;
-      _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "simFocus: dndConfiguration is nil", buf, 2u);
+      _os_log_impl(&_mh_execute_header, deniedContacts, OS_LOG_TYPE_DEFAULT, "simFocus: dndConfiguration is nil", buf, 2u);
     }
 
     LOBYTE(v14) = 0;
@@ -216,11 +216,11 @@ LABEL_19:
   return v14;
 }
 
-- (id)dndContactHandleForAddress:(id)a3
+- (id)dndContactHandleForAddress:(id)address
 {
-  v3 = a3;
+  addressCopy = address;
   v4 = objc_alloc_init(DNDMutableContactHandle);
-  [v4 setValue:v3];
+  [v4 setValue:addressCopy];
 
   [v4 setType:2];
   v5 = [v4 copy];

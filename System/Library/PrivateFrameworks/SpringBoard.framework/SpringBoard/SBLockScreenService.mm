@@ -1,38 +1,38 @@
 @interface SBLockScreenService
-- (BOOL)passcodeEntryTransientOverlayViewController:(id)a3 authenticatePasscode:(id)a4;
-- (SBLockScreenService)initWithLockScreenManager:(id)a3 workspace:(id)a4 authenticationAssertionProvider:(id)a5 remoteTransientOverlaySessionManager:(id)a6;
-- (void)_setPasscodeVisible:(BOOL)a3 animated:(BOOL)a4;
-- (void)launchEmergencyDialerWithCompletion:(id)a3;
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5;
-- (void)lockDeviceAnimated:(id)a3 withCompletion:(id)a4;
+- (BOOL)passcodeEntryTransientOverlayViewController:(id)controller authenticatePasscode:(id)passcode;
+- (SBLockScreenService)initWithLockScreenManager:(id)manager workspace:(id)workspace authenticationAssertionProvider:(id)provider remoteTransientOverlaySessionManager:(id)sessionManager;
+- (void)_setPasscodeVisible:(BOOL)visible animated:(BOOL)animated;
+- (void)launchEmergencyDialerWithCompletion:(id)completion;
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context;
+- (void)lockDeviceAnimated:(id)animated withCompletion:(id)completion;
 - (void)migrateIncomingNotificationsToHistory;
-- (void)passcodeEntryTransientOverlayViewControllerRequestsDismissal:(id)a3;
-- (void)requestPasscodeCheckUIForClient:(id)a3 options:(id)a4 description:(id)a5 withCompletion:(id)a6;
-- (void)requestPasscodeCheckUIWithOptions:(id)a3 withCompletion:(id)a4;
-- (void)requestPasscodeUnlockUIForClient:(id)a3 options:(id)a4 description:(id)a5 withCompletion:(id)a6;
-- (void)requestPasscodeUnlockUIWithOptions:(id)a3 withCompletion:(id)a4;
-- (void)setPreventPasscodeLock:(id)a3;
-- (void)setPreventSpuriousScreenUndim:(id)a3;
+- (void)passcodeEntryTransientOverlayViewControllerRequestsDismissal:(id)dismissal;
+- (void)requestPasscodeCheckUIForClient:(id)client options:(id)options description:(id)description withCompletion:(id)completion;
+- (void)requestPasscodeCheckUIWithOptions:(id)options withCompletion:(id)completion;
+- (void)requestPasscodeUnlockUIForClient:(id)client options:(id)options description:(id)description withCompletion:(id)completion;
+- (void)requestPasscodeUnlockUIWithOptions:(id)options withCompletion:(id)completion;
+- (void)setPreventPasscodeLock:(id)lock;
+- (void)setPreventSpuriousScreenUndim:(id)undim;
 @end
 
 @implementation SBLockScreenService
 
-- (SBLockScreenService)initWithLockScreenManager:(id)a3 workspace:(id)a4 authenticationAssertionProvider:(id)a5 remoteTransientOverlaySessionManager:(id)a6
+- (SBLockScreenService)initWithLockScreenManager:(id)manager workspace:(id)workspace authenticationAssertionProvider:(id)provider remoteTransientOverlaySessionManager:(id)sessionManager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  workspaceCopy = workspace;
+  providerCopy = provider;
+  sessionManagerCopy = sessionManager;
   v32.receiver = self;
   v32.super_class = SBLockScreenService;
   v15 = [(SBLockScreenService *)&v32 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_lockScreenManager, a3);
-    objc_storeStrong(&v16->_mainWorkspace, a4);
-    objc_storeStrong(&v16->_authenticationAssertionProvider, a5);
-    objc_storeStrong(&v16->_remoteTransientOverlaySessionManager, a6);
+    objc_storeStrong(&v15->_lockScreenManager, manager);
+    objc_storeStrong(&v16->_mainWorkspace, workspace);
+    objc_storeStrong(&v16->_authenticationAssertionProvider, provider);
+    objc_storeStrong(&v16->_remoteTransientOverlaySessionManager, sessionManager);
     v17 = [objc_alloc(MEMORY[0x277D0AAF8]) initWithEntitlement:@"com.apple.springboard.requestDeviceUnlock" additionalCredentials:3];
     requestDeviceUnlockAuthenticator = v16->_requestDeviceUnlockAuthenticator;
     v16->_requestDeviceUnlockAuthenticator = v17;
@@ -74,16 +74,16 @@ void __128__SBLockScreenService_initWithLockScreenManager_workspace_authenticati
   [v3 setDelegate:*(a1 + 32)];
 }
 
-- (void)requestPasscodeUnlockUIForClient:(id)a3 options:(id)a4 description:(id)a5 withCompletion:(id)a6
+- (void)requestPasscodeUnlockUIForClient:(id)client options:(id)options description:(id)description withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  clientCopy = client;
+  optionsCopy = options;
+  descriptionCopy = description;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  if (v10)
+  if (clientCopy)
   {
-    if (v12)
+    if (descriptionCopy)
     {
       goto LABEL_3;
     }
@@ -92,7 +92,7 @@ void __128__SBLockScreenService_initWithLockScreenManager_workspace_authenticati
   else
   {
     [SBLockScreenService requestPasscodeUnlockUIForClient:options:description:withCompletion:];
-    if (v12)
+    if (descriptionCopy)
     {
       goto LABEL_3;
     }
@@ -102,23 +102,23 @@ void __128__SBLockScreenService_initWithLockScreenManager_workspace_authenticati
 LABEL_3:
   requestDeviceUnlockAuthenticator = self->_requestDeviceUnlockAuthenticator;
   v24 = 0;
-  v15 = [(FBServiceClientAuthenticator *)requestDeviceUnlockAuthenticator authenticateAuditToken:v10 error:&v24];
+  v15 = [(FBServiceClientAuthenticator *)requestDeviceUnlockAuthenticator authenticateAuditToken:clientCopy error:&v24];
   v16 = v24;
   if (v15)
   {
     v17 = objc_alloc_init(SBLockScreenUnlockRequest);
     [(SBLockScreenUnlockRequest *)v17 setSource:19];
     [(SBLockScreenUnlockRequest *)v17 setIntent:2];
-    [(SBLockScreenUnlockRequest *)v17 setName:v12];
-    v18 = [MEMORY[0x277CF0CD0] processHandleForAuditToken:v10];
+    [(SBLockScreenUnlockRequest *)v17 setName:descriptionCopy];
+    v18 = [MEMORY[0x277CF0CD0] processHandleForAuditToken:clientCopy];
     [(SBLockScreenUnlockRequest *)v17 setProcess:v18];
     [(SBLockScreenUnlockRequest *)v17 setWantsBiometricPresentation:1];
-    if ([v11 _aboveOtherContexts])
+    if ([optionsCopy _aboveOtherContexts])
     {
       [(SBLockScreenUnlockRequest *)v17 setForceAlertAuthenticationUI:1];
     }
 
-    if (-[SBRemoteTransientOverlaySessionManager hasSessionWithServiceProcessIdentifier:options:](self->_remoteTransientOverlaySessionManager, "hasSessionWithServiceProcessIdentifier:options:", [v10 pid], 0))
+    if (-[SBRemoteTransientOverlaySessionManager hasSessionWithServiceProcessIdentifier:options:](self->_remoteTransientOverlaySessionManager, "hasSessionWithServiceProcessIdentifier:options:", [clientCopy pid], 0))
     {
       [(SBLockScreenUnlockRequest *)v17 setSource:9];
     }
@@ -128,7 +128,7 @@ LABEL_3:
     v22[1] = 3221225472;
     v22[2] = __91__SBLockScreenService_requestPasscodeUnlockUIForClient_options_description_withCompletion___block_invoke;
     v22[3] = &unk_2783A9C70;
-    v23 = v13;
+    v23 = completionCopy;
     [(SBLockScreenManager *)lockScreenManager unlockWithRequest:v17 completion:v22];
   }
 
@@ -140,17 +140,17 @@ LABEL_3:
       [SBLockScreenService requestPasscodeUnlockUIForClient:options:description:withCompletion:];
     }
 
-    if (v13)
+    if (completionCopy)
     {
       if (v16)
       {
-        (*(v13 + 2))(v13, v16);
+        (*(completionCopy + 2))(completionCopy, v16);
       }
 
       else
       {
         v21 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0AA50] code:13 userInfo:0];
-        (*(v13 + 2))(v13, v21);
+        (*(completionCopy + 2))(completionCopy, v21);
       }
     }
   }
@@ -177,15 +177,15 @@ void __91__SBLockScreenService_requestPasscodeUnlockUIForClient_options_descript
   }
 }
 
-- (void)requestPasscodeCheckUIForClient:(id)a3 options:(id)a4 description:(id)a5 withCompletion:(id)a6
+- (void)requestPasscodeCheckUIForClient:(id)client options:(id)options description:(id)description withCompletion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  clientCopy = client;
+  optionsCopy = options;
+  completionCopy = completion;
   BSDispatchQueueAssertMain();
-  if (v10)
+  if (clientCopy)
   {
-    if (a5)
+    if (description)
     {
       goto LABEL_3;
     }
@@ -194,7 +194,7 @@ void __91__SBLockScreenService_requestPasscodeUnlockUIForClient_options_descript
   else
   {
     [SBLockScreenService requestPasscodeCheckUIForClient:options:description:withCompletion:];
-    if (a5)
+    if (description)
     {
       goto LABEL_3;
     }
@@ -204,53 +204,53 @@ void __91__SBLockScreenService_requestPasscodeUnlockUIForClient_options_descript
 LABEL_3:
   requestDeviceUnlockAuthenticator = self->_requestDeviceUnlockAuthenticator;
   v37 = 0;
-  v14 = [(FBServiceClientAuthenticator *)requestDeviceUnlockAuthenticator authenticateAuditToken:v10 error:&v37];
+  v14 = [(FBServiceClientAuthenticator *)requestDeviceUnlockAuthenticator authenticateAuditToken:clientCopy error:&v37];
   v15 = v37;
   if (v14)
   {
-    v16 = [SBApp authenticationController];
-    v17 = [v16 hasPasscodeSet];
+    authenticationController = [SBApp authenticationController];
+    hasPasscodeSet = [authenticationController hasPasscodeSet];
 
-    if (v17)
+    if (hasPasscodeSet)
     {
-      v18 = [v11 title];
+      title = [optionsCopy title];
 
-      if (v18)
+      if (title)
       {
-        v19 = [v11 title];
+        title2 = [optionsCopy title];
         passcodeTitle = self->_passcodeTitle;
-        self->_passcodeTitle = v19;
+        self->_passcodeTitle = title2;
       }
 
-      v21 = [v11 subtitle];
+      subtitle = [optionsCopy subtitle];
 
-      if (v21)
+      if (subtitle)
       {
-        v22 = [v11 subtitle];
+        subtitle2 = [optionsCopy subtitle];
         passcodeSubtitle = self->_passcodeSubtitle;
-        self->_passcodeSubtitle = v22;
+        self->_passcodeSubtitle = subtitle2;
       }
 
-      v24 = MEMORY[0x223D6F7F0](v12);
+      v24 = MEMORY[0x223D6F7F0](completionCopy);
       passcodeCheckCompletion = self->_passcodeCheckCompletion;
       self->_passcodeCheckCompletion = v24;
 
-      v26 = [(SBLockScreenService *)self userAuthController];
+      userAuthController = [(SBLockScreenService *)self userAuthController];
 
-      if (!v26)
+      if (!userAuthController)
       {
-        v27 = [SBApp authenticationController];
+        authenticationController2 = [SBApp authenticationController];
         userAuthController = self->_userAuthController;
-        self->_userAuthController = v27;
+        self->_userAuthController = authenticationController2;
 
-        v29 = [SBApp lockOutController];
+        lockOutController = [SBApp lockOutController];
         lockOutController = self->_lockOutController;
-        self->_lockOutController = v29;
+        self->_lockOutController = lockOutController;
       }
 
       v31 = [SBPasscodeEntryTransientOverlayViewController alloc];
-      v32 = [SBApp authenticationController];
-      v33 = [(SBPasscodeEntryTransientOverlayViewController *)v31 initWithAuthenticationController:v32];
+      authenticationController3 = [SBApp authenticationController];
+      v33 = [(SBPasscodeEntryTransientOverlayViewController *)v31 initWithAuthenticationController:authenticationController3];
 
       [(SBLockScreenService *)self setPasscodeEntryTransientOverlayViewController:v33];
       [(SBPasscodeEntryTransientOverlayViewController *)self->_passcodeEntryTransientOverlayViewController setDelegate:self];
@@ -260,7 +260,7 @@ LABEL_3:
 
     else
     {
-      v12[2](v12, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
@@ -272,45 +272,45 @@ LABEL_3:
       [SBLockScreenService requestPasscodeUnlockUIForClient:options:description:withCompletion:];
     }
 
-    if (v12)
+    if (completionCopy)
     {
       if (v15)
       {
-        (v12)[2](v12, v15);
+        (completionCopy)[2](completionCopy, v15);
       }
 
       else
       {
         v36 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0AA50] code:13 userInfo:0];
-        (v12)[2](v12, v36);
+        (completionCopy)[2](completionCopy, v36);
       }
     }
   }
 }
 
-- (void)_setPasscodeVisible:(BOOL)a3 animated:(BOOL)a4
+- (void)_setPasscodeVisible:(BOOL)visible animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v6 = +[SBWorkspace mainWorkspace];
-  [v6 dismissTransientOverlayViewController:self->_passcodeEntryTransientOverlayViewController animated:v4 completion:0];
+  [v6 dismissTransientOverlayViewController:self->_passcodeEntryTransientOverlayViewController animated:animatedCopy completion:0];
 
   passcodeEntryTransientOverlayViewController = self->_passcodeEntryTransientOverlayViewController;
   self->_passcodeEntryTransientOverlayViewController = 0;
 }
 
-- (BOOL)passcodeEntryTransientOverlayViewController:(id)a3 authenticatePasscode:(id)a4
+- (BOOL)passcodeEntryTransientOverlayViewController:(id)controller authenticatePasscode:(id)passcode
 {
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __88__SBLockScreenService_passcodeEntryTransientOverlayViewController_authenticatePasscode___block_invoke;
   v10[3] = &unk_2783A9398;
   v10[4] = self;
-  v5 = a4;
+  passcodeCopy = passcode;
   v6 = MEMORY[0x223D6F7F0](v10);
-  v7 = [objc_alloc(MEMORY[0x277D65DF0]) initForPasscode:v5 source:0 handler:v6];
+  v7 = [objc_alloc(MEMORY[0x277D65DF0]) initForPasscode:passcodeCopy source:0 handler:v6];
 
-  v8 = [(SBLockScreenService *)self userAuthController];
-  [v8 processAuthenticationRequest:v7];
+  userAuthController = [(SBLockScreenService *)self userAuthController];
+  [userAuthController processAuthenticationRequest:v7];
 
   return 1;
 }
@@ -369,24 +369,24 @@ void __88__SBLockScreenService_passcodeEntryTransientOverlayViewController_authe
   }
 }
 
-- (void)passcodeEntryTransientOverlayViewControllerRequestsDismissal:(id)a3
+- (void)passcodeEntryTransientOverlayViewControllerRequestsDismissal:(id)dismissal
 {
   v4 = +[SBWorkspace mainWorkspace];
   [v4 dismissTransientOverlayViewController:self->_passcodeEntryTransientOverlayViewController animated:1 completion:0];
 }
 
-- (void)listener:(id)a3 didReceiveConnection:(id)a4 withContext:(id)a5
+- (void)listener:(id)listener didReceiveConnection:(id)connection withContext:(id)context
 {
-  v6 = a4;
+  connectionCopy = connection;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = __65__SBLockScreenService_listener_didReceiveConnection_withContext___block_invoke;
   v11 = &unk_2783B2168;
-  v12 = self;
-  v13 = v6;
-  v7 = v6;
+  selfCopy = self;
+  v13 = connectionCopy;
+  v7 = connectionCopy;
   [v7 configureConnection:&v8];
-  [(NSMutableSet *)self->_connections addObject:v7, v8, v9, v10, v11, v12];
+  [(NSMutableSet *)self->_connections addObject:v7, v8, v9, v10, v11, selfCopy];
   [v7 activate];
 }
 
@@ -493,17 +493,17 @@ void __65__SBLockScreenService_listener_didReceiveConnection_withContext___block
   [*(*(a1 + 32) + 56) removeObject:v3];
 }
 
-- (void)launchEmergencyDialerWithCompletion:(id)a3
+- (void)launchEmergencyDialerWithCompletion:(id)completion
 {
   v23[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CF3280] currentContext];
-  v6 = [v5 remoteProcess];
+  completionCopy = completion;
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess = [currentContext remoteProcess];
 
-  v7 = [MEMORY[0x277D0AAF8] sharedSystemClientAuthenticator];
-  v8 = [v6 auditToken];
+  mEMORY[0x277D0AAF8] = [MEMORY[0x277D0AAF8] sharedSystemClientAuthenticator];
+  auditToken = [remoteProcess auditToken];
   v21 = 0;
-  v9 = [v7 authenticateAuditToken:v8 error:&v21];
+  v9 = [mEMORY[0x277D0AAF8] authenticateAuditToken:auditToken error:&v21];
   v10 = v21;
 
   if (v9)
@@ -527,7 +527,7 @@ void __65__SBLockScreenService_listener_didReceiveConnection_withContext___block
     v19[2] = __59__SBLockScreenService_launchEmergencyDialerWithCompletion___block_invoke;
     v19[3] = &unk_2783A98A0;
     v19[4] = self;
-    v20 = v4;
+    v20 = completionCopy;
     dispatch_after(v16, MEMORY[0x277D85CD0], v19);
   }
 
@@ -539,17 +539,17 @@ void __65__SBLockScreenService_listener_didReceiveConnection_withContext___block
       [SBLockScreenService launchEmergencyDialerWithCompletion:];
     }
 
-    if (v4)
+    if (completionCopy)
     {
       if (v10)
       {
-        (*(v4 + 2))(v4, v10);
+        (*(completionCopy + 2))(completionCopy, v10);
       }
 
       else
       {
         v18 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277D0AA50] code:13 userInfo:0];
-        (*(v4 + 2))(v4, v18);
+        (*(completionCopy + 2))(completionCopy, v18);
       }
     }
   }
@@ -572,21 +572,21 @@ uint64_t __59__SBLockScreenService_launchEmergencyDialerWithCompletion___block_i
   return result;
 }
 
-- (void)requestPasscodeUnlockUIWithOptions:(id)a3 withCompletion:(id)a4
+- (void)requestPasscodeUnlockUIWithOptions:(id)options withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CF3280];
-  v8 = a3;
-  v9 = [v7 currentContext];
-  v10 = [v9 remoteProcess];
-  v11 = [v10 auditToken];
+  optionsCopy = options;
+  currentContext = [v7 currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  auditToken = [remoteProcess auditToken];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __73__SBLockScreenService_requestPasscodeUnlockUIWithOptions_withCompletion___block_invoke;
   v13[3] = &unk_2783A9FC8;
-  v14 = v6;
-  v12 = v6;
-  [(SBLockScreenService *)self requestPasscodeUnlockUIForClient:v11 options:v8 description:@"SBSRequestPasscodeUnlockUI" withCompletion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(SBLockScreenService *)self requestPasscodeUnlockUIForClient:auditToken options:optionsCopy description:@"SBSRequestPasscodeUnlockUI" withCompletion:v13];
 }
 
 uint64_t __73__SBLockScreenService_requestPasscodeUnlockUIWithOptions_withCompletion___block_invoke(uint64_t a1)
@@ -600,21 +600,21 @@ uint64_t __73__SBLockScreenService_requestPasscodeUnlockUIWithOptions_withComple
   return result;
 }
 
-- (void)requestPasscodeCheckUIWithOptions:(id)a3 withCompletion:(id)a4
+- (void)requestPasscodeCheckUIWithOptions:(id)options withCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = MEMORY[0x277CF3280];
-  v8 = a3;
-  v9 = [v7 currentContext];
-  v10 = [v9 remoteProcess];
-  v11 = [v10 auditToken];
+  optionsCopy = options;
+  currentContext = [v7 currentContext];
+  remoteProcess = [currentContext remoteProcess];
+  auditToken = [remoteProcess auditToken];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __72__SBLockScreenService_requestPasscodeCheckUIWithOptions_withCompletion___block_invoke;
   v13[3] = &unk_2783A9FC8;
-  v14 = v6;
-  v12 = v6;
-  [(SBLockScreenService *)self requestPasscodeCheckUIForClient:v11 options:v8 description:@"SBSRequestPasscodeCheckUI" withCompletion:v13];
+  v14 = completionCopy;
+  v12 = completionCopy;
+  [(SBLockScreenService *)self requestPasscodeCheckUIForClient:auditToken options:optionsCopy description:@"SBSRequestPasscodeCheckUI" withCompletion:v13];
 }
 
 uint64_t __72__SBLockScreenService_requestPasscodeCheckUIWithOptions_withCompletion___block_invoke(uint64_t a1)
@@ -628,32 +628,32 @@ uint64_t __72__SBLockScreenService_requestPasscodeCheckUIWithOptions_withComplet
   return result;
 }
 
-- (void)setPreventPasscodeLock:(id)a3
+- (void)setPreventPasscodeLock:(id)lock
 {
   v27 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CF3280];
-  v5 = a3;
-  v6 = [v4 currentContext];
-  v7 = [v5 BOOLValue];
+  lockCopy = lock;
+  currentContext = [v4 currentContext];
+  bOOLValue = [lockCopy BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = [v6 remoteProcess];
-    if ([v8 hasEntitlement:@"com.apple.springboard.preventDeviceLock"])
+    remoteProcess = [currentContext remoteProcess];
+    if ([remoteProcess hasEntitlement:@"com.apple.springboard.preventDeviceLock"])
     {
-      if (([(NSMutableSet *)self->_connectionsPreventingPasscodeLock containsObject:v6]& 1) == 0)
+      if (([(NSMutableSet *)self->_connectionsPreventingPasscodeLock containsObject:currentContext]& 1) == 0)
       {
         v9 = SBLogCommon();
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
         {
           v23 = 134218242;
-          v24 = v6;
+          v24 = currentContext;
           v25 = 2114;
-          v26 = v8;
+          v26 = remoteProcess;
           _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "SBLockScreenService-%p: client started requesting preventPasscodeLock : %{public}@", &v23, 0x16u);
         }
 
-        [(NSMutableSet *)self->_connectionsPreventingPasscodeLock addObject:v6];
+        [(NSMutableSet *)self->_connectionsPreventingPasscodeLock addObject:currentContext];
         if (!self->_preventPasscodeLockAssertion)
         {
           v10 = SBLogCommon();
@@ -677,7 +677,7 @@ uint64_t __72__SBLockScreenService_requestPasscodeCheckUIWithOptions_withComplet
       v16 = SBLogCommon();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
-        [(SBLockScreenService *)v8 setPreventPasscodeLock:v16, v17, v18, v19, v20, v21, v22];
+        [(SBLockScreenService *)remoteProcess setPreventPasscodeLock:v16, v17, v18, v19, v20, v21, v22];
       }
     }
 
@@ -686,17 +686,17 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ([(NSMutableSet *)self->_connectionsPreventingPasscodeLock containsObject:v6])
+  if ([(NSMutableSet *)self->_connectionsPreventingPasscodeLock containsObject:currentContext])
   {
-    [(NSMutableSet *)self->_connectionsPreventingPasscodeLock removeObject:v6];
+    [(NSMutableSet *)self->_connectionsPreventingPasscodeLock removeObject:currentContext];
     v13 = SBLogCommon();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v6 remoteProcess];
+      remoteProcess2 = [currentContext remoteProcess];
       v23 = 134218242;
-      v24 = v6;
+      v24 = currentContext;
       v25 = 2114;
-      v26 = v14;
+      v26 = remoteProcess2;
       _os_log_impl(&dword_21ED4E000, v13, OS_LOG_TYPE_DEFAULT, "SBLockScreenService-%p: client stopped requesting preventPasscodeLock : %{public}@", &v23, 0x16u);
     }
 
@@ -710,7 +710,7 @@ LABEL_20:
       }
 
       [(SBFAuthenticationAssertion *)self->_preventPasscodeLockAssertion invalidate];
-      v8 = self->_preventPasscodeLockAssertion;
+      remoteProcess = self->_preventPasscodeLockAssertion;
       self->_preventPasscodeLockAssertion = 0;
       goto LABEL_20;
     }
@@ -719,20 +719,20 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)setPreventSpuriousScreenUndim:(id)a3
+- (void)setPreventSpuriousScreenUndim:(id)undim
 {
   v34 = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CF3280];
-  v5 = a3;
-  v6 = [v4 currentContext];
-  v7 = [v5 BOOLValue];
+  undimCopy = undim;
+  currentContext = [v4 currentContext];
+  bOOLValue = [undimCopy BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
-    v8 = [v6 remoteProcess];
-    if ([v8 hasEntitlement:@"com.apple.springboard.preventSpuriousScreenUndim"])
+    remoteProcess = [currentContext remoteProcess];
+    if ([remoteProcess hasEntitlement:@"com.apple.springboard.preventSpuriousScreenUndim"])
     {
-      if (([(NSMutableSet *)self->_connectionsPreventingSpuriousScreenUndim containsObject:v6]& 1) != 0)
+      if (([(NSMutableSet *)self->_connectionsPreventingSpuriousScreenUndim containsObject:currentContext]& 1) != 0)
       {
         goto LABEL_20;
       }
@@ -741,13 +741,13 @@ LABEL_21:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218242;
-        v31 = v6;
+        v31 = currentContext;
         v32 = 2114;
-        v33 = v8;
+        v33 = remoteProcess;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "SBLockScreenService-%p: client started requesting preventSpuriousScreenUndim : %{public}@", buf, 0x16u);
       }
 
-      [(NSMutableSet *)self->_connectionsPreventingSpuriousScreenUndim addObject:v6];
+      [(NSMutableSet *)self->_connectionsPreventingSpuriousScreenUndim addObject:currentContext];
       if (self->_preventSpuriousScreenUndimAssertion)
       {
         goto LABEL_20;
@@ -765,9 +765,9 @@ LABEL_21:
       self->_preventSpuriousScreenUndimAssertion = v11;
 
       v13 = MEMORY[0x277CF0868];
-      v14 = [MEMORY[0x277CEA5C8] allowAmbientIdleTimer];
-      v15 = [MEMORY[0x277CF08F8] disableAlwaysOn];
-      v29[1] = v15;
+      allowAmbientIdleTimer = [MEMORY[0x277CEA5C8] allowAmbientIdleTimer];
+      disableAlwaysOn = [MEMORY[0x277CF08F8] disableAlwaysOn];
+      v29[1] = disableAlwaysOn;
       v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v29 count:2];
       v17 = [v13 acquireWithExplanation:@"SBLockScreenService-PreventSpuriousScreenUndimming" observer:0 attributes:v16];
       preventSpuriousScreenUndimDisableAlwaysOnAssertion = self->_preventSpuriousScreenUndimDisableAlwaysOnAssertion;
@@ -776,10 +776,10 @@ LABEL_21:
 
     else
     {
-      v14 = SBLogCommon();
-      if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+      allowAmbientIdleTimer = SBLogCommon();
+      if (os_log_type_enabled(allowAmbientIdleTimer, OS_LOG_TYPE_ERROR))
       {
-        [(SBLockScreenService *)v8 setPreventSpuriousScreenUndim:v14, v23, v24, v25, v26, v27, v28];
+        [(SBLockScreenService *)remoteProcess setPreventSpuriousScreenUndim:allowAmbientIdleTimer, v23, v24, v25, v26, v27, v28];
       }
     }
 
@@ -787,17 +787,17 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  if ([(NSMutableSet *)self->_connectionsPreventingSpuriousScreenUndim containsObject:v6])
+  if ([(NSMutableSet *)self->_connectionsPreventingSpuriousScreenUndim containsObject:currentContext])
   {
-    [(NSMutableSet *)self->_connectionsPreventingSpuriousScreenUndim removeObject:v6];
+    [(NSMutableSet *)self->_connectionsPreventingSpuriousScreenUndim removeObject:currentContext];
     v19 = SBLogCommon();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
-      v20 = [v6 remoteProcess];
+      remoteProcess2 = [currentContext remoteProcess];
       *buf = 134218242;
-      v31 = v6;
+      v31 = currentContext;
       v32 = 2114;
-      v33 = v20;
+      v33 = remoteProcess2;
       _os_log_impl(&dword_21ED4E000, v19, OS_LOG_TYPE_DEFAULT, "SBLockScreenService-%p: client stopped requesting preventSpuriousScreenUndim : %{public}@", buf, 0x16u);
     }
 
@@ -815,7 +815,7 @@ LABEL_20:
       self->_preventSpuriousScreenUndimAssertion = 0;
 
       [(BLSAssertion *)self->_preventSpuriousScreenUndimDisableAlwaysOnAssertion invalidate];
-      v8 = self->_preventSpuriousScreenUndimDisableAlwaysOnAssertion;
+      remoteProcess = self->_preventSpuriousScreenUndimDisableAlwaysOnAssertion;
       self->_preventSpuriousScreenUndimDisableAlwaysOnAssertion = 0;
       goto LABEL_20;
     }
@@ -824,15 +824,15 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)lockDeviceAnimated:(id)a3 withCompletion:(id)a4
+- (void)lockDeviceAnimated:(id)animated withCompletion:(id)completion
 {
   v18[4] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CF3280] currentContext];
-  v9 = [v8 remoteProcess];
+  animatedCopy = animated;
+  completionCopy = completion;
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess = [currentContext remoteProcess];
 
-  if ([v9 hasEntitlement:@"com.apple.springboard.lockDevice"])
+  if ([remoteProcess hasEntitlement:@"com.apple.springboard.lockDevice"])
   {
     lockScreenManager = self->_lockScreenManager;
     v17[0] = @"SBUILockOptionsUseScreenOffModeKey";
@@ -842,14 +842,14 @@ LABEL_21:
     v18[2] = MEMORY[0x277CBEC38];
     v17[2] = @"SBUILockOptionsForceLockKey";
     v17[3] = @"SBUILockOptionsAnimateLockScreenActivationKey";
-    v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "BOOLValue")}];
+    v11 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(animatedCopy, "BOOLValue")}];
     v18[3] = v11;
     v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:4];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __57__SBLockScreenService_lockDeviceAnimated_withCompletion___block_invoke;
     v15[3] = &unk_2783A9C70;
-    v16 = v7;
+    v16 = completionCopy;
     [(SBLockScreenManager *)lockScreenManager lockUIFromSource:21 withOptions:v12 completion:v15];
 
     v13 = 0;
@@ -864,9 +864,9 @@ LABEL_21:
       [SBLockScreenService lockDeviceAnimated:withCompletion:];
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, v13);
+      (*(completionCopy + 2))(completionCopy, v13);
     }
   }
 }
@@ -884,10 +884,10 @@ uint64_t __57__SBLockScreenService_lockDeviceAnimated_withCompletion___block_inv
 
 - (void)migrateIncomingNotificationsToHistory
 {
-  v3 = [MEMORY[0x277CF3280] currentContext];
-  v4 = [v3 remoteProcess];
+  currentContext = [MEMORY[0x277CF3280] currentContext];
+  remoteProcess = [currentContext remoteProcess];
 
-  if ([v4 hasEntitlement:@"com.apple.springboard.notificationList"])
+  if ([remoteProcess hasEntitlement:@"com.apple.springboard.notificationList"])
   {
     [(SBLockScreenManager *)self->_lockScreenManager migrateNotificationsToHistory];
   }
@@ -897,7 +897,7 @@ uint64_t __57__SBLockScreenService_lockDeviceAnimated_withCompletion___block_inv
     v5 = SBLogCommon();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
-      [(SBLockScreenService *)v4 migrateIncomingNotificationsToHistory:v5];
+      [(SBLockScreenService *)remoteProcess migrateIncomingNotificationsToHistory:v5];
     }
   }
 }

@@ -1,16 +1,16 @@
 @interface SCLInterruptBehaviorResolution
-+ (id)resolutionForClientIdentifier:(id)a3;
-- (SCLInterruptBehaviorResolution)initWithClientIdentifier:(id)a3;
-- (id)resolveBehaviorForEvent:(id)a3 error:(id *)a4;
++ (id)resolutionForClientIdentifier:(id)identifier;
+- (SCLInterruptBehaviorResolution)initWithClientIdentifier:(id)identifier;
+- (id)resolveBehaviorForEvent:(id)event error:(id *)error;
 - (id)serverConnection;
-- (void)setServerConnection:(id)a3;
+- (void)setServerConnection:(id)connection;
 @end
 
 @implementation SCLInterruptBehaviorResolution
 
-+ (id)resolutionForClientIdentifier:(id)a3
++ (id)resolutionForClientIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   if (resolutionForClientIdentifier__onceToken != -1)
   {
     +[SCLInterruptBehaviorResolution resolutionForClientIdentifier:];
@@ -27,10 +27,10 @@
   block[1] = 3221225472;
   block[2] = __64__SCLInterruptBehaviorResolution_resolutionForClientIdentifier___block_invoke_2;
   block[3] = &unk_279B6C648;
-  v10 = v4;
+  v10 = identifierCopy;
   v11 = &v13;
-  v12 = a1;
-  v6 = v4;
+  selfCopy = self;
+  v6 = identifierCopy;
   dispatch_sync(v5, block);
   v7 = v14[5];
 
@@ -73,10 +73,10 @@ void __64__SCLInterruptBehaviorResolution_resolutionForClientIdentifier___block_
   }
 }
 
-- (SCLInterruptBehaviorResolution)initWithClientIdentifier:(id)a3
+- (SCLInterruptBehaviorResolution)initWithClientIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = SCLInterruptBehaviorResolution;
   v6 = [(SCLInterruptBehaviorResolution *)&v12 init];
@@ -86,11 +86,11 @@ void __64__SCLInterruptBehaviorResolution_resolutionForClientIdentifier___block_
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v14 = v5;
+      v14 = identifierCopy;
       _os_log_impl(&dword_264829000, v7, OS_LOG_TYPE_INFO, "Creating SCLInterruptBehaviorResolution for client %@", buf, 0xCu);
     }
 
-    objc_storeStrong(&v6->_clientIdentifier, a3);
+    objc_storeStrong(&v6->_clientIdentifier, identifier);
     v8 = dispatch_queue_create("com.apple.schooltime.behaviorResolutionConnection", 0);
     connectionQueue = v6->_connectionQueue;
     v6->_connectionQueue = v8;
@@ -100,10 +100,10 @@ void __64__SCLInterruptBehaviorResolution_resolutionForClientIdentifier___block_
   return v6;
 }
 
-- (id)resolveBehaviorForEvent:(id)a3 error:(id *)a4
+- (id)resolveBehaviorForEvent:(id)event error:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  eventCopy = event;
   v7 = scl_interrupt_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -111,7 +111,7 @@ void __64__SCLInterruptBehaviorResolution_resolutionForClientIdentifier___block_
     *buf = 138412546;
     *&buf[4] = clientIdentifier;
     *&buf[12] = 2112;
-    *&buf[14] = v6;
+    *&buf[14] = eventCopy;
     _os_log_impl(&dword_264829000, v7, OS_LOG_TYPE_INFO, "Resolving behavior for client %@ event %@", buf, 0x16u);
   }
 
@@ -127,13 +127,13 @@ void __64__SCLInterruptBehaviorResolution_resolutionForClientIdentifier___block_
   v21 = __Block_byref_object_copy__1;
   v22 = __Block_byref_object_dispose__1;
   v23 = 0;
-  v9 = [(SCLInterruptBehaviorResolution *)self serverConnection];
+  serverConnection = [(SCLInterruptBehaviorResolution *)self serverConnection];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __64__SCLInterruptBehaviorResolution_resolveBehaviorForEvent_error___block_invoke;
   v17[3] = &unk_279B6C420;
   v17[4] = buf;
-  v10 = [v9 synchronousRemoteObjectProxyWithErrorHandler:v17];
+  v10 = [serverConnection synchronousRemoteObjectProxyWithErrorHandler:v17];
   v11 = self->_clientIdentifier;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
@@ -141,11 +141,11 @@ void __64__SCLInterruptBehaviorResolution_resolutionForClientIdentifier___block_
   v16[3] = &unk_279B6C670;
   v16[4] = &v18;
   v16[5] = buf;
-  [v10 resolveBehaviorForEvent:v6 clientIdentifier:v11 completion:v16];
+  [v10 resolveBehaviorForEvent:eventCopy clientIdentifier:v11 completion:v16];
 
-  if (a4)
+  if (error)
   {
-    *a4 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
   }
 
   if (*(*&buf[8] + 40))
@@ -153,7 +153,7 @@ void __64__SCLInterruptBehaviorResolution_resolutionForClientIdentifier___block_
     v12 = scl_interrupt_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [(SCLInterruptBehaviorResolution *)v6 resolveBehaviorForEvent:v12 error:?];
+      [(SCLInterruptBehaviorResolution *)eventCopy resolveBehaviorForEvent:v12 error:?];
     }
   }
 
@@ -261,9 +261,9 @@ void __50__SCLInterruptBehaviorResolution_serverConnection__block_invoke_7(uint6
   [WeakRetained setServerConnection:0];
 }
 
-- (void)setServerConnection:(id)a3
+- (void)setServerConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   objc_initWeak(&location, self);
   connectionQueue = self->_connectionQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -271,8 +271,8 @@ void __50__SCLInterruptBehaviorResolution_serverConnection__block_invoke_7(uint6
   block[2] = __54__SCLInterruptBehaviorResolution_setServerConnection___block_invoke;
   block[3] = &unk_279B6C0D8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = connectionCopy;
+  v6 = connectionCopy;
   dispatch_async(connectionQueue, block);
 
   objc_destroyWeak(&v9);

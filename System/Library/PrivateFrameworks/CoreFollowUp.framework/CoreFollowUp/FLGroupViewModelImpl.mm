@@ -1,12 +1,12 @@
 @interface FLGroupViewModelImpl
 - (BOOL)restrictionEnabled;
 - (BOOL)shouldCoalesceItems;
-- (FLGroupViewModelImpl)initWithIdentifier:(id)a3;
+- (FLGroupViewModelImpl)initWithIdentifier:(id)identifier;
 - (id)_expirationOrInformativeText;
 - (id)footerText;
 - (id)items;
 - (id)subtitleText;
-- (void)addItem:(id)a3;
+- (void)addItem:(id)item;
 @end
 
 @implementation FLGroupViewModelImpl
@@ -18,35 +18,35 @@
   return v2;
 }
 
-- (FLGroupViewModelImpl)initWithIdentifier:(id)a3
+- (FLGroupViewModelImpl)initWithIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = [(FLGroupViewModelImpl *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identifier, a3);
+    objc_storeStrong(&v6->_identifier, identifier);
   }
 
   return v7;
 }
 
-- (void)addItem:(id)a3
+- (void)addItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   mutableItems = self->_mutableItems;
-  v8 = v4;
+  v8 = itemCopy;
   if (!mutableItems)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v7 = self->_mutableItems;
-    self->_mutableItems = v6;
+    self->_mutableItems = array;
 
-    v4 = v8;
+    itemCopy = v8;
     mutableItems = self->_mutableItems;
   }
 
-  [(NSMutableArray *)mutableItems addObject:v4];
+  [(NSMutableArray *)mutableItems addObject:itemCopy];
 }
 
 - (id)footerText
@@ -55,15 +55,15 @@
   {
     if ([(FLGroupViewModelImpl *)self shouldCoalesceItems])
     {
-      v3 = [(NSMutableArray *)self->_mutableItems firstObject];
-      v4 = [v3 userInfo];
-      v5 = [v4 objectForKeyedSubscript:@"FLUserInfoPropertyCoalescedGroupFooterText"];
+      firstObject = [(NSMutableArray *)self->_mutableItems firstObject];
+      userInfo = [firstObject userInfo];
+      v5 = [userInfo objectForKeyedSubscript:@"FLUserInfoPropertyCoalescedGroupFooterText"];
 
       if (v5)
       {
-        v6 = [(NSMutableArray *)self->_mutableItems firstObject];
-        v7 = [v6 userInfo];
-        v8 = [v7 objectForKeyedSubscript:@"FLUserInfoPropertyCoalescedGroupFooterText"];
+        firstObject2 = [(NSMutableArray *)self->_mutableItems firstObject];
+        userInfo2 = [firstObject2 userInfo];
+        _expirationOrInformativeText = [userInfo2 objectForKeyedSubscript:@"FLUserInfoPropertyCoalescedGroupFooterText"];
 
         goto LABEL_8;
       }
@@ -72,29 +72,29 @@
 
   else if ([(NSString *)self->_identifier isEqualToString:@"com.apple.followup.group.services"])
   {
-    v8 = 0;
+    _expirationOrInformativeText = 0;
     goto LABEL_8;
   }
 
-  v8 = [(FLGroupViewModelImpl *)self _expirationOrInformativeText];
+  _expirationOrInformativeText = [(FLGroupViewModelImpl *)self _expirationOrInformativeText];
 LABEL_8:
 
-  return v8;
+  return _expirationOrInformativeText;
 }
 
 - (id)subtitleText
 {
   if ([(NSString *)self->_identifier isEqualToString:@"com.apple.followup.group.services"])
   {
-    v3 = [(FLGroupViewModelImpl *)self _expirationOrInformativeText];
+    _expirationOrInformativeText = [(FLGroupViewModelImpl *)self _expirationOrInformativeText];
   }
 
   else
   {
-    v3 = 0;
+    _expirationOrInformativeText = 0;
   }
 
-  return v3;
+  return _expirationOrInformativeText;
 }
 
 - (id)_expirationOrInformativeText
@@ -122,21 +122,21 @@ LABEL_8:
         }
 
         v10 = *(*(&v23 + 1) + 8 * i);
-        v11 = [v10 informativeFooterText];
+        informativeFooterText = [v10 informativeFooterText];
 
-        if (v11)
+        if (informativeFooterText)
         {
-          v12 = [v10 informativeFooterText];
+          informativeFooterText2 = [v10 informativeFooterText];
 
-          v7 = v12;
+          v7 = informativeFooterText2;
         }
 
         if ([v10 displayExpirationDate])
         {
           [v3 addObject:v10];
-          v13 = [v10 formattedExpirationDate];
+          formattedExpirationDate = [v10 formattedExpirationDate];
 
-          v7 = v13;
+          v7 = formattedExpirationDate;
         }
       }
 
@@ -154,10 +154,10 @@ LABEL_8:
   if ([v3 count] >= 2)
   {
     [v3 sortUsingComparator:&__block_literal_global_9];
-    v14 = [v3 firstObject];
+    firstObject = [v3 firstObject];
     v15 = +[FLFollowUpItem _expirationDateFormatter];
-    v16 = [v14 _midnightAdjustedDate];
-    v17 = [v15 stringFromDate:v16];
+    _midnightAdjustedDate = [firstObject _midnightAdjustedDate];
+    v17 = [v15 stringFromDate:_midnightAdjustedDate];
 
     v18 = MEMORY[0x277CCACA8];
     v19 = FLLoc(@"EARLIEST_ITEM_EXPIRATION_FORMAT");
@@ -188,8 +188,8 @@ uint64_t __52__FLGroupViewModelImpl__expirationOrInformativeText__block_invoke(u
     return 0;
   }
 
-  v2 = [MEMORY[0x277D262A0] sharedConnection];
-  v3 = [v2 effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]] == 2;
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v3 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25CD0]] == 2;
 
   return v3;
 }
@@ -198,8 +198,8 @@ uint64_t __52__FLGroupViewModelImpl__expirationOrInformativeText__block_invoke(u
 {
   if ([(NSString *)self->_identifier isEqualToString:@"com.apple.followup.group.account"]|| [(NSString *)self->_identifier isEqualToString:@"com.apple.followup.group.services"]|| [(NSString *)self->_identifier isEqualToString:@"com.apple.followup.group.ndo"]|| [(NSString *)self->_identifier isEqualToString:@"com.apple.followup.secure.mic"])
   {
-    v3 = [(FLGroupViewModelImpl *)self items];
-    v4 = [v3 count] > 1;
+    items = [(FLGroupViewModelImpl *)self items];
+    v4 = [items count] > 1;
   }
 
   else
@@ -210,8 +210,8 @@ uint64_t __52__FLGroupViewModelImpl__expirationOrInformativeText__block_invoke(u
       return 0;
     }
 
-    v3 = [(FLGroupViewModelImpl *)self items];
-    v4 = [v3 count] > 2;
+    items = [(FLGroupViewModelImpl *)self items];
+    v4 = [items count] > 2;
   }
 
   v5 = v4;

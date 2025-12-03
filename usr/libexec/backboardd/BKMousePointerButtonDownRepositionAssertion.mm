@@ -1,22 +1,22 @@
 @interface BKMousePointerButtonDownRepositionAssertion
-- (BKMousePointerButtonDownRepositionAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 contextRelativePointerPosition:(id)a5 displayUUID:(id)a6 restrictingToPID:(int)a7 invalidationBlock:(id)a8;
+- (BKMousePointerButtonDownRepositionAssertion)initWithIdentifier:(id)identifier forReason:(id)reason contextRelativePointerPosition:(id)position displayUUID:(id)d restrictingToPID:(int)iD invalidationBlock:(id)block;
 @end
 
 @implementation BKMousePointerButtonDownRepositionAssertion
 
-- (BKMousePointerButtonDownRepositionAssertion)initWithIdentifier:(id)a3 forReason:(id)a4 contextRelativePointerPosition:(id)a5 displayUUID:(id)a6 restrictingToPID:(int)a7 invalidationBlock:(id)a8
+- (BKMousePointerButtonDownRepositionAssertion)initWithIdentifier:(id)identifier forReason:(id)reason contextRelativePointerPosition:(id)position displayUUID:(id)d restrictingToPID:(int)iD invalidationBlock:(id)block
 {
-  v15 = a5;
-  v16 = a6;
+  positionCopy = position;
+  dCopy = d;
   v20.receiver = self;
   v20.super_class = BKMousePointerButtonDownRepositionAssertion;
-  v17 = [(BKMousePointerButtonDownRepositionAssertion *)&v20 initWithIdentifier:a3 forReason:a4 invalidationBlock:a8];
+  v17 = [(BKMousePointerButtonDownRepositionAssertion *)&v20 initWithIdentifier:identifier forReason:reason invalidationBlock:block];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_contextRelativePointerPosition, a5);
-    objc_storeStrong(&v18->_displayUUID, a6);
-    v18->_restrictingToPID = a7;
+    objc_storeStrong(&v17->_contextRelativePointerPosition, position);
+    objc_storeStrong(&v18->_displayUUID, d);
+    v18->_restrictingToPID = iD;
   }
 
   return v18;

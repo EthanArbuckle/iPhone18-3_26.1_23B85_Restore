@@ -12,9 +12,9 @@
 - (NWEndpoint)localEndpoint;
 - (NWEndpoint)remoteEndpoint;
 - (NWInterface)interface;
-- (NWPathFlow)initWithPathFlow:(id)a3;
+- (NWPathFlow)initWithPathFlow:(id)flow;
 - (id)description;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 - (id)privateDescription;
 - (unsigned)nexusPort;
 @end
@@ -35,13 +35,13 @@
   return v2;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
-  v4 = a4;
-  v5 = *&a3;
+  contentCopy = content;
+  v5 = *&indent;
   v7 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v8 = [(NWPathFlow *)self flowID];
-  [v7 appendPrettyObject:v8 withName:@"flowID" indent:v5 showFullContent:v4];
+  flowID = [(NWPathFlow *)self flowID];
+  [v7 appendPrettyObject:flowID withName:@"flowID" indent:v5 showFullContent:contentCopy];
 
   [v7 appendPrettyBOOL:-[NWPathFlow isViable](self withName:"isViable") indent:{@"isViable", v5}];
   [v7 appendPrettyBOOL:-[NWPathFlow isAssigned](self withName:"isAssigned") indent:{@"isAssigned", v5}];
@@ -70,21 +70,21 @@
     [v7 appendPrettyBOOL:-[NWPathFlow supportsIPv6](self withName:"supportsIPv6") indent:{@"supportsIPv6", v5}];
   }
 
-  v9 = [(NWPathFlow *)self interface];
-  [v7 appendPrettyObject:v9 withName:@"interface" indent:v5 showFullContent:v4];
+  interface = [(NWPathFlow *)self interface];
+  [v7 appendPrettyObject:interface withName:@"interface" indent:v5 showFullContent:contentCopy];
 
-  v10 = [(NWPathFlow *)self localEndpoint];
-  [v7 appendPrettyObject:v10 withName:@"localEndpoint" indent:v5 showFullContent:v4];
+  localEndpoint = [(NWPathFlow *)self localEndpoint];
+  [v7 appendPrettyObject:localEndpoint withName:@"localEndpoint" indent:v5 showFullContent:contentCopy];
 
-  v11 = [(NWPathFlow *)self remoteEndpoint];
-  [v7 appendPrettyObject:v11 withName:@"remoteEndpoint" indent:v5 showFullContent:v4];
+  remoteEndpoint = [(NWPathFlow *)self remoteEndpoint];
+  [v7 appendPrettyObject:remoteEndpoint withName:@"remoteEndpoint" indent:v5 showFullContent:contentCopy];
 
-  v12 = [(NWPathFlow *)self nexusAgent];
-  if (v12)
+  nexusAgent = [(NWPathFlow *)self nexusAgent];
+  if (nexusAgent)
   {
-    [v7 appendPrettyObject:v12 withName:@"nexusAgent" indent:v5 showFullContent:v4];
-    v13 = [(NWPathFlow *)self nexusInstance];
-    [v7 appendPrettyObject:v13 withName:@"nexusInstance" indent:v5 showFullContent:v4];
+    [v7 appendPrettyObject:nexusAgent withName:@"nexusAgent" indent:v5 showFullContent:contentCopy];
+    nexusInstance = [(NWPathFlow *)self nexusInstance];
+    [v7 appendPrettyObject:nexusInstance withName:@"nexusInstance" indent:v5 showFullContent:contentCopy];
 
     [v7 appendPrettyInt:-[NWPathFlow nexusPort](self withName:"nexusPort") indent:{@"nexusPort", v5}];
   }
@@ -94,56 +94,56 @@
 
 - (BOOL)supportsIPv6
 {
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  has_ipv6 = nw_path_flow_has_ipv6(v2);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  has_ipv6 = nw_path_flow_has_ipv6(internalPathFlow);
 
   return has_ipv6;
 }
 
 - (BOOL)supportsIPv4
 {
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  has_ipv4 = nw_path_flow_has_ipv4(v2);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  has_ipv4 = nw_path_flow_has_ipv4(internalPathFlow);
 
   return has_ipv4;
 }
 
 - (BOOL)isDefunct
 {
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  is_defunct = nw_path_flow_is_defunct(v2);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  is_defunct = nw_path_flow_is_defunct(internalPathFlow);
 
   return is_defunct;
 }
 
 - (BOOL)isDirect
 {
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  is_direct = nw_path_flow_is_direct(v2);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  is_direct = nw_path_flow_is_direct(internalPathFlow);
 
   return is_direct;
 }
 
 - (BOOL)isLocal
 {
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  is_local = nw_path_flow_is_local(v2);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  is_local = nw_path_flow_is_local(internalPathFlow);
 
   return is_local;
 }
 
 - (BOOL)isAssigned
 {
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  is_assigned = nw_path_flow_is_assigned(v2);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  is_assigned = nw_path_flow_is_assigned(internalPathFlow);
 
   return is_assigned;
 }
 
 - (BOOL)isViable
 {
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  is_viable = nw_path_flow_is_viable(v2);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  is_viable = nw_path_flow_is_viable(internalPathFlow);
 
   return is_viable;
 }
@@ -154,8 +154,8 @@
   v6[0] = 0;
   v6[1] = 0;
   v5 = 0;
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  nexus_instance = nw_path_flow_get_nexus_instance(v2, v6, &v5);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  nexus_instance = nw_path_flow_get_nexus_instance(internalPathFlow, v6, &v5);
 
   if (nexus_instance)
   {
@@ -173,8 +173,8 @@
   v6[2] = *MEMORY[0x1E69E9840];
   v6[0] = 0;
   v6[1] = 0;
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  nexus_instance = nw_path_flow_get_nexus_instance(v2, v6, 0);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  nexus_instance = nw_path_flow_get_nexus_instance(internalPathFlow, v6, 0);
 
   v4 = 0;
   if (nexus_instance)
@@ -190,8 +190,8 @@
   v6[2] = *MEMORY[0x1E69E9840];
   v6[0] = 0;
   v6[1] = 0;
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  nexus_agent_uuid = nw_path_flow_get_nexus_agent_uuid(v2, v6);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  nexus_agent_uuid = nw_path_flow_get_nexus_agent_uuid(internalPathFlow, v6);
 
   v4 = 0;
   if (nexus_agent_uuid)
@@ -207,8 +207,8 @@
   v6[2] = *MEMORY[0x1E69E9840];
   v6[0] = 0;
   v6[1] = 0;
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  id = nw_path_flow_get_id(v2, v6);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  id = nw_path_flow_get_id(internalPathFlow, v6);
 
   v4 = 0;
   if (id)
@@ -221,8 +221,8 @@
 
 - (NWEndpoint)remoteEndpoint
 {
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  v3 = nw_path_flow_copy_remote_endpoint(v2);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  v3 = nw_path_flow_copy_remote_endpoint(internalPathFlow);
 
   if (v3)
   {
@@ -239,8 +239,8 @@
 
 - (NWEndpoint)localEndpoint
 {
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  v3 = nw_path_flow_copy_local_endpoint(v2);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  v3 = nw_path_flow_copy_local_endpoint(internalPathFlow);
 
   if (v3)
   {
@@ -257,8 +257,8 @@
 
 - (NWInterface)interface
 {
-  v2 = [(NWPathFlow *)self internalPathFlow];
-  v3 = nw_path_flow_copy_interface(v2);
+  internalPathFlow = [(NWPathFlow *)self internalPathFlow];
+  v3 = nw_path_flow_copy_interface(internalPathFlow);
 
   if (v3)
   {
@@ -273,11 +273,11 @@
   return v4;
 }
 
-- (NWPathFlow)initWithPathFlow:(id)a3
+- (NWPathFlow)initWithPathFlow:(id)flow
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  flowCopy = flow;
+  if (flowCopy)
   {
     v23.receiver = self;
     v23.super_class = NWPathFlow;
@@ -285,7 +285,7 @@
     if (v6)
     {
       v7 = v6;
-      objc_storeStrong(&v6->_internalPathFlow, a3);
+      objc_storeStrong(&v6->_internalPathFlow, flow);
       goto LABEL_4;
     }
 

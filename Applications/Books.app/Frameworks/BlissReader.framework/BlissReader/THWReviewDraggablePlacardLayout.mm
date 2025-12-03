@@ -1,23 +1,23 @@
 @interface THWReviewDraggablePlacardLayout
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4;
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3;
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size;
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout;
 - (CGSize)adjustedInsets;
 - (NSString)contentImageAccessibilityDescription;
-- (THWReviewDraggablePlacardLayout)initWithIndex:(unint64_t)a3 choice:(id)a4 delegate:(id)a5;
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6;
+- (THWReviewDraggablePlacardLayout)initWithIndex:(unint64_t)index choice:(id)choice delegate:(id)delegate;
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap;
 - (id)childInfosForLayout;
 - (id)computeLayoutGeometry;
 - (id)p_wpLayout;
 - (void)dealloc;
 - (void)invalidatePlacement;
-- (void)setContentImage:(id)a3;
-- (void)setContentStorage:(id)a3;
-- (void)setPlacement:(int)a3;
+- (void)setContentImage:(id)image;
+- (void)setContentStorage:(id)storage;
+- (void)setPlacement:(int)placement;
 @end
 
 @implementation THWReviewDraggablePlacardLayout
 
-- (THWReviewDraggablePlacardLayout)initWithIndex:(unint64_t)a3 choice:(id)a4 delegate:(id)a5
+- (THWReviewDraggablePlacardLayout)initWithIndex:(unint64_t)index choice:(id)choice delegate:(id)delegate
 {
   v11.receiver = self;
   v11.super_class = THWReviewDraggablePlacardLayout;
@@ -25,9 +25,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_index = a3;
-    v8->_choice = a4;
-    v9->_delegate = a5;
+    v8->_index = index;
+    v8->_choice = choice;
+    v9->_delegate = delegate;
   }
 
   return v9;
@@ -40,11 +40,11 @@
   [(THWContainerLayout *)&v3 dealloc];
 }
 
-- (void)setPlacement:(int)a3
+- (void)setPlacement:(int)placement
 {
-  if (self->_placement != a3)
+  if (self->_placement != placement)
   {
-    self->_placement = a3;
+    self->_placement = placement;
     if (self->_contentStorage)
     {
       [(THWReviewDraggablePlacardLayout *)self invalidatePlacement];
@@ -55,9 +55,9 @@
 - (void)invalidatePlacement
 {
   [(THWReviewDraggablePlacardLayout *)self invalidateFrame];
-  v3 = [(THWReviewDraggablePlacardLayout *)self p_wpLayout];
+  p_wpLayout = [(THWReviewDraggablePlacardLayout *)self p_wpLayout];
 
-  [v3 invalidateSize];
+  [p_wpLayout invalidateSize];
 }
 
 - (id)p_wpLayout
@@ -109,8 +109,8 @@
 
   else if (self->_contentStorage)
   {
-    v18 = [(THWReviewDraggablePlacardLayout *)self p_wpLayout];
-    [v18 frame];
+    p_wpLayout = [(THWReviewDraggablePlacardLayout *)self p_wpLayout];
+    [p_wpLayout frame];
     v20 = v19;
     v22 = v5 + v21;
     v23 = self->_delegate;
@@ -137,9 +137,9 @@
     }
 
     height = v9 + v22;
-    [v18 frame];
+    [p_wpLayout frame];
     TSDSubtractPoints();
-    [v18 offsetGeometryBy:?];
+    [p_wpLayout offsetGeometryBy:?];
   }
 
   else
@@ -173,7 +173,7 @@
   }
 }
 
-- (void)setContentStorage:(id)a3
+- (void)setContentStorage:(id)storage
 {
   contentImage = self->_contentImage;
   if (contentImage)
@@ -182,7 +182,7 @@
     self->_contentImage = 0;
     p_contentStorage = &self->_contentStorage;
     contentStorage = self->_contentStorage;
-    if (contentStorage == a3)
+    if (contentStorage == storage)
     {
       goto LABEL_6;
     }
@@ -192,19 +192,19 @@
   {
     p_contentStorage = &self->_contentStorage;
     contentStorage = self->_contentStorage;
-    if (contentStorage == a3)
+    if (contentStorage == storage)
     {
       return;
     }
   }
 
-  *p_contentStorage = a3;
+  *p_contentStorage = storage;
 LABEL_6:
 
   [(THWContainerLayout *)self invalidate];
 }
 
-- (void)setContentImage:(id)a3
+- (void)setContentImage:(id)image
 {
   contentStorage = self->_contentStorage;
   if (contentStorage)
@@ -213,7 +213,7 @@ LABEL_6:
     self->_contentStorage = 0;
     p_contentImage = &self->_contentImage;
     contentImage = self->_contentImage;
-    if (contentImage == a3)
+    if (contentImage == image)
     {
       goto LABEL_6;
     }
@@ -223,13 +223,13 @@ LABEL_6:
   {
     p_contentImage = &self->_contentImage;
     contentImage = self->_contentImage;
-    if (contentImage == a3)
+    if (contentImage == image)
     {
       return;
     }
   }
 
-  *p_contentImage = a3;
+  *p_contentImage = image;
 LABEL_6:
 
   [(THWContainerLayout *)self invalidate];
@@ -237,12 +237,12 @@ LABEL_6:
 
 - (NSString)contentImageAccessibilityDescription
 {
-  v2 = [(THWReviewDraggablePlacardLayout *)self choice];
+  choice = [(THWReviewDraggablePlacardLayout *)self choice];
 
-  return [(THWReviewChoice *)v2 accessibilityDescription];
+  return [(THWReviewChoice *)choice accessibilityDescription];
 }
 
-- (CGRect)nonAutosizedFrameForTextLayout:(id)a3
+- (CGRect)nonAutosizedFrameForTextLayout:(id)layout
 {
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -255,13 +255,13 @@ LABEL_6:
   return result;
 }
 
-- (CGRect)autosizedFrameForTextLayout:(id)a3 textSize:(CGSize)a4
+- (CGRect)autosizedFrameForTextLayout:(id)layout textSize:(CGSize)size
 {
-  width = a4.width;
+  width = size.width;
   delegate = self->_delegate;
   if (delegate)
   {
-    [(THWReviewDraggablePlacardLayoutDelegate *)delegate draggablePlacardLayoutInsets:self, a4.width, a4.height];
+    [(THWReviewDraggablePlacardLayoutDelegate *)delegate draggablePlacardLayoutInsets:self, size.width, size.height];
     v8 = v7;
     v10 = v9;
     delegate = self->_delegate;
@@ -294,16 +294,16 @@ LABEL_6:
   return result;
 }
 
-- (double)positionForColumnIndex:(unint64_t)a3 bodyWidth:(double)a4 outWidth:(double *)a5 outGap:(double *)a6
+- (double)positionForColumnIndex:(unint64_t)index bodyWidth:(double)width outWidth:(double *)outWidth outGap:(double *)gap
 {
-  if (a5)
+  if (outWidth)
   {
-    *a5 = a4;
+    *outWidth = width;
   }
 
-  if (a6)
+  if (gap)
   {
-    *a6 = 0.0;
+    *gap = 0.0;
   }
 
   return 0.0;

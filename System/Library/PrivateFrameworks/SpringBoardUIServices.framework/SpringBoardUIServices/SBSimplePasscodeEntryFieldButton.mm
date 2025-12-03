@@ -1,7 +1,7 @@
 @interface SBSimplePasscodeEntryFieldButton
-- (SBSimplePasscodeEntryFieldButton)initWithFrame:(CGRect)a3 paddingOutsideRing:(UIEdgeInsets)a4 useLightStyle:(BOOL)a5;
+- (SBSimplePasscodeEntryFieldButton)initWithFrame:(CGRect)frame paddingOutsideRing:(UIEdgeInsets)ring useLightStyle:(BOOL)style;
 - (void)layoutSubviews;
-- (void)setRevealed:(BOOL)revealed animated:(BOOL)a4 delay:(double)a5;
+- (void)setRevealed:(BOOL)revealed animated:(BOOL)animated delay:(double)delay;
 @end
 
 @implementation SBSimplePasscodeEntryFieldButton
@@ -17,19 +17,19 @@
   [(UIView *)v8 _setCornerRadius:v9 * 0.5];
 }
 
-- (SBSimplePasscodeEntryFieldButton)initWithFrame:(CGRect)a3 paddingOutsideRing:(UIEdgeInsets)a4 useLightStyle:(BOOL)a5
+- (SBSimplePasscodeEntryFieldButton)initWithFrame:(CGRect)frame paddingOutsideRing:(UIEdgeInsets)ring useLightStyle:(BOOL)style
 {
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
+  right = ring.right;
+  bottom = ring.bottom;
+  left = ring.left;
+  top = ring.top;
   v26.receiver = self;
   v26.super_class = SBSimplePasscodeEntryFieldButton;
-  v10 = [(SBSimplePasscodeEntryFieldButton *)&v26 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v10 = [(SBSimplePasscodeEntryFieldButton *)&v26 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v11 = v10;
   if (v10)
   {
-    v10->_useLightStyle = a5;
+    v10->_useLightStyle = style;
     p_top = &v10->_paddingOutsideRing.top;
     v10->_paddingOutsideRing.top = top;
     v10->_paddingOutsideRing.left = left;
@@ -58,23 +58,23 @@
     v21 = v11->_ringView;
     [(UIView *)v21 frame];
     [(UIView *)v21 _setCornerRadius:v22 * 0.5];
-    v23 = [(UIView *)v11->_ringView layer];
-    [v23 setBorderColor:{-[UIColor cgColor](v11->_color, "cgColor")}];
+    layer = [(UIView *)v11->_ringView layer];
+    [layer setBorderColor:{-[UIColor cgColor](v11->_color, "cgColor")}];
 
-    v24 = [(UIView *)v11->_ringView layer];
+    layer2 = [(UIView *)v11->_ringView layer];
     [MEMORY[0x1E69D3FE8] pinFixedDigitEntryFieldIndicatorStrokeSize];
-    [v24 setBorderWidth:?];
+    [layer2 setBorderWidth:?];
   }
 
   return v11;
 }
 
-- (void)setRevealed:(BOOL)revealed animated:(BOOL)a4 delay:(double)a5
+- (void)setRevealed:(BOOL)revealed animated:(BOOL)animated delay:(double)delay
 {
-  if (fabs(a5) < 2.22044605e-16 || self->_revealed != revealed)
+  if (fabs(delay) < 2.22044605e-16 || self->_revealed != revealed)
   {
     self->_revealed = revealed;
-    v9 = !a4 || revealed;
+    v9 = !animated || revealed;
     if (!v9)
     {
       self->_animatingUnreveal = 1;
@@ -101,7 +101,7 @@
     v12[3] = &unk_1E789E2F8;
     v13 = v10;
     v12[4] = self;
-    [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v14 options:v12 animations:v11 completion:a5];
+    [MEMORY[0x1E69DD250] animateWithDuration:0 delay:v14 options:v12 animations:v11 completion:delay];
   }
 }
 

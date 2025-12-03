@@ -1,21 +1,21 @@
 @interface ADCapData
 + (id)sharedInstance;
-- (ADCapData)initWithStorageType:(int64_t)a3;
-- (ADCapData)initWithStorageType:(int64_t)a3 keychainKey:(id)a4 title:(id)a5;
-- (id)capData:(id)a3;
-- (id)capDataJSON:(id)a3;
-- (id)clickCapObjectForAdamID:(id)a3;
+- (ADCapData)initWithStorageType:(int64_t)type;
+- (ADCapData)initWithStorageType:(int64_t)type keychainKey:(id)key title:(id)title;
+- (id)capData:(id)data;
+- (id)capDataJSON:(id)n;
+- (id)clickCapObjectForAdamID:(id)d;
 - (id)dictionaryRepresentation;
-- (id)downloadObjectForAdamID:(id)a3;
-- (id)filteredCapData:(id)a3 maxItems:(unint64_t)a4 expirationThresholdInSeconds:(double)a5;
-- (id)restoreCapDataArrayFromPlist:(id)a3;
-- (void)addCapDataObject:(id)a3 ofKind:(int64_t)a4;
+- (id)downloadObjectForAdamID:(id)d;
+- (id)filteredCapData:(id)data maxItems:(unint64_t)items expirationThresholdInSeconds:(double)seconds;
+- (id)restoreCapDataArrayFromPlist:(id)plist;
+- (void)addCapDataObject:(id)object ofKind:(int64_t)kind;
 - (void)checkAndUpdateToroID;
 - (void)eraseCapData;
 - (void)resetCapDataObject;
 - (void)restoreAllCapData;
-- (void)saveCapDataWithReason:(id)a3;
-- (void)updateCapDataWith:(id)a3 ofKind:(int64_t)a4;
+- (void)saveCapDataWithReason:(id)reason;
+- (void)updateCapDataWith:(id)with ofKind:(int64_t)kind;
 @end
 
 @implementation ADCapData
@@ -26,7 +26,7 @@
   block[1] = 3221225472;
   block[2] = __27__ADCapData_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance__onceToken != -1)
   {
     dispatch_once(&sharedInstance__onceToken, block);
@@ -45,53 +45,53 @@ uint64_t __27__ADCapData_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (ADCapData)initWithStorageType:(int64_t)a3
+- (ADCapData)initWithStorageType:(int64_t)type
 {
-  if (a3 > 3 || (a3 - 2) < 2 || a3)
+  if (type > 3 || (type - 2) < 2 || type)
   {
     self = [ADCapData initWithStorageType:"initWithStorageType:keychainKey:title:" keychainKey:? title:?];
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (ADCapData)initWithStorageType:(int64_t)a3 keychainKey:(id)a4 title:(id)a5
+- (ADCapData)initWithStorageType:(int64_t)type keychainKey:(id)key title:(id)title
 {
-  v9 = a4;
-  v10 = a5;
+  keyCopy = key;
+  titleCopy = title;
   v14.receiver = self;
   v14.super_class = ADCapData;
   v11 = [(ADCapData *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_storageType = a3;
-    objc_storeStrong(&v11->_keychainKey, a4);
-    objc_storeStrong(&v12->_title, a5);
+    v11->_storageType = type;
+    objc_storeStrong(&v11->_keychainKey, key);
+    objc_storeStrong(&v12->_title, title);
     [(ADCapData *)v12 restoreAllCapData];
   }
 
   return v12;
 }
 
-- (id)restoreCapDataArrayFromPlist:(id)a3
+- (id)restoreCapDataArrayFromPlist:(id)plist
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB18] array];
-  if (v3)
+  plistCopy = plist;
+  array = [MEMORY[0x277CBEB18] array];
+  if (plistCopy)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v5 = v3;
+    v5 = plistCopy;
     v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v6)
     {
@@ -109,7 +109,7 @@ uint64_t __27__ADCapData_sharedInstance__block_invoke(uint64_t a1)
           v10 = *(*(&v15 + 1) + 8 * i);
           v11 = [ADFrequencyCap alloc];
           v12 = [(ADFrequencyCap *)v11 initWithDictionary:v10, v15];
-          [v4 addObject:v12];
+          [array addObject:v12];
         }
 
         v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -121,7 +121,7 @@ uint64_t __27__ADCapData_sharedInstance__block_invoke(uint64_t a1)
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return array;
 }
 
 - (void)resetCapDataObject
@@ -131,17 +131,17 @@ uint64_t __27__ADCapData_sharedInstance__block_invoke(uint64_t a1)
   toroID = self->_toroID;
   self->_toroID = v4;
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   frequencyCapData = self->_frequencyCapData;
-  self->_frequencyCapData = v6;
+  self->_frequencyCapData = array;
 
-  v8 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   clickCountData = self->_clickCountData;
-  self->_clickCountData = v8;
+  self->_clickCountData = array2;
 
-  v10 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   downloadData = self->_downloadData;
-  self->_downloadData = v10;
+  self->_downloadData = array3;
 
   MEMORY[0x2821F96F8]();
 }
@@ -149,8 +149,8 @@ uint64_t __27__ADCapData_sharedInstance__block_invoke(uint64_t a1)
 - (void)restoreAllCapData
 {
   v33 = 0;
-  v3 = [(ADCapData *)self keychainKey];
-  v4 = ADCopyDataFromKeychain(v3, &v33);
+  keychainKey = [(ADCapData *)self keychainKey];
+  v4 = ADCopyDataFromKeychain(keychainKey, &v33);
 
   if (v4)
   {
@@ -160,8 +160,8 @@ uint64_t __27__ADCapData_sharedInstance__block_invoke(uint64_t a1)
     if (v6)
     {
       v7 = MEMORY[0x277CCACA8];
-      v8 = [(ADCapData *)self title];
-      v9 = [v7 stringWithFormat:@"Error restoring cap data for %@ %@", v8, v6];
+      title = [(ADCapData *)self title];
+      v9 = [v7 stringWithFormat:@"Error restoring cap data for %@ %@", title, v6];
       _ADLog(@"ToroLogging", v9, 16);
 
       [(ADCapData *)self resetCapDataObject];
@@ -194,18 +194,18 @@ uint64_t __27__ADCapData_sharedInstance__block_invoke(uint64_t a1)
       else
       {
         v24 = MEMORY[0x277CCACA8];
-        v25 = [(ADCapData *)self title];
-        v26 = [v24 stringWithFormat:@"Unable to restore Toro ID for ADCapData for %@. Please file a radar...", v25];
+        title2 = [(ADCapData *)self title];
+        v26 = [v24 stringWithFormat:@"Unable to restore Toro ID for ADCapData for %@. Please file a radar...", title2];
         _ADLog(@"ToroLogging", v26, 16);
 
         [(ADCapData *)self resetCapDataObject];
       }
 
       v27 = MEMORY[0x277CCACA8];
-      v28 = [(ADCapData *)self title];
-      v29 = [(ADCapData *)self dictionaryRepresentation];
-      v30 = [v29 AD_jsonString];
-      v31 = [v27 stringWithFormat:@"Restored Cap Data information for %@: %@", v28, v30];
+      title3 = [(ADCapData *)self title];
+      dictionaryRepresentation = [(ADCapData *)self dictionaryRepresentation];
+      aD_jsonString = [dictionaryRepresentation AD_jsonString];
+      v31 = [v27 stringWithFormat:@"Restored Cap Data information for %@: %@", title3, aD_jsonString];
       _ADLog(@"ToroLogging", v31, 0);
     }
   }
@@ -213,71 +213,71 @@ uint64_t __27__ADCapData_sharedInstance__block_invoke(uint64_t a1)
   else
   {
     v10 = MEMORY[0x277CCACA8];
-    v11 = [(ADCapData *)self title];
-    v12 = [v10 stringWithFormat:@"No data to restore. Initializing an empty Cap Data object for %@.", v11];
+    title4 = [(ADCapData *)self title];
+    v12 = [v10 stringWithFormat:@"No data to restore. Initializing an empty Cap Data object for %@.", title4];
     _ADLog(@"ToroLogging", v12, 0);
 
     [(ADCapData *)self resetCapDataObject];
   }
 }
 
-- (void)saveCapDataWithReason:(id)a3
+- (void)saveCapDataWithReason:(id)reason
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  v6 = [(ADCapData *)v5 dictionaryRepresentation];
+  reasonCopy = reason;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  dictionaryRepresentation = [(ADCapData *)selfCopy dictionaryRepresentation];
   v7 = MEMORY[0x277CCACA8];
-  v8 = [(ADCapData *)v5 title];
-  v9 = [v6 AD_jsonString];
-  if (v4)
+  title = [(ADCapData *)selfCopy title];
+  aD_jsonString = [dictionaryRepresentation AD_jsonString];
+  if (reasonCopy)
   {
-    [v7 stringWithFormat:@"Updated %@ Cap Data information for %@: %@", v8, v4, v9];
+    [v7 stringWithFormat:@"Updated %@ Cap Data information for %@: %@", title, reasonCopy, aD_jsonString];
   }
 
   else
   {
-    [v7 stringWithFormat:@"Updated %@ Cap Data information: %@", v8, v9];
+    [v7 stringWithFormat:@"Updated %@ Cap Data information: %@", title, aD_jsonString];
   }
   v10 = ;
   _ADLog(@"ToroLogging", v10, 0);
 
   v18 = 0;
-  v11 = [MEMORY[0x277CCAC58] dataWithPropertyList:v6 format:200 options:0 error:&v18];
+  v11 = [MEMORY[0x277CCAC58] dataWithPropertyList:dictionaryRepresentation format:200 options:0 error:&v18];
   v12 = v18;
   if (!v11)
   {
     v16 = MEMORY[0x277CCACA8];
-    v15 = [(ADCapData *)v5 title];
-    v17 = [v16 stringWithFormat:@"Error serializing %@ Cap Data: %@", v15, v12];
+    title2 = [(ADCapData *)selfCopy title];
+    v17 = [v16 stringWithFormat:@"Error serializing %@ Cap Data: %@", title2, v12];
     _ADLog(@"ToroLogging", v17, 16);
 
     goto LABEL_8;
   }
 
-  v13 = [(ADCapData *)v5 keychainKey];
-  v14 = ADWriteDataToKeychain(v13, v11);
+  keychainKey = [(ADCapData *)selfCopy keychainKey];
+  v14 = ADWriteDataToKeychain(keychainKey, v11);
 
   if (v14)
   {
-    v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error writing results cap data to keychain: %d", v14];
-    _ADLog(@"iAdInternalLogging", v15, 16);
+    title2 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error writing results cap data to keychain: %d", v14];
+    _ADLog(@"iAdInternalLogging", title2, 16);
 LABEL_8:
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)dictionaryRepresentation
 {
   v46 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   toroID = self->_toroID;
   if (toroID)
   {
-    [v3 setObject:toroID forKey:@"ADToroIDKey"];
-    v6 = [MEMORY[0x277CBEB18] array];
+    [dictionary setObject:toroID forKey:@"ADToroIDKey"];
+    array = [MEMORY[0x277CBEB18] array];
     v39 = 0u;
     v40 = 0u;
     v41 = 0u;
@@ -297,8 +297,8 @@ LABEL_8:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v39 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v39 objects:v45 count:16];
@@ -307,8 +307,8 @@ LABEL_8:
       while (v9);
     }
 
-    [v4 setObject:v6 forKey:@"ADFrequencyCapTypeKey"];
-    v13 = [MEMORY[0x277CBEB18] array];
+    [v4 setObject:array forKey:@"ADFrequencyCapTypeKey"];
+    array2 = [MEMORY[0x277CBEB18] array];
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
@@ -328,8 +328,8 @@ LABEL_8:
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v35 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v35 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v35 objects:v44 count:16];
@@ -338,8 +338,8 @@ LABEL_8:
       while (v16);
     }
 
-    [v4 setObject:v13 forKey:@"ADToroClickTypeKey"];
-    v20 = [MEMORY[0x277CBEB18] array];
+    [v4 setObject:array2 forKey:@"ADToroClickTypeKey"];
+    array3 = [MEMORY[0x277CBEB18] array];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
@@ -359,8 +359,8 @@ LABEL_8:
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v31 + 1) + 8 * k) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation3 = [*(*(&v31 + 1) + 8 * k) dictionaryRepresentation];
+          [array3 addObject:dictionaryRepresentation3];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v31 objects:v43 count:16];
@@ -369,7 +369,7 @@ LABEL_8:
       while (v23);
     }
 
-    [v4 setObject:v20 forKey:@"ADDownloadTypeKey"];
+    [v4 setObject:array3 forKey:@"ADDownloadTypeKey"];
     v27 = [MEMORY[0x277CBEAC0] dictionaryWithDictionary:v4];
   }
 
@@ -391,135 +391,135 @@ LABEL_8:
   v3 = +[ADIDManager sharedInstance];
   v6 = [v3 idForClientType:4];
 
-  v4 = self;
-  objc_sync_enter(v4);
-  toroID = v4->_toroID;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  toroID = selfCopy->_toroID;
   if (toroID | v6 && ![(NSString *)toroID isEqualToString:v6])
   {
-    [(ADCapData *)v4 resetCapDataObject];
+    [(ADCapData *)selfCopy resetCapDataObject];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)addCapDataObject:(id)a3 ofKind:(int64_t)a4
+- (void)addCapDataObject:(id)object ofKind:(int64_t)kind
 {
-  v27 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  [(ADCapData *)v6 checkAndUpdateToroID];
-  if (a4 == 2)
+  objectCopy = object;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(ADCapData *)selfCopy checkAndUpdateToroID];
+  if (kind == 2)
   {
-    v20 = [(ADCapData *)v6 storageType];
+    storageType = [(ADCapData *)selfCopy storageType];
     v21 = MEMORY[0x277CCACA8];
-    if (v20)
+    if (storageType)
     {
-      v22 = [(ADCapData *)v6 title];
-      v23 = [v27 identifier];
-      v24 = [v21 stringWithFormat:@"Adding %@ Download Data: %@", v22, v23];
+      title = [(ADCapData *)selfCopy title];
+      identifier = [objectCopy identifier];
+      v24 = [v21 stringWithFormat:@"Adding %@ Download Data: %@", title, identifier];
       _ADLog(@"iAdToroClick", v24, 0);
     }
 
     else
     {
-      v22 = [v27 identifier];
-      v23 = [v21 stringWithFormat:@"Adding Download Data: %@", v22];
-      _ADLog(@"iAdToroClick", v23, 0);
+      title = [objectCopy identifier];
+      identifier = [v21 stringWithFormat:@"Adding Download Data: %@", title];
+      _ADLog(@"iAdToroClick", identifier, 0);
     }
 
-    [(NSMutableArray *)v6->_downloadData addObject:v27];
+    [(NSMutableArray *)selfCopy->_downloadData addObject:objectCopy];
     v19 = @"Ad Download Update";
   }
 
-  else if (a4 == 1)
+  else if (kind == 1)
   {
-    v12 = [(ADCapData *)v6 storageType];
+    storageType2 = [(ADCapData *)selfCopy storageType];
     v13 = MEMORY[0x277CCACA8];
-    if (v12)
+    if (storageType2)
     {
-      v14 = [(ADCapData *)v6 title];
-      v15 = [v27 identifier];
-      v16 = [v13 stringWithFormat:@"Adding %@ Click Count Data: %@", v14, v15];
+      title2 = [(ADCapData *)selfCopy title];
+      identifier2 = [objectCopy identifier];
+      v16 = [v13 stringWithFormat:@"Adding %@ Click Count Data: %@", title2, identifier2];
       _ADLog(@"iAdToroClick", v16, 0);
 
       v17 = MEMORY[0x277CCACA8];
-      v18 = [(ADCapData *)v6 title];
-      v19 = [v17 stringWithFormat:@"%@ Click Update", v18];
+      title3 = [(ADCapData *)selfCopy title];
+      v19 = [v17 stringWithFormat:@"%@ Click Update", title3];
     }
 
     else
     {
-      v18 = [v27 identifier];
-      v26 = [v13 stringWithFormat:@"Adding Toro Click Count Data: %@", v18];
+      title3 = [objectCopy identifier];
+      v26 = [v13 stringWithFormat:@"Adding Toro Click Count Data: %@", title3];
       _ADLog(@"iAdToroClick", v26, 0);
 
       v19 = @"Toro Click Update";
     }
 
-    [(NSMutableArray *)v6->_clickCountData addObject:v27];
+    [(NSMutableArray *)selfCopy->_clickCountData addObject:objectCopy];
   }
 
   else
   {
-    if (a4)
+    if (kind)
     {
       v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"Error: Unknown type of Cap Data."];
       _ADLog(@"ToroLogging", v25, 16);
 
-      objc_sync_exit(v6);
+      objc_sync_exit(selfCopy);
       goto LABEL_18;
     }
 
-    v7 = [(ADCapData *)v6 storageType];
+    storageType3 = [(ADCapData *)selfCopy storageType];
     v8 = MEMORY[0x277CCACA8];
-    if (v7)
+    if (storageType3)
     {
-      v9 = [(ADCapData *)v6 title];
-      v10 = [v27 identifier];
-      v11 = [v8 stringWithFormat:@"Adding %@ Frequency Cap Identifier: %@", v9, v10];
+      title4 = [(ADCapData *)selfCopy title];
+      identifier3 = [objectCopy identifier];
+      v11 = [v8 stringWithFormat:@"Adding %@ Frequency Cap Identifier: %@", title4, identifier3];
       _ADLog(@"iAdFrequencyCap", v11, 0);
     }
 
     else
     {
-      v9 = [v27 identifier];
-      v10 = [v8 stringWithFormat:@"Adding Sponsored Frequency Cap Identifier: %@", v9];
-      _ADLog(@"iAdFrequencyCap", v10, 0);
+      title4 = [objectCopy identifier];
+      identifier3 = [v8 stringWithFormat:@"Adding Sponsored Frequency Cap Identifier: %@", title4];
+      _ADLog(@"iAdFrequencyCap", identifier3, 0);
     }
 
-    [(NSMutableArray *)v6->_frequencyCapData addObject:v27];
+    [(NSMutableArray *)selfCopy->_frequencyCapData addObject:objectCopy];
     v19 = @"Frequency Cap Update";
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  [(ADCapData *)v6 saveCapDataWithReason:v19];
-  v6 = v19;
+  [(ADCapData *)selfCopy saveCapDataWithReason:v19];
+  selfCopy = v19;
 LABEL_18:
 }
 
-- (void)updateCapDataWith:(id)a3 ofKind:(int64_t)a4
+- (void)updateCapDataWith:(id)with ofKind:(int64_t)kind
 {
-  v6 = a3;
-  v7 = [[ADFrequencyCap alloc] initWithIdentifier:v6];
+  withCopy = with;
+  v7 = [[ADFrequencyCap alloc] initWithIdentifier:withCopy];
 
-  [(ADCapData *)self addCapDataObject:v7 ofKind:a4];
+  [(ADCapData *)self addCapDataObject:v7 ofKind:kind];
 }
 
-- (id)filteredCapData:(id)a3 maxItems:(unint64_t)a4 expirationThresholdInSeconds:(double)a5
+- (id)filteredCapData:(id)data maxItems:(unint64_t)items expirationThresholdInSeconds:(double)seconds
 {
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEAA8] date];
-  [v9 timeIntervalSince1970];
+  dataCopy = data;
+  array = [MEMORY[0x277CBEB18] array];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v11 = v10;
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v12 = v7;
+  v12 = dataCopy;
   v13 = [v12 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v13)
   {
@@ -536,9 +536,9 @@ LABEL_18:
 
         v17 = *(*(&v23 + 1) + 8 * i);
         [v17 setTime];
-        if (v11 - v18 < a5)
+        if (v11 - v18 < seconds)
         {
-          [v8 addObject:v17];
+          [array addObject:v17];
         }
       }
 
@@ -548,7 +548,7 @@ LABEL_18:
     while (v14);
   }
 
-  v19 = [v8 arrayCappedToMaxItems:a4];
+  v19 = [array arrayCappedToMaxItems:items];
   v20 = [v19 mutableCopy];
 
   v21 = *MEMORY[0x277D85DE8];
@@ -556,9 +556,9 @@ LABEL_18:
   return v20;
 }
 
-- (id)capDataJSON:(id)a3
+- (id)capDataJSON:(id)n
 {
-  v3 = [(ADCapData *)self capData:a3];
+  v3 = [(ADCapData *)self capData:n];
   if (v3)
   {
     if ([MEMORY[0x277CCAAA0] isValidJSONObject:v3])
@@ -591,20 +591,20 @@ LABEL_9:
   return v6;
 }
 
-- (id)capData:(id)a3
+- (id)capData:(id)data
 {
   v28 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
-  v5 = [MEMORY[0x277CBEAA8] date];
-  [v5 timeIntervalSince1970];
+  dataCopy = data;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  date = [MEMORY[0x277CBEAA8] date];
+  [date timeIntervalSince1970];
   v7 = v6;
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v8 = v3;
+  v8 = dataCopy;
   v9 = [v8 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -620,23 +620,23 @@ LABEL_9:
         }
 
         v13 = *(*(&v23 + 1) + 8 * i);
-        v14 = [v13 identifier];
+        identifier = [v13 identifier];
 
-        if (v14)
+        if (identifier)
         {
           [v13 setTime];
           v16 = [MEMORY[0x277CCABB0] numberWithInteger:((v7 - v15) / 3600.0)];
-          v17 = [v13 identifier];
-          v18 = [v4 objectForKeyedSubscript:v17];
+          identifier2 = [v13 identifier];
+          array = [dictionary objectForKeyedSubscript:identifier2];
 
-          if (!v18)
+          if (!array)
           {
-            v18 = [MEMORY[0x277CBEB18] array];
-            v19 = [v13 identifier];
-            [v4 setObject:v18 forKeyedSubscript:v19];
+            array = [MEMORY[0x277CBEB18] array];
+            identifier3 = [v13 identifier];
+            [dictionary setObject:array forKeyedSubscript:identifier3];
           }
 
-          [v18 addObject:v16];
+          [array addObject:v16];
         }
 
         else
@@ -652,9 +652,9 @@ LABEL_9:
     while (v10);
   }
 
-  if ([v4 count])
+  if ([dictionary count])
   {
-    v20 = v4;
+    v20 = dictionary;
   }
 
   else
@@ -667,10 +667,10 @@ LABEL_9:
   return v20;
 }
 
-- (id)clickCapObjectForAdamID:(id)a3
+- (id)clickCapObjectForAdamID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = +[ADIDManager sharedInstance];
   v6 = [v5 idForClientType:4];
   v7 = [v6 isEqualToString:self->_toroID];
@@ -681,8 +681,8 @@ LABEL_9:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(NSMutableArray *)self->_clickCountData reverseObjectEnumerator];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    reverseObjectEnumerator = [(NSMutableArray *)self->_clickCountData reverseObjectEnumerator];
+    v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = *v18;
@@ -692,12 +692,12 @@ LABEL_9:
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 identifier];
-          v14 = [v13 isEqualToString:v4];
+          identifier = [v12 identifier];
+          v14 = [identifier isEqualToString:dCopy];
 
           if (v14)
           {
@@ -706,7 +706,7 @@ LABEL_9:
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v9)
         {
           continue;
@@ -729,10 +729,10 @@ LABEL_13:
   return v9;
 }
 
-- (id)downloadObjectForAdamID:(id)a3
+- (id)downloadObjectForAdamID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = +[ADIDManager sharedInstance];
   v6 = [v5 idForClientType:4];
   v7 = [v6 isEqualToString:self->_toroID];
@@ -743,8 +743,8 @@ LABEL_13:
     v20 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [(NSMutableArray *)self->_downloadData reverseObjectEnumerator];
-    v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+    reverseObjectEnumerator = [(NSMutableArray *)self->_downloadData reverseObjectEnumerator];
+    v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
     if (v9)
     {
       v10 = *v18;
@@ -754,12 +754,12 @@ LABEL_13:
         {
           if (*v18 != v10)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(reverseObjectEnumerator);
           }
 
           v12 = *(*(&v17 + 1) + 8 * i);
-          v13 = [v12 identifier];
-          v14 = [v13 isEqualToString:v4];
+          identifier = [v12 identifier];
+          v14 = [identifier isEqualToString:dCopy];
 
           if (v14)
           {
@@ -768,7 +768,7 @@ LABEL_13:
           }
         }
 
-        v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+        v9 = [reverseObjectEnumerator countByEnumeratingWithState:&v17 objects:v21 count:16];
         if (v9)
         {
           continue;
@@ -796,17 +796,17 @@ LABEL_13:
   toroID = self->_toroID;
   self->_toroID = &stru_2850FB348;
 
-  v4 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   frequencyCapData = self->_frequencyCapData;
-  self->_frequencyCapData = v4;
+  self->_frequencyCapData = array;
 
-  v6 = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   clickCountData = self->_clickCountData;
-  self->_clickCountData = v6;
+  self->_clickCountData = array2;
 
-  v8 = [MEMORY[0x277CBEB18] array];
+  array3 = [MEMORY[0x277CBEB18] array];
   downloadData = self->_downloadData;
-  self->_downloadData = v8;
+  self->_downloadData = array3;
 
   [(ADCapData *)self saveCapDataWithReason:@"Erasing"];
 }

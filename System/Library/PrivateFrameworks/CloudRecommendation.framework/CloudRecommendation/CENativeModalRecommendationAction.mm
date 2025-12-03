@@ -1,46 +1,46 @@
 @interface CENativeModalRecommendationAction
-- (CENativeModalRecommendationAction)initWithCoder:(id)a3;
-- (CENativeModalRecommendationAction)initWithIdentifier:(id)a3 title:(id)a4 detailControllerClass:(Class)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CENativeModalRecommendationAction)initWithCoder:(id)coder;
+- (CENativeModalRecommendationAction)initWithIdentifier:(id)identifier title:(id)title detailControllerClass:(Class)class;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CENativeModalRecommendationAction
 
-- (CENativeModalRecommendationAction)initWithIdentifier:(id)a3 title:(id)a4 detailControllerClass:(Class)a5
+- (CENativeModalRecommendationAction)initWithIdentifier:(id)identifier title:(id)title detailControllerClass:(Class)class
 {
   v9.receiver = self;
   v9.super_class = CENativeModalRecommendationAction;
-  v6 = [(CERecommendationAction *)&v9 initWithIdentifier:a3 actionTitle:a4 actionType:@"NativeModal"];
+  v6 = [(CERecommendationAction *)&v9 initWithIdentifier:identifier actionTitle:title actionType:@"NativeModal"];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_detailControllerClass, a5);
+    objc_storeStrong(&v6->_detailControllerClass, class);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CENativeModalRecommendationAction;
-  v4 = a3;
-  [(CERecommendationAction *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CERecommendationAction *)&v6 encodeWithCoder:coderCopy];
   v5 = NSStringFromClass(self->_detailControllerClass);
-  [v4 encodeObject:v5 forKey:{@"viewControllerClass", v6.receiver, v6.super_class}];
+  [coderCopy encodeObject:v5 forKey:{@"viewControllerClass", v6.receiver, v6.super_class}];
 }
 
-- (CENativeModalRecommendationAction)initWithCoder:(id)a3
+- (CENativeModalRecommendationAction)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CENativeModalRecommendationAction;
-  v5 = [(CERecommendationAction *)&v10 initWithCoder:v4];
+  v5 = [(CERecommendationAction *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"viewControllerClass"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"viewControllerClass"];
     v7 = NSClassFromString(v6);
     detailControllerClass = v5->_detailControllerClass;
     v5->_detailControllerClass = v7;
@@ -49,11 +49,11 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = CENativeModalRecommendationAction;
-  v4 = [(CERecommendationAction *)&v6 copyWithZone:a3];
+  v4 = [(CERecommendationAction *)&v6 copyWithZone:zone];
   [v4 setDetailControllerClass:self->_detailControllerClass];
   return v4;
 }

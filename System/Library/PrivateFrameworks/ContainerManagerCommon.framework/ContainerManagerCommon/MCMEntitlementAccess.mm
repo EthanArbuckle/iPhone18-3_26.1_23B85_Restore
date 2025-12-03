@@ -1,10 +1,10 @@
 @interface MCMEntitlementAccess
-- (BOOL)isAllowedWithContainerConfig:(id)a3 identifier:(id)a4 part:(unint64_t)a5 partDomain:(id)a6 operation:(unint64_t)a7 access:(unint64_t)a8;
-- (BOOL)isAllowedWithContainerConfig:(id)a3 part:(unint64_t)a4 partDomain:(id)a5 operation:(unint64_t)a6 access:(unint64_t)a7;
+- (BOOL)isAllowedWithContainerConfig:(id)config identifier:(id)identifier part:(unint64_t)part partDomain:(id)domain operation:(unint64_t)operation access:(unint64_t)access;
+- (BOOL)isAllowedWithContainerConfig:(id)config part:(unint64_t)part partDomain:(id)domain operation:(unint64_t)operation access:(unint64_t)access;
 - (MCMEntitlementAccess)init;
-- (MCMEntitlementAccess)initWithEntitlementData:(id)a3 containerConfigMap:(id)a4;
+- (MCMEntitlementAccess)initWithEntitlementData:(id)data containerConfigMap:(id)map;
 - (NSDictionary)rawData;
-- (id)contributingIdentifiersForContainerConfig:(id)a3;
+- (id)contributingIdentifiersForContainerConfig:(id)config;
 @end
 
 @implementation MCMEntitlementAccess
@@ -18,7 +18,7 @@
   return v3;
 }
 
-- (MCMEntitlementAccess)initWithEntitlementData:(id)a3 containerConfigMap:(id)a4
+- (MCMEntitlementAccess)initWithEntitlementData:(id)data containerConfigMap:(id)map
 {
   v4 = sub_1DF3B0DAC();
   __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1ECE30CE8, &qword_1DF3BD908);
@@ -26,14 +26,14 @@
   return sub_1DF2DED68(v4, v5);
 }
 
-- (BOOL)isAllowedWithContainerConfig:(id)a3 identifier:(id)a4 part:(unint64_t)a5 partDomain:(id)a6 operation:(unint64_t)a7 access:(unint64_t)a8
+- (BOOL)isAllowedWithContainerConfig:(id)config identifier:(id)identifier part:(unint64_t)part partDomain:(id)domain operation:(unint64_t)operation access:(unint64_t)access
 {
   v14 = sub_1DF3B0DCC();
   v16 = v15;
-  if (a6)
+  if (domain)
   {
     v17 = sub_1DF3B0DCC();
-    a6 = v18;
+    domain = v18;
   }
 
   else
@@ -42,16 +42,16 @@
   }
 
   swift_unknownObjectRetain();
-  v19 = self;
-  v20 = sub_1DF2DF1B0(a3, v14, v16, a5, v17, a6, a7, a8);
+  selfCopy = self;
+  v20 = sub_1DF2DF1B0(config, v14, v16, part, v17, domain, operation, access);
   swift_unknownObjectRelease();
 
   return v20 & 1;
 }
 
-- (BOOL)isAllowedWithContainerConfig:(id)a3 part:(unint64_t)a4 partDomain:(id)a5 operation:(unint64_t)a6 access:(unint64_t)a7
+- (BOOL)isAllowedWithContainerConfig:(id)config part:(unint64_t)part partDomain:(id)domain operation:(unint64_t)operation access:(unint64_t)access
 {
-  if (a5)
+  if (domain)
   {
     v12 = sub_1DF3B0DCC();
     v14 = v13;
@@ -64,18 +64,18 @@
   }
 
   swift_unknownObjectRetain();
-  v15 = self;
-  v16 = sub_1DF2DF6AC(a3, a4, v12, v14, a6, a7);
+  selfCopy = self;
+  v16 = sub_1DF2DF6AC(config, part, v12, v14, operation, access);
   swift_unknownObjectRelease();
 
   return v16 & 1;
 }
 
-- (id)contributingIdentifiersForContainerConfig:(id)a3
+- (id)contributingIdentifiersForContainerConfig:(id)config
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_1DF2DFB9C(a3);
+  selfCopy = self;
+  sub_1DF2DFB9C(config);
   swift_unknownObjectRelease();
 
   v6 = sub_1DF3B0E5C();

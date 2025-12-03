@@ -1,18 +1,18 @@
 @interface _EARPhoneticMatchBuilder
-+ (BOOL)writePlaceholderFstToPath:(id)a3;
-+ (BOOL)writePlaceholderSymbolsToPath:(id)a3;
-- (BOOL)writeAlignedLFstToPath:(id)a3;
-- (BOOL)writeGFstsToDirectory:(id)a3;
-- (BOOL)writeISymsToPath:(id)a3 asText:(BOOL)a4;
-- (BOOL)writeIndividualLGFstsToDirectory:(id)a3;
-- (BOOL)writeLFstToPath:(id)a3;
-- (BOOL)writeLGFstToPath:(id)a3;
-- (BOOL)writeMetadataToPath:(id)a3;
-- (BOOL)writeOSymsToPath:(id)a3 asText:(BOOL)a4 quasarise:(BOOL)a5;
-- (_EARPhoneticMatchBuilder)initWithModelRoot:(id)a3 jsonConfigFile:(id)a4 dataFeeds:(id)a5;
-- (_EARPhoneticMatchBuilder)initWithModelRoot:(id)a3 jsonConfigFile:(id)a4 dataFeedsFile:(id)a5;
-- (_EARPhoneticMatchBuilder)initWithNcsRoot:(id)a3 jsonConfigFile:(id)a4 dataFeeds:(id)a5;
-- (_EARPhoneticMatchBuilder)initWithNcsRoot:(id)a3 jsonConfigFile:(id)a4 dataFeedsFile:(id)a5;
++ (BOOL)writePlaceholderFstToPath:(id)path;
++ (BOOL)writePlaceholderSymbolsToPath:(id)path;
+- (BOOL)writeAlignedLFstToPath:(id)path;
+- (BOOL)writeGFstsToDirectory:(id)directory;
+- (BOOL)writeISymsToPath:(id)path asText:(BOOL)text;
+- (BOOL)writeIndividualLGFstsToDirectory:(id)directory;
+- (BOOL)writeLFstToPath:(id)path;
+- (BOOL)writeLGFstToPath:(id)path;
+- (BOOL)writeMetadataToPath:(id)path;
+- (BOOL)writeOSymsToPath:(id)path asText:(BOOL)text quasarise:(BOOL)quasarise;
+- (_EARPhoneticMatchBuilder)initWithModelRoot:(id)root jsonConfigFile:(id)file dataFeeds:(id)feeds;
+- (_EARPhoneticMatchBuilder)initWithModelRoot:(id)root jsonConfigFile:(id)file dataFeedsFile:(id)feedsFile;
+- (_EARPhoneticMatchBuilder)initWithNcsRoot:(id)root jsonConfigFile:(id)file dataFeeds:(id)feeds;
+- (_EARPhoneticMatchBuilder)initWithNcsRoot:(id)root jsonConfigFile:(id)file dataFeedsFile:(id)feedsFile;
 - (id).cxx_construct;
 - (id)lFstName;
 - (id)lgFstName;
@@ -24,18 +24,18 @@
 
 @implementation _EARPhoneticMatchBuilder
 
-- (_EARPhoneticMatchBuilder)initWithModelRoot:(id)a3 jsonConfigFile:(id)a4 dataFeeds:(id)a5
+- (_EARPhoneticMatchBuilder)initWithModelRoot:(id)root jsonConfigFile:(id)file dataFeeds:(id)feeds
 {
   v43 = *MEMORY[0x1E69E9840];
-  v21 = a3;
-  v8 = a4;
-  v22 = a5;
+  rootCopy = root;
+  fileCopy = file;
+  feedsCopy = feeds;
   v26.receiver = self;
   v26.super_class = _EARPhoneticMatchBuilder;
   v9 = [(_EARPhoneticMatchBuilder *)&v26 init];
   if (v9)
   {
-    [_EARQuasarTokenizer tokenizerWithModelRoot:v21];
+    [_EARQuasarTokenizer tokenizerWithModelRoot:rootCopy];
     std::shared_ptr<quasar::TextTokenizer>::operator=[abi:ne200100]<quasar::TextTokenizer,std::default_delete<quasar::TextTokenizer>,0>(&v9->_tokenizer.__ptr_, buf);
     v10 = *buf;
     *buf = 0;
@@ -44,7 +44,7 @@
       (*(*v10 + 8))(v10);
     }
 
-    v11 = v22;
+    v11 = feedsCopy;
     v24 = 0;
     v25 = 0;
     v23 = 0;
@@ -110,9 +110,9 @@
       while (v13);
     }
 
-    if (v8)
+    if (fileCopy)
     {
-      [v8 ear_toString];
+      [fileCopy ear_toString];
     }
 
     else
@@ -130,18 +130,18 @@
   return v19;
 }
 
-- (_EARPhoneticMatchBuilder)initWithModelRoot:(id)a3 jsonConfigFile:(id)a4 dataFeedsFile:(id)a5
+- (_EARPhoneticMatchBuilder)initWithModelRoot:(id)root jsonConfigFile:(id)file dataFeedsFile:(id)feedsFile
 {
   v19 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  rootCopy = root;
+  fileCopy = file;
+  feedsFileCopy = feedsFile;
   v15.receiver = self;
   v15.super_class = _EARPhoneticMatchBuilder;
   v11 = [(_EARPhoneticMatchBuilder *)&v15 init];
   if (v11)
   {
-    [_EARQuasarTokenizer tokenizerWithModelRoot:v8];
+    [_EARQuasarTokenizer tokenizerWithModelRoot:rootCopy];
     std::shared_ptr<quasar::TextTokenizer>::operator=[abi:ne200100]<quasar::TextTokenizer,std::default_delete<quasar::TextTokenizer>,0>(&v11->_tokenizer.__ptr_, buf);
     v12 = *buf;
     *buf = 0;
@@ -150,10 +150,10 @@
       (*(*v12 + 8))(v12);
     }
 
-    if (v9)
+    if (fileCopy)
     {
-      [v9 ear_toString];
-      if (!v10)
+      [fileCopy ear_toString];
+      if (!feedsFileCopy)
       {
         goto LABEL_8;
       }
@@ -164,14 +164,14 @@
       *buf = 0;
       v17 = 0;
       v18 = 0;
-      if (!v10)
+      if (!feedsFileCopy)
       {
 LABEL_8:
         std::allocate_shared[abi:ne200100]<quasar::PMBuilder,std::allocator<quasar::PMBuilder>,std::string,std::shared_ptr<quasar::TextTokenizer> &,std::string,0>();
       }
     }
 
-    [v10 ear_toString];
+    [feedsFileCopy ear_toString];
     goto LABEL_8;
   }
 
@@ -180,34 +180,34 @@ LABEL_8:
   return v13;
 }
 
-- (_EARPhoneticMatchBuilder)initWithNcsRoot:(id)a3 jsonConfigFile:(id)a4 dataFeeds:(id)a5
+- (_EARPhoneticMatchBuilder)initWithNcsRoot:(id)root jsonConfigFile:(id)file dataFeeds:(id)feeds
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 stringByDeletingLastPathComponent];
-  v11 = [(_EARPhoneticMatchBuilder *)self initWithModelRoot:v10 jsonConfigFile:v8 dataFeeds:v9];
+  fileCopy = file;
+  feedsCopy = feeds;
+  stringByDeletingLastPathComponent = [root stringByDeletingLastPathComponent];
+  v11 = [(_EARPhoneticMatchBuilder *)self initWithModelRoot:stringByDeletingLastPathComponent jsonConfigFile:fileCopy dataFeeds:feedsCopy];
 
   return v11;
 }
 
-- (_EARPhoneticMatchBuilder)initWithNcsRoot:(id)a3 jsonConfigFile:(id)a4 dataFeedsFile:(id)a5
+- (_EARPhoneticMatchBuilder)initWithNcsRoot:(id)root jsonConfigFile:(id)file dataFeedsFile:(id)feedsFile
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [a3 stringByDeletingLastPathComponent];
-  v11 = [(_EARPhoneticMatchBuilder *)self initWithModelRoot:v10 jsonConfigFile:v8 dataFeedsFile:v9];
+  fileCopy = file;
+  feedsFileCopy = feedsFile;
+  stringByDeletingLastPathComponent = [root stringByDeletingLastPathComponent];
+  v11 = [(_EARPhoneticMatchBuilder *)self initWithModelRoot:stringByDeletingLastPathComponent jsonConfigFile:fileCopy dataFeedsFile:feedsFileCopy];
 
   return v11;
 }
 
-- (BOOL)writeAlignedLFstToPath:(id)a3
+- (BOOL)writeAlignedLFstToPath:(id)path
 {
   __p[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   ptr = self->_pmBuilder.__ptr_;
-  if (v4)
+  if (pathCopy)
   {
-    [v4 ear_toString];
+    [pathCopy ear_toString];
   }
 
   else
@@ -218,14 +218,14 @@ LABEL_8:
   quasar::PMBuilder::writeAlignedLFst(ptr, __p);
 }
 
-- (BOOL)writeLGFstToPath:(id)a3
+- (BOOL)writeLGFstToPath:(id)path
 {
   __p[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   ptr = self->_pmBuilder.__ptr_;
-  if (v4)
+  if (pathCopy)
   {
-    [v4 ear_toString];
+    [pathCopy ear_toString];
   }
 
   else
@@ -236,16 +236,16 @@ LABEL_8:
   quasar::PMBuilder::writeLGFst(ptr, __p);
 }
 
-- (BOOL)writeOSymsToPath:(id)a3 asText:(BOOL)a4 quasarise:(BOOL)a5
+- (BOOL)writeOSymsToPath:(id)path asText:(BOOL)text quasarise:(BOOL)quasarise
 {
-  v5 = a5;
-  v6 = a4;
+  quasariseCopy = quasarise;
+  textCopy = text;
   v16[19] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = v8;
-  if (v6)
+  pathCopy = path;
+  v9 = pathCopy;
+  if (textCopy)
   {
-    quasar::PMBuilder::getOsyms(self->_pmBuilder.__ptr_, v5, __p);
+    quasar::PMBuilder::getOsyms(self->_pmBuilder.__ptr_, quasariseCopy, __p);
     if (v9)
     {
       [v9 ear_toString];
@@ -269,9 +269,9 @@ LABEL_8:
 
   else
   {
-    if (v8)
+    if (pathCopy)
     {
-      [v8 ear_toString];
+      [pathCopy ear_toString];
     }
 
     else
@@ -287,7 +287,7 @@ LABEL_8:
       operator delete(__p[0]);
     }
 
-    quasar::PMBuilder::getOsyms(self->_pmBuilder.__ptr_, v5, __p);
+    quasar::PMBuilder::getOsyms(self->_pmBuilder.__ptr_, quasariseCopy, __p);
     quasar::PMBuilder::writeSymsQuasarMap(__p);
     fst::SymbolTable::~SymbolTable(__p);
     v13 = *MEMORY[0x1E69E54D0];
@@ -300,18 +300,18 @@ LABEL_8:
   return 1;
 }
 
-- (BOOL)writeISymsToPath:(id)a3 asText:(BOOL)a4
+- (BOOL)writeISymsToPath:(id)path asText:(BOOL)text
 {
-  v4 = a4;
+  textCopy = text;
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  pathCopy = path;
   ptr = self->_pmBuilder.__ptr_;
-  if (v4)
+  if (textCopy)
   {
     MultiChainMultiAudioBuffer = quasar::SpeechRequestData::getMultiChainMultiAudioBuffer(ptr);
-    if (v6)
+    if (pathCopy)
     {
-      [v6 ear_toString];
+      [pathCopy ear_toString];
     }
 
     else
@@ -327,9 +327,9 @@ LABEL_8:
   else
   {
     v9 = quasar::SpeechRequestData::getMultiChainMultiAudioBuffer(ptr);
-    if (v6)
+    if (pathCopy)
     {
-      [v6 ear_toString];
+      [pathCopy ear_toString];
     }
 
     else
@@ -350,10 +350,10 @@ LABEL_8:
   return 1;
 }
 
-- (BOOL)writeGFstsToDirectory:(id)a3
+- (BOOL)writeGFstsToDirectory:(id)directory
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  directoryCopy = directory;
   SectionNames = quasar::PMBuilder::getSectionNames(self->_pmBuilder.__ptr_);
   v6 = EARHelpers::NSArrayOfStringFromVectorOfString(SectionNames);
   quasar::Bitmap::~Bitmap(self->_pmBuilder.__ptr_);
@@ -369,7 +369,7 @@ LABEL_8:
       v13 = [v6 objectAtIndexedSubscript:v10];
       v14 = [v12 stringWithFormat:@"%@.G.fst", v13];
 
-      v15 = [v4 stringByAppendingPathComponent:v14];
+      v15 = [directoryCopy stringByAppendingPathComponent:v14];
       v16 = v15;
       if (v15)
       {
@@ -400,14 +400,14 @@ LABEL_8:
   return 1;
 }
 
-- (BOOL)writeLFstToPath:(id)a3
+- (BOOL)writeLFstToPath:(id)path
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathCopy = path;
   TagSequence = quasar::CommandTagging::getTagSequence(self->_pmBuilder.__ptr_);
-  if (v4)
+  if (pathCopy)
   {
-    [v4 ear_toString];
+    [pathCopy ear_toString];
   }
 
   else
@@ -426,10 +426,10 @@ LABEL_8:
   return 1;
 }
 
-- (BOOL)writeIndividualLGFstsToDirectory:(id)a3
+- (BOOL)writeIndividualLGFstsToDirectory:(id)directory
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  directoryCopy = directory;
   SectionNames = quasar::PMBuilder::getSectionNames(self->_pmBuilder.__ptr_);
   v6 = EARHelpers::NSArrayOfStringFromVectorOfString(SectionNames);
   IndividualLGFsts = quasar::PMBuilder::getIndividualLGFsts(self->_pmBuilder.__ptr_);
@@ -445,7 +445,7 @@ LABEL_8:
       v13 = [v6 objectAtIndexedSubscript:v10];
       v14 = [v12 stringWithFormat:@"%@.LG.fst", v13];
 
-      v15 = [v4 stringByAppendingPathComponent:v14];
+      v15 = [directoryCopy stringByAppendingPathComponent:v14];
       v16 = v15;
       if (v15)
       {
@@ -476,28 +476,28 @@ LABEL_8:
   return 1;
 }
 
-- (BOOL)writeMetadataToPath:(id)a3
+- (BOOL)writeMetadataToPath:(id)path
 {
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
-    [v3 ear_toString];
+    [pathCopy ear_toString];
   }
 
   quasar::PMBuilder::writeMetadata();
 }
 
-+ (BOOL)writePlaceholderFstToPath:(id)a3
++ (BOOL)writePlaceholderFstToPath:(id)path
 {
   v5 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   fst::VectorFst<fst::ArcTpl<fst::TropicalWeightTpl<float>,int>,fst::VectorState<fst::ArcTpl<fst::TropicalWeightTpl<float>,int>,std::allocator<fst::ArcTpl<fst::TropicalWeightTpl<float>,int>>>>::VectorFst();
 }
 
-+ (BOOL)writePlaceholderSymbolsToPath:(id)a3
++ (BOOL)writePlaceholderSymbolsToPath:(id)path
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  pathCopy = path;
   fst::SymbolTable::SymbolTable(v5);
 }
 
@@ -591,7 +591,7 @@ LABEL_8:
 
 - (void)buildGFsts
 {
-  if (a1)
+  if (self)
   {
     OUTLINED_FUNCTION_2(&dword_1B501D000, a2, a3, "Internal unknown exception", a5, a6, a7, a8, 0);
   }

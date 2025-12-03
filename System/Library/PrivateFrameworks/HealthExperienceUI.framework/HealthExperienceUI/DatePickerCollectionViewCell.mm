@@ -1,14 +1,14 @@
 @interface DatePickerCollectionViewCell
-- (void)pickerDateChanged:(id)a3;
+- (void)pickerDateChanged:(id)changed;
 @end
 
 @implementation DatePickerCollectionViewCell
 
-- (void)pickerDateChanged:(id)a3
+- (void)pickerDateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BA47A9EC(v4);
+  changedCopy = changed;
+  selfCopy = self;
+  sub_1BA47A9EC(changedCopy);
 }
 
 @end

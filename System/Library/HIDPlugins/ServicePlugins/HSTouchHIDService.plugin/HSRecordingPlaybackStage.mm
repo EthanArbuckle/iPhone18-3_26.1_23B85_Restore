@@ -1,29 +1,29 @@
 @interface HSRecordingPlaybackStage
-- (BOOL)recordingCopyDataTo:(Writable *)a3;
-- (HSRecordingPlaybackStage)initWithPlaybackQueue:(id)a3;
+- (BOOL)recordingCopyDataTo:(Writable *)to;
+- (HSRecordingPlaybackStage)initWithPlaybackQueue:(id)queue;
 - (float)playbackProgress;
 - (id).cxx_construct;
-- (id)HSRecordingPlaybackStageProxy_playbackSetProgressdispatchEvent:(id)a3;
-- (id)HSRecordingPlaybackStageProxy_recordingSetMaxSize:(id)a3;
-- (id)HSRecordingPlaybackStageProxy_setMode:(id)a3;
+- (id)HSRecordingPlaybackStageProxy_playbackSetProgressdispatchEvent:(id)event;
+- (id)HSRecordingPlaybackStageProxy_recordingSetMaxSize:(id)size;
+- (id)HSRecordingPlaybackStageProxy_setMode:(id)mode;
 - (id)data;
 - (int)_mode;
 - (int)mode;
 - (unint64_t)recordingSize;
 - (void)_destroyRecordingBuffer;
 - (void)_playbackHeartbeatTimerFired;
-- (void)_setPlaybackTimerEnabled:(BOOL)a3;
+- (void)_setPlaybackTimerEnabled:(BOOL)enabled;
 - (void)clear;
-- (void)playbackLoadFromData:(id)a3;
-- (void)playbackSetProgress:(float)a3 dispatchEvent:(BOOL)a4;
-- (void)recordingSetMaxSize:(unint64_t)a3;
-- (void)setConsumers:(id)a3;
-- (void)setMode:(int)a3;
+- (void)playbackLoadFromData:(id)data;
+- (void)playbackSetProgress:(float)progress dispatchEvent:(BOOL)event;
+- (void)recordingSetMaxSize:(unint64_t)size;
+- (void)setConsumers:(id)consumers;
+- (void)setMode:(int)mode;
 @end
 
 @implementation HSRecordingPlaybackStage
 
-- (HSRecordingPlaybackStage)initWithPlaybackQueue:(id)a3
+- (HSRecordingPlaybackStage)initWithPlaybackQueue:(id)queue
 {
   v17.receiver = self;
   v17.super_class = HSRecordingPlaybackStage;
@@ -71,26 +71,26 @@ void __50__HSRecordingPlaybackStage_initWithPlaybackQueue___block_invoke(uint64_
 - (id)data
 {
   HSUtil::ObjectLock::ObjectLock(v7, self);
-  v3 = [(HSRecordingPlaybackStage *)self _mode];
+  _mode = [(HSRecordingPlaybackStage *)self _mode];
   v4 = 40;
-  if (v3 == 1)
+  if (_mode == 1)
   {
     v4 = 32;
   }
 
-  v5 = [*(&self->_state.recordingMaxSize + v4) data];
+  data = [*(&self->_state.recordingMaxSize + v4) data];
   HSUtil::ObjectLock::~ObjectLock(v7);
 
-  return v5;
+  return data;
 }
 
 - (void)clear
 {
   HSUtil::ObjectLock::ObjectLock(v4, self);
-  v3 = [(HSRecordingPlaybackStage *)self _mode];
+  _mode = [(HSRecordingPlaybackStage *)self _mode];
   [(HSRecordingStage *)self->_state.recording reset];
   [(HSPlaybackStage *)self->_state.playback reset];
-  if (v3 == 1)
+  if (_mode == 1)
   {
     [(HSRecordingStage *)self->_state.recording setRecording:1];
   }
@@ -108,22 +108,22 @@ void __50__HSRecordingPlaybackStage_initWithPlaybackQueue___block_invoke(uint64_
 
 - (int)mode
 {
-  v2 = self;
+  selfCopy = self;
   HSUtil::ObjectLock::ObjectLock(v4, self);
-  LODWORD(v2) = [(HSRecordingPlaybackStage *)v2 _mode];
+  LODWORD(selfCopy) = [(HSRecordingPlaybackStage *)selfCopy _mode];
   HSUtil::ObjectLock::~ObjectLock(v4);
-  return v2;
+  return selfCopy;
 }
 
-- (void)setMode:(int)a3
+- (void)setMode:(int)mode
 {
   HSUtil::ObjectLock::ObjectLock(v10, self);
-  v5 = [(HSRecordingPlaybackStage *)self _mode];
-  if (v5 != a3)
+  _mode = [(HSRecordingPlaybackStage *)self _mode];
+  if (_mode != mode)
   {
     [(HSRecordingStage *)self->_state.recording setRecording:0];
     [(HSPlaybackStage *)self->_state.playback setPlaying:0];
-    if (v5 == 1)
+    if (_mode == 1)
     {
       playback = self->_state.playback;
       cntrl = self->_state.recordingBuffer.__cntrl_;
@@ -141,13 +141,13 @@ void __50__HSRecordingPlaybackStage_initWithPlaybackQueue___block_invoke(uint64_
       }
     }
 
-    if (a3 == 2)
+    if (mode == 2)
     {
       [(HSPlaybackStage *)self->_state.playback setPlaying:1];
       [(HSRecordingPlaybackStage *)self _setPlaybackTimerEnabled:1];
     }
 
-    else if (a3 == 1)
+    else if (mode == 1)
     {
       [(HSPlaybackStage *)self->_state.playback reset];
       if (!self->_state.recordingBuffer.__ptr_)
@@ -166,10 +166,10 @@ void __50__HSRecordingPlaybackStage_initWithPlaybackQueue___block_invoke(uint64_
   HSUtil::ObjectLock::~ObjectLock(v10);
 }
 
-- (void)recordingSetMaxSize:(unint64_t)a3
+- (void)recordingSetMaxSize:(unint64_t)size
 {
   HSUtil::ObjectLock::ObjectLock(v5, self);
-  self->_state.recordingMaxSize = a3;
+  self->_state.recordingMaxSize = size;
   if ([(HSRecordingPlaybackStage *)self _mode]== 1)
   {
     [(HSRecordingPlaybackStage *)self _createRecordingBuffer];
@@ -194,22 +194,22 @@ void __50__HSRecordingPlaybackStage_initWithPlaybackQueue___block_invoke(uint64_
   return v3;
 }
 
-- (BOOL)recordingCopyDataTo:(Writable *)a3
+- (BOOL)recordingCopyDataTo:(Writable *)to
 {
   HSUtil::ObjectLock::ObjectLock(v6, self);
-  LOBYTE(a3) = [(HSRecordingStage *)self->_state.recording copyDataTo:a3];
+  LOBYTE(to) = [(HSRecordingStage *)self->_state.recording copyDataTo:to];
   HSUtil::ObjectLock::~ObjectLock(v6);
-  return a3;
+  return to;
 }
 
-- (void)playbackLoadFromData:(id)a3
+- (void)playbackLoadFromData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   HSUtil::ObjectLock::ObjectLock(v5, self);
   [(HSPlaybackStage *)self->_state.playback reset];
   [(HSRecordingStage *)self->_state.recording reset];
   [(HSRecordingPlaybackStage *)self _destroyRecordingBuffer];
-  [(HSPlaybackStage *)self->_state.playback loadFromData:v4];
+  [(HSPlaybackStage *)self->_state.playback loadFromData:dataCopy];
   [v5[1] unlock];
   LOBYTE(v5[0]) = 0;
   [(HSStage *)self postNotification:HSRecordingPlaybackStageDataChanged, v5[0]];
@@ -234,28 +234,28 @@ void __50__HSRecordingPlaybackStage_initWithPlaybackQueue___block_invoke(uint64_
   return v4;
 }
 
-- (void)playbackSetProgress:(float)a3 dispatchEvent:(BOOL)a4
+- (void)playbackSetProgress:(float)progress dispatchEvent:(BOOL)event
 {
-  v4 = a4;
+  eventCopy = event;
   HSUtil::ObjectLock::ObjectLock(v8, self);
-  *&v7 = a3;
-  [(HSPlaybackStage *)self->_state.playback setProgress:v4 dispatchEvent:v7];
+  *&v7 = progress;
+  [(HSPlaybackStage *)self->_state.playback setProgress:eventCopy dispatchEvent:v7];
   [v8[1] unlock];
   LOBYTE(v8[0]) = 0;
   [(HSStage *)self postNotification:HSRecordingPlaybackStageChanged, v8[0]];
   HSUtil::ObjectLock::~ObjectLock(v8);
 }
 
-- (void)setConsumers:(id)a3
+- (void)setConsumers:(id)consumers
 {
-  v4 = a3;
+  consumersCopy = consumers;
   HSUtil::ObjectLock::ObjectLock(v6, self);
   v5.receiver = self;
   v5.super_class = HSRecordingPlaybackStage;
-  [(HSStage *)&v5 setConsumers:v4];
+  [(HSStage *)&v5 setConsumers:consumersCopy];
   self = (self + 120);
-  [*&self->super._state.lock.__m_.__opaque[16] setConsumers:v4];
-  [*&self->super._state.lock.__m_.__opaque[24] setConsumers:v4];
+  [*&self->super._state.lock.__m_.__opaque[16] setConsumers:consumersCopy];
+  [*&self->super._state.lock.__m_.__opaque[24] setConsumers:consumersCopy];
   HSUtil::ObjectLock::~ObjectLock(v6);
 }
 
@@ -296,10 +296,10 @@ void __50__HSRecordingPlaybackStage_initWithPlaybackQueue___block_invoke(uint64_
   }
 }
 
-- (void)_setPlaybackTimerEnabled:(BOOL)a3
+- (void)_setPlaybackTimerEnabled:(BOOL)enabled
 {
   playbackHeartbeatTimer = self->_state.playbackHeartbeatTimer;
-  if (a3)
+  if (enabled)
   {
     v4 = 0;
     v5 = 100000000;
@@ -336,23 +336,23 @@ void __50__HSRecordingPlaybackStage_initWithPlaybackQueue___block_invoke(uint64_
   return self;
 }
 
-- (id)HSRecordingPlaybackStageProxy_setMode:(id)a3
+- (id)HSRecordingPlaybackStageProxy_setMode:(id)mode
 {
-  v3 = HSProxySynth::HSRecordingPlaybackStageProxy_setMode_call1<void>(self, a3);
+  v3 = HSProxySynth::HSRecordingPlaybackStageProxy_setMode_call1<void>(self, mode);
 
   return v3;
 }
 
-- (id)HSRecordingPlaybackStageProxy_recordingSetMaxSize:(id)a3
+- (id)HSRecordingPlaybackStageProxy_recordingSetMaxSize:(id)size
 {
-  v3 = HSProxySynth::HSRecordingPlaybackStageProxy_recordingSetMaxSize_call1<void>(self, a3);
+  v3 = HSProxySynth::HSRecordingPlaybackStageProxy_recordingSetMaxSize_call1<void>(self, size);
 
   return v3;
 }
 
-- (id)HSRecordingPlaybackStageProxy_playbackSetProgressdispatchEvent:(id)a3
+- (id)HSRecordingPlaybackStageProxy_playbackSetProgressdispatchEvent:(id)event
 {
-  v3 = HSProxySynth::HSRecordingPlaybackStageProxy_playbackSetProgressdispatchEvent_call2<void>(self, a3);
+  v3 = HSProxySynth::HSRecordingPlaybackStageProxy_playbackSetProgressdispatchEvent_call2<void>(self, event);
 
   return v3;
 }

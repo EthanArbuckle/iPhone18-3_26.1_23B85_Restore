@@ -1,13 +1,13 @@
 @interface MediaSocialStatusPollRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation MediaSocialStatusPollRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAccountIdentifier:self->_accountIdentifier];
   [v4 setActivityIdentifier:self->_activityIdentifier];
   [v4 setPollingDuration:self->_pollingDuration];
@@ -18,15 +18,15 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if (v5 == objc_opt_class())
   {
-    v7 = [(MediaSocialStatusPollRequest *)self activityIdentifier];
-    v8 = [v4 activityIdentifier];
-    v6 = [v7 isEqualToString:v8];
+    activityIdentifier = [(MediaSocialStatusPollRequest *)self activityIdentifier];
+    activityIdentifier2 = [equalCopy activityIdentifier];
+    v6 = [activityIdentifier isEqualToString:activityIdentifier2];
   }
 
   else

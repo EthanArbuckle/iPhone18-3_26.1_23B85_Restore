@@ -1,13 +1,13 @@
 @interface TransparencyGPBOneofDescriptor
-- (TransparencyGPBOneofDescriptor)initWithName:(const char *)a3 fields:(id)a4;
-- (id)fieldWithName:(id)a3;
-- (id)fieldWithNumber:(unsigned int)a3;
+- (TransparencyGPBOneofDescriptor)initWithName:(const char *)name fields:(id)fields;
+- (id)fieldWithName:(id)name;
+- (id)fieldWithNumber:(unsigned int)number;
 - (void)dealloc;
 @end
 
 @implementation TransparencyGPBOneofDescriptor
 
-- (TransparencyGPBOneofDescriptor)initWithName:(const char *)a3 fields:(id)a4
+- (TransparencyGPBOneofDescriptor)initWithName:(const char *)name fields:(id)fields
 {
   v19.receiver = self;
   v19.super_class = TransparencyGPBOneofDescriptor;
@@ -15,13 +15,13 @@
   v7 = v6;
   if (v6)
   {
-    v6->name_ = a3;
-    v6->fields_ = a4;
+    v6->name_ = name;
+    v6->fields_ = fields;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
-    v8 = [a4 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    v8 = [fields countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v8)
     {
       v9 = v8;
@@ -32,19 +32,19 @@
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(fields);
           }
 
           *(*(*(&v15 + 1) + 8 * i) + 16) = v7;
         }
 
-        v9 = [a4 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v9 = [fields countByEnumeratingWithState:&v15 objects:v20 count:16];
       }
 
       while (v9);
     }
 
-    v12 = sub_10001DC0C(0, a3, "OneOfCase", 0);
+    v12 = sub_10001DC0C(0, name, "OneOfCase", 0);
     if (v12)
     {
       v13 = v12;
@@ -68,7 +68,7 @@
   [(TransparencyGPBOneofDescriptor *)&v3 dealloc];
 }
 
-- (id)fieldWithNumber:(unsigned int)a3
+- (id)fieldWithNumber:(unsigned int)number
 {
   v9 = 0u;
   v10 = 0u;
@@ -90,7 +90,7 @@ LABEL_3:
       }
 
       result = *(*(&v9 + 1) + 8 * v8);
-      if (*(*(result + 1) + 16) == a3)
+      if (*(*(result + 1) + 16) == number)
       {
         break;
       }
@@ -112,7 +112,7 @@ LABEL_3:
   return result;
 }
 
-- (id)fieldWithName:(id)a3
+- (id)fieldWithName:(id)name
 {
   v11 = 0u;
   v12 = 0u;

@@ -1,5 +1,5 @@
 @interface IMFeatureFlagsTestSwizzler
-- (IMFeatureFlagsTestSwizzler)initWithFeature:(SEL)a3 enabled:(BOOL)a4;
+- (IMFeatureFlagsTestSwizzler)initWithFeature:(SEL)feature enabled:(BOOL)enabled;
 - (SEL)feature;
 - (SEL)testMethod;
 - (void)dealloc;
@@ -9,7 +9,7 @@
 
 @implementation IMFeatureFlagsTestSwizzler
 
-- (IMFeatureFlagsTestSwizzler)initWithFeature:(SEL)a3 enabled:(BOOL)a4
+- (IMFeatureFlagsTestSwizzler)initWithFeature:(SEL)feature enabled:(BOOL)enabled
 {
   v34.receiver = self;
   v34.super_class = IMFeatureFlagsTestSwizzler;
@@ -27,26 +27,26 @@
     goto LABEL_24;
   }
 
-  v6->_enabled = a4;
-  if (a3)
+  v6->_enabled = enabled;
+  if (feature)
   {
-    v7 = a3;
+    featureCopy = feature;
   }
 
   else
   {
-    v7 = 0;
+    featureCopy = 0;
   }
 
-  v6->_feature = v7;
-  v8 = [[IMSwizzledMethod alloc] initWithClass:objc_opt_class() selector:a3];
+  v6->_feature = featureCopy;
+  v8 = [[IMSwizzledMethod alloc] initWithClass:objc_opt_class() selector:feature];
   originalMethod = v6->_originalMethod;
   v6->_originalMethod = v8;
 
   enabled = v6->_enabled;
   p_testMethod = &v6->_testMethod;
   v12 = MEMORY[0x1E696AEC0];
-  v13 = NSStringFromSelector(a3);
+  v13 = NSStringFromSelector(feature);
   v14 = v13;
   if (enabled)
   {

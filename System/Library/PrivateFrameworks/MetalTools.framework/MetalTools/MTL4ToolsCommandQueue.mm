@@ -1,32 +1,32 @@
 @interface MTL4ToolsCommandQueue
-- (MTL4ToolsCommandQueue)initWithBaseObject:(id)a3 parent:(id)a4;
+- (MTL4ToolsCommandQueue)initWithBaseObject:(id)object parent:(id)parent;
 - (NSString)label;
 - (unint64_t)lastCommittedCommandBufferGeneration;
-- (void)addResidencySet:(id)a3;
-- (void)addResidencySets:(const void *)a3 count:(unint64_t)a4;
-- (void)commit:(const void *)a3 count:(unint64_t)a4;
-- (void)commit:(const void *)a3 count:(unint64_t)a4 options:(id)a5;
-- (void)commit:(const void *)a3 count:(unint64_t)a4 options:(id)a5 preprocessHandler:(id)a6;
-- (void)copyBufferMappingsFromBuffer:(id)a3 toBuffer:(id)a4 operations:(id *)a5 count:(unint64_t)a6;
-- (void)copyTextureMappingsFromTexture:(id)a3 toTexture:(id)a4 operations:(id *)a5 count:(unint64_t)a6;
+- (void)addResidencySet:(id)set;
+- (void)addResidencySets:(const void *)sets count:(unint64_t)count;
+- (void)commit:(const void *)commit count:(unint64_t)count;
+- (void)commit:(const void *)commit count:(unint64_t)count options:(id)options;
+- (void)commit:(const void *)commit count:(unint64_t)count options:(id)options preprocessHandler:(id)handler;
+- (void)copyBufferMappingsFromBuffer:(id)buffer toBuffer:(id)toBuffer operations:(id *)operations count:(unint64_t)count;
+- (void)copyTextureMappingsFromTexture:(id)texture toTexture:(id)toTexture operations:(id *)operations count:(unint64_t)count;
 - (void)dealloc;
-- (void)removeResidencySet:(id)a3;
-- (void)removeResidencySets:(const void *)a3 count:(unint64_t)a4;
-- (void)signalDrawable:(id)a3;
-- (void)signalEvent:(id)a3 value:(unint64_t)a4;
-- (void)updateBufferMappings:(id)a3 heap:(id)a4 operations:(id *)a5 count:(unint64_t)a6;
-- (void)updateTextureMappings:(id)a3 heap:(id)a4 operations:(id *)a5 count:(unint64_t)a6;
-- (void)waitForDrawable:(id)a3;
-- (void)waitForEvent:(id)a3 value:(unint64_t)a4;
+- (void)removeResidencySet:(id)set;
+- (void)removeResidencySets:(const void *)sets count:(unint64_t)count;
+- (void)signalDrawable:(id)drawable;
+- (void)signalEvent:(id)event value:(unint64_t)value;
+- (void)updateBufferMappings:(id)mappings heap:(id)heap operations:(id *)operations count:(unint64_t)count;
+- (void)updateTextureMappings:(id)mappings heap:(id)heap operations:(id *)operations count:(unint64_t)count;
+- (void)waitForDrawable:(id)drawable;
+- (void)waitForEvent:(id)event value:(unint64_t)value;
 @end
 
 @implementation MTL4ToolsCommandQueue
 
-- (MTL4ToolsCommandQueue)initWithBaseObject:(id)a3 parent:(id)a4
+- (MTL4ToolsCommandQueue)initWithBaseObject:(id)object parent:(id)parent
 {
   v6.receiver = self;
   v6.super_class = MTL4ToolsCommandQueue;
-  v4 = [(MTLToolsObject *)&v6 initWithBaseObject:a3 parent:a4];
+  v4 = [(MTLToolsObject *)&v6 initWithBaseObject:object parent:parent];
   if (v4)
   {
     v4->_addedResidencySets = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -44,9 +44,9 @@
 
 - (NSString)label
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 label];
+  return [baseObject label];
 }
 
 - (unint64_t)lastCommittedCommandBufferGeneration
@@ -56,20 +56,20 @@
   return [-[MTLToolsObject baseObject](&v3 baseObject)];
 }
 
-- (void)commit:(const void *)a3 count:(unint64_t)a4
+- (void)commit:(const void *)commit count:(unint64_t)count
 {
-  std::vector<objc_object  {objcproto17MTL4CommandBuffer}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto17MTL4CommandBuffer}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      v8 = [a3[v7] baseObject];
-      *(__p[0] + v7++) = v8;
+      baseObject = [commit[v7] baseObject];
+      *(__p[0] + v7++) = baseObject;
     }
 
-    while (a4 != v7);
-    v9 = a3[a4 - 1];
+    while (count != v7);
+    v9 = commit[count - 1];
   }
 
   else
@@ -78,8 +78,8 @@
   }
 
   self->_lastCommittedCommandBuffer = v9;
-  v10 = [(MTLToolsObject *)self baseObject];
-  [v10 commit:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 commit:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -87,20 +87,20 @@
   }
 }
 
-- (void)commit:(const void *)a3 count:(unint64_t)a4 options:(id)a5
+- (void)commit:(const void *)commit count:(unint64_t)count options:(id)options
 {
-  std::vector<objc_object  {objcproto17MTL4CommandBuffer}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto17MTL4CommandBuffer}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v9 = 0;
     do
     {
-      v10 = [a3[v9] baseObject];
-      *(__p[0] + v9++) = v10;
+      baseObject = [commit[v9] baseObject];
+      *(__p[0] + v9++) = baseObject;
     }
 
-    while (a4 != v9);
-    v11 = a3[a4 - 1];
+    while (count != v9);
+    v11 = commit[count - 1];
   }
 
   else
@@ -109,8 +109,8 @@
   }
 
   self->_lastCommittedCommandBuffer = v11;
-  v12 = [(MTLToolsObject *)self baseObject];
-  [v12 commit:__p[0] count:a4 options:a5];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 commit:__p[0] count:count options:options];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -118,67 +118,67 @@
   }
 }
 
-- (void)signalEvent:(id)a3 value:(unint64_t)a4
+- (void)signalEvent:(id)event value:(unint64_t)value
 {
   self->_lastCommittedCommandBuffer = 0;
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [event baseObject];
 
-  [v6 signalEvent:v7 value:a4];
+  [baseObject signalEvent:baseObject2 value:value];
 }
 
-- (void)waitForEvent:(id)a3 value:(unint64_t)a4
+- (void)waitForEvent:(id)event value:(unint64_t)value
 {
   self->_lastCommittedCommandBuffer = 0;
-  v6 = [(MTLToolsObject *)self baseObject];
-  v7 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [event baseObject];
 
-  [v6 waitForEvent:v7 value:a4];
+  [baseObject waitForEvent:baseObject2 value:value];
 }
 
-- (void)signalDrawable:(id)a3
+- (void)signalDrawable:(id)drawable
 {
   self->_lastCommittedCommandBuffer = 0;
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 signalDrawable:a3];
+  [baseObject signalDrawable:drawable];
 }
 
-- (void)waitForDrawable:(id)a3
+- (void)waitForDrawable:(id)drawable
 {
   self->_lastCommittedCommandBuffer = 0;
-  v4 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  [v4 waitForDrawable:a3];
+  [baseObject waitForDrawable:drawable];
 }
 
-- (void)addResidencySet:(id)a3
+- (void)addResidencySet:(id)set
 {
   [(NSMutableArray *)self->_addedResidencySets addObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [set baseObject];
 
-  [v5 addResidencySet:v6];
+  [baseObject addResidencySet:baseObject2];
 }
 
-- (void)addResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)addResidencySets:(const void *)sets count:(unint64_t)count
 {
-  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      v8 = [a3[v7] baseObject];
-      *(__p[0] + v7) = v8;
-      [(NSMutableArray *)self->_addedResidencySets addObject:a3[v7++]];
+      baseObject = [sets[v7] baseObject];
+      *(__p[0] + v7) = baseObject;
+      [(NSMutableArray *)self->_addedResidencySets addObject:sets[v7++]];
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  [v9 addResidencySets:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 addResidencySets:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -186,33 +186,33 @@
   }
 }
 
-- (void)removeResidencySet:(id)a3
+- (void)removeResidencySet:(id)set
 {
   [(NSMutableArray *)self->_addedResidencySets removeObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [set baseObject];
 
-  [v5 removeResidencySet:v6];
+  [baseObject removeResidencySet:baseObject2];
 }
 
-- (void)removeResidencySets:(const void *)a3 count:(unint64_t)a4
+- (void)removeResidencySets:(const void *)sets count:(unint64_t)count
 {
-  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto15MTLResidencySet}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v7 = 0;
     do
     {
-      v8 = [a3[v7] baseObject];
-      *(__p[0] + v7) = v8;
-      [(NSMutableArray *)self->_addedResidencySets removeObject:a3[v7++]];
+      baseObject = [sets[v7] baseObject];
+      *(__p[0] + v7) = baseObject;
+      [(NSMutableArray *)self->_addedResidencySets removeObject:sets[v7++]];
     }
 
-    while (a4 != v7);
+    while (count != v7);
   }
 
-  v9 = [(MTLToolsObject *)self baseObject];
-  [v9 removeResidencySets:__p[0] count:a4];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 removeResidencySets:__p[0] count:count];
   if (__p[0])
   {
     __p[1] = __p[0];
@@ -220,59 +220,59 @@
   }
 }
 
-- (void)updateTextureMappings:(id)a3 heap:(id)a4 operations:(id *)a5 count:(unint64_t)a6
+- (void)updateTextureMappings:(id)mappings heap:(id)heap operations:(id *)operations count:(unint64_t)count
 {
-  v10 = [(MTLToolsObject *)self baseObject];
-  v11 = [a3 baseObject];
-  v12 = [a4 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [mappings baseObject];
+  baseObject3 = [heap baseObject];
 
-  [v10 updateTextureMappings:v11 heap:v12 operations:a5 count:a6];
+  [baseObject updateTextureMappings:baseObject2 heap:baseObject3 operations:operations count:count];
 }
 
-- (void)copyTextureMappingsFromTexture:(id)a3 toTexture:(id)a4 operations:(id *)a5 count:(unint64_t)a6
+- (void)copyTextureMappingsFromTexture:(id)texture toTexture:(id)toTexture operations:(id *)operations count:(unint64_t)count
 {
-  v10 = [(MTLToolsObject *)self baseObject];
-  v11 = [a3 baseObject];
-  v12 = [a4 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  baseObject3 = [toTexture baseObject];
 
-  [v10 copyTextureMappingsFromTexture:v11 toTexture:v12 operations:a5 count:a6];
+  [baseObject copyTextureMappingsFromTexture:baseObject2 toTexture:baseObject3 operations:operations count:count];
 }
 
-- (void)updateBufferMappings:(id)a3 heap:(id)a4 operations:(id *)a5 count:(unint64_t)a6
+- (void)updateBufferMappings:(id)mappings heap:(id)heap operations:(id *)operations count:(unint64_t)count
 {
-  v10 = [(MTLToolsObject *)self baseObject];
-  v11 = [a3 baseObject];
-  v12 = [a4 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [mappings baseObject];
+  baseObject3 = [heap baseObject];
 
-  [v10 updateBufferMappings:v11 heap:v12 operations:a5 count:a6];
+  [baseObject updateBufferMappings:baseObject2 heap:baseObject3 operations:operations count:count];
 }
 
-- (void)copyBufferMappingsFromBuffer:(id)a3 toBuffer:(id)a4 operations:(id *)a5 count:(unint64_t)a6
+- (void)copyBufferMappingsFromBuffer:(id)buffer toBuffer:(id)toBuffer operations:(id *)operations count:(unint64_t)count
 {
-  v10 = [(MTLToolsObject *)self baseObject];
-  v11 = [a3 baseObject];
-  v12 = [a4 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [buffer baseObject];
+  baseObject3 = [toBuffer baseObject];
 
-  [v10 copyBufferMappingsFromBuffer:v11 toBuffer:v12 operations:a5 count:a6];
+  [baseObject copyBufferMappingsFromBuffer:baseObject2 toBuffer:baseObject3 operations:operations count:count];
 }
 
-- (void)commit:(const void *)a3 count:(unint64_t)a4 options:(id)a5 preprocessHandler:(id)a6
+- (void)commit:(const void *)commit count:(unint64_t)count options:(id)options preprocessHandler:(id)handler
 {
-  std::vector<objc_object  {objcproto17MTL4CommandBuffer}*>::vector[abi:ne200100](__p, a4);
-  if (a4)
+  std::vector<objc_object  {objcproto17MTL4CommandBuffer}*>::vector[abi:ne200100](__p, count);
+  if (count)
   {
     v11 = 0;
     do
     {
-      v12 = [a3[v11] baseObject];
-      *(__p[0] + v11++) = v12;
+      baseObject = [commit[v11] baseObject];
+      *(__p[0] + v11++) = baseObject;
     }
 
-    while (a4 != v11);
+    while (count != v11);
   }
 
-  v13 = [a5 commitFeedbackDispatch];
-  if (a6 | v13)
+  commitFeedbackDispatch = [options commitFeedbackDispatch];
+  if (handler | commitFeedbackDispatch)
   {
     v14 = objc_alloc_init(MEMORY[0x277CD6AD8]);
     v16[0] = MEMORY[0x277D85DD0];
@@ -280,8 +280,8 @@
     v16[2] = __64__MTL4ToolsCommandQueue_commit_count_options_preprocessHandler___block_invoke;
     v16[3] = &unk_2787B4F00;
     v16[5] = v14;
-    v16[6] = a6;
-    v16[4] = v13;
+    v16[6] = handler;
+    v16[4] = commitFeedbackDispatch;
     [v14 addFeedbackHandler:v16];
   }
 
@@ -290,9 +290,9 @@
     v14 = 0;
   }
 
-  [a5 setCommitFeedbackDispatch:0];
-  v15 = [(MTLToolsObject *)self baseObject];
-  [v15 commit:__p[0] count:a4 options:v14];
+  [options setCommitFeedbackDispatch:0];
+  baseObject2 = [(MTLToolsObject *)self baseObject];
+  [baseObject2 commit:__p[0] count:count options:v14];
   if (__p[0])
   {
     __p[1] = __p[0];

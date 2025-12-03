@@ -2,59 +2,59 @@
 - (_TtC9JetEngine23MetricsInspectorScanner)init;
 - (uint64_t)netServiceBrowserDidStopSearch:;
 - (uint64_t)netServiceBrowserWillSearch:;
-- (void)netService:(id)a3 didNotResolve:(id)a4;
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4;
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5;
-- (void)netServiceDidResolveAddress:(id)a3;
+- (void)netService:(id)service didNotResolve:(id)resolve;
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search;
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming;
+- (void)netServiceDidResolveAddress:(id)address;
 @end
 
 @implementation MetricsInspectorScanner
 
-- (void)netServiceBrowser:(id)a3 didNotSearch:(id)a4
+- (void)netServiceBrowser:(id)browser didNotSearch:(id)search
 {
   sub_1AB016760(0, &qword_1ED4D1940);
   v6 = sub_1AB4602F4();
-  v7 = a3;
-  v8 = self;
+  browserCopy = browser;
+  selfCopy = self;
   sub_1AB188128(v6);
 }
 
-- (void)netServiceBrowser:(id)a3 didFindService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didFindService:(id)service moreComing:(BOOL)coming
 {
   swift_getObjectType();
   v7 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine23MetricsInspectorScanner_stateLock);
-  v9 = a4;
-  v8 = self;
+  serviceCopy = service;
+  selfCopy = self;
   [v7 lock];
-  sub_1AB1875E0(v9, v8);
+  sub_1AB1875E0(serviceCopy, selfCopy);
   [v7 unlock];
 }
 
-- (void)netServiceBrowser:(id)a3 didRemoveService:(id)a4 moreComing:(BOOL)a5
+- (void)netServiceBrowser:(id)browser didRemoveService:(id)service moreComing:(BOOL)coming
 {
   v6 = *(&self->super.isa + OBJC_IVAR____TtC9JetEngine23MetricsInspectorScanner_stateLock);
-  v8 = a4;
-  v7 = self;
+  serviceCopy = service;
+  selfCopy = self;
   [v6 lock];
-  sub_1AB1879F8(v7, v8);
+  sub_1AB1879F8(selfCopy, serviceCopy);
   [v6 unlock];
 }
 
-- (void)netServiceDidResolveAddress:(id)a3
+- (void)netServiceDidResolveAddress:(id)address
 {
-  v4 = a3;
-  v5 = self;
-  sub_1AB18830C(v4);
+  addressCopy = address;
+  selfCopy = self;
+  sub_1AB18830C(addressCopy);
 }
 
-- (void)netService:(id)a3 didNotResolve:(id)a4
+- (void)netService:(id)service didNotResolve:(id)resolve
 {
   sub_1AB016760(0, &qword_1ED4D1940);
   v6 = sub_1AB4602F4();
-  v7 = a3;
-  v8 = self;
-  sub_1AB1884F8(v7, v6);
+  serviceCopy = service;
+  selfCopy = self;
+  sub_1AB1884F8(serviceCopy, v6);
 }
 
 - (_TtC9JetEngine23MetricsInspectorScanner)init

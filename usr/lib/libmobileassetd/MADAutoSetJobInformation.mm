@@ -1,9 +1,9 @@
 @interface MADAutoSetJobInformation
 - (MADAutoSetJobInformation)init;
-- (MADAutoSetJobInformation)initWithCoder:(id)a3;
+- (MADAutoSetJobInformation)initWithCoder:(id)coder;
 - (id)copy;
 - (id)summary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADAutoSetJobInformation
@@ -38,35 +38,35 @@
   return v3;
 }
 
-- (MADAutoSetJobInformation)initWithCoder:(id)a3
+- (MADAutoSetJobInformation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = MADAutoSetJobInformation;
   v5 = [(MADAutoSetJobInformation *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientInstance"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientInstance"];
     clientInstance = v5->_clientInstance;
     v5->_clientInstance = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientDesire"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientDesire"];
     clientDesire = v5->_clientDesire;
     v5->_clientDesire = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"foundContent"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"foundContent"];
     foundContent = v5->_foundContent;
     v5->_foundContent = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"setDescriptor"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"setDescriptor"];
     setDescriptor = v5->_setDescriptor;
     v5->_setDescriptor = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currentSetStatus"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currentSetStatus"];
     currentSetStatus = v5->_currentSetStatus;
     v5->_currentSetStatus = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"assignedAutoAssetUUID"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"assignedAutoAssetUUID"];
     assignedAutoAssetUUID = v5->_assignedAutoAssetUUID;
     v5->_assignedAutoAssetUUID = v16;
   }
@@ -74,104 +74,104 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MADAutoSetJobInformation *)self clientInstance];
-  [v4 encodeObject:v5 forKey:@"clientInstance"];
+  coderCopy = coder;
+  clientInstance = [(MADAutoSetJobInformation *)self clientInstance];
+  [coderCopy encodeObject:clientInstance forKey:@"clientInstance"];
 
-  v6 = [(MADAutoSetJobInformation *)self clientDesire];
-  [v4 encodeObject:v6 forKey:@"clientDesire"];
+  clientDesire = [(MADAutoSetJobInformation *)self clientDesire];
+  [coderCopy encodeObject:clientDesire forKey:@"clientDesire"];
 
-  v7 = [(MADAutoSetJobInformation *)self foundContent];
-  [v4 encodeObject:v7 forKey:@"foundContent"];
+  foundContent = [(MADAutoSetJobInformation *)self foundContent];
+  [coderCopy encodeObject:foundContent forKey:@"foundContent"];
 
-  v8 = [(MADAutoSetJobInformation *)self setDescriptor];
-  [v4 encodeObject:v8 forKey:@"setDescriptor"];
+  setDescriptor = [(MADAutoSetJobInformation *)self setDescriptor];
+  [coderCopy encodeObject:setDescriptor forKey:@"setDescriptor"];
 
-  v9 = [(MADAutoSetJobInformation *)self currentSetStatus];
-  [v4 encodeObject:v9 forKey:@"currentSetStatus"];
+  currentSetStatus = [(MADAutoSetJobInformation *)self currentSetStatus];
+  [coderCopy encodeObject:currentSetStatus forKey:@"currentSetStatus"];
 
-  v10 = [(MADAutoSetJobInformation *)self assignedAutoAssetUUID];
-  [v4 encodeObject:v10 forKey:@"assignedAutoAssetUUID"];
+  assignedAutoAssetUUID = [(MADAutoSetJobInformation *)self assignedAutoAssetUUID];
+  [coderCopy encodeObject:assignedAutoAssetUUID forKey:@"assignedAutoAssetUUID"];
 }
 
 - (id)copy
 {
   v3 = objc_alloc_init(MADAutoSetJobInformation);
-  v4 = [(MADAutoSetJobInformation *)self clientInstance];
-  [(MADAutoSetJobInformation *)v3 setClientInstance:v4];
+  clientInstance = [(MADAutoSetJobInformation *)self clientInstance];
+  [(MADAutoSetJobInformation *)v3 setClientInstance:clientInstance];
 
-  v5 = [(MADAutoSetJobInformation *)self clientDesire];
-  [(MADAutoSetJobInformation *)v3 setClientDesire:v5];
+  clientDesire = [(MADAutoSetJobInformation *)self clientDesire];
+  [(MADAutoSetJobInformation *)v3 setClientDesire:clientDesire];
 
-  v6 = [(MADAutoSetJobInformation *)self foundContent];
-  [(MADAutoSetJobInformation *)v3 setFoundContent:v6];
+  foundContent = [(MADAutoSetJobInformation *)self foundContent];
+  [(MADAutoSetJobInformation *)v3 setFoundContent:foundContent];
 
-  v7 = [(MADAutoSetJobInformation *)self setDescriptor];
-  v8 = [v7 copy];
+  setDescriptor = [(MADAutoSetJobInformation *)self setDescriptor];
+  v8 = [setDescriptor copy];
   [(MADAutoSetJobInformation *)v3 setSetDescriptor:v8];
 
-  v9 = [(MADAutoSetJobInformation *)self currentSetStatus];
-  v10 = [v9 copy];
+  currentSetStatus = [(MADAutoSetJobInformation *)self currentSetStatus];
+  v10 = [currentSetStatus copy];
   [(MADAutoSetJobInformation *)v3 setCurrentSetStatus:v10];
 
-  v11 = [(MADAutoSetJobInformation *)self assignedAutoAssetUUID];
-  [(MADAutoSetJobInformation *)v3 setAssignedAutoAssetUUID:v11];
+  assignedAutoAssetUUID = [(MADAutoSetJobInformation *)self assignedAutoAssetUUID];
+  [(MADAutoSetJobInformation *)v3 setAssignedAutoAssetUUID:assignedAutoAssetUUID];
 
   return v3;
 }
 
 - (id)summary
 {
-  v3 = [(MADAutoSetJobInformation *)self foundContent];
+  foundContent = [(MADAutoSetJobInformation *)self foundContent];
 
-  v4 = [(MADAutoSetJobInformation *)self clientInstance];
-  v5 = [v4 summary];
-  v6 = [(MADAutoSetJobInformation *)self clientDesire];
-  v7 = [v6 summary];
-  v8 = [(MADAutoSetJobInformation *)self setDescriptor];
-  v9 = [v8 summary];
-  if (v3)
+  clientInstance = [(MADAutoSetJobInformation *)self clientInstance];
+  summary = [clientInstance summary];
+  clientDesire = [(MADAutoSetJobInformation *)self clientDesire];
+  summary2 = [clientDesire summary];
+  setDescriptor = [(MADAutoSetJobInformation *)self setDescriptor];
+  summary3 = [setDescriptor summary];
+  if (foundContent)
   {
-    v10 = [(MADAutoSetJobInformation *)self foundContent];
-    v11 = [v10 summary];
-    v12 = [(MADAutoSetJobInformation *)self assignedAutoAssetUUID];
-    if (v12)
+    foundContent2 = [(MADAutoSetJobInformation *)self foundContent];
+    summary4 = [foundContent2 summary];
+    assignedAutoAssetUUID = [(MADAutoSetJobInformation *)self assignedAutoAssetUUID];
+    if (assignedAutoAssetUUID)
     {
       [(MADAutoSetJobInformation *)self assignedAutoAssetUUID];
-      v20 = v10;
-      v13 = v8;
-      v14 = v6;
-      v16 = v15 = v4;
-      v17 = [NSString stringWithFormat:@"[clientInstance:%@|clientDesire:%@|setDescriptor:%@|foundContent:%@|UUID:%@]", v5, v7, v9, v11, v16];
+      v20 = foundContent2;
+      v13 = setDescriptor;
+      v14 = clientDesire;
+      v16 = v15 = clientInstance;
+      v17 = [NSString stringWithFormat:@"[clientInstance:%@|clientDesire:%@|setDescriptor:%@|foundContent:%@|UUID:%@]", summary, summary2, summary3, summary4, v16];
 
-      v4 = v15;
-      v6 = v14;
-      v8 = v13;
-      v10 = v20;
+      clientInstance = v15;
+      clientDesire = v14;
+      setDescriptor = v13;
+      foundContent2 = v20;
       goto LABEL_9;
     }
 
-    [NSString stringWithFormat:@"[clientInstance:%@|clientDesire:%@|setDescriptor:%@|foundContent:%@|UUID:%@]", v5, v7, v9, v11, @"N"];
+    [NSString stringWithFormat:@"[clientInstance:%@|clientDesire:%@|setDescriptor:%@|foundContent:%@|UUID:%@]", summary, summary2, summary3, summary4, @"N"];
   }
 
   else
   {
-    v10 = [(MADAutoSetJobInformation *)self currentSetStatus];
-    v11 = [v10 summary];
-    v12 = [(MADAutoSetJobInformation *)self assignedAutoAssetUUID];
-    if (v12)
+    foundContent2 = [(MADAutoSetJobInformation *)self currentSetStatus];
+    summary4 = [foundContent2 summary];
+    assignedAutoAssetUUID = [(MADAutoSetJobInformation *)self assignedAutoAssetUUID];
+    if (assignedAutoAssetUUID)
     {
       [(MADAutoSetJobInformation *)self assignedAutoAssetUUID];
-      v18 = v21 = v4;
-      v17 = [NSString stringWithFormat:@"[clientInstance:%@|clientDesire:%@|setDescriptor:%@|currentSetStatus:%@|UUID:%@]", v5, v7, v9, v11, v18];
+      v18 = v21 = clientInstance;
+      v17 = [NSString stringWithFormat:@"[clientInstance:%@|clientDesire:%@|setDescriptor:%@|currentSetStatus:%@|UUID:%@]", summary, summary2, summary3, summary4, v18];
 
-      v4 = v21;
+      clientInstance = v21;
       goto LABEL_9;
     }
 
-    [NSString stringWithFormat:@"[clientInstance:%@|clientDesire:%@|setDescriptor:%@|currentSetStatus:%@|UUID:%@]", v5, v7, v9, v11, @"N"];
+    [NSString stringWithFormat:@"[clientInstance:%@|clientDesire:%@|setDescriptor:%@|currentSetStatus:%@|UUID:%@]", summary, summary2, summary3, summary4, @"N"];
   }
   v17 = ;
 LABEL_9:

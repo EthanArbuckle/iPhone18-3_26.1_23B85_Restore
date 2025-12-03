@@ -1,30 +1,30 @@
 @interface TPPageInfo
-+ (BOOL)isAlternativePageIndex:(unint64_t)a3 documentRoot:(id)a4;
-+ (BOOL)isPageTemplatePageIndex:(unint64_t)a3 documentRoot:(id)a4;
-+ (unint64_t)pageIndexFromPageTemplateIndex:(unint64_t)a3;
-+ (unint64_t)pageTemplateIndexFromPageIndex:(unint64_t)a3 documentRoot:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (BOOL)isAlternativePageIndex:(unint64_t)index documentRoot:(id)root;
++ (BOOL)isPageTemplatePageIndex:(unint64_t)index documentRoot:(id)root;
++ (unint64_t)pageIndexFromPageTemplateIndex:(unint64_t)index;
++ (unint64_t)pageTemplateIndexFromPageIndex:(unint64_t)index documentRoot:(id)root;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)pageFrame;
 - (NSArray)childInfos;
 - (TPDocumentRoot)documentRoot;
 - (TPPageController)pageController;
-- (TPPageInfo)initWithPageIndex:(unint64_t)a3 documentRoot:(id)a4;
+- (TPPageInfo)initWithPageIndex:(unint64_t)index documentRoot:(id)root;
 - (void)dealloc;
-- (void)setGeometry:(id)a3;
-- (void)setParentInfo:(id)a3;
+- (void)setGeometry:(id)geometry;
+- (void)setParentInfo:(id)info;
 @end
 
 @implementation TPPageInfo
 
-- (TPPageInfo)initWithPageIndex:(unint64_t)a3 documentRoot:(id)a4
+- (TPPageInfo)initWithPageIndex:(unint64_t)index documentRoot:(id)root
 {
-  v6 = a4;
+  rootCopy = root;
   v86.receiver = self;
   v86.super_class = TPPageInfo;
   v8 = [(TPPageInfo *)&v86 init];
   if (v8)
   {
-    if (!v6)
+    if (!rootCopy)
     {
       v13 = MEMORY[0x277D81150];
       v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, v12, "[TPPageInfo initWithPageIndex:documentRoot:]");
@@ -34,7 +34,7 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v26, v27, v28, v29, v30);
     }
 
-    if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+    if (index == 0x7FFFFFFFFFFFFFFFLL)
     {
       v31 = MEMORY[0x277D81150];
       v32 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v7, v9, v10, v11, v12, "[TPPageInfo initWithPageIndex:documentRoot:]");
@@ -44,16 +44,16 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v44, v45, v46, v47, v48);
     }
 
-    objc_storeWeak(&v8->_documentRoot, v6);
-    v8->_pageIndex = a3;
-    if ((objc_msgSend_isDocSetupPageIndex_(TPPageInfo, v49, v50, v51, v52, v53, a3) & 1) == 0)
+    objc_storeWeak(&v8->_documentRoot, rootCopy);
+    v8->_pageIndex = index;
+    if ((objc_msgSend_isDocSetupPageIndex_(TPPageInfo, v49, v50, v51, v52, v53, index) & 1) == 0)
     {
       v54 = objc_opt_class();
       if (objc_msgSend_hasBodyInfo(v54, v55, v56, v57, v58, v59))
       {
         v60 = objc_opt_class();
         v66 = objc_alloc(objc_msgSend_bodyInfoClass(v60, v61, v62, v63, v64, v65));
-        v72 = objc_msgSend_bodyStorage(v6, v67, v68, v69, v70, v71);
+        v72 = objc_msgSend_bodyStorage(rootCopy, v67, v68, v69, v70, v71);
         v78 = objc_msgSend_initWithBodyStorage_(v66, v73, v74, v75, v76, v77, v72);
         bodyInfo = v8->_bodyInfo;
         v8->_bodyInfo = v78;
@@ -74,14 +74,14 @@
   [(TPPageInfo *)&v7 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -134,7 +134,7 @@
   objc_exception_throw(v42);
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
   v7 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPPageInfo setParentInfo:]");
@@ -146,7 +146,7 @@
   objc_msgSend_logBacktraceThrottled(v25, v20, v21, v22, v23, v24);
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v7 = MEMORY[0x277D81150];
   v8 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "[TPPageInfo setGeometry:]");
@@ -170,10 +170,10 @@
   return v13;
 }
 
-+ (BOOL)isPageTemplatePageIndex:(unint64_t)a3 documentRoot:(id)a4
++ (BOOL)isPageTemplatePageIndex:(unint64_t)index documentRoot:(id)root
 {
-  v6 = a4;
-  if (!v6)
+  rootCopy = root;
+  if (!rootCopy)
   {
     v11 = MEMORY[0x277D81150];
     v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v5, v7, v8, v9, v10, "+[TPPageInfo isPageTemplatePageIndex:documentRoot:]");
@@ -183,28 +183,28 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v24, v25, v26, v27, v28);
   }
 
-  v29 = objc_msgSend_pageTemplates(v6, v5, v7, v8, v9, v10);
+  v29 = objc_msgSend_pageTemplates(rootCopy, v5, v7, v8, v9, v10);
   v35 = objc_msgSend_count(v29, v30, v31, v32, v33, v34) + 1592629870;
 
-  if ((~a3 & 0x7FFFFFFFFFFFFFFFLL) != 0 && v35 <= a3)
+  if ((~index & 0x7FFFFFFFFFFFFFFFLL) != 0 && v35 <= index)
   {
     v41 = MEMORY[0x277D81150];
     v42 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v36, v37, v38, v39, v40, "+[TPPageInfo isPageTemplatePageIndex:documentRoot:]");
     v48 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v43, v44, v45, v46, v47, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/pages/Classes/TPPageInfo.m");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v41, v49, v50, v51, v52, v53, v42, v48, 204, 0, "Expect pageIndex cannot be greater than max of page templates (pageIndex = %lu).", a3);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v41, v49, v50, v51, v52, v53, v42, v48, 204, 0, "Expect pageIndex cannot be greater than max of page templates (pageIndex = %lu).", index);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v54, v55, v56, v57, v58);
   }
 
-  v60 = a3 > 0x5EED9A6D && v35 > a3;
+  v60 = index > 0x5EED9A6D && v35 > index;
 
   return v60;
 }
 
-+ (BOOL)isAlternativePageIndex:(unint64_t)a3 documentRoot:(id)a4
++ (BOOL)isAlternativePageIndex:(unint64_t)index documentRoot:(id)root
 {
-  v7 = a4;
-  if (!v7)
+  rootCopy = root;
+  if (!rootCopy)
   {
     v12 = MEMORY[0x277D81150];
     v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, v8, v9, v10, v11, "+[TPPageInfo isAlternativePageIndex:documentRoot:]");
@@ -214,22 +214,22 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26, v27, v28, v29);
   }
 
-  if (objc_msgSend_isDocSetupPageIndex_(a1, v6, v8, v9, v10, v11, a3))
+  if (objc_msgSend_isDocSetupPageIndex_(self, v6, v8, v9, v10, v11, index))
   {
     isPageTemplatePageIndex_documentRoot = 1;
   }
 
   else
   {
-    isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(a1, v30, v31, v32, v33, v34, a3, v7);
+    isPageTemplatePageIndex_documentRoot = objc_msgSend_isPageTemplatePageIndex_documentRoot_(self, v30, v31, v32, v33, v34, index, rootCopy);
   }
 
   return isPageTemplatePageIndex_documentRoot;
 }
 
-+ (unint64_t)pageIndexFromPageTemplateIndex:(unint64_t)a3
++ (unint64_t)pageIndexFromPageTemplateIndex:(unint64_t)index
 {
-  if (a3 != 0x7FFFFFFFFFFFFFFFLL && (a3 >= 0x5EED9A6E || objc_msgSend_isDocSetupPageIndex_(a1, a2, v3, v4, v5, v6, a3)))
+  if (index != 0x7FFFFFFFFFFFFFFFLL && (index >= 0x5EED9A6E || objc_msgSend_isDocSetupPageIndex_(self, a2, v3, v4, v5, v6, index)))
   {
     v8 = MEMORY[0x277D81150];
     v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v3, v4, v5, v6, "+[TPPageInfo pageIndexFromPageTemplateIndex:]");
@@ -239,20 +239,20 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v21, v22, v23, v24, v25);
   }
 
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (index == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
   {
-    return a3 + 1592629870;
+    return index + 1592629870;
   }
 }
 
-+ (unint64_t)pageTemplateIndexFromPageIndex:(unint64_t)a3 documentRoot:(id)a4
++ (unint64_t)pageTemplateIndexFromPageIndex:(unint64_t)index documentRoot:(id)root
 {
-  if ((objc_msgSend_isPageTemplatePageIndex_documentRoot_(a1, a2, v4, v5, v6, v7, a3, a4) & 1) == 0)
+  if ((objc_msgSend_isPageTemplatePageIndex_documentRoot_(self, a2, v4, v5, v6, v7, index, root) & 1) == 0)
   {
     v14 = MEMORY[0x277D81150];
     v15 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, v10, v11, v12, v13, "+[TPPageInfo pageTemplateIndexFromPageIndex:documentRoot:]");
@@ -262,7 +262,7 @@
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v27, v28, v29, v30, v31);
   }
 
-  return a3 - 1592629870;
+  return index - 1592629870;
 }
 
 - (CGRect)pageFrame

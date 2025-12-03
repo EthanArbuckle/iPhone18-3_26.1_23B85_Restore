@@ -1,45 +1,45 @@
 @interface PKInstallmentPlanMerchant
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToInstallmentPlanMerchant:(id)a3;
-- (PKInstallmentPlanMerchant)initWithCoder:(id)a3;
-- (PKInstallmentPlanMerchant)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToInstallmentPlanMerchant:(id)merchant;
+- (PKInstallmentPlanMerchant)initWithCoder:(id)coder;
+- (PKInstallmentPlanMerchant)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKInstallmentPlanMerchant
 
-- (PKInstallmentPlanMerchant)initWithDictionary:(id)a3
+- (PKInstallmentPlanMerchant)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v19.receiver = self;
   v19.super_class = PKInstallmentPlanMerchant;
   v5 = [(PKInstallmentPlanMerchant *)&v19 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"identifier"];
+    v6 = [dictionaryCopy PKStringForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 PKStringForKey:@"name"];
+    v8 = [dictionaryCopy PKStringForKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v5->_categoryCode = [v4 PKIntegerForKey:@"categoryCode"];
-    v10 = [v4 PKStringForKey:@"city"];
+    v5->_categoryCode = [dictionaryCopy PKIntegerForKey:@"categoryCode"];
+    v10 = [dictionaryCopy PKStringForKey:@"city"];
     city = v5->_city;
     v5->_city = v10;
 
-    v12 = [v4 PKStringForKey:@"state"];
+    v12 = [dictionaryCopy PKStringForKey:@"state"];
     state = v5->_state;
     v5->_state = v12;
 
-    v14 = [v4 PKStringForKey:@"postalCode"];
+    v14 = [dictionaryCopy PKStringForKey:@"postalCode"];
     postalCode = v5->_postalCode;
     v5->_postalCode = v14;
 
-    v16 = [v4 PKStringForKey:@"country"];
+    v16 = [dictionaryCopy PKStringForKey:@"country"];
     country = v5->_country;
     v5->_country = v16;
   }
@@ -47,30 +47,30 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKInstallmentPlanMerchant *)self isEqualToInstallmentPlanMerchant:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKInstallmentPlanMerchant *)self isEqualToInstallmentPlanMerchant:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToInstallmentPlanMerchant:(id)a3
+- (BOOL)isEqualToInstallmentPlanMerchant:(id)merchant
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  merchantCopy = merchant;
+  v5 = merchantCopy;
+  if (merchantCopy)
   {
-    v6 = v4[1];
+    v6 = merchantCopy[1];
     v7 = self->_identifier;
     v8 = v6;
     v9 = v8;
@@ -238,35 +238,35 @@ LABEL_40:
   return v5;
 }
 
-- (PKInstallmentPlanMerchant)initWithCoder:(id)a3
+- (PKInstallmentPlanMerchant)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKInstallmentPlanMerchant;
   v5 = [(PKInstallmentPlanMerchant *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"city"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"city"];
     city = v5->_city;
     v5->_city = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"state"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"state"];
     state = v5->_state;
     v5->_state = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"postalCode"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"postalCode"];
     postalCode = v5->_postalCode;
     v5->_postalCode = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"country"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"country"];
     country = v5->_country;
     v5->_country = v16;
   }
@@ -274,42 +274,42 @@ LABEL_40:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_city forKey:@"city"];
-  [v5 encodeObject:self->_state forKey:@"state"];
-  [v5 encodeObject:self->_postalCode forKey:@"postalCode"];
-  [v5 encodeObject:self->_country forKey:@"country"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_city forKey:@"city"];
+  [coderCopy encodeObject:self->_state forKey:@"state"];
+  [coderCopy encodeObject:self->_postalCode forKey:@"postalCode"];
+  [coderCopy encodeObject:self->_country forKey:@"country"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_identifier copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_identifier copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_name copyWithZone:a3];
+  v8 = [(NSString *)self->_name copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
-  v10 = [(NSString *)self->_city copyWithZone:a3];
+  v10 = [(NSString *)self->_city copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(NSString *)self->_state copyWithZone:a3];
+  v12 = [(NSString *)self->_state copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
-  v14 = [(NSString *)self->_postalCode copyWithZone:a3];
+  v14 = [(NSString *)self->_postalCode copyWithZone:zone];
   v15 = v5[6];
   v5[6] = v14;
 
-  v16 = [(NSString *)self->_country copyWithZone:a3];
+  v16 = [(NSString *)self->_country copyWithZone:zone];
   v17 = v5[7];
   v5[7] = v16;
 

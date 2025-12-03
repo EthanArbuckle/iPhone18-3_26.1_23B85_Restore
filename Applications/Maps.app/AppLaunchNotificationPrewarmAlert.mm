@@ -1,7 +1,7 @@
 @interface AppLaunchNotificationPrewarmAlert
 - (void)_alertDidFinishProcessing;
-- (void)_presentAlertUIWithStatus:(int64_t)a3 repeatPrompt:(BOOL)a4;
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3;
+- (void)_presentAlertUIWithStatus:(int64_t)status repeatPrompt:(BOOL)prompt;
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler;
 @end
 
 @implementation AppLaunchNotificationPrewarmAlert
@@ -19,25 +19,25 @@
   }
 }
 
-- (void)_presentAlertUIWithStatus:(int64_t)a3 repeatPrompt:(BOOL)a4
+- (void)_presentAlertUIWithStatus:(int64_t)status repeatPrompt:(BOOL)prompt
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1007A1238;
   v8[3] = &unk_101661B18;
   v8[4] = self;
-  v4 = [[PushNotificationPrompt alloc] initWithReason:a4 authorizationStatus:a3 completion:v8];
+  v4 = [[PushNotificationPrompt alloc] initWithReason:prompt authorizationStatus:status completion:v8];
   v5 = qword_10195D7E0;
   qword_10195D7E0 = v4;
 
   v6 = +[UIApplication sharedMapsDelegate];
-  v7 = [v6 chromeViewController];
-  [v7 _maps_topMostPresentViewController:qword_10195D7E0 animated:1 completion:0];
+  chromeViewController = [v6 chromeViewController];
+  [chromeViewController _maps_topMostPresentViewController:qword_10195D7E0 animated:1 completion:0];
 }
 
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   completionBlock = self->_completionBlock;
   self->_completionBlock = v4;
 

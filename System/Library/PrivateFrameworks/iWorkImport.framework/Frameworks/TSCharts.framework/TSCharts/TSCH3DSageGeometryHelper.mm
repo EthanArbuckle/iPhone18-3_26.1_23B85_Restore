@@ -1,22 +1,22 @@
 @interface TSCH3DSageGeometryHelper
-+ (CGRect)computeSageChartAreaBoundsForChartInfo:(id)a3 geometryRect:(CGRect)a4 returningContainingViewportSize:(id *)a5;
++ (CGRect)computeSageChartAreaBoundsForChartInfo:(id)info geometryRect:(CGRect)rect returningContainingViewportSize:(id *)size;
 - (BOOL)p_hasValidContainingViewport;
-- (CGRect)computeSageLayoutCBBForSpiceDoc:(BOOL)a3;
+- (CGRect)computeSageLayoutCBBForSpiceDoc:(BOOL)doc;
 @end
 
 @implementation TSCH3DSageGeometryHelper
 
-+ (CGRect)computeSageChartAreaBoundsForChartInfo:(id)a3 geometryRect:(CGRect)a4 returningContainingViewportSize:(id *)a5
++ (CGRect)computeSageChartAreaBoundsForChartInfo:(id)info geometryRect:(CGRect)rect returningContainingViewportSize:(id *)size
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a3;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  infoCopy = info;
   v12 = sub_27635FB94(__p);
-  v16 = objc_msgSend_create3DSceneWithLayoutSettings_styleProvidingSource_(v11, v13, v12, v14, v15, __p, 0);
+  v16 = objc_msgSend_create3DSceneWithLayoutSettings_styleProvidingSource_(infoCopy, v13, v12, v14, v15, __p, 0);
   objc_msgSend_setIsFixedPosition_forScene_(TSCH3DChartValueAxisTitleSceneObject, v17, v18, v19, v20, 1, v16);
-  v25 = objc_msgSend_helperWithInfo_(TSCH3DChartResizerHelper, v21, v22, v23, v24, v11);
+  v25 = objc_msgSend_helperWithInfo_(TSCH3DChartResizerHelper, v21, v22, v23, v24, infoCopy);
   v161.origin.x = x;
   v161.origin.y = y;
   v161.size.width = width;
@@ -58,9 +58,9 @@
   *&v48 = sub_276152C5C(__p, v47 + 10, v145).u64[0];
   sub_27615294C(v145, &v47[12], &v158, v48, v49, v50, v51);
   v56 = v158;
-  if (a5)
+  if (size)
   {
-    if (*a5)
+    if (*size)
     {
       v57 = MEMORY[0x277D81150];
       v58 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v52, v53, v54, v55, "+[TSCH3DSageGeometryHelper computeSageChartAreaBoundsForChartInfo:geometryRect:returningContainingViewportSize:]");
@@ -83,7 +83,7 @@
       __p[0] = 0;
       objc_msgSend_valueWithCGSize_(MEMORY[0x277CCAE60], v52, 0.0, 0.0, v55);
     }
-    *a5 = ;
+    *size = ;
   }
 
   else
@@ -192,7 +192,7 @@
       operator delete(v159.i64[0]);
     }
 
-    NSLog(&cfstr_PRectCvResultB.isa, v91, a1, v142, v141, v109, v110, v123, v136);
+    NSLog(&cfstr_PRectCvResultB.isa, v91, self, v142, v141, v109, v110, v123, v136);
   }
 
   v137 = *&v56;
@@ -223,9 +223,9 @@
   return v11;
 }
 
-- (CGRect)computeSageLayoutCBBForSpiceDoc:(BOOL)a3
+- (CGRect)computeSageLayoutCBBForSpiceDoc:(BOOL)doc
 {
-  v6 = a3;
+  docCopy = doc;
   if (byte_280A46430 == 1)
   {
     v9 = objc_opt_class();
@@ -235,7 +235,7 @@
 
   v11 = objc_msgSend_upgraderWithChartInfo_(TSCH3DSageGeometryHelperLimitingSeriesUpgrader, a2, v3, v4, v5, self->super._chartInfo);
   objc_msgSend_naturalSize(self, v12, v13, v14, v15);
-  objc_msgSend_upgradeForSpice_naturalSize_(v11, v16, v17, v18, v19, v6);
+  objc_msgSend_upgradeForSpice_naturalSize_(v11, v16, v17, v18, v19, docCopy);
   v24 = objc_msgSend_boundsLayout(v11, v20, v21, v22, v23);
   if (objc_msgSend_p_hasValidContainingViewport(self, v25, v26, v27, v28))
   {

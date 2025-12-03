@@ -2,7 +2,7 @@
 - (TSKLayerPool)init;
 - (id)requestLayerFromPool;
 - (void)dealloc;
-- (void)returnLayerToPool:(id)a3;
+- (void)returnLayerToPool:(id)pool;
 @end
 
 @implementation TSKLayerPool
@@ -37,21 +37,21 @@
     self->mLayerPool = mLayerPool;
   }
 
-  if (![(NSMutableArray *)mLayerPool count]|| (v4 = [(NSMutableArray *)self->mLayerPool lastObject], [(NSMutableArray *)self->mLayerPool removeLastObject], !v4))
+  if (![(NSMutableArray *)mLayerPool count]|| (layer = [(NSMutableArray *)self->mLayerPool lastObject], [(NSMutableArray *)self->mLayerPool removeLastObject], !layer))
   {
-    v4 = [(objc_class *)self->mLayerClass layer];
+    layer = [(objc_class *)self->mLayerClass layer];
   }
 
-  [v4 setDelegate:self->mLayerDelegate];
-  return v4;
+  [layer setDelegate:self->mLayerDelegate];
+  return layer;
 }
 
-- (void)returnLayerToPool:(id)a3
+- (void)returnLayerToPool:(id)pool
 {
   mLayerPool = self->mLayerPool;
   if (mLayerPool)
   {
-    if (!a3)
+    if (!pool)
     {
       return;
     }
@@ -61,17 +61,17 @@
   {
     mLayerPool = objc_alloc_init(MEMORY[0x277CBEB18]);
     self->mLayerPool = mLayerPool;
-    if (!a3)
+    if (!pool)
     {
       return;
     }
   }
 
-  [(NSMutableArray *)mLayerPool addObject:a3];
-  [a3 removeFromSuperlayer];
-  [a3 setContents:0];
+  [(NSMutableArray *)mLayerPool addObject:pool];
+  [pool removeFromSuperlayer];
+  [pool setContents:0];
 
-  [a3 setDelegate:0];
+  [pool setDelegate:0];
 }
 
 @end

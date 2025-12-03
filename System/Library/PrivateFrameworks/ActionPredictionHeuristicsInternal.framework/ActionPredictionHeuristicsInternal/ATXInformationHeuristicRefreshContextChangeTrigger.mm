@@ -1,33 +1,33 @@
 @interface ATXInformationHeuristicRefreshContextChangeTrigger
-- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCDContextualKeyPath:(id)a3;
-- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCDContextualKeyPath:(id)a3 equalToValue:(id)a4 withMinimumDurationInPreviousState:(double)a5;
-- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCDContextualKeyPath:(id)a3 predicate:(id)a4 registrationIdentifier:(id)a5;
-- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCoder:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCDContextualKeyPath:(id)path;
+- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCDContextualKeyPath:(id)path equalToValue:(id)value withMinimumDurationInPreviousState:(double)state;
+- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCDContextualKeyPath:(id)path predicate:(id)predicate registrationIdentifier:(id)identifier;
+- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCoder:(id)coder;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (void)_start;
 - (void)_stop;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXInformationHeuristicRefreshContextChangeTrigger
 
-- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCDContextualKeyPath:(id)a3 equalToValue:(id)a4 withMinimumDurationInPreviousState:(double)a5
+- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCDContextualKeyPath:(id)path equalToValue:(id)value withMinimumDurationInPreviousState:(double)state
 {
-  v9 = a3;
-  v10 = a4;
+  pathCopy = path;
+  valueCopy = value;
   v18.receiver = self;
   v18.super_class = ATXInformationHeuristicRefreshContextChangeTrigger;
   v11 = [(ATXInformationHeuristicRefreshTrigger *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_contextKeyPath, a3);
-    v13 = [MEMORY[0x277CFE360] predicateForKeyPath:v12->_contextKeyPath equalToValue:v10 withMinimumDurationInPreviousState:a5];
+    objc_storeStrong(&v11->_contextKeyPath, path);
+    v13 = [MEMORY[0x277CFE360] predicateForKeyPath:v12->_contextKeyPath equalToValue:valueCopy withMinimumDurationInPreviousState:state];
     predicate = v12->_predicate;
     v12->_predicate = v13;
 
-    v15 = [v9 key];
+    v15 = [pathCopy key];
     registrationIdentifier = v12->_registrationIdentifier;
     v12->_registrationIdentifier = v15;
   }
@@ -35,21 +35,21 @@
   return v12;
 }
 
-- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCDContextualKeyPath:(id)a3
+- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCDContextualKeyPath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v13.receiver = self;
   v13.super_class = ATXInformationHeuristicRefreshContextChangeTrigger;
   v6 = [(ATXInformationHeuristicRefreshTrigger *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_contextKeyPath, a3);
-    v8 = [MEMORY[0x277CFE360] predicateForChangeAtKeyPath:v5];
+    objc_storeStrong(&v6->_contextKeyPath, path);
+    v8 = [MEMORY[0x277CFE360] predicateForChangeAtKeyPath:pathCopy];
     predicate = v7->_predicate;
     v7->_predicate = v8;
 
-    v10 = [v5 key];
+    v10 = [pathCopy key];
     registrationIdentifier = v7->_registrationIdentifier;
     v7->_registrationIdentifier = v10;
   }
@@ -57,20 +57,20 @@
   return v7;
 }
 
-- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCDContextualKeyPath:(id)a3 predicate:(id)a4 registrationIdentifier:(id)a5
+- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCDContextualKeyPath:(id)path predicate:(id)predicate registrationIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  predicateCopy = predicate;
+  identifierCopy = identifier;
   v15.receiver = self;
   v15.super_class = ATXInformationHeuristicRefreshContextChangeTrigger;
   v12 = [(ATXInformationHeuristicRefreshTrigger *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_contextKeyPath, a3);
-    objc_storeStrong(&v13->_predicate, a4);
-    objc_storeStrong(&v13->_registrationIdentifier, a5);
+    objc_storeStrong(&v12->_contextKeyPath, path);
+    objc_storeStrong(&v13->_predicate, predicate);
+    objc_storeStrong(&v13->_registrationIdentifier, identifier);
   }
 
   return v13;
@@ -93,8 +93,8 @@
     registration = self->_registration;
     self->_registration = v6;
 
-    v8 = [MEMORY[0x277CFE318] userContext];
-    [v8 registerCallback:self->_registration];
+    userContext = [MEMORY[0x277CFE318] userContext];
+    [userContext registerCallback:self->_registration];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -145,18 +145,18 @@ void __60__ATXInformationHeuristicRefreshContextChangeTrigger__start__block_invo
 {
   if (self->_registration)
   {
-    v3 = [MEMORY[0x277CFE318] userContext];
-    [v3 deregisterCallback:self->_registration];
+    userContext = [MEMORY[0x277CFE318] userContext];
+    [userContext deregisterCallback:self->_registration];
 
     registration = self->_registration;
     self->_registration = 0;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -166,7 +166,7 @@ void __60__ATXInformationHeuristicRefreshContextChangeTrigger__start__block_invo
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       contextKeyPath = self->_contextKeyPath;
       if (contextKeyPath == v5->_contextKeyPath || [(_CDContextualKeyPath *)contextKeyPath isEqual:?])
       {
@@ -206,36 +206,36 @@ void __60__ATXInformationHeuristicRefreshContextChangeTrigger__start__block_invo
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ATXInformationHeuristicRefreshContextChangeTrigger;
-  v4 = a3;
-  [(ATXInformationHeuristicRefreshTrigger *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_contextKeyPath forKey:{@"contextKeyPath", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_predicate forKey:@"predicate"];
-  [v4 encodeObject:self->_registrationIdentifier forKey:@"registrationIdKey"];
+  coderCopy = coder;
+  [(ATXInformationHeuristicRefreshTrigger *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_contextKeyPath forKey:{@"contextKeyPath", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_predicate forKey:@"predicate"];
+  [coderCopy encodeObject:self->_registrationIdentifier forKey:@"registrationIdKey"];
 }
 
-- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCoder:(id)a3
+- (ATXInformationHeuristicRefreshContextChangeTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = ATXInformationHeuristicRefreshContextChangeTrigger;
-  v5 = [(ATXInformationHeuristicRefreshTrigger *)&v18 initWithCoder:v4];
+  v5 = [(ATXInformationHeuristicRefreshTrigger *)&v18 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_3;
   }
 
-  v6 = [v4 error];
+  error = [coderCopy error];
 
-  if (v6)
+  if (error)
   {
     goto LABEL_3;
   }
 
-  v9 = [(ATXInformationHeuristicRefreshTrigger *)v5 _safeDecodeObjectOfClass:objc_opt_class() forKey:@"contextKeyPath" withCoder:v4 nonNull:1];
+  v9 = [(ATXInformationHeuristicRefreshTrigger *)v5 _safeDecodeObjectOfClass:objc_opt_class() forKey:@"contextKeyPath" withCoder:coderCopy nonNull:1];
   contextKeyPath = v5->_contextKeyPath;
   v5->_contextKeyPath = v9;
 
@@ -244,14 +244,14 @@ void __60__ATXInformationHeuristicRefreshContextChangeTrigger__start__block_invo
     goto LABEL_3;
   }
 
-  v11 = [v4 error];
+  error2 = [coderCopy error];
 
-  if (v11)
+  if (error2)
   {
     goto LABEL_3;
   }
 
-  v12 = [(ATXInformationHeuristicRefreshTrigger *)v5 _safeDecodeObjectOfClass:objc_opt_class() forKey:@"predicate" withCoder:v4 nonNull:1];
+  v12 = [(ATXInformationHeuristicRefreshTrigger *)v5 _safeDecodeObjectOfClass:objc_opt_class() forKey:@"predicate" withCoder:coderCopy nonNull:1];
   predicate = v5->_predicate;
   v5->_predicate = v12;
 
@@ -260,18 +260,18 @@ void __60__ATXInformationHeuristicRefreshContextChangeTrigger__start__block_invo
     goto LABEL_3;
   }
 
-  v14 = [v4 error];
+  error3 = [coderCopy error];
 
-  if (v14)
+  if (error3)
   {
     goto LABEL_3;
   }
 
-  v15 = [(ATXInformationHeuristicRefreshTrigger *)v5 _safeDecodeObjectOfClass:objc_opt_class() forKey:@"registrationIdKey" withCoder:v4 nonNull:1];
+  v15 = [(ATXInformationHeuristicRefreshTrigger *)v5 _safeDecodeObjectOfClass:objc_opt_class() forKey:@"registrationIdKey" withCoder:coderCopy nonNull:1];
   registrationIdentifier = v5->_registrationIdentifier;
   v5->_registrationIdentifier = v15;
 
-  if (!v5->_registrationIdentifier || ([v4 error], v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
+  if (!v5->_registrationIdentifier || ([coderCopy error], v17 = objc_claimAutoreleasedReturnValue(), v17, v17))
   {
 LABEL_3:
     v7 = 0;

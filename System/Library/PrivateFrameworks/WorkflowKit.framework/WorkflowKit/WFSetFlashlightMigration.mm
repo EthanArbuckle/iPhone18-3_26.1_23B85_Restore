@@ -1,16 +1,16 @@
 @interface WFSetFlashlightMigration
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4;
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version;
 - (void)migrateWorkflow;
 @end
 
 @implementation WFSetFlashlightMigration
 
-+ (BOOL)workflowNeedsMigration:(id)a3 fromClientVersion:(id)a4
++ (BOOL)workflowNeedsMigration:(id)migration fromClientVersion:(id)version
 {
-  v5 = a3;
-  if (WFCompareBundleVersions(a4, @"1050.8") == 3)
+  migrationCopy = migration;
+  if (WFCompareBundleVersions(version, @"1050.8") == 3)
   {
-    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.flashlight", v5);
+    HasActionsWithIdentifier = WFWorkflowHasActionsWithIdentifier(@"is.workflow.actions.flashlight", migrationCopy);
   }
 
   else
@@ -23,14 +23,14 @@
 
 - (void)migrateWorkflow
 {
-  v2 = self;
+  selfCopy = self;
   v36 = *MEMORY[0x1E69E9840];
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v3 = [(WFWorkflowMigration *)self actions];
-  v4 = [v3 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  actions = [(WFWorkflowMigration *)self actions];
+  v4 = [actions countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v4)
   {
     v5 = v4;
@@ -46,17 +46,17 @@
       {
         if (*v32 != v8)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(actions);
         }
 
         v10 = *(*(&v31 + 1) + 8 * v9);
-        v11 = [(WFWorkflowMigration *)v2 actionIdentifierKey];
-        v12 = [v10 objectForKey:v11];
+        actionIdentifierKey = [(WFWorkflowMigration *)selfCopy actionIdentifierKey];
+        v12 = [v10 objectForKey:actionIdentifierKey];
 
         if ([v12 isEqualToString:v6])
         {
-          v13 = [(WFWorkflowMigration *)v2 actionParametersKey];
-          v14 = [v10 objectForKeyedSubscript:v13];
+          actionParametersKey = [(WFWorkflowMigration *)selfCopy actionParametersKey];
+          v14 = [v10 objectForKeyedSubscript:actionParametersKey];
 
           v15 = [v14 objectForKeyedSubscript:v7];
           objc_opt_class();
@@ -103,16 +103,16 @@ LABEL_17:
             {
               v28 = v15;
               [(__CFString *)v28 objectForKeyedSubscript:@"WFSerializationType"];
-              v19 = v2;
+              v19 = selfCopy;
               v20 = v7;
               v21 = v6;
-              v23 = v22 = v3;
+              v23 = v22 = actions;
               v24 = [v23 isEqual:@"WFTextTokenAttachment"];
 
-              v3 = v22;
+              actions = v22;
               v6 = v21;
               v7 = v20;
-              v2 = v19;
+              selfCopy = v19;
               if (v24)
               {
                 v17 = v14;
@@ -131,14 +131,14 @@ LABEL_17:
       }
 
       while (v5 != v9);
-      v26 = [v3 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v26 = [actions countByEnumeratingWithState:&v31 objects:v35 count:16];
       v5 = v26;
     }
 
     while (v26);
   }
 
-  [(WFWorkflowMigration *)v2 finish];
+  [(WFWorkflowMigration *)selfCopy finish];
   v27 = *MEMORY[0x1E69E9840];
 }
 

@@ -1,28 +1,28 @@
 @interface MRDNowPlayingStateObserver
 - (MRDNowPlayingStateObserver)init;
 - (MRDNowPlayingStateObserverDelegate)delegate;
-- (id)_onQueue_stateForPlayerPath:(id)a3;
+- (id)_onQueue_stateForPlayerPath:(id)path;
 - (id)debugDescription;
-- (void)_addNowPlayingNotification:(id)a3 selector:(SEL)a4;
-- (void)_handleApplicationClientStateChanged:(id)a3;
-- (void)_handleContentItemArtworkChanged:(id)a3;
-- (void)_handleContentItemsChanged:(id)a3;
-- (void)_handleDefaultSupportedCommandsChanged:(id)a3;
-- (void)_handleNowPlayingClientDidChange:(id)a3;
-- (void)_handleNowPlayingPlaybackStateChanged:(id)a3;
-- (void)_handleNowPlayingPlayerDidChange:(id)a3;
-- (void)_handlePlaybackQueueCapabilitiesChanged:(id)a3;
-- (void)_handlePlaybackQueueChanged:(id)a3;
-- (void)_handlePlayerStateChanged:(id)a3;
-- (void)_handleRemoveClient:(id)a3;
-- (void)_handleRemovePlayer:(id)a3;
-- (void)_handleSupportedCommandsDidChange:(id)a3;
-- (void)_handleVolumeAvailabilityDidChangeNotification:(id)a3;
-- (void)_onQueue_notifyCoalescedPlayerPath:(id)a3;
-- (void)_onQueue_setReceiveNowPlayingUpdates:(BOOL)a3;
-- (void)_onQueue_setReceiveVolumeControlUpdates:(BOOL)a3;
+- (void)_addNowPlayingNotification:(id)notification selector:(SEL)selector;
+- (void)_handleApplicationClientStateChanged:(id)changed;
+- (void)_handleContentItemArtworkChanged:(id)changed;
+- (void)_handleContentItemsChanged:(id)changed;
+- (void)_handleDefaultSupportedCommandsChanged:(id)changed;
+- (void)_handleNowPlayingClientDidChange:(id)change;
+- (void)_handleNowPlayingPlaybackStateChanged:(id)changed;
+- (void)_handleNowPlayingPlayerDidChange:(id)change;
+- (void)_handlePlaybackQueueCapabilitiesChanged:(id)changed;
+- (void)_handlePlaybackQueueChanged:(id)changed;
+- (void)_handlePlayerStateChanged:(id)changed;
+- (void)_handleRemoveClient:(id)client;
+- (void)_handleRemovePlayer:(id)player;
+- (void)_handleSupportedCommandsDidChange:(id)change;
+- (void)_handleVolumeAvailabilityDidChangeNotification:(id)notification;
+- (void)_onQueue_notifyCoalescedPlayerPath:(id)path;
+- (void)_onQueue_setReceiveNowPlayingUpdates:(BOOL)updates;
+- (void)_onQueue_setReceiveVolumeControlUpdates:(BOOL)updates;
 - (void)_removeNowPlayingNotifications;
-- (void)_setReceiveUpdates:(BOOL)a3 forSource:(int64_t)a4;
+- (void)_setReceiveUpdates:(BOOL)updates forSource:(int64_t)source;
 - (void)dealloc;
 @end
 
@@ -47,9 +47,9 @@
     v2->_observedNowPlayingNotifications = v8;
 
     v10 = +[MRDMediaRemoteServer server];
-    v11 = [v10 nowPlayingServer];
+    nowPlayingServer = [v10 nowPlayingServer];
     npServer = v2->_npServer;
-    v2->_npServer = v11;
+    v2->_npServer = nowPlayingServer;
 
     v13 = objc_alloc_init(NSMutableDictionary);
     coalescingStates = v2->_coalescingStates;
@@ -90,45 +90,45 @@
   return v3;
 }
 
-- (void)_handleNowPlayingClientDidChange:(id)a3
+- (void)_handleNowPlayingClientDidChange:(id)change
 {
-  v7 = a3;
+  changeCopy = change;
   if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:?])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [v7 userInfo];
+    userInfo = [changeCopy userInfo];
     v6 = MRGetPlayerPathFromUserInfo();
     [WeakRetained stateObserver:self didReceiveNowPlayingClientChange:v6];
   }
 }
 
-- (void)_handleNowPlayingPlayerDidChange:(id)a3
+- (void)_handleNowPlayingPlayerDidChange:(id)change
 {
-  v7 = a3;
+  changeCopy = change;
   if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:?])
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [v7 userInfo];
+    userInfo = [changeCopy userInfo];
     v6 = MRGetPlayerPathFromUserInfo();
     [WeakRetained stateObserver:self didReceiveNowPlayingPlayerChange:v6];
   }
 }
 
-- (void)_handleApplicationClientStateChanged:(id)a3
+- (void)_handleApplicationClientStateChanged:(id)changed
 {
-  v4 = a3;
-  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:v4])
+  changedCopy = changed;
+  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:changedCopy])
   {
-    v5 = [v4 userInfo];
+    userInfo = [changedCopy userInfo];
     v6 = MRGetPlayerPathFromUserInfo();
 
     v7 = +[MRDMediaRemoteServer server];
-    v8 = [v7 nowPlayingServer];
+    nowPlayingServer = [v7 nowPlayingServer];
 
-    v9 = [v8 queryExistingPlayerPath:v6];
-    v10 = [v9 nowPlayingClient];
+    v9 = [nowPlayingServer queryExistingPlayerPath:v6];
+    nowPlayingClient = [v9 nowPlayingClient];
 
-    if (v10)
+    if (nowPlayingClient)
     {
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -143,12 +143,12 @@
   }
 }
 
-- (void)_handleRemoveClient:(id)a3
+- (void)_handleRemoveClient:(id)client
 {
-  v7 = a3;
+  clientCopy = client;
   if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:?])
   {
-    v4 = [v7 userInfo];
+    userInfo = [clientCopy userInfo];
     v5 = MRGetPlayerPathFromUserInfo();
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -156,57 +156,57 @@
   }
 }
 
-- (void)_handleVolumeAvailabilityDidChangeNotification:(id)a3
+- (void)_handleVolumeAvailabilityDidChangeNotification:(id)notification
 {
-  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:a3])
+  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:notification])
   {
     v4 = [MRPlayerPath alloc];
     v5 = +[MROrigin localOrigin];
     v11 = [v4 initWithOrigin:v5 client:0 player:0];
 
     v6 = +[MRDMediaRemoteServer server];
-    v7 = [v6 nowPlayingServer];
+    nowPlayingServer = [v6 nowPlayingServer];
 
-    v8 = [v7 queryExistingPlayerPath:v11];
+    v8 = [nowPlayingServer queryExistingPlayerPath:v11];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v10 = [v8 originClient];
-    [WeakRetained stateObserver:self didReceiveVolumeControlCapabilitiesChange:objc_msgSend(v10 playerPath:{"volumeControlCapabilities"), v11}];
+    originClient = [v8 originClient];
+    [WeakRetained stateObserver:self didReceiveVolumeControlCapabilitiesChange:objc_msgSend(originClient playerPath:{"volumeControlCapabilities"), v11}];
   }
 }
 
-- (void)_handleDefaultSupportedCommandsChanged:(id)a3
+- (void)_handleDefaultSupportedCommandsChanged:(id)changed
 {
-  v14 = a3;
+  changedCopy = changed;
   if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:?])
   {
-    v4 = [v14 userInfo];
+    userInfo = [changedCopy userInfo];
     v5 = MRGetPlayerPathFromUserInfo();
 
     v6 = +[MRDMediaRemoteServer server];
-    v7 = [v6 nowPlayingServer];
-    v8 = [v5 origin];
-    v9 = [v7 originClientForOrigin:v8];
+    nowPlayingServer = [v6 nowPlayingServer];
+    origin = [v5 origin];
+    v9 = [nowPlayingServer originClientForOrigin:origin];
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v11 = [v5 client];
-    v12 = [v11 bundleIdentifier];
-    v13 = [v9 defaultSupportedCommandsForClient:v12];
+    client = [v5 client];
+    bundleIdentifier = [client bundleIdentifier];
+    v13 = [v9 defaultSupportedCommandsForClient:bundleIdentifier];
     [WeakRetained stateObserver:self didReceiveDefaultSupportedCommandsChange:v13 playerPath:v5];
   }
 }
 
-- (void)_handleSupportedCommandsDidChange:(id)a3
+- (void)_handleSupportedCommandsDidChange:(id)change
 {
-  v4 = a3;
-  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:v4])
+  changeCopy = change;
+  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:changeCopy])
   {
-    v5 = [v4 userInfo];
+    userInfo = [changeCopy userInfo];
     v6 = MRGetPlayerPathFromUserInfo();
 
     v7 = [(MRDNowPlayingServer *)self->_npServer queryExistingPlayerPath:v6];
-    v8 = [v7 playerClient];
+    playerClient = [v7 playerClient];
 
-    if (v8)
+    if (playerClient)
     {
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -221,18 +221,18 @@
   }
 }
 
-- (void)_handleNowPlayingPlaybackStateChanged:(id)a3
+- (void)_handleNowPlayingPlaybackStateChanged:(id)changed
 {
-  v4 = a3;
-  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:v4])
+  changedCopy = changed;
+  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:changedCopy])
   {
-    v5 = [v4 userInfo];
+    userInfo = [changedCopy userInfo];
     v6 = MRGetPlayerPathFromUserInfo();
 
     v7 = [(MRDNowPlayingServer *)self->_npServer queryExistingPlayerPath:v6];
-    v8 = [v7 playerClient];
+    playerClient = [v7 playerClient];
 
-    if (v8)
+    if (playerClient)
     {
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -247,18 +247,18 @@
   }
 }
 
-- (void)_handlePlaybackQueueChanged:(id)a3
+- (void)_handlePlaybackQueueChanged:(id)changed
 {
-  v4 = a3;
-  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:v4])
+  changedCopy = changed;
+  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:changedCopy])
   {
-    v5 = [v4 userInfo];
+    userInfo = [changedCopy userInfo];
     v6 = MRGetPlayerPathFromUserInfo();
 
     v7 = [(MRDNowPlayingServer *)self->_npServer queryExistingPlayerPath:v6];
-    v8 = [v7 playerClient];
+    playerClient = [v7 playerClient];
 
-    if (v8)
+    if (playerClient)
     {
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -273,18 +273,18 @@
   }
 }
 
-- (void)_handlePlaybackQueueCapabilitiesChanged:(id)a3
+- (void)_handlePlaybackQueueCapabilitiesChanged:(id)changed
 {
-  v4 = a3;
-  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:v4])
+  changedCopy = changed;
+  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:changedCopy])
   {
-    v5 = [v4 userInfo];
+    userInfo = [changedCopy userInfo];
     v6 = MRGetPlayerPathFromUserInfo();
 
     v7 = [(MRDNowPlayingServer *)self->_npServer queryExistingPlayerPath:v6];
-    v8 = [v7 playerClient];
+    playerClient = [v7 playerClient];
 
-    if (v8)
+    if (playerClient)
     {
       queue = self->_queue;
       block[0] = _NSConcreteStackBlock;
@@ -299,20 +299,20 @@
   }
 }
 
-- (void)_handleContentItemsChanged:(id)a3
+- (void)_handleContentItemsChanged:(id)changed
 {
-  v4 = a3;
-  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:v4])
+  changedCopy = changed;
+  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:changedCopy])
   {
-    v5 = [v4 userInfo];
+    userInfo = [changedCopy userInfo];
     v6 = MRGetPlayerPathFromUserInfo();
 
     v7 = [(MRDNowPlayingServer *)self->_npServer queryExistingPlayerPath:v6];
-    v8 = [v7 playerClient];
+    playerClient = [v7 playerClient];
 
-    if (v8)
+    if (playerClient)
     {
-      v9 = [v4 userInfo];
+      userInfo2 = [changedCopy userInfo];
       v10 = MRGetContentItemsFromUserInfo();
 
       queue = self->_queue;
@@ -329,20 +329,20 @@
   }
 }
 
-- (void)_handleContentItemArtworkChanged:(id)a3
+- (void)_handleContentItemArtworkChanged:(id)changed
 {
-  v4 = a3;
-  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:v4])
+  changedCopy = changed;
+  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:changedCopy])
   {
-    v5 = [v4 userInfo];
+    userInfo = [changedCopy userInfo];
     v6 = MRGetPlayerPathFromUserInfo();
 
     v7 = [(MRDNowPlayingServer *)self->_npServer queryExistingPlayerPath:v6];
-    v8 = [v7 playerClient];
+    playerClient = [v7 playerClient];
 
-    if (v8)
+    if (playerClient)
     {
-      v9 = [v4 userInfo];
+      userInfo2 = [changedCopy userInfo];
       v10 = MRGetContentItemsFromUserInfo();
 
       queue = self->_queue;
@@ -359,18 +359,18 @@
   }
 }
 
-- (void)_handlePlayerStateChanged:(id)a3
+- (void)_handlePlayerStateChanged:(id)changed
 {
-  v4 = a3;
-  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:v4])
+  changedCopy = changed;
+  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:changedCopy])
   {
-    v5 = [v4 userInfo];
+    userInfo = [changedCopy userInfo];
     v6 = MRGetPlayerPathFromUserInfo();
 
     v7 = [(MRDNowPlayingServer *)self->_npServer queryExistingPlayerPath:v6];
-    v8 = [v7 playerClient];
+    playerClient = [v7 playerClient];
 
-    if (v8)
+    if (playerClient)
     {
       queue = self->_queue;
       v10[0] = _NSConcreteStackBlock;
@@ -384,35 +384,35 @@
   }
 }
 
-- (void)_handleRemovePlayer:(id)a3
+- (void)_handleRemovePlayer:(id)player
 {
-  v4 = a3;
-  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:v4])
+  playerCopy = player;
+  if ([(MRDNowPlayingStateObserver *)self _shouldNotifyChange:playerCopy])
   {
-    v5 = [v4 userInfo];
+    userInfo = [playerCopy userInfo];
     v6 = MRGetPlayerPathFromUserInfo();
 
     v7 = [(MRDNowPlayingServer *)self->_npServer queryExistingPlayerPath:v6];
-    v8 = [v7 playerClient];
+    playerClient = [v7 playerClient];
 
-    if (v8)
+    if (playerClient)
     {
       queue = self->_queue;
       v12 = _NSConcreteStackBlock;
       v13 = 3221225472;
       v14 = sub_1000F4F70;
       v15 = &unk_1004B68F0;
-      v16 = self;
+      selfCopy = self;
       v10 = v6;
       v17 = v10;
       dispatch_async(queue, &v12);
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained stateObserver:self didReceivePlayerDidUnregister:{v10, v12, v13, v14, v15, v16}];
+      [WeakRetained stateObserver:self didReceivePlayerDidUnregister:{v10, v12, v13, v14, v15, selfCopy}];
     }
   }
 }
 
-- (void)_setReceiveUpdates:(BOOL)a3 forSource:(int64_t)a4
+- (void)_setReceiveUpdates:(BOOL)updates forSource:(int64_t)source
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -420,15 +420,15 @@
   block[2] = sub_1000F4FF8;
   block[3] = &unk_1004BC818;
   block[4] = self;
-  block[5] = a4;
-  v6 = a3;
+  block[5] = source;
+  updatesCopy = updates;
   dispatch_sync(queue, block);
 }
 
-- (void)_onQueue_setReceiveNowPlayingUpdates:(BOOL)a3
+- (void)_onQueue_setReceiveNowPlayingUpdates:(BOOL)updates
 {
   registeredForNowPlayingCount = self->_registeredForNowPlayingCount;
-  if (a3)
+  if (updates)
   {
     self->_registeredForNowPlayingCount = registeredForNowPlayingCount + 1;
     if (!registeredForNowPlayingCount)
@@ -480,10 +480,10 @@
   }
 }
 
-- (void)_onQueue_setReceiveVolumeControlUpdates:(BOOL)a3
+- (void)_onQueue_setReceiveVolumeControlUpdates:(BOOL)updates
 {
   registeredForVolumeAvailabilityCount = self->_registeredForVolumeAvailabilityCount;
-  if (a3)
+  if (updates)
   {
     self->_registeredForVolumeAvailabilityCount = registeredForVolumeAvailabilityCount + 1;
     if (!registeredForVolumeAvailabilityCount)
@@ -538,14 +538,14 @@
   }
 }
 
-- (void)_addNowPlayingNotification:(id)a3 selector:(SEL)a4
+- (void)_addNowPlayingNotification:(id)notification selector:(SEL)selector
 {
-  v7 = a3;
+  notificationCopy = notification;
   v6 = +[NSNotificationCenter defaultCenter];
-  if (([(NSMutableArray *)self->_observedNowPlayingNotifications containsObject:v7]& 1) == 0)
+  if (([(NSMutableArray *)self->_observedNowPlayingNotifications containsObject:notificationCopy]& 1) == 0)
   {
-    [v6 addObserver:self selector:a4 name:v7 object:0];
-    [(NSMutableArray *)self->_observedNowPlayingNotifications addObject:v7];
+    [v6 addObserver:self selector:selector name:notificationCopy object:0];
+    [(NSMutableArray *)self->_observedNowPlayingNotifications addObject:notificationCopy];
   }
 }
 
@@ -586,11 +586,11 @@
   [(NSMutableArray *)self->_observedNowPlayingNotifications removeAllObjects];
 }
 
-- (id)_onQueue_stateForPlayerPath:(id)a3
+- (id)_onQueue_stateForPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [(NSMutableDictionary *)self->_coalescingStates objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_coalescingStates objectForKeyedSubscript:pathCopy];
   if (!v5)
   {
     v6 = +[MRUserSettings currentSettings];
@@ -598,48 +598,48 @@
     v8 = v7;
 
     v9 = +[MRUserSettings currentSettings];
-    v10 = [v9 verboseNowPlayingStateObserver];
+    verboseNowPlayingStateObserver = [v9 verboseNowPlayingStateObserver];
 
-    if (v10)
+    if (verboseNowPlayingStateObserver)
     {
       v11 = _MRLogForCategory();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v23 = v4;
+        v23 = pathCopy;
         v24 = 2048;
         v25 = v8;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[MRDNowPlayingStateObserver] Begin Coalescing for %@ for %lf seconds", buf, 0x16u);
       }
     }
 
-    v5 = [[MRDNowPlayingObserverState alloc] initWithPlayerPath:v4];
+    v5 = [[MRDNowPlayingObserverState alloc] initWithPlayerPath:pathCopy];
     v12 = dispatch_time(0, (v8 * 1000000000.0));
     queue = self->_queue;
     v16 = _NSConcreteStackBlock;
     v17 = 3221225472;
     v18 = sub_1000F5894;
     v19 = &unk_1004B68F0;
-    v20 = self;
-    v14 = v4;
+    selfCopy = self;
+    v14 = pathCopy;
     v21 = v14;
     dispatch_after(v12, queue, &v16);
-    [(NSMutableDictionary *)self->_coalescingStates setObject:v5 forKeyedSubscript:v14, v16, v17, v18, v19, v20];
+    [(NSMutableDictionary *)self->_coalescingStates setObject:v5 forKeyedSubscript:v14, v16, v17, v18, v19, selfCopy];
   }
 
   return v5;
 }
 
-- (void)_onQueue_notifyCoalescedPlayerPath:(id)a3
+- (void)_onQueue_notifyCoalescedPlayerPath:(id)path
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_coalescingStates objectForKeyedSubscript:v4];
+  pathCopy = path;
+  v5 = [(NSMutableDictionary *)self->_coalescingStates objectForKeyedSubscript:pathCopy];
   if (v5)
   {
     v6 = +[MRUserSettings currentSettings];
-    v7 = [v6 verboseNowPlayingStateObserver];
+    verboseNowPlayingStateObserver = [v6 verboseNowPlayingStateObserver];
 
-    if (v7)
+    if (verboseNowPlayingStateObserver)
     {
       v8 = _MRLogForCategory();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -647,7 +647,7 @@
         *buf = 138412546;
         v14 = v5;
         v15 = 2112;
-        v16 = v4;
+        v16 = pathCopy;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[MRDNowPlayingStateObserver] End Coalescing %@ for %@", buf, 0x16u);
       }
     }
@@ -658,7 +658,7 @@
     block[3] = &unk_1004B69D0;
     block[4] = self;
     v11 = v5;
-    v9 = v4;
+    v9 = pathCopy;
     v12 = v9;
     dispatch_async(&_dispatch_main_q, block);
     [(NSMutableDictionary *)self->_coalescingStates setObject:0 forKeyedSubscript:v9];

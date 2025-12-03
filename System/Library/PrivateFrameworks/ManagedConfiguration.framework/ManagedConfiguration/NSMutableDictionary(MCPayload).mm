@@ -10,13 +10,13 @@
 - (id)MCValidateAndRemoveNonZeroLengthStringWithKey:()MCPayload isRequired:outError:
 {
   v8 = a3;
-  v9 = [a1 objectForKey:v8];
+  v9 = [self objectForKey:v8];
   if (!v9)
   {
     goto LABEL_5;
   }
 
-  [a1 removeObjectForKey:v8];
+  [self removeObjectForKey:v8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -55,10 +55,10 @@ LABEL_12:
 - (id)MCValidateAndRemoveObjectOfClass:()MCPayload withKey:isRequired:outError:
 {
   v9 = a4;
-  v10 = [a1 objectForKey:v9];
+  v10 = [self objectForKey:v9];
   if (v10)
   {
-    [a1 removeObjectForKey:v9];
+    [self removeObjectForKey:v9];
     if (objc_opt_isKindOfClass())
     {
       v11 = v10;
@@ -95,7 +95,7 @@ LABEL_11:
 {
   v29 = *MEMORY[0x1E69E9840];
   v11 = a4;
-  v12 = [a1 objectForKey:v11];
+  v12 = [self objectForKey:v11];
   if (!v12)
   {
     v19 = 0;
@@ -111,7 +111,7 @@ LABEL_20:
     goto LABEL_25;
   }
 
-  [a1 removeObjectForKey:v11];
+  [self removeObjectForKey:v11];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -215,7 +215,7 @@ LABEL_25:
 
         v14 = *(*(&v23 + 1) + 8 * i);
         v15 = [v9 objectForKeyedSubscript:{v14, v21}];
-        v16 = [a1 objectForKeyedSubscript:v14];
+        v16 = [self objectForKeyedSubscript:v14];
         if (v16)
         {
           if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -251,7 +251,7 @@ LABEL_25:
   v17 = v22;
   if ([v22 count])
   {
-    [a1 removeObjectsForKeys:v22];
+    [self removeObjectsForKeys:v22];
   }
 
   v18 = v8;

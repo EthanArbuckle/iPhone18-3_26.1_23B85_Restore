@@ -1,22 +1,22 @@
 @interface AMRLocalUSBInterface
-- (AMRLocalUSBInterface)initWithService:(unsigned int)a3;
+- (AMRLocalUSBInterface)initWithService:(unsigned int)service;
 - (void)dealloc;
-- (void)getDFUInformationWithReply:(id)a3;
-- (void)getFileTransferPipeWithReply:(id)a3;
-- (void)getPipesWithReply:(id)a3;
-- (void)openInterfaceWithReply:(id)a3;
+- (void)getDFUInformationWithReply:(id)reply;
+- (void)getFileTransferPipeWithReply:(id)reply;
+- (void)getPipesWithReply:(id)reply;
+- (void)openInterfaceWithReply:(id)reply;
 @end
 
 @implementation AMRLocalUSBInterface
 
-- (AMRLocalUSBInterface)initWithService:(unsigned int)a3
+- (AMRLocalUSBInterface)initWithService:(unsigned int)service
 {
   v7.receiver = self;
   v7.super_class = AMRLocalUSBInterface;
   v4 = [(AMRLocalUSBInterface *)&v7 init];
   if (v4)
   {
-    InterfaceInterfaceForService = _getInterfaceInterfaceForService(a3);
+    InterfaceInterfaceForService = _getInterfaceInterfaceForService(service);
     v4->interfaceInterface = InterfaceInterfaceForService;
     if (!InterfaceInterfaceForService)
     {
@@ -42,7 +42,7 @@
   [(AMRLocalUSBInterface *)&v4 dealloc];
 }
 
-- (void)openInterfaceWithReply:(id)a3
+- (void)openInterfaceWithReply:(id)reply
 {
   v4 = ((*self->interfaceInterface)->USBInterfaceOpen)(self->interfaceInterface, a2);
   v11 = v4;
@@ -57,12 +57,12 @@
   }
 
   v13 = _AMRestoreErrorForIOReturn(v11, 2002);
-  v14 = *(a3 + 2);
+  v14 = *(reply + 2);
 
-  v14(a3, v13, v12);
+  v14(reply, v13, v12);
 }
 
-- (void)getFileTransferPipeWithReply:(id)a3
+- (void)getFileTransferPipeWithReply:(id)reply
 {
   v33 = 0;
   v5 = ((*self->interfaceInterface)->GetNumEndpoints)(self->interfaceInterface, &v33);
@@ -71,7 +71,7 @@
     v12 = v5;
     v13 = createAndLogUSBError(v5, @"error getting number of endpoints: 0x%x", v6, v7, v8, v9, v10, v11, v5);
     v14 = _AMRestoreErrorForIOReturn(v12, 2010);
-    (*(a3 + 2))(a3, v14, 0, 0, v13);
+    (*(reply + 2))(reply, v14, 0, 0, v13);
   }
 
   else
@@ -122,11 +122,11 @@ LABEL_14:
     }
 
     v28 = _AMRestoreErrorForIOReturn(v23, 2010);
-    (*(a3 + 2))(a3, v28, v15, v27, v26);
+    (*(reply + 2))(reply, v28, v15, v27, v26);
   }
 }
 
-- (void)getPipesWithReply:(id)a3
+- (void)getPipesWithReply:(id)reply
 {
   v39 = 0;
   v5 = ((*self->interfaceInterface)->GetNumEndpoints)(self->interfaceInterface, &v39);
@@ -135,7 +135,7 @@ LABEL_14:
     v12 = v5;
     v13 = createAndLogUSBError(v5, @"error getting number of endpoints: 0x%x", v6, v7, v8, v9, v10, v11, v5);
     v14 = _AMRestoreErrorForIOReturn(v12, 2010);
-    (*(a3 + 2))(a3, v14, 255, 255, 255, 255, 255, v13);
+    (*(reply + 2))(reply, v14, 255, 255, 255, 255, 255, v13);
   }
 
   else
@@ -250,11 +250,11 @@ LABEL_14:
 
 LABEL_35:
     v34 = _AMRestoreErrorForIOReturn(v33, 2010);
-    (*(a3 + 2))(a3, v34, v20, v19, v18, v17, v16, 0);
+    (*(reply + 2))(reply, v34, v20, v19, v18, v17, v16, 0);
   }
 }
 
-- (void)getDFUInformationWithReply:(id)a3
+- (void)getDFUInformationWithReply:(id)reply
 {
   v9 = 0;
   v5 = ((*self->interfaceInterface)->FindNextAssociatedDescriptor)(self->interfaceInterface, 0, 33);
@@ -263,14 +263,14 @@ LABEL_35:
     v6 = *(v5 + 5);
     v7 = *(v5 + 2);
     ((*self->interfaceInterface)->GetInterfaceNumber)(self->interfaceInterface, &v9);
-    (*(a3 + 2))(a3, 0, v6, v7, v9, 0);
+    (*(reply + 2))(reply, 0, v6, v7, v9, 0);
   }
 
   else
   {
-    v8 = *(a3 + 2);
+    v8 = *(reply + 2);
 
-    v8(a3, 2010, 0, 0, 0, 0);
+    v8(reply, 2010, 0, 0, 0, 0);
   }
 }
 

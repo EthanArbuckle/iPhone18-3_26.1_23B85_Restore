@@ -1,41 +1,41 @@
 @interface RFBadgedImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFBadgedImage)initWithCoder:(id)a3;
-- (RFBadgedImage)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFBadgedImage)initWithCoder:(id)coder;
+- (RFBadgedImage)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFBadgedImage
 
-- (RFBadgedImage)initWithProtobuf:(id)a3
+- (RFBadgedImage)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v16.receiver = self;
   v16.super_class = RFBadgedImage;
   v5 = [(RFBadgedImage *)&v16 init];
   if (v5)
   {
-    v6 = [v4 image];
+    image = [protobufCopy image];
 
-    if (v6)
+    if (image)
     {
       v7 = [RFImageSource alloc];
-      v8 = [v4 image];
-      v9 = [(RFImageSource *)v7 initWithProtobuf:v8];
+      image2 = [protobufCopy image];
+      v9 = [(RFImageSource *)v7 initWithProtobuf:image2];
       [(RFBadgedImage *)v5 setImage:v9];
     }
 
-    v10 = [v4 badge];
+    badge = [protobufCopy badge];
 
-    if (v10)
+    if (badge)
     {
       v11 = [RFImageSource alloc];
-      v12 = [v4 badge];
-      v13 = [(RFImageSource *)v11 initWithProtobuf:v12];
+      badge2 = [protobufCopy badge];
+      v13 = [(RFImageSource *)v11 initWithProtobuf:badge2];
       [(RFBadgedImage *)v5 setBadge:v13];
     }
 
@@ -47,30 +47,30 @@
 
 - (unint64_t)hash
 {
-  v3 = [(RFBadgedImage *)self image];
-  v4 = [v3 hash];
-  v5 = [(RFBadgedImage *)self badge];
-  v6 = [v5 hash];
+  image = [(RFBadgedImage *)self image];
+  v4 = [image hash];
+  badge = [(RFBadgedImage *)self badge];
+  v6 = [badge hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(RFBadgedImage *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(RFBadgedImage *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(RFBadgedImage *)self image];
-      v8 = [(RFBadgedImage *)v6 image];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      image = [(RFBadgedImage *)self image];
+      image2 = [(RFBadgedImage *)v6 image];
+      if ((image != 0) == (image2 == 0))
       {
         v11 = 0;
 LABEL_19:
@@ -78,12 +78,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = [(RFBadgedImage *)self image];
-      if (v9)
+      image3 = [(RFBadgedImage *)self image];
+      if (image3)
       {
-        v3 = [(RFBadgedImage *)self image];
-        v10 = [(RFBadgedImage *)v6 image];
-        if (![v3 isEqual:v10])
+        image4 = [(RFBadgedImage *)self image];
+        image5 = [(RFBadgedImage *)v6 image];
+        if (![image4 isEqual:image5])
         {
           v11 = 0;
 LABEL_17:
@@ -92,13 +92,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v21 = v10;
+        v21 = image5;
       }
 
-      v12 = [(RFBadgedImage *)self badge];
-      v13 = [(RFBadgedImage *)v6 badge];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      badge = [(RFBadgedImage *)self badge];
+      badge2 = [(RFBadgedImage *)v6 badge];
+      v14 = badge2;
+      if ((badge != 0) == (badge2 == 0))
       {
 
         v11 = 0;
@@ -106,16 +106,16 @@ LABEL_18:
 
       else
       {
-        v15 = [(RFBadgedImage *)self badge];
-        if (v15)
+        badge3 = [(RFBadgedImage *)self badge];
+        if (badge3)
         {
-          v16 = v15;
-          v19 = [(RFBadgedImage *)self badge];
+          v16 = badge3;
+          badge4 = [(RFBadgedImage *)self badge];
           [(RFBadgedImage *)v6 badge];
-          v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v17 = v20 = image4;
+          v11 = [badge4 isEqual:v17];
 
-          v3 = v20;
+          image4 = v20;
         }
 
         else
@@ -125,8 +125,8 @@ LABEL_18:
         }
       }
 
-      v10 = v21;
-      if (!v9)
+      image5 = v21;
+      if (!image3)
       {
         goto LABEL_18;
       }
@@ -142,15 +142,15 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(RFBadgedImage *)self image];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  image = [(RFBadgedImage *)self image];
+  v6 = [image copy];
   [v4 setImage:v6];
 
-  v7 = [(RFBadgedImage *)self badge];
-  v8 = [v7 copy];
+  badge = [(RFBadgedImage *)self badge];
+  v8 = [badge copy];
   [v4 setBadge:v8];
 
   return v4;
@@ -159,31 +159,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFBadgedImage alloc] initWithFacade:self];
-  v3 = [(_SFPBRFBadgedImage *)v2 jsonData];
+  jsonData = [(_SFPBRFBadgedImage *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFBadgedImage alloc] initWithFacade:self];
-  v3 = [(_SFPBRFBadgedImage *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFBadgedImage *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFBadgedImage alloc] initWithFacade:self];
-  v5 = [(_SFPBRFBadgedImage *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFBadgedImage *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFBadgedImage)initWithCoder:(id)a3
+- (RFBadgedImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFBadgedImage alloc] initWithData:v5];
   v7 = [(RFBadgedImage *)self initWithProtobuf:v6];

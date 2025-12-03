@@ -1,17 +1,17 @@
 @interface ConversationController
 - (NSString)description;
-- (void)frequencyController:(id)a3 audioPowerChanged:(float)a4 forParticipantWithStreamToken:(int64_t)a5;
-- (void)momentsController:(id)a3 didUpdateCapabilities:(id)a4 forProvider:(id)a5;
-- (void)momentsController:(id)a3 willCaptureRemoteRequestFromIdentifier:(id)a4;
-- (void)remoteVideoClient:(id)a3 didDetectSensitiveContentWithAnalysis:(id)a4;
-- (void)remoteVideoClient:(id)a3 networkQualityDidDegrade:(BOOL)a4 info:(id)a5;
-- (void)remoteVideoClient:(id)a3 remoteMediaDidStall:(BOOL)a4;
-- (void)remoteVideoClient:(id)a3 remoteScreenAttributesDidChange:(id)a4;
-- (void)remoteVideoClient:(id)a3 remoteVideoAttributesDidChange:(id)a4;
-- (void)remoteVideoClient:(id)a3 remoteVideoDidPause:(BOOL)a4;
-- (void)remoteVideoClient:(id)a3 videoDidDegrade:(BOOL)a4;
-- (void)remoteVideoClient:(id)a3 videoDidSuspend:(BOOL)a4;
-- (void)remoteVideoClientDidReceiveFirstFrame:(id)a3;
+- (void)frequencyController:(id)controller audioPowerChanged:(float)changed forParticipantWithStreamToken:(int64_t)token;
+- (void)momentsController:(id)controller didUpdateCapabilities:(id)capabilities forProvider:(id)provider;
+- (void)momentsController:(id)controller willCaptureRemoteRequestFromIdentifier:(id)identifier;
+- (void)remoteVideoClient:(id)client didDetectSensitiveContentWithAnalysis:(id)analysis;
+- (void)remoteVideoClient:(id)client networkQualityDidDegrade:(BOOL)degrade info:(id)info;
+- (void)remoteVideoClient:(id)client remoteMediaDidStall:(BOOL)stall;
+- (void)remoteVideoClient:(id)client remoteScreenAttributesDidChange:(id)change;
+- (void)remoteVideoClient:(id)client remoteVideoAttributesDidChange:(id)change;
+- (void)remoteVideoClient:(id)client remoteVideoDidPause:(BOOL)pause;
+- (void)remoteVideoClient:(id)client videoDidDegrade:(BOOL)degrade;
+- (void)remoteVideoClient:(id)client videoDidSuspend:(BOOL)suspend;
+- (void)remoteVideoClientDidReceiveFirstFrame:(id)frame;
 - (void)toggleStudioLight;
 @end
 
@@ -19,7 +19,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   ConversationController.description.getter();
   v4 = v3;
   v6 = v5;
@@ -31,98 +31,98 @@
 
 - (void)toggleStudioLight
 {
-  v2 = self;
+  selfCopy = self;
   ConversationController.toggleStudioLight()();
 }
 
-- (void)frequencyController:(id)a3 audioPowerChanged:(float)a4 forParticipantWithStreamToken:(int64_t)a5
+- (void)frequencyController:(id)controller audioPowerChanged:(float)changed forParticipantWithStreamToken:(int64_t)token
 {
-  v6 = a3;
-  v7 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   ConversationController.frequencyController(_:audioPowerChanged:forParticipantWithStreamToken:)();
 }
 
-- (void)momentsController:(id)a3 didUpdateCapabilities:(id)a4 forProvider:(id)a5
+- (void)momentsController:(id)controller didUpdateCapabilities:(id)capabilities forProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  ConversationController.momentsController(_:didUpdate:for:)(v11, v9, v10);
+  controllerCopy = controller;
+  capabilitiesCopy = capabilities;
+  providerCopy = provider;
+  selfCopy = self;
+  ConversationController.momentsController(_:didUpdate:for:)(selfCopy, capabilitiesCopy, providerCopy);
 }
 
-- (void)momentsController:(id)a3 willCaptureRemoteRequestFromIdentifier:(id)a4
+- (void)momentsController:(id)controller willCaptureRemoteRequestFromIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   ConversationController.momentsController(_:willCaptureRemoteRequestFromIdentifier:)();
 }
 
-- (void)remoteVideoClientDidReceiveFirstFrame:(id)a3
+- (void)remoteVideoClientDidReceiveFirstFrame:(id)frame
 {
-  v4 = a3;
-  v5 = self;
+  frameCopy = frame;
+  selfCopy = self;
   ConversationController.remoteVideoClientDidReceiveFirstFrame(_:)();
 }
 
-- (void)remoteVideoClient:(id)a3 videoDidSuspend:(BOOL)a4
+- (void)remoteVideoClient:(id)client videoDidSuspend:(BOOL)suspend
 {
-  v5 = a3;
-  v6 = self;
+  clientCopy = client;
+  selfCopy = self;
   ConversationController.remoteVideoClient(_:videoDidSuspend:)();
 }
 
-- (void)remoteVideoClient:(id)a3 remoteVideoDidPause:(BOOL)a4
+- (void)remoteVideoClient:(id)client remoteVideoDidPause:(BOOL)pause
 {
-  v5 = a3;
-  v6 = self;
+  clientCopy = client;
+  selfCopy = self;
   ConversationController.remoteVideoClient(_:remoteVideoDidPause:)();
 }
 
-- (void)remoteVideoClient:(id)a3 networkQualityDidDegrade:(BOOL)a4 info:(id)a5
+- (void)remoteVideoClient:(id)client networkQualityDidDegrade:(BOOL)degrade info:(id)info
 {
-  if (a5)
+  if (info)
   {
     static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v7 = a3;
-  v8 = self;
+  clientCopy = client;
+  selfCopy = self;
   ConversationController.remoteVideoClient(_:networkQualityDidDegrade:info:)();
 }
 
-- (void)remoteVideoClient:(id)a3 videoDidDegrade:(BOOL)a4
+- (void)remoteVideoClient:(id)client videoDidDegrade:(BOOL)degrade
 {
-  v5 = a3;
-  v6 = self;
+  clientCopy = client;
+  selfCopy = self;
   ConversationController.remoteVideoClient(_:videoDidDegrade:)();
 }
 
-- (void)remoteVideoClient:(id)a3 remoteMediaDidStall:(BOOL)a4
+- (void)remoteVideoClient:(id)client remoteMediaDidStall:(BOOL)stall
 {
-  v5 = a3;
-  v6 = self;
+  clientCopy = client;
+  selfCopy = self;
   ConversationController.remoteVideoClient(_:remoteMediaDidStall:)();
 }
 
-- (void)remoteVideoClient:(id)a3 remoteVideoAttributesDidChange:(id)a4
+- (void)remoteVideoClient:(id)client remoteVideoAttributesDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  clientCopy = client;
+  changeCopy = change;
+  selfCopy = self;
   ConversationController.remoteVideoClient(_:remoteVideoAttributesDidChange:)();
 }
 
-- (void)remoteVideoClient:(id)a3 didDetectSensitiveContentWithAnalysis:(id)a4
+- (void)remoteVideoClient:(id)client didDetectSensitiveContentWithAnalysis:(id)analysis
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = self;
+  clientCopy = client;
+  analysisCopy = analysis;
+  selfCopy = self;
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 
@@ -130,11 +130,11 @@
   outlined consume of Data._Representation(v8, v10);
 }
 
-- (void)remoteVideoClient:(id)a3 remoteScreenAttributesDidChange:(id)a4
+- (void)remoteVideoClient:(id)client remoteScreenAttributesDidChange:(id)change
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  clientCopy = client;
+  changeCopy = change;
+  selfCopy = self;
   ConversationController.remoteVideoClient(_:remoteScreenAttributesDidChange:)();
 }
 

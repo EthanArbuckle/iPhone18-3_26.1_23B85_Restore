@@ -2,21 +2,21 @@
 - (void)_invokeCompletionHandler;
 - (void)_showCurrentPasscodePromptOrComplete;
 - (void)invalidate;
-- (void)requestNumericInputForFields:(id)a3 completion:(id)a4;
+- (void)requestNumericInputForFields:(id)fields completion:(id)completion;
 @end
 
 @implementation NPKStandaloneProvisioningNumericEntryCoordinator
 
-- (void)requestNumericInputForFields:(id)a3 completion:(id)a4
+- (void)requestNumericInputForFields:(id)fields completion:(id)completion
 {
-  objc_storeStrong(&self->_providedFields, a3);
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CBEB18] array];
+  objc_storeStrong(&self->_providedFields, fields);
+  fieldsCopy = fields;
+  completionCopy = completion;
+  array = [MEMORY[0x277CBEB18] array];
   completedFields = self->_completedFields;
-  self->_completedFields = v9;
+  self->_completedFields = array;
 
-  v11 = _Block_copy(v8);
+  v11 = _Block_copy(completionCopy);
   completionHandler = self->_completionHandler;
   self->_completionHandler = v11;
 

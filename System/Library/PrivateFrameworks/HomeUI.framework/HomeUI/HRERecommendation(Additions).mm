@@ -11,10 +11,10 @@
 - (void)hu_asActionSetRecommendation
 {
   objc_opt_class();
-  v2 = a1;
+  selfCopy = self;
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = selfCopy;
   }
 
   else
@@ -30,10 +30,10 @@
 - (void)hu_asTriggerRecommendation
 {
   objc_opt_class();
-  v2 = a1;
+  selfCopy = self;
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    v3 = selfCopy;
   }
 
   else
@@ -48,10 +48,10 @@
 
 - (void)hu_asActionRecommendation
 {
-  v1 = a1;
-  if ([v1 conformsToProtocol:&unk_2825BD5A0])
+  selfCopy = self;
+  if ([selfCopy conformsToProtocol:&unk_2825BD5A0])
   {
-    v2 = v1;
+    v2 = selfCopy;
   }
 
   else
@@ -66,18 +66,18 @@
 
 - (id)hu_triggerBuilderIfAny
 {
-  v1 = [a1 hu_asTriggerRecommendation];
-  v2 = [v1 selectedTriggerBuilder];
+  hu_asTriggerRecommendation = [self hu_asTriggerRecommendation];
+  selectedTriggerBuilder = [hu_asTriggerRecommendation selectedTriggerBuilder];
 
-  return v2;
+  return selectedTriggerBuilder;
 }
 
 - (id)hu_actionSetBuilderIfAny
 {
-  v1 = [a1 hu_asActionSetRecommendation];
-  v2 = [v1 selectedActionSetBuilder];
+  hu_asActionSetRecommendation = [self hu_asActionSetRecommendation];
+  selectedActionSetBuilder = [hu_asActionSetRecommendation selectedActionSetBuilder];
 
-  return v2;
+  return selectedActionSetBuilder;
 }
 
 @end

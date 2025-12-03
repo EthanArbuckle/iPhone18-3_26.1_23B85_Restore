@@ -1,37 +1,37 @@
 @interface OSLogEventSerializer
 - (NSPredicate)filterPredicate;
-- (OSLogEventSerializer)initWithSource:(id)a3 dataProcessingBlock:(id)a4 completionBlock:(id)a5;
+- (OSLogEventSerializer)initWithSource:(id)source dataProcessingBlock:(id)block completionBlock:(id)completionBlock;
 - (OSLogEventSource)source;
 - (OS_dispatch_queue)target;
-- (id)_arrayForDecomposedMessage:(id)a3 indicesToRedact:(id)a4;
-- (id)_dictForArg:(id)a3 shouldRedactValue:(BOOL)a4;
-- (id)_dictForDecomposedMessage:(id)a3 indicesToRedact:(id)a4;
-- (id)_dictForPlaceholder:(id)a3;
-- (id)_dictionaryForProxy:(id)a3;
+- (id)_arrayForDecomposedMessage:(id)message indicesToRedact:(id)redact;
+- (id)_dictForArg:(id)arg shouldRedactValue:(BOOL)value;
+- (id)_dictForDecomposedMessage:(id)message indicesToRedact:(id)redact;
+- (id)_dictForPlaceholder:(id)placeholder;
+- (id)_dictionaryForProxy:(id)proxy;
 - (unint64_t)flags;
-- (void)_completeBatch:(id)a3;
-- (void)_serializeEvent:(id)a3;
+- (void)_completeBatch:(id)batch;
+- (void)_serializeEvent:(id)event;
 - (void)invalidate;
-- (void)serializeFromDate:(id)a3;
-- (void)serializeFromDate:(id)a3 toDate:(id)a4;
+- (void)serializeFromDate:(id)date;
+- (void)serializeFromDate:(id)date toDate:(id)toDate;
 - (void)serializeFromLastBoot;
-- (void)serializeFromPosition:(id)a3;
-- (void)setFilterPredicate:(id)a3;
-- (void)setFlags:(unint64_t)a3;
-- (void)setTarget:(id)a3;
+- (void)serializeFromPosition:(id)position;
+- (void)setFilterPredicate:(id)predicate;
+- (void)setFlags:(unint64_t)flags;
+- (void)setTarget:(id)target;
 @end
 
 @implementation OSLogEventSerializer
 
-- (void)_completeBatch:(id)a3
+- (void)_completeBatch:(id)batch
 {
   v16[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  batchCopy = batch;
   v15[0] = @"Version";
   v15[1] = @"Events";
   v16[0] = &unk_2841B9228;
-  v6 = [(OSLogEventSerializer *)self curBatchDictionaries];
-  v16[1] = v6;
+  curBatchDictionaries = [(OSLogEventSerializer *)self curBatchDictionaries];
+  v16[1] = curBatchDictionaries;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:2];
 
   v14 = 0;
@@ -39,47 +39,47 @@
   v9 = v14;
   if (!v8)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:616 description:@"Failed to serialize to plist format"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:616 description:@"Failed to serialize to plist format"];
   }
 
-  v5[2](v5, v8);
+  batchCopy[2](batchCopy, v8);
   self->_curBatchSize = 0;
-  v10 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   curBatchDictionaries = self->_curBatchDictionaries;
-  self->_curBatchDictionaries = v10;
+  self->_curBatchDictionaries = array;
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_dictionaryForProxy:(id)a3
+- (id)_dictionaryForProxy:(id)proxy
 {
-  v4 = a3;
-  if (!v4)
+  proxyCopy = proxy;
+  if (!proxyCopy)
   {
     v14 = 0;
     goto LABEL_123;
   }
 
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   argumentRedactionBlock = self->_argumentRedactionBlock;
   if (argumentRedactionBlock)
   {
-    v7 = argumentRedactionBlock[2](argumentRedactionBlock, v4);
+    v7 = argumentRedactionBlock[2](argumentRedactionBlock, proxyCopy);
     v8 = v7;
     if (v7)
     {
       if ([v7 count])
       {
-        v9 = [v8 firstIndex];
-        v10 = [v4 decomposedMessage];
-        v11 = [v10 placeholderCount];
+        firstIndex = [v8 firstIndex];
+        decomposedMessage = [proxyCopy decomposedMessage];
+        placeholderCount = [decomposedMessage placeholderCount];
 
-        if (v9 < v11)
+        if (firstIndex < placeholderCount)
         {
-          v12 = [(OSLogEventSerializer *)self metadata];
-          v13 = [v12 indexForString:@"<value-redacted>"];
-          [v5 setObject:v13 forKeyedSubscript:@"cm"];
+          metadata = [(OSLogEventSerializer *)self metadata];
+          composedMessage2 = [metadata indexForString:@"<value-redacted>"];
+          [dictionary setObject:composedMessage2 forKeyedSubscript:@"cm"];
           goto LABEL_11;
         }
       }
@@ -91,474 +91,474 @@
     v8 = 0;
   }
 
-  v15 = [v4 composedMessage];
+  composedMessage = [proxyCopy composedMessage];
 
-  if (!v15)
+  if (!composedMessage)
   {
     goto LABEL_12;
   }
 
-  v12 = [(OSLogEventSerializer *)self metadata];
-  v13 = [v4 composedMessage];
-  v16 = [v12 indexForString:v13];
-  [v5 setObject:v16 forKeyedSubscript:@"cm"];
+  metadata = [(OSLogEventSerializer *)self metadata];
+  composedMessage2 = [proxyCopy composedMessage];
+  v16 = [metadata indexForString:composedMessage2];
+  [dictionary setObject:v16 forKeyedSubscript:@"cm"];
 
 LABEL_11:
 LABEL_12:
-  v17 = [v4 processImagePath];
+  processImagePath = [proxyCopy processImagePath];
 
-  if (v17)
+  if (processImagePath)
   {
-    v18 = [(OSLogEventSerializer *)self metadata];
-    v19 = [v4 processImagePath];
-    v20 = [v18 indexForString:v19];
-    [v5 setObject:v20 forKeyedSubscript:@"pip"];
+    metadata2 = [(OSLogEventSerializer *)self metadata];
+    processImagePath2 = [proxyCopy processImagePath];
+    v20 = [metadata2 indexForString:processImagePath2];
+    [dictionary setObject:v20 forKeyedSubscript:@"pip"];
   }
 
-  v21 = [v4 process];
+  process = [proxyCopy process];
 
-  if (v21)
+  if (process)
   {
-    v22 = [(OSLogEventSerializer *)self metadata];
-    v23 = [v4 process];
-    v24 = [v22 indexForString:v23];
-    [v5 setObject:v24 forKeyedSubscript:@"p"];
+    metadata3 = [(OSLogEventSerializer *)self metadata];
+    process2 = [proxyCopy process];
+    v24 = [metadata3 indexForString:process2];
+    [dictionary setObject:v24 forKeyedSubscript:@"p"];
   }
 
-  v25 = [v4 senderImagePath];
+  senderImagePath = [proxyCopy senderImagePath];
 
-  if (v25)
+  if (senderImagePath)
   {
-    v26 = [(OSLogEventSerializer *)self metadata];
-    v27 = [v4 senderImagePath];
-    v28 = [v26 indexForString:v27];
-    [v5 setObject:v28 forKeyedSubscript:@"sip"];
+    metadata4 = [(OSLogEventSerializer *)self metadata];
+    senderImagePath2 = [proxyCopy senderImagePath];
+    v28 = [metadata4 indexForString:senderImagePath2];
+    [dictionary setObject:v28 forKeyedSubscript:@"sip"];
   }
 
-  v29 = [v4 sender];
+  sender = [proxyCopy sender];
 
-  if (v29)
+  if (sender)
   {
-    v30 = [(OSLogEventSerializer *)self metadata];
-    v31 = [v4 sender];
-    v32 = [v30 indexForString:v31];
-    [v5 setObject:v32 forKeyedSubscript:@"send"];
+    metadata5 = [(OSLogEventSerializer *)self metadata];
+    sender2 = [proxyCopy sender];
+    v32 = [metadata5 indexForString:sender2];
+    [dictionary setObject:v32 forKeyedSubscript:@"send"];
   }
 
-  if ([v4 type])
+  if ([proxyCopy type])
   {
-    v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "type")}];
-    [v5 setObject:v33 forKeyedSubscript:@"t"];
+    v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(proxyCopy, "type")}];
+    [dictionary setObject:v33 forKeyedSubscript:@"t"];
   }
 
-  if ([v4 logType])
+  if ([proxyCopy logType])
   {
-    v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "logType")}];
-    [v5 setObject:v34 forKeyedSubscript:@"lt"];
+    v34 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(proxyCopy, "logType")}];
+    [dictionary setObject:v34 forKeyedSubscript:@"lt"];
   }
 
-  if ([v4 size])
+  if ([proxyCopy size])
   {
-    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(v4, "size")}];
-    [v5 setObject:v35 forKeyedSubscript:@"s"];
+    v35 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:{objc_msgSend(proxyCopy, "size")}];
+    [dictionary setObject:v35 forKeyedSubscript:@"s"];
   }
 
-  if ([v4 timeToLive])
+  if ([proxyCopy timeToLive])
   {
-    v36 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "timeToLive")}];
-    [v5 setObject:v36 forKeyedSubscript:@"ttl"];
+    v36 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "timeToLive")}];
+    [dictionary setObject:v36 forKeyedSubscript:@"ttl"];
   }
 
-  if ([v4 traceIdentifier])
+  if ([proxyCopy traceIdentifier])
   {
-    v37 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "traceIdentifier")}];
-    [v5 setObject:v37 forKeyedSubscript:@"ti"];
+    v37 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "traceIdentifier")}];
+    [dictionary setObject:v37 forKeyedSubscript:@"ti"];
   }
 
-  if ([v4 threadIdentifier])
+  if ([proxyCopy threadIdentifier])
   {
-    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "threadIdentifier")}];
-    [v5 setObject:v38 forKeyedSubscript:@"tid"];
+    v38 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "threadIdentifier")}];
+    [dictionary setObject:v38 forKeyedSubscript:@"tid"];
   }
 
-  if ([v4 processIdentifier])
+  if ([proxyCopy processIdentifier])
   {
-    v39 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "processIdentifier")}];
-    [v5 setObject:v39 forKeyedSubscript:@"pid"];
+    v39 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(proxyCopy, "processIdentifier")}];
+    [dictionary setObject:v39 forKeyedSubscript:@"pid"];
   }
 
-  if ([v4 activityIdentifier])
+  if ([proxyCopy activityIdentifier])
   {
-    v40 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "activityIdentifier")}];
-    [v5 setObject:v40 forKeyedSubscript:@"aid"];
+    v40 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "activityIdentifier")}];
+    [dictionary setObject:v40 forKeyedSubscript:@"aid"];
   }
 
-  if ([v4 parentActivityIdentifier])
+  if ([proxyCopy parentActivityIdentifier])
   {
-    v41 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "parentActivityIdentifier")}];
-    [v5 setObject:v41 forKeyedSubscript:@"paid"];
+    v41 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "parentActivityIdentifier")}];
+    [dictionary setObject:v41 forKeyedSubscript:@"paid"];
   }
 
-  if ([v4 transitionActivityIdentifier])
+  if ([proxyCopy transitionActivityIdentifier])
   {
-    v42 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "transitionActivityIdentifier")}];
-    [v5 setObject:v42 forKeyedSubscript:@"tai"];
+    v42 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "transitionActivityIdentifier")}];
+    [dictionary setObject:v42 forKeyedSubscript:@"tai"];
   }
 
-  if ([v4 continuousNanosecondsSinceBoot])
+  if ([proxyCopy continuousNanosecondsSinceBoot])
   {
-    v43 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "continuousNanosecondsSinceBoot")}];
-    [v5 setObject:v43 forKeyedSubscript:@"ns"];
+    v43 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "continuousNanosecondsSinceBoot")}];
+    [dictionary setObject:v43 forKeyedSubscript:@"ns"];
   }
 
-  if ([v4 machContinuousTimestamp])
+  if ([proxyCopy machContinuousTimestamp])
   {
-    v44 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "machContinuousTimestamp")}];
-    [v5 setObject:v44 forKeyedSubscript:@"mct"];
+    v44 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "machContinuousTimestamp")}];
+    [dictionary setObject:v44 forKeyedSubscript:@"mct"];
   }
 
-  if ([v4 senderImageOffset])
+  if ([proxyCopy senderImageOffset])
   {
-    v45 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "senderImageOffset")}];
-    [v5 setObject:v45 forKeyedSubscript:@"sio"];
+    v45 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "senderImageOffset")}];
+    [dictionary setObject:v45 forKeyedSubscript:@"sio"];
   }
 
-  v46 = [v4 bootUUID];
+  bootUUID = [proxyCopy bootUUID];
 
-  if (v46)
+  if (bootUUID)
   {
-    v47 = [v4 bootUUID];
-    v48 = _dataForUUID(v47);
-    [v5 setObject:v48 forKeyedSubscript:@"b"];
+    bootUUID2 = [proxyCopy bootUUID];
+    v48 = _dataForUUID(bootUUID2);
+    [dictionary setObject:v48 forKeyedSubscript:@"b"];
   }
 
-  v49 = [v4 processImageUUID];
+  processImageUUID = [proxyCopy processImageUUID];
 
-  if (v49)
+  if (processImageUUID)
   {
-    v50 = [v4 processImageUUID];
-    v51 = _dataForUUID(v50);
-    [v5 setObject:v51 forKeyedSubscript:@"piu"];
+    processImageUUID2 = [proxyCopy processImageUUID];
+    v51 = _dataForUUID(processImageUUID2);
+    [dictionary setObject:v51 forKeyedSubscript:@"piu"];
   }
 
-  v52 = [v4 senderImageUUID];
+  senderImageUUID = [proxyCopy senderImageUUID];
 
-  if (v52)
+  if (senderImageUUID)
   {
-    v53 = [v4 senderImageUUID];
-    v54 = _dataForUUID(v53);
-    [v5 setObject:v54 forKeyedSubscript:@"siu"];
+    senderImageUUID2 = [proxyCopy senderImageUUID];
+    v54 = _dataForUUID(senderImageUUID2);
+    [dictionary setObject:v54 forKeyedSubscript:@"siu"];
   }
 
-  if ([v4 unixDate])
+  if ([proxyCopy unixDate])
   {
-    v55 = _dictForTimeval([v4 unixDate]);
+    v55 = _dictForTimeval([proxyCopy unixDate]);
 
     if (v55)
     {
-      v56 = _dictForTimeval([v4 unixDate]);
-      [v5 setObject:v56 forKeyedSubscript:@"ud"];
+      v56 = _dictForTimeval([proxyCopy unixDate]);
+      [dictionary setObject:v56 forKeyedSubscript:@"ud"];
     }
   }
 
-  if ([v4 unixTimeZone])
+  if ([proxyCopy unixTimeZone])
   {
-    v57 = _dictForTimezone([v4 unixTimeZone]);
+    v57 = _dictForTimezone([proxyCopy unixTimeZone]);
 
     if (v57)
     {
-      v58 = _dictForTimezone([v4 unixTimeZone]);
-      [v5 setObject:v58 forKeyedSubscript:@"utz"];
+      v58 = _dictForTimezone([proxyCopy unixTimeZone]);
+      [dictionary setObject:v58 forKeyedSubscript:@"utz"];
     }
   }
 
-  v59 = [v4 backtrace];
-  if (v59)
+  backtrace = [proxyCopy backtrace];
+  if (backtrace)
   {
-    v60 = v59;
-    v61 = [v4 backtrace];
-    v62 = [v61 frames];
-    v63 = [v62 count];
+    v60 = backtrace;
+    backtrace2 = [proxyCopy backtrace];
+    frames = [backtrace2 frames];
+    v63 = [frames count];
 
     if (v63 >= 2)
     {
-      v64 = [v4 backtrace];
-      v65 = _dictArrayForBacktrace(v64);
+      backtrace3 = [proxyCopy backtrace];
+      v65 = _dictArrayForBacktrace(backtrace3);
 
       if (v65)
       {
-        v66 = [v4 backtrace];
-        v67 = _dictArrayForBacktrace(v66);
-        [v5 setObject:v67 forKeyedSubscript:@"bt"];
+        backtrace4 = [proxyCopy backtrace];
+        v67 = _dictArrayForBacktrace(backtrace4);
+        [dictionary setObject:v67 forKeyedSubscript:@"bt"];
       }
     }
   }
 
-  v68 = [v4 type];
-  if (v68 > 1535)
+  type = [proxyCopy type];
+  if (type > 1535)
   {
-    if (v68 != 1536)
+    if (type != 1536)
     {
-      if (v68 != 1792)
+      if (type != 1792)
       {
-        if (v68 != 2048)
+        if (type != 2048)
         {
           goto LABEL_122;
         }
 
-        v69 = [v4 metricLabel];
+        metricLabel = [proxyCopy metricLabel];
 
-        if (v69)
+        if (metricLabel)
         {
-          v70 = [(OSLogEventSerializer *)self metadata];
-          v71 = [v4 metricLabel];
-          v72 = [v70 indexForString:v71];
-          [v5 setObject:v72 forKeyedSubscript:@"mtl"];
+          metadata6 = [(OSLogEventSerializer *)self metadata];
+          metricLabel2 = [proxyCopy metricLabel];
+          v72 = [metadata6 indexForString:metricLabel2];
+          [dictionary setObject:v72 forKeyedSubscript:@"mtl"];
         }
 
-        v73 = [v4 metricDimensions];
+        metricDimensions = [proxyCopy metricDimensions];
 
-        if (v73)
+        if (metricDimensions)
         {
-          v74 = [v4 metricDimensions];
-          [v5 setObject:v74 forKeyedSubscript:@"mtdi"];
+          metricDimensions2 = [proxyCopy metricDimensions];
+          [dictionary setObject:metricDimensions2 forKeyedSubscript:@"mtdi"];
         }
 
-        v75 = [v4 metricMetadata];
+        metricMetadata = [proxyCopy metricMetadata];
 
-        if (v75)
+        if (metricMetadata)
         {
-          v76 = [v4 metricMetadata];
-          [v5 setObject:v76 forKeyedSubscript:@"mtm"];
+          metricMetadata2 = [proxyCopy metricMetadata];
+          [dictionary setObject:metricMetadata2 forKeyedSubscript:@"mtm"];
         }
 
-        v77 = [v4 metricData];
+        metricData = [proxyCopy metricData];
 
-        if (v77)
+        if (metricData)
         {
-          v78 = [v4 metricData];
-          [v5 setObject:v78 forKeyedSubscript:@"mtd"];
+          metricData2 = [proxyCopy metricData];
+          [dictionary setObject:metricData2 forKeyedSubscript:@"mtd"];
         }
 
-        v79 = [v4 subsystem];
+        subsystem = [proxyCopy subsystem];
 
-        if (v79)
+        if (subsystem)
         {
-          v80 = [(OSLogEventSerializer *)self metadata];
-          v81 = [v4 subsystem];
-          v82 = [v80 indexForString:v81];
-          [v5 setObject:v82 forKeyedSubscript:@"sub"];
+          metadata7 = [(OSLogEventSerializer *)self metadata];
+          subsystem2 = [proxyCopy subsystem];
+          v82 = [metadata7 indexForString:subsystem2];
+          [dictionary setObject:v82 forKeyedSubscript:@"sub"];
         }
 
-        v83 = [v4 category];
+        category = [proxyCopy category];
 
-        if (!v83)
+        if (!category)
         {
           goto LABEL_122;
         }
 
-        v84 = [(OSLogEventSerializer *)self metadata];
-        v85 = [v4 category];
-        v86 = [v84 indexForString:v85];
-        [v5 setObject:v86 forKeyedSubscript:@"cat"];
+        metadata8 = [(OSLogEventSerializer *)self metadata];
+        category2 = [proxyCopy category];
+        v86 = [metadata8 indexForString:category2];
+        [dictionary setObject:v86 forKeyedSubscript:@"cat"];
 
         goto LABEL_121;
       }
 
-      if ([v4 lossStartMachContinuousTimestamp])
+      if ([proxyCopy lossStartMachContinuousTimestamp])
       {
-        v109 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "lossStartMachContinuousTimestamp")}];
-        [v5 setObject:v109 forKeyedSubscript:@"lsmct"];
+        v109 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "lossStartMachContinuousTimestamp")}];
+        [dictionary setObject:v109 forKeyedSubscript:@"lsmct"];
       }
 
-      if ([v4 lossEndMachContinuousTimestamp])
+      if ([proxyCopy lossEndMachContinuousTimestamp])
       {
-        v110 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "lossEndMachContinuousTimestamp")}];
-        [v5 setObject:v110 forKeyedSubscript:@"lemct"];
+        v110 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "lossEndMachContinuousTimestamp")}];
+        [dictionary setObject:v110 forKeyedSubscript:@"lemct"];
       }
 
-      if ([v4 lossStartUnixDate])
+      if ([proxyCopy lossStartUnixDate])
       {
-        v111 = _dictForTimeval([v4 lossStartUnixDate]);
+        v111 = _dictForTimeval([proxyCopy lossStartUnixDate]);
 
         if (v111)
         {
-          v112 = _dictForTimeval([v4 lossStartUnixDate]);
-          [v5 setObject:v112 forKeyedSubscript:@"lsud"];
+          v112 = _dictForTimeval([proxyCopy lossStartUnixDate]);
+          [dictionary setObject:v112 forKeyedSubscript:@"lsud"];
         }
       }
 
-      if ([v4 lossEndUnixDate])
+      if ([proxyCopy lossEndUnixDate])
       {
-        v113 = _dictForTimeval([v4 lossEndUnixDate]);
+        v113 = _dictForTimeval([proxyCopy lossEndUnixDate]);
 
         if (v113)
         {
-          v114 = _dictForTimeval([v4 lossEndUnixDate]);
-          [v5 setObject:v114 forKeyedSubscript:@"leud"];
+          v114 = _dictForTimeval([proxyCopy lossEndUnixDate]);
+          [dictionary setObject:v114 forKeyedSubscript:@"leud"];
         }
       }
 
-      if ([v4 lossStartUnixTimeZone])
+      if ([proxyCopy lossStartUnixTimeZone])
       {
-        v115 = _dictForTimezone([v4 lossStartUnixTimeZone]);
+        v115 = _dictForTimezone([proxyCopy lossStartUnixTimeZone]);
 
         if (v115)
         {
-          v116 = _dictForTimezone([v4 lossStartUnixTimeZone]);
-          [v5 setObject:v116 forKeyedSubscript:@"lsutz"];
+          v116 = _dictForTimezone([proxyCopy lossStartUnixTimeZone]);
+          [dictionary setObject:v116 forKeyedSubscript:@"lsutz"];
         }
       }
 
-      if ([v4 lossEndUnixTimeZone])
+      if ([proxyCopy lossEndUnixTimeZone])
       {
-        v117 = _dictForTimezone([v4 lossEndUnixTimeZone]);
+        v117 = _dictForTimezone([proxyCopy lossEndUnixTimeZone]);
 
         if (v117)
         {
-          v118 = _dictForTimezone([v4 lossEndUnixTimeZone]);
-          [v5 setObject:v118 forKeyedSubscript:@"leutz"];
+          v118 = _dictForTimezone([proxyCopy lossEndUnixTimeZone]);
+          [dictionary setObject:v118 forKeyedSubscript:@"leutz"];
         }
       }
 
-      v119 = _dictForLossCount([v4 lossCount]);
+      v119 = _dictForLossCount([proxyCopy lossCount]);
 
       if (!v119)
       {
         goto LABEL_122;
       }
 
-      v84 = _dictForLossCount([v4 lossCount]);
+      metadata8 = _dictForLossCount([proxyCopy lossCount]);
       v88 = @"lc";
       goto LABEL_120;
     }
 
-    if ([v4 signpostIdentifier])
+    if ([proxyCopy signpostIdentifier])
     {
-      v89 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "signpostIdentifier")}];
-      [v5 setObject:v89 forKeyedSubscript:@"si"];
+      v89 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "signpostIdentifier")}];
+      [dictionary setObject:v89 forKeyedSubscript:@"si"];
     }
 
-    if ([v4 signpostType])
+    if ([proxyCopy signpostType])
     {
-      v90 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "signpostType")}];
-      [v5 setObject:v90 forKeyedSubscript:@"st"];
+      v90 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(proxyCopy, "signpostType")}];
+      [dictionary setObject:v90 forKeyedSubscript:@"st"];
     }
 
-    if ([v4 signpostScope])
+    if ([proxyCopy signpostScope])
     {
-      v91 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v4, "signpostScope")}];
-      [v5 setObject:v91 forKeyedSubscript:@"ss"];
+      v91 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(proxyCopy, "signpostScope")}];
+      [dictionary setObject:v91 forKeyedSubscript:@"ss"];
     }
 
-    v92 = [v4 signpostName];
+    signpostName = [proxyCopy signpostName];
 
-    if (v92)
+    if (signpostName)
     {
-      v93 = [(OSLogEventSerializer *)self metadata];
-      v94 = [v4 signpostName];
-      v95 = [v93 indexForString:v94];
-      [v5 setObject:v95 forKeyedSubscript:@"sn"];
+      metadata9 = [(OSLogEventSerializer *)self metadata];
+      signpostName2 = [proxyCopy signpostName];
+      v95 = [metadata9 indexForString:signpostName2];
+      [dictionary setObject:v95 forKeyedSubscript:@"sn"];
     }
 
     goto LABEL_94;
   }
 
-  if (v68 == 513)
+  if (type == 513)
   {
-    if ([v4 creatorActivityIdentifier])
+    if ([proxyCopy creatorActivityIdentifier])
     {
-      v87 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "creatorActivityIdentifier")}];
-      [v5 setObject:v87 forKeyedSubscript:@"cai"];
+      v87 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "creatorActivityIdentifier")}];
+      [dictionary setObject:v87 forKeyedSubscript:@"cai"];
     }
 
-    if (![v4 creatorProcessUniqueIdentifier])
+    if (![proxyCopy creatorProcessUniqueIdentifier])
     {
       goto LABEL_122;
     }
 
-    v84 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(v4, "creatorProcessUniqueIdentifier")}];
+    metadata8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{objc_msgSend(proxyCopy, "creatorProcessUniqueIdentifier")}];
     v88 = @"cpui";
     goto LABEL_120;
   }
 
-  if (v68 != 768)
+  if (type != 768)
   {
-    if (v68 != 1024)
+    if (type != 1024)
     {
       goto LABEL_122;
     }
 
 LABEL_94:
-    v96 = [v4 subsystem];
+    subsystem3 = [proxyCopy subsystem];
 
-    if (v96)
+    if (subsystem3)
     {
-      v97 = [(OSLogEventSerializer *)self metadata];
-      v98 = [v4 subsystem];
-      v99 = [v97 indexForString:v98];
-      [v5 setObject:v99 forKeyedSubscript:@"sub"];
+      metadata10 = [(OSLogEventSerializer *)self metadata];
+      subsystem4 = [proxyCopy subsystem];
+      v99 = [metadata10 indexForString:subsystem4];
+      [dictionary setObject:v99 forKeyedSubscript:@"sub"];
     }
 
-    v100 = [v4 category];
+    category3 = [proxyCopy category];
 
-    if (v100)
+    if (category3)
     {
-      v101 = [(OSLogEventSerializer *)self metadata];
-      v102 = [v4 category];
-      v103 = [v101 indexForString:v102];
-      [v5 setObject:v103 forKeyedSubscript:@"cat"];
+      metadata11 = [(OSLogEventSerializer *)self metadata];
+      category4 = [proxyCopy category];
+      v103 = [metadata11 indexForString:category4];
+      [dictionary setObject:v103 forKeyedSubscript:@"cat"];
     }
   }
 
-  v104 = [v4 formatString];
+  formatString = [proxyCopy formatString];
 
-  if (v104)
+  if (formatString)
   {
-    v105 = [(OSLogEventSerializer *)self metadata];
-    v106 = [v4 formatString];
-    v107 = [v105 indexForString:v106];
-    [v5 setObject:v107 forKeyedSubscript:@"f"];
+    metadata12 = [(OSLogEventSerializer *)self metadata];
+    formatString2 = [proxyCopy formatString];
+    v107 = [metadata12 indexForString:formatString2];
+    [dictionary setObject:v107 forKeyedSubscript:@"f"];
   }
 
-  v108 = [v4 decomposedMessage];
-  v84 = [(OSLogEventSerializer *)self _dictForDecomposedMessage:v108 indicesToRedact:v8];
+  decomposedMessage2 = [proxyCopy decomposedMessage];
+  metadata8 = [(OSLogEventSerializer *)self _dictForDecomposedMessage:decomposedMessage2 indicesToRedact:v8];
 
-  if (!v84)
+  if (!metadata8)
   {
     goto LABEL_121;
   }
 
   v88 = @"dm";
 LABEL_120:
-  [v5 setObject:v84 forKeyedSubscript:v88];
+  [dictionary setObject:metadata8 forKeyedSubscript:v88];
 LABEL_121:
 
 LABEL_122:
-  v14 = v5;
+  v14 = dictionary;
 
 LABEL_123:
 
   return v14;
 }
 
-- (id)_dictForDecomposedMessage:(id)a3 indicesToRedact:(id)a4
+- (id)_dictForDecomposedMessage:(id)message indicesToRedact:(id)redact
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  messageCopy = message;
+  redactCopy = redact;
+  if (messageCopy)
   {
-    if ([v6 placeholderCount])
+    if ([messageCopy placeholderCount])
     {
       v16[0] = @"pc";
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "placeholderCount")}];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(messageCopy, "placeholderCount")}];
       v17[0] = v8;
       v16[1] = @"s";
-      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "state")}];
+      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(messageCopy, "state")}];
       v17[1] = v9;
       v16[2] = @"seg";
-      v10 = [(OSLogEventSerializer *)self _arrayForDecomposedMessage:v6 indicesToRedact:v7];
+      v10 = [(OSLogEventSerializer *)self _arrayForDecomposedMessage:messageCopy indicesToRedact:redactCopy];
       v17[2] = v10;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:3];
     }
@@ -566,10 +566,10 @@ LABEL_123:
     else
     {
       v14[0] = @"pc";
-      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "placeholderCount")}];
+      v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(messageCopy, "placeholderCount")}];
       v14[1] = @"s";
       v15[0] = v8;
-      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "state")}];
+      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(messageCopy, "state")}];
       v15[1] = v9;
       v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
     }
@@ -585,117 +585,117 @@ LABEL_123:
   return v11;
 }
 
-- (id)_arrayForDecomposedMessage:(id)a3 indicesToRedact:(id)a4
+- (id)_arrayForDecomposedMessage:(id)message indicesToRedact:(id)redact
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CBEB18] array];
-  [v6 placeholderCount];
+  messageCopy = message;
+  redactCopy = redact;
+  array = [MEMORY[0x277CBEB18] array];
+  [messageCopy placeholderCount];
   v9 = 0;
   do
   {
-    v10 = -[OSLogEventSerializer _dictForDecomposedMessage:index:shouldRedact:](self, "_dictForDecomposedMessage:index:shouldRedact:", v6, v9, [v7 containsIndex:v9]);
+    v10 = -[OSLogEventSerializer _dictForDecomposedMessage:index:shouldRedact:](self, "_dictForDecomposedMessage:index:shouldRedact:", messageCopy, v9, [redactCopy containsIndex:v9]);
     if (!v10)
     {
       break;
     }
 
     v11 = v10;
-    [v8 addObject:v10];
+    [array addObject:v10];
 
     ++v9;
   }
 
-  while (v9 <= [v6 placeholderCount]);
+  while (v9 <= [messageCopy placeholderCount]);
 
-  return v8;
+  return array;
 }
 
-- (id)_dictForArg:(id)a3 shouldRedactValue:(BOOL)a4
+- (id)_dictForArg:(id)arg shouldRedactValue:(BOOL)value
 {
-  v6 = a3;
-  v7 = [MEMORY[0x277CBEB38] dictionary];
-  if (a4)
+  argCopy = arg;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  if (value)
   {
-    v8 = 2;
+    availability = 2;
   }
 
   else
   {
-    v8 = [v6 availability];
+    availability = [argCopy availability];
   }
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v8];
-  [v7 setObject:v9 forKeyedSubscript:@"a"];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:availability];
+  [dictionary setObject:v9 forKeyedSubscript:@"a"];
 
-  if ([v6 availability])
+  if ([argCopy availability])
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "availability")}];
-    [v7 setObject:v10 forKeyedSubscript:@"a"];
+    v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(argCopy, "availability")}];
+    [dictionary setObject:v10 forKeyedSubscript:@"a"];
   }
 
-  if ([v6 privacy])
+  if ([argCopy privacy])
   {
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "privacy")}];
-    [v7 setObject:v11 forKeyedSubscript:@"p"];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(argCopy, "privacy")}];
+    [dictionary setObject:v11 forKeyedSubscript:@"p"];
   }
 
-  if ([v6 category])
+  if ([argCopy category])
   {
-    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "category")}];
-    [v7 setObject:v12 forKeyedSubscript:@"c"];
+    v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(argCopy, "category")}];
+    [dictionary setObject:v12 forKeyedSubscript:@"c"];
   }
 
-  if ([v6 category] == 1)
+  if ([argCopy category] == 1)
   {
-    if ([v6 scalarCategory])
+    if ([argCopy scalarCategory])
     {
-      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "scalarCategory")}];
-      [v7 setObject:v13 forKeyedSubscript:@"sc"];
+      v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(argCopy, "scalarCategory")}];
+      [dictionary setObject:v13 forKeyedSubscript:@"sc"];
     }
 
-    if ([v6 scalarType])
+    if ([argCopy scalarType])
     {
-      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "scalarType")}];
-      [v7 setObject:v14 forKeyedSubscript:@"st"];
+      v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(argCopy, "scalarType")}];
+      [dictionary setObject:v14 forKeyedSubscript:@"st"];
     }
   }
 
-  if (v8 == 3 || !v8)
+  if (availability == 3 || !availability)
   {
-    v15 = [v6 objectRepresentation];
-    if (v15)
+    objectRepresentation = [argCopy objectRepresentation];
+    if (objectRepresentation)
     {
-      v16 = v15;
-      if ([v6 category] != 2 || (-[OSLogEventSerializer metadata](self, "metadata"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "indexForString:", v16), v18 = objc_claimAutoreleasedReturnValue(), v16, v17, (v16 = v18) != 0))
+      v16 = objectRepresentation;
+      if ([argCopy category] != 2 || (-[OSLogEventSerializer metadata](self, "metadata"), v17 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v17, "indexForString:", v16), v18 = objc_claimAutoreleasedReturnValue(), v16, v17, (v16 = v18) != 0))
       {
-        [v7 setObject:v16 forKeyedSubscript:@"or"];
+        [dictionary setObject:v16 forKeyedSubscript:@"or"];
       }
     }
   }
 
-  return v7;
+  return dictionary;
 }
 
-- (id)_dictForPlaceholder:(id)a3
+- (id)_dictForPlaceholder:(id)placeholder
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
-  v6 = [v4 rawString];
-  if (v6)
+  placeholderCopy = placeholder;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  rawString = [placeholderCopy rawString];
+  if (rawString)
   {
-    v7 = [(OSLogEventSerializer *)self metadata];
-    v8 = [v7 indexForString:v6];
-    [v5 setObject:v8 forKeyedSubscript:@"rs"];
+    metadata = [(OSLogEventSerializer *)self metadata];
+    v8 = [metadata indexForString:rawString];
+    [dictionary setObject:v8 forKeyedSubscript:@"rs"];
   }
 
-  v9 = [v4 tokens];
-  v10 = v9;
-  if (v9 && [v9 count])
+  tokens = [placeholderCopy tokens];
+  v10 = tokens;
+  if (tokens && [tokens count])
   {
-    v31 = v6;
-    v11 = [MEMORY[0x277CBEB18] array];
+    v31 = rawString;
+    array = [MEMORY[0x277CBEB18] array];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -717,9 +717,9 @@ LABEL_123:
           }
 
           v17 = *(*(&v32 + 1) + 8 * i);
-          v18 = [(OSLogEventSerializer *)self metadata];
-          v19 = [v18 indexForString:v17];
-          [v11 addObject:v19];
+          metadata2 = [(OSLogEventSerializer *)self metadata];
+          v19 = [metadata2 indexForString:v17];
+          [array addObject:v19];
         }
 
         v14 = [v12 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -728,199 +728,199 @@ LABEL_123:
       while (v14);
     }
 
-    [v5 setObject:v11 forKeyedSubscript:@"t"];
+    [dictionary setObject:array forKeyedSubscript:@"t"];
     v10 = v30;
-    v6 = v31;
+    rawString = v31;
   }
 
-  v20 = [v4 typeNamespace];
-  if (v20)
+  typeNamespace = [placeholderCopy typeNamespace];
+  if (typeNamespace)
   {
-    v21 = [(OSLogEventSerializer *)self metadata];
-    v22 = [v21 indexForString:v20];
-    [v5 setObject:v22 forKeyedSubscript:@"tn"];
+    metadata3 = [(OSLogEventSerializer *)self metadata];
+    v22 = [metadata3 indexForString:typeNamespace];
+    [dictionary setObject:v22 forKeyedSubscript:@"tn"];
   }
 
-  v23 = [v4 type];
-  if (v23)
+  type = [placeholderCopy type];
+  if (type)
   {
-    v24 = [(OSLogEventSerializer *)self metadata];
-    v25 = [v24 indexForString:v23];
-    [v5 setObject:v25 forKeyedSubscript:@"ty"];
+    metadata4 = [(OSLogEventSerializer *)self metadata];
+    v25 = [metadata4 indexForString:type];
+    [dictionary setObject:v25 forKeyedSubscript:@"ty"];
   }
 
-  v26 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "width")}];
-  [v5 setObject:v26 forKeyedSubscript:@"w"];
+  v26 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(placeholderCopy, "width")}];
+  [dictionary setObject:v26 forKeyedSubscript:@"w"];
 
-  v27 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v4, "precision")}];
-  [v5 setObject:v27 forKeyedSubscript:@"p"];
+  v27 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(placeholderCopy, "precision")}];
+  [dictionary setObject:v27 forKeyedSubscript:@"p"];
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return dictionary;
 }
 
-- (void)_serializeEvent:(id)a3
+- (void)_serializeEvent:(id)event
 {
-  v14 = a3;
-  v5 = [(OSLogEventSerializer *)self metadata];
-  v6 = [v5 firstDate];
+  eventCopy = event;
+  metadata = [(OSLogEventSerializer *)self metadata];
+  firstDate = [metadata firstDate];
 
-  if (!v6)
+  if (!firstDate)
   {
-    v7 = [v14 date];
-    v8 = [(OSLogEventSerializer *)self metadata];
-    [v8 setFirstDate:v7];
+    date = [eventCopy date];
+    metadata2 = [(OSLogEventSerializer *)self metadata];
+    [metadata2 setFirstDate:date];
   }
 
-  v9 = [v14 date];
-  v10 = [(OSLogEventSerializer *)self metadata];
-  [v10 setLastDate:v9];
+  date2 = [eventCopy date];
+  metadata3 = [(OSLogEventSerializer *)self metadata];
+  [metadata3 setLastDate:date2];
 
   [(OSLogEventSerializer *)self setCurBatchSize:[(OSLogEventSerializer *)self curBatchSize]+ 1];
   ++self->_serializedEventCount;
-  v11 = [(OSLogEventSerializer *)self _dictionaryForProxy:v14];
+  v11 = [(OSLogEventSerializer *)self _dictionaryForProxy:eventCopy];
   if (!v11)
   {
-    v13 = [MEMORY[0x277CCA890] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:307 description:@"Encountered serialization failure"];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EventSerializer.m" lineNumber:307 description:@"Encountered serialization failure"];
   }
 
-  v12 = [(OSLogEventSerializer *)self curBatchDictionaries];
-  [v12 addObject:v11];
+  curBatchDictionaries = [(OSLogEventSerializer *)self curBatchDictionaries];
+  [curBatchDictionaries addObject:v11];
 }
 
 - (void)invalidate
 {
-  v2 = [(OSLogEventSerializer *)self stream];
-  [v2 invalidate];
+  stream = [(OSLogEventSerializer *)self stream];
+  [stream invalidate];
 }
 
-- (void)serializeFromPosition:(id)a3
+- (void)serializeFromPosition:(id)position
 {
-  v4 = a3;
-  v5 = [(OSLogEventSerializer *)self stream];
-  [v5 activateStreamFromPosition:v4];
+  positionCopy = position;
+  stream = [(OSLogEventSerializer *)self stream];
+  [stream activateStreamFromPosition:positionCopy];
 }
 
 - (void)serializeFromLastBoot
 {
-  v2 = [(OSLogEventSerializer *)self stream];
-  [v2 activateStreamFromLastBoot];
+  stream = [(OSLogEventSerializer *)self stream];
+  [stream activateStreamFromLastBoot];
 }
 
-- (void)serializeFromDate:(id)a3 toDate:(id)a4
+- (void)serializeFromDate:(id)date toDate:(id)toDate
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(OSLogEventSerializer *)self stream];
-  v8 = v11;
-  if (v11)
+  dateCopy = date;
+  toDateCopy = toDate;
+  stream = [(OSLogEventSerializer *)self stream];
+  distantPast = dateCopy;
+  if (dateCopy)
   {
-    if (v6)
+    if (toDateCopy)
     {
 LABEL_3:
-      [v7 activateStreamFromDate:v8 toDate:v6];
+      [stream activateStreamFromDate:distantPast toDate:toDateCopy];
       goto LABEL_6;
     }
   }
 
   else
   {
-    v8 = [MEMORY[0x277CBEAA8] distantPast];
-    if (v6)
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    if (toDateCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v9 = [(OSLogEventStream *)self->_stream source];
-  v10 = [v9 newestDate];
-  [v7 activateStreamFromDate:v8 toDate:v10];
+  source = [(OSLogEventStream *)self->_stream source];
+  newestDate = [source newestDate];
+  [stream activateStreamFromDate:distantPast toDate:newestDate];
 
 LABEL_6:
-  if (!v11)
+  if (!dateCopy)
   {
   }
 }
 
-- (void)serializeFromDate:(id)a3
+- (void)serializeFromDate:(id)date
 {
-  v7 = a3;
-  v4 = [(OSLogEventSerializer *)self stream];
-  v5 = v4;
-  if (v7)
+  dateCopy = date;
+  stream = [(OSLogEventSerializer *)self stream];
+  v5 = stream;
+  if (dateCopy)
   {
-    [v4 activateStreamFromDate:v7];
+    [stream activateStreamFromDate:dateCopy];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEAA8] distantPast];
-    [v5 activateStreamFromDate:v6];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
+    [v5 activateStreamFromDate:distantPast];
   }
 }
 
 - (OSLogEventSource)source
 {
-  v2 = [(OSLogEventSerializer *)self stream];
-  v3 = [v2 source];
+  stream = [(OSLogEventSerializer *)self stream];
+  source = [stream source];
 
-  return v3;
+  return source;
 }
 
 - (OS_dispatch_queue)target
 {
-  v2 = [(OSLogEventSerializer *)self stream];
-  v3 = [v2 target];
+  stream = [(OSLogEventSerializer *)self stream];
+  target = [stream target];
 
-  return v3;
+  return target;
 }
 
-- (void)setTarget:(id)a3
+- (void)setTarget:(id)target
 {
-  v4 = a3;
-  v5 = [(OSLogEventSerializer *)self stream];
-  [v5 setTarget:v4];
+  targetCopy = target;
+  stream = [(OSLogEventSerializer *)self stream];
+  [stream setTarget:targetCopy];
 }
 
 - (NSPredicate)filterPredicate
 {
-  v2 = [(OSLogEventSerializer *)self stream];
-  v3 = [v2 filterPredicate];
+  stream = [(OSLogEventSerializer *)self stream];
+  filterPredicate = [stream filterPredicate];
 
-  return v3;
+  return filterPredicate;
 }
 
-- (void)setFilterPredicate:(id)a3
+- (void)setFilterPredicate:(id)predicate
 {
-  v4 = a3;
-  v5 = [(OSLogEventSerializer *)self stream];
-  [v5 setFilterPredicate:v4];
+  predicateCopy = predicate;
+  stream = [(OSLogEventSerializer *)self stream];
+  [stream setFilterPredicate:predicateCopy];
 }
 
 - (unint64_t)flags
 {
-  v2 = [(OSLogEventSerializer *)self stream];
-  v3 = [v2 flags];
+  stream = [(OSLogEventSerializer *)self stream];
+  flags = [stream flags];
 
-  return v3;
+  return flags;
 }
 
-- (void)setFlags:(unint64_t)a3
+- (void)setFlags:(unint64_t)flags
 {
-  v4 = [(OSLogEventSerializer *)self stream];
-  [v4 setFlags:a3];
+  stream = [(OSLogEventSerializer *)self stream];
+  [stream setFlags:flags];
 }
 
-- (OSLogEventSerializer)initWithSource:(id)a3 dataProcessingBlock:(id)a4 completionBlock:(id)a5
+- (OSLogEventSerializer)initWithSource:(id)source dataProcessingBlock:(id)block completionBlock:(id)completionBlock
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  v12 = 0;
-  if (v9 && v10)
+  sourceCopy = source;
+  blockCopy = block;
+  completionBlockCopy = completionBlock;
+  v11 = completionBlockCopy;
+  selfCopy = 0;
+  if (blockCopy && completionBlockCopy)
   {
     v31.receiver = self;
     v31.super_class = OSLogEventSerializer;
@@ -929,26 +929,26 @@ LABEL_6:
     {
 LABEL_6:
       self = self;
-      v12 = self;
+      selfCopy = self;
       goto LABEL_7;
     }
 
-    v13 = [[OSLogEventStream alloc] initWithSource:v8];
+    v13 = [[OSLogEventStream alloc] initWithSource:sourceCopy];
     stream = self->_stream;
     self->_stream = v13;
 
     self->_maxLogEventBatchSize = 1000;
-    v15 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     curBatchDictionaries = self->_curBatchDictionaries;
-    self->_curBatchDictionaries = v15;
+    self->_curBatchDictionaries = array;
 
     v17 = objc_alloc_init(_OSLogEventSerializationMetadata);
     metadata = self->_metadata;
     self->_metadata = v17;
 
-    v12 = [(OSLogEventSerializer *)self stream];
+    selfCopy = [(OSLogEventSerializer *)self stream];
 
-    if (v12)
+    if (selfCopy)
     {
       objc_initWeak(&location, self);
       v19 = self->_stream;
@@ -957,7 +957,7 @@ LABEL_6:
       v27[2] = __75__OSLogEventSerializer_initWithSource_dataProcessingBlock_completionBlock___block_invoke;
       v27[3] = &unk_2787AEDD8;
       objc_copyWeak(&v29, &location);
-      v20 = v9;
+      v20 = blockCopy;
       v28 = v20;
       [(OSLogEventStreamBase *)v19 setEventHandler:v27];
       v21 = self->_stream;
@@ -979,7 +979,7 @@ LABEL_6:
 
 LABEL_7:
 
-  return v12;
+  return selfCopy;
 }
 
 void __75__OSLogEventSerializer_initWithSource_dataProcessingBlock_completionBlock___block_invoke(uint64_t a1, void *a2)

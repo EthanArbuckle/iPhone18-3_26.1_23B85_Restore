@@ -1,11 +1,11 @@
 @interface NSConstraintCache
-+ (uint64_t)createCachesForEntity:(uint64_t)a3 forValidator:;
++ (uint64_t)createCachesForEntity:(uint64_t)entity forValidator:;
 - (id)description;
-- (uint64_t)extendConstraint:(void *)a3 onParentEntity:(uint64_t)a4 parentCache:;
+- (uint64_t)extendConstraint:(void *)constraint onParentEntity:(uint64_t)entity parentCache:;
 - (uint64_t)registerObject:(uint64_t)result;
 - (uint64_t)reset;
 - (void)dealloc;
-- (void)initForEntity:(void *)a3 constraint:(void *)a4 extension:;
+- (void)initForEntity:(void *)entity constraint:(void *)constraint extension:;
 - (void)validateForSave:(void *)result;
 @end
 
@@ -68,7 +68,7 @@
   [(NSConstraintCache *)&v3 dealloc];
 }
 
-- (uint64_t)extendConstraint:(void *)a3 onParentEntity:(uint64_t)a4 parentCache:
+- (uint64_t)extendConstraint:(void *)constraint onParentEntity:(uint64_t)entity parentCache:
 {
   v54 = *MEMORY[0x1E69E9840];
   v31 = result;
@@ -78,13 +78,13 @@
     v46 = 0u;
     v43 = 0u;
     v44 = 0u;
-    obj = [a3 subentities];
+    obj = [constraint subentities];
     result = [obj countByEnumeratingWithState:&v43 objects:v52 count:16];
     v28 = result;
     if (result)
     {
       v27 = *v44;
-      v37 = a4;
+      entityCopy = entity;
       do
       {
         v5 = 0;
@@ -122,14 +122,14 @@
                 v38 = v8;
                 v36 = *(*(&v39 + 1) + 8 * v8);
                 v9 = [v36 objectAtIndexedSubscript:0];
-                if (a4)
+                if (entity)
                 {
                   v10 = v9;
                   v49 = 0u;
                   v50 = 0u;
                   v47 = 0u;
                   v48 = 0u;
-                  v11 = *(a4 + 40);
+                  v11 = *(entity + 40);
                   v12 = [v11 countByEnumeratingWithState:&v47 objects:v53 count:16];
                   if (v12)
                   {
@@ -176,7 +176,7 @@
 
                           if (v20 == v21)
                           {
-                            a4 = v37;
+                            entity = entityCopy;
                             goto LABEL_33;
                           }
                         }
@@ -187,7 +187,7 @@
                       while (v15 != v13);
                       v23 = [v11 countByEnumeratingWithState:&v47 objects:v53 count:16];
                       v13 = v23;
-                      a4 = v37;
+                      entity = entityCopy;
                     }
 
                     while (v23);
@@ -195,9 +195,9 @@
                 }
 
                 v24 = -[NSConstraintCache initForEntity:constraint:extension:]([NSConstraintCache alloc], v33, [v36 objectAtIndexedSubscript:0], objc_msgSend(v36, "objectAtIndexedSubscript:", 2));
-                if (a4)
+                if (entity)
                 {
-                  [*(a4 + 40) addObject:v24];
+                  [*(entity + 40) addObject:v24];
                 }
 
                 -[NSConstraintCache extendConstraint:onParentEntity:parentCache:](v31, [v36 objectAtIndexedSubscript:0], v33, v24);
@@ -212,7 +212,7 @@ LABEL_33:
             while (v35);
           }
 
-          [(NSConstraintCache *)v31 extendConstraint:a2 onParentEntity:v33 parentCache:a4];
+          [(NSConstraintCache *)v31 extendConstraint:a2 onParentEntity:v33 parentCache:entity];
           v5 = v29 + 1;
         }
 
@@ -229,22 +229,22 @@ LABEL_33:
   return result;
 }
 
-- (void)initForEntity:(void *)a3 constraint:(void *)a4 extension:
+- (void)initForEntity:(void *)entity constraint:(void *)constraint extension:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v10.receiver = a1;
+  v10.receiver = self;
   v10.super_class = NSConstraintCache;
   v7 = objc_msgSendSuper2(&v10, sel_init);
   v8 = v7;
   if (v7)
   {
     v7[3] = a2;
-    v7[1] = a3;
-    v8[2] = a4;
+    v7[1] = entity;
+    v8[2] = constraint;
     v8[5] = objc_alloc_init(MEMORY[0x1E695DF70]);
     v8[4] = objc_alloc_init(MEMORY[0x1E695DF90]);
   }
@@ -252,7 +252,7 @@ LABEL_33:
   return v8;
 }
 
-+ (uint64_t)createCachesForEntity:(uint64_t)a3 forValidator:
++ (uint64_t)createCachesForEntity:(uint64_t)entity forValidator:
 {
   v19 = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -294,7 +294,7 @@ LABEL_33:
         {
           v12 = [[NSConstraintCache alloc] initForEntity:a2 constraint:v11 extension:0];
           [(NSConstraintCache *)v12 extendConstraint:v11 onParentEntity:a2 parentCache:v12];
-          [(NSConstraintValidator *)a3 _addConstraintRoot:v12 forEntity:a2];
+          [(NSConstraintValidator *)entity _addConstraintRoot:v12 forEntity:a2];
         }
 
         ++v10;
@@ -401,14 +401,14 @@ LABEL_33:
         if (!v13)
         {
 LABEL_19:
-          v16 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
           goto LABEL_22;
         }
       }
 
       if ([v13 isNSString])
       {
-        v16 = [_PFRoutines sanitize:v13];
+        null = [_PFRoutines sanitize:v13];
       }
 
       else
@@ -419,11 +419,11 @@ LABEL_19:
           goto LABEL_23;
         }
 
-        v16 = [v13 objectID];
+        null = [v13 objectID];
       }
 
 LABEL_22:
-      v13 = v16;
+      v13 = null;
 LABEL_23:
       [v4 addObject:v13];
     }
@@ -441,13 +441,13 @@ LABEL_25:
 
   if ([v17 count] == 1)
   {
-    v18 = [v4 firstObject];
+    firstObject = [v4 firstObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v19 = [v18 objectID];
+      objectID = [firstObject objectID];
 
-      v18 = v19;
+      firstObject = objectID;
     }
   }
 
@@ -458,8 +458,8 @@ LABEL_25:
     {
       v46.receiver = v20;
       v46.super_class = NSConstraintCacheKey;
-      v18 = objc_msgSendSuper2(&v46, sel_init);
-      if (v18)
+      firstObject = objc_msgSendSuper2(&v46, sel_init);
+      if (firstObject)
       {
         v21 = objc_alloc_init(MEMORY[0x1E695DF70]);
         v42 = 0u;
@@ -480,14 +480,14 @@ LABEL_25:
                 objc_enumerationMutation(v4);
               }
 
-              v26 = *(*(&v42 + 1) + 8 * j);
+              objectID2 = *(*(&v42 + 1) + 8 * j);
               objc_opt_class();
               if (objc_opt_isKindOfClass())
               {
-                v26 = [v26 objectID];
+                objectID2 = [objectID2 objectID];
               }
 
-              [v21 addObject:v26];
+              [v21 addObject:objectID2];
             }
 
             v23 = [v4 countByEnumeratingWithState:&v42 objects:v49 count:16];
@@ -496,21 +496,21 @@ LABEL_25:
           while (v23);
         }
 
-        v18[1] = [v21 copy];
+        firstObject[1] = [v21 copy];
       }
     }
 
     else
     {
-      v18 = 0;
+      firstObject = 0;
     }
   }
 
-  v27 = [*(v33 + 32) objectForKey:v18];
+  v27 = [*(v33 + 32) objectForKey:firstObject];
   if (!v27)
   {
     v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [*(v33 + 32) setObject:v27 forKey:v18];
+    [*(v33 + 32) setObject:v27 forKey:firstObject];
   }
 
   [v27 addObject:a2];

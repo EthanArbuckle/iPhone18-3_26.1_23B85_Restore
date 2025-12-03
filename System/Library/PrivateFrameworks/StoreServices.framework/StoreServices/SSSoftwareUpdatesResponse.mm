@@ -1,27 +1,27 @@
 @interface SSSoftwareUpdatesResponse
 - (NSArray)updateItems;
 - (NSError)error;
-- (SSSoftwareUpdatesResponse)initWithError:(id)a3;
-- (SSSoftwareUpdatesResponse)initWithXPCEncoding:(id)a3;
+- (SSSoftwareUpdatesResponse)initWithError:(id)error;
+- (SSSoftwareUpdatesResponse)initWithXPCEncoding:(id)encoding;
 - (id)copyUpdateItemDictionaries;
 - (id)copyXPCEncoding;
 - (id)description;
 - (void)dealloc;
-- (void)setUpdateItemsWithItemDictionaries:(id)a3;
+- (void)setUpdateItemsWithItemDictionaries:(id)dictionaries;
 @end
 
 @implementation SSSoftwareUpdatesResponse
 
-- (SSSoftwareUpdatesResponse)initWithError:(id)a3
+- (SSSoftwareUpdatesResponse)initWithError:(id)error
 {
   v7.receiver = self;
   v7.super_class = SSSoftwareUpdatesResponse;
   v4 = [(SSSoftwareUpdatesResponse *)&v7 init];
   if (v4)
   {
-    v5 = a3;
-    v4->_error = v5;
-    v4->_failed = v5 != 0;
+    errorCopy = error;
+    v4->_error = errorCopy;
+    v4->_failed = errorCopy != 0;
   }
 
   return v4;
@@ -102,7 +102,7 @@
   return v3;
 }
 
-- (void)setUpdateItemsWithItemDictionaries:(id)a3
+- (void)setUpdateItemsWithItemDictionaries:(id)dictionaries
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -110,7 +110,7 @@
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [dictionaries countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = v6;
@@ -122,7 +122,7 @@
       {
         if (*v14 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(dictionaries);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
@@ -141,7 +141,7 @@
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v7 = [dictionaries countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v7);
@@ -155,25 +155,25 @@
   v3 = xpc_dictionary_create(0, 0, 0);
   SSXPCDictionarySetCFObject(v3, "0", self->_error);
   xpc_dictionary_set_BOOL(v3, "1", self->_failed);
-  v4 = [(SSSoftwareUpdatesResponse *)self copyUpdateItemDictionaries];
-  SSXPCDictionarySetCFObject(v3, "2", v4);
+  copyUpdateItemDictionaries = [(SSSoftwareUpdatesResponse *)self copyUpdateItemDictionaries];
+  SSXPCDictionarySetCFObject(v3, "2", copyUpdateItemDictionaries);
 
   return v3;
 }
 
-- (SSSoftwareUpdatesResponse)initWithXPCEncoding:(id)a3
+- (SSSoftwareUpdatesResponse)initWithXPCEncoding:(id)encoding
 {
-  if (a3 && MEMORY[0x1DA6E0380](a3, a2) == MEMORY[0x1E69E9E80])
+  if (encoding && MEMORY[0x1DA6E0380](encoding, a2) == MEMORY[0x1E69E9E80])
   {
     v8.receiver = self;
     v8.super_class = SSSoftwareUpdatesResponse;
     v5 = [(SSSoftwareUpdatesResponse *)&v8 init];
     if (v5)
     {
-      v5->_error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithXPCEncoding:{xpc_dictionary_get_value(a3, "0")}];
-      v5->_failed = xpc_dictionary_get_BOOL(a3, "1");
+      v5->_error = [objc_alloc(MEMORY[0x1E696ABC0]) initWithXPCEncoding:{xpc_dictionary_get_value(encoding, "0")}];
+      v5->_failed = xpc_dictionary_get_BOOL(encoding, "1");
       objc_opt_class();
-      v7 = SSXPCDictionaryCopyCFObjectWithClass(a3, "2");
+      v7 = SSXPCDictionaryCopyCFObjectWithClass(encoding, "2");
       [(SSSoftwareUpdatesResponse *)v5 setUpdateItemsWithItemDictionaries:v7];
     }
   }

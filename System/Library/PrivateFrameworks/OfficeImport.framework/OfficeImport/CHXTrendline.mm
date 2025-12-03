@@ -1,36 +1,36 @@
 @interface CHXTrendline
-+ (id)chdTrendlineFromXmlTrendlineElement:(_xmlNode *)a3 state:(id)a4;
-+ (id)stringFromTrendlineTypeEnum:(int)a3;
-+ (int)chdTrendlineTypeFromXmlTrendlineTypeElement:(_xmlNode *)a3;
++ (id)chdTrendlineFromXmlTrendlineElement:(_xmlNode *)element state:(id)state;
++ (id)stringFromTrendlineTypeEnum:(int)enum;
++ (int)chdTrendlineTypeFromXmlTrendlineTypeElement:(_xmlNode *)element;
 @end
 
 @implementation CHXTrendline
 
-+ (id)chdTrendlineFromXmlTrendlineElement:(_xmlNode *)a3 state:(id)a4
++ (id)chdTrendlineFromXmlTrendlineElement:(_xmlNode *)element state:(id)state
 {
-  v6 = a4;
+  stateCopy = state;
   v7 = +[CHDTrendline trendline];
-  v8 = [v6 drawingState];
-  v9 = [v8 OAXChartNamespace];
-  v10 = OCXFindChild(a3, v9, "dispEq");
+  drawingState = [stateCopy drawingState];
+  oAXChartNamespace = [drawingState OAXChartNamespace];
+  v10 = OCXFindChild(element, oAXChartNamespace, "dispEq");
 
   if (v10)
   {
     [v7 setDisplayEquation:{CXRequiredBoolAttribute(v10, CXNoNamespace, "val")}];
   }
 
-  v11 = [v6 drawingState];
-  v12 = [v11 OAXChartNamespace];
-  v13 = OCXFindChild(a3, v12, "dispRSqr");
+  drawingState2 = [stateCopy drawingState];
+  oAXChartNamespace2 = [drawingState2 OAXChartNamespace];
+  v13 = OCXFindChild(element, oAXChartNamespace2, "dispRSqr");
 
   if (v13)
   {
     [v7 setDisplayRSquaredValue:{CXRequiredBoolAttribute(v13, CXNoNamespace, "val")}];
   }
 
-  v14 = [v6 drawingState];
-  v15 = [v14 OAXChartNamespace];
-  v16 = OCXFindChild(a3, v15, "backward");
+  drawingState3 = [stateCopy drawingState];
+  oAXChartNamespace3 = [drawingState3 OAXChartNamespace];
+  v16 = OCXFindChild(element, oAXChartNamespace3, "backward");
 
   if (v16)
   {
@@ -41,9 +41,9 @@
     }
   }
 
-  v17 = [v6 drawingState];
-  v18 = [v17 OAXChartNamespace];
-  v19 = OCXFindChild(a3, v18, "forward");
+  drawingState4 = [stateCopy drawingState];
+  oAXChartNamespace4 = [drawingState4 OAXChartNamespace];
+  v19 = OCXFindChild(element, oAXChartNamespace4, "forward");
 
   if (v19)
   {
@@ -54,9 +54,9 @@
     }
   }
 
-  v20 = [v6 drawingState];
-  v21 = [v20 OAXChartNamespace];
-  v22 = OCXFindChild(a3, v21, "intercept");
+  drawingState5 = [stateCopy drawingState];
+  oAXChartNamespace5 = [drawingState5 OAXChartNamespace];
+  v22 = OCXFindChild(element, oAXChartNamespace5, "intercept");
 
   if (v22)
   {
@@ -67,44 +67,44 @@
     }
   }
 
-  v23 = [v6 drawingState];
-  v24 = [v23 OAXChartNamespace];
-  v25 = OCXFindChild(a3, v24, "order");
+  drawingState6 = [stateCopy drawingState];
+  oAXChartNamespace6 = [drawingState6 OAXChartNamespace];
+  v25 = OCXFindChild(element, oAXChartNamespace6, "order");
 
   if (v25)
   {
     [v7 setPolynomialOrder:{CXRequiredLongAttribute(v25, CXNoNamespace, "val")}];
   }
 
-  v26 = [v6 drawingState];
-  v27 = [v26 OAXChartNamespace];
-  v28 = OCXFindChild(a3, v27, "period");
+  drawingState7 = [stateCopy drawingState];
+  oAXChartNamespace7 = [drawingState7 OAXChartNamespace];
+  v28 = OCXFindChild(element, oAXChartNamespace7, "period");
 
   if (v28)
   {
     [v7 setMovingAveragePeriod:{CXRequiredLongAttribute(v28, CXNoNamespace, "val")}];
   }
 
-  v29 = [v6 drawingState];
-  v30 = [v29 OAXChartNamespace];
-  [v7 setType:{objc_msgSend(a1, "chdTrendlineTypeFromXmlTrendlineTypeElement:", OCXFindChild(a3, v30, "trendlineType"))}];
+  drawingState8 = [stateCopy drawingState];
+  oAXChartNamespace8 = [drawingState8 OAXChartNamespace];
+  [v7 setType:{objc_msgSend(self, "chdTrendlineTypeFromXmlTrendlineTypeElement:", OCXFindChild(element, oAXChartNamespace8, "trendlineType"))}];
 
   v31 = objc_alloc_init(OADGraphicProperties);
-  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v31 element:a3 state:v6];
+  [CHXGraphicProperties setGraphicPropertiesFromXmlElementWithGraphicProperties:v31 element:element state:stateCopy];
   [v7 setGraphicProperties:v31];
-  v32 = [v6 drawingState];
-  v33 = [v32 OAXChartNamespace];
-  v34 = OCXFindChild(a3, v33, "trendlineLbl");
+  drawingState9 = [stateCopy drawingState];
+  oAXChartNamespace9 = [drawingState9 OAXChartNamespace];
+  v34 = OCXFindChild(element, oAXChartNamespace9, "trendlineLbl");
 
   if (v34)
   {
-    v35 = [CHXTrendlineLabel chdTrendlineLabelFromXmlTrendlineLabelElement:v34 state:v6];
+    v35 = [CHXTrendlineLabel chdTrendlineLabelFromXmlTrendlineLabelElement:v34 state:stateCopy];
     [v7 setLabel:v35];
   }
 
-  v36 = [v6 drawingState];
-  v37 = [v36 OAXChartNamespace];
-  v38 = OCXFindChild(a3, v37, "name");
+  drawingState10 = [stateCopy drawingState];
+  oAXChartNamespace10 = [drawingState10 OAXChartNamespace];
+  v38 = OCXFindChild(element, oAXChartNamespace10, "name");
 
   if (v38)
   {
@@ -120,12 +120,12 @@
   return v7;
 }
 
-+ (int)chdTrendlineTypeFromXmlTrendlineTypeElement:(_xmlNode *)a3
++ (int)chdTrendlineTypeFromXmlTrendlineTypeElement:(_xmlNode *)element
 {
-  if (a3)
+  if (element)
   {
     v8 = 0;
-    v3 = CXOptionalStringAttribute(a3, CXNoNamespace, "val", &v8);
+    v3 = CXOptionalStringAttribute(element, CXNoNamespace, "val", &v8);
     v4 = v8;
     v5 = v4;
     if (v3)
@@ -173,16 +173,16 @@ LABEL_8:
   return 1;
 }
 
-+ (id)stringFromTrendlineTypeEnum:(int)a3
++ (id)stringFromTrendlineTypeEnum:(int)enum
 {
-  if (a3 > 5)
+  if (enum > 5)
   {
     return @"linear";
   }
 
   else
   {
-    return off_2799CD348[a3];
+    return off_2799CD348[enum];
   }
 }
 

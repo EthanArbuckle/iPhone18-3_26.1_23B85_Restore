@@ -1,32 +1,32 @@
 @interface NTKSolarRichComplicatonCircularPath
-+ (id)_cachedSolarPathForDiameter:(double)a3 horizonLineTop:(double)a4 horizonLineHeight:(double)a5 maxCurveHeight:(double)a6 solarTimeModel:(id)a7 sunriseWaypoint:(id)a8 sunsetWayPoint:(id)a9 cacheMissBlock:(id)a10;
-+ (id)_cachedSolarPathKeyForDiameter:(double)a3 horizonLineTop:(double)a4 horizonLineHeight:(double)a5 maxCurveHeight:(double)a6 solarTimeModel:(id)a7 sunriseWaypoint:(id)a8 sunsetWayPoint:(id)a9;
++ (id)_cachedSolarPathForDiameter:(double)diameter horizonLineTop:(double)top horizonLineHeight:(double)height maxCurveHeight:(double)curveHeight solarTimeModel:(id)model sunriseWaypoint:(id)waypoint sunsetWayPoint:(id)point cacheMissBlock:(id)self0;
++ (id)_cachedSolarPathKeyForDiameter:(double)diameter horizonLineTop:(double)top horizonLineHeight:(double)height maxCurveHeight:(double)curveHeight solarTimeModel:(id)model sunriseWaypoint:(id)waypoint sunsetWayPoint:(id)point;
 + (id)_solarPathCache;
-+ (id)pathWithDiameter:(double)a3 horizonLineTop:(double)a4 horizonLineHeight:(double)a5 maxCurveHeight:(double)a6 solarTimeModel:(id)a7 sunriseWaypoint:(id)a8 sunsetWayPoint:(id)a9;
++ (id)pathWithDiameter:(double)diameter horizonLineTop:(double)top horizonLineHeight:(double)height maxCurveHeight:(double)curveHeight solarTimeModel:(id)model sunriseWaypoint:(id)waypoint sunsetWayPoint:(id)point;
 @end
 
 @implementation NTKSolarRichComplicatonCircularPath
 
-+ (id)pathWithDiameter:(double)a3 horizonLineTop:(double)a4 horizonLineHeight:(double)a5 maxCurveHeight:(double)a6 solarTimeModel:(id)a7 sunriseWaypoint:(id)a8 sunsetWayPoint:(id)a9
++ (id)pathWithDiameter:(double)diameter horizonLineTop:(double)top horizonLineHeight:(double)height maxCurveHeight:(double)curveHeight solarTimeModel:(id)model sunriseWaypoint:(id)waypoint sunsetWayPoint:(id)point
 {
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  modelCopy = model;
+  waypointCopy = waypoint;
+  pointCopy = point;
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __150__NTKSolarRichComplicatonCircularPath_pathWithDiameter_horizonLineTop_horizonLineHeight_maxCurveHeight_solarTimeModel_sunriseWaypoint_sunsetWayPoint___block_invoke;
   v24[3] = &unk_2787824F8;
-  v28 = a3;
-  v29 = a6;
-  v25 = v16;
-  v26 = v17;
-  v27 = v18;
-  v30 = a5;
-  v31 = a4;
-  v19 = v18;
-  v20 = v17;
-  v21 = v16;
-  v22 = [a1 _cachedSolarPathForDiameter:v21 horizonLineTop:v20 horizonLineHeight:v19 maxCurveHeight:v24 solarTimeModel:a3 sunriseWaypoint:a4 sunsetWayPoint:a5 cacheMissBlock:a6];
+  diameterCopy = diameter;
+  curveHeightCopy = curveHeight;
+  v25 = modelCopy;
+  v26 = waypointCopy;
+  v27 = pointCopy;
+  heightCopy = height;
+  topCopy = top;
+  v19 = pointCopy;
+  v20 = waypointCopy;
+  v21 = modelCopy;
+  v22 = [self _cachedSolarPathForDiameter:v21 horizonLineTop:v20 horizonLineHeight:v19 maxCurveHeight:v24 solarTimeModel:diameter sunriseWaypoint:top sunsetWayPoint:height cacheMissBlock:curveHeight];
 
   return v22;
 }
@@ -123,32 +123,32 @@ void __54__NTKSolarRichComplicatonCircularPath__solarPathCache__block_invoke()
   _solarPathCache___solarPathCache = v0;
 }
 
-+ (id)_cachedSolarPathForDiameter:(double)a3 horizonLineTop:(double)a4 horizonLineHeight:(double)a5 maxCurveHeight:(double)a6 solarTimeModel:(id)a7 sunriseWaypoint:(id)a8 sunsetWayPoint:(id)a9 cacheMissBlock:(id)a10
++ (id)_cachedSolarPathForDiameter:(double)diameter horizonLineTop:(double)top horizonLineHeight:(double)height maxCurveHeight:(double)curveHeight solarTimeModel:(id)model sunriseWaypoint:(id)waypoint sunsetWayPoint:(id)point cacheMissBlock:(id)self0
 {
-  v18 = a10;
-  v19 = [a1 _cachedSolarPathKeyForDiameter:a7 horizonLineTop:a8 horizonLineHeight:a9 maxCurveHeight:a3 solarTimeModel:a4 sunriseWaypoint:a5 sunsetWayPoint:a6];
-  v20 = [a1 _solarPathCache];
-  v21 = [v20 ntkCachedObjectForKey:v19 creationBlock:v18];
+  blockCopy = block;
+  v19 = [self _cachedSolarPathKeyForDiameter:model horizonLineTop:waypoint horizonLineHeight:point maxCurveHeight:diameter solarTimeModel:top sunriseWaypoint:height sunsetWayPoint:curveHeight];
+  _solarPathCache = [self _solarPathCache];
+  v21 = [_solarPathCache ntkCachedObjectForKey:v19 creationBlock:blockCopy];
 
   return v21;
 }
 
-+ (id)_cachedSolarPathKeyForDiameter:(double)a3 horizonLineTop:(double)a4 horizonLineHeight:(double)a5 maxCurveHeight:(double)a6 solarTimeModel:(id)a7 sunriseWaypoint:(id)a8 sunsetWayPoint:(id)a9
++ (id)_cachedSolarPathKeyForDiameter:(double)diameter horizonLineTop:(double)top horizonLineHeight:(double)height maxCurveHeight:(double)curveHeight solarTimeModel:(id)model sunriseWaypoint:(id)waypoint sunsetWayPoint:(id)point
 {
   v15 = MEMORY[0x277CCAB68];
-  v16 = a9;
-  v17 = a8;
-  v18 = a7;
-  v19 = [v15 stringWithFormat:@"diameter:%f-horizonLineTop:%f-horizonLineHeight:%f-maxCurveHeight:%f-", *&a3, *&a4, *&a5, *&a6];
-  v20 = [v18 ntkCacheableKey];
+  pointCopy = point;
+  waypointCopy = waypoint;
+  modelCopy = model;
+  v19 = [v15 stringWithFormat:@"diameter:%f-horizonLineTop:%f-horizonLineHeight:%f-maxCurveHeight:%f-", *&diameter, *&top, *&height, *&curveHeight];
+  ntkCacheableKey = [modelCopy ntkCacheableKey];
 
-  [v19 appendFormat:@"solarTimeModel:%@-", v20];
-  v21 = [v17 ntkCacheableKey];
+  [v19 appendFormat:@"solarTimeModel:%@-", ntkCacheableKey];
+  ntkCacheableKey2 = [waypointCopy ntkCacheableKey];
 
-  [v19 appendFormat:@"sunriseWaypoint:%@-", v21];
-  v22 = [v16 ntkCacheableKey];
+  [v19 appendFormat:@"sunriseWaypoint:%@-", ntkCacheableKey2];
+  ntkCacheableKey3 = [pointCopy ntkCacheableKey];
 
-  [v19 appendFormat:@"sunsetWaypoint:%@", v22];
+  [v19 appendFormat:@"sunsetWaypoint:%@", ntkCacheableKey3];
 
   return v19;
 }

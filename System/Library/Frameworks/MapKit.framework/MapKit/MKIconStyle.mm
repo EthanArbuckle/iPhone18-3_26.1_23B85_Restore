@@ -1,19 +1,19 @@
 @interface MKIconStyle
 - (BOOL)_elevationForIcons;
-- (MKIconStyle)initWithStyleAttributes:(id)a3 isHybridMap:(BOOL)a4;
+- (MKIconStyle)initWithStyleAttributes:(id)attributes isHybridMap:(BOOL)map;
 - (UIColor)backgroundColor;
 - (UIImage)image;
-- (id)iconForModifiers:(id)a3;
+- (id)iconForModifiers:(id)modifiers;
 - (void)_setColorAndImages;
-- (void)registerImage:(id)a3 darkMode:(BOOL)a4;
+- (void)registerImage:(id)image darkMode:(BOOL)mode;
 @end
 
 @implementation MKIconStyle
 
 - (BOOL)_elevationForIcons
 {
-  v3 = [MEMORY[0x1E69A2398] sharedPlatform];
-  if ([v3 supportsAdvancedMap])
+  mEMORY[0x1E69A2398] = [MEMORY[0x1E69A2398] sharedPlatform];
+  if ([mEMORY[0x1E69A2398] supportsAdvancedMap])
   {
     v4 = !self->_isHybridMap;
   }
@@ -26,21 +26,21 @@
   return v4;
 }
 
-- (void)registerImage:(id)a3 darkMode:(BOOL)a4
+- (void)registerImage:(id)image darkMode:(BOOL)mode
 {
   v6 = MEMORY[0x1E69DCAB8];
-  v7 = a3;
+  imageCopy = image;
   v8 = [v6 alloc];
-  v9 = [v7 image];
-  [v7 contentScale];
+  image = [imageCopy image];
+  [imageCopy contentScale];
   v11 = v10;
 
-  v12 = [v8 initWithCGImage:v9 scale:0 orientation:v11];
+  v12 = [v8 initWithCGImage:image scale:0 orientation:v11];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __38__MKIconStyle_registerImage_darkMode___block_invoke;
   v14[3] = &__block_descriptor_33_e27_v16__0___UIMutableTraits__8l;
-  v15 = a4;
+  modeCopy = mode;
   v13 = [MEMORY[0x1E69DD1B8] traitCollectionWithTraits:v14];
   [(UIImageAsset *)self->_combinedImageAsset registerImage:v12 withTraitCollection:v13];
 }
@@ -66,15 +66,15 @@ void __38__MKIconStyle_registerImage_darkMode___block_invoke(uint64_t a1, void *
   [v6 setUserInterfaceStyle:v5];
 }
 
-- (id)iconForModifiers:(id)a3
+- (id)iconForModifiers:(id)modifiers
 {
-  v4 = a3;
+  modifiersCopy = modifiers;
   v5 = +[MKIconManager iconManager];
   styleAttributes = self->_styleAttributes;
-  v7 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v7 scale];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
   *&v8 = v8;
-  v9 = [v5 imageForStyleAttributes:styleAttributes withStylesheetName:@"default" contentScale:8 sizeGroup:v4 modifiers:v8];
+  v9 = [v5 imageForStyleAttributes:styleAttributes withStylesheetName:@"default" contentScale:8 sizeGroup:modifiersCopy modifiers:v8];
 
   return v9;
 }
@@ -85,14 +85,14 @@ void __38__MKIconStyle_registerImage_darkMode___block_invoke(uint64_t a1, void *
   [v17 setGlyphOnly:1];
   [v17 setElevated:{-[MKIconStyle _elevationForIcons](self, "_elevationForIcons")}];
   v3 = +[MKSystemController sharedInstance];
-  v4 = [v3 isGlassEnabled];
+  isGlassEnabled = [v3 isGlassEnabled];
 
-  [v17 setNewInterfaceEnabled:v4];
+  [v17 setNewInterfaceEnabled:isGlassEnabled];
   v5 = objc_alloc_init(MEMORY[0x1E69DF438]);
   [v5 setGlyphOnly:1];
   [v5 setElevated:{-[MKIconStyle _elevationForIcons](self, "_elevationForIcons")}];
   [v5 setNightMode:1];
-  [v5 setNewInterfaceEnabled:v4];
+  [v5 setNewInterfaceEnabled:isGlassEnabled];
   v6 = [MEMORY[0x1E69A1DB0] styleAttributesForMapFeatureAttributes:self->_styleAttributes elevatedGround:{-[MKIconStyle _elevationForIcons](self, "_elevationForIcons")}];
   styleAttributes = self->_styleAttributes;
   self->_styleAttributes = v6;
@@ -123,15 +123,15 @@ void __38__MKIconStyle_registerImage_darkMode___block_invoke(uint64_t a1, void *
   combinedImageAsset = self->_combinedImageAsset;
   if (combinedImageAsset)
   {
-    v3 = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
-    v4 = [(UIImageAsset *)combinedImageAsset imageWithTraitCollection:v3];
+    _currentTraitCollection = [MEMORY[0x1E69DD1B8] _currentTraitCollection];
+    v4 = [(UIImageAsset *)combinedImageAsset imageWithTraitCollection:_currentTraitCollection];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"mappin"];
-    v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    v4 = [v3 imageWithTintColor:v5 renderingMode:1];
+    _currentTraitCollection = [MEMORY[0x1E69DCAB8] systemImageNamed:@"mappin"];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    v4 = [_currentTraitCollection imageWithTintColor:systemBackgroundColor renderingMode:1];
   }
 
   return v4;
@@ -179,17 +179,17 @@ LABEL_7:
   return v6;
 }
 
-- (MKIconStyle)initWithStyleAttributes:(id)a3 isHybridMap:(BOOL)a4
+- (MKIconStyle)initWithStyleAttributes:(id)attributes isHybridMap:(BOOL)map
 {
-  v7 = a3;
+  attributesCopy = attributes;
   v11.receiver = self;
   v11.super_class = MKIconStyle;
   v8 = [(MKIconStyle *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_styleAttributes, a3);
-    v9->_isHybridMap = a4;
+    objc_storeStrong(&v8->_styleAttributes, attributes);
+    v9->_isHybridMap = map;
     [(MKIconStyle *)v9 _setColorAndImages];
   }
 

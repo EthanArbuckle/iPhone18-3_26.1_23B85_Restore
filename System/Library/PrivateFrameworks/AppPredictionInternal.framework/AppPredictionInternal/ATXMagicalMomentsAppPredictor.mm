@@ -1,11 +1,11 @@
 @interface ATXMagicalMomentsAppPredictor
 + (id)sharedInstance;
 - (ATXMagicalMomentsAppPredictor)init;
-- (id)addNowPlayingEventsToAppLaunches:(id)a3;
+- (id)addNowPlayingEventsToAppLaunches:(id)launches;
 - (id)fetchAppLaunchEventsForTraining;
-- (id)generateAppLaunchCountedSetFromAppLaunches:(id)a3;
+- (id)generateAppLaunchCountedSetFromAppLaunches:(id)launches;
 - (void)fetchAppLaunchEventsForTraining;
-- (void)trainWithTask:(id)a3;
+- (void)trainWithTask:(id)task;
 @end
 
 @implementation ATXMagicalMomentsAppPredictor
@@ -60,42 +60,42 @@ void __47__ATXMagicalMomentsAppPredictor_sharedInstance__block_invoke()
     rateLimiter = v2->_rateLimiter;
     v2->_rateLimiter = v6;
 
-    v8 = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
-    [(ATXMMAppPredictionExpert *)ATXBTConnectedMMExpert setupEventListenerForInferenceWithContext:v8 rateLimiter:v2->_rateLimiter];
+    context = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
+    [(ATXMMAppPredictionExpert *)ATXBTConnectedMMExpert setupEventListenerForInferenceWithContext:context rateLimiter:v2->_rateLimiter];
 
-    v9 = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
-    [(ATXMMAppPredictionExpert *)ATXBTDisconnectedMMExpert setupEventListenerForInferenceWithContext:v9 rateLimiter:v2->_rateLimiter];
+    context2 = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
+    [(ATXMMAppPredictionExpert *)ATXBTDisconnectedMMExpert setupEventListenerForInferenceWithContext:context2 rateLimiter:v2->_rateLimiter];
 
-    v10 = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
-    [(ATXMMAppPredictionExpert *)ATXCarPlayConnectedMMExpert setupEventListenerForInferenceWithContext:v10 rateLimiter:v2->_rateLimiter];
+    context3 = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
+    [(ATXMMAppPredictionExpert *)ATXCarPlayConnectedMMExpert setupEventListenerForInferenceWithContext:context3 rateLimiter:v2->_rateLimiter];
 
-    v11 = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
-    [(ATXMMAppPredictionExpert *)ATXCarPlayDisconnectedMMExpert setupEventListenerForInferenceWithContext:v11 rateLimiter:v2->_rateLimiter];
+    context4 = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
+    [(ATXMMAppPredictionExpert *)ATXCarPlayDisconnectedMMExpert setupEventListenerForInferenceWithContext:context4 rateLimiter:v2->_rateLimiter];
 
-    v12 = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
-    [(ATXMMAppPredictionExpert *)ATXAudioConnectedMMExpert setupEventListenerForInferenceWithContext:v12 rateLimiter:v2->_rateLimiter];
+    context5 = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
+    [(ATXMMAppPredictionExpert *)ATXAudioConnectedMMExpert setupEventListenerForInferenceWithContext:context5 rateLimiter:v2->_rateLimiter];
 
-    v13 = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
-    [(ATXMMAppPredictionExpert *)ATXAudioDisconnectedMMExpert setupEventListenerForInferenceWithContext:v13 rateLimiter:v2->_rateLimiter];
+    context6 = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
+    [(ATXMMAppPredictionExpert *)ATXAudioDisconnectedMMExpert setupEventListenerForInferenceWithContext:context6 rateLimiter:v2->_rateLimiter];
 
-    v14 = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
-    [(ATXMMAppPredictionExpert *)ATXIdleTimeEndMMExpert setupEventListenerForInferenceWithContext:v14 rateLimiter:v2->_rateLimiter];
+    context7 = [(ATXCoreDuetContextHelper *)v2->_contextHelper context];
+    [(ATXMMAppPredictionExpert *)ATXIdleTimeEndMMExpert setupEventListenerForInferenceWithContext:context7 rateLimiter:v2->_rateLimiter];
   }
 
   return v2;
 }
 
-- (id)addNowPlayingEventsToAppLaunches:(id)a3
+- (id)addNowPlayingEventsToAppLaunches:(id)launches
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  launchesCopy = launches;
   v4 = objc_opt_new();
   v5 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceNow:-2592000.0];
   v6 = objc_opt_new();
   v7 = [v4 playbackEventsAfterSecondsOfInactivity:v5 betweenStartDate:v6 endDate:300.0];
 
   v8 = [v4 convertNowPlayingEventsToAppLaunchEvents:v7];
-  [v3 addObjectsFromArray:v8];
+  [launchesCopy addObjectsFromArray:v8];
   v9 = __atxlog_handle_default();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
@@ -107,7 +107,7 @@ void __47__ATXMagicalMomentsAppPredictor_sharedInstance__block_invoke()
   v10 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"self" ascending:1];
   v15 = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:&v15 count:1];
-  v12 = [v3 sortedArrayUsingDescriptors:v11];
+  v12 = [launchesCopy sortedArrayUsingDescriptors:v11];
 
   v13 = *MEMORY[0x277D85DE8];
 
@@ -120,14 +120,14 @@ void __47__ATXMagicalMomentsAppPredictor_sharedInstance__block_invoke()
   v3 = objc_alloc_init(MEMORY[0x277CEBBE0]);
   v4 = objc_opt_new();
   v5 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:-2592000.0];
-  v6 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __64__ATXMagicalMomentsAppPredictor_fetchAppLaunchEventsForTraining__block_invoke;
   v14[3] = &unk_278596DC8;
   v7 = v4;
   v15 = v7;
-  [v3 enumerateAppLaunchSessionsBetweenStartDate:v5 endDate:v6 limit:1000000 shouldReverse:0 bundleIDFilter:0 block:v14];
+  [v3 enumerateAppLaunchSessionsBetweenStartDate:v5 endDate:date limit:1000000 shouldReverse:0 bundleIDFilter:0 block:v14];
 
   v8 = __atxlog_handle_default();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
@@ -170,16 +170,16 @@ uint64_t __64__ATXMagicalMomentsAppPredictor_fetchAppLaunchEventsForTraining__bl
   return 1;
 }
 
-- (id)generateAppLaunchCountedSetFromAppLaunches:(id)a3
+- (id)generateAppLaunchCountedSetFromAppLaunches:(id)launches
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  launchesCopy = launches;
   v4 = objc_opt_new();
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = v3;
+  v5 = launchesCopy;
   v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
@@ -196,8 +196,8 @@ uint64_t __64__ATXMagicalMomentsAppPredictor_fetchAppLaunchEventsForTraining__bl
 
         v10 = *(*(&v15 + 1) + 8 * i);
         v11 = objc_autoreleasePoolPush();
-        v12 = [v10 identifier];
-        [v4 addObject:v12];
+        identifier = [v10 identifier];
+        [v4 addObject:identifier];
 
         objc_autoreleasePoolPop(v11);
       }
@@ -213,11 +213,11 @@ uint64_t __64__ATXMagicalMomentsAppPredictor_fetchAppLaunchEventsForTraining__bl
   return v4;
 }
 
-- (void)trainWithTask:(id)a3
+- (void)trainWithTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   v5 = os_transaction_create();
-  [v4 setProgressUnits:5];
+  [taskCopy setProgressUnits:5];
   v6 = objc_autoreleasePoolPush();
   v7 = __atxlog_handle_default();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -226,11 +226,11 @@ uint64_t __64__ATXMagicalMomentsAppPredictor_fetchAppLaunchEventsForTraining__bl
     _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "ATXMM: Starting training of MagicalMoments App Predictor.", v28, 2u);
   }
 
-  v8 = [(ATXMagicalMomentsAppPredictor *)self fetchAppLaunchEventsForTraining];
-  v9 = [(ATXMagicalMomentsAppPredictor *)self generateAppLaunchCountedSetFromAppLaunches:v8];
-  if (v8 && [v8 count] && v9 && objc_msgSend(v9, "count"))
+  fetchAppLaunchEventsForTraining = [(ATXMagicalMomentsAppPredictor *)self fetchAppLaunchEventsForTraining];
+  v9 = [(ATXMagicalMomentsAppPredictor *)self generateAppLaunchCountedSetFromAppLaunches:fetchAppLaunchEventsForTraining];
+  if (fetchAppLaunchEventsForTraining && [fetchAppLaunchEventsForTraining count] && v9 && objc_msgSend(v9, "count"))
   {
-    if ([v4 didDefer])
+    if ([taskCopy didDefer])
     {
       v10 = __atxlog_handle_default();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -244,7 +244,7 @@ LABEL_50:
 
     else
     {
-      [v4 setProgressUnits:20];
+      [taskCopy setProgressUnits:20];
       v13 = __atxlog_handle_default();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
@@ -260,9 +260,9 @@ LABEL_50:
       }
 
       v15 = objc_autoreleasePoolPush();
-      [(ATXMMAppPredictionExpert *)ATXBTConnectedMMExpert trainExpertWithAppLaunchEvents:v8 appLaunchCountedSet:v9];
+      [(ATXMMAppPredictionExpert *)ATXBTConnectedMMExpert trainExpertWithAppLaunchEvents:fetchAppLaunchEventsForTraining appLaunchCountedSet:v9];
       objc_autoreleasePoolPop(v15);
-      if ([v4 didDefer])
+      if ([taskCopy didDefer])
       {
         v10 = __atxlog_handle_default();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -275,7 +275,7 @@ LABEL_50:
 
       else
       {
-        [v4 setProgressUnits:30];
+        [taskCopy setProgressUnits:30];
         v16 = __atxlog_handle_default();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
@@ -284,9 +284,9 @@ LABEL_50:
         }
 
         v17 = objc_autoreleasePoolPush();
-        [(ATXMMAppPredictionExpert *)ATXBTDisconnectedMMExpert trainExpertWithAppLaunchEvents:v8 appLaunchCountedSet:v9];
+        [(ATXMMAppPredictionExpert *)ATXBTDisconnectedMMExpert trainExpertWithAppLaunchEvents:fetchAppLaunchEventsForTraining appLaunchCountedSet:v9];
         objc_autoreleasePoolPop(v17);
-        if ([v4 didDefer])
+        if ([taskCopy didDefer])
         {
           v10 = __atxlog_handle_default();
           if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -299,7 +299,7 @@ LABEL_50:
 
         else
         {
-          [v4 setProgressUnits:40];
+          [taskCopy setProgressUnits:40];
           v18 = __atxlog_handle_default();
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
@@ -308,9 +308,9 @@ LABEL_50:
           }
 
           v19 = objc_autoreleasePoolPush();
-          [(ATXMMAppPredictionExpert *)ATXCarPlayConnectedMMExpert trainExpertWithAppLaunchEvents:v8 appLaunchCountedSet:v9];
+          [(ATXMMAppPredictionExpert *)ATXCarPlayConnectedMMExpert trainExpertWithAppLaunchEvents:fetchAppLaunchEventsForTraining appLaunchCountedSet:v9];
           objc_autoreleasePoolPop(v19);
-          if ([v4 didDefer])
+          if ([taskCopy didDefer])
           {
             v10 = __atxlog_handle_default();
             if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -323,7 +323,7 @@ LABEL_50:
 
           else
           {
-            [v4 setProgressUnits:50];
+            [taskCopy setProgressUnits:50];
             v20 = __atxlog_handle_default();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
             {
@@ -332,9 +332,9 @@ LABEL_50:
             }
 
             v21 = objc_autoreleasePoolPush();
-            [(ATXMMAppPredictionExpert *)ATXCarPlayDisconnectedMMExpert trainExpertWithAppLaunchEvents:v8 appLaunchCountedSet:v9];
+            [(ATXMMAppPredictionExpert *)ATXCarPlayDisconnectedMMExpert trainExpertWithAppLaunchEvents:fetchAppLaunchEventsForTraining appLaunchCountedSet:v9];
             objc_autoreleasePoolPop(v21);
-            if ([v4 didDefer])
+            if ([taskCopy didDefer])
             {
               v10 = __atxlog_handle_default();
               if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -347,7 +347,7 @@ LABEL_50:
 
             else
             {
-              [v4 setProgressUnits:60];
+              [taskCopy setProgressUnits:60];
               v22 = __atxlog_handle_default();
               if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
               {
@@ -356,9 +356,9 @@ LABEL_50:
               }
 
               v23 = objc_autoreleasePoolPush();
-              [(ATXMMAppPredictionExpert *)ATXAudioConnectedMMExpert trainExpertWithAppLaunchEvents:v8 appLaunchCountedSet:v9];
+              [(ATXMMAppPredictionExpert *)ATXAudioConnectedMMExpert trainExpertWithAppLaunchEvents:fetchAppLaunchEventsForTraining appLaunchCountedSet:v9];
               objc_autoreleasePoolPop(v23);
-              if ([v4 didDefer])
+              if ([taskCopy didDefer])
               {
                 v10 = __atxlog_handle_default();
                 if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -371,7 +371,7 @@ LABEL_50:
 
               else
               {
-                [v4 setProgressUnits:70];
+                [taskCopy setProgressUnits:70];
                 v24 = __atxlog_handle_default();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
                 {
@@ -380,11 +380,11 @@ LABEL_50:
                 }
 
                 v25 = objc_autoreleasePoolPush();
-                [(ATXMMAppPredictionExpert *)ATXAudioDisconnectedMMExpert trainExpertWithAppLaunchEvents:v8 appLaunchCountedSet:v9];
+                [(ATXMMAppPredictionExpert *)ATXAudioDisconnectedMMExpert trainExpertWithAppLaunchEvents:fetchAppLaunchEventsForTraining appLaunchCountedSet:v9];
                 objc_autoreleasePoolPop(v25);
-                if (![v4 didDefer])
+                if (![taskCopy didDefer])
                 {
-                  [v4 setProgressUnits:80];
+                  [taskCopy setProgressUnits:80];
                   v26 = __atxlog_handle_default();
                   if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
                   {
@@ -393,9 +393,9 @@ LABEL_50:
                   }
 
                   v27 = objc_autoreleasePoolPush();
-                  [(ATXMMAppPredictionExpert *)ATXIdleTimeEndMMExpert trainExpertWithAppLaunchEvents:v8 appLaunchCountedSet:v9];
+                  [(ATXMMAppPredictionExpert *)ATXIdleTimeEndMMExpert trainExpertWithAppLaunchEvents:fetchAppLaunchEventsForTraining appLaunchCountedSet:v9];
                   objc_autoreleasePoolPop(v27);
-                  [v4 setDone];
+                  [taskCopy setDone];
                   v10 = __atxlog_handle_default();
                   if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
                   {
@@ -433,7 +433,7 @@ LABEL_51:
     _os_log_impl(&dword_2263AA000, v12, OS_LOG_TYPE_DEFAULT, "ATXMM: Didn't retrieve any app launches. Exiting training early.", v28, 2u);
   }
 
-  [v4 setDone];
+  [taskCopy setDone];
 LABEL_13:
 
   objc_autoreleasePoolPop(v6);
@@ -442,9 +442,9 @@ LABEL_13:
 - (void)fetchAppLaunchEventsForTraining
 {
   v7 = *MEMORY[0x277D85DE8];
-  v3 = [a1 lastObject];
+  lastObject = [self lastObject];
   v5 = 138412290;
-  v6 = v3;
+  v6 = lastObject;
   _os_log_debug_impl(&dword_2263AA000, a2, OS_LOG_TYPE_DEBUG, "ATXMM: Last App Launch Event: %@", &v5, 0xCu);
 
   v4 = *MEMORY[0x277D85DE8];

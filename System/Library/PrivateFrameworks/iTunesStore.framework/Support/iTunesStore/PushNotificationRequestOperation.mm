@@ -1,23 +1,23 @@
 @interface PushNotificationRequestOperation
-- (BOOL)_loadResponseWithAccountIdentifier:(id)a3 URL:(id)a4 error:(id *)a5;
+- (BOOL)_loadResponseWithAccountIdentifier:(id)identifier URL:(id)l error:(id *)error;
 - (NSString)userAgent;
-- (PushNotificationRequestOperation)initWithPushNotificationParameters:(id)a3;
+- (PushNotificationRequestOperation)initWithPushNotificationParameters:(id)parameters;
 - (SSURLConnectionResponse)URLResponse;
 - (void)dealloc;
 - (void)run;
-- (void)setUserAgent:(id)a3;
+- (void)setUserAgent:(id)agent;
 @end
 
 @implementation PushNotificationRequestOperation
 
-- (PushNotificationRequestOperation)initWithPushNotificationParameters:(id)a3
+- (PushNotificationRequestOperation)initWithPushNotificationParameters:(id)parameters
 {
   v6.receiver = self;
   v6.super_class = PushNotificationRequestOperation;
   v4 = [(PushNotificationRequestOperation *)&v6 init];
   if (v4)
   {
-    v4->_parameters = [a3 copy];
+    v4->_parameters = [parameters copy];
   }
 
   return v4;
@@ -30,14 +30,14 @@
   [(PushNotificationRequestOperation *)&v3 dealloc];
 }
 
-- (void)setUserAgent:(id)a3
+- (void)setUserAgent:(id)agent
 {
   [(PushNotificationRequestOperation *)self lock];
   userAgent = self->_userAgent;
-  if (userAgent != a3)
+  if (userAgent != agent)
   {
 
-    self->_userAgent = [a3 copy];
+    self->_userAgent = [agent copy];
   }
 
   [(PushNotificationRequestOperation *)self unlock];
@@ -64,11 +64,11 @@
 - (void)run
 {
   v47 = 0;
-  v3 = [(SSVPushNotificationParameters *)self->_parameters accountIdentifier];
-  if (!v3)
+  accountIdentifier = [(SSVPushNotificationParameters *)self->_parameters accountIdentifier];
+  if (!accountIdentifier)
   {
-    v3 = [objc_msgSend(+[SSAccountStore defaultStore](SSAccountStore "defaultStore")];
-    if (!v3)
+    accountIdentifier = [objc_msgSend(+[SSAccountStore defaultStore](SSAccountStore "defaultStore")];
+    if (!accountIdentifier)
     {
       v27 = +[SSLogConfig sharedDaemonConfig];
       if (!v27)
@@ -76,15 +76,15 @@
         v27 = +[SSLogConfig sharedConfig];
       }
 
-      v28 = [v27 shouldLog];
+      shouldLog = [v27 shouldLog];
       if ([v27 shouldLogToDisk])
       {
-        v29 = v28 | 2;
+        v29 = shouldLog | 2;
       }
 
       else
       {
-        v29 = v28;
+        v29 = shouldLog;
       }
 
       if (!os_log_type_enabled([v27 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -113,11 +113,11 @@
     }
   }
 
-  v4 = v3;
+  v4 = accountIdentifier;
   v5 = [SSURLBagContext contextWithBagType:0];
   [(SSURLBagContext *)v5 setUserIdentifier:v4];
-  v6 = [(PushNotificationRequestOperation *)self userAgent];
-  [(SSURLBagContext *)v5 setValue:v6 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  userAgent = [(PushNotificationRequestOperation *)self userAgent];
+  [(SSURLBagContext *)v5 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
   v7 = [(PushNotificationRequestOperation *)self loadedURLBagWithContext:v5 returningError:0];
   v8 = [v7 valueForKey:@"push-notification-types"];
   objc_opt_class();
@@ -126,15 +126,15 @@
     goto LABEL_18;
   }
 
-  v9 = [(SSVPushNotificationParameters *)self->_parameters requestType];
-  if (!v9)
+  requestType = [(SSVPushNotificationParameters *)self->_parameters requestType];
+  if (!requestType)
   {
     v10 = [v8 objectForKey:@"add-push-notification-type-url"];
     LODWORD(v11) = 1;
     goto LABEL_20;
   }
 
-  if (v9 == 1)
+  if (requestType == 1)
   {
     v10 = [v8 objectForKey:@"remove-push-notification-type-url"];
 LABEL_19:
@@ -148,15 +148,15 @@ LABEL_19:
     v12 = +[SSLogConfig sharedConfig];
   }
 
-  v13 = [v12 shouldLog];
+  shouldLog2 = [v12 shouldLog];
   if ([v12 shouldLogToDisk])
   {
-    v14 = v13 | 2;
+    v14 = shouldLog2 | 2;
   }
 
   else
   {
-    v14 = v13;
+    v14 = shouldLog2;
   }
 
   if (!os_log_type_enabled([v12 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -172,11 +172,11 @@ LABEL_18:
   }
 
   v15 = objc_opt_class();
-  v16 = [(SSVPushNotificationParameters *)self->_parameters requestType];
+  requestType2 = [(SSVPushNotificationParameters *)self->_parameters requestType];
   v48 = 138412546;
   v49 = v15;
   v50 = 2048;
-  v51 = v16;
+  v51 = requestType2;
   LODWORD(v45) = 22;
   v44 = &v48;
   v11 = _os_log_send_and_compose_impl();
@@ -200,15 +200,15 @@ LABEL_20:
       v20 = +[SSLogConfig sharedConfig];
     }
 
-    v21 = [v20 shouldLog];
+    shouldLog3 = [v20 shouldLog];
     if ([v20 shouldLogToDisk])
     {
-      v22 = v21 | 2;
+      v22 = shouldLog3 | 2;
     }
 
     else
     {
-      v22 = v21;
+      v22 = shouldLog3;
     }
 
     if (!os_log_type_enabled([v20 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -243,19 +243,19 @@ LABEL_46:
 
   if (v11)
   {
-    v18 = [(SSVPushNotificationParameters *)self->_parameters environmentName];
-    if (!v18)
+    environmentName = [(SSVPushNotificationParameters *)self->_parameters environmentName];
+    if (!environmentName)
     {
       v19 = [v7 valueForKey:@"push-notifications"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v18 = [v19 objectForKey:@"environment"];
+        environmentName = [v19 objectForKey:@"environment"];
       }
 
       else
       {
-        v18 = 0;
+        environmentName = 0;
       }
     }
 
@@ -268,15 +268,15 @@ LABEL_46:
         v35 = +[SSLogConfig sharedConfig];
       }
 
-      v36 = [v35 shouldLog];
+      shouldLog4 = [v35 shouldLog];
       if ([v35 shouldLogToDisk])
       {
-        v37 = v36 | 2;
+        v37 = shouldLog4 | 2;
       }
 
       else
       {
-        v37 = v36;
+        v37 = shouldLog4;
       }
 
       if (!os_log_type_enabled([v35 OSLogObject], OS_LOG_TYPE_INFO))
@@ -290,7 +290,7 @@ LABEL_46:
         v48 = 138412802;
         v49 = v38;
         v50 = 2112;
-        v51 = v18;
+        v51 = environmentName;
         v52 = 2112;
         v53 = v10;
         LODWORD(v45) = 32;
@@ -312,7 +312,7 @@ LABEL_46:
       v46[2] = sub_1001023D8;
       v46[3] = &unk_100327378;
       v46[4] = v42;
-      [+[PushNotificationController sharedInstance](PushNotificationController registerTokenForEnvironmentName:"registerTokenForEnvironmentName:accountIdentifier:completionBlock:" accountIdentifier:v18 completionBlock:v4, v46];
+      [+[PushNotificationController sharedInstance](PushNotificationController registerTokenForEnvironmentName:"registerTokenForEnvironmentName:accountIdentifier:completionBlock:" accountIdentifier:environmentName completionBlock:v4, v46];
       v43 = dispatch_time(0, 60000000000);
       dispatch_semaphore_wait(v42, v43);
       dispatch_release(v42);
@@ -326,31 +326,31 @@ LABEL_61:
   [(PushNotificationRequestOperation *)self setSuccess:v34];
 }
 
-- (BOOL)_loadResponseWithAccountIdentifier:(id)a3 URL:(id)a4 error:(id *)a5
+- (BOOL)_loadResponseWithAccountIdentifier:(id)identifier URL:(id)l error:(id *)error
 {
   v28 = 0;
   v9 = objc_alloc_init(ISStoreURLOperation);
   [v9 setDataProvider:{+[DaemonProtocolDataProvider provider](DaemonProtocolDataProvider, "provider")}];
-  v10 = [[SSMutableAuthenticationContext alloc] initWithAccountIdentifier:a3];
+  v10 = [[SSMutableAuthenticationContext alloc] initWithAccountIdentifier:identifier];
   [v10 setPromptStyle:1000];
-  v11 = [(PushNotificationRequestOperation *)self userAgent];
+  userAgent = [(PushNotificationRequestOperation *)self userAgent];
   v12 = SSHTTPHeaderUserAgent;
-  [v10 setValue:v11 forHTTPHeaderField:SSHTTPHeaderUserAgent];
+  [v10 setValue:userAgent forHTTPHeaderField:SSHTTPHeaderUserAgent];
   [v9 setAuthenticationContext:v10];
 
   v13 = objc_alloc_init(SSMutableURLRequestProperties);
   [v13 setHTTPMethod:@"POST"];
-  [v13 setURL:a4];
+  [v13 setURL:l];
   [v13 setValue:@"application/x-apple-plist" forHTTPHeaderField:@"Content-Type"];
   [v13 setValue:-[PushNotificationRequestOperation userAgent](self forHTTPHeaderField:{"userAgent"), v12}];
-  v14 = [(SSVPushNotificationParameters *)self->_parameters _copyParametersDictionary];
-  v15 = [+[ISDevice sharedInstance](ISDevice guid];
-  if (v15)
+  _copyParametersDictionary = [(SSVPushNotificationParameters *)self->_parameters _copyParametersDictionary];
+  guid = [+[ISDevice sharedInstance](ISDevice guid];
+  if (guid)
   {
-    [v14 setObject:v15 forKey:@"guid"];
+    [_copyParametersDictionary setObject:guid forKey:@"guid"];
   }
 
-  [v13 setRequestParameters:v14];
+  [v13 setRequestParameters:_copyParametersDictionary];
 
   [v9 setRequestProperties:v13];
   v16 = +[SSLogConfig sharedDaemonConfig];
@@ -359,15 +359,15 @@ LABEL_61:
     v16 = +[SSLogConfig sharedConfig];
   }
 
-  v17 = [v16 shouldLog];
+  shouldLog = [v16 shouldLog];
   if ([v16 shouldLogToDisk])
   {
-    v18 = v17 | 2;
+    v18 = shouldLog | 2;
   }
 
   else
   {
-    v18 = v17;
+    v18 = shouldLog;
   }
 
   if (!os_log_type_enabled([v16 OSLogObject], OS_LOG_TYPE_INFO))
@@ -380,7 +380,7 @@ LABEL_61:
     v29 = 138412546;
     v30 = objc_opt_class();
     v31 = 2112;
-    v32 = a4;
+    lCopy = l;
     LODWORD(v27) = 22;
     v26 = &v29;
     v19 = _os_log_send_and_compose_impl();
@@ -418,9 +418,9 @@ LABEL_61:
   else
   {
 
-    if (a5)
+    if (error)
     {
-      *a5 = v28;
+      *error = v28;
     }
   }
 

@@ -1,15 +1,15 @@
 @interface _CPResultSectionForFeedback
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)bundleIdentifier;
-- (_CPResultSectionForFeedback)initWithFacade:(id)a3;
+- (_CPResultSectionForFeedback)initWithFacade:(id)facade;
 - (int)knownBundleIdentifier;
 - (unint64_t)hash;
-- (void)addResults:(id)a3;
+- (void)addResults:(id)results;
 - (void)clearBundleid;
-- (void)setBundleIdentifier:(id)a3;
-- (void)setKnownBundleIdentifier:(int)a3;
-- (void)setResults:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setBundleIdentifier:(id)identifier;
+- (void)setKnownBundleIdentifier:(int)identifier;
+- (void)setResults:(id)results;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _CPResultSectionForFeedback
@@ -38,28 +38,28 @@
   return v9 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ [(_CPButtonForFeedback *)self->_titleButtonItem hash]^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
-  v5 = [(_CPResultSectionForFeedback *)self results];
-  v6 = [v4 results];
-  if ((v5 != 0) == (v6 == 0))
+  results = [(_CPResultSectionForFeedback *)self results];
+  results2 = [equalCopy results];
+  if ((results != 0) == (results2 == 0))
   {
     goto LABEL_30;
   }
 
-  v7 = [(_CPResultSectionForFeedback *)self results];
-  if (v7)
+  results3 = [(_CPResultSectionForFeedback *)self results];
+  if (results3)
   {
-    v8 = v7;
-    v9 = [(_CPResultSectionForFeedback *)self results];
-    v10 = [v4 results];
-    v11 = [v9 isEqual:v10];
+    v8 = results3;
+    results4 = [(_CPResultSectionForFeedback *)self results];
+    results5 = [equalCopy results];
+    v11 = [results4 isEqual:results5];
 
     if (!v11)
     {
@@ -71,20 +71,20 @@
   {
   }
 
-  v5 = [(_CPResultSectionForFeedback *)self identifier];
-  v6 = [v4 identifier];
-  if ((v5 != 0) == (v6 == 0))
+  results = [(_CPResultSectionForFeedback *)self identifier];
+  results2 = [equalCopy identifier];
+  if ((results != 0) == (results2 == 0))
   {
     goto LABEL_30;
   }
 
-  v12 = [(_CPResultSectionForFeedback *)self identifier];
-  if (v12)
+  identifier = [(_CPResultSectionForFeedback *)self identifier];
+  if (identifier)
   {
-    v13 = v12;
-    v14 = [(_CPResultSectionForFeedback *)self identifier];
-    v15 = [v4 identifier];
-    v16 = [v14 isEqual:v15];
+    v13 = identifier;
+    identifier2 = [(_CPResultSectionForFeedback *)self identifier];
+    identifier3 = [equalCopy identifier];
+    v16 = [identifier2 isEqual:identifier3];
 
     if (!v16)
     {
@@ -97,26 +97,26 @@
   }
 
   rankingScore = self->_rankingScore;
-  [v4 rankingScore];
+  [equalCopy rankingScore];
   if (rankingScore != v18)
   {
     goto LABEL_31;
   }
 
-  v5 = [(_CPResultSectionForFeedback *)self fallbackResultSection];
-  v6 = [v4 fallbackResultSection];
-  if ((v5 != 0) == (v6 == 0))
+  results = [(_CPResultSectionForFeedback *)self fallbackResultSection];
+  results2 = [equalCopy fallbackResultSection];
+  if ((results != 0) == (results2 == 0))
   {
     goto LABEL_30;
   }
 
-  v19 = [(_CPResultSectionForFeedback *)self fallbackResultSection];
-  if (v19)
+  fallbackResultSection = [(_CPResultSectionForFeedback *)self fallbackResultSection];
+  if (fallbackResultSection)
   {
-    v20 = v19;
-    v21 = [(_CPResultSectionForFeedback *)self fallbackResultSection];
-    v22 = [v4 fallbackResultSection];
-    v23 = [v21 isEqual:v22];
+    v20 = fallbackResultSection;
+    fallbackResultSection2 = [(_CPResultSectionForFeedback *)self fallbackResultSection];
+    fallbackResultSection3 = [equalCopy fallbackResultSection];
+    v23 = [fallbackResultSection2 isEqual:fallbackResultSection3];
 
     if (!v23)
     {
@@ -128,20 +128,20 @@
   {
   }
 
-  v5 = [(_CPResultSectionForFeedback *)self bundleIdentifier];
-  v6 = [v4 bundleIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  results = [(_CPResultSectionForFeedback *)self bundleIdentifier];
+  results2 = [equalCopy bundleIdentifier];
+  if ((results != 0) == (results2 == 0))
   {
     goto LABEL_30;
   }
 
-  v24 = [(_CPResultSectionForFeedback *)self bundleIdentifier];
-  if (v24)
+  bundleIdentifier = [(_CPResultSectionForFeedback *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v25 = v24;
-    v26 = [(_CPResultSectionForFeedback *)self bundleIdentifier];
-    v27 = [v4 bundleIdentifier];
-    v28 = [v26 isEqual:v27];
+    v25 = bundleIdentifier;
+    bundleIdentifier2 = [(_CPResultSectionForFeedback *)self bundleIdentifier];
+    bundleIdentifier3 = [equalCopy bundleIdentifier];
+    v28 = [bundleIdentifier2 isEqual:bundleIdentifier3];
 
     if (!v28)
     {
@@ -154,34 +154,34 @@
   }
 
   knownBundleIdentifier = self->_knownBundleIdentifier;
-  if (knownBundleIdentifier != [v4 knownBundleIdentifier])
+  if (knownBundleIdentifier != [equalCopy knownBundleIdentifier])
   {
     goto LABEL_31;
   }
 
   isInitiallyHidden = self->_isInitiallyHidden;
-  if (isInitiallyHidden != [v4 isInitiallyHidden])
+  if (isInitiallyHidden != [equalCopy isInitiallyHidden])
   {
     goto LABEL_31;
   }
 
   totalAvailableResults = self->_totalAvailableResults;
-  if (totalAvailableResults != [v4 totalAvailableResults])
+  if (totalAvailableResults != [equalCopy totalAvailableResults])
   {
     goto LABEL_31;
   }
 
-  v5 = [(_CPResultSectionForFeedback *)self titleButtonItem];
-  v6 = [v4 titleButtonItem];
-  if ((v5 != 0) == (v6 == 0))
+  results = [(_CPResultSectionForFeedback *)self titleButtonItem];
+  results2 = [equalCopy titleButtonItem];
+  if ((results != 0) == (results2 == 0))
   {
 LABEL_30:
 
     goto LABEL_31;
   }
 
-  v32 = [(_CPResultSectionForFeedback *)self titleButtonItem];
-  if (!v32)
+  titleButtonItem = [(_CPResultSectionForFeedback *)self titleButtonItem];
+  if (!titleButtonItem)
   {
 
 LABEL_34:
@@ -189,10 +189,10 @@ LABEL_34:
     goto LABEL_32;
   }
 
-  v33 = v32;
-  v34 = [(_CPResultSectionForFeedback *)self titleButtonItem];
-  v35 = [v4 titleButtonItem];
-  v36 = [v34 isEqual:v35];
+  v33 = titleButtonItem;
+  titleButtonItem2 = [(_CPResultSectionForFeedback *)self titleButtonItem];
+  titleButtonItem3 = [equalCopy titleButtonItem];
+  v36 = [titleButtonItem2 isEqual:titleButtonItem3];
 
   if (v36)
   {
@@ -206,10 +206,10 @@ LABEL_32:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -242,9 +242,9 @@ LABEL_32:
     while (v7);
   }
 
-  v11 = [(_CPResultSectionForFeedback *)self identifier];
+  identifier = [(_CPResultSectionForFeedback *)self identifier];
 
-  if (v11)
+  if (identifier)
   {
     identifier = self->_identifier;
     PBDataWriterWriteStringField();
@@ -257,17 +257,17 @@ LABEL_32:
     PBDataWriterWriteDoubleField();
   }
 
-  v15 = [(_CPResultSectionForFeedback *)self fallbackResultSection];
+  fallbackResultSection = [(_CPResultSectionForFeedback *)self fallbackResultSection];
 
-  if (v15)
+  if (fallbackResultSection)
   {
     fallbackResultSection = self->_fallbackResultSection;
     PBDataWriterWriteDataField();
   }
 
-  v17 = [(_CPResultSectionForFeedback *)self bundleIdentifier];
+  bundleIdentifier = [(_CPResultSectionForFeedback *)self bundleIdentifier];
 
-  if (v17)
+  if (bundleIdentifier)
   {
     bundleIdentifier = self->_bundleIdentifier;
     PBDataWriterWriteStringField();
@@ -291,11 +291,11 @@ LABEL_32:
     PBDataWriterWriteUint32Field();
   }
 
-  v22 = [(_CPResultSectionForFeedback *)self titleButtonItem];
+  titleButtonItem = [(_CPResultSectionForFeedback *)self titleButtonItem];
 
-  if (v22)
+  if (titleButtonItem)
   {
-    v23 = [(_CPResultSectionForFeedback *)self titleButtonItem];
+    titleButtonItem2 = [(_CPResultSectionForFeedback *)self titleButtonItem];
     PBDataWriterWriteSubmessage();
   }
 
@@ -315,11 +315,11 @@ LABEL_32:
   }
 }
 
-- (void)setKnownBundleIdentifier:(int)a3
+- (void)setKnownBundleIdentifier:(int)identifier
 {
   [(_CPResultSectionForFeedback *)self clearBundleid];
   self->_whichBundleid = 2;
-  self->_knownBundleIdentifier = a3;
+  self->_knownBundleIdentifier = identifier;
 }
 
 - (NSString)bundleIdentifier
@@ -337,37 +337,37 @@ LABEL_32:
   return v3;
 }
 
-- (void)setBundleIdentifier:(id)a3
+- (void)setBundleIdentifier:(id)identifier
 {
-  v6 = a3;
+  identifierCopy = identifier;
   [(_CPResultSectionForFeedback *)self clearBundleid];
-  self->_whichBundleid = v6 != 0;
-  v4 = [v6 copy];
+  self->_whichBundleid = identifierCopy != 0;
+  v4 = [identifierCopy copy];
   bundleIdentifier = self->_bundleIdentifier;
   self->_bundleIdentifier = v4;
 }
 
-- (void)addResults:(id)a3
+- (void)addResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   results = self->_results;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!results)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_results;
-    self->_results = v6;
+    self->_results = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     results = self->_results;
   }
 
-  [(NSArray *)results addObject:v4];
+  [(NSArray *)results addObject:resultsCopy];
 }
 
-- (void)setResults:(id)a3
+- (void)setResults:(id)results
 {
-  v4 = [a3 mutableCopy];
+  v4 = [results mutableCopy];
   results = self->_results;
   self->_results = v4;
 
@@ -383,10 +383,10 @@ LABEL_32:
   self->_knownBundleIdentifier = 0;
 }
 
-- (_CPResultSectionForFeedback)initWithFacade:(id)a3
+- (_CPResultSectionForFeedback)initWithFacade:(id)facade
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  facadeCopy = facade;
   v32.receiver = self;
   v32.super_class = _CPResultSectionForFeedback;
   v5 = [(_CPResultSectionForFeedback *)&v32 init];
@@ -395,8 +395,8 @@ LABEL_32:
     goto LABEL_378;
   }
 
-  v6 = [v4 results];
-  if (v6)
+  results = [facadeCopy results];
+  if (results)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -410,8 +410,8 @@ LABEL_32:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v8 = [v4 results];
-  v9 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+  results2 = [facadeCopy results];
+  v9 = [results2 countByEnumeratingWithState:&v28 objects:v33 count:16];
   if (v9)
   {
     v10 = v9;
@@ -422,395 +422,395 @@ LABEL_32:
       {
         if (*v29 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(results2);
         }
 
         v13 = [[_CPSearchResultForFeedback alloc] initWithFacade:*(*(&v28 + 1) + 8 * i)];
         [v7 addObject:v13];
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      v10 = [results2 countByEnumeratingWithState:&v28 objects:v33 count:16];
     }
 
     while (v10);
   }
 
   [(_CPResultSectionForFeedback *)v5 setResults:v7];
-  v14 = [v4 identifier];
+  identifier = [facadeCopy identifier];
 
-  if (v14)
+  if (identifier)
   {
-    v15 = [v4 identifier];
-    [(_CPResultSectionForFeedback *)v5 setIdentifier:v15];
+    identifier2 = [facadeCopy identifier];
+    [(_CPResultSectionForFeedback *)v5 setIdentifier:identifier2];
   }
 
-  [v4 rankingScore];
+  [facadeCopy rankingScore];
   [(_CPResultSectionForFeedback *)v5 setRankingScore:?];
-  v16 = [v4 bundleIdentifier];
+  bundleIdentifier = [facadeCopy bundleIdentifier];
 
-  if (v16)
+  if (bundleIdentifier)
   {
-    v17 = [v4 bundleIdentifier];
-    if ([v17 compare:@"unknown" options:3])
+    bundleIdentifier2 = [facadeCopy bundleIdentifier];
+    if ([bundleIdentifier2 compare:@"unknown" options:3])
     {
-      if ([v17 compare:@"com.apple.parsec.web_index" options:3])
+      if ([bundleIdentifier2 compare:@"com.apple.parsec.web_index" options:3])
       {
-        if ([v17 compare:@"com.apple.application" options:3])
+        if ([bundleIdentifier2 compare:@"com.apple.application" options:3])
         {
           v18 = 3;
-          if ([v17 compare:@"com.apple.preferences" options:3])
+          if ([bundleIdentifier2 compare:@"com.apple.preferences" options:3])
           {
-            if ([v17 compare:@"com.apple.mobilemail" options:3])
+            if ([bundleIdentifier2 compare:@"com.apple.mobilemail" options:3])
             {
-              if ([v17 compare:@"com.apple.mobilesafari" options:3])
+              if ([bundleIdentifier2 compare:@"com.apple.mobilesafari" options:3])
               {
-                if ([v17 compare:@"com.apple.mobilesms" options:3])
+                if ([bundleIdentifier2 compare:@"com.apple.mobilesms" options:3])
                 {
-                  if ([v17 compare:@"com.apple.stocks" options:3])
+                  if ([bundleIdentifier2 compare:@"com.apple.stocks" options:3])
                   {
-                    if ([v17 compare:@"com.apple.parsec.stocks" options:3])
+                    if ([bundleIdentifier2 compare:@"com.apple.parsec.stocks" options:3])
                     {
-                      if ([v17 compare:@"com.apple.taptoradar" options:3])
+                      if ([bundleIdentifier2 compare:@"com.apple.taptoradar" options:3])
                       {
-                        if ([v17 compare:@"com.apple.searchd.zkw.apps" options:3])
+                        if ([bundleIdentifier2 compare:@"com.apple.searchd.zkw.apps" options:3])
                         {
-                          if ([v17 compare:@"com.apple.searchd.suggestions" options:3])
+                          if ([bundleIdentifier2 compare:@"com.apple.searchd.suggestions" options:3])
                           {
-                            if ([v17 compare:@"com.apple.podcasts" options:3])
+                            if ([bundleIdentifier2 compare:@"com.apple.podcasts" options:3])
                             {
-                              if ([v17 compare:@"com.apple.mobileaddressbook" options:3])
+                              if ([bundleIdentifier2 compare:@"com.apple.mobileaddressbook" options:3])
                               {
-                                if ([v17 compare:@"com.apple.documentsapp" options:3])
+                                if ([bundleIdentifier2 compare:@"com.apple.documentsapp" options:3])
                                 {
-                                  if ([v17 compare:@"com.apple.coresuggestions" options:3])
+                                  if ([bundleIdentifier2 compare:@"com.apple.coresuggestions" options:3])
                                   {
-                                    if ([v17 compare:@"com.apple.clouddocs.mobiledocumentsfileprovider" options:3])
+                                    if ([bundleIdentifier2 compare:@"com.apple.clouddocs.mobiledocumentsfileprovider" options:3])
                                     {
-                                      if ([v17 compare:@"com.apple.music" options:3])
+                                      if ([bundleIdentifier2 compare:@"com.apple.music" options:3])
                                       {
-                                        if ([v17 compare:@"com.apple.mobilecal" options:3])
+                                        if ([bundleIdentifier2 compare:@"com.apple.mobilecal" options:3])
                                         {
-                                          if ([v17 compare:@"com.apple.other:search_web" options:3])
+                                          if ([bundleIdentifier2 compare:@"com.apple.other:search_web" options:3])
                                           {
-                                            if ([v17 compare:@"com.apple.other:search_app_store" options:3])
+                                            if ([bundleIdentifier2 compare:@"com.apple.other:search_app_store" options:3])
                                             {
-                                              if ([v17 compare:@"com.apple.other:search_maps" options:3])
+                                              if ([bundleIdentifier2 compare:@"com.apple.other:search_maps" options:3])
                                               {
-                                                if ([v17 compare:@"com.apple.spotlight.suggestionlist.usertypedstring" options:3])
+                                                if ([bundleIdentifier2 compare:@"com.apple.spotlight.suggestionlist.usertypedstring" options:3])
                                                 {
-                                                  if ([v17 compare:@"com.apple.spotlight.suggestionlist.parsec" options:3])
+                                                  if ([bundleIdentifier2 compare:@"com.apple.spotlight.suggestionlist.parsec" options:3])
                                                   {
-                                                    if ([v17 compare:@"com.apple.other:taptoradar" options:3])
+                                                    if ([bundleIdentifier2 compare:@"com.apple.other:taptoradar" options:3])
                                                     {
-                                                      if ([v17 compare:@"com.apple.spotlightui.search-through" options:3])
+                                                      if ([bundleIdentifier2 compare:@"com.apple.spotlightui.search-through" options:3])
                                                       {
-                                                        if ([v17 compare:@"com.apple.weather" options:3])
+                                                        if ([bundleIdentifier2 compare:@"com.apple.weather" options:3])
                                                         {
-                                                          if ([v17 compare:@"com.apple.maps" options:3])
+                                                          if ([bundleIdentifier2 compare:@"com.apple.maps" options:3])
                                                           {
-                                                            if ([v17 compare:@"google_comp" options:3])
+                                                            if ([bundleIdentifier2 compare:@"google_comp" options:3])
                                                             {
-                                                              if ([v17 compare:@"history" options:3])
+                                                              if ([bundleIdentifier2 compare:@"history" options:3])
                                                               {
-                                                                if ([v17 compare:@"com.apple.safari.completionlist.searchenginesuggestion" options:3])
+                                                                if ([bundleIdentifier2 compare:@"com.apple.safari.completionlist.searchenginesuggestion" options:3])
                                                                 {
-                                                                  if ([v17 compare:@"google_search" options:3])
+                                                                  if ([bundleIdentifier2 compare:@"google_search" options:3])
                                                                   {
-                                                                    if ([v17 compare:@"com.apple.safari.completionlist.usertypedstring" options:3])
+                                                                    if ([bundleIdentifier2 compare:@"com.apple.safari.completionlist.usertypedstring" options:3])
                                                                     {
-                                                                      if ([v17 compare:@"com.apple.history" options:3])
+                                                                      if ([bundleIdentifier2 compare:@"com.apple.history" options:3])
                                                                       {
-                                                                        if ([v17 compare:@"com.apple.safari.completionlist.findonpage" options:3])
+                                                                        if ([bundleIdentifier2 compare:@"com.apple.safari.completionlist.findonpage" options:3])
                                                                         {
-                                                                          if ([v17 compare:@"tophit" options:3])
+                                                                          if ([bundleIdentifier2 compare:@"tophit" options:3])
                                                                           {
-                                                                            if ([v17 compare:@"com.apple.tophit" options:3])
+                                                                            if ([bundleIdentifier2 compare:@"com.apple.tophit" options:3])
                                                                             {
-                                                                              if ([v17 compare:@"icloud_tab" options:3])
+                                                                              if ([bundleIdentifier2 compare:@"icloud_tab" options:3])
                                                                               {
-                                                                                if ([v17 compare:@"com.apple.safari.completionlist.recentsearch" options:3])
+                                                                                if ([bundleIdentifier2 compare:@"com.apple.safari.completionlist.recentsearch" options:3])
                                                                                 {
-                                                                                  if ([v17 compare:@"bookmark" options:3])
+                                                                                  if ([bundleIdentifier2 compare:@"bookmark" options:3])
                                                                                   {
-                                                                                    if ([v17 compare:@"yahoo_comp" options:3])
+                                                                                    if ([bundleIdentifier2 compare:@"yahoo_comp" options:3])
                                                                                     {
-                                                                                      if ([v17 compare:@"com.apple.bookmarks" options:3])
+                                                                                      if ([bundleIdentifier2 compare:@"com.apple.bookmarks" options:3])
                                                                                       {
-                                                                                        if ([v17 compare:@"com.apple.other" options:3])
+                                                                                        if ([bundleIdentifier2 compare:@"com.apple.other" options:3])
                                                                                         {
-                                                                                          if ([v17 compare:@"bing_comp" options:3])
+                                                                                          if ([bundleIdentifier2 compare:@"bing_comp" options:3])
                                                                                           {
-                                                                                            if ([v17 compare:@"com.apple.hashtagimages.querysuggestions.suggestion" options:3])
+                                                                                            if ([bundleIdentifier2 compare:@"com.apple.hashtagimages.querysuggestions.suggestion" options:3])
                                                                                             {
-                                                                                              if ([v17 compare:@"com.apple.safari.completionlist.restoredsearchcompletion" options:3])
+                                                                                              if ([bundleIdentifier2 compare:@"com.apple.safari.completionlist.restoredsearchcompletion" options:3])
                                                                                               {
-                                                                                                if ([v17 compare:@"ddg_comp" options:3])
+                                                                                                if ([bundleIdentifier2 compare:@"ddg_comp" options:3])
                                                                                                 {
-                                                                                                  if ([v17 compare:@"yahoo_search" options:3])
+                                                                                                  if ([bundleIdentifier2 compare:@"yahoo_search" options:3])
                                                                                                   {
-                                                                                                    if ([v17 compare:@"com.atebits.tweetie2" options:3])
+                                                                                                    if ([bundleIdentifier2 compare:@"com.atebits.tweetie2" options:3])
                                                                                                     {
-                                                                                                      if ([v17 compare:@"address_box" options:3])
+                                                                                                      if ([bundleIdentifier2 compare:@"address_box" options:3])
                                                                                                       {
-                                                                                                        if ([v17 compare:@"com.apple.spotlight.suggestionlist.local" options:3])
+                                                                                                        if ([bundleIdentifier2 compare:@"com.apple.spotlight.suggestionlist.local" options:3])
                                                                                                         {
-                                                                                                          if ([v17 compare:@"ddg_search" options:3])
+                                                                                                          if ([bundleIdentifier2 compare:@"ddg_search" options:3])
                                                                                                           {
-                                                                                                            if ([v17 compare:@"bing_search" options:3])
+                                                                                                            if ([bundleIdentifier2 compare:@"bing_search" options:3])
                                                                                                             {
-                                                                                                              if ([v17 compare:@"com.apple.news" options:3])
+                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.news" options:3])
                                                                                                               {
-                                                                                                                if ([v17 compare:@"com.apple.coresuggestions" options:3])
+                                                                                                                if ([bundleIdentifier2 compare:@"com.apple.coresuggestions" options:3])
                                                                                                                 {
-                                                                                                                  if ([v17 compare:@"com.giphy.giphyformessenger" options:3])
+                                                                                                                  if ([bundleIdentifier2 compare:@"com.giphy.giphyformessenger" options:3])
                                                                                                                   {
-                                                                                                                    if ([v17 compare:@"com.apple.settings" options:3])
+                                                                                                                    if ([bundleIdentifier2 compare:@"com.apple.settings" options:3])
                                                                                                                     {
-                                                                                                                      if ([v17 compare:@"com.google.ios.youtube" options:3])
+                                                                                                                      if ([bundleIdentifier2 compare:@"com.google.ios.youtube" options:3])
                                                                                                                       {
-                                                                                                                        if ([v17 compare:@"net.whatsapp.whatsapp" options:3])
+                                                                                                                        if ([bundleIdentifier2 compare:@"net.whatsapp.whatsapp" options:3])
                                                                                                                         {
-                                                                                                                          if ([v17 compare:@"com.apple.applications" options:3])
+                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.applications" options:3])
                                                                                                                           {
-                                                                                                                            if ([v17 compare:@"com.riffsy.riffsykeyboard" options:3])
+                                                                                                                            if ([bundleIdentifier2 compare:@"com.riffsy.riffsykeyboard" options:3])
                                                                                                                             {
-                                                                                                                              if ([v17 compare:@"com.apple.spotlight.suggestionlist.contact" options:3])
+                                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.spotlight.suggestionlist.contact" options:3])
                                                                                                                               {
-                                                                                                                                if ([v17 compare:@"com.yelp.yelpiphone" options:3])
+                                                                                                                                if ([bundleIdentifier2 compare:@"com.yelp.yelpiphone" options:3])
                                                                                                                                 {
-                                                                                                                                  if ([v17 compare:@"com.microsoft.office.outlook" options:3])
+                                                                                                                                  if ([bundleIdentifier2 compare:@"com.microsoft.office.outlook" options:3])
                                                                                                                                   {
-                                                                                                                                    if ([v17 compare:@"pinterest" options:3])
+                                                                                                                                    if ([bundleIdentifier2 compare:@"pinterest" options:3])
                                                                                                                                     {
-                                                                                                                                      if ([v17 compare:@"com.apple.mail" options:3])
+                                                                                                                                      if ([bundleIdentifier2 compare:@"com.apple.mail" options:3])
                                                                                                                                       {
-                                                                                                                                        if ([v17 compare:@"com.apple.hashtagimages.categorylist.categories.category" options:3])
+                                                                                                                                        if ([bundleIdentifier2 compare:@"com.apple.hashtagimages.categorylist.categories.category" options:3])
                                                                                                                                         {
-                                                                                                                                          if ([v17 compare:@"com.apple.mobilenotes" options:3])
+                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.mobilenotes" options:3])
                                                                                                                                           {
-                                                                                                                                            if ([v17 compare:@"com.apple.pdfs" options:3])
+                                                                                                                                            if ([bundleIdentifier2 compare:@"com.apple.pdfs" options:3])
                                                                                                                                             {
-                                                                                                                                              if ([v17 compare:@"com.apple.documents" options:3])
+                                                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.documents" options:3])
                                                                                                                                               {
-                                                                                                                                                if ([v17 compare:@"com.google.chrome.ios" options:3])
+                                                                                                                                                if ([bundleIdentifier2 compare:@"com.google.chrome.ios" options:3])
                                                                                                                                                 {
-                                                                                                                                                  if ([v17 compare:@"com.apple.developer" options:3])
+                                                                                                                                                  if ([bundleIdentifier2 compare:@"com.apple.developer" options:3])
                                                                                                                                                   {
-                                                                                                                                                    if ([v17 compare:@"com.google.maps" options:3])
+                                                                                                                                                    if ([bundleIdentifier2 compare:@"com.google.maps" options:3])
                                                                                                                                                     {
-                                                                                                                                                      if ([v17 compare:@"com.apple.directories" options:3])
+                                                                                                                                                      if ([bundleIdentifier2 compare:@"com.apple.directories" options:3])
                                                                                                                                                       {
-                                                                                                                                                        if ([v17 compare:@"baidu_comp" options:3])
+                                                                                                                                                        if ([bundleIdentifier2 compare:@"baidu_comp" options:3])
                                                                                                                                                         {
-                                                                                                                                                          if ([v17 compare:@"baidu_search" options:3])
+                                                                                                                                                          if ([bundleIdentifier2 compare:@"baidu_search" options:3])
                                                                                                                                                           {
-                                                                                                                                                            if ([v17 compare:@"com.apple.reminders" options:3])
+                                                                                                                                                            if ([bundleIdentifier2 compare:@"com.apple.reminders" options:3])
                                                                                                                                                             {
-                                                                                                                                                              if ([v17 compare:@"com.apple.photos" options:3])
+                                                                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.photos" options:3])
                                                                                                                                                               {
-                                                                                                                                                                if ([v17 compare:@"com.apple.dictionary" options:3])
+                                                                                                                                                                if ([bundleIdentifier2 compare:@"com.apple.dictionary" options:3])
                                                                                                                                                                 {
-                                                                                                                                                                  if ([v17 compare:@"siri_comp" options:3])
+                                                                                                                                                                  if ([bundleIdentifier2 compare:@"siri_comp" options:3])
                                                                                                                                                                   {
-                                                                                                                                                                    if ([v17 compare:@"com.google.photos" options:3])
+                                                                                                                                                                    if ([bundleIdentifier2 compare:@"com.google.photos" options:3])
                                                                                                                                                                     {
-                                                                                                                                                                      if ([v17 compare:@"com.apple.ibooks" options:3])
+                                                                                                                                                                      if ([bundleIdentifier2 compare:@"com.apple.ibooks" options:3])
                                                                                                                                                                       {
-                                                                                                                                                                        if ([v17 compare:@"com.linkedin.linkedin" options:3])
+                                                                                                                                                                        if ([bundleIdentifier2 compare:@"com.linkedin.linkedin" options:3])
                                                                                                                                                                         {
-                                                                                                                                                                          if ([v17 compare:@"com.apple.numbers" options:3])
+                                                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.numbers" options:3])
                                                                                                                                                                           {
-                                                                                                                                                                            if ([v17 compare:@"com.apple.mobiletimer" options:3])
+                                                                                                                                                                            if ([bundleIdentifier2 compare:@"com.apple.mobiletimer" options:3])
                                                                                                                                                                             {
-                                                                                                                                                                              if ([v17 compare:@"com.pandora" options:3])
+                                                                                                                                                                              if ([bundleIdentifier2 compare:@"com.pandora" options:3])
                                                                                                                                                                               {
-                                                                                                                                                                                if ([v17 compare:@"com.apple.hashtagimages.categorylist.recents.recent" options:3])
+                                                                                                                                                                                if ([bundleIdentifier2 compare:@"com.apple.hashtagimages.categorylist.recents.recent" options:3])
                                                                                                                                                                                 {
-                                                                                                                                                                                  if ([v17 compare:@"com.mlb.atbatuniversal" options:3])
+                                                                                                                                                                                  if ([bundleIdentifier2 compare:@"com.mlb.atbatuniversal" options:3])
                                                                                                                                                                                   {
-                                                                                                                                                                                    if ([v17 compare:@"com.yahoo.aerogram" options:3])
+                                                                                                                                                                                    if ([bundleIdentifier2 compare:@"com.yahoo.aerogram" options:3])
                                                                                                                                                                                     {
-                                                                                                                                                                                      if ([v17 compare:@"com.getdropbox.dropbox" options:3])
+                                                                                                                                                                                      if ([bundleIdentifier2 compare:@"com.getdropbox.dropbox" options:3])
                                                                                                                                                                                       {
-                                                                                                                                                                                        if ([v17 compare:@"com.apple.lookup.search-through" options:3])
+                                                                                                                                                                                        if ([bundleIdentifier2 compare:@"com.apple.lookup.search-through" options:3])
                                                                                                                                                                                         {
-                                                                                                                                                                                          if ([v17 compare:@"com.apple.calendar" options:3])
+                                                                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.calendar" options:3])
                                                                                                                                                                                           {
-                                                                                                                                                                                            if ([v17 compare:@"com.airbnb.app" options:3])
+                                                                                                                                                                                            if ([bundleIdentifier2 compare:@"com.airbnb.app" options:3])
                                                                                                                                                                                             {
-                                                                                                                                                                                              if ([v17 compare:@"com.stubhub.stubhub" options:3])
+                                                                                                                                                                                              if ([bundleIdentifier2 compare:@"com.stubhub.stubhub" options:3])
                                                                                                                                                                                               {
-                                                                                                                                                                                                if ([v17 compare:@"com.groupon.grouponapp" options:3])
+                                                                                                                                                                                                if ([bundleIdentifier2 compare:@"com.groupon.grouponapp" options:3])
                                                                                                                                                                                                 {
-                                                                                                                                                                                                  if ([v17 compare:@"com.apple.calculator" options:3])
+                                                                                                                                                                                                  if ([bundleIdentifier2 compare:@"com.apple.calculator" options:3])
                                                                                                                                                                                                   {
-                                                                                                                                                                                                    if ([v17 compare:@"tv.twitch" options:3])
+                                                                                                                                                                                                    if ([bundleIdentifier2 compare:@"tv.twitch" options:3])
                                                                                                                                                                                                     {
-                                                                                                                                                                                                      if ([v17 compare:@"com.apple.keynote" options:3])
+                                                                                                                                                                                                      if ([bundleIdentifier2 compare:@"com.apple.keynote" options:3])
                                                                                                                                                                                                       {
-                                                                                                                                                                                                        if ([v17 compare:@"com.zillow.zillowmap" options:3])
+                                                                                                                                                                                                        if ([bundleIdentifier2 compare:@"com.zillow.zillowmap" options:3])
                                                                                                                                                                                                         {
-                                                                                                                                                                                                          if ([v17 compare:@"com.apple.voicememos" options:3])
+                                                                                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.voicememos" options:3])
                                                                                                                                                                                                           {
-                                                                                                                                                                                                            if ([v17 compare:@"com.apple.safari.completionlist.quickwebsitesearch" options:3])
+                                                                                                                                                                                                            if ([bundleIdentifier2 compare:@"com.apple.safari.completionlist.quickwebsitesearch" options:3])
                                                                                                                                                                                                             {
-                                                                                                                                                                                                              if ([v17 compare:@"com.apple.parsec.image_search.msgs-zkw" options:3])
+                                                                                                                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.parsec.image_search.msgs-zkw" options:3])
                                                                                                                                                                                                               {
-                                                                                                                                                                                                                if ([v17 compare:@"com.apple.safari.completionlist.searchsuggestionprovider" options:3])
+                                                                                                                                                                                                                if ([bundleIdentifier2 compare:@"com.apple.safari.completionlist.searchsuggestionprovider" options:3])
                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                  if ([v17 compare:@"com.apple.searchd.zkw.suggestion" options:3])
+                                                                                                                                                                                                                  if ([bundleIdentifier2 compare:@"com.apple.searchd.zkw.suggestion" options:3])
                                                                                                                                                                                                                   {
-                                                                                                                                                                                                                    if ([v17 compare:@"com.apple.other:search_siri" options:3])
+                                                                                                                                                                                                                    if ([bundleIdentifier2 compare:@"com.apple.other:search_siri" options:3])
                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                      if ([v17 compare:@"switch_to_tab" options:3])
+                                                                                                                                                                                                                      if ([bundleIdentifier2 compare:@"switch_to_tab" options:3])
                                                                                                                                                                                                                       {
-                                                                                                                                                                                                                        if ([v17 compare:@"com.apple.Safari.CompletionList.WebsiteSpecificSearch" options:3])
+                                                                                                                                                                                                                        if ([bundleIdentifier2 compare:@"com.apple.Safari.CompletionList.WebsiteSpecificSearch" options:3])
                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                          if ([v17 compare:@"com.apple.spotlight.suggestionlist.siri" options:3])
+                                                                                                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.spotlight.suggestionlist.siri" options:3])
                                                                                                                                                                                                                           {
-                                                                                                                                                                                                                            if ([v17 compare:@"com.apple.contacts" options:3])
+                                                                                                                                                                                                                            if ([bundleIdentifier2 compare:@"com.apple.contacts" options:3])
                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                              if ([v17 compare:@"com.apple.parsec.itunes.iossoftware" options:3])
+                                                                                                                                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.parsec.itunes.iossoftware" options:3])
                                                                                                                                                                                                                               {
-                                                                                                                                                                                                                                if ([v17 compare:@"com.apple.parsec.maps" options:3])
+                                                                                                                                                                                                                                if ([bundleIdentifier2 compare:@"com.apple.parsec.maps" options:3])
                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                  if ([v17 compare:@"com.apple.parsec.wiki" options:3])
+                                                                                                                                                                                                                                  if ([bundleIdentifier2 compare:@"com.apple.parsec.wiki" options:3])
                                                                                                                                                                                                                                   {
-                                                                                                                                                                                                                                    if ([v17 compare:@"com.apple.parsec.kg" options:3])
+                                                                                                                                                                                                                                    if ([bundleIdentifier2 compare:@"com.apple.parsec.kg" options:3])
                                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                                      if ([v17 compare:@"com.apple.parsec.news" options:3])
+                                                                                                                                                                                                                                      if ([bundleIdentifier2 compare:@"com.apple.parsec.news" options:3])
                                                                                                                                                                                                                                       {
-                                                                                                                                                                                                                                        if ([v17 compare:@"com.apple.parsec.weather" options:3])
+                                                                                                                                                                                                                                        if ([bundleIdentifier2 compare:@"com.apple.parsec.weather" options:3])
                                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                                          if ([v17 compare:@"com.apple.searchd.searchthroughsuggestions" options:3])
+                                                                                                                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.searchd.searchthroughsuggestions" options:3])
                                                                                                                                                                                                                                           {
-                                                                                                                                                                                                                                            if ([v17 compare:@"com.apple.spotlight.websuggestionlist.usertypedstring" options:3])
+                                                                                                                                                                                                                                            if ([bundleIdentifier2 compare:@"com.apple.spotlight.websuggestionlist.usertypedstring" options:3])
                                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                              if ([v17 compare:@"com.apple.spotlight.websuggestionlist.parsec" options:3])
+                                                                                                                                                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.spotlight.websuggestionlist.parsec" options:3])
                                                                                                                                                                                                                                               {
-                                                                                                                                                                                                                                                if ([v17 compare:@"com.apple.spotlight.related_search_as_typed.web" options:3])
+                                                                                                                                                                                                                                                if ([bundleIdentifier2 compare:@"com.apple.spotlight.related_search_as_typed.web" options:3])
                                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                                  if ([v17 compare:@"com.apple.spotlight.tophits" options:3])
+                                                                                                                                                                                                                                                  if ([bundleIdentifier2 compare:@"com.apple.spotlight.tophits" options:3])
                                                                                                                                                                                                                                                   {
-                                                                                                                                                                                                                                                    if ([v17 compare:@"com.apple.spotlight.related_search" options:3])
+                                                                                                                                                                                                                                                    if ([bundleIdentifier2 compare:@"com.apple.spotlight.related_search" options:3])
                                                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                                                      if ([v17 compare:@"com.apple.mail.search.tophit" options:3])
+                                                                                                                                                                                                                                                      if ([bundleIdentifier2 compare:@"com.apple.mail.search.tophit" options:3])
                                                                                                                                                                                                                                                       {
-                                                                                                                                                                                                                                                        if ([v17 compare:@"com.apple.mail.search.suggestion" options:3])
+                                                                                                                                                                                                                                                        if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion" options:3])
                                                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                                                          if ([v17 compare:@"com.apple.mail.search.suggestion.vip" options:3])
+                                                                                                                                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion.vip" options:3])
                                                                                                                                                                                                                                                           {
-                                                                                                                                                                                                                                                            if ([v17 compare:@"com.apple.mail.search.suggestion.usertyped" options:3])
+                                                                                                                                                                                                                                                            if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion.usertyped" options:3])
                                                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                                              if ([v17 compare:@"com.apple.mail.search.messageresult" options:3])
+                                                                                                                                                                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.mail.search.messageresult" options:3])
                                                                                                                                                                                                                                                               {
-                                                                                                                                                                                                                                                                if ([v17 compare:@"com.apple.mail.search.messagelist" options:3])
+                                                                                                                                                                                                                                                                if ([bundleIdentifier2 compare:@"com.apple.mail.search.messagelist" options:3])
                                                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                                                  if ([v17 compare:@"com.apple.parsec.entity" options:3])
+                                                                                                                                                                                                                                                                  if ([bundleIdentifier2 compare:@"com.apple.parsec.entity" options:3])
                                                                                                                                                                                                                                                                   {
-                                                                                                                                                                                                                                                                    if ([v17 compare:@"com.apple.mail.search.suggestion.date" options:3])
+                                                                                                                                                                                                                                                                    if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion.date" options:3])
                                                                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                                                                      if ([v17 compare:@"com.apple.mail.search.suggestion.free_text" options:3])
+                                                                                                                                                                                                                                                                      if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion.free_text" options:3])
                                                                                                                                                                                                                                                                       {
-                                                                                                                                                                                                                                                                        if ([v17 compare:@"com.apple.mail.search.suggestion.attachment" options:3])
+                                                                                                                                                                                                                                                                        if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion.attachment" options:3])
                                                                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                                                                          if ([v17 compare:@"com.apple.mail.search.suggestion.people" options:3])
+                                                                                                                                                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion.people" options:3])
                                                                                                                                                                                                                                                                           {
-                                                                                                                                                                                                                                                                            if ([v17 compare:@"com.apple.mail.search.suggestion.contact" options:3])
+                                                                                                                                                                                                                                                                            if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion.contact" options:3])
                                                                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                                                              if ([v17 compare:@"com.apple.mail.search.suggestion.mailbox" options:3])
+                                                                                                                                                                                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion.mailbox" options:3])
                                                                                                                                                                                                                                                                               {
-                                                                                                                                                                                                                                                                                if ([v17 compare:@"com.apple.mail.search.suggestion.flag" options:3])
+                                                                                                                                                                                                                                                                                if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion.flag" options:3])
                                                                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                                                                  if ([v17 compare:@"com.apple.mail.search.suggestion.subject" options:3])
+                                                                                                                                                                                                                                                                                  if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion.subject" options:3])
                                                                                                                                                                                                                                                                                   {
-                                                                                                                                                                                                                                                                                    if ([v17 compare:@"com.apple.mail.search.location" options:3])
+                                                                                                                                                                                                                                                                                    if ([bundleIdentifier2 compare:@"com.apple.mail.search.location" options:3])
                                                                                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                                                                                      if ([v17 compare:@"com.apple.mail.search.document" options:3])
+                                                                                                                                                                                                                                                                                      if ([bundleIdentifier2 compare:@"com.apple.mail.search.document" options:3])
                                                                                                                                                                                                                                                                                       {
-                                                                                                                                                                                                                                                                                        if ([v17 compare:@"com.apple.mail.search.link" options:3])
+                                                                                                                                                                                                                                                                                        if ([bundleIdentifier2 compare:@"com.apple.mail.search.link" options:3])
                                                                                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                                                                                          if ([v17 compare:@"com.apple.1papplication" options:3])
+                                                                                                                                                                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.1papplication" options:3])
                                                                                                                                                                                                                                                                                           {
-                                                                                                                                                                                                                                                                                            if ([v17 compare:@"com.apple.3papplication" options:3])
+                                                                                                                                                                                                                                                                                            if ([bundleIdentifier2 compare:@"com.apple.3papplication" options:3])
                                                                                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                                                                              if ([v17 compare:@"com.apple.mail.search.suggestion.sendercontains" options:3])
+                                                                                                                                                                                                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion.sendercontains" options:3])
                                                                                                                                                                                                                                                                                               {
-                                                                                                                                                                                                                                                                                                if ([v17 compare:@"com.apple.mail.search.suggestion.topiccontains" options:3])
+                                                                                                                                                                                                                                                                                                if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion.topiccontains" options:3])
                                                                                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                                                                                  if ([v17 compare:@"com.apple.mail.search.suggestion.instantanswer" options:3])
+                                                                                                                                                                                                                                                                                                  if ([bundleIdentifier2 compare:@"com.apple.mail.search.suggestion.instantanswer" options:3])
                                                                                                                                                                                                                                                                                                   {
-                                                                                                                                                                                                                                                                                                    if ([v17 compare:@"com.apple.photos.Albums" options:3])
+                                                                                                                                                                                                                                                                                                    if ([bundleIdentifier2 compare:@"com.apple.photos.Albums" options:3])
                                                                                                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                                                                                                      if ([v17 compare:@"com.apple.photos.Caption" options:3])
+                                                                                                                                                                                                                                                                                                      if ([bundleIdentifier2 compare:@"com.apple.photos.Caption" options:3])
                                                                                                                                                                                                                                                                                                       {
-                                                                                                                                                                                                                                                                                                        if ([v17 compare:@"com.apple.photos.Categories" options:3])
+                                                                                                                                                                                                                                                                                                        if ([bundleIdentifier2 compare:@"com.apple.photos.Categories" options:3])
                                                                                                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                                                                                                          if ([v17 compare:@"com.apple.photos.Dates" options:3])
+                                                                                                                                                                                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.photos.Dates" options:3])
                                                                                                                                                                                                                                                                                                           {
-                                                                                                                                                                                                                                                                                                            if ([v17 compare:@"com.apple.photos.ImportedByApp" options:3])
+                                                                                                                                                                                                                                                                                                            if ([bundleIdentifier2 compare:@"com.apple.photos.ImportedByApp" options:3])
                                                                                                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                                                                                              if ([v17 compare:@"com.apple.photos.Keywords" options:3])
+                                                                                                                                                                                                                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.photos.Keywords" options:3])
                                                                                                                                                                                                                                                                                                               {
-                                                                                                                                                                                                                                                                                                                if ([v17 compare:@"com.apple.photos.MediaType" options:3])
+                                                                                                                                                                                                                                                                                                                if ([bundleIdentifier2 compare:@"com.apple.photos.MediaType" options:3])
                                                                                                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                                                                                                  if ([v17 compare:@"com.apple.photos.Memories" options:3])
+                                                                                                                                                                                                                                                                                                                  if ([bundleIdentifier2 compare:@"com.apple.photos.Memories" options:3])
                                                                                                                                                                                                                                                                                                                   {
-                                                                                                                                                                                                                                                                                                                    if ([v17 compare:@"com.apple.photos.Moments" options:3])
+                                                                                                                                                                                                                                                                                                                    if ([bundleIdentifier2 compare:@"com.apple.photos.Moments" options:3])
                                                                                                                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                                                                                                                      if ([v17 compare:@"com.apple.photos.Ocr" options:3])
+                                                                                                                                                                                                                                                                                                                      if ([bundleIdentifier2 compare:@"com.apple.photos.Ocr" options:3])
                                                                                                                                                                                                                                                                                                                       {
-                                                                                                                                                                                                                                                                                                                        if ([v17 compare:@"com.apple.photos.People" options:3])
+                                                                                                                                                                                                                                                                                                                        if ([bundleIdentifier2 compare:@"com.apple.photos.People" options:3])
                                                                                                                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                                                                                                                          if ([v17 compare:@"com.apple.photos.Places" options:3])
+                                                                                                                                                                                                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.photos.Places" options:3])
                                                                                                                                                                                                                                                                                                                           {
-                                                                                                                                                                                                                                                                                                                            if ([v17 compare:@"com.apple.photos.Title" options:3])
+                                                                                                                                                                                                                                                                                                                            if ([bundleIdentifier2 compare:@"com.apple.photos.Title" options:3])
                                                                                                                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                                                                                                              if ([v17 compare:@"com.apple.photos.TopResults" options:3])
+                                                                                                                                                                                                                                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.photos.TopResults" options:3])
                                                                                                                                                                                                                                                                                                                               {
-                                                                                                                                                                                                                                                                                                                                if ([v17 compare:@"com.apple.photos.suggestions.Generic" options:3])
+                                                                                                                                                                                                                                                                                                                                if ([bundleIdentifier2 compare:@"com.apple.photos.suggestions.Generic" options:3])
                                                                                                                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                                                                                                                  if ([v17 compare:@"com.apple.photos.suggestions.Place" options:3])
+                                                                                                                                                                                                                                                                                                                                  if ([bundleIdentifier2 compare:@"com.apple.photos.suggestions.Place" options:3])
                                                                                                                                                                                                                                                                                                                                   {
-                                                                                                                                                                                                                                                                                                                                    if ([v17 compare:@"com.apple.photos.zkw.Date" options:3])
+                                                                                                                                                                                                                                                                                                                                    if ([bundleIdentifier2 compare:@"com.apple.photos.zkw.Date" options:3])
                                                                                                                                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                                                                                                                                      if ([v17 compare:@"com.apple.photos.zkw.Meaning" options:3])
+                                                                                                                                                                                                                                                                                                                                      if ([bundleIdentifier2 compare:@"com.apple.photos.zkw.Meaning" options:3])
                                                                                                                                                                                                                                                                                                                                       {
-                                                                                                                                                                                                                                                                                                                                        if ([v17 compare:@"com.apple.photos.zkw.Person" options:3])
+                                                                                                                                                                                                                                                                                                                                        if ([bundleIdentifier2 compare:@"com.apple.photos.zkw.Person" options:3])
                                                                                                                                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                                                                                                                                          if ([v17 compare:@"com.apple.photos.zkw.Place" options:3])
+                                                                                                                                                                                                                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.photos.zkw.Place" options:3])
                                                                                                                                                                                                                                                                                                                                           {
-                                                                                                                                                                                                                                                                                                                                            if ([v17 compare:@"com.apple.photos.zkw.Scene" options:3])
+                                                                                                                                                                                                                                                                                                                                            if ([bundleIdentifier2 compare:@"com.apple.photos.zkw.Scene" options:3])
                                                                                                                                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                                                                                                                              if ([v17 compare:@"com.apple.photos.zkw.Season" options:3])
+                                                                                                                                                                                                                                                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.photos.zkw.Season" options:3])
                                                                                                                                                                                                                                                                                                                                               {
-                                                                                                                                                                                                                                                                                                                                                if ([v17 compare:@"com.apple.photos.zkw.SocialGroup" options:3])
+                                                                                                                                                                                                                                                                                                                                                if ([bundleIdentifier2 compare:@"com.apple.photos.zkw.SocialGroup" options:3])
                                                                                                                                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                                                                                                                                  if ([v17 compare:@"com.apple.photos.zkw.UnnamedPerson" options:3])
+                                                                                                                                                                                                                                                                                                                                                  if ([bundleIdentifier2 compare:@"com.apple.photos.zkw.UnnamedPerson" options:3])
                                                                                                                                                                                                                                                                                                                                                   {
-                                                                                                                                                                                                                                                                                                                                                    if ([v17 compare:@"com.apple.mail.search.instantanswer.flight" options:3])
+                                                                                                                                                                                                                                                                                                                                                    if ([bundleIdentifier2 compare:@"com.apple.mail.search.instantanswer.flight" options:3])
                                                                                                                                                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                                                                                                                                                      if ([v17 compare:@"com.apple.mail.search.instantanswer.lodging" options:3])
+                                                                                                                                                                                                                                                                                                                                                      if ([bundleIdentifier2 compare:@"com.apple.mail.search.instantanswer.lodging" options:3])
                                                                                                                                                                                                                                                                                                                                                       {
-                                                                                                                                                                                                                                                                                                                                                        if ([v17 compare:@"com.apple.photos.Trip" options:3])
+                                                                                                                                                                                                                                                                                                                                                        if ([bundleIdentifier2 compare:@"com.apple.photos.Trip" options:3])
                                                                                                                                                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                                                                                                                                                          if ([v17 compare:@"com.apple.photos.AllResults" options:3])
+                                                                                                                                                                                                                                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.photos.AllResults" options:3])
                                                                                                                                                                                                                                                                                                                                                           {
-                                                                                                                                                                                                                                                                                                                                                            if ([v17 compare:@"com.apple.photos.suggestions.UserGeneratedText" options:3])
+                                                                                                                                                                                                                                                                                                                                                            if ([bundleIdentifier2 compare:@"com.apple.photos.suggestions.UserGeneratedText" options:3])
                                                                                                                                                                                                                                                                                                                                                             {
-                                                                                                                                                                                                                                                                                                                                                              if ([v17 compare:@"com.apple.photos.suggestions.Scene" options:3])
+                                                                                                                                                                                                                                                                                                                                                              if ([bundleIdentifier2 compare:@"com.apple.photos.suggestions.Scene" options:3])
                                                                                                                                                                                                                                                                                                                                                               {
-                                                                                                                                                                                                                                                                                                                                                                if ([v17 compare:@"com.apple.photos.suggestions.PublicEvent" options:3])
+                                                                                                                                                                                                                                                                                                                                                                if ([bundleIdentifier2 compare:@"com.apple.photos.suggestions.PublicEvent" options:3])
                                                                                                                                                                                                                                                                                                                                                                 {
-                                                                                                                                                                                                                                                                                                                                                                  if ([v17 compare:@"com.apple.photos.suggestions.ActionCam" options:3])
+                                                                                                                                                                                                                                                                                                                                                                  if ([bundleIdentifier2 compare:@"com.apple.photos.suggestions.ActionCam" options:3])
                                                                                                                                                                                                                                                                                                                                                                   {
-                                                                                                                                                                                                                                                                                                                                                                    if ([v17 compare:@"com.apple.photos.suggestions.Spatial" options:3])
+                                                                                                                                                                                                                                                                                                                                                                    if ([bundleIdentifier2 compare:@"com.apple.photos.suggestions.Spatial" options:3])
                                                                                                                                                                                                                                                                                                                                                                     {
-                                                                                                                                                                                                                                                                                                                                                                      if ([v17 compare:@"com.apple.photos.suggestions.Filename" options:3])
+                                                                                                                                                                                                                                                                                                                                                                      if ([bundleIdentifier2 compare:@"com.apple.photos.suggestions.Filename" options:3])
                                                                                                                                                                                                                                                                                                                                                                       {
-                                                                                                                                                                                                                                                                                                                                                                        if ([v17 compare:@"com.apple.photos.zkw.prompt" options:3])
+                                                                                                                                                                                                                                                                                                                                                                        if ([bundleIdentifier2 compare:@"com.apple.photos.zkw.prompt" options:3])
                                                                                                                                                                                                                                                                                                                                                                         {
-                                                                                                                                                                                                                                                                                                                                                                          if ([v17 compare:@"com.apple.photos.suggestions" options:3])
+                                                                                                                                                                                                                                                                                                                                                                          if ([bundleIdentifier2 compare:@"com.apple.photos.suggestions" options:3])
                                                                                                                                                                                                                                                                                                                                                                           {
                                                                                                                                                                                                                                                                                                                                                                             goto LABEL_195;
                                                                                                                                                                                                                                                                                                                                                                           }
@@ -1886,21 +1886,21 @@ LABEL_32:
 
 LABEL_195:
 
-    v19 = [v4 bundleIdentifier];
-    v20 = [v19 copy];
+    bundleIdentifier3 = [facadeCopy bundleIdentifier];
+    v20 = [bundleIdentifier3 copy];
     [(_CPResultSectionForFeedback *)v5 setBundleIdentifier:v20];
   }
 
 LABEL_375:
-  -[_CPResultSectionForFeedback setIsInitiallyHidden:](v5, "setIsInitiallyHidden:", [v4 isInitiallyHidden]);
-  -[_CPResultSectionForFeedback setTotalAvailableResults:](v5, "setTotalAvailableResults:", [v4 totalAvailableResults]);
-  v21 = [v4 titleButtonItem];
+  -[_CPResultSectionForFeedback setIsInitiallyHidden:](v5, "setIsInitiallyHidden:", [facadeCopy isInitiallyHidden]);
+  -[_CPResultSectionForFeedback setTotalAvailableResults:](v5, "setTotalAvailableResults:", [facadeCopy totalAvailableResults]);
+  titleButtonItem = [facadeCopy titleButtonItem];
 
-  if (v21)
+  if (titleButtonItem)
   {
     v22 = [_CPButtonForFeedback alloc];
-    v23 = [v4 titleButtonItem];
-    v24 = [(_CPButtonForFeedback *)v22 initWithFacade:v23];
+    titleButtonItem2 = [facadeCopy titleButtonItem];
+    v24 = [(_CPButtonForFeedback *)v22 initWithFacade:titleButtonItem2];
     [(_CPResultSectionForFeedback *)v5 setTitleButtonItem:v24];
   }
 

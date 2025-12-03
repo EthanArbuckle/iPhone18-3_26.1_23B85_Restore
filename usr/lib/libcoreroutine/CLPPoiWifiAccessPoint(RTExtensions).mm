@@ -14,13 +14,13 @@
     v5 = objc_opt_new();
     [v4 age];
     [v5 setAge:?];
-    v6 = [v4 date];
-    [v6 timeIntervalSinceReferenceDate];
+    date = [v4 date];
+    [date timeIntervalSinceReferenceDate];
     [v5 setScanTimestamp:?];
 
     [v5 setChannel:{objc_msgSend(v4, "channel")}];
     v7 = [v4 mac];
-    v8 = [a1 length12StringForMac:v7];
+    v8 = [self length12StringForMac:v7];
     if (v8)
     {
       [v5 setMac:v8];

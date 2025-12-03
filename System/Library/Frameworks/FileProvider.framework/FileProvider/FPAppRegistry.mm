@@ -1,23 +1,23 @@
 @interface FPAppRegistry
 + (FPAppRegistry)sharedRegistry;
-+ (void)setDaemonConnectionOverride:(id)a3;
-+ (void)setSharedRegistry:(id)a3;
-- (BOOL)_isAppLibrary:(id)a3 appMetadata:(id *)a4 userVisible:(BOOL *)a5;
++ (void)setDaemonConnectionOverride:(id)override;
++ (void)setSharedRegistry:(id)registry;
+- (BOOL)_isAppLibrary:(id)library appMetadata:(id *)metadata userVisible:(BOOL *)visible;
 - (FPAppRegistry)init;
 - (FPAppRegistryDelegate)delegate;
 - (NSArray)listOfMonitoredApps;
-- (id)_bundleIDForHomonymOfApp:(id)a3;
-- (id)appForBundleID:(id)a3;
-- (id)appForDisplayName:(id)a3;
-- (id)promoteItemToAppLibraryIfNeeded:(id)a3;
-- (int)_registerForNotification:(id)a3 handler:(id)a4;
-- (void)_addApps:(id)a3;
-- (void)_removeAppsWithBundleIDs:(id)a3;
-- (void)_setApps:(id)a3;
-- (void)addApps:(id)a3;
+- (id)_bundleIDForHomonymOfApp:(id)app;
+- (id)appForBundleID:(id)d;
+- (id)appForDisplayName:(id)name;
+- (id)promoteItemToAppLibraryIfNeeded:(id)needed;
+- (int)_registerForNotification:(id)notification handler:(id)handler;
+- (void)_addApps:(id)apps;
+- (void)_removeAppsWithBundleIDs:(id)ds;
+- (void)_setApps:(id)apps;
+- (void)addApps:(id)apps;
 - (void)dealloc;
 - (void)init;
-- (void)removeAppsWithBundleIDs:(id)a3;
+- (void)removeAppsWithBundleIDs:(id)ds;
 - (void)updateAppList;
 @end
 
@@ -25,8 +25,8 @@
 
 + (FPAppRegistry)sharedRegistry
 {
-  v2 = a1;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v3 = _sharedRegistry;
   if (!_sharedRegistry)
   {
@@ -38,7 +38,7 @@
   }
 
   v6 = v3;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
@@ -50,13 +50,13 @@
   v2 = [(FPAppRegistry *)&v19 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     appMetadataByBundleID = v2->_appMetadataByBundleID;
-    v2->_appMetadataByBundleID = v3;
+    v2->_appMetadataByBundleID = dictionary;
 
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary2 = [MEMORY[0x1E695DF90] dictionary];
     appMetadataByDisplayName = v2->_appMetadataByDisplayName;
-    v2->_appMetadataByDisplayName = v5;
+    v2->_appMetadataByDisplayName = dictionary2;
 
     v7 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v8 = dispatch_queue_create("com.apple.FileProvider.app-registry-sync-queue", v7);
@@ -66,13 +66,13 @@
     if ([objc_opt_class() keepInSync])
     {
       objc_initWeak(&location, v2);
-      v10 = [FPAppRegistryDidUpdateAppsNotification fp_libnotifyPerUserNotificationName];
+      fp_libnotifyPerUserNotificationName = [FPAppRegistryDidUpdateAppsNotification fp_libnotifyPerUserNotificationName];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __21__FPAppRegistry_init__block_invoke;
       v16[3] = &unk_1E7938FE8;
       objc_copyWeak(&v17, &location);
-      v2->_updateAppsNotification = [(FPAppRegistry *)v2 _registerForNotification:v10 handler:v16];
+      v2->_updateAppsNotification = [(FPAppRegistry *)v2 _registerForNotification:fp_libnotifyPerUserNotificationName handler:v16];
       v11 = v2->_syncQueue;
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
@@ -103,7 +103,7 @@
 - (void)updateAppList
 {
   v6 = *MEMORY[0x1E69E9840];
-  v3 = [a1 fp_prettyDescription];
+  fp_prettyDescription = [self fp_prettyDescription];
   OUTLINED_FUNCTION_2();
   _os_log_error_impl(&dword_1AAAE1000, a2, OS_LOG_TYPE_ERROR, "[ERROR] can't fetch list of monitored apps; %@", v5, 0xCu);
 
@@ -163,69 +163,69 @@ void __21__FPAppRegistry_init__block_invoke(uint64_t a1)
   v6 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)setSharedRegistry:(id)a3
++ (void)setSharedRegistry:(id)registry
 {
-  v4 = a3;
-  obj = a1;
+  registryCopy = registry;
+  obj = self;
   objc_sync_enter(obj);
   v5 = _sharedRegistry;
-  _sharedRegistry = v4;
+  _sharedRegistry = registryCopy;
 
   objc_sync_exit(obj);
 }
 
-+ (void)setDaemonConnectionOverride:(id)a3
++ (void)setDaemonConnectionOverride:(id)override
 {
-  objc_storeStrong(&_daemonConnectionOverride, a3);
-  v4 = a3;
-  v6 = [FPAppRegistryDidUpdateAppsNotification fp_libnotifyPerUserNotificationName];
+  objc_storeStrong(&_daemonConnectionOverride, override);
+  overrideCopy = override;
+  fp_libnotifyPerUserNotificationName = [FPAppRegistryDidUpdateAppsNotification fp_libnotifyPerUserNotificationName];
 
-  v5 = v6;
-  notify_post([v6 UTF8String]);
+  v5 = fp_libnotifyPerUserNotificationName;
+  notify_post([fp_libnotifyPerUserNotificationName UTF8String]);
 }
 
-- (id)promoteItemToAppLibraryIfNeeded:(id)a3
+- (id)promoteItemToAppLibraryIfNeeded:(id)needed
 {
-  v4 = a3;
+  neededCopy = needed;
   v12 = 0;
   v11 = 0;
-  v5 = [(FPAppRegistry *)self _isAppLibrary:v4 appMetadata:&v11 userVisible:&v12];
+  v5 = [(FPAppRegistry *)self _isAppLibrary:neededCopy appMetadata:&v11 userVisible:&v12];
   v6 = v11;
   if (v5)
   {
     v7 = fp_current_or_default_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
-      [(FPAppRegistry *)v4 promoteItemToAppLibraryIfNeeded:?];
+      [(FPAppRegistry *)neededCopy promoteItemToAppLibraryIfNeeded:?];
     }
 
-    [v4 setIsContainer:1];
-    [v4 setCapabilities:{objc_msgSend(v4, "capabilities") & 0xFFFFFFFFFFFFFFF7}];
-    [v4 setCapabilities:{objc_msgSend(v4, "capabilities") & 0xFFFFFFFFFFFFFFFBLL}];
-    [v4 setCapabilities:{objc_msgSend(v4, "capabilities") & 0xFFFFFFFFFFFFFFEFLL}];
-    v8 = [v4 fp_appContainerBundleIdentifier];
+    [neededCopy setIsContainer:1];
+    [neededCopy setCapabilities:{objc_msgSend(neededCopy, "capabilities") & 0xFFFFFFFFFFFFFFF7}];
+    [neededCopy setCapabilities:{objc_msgSend(neededCopy, "capabilities") & 0xFFFFFFFFFFFFFFFBLL}];
+    [neededCopy setCapabilities:{objc_msgSend(neededCopy, "capabilities") & 0xFFFFFFFFFFFFFFEFLL}];
+    fp_appContainerBundleIdentifier = [neededCopy fp_appContainerBundleIdentifier];
 
-    if (!v8)
+    if (!fp_appContainerBundleIdentifier)
     {
-      v9 = [v6 bundleID];
-      [v4 setFp_appContainerBundleIdentifier:v9];
+      bundleID = [v6 bundleID];
+      [neededCopy setFp_appContainerBundleIdentifier:bundleID];
     }
   }
 
   else
   {
-    [v4 setIsContainer:0];
-    [v4 setFp_appContainerBundleIdentifier:0];
+    [neededCopy setIsContainer:0];
+    [neededCopy setFp_appContainerBundleIdentifier:0];
   }
 
-  return v4;
+  return neededCopy;
 }
 
-- (id)appForBundleID:(id)a3
+- (id)appForBundleID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -240,7 +240,7 @@ void __21__FPAppRegistry_init__block_invoke(uint64_t a1)
     block[3] = &unk_1E793A190;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = dCopy;
     dispatch_sync(syncQueue, block);
     v7 = v13[5];
 
@@ -265,11 +265,11 @@ uint64_t __32__FPAppRegistry_appForBundleID___block_invoke(void *a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)appForDisplayName:(id)a3
+- (id)appForDisplayName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  nameCopy = name;
+  v5 = nameCopy;
+  if (nameCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -284,7 +284,7 @@ uint64_t __32__FPAppRegistry_appForBundleID___block_invoke(void *a1)
     block[3] = &unk_1E793A190;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = nameCopy;
     dispatch_sync(syncQueue, block);
     v7 = v13[5];
 
@@ -309,19 +309,19 @@ uint64_t __35__FPAppRegistry_appForDisplayName___block_invoke(void *a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (void)_setApps:(id)a3
+- (void)_setApps:(id)apps
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  appsCopy = apps;
   dispatch_assert_queue_V2(self->_syncQueue);
-  v5 = [(NSMutableDictionary *)self->_appMetadataByBundleID allKeys];
-  v6 = [v5 mutableCopy];
+  allKeys = [(NSMutableDictionary *)self->_appMetadataByBundleID allKeys];
+  v6 = [allKeys mutableCopy];
 
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = v4;
+  v7 = appsCopy;
   v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
@@ -337,8 +337,8 @@ uint64_t __35__FPAppRegistry_appForDisplayName___block_invoke(void *a1)
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) bundleID];
-        [v6 removeObject:v12];
+        bundleID = [*(*(&v14 + 1) + 8 * v11) bundleID];
+        [v6 removeObject:bundleID];
 
         ++v11;
       }
@@ -356,32 +356,32 @@ uint64_t __35__FPAppRegistry_appForDisplayName___block_invoke(void *a1)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addApps:(id)a3
+- (void)addApps:(id)apps
 {
-  v4 = a3;
+  appsCopy = apps;
   syncQueue = self->_syncQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __25__FPAppRegistry_addApps___block_invoke;
   v7[3] = &unk_1E79390B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = appsCopy;
+  v6 = appsCopy;
   dispatch_sync(syncQueue, v7);
 }
 
-- (void)_addApps:(id)a3
+- (void)_addApps:(id)apps
 {
   v43 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  appsCopy = apps;
+  if ([appsCopy count])
   {
     v34 = 0u;
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v30 = v4;
-    v5 = v4;
+    v30 = appsCopy;
+    v5 = appsCopy;
     v6 = [v5 countByEnumeratingWithState:&v32 objects:v42 count:16];
     if (v6)
     {
@@ -399,13 +399,13 @@ uint64_t __35__FPAppRegistry_appForDisplayName___block_invoke(void *a1)
 
           v10 = *(*(&v32 + 1) + 8 * v9);
           appMetadataByBundleID = self->_appMetadataByBundleID;
-          v12 = [v10 bundleID];
-          v13 = [(NSMutableDictionary *)appMetadataByBundleID objectForKeyedSubscript:v12];
+          bundleID = [v10 bundleID];
+          v13 = [(NSMutableDictionary *)appMetadataByBundleID objectForKeyedSubscript:bundleID];
 
           v14 = fp_default_log();
-          LODWORD(v12) = os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG);
+          LODWORD(bundleID) = os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG);
 
-          if (v12)
+          if (bundleID)
           {
             v15 = [(FPAppRegistry *)self _bundleIDForHomonymOfApp:v10];
             v16 = fp_current_or_default_log();
@@ -444,17 +444,17 @@ uint64_t __35__FPAppRegistry_appForDisplayName___block_invoke(void *a1)
           if (v13)
           {
             appMetadataByDisplayName = self->_appMetadataByDisplayName;
-            v18 = [v13 displayName];
-            [(NSMutableDictionary *)appMetadataByDisplayName setObject:0 forKeyedSubscript:v18];
+            displayName = [v13 displayName];
+            [(NSMutableDictionary *)appMetadataByDisplayName setObject:0 forKeyedSubscript:displayName];
           }
 
           v19 = self->_appMetadataByBundleID;
-          v20 = [v10 bundleID];
-          [(NSMutableDictionary *)v19 setObject:v10 forKeyedSubscript:v20];
+          bundleID2 = [v10 bundleID];
+          [(NSMutableDictionary *)v19 setObject:v10 forKeyedSubscript:bundleID2];
 
           v21 = self->_appMetadataByDisplayName;
-          v22 = [v10 displayName];
-          [(NSMutableDictionary *)v21 setObject:v10 forKeyedSubscript:v22];
+          displayName2 = [v10 displayName];
+          [(NSMutableDictionary *)v21 setObject:v10 forKeyedSubscript:displayName2];
 
           ++v9;
         }
@@ -467,10 +467,10 @@ uint64_t __35__FPAppRegistry_appForDisplayName___block_invoke(void *a1)
       while (v25);
     }
 
-    v26 = [(FPAppRegistry *)self delegate];
+    delegate = [(FPAppRegistry *)self delegate];
 
-    v4 = v30;
-    if (v26)
+    appsCopy = v30;
+    if (delegate)
     {
       v27 = fp_current_or_default_log();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -478,41 +478,41 @@ uint64_t __35__FPAppRegistry_appForDisplayName___block_invoke(void *a1)
         [(FPAppRegistry *)v5 _addApps:v27];
       }
 
-      v28 = [(FPAppRegistry *)self delegate];
-      [v28 appRegistry:self didUpdateApps:v5];
+      delegate2 = [(FPAppRegistry *)self delegate];
+      [delegate2 appRegistry:self didUpdateApps:v5];
     }
   }
 
   v29 = *MEMORY[0x1E69E9840];
 }
 
-- (void)removeAppsWithBundleIDs:(id)a3
+- (void)removeAppsWithBundleIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   syncQueue = self->_syncQueue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__FPAppRegistry_removeAppsWithBundleIDs___block_invoke;
   v7[3] = &unk_1E79390B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dsCopy;
+  v6 = dsCopy;
   dispatch_sync(syncQueue, v7);
 }
 
-- (void)_removeAppsWithBundleIDs:(id)a3
+- (void)_removeAppsWithBundleIDs:(id)ds
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v5 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v26 = v4;
-    v6 = v4;
+    v26 = dsCopy;
+    v6 = dsCopy;
     v7 = [v6 countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v7)
     {
@@ -532,8 +532,8 @@ uint64_t __35__FPAppRegistry_appForDisplayName___block_invoke(void *a1)
           v13 = v12;
           if (v12)
           {
-            v14 = [v12 bundleID];
-            [v5 addObject:v14];
+            bundleID = [v12 bundleID];
+            [array addObject:bundleID];
 
             v15 = fp_default_log();
             v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
@@ -555,8 +555,8 @@ uint64_t __35__FPAppRegistry_appForDisplayName___block_invoke(void *a1)
             if (!v18)
             {
               appMetadataByDisplayName = self->_appMetadataByDisplayName;
-              v20 = [v13 displayName];
-              [(NSMutableDictionary *)appMetadataByDisplayName setObject:0 forKeyedSubscript:v20];
+              displayName = [v13 displayName];
+              [(NSMutableDictionary *)appMetadataByDisplayName setObject:0 forKeyedSubscript:displayName];
             }
           }
 
@@ -572,83 +572,83 @@ uint64_t __35__FPAppRegistry_appForDisplayName___block_invoke(void *a1)
       while (v8);
     }
 
-    v21 = [(FPAppRegistry *)self delegate];
-    if (v21)
+    delegate = [(FPAppRegistry *)self delegate];
+    if (delegate)
     {
-      v22 = v21;
-      v23 = [v5 count];
+      v22 = delegate;
+      v23 = [array count];
 
       if (v23)
       {
-        v24 = [(FPAppRegistry *)self delegate];
-        [v24 appRegistry:self didRemoveAppsWithBundleIDs:v5];
+        delegate2 = [(FPAppRegistry *)self delegate];
+        [delegate2 appRegistry:self didRemoveAppsWithBundleIDs:array];
       }
     }
 
-    v4 = v26;
+    dsCopy = v26;
   }
 
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)_isAppLibrary:(id)a3 appMetadata:(id *)a4 userVisible:(BOOL *)a5
+- (BOOL)_isAppLibrary:(id)library appMetadata:(id *)metadata userVisible:(BOOL *)visible
 {
-  v8 = a3;
-  v9 = v8;
-  if (v8 && [v8 isFolder])
+  libraryCopy = library;
+  v9 = libraryCopy;
+  if (libraryCopy && [libraryCopy isFolder])
   {
-    v10 = [v9 itemIdentifier];
-    v11 = [v10 isEqualToString:@"NSFileProviderRootContainerItemIdentifier"];
+    itemIdentifier = [v9 itemIdentifier];
+    v11 = [itemIdentifier isEqualToString:@"NSFileProviderRootContainerItemIdentifier"];
 
-    v13 = [v9 parentItemIdentifier];
-    v12 = [v13 isEqualToString:@"NSFileProviderRootContainerItemIdentifier"];
+    parentItemIdentifier = [v9 parentItemIdentifier];
+    v12 = [parentItemIdentifier isEqualToString:@"NSFileProviderRootContainerItemIdentifier"];
 
-    LOBYTE(v13) = 0;
+    LOBYTE(parentItemIdentifier) = 0;
     if ((v11 & 1) == 0 && v12)
     {
-      v14 = [v9 providerID];
-      v15 = [v14 fp_isiCloudDriveIdentifier];
+      providerID = [v9 providerID];
+      fp_isiCloudDriveIdentifier = [providerID fp_isiCloudDriveIdentifier];
 
-      if (v15)
+      if (fp_isiCloudDriveIdentifier)
       {
-        v13 = [v9 cloudContainerIdentifier];
+        parentItemIdentifier = [v9 cloudContainerIdentifier];
 
-        if (!v13)
+        if (!parentItemIdentifier)
         {
           v17 = 0;
           goto LABEL_24;
         }
 
-        v16 = [v9 fp_appContainerBundleIdentifier];
-        v17 = [(FPAppRegistry *)self appForBundleID:v16];
+        fp_appContainerBundleIdentifier = [v9 fp_appContainerBundleIdentifier];
+        v17 = [(FPAppRegistry *)self appForBundleID:fp_appContainerBundleIdentifier];
       }
 
       else
       {
-        v19 = [v9 displayName];
-        v17 = [(FPAppRegistry *)self appForDisplayName:v19];
+        displayName = [v9 displayName];
+        v17 = [(FPAppRegistry *)self appForDisplayName:displayName];
 
         if (!v17)
         {
-          LOBYTE(v13) = 0;
+          LOBYTE(parentItemIdentifier) = 0;
           goto LABEL_24;
         }
       }
 
-      if (a4)
+      if (metadata)
       {
         v20 = v17;
-        *a4 = v17;
+        *metadata = v17;
       }
 
-      if (!a5)
+      if (!visible)
       {
         goto LABEL_18;
       }
 
       if ([v9 isContainerPristine])
       {
-        *a5 = 0;
+        *visible = 0;
         v21 = fp_current_or_default_log();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
@@ -658,42 +658,42 @@ uint64_t __35__FPAppRegistry_appForDisplayName___block_invoke(void *a1)
 
       else
       {
-        v22 = [v17 providerDomainID];
-        if (!v22)
+        providerDomainID = [v17 providerDomainID];
+        if (!providerDomainID)
         {
           goto LABEL_21;
         }
 
-        v23 = v22;
-        v24 = [v17 providerDomainID];
-        v25 = [v9 providerDomainID];
-        v26 = [v24 isEqualToString:v25];
+        v23 = providerDomainID;
+        providerDomainID2 = [v17 providerDomainID];
+        providerDomainID3 = [v9 providerDomainID];
+        v26 = [providerDomainID2 isEqualToString:providerDomainID3];
 
         if (v26)
         {
 LABEL_21:
-          LOBYTE(v13) = 1;
-          *a5 = 1;
+          LOBYTE(parentItemIdentifier) = 1;
+          *visible = 1;
           goto LABEL_24;
         }
 
-        v27 = [v9 childItemCount];
-        if (v27)
+        childItemCount = [v9 childItemCount];
+        if (childItemCount)
         {
-          v28 = [v9 childItemCount];
-          v29 = [v28 integerValue] > 0 || objc_msgSend(v9, "folderType") == 2 || objc_msgSend(v9, "folderType") == 3;
-          *a5 = v29;
+          childItemCount2 = [v9 childItemCount];
+          v29 = [childItemCount2 integerValue] > 0 || objc_msgSend(v9, "folderType") == 2 || objc_msgSend(v9, "folderType") == 3;
+          *visible = v29;
         }
 
         else
         {
-          *a5 = 1;
+          *visible = 1;
         }
 
-        if (*a5)
+        if (*visible)
         {
 LABEL_18:
-          LOBYTE(v13) = 1;
+          LOBYTE(parentItemIdentifier) = 1;
 LABEL_24:
 
           goto LABEL_9;
@@ -712,23 +712,23 @@ LABEL_24:
 
   else
   {
-    LOBYTE(v13) = 0;
+    LOBYTE(parentItemIdentifier) = 0;
   }
 
 LABEL_9:
 
-  return v13;
+  return parentItemIdentifier;
 }
 
-- (int)_registerForNotification:(id)a3 handler:(id)a4
+- (int)_registerForNotification:(id)notification handler:(id)handler
 {
-  v5 = a3;
+  notificationCopy = notification;
   out_token = -1;
-  v7 = a3;
-  v8 = a4;
-  LODWORD(v5) = notify_register_dispatch([v5 UTF8String], &out_token, self->_syncQueue, v8);
+  notificationCopy2 = notification;
+  handlerCopy = handler;
+  LODWORD(notificationCopy) = notify_register_dispatch([notificationCopy UTF8String], &out_token, self->_syncQueue, handlerCopy);
 
-  if (v5)
+  if (notificationCopy)
   {
     return -1;
   }
@@ -739,33 +739,33 @@ LABEL_9:
   }
 }
 
-- (id)_bundleIDForHomonymOfApp:(id)a3
+- (id)_bundleIDForHomonymOfApp:(id)app
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  appCopy = app;
+  v5 = appCopy;
+  if (appCopy)
   {
     appMetadataByDisplayName = self->_appMetadataByDisplayName;
-    v7 = [v4 displayName];
-    v8 = [(NSMutableDictionary *)appMetadataByDisplayName objectForKeyedSubscript:v7];
+    displayName = [appCopy displayName];
+    v8 = [(NSMutableDictionary *)appMetadataByDisplayName objectForKeyedSubscript:displayName];
 
     if (v8 && ([v5 bundleID], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "bundleID"), v10 = objc_claimAutoreleasedReturnValue(), v11 = objc_msgSend(v9, "isEqualToString:", v10), v10, v9, (v11 & 1) == 0))
     {
-      v12 = [v8 bundleID];
+      bundleID = [v8 bundleID];
     }
 
     else
     {
-      v12 = 0;
+      bundleID = 0;
     }
   }
 
   else
   {
-    v12 = 0;
+    bundleID = 0;
   }
 
-  return v12;
+  return bundleID;
 }
 
 - (void)init

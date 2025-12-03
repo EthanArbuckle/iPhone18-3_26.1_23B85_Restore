@@ -1,12 +1,12 @@
 @interface _INPBDictionary
-- (BOOL)isEqual:(id)a3;
-- (_INPBDictionary)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBDictionary)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (void)addPair:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPairs:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPair:(id)pair;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPairs:(id)pairs;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBDictionary
@@ -14,10 +14,10 @@
 - (id)dictionaryRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_pairs count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
@@ -37,8 +37,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -47,26 +47,26 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"pair"];
+    [dictionary setObject:array forKeyedSubscript:@"pair"];
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(_INPBDictionary *)self pairs];
-    v6 = [v4 pairs];
-    v7 = v6;
-    if ((v5 != 0) != (v6 == 0))
+    pairs = [(_INPBDictionary *)self pairs];
+    pairs2 = [equalCopy pairs];
+    v7 = pairs2;
+    if ((pairs != 0) != (pairs2 == 0))
     {
-      v8 = [(_INPBDictionary *)self pairs];
-      if (!v8)
+      pairs3 = [(_INPBDictionary *)self pairs];
+      if (!pairs3)
       {
 
 LABEL_10:
@@ -74,10 +74,10 @@ LABEL_10:
         goto LABEL_8;
       }
 
-      v9 = v8;
-      v10 = [(_INPBDictionary *)self pairs];
-      v11 = [v4 pairs];
-      v12 = [v10 isEqual:v11];
+      v9 = pairs3;
+      pairs4 = [(_INPBDictionary *)self pairs];
+      pairs5 = [equalCopy pairs];
+      v12 = [pairs4 isEqual:pairs5];
 
       if (v12)
       {
@@ -96,43 +96,43 @@ LABEL_8:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBDictionary allocWithZone:](_INPBDictionary init];
-  v6 = [(NSArray *)self->_pairs copyWithZone:a3];
+  v6 = [(NSArray *)self->_pairs copyWithZone:zone];
   [(_INPBDictionary *)v5 setPairs:v6];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBDictionary *)self data];
+  coderCopy = coder;
+  data = [(_INPBDictionary *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBDictionary)initWithCoder:(id)a3
+- (_INPBDictionary)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBDictionary *)self initWithData:v6];
+    self = [(_INPBDictionary *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -168,27 +168,27 @@ LABEL_8:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addPair:(id)a3
+- (void)addPair:(id)pair
 {
-  v4 = a3;
+  pairCopy = pair;
   pairs = self->_pairs;
-  v8 = v4;
+  v8 = pairCopy;
   if (!pairs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pairs;
-    self->_pairs = v6;
+    self->_pairs = array;
 
-    v4 = v8;
+    pairCopy = v8;
     pairs = self->_pairs;
   }
 
-  [(NSArray *)pairs addObject:v4];
+  [(NSArray *)pairs addObject:pairCopy];
 }
 
-- (void)setPairs:(id)a3
+- (void)setPairs:(id)pairs
 {
-  v4 = [a3 mutableCopy];
+  v4 = [pairs mutableCopy];
   pairs = self->_pairs;
   self->_pairs = v4;
 

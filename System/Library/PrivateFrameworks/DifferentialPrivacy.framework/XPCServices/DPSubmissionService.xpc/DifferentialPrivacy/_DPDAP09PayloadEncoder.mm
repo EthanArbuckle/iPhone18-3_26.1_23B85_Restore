@@ -1,85 +1,85 @@
 @interface _DPDAP09PayloadEncoder
-- (_DPDAP09PayloadEncoder)initWithDonation:(id)a3 keys:(id)a4 error:(id *)a5;
-- (id)encodedAdditionalDataWithError:(id *)a3;
-- (id)encodedPlaintextInputShareForServerRole:(unsigned __int8)a3 error:(id *)a4;
-- (id)encodedReportAuthExtensionDataWithError:(id *)a3;
-- (id)encodedReportWithError:(id *)a3;
+- (_DPDAP09PayloadEncoder)initWithDonation:(id)donation keys:(id)keys error:(id *)error;
+- (id)encodedAdditionalDataWithError:(id *)error;
+- (id)encodedPlaintextInputShareForServerRole:(unsigned __int8)role error:(id *)error;
+- (id)encodedReportAuthExtensionDataWithError:(id *)error;
+- (id)encodedReportWithError:(id *)error;
 @end
 
 @implementation _DPDAP09PayloadEncoder
 
-- (_DPDAP09PayloadEncoder)initWithDonation:(id)a3 keys:(id)a4 error:(id *)a5
+- (_DPDAP09PayloadEncoder)initWithDonation:(id)donation keys:(id)keys error:(id *)error
 {
   v6.receiver = self;
   v6.super_class = _DPDAP09PayloadEncoder;
-  return [(_DPDAPPayloadEncoder *)&v6 initWithDonation:a3 keys:a4 error:a5];
+  return [(_DPDAPPayloadEncoder *)&v6 initWithDonation:donation keys:keys error:error];
 }
 
-- (id)encodedReportWithError:(id *)a3
+- (id)encodedReportWithError:(id *)error
 {
-  v5 = [(_DPDAPPayloadEncoder *)self report];
+  report = [(_DPDAPPayloadEncoder *)self report];
 
-  if (v5)
+  if (report)
   {
     goto LABEL_2;
   }
 
   [(_DPDAPPayloadEncoder *)self encodeReportID];
   [(_DPDAPPayloadEncoder *)self encodePublicShare];
-  [(_DPDAPPayloadEncoder *)self encryptLeaderSharesWithError:a3];
-  v7 = [(_DPDAPPayloadEncoder *)self encryptedLeaderShares];
-  v8 = [v7 count];
+  [(_DPDAPPayloadEncoder *)self encryptLeaderSharesWithError:error];
+  encryptedLeaderShares = [(_DPDAPPayloadEncoder *)self encryptedLeaderShares];
+  v8 = [encryptedLeaderShares count];
 
   if (v8 == 2)
   {
-    [(_DPDAPPayloadEncoder *)self encryptHelperSharesWithError:a3];
-    v9 = [(_DPDAPPayloadEncoder *)self encryptedHelperShares];
-    v10 = [v9 count];
+    [(_DPDAPPayloadEncoder *)self encryptHelperSharesWithError:error];
+    encryptedHelperShares = [(_DPDAPPayloadEncoder *)self encryptedHelperShares];
+    v10 = [encryptedHelperShares count];
 
     if (v10 == 2)
     {
-      v11 = [(_DPDAPPayloadEncoder *)self reportID];
-      v25 = [(_DPDAPPayloadEncoder *)self time];
-      v24 = [(_DPDAPPayloadEncoder *)self publicShare];
-      v28 = [(_DPDAPPayloadEncoder *)self keys];
-      v22 = [v28 leaderHPKEConfigID];
-      v27 = [(_DPDAPPayloadEncoder *)self encryptedLeaderShares];
-      v21 = [v27 objectAtIndexedSubscript:0];
-      v26 = [(_DPDAPPayloadEncoder *)self encryptedLeaderShares];
-      v12 = [v26 objectAtIndexedSubscript:1];
-      v23 = [(_DPDAPPayloadEncoder *)self keys];
-      v13 = [v23 helperHPKEConfigID];
-      v14 = [(_DPDAPPayloadEncoder *)self encryptedHelperShares];
-      v15 = [v14 objectAtIndexedSubscript:0];
-      v16 = [(_DPDAPPayloadEncoder *)self encryptedHelperShares];
-      v17 = [v16 objectAtIndexedSubscript:1];
-      LOBYTE(v20) = v13;
-      v18 = [_DPPPM_0_2_1_PayloadEncoderShim encodedReportWithReportID:v11 time:v25 publicShare:v24 leaderHPKEConfigID:v22 leaderEnc:v21 leaderPayload:v12 helperHPKEConfigID:v20 helperEnc:v15 helperPayload:v17 error:a3];
+      reportID = [(_DPDAPPayloadEncoder *)self reportID];
+      time = [(_DPDAPPayloadEncoder *)self time];
+      publicShare = [(_DPDAPPayloadEncoder *)self publicShare];
+      keys = [(_DPDAPPayloadEncoder *)self keys];
+      leaderHPKEConfigID = [keys leaderHPKEConfigID];
+      encryptedLeaderShares2 = [(_DPDAPPayloadEncoder *)self encryptedLeaderShares];
+      v21 = [encryptedLeaderShares2 objectAtIndexedSubscript:0];
+      encryptedLeaderShares3 = [(_DPDAPPayloadEncoder *)self encryptedLeaderShares];
+      v12 = [encryptedLeaderShares3 objectAtIndexedSubscript:1];
+      keys2 = [(_DPDAPPayloadEncoder *)self keys];
+      helperHPKEConfigID = [keys2 helperHPKEConfigID];
+      encryptedHelperShares2 = [(_DPDAPPayloadEncoder *)self encryptedHelperShares];
+      v15 = [encryptedHelperShares2 objectAtIndexedSubscript:0];
+      encryptedHelperShares3 = [(_DPDAPPayloadEncoder *)self encryptedHelperShares];
+      v17 = [encryptedHelperShares3 objectAtIndexedSubscript:1];
+      LOBYTE(v20) = helperHPKEConfigID;
+      v18 = [_DPPPM_0_2_1_PayloadEncoderShim encodedReportWithReportID:reportID time:time publicShare:publicShare leaderHPKEConfigID:leaderHPKEConfigID leaderEnc:v21 leaderPayload:v12 helperHPKEConfigID:v20 helperEnc:v15 helperPayload:v17 error:error];
       [(_DPDAPPayloadEncoder *)self setReport:v18];
 
 LABEL_2:
-      v6 = [(_DPDAPPayloadEncoder *)self report];
+      report2 = [(_DPDAPPayloadEncoder *)self report];
       goto LABEL_7;
     }
   }
 
-  v6 = 0;
+  report2 = 0;
 LABEL_7:
 
-  return v6;
+  return report2;
 }
 
-- (id)encodedAdditionalDataWithError:(id *)a3
+- (id)encodedAdditionalDataWithError:(id *)error
 {
   v5 = [(_DPDAPPayloadEncoder *)self taskIDWithError:?];
   if (v5)
   {
     [(_DPDAPPayloadEncoder *)self encodeReportID];
     [(_DPDAPPayloadEncoder *)self encodePublicShare];
-    v6 = [(_DPDAPPayloadEncoder *)self reportID];
-    v7 = [(_DPDAPPayloadEncoder *)self time];
-    v8 = [(_DPDAPPayloadEncoder *)self publicShare];
-    v9 = [_DPPPM_0_2_1_PayloadEncoderShim encodedInputShareAADWithTaskID:v5 reportID:v6 time:v7 publicShare:v8 error:a3];
+    reportID = [(_DPDAPPayloadEncoder *)self reportID];
+    time = [(_DPDAPPayloadEncoder *)self time];
+    publicShare = [(_DPDAPPayloadEncoder *)self publicShare];
+    v9 = [_DPPPM_0_2_1_PayloadEncoderShim encodedInputShareAADWithTaskID:v5 reportID:reportID time:time publicShare:publicShare error:error];
   }
 
   else
@@ -90,26 +90,26 @@ LABEL_7:
   return v9;
 }
 
-- (id)encodedPlaintextInputShareForServerRole:(unsigned __int8)a3 error:(id *)a4
+- (id)encodedPlaintextInputShareForServerRole:(unsigned __int8)role error:(id *)error
 {
-  v5 = a3;
-  v7 = [(_DPDAPPayloadEncoder *)self encodedTaskProvExtensionDataWithError:a4];
+  roleCopy = role;
+  v7 = [(_DPDAPPayloadEncoder *)self encodedTaskProvExtensionDataWithError:error];
   if (v7)
   {
-    v8 = [(_DPDAPPayloadEncoder *)self donation];
-    v9 = v8;
-    if (v5 == 2)
+    donation = [(_DPDAPPayloadEncoder *)self donation];
+    v9 = donation;
+    if (roleCopy == 2)
     {
-      [v8 share1];
+      [donation share1];
     }
 
     else
     {
-      [v8 share2];
+      [donation share2];
     }
     v11 = ;
 
-    v10 = [_DPPPM_0_2_1_PayloadEncoderShim encodedPlaintextInputShareWithTaskProvExtensionData:v7 payload:v11 error:a4];
+    v10 = [_DPPPM_0_2_1_PayloadEncoderShim encodedPlaintextInputShareWithTaskProvExtensionData:v7 payload:v11 error:error];
   }
 
   else
@@ -120,12 +120,12 @@ LABEL_7:
   return v10;
 }
 
-- (id)encodedReportAuthExtensionDataWithError:(id *)a3
+- (id)encodedReportAuthExtensionDataWithError:(id *)error
 {
-  v5 = [(_DPDAPPayloadEncoder *)self donation];
-  v6 = [v5 isPrivateAccessTokenEnabledWithError:a3];
+  donation = [(_DPDAPPayloadEncoder *)self donation];
+  v6 = [donation isPrivateAccessTokenEnabledWithError:error];
 
-  if (a3 && *a3)
+  if (error && *error)
   {
     v7 = 0;
   }
@@ -143,39 +143,39 @@ LABEL_7:
       }
 
       v9 = objc_alloc_init(_DPPrivateAccessTokenManager);
-      v10 = [(_DPDAPPayloadEncoder *)self donation];
-      v11 = [v10 getLeaderServerName];
+      donation2 = [(_DPDAPPayloadEncoder *)self donation];
+      getLeaderServerName = [donation2 getLeaderServerName];
 
-      v12 = [(_DPDAPPayloadEncoder *)self donation];
-      v13 = [v12 getLeaderServerName];
+      donation3 = [(_DPDAPPayloadEncoder *)self donation];
+      getLeaderServerName2 = [donation3 getLeaderServerName];
       v20 = 0;
-      v14 = [(_DPPrivateAccessTokenManager *)v9 reportAuthForAggregator:v13 withError:&v20];
+      v14 = [(_DPPrivateAccessTokenManager *)v9 reportAuthForAggregator:getLeaderServerName2 withError:&v20];
       v15 = v20;
 
       if (v14)
       {
-        v7 = [v14 encodeWithError:a3];
+        v7 = [v14 encodeWithError:error];
       }
 
-      else if (a3 && v15)
+      else if (error && v15)
       {
         v16 = v15;
         v7 = 0;
-        *a3 = v15;
+        *error = v15;
       }
 
       else
       {
-        v17 = [NSString stringWithFormat:@"Failed to allocate Private Access Token for %@", v11];
+        v17 = [NSString stringWithFormat:@"Failed to allocate Private Access Token for %@", getLeaderServerName];
         v18 = +[_DPLog service];
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           sub_1000500D0(v17, v18);
         }
 
-        if (a3)
+        if (error)
         {
-          *a3 = [_DPDediscoError errorWithCode:800 description:v17];
+          *error = [_DPDediscoError errorWithCode:800 description:v17];
         }
 
         v7 = 0;

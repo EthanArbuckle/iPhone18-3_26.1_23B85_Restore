@@ -1,24 +1,24 @@
 @interface _TVAlertActionCell
 - (id)preferredFocusEnvironments;
 - (void)prepareForReuse;
-- (void)setButtonView:(id)a3;
+- (void)setButtonView:(id)view;
 @end
 
 @implementation _TVAlertActionCell
 
-- (void)setButtonView:(id)a3
+- (void)setButtonView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   buttonView = self->_buttonView;
-  v9 = v5;
-  if (buttonView != v5)
+  v9 = viewCopy;
+  if (buttonView != viewCopy)
   {
     [(UIView *)buttonView removeFromSuperview];
-    objc_storeStrong(&self->_buttonView, a3);
+    objc_storeStrong(&self->_buttonView, view);
     if (self->_buttonView)
     {
-      v7 = [(_TVAlertActionCell *)self contentView];
-      [v7 addSubview:self->_buttonView];
+      contentView = [(_TVAlertActionCell *)self contentView];
+      [contentView addSubview:self->_buttonView];
 
       v8 = self->_buttonView;
       [(_TVAlertActionCell *)self bounds];
@@ -49,9 +49,9 @@
   v6.receiver = self;
   v6.super_class = _TVAlertActionCell;
   [(_TVAlertActionCell *)&v6 prepareForReuse];
-  v3 = [(_TVAlertActionCell *)self contentView];
-  v4 = [v3 subviews];
-  [v4 makeObjectsPerformSelector:sel_removeFromSuperview];
+  contentView = [(_TVAlertActionCell *)self contentView];
+  subviews = [contentView subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
   buttonView = self->_buttonView;
   self->_buttonView = 0;

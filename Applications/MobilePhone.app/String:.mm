@@ -6,7 +6,7 @@
 
 - (Class)NSObject
 {
-  v1 = *(a1 + 32);
+  v1 = *(self + 32);
 
   v3 = v1(v2);
 

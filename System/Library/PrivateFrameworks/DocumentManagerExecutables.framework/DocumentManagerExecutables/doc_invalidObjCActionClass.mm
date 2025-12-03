@@ -1,13 +1,13 @@
 @interface doc_invalidObjCActionClass
 - (_TtC26DocumentManagerExecutablesP33_75D41E1192F6C0DF7173E05F3862C05026doc_invalidObjCActionClass)init;
-- (void)actionNoOneImplements:(id)a3;
+- (void)actionNoOneImplements:(id)implements;
 @end
 
 @implementation doc_invalidObjCActionClass
 
-- (void)actionNoOneImplements:(id)a3
+- (void)actionNoOneImplements:(id)implements
 {
-  if (a3)
+  if (implements)
   {
     swift_unknownObjectRetain();
     _bridgeAnyObjectToAny(_:)();

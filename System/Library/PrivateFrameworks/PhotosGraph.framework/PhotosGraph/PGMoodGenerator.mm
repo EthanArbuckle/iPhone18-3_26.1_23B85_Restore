@@ -1,30 +1,30 @@
 @interface PGMoodGenerator
-- (PGMoodGenerator)initWithAssetCollection:(id)a3 photoLibrary:(id)a4 options:(id)a5;
-- (PGMoodGenerator)initWithEnrichedMemory:(id)a3 photoLibrary:(id)a4 options:(id)a5;
+- (PGMoodGenerator)initWithAssetCollection:(id)collection photoLibrary:(id)library options:(id)options;
+- (PGMoodGenerator)initWithEnrichedMemory:(id)memory photoLibrary:(id)library options:(id)options;
 - (id)_moodSources;
-- (id)historyWeightedPositiveMoodVectorWithGraph:(id)a3;
-- (id)negativeMoodVectorWithGraph:(id)a3;
-- (id)positiveMoodVectorWithGraph:(id)a3;
-- (unint64_t)forbiddenMoodsWithGraph:(id)a3;
-- (unint64_t)recommendedMoodsWithGraph:(id)a3;
-- (unint64_t)suggestedMoodWithGraph:(id)a3;
-- (void)_processMoodSourcesWithGraph:(id)a3;
+- (id)historyWeightedPositiveMoodVectorWithGraph:(id)graph;
+- (id)negativeMoodVectorWithGraph:(id)graph;
+- (id)positiveMoodVectorWithGraph:(id)graph;
+- (unint64_t)forbiddenMoodsWithGraph:(id)graph;
+- (unint64_t)recommendedMoodsWithGraph:(id)graph;
+- (unint64_t)suggestedMoodWithGraph:(id)graph;
+- (void)_processMoodSourcesWithGraph:(id)graph;
 @end
 
 @implementation PGMoodGenerator
 
-- (void)_processMoodSourcesWithGraph:(id)a3
+- (void)_processMoodSourcesWithGraph:(id)graph
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  graphCopy = graph;
   v5 = objc_opt_new();
   v25 = objc_opt_new();
-  v6 = [(PGMoodGenerator *)self _moodSources];
+  _moodSources = [(PGMoodGenerator *)self _moodSources];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+  v7 = [_moodSources countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v7)
   {
     v8 = v7;
@@ -36,7 +36,7 @@
       {
         if (*v27 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(_moodSources);
         }
 
         enrichedMemory = self->_enrichedMemory;
@@ -58,10 +58,10 @@
         if (v17 != 0.0)
         {
           v18 = v17;
-          v19 = [v16 positiveVectorWithGraph:v4];
+          v19 = [v16 positiveVectorWithGraph:graphCopy];
           [v19 multiplyByWeight:v18];
           [(PGMoodVector *)v5 addMoodVector:v19];
-          v20 = [v16 negativeVectorWithGraph:v4];
+          v20 = [v16 negativeVectorWithGraph:graphCopy];
           [v20 multiplyByWeight:v18];
           [(PGMoodVector *)v25 addMoodVector:v20];
         }
@@ -70,7 +70,7 @@
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v26 objects:v30 count:16];
+      v8 = [_moodSources countByEnumeratingWithState:&v26 objects:v30 count:16];
     }
 
     while (v8);
@@ -86,21 +86,21 @@
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (id)historyWeightedPositiveMoodVectorWithGraph:(id)a3
+- (id)historyWeightedPositiveMoodVectorWithGraph:(id)graph
 {
   v20 = *MEMORY[0x277D85DE8];
   historyWeightedPositiveMoodVector = self->_historyWeightedPositiveMoodVector;
   if (!historyWeightedPositiveMoodVector)
   {
-    v5 = [(PGMoodGenerator *)self positiveMoodVectorWithGraph:a3];
+    v5 = [(PGMoodGenerator *)self positiveMoodVectorWithGraph:graph];
     v6 = [v5 copy];
 
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = [(PGMoodGeneratorOptions *)self->_options moodHistory];
-    v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    moodHistory = [(PGMoodGeneratorOptions *)self->_options moodHistory];
+    v8 = [moodHistory countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
       v9 = v8;
@@ -112,14 +112,14 @@
         {
           if (*v16 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(moodHistory);
           }
 
           -[PGMoodVector multiplyByWeight:forMood:](v6, "multiplyByWeight:forMood:", [*(*(&v15 + 1) + 8 * v11++) unsignedIntegerValue], 0.9);
         }
 
         while (v9 != v11);
-        v9 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v9 = [moodHistory countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v9);
@@ -136,60 +136,60 @@
   return historyWeightedPositiveMoodVector;
 }
 
-- (id)negativeMoodVectorWithGraph:(id)a3
+- (id)negativeMoodVectorWithGraph:(id)graph
 {
   negativeMoodVector = self->_negativeMoodVector;
   if (!negativeMoodVector)
   {
-    [(PGMoodGenerator *)self _processMoodSourcesWithGraph:a3];
+    [(PGMoodGenerator *)self _processMoodSourcesWithGraph:graph];
     negativeMoodVector = self->_negativeMoodVector;
   }
 
   return negativeMoodVector;
 }
 
-- (id)positiveMoodVectorWithGraph:(id)a3
+- (id)positiveMoodVectorWithGraph:(id)graph
 {
   positiveMoodVector = self->_positiveMoodVector;
   if (!positiveMoodVector)
   {
-    [(PGMoodGenerator *)self _processMoodSourcesWithGraph:a3];
+    [(PGMoodGenerator *)self _processMoodSourcesWithGraph:graph];
     positiveMoodVector = self->_positiveMoodVector;
   }
 
   return positiveMoodVector;
 }
 
-- (unint64_t)forbiddenMoodsWithGraph:(id)a3
+- (unint64_t)forbiddenMoodsWithGraph:(id)graph
 {
-  v4 = [(PGMoodGenerator *)self negativeMoodVectorWithGraph:a3];
+  v4 = [(PGMoodGenerator *)self negativeMoodVectorWithGraph:graph];
   v5 = [v4 moodsWithThreshold:self->_negativeThreshold];
 
   return v5;
 }
 
-- (unint64_t)recommendedMoodsWithGraph:(id)a3
+- (unint64_t)recommendedMoodsWithGraph:(id)graph
 {
-  v4 = [(PGMoodGenerator *)self positiveMoodVectorWithGraph:a3];
+  v4 = [(PGMoodGenerator *)self positiveMoodVectorWithGraph:graph];
   v5 = [v4 moodsWithThreshold:self->_positiveThreshold];
 
   return v5;
 }
 
-- (unint64_t)suggestedMoodWithGraph:(id)a3
+- (unint64_t)suggestedMoodWithGraph:(id)graph
 {
   result = self->_suggestedMood;
   if (!result)
   {
-    v5 = a3;
-    v6 = [(PGMoodGenerator *)self recommendedMoodsWithGraph:v5];
-    v7 = [(PGMoodGenerator *)self forbiddenMoodsWithGraph:v5];
-    v8 = [(PGMoodGenerator *)self historyWeightedPositiveMoodVectorWithGraph:v5];
+    graphCopy = graph;
+    v6 = [(PGMoodGenerator *)self recommendedMoodsWithGraph:graphCopy];
+    v7 = [(PGMoodGenerator *)self forbiddenMoodsWithGraph:graphCopy];
+    v8 = [(PGMoodGenerator *)self historyWeightedPositiveMoodVectorWithGraph:graphCopy];
 
     v9 = [v8 copy];
     [v9 filterWithMoods:v6 & ~v7];
-    v10 = [(PHAssetCollection *)self->_assetCollection uuid];
-    self->_suggestedMood = [v9 weightedRandomMoodWithSeed:{objc_msgSend(v10, "hash")}];
+    uuid = [(PHAssetCollection *)self->_assetCollection uuid];
+    self->_suggestedMood = [v9 weightedRandomMoodWithSeed:{objc_msgSend(uuid, "hash")}];
 
     if (!self->_suggestedMood)
     {
@@ -233,40 +233,40 @@ void __31__PGMoodGenerator__moodSources__block_invoke()
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (PGMoodGenerator)initWithEnrichedMemory:(id)a3 photoLibrary:(id)a4 options:(id)a5
+- (PGMoodGenerator)initWithEnrichedMemory:(id)memory photoLibrary:(id)library options:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  memoryCopy = memory;
+  libraryCopy = library;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = PGMoodGenerator;
   v12 = [(PGMoodGenerator *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_enrichedMemory, a3);
-    objc_storeStrong(&v13->_photoLibrary, a4);
-    objc_storeStrong(&v13->_options, a5);
+    objc_storeStrong(&v12->_enrichedMemory, memory);
+    objc_storeStrong(&v13->_photoLibrary, library);
+    objc_storeStrong(&v13->_options, options);
     *&v13->_positiveThreshold = xmmword_22F78C0C0;
   }
 
   return v13;
 }
 
-- (PGMoodGenerator)initWithAssetCollection:(id)a3 photoLibrary:(id)a4 options:(id)a5
+- (PGMoodGenerator)initWithAssetCollection:(id)collection photoLibrary:(id)library options:(id)options
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  collectionCopy = collection;
+  libraryCopy = library;
+  optionsCopy = options;
   v15.receiver = self;
   v15.super_class = PGMoodGenerator;
   v12 = [(PGMoodGenerator *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_assetCollection, a3);
-    objc_storeStrong(&v13->_photoLibrary, a4);
-    objc_storeStrong(&v13->_options, a5);
+    objc_storeStrong(&v12->_assetCollection, collection);
+    objc_storeStrong(&v13->_photoLibrary, library);
+    objc_storeStrong(&v13->_options, options);
     *&v13->_positiveThreshold = xmmword_22F78C0C0;
   }
 

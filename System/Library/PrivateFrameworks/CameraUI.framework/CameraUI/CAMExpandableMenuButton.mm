@@ -1,64 +1,64 @@
 @interface CAMExpandableMenuButton
 - (BOOL)_wantsHeaderViewToBeVisible;
 - (BOOL)wantsSelectedItemToBeVisible;
-- (CAMExpandableMenuButton)initWithCoder:(id)a3;
-- (CAMExpandableMenuButton)initWithFrame:(CGRect)a3;
-- (CAMExpandableMenuButton)initWithLayoutStyle:(int64_t)a3;
+- (CAMExpandableMenuButton)initWithCoder:(id)coder;
+- (CAMExpandableMenuButton)initWithFrame:(CGRect)frame;
+- (CAMExpandableMenuButton)initWithLayoutStyle:(int64_t)style;
 - (CAMExpandableMenuButtonDelegate)expandableMenuDelegate;
-- (CGRect)alignmentRectForFrame:(CGRect)a3 expanded:(BOOL)a4;
-- (CGRect)frameForAlignmentRect:(CGRect)a3 expanded:(BOOL)a4;
-- (CGSize)_layoutForPadCollapsedPortraitButton:(BOOL)a3;
-- (CGSize)_layoutForPadExpandedPortraitButton:(BOOL)a3;
-- (CGSize)_layoutForPadStyle:(BOOL)a3 expanded:(BOOL)a4;
-- (CGSize)_layoutForPhoneCollapsedLandscapeButton:(BOOL)a3;
-- (CGSize)_layoutForPhoneCollapsedPortraitButton:(BOOL)a3;
-- (CGSize)_layoutForPhoneExpandedLandscapeButton:(BOOL)a3;
-- (CGSize)_layoutForPhoneExpandedPortraitButton:(BOOL)a3;
-- (CGSize)_layoutForPhoneStyle:(BOOL)a3 expanded:(BOOL)a4;
-- (CGSize)_layoutMenuButton:(BOOL)a3 expanded:(BOOL)a4;
+- (CGRect)alignmentRectForFrame:(CGRect)frame expanded:(BOOL)expanded;
+- (CGRect)frameForAlignmentRect:(CGRect)rect expanded:(BOOL)expanded;
+- (CGSize)_layoutForPadCollapsedPortraitButton:(BOOL)button;
+- (CGSize)_layoutForPadExpandedPortraitButton:(BOOL)button;
+- (CGSize)_layoutForPadStyle:(BOOL)style expanded:(BOOL)expanded;
+- (CGSize)_layoutForPhoneCollapsedLandscapeButton:(BOOL)button;
+- (CGSize)_layoutForPhoneCollapsedPortraitButton:(BOOL)button;
+- (CGSize)_layoutForPhoneExpandedLandscapeButton:(BOOL)button;
+- (CGSize)_layoutForPhoneExpandedPortraitButton:(BOOL)button;
+- (CGSize)_layoutForPhoneStyle:(BOOL)style expanded:(BOOL)expanded;
+- (CGSize)_layoutMenuButton:(BOOL)button expanded:(BOOL)expanded;
 - (CGSize)_padCollapsedIntrinsicContentSize;
 - (CGSize)intrinsicContentSize;
-- (CGSize)intrinsicContentSizeForExpansion:(BOOL)a3;
+- (CGSize)intrinsicContentSizeForExpansion:(BOOL)expansion;
 - (UIEdgeInsets)tappableEdgeInsets;
 - (id)_selectedLabel;
-- (id)_viewToTrackForTouchAtLocation:(CGPoint)a3;
-- (id)hudItemForAccessibilityHUDManager:(id)a3;
+- (id)_viewToTrackForTouchAtLocation:(CGPoint)location;
+- (id)hudItemForAccessibilityHUDManager:(id)manager;
 - (void)_applyHeaderViewForCurrentExpansionState;
 - (void)_applyMenuItemAlphaForCurrentExpansionState;
 - (void)_applyMenuItemColorsForCurrentState;
 - (void)_applyMenuItemTextAlignmentAndShadowForCurrentOrientation;
-- (void)_convertAllSubviewsToProposedFrame:(CGRect)a3;
+- (void)_convertAllSubviewsToProposedFrame:(CGRect)frame;
 - (void)_createPadBackgroundView;
-- (void)_handleTouchGesture:(id)a3;
+- (void)_handleTouchGesture:(id)gesture;
 - (void)_preferredContentSizeCategoryDidChange;
-- (void)_updateFromExpansionChangeAnimated:(BOOL)a3;
-- (void)_updateFromOrientationChangeAnimated:(BOOL)a3;
+- (void)_updateFromExpansionChangeAnimated:(BOOL)animated;
+- (void)_updateFromOrientationChangeAnimated:(BOOL)animated;
 - (void)_updateFromSelectedIndexChange;
-- (void)collapseMenuAnimated:(BOOL)a3;
-- (void)expandMenuAnimated:(BOOL)a3;
-- (void)finishCollapsingAnimated:(BOOL)a3;
-- (void)finishExpansionAnimated:(BOOL)a3;
+- (void)collapseMenuAnimated:(BOOL)animated;
+- (void)expandMenuAnimated:(BOOL)animated;
+- (void)finishCollapsingAnimated:(BOOL)animated;
+- (void)finishExpansionAnimated:(BOOL)animated;
 - (void)layoutSubviews;
 - (void)reloadData;
-- (void)selectedByAccessibilityHUDManager:(id)a3;
-- (void)setHighlighted:(BOOL)a3 forIndex:(int64_t)a4;
-- (void)setLayoutStyle:(int64_t)a3;
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4;
-- (void)setSelectedIndex:(int64_t)a3;
-- (void)setTappableEdgeInsets:(UIEdgeInsets)a3;
+- (void)selectedByAccessibilityHUDManager:(id)manager;
+- (void)setHighlighted:(BOOL)highlighted forIndex:(int64_t)index;
+- (void)setLayoutStyle:(int64_t)style;
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated;
+- (void)setSelectedIndex:(int64_t)index;
+- (void)setTappableEdgeInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation CAMExpandableMenuButton
 
 - (void)_applyHeaderViewForCurrentExpansionState
 {
-  v3 = [(CAMExpandableMenuButton *)self _headerView];
+  _headerView = [(CAMExpandableMenuButton *)self _headerView];
 
-  if (v3)
+  if (_headerView)
   {
-    v4 = [(CAMExpandableMenuButton *)self isExpanded];
+    isExpanded = [(CAMExpandableMenuButton *)self isExpanded];
 
-    [(CAMExpandableMenuButton *)self prepareHeaderViewForExpanding:v4];
+    [(CAMExpandableMenuButton *)self prepareHeaderViewForExpanding:isExpanded];
   }
 }
 
@@ -66,9 +66,9 @@
 {
   if ([(NSMutableArray *)self->__menuItems count])
   {
-    v3 = [(CAMExpandableMenuButton *)self isExpanded];
+    isExpanded = [(CAMExpandableMenuButton *)self isExpanded];
     menuItems = self->__menuItems;
-    if (v3)
+    if (isExpanded)
     {
       v14[0] = MEMORY[0x1E69E9820];
       v14[1] = 3221225472;
@@ -83,14 +83,14 @@
       if (isKindOfClass)
       {
         v8 = headerView;
-        v9 = [v7 whiteColor];
-        [(UIView *)v8 setTextColor:v9];
+        whiteColor = [v7 whiteColor];
+        [(UIView *)v8 setTextColor:whiteColor];
 
 LABEL_11:
         return;
       }
 
-      v9 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
       v12 = headerView;
     }
 
@@ -102,12 +102,12 @@ LABEL_11:
       v13[3] = &unk_1E76FCB68;
       v13[4] = self;
       [(NSMutableArray *)menuItems enumerateObjectsUsingBlock:v13];
-      v9 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
       if ([(NSMutableIndexSet *)self->__highlightedIndexesWhileCollapsed containsIndex:self->_selectedIndex])
       {
-        v10 = [MEMORY[0x1E69DC888] systemYellowColor];
+        systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
 
-        v9 = v10;
+        whiteColor = systemYellowColor;
       }
 
       objc_opt_class();
@@ -115,12 +115,12 @@ LABEL_11:
       v12 = self->__headerView;
       if (v11)
       {
-        [(UIView *)v12 setTextColor:v9];
+        [(UIView *)v12 setTextColor:whiteColor];
         goto LABEL_11;
       }
     }
 
-    [(UIView *)v12 setTintColor:v9];
+    [(UIView *)v12 setTintColor:whiteColor];
     goto LABEL_11;
   }
 }
@@ -161,19 +161,19 @@ LABEL_11:
 
 - (BOOL)_wantsHeaderViewToBeVisible
 {
-  v3 = [(CAMExpandableMenuButton *)self isExpanded];
-  v4 = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
-  v5 = [(CAMExpandableMenuButton *)self layoutStyle]!= 1 || v3 || !v4;
+  isExpanded = [(CAMExpandableMenuButton *)self isExpanded];
+  wantsSelectedItemToBeVisible = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
+  v5 = [(CAMExpandableMenuButton *)self layoutStyle]!= 1 || isExpanded || !wantsSelectedItemToBeVisible;
   return v5 & 1;
 }
 
 - (BOOL)wantsSelectedItemToBeVisible
 {
-  v3 = [(CAMExpandableMenuButton *)self selectedIndex];
-  v4 = [(CAMExpandableMenuButton *)self _shownIndexesWhileCollapsed];
-  LOBYTE(v3) = [v4 containsIndex:v3];
+  selectedIndex = [(CAMExpandableMenuButton *)self selectedIndex];
+  _shownIndexesWhileCollapsed = [(CAMExpandableMenuButton *)self _shownIndexesWhileCollapsed];
+  LOBYTE(selectedIndex) = [_shownIndexesWhileCollapsed containsIndex:selectedIndex];
 
-  return v3;
+  return selectedIndex;
 }
 
 - (void)_applyMenuItemTextAlignmentAndShadowForCurrentOrientation
@@ -213,13 +213,13 @@ LABEL_11:
 
 - (void)reloadData
 {
-  v3 = [(CAMExpandableMenuButton *)self layoutStyle];
+  layoutStyle = [(CAMExpandableMenuButton *)self layoutStyle];
   [(NSMutableArray *)self->__menuItems makeObjectsPerformSelector:sel_removeFromSuperview];
   [(NSMutableArray *)self->__menuItems removeAllObjects];
-  v4 = [(CAMExpandableMenuButton *)self numberOfMenuItems];
-  if (v4 >= 1)
+  numberOfMenuItems = [(CAMExpandableMenuButton *)self numberOfMenuItems];
+  if (numberOfMenuItems >= 1)
   {
-    v5 = v4;
+    v5 = numberOfMenuItems;
     v6 = 0;
     v7 = *MEMORY[0x1E695F058];
     v8 = *(MEMORY[0x1E695F058] + 8);
@@ -240,23 +240,23 @@ LABEL_11:
   }
 
   [(UIView *)self->__headerView removeFromSuperview];
-  v13 = [(CAMExpandableMenuButton *)self headerView];
+  headerView = [(CAMExpandableMenuButton *)self headerView];
   headerView = self->__headerView;
-  self->__headerView = v13;
+  self->__headerView = headerView;
 
   [(CAMExpandableMenuButton *)self addSubview:self->__headerView];
   [(UIView *)self->__padBackgroundView removeFromSuperview];
   padBackgroundView = self->__padBackgroundView;
   self->__padBackgroundView = 0;
 
-  if (v3 == 1)
+  if (layoutStyle == 1)
   {
     [(CAMExpandableMenuButton *)self _createPadBackgroundView];
   }
 
-  v16 = [(CAMExpandableMenuButton *)self shownIndexesWhileCollapsed];
+  shownIndexesWhileCollapsed = [(CAMExpandableMenuButton *)self shownIndexesWhileCollapsed];
   shownIndexesWhileCollapsed = self->__shownIndexesWhileCollapsed;
-  self->__shownIndexesWhileCollapsed = v16;
+  self->__shownIndexesWhileCollapsed = shownIndexesWhileCollapsed;
 
   v18 = [(NSMutableArray *)self->__menuItems count];
   selectedIndex = self->_selectedIndex;
@@ -312,7 +312,7 @@ void __70__CAMExpandableMenuButton__applyMenuItemAlphaForCurrentExpansionState__
   [(CAMExpandableMenuButton *)self _layoutMenuButton:1 expanded:[(CAMExpandableMenuButton *)self isExpanded]];
 }
 
-- (CAMExpandableMenuButton)initWithLayoutStyle:(int64_t)a3
+- (CAMExpandableMenuButton)initWithLayoutStyle:(int64_t)style
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
@@ -326,13 +326,13 @@ void __70__CAMExpandableMenuButton__applyMenuItemAlphaForCurrentExpansionState__
 
     v4->_selectedIndex = 0x7FFFFFFFFFFFFFFFLL;
     v4->_orientation = 1;
-    v4->_layoutStyle = a3;
+    v4->_layoutStyle = style;
     v7 = objc_alloc_init(MEMORY[0x1E696AD50]);
     highlightedIndexesWhileCollapsed = v4->__highlightedIndexesWhileCollapsed;
     v4->__highlightedIndexesWhileCollapsed = v7;
 
-    v9 = [MEMORY[0x1E69DC888] whiteColor];
-    [(CAMExpandableMenuButton *)v4 setTintColor:v9];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(CAMExpandableMenuButton *)v4 setTintColor:whiteColor];
 
     [(CAMExpandableMenuButton *)v4 _updateFromExpansionChangeAnimated:0];
     [(CAMExpandableMenuButton *)v4 _updateFromOrientationChangeAnimated:0];
@@ -351,25 +351,25 @@ void __70__CAMExpandableMenuButton__applyMenuItemAlphaForCurrentExpansionState__
   return v4;
 }
 
-- (CAMExpandableMenuButton)initWithFrame:(CGRect)a3
+- (CAMExpandableMenuButton)initWithFrame:(CGRect)frame
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [(CAMExpandableMenuButton *)self initWithLayoutStyle:v5];
+  return [(CAMExpandableMenuButton *)self initWithLayoutStyle:cam_initialLayoutStyle];
 }
 
-- (CAMExpandableMenuButton)initWithCoder:(id)a3
+- (CAMExpandableMenuButton)initWithCoder:(id)coder
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 cam_initialLayoutStyle];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  cam_initialLayoutStyle = [currentDevice cam_initialLayoutStyle];
 
-  return [(CAMExpandableMenuButton *)self initWithLayoutStyle:v5];
+  return [(CAMExpandableMenuButton *)self initWithLayoutStyle:cam_initialLayoutStyle];
 }
 
-- (CGRect)alignmentRectForFrame:(CGRect)a3 expanded:(BOOL)a4
+- (CGRect)alignmentRectForFrame:(CGRect)frame expanded:(BOOL)expanded
 {
-  if (a4)
+  if (expanded)
   {
     p_tappableEdgeInsets = MEMORY[0x1E69DDCE0];
   }
@@ -380,10 +380,10 @@ void __70__CAMExpandableMenuButton__applyMenuItemAlphaForCurrentExpansionState__
   }
 
   left = p_tappableEdgeInsets->left;
-  v6 = a3.origin.x + left;
-  v7 = a3.origin.y + p_tappableEdgeInsets->top;
-  v8 = a3.size.width - (p_tappableEdgeInsets->right + left);
-  v9 = a3.size.height - (p_tappableEdgeInsets->bottom + p_tappableEdgeInsets->top);
+  v6 = frame.origin.x + left;
+  v7 = frame.origin.y + p_tappableEdgeInsets->top;
+  v8 = frame.size.width - (p_tappableEdgeInsets->right + left);
+  v9 = frame.size.height - (p_tappableEdgeInsets->bottom + p_tappableEdgeInsets->top);
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -391,9 +391,9 @@ void __70__CAMExpandableMenuButton__applyMenuItemAlphaForCurrentExpansionState__
   return result;
 }
 
-- (CGRect)frameForAlignmentRect:(CGRect)a3 expanded:(BOOL)a4
+- (CGRect)frameForAlignmentRect:(CGRect)rect expanded:(BOOL)expanded
 {
-  if (a4)
+  if (expanded)
   {
     p_tappableEdgeInsets = MEMORY[0x1E69DDCE0];
   }
@@ -404,10 +404,10 @@ void __70__CAMExpandableMenuButton__applyMenuItemAlphaForCurrentExpansionState__
   }
 
   left = p_tappableEdgeInsets->left;
-  v6 = a3.origin.x - left;
-  v7 = a3.origin.y - p_tappableEdgeInsets->top;
-  v8 = a3.size.width - (-p_tappableEdgeInsets->right - left);
-  v9 = a3.size.height - (-p_tappableEdgeInsets->bottom - p_tappableEdgeInsets->top);
+  v6 = rect.origin.x - left;
+  v7 = rect.origin.y - p_tappableEdgeInsets->top;
+  v8 = rect.size.width - (-p_tappableEdgeInsets->right - left);
+  v9 = rect.size.height - (-p_tappableEdgeInsets->bottom - p_tappableEdgeInsets->top);
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -415,9 +415,9 @@ void __70__CAMExpandableMenuButton__applyMenuItemAlphaForCurrentExpansionState__
   return result;
 }
 
-- (CGSize)intrinsicContentSizeForExpansion:(BOOL)a3
+- (CGSize)intrinsicContentSizeForExpansion:(BOOL)expansion
 {
-  [(CAMExpandableMenuButton *)self _layoutMenuButton:0 expanded:a3];
+  [(CAMExpandableMenuButton *)self _layoutMenuButton:0 expanded:expansion];
   result.height = v4;
   result.width = v3;
   return result;
@@ -431,34 +431,34 @@ void __70__CAMExpandableMenuButton__applyMenuItemAlphaForCurrentExpansionState__
   return result;
 }
 
-- (CGSize)_layoutForPhoneCollapsedPortraitButton:(BOOL)a3
+- (CGSize)_layoutForPhoneCollapsedPortraitButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   [(CAMExpandableMenuButton *)self bounds];
   [(CAMExpandableMenuButton *)self alignmentRectForFrame:0 expanded:?];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  v13 = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
+  wantsSelectedItemToBeVisible = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
   [(UIView *)self->__headerView intrinsicContentSize];
   v55 = 0;
   UIRectCenteredIntegralRectScale();
   v17 = v16;
   v19 = v18;
   v57 = v15;
-  if (v13)
+  if (wantsSelectedItemToBeVisible)
   {
     v61.origin.x = v6;
     v61.origin.y = v8;
     v61.size.width = v10;
     v61.size.height = v12;
     v56 = CGRectGetMinX(v61) + 0.0;
-    if (v3)
+    if (buttonCopy)
     {
-      v20 = [(CAMExpandableMenuButton *)self _headerView];
-      [v20 frameForAlignmentRect:{v56, v17, v19, v57}];
-      CAMViewSetBoundsAndCenterForFrame(v20, v21, v22, v23, v24);
+      _headerView = [(CAMExpandableMenuButton *)self _headerView];
+      [_headerView frameForAlignmentRect:{v56, v17, v19, v57}];
+      CAMViewSetBoundsAndCenterForFrame(_headerView, v21, v22, v23, v24);
     }
 
     v59[0] = 0;
@@ -472,8 +472,8 @@ void __70__CAMExpandableMenuButton__applyMenuItemAlphaForCurrentExpansionState__
     v58[3] = &unk_1E76FCB40;
     v58[4] = v59;
     [(NSMutableArray *)menuItems enumerateObjectsUsingBlock:v58, v55];
-    v26 = [(CAMExpandableMenuButton *)self _selectedLabel];
-    [v26 intrinsicContentSize];
+    _selectedLabel = [(CAMExpandableMenuButton *)self _selectedLabel];
+    [_selectedLabel intrinsicContentSize];
     UIRectCenteredIntegralRectScale();
     v28 = v27;
     v30 = v29;
@@ -485,10 +485,10 @@ void __70__CAMExpandableMenuButton__applyMenuItemAlphaForCurrentExpansionState__
     MaxX = CGRectGetMaxX(v62);
     [(CAMExpandableMenuButton *)self collapsedSelectedLabelHorizontalMargin];
     v35 = MaxX + v34;
-    if (v3)
+    if (buttonCopy)
     {
-      [v26 frameForAlignmentRect:{MaxX + v34, v28, v30, v32}];
-      CAMViewSetBoundsAndCenterForFrame(v26, v36, v37, v38, v39);
+      [_selectedLabel frameForAlignmentRect:{MaxX + v34, v28, v30, v32}];
+      CAMViewSetBoundsAndCenterForFrame(_selectedLabel, v36, v37, v38, v39);
     }
 
     v63.origin.x = v35;
@@ -528,12 +528,12 @@ void __70__CAMExpandableMenuButton__applyMenuItemAlphaForCurrentExpansionState__
   else
   {
     v46 = v14;
-    if (v3)
+    if (buttonCopy)
     {
-      v47 = [(CAMExpandableMenuButton *)self _headerView];
+      _headerView2 = [(CAMExpandableMenuButton *)self _headerView];
       v48 = v57;
-      [v47 frameForAlignmentRect:{v46, v17, v19, v57}];
-      CAMViewSetBoundsAndCenterForFrame(v47, v49, v50, v51, v52);
+      [_headerView2 frameForAlignmentRect:{v46, v17, v19, v57}];
+      CAMViewSetBoundsAndCenterForFrame(_headerView2, v49, v50, v51, v52);
     }
 
     else
@@ -573,7 +573,7 @@ uint64_t __66__CAMExpandableMenuButton__layoutForPhoneCollapsedPortraitButton___
   return result;
 }
 
-- (CGSize)_layoutForPhoneCollapsedLandscapeButton:(BOOL)a3
+- (CGSize)_layoutForPhoneCollapsedLandscapeButton:(BOOL)button
 {
   [(CAMExpandableMenuButton *)self bounds];
   [(CAMExpandableMenuButton *)self alignmentRectForFrame:0 expanded:?];
@@ -585,8 +585,8 @@ uint64_t __66__CAMExpandableMenuButton__layoutForPhoneCollapsedPortraitButton___
     v7 = v6;
     v9 = v8;
     v78 = v10;
-    v11 = [(CAMExpandableMenuButton *)self _selectedLabel];
-    [v11 intrinsicContentSize];
+    _selectedLabel = [(CAMExpandableMenuButton *)self _selectedLabel];
+    [_selectedLabel intrinsicContentSize];
     UIRectCenteredIntegralRectScale();
     v13 = v12;
     v15 = v14;
@@ -627,17 +627,17 @@ uint64_t __66__CAMExpandableMenuButton__layoutForPhoneCollapsedPortraitButton___
     CGRectDivide(v87, &slice, &remainder, Height, CGRectMinYEdge);
     y = slice.origin.y;
     v30 = slice.size.height;
-    if (a3)
+    if (button)
     {
       v76 = remainder.origin.y;
       v79 = remainder.size.height;
-      v31 = [(CAMExpandableMenuButton *)self _headerView];
-      [v31 frameForAlignmentRect:{v18, y, v19, v30}];
+      _headerView = [(CAMExpandableMenuButton *)self _headerView];
+      [_headerView frameForAlignmentRect:{v18, y, v19, v30}];
       v71 = v33;
       v72 = v32;
       v67 = v35;
       v68 = v34;
-      [v11 frameForAlignmentRect:{v69, v76, v70, v79}];
+      [_selectedLabel frameForAlignmentRect:{v69, v76, v70, v79}];
       v73 = v27;
       v74 = v25;
       v36 = v19;
@@ -648,7 +648,7 @@ uint64_t __66__CAMExpandableMenuButton__layoutForPhoneCollapsedPortraitButton___
       v80 = v21;
       v43 = v42;
       v45 = v44;
-      CAMViewSetBoundsAndCenterForFrame(v31, v72, v71, v68, v67);
+      CAMViewSetBoundsAndCenterForFrame(_headerView, v72, v71, v68, v67);
       v46 = v38;
       v19 = v36;
       v47 = v41;
@@ -659,7 +659,7 @@ uint64_t __66__CAMExpandableMenuButton__layoutForPhoneCollapsedPortraitButton___
       v49 = v45;
       v23 = v77;
       v21 = v80;
-      CAMViewSetBoundsAndCenterForFrame(v11, v46, v47, v48, v49);
+      CAMViewSetBoundsAndCenterForFrame(_selectedLabel, v46, v47, v48, v49);
     }
 
     v88.origin.x = v21;
@@ -682,11 +682,11 @@ uint64_t __66__CAMExpandableMenuButton__layoutForPhoneCollapsedPortraitButton___
     v55 = v54;
     v57 = v56;
     v59 = v58;
-    if (a3)
+    if (button)
     {
-      v60 = [(CAMExpandableMenuButton *)self _headerView];
-      [v60 frameForAlignmentRect:{v53, v55, v57, v59}];
-      CAMViewSetBoundsAndCenterForFrame(v60, v61, v62, v63, v64);
+      _headerView2 = [(CAMExpandableMenuButton *)self _headerView];
+      [_headerView2 frameForAlignmentRect:{v53, v55, v57, v59}];
+      CAMViewSetBoundsAndCenterForFrame(_headerView2, v61, v62, v63, v64);
     }
 
     v90.origin.x = v53;
@@ -708,9 +708,9 @@ uint64_t __66__CAMExpandableMenuButton__layoutForPhoneCollapsedPortraitButton___
   return result;
 }
 
-- (CGSize)_layoutForPhoneExpandedPortraitButton:(BOOL)a3
+- (CGSize)_layoutForPhoneExpandedPortraitButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v47 = *MEMORY[0x1E69E9840];
   [(CAMExpandableMenuButton *)self bounds];
   [(CAMExpandableMenuButton *)self alignmentRectForFrame:1 expanded:?];
@@ -766,9 +766,9 @@ uint64_t __66__CAMExpandableMenuButton__layoutForPhoneCollapsedPortraitButton___
         v21 = v20;
         v23 = v22;
         v25 = v24;
-        if (v3)
+        if (buttonCopy)
         {
-          v26 = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
+          wantsSelectedItemToBeVisible = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
           v27 = self->__headerView == v19;
           v28 = self->_selectedIndex == v15;
           aBlock[0] = MEMORY[0x1E69E9820];
@@ -781,7 +781,7 @@ uint64_t __66__CAMExpandableMenuButton__layoutForPhoneCollapsedPortraitButton___
 
           else
           {
-            v30 = v26;
+            v30 = wantsSelectedItemToBeVisible;
           }
 
           aBlock[2] = __65__CAMExpandableMenuButton__layoutForPhoneExpandedPortraitButton___block_invoke_2;
@@ -845,9 +845,9 @@ void __65__CAMExpandableMenuButton__layoutForPhoneExpandedPortraitButton___block
   CAMViewSetBoundsAndCenterForFrame(v6, v2, v3, v4, v5);
 }
 
-- (CGSize)_layoutForPhoneExpandedLandscapeButton:(BOOL)a3
+- (CGSize)_layoutForPhoneExpandedLandscapeButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v81 = *MEMORY[0x1E69E9840];
   [(CAMExpandableMenuButton *)self bounds];
   [(CAMExpandableMenuButton *)self alignmentRectForFrame:1 expanded:?];
@@ -855,7 +855,7 @@ void __65__CAMExpandableMenuButton__layoutForPhoneExpandedPortraitButton___block
   v68 = v5;
   v8 = v7;
   rect = v9;
-  v10 = [(CAMExpandableMenuButton *)self orientation];
+  orientation = [(CAMExpandableMenuButton *)self orientation];
   v11 = objc_alloc_init(MEMORY[0x1E695DF70]);
   [v11 addObjectsFromArray:self->__menuItems];
   WeakRetained = objc_loadWeakRetained(&self->_expandableMenuDelegate);
@@ -871,13 +871,13 @@ void __65__CAMExpandableMenuButton__layoutForPhoneExpandedPortraitButton___block
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v64 = v3;
-  if (v3)
+  v64 = buttonCopy;
+  if (buttonCopy)
   {
-    v25 = [(CAMExpandableMenuButton *)self _headerView];
-    [v25 frameForAlignmentRect:{v20, v18, v24, v22}];
+    _headerView = [(CAMExpandableMenuButton *)self _headerView];
+    [_headerView frameForAlignmentRect:{v20, v18, v24, v22}];
     v30 = v29;
-    if (v10 == 4)
+    if (orientation == 4)
     {
       obja = v26;
       v83.origin.y = v67;
@@ -898,7 +898,7 @@ void __65__CAMExpandableMenuButton__layoutForPhoneExpandedPortraitButton___block
       v30 = MaxX - v31;
     }
 
-    CAMViewSetBoundsAndCenterForFrame(v25, v30, v26, v27, v28);
+    CAMViewSetBoundsAndCenterForFrame(_headerView, v30, v26, v27, v28);
   }
 
   v85.origin.x = v20;
@@ -925,7 +925,7 @@ void __65__CAMExpandableMenuButton__layoutForPhoneExpandedPortraitButton___block
   UIRoundToViewScale();
   v34 = v33;
   v60 = v77[3];
-  if (v10 == 4)
+  if (orientation == 4)
   {
     v87.origin.y = v67;
     v87.origin.x = v68;
@@ -965,14 +965,14 @@ void __65__CAMExpandableMenuButton__layoutForPhoneExpandedPortraitButton___block
         v45 = v42;
         v46 = v43;
         v47 = v44;
-        if (v10 == 4)
+        if (orientation == 4)
         {
           v35 = v35 - CGRectGetWidth(*&v41);
         }
 
-        if (v3)
+        if (buttonCopy)
         {
-          v48 = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
+          wantsSelectedItemToBeVisible = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
           v49 = self->__headerView == v40;
           v50 = self->_selectedIndex == v37;
           aBlock[0] = MEMORY[0x1E69E9820];
@@ -985,7 +985,7 @@ void __65__CAMExpandableMenuButton__layoutForPhoneExpandedPortraitButton___block
 
           else
           {
-            v52 = v48;
+            v52 = wantsSelectedItemToBeVisible;
           }
 
           aBlock[2] = __66__CAMExpandableMenuButton__layoutForPhoneExpandedLandscapeButton___block_invoke_2;
@@ -1007,10 +1007,10 @@ void __65__CAMExpandableMenuButton__layoutForPhoneExpandedPortraitButton___block
             [MEMORY[0x1E69DD250] performWithoutAnimation:v53];
           }
 
-          v3 = v64;
+          buttonCopy = v64;
         }
 
-        if (v10 == 4)
+        if (orientation == 4)
         {
           v35 = v35 - v34;
         }
@@ -1067,13 +1067,13 @@ void __66__CAMExpandableMenuButton__layoutForPhoneExpandedLandscapeButton___bloc
   return result;
 }
 
-- (CGSize)_layoutForPadCollapsedPortraitButton:(BOOL)a3
+- (CGSize)_layoutForPadCollapsedPortraitButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v40 = *MEMORY[0x1E69E9840];
   [(CAMExpandableMenuButton *)self bounds];
   [(CAMExpandableMenuButton *)self alignmentRectForFrame:0 expanded:?];
-  if (v3)
+  if (buttonCopy)
   {
     [(UIView *)self->__padBackgroundView setFrame:v5, v6, v7, v8];
   }
@@ -1081,15 +1081,15 @@ void __66__CAMExpandableMenuButton__layoutForPhoneExpandedLandscapeButton___bloc
   [(UIView *)self->__headerView intrinsicContentSize];
   v32 = 0;
   UIRectCenteredIntegralRectScale();
-  if (v3)
+  if (buttonCopy)
   {
     v13 = v9;
     v14 = v10;
     v33 = v11;
     v34 = v12;
-    v15 = [(CAMExpandableMenuButton *)self _headerView];
-    [v15 frameForAlignmentRect:{v13, v14, v33, v34}];
-    CAMViewSetBoundsAndCenterForFrame(v15, v16, v17, v18, v19);
+    _headerView = [(CAMExpandableMenuButton *)self _headerView];
+    [_headerView frameForAlignmentRect:{v13, v14, v33, v34}];
+    CAMViewSetBoundsAndCenterForFrame(_headerView, v16, v17, v18, v19);
   }
 
   v37 = 0u;
@@ -1115,7 +1115,7 @@ void __66__CAMExpandableMenuButton__layoutForPhoneExpandedLandscapeButton___bloc
         [v25 intrinsicContentSize];
         v32 = 0;
         UIRectCenteredIntegralRectScale();
-        if (v3)
+        if (buttonCopy)
         {
           [v25 frameForAlignmentRect:0];
           CAMViewSetBoundsAndCenterForFrame(v25, v26, v27, v28, v29);
@@ -1134,15 +1134,15 @@ void __66__CAMExpandableMenuButton__layoutForPhoneExpandedLandscapeButton___bloc
   return result;
 }
 
-- (CGSize)_layoutForPadExpandedPortraitButton:(BOOL)a3
+- (CGSize)_layoutForPadExpandedPortraitButton:(BOOL)button
 {
-  v3 = a3;
+  buttonCopy = button;
   v54 = *MEMORY[0x1E69E9840];
   [(CAMExpandableMenuButton *)self tappableEdgeInsets];
   v6 = v5;
   [(CAMExpandableMenuButton *)self bounds];
   [(CAMExpandableMenuButton *)self alignmentRectForFrame:0 expanded:?];
-  if (v3)
+  if (buttonCopy)
   {
     [(UIView *)self->__padBackgroundView setFrame:v7, v8, v9, v10];
   }
@@ -1175,7 +1175,7 @@ void __66__CAMExpandableMenuButton__layoutForPhoneExpandedLandscapeButton___bloc
         v21 = v18;
         v22 = v19;
         v23 = v20;
-        if (v3)
+        if (buttonCopy)
         {
           [v17 frameForAlignmentRect:{v11, v18, v19, v20, 0}];
           CAMViewSetBoundsAndCenterForFrame(v17, v24, v25, v26, v27);
@@ -1201,11 +1201,11 @@ void __66__CAMExpandableMenuButton__layoutForPhoneExpandedLandscapeButton___bloc
   v33 = v32;
   [(CAMExpandableMenuButton *)self padHeaderViewContentInsetLeft];
   v35 = v11 - v34;
-  if (v3)
+  if (buttonCopy)
   {
-    v36 = [(CAMExpandableMenuButton *)self _headerView];
-    [v36 frameForAlignmentRect:{v35, v29, v31, v33}];
-    CAMViewSetBoundsAndCenterForFrame(v36, v37, v38, v39, v40);
+    _headerView = [(CAMExpandableMenuButton *)self _headerView];
+    [_headerView frameForAlignmentRect:{v35, v29, v31, v33}];
+    CAMViewSetBoundsAndCenterForFrame(_headerView, v37, v38, v39, v40);
   }
 
   [(CAMExpandableMenuButton *)self _padCollapsedIntrinsicContentSize];
@@ -1222,13 +1222,13 @@ void __66__CAMExpandableMenuButton__layoutForPhoneExpandedLandscapeButton___bloc
   return result;
 }
 
-- (CGSize)_layoutForPhoneStyle:(BOOL)a3 expanded:(BOOL)a4
+- (CGSize)_layoutForPhoneStyle:(BOOL)style expanded:(BOOL)expanded
 {
-  v4 = a4;
-  v5 = a3;
+  expandedCopy = expanded;
+  styleCopy = style;
   v7 = [(CAMExpandableMenuButton *)self orientation]- 3;
-  v8 = !v4;
-  if (!v4 || v7 > 1)
+  v8 = !expandedCopy;
+  if (!expandedCopy || v7 > 1)
   {
     if (v7 < 2)
     {
@@ -1237,31 +1237,31 @@ void __66__CAMExpandableMenuButton__layoutForPhoneExpandedLandscapeButton___bloc
 
     if (v8)
     {
-      if (v4 || v7 > 1)
+      if (expandedCopy || v7 > 1)
       {
         v9 = *MEMORY[0x1E695F060];
         v10 = *(MEMORY[0x1E695F060] + 8);
-        if (!v4 && v7 >= 2)
+        if (!expandedCopy && v7 >= 2)
         {
-          [(CAMExpandableMenuButton *)self _layoutForPhoneCollapsedPortraitButton:v5, v9, v10];
+          [(CAMExpandableMenuButton *)self _layoutForPhoneCollapsedPortraitButton:styleCopy, v9, v10];
         }
       }
 
       else
       {
-        [(CAMExpandableMenuButton *)self _layoutForPhoneCollapsedLandscapeButton:v5];
+        [(CAMExpandableMenuButton *)self _layoutForPhoneCollapsedLandscapeButton:styleCopy];
       }
     }
 
     else
     {
-      [(CAMExpandableMenuButton *)self _layoutForPhoneExpandedPortraitButton:v5];
+      [(CAMExpandableMenuButton *)self _layoutForPhoneExpandedPortraitButton:styleCopy];
     }
   }
 
   else
   {
-    [(CAMExpandableMenuButton *)self _layoutForPhoneExpandedLandscapeButton:v5];
+    [(CAMExpandableMenuButton *)self _layoutForPhoneExpandedLandscapeButton:styleCopy];
   }
 
   result.height = v10;
@@ -1269,23 +1269,23 @@ void __66__CAMExpandableMenuButton__layoutForPhoneExpandedLandscapeButton___bloc
   return result;
 }
 
-- (CGSize)_layoutForPadStyle:(BOOL)a3 expanded:(BOOL)a4
+- (CGSize)_layoutForPadStyle:(BOOL)style expanded:(BOOL)expanded
 {
-  v4 = a4;
-  v5 = a3;
+  expandedCopy = expanded;
+  styleCopy = style;
   v7 = [(CAMExpandableMenuButton *)self orientation]- 3;
   v8 = *MEMORY[0x1E695F060];
   v9 = *(MEMORY[0x1E695F060] + 8);
-  if (!v4 || v7 >= 2)
+  if (!expandedCopy || v7 >= 2)
   {
-    if (v4 && v7 >= 2)
+    if (expandedCopy && v7 >= 2)
     {
-      [(CAMExpandableMenuButton *)self _layoutForPadExpandedPortraitButton:v5, v8, v9];
+      [(CAMExpandableMenuButton *)self _layoutForPadExpandedPortraitButton:styleCopy, v8, v9];
     }
 
-    else if (!v4 && v7 >= 2)
+    else if (!expandedCopy && v7 >= 2)
     {
-      [(CAMExpandableMenuButton *)self _layoutForPadCollapsedPortraitButton:v5, v8, v9];
+      [(CAMExpandableMenuButton *)self _layoutForPadCollapsedPortraitButton:styleCopy, v8, v9];
     }
   }
 
@@ -1294,20 +1294,20 @@ void __66__CAMExpandableMenuButton__layoutForPhoneExpandedLandscapeButton___bloc
   return result;
 }
 
-- (CGSize)_layoutMenuButton:(BOOL)a3 expanded:(BOOL)a4
+- (CGSize)_layoutMenuButton:(BOOL)button expanded:(BOOL)expanded
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(CAMExpandableMenuButton *)self layoutStyle];
-  if (v7 != 3)
+  expandedCopy = expanded;
+  buttonCopy = button;
+  layoutStyle = [(CAMExpandableMenuButton *)self layoutStyle];
+  if (layoutStyle != 3)
   {
-    if (v7 == 1)
+    if (layoutStyle == 1)
     {
-      [(CAMExpandableMenuButton *)self _layoutForPadStyle:v5 expanded:v4];
+      [(CAMExpandableMenuButton *)self _layoutForPadStyle:buttonCopy expanded:expandedCopy];
       goto LABEL_7;
     }
 
-    if (v7)
+    if (layoutStyle)
     {
       v8 = *MEMORY[0x1E695F060];
       v9 = *(MEMORY[0x1E695F060] + 8);
@@ -1315,7 +1315,7 @@ void __66__CAMExpandableMenuButton__layoutForPhoneExpandedLandscapeButton___bloc
     }
   }
 
-  [(CAMExpandableMenuButton *)self _layoutForPhoneStyle:v5 expanded:v4];
+  [(CAMExpandableMenuButton *)self _layoutForPhoneStyle:buttonCopy expanded:expandedCopy];
 LABEL_7:
   result.height = v9;
   result.width = v8;
@@ -1341,20 +1341,20 @@ LABEL_7:
   return v3;
 }
 
-- (void)setSelectedIndex:(int64_t)a3
+- (void)setSelectedIndex:(int64_t)index
 {
-  if (self->_selectedIndex != a3)
+  if (self->_selectedIndex != index)
   {
-    self->_selectedIndex = a3;
+    self->_selectedIndex = index;
     [(CAMExpandableMenuButton *)self _updateFromSelectedIndexChange];
   }
 }
 
-- (void)setLayoutStyle:(int64_t)a3
+- (void)setLayoutStyle:(int64_t)style
 {
-  if (self->_layoutStyle != a3)
+  if (self->_layoutStyle != style)
   {
-    self->_layoutStyle = a3;
+    self->_layoutStyle = style;
     [(CAMExpandableMenuButton *)self reloadData];
   }
 }
@@ -1373,18 +1373,18 @@ LABEL_7:
   self->__padBackgroundView = v8;
 }
 
-- (void)expandMenuAnimated:(BOOL)a3
+- (void)expandMenuAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_expandableMenuDelegate);
-  [WeakRetained expandMenuButton:self animated:v3];
+  [WeakRetained expandMenuButton:self animated:animatedCopy];
 }
 
-- (void)collapseMenuAnimated:(BOOL)a3
+- (void)collapseMenuAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_expandableMenuDelegate);
-  [WeakRetained collapseMenuButton:self animated:v3];
+  [WeakRetained collapseMenuButton:self animated:animatedCopy];
 }
 
 void __62__CAMExpandableMenuButton__applyMenuItemColorsForCurrentState__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -1425,9 +1425,9 @@ void __62__CAMExpandableMenuButton__applyMenuItemColorsForCurrentState__block_in
   }
 }
 
-- (void)_updateFromExpansionChangeAnimated:(BOOL)a3
+- (void)_updateFromExpansionChangeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   [(CAMExpandableMenuButton *)self invalidateIntrinsicContentSize];
   [(CAMExpandableMenuButton *)self setNeedsLayout];
   aBlock[0] = MEMORY[0x1E69E9820];
@@ -1437,7 +1437,7 @@ void __62__CAMExpandableMenuButton__applyMenuItemColorsForCurrentState__block_in
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
   v6 = v5;
-  if (v3)
+  if (animatedCopy)
   {
     [objc_opt_class() expansionDuration];
     v8 = v7;
@@ -1474,19 +1474,19 @@ uint64_t __62__CAMExpandableMenuButton__updateFromExpansionChangeAnimated___bloc
   return v2();
 }
 
-- (void)_convertAllSubviewsToProposedFrame:(CGRect)a3
+- (void)_convertAllSubviewsToProposedFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v36 = *MEMORY[0x1E69E9840];
   [(CAMExpandableMenuButton *)self frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(CAMExpandableMenuButton *)self orientation];
+  orientation = [(CAMExpandableMenuButton *)self orientation];
   if ([(CAMExpandableMenuButton *)self orientation]== 4 || [(CAMExpandableMenuButton *)self orientation]== 2)
   {
     v37.origin.x = x;
@@ -1522,13 +1522,13 @@ uint64_t __62__CAMExpandableMenuButton__updateFromExpansionChangeAnimated___bloc
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v20 = [(CAMExpandableMenuButton *)self subviews];
-  v21 = [v20 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  subviews = [(CAMExpandableMenuButton *)self subviews];
+  v21 = [subviews countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v21)
   {
     v22 = v21;
     v23 = *v32;
-    if ((v16 - 3) >= 2)
+    if ((orientation - 3) >= 2)
     {
       v24 = v30;
     }
@@ -1538,7 +1538,7 @@ uint64_t __62__CAMExpandableMenuButton__updateFromExpansionChangeAnimated___bloc
       v24 = v19;
     }
 
-    if ((v16 - 3) < 2)
+    if ((orientation - 3) < 2)
     {
       v19 = v30;
     }
@@ -1549,7 +1549,7 @@ uint64_t __62__CAMExpandableMenuButton__updateFromExpansionChangeAnimated___bloc
       {
         if (*v32 != v23)
         {
-          objc_enumerationMutation(v20);
+          objc_enumerationMutation(subviews);
         }
 
         v26 = *(*(&v31 + 1) + 8 * i);
@@ -1557,43 +1557,43 @@ uint64_t __62__CAMExpandableMenuButton__updateFromExpansionChangeAnimated___bloc
         [v26 setFrame:{v24 + v27, v19 + v28}];
       }
 
-      v22 = [v20 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v22 = [subviews countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v22);
   }
 }
 
-- (void)finishCollapsingAnimated:(BOOL)a3
+- (void)finishCollapsingAnimated:(BOOL)animated
 {
   if (self->_expanded)
   {
     self->_expanded = 0;
-    [(CAMExpandableMenuButton *)self _updateFromExpansionChangeAnimated:a3];
+    [(CAMExpandableMenuButton *)self _updateFromExpansionChangeAnimated:animated];
   }
 }
 
-- (void)finishExpansionAnimated:(BOOL)a3
+- (void)finishExpansionAnimated:(BOOL)animated
 {
   if (!self->_expanded)
   {
     self->_expanded = 1;
-    [(CAMExpandableMenuButton *)self _updateFromExpansionChangeAnimated:a3];
+    [(CAMExpandableMenuButton *)self _updateFromExpansionChangeAnimated:animated];
   }
 }
 
-- (void)setOrientation:(int64_t)a3 animated:(BOOL)a4
+- (void)setOrientation:(int64_t)orientation animated:(BOOL)animated
 {
-  if (self->_orientation != a3)
+  if (self->_orientation != orientation)
   {
-    self->_orientation = a3;
-    [(CAMExpandableMenuButton *)self _updateFromOrientationChangeAnimated:a4];
+    self->_orientation = orientation;
+    [(CAMExpandableMenuButton *)self _updateFromOrientationChangeAnimated:animated];
   }
 }
 
-- (void)_updateFromOrientationChangeAnimated:(BOOL)a3
+- (void)_updateFromOrientationChangeAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   if (([(CAMExpandableMenuButton *)self isHidden]& 1) != 0)
   {
     v5 = 0;
@@ -1605,7 +1605,7 @@ uint64_t __62__CAMExpandableMenuButton__updateFromExpansionChangeAnimated___bloc
     [(CAMExpandableMenuButton *)self alpha];
     v6 = 0;
     v5 = 0;
-    if (v3 && v7 != 0.0)
+    if (animatedCopy && v7 != 0.0)
     {
       v8 = [(CAMExpandableMenuButton *)self snapshotViewAfterScreenUpdates:0];
       v9 = MEMORY[0x1E69DD250];
@@ -1615,15 +1615,15 @@ uint64_t __62__CAMExpandableMenuButton__updateFromExpansionChangeAnimated___bloc
       v21[3] = &unk_1E76F7960;
       v6 = v8;
       v22 = v6;
-      v23 = self;
+      selfCopy = self;
       [v9 performWithoutAnimation:v21];
 
       v5 = 1;
     }
   }
 
-  v10 = [(CAMExpandableMenuButton *)self shownIndexesWhileCollapsed];
-  v11 = [v10 containsIndex:{-[CAMExpandableMenuButton selectedIndex](self, "selectedIndex")}];
+  shownIndexesWhileCollapsed = [(CAMExpandableMenuButton *)self shownIndexesWhileCollapsed];
+  v11 = [shownIndexesWhileCollapsed containsIndex:{-[CAMExpandableMenuButton selectedIndex](self, "selectedIndex")}];
   [CAMView rotateView:self toInterfaceOrientation:self->_orientation animated:v5];
   [(CAMExpandableMenuButton *)self _applyMenuItemTextAlignmentAndShadowForCurrentOrientation];
   if ([(CAMExpandableMenuButton *)self isExpanded])
@@ -1647,8 +1647,8 @@ uint64_t __62__CAMExpandableMenuButton__updateFromExpansionChangeAnimated___bloc
     v20[3] = &unk_1E76F77B0;
     v20[4] = self;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v20];
-    v13 = [(CAMExpandableMenuButton *)self superview];
-    [v13 addSubview:v6];
+    superview = [(CAMExpandableMenuButton *)self superview];
+    [superview addSubview:v6];
 
     v14 = MEMORY[0x1E69DD250];
     v18[0] = MEMORY[0x1E69E9820];
@@ -1699,48 +1699,48 @@ uint64_t __64__CAMExpandableMenuButton__updateFromOrientationChangeAnimated___bl
   return [v2 layoutIfNeeded];
 }
 
-- (void)setHighlighted:(BOOL)a3 forIndex:(int64_t)a4
+- (void)setHighlighted:(BOOL)highlighted forIndex:(int64_t)index
 {
   highlightedIndexesWhileCollapsed = self->__highlightedIndexesWhileCollapsed;
-  if (a3)
+  if (highlighted)
   {
-    [(NSMutableIndexSet *)highlightedIndexesWhileCollapsed addIndex:a4];
+    [(NSMutableIndexSet *)highlightedIndexesWhileCollapsed addIndex:index];
   }
 
   else
   {
-    [(NSMutableIndexSet *)highlightedIndexesWhileCollapsed removeIndex:a4];
+    [(NSMutableIndexSet *)highlightedIndexesWhileCollapsed removeIndex:index];
   }
 
   [(CAMExpandableMenuButton *)self _applyMenuItemColorsForCurrentState];
 }
 
-- (void)_handleTouchGesture:(id)a3
+- (void)_handleTouchGesture:(id)gesture
 {
-  v23 = a3;
+  gestureCopy = gesture;
   if (![(CAMExpandableMenuButton *)self shouldIgnoreMenuInteraction])
   {
-    v4 = [(CAMExpandableMenuButton *)self _trackingView];
-    [v23 locationInView:self];
+    _trackingView = [(CAMExpandableMenuButton *)self _trackingView];
+    [gestureCopy locationInView:self];
     v6 = v5;
     v8 = v7;
-    v9 = [v23 state];
-    if (v9 == 1)
+    state = [gestureCopy state];
+    if (state == 1)
     {
       v10 = [(CAMExpandableMenuButton *)self _viewToTrackForTouchAtLocation:v6, v8];
       if (v10)
       {
         [(CAMExpandableMenuButton *)self _setTrackingView:v10];
         [(CAMExpandableMenuButton *)self _setTrackingViewHighlighted:1];
-        v11 = [v10 layer];
-        [CAMAnimationHelper animateLayer:v11 forButtonHighlighted:1 layoutStyle:[(CAMExpandableMenuButton *)self layoutStyle]];
+        layer = [v10 layer];
+        [CAMAnimationHelper animateLayer:layer forButtonHighlighted:1 layoutStyle:[(CAMExpandableMenuButton *)self layoutStyle]];
       }
     }
 
-    else if (v4)
+    else if (_trackingView)
     {
-      v12 = v9;
-      [v4 frame];
+      v12 = state;
+      [_trackingView frame];
       UIDistanceBetweenPointAndRect();
       v14 = v13;
       if (v12 == 2)
@@ -1748,8 +1748,8 @@ uint64_t __64__CAMExpandableMenuButton__updateFromOrientationChangeAnimated___bl
         if (v13 < 50.0 != [(CAMExpandableMenuButton *)self _isTrackingViewHighlighted])
         {
           [(CAMExpandableMenuButton *)self _setTrackingViewHighlighted:v14 < 50.0, 50.0];
-          v15 = [v4 layer];
-          [CAMAnimationHelper animateLayer:v15 forButtonHighlighted:v14 < 50.0 layoutStyle:[(CAMExpandableMenuButton *)self layoutStyle]];
+          layer2 = [_trackingView layer];
+          [CAMAnimationHelper animateLayer:layer2 forButtonHighlighted:v14 < 50.0 layoutStyle:[(CAMExpandableMenuButton *)self layoutStyle]];
         }
       }
 
@@ -1757,38 +1757,38 @@ uint64_t __64__CAMExpandableMenuButton__updateFromOrientationChangeAnimated___bl
       {
         if (v12 != 4 && v13 < 50.0)
         {
-          v16 = [(CAMExpandableMenuButton *)self selectedIndex];
-          v17 = [(CAMExpandableMenuButton *)self _menuItems];
-          v18 = [(CAMExpandableMenuButton *)self shouldAllowExpansion];
-          if (v18)
+          selectedIndex = [(CAMExpandableMenuButton *)self selectedIndex];
+          _menuItems = [(CAMExpandableMenuButton *)self _menuItems];
+          shouldAllowExpansion = [(CAMExpandableMenuButton *)self shouldAllowExpansion];
+          if (shouldAllowExpansion)
           {
-            v19 = [(CAMExpandableMenuButton *)self headerView];
+            headerView = [(CAMExpandableMenuButton *)self headerView];
 
-            if (v4 != v19)
+            if (_trackingView != headerView)
             {
-              v16 = [v17 indexOfObject:v4];
+              selectedIndex = [_menuItems indexOfObject:_trackingView];
             }
           }
 
           else
           {
-            v16 = (v16 + 1) % [v17 count];
+            selectedIndex = (selectedIndex + 1) % [_menuItems count];
           }
 
-          v20 = [(CAMExpandableMenuButton *)self selectedIndex];
-          [(CAMExpandableMenuButton *)self setSelectedIndex:v16];
-          v21 = [(CAMExpandableMenuButton *)self expandableMenuDelegate];
+          selectedIndex2 = [(CAMExpandableMenuButton *)self selectedIndex];
+          [(CAMExpandableMenuButton *)self setSelectedIndex:selectedIndex];
+          expandableMenuDelegate = [(CAMExpandableMenuButton *)self expandableMenuDelegate];
           if ([(CAMExpandableMenuButton *)self isExpanded])
           {
-            [v21 collapseMenuButton:self animated:1];
+            [expandableMenuDelegate collapseMenuButton:self animated:1];
           }
 
-          else if (v18)
+          else if (shouldAllowExpansion)
           {
-            [v21 expandMenuButton:self animated:1];
+            [expandableMenuDelegate expandMenuButton:self animated:1];
           }
 
-          if (v16 != v20)
+          if (selectedIndex != selectedIndex2)
           {
             [(CAMExpandableMenuButton *)self sendActionsForControlEvents:4096];
           }
@@ -1796,8 +1796,8 @@ uint64_t __64__CAMExpandableMenuButton__updateFromOrientationChangeAnimated___bl
 
         if ([(CAMExpandableMenuButton *)self _isTrackingViewHighlighted])
         {
-          v22 = [v4 layer];
-          [CAMAnimationHelper animateLayer:v22 forButtonHighlighted:0 layoutStyle:[(CAMExpandableMenuButton *)self layoutStyle]];
+          layer3 = [_trackingView layer];
+          [CAMAnimationHelper animateLayer:layer3 forButtonHighlighted:0 layoutStyle:[(CAMExpandableMenuButton *)self layoutStyle]];
           [(CAMExpandableMenuButton *)self _setTrackingViewHighlighted:0];
         }
 
@@ -1807,12 +1807,12 @@ uint64_t __64__CAMExpandableMenuButton__updateFromOrientationChangeAnimated___bl
   }
 }
 
-- (id)_viewToTrackForTouchAtLocation:(CGPoint)a3
+- (id)_viewToTrackForTouchAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CAMExpandableMenuButton *)self _menuItems];
-  v7 = [(CAMExpandableMenuButton *)self _headerView];
+  y = location.y;
+  x = location.x;
+  _menuItems = [(CAMExpandableMenuButton *)self _menuItems];
+  _headerView = [(CAMExpandableMenuButton *)self _headerView];
   if ([(CAMExpandableMenuButton *)self isExpanded])
   {
     v19 = 0;
@@ -1825,7 +1825,7 @@ uint64_t __64__CAMExpandableMenuButton__updateFromOrientationChangeAnimated___bl
     v16 = &v15;
     v17 = 0x2020000000;
     v18 = 0x7FEFFFFFFFFFFFFFLL;
-    v8 = [v6 arrayByAddingObject:v7];
+    v8 = [_menuItems arrayByAddingObject:_headerView];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __58__CAMExpandableMenuButton__viewToTrackForTouchAtLocation___block_invoke;
@@ -1851,16 +1851,16 @@ uint64_t __64__CAMExpandableMenuButton__updateFromOrientationChangeAnimated___bl
 
   else
   {
-    v10 = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
-    v11 = [(CAMExpandableMenuButton *)self _wantsHeaderViewToBeVisible];
-    if (!v10 || v11)
+    wantsSelectedItemToBeVisible = [(CAMExpandableMenuButton *)self wantsSelectedItemToBeVisible];
+    _wantsHeaderViewToBeVisible = [(CAMExpandableMenuButton *)self _wantsHeaderViewToBeVisible];
+    if (!wantsSelectedItemToBeVisible || _wantsHeaderViewToBeVisible)
     {
-      v12 = v7;
+      v12 = _headerView;
     }
 
     else
     {
-      v12 = [v6 objectAtIndexedSubscript:{-[CAMExpandableMenuButton selectedIndex](self, "selectedIndex")}];
+      v12 = [_menuItems objectAtIndexedSubscript:{-[CAMExpandableMenuButton selectedIndex](self, "selectedIndex")}];
     }
 
     v9 = v12;
@@ -1899,8 +1899,8 @@ void __58__CAMExpandableMenuButton__viewToTrackForTouchAtLocation___block_invoke
   left = self->_tappableEdgeInsets.left;
   bottom = self->_tappableEdgeInsets.bottom;
   right = self->_tappableEdgeInsets.right;
-  v7 = [(CAMExpandableMenuButton *)self layoutStyle];
-  if (v7 == 3 || !v7)
+  layoutStyle = [(CAMExpandableMenuButton *)self layoutStyle];
+  if (layoutStyle == 3 || !layoutStyle)
   {
     if ([(CAMExpandableMenuButton *)self isExpanded])
     {
@@ -1922,15 +1922,15 @@ void __58__CAMExpandableMenuButton__viewToTrackForTouchAtLocation___block_invoke
   return result;
 }
 
-- (void)setTappableEdgeInsets:(UIEdgeInsets)a3
+- (void)setTappableEdgeInsets:(UIEdgeInsets)insets
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.left;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.right;
+  v3.f64[0] = insets.top;
+  v3.f64[1] = insets.left;
+  v4.f64[0] = insets.bottom;
+  v4.f64[1] = insets.right;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_tappableEdgeInsets.top), vceqq_f64(v4, *&self->_tappableEdgeInsets.bottom)))) & 1) == 0)
   {
-    self->_tappableEdgeInsets = a3;
+    self->_tappableEdgeInsets = insets;
     [(CAMExpandableMenuButton *)self setNeedsLayout];
   }
 }
@@ -1942,9 +1942,9 @@ void __58__CAMExpandableMenuButton__viewToTrackForTouchAtLocation___block_invoke
   [(CAMExpandableMenuButton *)self setNeedsLayout];
 }
 
-- (id)hudItemForAccessibilityHUDManager:(id)a3
+- (id)hudItemForAccessibilityHUDManager:(id)manager
 {
-  [a3 locationOfAccessibilityGestureInView:self];
+  [manager locationOfAccessibilityGestureInView:self];
   v4 = [(CAMExpandableMenuButton *)self _viewToTrackForTouchAtLocation:?];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -1952,15 +1952,15 @@ void __58__CAMExpandableMenuButton__viewToTrackForTouchAtLocation___block_invoke
     v5 = MEMORY[0x1E69DC618];
     v6 = v4;
     v7 = [v5 alloc];
-    v8 = [v6 text];
+    text = [v6 text];
 
-    v9 = [v7 initWithTitle:v8 image:0 imageInsets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+    v9 = [v7 initWithTitle:text image:0 imageInsets:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
   }
 
   else
   {
-    v10 = [(CAMExpandableMenuButton *)self headerView];
-    v11 = [v4 isEqual:v10];
+    headerView = [(CAMExpandableMenuButton *)self headerView];
+    v11 = [v4 isEqual:headerView];
 
     if (!v11)
     {
@@ -1968,45 +1968,45 @@ void __58__CAMExpandableMenuButton__viewToTrackForTouchAtLocation___block_invoke
       goto LABEL_15;
     }
 
-    v8 = [(CAMExpandableMenuButton *)self shownIndexesWhileCollapsed];
-    if ([v8 containsIndex:{-[CAMExpandableMenuButton selectedIndex](self, "selectedIndex")}])
+    text = [(CAMExpandableMenuButton *)self shownIndexesWhileCollapsed];
+    if ([text containsIndex:{-[CAMExpandableMenuButton selectedIndex](self, "selectedIndex")}])
     {
-      v12 = [(CAMExpandableMenuButton *)self _menuItems];
-      v13 = [v12 objectAtIndex:{-[CAMExpandableMenuButton selectedIndex](self, "selectedIndex")}];
+      _menuItems = [(CAMExpandableMenuButton *)self _menuItems];
+      v13 = [_menuItems objectAtIndex:{-[CAMExpandableMenuButton selectedIndex](self, "selectedIndex")}];
 
-      v14 = [v13 text];
+      text2 = [v13 text];
     }
 
     else
     {
-      v14 = 0;
+      text2 = 0;
     }
 
     if ([(CAMExpandableMenuButton *)self conformsToProtocol:&unk_1F1717470])
     {
-      v15 = [(CAMExpandableMenuButton *)self imageForAccessibilityHUD];
+      imageForAccessibilityHUD = [(CAMExpandableMenuButton *)self imageForAccessibilityHUD];
     }
 
     else
     {
-      v16 = [(CAMExpandableMenuButton *)self headerView];
+      headerView2 = [(CAMExpandableMenuButton *)self headerView];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v18 = [(CAMExpandableMenuButton *)self headerView];
-        v15 = [v18 image];
+        headerView3 = [(CAMExpandableMenuButton *)self headerView];
+        imageForAccessibilityHUD = [headerView3 image];
       }
 
       else
       {
-        v15 = 0;
+        imageForAccessibilityHUD = 0;
       }
     }
 
     v19 = objc_alloc(MEMORY[0x1E69DC618]);
-    v9 = [v19 initWithTitle:v14 image:v15 imageInsets:1 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
+    v9 = [v19 initWithTitle:text2 image:imageForAccessibilityHUD imageInsets:1 scaleImage:{*MEMORY[0x1E69DDCE0], *(MEMORY[0x1E69DDCE0] + 8), *(MEMORY[0x1E69DDCE0] + 16), *(MEMORY[0x1E69DDCE0] + 24)}];
   }
 
 LABEL_15:
@@ -2014,19 +2014,19 @@ LABEL_15:
   return v9;
 }
 
-- (void)selectedByAccessibilityHUDManager:(id)a3
+- (void)selectedByAccessibilityHUDManager:(id)manager
 {
-  v10 = a3;
+  managerCopy = manager;
   if ([(CAMExpandableMenuButton *)self isExpanded])
   {
-    [v10 locationOfAccessibilityGestureInView:self];
+    [managerCopy locationOfAccessibilityGestureInView:self];
     v4 = [(CAMExpandableMenuButton *)self _viewToTrackForTouchAtLocation:?];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v5 = v4;
-      v6 = [(CAMExpandableMenuButton *)self _menuItems];
-      v7 = [v6 indexOfObject:v5];
+      _menuItems = [(CAMExpandableMenuButton *)self _menuItems];
+      v7 = [_menuItems indexOfObject:v5];
 
       [(CAMExpandableMenuButton *)self setSelectedIndex:v7];
       [(CAMExpandableMenuButton *)self sendActionsForControlEvents:4096];
@@ -2043,8 +2043,8 @@ LABEL_15:
   else
   {
     v8 = [(CAMExpandableMenuButton *)self selectedIndex]+ 1;
-    v9 = [(CAMExpandableMenuButton *)self _menuItems];
-    -[CAMExpandableMenuButton setSelectedIndex:](self, "setSelectedIndex:", v8 % [v9 count]);
+    _menuItems2 = [(CAMExpandableMenuButton *)self _menuItems];
+    -[CAMExpandableMenuButton setSelectedIndex:](self, "setSelectedIndex:", v8 % [_menuItems2 count]);
 
     [(CAMExpandableMenuButton *)self sendActionsForControlEvents:4096];
   }

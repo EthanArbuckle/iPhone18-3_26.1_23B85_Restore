@@ -1,23 +1,23 @@
 @interface ICSPrivateEmailSpecifierProvider
 - (AAUISpecifierProviderDelegate)delegate;
-- (BOOL)handleURL:(id)a3;
-- (ICSPrivateEmailSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4;
+- (BOOL)handleURL:(id)l;
+- (ICSPrivateEmailSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter;
 - (NSArray)specifiers;
 - (UIViewController)presenter;
 - (id)account;
 - (void)_fetchCloudStorageSummary;
-- (void)_privateEmailSpecifierWasTapped:(id)a3;
+- (void)_privateEmailSpecifierWasTapped:(id)tapped;
 - (void)_reloadPrivateEmailSpecifier;
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4;
+- (void)remoteUIRequestComplete:(id)complete error:(id)error;
 @end
 
 @implementation ICSPrivateEmailSpecifierProvider
 
-- (ICSPrivateEmailSpecifierProvider)initWithAccountManager:(id)a3 presenter:(id)a4
+- (ICSPrivateEmailSpecifierProvider)initWithAccountManager:(id)manager presenter:(id)presenter
 {
-  objc_storeStrong(&self->_accountManager, a3);
-  v6 = a4;
-  objc_storeWeak(&self->_presenter, v6);
+  objc_storeStrong(&self->_accountManager, manager);
+  presenterCopy = presenter;
+  objc_storeWeak(&self->_presenter, presenterCopy);
 
   [(ICSPrivateEmailSpecifierProvider *)self _fetchCloudStorageSummary];
   return self;
@@ -25,8 +25,8 @@
 
 - (id)account
 {
-  v2 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v3 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   return v3;
 }
@@ -36,7 +36,7 @@
   specifiers = self->_specifiers;
   if (!specifiers)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = MEMORY[0x277D3FAD8];
     v6 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v7 = [v6 localizedStringForKey:@"PRIVATE_EMAIL_ADDRESSES" value:&stru_288487370 table:@"Localizable-AppleID"];
@@ -62,10 +62,10 @@
         goto LABEL_9;
       }
 
-      v15 = [(ICQCloudStorageSummary *)storageSummary subscriptionInfo];
-      v16 = [v15 isiCloudPlusSubscriber];
+      subscriptionInfo = [(ICQCloudStorageSummary *)storageSummary subscriptionInfo];
+      isiCloudPlusSubscriber = [subscriptionInfo isiCloudPlusSubscriber];
 
-      if (v16)
+      if (isiCloudPlusSubscriber)
       {
         goto LABEL_9;
       }
@@ -75,9 +75,9 @@
     {
     }
 
-    [v4 addObject:self->privateEmailSpecifier];
+    [array addObject:self->privateEmailSpecifier];
 LABEL_9:
-    v17 = [v4 copy];
+    v17 = [array copy];
     v18 = self->_specifiers;
     self->_specifiers = v17;
 
@@ -97,19 +97,19 @@ LABEL_9:
   [WeakRetained reloadSpecifiersForProvider:self oldSpecifiers:v5 animated:0];
 }
 
-- (void)_privateEmailSpecifierWasTapped:(id)a3
+- (void)_privateEmailSpecifierWasTapped:(id)tapped
 {
   v25[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained specifierProvider:self willBeginLoadingSpecifier:v4];
+  [WeakRetained specifierProvider:self willBeginLoadingSpecifier:tappedCopy];
 
   v6 = [MEMORY[0x277CF02F0] bagForAltDSID:0];
-  v7 = [v6 privateEmailManageURL];
+  privateEmailManageURL = [v6 privateEmailManageURL];
 
   v8 = objc_alloc_init(MEMORY[0x277CCAB70]);
-  v24 = v7;
-  [v8 setURL:v7];
+  v24 = privateEmailManageURL;
+  [v8 setURL:privateEmailManageURL];
   [v8 setHTTPMethod:@"GET"];
   v9 = LogSubsystem();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -119,12 +119,12 @@ LABEL_9:
 
   v10 = objc_alloc_init(ICSMatterhornUpsellHook);
   v11 = objc_alloc_init(ICSPrivateEmailUpdateCacheHook);
-  v12 = [(AIDAAccountManager *)self->_accountManager accounts];
-  v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
+  accounts = [(AIDAAccountManager *)self->_accountManager accounts];
+  v13 = [accounts objectForKeyedSubscript:*MEMORY[0x277CED1A0]];
 
   v14 = objc_alloc(MEMORY[0x277CECA40]);
-  v15 = [v13 aa_altDSID];
-  v16 = [v14 initWithAltDSID:v15 upgradeContext:*MEMORY[0x277CF00A0]];
+  aa_altDSID = [v13 aa_altDSID];
+  v16 = [v14 initWithAltDSID:aa_altDSID upgradeContext:*MEMORY[0x277CF00A0]];
 
   v25[0] = v10;
   v25[1] = v11;
@@ -143,16 +143,16 @@ LABEL_9:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remoteUIRequestComplete:(id)a3 error:(id)a4
+- (void)remoteUIRequestComplete:(id)complete error:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = LogSubsystem();
   v7 = v6;
-  if (v5)
+  if (errorCopy)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      [ICSPrivateEmailSpecifierProvider remoteUIRequestComplete:v5 error:v7];
+      [ICSPrivateEmailSpecifierProvider remoteUIRequestComplete:errorCopy error:v7];
     }
   }
 
@@ -186,8 +186,8 @@ void __66__ICSPrivateEmailSpecifierProvider_remoteUIRequestComplete_error___bloc
 - (void)_fetchCloudStorageSummary
 {
   v3 = objc_alloc(MEMORY[0x277D7F338]);
-  v4 = [(ICSPrivateEmailSpecifierProvider *)self account];
-  v5 = [v3 initWithAccount:v4];
+  account = [(ICSPrivateEmailSpecifierProvider *)self account];
+  v5 = [v3 initWithAccount:account];
 
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
@@ -223,9 +223,9 @@ void __61__ICSPrivateEmailSpecifierProvider__fetchCloudStorageSummary__block_inv
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (BOOL)handleURL:(id)a3
+- (BOOL)handleURL:(id)l
 {
-  v4 = [a3 objectForKeyedSubscript:@"path"];
+  v4 = [l objectForKeyedSubscript:@"path"];
   v5 = [v4 isEqualToString:@"PRIVATE_EMAIL_MANAGE"];
   if (v5)
   {

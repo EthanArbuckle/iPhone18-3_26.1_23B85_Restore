@@ -1,11 +1,11 @@
 @interface CNSiriContactContextProvider
 + (id)descriptorForRequiredKeys;
-- (CNSiriContactContextProvider)initWithContact:(id)a3 store:(id)a4;
+- (CNSiriContactContextProvider)initWithContact:(id)contact store:(id)store;
 - (id)defaultContextManager;
 - (id)getCurrentContext;
 - (void)_removeContextProviderOnMainThread;
 - (void)dealloc;
-- (void)setEnabled:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
 @end
 
 @implementation CNSiriContactContextProvider
@@ -13,14 +13,14 @@
 + (id)descriptorForRequiredKeys
 {
   v2 = +[CNCapabilitiesManager defaultCapabilitiesManager];
-  v3 = [v2 hasSiriCapability];
+  hasSiriCapability = [v2 hasSiriCapability];
 
-  if (v3)
+  if (hasSiriCapability)
   {
     v4 = MEMORY[0x1E695CD58];
-    v5 = [getCNAssistantConversionClass() descriptorsForRequiredKeys];
+    descriptorsForRequiredKeys = [getCNAssistantConversionClass() descriptorsForRequiredKeys];
     v6 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"+[CNSiriContactContextProvider descriptorForRequiredKeys]"];
-    v7 = [v4 descriptorWithKeyDescriptors:v5 description:v6];
+    v7 = [v4 descriptorWithKeyDescriptors:descriptorsForRequiredKeys description:v6];
   }
 
   else
@@ -51,31 +51,31 @@
 
   v3 = v2;
   _Block_object_dispose(&v7, 8);
-  v4 = [v2 defaultContextManager];
+  defaultContextManager = [v2 defaultContextManager];
 
-  return v4;
+  return defaultContextManager;
 }
 
 - (void)_removeContextProviderOnMainThread
 {
-  v3 = [(CNSiriContactContextProvider *)self defaultContextManager];
-  [v3 removeContextProvider:self];
+  defaultContextManager = [(CNSiriContactContextProvider *)self defaultContextManager];
+  [defaultContextManager removeContextProvider:self];
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   [(CNSiriContactContextProvider *)self setIsEnabled:?];
-  v5 = [(CNSiriContactContextProvider *)self defaultContextManager];
-  v6 = v5;
-  if (v3)
+  defaultContextManager = [(CNSiriContactContextProvider *)self defaultContextManager];
+  v6 = defaultContextManager;
+  if (enabledCopy)
   {
-    [v5 addContextProvider:self];
+    [defaultContextManager addContextProvider:self];
   }
 
   else
   {
-    [v5 removeContextProvider:self];
+    [defaultContextManager removeContextProvider:self];
   }
 }
 
@@ -83,13 +83,13 @@
 {
   v9[1] = *MEMORY[0x1E69E9840];
   CNAssistantConversionClass = getCNAssistantConversionClass();
-  v4 = [(CNSiriContactContextProvider *)self contact];
-  v5 = [CNAssistantConversionClass createSAPersonFromCNContact:v4];
+  contact = [(CNSiriContactContextProvider *)self contact];
+  v5 = [CNAssistantConversionClass createSAPersonFromCNContact:contact];
 
   if (v5)
   {
-    v6 = [v5 dictionary];
-    v9[0] = v6;
+    dictionary = [v5 dictionary];
+    v9[0] = dictionary;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
@@ -104,9 +104,9 @@
 - (void)dealloc
 {
   v3 = +[CNCapabilitiesManager defaultCapabilitiesManager];
-  v4 = [v3 hasSiriCapability];
+  hasSiriCapability = [v3 hasSiriCapability];
 
-  if (v4)
+  if (hasSiriCapability)
   {
     [(CNSiriContactContextProvider *)self performSelectorOnMainThread:sel__removeContextProviderOnMainThread withObject:0 waitUntilDone:1];
   }
@@ -116,14 +116,14 @@
   [(CNSiriContactContextProvider *)&v5 dealloc];
 }
 
-- (CNSiriContactContextProvider)initWithContact:(id)a3 store:(id)a4
+- (CNSiriContactContextProvider)initWithContact:(id)contact store:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  contactCopy = contact;
+  storeCopy = store;
   v9 = +[CNCapabilitiesManager defaultCapabilitiesManager];
-  v10 = [v9 hasSiriCapability];
+  hasSiriCapability = [v9 hasSiriCapability];
 
-  if (v10)
+  if (hasSiriCapability)
   {
     v15.receiver = self;
     v15.super_class = CNSiriContactContextProvider;
@@ -131,20 +131,20 @@
     p_isa = &v11->super.isa;
     if (v11)
     {
-      objc_storeStrong(&v11->_contact, a3);
-      objc_storeStrong(p_isa + 3, a4);
+      objc_storeStrong(&v11->_contact, contact);
+      objc_storeStrong(p_isa + 3, store);
     }
 
     self = p_isa;
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
 @end

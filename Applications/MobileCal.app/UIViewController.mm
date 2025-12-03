@@ -2,7 +2,7 @@
 - (UINavigationController)viewControllerToShowFrom;
 - (UIViewController)modalPresentationDelegate;
 - (int64_t)presentationStyleOverrideForChildViewControllers;
-- (void)setModalPresentationDelegate:(id)a3;
+- (void)setModalPresentationDelegate:(id)delegate;
 @end
 
 @implementation UIViewController
@@ -20,14 +20,14 @@
   return v3;
 }
 
-- (void)setModalPresentationDelegate:(id)a3
+- (void)setModalPresentationDelegate:(id)delegate
 {
-  v6 = a3;
+  delegateCopy = delegate;
   v4 = objc_getAssociatedObject(self, &unk_1002518E0);
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 isEqual:v6] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v4 isEqual:delegateCopy] & 1) == 0)
   {
-    v5 = v6;
+    v5 = delegateCopy;
 
     objc_setAssociatedObject(self, &unk_1002518E0, v5, 0);
     v4 = v5;
@@ -53,33 +53,33 @@
 
 - (int64_t)presentationStyleOverrideForChildViewControllers
 {
-  v3 = [(UIViewController *)self ekui_futureTraitCollection];
-  if (![v3 horizontalSizeClass])
+  ekui_futureTraitCollection = [(UIViewController *)self ekui_futureTraitCollection];
+  if (![ekui_futureTraitCollection horizontalSizeClass])
   {
 
     return 6;
   }
 
-  v4 = [(UIViewController *)self ekui_futureTraitCollection];
-  v5 = [v4 horizontalSizeClass];
+  ekui_futureTraitCollection2 = [(UIViewController *)self ekui_futureTraitCollection];
+  horizontalSizeClass = [ekui_futureTraitCollection2 horizontalSizeClass];
 
-  if (v5 == 1)
+  if (horizontalSizeClass == 1)
   {
     return 6;
   }
 
-  v6 = [(UIViewController *)self ekui_futureTraitCollection];
-  v7 = [v6 horizontalSizeClass];
+  ekui_futureTraitCollection3 = [(UIViewController *)self ekui_futureTraitCollection];
+  horizontalSizeClass2 = [ekui_futureTraitCollection3 horizontalSizeClass];
 
-  if (v7 != 2)
+  if (horizontalSizeClass2 != 2)
   {
     return -1;
   }
 
-  v8 = [(UIViewController *)self ekui_futureTraitCollection];
-  v9 = [v8 verticalSizeClass];
+  ekui_futureTraitCollection4 = [(UIViewController *)self ekui_futureTraitCollection];
+  verticalSizeClass = [ekui_futureTraitCollection4 verticalSizeClass];
 
-  if (v9 == 1)
+  if (verticalSizeClass == 1)
   {
     return 1;
   }

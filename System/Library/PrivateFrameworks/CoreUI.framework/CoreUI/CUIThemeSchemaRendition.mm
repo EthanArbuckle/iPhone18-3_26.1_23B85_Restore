@@ -1,9 +1,9 @@
 @interface CUIThemeSchemaRendition
 - ($01BB1521EC52D44A8E7628F5261DCEC8)contentInsets;
-- (CGPoint)renditionCoordinatesForPartFeatures:(int64_t)a3;
+- (CGPoint)renditionCoordinatesForPartFeatures:(int64_t)features;
 - (CGRect)alignmentRectangle;
-- (CGRect)edgeInsets:(BOOL)a3;
-- (CUIThemeSchemaRendition)initWithCoreUIOptions:(id)a3 forKey:(const _renditionkeytoken *)a4;
+- (CGRect)edgeInsets:(BOOL)insets;
+- (CUIThemeSchemaRendition)initWithCoreUIOptions:(id)options forKey:(const _renditionkeytoken *)key;
 - (double)scale;
 - (id)defaultTemplateName;
 - (id)description;
@@ -18,8 +18,8 @@
 - (id)sizeLocalizedString;
 - (id)slices;
 - (id)stateLocalizedString;
-- (id)stringForState:(unsigned __int16)a3;
-- (id)stringForValue:(unsigned __int16)a3;
+- (id)stringForState:(unsigned __int16)state;
+- (id)stringForValue:(unsigned __int16)value;
 - (id)typeLocalizedString;
 - (id)valueLocalizedString;
 - (int64_t)columnSlices;
@@ -29,7 +29,7 @@
 
 @implementation CUIThemeSchemaRendition
 
-- (CUIThemeSchemaRendition)initWithCoreUIOptions:(id)a3 forKey:(const _renditionkeytoken *)a4
+- (CUIThemeSchemaRendition)initWithCoreUIOptions:(id)options forKey:(const _renditionkeytoken *)key
 {
   v9.receiver = self;
   v9.super_class = CUIThemeSchemaRendition;
@@ -38,12 +38,12 @@
   if (v6)
   {
     v6->_intrinsicSize = CGSizeZero;
-    [(CUIThemeRendition *)v6 _initializeRenditionKey:a4];
+    [(CUIThemeRendition *)v6 _initializeRenditionKey:key];
     [(CUIThemeRendition *)v7 setOpacity:1.0];
     [(CUIThemeRendition *)v7 setBlendMode:0];
     if ([NSBundle bundleWithIdentifier:@"com.apple.systemappearance"])
     {
-      [(CUIThemeSchemaRendition *)v7 _initializeCoreUIOptions:a3];
+      [(CUIThemeSchemaRendition *)v7 _initializeCoreUIOptions:options];
     }
   }
 
@@ -121,14 +121,14 @@
   return result;
 }
 
-- (CGRect)edgeInsets:(BOOL)a3
+- (CGRect)edgeInsets:(BOOL)insets
 {
-  v3 = a3;
-  v5 = [(CUIThemeSchemaRendition *)self referenceImage];
-  v6 = v5;
+  insetsCopy = insets;
+  referenceImage = [(CUIThemeSchemaRendition *)self referenceImage];
+  v6 = referenceImage;
   p_elementRect = &self->_elementRect;
   y = p_elementRect->origin.y;
-  if (v3)
+  if (insetsCopy)
   {
     height = p_elementRect->size.height + 1.0;
   }
@@ -138,7 +138,7 @@
     height = p_elementRect->size.height;
   }
 
-  [v5 size];
+  [referenceImage size];
   if (height > v10)
   {
     [v6 size];
@@ -146,7 +146,7 @@
   }
 
   v12 = y + -1.0;
-  if (!v3)
+  if (!insetsCopy)
   {
     v12 = y;
   }
@@ -202,13 +202,13 @@
   result = self->_columnSlices;
   if (result <= 0)
   {
-    v4 = [(CUIThemeRendition *)self type];
+    type = [(CUIThemeRendition *)self type];
     result = 1;
-    if (v4 <= 1)
+    if (type <= 1)
     {
-      if (v4)
+      if (type)
       {
-        if (v4 != 1)
+        if (type != 1)
         {
 LABEL_11:
           result = -1;
@@ -219,14 +219,14 @@ LABEL_11:
       }
     }
 
-    else if (v4 != 2)
+    else if (type != 2)
     {
-      if (v4 == 3)
+      if (type == 3)
       {
         result = 3;
       }
 
-      else if (v4 != 1004)
+      else if (type != 1004)
       {
         goto LABEL_11;
       }
@@ -244,25 +244,25 @@ LABEL_12:
   result = self->_rowSlices;
   if (result <= 0)
   {
-    v4 = [(CUIThemeRendition *)self type];
+    type = [(CUIThemeRendition *)self type];
     result = 1;
-    if (v4 > 2)
+    if (type > 2)
     {
-      if (v4 == 3)
+      if (type == 3)
       {
         result = 3;
         goto LABEL_10;
       }
 
-      if (v4 != 1004)
+      if (type != 1004)
       {
         goto LABEL_8;
       }
     }
 
-    else if (v4 >= 2)
+    else if (type >= 2)
     {
-      if (v4 == 2)
+      if (type == 2)
       {
         result = 4;
         goto LABEL_10;
@@ -279,60 +279,60 @@ LABEL_10:
   return result;
 }
 
-- (CGPoint)renditionCoordinatesForPartFeatures:(int64_t)a3
+- (CGPoint)renditionCoordinatesForPartFeatures:(int64_t)features
 {
-  v3 = a3;
-  if (a3)
+  featuresCopy = features;
+  if (features)
   {
-    v6 = [(CUIThemeSchemaRendition *)self value];
+    value = [(CUIThemeSchemaRendition *)self value];
 LABEL_6:
-    v5 = v6;
+    v5 = value;
     goto LABEL_7;
   }
 
-  if ((a3 & 0x4000) != 0)
+  if ((features & 0x4000) != 0)
   {
-    v6 = [(CUIThemeSchemaRendition *)self dimension1];
+    value = [(CUIThemeSchemaRendition *)self dimension1];
     goto LABEL_6;
   }
 
   v5 = 0;
 LABEL_7:
-  if ((*&v3 & 0x20004) == 0 || (v3 & 0x10000) != 0)
+  if ((*&featuresCopy & 0x20004) == 0 || (featuresCopy & 0x10000) != 0)
   {
-    if ((v3 & 0x8000) != 0)
+    if ((featuresCopy & 0x8000) != 0)
     {
-      v9 = [(CUIThemeSchemaRendition *)self dimension2];
+      dimension2 = [(CUIThemeSchemaRendition *)self dimension2];
     }
 
     else
     {
-      v9 = 0;
+      dimension2 = 0;
     }
   }
 
   else
   {
-    v7 = [(CUIThemeSchemaRendition *)self presentationState];
-    v8 = v7 == 1;
-    if (!v7)
+    presentationState = [(CUIThemeSchemaRendition *)self presentationState];
+    v8 = presentationState == 1;
+    if (!presentationState)
     {
       v8 = 2;
     }
 
-    if ((*&v3 & 0x20004) == 0x20004)
+    if ((*&featuresCopy & 0x20004) == 0x20004)
     {
-      v9 = v8;
+      dimension2 = v8;
     }
 
     else
     {
-      v9 = v7 == 0;
+      dimension2 = presentationState == 0;
     }
   }
 
   v10 = v5;
-  v11 = v9;
+  v11 = dimension2;
   result.y = v11;
   result.x = v10;
   return result;
@@ -348,23 +348,23 @@ LABEL_7:
 - (id)typeLocalizedString
 {
   v3 = objc_opt_class();
-  v4 = [(CUIThemeRendition *)self type];
+  type = [(CUIThemeRendition *)self type];
 
-  return [v3 displayNameForRenditionType:v4];
+  return [v3 displayNameForRenditionType:type];
 }
 
-- (id)stringForState:(unsigned __int16)a3
+- (id)stringForState:(unsigned __int16)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = +[NSBundle mainBundle];
-  if (v3 > 5)
+  if (stateCopy > 5)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = off_1E724A5B8[v3];
+    v5 = off_1E724A5B8[stateCopy];
   }
 
   return [(NSBundle *)v4 localizedStringForKey:v5 value:&stru_1F00D74D0 table:0];
@@ -372,47 +372,47 @@ LABEL_7:
 
 - (id)stateLocalizedString
 {
-  v3 = [(CUIThemeSchemaRendition *)self state];
+  state = [(CUIThemeSchemaRendition *)self state];
 
-  return [(CUIThemeSchemaRendition *)self stringForState:v3];
+  return [(CUIThemeSchemaRendition *)self stringForState:state];
 }
 
 - (id)previousStateLocalizedString
 {
-  v3 = [(CUIThemeSchemaRendition *)self previousState];
+  previousState = [(CUIThemeSchemaRendition *)self previousState];
 
-  return [(CUIThemeSchemaRendition *)self stringForState:v3];
+  return [(CUIThemeSchemaRendition *)self stringForState:previousState];
 }
 
 - (id)directionLocalizedString
 {
-  v2 = [(CUIThemeSchemaRendition *)self direction];
+  direction = [(CUIThemeSchemaRendition *)self direction];
   v3 = +[NSBundle mainBundle];
-  if (v2 > 5)
+  if (direction > 5)
   {
     v4 = @"Unknown";
   }
 
   else
   {
-    v4 = off_1E724A5E8[v2];
+    v4 = off_1E724A5E8[direction];
   }
 
   return [(NSBundle *)v3 localizedStringForKey:v4 value:&stru_1F00D74D0 table:0];
 }
 
-- (id)stringForValue:(unsigned __int16)a3
+- (id)stringForValue:(unsigned __int16)value
 {
-  v3 = a3;
+  valueCopy = value;
   v4 = +[NSBundle mainBundle];
-  if (v3 > 2)
+  if (valueCopy > 2)
   {
     v5 = @"Unknown";
   }
 
   else
   {
-    v5 = off_1E724A618[v3];
+    v5 = off_1E724A618[valueCopy];
   }
 
   return [(NSBundle *)v4 localizedStringForKey:v5 value:&stru_1F00D74D0 table:0];
@@ -420,16 +420,16 @@ LABEL_7:
 
 - (id)valueLocalizedString
 {
-  v3 = [(CUIThemeSchemaRendition *)self value];
+  value = [(CUIThemeSchemaRendition *)self value];
 
-  return [(CUIThemeSchemaRendition *)self stringForValue:v3];
+  return [(CUIThemeSchemaRendition *)self stringForValue:value];
 }
 
 - (id)previousValueLocalizedString
 {
-  v3 = [(CUIThemeSchemaRendition *)self previousValue];
+  previousValue = [(CUIThemeSchemaRendition *)self previousValue];
 
-  return [(CUIThemeSchemaRendition *)self stringForValue:v3];
+  return [(CUIThemeSchemaRendition *)self stringForValue:previousValue];
 }
 
 - (id)sizeLocalizedString
@@ -451,16 +451,16 @@ LABEL_7:
 
 - (id)presentationStateLocalizedString
 {
-  v2 = [(CUIThemeSchemaRendition *)self presentationState];
+  presentationState = [(CUIThemeSchemaRendition *)self presentationState];
   v3 = +[NSBundle mainBundle];
-  if (v2 > 2)
+  if (presentationState > 2)
   {
     v4 = @"Unknown";
   }
 
   else
   {
-    v4 = off_1E724A650[v2];
+    v4 = off_1E724A650[presentationState];
   }
 
   return [(NSBundle *)v3 localizedStringForKey:v4 value:&stru_1F00D74D0 table:0];
@@ -482,16 +482,16 @@ LABEL_7:
 
 - (id)drawingLayerLocalizedString
 {
-  v2 = [(CUIThemeSchemaRendition *)self drawingLayer];
+  drawingLayer = [(CUIThemeSchemaRendition *)self drawingLayer];
   v3 = +[NSBundle mainBundle];
-  if (v2 > 7)
+  if (drawingLayer > 7)
   {
     v4 = @"Unknown";
   }
 
   else
   {
-    v4 = off_1E724A668[v2];
+    v4 = off_1E724A668[drawingLayer];
   }
 
   return [(NSBundle *)v3 localizedStringForKey:v4 value:&stru_1F00D74D0 table:0];

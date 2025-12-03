@@ -1,27 +1,27 @@
 @interface ODDSiriSchemaODDMAErrorsDigest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODDSiriSchemaODDMAErrorsDigest)initWithDictionary:(id)a3;
-- (ODDSiriSchemaODDMAErrorsDigest)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (ODDSiriSchemaODDMAErrorsDigest)initWithDictionary:(id)dictionary;
+- (ODDSiriSchemaODDMAErrorsDigest)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasMaSuccessCount:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasMaSuccessCount:(BOOL)count;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODDSiriSchemaODDMAErrorsDigest
 
-- (ODDSiriSchemaODDMAErrorsDigest)initWithDictionary:(id)a3
+- (ODDSiriSchemaODDMAErrorsDigest)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = ODDSiriSchemaODDMAErrorsDigest;
   v5 = [(ODDSiriSchemaODDMAErrorsDigest *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"maErrorsDimensions"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"maErrorsDimensions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,14 +29,14 @@
       [(ODDSiriSchemaODDMAErrorsDigest *)v5 setMaErrorsDimensions:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"maFailureCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"maFailureCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODDSiriSchemaODDMAErrorsDigest setMaFailureCount:](v5, "setMaFailureCount:", [v8 unsignedIntValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"maSuccessCount"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"maSuccessCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -49,30 +49,30 @@
   return v5;
 }
 
-- (ODDSiriSchemaODDMAErrorsDigest)initWithJSON:(id)a3
+- (ODDSiriSchemaODDMAErrorsDigest)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODDSiriSchemaODDMAErrorsDigest *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODDSiriSchemaODDMAErrorsDigest *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODDSiriSchemaODDMAErrorsDigest *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -85,20 +85,20 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_maErrorsDimensions)
   {
-    v4 = [(ODDSiriSchemaODDMAErrorsDigest *)self maErrorsDimensions];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    maErrorsDimensions = [(ODDSiriSchemaODDMAErrorsDigest *)self maErrorsDimensions];
+    dictionaryRepresentation = [maErrorsDimensions dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"maErrorsDimensions"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"maErrorsDimensions"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"maErrorsDimensions"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"maErrorsDimensions"];
     }
   }
 
@@ -106,7 +106,7 @@
   if (has)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDMAErrorsDigest maFailureCount](self, "maFailureCount")}];
-    [v3 setObject:v8 forKeyedSubscript:@"maFailureCount"];
+    [dictionary setObject:v8 forKeyedSubscript:@"maFailureCount"];
 
     has = self->_has;
   }
@@ -114,12 +114,12 @@
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODDSiriSchemaODDMAErrorsDigest maSuccessCount](self, "maSuccessCount")}];
-    [v3 setObject:v9 forKeyedSubscript:@"maSuccessCount"];
+    [dictionary setObject:v9 forKeyedSubscript:@"maSuccessCount"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -149,30 +149,30 @@ LABEL_3:
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
-  v5 = [(ODDSiriSchemaODDMAErrorsDigest *)self maErrorsDimensions];
-  v6 = [v4 maErrorsDimensions];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  maErrorsDimensions = [(ODDSiriSchemaODDMAErrorsDigest *)self maErrorsDimensions];
+  maErrorsDimensions2 = [equalCopy maErrorsDimensions];
+  v7 = maErrorsDimensions2;
+  if ((maErrorsDimensions != 0) == (maErrorsDimensions2 == 0))
   {
 
     goto LABEL_16;
   }
 
-  v8 = [(ODDSiriSchemaODDMAErrorsDigest *)self maErrorsDimensions];
-  if (v8)
+  maErrorsDimensions3 = [(ODDSiriSchemaODDMAErrorsDigest *)self maErrorsDimensions];
+  if (maErrorsDimensions3)
   {
-    v9 = v8;
-    v10 = [(ODDSiriSchemaODDMAErrorsDigest *)self maErrorsDimensions];
-    v11 = [v4 maErrorsDimensions];
-    v12 = [v10 isEqual:v11];
+    v9 = maErrorsDimensions3;
+    maErrorsDimensions4 = [(ODDSiriSchemaODDMAErrorsDigest *)self maErrorsDimensions];
+    maErrorsDimensions5 = [equalCopy maErrorsDimensions];
+    v12 = [maErrorsDimensions4 isEqual:maErrorsDimensions5];
 
     if (!v12)
     {
@@ -185,7 +185,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v14 = v4[24];
+  v14 = equalCopy[24];
   if ((*&has & 1) != (v14 & 1))
   {
 LABEL_16:
@@ -196,10 +196,10 @@ LABEL_16:
   if (*&has)
   {
     maFailureCount = self->_maFailureCount;
-    if (maFailureCount == [v4 maFailureCount])
+    if (maFailureCount == [equalCopy maFailureCount])
     {
       has = self->_has;
-      v14 = v4[24];
+      v14 = equalCopy[24];
       goto LABEL_12;
     }
 
@@ -216,7 +216,7 @@ LABEL_12:
   if (v16)
   {
     maSuccessCount = self->_maSuccessCount;
-    if (maSuccessCount != [v4 maSuccessCount])
+    if (maSuccessCount != [equalCopy maSuccessCount])
     {
       goto LABEL_16;
     }
@@ -228,14 +228,14 @@ LABEL_17:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(ODDSiriSchemaODDMAErrorsDigest *)self maErrorsDimensions];
+  toCopy = to;
+  maErrorsDimensions = [(ODDSiriSchemaODDMAErrorsDigest *)self maErrorsDimensions];
 
-  if (v4)
+  if (maErrorsDimensions)
   {
-    v5 = [(ODDSiriSchemaODDMAErrorsDigest *)self maErrorsDimensions];
+    maErrorsDimensions2 = [(ODDSiriSchemaODDMAErrorsDigest *)self maErrorsDimensions];
     PBDataWriterWriteSubmessage();
   }
 
@@ -246,17 +246,17 @@ LABEL_17:
     has = self->_has;
   }
 
-  v7 = v8;
+  v7 = toCopy;
   if ((has & 2) != 0)
   {
     PBDataWriterWriteUint32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setHasMaSuccessCount:(BOOL)a3
+- (void)setHasMaSuccessCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }
@@ -269,17 +269,17 @@ LABEL_17:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = ODDSiriSchemaODDMAErrorsDigest;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(ODDSiriSchemaODDMAErrorsDigest *)self maErrorsDimensions:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(ODDSiriSchemaODDMAErrorsDigest *)self deleteMaErrorsDimensions];
   }

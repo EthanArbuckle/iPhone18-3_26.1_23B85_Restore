@@ -1,6 +1,6 @@
 @interface HMDPendingBulkSendListener
 - (HMDDataStreamBulkSendListener)listener;
-- (HMDPendingBulkSendListener)initWithListener:(id)a3 fileType:(id)a4;
+- (HMDPendingBulkSendListener)initWithListener:(id)listener fileType:(id)type;
 @end
 
 @implementation HMDPendingBulkSendListener
@@ -12,18 +12,18 @@
   return WeakRetained;
 }
 
-- (HMDPendingBulkSendListener)initWithListener:(id)a3 fileType:(id)a4
+- (HMDPendingBulkSendListener)initWithListener:(id)listener fileType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  typeCopy = type;
   v11.receiver = self;
   v11.super_class = HMDPendingBulkSendListener;
   v8 = [(HMDPendingBulkSendListener *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_listener, v6);
-    objc_storeStrong(&v9->_fileType, a4);
+    objc_storeWeak(&v8->_listener, listenerCopy);
+    objc_storeStrong(&v9->_fileType, type);
   }
 
   return v9;

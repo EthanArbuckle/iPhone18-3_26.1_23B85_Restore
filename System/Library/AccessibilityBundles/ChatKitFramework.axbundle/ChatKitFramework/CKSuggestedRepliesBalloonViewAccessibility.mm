@@ -1,15 +1,15 @@
 @interface CKSuggestedRepliesBalloonViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation CKSuggestedRepliesBalloonViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ChatKit.CKSuggestedRepliesBalloonView" hasSwiftField:@"view" withSwiftType:"Optional<CKSuggestedRepliesView>"];
-  [v3 validateClass:@"ChatKit.CKSuggestedReplyButton"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ChatKit.CKSuggestedRepliesBalloonView" hasSwiftField:@"view" withSwiftType:"Optional<CKSuggestedRepliesView>"];
+  [validationsCopy validateClass:@"ChatKit.CKSuggestedReplyButton"];
 }
 
 - (id)accessibilityLabel
@@ -19,7 +19,7 @@
 
   v8.receiver = self;
   v8.super_class = CKSuggestedRepliesBalloonViewAccessibility;
-  v5 = [(CKSuggestedRepliesBalloonViewAccessibility *)&v8 accessibilityLabel];
+  accessibilityLabel = [(CKSuggestedRepliesBalloonViewAccessibility *)&v8 accessibilityLabel];
   v6 = __UIAXStringForVariables();
 
   return v6;

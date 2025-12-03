@@ -1,5 +1,5 @@
 @interface UIWindowAccessibility__ChatKit__UIKit
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_accessibilityIsIsolatedWindow;
 - (BOOL)accessibilityElementsHidden;
 - (id)_accessibilityWindowSections;
@@ -7,23 +7,23 @@
 
 @implementation UIWindowAccessibility__ChatKit__UIKit
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UIWindow" hasProperty:@"rootViewController" withType:"@"];
-  [v3 validateClass:@"CKMessagesController" hasProperty:@"chatController" withType:"@"];
-  [v3 validateClass:@"CKChatController" hasProperty:@"entryView" withType:"@"];
-  [v3 validateClass:@"CKMessageEntryView" hasProperty:@"contentView" withType:"@"];
-  [v3 validateClass:@"CKMessageEntryContentView" hasProperty:@"textView" withType:"@"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UIWindow" hasProperty:@"rootViewController" withType:"@"];
+  [validationsCopy validateClass:@"CKMessagesController" hasProperty:@"chatController" withType:"@"];
+  [validationsCopy validateClass:@"CKChatController" hasProperty:@"entryView" withType:"@"];
+  [validationsCopy validateClass:@"CKMessageEntryView" hasProperty:@"contentView" withType:"@"];
+  [validationsCopy validateClass:@"CKMessageEntryContentView" hasProperty:@"textView" withType:"@"];
 }
 
 - (id)_accessibilityWindowSections
 {
   v11.receiver = self;
   v11.super_class = UIWindowAccessibility__ChatKit__UIKit;
-  v3 = [(UIWindowAccessibility__ChatKit__UIKit *)&v11 _accessibilityWindowSections];
+  _accessibilityWindowSections = [(UIWindowAccessibility__ChatKit__UIKit *)&v11 _accessibilityWindowSections];
   v4 = objc_opt_new();
-  [v4 axSafelyAddObjectsFromArray:v3];
+  [v4 axSafelyAddObjectsFromArray:_accessibilityWindowSections];
   v5 = [(UIWindowAccessibility__ChatKit__UIKit *)self safeValueForKey:@"rootViewController"];
   NSClassFromString(&cfstr_Ckmessagescont_0.isa);
   if (objc_opt_isKindOfClass())
@@ -44,8 +44,8 @@
 
 - (BOOL)_accessibilityIsIsolatedWindow
 {
-  v3 = [(UIWindowAccessibility__ChatKit__UIKit *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AXMessagesExtensionWindow"];
+  accessibilityIdentifier = [(UIWindowAccessibility__ChatKit__UIKit *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AXMessagesExtensionWindow"];
 
   if (v4)
   {
@@ -59,8 +59,8 @@
 
 - (BOOL)accessibilityElementsHidden
 {
-  v3 = [(UIWindowAccessibility__ChatKit__UIKit *)self accessibilityIdentifier];
-  v4 = [v3 isEqualToString:@"AXChatMainWindow"];
+  accessibilityIdentifier = [(UIWindowAccessibility__ChatKit__UIKit *)self accessibilityIdentifier];
+  v4 = [accessibilityIdentifier isEqualToString:@"AXChatMainWindow"];
 
   if (v4)
   {

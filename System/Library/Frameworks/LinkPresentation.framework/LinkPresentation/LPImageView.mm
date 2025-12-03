@@ -1,16 +1,16 @@
 @interface LPImageView
 - (BOOL)shouldApplyBackground;
-- (CGSize)imageSizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (LPImageView)initWithHost:(id)a3 image:(id)a4 properties:(id)a5 style:(id)a6;
+- (CGSize)imageSizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (LPImageView)initWithHost:(id)host image:(id)image properties:(id)properties style:(id)style;
 - (double)_effectiveCornerRadius;
-- (id)_createImageViewWithImage:(id)a3;
-- (id)_createOverlayViewWithOpacity:(double)a3;
+- (id)_createImageViewWithImage:(id)image;
+- (id)_createOverlayViewWithOpacity:(double)opacity;
 - (int64_t)_filter;
-- (int64_t)scalingModeForSize:(CGSize)a3;
-- (void)_setImageViewScalingMode:(int64_t)a3;
+- (int64_t)scalingModeForSize:(CGSize)size;
+- (void)_setImageViewScalingMode:(int64_t)mode;
 - (void)_updateScalingMode;
-- (void)_userInterfaceStyleDidChange:(id)a3;
+- (void)_userInterfaceStyleDidChange:(id)change;
 - (void)ensureImageView;
 - (void)installDarkeningViewIfNeeded;
 - (void)layoutComponentView;
@@ -21,34 +21,34 @@
 
 @implementation LPImageView
 
-- (LPImageView)initWithHost:(id)a3 image:(id)a4 properties:(id)a5 style:(id)a6
+- (LPImageView)initWithHost:(id)host image:(id)image properties:(id)properties style:(id)style
 {
   v28[1] = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  hostCopy = host;
+  imageCopy = image;
+  propertiesCopy = properties;
+  styleCopy = style;
   v27.receiver = self;
   v27.super_class = LPImageView;
-  v14 = [(LPComponentView *)&v27 initWithHost:v10];
+  v14 = [(LPComponentView *)&v27 initWithHost:hostCopy];
   p_isa = &v14->super.super.super.super.isa;
   v16 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_image, a4);
-    objc_storeStrong(p_isa + 54, a5);
-    objc_storeStrong(p_isa + 55, a6);
-    objc_storeStrong(p_isa + 56, a6);
+    objc_storeStrong(&v14->_image, image);
+    objc_storeStrong(p_isa + 54, properties);
+    objc_storeStrong(p_isa + 55, style);
+    objc_storeStrong(p_isa + 56, style);
     if (+[LPSettings showDebugIndicators])
     {
-      v17 = [MEMORY[0x1E69DC888] redColor];
-      v18 = v17;
-      v19 = [v17 CGColor];
-      v20 = [(LPImageView *)v16 layer];
-      [v20 setBorderColor:v19];
+      redColor = [MEMORY[0x1E69DC888] redColor];
+      v18 = redColor;
+      cGColor = [redColor CGColor];
+      layer = [(LPImageView *)v16 layer];
+      [layer setBorderColor:cGColor];
 
-      v21 = [(LPImageView *)v16 layer];
-      [v21 setBorderWidth:0.5];
+      layer2 = [(LPImageView *)v16 layer];
+      [layer2 setBorderWidth:0.5];
     }
 
     v22 = objc_opt_self();
@@ -65,8 +65,8 @@
 - (int64_t)_filter
 {
   v3 = LPImageViewFilterResolve(self->_image, self->_properties, self->_style);
-  v4 = [(LPComponentView *)self host];
-  v5 = [v4 componentView:self allowedImageFilterForFilter:v3];
+  host = [(LPComponentView *)self host];
+  v5 = [host componentView:self allowedImageFilterForFilter:v3];
 
   return v5;
 }
@@ -79,38 +79,38 @@
   }
 
   originalStyle = self->_originalStyle;
-  v4 = [(LPImageView *)self _filter];
+  _filter = [(LPImageView *)self _filter];
   image = self->_image;
   [(UIView *)self _lp_backingScaleFactor];
-  v7 = shouldUseIconPlatter(originalStyle, v4, image, v6);
+  v7 = shouldUseIconPlatter(originalStyle, _filter, image, v6);
   self->_platterReason = v7;
   if (v7)
   {
     v99 = [(LPImageViewStyle *)self->_style copy];
-    v8 = [(LPImageViewStyle *)self->_originalStyle fixedSize];
-    [v8 asSize];
+    fixedSize = [(LPImageViewStyle *)self->_originalStyle fixedSize];
+    [fixedSize asSize];
     v10 = v9;
     v12 = v11;
 
     [LPTheme platterizedIconScaleForReason:self->_platterReason];
     v14 = v10 * v13;
     v15 = [[LPPointUnit alloc] initWithValue:(v12 - v10 * v13) * 0.5];
-    v16 = [(LPImageViewStyle *)v99 padding];
-    [v16 setTop:v15];
+    padding = [(LPImageViewStyle *)v99 padding];
+    [padding setTop:v15];
 
-    v17 = [(LPImageViewStyle *)v99 padding];
-    v18 = [v17 top];
-    v19 = [(LPImageViewStyle *)v99 padding];
-    [v19 setBottom:v18];
+    padding2 = [(LPImageViewStyle *)v99 padding];
+    v18 = [padding2 top];
+    padding3 = [(LPImageViewStyle *)v99 padding];
+    [padding3 setBottom:v18];
 
     v20 = [[LPPointUnit alloc] initWithValue:(v10 - v14) * 0.5];
-    v21 = [(LPImageViewStyle *)v99 padding];
-    [v21 setLeading:v20];
+    padding4 = [(LPImageViewStyle *)v99 padding];
+    [padding4 setLeading:v20];
 
-    v22 = [(LPImageViewStyle *)v99 padding];
-    v23 = [v22 leading];
-    v24 = [(LPImageViewStyle *)v99 padding];
-    [v24 setTrailing:v23];
+    padding5 = [(LPImageViewStyle *)v99 padding];
+    leading = [padding5 leading];
+    padding6 = [(LPImageViewStyle *)v99 padding];
+    [padding6 setTrailing:leading];
 
     v25 = [[LPSize alloc] initWithSquareSize:v14];
     [(LPImageViewStyle *)v99 setFixedSize:v25];
@@ -119,7 +119,7 @@
     self->_style = v99;
   }
 
-  v27 = [(LPImageView *)self _filter];
+  _filter2 = [(LPImageView *)self _filter];
   filteredImage = self->_filteredImage;
   self->_filteredImage = 0;
 
@@ -138,8 +138,8 @@
   [(LPImagePresentationProperties *)self->_properties fixedSize];
   if (v33 == *MEMORY[0x1E695F060] && v32 == *(MEMORY[0x1E695F060] + 8))
   {
-    v100 = [(LPImageViewStyle *)self->_style fixedSize];
-    [v100 asSize];
+    fixedSize2 = [(LPImageViewStyle *)self->_style fixedSize];
+    [fixedSize2 asSize];
     v36 = v39;
     v38 = v40;
   }
@@ -153,50 +153,50 @@
 
   [(LPImageView *)self _effectiveCornerRadius];
   v42 = v41;
-  v43 = [(LPImagePresentationProperties *)self->_properties maskColor];
-  v44 = v43;
-  if (v43)
+  maskColor = [(LPImagePresentationProperties *)self->_properties maskColor];
+  v44 = maskColor;
+  if (maskColor)
   {
-    v45 = v43;
+    maskColor2 = maskColor;
   }
 
   else
   {
-    v45 = [(LPImageViewStyle *)self->_style maskColor];
+    maskColor2 = [(LPImageViewStyle *)self->_style maskColor];
   }
 
-  v101 = v45;
+  whiteColor = maskColor2;
 
-  v46 = [(LPImagePresentationProperties *)self->_properties backgroundColor];
-  v47 = v46;
-  if (v46)
+  backgroundColor = [(LPImagePresentationProperties *)self->_properties backgroundColor];
+  v47 = backgroundColor;
+  if (backgroundColor)
   {
-    v48 = v46;
+    backgroundColor2 = backgroundColor;
   }
 
   else
   {
-    v48 = [(LPImageViewStyle *)self->_style backgroundColor];
+    backgroundColor2 = [(LPImageViewStyle *)self->_style backgroundColor];
   }
 
-  v49 = v48;
+  v49 = backgroundColor2;
 
-  v50 = [(LPImageViewStyle *)self->_style backgroundInset];
-  [v50 value];
+  backgroundInset = [(LPImageViewStyle *)self->_style backgroundInset];
+  [backgroundInset value];
   v52 = v51;
 
-  if (v27 <= 7)
+  if (_filter2 <= 7)
   {
-    if (v27 > 4)
+    if (_filter2 > 4)
     {
-      if (v27 == 5)
+      if (_filter2 == 5)
       {
         v53 = appIconImage(self->_image, v36, v38, v30);
       }
 
       else
       {
-        if (v27 == 6)
+        if (_filter2 == 6)
         {
           watchAppIconImage(self->_image, v36, v38, v30);
         }
@@ -211,19 +211,19 @@
       goto LABEL_52;
     }
 
-    if ((v27 - 1) >= 2)
+    if ((_filter2 - 1) >= 2)
     {
-      if (v27 != 3)
+      if (_filter2 != 3)
       {
-        if (v27 == 4)
+        if (_filter2 == 4)
         {
-          v54 = [(LPImage *)self->_image _asTemplate];
+          _asTemplate = [(LPImage *)self->_image _asTemplate];
           v55 = self->_filteredImage;
-          self->_filteredImage = v54;
+          self->_filteredImage = _asTemplate;
 
-          if (!v101)
+          if (!whiteColor)
           {
-            v101 = [MEMORY[0x1E69DC888] whiteColor];
+            whiteColor = [MEMORY[0x1E69DC888] whiteColor];
           }
         }
 
@@ -234,15 +234,15 @@
       v63 = self->_filteredImage;
       self->_filteredImage = v62;
 
-      v64 = [(LPImage *)self->_image _darkInterfaceAlternativeImage];
+      _darkInterfaceAlternativeImage = [(LPImage *)self->_image _darkInterfaceAlternativeImage];
 
-      if (!v64)
+      if (!_darkInterfaceAlternativeImage)
       {
         goto LABEL_53;
       }
 
-      v59 = [(LPImage *)self->_image _darkInterfaceAlternativeImage];
-      v60 = squareImageWithCornerRadius(v59, v49, v36, v38, v42, v30, v52);
+      _darkInterfaceAlternativeImage2 = [(LPImage *)self->_image _darkInterfaceAlternativeImage];
+      v60 = squareImageWithCornerRadius(_darkInterfaceAlternativeImage2, v49, v36, v38, v42, v30, v52);
       [(LPImage *)self->_filteredImage _setDarkInterfaceAlternativeImage:v60];
       goto LABEL_44;
     }
@@ -250,13 +250,13 @@
     goto LABEL_34;
   }
 
-  if (v27 > 11)
+  if (_filter2 > 11)
   {
-    if ((v27 - 13) >= 2)
+    if ((_filter2 - 13) >= 2)
     {
-      if (v27 != 12)
+      if (_filter2 != 12)
       {
-        if (v27 != 15)
+        if (_filter2 != 15)
         {
           goto LABEL_53;
         }
@@ -265,15 +265,15 @@
         v57 = self->_filteredImage;
         self->_filteredImage = v56;
 
-        v58 = [(LPImage *)self->_image _darkInterfaceAlternativeImage];
+        _darkInterfaceAlternativeImage3 = [(LPImage *)self->_image _darkInterfaceAlternativeImage];
 
-        if (!v58)
+        if (!_darkInterfaceAlternativeImage3)
         {
           goto LABEL_53;
         }
 
-        v59 = [(LPImage *)self->_image _darkInterfaceAlternativeImage];
-        v60 = squareFittingImageWithCornerRadius(v59, v49, v36, v38, v42, v30, v52);
+        _darkInterfaceAlternativeImage2 = [(LPImage *)self->_image _darkInterfaceAlternativeImage];
+        v60 = squareFittingImageWithCornerRadius(_darkInterfaceAlternativeImage2, v49, v36, v38, v42, v30, v52);
         [(LPImage *)self->_filteredImage _setDarkInterfaceAlternativeImage:v60];
 LABEL_44:
 
@@ -281,15 +281,15 @@ LABEL_49:
         goto LABEL_53;
       }
 
-      v65 = [(LPComponentView *)self host];
-      v66 = [v65 usesBackgroundForSymbolImagesForComponentView:self];
+      host = [(LPComponentView *)self host];
+      v66 = [host usesBackgroundForSymbolImagesForComponentView:self];
 
       v61 = self->_image;
       if ((v66 & 1) == 0)
       {
-        v59 = [(LPImage *)self->_image filledVariant];
-        v67 = v59;
-        if (!v59)
+        _darkInterfaceAlternativeImage2 = [(LPImage *)self->_image filledVariant];
+        v67 = _darkInterfaceAlternativeImage2;
+        if (!_darkInterfaceAlternativeImage2)
         {
           v67 = self->_image;
         }
@@ -308,9 +308,9 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  if ((v27 - 9) < 3)
+  if ((_filter2 - 9) < 3)
   {
-    v53 = bookCoverImage(self->_image, v27 == 11, v27 == 10, v30);
+    v53 = bookCoverImage(self->_image, _filter2 == 11, _filter2 == 10, v30);
 LABEL_52:
     v68 = self->_filteredImage;
     self->_filteredImage = v53;
@@ -318,7 +318,7 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  if (v27 == 8)
+  if (_filter2 == 8)
   {
     v53 = appClipIconImage(self->_image, v36, v38, v30);
     goto LABEL_52;
@@ -353,84 +353,84 @@ LABEL_53:
   v73 = self->_imageView;
   [(LPImageViewStyle *)self->_style opacity];
   [(UIImageView *)v73 _lp_setOpacity:?];
-  [(UIImageView *)self->_imageView _lp_setTintColor:v101];
+  [(UIImageView *)self->_imageView _lp_setTintColor:whiteColor];
   [(UIImageView *)self->_imageView setIsAccessibilityElement:1];
   [(LPImageView *)self addSubview:self->_imageView];
   if (+[LPSettings showDebugIndicators])
   {
-    v74 = [MEMORY[0x1E69DC888] greenColor];
-    v75 = [v74 CGColor];
-    v76 = [(UIImageView *)self->_imageView layer];
-    [v76 setBorderColor:v75];
+    greenColor = [MEMORY[0x1E69DC888] greenColor];
+    cGColor = [greenColor CGColor];
+    layer = [(UIImageView *)self->_imageView layer];
+    [layer setBorderColor:cGColor];
 
-    v77 = [(UIImageView *)self->_imageView layer];
-    [v77 setBorderWidth:0.5];
+    layer2 = [(UIImageView *)self->_imageView layer];
+    [layer2 setBorderWidth:0.5];
   }
 
-  if (v27 == 2)
+  if (_filter2 == 2)
   {
     [(LPImageView *)self installDarkeningViewIfNeeded];
   }
 
-  v78 = [(LPImageViewStyle *)self->_style shadow];
+  shadow = [(LPImageViewStyle *)self->_style shadow];
 
-  if (v78)
+  if (shadow)
   {
-    v79 = [(LPImageViewStyle *)self->_style shadow];
-    [v79 radius];
+    shadow2 = [(LPImageViewStyle *)self->_style shadow];
+    [shadow2 radius];
     v81 = v80;
-    v82 = [(LPImageView *)self layer];
-    [v82 setShadowRadius:v81];
+    layer3 = [(LPImageView *)self layer];
+    [layer3 setShadowRadius:v81];
 
-    v83 = [(LPImageViewStyle *)self->_style shadow];
-    v84 = [v83 offset];
-    [v84 asSize];
+    shadow3 = [(LPImageViewStyle *)self->_style shadow];
+    offset = [shadow3 offset];
+    [offset asSize];
     v86 = v85;
     v88 = v87;
-    v89 = [(LPImageView *)self layer];
-    [v89 setShadowOffset:{v86, v88}];
+    layer4 = [(LPImageView *)self layer];
+    [layer4 setShadowOffset:{v86, v88}];
 
-    v90 = [(LPImageViewStyle *)self->_style shadow];
-    [v90 opacity];
+    shadow4 = [(LPImageViewStyle *)self->_style shadow];
+    [shadow4 opacity];
     v92 = v91;
-    v93 = [(LPImageView *)self layer];
+    layer5 = [(LPImageView *)self layer];
     *&v94 = v92;
-    [v93 setShadowOpacity:v94];
+    [layer5 setShadowOpacity:v94];
 
-    v95 = [(LPImageViewStyle *)self->_style shadow];
-    v96 = [v95 color];
-    v97 = [v96 CGColor];
-    v98 = [(LPImageView *)self layer];
-    [v98 setShadowColor:v97];
+    shadow5 = [(LPImageViewStyle *)self->_style shadow];
+    color = [shadow5 color];
+    cGColor2 = [color CGColor];
+    layer6 = [(LPImageView *)self layer];
+    [layer6 setShadowColor:cGColor2];
 
     [(LPImageView *)self updateShadowPath];
   }
 }
 
-- (void)_userInterfaceStyleDidChange:(id)a3
+- (void)_userInterfaceStyleDidChange:(id)change
 {
-  v10 = a3;
-  v4 = [(LPImage *)self->_filteredImage _darkInterfaceAlternativeImage];
+  changeCopy = change;
+  _darkInterfaceAlternativeImage = [(LPImage *)self->_filteredImage _darkInterfaceAlternativeImage];
 
-  if (v4)
+  if (_darkInterfaceAlternativeImage)
   {
-    v5 = [v10 traitCollection];
-    v6 = [v5 userInterfaceStyle];
+    traitCollection = [changeCopy traitCollection];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
     filteredImage = self->_filteredImage;
-    if (v6 == 2)
+    if (userInterfaceStyle == 2)
     {
-      v8 = [(LPImage *)filteredImage _darkInterfaceAlternativeImage];
-      v9 = [v8 platformImage];
+      _darkInterfaceAlternativeImage2 = [(LPImage *)filteredImage _darkInterfaceAlternativeImage];
+      platformImage = [_darkInterfaceAlternativeImage2 platformImage];
     }
 
     else
     {
-      v9 = [(LPImage *)filteredImage platformImage];
-      v8 = v9;
+      platformImage = [(LPImage *)filteredImage platformImage];
+      _darkInterfaceAlternativeImage2 = platformImage;
     }
 
-    [(UIImageView *)self->_imageView setImage:v9];
-    if (v6 == 2)
+    [(UIImageView *)self->_imageView setImage:platformImage];
+    if (userInterfaceStyle == 2)
     {
     }
   }
@@ -469,8 +469,8 @@ LABEL_53:
     v51.size.width = v20;
     v51.size.height = v22;
     v27 = CGRectEqualToRect(v51, v53);
-    v28 = [(LPImageView *)self _filter];
-    if (v28 == 13)
+    _filter = [(LPImageView *)self _filter];
+    if (_filter == 13)
     {
       if (v27)
       {
@@ -490,8 +490,8 @@ LABEL_53:
 
   else
   {
-    v28 = [(LPImageView *)self _filter];
-    if (v28 == 13)
+    _filter = [(LPImageView *)self _filter];
+    if (_filter == 13)
     {
 LABEL_6:
       [(UIImageView *)self->_imageView frame];
@@ -511,7 +511,7 @@ LABEL_6:
   }
 
   v34 = 0.0;
-  if ((v28 & 0xFFFFFFFFFFFFFFFDLL) == 0xC)
+  if ((_filter & 0xFFFFFFFFFFFFFFFDLL) == 0xC)
   {
     [(LPImageView *)self _effectiveCornerRadius];
     v33 = v41;
@@ -527,8 +527,8 @@ LABEL_6:
 LABEL_11:
   if (self->_platterReason)
   {
-    v42 = [(LPImageViewStyle *)self->_style iconPlatterCornerRadius];
-    [v42 value];
+    iconPlatterCornerRadius = [(LPImageViewStyle *)self->_style iconPlatterCornerRadius];
+    [iconPlatterCornerRadius value];
     v44 = v43;
 
     v34 = v33;
@@ -575,29 +575,29 @@ LABEL_11:
 
 - (void)updateShadowPath
 {
-  v3 = [(LPImageViewStyle *)self->_style shadow];
+  shadow = [(LPImageViewStyle *)self->_style shadow];
 
-  if (!v3)
+  if (!shadow)
   {
     return;
   }
 
-  v4 = [(LPImageView *)self _filter];
-  v5 = v4;
-  if (v4 <= 8 && ((1 << v4) & 0x1A0) != 0 || (-[LPImage properties](self->_image, "properties"), v48 = objc_claimAutoreleasedReturnValue(), v8 = [v48 type], v48, v8 == 5) || !-[LPImageView shouldApplyBackground](self, "shouldApplyBackground") && -[LPImage _hasTransparency](self->_image, "_hasTransparency"))
+  _filter = [(LPImageView *)self _filter];
+  v5 = _filter;
+  if (_filter <= 8 && ((1 << _filter) & 0x1A0) != 0 || (-[LPImage properties](self->_image, "properties"), v48 = objc_claimAutoreleasedReturnValue(), v8 = [v48 type], v48, v8 == 5) || !-[LPImageView shouldApplyBackground](self, "shouldApplyBackground") && -[LPImage _hasTransparency](self->_image, "_hasTransparency"))
   {
-    v46 = [(LPImageView *)self layer];
-    [v46 setShadowPath:0];
+    layer = [(LPImageView *)self layer];
+    [layer setShadowPath:0];
 
     if (!+[LPSettings showDebugIndicators])
     {
       return;
     }
 
-    v47 = [MEMORY[0x1E69DC888] redColor];
-    v6 = [v47 CGColor];
-    v7 = [(LPImageView *)self layer];
-    [v7 setShadowColor:v6];
+    redColor = [MEMORY[0x1E69DC888] redColor];
+    cGColor = [redColor CGColor];
+    layer2 = [(LPImageView *)self layer];
+    [layer2 setShadowColor:cGColor];
     goto LABEL_6;
   }
 
@@ -627,14 +627,14 @@ LABEL_11:
     v52.size.height = v16;
     v21 = CGPathCreateWithRoundedRect(v52, v18, v20, 0);
     v22 = CFAutorelease(v21);
-    v49 = [(LPImageView *)self layer];
-    [v49 setShadowPath:v22];
+    layer3 = [(LPImageView *)self layer];
+    [layer3 setShadowPath:v22];
   }
 
   else if (v5 == 15)
   {
-    v50 = [(LPImage *)self->_image platformImage];
-    [v50 size];
+    platformImage = [(LPImage *)self->_image platformImage];
+    [platformImage size];
     v27 = v26;
     v29 = v28;
     [(LPImageView *)self bounds];
@@ -656,8 +656,8 @@ LABEL_11:
     v53.size.height = v35;
     v44 = CGPathCreateWithRoundedRect(v53, v41, v43, 0);
     v45 = CFAutorelease(v44);
-    v49 = [(LPImageView *)self layer];
-    [v49 setShadowPath:v45];
+    layer3 = [(LPImageView *)self layer];
+    [layer3 setShadowPath:v45];
   }
 
   else
@@ -673,69 +673,69 @@ LABEL_11:
     }
 
     v25 = CFAutorelease(v24);
-    v49 = [(LPImageView *)self layer];
-    [v49 setShadowPath:v25];
+    layer3 = [(LPImageView *)self layer];
+    [layer3 setShadowPath:v25];
   }
 
   if (+[LPSettings showDebugIndicators])
   {
-    v47 = [MEMORY[0x1E69DC888] greenColor];
-    v23 = [v47 CGColor];
-    v7 = [(LPImageView *)self layer];
-    [v7 setShadowColor:v23];
+    redColor = [MEMORY[0x1E69DC888] greenColor];
+    cGColor2 = [redColor CGColor];
+    layer2 = [(LPImageView *)self layer];
+    [layer2 setShadowColor:cGColor2];
 LABEL_6:
   }
 }
 
 - (void)updateBorder
 {
-  v3 = [(LPImageViewStyle *)self->_style borderWidth];
+  borderWidth = [(LPImageViewStyle *)self->_style borderWidth];
 
-  if (v3)
+  if (borderWidth)
   {
-    v4 = [(LPImageView *)self _filter];
-    if (v4 <= 8 && ((1 << v4) & 0x1A0) != 0 || (-[LPImage properties](self->_image, "properties"), v17 = objc_claimAutoreleasedReturnValue(), v5 = [v17 type], v17, v5 == 5) || !-[LPImageView shouldApplyBackground](self, "shouldApplyBackground") && -[LPImage _hasTransparency](self->_image, "_hasTransparency"))
+    _filter = [(LPImageView *)self _filter];
+    if (_filter <= 8 && ((1 << _filter) & 0x1A0) != 0 || (-[LPImage properties](self->_image, "properties"), v17 = objc_claimAutoreleasedReturnValue(), v5 = [v17 type], v17, v5 == 5) || !-[LPImageView shouldApplyBackground](self, "shouldApplyBackground") && -[LPImage _hasTransparency](self->_image, "_hasTransparency"))
     {
-      v13 = [(UIImageView *)self->_imageView layer];
-      [v13 setBorderWidth:0.0];
+      layer = [(UIImageView *)self->_imageView layer];
+      [layer setBorderWidth:0.0];
 
-      v14 = [(UIImageView *)self->_imageView layer];
-      [v14 setBorderColor:0];
+      layer2 = [(UIImageView *)self->_imageView layer];
+      [layer2 setBorderColor:0];
 
-      v15 = [(LPImageView *)self layer];
-      [v15 setBorderWidth:0.0];
+      layer3 = [(LPImageView *)self layer];
+      [layer3 setBorderWidth:0.0];
 
-      v16 = [(LPImageView *)self layer];
-      [v16 setBorderColor:0];
+      layer4 = [(LPImageView *)self layer];
+      [layer4 setBorderColor:0];
     }
 
     else
     {
-      v6 = [(LPImageView *)self shouldApplyBackground];
-      v18 = [(LPImageViewStyle *)self->_style borderWidth];
-      [v18 value];
+      shouldApplyBackground = [(LPImageView *)self shouldApplyBackground];
+      borderWidth2 = [(LPImageViewStyle *)self->_style borderWidth];
+      [borderWidth2 value];
       v8 = v7;
-      if (v6)
+      if (shouldApplyBackground)
       {
-        v9 = [(LPImageView *)self layer];
-        [v9 setBorderWidth:v8];
+        layer5 = [(LPImageView *)self layer];
+        [layer5 setBorderWidth:v8];
 
-        v16 = [(LPImageViewStyle *)self->_style borderColor];
-        v10 = [v16 CGColor];
+        layer4 = [(LPImageViewStyle *)self->_style borderColor];
+        cGColor = [layer4 CGColor];
         [(LPImageView *)self layer];
       }
 
       else
       {
-        v12 = [(UIImageView *)self->_imageView layer];
-        [v12 setBorderWidth:v8];
+        layer6 = [(UIImageView *)self->_imageView layer];
+        [layer6 setBorderWidth:v8];
 
-        v16 = [(LPImageViewStyle *)self->_style borderColor];
-        v10 = [v16 CGColor];
+        layer4 = [(LPImageViewStyle *)self->_style borderColor];
+        cGColor = [layer4 CGColor];
         [(UIImageView *)self->_imageView layer];
       }
       v11 = ;
-      [v11 setBorderColor:v10];
+      [v11 setBorderColor:cGColor];
     }
   }
 }
@@ -748,21 +748,21 @@ LABEL_6:
   v6 = v5;
   v8 = v7;
   v46 = v9;
-  v10 = [(LPImageViewStyle *)self->_style padding];
-  [v10 asInsetsForLTR:{-[UIImageView _lp_isLTR](self->_imageView, "_lp_isLTR")}];
+  padding = [(LPImageViewStyle *)self->_style padding];
+  [padding asInsetsForLTR:{-[UIImageView _lp_isLTR](self->_imageView, "_lp_isLTR")}];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
-  v19 = [(LPImage *)self->_image platformImage];
-  v20 = [v19 _lp_isSymbolImage];
+  platformImage = [(LPImage *)self->_image platformImage];
+  _lp_isSymbolImage = [platformImage _lp_isSymbolImage];
   v21 = v4 + v14;
   v22 = v6 + v12;
   v23 = v14 + v18;
   v24 = v12 + v16;
 
-  if (v20)
+  if (_lp_isSymbolImage)
   {
     [(UIImageView *)self->_imageView alignmentRectInsets];
     v21 = v21 + v26 - v25;
@@ -810,8 +810,8 @@ LABEL_6:
 
   else
   {
-    v35 = [(LPImageViewStyle *)self->_style backgroundInset];
-    [v35 value];
+    backgroundInset = [(LPImageViewStyle *)self->_style backgroundInset];
+    [backgroundInset value];
     v37 = v36;
 
     [(LPImageView *)self bounds];
@@ -879,8 +879,8 @@ double __34__LPImageView_layoutComponentView__block_invoke(uint64_t a1)
     return 0;
   }
 
-  v5 = [(LPComponentView *)self host];
-  v3 = [v5 usesBackgroundForSymbolImagesForComponentView:self];
+  host = [(LPComponentView *)self host];
+  v3 = [host usesBackgroundForSymbolImagesForComponentView:self];
 
   return v3;
 }
@@ -895,8 +895,8 @@ double __34__LPImageView_layoutComponentView__block_invoke(uint64_t a1)
     self->_overlayView = v3;
 
     [(UIImageView *)self->_imageView addSubview:self->_overlayView];
-    v5 = [(LPImageView *)self _filter];
-    if (v5 <= 0xE && ((1 << v5) & 0x5008) != 0)
+    _filter = [(LPImageView *)self _filter];
+    if (_filter <= 0xE && ((1 << _filter) & 0x5008) != 0)
     {
       [(LPImageView *)self _effectiveCornerRadius];
 
@@ -905,32 +905,32 @@ double __34__LPImageView_layoutComponentView__block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)scalingModeForSize:(CGSize)a3
+- (int64_t)scalingModeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(LPImageViewStyle *)self->_style scalingMode];
+  height = size.height;
+  width = size.width;
+  scalingMode = [(LPImageViewStyle *)self->_style scalingMode];
   if ([(LPImagePresentationProperties *)self->_properties scalingMode])
   {
-    v6 = [(LPImagePresentationProperties *)self->_properties scalingMode];
+    scalingMode = [(LPImagePresentationProperties *)self->_properties scalingMode];
   }
 
-  v7 = [(LPImage *)self->_image properties];
-  v8 = [v7 type];
+  properties = [(LPImage *)self->_image properties];
+  type = [properties type];
 
-  if ((v8 - 1) < 7)
+  if ((type - 1) < 7)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = v6;
+    v9 = scalingMode;
   }
 
-  v10 = [(LPImageViewStyle *)self->_style minimumSize];
+  minimumSize = [(LPImageViewStyle *)self->_style minimumSize];
 
-  if (v10)
+  if (minimumSize)
   {
     v11 = v9 == 1;
   }
@@ -942,8 +942,8 @@ double __34__LPImageView_layoutComponentView__block_invoke(uint64_t a1)
 
   if (v11)
   {
-    v21 = [(LPImageViewStyle *)self->_style padding];
-    [v21 asInsetsForLTR:{-[UIView _lp_isLTR](self, "_lp_isLTR")}];
+    padding = [(LPImageViewStyle *)self->_style padding];
+    [padding asInsetsForLTR:{-[UIView _lp_isLTR](self, "_lp_isLTR")}];
     v23 = v22;
     v25 = v24;
     v27 = v26;
@@ -952,18 +952,18 @@ double __34__LPImageView_layoutComponentView__block_invoke(uint64_t a1)
     [(LPImageView *)self imageSizeThatFits:width - (v25 + v29), height - (v23 + v27)];
     v31 = v30;
     v33 = v32;
-    v34 = [(LPImageViewStyle *)self->_style minimumSize];
-    v35 = [v34 width];
-    [v35 value];
+    minimumSize2 = [(LPImageViewStyle *)self->_style minimumSize];
+    width = [minimumSize2 width];
+    [width value];
     if (ceil(v31) < v36)
     {
     }
 
     else
     {
-      v37 = [(LPImageViewStyle *)self->_style minimumSize];
-      v38 = [v37 height];
-      [v38 value];
+      minimumSize3 = [(LPImageViewStyle *)self->_style minimumSize];
+      height = [minimumSize3 height];
+      [height value];
       v40 = v39;
 
       if (ceil(v33) >= v40)
@@ -977,8 +977,8 @@ double __34__LPImageView_layoutComponentView__block_invoke(uint64_t a1)
 
   if (v9 == 3)
   {
-    v12 = [(LPImage *)self->_filteredImage platformImage];
-    [v12 size];
+    platformImage = [(LPImage *)self->_filteredImage platformImage];
+    [platformImage size];
     v14 = v13;
     [(UIImageView *)self->_imageView frame];
     if (v14 > v15)
@@ -987,8 +987,8 @@ double __34__LPImageView_layoutComponentView__block_invoke(uint64_t a1)
 
     else
     {
-      v16 = [(LPImage *)self->_filteredImage platformImage];
-      [v16 size];
+      platformImage2 = [(LPImage *)self->_filteredImage platformImage];
+      [platformImage2 size];
       v18 = v17;
       [(UIImageView *)self->_imageView frame];
       v20 = v19;
@@ -1005,20 +1005,20 @@ double __34__LPImageView_layoutComponentView__block_invoke(uint64_t a1)
   return v9;
 }
 
-- (CGSize)imageSizeThatFits:(CGSize)a3
+- (CGSize)imageSizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(LPImageViewStyle *)self->_style fixedSize];
-  if (v6)
+  height = fits.height;
+  width = fits.width;
+  fixedSize = [(LPImageViewStyle *)self->_style fixedSize];
+  if (fixedSize)
   {
-    v7 = v6;
+    v7 = fixedSize;
     if ([(LPImageViewStyle *)self->_style filter]== 3 || [(LPImageViewStyle *)self->_style filter]== 12 || [(LPImageViewStyle *)self->_style requireFixedSize])
     {
 
 LABEL_6:
-      v8 = [(LPImageViewStyle *)self->_style fixedSize];
-      [v8 asSize];
+      fixedSize2 = [(LPImageViewStyle *)self->_style fixedSize];
+      [fixedSize2 asSize];
       sizeFittingInsideSizeMaintainingAspectRatio(v9, v10, width, height);
       v12 = v11;
       v14 = v13;
@@ -1028,22 +1028,22 @@ LABEL_6:
       goto LABEL_16;
     }
 
-    v17 = [(LPImagePresentationProperties *)self->_properties requireFixedSize];
+    requireFixedSize = [(LPImagePresentationProperties *)self->_properties requireFixedSize];
 
-    if (v17)
+    if (requireFixedSize)
     {
       goto LABEL_6;
     }
   }
 
-  v18 = [(LPImage *)self->_image platformImage];
-  [v18 size];
+  platformImage = [(LPImage *)self->_image platformImage];
+  [platformImage size];
   v20 = v19;
   v22 = v21;
 
-  v23 = [(LPImage *)self->_image _isFallbackIcon];
+  _isFallbackIcon = [(LPImage *)self->_image _isFallbackIcon];
   v24 = fmax(v20, v22);
-  if (v23)
+  if (_isFallbackIcon)
   {
     v25 = v24;
   }
@@ -1053,7 +1053,7 @@ LABEL_6:
     v25 = v20;
   }
 
-  if (!v23)
+  if (!_isFallbackIcon)
   {
     v24 = v22;
   }
@@ -1065,12 +1065,12 @@ LABEL_16:
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(LPImageViewStyle *)self->_style padding];
-  [v6 asInsetsForLTR:{-[UIView _lp_isLTR](self, "_lp_isLTR")}];
+  height = fits.height;
+  width = fits.width;
+  padding = [(LPImageViewStyle *)self->_style padding];
+  [padding asInsetsForLTR:{-[UIView _lp_isLTR](self, "_lp_isLTR")}];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -1079,43 +1079,43 @@ LABEL_16:
   [(LPImageView *)self imageSizeThatFits:width - (v10 + v14), height - (v8 + v12)];
   v16 = ceil(v15);
   v18 = ceil(v17);
-  v19 = [(LPImageViewStyle *)self->_style minimumSize];
-  if (v19)
+  minimumSize = [(LPImageViewStyle *)self->_style minimumSize];
+  if (minimumSize)
   {
-    v20 = v19;
-    v21 = [(LPImageViewStyle *)self->_style requireFixedSize];
+    v20 = minimumSize;
+    requireFixedSize = [(LPImageViewStyle *)self->_style requireFixedSize];
 
-    if (!v21)
+    if (!requireFixedSize)
     {
-      v22 = [(LPImageViewStyle *)self->_style minimumSize];
-      v23 = [v22 width];
-      [v23 value];
+      minimumSize2 = [(LPImageViewStyle *)self->_style minimumSize];
+      width = [minimumSize2 width];
+      [width value];
       v25 = v24;
 
-      v26 = [(LPImageViewStyle *)self->_style minimumSize];
-      v27 = [v26 height];
-      [v27 value];
+      minimumSize3 = [(LPImageViewStyle *)self->_style minimumSize];
+      height = [minimumSize3 height];
+      [height value];
       v16 = fmax(v16, v25);
       v18 = fmax(v18, v28);
     }
   }
 
-  v29 = [(LPImageViewStyle *)self->_style maximumSize];
-  if (v29)
+  maximumSize = [(LPImageViewStyle *)self->_style maximumSize];
+  if (maximumSize)
   {
-    v30 = v29;
-    v31 = [(LPImageViewStyle *)self->_style requireFixedSize];
+    v30 = maximumSize;
+    requireFixedSize2 = [(LPImageViewStyle *)self->_style requireFixedSize];
 
-    if (!v31)
+    if (!requireFixedSize2)
     {
-      v32 = [(LPImageViewStyle *)self->_style maximumSize];
-      v33 = [v32 width];
-      [v33 value];
+      maximumSize2 = [(LPImageViewStyle *)self->_style maximumSize];
+      width2 = [maximumSize2 width];
+      [width2 value];
       v35 = v34;
 
-      v36 = [(LPImageViewStyle *)self->_style maximumSize];
-      v37 = [v36 height];
-      [v37 value];
+      maximumSize3 = [(LPImageViewStyle *)self->_style maximumSize];
+      height2 = [maximumSize3 height];
+      [height2 value];
       v16 = fmin(v16, v35);
       v18 = fmin(v18, v38);
     }
@@ -1128,13 +1128,13 @@ LABEL_16:
   return result;
 }
 
-- (id)_createOverlayViewWithOpacity:(double)a3
+- (id)_createOverlayViewWithOpacity:(double)opacity
 {
-  v5 = [(LPComponentView *)self host];
-  v6 = [v5 appearanceForComponentView:self];
+  host = [(LPComponentView *)self host];
+  v6 = [host appearanceForComponentView:self];
 
-  v7 = [v6 _lp_prefersDarkInterface];
-  v8 = [MEMORY[0x1E69DC888] colorWithWhite:v7 alpha:a3];
+  _lp_prefersDarkInterface = [v6 _lp_prefersDarkInterface];
+  v8 = [MEMORY[0x1E69DC888] colorWithWhite:_lp_prefersDarkInterface alpha:opacity];
   v9 = objc_alloc_init(MEMORY[0x1E69DD250]);
   [v9 _lp_setBackgroundColor:v8];
   [v9 _lp_disableAutomaticVibrancy];
@@ -1156,35 +1156,35 @@ LABEL_16:
 
 - (double)_effectiveCornerRadius
 {
-  v3 = [(LPImageViewStyle *)self->_style cornerRadius];
-  [v3 value];
+  cornerRadius = [(LPImageViewStyle *)self->_style cornerRadius];
+  [cornerRadius value];
   v5 = v4;
-  v6 = [(LPComponentView *)self host];
-  [v6 minimumCornerRadiusForComponentView:self];
+  host = [(LPComponentView *)self host];
+  [host minimumCornerRadiusForComponentView:self];
   v8 = fmax(v5, v7);
 
   return v8;
 }
 
-- (id)_createImageViewWithImage:(id)a3
+- (id)_createImageViewWithImage:(id)image
 {
-  v5 = a3;
-  v6 = [v5 _darkInterfaceAlternativeImage];
-  if (v6)
+  imageCopy = image;
+  _darkInterfaceAlternativeImage = [imageCopy _darkInterfaceAlternativeImage];
+  if (_darkInterfaceAlternativeImage)
   {
-    v3 = [(LPImageView *)self traitCollection];
-    if ([v3 userInterfaceStyle] == 2)
+    traitCollection = [(LPImageView *)self traitCollection];
+    if ([traitCollection userInterfaceStyle] == 2)
     {
-      v7 = [v5 _darkInterfaceAlternativeImage];
-      v8 = [v7 platformImage];
+      _darkInterfaceAlternativeImage2 = [imageCopy _darkInterfaceAlternativeImage];
+      platformImage = [_darkInterfaceAlternativeImage2 platformImage];
 
 LABEL_5:
       goto LABEL_6;
     }
   }
 
-  v8 = [v5 platformImage];
-  if (v6)
+  platformImage = [imageCopy platformImage];
+  if (_darkInterfaceAlternativeImage)
   {
     goto LABEL_5;
   }
@@ -1192,13 +1192,13 @@ LABEL_5:
 LABEL_6:
 
   v9 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
-  [v8 _lp_pixelSize];
+  [platformImage _lp_pixelSize];
   v11 = v10;
   v13 = v12;
-  if (([v8 isSymbolImage] & 1) == 0 && !sizeFitsWithinSize(v11, v13, 1024.0, 1024.0))
+  if (([platformImage isSymbolImage] & 1) == 0 && !sizeFitsWithinSize(v11, v13, 1024.0, 1024.0))
   {
-    v14 = [(LPComponentView *)self host];
-    v15 = [v14 allowsAsynchronousImageDecodingForComponentView:self];
+    host = [(LPComponentView *)self host];
+    v15 = [host allowsAsynchronousImageDecodingForComponentView:self];
 
     if (v15)
     {
@@ -1213,83 +1213,83 @@ LABEL_6:
       v45[3] = &unk_1E7A36B38;
       v45[4] = self;
       objc_copyWeak(&v46, &location);
-      [v8 prepareThumbnailOfSize:v45 completionHandler:{v17, v19}];
+      [platformImage prepareThumbnailOfSize:v45 completionHandler:{v17, v19}];
 
       objc_destroyWeak(&v46);
       objc_destroyWeak(&location);
-      v8 = 0;
+      platformImage = 0;
     }
   }
 
-  [v9 setImage:v8];
+  [v9 setImage:platformImage];
   [v9 setUserInteractionEnabled:1];
-  v20 = [v5 properties];
-  v21 = [v20 accessibilityText];
-  [v9 setAccessibilityLabel:v21];
+  properties = [imageCopy properties];
+  accessibilityText = [properties accessibilityText];
+  [v9 setAccessibilityLabel:accessibilityText];
 
-  v22 = [(LPImageViewStyle *)self->_style fixedFallbackImageFont];
+  fixedFallbackImageFont = [(LPImageViewStyle *)self->_style fixedFallbackImageFont];
 
-  if (v22)
+  if (fixedFallbackImageFont)
   {
     v23 = MEMORY[0x1E69DCAD8];
-    v24 = [(LPImageViewStyle *)self->_style fixedFallbackImageFont];
-    v25 = [v23 configurationWithFont:v24];
+    fixedFallbackImageFont2 = [(LPImageViewStyle *)self->_style fixedFallbackImageFont];
+    v25 = [v23 configurationWithFont:fixedFallbackImageFont2];
     v26 = MEMORY[0x1E69DCAD8];
-    v27 = [(LPImageViewStyle *)self->_style fixedFallbackImageScale];
-    v28 = [v26 configurationWithScale:{objc_msgSend(v27, "integerValue")}];
+    fixedFallbackImageScale = [(LPImageViewStyle *)self->_style fixedFallbackImageScale];
+    v28 = [v26 configurationWithScale:{objc_msgSend(fixedFallbackImageScale, "integerValue")}];
     v29 = [v25 configurationByApplyingConfiguration:v28];
     [v9 setPreferredSymbolConfiguration:v29];
 
     goto LABEL_20;
   }
 
-  v30 = [(LPImageViewStyle *)self->_style fixedFallbackImageSize];
-  if (v30 || ([(LPImageViewStyle *)self->_style fixedFallbackImageWeight], (v30 = objc_claimAutoreleasedReturnValue()) != 0))
+  fixedFallbackImageSize = [(LPImageViewStyle *)self->_style fixedFallbackImageSize];
+  if (fixedFallbackImageSize || ([(LPImageViewStyle *)self->_style fixedFallbackImageWeight], (fixedFallbackImageSize = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v44 = [(LPImageViewStyle *)self->_style fixedFallbackImageFontTextStyle];
+    fixedFallbackImageFontTextStyle = [(LPImageViewStyle *)self->_style fixedFallbackImageFontTextStyle];
 
-    if (!v44)
+    if (!fixedFallbackImageFontTextStyle)
     {
-      v24 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:3];
-      [v9 setPreferredSymbolConfiguration:v24];
+      fixedFallbackImageFont2 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDCF8] scale:3];
+      [v9 setPreferredSymbolConfiguration:fixedFallbackImageFont2];
       goto LABEL_20;
     }
   }
 
   v31 = MEMORY[0x1E69DCAD8];
-  v32 = [(LPImageViewStyle *)self->_style fixedFallbackImageSize];
-  [v32 value];
-  v24 = [v31 configurationWithPointSize:?];
+  fixedFallbackImageSize2 = [(LPImageViewStyle *)self->_style fixedFallbackImageSize];
+  [fixedFallbackImageSize2 value];
+  fixedFallbackImageFont2 = [v31 configurationWithPointSize:?];
 
-  v33 = [(LPImageViewStyle *)self->_style fixedFallbackImageWeight];
+  fixedFallbackImageWeight = [(LPImageViewStyle *)self->_style fixedFallbackImageWeight];
 
-  if (v33)
+  if (fixedFallbackImageWeight)
   {
     v34 = MEMORY[0x1E69DCAD8];
-    v35 = [(LPImageViewStyle *)self->_style fixedFallbackImageWeight];
-    v36 = [v34 configurationWithWeight:{objc_msgSend(v35, "integerValue")}];
-    v37 = [v24 configurationByApplyingConfiguration:v36];
+    fixedFallbackImageWeight2 = [(LPImageViewStyle *)self->_style fixedFallbackImageWeight];
+    v36 = [v34 configurationWithWeight:{objc_msgSend(fixedFallbackImageWeight2, "integerValue")}];
+    v37 = [fixedFallbackImageFont2 configurationByApplyingConfiguration:v36];
 
-    v24 = v37;
+    fixedFallbackImageFont2 = v37;
   }
 
-  v38 = [(LPImageViewStyle *)self->_style fixedFallbackImageFontTextStyle];
+  fixedFallbackImageFontTextStyle2 = [(LPImageViewStyle *)self->_style fixedFallbackImageFontTextStyle];
 
-  if (v38)
+  if (fixedFallbackImageFontTextStyle2)
   {
     v39 = MEMORY[0x1E69DCAD8];
-    v40 = [(LPImageViewStyle *)self->_style fixedFallbackImageFontTextStyle];
-    v41 = [v39 configurationWithTextStyle:v40];
-    v42 = [v24 configurationByApplyingConfiguration:v41];
+    fixedFallbackImageFontTextStyle3 = [(LPImageViewStyle *)self->_style fixedFallbackImageFontTextStyle];
+    v41 = [v39 configurationWithTextStyle:fixedFallbackImageFontTextStyle3];
+    v42 = [fixedFallbackImageFont2 configurationByApplyingConfiguration:v41];
 
-    v24 = v42;
+    fixedFallbackImageFont2 = v42;
   }
 
-  [v9 setPreferredSymbolConfiguration:v24];
+  [v9 setPreferredSymbolConfiguration:fixedFallbackImageFont2];
 LABEL_20:
 
   return v9;
@@ -1326,9 +1326,9 @@ void __41__LPImageView__createImageViewWithImage___block_invoke_2(uint64_t a1)
   }
 }
 
-- (void)_setImageViewScalingMode:(int64_t)a3
+- (void)_setImageViewScalingMode:(int64_t)mode
 {
-  if (a3 == 1)
+  if (mode == 1)
   {
     p_imageView = &self->_imageView;
     v6 = 1;
@@ -1341,16 +1341,16 @@ void __41__LPImageView__createImageViewWithImage___block_invoke_2(uint64_t a1)
 
   else
   {
-    if (a3 == 3)
+    if (mode == 3)
     {
       p_imageView = &self->_imageView;
       imageView = self->_imageView;
-      a3 = 4;
+      mode = 4;
     }
 
     else
     {
-      if (a3 != 2)
+      if (mode != 2)
       {
         return;
       }
@@ -1359,7 +1359,7 @@ void __41__LPImageView__createImageViewWithImage___block_invoke_2(uint64_t a1)
       imageView = self->_imageView;
     }
 
-    [(UIImageView *)imageView setContentMode:a3];
+    [(UIImageView *)imageView setContentMode:mode];
     v6 = 1;
   }
 

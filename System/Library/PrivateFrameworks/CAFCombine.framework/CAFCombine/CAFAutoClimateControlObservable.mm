@@ -1,19 +1,19 @@
 @interface CAFAutoClimateControlObservable
 - (NSString)description;
-- (void)autoClimateControlService:(id)a3 didUpdateIntensity:(unsigned __int8)a4;
-- (void)autoClimateControlService:(id)a3 didUpdateLevel:(unsigned __int8)a4;
-- (void)autoClimateControlService:(id)a3 didUpdateName:(id)a4;
-- (void)autoClimateControlService:(id)a3 didUpdateVehicleLayoutKey:(id)a4;
-- (void)serviceDidFinishGroupUpdate:(id)a3;
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5;
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4;
+- (void)autoClimateControlService:(id)service didUpdateIntensity:(unsigned __int8)intensity;
+- (void)autoClimateControlService:(id)service didUpdateLevel:(unsigned __int8)level;
+- (void)autoClimateControlService:(id)service didUpdateName:(id)name;
+- (void)autoClimateControlService:(id)service didUpdateVehicleLayoutKey:(id)key;
+- (void)serviceDidFinishGroupUpdate:(id)update;
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate;
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values;
 @end
 
 @implementation CAFAutoClimateControlObservable
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CAFAutoClimateControlObservable.description.getter();
   v5 = v4;
 
@@ -22,59 +22,59 @@
   return v6;
 }
 
-- (void)autoClimateControlService:(id)a3 didUpdateLevel:(unsigned __int8)a4
+- (void)autoClimateControlService:(id)service didUpdateLevel:(unsigned __int8)level
 {
-  v6 = a3;
-  v7 = self;
-  CAFAutoClimateControlObservable.autoClimateControlService(_:didUpdateLevel:)(v7, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFAutoClimateControlObservable.autoClimateControlService(_:didUpdateLevel:)(selfCopy, level);
 }
 
-- (void)autoClimateControlService:(id)a3 didUpdateIntensity:(unsigned __int8)a4
+- (void)autoClimateControlService:(id)service didUpdateIntensity:(unsigned __int8)intensity
 {
-  v6 = a3;
-  v7 = self;
-  CAFAutoClimateControlObservable.autoClimateControlService(_:didUpdateIntensity:)(v7, a4);
+  serviceCopy = service;
+  selfCopy = self;
+  CAFAutoClimateControlObservable.autoClimateControlService(_:didUpdateIntensity:)(selfCopy, intensity);
 }
 
-- (void)autoClimateControlService:(id)a3 didUpdateVehicleLayoutKey:(id)a4
+- (void)autoClimateControlService:(id)service didUpdateVehicleLayoutKey:(id)key
 {
-  if (a4)
+  if (key)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v6 = a3;
-  v7 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFAutoClimateControlObservable.autoClimateControlService(_:didUpdateVehicleLayoutKey:)();
 }
 
-- (void)autoClimateControlService:(id)a3 didUpdateName:(id)a4
+- (void)autoClimateControlService:(id)service didUpdateName:(id)name
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  v6 = a3;
-  v7 = self;
+  serviceCopy = service;
+  selfCopy = self;
   CAFAutoClimateControlObservable.autoClimateControlService(_:didUpdateName:)();
 }
 
-- (void)serviceDidUpdate:(id)a3 characteristic:(id)a4 fromGroupUpdate:(BOOL)a5
+- (void)serviceDidUpdate:(id)update characteristic:(id)characteristic fromGroupUpdate:(BOOL)groupUpdate
 {
-  v8 = a3;
-  v9 = a4;
-  v11 = self;
-  CAFAutoClimateControlObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(v11, v10, a5);
+  updateCopy = update;
+  characteristicCopy = characteristic;
+  selfCopy = self;
+  CAFAutoClimateControlObservable.serviceDidUpdate(_:characteristic:fromGroupUpdate:)(selfCopy, v10, groupUpdate);
 }
 
-- (void)serviceDidUpdate:(id)a3 receivedAllValues:(BOOL)a4
+- (void)serviceDidUpdate:(id)update receivedAllValues:(BOOL)values
 {
-  v6 = a3;
-  v7 = self;
-  CAFAutoClimateControlObservable.serviceDidUpdate(_:receivedAllValues:)(v7, a4);
+  updateCopy = update;
+  selfCopy = self;
+  CAFAutoClimateControlObservable.serviceDidUpdate(_:receivedAllValues:)(selfCopy, values);
 }
 
-- (void)serviceDidFinishGroupUpdate:(id)a3
+- (void)serviceDidFinishGroupUpdate:(id)update
 {
-  v4 = a3;
-  v5 = self;
+  updateCopy = update;
+  selfCopy = self;
   CAFAutoClimateControlObservable.serviceDidFinishGroupUpdate(_:)();
 }
 

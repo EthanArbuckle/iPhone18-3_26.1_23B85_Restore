@@ -1,15 +1,15 @@
 @interface WebScriptCallFrame
-- (id)_convertValueToObjcValue:(JSValue)a3;
-- (id)_initWithGlobalObject:(id)a3 functionName:(String)a4 exceptionValue:(JSValue)a5;
+- (id)_convertValueToObjcValue:(JSValue)value;
+- (id)_initWithGlobalObject:(id)object functionName:(String)name exceptionValue:(JSValue)value;
 - (id)exception;
 - (id)functionName;
 - (void)dealloc;
-- (void)setUserInfo:(id)a3;
+- (void)setUserInfo:(id)info;
 @end
 
 @implementation WebScriptCallFrame
 
-- (id)_initWithGlobalObject:(id)a3 functionName:(String)a4 exceptionValue:(JSValue)a5
+- (id)_initWithGlobalObject:(id)object functionName:(String)name exceptionValue:(JSValue)value
 {
   v15.receiver = self;
   v15.super_class = WebScriptCallFrame;
@@ -18,10 +18,10 @@
   {
     v9 = objc_alloc_init(WebScriptCallFramePrivate);
     v8->_private = v9;
-    v9->globalObject = a3;
+    v9->globalObject = object;
     v11 = v8->_private;
-    v12 = *a4.m_impl.m_ptr;
-    if (*a4.m_impl.m_ptr)
+    v12 = *name.m_impl.m_ptr;
+    if (*name.m_impl.m_ptr)
     {
       atomic_fetch_add_explicit(v12, 2u, memory_order_relaxed);
     }
@@ -33,42 +33,42 @@
       WTF::StringImpl::destroy(m_ptr, v10);
     }
 
-    v8->_private->exceptionValue = a5;
+    v8->_private->exceptionValue = value;
   }
 
   return v8;
 }
 
-- (id)_convertValueToObjcValue:(JSValue)a3
+- (id)_convertValueToObjcValue:(JSValue)value
 {
-  if (!a3.super.isa)
+  if (!value.super.isa)
   {
     return 0;
   }
 
   globalObject = self->_private->globalObject;
-  if ([(WebScriptObject *)globalObject _imp]== a3.super.isa)
+  if ([(WebScriptObject *)globalObject _imp]== value.super.isa)
   {
     return globalObject;
   }
 
-  v5 = [(WebScriptObject *)globalObject _originRootObject];
-  if (!v5)
+  _originRootObject = [(WebScriptObject *)globalObject _originRootObject];
+  if (!_originRootObject)
   {
     return 0;
   }
 
-  v6 = v5;
-  v7 = [(WebScriptObject *)globalObject _rootObject];
-  if (!v7)
+  v6 = _originRootObject;
+  _rootObject = [(WebScriptObject *)globalObject _rootObject];
+  if (!_rootObject)
   {
     return 0;
   }
 
-  v8 = v7;
+  v8 = _rootObject;
   v9 = MEMORY[0x1E69E21B8];
 
-  return [v9 _convertValueToObjcValue:a3.super.isa originRootObject:v6 rootObject:v8];
+  return [v9 _convertValueToObjcValue:value.super.isa originRootObject:v6 rootObject:v8];
 }
 
 - (void)dealloc
@@ -78,13 +78,13 @@
   [(WebScriptCallFrame *)&v3 dealloc];
 }
 
-- (void)setUserInfo:(id)a3
+- (void)setUserInfo:(id)info
 {
   userInfo = self->_userInfo;
-  if (userInfo != a3)
+  if (userInfo != info)
   {
 
-    self->_userInfo = a3;
+    self->_userInfo = info;
   }
 }
 

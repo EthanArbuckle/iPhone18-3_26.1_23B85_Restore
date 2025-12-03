@@ -1,59 +1,59 @@
 @interface ADCloudKitMultiUserSharedDataStore
 - (ADCloudKitMultiUserSharedDataStore)init;
-- (ADCloudKitMultiUserSharedDataStore)initWithInstanceContext:(id)a3;
+- (ADCloudKitMultiUserSharedDataStore)initWithInstanceContext:(id)context;
 - (BOOL)_cleanupCacheDirectory;
 - (BOOL)hasSetUpRecordZoneSubscription;
 - (CKServerChangeToken)serverChangeToken;
 - (id)_cacheDirectory;
-- (id)_constructRecord:(id)a3 fileArchives:(id)a4 assetManifest:(id)a5 filePath:(id)a6;
+- (id)_constructRecord:(id)record fileArchives:(id)archives assetManifest:(id)manifest filePath:(id)path;
 - (id)_createCacheDirectory;
-- (id)_extractRecord:(id)a3 atPath:(id)a4 fileManager:(id)a5;
-- (id)_homeMembershipsFromUnencryptedRecords:(id)a3;
-- (void)_logRelevantAnalyticsOnMultiUserVoiceProfileDownloadSuccessWithSharedUserID:(id)a3 isPrimary:(BOOL)a4 isNewUser:(BOOL)a5;
-- (void)_mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6;
-- (void)_synchronizeUsingActivity:(id)a3 sharedUserId:(id)a4 completion:(id)a5;
-- (void)_synchronizeVoiceIDWithActivity:(id)a3 sharedUserId:(id)a4 completion:(id)a5;
-- (void)_updateVoiceIDProfilesForSharedUser:(id)a3 iCloudAltDSID:(id)a4 records:(id)a5 isPrimary:(BOOL)a6 isNewUser:(BOOL)a7 completion:(id)a8;
-- (void)checkForATVRMVSettingUpdate:(id)a3;
+- (id)_extractRecord:(id)record atPath:(id)path fileManager:(id)manager;
+- (id)_homeMembershipsFromUnencryptedRecords:(id)records;
+- (void)_logRelevantAnalyticsOnMultiUserVoiceProfileDownloadSuccessWithSharedUserID:(id)d isPrimary:(BOOL)primary isNewUser:(BOOL)user;
+- (void)_mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion;
+- (void)_synchronizeUsingActivity:(id)activity sharedUserId:(id)id completion:(id)completion;
+- (void)_synchronizeVoiceIDWithActivity:(id)activity sharedUserId:(id)id completion:(id)completion;
+- (void)_updateVoiceIDProfilesForSharedUser:(id)user iCloudAltDSID:(id)d records:(id)records isPrimary:(BOOL)primary isNewUser:(BOOL)newUser completion:(id)completion;
+- (void)checkForATVRMVSettingUpdate:(id)update;
 - (void)cleanupCacheDirectory;
-- (void)deleteUserData:(id)a3;
-- (void)fetchDeviceTypesForAllLanguages:(id)a3;
-- (void)fetchDeviceTypesForLanguage:(id)a3 completion:(id)a4;
-- (void)mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6;
-- (void)setHasSetUpRecordZoneSubscription:(BOOL)a3;
-- (void)setKeyValueRecordsAndVoiceProfile:(id)a3 records:(id)a4 completion:(id)a5;
-- (void)setServerChangeToken:(id)a3;
-- (void)synchronizeUsingActivity:(id)a3 completion:(id)a4;
-- (void)synchronizeUsingActivity:(id)a3 sharedUserId:(id)a4 completion:(id)a5;
+- (void)deleteUserData:(id)data;
+- (void)fetchDeviceTypesForAllLanguages:(id)languages;
+- (void)fetchDeviceTypesForLanguage:(id)language completion:(id)completion;
+- (void)mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion;
+- (void)setHasSetUpRecordZoneSubscription:(BOOL)subscription;
+- (void)setKeyValueRecordsAndVoiceProfile:(id)profile records:(id)records completion:(id)completion;
+- (void)setServerChangeToken:(id)token;
+- (void)synchronizeUsingActivity:(id)activity completion:(id)completion;
+- (void)synchronizeUsingActivity:(id)activity sharedUserId:(id)id completion:(id)completion;
 @end
 
 @implementation ADCloudKitMultiUserSharedDataStore
 
-- (void)setKeyValueRecordsAndVoiceProfile:(id)a3 records:(id)a4 completion:(id)a5
+- (void)setKeyValueRecordsAndVoiceProfile:(id)profile records:(id)records completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  profileCopy = profile;
+  recordsCopy = records;
+  completionCopy = completion;
   v10 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v159 = "[ADCloudKitMultiUserSharedDataStore setKeyValueRecordsAndVoiceProfile:records:completion:]";
     v160 = 2048;
-    v161 = [v7 count];
+    v161 = [profileCopy count];
     v162 = 2048;
-    v163 = [v8 count];
+    v163 = [recordsCopy count];
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%s Modified %zd Key Value Records, %zd Voice Records", buf, 0x20u);
   }
 
-  if (!+[AFFeatureFlags isLassoEnabled](AFFeatureFlags, "isLassoEnabled") || ![v7 count] || (-[ADCloudKitMultiUserSharedDataStore checkForATVRMVSettingUpdate:](self, "checkForATVRMVSettingUpdate:", v7), objc_msgSend(v8, "count")))
+  if (!+[AFFeatureFlags isLassoEnabled](AFFeatureFlags, "isLassoEnabled") || ![profileCopy count] || (-[ADCloudKitMultiUserSharedDataStore checkForATVRMVSettingUpdate:](self, "checkForATVRMVSettingUpdate:", profileCopy), objc_msgSend(recordsCopy, "count")))
   {
     v11 = +[ADHomeInfoManager sharedInfoManager];
     v12 = +[ADMultiUserService sharedService];
     v13 = v12;
     if (!v12)
     {
-      [(ADCloudKitMultiUserSharedDataStore *)self _updateVoiceIDProfilesForSharedUser:0 iCloudAltDSID:0 records:v8 isPrimary:1 isNewUser:0 completion:v9];
+      [(ADCloudKitMultiUserSharedDataStore *)self _updateVoiceIDProfilesForSharedUser:0 iCloudAltDSID:0 records:recordsCopy isPrimary:1 isNewUser:0 completion:completionCopy];
 LABEL_153:
 
       goto LABEL_154;
@@ -61,15 +61,15 @@ LABEL_153:
 
     v113 = v12;
     v119 = v11;
-    v122 = v8;
-    v123 = v9;
+    v122 = recordsCopy;
+    v123 = completionCopy;
     v14 = objc_alloc_init(NSMutableDictionary);
     v153 = 0u;
     v154 = 0u;
     v155 = 0u;
     v156 = 0u;
-    v105 = v7;
-    obj = v7;
+    v105 = profileCopy;
+    obj = profileCopy;
     v15 = [obj countByEnumeratingWithState:&v153 objects:v157 count:16];
     if (v15)
     {
@@ -85,15 +85,15 @@ LABEL_153:
           }
 
           v19 = *(*(&v153 + 1) + 8 * i);
-          v20 = [v19 recordID];
-          v21 = [v20 recordName];
+          recordID = [v19 recordID];
+          recordName = [recordID recordName];
 
           v22 = sub_100125E60(v19);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
             v23 = v22;
-            [v14 setObject:v23 forKey:v21];
+            [v14 setObject:v23 forKey:recordName];
             v24 = AFSiriLogContextDaemon;
             if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
@@ -102,7 +102,7 @@ LABEL_153:
               v160 = 2113;
               v161 = v23;
               v162 = 2113;
-              v163 = v21;
+              v163 = recordName;
               _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "%s Found value (%{private}@) for key (%{private}@)", buf, 0x20u);
             }
           }
@@ -111,7 +111,7 @@ LABEL_153:
           if (objc_opt_isKindOfClass())
           {
             v25 = v22;
-            [v14 setObject:v25 forKey:v21];
+            [v14 setObject:v25 forKey:recordName];
             v26 = AFSiriLogContextDaemon;
             if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
             {
@@ -120,7 +120,7 @@ LABEL_153:
               v160 = 2113;
               v161 = v25;
               v162 = 2113;
-              v163 = v21;
+              v163 = recordName;
               _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "%s Found value (%{private}@) for key (%{private}@)", buf, 0x20u);
             }
           }
@@ -129,7 +129,7 @@ LABEL_153:
           if (objc_opt_isKindOfClass())
           {
             v27 = v22;
-            [v14 setObject:v27 forKey:v21];
+            [v14 setObject:v27 forKey:recordName];
             v28 = AFSiriLogContextDaemon;
             if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
             {
@@ -138,7 +138,7 @@ LABEL_153:
               v160 = 2113;
               v161 = v27;
               v162 = 2113;
-              v163 = v21;
+              v163 = recordName;
               _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_INFO, "%s Found value (%{private}@) for key (%{private}@)", buf, 0x20u);
             }
           }
@@ -147,7 +147,7 @@ LABEL_153:
           if (objc_opt_isKindOfClass())
           {
             v29 = v22;
-            [v14 setObject:v29 forKey:v21];
+            [v14 setObject:v29 forKey:recordName];
             v30 = AFSiriLogContextDaemon;
             if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
             {
@@ -156,7 +156,7 @@ LABEL_153:
               v160 = 2113;
               v161 = v29;
               v162 = 2113;
-              v163 = v21;
+              v163 = recordName;
               _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_INFO, "%s Found value (%{private}@) for key (%{private}@)", buf, 0x20u);
             }
           }
@@ -165,7 +165,7 @@ LABEL_153:
           if (objc_opt_isKindOfClass())
           {
             v31 = v22;
-            [v14 setObject:v31 forKey:v21];
+            [v14 setObject:v31 forKey:recordName];
             v32 = AFSiriLogContextDaemon;
             if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
             {
@@ -174,7 +174,7 @@ LABEL_153:
               v160 = 2113;
               v161 = v31;
               v162 = 2113;
-              v163 = v21;
+              v163 = recordName;
               _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_INFO, "%s Found value (%{private}@) for key (%{private}@)", buf, 0x20u);
             }
           }
@@ -188,7 +188,7 @@ LABEL_153:
               *buf = 136315395;
               v159 = "[ADCloudKitMultiUserSharedDataStore setKeyValueRecordsAndVoiceProfile:records:completion:]";
               v160 = 2113;
-              v161 = v21;
+              v161 = recordName;
               _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_INFO, "%s Found null value for key (%{private}@)", buf, 0x16u);
             }
           }
@@ -207,7 +207,7 @@ LABEL_153:
     }
 
     v35 = [v14 objectForKey:@"meDeviceLoggingSharedUserID"];
-    v9 = v123;
+    completionCopy = v123;
     if (!v35)
     {
       v35 = [v14 objectForKey:@"backupLoggingSharedUserID"];
@@ -229,12 +229,12 @@ LABEL_153:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v39 = [v38 BOOLValue];
+      bOOLValue = [v38 BOOLValue];
     }
 
     else
     {
-      v39 = 0;
+      bOOLValue = 0;
     }
 
     v40 = [v128 objectForKey:@"meDeviceAssistantID"];
@@ -265,10 +265,10 @@ LABEL_153:
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "%s AssistantID of companion (%@) does not match assistantID (%@) from capabilities", buf, 0x20u);
       }
 
-      v39 = 0;
+      bOOLValue = 0;
     }
 
-    v101 = v39;
+    v101 = bOOLValue;
     v43 = [v14 objectForKey:@"meDeviceVoiceIDChangedToEnabledTimestamp"];
     v44 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
@@ -284,11 +284,11 @@ LABEL_153:
     if ([v43 count])
     {
       v45 = +[ADPreferences sharedPreferences];
-      v46 = [v45 multiUserSetupStartTimes];
+      multiUserSetupStartTimes = [v45 multiUserSetupStartTimes];
 
-      if (v46)
+      if (multiUserSetupStartTimes)
       {
-        v47 = [NSMutableDictionary dictionaryWithDictionary:v46];
+        v47 = [NSMutableDictionary dictionaryWithDictionary:multiUserSetupStartTimes];
       }
 
       else
@@ -344,20 +344,20 @@ LABEL_153:
     v104 = v37;
     if (objc_opt_isKindOfClass())
     {
-      v100 = [v54 BOOLValue];
+      bOOLValue2 = [v54 BOOLValue];
     }
 
     else
     {
-      v100 = 1;
+      bOOLValue2 = 1;
     }
 
-    v8 = v122;
+    recordsCopy = v122;
     v109 = [v14 objectForKey:@"siriLanguage"];
     v108 = [v14 objectForKey:@"companionName"];
     v107 = [(ADCloudKitMultiUserSharedDataStore *)self _homeMembershipsFromUnencryptedRecords:v14];
-    v55 = [v107 allKeys];
-    v120 = [NSSet setWithArray:v55];
+    allKeys = [v107 allKeys];
+    v120 = [NSSet setWithArray:allKeys];
 
     v56 = v14;
     if (!v56)
@@ -463,10 +463,10 @@ LABEL_153:
             goto LABEL_108;
           }
 
-          v96 = [v72 integerValue];
+          integerValue = [v72 integerValue];
           v77 = AFSiriLogContextDaemonAce;
           v79 = os_log_type_enabled(AFSiriLogContextDaemonAce, OS_LOG_TYPE_DEBUG);
-          if (v96 != -1)
+          if (integerValue != -1)
           {
             if (v79)
             {
@@ -502,7 +502,7 @@ LABEL_106:
 
         v74 = &__kCFBooleanFalse;
 LABEL_108:
-        [v57 setTwentyFourHourTimeDisplay:{v74, v96}];
+        [v57 setTwentyFourHourTimeDisplay:{v74, integerValue}];
 LABEL_109:
 
         goto LABEL_110;
@@ -533,8 +533,8 @@ LABEL_98:
 
 LABEL_110:
 
-    v8 = v122;
-    v9 = v123;
+    recordsCopy = v122;
+    completionCopy = v123;
     v11 = v119;
     v35 = v98;
     v34 = v99;
@@ -550,20 +550,20 @@ LABEL_111:
         _os_log_impl(&_mh_execute_header, v93, OS_LOG_TYPE_INFO, "%s ADHomeInfoManager is not ready", buf, 0xCu);
       }
 
-      v7 = v105;
-      if (v9)
+      profileCopy = v105;
+      if (completionCopy)
       {
-        (*(v9 + 2))(v9, 0);
+        (*(completionCopy + 2))(completionCopy, 0);
       }
 
       goto LABEL_152;
     }
 
     v80 = [(ADCloudKitMultiUserSharedDataStore *)self zone];
-    v81 = [v80 zoneID];
-    v82 = [v81 ownerName];
+    zoneID = [v80 zoneID];
+    ownerName = [zoneID ownerName];
 
-    if ([v82 isEqualToString:CKCurrentUserDefaultName])
+    if ([ownerName isEqualToString:CKCurrentUserDefaultName])
     {
       v83 = AFSiriLogContextDaemon;
       if (os_log_type_enabled(v83, OS_LOG_TYPE_INFO))
@@ -583,7 +583,7 @@ LABEL_111:
         v84 = @"backupMeCard";
       }
 
-      v85 = [v56 objectForKey:{v84, v96}];
+      v85 = [v56 objectForKey:{v84, integerValue}];
       v86 = v125;
       if (v85)
       {
@@ -598,7 +598,7 @@ LABEL_111:
         v88 = +[ADLocalMeCardStore sharedStore];
         [v88 storeMeCard:v85];
 
-        v8 = v122;
+        recordsCopy = v122;
       }
 
       if (v86)
@@ -614,12 +614,12 @@ LABEL_111:
         v90 = +[ADPreferences sharedPreferences];
         [v90 setSingleUserCompanionACEHost:v86];
 
-        v8 = v122;
+        recordsCopy = v122;
       }
     }
 
-    v7 = v105;
-    if (v120 && v34 && v35 || ![v8 count])
+    profileCopy = v105;
+    if (v120 && v34 && v35 || ![recordsCopy count])
     {
       if (!self->isATVOnly || v117 && v114)
       {
@@ -635,17 +635,17 @@ LABEL_111:
         v135 = v111;
         v136 = v125;
         v149 = v101;
-        v150 = v100;
+        v150 = bOOLValue2;
         v137 = v109;
         v138 = v108;
-        v139 = self;
+        selfCopy = self;
         v140 = v113;
         v141 = v35;
         v142 = v117;
-        v143 = v8;
-        v9 = v123;
+        v143 = recordsCopy;
+        completionCopy = v123;
         v148 = v123;
-        v144 = v82;
+        v144 = ownerName;
         v145 = v57;
         v146 = v112;
         v147 = v120;
@@ -660,7 +660,7 @@ LABEL_152:
       }
 
       v94 = AFSiriLogContextSession;
-      v9 = v123;
+      completionCopy = v123;
       v11 = v119;
       if (os_log_type_enabled(AFSiriLogContextSession, OS_LOG_TYPE_INFO))
       {
@@ -678,18 +678,18 @@ LABEL_152:
         goto LABEL_151;
       }
 
-      v92 = [AFError errorWithCode:1012];
-      (v123)[2](v123, v92);
+      currentOwnerSharedUserID = [AFError errorWithCode:1012];
+      (v123)[2](v123, currentOwnerSharedUserID);
     }
 
     else
     {
-      if (![v82 isEqualToString:CKCurrentUserDefaultName])
+      if (![ownerName isEqualToString:CKCurrentUserDefaultName])
       {
         v95 = +[ADPreferences sharedPreferences];
-        [v95 multiUserSharedDataServerChangeTokenForOwner:v82];
+        [v95 multiUserSharedDataServerChangeTokenForOwner:ownerName];
 
-        v9 = v123;
+        completionCopy = v123;
         v11 = v119;
         if (v123)
         {
@@ -700,12 +700,12 @@ LABEL_152:
       }
 
       v91 = +[ADMultiUserService sharedService];
-      v92 = [v91 currentOwnerSharedUserID];
+      currentOwnerSharedUserID = [v91 currentOwnerSharedUserID];
 
-      v9 = v123;
-      if (v92)
+      completionCopy = v123;
+      if (currentOwnerSharedUserID)
       {
-        [(ADCloudKitMultiUserSharedDataStore *)self _updateVoiceIDProfilesForSharedUser:v92 iCloudAltDSID:0 records:v8 isPrimary:1 isNewUser:0 completion:v123];
+        [(ADCloudKitMultiUserSharedDataStore *)self _updateVoiceIDProfilesForSharedUser:currentOwnerSharedUserID iCloudAltDSID:0 records:recordsCopy isPrimary:1 isNewUser:0 completion:v123];
         v11 = v119;
       }
 
@@ -722,17 +722,17 @@ LABEL_152:
     goto LABEL_151;
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_154:
 }
 
-- (void)checkForATVRMVSettingUpdate:(id)a3
+- (void)checkForATVRMVSettingUpdate:(id)update
 {
-  v3 = a3;
+  updateCopy = update;
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -742,8 +742,8 @@ LABEL_154:
   }
 
   v28 = +[ADHomeInfoManager sharedInfoManager];
-  v5 = [v28 getHomeUniqueIdentifiers];
-  v6 = [NSSet setWithArray:v5];
+  getHomeUniqueIdentifiers = [v28 getHomeUniqueIdentifiers];
+  v6 = [NSSet setWithArray:getHomeUniqueIdentifiers];
 
   v7 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -759,7 +759,7 @@ LABEL_154:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v3;
+  obj = updateCopy;
   v8 = [obj countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v8)
   {
@@ -777,9 +777,9 @@ LABEL_154:
         }
 
         v13 = *(*(&v32 + 1) + 8 * i);
-        v14 = [v13 recordID];
-        v15 = [v14 recordName];
-        v16 = [v15 uppercaseString];
+        recordID = [v13 recordID];
+        recordName = [recordID recordName];
+        uppercaseString = [recordName uppercaseString];
 
         v17 = AFSiriLogContextDaemon;
         if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
@@ -787,13 +787,13 @@ LABEL_154:
           *buf = 136315394;
           v38 = "[ADCloudKitMultiUserSharedDataStore checkForATVRMVSettingUpdate:]";
           v39 = 2112;
-          v40 = v16;
+          v40 = uppercaseString;
           _os_log_debug_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEBUG, "%s #multi-user-atv found key %@", buf, 0x16u);
         }
 
-        if ([v6 containsObject:v16])
+        if ([v6 containsObject:uppercaseString])
         {
-          v18 = v16;
+          v18 = uppercaseString;
           v19 = AFSiriLogContextDaemon;
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
           {
@@ -816,13 +816,13 @@ LABEL_154:
               if (v22)
               {
                 v23 = v22;
-                v24 = [v22 BOOLValue];
+                bOOLValue = [v22 BOOLValue];
                 v30[0] = _NSConcreteStackBlock;
                 v30[1] = 3221225472;
                 v30[2] = sub_10016D370;
                 v30[3] = &unk_10051C498;
                 v31 = v18;
-                [v28 updateCurrentUserRMVSettingForHome:v31 enabled:v24 completion:v30];
+                [v28 updateCurrentUserRMVSettingForHome:v31 enabled:bOOLValue completion:v30];
               }
             }
 
@@ -860,11 +860,11 @@ LABEL_154:
   }
 }
 
-- (id)_homeMembershipsFromUnencryptedRecords:(id)a3
+- (id)_homeMembershipsFromUnencryptedRecords:(id)records
 {
-  v3 = a3;
+  recordsCopy = records;
   v4 = +[NSMutableDictionary dictionary];
-  v5 = [v3 objectForKey:@"meDeviceHomeUserUUID"];
+  v5 = [recordsCopy objectForKey:@"meDeviceHomeUserUUID"];
   if ([v5 count])
   {
     v6 = AFSiriLogContextDaemon;
@@ -885,7 +885,7 @@ LABEL_154:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v7 = v3;
+  v7 = recordsCopy;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v40 count:16];
   if (v8)
   {
@@ -972,27 +972,27 @@ LABEL_154:
   return v4;
 }
 
-- (void)fetchDeviceTypesForAllLanguages:(id)a3
+- (void)fetchDeviceTypesForAllLanguages:(id)languages
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  languagesCopy = languages;
+  v5 = languagesCopy;
+  if (languagesCopy)
   {
     serialQueue = self->_serialQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_10016DA28;
     block[3] = &unk_10051CF58;
-    v8 = v4;
+    v8 = languagesCopy;
     dispatch_async(serialQueue, block);
   }
 }
 
-- (void)fetchDeviceTypesForLanguage:(id)a3 completion:(id)a4
+- (void)fetchDeviceTypesForLanguage:(id)language completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  languageCopy = language;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1000,7 +1000,7 @@ LABEL_154:
       *buf = 136315394;
       v14 = "[ADCloudKitMultiUserSharedDataStore fetchDeviceTypesForLanguage:completion:]";
       v15 = 2112;
-      v16 = v6;
+      v16 = languageCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%s requiredLanguage: %@", buf, 0x16u);
     }
 
@@ -1010,13 +1010,13 @@ LABEL_154:
     block[2] = sub_10016DC48;
     block[3] = &unk_10051E088;
     block[4] = self;
-    v12 = v7;
-    v11 = v6;
+    v12 = completionCopy;
+    v11 = languageCopy;
     dispatch_async(serialQueue, block);
   }
 }
 
-- (void)deleteUserData:(id)a3
+- (void)deleteUserData:(id)data
 {
   v4 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1043,13 +1043,13 @@ LABEL_154:
 - (id)_createCacheDirectory
 {
   dispatch_assert_queue_V2(self->_serialQueue);
-  v3 = [(ADCloudKitMultiUserSharedDataStore *)self _cacheDirectory];
+  _cacheDirectory = [(ADCloudKitMultiUserSharedDataStore *)self _cacheDirectory];
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 createDirectoryAtPath:v3 withIntermediateDirectories:1 attributes:0 error:0];
+  v5 = [v4 createDirectoryAtPath:_cacheDirectory withIntermediateDirectories:1 attributes:0 error:0];
 
   if (v5)
   {
-    v6 = v3;
+    v6 = _cacheDirectory;
   }
 
   else
@@ -1060,7 +1060,7 @@ LABEL_154:
       v9 = 136315394;
       v10 = "[ADCloudKitMultiUserSharedDataStore _createCacheDirectory]";
       v11 = 2112;
-      v12 = v3;
+      v12 = _cacheDirectory;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%s Error creating cache directory att %@", &v9, 0x16u);
     }
 
@@ -1074,11 +1074,11 @@ LABEL_154:
 {
   dispatch_assert_queue_V2(self->_serialQueue);
   v3 = +[NSFileManager defaultManager];
-  v4 = [(ADCloudKitMultiUserSharedDataStore *)self _cacheDirectory];
-  v5 = [(ADCloudKitMultiUserSharedDataStore *)self _cacheDirectory];
-  v6 = [v3 fileExistsAtPath:v5];
+  _cacheDirectory = [(ADCloudKitMultiUserSharedDataStore *)self _cacheDirectory];
+  _cacheDirectory2 = [(ADCloudKitMultiUserSharedDataStore *)self _cacheDirectory];
+  v6 = [v3 fileExistsAtPath:_cacheDirectory2];
 
-  if (v6 && ([v3 removeItemAtPath:v4 error:0] & 1) == 0)
+  if (v6 && ([v3 removeItemAtPath:_cacheDirectory error:0] & 1) == 0)
   {
     v8 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -1086,7 +1086,7 @@ LABEL_154:
       v10 = 136315394;
       v11 = "[ADCloudKitMultiUserSharedDataStore _cleanupCacheDirectory]";
       v12 = 2112;
-      v13 = v4;
+      v13 = _cacheDirectory;
       _os_log_error_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "%s Error deleting cache directory at %@", &v10, 0x16u);
     }
 
@@ -1104,22 +1104,22 @@ LABEL_154:
 - (id)_cacheDirectory
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
+  firstObject = [v2 firstObject];
 
-  v4 = [v3 stringByAppendingPathComponent:@"com.apple.assistantd/voiceid.cache"];
+  v4 = [firstObject stringByAppendingPathComponent:@"com.apple.assistantd/voiceid.cache"];
 
   return v4;
 }
 
-- (id)_extractRecord:(id)a3 atPath:(id)a4 fileManager:(id)a5
+- (id)_extractRecord:(id)record atPath:(id)path fileManager:(id)manager
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if ([v9 fileExistsAtPath:v8])
+  recordCopy = record;
+  pathCopy = path;
+  managerCopy = manager;
+  if ([managerCopy fileExistsAtPath:pathCopy])
   {
     v85 = 0;
-    v10 = [v9 removeItemAtPath:v8 error:&v85];
+    v10 = [managerCopy removeItemAtPath:pathCopy error:&v85];
     v11 = v85;
     v12 = v11;
     if ((v10 & 1) == 0)
@@ -1139,7 +1139,7 @@ LABEL_154:
   }
 
   v84 = 0;
-  v13 = [v9 createDirectoryAtPath:v8 withIntermediateDirectories:1 attributes:0 error:&v84];
+  v13 = [managerCopy createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v84];
   v14 = v84;
   if ((v13 & 1) == 0)
   {
@@ -1157,8 +1157,8 @@ LABEL_154:
     goto LABEL_30;
   }
 
-  v82 = v7;
-  v83 = v8;
+  v82 = recordCopy;
+  v83 = pathCopy;
   v15 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -1566,16 +1566,16 @@ LABEL_32:
   return v12;
 }
 
-- (id)_constructRecord:(id)a3 fileArchives:(id)a4 assetManifest:(id)a5 filePath:(id)a6
+- (id)_constructRecord:(id)record fileArchives:(id)archives assetManifest:(id)manifest filePath:(id)path
 {
-  v9 = a3;
-  v77 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [v9 version];
-  v13 = [v9 productCategory];
-  v70 = [v9 languageCode];
-  if (!v12 || !v13)
+  recordCopy = record;
+  archivesCopy = archives;
+  manifestCopy = manifest;
+  pathCopy = path;
+  version = [recordCopy version];
+  productCategory = [recordCopy productCategory];
+  languageCode = [recordCopy languageCode];
+  if (!version || !productCategory)
   {
     v43 = 4008;
 LABEL_34:
@@ -1583,7 +1583,7 @@ LABEL_34:
     goto LABEL_63;
   }
 
-  if (!v11)
+  if (!pathCopy)
   {
     v44 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
@@ -1598,10 +1598,10 @@ LABEL_34:
   }
 
   v75 = +[NSFileManager defaultManager];
-  if (([v75 fileExistsAtPath:v11] & 1) == 0)
+  if (([v75 fileExistsAtPath:pathCopy] & 1) == 0)
   {
     v88 = 0;
-    v14 = [v75 createDirectoryAtPath:v11 withIntermediateDirectories:1 attributes:0 error:&v88];
+    v14 = [v75 createDirectoryAtPath:pathCopy withIntermediateDirectories:1 attributes:0 error:&v88];
     v15 = v88;
     if (!v14)
     {
@@ -1612,7 +1612,7 @@ LABEL_34:
         *buf = 136315650;
         v92 = "[ADCloudKitMultiUserSharedDataStore _constructRecord:fileArchives:assetManifest:filePath:]";
         v93 = 2112;
-        v94 = v11;
+        v94 = pathCopy;
         v95 = 2112;
         v96 = obj;
         _os_log_error_impl(&_mh_execute_header, v62, OS_LOG_TYPE_ERROR, "%s Failed to create update location (%@) with error (%@)", buf, 0x20u);
@@ -1627,13 +1627,13 @@ LABEL_34:
   v87 = 0u;
   v84 = 0u;
   v85 = 0u;
-  v16 = v10;
+  v16 = manifestCopy;
   v17 = [v16 countByEnumeratingWithState:&v84 objects:v90 count:16];
-  v69 = v12;
-  v65 = v10;
-  v66 = v9;
-  v74 = v11;
-  v71 = v13;
+  v69 = version;
+  v65 = manifestCopy;
+  v66 = recordCopy;
+  v74 = pathCopy;
+  v71 = productCategory;
   if (v17)
   {
     v18 = v17;
@@ -1674,12 +1674,12 @@ LABEL_34:
           v34 = [v23 objectAtIndexedSubscript:2];
           v35 = [v34 substringFromIndex:v33];
 
-          if ([v71 isEqualToString:v28] && (!v70 || objc_msgSend(v70, "isEqualToString:", v30)))
+          if ([v71 isEqualToString:v28] && (!languageCode || objc_msgSend(languageCode, "isEqualToString:", v30)))
           {
-            v36 = [v69 integerValue];
-            if (v36 == [v35 integerValue])
+            integerValue = [v69 integerValue];
+            if (integerValue == [v35 integerValue])
             {
-              v68 = [v77 objectForKey:v21];
+              v68 = [archivesCopy objectForKey:v21];
               v37 = [v74 stringByAppendingPathComponent:v30];
               v38 = AFSiriLogContextDaemon;
               if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -1718,8 +1718,8 @@ LABEL_34:
 
             else
             {
-              v40 = [v35 integerValue];
-              if (v40 < [v69 integerValue])
+              integerValue2 = [v35 integerValue];
+              if (integerValue2 < [v69 integerValue])
               {
                 v41 = obj;
                 if (!obj)
@@ -1756,12 +1756,12 @@ LABEL_34:
       goto LABEL_61;
     }
 
-    v10 = v65;
-    v9 = v66;
+    manifestCopy = v65;
+    recordCopy = v66;
     v48 = obj;
-    v11 = v74;
-    v12 = v69;
-    v13 = v71;
+    pathCopy = v74;
+    version = v69;
+    productCategory = v71;
   }
 
   else
@@ -1795,7 +1795,7 @@ LABEL_34:
           }
 
           v54 = *(*(&v80 + 1) + 8 * i);
-          v55 = [v77 objectForKey:v54];
+          v55 = [archivesCopy objectForKey:v54];
           v56 = [v79 objectForKey:v54];
           v57 = [v56 objectForKey:@"languages"];
           v58 = [v57 objectAtIndex:0];
@@ -1846,11 +1846,11 @@ LABEL_34:
 LABEL_60:
 
 LABEL_61:
-    v10 = v65;
-    v9 = v66;
-    v11 = v74;
-    v12 = v69;
-    v13 = v71;
+    manifestCopy = v65;
+    recordCopy = v66;
+    pathCopy = v74;
+    version = v69;
+    productCategory = v71;
     goto LABEL_62;
   }
 
@@ -1866,11 +1866,11 @@ LABEL_63:
   return v45;
 }
 
-- (void)_logRelevantAnalyticsOnMultiUserVoiceProfileDownloadSuccessWithSharedUserID:(id)a3 isPrimary:(BOOL)a4 isNewUser:(BOOL)a5
+- (void)_logRelevantAnalyticsOnMultiUserVoiceProfileDownloadSuccessWithSharedUserID:(id)d isPrimary:(BOOL)primary isNewUser:(BOOL)user
 {
-  v40 = a4;
-  v41 = a5;
-  v5 = a3;
+  primaryCopy = primary;
+  userCopy = user;
+  dCopy = d;
   v6 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -1881,13 +1881,13 @@ LABEL_63:
 
   v7 = +[NSMutableDictionary dictionary];
   v8 = +[ADPreferences sharedPreferences];
-  v9 = [v8 multiUserSetupStartTimes];
+  multiUserSetupStartTimes = [v8 multiUserSetupStartTimes];
 
   v10 = +[ADPreferences sharedPreferences];
-  v11 = [v10 multiUserSetupCompleteTimes];
+  multiUserSetupCompleteTimes = [v10 multiUserSetupCompleteTimes];
 
-  v12 = [v9 objectForKeyedSubscript:v5];
-  v13 = [v11 objectForKeyedSubscript:v5];
+  v12 = [multiUserSetupStartTimes objectForKeyedSubscript:dCopy];
+  v13 = [multiUserSetupCompleteTimes objectForKeyedSubscript:dCopy];
   if (v12 | v13)
   {
     v14 = 0;
@@ -1923,7 +1923,7 @@ LABEL_63:
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
   {
     log = v20;
-    v38 = [NSNumber numberWithBool:v41];
+    v38 = [NSNumber numberWithBool:userCopy];
     v37 = [NSNumber numberWithBool:v17];
     *buf = 136316162;
     v47 = "[ADCloudKitMultiUserSharedDataStore _logRelevantAnalyticsOnMultiUserVoiceProfileDownloadSuccessWithSharedUserID:isPrimary:isNewUser:]";
@@ -1953,9 +1953,9 @@ LABEL_63:
     [v21 timeIntervalSince1970];
     v23 = v22;
 
-    if (v41)
+    if (userCopy)
     {
-      if (v40)
+      if (primaryCopy)
       {
         v24 = @"owner";
       }
@@ -1980,9 +1980,9 @@ LABEL_63:
         [v27 setObject:v30 forKeyedSubscript:@"multiuser-voiceid-setup-time"];
       }
 
-      v31 = [NSMutableDictionary dictionaryWithDictionary:v11];
+      v31 = [NSMutableDictionary dictionaryWithDictionary:multiUserSetupCompleteTimes];
       v32 = [NSNumber numberWithDouble:v23];
-      [v31 setObject:v32 forKeyedSubscript:v5];
+      [v31 setObject:v32 forKeyedSubscript:dCopy];
 
       v33 = +[ADPreferences sharedPreferences];
       v34 = [NSDictionary dictionaryWithDictionary:v31];
@@ -2024,13 +2024,13 @@ LABEL_63:
   }
 }
 
-- (void)_updateVoiceIDProfilesForSharedUser:(id)a3 iCloudAltDSID:(id)a4 records:(id)a5 isPrimary:(BOOL)a6 isNewUser:(BOOL)a7 completion:(id)a8
+- (void)_updateVoiceIDProfilesForSharedUser:(id)user iCloudAltDSID:(id)d records:(id)records isPrimary:(BOOL)primary isNewUser:(BOOL)newUser completion:(id)completion
 {
-  v9 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
+  newUserCopy = newUser;
+  userCopy = user;
+  dCopy = d;
+  recordsCopy = records;
+  completionCopy = completion;
   v18 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
@@ -2039,14 +2039,14 @@ LABEL_63:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  if (v9)
+  if (newUserCopy)
   {
     v19 = +[AFAnalytics sharedAnalytics];
     v115[0] = _NSConcreteStackBlock;
     v115[1] = 3221225472;
     v115[2] = sub_100170F00;
     v115[3] = &unk_100519940;
-    v116 = a6;
+    primaryCopy = primary;
     [v19 logEventWithType:6111 contextProvider:v115];
   }
 
@@ -2056,23 +2056,23 @@ LABEL_63:
   objc_opt_class();
   objc_opt_class();
   objc_opt_class();
-  if ([v16 count])
+  if ([recordsCopy count])
   {
-    v77 = a6;
-    v78 = v9;
-    v79 = self;
+    primaryCopy2 = primary;
+    v78 = newUserCopy;
+    selfCopy = self;
     v86 = v21;
     v84 = v20;
-    v80 = v17;
-    v81 = v16;
-    v82 = v15;
+    v80 = completionCopy;
+    v81 = recordsCopy;
+    v82 = dCopy;
     v113 = 0u;
     v114 = 0u;
     v111 = 0u;
     v112 = 0u;
-    v22 = v16;
+    v22 = recordsCopy;
     v23 = [v22 countByEnumeratingWithState:&v111 objects:v128 count:16];
-    v83 = v14;
+    v83 = userCopy;
     if (!v23)
     {
       goto LABEL_76;
@@ -2091,18 +2091,18 @@ LABEL_63:
         }
 
         v27 = *(*(&v111 + 1) + 8 * i);
-        v28 = [v27 recordType];
-        if (([v28 isEqualToString:@"AssistantKeyValueRecord"] & 1) == 0)
+        recordType = [v27 recordType];
+        if (([recordType isEqualToString:@"AssistantKeyValueRecord"] & 1) == 0)
         {
-          if ([v28 isEqualToString:@"AssistantVoiceTriggerFileAssetRecord"])
+          if ([recordType isEqualToString:@"AssistantVoiceTriggerFileAssetRecord"])
           {
-            v29 = [v27 recordID];
-            v30 = [v29 recordName];
+            recordID = [v27 recordID];
+            recordName = [recordID recordName];
 
-            if ([v30 length])
+            if ([recordName length])
             {
-              v31 = [v27 encryptedValuesByKey];
-              v32 = [v31 objectForKey:@"fileName"];
+              encryptedValuesByKey = [v27 encryptedValuesByKey];
+              v32 = [encryptedValuesByKey objectForKey:@"fileName"];
               if ((objc_opt_isKindOfClass() & 1) == 0 || ![v32 length])
               {
                 v55 = AFSiriLogContextDaemon;
@@ -2111,7 +2111,7 @@ LABEL_63:
                   *buf = 136315394;
                   v121 = "[ADCloudKitMultiUserSharedDataStore _updateVoiceIDProfilesForSharedUser:iCloudAltDSID:records:isPrimary:isNewUser:completion:]";
                   v122 = 2112;
-                  v123 = v30;
+                  v123 = recordName;
                   _os_log_error_impl(&_mh_execute_header, v55, OS_LOG_TYPE_ERROR, "%s Record (%@) has invalid file name", buf, 0x16u);
                 }
 
@@ -2119,14 +2119,14 @@ LABEL_63:
               }
 
               v33 = v32;
-              v34 = v31;
-              v35 = [v31 objectForKey:@"fileCompressionType"];
+              v34 = encryptedValuesByKey;
+              v35 = [encryptedValuesByKey objectForKey:@"fileCompressionType"];
               v94 = v35;
               if (objc_opt_isKindOfClass())
               {
                 if ([v35 unsignedIntegerValue] == 2)
                 {
-                  v31 = v34;
+                  encryptedValuesByKey = v34;
                   v93 = [v34 objectForKey:@"fileAssetSize"];
                   if ((objc_opt_isKindOfClass() & 1) == 0)
                   {
@@ -2136,7 +2136,7 @@ LABEL_63:
                       *buf = 136315394;
                       v121 = "[ADCloudKitMultiUserSharedDataStore _updateVoiceIDProfilesForSharedUser:iCloudAltDSID:records:isPrimary:isNewUser:completion:]";
                       v122 = 2112;
-                      v123 = v30;
+                      v123 = recordName;
                       _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "%s Record (%@) has invalid file size type", buf, 0x16u);
                     }
                   }
@@ -2146,13 +2146,13 @@ LABEL_63:
                   v92 = v37;
                   if (objc_opt_isKindOfClass())
                   {
-                    v38 = [v37 fileURL];
-                    v39 = [v38 path];
+                    fileURL = [v37 fileURL];
+                    path = [fileURL path];
 
-                    if (v39)
+                    if (path)
                     {
-                      v40 = [v38 path];
-                      [v86 setObject:v40 forKey:v32];
+                      path2 = [fileURL path];
+                      [v86 setObject:path2 forKey:v32];
 
                       v41 = AFSiriLogContextDaemon;
                       if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -2162,7 +2162,7 @@ LABEL_63:
                         *buf = 136315906;
                         v121 = "[ADCloudKitMultiUserSharedDataStore _updateVoiceIDProfilesForSharedUser:iCloudAltDSID:records:isPrimary:isNewUser:completion:]";
                         v122 = 2112;
-                        v123 = v30;
+                        v123 = recordName;
                         v124 = 2112;
                         v125 = v32;
                         v126 = 2048;
@@ -2170,7 +2170,7 @@ LABEL_63:
                         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_INFO, "%s Extracted: recordName(%@), fileName(%@), fileArchiveDict count(%lu)", buf, 0x2Au);
                       }
 
-                      v44 = [v31 objectForKey:@"languages"];
+                      v44 = [encryptedValuesByKey objectForKey:@"languages"];
                       v85 = v44;
                       if ((objc_opt_isKindOfClass() & 1) != 0 && [v44 count])
                       {
@@ -2183,7 +2183,7 @@ LABEL_63:
                         if (v90)
                         {
                           v88 = *v108;
-                          v76 = v38;
+                          v76 = fileURL;
 LABEL_29:
                           v45 = 0;
                           while (1)
@@ -2201,7 +2201,7 @@ LABEL_29:
 
                             if (v90 == ++v45)
                             {
-                              v38 = v76;
+                              fileURL = v76;
                               v90 = [obj countByEnumeratingWithState:&v107 objects:v119 count:16];
                               if (v90)
                               {
@@ -2213,7 +2213,7 @@ LABEL_29:
                           }
 
                           v67 = AFSiriLogContextDaemon;
-                          v38 = v76;
+                          fileURL = v76;
                           if (!os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
                           {
                             goto LABEL_68;
@@ -2222,7 +2222,7 @@ LABEL_29:
                           *buf = 136315394;
                           v121 = "[ADCloudKitMultiUserSharedDataStore _updateVoiceIDProfilesForSharedUser:iCloudAltDSID:records:isPrimary:isNewUser:completion:]";
                           v122 = 2112;
-                          v123 = v30;
+                          v123 = recordName;
                           v64 = v67;
                           v65 = "%s Record (%@) has invalid language in array";
 LABEL_64:
@@ -2243,25 +2243,25 @@ LABEL_36:
                             _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_INFO, "%s Languages: %@", buf, 0x16u);
                           }
 
-                          v48 = [v31 objectForKey:@"productType"];
+                          v48 = [encryptedValuesByKey objectForKey:@"productType"];
                           v91 = v48;
                           if ((objc_opt_isKindOfClass() & 1) != 0 && [v48 length])
                           {
-                            v49 = [v27 modificationDate];
-                            if (!v49)
+                            modificationDate = [v27 modificationDate];
+                            if (!modificationDate)
                             {
-                              v49 = +[NSDate date];
+                              modificationDate = +[NSDate date];
                             }
 
                             v117[0] = @"modificationDate";
                             v117[1] = @"languages";
-                            v89 = v49;
-                            v118[0] = v49;
+                            v89 = modificationDate;
+                            v118[0] = modificationDate;
                             v118[1] = obj;
                             v117[2] = @"productType";
                             v118[2] = v48;
                             v50 = [NSDictionary dictionaryWithObjects:v118 forKeys:v117 count:3];
-                            [v84 setObject:v50 forKey:v30];
+                            [v84 setObject:v50 forKey:recordName];
                             v51 = AFSiriLogContextDaemon;
                             if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
                             {
@@ -2281,7 +2281,7 @@ LABEL_36:
                               *buf = 136315394;
                               v121 = "[ADCloudKitMultiUserSharedDataStore _updateVoiceIDProfilesForSharedUser:iCloudAltDSID:records:isPrimary:isNewUser:completion:]";
                               v122 = 2112;
-                              v123 = v30;
+                              v123 = recordName;
                               _os_log_error_impl(&_mh_execute_header, v68, OS_LOG_TYPE_ERROR, "%s Record (%@) has invalid product type", buf, 0x16u);
                             }
                           }
@@ -2296,7 +2296,7 @@ LABEL_36:
                           *buf = 136315394;
                           v121 = "[ADCloudKitMultiUserSharedDataStore _updateVoiceIDProfilesForSharedUser:iCloudAltDSID:records:isPrimary:isNewUser:completion:]";
                           v122 = 2112;
-                          v123 = v30;
+                          v123 = recordName;
                           v64 = v63;
                           v65 = "%s Record (%@) has invalid language array";
                           goto LABEL_64;
@@ -2314,9 +2314,9 @@ LABEL_68:
                         *buf = 136315650;
                         v121 = "[ADCloudKitMultiUserSharedDataStore _updateVoiceIDProfilesForSharedUser:iCloudAltDSID:records:isPrimary:isNewUser:completion:]";
                         v122 = 2112;
-                        v123 = v30;
+                        v123 = recordName;
                         v124 = 2112;
-                        v125 = v38;
+                        v125 = fileURL;
                         _os_log_error_impl(&_mh_execute_header, v66, OS_LOG_TYPE_ERROR, "%s Record (%@) file asset URL(%@) path is nil", buf, 0x20u);
                       }
                     }
@@ -2330,7 +2330,7 @@ LABEL_68:
                       *buf = 136315394;
                       v121 = "[ADCloudKitMultiUserSharedDataStore _updateVoiceIDProfilesForSharedUser:iCloudAltDSID:records:isPrimary:isNewUser:completion:]";
                       v122 = 2112;
-                      v123 = v30;
+                      v123 = recordName;
                       _os_log_error_impl(&_mh_execute_header, v62, OS_LOG_TYPE_ERROR, "%s Record (%@) has invalid file asset type", buf, 0x16u);
                     }
                   }
@@ -2345,7 +2345,7 @@ LABEL_73:
                 }
 
                 v61 = AFSiriLogContextDaemon;
-                v31 = v34;
+                encryptedValuesByKey = v34;
                 v32 = v33;
                 if (!os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
                 {
@@ -2366,7 +2366,7 @@ LABEL_73:
               else
               {
                 v57 = AFSiriLogContextDaemon;
-                v31 = v34;
+                encryptedValuesByKey = v34;
                 v32 = v33;
                 if (!os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_ERROR))
                 {
@@ -2376,7 +2376,7 @@ LABEL_73:
                 *buf = 136315394;
                 v121 = "[ADCloudKitMultiUserSharedDataStore _updateVoiceIDProfilesForSharedUser:iCloudAltDSID:records:isPrimary:isNewUser:completion:]";
                 v122 = 2112;
-                v123 = v30;
+                v123 = recordName;
                 v58 = v57;
                 v59 = "%s Record (%@) has invalid compression type";
                 v60 = 22;
@@ -2403,11 +2403,11 @@ LABEL_73:
           if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_DEBUG))
           {
             v53 = v52;
-            v54 = [v27 recordType];
+            recordType2 = [v27 recordType];
             *buf = 136315394;
             v121 = "[ADCloudKitMultiUserSharedDataStore _updateVoiceIDProfilesForSharedUser:iCloudAltDSID:records:isPrimary:isNewUser:completion:]";
             v122 = 2112;
-            v123 = v54;
+            v123 = recordType2;
             _os_log_debug_impl(&_mh_execute_header, v53, OS_LOG_TYPE_DEBUG, "%s Unsupported record type : (%@)", buf, 0x16u);
 
             v22 = v95;
@@ -2431,24 +2431,24 @@ LABEL_76:
           v99[3] = &unk_100513BB0;
           v69 = v86;
           v100 = v69;
-          v101 = v79;
-          v14 = v83;
+          v101 = selfCopy;
+          userCopy = v83;
           v70 = v83;
           v102 = v70;
-          v105 = v77;
+          v105 = primaryCopy2;
           v106 = v78;
-          v17 = v80;
+          completionCopy = v80;
           v104 = v80;
           v20 = v84;
           v71 = v84;
           v103 = v71;
           v72 = objc_retainBlock(v99);
-          voiceProfileManager = v79->_voiceProfileManager;
+          voiceProfileManager = selfCopy->_voiceProfileManager;
           v96[0] = _NSConcreteStackBlock;
           v96[1] = 3221225472;
           v96[2] = sub_100171400;
           v96[3] = &unk_100513BD8;
-          v96[4] = v79;
+          v96[4] = selfCopy;
           v97 = v69;
           v98 = v71;
           [(SSRVoiceProfileManager *)voiceProfileManager notifyUserVoiceProfileDownloadReadyForUser:v70 getData:v96 completion:v72];
@@ -2459,8 +2459,8 @@ LABEL_76:
         else
         {
           v74 = [AFError errorWithCode:4005];
-          v17 = v80;
-          v14 = v83;
+          completionCopy = v80;
+          userCopy = v83;
           v20 = v84;
           if (v80)
           {
@@ -2468,8 +2468,8 @@ LABEL_76:
           }
         }
 
-        v16 = v81;
-        v15 = v82;
+        recordsCopy = v81;
+        dCopy = v82;
         goto LABEL_85;
       }
     }
@@ -2484,31 +2484,31 @@ LABEL_76:
   }
 
   v74 = [AFError errorWithCode:4005];
-  if (v17)
+  if (completionCopy)
   {
-    (*(v17 + 2))(v17, v74);
+    (*(completionCopy + 2))(completionCopy, v74);
   }
 
 LABEL_85:
 }
 
-- (void)_mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6
+- (void)_mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v31 = a6;
+  changesCopy = changes;
+  recordsCopy = records;
+  dsCopy = ds;
+  completionCopy = completion;
   v12 = AFSiriLogContextDaemon;
   if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
   {
     v13 = v12;
-    v14 = [v10 count];
-    v15 = [v11 count];
+    v14 = [recordsCopy count];
+    v15 = [dsCopy count];
     dataStoreIsOnSharedDatabase = self->_dataStoreIsOnSharedDatabase;
     v17 = @"partial";
     *buf = 136316162;
     v39 = "[ADCloudKitMultiUserSharedDataStore _mergeDataWithModifiedRecords:deletedRecordIDs:containsAllChanges:completion:]";
-    if (v7)
+    if (changesCopy)
     {
       v17 = @"full";
     }
@@ -2530,7 +2530,7 @@ LABEL_85:
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "%s Merging %zd modified records, %zd deleted records, %@ sync, %@", buf, 0x34u);
   }
 
-  v32 = v11;
+  v32 = dsCopy;
   dispatch_assert_queue_V2(self->_serialQueue);
   v19 = objc_alloc_init(NSMutableArray);
   v20 = objc_alloc_init(NSMutableArray);
@@ -2538,7 +2538,7 @@ LABEL_85:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v21 = v10;
+  v21 = recordsCopy;
   v22 = [v21 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v22)
   {
@@ -2554,10 +2554,10 @@ LABEL_85:
         }
 
         v26 = *(*(&v33 + 1) + 8 * i);
-        v27 = [v26 recordType];
-        v28 = [v27 isEqualToString:@"AssistantKeyValueRecord"];
+        recordType = [v26 recordType];
+        v28 = [recordType isEqualToString:@"AssistantKeyValueRecord"];
         v29 = v19;
-        if ((v28 & 1) != 0 || (v30 = [v27 isEqualToString:@"AssistantVoiceTriggerFileAssetRecord"], v29 = v20, v30))
+        if ((v28 & 1) != 0 || (v30 = [recordType isEqualToString:@"AssistantVoiceTriggerFileAssetRecord"], v29 = v20, v30))
         {
           [v29 addObject:v26];
         }
@@ -2569,35 +2569,35 @@ LABEL_85:
     while (v23);
   }
 
-  [(ADCloudKitMultiUserSharedDataStore *)self setKeyValueRecordsAndVoiceProfile:v19 records:v20 completion:v31];
+  [(ADCloudKitMultiUserSharedDataStore *)self setKeyValueRecordsAndVoiceProfile:v19 records:v20 completion:completionCopy];
 }
 
-- (void)mergeDataWithModifiedRecords:(id)a3 deletedRecordIDs:(id)a4 containsAllChanges:(BOOL)a5 completion:(id)a6
+- (void)mergeDataWithModifiedRecords:(id)records deletedRecordIDs:(id)ds containsAllChanges:(BOOL)changes completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  recordsCopy = records;
+  dsCopy = ds;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001717B4;
   block[3] = &unk_100519D50;
   block[4] = self;
-  v18 = v10;
-  v21 = a5;
-  v19 = v11;
-  v20 = v12;
-  v14 = v12;
-  v15 = v11;
-  v16 = v10;
+  v18 = recordsCopy;
+  changesCopy = changes;
+  v19 = dsCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = dsCopy;
+  v16 = recordsCopy;
   dispatch_async(serialQueue, block);
 }
 
-- (void)_synchronizeVoiceIDWithActivity:(id)a3 sharedUserId:(id)a4 completion:(id)a5
+- (void)_synchronizeVoiceIDWithActivity:(id)activity sharedUserId:(id)id completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  activityCopy = activity;
+  idCopy = id;
+  completionCopy = completion;
   if (!AFIsHorseman())
   {
     v12 = self->_sharedUserID;
@@ -2632,8 +2632,8 @@ LABEL_85:
         v41[4] = sub_100171D20;
         v42 = objc_alloc_init(NSMutableArray);
         [(ADCloudKitMultiUserSharedDataStore *)self _cleanupCacheDirectory];
-        v15 = [(ADCloudKitMultiUserSharedDataStore *)self _createCacheDirectory];
-        if (v15)
+        _createCacheDirectory = [(ADCloudKitMultiUserSharedDataStore *)self _createCacheDirectory];
+        if (_createCacheDirectory)
         {
           v16 = +[NSFileManager defaultManager];
           v34[0] = _NSConcreteStackBlock;
@@ -2644,8 +2644,8 @@ LABEL_85:
           v34[4] = self;
           v17 = v25;
           v35 = v17;
-          v38 = v10;
-          v36 = v8;
+          v38 = completionCopy;
+          v36 = activityCopy;
           v40 = v41;
           v18 = v14;
           v37 = v18;
@@ -2657,8 +2657,8 @@ LABEL_85:
           v26[3] = &unk_100513B88;
           v21 = v16;
           v27 = v21;
-          v28 = v15;
-          v29 = self;
+          v28 = _createCacheDirectory;
+          selfCopy = self;
           v30 = v18;
           v31 = v24;
           v32 = buf;
@@ -2666,9 +2666,9 @@ LABEL_85:
           [(SSRVoiceProfileManager *)voiceProfileManager uploadUserVoiceProfileForSiriProfileId:v17 withUploadTrigger:v26 completion:v19];
         }
 
-        else if (v10)
+        else if (completionCopy)
         {
-          (*(v10 + 2))(v10, 0);
+          (*(completionCopy + 2))(completionCopy, 0);
         }
 
         _Block_object_dispose(v41, 8);
@@ -2683,20 +2683,20 @@ LABEL_85:
         *buf = 136315138;
         *&buf[4] = "[ADCloudKitMultiUserSharedDataStore _synchronizeVoiceIDWithActivity:sharedUserId:completion:]";
         _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%s Unable to retrieve build version", buf, 0xCu);
-        if (!v10)
+        if (!completionCopy)
         {
           goto LABEL_19;
         }
       }
 
-      else if (!v10)
+      else if (!completionCopy)
       {
 LABEL_19:
 
         goto LABEL_20;
       }
 
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
       goto LABEL_19;
     }
 
@@ -2706,21 +2706,21 @@ LABEL_19:
       *buf = 136315138;
       *&buf[4] = "[ADCloudKitMultiUserSharedDataStore _synchronizeVoiceIDWithActivity:sharedUserId:completion:]";
       _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%s Unable to retrieve product type", buf, 0xCu);
-      if (!v10)
+      if (!completionCopy)
       {
         goto LABEL_20;
       }
     }
 
-    else if (!v10)
+    else if (!completionCopy)
     {
 LABEL_20:
 
-      v9 = v25;
+      idCopy = v25;
       goto LABEL_21;
     }
 
-    (*(v10 + 2))(v10, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
     goto LABEL_20;
   }
 
@@ -2735,51 +2735,51 @@ LABEL_20:
 LABEL_21:
 }
 
-- (void)_synchronizeUsingActivity:(id)a3 sharedUserId:(id)a4 completion:(id)a5
+- (void)_synchronizeUsingActivity:(id)activity sharedUserId:(id)id completion:(id)completion
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  activityCopy = activity;
+  idCopy = id;
+  completionCopy = completion;
   if (AFIsMultiUserCompanion() && [(ADCloudKitMultiUserSharedDataStore *)self isMirroredDataStore])
   {
     v10 = +[ADMultiUserCloudKitSyncer sharedService];
     [v10 syncIdentifiersToCloud];
   }
 
-  [(ADCloudKitMultiUserSharedDataStore *)self _synchronizeVoiceIDWithActivity:v11 sharedUserId:v8 completion:v9];
+  [(ADCloudKitMultiUserSharedDataStore *)self _synchronizeVoiceIDWithActivity:activityCopy sharedUserId:idCopy completion:completionCopy];
 }
 
-- (void)synchronizeUsingActivity:(id)a3 sharedUserId:(id)a4 completion:(id)a5
+- (void)synchronizeUsingActivity:(id)activity sharedUserId:(id)id completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  activityCopy = activity;
+  idCopy = id;
+  completionCopy = completion;
   serialQueue = self->_serialQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10017363C;
   v15[3] = &unk_10051E0D8;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
+  v16 = idCopy;
+  v17 = activityCopy;
+  v18 = completionCopy;
+  v12 = activityCopy;
+  v13 = idCopy;
+  v14 = completionCopy;
   dispatch_async(serialQueue, v15);
 }
 
-- (void)synchronizeUsingActivity:(id)a3 completion:(id)a4
+- (void)synchronizeUsingActivity:(id)activity completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  activityCopy = activity;
+  completionCopy = completion;
   if (AFSupportsMultiUser() && !self->_sharedUserID)
   {
     v11 = +[ADMultiUserService sharedService];
     v12 = [(ADCloudKitMultiUserSharedDataStore *)self zone];
-    v13 = [v12 zoneID];
-    v14 = [v13 ownerName];
-    v15 = [v11 getSharedUserIdForShareOwnerName:v14];
+    zoneID = [v12 zoneID];
+    ownerName = [zoneID ownerName];
+    v15 = [v11 getSharedUserIdForShareOwnerName:ownerName];
     sharedUserID = self->_sharedUserID;
     self->_sharedUserID = v15;
 
@@ -2791,26 +2791,26 @@ LABEL_21:
       {
         v18 = v8;
         v19 = [(ADCloudKitMultiUserSharedDataStore *)self zone];
-        v20 = [v19 zoneID];
-        v21 = [v20 ownerName];
+        zoneID2 = [v19 zoneID];
+        ownerName2 = [zoneID2 ownerName];
         *v22 = 136315395;
         *&v22[4] = "[ADCloudKitMultiUserSharedDataStore synchronizeUsingActivity:completion:]";
         *&v22[12] = 2113;
-        *&v22[14] = v21;
+        *&v22[14] = ownerName2;
         _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s Couldn't find sharedUserId for owner: %{private}@", v22, 0x16u);
 
-        if (!v7)
+        if (!completionCopy)
         {
           goto LABEL_7;
         }
       }
 
-      else if (!v7)
+      else if (!completionCopy)
       {
         goto LABEL_7;
       }
 
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
       goto LABEL_7;
     }
 
@@ -2841,18 +2841,18 @@ LABEL_5:
     }
   }
 
-  [(ADCloudKitMultiUserSharedDataStore *)self synchronizeUsingActivity:v6 sharedUserId:self->_sharedUserID completion:v7, *v22, *&v22[16]];
+  [(ADCloudKitMultiUserSharedDataStore *)self synchronizeUsingActivity:activityCopy sharedUserId:self->_sharedUserID completion:completionCopy, *v22, *&v22[16]];
 LABEL_7:
 }
 
-- (void)setServerChangeToken:(id)a3
+- (void)setServerChangeToken:(id)token
 {
-  v10 = a3;
+  tokenCopy = token;
   if (![(ADCloudKitMultiUserSharedDataStore *)self isMirroredDataStore]&& (AFSupportsMultiUser() & 1) == 0)
   {
-    if (v10)
+    if (tokenCopy)
     {
-      v4 = [v10 ad_archiveTokenToDataWithExceptionBlock:&stru_100513AC0];
+      v4 = [tokenCopy ad_archiveTokenToDataWithExceptionBlock:&stru_100513AC0];
       if (!v4)
       {
         goto LABEL_13;
@@ -2865,12 +2865,12 @@ LABEL_7:
     }
 
     v5 = [(ADCloudKitMultiUserSharedDataStore *)self zone];
-    v6 = [v5 zoneID];
-    v7 = [v6 ownerName];
+    zoneID = [v5 zoneID];
+    ownerName = [zoneID ownerName];
 
     if ([(ADCloudKitMultiUserSharedDataStore *)self dataStoreIsOnSharedDatabase])
     {
-      if (!v7)
+      if (!ownerName)
       {
 LABEL_12:
 
@@ -2878,7 +2878,7 @@ LABEL_12:
       }
 
       v8 = +[ADPreferences sharedPreferences];
-      [v8 setMultiUserSharedDataServerChangeToken:v4 forOwnerName:v7];
+      [v8 setMultiUserSharedDataServerChangeToken:v4 forOwnerName:ownerName];
     }
 
     else
@@ -2906,19 +2906,19 @@ LABEL_13:
   else
   {
     v5 = +[ADPreferences sharedPreferences];
-    v6 = [v5 multiUserSharedDataServerChangeToken];
+    multiUserSharedDataServerChangeToken = [v5 multiUserSharedDataServerChangeToken];
 
-    v3 = [CKServerChangeToken ad_unarchiveTokenFromData:v6 withExceptionBlock:&stru_100513AA0];
+    v3 = [CKServerChangeToken ad_unarchiveTokenFromData:multiUserSharedDataServerChangeToken withExceptionBlock:&stru_100513AA0];
   }
 
   return v3;
 }
 
-- (void)setHasSetUpRecordZoneSubscription:(BOOL)a3
+- (void)setHasSetUpRecordZoneSubscription:(BOOL)subscription
 {
-  v3 = a3;
+  subscriptionCopy = subscription;
   v4 = +[ADPreferences sharedPreferences];
-  [v4 setHasSetupMultiUserSharedRecordZoneSubscription:v3];
+  [v4 setHasSetupMultiUserSharedRecordZoneSubscription:subscriptionCopy];
 
   v5 = +[ADPreferences sharedPreferences];
   [v5 synchronize];
@@ -2927,12 +2927,12 @@ LABEL_13:
 - (BOOL)hasSetUpRecordZoneSubscription
 {
   v2 = +[ADPreferences sharedPreferences];
-  v3 = [v2 hasSetUpMultiUserSharedRecordZoneSubscription];
+  hasSetUpMultiUserSharedRecordZoneSubscription = [v2 hasSetUpMultiUserSharedRecordZoneSubscription];
 
-  return v3;
+  return hasSetUpMultiUserSharedRecordZoneSubscription;
 }
 
-- (ADCloudKitMultiUserSharedDataStore)initWithInstanceContext:(id)a3
+- (ADCloudKitMultiUserSharedDataStore)initWithInstanceContext:(id)context
 {
   v16.receiver = self;
   v16.super_class = ADCloudKitMultiUserSharedDataStore;

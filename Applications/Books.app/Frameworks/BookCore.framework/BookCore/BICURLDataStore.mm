@@ -1,17 +1,17 @@
 @interface BICURLDataStore
-- (BICURLDataStore)initWithCachePath:(id)a3;
-- (BOOL)canStoreDescribedImage:(id)a3;
-- (void)_clean:(id)a3;
-- (void)_inventoryLevel:(signed __int16)a3 addLevelID:(BOOL)a4 completion:(id)a5;
-- (void)afterAllStoreOperationsCompletedPerformBlock:(id)a3;
-- (void)deleteRemovedEntries:(id)a3 deletingCompletedHandler:(id)a4;
-- (void)fetchImagesForEntry:(id)a3 forRequest:(id)a4 completion:(id)a5;
-- (void)storeAddedEntries:(id)a3 forRequest:(id)a4 storingCompletedHandler:(id)a5;
+- (BICURLDataStore)initWithCachePath:(id)path;
+- (BOOL)canStoreDescribedImage:(id)image;
+- (void)_clean:(id)_clean;
+- (void)_inventoryLevel:(signed __int16)level addLevelID:(BOOL)d completion:(id)completion;
+- (void)afterAllStoreOperationsCompletedPerformBlock:(id)block;
+- (void)deleteRemovedEntries:(id)entries deletingCompletedHandler:(id)handler;
+- (void)fetchImagesForEntry:(id)entry forRequest:(id)request completion:(id)completion;
+- (void)storeAddedEntries:(id)entries forRequest:(id)request storingCompletedHandler:(id)handler;
 @end
 
 @implementation BICURLDataStore
 
-- (BICURLDataStore)initWithCachePath:(id)a3
+- (BICURLDataStore)initWithCachePath:(id)path
 {
   v17.receiver = self;
   v17.super_class = BICURLDataStore;
@@ -43,14 +43,14 @@
   return v3;
 }
 
-- (BOOL)canStoreDescribedImage:(id)a3
+- (BOOL)canStoreDescribedImage:(id)image
 {
-  v3 = a3;
-  v4 = [v3 urlString];
-  if (v4)
+  imageCopy = image;
+  urlString = [imageCopy urlString];
+  if (urlString)
   {
-    v5 = [v3 urlString];
-    v6 = [v5 isEqualToString:@"test"] ^ 1;
+    urlString2 = [imageCopy urlString];
+    v6 = [urlString2 isEqualToString:@"test"] ^ 1;
   }
 
   else
@@ -61,48 +61,48 @@
   return v6;
 }
 
-- (void)deleteRemovedEntries:(id)a3 deletingCompletedHandler:(id)a4
+- (void)deleteRemovedEntries:(id)entries deletingCompletedHandler:(id)handler
 {
-  v7 = a3;
-  v5 = objc_retainBlock(a4);
+  entriesCopy = entries;
+  v5 = objc_retainBlock(handler);
   v6 = v5;
   if (v5)
   {
-    (*(v5 + 2))(v5, v7);
+    (*(v5 + 2))(v5, entriesCopy);
   }
 }
 
-- (void)afterAllStoreOperationsCompletedPerformBlock:(id)a3
+- (void)afterAllStoreOperationsCompletedPerformBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [BICDescribedImage describedImageWithPriority:3];
   objc_initWeak(&location, self);
-  v6 = [(BICURLDataStore *)self workQueue];
+  workQueue = [(BICURLDataStore *)self workQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_B6884;
   v8[3] = &unk_2CC5E0;
   objc_copyWeak(&v10, &location);
-  v7 = v4;
+  v7 = blockCopy;
   v9 = v7;
-  [v6 addWorkItemWithPriority:v5 description:@"URLDataStore after all ops" block:v8];
+  [workQueue addWorkItemWithPriority:v5 description:@"URLDataStore after all ops" block:v8];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)fetchImagesForEntry:(id)a3 forRequest:(id)a4 completion:(id)a5
+- (void)fetchImagesForEntry:(id)entry forRequest:(id)request completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [BICDescribedImage describedImageFromImageEntry:v8];
+  entryCopy = entry;
+  requestCopy = request;
+  completionCopy = completion;
+  v11 = [BICDescribedImage describedImageFromImageEntry:entryCopy];
   [v11 setExpiry:0];
-  v12 = [v8 dataStoreInformation];
-  if (v12)
+  dataStoreInformation = [entryCopy dataStoreInformation];
+  if (dataStoreInformation)
   {
-    v13 = [(BICURLDataStore *)self delegate];
-    v14 = [v13 canFetchCoverForURL:v12];
+    delegate = [(BICURLDataStore *)self delegate];
+    v14 = [delegate canFetchCoverForURL:dataStoreInformation];
     objc_initWeak(&location, self);
     v15 = BICCacheStatsOperationNetworkDownloadQueueStart;
     if (v14)
@@ -110,24 +110,24 @@
       v15 = BICCacheStatsOperationNetworkDownloadQueueStartFromDataSource;
     }
 
-    [BICCacheStats logOperation:*v15 forRequest:v9];
-    v16 = [(BICURLDataStore *)self completionQueue];
-    v17 = [(BICURLDataStore *)self workQueue];
+    [BICCacheStats logOperation:*v15 forRequest:requestCopy];
+    completionQueue = [(BICURLDataStore *)self completionQueue];
+    workQueue = [(BICURLDataStore *)self workQueue];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_B6BB4;
     v21[3] = &unk_2CC680;
     objc_copyWeak(&v28, &location);
-    v22 = v9;
+    v22 = requestCopy;
     v29 = v14;
-    v23 = v12;
-    v18 = v13;
+    v23 = dataStoreInformation;
+    v18 = delegate;
     v24 = v18;
     v25 = v11;
-    v27 = v10;
-    v19 = v16;
+    v27 = completionCopy;
+    v19 = completionQueue;
     v26 = v19;
-    [v17 addWorkItemWithPriority:v22 description:@"URLDataStore read" block:v21];
+    [workQueue addWorkItemWithPriority:v22 description:@"URLDataStore read" block:v21];
 
     objc_destroyWeak(&v28);
     objc_destroyWeak(&location);
@@ -135,7 +135,7 @@
 
   else
   {
-    v20 = objc_retainBlock(v10);
+    v20 = objc_retainBlock(completionCopy);
     v18 = v20;
     if (v20)
     {
@@ -144,15 +144,15 @@
   }
 }
 
-- (void)storeAddedEntries:(id)a3 forRequest:(id)a4 storingCompletedHandler:(id)a5
+- (void)storeAddedEntries:(id)entries forRequest:(id)request storingCompletedHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a5;
+  entriesCopy = entries;
+  handlerCopy = handler;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [entriesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -163,27 +163,27 @@
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(entriesCopy);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 imageDescription];
-        v14 = [v13 urlString];
-        [v12 setStoredData:v14];
+        imageDescription = [v12 imageDescription];
+        urlString = [imageDescription urlString];
+        [v12 setStoredData:urlString];
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [entriesCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
   }
 
-  v7[2](v7, v6, &__NSArray0__struct);
+  handlerCopy[2](handlerCopy, entriesCopy, &__NSArray0__struct);
 }
 
-- (void)_inventoryLevel:(signed __int16)a3 addLevelID:(BOOL)a4 completion:(id)a5
+- (void)_inventoryLevel:(signed __int16)level addLevelID:(BOOL)d completion:(id)completion
 {
-  v5 = objc_retainBlock(a5);
+  v5 = objc_retainBlock(completion);
   if (v5)
   {
     v6 = v5;
@@ -192,9 +192,9 @@
   }
 }
 
-- (void)_clean:(id)a3
+- (void)_clean:(id)_clean
 {
-  v3 = objc_retainBlock(a3);
+  v3 = objc_retainBlock(_clean);
   if (v3)
   {
     v4 = v3;

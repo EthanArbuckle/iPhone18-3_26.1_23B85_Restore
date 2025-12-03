@@ -1,18 +1,18 @@
 @interface TSCH3DChartMeshSharedResource
 - (id)get;
 - (void)flushMemory;
-- (void)setChildRegenerated:(BOOL)a3;
+- (void)setChildRegenerated:(BOOL)regenerated;
 @end
 
 @implementation TSCH3DChartMeshSharedResource
 
-- (void)setChildRegenerated:(BOOL)a3
+- (void)setChildRegenerated:(BOOL)regenerated
 {
-  v3 = a3;
+  regeneratedCopy = regenerated;
   v9.receiver = self;
   v9.super_class = TSCH3DChartMeshSharedResource;
   [(TSCH3DChartMeshSharedChildResource *)&v9 setChildRegenerated:?];
-  if (v3)
+  if (regeneratedCopy)
   {
     objc_msgSend_setMesh_(self, v5, v6, v7, v8, 0);
   }

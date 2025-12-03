@@ -1,7 +1,7 @@
 @interface VPScannerViewController
 + (id)instantiateViewController;
-- (void)handleCancelButton:(id)a3;
-- (void)handlePairManuallyButton:(id)a3;
+- (void)handleCancelButton:(id)button;
+- (void)handlePairManuallyButton:(id)button;
 - (void)viewDidLoad;
 @end
 
@@ -22,14 +22,14 @@
   v10.receiver = self;
   v10.super_class = VPScannerViewController;
   [(VPScannerViewController *)&v10 viewDidLoad];
-  v3 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v4 = [v3 horizontalSizeClass];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  horizontalSizeClass = [currentTraitCollection horizontalSizeClass];
 
-  if (v4 != 1)
+  if (horizontalSizeClass != 1)
   {
     v5 = MEMORY[0x277CCAAD0];
-    v6 = [(UIView *)self->_containerView widthAnchor];
-    v7 = [v6 constraintLessThanOrEqualToConstant:400.0];
+    widthAnchor = [(UIView *)self->_containerView widthAnchor];
+    v7 = [widthAnchor constraintLessThanOrEqualToConstant:400.0];
     v11[0] = v7;
     v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     [v5 activateConstraints:v8];
@@ -49,9 +49,9 @@ uint64_t __42__VPScannerViewController_viewWillAppear___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)handleCancelButton:(id)a3
+- (void)handleCancelButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   if (gLogCategory_SVC <= 30 && (gLogCategory_SVC != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -64,9 +64,9 @@ uint64_t __42__VPScannerViewController_viewWillAppear___block_invoke(uint64_t a1
   }
 }
 
-- (void)handlePairManuallyButton:(id)a3
+- (void)handlePairManuallyButton:(id)button
 {
-  v5 = a3;
+  buttonCopy = button;
   if (gLogCategory_SVC <= 30 && (gLogCategory_SVC != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();

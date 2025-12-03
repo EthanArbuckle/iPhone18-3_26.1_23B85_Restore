@@ -1,21 +1,21 @@
 @interface PPNamedEntityFilter
-- (BOOL)isAcceptableRecord:(id)a3;
+- (BOOL)isAcceptableRecord:(id)record;
 - (PPNamedEntityFilter)init;
-- (PPNamedEntityFilter)initWithModel:(id)a3;
-- (id)_filterNamedEntities:(uint64_t)a1;
-- (id)filterNamedEntityRecords:(id)a3;
-- (id)filterScoredNamedEntities:(id)a3;
+- (PPNamedEntityFilter)initWithModel:(id)model;
+- (id)_filterNamedEntities:(uint64_t)entities;
+- (id)filterNamedEntityRecords:(id)records;
+- (id)filterScoredNamedEntities:(id)entities;
 @end
 
 @implementation PPNamedEntityFilter
 
-- (BOOL)isAcceptableRecord:(id)a3
+- (BOOL)isAcceptableRecord:(id)record
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = objc_autoreleasePoolPush();
-  v6 = [v4 entity];
-  v11[0] = v6;
+  entity = [recordCopy entity];
+  v11[0] = entity;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
 
   objc_autoreleasePoolPop(v5);
@@ -26,20 +26,20 @@
   return self;
 }
 
-- (id)_filterNamedEntities:(uint64_t)a1
+- (id)_filterNamedEntities:(uint64_t)entities
 {
   v3 = a2;
-  if (a1)
+  if (entities)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAB58]) initWithIndexesInRange:{0, objc_msgSend(v3, "count")}];
     v5 = v4;
-    if (*(a1 + 8))
+    if (*(entities + 8))
     {
       v10[0] = MEMORY[0x277D85DD0];
       v10[1] = 3221225472;
       v10[2] = __44__PPNamedEntityFilter__filterNamedEntities___block_invoke;
       v10[3] = &unk_278975780;
-      v10[4] = a1;
+      v10[4] = entities;
       v6 = v4;
       v11 = v6;
       [v3 enumerateObjectsUsingBlock:v10];
@@ -215,21 +215,21 @@ LABEL_27:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)filterNamedEntityRecords:(id)a3
+- (id)filterNamedEntityRecords:(id)records
 {
-  v4 = a3;
-  v5 = [v4 _pas_mappedArrayWithTransform:&__block_literal_global_21_15576];
+  recordsCopy = records;
+  v5 = [recordsCopy _pas_mappedArrayWithTransform:&__block_literal_global_21_15576];
   v6 = [(PPNamedEntityFilter *)self _filterNamedEntities:v5];
 
   v7 = [v6 count];
-  if (v7 >= [v4 count])
+  if (v7 >= [recordsCopy count])
   {
-    v8 = v4;
+    v8 = recordsCopy;
   }
 
   else
   {
-    v8 = [v4 objectsAtIndexes:v6];
+    v8 = [recordsCopy objectsAtIndexes:v6];
   }
 
   v9 = v8;
@@ -237,21 +237,21 @@ LABEL_27:
   return v9;
 }
 
-- (id)filterScoredNamedEntities:(id)a3
+- (id)filterScoredNamedEntities:(id)entities
 {
-  v4 = a3;
-  v5 = [v4 _pas_mappedArrayWithTransform:&__block_literal_global_15579];
+  entitiesCopy = entities;
+  v5 = [entitiesCopy _pas_mappedArrayWithTransform:&__block_literal_global_15579];
   v6 = [(PPNamedEntityFilter *)self _filterNamedEntities:v5];
 
   v7 = [v6 count];
-  if (v7 >= [v4 count])
+  if (v7 >= [entitiesCopy count])
   {
-    v8 = v4;
+    v8 = entitiesCopy;
   }
 
   else
   {
-    v8 = [v4 objectsAtIndexes:v6];
+    v8 = [entitiesCopy objectsAtIndexes:v6];
   }
 
   v9 = v8;
@@ -272,10 +272,10 @@ LABEL_27:
     goto LABEL_3;
   }
 
-  v6 = [v4 modelDescription];
-  v7 = [v6 outputDescriptionsByName];
-  v8 = [v7 allKeys];
-  v9 = [v8 containsObject:@"computed_filterScore"];
+  modelDescription = [v4 modelDescription];
+  outputDescriptionsByName = [modelDescription outputDescriptionsByName];
+  allKeys = [outputDescriptionsByName allKeys];
+  v9 = [allKeys containsObject:@"computed_filterScore"];
 
   if (v9)
   {
@@ -295,16 +295,16 @@ LABEL_3:
   return v11;
 }
 
-- (PPNamedEntityFilter)initWithModel:(id)a3
+- (PPNamedEntityFilter)initWithModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   v9.receiver = self;
   v9.super_class = PPNamedEntityFilter;
   v6 = [(PPNamedEntityFilter *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_model, a3);
+    objc_storeStrong(&v6->_model, model);
   }
 
   return v7;

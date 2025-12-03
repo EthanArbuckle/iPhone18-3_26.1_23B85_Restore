@@ -1,8 +1,8 @@
 @interface QSSAudioAnalytics
 - (NSArray)acoustic_features;
 - (NSArray)speech_recognition_features;
-- (Offset<siri::speech::schema_fb::AudioAnalytics>)addObjectToBuffer:(void *)a3;
-- (QSSAudioAnalytics)initWithFlatbuffData:(id)a3 root:(const AudioAnalytics *)a4 verify:(BOOL)a5;
+- (Offset<siri::speech::schema_fb::AudioAnalytics>)addObjectToBuffer:(void *)buffer;
+- (QSSAudioAnalytics)initWithFlatbuffData:(id)data root:(const AudioAnalytics *)root verify:(BOOL)verify;
 - (id)flatbuffData;
 @end
 
@@ -37,11 +37,11 @@ flatbuffers::DetachedBuffer *__33__QSSAudioAnalytics_flatbuffData__block_invoke(
   return result;
 }
 
-- (Offset<siri::speech::schema_fb::AudioAnalytics>)addObjectToBuffer:(void *)a3
+- (Offset<siri::speech::schema_fb::AudioAnalytics>)addObjectToBuffer:(void *)buffer
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = [(QSSAudioAnalytics *)self speech_recognition_features];
-  v5 = [v4 count];
+  speech_recognition_features = [(QSSAudioAnalytics *)self speech_recognition_features];
+  v5 = [speech_recognition_features count];
   if (v5)
   {
     if (!(v5 >> 62))
@@ -61,15 +61,15 @@ flatbuffers::DetachedBuffer *__33__QSSAudioAnalytics_flatbuffData__block_invoke(
   {
     *v28;
     *v28;
-    [**(&v27 + 1) addObjectToBuffer:a3];
+    [**(&v27 + 1) addObjectToBuffer:buffer];
     std::__allocate_at_least[abi:ne200100]<std::allocator<flatbuffers::Offset<siri::speech::schema_fb::RecognitionToken>>>(1uLL);
   }
 
-  obja = a3;
-  flatbuffers::FlatBufferBuilder::StartVector(a3, 0, 4uLL);
-  v6 = flatbuffers::FlatBufferBuilder::EndVector(a3, 0);
-  v7 = [(QSSAudioAnalytics *)self acoustic_features];
-  v8 = [v7 count];
+  obja = buffer;
+  flatbuffers::FlatBufferBuilder::StartVector(buffer, 0, 4uLL);
+  v6 = flatbuffers::FlatBufferBuilder::EndVector(buffer, 0);
+  acoustic_features = [(QSSAudioAnalytics *)self acoustic_features];
+  v8 = [acoustic_features count];
   if (v8)
   {
     if (!(v8 >> 62))
@@ -84,9 +84,9 @@ flatbuffers::DetachedBuffer *__33__QSSAudioAnalytics_flatbuffData__block_invoke(
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v20 = [(QSSAudioAnalytics *)self acoustic_features];
+  acoustic_features2 = [(QSSAudioAnalytics *)self acoustic_features];
   v18 = v6;
-  if ([v20 countByEnumeratingWithState:&v23 objects:v31 count:16])
+  if ([acoustic_features2 countByEnumeratingWithState:&v23 objects:v31 count:16])
   {
     *v24;
     *v24;
@@ -120,10 +120,10 @@ flatbuffers::DetachedBuffer *__33__QSSAudioAnalytics_flatbuffData__block_invoke(
 
 - (NSArray)acoustic_features
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"acoustic_features"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"acoustic_features"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 7u)
@@ -140,7 +140,7 @@ flatbuffers::DetachedBuffer *__33__QSSAudioAnalytics_flatbuffData__block_invoke(
           do
           {
             v11 = [[QSSAudioAnalytics_AcousticFeaturesEntry alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -151,10 +151,10 @@ flatbuffers::DetachedBuffer *__33__QSSAudioAnalytics_flatbuffData__block_invoke(
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"acoustic_features"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"acoustic_features"];
   }
 
-  return v3;
+  return array;
 }
 
 flatbuffers::DetachedBuffer *__55__QSSAudioAnalytics_AcousticFeaturesEntry_flatbuffData__block_invoke(uint64_t a1)
@@ -172,10 +172,10 @@ flatbuffers::DetachedBuffer *__55__QSSAudioAnalytics_AcousticFeaturesEntry_flatb
 
 - (NSArray)speech_recognition_features
 {
-  v3 = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"speech_recognition_features"];
-  if (!v3)
+  array = [(NSMutableDictionary *)self->_storage objectForKeyedSubscript:@"speech_recognition_features"];
+  if (!array)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     root = self->_root;
     v5 = &root[-*root->var0];
     if (*v5->var0 >= 5u)
@@ -192,7 +192,7 @@ flatbuffers::DetachedBuffer *__55__QSSAudioAnalytics_AcousticFeaturesEntry_flatb
           do
           {
             v11 = [[QSSAudioAnalytics_SpeechRecognitionFeaturesEntry alloc] initWithFlatbuffData:self->_data root:&v10[*v10->var0] verify:0];
-            [v3 addObject:v11];
+            [array addObject:v11];
 
             v10 += 4;
             v9 -= 4;
@@ -203,10 +203,10 @@ flatbuffers::DetachedBuffer *__55__QSSAudioAnalytics_AcousticFeaturesEntry_flatb
       }
     }
 
-    [(NSMutableDictionary *)self->_storage setObject:v3 forKeyedSubscript:@"speech_recognition_features"];
+    [(NSMutableDictionary *)self->_storage setObject:array forKeyedSubscript:@"speech_recognition_features"];
   }
 
-  return v3;
+  return array;
 }
 
 flatbuffers::DetachedBuffer *__64__QSSAudioAnalytics_SpeechRecognitionFeaturesEntry_flatbuffData__block_invoke(uint64_t a1)
@@ -222,42 +222,42 @@ flatbuffers::DetachedBuffer *__64__QSSAudioAnalytics_SpeechRecognitionFeaturesEn
   return result;
 }
 
-- (QSSAudioAnalytics)initWithFlatbuffData:(id)a3 root:(const AudioAnalytics *)a4 verify:(BOOL)a5
+- (QSSAudioAnalytics)initWithFlatbuffData:(id)data root:(const AudioAnalytics *)root verify:(BOOL)verify
 {
-  v5 = a5;
-  v9 = a3;
+  verifyCopy = verify;
+  dataCopy = data;
   v29.receiver = self;
   v29.super_class = QSSAudioAnalytics;
   v10 = [(QSSAudioAnalytics *)&v29 init];
   v11 = v10;
   if (v10)
   {
-    if (!v9 || ![v9 length])
+    if (!dataCopy || ![dataCopy length])
     {
       goto LABEL_16;
     }
 
-    objc_storeStrong(&v10->_data, a3);
-    if (!a4)
+    objc_storeStrong(&v10->_data, data);
+    if (!root)
     {
-      v12 = [(NSData *)v10->_data bytes];
-      a4 = v12 + *v12;
+      bytes = [(NSData *)v10->_data bytes];
+      root = bytes + *bytes;
     }
 
-    v10->_root = a4;
-    if (v5)
+    v10->_root = root;
+    if (verifyCopy)
     {
-      v13 = [(NSData *)v10->_data bytes];
+      bytes2 = [(NSData *)v10->_data bytes];
       v14 = [(NSData *)v10->_data length];
       root = v10->_root;
-      if (root < v13 || root > v13 + v14)
+      if (root < bytes2 || root > bytes2 + v14)
       {
         goto LABEL_16;
       }
 
-      v17 = [(NSData *)v10->_data bytes];
+      bytes3 = [(NSData *)v10->_data bytes];
       v18 = [(NSData *)v10->_data length];
-      v24 = v17;
+      v24 = bytes3;
       v25 = v18;
       v26 = xmmword_26914CD70;
       v27 = 0;
@@ -279,9 +279,9 @@ LABEL_16:
       }
     }
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     storage = v10->_storage;
-    v10->_storage = v20;
+    v10->_storage = dictionary;
   }
 
   v22 = v10;

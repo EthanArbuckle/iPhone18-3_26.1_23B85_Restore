@@ -1,9 +1,9 @@
 @interface NIPrivacyAuthorizationManager
-- (AuthorizationState)presentUserAuthorizationPrompt:(SEL)a3 forAuditToken:(id)a4 withBundleRecord:(id *)a5;
+- (AuthorizationState)presentUserAuthorizationPrompt:(SEL)prompt forAuditToken:(id)token withBundleRecord:(id *)record;
 - (NIPrivacyAuthorizationManager)init;
 - (id).cxx_construct;
-- (int)authorizationStatusForSession:(id)a3 promptUserIfUndetermined:(BOOL)a4;
-- (void)clearStateForPid:(int)a3;
+- (int)authorizationStatusForSession:(id)session promptUserIfUndetermined:(BOOL)undetermined;
+- (void)clearStateForPid:(int)pid;
 @end
 
 @implementation NIPrivacyAuthorizationManager
@@ -15,19 +15,19 @@
   return [(NIPrivacyAuthorizationManager *)&v3 init];
 }
 
-- (void)clearStateForPid:(int)a3
+- (void)clearStateForPid:(int)pid
 {
-  v4 = a3;
+  pidCopy = pid;
   std::mutex::lock((self + 8));
-  sub_10003CAB0(self + 9, &v4);
+  sub_10003CAB0(self + 9, &pidCopy);
   std::mutex::unlock((self + 8));
 }
 
-- (int)authorizationStatusForSession:(id)a3 promptUserIfUndetermined:(BOOL)a4
+- (int)authorizationStatusForSession:(id)session promptUserIfUndetermined:(BOOL)undetermined
 {
-  v4 = a4;
-  v6 = a3;
-  v26 = [v6 pid];
+  undeterminedCopy = undetermined;
+  sessionCopy = session;
+  v26 = [sessionCopy pid];
   std::mutex::lock((self + 8));
   v7 = sub_10003CAE8(self + 9, &v26);
   if (v7)
@@ -39,8 +39,8 @@
   else
   {
     std::mutex::unlock((self + 8));
-    v9 = [v6 displayName];
-    v10 = v9 == 0;
+    displayName = [sessionCopy displayName];
+    v10 = displayName == 0;
 
     if (v10)
     {
@@ -55,11 +55,11 @@
 
     else
     {
-      v11 = [v6 connection];
-      v12 = v11;
-      if (v11)
+      connection = [sessionCopy connection];
+      v12 = connection;
+      if (connection)
       {
-        [v11 auditToken];
+        [connection auditToken];
       }
 
       else
@@ -77,21 +77,21 @@
         v19 = qword_1009F9820;
         if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
         {
-          v20 = [v6 displayName];
-          sub_10049CC10(v20, v15, buf, v19);
+          displayName2 = [sessionCopy displayName];
+          sub_10049CC10(displayName2, v15, buf, v19);
         }
 
         v8 = 0;
       }
 
-      else if (v4)
+      else if (undeterminedCopy)
       {
-        v16 = [v6 displayName];
-        v17 = [v6 connection];
-        v18 = v17;
-        if (v17)
+        displayName3 = [sessionCopy displayName];
+        connection2 = [sessionCopy connection];
+        v18 = connection2;
+        if (connection2)
         {
-          [v17 auditToken];
+          [connection2 auditToken];
         }
 
         else
@@ -100,7 +100,7 @@
           v28 = 0u;
         }
 
-        [(NIPrivacyAuthorizationManager *)self presentUserAuthorizationPrompt:v16 forAuditToken:buf withBundleRecord:v14];
+        [(NIPrivacyAuthorizationManager *)self presentUserAuthorizationPrompt:displayName3 forAuditToken:buf withBundleRecord:v14];
 
         std::mutex::lock((self + 8));
         *buf = &v26;
@@ -122,7 +122,7 @@
   return v8;
 }
 
-- (AuthorizationState)presentUserAuthorizationPrompt:(SEL)a3 forAuditToken:(id)a4 withBundleRecord:(id *)a5
+- (AuthorizationState)presentUserAuthorizationPrompt:(SEL)prompt forAuditToken:(id)token withBundleRecord:(id *)record
 {
   v8 = a6;
   retstr->var0 = 2;
@@ -131,8 +131,8 @@
   v16 = kTCCAccessCheckOptionPrompt;
   v17 = &__kCFBooleanTrue;
   v9 = [NSDictionary dictionaryWithObjects:&v17 forKeys:&v16 count:1];
-  v10 = *&a5->var0[4];
-  *v15 = *a5->var0;
+  v10 = *&record->var0[4];
+  *v15 = *record->var0;
   *&v15[16] = v10;
   v11 = TCCAccessCheckAuditToken();
   v12 = qword_1009F9820;

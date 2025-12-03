@@ -6,7 +6,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v86 = TCBundle();
     v2 = [v86 localizedStringForKey:@"Out of memory." value:&stru_286EE1130 table:@"TCCompatibility"];

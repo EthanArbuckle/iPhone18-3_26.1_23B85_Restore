@@ -7,11 +7,11 @@
 - (id)navd_defaultTraitsForNavd
 {
   v2 = +[GEOMapService sharedService];
-  v3 = [v2 defaultTraits];
+  defaultTraits = [v2 defaultTraits];
 
-  [v3 setAppIdentifier:@"com.apple.navd"];
+  [defaultTraits setAppIdentifier:@"com.apple.navd"];
 
-  return v3;
+  return defaultTraits;
 }
 
 @end

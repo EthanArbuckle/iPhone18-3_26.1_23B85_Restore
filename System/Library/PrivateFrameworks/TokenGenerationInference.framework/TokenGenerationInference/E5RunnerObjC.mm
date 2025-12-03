@@ -1,24 +1,24 @@
 @interface E5RunnerObjC
-+ (BOOL)compileModelAtPath:(id)a3 modelType:(int64_t)a4 error:(id *)a5;
-+ (BOOL)compileModelWithConfiguration:(id)a3 error:(id *)a4;
-+ (BOOL)doesModelRequireCompilationAtPath:(id)a3 modelType:(int64_t)a4;
-+ (BOOL)doesModelRequireCompilationWithConfiguration:(id)a3 bundleCachePath:(id)a4;
-+ (id)compiledModelAtPath:(id)a3 modelType:(int64_t)a4 bundleCachePath:(id)a5 error:(id *)a6;
-+ (id)compiledModelWithConfiguration:(id)a3 bundleCachePath:(id)a4 error:(id *)a5;
++ (BOOL)compileModelAtPath:(id)path modelType:(int64_t)type error:(id *)error;
++ (BOOL)compileModelWithConfiguration:(id)configuration error:(id *)error;
++ (BOOL)doesModelRequireCompilationAtPath:(id)path modelType:(int64_t)type;
++ (BOOL)doesModelRequireCompilationWithConfiguration:(id)configuration bundleCachePath:(id)path;
++ (id)compiledModelAtPath:(id)path modelType:(int64_t)type bundleCachePath:(id)cachePath error:(id *)error;
++ (id)compiledModelWithConfiguration:(id)configuration bundleCachePath:(id)path error:(id *)error;
 + (id)log;
-- (BOOL)setKVCacheEntryWithTokens:(id)a3 tokens:(id)a4 tokenMasks:(id)a5 startIndex:(int64_t)a6 error:(id *)a7;
+- (BOOL)setKVCacheEntryWithTokens:(id)tokens tokens:(id)a4 tokenMasks:(id)masks startIndex:(int64_t)index error:(id *)error;
 - (BOOL)supportsModularAttention;
-- (E5RunnerObjC)initWithModelConfiguration:(id)a3 error:(id *)a4;
-- (id)createKVCacheEntry:(_NSRange)a3 error:(id *)a4;
-- (id)getEmbeddingsWithTokenID:(int)a3;
+- (E5RunnerObjC)initWithModelConfiguration:(id)configuration error:(id *)error;
+- (id)createKVCacheEntry:(_NSRange)entry error:(id *)error;
+- (id)getEmbeddingsWithTokenID:(int)d;
 - (uint64_t)runTokens:tokenMasks:computeLogitsTokenCount:outputBlock:;
-- (void)enableTelemetryWithIdentifier:(id)a3;
+- (void)enableTelemetryWithIdentifier:(id)identifier;
 - (void)moveToDynamicState;
 - (void)moveToFullyLoadedState;
-- (void)purgeSteps:(id)a3;
-- (void)runTokens:(id)a3 tokenMasks:(id)a4 computeLogitsTokenCount:(int64_t)a5 outputBlock:(id)a6;
+- (void)purgeSteps:(id)steps;
+- (void)runTokens:(id)tokens tokenMasks:(id)masks computeLogitsTokenCount:(int64_t)count outputBlock:(id)block;
 - (void)runTokens:tokenMasks:computeLogitsTokenCount:outputBlock:;
-- (void)setEncodedImages:(id)a3;
+- (void)setEncodedImages:(id)images;
 @end
 
 @implementation E5RunnerObjC
@@ -68,10 +68,10 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (E5RunnerObjC)initWithModelConfiguration:(id)a3 error:(id *)a4
+- (E5RunnerObjC)initWithModelConfiguration:(id)configuration error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configurationCopy = configuration;
   v10.receiver = self;
   v10.super_class = E5RunnerObjC;
   if ([(E5RunnerObjC *)&v10 init])
@@ -80,13 +80,13 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      *&buf[4] = v5;
+      *&buf[4] = configurationCopy;
       _os_log_impl(&dword_220940000, v6, OS_LOG_TYPE_DEFAULT, "Initializing E5RunnerObjC with model configuration: %@", buf, 0xCu);
     }
 
-    if (v5)
+    if (configurationCopy)
     {
-      [v5 modelConfiguration];
+      [configurationCopy modelConfiguration];
     }
 
     else
@@ -121,18 +121,18 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
   return ptr;
 }
 
-- (void)runTokens:(id)a3 tokenMasks:(id)a4 computeLogitsTokenCount:(int64_t)a5 outputBlock:(id)a6
+- (void)runTokens:(id)tokens tokenMasks:(id)masks computeLogitsTokenCount:(int64_t)count outputBlock:(id)block
 {
   v35[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v31 = v12;
-  if (v11)
+  tokensCopy = tokens;
+  masksCopy = masks;
+  blockCopy = block;
+  v31 = blockCopy;
+  if (masksCopy)
   {
-    v13 = v12;
-    v14 = [v11 count];
-    if (v14 != [v10 count])
+    v13 = blockCopy;
+    v14 = [masksCopy count];
+    if (v14 != [tokensCopy count])
     {
       log = self->_log;
       if (os_log_type_enabled(log, OS_LOG_TYPE_ERROR))
@@ -151,7 +151,7 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
     }
   }
 
-  v27 = [v10 count];
+  v27 = [tokensCopy count];
   if (v27 != __p.__end_ - __p.__begin_)
   {
     __assert_rtn("[E5RunnerObjC runTokens:tokenMasks:computeLogitsTokenCount:outputBlock:]", "E5RunnerObjC.mm", 235, "[tokens count] == tokensVector.size()");
@@ -161,7 +161,7 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
   v33[0] = &unk_28344DB50;
   v33[1] = &v31;
   v33[3] = v33;
-  (**ptr)(ptr, &__p, v29, a5, v33);
+  (**ptr)(ptr, &__p, v29, count, v33);
   std::__function::__value_func<void ()(cgm::token_generation_inference::ajax::AJAXE5MLModel::Logits const&)>::~__value_func[abi:ne200100](v33);
   v32 = v29;
   std::vector<std::vector<signed char>>::__destroy_vector::operator()[abi:ne200100](&v32);
@@ -172,9 +172,9 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
   }
 }
 
-- (void)purgeSteps:(id)a3
+- (void)purgeSteps:(id)steps
 {
-  v4 = a3;
+  stepsCopy = steps;
   ptr = self->ajax_e5_model.__ptr_;
   {
     exception = __cxa_allocate_exception(0x10uLL);
@@ -191,7 +191,7 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
   }
 }
 
-- (id)createKVCacheEntry:(_NSRange)a3 error:(id *)a4
+- (id)createKVCacheEntry:(_NSRange)entry error:(id *)error
 {
   v23[1] = *MEMORY[0x277D85DE8];
   ptr = self->ajax_e5_model.__ptr_;
@@ -211,14 +211,14 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
       [(E5RunnerObjC *)log createKVCacheEntry:v10 error:v11, v12, v13, v14, v15, v16];
     }
 
-    if (a4)
+    if (error)
     {
       v17 = MEMORY[0x277CCA9B8];
       v22 = *MEMORY[0x277CCA450];
       v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to create KV cache entry, model does not support modular attention"];
       v23[0] = v18;
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
-      *a4 = [v17 errorWithDomain:@"com.apple.TokenGenerationInference.E5Runner" code:0 userInfo:v19];
+      *error = [v17 errorWithDomain:@"com.apple.TokenGenerationInference.E5Runner" code:0 userInfo:v19];
     }
 
     v8 = 0;
@@ -227,12 +227,12 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
   return v8;
 }
 
-- (BOOL)setKVCacheEntryWithTokens:(id)a3 tokens:(id)a4 tokenMasks:(id)a5 startIndex:(int64_t)a6 error:(id *)a7
+- (BOOL)setKVCacheEntryWithTokens:(id)tokens tokens:(id)a4 tokenMasks:(id)masks startIndex:(int64_t)index error:(id *)error
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v11 = a3;
+  tokensCopy = tokens;
   v12 = a4;
-  v13 = a5;
+  masksCopy = masks;
   ptr = self->ajax_e5_model.__ptr_;
   {
     operator new();
@@ -244,75 +244,75 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
     [(E5RunnerObjC *)log setKVCacheEntryWithTokens:v16 tokens:v17 tokenMasks:v18 startIndex:v19 error:v20, v21, v22];
   }
 
-  if (a7)
+  if (error)
   {
     v23 = MEMORY[0x277CCA9B8];
     v29 = *MEMORY[0x277CCA450];
     v24 = [MEMORY[0x277CCACA8] stringWithFormat:@"Failed to set KV cache entry, model does not support modular attention"];
     v30[0] = v24;
     v25 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
-    *a7 = [v23 errorWithDomain:@"com.apple.TokenGenerationInference.E5Runner" code:0 userInfo:v25];
+    *error = [v23 errorWithDomain:@"com.apple.TokenGenerationInference.E5Runner" code:0 userInfo:v25];
   }
 
   return 0;
 }
 
-+ (BOOL)compileModelAtPath:(id)a3 modelType:(int64_t)a4 error:(id *)a5
++ (BOOL)compileModelAtPath:(id)path modelType:(int64_t)type error:(id *)error
 {
-  v5 = [a1 compiledModelAtPath:a3 modelType:a4 bundleCachePath:0 error:a5];
+  v5 = [self compiledModelAtPath:path modelType:type bundleCachePath:0 error:error];
   v6 = v5 != 0;
 
   return v6;
 }
 
-+ (id)compiledModelAtPath:(id)a3 modelType:(int64_t)a4 bundleCachePath:(id)a5 error:(id *)a6
++ (id)compiledModelAtPath:(id)path modelType:(int64_t)type bundleCachePath:(id)cachePath error:(id *)error
 {
-  v9 = a3;
-  v10 = a5;
+  pathCopy = path;
+  cachePathCopy = cachePath;
   v11 = [TGIMutableE5ModelConfigurationObjC alloc];
   v12 = objc_opt_new();
   v13 = objc_opt_new();
-  v14 = [(TGIE5ModelConfigurationObjC *)v11 initWithModelType:a4 modelBundlePath:v9 e5Functions:v12 adapterConfigurations:v13];
+  v14 = [(TGIE5ModelConfigurationObjC *)v11 initWithModelType:type modelBundlePath:pathCopy e5Functions:v12 adapterConfigurations:v13];
 
-  [(TGIE5ModelConfigurationObjC *)v14 setUseModelCatalogE5CompilerCache:v10 == 0];
-  v15 = [E5RunnerObjC compiledModelWithConfiguration:v14 bundleCachePath:v10 error:a6];
+  [(TGIE5ModelConfigurationObjC *)v14 setUseModelCatalogE5CompilerCache:cachePathCopy == 0];
+  v15 = [E5RunnerObjC compiledModelWithConfiguration:v14 bundleCachePath:cachePathCopy error:error];
 
   return v15;
 }
 
-+ (BOOL)compileModelWithConfiguration:(id)a3 error:(id *)a4
++ (BOOL)compileModelWithConfiguration:(id)configuration error:(id *)error
 {
-  v4 = [a1 compiledModelWithConfiguration:a3 bundleCachePath:0 error:a4];
+  v4 = [self compiledModelWithConfiguration:configuration bundleCachePath:0 error:error];
   v5 = v4 != 0;
 
   return v5;
 }
 
-+ (id)compiledModelWithConfiguration:(id)a3 bundleCachePath:(id)a4 error:(id *)a5
++ (id)compiledModelWithConfiguration:(id)configuration bundleCachePath:(id)path error:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  pathCopy = path;
   v8 = +[E5RunnerObjC log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.__r_.__value_.__l.__data_) = 138412290;
-    *(buf.__r_.__value_.__r.__words + 4) = v6;
+    *(buf.__r_.__value_.__r.__words + 4) = configurationCopy;
     _os_log_impl(&dword_220940000, v8, OS_LOG_TYPE_DEFAULT, "Compiling model with configuration: %@", &buf, 0xCu);
   }
 
-  if (v7)
+  if (pathCopy)
   {
-    v9 = [v6 modelBundlePath];
-    v10 = v9;
-    v21 = [v9 UTF8String];
-    std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&__p, &v21);
-    v11 = v7;
-    std::string::basic_string[abi:ne200100]<0>(&buf, [v7 fileSystemRepresentation]);
+    modelBundlePath = [configurationCopy modelBundlePath];
+    v10 = modelBundlePath;
+    uTF8String = [modelBundlePath UTF8String];
+    std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&__p, &uTF8String);
+    v11 = pathCopy;
+    std::string::basic_string[abi:ne200100]<0>(&buf, [pathCopy fileSystemRepresentation]);
     v26 = 1;
-    cgm::token_generation_inference::ajax::utils::makeProgramLibrary(&__p, &buf, &v23);
-    v12 = v23;
-    v23 = 0;
+    cgm::token_generation_inference::ajax::utils::makeProgramLibrary(&__p, &buf, &uTF8String2);
+    v12 = uTF8String2;
+    uTF8String2 = 0;
     if (v26 == 1 && SHIBYTE(buf.__r_.__value_.__r.__words[2]) < 0)
     {
       operator delete(buf.__r_.__value_.__l.__data_);
@@ -326,11 +326,11 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
 
   else
   {
-    v13 = [v6 modelBundlePath];
-    v14 = v13;
-    v23 = [v13 UTF8String];
-    std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&buf, &v23);
-    cgm::token_generation_inference::ajax::utils::makeProgramLibrary(&buf, [v6 useModelCatalogE5CompilerCache], &__p);
+    modelBundlePath2 = [configurationCopy modelBundlePath];
+    v14 = modelBundlePath2;
+    uTF8String2 = [modelBundlePath2 UTF8String];
+    std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&buf, &uTF8String2);
+    cgm::token_generation_inference::ajax::utils::makeProgramLibrary(&buf, [configurationCopy useModelCatalogE5CompilerCache], &__p);
     v12 = __p.__r_.__value_.__r.__words[0];
     __p.__r_.__value_.__r.__words[0] = 0;
     if (SHIBYTE(buf.__r_.__value_.__r.__words[2]) < 0)
@@ -363,13 +363,13 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
   return v18;
 }
 
-+ (BOOL)doesModelRequireCompilationAtPath:(id)a3 modelType:(int64_t)a4
++ (BOOL)doesModelRequireCompilationAtPath:(id)path modelType:(int64_t)type
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = [TGIMutableE5ModelConfigurationObjC alloc];
   v7 = objc_opt_new();
   v8 = objc_opt_new();
-  v9 = [(TGIE5ModelConfigurationObjC *)v6 initWithModelType:a4 modelBundlePath:v5 e5Functions:v7 adapterConfigurations:v8];
+  v9 = [(TGIE5ModelConfigurationObjC *)v6 initWithModelType:type modelBundlePath:pathCopy e5Functions:v7 adapterConfigurations:v8];
 
   [(TGIE5ModelConfigurationObjC *)v9 setUseModelCatalogE5CompilerCache:1];
   LOBYTE(v7) = [E5RunnerObjC doesModelRequireCompilationWithConfiguration:v9];
@@ -377,23 +377,23 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
   return v7;
 }
 
-+ (BOOL)doesModelRequireCompilationWithConfiguration:(id)a3 bundleCachePath:(id)a4
++ (BOOL)doesModelRequireCompilationWithConfiguration:(id)configuration bundleCachePath:(id)path
 {
   v26 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 modelBundlePath];
+  configurationCopy = configuration;
+  pathCopy = path;
+  modelBundlePath = [configurationCopy modelBundlePath];
   v8 = +[E5RunnerObjC log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf.__r_.__value_.__l.__data_) = 138412290;
-    *(buf.__r_.__value_.__r.__words + 4) = v5;
+    *(buf.__r_.__value_.__r.__words + 4) = configurationCopy;
     _os_log_impl(&dword_220940000, v8, OS_LOG_TYPE_DEFAULT, "Checking if model with configuration: %@ requires compilation", &buf, 0xCu);
   }
 
-  v9 = [v5 modelBundlePath];
-  v10 = [v9 pathExtension];
-  v11 = [v10 isEqualToString:@"bundle"];
+  modelBundlePath2 = [configurationCopy modelBundlePath];
+  pathExtension = [modelBundlePath2 pathExtension];
+  v11 = [pathExtension isEqualToString:@"bundle"];
 
   if (v11)
   {
@@ -407,14 +407,14 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
     goto LABEL_18;
   }
 
-  if (v6)
+  if (pathCopy)
   {
-    v14 = v7;
-    v21 = [v7 UTF8String];
-    std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&v22, &v21);
+    v14 = modelBundlePath;
+    uTF8String = [modelBundlePath UTF8String];
+    std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&v22, &uTF8String);
     v15 = v23;
-    v16 = v6;
-    std::string::basic_string[abi:ne200100]<0>(&buf, [v6 fileSystemRepresentation]);
+    v16 = pathCopy;
+    std::string::basic_string[abi:ne200100]<0>(&buf, [pathCopy fileSystemRepresentation]);
     v25 = 1;
     v13 = cgm::token_generation_inference::ajax::utils::modelRequiresCompilation(&v22, v15, &buf);
     if (v25 == 1 && SHIBYTE(buf.__r_.__value_.__r.__words[2]) < 0)
@@ -432,10 +432,10 @@ uint64_t __19__E5RunnerObjC_log__block_invoke()
 
   else
   {
-    v18 = v7;
-    v22.__r_.__value_.__r.__words[0] = [v7 UTF8String];
+    v18 = modelBundlePath;
+    v22.__r_.__value_.__r.__words[0] = [modelBundlePath UTF8String];
     std::__fs::filesystem::path::path[abi:ne200100]<char const*,void>(&buf, &v22);
-    v13 = cgm::token_generation_inference::ajax::utils::modelRequiresCompilation(&buf, v23, [v5 useModelCatalogE5CompilerCache]);
+    v13 = cgm::token_generation_inference::ajax::utils::modelRequiresCompilation(&buf, v23, [configurationCopy useModelCatalogE5CompilerCache]);
     if ((SHIBYTE(buf.__r_.__value_.__r.__words[2]) & 0x80000000) == 0)
     {
       goto LABEL_16;
@@ -458,11 +458,11 @@ LABEL_18:
   return v13;
 }
 
-- (void)enableTelemetryWithIdentifier:(id)a3
+- (void)enableTelemetryWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   ptr = self->ajax_e5_model.__ptr_;
-  std::string::basic_string[abi:ne200100]<0>(&__str, [v4 UTF8String]);
+  std::string::basic_string[abi:ne200100]<0>(&__str, [identifierCopy UTF8String]);
   std::string::operator=((ptr + 16), &__str);
   if (SHIBYTE(__str.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -470,13 +470,13 @@ LABEL_18:
   }
 }
 
-- (void)setEncodedImages:(id)a3
+- (void)setEncodedImages:(id)images
 {
-  v4 = a3;
+  imagesCopy = images;
   v5 = *(self->ajax_e5_model.__ptr_ + 1);
   if (v5)
   {
-    ImageEmbeddingsProvider::setEncodedImages(v5, v4);
+    ImageEmbeddingsProvider::setEncodedImages(v5, imagesCopy);
   }
 
   else
@@ -490,13 +490,13 @@ LABEL_18:
   }
 }
 
-- (id)getEmbeddingsWithTokenID:(int)a3
+- (id)getEmbeddingsWithTokenID:(int)d
 {
   v4 = *(self->ajax_e5_model.__ptr_ + 1);
   if (v4)
   {
     EmbeddingSizeInBytes = ImageEmbeddingsProvider::getEmbeddingSizeInBytes(v4);
-    Embeddings = ImageEmbeddingsProvider::getEmbeddings(*(self->ajax_e5_model.__ptr_ + 1), a3);
+    Embeddings = ImageEmbeddingsProvider::getEmbeddings(*(self->ajax_e5_model.__ptr_ + 1), d);
     if (Embeddings)
     {
       Embeddings = [MEMORY[0x277CBEA90] dataWithBytes:Embeddings length:EmbeddingSizeInBytes];
@@ -521,7 +521,7 @@ LABEL_18:
 - (uint64_t)runTokens:tokenMasks:computeLogitsTokenCount:outputBlock:
 {
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -538,7 +538,7 @@ LABEL_18:
   v7[1] = v5;
   v7[2] = a2[2];
   v6 = [(E5RunnerLastForwardLogits *)v4 initWithLogits:v7];
-  (*(**(a1 + 8) + 16))();
+  (*(**(self + 8) + 16))();
 }
 
 - (void)initWithModelConfiguration:error:.cold.1()

@@ -1,38 +1,38 @@
 @interface SFPowerSourceLEDInfo
-- (BOOL)isEqual:(id)a3;
-- (SFPowerSourceLEDInfo)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (SFPowerSourceLEDInfo)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFPowerSourceLEDInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   LEDState = self->_LEDState;
-  v7 = v4;
+  v7 = coderCopy;
   if (LEDState)
   {
-    [v4 encodeInteger:LEDState forKey:@"state"];
-    v4 = v7;
+    [coderCopy encodeInteger:LEDState forKey:@"state"];
+    coderCopy = v7;
   }
 
   LEDColor = self->_LEDColor;
   if (LEDColor)
   {
     [v7 encodeInteger:LEDColor forKey:@"color"];
-    v4 = v7;
+    coderCopy = v7;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     LEDState = self->_LEDState;
     if (LEDState == [v5 LEDState])
     {
@@ -81,9 +81,9 @@
   return v6;
 }
 
-- (SFPowerSourceLEDInfo)initWithCoder:(id)a3
+- (SFPowerSourceLEDInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = SFPowerSourceLEDInfo;
   v5 = [(SFPowerSourceLEDInfo *)&v8 init];

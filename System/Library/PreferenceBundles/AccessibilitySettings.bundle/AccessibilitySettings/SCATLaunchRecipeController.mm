@@ -1,7 +1,7 @@
 @interface SCATLaunchRecipeController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 @end
 
 @implementation SCATLaunchRecipeController
@@ -13,11 +13,11 @@
   if (!v4)
   {
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 switchControlRecipes];
-    [(SCATLaunchRecipeController *)self setRecipes:v6];
+    switchControlRecipes = [v5 switchControlRecipes];
+    [(SCATLaunchRecipeController *)self setRecipes:switchControlRecipes];
 
-    v7 = [(SCATLaunchRecipeController *)self recipes];
-    v8 = [v7 count];
+    recipes = [(SCATLaunchRecipeController *)self recipes];
+    v8 = [recipes count];
 
     if (!v8)
     {
@@ -25,8 +25,8 @@
     }
 
     v9 = [NSMutableArray alloc];
-    v10 = [(SCATLaunchRecipeController *)self recipes];
-    v11 = [v9 initWithCapacity:{objc_msgSend(v10, "count") + 2}];
+    recipes2 = [(SCATLaunchRecipeController *)self recipes];
+    v11 = [v9 initWithCapacity:{objc_msgSend(recipes2, "count") + 2}];
 
     v12 = +[PSSpecifier emptyGroupSpecifier];
     v13 = AXParameterizedLocalizedString();
@@ -38,7 +38,7 @@
 
     [v15 setProperty:&off_27A530 forKey:@"RecipeIndex"];
     [v11 addObject:v15];
-    v16 = [(SCATLaunchRecipeController *)self recipes];
+    recipes3 = [(SCATLaunchRecipeController *)self recipes];
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = __40__SCATLaunchRecipeController_specifiers__block_invoke;
@@ -46,7 +46,7 @@
     v21[4] = self;
     v17 = v11;
     v22 = v17;
-    [v16 enumerateObjectsUsingBlock:v21];
+    [recipes3 enumerateObjectsUsingBlock:v21];
 
     v18 = *&self->AXUISettingsBaseListController_opaque[v3];
     *&self->AXUISettingsBaseListController_opaque[v3] = v17;
@@ -69,22 +69,22 @@ void __40__SCATLaunchRecipeController_specifiers__block_invoke(uint64_t a1, void
   [*(a1 + 40) addObject:v7];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
+  pathCopy = path;
   v32.receiver = self;
   v32.super_class = SCATLaunchRecipeController;
-  v7 = [(SCATLaunchRecipeController *)&v32 tableView:a3 cellForRowAtIndexPath:v6];
+  v7 = [(SCATLaunchRecipeController *)&v32 tableView:view cellForRowAtIndexPath:pathCopy];
   v8 = +[AXSettings sharedInstance];
-  v9 = [(SCATLaunchRecipeController *)self specifierAtIndex:[(SCATLaunchRecipeController *)self indexForIndexPath:v6]];
+  v9 = [(SCATLaunchRecipeController *)self specifierAtIndex:[(SCATLaunchRecipeController *)self indexForIndexPath:pathCopy]];
   v10 = [v9 propertyForKey:@"RecipeIndex"];
   if (v10)
   {
-    v11 = [v8 switchControlLaunchRecipeUUID];
-    v12 = [v10 unsignedIntegerValue];
-    if (v12 == 0x7FFFFFFFFFFFFFFFLL)
+    switchControlLaunchRecipeUUID = [v8 switchControlLaunchRecipeUUID];
+    unsignedIntegerValue = [v10 unsignedIntegerValue];
+    if (unsignedIntegerValue == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if (!v11)
+      if (!switchControlLaunchRecipeUUID)
       {
         v20 = &dword_0 + 1;
         goto LABEL_23;
@@ -94,8 +94,8 @@ void __40__SCATLaunchRecipeController_specifiers__block_invoke(uint64_t a1, void
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v13 = [(SCATLaunchRecipeController *)self recipes];
-      v14 = [v13 countByEnumeratingWithState:&v28 objects:v33 count:16];
+      recipes = [(SCATLaunchRecipeController *)self recipes];
+      v14 = [recipes countByEnumeratingWithState:&v28 objects:v33 count:16];
       if (v14)
       {
         v15 = v14;
@@ -108,11 +108,11 @@ void __40__SCATLaunchRecipeController_specifiers__block_invoke(uint64_t a1, void
           {
             if (*v29 != v16)
             {
-              objc_enumerationMutation(v13);
+              objc_enumerationMutation(recipes);
             }
 
-            v18 = [*(*(&v28 + 1) + 8 * i) uuid];
-            v19 = [v18 isEqual:v11];
+            uuid = [*(*(&v28 + 1) + 8 * i) uuid];
+            v19 = [uuid isEqual:switchControlLaunchRecipeUUID];
 
             if (v19)
             {
@@ -121,7 +121,7 @@ void __40__SCATLaunchRecipeController_specifiers__block_invoke(uint64_t a1, void
             }
           }
 
-          v15 = [v13 countByEnumeratingWithState:&v28 objects:v33 count:16];
+          v15 = [recipes countByEnumeratingWithState:&v28 objects:v33 count:16];
           if (v15)
           {
             continue;
@@ -144,15 +144,15 @@ LABEL_17:
 
     else
     {
-      v21 = v12;
-      v22 = [(SCATLaunchRecipeController *)self recipes];
-      v13 = [v22 objectAtIndexedSubscript:v21];
+      v21 = unsignedIntegerValue;
+      recipes2 = [(SCATLaunchRecipeController *)self recipes];
+      recipes = [recipes2 objectAtIndexedSubscript:v21];
 
-      if (v11)
+      if (switchControlLaunchRecipeUUID)
       {
-        v23 = [v13 uuid];
-        v24 = [v8 switchControlLaunchRecipeUUID];
-        v20 = [v23 isEqual:v24];
+        uuid2 = [recipes uuid];
+        switchControlLaunchRecipeUUID2 = [v8 switchControlLaunchRecipeUUID];
+        v20 = [uuid2 isEqual:switchControlLaunchRecipeUUID2];
       }
 
       else
@@ -165,7 +165,7 @@ LABEL_17:
   else
   {
     _AXAssert();
-    v11 = [v8 switchControlLaunchRecipeUUID];
+    switchControlLaunchRecipeUUID = [v8 switchControlLaunchRecipeUUID];
     v20 = 0;
   }
 
@@ -175,31 +175,31 @@ LABEL_23:
   return v7;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  [(SCATLaunchRecipeController *)self updateTableCheckedSelection:v6];
-  v8 = [(SCATLaunchRecipeController *)self specifierAtIndex:[(SCATLaunchRecipeController *)self indexForIndexPath:v6]];
+  pathCopy = path;
+  viewCopy = view;
+  [(SCATLaunchRecipeController *)self updateTableCheckedSelection:pathCopy];
+  v8 = [(SCATLaunchRecipeController *)self specifierAtIndex:[(SCATLaunchRecipeController *)self indexForIndexPath:pathCopy]];
   v9 = [v8 propertyForKey:@"RecipeIndex"];
   v10 = v9;
   if (v9)
   {
-    v11 = [v9 unsignedIntegerValue];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
     v12 = +[AXSettings sharedInstance];
     v13 = v12;
-    if (v11 == 0x7FFFFFFFFFFFFFFFLL)
+    if (unsignedIntegerValue == 0x7FFFFFFFFFFFFFFFLL)
     {
       [v12 setSwitchControlLaunchRecipeUUID:0];
     }
 
     else
     {
-      v14 = [(SCATLaunchRecipeController *)self recipes];
-      v15 = [v14 objectAtIndexedSubscript:v11];
+      recipes = [(SCATLaunchRecipeController *)self recipes];
+      v15 = [recipes objectAtIndexedSubscript:unsignedIntegerValue];
 
-      v16 = [v15 uuid];
-      [v13 setSwitchControlLaunchRecipeUUID:v16];
+      uuid = [v15 uuid];
+      [v13 setSwitchControlLaunchRecipeUUID:uuid];
     }
   }
 
@@ -211,7 +211,7 @@ LABEL_23:
 
   v18.receiver = self;
   v18.super_class = SCATLaunchRecipeController;
-  [(SCATLaunchRecipeController *)&v18 tableView:v7 didSelectRowAtIndexPath:v6, v17];
+  [(SCATLaunchRecipeController *)&v18 tableView:viewCopy didSelectRowAtIndexPath:pathCopy, v17];
 }
 
 @end

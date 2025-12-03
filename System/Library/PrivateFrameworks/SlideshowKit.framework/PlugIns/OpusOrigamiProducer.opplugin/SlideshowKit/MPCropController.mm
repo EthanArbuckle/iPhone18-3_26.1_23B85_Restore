@@ -1,23 +1,23 @@
 @interface MPCropController
 + (id)sharedController;
 + (void)releaseSharedController;
-- (CGPoint)checkFarApartROIs:(id)a3 withImageSize:(CGSize)a4 visibleAspectRatio:(double)a5 roiCenter:(CGPoint)a6;
+- (CGPoint)checkFarApartROIs:(id)is withImageSize:(CGSize)size visibleAspectRatio:(double)ratio roiCenter:(CGPoint)center;
 - (MPCropController)init;
-- (double)durationOfSlide:(id)a3;
-- (void)_applyCropToSlidesInEffectContainersWithArguments:(id)a3;
-- (void)applyAnimatedCropToBreakSlide:(id)a3 withOptions:(id)a4;
-- (void)applyAnimatedCropToSlide:(id)a3 withOptions:(id)a4 centeredAt:(CGPoint)a5 alwaysZoomIn:(BOOL)a6;
-- (void)applyAnimatedCropWithROIsToSlide:(id)a3 withOptions:(id)a4;
-- (void)applyCropToSlide:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (void)applyCropToSlide:(id)a3 withOptions:(id)a4;
-- (void)applyCropToSlidesInEffectContainers:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (void)applyMultiFaceAnimatedCropToSlide:(id)a3 withOptions:(id)a4;
-- (void)applyStationaryCropToSlide:(id)a3 withOptions:(id)a4;
-- (void)batchCrop:(id)a3;
-- (void)cropSlidesForLayerGroup:(id)a3 inDocument:(id)a4 withOptions:(id)a5;
-- (void)cropSlidesInDocument:(id)a3 withOptions:(id)a4;
+- (double)durationOfSlide:(id)slide;
+- (void)_applyCropToSlidesInEffectContainersWithArguments:(id)arguments;
+- (void)applyAnimatedCropToBreakSlide:(id)slide withOptions:(id)options;
+- (void)applyAnimatedCropToSlide:(id)slide withOptions:(id)options centeredAt:(CGPoint)at alwaysZoomIn:(BOOL)in;
+- (void)applyAnimatedCropWithROIsToSlide:(id)slide withOptions:(id)options;
+- (void)applyCropToSlide:(id)slide inDocument:(id)document withOptions:(id)options;
+- (void)applyCropToSlide:(id)slide withOptions:(id)options;
+- (void)applyCropToSlidesInEffectContainers:(id)containers inDocument:(id)document withOptions:(id)options;
+- (void)applyMultiFaceAnimatedCropToSlide:(id)slide withOptions:(id)options;
+- (void)applyStationaryCropToSlide:(id)slide withOptions:(id)options;
+- (void)batchCrop:(id)crop;
+- (void)cropSlidesForLayerGroup:(id)group inDocument:(id)document withOptions:(id)options;
+- (void)cropSlidesInDocument:(id)document withOptions:(id)options;
 - (void)dealloc;
-- (void)setupWithDocument:(id)a3 andOptions:(id)a4;
+- (void)setupWithDocument:(id)document andOptions:(id)options;
 @end
 
 @implementation MPCropController
@@ -27,13 +27,13 @@
   result = qword_1EF2B0;
   if (!qword_1EF2B0)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!qword_1EF2B0)
     {
       qword_1EF2B0 = objc_alloc_init(MPCropController);
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return qword_1EF2B0;
   }
 
@@ -44,11 +44,11 @@
 {
   if (qword_1EF2B0)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
 
     qword_1EF2B0 = 0;
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
   }
 }
 
@@ -75,7 +75,7 @@
   [(MPCropController *)&v3 dealloc];
 }
 
-- (void)batchCrop:(id)a3
+- (void)batchCrop:(id)crop
 {
   v24 = objc_alloc_init(NSAutoreleasePool);
   if (!self->_delegate)
@@ -95,13 +95,13 @@ LABEL_5:
   v6 = objc_opt_respondsToSelector() ^ 1;
 LABEL_6:
   v21 = v6;
-  v7 = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(a3, "objectForKey:", @"options"}];
-  v22 = [a3 objectForKey:@"document"];
+  v7 = [[NSMutableDictionary alloc] initWithDictionary:{objc_msgSend(crop, "objectForKey:", @"options"}];
+  v22 = [crop objectForKey:@"document"];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  obj = [a3 objectForKey:@"slidesToCrop"];
+  obj = [crop objectForKey:@"slidesToCrop"];
   v8 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (!v8)
   {
@@ -178,32 +178,32 @@ LABEL_29:
   [v24 drain];
 }
 
-- (void)cropSlidesInDocument:(id)a3 withOptions:(id)a4
+- (void)cropSlidesInDocument:(id)document withOptions:(id)options
 {
-  v7 = [a3 documentLayerGroup];
+  documentLayerGroup = [document documentLayerGroup];
 
-  [(MPCropController *)self cropSlidesForLayerGroup:v7 inDocument:a3 withOptions:a4];
+  [(MPCropController *)self cropSlidesForLayerGroup:documentLayerGroup inDocument:document withOptions:options];
 }
 
-- (void)cropSlidesForLayerGroup:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (void)cropSlidesForLayerGroup:(id)group inDocument:(id)document withOptions:(id)options
 {
   v9 = objc_autoreleasePoolPush();
   [(NSRecursiveLock *)self->_cropLock lock];
-  v51 = [a5 mutableCopy];
+  v51 = [options mutableCopy];
   if (!v51)
   {
-    v51 = [objc_msgSend(a3 "authoringOptions")];
+    v51 = [objc_msgSend(group "authoringOptions")];
   }
 
-  [(MPCropController *)self setupWithDocument:a4 andOptions:a5];
-  v10 = [MPAuthoringUtilities reconfigureRangeFromOptions:a5];
+  [(MPCropController *)self setupWithDocument:document andOptions:options];
+  v10 = [MPAuthoringUtilities reconfigureRangeFromOptions:options];
   v12 = v11;
   v13 = objc_alloc_init(NSMutableArray);
   v64 = 0u;
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
-  obj = [a3 layers];
+  obj = [group layers];
   v45 = [obj countByEnumeratingWithState:&v64 objects:v70 count:16];
   if (v45)
   {
@@ -213,8 +213,8 @@ LABEL_29:
     v15 = 0;
     v52 = &v10[v12];
     v42 = *v65;
-    v49 = a4;
-    v50 = self;
+    documentCopy = document;
+    selfCopy = self;
     do
     {
       v16 = 0;
@@ -228,18 +228,18 @@ LABEL_29:
         v17 = *(*(&v64 + 1) + 8 * v16);
         v18 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v17 zIndex]);
         [v51 setObject:v18 forKey:kMPAuthoringLayerIndex];
-        v19 = [v17 effectContainers];
+        effectContainers = [v17 effectContainers];
         v60 = 0u;
         v61 = 0u;
         v62 = 0u;
         v63 = 0u;
-        v47 = [v19 countByEnumeratingWithState:&v60 objects:v69 count:16];
+        v47 = [effectContainers countByEnumeratingWithState:&v60 objects:v69 count:16];
         if (v47)
         {
           v20 = *v61;
           v21 = v14;
           v48 = v16;
-          v43 = v19;
+          v43 = effectContainers;
           v44 = *v61;
 LABEL_10:
           v22 = 0;
@@ -247,7 +247,7 @@ LABEL_11:
           if (*v61 != v20)
           {
             v23 = v22;
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(effectContainers);
             v22 = v23;
           }
 
@@ -257,8 +257,8 @@ LABEL_11:
           v57 = 0u;
           v58 = 0u;
           v59 = 0u;
-          v53 = [v24 effects];
-          v25 = [v53 countByEnumeratingWithState:&v56 objects:v68 count:16];
+          effects = [v24 effects];
+          v25 = [effects countByEnumeratingWithState:&v56 objects:v68 count:16];
           if (v25)
           {
             v26 = v25;
@@ -269,7 +269,7 @@ LABEL_15:
             {
               if (*v57 != v55)
               {
-                objc_enumerationMutation(v53);
+                objc_enumerationMutation(effects);
               }
 
               v28 = *(*(&v56 + 1) + 8 * v27);
@@ -308,8 +308,8 @@ LABEL_22:
                       [v34 setMaxConcurrentOperationCount:1];
                     }
 
-                    v35 = [[NSDictionary alloc] initWithObjectsAndKeys:{v13, @"slidesToCrop", v49, @"document", objc_msgSend(v51, "copy"), @"options", 0}];
-                    v36 = [[NSInvocationOperation alloc] initWithTarget:v50 selector:"batchCrop:" object:v35];
+                    v35 = [[NSDictionary alloc] initWithObjectsAndKeys:{v13, @"slidesToCrop", documentCopy, @"document", objc_msgSend(v51, "copy"), @"options", 0}];
+                    v36 = [[NSInvocationOperation alloc] initWithTarget:selfCopy selector:"batchCrop:" object:v35];
                     [v36 setQualityOfService:9];
                     [v36 setQueuePriority:-8];
                     v54 = v34;
@@ -326,15 +326,15 @@ LABEL_22:
               if (v12 && v15 >= v52)
               {
                 v14 = 1;
-                a4 = v49;
-                self = v50;
+                document = documentCopy;
+                self = selfCopy;
                 v16 = v48;
                 goto LABEL_37;
               }
 
               if (v26 == ++v27)
               {
-                v26 = [v53 countByEnumeratingWithState:&v56 objects:v68 count:16];
+                v26 = [effects countByEnumeratingWithState:&v56 objects:v68 count:16];
                 if (v26)
                 {
                   goto LABEL_15;
@@ -343,10 +343,10 @@ LABEL_22:
 LABEL_33:
                 v21 = 0;
                 v22 = v46 + 1;
-                a4 = v49;
-                self = v50;
+                document = documentCopy;
+                self = selfCopy;
                 v16 = v48;
-                v19 = v43;
+                effectContainers = v43;
                 v20 = v44;
                 if ((v46 + 1) == v47)
                 {
@@ -377,7 +377,7 @@ LABEL_33:
         }
 
 LABEL_37:
-        v38 = [[NSDictionary alloc] initWithObjectsAndKeys:{v13, @"slidesToCrop", a4, @"document", objc_msgSend(v51, "copy"), @"options", 0}];
+        v38 = [[NSDictionary alloc] initWithObjectsAndKeys:{v13, @"slidesToCrop", document, @"document", objc_msgSend(v51, "copy"), @"options", 0}];
         [(MPCropController *)self batchCrop:v38];
 
         v16 = v16 + 1;
@@ -401,7 +401,7 @@ LABEL_37:
   objc_autoreleasePoolPop(v9);
 }
 
-- (void)_applyCropToSlidesInEffectContainersWithArguments:(id)a3
+- (void)_applyCropToSlidesInEffectContainersWithArguments:(id)arguments
 {
   v4 = objc_autoreleasePoolPush();
   [+[MPCropController sharedController](MPCropController "sharedController")];
@@ -409,20 +409,20 @@ LABEL_37:
   objc_autoreleasePoolPop(v4);
 }
 
-- (void)applyCropToSlidesInEffectContainers:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (void)applyCropToSlidesInEffectContainers:(id)containers inDocument:(id)document withOptions:(id)options
 {
   [(NSRecursiveLock *)self->_cropLock lock];
-  v27 = a4;
-  v28 = self;
-  v9 = a5;
-  [(MPCropController *)self setupWithDocument:a4 andOptions:a5];
+  documentCopy = document;
+  selfCopy = self;
+  optionsCopy = options;
+  [(MPCropController *)self setupWithDocument:document andOptions:options];
   v10 = objc_alloc_init(NSMutableArray);
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  obj = a3;
-  v25 = [a3 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  obj = containers;
+  v25 = [containers countByEnumeratingWithState:&v33 objects:v38 count:16];
   v11 = 0;
   if (v25)
   {
@@ -443,8 +443,8 @@ LABEL_37:
         v30 = 0u;
         v31 = 0u;
         v32 = 0u;
-        v14 = [v13 effects];
-        v15 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
+        effects = [v13 effects];
+        v15 = [effects countByEnumeratingWithState:&v29 objects:v37 count:16];
         if (v15)
         {
           v16 = v15;
@@ -455,7 +455,7 @@ LABEL_37:
             {
               if (*v30 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(effects);
               }
 
               v19 = *(*(&v29 + 1) + 8 * i);
@@ -469,8 +469,8 @@ LABEL_37:
                   [v11 setMaxConcurrentOperationCount:1];
                 }
 
-                v20 = [[NSDictionary alloc] initWithObjectsAndKeys:{v10, @"slidesToCrop", v27, @"document", v9, @"options", 0}];
-                v21 = [[NSInvocationOperation alloc] initWithTarget:v28 selector:"batchCrop:" object:v20];
+                v20 = [[NSDictionary alloc] initWithObjectsAndKeys:{v10, @"slidesToCrop", documentCopy, @"document", optionsCopy, @"options", 0}];
+                v21 = [[NSInvocationOperation alloc] initWithTarget:selfCopy selector:"batchCrop:" object:v20];
                 [v21 setQualityOfService:9];
                 [v21 setQueuePriority:-8];
                 [v11 addOperation:v21];
@@ -479,7 +479,7 @@ LABEL_37:
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
+            v16 = [effects countByEnumeratingWithState:&v29 objects:v37 count:16];
           }
 
           while (v16);
@@ -495,43 +495,43 @@ LABEL_37:
     while (v25);
   }
 
-  v22 = [[NSDictionary alloc] initWithObjectsAndKeys:{v10, @"slidesToCrop", v27, @"document", v9, @"options", 0}];
-  [(MPCropController *)v28 batchCrop:v22];
+  v22 = [[NSDictionary alloc] initWithObjectsAndKeys:{v10, @"slidesToCrop", documentCopy, @"document", optionsCopy, @"options", 0}];
+  [(MPCropController *)selfCopy batchCrop:v22];
 
   if (v11)
   {
     [v11 waitUntilAllOperationsAreFinished];
   }
 
-  [(MPCropController *)v28 cleanup];
-  [(NSRecursiveLock *)v28->_cropLock unlock];
+  [(MPCropController *)selfCopy cleanup];
+  [(NSRecursiveLock *)selfCopy->_cropLock unlock];
 }
 
-- (void)applyCropToSlide:(id)a3 inDocument:(id)a4 withOptions:(id)a5
+- (void)applyCropToSlide:(id)slide inDocument:(id)document withOptions:(id)options
 {
   [(NSRecursiveLock *)self->_cropLock lock];
-  if (!a5)
+  if (!options)
   {
-    a5 = [objc_msgSend(a4 "documentLayerGroup")];
+    options = [objc_msgSend(document "documentLayerGroup")];
   }
 
-  [(MPCropController *)self setupWithDocument:a4 andOptions:a5];
-  v9 = [objc_msgSend(a3 "nearestLayer")];
-  v10 = [a5 mutableCopy];
+  [(MPCropController *)self setupWithDocument:document andOptions:options];
+  v9 = [objc_msgSend(slide "nearestLayer")];
+  v10 = [options mutableCopy];
   if (v9 != -1)
   {
     v11 = [NSNumber numberWithInteger:v9];
     [v10 setObject:v11 forKey:kMPAuthoringLayerIndex];
   }
 
-  [(MPCropController *)self applyCropToSlide:a3 withOptions:v10];
+  [(MPCropController *)self applyCropToSlide:slide withOptions:v10];
   [(MPCropController *)self cleanup];
   cropLock = self->_cropLock;
 
   [(NSRecursiveLock *)cropLock unlock];
 }
 
-- (void)setupWithDocument:(id)a3 andOptions:(id)a4
+- (void)setupWithDocument:(id)document andOptions:(id)options
 {
   authoredDocument = self->_authoredDocument;
   if (authoredDocument)
@@ -540,17 +540,17 @@ LABEL_37:
     self->_authoredDocument = 0;
   }
 
-  self->_authoredDocument = a3;
+  self->_authoredDocument = document;
 }
 
-- (void)applyCropToSlide:(id)a3 withOptions:(id)a4
+- (void)applyCropToSlide:(id)slide withOptions:(id)options
 {
-  v4 = a4;
+  optionsCopy = options;
   p_vtable = &OBJC_METACLASS___MPDocumentInternal.vtable;
-  [MPAuthoringUtilities kenBurnsLikelihoodFromOptions:a4];
+  [MPAuthoringUtilities kenBurnsLikelihoodFromOptions:options];
   v9 = v8;
-  v10 = [MPAuthoringUtilities kenBurnsBreaksFromOptions:v4];
-  -[MPDocument resolutionForPath:](self->_authoredDocument, "resolutionForPath:", [a3 path]);
+  v10 = [MPAuthoringUtilities kenBurnsBreaksFromOptions:optionsCopy];
+  -[MPDocument resolutionForPath:](self->_authoredDocument, "resolutionForPath:", [slide path]);
   v13 = v11 / v12;
   if (v11 / v12 >= 0.5 && v13 <= 2.0)
   {
@@ -559,9 +559,9 @@ LABEL_37:
 
   else
   {
-    [MPAuthoringUtilities aspectRatioFromOptions:v4];
+    [MPAuthoringUtilities aspectRatioFromOptions:optionsCopy];
     v16 = v15;
-    v17 = [a3 parentEffect];
+    parentEffect = [slide parentEffect];
     p_vtable = (&OBJC_METACLASS___MPDocumentInternal + 24);
     [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
     v19 = v13 / v18;
@@ -584,9 +584,9 @@ LABEL_37:
     v22 = v10 & v21;
   }
 
-  v23 = [p_vtable + 172 kenBurnsLevelFromOptions:v4];
-  v24 = [a3 parentEffect];
-  if (!v24 || (v25 = v24, v26 = [v24 effectID], v27 = objc_msgSend(v25, "presetID"), v28 = objc_msgSend(p_vtable + 172, "styleFromOptions:", v4), objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager, "sharedManager"), "defaultAutoKenBurnsLikelihoodForEffect:withPreset:ofStyle:", v26, v27, v28), v29 <= -1.0))
+  v23 = [p_vtable + 172 kenBurnsLevelFromOptions:optionsCopy];
+  parentEffect2 = [slide parentEffect];
+  if (!parentEffect2 || (v25 = parentEffect2, v26 = [parentEffect2 effectID], v27 = objc_msgSend(v25, "presetID"), v28 = objc_msgSend(p_vtable + 172, "styleFromOptions:", optionsCopy), objc_msgSend(+[MPStyleManager sharedManager](MPStyleManager, "sharedManager"), "defaultAutoKenBurnsLikelihoodForEffect:withPreset:ofStyle:", v26, v27, v28), v29 <= -1.0))
   {
     if (v22)
     {
@@ -595,7 +595,7 @@ LABEL_37:
 
 LABEL_28:
 
-    [(MPCropController *)self applyStationaryCropToSlide:a3 withOptions:v4];
+    [(MPCropController *)self applyStationaryCropToSlide:slide withOptions:optionsCopy];
     return;
   }
 
@@ -612,15 +612,15 @@ LABEL_28:
 
   v23 = v30;
 LABEL_19:
-  v31 = [(NSMutableDictionary *)v4 objectForKey:kMPAuthoringSeed];
+  v31 = [(NSMutableDictionary *)optionsCopy objectForKey:kMPAuthoringSeed];
   if (v31)
   {
-    srandom([objc_msgSend(a3 "path")] + objc_msgSend(v31, "unsignedIntegerValue"));
+    srandom([objc_msgSend(slide "path")] + objc_msgSend(v31, "unsignedIntegerValue"));
   }
 
-  if ([MPAuthoringUtilities useROIFromOptions:v4])
+  if ([MPAuthoringUtilities useROIFromOptions:optionsCopy])
   {
-    v32 = -[MPDocument regionsOfInterestForPath:detect:](self->_authoredDocument, "regionsOfInterestForPath:detect:", [a3 path], +[MPAuthoringUtilities performFaceDetectionFromOptions:](MPAuthoringUtilities, "performFaceDetectionFromOptions:", v4));
+    v32 = -[MPDocument regionsOfInterestForPath:detect:](self->_authoredDocument, "regionsOfInterestForPath:detect:", [slide path], +[MPAuthoringUtilities performFaceDetectionFromOptions:](MPAuthoringUtilities, "performFaceDetectionFromOptions:", optionsCopy));
     if (v32)
     {
       v32 = [v32 count];
@@ -639,30 +639,30 @@ LABEL_19:
     {
 LABEL_25:
 
-      [(MPCropController *)self applyAnimatedCropToBreakSlide:a3 withOptions:v4];
+      [(MPCropController *)self applyAnimatedCropToBreakSlide:slide withOptions:optionsCopy];
       return;
     }
   }
 
   if (!v23)
   {
-    v4 = [NSMutableDictionary dictionaryWithDictionary:v4];
+    optionsCopy = [NSMutableDictionary dictionaryWithDictionary:optionsCopy];
     LODWORD(v33) = 0.5;
     v34 = [NSNumber numberWithFloat:v33];
-    [(NSMutableDictionary *)v4 setObject:v34 forKey:kMPAuthoringKenBurnsPanFactor];
+    [(NSMutableDictionary *)optionsCopy setObject:v34 forKey:kMPAuthoringKenBurnsPanFactor];
     LODWORD(v35) = 1067030938;
     v36 = [NSNumber numberWithFloat:v35];
-    [(NSMutableDictionary *)v4 setObject:v36 forKey:kMPAuthoringKenBurnsMaxZoom];
+    [(NSMutableDictionary *)optionsCopy setObject:v36 forKey:kMPAuthoringKenBurnsMaxZoom];
 LABEL_39:
 
-    [(MPCropController *)self applyAnimatedCropWithROIsToSlide:a3 withOptions:v4];
+    [(MPCropController *)self applyAnimatedCropWithROIsToSlide:slide withOptions:optionsCopy];
     return;
   }
 
   if (v32 >= 2)
   {
 
-    [(MPCropController *)self applyMultiFaceAnimatedCropToSlide:a3 withOptions:v4];
+    [(MPCropController *)self applyMultiFaceAnimatedCropToSlide:slide withOptions:optionsCopy];
     return;
   }
 
@@ -671,12 +671,12 @@ LABEL_39:
     goto LABEL_39;
   }
 
-  [(MPCropController *)self applyAnimatedCropToSlide:a3 withOptions:v4];
+  [(MPCropController *)self applyAnimatedCropToSlide:slide withOptions:optionsCopy];
 }
 
-- (void)applyAnimatedCropWithROIsToSlide:(id)a3 withOptions:(id)a4
+- (void)applyAnimatedCropWithROIsToSlide:(id)slide withOptions:(id)options
 {
-  v7 = -[MPDocument regionsOfInterestForPath:detect:](self->_authoredDocument, "regionsOfInterestForPath:detect:", [a3 path], +[MPAuthoringUtilities performFaceDetectionFromOptions:](MPAuthoringUtilities, "performFaceDetectionFromOptions:", a4));
+  v7 = -[MPDocument regionsOfInterestForPath:detect:](self->_authoredDocument, "regionsOfInterestForPath:detect:", [slide path], +[MPAuthoringUtilities performFaceDetectionFromOptions:](MPAuthoringUtilities, "performFaceDetectionFromOptions:", options));
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
@@ -781,18 +781,18 @@ LABEL_39:
     [MPAuthoringUtilities kbCenterPointFromRect:*v29, *&v29[8], *&v29[16], *&v29[24]];
   }
 
-  [(MPCropController *)self applyAnimatedCropToSlide:a3 withOptions:a4 centeredAt:1 alwaysZoomIn:v27, v28];
+  [(MPCropController *)self applyAnimatedCropToSlide:slide withOptions:options centeredAt:1 alwaysZoomIn:v27, v28];
 }
 
-- (void)applyStationaryCropToSlide:(id)a3 withOptions:(id)a4
+- (void)applyStationaryCropToSlide:(id)slide withOptions:(id)options
 {
-  [a3 removeAnimationPathForKey:@"scale"];
-  [a3 removeAnimationPathForKey:@"center"];
-  [a3 removeAnimationPathForKey:@"angle"];
-  v7 = [MPAuthoringUtilities croppingModeFromOptions:a4];
+  [slide removeAnimationPathForKey:@"scale"];
+  [slide removeAnimationPathForKey:@"center"];
+  [slide removeAnimationPathForKey:@"angle"];
+  v7 = [MPAuthoringUtilities croppingModeFromOptions:options];
   if (v7 == 1)
   {
-    [a3 setSizingMode:@"Scale to Fit"];
+    [slide setSizingMode:@"Scale to Fit"];
     v8 = 0.5;
 LABEL_16:
     v16 = 0.5;
@@ -800,7 +800,7 @@ LABEL_16:
   }
 
   v9 = v7;
-  -[MPDocument resolutionForPath:](self->_authoredDocument, "resolutionForPath:", [a3 path]);
+  -[MPDocument resolutionForPath:](self->_authoredDocument, "resolutionForPath:", [slide path]);
   v11 = v10;
   v13 = v12;
   v14 = v10 / v12;
@@ -822,7 +822,7 @@ LABEL_16:
       v17 = kMPSlideSizingModeBestFit;
     }
 
-    [a3 setSizingMode:*v17];
+    [slide setSizingMode:*v17];
     goto LABEL_16;
   }
 
@@ -832,16 +832,16 @@ LABEL_16:
   }
 
   v16 = 0.5;
-  if ([objc_msgSend(a3 "sizingMode")])
+  if ([objc_msgSend(slide "sizingMode")])
   {
 LABEL_22:
-    v76 = [a3 parentEffect];
+    parentEffect = [slide parentEffect];
     v18 = [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
     v19 = [v18 count] - 1;
-    v20 = [a3 index];
-    if (v19 >= v20)
+    index = [slide index];
+    if (v19 >= index)
     {
-      v21 = v20;
+      v21 = index;
     }
 
     else
@@ -852,12 +852,12 @@ LABEL_22:
     v22 = [v18 objectAtIndex:v21];
     v23 = [v22 objectForKey:@"kenBurnsType"];
     v24 = [v23 hasSuffix:@"to Fit"];
-    v25 = [a3 hasMovie];
-    if (![MPAuthoringUtilities useROIFromOptions:a4]|| (v25 & 1) != 0 || (v24 & 1) != 0)
+    hasMovie = [slide hasMovie];
+    if (![MPAuthoringUtilities useROIFromOptions:options]|| (hasMovie & 1) != 0 || (v24 & 1) != 0)
     {
       if (v24)
       {
-        [a3 setSizingMode:v23];
+        [slide setSizingMode:v23];
         v31 = 1;
         goto LABEL_53;
       }
@@ -865,7 +865,7 @@ LABEL_22:
 
     else
     {
-      v26 = [a3 userInfoAttributeForKey:@"pickedROIRect"];
+      v26 = [slide userInfoAttributeForKey:@"pickedROIRect"];
       if (v26)
       {
         v86 = CGRectFromString(v26);
@@ -885,7 +885,7 @@ LABEL_22:
 LABEL_53:
           v16 = 0.5;
 LABEL_54:
-          if (v25 && +[MPAuthoringUtilities fitMoviesWhenPossibleFromOptions:](MPAuthoringUtilities, "fitMoviesWhenPossibleFromOptions:", a4) && [objc_msgSend(a3 "parentEffect")] == &dword_0 + 1 && (+[MPAuthoringUtilities croppingModeForFitMoviesFromOptions:](MPAuthoringUtilities, "croppingModeForFitMoviesFromOptions:", a4) & 0x80000000) == 0)
+          if (hasMovie && +[MPAuthoringUtilities fitMoviesWhenPossibleFromOptions:](MPAuthoringUtilities, "fitMoviesWhenPossibleFromOptions:", options) && [objc_msgSend(slide "parentEffect")] == &dword_0 + 1 && (+[MPAuthoringUtilities croppingModeForFitMoviesFromOptions:](MPAuthoringUtilities, "croppingModeForFitMoviesFromOptions:", options) & 0x80000000) == 0)
           {
             v51 = @"Scale to Fit";
           }
@@ -910,7 +910,7 @@ LABEL_54:
             v51 = @"Crop to Fit";
           }
 
-          [a3 setSizingMode:v51];
+          [slide setSizingMode:v51];
           goto LABEL_17;
         }
 
@@ -949,7 +949,7 @@ LABEL_66:
 
       if (([objc_msgSend(v22 objectForKey:{@"fullImage", "BOOLValue"}] & 1) == 0)
       {
-        v32 = -[MPDocument regionsOfInterestForPath:detect:](self->_authoredDocument, "regionsOfInterestForPath:detect:", [a3 path], +[MPAuthoringUtilities performFaceDetectionFromOptions:](MPAuthoringUtilities, "performFaceDetectionFromOptions:", a4));
+        v32 = -[MPDocument regionsOfInterestForPath:detect:](self->_authoredDocument, "regionsOfInterestForPath:detect:", [slide path], +[MPAuthoringUtilities performFaceDetectionFromOptions:](MPAuthoringUtilities, "performFaceDetectionFromOptions:", options));
         if (v32)
         {
           v33 = v32;
@@ -958,7 +958,7 @@ LABEL_66:
             v72 = v14;
             v73 = v13;
             v74 = v11;
-            v75 = v25;
+            v75 = hasMovie;
             v35 = CGRectZero.origin.x;
             v34 = CGRectZero.origin.y;
             v36 = CGRectZero.size.width;
@@ -997,19 +997,19 @@ LABEL_69:
                 v62 = v65;
               }
 
-              [MPAuthoringUtilities aspectRatioFromOptions:a4];
+              [MPAuthoringUtilities aspectRatioFromOptions:options];
               v67 = v66;
               v68 = [objc_msgSend(v22 objectForKey:{@"needsImageSize", "BOOLValue"}];
               v80 = +[MPEffectManager sharedManager];
-              v69 = [v76 effectID];
+              effectID = [parentEffect effectID];
               if (v68)
               {
-                [v80 mediaAspectRatioForEffectID:v69 usingAttributes:objc_msgSend(v76 atIndex:"effectAttributes") defaultAspectRatio:objc_msgSend(a3 imageAspectRatio:{"index"), v67, v72}];
+                [v80 mediaAspectRatioForEffectID:effectID usingAttributes:objc_msgSend(parentEffect atIndex:"effectAttributes") defaultAspectRatio:objc_msgSend(slide imageAspectRatio:{"index"), v67, v72}];
               }
 
               else
               {
-                [v80 mediaAspectRatioForEffectID:v69 usingPresetID:objc_msgSend(objc_msgSend(a3 atIndex:"parentEffect") defaultAspectRatio:{"presetID"), objc_msgSend(a3, "index"), v67}];
+                [v80 mediaAspectRatioForEffectID:effectID usingPresetID:objc_msgSend(objc_msgSend(slide atIndex:"parentEffect") defaultAspectRatio:{"presetID"), objc_msgSend(slide, "index"), v67}];
               }
 
               if (v70 == 9.22337204e18)
@@ -1025,7 +1025,7 @@ LABEL_69:
               [(MPCropController *)self checkFarApartROIs:v33 withImageSize:v74 visibleAspectRatio:v73 roiCenter:v71, v63, v62];
               v8 = 1.0;
               v16 = 1.0;
-              v25 = v75;
+              hasMovie = v75;
               if (v53 > 1.0)
               {
                 goto LABEL_78;
@@ -1139,19 +1139,19 @@ LABEL_46:
   }
 
 LABEL_17:
-  if ([objc_msgSend(a3 "sizingMode")] && (v16 != 0.5 || v8 != 0.5))
+  if ([objc_msgSend(slide "sizingMode")] && (v16 != 0.5 || v8 != 0.5))
   {
-    [a3 setCenter:{v16, v8}];
+    [slide setCenter:{v16, v8}];
   }
 }
 
-- (CGPoint)checkFarApartROIs:(id)a3 withImageSize:(CGSize)a4 visibleAspectRatio:(double)a5 roiCenter:(CGPoint)a6
+- (CGPoint)checkFarApartROIs:(id)is withImageSize:(CGSize)size visibleAspectRatio:(double)ratio roiCenter:(CGPoint)center
 {
-  y = a6.y;
-  x = a6.x;
-  height = a4.height;
-  width = a4.width;
-  [MPAuthoringUtilities rectToFitIn:0.0 withAspectRatio:0.0, a4.width, a4.height, a5];
+  y = center.y;
+  x = center.x;
+  height = size.height;
+  width = size.width;
+  [MPAuthoringUtilities rectToFitIn:0.0 withAspectRatio:0.0, size.width, size.height, ratio];
   v13 = width * x - v12 * 0.5;
   v14 = height * y - v11 * 0.5;
   v15 = v12 + v13 <= width;
@@ -1196,7 +1196,7 @@ LABEL_17:
 
   v166 = 0uLL;
   v167 = 0uLL;
-  v20 = [a3 countByEnumeratingWithState:&v166 objects:v172 count:{16, v18}];
+  v20 = [is countByEnumeratingWithState:&v166 objects:v172 count:{16, v18}];
   v21 = CGRectZero.size.width;
   v22 = CGRectZero.size.height;
   r2_16 = v22;
@@ -1217,7 +1217,7 @@ LABEL_17:
     {
       if (*v167 != v24)
       {
-        objc_enumerationMutation(a3);
+        objc_enumerationMutation(is);
       }
 
       v174 = CGRectFromString([*(*(&v166 + 1) + 8 * i) objectForKey:kMPMetaDataRegionOfInterestBounds]);
@@ -1253,7 +1253,7 @@ LABEL_17:
       v25 = (v33 * v32 / (v29 * v30) <= 0.5) & v25;
     }
 
-    v23 = [a3 countByEnumeratingWithState:&v166 objects:v172 count:16];
+    v23 = [is countByEnumeratingWithState:&v166 objects:v172 count:16];
   }
 
   while (v23);
@@ -1271,7 +1271,7 @@ LABEL_21:
     v165 = 0u;
     v162 = 0u;
     v163 = 0u;
-    v37 = [a3 countByEnumeratingWithState:&v162 objects:v171 count:16];
+    v37 = [is countByEnumeratingWithState:&v162 objects:v171 count:16];
     v131 = v21;
     v132 = v22;
     v125 = v36;
@@ -1294,7 +1294,7 @@ LABEL_23:
       {
         if (*v163 != v39)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(is);
         }
 
         v177 = CGRectFromString([*(*(&v162 + 1) + 8 * v44) objectForKey:kMPMetaDataRegionOfInterestBounds]);
@@ -1454,7 +1454,7 @@ LABEL_23:
         r2_8a = r2b;
         if (v38 == v44)
         {
-          v83 = [a3 countByEnumeratingWithState:&v162 objects:v171 count:16];
+          v83 = [is countByEnumeratingWithState:&v162 objects:v171 count:16];
           v43 = v144;
           v42 = r2b;
           v40 = v140;
@@ -1474,9 +1474,9 @@ LABEL_23:
       }
     }
 
-    v84 = [a3 reverseObjectEnumerator];
-    v85 = [v84 nextObject];
-    if (v85)
+    reverseObjectEnumerator = [is reverseObjectEnumerator];
+    nextObject = [reverseObjectEnumerator nextObject];
+    if (nextObject)
     {
       v124 = 0.0;
       v86 = CGRectZero.origin.x;
@@ -1489,7 +1489,7 @@ LABEL_23:
       r1 = v125;
       do
       {
-        v184 = CGRectFromString([v85 objectForKey:{kMPMetaDataRegionOfInterestBounds, *&v124}]);
+        v184 = CGRectFromString([nextObject objectForKey:{kMPMetaDataRegionOfInterestBounds, *&v124}]);
         v89 = v184.origin.x;
         v90 = v184.origin.y;
         v91 = v184.size.width;
@@ -1615,7 +1615,7 @@ LABEL_23:
           break;
         }
 
-        v85 = [v84 nextObject];
+        nextObject = [reverseObjectEnumerator nextObject];
         v124 = 1.0;
         v86 = v141;
         r1 = v145;
@@ -1623,7 +1623,7 @@ LABEL_23:
         v88 = v93;
       }
 
-      while (v85);
+      while (nextObject);
     }
 
     else
@@ -1655,7 +1655,7 @@ LABEL_23:
       v161 = 0u;
       v158 = 0u;
       v159 = 0u;
-      v116 = [a3 countByEnumeratingWithState:&v158 objects:v170 count:16];
+      v116 = [is countByEnumeratingWithState:&v158 objects:v170 count:16];
       if (v116)
       {
         v117 = v116;
@@ -1666,7 +1666,7 @@ LABEL_23:
           {
             if (*v159 != v118)
             {
-              objc_enumerationMutation(a3);
+              objc_enumerationMutation(is);
             }
 
             v193 = CGRectFromString([*(*(&v158 + 1) + 8 * j) objectForKey:{kMPMetaDataRegionOfInterestBounds, *&v124}]);
@@ -1679,7 +1679,7 @@ LABEL_23:
             }
           }
 
-          v117 = [a3 countByEnumeratingWithState:&v158 objects:v170 count:16];
+          v117 = [is countByEnumeratingWithState:&v158 objects:v170 count:16];
         }
 
         while (v117);
@@ -1718,14 +1718,14 @@ LABEL_23:
   return result;
 }
 
-- (void)applyAnimatedCropToBreakSlide:(id)a3 withOptions:(id)a4
+- (void)applyAnimatedCropToBreakSlide:(id)slide withOptions:(id)options
 {
-  -[MPDocument resolutionForPath:](self->_authoredDocument, "resolutionForPath:", [a3 path]);
+  -[MPDocument resolutionForPath:](self->_authoredDocument, "resolutionForPath:", [slide path]);
   v9 = v7 / v8;
-  v10 = [MPAuthoringUtilities croppingModeFromOptions:a4];
-  [MPAuthoringUtilities aspectRatioFromOptions:a4];
+  v10 = [MPAuthoringUtilities croppingModeFromOptions:options];
+  [MPAuthoringUtilities aspectRatioFromOptions:options];
   v12 = v11;
-  v13 = [MPAuthoringUtilities kenBurnsOffsetTypeFromOptions:a4];
+  v13 = [MPAuthoringUtilities kenBurnsOffsetTypeFromOptions:options];
   if (v10 == 1)
   {
     v17 = 0;
@@ -1752,7 +1752,7 @@ LABEL_23:
     }
   }
 
-  v18 = -[MPDocument regionsOfInterestForPath:](self->_authoredDocument, "regionsOfInterestForPath:", [a3 path]);
+  v18 = -[MPDocument regionsOfInterestForPath:](self->_authoredDocument, "regionsOfInterestForPath:", [slide path]);
   v19 = v18;
   if (v9 >= 1.0)
   {
@@ -1895,7 +1895,7 @@ LABEL_27:
   v35 = 0.5;
 LABEL_48:
   v38 = +[MPAnimationPathKeyframed animationPath];
-  v39 = [MPAuthoringUtilities easeKenBurnsPanFromOptions:a4];
+  v39 = [MPAuthoringUtilities easeKenBurnsPanFromOptions:options];
   v40 = [v38 createKeyframeWithPoint:v35 atTime:{v26, 0.0}];
   if (v39)
   {
@@ -1914,10 +1914,10 @@ LABEL_48:
     [objc_msgSend(v38 createKeyframeWithPoint:v36 atTime:{v37, 1.0), "setOffsetType:", v13}];
   }
 
-  [a3 setAnimationPath:v38 forKey:@"center"];
-  [MPAuthoringUtilities kenBurnsStartZoomLevelFromOptions:a4];
+  [slide setAnimationPath:v38 forKey:@"center"];
+  [MPAuthoringUtilities kenBurnsStartZoomLevelFromOptions:options];
   v42 = v41;
-  [MPAuthoringUtilities kenBurnsEndZoomLevelFromOptions:a4];
+  [MPAuthoringUtilities kenBurnsEndZoomLevelFromOptions:options];
   v44 = v43;
   v45 = +[MPAnimationPathKeyframed animationPath];
   v46 = v45;
@@ -1979,40 +1979,40 @@ LABEL_48:
 LABEL_70:
   [v45 createKeyframeWithScalar:? atTime:?];
   [v46 createKeyframeWithScalar:v44 atTime:1.0];
-  [a3 setAnimationPath:v46 forKey:@"scale"];
-  [a3 setSizingMode:v14];
-  [a3 removeAnimationPathForKey:@"angle"];
+  [slide setAnimationPath:v46 forKey:@"scale"];
+  [slide setSizingMode:v14];
+  [slide removeAnimationPathForKey:@"angle"];
 }
 
-- (void)applyAnimatedCropToSlide:(id)a3 withOptions:(id)a4 centeredAt:(CGPoint)a5 alwaysZoomIn:(BOOL)a6
+- (void)applyAnimatedCropToSlide:(id)slide withOptions:(id)options centeredAt:(CGPoint)at alwaysZoomIn:(BOOL)in
 {
-  -[MPDocument resolutionForPath:](self->_authoredDocument, "resolutionForPath:", [a3 path]);
+  -[MPDocument resolutionForPath:](self->_authoredDocument, "resolutionForPath:", [slide path]);
   v11 = v10;
   v13 = v12;
-  [(MPCropController *)self durationOfSlide:a3];
+  [(MPCropController *)self durationOfSlide:slide];
   v110 = v14;
   if (v14 == -1.0)
   {
-    [MPAuthoringUtilities durationPerEffectFromOptions:a4];
+    [MPAuthoringUtilities durationPerEffectFromOptions:options];
     v110 = v15;
   }
 
   v16 = v11 / v13;
-  [MPAuthoringUtilities kenBurnsZoomFactorFromOptions:a4];
+  [MPAuthoringUtilities kenBurnsZoomFactorFromOptions:options];
   v102 = v17;
-  if (a6)
+  if (in)
   {
     v18 = 1;
   }
 
   else
   {
-    v18 = [MPAuthoringUtilities kenBurnsAlwaysZoomInFromOptions:a4];
+    v18 = [MPAuthoringUtilities kenBurnsAlwaysZoomInFromOptions:options];
   }
 
-  [MPAuthoringUtilities aspectRatioFromOptions:a4];
+  [MPAuthoringUtilities aspectRatioFromOptions:options];
   v20 = v19;
-  v21 = [a3 parentEffect];
+  parentEffect = [slide parentEffect];
   [+[MPEffectManager sharedManager](MPEffectManager "sharedManager")];
   if (v22 == 9.22337204e18)
   {
@@ -2024,11 +2024,11 @@ LABEL_70:
     v23 = v22;
   }
 
-  v24 = [MPAuthoringUtilities croppingModeFromOptions:a4];
+  v24 = [MPAuthoringUtilities croppingModeFromOptions:options];
   v25 = 1.29999995;
-  if ([a3 hasMovie] && +[MPAuthoringUtilities fitMoviesWhenPossibleFromOptions:](MPAuthoringUtilities, "fitMoviesWhenPossibleFromOptions:", a4))
+  if ([slide hasMovie] && +[MPAuthoringUtilities fitMoviesWhenPossibleFromOptions:](MPAuthoringUtilities, "fitMoviesWhenPossibleFromOptions:", options))
   {
-    v26 = [MPAuthoringUtilities croppingModeForFitMoviesFromOptions:a4];
+    v26 = [MPAuthoringUtilities croppingModeForFitMoviesFromOptions:options];
     if ((v26 & 0x80000000) == 0)
     {
       v24 = v26;
@@ -2075,7 +2075,7 @@ LABEL_34:
 
   if (v24 == 1)
   {
-    [a3 setSizingMode:@"Scale to Fit"];
+    [slide setSizingMode:@"Scale to Fit"];
 LABEL_40:
     v31 = v13 * v23;
     v106 = 0.0;
@@ -2086,7 +2086,7 @@ LABEL_40:
 
   v29 = kMPSlideSizingModeBestFit;
 LABEL_39:
-  [a3 setSizingMode:*v29];
+  [slide setSizingMode:*v29];
   if (v27)
   {
     goto LABEL_40;
@@ -2132,11 +2132,11 @@ LABEL_45:
     v33 = 1.00999999;
   }
 
-  [MPAuthoringUtilities kenBurnsStartZoomLevelFromOptions:a4];
+  [MPAuthoringUtilities kenBurnsStartZoomLevelFromOptions:options];
   v36 = v35;
-  [MPAuthoringUtilities kenBurnsEndZoomLevelFromOptions:a4];
+  [MPAuthoringUtilities kenBurnsEndZoomLevelFromOptions:options];
   v38 = v37;
-  [MPAuthoringUtilities maxKenBurnsZoomFromOptions:a4];
+  [MPAuthoringUtilities maxKenBurnsZoomFromOptions:options];
   if (v25 > v39 && v39 != -1.0)
   {
     v25 = v39;
@@ -2198,7 +2198,7 @@ LABEL_45:
     v36 = v36 + v47;
   }
 
-  [MPAuthoringUtilities kenBurnsPanFactorFromOptions:a4];
+  [MPAuthoringUtilities kenBurnsPanFactorFromOptions:options];
   v99 = v50;
   v51 = CenterRectOverRect(0.0, 0.0, v11 * v36, v13 * v36, v107, v106, v109, v108);
   v52 = (v107 - FloorRect(v51)) / v109;
@@ -2275,29 +2275,29 @@ LABEL_45:
   {
     y = 0.649999976;
     x = 0.649999976;
-    if (a5.x <= 0.649999976)
+    if (at.x <= 0.649999976)
     {
-      x = a5.x;
-      if (a5.x < 0.349999994)
+      x = at.x;
+      if (at.x < 0.349999994)
       {
         x = 0.349999994;
       }
     }
 
-    if (a5.y <= 0.649999976)
+    if (at.y <= 0.649999976)
     {
       y = 0.349999994;
-      if (a5.y >= 0.349999994)
+      if (at.y >= 0.349999994)
       {
-        y = a5.y;
+        y = at.y;
       }
     }
   }
 
   else
   {
-    x = a5.x;
-    y = a5.y;
+    x = at.x;
+    y = at.y;
   }
 
   v101 = x;
@@ -2466,24 +2466,24 @@ LABEL_45:
 
   [v90 createKeyframeWithScalar:v94 atTime:0.0];
   [v91 createKeyframeWithScalar:v102 * v95 atTime:1.0];
-  [a3 setAnimationPath:v91 forKey:@"scale"];
+  [slide setAnimationPath:v91 forKey:@"scale"];
   v96 = +[MPAnimationPathKeyframed animationPath];
   [v96 createKeyframeWithPoint:v85 atTime:{v84, 0.0}];
   [v96 createKeyframeWithPoint:v89 atTime:{v88, 1.0}];
-  [a3 setAnimationPath:v96 forKey:@"center"];
+  [slide setAnimationPath:v96 forKey:@"center"];
 
-  [a3 removeAnimationPathForKey:@"angle"];
+  [slide removeAnimationPathForKey:@"angle"];
 }
 
-- (void)applyMultiFaceAnimatedCropToSlide:(id)a3 withOptions:(id)a4
+- (void)applyMultiFaceAnimatedCropToSlide:(id)slide withOptions:(id)options
 {
-  -[MPDocument resolutionForPath:](self->_authoredDocument, "resolutionForPath:", [a3 path]);
+  -[MPDocument resolutionForPath:](self->_authoredDocument, "resolutionForPath:", [slide path]);
   v73 = v8;
   v74 = v7;
-  v9 = -[MPDocument regionsOfInterestForPath:detect:](self->_authoredDocument, "regionsOfInterestForPath:detect:", [a3 path], +[MPAuthoringUtilities performFaceDetectionFromOptions:](MPAuthoringUtilities, "performFaceDetectionFromOptions:", a4));
-  [MPAuthoringUtilities kenBurnsZoomFactorFromOptions:a4];
+  v9 = -[MPDocument regionsOfInterestForPath:detect:](self->_authoredDocument, "regionsOfInterestForPath:detect:", [slide path], +[MPAuthoringUtilities performFaceDetectionFromOptions:](MPAuthoringUtilities, "performFaceDetectionFromOptions:", options));
+  [MPAuthoringUtilities kenBurnsZoomFactorFromOptions:options];
   v71 = v10;
-  [MPAuthoringUtilities kenBurnsPanFactorFromOptions:a4];
+  [MPAuthoringUtilities kenBurnsPanFactorFromOptions:options];
   v72 = v11;
   x = CGRectZero.origin.x;
   y = CGRectZero.origin.y;
@@ -2688,10 +2688,10 @@ LABEL_13:
   v42 = v74 / v73;
   v43 = randomFloatInRange(1.00999999, 1.03899999);
   v44 = randomFloatInRange(1.27099995, 1.29999995);
-  v45 = [MPAuthoringUtilities croppingModeFromOptions:a4];
-  if ([a3 hasMovie] && +[MPAuthoringUtilities fitMoviesWhenPossibleFromOptions:](MPAuthoringUtilities, "fitMoviesWhenPossibleFromOptions:", a4))
+  v45 = [MPAuthoringUtilities croppingModeFromOptions:options];
+  if ([slide hasMovie] && +[MPAuthoringUtilities fitMoviesWhenPossibleFromOptions:](MPAuthoringUtilities, "fitMoviesWhenPossibleFromOptions:", options))
   {
-    [MPAuthoringUtilities croppingModeForFitMoviesFromOptions:a4];
+    [MPAuthoringUtilities croppingModeForFitMoviesFromOptions:options];
   }
 
   if (v42 < 1.0 && v45 == 2)
@@ -2718,7 +2718,7 @@ LABEL_37:
 
 LABEL_44:
   v47 = *v46;
-  [a3 setSizingMode:{*v46, *&v68}];
+  [slide setSizingMode:{*v46, *&v68}];
   if (!v47)
   {
     v49 = v38;
@@ -2803,9 +2803,9 @@ LABEL_58:
     v44 = v43;
   }
 
-  [MPAuthoringUtilities kenBurnsStartZoomLevelFromOptions:a4];
+  [MPAuthoringUtilities kenBurnsStartZoomLevelFromOptions:options];
   v58 = v57;
-  [MPAuthoringUtilities kenBurnsEndZoomLevelFromOptions:a4];
+  [MPAuthoringUtilities kenBurnsEndZoomLevelFromOptions:options];
   if (v58 <= -1.0)
   {
     v58 = v56;
@@ -2820,7 +2820,7 @@ LABEL_58:
   [v60 createKeyframeWithScalar:v71 * v58 atTime:0.0];
   v61 = 1.0;
   [v60 createKeyframeWithScalar:v71 * v44 atTime:1.0];
-  [a3 setAnimationPath:v60 forKey:@"scale"];
+  [slide setAnimationPath:v60 forKey:@"scale"];
   v62 = 1.0;
   if (v49 <= 1.0)
   {
@@ -2865,17 +2865,17 @@ LABEL_58:
   v67 = +[MPAnimationPathKeyframed animationPath];
   [v67 createKeyframeWithPoint:v62 atTime:{v61, 0.0}];
   [v67 createKeyframeWithPoint:v66 atTime:{v65, 1.0}];
-  [a3 setAnimationPath:v67 forKey:@"center"];
-  [a3 removeAnimationPathForKey:@"angle"];
+  [slide setAnimationPath:v67 forKey:@"center"];
+  [slide removeAnimationPathForKey:@"angle"];
 }
 
-- (double)durationOfSlide:(id)a3
+- (double)durationOfSlide:(id)slide
 {
-  v4 = [a3 parentEffect];
+  parentEffect = [slide parentEffect];
   result = -1.0;
-  if (v4)
+  if (parentEffect)
   {
-    [objc_msgSend(a3 parentEffect];
+    [objc_msgSend(slide parentEffect];
   }
 
   if (result == 0.0)

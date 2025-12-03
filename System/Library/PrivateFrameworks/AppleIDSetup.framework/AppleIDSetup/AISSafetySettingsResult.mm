@@ -1,14 +1,14 @@
 @interface AISSafetySettingsResult
 - (AISSafetySettingsResult)init;
-- (AISSafetySettingsResult)initWithIsSafetySettingsApplied:(BOOL)a3;
+- (AISSafetySettingsResult)initWithIsSafetySettingsApplied:(BOOL)applied;
 - (NSString)description;
 @end
 
 @implementation AISSafetySettingsResult
 
-- (AISSafetySettingsResult)initWithIsSafetySettingsApplied:(BOOL)a3
+- (AISSafetySettingsResult)initWithIsSafetySettingsApplied:(BOOL)applied
 {
-  *(&self->super.isa + OBJC_IVAR___AISSafetySettingsResult_isSafetySettingsApplied) = a3;
+  *(&self->super.isa + OBJC_IVAR___AISSafetySettingsResult_isSafetySettingsApplied) = applied;
   v4.receiver = self;
   v4.super_class = AISSafetySettingsResult;
   return [(AISSafetySettingsResult *)&v4 init];
@@ -16,7 +16,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   AISSafetySettingsResult.description.getter();
 
   v3 = sub_24075A084();

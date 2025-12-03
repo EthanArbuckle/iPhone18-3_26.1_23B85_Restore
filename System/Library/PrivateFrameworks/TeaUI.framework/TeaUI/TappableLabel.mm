@@ -1,13 +1,13 @@
 @interface TappableLabel
 - (NSString)accessibilityLabel;
-- (void)setAccessibilityLabel:(id)a3;
+- (void)setAccessibilityLabel:(id)label;
 @end
 
 @implementation TappableLabel
 
 - (NSString)accessibilityLabel
 {
-  v2 = self;
+  selfCopy = self;
   TappableLabel.accessibilityLabel.getter();
   v4 = v3;
 
@@ -24,14 +24,14 @@
   return v5;
 }
 
-- (void)setAccessibilityLabel:(id)a3
+- (void)setAccessibilityLabel:(id)label
 {
-  if (a3)
+  if (label)
   {
     sub_1D8190F14();
   }
 
-  v4 = self;
+  selfCopy = self;
   TappableLabel.accessibilityLabel.setter();
 }
 

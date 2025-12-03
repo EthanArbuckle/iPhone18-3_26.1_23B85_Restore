@@ -1,10 +1,10 @@
 @interface PIParallaxStyleFilterStackDefinition
-- (BOOL)isEqualToParallaxStyleDefinition:(id)a3;
-- (BOOL)isEqualToParallaxStyleFilterStackDefinition:(id)a3;
+- (BOOL)isEqualToParallaxStyleDefinition:(id)definition;
+- (BOOL)isEqualToParallaxStyleFilterStackDefinition:(id)definition;
 - (PIParallaxStyleFilterStackDefinition)init;
-- (PIParallaxStyleFilterStackDefinition)initWithStackName:(id)a3 filters:(id)a4;
+- (PIParallaxStyleFilterStackDefinition)initWithStackName:(id)name filters:(id)filters;
 - (id)description;
-- (id)evaluateWithContext:(id)a3 error:(id *)a4;
+- (id)evaluateWithContext:(id)context error:(id *)error;
 @end
 
 @implementation PIParallaxStyleFilterStackDefinition
@@ -13,18 +13,18 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PIParallaxStyleFilterStackDefinition *)self stackName];
-  v6 = [(PIParallaxStyleFilterStackDefinition *)self filters];
-  v7 = [v3 stringWithFormat:@"<%@:%p stack:%@ filters:%@>", v4, self, v5, v6];
+  stackName = [(PIParallaxStyleFilterStackDefinition *)self stackName];
+  filters = [(PIParallaxStyleFilterStackDefinition *)self filters];
+  v7 = [v3 stringWithFormat:@"<%@:%p stack:%@ filters:%@>", v4, self, stackName, filters];
 
   return v7;
 }
 
-- (id)evaluateWithContext:(id)a3 error:(id *)a4
+- (id)evaluateWithContext:(id)context error:(id *)error
 {
   v63 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if (!v6)
+  contextCopy = context;
+  if (!contextCopy)
   {
     v30 = NUAssertLogger_15312();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
@@ -35,7 +35,7 @@
       _os_log_error_impl(&dword_1C7694000, v30, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v32 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v34 = NUAssertLogger_15312();
     v35 = os_log_type_enabled(v34, OS_LOG_TYPE_ERROR);
@@ -43,11 +43,11 @@
     {
       if (v35)
       {
-        v43 = dispatch_get_specific(*v32);
+        v43 = dispatch_get_specific(*callStackSymbols);
         v44 = MEMORY[0x1E696AF00];
         v45 = v43;
-        v32 = [v44 callStackSymbols];
-        v46 = [v32 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v44 callStackSymbols];
+        v46 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v60 = v43;
         v61 = 2114;
@@ -58,10 +58,10 @@
 
     else if (v35)
     {
-      v36 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v32 = [v36 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v60 = v32;
+      v60 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -69,7 +69,7 @@
     goto LABEL_32;
   }
 
-  if (!a4)
+  if (!error)
   {
     v37 = NUAssertLogger_15312();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
@@ -80,7 +80,7 @@
       _os_log_error_impl(&dword_1C7694000, v37, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v32 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v39 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v34 = NUAssertLogger_15312();
     v40 = os_log_type_enabled(v34, OS_LOG_TYPE_ERROR);
@@ -88,8 +88,8 @@
     {
       if (v40)
       {
-        v41 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v42 = [v41 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v42 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v60 = v42;
         _os_log_error_impl(&dword_1C7694000, v34, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -101,11 +101,11 @@
 LABEL_32:
     if (v40)
     {
-      v47 = dispatch_get_specific(*v32);
+      v47 = dispatch_get_specific(*callStackSymbols);
       v48 = MEMORY[0x1E696AF00];
       v49 = v47;
-      v50 = [v48 callStackSymbols];
-      v51 = [v50 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v48 callStackSymbols];
+      v51 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v60 = v47;
       v61 = 2114;
@@ -118,23 +118,23 @@ LABEL_34:
     _NUAssertFailHandler();
   }
 
-  v7 = v6;
-  v52 = [v6 inputImage];
-  [v52 extent];
+  v7 = contextCopy;
+  inputImage = [contextCopy inputImage];
+  [inputImage extent];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [v7 outputImage];
-  v17 = [v16 imageByCroppingToRect:{v9, v11, v13, v15}];
+  outputImage = [v7 outputImage];
+  v17 = [outputImage imageByCroppingToRect:{v9, v11, v13, v15}];
   [v7 setInputImage:v17];
 
   v56 = 0u;
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v18 = [(PIParallaxStyleFilterStackDefinition *)self filters];
-  v19 = [v18 countByEnumeratingWithState:&v54 objects:v58 count:16];
+  filters = [(PIParallaxStyleFilterStackDefinition *)self filters];
+  v19 = [filters countByEnumeratingWithState:&v54 objects:v58 count:16];
   if (v19)
   {
     v20 = v19;
@@ -147,7 +147,7 @@ LABEL_34:
       {
         if (*v55 != v21)
         {
-          objc_enumerationMutation(v18);
+          objc_enumerationMutation(filters);
         }
 
         v24 = *(*(&v54 + 1) + 8 * v23);
@@ -181,30 +181,30 @@ LABEL_34:
       }
 
       while (v20 != v23);
-      v20 = [v18 countByEnumeratingWithState:&v54 objects:v58 count:16];
+      v20 = [filters countByEnumeratingWithState:&v54 objects:v58 count:16];
     }
 
     while (v20);
   }
 
-  [v7 setInputImage:v52];
-  v28 = [v7 outputImage];
+  [v7 setInputImage:inputImage];
+  outputImage2 = [v7 outputImage];
 
-  return v28;
+  return outputImage2;
 }
 
-- (BOOL)isEqualToParallaxStyleFilterStackDefinition:(id)a3
+- (BOOL)isEqualToParallaxStyleFilterStackDefinition:(id)definition
 {
-  v4 = a3;
-  v5 = [(PIParallaxStyleFilterStackDefinition *)self stackName];
-  v6 = [v4 stackName];
-  v7 = [v5 isEqualToString:v6];
+  definitionCopy = definition;
+  stackName = [(PIParallaxStyleFilterStackDefinition *)self stackName];
+  stackName2 = [definitionCopy stackName];
+  v7 = [stackName isEqualToString:stackName2];
 
   if (v7)
   {
-    v8 = [(PIParallaxStyleFilterStackDefinition *)self filters];
-    v9 = [v4 filters];
-    v10 = [v8 isEqualToArray:v9];
+    filters = [(PIParallaxStyleFilterStackDefinition *)self filters];
+    filters2 = [definitionCopy filters];
+    v10 = [filters isEqualToArray:filters2];
   }
 
   else
@@ -215,15 +215,15 @@ LABEL_34:
   return v10;
 }
 
-- (BOOL)isEqualToParallaxStyleDefinition:(id)a3
+- (BOOL)isEqualToParallaxStyleDefinition:(id)definition
 {
-  v4 = a3;
-  v5 = [v4 type];
-  v6 = [v5 isEqualToString:@"stack"];
+  definitionCopy = definition;
+  type = [definitionCopy type];
+  v6 = [type isEqualToString:@"stack"];
 
   if (v6)
   {
-    v7 = [(PIParallaxStyleFilterStackDefinition *)self isEqualToParallaxStyleFilterStackDefinition:v4];
+    v7 = [(PIParallaxStyleFilterStackDefinition *)self isEqualToParallaxStyleFilterStackDefinition:definitionCopy];
   }
 
   else
@@ -234,19 +234,19 @@ LABEL_34:
   return v7;
 }
 
-- (PIParallaxStyleFilterStackDefinition)initWithStackName:(id)a3 filters:(id)a4
+- (PIParallaxStyleFilterStackDefinition)initWithStackName:(id)name filters:(id)filters
 {
   v13.receiver = self;
   v13.super_class = PIParallaxStyleFilterStackDefinition;
-  v5 = a4;
-  v6 = a3;
+  filtersCopy = filters;
+  nameCopy = name;
   v7 = [(PIParallaxStyleFilterStackDefinition *)&v13 init];
-  v8 = [v6 copy];
+  v8 = [nameCopy copy];
 
   stackName = v7->_stackName;
   v7->_stackName = v8;
 
-  v10 = [v5 copy];
+  v10 = [filtersCopy copy];
   filters = v7->_filters;
   v7->_filters = v10;
 
@@ -294,8 +294,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v24 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v24 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v27 = specific;
           v28 = 2114;
@@ -322,8 +322,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v27 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

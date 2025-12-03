@@ -1,37 +1,37 @@
 @interface _UIImageSerializationWrapper
-- (_UIImageSerializationWrapper)initWithCoder:(id)a3;
-- (_UIImageSerializationWrapper)initWithImage:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_UIImageSerializationWrapper)initWithCoder:(id)coder;
+- (_UIImageSerializationWrapper)initWithImage:(id)image;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _UIImageSerializationWrapper
 
-- (_UIImageSerializationWrapper)initWithImage:(id)a3
+- (_UIImageSerializationWrapper)initWithImage:(id)image
 {
-  v5 = a3;
+  imageCopy = image;
   v6 = [(_UIImageSerializationWrapper *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_image, a3);
+    objc_storeStrong(&v6->_image, image);
   }
 
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [(UIImage *)self->_image encodeWithCoder:v5];
+  coderCopy = coder;
+  [(UIImage *)self->_image encodeWithCoder:coderCopy];
   v4 = _UIImageName(self->_image);
-  if ([(UIImage *)self->_image _canEncodeWithName:v4 coder:v5])
+  if ([(UIImage *)self->_image _canEncodeWithName:v4 coder:coderCopy])
   {
-    [(UIImage *)self->_image _encodeDataWithCoder:v5 imageName:v4];
-    [(UIImage *)self->_image _encodePropertiesWithCoder:v5];
+    [(UIImage *)self->_image _encodeDataWithCoder:coderCopy imageName:v4];
+    [(UIImage *)self->_image _encodePropertiesWithCoder:coderCopy];
   }
 }
 
-- (_UIImageSerializationWrapper)initWithCoder:(id)a3
+- (_UIImageSerializationWrapper)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = _UIImageSerializationWrapper;

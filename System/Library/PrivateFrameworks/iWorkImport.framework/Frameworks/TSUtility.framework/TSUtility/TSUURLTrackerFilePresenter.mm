@@ -6,27 +6,27 @@
 - (NSURL)presentedItemURL;
 - (NSURL)volumeURL;
 - (TSUURLTrackerFilePresenter)init;
-- (TSUURLTrackerFilePresenter)initWithSandboxedURL:(id)a3 bookmarkData:(id)a4 urlTracker:(id)a5 logContext:(id)a6 delegate:(id)a7;
-- (id)bookmarkDataWithOptions:(unint64_t)a3 error:(id *)a4;
-- (id)p_bookmarkDataWithOptions:(unint64_t)a3 error:(id *)a4;
-- (id)p_lastKnownURLFromBookmark:(id)a3;
+- (TSUURLTrackerFilePresenter)initWithSandboxedURL:(id)l bookmarkData:(id)data urlTracker:(id)tracker logContext:(id)context delegate:(id)delegate;
+- (id)bookmarkDataWithOptions:(unint64_t)options error:(id *)error;
+- (id)p_bookmarkDataWithOptions:(unint64_t)options error:(id *)error;
+- (id)p_lastKnownURLFromBookmark:(id)bookmark;
 - (id)p_latestSandboxedURLWithAccess;
-- (id)p_sandboxedURLIfAvailableLoadingLastKnownURLFromBookmark:(BOOL)a3;
-- (id)p_sandboxedURLWithOptions:(unint64_t)a3 error:(id *)a4;
-- (id)sandboxedURLWithOptions:(unint64_t)a3 error:(id *)a4;
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3;
+- (id)p_sandboxedURLIfAvailableLoadingLastKnownURLFromBookmark:(BOOL)bookmark;
+- (id)p_sandboxedURLWithOptions:(unint64_t)options error:(id *)error;
+- (id)sandboxedURLWithOptions:(unint64_t)options error:(id *)error;
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler;
 - (void)p_notifyURLTrackerPresentedItemContentsDidChange;
-- (void)p_notifyURLTrackerPresentedItemDidMoveToURL:(id)a3;
+- (void)p_notifyURLTrackerPresentedItemDidMoveToURL:(id)l;
 - (void)p_notifyURLTrackerPresentedItemWasDeleted;
-- (void)p_presentedItemDidMoveToSandboxedURL:(id)a3;
-- (void)p_setBookmarkDataIfAvailable:(id)a3;
-- (void)p_setSandboxedURL:(id)a3;
+- (void)p_presentedItemDidMoveToSandboxedURL:(id)l;
+- (void)p_setBookmarkDataIfAvailable:(id)available;
+- (void)p_setSandboxedURL:(id)l;
 - (void)p_updateVolumeInfo;
-- (void)pauseForEnteringBackground:(BOOL)a3;
-- (void)presentedItemDidChangeUbiquityAttributes:(id)a3;
-- (void)presentedItemDidMoveToURL:(id)a3;
-- (void)relinquishPresentedItemToWriter:(id)a3;
-- (void)startOrResumeForEnteringForeground:(BOOL)a3;
+- (void)pauseForEnteringBackground:(BOOL)background;
+- (void)presentedItemDidChangeUbiquityAttributes:(id)attributes;
+- (void)presentedItemDidMoveToURL:(id)l;
+- (void)relinquishPresentedItemToWriter:(id)writer;
+- (void)startOrResumeForEnteringForeground:(BOOL)foreground;
 - (void)stop;
 @end
 
@@ -48,21 +48,21 @@
   objc_exception_throw(v7);
 }
 
-- (TSUURLTrackerFilePresenter)initWithSandboxedURL:(id)a3 bookmarkData:(id)a4 urlTracker:(id)a5 logContext:(id)a6 delegate:(id)a7
+- (TSUURLTrackerFilePresenter)initWithSandboxedURL:(id)l bookmarkData:(id)data urlTracker:(id)tracker logContext:(id)context delegate:(id)delegate
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  lCopy = l;
+  dataCopy = data;
+  trackerCopy = tracker;
+  contextCopy = context;
+  delegateCopy = delegate;
   v31.receiver = self;
   v31.super_class = TSUURLTrackerFilePresenter;
   v18 = [(TSUURLTrackerFilePresenter *)&v31 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_urlTracker, v15);
-    objc_storeStrong(&v19->_logContext, a6);
+    objc_storeWeak(&v18->_urlTracker, trackerCopy);
+    objc_storeStrong(&v19->_logContext, context);
     v20 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v21 = dispatch_queue_create("TSUURLTrackerFilePresenter.access", v20);
     accessQueue = v19->_accessQueue;
@@ -70,9 +70,9 @@
 
     v19->_propertiesLock._os_unfair_lock_opaque = 0;
     __dmb(0xBu);
-    v19->_isValid = (v13 | v14) != 0;
-    objc_storeStrong(&v19->_sandboxedURL, a3);
-    v23 = [v14 copy];
+    v19->_isValid = (lCopy | dataCopy) != 0;
+    objc_storeStrong(&v19->_sandboxedURL, l);
+    v23 = [dataCopy copy];
     bookmarkDataIfAvailable = v19->_bookmarkDataIfAvailable;
     v19->_bookmarkDataIfAvailable = v23;
 
@@ -82,26 +82,26 @@
     presentedItemOperationQueue = v19->_presentedItemOperationQueue;
     v19->_presentedItemOperationQueue = v27;
 
-    objc_storeWeak(&v19->_delegate, v17);
-    if (v13)
+    objc_storeWeak(&v19->_delegate, delegateCopy);
+    if (lCopy)
     {
-      if ([v13 hasSandboxAccess])
+      if ([lCopy hasSandboxAccess])
       {
-        objc_storeStrong(&v19->_latestSandboxedURLWithAccess, a3);
+        objc_storeStrong(&v19->_latestSandboxedURLWithAccess, l);
       }
 
-      v29 = [v13 normalize];
-      if (v29 != v13)
+      normalize = [lCopy normalize];
+      if (normalize != lCopy)
       {
         if (TSUURLTrackerCat_init_token != -1)
         {
           sub_277114734();
         }
 
-        objc_storeStrong(&v19->_sandboxedURL, v29);
-        if ([v29 hasSandboxAccess])
+        objc_storeStrong(&v19->_sandboxedURL, normalize);
+        if ([normalize hasSandboxAccess])
         {
-          objc_storeStrong(&v19->_latestSandboxedURLWithAccess, v29);
+          objc_storeStrong(&v19->_latestSandboxedURLWithAccess, normalize);
         }
       }
 
@@ -112,9 +112,9 @@
   return v19;
 }
 
-- (id)p_sandboxedURLIfAvailableLoadingLastKnownURLFromBookmark:(BOOL)a3
+- (id)p_sandboxedURLIfAvailableLoadingLastKnownURLFromBookmark:(BOOL)bookmark
 {
-  v3 = a3;
+  bookmarkCopy = bookmark;
   os_unfair_lock_lock(&self->_propertiesLock);
   v5 = self->_sandboxedURL;
   v6 = self->_bookmarkDataIfAvailable;
@@ -126,7 +126,7 @@
 
   else
   {
-    v7 = !v3;
+    v7 = !bookmarkCopy;
   }
 
   if (!v7)
@@ -156,28 +156,28 @@
   return v3;
 }
 
-- (void)p_setSandboxedURL:(id)a3
+- (void)p_setSandboxedURL:(id)l
 {
-  v5 = a3;
-  if (v5 && ([v5 hasSandboxAccess] & 1) == 0 && TSUURLTrackerCat_init_token != -1)
+  lCopy = l;
+  if (lCopy && ([lCopy hasSandboxAccess] & 1) == 0 && TSUURLTrackerCat_init_token != -1)
   {
     sub_277114770();
   }
 
   os_unfair_lock_lock(&self->_propertiesLock);
-  objc_storeStrong(&self->_sandboxedURL, a3);
-  if ([v5 hasSandboxAccess])
+  objc_storeStrong(&self->_sandboxedURL, l);
+  if ([lCopy hasSandboxAccess])
   {
-    objc_storeStrong(&self->_latestSandboxedURLWithAccess, a3);
+    objc_storeStrong(&self->_latestSandboxedURLWithAccess, l);
   }
 
   os_unfair_lock_unlock(&self->_propertiesLock);
   [(TSUURLTrackerFilePresenter *)self p_updateVolumeInfo];
 }
 
-- (id)sandboxedURLWithOptions:(unint64_t)a3 error:(id *)a4
+- (id)sandboxedURLWithOptions:(unint64_t)options error:(id *)error
 {
-  v5 = a3;
+  optionsCopy = options;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -198,16 +198,16 @@
   v16[4] = self;
   v16[5] = &v17;
   v16[6] = &v23;
-  v16[7] = a3;
+  v16[7] = options;
   dispatch_sync(accessQueue, v16);
   v8 = v18[5];
-  if (a4 && !v8)
+  if (error && !v8)
   {
-    *a4 = v24[5];
+    *error = v24[5];
     v8 = v18[5];
   }
 
-  if ((v5 & 1) != 0 && !v8)
+  if ((optionsCopy & 1) != 0 && !v8)
   {
     os_unfair_lock_lock(&self->_propertiesLock);
     v9 = self->_bookmarkDataIfAvailable;
@@ -229,26 +229,26 @@
   return v14;
 }
 
-- (id)p_sandboxedURLWithOptions:(unint64_t)a3 error:(id *)a4
+- (id)p_sandboxedURLWithOptions:(unint64_t)options error:(id *)error
 {
-  v5 = a3;
+  optionsCopy = options;
   dispatch_assert_queue_V2(self->_accessQueue);
-  v7 = [(TSUURLTrackerFilePresenter *)self bookmarkDataIfAvailable];
+  bookmarkDataIfAvailable = [(TSUURLTrackerFilePresenter *)self bookmarkDataIfAvailable];
   v8 = [(TSUURLTrackerFilePresenter *)self p_sandboxedURLIfAvailableLoadingLastKnownURLFromBookmark:0];
   v9 = v8;
   v10 = 1;
-  if ((v5 & 2) == 0 && v8)
+  if ((optionsCopy & 2) == 0 && v8)
   {
     v11 = atomic_load(&self->_hasStarted);
     v10 = v11 ^ 1;
   }
 
   v12 = 0;
-  if ((v10 & 1) != 0 && v7)
+  if ((v10 & 1) != 0 && bookmarkDataIfAvailable)
   {
     v30 = 0;
     v29 = 0;
-    v12 = [[TSUSandboxedURL alloc] initByResolvingBookmarkData:v7 relativeToURL:0 bookmarkDataIsStale:&v30 error:&v29];
+    v12 = [[TSUSandboxedURL alloc] initByResolvingBookmarkData:bookmarkDataIfAvailable relativeToURL:0 bookmarkDataIsStale:&v30 error:&v29];
     v13 = v29;
     v14 = v13;
     if (v12)
@@ -270,7 +270,7 @@
           v17 = v16;
 
           [(TSUURLTrackerFilePresenter *)self p_setBookmarkDataIfAvailable:v17];
-          v7 = v17;
+          bookmarkDataIfAvailable = v17;
         }
 
         else if (TSUURLTrackerCat_init_token != -1)
@@ -301,7 +301,7 @@
 
   v18 = [(TSUURLTrackerFilePresenter *)self p_sandboxedURLIfAvailableLoadingLastKnownURLFromBookmark:0];
   v19 = v18;
-  if ((((v5 & 1) == 0) & v10) != 0)
+  if ((((optionsCopy & 1) == 0) & v10) != 0)
   {
     v20 = v12;
   }
@@ -316,15 +316,15 @@
   if ((v10 & (v12 == 0)) != 1)
   {
 LABEL_42:
-    if (a4 && !v22)
+    if (error && !v22)
     {
       if (!v14)
       {
         v26 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4 userInfo:0];
-        *a4 = v26;
+        *error = v26;
 
 LABEL_47:
-        if (v7 && TSUURLTrackerCat_init_token != -1)
+        if (bookmarkDataIfAvailable && TSUURLTrackerCat_init_token != -1)
         {
           sub_2771148EC();
         }
@@ -333,7 +333,7 @@ LABEL_47:
       }
 
       v24 = v14;
-      *a4 = v14;
+      *error = v14;
     }
 
     if (v22)
@@ -344,7 +344,7 @@ LABEL_47:
     goto LABEL_47;
   }
 
-  if (v7)
+  if (bookmarkDataIfAvailable)
   {
     if (v21 && TSUURLTrackerCat_init_token != -1)
     {
@@ -390,25 +390,25 @@ LABEL_50:
   return v22;
 }
 
-- (id)p_lastKnownURLFromBookmark:(id)a3
+- (id)p_lastKnownURLFromBookmark:(id)bookmark
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (bookmark)
   {
     v3 = MEMORY[0x277CBEBC0];
     v13 = *MEMORY[0x277CBE8F8];
     v4 = v13;
     v5 = MEMORY[0x277CBEA60];
-    v6 = a3;
+    bookmarkCopy = bookmark;
     v7 = [v5 arrayWithObjects:&v13 count:1];
-    v8 = [v3 resourceValuesForKeys:v7 fromBookmarkData:{v6, v13, v14}];
+    v8 = [v3 resourceValuesForKeys:v7 fromBookmarkData:{bookmarkCopy, v13, v14}];
 
     v9 = [v8 objectForKeyedSubscript:v4];
-    v10 = [v9 tsu_pathExceptPrivate];
+    tsu_pathExceptPrivate = [v9 tsu_pathExceptPrivate];
 
-    if (v10)
+    if (tsu_pathExceptPrivate)
     {
-      v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:v10];
+      v11 = [MEMORY[0x277CBEBC0] fileURLWithPath:tsu_pathExceptPrivate];
     }
 
     else
@@ -425,7 +425,7 @@ LABEL_50:
   return v11;
 }
 
-- (void)startOrResumeForEnteringForeground:(BOOL)a3
+- (void)startOrResumeForEnteringForeground:(BOOL)foreground
 {
   v8 = 0;
   v9 = &v8;
@@ -436,7 +436,7 @@ LABEL_50:
   block[1] = 3221225472;
   block[2] = sub_2770CCED4;
   block[3] = &unk_27A702E70;
-  v7 = a3;
+  foregroundCopy = foreground;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(accessQueue, block);
@@ -452,7 +452,7 @@ LABEL_50:
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)pauseForEnteringBackground:(BOOL)a3
+- (void)pauseForEnteringBackground:(BOOL)background
 {
   v7 = 0;
   v8 = &v7;
@@ -463,7 +463,7 @@ LABEL_50:
   block[1] = 3221225472;
   block[2] = sub_2770CD0C4;
   block[3] = &unk_27A702E70;
-  v6 = a3;
+  backgroundCopy = background;
   block[4] = self;
   block[5] = &v7;
   dispatch_sync(accessQueue, block);
@@ -498,60 +498,60 @@ LABEL_50:
 
 - (BOOL)isLikelyOnRemovedMedia
 {
-  LOBYTE(v3) = atomic_load(&self->_isLikelyOnRemovedMedia);
+  LOBYTE(volumeURL) = atomic_load(&self->_isLikelyOnRemovedMedia);
   if ([(TSUURLTrackerFilePresenter *)self isLikelyOnExternalStorage])
   {
-    v4 = [(TSUURLTrackerFilePresenter *)self sandboxedURLIfAvailable];
-    v5 = v4;
-    if (!v4)
+    sandboxedURLIfAvailable = [(TSUURLTrackerFilePresenter *)self sandboxedURLIfAvailable];
+    v5 = sandboxedURLIfAvailable;
+    if (!sandboxedURLIfAvailable)
     {
 LABEL_12:
 
-      return v3 & 1;
+      return volumeURL & 1;
     }
 
-    v6 = [v4 URL];
+    tsu_reachableFileURLByDeletingUnreachablePathComponents = [sandboxedURLIfAvailable URL];
     v16 = 0;
-    v7 = [v6 checkPromisedItemIsReachableAndReturnError:&v16];
+    v7 = [tsu_reachableFileURLByDeletingUnreachablePathComponents checkPromisedItemIsReachableAndReturnError:&v16];
     v8 = v16;
     v9 = v8;
     if (v7)
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(volumeURL) = 0;
     }
 
     else
     {
-      v10 = [v8 tsu_isNoSuchFileError];
+      tsu_isNoSuchFileError = [v8 tsu_isNoSuchFileError];
 
-      if (!v10)
+      if (!tsu_isNoSuchFileError)
       {
-        LOBYTE(v3) = 0;
+        LOBYTE(volumeURL) = 0;
         goto LABEL_11;
       }
 
       v11 = [v5 URL];
-      v6 = [v11 tsu_reachableFileURLByDeletingUnreachablePathComponents];
+      tsu_reachableFileURLByDeletingUnreachablePathComponents = [v11 tsu_reachableFileURLByDeletingUnreachablePathComponents];
 
       v15 = 0;
-      LODWORD(v3) = [v6 getPromisedItemResourceValue:&v15 forKey:*MEMORY[0x277CBEA58] error:0];
+      LODWORD(volumeURL) = [tsu_reachableFileURLByDeletingUnreachablePathComponents getPromisedItemResourceValue:&v15 forKey:*MEMORY[0x277CBEA58] error:0];
       v12 = v15;
-      if (v3)
+      if (volumeURL)
       {
-        v3 = [(TSUURLTrackerFilePresenter *)self volumeURL];
-        v13 = [v12 tsu_matchesURL:v3 canCompareFileID:0];
+        volumeURL = [(TSUURLTrackerFilePresenter *)self volumeURL];
+        v13 = [v12 tsu_matchesURL:volumeURL canCompareFileID:0];
 
-        LOBYTE(v3) = v13 ^ 1;
+        LOBYTE(volumeURL) = v13 ^ 1;
       }
     }
 
 LABEL_11:
-    atomic_store(v3, &self->_isLikelyOnRemovedMedia);
+    atomic_store(volumeURL, &self->_isLikelyOnRemovedMedia);
 
     goto LABEL_12;
   }
 
-  return v3 & 1;
+  return volumeURL & 1;
 }
 
 - (NSURL)volumeURL
@@ -565,8 +565,8 @@ LABEL_11:
 
 - (void)p_updateVolumeInfo
 {
-  v3 = [(TSUURLTrackerFilePresenter *)self sandboxedURLIfAvailable];
-  v4 = [v3 URL];
+  sandboxedURLIfAvailable = [(TSUURLTrackerFilePresenter *)self sandboxedURLIfAvailable];
+  v4 = [sandboxedURLIfAvailable URL];
   if ([v4 checkPromisedItemIsReachableAndReturnError:0])
   {
     atomic_store([v4 tsu_isVolumeKnownToBeEjectable], &self->_volumeIsEjectable);
@@ -599,13 +599,13 @@ LABEL_11:
   return v3;
 }
 
-- (void)p_setBookmarkDataIfAvailable:(id)a3
+- (void)p_setBookmarkDataIfAvailable:(id)available
 {
   accessQueue = self->_accessQueue;
-  v5 = a3;
+  availableCopy = available;
   dispatch_assert_queue_V2(accessQueue);
   os_unfair_lock_lock(&self->_propertiesLock);
-  v6 = [v5 copy];
+  v6 = [availableCopy copy];
 
   bookmarkDataIfAvailable = self->_bookmarkDataIfAvailable;
   self->_bookmarkDataIfAvailable = v6;
@@ -613,7 +613,7 @@ LABEL_11:
   os_unfair_lock_unlock(&self->_propertiesLock);
 }
 
-- (id)bookmarkDataWithOptions:(unint64_t)a3 error:(id *)a4
+- (id)bookmarkDataWithOptions:(unint64_t)options error:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -635,12 +635,12 @@ LABEL_11:
   v9[4] = self;
   v9[5] = &v10;
   v9[6] = &v16;
-  v9[7] = a3;
+  v9[7] = options;
   dispatch_sync(accessQueue, v9);
   v6 = v11[5];
-  if (a4 && !v6)
+  if (error && !v6)
   {
-    *a4 = v17[5];
+    *error = v17[5];
     v6 = v11[5];
   }
 
@@ -652,14 +652,14 @@ LABEL_11:
   return v7;
 }
 
-- (id)p_bookmarkDataWithOptions:(unint64_t)a3 error:(id *)a4
+- (id)p_bookmarkDataWithOptions:(unint64_t)options error:(id *)error
 {
-  v5 = a3;
+  optionsCopy = options;
   dispatch_assert_queue_V2(self->_accessQueue);
   v7 = [(TSUURLTrackerFilePresenter *)self p_sandboxedURLIfAvailableLoadingLastKnownURLFromBookmark:0];
-  v8 = [(TSUURLTrackerFilePresenter *)self bookmarkDataIfAvailable];
-  v9 = v8;
-  if (v5 & 2) != 0 || !v8 || (v10 = atomic_load(&self->_forceEncodingBookmarkData), (v10) || (v11 = atomic_load(&self->_didFailToForceEncodingBookmarkData), (v11))
+  bookmarkDataIfAvailable = [(TSUURLTrackerFilePresenter *)self bookmarkDataIfAvailable];
+  v9 = bookmarkDataIfAvailable;
+  if (optionsCopy & 2) != 0 || !bookmarkDataIfAvailable || (v10 = atomic_load(&self->_forceEncodingBookmarkData), (v10) || (v11 = atomic_load(&self->_didFailToForceEncodingBookmarkData), (v11))
   {
     v12 = [v7 URL];
 
@@ -755,9 +755,9 @@ LABEL_11:
   }
 
 LABEL_29:
-  v23 = (v5 & 1) == 0;
-  v24 = [(TSUURLTrackerFilePresenter *)self bookmarkDataIfAvailable];
-  v25 = v24;
+  v23 = (optionsCopy & 1) == 0;
+  bookmarkDataIfAvailable2 = [(TSUURLTrackerFilePresenter *)self bookmarkDataIfAvailable];
+  v25 = bookmarkDataIfAvailable2;
   if ((v23 & v18) != 0)
   {
     v26 = v17;
@@ -765,7 +765,7 @@ LABEL_29:
 
   else
   {
-    v26 = v24;
+    v26 = bookmarkDataIfAvailable2;
   }
 
   v27 = v26;
@@ -788,18 +788,18 @@ LABEL_29:
     }
   }
 
-  else if (a4 && !v27)
+  else if (error && !v27)
   {
     if (v16)
     {
       v30 = v16;
-      *a4 = v16;
+      *error = v16;
     }
 
     else
     {
       v31 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:4 userInfo:0];
-      *a4 = v31;
+      *error = v31;
     }
   }
 
@@ -814,10 +814,10 @@ LABEL_29:
   return v3;
 }
 
-- (void)relinquishPresentedItemToWriter:(id)a3
+- (void)relinquishPresentedItemToWriter:(id)writer
 {
   v4 = TSUURLTrackerCat_init_token;
-  v5 = a3;
+  writerCopy = writer;
   if (v4 != -1)
   {
     sub_277114A90();
@@ -828,7 +828,7 @@ LABEL_29:
   v6[2] = sub_2770CDE7C;
   v6[3] = &unk_27A7023D8;
   v6[4] = self;
-  v5[2](v5, v6);
+  writerCopy[2](writerCopy, v6);
 }
 
 - (void)p_notifyURLTrackerPresentedItemContentsDidChange
@@ -841,9 +841,9 @@ LABEL_29:
   }
 }
 
-- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)a3
+- (void)accommodatePresentedItemDeletionWithCompletionHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (TSUURLTrackerCat_init_token != -1)
   {
     sub_277114AB8();
@@ -852,11 +852,11 @@ LABEL_29:
   [(TSUURLTrackerFilePresenter *)self p_setDeleted:1];
   [(TSUURLTrackerFilePresenter *)self stop];
   [(TSUURLTrackerFilePresenter *)self p_notifyURLTrackerPresentedItemWasDeleted];
-  v4 = v5;
-  if (v5)
+  v4 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v5 + 2))(v5, 0);
-    v4 = v5;
+    (*(handlerCopy + 2))(handlerCopy, 0);
+    v4 = handlerCopy;
   }
 }
 
@@ -870,15 +870,15 @@ LABEL_29:
   }
 }
 
-- (void)presentedItemDidMoveToURL:(id)a3
+- (void)presentedItemDidMoveToURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   if (TSUURLTrackerCat_init_token != -1)
   {
     sub_277114ACC();
   }
 
-  v5 = [[TSUSandboxedURL alloc] initWithURL:v4];
+  v5 = [[TSUSandboxedURL alloc] initWithURL:lCopy];
   v6 = [(TSUSandboxedURL *)v5 URL];
   v16 = 0;
   v7 = [v6 checkPromisedItemIsReachableAndReturnError:&v16];
@@ -891,9 +891,9 @@ LABEL_29:
       sub_277114AE0();
     }
 
-    v9 = [(TSUURLTrackerFilePresenter *)self bookmarkDataIfAvailable];
+    bookmarkDataIfAvailable = [(TSUURLTrackerFilePresenter *)self bookmarkDataIfAvailable];
 
-    if (v9)
+    if (bookmarkDataIfAvailable)
     {
       v15 = 0;
       v10 = [(TSUURLTrackerFilePresenter *)self sandboxedURLWithOptions:2 error:&v15];
@@ -933,38 +933,38 @@ LABEL_29:
   [(TSUURLTrackerFilePresenter *)self p_presentedItemDidMoveToSandboxedURL:v5];
 }
 
-- (void)p_presentedItemDidMoveToSandboxedURL:(id)a3
+- (void)p_presentedItemDidMoveToSandboxedURL:(id)l
 {
-  v4 = a3;
-  [(TSUURLTrackerFilePresenter *)self p_setSandboxedURL:v4];
+  lCopy = l;
+  [(TSUURLTrackerFilePresenter *)self p_setSandboxedURL:lCopy];
   atomic_store(1u, &self->_forceEncodingBookmarkData);
   accessQueue = self->_accessQueue;
   v8 = MEMORY[0x277D85DD0];
   v9 = 3221225472;
   v10 = sub_2770CE554;
   v11 = &unk_27A702450;
-  v12 = self;
-  v13 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v13 = lCopy;
+  v6 = lCopy;
   dispatch_async(accessQueue, &v8);
   v7 = [v6 URL];
   [(TSUURLTrackerFilePresenter *)self p_notifyURLTrackerPresentedItemDidMoveToURL:v7];
 }
 
-- (void)p_notifyURLTrackerPresentedItemDidMoveToURL:(id)a3
+- (void)p_notifyURLTrackerPresentedItemDidMoveToURL:(id)l
 {
-  v6 = a3;
+  lCopy = l;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
     v5 = objc_loadWeakRetained(&self->_urlTracker);
-    [WeakRetained urlTracker:v5 presentedItemDidMoveToURL:v6];
+    [WeakRetained urlTracker:v5 presentedItemDidMoveToURL:lCopy];
   }
 }
 
-- (void)presentedItemDidChangeUbiquityAttributes:(id)a3
+- (void)presentedItemDidChangeUbiquityAttributes:(id)attributes
 {
-  v8 = a3;
+  attributesCopy = attributes;
   if (TSUURLTrackerCat_init_token != -1)
   {
     sub_277114BD0();
@@ -973,21 +973,21 @@ LABEL_29:
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(TSUURLTrackerFilePresenter *)self presentedItemURL];
-    v6 = [v8 allObjects];
-    [v5 tsu_removeCachedResourceValueForKeys:v6];
+    presentedItemURL = [(TSUURLTrackerFilePresenter *)self presentedItemURL];
+    allObjects = [attributesCopy allObjects];
+    [presentedItemURL tsu_removeCachedResourceValueForKeys:allObjects];
 
     v7 = objc_loadWeakRetained(&self->_urlTracker);
-    [WeakRetained urlTracker:v7 presentedItemDidChangeUbiquityAttributes:v8];
+    [WeakRetained urlTracker:v7 presentedItemDidChangeUbiquityAttributes:attributesCopy];
   }
 }
 
 - (NSString)description
 {
   v3 = [(TSUURLTrackerFilePresenter *)self p_sandboxedURLIfAvailableLoadingLastKnownURLFromBookmark:1];
-  v4 = [(TSUURLTrackerFilePresenter *)self p_latestSandboxedURLWithAccess];
-  v5 = v4;
-  if (v4 && ![v4 isEqual:v3])
+  p_latestSandboxedURLWithAccess = [(TSUURLTrackerFilePresenter *)self p_latestSandboxedURLWithAccess];
+  v5 = p_latestSandboxedURLWithAccess;
+  if (p_latestSandboxedURLWithAccess && ![p_latestSandboxedURLWithAccess isEqual:v3])
   {
     v9 = MEMORY[0x277CCACA8];
     v10 = objc_opt_class();

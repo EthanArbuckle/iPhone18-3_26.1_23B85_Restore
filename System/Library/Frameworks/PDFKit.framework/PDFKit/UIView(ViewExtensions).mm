@@ -6,13 +6,13 @@
 
 - (id)PDFKitEnclosingScrollView
 {
-  v1 = a1;
+  selfCopy = self;
   do
   {
-    v2 = v1;
-    v1 = [v1 superview];
+    v2 = selfCopy;
+    selfCopy = [selfCopy superview];
 
-    if (!v1)
+    if (!selfCopy)
     {
       break;
     }
@@ -22,7 +22,7 @@
 
   while ((objc_opt_isKindOfClass() & 1) == 0);
 
-  return v1;
+  return selfCopy;
 }
 
 @end

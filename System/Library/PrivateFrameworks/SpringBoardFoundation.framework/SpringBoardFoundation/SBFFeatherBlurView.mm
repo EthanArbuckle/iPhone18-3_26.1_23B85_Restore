@@ -1,11 +1,11 @@
 @interface SBFFeatherBlurView
-+ (BOOL)_requiresLowQualityFeatherBlur:(unint64_t)a3;
-+ (UIEdgeInsets)gradientMaskLayerInsetsForFeatherBlurRecipe:(unint64_t)a3;
-+ (id)configureGradientMaskForFeatherBlurRecipe:(unint64_t)a3 onContentView:(id)a4;
-+ (id)matchMoveAnimationForFrame:(CGRect)a3 relativeToView:(id)a4;
++ (BOOL)_requiresLowQualityFeatherBlur:(unint64_t)blur;
++ (UIEdgeInsets)gradientMaskLayerInsetsForFeatherBlurRecipe:(unint64_t)recipe;
++ (id)configureGradientMaskForFeatherBlurRecipe:(unint64_t)recipe onContentView:(id)view;
++ (id)matchMoveAnimationForFrame:(CGRect)frame relativeToView:(id)view;
 - (CGSize)intrinsicContentSize;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (SBFFeatherBlurView)initWithRecipe:(unint64_t)a3;
+- (SBFFeatherBlurView)initWithRecipe:(unint64_t)recipe;
 - (void)layoutSubviews;
 @end
 
@@ -20,15 +20,15 @@
   [(MTMaterialView *)self->_backgroundBlurView setFrame:?];
 }
 
-+ (BOOL)_requiresLowQualityFeatherBlur:(unint64_t)a3
++ (BOOL)_requiresLowQualityFeatherBlur:(unint64_t)blur
 {
-  v4 = [MEMORY[0x1E69DC938] currentDevice];
-  v5 = [v4 sbf_featherBlurGraphicsQuality];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  sbf_featherBlurGraphicsQuality = [currentDevice sbf_featherBlurGraphicsQuality];
 
-  return (a3 == 2 || (a3 & 0xFFFFFFFFFFFFFFFDLL) == 1) && v5 < 100;
+  return (blur == 2 || (blur & 0xFFFFFFFFFFFFFFFDLL) == 1) && sbf_featherBlurGraphicsQuality < 100;
 }
 
-- (SBFFeatherBlurView)initWithRecipe:(unint64_t)a3
+- (SBFFeatherBlurView)initWithRecipe:(unint64_t)recipe
 {
   v17.receiver = self;
   v17.super_class = SBFFeatherBlurView;
@@ -36,15 +36,15 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 > 7)
+    if (recipe > 7)
     {
       v6 = 0;
     }
 
     else
     {
-      v6 = off_1E807F5A0[a3];
-      *&v4->_intrinsicHeight = qword_1BEAD3C00[a3];
+      v6 = off_1E807F5A0[recipe];
+      *&v4->_intrinsicHeight = qword_1BEAD3C00[recipe];
     }
 
     v7 = MEMORY[0x1E69AE158];
@@ -53,7 +53,7 @@
     backgroundBlurView = v5->_backgroundBlurView;
     v5->_backgroundBlurView = v9;
 
-    v11 = [objc_opt_class() _requiresLowQualityFeatherBlur:a3];
+    v11 = [objc_opt_class() _requiresLowQualityFeatherBlur:recipe];
     v12 = v5->_backgroundBlurView;
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
@@ -98,17 +98,17 @@ double __37__SBFFeatherBlurView_initWithRecipe___block_invoke(uint64_t a1, doubl
   return result;
 }
 
-+ (id)configureGradientMaskForFeatherBlurRecipe:(unint64_t)a3 onContentView:(id)a4
++ (id)configureGradientMaskForFeatherBlurRecipe:(unint64_t)recipe onContentView:(id)view
 {
   v51[3] = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [v7 superview];
-  if (!v8)
+  viewCopy = view;
+  superview = [viewCopy superview];
+  if (!superview)
   {
-    [SBFFeatherBlurView configureGradientMaskForFeatherBlurRecipe:a2 onContentView:a1];
+    [SBFFeatherBlurView configureGradientMaskForFeatherBlurRecipe:a2 onContentView:self];
   }
 
-  if ([objc_opt_class() _requiresLowQualityFeatherBlur:a3])
+  if ([objc_opt_class() _requiresLowQualityFeatherBlur:recipe])
   {
     v9 = MEMORY[0x1E695E0F0];
     goto LABEL_19;
@@ -117,24 +117,24 @@ double __37__SBFFeatherBlurView_initWithRecipe___block_invoke(uint64_t a1, doubl
   v10 = MEMORY[0x1E696AEC0];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
-  v13 = [v10 stringWithFormat:@"<%@:%p>:destOut", v12, v7];
+  viewCopy = [v10 stringWithFormat:@"<%@:%p>:destOut", v12, viewCopy];
 
-  v14 = [MEMORY[0x1E6979310] layer];
-  [v14 setCaptureOnly:1];
-  [v14 setGroupName:v13];
-  v15 = [v8 layer];
-  v16 = [v7 layer];
-  [v15 insertSublayer:v14 below:v16];
+  layer = [MEMORY[0x1E6979310] layer];
+  [layer setCaptureOnly:1];
+  [layer setGroupName:viewCopy];
+  layer2 = [superview layer];
+  layer3 = [viewCopy layer];
+  [layer2 insertSublayer:layer below:layer3];
 
-  v17 = [MEMORY[0x1E69DC888] whiteColor];
-  v18 = v17;
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  v18 = whiteColor;
   v19 = 0;
-  v43 = v14;
-  if (a3 <= 2)
+  v43 = layer;
+  if (recipe <= 2)
   {
-    if (!a3)
+    if (!recipe)
     {
-      v21 = [v17 colorWithAlphaComponent:0.84];
+      v21 = [whiteColor colorWithAlphaComponent:0.84];
       v51[0] = [v21 CGColor];
       v22 = [v18 colorWithAlphaComponent:0.66];
       v51[1] = [v22 CGColor];
@@ -146,12 +146,12 @@ double __37__SBFFeatherBlurView_initWithRecipe___block_invoke(uint64_t a1, doubl
       goto LABEL_17;
     }
 
-    if (a3 != 1)
+    if (recipe != 1)
     {
       v20 = 0;
-      if (a3 == 2)
+      if (recipe == 2)
       {
-        v21 = [v17 colorWithAlphaComponent:0.84];
+        v21 = [whiteColor colorWithAlphaComponent:0.84];
         v50[0] = [v21 CGColor];
         v22 = [v18 colorWithAlphaComponent:0.0];
         v50[1] = [v22 CGColor];
@@ -166,7 +166,7 @@ LABEL_17:
     }
 
 LABEL_14:
-    v21 = [v17 colorWithAlphaComponent:0.84];
+    v21 = [whiteColor colorWithAlphaComponent:0.84];
     v49[0] = [v21 CGColor];
     v22 = [v18 colorWithAlphaComponent:0.66];
     v49[1] = [v22 CGColor];
@@ -178,14 +178,14 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  if (a3 == 3)
+  if (recipe == 3)
   {
     goto LABEL_14;
   }
 
-  if (a3 == 4)
+  if (recipe == 4)
   {
-    v21 = [v17 colorWithAlphaComponent:0.77];
+    v21 = [whiteColor colorWithAlphaComponent:0.77];
     v48[0] = [v21 CGColor];
     v22 = [v18 colorWithAlphaComponent:0.81];
     v48[1] = [v22 CGColor];
@@ -195,9 +195,9 @@ LABEL_14:
   }
 
   v20 = 0;
-  if (a3 == 7)
+  if (recipe == 7)
   {
-    v21 = [v17 colorWithAlphaComponent:0.84];
+    v21 = [whiteColor colorWithAlphaComponent:0.84];
     v47[0] = [v21 CGColor];
     v22 = [v18 colorWithAlphaComponent:0.42];
     v47[1] = [v22 CGColor];
@@ -211,67 +211,67 @@ LABEL_14:
 
 LABEL_18:
   v42 = v20;
-  v26 = [MEMORY[0x1E6979380] layer];
-  [v26 setType:*MEMORY[0x1E6979DA0]];
-  [v26 setColors:v20];
-  [v26 setLocations:v19];
-  [v26 setStartPoint:{0.5, 0.0}];
-  [v26 setEndPoint:{0.5, 1.0}];
-  [v26 setCompositingFilter:*MEMORY[0x1E69798E8]];
-  v27 = [v8 layer];
-  v28 = [v7 layer];
-  [v27 insertSublayer:v26 above:v28];
+  layer4 = [MEMORY[0x1E6979380] layer];
+  [layer4 setType:*MEMORY[0x1E6979DA0]];
+  [layer4 setColors:v20];
+  [layer4 setLocations:v19];
+  [layer4 setStartPoint:{0.5, 0.0}];
+  [layer4 setEndPoint:{0.5, 1.0}];
+  [layer4 setCompositingFilter:*MEMORY[0x1E69798E8]];
+  layer5 = [superview layer];
+  layer6 = [viewCopy layer];
+  [layer5 insertSublayer:layer4 above:layer6];
 
-  v29 = [MEMORY[0x1E6979310] layer];
-  [v29 setGroupName:v13];
-  [v29 setCompositingFilter:*MEMORY[0x1E69798F0]];
-  v30 = [v8 layer];
-  [v30 insertSublayer:v29 above:v26];
+  layer7 = [MEMORY[0x1E6979310] layer];
+  [layer7 setGroupName:viewCopy];
+  [layer7 setCompositingFilter:*MEMORY[0x1E69798F0]];
+  layer8 = [superview layer];
+  [layer8 insertSublayer:layer7 above:layer4];
 
-  v31 = [v8 layer];
-  [v31 setAllowsGroupBlending:0];
+  layer9 = [superview layer];
+  [layer9 setAllowsGroupBlending:0];
 
   v45[0] = @"position";
-  v32 = [MEMORY[0x1E695DFB0] null];
-  v46[0] = v32;
+  null = [MEMORY[0x1E695DFB0] null];
+  v46[0] = null;
   v45[1] = @"bounds";
   [MEMORY[0x1E695DFB0] null];
-  v33 = v41 = v13;
+  v33 = v41 = viewCopy;
   v46[1] = v33;
   v45[2] = @"opacity";
-  v34 = [MEMORY[0x1E695DFB0] null];
-  v46[2] = v34;
+  null2 = [MEMORY[0x1E695DFB0] null];
+  v46[2] = null2;
   v45[3] = @"hidden";
   [MEMORY[0x1E695DFB0] null];
-  v35 = v8;
-  v36 = v7;
+  v35 = superview;
+  v36 = viewCopy;
   v38 = v37 = v18;
   v46[3] = v38;
   v39 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v46 forKeys:v45 count:4];
 
   [v43 setActions:v39];
-  [v26 setActions:v39];
-  [v29 setActions:v39];
+  [layer4 setActions:v39];
+  [layer7 setActions:v39];
   v44[0] = v43;
-  v44[1] = v26;
-  v44[2] = v29;
+  v44[1] = layer4;
+  v44[2] = layer7;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:3];
 
-  v7 = v36;
-  v8 = v35;
+  viewCopy = v36;
+  superview = v35;
 
 LABEL_19:
 
   return v9;
 }
 
-+ (UIEdgeInsets)gradientMaskLayerInsetsForFeatherBlurRecipe:(unint64_t)a3
++ (UIEdgeInsets)gradientMaskLayerInsetsForFeatherBlurRecipe:(unint64_t)recipe
 {
-  if (a3 - 4 >= 4)
+  if (recipe - 4 >= 4)
   {
     v3 = 0.0;
     v5 = 30.0;
-    if (a3 != 3)
+    if (recipe != 3)
     {
       v5 = -10.0;
     }
@@ -295,19 +295,19 @@ LABEL_19:
   return result;
 }
 
-+ (id)matchMoveAnimationForFrame:(CGRect)a3 relativeToView:(id)a4
++ (id)matchMoveAnimationForFrame:(CGRect)frame relativeToView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v26[4] = *MEMORY[0x1E69E9840];
   v8 = MEMORY[0x1E69793B8];
-  v9 = a4;
+  viewCopy = view;
   v10 = objc_alloc_init(v8);
-  v11 = [v9 layer];
+  layer = [viewCopy layer];
 
-  [v10 setSourceLayer:v11];
+  [v10 setSourceLayer:layer];
   v12 = MEMORY[0x1E696B098];
   v28.origin.x = x;
   v28.origin.y = y;

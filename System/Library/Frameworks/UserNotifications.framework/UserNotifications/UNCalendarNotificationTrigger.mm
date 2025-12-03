@@ -1,11 +1,11 @@
 @interface UNCalendarNotificationTrigger
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDate)nextTriggerDate;
-- (UNCalendarNotificationTrigger)initWithCoder:(id)a3;
+- (UNCalendarNotificationTrigger)initWithCoder:(id)coder;
 - (id)description;
-- (id)nextTriggerDateAfterDate:(id)a3 withRequestedDate:(id)a4;
+- (id)nextTriggerDateAfterDate:(id)date withRequestedDate:(id)requestedDate;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNCalendarNotificationTrigger
@@ -15,21 +15,21 @@
   v7.receiver = self;
   v7.super_class = UNCalendarNotificationTrigger;
   v3 = [(UNNotificationTrigger *)&v7 hash];
-  v4 = [(UNCalendarNotificationTrigger *)self dateComponents];
-  v5 = [v4 hash];
+  dateComponents = [(UNCalendarNotificationTrigger *)self dateComponents];
+  v5 = [dateComponents hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = UNCalendarNotificationTrigger, [(UNNotificationTrigger *)&v9 isEqual:v4]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v9.receiver = self, v9.super_class = UNCalendarNotificationTrigger, [(UNNotificationTrigger *)&v9 isEqual:equalCopy]))
   {
-    v5 = [(UNCalendarNotificationTrigger *)self dateComponents];
-    v6 = [v4 dateComponents];
-    v7 = UNEqualObjects(v5, v6);
+    dateComponents = [(UNCalendarNotificationTrigger *)self dateComponents];
+    dateComponents2 = [equalCopy dateComponents];
+    v7 = UNEqualObjects(dateComponents, dateComponents2);
   }
 
   else
@@ -44,10 +44,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(UNCalendarNotificationTrigger *)self dateComponents];
+  dateComponents = [(UNCalendarNotificationTrigger *)self dateComponents];
   [(UNNotificationTrigger *)self repeats];
   v6 = NSStringFromBOOL();
-  v7 = [v3 stringWithFormat:@"<%@: %p dateComponents: %@, repeats: %@>", v4, self, v5, v6];;
+  v7 = [v3 stringWithFormat:@"<%@: %p dateComponents: %@, repeats: %@>", v4, self, dateComponents, v6];;
 
   return v7;
 }
@@ -56,19 +56,19 @@
 {
   v4.receiver = self;
   v4.super_class = UNCalendarNotificationTrigger;
-  v2 = [(UNNotificationTrigger *)&v4 nextTriggerDate];
+  nextTriggerDate = [(UNNotificationTrigger *)&v4 nextTriggerDate];
 
-  return v2;
+  return nextTriggerDate;
 }
 
-- (id)nextTriggerDateAfterDate:(id)a3 withRequestedDate:(id)a4
+- (id)nextTriggerDateAfterDate:(id)date withRequestedDate:(id)requestedDate
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v6)
+  dateCopy = date;
+  requestedDateCopy = requestedDate;
+  v8 = requestedDateCopy;
+  if (dateCopy)
   {
-    if (v7)
+    if (requestedDateCopy)
     {
       goto LABEL_3;
     }
@@ -85,26 +85,26 @@
 
   [UNCalendarNotificationTrigger nextTriggerDateAfterDate:withRequestedDate:];
 LABEL_3:
-  v9 = [(UNCalendarNotificationTrigger *)self dateComponents];
-  v10 = v9;
-  if (v9)
+  dateComponents = [(UNCalendarNotificationTrigger *)self dateComponents];
+  v10 = dateComponents;
+  if (dateComponents)
   {
-    v11 = [v9 calendar];
-    if (!v11)
+    calendar = [dateComponents calendar];
+    if (!calendar)
     {
-      v11 = [MEMORY[0x1E695DEE8] currentCalendar];
-      v12 = [v10 timeZone];
+      calendar = [MEMORY[0x1E695DEE8] currentCalendar];
+      timeZone = [v10 timeZone];
 
-      if (v12)
+      if (timeZone)
       {
-        v13 = [v10 timeZone];
-        [v11 setTimeZone:v13];
+        timeZone2 = [v10 timeZone];
+        [calendar setTimeZone:timeZone2];
       }
     }
 
     if ([(UNNotificationTrigger *)self repeats])
     {
-      v14 = v6;
+      v14 = dateCopy;
     }
 
     else
@@ -114,9 +114,9 @@ LABEL_3:
 
     v15 = v14;
     v16 = objc_autoreleasePoolPush();
-    v17 = [v11 nextDateAfterDate:v15 matchingComponents:v10 options:512];
+    v17 = [calendar nextDateAfterDate:v15 matchingComponents:v10 options:512];
     objc_autoreleasePoolPop(v16);
-    if ([v17 compare:v6] != 1)
+    if ([v17 compare:dateCopy] != 1)
     {
 
       v17 = 0;
@@ -131,25 +131,25 @@ LABEL_3:
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = UNCalendarNotificationTrigger;
-  v4 = a3;
-  [(UNNotificationTrigger *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(UNNotificationTrigger *)&v6 encodeWithCoder:coderCopy];
   v5 = [(UNCalendarNotificationTrigger *)self dateComponents:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"matchingDateComponents"];
+  [coderCopy encodeObject:v5 forKey:@"matchingDateComponents"];
 }
 
-- (UNCalendarNotificationTrigger)initWithCoder:(id)a3
+- (UNCalendarNotificationTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = UNCalendarNotificationTrigger;
-  v5 = [(UNNotificationTrigger *)&v10 initWithCoder:v4];
+  v5 = [(UNNotificationTrigger *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"matchingDateComponents"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"matchingDateComponents"];
     v7 = [v6 copy];
     dateComponents = v5->_dateComponents;
     v5->_dateComponents = v7;

@@ -1,34 +1,34 @@
 @interface EDSearchableIndexPersistenceRichLinkDatum
-- (EDSearchableIndexPersistenceRichLinkDatum)initWithMessageID:(id)a3 richLinkID:(id)a4 mailboxID:(int64_t)a5 title:(id)a6 url:(id)a7;
+- (EDSearchableIndexPersistenceRichLinkDatum)initWithMessageID:(id)d richLinkID:(id)iD mailboxID:(int64_t)mailboxID title:(id)title url:(id)url;
 @end
 
 @implementation EDSearchableIndexPersistenceRichLinkDatum
 
-- (EDSearchableIndexPersistenceRichLinkDatum)initWithMessageID:(id)a3 richLinkID:(id)a4 mailboxID:(int64_t)a5 title:(id)a6 url:(id)a7
+- (EDSearchableIndexPersistenceRichLinkDatum)initWithMessageID:(id)d richLinkID:(id)iD mailboxID:(int64_t)mailboxID title:(id)title url:(id)url
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
+  dCopy = d;
+  iDCopy = iD;
+  titleCopy = title;
+  urlCopy = url;
   v26.receiver = self;
   v26.super_class = EDSearchableIndexPersistenceRichLinkDatum;
   v16 = [(EDSearchableIndexPersistenceRichLinkDatum *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [dCopy copy];
     messageID = v16->_messageID;
     v16->_messageID = v17;
 
-    v19 = [v13 copy];
+    v19 = [iDCopy copy];
     richLinkID = v16->_richLinkID;
     v16->_richLinkID = v19;
 
-    v16->_mailboxID = a5;
-    v21 = [v14 copy];
+    v16->_mailboxID = mailboxID;
+    v21 = [titleCopy copy];
     title = v16->_title;
     v16->_title = v21;
 
-    v23 = [v15 copy];
+    v23 = [urlCopy copy];
     url = v16->_url;
     v16->_url = v23;
   }

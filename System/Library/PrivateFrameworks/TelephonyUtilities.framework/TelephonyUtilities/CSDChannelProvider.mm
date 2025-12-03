@@ -1,110 +1,110 @@
 @interface CSDChannelProvider
-- (BOOL)isEqualToChannelProvider:(id)a3;
-- (CSDChannelProvider)initWithApplicationRecord:(id)a3;
-- (CSDChannelProvider)initWithChannelProvider:(id)a3;
-- (CSDChannelProvider)initWithSource:(id)a3 configuration:(id)a4;
+- (BOOL)isEqualToChannelProvider:(id)provider;
+- (CSDChannelProvider)initWithApplicationRecord:(id)record;
+- (CSDChannelProvider)initWithChannelProvider:(id)provider;
+- (CSDChannelProvider)initWithSource:(id)source configuration:(id)configuration;
 - (id)base;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CSDChannelProvider
 
-- (CSDChannelProvider)initWithSource:(id)a3 configuration:(id)a4
+- (CSDChannelProvider)initWithSource:(id)source configuration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 identifier];
+  sourceCopy = source;
+  configurationCopy = configuration;
+  identifier = [sourceCopy identifier];
   v15.receiver = self;
   v15.super_class = CSDChannelProvider;
-  v9 = [(CSDChannelProvider *)&v15 initWithIdentifier:v8];
+  v9 = [(CSDChannelProvider *)&v15 initWithIdentifier:identifier];
 
   if (v9)
   {
-    -[CSDChannelProvider setAudioSessionID:](v9, "setAudioSessionID:", [v7 audioSessionID]);
-    v10 = [v6 bundleIdentifier];
-    [(CSDChannelProvider *)v9 setBundleIdentifier:v10];
+    -[CSDChannelProvider setAudioSessionID:](v9, "setAudioSessionID:", [configurationCopy audioSessionID]);
+    bundleIdentifier = [sourceCopy bundleIdentifier];
+    [(CSDChannelProvider *)v9 setBundleIdentifier:bundleIdentifier];
 
-    v11 = [v6 bundleURL];
-    [(CSDChannelProvider *)v9 setBundleURL:v11];
+    bundleURL = [sourceCopy bundleURL];
+    [(CSDChannelProvider *)v9 setBundleURL:bundleURL];
 
-    v12 = [v6 localizedName];
-    v13 = [v12 copy];
+    localizedName = [sourceCopy localizedName];
+    v13 = [localizedName copy];
     [(CSDChannelProvider *)v9 setLocalizedName:v13];
   }
 
   return v9;
 }
 
-- (CSDChannelProvider)initWithChannelProvider:(id)a3
+- (CSDChannelProvider)initWithChannelProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [v4 identifier];
+  providerCopy = provider;
+  identifier = [providerCopy identifier];
   v11.receiver = self;
   v11.super_class = CSDChannelProvider;
-  v6 = [(CSDChannelProvider *)&v11 initWithIdentifier:v5];
+  v6 = [(CSDChannelProvider *)&v11 initWithIdentifier:identifier];
 
   if (v6)
   {
-    -[CSDChannelProvider setAudioSessionID:](v6, "setAudioSessionID:", [v4 audioSessionID]);
-    v7 = [v4 bundleIdentifier];
-    [(CSDChannelProvider *)v6 setBundleIdentifier:v7];
+    -[CSDChannelProvider setAudioSessionID:](v6, "setAudioSessionID:", [providerCopy audioSessionID]);
+    bundleIdentifier = [providerCopy bundleIdentifier];
+    [(CSDChannelProvider *)v6 setBundleIdentifier:bundleIdentifier];
 
-    v8 = [v4 bundleURL];
-    [(CSDChannelProvider *)v6 setBundleURL:v8];
+    bundleURL = [providerCopy bundleURL];
+    [(CSDChannelProvider *)v6 setBundleURL:bundleURL];
 
-    v9 = [v4 localizedName];
-    [(CSDChannelProvider *)v6 setLocalizedName:v9];
+    localizedName = [providerCopy localizedName];
+    [(CSDChannelProvider *)v6 setLocalizedName:localizedName];
   }
 
   return v6;
 }
 
-- (CSDChannelProvider)initWithApplicationRecord:(id)a3
+- (CSDChannelProvider)initWithApplicationRecord:(id)record
 {
-  v4 = a3;
-  v5 = [v4 applicationIdentifier];
+  recordCopy = record;
+  applicationIdentifier = [recordCopy applicationIdentifier];
   v11.receiver = self;
   v11.super_class = CSDChannelProvider;
-  v6 = [(CSDChannelProvider *)&v11 initWithIdentifier:v5];
+  v6 = [(CSDChannelProvider *)&v11 initWithIdentifier:applicationIdentifier];
 
   if (v6)
   {
-    v7 = [v4 bundleIdentifier];
-    [(CSDChannelProvider *)v6 setBundleIdentifier:v7];
+    bundleIdentifier = [recordCopy bundleIdentifier];
+    [(CSDChannelProvider *)v6 setBundleIdentifier:bundleIdentifier];
 
-    v8 = [v4 URL];
+    v8 = [recordCopy URL];
     [(CSDChannelProvider *)v6 setBundleURL:v8];
 
-    v9 = [v4 localizedName];
-    [(CSDChannelProvider *)v6 setLocalizedName:v9];
+    localizedName = [recordCopy localizedName];
+    [(CSDChannelProvider *)v6 setLocalizedName:localizedName];
   }
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CSDChannelProvider allocWithZone:a3];
+  v4 = [CSDChannelProvider allocWithZone:zone];
 
   return [(CSDChannelProvider *)v4 initWithChannelProvider:self];
 }
 
-- (BOOL)isEqualToChannelProvider:(id)a3
+- (BOOL)isEqualToChannelProvider:(id)provider
 {
-  v4 = a3;
-  v5 = [(CSDChannelProvider *)self audioSessionID];
-  if (v5 == [v4 audioSessionID])
+  providerCopy = provider;
+  audioSessionID = [(CSDChannelProvider *)self audioSessionID];
+  if (audioSessionID == [providerCopy audioSessionID])
   {
-    v6 = [(CSDChannelProvider *)self bundleURL];
-    v7 = [v4 bundleURL];
-    if ([v6 isEqual:v7])
+    bundleURL = [(CSDChannelProvider *)self bundleURL];
+    bundleURL2 = [providerCopy bundleURL];
+    if ([bundleURL isEqual:bundleURL2])
     {
-      v8 = [(CSDChannelProvider *)self bundleIdentifier];
-      v9 = [v4 bundleIdentifier];
+      bundleIdentifier = [(CSDChannelProvider *)self bundleIdentifier];
+      bundleIdentifier2 = [providerCopy bundleIdentifier];
       if (TUStringsAreEqualOrNil())
       {
-        v10 = [(CSDChannelProvider *)self localizedName];
-        v11 = [v4 localizedName];
+        localizedName = [(CSDChannelProvider *)self localizedName];
+        localizedName2 = [providerCopy localizedName];
         v12 = TUStringsAreEqualOrNil();
       }
 
@@ -131,19 +131,19 @@
 - (id)base
 {
   v3 = [TUCallProvider alloc];
-  v4 = [(CSDChannelProvider *)self identifier];
-  v5 = [v3 initWithIdentifier:v4];
+  identifier = [(CSDChannelProvider *)self identifier];
+  v5 = [v3 initWithIdentifier:identifier];
 
-  v6 = [(CSDChannelProvider *)self bundleURL];
-  v7 = [v6 copy];
+  bundleURL = [(CSDChannelProvider *)self bundleURL];
+  v7 = [bundleURL copy];
   [v5 setBundleURL:v7];
 
-  v8 = [(CSDChannelProvider *)self bundleIdentifier];
-  v9 = [v8 copy];
+  bundleIdentifier = [(CSDChannelProvider *)self bundleIdentifier];
+  v9 = [bundleIdentifier copy];
   [v5 setBundleIdentifier:v9];
 
-  v10 = [(CSDChannelProvider *)self localizedName];
-  v11 = [v10 copy];
+  localizedName = [(CSDChannelProvider *)self localizedName];
+  v11 = [localizedName copy];
   [v5 setLocalizedName:v11];
 
   [v5 setAudioSessionID:{-[CSDChannelProvider audioSessionID](self, "audioSessionID")}];

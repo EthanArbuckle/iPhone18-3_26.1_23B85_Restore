@@ -1,8 +1,8 @@
 @interface MIOWriterStereoPixelBufferStreamInput
-- (BOOL)appendLeftPixelBuffer:(__CVBuffer *)a3 rightPixelBuffer:(__CVBuffer *)a4 pts:(id *)a5 error:(id *)a6;
+- (BOOL)appendLeftPixelBuffer:(__CVBuffer *)buffer rightPixelBuffer:(__CVBuffer *)pixelBuffer pts:(id *)pts error:(id *)error;
 - (BOOL)leftBufferUsesPrimaryLayer;
 - (MIOWriterStereoPixelBufferStreamInput)init;
-- (MIOWriterStereoPixelBufferStreamInput)initWithStreamId:(id)a3 format:(opaqueCMFormatDescription *)a4 recordingConfig:(id)a5;
+- (MIOWriterStereoPixelBufferStreamInput)initWithStreamId:(id)id format:(opaqueCMFormatDescription *)format recordingConfig:(id)config;
 - (id)taggedPixelBufferAttributes;
 - (void)dealloc;
 @end
@@ -18,13 +18,13 @@
   return 0;
 }
 
-- (MIOWriterStereoPixelBufferStreamInput)initWithStreamId:(id)a3 format:(opaqueCMFormatDescription *)a4 recordingConfig:(id)a5
+- (MIOWriterStereoPixelBufferStreamInput)initWithStreamId:(id)id format:(opaqueCMFormatDescription *)format recordingConfig:(id)config
 {
-  v8 = a3;
-  v9 = a5;
+  idCopy = id;
+  configCopy = config;
   v33.receiver = self;
   v33.super_class = MIOWriterStereoPixelBufferStreamInput;
-  v10 = [(MIOWriterPixelBufferStreamInput *)&v33 initWithStreamId:v8 format:a4 recordingConfig:v9];
+  v10 = [(MIOWriterPixelBufferStreamInput *)&v33 initWithStreamId:idCopy format:format recordingConfig:configCopy];
   v11 = v10;
   if (v10)
   {
@@ -39,7 +39,7 @@
     leftAndRightViewIDs = v11->_leftAndRightViewIDs;
     v11->_leftAndRightViewIDs = v15;
 
-    [v9 objectForKey:@"CustomOutputSettings"];
+    [configCopy objectForKey:@"CustomOutputSettings"];
     v17 = [objc_claimAutoreleasedReturnValue() objectForKey:*MEMORY[0x277CE6330]];
     v18 = [v17 objectForKey:*MEMORY[0x277CE2580]];
     v19 = v18;
@@ -106,8 +106,8 @@
 
 - (id)taggedPixelBufferAttributes
 {
-  v2 = [(MIOWriterPixelBufferStreamInput *)self config];
-  v3 = [v2 objectForKey:@"TaggedPixelBufferGroupAdaptorPixelBufferAttributes"];
+  config = [(MIOWriterPixelBufferStreamInput *)self config];
+  v3 = [config objectForKey:@"TaggedPixelBufferGroupAdaptorPixelBufferAttributes"];
 
   return v3;
 }
@@ -115,56 +115,56 @@
 - (BOOL)leftBufferUsesPrimaryLayer
 {
   v3 = [(NSArray *)self->_leftAndRightViewIDs objectAtIndex:0];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  v5 = [(NSArray *)self->_viewIDs objectAtIndex:v4];
-  v6 = [v5 unsignedIntegerValue];
+  v5 = [(NSArray *)self->_viewIDs objectAtIndex:unsignedIntegerValue];
+  unsignedIntegerValue2 = [v5 unsignedIntegerValue];
 
-  v7 = [(NSArray *)self->_videoLayerIDs objectAtIndex:v6];
-  v8 = [v7 unsignedIntegerValue];
+  v7 = [(NSArray *)self->_videoLayerIDs objectAtIndex:unsignedIntegerValue2];
+  unsignedIntegerValue3 = [v7 unsignedIntegerValue];
 
-  return v8 == 0;
+  return unsignedIntegerValue3 == 0;
 }
 
-- (BOOL)appendLeftPixelBuffer:(__CVBuffer *)a3 rightPixelBuffer:(__CVBuffer *)a4 pts:(id *)a5 error:(id *)a6
+- (BOOL)appendLeftPixelBuffer:(__CVBuffer *)buffer rightPixelBuffer:(__CVBuffer *)pixelBuffer pts:(id *)pts error:(id *)error
 {
-  v9 = self;
-  location = *a5;
-  if ([(MIOWriterStreamInput *)self prepareForAppendWithTimeStamp:&location error:a6])
+  selfCopy = self;
+  location = *pts;
+  if ([(MIOWriterStreamInput *)self prepareForAppendWithTimeStamp:&location error:error])
   {
-    CVPixelBufferRetain(a3);
-    CVPixelBufferRetain(a4);
-    objc_initWeak(&location, v9);
+    CVPixelBufferRetain(buffer);
+    CVPixelBufferRetain(pixelBuffer);
+    objc_initWeak(&location, selfCopy);
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __90__MIOWriterStereoPixelBufferStreamInput_appendLeftPixelBuffer_rightPixelBuffer_pts_error___block_invoke;
     v15[3] = &unk_279848438;
     objc_copyWeak(v16, &location);
-    v16[1] = a3;
-    v16[2] = a4;
-    v17 = *&a5->var0;
-    var3 = a5->var3;
+    v16[1] = buffer;
+    v16[2] = pixelBuffer;
+    v17 = *&pts->var0;
+    var3 = pts->var3;
     v10 = MEMORY[0x259C68980](v15);
-    v11 = [v9 threadingOption];
-    if (v11)
+    threadingOption = [selfCopy threadingOption];
+    if (threadingOption)
     {
-      if (v11 == 1)
+      if (threadingOption == 1)
       {
-        LOBYTE(v9) = v10[2](v10);
+        LOBYTE(selfCopy) = v10[2](v10);
       }
     }
 
     else
     {
-      v9 = [v9 processingQueue];
+      selfCopy = [selfCopy processingQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __90__MIOWriterStereoPixelBufferStreamInput_appendLeftPixelBuffer_rightPixelBuffer_pts_error___block_invoke_223;
       block[3] = &unk_279847DC8;
       v14 = v10;
-      dispatch_async(v9, block);
+      dispatch_async(selfCopy, block);
 
-      LOBYTE(v9) = 1;
+      LOBYTE(selfCopy) = 1;
     }
 
     objc_destroyWeak(v16);
@@ -173,10 +173,10 @@
 
   else
   {
-    LOBYTE(v9) = 0;
+    LOBYTE(selfCopy) = 0;
   }
 
-  return v9 & 1;
+  return selfCopy & 1;
 }
 
 uint64_t __90__MIOWriterStereoPixelBufferStreamInput_appendLeftPixelBuffer_rightPixelBuffer_pts_error___block_invoke(uint64_t a1)

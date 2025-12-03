@@ -1,5 +1,5 @@
 @interface DirectionsLargeStyleStartEndContentView
-+ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)a3;
++ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)idiom;
 + (id)overviewFontProvider;
 + (id)subtitleFontProvider;
 @end
@@ -20,7 +20,7 @@
   return v2;
 }
 
-+ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)a3
++ ($8452678F12DBC466148836A9D382CAFC)cellMetricsForIdiom:(SEL)idiom
 {
   retstr->var8 = 0.0;
   *&retstr->var4 = 0u;

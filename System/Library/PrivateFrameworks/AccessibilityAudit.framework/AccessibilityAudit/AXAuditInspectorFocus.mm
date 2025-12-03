@@ -1,25 +1,25 @@
 @interface AXAuditInspectorFocus
-+ (void)registerTransportableObjectWithManager:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (void)registerTransportableObjectWithManager:(id)manager;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)setInspectorSections:(id)a3;
+- (void)setInspectorSections:(id)sections;
 @end
 
 @implementation AXAuditInspectorFocus
 
-- (void)setInspectorSections:(id)a3
+- (void)setInspectorSections:(id)sections
 {
-  v17 = self;
+  selfCopy = self;
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  sectionsCopy = sections;
   v18 = objc_opt_new();
   v4 = objc_opt_new();
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = sectionsCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -35,14 +35,14 @@
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 title];
-        if ([v11 length])
+        title = [v10 title];
+        if ([title length])
         {
-          v12 = [v10 identifier];
-          if ([v12 length])
+          identifier = [v10 identifier];
+          if ([identifier length])
           {
-            v13 = [v10 identifier];
-            v14 = [v4 containsObject:v13];
+            identifier2 = [v10 identifier];
+            v14 = [v4 containsObject:identifier2];
 
             if (v14)
             {
@@ -50,8 +50,8 @@
             }
 
             [(NSArray *)v18 addObject:v10];
-            v11 = [v10 identifier];
-            [v4 addObject:v11];
+            title = [v10 identifier];
+            [v4 addObject:title];
           }
 
           else
@@ -66,15 +66,15 @@
     while (v7);
   }
 
-  inspectorSections = v17->_inspectorSections;
-  v17->_inspectorSections = v18;
+  inspectorSections = selfCopy->_inspectorSections;
+  selfCopy->_inspectorSections = v18;
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)registerTransportableObjectWithManager:(id)a3
++ (void)registerTransportableObjectWithManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v8 = [[AXAuditObjectTransportInfoPropertyBased alloc] initWithClass:objc_opt_class() transportKey:@"AXAuditInspectorFocus_v1"];
   v4 = objc_alloc_init(AXAuditObjectTransportPropertyEntry);
   [(AXAuditObjectTransportInfoPropertyBased *)v8 addPropertyEntry:v4];
@@ -96,7 +96,7 @@
   [(AXAuditObjectTransportPropertyEntry *)v7 setTransportKey:@"InspectorSectionsValue_v1"];
   [(AXAuditObjectTransportPropertyEntry *)v7 setLocalValueToTransportValue:&__block_literal_global_35];
   [(AXAuditObjectTransportPropertyEntry *)v7 setPopulateLocalObjectWithTransportValue:&__block_literal_global_38];
-  [v3 registerTransportInfoPropertyBased:v8];
+  [managerCopy registerTransportInfoPropertyBased:v8];
 }
 
 void __64__AXAuditInspectorFocus_registerTransportableObjectWithManager___block_invoke_2(uint64_t a1, void *a2, void *a3)
@@ -145,22 +145,22 @@ void __64__AXAuditInspectorFocus_registerTransportableObjectWithManager___block_
 
 - (unint64_t)hash
 {
-  v3 = [(AXAuditInspectorFocus *)self element];
-  v4 = [v3 hash];
-  v5 = [(AXAuditInspectorFocus *)self captionText];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(AXAuditInspectorFocus *)self inspectorSections];
-  v8 = [v7 hash];
-  v9 = [(AXAuditInspectorFocus *)self spokenDescription];
-  v10 = v8 ^ [v9 hash];
+  element = [(AXAuditInspectorFocus *)self element];
+  v4 = [element hash];
+  captionText = [(AXAuditInspectorFocus *)self captionText];
+  v6 = [captionText hash] ^ v4;
+  inspectorSections = [(AXAuditInspectorFocus *)self inspectorSections];
+  v8 = [inspectorSections hash];
+  spokenDescription = [(AXAuditInspectorFocus *)self spokenDescription];
+  v10 = v8 ^ [spokenDescription hash];
 
   return v6 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -170,40 +170,40 @@ void __64__AXAuditInspectorFocus_registerTransportableObjectWithManager___block_
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(AXAuditInspectorFocus *)v5 element];
-      v7 = [(AXAuditInspectorFocus *)self element];
-      if (v6 | v7 && ![v6 isEqual:v7])
+      v5 = equalCopy;
+      element = [(AXAuditInspectorFocus *)v5 element];
+      element2 = [(AXAuditInspectorFocus *)self element];
+      if (element | element2 && ![element isEqual:element2])
       {
         v14 = 0;
       }
 
       else
       {
-        v8 = [(AXAuditInspectorFocus *)v5 inspectorSections];
-        v9 = [(AXAuditInspectorFocus *)self inspectorSections];
-        if (v8 | v9 && ![v8 isEqual:v9])
+        inspectorSections = [(AXAuditInspectorFocus *)v5 inspectorSections];
+        inspectorSections2 = [(AXAuditInspectorFocus *)self inspectorSections];
+        if (inspectorSections | inspectorSections2 && ![inspectorSections isEqual:inspectorSections2])
         {
           v14 = 0;
         }
 
         else
         {
-          v10 = [(AXAuditInspectorFocus *)v5 captionText];
-          v11 = [(AXAuditInspectorFocus *)self captionText];
-          if (v10 | v11 && ![v10 isEqual:v11])
+          captionText = [(AXAuditInspectorFocus *)v5 captionText];
+          captionText2 = [(AXAuditInspectorFocus *)self captionText];
+          if (captionText | captionText2 && ![captionText isEqual:captionText2])
           {
             v14 = 0;
           }
 
           else
           {
-            v16 = v8;
-            v12 = [(AXAuditInspectorFocus *)v5 spokenDescription];
-            v13 = [(AXAuditInspectorFocus *)self spokenDescription];
-            v14 = !(v12 | v13) || [v12 isEqual:v13];
+            v16 = inspectorSections;
+            spokenDescription = [(AXAuditInspectorFocus *)v5 spokenDescription];
+            spokenDescription2 = [(AXAuditInspectorFocus *)self spokenDescription];
+            v14 = !(spokenDescription | spokenDescription2) || [spokenDescription isEqual:spokenDescription2];
 
-            v8 = v16;
+            inspectorSections = v16;
           }
         }
       }
@@ -218,21 +218,21 @@ void __64__AXAuditInspectorFocus_registerTransportableObjectWithManager___block_
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(AXAuditInspectorFocus *)self element];
-  [v4 setElement:v5];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  element = [(AXAuditInspectorFocus *)self element];
+  [v4 setElement:element];
 
-  v6 = [(AXAuditInspectorFocus *)self inspectorSections];
-  v7 = [v6 copy];
+  inspectorSections = [(AXAuditInspectorFocus *)self inspectorSections];
+  v7 = [inspectorSections copy];
   [v4 setInspectorSections:v7];
 
-  v8 = [(AXAuditInspectorFocus *)self captionText];
-  [v4 setCaptionText:v8];
+  captionText = [(AXAuditInspectorFocus *)self captionText];
+  [v4 setCaptionText:captionText];
 
-  v9 = [(AXAuditInspectorFocus *)self spokenDescription];
-  [v4 setSpokenDescription:v9];
+  spokenDescription = [(AXAuditInspectorFocus *)self spokenDescription];
+  [v4 setSpokenDescription:spokenDescription];
 
   return v4;
 }

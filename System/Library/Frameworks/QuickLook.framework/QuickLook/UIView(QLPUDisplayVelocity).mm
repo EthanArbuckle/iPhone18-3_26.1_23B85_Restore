@@ -24,7 +24,7 @@
   v35[1] = v30;
   v35[2] = a12[2];
   v31 = v29;
-  [a1 _qlpu_animateView:v31 toCenter:v35 bounds:v36 transform:a14 withInitialVelocity:a2 usingSpringAnimation:a3 completion:{a4, a5, a6, a7, a18, a19, a20}];
+  [self _qlpu_animateView:v31 toCenter:v35 bounds:v36 transform:a14 withInitialVelocity:a2 usingSpringAnimation:a3 completion:{a4, a5, a6, a7, a18, a19, a20}];
 }
 
 + (void)qlpu_animateView:()QLPUDisplayVelocity toCenter:bounds:transform:usingDefaultDampedSpringWithDelay:initialVelocity:options:completion:
@@ -42,7 +42,7 @@
   v32[1] = v29;
   v32[2] = a11[2];
   v30 = v28;
-  [a1 _qlpu_animateView:v30 toCenter:v32 bounds:v33 transform:a13 withInitialVelocity:a2 usingSpringAnimation:a3 completion:{a4, a5, a6, a7, a16, a17, a18}];
+  [self _qlpu_animateView:v30 toCenter:v32 bounds:v33 transform:a13 withInitialVelocity:a2 usingSpringAnimation:a3 completion:{a4, a5, a6, a7, a16, a17, a18}];
 }
 
 + (void)qlpu_animateView:()QLPUDisplayVelocity toCenter:bounds:transform:usingSpringWithDuration:delay:options:mass:stiffness:damping:initialVelocity:completion:
@@ -63,7 +63,7 @@
   v36[1] = v31;
   v36[2] = a12[2];
   v32 = v30;
-  [a1 _qlpu_animateView:v32 toCenter:v36 bounds:v37 transform:a14 withInitialVelocity:a2 usingSpringAnimation:a3 completion:{a4, a5, a6, a7, a19, a20, a21}];
+  [self _qlpu_animateView:v32 toCenter:v36 bounds:v37 transform:a14 withInitialVelocity:a2 usingSpringAnimation:a3 completion:{a4, a5, a6, a7, a19, a20, a21}];
 }
 
 + (void)_qlpu_animateView:()QLPUDisplayVelocity toCenter:bounds:transform:withInitialVelocity:usingSpringAnimation:completion:
@@ -100,9 +100,9 @@
   v138 = v39;
   v139 = v140;
   dispatch_group_notify(v38, MEMORY[0x277D85CD0], block);
-  if (a1 == v31)
+  if (self == v31)
   {
-    a1 = v31;
+    self = v31;
   }
 
   else
@@ -113,7 +113,7 @@
     v133[2] = __127__UIView_QLPUDisplayVelocity___qlpu_animateView_toCenter_bounds_transform_withInitialVelocity_usingSpringAnimation_completion___block_invoke_2;
     v133[3] = &unk_278B575B8;
     v134 = v27;
-    v135 = a1;
+    selfCopy = self;
     v136 = v33;
     v130[0] = MEMORY[0x277D85DD0];
     v130[1] = 3221225472;
@@ -121,7 +121,7 @@
     v130[3] = &unk_278B586D8;
     v132 = v140;
     v131 = v38;
-    (*(v28 + 2))(v28, v133, v130, a15 / (a1 - v31));
+    (*(v28 + 2))(v28, v133, v130, a15 / (self - v31));
   }
 
   if (a2 != v33)
@@ -132,7 +132,7 @@
     v126[2] = __127__UIView_QLPUDisplayVelocity___qlpu_animateView_toCenter_bounds_transform_withInitialVelocity_usingSpringAnimation_completion___block_invoke_4;
     v126[3] = &unk_278B575B8;
     v127 = v27;
-    v128 = a1;
+    selfCopy2 = self;
     v129 = a2;
     v123[0] = MEMORY[0x277D85DD0];
     v123[1] = 3221225472;

@@ -1,7 +1,7 @@
 @interface CSAudioStreamHoldRequestOption
-+ (id)defaultOptionWithTimeout:(double)a3;
-- (CSAudioStreamHoldRequestOption)initWithTimeout:(double)a3 clientIdentity:(unint64_t)a4 requireRecordModeLock:(BOOL)a5 requireListeningMicIndicatorLock:(BOOL)a6;
-- (CSAudioStreamHoldRequestOption)initWithXPCObject:(id)a3;
++ (id)defaultOptionWithTimeout:(double)timeout;
+- (CSAudioStreamHoldRequestOption)initWithTimeout:(double)timeout clientIdentity:(unint64_t)identity requireRecordModeLock:(BOOL)lock requireListeningMicIndicatorLock:(BOOL)indicatorLock;
+- (CSAudioStreamHoldRequestOption)initWithXPCObject:(id)object;
 - (id)xpcObject;
 @end
 
@@ -28,42 +28,42 @@
   return v3;
 }
 
-- (CSAudioStreamHoldRequestOption)initWithXPCObject:(id)a3
+- (CSAudioStreamHoldRequestOption)initWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7.receiver = self;
   v7.super_class = CSAudioStreamHoldRequestOption;
   v5 = [(CSAudioStreamHoldRequestOption *)&v7 init];
   if (v5)
   {
-    v5->_timeout = xpc_dictionary_get_double(v4, "timeout");
-    v5->_clientIdentity = xpc_dictionary_get_uint64(v4, "clientIdentity");
-    v5->_requireRecordModeLock = xpc_dictionary_get_BOOL(v4, "requireRecordModeLock");
-    v5->_requireListeningMicIndicatorLock = xpc_dictionary_get_BOOL(v4, "requireListeningMicIndicatorLock");
+    v5->_timeout = xpc_dictionary_get_double(objectCopy, "timeout");
+    v5->_clientIdentity = xpc_dictionary_get_uint64(objectCopy, "clientIdentity");
+    v5->_requireRecordModeLock = xpc_dictionary_get_BOOL(objectCopy, "requireRecordModeLock");
+    v5->_requireListeningMicIndicatorLock = xpc_dictionary_get_BOOL(objectCopy, "requireListeningMicIndicatorLock");
   }
 
   return v5;
 }
 
-- (CSAudioStreamHoldRequestOption)initWithTimeout:(double)a3 clientIdentity:(unint64_t)a4 requireRecordModeLock:(BOOL)a5 requireListeningMicIndicatorLock:(BOOL)a6
+- (CSAudioStreamHoldRequestOption)initWithTimeout:(double)timeout clientIdentity:(unint64_t)identity requireRecordModeLock:(BOOL)lock requireListeningMicIndicatorLock:(BOOL)indicatorLock
 {
   v11.receiver = self;
   v11.super_class = CSAudioStreamHoldRequestOption;
   result = [(CSAudioStreamHoldRequestOption *)&v11 init];
   if (result)
   {
-    result->_timeout = a3;
-    result->_clientIdentity = a4;
-    result->_requireRecordModeLock = a5;
-    result->_requireListeningMicIndicatorLock = a6;
+    result->_timeout = timeout;
+    result->_clientIdentity = identity;
+    result->_requireRecordModeLock = lock;
+    result->_requireListeningMicIndicatorLock = indicatorLock;
   }
 
   return result;
 }
 
-+ (id)defaultOptionWithTimeout:(double)a3
++ (id)defaultOptionWithTimeout:(double)timeout
 {
-  v3 = [[CSAudioStreamHoldRequestOption alloc] initWithTimeout:0 clientIdentity:0 requireRecordModeLock:0 requireListeningMicIndicatorLock:a3];
+  v3 = [[CSAudioStreamHoldRequestOption alloc] initWithTimeout:0 clientIdentity:0 requireRecordModeLock:0 requireListeningMicIndicatorLock:timeout];
 
   return v3;
 }

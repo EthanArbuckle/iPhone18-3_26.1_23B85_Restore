@@ -1,41 +1,41 @@
 @interface CHWorkoutDetailFourColumnDownhillRunTableViewCell
-- (CHWorkoutDetailFourColumnDownhillRunTableViewCell)initWithCoder:(id)a3;
-- (CHWorkoutDetailFourColumnDownhillRunTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)configureHeaderWithFormattingManager:(id)a3;
-- (void)configureWithDownhillRun:(id)a3 downhillRunIndex:(int64_t)a4 activityType:(id)a5 isLastCell:(BOOL)a6 formattingManager:(id)a7;
-- (void)configureWithDownhillRunsStats:(id)a3 activityType:(id)a4 formattingManager:(id)a5;
+- (CHWorkoutDetailFourColumnDownhillRunTableViewCell)initWithCoder:(id)coder;
+- (CHWorkoutDetailFourColumnDownhillRunTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)configureHeaderWithFormattingManager:(id)manager;
+- (void)configureWithDownhillRun:(id)run downhillRunIndex:(int64_t)index activityType:(id)type isLastCell:(BOOL)cell formattingManager:(id)manager;
+- (void)configureWithDownhillRunsStats:(id)stats activityType:(id)type formattingManager:(id)manager;
 @end
 
 @implementation CHWorkoutDetailFourColumnDownhillRunTableViewCell
 
-- (void)configureHeaderWithFormattingManager:(id)a3
+- (void)configureHeaderWithFormattingManager:(id)manager
 {
-  v4 = a3;
-  v5 = self;
-  sub_1002210DC(v4);
+  managerCopy = manager;
+  selfCopy = self;
+  sub_1002210DC(managerCopy);
 }
 
-- (void)configureWithDownhillRunsStats:(id)a3 activityType:(id)a4 formattingManager:(id)a5
+- (void)configureWithDownhillRunsStats:(id)stats activityType:(id)type formattingManager:(id)manager
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_100221750(v8, v9, v10);
+  statsCopy = stats;
+  typeCopy = type;
+  managerCopy = manager;
+  selfCopy = self;
+  sub_100221750(statsCopy, typeCopy, managerCopy);
 }
 
-- (void)configureWithDownhillRun:(id)a3 downhillRunIndex:(int64_t)a4 activityType:(id)a5 isLastCell:(BOOL)a6 formattingManager:(id)a7
+- (void)configureWithDownhillRun:(id)run downhillRunIndex:(int64_t)index activityType:(id)type isLastCell:(BOOL)cell formattingManager:(id)manager
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
-  v16 = self;
-  sub_100221AB8(a3, a4, v14, a6, v15);
+  runCopy = run;
+  typeCopy = type;
+  managerCopy = manager;
+  selfCopy = self;
+  sub_100221AB8(run, index, typeCopy, cell, managerCopy);
 }
 
-- (CHWorkoutDetailFourColumnDownhillRunTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CHWorkoutDetailFourColumnDownhillRunTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = String._bridgeToObjectiveC()();
@@ -48,17 +48,17 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for WorkoutDetailFourColumnDownhillRunTableViewCell();
-  v7 = [(CHWorkoutDetailFourColumnTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(CHWorkoutDetailFourColumnTableViewCell *)&v9 initWithStyle:style reuseIdentifier:v6];
 
   return v7;
 }
 
-- (CHWorkoutDetailFourColumnDownhillRunTableViewCell)initWithCoder:(id)a3
+- (CHWorkoutDetailFourColumnDownhillRunTableViewCell)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for WorkoutDetailFourColumnDownhillRunTableViewCell();
-  v4 = a3;
-  v5 = [(CHWorkoutDetailFourColumnTableViewCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(CHWorkoutDetailFourColumnTableViewCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

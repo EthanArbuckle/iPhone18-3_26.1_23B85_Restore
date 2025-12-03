@@ -1,29 +1,29 @@
 @interface MXCallStackThread
-- (MXCallStackThread)initWithCoder:(id)a3;
-- (MXCallStackThread)initWithTopCallStackFrames:(id)a3 isAttributedThread:(BOOL)a4;
+- (MXCallStackThread)initWithCoder:(id)coder;
+- (MXCallStackThread)initWithTopCallStackFrames:(id)frames isAttributedThread:(BOOL)thread;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MXCallStackThread
 
-- (MXCallStackThread)initWithTopCallStackFrames:(id)a3 isAttributedThread:(BOOL)a4
+- (MXCallStackThread)initWithTopCallStackFrames:(id)frames isAttributedThread:(BOOL)thread
 {
-  v7 = a3;
+  framesCopy = frames;
   v12.receiver = self;
   v12.super_class = MXCallStackThread;
   v8 = [(MXCallStackThread *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    if (!v7)
+    if (!framesCopy)
     {
       v10 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v8->_topFrames, a3);
-    v9->_attributedThread = a4;
+    objc_storeStrong(&v8->_topFrames, frames);
+    v9->_attributedThread = thread;
   }
 
   v10 = v9;
@@ -32,17 +32,17 @@ LABEL_6:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   topFrames = self->_topFrames;
-  v5 = a3;
-  [v5 encodeObject:topFrames forKey:@"callStackRootFrames"];
-  [v5 encodeBool:self->_attributedThread forKey:@"threadAttributed"];
+  coderCopy = coder;
+  [coderCopy encodeObject:topFrames forKey:@"callStackRootFrames"];
+  [coderCopy encodeBool:self->_attributedThread forKey:@"threadAttributed"];
 }
 
-- (MXCallStackThread)initWithCoder:(id)a3
+- (MXCallStackThread)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MXCallStackThread;
   v5 = [(MXCallStackThread *)&v12 init];
@@ -51,11 +51,11 @@ LABEL_6:
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"callStackRootFrames"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"callStackRootFrames"];
     topFrames = v5->_topFrames;
     v5->_topFrames = v9;
 
-    v5->_attributedThread = [v4 decodeBoolForKey:@"threadAttributed"];
+    v5->_attributedThread = [coderCopy decodeBoolForKey:@"threadAttributed"];
   }
 
   return v5;
@@ -90,8 +90,8 @@ LABEL_6:
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v14 + 1) + 8 * i) toDictionary];
-          [v5 addObject:v11];
+          toDictionary = [*(*(&v14 + 1) + 8 * i) toDictionary];
+          [v5 addObject:toDictionary];
         }
 
         v8 = [(NSArray *)v6 countByEnumeratingWithState:&v14 objects:v18 count:16];

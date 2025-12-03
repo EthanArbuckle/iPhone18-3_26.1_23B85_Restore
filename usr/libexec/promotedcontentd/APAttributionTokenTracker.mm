@@ -1,9 +1,9 @@
 @interface APAttributionTokenTracker
 + (id)defaultTracker;
 - (APAttributionTokenTracker)init;
-- (BOOL)isTokenUsed:(id)a3;
-- (BOOL)isTokenUsedByOtherBundle:(id)a3 bundleID:(id)a4;
-- (void)addToken:(id)a3 bundleID:(id)a4;
+- (BOOL)isTokenUsed:(id)used;
+- (BOOL)isTokenUsedByOtherBundle:(id)bundle bundleID:(id)d;
+- (void)addToken:(id)token bundleID:(id)d;
 @end
 
 @implementation APAttributionTokenTracker
@@ -39,33 +39,33 @@
   return v3;
 }
 
-- (void)addToken:(id)a3 bundleID:(id)a4
+- (void)addToken:(id)token bundleID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(APAttributionTokenTracker *)self tokensLock];
-  [v8 lock];
+  dCopy = d;
+  tokenCopy = token;
+  tokensLock = [(APAttributionTokenTracker *)self tokensLock];
+  [tokensLock lock];
 
-  v9 = [(APAttributionTokenTracker *)self bundles];
-  [v9 setObject:v7 forKey:v6];
+  bundles = [(APAttributionTokenTracker *)self bundles];
+  [bundles setObject:tokenCopy forKey:dCopy];
 
-  v10 = [(APAttributionTokenTracker *)self tokensLock];
-  [v10 unlock];
+  tokensLock2 = [(APAttributionTokenTracker *)self tokensLock];
+  [tokensLock2 unlock];
 }
 
-- (BOOL)isTokenUsedByOtherBundle:(id)a3 bundleID:(id)a4
+- (BOOL)isTokenUsedByOtherBundle:(id)bundle bundleID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(APAttributionTokenTracker *)self tokensLock];
-  [v8 lock];
+  bundleCopy = bundle;
+  dCopy = d;
+  tokensLock = [(APAttributionTokenTracker *)self tokensLock];
+  [tokensLock lock];
 
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v9 = [(APAttributionTokenTracker *)self bundles];
-  v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  bundles = [(APAttributionTokenTracker *)self bundles];
+  v10 = [bundles countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v10)
   {
     v11 = *v20;
@@ -75,15 +75,15 @@
       {
         if (*v20 != v11)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(bundles);
         }
 
         v13 = *(*(&v19 + 1) + 8 * i);
-        v14 = [(APAttributionTokenTracker *)self bundles];
-        v15 = [v14 objectForKeyedSubscript:v13];
-        if ([v6 isEqualToString:v15])
+        bundles2 = [(APAttributionTokenTracker *)self bundles];
+        v15 = [bundles2 objectForKeyedSubscript:v13];
+        if ([bundleCopy isEqualToString:v15])
         {
-          v16 = [v7 isEqualToString:v13];
+          v16 = [dCopy isEqualToString:v13];
 
           if ((v16 & 1) == 0)
           {
@@ -97,7 +97,7 @@
         }
       }
 
-      v10 = [v9 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v10 = [bundles countByEnumeratingWithState:&v19 objects:v23 count:16];
     }
 
     while (v10);
@@ -105,24 +105,24 @@
 
 LABEL_12:
 
-  v17 = [(APAttributionTokenTracker *)self tokensLock];
-  [v17 unlock];
+  tokensLock2 = [(APAttributionTokenTracker *)self tokensLock];
+  [tokensLock2 unlock];
 
   return v10;
 }
 
-- (BOOL)isTokenUsed:(id)a3
+- (BOOL)isTokenUsed:(id)used
 {
-  v4 = a3;
-  v5 = [(APAttributionTokenTracker *)self tokensLock];
-  [v5 lock];
+  usedCopy = used;
+  tokensLock = [(APAttributionTokenTracker *)self tokensLock];
+  [tokensLock lock];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(APAttributionTokenTracker *)self bundles];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  bundles = [(APAttributionTokenTracker *)self bundles];
+  v7 = [bundles countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = *v17;
@@ -132,13 +132,13 @@ LABEL_12:
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(bundles);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [(APAttributionTokenTracker *)self bundles];
-        v12 = [v11 objectForKeyedSubscript:v10];
-        v13 = [v4 isEqualToString:v12];
+        bundles2 = [(APAttributionTokenTracker *)self bundles];
+        v12 = [bundles2 objectForKeyedSubscript:v10];
+        v13 = [usedCopy isEqualToString:v12];
 
         if (v13)
         {
@@ -147,7 +147,7 @@ LABEL_12:
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [bundles countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v7)
       {
         continue;
@@ -159,8 +159,8 @@ LABEL_12:
 
 LABEL_11:
 
-  v14 = [(APAttributionTokenTracker *)self tokensLock];
-  [v14 unlock];
+  tokensLock2 = [(APAttributionTokenTracker *)self tokensLock];
+  [tokensLock2 unlock];
 
   return v7;
 }

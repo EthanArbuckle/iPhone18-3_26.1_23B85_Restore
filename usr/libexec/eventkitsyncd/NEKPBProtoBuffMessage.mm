@@ -1,12 +1,12 @@
 @interface NEKPBProtoBuffMessage
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NEKPBProtoBuffMessage
@@ -16,8 +16,8 @@
   v7.receiver = self;
   v7.super_class = NEKPBProtoBuffMessage;
   v3 = [(NEKPBProtoBuffMessage *)&v7 description];
-  v4 = [(NEKPBProtoBuffMessage *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(NEKPBProtoBuffMessage *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -34,236 +34,236 @@
   storeWrapper = self->_storeWrapper;
   if (storeWrapper)
   {
-    v6 = [(NEKPBSourceWrapper *)storeWrapper dictionaryRepresentation];
-    [v3 setObject:v6 forKey:@"storeWrapper"];
+    dictionaryRepresentation = [(NEKPBSourceWrapper *)storeWrapper dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"storeWrapper"];
   }
 
   calendarWrapper = self->_calendarWrapper;
   if (calendarWrapper)
   {
-    v8 = [(NEKPBCalendarWrapper *)calendarWrapper dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"calendarWrapper"];
+    dictionaryRepresentation2 = [(NEKPBCalendarWrapper *)calendarWrapper dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"calendarWrapper"];
   }
 
   iCSWrapper = self->_iCSWrapper;
   if (iCSWrapper)
   {
-    v10 = [(NEKPBICSWrapper *)iCSWrapper dictionaryRepresentation];
-    [v3 setObject:v10 forKey:@"ICSWrapper"];
+    dictionaryRepresentation3 = [(NEKPBICSWrapper *)iCSWrapper dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation3 forKey:@"ICSWrapper"];
   }
 
   deletionWrapper = self->_deletionWrapper;
   if (deletionWrapper)
   {
-    v12 = [(NEKPBDeletionWrapper *)deletionWrapper dictionaryRepresentation];
-    [v3 setObject:v12 forKey:@"deletionWrapper"];
+    dictionaryRepresentation4 = [(NEKPBDeletionWrapper *)deletionWrapper dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation4 forKey:@"deletionWrapper"];
   }
 
   validationWrapper = self->_validationWrapper;
   if (validationWrapper)
   {
-    v14 = [(NEKPBValidationWrapper *)validationWrapper dictionaryRepresentation];
-    [v3 setObject:v14 forKey:@"validationWrapper"];
+    dictionaryRepresentation5 = [(NEKPBValidationWrapper *)validationWrapper dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation5 forKey:@"validationWrapper"];
   }
 
   setReminderComplete = self->_setReminderComplete;
   if (setReminderComplete)
   {
-    v16 = [(NEKPBSetReminderComplete *)setReminderComplete dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"setReminderComplete"];
+    dictionaryRepresentation6 = [(NEKPBSetReminderComplete *)setReminderComplete dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation6 forKey:@"setReminderComplete"];
   }
 
   setParticipantStatus = self->_setParticipantStatus;
   if (setParticipantStatus)
   {
-    v18 = [(NEKPBSetParticipantStatus *)setParticipantStatus dictionaryRepresentation];
-    [v3 setObject:v18 forKey:@"setParticipantStatus"];
+    dictionaryRepresentation7 = [(NEKPBSetParticipantStatus *)setParticipantStatus dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation7 forKey:@"setParticipantStatus"];
   }
 
   setAlarmSnooze = self->_setAlarmSnooze;
   if (setAlarmSnooze)
   {
-    v20 = [(NEKPBSetAlarmSnooze *)setAlarmSnooze dictionaryRepresentation];
-    [v3 setObject:v20 forKey:@"setAlarmSnooze"];
+    dictionaryRepresentation8 = [(NEKPBSetAlarmSnooze *)setAlarmSnooze dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation8 forKey:@"setAlarmSnooze"];
   }
 
   deleteEvent = self->_deleteEvent;
   if (deleteEvent)
   {
-    v22 = [(NEKPBDeleteEvent *)deleteEvent dictionaryRepresentation];
-    [v3 setObject:v22 forKey:@"deleteEvent"];
+    dictionaryRepresentation9 = [(NEKPBDeleteEvent *)deleteEvent dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation9 forKey:@"deleteEvent"];
   }
 
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_storeWrapper)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_calendarWrapper)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_iCSWrapper)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deletionWrapper)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_validationWrapper)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setReminderComplete)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setParticipantStatus)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_setAlarmSnooze)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_deleteEvent)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     packetNumber = self->_packetNumber;
     PBDataWriterWriteFixed32Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_storeWrapper)
   {
-    [v4 setStoreWrapper:?];
-    v4 = v5;
+    [toCopy setStoreWrapper:?];
+    toCopy = v5;
   }
 
   if (self->_calendarWrapper)
   {
     [v5 setCalendarWrapper:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_iCSWrapper)
   {
     [v5 setICSWrapper:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deletionWrapper)
   {
     [v5 setDeletionWrapper:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_validationWrapper)
   {
     [v5 setValidationWrapper:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_setReminderComplete)
   {
     [v5 setSetReminderComplete:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_setParticipantStatus)
   {
     [v5 setSetParticipantStatus:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_setAlarmSnooze)
   {
     [v5 setSetAlarmSnooze:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_deleteEvent)
   {
     [v5 setDeleteEvent:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 10) = self->_packetNumber;
-    *(v4 + 88) |= 1u;
+    *(toCopy + 10) = self->_packetNumber;
+    *(toCopy + 88) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NEKPBSourceWrapper *)self->_storeWrapper copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NEKPBSourceWrapper *)self->_storeWrapper copyWithZone:zone];
   v7 = v5[9];
   v5[9] = v6;
 
-  v8 = [(NEKPBCalendarWrapper *)self->_calendarWrapper copyWithZone:a3];
+  v8 = [(NEKPBCalendarWrapper *)self->_calendarWrapper copyWithZone:zone];
   v9 = v5[1];
   v5[1] = v8;
 
-  v10 = [(NEKPBICSWrapper *)self->_iCSWrapper copyWithZone:a3];
+  v10 = [(NEKPBICSWrapper *)self->_iCSWrapper copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 
-  v12 = [(NEKPBDeletionWrapper *)self->_deletionWrapper copyWithZone:a3];
+  v12 = [(NEKPBDeletionWrapper *)self->_deletionWrapper copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
-  v14 = [(NEKPBValidationWrapper *)self->_validationWrapper copyWithZone:a3];
+  v14 = [(NEKPBValidationWrapper *)self->_validationWrapper copyWithZone:zone];
   v15 = v5[10];
   v5[10] = v14;
 
-  v16 = [(NEKPBSetReminderComplete *)self->_setReminderComplete copyWithZone:a3];
+  v16 = [(NEKPBSetReminderComplete *)self->_setReminderComplete copyWithZone:zone];
   v17 = v5[8];
   v5[8] = v16;
 
-  v18 = [(NEKPBSetParticipantStatus *)self->_setParticipantStatus copyWithZone:a3];
+  v18 = [(NEKPBSetParticipantStatus *)self->_setParticipantStatus copyWithZone:zone];
   v19 = v5[7];
   v5[7] = v18;
 
-  v20 = [(NEKPBSetAlarmSnooze *)self->_setAlarmSnooze copyWithZone:a3];
+  v20 = [(NEKPBSetAlarmSnooze *)self->_setAlarmSnooze copyWithZone:zone];
   v21 = v5[6];
   v5[6] = v20;
 
-  v22 = [(NEKPBDeleteEvent *)self->_deleteEvent copyWithZone:a3];
+  v22 = [(NEKPBDeleteEvent *)self->_deleteEvent copyWithZone:zone];
   v23 = v5[2];
   v5[2] = v22;
 
@@ -276,16 +276,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_24;
   }
 
   storeWrapper = self->_storeWrapper;
-  if (storeWrapper | *(v4 + 9))
+  if (storeWrapper | *(equalCopy + 9))
   {
     if (![(NEKPBSourceWrapper *)storeWrapper isEqual:?])
     {
@@ -294,7 +294,7 @@
   }
 
   calendarWrapper = self->_calendarWrapper;
-  if (calendarWrapper | *(v4 + 1))
+  if (calendarWrapper | *(equalCopy + 1))
   {
     if (![(NEKPBCalendarWrapper *)calendarWrapper isEqual:?])
     {
@@ -303,7 +303,7 @@
   }
 
   iCSWrapper = self->_iCSWrapper;
-  if (iCSWrapper | *(v4 + 4))
+  if (iCSWrapper | *(equalCopy + 4))
   {
     if (![(NEKPBICSWrapper *)iCSWrapper isEqual:?])
     {
@@ -312,7 +312,7 @@
   }
 
   deletionWrapper = self->_deletionWrapper;
-  if (deletionWrapper | *(v4 + 3))
+  if (deletionWrapper | *(equalCopy + 3))
   {
     if (![(NEKPBDeletionWrapper *)deletionWrapper isEqual:?])
     {
@@ -321,7 +321,7 @@
   }
 
   validationWrapper = self->_validationWrapper;
-  if (validationWrapper | *(v4 + 10))
+  if (validationWrapper | *(equalCopy + 10))
   {
     if (![(NEKPBValidationWrapper *)validationWrapper isEqual:?])
     {
@@ -330,7 +330,7 @@
   }
 
   setReminderComplete = self->_setReminderComplete;
-  if (setReminderComplete | *(v4 + 8))
+  if (setReminderComplete | *(equalCopy + 8))
   {
     if (![(NEKPBSetReminderComplete *)setReminderComplete isEqual:?])
     {
@@ -339,7 +339,7 @@
   }
 
   setParticipantStatus = self->_setParticipantStatus;
-  if (setParticipantStatus | *(v4 + 7))
+  if (setParticipantStatus | *(equalCopy + 7))
   {
     if (![(NEKPBSetParticipantStatus *)setParticipantStatus isEqual:?])
     {
@@ -348,7 +348,7 @@
   }
 
   setAlarmSnooze = self->_setAlarmSnooze;
-  if (setAlarmSnooze | *(v4 + 6))
+  if (setAlarmSnooze | *(equalCopy + 6))
   {
     if (![(NEKPBSetAlarmSnooze *)setAlarmSnooze isEqual:?])
     {
@@ -357,7 +357,7 @@
   }
 
   deleteEvent = self->_deleteEvent;
-  if (deleteEvent | *(v4 + 2))
+  if (deleteEvent | *(equalCopy + 2))
   {
     if (![(NEKPBDeleteEvent *)deleteEvent isEqual:?])
     {
@@ -365,10 +365,10 @@
     }
   }
 
-  v14 = (*(v4 + 88) & 1) == 0;
+  v14 = (*(equalCopy + 88) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 88) & 1) != 0 && self->_packetNumber == *(v4 + 10))
+    if ((*(equalCopy + 88) & 1) != 0 && self->_packetNumber == *(equalCopy + 10))
     {
       v14 = 1;
       goto LABEL_25;
@@ -407,12 +407,12 @@ LABEL_25:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   storeWrapper = self->_storeWrapper;
-  v6 = *(v4 + 9);
-  v23 = v4;
+  v6 = *(fromCopy + 9);
+  v23 = fromCopy;
   if (storeWrapper)
   {
     if (!v6)
@@ -433,10 +433,10 @@ LABEL_25:
     [(NEKPBProtoBuffMessage *)self setStoreWrapper:?];
   }
 
-  v4 = v23;
+  fromCopy = v23;
 LABEL_7:
   calendarWrapper = self->_calendarWrapper;
-  v8 = *(v4 + 1);
+  v8 = *(fromCopy + 1);
   if (calendarWrapper)
   {
     if (!v8)
@@ -457,10 +457,10 @@ LABEL_7:
     [(NEKPBProtoBuffMessage *)self setCalendarWrapper:?];
   }
 
-  v4 = v23;
+  fromCopy = v23;
 LABEL_13:
   iCSWrapper = self->_iCSWrapper;
-  v10 = *(v4 + 4);
+  v10 = *(fromCopy + 4);
   if (iCSWrapper)
   {
     if (!v10)
@@ -481,10 +481,10 @@ LABEL_13:
     [(NEKPBProtoBuffMessage *)self setICSWrapper:?];
   }
 
-  v4 = v23;
+  fromCopy = v23;
 LABEL_19:
   deletionWrapper = self->_deletionWrapper;
-  v12 = *(v4 + 3);
+  v12 = *(fromCopy + 3);
   if (deletionWrapper)
   {
     if (!v12)
@@ -505,10 +505,10 @@ LABEL_19:
     [(NEKPBProtoBuffMessage *)self setDeletionWrapper:?];
   }
 
-  v4 = v23;
+  fromCopy = v23;
 LABEL_25:
   validationWrapper = self->_validationWrapper;
-  v14 = *(v4 + 10);
+  v14 = *(fromCopy + 10);
   if (validationWrapper)
   {
     if (!v14)
@@ -529,10 +529,10 @@ LABEL_25:
     [(NEKPBProtoBuffMessage *)self setValidationWrapper:?];
   }
 
-  v4 = v23;
+  fromCopy = v23;
 LABEL_31:
   setReminderComplete = self->_setReminderComplete;
-  v16 = *(v4 + 8);
+  v16 = *(fromCopy + 8);
   if (setReminderComplete)
   {
     if (!v16)
@@ -553,10 +553,10 @@ LABEL_31:
     [(NEKPBProtoBuffMessage *)self setSetReminderComplete:?];
   }
 
-  v4 = v23;
+  fromCopy = v23;
 LABEL_37:
   setParticipantStatus = self->_setParticipantStatus;
-  v18 = *(v4 + 7);
+  v18 = *(fromCopy + 7);
   if (setParticipantStatus)
   {
     if (!v18)
@@ -577,10 +577,10 @@ LABEL_37:
     [(NEKPBProtoBuffMessage *)self setSetParticipantStatus:?];
   }
 
-  v4 = v23;
+  fromCopy = v23;
 LABEL_43:
   setAlarmSnooze = self->_setAlarmSnooze;
-  v20 = *(v4 + 6);
+  v20 = *(fromCopy + 6);
   if (setAlarmSnooze)
   {
     if (!v20)
@@ -601,10 +601,10 @@ LABEL_43:
     [(NEKPBProtoBuffMessage *)self setSetAlarmSnooze:?];
   }
 
-  v4 = v23;
+  fromCopy = v23;
 LABEL_49:
   deleteEvent = self->_deleteEvent;
-  v22 = *(v4 + 2);
+  v22 = *(fromCopy + 2);
   if (deleteEvent)
   {
     if (!v22)
@@ -625,11 +625,11 @@ LABEL_49:
     [(NEKPBProtoBuffMessage *)self setDeleteEvent:?];
   }
 
-  v4 = v23;
+  fromCopy = v23;
 LABEL_55:
-  if (*(v4 + 88))
+  if (*(fromCopy + 88))
   {
-    self->_packetNumber = *(v4 + 10);
+    self->_packetNumber = *(fromCopy + 10);
     *&self->_has |= 1u;
   }
 

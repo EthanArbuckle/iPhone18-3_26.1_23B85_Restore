@@ -1,72 +1,72 @@
 @interface RFFormattedText
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFFormattedText)initWithCoder:(id)a3;
-- (RFFormattedText)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFFormattedText)initWithCoder:(id)coder;
+- (RFFormattedText)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setInline_image_element:(id)a3;
-- (void)setText:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setInline_image_element:(id)inline_image_element;
+- (void)setText:(id)text;
 @end
 
 @implementation RFFormattedText
 
 - (unint64_t)hash
 {
-  v31 = [(RFFormattedText *)self text];
-  v3 = [v31 hash];
-  v30 = [(RFFormattedText *)self inline_image_element];
-  v4 = [v30 hash] ^ v3;
-  v29 = [(RFFormattedText *)self color];
-  v5 = [v29 hash];
-  v28 = [(RFFormattedText *)self is_italic];
-  v6 = v4 ^ v5 ^ [v28 hash];
-  v27 = [(RFFormattedText *)self is_bold];
-  v7 = [v27 hash];
-  v8 = [(RFFormattedText *)self text_encapsulation];
-  v9 = v7 ^ [v8 hash];
-  v10 = [(RFFormattedText *)self is_highlighted];
-  v11 = v6 ^ v9 ^ [v10 hash];
-  v12 = [(RFFormattedText *)self background_color];
-  v13 = [v12 hash];
-  v14 = [(RFFormattedText *)self attributions];
-  v15 = v13 ^ [v14 hash];
-  v16 = [(RFFormattedText *)self highlighted_substrings];
-  v17 = v15 ^ [v16 hash];
-  v18 = [(RFFormattedText *)self font];
-  v26 = v11 ^ v17 ^ [v18 hash];
-  v19 = [(RFFormattedText *)self is_underlined];
-  v20 = [v19 hash];
-  v21 = [(RFFormattedText *)self engageable];
-  v22 = v20 ^ [v21 hash];
+  text = [(RFFormattedText *)self text];
+  v3 = [text hash];
+  inline_image_element = [(RFFormattedText *)self inline_image_element];
+  v4 = [inline_image_element hash] ^ v3;
+  color = [(RFFormattedText *)self color];
+  v5 = [color hash];
+  is_italic = [(RFFormattedText *)self is_italic];
+  v6 = v4 ^ v5 ^ [is_italic hash];
+  is_bold = [(RFFormattedText *)self is_bold];
+  v7 = [is_bold hash];
+  text_encapsulation = [(RFFormattedText *)self text_encapsulation];
+  v9 = v7 ^ [text_encapsulation hash];
+  is_highlighted = [(RFFormattedText *)self is_highlighted];
+  v11 = v6 ^ v9 ^ [is_highlighted hash];
+  background_color = [(RFFormattedText *)self background_color];
+  v13 = [background_color hash];
+  attributions = [(RFFormattedText *)self attributions];
+  v15 = v13 ^ [attributions hash];
+  highlighted_substrings = [(RFFormattedText *)self highlighted_substrings];
+  v17 = v15 ^ [highlighted_substrings hash];
+  font = [(RFFormattedText *)self font];
+  v26 = v11 ^ v17 ^ [font hash];
+  is_underlined = [(RFFormattedText *)self is_underlined];
+  v20 = [is_underlined hash];
+  engageable = [(RFFormattedText *)self engageable];
+  v22 = v20 ^ [engageable hash];
   v23 = v22 ^ [(RFFormattedText *)self weight];
   v24 = v23 ^ [(RFFormattedText *)self design];
 
   return v26 ^ v24;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v19 = 1;
     goto LABEL_88;
   }
 
-  if (![(RFFormattedText *)v4 isMemberOfClass:objc_opt_class()])
+  if (![(RFFormattedText *)equalCopy isMemberOfClass:objc_opt_class()])
   {
     v19 = 0;
     goto LABEL_88;
   }
 
-  v5 = v4;
-  v137 = [(RFFormattedText *)self text];
-  v136 = [(RFFormattedText *)v5 text];
-  v134 = v136 == 0;
-  v135 = v137 != 0;
+  v5 = equalCopy;
+  text = [(RFFormattedText *)self text];
+  text2 = [(RFFormattedText *)v5 text];
+  v134 = text2 == 0;
+  v135 = text != 0;
   if (v135 == v134)
   {
     v10 = 0;
@@ -87,15 +87,15 @@
     goto LABEL_15;
   }
 
-  v7 = [(RFFormattedText *)self text];
-  v8 = v7 != 0;
-  v129 = v7;
-  if (v7)
+  text3 = [(RFFormattedText *)self text];
+  v8 = text3 != 0;
+  v129 = text3;
+  if (text3)
   {
-    v9 = [(RFFormattedText *)self text];
-    v123 = [(RFFormattedText *)v5 text];
-    v124 = v9;
-    if (![v9 isEqual:?])
+    text4 = [(RFFormattedText *)self text];
+    text5 = [(RFFormattedText *)v5 text];
+    v124 = text4;
+    if (![text4 isEqual:?])
     {
       v10 = 0;
       v11 = 0;
@@ -117,10 +117,10 @@
     }
   }
 
-  v126 = [(RFFormattedText *)self inline_image_element];
-  v125 = [(RFFormattedText *)v5 inline_image_element];
+  inline_image_element = [(RFFormattedText *)self inline_image_element];
+  inline_image_element2 = [(RFFormattedText *)v5 inline_image_element];
   *&v133[24] = v8;
-  if ((v126 != 0) == (v125 == 0))
+  if ((inline_image_element != 0) == (inline_image_element2 == 0))
   {
     v10 = 0;
     v11 = 0;
@@ -141,15 +141,15 @@
     goto LABEL_15;
   }
 
-  v20 = [(RFFormattedText *)self inline_image_element];
-  v21 = v20 != 0;
-  v122 = v20;
-  if (v20)
+  inline_image_element3 = [(RFFormattedText *)self inline_image_element];
+  v21 = inline_image_element3 != 0;
+  v122 = inline_image_element3;
+  if (inline_image_element3)
   {
-    v22 = [(RFFormattedText *)self inline_image_element];
-    v118 = [(RFFormattedText *)v5 inline_image_element];
-    v119 = v22;
-    if (![v22 isEqual:?])
+    inline_image_element4 = [(RFFormattedText *)self inline_image_element];
+    inline_image_element5 = [(RFFormattedText *)v5 inline_image_element];
+    v119 = inline_image_element4;
+    if (![inline_image_element4 isEqual:?])
     {
       v10 = 0;
       v11 = 0;
@@ -179,9 +179,9 @@
     *&v133[20] = 0;
   }
 
-  v121 = [(RFFormattedText *)self color];
-  v120 = [(RFFormattedText *)v5 color];
-  if ((v121 != 0) == (v120 == 0))
+  color = [(RFFormattedText *)self color];
+  color2 = [(RFFormattedText *)v5 color];
+  if ((color != 0) == (color2 == 0))
   {
     v10 = 0;
     v11 = 0;
@@ -203,15 +203,15 @@
     goto LABEL_15;
   }
 
-  v35 = [(RFFormattedText *)self color];
-  v36 = v35 != 0;
-  v117 = v35;
-  if (v35)
+  color3 = [(RFFormattedText *)self color];
+  v36 = color3 != 0;
+  v117 = color3;
+  if (color3)
   {
-    v37 = [(RFFormattedText *)self color];
-    v113 = [(RFFormattedText *)v5 color];
-    v114 = v37;
-    if (![v37 isEqual:?])
+    color4 = [(RFFormattedText *)self color];
+    color5 = [(RFFormattedText *)v5 color];
+    v114 = color4;
+    if (![color4 isEqual:?])
     {
       *&v133[8] = 0;
       v10 = 0;
@@ -243,9 +243,9 @@
     *&v133[16] = 0;
   }
 
-  v116 = [(RFFormattedText *)self is_italic];
-  v115 = [(RFFormattedText *)v5 is_italic];
-  if ((v116 != 0) == (v115 == 0))
+  is_italic = [(RFFormattedText *)self is_italic];
+  is_italic2 = [(RFFormattedText *)v5 is_italic];
+  if ((is_italic != 0) == (is_italic2 == 0))
   {
     *&v133[8] = 0;
     v10 = 0;
@@ -269,15 +269,15 @@
     goto LABEL_15;
   }
 
-  v38 = [(RFFormattedText *)self is_italic];
-  v39 = v38 != 0;
-  v112 = v38;
-  if (v38)
+  is_italic3 = [(RFFormattedText *)self is_italic];
+  v39 = is_italic3 != 0;
+  v112 = is_italic3;
+  if (is_italic3)
   {
-    v40 = [(RFFormattedText *)self is_italic];
-    v108 = [(RFFormattedText *)v5 is_italic];
-    v109 = v40;
-    if (![v40 isEqual:?])
+    is_italic4 = [(RFFormattedText *)self is_italic];
+    is_italic5 = [(RFFormattedText *)v5 is_italic];
+    v109 = is_italic4;
+    if (![is_italic4 isEqual:?])
     {
       *&v133[4] = 0;
       v10 = 0;
@@ -310,9 +310,9 @@
     *&v133[12] = 0;
   }
 
-  v111 = [(RFFormattedText *)self is_bold];
-  v110 = [(RFFormattedText *)v5 is_bold];
-  if ((v111 != 0) == (v110 == 0))
+  is_bold = [(RFFormattedText *)self is_bold];
+  is_bold2 = [(RFFormattedText *)v5 is_bold];
+  if ((is_bold != 0) == (is_bold2 == 0))
   {
     *&v133[4] = 0;
     v10 = 0;
@@ -338,15 +338,15 @@
     goto LABEL_15;
   }
 
-  v41 = [(RFFormattedText *)self is_bold];
-  v42 = v41 != 0;
-  v107 = v41;
-  if (v41)
+  is_bold3 = [(RFFormattedText *)self is_bold];
+  v42 = is_bold3 != 0;
+  v107 = is_bold3;
+  if (is_bold3)
   {
-    v43 = [(RFFormattedText *)self is_bold];
-    v103 = [(RFFormattedText *)v5 is_bold];
-    v104 = v43;
-    if (![v43 isEqual:?])
+    is_bold4 = [(RFFormattedText *)self is_bold];
+    is_bold5 = [(RFFormattedText *)v5 is_bold];
+    v104 = is_bold4;
+    if (![is_bold4 isEqual:?])
     {
       v10 = 0;
       v11 = 0;
@@ -380,9 +380,9 @@
     *&v133[8] = 0;
   }
 
-  v106 = [(RFFormattedText *)self text_encapsulation];
-  v105 = [(RFFormattedText *)v5 text_encapsulation];
-  if ((v106 != 0) == (v105 == 0))
+  text_encapsulation = [(RFFormattedText *)self text_encapsulation];
+  text_encapsulation2 = [(RFFormattedText *)v5 text_encapsulation];
+  if ((text_encapsulation != 0) == (text_encapsulation2 == 0))
   {
     v11 = 0;
     *v133 = 0;
@@ -407,15 +407,15 @@
     goto LABEL_15;
   }
 
-  v44 = [(RFFormattedText *)self text_encapsulation];
-  v45 = v44 != 0;
-  v102 = v44;
-  if (v44)
+  text_encapsulation3 = [(RFFormattedText *)self text_encapsulation];
+  v45 = text_encapsulation3 != 0;
+  v102 = text_encapsulation3;
+  if (text_encapsulation3)
   {
-    v46 = [(RFFormattedText *)self text_encapsulation];
-    v98 = [(RFFormattedText *)v5 text_encapsulation];
-    v99 = v46;
-    if (![v46 isEqual:?])
+    text_encapsulation4 = [(RFFormattedText *)self text_encapsulation];
+    text_encapsulation5 = [(RFFormattedText *)v5 text_encapsulation];
+    v99 = text_encapsulation4;
+    if (![text_encapsulation4 isEqual:?])
     {
       v132[0] = 0;
       v12 = 0;
@@ -448,9 +448,9 @@
     *&v133[4] = 0;
   }
 
-  v101 = [(RFFormattedText *)self is_highlighted];
-  v100 = [(RFFormattedText *)v5 is_highlighted];
-  if ((v101 != 0) == (v100 == 0))
+  is_highlighted = [(RFFormattedText *)self is_highlighted];
+  is_highlighted2 = [(RFFormattedText *)v5 is_highlighted];
+  if ((is_highlighted != 0) == (is_highlighted2 == 0))
   {
     v12 = 0;
     v13 = 0;
@@ -476,15 +476,15 @@
     goto LABEL_15;
   }
 
-  v47 = [(RFFormattedText *)self is_highlighted];
-  v48 = v47 != 0;
-  v97 = v47;
-  if (v47)
+  is_highlighted3 = [(RFFormattedText *)self is_highlighted];
+  v48 = is_highlighted3 != 0;
+  v97 = is_highlighted3;
+  if (is_highlighted3)
   {
-    v49 = [(RFFormattedText *)self is_highlighted];
-    v93 = [(RFFormattedText *)v5 is_highlighted];
-    v94 = v49;
-    if (![v49 isEqual:?])
+    is_highlighted4 = [(RFFormattedText *)self is_highlighted];
+    is_highlighted5 = [(RFFormattedText *)v5 is_highlighted];
+    v94 = is_highlighted4;
+    if (![is_highlighted4 isEqual:?])
     {
       v13 = 0;
       memset(v130, 0, sizeof(v130));
@@ -518,9 +518,9 @@
     *v133 = 0;
   }
 
-  v96 = [(RFFormattedText *)self background_color];
-  v95 = [(RFFormattedText *)v5 background_color];
-  if ((v96 != 0) == (v95 == 0))
+  background_color = [(RFFormattedText *)self background_color];
+  background_color2 = [(RFFormattedText *)v5 background_color];
+  if ((background_color != 0) == (background_color2 == 0))
   {
     v13 = 0;
     *v130 = 0;
@@ -546,16 +546,16 @@
     goto LABEL_15;
   }
 
-  v50 = [(RFFormattedText *)self background_color];
-  LODWORD(v138[2]) = v50 != 0;
-  v92 = v50;
+  background_color3 = [(RFFormattedText *)self background_color];
+  LODWORD(v138[2]) = background_color3 != 0;
+  v92 = background_color3;
   v65 = v5;
-  if (v50)
+  if (background_color3)
   {
-    v51 = [(RFFormattedText *)self background_color];
-    v88 = [(RFFormattedText *)v5 background_color];
-    v89 = v51;
-    if (![v51 isEqual:?])
+    background_color4 = [(RFFormattedText *)self background_color];
+    background_color5 = [(RFFormattedText *)v5 background_color];
+    v89 = background_color4;
+    if (![background_color4 isEqual:?])
     {
       *v130 = 0;
       *(v132 + 4) = 0;
@@ -586,9 +586,9 @@ LABEL_162:
     }
   }
 
-  v91 = [(RFFormattedText *)self attributions];
-  v90 = [(RFFormattedText *)v5 attributions];
-  if ((v91 != 0) == (v90 == 0))
+  attributions = [(RFFormattedText *)self attributions];
+  attributions2 = [(RFFormattedText *)v5 attributions];
+  if ((attributions != 0) == (attributions2 == 0))
   {
     *(v132 + 4) = 0;
     v138[1] = 0;
@@ -615,15 +615,15 @@ LABEL_162:
     goto LABEL_162;
   }
 
-  v52 = [(RFFormattedText *)self attributions];
-  HIDWORD(v138[1]) = v52 != 0;
-  v87 = v52;
-  if (v52)
+  attributions3 = [(RFFormattedText *)self attributions];
+  HIDWORD(v138[1]) = attributions3 != 0;
+  v87 = attributions3;
+  if (attributions3)
   {
-    v53 = [(RFFormattedText *)self attributions];
-    v83 = [(RFFormattedText *)v65 attributions];
-    v84 = v53;
-    if (![v53 isEqual:?])
+    attributions4 = [(RFFormattedText *)self attributions];
+    attributions5 = [(RFFormattedText *)v65 attributions];
+    v84 = attributions4;
+    if (![attributions4 isEqual:?])
     {
       v132[1] = 0;
       *(v138 + 4) = 0;
@@ -651,9 +651,9 @@ LABEL_162:
     }
   }
 
-  v86 = [(RFFormattedText *)self highlighted_substrings];
-  v85 = [(RFFormattedText *)v65 highlighted_substrings];
-  if ((v86 != 0) == (v85 == 0))
+  highlighted_substrings = [(RFFormattedText *)self highlighted_substrings];
+  highlighted_substrings2 = [(RFFormattedText *)v65 highlighted_substrings];
+  if ((highlighted_substrings != 0) == (highlighted_substrings2 == 0))
   {
     v132[1] = 0;
     *(v138 + 4) = 0;
@@ -679,15 +679,15 @@ LABEL_162:
     goto LABEL_162;
   }
 
-  v54 = [(RFFormattedText *)self highlighted_substrings];
-  LODWORD(v138[1]) = v54 != 0;
-  v82 = v54;
-  if (v54)
+  highlighted_substrings3 = [(RFFormattedText *)self highlighted_substrings];
+  LODWORD(v138[1]) = highlighted_substrings3 != 0;
+  v82 = highlighted_substrings3;
+  if (highlighted_substrings3)
   {
-    v55 = [(RFFormattedText *)self highlighted_substrings];
-    v78 = [(RFFormattedText *)v65 highlighted_substrings];
-    v79 = v55;
-    if (![v55 isEqual:?])
+    highlighted_substrings4 = [(RFFormattedText *)self highlighted_substrings];
+    highlighted_substrings5 = [(RFFormattedText *)v65 highlighted_substrings];
+    v79 = highlighted_substrings4;
+    if (![highlighted_substrings4 isEqual:?])
     {
       v14 = 0;
       v138[0] = 0;
@@ -714,9 +714,9 @@ LABEL_162:
     }
   }
 
-  v81 = [(RFFormattedText *)self font];
-  v80 = [(RFFormattedText *)v65 font];
-  if ((v81 != 0) == (v80 == 0))
+  font = [(RFFormattedText *)self font];
+  font2 = [(RFFormattedText *)v65 font];
+  if ((font != 0) == (font2 == 0))
   {
     v14 = 0;
     v138[0] = 0;
@@ -741,15 +741,15 @@ LABEL_162:
     goto LABEL_162;
   }
 
-  v56 = [(RFFormattedText *)self font];
-  HIDWORD(v138[0]) = v56 != 0;
-  v77 = v56;
-  if (v56)
+  font3 = [(RFFormattedText *)self font];
+  HIDWORD(v138[0]) = font3 != 0;
+  v77 = font3;
+  if (font3)
   {
-    v57 = [(RFFormattedText *)self font];
-    v73 = [(RFFormattedText *)v65 font];
-    v74 = v57;
-    if (![v57 isEqual:?])
+    font4 = [(RFFormattedText *)self font];
+    font5 = [(RFFormattedText *)v65 font];
+    v74 = font4;
+    if (![font4 isEqual:?])
     {
       v15 = 0;
       v138[0] = 0x100000000;
@@ -775,9 +775,9 @@ LABEL_162:
     }
   }
 
-  v76 = [(RFFormattedText *)self is_underlined];
-  v75 = [(RFFormattedText *)v65 is_underlined];
-  if ((v76 != 0) == (v75 == 0))
+  is_underlined = [(RFFormattedText *)self is_underlined];
+  is_underlined2 = [(RFFormattedText *)v65 is_underlined];
+  if ((is_underlined != 0) == (is_underlined2 == 0))
   {
     v15 = 0;
     LODWORD(v138[0]) = 0;
@@ -802,15 +802,15 @@ LABEL_162:
     goto LABEL_162;
   }
 
-  v58 = [(RFFormattedText *)self is_underlined];
-  LODWORD(v138[0]) = v58 != 0;
-  v72 = v58;
-  if (v58)
+  is_underlined3 = [(RFFormattedText *)self is_underlined];
+  LODWORD(v138[0]) = is_underlined3 != 0;
+  v72 = is_underlined3;
+  if (is_underlined3)
   {
-    v59 = [(RFFormattedText *)self is_underlined];
-    v68 = [(RFFormattedText *)v65 is_underlined];
-    v69 = v59;
-    if (![v59 isEqual:?])
+    is_underlined4 = [(RFFormattedText *)self is_underlined];
+    is_underlined5 = [(RFFormattedText *)v65 is_underlined];
+    v69 = is_underlined4;
+    if (![is_underlined4 isEqual:?])
     {
       v16 = 0;
       v17 = 0;
@@ -836,9 +836,9 @@ LABEL_162:
     }
   }
 
-  v71 = [(RFFormattedText *)self engageable];
-  v70 = [(RFFormattedText *)v65 engageable];
-  if ((v71 != 0) == (v70 == 0))
+  engageable = [(RFFormattedText *)self engageable];
+  engageable2 = [(RFFormattedText *)v65 engageable];
+  if ((engageable != 0) == (engageable2 == 0))
   {
     v17 = 0;
     v18 = 0;
@@ -862,15 +862,15 @@ LABEL_162:
     goto LABEL_162;
   }
 
-  v60 = [(RFFormattedText *)self engageable];
-  v128 = v60 != 0;
-  v67 = v60;
-  if (v60)
+  engageable3 = [(RFFormattedText *)self engageable];
+  v128 = engageable3 != 0;
+  v67 = engageable3;
+  if (engageable3)
   {
-    v61 = [(RFFormattedText *)self engageable];
+    engageable4 = [(RFFormattedText *)self engageable];
     [(RFFormattedText *)v65 engageable];
-    v64 = v66 = v61;
-    if (![v61 isEqual:?])
+    v64 = v66 = engageable4;
+    if (![engageable4 isEqual:?])
     {
       v19 = 0;
       v132[5] = 0x100000001;
@@ -897,8 +897,8 @@ LABEL_166:
     }
   }
 
-  v62 = [(RFFormattedText *)self weight];
-  if (v62 != [(RFFormattedText *)v65 weight])
+  weight = [(RFFormattedText *)self weight];
+  if (weight != [(RFFormattedText *)v65 weight])
   {
     v19 = 0;
     v132[5] = 0x100000001;
@@ -922,9 +922,9 @@ LABEL_166:
     goto LABEL_166;
   }
 
-  v63 = [(RFFormattedText *)self design];
+  design = [(RFFormattedText *)self design];
   v5 = v65;
-  v19 = v63 == [(RFFormattedText *)v65 design];
+  v19 = design == [(RFFormattedText *)v65 design];
   v132[5] = 0x100000001;
   v132[4] = 0x100000001;
   v132[3] = 0x100000001;
@@ -948,7 +948,7 @@ LABEL_167:
 LABEL_15:
   if (v18)
   {
-    v127 = v4;
+    v127 = equalCopy;
     v23 = v19;
     v24 = v5;
     v25 = v13;
@@ -970,7 +970,7 @@ LABEL_15:
     v13 = v25;
     v5 = v24;
     v19 = v23;
-    v4 = v127;
+    equalCopy = v127;
     if (!v33)
     {
       goto LABEL_17;
@@ -1156,65 +1156,65 @@ LABEL_88:
   return v19;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if ([(RFFormattedText *)self hasText])
   {
-    v5 = [(RFFormattedText *)self text];
-    v6 = [v5 copy];
+    text = [(RFFormattedText *)self text];
+    v6 = [text copy];
     [v4 setText:v6];
   }
 
   if ([(RFFormattedText *)self hasInline_image_element])
   {
-    v7 = [(RFFormattedText *)self inline_image_element];
-    v8 = [v7 copy];
+    inline_image_element = [(RFFormattedText *)self inline_image_element];
+    v8 = [inline_image_element copy];
     [v4 setInline_image_element:v8];
   }
 
-  v9 = [(RFFormattedText *)self color];
-  v10 = [v9 copy];
+  color = [(RFFormattedText *)self color];
+  v10 = [color copy];
   [v4 setColor:v10];
 
-  v11 = [(RFFormattedText *)self is_italic];
-  v12 = [v11 copy];
+  is_italic = [(RFFormattedText *)self is_italic];
+  v12 = [is_italic copy];
   [v4 setIs_italic:v12];
 
-  v13 = [(RFFormattedText *)self is_bold];
-  v14 = [v13 copy];
+  is_bold = [(RFFormattedText *)self is_bold];
+  v14 = [is_bold copy];
   [v4 setIs_bold:v14];
 
-  v15 = [(RFFormattedText *)self text_encapsulation];
-  v16 = [v15 copy];
+  text_encapsulation = [(RFFormattedText *)self text_encapsulation];
+  v16 = [text_encapsulation copy];
   [v4 setText_encapsulation:v16];
 
-  v17 = [(RFFormattedText *)self is_highlighted];
-  v18 = [v17 copy];
+  is_highlighted = [(RFFormattedText *)self is_highlighted];
+  v18 = [is_highlighted copy];
   [v4 setIs_highlighted:v18];
 
-  v19 = [(RFFormattedText *)self background_color];
-  v20 = [v19 copy];
+  background_color = [(RFFormattedText *)self background_color];
+  v20 = [background_color copy];
   [v4 setBackground_color:v20];
 
-  v21 = [(RFFormattedText *)self attributions];
-  v22 = [v21 copy];
+  attributions = [(RFFormattedText *)self attributions];
+  v22 = [attributions copy];
   [v4 setAttributions:v22];
 
-  v23 = [(RFFormattedText *)self highlighted_substrings];
-  v24 = [v23 copy];
+  highlighted_substrings = [(RFFormattedText *)self highlighted_substrings];
+  v24 = [highlighted_substrings copy];
   [v4 setHighlighted_substrings:v24];
 
-  v25 = [(RFFormattedText *)self font];
-  v26 = [v25 copy];
+  font = [(RFFormattedText *)self font];
+  v26 = [font copy];
   [v4 setFont:v26];
 
-  v27 = [(RFFormattedText *)self is_underlined];
-  v28 = [v27 copy];
+  is_underlined = [(RFFormattedText *)self is_underlined];
+  v28 = [is_underlined copy];
   [v4 setIs_underlined:v28];
 
-  v29 = [(RFFormattedText *)self engageable];
-  v30 = [v29 copy];
+  engageable = [(RFFormattedText *)self engageable];
+  v30 = [engageable copy];
   [v4 setEngageable:v30];
 
   [v4 setWeight:{-[RFFormattedText weight](self, "weight")}];
@@ -1225,31 +1225,31 @@ LABEL_88:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFFormattedText alloc] initWithFacade:self];
-  v3 = [(_SFPBRFFormattedText *)v2 jsonData];
+  jsonData = [(_SFPBRFFormattedText *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFFormattedText alloc] initWithFacade:self];
-  v3 = [(_SFPBRFFormattedText *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFFormattedText *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFFormattedText alloc] initWithFacade:self];
-  v5 = [(_SFPBRFFormattedText *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFFormattedText *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFFormattedText)initWithCoder:(id)a3
+- (RFFormattedText)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFFormattedText alloc] initWithData:v5];
   v7 = [(RFFormattedText *)self initWithProtobuf:v6];
@@ -1257,115 +1257,115 @@ LABEL_88:
   return v7;
 }
 
-- (void)setInline_image_element:(id)a3
+- (void)setInline_image_element:(id)inline_image_element
 {
   *&self->_has |= 2u;
-  objc_storeStrong(&self->_inline_image_element, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_inline_image_element, inline_image_element);
+  inline_image_elementCopy = inline_image_element;
   *&self->_has &= ~1u;
   text = self->_text;
   self->_text = 0;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   *&self->_has |= 1u;
-  objc_storeStrong(&self->_text, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_text, text);
+  textCopy = text;
   *&self->_has &= ~2u;
   inline_image_element = self->_inline_image_element;
   self->_inline_image_element = 0;
 }
 
-- (RFFormattedText)initWithProtobuf:(id)a3
+- (RFFormattedText)initWithProtobuf:(id)protobuf
 {
   v78 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v75.receiver = self;
   v75.super_class = RFFormattedText;
   v5 = [(RFFormattedText *)&v75 init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [protobufCopy text];
 
-    if (v6)
+    if (text)
     {
-      v7 = [v4 text];
-      [(RFFormattedText *)v5 setText:v7];
+      text2 = [protobufCopy text];
+      [(RFFormattedText *)v5 setText:text2];
     }
 
-    v8 = [v4 inline_image_element];
+    inline_image_element = [protobufCopy inline_image_element];
 
-    if (v8)
+    if (inline_image_element)
     {
       v9 = [RFImageElement alloc];
-      v10 = [v4 inline_image_element];
-      v11 = [(RFImageElement *)v9 initWithProtobuf:v10];
+      inline_image_element2 = [protobufCopy inline_image_element];
+      v11 = [(RFImageElement *)v9 initWithProtobuf:inline_image_element2];
       [(RFFormattedText *)v5 setInline_image_element:v11];
     }
 
-    v12 = [v4 color];
+    color = [protobufCopy color];
 
-    if (v12)
+    if (color)
     {
       v13 = [RFColor alloc];
-      v14 = [v4 color];
-      v15 = [(RFColor *)v13 initWithProtobuf:v14];
+      color2 = [protobufCopy color];
+      v15 = [(RFColor *)v13 initWithProtobuf:color2];
       [(RFFormattedText *)v5 setColor:v15];
     }
 
-    v16 = [v4 is_italic];
+    is_italic = [protobufCopy is_italic];
 
-    if (v16)
+    if (is_italic)
     {
       v17 = [RFOptionalBool alloc];
-      v18 = [v4 is_italic];
-      v19 = [(RFOptionalBool *)v17 initWithProtobuf:v18];
+      is_italic2 = [protobufCopy is_italic];
+      v19 = [(RFOptionalBool *)v17 initWithProtobuf:is_italic2];
       [(RFFormattedText *)v5 setIs_italic:v19];
     }
 
-    v20 = [v4 is_bold];
+    is_bold = [protobufCopy is_bold];
 
-    if (v20)
+    if (is_bold)
     {
       v21 = [RFOptionalBool alloc];
-      v22 = [v4 is_bold];
-      v23 = [(RFOptionalBool *)v21 initWithProtobuf:v22];
+      is_bold2 = [protobufCopy is_bold];
+      v23 = [(RFOptionalBool *)v21 initWithProtobuf:is_bold2];
       [(RFFormattedText *)v5 setIs_bold:v23];
     }
 
-    v24 = [v4 text_encapsulation];
+    text_encapsulation = [protobufCopy text_encapsulation];
 
-    if (v24)
+    if (text_encapsulation)
     {
       v25 = [RFTextEncapsulation alloc];
-      v26 = [v4 text_encapsulation];
-      v27 = [(RFTextEncapsulation *)v25 initWithProtobuf:v26];
+      text_encapsulation2 = [protobufCopy text_encapsulation];
+      v27 = [(RFTextEncapsulation *)v25 initWithProtobuf:text_encapsulation2];
       [(RFFormattedText *)v5 setText_encapsulation:v27];
     }
 
-    v28 = [v4 is_highlighted];
+    is_highlighted = [protobufCopy is_highlighted];
 
-    if (v28)
+    if (is_highlighted)
     {
       v29 = [RFOptionalBool alloc];
-      v30 = [v4 is_highlighted];
-      v31 = [(RFOptionalBool *)v29 initWithProtobuf:v30];
+      is_highlighted2 = [protobufCopy is_highlighted];
+      v31 = [(RFOptionalBool *)v29 initWithProtobuf:is_highlighted2];
       [(RFFormattedText *)v5 setIs_highlighted:v31];
     }
 
-    v32 = [v4 background_color];
+    background_color = [protobufCopy background_color];
 
-    if (v32)
+    if (background_color)
     {
       v33 = [RFColor alloc];
-      v34 = [v4 background_color];
-      v35 = [(RFColor *)v33 initWithProtobuf:v34];
+      background_color2 = [protobufCopy background_color];
+      v35 = [(RFColor *)v33 initWithProtobuf:background_color2];
       [(RFFormattedText *)v5 setBackground_color:v35];
     }
 
-    v36 = [v4 attributions];
-    if (v36)
+    attributions = [protobufCopy attributions];
+    if (attributions)
     {
       v37 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1379,8 +1379,8 @@ LABEL_88:
     v74 = 0u;
     v71 = 0u;
     v72 = 0u;
-    v38 = [v4 attributions];
-    v39 = [v38 countByEnumeratingWithState:&v71 objects:v77 count:16];
+    attributions2 = [protobufCopy attributions];
+    v39 = [attributions2 countByEnumeratingWithState:&v71 objects:v77 count:16];
     if (v39)
     {
       v40 = v39;
@@ -1391,7 +1391,7 @@ LABEL_88:
         {
           if (*v72 != v41)
           {
-            objc_enumerationMutation(v38);
+            objc_enumerationMutation(attributions2);
           }
 
           v43 = [[RFAttribution alloc] initWithProtobuf:*(*(&v71 + 1) + 8 * i)];
@@ -1401,15 +1401,15 @@ LABEL_88:
           }
         }
 
-        v40 = [v38 countByEnumeratingWithState:&v71 objects:v77 count:16];
+        v40 = [attributions2 countByEnumeratingWithState:&v71 objects:v77 count:16];
       }
 
       while (v40);
     }
 
     [(RFFormattedText *)v5 setAttributions:v37];
-    v44 = [v4 highlighted_substrings];
-    if (v44)
+    highlighted_substrings = [protobufCopy highlighted_substrings];
+    if (highlighted_substrings)
     {
       v45 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -1423,8 +1423,8 @@ LABEL_88:
     v70 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v46 = [v4 highlighted_substrings];
-    v47 = [v46 countByEnumeratingWithState:&v67 objects:v76 count:16];
+    highlighted_substrings2 = [protobufCopy highlighted_substrings];
+    v47 = [highlighted_substrings2 countByEnumeratingWithState:&v67 objects:v76 count:16];
     if (v47)
     {
       v48 = v47;
@@ -1435,7 +1435,7 @@ LABEL_88:
         {
           if (*v68 != v49)
           {
-            objc_enumerationMutation(v46);
+            objc_enumerationMutation(highlighted_substrings2);
           }
 
           v51 = [[RFHighlightedSubstring alloc] initWithProtobuf:*(*(&v67 + 1) + 8 * j)];
@@ -1445,51 +1445,51 @@ LABEL_88:
           }
         }
 
-        v48 = [v46 countByEnumeratingWithState:&v67 objects:v76 count:16];
+        v48 = [highlighted_substrings2 countByEnumeratingWithState:&v67 objects:v76 count:16];
       }
 
       while (v48);
     }
 
     [(RFFormattedText *)v5 setHighlighted_substrings:v45];
-    v52 = [v4 font];
+    font = [protobufCopy font];
 
-    if (v52)
+    if (font)
     {
       v53 = [RFFont alloc];
-      v54 = [v4 font];
-      v55 = [(RFFont *)v53 initWithProtobuf:v54];
+      font2 = [protobufCopy font];
+      v55 = [(RFFont *)v53 initWithProtobuf:font2];
       [(RFFormattedText *)v5 setFont:v55];
     }
 
-    v56 = [v4 is_underlined];
+    is_underlined = [protobufCopy is_underlined];
 
-    if (v56)
+    if (is_underlined)
     {
       v57 = [RFOptionalBool alloc];
-      v58 = [v4 is_underlined];
-      v59 = [(RFOptionalBool *)v57 initWithProtobuf:v58];
+      is_underlined2 = [protobufCopy is_underlined];
+      v59 = [(RFOptionalBool *)v57 initWithProtobuf:is_underlined2];
       [(RFFormattedText *)v5 setIs_underlined:v59];
     }
 
-    v60 = [v4 engageable];
+    engageable = [protobufCopy engageable];
 
-    if (v60)
+    if (engageable)
     {
       v61 = [RFEngageable alloc];
-      v62 = [v4 engageable];
-      v63 = [(RFEngageable *)v61 initWithProtobuf:v62];
+      engageable2 = [protobufCopy engageable];
+      v63 = [(RFEngageable *)v61 initWithProtobuf:engageable2];
       [(RFFormattedText *)v5 setEngageable:v63];
     }
 
-    if ([v4 weight])
+    if ([protobufCopy weight])
     {
-      -[RFFormattedText setWeight:](v5, "setWeight:", [v4 weight]);
+      -[RFFormattedText setWeight:](v5, "setWeight:", [protobufCopy weight]);
     }
 
-    if ([v4 design])
+    if ([protobufCopy design])
     {
-      -[RFFormattedText setDesign:](v5, "setDesign:", [v4 design]);
+      -[RFFormattedText setDesign:](v5, "setDesign:", [protobufCopy design]);
     }
 
     v64 = v5;

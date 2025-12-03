@@ -4,7 +4,7 @@
 + (void)createRegisteredValueClassesSet;
 + (void)initialize;
 + (void)rediscoverParameterValueClassesIfNeeded;
-+ (void)registerValueClass:(Class)a3;
++ (void)registerValueClass:(Class)class;
 @end
 
 @implementation WFParameterValueRegistry
@@ -56,7 +56,7 @@ uint64_t __67__WFParameterValueRegistry_rediscoverParameterValueClassesIfNeeded_
 
 + (id)registeredValueClasses
 {
-  [a1 rediscoverParameterValueClassesIfNeeded];
+  [self rediscoverParameterValueClassesIfNeeded];
   v2 = [_mutableRegisteredValueClasses copy];
   v3 = v2;
   if (v2)
@@ -74,25 +74,25 @@ uint64_t __67__WFParameterValueRegistry_rediscoverParameterValueClassesIfNeeded_
   return v5;
 }
 
-+ (void)registerValueClass:(Class)a3
++ (void)registerValueClass:(Class)class
 {
-  if (([(objc_class *)a3 conformsToProtocol:&unk_1F4AA6468]& 1) == 0)
+  if (([(objc_class *)class conformsToProtocol:&unk_1F4AA6468]& 1) == 0)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"WFParameterValueRegistry.m" lineNumber:34 description:@"Parameter value classes must conform to NSSecureCoding"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFParameterValueRegistry.m" lineNumber:34 description:@"Parameter value classes must conform to NSSecureCoding"];
   }
 
   v6 = _mutableRegisteredValueClasses;
 
-  [v6 addObject:a3];
+  [v6 addObject:class];
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
-    [a1 createRegisteredValueClassesSet];
+    [self createRegisteredValueClassesSet];
   }
 }
 

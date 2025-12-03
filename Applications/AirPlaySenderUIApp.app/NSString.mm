@@ -1,18 +1,18 @@
 @interface NSString
-- (BOOL)isValidIPv4AddressWithSubnetMask:(id)a3;
+- (BOOL)isValidIPv4AddressWithSubnetMask:(id)mask;
 - (BOOL)isValidIPv6Address;
 @end
 
 @implementation NSString
 
-- (BOOL)isValidIPv4AddressWithSubnetMask:(id)a3
+- (BOOL)isValidIPv4AddressWithSubnetMask:(id)mask
 {
-  v4 = a3;
-  if (-[NSString isValidIPv4Address](self, "isValidIPv4Address") && [v4 isValidSubnetMask])
+  maskCopy = mask;
+  if (-[NSString isValidIPv4Address](self, "isValidIPv4Address") && [maskCopy isValidSubnetMask])
   {
     if ([(NSString *)self hasPrefix:@"169.254."])
     {
-      v5 = [v4 isEqualToString:@"255.255.0.0"] == 0;
+      v5 = [maskCopy isEqualToString:@"255.255.0.0"] == 0;
     }
 
     else

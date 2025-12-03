@@ -1,48 +1,48 @@
 @interface FBSSceneSnapshotRequestHandle
-+ (id)handleForRequestType:(unint64_t)a3 context:(id)a4;
-- (FBSSceneSnapshotRequestHandle)initWithRequestType:(unint64_t)a3 context:(id)a4;
++ (id)handleForRequestType:(unint64_t)type context:(id)context;
+- (FBSSceneSnapshotRequestHandle)initWithRequestType:(unint64_t)type context:(id)context;
 - (void)_clearAction;
 - (void)cancelRequest;
-- (void)performRequestForScene:(id)a3;
+- (void)performRequestForScene:(id)scene;
 @end
 
 @implementation FBSSceneSnapshotRequestHandle
 
-+ (id)handleForRequestType:(unint64_t)a3 context:(id)a4
++ (id)handleForRequestType:(unint64_t)type context:(id)context
 {
-  v6 = a4;
-  v7 = [[a1 alloc] initWithRequestType:a3 context:v6];
+  contextCopy = context;
+  v7 = [[self alloc] initWithRequestType:type context:contextCopy];
 
   return v7;
 }
 
-- (FBSSceneSnapshotRequestHandle)initWithRequestType:(unint64_t)a3 context:(id)a4
+- (FBSSceneSnapshotRequestHandle)initWithRequestType:(unint64_t)type context:(id)context
 {
-  v7 = a4;
+  contextCopy = context;
   v8 = [(FBSSceneSnapshotRequestHandle *)self init];
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    objc_storeStrong(&v8->_context, a4);
+    v8->_type = type;
+    objc_storeStrong(&v8->_context, context);
   }
 
   return v9;
 }
 
-- (void)performRequestForScene:(id)a3
+- (void)performRequestForScene:(id)scene
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  sceneCopy = scene;
+  if (!sceneCopy)
   {
     [FBSSceneSnapshotRequestHandle performRequestForScene:a2];
   }
 
-  v6 = v5;
-  v7 = [v5 identifier];
-  v8 = [(FBSSceneSnapshotContext *)self->_context sceneID];
-  v9 = [v7 isEqualToString:v8];
+  v6 = sceneCopy;
+  identifier = [sceneCopy identifier];
+  sceneID = [(FBSSceneSnapshotContext *)self->_context sceneID];
+  v9 = [identifier isEqualToString:sceneID];
 
   if ((v9 & 1) == 0)
   {
@@ -54,22 +54,22 @@
     [(FBSSceneSnapshotRequestHandle *)a2 performRequestForScene:?];
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  if (!v10->_canceled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_canceled)
   {
     v11 = FBLogCommon();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      type = v10->_type;
+      type = selfCopy->_type;
       *buf = 134218240;
-      v18 = v10;
+      v18 = selfCopy;
       v19 = 2048;
       v20 = type;
       _os_log_impl(&dword_1A2DBB000, v11, OS_LOG_TYPE_DEFAULT, "Performing snapshot request %p (type %lu)", buf, 0x16u);
     }
 
-    if (v10->_type == 1)
+    if (selfCopy->_type == 1)
     {
       v13 = dispatch_semaphore_create(0);
     }
@@ -83,7 +83,7 @@
     v16[1] = 3221225472;
     v16[2] = __56__FBSSceneSnapshotRequestHandle_performRequestForScene___block_invoke;
     v16[3] = &unk_1E76BF4E8;
-    v16[4] = v10;
+    v16[4] = selfCopy;
     v16[5] = v13;
     v14 = [off_1E76BC978 responderWithHandler:v16];
     responder = self->_responder;
@@ -92,7 +92,7 @@
     BSDispatchQueueCreateSerialWithQoS();
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 }
 
 void __56__FBSSceneSnapshotRequestHandle_performRequestForScene___block_invoke(uint64_t a1, void *a2)
@@ -132,24 +132,24 @@ void __56__FBSSceneSnapshotRequestHandle_performRequestForScene___block_invoke(u
 - (void)cancelRequest
 {
   v6 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_canceled)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_canceled)
   {
     v3 = FBLogCommon();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v4 = 134217984;
-      v5 = v2;
+      v5 = selfCopy;
       _os_log_impl(&dword_1A2DBB000, v3, OS_LOG_TYPE_DEFAULT, "Snapshot request %p canceled", &v4, 0xCu);
     }
 
-    v2->_canceled = 1;
-    [(BSActionResponder *)v2->_responder annul];
-    [(FBSSceneSnapshotRequestHandle *)v2 _clearAction];
+    selfCopy->_canceled = 1;
+    [(BSActionResponder *)selfCopy->_responder annul];
+    [(FBSSceneSnapshotRequestHandle *)selfCopy _clearAction];
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)_clearAction

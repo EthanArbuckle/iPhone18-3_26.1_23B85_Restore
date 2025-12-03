@@ -18,7 +18,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D64D60];
+    v1 = [self conformsToProtocol:&unk_285D64D60];
     acceptsTopLevelLeaves___result_104 = v1;
     acceptsTopLevelLeaves___haveChecked_103 = 1;
   }
@@ -35,7 +35,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D5E660];
+    v1 = [self conformsToProtocol:&unk_285D5E660];
     parsingLeafNode___result_106 = v1;
     parsingLeafNode___haveChecked_105 = 1;
   }
@@ -52,7 +52,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D64A10];
+    v1 = [self conformsToProtocol:&unk_285D64A10];
     parsingWithSubItems___result_108 = v1;
     parsingWithSubItems___haveChecked_107 = 1;
   }
@@ -69,7 +69,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D5F9B0];
+    v1 = [self conformsToProtocol:&unk_285D5F9B0];
     frontingBasicTypes___result_110 = v1;
     frontingBasicTypes___haveChecked_109 = 1;
   }
@@ -86,7 +86,7 @@
 
   else
   {
-    v1 = [a1 conformsToProtocol:&unk_285D6EED0];
+    v1 = [self conformsToProtocol:&unk_285D6EED0];
     notifyOfUnknownTokens___result_112 = v1;
     notifyOfUnknownTokens___haveChecked_111 = 1;
   }
@@ -106,16 +106,16 @@
 
   if (v20)
   {
-    a1 = [a1 initWithInt:{objc_msgSend(v20, "intValue")}];
-    v21 = a1;
+    self = [self initWithInt:{objc_msgSend(v20, "intValue")}];
+    selfCopy = self;
   }
 
   else
   {
-    v21 = 0;
+    selfCopy = 0;
   }
 
-  return v21;
+  return selfCopy;
 }
 
 @end

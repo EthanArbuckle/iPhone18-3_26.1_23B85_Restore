@@ -1,13 +1,13 @@
 @interface NSPPrivacyProxyProxyPathWeight
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (unsigned)proxiesAtIndex:(unint64_t)a3;
-- (void)copyTo:(id)a3;
+- (unsigned)proxiesAtIndex:(unint64_t)index;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSPPrivacyProxyProxyPathWeight
@@ -20,20 +20,20 @@
   [(NSPPrivacyProxyProxyPathWeight *)&v3 dealloc];
 }
 
-- (unsigned)proxiesAtIndex:(unint64_t)a3
+- (unsigned)proxiesAtIndex:(unint64_t)index
 {
   p_proxies = &self->_proxies;
   count = self->_proxies.count;
-  if (count <= a3)
+  if (count <= index)
   {
     v6 = MEMORY[0x1E695DF30];
     v7 = *MEMORY[0x1E695DA20];
-    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", a3, count];
+    v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"idx (%lu) is out of range (%lu)", index, count];
     v9 = [v6 exceptionWithName:v7 reason:v8 userInfo:0];
     [v9 raise];
   }
 
-  return p_proxies->list[a3];
+  return p_proxies->list[index];
 }
 
 - (id)description
@@ -42,29 +42,29 @@
   v8.receiver = self;
   v8.super_class = NSPPrivacyProxyProxyPathWeight;
   v4 = [(NSPPrivacyProxyProxyPathWeight *)&v8 description];
-  v5 = [(NSPPrivacyProxyProxyPathWeight *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSPPrivacyProxyProxyPathWeight *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:self->_weight];
-  [v3 setObject:v4 forKey:@"weight"];
+  [dictionary setObject:v4 forKey:@"weight"];
 
   v5 = PBRepeatedUInt32NSArray();
-  [v3 setObject:v5 forKey:@"proxies"];
+  [dictionary setObject:v5 forKey:@"proxies"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   weight = self->_weight;
-  v9 = v4;
+  v9 = toCopy;
   PBDataWriterWriteUint32Field();
   p_proxies = &self->_proxies;
   if (p_proxies->count)
@@ -81,37 +81,37 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v7 = a3;
-  v7[8] = self->_weight;
+  toCopy = to;
+  toCopy[8] = self->_weight;
   if ([(NSPPrivacyProxyProxyPathWeight *)self proxiesCount])
   {
-    [v7 clearProxies];
-    v4 = [(NSPPrivacyProxyProxyPathWeight *)self proxiesCount];
-    if (v4)
+    [toCopy clearProxies];
+    proxiesCount = [(NSPPrivacyProxyProxyPathWeight *)self proxiesCount];
+    if (proxiesCount)
     {
-      v5 = v4;
+      v5 = proxiesCount;
       for (i = 0; i != v5; ++i)
       {
-        [v7 addProxies:{-[NSPPrivacyProxyProxyPathWeight proxiesAtIndex:](self, "proxiesAtIndex:", i)}];
+        [toCopy addProxies:{-[NSPPrivacyProxyProxyPathWeight proxiesAtIndex:](self, "proxiesAtIndex:", i)}];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v4[8] = self->_weight;
   PBRepeatedUInt32Copy();
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_weight == v4[8])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_weight == equalCopy[8])
   {
     IsEqual = PBRepeatedUInt32IsEqual();
   }
@@ -124,15 +124,15 @@
   return IsEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  self->_weight = v4[8];
-  v8 = v4;
-  v5 = [v4 proxiesCount];
-  if (v5)
+  fromCopy = from;
+  self->_weight = fromCopy[8];
+  v8 = fromCopy;
+  proxiesCount = [fromCopy proxiesCount];
+  if (proxiesCount)
   {
-    v6 = v5;
+    v6 = proxiesCount;
     for (i = 0; i != v6; ++i)
     {
       -[NSPPrivacyProxyProxyPathWeight addProxies:](self, "addProxies:", [v8 proxiesAtIndex:i]);

@@ -1,12 +1,12 @@
 @interface SafariExportDataTypeToggle
-- (SafariExportDataTypeToggle)initWithBrowsingDataExportType:(unint64_t)a3;
+- (SafariExportDataTypeToggle)initWithBrowsingDataExportType:(unint64_t)type;
 - (id)_deselectedIcon;
 - (id)_selectedIcon;
 - (unint64_t)accessibilityTraits;
 - (void)_toggleSelectedState;
 - (void)_updateStyle;
 - (void)layoutLabelsVertically;
-- (void)setCount:(id)a3;
+- (void)setCount:(id)count;
 - (void)showSpinner;
 @end
 
@@ -15,8 +15,8 @@
 - (id)_selectedIcon
 {
   v3 = [UIImage systemImageNamed:@"checkmark.circle.fill"];
-  v4 = [(SafariExportDataTypeToggle *)self selectIconImageSymbolConfiguration];
-  v5 = [v3 imageWithSymbolConfiguration:v4];
+  selectIconImageSymbolConfiguration = [(SafariExportDataTypeToggle *)self selectIconImageSymbolConfiguration];
+  v5 = [v3 imageWithSymbolConfiguration:selectIconImageSymbolConfiguration];
 
   return v5;
 }
@@ -24,13 +24,13 @@
 - (id)_deselectedIcon
 {
   v3 = [UIImage systemImageNamed:@"circle"];
-  v4 = [(SafariExportDataTypeToggle *)self selectIconImageSymbolConfiguration];
-  v5 = [v3 imageWithSymbolConfiguration:v4];
+  selectIconImageSymbolConfiguration = [(SafariExportDataTypeToggle *)self selectIconImageSymbolConfiguration];
+  v5 = [v3 imageWithSymbolConfiguration:selectIconImageSymbolConfiguration];
 
   return v5;
 }
 
-- (SafariExportDataTypeToggle)initWithBrowsingDataExportType:(unint64_t)a3
+- (SafariExportDataTypeToggle)initWithBrowsingDataExportType:(unint64_t)type
 {
   v38.receiver = self;
   v38.super_class = SafariExportDataTypeToggle;
@@ -43,9 +43,9 @@
     v35 = [UIFont preferredFontForTextStyle:UIFontTextStyleHeadline];
     v36 = [UIFont preferredFontForTextStyle:UIFontTextStyleFootnote];
     [(SafariExportDataTypeToggle *)v5 setSelected:1];
-    v5->_browsingDataExportType = a3;
-    v6 = [(SafariExportDataTypeToggle *)v5 layer];
-    [v6 setCornerRadius:8.0];
+    v5->_browsingDataExportType = type;
+    layer = [(SafariExportDataTypeToggle *)v5 layer];
+    [layer setCornerRadius:8.0];
 
     [(SafariExportDataTypeToggle *)v5 setBackgroundColor:v37];
     [(SafariExportDataTypeToggle *)v5 addTarget:v5 action:"_toggleSelectedState" forControlEvents:64];
@@ -78,8 +78,8 @@
     v13 = [UIImageView alloc];
     v14 = [WBSBrowsingDataExportController iconForBrowsingDataExportType:v5->_browsingDataExportType];
     v15 = [UIImage systemImageNamed:v14];
-    v16 = [(SafariExportDataTypeToggle *)v5 dataTypeIconImageSymbolConfiguration];
-    v17 = [v15 imageWithSymbolConfiguration:v16];
+    dataTypeIconImageSymbolConfiguration = [(SafariExportDataTypeToggle *)v5 dataTypeIconImageSymbolConfiguration];
+    v17 = [v15 imageWithSymbolConfiguration:dataTypeIconImageSymbolConfiguration];
     v18 = [v13 initWithImage:v17 highlightedImage:0];
     dataTypeIconImageView = v5->_dataTypeIconImageView;
     v5->_dataTypeIconImageView = v18;
@@ -132,15 +132,15 @@
   return v5;
 }
 
-- (void)setCount:(id)a3
+- (void)setCount:(id)count
 {
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = __39__SafariExportDataTypeToggle_setCount___block_invoke;
   v10 = &unk_896A0;
-  v11 = self;
-  v4 = a3;
-  v12 = v4;
+  selfCopy = self;
+  countCopy = count;
+  v12 = countCopy;
   v5 = objc_retainBlock(&v7);
   if (self->_firstDisplay || [(UIActivityIndicatorView *)self->_spinner isHidden:v7])
   {
@@ -230,16 +230,16 @@ id __39__SafariExportDataTypeToggle_setCount___block_invoke(uint64_t a1)
       goto LABEL_10;
     }
 
-    v5 = +[UIColor secondaryLabelColor];
+    _disabledIconColor = +[UIColor secondaryLabelColor];
   }
 
   else
   {
-    v5 = [(SafariExportDataTypeToggle *)self _disabledIconColor];
+    _disabledIconColor = [(SafariExportDataTypeToggle *)self _disabledIconColor];
   }
 
-  v6 = v5;
-  [(UIImageView *)self->_checkboxIconImageView setTintColor:v5];
+  v6 = _disabledIconColor;
+  [(UIImageView *)self->_checkboxIconImageView setTintColor:_disabledIconColor];
 
 LABEL_10:
   if ([(SafariExportDataTypeToggle *)self isEnabled])
@@ -249,8 +249,8 @@ LABEL_10:
 
   else
   {
-    v7 = [(SafariExportDataTypeToggle *)self _disabledIconColor];
-    [(UIImageView *)self->_dataTypeIconImageView setTintColor:v7];
+    _disabledIconColor2 = [(SafariExportDataTypeToggle *)self _disabledIconColor];
+    [(UIImageView *)self->_dataTypeIconImageView setTintColor:_disabledIconColor2];
   }
 
   if ([(SafariExportDataTypeToggle *)self isEnabled])

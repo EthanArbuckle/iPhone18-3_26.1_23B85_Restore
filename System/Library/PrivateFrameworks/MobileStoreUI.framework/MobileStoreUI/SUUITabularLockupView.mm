@@ -1,23 +1,23 @@
 @interface SUUITabularLockupView
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4;
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5;
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4;
-+ (void)_requestLayoutForViewElements:(id)a3 width:(double)a4 context:(id)a5;
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5;
-- (CGSize)_sizeViewsForColumn:(id)a3 toFitWidth:(double)a4;
-- (SUUITabularLockupView)initWithFrame:(CGRect)a3;
-- (void)_layoutSubviewsForColumn:(id)a3;
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context;
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context;
++ (id)_attributedStringForLabel:(id)label context:(id)context;
++ (void)_requestLayoutForViewElements:(id)elements width:(double)width context:(id)context;
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context;
+- (CGSize)_sizeViewsForColumn:(id)column toFitWidth:(double)width;
+- (SUUITabularLockupView)initWithFrame:(CGRect)frame;
+- (void)_layoutSubviewsForColumn:(id)column;
 - (void)layoutSubviews;
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5;
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context;
 @end
 
 @implementation SUUITabularLockupView
 
-- (SUUITabularLockupView)initWithFrame:(CGRect)a3
+- (SUUITabularLockupView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SUUITabularLockupView;
-  v3 = [(SUUIViewReuseView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUUIViewReuseView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CCAB00]) initWithKeyOptions:0 valueOptions:0 capacity:0];
@@ -28,7 +28,7 @@
   return v3;
 }
 
-+ (CGSize)preferredSizeForViewElement:(id)a3 context:(id)a4
++ (CGSize)preferredSizeForViewElement:(id)element context:(id)context
 {
   v4 = *MEMORY[0x277CBF3A8];
   v5 = *(MEMORY[0x277CBF3A8] + 8);
@@ -37,19 +37,19 @@
   return result;
 }
 
-+ (void)requestLayoutForViewElement:(id)a3 width:(double)a4 context:(id)a5
++ (void)requestLayoutForViewElement:(id)element width:(double)width context:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [[SUUITabularLockupLayout alloc] initWithLockup:v8 context:v9];
-  [(SUUITabularLockupLayout *)v10 sizeColumnsToFitWidth:v9 context:a4];
+  elementCopy = element;
+  contextCopy = context;
+  v10 = [[SUUITabularLockupLayout alloc] initWithLockup:elementCopy context:contextCopy];
+  [(SUUITabularLockupLayout *)v10 sizeColumnsToFitWidth:contextCopy context:width];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = [(SUUITabularLockupLayout *)v10 columns];
-  v12 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  columns = [(SUUITabularLockupLayout *)v10 columns];
+  v12 = [columns countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v12)
   {
     v13 = v12;
@@ -60,24 +60,24 @@
       {
         if (*v21 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(columns);
         }
 
         v16 = *(*(&v20 + 1) + 8 * i);
         [v16 size];
         v18 = v17;
-        v19 = [v16 childViewElements];
-        [a1 _requestLayoutForViewElements:v19 width:v9 context:v18];
+        childViewElements = [v16 childViewElements];
+        [self _requestLayoutForViewElements:childViewElements width:contextCopy context:v18];
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v13 = [columns countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v13);
   }
 }
 
-+ (CGSize)sizeThatFitsWidth:(double)a3 viewElement:(id)a4 context:(id)a5
++ (CGSize)sizeThatFitsWidth:(double)width viewElement:(id)element context:(id)context
 {
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
@@ -86,25 +86,25 @@
   return result;
 }
 
-- (void)reloadWithViewElement:(id)a3 width:(double)a4 context:(id)a5
+- (void)reloadWithViewElement:(id)element width:(double)width context:(id)context
 {
-  v8 = a5;
+  contextCopy = context;
   viewElementViews = self->_viewElementViews;
-  v10 = a3;
+  elementCopy = element;
   [(NSMapTable *)viewElementViews removeAllObjects];
-  v11 = [[SUUITabularLockupLayout alloc] initWithLockup:v10 context:v8];
+  v11 = [[SUUITabularLockupLayout alloc] initWithLockup:elementCopy context:contextCopy];
 
   layout = self->_layout;
   self->_layout = v11;
 
-  [(SUUITabularLockupLayout *)self->_layout sizeColumnsToFitWidth:v8 context:a4];
+  [(SUUITabularLockupLayout *)self->_layout sizeColumnsToFitWidth:contextCopy context:width];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __61__SUUITabularLockupView_reloadWithViewElement_width_context___block_invoke;
   v14[3] = &unk_2798F7740;
   v14[4] = self;
-  v15 = v8;
-  v13 = v8;
+  v15 = contextCopy;
+  v13 = contextCopy;
   [(SUUIViewReuseView *)self modifyUsingBlock:v14];
 }
 
@@ -179,8 +179,8 @@ void __61__SUUITabularLockupView_reloadWithViewElement_width_context___block_inv
   v11 = 0u;
   v8 = 0u;
   v9 = 0u;
-  v3 = [(SUUITabularLockupLayout *)self->_layout columns];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+  columns = [(SUUITabularLockupLayout *)self->_layout columns];
+  v4 = [columns countByEnumeratingWithState:&v8 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -192,53 +192,53 @@ void __61__SUUITabularLockupView_reloadWithViewElement_width_context___block_inv
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(columns);
         }
 
         [(SUUITabularLockupView *)self _layoutSubviewsForColumn:*(*(&v8 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v13 count:16];
+      v5 = [columns countByEnumeratingWithState:&v8 objects:v13 count:16];
     }
 
     while (v5);
   }
 }
 
-+ (id)_attributedStringForLabel:(id)a3 context:(id)a4
++ (id)_attributedStringForLabel:(id)label context:(id)context
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [SUUITabularLockupLayout fontForLabelViewElement:v5 context:v6];
-  v8 = [v5 style];
-  v9 = [v6 tintColor];
+  labelCopy = label;
+  contextCopy = context;
+  v7 = [SUUITabularLockupLayout fontForLabelViewElement:labelCopy context:contextCopy];
+  style = [labelCopy style];
+  tintColor = [contextCopy tintColor];
 
-  v10 = SUUIViewElementPlainColorWithStyle(v8, v9);
+  blackColor = SUUIViewElementPlainColorWithStyle(style, tintColor);
 
-  if (!v10)
+  if (!blackColor)
   {
-    v10 = [MEMORY[0x277D75348] blackColor];
+    blackColor = [MEMORY[0x277D75348] blackColor];
   }
 
-  v11 = [v5 text];
-  v12 = [v5 style];
-  v13 = [v11 attributedStringWithDefaultFont:v7 foregroundColor:v10 style:v12];
+  text = [labelCopy text];
+  style2 = [labelCopy style];
+  v13 = [text attributedStringWithDefaultFont:v7 foregroundColor:blackColor style:style2];
 
   return v13;
 }
 
-+ (void)_requestLayoutForViewElements:(id)a3 width:(double)a4 context:(id)a5
++ (void)_requestLayoutForViewElements:(id)elements width:(double)width context:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [v8 labelLayoutCache];
+  elementsCopy = elements;
+  contextCopy = context;
+  labelLayoutCache = [contextCopy labelLayoutCache];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v7;
+  v10 = elementsCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -257,9 +257,9 @@ void __61__SUUITabularLockupView_reloadWithViewElement_width_context___block_inv
         if ([v15 elementType] == 138)
         {
           v16 = v15;
-          v17 = [v8 maxWidthForElement:v16 withDefaultWidth:a4];
-          v18 = [a1 _attributedStringForLabel:v16 context:v8];
-          [v9 requestLayoutForLabel:v16 attributedString:v18 width:v17];
+          v17 = [contextCopy maxWidthForElement:v16 withDefaultWidth:width];
+          v18 = [self _attributedStringForLabel:v16 context:contextCopy];
+          [labelLayoutCache requestLayoutForLabel:v16 attributedString:v18 width:v17];
         }
       }
 
@@ -270,24 +270,24 @@ void __61__SUUITabularLockupView_reloadWithViewElement_width_context___block_inv
   }
 }
 
-- (void)_layoutSubviewsForColumn:(id)a3
+- (void)_layoutSubviewsForColumn:(id)column
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
+  columnCopy = column;
+  identifier = [columnCopy identifier];
   [(SUUITabularLockupView *)self bounds];
   v30 = v7;
   v31 = v6;
   v28 = v9;
   v29 = v8;
   [(SUUITabularLockupView *)self bounds];
-  [(SUUITabularLockupView *)self _sizeViewsForColumn:v4 toFitWidth:CGRectGetWidth(v39)];
+  [(SUUITabularLockupView *)self _sizeViewsForColumn:columnCopy toFitWidth:CGRectGetWidth(v39)];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v10 = [v4 childViewElements];
-  v11 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
+  childViewElements = [columnCopy childViewElements];
+  v11 = [childViewElements countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v11)
   {
     v12 = v11;
@@ -299,7 +299,7 @@ void __61__SUUITabularLockupView_reloadWithViewElement_width_context___block_inv
       {
         if (*v34 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(childViewElements);
         }
 
         v15 = [(NSMapTable *)self->_viewElementViews objectForKey:*(*(&v33 + 1) + 8 * v14)];
@@ -309,7 +309,7 @@ void __61__SUUITabularLockupView_reloadWithViewElement_width_context___block_inv
         v21 = v20;
         v23 = v22;
         rect = v18;
-        switch(v5)
+        switch(identifier)
         {
           case 2:
             v42.origin.y = v30;
@@ -356,30 +356,30 @@ void __61__SUUITabularLockupView_reloadWithViewElement_width_context___block_inv
       }
 
       while (v12 != v14);
-      v12 = [v10 countByEnumeratingWithState:&v33 objects:v37 count:16];
+      v12 = [childViewElements countByEnumeratingWithState:&v33 objects:v37 count:16];
     }
 
     while (v12);
   }
 }
 
-- (CGSize)_sizeViewsForColumn:(id)a3 toFitWidth:(double)a4
+- (CGSize)_sizeViewsForColumn:(id)column toFitWidth:(double)width
 {
-  v6 = a3;
+  columnCopy = column;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3010000000;
   v16 = "";
   v17 = *MEMORY[0x277CBF3A8];
-  v7 = [v6 childViewElements];
+  childViewElements = [columnCopy childViewElements];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __56__SUUITabularLockupView__sizeViewsForColumn_toFitWidth___block_invoke;
   v12[3] = &unk_2798F7768;
-  *&v12[6] = a4;
+  *&v12[6] = width;
   v12[4] = self;
   v12[5] = &v13;
-  [v7 enumerateObjectsUsingBlock:v12];
+  [childViewElements enumerateObjectsUsingBlock:v12];
   v8 = v14[4];
   v9 = v14[5];
 

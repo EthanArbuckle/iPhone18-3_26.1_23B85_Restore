@@ -1,13 +1,13 @@
 @interface MTCoreDataKeyRequestStorage
-- (BOOL)keyExistsInStorageFor:(int64_t)a3;
-- (BOOL)saveKeyDataFor:(id)a3;
+- (BOOL)keyExistsInStorageFor:(int64_t)for;
+- (BOOL)saveKeyDataFor:(id)for;
 - (MTCoreDataKeyRequestStorage)init;
-- (id)retrieveKeyDataFor:(id)a3;
-- (void)markOfflineKeyFor:(int64_t)a3 pendingDeletion:(BOOL)a4;
-- (void)removeAllKeyDataWithCompletion:(id)a3;
-- (void)removeKeyDataFor:(id)a3;
-- (void)removeKeyDataForStoreTrackID:(int64_t)a3;
-- (void)saveKeyDataWithKeyIdentifier:(id)a3 storeTrackID:(int64_t)a4 keyData:(id)a5 renewalDate:(id)a6 dsid:(int64_t)a7 responseQueue:(id)a8 completion:(id)a9;
+- (id)retrieveKeyDataFor:(id)for;
+- (void)markOfflineKeyFor:(int64_t)for pendingDeletion:(BOOL)deletion;
+- (void)removeAllKeyDataWithCompletion:(id)completion;
+- (void)removeKeyDataFor:(id)for;
+- (void)removeKeyDataForStoreTrackID:(int64_t)d;
+- (void)saveKeyDataWithKeyIdentifier:(id)identifier storeTrackID:(int64_t)d keyData:(id)data renewalDate:(id)date dsid:(int64_t)dsid responseQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation MTCoreDataKeyRequestStorage
@@ -19,90 +19,90 @@
   return [(MTCoreDataKeyRequestStorage *)&v3 init];
 }
 
-- (BOOL)saveKeyDataFor:(id)a3
+- (BOOL)saveKeyDataFor:(id)for
 {
-  v3 = a3;
-  v5 = a3;
-  v6 = self;
-  LOBYTE(v3) = sub_1D8FF34C8(v3);
+  forCopy = for;
+  forCopy2 = for;
+  selfCopy = self;
+  LOBYTE(forCopy) = sub_1D8FF34C8(forCopy);
 
-  return v3 & 1;
+  return forCopy & 1;
 }
 
-- (void)saveKeyDataWithKeyIdentifier:(id)a3 storeTrackID:(int64_t)a4 keyData:(id)a5 renewalDate:(id)a6 dsid:(int64_t)a7 responseQueue:(id)a8 completion:(id)a9
+- (void)saveKeyDataWithKeyIdentifier:(id)identifier storeTrackID:(int64_t)d keyData:(id)data renewalDate:(id)date dsid:(int64_t)dsid responseQueue:(id)queue completion:(id)completion
 {
-  v29 = a4;
-  v30 = a7;
+  dCopy = d;
+  dsidCopy = dsid;
   v13 = sub_1D9176E3C();
   v31 = *(v13 - 8);
   v32 = v13;
   v14 = *(v31 + 64);
   MEMORY[0x1EEE9AC00](v13);
-  v16 = &v29 - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v17 = _Block_copy(a9);
+  v16 = &dCopy - ((v15 + 15) & 0xFFFFFFFFFFFFFFF0);
+  v17 = _Block_copy(completion);
   v18 = sub_1D917820C();
   v20 = v19;
-  v21 = a5;
-  v22 = a6;
-  v23 = a8;
-  v24 = self;
+  dataCopy = data;
+  dateCopy = date;
+  queueCopy = queue;
+  selfCopy = self;
   v25 = sub_1D9176C8C();
   v27 = v26;
 
   sub_1D9176DFC();
   v28 = swift_allocObject();
   *(v28 + 16) = v17;
-  sub_1D8FF3F9C(v18, v20, v29, v25, v27, v16, v30, v23, sub_1D8FF7E60, v28);
+  sub_1D8FF3F9C(v18, v20, dCopy, v25, v27, v16, dsidCopy, queueCopy, sub_1D8FF7E60, v28);
 
   sub_1D8D7567C(v25, v27);
 
   (*(v31 + 8))(v16, v32);
 }
 
-- (void)removeKeyDataFor:(id)a3
+- (void)removeKeyDataFor:(id)for
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D8FF47A4(a3);
+  forCopy = for;
+  selfCopy = self;
+  sub_1D8FF47A4(for);
 }
 
-- (void)removeKeyDataForStoreTrackID:(int64_t)a3
+- (void)removeKeyDataForStoreTrackID:(int64_t)d
 {
-  v4 = self;
-  sub_1D8FF4C38(a3);
+  selfCopy = self;
+  sub_1D8FF4C38(d);
 }
 
-- (void)removeAllKeyDataWithCompletion:(id)a3
+- (void)removeAllKeyDataWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_1D8FF7AC4(sub_1D8D998AC, v5);
 }
 
-- (id)retrieveKeyDataFor:(id)a3
+- (id)retrieveKeyDataFor:(id)for
 {
-  v5 = a3;
-  v6 = self;
-  sub_1D8FF5368(a3);
+  forCopy = for;
+  selfCopy = self;
+  sub_1D8FF5368(for);
   v8 = v7;
 
   return v8;
 }
 
-- (BOOL)keyExistsInStorageFor:(int64_t)a3
+- (BOOL)keyExistsInStorageFor:(int64_t)for
 {
-  v4 = self;
-  LOBYTE(a3) = sub_1D8FF5EA0(a3);
+  selfCopy = self;
+  LOBYTE(for) = sub_1D8FF5EA0(for);
 
-  return a3 & 1;
+  return for & 1;
 }
 
-- (void)markOfflineKeyFor:(int64_t)a3 pendingDeletion:(BOOL)a4
+- (void)markOfflineKeyFor:(int64_t)for pendingDeletion:(BOOL)deletion
 {
-  v6 = self;
-  sub_1D8FF6090(a3, a4);
+  selfCopy = self;
+  sub_1D8FF6090(for, deletion);
 }
 
 @end

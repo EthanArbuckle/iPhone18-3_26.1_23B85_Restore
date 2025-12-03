@@ -1,57 +1,57 @@
 @interface PKCloudStoreRecordFetchTask
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)lastErrorIsSetupAssistantNotComplete;
-- (PKCloudStoreRecordFetchTask)initWithCloudStoreZone:(id)a3 type:(unint64_t)a4;
-- (PKCloudStoreRecordFetchTask)initWithCoder:(id)a3;
-- (PKCloudStoreRecordFetchTask)initWithTransactionSourceIdentifier:(id)a3 type:(unint64_t)a4;
-- (PKCloudStoreRecordFetchTask)initWithType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKCloudStoreRecordFetchTask)initWithCloudStoreZone:(id)zone type:(unint64_t)type;
+- (PKCloudStoreRecordFetchTask)initWithCoder:(id)coder;
+- (PKCloudStoreRecordFetchTask)initWithTransactionSourceIdentifier:(id)identifier type:(unint64_t)type;
+- (PKCloudStoreRecordFetchTask)initWithType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (id)identifier;
 - (unint64_t)hash;
-- (void)completeTaskWithError:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)completeTaskWithError:(id)error;
+- (void)encodeWithCoder:(id)coder;
 - (void)queueTask;
 - (void)startTask;
 @end
 
 @implementation PKCloudStoreRecordFetchTask
 
-- (PKCloudStoreRecordFetchTask)initWithType:(unint64_t)a3
+- (PKCloudStoreRecordFetchTask)initWithType:(unint64_t)type
 {
   v5.receiver = self;
   v5.super_class = PKCloudStoreRecordFetchTask;
   result = [(PKCloudStoreRecordFetchTask *)&v5 init];
   if (result)
   {
-    result->_type = a3;
+    result->_type = type;
   }
 
   return result;
 }
 
-- (PKCloudStoreRecordFetchTask)initWithTransactionSourceIdentifier:(id)a3 type:(unint64_t)a4
+- (PKCloudStoreRecordFetchTask)initWithTransactionSourceIdentifier:(id)identifier type:(unint64_t)type
 {
-  v7 = a3;
-  v8 = [(PKCloudStoreRecordFetchTask *)self initWithType:a4];
+  identifierCopy = identifier;
+  v8 = [(PKCloudStoreRecordFetchTask *)self initWithType:type];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_transactionSourceIdentifier, a3);
+    objc_storeStrong(&v8->_transactionSourceIdentifier, identifier);
   }
 
   return v9;
 }
 
-- (PKCloudStoreRecordFetchTask)initWithCloudStoreZone:(id)a3 type:(unint64_t)a4
+- (PKCloudStoreRecordFetchTask)initWithCloudStoreZone:(id)zone type:(unint64_t)type
 {
-  v7 = a3;
-  v8 = [(PKCloudStoreRecordFetchTask *)self initWithType:a4];
+  zoneCopy = zone;
+  v8 = [(PKCloudStoreRecordFetchTask *)self initWithType:type];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_cloudStoreZone, a3);
+    objc_storeStrong(&v8->_cloudStoreZone, zone);
   }
 
   return v9;
@@ -62,7 +62,7 @@
   transactionSourceIdentifier = self->_transactionSourceIdentifier;
   if (transactionSourceIdentifier)
   {
-    v3 = transactionSourceIdentifier;
+    zoneName = transactionSourceIdentifier;
   }
 
   else
@@ -70,23 +70,23 @@
     cloudStoreZone = self->_cloudStoreZone;
     if (cloudStoreZone)
     {
-      v3 = [(PKCloudStoreZone *)cloudStoreZone zoneName];
+      zoneName = [(PKCloudStoreZone *)cloudStoreZone zoneName];
     }
 
     else
     {
-      v3 = &stru_1F227FD28;
+      zoneName = &stru_1F227FD28;
     }
   }
 
-  return v3;
+  return zoneName;
 }
 
 - (void)startTask
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   startDate = self->_startDate;
-  self->_startDate = v3;
+  self->_startDate = date;
 
   endDate = self->_endDate;
   self->_endDate = 0;
@@ -102,9 +102,9 @@
 
 - (void)queueTask
 {
-  v3 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   startDate = self->_startDate;
-  self->_startDate = v3;
+  self->_startDate = date;
 
   endDate = self->_endDate;
   self->_endDate = 0;
@@ -118,23 +118,23 @@
   self->_status = 4;
 }
 
-- (void)completeTaskWithError:(id)a3
+- (void)completeTaskWithError:(id)error
 {
-  v13 = a3;
-  v5 = [MEMORY[0x1E695DF00] date];
+  errorCopy = error;
+  date = [MEMORY[0x1E695DF00] date];
   endDate = self->_endDate;
-  self->_endDate = v5;
+  self->_endDate = date;
 
   v7 = 2;
-  if (v13)
+  if (errorCopy)
   {
     v7 = 3;
   }
 
   self->_status = v7;
-  objc_storeStrong(&self->_lastError, a3);
-  v8 = [(PKCloudStoreRecordFetchTask *)self lastErrorIsSetupAssistantNotComplete];
-  if (self->_status != 3 || v8)
+  objc_storeStrong(&self->_lastError, error);
+  lastErrorIsSetupAssistantNotComplete = [(PKCloudStoreRecordFetchTask *)self lastErrorIsSetupAssistantNotComplete];
+  if (self->_status != 3 || lastErrorIsSetupAssistantNotComplete)
   {
     v11 = 0;
     self->_backoffLevel = 0;
@@ -166,11 +166,11 @@
   lastError = self->_lastError;
   if (lastError)
   {
-    v4 = [(NSError *)lastError domain];
-    v5 = v4;
-    if (v4 != @"PKPassKitErrorDomain")
+    domain = [(NSError *)lastError domain];
+    v5 = domain;
+    if (domain != @"PKPassKitErrorDomain")
     {
-      if (v4)
+      if (domain)
       {
         v6 = @"PKPassKitErrorDomain" == 0;
       }
@@ -186,7 +186,7 @@
 
       else
       {
-        v8 = [(__CFString *)v4 isEqualToString:@"PKPassKitErrorDomain"];
+        v8 = [(__CFString *)domain isEqualToString:@"PKPassKitErrorDomain"];
 
         if (v8)
         {
@@ -237,8 +237,8 @@ LABEL_14:
 
   [v4 setObject:v8 forKeyedSubscript:@"status"];
   [v4 setObject:self->_transactionSourceIdentifier forKeyedSubscript:@"transactionSourceIdentifier"];
-  v9 = [(PKCloudStoreZone *)self->_cloudStoreZone zoneName];
-  [v4 setObject:v9 forKeyedSubscript:@"cloudStoreZone"];
+  zoneName = [(PKCloudStoreZone *)self->_cloudStoreZone zoneName];
+  [v4 setObject:zoneName forKeyedSubscript:@"cloudStoreZone"];
 
   v10 = [(NSDate *)self->_startDate description];
   [v4 setObject:v10 forKeyedSubscript:@"startDate"];
@@ -260,38 +260,38 @@ LABEL_14:
   return v15;
 }
 
-- (PKCloudStoreRecordFetchTask)initWithCoder:(id)a3
+- (PKCloudStoreRecordFetchTask)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKCloudStoreRecordFetchTask;
   v5 = [(PKCloudStoreRecordFetchTask *)&v19 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v5->_status = [v4 decodeIntegerForKey:@"status"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v5->_status = [coderCopy decodeIntegerForKey:@"status"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"transactionSourceIdentifier"];
     transactionSourceIdentifier = v5->_transactionSourceIdentifier;
     v5->_transactionSourceIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"cloudStoreZone"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"cloudStoreZone"];
     cloudStoreZone = v5->_cloudStoreZone;
     v5->_cloudStoreZone = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"startDate"];
     startDate = v5->_startDate;
     v5->_startDate = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"endDate"];
     endDate = v5->_endDate;
     v5->_endDate = v12;
 
-    v5->_backoffLevel = [v4 decodeIntegerForKey:@"backoffLevel"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"nextPossibleFetchDate"];
+    v5->_backoffLevel = [coderCopy decodeIntegerForKey:@"backoffLevel"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"nextPossibleFetchDate"];
     nextPossibleFetchDate = v5->_nextPossibleFetchDate;
     v5->_nextPossibleFetchDate = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastError"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastError"];
     lastError = v5->_lastError;
     v5->_lastError = v16;
   }
@@ -299,60 +299,60 @@ LABEL_14:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeInteger:self->_status forKey:@"status"];
-  [v5 encodeObject:self->_transactionSourceIdentifier forKey:@"transactionSourceIdentifier"];
-  [v5 encodeObject:self->_cloudStoreZone forKey:@"cloudStoreZone"];
-  [v5 encodeObject:self->_startDate forKey:@"startDate"];
-  [v5 encodeObject:self->_endDate forKey:@"endDate"];
-  [v5 encodeInteger:self->_backoffLevel forKey:@"backoffLevel"];
-  [v5 encodeObject:self->_nextPossibleFetchDate forKey:@"nextPossibleFetchDate"];
-  [v5 encodeObject:self->_lastError forKey:@"lastError"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeInteger:self->_status forKey:@"status"];
+  [coderCopy encodeObject:self->_transactionSourceIdentifier forKey:@"transactionSourceIdentifier"];
+  [coderCopy encodeObject:self->_cloudStoreZone forKey:@"cloudStoreZone"];
+  [coderCopy encodeObject:self->_startDate forKey:@"startDate"];
+  [coderCopy encodeObject:self->_endDate forKey:@"endDate"];
+  [coderCopy encodeInteger:self->_backoffLevel forKey:@"backoffLevel"];
+  [coderCopy encodeObject:self->_nextPossibleFetchDate forKey:@"nextPossibleFetchDate"];
+  [coderCopy encodeObject:self->_lastError forKey:@"lastError"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKCloudStoreRecordFetchTask allocWithZone:](PKCloudStoreRecordFetchTask init];
   v5->_type = self->_type;
   v5->_status = self->_status;
-  v6 = [(NSString *)self->_transactionSourceIdentifier copyWithZone:a3];
+  v6 = [(NSString *)self->_transactionSourceIdentifier copyWithZone:zone];
   transactionSourceIdentifier = v5->_transactionSourceIdentifier;
   v5->_transactionSourceIdentifier = v6;
 
-  v8 = [(PKCloudStoreZone *)self->_cloudStoreZone copyWithZone:a3];
+  v8 = [(PKCloudStoreZone *)self->_cloudStoreZone copyWithZone:zone];
   cloudStoreZone = v5->_cloudStoreZone;
   v5->_cloudStoreZone = v8;
 
-  v10 = [(NSDate *)self->_startDate copyWithZone:a3];
+  v10 = [(NSDate *)self->_startDate copyWithZone:zone];
   startDate = v5->_startDate;
   v5->_startDate = v10;
 
-  v12 = [(NSDate *)self->_endDate copyWithZone:a3];
+  v12 = [(NSDate *)self->_endDate copyWithZone:zone];
   endDate = v5->_endDate;
   v5->_endDate = v12;
 
   v5->_backoffLevel = self->_backoffLevel;
-  v14 = [(NSDate *)self->_nextPossibleFetchDate copyWithZone:a3];
+  v14 = [(NSDate *)self->_nextPossibleFetchDate copyWithZone:zone];
   nextPossibleFetchDate = v5->_nextPossibleFetchDate;
   v5->_nextPossibleFetchDate = v14;
 
-  v16 = [(NSError *)self->_lastError copyWithZone:a3];
+  v16 = [(NSError *)self->_lastError copyWithZone:zone];
   lastError = v5->_lastError;
   v5->_lastError = v16;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
   }
 
   else
@@ -480,14 +480,14 @@ LABEL_38:
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  [v3 safelyAddObject:self->_transactionSourceIdentifier];
-  [v3 safelyAddObject:self->_cloudStoreZone];
-  [v3 safelyAddObject:self->_startDate];
-  [v3 safelyAddObject:self->_endDate];
-  [v3 safelyAddObject:self->_lastError];
-  [v3 safelyAddObject:self->_nextPossibleFetchDate];
-  v4 = PKCombinedHash(17, v3);
+  array = [MEMORY[0x1E695DF70] array];
+  [array safelyAddObject:self->_transactionSourceIdentifier];
+  [array safelyAddObject:self->_cloudStoreZone];
+  [array safelyAddObject:self->_startDate];
+  [array safelyAddObject:self->_endDate];
+  [array safelyAddObject:self->_lastError];
+  [array safelyAddObject:self->_nextPossibleFetchDate];
+  v4 = PKCombinedHash(17, array);
   v5 = self->_type - v4 + 32 * v4;
   v6 = self->_status - v5 + 32 * v5;
   v7 = self->_backoffLevel - v6 + 32 * v6;
@@ -531,8 +531,8 @@ LABEL_38:
   cloudStoreZone = self->_cloudStoreZone;
   if (cloudStoreZone)
   {
-    v10 = [(PKCloudStoreZone *)cloudStoreZone zoneName];
-    [v4 appendFormat:@"cloudStoreZone: '%@'; ", v10];
+    zoneName = [(PKCloudStoreZone *)cloudStoreZone zoneName];
+    [v4 appendFormat:@"cloudStoreZone: '%@'; ", zoneName];
   }
 
   [v4 appendFormat:@"startDate: '%@'; ", self->_startDate];

@@ -3,32 +3,32 @@
 - (BOOL)isEdited;
 - (NSArray)orderedCorrectableItems;
 - (NSString)localizedTitle;
-- (id)_createAndObserveStringOfKind:(int64_t)a3 originalValue:(id)a4;
-- (id)_initWithMapItem:(id)a3;
-- (id)_initWithStreet:(id)a3 subPremise:(id)a4 city:(id)a5 state:(id)a6 zipCode:(id)a7 country:(id)a8 addressFormattingLocaleIdentifier:(id)a9;
+- (id)_createAndObserveStringOfKind:(int64_t)kind originalValue:(id)value;
+- (id)_initWithMapItem:(id)item;
+- (id)_initWithStreet:(id)street subPremise:(id)premise city:(id)city state:(id)state zipCode:(id)code country:(id)country addressFormattingLocaleIdentifier:(id)identifier;
 - (id)_structuredAddress;
 - (void)_invokeChangeHandlers;
 - (void)_updateFreeformAddressWithStructuredChange;
-- (void)addObserver:(id)a3 changeHandler:(id)a4;
+- (void)addObserver:(id)observer changeHandler:(id)handler;
 - (void)revertCorrections;
-- (void)setAddressFormattingLocaleIdentifier:(id)a3;
-- (void)updateFreeformAddressFromMapItem:(id)a3;
+- (void)setAddressFormattingLocaleIdentifier:(id)identifier;
+- (void)updateFreeformAddressFromMapItem:(id)item;
 @end
 
 @implementation RAPPlaceCorrectableAddress
 
-- (void)updateFreeformAddressFromMapItem:(id)a3
+- (void)updateFreeformAddressFromMapItem:(id)item
 {
-  v5 = [a3 _fullAddressWithMultiline:1];
-  v4 = [(RAPPlaceCorrectableAddress *)self freeformAddress];
-  [v4 setValue:v5];
+  v5 = [item _fullAddressWithMultiline:1];
+  freeformAddress = [(RAPPlaceCorrectableAddress *)self freeformAddress];
+  [freeformAddress setValue:v5];
 }
 
-- (void)setAddressFormattingLocaleIdentifier:(id)a3
+- (void)setAddressFormattingLocaleIdentifier:(id)identifier
 {
-  if (self->_addressFormattingLocaleIdentifier != a3)
+  if (self->_addressFormattingLocaleIdentifier != identifier)
   {
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     addressFormattingLocaleIdentifier = self->_addressFormattingLocaleIdentifier;
     self->_addressFormattingLocaleIdentifier = v5;
 
@@ -42,8 +42,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(RAPPlaceCorrectableAddress *)self orderedCorrectableItems];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  orderedCorrectableItems = [(RAPPlaceCorrectableAddress *)self orderedCorrectableItems];
+  v3 = [orderedCorrectableItems countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -53,7 +53,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(orderedCorrectableItems);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) isEdited])
@@ -63,7 +63,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [orderedCorrectableItems countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -84,8 +84,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(RAPPlaceCorrectableAddress *)self orderedCorrectableItems];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  orderedCorrectableItems = [(RAPPlaceCorrectableAddress *)self orderedCorrectableItems];
+  v3 = [orderedCorrectableItems countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -97,7 +97,7 @@ LABEL_11:
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(orderedCorrectableItems);
         }
 
         [*(*(&v7 + 1) + 8 * v6) revertCorrections];
@@ -105,7 +105,7 @@ LABEL_11:
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [orderedCorrectableItems countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -114,10 +114,10 @@ LABEL_11:
 
 - (NSString)localizedTitle
 {
-  v2 = [(RAPPlaceCorrectableAddress *)self kind];
-  if (v2 <= 0x15 && ((0x30FFFFu >> v2) & 1) != 0)
+  kind = [(RAPPlaceCorrectableAddress *)self kind];
+  if (kind <= 0x15 && ((0x30FFFFu >> kind) & 1) != 0)
   {
-    v3 = off_101624FB0[v2];
+    v3 = off_101624FB0[kind];
     v4 = +[NSBundle mainBundle];
     v5 = [v4 localizedStringForKey:v3 value:@"localized string not found" table:0];
   }
@@ -130,10 +130,10 @@ LABEL_11:
   return v5;
 }
 
-- (id)_createAndObserveStringOfKind:(int64_t)a3 originalValue:(id)a4
+- (id)_createAndObserveStringOfKind:(int64_t)kind originalValue:(id)value
 {
-  v6 = a4;
-  v7 = [[RAPPlaceCorrectableString alloc] initWithKind:a3 originalValue:v6];
+  valueCopy = value;
+  v7 = [[RAPPlaceCorrectableString alloc] initWithKind:kind originalValue:valueCopy];
 
   [(RAPPlaceCorrectableString *)v7 addObserver:self changeHandler:&stru_101624F50];
 
@@ -143,23 +143,23 @@ LABEL_11:
 - (id)_structuredAddress
 {
   v3 = objc_alloc_init(CNMutablePostalAddress);
-  v4 = [(RAPPlaceCorrectableString *)self->_street value];
-  [v3 setStreet:v4];
+  value = [(RAPPlaceCorrectableString *)self->_street value];
+  [v3 setStreet:value];
 
-  v5 = [(RAPPlaceCorrectableString *)self->_subPremise value];
-  [v3 setSubAdministrativeArea:v5];
+  value2 = [(RAPPlaceCorrectableString *)self->_subPremise value];
+  [v3 setSubAdministrativeArea:value2];
 
-  v6 = [(RAPPlaceCorrectableString *)self->_city value];
-  [v3 setCity:v6];
+  value3 = [(RAPPlaceCorrectableString *)self->_city value];
+  [v3 setCity:value3];
 
-  v7 = [(RAPPlaceCorrectableString *)self->_state value];
-  [v3 setState:v7];
+  value4 = [(RAPPlaceCorrectableString *)self->_state value];
+  [v3 setState:value4];
 
-  v8 = [(RAPPlaceCorrectableString *)self->_zipCode value];
-  [v3 setPostalCode:v8];
+  value5 = [(RAPPlaceCorrectableString *)self->_zipCode value];
+  [v3 setPostalCode:value5];
 
-  v9 = [(RAPPlaceCorrectableString *)self->_country value];
-  [v3 setCountry:v9];
+  value6 = [(RAPPlaceCorrectableString *)self->_country value];
+  [v3 setCountry:value6];
 
   [v3 setISOCountryCode:self->_addressFormattingLocaleIdentifier];
   v10 = objc_alloc_init(CNPostalAddressFormatter);
@@ -170,8 +170,8 @@ LABEL_11:
 
 - (void)_updateFreeformAddressWithStructuredChange
 {
-  v3 = [(RAPPlaceCorrectableAddress *)self _structuredAddress];
-  [(RAPPlaceCorrectableString *)self->_freeformAddress setValue:v3];
+  _structuredAddress = [(RAPPlaceCorrectableAddress *)self _structuredAddress];
+  [(RAPPlaceCorrectableString *)self->_freeformAddress setValue:_structuredAddress];
 }
 
 - (NSArray)orderedCorrectableItems
@@ -197,15 +197,15 @@ LABEL_11:
   return orderedCorrectableItems;
 }
 
-- (id)_initWithStreet:(id)a3 subPremise:(id)a4 city:(id)a5 state:(id)a6 zipCode:(id)a7 country:(id)a8 addressFormattingLocaleIdentifier:(id)a9
+- (id)_initWithStreet:(id)street subPremise:(id)premise city:(id)city state:(id)state zipCode:(id)code country:(id)country addressFormattingLocaleIdentifier:(id)identifier
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  streetCopy = street;
+  premiseCopy = premise;
+  cityCopy = city;
+  stateCopy = state;
+  codeCopy = code;
+  countryCopy = country;
+  identifierCopy = identifier;
   v56.receiver = self;
   v56.super_class = RAPPlaceCorrectableAddress;
   v22 = [(RAPPlaceCorrectableAddress *)&v56 init];
@@ -217,12 +217,12 @@ LABEL_11:
     v54[1] = 3221225472;
     v54[2] = sub_1006634F0;
     v54[3] = &unk_101624F30;
-    v52 = v18;
-    v24 = v17;
-    v25 = v15;
+    v52 = stateCopy;
+    v24 = cityCopy;
+    v25 = streetCopy;
     v26 = v22;
     v55 = v26;
-    v53 = v16;
+    v53 = premiseCopy;
     v27 = objc_retainBlock(v54);
     v28 = (v27[2])(v27, 8, v25);
     street = v26->_street;
@@ -240,16 +240,16 @@ LABEL_11:
     state = v26->_state;
     v26->_state = v34;
 
-    v36 = (v27[2])(v27, 13, v19);
+    v36 = (v27[2])(v27, 13, codeCopy);
     zipCode = v26->_zipCode;
     v26->_zipCode = v36;
 
-    v38 = (v27[2])(v27, 14, v20);
+    v38 = (v27[2])(v27, 14, countryCopy);
     country = v26->_country;
     v26->_country = v38;
 
-    v40 = [(RAPPlaceCorrectableAddress *)v26 _structuredAddress];
-    v41 = (v27[2])(v27, 16, v40);
+    _structuredAddress = [(RAPPlaceCorrectableAddress *)v26 _structuredAddress];
+    v41 = (v27[2])(v27, 16, _structuredAddress);
     freeformAddress = v26->_freeformAddress;
     v26->_freeformAddress = v41;
 
@@ -265,28 +265,28 @@ LABEL_11:
     floorNumber = v26->_floorNumber;
     v26->_floorNumber = v47;
 
-    v49 = [v21 copy];
+    v49 = [identifierCopy copy];
     addressFormattingLocaleIdentifier = v26->_addressFormattingLocaleIdentifier;
     v26->_addressFormattingLocaleIdentifier = v49;
-    v15 = v25;
-    v17 = v24;
-    v18 = v52;
+    streetCopy = v25;
+    cityCopy = v24;
+    stateCopy = v52;
 
-    v16 = v53;
+    premiseCopy = v53;
   }
 
   return v23;
 }
 
-- (id)_initWithMapItem:(id)a3
+- (id)_initWithMapItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [(RAPPlaceCorrectableAddress *)self _initWithStreet:0 subPremise:0 city:0 state:0 zipCode:0 country:0 addressFormattingLocaleIdentifier:0];
   if (v5)
   {
-    v6 = [v4 _geoMapItem];
-    v7 = [v6 addressObject];
-    v8 = [v7 fullAddressWithMultiline:1];
+    _geoMapItem = [itemCopy _geoMapItem];
+    addressObject = [_geoMapItem addressObject];
+    v8 = [addressObject fullAddressWithMultiline:1];
 
     v9 = [v5 _createAndObserveStringOfKind:16 originalValue:v8];
     v10 = v5[11];
@@ -302,8 +302,8 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMapTable *)self->_observers keyEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  keyEnumerator = [(NSMapTable *)self->_observers keyEnumerator];
+  v4 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -314,7 +314,7 @@ LABEL_11:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(keyEnumerator);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
@@ -322,17 +322,17 @@ LABEL_11:
         (v9)[2](v9, self, v8);
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [keyEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)addObserver:(id)a3 changeHandler:(id)a4
+- (void)addObserver:(id)observer changeHandler:(id)handler
 {
-  v11 = a3;
-  v6 = a4;
+  observerCopy = observer;
+  handlerCopy = handler;
   observers = self->_observers;
   if (!observers)
   {
@@ -343,8 +343,8 @@ LABEL_11:
     observers = self->_observers;
   }
 
-  v10 = [v6 copy];
-  [(NSMapTable *)observers setObject:v10 forKey:v11];
+  v10 = [handlerCopy copy];
+  [(NSMapTable *)observers setObject:v10 forKey:observerCopy];
 }
 
 + (id)emptyCorrectableAddress

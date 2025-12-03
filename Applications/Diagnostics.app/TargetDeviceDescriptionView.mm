@@ -1,11 +1,11 @@
 @interface TargetDeviceDescriptionView
-- (_TtC11Diagnostics27TargetDeviceDescriptionView)initWithCoder:(id)a3;
-- (_TtC11Diagnostics27TargetDeviceDescriptionView)initWithFrame:(CGRect)a3;
+- (_TtC11Diagnostics27TargetDeviceDescriptionView)initWithCoder:(id)coder;
+- (_TtC11Diagnostics27TargetDeviceDescriptionView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TargetDeviceDescriptionView
 
-- (_TtC11Diagnostics27TargetDeviceDescriptionView)initWithCoder:(id)a3
+- (_TtC11Diagnostics27TargetDeviceDescriptionView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC11Diagnostics27TargetDeviceDescriptionView_device;
   v5 = type metadata accessor for TargetDevice();
@@ -18,7 +18,7 @@
   return result;
 }
 
-- (_TtC11Diagnostics27TargetDeviceDescriptionView)initWithFrame:(CGRect)a3
+- (_TtC11Diagnostics27TargetDeviceDescriptionView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

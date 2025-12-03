@@ -1,14 +1,14 @@
 @interface BKDeviceTouchID
-+ (BOOL)deviceAvailableWithFailure:(BOOL *)a3;
-- (id)createEnrollOperationWithError:(id *)a3;
-- (id)createExtendEnrollTouchIDOperationWithError:(id *)a3;
-- (id)createMatchOperationWithError:(id *)a3;
-- (id)createPresenceDetectOperationWithError:(id *)a3;
++ (BOOL)deviceAvailableWithFailure:(BOOL *)failure;
+- (id)createEnrollOperationWithError:(id *)error;
+- (id)createExtendEnrollTouchIDOperationWithError:(id *)error;
+- (id)createMatchOperationWithError:(id *)error;
+- (id)createPresenceDetectOperationWithError:(id *)error;
 @end
 
 @implementation BKDeviceTouchID
 
-+ (BOOL)deviceAvailableWithFailure:(BOOL *)a3
++ (BOOL)deviceAvailableWithFailure:(BOOL *)failure
 {
   *&v14[5] = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -26,7 +26,7 @@
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    *v14 = a3;
+    *v14 = failure;
     _os_log_impl(&dword_1C82AD000, v5, OS_LOG_TYPE_DEFAULT, "BKDeviceTouchID::deviceAvailableWithFailure: %p\n", buf, 0xCu);
   }
 
@@ -37,15 +37,15 @@
   }
 
   v6 = isTouchIDPlatformWithFailure(&v12);
-  if (a3)
+  if (failure)
   {
-    *a3 = v12;
+    *failure = v12;
   }
 
   if ((v6 & 1) == 0)
   {
 LABEL_20:
-    [(BKDeviceTouchID *)a3 deviceAvailableWithFailure:buf];
+    [(BKDeviceTouchID *)failure deviceAvailableWithFailure:buf];
     v9 = buf[0];
   }
 
@@ -63,9 +63,9 @@ LABEL_20:
 
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (failure)
       {
-        v8 = *a3;
+        v8 = *failure;
       }
 
       else
@@ -92,7 +92,7 @@ LABEL_20:
   return v9;
 }
 
-- (id)createEnrollOperationWithError:(id *)a3
+- (id)createEnrollOperationWithError:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -128,9 +128,9 @@ LABEL_20:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v9 = *a3;
+        v9 = *error;
       }
 
       else
@@ -148,7 +148,7 @@ LABEL_20:
 
   else
   {
-    [BKDeviceTouchID createEnrollOperationWithError:a3];
+    [BKDeviceTouchID createEnrollOperationWithError:error];
   }
 
   kdebug_trace();
@@ -157,7 +157,7 @@ LABEL_20:
   return v7;
 }
 
-- (id)createExtendEnrollTouchIDOperationWithError:(id *)a3
+- (id)createExtendEnrollTouchIDOperationWithError:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -193,9 +193,9 @@ LABEL_20:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v9 = *a3;
+        v9 = *error;
       }
 
       else
@@ -213,7 +213,7 @@ LABEL_20:
 
   else
   {
-    [BKDeviceTouchID createExtendEnrollTouchIDOperationWithError:a3];
+    [BKDeviceTouchID createExtendEnrollTouchIDOperationWithError:error];
   }
 
   kdebug_trace();
@@ -222,7 +222,7 @@ LABEL_20:
   return v7;
 }
 
-- (id)createMatchOperationWithError:(id *)a3
+- (id)createMatchOperationWithError:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -258,9 +258,9 @@ LABEL_20:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v9 = *a3;
+        v9 = *error;
       }
 
       else
@@ -278,7 +278,7 @@ LABEL_20:
 
   else
   {
-    [BKDeviceTouchID createMatchOperationWithError:a3];
+    [BKDeviceTouchID createMatchOperationWithError:error];
   }
 
   kdebug_trace();
@@ -287,7 +287,7 @@ LABEL_20:
   return v7;
 }
 
-- (id)createPresenceDetectOperationWithError:(id *)a3
+- (id)createPresenceDetectOperationWithError:(id *)error
 {
   v16 = *MEMORY[0x1E69E9840];
   kdebug_trace();
@@ -323,9 +323,9 @@ LABEL_20:
 
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (error)
       {
-        v9 = *a3;
+        v9 = *error;
       }
 
       else
@@ -343,7 +343,7 @@ LABEL_20:
 
   else
   {
-    [BKDeviceTouchID createPresenceDetectOperationWithError:a3];
+    [BKDeviceTouchID createPresenceDetectOperationWithError:error];
   }
 
   kdebug_trace();

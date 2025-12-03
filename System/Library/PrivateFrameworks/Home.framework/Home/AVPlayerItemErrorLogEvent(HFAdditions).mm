@@ -6,19 +6,19 @@
 
 - (id)hf_prettyDescription
 {
-  v2 = [MEMORY[0x277D2C8F8] builderWithObject:a1];
-  v3 = [a1 date];
-  v4 = [v2 appendObject:v3 withName:@"date"];
+  v2 = [MEMORY[0x277D2C8F8] builderWithObject:self];
+  date = [self date];
+  v4 = [v2 appendObject:date withName:@"date"];
 
-  v5 = [a1 URI];
+  v5 = [self URI];
   v6 = [v2 appendObject:v5 withName:@"URI"];
 
-  v7 = [a1 errorComment];
-  v8 = [v2 appendObject:v7 withName:@"error"];
+  errorComment = [self errorComment];
+  v8 = [v2 appendObject:errorComment withName:@"error"];
 
-  v9 = [v2 build];
+  build = [v2 build];
 
-  return v9;
+  return build;
 }
 
 @end

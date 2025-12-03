@@ -2,15 +2,15 @@
 + (id)sharedInstance;
 - (BKAccelerometerInterface)init;
 - (NSString)description;
-- (id)_lock_existingClientForSendRight:(id)a3;
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5;
-- (void)_handleAccelerometerRequestForPort:(id)a3 auditToken:(id *)a4 updateBlock:(id)a5;
+- (id)_lock_existingClientForSendRight:(id)right;
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher;
+- (void)_handleAccelerometerRequestForPort:(id)port auditToken:(id *)token updateBlock:(id)block;
 - (void)_lock_clearSystemAppOrientationClient;
-- (void)_lock_systemAppSetOrientationEventsClient:(id)a3 wantsOrientationEvents:(BOOL)a4 auditToken:(id *)a5;
+- (void)_lock_systemAppSetOrientationEventsClient:(id)client wantsOrientationEvents:(BOOL)events auditToken:(id *)token;
 - (void)_updateSettings;
-- (void)bksAccelerometerClientRequestedAccelerometerEvents:(id)a3 updateInterval:(double)a4 xThreshold:(float)a5 yThreshold:(float)a6 zThreshold:(float)a7 auditToken:(id *)a8;
-- (void)bksAccelerometerClientRequestedOrientationEvents:(id)a3 enabled:(BOOL)a4 passiveEvents:(BOOL)a5 auditToken:(id *)a6;
-- (void)clientDied:(id)a3;
+- (void)bksAccelerometerClientRequestedAccelerometerEvents:(id)events updateInterval:(double)interval xThreshold:(float)threshold yThreshold:(float)yThreshold zThreshold:(float)zThreshold auditToken:(id *)token;
+- (void)bksAccelerometerClientRequestedOrientationEvents:(id)events enabled:(BOOL)enabled passiveEvents:(BOOL)passiveEvents auditToken:(id *)token;
+- (void)clientDied:(id)died;
 - (void)dealloc;
 @end
 
@@ -254,13 +254,13 @@ LABEL_50:
   }
 }
 
-- (void)_lock_systemAppSetOrientationEventsClient:(id)a3 wantsOrientationEvents:(BOOL)a4 auditToken:(id *)a5
+- (void)_lock_systemAppSetOrientationEventsClient:(id)client wantsOrientationEvents:(BOOL)events auditToken:(id *)token
 {
-  v7 = a3;
+  clientCopy = client;
   v8 = BKHIDEventRoutingGetClientConnectionManager();
-  v9 = [v8 pidForBundleID:v7];
+  v9 = [v8 pidForBundleID:clientCopy];
 
-  if (v7 && v9 >= 1 && a4)
+  if (clientCopy && v9 >= 1 && events)
   {
     p_lock_systemAppOrientationClient = &self->_lock_systemAppOrientationClient;
     if ([(BKHIDEventClient *)self->_lock_systemAppOrientationClient pid]!= v9)
@@ -312,9 +312,9 @@ LABEL_50:
   }
 }
 
-- (id)_lock_existingClientForSendRight:(id)a3
+- (id)_lock_existingClientForSendRight:(id)right
 {
-  v4 = a3;
+  rightCopy = right;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -326,7 +326,7 @@ LABEL_50:
   v9[1] = 3221225472;
   v9[2] = sub_10005430C;
   v9[3] = &unk_1000FB8C0;
-  v6 = v4;
+  v6 = rightCopy;
   v10 = v6;
   v11 = &v12;
   [(NSMutableSet *)lock_accelerometerClients enumerateObjectsUsingBlock:v9];
@@ -337,15 +337,15 @@ LABEL_50:
   return v7;
 }
 
-- (void)_handleAccelerometerRequestForPort:(id)a3 auditToken:(id *)a4 updateBlock:(id)a5
+- (void)_handleAccelerometerRequestForPort:(id)port auditToken:(id *)token updateBlock:(id)block
 {
-  v9 = a3;
-  v7 = a5;
+  portCopy = port;
+  blockCopy = block;
   [(NSLock *)self->_lock lock];
-  v8 = [(BKAccelerometerInterface *)self _lock_existingClientForSendRight:v9];
+  v8 = [(BKAccelerometerInterface *)self _lock_existingClientForSendRight:portCopy];
   if (!v8)
   {
-    v8 = [(BKHIDEventClient *)[BKAccelerometerClientBKSAccelerometer alloc] initWithPid:BSPIDForAuditToken() sendRight:v9];
+    v8 = [(BKHIDEventClient *)[BKAccelerometerClientBKSAccelerometer alloc] initWithPid:BSPIDForAuditToken() sendRight:portCopy];
     [(BKHIDEventClient *)v8 setDelegate:self];
     if (v8)
     {
@@ -353,25 +353,25 @@ LABEL_50:
     }
   }
 
-  if (v7)
+  if (blockCopy)
   {
-    v7[2](v7, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   [(NSLock *)self->_lock unlock];
   [(BKAccelerometerInterface *)self _updateSettings];
 }
 
-- (void)clientDied:(id)a3
+- (void)clientDied:(id)died
 {
   lock = self->_lock;
-  v5 = a3;
+  diedCopy = died;
   [(NSLock *)lock lock];
-  [(BKHIDEventClient *)v5 invalidate];
-  [(NSMutableSet *)self->_lock_accelerometerClients removeObject:v5];
+  [(BKHIDEventClient *)diedCopy invalidate];
+  [(NSMutableSet *)self->_lock_accelerometerClients removeObject:diedCopy];
   lock_systemAppOrientationClient = self->_lock_systemAppOrientationClient;
 
-  if (lock_systemAppOrientationClient == v5)
+  if (lock_systemAppOrientationClient == diedCopy)
   {
     [(BKAccelerometerInterface *)self _lock_clearSystemAppOrientationClient];
   }
@@ -381,9 +381,9 @@ LABEL_50:
   [(BKAccelerometerInterface *)self _updateSettings];
 }
 
-- (int64_t)processEvent:(__IOHIDEvent *)a3 sender:(id)a4 dispatcher:(id)a5
+- (int64_t)processEvent:(__IOHIDEvent *)event sender:(id)sender dispatcher:(id)dispatcher
 {
-  v6 = *a3;
+  v6 = *event;
   IOHIDEventGetTimeStamp();
   BSMonotonicReferencedTimeFromMachTime();
   v8 = v7;
@@ -494,33 +494,33 @@ LABEL_50:
   v7 = [v3 appendBool:v6 & 1 withName:@"eventsEnabled"];
   v8 = [v3 appendObject:self->_lock_accelerometerClients withName:@"clients"];
   v9 = [v3 appendObject:self->_lock_systemAppOrientationClient withName:@"systemAppOrientationClient"];
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
-- (void)bksAccelerometerClientRequestedOrientationEvents:(id)a3 enabled:(BOOL)a4 passiveEvents:(BOOL)a5 auditToken:(id *)a6
+- (void)bksAccelerometerClientRequestedOrientationEvents:(id)events enabled:(BOOL)enabled passiveEvents:(BOOL)passiveEvents auditToken:(id *)token
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_100054BE0;
   v6[3] = &unk_1000FB878;
-  v7 = a4;
-  v8 = a5;
-  [(BKAccelerometerInterface *)self _handleAccelerometerRequestForPort:a3 auditToken:a6 updateBlock:v6];
+  enabledCopy = enabled;
+  passiveEventsCopy = passiveEvents;
+  [(BKAccelerometerInterface *)self _handleAccelerometerRequestForPort:events auditToken:token updateBlock:v6];
 }
 
-- (void)bksAccelerometerClientRequestedAccelerometerEvents:(id)a3 updateInterval:(double)a4 xThreshold:(float)a5 yThreshold:(float)a6 zThreshold:(float)a7 auditToken:(id *)a8
+- (void)bksAccelerometerClientRequestedAccelerometerEvents:(id)events updateInterval:(double)interval xThreshold:(float)threshold yThreshold:(float)yThreshold zThreshold:(float)zThreshold auditToken:(id *)token
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100054CB0;
   v8[3] = &unk_1000FB858;
-  *&v8[4] = a4;
-  v9 = a5;
-  v10 = a6;
-  v11 = a7;
-  [(BKAccelerometerInterface *)self _handleAccelerometerRequestForPort:a3 auditToken:a8 updateBlock:v8];
+  *&v8[4] = interval;
+  thresholdCopy = threshold;
+  yThresholdCopy = yThreshold;
+  zThresholdCopy = zThreshold;
+  [(BKAccelerometerInterface *)self _handleAccelerometerRequestForPort:events auditToken:token updateBlock:v8];
 }
 
 - (void)dealloc
@@ -536,7 +536,7 @@ LABEL_50:
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"BKAccelerometerInterface.m";
     v16 = 1024;

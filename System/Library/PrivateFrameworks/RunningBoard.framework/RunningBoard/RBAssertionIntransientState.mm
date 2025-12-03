@@ -1,7 +1,7 @@
 @interface RBAssertionIntransientState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSMutableSet)sourceEnvironments;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -98,7 +98,7 @@
   return sourceEnvironments;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[RBAssertionIntransientState allocWithZone:?]];
   v4->_endPolicy = self->_endPolicy;
@@ -129,22 +129,22 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_27;
   }
 
   v5 = objc_opt_class();
-  if (v5 != objc_opt_class() || self->_definesRelativeStartTime != v4->_definesRelativeStartTime || self->_endPolicy != v4->_endPolicy || self->_invalidationDuration != v4->_invalidationDuration || self->_startPolicy != v4->_startPolicy || self->_suspendsOnOriginatorSuspension != v4->_suspendsOnOriginatorSuspension || self->_warningDuration != v4->_warningDuration || self->_hasHereditaryGrant != v4->_hasHereditaryGrant || self->_terminateTargetOnOriginatorExit != v4->_terminateTargetOnOriginatorExit || self->_invalidatesSynchronously != v4->_invalidatesSynchronously || self->_preventsSuspension != v4->_preventsSuspension)
+  if (v5 != objc_opt_class() || self->_definesRelativeStartTime != equalCopy->_definesRelativeStartTime || self->_endPolicy != equalCopy->_endPolicy || self->_invalidationDuration != equalCopy->_invalidationDuration || self->_startPolicy != equalCopy->_startPolicy || self->_suspendsOnOriginatorSuspension != equalCopy->_suspendsOnOriginatorSuspension || self->_warningDuration != equalCopy->_warningDuration || self->_hasHereditaryGrant != equalCopy->_hasHereditaryGrant || self->_terminateTargetOnOriginatorExit != equalCopy->_terminateTargetOnOriginatorExit || self->_invalidatesSynchronously != equalCopy->_invalidatesSynchronously || self->_preventsSuspension != equalCopy->_preventsSuspension)
   {
     goto LABEL_26;
   }
 
   sourceEnvironments = self->_sourceEnvironments;
-  v7 = v4->_sourceEnvironments;
+  v7 = equalCopy->_sourceEnvironments;
   if (sourceEnvironments != v7)
   {
     v8 = 0;
@@ -154,7 +154,7 @@
       goto LABEL_28;
     }
 
-    v14 = v4->_sourceEnvironments;
+    v14 = equalCopy->_sourceEnvironments;
     if (!v7)
     {
       goto LABEL_28;
@@ -167,7 +167,7 @@
     }
   }
 
-  if (self->_runningReason != v4->_runningReason || self->_legacyReason != v4->_legacyReason || (domainAttributes = self->_domainAttributes, domainAttributes != v4->_domainAttributes) && ![(NSString *)domainAttributes isEqualToString:?])
+  if (self->_runningReason != equalCopy->_runningReason || self->_legacyReason != equalCopy->_legacyReason || (domainAttributes = self->_domainAttributes, domainAttributes != equalCopy->_domainAttributes) && ![(NSString *)domainAttributes isEqualToString:?])
   {
 LABEL_26:
     v8 = 0;
@@ -175,7 +175,7 @@ LABEL_26:
   }
 
   invalidatesOnConditions = self->_invalidatesOnConditions;
-  v12 = v4->_invalidatesOnConditions;
+  v12 = equalCopy->_invalidatesOnConditions;
   if (invalidatesOnConditions == v12)
   {
 LABEL_27:

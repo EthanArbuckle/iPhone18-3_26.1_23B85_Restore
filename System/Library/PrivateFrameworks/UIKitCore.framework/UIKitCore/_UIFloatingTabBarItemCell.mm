@@ -2,27 +2,27 @@
 - (BOOL)hasSelectionHighlight;
 - (BOOL)isHighlighted;
 - (UIEdgeInsets)_contentViewInset;
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3;
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes;
 - (void)prepareForReuse;
-- (void)setHasSelectionHighlight:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setListItem:(id)a3;
-- (void)updateConfigurationUsingState:(id)a3;
+- (void)setHasSelectionHighlight:(BOOL)highlight;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setListItem:(id)item;
+- (void)updateConfigurationUsingState:(id)state;
 @end
 
 @implementation _UIFloatingTabBarItemCell
 
-- (id)preferredLayoutAttributesFittingAttributes:(id)a3
+- (id)preferredLayoutAttributesFittingAttributes:(id)attributes
 {
   v13.receiver = self;
   v13.super_class = _UIFloatingTabBarItemCell;
-  v4 = [(UICollectionReusableView *)&v13 preferredLayoutAttributesFittingAttributes:a3];
+  v4 = [(UICollectionReusableView *)&v13 preferredLayoutAttributesFittingAttributes:attributes];
   [(_UIFloatingTabBarItemCell *)self _contentViewInset];
   v6 = v5;
   v8 = v7;
-  v9 = [(_UIFloatingTabBarItemCell *)self _itemView];
+  _itemView = [(_UIFloatingTabBarItemCell *)self _itemView];
   [v4 size];
-  [v9 sizeThatFits:?];
+  [_itemView sizeThatFits:?];
   v11 = v10;
 
   [v4 size];
@@ -33,18 +33,18 @@
 
 - (UIEdgeInsets)_contentViewInset
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = _UIFloatingTabBarGetPlatformMetrics([v3 userInterfaceIdiom]);
+  traitCollection = [(UIView *)self traitCollection];
+  v4 = _UIFloatingTabBarGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
-  v5 = [(_UIFloatingTabBarItemCell *)self _itemView];
+  _itemView = [(_UIFloatingTabBarItemCell *)self _itemView];
   v6 = 0.0;
   v7 = 0.0;
   v8 = 0.0;
   v9 = 0.0;
-  if ([v5 isCustomizableItem])
+  if ([_itemView isCustomizableItem])
   {
-    v10 = [(UICollectionViewCell *)self configurationState];
-    if ([v10 isEditing])
+    configurationState = [(UICollectionViewCell *)self configurationState];
+    if ([configurationState isEditing])
     {
       [v4 editModeItemMargins];
       v9 = v11;
@@ -70,79 +70,79 @@
   v4.receiver = self;
   v4.super_class = _UIFloatingTabBarItemCell;
   [(UICollectionViewCell *)&v4 prepareForReuse];
-  v3 = [(_UIFloatingTabBarItemCell *)self _itemView];
-  [v3 setHidden:0];
+  _itemView = [(_UIFloatingTabBarItemCell *)self _itemView];
+  [_itemView setHidden:0];
 }
 
-- (void)setListItem:(id)a3
+- (void)setListItem:(id)item
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  itemCopy = item;
+  v6 = itemCopy;
+  if (itemCopy)
   {
-    v7 = [v5 contentTab];
+    contentTab = [itemCopy contentTab];
 
-    if (!v7)
+    if (!contentTab)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"_UIFloatingTabBarItemCell.m" lineNumber:57 description:{@"listItem must represent a single item, not a group."}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIFloatingTabBarItemCell.m" lineNumber:57 description:{@"listItem must represent a single item, not a group."}];
     }
   }
 
   v11.receiver = self;
   v11.super_class = _UIFloatingTabBarItemCell;
   [(_UIFloatingTabBarCell *)&v11 setListItem:v6];
-  v9 = [v6 contentTab];
-  v10 = [(_UIFloatingTabBarItemCell *)self _itemView];
-  [v10 setItem:v9];
+  contentTab2 = [v6 contentTab];
+  _itemView = [(_UIFloatingTabBarItemCell *)self _itemView];
+  [_itemView setItem:contentTab2];
 }
 
-- (void)updateConfigurationUsingState:(id)a3
+- (void)updateConfigurationUsingState:(id)state
 {
   v9.receiver = self;
   v9.super_class = _UIFloatingTabBarItemCell;
-  v4 = a3;
-  [(UICollectionViewCell *)&v9 updateConfigurationUsingState:v4];
-  v5 = [v4 isEditing];
-  v6 = [(_UIFloatingTabBarItemCell *)self _itemView];
-  [v6 setEditing:v5];
+  stateCopy = state;
+  [(UICollectionViewCell *)&v9 updateConfigurationUsingState:stateCopy];
+  isEditing = [stateCopy isEditing];
+  _itemView = [(_UIFloatingTabBarItemCell *)self _itemView];
+  [_itemView setEditing:isEditing];
 
-  v7 = [v4 cellDragState];
-  v8 = [(_UIFloatingTabBarItemCell *)self _itemView];
-  [v8 setDragged:v7 != 0];
+  cellDragState = [stateCopy cellDragState];
+  _itemView2 = [(_UIFloatingTabBarItemCell *)self _itemView];
+  [_itemView2 setDragged:cellDragState != 0];
 }
 
 - (BOOL)isHighlighted
 {
-  v2 = [(_UIFloatingTabBarItemCell *)self _itemView];
-  v3 = [v2 isHighlighted];
+  _itemView = [(_UIFloatingTabBarItemCell *)self _itemView];
+  isHighlighted = [_itemView isHighlighted];
 
-  return v3;
+  return isHighlighted;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v6.receiver = self;
   v6.super_class = _UIFloatingTabBarItemCell;
   [(UICollectionViewCell *)&v6 setHighlighted:?];
-  v5 = [(_UIFloatingTabBarItemCell *)self _itemView];
-  [v5 setHighlighted:v3];
+  _itemView = [(_UIFloatingTabBarItemCell *)self _itemView];
+  [_itemView setHighlighted:highlightedCopy];
 }
 
 - (BOOL)hasSelectionHighlight
 {
-  v2 = [(_UIFloatingTabBarItemCell *)self _itemView];
-  v3 = [v2 hasSelectionHighlight];
+  _itemView = [(_UIFloatingTabBarItemCell *)self _itemView];
+  hasSelectionHighlight = [_itemView hasSelectionHighlight];
 
-  return v3;
+  return hasSelectionHighlight;
 }
 
-- (void)setHasSelectionHighlight:(BOOL)a3
+- (void)setHasSelectionHighlight:(BOOL)highlight
 {
-  v3 = a3;
-  v4 = [(_UIFloatingTabBarItemCell *)self _itemView];
-  [v4 setHasSelectionHighlight:v3];
+  highlightCopy = highlight;
+  _itemView = [(_UIFloatingTabBarItemCell *)self _itemView];
+  [_itemView setHasSelectionHighlight:highlightCopy];
 }
 
 @end

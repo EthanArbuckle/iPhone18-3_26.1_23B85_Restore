@@ -1,25 +1,25 @@
 @interface PGMemoryTriggerSeasonInHistory
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerSeasonInHistory
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v41 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (![v9 isCancelledWithProgress:0.0])
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
+  if (![reporterCopy isCancelledWithProgress:0.0])
   {
-    v11 = [v7 localDate];
-    v12 = [MEMORY[0x277D27690] components:12 fromDate:v11];
-    v13 = [v12 month];
-    v14 = [v12 year];
-    v15 = [MEMORY[0x277D27690] seasonNameForLocalDate:v11 locale:0];
+    localDate = [contextCopy localDate];
+    v12 = [MEMORY[0x277D27690] components:12 fromDate:localDate];
+    month = [v12 month];
+    year = [v12 year];
+    v15 = [MEMORY[0x277D27690] seasonNameForLocalDate:localDate locale:0];
     if (!v15)
     {
-      if ([v9 isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
+      if ([reporterCopy isCancelledWithProgress:1.0] && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
       {
         *buf = 67109378;
         v38 = 46;
@@ -33,39 +33,39 @@
     }
 
     v33 = v12;
-    if (v13 == 12)
+    if (month == 12)
     {
-      v16 = v14 + 1;
+      v16 = year + 1;
     }
 
     else
     {
-      v16 = v14;
+      v16 = year;
     }
 
     v36 = v15;
-    v17 = [PGGraphSeasonNodeCollection seasonNodesForSeasonName:v15 inGraph:v8];
-    v18 = [PGGraphYearNodeCollection yearNodesForYear:v16 inGraph:v8];
+    v17 = [PGGraphSeasonNodeCollection seasonNodesForSeasonName:v15 inGraph:graphCopy];
+    v18 = [PGGraphYearNodeCollection yearNodesForYear:v16 inGraph:graphCopy];
     v35 = v17;
-    v19 = [v17 featureNodeCollection];
-    v20 = [v19 memoryNodes];
+    featureNodeCollection = [v17 featureNodeCollection];
+    memoryNodes = [featureNodeCollection memoryNodes];
 
     v34 = v18;
-    v21 = [v18 featureNodeCollection];
-    v22 = [v21 memoryNodes];
-    v23 = [v20 collectionBySubtracting:v22];
+    featureNodeCollection2 = [v18 featureNodeCollection];
+    memoryNodes2 = [featureNodeCollection2 memoryNodes];
+    v23 = [memoryNodes collectionBySubtracting:memoryNodes2];
 
     v24 = v23;
     if ([v23 count])
     {
-      v32 = [MEMORY[0x277D27690] localStartDateForNextSeasonAfterLocalDate:v11];
+      v32 = [MEMORY[0x277D27690] localStartDateForNextSeasonAfterLocalDate:localDate];
       v25 = [v32 dateByAddingTimeInterval:-0.01];
-      v26 = [MEMORY[0x277D27690] localStartSeasonDateForLocalDate:v11];
+      v26 = [MEMORY[0x277D27690] localStartSeasonDateForLocalDate:localDate];
       v27 = objc_opt_class();
-      v28 = [v7 timeZone];
-      v29 = [v27 validityIntervalForLocalStartDate:v26 localEndDate:v25 timeZone:v28];
+      timeZone = [contextCopy timeZone];
+      v29 = [v27 validityIntervalForLocalStartDate:v26 localEndDate:v25 timeZone:timeZone];
 
-      if ([v9 isCancelledWithProgress:1.0])
+      if ([reporterCopy isCancelledWithProgress:1.0])
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
         {
@@ -87,7 +87,7 @@
 
     else
     {
-      if ([v9 isCancelledWithProgress:1.0])
+      if ([reporterCopy isCancelledWithProgress:1.0])
       {
         v15 = v36;
         v12 = v33;

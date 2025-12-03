@@ -1,37 +1,37 @@
 @interface BYODAddEmailViewController
 + (id)log;
-- (BOOL)_insertEmailSpecifierAfter:(id)a3;
-- (BOOL)_isRowEditableAtIndexPath:(id)a3;
-- (BYODAddEmailViewController)initWithACAccount:(id)a3 familyFlow:(BOOL)a4 familyCircle:(id)a5 domainName:(id)a6 domainResult:(id)a7;
-- (id)_getDomainMemberFromIdentifier:(id)a3;
+- (BOOL)_insertEmailSpecifierAfter:(id)after;
+- (BOOL)_isRowEditableAtIndexPath:(id)path;
+- (BYODAddEmailViewController)initWithACAccount:(id)account familyFlow:(BOOL)flow familyCircle:(id)circle domainName:(id)name domainResult:(id)result;
+- (id)_getDomainMemberFromIdentifier:(id)identifier;
 - (id)_getEmailAddressListSpecifier;
 - (id)_getEmailAddressSpecifier;
 - (id)_getMemberSpecifiers;
-- (id)_getSpecifierGroupWithMember:(id)a3;
+- (id)_getSpecifierGroupWithMember:(id)member;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)valueForSpecifier:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)valueForSpecifier:(id)specifier;
 - (int64_t)_emailCount;
-- (int64_t)_getMemberTypeByDsid:(id)a3;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_addDomainMemberWithContact:(id)a3 withController:(id)a4;
+- (int64_t)_getMemberTypeByDsid:(id)dsid;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_addDomainMemberWithContact:(id)contact withController:(id)controller;
 - (void)_addEmailForFamily;
-- (void)_didTapAddAPersonButton:(id)a3;
-- (void)_didTapEditButton:(id)a3;
+- (void)_didTapAddAPersonButton:(id)button;
+- (void)_didTapEditButton:(id)button;
 - (void)_getMemberPhotos;
-- (void)_getPhotoForMember:(id)a3;
+- (void)_getPhotoForMember:(id)member;
 - (void)_populatMemberEmailList;
-- (void)_populateDomainMembersFromDomainResult:(id)a3;
-- (void)_populateDomainMembersFromFamily:(id)a3;
-- (void)_removeDomainMember:(id)a3 memberSpecifier:(id)a4 completion:(id)a5;
-- (void)_shouldRemoveDomainMember:(id)a3 completion:(id)a4;
-- (void)_shouldRemoveEmailAddress:(id)a3 completion:(id)a4;
-- (void)_showEmailConfirmation:(id)a3;
+- (void)_populateDomainMembersFromDomainResult:(id)result;
+- (void)_populateDomainMembersFromFamily:(id)family;
+- (void)_removeDomainMember:(id)member memberSpecifier:(id)specifier completion:(id)completion;
+- (void)_shouldRemoveDomainMember:(id)member completion:(id)completion;
+- (void)_shouldRemoveEmailAddress:(id)address completion:(id)completion;
+- (void)_showEmailConfirmation:(id)confirmation;
 - (void)_showErrorAlert;
-- (void)_showVerifyEmailConfirmation:(id)a3;
-- (void)chooseContactController:(id)a3 didSelectContact:(id)a4;
+- (void)_showVerifyEmailConfirmation:(id)confirmation;
+- (void)chooseContactController:(id)controller didSelectContact:(id)contact;
 - (void)reloadSpecifiers;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -43,7 +43,7 @@
   block[1] = 3221225472;
   block[2] = sub_21824;
   block[3] = &unk_B8D78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_D6470 != -1)
   {
     dispatch_once(&qword_D6470, block);
@@ -54,21 +54,21 @@
   return v2;
 }
 
-- (BYODAddEmailViewController)initWithACAccount:(id)a3 familyFlow:(BOOL)a4 familyCircle:(id)a5 domainName:(id)a6 domainResult:(id)a7
+- (BYODAddEmailViewController)initWithACAccount:(id)account familyFlow:(BOOL)flow familyCircle:(id)circle domainName:(id)name domainResult:(id)result
 {
-  v31 = a3;
-  v32 = a5;
-  v33 = a6;
-  v34 = a7;
+  accountCopy = account;
+  circleCopy = circle;
+  nameCopy = name;
+  resultCopy = result;
   v35.receiver = self;
   v35.super_class = BYODAddEmailViewController;
   v13 = [(BYODAddEmailViewController *)&v35 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_loggedInUserAccount, a3);
-    v14->_isFamilyFlow = a4;
-    objc_storeStrong(&v14->_domainName, a6);
+    objc_storeStrong(&v13->_loggedInUserAccount, account);
+    v14->_isFamilyFlow = flow;
+    objc_storeStrong(&v14->_domainName, name);
     v15 = dispatch_group_create();
     requestGroup = v14->_requestGroup;
     v14->_requestGroup = v15;
@@ -79,8 +79,8 @@
 
     if (v14->_isFamilyFlow)
     {
-      objc_storeStrong(&v14->_familyCircle, a5);
-      [(BYODAddEmailViewController *)v14 _populateDomainMembersFromDomainResult:v34];
+      objc_storeStrong(&v14->_familyCircle, circle);
+      [(BYODAddEmailViewController *)v14 _populateDomainMembersFromDomainResult:resultCopy];
     }
 
     else
@@ -91,24 +91,24 @@
 
       v21 = [BYODUser alloc];
       v36[0] = @"dsid";
-      v22 = [(ACAccount *)v14->_loggedInUserAccount normalizedDSID];
-      v37[0] = v22;
+      normalizedDSID = [(ACAccount *)v14->_loggedInUserAccount normalizedDSID];
+      v37[0] = normalizedDSID;
       v36[1] = @"firstName";
-      v23 = [(ACAccount *)v14->_loggedInUserAccount aa_firstName];
-      v37[1] = v23;
+      aa_firstName = [(ACAccount *)v14->_loggedInUserAccount aa_firstName];
+      v37[1] = aa_firstName;
       v36[2] = @"lastName";
-      v24 = [(ACAccount *)v14->_loggedInUserAccount aa_lastName];
-      v37[2] = v24;
+      aa_lastName = [(ACAccount *)v14->_loggedInUserAccount aa_lastName];
+      v37[2] = aa_lastName;
       v36[3] = @"fullName";
-      v25 = [(ACAccount *)v14->_loggedInUserAccount userFullName];
-      v37[3] = v25;
+      userFullName = [(ACAccount *)v14->_loggedInUserAccount userFullName];
+      v37[3] = userFullName;
       v26 = [NSDictionary dictionaryWithObjects:v37 forKeys:v36 count:4];
       v27 = [(BYODUser *)v21 initWithDictionary:v26];
 
       [(NSMutableArray *)v14->_domainMembers addObject:v27];
     }
 
-    objc_storeStrong(&v14->_domainResult, a7);
+    objc_storeStrong(&v14->_domainResult, result);
     v14->_isEditing = 0;
     v28 = objc_alloc_init(NSMutableArray);
     addEmailButtonSpecifiers = v14->_addEmailButtonSpecifiers;
@@ -123,20 +123,20 @@
   v14.receiver = self;
   v14.super_class = BYODAddEmailViewController;
   [(BYODAddEmailViewController *)&v14 viewDidLoad];
-  v3 = [(BYODAddEmailViewController *)self navigationItem];
+  navigationItem = [(BYODAddEmailViewController *)self navigationItem];
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"BYOD_ADD_DOMAIN_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  [v3 setTitle:v5];
+  [navigationItem setTitle:v5];
 
-  v6 = [(BYODAddEmailViewController *)self navigationItem];
-  [v6 setHidesBackButton:0];
+  navigationItem2 = [(BYODAddEmailViewController *)self navigationItem];
+  [navigationItem2 setHidesBackButton:0];
 
-  v7 = [(BYODAddEmailViewController *)self navigationItem];
+  navigationItem3 = [(BYODAddEmailViewController *)self navigationItem];
   v8 = [UIBarButtonItem alloc];
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"NEXT" value:&stru_B9FC8 table:@"AccountPreferences"];
   v11 = [v8 initWithTitle:v10 style:2 target:self action:"_showEmailConfirmation:"];
-  [v7 setRightBarButtonItem:v11];
+  [navigationItem3 setRightBarButtonItem:v11];
 
   if (self->_isFamilyFlow)
   {
@@ -145,13 +145,13 @@
 
   if ([(BYODAddEmailViewController *)self shouldShowCancel])
   {
-    v12 = [(BYODAddEmailViewController *)self navigationItem];
+    navigationItem4 = [(BYODAddEmailViewController *)self navigationItem];
     v13 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_cancelButtonTapped:"];
-    [v12 setLeftBarButtonItem:v13];
+    [navigationItem4 setLeftBarButtonItem:v13];
   }
 }
 
-- (void)_showEmailConfirmation:(id)a3
+- (void)_showEmailConfirmation:(id)confirmation
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"CONFIRM_EMAIL_MESSAGE%1$ld" value:&stru_B9FC8 table:@"AccountPreferences"];
@@ -180,9 +180,9 @@
   [(BYODAddEmailViewController *)self presentViewController:v9 animated:1 completion:0];
 }
 
-- (void)_showVerifyEmailConfirmation:(id)a3
+- (void)_showVerifyEmailConfirmation:(id)confirmation
 {
-  v4 = a3;
+  confirmationCopy = confirmation;
   if (self->_isFamilyFlow)
   {
     v5 = [NSBundle bundleForClass:objc_opt_class()];
@@ -266,8 +266,8 @@
     }
   }
 
-  v12 = [(BYODAddEmailViewController *)self _getEmailAddressListSpecifier];
-  [v3 addObjectsFromArray:v12];
+  _getEmailAddressListSpecifier = [(BYODAddEmailViewController *)self _getEmailAddressListSpecifier];
+  [v3 addObjectsFromArray:_getEmailAddressListSpecifier];
 
   v13 = [v3 copy];
   v14 = OBJC_IVAR___PSListController__specifiers;
@@ -300,69 +300,69 @@
   v3 = objc_alloc_init(NSMutableArray);
   if (self->_isFamilyFlow)
   {
-    v4 = [(BYODAddEmailViewController *)self _getMemberSpecifiers];
-    [v3 addObjectsFromArray:v4];
+    _getMemberSpecifiers = [(BYODAddEmailViewController *)self _getMemberSpecifiers];
+    [v3 addObjectsFromArray:_getMemberSpecifiers];
   }
 
   else
   {
-    v5 = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
-    v4 = [PSSpecifier groupSpecifierWithID:v5];
+    normalizedDSID = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
+    _getMemberSpecifiers = [PSSpecifier groupSpecifierWithID:normalizedDSID];
 
-    v6 = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
-    [v4 setProperty:v6 forKey:@"MEMBER_DSID"];
+    normalizedDSID2 = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
+    [_getMemberSpecifiers setProperty:normalizedDSID2 forKey:@"MEMBER_DSID"];
 
-    [v4 setButtonAction:"_didTapEditButton:"];
+    [_getMemberSpecifiers setButtonAction:"_didTapEditButton:"];
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v4 setProperty:v8 forKey:PSHeaderCellClassGroupKey];
+    [_getMemberSpecifiers setProperty:v8 forKey:PSHeaderCellClassGroupKey];
 
     v9 = [NSBundle bundleForClass:objc_opt_class()];
     v10 = [v9 localizedStringForKey:@"BYOD_ADD_DOMAIN_EMAIL_ADDRESSES_HEADER" value:&stru_B9FC8 table:@"AccountPreferences"];
-    [v4 setProperty:v10 forKey:@"headerTitle"];
+    [_getMemberSpecifiers setProperty:v10 forKey:@"headerTitle"];
 
     if (self->_isEditing)
     {
-      [v4 setProperty:@"YES" forKey:@"tableEditing"];
+      [_getMemberSpecifiers setProperty:@"YES" forKey:@"tableEditing"];
     }
 
-    objc_storeStrong(&self->_ownerGroupSpecifier, v4);
-    [v3 addObject:v4];
+    objc_storeStrong(&self->_ownerGroupSpecifier, _getMemberSpecifiers);
+    [v3 addObject:_getMemberSpecifiers];
     v11 = +[BYODContactsManager sharedInstance];
-    v12 = [v11 avatarImageForMeContact];
+    avatarImageForMeContact = [v11 avatarImageForMeContact];
 
-    if (!v12)
+    if (!avatarImageForMeContact)
     {
       v28 = v3;
       v27 = +[BYODContactsManager sharedInstance];
-      v26 = [(BYODGetDomainResult *)self->_domainResult domain];
-      v13 = [v26 owner];
-      v14 = [v13 firstName];
-      v15 = [(BYODGetDomainResult *)self->_domainResult domain];
-      v16 = [v15 owner];
-      v17 = [v16 lastName];
-      v12 = [v27 monogramWithFirstName:v14 andLastName:v17];
+      domain = [(BYODGetDomainResult *)self->_domainResult domain];
+      owner = [domain owner];
+      firstName = [owner firstName];
+      domain2 = [(BYODGetDomainResult *)self->_domainResult domain];
+      owner2 = [domain2 owner];
+      lastName = [owner2 lastName];
+      avatarImageForMeContact = [v27 monogramWithFirstName:firstName andLastName:lastName];
 
       v3 = v28;
     }
 
-    v18 = [(ACAccount *)self->_loggedInUserAccount userFullName];
-    v19 = [PSSpecifier preferenceSpecifierNamed:v18 target:self set:0 get:"valueForSpecifier:" detail:0 cell:4 edit:0];
+    userFullName = [(ACAccount *)self->_loggedInUserAccount userFullName];
+    v19 = [PSSpecifier preferenceSpecifierNamed:userFullName target:self set:0 get:"valueForSpecifier:" detail:0 cell:4 edit:0];
 
     v20 = [NSBundle bundleForClass:objc_opt_class()];
     v21 = [v20 localizedStringForKey:@"BYOD_DOMAIN_OWNER_TEXT" value:&stru_B9FC8 table:@"AccountPreferences"];
     [v19 setProperty:v21 forKey:PSValueKey];
 
     [v19 setProperty:objc_opt_class() forKey:PSCellClassKey];
-    [v19 setProperty:v12 forKey:PSIconImageKey];
-    v22 = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
-    v23 = [NSString stringWithFormat:@"MEMBER_%@", v22];
+    [v19 setProperty:avatarImageForMeContact forKey:PSIconImageKey];
+    normalizedDSID3 = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
+    v23 = [NSString stringWithFormat:@"MEMBER_%@", normalizedDSID3];
     [v19 setIdentifier:v23];
 
     [v19 setProperty:&__kCFBooleanFalse forKey:@"editableSpecifier"];
     [v3 addObject:v19];
-    v24 = [(BYODAddEmailViewController *)self _getEmailAddressSpecifier];
-    [v3 addObject:v24];
+    _getEmailAddressSpecifier = [(BYODAddEmailViewController *)self _getEmailAddressSpecifier];
+    [v3 addObject:_getEmailAddressSpecifier];
   }
 
   return v3;
@@ -390,8 +390,8 @@
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
-        v9 = [v8 dsid];
-        v10 = [(BYODAddEmailViewController *)self _getMemberTypeByDsid:v9];
+        dsid = [v8 dsid];
+        v10 = [(BYODAddEmailViewController *)self _getMemberTypeByDsid:dsid];
 
         if (!v10)
         {
@@ -425,8 +425,8 @@
         }
 
         v16 = *(*(&v21 + 1) + 8 * j);
-        v17 = [v16 dsid];
-        v18 = [(BYODAddEmailViewController *)self _getMemberTypeByDsid:v17];
+        dsid2 = [v16 dsid];
+        v18 = [(BYODAddEmailViewController *)self _getMemberTypeByDsid:dsid2];
 
         if (v18)
         {
@@ -444,20 +444,20 @@
   return v3;
 }
 
-- (id)_getSpecifierGroupWithMember:(id)a3
+- (id)_getSpecifierGroupWithMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   v5 = objc_alloc_init(NSMutableArray);
-  v6 = [v4 memberIdentifier];
-  v7 = [PSSpecifier groupSpecifierWithID:v6];
+  memberIdentifier = [memberCopy memberIdentifier];
+  v7 = [PSSpecifier groupSpecifierWithID:memberIdentifier];
 
   [v7 setButtonAction:"_didTapEditButton:"];
   [v5 addObject:v7];
-  v8 = [v4 fullName];
-  v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:0 get:"valueForSpecifier:" detail:0 cell:4 edit:0];
+  fullName = [memberCopy fullName];
+  v9 = [PSSpecifier preferenceSpecifierNamed:fullName target:self set:0 get:"valueForSpecifier:" detail:0 cell:4 edit:0];
 
-  v10 = [v4 dsid];
-  v11 = [(BYODAddEmailViewController *)self _getMemberTypeByDsid:v10];
+  dsid = [memberCopy dsid];
+  v11 = [(BYODAddEmailViewController *)self _getMemberTypeByDsid:dsid];
 
   if (v11 == 1)
   {
@@ -497,16 +497,16 @@ LABEL_7:
 LABEL_9:
   [v9 setProperty:v18 forKey:@"editableSpecifier"];
   [v9 setProperty:objc_opt_class() forKey:PSCellClassKey];
-  v19 = [v4 memberIdentifier];
-  [v9 setProperty:v19 forKey:@"MEMBER_DSID"];
+  memberIdentifier2 = [memberCopy memberIdentifier];
+  [v9 setProperty:memberIdentifier2 forKey:@"MEMBER_DSID"];
 
-  v20 = [v4 memberIdentifier];
-  v21 = [NSString stringWithFormat:@"MEMBER_%@", v20];
+  memberIdentifier3 = [memberCopy memberIdentifier];
+  v21 = [NSString stringWithFormat:@"MEMBER_%@", memberIdentifier3];
   [v9 setIdentifier:v21];
 
   [v5 addObject:v9];
-  v22 = [(BYODAddEmailViewController *)self _getEmailAddressSpecifier];
-  [v5 addObject:v22];
+  _getEmailAddressSpecifier = [(BYODAddEmailViewController *)self _getEmailAddressSpecifier];
+  [v5 addObject:_getEmailAddressSpecifier];
 
   return v5;
 }
@@ -532,8 +532,8 @@ LABEL_9:
         }
 
         v7 = *(*(&v21 + 1) + 8 * i);
-        v8 = [v7 dsid];
-        v9 = [(BYODAddEmailViewController *)self _getMemberTypeByDsid:v8];
+        dsid = [v7 dsid];
+        v9 = [(BYODAddEmailViewController *)self _getMemberTypeByDsid:dsid];
 
         if (!v9)
         {
@@ -566,8 +566,8 @@ LABEL_9:
         }
 
         v14 = *(*(&v17 + 1) + 8 * j);
-        v15 = [v14 dsid];
-        v16 = [(BYODAddEmailViewController *)self _getMemberTypeByDsid:v15];
+        dsid2 = [v14 dsid];
+        v16 = [(BYODAddEmailViewController *)self _getMemberTypeByDsid:dsid2];
 
         if (v16)
         {
@@ -582,16 +582,16 @@ LABEL_9:
   }
 }
 
-- (void)_getPhotoForMember:(id)a3
+- (void)_getPhotoForMember:(id)member
 {
-  v4 = a3;
+  memberCopy = member;
   v5 = +[BYODContactsManager sharedInstance];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_23A10;
   v7[3] = &unk_B9088;
   v7[4] = self;
-  v6 = v4;
+  v6 = memberCopy;
   v8 = v6;
   [v5 fetchAvatarImageForUser:v6 withCompletion:v7];
 }
@@ -605,9 +605,9 @@ LABEL_9:
   return v2;
 }
 
-- (id)valueForSpecifier:(id)a3
+- (id)valueForSpecifier:(id)specifier
 {
-  v3 = [a3 objectForKeyedSubscript:PSValueKey];
+  v3 = [specifier objectForKeyedSubscript:PSValueKey];
 
   return v3;
 }
@@ -622,7 +622,7 @@ LABEL_9:
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v21 = self;
+  selfCopy = self;
   obj = *&self->PSListController_opaque[OBJC_IVAR___PSListController__specifiers];
   v5 = [obj countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v5)
@@ -643,31 +643,31 @@ LABEL_9:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v9 = [v8 textField];
-          v10 = [v9 text];
-          v11 = [v10 length] == 0;
+          textField = [v8 textField];
+          text = [textField text];
+          v11 = [text length] == 0;
 
           if (!v11)
           {
-            v12 = [(BYODAddEmailViewController *)v21 getGroupSpecifierForSpecifier:v7];
-            v13 = [v12 identifier];
-            v14 = [(NSMutableDictionary *)v21->_memberEmailDictionary valueForKey:v13];
+            v12 = [(BYODAddEmailViewController *)selfCopy getGroupSpecifierForSpecifier:v7];
+            identifier = [v12 identifier];
+            v14 = [(NSMutableDictionary *)selfCopy->_memberEmailDictionary valueForKey:identifier];
             if (!v14)
             {
               v14 = objc_alloc_init(NSMutableArray);
             }
 
-            v15 = [v9 text];
-            if (([v15 containsString:@"@"] & 1) == 0)
+            text2 = [textField text];
+            if (([text2 containsString:@"@"] & 1) == 0)
             {
-              v16 = [v9 text];
-              v17 = [NSString stringWithFormat:@"%@@%@", v16, v21->_domainName];
+              text3 = [textField text];
+              v17 = [NSString stringWithFormat:@"%@@%@", text3, selfCopy->_domainName];
 
-              v15 = v17;
+              text2 = v17;
             }
 
-            [v14 addObject:v15];
-            [(NSMutableDictionary *)v21->_memberEmailDictionary setValue:v14 forKey:v13];
+            [v14 addObject:text2];
+            [(NSMutableDictionary *)selfCopy->_memberEmailDictionary setValue:v14 forKey:identifier];
           }
         }
       }
@@ -679,22 +679,22 @@ LABEL_9:
   }
 }
 
-- (int64_t)_getMemberTypeByDsid:(id)a3
+- (int64_t)_getMemberTypeByDsid:(id)dsid
 {
-  v4 = a3;
-  v5 = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
-  if ([v4 isEqualToString:v5])
+  dsidCopy = dsid;
+  normalizedDSID = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
+  if ([dsidCopy isEqualToString:normalizedDSID])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [(FAFamilyCircle *)self->_familyCircle members];
-    v8 = [v7 valueForKey:@"dsid"];
+    members = [(FAFamilyCircle *)self->_familyCircle members];
+    v8 = [members valueForKey:@"dsid"];
     v9 = [v8 valueForKey:@"stringValue"];
 
-    if ([v9 containsObject:v4])
+    if ([v9 containsObject:dsidCopy])
     {
       v6 = 1;
     }
@@ -708,7 +708,7 @@ LABEL_9:
   return v6;
 }
 
-- (void)_didTapAddAPersonButton:(id)a3
+- (void)_didTapAddAPersonButton:(id)button
 {
   v4 = +[BYODAddEmailViewController log];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -728,22 +728,22 @@ LABEL_9:
 
   [(BYODContactPickerController *)self->_contactController setDelegate:self];
   v12 = [UINavigationController alloc];
-  v13 = [(BYODContactPickerController *)self->_contactController chooseContactViewController];
-  v14 = [v12 initWithRootViewController:v13];
+  chooseContactViewController = [(BYODContactPickerController *)self->_contactController chooseContactViewController];
+  v14 = [v12 initWithRootViewController:chooseContactViewController];
 
   v15 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:1 target:self action:"_didTapCancelButton:"];
-  v16 = [(BYODContactPickerController *)self->_contactController chooseContactViewController];
-  v17 = [v16 navigationItem];
-  [v17 setLeftBarButtonItem:v15];
+  chooseContactViewController2 = [(BYODContactPickerController *)self->_contactController chooseContactViewController];
+  navigationItem = [chooseContactViewController2 navigationItem];
+  [navigationItem setLeftBarButtonItem:v15];
 
   [(BYODAddEmailViewController *)self presentViewController:v14 animated:1 completion:0];
 }
 
-- (void)_didTapEditButton:(id)a3
+- (void)_didTapEditButton:(id)button
 {
   self->_isEditing ^= 1u;
-  v4 = [(BYODAddEmailViewController *)self table];
-  [v4 setEditing:self->_isEditing animated:1];
+  table = [(BYODAddEmailViewController *)self table];
+  [table setEditing:self->_isEditing animated:1];
 
   v5 = [(PSSpecifier *)self->_ownerGroupSpecifier propertyForKey:@"headerView"];
   [v5 toggleDoneButton:self->_isEditing];
@@ -770,7 +770,7 @@ LABEL_9:
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v23 = self;
+  selfCopy = self;
   obj = [(NSMutableDictionary *)self->_memberEmailDictionary allKeys];
   v6 = [obj countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v6)
@@ -787,24 +787,24 @@ LABEL_9:
         }
 
         v8 = *(*(&v25 + 1) + 8 * i);
-        v22 = [(BYODAddEmailViewController *)v23 _getDomainMemberFromIdentifier:v8];
+        v22 = [(BYODAddEmailViewController *)selfCopy _getDomainMemberFromIdentifier:v8];
         v9 = [BYODAddEmailRequest alloc];
-        loggedInUserAccount = v23->_loggedInUserAccount;
-        v11 = [(ACAccount *)loggedInUserAccount accountStore];
-        domainName = v23->_domainName;
-        v13 = [(NSMutableDictionary *)v23->_memberEmailDictionary valueForKey:v8];
+        loggedInUserAccount = selfCopy->_loggedInUserAccount;
+        accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+        domainName = selfCopy->_domainName;
+        v13 = [(NSMutableDictionary *)selfCopy->_memberEmailDictionary valueForKey:v8];
         v14 = [v13 copy];
-        v15 = [v22 dsid];
-        v16 = [v22 invitedEmail];
-        v17 = [v22 invitedPhoneNumber];
-        v18 = [(BYODAddEmailRequest *)v9 initWithAccount:loggedInUserAccount accountStore:v11 domain:domainName emailArray:v14 dsid:v15 withEmail:v16 withPhone:v17];
+        dsid = [v22 dsid];
+        invitedEmail = [v22 invitedEmail];
+        invitedPhoneNumber = [v22 invitedPhoneNumber];
+        v18 = [(BYODAddEmailRequest *)v9 initWithAccount:loggedInUserAccount accountStore:accountStore domain:domainName emailArray:v14 dsid:dsid withEmail:invitedEmail withPhone:invitedPhoneNumber];
 
-        dispatch_group_enter(v23->_requestGroup);
+        dispatch_group_enter(selfCopy->_requestGroup);
         v24[0] = _NSConcreteStackBlock;
         v24[1] = 3221225472;
         v24[2] = sub_2476C;
         v24[3] = &unk_B90B0;
-        v24[4] = v23;
+        v24[4] = selfCopy;
         [(BYODAddEmailRequest *)v18 performRequestWithCallback:v24];
       }
 
@@ -815,9 +815,9 @@ LABEL_9:
   }
 }
 
-- (id)_getDomainMemberFromIdentifier:(id)a3
+- (id)_getDomainMemberFromIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -837,8 +837,8 @@ LABEL_9:
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 memberIdentifier];
-        v11 = [v10 isEqualToString:v4];
+        memberIdentifier = [v9 memberIdentifier];
+        v11 = [memberIdentifier isEqualToString:identifierCopy];
 
         if (v11)
         {
@@ -862,35 +862,35 @@ LABEL_11:
   return v6;
 }
 
-- (void)_addDomainMemberWithContact:(id)a3 withController:(id)a4
+- (void)_addDomainMemberWithContact:(id)contact withController:(id)controller
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 kind] == &dword_0 + 1)
+  contactCopy = contact;
+  controllerCopy = controller;
+  if ([contactCopy kind] == &dword_0 + 1)
   {
     v8 = [BYODAddMemberRequest alloc];
     loggedInUserAccount = self->_loggedInUserAccount;
-    v10 = [(ACAccount *)loggedInUserAccount accountStore];
-    v11 = [(BYODGetDomainResult *)self->_domainResult domain];
-    v12 = [v11 name];
-    v13 = [v6 normalizedAddress];
-    v14 = [(BYODAddMemberRequest *)v8 initWithAccount:loggedInUserAccount accountStore:v10 domain:v12 email:&stru_B9FC8 phone:v13];
+    accountStore = [(ACAccount *)loggedInUserAccount accountStore];
+    domain = [(BYODGetDomainResult *)self->_domainResult domain];
+    name = [domain name];
+    normalizedAddress = [contactCopy normalizedAddress];
+    v14 = [(BYODAddMemberRequest *)v8 initWithAccount:loggedInUserAccount accountStore:accountStore domain:name email:&stru_B9FC8 phone:normalizedAddress];
   }
 
   else
   {
     v15 = [BYODAddMemberRequest alloc];
     v16 = self->_loggedInUserAccount;
-    v10 = [(ACAccount *)v16 accountStore];
-    v11 = [(BYODGetDomainResult *)self->_domainResult domain];
-    v12 = [v11 name];
-    v13 = [v6 address];
-    v14 = [(BYODAddMemberRequest *)v15 initWithAccount:v16 accountStore:v10 domain:v12 email:v13 phone:&stru_B9FC8];
+    accountStore = [(ACAccount *)v16 accountStore];
+    domain = [(BYODGetDomainResult *)self->_domainResult domain];
+    name = [domain name];
+    normalizedAddress = [contactCopy address];
+    v14 = [(BYODAddMemberRequest *)v15 initWithAccount:v16 accountStore:accountStore domain:name email:normalizedAddress phone:&stru_B9FC8];
   }
 
   v17 = v14;
 
-  v18 = [[BYODSpinner alloc] initWithViewController:v7];
+  v18 = [[BYODSpinner alloc] initWithViewController:controllerCopy];
   spinner = self->_spinner;
   self->_spinner = v18;
 
@@ -901,9 +901,9 @@ LABEL_11:
   v22[2] = sub_24BF4;
   v22[3] = &unk_B9100;
   objc_copyWeak(&v25, &location);
-  v20 = v7;
+  v20 = controllerCopy;
   v23 = v20;
-  v21 = v6;
+  v21 = contactCopy;
   v24 = v21;
   [(BYODAddMemberRequest *)v17 performRequestWithCallback:v22];
 
@@ -911,18 +911,18 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (void)_removeDomainMember:(id)a3 memberSpecifier:(id)a4 completion:(id)a5
+- (void)_removeDomainMember:(id)member memberSpecifier:(id)specifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  memberCopy = member;
+  specifierCopy = specifier;
+  completionCopy = completion;
   v11 = [BYODRemoveMemberRequest alloc];
   loggedInUserAccount = self->_loggedInUserAccount;
-  v13 = [(ACAccount *)loggedInUserAccount accountStore];
+  accountStore = [(ACAccount *)loggedInUserAccount accountStore];
   domainName = self->_domainName;
-  v15 = [(BYODGetDomainResult *)self->_domainResult domain];
-  v16 = [v15 status];
-  v17 = [(BYODRemoveMemberRequest *)v11 initWithAccount:loggedInUserAccount accountStore:v13 domain:domainName domainStatus:v16 domainMember:v8];
+  domain = [(BYODGetDomainResult *)self->_domainResult domain];
+  status = [domain status];
+  v17 = [(BYODRemoveMemberRequest *)v11 initWithAccount:loggedInUserAccount accountStore:accountStore domain:domainName domainStatus:status domainMember:memberCopy];
 
   objc_initWeak(&location, self);
   v20[0] = _NSConcreteStackBlock;
@@ -930,9 +930,9 @@ LABEL_11:
   v20[2] = sub_25174;
   v20[3] = &unk_B9128;
   objc_copyWeak(&v23, &location);
-  v18 = v9;
+  v18 = specifierCopy;
   v21 = v18;
-  v19 = v10;
+  v19 = completionCopy;
   v22 = v19;
   [(BYODRemoveMemberRequest *)v17 performRequestWithCallback:v20];
 
@@ -940,9 +940,9 @@ LABEL_11:
   objc_destroyWeak(&location);
 }
 
-- (BOOL)_insertEmailSpecifierAfter:(id)a3
+- (BOOL)_insertEmailSpecifierAfter:(id)after
 {
-  v19 = a3;
+  afterCopy = after;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
@@ -967,11 +967,11 @@ LABEL_11:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 textField];
-          if ([v19 isEqual:v10])
+          textField = [v9 textField];
+          if ([afterCopy isEqual:textField])
           {
-            v11 = [v19 text];
-            v12 = [v11 length] == 0;
+            text = [afterCopy text];
+            v12 = [text length] == 0;
 
             if (!v12)
             {
@@ -984,8 +984,8 @@ LABEL_11:
                 v15 = [v14 count];
                 if (v15 - 2 < [(BYODGetDomainResult *)self->_domainResult maxEmailsPerUser])
                 {
-                  v16 = [(BYODAddEmailViewController *)self _getEmailAddressSpecifier];
-                  [(BYODAddEmailViewController *)self insertSpecifier:v16 atEndOfGroup:v20];
+                  _getEmailAddressSpecifier = [(BYODAddEmailViewController *)self _getEmailAddressSpecifier];
+                  [(BYODAddEmailViewController *)self insertSpecifier:_getEmailAddressSpecifier atEndOfGroup:v20];
                 }
               }
 
@@ -1010,44 +1010,44 @@ LABEL_18:
   return 1;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = BYODAddEmailViewController;
-  v5 = [(BYODAddEmailViewController *)&v13 tableView:a3 cellForRowAtIndexPath:a4];
-  v6 = [v5 detailTextLabel];
-  [v6 setNumberOfLines:0];
+  v5 = [(BYODAddEmailViewController *)&v13 tableView:view cellForRowAtIndexPath:path];
+  detailTextLabel = [v5 detailTextLabel];
+  [detailTextLabel setNumberOfLines:0];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v5 textField];
-    if (v7)
+    textField = [v5 textField];
+    if (textField)
     {
       v8 = [NSBundle bundleForClass:objc_opt_class()];
       v9 = [v8 localizedStringForKey:@"BYOD_UPDATE_EMAIL_TEXT_PLACEHOLDER" value:&stru_B9FC8 table:@"AccountPreferences"];
-      [v7 setPlaceholder:v9];
+      [textField setPlaceholder:v9];
 
       v10 = [NSString stringWithFormat:@"%@%@", @"@", self->_domainName];
       v11 = +[UIColor secondaryLabelColor];
-      [v7 _setSuffix:v10 withColor:v11];
+      [textField _setSuffix:v10 withColor:v11];
 
-      [v7 setDelegate:self];
+      [textField setDelegate:self];
     }
   }
 
   return v5;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  if ([(BYODAddEmailViewController *)self _isRowEditableAtIndexPath:v5])
+  pathCopy = path;
+  if ([(BYODAddEmailViewController *)self _isRowEditableAtIndexPath:pathCopy])
   {
-    v6 = [(BYODAddEmailViewController *)self table];
-    v7 = [v6 isEditing];
+    table = [(BYODAddEmailViewController *)self table];
+    isEditing = [table isEditing];
 
-    v8 = v7 & 1;
+    v8 = isEditing & 1;
   }
 
   else
@@ -1058,32 +1058,32 @@ LABEL_18:
   return v8;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v31 = a3;
-  v8 = a5;
-  if (a4 == 1)
+  viewCopy = view;
+  pathCopy = path;
+  if (style == 1)
   {
-    v30 = v8;
-    if ([v8 row])
+    v30 = pathCopy;
+    if ([pathCopy row])
     {
       v35.receiver = self;
       v35.super_class = BYODAddEmailViewController;
-      v9 = [(BYODAddEmailViewController *)&v35 tableView:v31 cellForRowAtIndexPath:v30];
-      v10 = [v9 textField];
-      v29 = [v10 text];
+      v9 = [(BYODAddEmailViewController *)&v35 tableView:viewCopy cellForRowAtIndexPath:v30];
+      textField = [v9 textField];
+      text = [textField text];
 
-      v11 = [v9 specifier];
+      specifier = [v9 specifier];
       objc_initWeak(&location, self);
       v32[0] = _NSConcreteStackBlock;
       v32[1] = 3221225472;
       v32[2] = sub_260A0;
       v32[3] = &unk_B9150;
       objc_copyWeak(&v34, &location);
-      v12 = v11;
+      v12 = specifier;
       v33 = v12;
       v13 = objc_retainBlock(v32);
-      v14 = [NSString stringWithFormat:@"%@@%@", v29, self->_domainName];
+      v14 = [NSString stringWithFormat:@"%@@%@", text, self->_domainName];
       [(BYODAddEmailViewController *)self _shouldRemoveEmailAddress:v14 completion:v13];
 
       objc_destroyWeak(&v34);
@@ -1093,8 +1093,8 @@ LABEL_18:
     else
     {
       v27 = [(BYODAddEmailViewController *)self specifierAtIndexPath:v30];
-      v29 = [v27 propertyForKey:@"MEMBER_DSID"];
-      v28 = [(BYODAddEmailViewController *)self _getDomainMemberFromIdentifier:v29];
+      text = [v27 propertyForKey:@"MEMBER_DSID"];
+      v28 = [(BYODAddEmailViewController *)self _getDomainMemberFromIdentifier:text];
       v26 = -[BYODAddEmailViewController specifiersInGroup:](self, "specifiersInGroup:", [v30 section]);
       v15 = objc_alloc_init(NSMutableArray);
       v47 = 0u;
@@ -1162,23 +1162,23 @@ LABEL_18:
       objc_destroyWeak(&location);
     }
 
-    v8 = v30;
+    pathCopy = v30;
   }
 }
 
-- (void)_shouldRemoveDomainMember:(id)a3 completion:(id)a4
+- (void)_shouldRemoveDomainMember:(id)member completion:(id)completion
 {
-  v21 = a3;
-  v22 = a4;
+  memberCopy = member;
+  completionCopy = completion;
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"BYOD_ADD_DOMAIN_DELETE_MEMBER_CONFIRMATION_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v8 = [v21 fullName];
-  v23 = [NSString stringWithFormat:v7, v8];
+  fullName = [memberCopy fullName];
+  v23 = [NSString stringWithFormat:v7, fullName];
 
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"BYOD_ADD_DOMAIN_DELETE_MEMBER_CONFIRMATION_MESSAGE" value:&stru_B9FC8 table:@"AccountPreferences"];
   v11 = [NSString stringWithFormat:v10, self->_domainName];
-  v12 = self;
+  selfCopy = self;
 
   v13 = [UIAlertController alertControllerWithTitle:v23 message:v11 preferredStyle:1];
   v14 = [NSBundle bundleForClass:objc_opt_class()];
@@ -1191,29 +1191,29 @@ LABEL_18:
   v24[1] = 3221225472;
   v24[2] = sub_265B0;
   v24[3] = &unk_B8CF8;
-  v19 = v22;
+  v19 = completionCopy;
   v25 = v19;
   v20 = [UIAlertAction actionWithTitle:v18 style:2 handler:v24];
 
   [v13 addAction:v16];
   [v13 addAction:v20];
   [v13 setPreferredAction:v20];
-  [(BYODAddEmailViewController *)v12 presentViewController:v13 animated:1 completion:0];
+  [(BYODAddEmailViewController *)selfCopy presentViewController:v13 animated:1 completion:0];
 }
 
-- (void)_shouldRemoveEmailAddress:(id)a3 completion:(id)a4
+- (void)_shouldRemoveEmailAddress:(id)address completion:(id)completion
 {
-  v20 = a3;
-  v21 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"BYOD_ADD_DOMAIN_DELETE_ADDRESS_CONFIRMATION_TITLE" value:&stru_B9FC8 table:@"AccountPreferences"];
 
   v19 = v7;
   v8 = [NSBundle bundleForClass:objc_opt_class()];
   v9 = [v8 localizedStringForKey:@"BYOD_ADD_DOMAIN_DELETE_ADDRESS_CONFIRMATION_MESSAGE" value:&stru_B9FC8 table:@"AccountPreferences"];
-  v10 = [NSString stringWithFormat:v9, v20];
+  addressCopy = [NSString stringWithFormat:v9, addressCopy];
 
-  v11 = [UIAlertController alertControllerWithTitle:v7 message:v10 preferredStyle:1];
+  v11 = [UIAlertController alertControllerWithTitle:v7 message:addressCopy preferredStyle:1];
   v12 = [NSBundle bundleForClass:objc_opt_class()];
   v13 = [v12 localizedStringForKey:@"CANCEL_TEXT" value:&stru_B9FC8 table:@"AccountPreferences"];
   v14 = [UIAlertAction actionWithTitle:v13 style:1 handler:0];
@@ -1224,7 +1224,7 @@ LABEL_18:
   v22[1] = 3221225472;
   v22[2] = sub_26950;
   v22[3] = &unk_B8CF8;
-  v17 = v21;
+  v17 = completionCopy;
   v23 = v17;
   v18 = [UIAlertAction actionWithTitle:v16 style:2 handler:v22];
 
@@ -1261,9 +1261,9 @@ LABEL_18:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v8 = [v7 textField];
-          v9 = [v8 text];
-          v10 = [v9 length] != 0;
+          textField = [v7 textField];
+          text = [textField text];
+          v10 = [text length] != 0;
 
           v2 += v10;
         }
@@ -1292,32 +1292,32 @@ LABEL_18:
   v8 = [UIAlertAction actionWithTitle:v7 style:1 handler:0];
 
   [v5 addAction:v8];
-  v12 = self;
+  selfCopy = self;
   v9 = v5;
   v13 = v9;
   v10 = [EFScheduler mainThreadScheduler:_NSConcreteStackBlock];
   [v10 performBlock:&v11];
 }
 
-- (void)_populateDomainMembersFromDomainResult:(id)a3
+- (void)_populateDomainMembersFromDomainResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   v5 = objc_alloc_init(NSMutableArray);
   domainMembers = self->_domainMembers;
   self->_domainMembers = v5;
 
   v7 = self->_domainMembers;
-  v8 = [v4 getDomainOwnerMember];
-  [(NSMutableArray *)v7 addObject:v8];
+  getDomainOwnerMember = [resultCopy getDomainOwnerMember];
+  [(NSMutableArray *)v7 addObject:getDomainOwnerMember];
 
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v9 = [v4 members];
-  v19 = self;
-  obj = v9;
-  v10 = [v9 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  members = [resultCopy members];
+  selfCopy = self;
+  obj = members;
+  v10 = [members countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v10)
   {
     v11 = *v22;
@@ -1331,19 +1331,19 @@ LABEL_18:
         }
 
         v13 = *(*(&v21 + 1) + 8 * i);
-        v14 = [v13 dsid];
-        v15 = [v4 domain];
-        v16 = [v15 owner];
-        v17 = [v16 dsid];
-        v18 = [v14 isEqualToString:v17];
+        dsid = [v13 dsid];
+        domain = [resultCopy domain];
+        owner = [domain owner];
+        dsid2 = [owner dsid];
+        v18 = [dsid isEqualToString:dsid2];
 
         if ((v18 & 1) == 0)
         {
-          [(NSMutableArray *)v19->_domainMembers addObject:v13];
+          [(NSMutableArray *)selfCopy->_domainMembers addObject:v13];
         }
       }
 
-      v9 = obj;
+      members = obj;
       v10 = [obj countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
@@ -1351,9 +1351,9 @@ LABEL_18:
   }
 }
 
-- (void)_populateDomainMembersFromFamily:(id)a3
+- (void)_populateDomainMembersFromFamily:(id)family
 {
-  v21 = a3;
+  familyCopy = family;
   v4 = objc_alloc_init(NSMutableArray);
   domainMembers = self->_domainMembers;
   self->_domainMembers = v4;
@@ -1362,7 +1362,7 @@ LABEL_18:
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  obj = [v21 members];
+  obj = [familyCopy members];
   v6 = [obj countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v6)
   {
@@ -1377,27 +1377,27 @@ LABEL_18:
         }
 
         v8 = *(*(&v24 + 1) + 8 * i);
-        v9 = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
-        v10 = [v8 dsid];
-        v11 = [NSString stringWithFormat:@"%@", v10];
-        v12 = [v9 isEqualToString:v11];
+        normalizedDSID = [(ACAccount *)self->_loggedInUserAccount normalizedDSID];
+        dsid = [v8 dsid];
+        v11 = [NSString stringWithFormat:@"%@", dsid];
+        v12 = [normalizedDSID isEqualToString:v11];
 
         if (v12)
         {
           v13 = [BYODUser alloc];
           v28[0] = @"dsid";
-          v14 = [v8 dsid];
-          v15 = [NSString stringWithFormat:@"%@", v14];
+          dsid2 = [v8 dsid];
+          v15 = [NSString stringWithFormat:@"%@", dsid2];
           v29[0] = v15;
           v28[1] = @"firstName";
-          v16 = [v8 firstName];
-          v29[1] = v16;
+          firstName = [v8 firstName];
+          v29[1] = firstName;
           v28[2] = @"lastName";
-          v17 = [v8 lastName];
-          v29[2] = v17;
+          lastName = [v8 lastName];
+          v29[2] = lastName;
           v28[3] = @"fullName";
-          v18 = [v8 fullName];
-          v29[3] = v18;
+          fullName = [v8 fullName];
+          v29[3] = fullName;
           v19 = [NSDictionary dictionaryWithObjects:v29 forKeys:v28 count:4];
           v20 = [(BYODUser *)v13 initWithDictionary:v19];
 
@@ -1412,9 +1412,9 @@ LABEL_18:
   }
 }
 
-- (BOOL)_isRowEditableAtIndexPath:(id)a3
+- (BOOL)_isRowEditableAtIndexPath:(id)path
 {
-  v3 = [(BYODAddEmailViewController *)self specifierAtIndexPath:a3];
+  v3 = [(BYODAddEmailViewController *)self specifierAtIndexPath:path];
   v4 = [v3 propertyForKey:@"editableSpecifier"];
   v5 = [v4 isEqual:&__kCFBooleanTrue];
 
@@ -1431,11 +1431,11 @@ LABEL_18:
   return v10;
 }
 
-- (void)chooseContactController:(id)a3 didSelectContact:(id)a4
+- (void)chooseContactController:(id)controller didSelectContact:(id)contact
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 kind] && objc_msgSend(v7, "kind") != &dword_0 + 1)
+  controllerCopy = controller;
+  contactCopy = contact;
+  if ([contactCopy kind] && objc_msgSend(contactCopy, "kind") != &dword_0 + 1)
   {
     v9 = +[BYODAddEmailViewController log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1446,8 +1446,8 @@ LABEL_18:
 
   else
   {
-    v8 = [v6 chooseContactViewController];
-    [(BYODAddEmailViewController *)self _addDomainMemberWithContact:v7 withController:v8];
+    chooseContactViewController = [controllerCopy chooseContactViewController];
+    [(BYODAddEmailViewController *)self _addDomainMemberWithContact:contactCopy withController:chooseContactViewController];
   }
 }
 

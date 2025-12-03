@@ -11,15 +11,15 @@
 - (NSArray)images;
 - (NSArray)textElements;
 - (NSString)columnItemType;
-- (void)_computeTitle:(id *)a3 subtitle:(id *)a4 secondarySubtitle:(id *)a5 unstyledTextElements:(id *)a6;
+- (void)_computeTitle:(id *)title subtitle:(id *)subtitle secondarySubtitle:(id *)secondarySubtitle unstyledTextElements:(id *)elements;
 @end
 
 @implementation IKColumnItemLockupElement
 
 - (NSString)columnItemType
 {
-  v3 = [(IKViewElement *)self attributes];
-  v4 = [v3 objectForKey:@"type"];
+  attributes = [(IKViewElement *)self attributes];
+  v4 = [attributes objectForKey:@"type"];
   v5 = v4;
   if (v4)
   {
@@ -28,9 +28,9 @@
 
   else
   {
-    v7 = [(IKViewElement *)self style];
-    v8 = [v7 columnItemType];
-    v6 = [v8 copy];
+    style = [(IKViewElement *)self style];
+    columnItemType = [style columnItemType];
+    v6 = [columnItemType copy];
   }
 
   return v6;
@@ -65,10 +65,10 @@
 
 - (IKImageElement)image
 {
-  v2 = [(IKColumnItemLockupElement *)self images];
-  v3 = [v2 firstObject];
+  images = [(IKColumnItemLockupElement *)self images];
+  firstObject = [images firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSArray)images
@@ -82,20 +82,20 @@
 
 - (IKTextBadgeAttachment)titleBadge
 {
-  v2 = [(IKColumnItemLockupElement *)self title];
-  v3 = [v2 badges];
-  v4 = [v3 firstObject];
+  title = [(IKColumnItemLockupElement *)self title];
+  badges = [title badges];
+  firstObject = [badges firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (IKTextBadgeAttachment)subtitleBadge
 {
-  v2 = [(IKColumnItemLockupElement *)self subtitle];
-  v3 = [v2 badges];
-  v4 = [v3 firstObject];
+  subtitle = [(IKColumnItemLockupElement *)self subtitle];
+  badges = [subtitle badges];
+  firstObject = [badges firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (NSArray)textElements
@@ -109,32 +109,32 @@
 
 - (BOOL)hasSeparator
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"separator"];
-  v4 = [v3 ik_attributeBoolValue];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"separator"];
+  ik_attributeBoolValue = [v3 ik_attributeBoolValue];
 
-  return v4;
+  return ik_attributeBoolValue;
 }
 
 - (BOOL)isWatchlisted
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"watchlisted"];
-  v4 = [v3 ik_attributeBoolValue];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"watchlisted"];
+  ik_attributeBoolValue = [v3 ik_attributeBoolValue];
 
-  return v4;
+  return ik_attributeBoolValue;
 }
 
 - (BOOL)onlyVisibleOnColumnHighlight
 {
-  v2 = [(IKViewElement *)self attributes];
-  v3 = [v2 objectForKeyedSubscript:@"onlyVisibleOnColumnHighlight"];
-  v4 = [v3 ik_attributeBoolValue];
+  attributes = [(IKViewElement *)self attributes];
+  v3 = [attributes objectForKeyedSubscript:@"onlyVisibleOnColumnHighlight"];
+  ik_attributeBoolValue = [v3 ik_attributeBoolValue];
 
-  return v4;
+  return ik_attributeBoolValue;
 }
 
-- (void)_computeTitle:(id *)a3 subtitle:(id *)a4 secondarySubtitle:(id *)a5 unstyledTextElements:(id *)a6
+- (void)_computeTitle:(id *)title subtitle:(id *)subtitle secondarySubtitle:(id *)secondarySubtitle unstyledTextElements:(id *)elements
 {
   v34 = *MEMORY[0x277D85DE8];
   v8 = [(IKViewElement *)self childElementsWithType:138];
@@ -196,21 +196,21 @@
   if (v14 | v13)
   {
     v20 = 0;
-    v22 = a3;
-    v21 = a4;
-    if (!a3)
+    titleCopy2 = title;
+    subtitleCopy2 = subtitle;
+    if (!title)
     {
       goto LABEL_28;
     }
 
 LABEL_27:
     v23 = v14;
-    *v22 = v14;
+    *titleCopy2 = v14;
     goto LABEL_28;
   }
 
-  v22 = a3;
-  v21 = a4;
+  titleCopy2 = title;
+  subtitleCopy2 = subtitle;
   if ([v9 count])
   {
     v14 = [v9 objectAtIndexedSubscript:0];
@@ -218,7 +218,7 @@ LABEL_27:
     {
       v20 = 0;
       v13 = 0;
-      if (!a3)
+      if (!title)
       {
         goto LABEL_28;
       }
@@ -230,7 +230,7 @@ LABEL_27:
     if ([v9 count] < 3)
     {
       v20 = 0;
-      if (a3)
+      if (title)
       {
         goto LABEL_27;
       }
@@ -239,7 +239,7 @@ LABEL_27:
     else
     {
       v20 = [v9 objectAtIndexedSubscript:2];
-      if (a3)
+      if (title)
       {
         goto LABEL_27;
       }
@@ -251,28 +251,28 @@ LABEL_27:
     v20 = 0;
     v13 = 0;
     v14 = 0;
-    if (a3)
+    if (title)
     {
       goto LABEL_27;
     }
   }
 
 LABEL_28:
-  if (v21)
+  if (subtitleCopy2)
   {
     v24 = v13;
-    *v21 = v13;
+    *subtitleCopy2 = v13;
   }
 
-  if (a5)
+  if (secondarySubtitle)
   {
     v25 = v20;
-    *a5 = v20;
+    *secondarySubtitle = v20;
   }
 
-  if (a6)
+  if (elements)
   {
-    *a6 = [v9 copy];
+    *elements = [v9 copy];
   }
 
   v26 = *MEMORY[0x277D85DE8];

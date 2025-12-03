@@ -1,54 +1,54 @@
 @interface TRIExperimentPostLaunchRecorder
-+ (id)recorderFromContext:(id)a3;
-- (BOOL)recordEvent:(id)a3;
-- (TRIExperimentPostLaunchRecorder)initWithStorage:(id)a3 logger:(id)a4;
++ (id)recorderFromContext:(id)context;
+- (BOOL)recordEvent:(id)event;
+- (TRIExperimentPostLaunchRecorder)initWithStorage:(id)storage logger:(id)logger;
 @end
 
 @implementation TRIExperimentPostLaunchRecorder
 
-- (TRIExperimentPostLaunchRecorder)initWithStorage:(id)a3 logger:(id)a4
+- (TRIExperimentPostLaunchRecorder)initWithStorage:(id)storage logger:(id)logger
 {
-  v7 = a3;
-  v8 = a4;
+  storageCopy = storage;
+  loggerCopy = logger;
   v12.receiver = self;
   v12.super_class = TRIExperimentPostLaunchRecorder;
   v9 = [(TRIExperimentPostLaunchRecorder *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_storage, a3);
-    objc_storeStrong(&v10->_logger, a4);
+    objc_storeStrong(&v9->_storage, storage);
+    objc_storeStrong(&v10->_logger, logger);
   }
 
   return v10;
 }
 
-+ (id)recorderFromContext:(id)a3
++ (id)recorderFromContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   v4 = [TRIExperimentPostLaunchLogger alloc];
-  v5 = [v3 client];
-  v6 = [(TRIExperimentPostLaunchLogger *)v4 initWithClient:v5];
+  client = [contextCopy client];
+  v6 = [(TRIExperimentPostLaunchLogger *)v4 initWithClient:client];
 
   v7 = [TRIExperimentPostLaunchRecorder alloc];
-  v8 = [v3 experimentHistoryDatabase];
+  experimentHistoryDatabase = [contextCopy experimentHistoryDatabase];
 
-  v9 = [(TRIExperimentPostLaunchRecorder *)v7 initWithStorage:v8 logger:v6];
+  v9 = [(TRIExperimentPostLaunchRecorder *)v7 initWithStorage:experimentHistoryDatabase logger:v6];
 
   return v9;
 }
 
-- (BOOL)recordEvent:(id)a3
+- (BOOL)recordEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v9 = 0;
-  v5 = [(TRIExperimentPostLaunchRecorder *)self storage];
-  v6 = [v5 storeExperimentEvent:v4 isValidTransition:&v9];
+  storage = [(TRIExperimentPostLaunchRecorder *)self storage];
+  v6 = [storage storeExperimentEvent:eventCopy isValidTransition:&v9];
 
   if (v6 && v9 == 1)
   {
-    v7 = [(TRIExperimentPostLaunchRecorder *)self logger];
-    [v7 logExperimentPostLaunchEvent:v4];
+    logger = [(TRIExperimentPostLaunchRecorder *)self logger];
+    [logger logExperimentPostLaunchEvent:eventCopy];
   }
 
   return v6;

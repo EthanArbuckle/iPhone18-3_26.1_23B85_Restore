@@ -1,18 +1,18 @@
 @interface VISTextDetectionPostProcessConfig
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (VISTextDetectionPostProcessConfig)initWithDictionary:(id)a3;
-- (VISTextDetectionPostProcessConfig)initWithJSON:(id)a3;
+- (VISTextDetectionPostProcessConfig)initWithDictionary:(id)dictionary;
+- (VISTextDetectionPostProcessConfig)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VISTextDetectionPostProcessConfig
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if ([(VISTextDetectionPostProcessConfig *)self enable_text_bounding_box_merge])
   {
     PBDataWriterWriteBOOLField();
@@ -74,21 +74,21 @@
   }
 
   [(VISTextDetectionPostProcessConfig *)self padding_for_text_result_merge];
-  v9 = v11;
+  v9 = toCopy;
   if (v10 != 0.0)
   {
     PBDataWriterWriteFloatField();
-    v9 = v11;
+    v9 = toCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && (enable_text_bounding_box_merge = self->_enable_text_bounding_box_merge, enable_text_bounding_box_merge == objc_msgSend(v4, "enable_text_bounding_box_merge")) && (text_merge_iou_threshold = self->_text_merge_iou_threshold, objc_msgSend(v4, "text_merge_iou_threshold"), text_merge_iou_threshold == v7) && (enable_text_bounding_box_suppress = self->_enable_text_bounding_box_suppress, enable_text_bounding_box_suppress == objc_msgSend(v4, "enable_text_bounding_box_suppress")) && (enable_text_font_size_suppress = self->_enable_text_font_size_suppress, enable_text_font_size_suppress == objc_msgSend(v4, "enable_text_font_size_suppress")) && (font_size_suppress_threshold = self->_font_size_suppress_threshold, objc_msgSend(v4, "font_size_suppress_threshold"), font_size_suppress_threshold == v11) && (enable_text_confidence_suppress = self->_enable_text_confidence_suppress, enable_text_confidence_suppress == objc_msgSend(v4, "enable_text_confidence_suppress")) && (text_confidence_suppress_threshold = self->_text_confidence_suppress_threshold, objc_msgSend(v4, "text_confidence_suppress_threshold"), text_confidence_suppress_threshold == v14) && (enable_text_bbox_size_suppress = self->_enable_text_bbox_size_suppress, enable_text_bbox_size_suppress == objc_msgSend(v4, "enable_text_bbox_size_suppress")) && (text_bbox_size_suppress_threshold = self->_text_bbox_size_suppress_threshold, objc_msgSend(v4, "text_bbox_size_suppress_threshold"), text_bbox_size_suppress_threshold == v17) && (enable_text_negative_objects_suppress = self->_enable_text_negative_objects_suppress, enable_text_negative_objects_suppress == objc_msgSend(v4, "enable_text_negative_objects_suppress")) && (text_suppress_iou_threshold = self->_text_suppress_iou_threshold, objc_msgSend(v4, "text_suppress_iou_threshold"), text_suppress_iou_threshold == v20))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && (enable_text_bounding_box_merge = self->_enable_text_bounding_box_merge, enable_text_bounding_box_merge == objc_msgSend(equalCopy, "enable_text_bounding_box_merge")) && (text_merge_iou_threshold = self->_text_merge_iou_threshold, objc_msgSend(equalCopy, "text_merge_iou_threshold"), text_merge_iou_threshold == v7) && (enable_text_bounding_box_suppress = self->_enable_text_bounding_box_suppress, enable_text_bounding_box_suppress == objc_msgSend(equalCopy, "enable_text_bounding_box_suppress")) && (enable_text_font_size_suppress = self->_enable_text_font_size_suppress, enable_text_font_size_suppress == objc_msgSend(equalCopy, "enable_text_font_size_suppress")) && (font_size_suppress_threshold = self->_font_size_suppress_threshold, objc_msgSend(equalCopy, "font_size_suppress_threshold"), font_size_suppress_threshold == v11) && (enable_text_confidence_suppress = self->_enable_text_confidence_suppress, enable_text_confidence_suppress == objc_msgSend(equalCopy, "enable_text_confidence_suppress")) && (text_confidence_suppress_threshold = self->_text_confidence_suppress_threshold, objc_msgSend(equalCopy, "text_confidence_suppress_threshold"), text_confidence_suppress_threshold == v14) && (enable_text_bbox_size_suppress = self->_enable_text_bbox_size_suppress, enable_text_bbox_size_suppress == objc_msgSend(equalCopy, "enable_text_bbox_size_suppress")) && (text_bbox_size_suppress_threshold = self->_text_bbox_size_suppress_threshold, objc_msgSend(equalCopy, "text_bbox_size_suppress_threshold"), text_bbox_size_suppress_threshold == v17) && (enable_text_negative_objects_suppress = self->_enable_text_negative_objects_suppress, enable_text_negative_objects_suppress == objc_msgSend(equalCopy, "enable_text_negative_objects_suppress")) && (text_suppress_iou_threshold = self->_text_suppress_iou_threshold, objc_msgSend(equalCopy, "text_suppress_iou_threshold"), text_suppress_iou_threshold == v20))
   {
     padding_for_text_result_merge = self->_padding_for_text_result_merge;
-    [v4 padding_for_text_result_merge];
+    [equalCopy padding_for_text_result_merge];
     v21 = padding_for_text_result_merge == v24;
   }
 
@@ -384,41 +384,41 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_enable_text_bbox_size_suppress)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISTextDetectionPostProcessConfig enable_text_bbox_size_suppress](self, "enable_text_bbox_size_suppress")}];
-    [v3 setObject:v4 forKeyedSubscript:@"enableTextBboxSizeSuppress"];
+    [dictionary setObject:v4 forKeyedSubscript:@"enableTextBboxSizeSuppress"];
   }
 
   if (self->_enable_text_bounding_box_merge)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISTextDetectionPostProcessConfig enable_text_bounding_box_merge](self, "enable_text_bounding_box_merge")}];
-    [v3 setObject:v5 forKeyedSubscript:@"enableTextBoundingBoxMerge"];
+    [dictionary setObject:v5 forKeyedSubscript:@"enableTextBoundingBoxMerge"];
   }
 
   if (self->_enable_text_bounding_box_suppress)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISTextDetectionPostProcessConfig enable_text_bounding_box_suppress](self, "enable_text_bounding_box_suppress")}];
-    [v3 setObject:v6 forKeyedSubscript:@"enableTextBoundingBoxSuppress"];
+    [dictionary setObject:v6 forKeyedSubscript:@"enableTextBoundingBoxSuppress"];
   }
 
   if (self->_enable_text_confidence_suppress)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISTextDetectionPostProcessConfig enable_text_confidence_suppress](self, "enable_text_confidence_suppress")}];
-    [v3 setObject:v7 forKeyedSubscript:@"enableTextConfidenceSuppress"];
+    [dictionary setObject:v7 forKeyedSubscript:@"enableTextConfidenceSuppress"];
   }
 
   if (self->_enable_text_font_size_suppress)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISTextDetectionPostProcessConfig enable_text_font_size_suppress](self, "enable_text_font_size_suppress")}];
-    [v3 setObject:v8 forKeyedSubscript:@"enableTextFontSizeSuppress"];
+    [dictionary setObject:v8 forKeyedSubscript:@"enableTextFontSizeSuppress"];
   }
 
   if (self->_enable_text_negative_objects_suppress)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[VISTextDetectionPostProcessConfig enable_text_negative_objects_suppress](self, "enable_text_negative_objects_suppress")}];
-    [v3 setObject:v9 forKeyedSubscript:@"enableTextNegativeObjectsSuppress"];
+    [dictionary setObject:v9 forKeyedSubscript:@"enableTextNegativeObjectsSuppress"];
   }
 
   if (self->_font_size_suppress_threshold != 0.0)
@@ -426,7 +426,7 @@
     v10 = MEMORY[0x1E696AD98];
     [(VISTextDetectionPostProcessConfig *)self font_size_suppress_threshold];
     v11 = [v10 numberWithFloat:?];
-    [v3 setObject:v11 forKeyedSubscript:@"fontSizeSuppressThreshold"];
+    [dictionary setObject:v11 forKeyedSubscript:@"fontSizeSuppressThreshold"];
   }
 
   if (self->_padding_for_text_result_merge != 0.0)
@@ -434,7 +434,7 @@
     v12 = MEMORY[0x1E696AD98];
     [(VISTextDetectionPostProcessConfig *)self padding_for_text_result_merge];
     v13 = [v12 numberWithFloat:?];
-    [v3 setObject:v13 forKeyedSubscript:@"paddingForTextResultMerge"];
+    [dictionary setObject:v13 forKeyedSubscript:@"paddingForTextResultMerge"];
   }
 
   if (self->_text_bbox_size_suppress_threshold != 0.0)
@@ -442,7 +442,7 @@
     v14 = MEMORY[0x1E696AD98];
     [(VISTextDetectionPostProcessConfig *)self text_bbox_size_suppress_threshold];
     v15 = [v14 numberWithFloat:?];
-    [v3 setObject:v15 forKeyedSubscript:@"textBboxSizeSuppressThreshold"];
+    [dictionary setObject:v15 forKeyedSubscript:@"textBboxSizeSuppressThreshold"];
   }
 
   if (self->_text_confidence_suppress_threshold != 0.0)
@@ -450,7 +450,7 @@
     v16 = MEMORY[0x1E696AD98];
     [(VISTextDetectionPostProcessConfig *)self text_confidence_suppress_threshold];
     v17 = [v16 numberWithFloat:?];
-    [v3 setObject:v17 forKeyedSubscript:@"textConfidenceSuppressThreshold"];
+    [dictionary setObject:v17 forKeyedSubscript:@"textConfidenceSuppressThreshold"];
   }
 
   if (self->_text_merge_iou_threshold != 0.0)
@@ -458,7 +458,7 @@
     v18 = MEMORY[0x1E696AD98];
     [(VISTextDetectionPostProcessConfig *)self text_merge_iou_threshold];
     v19 = [v18 numberWithFloat:?];
-    [v3 setObject:v19 forKeyedSubscript:@"textMergeIouThreshold"];
+    [dictionary setObject:v19 forKeyedSubscript:@"textMergeIouThreshold"];
   }
 
   if (self->_text_suppress_iou_threshold != 0.0)
@@ -466,18 +466,18 @@
     v20 = MEMORY[0x1E696AD98];
     [(VISTextDetectionPostProcessConfig *)self text_suppress_iou_threshold];
     v21 = [v20 numberWithFloat:?];
-    [v3 setObject:v21 forKeyedSubscript:@"textSuppressIouThreshold"];
+    [dictionary setObject:v21 forKeyedSubscript:@"textSuppressIouThreshold"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(VISTextDetectionPostProcessConfig *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(VISTextDetectionPostProcessConfig *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -488,40 +488,40 @@
   return v3;
 }
 
-- (VISTextDetectionPostProcessConfig)initWithJSON:(id)a3
+- (VISTextDetectionPostProcessConfig)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(VISTextDetectionPostProcessConfig *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (VISTextDetectionPostProcessConfig)initWithDictionary:(id)a3
+- (VISTextDetectionPostProcessConfig)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v26.receiver = self;
   v26.super_class = VISTextDetectionPostProcessConfig;
   v5 = [(VISTextDetectionPostProcessConfig *)&v26 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"enableTextBoundingBoxMerge"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"enableTextBoundingBoxMerge"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[VISTextDetectionPostProcessConfig setEnable_text_bounding_box_merge:](v5, "setEnable_text_bounding_box_merge:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"textMergeIouThreshold"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"textMergeIouThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -529,21 +529,21 @@
       [(VISTextDetectionPostProcessConfig *)v5 setText_merge_iou_threshold:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"enableTextBoundingBoxSuppress"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"enableTextBoundingBoxSuppress"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[VISTextDetectionPostProcessConfig setEnable_text_bounding_box_suppress:](v5, "setEnable_text_bounding_box_suppress:", [v8 BOOLValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"enableTextFontSizeSuppress"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"enableTextFontSizeSuppress"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[VISTextDetectionPostProcessConfig setEnable_text_font_size_suppress:](v5, "setEnable_text_font_size_suppress:", [v9 BOOLValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"fontSizeSuppressThreshold"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"fontSizeSuppressThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -551,7 +551,7 @@
       [(VISTextDetectionPostProcessConfig *)v5 setFont_size_suppress_threshold:?];
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"enableTextConfidenceSuppress"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"enableTextConfidenceSuppress"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -559,7 +559,7 @@
     }
 
     v21 = v11;
-    v12 = [v4 objectForKeyedSubscript:@"textConfidenceSuppressThreshold"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"textConfidenceSuppressThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -568,7 +568,7 @@
     }
 
     v25 = v6;
-    v13 = [v4 objectForKeyedSubscript:@"enableTextBboxSizeSuppress"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"enableTextBboxSizeSuppress"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -576,7 +576,7 @@
     }
 
     v24 = v7;
-    v14 = [v4 objectForKeyedSubscript:@"textBboxSizeSuppressThreshold"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"textBboxSizeSuppressThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -586,7 +586,7 @@
 
     v22 = v10;
     v23 = v8;
-    v15 = [v4 objectForKeyedSubscript:@"enableTextNegativeObjectsSuppress"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"enableTextNegativeObjectsSuppress"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -594,7 +594,7 @@
     }
 
     v16 = v9;
-    v17 = [v4 objectForKeyedSubscript:@"textSuppressIouThreshold"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"textSuppressIouThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -602,7 +602,7 @@
       [(VISTextDetectionPostProcessConfig *)v5 setText_suppress_iou_threshold:?];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"paddingForTextResultMerge"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"paddingForTextResultMerge"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {

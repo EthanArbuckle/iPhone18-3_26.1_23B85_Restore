@@ -1,15 +1,15 @@
 @interface BKUIPearlCoachingControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)updateInstructionText;
 @end
 
 @implementation BKUIPearlCoachingControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BKUIPearlCoachingController" hasInstanceMethod:@"updateInstructionText" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"BKUIPearlCoachingController" hasInstanceMethod:@"instructionView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BKUIPearlCoachingController" hasInstanceMethod:@"updateInstructionText" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"BKUIPearlCoachingController" hasInstanceMethod:@"instructionView" withFullSignature:{"@", 0}];
 }
 
 - (void)updateInstructionText

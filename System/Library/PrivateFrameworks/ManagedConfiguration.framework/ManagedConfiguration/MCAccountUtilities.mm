@@ -1,7 +1,7 @@
 @interface MCAccountUtilities
-+ (BOOL)hasManagedAccountOfDataclasses:(id)a3;
-+ (id)accountDataclassesForBundleID:(id)a3;
-+ (id)appStoreAccountIdentifierForPersona:(id)a3;
++ (BOOL)hasManagedAccountOfDataclasses:(id)dataclasses;
++ (id)accountDataclassesForBundleID:(id)d;
++ (id)appStoreAccountIdentifierForPersona:(id)persona;
 + (void)checkAccountConsistencyAndReleaseOrphanedAccounts;
 - (MCAccountUtilities)init;
 @end
@@ -27,7 +27,7 @@
 {
   v67 = *MEMORY[0x1E69E9840];
   v2 = +[MCManifest sharedManifest];
-  v3 = [v2 allInstalledProfileIdentifiers];
+  allInstalledProfileIdentifiers = [v2 allInstalledProfileIdentifiers];
   [MEMORY[0x1E6959A48] defaultStore];
   v54 = 0u;
   v55 = 0u;
@@ -43,7 +43,7 @@
     *&v5 = 138543874;
     v44 = v5;
     v45 = v2;
-    v46 = v3;
+    v46 = allInstalledProfileIdentifiers;
     v49 = *v55;
     do
     {
@@ -57,29 +57,29 @@
         }
 
         v9 = *(*(&v54 + 1) + 8 * v8);
-        v10 = [v9 mcConfigurationProfileIdentifier];
+        mcConfigurationProfileIdentifier = [v9 mcConfigurationProfileIdentifier];
         v11 = MCMailAccountManagedTag();
         v12 = [v9 accountPropertyForKey:v11];
 
-        if (v10 | v12)
+        if (mcConfigurationProfileIdentifier | v12)
         {
-          v13 = [v9 mcProfileUUID];
-          v14 = [v9 mcPayloadUUID];
-          if (v10)
+          mcProfileUUID = [v9 mcProfileUUID];
+          mcPayloadUUID = [v9 mcPayloadUUID];
+          if (mcConfigurationProfileIdentifier)
           {
-            if ([v3 containsObject:v10])
+            if ([allInstalledProfileIdentifiers containsObject:mcConfigurationProfileIdentifier])
             {
-              v15 = [v2 installedProfileWithIdentifier:v10];
-              v16 = [v15 UUID];
-              v17 = [v16 isEqualToString:v13];
+              v15 = [v2 installedProfileWithIdentifier:mcConfigurationProfileIdentifier];
+              uUID = [v15 UUID];
+              v17 = [uUID isEqualToString:mcProfileUUID];
 
               if (v17)
               {
-                v18 = [v15 payloadWithUUID:v14];
+                v18 = [v15 payloadWithUUID:mcPayloadUUID];
                 if (v18)
                 {
 
-                  v3 = v46;
+                  allInstalledProfileIdentifiers = v46;
 LABEL_33:
 
                   v7 = v49;
@@ -91,13 +91,13 @@ LABEL_33:
                 if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
                 {
                   v29 = v32;
-                  v30 = [v9 identifier];
+                  identifier = [v9 identifier];
                   *buf = v44;
-                  v59 = v30;
+                  v59 = identifier;
                   v60 = 2114;
-                  v61 = v10;
+                  v61 = mcConfigurationProfileIdentifier;
                   v62 = 2114;
-                  v63 = v14;
+                  v63 = mcPayloadUUID;
                   _os_log_impl(&dword_1A795B000, v29, OS_LOG_TYPE_ERROR, "Found account (%{public}@) with installed profile identifier (%{public}@) whose payload UUID (%{public}@) does not match any payload in that profile", buf, 0x20u);
 LABEL_23:
                 }
@@ -109,16 +109,16 @@ LABEL_23:
                 if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_ERROR))
                 {
                   v29 = v28;
-                  v30 = [v9 identifier];
-                  v31 = [v15 UUID];
+                  identifier = [v9 identifier];
+                  uUID2 = [v15 UUID];
                   *buf = 138544130;
-                  v59 = v30;
+                  v59 = identifier;
                   v60 = 2114;
-                  v61 = v10;
+                  v61 = mcConfigurationProfileIdentifier;
                   v62 = 2114;
-                  v63 = v13;
+                  v63 = mcProfileUUID;
                   v64 = 2114;
-                  v65 = v31;
+                  v65 = uUID2;
                   _os_log_impl(&dword_1A795B000, v29, OS_LOG_TYPE_ERROR, "Found account (%{public}@) with installed profile identifier (%{public}@) whose UUID (%{public}@) does not match that of the profile (%{public}@)", buf, 0x2Au);
 
                   v2 = v45;
@@ -126,15 +126,15 @@ LABEL_23:
                 }
               }
 
-              v3 = v46;
+              allInstalledProfileIdentifiers = v46;
 LABEL_25:
               v33 = _MCLogObjects;
               if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT))
               {
                 v34 = v33;
-                v35 = [v9 identifier];
+                identifier2 = [v9 identifier];
                 *buf = 138543362;
-                v59 = v35;
+                v59 = identifier2;
                 _os_log_impl(&dword_1A795B000, v34, OS_LOG_TYPE_DEFAULT, "Removing profile information from account %{public}@", buf, 0xCu);
               }
 
@@ -151,9 +151,9 @@ LABEL_25:
               if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT))
               {
                 v38 = v37;
-                v39 = [v9 identifier];
+                identifier3 = [v9 identifier];
                 *buf = 138543362;
-                v59 = v39;
+                v59 = identifier3;
                 _os_log_impl(&dword_1A795B000, v38, OS_LOG_TYPE_DEFAULT, "Saving account %{public}@...", buf, 0xCu);
               }
 
@@ -187,11 +187,11 @@ LABEL_25:
             }
 
             v23 = v27;
-            v24 = [v9 identifier];
+            identifier4 = [v9 identifier];
             *buf = 138543618;
-            v59 = v24;
+            v59 = identifier4;
             v60 = 2114;
-            v61 = v10;
+            v61 = mcConfigurationProfileIdentifier;
             v25 = v23;
             v26 = "Found account (%{public}@) with uninstalled profile identifier (%{public}@)";
           }
@@ -205,9 +205,9 @@ LABEL_25:
             }
 
             v23 = v22;
-            v24 = [v9 identifier];
+            identifier4 = [v9 identifier];
             *buf = 138543618;
-            v59 = v24;
+            v59 = identifier4;
             v60 = 2114;
             v61 = v12;
             v25 = v23;
@@ -223,9 +223,9 @@ LABEL_25:
         if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEBUG))
         {
           v20 = v19;
-          v21 = [v9 identifier];
+          identifier5 = [v9 identifier];
           *buf = 138543362;
-          v59 = v21;
+          v59 = identifier5;
           _os_log_impl(&dword_1A795B000, v20, OS_LOG_TYPE_DEBUG, "Skipping unmanaged account with identifier: %{public}@", buf, 0xCu);
         }
 
@@ -273,11 +273,11 @@ void __71__MCAccountUtilities_checkAccountConsistencyAndReleaseOrphanedAccounts_
   v12 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)accountDataclassesForBundleID:(id)a3
++ (id)accountDataclassesForBundleID:(id)d
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (([v3 isEqualToString:@"com.apple.mobilemail"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"com.apple.MailCompositionService"))
+  dCopy = d;
+  if (([dCopy isEqualToString:@"com.apple.mobilemail"] & 1) != 0 || objc_msgSend(dCopy, "isEqualToString:", @"com.apple.MailCompositionService"))
   {
     v15[0] = *MEMORY[0x1E6959B28];
     v4 = MEMORY[0x1E695DEC8];
@@ -289,7 +289,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([v3 isEqualToString:@"com.apple.mobilecal"])
+  if ([dCopy isEqualToString:@"com.apple.mobilecal"])
   {
     v14 = *MEMORY[0x1E6959AE0];
     v4 = MEMORY[0x1E695DEC8];
@@ -297,7 +297,7 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:@"com.apple.mobilenotes"])
+  if ([dCopy isEqualToString:@"com.apple.mobilenotes"])
   {
     v13 = *MEMORY[0x1E6959B40];
     v4 = MEMORY[0x1E695DEC8];
@@ -305,7 +305,7 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  if ([v3 isEqualToString:@"com.apple.reminders"])
+  if ([dCopy isEqualToString:@"com.apple.reminders"])
   {
     v12 = *MEMORY[0x1E6959B48];
     v4 = MEMORY[0x1E695DEC8];
@@ -313,7 +313,7 @@ LABEL_5:
     goto LABEL_4;
   }
 
-  if (([v3 isEqualToString:@"com.apple.MobileAddressBook"] & 1) != 0 || objc_msgSend(v3, "isEqualToString:", @"com.apple.mobilephone"))
+  if (([dCopy isEqualToString:@"com.apple.MobileAddressBook"] & 1) != 0 || objc_msgSend(dCopy, "isEqualToString:", @"com.apple.mobilephone"))
   {
     v10 = *MEMORY[0x1E6959AF8];
     v11[0] = *MEMORY[0x1E6959AF0];
@@ -332,17 +332,17 @@ LABEL_6:
   return v7;
 }
 
-+ (id)appStoreAccountIdentifierForPersona:(id)a3
++ (id)appStoreAccountIdentifierForPersona:(id)persona
 {
   v31[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  personaCopy = persona;
+  if (personaCopy)
   {
-    v4 = [MEMORY[0x1E6959A48] defaultStore];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
     v31[0] = *MEMORY[0x1E6959930];
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:1];
     v25 = 0;
-    v6 = [v4 accountsWithAccountTypeIdentifiers:v5 preloadedProperties:0 error:&v25];
+    v6 = [defaultStore accountsWithAccountTypeIdentifiers:v5 preloadedProperties:0 error:&v25];
     v20 = v25;
 
     v23 = 0u;
@@ -368,16 +368,16 @@ LABEL_6:
           v13 = *(*(&v21 + 1) + 8 * i);
           v14 = [v13 objectForKeyedSubscript:v11];
           objc_opt_class();
-          if ((objc_opt_isKindOfClass() & 1) != 0 && [v14 isEqualToString:v3])
+          if ((objc_opt_isKindOfClass() & 1) != 0 && [v14 isEqualToString:personaCopy])
           {
-            v16 = [v13 ams_DSID];
+            ams_DSID = [v13 ams_DSID];
             v17 = _MCLogObjects;
             if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138543618;
-              v27 = v3;
+              v27 = personaCopy;
               v28 = 2114;
-              v29 = v16;
+              v29 = ams_DSID;
               _os_log_impl(&dword_1A795B000, v17, OS_LOG_TYPE_DEFAULT, "appStoreAccountIdentifierForPersona FOUND persona:%{public}@ -> accountIdentifier:%{public}@", buf, 0x16u);
             }
 
@@ -399,42 +399,42 @@ LABEL_6:
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v27 = v3;
+      v27 = personaCopy;
       _os_log_impl(&dword_1A795B000, v15, OS_LOG_TYPE_DEFAULT, "appStoreAccountIdentifierForPersona NOT FOUND persona:%{public}@", buf, 0xCu);
     }
 
-    v16 = 0;
+    ams_DSID = 0;
 LABEL_18:
   }
 
   else
   {
-    v16 = 0;
+    ams_DSID = 0;
   }
 
   v18 = *MEMORY[0x1E69E9840];
 
-  return v16;
+  return ams_DSID;
 }
 
-+ (BOOL)hasManagedAccountOfDataclasses:(id)a3
++ (BOOL)hasManagedAccountOfDataclasses:(id)dataclasses
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  dataclassesCopy = dataclasses;
+  if (dataclassesCopy)
   {
     v4 = _MCLogObjects;
     if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138543362;
-      v30 = v3;
+      v30 = dataclassesCopy;
       _os_log_impl(&dword_1A795B000, v4, OS_LOG_TYPE_DEBUG, "Checking for managed accounts that have one of these dataclasses: %{public}@", buf, 0xCu);
     }
 
-    v23 = v3;
-    v5 = [MEMORY[0x1E695DFD8] setWithArray:v3];
-    v22 = [MEMORY[0x1E6959A48] defaultStore];
-    [v22 accounts];
+    v23 = dataclassesCopy;
+    v5 = [MEMORY[0x1E695DFD8] setWithArray:dataclassesCopy];
+    defaultStore = [MEMORY[0x1E6959A48] defaultStore];
+    [defaultStore accounts];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
@@ -454,21 +454,21 @@ LABEL_18:
           }
 
           v11 = *(*(&v24 + 1) + 8 * i);
-          v12 = [v11 enabledDataclasses];
-          if ([v12 intersectsSet:v5])
+          enabledDataclasses = [v11 enabledDataclasses];
+          if ([enabledDataclasses intersectsSet:v5])
           {
             v13 = [v11 accountPropertyForKey:@"MCAccountIsManaged"];
-            v14 = [v13 BOOLValue];
+            bOOLValue = [v13 BOOLValue];
 
-            if (v14)
+            if (bOOLValue)
             {
               v17 = _MCLogObjects;
               if (os_log_type_enabled(_MCLogObjects, OS_LOG_TYPE_DEBUG))
               {
                 v18 = v17;
-                v19 = [v11 identifier];
+                identifier = [v11 identifier];
                 *buf = 138543362;
-                v30 = v19;
+                v30 = identifier;
                 _os_log_impl(&dword_1A795B000, v18, OS_LOG_TYPE_DEBUG, "Account %{public}@ found.", buf, 0xCu);
               }
 
@@ -497,7 +497,7 @@ LABEL_18:
 
     v16 = 0;
 LABEL_20:
-    v3 = v23;
+    dataclassesCopy = v23;
   }
 
   else

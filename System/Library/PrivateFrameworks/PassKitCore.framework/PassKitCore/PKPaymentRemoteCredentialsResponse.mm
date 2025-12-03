@@ -1,28 +1,28 @@
 @interface PKPaymentRemoteCredentialsResponse
-- (PKPaymentRemoteCredentialsResponse)initWithData:(id)a3;
+- (PKPaymentRemoteCredentialsResponse)initWithData:(id)data;
 @end
 
 @implementation PKPaymentRemoteCredentialsResponse
 
-- (PKPaymentRemoteCredentialsResponse)initWithData:(id)a3
+- (PKPaymentRemoteCredentialsResponse)initWithData:(id)data
 {
   v32 = *MEMORY[0x1E69E9840];
   v26.receiver = self;
   v26.super_class = PKPaymentRemoteCredentialsResponse;
-  v3 = [(PKWebServiceResponse *)&v26 initWithData:a3];
+  v3 = [(PKWebServiceResponse *)&v26 initWithData:data];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKWebServiceResponse *)v3 JSONObject];
+    jSONObject = [(PKWebServiceResponse *)v3 JSONObject];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(v5, "count")}];
+      v6 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:{objc_msgSend(jSONObject, "count")}];
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
-      v7 = v5;
+      v7 = jSONObject;
       v8 = [v7 countByEnumeratingWithState:&v22 objects:v31 count:16];
       if (v8)
       {

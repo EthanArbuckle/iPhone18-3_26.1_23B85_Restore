@@ -1,5 +1,5 @@
 @interface PKStrokeAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (CGRect)accessibilityFrame;
 - (id)accessibilityLabel;
 - (void)dealloc;
@@ -7,11 +7,11 @@
 
 @implementation PKStrokeAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PKStroke" hasInstanceMethod:@"ink" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"PKStroke" hasInstanceMethod:@"renderBounds" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PKStroke" hasInstanceMethod:@"ink" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"PKStroke" hasInstanceMethod:@"renderBounds" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
 }
 
 - (void)dealloc
@@ -60,9 +60,9 @@
   v2 = [(PKStrokeAccessibility *)self safeValueForKey:@"ink"];
   v3 = __UIAccessibilitySafeClass();
 
-  v4 = [v3 inkType];
-  v5 = [v3 color];
-  if ([v4 isEqualToString:*MEMORY[0x29EDBB9E0]])
+  inkType = [v3 inkType];
+  color = [v3 color];
+  if ([inkType isEqualToString:*MEMORY[0x29EDBB9E0]])
   {
     v6 = @"pen.tool";
 LABEL_7:
@@ -70,13 +70,13 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x29EDBB9E8]])
+  if ([inkType isEqualToString:*MEMORY[0x29EDBB9E8]])
   {
     v6 = @"pencil.tool";
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x29EDBB9D8]])
+  if ([inkType isEqualToString:*MEMORY[0x29EDBB9D8]])
   {
     v6 = @"marker.tool";
     goto LABEL_7;
@@ -84,7 +84,7 @@ LABEL_7:
 
   v7 = 0;
 LABEL_8:
-  v10 = [v5 accessibilityName];
+  accessibilityName = [color accessibilityName];
   v8 = __AXStringForVariables();
 
   return v8;

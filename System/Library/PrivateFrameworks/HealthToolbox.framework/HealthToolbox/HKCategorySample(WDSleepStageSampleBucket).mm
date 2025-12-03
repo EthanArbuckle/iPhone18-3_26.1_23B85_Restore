@@ -6,8 +6,8 @@
 
 - (uint64_t)sleep_belongsInBucket:()WDSleepStageSampleBucket
 {
-  v4 = [a3 predicate];
-  v5 = [v4 evaluateWithObject:a1];
+  predicate = [a3 predicate];
+  v5 = [predicate evaluateWithObject:self];
 
   return v5;
 }

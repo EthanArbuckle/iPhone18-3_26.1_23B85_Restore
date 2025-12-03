@@ -1,13 +1,13 @@
 @interface ATXPosterDescriptorCache
 + (id)sharedInstance;
 - (ATXPosterDescriptorCache)init;
-- (ATXPosterDescriptorCache)initWithPath:(id)a3;
+- (ATXPosterDescriptorCache)initWithPath:(id)path;
 - (NSDictionary)descriptors;
 - (NSSet)allDescriptors;
 - (id)_readDescriptorsFromDisk;
-- (void)registerObserver:(id)a3;
-- (void)unregisterObserver:(id)a3;
-- (void)updateDescriptors:(id)a3;
+- (void)registerObserver:(id)observer;
+- (void)unregisterObserver:(id)observer;
+- (void)updateDescriptors:(id)descriptors;
 @end
 
 @implementation ATXPosterDescriptorCache
@@ -33,25 +33,25 @@ uint64_t __42__ATXPosterDescriptorCache_sharedInstance__block_invoke()
 
 - (ATXPosterDescriptorCache)init
 {
-  v3 = [MEMORY[0x277CEBCB0] posterDescriptorCacheFilePath];
-  v4 = [(ATXPosterDescriptorCache *)self initWithPath:v3];
+  posterDescriptorCacheFilePath = [MEMORY[0x277CEBCB0] posterDescriptorCacheFilePath];
+  v4 = [(ATXPosterDescriptorCache *)self initWithPath:posterDescriptorCacheFilePath];
 
   return v4;
 }
 
-- (ATXPosterDescriptorCache)initWithPath:(id)a3
+- (ATXPosterDescriptorCache)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v18.receiver = self;
   v18.super_class = ATXPosterDescriptorCache;
   v5 = [(ATXPosterDescriptorCache *)&v18 init];
   if (v5)
   {
-    if (v4)
+    if (pathCopy)
     {
       v6 = objc_alloc(MEMORY[0x277CEBC68]);
       v7 = __atxlog_handle_lock_screen();
-      v8 = [v6 initWithCacheFilePath:v4 loggingHandle:v7 debugName:@"poster descriptors"];
+      v8 = [v6 initWithCacheFilePath:pathCopy loggingHandle:v7 debugName:@"poster descriptors"];
       fileCache = v5->_fileCache;
       v5->_fileCache = v8;
     }
@@ -164,16 +164,16 @@ void __42__ATXPosterDescriptorCache_allDescriptors__block_invoke_2(uint64_t a1, 
   }
 }
 
-- (void)updateDescriptors:(id)a3
+- (void)updateDescriptors:(id)descriptors
 {
-  v4 = [a3 copy];
+  v4 = [descriptors copy];
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__ATXPosterDescriptorCache_updateDescriptors___block_invoke;
   v7[3] = &unk_278599A70;
   v8 = v4;
-  v9 = self;
+  selfCopy = self;
   v6 = v4;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
@@ -264,29 +264,29 @@ void __46__ATXPosterDescriptorCache_updateDescriptors___block_invoke(uint64_t a1
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__ATXPosterDescriptorCache_registerObserver___block_invoke;
   v7[3] = &unk_278599A98;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   lock = self->_lock;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __47__ATXPosterDescriptorCache_unregisterObserver___block_invoke;
   v7[3] = &unk_278599A98;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   [(_PASLock *)lock runWithLockAcquired:v7];
 }
 

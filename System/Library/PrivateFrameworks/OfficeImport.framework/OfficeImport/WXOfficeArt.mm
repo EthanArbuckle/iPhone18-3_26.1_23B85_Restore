@@ -1,24 +1,24 @@
 @interface WXOfficeArt
-+ (BOOL)writeWrapTightlyWith:(id)a3 toWriter:(id)a4;
++ (BOOL)writeWrapTightlyWith:(id)with toWriter:(id)writer;
 + (id)relativeHorizontalPositionEnumMap;
 + (id)relativeVerticalPositionEnumMap;
 + (id)textWrappingModeTypeEnumMap;
-+ (void)readClientData:(_xmlNode *)a3 state:(id)a4 to:(id)a5;
-+ (void)readFrom:(_xmlNode *)a3 parentRElement:(_xmlNode *)a4 parentParagraph:(id)a5 state:(id)a6 to:(id)a7;
-+ (void)readOAX:(_xmlNode *)a3 parentRElement:(_xmlNode *)a4 parentParagraph:(id)a5 state:(id)a6 to:(id)a7;
-+ (void)readPosition:(_xmlNode *)a3 state:(id)a4 to:(id)a5 isHorizontal:(BOOL)a6;
-+ (void)readVml:(_xmlNode *)a3 parentRElement:(_xmlNode *)a4 parentParagraph:(id)a5 state:(id)a6 to:(id)a7;
-+ (void)readWrap:(_xmlNode *)a3 state:(id)a4 to:(id)a5;
-+ (void)readWrapDistance:(_xmlNode *)a3 parentElement:(_xmlNode *)a4 state:(id)a5 to:(id)a6;
++ (void)readClientData:(_xmlNode *)data state:(id)state to:(id)to;
++ (void)readFrom:(_xmlNode *)from parentRElement:(_xmlNode *)element parentParagraph:(id)paragraph state:(id)state to:(id)to;
++ (void)readOAX:(_xmlNode *)x parentRElement:(_xmlNode *)element parentParagraph:(id)paragraph state:(id)state to:(id)to;
++ (void)readPosition:(_xmlNode *)position state:(id)state to:(id)to isHorizontal:(BOOL)horizontal;
++ (void)readVml:(_xmlNode *)vml parentRElement:(_xmlNode *)element parentParagraph:(id)paragraph state:(id)state to:(id)to;
++ (void)readWrap:(_xmlNode *)wrap state:(id)state to:(id)to;
++ (void)readWrapDistance:(_xmlNode *)distance parentElement:(_xmlNode *)element state:(id)state to:(id)to;
 + (void)relativeHorizontalPositionEnumMap;
 + (void)relativeVerticalPositionEnumMap;
 + (void)textWrappingModeTypeEnumMap;
-+ (void)writeWrapBottomDistance:(id)a3 to:(id)a4;
-+ (void)writeWrapLeftDistance:(id)a3 to:(id)a4;
-+ (void)writeWrapPolygonChildren:(id)a3 to:(id)a4;
-+ (void)writeWrapRightDistance:(id)a3 to:(id)a4;
-+ (void)writeWrapText:(id)a3 to:(id)a4;
-+ (void)writeWrapTopDistance:(id)a3 to:(id)a4;
++ (void)writeWrapBottomDistance:(id)distance to:(id)to;
++ (void)writeWrapLeftDistance:(id)distance to:(id)to;
++ (void)writeWrapPolygonChildren:(id)children to:(id)to;
++ (void)writeWrapRightDistance:(id)distance to:(id)to;
++ (void)writeWrapText:(id)text to:(id)to;
++ (void)writeWrapTopDistance:(id)distance to:(id)to;
 @end
 
 @implementation WXOfficeArt
@@ -92,45 +92,45 @@ void __42__WXOfficeArt_textWrappingModeTypeEnumMap__block_invoke()
   +[WXOfficeArt textWrappingModeTypeEnumMap]::sTextWrappingModeTypeEnumMap = v0;
 }
 
-+ (void)readFrom:(_xmlNode *)a3 parentRElement:(_xmlNode *)a4 parentParagraph:(id)a5 state:(id)a6 to:(id)a7
++ (void)readFrom:(_xmlNode *)from parentRElement:(_xmlNode *)element parentParagraph:(id)paragraph state:(id)state to:(id)to
 {
   v45[3] = *MEMORY[0x277D85DE8];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v12 text];
-  [v13 setCurrentOfficeArtTextType:{objc_msgSend(v15, "textType")}];
+  paragraphCopy = paragraph;
+  stateCopy = state;
+  toCopy = to;
+  text = [paragraphCopy text];
+  [stateCopy setCurrentOfficeArtTextType:{objc_msgSend(text, "textType")}];
 
-  if (xmlStrEqual(a3->name, "drawing"))
+  if (xmlStrEqual(from->name, "drawing"))
   {
-    [a1 readOAX:a3 parentRElement:a4 parentParagraph:v12 state:v13 to:v14];
+    [self readOAX:from parentRElement:element parentParagraph:paragraphCopy state:stateCopy to:toCopy];
   }
 
   else
   {
-    [a1 readVml:a3 parentRElement:a4 parentParagraph:v12 state:v13 to:v14];
+    [self readVml:from parentRElement:element parentParagraph:paragraphCopy state:stateCopy to:toCopy];
   }
 
-  [v13 setCurrentOfficeArtTextType:0xFFFFFFFFLL];
-  v16 = [v13 drawingState];
-  v44 = [v16 targetBlipCollection];
+  [stateCopy setCurrentOfficeArtTextType:0xFFFFFFFFLL];
+  drawingState = [stateCopy drawingState];
+  targetBlipCollection = [drawingState targetBlipCollection];
 
-  v17 = [v14 drawable];
+  drawable = [toCopy drawable];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v38 = v17;
+    v38 = drawable;
     objc_opt_class();
-    v39 = v17;
-    v18 = [v39 imageProperties];
-    v45[0] = [v18 imageFill];
-    v41 = v13;
-    v42 = v12;
-    v40 = v14;
-    v43 = v18;
-    v45[1] = [v18 fill];
-    v19 = [v18 stroke];
-    v45[2] = [v19 fill];
+    v39 = drawable;
+    imageProperties = [v39 imageProperties];
+    v45[0] = [imageProperties imageFill];
+    v41 = stateCopy;
+    v42 = paragraphCopy;
+    v40 = toCopy;
+    v43 = imageProperties;
+    v45[1] = [imageProperties fill];
+    stroke = [imageProperties stroke];
+    v45[2] = [stroke fill];
 
     v20 = 0;
     while (1)
@@ -151,11 +151,11 @@ void __42__WXOfficeArt_textWrappingModeTypeEnumMap__block_invoke()
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v23 = [v21 pattern];
+          pattern = [v21 pattern];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v22 = v23;
+            v22 = pattern;
           }
 
           else
@@ -166,30 +166,30 @@ void __42__WXOfficeArt_textWrappingModeTypeEnumMap__block_invoke()
           if (v22)
           {
 LABEL_15:
-            v24 = [v22 blipRef];
-            v25 = [v24 index];
-            if (v25)
+            blipRef = [v22 blipRef];
+            index = [blipRef index];
+            if (index)
             {
-              v26 = [v44 blipAtIndex:v25];
+              v26 = [targetBlipCollection blipAtIndex:index];
               v27 = objc_alloc_init(OADBlip);
-              v28 = [v26 mainSubBlip];
-              [(OADBlip *)v27 setMainSubBlip:v28];
+              mainSubBlip = [v26 mainSubBlip];
+              [(OADBlip *)v27 setMainSubBlip:mainSubBlip];
 
-              v29 = [v26 altSubBlip];
-              [(OADBlip *)v27 setAltSubBlip:v29];
+              altSubBlip = [v26 altSubBlip];
+              [(OADBlip *)v27 setAltSubBlip:altSubBlip];
 
               *[(OADBlip *)v27 referenceCount]= 1;
-              v30 = [v26 referenceCount];
-              --*v30;
-              v31 = [v43 imageFill];
-              v32 = [v31 blipRef];
+              referenceCount = [v26 referenceCount];
+              --*referenceCount;
+              imageFill = [v43 imageFill];
+              blipRef2 = [imageFill blipRef];
 
-              v33 = [v32 index];
-              v34 = [v32 name];
-              v35 = [[OADBlipRef alloc] initWithIndex:v33 name:v34 blip:v27];
+              index2 = [blipRef2 index];
+              name = [blipRef2 name];
+              v35 = [[OADBlipRef alloc] initWithIndex:index2 name:name blip:v27];
               [v22 setBlipRef:v35];
-              v36 = [v32 effects];
-              [(OADBlipRef *)v35 setEffects:v36];
+              effects = [blipRef2 effects];
+              [(OADBlipRef *)v35 setEffects:effects];
             }
           }
         }
@@ -203,78 +203,78 @@ LABEL_15:
       if (++v20 == 3)
       {
         v37 = 2;
-        v13 = v41;
-        v12 = v42;
-        v14 = v40;
+        stateCopy = v41;
+        paragraphCopy = v42;
+        toCopy = v40;
         do
         {
         }
 
         while (v37 != -1);
 
-        v17 = v38;
+        drawable = v38;
         break;
       }
     }
   }
 }
 
-+ (void)readOAX:(_xmlNode *)a3 parentRElement:(_xmlNode *)a4 parentParagraph:(id)a5 state:(id)a6 to:(id)a7
++ (void)readOAX:(_xmlNode *)x parentRElement:(_xmlNode *)element parentParagraph:(id)paragraph state:(id)state to:(id)to
 {
-  v18 = a6;
-  v10 = a7;
-  v11 = [v18 WXDrawingNamespace];
-  v12 = OCXFindChild(a3, v11, "anchor");
+  stateCopy = state;
+  toCopy = to;
+  wXDrawingNamespace = [stateCopy WXDrawingNamespace];
+  v12 = OCXFindChild(x, wXDrawingNamespace, "anchor");
 
   if (!v12)
   {
-    v13 = [v18 WXDrawingNamespace];
-    v12 = OCXFindChild(a3, v13, "inline");
+    wXDrawingNamespace2 = [stateCopy WXDrawingNamespace];
+    v12 = OCXFindChild(x, wXDrawingNamespace2, "inline");
   }
 
-  v14 = [v18 drawingState];
-  v15 = [v18 WXDrawingNamespace];
-  v16 = [OAXGraphicalObject readFromParentXmlNode:v12 inNamespace:v15 drawingState:v14];
+  drawingState = [stateCopy drawingState];
+  wXDrawingNamespace3 = [stateCopy WXDrawingNamespace];
+  v16 = [OAXGraphicalObject readFromParentXmlNode:v12 inNamespace:wXDrawingNamespace3 drawingState:drawingState];
 
   if (v16)
   {
-    [v10 setDrawable:v16];
-    v17 = [v16 clientData];
-    [v17 setDrawable:v16];
-    [a1 readClientData:v12 state:v18 to:v17];
-    [v10 setFloating:{objc_msgSend(v17, "floating")}];
+    [toCopy setDrawable:v16];
+    clientData = [v16 clientData];
+    [clientData setDrawable:v16];
+    [self readClientData:v12 state:stateCopy to:clientData];
+    [toCopy setFloating:{objc_msgSend(clientData, "floating")}];
   }
 }
 
-+ (void)readClientData:(_xmlNode *)a3 state:(id)a4 to:(id)a5
++ (void)readClientData:(_xmlNode *)data state:(id)state to:(id)to
 {
-  v60 = a4;
-  v57 = a5;
-  v7 = [v60 WXDrawingNamespace];
-  v8 = OCXFindChild(a3, v7, "docPr");
+  stateCopy = state;
+  toCopy = to;
+  wXDrawingNamespace = [stateCopy WXDrawingNamespace];
+  v8 = OCXFindChild(data, wXDrawingNamespace, "docPr");
 
-  v9 = [v57 drawable];
-  [v9 id];
+  drawable = [toCopy drawable];
+  [drawable id];
   v10 = CXRequiredUnsignedLongAttribute(v8, CXNoNamespace, "id");
-  v11 = [v60 drawingState];
-  v12 = [v11 drawableForShapeId:v10];
+  drawingState = [stateCopy drawingState];
+  v12 = [drawingState drawableForShapeId:v10];
 
   if (v12)
   {
-    v10 = [OADDrawable generateOADDrawableId:v9];
+    v10 = [OADDrawable generateOADDrawableId:drawable];
   }
 
-  [v9 setId:v10];
-  v13 = [v60 drawingState];
-  [v13 setDrawable:v9 forShapeId:v10];
+  [drawable setId:v10];
+  drawingState2 = [stateCopy drawingState];
+  [drawingState2 setDrawable:drawable forShapeId:v10];
 
   v62 = 0;
-  LODWORD(v13) = CXOptionalStringAttribute(v8, CXNoNamespace, "title", &v62);
+  LODWORD(drawingState2) = CXOptionalStringAttribute(v8, CXNoNamespace, "title", &v62);
   v59 = v62;
-  if (v13)
+  if (drawingState2)
   {
-    v14 = [v9 drawableProperties];
-    [v14 setAltTitle:v59];
+    drawableProperties = [drawable drawableProperties];
+    [drawableProperties setAltTitle:v59];
   }
 
   v61 = 0;
@@ -282,23 +282,23 @@ LABEL_15:
   v58 = v61;
   if (v15)
   {
-    v16 = [v9 drawableProperties];
-    [v16 setAltDescription:v58];
+    drawableProperties2 = [drawable drawableProperties];
+    [drawableProperties2 setAltDescription:v58];
   }
 
-  v17 = [v60 WXDrawingNamespace];
-  v18 = OCXFindChild(a3, v17, "extent");
+  wXDrawingNamespace2 = [stateCopy WXDrawingNamespace];
+  v18 = OCXFindChild(data, wXDrawingNamespace2, "extent");
 
   v19 = CXRequiredLongAttribute(v18, CXNoNamespace, "cx");
   v20 = CXRequiredLongAttribute(v18, CXNoNamespace, "cy");
-  v21 = v57;
-  v22 = [v57 drawable];
-  v23 = [v22 drawableProperties];
+  v21 = toCopy;
+  drawable2 = [toCopy drawable];
+  drawableProperties3 = [drawable2 drawableProperties];
 
-  if (![v23 hasOrientedBounds] || (objc_msgSend(v23, "orientedBounds"), (v24 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![drawableProperties3 hasOrientedBounds] || (objc_msgSend(drawableProperties3, "orientedBounds"), (v24 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v24 = objc_alloc_init(OADOrientedBounds);
-    [v23 setOrientedBounds:v24];
+    [drawableProperties3 setOrientedBounds:v24];
   }
 
   [(OADOrientedBounds *)v24 bounds];
@@ -318,42 +318,42 @@ LABEL_15:
     v28 = v26 * v31;
   }
 
-  if (xmlStrEqual(a3->name, "inline"))
+  if (xmlStrEqual(data->name, "inline"))
   {
     [(OADOrientedBounds *)v24 setBounds:*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v27, v28];
   }
 
-  else if (xmlStrEqual(a3->name, "anchor"))
+  else if (xmlStrEqual(data->name, "anchor"))
   {
-    v32 = [v57 createAnchor];
-    v55 = v32;
-    v33 = CXRequiredBoolAttribute(a3, CXNoNamespace, "behindDoc");
-    [v32 setZIndex:{CXRequiredLongAttribute(a3, CXNoNamespace, "relativeHeight")}];
+    createAnchor = [toCopy createAnchor];
+    v55 = createAnchor;
+    v33 = CXRequiredBoolAttribute(data, CXNoNamespace, "behindDoc");
+    [createAnchor setZIndex:{CXRequiredLongAttribute(data, CXNoNamespace, "relativeHeight")}];
     if (v33)
     {
-      [v32 setZIndex:{objc_msgSend(v32, "zIndex") - 503316480}];
+      [createAnchor setZIndex:{objc_msgSend(createAnchor, "zIndex") - 503316480}];
     }
 
-    v34 = [v60 WXDrawingNamespace];
-    v35 = OCXFindChild(a3, v34, "positionH");
+    wXDrawingNamespace3 = [stateCopy WXDrawingNamespace];
+    v35 = OCXFindChild(data, wXDrawingNamespace3, "positionH");
 
     if (v35)
     {
-      v36 = [a1 relativeHorizontalPositionEnumMap];
+      relativeHorizontalPositionEnumMap = [self relativeHorizontalPositionEnumMap];
       v63 = 0;
       NSStringAnyNsProp = sfaxmlGetNSStringAnyNsProp(v35, "relativeFrom", &v63);
       v38 = v63;
       v39 = -130883970;
       if (NSStringAnyNsProp)
       {
-        v39 = [v36 valueForString:v38];
+        v39 = [relativeHorizontalPositionEnumMap valueForString:v38];
       }
 
-      v32 = v55;
+      createAnchor = v55;
       if (v39 != -130883970)
       {
-        v40 = [v57 anchor];
-        v41 = v40;
+        anchor = [toCopy anchor];
+        v41 = anchor;
         if (v39 == 5)
         {
           v42 = 4;
@@ -364,68 +364,68 @@ LABEL_15:
           v42 = v39;
         }
 
-        [v40 setRelativeHorizontalPosition:v42];
+        [anchor setRelativeHorizontalPosition:v42];
       }
 
-      [a1 readPosition:v35 state:v60 to:v55 isHorizontal:1];
+      [self readPosition:v35 state:stateCopy to:v55 isHorizontal:1];
     }
 
-    v43 = [v60 WXDrawingNamespace];
-    v44 = OCXFindChild(a3, v43, "positionV");
+    wXDrawingNamespace4 = [stateCopy WXDrawingNamespace];
+    v44 = OCXFindChild(data, wXDrawingNamespace4, "positionV");
 
     if (v44)
     {
-      v45 = [a1 relativeVerticalPositionEnumMap];
+      relativeVerticalPositionEnumMap = [self relativeVerticalPositionEnumMap];
       v63 = 0;
       v46 = sfaxmlGetNSStringAnyNsProp(v44, "relativeFrom", &v63);
       v47 = v63;
       v48 = -130883970;
       if (v46)
       {
-        v48 = [v45 valueForString:v47];
+        v48 = [relativeVerticalPositionEnumMap valueForString:v47];
       }
 
-      v32 = v55;
+      createAnchor = v55;
       if (v48 != -130883970)
       {
-        v49 = [v57 anchor];
-        [v49 setRelativeVerticalPosition:v48];
+        anchor2 = [toCopy anchor];
+        [anchor2 setRelativeVerticalPosition:v48];
       }
 
-      [a1 readPosition:v44 state:v60 to:v55 isHorizontal:0];
+      [self readPosition:v44 state:stateCopy to:v55 isHorizontal:0];
     }
 
-    v21 = v57;
-    v50 = [v57 anchor];
-    [a1 readWrap:a3 state:v60 to:v50];
+    v21 = toCopy;
+    anchor3 = [toCopy anchor];
+    [self readWrap:data state:stateCopy to:anchor3];
 
-    [v32 bounds];
+    [createAnchor bounds];
     v52 = v51;
     v54 = v53;
     [(OADOrientedBounds *)v24 setBounds:?];
-    [v32 setBounds:{v52, v54, v27, v28}];
+    [createAnchor setBounds:{v52, v54, v27, v28}];
   }
 }
 
-+ (void)readPosition:(_xmlNode *)a3 state:(id)a4 to:(id)a5 isHorizontal:(BOOL)a6
++ (void)readPosition:(_xmlNode *)position state:(id)state to:(id)to isHorizontal:(BOOL)horizontal
 {
-  v6 = a6;
-  v40 = a4;
-  v9 = a5;
-  v10 = [v40 WXDrawingNamespace];
-  v11 = OCXFindChild(a3, v10, "align");
+  horizontalCopy = horizontal;
+  stateCopy = state;
+  toCopy = to;
+  wXDrawingNamespace = [stateCopy WXDrawingNamespace];
+  v11 = OCXFindChild(position, wXDrawingNamespace, "align");
 
-  v12 = [v40 WXDrawingNamespace];
-  v13 = OCXFindChild(a3, v12, "offset");
+  wXDrawingNamespace2 = [stateCopy WXDrawingNamespace];
+  v13 = OCXFindChild(position, wXDrawingNamespace2, "offset");
 
-  v14 = [v40 WXDrawingNamespace];
-  v15 = OCXFindChild(a3, v14, "posOffset");
+  wXDrawingNamespace3 = [stateCopy WXDrawingNamespace];
+  v15 = OCXFindChild(position, wXDrawingNamespace3, "posOffset");
 
   if (v11)
   {
     v16 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:v11];
     v17 = v16;
-    if (v6)
+    if (horizontalCopy)
     {
       if ([v16 isEqualToString:@"left"])
       {
@@ -457,7 +457,7 @@ LABEL_15:
         v18 = 1;
       }
 
-      [v9 setHorizontalPosition:v18];
+      [toCopy setHorizontalPosition:v18];
     }
 
     else
@@ -492,42 +492,42 @@ LABEL_15:
         v28 = 1;
       }
 
-      [v9 setVerticalPosition:v28];
+      [toCopy setVerticalPosition:v28];
     }
   }
 
   else if (v13)
   {
     v17 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:v13];
-    [v9 bounds];
+    [toCopy bounds];
     v22 = v21;
     v24 = v23;
-    if (v6)
+    if (horizontalCopy)
     {
       v25 = v20;
-      v26 = [v17 intValue];
-      [v9 setHorizontalPosition:0];
-      v27 = v26 / 12700.0;
+      intValue = [v17 intValue];
+      [toCopy setHorizontalPosition:0];
+      v27 = intValue / 12700.0;
     }
 
     else
     {
       v27 = v19;
-      v38 = [v17 intValue];
-      [v9 setVerticalPosition:0];
-      v25 = v38 / 12700.0;
+      intValue2 = [v17 intValue];
+      [toCopy setVerticalPosition:0];
+      v25 = intValue2 / 12700.0;
     }
 
-    [v9 setBounds:{v27, v25, v22, v24}];
+    [toCopy setBounds:{v27, v25, v22, v24}];
   }
 
   else if (v15)
   {
     v17 = [objc_alloc(MEMORY[0x277CCACA8]) tc_initWithContentOfXmlNode:v15];
-    [v9 bounds];
+    [toCopy bounds];
     v32 = v31;
     v34 = v33;
-    if (v6)
+    if (horizontalCopy)
     {
       v35 = v30;
       [v17 doubleValue];
@@ -541,7 +541,7 @@ LABEL_15:
       v35 = v39 / 12700.0;
     }
 
-    [v9 setBounds:{v37, v35, v32, v34}];
+    [toCopy setBounds:{v37, v35, v32, v34}];
   }
 
   else
@@ -550,84 +550,84 @@ LABEL_15:
   }
 }
 
-+ (void)readWrap:(_xmlNode *)a3 state:(id)a4 to:(id)a5
++ (void)readWrap:(_xmlNode *)wrap state:(id)state to:(id)to
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 WXDrawingNamespace];
-  v11 = OCXFindChild(a3, v10, "wrapNone");
+  stateCopy = state;
+  toCopy = to;
+  wXDrawingNamespace = [stateCopy WXDrawingNamespace];
+  v11 = OCXFindChild(wrap, wXDrawingNamespace, "wrapNone");
 
   if (v11)
   {
-    [v9 setTextWrappingMode:3];
+    [toCopy setTextWrappingMode:3];
   }
 
   else
   {
-    v12 = [v8 WXDrawingNamespace];
-    v13 = OCXFindChild(a3, v12, "wrapSquare");
+    wXDrawingNamespace2 = [stateCopy WXDrawingNamespace];
+    v13 = OCXFindChild(wrap, wXDrawingNamespace2, "wrapSquare");
 
     if (v13)
     {
-      [v9 setTextWrappingMode:2];
-      [a1 readWrapDistance:v13 parentElement:a3 state:v8 to:v9];
+      [toCopy setTextWrappingMode:2];
+      [self readWrapDistance:v13 parentElement:wrap state:stateCopy to:toCopy];
       v28 = 0;
-      v14 = [a1 textWrappingModeTypeEnumMap];
-      v15 = readEnumProperty<WDATextWrappingModeType>(v13, "wrapText", v14, &v28);
+      textWrappingModeTypeEnumMap = [self textWrappingModeTypeEnumMap];
+      v15 = readEnumProperty<WDATextWrappingModeType>(v13, "wrapText", textWrappingModeTypeEnumMap, &v28);
 
       if (v15)
       {
-        [v9 setTextWrappingModeType:v28];
+        [toCopy setTextWrappingModeType:v28];
       }
     }
 
     else
     {
-      v16 = [v8 WXDrawingNamespace];
-      v17 = OCXFindChild(a3, v16, "wrapThrough");
+      wXDrawingNamespace3 = [stateCopy WXDrawingNamespace];
+      v17 = OCXFindChild(wrap, wXDrawingNamespace3, "wrapThrough");
 
       if (v17)
       {
-        [v9 setTextWrappingMode:5];
-        [a1 readWrapDistance:v17 parentElement:a3 state:v8 to:v9];
+        [toCopy setTextWrappingMode:5];
+        [self readWrapDistance:v17 parentElement:wrap state:stateCopy to:toCopy];
         v27 = 0;
-        v18 = [a1 textWrappingModeTypeEnumMap];
-        v19 = readEnumProperty<WDATextWrappingModeType>(v17, "wrapText", v18, &v27);
+        textWrappingModeTypeEnumMap2 = [self textWrappingModeTypeEnumMap];
+        v19 = readEnumProperty<WDATextWrappingModeType>(v17, "wrapText", textWrappingModeTypeEnumMap2, &v27);
 
         if (v19)
         {
-          [v9 setTextWrappingModeType:v27];
+          [toCopy setTextWrappingModeType:v27];
         }
       }
 
       else
       {
-        v20 = [v8 WXDrawingNamespace];
-        v21 = OCXFindChild(a3, v20, "wrapTight");
+        wXDrawingNamespace4 = [stateCopy WXDrawingNamespace];
+        v21 = OCXFindChild(wrap, wXDrawingNamespace4, "wrapTight");
 
         if (v21)
         {
-          [v9 setTextWrappingMode:4];
-          [a1 readWrapDistance:v21 parentElement:a3 state:v8 to:v9];
+          [toCopy setTextWrappingMode:4];
+          [self readWrapDistance:v21 parentElement:wrap state:stateCopy to:toCopy];
           v26 = 0;
-          v22 = [a1 textWrappingModeTypeEnumMap];
-          v23 = readEnumProperty<WDATextWrappingModeType>(v21, "wrapText", v22, &v26);
+          textWrappingModeTypeEnumMap3 = [self textWrappingModeTypeEnumMap];
+          v23 = readEnumProperty<WDATextWrappingModeType>(v21, "wrapText", textWrappingModeTypeEnumMap3, &v26);
 
           if (v23)
           {
-            [v9 setTextWrappingModeType:v26];
+            [toCopy setTextWrappingModeType:v26];
           }
         }
 
         else
         {
-          v24 = [v8 WXDrawingNamespace];
-          v25 = OCXFindChild(a3, v24, "wrapTopAndBottom");
+          wXDrawingNamespace5 = [stateCopy WXDrawingNamespace];
+          v25 = OCXFindChild(wrap, wXDrawingNamespace5, "wrapTopAndBottom");
 
           if (v25)
           {
-            [v9 setTextWrappingMode:1];
-            [a1 readWrapDistance:v25 parentElement:a3 state:v8 to:v9];
+            [toCopy setTextWrappingMode:1];
+            [self readWrapDistance:v25 parentElement:wrap state:stateCopy to:toCopy];
           }
         }
       }
@@ -635,111 +635,111 @@ LABEL_15:
   }
 }
 
-+ (void)readWrapDistance:(_xmlNode *)a3 parentElement:(_xmlNode *)a4 state:(id)a5 to:(id)a6
++ (void)readWrapDistance:(_xmlNode *)distance parentElement:(_xmlNode *)element state:(id)state to:(id)to
 {
-  v9 = a5;
-  v10 = a6;
+  stateCopy = state;
+  toCopy = to;
   v17 = 0;
-  if (CXOptionalLongAttribute(a3, CXNoNamespace, "distB", &v17) || CXOptionalLongAttribute(a4, CXNoNamespace, "distB", &v17))
+  if (CXOptionalLongAttribute(distance, CXNoNamespace, "distB", &v17) || CXOptionalLongAttribute(element, CXNoNamespace, "distB", &v17))
   {
-    [v10 setWrapDistanceBottom:v17 / 12700.0];
+    [toCopy setWrapDistanceBottom:v17 / 12700.0];
   }
 
-  v11 = [v9 WXDrawingNamespace];
-  v12 = CXOptionalLongAttribute(a3, v11, "distL", &v17);
+  wXDrawingNamespace = [stateCopy WXDrawingNamespace];
+  v12 = CXOptionalLongAttribute(distance, wXDrawingNamespace, "distL", &v17);
 
-  if (v12 || CXOptionalLongAttribute(a4, CXNoNamespace, "distL", &v17))
+  if (v12 || CXOptionalLongAttribute(element, CXNoNamespace, "distL", &v17))
   {
-    [v10 setWrapDistanceLeft:v17 / 12700.0];
+    [toCopy setWrapDistanceLeft:v17 / 12700.0];
   }
 
-  v13 = [v9 WXDrawingNamespace];
-  v14 = CXOptionalLongAttribute(a3, v13, "distR", &v17);
+  wXDrawingNamespace2 = [stateCopy WXDrawingNamespace];
+  v14 = CXOptionalLongAttribute(distance, wXDrawingNamespace2, "distR", &v17);
 
-  if (v14 || CXOptionalLongAttribute(a4, CXNoNamespace, "distR", &v17))
+  if (v14 || CXOptionalLongAttribute(element, CXNoNamespace, "distR", &v17))
   {
-    [v10 setWrapDistanceRight:v17 / 12700.0];
+    [toCopy setWrapDistanceRight:v17 / 12700.0];
   }
 
-  v15 = [v9 WXDrawingNamespace];
-  v16 = CXOptionalLongAttribute(a3, v15, "distT", &v17);
+  wXDrawingNamespace3 = [stateCopy WXDrawingNamespace];
+  v16 = CXOptionalLongAttribute(distance, wXDrawingNamespace3, "distT", &v17);
 
-  if (v16 || CXOptionalLongAttribute(a4, CXNoNamespace, "distT", &v17))
+  if (v16 || CXOptionalLongAttribute(element, CXNoNamespace, "distT", &v17))
   {
-    [v10 setWrapDistanceTop:v17 / 12700.0];
-  }
-}
-
-+ (void)writeWrapText:(id)a3 to:(id)a4
-{
-  v7 = a3;
-  v5 = a4;
-  if (v7)
-  {
-    v6 = +[WDAAnchor stringForTextWrappingModeType:](WDAAnchor, "stringForTextWrappingModeType:", [v7 textWrappingModeType]);
-    [v5 writeAttribute:@"wrapText" content:v6 prefix:0 ns:0];
+    [toCopy setWrapDistanceTop:v17 / 12700.0];
   }
 }
 
-+ (void)writeWrapLeftDistance:(id)a3 to:(id)a4
++ (void)writeWrapText:(id)text to:(id)to
 {
-  v8 = a3;
-  v5 = a4;
-  if (v8)
+  textCopy = text;
+  toCopy = to;
+  if (textCopy)
   {
-    [v8 wrapDistanceLeft];
+    v6 = +[WDAAnchor stringForTextWrappingModeType:](WDAAnchor, "stringForTextWrappingModeType:", [textCopy textWrappingModeType]);
+    [toCopy writeAttribute:@"wrapText" content:v6 prefix:0 ns:0];
+  }
+}
+
++ (void)writeWrapLeftDistance:(id)distance to:(id)to
+{
+  distanceCopy = distance;
+  toCopy = to;
+  if (distanceCopy)
+  {
+    [distanceCopy wrapDistanceLeft];
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", (v6 * 12700.0)];
-    [v5 writeAttribute:@"distL" content:v7 prefix:0 ns:0];
+    [toCopy writeAttribute:@"distL" content:v7 prefix:0 ns:0];
   }
 }
 
-+ (void)writeWrapRightDistance:(id)a3 to:(id)a4
++ (void)writeWrapRightDistance:(id)distance to:(id)to
 {
-  v8 = a3;
-  v5 = a4;
-  if (v8)
+  distanceCopy = distance;
+  toCopy = to;
+  if (distanceCopy)
   {
-    [v8 wrapDistanceRight];
+    [distanceCopy wrapDistanceRight];
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", (v6 * 12700.0)];
-    [v5 writeAttribute:@"distR" content:v7 prefix:0 ns:0];
+    [toCopy writeAttribute:@"distR" content:v7 prefix:0 ns:0];
   }
 }
 
-+ (void)writeWrapTopDistance:(id)a3 to:(id)a4
++ (void)writeWrapTopDistance:(id)distance to:(id)to
 {
-  v8 = a3;
-  v5 = a4;
-  if (v8)
+  distanceCopy = distance;
+  toCopy = to;
+  if (distanceCopy)
   {
-    [v8 wrapDistanceTop];
+    [distanceCopy wrapDistanceTop];
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", (v6 * 12700.0)];
-    [v5 writeAttribute:@"distT" content:v7 prefix:0 ns:0];
+    [toCopy writeAttribute:@"distT" content:v7 prefix:0 ns:0];
   }
 }
 
-+ (void)writeWrapBottomDistance:(id)a3 to:(id)a4
++ (void)writeWrapBottomDistance:(id)distance to:(id)to
 {
-  v8 = a3;
-  v5 = a4;
-  if (v8)
+  distanceCopy = distance;
+  toCopy = to;
+  if (distanceCopy)
   {
-    [v8 wrapDistanceBottom];
+    [distanceCopy wrapDistanceBottom];
     v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"%ld", (v6 * 12700.0)];
-    [v5 writeAttribute:@"distB" content:v7 prefix:0 ns:0];
+    [toCopy writeAttribute:@"distB" content:v7 prefix:0 ns:0];
   }
 }
 
-+ (void)readVml:(_xmlNode *)a3 parentRElement:(_xmlNode *)a4 parentParagraph:(id)a5 state:(id)a6 to:(id)a7
++ (void)readVml:(_xmlNode *)vml parentRElement:(_xmlNode *)element parentParagraph:(id)paragraph state:(id)state to:(id)to
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = a7;
-  [v11 wxoavState];
-  v46 = v48 = v11;
-  [v46 setCurrentParagraph:v10];
-  v13 = [OAVDrawable readDrawablesFromParent:a3 inNamespace:OAVOfficeDrawingNamespace state:v46];
+  paragraphCopy = paragraph;
+  stateCopy = state;
+  toCopy = to;
+  [stateCopy wxoavState];
+  v46 = v48 = stateCopy;
+  [v46 setCurrentParagraph:paragraphCopy];
+  v13 = [OAVDrawable readDrawablesFromParent:vml inNamespace:OAVOfficeDrawingNamespace state:v46];
   [v46 setCurrentParagraph:0];
-  v14 = OCXFindChild(a3, OAVOfficeDrawingNamespace, "OLEObject");
+  v14 = OCXFindChild(vml, OAVOfficeDrawingNamespace, "OLEObject");
   v15 = v14;
   if (!v14)
   {
@@ -747,8 +747,8 @@ LABEL_15:
   }
 
   v16 = CXDefaultStringAttribute(v14, CXNoNamespace, "ProgID", 0);
-  v45 = [v48 packagePart];
-  v47 = [v48 OCXReadRelationshipForNode:v15 packagePart:v45];
+  packagePart = [v48 packagePart];
+  v47 = [v48 OCXReadRelationshipForNode:v15 packagePart:packagePart];
   v17 = [OADOle isProgIDChart:v16];
   if (v47)
   {
@@ -762,13 +762,13 @@ LABEL_15:
 
   if (!v18)
   {
-    v24 = 0;
+    read = 0;
 LABEL_14:
     v27 = objc_alloc_init(OADOle);
     v28 = v27;
-    if (v24)
+    if (read)
     {
-      [(OADOle *)v27 setObject:v24];
+      [(OADOle *)v27 setObject:read];
     }
 
     v25 = v28;
@@ -781,27 +781,27 @@ LABEL_14:
   }
 
   context = objc_autoreleasePoolPush();
-  v44 = [v45 package];
-  v19 = [v47 targetLocation];
-  v20 = [v44 partForLocation:v19];
+  package = [packagePart package];
+  targetLocation = [v47 targetLocation];
+  v20 = [package partForLocation:targetLocation];
 
   v42 = v20;
-  v43 = [v20 data];
+  data = [v20 data];
   if ([v16 hasSuffix:@".12"])
   {
     v21 = [EXReader alloc];
-    v22 = [v48 cancelDelegate];
-    v23 = [(OCDReader *)v21 initWithCancelDelegate:v22];
+    cancelDelegate = [v48 cancelDelegate];
+    cancelDelegate2 = [(OCDReader *)v21 initWithCancelDelegate:cancelDelegate];
 
-    if ([(OCXReader *)v23 start])
+    if ([(OCXReader *)cancelDelegate2 start])
     {
-      [(OCDReader *)v23 setData:v43];
-      v24 = [(EXReader *)v23 read];
+      [(OCDReader *)cancelDelegate2 setData:data];
+      read = [(EXReader *)cancelDelegate2 read];
     }
 
     else
     {
-      v24 = 0;
+      read = 0;
     }
 
     v25 = 0;
@@ -809,13 +809,13 @@ LABEL_14:
 
   else
   {
-    v23 = [v48 cancelDelegate];
-    v25 = [OABOle readFromData:v43 cancel:v23];
-    v24 = 0;
+    cancelDelegate2 = [v48 cancelDelegate];
+    v25 = [OABOle readFromData:data cancel:cancelDelegate2];
+    read = 0;
   }
 
-  v26 = [v47 targetLocation];
-  [v44 resetPartForLocation:v26];
+  targetLocation2 = [v47 targetLocation];
+  [package resetPartForLocation:targetLocation2];
 
   objc_autoreleasePoolPop(context);
   if (!v25)
@@ -850,15 +850,15 @@ LABEL_23:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v12 setDrawable:v37];
-        v38 = [v37 clientData];
-        [v38 setDrawable:v37];
-        [v12 setFloating:{objc_msgSend(v38, "floating")}];
-        v39 = [v38 textBox];
-        if (v39)
+        [toCopy setDrawable:v37];
+        clientData = [v37 clientData];
+        [clientData setDrawable:v37];
+        [toCopy setFloating:{objc_msgSend(clientData, "floating")}];
+        textBox = [clientData textBox];
+        if (textBox)
         {
-          v40 = [v10 document];
-          [v39 setDocument:v40];
+          document = [paragraphCopy document];
+          [textBox setDocument:document];
         }
       }
 
@@ -869,22 +869,22 @@ LABEL_23:
   }
 }
 
-+ (BOOL)writeWrapTightlyWith:(id)a3 toWriter:(id)a4
++ (BOOL)writeWrapTightlyWith:(id)with toWriter:(id)writer
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 textWrapPoints];
-  if ([v8 count] < 3)
+  withCopy = with;
+  writerCopy = writer;
+  textWrapPoints = [withCopy textWrapPoints];
+  if ([textWrapPoints count] < 3)
   {
 
     goto LABEL_5;
   }
 
-  if ([v6 textWrappingMode] != 4)
+  if ([withCopy textWrappingMode] != 4)
   {
-    v10 = [v6 textWrappingMode];
+    textWrappingMode = [withCopy textWrappingMode];
 
-    if (v10 == 5)
+    if (textWrappingMode == 5)
     {
       goto LABEL_7;
     }
@@ -895,7 +895,7 @@ LABEL_5:
   }
 
 LABEL_7:
-  if ([v6 textWrappingMode] == 4)
+  if ([withCopy textWrappingMode] == 4)
   {
     v11 = @"wrapTight";
   }
@@ -905,33 +905,33 @@ LABEL_7:
     v11 = @"wrapThrough";
   }
 
-  [v7 startElement:v11 prefix:@"wp" ns:0];
-  [a1 writeWrapText:v6 to:v7];
-  [a1 writeWrapLeftDistance:v6 to:v7];
-  [a1 writeWrapRightDistance:v6 to:v7];
-  [v7 startElement:@"wrapPolygon" prefix:@"wp" ns:0];
-  [v7 writeAttribute:@"edited" BOOLContent:1 prefix:0 ns:0];
-  v12 = [v6 textWrapPoints];
-  [a1 writeWrapPolygonChildren:v12 to:v7];
+  [writerCopy startElement:v11 prefix:@"wp" ns:0];
+  [self writeWrapText:withCopy to:writerCopy];
+  [self writeWrapLeftDistance:withCopy to:writerCopy];
+  [self writeWrapRightDistance:withCopy to:writerCopy];
+  [writerCopy startElement:@"wrapPolygon" prefix:@"wp" ns:0];
+  [writerCopy writeAttribute:@"edited" BOOLContent:1 prefix:0 ns:0];
+  textWrapPoints2 = [withCopy textWrapPoints];
+  [self writeWrapPolygonChildren:textWrapPoints2 to:writerCopy];
 
-  [v7 endElement];
-  [v7 endElement];
+  [writerCopy endElement];
+  [writerCopy endElement];
   v9 = 1;
 LABEL_11:
 
   return v9;
 }
 
-+ (void)writeWrapPolygonChildren:(id)a3 to:(id)a4
++ (void)writeWrapPolygonChildren:(id)children to:(id)to
 {
-  v16 = a3;
-  v5 = a4;
-  v6 = [v16 count];
+  childrenCopy = children;
+  toCopy = to;
+  v6 = [childrenCopy count];
   if (v6)
   {
     for (i = 0; i != v6; ++i)
     {
-      v8 = [v16 objectAtIndexedSubscript:i];
+      v8 = [childrenCopy objectAtIndexedSubscript:i];
       [v8 CGPointValue];
       v10 = v9;
       v12 = v11;
@@ -966,10 +966,10 @@ LABEL_11:
         v15 = @"start";
       }
 
-      [v5 startElement:v15 prefix:@"wp" ns:0];
-      [v5 writeAttribute:@"x" intContent:v13 prefix:0 ns:0];
-      [v5 writeAttribute:@"y" intContent:v14 prefix:0 ns:0];
-      [v5 endElement];
+      [toCopy startElement:v15 prefix:@"wp" ns:0];
+      [toCopy writeAttribute:@"x" intContent:v13 prefix:0 ns:0];
+      [toCopy writeAttribute:@"y" intContent:v14 prefix:0 ns:0];
+      [toCopy endElement];
     }
   }
 }

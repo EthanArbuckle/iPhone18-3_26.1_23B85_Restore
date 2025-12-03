@@ -168,7 +168,7 @@ LABEL_28:
       if (!v13)
       {
 LABEL_34:
-        v56 = [(PISmartColorFilterHDR *)self _kernelCast];
+        _kernelCast = [(PISmartColorFilterHDR *)self _kernelCast];
         [(CIImage *)v3 extent];
         v58 = v57;
         v60 = v59;
@@ -186,22 +186,22 @@ LABEL_34:
         v69 = [MEMORY[0x1E696AD98] numberWithFloat:v68];
         v76[4] = v69;
         v70 = [MEMORY[0x1E695DEC8] arrayWithObjects:v76 count:5];
-        v71 = [v56 applyWithExtent:v70 arguments:{v58, v60, v62, v64}];
+        v71 = [_kernelCast applyWithExtent:v70 arguments:{v58, v60, v62, v64}];
 
         v3 = v71;
         goto LABEL_35;
       }
 
 LABEL_33:
-      v55 = [(CIImage *)v3 imageByUnpremultiplyingAlpha];
+      imageByUnpremultiplyingAlpha = [(CIImage *)v3 imageByUnpremultiplyingAlpha];
 
-      v3 = v55;
+      v3 = imageByUnpremultiplyingAlpha;
       goto LABEL_34;
     }
 
-    v16 = [(CIImage *)v10 imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha2 = [(CIImage *)v10 imageByUnpremultiplyingAlpha];
 
-    v3 = v16;
+    v3 = imageByUnpremultiplyingAlpha2;
     goto LABEL_17;
   }
 
@@ -215,7 +215,7 @@ LABEL_33:
     v14 = v5 * 3.0 + 1.0;
   }
 
-  v15 = [(CIImage *)v10 imageByUnpremultiplyingAlpha];
+  imageByUnpremultiplyingAlpha3 = [(CIImage *)v10 imageByUnpremultiplyingAlpha];
 
   if (v14 >= 1.0)
   {
@@ -227,12 +227,12 @@ LABEL_33:
     [(PISmartColorFilterHDR *)self _kernelV_lt1];
   }
   v17 = ;
-  [v15 extent];
+  [imageByUnpremultiplyingAlpha3 extent];
   v19 = v18;
   v21 = v20;
   v23 = v22;
   v25 = v24;
-  v81[0] = v15;
+  v81[0] = imageByUnpremultiplyingAlpha3;
   v26 = [MEMORY[0x1E696AD98] numberWithDouble:v14];
   v81[1] = v26;
   v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v81 count:2];
@@ -250,7 +250,7 @@ LABEL_17:
       v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v79 forKeys:&v78 count:1];
       v42 = [(CIImage *)v3 imageByApplyingFilter:@"CIVibrance" withInputParameters:v41];
 
-      v29 = [(PISmartColorFilterHDR *)self _kernelCNeg];
+      _kernelCNeg = [(PISmartColorFilterHDR *)self _kernelCNeg];
       [(CIImage *)v42 extent];
       v31 = v43;
       v33 = v44;
@@ -265,7 +265,7 @@ LABEL_17:
 
     else
     {
-      v29 = [(PISmartColorFilterHDR *)self _kernelCPos];
+      _kernelCNeg = [(PISmartColorFilterHDR *)self _kernelCPos];
       [(CIImage *)v3 extent];
       v31 = v30;
       v33 = v32;
@@ -278,7 +278,7 @@ LABEL_17:
     }
 
     v47 = [MEMORY[0x1E695DEC8] arrayWithObjects:v39 count:2];
-    v48 = [v29 applyWithExtent:v47 arguments:{v31, v33, v35, v37}];
+    v48 = [_kernelCNeg applyWithExtent:v47 arguments:{v31, v33, v35, v37}];
 
     v3 = v48;
   }
@@ -290,9 +290,9 @@ LABEL_17:
   }
 
 LABEL_35:
-  v72 = [(CIImage *)v3 imageByPremultiplyingAlpha];
+  imageByPremultiplyingAlpha = [(CIImage *)v3 imageByPremultiplyingAlpha];
 
-  v3 = v72;
+  v3 = imageByPremultiplyingAlpha;
 LABEL_36:
 
   return v3;

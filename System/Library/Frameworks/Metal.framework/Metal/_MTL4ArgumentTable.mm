@@ -1,10 +1,10 @@
 @interface _MTL4ArgumentTable
-- (_MTL4ArgumentTable)initWithDescriptor:(id)a3 device:(id)a4;
+- (_MTL4ArgumentTable)initWithDescriptor:(id)descriptor device:(id)device;
 @end
 
 @implementation _MTL4ArgumentTable
 
-- (_MTL4ArgumentTable)initWithDescriptor:(id)a3 device:(id)a4
+- (_MTL4ArgumentTable)initWithDescriptor:(id)descriptor device:(id)device
 {
   v9.receiver = self;
   v9.super_class = _MTL4ArgumentTable;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_device = a4;
-    -[_MTLObjectWithLabel setLabel:](v6, "setLabel:", [a3 label]);
+    v6->_device = device;
+    -[_MTLObjectWithLabel setLabel:](v6, "setLabel:", [descriptor label]);
   }
 
   return v7;

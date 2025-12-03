@@ -1,34 +1,34 @@
 @interface HUAccessorySceneListContentItem
-- (HUAccessorySceneListContentItem)initWithContentSource:(unint64_t)a3 serviceLikeItem:(id)a4 home:(id)a5;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (HUAccessorySceneListContentItem)initWithContentSource:(unint64_t)source serviceLikeItem:(id)item home:(id)home;
+- (id)_subclass_updateWithOptions:(id)options;
 @end
 
 @implementation HUAccessorySceneListContentItem
 
-- (HUAccessorySceneListContentItem)initWithContentSource:(unint64_t)a3 serviceLikeItem:(id)a4 home:(id)a5
+- (HUAccessorySceneListContentItem)initWithContentSource:(unint64_t)source serviceLikeItem:(id)item home:(id)home
 {
-  v9 = a4;
-  v10 = a5;
+  itemCopy = item;
+  homeCopy = home;
   v14.receiver = self;
   v14.super_class = HUAccessorySceneListContentItem;
   v11 = [(HUAccessorySceneListContentItem *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    v11->_contentSource = a3;
-    objc_storeStrong(&v11->_serviceLikeItem, a4);
-    objc_storeStrong(&v12->_home, a5);
+    v11->_contentSource = source;
+    objc_storeStrong(&v11->_serviceLikeItem, item);
+    objc_storeStrong(&v12->_home, home);
   }
 
   return v12;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = [(HUAccessorySceneListContentItem *)self contentSource];
-  v5 = [(HUAccessorySceneListContentItem *)self serviceLikeItem];
-  v6 = [(HUAccessorySceneListContentItem *)self home];
-  v7 = [HUAccessorySceneListContentItemManager computeNumberOfItemsToDisplayForContentSource:v4 serviceLikeItem:v5 home:v6];
+  contentSource = [(HUAccessorySceneListContentItem *)self contentSource];
+  serviceLikeItem = [(HUAccessorySceneListContentItem *)self serviceLikeItem];
+  home = [(HUAccessorySceneListContentItem *)self home];
+  v7 = [HUAccessorySceneListContentItemManager computeNumberOfItemsToDisplayForContentSource:contentSource serviceLikeItem:serviceLikeItem home:home];
 
   v8 = [v7 flatMap:&__block_literal_global_212];
 

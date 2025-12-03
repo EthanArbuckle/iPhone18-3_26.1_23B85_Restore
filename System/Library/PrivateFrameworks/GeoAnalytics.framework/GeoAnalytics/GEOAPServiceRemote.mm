@@ -1,19 +1,19 @@
 @interface GEOAPServiceRemote
-+ (id)_daemonConnectionWithExportedClient:(uint64_t)a1;
-+ (id)_daemonConnectionWithExportedProtocol:(id)a3 instance:(id)a4;
-+ (id)_daemonConnectionWithMapsDebugPanelExportedClient:(uint64_t)a1;
++ (id)_daemonConnectionWithExportedClient:(uint64_t)client;
++ (id)_daemonConnectionWithExportedProtocol:(id)protocol instance:(id)instance;
++ (id)_daemonConnectionWithMapsDebugPanelExportedClient:(uint64_t)client;
 - (GEOAPServiceRemote)init;
 - (id)_sharedDaemonConnection;
 - (void)dealloc;
 - (void)flushEvalData;
-- (void)flushUploadHistoryWithCompletion:(id)a3;
-- (void)reportDailySettings:(id)a3 completion:(id)a4;
-- (void)reportLogMsg:(id)a3 uploadBatchId:(unint64_t)a4 completion:(id)a5;
+- (void)flushUploadHistoryWithCompletion:(id)completion;
+- (void)reportDailySettings:(id)settings completion:(id)completion;
+- (void)reportLogMsg:(id)msg uploadBatchId:(unint64_t)id completion:(id)completion;
 - (void)runAggregationTasks;
-- (void)showEvalDataWithVisitorBlock:(id)a3;
-- (void)showInflightUploadsWithVisitorBlock:(id)a3 completion:(id)a4;
-- (void)showUploadCounts:(id)a3;
-- (void)streamWithLogMsgBlock:(id)a3 dailyUsageBlock:(id)a4 monthlyUsageBlock:(id)a5;
+- (void)showEvalDataWithVisitorBlock:(id)block;
+- (void)showInflightUploadsWithVisitorBlock:(id)block completion:(id)completion;
+- (void)showUploadCounts:(id)counts;
+- (void)streamWithLogMsgBlock:(id)block dailyUsageBlock:(id)usageBlock monthlyUsageBlock:(id)monthlyUsageBlock;
 @end
 
 @implementation GEOAPServiceRemote
@@ -71,9 +71,9 @@
     [v6 setInvalidationHandler:v10];
     [v6 resume];
     objc_storeStrong(&self->_conn, v6);
-    v7 = [(NSXPCConnection *)self->_conn remoteObjectProxy];
+    remoteObjectProxy = [(NSXPCConnection *)self->_conn remoteObjectProxy];
     v8 = self->_daemonSvc;
-    self->_daemonSvc = v7;
+    self->_daemonSvc = remoteObjectProxy;
 
     v4 = self->_daemonSvc;
   }
@@ -83,25 +83,25 @@
   return v4;
 }
 
-- (void)showUploadCounts:(id)a3
+- (void)showUploadCounts:(id)counts
 {
-  v4 = a3;
-  v5 = [(GEOAPServiceRemote *)self _sharedDaemonConnection];
-  [v5 showUploadCounts:v4];
+  countsCopy = counts;
+  _sharedDaemonConnection = [(GEOAPServiceRemote *)self _sharedDaemonConnection];
+  [_sharedDaemonConnection showUploadCounts:countsCopy];
 }
 
-- (void)flushUploadHistoryWithCompletion:(id)a3
+- (void)flushUploadHistoryWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(GEOAPServiceRemote *)self _sharedDaemonConnection];
-  [v5 flushUploadHistoryWithCompletion:v4];
+  completionCopy = completion;
+  _sharedDaemonConnection = [(GEOAPServiceRemote *)self _sharedDaemonConnection];
+  [_sharedDaemonConnection flushUploadHistoryWithCompletion:completionCopy];
 }
 
-- (void)showInflightUploadsWithVisitorBlock:(id)a3 completion:(id)a4
+- (void)showInflightUploadsWithVisitorBlock:(id)block completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[GEOAPShowUploadInfoHandler alloc] initWithInflightVisitorBlock:v6 completion:v5];
+  completionCopy = completion;
+  blockCopy = block;
+  v7 = [[GEOAPShowUploadInfoHandler alloc] initWithInflightVisitorBlock:blockCopy completion:completionCopy];
 
   [(GEOAPShowUploadInfoHandler *)v7 showInflight];
 }
@@ -117,22 +117,22 @@
     _os_log_impl(&dword_1AB634000, v3, OS_LOG_TYPE_DEBUG, "%s", &v6, 0xCu);
   }
 
-  v4 = [(GEOAPServiceRemote *)self _sharedDaemonConnection];
-  [v4 runAggregationTasks];
+  _sharedDaemonConnection = [(GEOAPServiceRemote *)self _sharedDaemonConnection];
+  [_sharedDaemonConnection runAggregationTasks];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)streamWithLogMsgBlock:(id)a3 dailyUsageBlock:(id)a4 monthlyUsageBlock:(id)a5
+- (void)streamWithLogMsgBlock:(id)block dailyUsageBlock:(id)usageBlock monthlyUsageBlock:(id)monthlyUsageBlock
 {
   v33 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  monthlyUsageBlockCopy = monthlyUsageBlock;
+  usageBlockCopy = usageBlock;
+  blockCopy = block;
   v10 = [GEOAPShowEvalHandler alloc];
-  v11 = v9;
-  v12 = v8;
-  v13 = v7;
+  v11 = blockCopy;
+  v12 = usageBlockCopy;
+  v13 = monthlyUsageBlockCopy;
   if (v10)
   {
     v30.receiver = v10;
@@ -169,8 +169,8 @@
 
   if (v10)
   {
-    v24 = [(NSXPCConnection *)v10->_xpcConn remoteObjectProxy];
-    [v24 streamEvalData];
+    remoteObjectProxy = [(NSXPCConnection *)v10->_xpcConn remoteObjectProxy];
+    [remoteObjectProxy streamEvalData];
   }
 
   v25 = dispatch_time(0, 99999999000000000);
@@ -200,12 +200,12 @@ void __78__GEOAPServiceRemote_streamWithLogMsgBlock_dailyUsageBlock_monthlyUsage
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)showEvalDataWithVisitorBlock:(id)a3
+- (void)showEvalDataWithVisitorBlock:(id)block
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  blockCopy = block;
   v4 = [GEOAPShowEvalHandler alloc];
-  v5 = v3;
+  v5 = blockCopy;
   if (v4 && (v21.receiver = v4, v21.super_class = GEOAPShowEvalHandler, (v6 = [(GEOAPServiceRemote *)&v21 init]) != 0))
   {
     v18 = v6;
@@ -238,8 +238,8 @@ void __78__GEOAPServiceRemote_streamWithLogMsgBlock_dailyUsageBlock_monthlyUsage
       _os_log_impl(&dword_1AB634000, v15, OS_LOG_TYPE_DEBUG, "%s", &v21, 0xCu);
     }
 
-    v16 = [(NSXPCConnection *)v18->_conn remoteObjectProxy];
-    [v16 showEvalData];
+    remoteObjectProxy = [(NSXPCConnection *)v18->_conn remoteObjectProxy];
+    [remoteObjectProxy showEvalData];
 
     dispatch_semaphore_wait(v18->_xpcIso, 0xFFFFFFFFFFFFFFFFLL);
   }
@@ -264,17 +264,17 @@ void __78__GEOAPServiceRemote_streamWithLogMsgBlock_dailyUsageBlock_monthlyUsage
     _os_log_impl(&dword_1AB634000, v3, OS_LOG_TYPE_DEBUG, "%s", &v6, 0xCu);
   }
 
-  v4 = [(GEOAPServiceRemote *)self _sharedDaemonConnection];
-  [v4 flushEvalData];
+  _sharedDaemonConnection = [(GEOAPServiceRemote *)self _sharedDaemonConnection];
+  [_sharedDaemonConnection flushEvalData];
 
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportDailySettings:(id)a3 completion:(id)a4
+- (void)reportDailySettings:(id)settings completion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  settingsCopy = settings;
   v8 = GEOGetGEOAPRemoteAnalyticsLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -283,14 +283,14 @@ void __78__GEOAPServiceRemote_streamWithLogMsgBlock_dailyUsageBlock_monthlyUsage
     _os_log_impl(&dword_1AB634000, v8, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v9 = [(GEOAPServiceRemote *)self _sharedDaemonConnection];
+  _sharedDaemonConnection = [(GEOAPServiceRemote *)self _sharedDaemonConnection];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __53__GEOAPServiceRemote_reportDailySettings_completion___block_invoke;
   v12[3] = &unk_1E7959388;
-  v13 = v6;
-  v10 = v6;
-  [v9 reportDailySettings:v7 completion:v12];
+  v13 = completionCopy;
+  v10 = completionCopy;
+  [_sharedDaemonConnection reportDailySettings:settingsCopy completion:v12];
 
   v11 = *MEMORY[0x1E69E9840];
 }
@@ -337,11 +337,11 @@ void __87__GEOAPServiceRemote_reportDailyUsageCountType_usageString_usageBool_ap
   v6 = *MEMORY[0x1E69E9840];
 }
 
-- (void)reportLogMsg:(id)a3 uploadBatchId:(unint64_t)a4 completion:(id)a5
+- (void)reportLogMsg:(id)msg uploadBatchId:(unint64_t)id completion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  msgCopy = msg;
   v10 = GEOGetGEOAPRemoteAnalyticsLog();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
@@ -350,14 +350,14 @@ void __87__GEOAPServiceRemote_reportDailyUsageCountType_usageString_usageBool_ap
     _os_log_impl(&dword_1AB634000, v10, OS_LOG_TYPE_DEBUG, "%s", buf, 0xCu);
   }
 
-  v11 = [(GEOAPServiceRemote *)self _sharedDaemonConnection];
+  _sharedDaemonConnection = [(GEOAPServiceRemote *)self _sharedDaemonConnection];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __60__GEOAPServiceRemote_reportLogMsg_uploadBatchId_completion___block_invoke;
   v14[3] = &unk_1E7959360;
-  v15 = v8;
-  v12 = v8;
-  [v11 reportLogMsg:v9 uploadBatchId:a4 completion:v14];
+  v15 = completionCopy;
+  v12 = completionCopy;
+  [_sharedDaemonConnection reportLogMsg:msgCopy uploadBatchId:id completion:v14];
 
   v13 = *MEMORY[0x1E69E9840];
 }
@@ -418,18 +418,18 @@ void __45__GEOAPServiceRemote__sharedDaemonConnection__block_invoke()
   [(GEOAPServiceRemote *)&v3 dealloc];
 }
 
-+ (id)_daemonConnectionWithExportedProtocol:(id)a3 instance:(id)a4
++ (id)_daemonConnectionWithExportedProtocol:(id)protocol instance:(id)instance
 {
   v5 = MEMORY[0x1E696B0D0];
-  v6 = a4;
-  v7 = a3;
+  instanceCopy = instance;
+  protocolCopy = protocol;
   v8 = [v5 interfaceWithProtocol:&unk_1F20798D0];
-  v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:v7];
+  v9 = [MEMORY[0x1E696B0D0] interfaceWithProtocol:protocolCopy];
 
   v10 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithMachServiceName:@"com.apple.geoanalyticsd" options:4096];
   [v10 setRemoteObjectInterface:v8];
   [v10 setExportedInterface:v9];
-  [v10 setExportedObject:v6];
+  [v10 setExportedObject:instanceCopy];
 
   [v10 setInterruptionHandler:&__block_literal_global_2942];
   [v10 setInvalidationHandler:&__block_literal_global_75_2943];
@@ -458,7 +458,7 @@ void __69__GEOAPServiceRemote__daemonConnectionWithExportedProtocol_instance___b
   }
 }
 
-+ (id)_daemonConnectionWithExportedClient:(uint64_t)a1
++ (id)_daemonConnectionWithExportedClient:(uint64_t)client
 {
   v2 = a2;
   v3 = [objc_opt_self() _daemonConnectionWithExportedProtocol:&unk_1F2060118 instance:v2];
@@ -466,7 +466,7 @@ void __69__GEOAPServiceRemote__daemonConnectionWithExportedProtocol_instance___b
   return v3;
 }
 
-+ (id)_daemonConnectionWithMapsDebugPanelExportedClient:(uint64_t)a1
++ (id)_daemonConnectionWithMapsDebugPanelExportedClient:(uint64_t)client
 {
   v2 = a2;
   v3 = [objc_opt_self() _daemonConnectionWithExportedProtocol:&unk_1F20602A0 instance:v2];

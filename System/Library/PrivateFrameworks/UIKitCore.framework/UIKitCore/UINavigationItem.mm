@@ -1,18 +1,18 @@
 @interface UINavigationItem
 + (id)defaultFont;
-+ (void)_partitionGroupsIntoSections:(id)a3 sectionHandler:(id)a4;
-- (BOOL)_accumulateViewsFromItems:(id)a3 isLeft:(BOOL)a4 refreshViews:(BOOL)a5;
++ (void)_partitionGroupsIntoSections:(id)sections sectionHandler:(id)handler;
+- (BOOL)_accumulateViewsFromItems:(id)items isLeft:(BOOL)left refreshViews:(BOOL)views;
 - (BOOL)_canRename;
-- (BOOL)_changeMayAffectSearchBarPlacementFromTraits:(id)a3 toOtherTraits:(id)a4;
+- (BOOL)_changeMayAffectSearchBarPlacementFromTraits:(id)traits toOtherTraits:(id)otherTraits;
 - (BOOL)_hasDefaultTitleView;
 - (BOOL)_hasInlineSearchBar;
-- (BOOL)_hasInlineSearchBarForTraits:(id)a3;
+- (BOOL)_hasInlineSearchBarForTraits:(id)traits;
 - (BOOL)_hasIntegratedSearchBarInNavigationBar;
-- (BOOL)_hasIntegratedSearchBarInNavigationBarForTraits:(id)a3;
+- (BOOL)_hasIntegratedSearchBarInNavigationBarForTraits:(id)traits;
 - (BOOL)_hasIntegratedSearchBarInToolbar;
-- (BOOL)_hasIntegratedSearchBarInToolbarForTraits:(id)a3;
+- (BOOL)_hasIntegratedSearchBarInToolbarForTraits:(id)traits;
 - (BOOL)_leftItemsWantBackButton;
-- (BOOL)_shouldSearchControllerDeferPresentationTransition:(id)a3;
+- (BOOL)_shouldSearchControllerDeferPresentationTransition:(id)transition;
 - (BOOL)_wantsBackButtonIndicator;
 - (BOOL)hidesSearchBarWhenScrolling;
 - (NSArray)_abbreviatedBackButtonTitles;
@@ -34,19 +34,19 @@
 - (UINavigationItem)initWithTitle:(NSString *)title;
 - (UINavigationItemSearchBarPlacement)searchBarPlacement;
 - (_UINavigationItemChangeObserver)_changeObserver;
-- (double)_desiredHeightForBarMetrics:(int64_t)a3 defaultHeightBlock:(id)a4;
-- (double)_minimumDesiredHeightForBarMetrics:(int64_t)a3;
-- (id)_addDefaultTitleViewToNavigationBarIfNecessary:(id)a3;
-- (id)_backButtonTitleAllowingGenericTitles:(BOOL)a3 allowingDefaultTitles:(BOOL)a4;
+- (double)_desiredHeightForBarMetrics:(int64_t)metrics defaultHeightBlock:(id)block;
+- (double)_minimumDesiredHeightForBarMetrics:(int64_t)metrics;
+- (id)_addDefaultTitleViewToNavigationBarIfNecessary:(id)necessary;
+- (id)_backButtonTitleAllowingGenericTitles:(BOOL)titles allowingDefaultTitles:(BOOL)defaultTitles;
 - (id)_barButtonForBackButtonIndicator;
-- (id)_barButtonItemsToAddWhenAttemptingToAddBarButtonItems:(int)a3 forRight:;
+- (id)_barButtonItemsToAddWhenAttemptingToAddBarButtonItems:(int)items forRight:;
 - (id)_buttonForBackButtonIndicator;
 - (id)_customLeftViews;
 - (id)_customRightViews;
 - (id)_defaultTitleView;
 - (id)_effectiveBackBarButtonItem;
-- (id)_effectiveTitleForTitle:(id)a3;
-- (id)_firstNonSpaceItemInList:(id)a3;
+- (id)_effectiveTitleForTitle:(id)title;
+- (id)_firstNonSpaceItemInList:(id)list;
 - (id)_titleView;
 - (id)backButtonView;
 - (id)currentBackButtonTitle;
@@ -54,68 +54,68 @@
 - (id)renameDelegate;
 - (uint64_t)_canRevealSearchBarPlacementAccurately;
 - (unint64_t)_navigationBarVisibility;
-- (void)_addImplicitTopBarSectionsFromGroups:(id)a3 toSections:(id)a4 forPlacement:(int64_t)a5;
-- (void)_addImplicitTopBarSectionsFromItems:(id)a3 toSections:(id)a4 forPlacement:(int64_t)a5;
+- (void)_addImplicitTopBarSectionsFromGroups:(id)groups toSections:(id)sections forPlacement:(int64_t)placement;
+- (void)_addImplicitTopBarSectionsFromItems:(id)items toSections:(id)sections forPlacement:(int64_t)placement;
 - (void)_cleanupFrozenTitleView;
 - (void)_confirmedSearchBarPlacementBarButtonItem;
 - (void)_freezeCurrentTitleView;
-- (void)_getLeadingItems:(id *)a3 groups:(id *)a4;
-- (void)_getTrailingItems:(id *)a3 groups:(id *)a4;
-- (void)_messageChangeObserver:(id)a3 forTransitionFromSearchController:(id)a4;
-- (void)_movedFromTopOfStack:(BOOL)a3;
-- (void)_movedToTopOfStack:(BOOL)a3;
+- (void)_getLeadingItems:(id *)items groups:(id *)groups;
+- (void)_getTrailingItems:(id *)items groups:(id *)groups;
+- (void)_messageChangeObserver:(id)observer forTransitionFromSearchController:(id)controller;
+- (void)_movedFromTopOfStack:(BOOL)stack;
+- (void)_movedToTopOfStack:(BOOL)stack;
 - (void)_movingFromTopOfStack;
 - (void)_movingToTopOfStack;
 - (void)_removeBackButtonView;
 - (void)_removeBarButtonItemViews;
-- (void)_removeContentInView:(id)a3;
+- (void)_removeContentInView:(id)view;
 - (void)_removeTitleAndButtonViews;
-- (void)_replaceCustomLeftRightViewAtIndex:(unint64_t)a3 withView:(id)a4 left:(BOOL)a5;
+- (void)_replaceCustomLeftRightViewAtIndex:(unint64_t)index withView:(id)view left:(BOOL)left;
 - (void)_resetHidesSearchBarWhenScrolling;
-- (void)_searchBarUpdatedSearchFieldIntegrationInSearchController:(id)a3;
+- (void)_searchBarUpdatedSearchFieldIntegrationInSearchController:(id)controller;
 - (void)_searchControllerReadyForDeferredAutomaticShowsScopeBar;
-- (void)_sendSearchBarPlacementChangeCallbackIfNecessaryWillChange:(id *)a1;
-- (void)_setAbbreviatedBackButtonTitles:(id)a3;
-- (void)_setAllowsInteractivePop:(BOOL)a3;
-- (void)_setAllowsInteractivePopWhenBackButtonHidden:(BOOL)a3;
-- (void)_setAllowsInteractivePopWhenNavigationBarHidden:(BOOL)a3;
-- (void)_setAlwaysUseManualScrollEdgeAppearance:(BOOL)a3;
-- (void)_setAutoScrollEdgeTransitionDistance:(double)a3;
-- (void)_setBackButtonPressed:(BOOL)a3;
-- (void)_setBackButtonTitle:(id)a3 lineBreakMode:(int64_t)a4;
-- (void)_setBackgroundHidden:(BOOL)a3;
-- (void)_setBottomPalette:(id)a3;
-- (void)_setBottomPaletteNeedsUpdate:(id)a3;
-- (void)_setChangeObserver:(id)a3;
-- (void)_setCustomLeftViews:(id)a3;
-- (void)_setCustomRightViews:(id)a3;
+- (void)_sendSearchBarPlacementChangeCallbackIfNecessaryWillChange:(id *)change;
+- (void)_setAbbreviatedBackButtonTitles:(id)titles;
+- (void)_setAllowsInteractivePop:(BOOL)pop;
+- (void)_setAllowsInteractivePopWhenBackButtonHidden:(BOOL)hidden;
+- (void)_setAllowsInteractivePopWhenNavigationBarHidden:(BOOL)hidden;
+- (void)_setAlwaysUseManualScrollEdgeAppearance:(BOOL)appearance;
+- (void)_setAutoScrollEdgeTransitionDistance:(double)distance;
+- (void)_setBackButtonPressed:(BOOL)pressed;
+- (void)_setBackButtonTitle:(id)title lineBreakMode:(int64_t)mode;
+- (void)_setBackgroundHidden:(BOOL)hidden;
+- (void)_setBottomPalette:(id)palette;
+- (void)_setBottomPaletteNeedsUpdate:(id)update;
+- (void)_setChangeObserver:(id)observer;
+- (void)_setCustomLeftViews:(id)views;
+- (void)_setCustomRightViews:(id)views;
 - (void)_setEffectiveTopBarSectionsNeedsUpdate;
-- (void)_setFontScaleAdjustment:(double)a3;
-- (void)_setLargeTitleAccessoryView:(id)a3 alignToBaseline:(BOOL)a4 horizontalAlignment:(unint64_t)a5;
-- (void)_setLargeTitleTwoLineMode:(unint64_t)a3;
-- (void)_setLargeTitleView:(id)a3;
-- (void)_setManualScrollEdgeAppearanceEnabled:(BOOL)a3;
-- (void)_setManualScrollEdgeAppearanceProgress:(double)a3;
-- (void)_setMinimumContentMargins:(NSDirectionalEdgeInsets)a3;
-- (void)_setMinimumDesiredHeight:(double)a3 forBarMetrics:(int64_t)a4;
-- (void)_setNavigationBarHidden:(BOOL)a3;
-- (void)_setPreferredNavigationBarVisibility:(unint64_t)a3;
-- (void)_setRenameHandler:(id)a3;
-- (void)_setShouldDismissPresentedViewControllerWhenPopped:(BOOL)a3;
-- (void)_setTitle:(id)a3 animated:(BOOL)a4 matchBarButtonItemAnimationDuration:(BOOL)a5;
-- (void)_setTitleViewDataSource:(id)a3;
-- (void)_setToolbarAvoidsKeyboard:(BOOL)a3;
-- (void)_setTopPalette:(id)a3;
-- (void)_setWeeTitle:(id)a3;
-- (void)_updatePalette:(id)a3;
-- (void)_updateSearchBarItemGroupForPreferredPlacementChange:(BOOL)a3;
-- (void)_updateViewsForBarSizeChangeAndApply:(BOOL)a3;
-- (void)appearance:(id)a3 categoriesChanged:(int64_t)a4;
+- (void)_setFontScaleAdjustment:(double)adjustment;
+- (void)_setLargeTitleAccessoryView:(id)view alignToBaseline:(BOOL)baseline horizontalAlignment:(unint64_t)alignment;
+- (void)_setLargeTitleTwoLineMode:(unint64_t)mode;
+- (void)_setLargeTitleView:(id)view;
+- (void)_setManualScrollEdgeAppearanceEnabled:(BOOL)enabled;
+- (void)_setManualScrollEdgeAppearanceProgress:(double)progress;
+- (void)_setMinimumContentMargins:(NSDirectionalEdgeInsets)margins;
+- (void)_setMinimumDesiredHeight:(double)height forBarMetrics:(int64_t)metrics;
+- (void)_setNavigationBarHidden:(BOOL)hidden;
+- (void)_setPreferredNavigationBarVisibility:(unint64_t)visibility;
+- (void)_setRenameHandler:(id)handler;
+- (void)_setShouldDismissPresentedViewControllerWhenPopped:(BOOL)popped;
+- (void)_setTitle:(id)title animated:(BOOL)animated matchBarButtonItemAnimationDuration:(BOOL)duration;
+- (void)_setTitleViewDataSource:(id)source;
+- (void)_setToolbarAvoidsKeyboard:(BOOL)keyboard;
+- (void)_setTopPalette:(id)palette;
+- (void)_setWeeTitle:(id)title;
+- (void)_updatePalette:(id)palette;
+- (void)_updateSearchBarItemGroupForPreferredPlacementChange:(BOOL)change;
+- (void)_updateViewsForBarSizeChangeAndApply:(BOOL)apply;
+- (void)appearance:(id)appearance categoriesChanged:(int64_t)changed;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setAdditionalOverflowItems:(UIDeferredMenuElement *)additionalOverflowItems;
-- (void)setAttributedSubtitle:(id)a3;
-- (void)setAttributedTitle:(id)a3;
+- (void)setAttributedSubtitle:(id)subtitle;
+- (void)setAttributedTitle:(id)title;
 - (void)setBackAction:(UIAction *)backAction;
 - (void)setBackBarButtonItem:(UIBarButtonItem *)backBarButtonItem;
 - (void)setBackButtonDisplayMode:(UINavigationItemBackButtonDisplayMode)backButtonDisplayMode;
@@ -127,10 +127,10 @@
 - (void)setHidesBackButton:(BOOL)hidesBackButton;
 - (void)setHidesBackButton:(BOOL)hidesBackButton animated:(BOOL)animated;
 - (void)setHidesSearchBarWhenScrolling:(BOOL)hidesSearchBarWhenScrolling;
-- (void)setLargeAttributedSubtitle:(id)a3;
-- (void)setLargeSubtitle:(id)a3;
-- (void)setLargeSubtitleView:(id)a3;
-- (void)setLargeTitle:(id)a3;
+- (void)setLargeAttributedSubtitle:(id)subtitle;
+- (void)setLargeSubtitle:(id)subtitle;
+- (void)setLargeSubtitleView:(id)view;
+- (void)setLargeTitle:(id)title;
 - (void)setLargeTitleDisplayMode:(UINavigationItemLargeTitleDisplayMode)largeTitleDisplayMode;
 - (void)setLeadingItemGroups:(NSArray *)leadingItemGroups;
 - (void)setLeftBarButtonItem:(UIBarButtonItem *)item animated:(BOOL)animated;
@@ -147,18 +147,18 @@
 - (void)setRightBarButtonItems:(NSArray *)items animated:(BOOL)animated;
 - (void)setRightBarButtonItems:(NSArray *)rightBarButtonItems;
 - (void)setScrollEdgeAppearance:(UINavigationBarAppearance *)scrollEdgeAppearance;
-- (void)setSearchBarPlacementAllowsExternalIntegration:(BOOL)a3;
-- (void)setSearchBarPlacementAllowsToolbarIntegration:(BOOL)a3;
+- (void)setSearchBarPlacementAllowsExternalIntegration:(BOOL)integration;
+- (void)setSearchBarPlacementAllowsToolbarIntegration:(BOOL)integration;
 - (void)setSearchController:(UISearchController *)searchController;
 - (void)setStandardAppearance:(UINavigationBarAppearance *)standardAppearance;
 - (void)setStyle:(UINavigationItemStyle)style;
-- (void)setSubtitle:(id)a3;
-- (void)setSubtitleView:(id)a3;
+- (void)setSubtitle:(id)subtitle;
+- (void)setSubtitleView:(id)view;
 - (void)setTitle:(NSString *)title;
 - (void)setTitleMenuProvider:(void *)titleMenuProvider;
 - (void)setTitleView:(UIView *)titleView;
 - (void)setTrailingItemGroups:(NSArray *)trailingItemGroups;
-- (void)updateNavigationBarButtonsAnimated:(BOOL)a3;
+- (void)updateNavigationBarButtonsAnimated:(BOOL)animated;
 @end
 
 @implementation UINavigationItem
@@ -205,12 +205,12 @@
 {
   if (self && (searchController = self->_searchController) != 0)
   {
-    v4 = [(UISearchController *)searchController searchBarPlacement];
+    searchBarPlacement = [(UISearchController *)searchController searchBarPlacement];
     [(UINavigationItem *)self _hasInlineSearchBar];
-    v5 = [(UINavigationItem *)self searchBarPlacement];
+    searchBarPlacement2 = [(UINavigationItem *)self searchBarPlacement];
     p_navigationItemFlags = &self->_navigationItemFlags;
     navigationItemFlags = self->_navigationItemFlags;
-    if (v4 != v5)
+    if (searchBarPlacement != searchBarPlacement2)
     {
       *&self->_navigationItemFlags = navigationItemFlags | 0x40;
       [(UINavigationItem *)&self->super.isa _sendSearchBarPlacementChangeCallbackIfNecessaryWillChange:?];
@@ -227,12 +227,12 @@
   *p_navigationItemFlags = navigationItemFlags & 0xFFBF;
 LABEL_7:
   [(UISearchController *)self->_searchController _setNavigationItemCurrentlyDisplayingSearchController:self];
-  v9 = [(UISearchController *)self->_searchController searchBar];
-  v8 = [(UINavigationItem *)self _hasIntegratedSearchBarInNavigationBar];
-  [v9 _setHostedInlineByNavigationBar:v8];
-  if (!v8)
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  _hasIntegratedSearchBarInNavigationBar = [(UINavigationItem *)self _hasIntegratedSearchBarInNavigationBar];
+  [searchBar _setHostedInlineByNavigationBar:_hasIntegratedSearchBarInNavigationBar];
+  if (!_hasIntegratedSearchBarInNavigationBar)
   {
-    [v9 _setHostedInlineByToolbar:{-[UINavigationItem _hasIntegratedSearchBarInToolbar](self, "_hasIntegratedSearchBarInToolbar")}];
+    [searchBar _setHostedInlineByToolbar:{-[UINavigationItem _hasIntegratedSearchBarInToolbar](self, "_hasIntegratedSearchBarInToolbar")}];
   }
 }
 
@@ -259,11 +259,11 @@ LABEL_7:
     goto LABEL_6;
   }
 
-  v4 = [(UISearchController *)searchController searchBarPlacement];
+  searchBarPlacement = [(UISearchController *)searchController searchBarPlacement];
   [(UINavigationItem *)self _hasInlineSearchBar];
-  v5 = [(UINavigationItem *)self searchBarPlacement];
+  searchBarPlacement2 = [(UINavigationItem *)self searchBarPlacement];
   v6 = self->_navigationItemFlags;
-  if (v4 == v5)
+  if (searchBarPlacement == searchBarPlacement2)
   {
     p_navigationItemFlags = &self->_navigationItemFlags;
 LABEL_6:
@@ -305,11 +305,11 @@ LABEL_6:
     if (!v5)
     {
       WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
-      v7 = [WeakRetained traitCollection];
-      v8 = v7;
-      if (v7)
+      traitCollection = [WeakRetained traitCollection];
+      v8 = traitCollection;
+      if (traitCollection)
       {
-        v9 = v7;
+        v9 = traitCollection;
       }
 
       else
@@ -318,10 +318,10 @@ LABEL_6:
       }
 
       v11 = v9;
-      v12 = [v9 userInterfaceIdiom];
-      if ((v12 - 2) >= 4)
+      userInterfaceIdiom = [v9 userInterfaceIdiom];
+      if ((userInterfaceIdiom - 2) >= 4)
       {
-        if (v12 == 1)
+        if (userInterfaceIdiom == 1)
         {
           if ([v11 horizontalSizeClass] == 1)
           {
@@ -365,15 +365,15 @@ LABEL_6:
   attributedTitle = self->_attributedTitle;
   if (attributedTitle)
   {
-    v6 = [(NSAttributedString *)attributedTitle string];
-    [v4 appendFormat:@" title='%@'", v6];
+    string = [(NSAttributedString *)attributedTitle string];
+    [v4 appendFormat:@" title='%@'", string];
   }
 
   attributedSubtitle = self->_attributedSubtitle;
   if (attributedSubtitle)
   {
-    v8 = [(NSAttributedString *)attributedSubtitle string];
-    [v4 appendFormat:@" subtitle='%@'", v8];
+    string2 = [(NSAttributedString *)attributedSubtitle string];
+    [v4 appendFormat:@" subtitle='%@'", string2];
   }
 
   if (self->_titleView)
@@ -648,60 +648,60 @@ LABEL_46:
   }
 
   v5 = objc_opt_new();
-  v6 = [(UINavigationItem *)self leadingItemGroups];
-  v7 = [v6 count];
+  leadingItemGroups = [(UINavigationItem *)self leadingItemGroups];
+  v7 = [leadingItemGroups count];
 
   if (v7)
   {
-    v8 = [(UINavigationItem *)self leadingItemGroups];
-    [(UINavigationItem *)self _addImplicitTopBarSectionsFromGroups:v8 toSections:v5 forPlacement:1];
+    leadingItemGroups2 = [(UINavigationItem *)self leadingItemGroups];
+    [(UINavigationItem *)self _addImplicitTopBarSectionsFromGroups:leadingItemGroups2 toSections:v5 forPlacement:1];
   }
 
   else
   {
-    v9 = [(UINavigationItem *)self leftBarButtonItems];
-    v10 = [v9 count];
+    leftBarButtonItems = [(UINavigationItem *)self leftBarButtonItems];
+    v10 = [leftBarButtonItems count];
 
     if (!v10)
     {
       goto LABEL_8;
     }
 
-    v8 = [(UINavigationItem *)self leftBarButtonItems];
-    [(UINavigationItem *)self _addImplicitTopBarSectionsFromItems:v8 toSections:v5 forPlacement:1];
+    leadingItemGroups2 = [(UINavigationItem *)self leftBarButtonItems];
+    [(UINavigationItem *)self _addImplicitTopBarSectionsFromItems:leadingItemGroups2 toSections:v5 forPlacement:1];
   }
 
 LABEL_8:
-  v11 = [(UINavigationItem *)self centerItemGroups];
-  v12 = [v11 count];
+  centerItemGroups = [(UINavigationItem *)self centerItemGroups];
+  v12 = [centerItemGroups count];
 
   if (v12)
   {
-    v13 = [(UINavigationItem *)self centerItemGroups];
-    [(UINavigationItem *)self _addImplicitTopBarSectionsFromGroups:v13 toSections:v5 forPlacement:2];
+    centerItemGroups2 = [(UINavigationItem *)self centerItemGroups];
+    [(UINavigationItem *)self _addImplicitTopBarSectionsFromGroups:centerItemGroups2 toSections:v5 forPlacement:2];
   }
 
-  v14 = [(UINavigationItem *)self trailingItemGroups];
-  v15 = [v14 count];
+  trailingItemGroups = [(UINavigationItem *)self trailingItemGroups];
+  v15 = [trailingItemGroups count];
 
   if (v15)
   {
-    v16 = [(UINavigationItem *)self trailingItemGroups];
-    [(UINavigationItem *)self _addImplicitTopBarSectionsFromGroups:v16 toSections:v5 forPlacement:3];
+    trailingItemGroups2 = [(UINavigationItem *)self trailingItemGroups];
+    [(UINavigationItem *)self _addImplicitTopBarSectionsFromGroups:trailingItemGroups2 toSections:v5 forPlacement:3];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  v17 = [(UINavigationItem *)self rightBarButtonItems];
-  v18 = [v17 count];
+  rightBarButtonItems = [(UINavigationItem *)self rightBarButtonItems];
+  v18 = [rightBarButtonItems count];
 
   if (v18)
   {
-    v16 = [(UINavigationItem *)self rightBarButtonItems];
-    v19 = [v16 reverseObjectEnumerator];
-    v20 = [v19 allObjects];
-    [(UINavigationItem *)self _addImplicitTopBarSectionsFromItems:v20 toSections:v5 forPlacement:3];
+    trailingItemGroups2 = [(UINavigationItem *)self rightBarButtonItems];
+    reverseObjectEnumerator = [trailingItemGroups2 reverseObjectEnumerator];
+    allObjects = [reverseObjectEnumerator allObjects];
+    [(UINavigationItem *)self _addImplicitTopBarSectionsFromItems:allObjects toSections:v5 forPlacement:3];
 
     goto LABEL_14;
   }
@@ -743,10 +743,10 @@ LABEL_16:
   canRevealSearchBarPlacement = [(UINavigationItem *)self _canRevealSearchBarPlacementAccurately];
   if (canRevealSearchBarPlacement)
   {
-    v4 = self;
-    v5 = [(UINavigationItem *)v4 _navigationBar];
-    v6 = [v5 traitCollection];
-    ShouldIntegrateSearchBarInNavigationBarForTraits = _UINavigationItemShouldIntegrateSearchBarInNavigationBarForTraits(v4, v6);
+    selfCopy = self;
+    _navigationBar = [(UINavigationItem *)selfCopy _navigationBar];
+    traitCollection = [_navigationBar traitCollection];
+    ShouldIntegrateSearchBarInNavigationBarForTraits = _UINavigationItemShouldIntegrateSearchBarInNavigationBarForTraits(selfCopy, traitCollection);
 
     if (ShouldIntegrateSearchBarInNavigationBarForTraits)
     {
@@ -756,7 +756,7 @@ LABEL_16:
     else
     {
 
-      LOBYTE(canRevealSearchBarPlacement) = [(UINavigationItem *)v4 _hasIntegratedSearchBarInToolbar];
+      LOBYTE(canRevealSearchBarPlacement) = [(UINavigationItem *)selfCopy _hasIntegratedSearchBarInToolbar];
     }
   }
 
@@ -801,9 +801,9 @@ LABEL_16:
     {
       v5 = v4;
       WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
-      v7 = [WeakRetained _permitsSearchBarPlacementIntegratedCentered];
+      _permitsSearchBarPlacementIntegratedCentered = [WeakRetained _permitsSearchBarPlacementIntegratedCentered];
 
-      if (v7)
+      if (_permitsSearchBarPlacementIntegratedCentered)
       {
         return 3;
       }
@@ -869,18 +869,18 @@ LABEL_13:
 
 - (UIBarButtonItem)rightBarButtonItem
 {
-  v2 = [(UINavigationItem *)self rightBarButtonItems];
-  v3 = [v2 firstObject];
+  rightBarButtonItems = [(UINavigationItem *)self rightBarButtonItems];
+  firstObject = [rightBarButtonItems firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (UIBarButtonItem)leftBarButtonItem
 {
-  v2 = [(UINavigationItem *)self leftBarButtonItems];
-  v3 = [v2 firstObject];
+  leftBarButtonItems = [(UINavigationItem *)self leftBarButtonItems];
+  firstObject = [leftBarButtonItems firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (id)_effectiveBackBarButtonItem
@@ -903,12 +903,12 @@ LABEL_13:
     v7 = [(UINavigationItem *)self _backButtonTitleAllowingGenericTitles:1 allowingDefaultTitles:_UISMCBarsEnabled() ^ 1];
     if (self->_backButtonDisplayMode == 2)
     {
-      v8 = MEMORY[0x1E695E0F0];
+      _abbreviatedBackButtonTitles = MEMORY[0x1E695E0F0];
     }
 
     else
     {
-      v8 = [(UINavigationItem *)self _abbreviatedBackButtonTitles];
+      _abbreviatedBackButtonTitles = [(UINavigationItem *)self _abbreviatedBackButtonTitles];
     }
 
     if (v7)
@@ -922,7 +922,7 @@ LABEL_13:
     }
 
     [(UIBarButtonItem *)self->_synthesizedBackBarButtonItem setTitle:v9];
-    [(UIBarButtonItem *)self->_synthesizedBackBarButtonItem _setBackButtonAlternateTitles:v8];
+    [(UIBarButtonItem *)self->_synthesizedBackBarButtonItem _setBackButtonAlternateTitles:_abbreviatedBackButtonTitles];
     v3 = self->_synthesizedBackBarButtonItem;
   }
 
@@ -963,18 +963,18 @@ LABEL_13:
   [(UINavigationItem *)&v2 dealloc];
 }
 
-- (void)_setFontScaleAdjustment:(double)a3
+- (void)_setFontScaleAdjustment:(double)adjustment
 {
-  if (self->_fontScaleAdjustment != a3)
+  if (self->_fontScaleAdjustment != adjustment)
   {
     aBlock[9] = v3;
     aBlock[10] = v4;
-    self->_fontScaleAdjustment = a3;
+    self->_fontScaleAdjustment = adjustment;
     aBlock[0] = MEMORY[0x1E69E9820];
     aBlock[1] = 3221225472;
     aBlock[2] = __44__UINavigationItem__setFontScaleAdjustment___block_invoke;
     aBlock[3] = &__block_descriptor_40_e17_v16__0__NSArray_8l;
-    *&aBlock[4] = a3;
+    *&aBlock[4] = adjustment;
     v6 = _Block_copy(aBlock);
     v6[2](v6, self->_leftBarButtonItems);
     v6[2](v6, self->_rightBarButtonItems);
@@ -1026,14 +1026,14 @@ void __44__UINavigationItem__setFontScaleAdjustment___block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_setAbbreviatedBackButtonTitles:(id)a3
+- (void)_setAbbreviatedBackButtonTitles:(id)titles
 {
-  v4 = a3;
+  titlesCopy = titles;
   abbreviatedBackButtonTitles = self->_abbreviatedBackButtonTitles;
-  v15 = v4;
-  if (v4 && !abbreviatedBackButtonTitles || abbreviatedBackButtonTitles && (v6 = [(NSArray *)abbreviatedBackButtonTitles isEqualToArray:v4], v4 = v15, !v6))
+  v15 = titlesCopy;
+  if (titlesCopy && !abbreviatedBackButtonTitles || abbreviatedBackButtonTitles && (v6 = [(NSArray *)abbreviatedBackButtonTitles isEqualToArray:titlesCopy], titlesCopy = v15, !v6))
   {
-    v7 = v4 != 0;
+    v7 = titlesCopy != 0;
     WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
     v9 = [v15 copy];
     v10 = self->_abbreviatedBackButtonTitles;
@@ -1048,8 +1048,8 @@ void __44__UINavigationItem__setFontScaleAdjustment___block_invoke(uint64_t a1, 
         [(UIView *)self->_backButtonView _setAbbreviatedTitleIndex:0x7FFFFFFFFFFFFFFFLL];
         if (WeakRetained)
         {
-          v12 = [(UIView *)self->_backButtonView superview];
-          if (v12 == WeakRetained && ![(UIView *)self->_backButtonView isHidden])
+          superview = [(UIView *)self->_backButtonView superview];
+          if (superview == WeakRetained && ![(UIView *)self->_backButtonView isHidden])
           {
             [(UIView *)self->_backButtonView alpha];
             v14 = v13;
@@ -1067,15 +1067,15 @@ void __44__UINavigationItem__setFontScaleAdjustment___block_invoke(uint64_t a1, 
       }
     }
 
-    v4 = v15;
+    titlesCopy = v15;
   }
 }
 
-- (void)_setBackButtonPressed:(BOOL)a3
+- (void)_setBackButtonPressed:(BOOL)pressed
 {
-  v3 = a3;
-  v4 = [(UINavigationItem *)self existingBackButtonView];
-  [v4 setPressed:v3];
+  pressedCopy = pressed;
+  existingBackButtonView = [(UINavigationItem *)self existingBackButtonView];
+  [existingBackButtonView setPressed:pressedCopy];
 }
 
 + (id)defaultFont
@@ -1293,150 +1293,150 @@ LABEL_34:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v24 = a3;
+  coderCopy = coder;
   if ([(NSAttributedString *)self->_attributedTitle length])
   {
-    v4 = [(NSAttributedString *)self->_attributedTitle string];
-    [v24 encodeObject:v4 forKey:@"UITitle"];
+    string = [(NSAttributedString *)self->_attributedTitle string];
+    [coderCopy encodeObject:string forKey:@"UITitle"];
 
-    [v24 encodeObject:self->_attributedTitle forKey:@"UIAttributedTitle"];
+    [coderCopy encodeObject:self->_attributedTitle forKey:@"UIAttributedTitle"];
   }
 
   prompt = self->_prompt;
   if (prompt)
   {
-    [v24 encodeObject:prompt forKey:@"UIPrompt"];
+    [coderCopy encodeObject:prompt forKey:@"UIPrompt"];
   }
 
   backButtonTitle = self->_backButtonTitle;
   if (backButtonTitle)
   {
-    [v24 encodeObject:backButtonTitle forKey:@"UIBackButtonTitle"];
+    [coderCopy encodeObject:backButtonTitle forKey:@"UIBackButtonTitle"];
   }
 
   backBarButtonItem = self->_backBarButtonItem;
   if (backBarButtonItem)
   {
-    [v24 encodeObject:backBarButtonItem forKey:@"UIBackBarButtonItem"];
+    [coderCopy encodeObject:backBarButtonItem forKey:@"UIBackBarButtonItem"];
   }
 
   backButtonDisplayMode = self->_backButtonDisplayMode;
   if (backButtonDisplayMode)
   {
-    [v24 encodeInteger:backButtonDisplayMode forKey:@"UIBackButtonDisplayMode"];
+    [coderCopy encodeInteger:backButtonDisplayMode forKey:@"UIBackButtonDisplayMode"];
   }
 
   if ((*&self->_navigationItemFlags & 2) != 0)
   {
-    [v24 encodeBool:1 forKey:@"UILeftItemsSupplementBackButton"];
+    [coderCopy encodeBool:1 forKey:@"UILeftItemsSupplementBackButton"];
   }
 
-  v9 = [(NSArray *)self->_leftBarButtonItems firstObject];
-  if (v9)
+  firstObject = [(NSArray *)self->_leftBarButtonItems firstObject];
+  if (firstObject)
   {
-    [v24 encodeObject:v9 forKey:@"UILeftBarButtonItem"];
+    [coderCopy encodeObject:firstObject forKey:@"UILeftBarButtonItem"];
   }
 
-  v10 = [(NSArray *)self->_rightBarButtonItems firstObject];
-  if (v10)
+  firstObject2 = [(NSArray *)self->_rightBarButtonItems firstObject];
+  if (firstObject2)
   {
-    [v24 encodeObject:v10 forKey:@"UIRightBarButtonItem"];
+    [coderCopy encodeObject:firstObject2 forKey:@"UIRightBarButtonItem"];
   }
 
   leftBarButtonItems = self->_leftBarButtonItems;
   if (leftBarButtonItems)
   {
-    [v24 encodeObject:leftBarButtonItems forKey:@"UILeftBarButtonItems"];
+    [coderCopy encodeObject:leftBarButtonItems forKey:@"UILeftBarButtonItems"];
   }
 
   titleView = self->_titleView;
   if (titleView)
   {
-    [v24 encodeObject:titleView forKey:@"UITitleView"];
+    [coderCopy encodeObject:titleView forKey:@"UITitleView"];
   }
 
   centerItemGroups = self->_centerItemGroups;
   if (centerItemGroups)
   {
-    [v24 encodeObject:centerItemGroups forKey:@"UICenterItemGroups"];
+    [coderCopy encodeObject:centerItemGroups forKey:@"UICenterItemGroups"];
   }
 
   customizationIdentifier = self->_customizationIdentifier;
   if (customizationIdentifier)
   {
-    [v24 encodeObject:customizationIdentifier forKey:@"UICustomizationIdentifier"];
+    [coderCopy encodeObject:customizationIdentifier forKey:@"UICustomizationIdentifier"];
   }
 
   style = self->_style;
   if (style)
   {
-    [v24 encodeInteger:style forKey:@"UIStyle"];
+    [coderCopy encodeInteger:style forKey:@"UIStyle"];
   }
 
   rightBarButtonItems = self->_rightBarButtonItems;
   if (rightBarButtonItems)
   {
-    [v24 encodeObject:rightBarButtonItems forKey:@"UIRightBarButtonItems"];
+    [coderCopy encodeObject:rightBarButtonItems forKey:@"UIRightBarButtonItems"];
   }
 
   if (dyld_program_sdk_at_least())
   {
-    [v24 encodeInteger:self->_largeTitleDisplayMode forKey:@"UILargeTitleDisplayMode"];
+    [coderCopy encodeInteger:self->_largeTitleDisplayMode forKey:@"UILargeTitleDisplayMode"];
   }
 
   navigationItemFlags = self->_navigationItemFlags;
   v18 = (navigationItemFlags >> 3) & 3;
   if (v18)
   {
-    [v24 encodeInteger:v18 forKey:@"UINavigationItemSearchBarVisibilityWhenScrolling"];
+    [coderCopy encodeInteger:v18 forKey:@"UINavigationItemSearchBarVisibilityWhenScrolling"];
   }
 
   else if ((navigationItemFlags & 4) != 0)
   {
-    [v24 encodeBool:1 forKey:@"UIAlwaysShowsSearchBar"];
+    [coderCopy encodeBool:1 forKey:@"UIAlwaysShowsSearchBar"];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
   if (WeakRetained)
   {
-    [v24 encodeConditionalObject:WeakRetained forKey:@"UINavigationBar"];
+    [coderCopy encodeConditionalObject:WeakRetained forKey:@"UINavigationBar"];
   }
 
   standardAppearance = self->_standardAppearance;
   if (standardAppearance)
   {
-    [v24 encodeObject:standardAppearance forKey:@"UINavigationBarStandardAppearance"];
+    [coderCopy encodeObject:standardAppearance forKey:@"UINavigationBarStandardAppearance"];
   }
 
   compactAppearance = self->_compactAppearance;
   if (compactAppearance)
   {
-    [v24 encodeObject:compactAppearance forKey:@"UINavigationBarCompactAppearance"];
+    [coderCopy encodeObject:compactAppearance forKey:@"UINavigationBarCompactAppearance"];
   }
 
   scrollEdgeAppearance = self->_scrollEdgeAppearance;
   if (scrollEdgeAppearance)
   {
-    [v24 encodeObject:scrollEdgeAppearance forKey:@"UINavigationBarScrollEdgeAppearance"];
+    [coderCopy encodeObject:scrollEdgeAppearance forKey:@"UINavigationBarScrollEdgeAppearance"];
   }
 
   compactScrollEdgeAppearance = self->_compactScrollEdgeAppearance;
   if (compactScrollEdgeAppearance)
   {
-    [v24 encodeObject:compactScrollEdgeAppearance forKey:@"UINavigationBarCompactScrollEdgeAppearance"];
+    [coderCopy encodeObject:compactScrollEdgeAppearance forKey:@"UINavigationBarCompactScrollEdgeAppearance"];
   }
 }
 
 - (void)_freezeCurrentTitleView
 {
-  v12 = [(UINavigationItem *)self _defaultTitleView];
-  [v12 bounds];
+  _defaultTitleView = [(UINavigationItem *)self _defaultTitleView];
+  [_defaultTitleView bounds];
   if (v3 > 0.0 && v4 > 0.0)
   {
     _UIGraphicsBeginImageContextWithOptions(0, 0, v3, v4, 0.0);
-    v5 = [v12 layer];
+    layer = [_defaultTitleView layer];
     ContextStack = GetContextStack(0);
     if (*ContextStack < 1)
     {
@@ -1448,7 +1448,7 @@ LABEL_34:
       v7 = ContextStack[3 * (*ContextStack - 1) + 1];
     }
 
-    [v5 renderInContext:v7];
+    [layer renderInContext:v7];
 
     v8 = _UIGraphicsGetImageFromCurrentImageContext(0);
     UIGraphicsEndImageContext();
@@ -1464,12 +1464,12 @@ LABEL_34:
       self->_frozenTitleView = v9;
 
       [(UIView *)self->_frozenTitleView setAlpha:1.0];
-      [v12 frame];
+      [_defaultTitleView frame];
       [(UIImageView *)self->_frozenTitleView setFrame:?];
-      v11 = [v12 superview];
-      [v11 addSubview:self->_frozenTitleView];
+      superview = [_defaultTitleView superview];
+      [superview addSubview:self->_frozenTitleView];
 
-      [v12 setAlpha:0.0];
+      [_defaultTitleView setAlpha:0.0];
     }
   }
 }
@@ -1481,37 +1481,37 @@ LABEL_34:
   self->_frozenTitleView = 0;
 }
 
-- (id)_addDefaultTitleViewToNavigationBarIfNecessary:(id)a3
+- (id)_addDefaultTitleViewToNavigationBarIfNecessary:(id)necessary
 {
-  v4 = a3;
-  v5 = v4;
+  necessaryCopy = necessary;
+  v5 = necessaryCopy;
   v6 = 0;
-  if (v4 && !self->_titleView)
+  if (necessaryCopy && !self->_titleView)
   {
-    if ([v4 _isAlwaysHidden])
+    if ([necessaryCopy _isAlwaysHidden])
     {
       v6 = 0;
       goto LABEL_9;
     }
 
-    v7 = [(UINavigationItem *)self _defaultTitleView];
-    v6 = v7;
-    if (v7)
+    _defaultTitleView = [(UINavigationItem *)self _defaultTitleView];
+    v6 = _defaultTitleView;
+    if (_defaultTitleView)
     {
-      v8 = [v7 superview];
-      if (v8)
+      superview = [_defaultTitleView superview];
+      if (superview)
       {
 LABEL_7:
 
         goto LABEL_9;
       }
 
-      v9 = [v5 topItem];
+      topItem = [v5 topItem];
 
-      if (v9 == self)
+      if (topItem == self)
       {
-        v8 = [v5 _contentView];
-        [v8 addSubview:v6];
+        superview = [v5 _contentView];
+        [superview addSubview:v6];
         goto LABEL_7;
       }
     }
@@ -1522,16 +1522,16 @@ LABEL_9:
   return v6;
 }
 
-- (void)_setTitle:(id)a3 animated:(BOOL)a4 matchBarButtonItemAnimationDuration:(BOOL)a5
+- (void)_setTitle:(id)title animated:(BOOL)animated matchBarButtonItemAnimationDuration:(BOOL)duration
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = v8;
-  if (a4)
+  durationCopy = duration;
+  titleCopy = title;
+  v9 = titleCopy;
+  if (animated)
   {
-    if (v8)
+    if (titleCopy)
     {
-      v10 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:v8];
+      v10 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:titleCopy];
     }
 
     else
@@ -1595,7 +1595,7 @@ LABEL_9:
             [(UIView *)self->_backButtonView setNeedsDisplay];
             [v19 setNeedsDisplay];
             [v18 setNeedsLayout];
-            if (v5)
+            if (durationCopy)
             {
               v20 = 0.35;
             }
@@ -1605,7 +1605,7 @@ LABEL_9:
               v20 = 0.175;
             }
 
-            v21 = [v18 animationFactory];
+            animationFactory = [v18 animationFactory];
             v23[4] = self;
             v24[0] = MEMORY[0x1E69E9820];
             v24[1] = 3221225472;
@@ -1618,7 +1618,7 @@ LABEL_9:
             v23[2] = __75__UINavigationItem__setTitle_animated_matchBarButtonItemAnimationDuration___block_invoke_2;
             v23[3] = &unk_1E70F5AC0;
             v22 = v19;
-            [UIView _animateWithDuration:393216 delay:v21 options:v24 factory:v23 animations:v20 completion:0.0];
+            [UIView _animateWithDuration:393216 delay:animationFactory options:v24 factory:v23 animations:v20 completion:0.0];
           }
         }
       }
@@ -1630,7 +1630,7 @@ LABEL_27:
     goto LABEL_28;
   }
 
-  [(UINavigationItem *)self setTitle:v8];
+  [(UINavigationItem *)self setTitle:titleCopy];
 LABEL_28:
 }
 
@@ -1658,11 +1658,11 @@ uint64_t __75__UINavigationItem__setTitle_animated_matchBarButtonItemAnimationDu
   [(UINavigationItem *)self _setAttributedTitle:v4];
 }
 
-- (void)setAttributedTitle:(id)a3
+- (void)setAttributedTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v5 = self->_attributedTitle;
-  v6 = v4;
+  v6 = titleCopy;
   v17 = v6;
   if (v5 == v6)
   {
@@ -1710,13 +1710,13 @@ LABEL_8:
         [v12 setNeedsLayout];
         if ([v12 state])
         {
-          v14 = [v12 topItem];
+          topItem = [v12 topItem];
 
-          if (v14 == self)
+          if (topItem == self)
           {
-            v15 = [v12 backItem];
-            v16 = [v15 backButtonView];
-            [v16 _setAbbreviatedTitleIndex:0x7FFFFFFFFFFFFFFFLL];
+            backItem = [v12 backItem];
+            backButtonView = [backItem backButtonView];
+            [backButtonView _setAbbreviatedTitleIndex:0x7FFFFFFFFFFFFFFFLL];
           }
         }
 
@@ -1740,11 +1740,11 @@ LABEL_8:
 LABEL_20:
 }
 
-- (void)setLargeTitle:(id)a3
+- (void)setLargeTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   largeTitle = self->_largeTitle;
-  v13 = v4;
+  v13 = titleCopy;
   v6 = largeTitle;
   if (v6 == v13)
   {
@@ -1786,11 +1786,11 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)_setLargeTitleView:(id)a3
+- (void)_setLargeTitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v6 = self->_largeTitleView;
-  v7 = v5;
+  v7 = viewCopy;
   v10 = v7;
   if (v6 == v7)
   {
@@ -1810,7 +1810,7 @@ LABEL_11:
   if ((v8 & 1) == 0)
   {
 LABEL_8:
-    objc_storeStrong(&self->_largeTitleView, a3);
+    objc_storeStrong(&self->_largeTitleView, view);
     WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
     v6 = WeakRetained;
     if (WeakRetained && [(UIView *)WeakRetained navigationItemIsTopItem:self])
@@ -1824,14 +1824,14 @@ LABEL_8:
 LABEL_12:
 }
 
-- (id)_effectiveTitleForTitle:(id)a3
+- (id)_effectiveTitleForTitle:(id)title
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  titleCopy = title;
+  v4 = titleCopy;
+  if (titleCopy && [titleCopy length])
   {
-    v5 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v6 = [v4 stringByTrimmingCharactersInSet:v5];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v6 = [v4 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     if ([v6 length])
     {
@@ -1854,13 +1854,13 @@ LABEL_12:
   return v13;
 }
 
-- (void)setSubtitle:(id)a3
+- (void)setSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
     v4 = MEMORY[0x1E696AAB0];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithString:v5];
+    subtitleCopy = subtitle;
+    v6 = [[v4 alloc] initWithString:subtitleCopy];
   }
 
   else
@@ -1871,11 +1871,11 @@ LABEL_12:
   [(UINavigationItem *)self setAttributedSubtitle:v6];
 }
 
-- (void)setAttributedSubtitle:(id)a3
+- (void)setAttributedSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   attributedSubtitle = self->_attributedSubtitle;
-  v13 = v4;
+  v13 = subtitleCopy;
   v6 = attributedSubtitle;
   if (v6 == v13)
   {
@@ -1918,11 +1918,11 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)setSubtitleView:(id)a3
+- (void)setSubtitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   subtitleView = self->_subtitleView;
-  v11 = v5;
+  v11 = viewCopy;
   v7 = subtitleView;
   if (v7 == v11)
   {
@@ -1944,7 +1944,7 @@ LABEL_11:
   if ((v8 & 1) == 0)
   {
 LABEL_8:
-    objc_storeStrong(&self->_subtitleView, a3);
+    objc_storeStrong(&self->_subtitleView, view);
     WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
     v9 = WeakRetained;
     if (WeakRetained && [(UIView *)WeakRetained navigationItemIsTopItem:self])
@@ -1958,13 +1958,13 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)setLargeSubtitle:(id)a3
+- (void)setLargeSubtitle:(id)subtitle
 {
-  if (a3)
+  if (subtitle)
   {
     v4 = MEMORY[0x1E696AAB0];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithString:v5];
+    subtitleCopy = subtitle;
+    v6 = [[v4 alloc] initWithString:subtitleCopy];
   }
 
   else
@@ -1975,11 +1975,11 @@ LABEL_12:
   [(UINavigationItem *)self setLargeAttributedSubtitle:v6];
 }
 
-- (void)setLargeAttributedSubtitle:(id)a3
+- (void)setLargeAttributedSubtitle:(id)subtitle
 {
-  v4 = a3;
+  subtitleCopy = subtitle;
   largeAttributedSubtitle = self->_largeAttributedSubtitle;
-  v13 = v4;
+  v13 = subtitleCopy;
   v6 = largeAttributedSubtitle;
   if (v6 == v13)
   {
@@ -2021,11 +2021,11 @@ LABEL_8:
 LABEL_12:
 }
 
-- (void)setLargeSubtitleView:(id)a3
+- (void)setLargeSubtitleView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   largeSubtitleView = self->_largeSubtitleView;
-  v11 = v5;
+  v11 = viewCopy;
   v7 = largeSubtitleView;
   if (v7 == v11)
   {
@@ -2037,7 +2037,7 @@ LABEL_12:
   {
 
 LABEL_8:
-    objc_storeStrong(&self->_largeSubtitleView, a3);
+    objc_storeStrong(&self->_largeSubtitleView, view);
     WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
     v9 = WeakRetained;
     if (!WeakRetained || ![(UIView *)WeakRetained navigationItemIsTopItem:self])
@@ -2073,39 +2073,39 @@ LABEL_13:
   }
 }
 
-- (void)_setLargeTitleAccessoryView:(id)a3 alignToBaseline:(BOOL)a4 horizontalAlignment:(unint64_t)a5
+- (void)_setLargeTitleAccessoryView:(id)view alignToBaseline:(BOOL)baseline horizontalAlignment:(unint64_t)alignment
 {
-  v6 = a4;
-  v9 = a3;
-  if (self->__largeTitleAccessoryView != v9 || self->__alignLargeTitleAccessoryViewToBaseline != v6 || self->__largeTitleAccessoryViewHorizontalAlignment != a5)
+  baselineCopy = baseline;
+  viewCopy = view;
+  if (self->__largeTitleAccessoryView != viewCopy || self->__alignLargeTitleAccessoryViewToBaseline != baselineCopy || self->__largeTitleAccessoryViewHorizontalAlignment != alignment)
   {
-    v11 = v9;
-    objc_storeStrong(&self->__largeTitleAccessoryView, a3);
-    self->__alignLargeTitleAccessoryViewToBaseline = v6;
-    self->__largeTitleAccessoryViewHorizontalAlignment = a5;
+    v11 = viewCopy;
+    objc_storeStrong(&self->__largeTitleAccessoryView, view);
+    self->__alignLargeTitleAccessoryViewToBaseline = baselineCopy;
+    self->__largeTitleAccessoryViewHorizontalAlignment = alignment;
     WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
     [WeakRetained navigationItemUpdatedLargeTitleContent:self];
 
-    v9 = v11;
+    viewCopy = v11;
   }
 }
 
-- (void)_setLargeTitleTwoLineMode:(unint64_t)a3
+- (void)_setLargeTitleTwoLineMode:(unint64_t)mode
 {
-  if (self->__largeTitleTwoLineMode != a3)
+  if (self->__largeTitleTwoLineMode != mode)
   {
-    self->__largeTitleTwoLineMode = a3;
+    self->__largeTitleTwoLineMode = mode;
     WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
     [WeakRetained navigationItemUpdatedLargeTitleContent:self];
   }
 }
 
-- (void)_setWeeTitle:(id)a3
+- (void)_setWeeTitle:(id)title
 {
-  v7 = a3;
+  titleCopy = title;
   if (![(NSString *)self->__weeTitle isEqualToString:?])
   {
-    v4 = [v7 copy];
+    v4 = [titleCopy copy];
     weeTitle = self->__weeTitle;
     self->__weeTitle = v4;
 
@@ -2114,23 +2114,23 @@ LABEL_13:
   }
 }
 
-- (void)_setBackgroundHidden:(BOOL)a3
+- (void)_setBackgroundHidden:(BOOL)hidden
 {
-  if (self->__backgroundHidden != a3)
+  if (self->__backgroundHidden != hidden)
   {
-    self->__backgroundHidden = a3;
+    self->__backgroundHidden = hidden;
     WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
     [WeakRetained navigationItemUpdatedBackgroundAppearance:self];
   }
 }
 
-- (void)_setPreferredNavigationBarVisibility:(unint64_t)a3
+- (void)_setPreferredNavigationBarVisibility:(unint64_t)visibility
 {
-  if (self->__preferredNavigationBarVisibility != a3)
+  if (self->__preferredNavigationBarVisibility != visibility)
   {
-    v5 = [(UINavigationItem *)self _navigationBarVisibility];
-    self->__preferredNavigationBarVisibility = a3;
-    if ([(UINavigationItem *)self _navigationBarVisibility]!= v5)
+    _navigationBarVisibility = [(UINavigationItem *)self _navigationBarVisibility];
+    self->__preferredNavigationBarVisibility = visibility;
+    if ([(UINavigationItem *)self _navigationBarVisibility]!= _navigationBarVisibility)
     {
       WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
       [WeakRetained navigationItemUpdatedNavigationBarVisibility:self];
@@ -2138,11 +2138,11 @@ LABEL_13:
   }
 }
 
-- (void)_setNavigationBarHidden:(BOOL)a3
+- (void)_setNavigationBarHidden:(BOOL)hidden
 {
-  if (self->__navigationBarHidden != a3)
+  if (self->__navigationBarHidden != hidden)
   {
-    self->__navigationBarHidden = a3;
+    self->__navigationBarHidden = hidden;
     if (!self->__preferredNavigationBarVisibility)
     {
       WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
@@ -2151,9 +2151,9 @@ LABEL_13:
   }
 }
 
-- (void)_setAllowsInteractivePop:(BOOL)a3
+- (void)_setAllowsInteractivePop:(BOOL)pop
 {
-  if (a3)
+  if (pop)
   {
     v3 = 0;
   }
@@ -2166,9 +2166,9 @@ LABEL_13:
   *&self->_navigationItemFlags = *&self->_navigationItemFlags & 0xFBFF | v3;
 }
 
-- (void)_setAllowsInteractivePopWhenNavigationBarHidden:(BOOL)a3
+- (void)_setAllowsInteractivePopWhenNavigationBarHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v4 = 2048;
   }
@@ -2189,9 +2189,9 @@ LABEL_13:
   }
 }
 
-- (void)_setAllowsInteractivePopWhenBackButtonHidden:(BOOL)a3
+- (void)_setAllowsInteractivePopWhenBackButtonHidden:(BOOL)hidden
 {
-  if (a3)
+  if (hidden)
   {
     v4 = 4096;
   }
@@ -2410,23 +2410,23 @@ LABEL_12:
   [WeakRetained navigationItemSearchControllerReadyForDeferredAutomaticShowsScopeBar:self];
 }
 
-- (BOOL)_shouldSearchControllerDeferPresentationTransition:(id)a3
+- (BOOL)_shouldSearchControllerDeferPresentationTransition:(id)transition
 {
-  v3 = self;
+  selfCopy = self;
   WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
-  LOBYTE(v3) = [WeakRetained shouldSearchControllerDeferPresentationTransitionForNavigationItem:v3];
+  LOBYTE(selfCopy) = [WeakRetained shouldSearchControllerDeferPresentationTransitionForNavigationItem:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (void)_setBackButtonTitle:(id)a3 lineBreakMode:(int64_t)a4
+- (void)_setBackButtonTitle:(id)title lineBreakMode:(int64_t)mode
 {
-  v6 = a3;
-  v7 = v6;
-  if (self->_backButtonTitle != v6)
+  titleCopy = title;
+  v7 = titleCopy;
+  if (self->_backButtonTitle != titleCopy)
   {
-    v17 = v6;
-    v8 = [(NSString *)v6 isEqualToString:?];
+    v17 = titleCopy;
+    v8 = [(NSString *)titleCopy isEqualToString:?];
     v7 = v17;
     if (!v8)
     {
@@ -2448,9 +2448,9 @@ LABEL_12:
           v13 = self->_backButtonTitle;
           if (v13 && [(NSString *)v13 length])
           {
-            v14 = [(UINavigationItem *)self backButtonView];
+            backButtonView = [(UINavigationItem *)self backButtonView];
             backButtonView = self->_backButtonView;
-            self->_backButtonView = v14;
+            self->_backButtonView = backButtonView;
           }
 
           else
@@ -2458,11 +2458,11 @@ LABEL_12:
             [(UINavigationItem *)self _removeBackButtonView];
           }
 
-          [(UIView *)self->_backButtonView _setLineBreakMode:a4];
+          [(UIView *)self->_backButtonView _setLineBreakMode:mode];
           [(UIView *)self->_backButtonView _resetTitleSize];
           [(UIView *)self->_backButtonView setNeedsDisplay];
-          v16 = [(UINavigationItem *)self _defaultTitleView];
-          [v16 setNeedsDisplay];
+          _defaultTitleView = [(UINavigationItem *)self _defaultTitleView];
+          [_defaultTitleView setNeedsDisplay];
           [v12 setNeedsLayout];
         }
       }
@@ -2480,8 +2480,8 @@ LABEL_12:
     object = v5;
     if (objc_opt_respondsToSelector())
     {
-      v6 = [(UIView *)self->_backButtonView _appearanceStorage];
-      v7 = v6 != 0;
+      _appearanceStorage = [(UIView *)self->_backButtonView _appearanceStorage];
+      v7 = _appearanceStorage != 0;
     }
 
     else
@@ -2512,21 +2512,21 @@ LABEL_12:
               [(UINavigationItem *)self _removeBackButtonView];
             }
 
-            v12 = [(UINavigationItem *)self backButtonView];
+            backButtonView = [(UINavigationItem *)self backButtonView];
             v13 = self->_backButtonView;
-            self->_backButtonView = v12;
+            self->_backButtonView = backButtonView;
           }
 
           else
           {
-            v14 = [v9 _appearanceStorage];
-            v15 = [v14 _barButtonAppearanceStorage];
-            [(UIView *)backButtonView _applyBarButtonAppearanceStorage:v15 withTaggedSelectors:0];
+            _appearanceStorage2 = [v9 _appearanceStorage];
+            _barButtonAppearanceStorage = [_appearanceStorage2 _barButtonAppearanceStorage];
+            [(UIView *)backButtonView _applyBarButtonAppearanceStorage:_barButtonAppearanceStorage withTaggedSelectors:0];
 
             v16 = self->_backButtonView;
-            v17 = [(UIBarButtonItem *)object _appearanceStorage];
+            _appearanceStorage3 = [(UIBarButtonItem *)object _appearanceStorage];
             v18 = objc_getAssociatedObject(object, &_UIAppearanceCustomizedSelectorsAssociationKey);
-            [(UIView *)v16 _applyBarButtonAppearanceStorage:v17 withTaggedSelectors:v18];
+            [(UIView *)v16 _applyBarButtonAppearanceStorage:_appearanceStorage3 withTaggedSelectors:v18];
           }
         }
 
@@ -2536,8 +2536,8 @@ LABEL_12:
         }
 
         [(UIView *)self->_backButtonView setNeedsDisplay];
-        v19 = [(UINavigationItem *)self _defaultTitleView];
-        [v19 setNeedsDisplay];
+        _defaultTitleView = [(UINavigationItem *)self _defaultTitleView];
+        [_defaultTitleView setNeedsDisplay];
         [v10 setNeedsLayout];
         [v10 _accessibility_navigationBarContentsDidChange];
       }
@@ -2552,33 +2552,33 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = [(UIView *)self->_backButtonView title];
-    v4 = [v3 copy];
+    title = [(UIView *)self->_backButtonView title];
+    backButtonTitle = [title copy];
   }
 
   else
   {
-    v4 = [(UINavigationItem *)self backButtonTitle];
+    backButtonTitle = [(UINavigationItem *)self backButtonTitle];
   }
 
-  return v4;
+  return backButtonTitle;
 }
 
-- (id)_backButtonTitleAllowingGenericTitles:(BOOL)a3 allowingDefaultTitles:(BOOL)a4
+- (id)_backButtonTitleAllowingGenericTitles:(BOOL)titles allowingDefaultTitles:(BOOL)defaultTitles
 {
-  v4 = a4;
-  if (a3)
+  defaultTitlesCopy = defaultTitles;
+  if (titles)
   {
     backButtonDisplayMode = self->_backButtonDisplayMode;
     if (backButtonDisplayMode == 1)
     {
 LABEL_13:
-      if (v4 || (*&self->_navigationItemFlags & 0x2000) != 0)
+      if (defaultTitlesCopy || (*&self->_navigationItemFlags & 0x2000) != 0)
       {
-        v11 = [(UINavigationItem *)self _abbreviatedBackButtonTitles];
-        v9 = [v11 firstObject];
+        _abbreviatedBackButtonTitles = [(UINavigationItem *)self _abbreviatedBackButtonTitles];
+        firstObject = [_abbreviatedBackButtonTitles firstObject];
 
-        if (v9)
+        if (firstObject)
         {
           goto LABEL_17;
         }
@@ -2590,7 +2590,7 @@ LABEL_13:
     if (backButtonDisplayMode)
     {
 LABEL_16:
-      v9 = &stru_1EFB14550;
+      firstObject = &stru_1EFB14550;
       goto LABEL_17;
     }
   }
@@ -2598,47 +2598,47 @@ LABEL_16:
   backBarButtonItem = self->_backBarButtonItem;
   if (backBarButtonItem)
   {
-    v8 = [(UIBarButtonItem *)backBarButtonItem title];
-    if (v8)
+    title = [(UIBarButtonItem *)backBarButtonItem title];
+    if (title)
     {
-      v9 = v8;
+      firstObject = title;
       goto LABEL_17;
     }
   }
 
-  v9 = self->_backButtonTitle;
-  if (v9)
+  firstObject = self->_backButtonTitle;
+  if (firstObject)
   {
     v10 = 1;
   }
 
   else
   {
-    v10 = !v4;
+    v10 = !defaultTitlesCopy;
   }
 
   if (!v10)
   {
-    v9 = [(NSAttributedString *)self->_attributedTitle string];
+    firstObject = [(NSAttributedString *)self->_attributedTitle string];
   }
 
-  if (!v9)
+  if (!firstObject)
   {
     goto LABEL_13;
   }
 
 LABEL_17:
 
-  return v9;
+  return firstObject;
 }
 
 - (void)_removeBarButtonItemViews
 {
-  v3 = [(UINavigationItem *)self leftBarButtonItems];
-  __45__UINavigationItem__removeBarButtonItemViews__block_invoke(v3);
+  leftBarButtonItems = [(UINavigationItem *)self leftBarButtonItems];
+  __45__UINavigationItem__removeBarButtonItemViews__block_invoke(leftBarButtonItems);
 
-  v4 = [(UINavigationItem *)self rightBarButtonItems];
-  __45__UINavigationItem__removeBarButtonItemViews__block_invoke(v4);
+  rightBarButtonItems = [(UINavigationItem *)self rightBarButtonItems];
+  __45__UINavigationItem__removeBarButtonItemViews__block_invoke(rightBarButtonItems);
 }
 
 void __45__UINavigationItem__removeBarButtonItemViews__block_invoke(void *a1)
@@ -2681,8 +2681,8 @@ void __45__UINavigationItem__removeBarButtonItemViews__block_invoke(void *a1)
 - (void)_removeTitleAndButtonViews
 {
   [(UINavigationItem *)self _removeBackButtonView];
-  v3 = [(UINavigationItem *)self titleView];
-  [v3 removeFromSuperview];
+  titleView = [(UINavigationItem *)self titleView];
+  [titleView removeFromSuperview];
 
   [(UIView *)self->_defaultTitleView removeFromSuperview];
   defaultTitleView = self->_defaultTitleView;
@@ -2696,24 +2696,24 @@ void __45__UINavigationItem__removeBarButtonItemViews__block_invoke(void *a1)
   self->_backButtonView = 0;
 }
 
-- (void)_replaceCustomLeftRightViewAtIndex:(unint64_t)a3 withView:(id)a4 left:(BOOL)a5
+- (void)_replaceCustomLeftRightViewAtIndex:(unint64_t)index withView:(id)view left:(BOOL)left
 {
-  v5 = a5;
-  v12 = a4;
-  [v12 _uinavigationbar_prepareToAppearInNavigationItem:self onLeft:v5];
+  leftCopy = left;
+  viewCopy = view;
+  [viewCopy _uinavigationbar_prepareToAppearInNavigationItem:self onLeft:leftCopy];
   v8 = 112;
-  if (v5)
+  if (leftCopy)
   {
     v8 = 104;
   }
 
   v9 = *(&self->super.isa + v8);
-  v10 = [v9 objectAtIndex:a3];
-  if (v10 != v12)
+  v10 = [v9 objectAtIndex:index];
+  if (v10 != viewCopy)
   {
     v11 = [v9 mutableCopy];
-    [v11 replaceObjectAtIndex:a3 withObject:v12];
-    if (v5)
+    [v11 replaceObjectAtIndex:index withObject:viewCopy];
+    if (leftCopy)
     {
       [(UINavigationItem *)self _setCustomLeftViews:v11];
     }
@@ -2728,8 +2728,8 @@ void __45__UINavigationItem__removeBarButtonItemViews__block_invoke(void *a1)
 - (id)backButtonView
 {
   WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
-  v4 = [WeakRetained _screen];
-  v5 = [WeakRetained _shouldShowBackButtonForScreen:v4];
+  _screen = [WeakRetained _screen];
+  v5 = [WeakRetained _shouldShowBackButtonForScreen:_screen];
 
   if (v5)
   {
@@ -2741,14 +2741,14 @@ void __45__UINavigationItem__removeBarButtonItemViews__block_invoke(void *a1)
       self->_backButtonView = &v7->super.super;
 
       v9 = self->_backButtonView;
-      v10 = [WeakRetained _appearanceStorage];
-      v11 = [v10 _barButtonAppearanceStorage];
-      [(UIView *)v9 _applyBarButtonAppearanceStorage:v11 withTaggedSelectors:0];
+      _appearanceStorage = [WeakRetained _appearanceStorage];
+      _barButtonAppearanceStorage = [_appearanceStorage _barButtonAppearanceStorage];
+      [(UIView *)v9 _applyBarButtonAppearanceStorage:_barButtonAppearanceStorage withTaggedSelectors:0];
 
       v12 = self->_backButtonView;
-      v13 = [(UIBarButtonItem *)self->_backBarButtonItem _appearanceStorage];
+      _appearanceStorage2 = [(UIBarButtonItem *)self->_backBarButtonItem _appearanceStorage];
       v14 = objc_getAssociatedObject(self->_backBarButtonItem, &_UIAppearanceCustomizedSelectorsAssociationKey);
-      [(UIView *)v12 _applyBarButtonAppearanceStorage:v13 withTaggedSelectors:v14];
+      [(UIView *)v12 _applyBarButtonAppearanceStorage:_appearanceStorage2 withTaggedSelectors:v14];
 
       -[UIView setSemanticContentAttribute:](self->_backButtonView, "setSemanticContentAttribute:", [WeakRetained semanticContentAttribute]);
       v15 = [_UIAppearance _hasCustomizationsForClass:objc_opt_class() guideClass:[(UIView *)self->_backButtonView _appearanceGuideClass]];
@@ -2823,28 +2823,28 @@ void __45__UINavigationItem__removeBarButtonItemViews__block_invoke(void *a1)
   }
 }
 
-- (void)_setTitleViewDataSource:(id)a3
+- (void)_setTitleViewDataSource:(id)source
 {
-  v9 = a3;
+  sourceCopy = source;
   v4 = _UINavigationBarCastToAugmentedTitleView(self->_titleView);
   v5 = v4;
   if (v4)
   {
-    if (v9)
+    if (sourceCopy)
     {
-      v6 = v9;
-      v7 = self;
+      v6 = sourceCopy;
+      selfCopy = self;
       v8 = 1;
     }
 
     else
     {
       v6 = 0;
-      v7 = 0;
+      selfCopy = 0;
       v8 = 0;
     }
 
-    [v4 _setDataSource:v6 navigationItem:v7 titleLocation:v8];
+    [v4 _setDataSource:v6 navigationItem:selfCopy titleLocation:v8];
   }
 }
 
@@ -2872,11 +2872,11 @@ void __45__UINavigationItem__removeBarButtonItemViews__block_invoke(void *a1)
   }
 }
 
-- (void)updateNavigationBarButtonsAnimated:(BOOL)a3
+- (void)updateNavigationBarButtonsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
-  [WeakRetained _updateContentIfTopItem:self animated:v3];
+  [WeakRetained _updateContentIfTopItem:self animated:animatedCopy];
 }
 
 - (void)setHidesBackButton:(BOOL)hidesBackButton
@@ -2971,31 +2971,31 @@ LABEL_11:
 
 - (id)_buttonForBackButtonIndicator
 {
-  v2 = [(UINavigationItem *)self _barButtonForBackButtonIndicator];
-  v3 = [v2 view];
+  _barButtonForBackButtonIndicator = [(UINavigationItem *)self _barButtonForBackButtonIndicator];
+  view = [_barButtonForBackButtonIndicator view];
 
-  return v3;
+  return view;
 }
 
-- (void)_messageChangeObserver:(id)a3 forTransitionFromSearchController:(id)a4
+- (void)_messageChangeObserver:(id)observer forTransitionFromSearchController:(id)controller
 {
-  v10 = a4;
-  v6 = a3;
-  [v6 navigationItemUpdatedSearchController:self oldSearchController:v10];
-  v7 = [v6 navigationItemIsTopItem:self];
+  controllerCopy = controller;
+  observerCopy = observer;
+  [observerCopy navigationItemUpdatedSearchController:self oldSearchController:controllerCopy];
+  v7 = [observerCopy navigationItemIsTopItem:self];
 
-  v8 = v10;
+  v8 = controllerCopy;
   if (v7)
   {
-    v9 = [v10 _navigationItemCurrentlyDisplayingSearchController];
+    _navigationItemCurrentlyDisplayingSearchController = [controllerCopy _navigationItemCurrentlyDisplayingSearchController];
 
-    if (v9 == self)
+    if (_navigationItemCurrentlyDisplayingSearchController == self)
     {
-      [v10 _setNavigationItemCurrentlyDisplayingSearchController:0];
+      [controllerCopy _setNavigationItemCurrentlyDisplayingSearchController:0];
     }
 
     [(UISearchController *)self->_searchController _setNavigationItemCurrentlyDisplayingSearchController:self];
-    v8 = v10;
+    v8 = controllerCopy;
   }
 }
 
@@ -3005,19 +3005,19 @@ LABEL_11:
   if (self->_searchController != v5)
   {
     v12 = v5;
-    v6 = [(UISearchController *)v5 searchBar];
-    [v6 _resetIfNecessaryForNavigationBarHosting:1];
+    searchBar = [(UISearchController *)v5 searchBar];
+    [searchBar _resetIfNecessaryForNavigationBarHosting:1];
 
     v7 = self->_searchController;
     objc_storeStrong(&self->_searchController, searchController);
-    v8 = [(UINavigationItem *)self _hasIntegratedSearchBarInNavigationBar];
-    v9 = [(UISearchController *)v12 searchBar];
-    [v9 _setHostedInlineByNavigationBar:v8];
+    _hasIntegratedSearchBarInNavigationBar = [(UINavigationItem *)self _hasIntegratedSearchBarInNavigationBar];
+    searchBar2 = [(UISearchController *)v12 searchBar];
+    [searchBar2 _setHostedInlineByNavigationBar:_hasIntegratedSearchBarInNavigationBar];
 
-    if (!v8)
+    if (!_hasIntegratedSearchBarInNavigationBar)
     {
-      v10 = [(UISearchController *)v12 searchBar];
-      [v10 _setHostedInlineByToolbar:{-[UINavigationItem _hasIntegratedSearchBarInToolbar](self, "_hasIntegratedSearchBarInToolbar")}];
+      searchBar3 = [(UISearchController *)v12 searchBar];
+      [searchBar3 _setHostedInlineByToolbar:{-[UINavigationItem _hasIntegratedSearchBarInToolbar](self, "_hasIntegratedSearchBarInToolbar")}];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
@@ -3030,9 +3030,9 @@ LABEL_11:
   }
 }
 
-- (void)_setChangeObserver:(id)a3
+- (void)_setChangeObserver:(id)observer
 {
-  obj = a3;
+  obj = observer;
   WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
 
   v5 = obj;
@@ -3059,14 +3059,14 @@ LABEL_11:
   {
     self->_preferredSearchBarPlacement = preferredSearchBarPlacement;
     [(UINavigationItem *)self _updateSearchBarItemGroupForPreferredPlacementChange:1];
-    v6 = [(UINavigationItem *)self _hasIntegratedSearchBarInNavigationBar];
-    v7 = [(UINavigationItem *)self _searchControllerIfAllowed];
-    v9 = [v7 searchBar];
+    _hasIntegratedSearchBarInNavigationBar = [(UINavigationItem *)self _hasIntegratedSearchBarInNavigationBar];
+    _searchControllerIfAllowed = [(UINavigationItem *)self _searchControllerIfAllowed];
+    searchBar = [_searchControllerIfAllowed searchBar];
 
-    [v9 _setHostedInlineByNavigationBar:v6];
-    if (!v6)
+    [searchBar _setHostedInlineByNavigationBar:_hasIntegratedSearchBarInNavigationBar];
+    if (!_hasIntegratedSearchBarInNavigationBar)
     {
-      [v9 _setHostedInlineByToolbar:{-[UINavigationItem _hasIntegratedSearchBarInToolbar](self, "_hasIntegratedSearchBarInToolbar")}];
+      [searchBar _setHostedInlineByToolbar:{-[UINavigationItem _hasIntegratedSearchBarInToolbar](self, "_hasIntegratedSearchBarInToolbar")}];
     }
 
     [(UIBarButtonItem *)self->_searchBarPlacementBarButtonItem _setPrefersCollapsedRepresentationInToolbar:preferredSearchBarPlacement == 4];
@@ -3077,14 +3077,14 @@ LABEL_11:
 
 - (void)_confirmedSearchBarPlacementBarButtonItem
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 searchBarPlacementBarButtonItem];
-    v3 = v2;
-    if (v2 == v1[33])
+    searchBarPlacementBarButtonItem = [self searchBarPlacementBarButtonItem];
+    v3 = searchBarPlacementBarButtonItem;
+    if (searchBarPlacementBarButtonItem == selfCopy[33])
     {
-      v1 = v2;
+      selfCopy = searchBarPlacementBarButtonItem;
     }
 
     else
@@ -3095,19 +3095,19 @@ LABEL_11:
       v7 = NSStringFromClass(v6);
       [v4 raise:v5 format:{@"An override of searchBarPlacementBarButtonItem has returned an unexpected object: <%@: %p>", v7, v3}];
 
-      v1 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v1;
+  return selfCopy;
 }
 
-- (void)setSearchBarPlacementAllowsToolbarIntegration:(BOOL)a3
+- (void)setSearchBarPlacementAllowsToolbarIntegration:(BOOL)integration
 {
   navigationItemFlags = self->_navigationItemFlags;
-  if (a3 == (navigationItemFlags & 0x4000) >> 14)
+  if (integration == (navigationItemFlags & 0x4000) >> 14)
   {
-    if (a3)
+    if (integration)
     {
       v6 = 0;
     }
@@ -3123,12 +3123,12 @@ LABEL_11:
   }
 }
 
-- (void)setSearchBarPlacementAllowsExternalIntegration:(BOOL)a3
+- (void)setSearchBarPlacementAllowsExternalIntegration:(BOOL)integration
 {
   navigationItemFlags = self->_navigationItemFlags;
-  if ((((*&navigationItemFlags >= 0) ^ a3) & 1) == 0)
+  if ((((*&navigationItemFlags >= 0) ^ integration) & 1) == 0)
   {
-    if (a3)
+    if (integration)
     {
       v6 = 0x8000;
     }
@@ -3147,19 +3147,19 @@ LABEL_11:
   }
 }
 
-- (BOOL)_changeMayAffectSearchBarPlacementFromTraits:(id)a3 toOtherTraits:(id)a4
+- (BOOL)_changeMayAffectSearchBarPlacementFromTraits:(id)traits toOtherTraits:(id)otherTraits
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 userInterfaceIdiom];
-  v8 = [v6 userInterfaceIdiom];
+  traitsCopy = traits;
+  otherTraitsCopy = otherTraits;
+  userInterfaceIdiom = [traitsCopy userInterfaceIdiom];
+  userInterfaceIdiom2 = [otherTraitsCopy userInterfaceIdiom];
   v9 = 0;
-  if (v7 != -1 && v8 != -1)
+  if (userInterfaceIdiom != -1 && userInterfaceIdiom2 != -1)
   {
-    if (v7 == v8 || (v9 = 1, v7) && v8)
+    if (userInterfaceIdiom == userInterfaceIdiom2 || (v9 = 1, userInterfaceIdiom) && userInterfaceIdiom2)
     {
-      v10 = [v5 horizontalSizeClass];
-      v9 = v10 != [v6 horizontalSizeClass];
+      horizontalSizeClass = [traitsCopy horizontalSizeClass];
+      v9 = horizontalSizeClass != [otherTraitsCopy horizontalSizeClass];
     }
   }
 
@@ -3168,18 +3168,18 @@ LABEL_11:
 
 - (uint64_t)_canRevealSearchBarPlacementAccurately
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
+    WeakRetained = objc_loadWeakRetained((self + 56));
     if (WeakRetained)
     {
-      v3 = objc_loadWeakRetained((a1 + 56));
-      v4 = [v3 _effectiveSearchControllerForNavigationItem:a1];
+      v3 = objc_loadWeakRetained((self + 56));
+      v4 = [v3 _effectiveSearchControllerForNavigationItem:self];
     }
 
     else
     {
-      v4 = *(a1 + 120);
+      v4 = *(self + 120);
     }
 
     if (v4)
@@ -3206,7 +3206,7 @@ LABEL_11:
   return v5 & 1;
 }
 
-- (BOOL)_hasIntegratedSearchBarInToolbarForTraits:(id)a3
+- (BOOL)_hasIntegratedSearchBarInToolbarForTraits:(id)traits
 {
   canRevealSearchBarPlacement = [(UINavigationItem *)self _canRevealSearchBarPlacementAccurately];
   if (canRevealSearchBarPlacement)
@@ -3219,10 +3219,10 @@ LABEL_11:
   return canRevealSearchBarPlacement;
 }
 
-- (BOOL)_hasIntegratedSearchBarInNavigationBarForTraits:(id)a3
+- (BOOL)_hasIntegratedSearchBarInNavigationBarForTraits:(id)traits
 {
-  v4 = a3;
-  if ([(UINavigationItem *)self _canRevealSearchBarPlacementAccurately]&& [(UINavigationItem *)self _hasInlineSearchBarForTraits:v4])
+  traitsCopy = traits;
+  if ([(UINavigationItem *)self _canRevealSearchBarPlacementAccurately]&& [(UINavigationItem *)self _hasInlineSearchBarForTraits:traitsCopy])
   {
     v5 = ![(UISearchController *)self->_searchController _isSearchTextFieldBorrowed];
   }
@@ -3235,12 +3235,12 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)_hasInlineSearchBarForTraits:(id)a3
+- (BOOL)_hasInlineSearchBarForTraits:(id)traits
 {
-  v4 = a3;
+  traitsCopy = traits;
   if ([(UINavigationItem *)self _canRevealSearchBarPlacementAccurately])
   {
-    v5 = _UINavigationItemShouldIntegrateSearchBarInNavigationBarForTraits(self, v4) || [(UINavigationItem *)self _hasIntegratedSearchBarInToolbar];
+    v5 = _UINavigationItemShouldIntegrateSearchBarInNavigationBarForTraits(self, traitsCopy) || [(UINavigationItem *)self _hasIntegratedSearchBarInToolbar];
   }
 
   else
@@ -3251,34 +3251,34 @@ LABEL_11:
   return v5;
 }
 
-- (void)_searchBarUpdatedSearchFieldIntegrationInSearchController:(id)a3
+- (void)_searchBarUpdatedSearchFieldIntegrationInSearchController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
-  [WeakRetained navigationItemUpdatedSearchController:self oldSearchController:v4];
+  [WeakRetained navigationItemUpdatedSearchController:self oldSearchController:controllerCopy];
 }
 
-- (void)_updateSearchBarItemGroupForPreferredPlacementChange:(BOOL)a3
+- (void)_updateSearchBarItemGroupForPreferredPlacementChange:(BOOL)change
 {
-  v6 = [(UISearchController *)self->_searchController searchBar];
-  v5 = [(UINavigationItem *)self _hasIntegratedSearchBarInNavigationBar];
-  if ((v5 & 1) == 0 && !a3)
+  searchBar = [(UISearchController *)self->_searchController searchBar];
+  _hasIntegratedSearchBarInNavigationBar = [(UINavigationItem *)self _hasIntegratedSearchBarInNavigationBar];
+  if ((_hasIntegratedSearchBarInNavigationBar & 1) == 0 && !change)
   {
-    v5 = [v6 _isHostedInlineByNavigationBar];
+    _hasIntegratedSearchBarInNavigationBar = [searchBar _isHostedInlineByNavigationBar];
   }
 
-  [(UISearchController *)self->_searchController _setDisplaysSearchBarItemGroupInline:v5];
+  [(UISearchController *)self->_searchController _setDisplaysSearchBarItemGroupInline:_hasIntegratedSearchBarInNavigationBar];
 }
 
 - (void)_resetHidesSearchBarWhenScrolling
 {
-  v3 = [(UINavigationItem *)self _hidesSearchBarWhenScrollingIfAllowed];
+  _hidesSearchBarWhenScrollingIfAllowed = [(UINavigationItem *)self _hidesSearchBarWhenScrollingIfAllowed];
   *&self->_navigationItemFlags &= 0xFFE7u;
   WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
   if (WeakRetained)
   {
     v6 = WeakRetained;
-    v5 = v3 == [(UINavigationItem *)self _hidesSearchBarWhenScrollingIfAllowed];
+    v5 = _hidesSearchBarWhenScrollingIfAllowed == [(UINavigationItem *)self _hidesSearchBarWhenScrollingIfAllowed];
     WeakRetained = v6;
     if (!v5)
     {
@@ -3291,7 +3291,7 @@ LABEL_11:
 - (void)setHidesSearchBarWhenScrolling:(BOOL)hidesSearchBarWhenScrolling
 {
   v3 = hidesSearchBarWhenScrolling;
-  v5 = [(UINavigationItem *)self _hidesSearchBarWhenScrollingIfAllowed];
+  _hidesSearchBarWhenScrollingIfAllowed = [(UINavigationItem *)self _hidesSearchBarWhenScrollingIfAllowed];
   if (dyld_program_sdk_at_least())
   {
     if (v3)
@@ -3327,7 +3327,7 @@ LABEL_11:
   if (WeakRetained)
   {
     v11 = WeakRetained;
-    v10 = v5 == [(UINavigationItem *)self _hidesSearchBarWhenScrollingIfAllowed];
+    v10 = _hidesSearchBarWhenScrollingIfAllowed == [(UINavigationItem *)self _hidesSearchBarWhenScrollingIfAllowed];
     WeakRetained = v11;
     if (!v10)
     {
@@ -3347,31 +3347,31 @@ LABEL_11:
   }
 }
 
-- (void)_setManualScrollEdgeAppearanceEnabled:(BOOL)a3
+- (void)_setManualScrollEdgeAppearanceEnabled:(BOOL)enabled
 {
-  if (self->_manualScrollEdgeAppearanceEnabled != a3)
+  if (self->_manualScrollEdgeAppearanceEnabled != enabled)
   {
-    self->_manualScrollEdgeAppearanceEnabled = a3;
+    self->_manualScrollEdgeAppearanceEnabled = enabled;
     WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
     [WeakRetained navigationItemUpdatedScrollEdgeProgress:self];
 
     if (self->_autoScrollEdgeTransitionDistance > 0.0)
     {
       v5 = objc_loadWeakRetained(&self->_navigationBar);
-      v7 = [v5 delegate];
+      delegate = [v5 delegate];
 
       if (objc_opt_respondsToSelector())
       {
         v6 = objc_loadWeakRetained(&self->_navigationBar);
-        [v7 _navigationBar:v6 itemEnabledAutoScrollTransition:self];
+        [delegate _navigationBar:v6 itemEnabledAutoScrollTransition:self];
       }
     }
   }
 }
 
-- (void)_setAlwaysUseManualScrollEdgeAppearance:(BOOL)a3
+- (void)_setAlwaysUseManualScrollEdgeAppearance:(BOOL)appearance
 {
-  v3 = a3;
+  appearanceCopy = appearance;
   if (qword_1ED49C980 != -1)
   {
     dispatch_once(&qword_1ED49C980, &__block_literal_global_249);
@@ -3399,12 +3399,12 @@ LABEL_11:
       }
     }
 
-    v3 = 0;
+    appearanceCopy = 0;
   }
 
-  if (self->_alwaysUseManualScrollEdgeAppearance != v3)
+  if (self->_alwaysUseManualScrollEdgeAppearance != appearanceCopy)
   {
-    self->_alwaysUseManualScrollEdgeAppearance = v3;
+    self->_alwaysUseManualScrollEdgeAppearance = appearanceCopy;
     if (self->_manualScrollEdgeAppearanceEnabled)
     {
       WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
@@ -3420,31 +3420,31 @@ void __60__UINavigationItem__setAlwaysUseManualScrollEdgeAppearance___block_invo
   _MergedGlobals_1008 = [@"com.apple.MobileSMS" isEqualToString:v0];
 }
 
-- (void)_setManualScrollEdgeAppearanceProgress:(double)a3
+- (void)_setManualScrollEdgeAppearanceProgress:(double)progress
 {
-  self->_manualScrollEdgeAppearanceProgress = fmin(fmax(a3, 0.0), 1.0);
+  self->_manualScrollEdgeAppearanceProgress = fmin(fmax(progress, 0.0), 1.0);
   WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
   [WeakRetained navigationItemUpdatedScrollEdgeProgress:self];
 }
 
-- (void)_setAutoScrollEdgeTransitionDistance:(double)a3
+- (void)_setAutoScrollEdgeTransitionDistance:(double)distance
 {
   if (self->_manualScrollEdgeAppearanceEnabled)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"UINavigationItem.m" lineNumber:1912 description:@"_autoScrollEdgeTransitionDistance may only be changed while _manualScrollEdgeAppearanceEnabled==NO"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UINavigationItem.m" lineNumber:1912 description:@"_autoScrollEdgeTransitionDistance may only be changed while _manualScrollEdgeAppearanceEnabled==NO"];
   }
 
-  v5 = fmax(a3, 0.0);
+  v5 = fmax(distance, 0.0);
   if (self->_autoScrollEdgeTransitionDistance != v5)
   {
     self->_autoScrollEdgeTransitionDistance = v5;
   }
 }
 
-- (void)_setShouldDismissPresentedViewControllerWhenPopped:(BOOL)a3
+- (void)_setShouldDismissPresentedViewControllerWhenPopped:(BOOL)popped
 {
-  if (a3)
+  if (popped)
   {
     v3 = 0;
   }
@@ -3457,18 +3457,18 @@ void __60__UINavigationItem__setAlwaysUseManualScrollEdgeAppearance___block_invo
   *&self->_navigationItemFlags = *&self->_navigationItemFlags & 0xFFDF | v3;
 }
 
-- (void)_addImplicitTopBarSectionsFromItems:(id)a3 toSections:(id)a4 forPlacement:(int64_t)a5
+- (void)_addImplicitTopBarSectionsFromItems:(id)items toSections:(id)sections forPlacement:(int64_t)placement
 {
   v37 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if (!v9)
+  itemsCopy = items;
+  sectionsCopy = sections;
+  if (!sectionsCopy)
   {
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"UINavigationItem.m" lineNumber:1965 description:{@"Invalid parameter not satisfying: %@", @"sections != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UINavigationItem.m" lineNumber:1965 description:{@"Invalid parameter not satisfying: %@", @"sections != nil"}];
   }
 
-  if ([v8 count])
+  if ([itemsCopy count])
   {
     v10 = objc_opt_new();
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -3477,16 +3477,16 @@ void __60__UINavigationItem__setAlwaysUseManualScrollEdgeAppearance___block_invo
     aBlock[3] = &unk_1E70F36D0;
     v11 = v10;
     v32 = v11;
-    v34 = a5;
-    v12 = v9;
+    placementCopy = placement;
+    v12 = sectionsCopy;
     v33 = v12;
     v13 = _Block_copy(aBlock);
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
-    v25 = v8;
-    v14 = v8;
+    v25 = itemsCopy;
+    v14 = itemsCopy;
     v15 = [v14 countByEnumeratingWithState:&v27 objects:v36 count:16];
     if (v15)
     {
@@ -3513,7 +3513,7 @@ void __60__UINavigationItem__setAlwaysUseManualScrollEdgeAppearance___block_invo
             v21 = [_UIBarSection alloc];
             v35 = v19;
             v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v35 count:1];
-            v23 = [(_UIBarSection *)v21 initWithPreferredPlacement:a5 items:v22];
+            v23 = [(_UIBarSection *)v21 initWithPreferredPlacement:placement items:v22];
 
             [v12 addObject:v23];
           }
@@ -3531,7 +3531,7 @@ void __60__UINavigationItem__setAlwaysUseManualScrollEdgeAppearance___block_invo
     }
 
     v13[2](v13);
-    v8 = v25;
+    itemsCopy = v25;
   }
 }
 
@@ -3545,26 +3545,26 @@ void __80__UINavigationItem__addImplicitTopBarSectionsFromItems_toSections_forPl
   }
 }
 
-- (void)_addImplicitTopBarSectionsFromGroups:(id)a3 toSections:(id)a4 forPlacement:(int64_t)a5
+- (void)_addImplicitTopBarSectionsFromGroups:(id)groups toSections:(id)sections forPlacement:(int64_t)placement
 {
-  v9 = a3;
-  v10 = a4;
-  if (!v10)
+  groupsCopy = groups;
+  sectionsCopy = sections;
+  if (!sectionsCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"UINavigationItem.m" lineNumber:2004 description:{@"Invalid parameter not satisfying: %@", @"sections != nil"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UINavigationItem.m" lineNumber:2004 description:{@"Invalid parameter not satisfying: %@", @"sections != nil"}];
   }
 
-  if ([v9 count])
+  if ([groupsCopy count])
   {
     v11 = objc_opt_class();
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __81__UINavigationItem__addImplicitTopBarSectionsFromGroups_toSections_forPlacement___block_invoke;
     v13[3] = &unk_1E70F7AF0;
-    v15 = a5;
-    v14 = v10;
-    [v11 _partitionGroupsIntoSections:v9 sectionHandler:v13];
+    placementCopy = placement;
+    v14 = sectionsCopy;
+    [v11 _partitionGroupsIntoSections:groupsCopy sectionHandler:v13];
   }
 }
 
@@ -3576,12 +3576,12 @@ void __81__UINavigationItem__addImplicitTopBarSectionsFromGroups_toSections_forP
   [*(a1 + 32) addObject:v4];
 }
 
-+ (void)_partitionGroupsIntoSections:(id)a3 sectionHandler:(id)a4
++ (void)_partitionGroupsIntoSections:(id)sections sectionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  sectionsCopy = sections;
+  handlerCopy = handler;
+  if ([sectionsCopy count])
   {
     v7 = objc_opt_new();
     aBlock[0] = MEMORY[0x1E69E9820];
@@ -3590,15 +3590,15 @@ void __81__UINavigationItem__addImplicitTopBarSectionsFromGroups_toSections_forP
     aBlock[3] = &unk_1E70F37C0;
     v8 = v7;
     v30 = v8;
-    v23 = v6;
-    v31 = v6;
+    v23 = handlerCopy;
+    v31 = handlerCopy;
     v9 = _Block_copy(aBlock);
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v24 = v5;
-    v10 = v5;
+    v24 = sectionsCopy;
+    v10 = sectionsCopy;
     v11 = [v10 countByEnumeratingWithState:&v25 objects:v32 count:16];
     if (!v11)
     {
@@ -3626,16 +3626,16 @@ LABEL_8:
           continue;
         }
 
-        v16 = [v15 _items];
-        v17 = [v16 count];
+        _items = [v15 _items];
+        v17 = [_items count];
 
         if (!v17)
         {
           goto LABEL_18;
         }
 
-        v18 = [v15 _items];
-        v19 = [v18 count];
+        _items2 = [v15 _items];
+        v19 = [_items2 count];
 
         if (v19 != 1)
         {
@@ -3649,8 +3649,8 @@ LABEL_18:
           continue;
         }
 
-        v20 = [v15 _items];
-        v21 = [v20 objectAtIndexedSubscript:0];
+        _items3 = [v15 _items];
+        v21 = [_items3 objectAtIndexedSubscript:0];
 
         if (v21 && [v21 isSpaceItem] && ((objc_msgSend(v21, "hidesSharedBackground") & 1) != 0 || (objc_msgSend(v21, "width"), v22 == 0.0)))
         {
@@ -3682,8 +3682,8 @@ LABEL_23:
 LABEL_26:
 
         v9[2](v9);
-        v6 = v23;
-        v5 = v24;
+        handlerCopy = v23;
+        sectionsCopy = v24;
         break;
       }
     }
@@ -3707,11 +3707,11 @@ uint64_t __64__UINavigationItem__partitionGroupsIntoSections_sectionHandler___bl
   return result;
 }
 
-- (void)_setToolbarAvoidsKeyboard:(BOOL)a3
+- (void)_setToolbarAvoidsKeyboard:(BOOL)keyboard
 {
-  if (self->_toolbarAvoidsKeyboard != a3)
+  if (self->_toolbarAvoidsKeyboard != keyboard)
   {
-    self->_toolbarAvoidsKeyboard = a3;
+    self->_toolbarAvoidsKeyboard = keyboard;
     WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
     v6 = WeakRetained;
     if (WeakRetained)
@@ -3728,27 +3728,27 @@ uint64_t __64__UINavigationItem__partitionGroupsIntoSections_sectionHandler___bl
   }
 }
 
-- (void)_sendSearchBarPlacementChangeCallbackIfNecessaryWillChange:(id *)a1
+- (void)_sendSearchBarPlacementChangeCallbackIfNecessaryWillChange:(id *)change
 {
-  if (!a1)
+  if (!change)
   {
     return;
   }
 
-  v4 = [a1[15] delegate];
-  v5 = v4;
-  if (v4)
+  delegate = [change[15] delegate];
+  v5 = delegate;
+  if (delegate)
   {
-    v11 = v4;
+    v11 = delegate;
     if (a2)
     {
       v6 = objc_opt_respondsToSelector();
       v5 = v11;
       if (v6)
       {
-        v7 = [a1 searchBarPlacement];
-        v8 = [a1[15] delegate];
-        [v8 searchController:a1[15] willChangeToSearchBarPlacement:v7];
+        searchBarPlacement = [change searchBarPlacement];
+        delegate2 = [change[15] delegate];
+        [delegate2 searchController:change[15] willChangeToSearchBarPlacement:searchBarPlacement];
 LABEL_8:
 
         v5 = v11;
@@ -3761,22 +3761,22 @@ LABEL_8:
       v5 = v11;
       if (v9)
       {
-        v10 = [a1 searchBarPlacement];
-        v8 = [a1[15] delegate];
-        [v8 searchController:a1[15] didChangeFromSearchBarPlacement:v10];
+        searchBarPlacement2 = [change searchBarPlacement];
+        delegate2 = [change[15] delegate];
+        [delegate2 searchController:change[15] didChangeFromSearchBarPlacement:searchBarPlacement2];
         goto LABEL_8;
       }
     }
   }
 }
 
-- (void)_movedToTopOfStack:(BOOL)a3
+- (void)_movedToTopOfStack:(BOOL)stack
 {
-  if (a3)
+  if (stack)
   {
     [(UISearchController *)self->_searchController _setNavigationItemCurrentlyDisplayingSearchController:self];
-    v4 = [(UISearchController *)self->_searchController searchBar];
-    [v4 _resetIfNecessaryForNavigationBarHosting:1];
+    searchBar = [(UISearchController *)self->_searchController searchBar];
+    [searchBar _resetIfNecessaryForNavigationBarHosting:1];
 
     if ((*&self->_navigationItemFlags & 0x40) != 0)
     {
@@ -3787,9 +3787,9 @@ LABEL_8:
   *&self->_navigationItemFlags &= ~0x40u;
 }
 
-- (void)_movedFromTopOfStack:(BOOL)a3
+- (void)_movedFromTopOfStack:(BOOL)stack
 {
-  if (a3)
+  if (stack)
   {
     if ((*&self->_navigationItemFlags & 0x80) != 0)
     {
@@ -3805,11 +3805,11 @@ LABEL_8:
   *&self->_navigationItemFlags &= ~0x80u;
 }
 
-- (id)_barButtonItemsToAddWhenAttemptingToAddBarButtonItems:(int)a3 forRight:
+- (id)_barButtonItemsToAddWhenAttemptingToAddBarButtonItems:(int)items forRight:
 {
   v54 = *MEMORY[0x1E69E9840];
   v6 = a2;
-  if (a1)
+  if (self)
   {
     if (dyld_program_sdk_at_least())
     {
@@ -3821,12 +3821,12 @@ LABEL_8:
       v8 = [v7 countByEnumeratingWithState:&v49 objects:v53 count:16];
       if (v8)
       {
-        v3 = v8;
+        disappearingViewController = v8;
         v9 = *v50;
         v10 = *MEMORY[0x1E695D940];
         do
         {
-          for (i = 0; i != v3; i = i + 1)
+          for (i = 0; i != disappearingViewController; i = i + 1)
           {
             if (*v50 != v9)
             {
@@ -3839,76 +3839,76 @@ LABEL_8:
             }
           }
 
-          v3 = [v7 countByEnumeratingWithState:&v49 objects:v53 count:16];
+          disappearingViewController = [v7 countByEnumeratingWithState:&v49 objects:v53 count:16];
         }
 
-        while (v3);
+        while (disappearingViewController);
       }
     }
 
     v12 = v6;
-    WeakRetained = objc_loadWeakRetained(a1 + 7);
-    v14 = [WeakRetained isLocked];
-    if ((v14 & 1) == 0)
+    WeakRetained = objc_loadWeakRetained(self + 7);
+    isLocked = [WeakRetained isLocked];
+    if ((isLocked & 1) == 0)
     {
-      v3 = objc_loadWeakRetained(a1 + 7);
-      if (![v3 _wasDecodedUnlockedWithNavigationControllerDelegate])
+      disappearingViewController = objc_loadWeakRetained(self + 7);
+      if (![disappearingViewController _wasDecodedUnlockedWithNavigationControllerDelegate])
       {
         goto LABEL_37;
       }
     }
 
-    v15 = objc_loadWeakRetained(a1 + 7);
-    v16 = [v15 _lostNavigationControllerDelegate];
+    v15 = objc_loadWeakRetained(self + 7);
+    _lostNavigationControllerDelegate = [v15 _lostNavigationControllerDelegate];
 
-    if ((v14 & 1) == 0)
+    if ((isLocked & 1) == 0)
     {
     }
 
-    if ((v16 & 1) == 0)
+    if ((_lostNavigationControllerDelegate & 1) == 0)
     {
-      v17 = objc_loadWeakRetained(a1 + 7);
+      v17 = objc_loadWeakRetained(self + 7);
       WeakRetained = [v17 _effectiveDelegate];
 
-      v3 = [WeakRetained disappearingViewController];
-      if (!v3)
+      disappearingViewController = [WeakRetained disappearingViewController];
+      if (!disappearingViewController)
       {
         goto LABEL_37;
       }
 
-      v18 = objc_loadWeakRetained(a1 + 7);
-      v19 = [v18 _stack];
-      v20 = [v19 state];
+      v18 = objc_loadWeakRetained(self + 7);
+      _stack = [v18 _stack];
+      state = [_stack state];
 
-      if (v20)
+      if (state)
       {
         goto LABEL_37;
       }
 
-      v21 = [v3 _existingNavigationItem];
-      v22 = [WeakRetained _nestedTopViewController];
-      v23 = [v22 _existingNavigationItem];
+      _existingNavigationItem = [disappearingViewController _existingNavigationItem];
+      _nestedTopViewController = [WeakRetained _nestedTopViewController];
+      _existingNavigationItem2 = [_nestedTopViewController _existingNavigationItem];
 
-      if (v21 == a1 && v23)
+      if (_existingNavigationItem == self && _existingNavigationItem2)
       {
-        v43 = v21;
-        v24 = [v23 rightBarButtonItems];
+        v43 = _existingNavigationItem;
+        rightBarButtonItems = [_existingNavigationItem2 rightBarButtonItems];
         v48 = 0;
-        v25 = _itemListExcludingOtherItemList(v12, v24, &v48);
+        v25 = _itemListExcludingOtherItemList(v12, rightBarButtonItems, &v48);
         v26 = v48;
 
-        v44 = v23;
-        v27 = [v23 leftBarButtonItems];
+        v44 = _existingNavigationItem2;
+        leftBarButtonItems = [_existingNavigationItem2 leftBarButtonItems];
         v47 = 0;
-        v12 = _itemListExcludingOtherItemList(v25, v27, &v47);
+        v12 = _itemListExcludingOtherItemList(v25, leftBarButtonItems, &v47);
         v28 = v47;
 
         v29 = v26;
         v30 = [v28 count];
         if (!(v30 + [v26 count]))
         {
-          v21 = v43;
-          v23 = v44;
+          _existingNavigationItem = v43;
+          _existingNavigationItem2 = v44;
 LABEL_35:
 
 LABEL_36:
@@ -3920,56 +3920,56 @@ LABEL_37:
         v38 = MEMORY[0x1E696AEC0];
         v39 = [v28 arrayByAddingObjectsFromArray:v26];
         v40 = @"left";
-        v41 = a3 == 0;
+        v41 = items == 0;
         v37 = v39;
         if (!v41)
         {
           v40 = @"right";
         }
 
-        v34 = [v38 stringWithFormat:@"%@ not added to %@BarButtonItems of %@", v39, v40, a1];
+        v34 = [v38 stringWithFormat:@"%@ not added to %@BarButtonItems of %@", v39, v40, self];
         UINavigationItemLogSettingUpSharedBarButtonItemsDuringTransition(v34);
-        v21 = v43;
+        _existingNavigationItem = v43;
       }
 
       else
       {
-        if (v23 != a1 || !v21)
+        if (_existingNavigationItem2 != self || !_existingNavigationItem)
         {
           goto LABEL_36;
         }
 
-        v44 = v23;
-        v31 = [v21 rightBarButtonItems];
+        v44 = _existingNavigationItem2;
+        rightBarButtonItems2 = [_existingNavigationItem rightBarButtonItems];
         v46 = 0;
-        v32 = _itemListExcludingOtherItemList(v31, v12, &v46);
+        v32 = _itemListExcludingOtherItemList(rightBarButtonItems2, v12, &v46);
         v29 = v46;
 
-        v33 = [v21 leftBarButtonItems];
+        leftBarButtonItems2 = [_existingNavigationItem leftBarButtonItems];
         v45 = 0;
-        v34 = _itemListExcludingOtherItemList(v33, v12, &v45);
+        v34 = _itemListExcludingOtherItemList(leftBarButtonItems2, v12, &v45);
         v28 = v45;
 
         if ([v29 count])
         {
-          v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ removed from rightBarButtonItems of %@", v29, v21];
+          v35 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ removed from rightBarButtonItems of %@", v29, _existingNavigationItem];
           UINavigationItemLogSettingUpSharedBarButtonItemsDuringTransition(v35);
 
-          [v21 setRightBarButtonItems:v32];
+          [_existingNavigationItem setRightBarButtonItems:v32];
         }
 
         if ([v28 count])
         {
-          v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ removed from leftBarButtonItems of %@", v28, v21];
+          v36 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ removed from leftBarButtonItems of %@", v28, _existingNavigationItem];
           UINavigationItemLogSettingUpSharedBarButtonItemsDuringTransition(v36);
 
-          [v21 setLeftBarButtonItems:v34];
+          [_existingNavigationItem setLeftBarButtonItems:v34];
         }
 
         v37 = v32;
       }
 
-      v23 = v44;
+      _existingNavigationItem2 = v44;
       goto LABEL_35;
     }
   }
@@ -4005,20 +4005,20 @@ LABEL_38:
     v16[0] = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     v8 = [(UINavigationItem *)&self->super.isa _barButtonItemsToAddWhenAttemptingToAddBarButtonItems:v7 forRight:0];
-    v9 = [v8 firstObject];
+    firstObject = [v8 firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  v10 = [(UINavigationItem *)self leftBarButtonItem];
+  leftBarButtonItem = [(UINavigationItem *)self leftBarButtonItem];
 
-  if (v9 != v10)
+  if (firstObject != leftBarButtonItem)
   {
     _updateItemOwners(self->_leftBarButtonItems, 0);
-    v11 = _itemListUpdatingFirstItem(self->_leftBarButtonItems, v9);
+    v11 = _itemListUpdatingFirstItem(self->_leftBarButtonItems, firstObject);
     leftBarButtonItems = self->_leftBarButtonItems;
     self->_leftBarButtonItems = v11;
 
@@ -4063,20 +4063,20 @@ LABEL_38:
     v16[0] = v6;
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
     v8 = [(UINavigationItem *)&self->super.isa _barButtonItemsToAddWhenAttemptingToAddBarButtonItems:v7 forRight:1];
-    v9 = [v8 firstObject];
+    firstObject = [v8 firstObject];
   }
 
   else
   {
-    v9 = 0;
+    firstObject = 0;
   }
 
-  v10 = [(UINavigationItem *)self rightBarButtonItem];
+  rightBarButtonItem = [(UINavigationItem *)self rightBarButtonItem];
 
-  if (v9 != v10)
+  if (firstObject != rightBarButtonItem)
   {
     _updateItemOwners(self->_rightBarButtonItems, 0);
-    v11 = _itemListUpdatingFirstItem(self->_rightBarButtonItems, v9);
+    v11 = _itemListUpdatingFirstItem(self->_rightBarButtonItems, firstObject);
     rightBarButtonItems = self->_rightBarButtonItems;
     self->_rightBarButtonItems = v11;
 
@@ -4393,12 +4393,12 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)_getLeadingItems:(id *)a3 groups:(id *)a4
+- (void)_getLeadingItems:(id *)items groups:(id *)groups
 {
   if ([(NSArray *)self->_leadingItemGroups count])
   {
-    v7 = *a3;
-    *a3 = 0;
+    v7 = *items;
+    *items = 0;
 
     v8 = self->_leadingItemGroups;
   }
@@ -4407,28 +4407,28 @@ LABEL_12:
   {
     if ([(NSArray *)self->_leftBarButtonItems count])
     {
-      objc_storeStrong(a3, self->_leftBarButtonItems);
+      objc_storeStrong(items, self->_leftBarButtonItems);
     }
 
     else
     {
-      v9 = *a3;
-      *a3 = 0;
+      v9 = *items;
+      *items = 0;
     }
 
     v8 = 0;
   }
 
-  v10 = *a4;
-  *a4 = v8;
+  v10 = *groups;
+  *groups = v8;
 }
 
-- (void)_getTrailingItems:(id *)a3 groups:(id *)a4
+- (void)_getTrailingItems:(id *)items groups:(id *)groups
 {
   if ([(NSArray *)self->_trailingItemGroups count])
   {
-    v7 = *a3;
-    *a3 = 0;
+    v7 = *items;
+    *items = 0;
 
     v8 = self->_trailingItemGroups;
   }
@@ -4437,20 +4437,20 @@ LABEL_12:
   {
     if ([(NSArray *)self->_rightBarButtonItems count])
     {
-      objc_storeStrong(a3, self->_rightBarButtonItems);
+      objc_storeStrong(items, self->_rightBarButtonItems);
     }
 
     else
     {
-      v9 = *a3;
-      *a3 = 0;
+      v9 = *items;
+      *items = 0;
     }
 
     v8 = 0;
   }
 
-  v10 = *a4;
-  *a4 = v8;
+  v10 = *groups;
+  *groups = v8;
 }
 
 - (void)setLeftItemsSupplementBackButton:(BOOL)leftItemsSupplementBackButton
@@ -4482,79 +4482,79 @@ LABEL_12:
   }
 }
 
-- (void)_setBottomPalette:(id)a3
+- (void)_setBottomPalette:(id)palette
 {
-  v5 = a3;
+  paletteCopy = palette;
   bottomPalette = self->_bottomPalette;
-  if (bottomPalette != v5)
+  if (bottomPalette != paletteCopy)
   {
-    v8 = v5;
+    v8 = paletteCopy;
     v7 = bottomPalette;
     [(_UINavigationBarPalette *)v7 setOwningNavigationItem:0];
-    objc_storeStrong(&self->_bottomPalette, a3);
+    objc_storeStrong(&self->_bottomPalette, palette);
     [(_UINavigationBarPalette *)self->_bottomPalette setOwningNavigationItem:self];
     [(UINavigationItem *)self _setBottomPaletteNeedsUpdate:v7];
 
-    v5 = v8;
+    paletteCopy = v8;
   }
 }
 
-- (void)_setTopPalette:(id)a3
+- (void)_setTopPalette:(id)palette
 {
-  v5 = a3;
+  paletteCopy = palette;
   topPalette = self->_topPalette;
-  if (topPalette != v5)
+  if (topPalette != paletteCopy)
   {
-    v9 = v5;
+    v9 = paletteCopy;
     v7 = topPalette;
     [(_UINavigationBarPalette *)v7 setOwningNavigationItem:0];
-    objc_storeStrong(&self->_topPalette, a3);
+    objc_storeStrong(&self->_topPalette, palette);
     [(_UINavigationBarPalette *)self->_topPalette setOwningNavigationItem:self];
     WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
     [WeakRetained navigationItem:self updatedPalettePart:6 oldPalette:v7];
 
-    v5 = v9;
+    paletteCopy = v9;
   }
 }
 
-- (void)_setBottomPaletteNeedsUpdate:(id)a3
+- (void)_setBottomPaletteNeedsUpdate:(id)update
 {
-  v6 = a3;
+  updateCopy = update;
   WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
   if (WeakRetained)
   {
     if (objc_opt_respondsToSelector())
     {
       v5 = objc_loadWeakRetained(&self->__changeObserver);
-      [v5 navigationItem:self updatedPalettePart:7 oldPalette:v6];
+      [v5 navigationItem:self updatedPalettePart:7 oldPalette:updateCopy];
     }
 
     else
     {
-      [WeakRetained navigationItemUpdatedBottomPalette:self oldPalette:v6];
+      [WeakRetained navigationItemUpdatedBottomPalette:self oldPalette:updateCopy];
     }
   }
 }
 
-- (void)_updatePalette:(id)a3
+- (void)_updatePalette:(id)palette
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_topPalette == v4)
+  paletteCopy = palette;
+  v5 = paletteCopy;
+  if (self->_topPalette == paletteCopy)
   {
-    v7 = v4;
+    v7 = paletteCopy;
     WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
     [WeakRetained navigationItem:self updatedPalettePart:6 oldPalette:v7];
   }
 
   else
   {
-    if (self->_bottomPalette != v4)
+    if (self->_bottomPalette != paletteCopy)
     {
       goto LABEL_6;
     }
 
-    v7 = v4;
+    v7 = paletteCopy;
     [(UINavigationItem *)self _setBottomPaletteNeedsUpdate:?];
   }
 
@@ -4714,20 +4714,20 @@ LABEL_11:
   }
 }
 
-- (void)_setRenameHandler:(id)a3
+- (void)_setRenameHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   renameHandler = self->_renameHandler;
-  if (renameHandler != v5)
+  if (renameHandler != handlerCopy)
   {
-    v8 = v5;
+    v8 = handlerCopy;
     [(_UINavigationItemRenameHandler *)renameHandler setAssociatedItem:0];
-    objc_storeStrong(&self->_renameHandler, a3);
+    objc_storeStrong(&self->_renameHandler, handler);
     [(_UINavigationItemRenameHandler *)v8 setAssociatedItem:self];
     WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
     [WeakRetained navigationItemUpdatedTitleContent:self animated:_UIBarsAnimatingSystemChanges()];
 
-    v5 = v8;
+    handlerCopy = v8;
   }
 }
 
@@ -4941,21 +4941,21 @@ void __38__UINavigationItem_setRenameDelegate___block_invoke_7(uint64_t a1, void
 
 - (BOOL)_canRename
 {
-  v2 = [(UINavigationItem *)self _renameHandler];
-  v3 = [v2 _canRename];
+  _renameHandler = [(UINavigationItem *)self _renameHandler];
+  _canRename = [_renameHandler _canRename];
 
-  return v3;
+  return _canRename;
 }
 
-- (void)_setMinimumContentMargins:(NSDirectionalEdgeInsets)a3
+- (void)_setMinimumContentMargins:(NSDirectionalEdgeInsets)margins
 {
-  v3.f64[0] = a3.top;
-  v3.f64[1] = a3.leading;
-  v4.f64[0] = a3.bottom;
-  v4.f64[1] = a3.trailing;
+  v3.f64[0] = margins.top;
+  v3.f64[1] = margins.leading;
+  v4.f64[0] = margins.bottom;
+  v4.f64[1] = margins.trailing;
   if ((vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(v3, *&self->_minimumContentMargins.top), vceqq_f64(v4, *&self->_minimumContentMargins.bottom)))) & 1) == 0)
   {
-    self->_minimumContentMargins = a3;
+    self->_minimumContentMargins = margins;
     WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
     if (WeakRetained)
     {
@@ -4978,9 +4978,9 @@ void __38__UINavigationItem_setRenameDelegate___block_invoke_7(uint64_t a1, void
   return customLeftViews;
 }
 
-- (void)_setCustomLeftViews:(id)a3
+- (void)_setCustomLeftViews:(id)views
 {
-  v4 = [a3 copy];
+  v4 = [views copy];
   customLeftViews = self->_customLeftViews;
   self->_customLeftViews = v4;
 }
@@ -4997,19 +4997,19 @@ void __38__UINavigationItem_setRenameDelegate___block_invoke_7(uint64_t a1, void
   return customRightViews;
 }
 
-- (void)_setCustomRightViews:(id)a3
+- (void)_setCustomRightViews:(id)views
 {
-  v4 = [a3 copy];
+  v4 = [views copy];
   customRightViews = self->_customRightViews;
   self->_customRightViews = v4;
 }
 
-- (BOOL)_accumulateViewsFromItems:(id)a3 isLeft:(BOOL)a4 refreshViews:(BOOL)a5
+- (BOOL)_accumulateViewsFromItems:(id)items isLeft:(BOOL)left refreshViews:(BOOL)views
 {
-  v54 = a5;
-  v51 = a4;
+  viewsCopy = views;
+  leftCopy = left;
   v61 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  itemsCopy = items;
   WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
   v8 = WeakRetained;
   if (!WeakRetained || ([WeakRetained _isAlwaysHidden] & 1) != 0)
@@ -5018,8 +5018,8 @@ void __38__UINavigationItem_setRenameDelegate___block_invoke_7(uint64_t a1, void
     goto LABEL_60;
   }
 
-  v10 = [v8 isMinibar];
-  v11 = [v6 count];
+  isMinibar = [v8 isMinibar];
+  v11 = [itemsCopy count];
   if (!v11)
   {
     v18 = 0;
@@ -5030,14 +5030,14 @@ void __38__UINavigationItem_setRenameDelegate___block_invoke_7(uint64_t a1, void
   }
 
   v12 = v11;
-  v55 = v10;
+  v55 = isMinibar;
   v13 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v11];
   v14 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:v12];
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
-  v15 = v6;
+  v15 = itemsCopy;
   v16 = [v15 countByEnumeratingWithState:&v56 objects:v60 count:16];
   if (!v16)
   {
@@ -5051,13 +5051,13 @@ void __38__UINavigationItem_setRenameDelegate___block_invoke_7(uint64_t a1, void
   obj = v15;
   v53 = v14;
   v50 = v13;
-  v45 = v6;
+  v45 = itemsCopy;
   v46 = v8;
   v18 = 0;
   v19 = 0;
   v48 = 0;
   v20 = *v57;
-  v47 = self;
+  selfCopy = self;
   do
   {
     v21 = 0;
@@ -5071,10 +5071,10 @@ void __38__UINavigationItem_setRenameDelegate___block_invoke_7(uint64_t a1, void
       v22 = *(*(&v56 + 1) + 8 * v21);
       if (![v22 isSystemItem] || objc_msgSend(v22, "systemItem") != 6 && objc_msgSend(v22, "systemItem") != 5)
       {
-        v26 = [v22 isCustomViewItem];
-        v27 = [v22 view];
-        v28 = v27;
-        if (v54)
+        isCustomViewItem = [v22 isCustomViewItem];
+        view = [v22 view];
+        v28 = view;
+        if (viewsCopy)
         {
           v29 = [v22 createViewForNavigationItem:self];
 
@@ -5094,11 +5094,11 @@ LABEL_41:
           goto LABEL_42;
         }
 
-        if (v27)
+        if (view)
         {
           if ([v22 isSystemItem])
           {
-            if ((v26 & 1) == 0)
+            if ((isCustomViewItem & 1) == 0)
             {
               v30 = v55;
               if (v55 == [v22 isMinibarView])
@@ -5108,22 +5108,22 @@ LABEL_41:
 
 LABEL_45:
               v38 = objc_loadWeakRetained(&self->_navigationBar);
-              v39 = [v38 _hasLegacyProvider];
+              _hasLegacyProvider = [v38 _hasLegacyProvider];
 
-              if (v39)
+              if (_hasLegacyProvider)
               {
-                v40 = [v28 superview];
-                if (v40)
+                superview = [v28 superview];
+                if (superview)
                 {
                   [v28 removeFromSuperview];
                 }
 
-                v49 = [v28 isHidden];
-                self = v47;
-                v41 = [v22 createViewForNavigationItem:v47];
+                isHidden = [v28 isHidden];
+                self = selfCopy;
+                v41 = [v22 createViewForNavigationItem:selfCopy];
 
                 [v22 setView:v41];
-                [v41 setHidden:v49];
+                [v41 setHidden:isHidden];
 
                 v48 = 1;
                 v28 = v41;
@@ -5132,19 +5132,19 @@ LABEL_45:
                 goto LABEL_40;
               }
 
-              self = v47;
+              self = selfCopy;
 LABEL_18:
               v30 = v55;
 LABEL_19:
               [v22 setIsMinibarView:v30];
 LABEL_20:
               [v28 setSemanticContentAttribute:{objc_msgSend(v8, "semanticContentAttribute")}];
-              [v28 _uinavigationbar_prepareToAppearInNavigationItem:self onLeft:v51];
+              [v28 _uinavigationbar_prepareToAppearInNavigationItem:self onLeft:leftCopy];
               [v50 addObject:v28];
               if ((v19 & 1) == 0)
               {
-                v31 = [MEMORY[0x1E695DFB0] null];
-                [v53 addObject:v31];
+                null = [MEMORY[0x1E695DFB0] null];
+                [v53 addObject:null];
               }
 
               v19 = 0;
@@ -5154,15 +5154,15 @@ LABEL_20:
 
           else
           {
-            v33 = [v22 landscapeImagePhone];
-            v34 = v33;
-            if (!((v33 == 0) | v26 & 1))
+            landscapeImagePhone = [v22 landscapeImagePhone];
+            v34 = landscapeImagePhone;
+            if (!((landscapeImagePhone == 0) | isCustomViewItem & 1))
             {
-              v36 = [v22 isMinibarView];
+              isMinibarView = [v22 isMinibarView];
 
-              v37 = v55 == v36;
+              v37 = v55 == isMinibarView;
               v30 = v55;
-              self = v47;
+              self = selfCopy;
               if (!v37)
               {
                 goto LABEL_45;
@@ -5173,16 +5173,16 @@ LABEL_27:
               goto LABEL_19;
             }
 
-            self = v47;
+            self = selfCopy;
           }
 
-          if ((objc_opt_respondsToSelector() & v26 & 1) == 0)
+          if ((objc_opt_respondsToSelector() & isCustomViewItem & 1) == 0)
           {
             goto LABEL_18;
           }
         }
 
-        else if ((objc_opt_respondsToSelector() & v26 & 1) == 0)
+        else if ((objc_opt_respondsToSelector() & isCustomViewItem & 1) == 0)
         {
           v32 = [v22 createViewForNavigationItem:self];
           if (!v32)
@@ -5210,19 +5210,19 @@ LABEL_40:
 
       if (v19)
       {
-        v23 = [v53 lastObject];
-        v24 = v23;
+        lastObject = [v53 lastObject];
+        v24 = lastObject;
         v25 = v22;
       }
 
       else
       {
         v24 = [objc_alloc(MEMORY[0x1E695DF70]) initWithObjects:{v22, 0}];
-        v23 = v53;
+        lastObject = v53;
         v25 = v24;
       }
 
-      [v23 addObject:v25];
+      [lastObject addObject:v25];
 
       if ([v22 systemItem] == 5)
       {
@@ -5241,19 +5241,19 @@ LABEL_42:
 
   while (v42);
 
-  v6 = v45;
+  itemsCopy = v45;
   v13 = v50;
   v14 = v53;
   v9 = v48;
   if ((v19 & 1) == 0)
   {
 LABEL_55:
-    v43 = [MEMORY[0x1E695DFB0] null];
-    [v14 addObject:v43];
+    null2 = [MEMORY[0x1E695DFB0] null];
+    [v14 addObject:null2];
   }
 
 LABEL_56:
-  if (v51)
+  if (leftCopy)
   {
     [(UINavigationItem *)self _setCustomLeftViews:v13];
     [(UINavigationItem *)self _setLeftItemSpaceList:v14];
@@ -5271,36 +5271,36 @@ LABEL_60:
   return v9 & 1;
 }
 
-- (void)_removeContentInView:(id)a3
+- (void)_removeContentInView:(id)view
 {
-  v8 = a3;
-  v4 = [(UIView *)self->_defaultTitleView superview];
+  viewCopy = view;
+  superview = [(UIView *)self->_defaultTitleView superview];
 
-  if (v4 == v8)
+  if (superview == viewCopy)
   {
     [(UIView *)self->_defaultTitleView removeFromSuperview];
   }
 
-  v5 = [(UIView *)self->_titleView superview];
+  superview2 = [(UIView *)self->_titleView superview];
 
-  if (v5 == v8)
+  if (superview2 == viewCopy)
   {
     [(UIView *)self->_titleView removeFromSuperview];
   }
 
-  v6 = [(UIView *)self->_backButtonView superview];
+  superview3 = [(UIView *)self->_backButtonView superview];
 
-  v7 = v8;
-  if (v6 == v8)
+  v7 = viewCopy;
+  if (superview3 == viewCopy)
   {
     [(UIView *)self->_backButtonView removeFromSuperview];
-    v7 = v8;
+    v7 = viewCopy;
   }
 }
 
-- (void)_updateViewsForBarSizeChangeAndApply:(BOOL)a3
+- (void)_updateViewsForBarSizeChangeAndApply:(BOOL)apply
 {
-  v3 = a3;
+  applyCopy = apply;
   if ([(NSArray *)self->_leftBarButtonItems count])
   {
     v5 = [(UINavigationItem *)self _accumulateViewsFromItems:self->_leftBarButtonItems isLeft:1 refreshViews:0];
@@ -5323,7 +5323,7 @@ LABEL_60:
     -[UIView updateForMiniBarState:](titleView, "updateForMiniBarState:", [WeakRetained isMinibar]);
   }
 
-  if ((v5 & v3) == 1)
+  if ((v5 & applyCopy) == 1)
   {
 
     [(UINavigationItem *)self updateNavigationBarButtonsAnimated:0];
@@ -5347,8 +5347,8 @@ LABEL_60:
 {
   if (!self->_defaultTitleView)
   {
-    v3 = [(UINavigationItem *)self title];
-    v4 = [v3 length];
+    title = [(UINavigationItem *)self title];
+    v4 = [title length];
 
     if (v4)
     {
@@ -5366,42 +5366,42 @@ LABEL_60:
 - (id)_titleView
 {
   WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
-  v4 = [WeakRetained _isAlwaysHidden];
+  _isAlwaysHidden = [WeakRetained _isAlwaysHidden];
 
-  if (v4)
+  if (_isAlwaysHidden)
   {
     v5 = 0;
   }
 
   else
   {
-    v6 = [(UINavigationItem *)self titleView];
-    v7 = v6;
-    if (v6)
+    titleView = [(UINavigationItem *)self titleView];
+    v7 = titleView;
+    if (titleView)
     {
-      v8 = v6;
+      _defaultTitleView = titleView;
     }
 
     else
     {
-      v8 = [(UINavigationItem *)self _defaultTitleView];
+      _defaultTitleView = [(UINavigationItem *)self _defaultTitleView];
     }
 
-    v5 = v8;
+    v5 = _defaultTitleView;
   }
 
   return v5;
 }
 
-- (id)_firstNonSpaceItemInList:(id)a3
+- (id)_firstNonSpaceItemInList:(id)list
 {
   v14 = *MEMORY[0x1E69E9840];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  listCopy = list;
+  v4 = [listCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = *v10;
@@ -5411,7 +5411,7 @@ LABEL_60:
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(listCopy);
         }
 
         v7 = *(*(&v9 + 1) + 8 * i);
@@ -5422,7 +5422,7 @@ LABEL_60:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [listCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v4)
       {
         continue;
@@ -5437,26 +5437,26 @@ LABEL_13:
   return v4;
 }
 
-- (void)_setMinimumDesiredHeight:(double)a3 forBarMetrics:(int64_t)a4
+- (void)_setMinimumDesiredHeight:(double)height forBarMetrics:(int64_t)metrics
 {
   minimumDesiredHeights = self->_minimumDesiredHeights;
   v8 = [MEMORY[0x1E696AD98] numberWithInteger:?];
   v19 = [(NSMutableDictionary *)minimumDesiredHeights objectForKeyedSubscript:v8];
 
-  v9 = fmax(a3, 0.0);
+  v9 = fmax(height, 0.0);
   v10 = self->_minimumDesiredHeights;
   if (v9 != 0.0)
   {
     if (!v10)
     {
-      v14 = [MEMORY[0x1E695DF90] dictionary];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
       v15 = self->_minimumDesiredHeights;
-      self->_minimumDesiredHeights = v14;
+      self->_minimumDesiredHeights = dictionary;
     }
 
     v13 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
     v16 = self->_minimumDesiredHeights;
-    v17 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v17 = [MEMORY[0x1E696AD98] numberWithInteger:metrics];
     [(NSMutableDictionary *)v16 setObject:v13 forKeyedSubscript:v17];
 
     if (!v19 || ([v19 isEqual:v13] & 1) == 0)
@@ -5471,7 +5471,7 @@ LABEL_13:
   v11 = v19;
   if (v10 && v19)
   {
-    v12 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v12 = [MEMORY[0x1E696AD98] numberWithInteger:metrics];
     [(NSMutableDictionary *)v10 removeObjectForKey:v12];
 
     v13 = objc_loadWeakRetained(&self->__changeObserver);
@@ -5482,7 +5482,7 @@ LABEL_10:
   }
 }
 
-- (double)_minimumDesiredHeightForBarMetrics:(int64_t)a3
+- (double)_minimumDesiredHeightForBarMetrics:(int64_t)metrics
 {
   minimumDesiredHeights = self->_minimumDesiredHeights;
   if (!minimumDesiredHeights)
@@ -5490,7 +5490,7 @@ LABEL_10:
     return 0.0;
   }
 
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:metrics];
   v5 = [(NSMutableDictionary *)minimumDesiredHeights objectForKeyedSubscript:v4];
 
   if (!v5)
@@ -5504,13 +5504,13 @@ LABEL_10:
   return v7;
 }
 
-- (double)_desiredHeightForBarMetrics:(int64_t)a3 defaultHeightBlock:(id)a4
+- (double)_desiredHeightForBarMetrics:(int64_t)metrics defaultHeightBlock:(id)block
 {
-  v6 = (*(a4 + 2))(a4, a3);
+  v6 = (*(block + 2))(block, metrics);
   minimumDesiredHeights = self->_minimumDesiredHeights;
   if (minimumDesiredHeights)
   {
-    v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+    v8 = [MEMORY[0x1E696AD98] numberWithInteger:metrics];
     v9 = [(NSMutableDictionary *)minimumDesiredHeights objectForKeyedSubscript:v8];
 
     if (v9)
@@ -5526,11 +5526,11 @@ LABEL_10:
   return v6;
 }
 
-- (void)appearance:(id)a3 categoriesChanged:(int64_t)a4
+- (void)appearance:(id)appearance categoriesChanged:(int64_t)changed
 {
-  v6 = a3;
+  appearanceCopy = appearance;
   WeakRetained = objc_loadWeakRetained(&self->__changeObserver);
-  [WeakRetained navigationItem:self appearance:v6 categoriesChanged:a4];
+  [WeakRetained navigationItem:self appearance:appearanceCopy categoriesChanged:changed];
 }
 
 - (NSDirectionalEdgeInsets)_titleMinimumMargins

@@ -1,12 +1,12 @@
 @interface MSEmailModel
-- (void)mf_mailMessageFromModel:(id)a3;
+- (void)mf_mailMessageFromModel:(id)model;
 @end
 
 @implementation MSEmailModel
 
-- (void)mf_mailMessageFromModel:(id)a3
+- (void)mf_mailMessageFromModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   if ([(MSEmailModel *)self type]== 1)
   {
     v5 = [[_MFMailCompositionContext alloc] initWithComposeType:0];
@@ -14,22 +14,22 @@
 
   else
   {
-    v6 = [(MSEmailModel *)self reference];
-    v7 = [v6 mf_messageCriterion];
+    reference = [(MSEmailModel *)self reference];
+    mf_messageCriterion = [reference mf_messageCriterion];
     v8 = +[MFMailMessageLibrary defaultInstance];
-    v9 = [v8 messagesMatchingCriterion:v7 options:7];
-    v10 = [v9 firstObject];
+    v9 = [v8 messagesMatchingCriterion:mf_messageCriterion options:7];
+    firstObject = [v9 firstObject];
 
-    if (v10)
+    if (firstObject)
     {
       if ([(MSEmailModel *)self type]== 3)
       {
-        v11 = [[_MFMailCompositionContext alloc] initForwardOfMessage:0 legacyMessage:v10];
+        v11 = [[_MFMailCompositionContext alloc] initForwardOfMessage:0 legacyMessage:firstObject];
       }
 
       else
       {
-        v11 = [[_MFMailCompositionContext alloc] initReplyAllToMessage:0 legacyMessage:v10];
+        v11 = [[_MFMailCompositionContext alloc] initReplyAllToMessage:0 legacyMessage:firstObject];
       }
 
       v5 = v11;
@@ -41,8 +41,8 @@
     }
   }
 
-  v12 = [(MSEmailModel *)self sender];
-  [v5 setPreferredSendingEmailAddress:v12];
+  sender = [(MSEmailModel *)self sender];
+  [v5 setPreferredSendingEmailAddress:sender];
 
   v13 = [(MSEmailModel *)self to];
   [v5 setToRecipients:v13];
@@ -53,25 +53,25 @@
   v15 = [(MSEmailModel *)self bcc];
   [v5 setBccRecipients:v15];
 
-  v16 = [(MSEmailModel *)self subject];
-  [v5 setSubject:v16];
+  subject = [(MSEmailModel *)self subject];
+  [v5 setSubject:subject];
 
-  v17 = [(MSEmailModel *)self body];
-  [v5 setMessageBody:v17 isHTML:0];
+  body = [(MSEmailModel *)self body];
+  [v5 setMessageBody:body isHTML:0];
 
   v18 = +[MFSignatures sharedInstance];
-  v19 = [v5 preferredSendingEmailAddress];
-  v20 = [v18 signaturePlainTextForSendingEmailAddress:v19];
+  preferredSendingEmailAddress = [v5 preferredSendingEmailAddress];
+  v20 = [v18 signaturePlainTextForSendingEmailAddress:preferredSendingEmailAddress];
 
-  v21 = [(MSEmailModel *)self body];
-  v22 = v21;
+  body2 = [(MSEmailModel *)self body];
+  v22 = body2;
   v23 = &stru_10015BEC8;
   if (v20)
   {
     v23 = v20;
   }
 
-  v24 = [NSString stringWithFormat:@"%@%@", v21, v23];
+  v24 = [NSString stringWithFormat:@"%@%@", body2, v23];
   [v5 setMessageBody:v24 isHTML:0];
 
   block[0] = _NSConcreteStackBlock;
@@ -79,8 +79,8 @@
   block[2] = sub_10005E8E4;
   block[3] = &unk_100157668;
   v28 = v5;
-  v29 = v4;
-  v25 = v4;
+  v29 = modelCopy;
+  v25 = modelCopy;
   v26 = v5;
   dispatch_async(&_dispatch_main_q, block);
 }

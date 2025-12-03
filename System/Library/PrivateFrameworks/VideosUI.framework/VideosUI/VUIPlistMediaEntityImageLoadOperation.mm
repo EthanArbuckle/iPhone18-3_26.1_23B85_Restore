@@ -1,12 +1,12 @@
 @interface VUIPlistMediaEntityImageLoadOperation
-- (VUIPlistMediaEntityImageLoadOperation)initWithParams:(id)a3;
-- (VUIPlistMediaEntityImageLoadOperation)initWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5;
+- (VUIPlistMediaEntityImageLoadOperation)initWithParams:(id)params;
+- (VUIPlistMediaEntityImageLoadOperation)initWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit;
 - (void)executionDidBegin;
 @end
 
 @implementation VUIPlistMediaEntityImageLoadOperation
 
-- (VUIPlistMediaEntityImageLoadOperation)initWithParams:(id)a3 scaleToSize:(CGSize)a4 cropToFit:(BOOL)a5
+- (VUIPlistMediaEntityImageLoadOperation)initWithParams:(id)params scaleToSize:(CGSize)size cropToFit:(BOOL)fit
 {
   v6 = MEMORY[0x1E695DF30];
   v7 = *MEMORY[0x1E695D940];
@@ -16,23 +16,23 @@
   return 0;
 }
 
-- (VUIPlistMediaEntityImageLoadOperation)initWithParams:(id)a3
+- (VUIPlistMediaEntityImageLoadOperation)initWithParams:(id)params
 {
   v4.receiver = self;
   v4.super_class = VUIPlistMediaEntityImageLoadOperation;
-  return [(VUIImageLoadParamsOperation *)&v4 initWithParams:a3 scaleToSize:0 cropToFit:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
+  return [(VUIImageLoadParamsOperation *)&v4 initWithParams:params scaleToSize:0 cropToFit:*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)];
 }
 
 - (void)executionDidBegin
 {
-  v3 = [(VUIPlistMediaEntityImageLoadOperation *)self _plistMediaEntityImageLoadParams];
-  v4 = [v3 imageURL];
-  if ([v4 isFileURL])
+  _plistMediaEntityImageLoadParams = [(VUIPlistMediaEntityImageLoadOperation *)self _plistMediaEntityImageLoadParams];
+  imageURL = [_plistMediaEntityImageLoadParams imageURL];
+  if ([imageURL isFileURL])
   {
-    v5 = [v4 absoluteString];
-    if (v5)
+    absoluteString = [imageURL absoluteString];
+    if (absoluteString)
     {
-      v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:v5];
+      v8 = [MEMORY[0x1E695DEF0] dataWithContentsOfFile:absoluteString];
     }
 
     else
@@ -45,7 +45,7 @@
 
   else
   {
-    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v4];
+    v6 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:imageURL];
   }
 
   v9 = v6;

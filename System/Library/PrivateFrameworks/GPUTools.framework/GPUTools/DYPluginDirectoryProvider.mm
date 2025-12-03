@@ -1,6 +1,6 @@
 @interface DYPluginDirectoryProvider
 - (DYPluginDirectoryProvider)init;
-- (id)getPlatformDirectoriesWithBundleName:(id)a3;
+- (id)getPlatformDirectoriesWithBundleName:(id)name;
 @end
 
 @implementation DYPluginDirectoryProvider
@@ -23,14 +23,14 @@
   }
 }
 
-- (id)getPlatformDirectoriesWithBundleName:(id)a3
+- (id)getPlatformDirectoriesWithBundleName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
   if (self->_developerDirectory)
   {
     v5 = objc_opt_new();
     v6 = objc_opt_new();
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Developer/Library/%@/PlugIns", a3];
+    name = [MEMORY[0x277CCACA8] stringWithFormat:@"Developer/Library/%@/PlugIns", name];
     v8 = [(NSURL *)self->_developerDirectory URLByAppendingPathComponent:@"Platforms"];
     v9 = *MEMORY[0x277CBE868];
     v10 = [v5 contentsOfDirectoryAtURL:v8 includingPropertiesForKeys:objc_msgSend(MEMORY[0x277CBEA60] options:"arrayWithObjects:" error:{*MEMORY[0x277CBE8E8], *MEMORY[0x277CBE868], 0), 0, 0}];
@@ -59,7 +59,7 @@
           [v15 getResourceValue:&v18 forKey:v9 error:0];
           if ([objc_msgSend(v15 "pathExtension")] && objc_msgSend(v18, "BOOLValue"))
           {
-            [v6 addObject:{objc_msgSend(v15, "URLByAppendingPathComponent:", v7)}];
+            [v6 addObject:{objc_msgSend(v15, "URLByAppendingPathComponent:", name)}];
           }
 
           ++v14;

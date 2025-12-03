@@ -1,6 +1,6 @@
 @interface ClinicalSharingOnboardingTileViewController
-- (_TtC13HealthRecords43ClinicalSharingOnboardingTileViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didAddAccount:(id)a3;
+- (_TtC13HealthRecords43ClinicalSharingOnboardingTileViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didAddAccount:(id)account;
 - (void)viewDidLoad;
 @end
 
@@ -8,20 +8,20 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_29D4FB148();
 }
 
-- (void)didAddAccount:(id)a3
+- (void)didAddAccount:(id)account
 {
-  v4 = a3;
-  v5 = self;
+  accountCopy = account;
+  selfCopy = self;
   sub_29D4FB99C();
 }
 
-- (_TtC13HealthRecords43ClinicalSharingOnboardingTileViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13HealthRecords43ClinicalSharingOnboardingTileViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_29D5B3E5C();
     v7 = v6;
@@ -33,8 +33,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_29D4FBC04(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_29D4FBC04(v5, v7, bundle);
 }
 
 @end

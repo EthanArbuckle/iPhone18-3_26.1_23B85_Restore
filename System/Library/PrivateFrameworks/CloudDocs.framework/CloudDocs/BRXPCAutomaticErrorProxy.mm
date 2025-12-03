@@ -1,44 +1,44 @@
 @interface BRXPCAutomaticErrorProxy
-+ (void)decrementConnectionRefCount:(id)a3;
-+ (void)incrementConnectionRefCount:(id)a3;
-- (BRXPCAutomaticErrorProxy)initWithConnection:(id)a3 service:(id)a4 interface:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (void)decrementConnectionRefCount:(id)count;
++ (void)incrementConnectionRefCount:(id)count;
+- (BRXPCAutomaticErrorProxy)initWithConnection:(id)connection service:(id)service interface:(id)interface;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation BRXPCAutomaticErrorProxy
 
-- (BRXPCAutomaticErrorProxy)initWithConnection:(id)a3 service:(id)a4 interface:(id)a5
+- (BRXPCAutomaticErrorProxy)initWithConnection:(id)connection service:(id)service interface:(id)interface
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  [v9 setRemoteObjectInterface:v11];
-  v12 = [v11 protocol];
+  connectionCopy = connection;
+  serviceCopy = service;
+  interfaceCopy = interface;
+  [connectionCopy setRemoteObjectInterface:interfaceCopy];
+  protocol = [interfaceCopy protocol];
 
-  v13 = [v10 name];
-  v14 = [v13 stringByAppendingString:@" error proxy"];
+  name = [serviceCopy name];
+  v14 = [name stringByAppendingString:@" error proxy"];
   v15 = getpid();
   v18.receiver = self;
   v18.super_class = BRXPCAutomaticErrorProxy;
-  v16 = [(FPXPCAutomaticErrorProxy *)&v18 initWithConnection:v9 protocol:v12 orError:0 name:v14 requestPid:v15];
+  v16 = [(FPXPCAutomaticErrorProxy *)&v18 initWithConnection:connectionCopy protocol:protocol orError:0 name:v14 requestPid:v15];
 
   if (v16)
   {
-    objc_storeStrong(&v16->_connection, a3);
-    objc_storeStrong(&v16->_service, a4);
+    objc_storeStrong(&v16->_connection, connection);
+    objc_storeStrong(&v16->_service, service);
     [BRXPCAutomaticErrorProxy incrementConnectionRefCount:v16->_connection];
   }
 
   return v16;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = BRXPCAutomaticErrorProxy;
-  v4 = [(FPXPCAutomaticErrorProxy *)&v7 copyWithZone:a3];
+  v4 = [(FPXPCAutomaticErrorProxy *)&v7 copyWithZone:zone];
   objc_storeStrong(v4 + 13, self->_service);
   objc_storeStrong(v4 + 12, self->_connection);
   v5 = __connectionToReferenceCount;
@@ -68,10 +68,10 @@
   [(BRXPCAutomaticErrorProxy *)&v3 dealloc];
 }
 
-+ (void)incrementConnectionRefCount:(id)a3
++ (void)incrementConnectionRefCount:(id)count
 {
-  v8 = a3;
-  if (v8)
+  countCopy = count;
+  if (countCopy)
   {
     if (incrementConnectionRefCount__onceToken != -1)
     {
@@ -80,18 +80,18 @@
 
     v3 = __connectionToReferenceCount;
     objc_sync_enter(v3);
-    v4 = [__connectionToReferenceCount objectForKey:v8];
+    v4 = [__connectionToReferenceCount objectForKey:countCopy];
     v5 = v4;
     v6 = __connectionToReferenceCount;
     if (v4)
     {
       v7 = [MEMORY[0x1E696AD98] numberWithLongLong:{objc_msgSend(v4, "longLongValue") + 1}];
-      [v6 setObject:v7 forKey:v8];
+      [v6 setObject:v7 forKey:countCopy];
     }
 
     else
     {
-      [__connectionToReferenceCount setObject:&unk_1F23E6910 forKey:v8];
+      [__connectionToReferenceCount setObject:&unk_1F23E6910 forKey:countCopy];
     }
 
     objc_sync_exit(v3);
@@ -105,26 +105,26 @@ uint64_t __56__BRXPCAutomaticErrorProxy_incrementConnectionRefCount___block_invo
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (void)decrementConnectionRefCount:(id)a3
++ (void)decrementConnectionRefCount:(id)count
 {
-  v3 = a3;
-  if (v3)
+  countCopy = count;
+  if (countCopy)
   {
     v4 = __connectionToReferenceCount;
     objc_sync_enter(v4);
-    v5 = [__connectionToReferenceCount objectForKey:v3];
-    v6 = [v5 longLongValue];
-    v7 = v6 - 1;
-    if (v6 > 1)
+    v5 = [__connectionToReferenceCount objectForKey:countCopy];
+    longLongValue = [v5 longLongValue];
+    v7 = longLongValue - 1;
+    if (longLongValue > 1)
     {
       v8 = __connectionToReferenceCount;
       v9 = [MEMORY[0x1E696AD98] numberWithLongLong:v7];
-      [v8 setObject:v9 forKey:v3];
+      [v8 setObject:v9 forKey:countCopy];
     }
 
     else
     {
-      if (v6 != 1)
+      if (longLongValue != 1)
       {
         v10 = brc_bread_crumbs("+[BRXPCAutomaticErrorProxy decrementConnectionRefCount:]", 103);
         v11 = brc_default_log(0, 0);
@@ -134,8 +134,8 @@ uint64_t __56__BRXPCAutomaticErrorProxy_incrementConnectionRefCount___block_invo
         }
       }
 
-      [v3 invalidate];
-      [__connectionToReferenceCount removeObjectForKey:v3];
+      [countCopy invalidate];
+      [__connectionToReferenceCount removeObjectForKey:countCopy];
     }
 
     objc_sync_exit(v4);

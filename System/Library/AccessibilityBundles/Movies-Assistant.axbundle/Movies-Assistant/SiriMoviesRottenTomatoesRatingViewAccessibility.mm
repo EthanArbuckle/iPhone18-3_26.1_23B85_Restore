@@ -1,23 +1,23 @@
 @interface SiriMoviesRottenTomatoesRatingViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation SiriMoviesRottenTomatoesRatingViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SiriMoviesRottenTomatoesRatingView" hasInstanceMethod:@"_isFresh" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"SiriMoviesRottenTomatoesRatingView" hasInstanceVariable:@"_percentageLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SiriMoviesRottenTomatoesRatingView" hasInstanceMethod:@"_isFresh" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"SiriMoviesRottenTomatoesRatingView" hasInstanceVariable:@"_percentageLabel" withType:"UILabel"];
 }
 
 - (id)accessibilityLabel
 {
   v3 = [(SiriMoviesRottenTomatoesRatingViewAccessibility *)self safeValueForKey:@"_percentageLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  v5 = [MEMORY[0x29EDBA0E0] scannerWithString:v4];
+  v5 = [MEMORY[0x29EDBA0E0] scannerWithString:accessibilityLabel];
   v13 = 0x7FFFFFFFFFFFFFFFLL;
   if ([v5 scanInteger:&v13])
   {
@@ -40,7 +40,7 @@
 
   else
   {
-    v9 = v4;
+    v9 = accessibilityLabel;
   }
 
   return v9;

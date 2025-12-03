@@ -1,45 +1,45 @@
 @interface CPTravelEstimates
-+ (id)timeRemainingColorForColor:(unint64_t)a3;
-- (CPTravelEstimates)initWithCoder:(id)a3;
++ (id)timeRemainingColorForColor:(unint64_t)color;
+- (CPTravelEstimates)initWithCoder:(id)coder;
 - (CPTravelEstimates)initWithDistanceRemaining:(NSMeasurement *)distance timeRemaining:(NSTimeInterval)time;
-- (CPTravelEstimates)initWithDistanceRemaining:(id)a3 distanceRemainingToDisplay:(id)a4 timeRemaining:(double)a5;
+- (CPTravelEstimates)initWithDistanceRemaining:(id)remaining distanceRemainingToDisplay:(id)display timeRemaining:(double)timeRemaining;
 - (id)_init;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPTravelEstimates
 
-+ (id)timeRemainingColorForColor:(unint64_t)a3
++ (id)timeRemainingColorForColor:(unint64_t)color
 {
-  if (a3 <= 1)
+  if (color <= 1)
   {
-    if (a3 == 1)
+    if (color == 1)
     {
-      v3 = [a1 _greenColor];
+      _greenColor = [self _greenColor];
       goto LABEL_9;
     }
 
 LABEL_7:
-    v3 = [MEMORY[0x277D75348] labelColor];
+    _greenColor = [MEMORY[0x277D75348] labelColor];
     goto LABEL_9;
   }
 
-  if (a3 != 2)
+  if (color != 2)
   {
-    if (a3 == 3)
+    if (color == 3)
     {
-      v3 = [a1 _redColor];
+      _greenColor = [self _redColor];
       goto LABEL_9;
     }
 
     goto LABEL_7;
   }
 
-  v3 = [a1 _orangeColor];
+  _greenColor = [self _orangeColor];
 LABEL_9:
 
-  return v3;
+  return _greenColor;
 }
 
 id __32__CPTravelEstimates__greenColor__block_invoke(uint64_t a1, void *a2)
@@ -106,8 +106,8 @@ id __33__CPTravelEstimates__orangeColor__block_invoke(uint64_t a1, void *a2)
 - (id)_init
 {
   v3 = objc_alloc(MEMORY[0x277CCAB10]);
-  v4 = [MEMORY[0x277CCAE20] meters];
-  v5 = [v3 initWithDoubleValue:v4 unit:0.0];
+  meters = [MEMORY[0x277CCAE20] meters];
+  v5 = [v3 initWithDoubleValue:meters unit:0.0];
   v6 = [(CPTravelEstimates *)self initWithDistanceRemaining:v5 timeRemaining:0.0];
 
   return v6;
@@ -135,63 +135,63 @@ id __33__CPTravelEstimates__orangeColor__block_invoke(uint64_t a1, void *a2)
   return v7;
 }
 
-- (CPTravelEstimates)initWithDistanceRemaining:(id)a3 distanceRemainingToDisplay:(id)a4 timeRemaining:(double)a5
+- (CPTravelEstimates)initWithDistanceRemaining:(id)remaining distanceRemainingToDisplay:(id)display timeRemaining:(double)timeRemaining
 {
-  v8 = a3;
-  v9 = a4;
+  remainingCopy = remaining;
+  displayCopy = display;
   v16.receiver = self;
   v16.super_class = CPTravelEstimates;
   v10 = [(CPTravelEstimates *)&v16 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [remainingCopy copy];
     distanceRemaining = v10->_distanceRemaining;
     v10->_distanceRemaining = v11;
 
-    v13 = [v9 copy];
+    v13 = [displayCopy copy];
     distanceRemainingToDisplay = v10->_distanceRemainingToDisplay;
     v10->_distanceRemainingToDisplay = v13;
 
-    v10->_timeRemaining = a5;
+    v10->_timeRemaining = timeRemaining;
   }
 
   return v10;
 }
 
-- (CPTravelEstimates)initWithCoder:(id)a3
+- (CPTravelEstimates)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CPTravelEstimates *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(CPTravelEstimates *)self _init];
+  if (_init)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPTravelEstimatesDistanceRemainingKey"];
-    distanceRemaining = v5->_distanceRemaining;
-    v5->_distanceRemaining = v6;
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPTravelEstimatesDistanceRemainingKey"];
+    distanceRemaining = _init->_distanceRemaining;
+    _init->_distanceRemaining = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kCPTravelEstimatesDistanceRemainingDisplayKey"];
-    distanceRemainingToDisplay = v5->_distanceRemainingToDisplay;
-    v5->_distanceRemainingToDisplay = v8;
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kCPTravelEstimatesDistanceRemainingDisplayKey"];
+    distanceRemainingToDisplay = _init->_distanceRemainingToDisplay;
+    _init->_distanceRemainingToDisplay = v8;
 
-    [v4 decodeDoubleForKey:@"kCPTravelEstimatesTimeRemainingKey"];
-    v5->_timeRemaining = v10;
-    v5->_timeRemainingColor = [v4 decodeIntegerForKey:@"kCPTravelEstimatesTimeRemainingColorKey"];
+    [coderCopy decodeDoubleForKey:@"kCPTravelEstimatesTimeRemainingKey"];
+    _init->_timeRemaining = v10;
+    _init->_timeRemainingColor = [coderCopy decodeIntegerForKey:@"kCPTravelEstimatesTimeRemainingColorKey"];
   }
 
-  return v5;
+  return _init;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(CPTravelEstimates *)self distanceRemaining];
-  [v6 encodeObject:v4 forKey:@"kCPTravelEstimatesDistanceRemainingKey"];
+  coderCopy = coder;
+  distanceRemaining = [(CPTravelEstimates *)self distanceRemaining];
+  [coderCopy encodeObject:distanceRemaining forKey:@"kCPTravelEstimatesDistanceRemainingKey"];
 
-  v5 = [(CPTravelEstimates *)self distanceRemainingToDisplay];
-  [v6 encodeObject:v5 forKey:@"kCPTravelEstimatesDistanceRemainingDisplayKey"];
+  distanceRemainingToDisplay = [(CPTravelEstimates *)self distanceRemainingToDisplay];
+  [coderCopy encodeObject:distanceRemainingToDisplay forKey:@"kCPTravelEstimatesDistanceRemainingDisplayKey"];
 
   [(CPTravelEstimates *)self timeRemaining];
-  [v6 encodeDouble:@"kCPTravelEstimatesTimeRemainingKey" forKey:?];
-  [v6 encodeInteger:-[CPTravelEstimates timeRemainingColor](self forKey:{"timeRemainingColor"), @"kCPTravelEstimatesTimeRemainingColorKey"}];
+  [coderCopy encodeDouble:@"kCPTravelEstimatesTimeRemainingKey" forKey:?];
+  [coderCopy encodeInteger:-[CPTravelEstimates timeRemainingColor](self forKey:{"timeRemainingColor"), @"kCPTravelEstimatesTimeRemainingColorKey"}];
 }
 
 - (id)description

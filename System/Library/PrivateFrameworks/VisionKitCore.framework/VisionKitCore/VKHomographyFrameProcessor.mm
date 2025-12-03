@@ -1,8 +1,8 @@
 @interface VKHomographyFrameProcessor
 - (id)resultHandler;
-- (void)processFrame:(id)a3;
-- (void)sendResult:(id)a3;
-- (void)setResultHandler:(id)a3;
+- (void)processFrame:(id)frame;
+- (void)sendResult:(id)result;
+- (void)setResultHandler:(id)handler;
 @end
 
 @implementation VKHomographyFrameProcessor
@@ -17,16 +17,16 @@
   return v4;
 }
 
-- (void)setResultHandler:(id)a3
+- (void)setResultHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__VKHomographyFrameProcessor_setResultHandler___block_invoke;
   v6[3] = &unk_1E7BE47B8;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   vk_performWhileLocked(self, v6);
 }
 
@@ -38,40 +38,40 @@ void __47__VKHomographyFrameProcessor_setResultHandler___block_invoke(uint64_t a
   *(v3 + 80) = v2;
 }
 
-- (void)sendResult:(id)a3
+- (void)sendResult:(id)result
 {
-  v4 = a3;
-  if (!v4)
+  resultCopy = result;
+  if (!resultCopy)
   {
     [VKAssert handleFailedAssertWithCondition:"result" functionName:"[VKHomographyFrameProcessor sendResult:]" simulateCrash:0 showAlert:0 format:@"Expecting a non-nil result object."];
   }
 
-  v5 = [(VKHomographyFrameProcessor *)self resultHandler];
-  if (v5)
+  resultHandler = [(VKHomographyFrameProcessor *)self resultHandler];
+  if (resultHandler)
   {
-    v6 = [(VKFrameProcessor *)self resultHandlerQueue];
-    if (v6)
+    resultHandlerQueue = [(VKFrameProcessor *)self resultHandlerQueue];
+    if (resultHandlerQueue)
     {
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __41__VKHomographyFrameProcessor_sendResult___block_invoke;
       v7[3] = &unk_1E7BE47E0;
-      v9 = v5;
-      v8 = v4;
-      dispatch_async(v6, v7);
+      v9 = resultHandler;
+      v8 = resultCopy;
+      dispatch_async(resultHandlerQueue, v7);
     }
 
     else
     {
-      (v5)[2](v5, v4);
+      (resultHandler)[2](resultHandler, resultCopy);
     }
   }
 }
 
-- (void)processFrame:(id)a3
+- (void)processFrame:(id)frame
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  frameCopy = frame;
   if (!self->_homographyRequest)
   {
     v5 = objc_alloc(MEMORY[0x1E69846A0]);
@@ -82,15 +82,15 @@ void __47__VKHomographyFrameProcessor_setResultHandler___block_invoke(uint64_t a
     self->_homographyRequest = v6;
   }
 
-  v8 = [v4 info];
-  [v8 regionOfInterest];
+  info = [frameCopy info];
+  [info regionOfInterest];
   [(VNTrackHomographyRequest *)self->_homographyRequest setRegionOfInterest:?];
 
-  v9 = [v4 imageRequestHandler];
+  imageRequestHandler = [frameCopy imageRequestHandler];
   v26[0] = self->_homographyRequest;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
   v23 = 0;
-  [v9 performRequests:v10 error:&v23];
+  [imageRequestHandler performRequests:v10 error:&v23];
   v11 = v23;
 
   if (v11)
@@ -106,14 +106,14 @@ void __47__VKHomographyFrameProcessor_setResultHandler___block_invoke(uint64_t a
 
   if (![(VKFrameProcessor *)self isCancelled])
   {
-    v13 = [(VNTrackHomographyRequest *)self->_homographyRequest results];
-    v14 = [v13 count];
+    results = [(VNTrackHomographyRequest *)self->_homographyRequest results];
+    v14 = [results count];
 
     if (v14)
     {
-      v15 = [(VNTrackHomographyRequest *)self->_homographyRequest results];
-      v16 = [v15 firstObject];
-      [v16 warpTransform];
+      results2 = [(VNTrackHomographyRequest *)self->_homographyRequest results];
+      firstObject = [results2 firstObject];
+      [firstObject warpTransform];
       v21 = v18;
       v22 = v17;
       v20 = v19;

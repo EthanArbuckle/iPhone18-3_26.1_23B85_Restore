@@ -1,34 +1,34 @@
 @interface HFAccessoryDiagnosticItem
 - (BOOL)isEligibleForUpload;
-- (HFAccessoryDiagnosticItem)initWithLogMetadata:(id)a3 accessory:(id)a4;
+- (HFAccessoryDiagnosticItem)initWithLogMetadata:(id)metadata accessory:(id)accessory;
 - (NSString)path;
 - (NSURL)fileURL;
 - (NSURL)privacyPolicyURL;
-- (id)_subclass_updateWithOptions:(id)a3;
+- (id)_subclass_updateWithOptions:(id)options;
 - (int64_t)consentVersion;
 - (int64_t)uploadType;
 @end
 
 @implementation HFAccessoryDiagnosticItem
 
-- (HFAccessoryDiagnosticItem)initWithLogMetadata:(id)a3 accessory:(id)a4
+- (HFAccessoryDiagnosticItem)initWithLogMetadata:(id)metadata accessory:(id)accessory
 {
-  v7 = a3;
-  v8 = a4;
+  metadataCopy = metadata;
+  accessoryCopy = accessory;
   v18.receiver = self;
   v18.super_class = HFAccessoryDiagnosticItem;
   v9 = [(HFAccessoryDiagnosticItem *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_metadata, a3);
-    v11 = [v7 snapshotPath];
-    v12 = [v11 lastPathComponent];
+    objc_storeStrong(&v9->_metadata, metadata);
+    snapshotPath = [metadataCopy snapshotPath];
+    lastPathComponent = [snapshotPath lastPathComponent];
     filename = v10->_filename;
-    v10->_filename = v12;
+    v10->_filename = lastPathComponent;
 
-    v14 = [v8 manufacturer];
-    v15 = [v14 copy];
+    manufacturer = [accessoryCopy manufacturer];
+    v15 = [manufacturer copy];
     manufacturer = v10->_manufacturer;
     v10->_manufacturer = v15;
   }
@@ -36,13 +36,13 @@
   return v10;
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
   v11[2] = *MEMORY[0x277D85DE8];
   v10[0] = @"title";
-  v3 = [(HFAccessoryDiagnosticItem *)self filename];
+  filename = [(HFAccessoryDiagnosticItem *)self filename];
   v10[1] = @"hidden";
-  v11[0] = v3;
+  v11[0] = filename;
   v11[1] = MEMORY[0x277CBEC28];
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
 
@@ -57,55 +57,55 @@
 
 - (NSURL)privacyPolicyURL
 {
-  v2 = [(HFAccessoryDiagnosticItem *)self metadata];
-  v3 = [v2 privacyPolicyURL];
+  metadata = [(HFAccessoryDiagnosticItem *)self metadata];
+  privacyPolicyURL = [metadata privacyPolicyURL];
 
-  return v3;
+  return privacyPolicyURL;
 }
 
 - (int64_t)consentVersion
 {
-  v2 = [(HFAccessoryDiagnosticItem *)self metadata];
-  v3 = [v2 consentVersion];
-  v4 = [v3 integerValue];
+  metadata = [(HFAccessoryDiagnosticItem *)self metadata];
+  consentVersion = [metadata consentVersion];
+  integerValue = [consentVersion integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (int64_t)uploadType
 {
-  v2 = [(HFAccessoryDiagnosticItem *)self metadata];
-  v3 = [v2 uploadType];
-  v4 = [v3 integerValue];
+  metadata = [(HFAccessoryDiagnosticItem *)self metadata];
+  uploadType = [metadata uploadType];
+  integerValue = [uploadType integerValue];
 
-  return v4;
+  return integerValue;
 }
 
 - (NSString)path
 {
-  v2 = [(HFAccessoryDiagnosticItem *)self metadata];
-  v3 = [v2 snapshotPath];
+  metadata = [(HFAccessoryDiagnosticItem *)self metadata];
+  snapshotPath = [metadata snapshotPath];
 
-  return v3;
+  return snapshotPath;
 }
 
 - (BOOL)isEligibleForUpload
 {
-  v3 = [(HFAccessoryDiagnosticItem *)self metadata];
-  v4 = [v3 uploadDestination];
+  metadata = [(HFAccessoryDiagnosticItem *)self metadata];
+  uploadDestination = [metadata uploadDestination];
 
-  v5 = [v4 absoluteString];
-  v6 = [v5 length] && -[HFAccessoryDiagnosticItem consentVersion](self, "consentVersion") == 1 && -[HFAccessoryDiagnosticItem uploadType](self, "uploadType") == 0;
+  absoluteString = [uploadDestination absoluteString];
+  v6 = [absoluteString length] && -[HFAccessoryDiagnosticItem consentVersion](self, "consentVersion") == 1 && -[HFAccessoryDiagnosticItem uploadType](self, "uploadType") == 0;
 
   return v6;
 }
 
 - (NSURL)fileURL
 {
-  v2 = [(HFAccessoryDiagnosticItem *)self metadata];
-  v3 = [v2 snapshotPath];
+  metadata = [(HFAccessoryDiagnosticItem *)self metadata];
+  snapshotPath = [metadata snapshotPath];
 
-  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:v3];
+  v4 = [MEMORY[0x277CBEBC0] fileURLWithPath:snapshotPath];
 
   return v4;
 }

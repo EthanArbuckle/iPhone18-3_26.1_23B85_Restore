@@ -4,45 +4,45 @@
 + (id)queue;
 + (id)sharedManager;
 - (BOOL)isTTRServiceAuthorized;
-- (HMDTTRManager)initWithDialog:(id)a3 requestFilter:(id)a4;
+- (HMDTTRManager)initWithDialog:(id)dialog requestFilter:(id)filter;
 - (NSUUID)messageTargetUUID;
 - (OS_dispatch_queue)messageReceiveQueue;
 - (id)messageDestination;
-- (void)handlePresentTTRDialog:(id)a3;
-- (void)handleResetLastTTRTime:(id)a3;
-- (void)initiateRadarWithTitle:(id)a3 componentName:(id)a4 componentVersion:(id)a5 componentID:(int64_t)a6 displayReason:(id)a7 attachments:(id)a8 isUserInitiated:(BOOL)a9;
-- (void)requestRadarWithDisplayReason:(id)a3 radarTitle:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(int64_t)a7 attachments:(id)a8 waitForResponse:(BOOL)a9;
+- (void)handlePresentTTRDialog:(id)dialog;
+- (void)handleResetLastTTRTime:(id)time;
+- (void)initiateRadarWithTitle:(id)title componentName:(id)name componentVersion:(id)version componentID:(int64_t)d displayReason:(id)reason attachments:(id)attachments isUserInitiated:(BOOL)initiated;
+- (void)requestRadarWithDisplayReason:(id)reason radarTitle:(id)title componentName:(id)name componentVersion:(id)version componentID:(int64_t)d attachments:(id)attachments waitForResponse:(BOOL)response;
 @end
 
 @implementation HMDTTRManager
 
 + (HMMRadarRequestFilter)defaultFilter
 {
-  v2 = [objc_opt_self() sharedPreferences];
+  sharedPreferences = [objc_opt_self() sharedPreferences];
   v3 = sub_253CD06F8();
   v4 = *(v3 + 48);
   v5 = *(v3 + 52);
   swift_allocObject();
   v6 = sub_253CD06E8();
-  v7 = sub_25320727C(v2, v6);
+  v7 = sub_25320727C(sharedPreferences, v6);
 
   return v7;
 }
 
-- (void)handleResetLastTTRTime:(id)a3
+- (void)handleResetLastTTRTime:(id)time
 {
-  v5 = a3;
-  v4 = [(HMDTTRManager *)self requestFilter];
-  [v4 radarRequestedForDisplayReason:&stru_286509E58];
+  timeCopy = time;
+  requestFilter = [(HMDTTRManager *)self requestFilter];
+  [requestFilter radarRequestedForDisplayReason:&stru_286509E58];
 
-  [v5 respondWithSuccess];
+  [timeCopy respondWithSuccess];
 }
 
-- (void)handlePresentTTRDialog:(id)a3
+- (void)handlePresentTTRDialog:(id)dialog
 {
-  v4 = a3;
-  v5 = [v4 messagePayload];
-  v6 = [v5 objectForKeyedSubscript:@"category"];
+  dialogCopy = dialog;
+  messagePayload = [dialogCopy messagePayload];
+  v6 = [messagePayload objectForKeyedSubscript:@"category"];
 
   if (v6)
   {
@@ -56,7 +56,7 @@
 
   v8 = v7;
   [(HMDTTRManager *)self requestRadarWithDisplayReason:v7 radarTitle:v7];
-  [v4 respondWithSuccess];
+  [dialogCopy respondWithSuccess];
 }
 
 - (OS_dispatch_queue)messageReceiveQueue
@@ -69,8 +69,8 @@
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x277D0F820]);
-  v4 = [(HMDTTRManager *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(HMDTTRManager *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
@@ -82,16 +82,16 @@
   return [v2 namespaceUUID];
 }
 
-- (void)initiateRadarWithTitle:(id)a3 componentName:(id)a4 componentVersion:(id)a5 componentID:(int64_t)a6 displayReason:(id)a7 attachments:(id)a8 isUserInitiated:(BOOL)a9
+- (void)initiateRadarWithTitle:(id)title componentName:(id)name componentVersion:(id)version componentID:(int64_t)d displayReason:(id)reason attachments:(id)attachments isUserInitiated:(BOOL)initiated
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = [(HMDTTRManager *)self ttrService];
+  titleCopy = title;
+  nameCopy = name;
+  versionCopy = version;
+  reasonCopy = reason;
+  attachmentsCopy = attachments;
+  ttrService = [(HMDTTRManager *)self ttrService];
 
-  if (!v20)
+  if (!ttrService)
   {
     v34 = _HMFPreconditionFailure();
     _Block_object_dispose(&v41, 8);
@@ -117,7 +117,7 @@
   v22 = v21;
   _Block_object_dispose(&v41, 8);
   v23 = objc_alloc_init(v21);
-  v24 = [v15 length];
+  v24 = [titleCopy length];
   if (v24 >= 0xF0)
   {
     v25 = 240;
@@ -128,7 +128,7 @@
     v25 = v24;
   }
 
-  v26 = [v15 substringToIndex:v25];
+  v26 = [titleCopy substringToIndex:v25];
   [v23 setTitle:v26];
 
   v41 = 0;
@@ -149,13 +149,13 @@
 
   v28 = v27;
   _Block_object_dispose(&v41, 8);
-  v29 = [[v27 alloc] initWithName:v16 version:v17 identifier:a6];
+  v29 = [[v27 alloc] initWithName:nameCopy version:versionCopy identifier:d];
   [v23 setComponent:v29];
 
-  [v23 setAttachments:v19];
-  [v23 setIsUserInitiated:a9];
+  [v23 setAttachments:attachmentsCopy];
+  [v23 setIsUserInitiated:initiated];
   [v23 setDiagnosticExtensionIDs:&unk_286626C98];
-  v30 = [v18 length];
+  v30 = [reasonCopy length];
   if (v30 >= 0x4B)
   {
     v31 = 75;
@@ -166,14 +166,14 @@
     v31 = v30;
   }
 
-  v32 = [v18 substringToIndex:v31];
-  v33 = [(HMDTTRManager *)self ttrService];
+  v32 = [reasonCopy substringToIndex:v31];
+  ttrService2 = [(HMDTTRManager *)self ttrService];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __125__HMDTTRManager_initiateRadarWithTitle_componentName_componentVersion_componentID_displayReason_attachments_isUserInitiated___block_invoke;
   v35[3] = &unk_2797359D8;
   v35[4] = self;
-  [v33 createDraft:v23 forProcessNamed:@"HomeKit" withDisplayReason:v32 completionHandler:v35];
+  [ttrService2 createDraft:v23 forProcessNamed:@"HomeKit" withDisplayReason:v32 completionHandler:v35];
 }
 
 void __125__HMDTTRManager_initiateRadarWithTitle_componentName_componentVersion_componentID_displayReason_attachments_isUserInitiated___block_invoke(uint64_t a1, void *a2)
@@ -204,21 +204,21 @@ void __125__HMDTTRManager_initiateRadarWithTitle_componentName_componentVersion_
 - (BOOL)isTTRServiceAuthorized
 {
   v18 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDTTRManager *)self ttrService];
+  ttrService = [(HMDTTRManager *)self ttrService];
 
-  if (!v3)
+  if (!ttrService)
   {
     _HMFPreconditionFailure();
   }
 
-  v4 = [(HMDTTRManager *)self ttrService];
-  v5 = [v4 serviceSettings];
-  v6 = [v5 authorizationStatus];
+  ttrService2 = [(HMDTTRManager *)self ttrService];
+  serviceSettings = [ttrService2 serviceSettings];
+  authorizationStatus = [serviceSettings authorizationStatus];
 
-  if (v6 == 2)
+  if (authorizationStatus == 2)
   {
     v7 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -230,10 +230,10 @@ void __125__HMDTTRManager_initiateRadarWithTitle_componentName_componentVersion_
     }
   }
 
-  else if (v6 == 1)
+  else if (authorizationStatus == 1)
   {
     v7 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -247,14 +247,14 @@ void __125__HMDTTRManager_initiateRadarWithTitle_componentName_componentVersion_
 
   else
   {
-    if (v6)
+    if (authorizationStatus)
     {
       result = 1;
       goto LABEL_14;
     }
 
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy3 = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -274,27 +274,27 @@ LABEL_14:
   return result;
 }
 
-- (void)requestRadarWithDisplayReason:(id)a3 radarTitle:(id)a4 componentName:(id)a5 componentVersion:(id)a6 componentID:(int64_t)a7 attachments:(id)a8 waitForResponse:(BOOL)a9
+- (void)requestRadarWithDisplayReason:(id)reason radarTitle:(id)title componentName:(id)name componentVersion:(id)version componentID:(int64_t)d attachments:(id)attachments waitForResponse:(BOOL)response
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
+  reasonCopy = reason;
+  titleCopy = title;
+  nameCopy = name;
+  versionCopy = version;
   if (isInternalBuild() && [(HMDTTRManager *)self isTTRServiceAuthorized])
   {
-    v18 = [objc_opt_class() queue];
+    queue = [objc_opt_class() queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __129__HMDTTRManager_requestRadarWithDisplayReason_radarTitle_componentName_componentVersion_componentID_attachments_waitForResponse___block_invoke;
     block[3] = &unk_279723528;
     block[4] = self;
-    v20 = v14;
-    v25 = a9;
-    v21 = v15;
-    v22 = v16;
-    v23 = v17;
-    v24 = a7;
-    dispatch_async(v18, block);
+    v20 = reasonCopy;
+    responseCopy = response;
+    v21 = titleCopy;
+    v22 = nameCopy;
+    v23 = versionCopy;
+    dCopy = d;
+    dispatch_async(queue, block);
   }
 }
 
@@ -372,10 +372,10 @@ uint64_t __129__HMDTTRManager_requestRadarWithDisplayReason_radarTitle_component
   return result;
 }
 
-- (HMDTTRManager)initWithDialog:(id)a3 requestFilter:(id)a4
+- (HMDTTRManager)initWithDialog:(id)dialog requestFilter:(id)filter
 {
-  v7 = a3;
-  v8 = a4;
+  dialogCopy = dialog;
+  filterCopy = filter;
   v15.receiver = self;
   v15.super_class = HMDTTRManager;
   v9 = [(HMDTTRManager *)&v15 init];
@@ -399,12 +399,12 @@ uint64_t __129__HMDTTRManager_requestRadarWithDisplayReason_radarTitle_component
 
     v11 = v10;
     _Block_object_dispose(&v17, 8);
-    v12 = [v10 shared];
+    shared = [v10 shared];
     ttrService = v9->_ttrService;
-    v9->_ttrService = v12;
+    v9->_ttrService = shared;
 
-    objc_storeStrong(&v9->_dialog, a3);
-    objc_storeStrong(&v9->_requestFilter, a4);
+    objc_storeStrong(&v9->_dialog, dialog);
+    objc_storeStrong(&v9->_requestFilter, filter);
   }
 
   return v9;
@@ -456,7 +456,7 @@ uint64_t __30__HMDTTRManager_namespaceUUID__block_invoke()
   block[1] = 3221225472;
   block[2] = __30__HMDTTRManager_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedManager_onceToken != -1)
   {
     dispatch_once(&sharedManager_onceToken, block);

@@ -1,11 +1,11 @@
 @interface CFPDMirroredSource
-- (id)acceptMessage:(id)a3;
+- (id)acceptMessage:(id)message;
 - (id)createDiskWrite;
-- (void)clearCacheForReason:(__CFString *)a3;
+- (void)clearCacheForReason:(__CFString *)reason;
 - (void)dealloc;
 - (void)drainPendingChanges;
 - (void)enqueueMirrorSignatureForKey:(xpc_object_t)xdict fromMessage:;
-- (void)handleWritingResult:(__CFDictionary *)a3;
+- (void)handleWritingResult:(__CFDictionary *)result;
 - (void)lock;
 - (void)unlock;
 @end
@@ -46,7 +46,7 @@
 - (void)enqueueMirrorSignatureForKey:(xpc_object_t)xdict fromMessage:
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     memset(buffer, 0, sizeof(buffer));
     remote_connection = xpc_dictionary_get_remote_connection(xdict);
@@ -76,7 +76,7 @@
     v12 = CFStringCreateWithFormat(&__kCFAllocatorSystemDefault, 0, @"%s%@", "Sig_", a2);
     v13 = _CFXPCCreateXPCObjectFromCFObject(v12);
     v14 = _CFXPCCreateXPCObjectFromCFObject(v11);
-    [*(a1 + 152) enqueueNewKey:v13 value:v14 encoding:0 inBatch:0 fromMessage:xdict];
+    [*(self + 152) enqueueNewKey:v13 value:v14 encoding:0 inBatch:0 fromMessage:xdict];
     CFRelease(v11);
     CFRelease(v12);
     xpc_release(v13);
@@ -107,13 +107,13 @@
   if (result)
   {
     v4 = result;
-    v5 = [(CFPDSource *)self->_mirrorSource createDiskWrite];
+    createDiskWrite = [(CFPDSource *)self->_mirrorSource createDiskWrite];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __37__CFPDMirroredSource_createDiskWrite__block_invoke;
     v7[3] = &unk_1E6DD1D50;
     v7[4] = v4;
-    v7[5] = v5;
+    v7[5] = createDiskWrite;
     result = [v7 copy];
   }
 
@@ -141,41 +141,41 @@ uint64_t __37__CFPDMirroredSource_createDiskWrite__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)handleWritingResult:(__CFDictionary *)a3
+- (void)handleWritingResult:(__CFDictionary *)result
 {
   v7 = *MEMORY[0x1E69E9840];
   os_unfair_lock_assert_owner(&self->super._lock);
   v6.receiver = self;
   v6.super_class = CFPDMirroredSource;
-  [(CFPDSource *)&v6 handleWritingResult:a3];
-  [(CFPDSource *)self->_mirrorSource handleWritingResult:a3];
+  [(CFPDSource *)&v6 handleWritingResult:result];
+  [(CFPDSource *)self->_mirrorSource handleWritingResult:result];
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)clearCacheForReason:(__CFString *)a3
+- (void)clearCacheForReason:(__CFString *)reason
 {
   v7 = *MEMORY[0x1E69E9840];
   [(CFPDSource *)self->_mirrorSource clearCacheForReason:?];
   v6.receiver = self;
   v6.super_class = CFPDMirroredSource;
-  [(CFPDSource *)&v6 clearCacheForReason:a3];
+  [(CFPDSource *)&v6 clearCacheForReason:reason];
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (id)acceptMessage:(id)a3
+- (id)acceptMessage:(id)message
 {
   v12 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = CFPDMirroredSource;
   v5 = [(CFPDSource *)&v11 acceptMessage:?];
-  if (xpc_dictionary_get_int64(a3, "CFPreferencesOperation") == 1 && !xpc_dictionary_get_value(v5, "CFPreferencesErrorType") && (_CFPrefsDecodeKeyValuePairFromXPCMessage(a3, 0, 0, 0) & 1) == 0)
+  if (xpc_dictionary_get_int64(message, "CFPreferencesOperation") == 1 && !xpc_dictionary_get_value(v5, "CFPreferencesErrorType") && (_CFPrefsDecodeKeyValuePairFromXPCMessage(message, 0, 0, 0) & 1) == 0)
   {
     v6 = [(CFPDSource *)self->_mirrorSource copyPropertyListValidatingPlist:0];
-    v7 = [v6 copyXPCData];
-    if (v7)
+    copyXPCData = [v6 copyXPCData];
+    if (copyXPCData)
     {
-      v8 = v7;
-      xpc_dictionary_set_value(v5, "CFPreferencesValidationPropertyList", v7);
+      v8 = copyXPCData;
+      xpc_dictionary_set_value(v5, "CFPreferencesValidationPropertyList", copyXPCData);
       xpc_release(v8);
     }
   }

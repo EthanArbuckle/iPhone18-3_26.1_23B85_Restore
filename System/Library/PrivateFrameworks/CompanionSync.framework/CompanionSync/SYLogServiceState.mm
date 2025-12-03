@@ -1,36 +1,36 @@
 @interface SYLogServiceState
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)cocoaTransportOptions;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsEnqueuedSyncType:(id)a3;
-- (int)StringAsServiceType:(id)a3;
+- (int)StringAsEnqueuedSyncType:(id)type;
+- (int)StringAsServiceType:(id)type;
 - (int)serviceType;
 - (unint64_t)hash;
-- (void)addTransportOptions:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setCocoaTransportOptions:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addTransportOptions:(id)options;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setCocoaTransportOptions:(id)options;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SYLogServiceState
 
-- (int)StringAsEnqueuedSyncType:(id)a3
+- (int)StringAsEnqueuedSyncType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Delta"])
+  else if ([typeCopy isEqualToString:@"Delta"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Reset"])
+  else if ([typeCopy isEqualToString:@"Reset"])
   {
     v4 = 2;
   }
@@ -43,22 +43,22 @@
   return v4;
 }
 
-- (void)addTransportOptions:(id)a3
+- (void)addTransportOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   transportOptions = self->_transportOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!transportOptions)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_transportOptions;
     self->_transportOptions = v6;
 
-    v4 = v8;
+    optionsCopy = v8;
     transportOptions = self->_transportOptions;
   }
 
-  [(NSMutableArray *)transportOptions addObject:v4];
+  [(NSMutableArray *)transportOptions addObject:optionsCopy];
 }
 
 - (int)serviceType
@@ -74,20 +74,20 @@
   }
 }
 
-- (int)StringAsServiceType:(id)a3
+- (int)StringAsServiceType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"None"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"None"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Master"])
+  else if ([typeCopy isEqualToString:@"Master"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Slave"])
+  else if ([typeCopy isEqualToString:@"Slave"])
   {
     v4 = 2;
   }
@@ -106,8 +106,8 @@
   v8.receiver = self;
   v8.super_class = SYLogServiceState;
   v4 = [(SYLogServiceState *)&v8 description];
-  v5 = [(SYLogServiceState *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SYLogServiceState *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -115,26 +115,26 @@
 - (id)dictionaryRepresentation
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   name = self->_name;
   if (name)
   {
-    [v3 setObject:name forKey:@"name"];
+    [dictionary setObject:name forKey:@"name"];
   }
 
   engine = self->_engine;
   if (engine)
   {
-    v7 = [(SYLogEngineState *)engine dictionaryRepresentation];
-    [v4 setObject:v7 forKey:@"engine"];
+    dictionaryRepresentation = [(SYLogEngineState *)engine dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"engine"];
   }
 
   session = self->_session;
   if (session)
   {
-    v9 = [(SYLogSessionState *)session dictionaryRepresentation];
-    [v4 setObject:v9 forKey:@"session"];
+    dictionaryRepresentation2 = [(SYLogSessionState *)session dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"session"];
   }
 
   v10 = [MEMORY[0x1E696AD98] numberWithBool:self->_sessionQueueRunning];
@@ -143,8 +143,8 @@
   targetedDevice = self->_targetedDevice;
   if (targetedDevice)
   {
-    v12 = [(SYLogDeviceState *)targetedDevice dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"targetedDevice"];
+    dictionaryRepresentation3 = [(SYLogDeviceState *)targetedDevice dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"targetedDevice"];
   }
 
   enqueuedSyncType = self->_enqueuedSyncType;
@@ -182,8 +182,8 @@
             objc_enumerationMutation(v16);
           }
 
-          v21 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
-          [v15 addObject:v21];
+          dictionaryRepresentation4 = [*(*(&v28 + 1) + 8 * i) dictionaryRepresentation];
+          [v15 addObject:dictionaryRepresentation4];
         }
 
         v18 = [(NSMutableArray *)v16 countByEnumeratingWithState:&v28 objects:v32 count:16];
@@ -228,16 +228,16 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (!self->_name)
   {
     [SYLogServiceState writeTo:];
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
   if (self->_engine)
   {
@@ -309,54 +309,54 @@
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v10 = a3;
-  [v10 setName:self->_name];
+  toCopy = to;
+  [toCopy setName:self->_name];
   if (self->_engine)
   {
-    [v10 setEngine:?];
+    [toCopy setEngine:?];
   }
 
   if (self->_session)
   {
-    [v10 setSession:?];
+    [toCopy setSession:?];
   }
 
-  v4 = v10;
-  v10[80] = self->_sessionQueueRunning;
+  v4 = toCopy;
+  toCopy[80] = self->_sessionQueueRunning;
   if (self->_targetedDevice)
   {
-    [v10 setTargetedDevice:?];
-    v4 = v10;
+    [toCopy setTargetedDevice:?];
+    v4 = toCopy;
   }
 
   *(v4 + 4) = self->_enqueuedSyncType;
   if ([(SYLogServiceState *)self transportOptionsCount])
   {
-    [v10 clearTransportOptions];
-    v5 = [(SYLogServiceState *)self transportOptionsCount];
-    if (v5)
+    [toCopy clearTransportOptions];
+    transportOptionsCount = [(SYLogServiceState *)self transportOptionsCount];
+    if (transportOptionsCount)
     {
-      v6 = v5;
+      v6 = transportOptionsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(SYLogServiceState *)self transportOptionsAtIndex:i];
-        [v10 addTransportOptions:v8];
+        [toCopy addTransportOptions:v8];
       }
     }
   }
 
   if (self->_peerID)
   {
-    [v10 setPeerID:?];
+    [toCopy setPeerID:?];
   }
 
-  v9 = v10;
+  v9 = toCopy;
   if (self->_peerGenerationID)
   {
-    [v10 setPeerGenerationID:?];
-    v9 = v10;
+    [toCopy setPeerGenerationID:?];
+    v9 = toCopy;
   }
 
   if (*&self->_has)
@@ -366,24 +366,24 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_name copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_name copyWithZone:zone];
   v7 = *(v5 + 24);
   *(v5 + 24) = v6;
 
-  v8 = [(SYLogEngineState *)self->_engine copyWithZone:a3];
+  v8 = [(SYLogEngineState *)self->_engine copyWithZone:zone];
   v9 = *(v5 + 8);
   *(v5 + 8) = v8;
 
-  v10 = [(SYLogSessionState *)self->_session copyWithZone:a3];
+  v10 = [(SYLogSessionState *)self->_session copyWithZone:zone];
   v11 = *(v5 + 56);
   *(v5 + 56) = v10;
 
   *(v5 + 80) = self->_sessionQueueRunning;
-  v12 = [(SYLogDeviceState *)self->_targetedDevice copyWithZone:a3];
+  v12 = [(SYLogDeviceState *)self->_targetedDevice copyWithZone:zone];
   v13 = *(v5 + 64);
   *(v5 + 64) = v12;
 
@@ -408,7 +408,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v26 + 1) + 8 * v18) copyWithZone:{a3, v26}];
+        v19 = [*(*(&v26 + 1) + 8 * v18) copyWithZone:{zone, v26}];
         [v5 addTransportOptions:v19];
 
         ++v18;
@@ -421,11 +421,11 @@
     while (v16);
   }
 
-  v20 = [(NSString *)self->_peerID copyWithZone:a3];
+  v20 = [(NSString *)self->_peerID copyWithZone:zone];
   v21 = *(v5 + 40);
   *(v5 + 40) = v20;
 
-  v22 = [(NSString *)self->_peerGenerationID copyWithZone:a3];
+  v22 = [(NSString *)self->_peerGenerationID copyWithZone:zone];
   v23 = *(v5 + 32);
   *(v5 + 32) = v22;
 
@@ -439,16 +439,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_25;
   }
 
   name = self->_name;
-  if (name | *(v4 + 3))
+  if (name | *(equalCopy + 3))
   {
     if (![(NSString *)name isEqual:?])
     {
@@ -457,7 +457,7 @@
   }
 
   engine = self->_engine;
-  if (engine | *(v4 + 1))
+  if (engine | *(equalCopy + 1))
   {
     if (![(SYLogEngineState *)engine isEqual:?])
     {
@@ -466,7 +466,7 @@
   }
 
   session = self->_session;
-  if (session | *(v4 + 7))
+  if (session | *(equalCopy + 7))
   {
     if (![(SYLogSessionState *)session isEqual:?])
     {
@@ -474,16 +474,16 @@
     }
   }
 
-  v8 = *(v4 + 80);
+  v8 = *(equalCopy + 80);
   if (self->_sessionQueueRunning)
   {
-    if ((*(v4 + 80) & 1) == 0)
+    if ((*(equalCopy + 80) & 1) == 0)
     {
       goto LABEL_25;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
 LABEL_25:
     v13 = 0;
@@ -491,18 +491,18 @@ LABEL_25:
   }
 
   targetedDevice = self->_targetedDevice;
-  if (targetedDevice | *(v4 + 8) && ![(SYLogDeviceState *)targetedDevice isEqual:?])
+  if (targetedDevice | *(equalCopy + 8) && ![(SYLogDeviceState *)targetedDevice isEqual:?])
   {
     goto LABEL_25;
   }
 
-  if (self->_enqueuedSyncType != *(v4 + 4))
+  if (self->_enqueuedSyncType != *(equalCopy + 4))
   {
     goto LABEL_25;
   }
 
   transportOptions = self->_transportOptions;
-  if (transportOptions | *(v4 + 9))
+  if (transportOptions | *(equalCopy + 9))
   {
     if (![(NSMutableArray *)transportOptions isEqual:?])
     {
@@ -511,7 +511,7 @@ LABEL_25:
   }
 
   peerID = self->_peerID;
-  if (peerID | *(v4 + 5))
+  if (peerID | *(equalCopy + 5))
   {
     if (![(NSString *)peerID isEqual:?])
     {
@@ -520,7 +520,7 @@ LABEL_25:
   }
 
   peerGenerationID = self->_peerGenerationID;
-  if (peerGenerationID | *(v4 + 4))
+  if (peerGenerationID | *(equalCopy + 4))
   {
     if (![(NSString *)peerGenerationID isEqual:?])
     {
@@ -528,10 +528,10 @@ LABEL_25:
     }
   }
 
-  v13 = (*(v4 + 84) & 1) == 0;
+  v13 = (*(equalCopy + 84) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 84) & 1) == 0 || self->_serviceType != *(v4 + 12))
+    if ((*(equalCopy + 84) & 1) == 0 || self->_serviceType != *(equalCopy + 12))
     {
       goto LABEL_25;
     }
@@ -568,17 +568,17 @@ LABEL_26:
   return v4 ^ v3 ^ v5 ^ v7 ^ (2654435761 * sessionQueueRunning) ^ (2654435761 * enqueuedSyncType) ^ v9 ^ v10 ^ v11 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 3))
+  fromCopy = from;
+  if (*(fromCopy + 3))
   {
     [(SYLogServiceState *)self setName:?];
   }
 
   engine = self->_engine;
-  v6 = *(v4 + 1);
+  v6 = *(fromCopy + 1);
   if (engine)
   {
     if (v6)
@@ -593,7 +593,7 @@ LABEL_26:
   }
 
   session = self->_session;
-  v8 = *(v4 + 7);
+  v8 = *(fromCopy + 7);
   if (session)
   {
     if (v8)
@@ -607,9 +607,9 @@ LABEL_26:
     [(SYLogServiceState *)self setSession:?];
   }
 
-  self->_sessionQueueRunning = *(v4 + 80);
+  self->_sessionQueueRunning = *(fromCopy + 80);
   targetedDevice = self->_targetedDevice;
-  v10 = *(v4 + 8);
+  v10 = *(fromCopy + 8);
   if (targetedDevice)
   {
     if (v10)
@@ -623,12 +623,12 @@ LABEL_26:
     [(SYLogServiceState *)self setTargetedDevice:?];
   }
 
-  self->_enqueuedSyncType = *(v4 + 4);
+  self->_enqueuedSyncType = *(fromCopy + 4);
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v11 = *(v4 + 9);
+  v11 = *(fromCopy + 9);
   v12 = [v11 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v12)
   {
@@ -652,35 +652,35 @@ LABEL_26:
     while (v13);
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(SYLogServiceState *)self setPeerID:?];
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(SYLogServiceState *)self setPeerGenerationID:?];
   }
 
-  if (*(v4 + 84))
+  if (*(fromCopy + 84))
   {
-    self->_serviceType = *(v4 + 12);
+    self->_serviceType = *(fromCopy + 12);
     *&self->_has |= 1u;
   }
 
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCocoaTransportOptions:(id)a3
+- (void)setCocoaTransportOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   [(SYLogServiceState *)self clearTransportOptions];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__SYLogServiceState_Convenience__setCocoaTransportOptions___block_invoke;
   v5[3] = &unk_1E86CB270;
   v5[4] = self;
-  [v4 enumerateKeysAndObjectsUsingBlock:v5];
+  [optionsCopy enumerateKeysAndObjectsUsingBlock:v5];
 }
 
 void __59__SYLogServiceState_Convenience__setCocoaTransportOptions___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -700,15 +700,15 @@ void __59__SYLogServiceState_Convenience__setCocoaTransportOptions___block_invok
 {
   v21 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695DF90]);
-  v4 = [(SYLogServiceState *)self transportOptions];
-  v5 = [v3 initWithCapacity:{objc_msgSend(v4, "count")}];
+  transportOptions = [(SYLogServiceState *)self transportOptions];
+  v5 = [v3 initWithCapacity:{objc_msgSend(transportOptions, "count")}];
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(SYLogServiceState *)self transportOptions];
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  transportOptions2 = [(SYLogServiceState *)self transportOptions];
+  v7 = [transportOptions2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -719,16 +719,16 @@ void __59__SYLogServiceState_Convenience__setCocoaTransportOptions___block_invok
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(transportOptions2);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 value];
+        value = [v11 value];
         v13 = [v11 key];
-        [v5 setObject:v12 forKeyedSubscript:v13];
+        [v5 setObject:value forKeyedSubscript:v13];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [transportOptions2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);

@@ -1,17 +1,17 @@
 @interface OAVColor
-+ (id)readColorFromAttribute:(id)a3 alpha:(float)a4 manager:(id)a5;
-+ (id)readColorProperty:(int)a3 manager:(id)a4;
-+ (id)readPropertyColorFromAttribute:(id)a3 manager:(id)a4;
-+ (id)readRGBColorFromAttribute:(id)a3;
-+ (int)readColorAdjustmentType:(id)a3;
-+ (int)readColorProperty:(id)a3;
++ (id)readColorFromAttribute:(id)attribute alpha:(float)alpha manager:(id)manager;
++ (id)readColorProperty:(int)property manager:(id)manager;
++ (id)readPropertyColorFromAttribute:(id)attribute manager:(id)manager;
++ (id)readRGBColorFromAttribute:(id)attribute;
++ (int)readColorAdjustmentType:(id)type;
++ (int)readColorProperty:(id)property;
 @end
 
 @implementation OAVColor
 
-+ (int)readColorProperty:(id)a3
++ (int)readColorProperty:(id)property
 {
-  v3 = a3;
+  propertyCopy = property;
   v4 = +[OAVColor readColorProperty:]::colorPropertyEnumMap;
   if (!+[OAVColor readColorProperty:]::colorPropertyEnumMap)
   {
@@ -26,14 +26,14 @@
     v4 = +[OAVColor readColorProperty:]::colorPropertyEnumMap;
   }
 
-  v7 = [v4 valueForString:v3];
+  v7 = [v4 valueForString:propertyCopy];
 
   return v7;
 }
 
-+ (int)readColorAdjustmentType:(id)a3
++ (int)readColorAdjustmentType:(id)type
 {
-  v3 = a3;
+  typeCopy = type;
   v4 = +[OAVColor readColorAdjustmentType:]::adjustmentTypeEnumMap;
   if (!+[OAVColor readColorAdjustmentType:]::adjustmentTypeEnumMap)
   {
@@ -48,27 +48,27 @@
     v4 = +[OAVColor readColorAdjustmentType:]::adjustmentTypeEnumMap;
   }
 
-  v7 = [v4 valueForString:v3];
+  v7 = [v4 valueForString:typeCopy];
 
   return v7;
 }
 
-+ (id)readColorFromAttribute:(id)a3 alpha:(float)a4 manager:(id)a5
++ (id)readColorFromAttribute:(id)attribute alpha:(float)alpha manager:(id)manager
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-  v11 = [v8 stringByTrimmingCharactersInSet:v10];
+  attributeCopy = attribute;
+  managerCopy = manager;
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+  v11 = [attributeCopy stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
   if ([v11 length])
   {
-    v12 = [a1 readRGBColorFromAttribute:v11];
+    v12 = [self readRGBColorFromAttribute:v11];
     if (!v12)
     {
       v12 = [OAXColor readPresetColorFromAttribute:v11];
       if (!v12)
       {
-        v12 = [a1 readPropertyColorFromAttribute:v11 manager:v9];
+        v12 = [self readPropertyColorFromAttribute:v11 manager:managerCopy];
         if (!v12)
         {
           v12 = [OAXColor readSystemColorFromAttribute:v11];
@@ -76,10 +76,10 @@
       }
     }
 
-    if (a4 != 1.0)
+    if (alpha != 1.0)
     {
       v13 = [(OADColorTransform *)[OADValueColorTransform alloc] initWithType:6];
-      *&v14 = a4;
+      *&v14 = alpha;
       [(OADValueColorTransform *)v13 setValue:v14];
       [v12 addTransform:v13];
     }
@@ -93,16 +93,16 @@
   return v12;
 }
 
-+ (id)readRGBColorFromAttribute:(id)a3
++ (id)readRGBColorFromAttribute:(id)attribute
 {
-  v3 = a3;
-  if ([v3 characterAtIndex:0] != 35)
+  attributeCopy = attribute;
+  if ([attributeCopy characterAtIndex:0] != 35)
   {
     v6 = 0;
     goto LABEL_11;
   }
 
-  v4 = [v3 componentsSeparatedByString:@" "];
+  v4 = [attributeCopy componentsSeparatedByString:@" "];
   v5 = [v4 objectAtIndex:0];
 
   v14 = 0;
@@ -133,64 +133,64 @@ LABEL_11:
   return v6;
 }
 
-+ (id)readColorProperty:(int)a3 manager:(id)a4
++ (id)readColorProperty:(int)property manager:(id)manager
 {
-  v6 = a4;
-  v8 = v6;
+  managerCopy = manager;
+  v8 = managerCopy;
   v9 = 0;
-  if (a3 > 242)
+  if (property > 242)
   {
-    if (a3 <= 245)
+    if (property <= 245)
     {
-      if (a3 == 243)
+      if (property == 243)
       {
-        v10 = [v6 shadowColor];
+        shadowColor = [managerCopy shadowColor];
       }
 
       else
       {
-        if (a3 != 245)
+        if (property != 245)
         {
           goto LABEL_19;
         }
 
-        v10 = [v6 fillBgColor];
+        shadowColor = [managerCopy fillBgColor];
       }
 
       goto LABEL_18;
     }
 
-    if (a3 == 246)
+    if (property == 246)
     {
-      v10 = [v6 strokeBgColor];
+      shadowColor = [managerCopy strokeBgColor];
       goto LABEL_18;
     }
 
-    if (a3 != 247)
+    if (property != 247)
     {
       goto LABEL_19;
     }
 
-    if ([v6 isFilled])
+    if ([managerCopy isFilled])
     {
 LABEL_13:
-      v10 = [v8 fillFgColor];
+      shadowColor = [v8 fillFgColor];
 LABEL_18:
-      v9 = v10;
+      v9 = shadowColor;
       goto LABEL_19;
     }
 
 LABEL_17:
-    v10 = [v8 strokeFgColor];
+    shadowColor = [v8 strokeFgColor];
     goto LABEL_18;
   }
 
-  switch(a3)
+  switch(property)
   {
     case 240:
       goto LABEL_13;
     case 241:
-      if (([v6 isStroked] & 1) == 0)
+      if (([managerCopy isStroked] & 1) == 0)
       {
         goto LABEL_13;
       }
@@ -202,18 +202,18 @@ LABEL_17:
 
 LABEL_19:
   LODWORD(v7) = 1.0;
-  v11 = [a1 readColorFromAttribute:v9 alpha:v8 manager:v7];
+  v11 = [self readColorFromAttribute:v9 alpha:v8 manager:v7];
 
   return v11;
 }
 
-+ (id)readPropertyColorFromAttribute:(id)a3 manager:(id)a4
++ (id)readPropertyColorFromAttribute:(id)attribute manager:(id)manager
 {
-  v22 = a3;
-  v23 = a4;
-  v6 = [v22 componentsSeparatedByString:@" "];
+  attributeCopy = attribute;
+  managerCopy = manager;
+  v6 = [attributeCopy componentsSeparatedByString:@" "];
   v21 = [v6 objectAtIndex:0];
-  v7 = [a1 readColorProperty:?];
+  v7 = [self readColorProperty:?];
   if (v7 == -130883970)
   {
     v8 = 0;
@@ -221,11 +221,11 @@ LABEL_19:
 
   else
   {
-    v20 = a1;
-    v19 = [a1 readColorProperty:v7 manager:v23];
+    selfCopy = self;
+    v19 = [self readColorProperty:v7 manager:managerCopy];
     v24 = 0;
     v9 = 0;
-    v10 = 0;
+    intValue = 0;
     v11 = 0;
     for (i = 1; [v6 count] > i; ++i)
     {
@@ -256,13 +256,13 @@ LABEL_19:
         }
 
         v16 = [v13 substringToIndex:v15];
-        v11 = [v20 readColorAdjustmentType:v16];
+        v11 = [selfCopy readColorAdjustmentType:v16];
         v17 = [v13 substringWithRange:{v15 + 1, v14 - v15 - 2}];
-        v10 = [v17 intValue];
+        intValue = [v17 intValue];
       }
     }
 
-    v8 = [[OADAdjustedColor alloc] initWithBaseColor:v19 adjustmentType:v11 adjustmentParam:v10 invert:v9 & 1 invert128:BYTE4(v24) & 1 gray:v24 & 1];
+    v8 = [[OADAdjustedColor alloc] initWithBaseColor:v19 adjustmentType:v11 adjustmentParam:intValue invert:v9 & 1 invert128:BYTE4(v24) & 1 gray:v24 & 1];
   }
 
   return v8;

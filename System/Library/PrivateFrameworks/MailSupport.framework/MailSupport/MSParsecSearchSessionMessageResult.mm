@@ -1,66 +1,66 @@
 @interface MSParsecSearchSessionMessageResult
-+ (id)resultWithIdentifier:(id)a3;
-+ (id)resultWithIdentifier:(id)a3 date:(id)a4;
-+ (id)resultWithIdentifier:(id)a3 date:(id)a4 mailRankingSignals:(id)a5;
++ (id)resultWithIdentifier:(id)identifier;
++ (id)resultWithIdentifier:(id)identifier date:(id)date;
++ (id)resultWithIdentifier:(id)identifier date:(id)date mailRankingSignals:(id)signals;
 - (id)feedbackResult;
-- (id)initResultWithIdentifier:(id)a3 date:(id)a4;
-- (id)initResultWithIdentifier:(id)a3 date:(id)a4 mailRankingSignals:(id)a5;
+- (id)initResultWithIdentifier:(id)identifier date:(id)date;
+- (id)initResultWithIdentifier:(id)identifier date:(id)date mailRankingSignals:(id)signals;
 @end
 
 @implementation MSParsecSearchSessionMessageResult
 
-+ (id)resultWithIdentifier:(id)a3
++ (id)resultWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initResultWithIdentifier:v4 date:0];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initResultWithIdentifier:identifierCopy date:0];
 
   return v5;
 }
 
-+ (id)resultWithIdentifier:(id)a3 date:(id)a4
++ (id)resultWithIdentifier:(id)identifier date:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[a1 alloc] initResultWithIdentifier:v6 date:v7];
+  identifierCopy = identifier;
+  dateCopy = date;
+  v8 = [[self alloc] initResultWithIdentifier:identifierCopy date:dateCopy];
 
   return v8;
 }
 
-+ (id)resultWithIdentifier:(id)a3 date:(id)a4 mailRankingSignals:(id)a5
++ (id)resultWithIdentifier:(id)identifier date:(id)date mailRankingSignals:(id)signals
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[a1 alloc] initResultWithIdentifier:v8 date:v9 mailRankingSignals:v10];
+  identifierCopy = identifier;
+  dateCopy = date;
+  signalsCopy = signals;
+  v11 = [[self alloc] initResultWithIdentifier:identifierCopy date:dateCopy mailRankingSignals:signalsCopy];
 
   return v11;
 }
 
-- (id)initResultWithIdentifier:(id)a3 date:(id)a4
+- (id)initResultWithIdentifier:(id)identifier date:(id)date
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v12.receiver = self;
   v12.super_class = MSParsecSearchSessionMessageResult;
   v9 = [(MSParsecSearchSessionMessageResult *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_resultID, a3);
-    v10->_messageAge = [MEMORY[0x277D07198] bucketedMessageAgeSinceDate:v8 leadingDigits:2];
+    objc_storeStrong(&v9->_resultID, identifier);
+    v10->_messageAge = [MEMORY[0x277D07198] bucketedMessageAgeSinceDate:dateCopy leadingDigits:2];
   }
 
   return v10;
 }
 
-- (id)initResultWithIdentifier:(id)a3 date:(id)a4 mailRankingSignals:(id)a5
+- (id)initResultWithIdentifier:(id)identifier date:(id)date mailRankingSignals:(id)signals
 {
-  v9 = a5;
-  v10 = [(MSParsecSearchSessionMessageResult *)self initResultWithIdentifier:a3 date:a4];
+  signalsCopy = signals;
+  v10 = [(MSParsecSearchSessionMessageResult *)self initResultWithIdentifier:identifier date:date];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(v10 + 3, a5);
+    objc_storeStrong(v10 + 3, signals);
   }
 
   return v11;
@@ -70,8 +70,8 @@
 {
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D4C5D0]);
-  v4 = [(MSParsecSearchSessionMessageResult *)self resultID];
-  [v3 setIdentifier:v4];
+  resultID = [(MSParsecSearchSessionMessageResult *)self resultID];
+  [v3 setIdentifier:resultID];
 
   v10 = @"messageAgeInDays";
   v5 = [MEMORY[0x277CCABB0] numberWithInteger:{-[MSParsecSearchSessionMessageResult messageAge](self, "messageAge")}];
@@ -80,8 +80,8 @@
   [v3 setLocalFeatures:v6];
 
   [v3 setType:2];
-  v7 = [(MSParsecSearchSessionMessageResult *)self mailRankingSignals];
-  [v3 setMailRankingSignals:v7];
+  mailRankingSignals = [(MSParsecSearchSessionMessageResult *)self mailRankingSignals];
+  [v3 setMailRankingSignals:mailRankingSignals];
 
   v8 = *MEMORY[0x277D85DE8];
 

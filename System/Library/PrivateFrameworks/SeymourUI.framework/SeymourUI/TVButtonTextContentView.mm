@@ -1,6 +1,6 @@
 @interface TVButtonTextContentView
 - (CGSize)intrinsicContentSize;
-- (_TtC9SeymourUI23TVButtonTextContentView)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI23TVButtonTextContentView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation TVButtonTextContentView
@@ -13,7 +13,7 @@
   return result;
 }
 
-- (_TtC9SeymourUI23TVButtonTextContentView)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI23TVButtonTextContentView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

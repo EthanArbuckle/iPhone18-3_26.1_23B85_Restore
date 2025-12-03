@@ -9,26 +9,26 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v2 = [a1 visibleViewController];
+    visibleViewController = [self visibleViewController];
 LABEL_5:
-    v4 = v2;
-    v5 = [v2 __ck_topViewController];
+    v4 = visibleViewController;
+    selfCopy = [visibleViewController __ck_topViewController];
 
     goto LABEL_6;
   }
 
-  v3 = [a1 presentedViewController];
+  presentedViewController = [self presentedViewController];
 
-  if (v3)
+  if (presentedViewController)
   {
-    v2 = [a1 presentedViewController];
+    visibleViewController = [self presentedViewController];
     goto LABEL_5;
   }
 
-  v5 = a1;
+  selfCopy = self;
 LABEL_6:
 
-  return v5;
+  return selfCopy;
 }
 
 @end

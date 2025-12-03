@@ -2,10 +2,10 @@
 + (BOOL)hasPerformanceControlService;
 + (id)sharedInstance;
 - (_OSICLPCInterface)init;
-- (unint64_t)optionFromValue:(int64_t)a3;
+- (unint64_t)optionFromValue:(int64_t)value;
 - (void)start;
 - (void)stop;
-- (void)updatePerformanceControlWithMitigation:(id)a3;
+- (void)updatePerformanceControlWithMitigation:(id)mitigation;
 @end
 
 @implementation _OSICLPCInterface
@@ -68,22 +68,22 @@
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)optionFromValue:(int64_t)a3
+- (unint64_t)optionFromValue:(int64_t)value
 {
-  if ((a3 - 1) >= 8)
+  if ((value - 1) >= 8)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return value;
   }
 }
 
-- (void)updatePerformanceControlWithMitigation:(id)a3
+- (void)updatePerformanceControlWithMitigation:(id)mitigation
 {
-  v4 = a3;
+  mitigationCopy = mitigation;
   v5 = [(_OSICLPCInterface *)self optionFromValue:self->_mitigationOption];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -91,9 +91,9 @@
   block[2] = __60___OSICLPCInterface_updatePerformanceControlWithMitigation___block_invoke;
   block[3] = &unk_2799C19E0;
   block[4] = self;
-  v9 = v4;
+  v9 = mitigationCopy;
   v10 = v5;
-  v7 = v4;
+  v7 = mitigationCopy;
   dispatch_sync(queue, block);
 }
 

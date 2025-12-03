@@ -1,7 +1,7 @@
 @interface HDSQLiteOrderingTerm
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HDSQLiteOrderingTerm)init;
-- (HDSQLiteOrderingTerm)initWithExpression:(id)a3 ascending:(BOOL)a4;
+- (HDSQLiteOrderingTerm)initWithExpression:(id)expression ascending:(BOOL)ascending;
 - (id)SQL;
 - (id)description;
 @end
@@ -29,19 +29,19 @@
   return 0;
 }
 
-- (HDSQLiteOrderingTerm)initWithExpression:(id)a3 ascending:(BOOL)a4
+- (HDSQLiteOrderingTerm)initWithExpression:(id)expression ascending:(BOOL)ascending
 {
-  v6 = a3;
+  expressionCopy = expression;
   v11.receiver = self;
   v11.super_class = HDSQLiteOrderingTerm;
   v7 = [(HDSQLiteOrderingTerm *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [expressionCopy copy];
     expression = v7->_expression;
     v7->_expression = v8;
 
-    v7->_ascending = a4;
+    v7->_ascending = ascending;
   }
 
   return v7;
@@ -62,10 +62,10 @@
   return [MEMORY[0x277CCACA8] stringWithFormat:@"<Order: %@ %@>", self->_expression, v2];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -75,7 +75,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       expression = self->_expression;
       v7 = v5->_expression;
       v8 = (expression == v7 || v7 && [(NSString *)expression isEqualToString:?]) && self->_ascending == v5->_ascending;

@@ -1,6 +1,6 @@
 @interface REGroupRelevanceProviderManager
 + (id)_features;
-- (id)_valueForProvider:(id)a3 feature:(id)a4;
+- (id)_valueForProvider:(id)provider feature:(id)feature;
 @end
 
 @implementation REGroupRelevanceProviderManager
@@ -17,10 +17,10 @@
   return v3;
 }
 
-- (id)_valueForProvider:(id)a3 feature:(id)a4
+- (id)_valueForProvider:(id)provider feature:(id)feature
 {
-  v4 = [a3 groupIdentifier];
-  v5 = [REFeatureValue featureValueWithString:v4];
+  groupIdentifier = [provider groupIdentifier];
+  v5 = [REFeatureValue featureValueWithString:groupIdentifier];
 
   return v5;
 }

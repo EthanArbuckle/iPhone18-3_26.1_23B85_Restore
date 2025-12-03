@@ -15,14 +15,14 @@
 
   if (v5)
   {
-    v6 = [MEMORY[0x277D37618] boldButton];
+    boldButton = [MEMORY[0x277D37618] boldButton];
     v7 = _HULocalizedStringWithDefaultValue(@"HUDoneTitle", @"HUDoneTitle", 1);
-    [v6 setTitle:v7 forState:0];
+    [boldButton setTitle:v7 forState:0];
 
-    [v6 setAccessibilityIdentifier:@"Home.OnboardingView.CameraRecording.LearnMore.DoneButton"];
-    [v6 addTarget:v5 action:sel_dismiss forControlEvents:64];
-    v8 = [(HUCameraRecordingLearnMoreViewController *)v5 buttonTray];
-    [v8 addButton:v6];
+    [boldButton setAccessibilityIdentifier:@"Home.OnboardingView.CameraRecording.LearnMore.DoneButton"];
+    [boldButton addTarget:v5 action:sel_dismiss forControlEvents:64];
+    buttonTray = [(HUCameraRecordingLearnMoreViewController *)v5 buttonTray];
+    [buttonTray addButton:boldButton];
   }
 
   return v5;
@@ -30,8 +30,8 @@
 
 - (void)dismiss
 {
-  v2 = [(HUCameraRecordingLearnMoreViewController *)self presentingViewController];
-  [v2 dismissViewControllerAnimated:1 completion:0];
+  presentingViewController = [(HUCameraRecordingLearnMoreViewController *)self presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:1 completion:0];
 }
 
 @end

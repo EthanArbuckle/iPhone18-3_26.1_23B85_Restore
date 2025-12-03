@@ -1,49 +1,49 @@
 @interface HKCoverageRecord
-+ (id)_newCoverageRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 statusCoding:(id)a15 coverageTypeCodingCollection:(id)a16 subscriber:(id)a17 subscriberId:(id)a18 beneficiary:(id)a19 policyHolder:(id)a20 payor:(id)a21 relationshipCodingCollection:(id)a22 classification:(id)a23 network:(id)a24 periodStartDate:(id)a25 periodEndDate:(id)a26 subscriberIdentifier:(id)a27 beneficiaryIdentifier:(id)a28 config:(id)a29;
++ (id)_newCoverageRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 statusCoding:(id)self5 coverageTypeCodingCollection:(id)self6 subscriber:(id)self7 subscriberId:(id)self8 beneficiary:(id)self9 policyHolder:(id)holder payor:(id)payor relationshipCodingCollection:(id)codingCollection classification:(id)classification network:(id)network periodStartDate:(id)startDate periodEndDate:(id)endDate subscriberIdentifier:(id)subscriberIdentifier beneficiaryIdentifier:(id)beneficiaryIdentifier config:(id)config;
 + (id)cachedConceptRelationshipKeyPaths;
-+ (id)coverageRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 statusCoding:(id)a14 coverageTypeCodingCollection:(id)a15 subscriber:(id)a16 subscriberId:(id)a17 beneficiary:(id)a18 policyHolder:(id)a19 payor:(id)a20 relationshipCodingCollection:(id)a21 classification:(id)a22 network:(id)a23 periodStartDate:(id)a24 periodEndDate:(id)a25 subscriberIdentifier:(id)a26 beneficiaryIdentifier:(id)a27;
++ (id)coverageRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 statusCoding:(id)self4 coverageTypeCodingCollection:(id)self5 subscriber:(id)self6 subscriberId:(id)self7 beneficiary:(id)self8 policyHolder:(id)self9 payor:(id)payor relationshipCodingCollection:(id)codingCollection classification:(id)classification network:(id)network periodStartDate:(id)startDate periodEndDate:(id)endDate subscriberIdentifier:(id)subscriberIdentifier beneficiaryIdentifier:(id)beneficiaryIdentifier;
 + (id)defaultDisplayString;
 + (id)indexableConceptKeyPaths;
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5;
-- (BOOL)isEquivalent:(id)a3;
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error;
+- (BOOL)isEquivalent:(id)equivalent;
 - (HKConcept)coverageType;
 - (HKConcept)relationship;
 - (HKConcept)status;
 - (HKCoverageRecord)init;
-- (HKCoverageRecord)initWithCoder:(id)a3;
+- (HKCoverageRecord)initWithCoder:(id)coder;
 - (NSString)description;
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3;
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4;
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration;
+- (id)codingsForKeyPath:(id)path error:(id *)error;
 - (id)medicalRecordCodings;
 - (id)statusCodingCollection;
-- (void)_setBeneficiary:(id)a3;
-- (void)_setBeneficiaryIdentifier:(id)a3;
-- (void)_setClassification:(id)a3;
-- (void)_setCoverageType:(id)a3;
-- (void)_setCoverageTypeCodingCollection:(id)a3;
-- (void)_setNetwork:(id)a3;
-- (void)_setPayor:(id)a3;
-- (void)_setPeriodEndDate:(id)a3;
-- (void)_setPeriodStartDate:(id)a3;
-- (void)_setPolicyHolder:(id)a3;
-- (void)_setRelationship:(id)a3;
-- (void)_setRelationshipCodingCollection:(id)a3;
-- (void)_setStatus:(id)a3;
-- (void)_setStatusCoding:(id)a3;
-- (void)_setSubscriber:(id)a3;
-- (void)_setSubscriberId:(id)a3;
-- (void)_setSubscriberIdentifier:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_setBeneficiary:(id)beneficiary;
+- (void)_setBeneficiaryIdentifier:(id)identifier;
+- (void)_setClassification:(id)classification;
+- (void)_setCoverageType:(id)type;
+- (void)_setCoverageTypeCodingCollection:(id)collection;
+- (void)_setNetwork:(id)network;
+- (void)_setPayor:(id)payor;
+- (void)_setPeriodEndDate:(id)date;
+- (void)_setPeriodStartDate:(id)date;
+- (void)_setPolicyHolder:(id)holder;
+- (void)_setRelationship:(id)relationship;
+- (void)_setRelationshipCodingCollection:(id)collection;
+- (void)_setStatus:(id)status;
+- (void)_setStatusCoding:(id)coding;
+- (void)_setSubscriber:(id)subscriber;
+- (void)_setSubscriberId:(id)id;
+- (void)_setSubscriberIdentifier:(id)identifier;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKCoverageRecord
 
 - (id)medicalRecordCodings
 {
-  v2 = [(HKCoverageRecord *)self coverageTypeCodingCollection];
-  v3 = [v2 codings];
+  coverageTypeCodingCollection = [(HKCoverageRecord *)self coverageTypeCodingCollection];
+  codings = [coverageTypeCodingCollection codings];
 
-  return v3;
+  return codings;
 }
 
 + (id)defaultDisplayString
@@ -56,7 +56,7 @@
 
 + (id)indexableConceptKeyPaths
 {
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___HKCoverageRecord;
   v2 = objc_msgSendSuper2(&v6, sel_indexableConceptKeyPaths);
   v3 = [v2 mutableCopy];
@@ -72,18 +72,18 @@
 
 + (id)cachedConceptRelationshipKeyPaths
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___HKCoverageRecord;
   v2 = objc_msgSendSuper2(&v4, sel_cachedConceptRelationshipKeyPaths);
 
   return v2;
 }
 
-- (id)codingsForKeyPath:(id)a3 error:(id *)a4
+- (id)codingsForKeyPath:(id)path error:(id *)error
 {
   v25[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:v6 error:a4];
+  pathCopy = path;
+  v7 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v8 = v7;
   if (!v7)
   {
@@ -93,8 +93,8 @@
 
   if ([v7 isEqualToString:@"status"])
   {
-    v9 = [(HKCoverageRecord *)self statusCoding];
-    v10 = [HKMedicalCodingCollection collectionWithCoding:v9];
+    statusCoding = [(HKCoverageRecord *)self statusCoding];
+    v10 = [HKMedicalCodingCollection collectionWithCoding:statusCoding];
     v11 = [HKIndexableObject indexableObjectWithObject:v10];
     v25[0] = v11;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:1];
@@ -104,8 +104,8 @@
 
   if ([v8 isEqualToString:@"coverageType"])
   {
-    v13 = [(HKCoverageRecord *)self coverageTypeCodingCollection];
-    v14 = [HKIndexableObject indexableObjectWithObject:v13];
+    coverageTypeCodingCollection = [(HKCoverageRecord *)self coverageTypeCodingCollection];
+    v14 = [HKIndexableObject indexableObjectWithObject:coverageTypeCodingCollection];
     v24 = v14;
     v15 = MEMORY[0x1E695DEC8];
     v16 = &v24;
@@ -118,12 +118,12 @@ LABEL_11:
 
   if ([v8 isEqualToString:@"relationship"])
   {
-    v17 = [(HKCoverageRecord *)self relationshipCodingCollection];
+    relationshipCodingCollection = [(HKCoverageRecord *)self relationshipCodingCollection];
 
-    if (v17)
+    if (relationshipCodingCollection)
     {
-      v13 = [(HKCoverageRecord *)self relationshipCodingCollection];
-      v14 = [HKIndexableObject indexableObjectWithObject:v13];
+      coverageTypeCodingCollection = [(HKCoverageRecord *)self relationshipCodingCollection];
+      v14 = [HKIndexableObject indexableObjectWithObject:coverageTypeCodingCollection];
       v23 = v14;
       v15 = MEMORY[0x1E695DEC8];
       v16 = &v23;
@@ -135,15 +135,15 @@ LABEL_11:
 
   if ([v8 isEqualToString:@"classification"])
   {
-    v20 = [(HKCoverageRecord *)self classification];
+    classification = [(HKCoverageRecord *)self classification];
 
-    if (v20)
+    if (classification)
     {
-      v13 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:v6 error:a4];
-      if (v13)
+      coverageTypeCodingCollection = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:pathCopy error:error];
+      if (coverageTypeCodingCollection)
       {
-        v21 = [(HKCoverageRecord *)self classification];
-        v12 = [v21 codingsForKeyPath:v13 error:a4];
+        classification2 = [(HKCoverageRecord *)self classification];
+        v12 = [classification2 codingsForKeyPath:coverageTypeCodingCollection error:error];
       }
 
       else
@@ -161,7 +161,7 @@ LABEL_19:
 
   v22.receiver = self;
   v22.super_class = HKCoverageRecord;
-  v12 = [(HKMedicalRecord *)&v22 codingsForKeyPath:v6 error:a4];
+  v12 = [(HKMedicalRecord *)&v22 codingsForKeyPath:pathCopy error:error];
 LABEL_12:
 
   v18 = *MEMORY[0x1E69E9840];
@@ -169,11 +169,11 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)applyConcepts:(id)a3 forKeyPath:(id)a4 error:(id *)a5
+- (BOOL)applyConcepts:(id)concepts forKeyPath:(id)path error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:v9 error:a5];
+  conceptsCopy = concepts;
+  pathCopy = path;
+  v10 = [HKConceptIndexUtilities firstComponentForKeyPath:pathCopy error:error];
   v11 = v10;
   if (!v10)
   {
@@ -182,11 +182,11 @@ LABEL_12:
 
   if ([v10 isEqualToString:@"status"])
   {
-    if (HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 1, v9, a5))
+    if (HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 1, pathCopy, error))
     {
-      v12 = [v8 firstObject];
-      v13 = [v12 object];
-      [(HKCoverageRecord *)self _setStatus:v13];
+      firstObject = [conceptsCopy firstObject];
+      object = [firstObject object];
+      [(HKCoverageRecord *)self _setStatus:object];
 LABEL_11:
 
       v17 = 1;
@@ -198,11 +198,11 @@ LABEL_11:
 
   if ([v11 isEqualToString:@"coverageType"])
   {
-    if (HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 1, v9, a5))
+    if (HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 1, pathCopy, error))
     {
-      v12 = [v8 firstObject];
-      v13 = [v12 object];
-      [(HKCoverageRecord *)self _setCoverageType:v13];
+      firstObject = [conceptsCopy firstObject];
+      object = [firstObject object];
+      [(HKCoverageRecord *)self _setCoverageType:object];
       goto LABEL_11;
     }
 
@@ -213,15 +213,15 @@ LABEL_12:
 
   if ([v11 isEqualToString:@"relationship"])
   {
-    v14 = [v8 count];
-    v15 = [(HKCoverageRecord *)self relationshipCodingCollection];
-    v16 = HKIndexableObjectCheckCardinalityForIndexRestore(v14, v15 != 0, v9, a5);
+    v14 = [conceptsCopy count];
+    relationshipCodingCollection = [(HKCoverageRecord *)self relationshipCodingCollection];
+    v16 = HKIndexableObjectCheckCardinalityForIndexRestore(v14, relationshipCodingCollection != 0, pathCopy, error);
 
     if (v16)
     {
-      v12 = [v8 firstObject];
-      v13 = [v12 object];
-      [(HKCoverageRecord *)self _setRelationship:v13];
+      firstObject = [conceptsCopy firstObject];
+      object = [firstObject object];
+      [(HKCoverageRecord *)self _setRelationship:object];
       goto LABEL_11;
     }
 
@@ -230,20 +230,20 @@ LABEL_12:
 
   if ([v11 isEqualToString:@"classification"])
   {
-    v19 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:v9 error:a5];
+    v19 = [HKConceptIndexUtilities keyPathRemovingFirstComponentFromKeyPath:pathCopy error:error];
     if (v19)
     {
-      v20 = [(HKCoverageRecord *)self classification];
+      classification = [(HKCoverageRecord *)self classification];
 
-      if (v20)
+      if (classification)
       {
-        v21 = [(HKCoverageRecord *)self classification];
-        v17 = [v21 applyConcepts:v8 forKeyPath:v19 error:a5];
+        classification2 = [(HKCoverageRecord *)self classification];
+        v17 = [classification2 applyConcepts:conceptsCopy forKeyPath:v19 error:error];
       }
 
       else
       {
-        v17 = HKIndexableObjectCheckCardinalityForIndexRestore([v8 count], 0, v9, a5);
+        v17 = HKIndexableObjectCheckCardinalityForIndexRestore([conceptsCopy count], 0, pathCopy, error);
       }
     }
 
@@ -257,7 +257,7 @@ LABEL_12:
   {
     v22.receiver = self;
     v22.super_class = HKCoverageRecord;
-    v17 = [(HKMedicalRecord *)&v22 applyConcepts:v8 forKeyPath:v9 error:a5];
+    v17 = [(HKMedicalRecord *)&v22 applyConcepts:conceptsCopy forKeyPath:pathCopy error:error];
   }
 
 LABEL_13:
@@ -265,41 +265,41 @@ LABEL_13:
   return v17;
 }
 
-+ (id)coverageRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 country:(id)a12 state:(unint64_t)a13 statusCoding:(id)a14 coverageTypeCodingCollection:(id)a15 subscriber:(id)a16 subscriberId:(id)a17 beneficiary:(id)a18 policyHolder:(id)a19 payor:(id)a20 relationshipCodingCollection:(id)a21 classification:(id)a22 network:(id)a23 periodStartDate:(id)a24 periodEndDate:(id)a25 subscriberIdentifier:(id)a26 beneficiaryIdentifier:(id)a27
++ (id)coverageRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 country:(id)self2 state:(unint64_t)self3 statusCoding:(id)self4 coverageTypeCodingCollection:(id)self5 subscriber:(id)self6 subscriberId:(id)self7 beneficiary:(id)self8 policyHolder:(id)self9 payor:(id)payor relationshipCodingCollection:(id)codingCollection classification:(id)classification network:(id)network periodStartDate:(id)startDate periodEndDate:(id)endDate subscriberIdentifier:(id)subscriberIdentifier beneficiaryIdentifier:(id)beneficiaryIdentifier
 {
-  v52 = a5;
-  v65 = a3;
-  v64 = a4;
-  v31 = a6;
-  v63 = a7;
-  v62 = a8;
-  v59 = a10;
-  v58 = a11;
-  v57 = a12;
-  v61 = a14;
-  v60 = a15;
-  v56 = a16;
-  v51 = a17;
-  v55 = a18;
-  v50 = a19;
-  v54 = a20;
-  v49 = a21;
-  v32 = a22;
-  v33 = a23;
-  v34 = a24;
-  v35 = a25;
-  v48 = a26;
-  v47 = a27;
+  errorCopy = error;
+  typeCopy = type;
+  noteCopy = note;
+  dateCopy = date;
+  identifierCopy = identifier;
+  localeCopy = locale;
+  deviceCopy = device;
+  metadataCopy = metadata;
+  countryCopy = country;
+  codingCopy = coding;
+  collectionCopy = collection;
+  subscriberCopy = subscriber;
+  idCopy = id;
+  beneficiaryCopy = beneficiary;
+  holderCopy = holder;
+  payorCopy = payor;
+  codingCollectionCopy = codingCollection;
+  classificationCopy = classification;
+  networkCopy = network;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
+  subscriberIdentifierCopy = subscriberIdentifier;
+  beneficiaryIdentifierCopy = beneficiaryIdentifier;
   v36 = @"modifiedDate";
-  v66 = v31;
-  if (v34)
+  v66 = dateCopy;
+  if (startDateCopy)
   {
     v37 = @"periodStartDate";
 
-    v38 = [v34 dateForUTC];
+    dateForUTC = [startDateCopy dateForUTC];
 
     v36 = v37;
-    if (!v35)
+    if (!endDateCopy)
     {
       goto LABEL_7;
     }
@@ -307,103 +307,103 @@ LABEL_13:
 
   else
   {
-    v38 = v66;
-    if (!v35)
+    dateForUTC = v66;
+    if (!endDateCopy)
     {
       goto LABEL_7;
     }
   }
 
-  v39 = [v35 dateForUTC];
-  [v39 timeIntervalSinceNow];
+  dateForUTC2 = [endDateCopy dateForUTC];
+  [dateForUTC2 timeIntervalSinceNow];
   v41 = v40;
 
   if (v41 < 0.0)
   {
     v42 = @"periodEndDate";
 
-    v43 = v35;
-    v44 = [v35 dateForUTC];
+    v43 = endDateCopy;
+    dateForUTC3 = [endDateCopy dateForUTC];
 
-    v38 = v44;
+    dateForUTC = dateForUTC3;
     v36 = v42;
     goto LABEL_8;
   }
 
 LABEL_7:
-  v43 = v35;
+  v43 = endDateCopy;
 LABEL_8:
-  v45 = [HKSemanticDate semanticDateWithKeyPath:v36 date:v38];
-  v53 = [HKCoverageRecord coverageRecordWithType:v65 note:v64 enteredInError:v52 modifiedDate:v66 originIdentifier:v63 locale:v62 extractionVersion:a9 device:v59 metadata:v58 sortDate:v45 country:v57 state:a13 statusCoding:v61 coverageTypeCodingCollection:v60 subscriber:v56 subscriberId:v51 beneficiary:v55 policyHolder:v50 payor:v54 relationshipCodingCollection:v49 classification:v32 network:v33 periodStartDate:v34 periodEndDate:v43 subscriberIdentifier:v48 beneficiaryIdentifier:v47];
+  v45 = [HKSemanticDate semanticDateWithKeyPath:v36 date:dateForUTC];
+  v53 = [HKCoverageRecord coverageRecordWithType:typeCopy note:noteCopy enteredInError:errorCopy modifiedDate:v66 originIdentifier:identifierCopy locale:localeCopy extractionVersion:version device:deviceCopy metadata:metadataCopy sortDate:v45 country:countryCopy state:state statusCoding:codingCopy coverageTypeCodingCollection:collectionCopy subscriber:subscriberCopy subscriberId:idCopy beneficiary:beneficiaryCopy policyHolder:holderCopy payor:payorCopy relationshipCodingCollection:codingCollectionCopy classification:classificationCopy network:networkCopy periodStartDate:startDateCopy periodEndDate:v43 subscriberIdentifier:subscriberIdentifierCopy beneficiaryIdentifier:beneficiaryIdentifierCopy];
 
   return v53;
 }
 
-+ (id)_newCoverageRecordWithType:(id)a3 note:(id)a4 enteredInError:(BOOL)a5 modifiedDate:(id)a6 originIdentifier:(id)a7 locale:(id)a8 extractionVersion:(int64_t)a9 device:(id)a10 metadata:(id)a11 sortDate:(id)a12 country:(id)a13 state:(unint64_t)a14 statusCoding:(id)a15 coverageTypeCodingCollection:(id)a16 subscriber:(id)a17 subscriberId:(id)a18 beneficiary:(id)a19 policyHolder:(id)a20 payor:(id)a21 relationshipCodingCollection:(id)a22 classification:(id)a23 network:(id)a24 periodStartDate:(id)a25 periodEndDate:(id)a26 subscriberIdentifier:(id)a27 beneficiaryIdentifier:(id)a28 config:(id)a29
++ (id)_newCoverageRecordWithType:(id)type note:(id)note enteredInError:(BOOL)error modifiedDate:(id)date originIdentifier:(id)identifier locale:(id)locale extractionVersion:(int64_t)version device:(id)self0 metadata:(id)self1 sortDate:(id)self2 country:(id)self3 state:(unint64_t)self4 statusCoding:(id)self5 coverageTypeCodingCollection:(id)self6 subscriber:(id)self7 subscriberId:(id)self8 beneficiary:(id)self9 policyHolder:(id)holder payor:(id)payor relationshipCodingCollection:(id)codingCollection classification:(id)classification network:(id)network periodStartDate:(id)startDate periodEndDate:(id)endDate subscriberIdentifier:(id)subscriberIdentifier beneficiaryIdentifier:(id)beneficiaryIdentifier config:(id)config
 {
-  v68 = a5;
-  v76 = a15;
-  v74 = a16;
-  v72 = a17;
-  v70 = a18;
-  v56 = a19;
-  v29 = a20;
-  v30 = a21;
-  v31 = a22;
-  v32 = a23;
-  v33 = a24;
-  v34 = a25;
-  v35 = a26;
-  v36 = a27;
-  v37 = a28;
-  v38 = a29;
+  errorCopy = error;
+  codingCopy = coding;
+  collectionCopy = collection;
+  subscriberCopy = subscriber;
+  idCopy = id;
+  beneficiaryCopy = beneficiary;
+  holderCopy = holder;
+  payorCopy = payor;
+  codingCollectionCopy = codingCollection;
+  classificationCopy = classification;
+  networkCopy = network;
+  startDateCopy = startDate;
+  endDateCopy = endDate;
+  subscriberIdentifierCopy = subscriberIdentifier;
+  beneficiaryIdentifierCopy = beneficiaryIdentifier;
+  configCopy = config;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_statusCoding_coverageTypeCodingCollection_subscriber_subscriberId_beneficiary_policyHolder_payor_relationshipCodingCollection_classification_network_periodStartDate_periodEndDate_subscriberIdentifier_beneficiaryIdentifier_config___block_invoke;
   aBlock[3] = &unk_1E7380FA0;
-  v80 = v76;
-  v81 = v74;
-  v82 = v72;
-  v83 = v70;
-  v84 = v56;
-  v85 = v29;
-  v86 = v30;
-  v87 = v31;
-  v88 = v32;
-  v89 = v33;
-  v90 = v34;
-  v91 = v35;
-  v92 = v36;
-  v93 = v37;
-  v94 = v38;
-  v67 = v38;
-  v66 = v37;
-  v65 = v36;
-  v64 = v35;
-  v63 = v34;
-  v62 = v33;
-  v61 = v32;
-  v60 = v31;
-  v59 = v30;
-  v58 = v29;
-  v57 = v56;
-  v71 = v70;
-  v73 = v72;
-  v75 = v74;
-  v77 = v76;
-  v39 = a13;
-  v40 = a12;
-  v41 = a11;
-  v42 = a10;
-  v43 = a8;
-  v44 = a7;
-  v45 = a6;
-  v46 = a4;
-  v47 = a3;
+  v80 = codingCopy;
+  v81 = collectionCopy;
+  v82 = subscriberCopy;
+  v83 = idCopy;
+  v84 = beneficiaryCopy;
+  v85 = holderCopy;
+  v86 = payorCopy;
+  v87 = codingCollectionCopy;
+  v88 = classificationCopy;
+  v89 = networkCopy;
+  v90 = startDateCopy;
+  v91 = endDateCopy;
+  v92 = subscriberIdentifierCopy;
+  v93 = beneficiaryIdentifierCopy;
+  v94 = configCopy;
+  v67 = configCopy;
+  v66 = beneficiaryIdentifierCopy;
+  v65 = subscriberIdentifierCopy;
+  v64 = endDateCopy;
+  v63 = startDateCopy;
+  v62 = networkCopy;
+  v61 = classificationCopy;
+  v60 = codingCollectionCopy;
+  v59 = payorCopy;
+  v58 = holderCopy;
+  v57 = beneficiaryCopy;
+  v71 = idCopy;
+  v73 = subscriberCopy;
+  v75 = collectionCopy;
+  v77 = codingCopy;
+  countryCopy = country;
+  sortDateCopy = sortDate;
+  metadataCopy = metadata;
+  deviceCopy = device;
+  localeCopy = locale;
+  identifierCopy = identifier;
+  dateCopy = date;
+  noteCopy = note;
+  typeCopy = type;
   v48 = _Block_copy(aBlock);
-  v78.receiver = a1;
+  v78.receiver = self;
   v78.super_class = &OBJC_METACLASS___HKCoverageRecord;
-  v69 = objc_msgSendSuper2(&v78, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, v47, v46, v68, v45, v44, v43, a9, v42, v41, v40, v39, a14, v48);
+  v69 = objc_msgSendSuper2(&v78, sel__newMedicalRecordWithType_note_enteredInError_modifiedDate_originIdentifier_locale_extractionVersion_device_metadata_sortDate_country_state_config_, typeCopy, noteCopy, errorCopy, dateCopy, identifierCopy, localeCopy, version, deviceCopy, metadataCopy, sortDateCopy, countryCopy, state, v48);
 
   return v69;
 }
@@ -498,106 +498,106 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = HKCoverageRecord;
-  v4 = a3;
-  [(HKMedicalRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_statusCoding forKey:{@"StatusCoding", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_coverageTypeCodingCollection forKey:@"CoverageTypeCodingCollection"];
-  [v4 encodeObject:self->_subscriber forKey:@"Subscriber"];
-  [v4 encodeObject:self->_subscriberId forKey:@"SubscriberId"];
-  [v4 encodeObject:self->_beneficiary forKey:@"Beneficiary"];
-  [v4 encodeObject:self->_policyHolder forKey:@"PolicyHolder"];
-  [v4 encodeObject:self->_payor forKey:@"Payor"];
-  [v4 encodeObject:self->_relationshipCodingCollection forKey:@"RelationshipCodingCollection"];
-  [v4 encodeObject:self->_classification forKey:@"Classification"];
-  [v4 encodeObject:self->_network forKey:@"Network"];
-  [v4 encodeObject:self->_periodStartDate forKey:@"PeriodStartDate"];
-  [v4 encodeObject:self->_periodEndDate forKey:@"PeriodEndDate"];
-  [v4 encodeObject:self->_subscriberIdentifier forKey:@"SubscriberIdentifier"];
-  [v4 encodeObject:self->_beneficiaryIdentifier forKey:@"BeneficiaryIdentifier"];
-  [v4 encodeObject:self->_status forKey:@"Status"];
-  [v4 encodeObject:self->_coverageType forKey:@"CoverageType"];
-  [v4 encodeObject:self->_relationship forKey:@"Relationship"];
+  coderCopy = coder;
+  [(HKMedicalRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_statusCoding forKey:{@"StatusCoding", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_coverageTypeCodingCollection forKey:@"CoverageTypeCodingCollection"];
+  [coderCopy encodeObject:self->_subscriber forKey:@"Subscriber"];
+  [coderCopy encodeObject:self->_subscriberId forKey:@"SubscriberId"];
+  [coderCopy encodeObject:self->_beneficiary forKey:@"Beneficiary"];
+  [coderCopy encodeObject:self->_policyHolder forKey:@"PolicyHolder"];
+  [coderCopy encodeObject:self->_payor forKey:@"Payor"];
+  [coderCopy encodeObject:self->_relationshipCodingCollection forKey:@"RelationshipCodingCollection"];
+  [coderCopy encodeObject:self->_classification forKey:@"Classification"];
+  [coderCopy encodeObject:self->_network forKey:@"Network"];
+  [coderCopy encodeObject:self->_periodStartDate forKey:@"PeriodStartDate"];
+  [coderCopy encodeObject:self->_periodEndDate forKey:@"PeriodEndDate"];
+  [coderCopy encodeObject:self->_subscriberIdentifier forKey:@"SubscriberIdentifier"];
+  [coderCopy encodeObject:self->_beneficiaryIdentifier forKey:@"BeneficiaryIdentifier"];
+  [coderCopy encodeObject:self->_status forKey:@"Status"];
+  [coderCopy encodeObject:self->_coverageType forKey:@"CoverageType"];
+  [coderCopy encodeObject:self->_relationship forKey:@"Relationship"];
 }
 
-- (HKCoverageRecord)initWithCoder:(id)a3
+- (HKCoverageRecord)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v43.receiver = self;
   v43.super_class = HKCoverageRecord;
-  v5 = [(HKMedicalRecord *)&v43 initWithCoder:v4];
+  v5 = [(HKMedicalRecord *)&v43 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"StatusCoding"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"StatusCoding"];
     statusCoding = v5->_statusCoding;
     v5->_statusCoding = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CoverageTypeCodingCollection"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CoverageTypeCodingCollection"];
     coverageTypeCodingCollection = v5->_coverageTypeCodingCollection;
     v5->_coverageTypeCodingCollection = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Subscriber"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Subscriber"];
     subscriber = v5->_subscriber;
     v5->_subscriber = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SubscriberId"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SubscriberId"];
     subscriberId = v5->_subscriberId;
     v5->_subscriberId = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Beneficiary"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Beneficiary"];
     beneficiary = v5->_beneficiary;
     v5->_beneficiary = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PolicyHolder"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PolicyHolder"];
     policyHolder = v5->_policyHolder;
     v5->_policyHolder = v16;
 
     v18 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"Payor"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"Payor"];
     payor = v5->_payor;
     v5->_payor = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"RelationshipCodingCollection"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"RelationshipCodingCollection"];
     relationshipCodingCollection = v5->_relationshipCodingCollection;
     v5->_relationshipCodingCollection = v21;
 
     v23 = [MEMORY[0x1E695DFD8] hk_typesForArrayOf:objc_opt_class()];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"Classification"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"Classification"];
     classification = v5->_classification;
     v5->_classification = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Network"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Network"];
     network = v5->_network;
     v5->_network = v26;
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PeriodStartDate"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PeriodStartDate"];
     periodStartDate = v5->_periodStartDate;
     v5->_periodStartDate = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PeriodEndDate"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PeriodEndDate"];
     periodEndDate = v5->_periodEndDate;
     v5->_periodEndDate = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"SubscriberIdentifier"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"SubscriberIdentifier"];
     subscriberIdentifier = v5->_subscriberIdentifier;
     v5->_subscriberIdentifier = v32;
 
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BeneficiaryIdentifier"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BeneficiaryIdentifier"];
     beneficiaryIdentifier = v5->_beneficiaryIdentifier;
     v5->_beneficiaryIdentifier = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Status"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Status"];
     status = v5->_status;
     v5->_status = v36;
 
-    v38 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CoverageType"];
+    v38 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CoverageType"];
     coverageType = v5->_coverageType;
     v5->_coverageType = v38;
 
-    v40 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Relationship"];
+    v40 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Relationship"];
     relationship = v5->_relationship;
     v5->_relationship = v40;
   }
@@ -605,13 +605,13 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
   return v5;
 }
 
-- (BOOL)isEquivalent:(id)a3
+- (BOOL)isEquivalent:(id)equivalent
 {
-  v4 = a3;
+  equivalentCopy = equivalent;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equivalentCopy;
     v112.receiver = self;
     v112.super_class = HKCoverageRecord;
     if (![(HKMedicalRecord *)&v112 isEquivalent:v5])
@@ -619,25 +619,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       goto LABEL_89;
     }
 
-    v6 = [(HKCoverageRecord *)self statusCoding];
-    v7 = [v5 statusCoding];
-    v8 = v7;
-    if (v6 == v7)
+    statusCoding = [(HKCoverageRecord *)self statusCoding];
+    statusCoding2 = [v5 statusCoding];
+    v8 = statusCoding2;
+    if (statusCoding == statusCoding2)
     {
     }
 
     else
     {
-      v9 = [v5 statusCoding];
-      if (!v9)
+      statusCoding3 = [v5 statusCoding];
+      if (!statusCoding3)
       {
         goto LABEL_88;
       }
 
-      v10 = v9;
-      v11 = [(HKCoverageRecord *)self statusCoding];
-      v12 = [v5 statusCoding];
-      v13 = [v11 isEqual:v12];
+      v10 = statusCoding3;
+      statusCoding4 = [(HKCoverageRecord *)self statusCoding];
+      statusCoding5 = [v5 statusCoding];
+      v13 = [statusCoding4 isEqual:statusCoding5];
 
       if (!v13)
       {
@@ -645,25 +645,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self coverageTypeCodingCollection];
-    v15 = [v5 coverageTypeCodingCollection];
-    v8 = v15;
-    if (v6 == v15)
+    statusCoding = [(HKCoverageRecord *)self coverageTypeCodingCollection];
+    coverageTypeCodingCollection = [v5 coverageTypeCodingCollection];
+    v8 = coverageTypeCodingCollection;
+    if (statusCoding == coverageTypeCodingCollection)
     {
     }
 
     else
     {
-      v16 = [v5 coverageTypeCodingCollection];
-      if (!v16)
+      coverageTypeCodingCollection2 = [v5 coverageTypeCodingCollection];
+      if (!coverageTypeCodingCollection2)
       {
         goto LABEL_88;
       }
 
-      v17 = v16;
-      v18 = [(HKCoverageRecord *)self coverageTypeCodingCollection];
-      v19 = [v5 coverageTypeCodingCollection];
-      v20 = [v18 isEqual:v19];
+      v17 = coverageTypeCodingCollection2;
+      coverageTypeCodingCollection3 = [(HKCoverageRecord *)self coverageTypeCodingCollection];
+      coverageTypeCodingCollection4 = [v5 coverageTypeCodingCollection];
+      v20 = [coverageTypeCodingCollection3 isEqual:coverageTypeCodingCollection4];
 
       if (!v20)
       {
@@ -671,25 +671,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self subscriber];
-    v21 = [v5 subscriber];
-    v8 = v21;
-    if (v6 == v21)
+    statusCoding = [(HKCoverageRecord *)self subscriber];
+    subscriber = [v5 subscriber];
+    v8 = subscriber;
+    if (statusCoding == subscriber)
     {
     }
 
     else
     {
-      v22 = [v5 subscriber];
-      if (!v22)
+      subscriber2 = [v5 subscriber];
+      if (!subscriber2)
       {
         goto LABEL_88;
       }
 
-      v23 = v22;
-      v24 = [(HKCoverageRecord *)self subscriber];
-      v25 = [v5 subscriber];
-      v26 = [v24 isEqualToString:v25];
+      v23 = subscriber2;
+      subscriber3 = [(HKCoverageRecord *)self subscriber];
+      subscriber4 = [v5 subscriber];
+      v26 = [subscriber3 isEqualToString:subscriber4];
 
       if (!v26)
       {
@@ -697,25 +697,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self subscriberId];
-    v27 = [v5 subscriberId];
-    v8 = v27;
-    if (v6 == v27)
+    statusCoding = [(HKCoverageRecord *)self subscriberId];
+    subscriberId = [v5 subscriberId];
+    v8 = subscriberId;
+    if (statusCoding == subscriberId)
     {
     }
 
     else
     {
-      v28 = [v5 subscriberId];
-      if (!v28)
+      subscriberId2 = [v5 subscriberId];
+      if (!subscriberId2)
       {
         goto LABEL_88;
       }
 
-      v29 = v28;
-      v30 = [(HKCoverageRecord *)self subscriberId];
-      v31 = [v5 subscriberId];
-      v32 = [v30 isEqualToString:v31];
+      v29 = subscriberId2;
+      subscriberId3 = [(HKCoverageRecord *)self subscriberId];
+      subscriberId4 = [v5 subscriberId];
+      v32 = [subscriberId3 isEqualToString:subscriberId4];
 
       if (!v32)
       {
@@ -723,25 +723,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self beneficiary];
-    v33 = [v5 beneficiary];
-    v8 = v33;
-    if (v6 == v33)
+    statusCoding = [(HKCoverageRecord *)self beneficiary];
+    beneficiary = [v5 beneficiary];
+    v8 = beneficiary;
+    if (statusCoding == beneficiary)
     {
     }
 
     else
     {
-      v34 = [v5 beneficiary];
-      if (!v34)
+      beneficiary2 = [v5 beneficiary];
+      if (!beneficiary2)
       {
         goto LABEL_88;
       }
 
-      v35 = v34;
-      v36 = [(HKCoverageRecord *)self beneficiary];
-      v37 = [v5 beneficiary];
-      v38 = [v36 isEqualToString:v37];
+      v35 = beneficiary2;
+      beneficiary3 = [(HKCoverageRecord *)self beneficiary];
+      beneficiary4 = [v5 beneficiary];
+      v38 = [beneficiary3 isEqualToString:beneficiary4];
 
       if (!v38)
       {
@@ -749,25 +749,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self policyHolder];
-    v39 = [v5 policyHolder];
-    v8 = v39;
-    if (v6 == v39)
+    statusCoding = [(HKCoverageRecord *)self policyHolder];
+    policyHolder = [v5 policyHolder];
+    v8 = policyHolder;
+    if (statusCoding == policyHolder)
     {
     }
 
     else
     {
-      v40 = [v5 policyHolder];
-      if (!v40)
+      policyHolder2 = [v5 policyHolder];
+      if (!policyHolder2)
       {
         goto LABEL_88;
       }
 
-      v41 = v40;
-      v42 = [(HKCoverageRecord *)self policyHolder];
-      v43 = [v5 policyHolder];
-      v44 = [v42 isEqualToString:v43];
+      v41 = policyHolder2;
+      policyHolder3 = [(HKCoverageRecord *)self policyHolder];
+      policyHolder4 = [v5 policyHolder];
+      v44 = [policyHolder3 isEqualToString:policyHolder4];
 
       if (!v44)
       {
@@ -775,25 +775,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self payor];
-    v45 = [v5 payor];
-    v8 = v45;
-    if (v6 == v45)
+    statusCoding = [(HKCoverageRecord *)self payor];
+    payor = [v5 payor];
+    v8 = payor;
+    if (statusCoding == payor)
     {
     }
 
     else
     {
-      v46 = [v5 payor];
-      if (!v46)
+      payor2 = [v5 payor];
+      if (!payor2)
       {
         goto LABEL_88;
       }
 
-      v47 = v46;
-      v48 = [(HKCoverageRecord *)self payor];
-      v49 = [v5 payor];
-      v50 = [v48 isEqualToArray:v49];
+      v47 = payor2;
+      payor3 = [(HKCoverageRecord *)self payor];
+      payor4 = [v5 payor];
+      v50 = [payor3 isEqualToArray:payor4];
 
       if (!v50)
       {
@@ -801,25 +801,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self relationshipCodingCollection];
-    v51 = [v5 relationshipCodingCollection];
-    v8 = v51;
-    if (v6 == v51)
+    statusCoding = [(HKCoverageRecord *)self relationshipCodingCollection];
+    relationshipCodingCollection = [v5 relationshipCodingCollection];
+    v8 = relationshipCodingCollection;
+    if (statusCoding == relationshipCodingCollection)
     {
     }
 
     else
     {
-      v52 = [v5 relationshipCodingCollection];
-      if (!v52)
+      relationshipCodingCollection2 = [v5 relationshipCodingCollection];
+      if (!relationshipCodingCollection2)
       {
         goto LABEL_88;
       }
 
-      v53 = v52;
-      v54 = [(HKCoverageRecord *)self relationshipCodingCollection];
-      v55 = [v5 relationshipCodingCollection];
-      v56 = [v54 isEqual:v55];
+      v53 = relationshipCodingCollection2;
+      relationshipCodingCollection3 = [(HKCoverageRecord *)self relationshipCodingCollection];
+      relationshipCodingCollection4 = [v5 relationshipCodingCollection];
+      v56 = [relationshipCodingCollection3 isEqual:relationshipCodingCollection4];
 
       if (!v56)
       {
@@ -827,25 +827,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self classification];
-    v57 = [v5 classification];
-    v8 = v57;
-    if (v6 == v57)
+    statusCoding = [(HKCoverageRecord *)self classification];
+    classification = [v5 classification];
+    v8 = classification;
+    if (statusCoding == classification)
     {
     }
 
     else
     {
-      v58 = [v5 classification];
-      if (!v58)
+      classification2 = [v5 classification];
+      if (!classification2)
       {
         goto LABEL_88;
       }
 
-      v59 = v58;
-      v60 = [(HKCoverageRecord *)self classification];
-      v61 = [v5 classification];
-      v62 = [v60 isEqualToArray:v61];
+      v59 = classification2;
+      classification3 = [(HKCoverageRecord *)self classification];
+      classification4 = [v5 classification];
+      v62 = [classification3 isEqualToArray:classification4];
 
       if (!v62)
       {
@@ -853,25 +853,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self network];
-    v63 = [v5 network];
-    v8 = v63;
-    if (v6 == v63)
+    statusCoding = [(HKCoverageRecord *)self network];
+    network = [v5 network];
+    v8 = network;
+    if (statusCoding == network)
     {
     }
 
     else
     {
-      v64 = [v5 network];
-      if (!v64)
+      network2 = [v5 network];
+      if (!network2)
       {
         goto LABEL_88;
       }
 
-      v65 = v64;
-      v66 = [(HKCoverageRecord *)self network];
-      v67 = [v5 network];
-      v68 = [v66 isEqualToString:v67];
+      v65 = network2;
+      network3 = [(HKCoverageRecord *)self network];
+      network4 = [v5 network];
+      v68 = [network3 isEqualToString:network4];
 
       if (!v68)
       {
@@ -879,25 +879,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self periodStartDate];
-    v69 = [v5 periodStartDate];
-    v8 = v69;
-    if (v6 == v69)
+    statusCoding = [(HKCoverageRecord *)self periodStartDate];
+    periodStartDate = [v5 periodStartDate];
+    v8 = periodStartDate;
+    if (statusCoding == periodStartDate)
     {
     }
 
     else
     {
-      v70 = [v5 periodStartDate];
-      if (!v70)
+      periodStartDate2 = [v5 periodStartDate];
+      if (!periodStartDate2)
       {
         goto LABEL_88;
       }
 
-      v71 = v70;
-      v72 = [(HKCoverageRecord *)self periodStartDate];
-      v73 = [v5 periodStartDate];
-      v74 = [v72 isEqual:v73];
+      v71 = periodStartDate2;
+      periodStartDate3 = [(HKCoverageRecord *)self periodStartDate];
+      periodStartDate4 = [v5 periodStartDate];
+      v74 = [periodStartDate3 isEqual:periodStartDate4];
 
       if (!v74)
       {
@@ -905,25 +905,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self periodEndDate];
-    v75 = [v5 periodEndDate];
-    v8 = v75;
-    if (v6 == v75)
+    statusCoding = [(HKCoverageRecord *)self periodEndDate];
+    periodEndDate = [v5 periodEndDate];
+    v8 = periodEndDate;
+    if (statusCoding == periodEndDate)
     {
     }
 
     else
     {
-      v76 = [v5 periodEndDate];
-      if (!v76)
+      periodEndDate2 = [v5 periodEndDate];
+      if (!periodEndDate2)
       {
         goto LABEL_88;
       }
 
-      v77 = v76;
-      v78 = [(HKCoverageRecord *)self periodEndDate];
-      v79 = [v5 periodEndDate];
-      v80 = [v78 isEqual:v79];
+      v77 = periodEndDate2;
+      periodEndDate3 = [(HKCoverageRecord *)self periodEndDate];
+      periodEndDate4 = [v5 periodEndDate];
+      v80 = [periodEndDate3 isEqual:periodEndDate4];
 
       if (!v80)
       {
@@ -931,25 +931,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self subscriberIdentifier];
-    v81 = [v5 subscriberIdentifier];
-    v8 = v81;
-    if (v6 == v81)
+    statusCoding = [(HKCoverageRecord *)self subscriberIdentifier];
+    subscriberIdentifier = [v5 subscriberIdentifier];
+    v8 = subscriberIdentifier;
+    if (statusCoding == subscriberIdentifier)
     {
     }
 
     else
     {
-      v82 = [v5 subscriberIdentifier];
-      if (!v82)
+      subscriberIdentifier2 = [v5 subscriberIdentifier];
+      if (!subscriberIdentifier2)
       {
         goto LABEL_88;
       }
 
-      v83 = v82;
-      v84 = [(HKCoverageRecord *)self subscriberIdentifier];
-      v85 = [v5 subscriberIdentifier];
-      v86 = [v84 isEqual:v85];
+      v83 = subscriberIdentifier2;
+      subscriberIdentifier3 = [(HKCoverageRecord *)self subscriberIdentifier];
+      subscriberIdentifier4 = [v5 subscriberIdentifier];
+      v86 = [subscriberIdentifier3 isEqual:subscriberIdentifier4];
 
       if (!v86)
       {
@@ -957,25 +957,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self beneficiaryIdentifier];
-    v87 = [v5 beneficiaryIdentifier];
-    v8 = v87;
-    if (v6 == v87)
+    statusCoding = [(HKCoverageRecord *)self beneficiaryIdentifier];
+    beneficiaryIdentifier = [v5 beneficiaryIdentifier];
+    v8 = beneficiaryIdentifier;
+    if (statusCoding == beneficiaryIdentifier)
     {
     }
 
     else
     {
-      v88 = [v5 beneficiaryIdentifier];
-      if (!v88)
+      beneficiaryIdentifier2 = [v5 beneficiaryIdentifier];
+      if (!beneficiaryIdentifier2)
       {
         goto LABEL_88;
       }
 
-      v89 = v88;
-      v90 = [(HKCoverageRecord *)self beneficiaryIdentifier];
-      v91 = [v5 beneficiaryIdentifier];
-      v92 = [v90 isEqual:v91];
+      v89 = beneficiaryIdentifier2;
+      beneficiaryIdentifier3 = [(HKCoverageRecord *)self beneficiaryIdentifier];
+      beneficiaryIdentifier4 = [v5 beneficiaryIdentifier];
+      v92 = [beneficiaryIdentifier3 isEqual:beneficiaryIdentifier4];
 
       if (!v92)
       {
@@ -983,25 +983,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self status];
-    v93 = [v5 status];
-    v8 = v93;
-    if (v6 == v93)
+    statusCoding = [(HKCoverageRecord *)self status];
+    status = [v5 status];
+    v8 = status;
+    if (statusCoding == status)
     {
     }
 
     else
     {
-      v94 = [v5 status];
-      if (!v94)
+      status2 = [v5 status];
+      if (!status2)
       {
         goto LABEL_88;
       }
 
-      v95 = v94;
-      v96 = [(HKCoverageRecord *)self status];
-      v97 = [v5 status];
-      v98 = [v96 isEqual:v97];
+      v95 = status2;
+      status3 = [(HKCoverageRecord *)self status];
+      status4 = [v5 status];
+      v98 = [status3 isEqual:status4];
 
       if (!v98)
       {
@@ -1009,25 +1009,25 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self coverageType];
-    v99 = [v5 coverageType];
-    v8 = v99;
-    if (v6 == v99)
+    statusCoding = [(HKCoverageRecord *)self coverageType];
+    coverageType = [v5 coverageType];
+    v8 = coverageType;
+    if (statusCoding == coverageType)
     {
     }
 
     else
     {
-      v100 = [v5 coverageType];
-      if (!v100)
+      coverageType2 = [v5 coverageType];
+      if (!coverageType2)
       {
         goto LABEL_88;
       }
 
-      v101 = v100;
-      v102 = [(HKCoverageRecord *)self coverageType];
-      v103 = [v5 coverageType];
-      v104 = [v102 isEqual:v103];
+      v101 = coverageType2;
+      coverageType3 = [(HKCoverageRecord *)self coverageType];
+      coverageType4 = [v5 coverageType];
+      v104 = [coverageType3 isEqual:coverageType4];
 
       if (!v104)
       {
@@ -1035,10 +1035,10 @@ void __390__HKCoverageRecord__newCoverageRecordWithType_note_enteredInError_modi
       }
     }
 
-    v6 = [(HKCoverageRecord *)self relationship];
-    v105 = [v5 relationship];
-    v8 = v105;
-    if (v6 == v105)
+    statusCoding = [(HKCoverageRecord *)self relationship];
+    relationship = [v5 relationship];
+    v8 = relationship;
+    if (statusCoding == relationship)
     {
 
 LABEL_93:
@@ -1046,13 +1046,13 @@ LABEL_93:
       goto LABEL_90;
     }
 
-    v106 = [v5 relationship];
-    if (v106)
+    relationship2 = [v5 relationship];
+    if (relationship2)
     {
-      v107 = v106;
-      v108 = [(HKCoverageRecord *)self relationship];
-      v109 = [v5 relationship];
-      v110 = [v108 isEqual:v109];
+      v107 = relationship2;
+      relationship3 = [(HKCoverageRecord *)self relationship];
+      relationship4 = [v5 relationship];
+      v110 = [relationship3 isEqual:relationship4];
 
       if (v110)
       {
@@ -1079,95 +1079,95 @@ LABEL_91:
 
 - (id)statusCodingCollection
 {
-  v2 = [(HKCoverageRecord *)self statusCoding];
-  v3 = [HKMedicalCodingCollection collectionWithCoding:v2];
+  statusCoding = [(HKCoverageRecord *)self statusCoding];
+  v3 = [HKMedicalCodingCollection collectionWithCoding:statusCoding];
 
   return v3;
 }
 
-- (void)_setStatusCoding:(id)a3
+- (void)_setStatusCoding:(id)coding
 {
-  v4 = [a3 copy];
+  v4 = [coding copy];
   statusCoding = self->_statusCoding;
   self->_statusCoding = v4;
 
-  v8 = [(HKCoverageRecord *)self statusCodingCollection];
-  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v8];
+  statusCodingCollection = [(HKCoverageRecord *)self statusCodingCollection];
+  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:statusCodingCollection];
   status = self->_status;
   self->_status = v6;
 }
 
-- (void)_setCoverageTypeCodingCollection:(id)a3
+- (void)_setCoverageTypeCodingCollection:(id)collection
 {
-  v4 = [a3 copy];
+  v4 = [collection copy];
   coverageTypeCodingCollection = self->_coverageTypeCodingCollection;
   self->_coverageTypeCodingCollection = v4;
 
-  v8 = [(HKCoverageRecord *)self coverageTypeCodingCollection];
-  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v8];
+  coverageTypeCodingCollection = [(HKCoverageRecord *)self coverageTypeCodingCollection];
+  v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:coverageTypeCodingCollection];
   coverageType = self->_coverageType;
   self->_coverageType = v6;
 }
 
-- (void)_setSubscriber:(id)a3
+- (void)_setSubscriber:(id)subscriber
 {
-  v4 = [a3 copy];
+  v4 = [subscriber copy];
   subscriber = self->_subscriber;
   self->_subscriber = v4;
 
   MEMORY[0x1EEE66BB8](v4, subscriber);
 }
 
-- (void)_setSubscriberId:(id)a3
+- (void)_setSubscriberId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   subscriberId = self->_subscriberId;
   self->_subscriberId = v4;
 
   MEMORY[0x1EEE66BB8](v4, subscriberId);
 }
 
-- (void)_setBeneficiary:(id)a3
+- (void)_setBeneficiary:(id)beneficiary
 {
-  v4 = [a3 copy];
+  v4 = [beneficiary copy];
   beneficiary = self->_beneficiary;
   self->_beneficiary = v4;
 
   MEMORY[0x1EEE66BB8](v4, beneficiary);
 }
 
-- (void)_setPolicyHolder:(id)a3
+- (void)_setPolicyHolder:(id)holder
 {
-  v4 = [a3 copy];
+  v4 = [holder copy];
   policyHolder = self->_policyHolder;
   self->_policyHolder = v4;
 
   MEMORY[0x1EEE66BB8](v4, policyHolder);
 }
 
-- (void)_setPayor:(id)a3
+- (void)_setPayor:(id)payor
 {
-  v4 = [a3 copy];
+  v4 = [payor copy];
   payor = self->_payor;
   self->_payor = v4;
 
   MEMORY[0x1EEE66BB8](v4, payor);
 }
 
-- (void)_setRelationshipCodingCollection:(id)a3
+- (void)_setRelationshipCodingCollection:(id)collection
 {
-  v4 = [a3 copy];
+  v4 = [collection copy];
   relationshipCodingCollection = self->_relationshipCodingCollection;
   self->_relationshipCodingCollection = v4;
 
   if (self->_relationshipCodingCollection)
   {
-    v9 = [(HKCoverageRecord *)self relationshipCodingCollection];
-    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v9];
+    relationshipCodingCollection = [(HKCoverageRecord *)self relationshipCodingCollection];
+    v6 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:relationshipCodingCollection];
     relationship = self->_relationship;
     self->_relationship = v6;
 
-    v8 = v9;
+    v8 = relationshipCodingCollection;
   }
 
   else
@@ -1177,54 +1177,54 @@ LABEL_91:
   }
 }
 
-- (void)_setClassification:(id)a3
+- (void)_setClassification:(id)classification
 {
-  v4 = [a3 copy];
+  v4 = [classification copy];
   classification = self->_classification;
   self->_classification = v4;
 
   MEMORY[0x1EEE66BB8](v4, classification);
 }
 
-- (void)_setNetwork:(id)a3
+- (void)_setNetwork:(id)network
 {
-  v4 = [a3 copy];
+  v4 = [network copy];
   network = self->_network;
   self->_network = v4;
 
   MEMORY[0x1EEE66BB8](v4, network);
 }
 
-- (void)_setPeriodStartDate:(id)a3
+- (void)_setPeriodStartDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   periodStartDate = self->_periodStartDate;
   self->_periodStartDate = v4;
 
   MEMORY[0x1EEE66BB8](v4, periodStartDate);
 }
 
-- (void)_setPeriodEndDate:(id)a3
+- (void)_setPeriodEndDate:(id)date
 {
-  v4 = [a3 copy];
+  v4 = [date copy];
   periodEndDate = self->_periodEndDate;
   self->_periodEndDate = v4;
 
   MEMORY[0x1EEE66BB8](v4, periodEndDate);
 }
 
-- (void)_setSubscriberIdentifier:(id)a3
+- (void)_setSubscriberIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   subscriberIdentifier = self->_subscriberIdentifier;
   self->_subscriberIdentifier = v4;
 
   MEMORY[0x1EEE66BB8](v4, subscriberIdentifier);
 }
 
-- (void)_setBeneficiaryIdentifier:(id)a3
+- (void)_setBeneficiaryIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   beneficiaryIdentifier = self->_beneficiaryIdentifier;
   self->_beneficiaryIdentifier = v4;
 
@@ -1241,17 +1241,17 @@ LABEL_91:
 
   else
   {
-    v4 = [(HKCoverageRecord *)self statusCodingCollection];
-    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+    statusCodingCollection = [(HKCoverageRecord *)self statusCodingCollection];
+    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:statusCodingCollection];
   }
 
   return v3;
 }
 
-- (void)_setStatus:(id)a3
+- (void)_setStatus:(id)status
 {
-  v4 = a3;
-  if (!v4)
+  statusCopy = status;
+  if (!statusCopy)
   {
     _HKInitializeLogging();
     v5 = HKLogHealthRecords;
@@ -1261,7 +1261,7 @@ LABEL_91:
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [statusCopy copy];
   status = self->_status;
   self->_status = v6;
 }
@@ -1276,17 +1276,17 @@ LABEL_91:
 
   else
   {
-    v4 = [(HKCoverageRecord *)self coverageTypeCodingCollection];
-    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+    coverageTypeCodingCollection = [(HKCoverageRecord *)self coverageTypeCodingCollection];
+    v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:coverageTypeCodingCollection];
   }
 
   return v3;
 }
 
-- (void)_setCoverageType:(id)a3
+- (void)_setCoverageType:(id)type
 {
-  v4 = a3;
-  if (!v4)
+  typeCopy = type;
+  if (!typeCopy)
   {
     _HKInitializeLogging();
     v5 = HKLogHealthRecords;
@@ -1296,7 +1296,7 @@ LABEL_91:
     }
   }
 
-  v6 = [v4 copy];
+  v6 = [typeCopy copy];
   coverageType = self->_coverageType;
   self->_coverageType = v6;
 }
@@ -1313,8 +1313,8 @@ LABEL_91:
 
     else
     {
-      v4 = [(HKCoverageRecord *)self relationshipCodingCollection];
-      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:v4];
+      relationshipCodingCollection = [(HKCoverageRecord *)self relationshipCodingCollection];
+      v3 = [HKConceptSynthesizer synthesizeInMemoryConceptForCodingCollection:relationshipCodingCollection];
     }
   }
 
@@ -1326,20 +1326,20 @@ LABEL_91:
   return v3;
 }
 
-- (void)_setRelationship:(id)a3
+- (void)_setRelationship:(id)relationship
 {
-  v4 = [a3 copy];
+  v4 = [relationship copy];
   relationship = self->_relationship;
   self->_relationship = v4;
 
   MEMORY[0x1EEE66BB8](v4, relationship);
 }
 
-- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)a3
+- (id)_validateWithConfiguration:(HKObjectValidationConfiguration)configuration
 {
   v13.receiver = self;
   v13.super_class = HKCoverageRecord;
-  v5 = [(HKMedicalRecord *)&v13 _validateWithConfiguration:a3.var0, a3.var1];
+  v5 = [(HKMedicalRecord *)&v13 _validateWithConfiguration:configuration.var0, configuration.var1];
   v6 = v5;
   if (v5)
   {

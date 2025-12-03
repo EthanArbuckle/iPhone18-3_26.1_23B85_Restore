@@ -1,35 +1,35 @@
 @interface NUImageTransform3D
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToGeometryTransform3D:(id)a3;
-- (BOOL)isInverseOf:(id)a3;
-- (CGPoint)transformPoint:(CGPoint)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToGeometryTransform3D:(id)d;
+- (BOOL)isInverseOf:(id)of;
+- (CGPoint)transformPoint:(CGPoint)point;
 - (NUImageTransform3D)init;
-- (NUImageTransform3D)initWithAffineTransform:(CGAffineTransform *)a3;
-- (_OWORD)initWithTransform3D:(float64x2_t *)a3;
-- (_OWORD)transformMatrix:(_OWORD *)a3@<X8>;
+- (NUImageTransform3D)initWithAffineTransform:(CGAffineTransform *)transform;
+- (_OWORD)initWithTransform3D:(float64x2_t *)d;
+- (_OWORD)transformMatrix:(_OWORD *)matrix@<X8>;
 - (id)inverseTransform;
-- (id)transformByRotateX:(double)a3 y:(double)a4 z:(double)a5;
-- (id)transformByRotateZ:(double)a3;
-- (id)transformByScaleX:(double)a3 scaleY:(double)a4;
-- (id)transformByTranslateX:(double)a3 translateY:(double)a4;
+- (id)transformByRotateX:(double)x y:(double)y z:(double)z;
+- (id)transformByRotateZ:(double)z;
+- (id)transformByScaleX:(double)x scaleY:(double)y;
+- (id)transformByTranslateX:(double)x translateY:(double)y;
 - (unint64_t)hash;
-- (void)nu_updateDigest:(id)a3;
+- (void)nu_updateDigest:(id)digest;
 @end
 
 @implementation NUImageTransform3D
 
-- (void)nu_updateDigest:(id)a3
+- (void)nu_updateDigest:(id)digest
 {
-  v4 = a3;
-  [v4 addCString:"NUImageTransform3D"];
-  [v4 addBytes:&self[1] length:128];
+  digestCopy = digest;
+  [digestCopy addCString:"NUImageTransform3D"];
+  [digestCopy addBytes:&self[1] length:128];
 }
 
-- (BOOL)isEqualToGeometryTransform3D:(id)a3
+- (BOOL)isEqualToGeometryTransform3D:(id)d
 {
   v44 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4)
+  dCopy = d;
+  if (!dCopy)
   {
     v7 = NUAssertLogger_21429();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -50,8 +50,8 @@
         v14 = dispatch_get_specific(NUCurrentlyExecutingJobNameKey);
         v15 = MEMORY[0x1E696AF00];
         v16 = v14;
-        v17 = [v15 callStackSymbols];
-        v18 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v15 callStackSymbols];
+        v18 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v41 = v14;
         v42 = 2114;
@@ -62,8 +62,8 @@
 
     else if (v11)
     {
-      v12 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v13 = [v12 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v13 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v41 = v13;
       _os_log_error_impl(&dword_1C0184000, v10, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -79,24 +79,24 @@
   v37 = *&self[1]._anon_10[64];
   v33 = *&self[1]._anon_10[48];
   v36 = *&self[1]._anon_10[96];
-  v31 = v4[11];
+  v31 = dCopy[11];
   v32 = *&self[1]._anon_10[80];
-  v26 = v4[12];
-  v27 = v4[10];
-  v29 = v4[15];
-  v30 = v4[13];
-  v28 = v4[17];
-  v24 = v4[16];
-  v25 = v4[14];
+  v26 = dCopy[12];
+  v27 = dCopy[10];
+  v29 = dCopy[15];
+  v30 = dCopy[13];
+  v28 = dCopy[17];
+  v24 = dCopy[16];
+  v25 = dCopy[14];
 
   v5 = vandq_s8(vandq_s8(vandq_s8(vceqq_f64(v34, v26), vceqq_f64(v35, v27)), vandq_s8(vceqq_f64(v33, v25), vceqq_f64(v32, v24))), vandq_s8(vandq_s8(vceqq_f64(v38, v30), vceqq_f64(v39, v31)), vandq_s8(vceqq_f64(v37, v29), vceqq_f64(v36, v28))));
   return vandq_s8(v5, vdupq_laneq_s64(v5, 1)).u64[0] >> 63;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -104,7 +104,7 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUImageTransform3D *)self isEqualToGeometryTransform3D:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(NUImageTransform3D *)self isEqualToGeometryTransform3D:equalCopy];
   }
 
   return v5;
@@ -120,12 +120,12 @@
   return v5;
 }
 
-- (id)transformByRotateX:(double)a3 y:(double)a4 z:(double)a5
+- (id)transformByRotateX:(double)x y:(double)y z:(double)z
 {
   v5 = self + 1;
-  v6 = a4 * 3.14159265 / 180.0;
-  v7 = a5 * 3.14159265 / 180.0;
-  v9 = __sincos_stret(a3 * 3.14159265 / 180.0 * 0.5);
+  v6 = y * 3.14159265 / 180.0;
+  v7 = z * 3.14159265 / 180.0;
+  v9 = __sincos_stret(x * 3.14159265 / 180.0 * 0.5);
   v8.f64[0] = v9.__sinval;
   *&v52 = *&vmulq_f64(v8, 0);
   vars0 = vmulq_n_f64(xmmword_1C03C2770, v9.__sinval);
@@ -222,7 +222,7 @@
   return v47;
 }
 
-- (id)transformByRotateZ:(double)a3
+- (id)transformByRotateZ:(double)z
 {
   v3 = self + 1;
   v21 = *(MEMORY[0x1E69E9B08] + 48);
@@ -231,7 +231,7 @@
   v20 = *(MEMORY[0x1E69E9B08] + 64);
   v17 = *(MEMORY[0x1E69E9B08] + 96);
   vars0 = *(MEMORY[0x1E69E9B08] + 80);
-  v5 = __sincos_stret(a3 * 3.14159265 / 180.0);
+  v5 = __sincos_stret(z * 3.14159265 / 180.0);
   v4.f64[0] = v5.__cosval;
   v6 = 0;
   v7 = *&v3->_anon_10[64];
@@ -280,7 +280,7 @@
   return v15;
 }
 
-- (id)transformByTranslateX:(double)a3 translateY:(double)a4
+- (id)transformByTranslateX:(double)x translateY:(double)y
 {
   v4 = 0;
   v5 = *MEMORY[0x1E69E9B08];
@@ -289,10 +289,10 @@
   v12 = *(MEMORY[0x1E69E9B08] + 48);
   v8 = *(MEMORY[0x1E69E9B08] + 64);
   v7 = *(MEMORY[0x1E69E9B08] + 80);
-  v9.f64[1] = a3;
+  v9.f64[1] = x;
   v11 = *(MEMORY[0x1E69E9B08] + 96);
   v10 = *(MEMORY[0x1E69E9B08] + 112);
-  v12.f64[1] = a4;
+  v12.f64[1] = y;
   v13 = *self[1]._anon_10;
   v20 = *&self[1].super.super.super.isa;
   vars0 = v13;
@@ -323,12 +323,12 @@
   return v18;
 }
 
-- (id)transformByScaleX:(double)a3 scaleY:(double)a4
+- (id)transformByScaleX:(double)x scaleY:(double)y
 {
   v4 = 0;
-  v5 = *&a3;
+  v5 = *&x;
   v6.f64[0] = 0.0;
-  v6.f64[1] = a4;
+  v6.f64[1] = y;
   v7 = *self[1]._anon_10;
   v14 = *&self[1].super.super.super.isa;
   vars0 = v7;
@@ -359,7 +359,7 @@
   return v12;
 }
 
-- (_OWORD)transformMatrix:(_OWORD *)a3@<X8>
+- (_OWORD)transformMatrix:(_OWORD *)matrix@<X8>
 {
   v3 = 0;
   v5 = *a2;
@@ -382,19 +382,19 @@
   v15 = result[13];
   v19[2] = result[12];
   v19[3] = v15;
-  *a3 = 0u;
-  a3[1] = 0u;
-  a3[2] = 0u;
-  a3[3] = 0u;
-  a3[4] = 0u;
-  a3[5] = 0u;
-  a3[6] = 0u;
-  a3[7] = 0u;
+  *matrix = 0u;
+  matrix[1] = 0u;
+  matrix[2] = 0u;
+  matrix[3] = 0u;
+  matrix[4] = 0u;
+  matrix[5] = 0u;
+  matrix[6] = 0u;
+  matrix[7] = 0u;
   do
   {
     v17 = v19[v3];
     v16 = v19[v3 + 1];
-    v18 = &a3[v3];
+    v18 = &matrix[v3];
     *v18 = vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(v5, v17.f64[0]), v7, v17, 1), v9, v16.f64[0]), v11, v16, 1);
     v18[1] = vmlaq_laneq_f64(vmlaq_n_f64(vmlaq_laneq_f64(vmulq_n_f64(v4, v17.f64[0]), v6, v17, 1), v8, v16.f64[0]), v10, v16, 1);
     v3 += 2;
@@ -404,7 +404,7 @@
   return result;
 }
 
-- (CGPoint)transformPoint:(CGPoint)a3
+- (CGPoint)transformPoint:(CGPoint)point
 {
   v3 = &self[1]._anon_10[48];
   v26 = vld4q_f64(v3);
@@ -416,8 +416,8 @@
   v9 = vzip2q_s64(v5, v6);
   v10 = vzip1q_s64(v4, v7);
   v11 = vzip2q_s64(v4, v7);
-  v12 = vmlaq_n_f64(vmulq_n_f64(v8, a3.x), v9, a3.y);
-  v13 = vmlaq_n_f64(vmulq_n_f64(v26.val[0], a3.x), v26.val[1], a3.y);
+  v12 = vmlaq_n_f64(vmulq_n_f64(v8, point.x), v9, point.y);
+  v13 = vmlaq_n_f64(vmulq_n_f64(v26.val[0], point.x), v26.val[1], point.y);
   if (self->_inverseProjection)
   {
     v14 = vdupq_n_s64(0xC08F400000000000);
@@ -493,13 +493,13 @@
   return v8;
 }
 
-- (BOOL)isInverseOf:(id)a3
+- (BOOL)isInverseOf:(id)of
 {
   v3 = vdupq_n_s64(0x3EE4F8B588E368F1uLL);
-  v4 = vandq_s8(vandq_s8(vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self[1]._anon_10[16], *(a3 + 3))), vcgeq_f64(v3, vabdq_f64(*&self[1].super.super.super.isa, *(a3 + 1)))), vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self[1]._anon_10[48], *(a3 + 5))), vcgeq_f64(v3, vabdq_f64(*&self[1]._anon_10[80], *(a3 + 7))))), vandq_s8(vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self[1]._anon_10[32], *(a3 + 4))), vcgeq_f64(v3, vabdq_f64(*self[1]._anon_10, *(a3 + 2)))), vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self[1]._anon_10[64], *(a3 + 6))), vcgeq_f64(v3, vabdq_f64(*&self[1]._anon_10[96], *(a3 + 8))))));
+  v4 = vandq_s8(vandq_s8(vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self[1]._anon_10[16], *(of + 3))), vcgeq_f64(v3, vabdq_f64(*&self[1].super.super.super.isa, *(of + 1)))), vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self[1]._anon_10[48], *(of + 5))), vcgeq_f64(v3, vabdq_f64(*&self[1]._anon_10[80], *(of + 7))))), vandq_s8(vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self[1]._anon_10[32], *(of + 4))), vcgeq_f64(v3, vabdq_f64(*self[1]._anon_10, *(of + 2)))), vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self[1]._anon_10[64], *(of + 6))), vcgeq_f64(v3, vabdq_f64(*&self[1]._anon_10[96], *(of + 8))))));
   if ((vandq_s8(v4, vdupq_laneq_s64(v4, 1)).u64[0] & 0x8000000000000000) != 0)
   {
-    v6 = vandq_s8(vandq_s8(vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[32], *(a3 + 12))), vcgeq_f64(v3, vabdq_f64(*self->_anon_10, *(a3 + 10)))), vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[64], *(a3 + 14))), vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[96], *(a3 + 16))))), vandq_s8(vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[48], *(a3 + 13))), vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[16], *(a3 + 11)))), vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[80], *(a3 + 15))), vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[112], *(a3 + 17))))));
+    v6 = vandq_s8(vandq_s8(vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[32], *(of + 12))), vcgeq_f64(v3, vabdq_f64(*self->_anon_10, *(of + 10)))), vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[64], *(of + 14))), vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[96], *(of + 16))))), vandq_s8(vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[48], *(of + 13))), vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[16], *(of + 11)))), vandq_s8(vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[80], *(of + 15))), vcgeq_f64(v3, vabdq_f64(*&self->_anon_10[112], *(of + 17))))));
     return vandq_s8(v6, vdupq_laneq_s64(v6, 1)).u64[0] >> 63;
   }
 
@@ -557,8 +557,8 @@ LABEL_8:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v12 callStackSymbols];
+      v15 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v30 = v15;
       _os_log_error_impl(&dword_1C0184000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -574,8 +574,8 @@ LABEL_8:
     v18 = MEMORY[0x1E696AF00];
     v19 = specific;
     v20 = v16;
-    v21 = [v18 callStackSymbols];
-    v22 = [v21 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [v18 callStackSymbols];
+    v22 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543618;
     v30 = specific;
     v31 = 2114;
@@ -591,17 +591,17 @@ LABEL_14:
   _NUAssertFailHandler("[NUImageTransform3D init]", "/Library/Caches/com.apple.xbs/Sources/Photos/workspaces/neutrino/Core/Geometry/transforms/NUGeometryTransform.m", 296, @"Initializer not available: [%@ %@], use designated initializer instead.", v25, v26, v27, v28, v24);
 }
 
-- (_OWORD)initWithTransform3D:(float64x2_t *)a3
+- (_OWORD)initWithTransform3D:(float64x2_t *)d
 {
   a53 = *MEMORY[0x1E69E9840];
-  v128 = a3[1];
-  v129 = *a3;
-  v126 = a3[3];
-  v127 = a3[2];
-  v124 = a3[5];
-  v125 = a3[4];
-  v122 = a3[7];
-  v123 = a3[6];
+  v128 = d[1];
+  v129 = *d;
+  v126 = d[3];
+  v127 = d[2];
+  v124 = d[5];
+  v125 = d[4];
+  v122 = d[7];
+  v123 = d[6];
   v54 = MEMORY[0x1E69E9B08];
   v120 = *(MEMORY[0x1E69E9B08] + 16);
   v121 = *MEMORY[0x1E69E9B08];
@@ -611,24 +611,24 @@ LABEL_14:
   vars0 = *(MEMORY[0x1E69E9B08] + 64);
   v114 = *(MEMORY[0x1E69E9B08] + 112);
   v115 = *(MEMORY[0x1E69E9B08] + 96);
-  a41.receiver = a1;
+  a41.receiver = self;
   a41.super_class = NUImageTransform3D;
   v55 = [(NUImageTransform3D *)&a41 init];
   v56 = v55;
   if (v55)
   {
     v57 = vandq_s8(vandq_s8(vandq_s8(vceqq_f64(v127, v119), vceqq_f64(v129, v121)), vandq_s8(vceqq_f64(v125, vars0), vceqq_f64(v123, v115))), vandq_s8(vandq_s8(vceqq_f64(v126, v118), vceqq_f64(v128, v120)), vandq_s8(vceqq_f64(v124, v116), vceqq_f64(v122, v114))));
-    v58 = a3[3];
-    v60 = *a3;
-    v59 = a3[1];
-    *(v55 + 12) = a3[2];
+    v58 = d[3];
+    v60 = *d;
+    v59 = d[1];
+    *(v55 + 12) = d[2];
     *(v55 + 13) = v58;
     *(v55 + 10) = v60;
     *(v55 + 11) = v59;
-    v61 = a3[7];
-    v63 = a3[4];
-    v62 = a3[5];
-    *(v55 + 16) = a3[6];
+    v61 = d[7];
+    v63 = d[4];
+    v62 = d[5];
+    *(v55 + 16) = d[6];
     *(v55 + 17) = v61;
     *(v55 + 14) = v63;
     *(v55 + 15) = v62;
@@ -653,17 +653,17 @@ LABEL_14:
 
     else
     {
-      v65 = a3[5];
-      a46 = a3[4];
+      v65 = d[5];
+      a46 = d[4];
       a47 = v65;
-      v66 = a3[7];
-      a48 = a3[6];
+      v66 = d[7];
+      a48 = d[6];
       a49 = v66;
-      v67 = a3[1];
-      buf = *a3;
+      v67 = d[1];
+      buf = *d;
       a43 = v67;
-      v68 = a3[3];
-      a44 = a3[2];
+      v68 = d[3];
+      a44 = d[2];
       a45 = v68;
       __invert_d4();
       v56[3] = a35;
@@ -674,13 +674,13 @@ LABEL_14:
       v56[8] = a40;
       v56[5] = a37;
       v56[6] = a38;
-      v130 = vld2q_f64(a3->f64);
-      v69 = a3[2];
-      v70 = a3[3];
-      v71 = a3[4];
-      v72 = a3[5];
-      v73 = a3[6];
-      v74 = a3[7];
+      v130 = vld2q_f64(d->f64);
+      v69 = d[2];
+      v70 = d[3];
+      v71 = d[4];
+      v72 = d[5];
+      v73 = d[6];
+      v74 = d[7];
       v75 = vextq_s8(v70, v69, 8uLL);
       v76 = vextq_s8(v69, v70, 8uLL);
       v77 = vextq_s8(v74, v73, 8uLL);
@@ -735,8 +735,8 @@ LABEL_12:
             v102 = MEMORY[0x1E696AF00];
             v103 = specific;
             v104 = v96;
-            v105 = [v102 callStackSymbols];
-            v106 = [v105 componentsJoinedByString:@"\n"];
+            callStackSymbols = [v102 callStackSymbols];
+            v106 = [callStackSymbols componentsJoinedByString:@"\n"];
             LODWORD(buf.f64[0]) = 138543618;
             *(buf.f64 + 4) = specific;
             WORD2(buf.f64[1]) = 2114;
@@ -754,8 +754,8 @@ LABEL_18:
         {
           v109 = MEMORY[0x1E696AF00];
           v110 = v107;
-          v111 = [v109 callStackSymbols];
-          v112 = [v111 componentsJoinedByString:@"\n"];
+          callStackSymbols2 = [v109 callStackSymbols];
+          v112 = [callStackSymbols2 componentsJoinedByString:@"\n"];
           LODWORD(buf.f64[0]) = 138543362;
           *(buf.f64 + 4) = v112;
           _os_log_error_impl(&dword_1C0184000, v110, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &buf, 0xCu);
@@ -769,16 +769,16 @@ LABEL_18:
   return v56;
 }
 
-- (NUImageTransform3D)initWithAffineTransform:(CGAffineTransform *)a3
+- (NUImageTransform3D)initWithAffineTransform:(CGAffineTransform *)transform
 {
-  *&v3 = a3->a;
-  *&v4 = a3->b;
-  *(&v3 + 1) = *&a3->c;
+  *&v3 = transform->a;
+  *&v4 = transform->b;
+  *(&v3 + 1) = *&transform->c;
   *&v5 = 0;
   *&v6 = 0;
-  *(&v6 + 1) = *&a3->tx;
-  *(&v4 + 1) = *&a3->d;
-  *(&v5 + 1) = *&a3->ty;
+  *(&v6 + 1) = *&transform->tx;
+  *(&v4 + 1) = *&transform->d;
+  *(&v5 + 1) = *&transform->ty;
   v10[0] = v3;
   v10[1] = v6;
   v10[2] = v4;

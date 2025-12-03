@@ -1,18 +1,18 @@
 @interface TSSPropertyCommandObjectRegistry
 + (TSSPropertyCommandObjectRegistry)sharedRegistry;
-+ (void)setIntializationHandler:(id)a3;
++ (void)setIntializationHandler:(id)handler;
 - (TSSPropertyCommandObjectRegistry)init;
 - (id).cxx_construct;
-- (int)indexForClass:(Class)a3;
-- (void)registerClass:(Class)a3 withField:(id)a4;
+- (int)indexForClass:(Class)class;
+- (void)registerClass:(Class)class withField:(id)field;
 @end
 
 @implementation TSSPropertyCommandObjectRegistry
 
-+ (void)setIntializationHandler:(id)a3
++ (void)setIntializationHandler:(id)handler
 {
-  v7 = a3;
-  v5 = objc_msgSend_copy(v7, v3, v4);
+  handlerCopy = handler;
+  v5 = objc_msgSend_copy(handlerCopy, v3, v4);
   v6 = qword_280A54BA8;
   qword_280A54BA8 = v5;
 
@@ -56,11 +56,11 @@
   return v2;
 }
 
-- (void)registerClass:(Class)a3 withField:(id)a4
+- (void)registerClass:(Class)class withField:(id)field
 {
-  v49[0] = a3;
-  v6 = a4;
-  v8 = objc_msgSend_conformsToProtocol_(a3, v7, &unk_288613CE8);
+  v49[0] = class;
+  fieldCopy = field;
+  v8 = objc_msgSend_conformsToProtocol_(class, v7, &unk_288613CE8);
   if (!v8)
   {
     goto LABEL_38;
@@ -89,13 +89,13 @@ LABEL_38:
     v34 = MEMORY[0x277D81150];
     v35 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSSPropertyCommandObjectRegistry registerClass:withField:]");
     v37 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v36, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/styles/TSSPropertyCommandObjectRegistry.mm");
-    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v34, v38, v35, v37, 117, 0, "class %@ (field %@) registration failed", a3, v6);
+    objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v34, v38, v35, v37, 117, 0, "class %@ (field %@) registration failed", class, fieldCopy);
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v39, v40);
     goto LABEL_39;
   }
 
-  v13 = v6;
+  v13 = fieldCopy;
   v16 = objc_msgSend_UTF8String(v13, v14, v15);
   sub_276CA3CD4(&v46, v16);
   FieldByName = google::protobuf::Descriptor::FindFieldByName();
@@ -159,8 +159,8 @@ LABEL_35:
     do
     {
       v28 = *(v24 + 4);
-      v29 = v28 >= a3;
-      v30 = v28 < a3;
+      v29 = v28 >= class;
+      v30 = v28 < class;
       if (v29)
       {
         v27 = v24;
@@ -170,7 +170,7 @@ LABEL_35:
     }
 
     while (v24);
-    if (v27 != v25 && v27[4].__left_ <= a3)
+    if (v27 != v25 && v27[4].__left_ <= class)
     {
 LABEL_33:
       if (v45 < 0)
@@ -210,10 +210,10 @@ LABEL_33:
 LABEL_39:
 }
 
-- (int)indexForClass:(Class)a3
+- (int)indexForClass:(Class)class
 {
   p_end_node = &self->_classToIndex.__tree_.__end_node_;
-  v5 = a3;
+  classCopy = class;
   do
   {
     left = p_end_node->__left_;
@@ -226,8 +226,8 @@ LABEL_39:
     do
     {
       v8 = *(left + 4);
-      v9 = v8 >= v5;
-      v10 = v8 < v5;
+      v9 = v8 >= classCopy;
+      v10 = v8 < classCopy;
       if (v9)
       {
         v7 = left;
@@ -237,16 +237,16 @@ LABEL_39:
     }
 
     while (left);
-    if (v7 == p_end_node || v5 < v7[4].__left_)
+    if (v7 == p_end_node || classCopy < v7[4].__left_)
     {
 LABEL_10:
       v7 = p_end_node;
     }
 
-    v5 = objc_msgSend_superclass(v5, a2, a3);
+    classCopy = objc_msgSend_superclass(classCopy, a2, class);
   }
 
-  while (v5 != objc_opt_class() && v7 == p_end_node);
+  while (classCopy != objc_opt_class() && v7 == p_end_node);
   if (v7 != p_end_node)
   {
     return v7[5].__left_;
@@ -255,7 +255,7 @@ LABEL_10:
   v13 = MEMORY[0x277D81150];
   v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TSSPropertyCommandObjectRegistry indexForClass:]");
   v16 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/styles/TSSPropertyCommandObjectRegistry.mm");
-  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 165, 0, "TSSPropertyCommandObjectRegistry does not have a class %@.", a3);
+  objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 165, 0, "TSSPropertyCommandObjectRegistry does not have a class %@.", class);
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19);
   return 1;

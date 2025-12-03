@@ -1,12 +1,12 @@
 @interface SGConversationHistory
-- (SGConversationHistory)initWithMessages:(id)a3;
+- (SGConversationHistory)initWithMessages:(id)messages;
 @end
 
 @implementation SGConversationHistory
 
-- (SGConversationHistory)initWithMessages:(id)a3
+- (SGConversationHistory)initWithMessages:(id)messages
 {
-  v5 = a3;
+  messagesCopy = messages;
   v12.receiver = self;
   v12.super_class = SGConversationHistory;
   v6 = [(SGConversationHistory *)&v12 init];
@@ -14,7 +14,7 @@
   {
     v7 = objc_autoreleasePoolPush();
     v8 = sgMapAndFilter();
-    objc_storeStrong(&v6->_messages, a3);
+    objc_storeStrong(&v6->_messages, messages);
     v9 = [MEMORY[0x277D3A248] detectLanguageFromLanguageTags:v8];
     likelyLanguage = v6->_likelyLanguage;
     v6->_likelyLanguage = v9;

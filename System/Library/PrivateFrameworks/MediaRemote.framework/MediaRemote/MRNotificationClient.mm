@@ -1,18 +1,18 @@
 @interface MRNotificationClient
 + (id)nowPlayingNotifications;
-- (BOOL)_postNotification:(id)a3 userInfo:(id)a4 object:(id)a5 withHandler:(id)a6;
+- (BOOL)_postNotification:(id)notification userInfo:(id)info object:(id)object withHandler:(id)handler;
 - (BOOL)_processAlwaysNeedsNowPlayingNotifications;
 - (BOOL)isRegisteredForNowPlayingNotifications;
 - (MRNotificationClient)init;
 - (OS_dispatch_queue)notificationQueue;
 - (id)debugDescription;
-- (void)_syncWakingPlayerPathsWithReplyQueue:(id)a3 completion:(id)a4;
-- (void)dispatchNotification:(id)a3 userInfo:(id)a4 object:(id)a5;
-- (void)registerForNowPlayingNotificationsWithQueue:(id)a3 force:(BOOL)a4;
-- (void)registerForWakingNowPlayingNotificationsForPlayerPath:(id)a3 replyQueue:(id)a4 completion:(id)a5;
+- (void)_syncWakingPlayerPathsWithReplyQueue:(id)queue completion:(id)completion;
+- (void)dispatchNotification:(id)notification userInfo:(id)info object:(id)object;
+- (void)registerForNowPlayingNotificationsWithQueue:(id)queue force:(BOOL)force;
+- (void)registerForWakingNowPlayingNotificationsForPlayerPath:(id)path replyQueue:(id)queue completion:(id)completion;
 - (void)restoreNowPlayingClientState;
 - (void)unregisterForNowPlayingNotifications;
-- (void)unregisterForWakingNowPlayingNotificationsForPlayerPath:(id)a3 replyQueue:(id)a4 completion:(id)a5;
+- (void)unregisterForWakingNowPlayingNotificationsForPlayerPath:(id)path replyQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation MRNotificationClient
@@ -197,7 +197,7 @@ void __41__MRNotificationClient_notificationQueue__block_invoke(uint64_t a1)
   block[3] = &unk_1E769A4A0;
   v5 = v3;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   dispatch_sync(serialQueue, block);
   v6 = v5;
 
@@ -246,18 +246,18 @@ uint64_t __40__MRNotificationClient_debugDescription__block_invoke(uint64_t a1)
   return [v7 appendString:@"}\n"];
 }
 
-- (void)registerForNowPlayingNotificationsWithQueue:(id)a3 force:(BOOL)a4
+- (void)registerForNowPlayingNotificationsWithQueue:(id)queue force:(BOOL)force
 {
-  v6 = a3;
+  queueCopy = queue;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __74__MRNotificationClient_registerForNowPlayingNotificationsWithQueue_force___block_invoke;
   block[3] = &unk_1E769BFC8;
-  v11 = a4;
+  forceCopy = force;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = queueCopy;
+  v8 = queueCopy;
   dispatch_sync(serialQueue, block);
 }
 
@@ -402,21 +402,21 @@ void __66__MRNotificationClient__processAlwaysNeedsNowPlayingNotifications__bloc
   _processAlwaysNeedsNowPlayingNotifications_allowed = [v1 containsObject:v2];
 }
 
-- (void)registerForWakingNowPlayingNotificationsForPlayerPath:(id)a3 replyQueue:(id)a4 completion:(id)a5
+- (void)registerForWakingNowPlayingNotificationsForPlayerPath:(id)path replyQueue:(id)queue completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696AFB0] UUID];
-  v12 = [v11 UUIDString];
+  pathCopy = path;
+  queueCopy = queue;
+  completionCopy = completion;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v13 = [MEMORY[0x1E695DF00] now];
-  v14 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"registerForWakingNowPlayingNotificationsForPlayerPath", v12];
+  v14 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"registerForWakingNowPlayingNotificationsForPlayerPath", uUIDString];
   v15 = v14;
-  if (v8)
+  if (pathCopy)
   {
-    [v14 appendFormat:@" for %@", v8];
+    [v14 appendFormat:@" for %@", pathCopy];
   }
 
   v16 = _MRLogForCategory(0xAuLL);
@@ -431,17 +431,17 @@ void __66__MRNotificationClient__processAlwaysNeedsNowPlayingNotifications__bloc
   v32[1] = 3221225472;
   v32[2] = __100__MRNotificationClient_registerForWakingNowPlayingNotificationsForPlayerPath_replyQueue_completion___block_invoke;
   v32[3] = &unk_1E769FBE0;
-  v17 = v8;
+  v17 = pathCopy;
   v33 = v17;
   v34 = @"registerForWakingNowPlayingNotificationsForPlayerPath";
-  v35 = v12;
+  v35 = uUIDString;
   v36 = v13;
-  v38 = v10;
-  v18 = v9;
+  v38 = completionCopy;
+  v18 = queueCopy;
   v37 = v18;
-  v19 = v10;
+  v19 = completionCopy;
   v20 = v13;
-  v21 = v12;
+  v21 = uUIDString;
   v22 = MEMORY[0x1A58E3570](v32);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -601,21 +601,21 @@ uint64_t __100__MRNotificationClient_registerForWakingNowPlayingNotificationsFor
   }
 }
 
-- (void)unregisterForWakingNowPlayingNotificationsForPlayerPath:(id)a3 replyQueue:(id)a4 completion:(id)a5
+- (void)unregisterForWakingNowPlayingNotificationsForPlayerPath:(id)path replyQueue:(id)queue completion:(id)completion
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E696AFB0] UUID];
-  v12 = [v11 UUIDString];
+  pathCopy = path;
+  queueCopy = queue;
+  completionCopy = completion;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v13 = [MEMORY[0x1E695DF00] now];
-  v14 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"unregisterForWakingNowPlayingNotificationsForPlayerPath", v12];
+  v14 = [objc_alloc(MEMORY[0x1E696AD60]) initWithFormat:@"%@<%@>", @"unregisterForWakingNowPlayingNotificationsForPlayerPath", uUIDString];
   v15 = v14;
-  if (v8)
+  if (pathCopy)
   {
-    [v14 appendFormat:@" for %@", v8];
+    [v14 appendFormat:@" for %@", pathCopy];
   }
 
   v16 = _MRLogForCategory(0xAuLL);
@@ -630,17 +630,17 @@ uint64_t __100__MRNotificationClient_registerForWakingNowPlayingNotificationsFor
   v32[1] = 3221225472;
   v32[2] = __102__MRNotificationClient_unregisterForWakingNowPlayingNotificationsForPlayerPath_replyQueue_completion___block_invoke;
   v32[3] = &unk_1E769FBE0;
-  v17 = v8;
+  v17 = pathCopy;
   v33 = v17;
   v34 = @"unregisterForWakingNowPlayingNotificationsForPlayerPath";
-  v35 = v12;
+  v35 = uUIDString;
   v36 = v13;
-  v38 = v10;
-  v18 = v9;
+  v38 = completionCopy;
+  v18 = queueCopy;
   v37 = v18;
-  v19 = v10;
+  v19 = completionCopy;
   v20 = v13;
-  v21 = v12;
+  v21 = uUIDString;
   v22 = MEMORY[0x1A58E3570](v32);
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -788,13 +788,13 @@ void __102__MRNotificationClient_unregisterForWakingNowPlayingNotificationsForPl
   }
 }
 
-- (void)_syncWakingPlayerPathsWithReplyQueue:(id)a3 completion:(id)a4
+- (void)_syncWakingPlayerPathsWithReplyQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   v9 = +[MRMediaRemoteServiceClient sharedServiceClient];
-  v8 = [v9 service];
-  MRMediaRemoteServiceSetWakingPlayerPaths(v8, self->_subscribedWakingPlayerPaths, v7, v6);
+  service = [v9 service];
+  MRMediaRemoteServiceSetWakingPlayerPaths(service, self->_subscribedWakingPlayerPaths, queueCopy, completionCopy);
 }
 
 - (void)restoreNowPlayingClientState
@@ -821,25 +821,25 @@ uint64_t __52__MRNotificationClient_restoreNowPlayingClientState__block_invoke(u
   return result;
 }
 
-- (void)dispatchNotification:(id)a3 userInfo:(id)a4 object:(id)a5
+- (void)dispatchNotification:(id)notification userInfo:(id)info object:(id)object
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MRNotificationClient *)self notificationQueue];
+  notificationCopy = notification;
+  infoCopy = info;
+  objectCopy = object;
+  notificationQueue = [(MRNotificationClient *)self notificationQueue];
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
   v16[2] = __61__MRNotificationClient_dispatchNotification_userInfo_object___block_invoke;
   v16[3] = &unk_1E769FC08;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v12 = v10;
-  v13 = v9;
-  v14 = v8;
+  v17 = notificationCopy;
+  v18 = infoCopy;
+  v19 = objectCopy;
+  v12 = objectCopy;
+  v13 = infoCopy;
+  v14 = notificationCopy;
   v15 = MRCreateDonatedQosBlock(v16);
-  dispatch_async(v11, v15);
+  dispatch_async(notificationQueue, v15);
 }
 
 void __57__MRNotificationClient_postNotification_userInfo_object___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -857,21 +857,21 @@ void __57__MRNotificationClient_postNotification_userInfo_object___block_invoke(
   [v16 postNotificationName:v6 object:v7 userInfo:v8];
 }
 
-- (BOOL)_postNotification:(id)a3 userInfo:(id)a4 object:(id)a5 withHandler:(id)a6
+- (BOOL)_postNotification:(id)notification userInfo:(id)info object:(id)object withHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  notificationCopy = notification;
+  infoCopy = info;
+  objectCopy = object;
+  handlerCopy = handler;
   kdebug_trace();
-  v14 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v11, "count")}];
+  v14 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(infoCopy, "count")}];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __70__MRNotificationClient__postNotification_userInfo_object_withHandler___block_invoke;
   v30[3] = &unk_1E769EC90;
   v15 = v14;
   v31 = v15;
-  [v11 enumerateKeysAndObjectsUsingBlock:v30];
+  [infoCopy enumerateKeysAndObjectsUsingBlock:v30];
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -881,16 +881,16 @@ void __57__MRNotificationClient_postNotification_userInfo_object___block_invoke(
   block[1] = 3221225472;
   block[2] = __70__MRNotificationClient__postNotification_userInfo_object_withHandler___block_invoke_2;
   block[3] = &unk_1E769FC50;
-  v17 = v10;
+  v17 = notificationCopy;
   v22 = v17;
   v18 = v15;
   v23 = v18;
-  v24 = self;
+  selfCopy = self;
   v25 = &v26;
   dispatch_sync(serialQueue, block);
   if (*(v27 + 24) == 1)
   {
-    v13[2](v13, v17, v18, v12);
+    handlerCopy[2](handlerCopy, v17, v18, objectCopy);
     v19 = *(v27 + 24);
   }
 

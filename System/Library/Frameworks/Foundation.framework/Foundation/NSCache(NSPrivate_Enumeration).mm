@@ -13,7 +13,7 @@
   v4[2] = __56__NSCache_NSPrivate_Enumeration__mapTableRepresentation__block_invoke;
   v4[3] = &unk_1E69F4990;
   v4[4] = v2;
-  [a1 __apply:v4];
+  [self __apply:v4];
   return v2;
 }
 

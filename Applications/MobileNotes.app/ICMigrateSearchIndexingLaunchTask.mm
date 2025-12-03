@@ -8,9 +8,9 @@
 {
   v3 = kICSearchIndexingVersionKey;
   v4 = [ICSettingsUtilities objectForKey:kICSearchIndexingVersionKey];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  if (&v5[-1].super.isa + 6 < 0xB)
+  if (&unsignedIntegerValue[-1].super.isa + 6 < 0xB)
   {
     v6 = 0;
 LABEL_3:
@@ -18,7 +18,7 @@ LABEL_3:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v18 = v5;
+      selfCopy2 = unsignedIntegerValue;
       v19 = 2048;
       v20 = 13;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "App needs to upgrade the search index because indexing version does not match. Current version = %lu, expected version = %lu", buf, 0x16u);
@@ -31,7 +31,7 @@ LABEL_3:
       if (v9)
       {
         *buf = 138412290;
-        v18 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@ should delete search indexing before reindexing", buf, 0xCu);
       }
 
@@ -54,7 +54,7 @@ LABEL_3:
       if (v9)
       {
         *buf = 138412290;
-        v18 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "%@ no need to delete search indexing before reindexing. updating the indexing version to expected version", buf, 0xCu);
       }
 
@@ -66,19 +66,19 @@ LABEL_3:
     return;
   }
 
-  if (v5 < 2)
+  if (unsignedIntegerValue < 2)
   {
     v6 = 1;
     goto LABEL_3;
   }
 
-  if (v5 != 13)
+  if (unsignedIntegerValue != 13)
   {
     v13 = os_log_create("com.apple.notes", "LaunchTask");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v18 = v5;
+      selfCopy2 = unsignedIntegerValue;
       v19 = 2048;
       v20 = 13;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "App does not need to upgrade the search index although indexing version does not match. Current version = %lu, expected version = %lu. Directly updating the indexing version to expected version", buf, 0x16u);

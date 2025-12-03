@@ -1,38 +1,38 @@
 @interface CDFCollectionItem
-+ (id)itemWithPathURL:(id)a3 date:(id)a4 fileSize:(id)a5;
-- (CDFCollectionItem)initWithPathURL:(id)a3 date:(id)a4 fileSize:(id)a5;
++ (id)itemWithPathURL:(id)l date:(id)date fileSize:(id)size;
+- (CDFCollectionItem)initWithPathURL:(id)l date:(id)date fileSize:(id)size;
 @end
 
 @implementation CDFCollectionItem
 
-- (CDFCollectionItem)initWithPathURL:(id)a3 date:(id)a4 fileSize:(id)a5
+- (CDFCollectionItem)initWithPathURL:(id)l date:(id)date fileSize:(id)size
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  dateCopy = date;
+  sizeCopy = size;
   v17.receiver = self;
   v17.super_class = CDFCollectionItem;
   v12 = [(CDFCollectionItem *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_path, a3);
-    objc_storeStrong(&v13->_date, a4);
-    objc_storeStrong(&v13->_size, a5);
-    v14 = [v9 lastPathComponent];
+    objc_storeStrong(&v12->_path, l);
+    objc_storeStrong(&v13->_date, date);
+    objc_storeStrong(&v13->_size, size);
+    lastPathComponent = [lCopy lastPathComponent];
     name = v13->_name;
-    v13->_name = v14;
+    v13->_name = lastPathComponent;
   }
 
   return v13;
 }
 
-+ (id)itemWithPathURL:(id)a3 date:(id)a4 fileSize:(id)a5
++ (id)itemWithPathURL:(id)l date:(id)date fileSize:(id)size
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[CDFCollectionItem alloc] initWithPathURL:v9 date:v8 fileSize:v7];
+  sizeCopy = size;
+  dateCopy = date;
+  lCopy = l;
+  v10 = [[CDFCollectionItem alloc] initWithPathURL:lCopy date:dateCopy fileSize:sizeCopy];
 
   return v10;
 }

@@ -83,7 +83,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [a1 addArrangedSubview:{*(*(&v8 + 1) + 8 * v7++), v8}];
+        [self addArrangedSubview:{*(*(&v8 + 1) + 8 * v7++), v8}];
       }
 
       while (v5 != v7);

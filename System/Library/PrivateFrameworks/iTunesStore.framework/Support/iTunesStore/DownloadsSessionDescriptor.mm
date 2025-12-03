@@ -1,5 +1,5 @@
 @interface DownloadsSessionDescriptor
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -12,9 +12,9 @@
   [(DownloadsSessionDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v4[1] = self->_database;
   v4[2] = self->_externalState;
   v4[3] = self->_pipeline;

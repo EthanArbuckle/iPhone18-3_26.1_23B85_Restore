@@ -1,32 +1,32 @@
 @interface BorderView
 - (UIColor)backgroundColor;
-- (_TtC11AppStoreKit10BorderView)initWithCoder:(id)a3;
-- (_TtC11AppStoreKit10BorderView)initWithFrame:(CGRect)a3;
-- (void)setBackgroundColor:(id)a3;
-- (void)setClipsToBounds:(BOOL)a3;
+- (_TtC11AppStoreKit10BorderView)initWithCoder:(id)coder;
+- (_TtC11AppStoreKit10BorderView)initWithFrame:(CGRect)frame;
+- (void)setBackgroundColor:(id)color;
+- (void)setClipsToBounds:(BOOL)bounds;
 @end
 
 @implementation BorderView
 
-- (_TtC11AppStoreKit10BorderView)initWithFrame:(CGRect)a3
+- (_TtC11AppStoreKit10BorderView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v9.receiver = self;
   v9.super_class = swift_getObjectType();
-  v7 = [(BorderView *)&v9 initWithFrame:x, y, width, height];
-  [(BorderView *)v7 setUserInteractionEnabled:0];
-  return v7;
+  height = [(BorderView *)&v9 initWithFrame:x, y, width, height];
+  [(BorderView *)height setUserInteractionEnabled:0];
+  return height;
 }
 
-- (_TtC11AppStoreKit10BorderView)initWithCoder:(id)a3
+- (_TtC11AppStoreKit10BorderView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(BorderView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(BorderView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {
@@ -37,21 +37,21 @@
 
 - (UIColor)backgroundColor
 {
-  v2 = [objc_opt_self() clearColor];
+  clearColor = [objc_opt_self() clearColor];
 
-  return v2;
+  return clearColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v5 = a3;
-  v4 = self;
+  colorCopy = color;
+  selfCopy = self;
   sub_1E18B9904();
 }
 
-- (void)setClipsToBounds:(BOOL)a3
+- (void)setClipsToBounds:(BOOL)bounds
 {
-  v3 = self;
+  selfCopy = self;
   _s11AppStoreKit10BorderViewC13clipsToBoundsSbvs_0();
 }
 

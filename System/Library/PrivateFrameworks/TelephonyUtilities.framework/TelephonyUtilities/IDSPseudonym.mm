@@ -6,8 +6,8 @@
 
 - (BOOL)csd_isExpired
 {
-  v2 = [(IDSPseudonym *)self properties];
-  v3 = [v2 hasBeenExpiredForAtLeast:0.0];
+  properties = [(IDSPseudonym *)self properties];
+  v3 = [properties hasBeenExpiredForAtLeast:0.0];
 
   return v3;
 }

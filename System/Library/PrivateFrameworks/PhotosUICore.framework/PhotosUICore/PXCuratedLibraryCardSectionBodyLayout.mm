@@ -1,32 +1,32 @@
 @interface PXCuratedLibraryCardSectionBodyLayout
 - (CGRect)assetFrame;
 - (CGSize)minPlayableSpriteSize;
-- (CGSize)minSpriteSizeForPresentationStyle:(unint64_t)a3;
+- (CGSize)minSpriteSizeForPresentationStyle:(unint64_t)style;
 - (PXCuratedLibraryCardSectionBodyLayout)init;
 - (PXCuratedLibrarySectionGeometryDescriptor)presentedGeometryDescriptor;
 - (PXSimpleIndexPath)sectionIndexPath;
-- (id)axContentInfoAtSpriteIndex:(unsigned int)a3;
+- (id)axContentInfoAtSpriteIndex:(unsigned int)index;
 - (id)axSelectedSpriteIndexes;
 - (id)axSpriteIndexes;
-- (id)axSpriteIndexesInRect:(CGRect)a3;
+- (id)axSpriteIndexesInRect:(CGRect)rect;
 - (id)axVisibleSpriteIndexes;
-- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4;
-- (id)objectReferenceForSpriteIndex:(unsigned int)a3;
-- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)a3 inDirection:(unint64_t)a4;
+- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)range inLayout:(id)layout;
+- (id)objectReferenceForSpriteIndex:(unsigned int)index;
+- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)index inDirection:(unint64_t)direction;
 - (void)_updateAXSprites;
-- (void)_updateKeyAssetFetchResultWithDataSource:(id)a3 section:(int64_t)a4;
+- (void)_updateKeyAssetFetchResultWithDataSource:(id)source section:(int64_t)section;
 - (void)_updateSprites;
-- (void)applySpriteChangeDetails:(id)a3 countAfterChanges:(unsigned int)a4 initialState:(id)a5 modifyState:(id)a6;
+- (void)applySpriteChangeDetails:(id)details countAfterChanges:(unsigned int)changes initialState:(id)state modifyState:(id)modifyState;
 - (void)displayScaleDidChange;
-- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)a3;
+- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)block;
 - (void)referenceSizeDidChange;
-- (void)setCurrentSkimmingIndex:(int64_t)a3;
-- (void)setDataSource:(id)a3 section:(int64_t)a4;
-- (void)setIsSelected:(BOOL)a3;
-- (void)setIsSkimming:(BOOL)a3;
-- (void)setMaxSkimmingIndex:(int64_t)a3;
-- (void)setSkimmingIndexPaths:(id)a3;
-- (void)setSpec:(id)a3;
+- (void)setCurrentSkimmingIndex:(int64_t)index;
+- (void)setDataSource:(id)source section:(int64_t)section;
+- (void)setIsSelected:(BOOL)selected;
+- (void)setIsSkimming:(BOOL)skimming;
+- (void)setMaxSkimmingIndex:(int64_t)index;
+- (void)setSkimmingIndexPaths:(id)paths;
+- (void)setSpec:(id)spec;
 - (void)update;
 @end
 
@@ -40,7 +40,7 @@
   return self;
 }
 
-- (id)axSpriteIndexesInRect:(CGRect)a3
+- (id)axSpriteIndexesInRect:(CGRect)rect
 {
   v4 = 0u;
   v5 = 0u;
@@ -48,16 +48,16 @@
   PXRectWithCenterAndSize();
 }
 
-- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)a3 inDirection:(unint64_t)a4
+- (unsigned)axSpriteIndexClosestToSpriteIndex:(unsigned int)index inDirection:(unint64_t)direction
 {
-  if (self->_assetSpriteIndexRange.location != a3)
+  if (self->_assetSpriteIndexRange.location != index)
   {
     return -1;
   }
 
-  if (a4 != 6)
+  if (direction != 6)
   {
-    if (a4 == 5)
+    if (direction == 5)
     {
       v4 = 1001;
       v5 = 1001;
@@ -81,18 +81,18 @@ LABEL_7:
   }
 }
 
-- (id)axContentInfoAtSpriteIndex:(unsigned int)a3
+- (id)axContentInfoAtSpriteIndex:(unsigned int)index
 {
-  if (self->_assetSpriteIndexRange.location == a3)
+  if (self->_assetSpriteIndexRange.location == index)
   {
     v7.receiver = self;
     v7.super_class = PXCuratedLibraryCardSectionBodyLayout;
-    v4 = [(PXCuratedLibraryCardSectionBodyLayout *)&v7 axContentInfoAtSpriteIndex:*&a3];
+    v4 = [(PXCuratedLibraryCardSectionBodyLayout *)&v7 axContentInfoAtSpriteIndex:*&index];
   }
 
   else
   {
-    v5 = [(PXCuratedLibraryCardSectionBodyLayout *)self displayAssetFetchResultForSpritesInRange:a3 | 0x100000000 inLayout:self];
+    v5 = [(PXCuratedLibraryCardSectionBodyLayout *)self displayAssetFetchResultForSpritesInRange:index | 0x100000000 inLayout:self];
     if ([v5 count] >= 1)
     {
       [(PXCuratedLibraryCardSectionBodyLayout *)self geometryForSpriteAtIndex:self->_assetSpriteIndexRange.location];
@@ -127,18 +127,18 @@ LABEL_7:
   return v2;
 }
 
-- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)a3 inLayout:(id)a4
+- (id)displayAssetFetchResultForSpritesInRange:(_PXGSpriteIndexRange)range inLayout:(id)layout
 {
-  location = a3.location;
-  v6 = a4;
-  if (v6 != self || (location & 0xFFFFFFFE) != 0x3E8)
+  location = range.location;
+  layoutCopy = layout;
+  if (layoutCopy != self || (location & 0xFFFFFFFE) != 0x3E8)
   {
 LABEL_18:
-    v16 = [(PXCuratedLibraryCardSectionBodyLayout *)self keyAssetsFetchResult];
+    keyAssetsFetchResult = [(PXCuratedLibraryCardSectionBodyLayout *)self keyAssetsFetchResult];
     goto LABEL_19;
   }
 
-  v7 = [(PXCuratedLibraryCardSectionBodyLayout *)self skimmingIndexPaths];
+  skimmingIndexPaths = [(PXCuratedLibraryCardSectionBodyLayout *)self skimmingIndexPaths];
   v30[0] = 0;
   v30[1] = v30;
   v30[2] = 0x2020000000;
@@ -156,7 +156,7 @@ LABEL_18:
   v23[3] = &unk_1E7733060;
   v23[4] = v30;
   v23[5] = &v24;
-  [v7 enumerateSectionIndexPathsUsingBlock:v23];
+  [skimmingIndexPaths enumerateSectionIndexPathsUsingBlock:v23];
   v21 = *(off_1E7722228 + 8);
   v22 = *(off_1E7722228 + 3);
   v9 = (v25 + 4);
@@ -165,12 +165,12 @@ LABEL_18:
   {
     if (location == 1000)
     {
-      if (v7)
+      if (skimmingIndexPaths)
       {
         v12 = *(v25 + 3);
         v18 = *v9;
         v19 = v12;
-        [v7 indexPathLessThanIndexPath:&v18];
+        [skimmingIndexPaths indexPathLessThanIndexPath:&v18];
 LABEL_10:
         v11 = *&v20[0];
 LABEL_12:
@@ -180,12 +180,12 @@ LABEL_12:
       }
     }
 
-    else if (v7)
+    else if (skimmingIndexPaths)
     {
       v13 = *(v25 + 3);
       v18 = *v9;
       v19 = v13;
-      [v7 indexPathGreaterThanIndexPath:&v18];
+      [skimmingIndexPaths indexPathGreaterThanIndexPath:&v18];
       goto LABEL_10;
     }
 
@@ -196,11 +196,11 @@ LABEL_12:
 
   v11 = *off_1E7722228;
 LABEL_13:
-  v14 = [(PXCuratedLibraryCardSectionBodyLayout *)self dataSource];
-  v15 = v14;
-  if (v11 == v10 || [v14 identifier] != v11)
+  dataSource = [(PXCuratedLibraryCardSectionBodyLayout *)self dataSource];
+  v15 = dataSource;
+  if (v11 == v10 || [dataSource identifier] != v11)
   {
-    v16 = 0;
+    keyAssetsFetchResult = 0;
   }
 
   else
@@ -208,20 +208,20 @@ LABEL_13:
     *&v20[0] = v11;
     *(v20 + 8) = v21;
     *(&v20[1] + 1) = v22;
-    v16 = [v15 keyAssetsInSectionIndexPath:v20];
+    keyAssetsFetchResult = [v15 keyAssetsInSectionIndexPath:v20];
   }
 
   _Block_object_dispose(&v24, 8);
   _Block_object_dispose(v30, 8);
 
-  if (!v16)
+  if (!keyAssetsFetchResult)
   {
     goto LABEL_18;
   }
 
 LABEL_19:
 
-  return v16;
+  return keyAssetsFetchResult;
 }
 
 uint64_t __91__PXCuratedLibraryCardSectionBodyLayout_displayAssetFetchResultForSpritesInRange_inLayout___block_invoke(uint64_t result, _OWORD *a2, _BYTE *a3)
@@ -243,9 +243,9 @@ uint64_t __91__PXCuratedLibraryCardSectionBodyLayout_displayAssetFetchResultForS
   return result;
 }
 
-- (CGSize)minSpriteSizeForPresentationStyle:(unint64_t)a3
+- (CGSize)minSpriteSizeForPresentationStyle:(unint64_t)style
 {
-  if (a3 == 16 || a3 == 2)
+  if (style == 16 || style == 2)
   {
     [(PXCuratedLibraryCardSectionBodyLayout *)self minPlayableSpriteSize:v3];
   }
@@ -263,10 +263,10 @@ uint64_t __91__PXCuratedLibraryCardSectionBodyLayout_displayAssetFetchResultForS
 
 - (CGSize)minPlayableSpriteSize
 {
-  v3 = [(PXCuratedLibraryCardSectionBodyLayout *)self spec];
-  v4 = [v3 allowsVideoPlaybackAtAnySize];
+  spec = [(PXCuratedLibraryCardSectionBodyLayout *)self spec];
+  allowsVideoPlaybackAtAnySize = [spec allowsVideoPlaybackAtAnySize];
 
-  if (v4)
+  if (allowsVideoPlaybackAtAnySize)
   {
     v5 = *MEMORY[0x1E695F060];
     v6 = *(MEMORY[0x1E695F060] + 8);
@@ -284,20 +284,20 @@ uint64_t __91__PXCuratedLibraryCardSectionBodyLayout_displayAssetFetchResultForS
   return result;
 }
 
-- (id)objectReferenceForSpriteIndex:(unsigned int)a3
+- (id)objectReferenceForSpriteIndex:(unsigned int)index
 {
   p_assetSpriteIndexRange = &self->_assetSpriteIndexRange;
   if (self->_assetSpriteIndexRange.length)
   {
-    v5 = [(PXCuratedLibraryCardSectionBodyLayout *)self dataSource];
-    v6 = [v5 identifier];
-    v7 = [(PXCuratedLibraryCardSectionBodyLayout *)self section];
+    dataSource = [(PXCuratedLibraryCardSectionBodyLayout *)self dataSource];
+    identifier = [dataSource identifier];
+    section = [(PXCuratedLibraryCardSectionBodyLayout *)self section];
     location = p_assetSpriteIndexRange->location;
-    v11[0] = v6;
-    v11[1] = v7;
+    v11[0] = identifier;
+    v11[1] = section;
     v11[2] = location;
     v11[3] = 0x7FFFFFFFFFFFFFFFLL;
-    v9 = [v5 assetReferenceAtItemIndexPath:v11];
+    v9 = [dataSource assetReferenceAtItemIndexPath:v11];
   }
 
   else
@@ -308,12 +308,12 @@ uint64_t __91__PXCuratedLibraryCardSectionBodyLayout_displayAssetFetchResultForS
   return v9;
 }
 
-- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)a3
+- (void)enumerateVisibleAnchoringSpriteIndexesUsingBlock:(id)block
 {
   if (self->_assetSpriteIndexRange.length)
   {
     v3 = 0;
-    (*(a3 + 2))(a3, self->_assetSpriteIndexRange.location, 1, &v3);
+    (*(block + 2))(block, self->_assetSpriteIndexRange.location, 1, &v3);
   }
 }
 
@@ -336,9 +336,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout displayScaleDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:259 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:259 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -378,9 +378,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout referenceSizeDidChange]"];
-      [v6 handleFailureInFunction:v7 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:254 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:254 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -401,13 +401,13 @@ LABEL_5:
   }
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
-  if (self->_spec != v5)
+  specCopy = spec;
+  if (self->_spec != specCopy)
   {
-    v11 = v5;
-    objc_storeStrong(&self->_spec, a3);
+    v11 = specCopy;
+    objc_storeStrong(&self->_spec, spec);
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -417,16 +417,16 @@ LABEL_5:
 LABEL_7:
         p_updateFlags->needsUpdate = needsUpdate | 1;
 LABEL_8:
-        v5 = v11;
+        specCopy = v11;
         goto LABEL_9;
       }
 
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v9 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout setSpec:]"];
-        [v9 handleFailureInFunction:v10 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:247 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v10 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:247 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -441,7 +441,7 @@ LABEL_6:
 
     willPerformUpdate = self->_updateFlags.willPerformUpdate;
     p_updateFlags->needsUpdate = 1;
-    v5 = v11;
+    specCopy = v11;
     if (!willPerformUpdate)
     {
       [(PXCuratedLibraryCardSectionBodyLayout *)self setNeedsUpdate];
@@ -452,22 +452,22 @@ LABEL_6:
 LABEL_9:
 }
 
-- (void)setIsSelected:(BOOL)a3
+- (void)setIsSelected:(BOOL)selected
 {
-  if (self->_isSelected != a3)
+  if (self->_isSelected != selected)
   {
-    self->_isSelected = a3;
+    self->_isSelected = selected;
     [(PXCuratedLibraryCardSectionBodyLayout *)self setNeedsUpdate];
-    v5 = [(PXCuratedLibraryCardSectionBodyLayout *)self axGroup];
-    [v5 invalidateLeafs];
+    axGroup = [(PXCuratedLibraryCardSectionBodyLayout *)self axGroup];
+    [axGroup invalidateLeafs];
   }
 }
 
-- (void)setCurrentSkimmingIndex:(int64_t)a3
+- (void)setCurrentSkimmingIndex:(int64_t)index
 {
-  if (self->_currentSkimmingIndex != a3)
+  if (self->_currentSkimmingIndex != index)
   {
-    self->_currentSkimmingIndex = a3;
+    self->_currentSkimmingIndex = index;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -489,9 +489,9 @@ LABEL_6:
       updated = self->_updateFlags.updated;
       if (updated)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout setCurrentSkimmingIndex:]"];
-        [v10 handleFailureInFunction:v11 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:229 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v11 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:229 description:{@"invalidating %lu after it already has been updated", 1}];
 LABEL_21:
 
         abort();
@@ -505,9 +505,9 @@ LABEL_21:
       }
 
 LABEL_19:
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout setCurrentSkimmingIndex:]"];
-      [v10 handleFailureInFunction:v11 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:230 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v11 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:230 description:{@"invalidating %lu after it already has been updated", 2}];
       goto LABEL_21;
     }
 
@@ -541,11 +541,11 @@ LABEL_19:
   }
 }
 
-- (void)setMaxSkimmingIndex:(int64_t)a3
+- (void)setMaxSkimmingIndex:(int64_t)index
 {
-  if (self->_maxSkimmingIndex != a3)
+  if (self->_maxSkimmingIndex != index)
   {
-    self->_maxSkimmingIndex = a3;
+    self->_maxSkimmingIndex = index;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -560,9 +560,9 @@ LABEL_7:
 LABEL_6:
       if (self->_updateFlags.updated)
       {
-        v7 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout setMaxSkimmingIndex:]"];
-        [v7 handleFailureInFunction:v8 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:221 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v8 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:221 description:{@"invalidating %lu after it already has been updated", 1}];
 
         abort();
       }
@@ -585,18 +585,18 @@ LABEL_6:
   }
 }
 
-- (void)setSkimmingIndexPaths:(id)a3
+- (void)setSkimmingIndexPaths:(id)paths
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_skimmingIndexPaths != v5)
+  pathsCopy = paths;
+  v6 = pathsCopy;
+  if (self->_skimmingIndexPaths != pathsCopy)
   {
-    v13 = v5;
-    v7 = [(PXIndexPathSet *)v5 isEqual:?];
+    v13 = pathsCopy;
+    v7 = [(PXIndexPathSet *)pathsCopy isEqual:?];
     v6 = v13;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_skimmingIndexPaths, a3);
+      objc_storeStrong(&self->_skimmingIndexPaths, paths);
       p_updateFlags = &self->_updateFlags;
       needsUpdate = self->_updateFlags.needsUpdate;
       if (needsUpdate)
@@ -613,9 +613,9 @@ LABEL_9:
 LABEL_7:
         if ((self->_updateFlags.updated & 2) != 0)
         {
-          v11 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout setSkimmingIndexPaths:]"];
-          [v11 handleFailureInFunction:v12 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:213 description:{@"invalidating %lu after it already has been updated", 2}];
+          [currentHandler handleFailureInFunction:v12 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:213 description:{@"invalidating %lu after it already has been updated", 2}];
 
           abort();
         }
@@ -642,11 +642,11 @@ LABEL_7:
 LABEL_10:
 }
 
-- (void)setIsSkimming:(BOOL)a3
+- (void)setIsSkimming:(BOOL)skimming
 {
-  if (self->_isSkimming != a3)
+  if (self->_isSkimming != skimming)
   {
-    self->_isSkimming = a3;
+    self->_isSkimming = skimming;
     p_updateFlags = &self->_updateFlags;
     needsUpdate = self->_updateFlags.needsUpdate;
     if (needsUpdate)
@@ -668,9 +668,9 @@ LABEL_6:
       updated = self->_updateFlags.updated;
       if (updated)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
         v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout setIsSkimming:]"];
-        [v10 handleFailureInFunction:v11 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:204 description:{@"invalidating %lu after it already has been updated", 1}];
+        [currentHandler handleFailureInFunction:v11 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:204 description:{@"invalidating %lu after it already has been updated", 1}];
 LABEL_21:
 
         abort();
@@ -684,9 +684,9 @@ LABEL_21:
       }
 
 LABEL_19:
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout setIsSkimming:]"];
-      [v10 handleFailureInFunction:v11 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:205 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v11 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:205 description:{@"invalidating %lu after it already has been updated", 2}];
       goto LABEL_21;
     }
 
@@ -720,31 +720,31 @@ LABEL_19:
   }
 }
 
-- (void)_updateKeyAssetFetchResultWithDataSource:(id)a3 section:(int64_t)a4
+- (void)_updateKeyAssetFetchResultWithDataSource:(id)source section:(int64_t)section
 {
-  v6 = a3;
-  v7 = [v6 identifier];
-  v27 = v7;
-  v28 = a4;
+  sourceCopy = source;
+  identifier = [sourceCopy identifier];
+  v27 = identifier;
+  sectionCopy2 = section;
   v8.f64[0] = NAN;
   v8.f64[1] = NAN;
   v26 = vnegq_f64(v8);
   v29 = v26;
-  v9 = [v6 keyAssetsInSectionIndexPath:&v27];
+  v9 = [sourceCopy keyAssetsInSectionIndexPath:&v27];
   if (![v9 count])
   {
-    v27 = v7;
-    v28 = a4;
+    v27 = identifier;
+    sectionCopy2 = section;
     v29 = v26;
-    v10 = [v6 assetsInSectionIndexPath:&v27];
+    v10 = [sourceCopy assetsInSectionIndexPath:&v27];
 
     v9 = v10;
   }
 
-  v11 = [v9 firstObject];
-  v12 = [(PXDisplayAssetFetchResult *)self->_keyAssetsFetchResult firstObject];
-  v13 = v11;
-  v14 = v12;
+  firstObject = [v9 firstObject];
+  firstObject2 = [(PXDisplayAssetFetchResult *)self->_keyAssetsFetchResult firstObject];
+  v13 = firstObject;
+  v14 = firstObject2;
   v15 = v14;
   if (v13 == v14)
   {
@@ -772,8 +772,8 @@ LABEL_12:
   }
 
 LABEL_13:
-  self->_sectionIndexPath.dataSourceIdentifier = v7;
-  self->_sectionIndexPath.section = a4;
+  self->_sectionIndexPath.dataSourceIdentifier = identifier;
+  self->_sectionIndexPath.section = section;
   v17.f64[0] = NAN;
   v17.f64[1] = NAN;
   *&self->_sectionIndexPath.item = vnegq_f64(v17);
@@ -799,9 +799,9 @@ LABEL_17:
     updated = self->_updateFlags.updated;
     if (updated)
     {
-      v24 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout _updateKeyAssetFetchResultWithDataSource:section:]"];
-      [v24 handleFailureInFunction:v25 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:195 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v25 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:195 description:{@"invalidating %lu after it already has been updated", 1}];
 LABEL_30:
 
       abort();
@@ -815,9 +815,9 @@ LABEL_30:
     }
 
 LABEL_28:
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v25 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout _updateKeyAssetFetchResultWithDataSource:section:]"];
-    [v24 handleFailureInFunction:v25 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:196 description:{@"invalidating %lu after it already has been updated", 2}];
+    [currentHandler handleFailureInFunction:v25 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:196 description:{@"invalidating %lu after it already has been updated", 2}];
     goto LABEL_30;
   }
 
@@ -851,55 +851,55 @@ LABEL_28:
 LABEL_20:
 }
 
-- (void)setDataSource:(id)a3 section:(int64_t)a4
+- (void)setDataSource:(id)source section:(int64_t)section
 {
-  v7 = a3;
-  if (*&self->_section != __PAIR128__(v7, a4))
+  sourceCopy = source;
+  if (*&self->_section != __PAIR128__(sourceCopy, section))
   {
-    v8 = v7;
-    objc_storeStrong(&self->_dataSource, a3);
-    self->_section = a4;
-    [(PXCuratedLibraryCardSectionBodyLayout *)self _updateKeyAssetFetchResultWithDataSource:v8 section:a4];
-    v7 = v8;
+    v8 = sourceCopy;
+    objc_storeStrong(&self->_dataSource, source);
+    self->_section = section;
+    [(PXCuratedLibraryCardSectionBodyLayout *)self _updateKeyAssetFetchResultWithDataSource:v8 section:section];
+    sourceCopy = v8;
   }
 }
 
-- (void)applySpriteChangeDetails:(id)a3 countAfterChanges:(unsigned int)a4 initialState:(id)a5 modifyState:(id)a6
+- (void)applySpriteChangeDetails:(id)details countAfterChanges:(unsigned int)changes initialState:(id)state modifyState:(id)modifyState
 {
-  v8 = *&a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 removedIndexes];
-  v14 = [v10 insertedIndexes];
-  if (![v13 isEqualToIndexSet:v14])
+  v8 = *&changes;
+  detailsCopy = details;
+  stateCopy = state;
+  modifyStateCopy = modifyState;
+  removedIndexes = [detailsCopy removedIndexes];
+  insertedIndexes = [detailsCopy insertedIndexes];
+  if (![removedIndexes isEqualToIndexSet:insertedIndexes])
   {
     goto LABEL_6;
   }
 
-  v15 = [v10 changedIndexes];
-  if ([v15 count])
+  changedIndexes = [detailsCopy changedIndexes];
+  if ([changedIndexes count])
   {
 
 LABEL_6:
     goto LABEL_7;
   }
 
-  v16 = [v10 removedIndexes];
-  v17 = [v16 count];
+  removedIndexes2 = [detailsCopy removedIndexes];
+  v17 = [removedIndexes2 count];
 
   if (v17 == 1)
   {
-    v13 = [v10 insertedIndexes];
-    [off_1E7721450 changeDetailsWithChangedIndexes:v13];
-    v10 = v14 = v10;
+    removedIndexes = [detailsCopy insertedIndexes];
+    [off_1E7721450 changeDetailsWithChangedIndexes:removedIndexes];
+    detailsCopy = insertedIndexes = detailsCopy;
     goto LABEL_6;
   }
 
 LABEL_7:
   v18.receiver = self;
   v18.super_class = PXCuratedLibraryCardSectionBodyLayout;
-  [(PXCuratedLibraryCardSectionBodyLayout *)&v18 applySpriteChangeDetails:v10 countAfterChanges:v8 initialState:v11 modifyState:v12];
+  [(PXCuratedLibraryCardSectionBodyLayout *)&v18 applySpriteChangeDetails:detailsCopy countAfterChanges:v8 initialState:stateCopy modifyState:modifyStateCopy];
 }
 
 - (PXCuratedLibrarySectionGeometryDescriptor)presentedGeometryDescriptor
@@ -912,23 +912,23 @@ LABEL_7:
 
 - (id)axVisibleSpriteIndexes
 {
-  v3 = [(PXCuratedLibraryCardSectionBodyLayout *)self axSpriteIndexes];
-  v4 = [v3 mutableCopy];
+  axSpriteIndexes = [(PXCuratedLibraryCardSectionBodyLayout *)self axSpriteIndexes];
+  v4 = [axSpriteIndexes mutableCopy];
 
   [v4 removeIndex:1000];
   [v4 removeIndex:1001];
-  v5 = [(PXCuratedLibraryCardSectionBodyLayout *)self spriteDataStore];
+  spriteDataStore = [(PXCuratedLibraryCardSectionBodyLayout *)self spriteDataStore];
   if ([v4 lastIndex] != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [v4 lastIndex];
-    if (v6 > [v5 count])
+    lastIndex = [v4 lastIndex];
+    if (lastIndex > [spriteDataStore count])
     {
       PXAssertGetLog();
     }
   }
 
   [(PXCuratedLibraryCardSectionBodyLayout *)self visibleRect];
-  v7 = [v5 spriteAtIndexes:v4 inRect:?];
+  v7 = [spriteDataStore spriteAtIndexes:v4 inRect:?];
 
   return v7;
 }
@@ -937,9 +937,9 @@ LABEL_7:
 {
   if ([(PXCuratedLibraryCardSectionBodyLayout *)self zoomLevel]== 1 && [(PXCuratedLibraryCardSectionBodyLayout *)self isSkimming])
   {
-    v3 = [(PXCuratedLibraryCardSectionBodyLayout *)self currentSkimmingIndex];
+    currentSkimmingIndex = [(PXCuratedLibraryCardSectionBodyLayout *)self currentSkimmingIndex];
     axSpriteIndexes = self->_axSpriteIndexes;
-    if (v3 < 1)
+    if (currentSkimmingIndex < 1)
     {
       [(NSMutableIndexSet *)axSpriteIndexes removeIndex:1000];
     }
@@ -949,9 +949,9 @@ LABEL_7:
       [(NSMutableIndexSet *)axSpriteIndexes addIndex:1000];
     }
 
-    v5 = [(PXCuratedLibraryCardSectionBodyLayout *)self maxSkimmingIndex];
+    maxSkimmingIndex = [(PXCuratedLibraryCardSectionBodyLayout *)self maxSkimmingIndex];
     v6 = self->_axSpriteIndexes;
-    if (v3 >= v5)
+    if (currentSkimmingIndex >= maxSkimmingIndex)
     {
 
       [(NSMutableIndexSet *)v6 removeIndex:1001];
@@ -971,23 +971,23 @@ LABEL_7:
   [(PXCuratedLibraryCardSectionBodyLayout *)self spec];
   if (!objc_claimAutoreleasedReturnValue())
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:76 description:{@"missing spec on %@", self}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:76 description:{@"missing spec on %@", self}];
   }
 
   [(PXCuratedLibraryCardSectionBodyLayout *)self displayScale];
   [(PXCuratedLibraryCardSectionBodyLayout *)self referenceSize];
   [(PXCuratedLibraryCardSectionBodyLayout *)self assetFrame];
-  v4 = [(PXCuratedLibraryCardSectionBodyLayout *)self keyAssetsFetchResult];
-  v5 = [v4 firstObject];
+  keyAssetsFetchResult = [(PXCuratedLibraryCardSectionBodyLayout *)self keyAssetsFetchResult];
+  firstObject = [keyAssetsFetchResult firstObject];
   keyAsset = self->_keyAsset;
-  self->_keyAsset = v5;
+  self->_keyAsset = firstObject;
 
   if (!self->_keyAsset)
   {
-    v7 = [(PXCuratedLibraryCardSectionBodyLayout *)self dataSource];
+    dataSource = [(PXCuratedLibraryCardSectionBodyLayout *)self dataSource];
     [(PXCuratedLibraryCardSectionBodyLayout *)self sectionIndexPath];
-    v8 = [v7 assetCollectionAtSectionIndexPath:buf];
+    v8 = [dataSource assetCollectionAtSectionIndexPath:buf];
 
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -1089,9 +1089,9 @@ void __55__PXCuratedLibraryCardSectionBodyLayout__updateSprites__block_invoke(ui
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v9 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v10 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout update]"];
-      [v9 handleFailureInFunction:v10 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v10 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:60 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -1104,9 +1104,9 @@ void __55__PXCuratedLibraryCardSectionBodyLayout__updateSprites__block_invoke(ui
       [(PXCuratedLibraryCardSectionBodyLayout *)self _updateSprites];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v11 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v12 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout update]"];
-        [v11 handleFailureInFunction:v12 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v12 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:64 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -1122,9 +1122,9 @@ void __55__PXCuratedLibraryCardSectionBodyLayout__updateSprites__block_invoke(ui
     p_updateFlags->isPerformingUpdate = 0;
     if (v5)
     {
-      v13 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout update]"];
-      [v13 handleFailureInFunction:v14 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:67 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler3 handleFailureInFunction:v14 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:67 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 
@@ -1140,16 +1140,16 @@ void __55__PXCuratedLibraryCardSectionBodyLayout__updateSprites__block_invoke(ui
       self->_postUpdateFlags.updated = 0;
       self->_postUpdateFlags.isPerformingUpdate = 0;
 LABEL_14:
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v8 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout update]"];
-      [v7 handleFailureInFunction:v8 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:71 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
+      [currentHandler4 handleFailureInFunction:v8 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:71 description:{@"still needing to update %lu after update pass", p_postUpdateFlags->needsUpdate}];
 
       return;
     }
 
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
     v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXCuratedLibraryCardSectionBodyLayout update]"];
-    [v15 handleFailureInFunction:v16 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
+    [currentHandler5 handleFailureInFunction:v16 file:@"PXCuratedLibraryCardSectionBodyLayout.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"!_postUpdateFlags.isPerformingUpdate"}];
 
     v17 = p_postUpdateFlags->needsUpdate;
     p_postUpdateFlags->updated = 0;

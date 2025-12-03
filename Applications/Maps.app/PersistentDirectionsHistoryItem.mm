@@ -1,26 +1,26 @@
 @interface PersistentDirectionsHistoryItem
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)transportTypeAsString:(int)a3;
-- (int)StringAsTransportType:(id)a3;
+- (id)transportTypeAsString:(int)string;
+- (int)StringAsTransportType:(id)type;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)setHasTransportType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)setHasTransportType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PersistentDirectionsHistoryItem
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   startSearchResult = self->_startSearchResult;
-  v6 = *(v4 + 6);
-  v10 = v4;
+  v6 = *(fromCopy + 6);
+  v10 = fromCopy;
   if (startSearchResult)
   {
     if (!v6)
@@ -41,10 +41,10 @@
     [(PersistentDirectionsHistoryItem *)self setStartSearchResult:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_7:
   endSearchResult = self->_endSearchResult;
-  v8 = *(v4 + 4);
+  v8 = *(fromCopy + 4);
   if (endSearchResult)
   {
     if (!v8)
@@ -65,32 +65,32 @@ LABEL_7:
     [(PersistentDirectionsHistoryItem *)self setEndSearchResult:?];
   }
 
-  v4 = v10;
+  fromCopy = v10;
 LABEL_13:
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(PersistentDirectionsHistoryItem *)self setDirectionsResponseID:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(PersistentDirectionsHistoryItem *)self setReportAProblemAttachment:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  if (*(v4 + 7))
+  if (*(fromCopy + 7))
   {
     [(PersistentDirectionsHistoryItem *)self setSyncIdentifier:?];
-    v4 = v10;
+    fromCopy = v10;
   }
 
-  v9 = *(v4 + 68);
+  v9 = *(fromCopy + 68);
   if (v9)
   {
-    self->_position = *(v4 + 1);
+    self->_position = *(fromCopy + 1);
     *&self->_has |= 1u;
-    v9 = *(v4 + 68);
+    v9 = *(fromCopy + 68);
     if ((v9 & 4) == 0)
     {
 LABEL_21:
@@ -103,17 +103,17 @@ LABEL_21:
     }
   }
 
-  else if ((*(v4 + 68) & 4) == 0)
+  else if ((*(fromCopy + 68) & 4) == 0)
   {
     goto LABEL_21;
   }
 
-  self->_transportType = *(v4 + 16);
+  self->_transportType = *(fromCopy + 16);
   *&self->_has |= 4u;
-  if ((*(v4 + 68) & 2) != 0)
+  if ((*(fromCopy + 68) & 2) != 0)
   {
 LABEL_22:
-    self->_timestamp = *(v4 + 2);
+    self->_timestamp = *(fromCopy + 2);
     *&self->_has |= 2u;
   }
 
@@ -192,16 +192,16 @@ LABEL_9:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v12 ^ v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_26;
   }
 
   startSearchResult = self->_startSearchResult;
-  if (startSearchResult | *(v4 + 6))
+  if (startSearchResult | *(equalCopy + 6))
   {
     if (![startSearchResult isEqual:?])
     {
@@ -210,7 +210,7 @@ LABEL_9:
   }
 
   endSearchResult = self->_endSearchResult;
-  if (endSearchResult | *(v4 + 4))
+  if (endSearchResult | *(equalCopy + 4))
   {
     if (![endSearchResult isEqual:?])
     {
@@ -219,7 +219,7 @@ LABEL_9:
   }
 
   directionsResponseID = self->_directionsResponseID;
-  if (directionsResponseID | *(v4 + 3))
+  if (directionsResponseID | *(equalCopy + 3))
   {
     if (![(NSData *)directionsResponseID isEqual:?])
     {
@@ -228,7 +228,7 @@ LABEL_9:
   }
 
   reportAProblemAttachment = self->_reportAProblemAttachment;
-  if (reportAProblemAttachment | *(v4 + 5))
+  if (reportAProblemAttachment | *(equalCopy + 5))
   {
     if (![(NSString *)reportAProblemAttachment isEqual:?])
     {
@@ -237,7 +237,7 @@ LABEL_9:
   }
 
   syncIdentifier = self->_syncIdentifier;
-  if (syncIdentifier | *(v4 + 7))
+  if (syncIdentifier | *(equalCopy + 7))
   {
     if (![(NSString *)syncIdentifier isEqual:?])
     {
@@ -247,13 +247,13 @@ LABEL_9:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_position != *(v4 + 1))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_position != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
 LABEL_26:
     v10 = 0;
@@ -262,21 +262,21 @@ LABEL_26:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 68) & 4) == 0 || self->_transportType != *(v4 + 16))
+    if ((*(equalCopy + 68) & 4) == 0 || self->_transportType != *(equalCopy + 16))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 68) & 4) != 0)
+  else if ((*(equalCopy + 68) & 4) != 0)
   {
     goto LABEL_26;
   }
 
-  v10 = (*(v4 + 68) & 2) == 0;
+  v10 = (*(equalCopy + 68) & 2) == 0;
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
@@ -289,26 +289,26 @@ LABEL_27:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [self->_startSearchResult copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [self->_startSearchResult copyWithZone:zone];
   v7 = v5[6];
   v5[6] = v6;
 
-  v8 = [self->_endSearchResult copyWithZone:a3];
+  v8 = [self->_endSearchResult copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(NSData *)self->_directionsResponseID copyWithZone:a3];
+  v10 = [(NSData *)self->_directionsResponseID copyWithZone:zone];
   v11 = v5[3];
   v5[3] = v10;
 
-  v12 = [(NSString *)self->_reportAProblemAttachment copyWithZone:a3];
+  v12 = [(NSString *)self->_reportAProblemAttachment copyWithZone:zone];
   v13 = v5[5];
   v5[5] = v12;
 
-  v14 = [(NSString *)self->_syncIdentifier copyWithZone:a3];
+  v14 = [(NSString *)self->_syncIdentifier copyWithZone:zone];
   v15 = v5[7];
   v5[7] = v14;
 
@@ -350,45 +350,45 @@ LABEL_4:
   return v5;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_startSearchResult)
   {
-    [v4 setStartSearchResult:?];
-    v4 = v6;
+    [toCopy setStartSearchResult:?];
+    toCopy = v6;
   }
 
   if (self->_endSearchResult)
   {
     [v6 setEndSearchResult:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_directionsResponseID)
   {
     [v6 setDirectionsResponseID:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_reportAProblemAttachment)
   {
     [v6 setReportAProblemAttachment:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_syncIdentifier)
   {
     [v6 setSyncIdentifier:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 1) = *&self->_position;
-    *(v4 + 68) |= 1u;
+    *(toCopy + 1) = *&self->_position;
+    *(toCopy + 68) |= 1u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -407,57 +407,57 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  *(v4 + 16) = self->_transportType;
-  *(v4 + 68) |= 4u;
+  *(toCopy + 16) = self->_transportType;
+  *(toCopy + 68) |= 4u;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_14:
-    *(v4 + 2) = *&self->_timestamp;
-    *(v4 + 68) |= 2u;
+    *(toCopy + 2) = *&self->_timestamp;
+    *(toCopy + 68) |= 2u;
   }
 
 LABEL_15:
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_startSearchResult)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_endSearchResult)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_directionsResponseID)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_reportAProblemAttachment)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_syncIdentifier)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if (has)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -477,12 +477,12 @@ LABEL_13:
   }
 
   PBDataWriterWriteInt32Field();
-  v4 = v6;
+  toCopy = v6;
   if ((*&self->_has & 2) != 0)
   {
 LABEL_14:
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 
 LABEL_15:
@@ -494,15 +494,15 @@ LABEL_15:
   startSearchResult = self->_startSearchResult;
   if (startSearchResult)
   {
-    v5 = [(SearchResultRepr *)startSearchResult dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"startSearchResult"];
+    dictionaryRepresentation = [(SearchResultRepr *)startSearchResult dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation forKey:@"startSearchResult"];
   }
 
   endSearchResult = self->_endSearchResult;
   if (endSearchResult)
   {
-    v7 = [(SearchResultRepr *)endSearchResult dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"endSearchResult"];
+    dictionaryRepresentation2 = [(SearchResultRepr *)endSearchResult dictionaryRepresentation];
+    [v3 setObject:dictionaryRepresentation2 forKey:@"endSearchResult"];
   }
 
   directionsResponseID = self->_directionsResponseID;
@@ -579,15 +579,15 @@ LABEL_15:
   v7.receiver = self;
   v7.super_class = PersistentDirectionsHistoryItem;
   v3 = [(PersistentDirectionsHistoryItem *)&v7 description];
-  v4 = [(PersistentDirectionsHistoryItem *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PersistentDirectionsHistoryItem *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }
@@ -600,40 +600,40 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsTransportType:(id)a3
+- (int)StringAsTransportType:(id)type
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"AUTOMOBILE"])
+  typeCopy = type;
+  if ([typeCopy isEqualToString:@"AUTOMOBILE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"TRANSIT"])
+  else if ([typeCopy isEqualToString:@"TRANSIT"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"WALKING"])
+  else if ([typeCopy isEqualToString:@"WALKING"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BICYCLE"])
+  else if ([typeCopy isEqualToString:@"BICYCLE"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"UNKNOWN_TRANSPORT_TYPE"])
+  else if ([typeCopy isEqualToString:@"UNKNOWN_TRANSPORT_TYPE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"FERRY"])
+  else if ([typeCopy isEqualToString:@"FERRY"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"RIDESHARE"])
+  else if ([typeCopy isEqualToString:@"RIDESHARE"])
   {
     v4 = 6;
   }
@@ -646,24 +646,24 @@ LABEL_15:
   return v4;
 }
 
-- (id)transportTypeAsString:(int)a3
+- (id)transportTypeAsString:(int)string
 {
-  if (a3 >= 7)
+  if (string >= 7)
   {
-    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+    v4 = [NSString stringWithFormat:@"(unknown: %i)", *&string];
   }
 
   else
   {
-    v4 = *(&off_101655248 + a3);
+    v4 = *(&off_101655248 + string);
   }
 
   return v4;
 }
 
-- (void)setHasTransportType:(BOOL)a3
+- (void)setHasTransportType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }

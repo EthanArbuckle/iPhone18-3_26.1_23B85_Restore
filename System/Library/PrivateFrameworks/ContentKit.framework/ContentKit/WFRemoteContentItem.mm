@@ -1,6 +1,6 @@
 @interface WFRemoteContentItem
-+ (id)itemWithSerializedItem:(id)a3 forType:(id)a4 named:(id)a5 attributionSet:(id)a6 cachingIdentifier:(id)a7;
-- (WFRemoteContentItem)initWithSerializedItem:(id)a3 named:(id)a4 attributionSet:(id)a5 cachingIdentifier:(id)a6;
++ (id)itemWithSerializedItem:(id)item forType:(id)type named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier;
+- (WFRemoteContentItem)initWithSerializedItem:(id)item named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier;
 - (id)name;
 - (id)preferredFileType;
 @end
@@ -9,43 +9,43 @@
 
 - (id)preferredFileType
 {
-  v3 = [(WFRemoteContentItem *)self serializedItem];
-  v4 = [v3 objectForKey:@"link.contentkit.remoteitem.preferredfiletype"];
+  serializedItem = [(WFRemoteContentItem *)self serializedItem];
+  v4 = [serializedItem objectForKey:@"link.contentkit.remoteitem.preferredfiletype"];
 
   if (v4)
   {
-    v5 = [MEMORY[0x277D79F68] typeWithString:v4];
+    preferredFileType = [MEMORY[0x277D79F68] typeWithString:v4];
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = WFRemoteContentItem;
-    v5 = [(WFContentItem *)&v8 preferredFileType];
+    preferredFileType = [(WFContentItem *)&v8 preferredFileType];
   }
 
-  v6 = v5;
+  v6 = preferredFileType;
 
   return v6;
 }
 
 - (id)name
 {
-  v2 = [(WFRemoteContentItem *)self serializedItem];
-  v3 = [v2 objectForKey:@"link.contentkit.name"];
+  serializedItem = [(WFRemoteContentItem *)self serializedItem];
+  v3 = [serializedItem objectForKey:@"link.contentkit.name"];
 
   return v3;
 }
 
-- (WFRemoteContentItem)initWithSerializedItem:(id)a3 named:(id)a4 attributionSet:(id)a5 cachingIdentifier:(id)a6
+- (WFRemoteContentItem)initWithSerializedItem:(id)item named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier
 {
-  v7 = a3;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = WFRemoteContentItem;
   v8 = [(WFRemoteContentItem *)&v13 init];
   if (v8)
   {
-    v9 = [v7 copy];
+    v9 = [itemCopy copy];
     serializedItem = v8->_serializedItem;
     v8->_serializedItem = v9;
 
@@ -55,13 +55,13 @@
   return v8;
 }
 
-+ (id)itemWithSerializedItem:(id)a3 forType:(id)a4 named:(id)a5 attributionSet:(id)a6 cachingIdentifier:(id)a7
++ (id)itemWithSerializedItem:(id)item forType:(id)type named:(id)named attributionSet:(id)set cachingIdentifier:(id)identifier
 {
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a3;
-  v15 = [[a1 alloc] initWithSerializedItem:v14 named:v13 attributionSet:v12 cachingIdentifier:v11];
+  identifierCopy = identifier;
+  setCopy = set;
+  namedCopy = named;
+  itemCopy = item;
+  v15 = [[self alloc] initWithSerializedItem:itemCopy named:namedCopy attributionSet:setCopy cachingIdentifier:identifierCopy];
 
   return v15;
 }

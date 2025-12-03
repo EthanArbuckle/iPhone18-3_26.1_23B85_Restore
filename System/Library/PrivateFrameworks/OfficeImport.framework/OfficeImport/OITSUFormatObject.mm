@@ -1,22 +1,22 @@
 @interface OITSUFormatObject
-+ (id)defaultDateFormat:(id)a3;
++ (id)defaultDateFormat:(id)format;
 + (id)defaultDurationFormat;
 - ($37D1E9AA147035CEEFF2BA7CE0E7535D)formatStruct;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (OITSUFormatObject)init;
-- (OITSUFormatObject)initWithTSUFormatFormatStruct:(id *)a3;
-- (OITSUFormatObject)initWithTSUFormatFormatStruct:(id *)a3 useExpandedContents:(BOOL)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (OITSUFormatObject)initWithTSUFormatFormatStruct:(id *)struct;
+- (OITSUFormatObject)initWithTSUFormatFormatStruct:(id *)struct useExpandedContents:(BOOL)contents;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)p_setFormatStruct:(id *)a3;
+- (void)p_setFormatStruct:(id *)struct;
 @end
 
 @implementation OITSUFormatObject
 
-+ (id)defaultDateFormat:(id)a3
++ (id)defaultDateFormat:(id)format
 {
-  if (!a3)
+  if (!format)
   {
     v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"TSUFormatStructDate TSUDefaultFormatStructDate(OITSULocale *)"];
     +[OITSUAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](OITSUAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v4, [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/OfficeImport/OfficeParser/shared/utility/TSUFormatStructUtilities.h"], 89, 0, "A locale is required.");
@@ -25,7 +25,7 @@
 
   v6[0] = 261;
   v6[1] = 0;
-  v6[2] = TSUDefaultDateTimeFormat(a3);
+  v6[2] = TSUDefaultDateTimeFormat(format);
   v6[3] = 0;
   v6[4] = 0;
   return [objc_alloc(objc_opt_class()) initWithTSUFormatFormatStruct:v6];
@@ -57,35 +57,35 @@
   return 0;
 }
 
-- (OITSUFormatObject)initWithTSUFormatFormatStruct:(id *)a3 useExpandedContents:(BOOL)a4
+- (OITSUFormatObject)initWithTSUFormatFormatStruct:(id *)struct useExpandedContents:(BOOL)contents
 {
   v13.receiver = self;
   v13.super_class = OITSUFormatObject;
   v6 = [(OITSUFormatObject *)&v13 init];
   if (v6)
   {
-    v7 = *&a3->var1.var7.var2;
-    v11[0] = *&a3->var0;
+    v7 = *&struct->var1.var7.var2;
+    v11[0] = *&struct->var0;
     v11[1] = v7;
-    v12 = *(&a3->var1.var7 + 3);
+    v12 = *(&struct->var1.var7 + 3);
     TSUFormatStructRetain(v11);
-    v8 = *&a3->var0;
-    v9 = *&a3->var1.var7.var2;
-    *(v6 + 5) = *(&a3->var1.var7 + 3);
+    v8 = *&struct->var0;
+    v9 = *&struct->var1.var7.var2;
+    *(v6 + 5) = *(&struct->var1.var7 + 3);
     *(v6 + 24) = v9;
     *(v6 + 8) = v8;
-    v6[48] = a4;
+    v6[48] = contents;
   }
 
   return v6;
 }
 
-- (OITSUFormatObject)initWithTSUFormatFormatStruct:(id *)a3
+- (OITSUFormatObject)initWithTSUFormatFormatStruct:(id *)struct
 {
-  v3 = *&a3->var1.var7.var2;
-  v5[0] = *&a3->var0;
+  v3 = *&struct->var1.var7.var2;
+  v5[0] = *&struct->var0;
   v5[1] = v3;
-  v6 = *(&a3->var1.var7 + 3);
+  v6 = *(&struct->var1.var7 + 3);
   return [(OITSUFormatObject *)self initWithTSUFormatFormatStruct:v5 useExpandedContents:0];
 }
 
@@ -101,7 +101,7 @@
   [(OITSUFormatObject *)&v4 dealloc];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [OITSUMutableFormatObject alloc];
   if (self)
@@ -127,21 +127,21 @@
   return self;
 }
 
-- (void)p_setFormatStruct:(id *)a3
+- (void)p_setFormatStruct:(id *)struct
 {
-  v5 = *&a3->var1.var7.var2;
-  v9 = *&a3->var0;
+  v5 = *&struct->var1.var7.var2;
+  v9 = *&struct->var0;
   v10 = v5;
-  v11 = *(&a3->var1.var7 + 3);
+  v11 = *(&struct->var1.var7 + 3);
   TSUFormatStructRetain(&v9);
   v6 = *&self->mFormatStruct.var0.mMultipleChoiceListFormatStruct.mData;
   v9 = *&self->mFormatStruct.mFormatType;
   v10 = v6;
   v11 = *(&self->mFormatStruct.var0.mMultipleChoiceListFormatStruct + 3);
   TSUFormatStructRelease(&v9);
-  v7 = *&a3->var0;
-  v8 = *&a3->var1.var7.var2;
-  *(&self->mFormatStruct.var0.mMultipleChoiceListFormatStruct + 3) = *(&a3->var1.var7 + 3);
+  v7 = *&struct->var0;
+  v8 = *&struct->var1.var7.var2;
+  *(&self->mFormatStruct.var0.mMultipleChoiceListFormatStruct + 3) = *(&struct->var1.var7 + 3);
   *&self->mFormatStruct.var0.mMultipleChoiceListFormatStruct.mData = v8;
   *&self->mFormatStruct.mFormatType = v7;
 }
@@ -164,11 +164,11 @@
   return TSUFormatStructHash(v6);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   v5 = objc_opt_class();
-  v6 = TSUSpecificCast(v5, a3);
-  if (v6 || (v7 = objc_opt_class(), (v6 = TSUSpecificCast(v7, a3)) != 0))
+  v6 = TSUSpecificCast(v5, equal);
+  if (v6 || (v7 = objc_opt_class(), (v6 = TSUSpecificCast(v7, equal)) != 0))
   {
     v8 = v6;
     mUseExpandedContents = self->mUseExpandedContents;

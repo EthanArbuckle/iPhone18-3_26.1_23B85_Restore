@@ -1,32 +1,32 @@
 @interface AggregateInputStream
-- (BOOL)setProperty:(id)a3 forKey:(id)a4;
+- (BOOL)setProperty:(id)property forKey:(id)key;
 - (NSError)streamError;
-- (_TtC15CTLazuliSupport20AggregateInputStream)initWithData:(id)a3;
-- (_TtC15CTLazuliSupport20AggregateInputStream)initWithURL:(id)a3;
-- (int64_t)read:(char *)a3 maxLength:(int64_t)a4;
+- (_TtC15CTLazuliSupport20AggregateInputStream)initWithData:(id)data;
+- (_TtC15CTLazuliSupport20AggregateInputStream)initWithURL:(id)l;
+- (int64_t)read:(char *)read maxLength:(int64_t)length;
 - (void)close;
 - (void)open;
 @end
 
 @implementation AggregateInputStream
 
-- (int64_t)read:(char *)a3 maxLength:(int64_t)a4
+- (int64_t)read:(char *)read maxLength:(int64_t)length
 {
-  v6 = self;
-  v7 = sub_242723920(a3, a4);
+  selfCopy = self;
+  v7 = sub_242723920(read, length);
 
   return v7;
 }
 
 - (void)open
 {
-  v2 = self;
+  selfCopy = self;
   sub_2427241C0();
 }
 
 - (void)close
 {
-  v2 = self;
+  selfCopy = self;
   sub_2427243DC();
 }
 
@@ -47,9 +47,9 @@
   return v4;
 }
 
-- (BOOL)setProperty:(id)a3 forKey:(id)a4
+- (BOOL)setProperty:(id)property forKey:(id)key
 {
-  if (a3)
+  if (property)
   {
     swift_unknownObjectRetain();
     sub_242732894();
@@ -65,9 +65,9 @@
   return 0;
 }
 
-- (_TtC15CTLazuliSupport20AggregateInputStream)initWithData:(id)a3
+- (_TtC15CTLazuliSupport20AggregateInputStream)initWithData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   sub_242731FC4();
 
   result = _swift_stdlib_reportUnimplementedInitializer();
@@ -75,7 +75,7 @@
   return result;
 }
 
-- (_TtC15CTLazuliSupport20AggregateInputStream)initWithURL:(id)a3
+- (_TtC15CTLazuliSupport20AggregateInputStream)initWithURL:(id)l
 {
   v3 = sub_242731F34();
   v4 = *(*(v3 - 8) + 64);

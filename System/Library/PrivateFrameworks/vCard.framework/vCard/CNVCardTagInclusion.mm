@@ -1,13 +1,13 @@
 @interface CNVCardTagInclusion
-+ (id)policyWithTags:(id)a3;
++ (id)policyWithTags:(id)tags;
 - (_TtC5vCard19CNVCardTagInclusion)init;
 @end
 
 @implementation CNVCardTagInclusion
 
-+ (id)policyWithTags:(id)a3
++ (id)policyWithTags:(id)tags
 {
-  if (a3)
+  if (tags)
   {
     v3 = sub_27721AD14();
     v4 = objc_allocWithZone(type metadata accessor for CNVCardTagInclusionRestrictedPolicy());

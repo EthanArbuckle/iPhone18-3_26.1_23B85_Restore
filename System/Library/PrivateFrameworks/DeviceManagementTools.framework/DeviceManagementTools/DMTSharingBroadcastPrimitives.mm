@@ -1,21 +1,21 @@
 @interface DMTSharingBroadcastPrimitives
-- (DMTSharingBroadcastPrimitives)initWithLoggingIdentifier:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (DMTSharingBroadcastPrimitives)initWithLoggingIdentifier:(id)identifier;
+- (void)activateWithCompletion:(id)completion;
 - (void)addDependencyHandlers;
 - (void)deactivate;
-- (void)invalidateWithError:(id)a3;
-- (void)removeDependencyHandlers:(BOOL)a3;
-- (void)sendMessageToPairedDevice:(id)a3;
+- (void)invalidateWithError:(id)error;
+- (void)removeDependencyHandlers:(BOOL)handlers;
+- (void)sendMessageToPairedDevice:(id)device;
 - (void)serviceReceivedObjectQueue;
-- (void)setMessageReceivedHandler:(id)a3;
-- (void)updateRemoteDeviceWithSession:(id)a3;
+- (void)setMessageReceivedHandler:(id)handler;
+- (void)updateRemoteDeviceWithSession:(id)session;
 @end
 
 @implementation DMTSharingBroadcastPrimitives
 
-- (DMTSharingBroadcastPrimitives)initWithLoggingIdentifier:(id)a3
+- (DMTSharingBroadcastPrimitives)initWithLoggingIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = DMTSharingBroadcastPrimitives;
   v5 = [(DMTSharingBroadcastPrimitives *)&v13 init];
@@ -33,7 +33,7 @@
     sharingService = v5->_sharingService;
     v5->_sharingService = v10;
 
-    [(SFService *)v5->_sharingService setLabel:v4];
+    [(SFService *)v5->_sharingService setLabel:identifierCopy];
     [(SFService *)v5->_sharingService setIdentifier:*MEMORY[0x277D54D70]];
     [(SFService *)v5->_sharingService setDeviceActionType:21];
     [(SFService *)v5->_sharingService setNeedsSetup:1];
@@ -43,9 +43,9 @@
   return v5;
 }
 
-- (void)setMessageReceivedHandler:(id)a3
+- (void)setMessageReceivedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = MEMORY[0x24C1DD740]();
   messageReceivedHandler = self->_messageReceivedHandler;
   self->_messageReceivedHandler = v5;
@@ -53,13 +53,13 @@
   if (self->_messageReceivedHandler)
   {
     objc_initWeak(&location, self);
-    v7 = [(DMTSharingBroadcastPrimitives *)self broadcastCallbackQueue];
+    broadcastCallbackQueue = [(DMTSharingBroadcastPrimitives *)self broadcastCallbackQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __59__DMTSharingBroadcastPrimitives_setMessageReceivedHandler___block_invoke;
     v8[3] = &unk_278F5E3E0;
     objc_copyWeak(&v9, &location);
-    dispatch_async(v7, v8);
+    dispatch_async(broadcastCallbackQueue, v8);
 
     objc_destroyWeak(&v9);
     objc_destroyWeak(&location);
@@ -77,20 +77,20 @@ void __59__DMTSharingBroadcastPrimitives_setMessageReceivedHandler___block_invok
   }
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   [(DMTSharingBroadcastPrimitives *)self addDependencyHandlers];
   objc_initWeak(&location, self);
-  v5 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  sharingService = [(DMTSharingBroadcastPrimitives *)self sharingService];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__DMTSharingBroadcastPrimitives_activateWithCompletion___block_invoke;
   v7[3] = &unk_278F5E3B8;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = completionCopy;
   v8 = v6;
-  [v5 activateWithCompletion:v7];
+  [sharingService activateWithCompletion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -109,21 +109,21 @@ void __56__DMTSharingBroadcastPrimitives_activateWithCompletion___block_invoke(u
 
 - (void)deactivate
 {
-  v2 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-  [v2 invalidate];
+  sharingService = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  [sharingService invalidate];
 }
 
-- (void)sendMessageToPairedDevice:(id)a3
+- (void)sendMessageToPairedDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(DMTSharingBroadcastPrimitives *)self remoteDevice];
+  deviceCopy = device;
+  remoteDevice = [(DMTSharingBroadcastPrimitives *)self remoteDevice];
 
-  if (v5)
+  if (remoteDevice)
   {
-    v6 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-    v7 = [(DMTSharingBroadcastPrimitives *)self remoteDevice];
-    v8 = [v7 identifier];
-    [v6 sendToPeer:v8 flags:1 object:v4];
+    sharingService = [(DMTSharingBroadcastPrimitives *)self sharingService];
+    remoteDevice2 = [(DMTSharingBroadcastPrimitives *)self remoteDevice];
+    identifier = [remoteDevice2 identifier];
+    [sharingService sendToPeer:identifier flags:1 object:deviceCopy];
   }
 
   else
@@ -144,72 +144,72 @@ void __56__DMTSharingBroadcastPrimitives_activateWithCompletion___block_invoke(u
   v28[2] = __54__DMTSharingBroadcastPrimitives_addDependencyHandlers__block_invoke;
   v28[3] = &unk_278F5E3E0;
   objc_copyWeak(&v29, location);
-  v3 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-  [v3 setInvalidationHandler:v28];
+  sharingService = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  [sharingService setInvalidationHandler:v28];
 
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __54__DMTSharingBroadcastPrimitives_addDependencyHandlers__block_invoke_2;
   v26[3] = &unk_278F5E3E0;
   objc_copyWeak(&v27, location);
-  v4 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-  [v4 setInterruptionHandler:v26];
+  sharingService2 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  [sharingService2 setInterruptionHandler:v26];
 
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __54__DMTSharingBroadcastPrimitives_addDependencyHandlers__block_invoke_5;
   v24[3] = &unk_278F5E390;
   objc_copyWeak(&v25, location);
-  v5 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-  [v5 setErrorHandler:v24];
+  sharingService3 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  [sharingService3 setErrorHandler:v24];
 
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __54__DMTSharingBroadcastPrimitives_addDependencyHandlers__block_invoke_6;
   v22[3] = &unk_278F5E4B8;
   objc_copyWeak(&v23, location);
-  v6 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-  [v6 setShowPINHandlerEx:v22];
+  sharingService4 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  [sharingService4 setShowPINHandlerEx:v22];
 
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __54__DMTSharingBroadcastPrimitives_addDependencyHandlers__block_invoke_2_8;
   v20[3] = &unk_278F5E3E0;
   objc_copyWeak(&v21, location);
-  v7 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-  [v7 setHidePINHandler:v20];
+  sharingService5 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  [sharingService5 setHidePINHandler:v20];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __54__DMTSharingBroadcastPrimitives_addDependencyHandlers__block_invoke_3;
   v18[3] = &unk_278F5E508;
   objc_copyWeak(&v19, location);
-  v8 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-  [v8 setSessionStartedHandler:v18];
+  sharingService6 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  [sharingService6 setSessionStartedHandler:v18];
 
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __54__DMTSharingBroadcastPrimitives_addDependencyHandlers__block_invoke_31;
   v16[3] = &unk_278F5E508;
   objc_copyWeak(&v17, location);
-  v9 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-  [v9 setSessionSecuredHandler:v16];
+  sharingService7 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  [sharingService7 setSessionSecuredHandler:v16];
 
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __54__DMTSharingBroadcastPrimitives_addDependencyHandlers__block_invoke_32;
   v14[3] = &unk_278F5E530;
   objc_copyWeak(&v15, location);
-  v10 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-  [v10 setSessionEndedHandler:v14];
+  sharingService8 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  [sharingService8 setSessionEndedHandler:v14];
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __54__DMTSharingBroadcastPrimitives_addDependencyHandlers__block_invoke_34;
   v12[3] = &unk_278F5E558;
   objc_copyWeak(&v13, location);
-  v11 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-  [v11 setReceivedObjectHandler:v12];
+  sharingService9 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  [sharingService9 setReceivedObjectHandler:v12];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&v15);
@@ -496,61 +496,61 @@ void __54__DMTSharingBroadcastPrimitives_addDependencyHandlers__block_invoke_34(
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDependencyHandlers:(BOOL)a3
+- (void)removeDependencyHandlers:(BOOL)handlers
 {
-  v5 = [(DMTSharingBroadcastPrimitives *)self broadcastCallbackQueue];
+  broadcastCallbackQueue = [(DMTSharingBroadcastPrimitives *)self broadcastCallbackQueue];
   MEMORY[0x24C1DD2C0]();
 
-  v6 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-  [v6 setSessionStartedHandler:0];
+  sharingService = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  [sharingService setSessionStartedHandler:0];
 
-  v7 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-  [v7 setShowPINHandler:0];
+  sharingService2 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  [sharingService2 setShowPINHandler:0];
 
-  v8 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-  [v8 setSessionSecuredHandler:0];
+  sharingService3 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+  [sharingService3 setSessionSecuredHandler:0];
 
-  if (!a3)
+  if (!handlers)
   {
-    v9 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-    [v9 setInvalidationHandler:0];
+    sharingService4 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+    [sharingService4 setInvalidationHandler:0];
 
-    v10 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-    [v10 setInterruptionHandler:0];
+    sharingService5 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+    [sharingService5 setInterruptionHandler:0];
 
-    v11 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-    [v11 setHidePINHandler:0];
+    sharingService6 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+    [sharingService6 setHidePINHandler:0];
 
-    v12 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-    [v12 setSessionEndedHandler:0];
+    sharingService7 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+    [sharingService7 setSessionEndedHandler:0];
 
-    v13 = [(DMTSharingBroadcastPrimitives *)self sharingService];
-    [v13 setReceivedObjectHandler:0];
+    sharingService8 = [(DMTSharingBroadcastPrimitives *)self sharingService];
+    [sharingService8 setReceivedObjectHandler:0];
   }
 }
 
-- (void)invalidateWithError:(id)a3
+- (void)invalidateWithError:(id)error
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   v5 = _DMTLogGeneral_1();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [DMTSharingBroadcastPrimitives invalidateWithError:];
   }
 
-  v6 = [(DMTSharingBroadcastPrimitives *)self broadcastCallbackQueue];
+  broadcastCallbackQueue = [(DMTSharingBroadcastPrimitives *)self broadcastCallbackQueue];
   MEMORY[0x24C1DD2C0]();
 
   [(DMTSharingBroadcastPrimitives *)self setInvalidated:1];
-  v7 = [(DMTSharingBroadcastPrimitives *)self invalidationHandler];
-  if (v7)
+  invalidationHandler = [(DMTSharingBroadcastPrimitives *)self invalidationHandler];
+  if (invalidationHandler)
   {
     v11 = *MEMORY[0x277CCA7E8];
-    v12[0] = v4;
+    v12[0] = errorCopy;
     v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v9 = DMTErrorWithCodeAndUserInfo(30, v8);
-    (v7)[2](v7, v9);
+    (invalidationHandler)[2](invalidationHandler, v9);
   }
 
   [(DMTSharingBroadcastPrimitives *)self removeDependencyHandlers:0];
@@ -558,17 +558,17 @@ void __54__DMTSharingBroadcastPrimitives_addDependencyHandlers__block_invoke_34(
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateRemoteDeviceWithSession:(id)a3
+- (void)updateRemoteDeviceWithSession:(id)session
 {
-  v4 = a3;
-  v5 = [(DMTSharingBroadcastPrimitives *)self broadcastCallbackQueue];
+  sessionCopy = session;
+  broadcastCallbackQueue = [(DMTSharingBroadcastPrimitives *)self broadcastCallbackQueue];
   MEMORY[0x24C1DD2C0]();
 
-  v6 = [v4 peerDevice];
+  peerDevice = [sessionCopy peerDevice];
 
-  if (v6)
+  if (peerDevice)
   {
-    v7 = [[DMTSharingDevice alloc] initWithDevice:v6];
+    v7 = [[DMTSharingDevice alloc] initWithDevice:peerDevice];
   }
 
   else
@@ -589,8 +589,8 @@ void __54__DMTSharingBroadcastPrimitives_addDependencyHandlers__block_invoke_34(
 {
   v10 = *MEMORY[0x277D85DE8];
   v1 = MEMORY[0x277CCABB0];
-  v2 = [a1 receivedObjectQueue];
-  v3 = [v1 numberWithUnsignedInteger:{objc_msgSend(v2, "count")}];
+  receivedObjectQueue = [self receivedObjectQueue];
+  v3 = [v1 numberWithUnsignedInteger:{objc_msgSend(receivedObjectQueue, "count")}];
   OUTLINED_FUNCTION_1();
   OUTLINED_FUNCTION_2();
   _os_log_debug_impl(v4, v5, v6, v7, v8, 0xCu);

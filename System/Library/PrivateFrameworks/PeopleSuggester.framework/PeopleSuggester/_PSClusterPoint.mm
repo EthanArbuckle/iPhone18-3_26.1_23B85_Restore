@@ -1,55 +1,55 @@
 @interface _PSClusterPoint
-- (BOOL)inConvexHull:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (_PSClusterPoint)initWithCoder:(id)a3;
-- (_PSClusterPoint)initWithDate:(id)a3;
-- (_PSClusterPoint)initWithX:(double)a3 Y:(double)a4;
-- (double)distanceToHull:(id)a3;
-- (double)distanceToLineFormedByStart:(id)a3 End:(id)a4;
-- (double)euclideanDistanceToPoint:(id)a3;
+- (BOOL)inConvexHull:(id)hull;
+- (BOOL)isEqual:(id)equal;
+- (_PSClusterPoint)initWithCoder:(id)coder;
+- (_PSClusterPoint)initWithDate:(id)date;
+- (_PSClusterPoint)initWithX:(double)x Y:(double)y;
+- (double)distanceToHull:(id)hull;
+- (double)distanceToLineFormedByStart:(id)start End:(id)end;
+- (double)euclideanDistanceToPoint:(id)point;
 - (id)description;
-- (int)findSideOfLineFormedByStart:(id)a3 End:(id)a4;
+- (int)findSideOfLineFormedByStart:(id)start End:(id)end;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _PSClusterPoint
 
-- (_PSClusterPoint)initWithDate:(id)a3
+- (_PSClusterPoint)initWithDate:(id)date
 {
-  v5 = a3;
+  dateCopy = date;
   v28.receiver = self;
   v28.super_class = _PSClusterPoint;
   v6 = [(_PSClusterPoint *)&v28 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_timestamp, a3);
+    objc_storeStrong(&v6->_timestamp, date);
     v7->_timestampExists = 1;
     v8 = objc_alloc_init(MEMORY[0x1E696AB78]);
     [v8 setDateFormat:@"HH"];
     v9 = MEMORY[0x1E696AEC0];
-    v10 = [v8 stringFromDate:v5];
+    v10 = [v8 stringFromDate:dateCopy];
     v11 = [v9 stringWithFormat:@"%@", v10];
     [v11 doubleValue];
     v13 = v12;
 
     [v8 setDateFormat:@"mm"];
     v14 = MEMORY[0x1E696AEC0];
-    v15 = [v8 stringFromDate:v5];
+    v15 = [v8 stringFromDate:dateCopy];
     v16 = [v14 stringWithFormat:@"%@", v15];
     [v16 doubleValue];
     v18 = v17;
 
     [v8 setDateFormat:@"ss"];
     v19 = MEMORY[0x1E696AEC0];
-    v20 = [v8 stringFromDate:v5];
+    v20 = [v8 stringFromDate:dateCopy];
     v21 = [v19 stringWithFormat:@"%@", v20];
     [v21 doubleValue];
     v23 = v22;
 
-    v24 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v25 = [v24 component:512 fromDate:v5];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v25 = [currentCalendar component:512 fromDate:dateCopy];
     v26 = __sincos_stret((v18 + v13 * 60.0 + v23 / 60.0 + v18 + v13 * 60.0 + v23 / 60.0) * 3.14159265 / 1440.0);
     v7->_x = v26.__cosval * v25;
     v7->_y = v26.__sinval * v25;
@@ -58,25 +58,25 @@
   return v7;
 }
 
-- (_PSClusterPoint)initWithX:(double)a3 Y:(double)a4
+- (_PSClusterPoint)initWithX:(double)x Y:(double)y
 {
   v7.receiver = self;
   v7.super_class = _PSClusterPoint;
   result = [(_PSClusterPoint *)&v7 init];
   if (result)
   {
-    result->_x = a3;
-    result->_y = a4;
+    result->_x = x;
+    result->_y = y;
     result->_timestampExists = 0;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v6 = a3;
-  if (self == v6)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -89,9 +89,9 @@
       timestampExists = self->_timestampExists;
       if (timestampExists)
       {
-        v3 = [(_PSClusterPoint *)self timestamp];
-        v4 = [(_PSClusterPoint *)v6 timestamp];
-        if ([v3 isEqual:v4])
+        timestamp = [(_PSClusterPoint *)self timestamp];
+        timestamp2 = [(_PSClusterPoint *)equalCopy timestamp];
+        if ([timestamp isEqual:timestamp2])
         {
           v8 = 1;
           goto LABEL_10;
@@ -100,7 +100,7 @@
 
       [(_PSClusterPoint *)self x];
       v10 = v9;
-      [(_PSClusterPoint *)v6 x];
+      [(_PSClusterPoint *)equalCopy x];
       if (v10 != v11)
       {
         v8 = 0;
@@ -114,7 +114,7 @@
 
       [(_PSClusterPoint *)self y];
       v13 = v12;
-      [(_PSClusterPoint *)v6 y];
+      [(_PSClusterPoint *)equalCopy y];
       v8 = v13 == v14;
       if (timestampExists)
       {
@@ -141,40 +141,40 @@ LABEL_11:
   return (v4 * v5);
 }
 
-- (double)euclideanDistanceToPoint:(id)a3
+- (double)euclideanDistanceToPoint:(id)point
 {
   x = self->_x;
-  v5 = a3;
-  [v5 x];
+  pointCopy = point;
+  [pointCopy x];
   v7 = (x - v6) * (x - v6);
   y = self->_y;
-  [v5 y];
+  [pointCopy y];
   v10 = v9;
 
   return sqrt(v7 + (y - v10) * (y - v10));
 }
 
-- (double)distanceToLineFormedByStart:(id)a3 End:(id)a4
+- (double)distanceToLineFormedByStart:(id)start End:(id)end
 {
-  v6 = a3;
-  v7 = a4;
-  [v7 x];
+  startCopy = start;
+  endCopy = end;
+  [endCopy x];
   v9 = v8;
-  [v6 x];
+  [startCopy x];
   v11 = v9 - v10;
   [(_PSClusterPoint *)self x];
   v13 = v12;
-  [v6 x];
+  [startCopy x];
   v15 = v13 - v14;
-  [v7 y];
+  [endCopy y];
   v17 = v16;
-  [v6 y];
+  [startCopy y];
   v19 = v17 - v18;
   [(_PSClusterPoint *)self y];
   v21 = v20;
-  [v6 y];
+  [startCopy y];
   v23 = v19 * (v21 - v22) + v11 * v15;
-  [v6 euclideanDistanceToPoint:v7];
+  [startCopy euclideanDistanceToPoint:endCopy];
   v25 = v23 / (v24 * v24);
   v26 = 0.0;
   if (v25 >= 0.0)
@@ -188,44 +188,44 @@ LABEL_11:
 
   [(_PSClusterPoint *)self x];
   v28 = v27;
-  [v6 x];
+  [startCopy x];
   v30 = v28 - v29;
-  [v7 x];
+  [endCopy x];
   v32 = v31;
-  [v6 x];
+  [startCopy x];
   v34 = (v30 - v26 * (v32 - v33)) * (v30 - v26 * (v32 - v33));
   [(_PSClusterPoint *)self y];
   v36 = v35;
-  [v6 y];
+  [startCopy y];
   v38 = v36 - v37;
-  [v7 y];
+  [endCopy y];
   v40 = v39;
-  [v6 y];
+  [startCopy y];
   v42 = sqrt(v34 + (v38 - v26 * (v40 - v41)) * (v38 - v26 * (v40 - v41)));
 
   return v42;
 }
 
-- (int)findSideOfLineFormedByStart:(id)a3 End:(id)a4
+- (int)findSideOfLineFormedByStart:(id)start End:(id)end
 {
-  v6 = a4;
-  v7 = a3;
-  [v6 x];
+  endCopy = end;
+  startCopy = start;
+  [endCopy x];
   v9 = v8;
-  [v7 x];
+  [startCopy x];
   v11 = v9 - v10;
   [(_PSClusterPoint *)self y];
   v13 = v12;
-  [v7 y];
+  [startCopy y];
   v15 = v13 - v14;
-  [v6 y];
+  [endCopy y];
   v17 = v16;
 
-  [v7 y];
+  [startCopy y];
   v19 = v17 - v18;
   [(_PSClusterPoint *)self x];
   v21 = v20;
-  [v7 x];
+  [startCopy x];
   v23 = v22;
 
   v24 = v11 * v15 - v19 * (v21 - v23);
@@ -250,21 +250,21 @@ LABEL_11:
   }
 }
 
-- (BOOL)inConvexHull:(id)a3
+- (BOOL)inConvexHull:(id)hull
 {
-  v4 = a3;
+  hullCopy = hull;
   v5 = 0;
   do
   {
     v6 = v5;
-    v7 = [v4 count];
+    v7 = [hullCopy count];
     if (v5 >= v7)
     {
       break;
     }
 
-    v8 = [v4 objectAtIndexedSubscript:v5];
-    v9 = [v4 objectAtIndexedSubscript:{++v5 % objc_msgSend(v4, "count")}];
+    v8 = [hullCopy objectAtIndexedSubscript:v5];
+    v9 = [hullCopy objectAtIndexedSubscript:{++v5 % objc_msgSend(hullCopy, "count")}];
     v10 = [(_PSClusterPoint *)self findSideOfLineFormedByStart:v8 End:v9];
   }
 
@@ -273,19 +273,19 @@ LABEL_11:
   return v6 >= v7;
 }
 
-- (double)distanceToHull:(id)a3
+- (double)distanceToHull:(id)hull
 {
-  v4 = a3;
-  if ([v4 count])
+  hullCopy = hull;
+  if ([hullCopy count])
   {
-    if ([v4 count])
+    if ([hullCopy count])
     {
       v5 = 0;
       v6 = 1.79769313e308;
       do
       {
-        v7 = [v4 objectAtIndexedSubscript:v5];
-        v8 = [v4 objectAtIndexedSubscript:{++v5 % objc_msgSend(v4, "count")}];
+        v7 = [hullCopy objectAtIndexedSubscript:v5];
+        v8 = [hullCopy objectAtIndexedSubscript:{++v5 % objc_msgSend(hullCopy, "count")}];
         [(_PSClusterPoint *)self distanceToLineFormedByStart:v7 End:v8];
         v10 = v9;
 
@@ -295,7 +295,7 @@ LABEL_11:
         }
       }
 
-      while (v5 < [v4 count]);
+      while (v5 < [hullCopy count]);
     }
 
     else
@@ -303,7 +303,7 @@ LABEL_11:
       v6 = 1.79769313e308;
     }
 
-    if ([(_PSClusterPoint *)self inConvexHull:v4])
+    if ([(_PSClusterPoint *)self inConvexHull:hullCopy])
     {
       v11 = -v6;
     }
@@ -346,8 +346,8 @@ LABEL_11:
   v10 = v9;
   if (self->_timestamp)
   {
-    v11 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v12 = [v4 initWithFormat:@"<_PSClusterPoint %p> timestampExists=%d timestamp=%@ (%@:%@:%@ weekday=%ld) x=%f y=%f", self, timestampExists, timestamp, v7, v8, v10, objc_msgSend(v11, "component:fromDate:", 512, self->_timestamp), *&self->_x, *&self->_y];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v12 = [v4 initWithFormat:@"<_PSClusterPoint %p> timestampExists=%d timestamp=%@ (%@:%@:%@ weekday=%ld) x=%f y=%f", self, timestampExists, timestamp, v7, v8, v10, objc_msgSend(currentCalendar, "component:fromDate:", 512, self->_timestamp), *&self->_x, *&self->_y];
   }
 
   else
@@ -358,20 +358,20 @@ LABEL_11:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_PSClusterPoint *)self timestamp];
+  coderCopy = coder;
+  timestamp = [(_PSClusterPoint *)self timestamp];
   v5 = NSStringFromSelector(sel_timestamp);
-  [v4 encodeObject:v6 forKey:v5];
+  [coderCopy encodeObject:timestamp forKey:v5];
 }
 
-- (_PSClusterPoint)initWithCoder:(id)a3
+- (_PSClusterPoint)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_timestamp);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = [(_PSClusterPoint *)self initWithDate:v7];
   return v8;

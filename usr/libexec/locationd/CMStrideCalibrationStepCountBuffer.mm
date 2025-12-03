@@ -2,7 +2,7 @@
 - (id).cxx_construct;
 - (unsigned)stepsInWindow;
 - (void)ageOutStepArray;
-- (void)feedStepCountUpdate:(const NotificationData *)a3;
+- (void)feedStepCountUpdate:(const NotificationData *)update;
 @end
 
 @implementation CMStrideCalibrationStepCountBuffer
@@ -44,14 +44,14 @@
   return (*(self->fStepWindow.c.__map_.__begin_ + (((size + start - 1) >> 5) & 0x7FFFFFFFFFFFFF8)))[4 * (size + start - 1) + 2] - (*(self->fStepWindow.c.__map_.__begin_ + ((start >> 5) & 0x7FFFFFFFFFFFFF8)))[4 * start + 2];
 }
 
-- (void)feedStepCountUpdate:(const NotificationData *)a3
+- (void)feedStepCountUpdate:(const NotificationData *)update
 {
   [(CMStrideCalibrationStepCountBuffer *)self ageOutStepArray];
   size = self->fStepWindow.c.__size_;
-  if (!size || (*(self->fStepWindow.c.__map_.__begin_ + (((size + self->fStepWindow.c.__start_ - 1) >> 5) & 0x7FFFFFFFFFFFFF8)))[4 * (size + LOBYTE(self->fStepWindow.c.__start_) - 1) + 2] != *(a3 + 8))
+  if (!size || (*(self->fStepWindow.c.__map_.__begin_ + (((size + self->fStepWindow.c.__start_ - 1) >> 5) & 0x7FFFFFFFFFFFFF8)))[4 * (size + LOBYTE(self->fStepWindow.c.__start_) - 1) + 2] != *(update + 8))
   {
 
-    sub_100248C10(&self->fStepWindow.c.__map_.__first_, a3 + 2, a3 + 8);
+    sub_100248C10(&self->fStepWindow.c.__map_.__first_, update + 2, update + 8);
   }
 }
 

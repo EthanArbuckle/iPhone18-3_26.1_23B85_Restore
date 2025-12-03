@@ -1,12 +1,12 @@
 @interface CRCharacterOutputRegion
-+ (id)characterWithText:(id)a3 confidence:(unint64_t)a4 quad:(id)a5 baselineAngle:(double)a6;
-+ (id)characterWithTextFeature:(id)a3 imageSize:(CGSize)a4 confidenceThresholdProvider:(id)a5;
-+ (id)characterWithTextFeature:(uint64_t)a3 candidateIdx:(void *)a4 imageSize:(uint64_t)a5 confidenceThresholdProvider:(void *)a6;
-- (BOOL)isEqual:(id)a3;
++ (id)characterWithText:(id)text confidence:(unint64_t)confidence quad:(id)quad baselineAngle:(double)angle;
++ (id)characterWithTextFeature:(id)feature imageSize:(CGSize)size confidenceThresholdProvider:(id)provider;
++ (id)characterWithTextFeature:(uint64_t)feature candidateIdx:(void *)idx imageSize:(uint64_t)size confidenceThresholdProvider:(void *)provider;
+- (BOOL)isEqual:(id)equal;
 - (CRCharacterOutputRegion)init;
-- (CRCharacterOutputRegion)initWithCRCodableDataRepresentation:(id)a3 version:(int64_t)a4 offset:(unint64_t *)a5;
+- (CRCharacterOutputRegion)initWithCRCodableDataRepresentation:(id)representation version:(int64_t)version offset:(unint64_t *)offset;
 - (id)contentBaselines;
-- (id)copyWithZone:(_NSZone *)a3 copyChildren:(BOOL)a4 copyCandidates:(BOOL)a5 deepCopy:(BOOL)a6;
+- (id)copyWithZone:(_NSZone *)zone copyChildren:(BOOL)children copyCandidates:(BOOL)candidates deepCopy:(BOOL)copy;
 - (id)crCodableDataRepresentation;
 @end
 
@@ -28,16 +28,16 @@
   return v3;
 }
 
-- (CRCharacterOutputRegion)initWithCRCodableDataRepresentation:(id)a3 version:(int64_t)a4 offset:(unint64_t *)a5
+- (CRCharacterOutputRegion)initWithCRCodableDataRepresentation:(id)representation version:(int64_t)version offset:(unint64_t *)offset
 {
-  v8 = a3;
+  representationCopy = representation;
   v15.receiver = self;
   v15.super_class = CRCharacterOutputRegion;
-  v9 = [(CROutputRegion *)&v15 initWithCRCodableDataRepresentation:v8 version:a4 offset:a5];
+  v9 = [(CROutputRegion *)&v15 initWithCRCodableDataRepresentation:representationCopy version:version offset:offset];
   if (v9)
   {
     v10 = [CRNormalizedPolyline alloc];
-    v11 = [CRCodingUtilities objectDataFromEncodingData:v8 offset:a5];
+    v11 = [CRCodingUtilities objectDataFromEncodingData:representationCopy offset:offset];
     v12 = [(CRNormalizedPolyline *)v10 initWithCRCodableDataRepresentation:v11];
     baseline = v9->_baseline;
     v9->_baseline = v12;
@@ -51,8 +51,8 @@
   v3 = MEMORY[0x1E695DF88];
   v9.receiver = self;
   v9.super_class = CRCharacterOutputRegion;
-  v4 = [(CROutputRegion *)&v9 crCodableDataRepresentation];
-  v5 = [v3 dataWithData:v4];
+  crCodableDataRepresentation = [(CROutputRegion *)&v9 crCodableDataRepresentation];
+  v5 = [v3 dataWithData:crCodableDataRepresentation];
 
   if (self)
   {
@@ -69,36 +69,36 @@
   return v5;
 }
 
-+ (id)characterWithTextFeature:(id)a3 imageSize:(CGSize)a4 confidenceThresholdProvider:(id)a5
++ (id)characterWithTextFeature:(id)feature imageSize:(CGSize)size confidenceThresholdProvider:(id)provider
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = a5;
-  v11 = [(CRCharacterOutputRegion *)width characterWithTextFeature:a1 candidateIdx:v9 imageSize:0 confidenceThresholdProvider:v10];
-  v12 = [v9 stringValueCandidates];
-  v13 = [v12 count];
+  height = size.height;
+  width = size.width;
+  featureCopy = feature;
+  providerCopy = provider;
+  v11 = [(CRCharacterOutputRegion *)width characterWithTextFeature:self candidateIdx:featureCopy imageSize:0 confidenceThresholdProvider:providerCopy];
+  stringValueCandidates = [featureCopy stringValueCandidates];
+  v13 = [stringValueCandidates count];
 
   if (v13 >= 2)
   {
     v14 = MEMORY[0x1E695DF70];
-    v15 = [v9 stringValueCandidates];
-    v16 = [v14 arrayWithCapacity:{objc_msgSend(v15, "count")}];
+    stringValueCandidates2 = [featureCopy stringValueCandidates];
+    v16 = [v14 arrayWithCapacity:{objc_msgSend(stringValueCandidates2, "count")}];
 
-    v17 = [v9 stringValueCandidates];
-    v18 = [v17 count];
+    stringValueCandidates3 = [featureCopy stringValueCandidates];
+    v18 = [stringValueCandidates3 count];
 
     if (v18)
     {
       v19 = 0;
       do
       {
-        v20 = [(CRCharacterOutputRegion *)width characterWithTextFeature:a1 candidateIdx:v9 imageSize:v19 confidenceThresholdProvider:v10];
+        v20 = [(CRCharacterOutputRegion *)width characterWithTextFeature:self candidateIdx:featureCopy imageSize:v19 confidenceThresholdProvider:providerCopy];
         [v16 addObject:v20];
 
         ++v19;
-        v21 = [v9 stringValueCandidates];
-        v22 = [v21 count];
+        stringValueCandidates4 = [featureCopy stringValueCandidates];
+        v22 = [stringValueCandidates4 count];
       }
 
       while (v19 < v22);
@@ -113,74 +113,74 @@
   return v11;
 }
 
-+ (id)characterWithTextFeature:(uint64_t)a3 candidateIdx:(void *)a4 imageSize:(uint64_t)a5 confidenceThresholdProvider:(void *)a6
++ (id)characterWithTextFeature:(uint64_t)feature candidateIdx:(void *)idx imageSize:(uint64_t)size confidenceThresholdProvider:(void *)provider
 {
-  v10 = a6;
-  v11 = a4;
+  providerCopy = provider;
+  idxCopy = idx;
   v12 = objc_opt_self();
-  v13 = [v11 selectedLocale];
-  v14 = [v10 thresholdsForTextRegion:v11 withLocale:v13];
+  selectedLocale = [idxCopy selectedLocale];
+  v14 = [providerCopy thresholdsForTextRegion:idxCopy withLocale:selectedLocale];
 
-  v15 = [v11 candidateProbs];
-  v16 = [v15 objectAtIndexedSubscript:a5];
+  candidateProbs = [idxCopy candidateProbs];
+  v16 = [candidateProbs objectAtIndexedSubscript:size];
   [v16 doubleValue];
   v17 = [CRImageReaderOutput confidenceLevelForConfidenceScore:v14 confidenceThresholds:?];
 
   v18 = [CRNormalizedQuad alloc];
-  [v11 topLeft];
+  [idxCopy topLeft];
   v20 = v19;
   v22 = v21;
-  [v11 topRight];
+  [idxCopy topRight];
   v24 = v23;
   v26 = v25;
-  [v11 bottomRight];
+  [idxCopy bottomRight];
   v28 = v27;
   v30 = v29;
-  [v11 bottomLeft];
-  v33 = [(CRNormalizedQuad *)v18 initWithNormalizedTopLeft:v20 topRight:v22 bottomRight:v24 bottomLeft:v26 size:v28, v30, v31, v32, *&a1, *&a2];
-  v34 = [v11 stringValueCandidates];
-  v35 = [v34 objectAtIndexedSubscript:a5];
-  [v11 baselineAngle];
+  [idxCopy bottomLeft];
+  v33 = [(CRNormalizedQuad *)v18 initWithNormalizedTopLeft:v20 topRight:v22 bottomRight:v24 bottomLeft:v26 size:v28, v30, v31, v32, *&self, *&a2];
+  stringValueCandidates = [idxCopy stringValueCandidates];
+  v35 = [stringValueCandidates objectAtIndexedSubscript:size];
+  [idxCopy baselineAngle];
   v37 = [v12 characterWithText:v35 confidence:v17 quad:v33 baselineAngle:v36];
 
-  v38 = [v11 candidateProbs];
-  v39 = [v38 objectAtIndexedSubscript:a5];
+  candidateProbs2 = [idxCopy candidateProbs];
+  v39 = [candidateProbs2 objectAtIndexedSubscript:size];
   [v39 floatValue];
   [v37 setRawConfidence:?];
 
-  v40 = [v11 candidateActivationProbs];
-  v41 = [v40 objectAtIndexedSubscript:a5];
+  candidateActivationProbs = [idxCopy candidateActivationProbs];
+  v41 = [candidateActivationProbs objectAtIndexedSubscript:size];
   [v41 floatValue];
   [v37 setActivationProbability:v42];
 
-  v43 = [v11 selectedLocale];
-  [v37 setRecognizedLocale:v43];
+  selectedLocale2 = [idxCopy selectedLocale];
+  [v37 setRecognizedLocale:selectedLocale2];
 
-  v44 = [v11 uuid];
+  uuid = [idxCopy uuid];
 
-  [v37 setUuid:v44];
+  [v37 setUuid:uuid];
   [v37 setNumberOfLines:0];
 
   return v37;
 }
 
-+ (id)characterWithText:(id)a3 confidence:(unint64_t)a4 quad:(id)a5 baselineAngle:(double)a6
++ (id)characterWithText:(id)text confidence:(unint64_t)confidence quad:(id)quad baselineAngle:(double)angle
 {
   v24[4] = *MEMORY[0x1E69E9840];
-  v9 = a5;
-  v10 = a3;
-  v11 = [(CROutputRegion *)[CRCharacterOutputRegion alloc] initWithConfidence:a4 baselineAngle:a6];
-  [(CROutputRegion *)v11 setText:v10];
+  quadCopy = quad;
+  textCopy = text;
+  v11 = [(CROutputRegion *)[CRCharacterOutputRegion alloc] initWithConfidence:confidence baselineAngle:angle];
+  [(CROutputRegion *)v11 setText:textCopy];
 
-  [(CROutputRegion *)v11 setBoundingQuad:v9];
-  [v9 bottomLeft];
+  [(CROutputRegion *)v11 setBoundingQuad:quadCopy];
+  [quadCopy bottomLeft];
   v24[0] = v12;
   v24[1] = v13;
-  [v9 bottomRight];
+  [quadCopy bottomRight];
   v24[2] = v14;
   v24[3] = v15;
   v16 = [CRNormalizedPolyline alloc];
-  [v9 normalizationSize];
+  [quadCopy normalizationSize];
   v18 = v17;
   v20 = v19;
 
@@ -197,31 +197,31 @@
 
 - (id)contentBaselines
 {
-  v2 = self;
+  selfCopy = self;
   v7[1] = *MEMORY[0x1E69E9840];
   if (self)
   {
     if (objc_getProperty(self, a2, 352, 1))
     {
-      v7[0] = objc_getProperty(v2, v3, 352, 1);
+      v7[0] = objc_getProperty(selfCopy, v3, 352, 1);
       v4 = MEMORY[0x1E695DEC8];
       v5 = v7[0];
-      v2 = [v4 arrayWithObjects:v7 count:1];
+      selfCopy = [v4 arrayWithObjects:v7 count:1];
     }
 
     else
     {
-      v2 = 0;
+      selfCopy = 0;
     }
   }
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -231,7 +231,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v13.receiver = self;
       v13.super_class = CRCharacterOutputRegion;
       if ([(CROutputRegion *)&v13 isEqual:v5])
@@ -275,11 +275,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3 copyChildren:(BOOL)a4 copyCandidates:(BOOL)a5 deepCopy:(BOOL)a6
+- (id)copyWithZone:(_NSZone *)zone copyChildren:(BOOL)children copyCandidates:(BOOL)candidates deepCopy:(BOOL)copy
 {
   v12.receiver = self;
   v12.super_class = CRCharacterOutputRegion;
-  v7 = [(CROutputRegion *)&v12 copyWithZone:a3 copyChildren:a4 copyCandidates:a5 deepCopy:a6];
+  v7 = [(CROutputRegion *)&v12 copyWithZone:zone copyChildren:children copyCandidates:candidates deepCopy:copy];
   v9 = v7;
   if (!self)
   {

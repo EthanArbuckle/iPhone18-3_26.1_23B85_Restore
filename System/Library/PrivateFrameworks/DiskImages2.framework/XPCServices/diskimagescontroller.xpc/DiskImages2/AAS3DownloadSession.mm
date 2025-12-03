@@ -1,34 +1,34 @@
 @interface AAS3DownloadSession
-+ (void)completeRequest:(id)a3 data:(id)a4 response:(id)a5 error:(id)a6;
-- (AAS3DownloadSession)initWithURL:(id)a3 streamBase:(id *)a4 maxAttempts:(unsigned int)a5 pauseInterval:(float)a6 maxRequestsInFlight:(unsigned int)a7;
-- (id)enqueueRequestWithSize:(unint64_t)a3 atOffset:(int64_t)a4 destinationBuffer:(char *)a5 destinationStream:(AAAsyncByteStream_impl *)a6 completionSemaphore:(id)a7;
-- (int)addRequest:(id)a3;
-- (int)readToAsyncByteStream:(AAAsyncByteStream_impl *)a3 size:(unint64_t)a4 atOffset:(int64_t)a5;
++ (void)completeRequest:(id)request data:(id)data response:(id)response error:(id)error;
+- (AAS3DownloadSession)initWithURL:(id)l streamBase:(id *)base maxAttempts:(unsigned int)attempts pauseInterval:(float)interval maxRequestsInFlight:(unsigned int)flight;
+- (id)enqueueRequestWithSize:(unint64_t)size atOffset:(int64_t)offset destinationBuffer:(char *)buffer destinationStream:(AAAsyncByteStream_impl *)stream completionSemaphore:(id)semaphore;
+- (int)addRequest:(id)request;
+- (int)readToAsyncByteStream:(AAAsyncByteStream_impl *)stream size:(unint64_t)size atOffset:(int64_t)offset;
 - (int)syncRequests;
-- (int64_t)readToBuffer:(void *)a3 size:(unint64_t)a4 atOffset:(int64_t)a5;
-- (void)cacheDocument:(id)a3;
+- (int64_t)readToBuffer:(void *)buffer size:(unint64_t)size atOffset:(int64_t)offset;
+- (void)cacheDocument:(id)document;
 - (void)invalidateAndCancel;
-- (void)removeRequest:(id)a3;
+- (void)removeRequest:(id)request;
 @end
 
 @implementation AAS3DownloadSession
 
-- (AAS3DownloadSession)initWithURL:(id)a3 streamBase:(id *)a4 maxAttempts:(unsigned int)a5 pauseInterval:(float)a6 maxRequestsInFlight:(unsigned int)a7
+- (AAS3DownloadSession)initWithURL:(id)l streamBase:(id *)base maxAttempts:(unsigned int)attempts pauseInterval:(float)interval maxRequestsInFlight:(unsigned int)flight
 {
-  v13 = a3;
+  lCopy = l;
   v58.receiver = self;
   v58.super_class = AAS3DownloadSession;
   v14 = [(AAS3DownloadSession *)&v58 init];
   if (v14)
   {
-    obj = a3;
-    v54 = a5;
-    v55 = a7;
-    v57 = v13;
+    obj = l;
+    attemptsCopy = attempts;
+    flightCopy = flight;
+    v57 = lCopy;
     v56 = +[NSURLSessionConfiguration ephemeralSessionConfiguration];
     v18 = objc_alloc_init(NSMutableDictionary);
-    v53 = a4;
-    var2 = a4->var2;
+    baseCopy = base;
+    var2 = base->var2;
     if (*(var2 + 348))
     {
       v20 = [NSString stringWithUTF8String:?];
@@ -102,7 +102,7 @@
     v14->_urlSession = v35;
 
     objc_storeStrong(&v14->_url, obj);
-    v14->_streamBase = v53;
+    v14->_streamBase = baseCopy;
     v37 = objc_alloc_init(NSMutableSet);
     requests = v14->_requests;
     v14->_requests = v37;
@@ -111,9 +111,9 @@
     requestsLock = v14->_requestsLock;
     v14->_requestsLock = v39;
 
-    if (v54)
+    if (attemptsCopy)
     {
-      v41 = v54;
+      v41 = attemptsCopy;
     }
 
     else
@@ -121,16 +121,16 @@
       v41 = 5;
     }
 
-    v42 = 250.0;
-    if (a6 != 0.0)
+    intervalCopy = 250.0;
+    if (interval != 0.0)
     {
-      v42 = a6;
+      intervalCopy = interval;
     }
 
-    v14->_pauseInterval = v42;
-    if (v55)
+    v14->_pauseInterval = intervalCopy;
+    if (flightCopy)
     {
-      v43 = v55;
+      v43 = flightCopy;
     }
 
     else
@@ -153,18 +153,18 @@
     v14->_cache = 0;
 
     v49 = v14;
-    v13 = v57;
+    lCopy = v57;
   }
 
   return v14;
 }
 
-- (int)addRequest:(id)a3
+- (int)addRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(AAS3DownloadSession *)self requestsSem];
+  requestCopy = request;
+  requestsSem = [(AAS3DownloadSession *)self requestsSem];
   v6 = dispatch_time(0, 600000000000);
-  v7 = dispatch_semaphore_wait(v5, v6);
+  v7 = dispatch_semaphore_wait(requestsSem, v6);
 
   if (v7)
   {
@@ -174,14 +174,14 @@
 
   else
   {
-    v11 = [(AAS3DownloadSession *)self requestsLock];
-    [(NSLock *)v11 lock];
+    requestsLock = [(AAS3DownloadSession *)self requestsLock];
+    [(NSLock *)requestsLock lock];
 
-    v12 = [(AAS3DownloadSession *)self requests];
-    [(NSMutableSet *)v12 addObject:v4];
+    requests = [(AAS3DownloadSession *)self requests];
+    [(NSMutableSet *)requests addObject:requestCopy];
 
-    v13 = [(AAS3DownloadSession *)self requestsLock];
-    [(NSLock *)v13 unlock];
+    requestsLock2 = [(AAS3DownloadSession *)self requestsLock];
+    [(NSLock *)requestsLock2 unlock];
 
     v10 = 0;
   }
@@ -189,26 +189,26 @@
   return v10;
 }
 
-- (void)removeRequest:(id)a3
+- (void)removeRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(AAS3DownloadSession *)self requestsLock];
-  [(NSLock *)v5 lock];
+  requestCopy = request;
+  requestsLock = [(AAS3DownloadSession *)self requestsLock];
+  [(NSLock *)requestsLock lock];
 
-  v6 = [(AAS3DownloadSession *)self requests];
-  [(NSMutableSet *)v6 removeObject:v4];
+  requests = [(AAS3DownloadSession *)self requests];
+  [(NSMutableSet *)requests removeObject:requestCopy];
 
-  v7 = [(AAS3DownloadSession *)self requestsLock];
-  [(NSLock *)v7 unlock];
+  requestsLock2 = [(AAS3DownloadSession *)self requestsLock];
+  [(NSLock *)requestsLock2 unlock];
 
-  v8 = [(AAS3DownloadSession *)self requestsSem];
-  dispatch_semaphore_signal(v8);
+  requestsSem = [(AAS3DownloadSession *)self requestsSem];
+  dispatch_semaphore_signal(requestsSem);
 }
 
-- (id)enqueueRequestWithSize:(unint64_t)a3 atOffset:(int64_t)a4 destinationBuffer:(char *)a5 destinationStream:(AAAsyncByteStream_impl *)a6 completionSemaphore:(id)a7
+- (id)enqueueRequestWithSize:(unint64_t)size atOffset:(int64_t)offset destinationBuffer:(char *)buffer destinationStream:(AAAsyncByteStream_impl *)stream completionSemaphore:(id)semaphore
 {
-  v12 = a7;
-  v13 = [[AAS3DownloadRequest alloc] initWithSession:self size:a3 atOffset:a4 destinationBuffer:a5 destinationStream:a6 completionSemaphore:v12];
+  semaphoreCopy = semaphore;
+  v13 = [[AAS3DownloadRequest alloc] initWithSession:self size:size atOffset:offset destinationBuffer:buffer destinationStream:stream completionSemaphore:semaphoreCopy];
 
   if (v13)
   {
@@ -244,23 +244,23 @@ LABEL_9:
   return v16;
 }
 
-- (int64_t)readToBuffer:(void *)a3 size:(unint64_t)a4 atOffset:(int64_t)a5
+- (int64_t)readToBuffer:(void *)buffer size:(unint64_t)size atOffset:(int64_t)offset
 {
-  v9 = [(AAS3DownloadSession *)self cacheLock];
-  [(NSLock *)v9 lock];
+  cacheLock = [(AAS3DownloadSession *)self cacheLock];
+  [(NSLock *)cacheLock lock];
 
-  v10 = [(AAS3DownloadSession *)self cache];
-  if (v10)
+  cache = [(AAS3DownloadSession *)self cache];
+  if (cache)
   {
-    v11 = [(AAS3DownloadSession *)self cache];
-    v12 = [(NSData *)v11 length];
+    cache2 = [(AAS3DownloadSession *)self cache];
+    v12 = [(NSData *)cache2 length];
 
-    v13 = [(AAS3DownloadSession *)self cache];
-    v14 = [(NSData *)v13 bytes];
+    cache3 = [(AAS3DownloadSession *)self cache];
+    bytes = [(NSData *)cache3 bytes];
 
-    v15 = a5 & ~(a5 >> 63);
-    v16 = a5 + a4;
-    if (v12 < (a5 + a4))
+    v15 = offset & ~(offset >> 63);
+    v16 = offset + size;
+    if (v12 < (offset + size))
     {
       v16 = v12;
     }
@@ -268,11 +268,11 @@ LABEL_9:
     v17 = v16 - v15;
     if (v16 > v15)
     {
-      memcpy(a3, &v14[v15], v17);
+      memcpy(buffer, &bytes[v15], v17);
     }
 
-    v18 = [(AAS3DownloadSession *)self cacheLock];
-    [(NSLock *)v18 unlock];
+    cacheLock2 = [(AAS3DownloadSession *)self cacheLock];
+    [(NSLock *)cacheLock2 unlock];
 
     v19 = 0;
     v20 = 0;
@@ -280,11 +280,11 @@ LABEL_9:
 
   else
   {
-    v21 = [(AAS3DownloadSession *)self cacheLock];
-    [(NSLock *)v21 unlock];
+    cacheLock3 = [(AAS3DownloadSession *)self cacheLock];
+    [(NSLock *)cacheLock3 unlock];
 
     v20 = dispatch_semaphore_create(0);
-    v19 = [(AAS3DownloadSession *)self enqueueRequestWithSize:a4 atOffset:a5 destinationBuffer:a3 destinationStream:0 completionSemaphore:v20];
+    v19 = [(AAS3DownloadSession *)self enqueueRequestWithSize:size atOffset:offset destinationBuffer:buffer destinationStream:0 completionSemaphore:v20];
     if (v19)
     {
       v24 = dispatch_time(0, 600000000000);
@@ -313,12 +313,12 @@ LABEL_9:
     }
 
     sub_10001E554("/Library/Caches/com.apple.xbs/Sources/ParallelCompression/AppleArchiveS3/AAS3DownloadStreamURLSession.m", "[AAS3DownloadSession readToBuffer:size:atOffset:]", v26, 121, 0, v25, v22, v23, v28);
-    a4 = -1;
+    size = -1;
   }
 
 LABEL_12:
 
-  return a4;
+  return size;
 }
 
 - (int)syncRequests
@@ -328,9 +328,9 @@ LABEL_12:
     v3 = 0;
     while (1)
     {
-      v4 = [(AAS3DownloadSession *)self requestsSem];
+      requestsSem = [(AAS3DownloadSession *)self requestsSem];
       v5 = dispatch_time(0, 600000000000);
-      v6 = dispatch_semaphore_wait(v4, v5);
+      v6 = dispatch_semaphore_wait(requestsSem, v5);
 
       if (v6)
       {
@@ -356,8 +356,8 @@ LABEL_5:
       v10 = 0;
       do
       {
-        v11 = [(AAS3DownloadSession *)self requestsSem];
-        dispatch_semaphore_signal(v11);
+        requestsSem2 = [(AAS3DownloadSession *)self requestsSem];
+        dispatch_semaphore_signal(requestsSem2);
 
         ++v10;
       }
@@ -370,25 +370,25 @@ LABEL_5:
   return result;
 }
 
-- (int)readToAsyncByteStream:(AAAsyncByteStream_impl *)a3 size:(unint64_t)a4 atOffset:(int64_t)a5
+- (int)readToAsyncByteStream:(AAAsyncByteStream_impl *)stream size:(unint64_t)size atOffset:(int64_t)offset
 {
-  if (a4)
+  if (size)
   {
-    v9 = [(AAS3DownloadSession *)self cacheLock];
-    [(NSLock *)v9 lock];
+    cacheLock = [(AAS3DownloadSession *)self cacheLock];
+    [(NSLock *)cacheLock lock];
 
-    v10 = [(AAS3DownloadSession *)self cache];
-    if (v10)
+    cache = [(AAS3DownloadSession *)self cache];
+    if (cache)
     {
-      v11 = [(AAS3DownloadSession *)self cache];
-      [(NSData *)v11 length];
+      cache2 = [(AAS3DownloadSession *)self cache];
+      [(NSData *)cache2 length];
 
-      v12 = [(AAS3DownloadSession *)self cache];
-      [(NSData *)v12 bytes];
+      cache3 = [(AAS3DownloadSession *)self cache];
+      [(NSData *)cache3 bytes];
 
       AAAsyncByteStreamProcess();
-      v18 = [(AAS3DownloadSession *)self cacheLock];
-      [(NSLock *)v18 unlock];
+      cacheLock2 = [(AAS3DownloadSession *)self cacheLock];
+      [(NSLock *)cacheLock2 unlock];
 
       v19 = 0;
 LABEL_7:
@@ -396,10 +396,10 @@ LABEL_7:
       goto LABEL_8;
     }
 
-    v15 = [(AAS3DownloadSession *)self cacheLock];
-    [(NSLock *)v15 unlock];
+    cacheLock3 = [(AAS3DownloadSession *)self cacheLock];
+    [(NSLock *)cacheLock3 unlock];
 
-    v19 = [(AAS3DownloadSession *)self enqueueRequestWithSize:a4 atOffset:a5 destinationBuffer:0 destinationStream:a3 completionSemaphore:0];
+    v19 = [(AAS3DownloadSession *)self enqueueRequestWithSize:size atOffset:offset destinationBuffer:0 destinationStream:stream completionSemaphore:0];
     if (v19)
     {
       goto LABEL_7;
@@ -412,7 +412,7 @@ LABEL_7:
 
   else
   {
-    v13 = [(AAS3DownloadSession *)self syncRequests:a3];
+    v13 = [(AAS3DownloadSession *)self syncRequests:stream];
     v19 = 0;
     v14 = v13 >> 31;
   }
@@ -422,39 +422,39 @@ LABEL_8:
   return v14;
 }
 
-+ (void)completeRequest:(id)a3 data:(id)a4 response:(id)a5 error:(id)a6
++ (void)completeRequest:(id)request data:(id)data response:(id)response error:(id)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v9 downloadSession];
-  v14 = [v11 statusCode];
-  if ([v13 isCancelled] || v12 && objc_msgSend(v12, "code") == -999)
+  requestCopy = request;
+  dataCopy = data;
+  responseCopy = response;
+  errorCopy = error;
+  downloadSession = [requestCopy downloadSession];
+  statusCode = [responseCopy statusCode];
+  if ([downloadSession isCancelled] || errorCopy && objc_msgSend(errorCopy, "code") == -999)
   {
     goto LABEL_2;
   }
 
-  if (v14 == 416)
+  if (statusCode == 416)
   {
-    [v10 bytes];
-    if ([v9 stream])
+    [dataCopy bytes];
+    if ([requestCopy stream])
     {
-      [v9 stream];
-      [v9 offset];
+      [requestCopy stream];
+      [requestCopy offset];
       AAAsyncByteStreamProcess();
     }
 
     goto LABEL_2;
   }
 
-  if (v14 == 206)
+  if (statusCode == 206)
   {
-    v21 = [v10 length];
-    v31 = [v9 nbyte];
-    if (v21 >= v31)
+    v21 = [dataCopy length];
+    nbyte = [requestCopy nbyte];
+    if (v21 >= nbyte)
     {
-      v32 = v31;
+      v32 = nbyte;
     }
 
     else
@@ -462,37 +462,37 @@ LABEL_8:
       v32 = v21;
     }
 
-    v33 = [v10 bytes];
-    if ([v9 buf])
+    bytes = [dataCopy bytes];
+    if ([requestCopy buf])
     {
-      memcpy([v9 buf], v33, v32);
+      memcpy([requestCopy buf], bytes, v32);
     }
 
-    if (![v9 stream])
+    if (![requestCopy stream])
     {
       goto LABEL_33;
     }
 
 LABEL_32:
-    [v9 stream];
-    [v9 offset];
+    [requestCopy stream];
+    [requestCopy offset];
     AAAsyncByteStreamProcess();
 LABEL_33:
-    [v13 addBytesDownloaded:v21];
+    [downloadSession addBytesDownloaded:v21];
 LABEL_2:
     v18 = 1;
     goto LABEL_3;
   }
 
-  if (v14 == 200)
+  if (statusCode == 200)
   {
-    v21 = [v10 length];
-    v22 = [v10 bytes];
-    [v13 cacheDocument:v10];
-    v23 = [v9 offset];
-    v24 = v23 & ~(v23 >> 63);
-    v25 = [v9 offset];
-    v26 = &v25[[v9 nbyte]];
+    v21 = [dataCopy length];
+    bytes2 = [dataCopy bytes];
+    [downloadSession cacheDocument:dataCopy];
+    offset = [requestCopy offset];
+    v24 = offset & ~(offset >> 63);
+    offset2 = [requestCopy offset];
+    v26 = &offset2[[requestCopy nbyte]];
     if (v21 < v26)
     {
       v26 = v21;
@@ -520,12 +520,12 @@ LABEL_2:
       v30 = v28;
     }
 
-    if ([v9 buf])
+    if ([requestCopy buf])
     {
-      memcpy([v9 buf], &v22[v29], v30);
+      memcpy([requestCopy buf], &bytes2[v29], v30);
     }
 
-    if (![v9 stream])
+    if (![requestCopy stream])
     {
       goto LABEL_33;
     }
@@ -533,31 +533,31 @@ LABEL_2:
     goto LABEL_32;
   }
 
-  if (v12 && (v34 = [v12 description]) != 0)
+  if (errorCopy && (v34 = [errorCopy description]) != 0)
   {
     v35 = v34;
     [v34 UTF8String];
-    sub_10001E660("/Library/Caches/com.apple.xbs/Sources/ParallelCompression/AppleArchiveS3/AAS3DownloadStreamURLSession.m", "+[AAS3DownloadSession completeRequest:data:response:error:]", 546, 121, "Request failed: %03ld %s", v36, v37, v38, v14);
+    sub_10001E660("/Library/Caches/com.apple.xbs/Sources/ParallelCompression/AppleArchiveS3/AAS3DownloadStreamURLSession.m", "+[AAS3DownloadSession completeRequest:data:response:error:]", 546, 121, "Request failed: %03ld %s", v36, v37, v38, statusCode);
   }
 
   else
   {
-    sub_10001E660("/Library/Caches/com.apple.xbs/Sources/ParallelCompression/AppleArchiveS3/AAS3DownloadStreamURLSession.m", "+[AAS3DownloadSession completeRequest:data:response:error:]", 547, 121, "Request failed: %03ld (error not set)", v15, v16, v17, v14);
+    sub_10001E660("/Library/Caches/com.apple.xbs/Sources/ParallelCompression/AppleArchiveS3/AAS3DownloadStreamURLSession.m", "+[AAS3DownloadSession completeRequest:data:response:error:]", 547, 121, "Request failed: %03ld (error not set)", v15, v16, v17, statusCode);
   }
 
-  if ([v9 remainingAttempts])
+  if ([requestCopy remainingAttempts])
   {
-    [v9 pauseInterval];
+    [requestCopy pauseInterval];
     v40 = v39;
-    [v9 nbyte];
-    [v9 offset];
+    [requestCopy nbyte];
+    [requestCopy offset];
     sub_10001E660("/Library/Caches/com.apple.xbs/Sources/ParallelCompression/AppleArchiveS3/AAS3DownloadStreamURLSession.m", "+[AAS3DownloadSession completeRequest:data:response:error:]", 554, 121, "Retrying request after %.0f seconds %zu bytes at offset %llu", v41, v42, v43, SLOBYTE(v40));
-    [v9 pauseInterval];
+    [requestCopy pauseInterval];
     [NSThread sleepForTimeInterval:v44];
-    [v9 pauseInterval];
+    [requestCopy pauseInterval];
     *&v46 = v45 + v45;
-    [v9 setPauseInterval:v46];
-    if (([v9 createAndResumeTask] & 0x80000000) == 0)
+    [requestCopy setPauseInterval:v46];
+    if (([requestCopy createAndResumeTask] & 0x80000000) == 0)
     {
       goto LABEL_6;
     }
@@ -567,16 +567,16 @@ LABEL_2:
 
   v18 = 0xFFFFFFFFLL;
 LABEL_3:
-  [v9 setStatus:v18];
-  v19 = [v9 sem];
+  [requestCopy setStatus:v18];
+  v19 = [requestCopy sem];
 
   if (v19)
   {
-    v20 = [v9 sem];
+    v20 = [requestCopy sem];
     dispatch_semaphore_signal(v20);
   }
 
-  [v13 removeRequest:v9];
+  [downloadSession removeRequest:requestCopy];
 LABEL_6:
 }
 
@@ -584,26 +584,26 @@ LABEL_6:
 {
   v3 = 0;
   atomic_compare_exchange_strong(&self->_cancelled, &v3, 1u);
-  v4 = [(AAS3DownloadSession *)self urlSession];
-  [(NSURLSession *)v4 invalidateAndCancel];
+  urlSession = [(AAS3DownloadSession *)self urlSession];
+  [(NSURLSession *)urlSession invalidateAndCancel];
 
   [(AAS3DownloadSession *)self syncRequests];
 }
 
-- (void)cacheDocument:(id)a3
+- (void)cacheDocument:(id)document
 {
-  v4 = a3;
-  v5 = [(AAS3DownloadSession *)self cacheLock];
-  [(NSLock *)v5 lock];
+  documentCopy = document;
+  cacheLock = [(AAS3DownloadSession *)self cacheLock];
+  [(NSLock *)cacheLock lock];
 
-  v6 = [(AAS3DownloadSession *)self cache];
-  if (!v6)
+  cache = [(AAS3DownloadSession *)self cache];
+  if (!cache)
   {
-    [(AAS3DownloadSession *)self setCache:v4];
+    [(AAS3DownloadSession *)self setCache:documentCopy];
   }
 
-  v7 = [(AAS3DownloadSession *)self cacheLock];
-  [(NSLock *)v7 unlock];
+  cacheLock2 = [(AAS3DownloadSession *)self cacheLock];
+  [(NSLock *)cacheLock2 unlock];
 }
 
 @end

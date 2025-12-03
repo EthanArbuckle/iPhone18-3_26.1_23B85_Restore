@@ -30,7 +30,7 @@
           objc_enumerationMutation(a3);
         }
 
-        if ([a1 tsu_conformsToUTI:*(*(&v9 + 1) + 8 * v8)])
+        if ([self tsu_conformsToUTI:*(*(&v9 + 1) + 8 * v8)])
         {
           return 1;
         }
@@ -55,7 +55,7 @@
 
 - (__CFString)tsu_UTIFilenameExtension
 {
-  v1 = UTTypeCopyPreferredTagWithClass(a1, *MEMORY[0x277CC1F58]);
+  v1 = UTTypeCopyPreferredTagWithClass(self, *MEMORY[0x277CC1F58]);
 
   return v1;
 }
@@ -63,12 +63,12 @@
 - (__CFString)tsu_pathUTI
 {
   v27 = *MEMORY[0x277D85DE8];
-  v2 = [a1 isAbsolutePath];
+  isAbsolutePath = [self isAbsolutePath];
   v3 = *MEMORY[0x277CC1F58];
-  v4 = [a1 pathExtension];
-  if (v2)
+  pathExtension = [self pathExtension];
+  if (isAbsolutePath)
   {
-    AllIdentifiersForTag = UTTypeCreateAllIdentifiersForTag(v3, v4, 0);
+    AllIdentifiersForTag = UTTypeCreateAllIdentifiersForTag(v3, pathExtension, 0);
     if ([(__CFArray *)AllIdentifiersForTag count]>= 2)
     {
       v24 = 0u;
@@ -161,7 +161,7 @@ LABEL_28:
 
   else
   {
-    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(v3, v4, 0);
+    PreferredIdentifierForTag = UTTypeCreatePreferredIdentifierForTag(v3, pathExtension, 0);
 
     return PreferredIdentifierForTag;
   }
@@ -169,9 +169,9 @@ LABEL_28:
 
 - (uint64_t)tsu_pathConformsToUTI:()TSUUTIUtilities
 {
-  v4 = [a1 pathExtension];
+  pathExtension = [self pathExtension];
 
-  return [v4 tsu_pathExtensionConformsToUTI:a3];
+  return [pathExtension tsu_pathExtensionConformsToUTI:a3];
 }
 
 - (uint64_t)tsu_pathExtensionConformsToUTI:()TSUUTIUtilities

@@ -1,90 +1,90 @@
 @interface NPDCompanionAgentClient
 - (BOOL)_isGizmoConnected;
-- (BOOL)_isPassQualifiedToBeDefaultWithUniqueID:(id)a3;
+- (BOOL)_isPassQualifiedToBeDefaultWithUniqueID:(id)d;
 - (BOOL)shouldUseLegacyIdentityProvisioning;
 - (NPDCompanionAgentClientDataSource)dataSource;
 - (NPDCompanionAgentClientDelegate)delegate;
-- (id)_commutePlanReminderIdentifierWithCommutePlan:(id)a3 pass:(id)a4;
+- (id)_commutePlanReminderIdentifierWithCommutePlan:(id)plan pass:(id)pass;
 - (id)_defaultCard;
-- (id)paymentPassWithUniqueID:(id)a3;
-- (void)_applyIngestionDateToPass:(id)a3;
+- (id)paymentPassWithUniqueID:(id)d;
+- (void)_applyIngestionDateToPass:(id)pass;
 - (void)_invalidateWatchOfferTimer;
-- (void)_invokeWatchOfferProvisioningCompletionHandlersWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_invokeWatchOfferProvisioningCompletionHandlersWithSuccess:(BOOL)success error:(id)error;
 - (void)_removePendingAppleCardNotification;
-- (void)_selectNewDefaultCardForUserAfterDeletionOfDefaultCardWithUniqueID:(id)a3;
-- (void)_setOrResetWatchOfferTimerForProvisioningURL:(id)a3;
-- (void)_updateLocalBalanceReminderForBalance:(id)a3 pass:(id)a4;
-- (void)_updateLocalCommutePlanReminderForCommutePlan:(id)a3 pass:(id)a4;
-- (void)addPendingProvisionings:(id)a3 identityTargetDeviceIdentifier:(id)a4 completion:(id)a5;
-- (void)allPaymentApplicationUsageSummaries:(id)a3;
-- (void)balanceReminderForBalance:(id)a3 pass:(id)a4 withCompletion:(id)a5;
-- (void)balancesForPaymentPassWithUniqueIdentifier:(id)a3 completion:(id)a4;
-- (void)beginProvisioningFromWatchOfferForPaymentPasses:(id)a3 withCompletion:(id)a4;
-- (void)bridgedClientInfoWithCompletion:(id)a3;
-- (void)canAddToCompanionPrecheckForegroundConnectivityWithCompletion:(id)a3;
-- (void)commutePlanReminderForCommutePlan:(id)a3 pass:(id)a4 withCompletion:(id)a5;
-- (void)countOfPassesWithCompletion:(id)a3;
-- (void)credentialedPassUniqueIDsWithReply:(id)a3;
-- (void)currentSecureElementSnapshot:(id)a3;
-- (void)defaultCard:(id)a3;
-- (void)defaultPaymentApplicationForPassWithUniqueID:(id)a3 completion:(id)a4;
-- (void)deletePaymentTransactionWithIdentifier:(id)a3 fromDeviceWithPairingID:(id)a4 completion:(id)a5;
-- (void)deviceIDSIdentifierWithCompletion:(id)a3;
-- (void)expressModeEnabledForPassIdentifier:(id)a3 completion:(id)a4;
-- (void)fetchPendingTransactionForPassWithUniqueID:(id)a3 completion:(id)a4;
+- (void)_selectNewDefaultCardForUserAfterDeletionOfDefaultCardWithUniqueID:(id)d;
+- (void)_setOrResetWatchOfferTimerForProvisioningURL:(id)l;
+- (void)_updateLocalBalanceReminderForBalance:(id)balance pass:(id)pass;
+- (void)_updateLocalCommutePlanReminderForCommutePlan:(id)plan pass:(id)pass;
+- (void)addPendingProvisionings:(id)provisionings identityTargetDeviceIdentifier:(id)identifier completion:(id)completion;
+- (void)allPaymentApplicationUsageSummaries:(id)summaries;
+- (void)balanceReminderForBalance:(id)balance pass:(id)pass withCompletion:(id)completion;
+- (void)balancesForPaymentPassWithUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)beginProvisioningFromWatchOfferForPaymentPasses:(id)passes withCompletion:(id)completion;
+- (void)bridgedClientInfoWithCompletion:(id)completion;
+- (void)canAddToCompanionPrecheckForegroundConnectivityWithCompletion:(id)completion;
+- (void)commutePlanReminderForCommutePlan:(id)plan pass:(id)pass withCompletion:(id)completion;
+- (void)countOfPassesWithCompletion:(id)completion;
+- (void)credentialedPassUniqueIDsWithReply:(id)reply;
+- (void)currentSecureElementSnapshot:(id)snapshot;
+- (void)defaultCard:(id)card;
+- (void)defaultPaymentApplicationForPassWithUniqueID:(id)d completion:(id)completion;
+- (void)deletePaymentTransactionWithIdentifier:(id)identifier fromDeviceWithPairingID:(id)d completion:(id)completion;
+- (void)deviceIDSIdentifierWithCompletion:(id)completion;
+- (void)expressModeEnabledForPassIdentifier:(id)identifier completion:(id)completion;
+- (void)fetchPendingTransactionForPassWithUniqueID:(id)d completion:(id)completion;
 - (void)handleDeviceUnlockedForPendingProvisioningRequestFromGizmo;
 - (void)handlePeerPaymentTermsAndConditionsRequestFromGizmo;
-- (void)handlePendingUnpairingWithCompletion:(id)a3;
-- (void)handlePendingiCloudSignoutWithCompletion:(id)a3;
-- (void)handleProvisioningErrorForAccountIdentifier:(id)a3 error:(id)a4;
-- (void)hasActiveExternallySharedPassesWithCompletion:(id)a3;
-- (void)hasPaymentPassWithUniqueID:(id)a3 reply:(id)a4;
-- (void)identityPassesOfTypes:(id)a3 withCompletion:(id)a4;
-- (void)initiateConsistencyCheckWithCompletion:(id)a3;
-- (void)initiateLostModeExitAuthWithCompletion:(id)a3;
-- (void)isIssuerAppProvisioningSupported:(id)a3;
-- (void)legacyIdentityProvisioning:(id)a3 targetDeviceIdentifier:(id)a4 completion:(id)a5;
-- (void)markAllAppletsForDeletionWithCompletion:(id)a3;
-- (void)markPendingTransactionAsProcessedForPassWithUniqueID:(id)a3;
-- (void)noteWatchOfferDisplayedForPaymentPassWithUniqueID:(id)a3;
-- (void)passesOfCardType:(int64_t)a3 withCompletion:(id)a4;
-- (void)passesWithCompletion:(id)a3;
-- (void)passesWithReaderIdentifier:(id)a3 completion:(id)a4;
-- (void)paymentPassUniqueIDsExcludingDeactivated:(BOOL)a3 reply:(id)a4;
-- (void)paymentPassWithDeviceAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)paymentPassWithUniqueID:(id)a3 reply:(id)a4;
-- (void)paymentPassesWithPrimaryAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)peerPaymentAccountForPairingID:(id)a3 withCompletion:(id)a4;
-- (void)presentStandaloneTransaction:(int64_t)a3 forPassUniqueIdentifier:(id)a4 terminalReaderIdentifier:(id)a5 completion:(id)a6;
-- (void)provisionPassForRemoteCredentialWithType:(int64_t)a3 andIdentifier:(id)a4 completion:(id)a5;
-- (void)reclaimUnusedSEMemory:(id)a3;
-- (void)redownloadAllPaymentPassesWithCompletion:(id)a3;
-- (void)registerDeviceWithCompletion:(id)a3;
-- (void)removePaymentPassWithUniqueID:(id)a3 forPairingID:(id)a4 waitForConfirmation:(BOOL)a5 completion:(id)a6;
-- (void)savePaymentPassData:(id)a3 withUniqueID:(id)a4 forPairingID:(id)a5 completion:(id)a6;
-- (void)setBalanceReminder:(id)a3 forBalance:(id)a4 pass:(id)a5 completion:(id)a6;
-- (void)setCommutePlanReminder:(id)a3 forCommutePlan:(id)a4 pass:(id)a5 completion:(id)a6;
-- (void)setDefaultCard:(id)a3 completion:(id)a4;
-- (void)setDefaultPaymentApplication:(id)a3 forPassWithUniqueID:(id)a4 completion:(id)a5;
-- (void)setPeerPaymentAccount:(id)a3 forPairingID:(id)a4 completion:(id)a5;
-- (void)setSharedPaymentWebServiceContext:(id)a3 forPairingID:(id)a4 completion:(id)a5;
-- (void)setSharedPeerPaymentWebServiceContext:(id)a3 forPairingID:(id)a4 completion:(id)a5;
-- (void)sharedPaymentWebServiceContextForPairingID:(id)a3 withCompletion:(id)a4;
-- (void)sharedPeerPaymentWebServiceContextForPairingID:(id)a3 withCompletion:(id)a4;
-- (void)startBackgroundVerificationObserverForPass:(id)a3 verificationMethod:(id)a4;
-- (void)transactionsForTransactionSourceIdentifiers:(id)a3 withTransactionSource:(unint64_t)a4 withBackingData:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7 orderedByDate:(int64_t)a8 limit:(int64_t)a9 completion:(id)a10;
-- (void)transitStateWithPassUniqueIdentifier:(id)a3 paymentApplication:(id)a4 completion:(id)a5;
-- (void)trustedDeviceEnrollmentSignatureWithAccountDSID:(id)a3 sessionData:(id)a4 handler:(id)a5;
-- (void)updateCredentials:(id)a3 forUniqueID:(id)a4 paymentApplicationIdentifier:(id)a5 completion:(id)a6;
-- (void)updateSettings:(unint64_t)a3 forPassWithUniqueID:(id)a4;
-- (void)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)a3 completion:(id)a4;
+- (void)handlePendingUnpairingWithCompletion:(id)completion;
+- (void)handlePendingiCloudSignoutWithCompletion:(id)completion;
+- (void)handleProvisioningErrorForAccountIdentifier:(id)identifier error:(id)error;
+- (void)hasActiveExternallySharedPassesWithCompletion:(id)completion;
+- (void)hasPaymentPassWithUniqueID:(id)d reply:(id)reply;
+- (void)identityPassesOfTypes:(id)types withCompletion:(id)completion;
+- (void)initiateConsistencyCheckWithCompletion:(id)completion;
+- (void)initiateLostModeExitAuthWithCompletion:(id)completion;
+- (void)isIssuerAppProvisioningSupported:(id)supported;
+- (void)legacyIdentityProvisioning:(id)provisioning targetDeviceIdentifier:(id)identifier completion:(id)completion;
+- (void)markAllAppletsForDeletionWithCompletion:(id)completion;
+- (void)markPendingTransactionAsProcessedForPassWithUniqueID:(id)d;
+- (void)noteWatchOfferDisplayedForPaymentPassWithUniqueID:(id)d;
+- (void)passesOfCardType:(int64_t)type withCompletion:(id)completion;
+- (void)passesWithCompletion:(id)completion;
+- (void)passesWithReaderIdentifier:(id)identifier completion:(id)completion;
+- (void)paymentPassUniqueIDsExcludingDeactivated:(BOOL)deactivated reply:(id)reply;
+- (void)paymentPassWithDeviceAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)paymentPassWithUniqueID:(id)d reply:(id)reply;
+- (void)paymentPassesWithPrimaryAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)peerPaymentAccountForPairingID:(id)d withCompletion:(id)completion;
+- (void)presentStandaloneTransaction:(int64_t)transaction forPassUniqueIdentifier:(id)identifier terminalReaderIdentifier:(id)readerIdentifier completion:(id)completion;
+- (void)provisionPassForRemoteCredentialWithType:(int64_t)type andIdentifier:(id)identifier completion:(id)completion;
+- (void)reclaimUnusedSEMemory:(id)memory;
+- (void)redownloadAllPaymentPassesWithCompletion:(id)completion;
+- (void)registerDeviceWithCompletion:(id)completion;
+- (void)removePaymentPassWithUniqueID:(id)d forPairingID:(id)iD waitForConfirmation:(BOOL)confirmation completion:(id)completion;
+- (void)savePaymentPassData:(id)data withUniqueID:(id)d forPairingID:(id)iD completion:(id)completion;
+- (void)setBalanceReminder:(id)reminder forBalance:(id)balance pass:(id)pass completion:(id)completion;
+- (void)setCommutePlanReminder:(id)reminder forCommutePlan:(id)plan pass:(id)pass completion:(id)completion;
+- (void)setDefaultCard:(id)card completion:(id)completion;
+- (void)setDefaultPaymentApplication:(id)application forPassWithUniqueID:(id)d completion:(id)completion;
+- (void)setPeerPaymentAccount:(id)account forPairingID:(id)d completion:(id)completion;
+- (void)setSharedPaymentWebServiceContext:(id)context forPairingID:(id)d completion:(id)completion;
+- (void)setSharedPeerPaymentWebServiceContext:(id)context forPairingID:(id)d completion:(id)completion;
+- (void)sharedPaymentWebServiceContextForPairingID:(id)d withCompletion:(id)completion;
+- (void)sharedPeerPaymentWebServiceContextForPairingID:(id)d withCompletion:(id)completion;
+- (void)startBackgroundVerificationObserverForPass:(id)pass verificationMethod:(id)method;
+- (void)transactionsForTransactionSourceIdentifiers:(id)identifiers withTransactionSource:(unint64_t)source withBackingData:(unint64_t)data startDate:(id)date endDate:(id)endDate orderedByDate:(int64_t)byDate limit:(int64_t)limit completion:(id)self0;
+- (void)transitStateWithPassUniqueIdentifier:(id)identifier paymentApplication:(id)application completion:(id)completion;
+- (void)trustedDeviceEnrollmentSignatureWithAccountDSID:(id)d sessionData:(id)data handler:(id)handler;
+- (void)updateCredentials:(id)credentials forUniqueID:(id)d paymentApplicationIdentifier:(id)identifier completion:(id)completion;
+- (void)updateSettings:(unint64_t)settings forPassWithUniqueID:(id)d;
+- (void)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)default completion:(id)completion;
 @end
 
 @implementation NPDCompanionAgentClient
 
-- (void)noteWatchOfferDisplayedForPaymentPassWithUniqueID:(id)a3
+- (void)noteWatchOfferDisplayedForPaymentPassWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -94,20 +94,20 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = dCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: Note watch offer displayed for pass with unique ID %@", &v10, 0xCu);
     }
   }
 
-  v8 = [(NPDCompanionAgentClient *)self dataSource];
-  v9 = [v8 bulletinScheduler];
-  [v9 noteOfferDisplayedForCompanionPaymentPassWithUniqueID:v4];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  bulletinScheduler = [dataSource bulletinScheduler];
+  [bulletinScheduler noteOfferDisplayedForCompanionPaymentPassWithUniqueID:dCopy];
 }
 
-- (void)provisionPassForRemoteCredentialWithType:(int64_t)a3 andIdentifier:(id)a4 completion:(id)a5
+- (void)provisionPassForRemoteCredentialWithType:(int64_t)type andIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -121,21 +121,21 @@
     }
   }
 
-  v13 = [(NPDCompanionAgentClient *)self dataSource];
-  v14 = [v13 remoteAdminConnectionServiceAgent];
-  [v14 provisionPassForRemoteCredentialWithType:a3 andIdentifier:v9 completion:v8];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
+  [remoteAdminConnectionServiceAgent provisionPassForRemoteCredentialWithType:type andIdentifier:identifierCopy completion:completionCopy];
 }
 
 - (void)handleDeviceUnlockedForPendingProvisioningRequestFromGizmo
 {
-  v3 = [(NPDCompanionAgentClient *)self dataSource];
-  v4 = [v3 npsDomainAccessor];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  npsDomainAccessor = [dataSource npsDomainAccessor];
   v5 = NPKProvisionAccountPassOnUnlock;
-  v6 = [v4 objectForKey:NPKProvisionAccountPassOnUnlock];
+  v6 = [npsDomainAccessor objectForKey:NPKProvisionAccountPassOnUnlock];
 
   v7 = [v6 objectForKey:@"accountIdentifier"];
   v8 = [v6 objectForKey:@"makeDefault"];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -146,7 +146,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = @"NO";
-      if (v9)
+      if (bOOLValue)
       {
         v13 = @"YES";
       }
@@ -161,7 +161,7 @@
 
   if (v7)
   {
-    v37 = v9;
+    v37 = bOOLValue;
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
@@ -183,10 +183,10 @@
             objc_enumerationMutation(v15);
           }
 
-          v20 = [*(*(&v40 + 1) + 8 * i) secureElementPass];
-          v21 = [v20 associatedAccountServiceAccountIdentifier];
+          secureElementPass = [*(*(&v40 + 1) + 8 * i) secureElementPass];
+          associatedAccountServiceAccountIdentifier = [secureElementPass associatedAccountServiceAccountIdentifier];
 
-          if (v21 && [v21 isEqualToString:v7])
+          if (associatedAccountServiceAccountIdentifier && [associatedAccountServiceAccountIdentifier isEqualToString:v7])
           {
 
             v34 = pk_Payment_log();
@@ -209,7 +209,7 @@
             v38[3] = &unk_100071E20;
             v39 = v7;
             [(NPDCompanionAgentClient *)self provisionPassForAccountIdentifier:v39 makeDefault:v37 completion:v38];
-            v30 = v39;
+            dataSource4 = v39;
             goto LABEL_27;
           }
         }
@@ -238,27 +238,27 @@
       }
     }
 
-    v25 = [(NPDCompanionAgentClient *)self dataSource];
-    v26 = [v25 npsDomainAccessor];
-    [v26 removeObjectForKey:v5];
+    dataSource2 = [(NPDCompanionAgentClient *)self dataSource];
+    npsDomainAccessor2 = [dataSource2 npsDomainAccessor];
+    [npsDomainAccessor2 removeObjectForKey:v5];
 
-    v27 = [(NPDCompanionAgentClient *)self dataSource];
-    v28 = [v27 npsDomainAccessor];
-    v29 = [v28 synchronize];
+    dataSource3 = [(NPDCompanionAgentClient *)self dataSource];
+    npsDomainAccessor3 = [dataSource3 npsDomainAccessor];
+    synchronize = [npsDomainAccessor3 synchronize];
 
-    v30 = [(NPDCompanionAgentClient *)self dataSource];
-    v31 = [v30 npsManager];
+    dataSource4 = [(NPDCompanionAgentClient *)self dataSource];
+    npsManager = [dataSource4 npsManager];
     v32 = NPKDefaultsDomain;
     v33 = [NSSet setWithObject:v5];
-    [v31 synchronizeNanoDomain:v32 keys:v33];
+    [npsManager synchronizeNanoDomain:v32 keys:v33];
 
 LABEL_27:
   }
 }
 
-- (void)handleProvisioningErrorForAccountIdentifier:(id)a3 error:(id)a4
+- (void)handleProvisioningErrorForAccountIdentifier:(id)identifier error:(id)error
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v6 = pk_General_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -268,7 +268,7 @@ LABEL_27:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v5;
+      v38 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-provisioning) handleProvisioningErrorForAccountIdentifier %@", buf, 0xCu);
     }
   }
@@ -294,10 +294,10 @@ LABEL_27:
         }
 
         v14 = *(*(&v31 + 1) + 8 * i);
-        v15 = [v14 secureElementPass];
-        v16 = [v15 associatedAccountServiceAccountIdentifier];
+        secureElementPass = [v14 secureElementPass];
+        associatedAccountServiceAccountIdentifier = [secureElementPass associatedAccountServiceAccountIdentifier];
 
-        if (v16 && [v16 isEqualToString:v5])
+        if (associatedAccountServiceAccountIdentifier && [associatedAccountServiceAccountIdentifier isEqualToString:identifierCopy])
         {
           v11 = v14;
 
@@ -318,12 +318,12 @@ LABEL_27:
 LABEL_16:
 
   v17 = [NSURL URLWithString:@"bridge:root=com.apple.NanoPassbookBridgeSettings&action=ACCOUNT_PASS_REPROVISION"];
-  v18 = [v11 paymentPass];
+  paymentPass = [v11 paymentPass];
 
-  if (v18)
+  if (paymentPass)
   {
-    v19 = [v11 paymentPass];
-    v35 = v19;
+    paymentPass2 = [v11 paymentPass];
+    v35 = paymentPass2;
     v20 = [NSArray arrayWithObjects:&v35 count:1];
     v21 = [NPKCompanionAgentConnection watchProvisioningURLForPaymentPasses:v20];
 
@@ -347,24 +347,24 @@ LABEL_16:
   v25 = [NSBundle bundleForClass:objc_opt_class()];
   v26 = [v25 localizedStringForKey:@"ACCOUNTPASS_PROVISIONING_ERROR" value:&stru_100073088 table:@"AccountPass"];
 
-  v27 = [(NPDCompanionAgentClient *)self dataSource];
-  v28 = [v27 bulletinManager];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  bulletinManager = [dataSource bulletinManager];
   v29 = [NSBundle bundleForClass:objc_opt_class()];
   v30 = [v29 localizedStringForKey:@"ACCOUNTPASS_PRODUCT_NAME" value:&stru_100073088 table:@"AccountPass"];
-  [v28 insertBridgeBulletinWithTitle:v30 message:v26 actionURL:v17 delay:180.0];
+  [bulletinManager insertBridgeBulletinWithTitle:v30 message:v26 actionURL:v17 delay:180.0];
 }
 
-- (void)beginProvisioningFromWatchOfferForPaymentPasses:(id)a3 withCompletion:(id)a4
+- (void)beginProvisioningFromWatchOfferForPaymentPasses:(id)passes withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  passesCopy = passes;
+  completionCopy = completion;
+  if ([passesCopy count])
   {
-    v8 = [(NPDCompanionAgentClient *)self dataSource];
-    v9 = [v8 paymentWebService];
-    v10 = [v9 targetDevice];
+    dataSource = [(NPDCompanionAgentClient *)self dataSource];
+    paymentWebService = [dataSource paymentWebService];
+    targetDevice = [paymentWebService targetDevice];
 
-    if ((objc_opt_respondsToSelector() & 1) != 0 && ([v10 currentPassbookState], PKPassbookIsCurrentlyDeletedByUser()))
+    if ((objc_opt_respondsToSelector() & 1) != 0 && ([targetDevice currentPassbookState], PKPassbookIsCurrentlyDeletedByUser()))
     {
       v11 = PKDisplayableErrorForCommonType();
       v12 = pk_Payment_log();
@@ -381,12 +381,12 @@ LABEL_16:
         }
       }
 
-      v7[2](v7, 0, v11);
+      completionCopy[2](completionCopy, 0, v11);
     }
 
     else
     {
-      v15 = [NPKCompanionAgentConnection watchProvisioningURLForPaymentPasses:v6];
+      v15 = [NPKCompanionAgentConnection watchProvisioningURLForPaymentPasses:passesCopy];
       v11 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
       v22[0] = FBSOpenApplicationOptionKeyActivateSuspended;
       v22[1] = FBSOpenApplicationOptionKeyIsSensitiveURL;
@@ -402,7 +402,7 @@ LABEL_16:
       v19[2] = sub_100022BB4;
       v19[3] = &unk_100071E48;
       v20 = v15;
-      v21 = v7;
+      v21 = completionCopy;
       v19[4] = self;
       v18 = v15;
       [v11 openApplication:@"com.apple.Bridge" withOptions:v17 completion:v19];
@@ -411,17 +411,17 @@ LABEL_16:
     goto LABEL_13;
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v10 = PKDisplayableErrorForCommonType();
-    v7[2](v7, 0, v10);
+    targetDevice = PKDisplayableErrorForCommonType();
+    completionCopy[2](completionCopy, 0, targetDevice);
 LABEL_13:
   }
 }
 
-- (void)_setOrResetWatchOfferTimerForProvisioningURL:(id)a3
+- (void)_setOrResetWatchOfferTimerForProvisioningURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -446,8 +446,8 @@ LABEL_13:
   v14[2] = sub_100022E60;
   v14[3] = &unk_1000712C0;
   objc_copyWeak(&v16, buf);
-  v15 = v4;
-  v11 = v4;
+  v15 = lCopy;
+  v11 = lCopy;
   dispatch_source_set_event_handler(v9, v14);
   watchOfferTimeoutTimer = self->_watchOfferTimeoutTimer;
   self->_watchOfferTimeoutTimer = v9;
@@ -481,28 +481,28 @@ LABEL_13:
   }
 }
 
-- (void)_invokeWatchOfferProvisioningCompletionHandlersWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_invokeWatchOfferProvisioningCompletionHandlersWithSuccess:(BOOL)success error:(id)error
 {
-  v6 = a4;
-  v7 = [(NPDCompanionAgentClient *)self dataSource];
-  v8 = [v7 watchOfferProvisioningCompletionHandlers];
+  errorCopy = error;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  watchOfferProvisioningCompletionHandlers = [dataSource watchOfferProvisioningCompletionHandlers];
   v12 = _NSConcreteStackBlock;
   v13 = 3221225472;
   v14 = sub_1000233F4;
   v15 = &unk_100071E98;
-  v17 = a3;
-  v16 = v6;
-  v9 = v6;
-  [v8 enumerateObjectsUsingBlock:&v12];
+  successCopy = success;
+  v16 = errorCopy;
+  v9 = errorCopy;
+  [watchOfferProvisioningCompletionHandlers enumerateObjectsUsingBlock:&v12];
 
   v10 = [(NPDCompanionAgentClient *)self dataSource:v12];
-  v11 = [v10 watchOfferProvisioningCompletionHandlers];
-  [v11 removeAllObjects];
+  watchOfferProvisioningCompletionHandlers2 = [v10 watchOfferProvisioningCompletionHandlers];
+  [watchOfferProvisioningCompletionHandlers2 removeAllObjects];
 }
 
-- (void)registerDeviceWithCompletion:(id)a3
+- (void)registerDeviceWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -516,35 +516,35 @@ LABEL_13:
     }
   }
 
-  v8 = [(NPDCompanionAgentClient *)self dataSource];
-  v9 = [v8 paymentWebService];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  paymentWebService = [dataSource paymentWebService];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100023538;
   v11[3] = &unk_100071EC0;
-  v12 = v4;
-  v10 = v4;
-  [v9 registerDeviceWithCompletion:v11];
+  v12 = completionCopy;
+  v10 = completionCopy;
+  [paymentWebService registerDeviceWithCompletion:v11];
 }
 
-- (void)paymentPassUniqueIDsExcludingDeactivated:(BOOL)a3 reply:(id)a4
+- (void)paymentPassUniqueIDsExcludingDeactivated:(BOOL)deactivated reply:(id)reply
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(NPDCompanionAgentClient *)self dataSource];
-  v8 = [v7 companionPaymentPassDatabase];
-  v9 = [v8 uniqueIDs];
+  deactivatedCopy = deactivated;
+  replyCopy = reply;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  companionPaymentPassDatabase = [dataSource companionPaymentPassDatabase];
+  uniqueIDs = [companionPaymentPassDatabase uniqueIDs];
 
-  v10 = [v9 mutableCopy];
-  if (v4)
+  v10 = [uniqueIDs mutableCopy];
+  if (deactivatedCopy)
   {
-    v25 = v9;
-    v26 = v6;
+    v25 = uniqueIDs;
+    v26 = replyCopy;
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v11 = v9;
+    v11 = uniqueIDs;
     v12 = [v11 countByEnumeratingWithState:&v27 objects:v33 count:16];
     if (v12)
     {
@@ -561,9 +561,9 @@ LABEL_13:
 
           v16 = *(*(&v27 + 1) + 8 * i);
           v17 = [(NPDCompanionAgentClient *)self paymentPassWithUniqueID:v16, v25, v26];
-          v18 = [v17 passActivationState];
+          passActivationState = [v17 passActivationState];
 
-          if (v18 == 4)
+          if (passActivationState == 4)
           {
             [v10 removeObject:v16];
             v19 = pk_Payment_log();
@@ -588,8 +588,8 @@ LABEL_13:
       while (v13);
     }
 
-    v9 = v25;
-    v6 = v26;
+    uniqueIDs = v25;
+    replyCopy = v26;
   }
 
   v22 = pk_Payment_log();
@@ -601,29 +601,29 @@ LABEL_13:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v32 = v9;
+      v32 = uniqueIDs;
       _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Notice: Request for payment pass unique IDs (returning %@)", buf, 0xCu);
     }
   }
 
-  v6[2](v6, v10);
+  replyCopy[2](replyCopy, v10);
 }
 
-- (void)paymentPassWithUniqueID:(id)a3 reply:(id)a4
+- (void)paymentPassWithUniqueID:(id)d reply:(id)reply
 {
-  v7 = a4;
-  v8 = [(NPDCompanionAgentClient *)self paymentPassWithUniqueID:a3];
-  (*(a4 + 2))(v7, v8);
+  replyCopy = reply;
+  v8 = [(NPDCompanionAgentClient *)self paymentPassWithUniqueID:d];
+  (*(reply + 2))(replyCopy, v8);
 }
 
-- (void)hasPaymentPassWithUniqueID:(id)a3 reply:(id)a4
+- (void)hasPaymentPassWithUniqueID:(id)d reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  replyCopy = reply;
+  if (replyCopy)
   {
     v7 = +[NPKGizmoDatabase sharedDatabase];
-    v8 = [v7 hasPassForUniqueID:v5];
+    v8 = [v7 hasPassForUniqueID:dCopy];
 
     v9 = pk_Payment_log();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -635,23 +635,23 @@ LABEL_13:
       {
         v12 = NSStringFromBOOL();
         v13 = 138412546;
-        v14 = v5;
+        v14 = dCopy;
         v15 = 2112;
         v16 = v12;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Notice: Request for has payment pass with unique ID %@ (replying with %@)", &v13, 0x16u);
       }
     }
 
-    v6[2](v6, v8);
+    replyCopy[2](replyCopy, v8);
   }
 }
 
-- (id)paymentPassWithUniqueID:(id)a3
+- (id)paymentPassWithUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [(NPDCompanionAgentClient *)self dataSource];
-  v6 = [v5 companionPaymentPassDatabase];
-  v7 = [v6 paymentPassWithUniqueID:v4];
+  dCopy = d;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  companionPaymentPassDatabase = [dataSource companionPaymentPassDatabase];
+  v7 = [companionPaymentPassDatabase paymentPassWithUniqueID:dCopy];
 
   v8 = NPKPairedDeviceSecureElementIdentifiers();
   if ([v8 count])
@@ -660,51 +660,51 @@ LABEL_13:
   }
 
   v9 = +[NPKGizmoDatabase sharedDatabase];
-  v10 = [v7 uniqueID];
-  v11 = [v9 transitAppletStateForPassWithUniqueID:v10];
+  uniqueID = [v7 uniqueID];
+  v11 = [v9 transitAppletStateForPassWithUniqueID:uniqueID];
 
   NPKUpdateTransitPassPropertiesForPass();
   v12 = +[NPKGizmoDatabase sharedDatabase];
-  v13 = [v7 uniqueID];
-  v14 = [v12 transactionSourceIdentifierForPassWithUniqueID:v13];
+  uniqueID2 = [v7 uniqueID];
+  v14 = [v12 transactionSourceIdentifierForPassWithUniqueID:uniqueID2];
 
   v61 = v14;
   NPKUpdateTransactionSourceIdentifierForPass();
   [(NPDCompanionAgentClient *)self _applyIngestionDateToPass:v7];
   v15 = +[NPKGizmoDatabase sharedDatabase];
-  v16 = [v15 passForUniqueID:v4 includeImageSets:0];
+  v16 = [v15 passForUniqueID:dCopy includeImageSets:0];
 
   [v7 setSettings:{objc_msgSend(v16, "settings")}];
   v60 = v16;
-  v17 = [v16 paymentPass];
-  v18 = [v17 copy];
+  paymentPass = [v16 paymentPass];
+  v18 = [paymentPass copy];
 
-  v19 = [v18 devicePaymentApplications];
-  v20 = [v19 count];
+  devicePaymentApplications = [v18 devicePaymentApplications];
+  v20 = [devicePaymentApplications count];
 
   v63 = v8;
-  v64 = v4;
+  v64 = dCopy;
   v62 = v11;
   v59 = v18;
   if (v20 == 1)
   {
-    v21 = [v18 devicePrimaryPaymentApplication];
-    v22 = [NSSet setWithObject:v21];
+    devicePrimaryPaymentApplication = [v18 devicePrimaryPaymentApplication];
+    devicePaymentApplications3 = [NSSet setWithObject:devicePrimaryPaymentApplication];
   }
 
   else
   {
-    v23 = [v18 devicePaymentApplications];
-    v24 = [v23 count];
+    devicePaymentApplications2 = [v18 devicePaymentApplications];
+    v24 = [devicePaymentApplications2 count];
 
     if (v24 < 2)
     {
-      v22 = 0;
+      devicePaymentApplications3 = 0;
     }
 
     else
     {
-      v22 = [v18 devicePaymentApplications];
+      devicePaymentApplications3 = [v18 devicePaymentApplications];
     }
   }
 
@@ -713,7 +713,7 @@ LABEL_13:
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
-  obj = v22;
+  obj = devicePaymentApplications3;
   v66 = v7;
   v68 = [obj countByEnumeratingWithState:&v83 objects:v96 count:16];
   if (v68)
@@ -729,38 +729,38 @@ LABEL_13:
         }
 
         v27 = *(*(&v83 + 1) + 8 * i);
-        v28 = [v27 subcredentials];
-        if ([v28 count])
+        subcredentials = [v27 subcredentials];
+        if ([subcredentials count])
         {
           v70 = i;
           v81 = 0u;
           v82 = 0u;
           v79 = 0u;
           v80 = 0u;
-          v29 = [v7 devicePaymentApplications];
-          v30 = [v29 countByEnumeratingWithState:&v79 objects:v95 count:16];
+          devicePaymentApplications4 = [v7 devicePaymentApplications];
+          v30 = [devicePaymentApplications4 countByEnumeratingWithState:&v79 objects:v95 count:16];
           if (v30)
           {
             v31 = v30;
             v32 = *v80;
-            v69 = v28;
+            v69 = subcredentials;
             while (2)
             {
               for (j = 0; j != v31; j = j + 1)
               {
                 if (*v80 != v32)
                 {
-                  objc_enumerationMutation(v29);
+                  objc_enumerationMutation(devicePaymentApplications4);
                 }
 
                 v34 = *(*(&v79 + 1) + 8 * j);
-                v35 = [v34 applicationIdentifier];
-                v36 = [v27 applicationIdentifier];
-                v37 = [v35 isEqualToString:v36];
+                applicationIdentifier = [v34 applicationIdentifier];
+                applicationIdentifier2 = [v27 applicationIdentifier];
+                v37 = [applicationIdentifier isEqualToString:applicationIdentifier2];
 
                 if (v37)
                 {
-                  v28 = v69;
+                  subcredentials = v69;
                   [v34 setSubcredentials:v69];
                   v38 = pk_Payment_log();
                   v39 = os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT);
@@ -770,12 +770,12 @@ LABEL_13:
                     v40 = pk_Payment_log();
                     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
                     {
-                      v41 = [v34 subcredentials];
-                      v42 = [v66 uniqueID];
+                      subcredentials2 = [v34 subcredentials];
+                      uniqueID3 = [v66 uniqueID];
                       *buf = 138412802;
-                      v90 = v41;
+                      v90 = subcredentials2;
                       v91 = 2112;
-                      v92 = v42;
+                      v92 = uniqueID3;
                       v93 = 2112;
                       v94 = v34;
                       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Notice: Applied subcredentials %@\n to pass with unique id %@\n applet %@\n", buf, 0x20u);
@@ -786,8 +786,8 @@ LABEL_13:
                 }
               }
 
-              v31 = [v29 countByEnumeratingWithState:&v79 objects:v95 count:16];
-              v28 = v69;
+              v31 = [devicePaymentApplications4 countByEnumeratingWithState:&v79 objects:v95 count:16];
+              subcredentials = v69;
               if (v31)
               {
                 continue;
@@ -814,8 +814,8 @@ LABEL_27:
   v78 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v43 = [v7 devicePaymentApplications];
-  v44 = [v43 countByEnumeratingWithState:&v75 objects:v88 count:16];
+  devicePaymentApplications5 = [v7 devicePaymentApplications];
+  v44 = [devicePaymentApplications5 countByEnumeratingWithState:&v75 objects:v88 count:16];
   if (v44)
   {
     v45 = v44;
@@ -826,7 +826,7 @@ LABEL_27:
       {
         if (*v76 != v46)
         {
-          objc_enumerationMutation(v43);
+          objc_enumerationMutation(devicePaymentApplications5);
         }
 
         v48 = *(*(&v75 + 1) + 8 * k);
@@ -834,8 +834,8 @@ LABEL_27:
         v72 = 0u;
         v73 = 0u;
         v74 = 0u;
-        v49 = [v48 subcredentials];
-        v50 = [v49 countByEnumeratingWithState:&v71 objects:v87 count:16];
+        subcredentials3 = [v48 subcredentials];
+        v50 = [subcredentials3 countByEnumeratingWithState:&v71 objects:v87 count:16];
         if (v50)
         {
           v51 = v50;
@@ -846,7 +846,7 @@ LABEL_27:
             {
               if (*v72 != v52)
               {
-                objc_enumerationMutation(v49);
+                objc_enumerationMutation(subcredentials3);
               }
 
               v54 = *(*(&v71 + 1) + 8 * m);
@@ -863,14 +863,14 @@ LABEL_27:
               [v54 setSupportedRadioTechnologies:NPKRadioTechnologySupportedByPairedDevice()];
             }
 
-            v51 = [v49 countByEnumeratingWithState:&v71 objects:v87 count:16];
+            v51 = [subcredentials3 countByEnumeratingWithState:&v71 objects:v87 count:16];
           }
 
           while (v51);
         }
       }
 
-      v45 = [v43 countByEnumeratingWithState:&v75 objects:v88 count:16];
+      v45 = [devicePaymentApplications5 countByEnumeratingWithState:&v75 objects:v88 count:16];
     }
 
     while (v45);
@@ -895,10 +895,10 @@ LABEL_27:
   return v66;
 }
 
-- (void)paymentPassesWithPrimaryAccountIdentifier:(id)a3 completion:(id)a4
+- (void)paymentPassesWithPrimaryAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -908,18 +908,18 @@ LABEL_27:
   v8 = NPKPairedDeviceSecureElementIdentifiers();
   if (v8)
   {
-    v9 = [(NPDCompanionAgentClient *)self dataSource];
-    v10 = [v9 companionPaymentPassDatabase];
-    v11 = [v10 uniqueIDs];
+    dataSource = [(NPDCompanionAgentClient *)self dataSource];
+    companionPaymentPassDatabase = [dataSource companionPaymentPassDatabase];
+    uniqueIDs = [companionPaymentPassDatabase uniqueIDs];
     v17[0] = _NSConcreteStackBlock;
     v17[1] = 3221225472;
     v17[2] = sub_100024334;
     v17[3] = &unk_100071EE8;
     v17[4] = self;
     v18 = v8;
-    v19 = v6;
+    v19 = identifierCopy;
     v20 = &v21;
-    [v11 enumerateObjectsUsingBlock:v17];
+    [uniqueIDs enumerateObjectsUsingBlock:v17];
   }
 
   v12 = pk_Payment_log();
@@ -932,26 +932,26 @@ LABEL_27:
     {
       v15 = v22[5];
       *buf = 138412546;
-      v28 = v6;
+      v28 = identifierCopy;
       v29 = 2112;
       v30 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Notice: Request for payment passes with FPANID %@ (replying with %@)", buf, 0x16u);
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v16 = [v22[5] copy];
-    v7[2](v7, v16);
+    completionCopy[2](completionCopy, v16);
   }
 
   _Block_object_dispose(&v21, 8);
 }
 
-- (void)paymentPassWithDeviceAccountIdentifier:(id)a3 completion:(id)a4
+- (void)paymentPassWithDeviceAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -961,18 +961,18 @@ LABEL_27:
   v8 = NPKPairedDeviceSecureElementIdentifiers();
   if (v8)
   {
-    v9 = [(NPDCompanionAgentClient *)self dataSource];
-    v10 = [v9 companionPaymentPassDatabase];
-    v11 = [v10 uniqueIDs];
+    dataSource = [(NPDCompanionAgentClient *)self dataSource];
+    companionPaymentPassDatabase = [dataSource companionPaymentPassDatabase];
+    uniqueIDs = [companionPaymentPassDatabase uniqueIDs];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_100024710;
     v16[3] = &unk_100071EE8;
     v16[4] = self;
     v17 = v8;
-    v18 = v6;
+    v18 = identifierCopy;
     v19 = &v20;
-    [v11 enumerateObjectsUsingBlock:v16];
+    [uniqueIDs enumerateObjectsUsingBlock:v16];
   }
 
   v12 = pk_Payment_log();
@@ -985,25 +985,25 @@ LABEL_27:
     {
       v15 = v21[5];
       *buf = 138412546;
-      v27 = v6;
+      v27 = identifierCopy;
       v28 = 2112;
       v29 = v15;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Notice: Request for payment pass with DPANID %@ (replying with %@)", buf, 0x16u);
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v21[5]);
+    completionCopy[2](completionCopy, v21[5]);
   }
 
   _Block_object_dispose(&v20, 8);
 }
 
-- (void)passesWithReaderIdentifier:(id)a3 completion:(id)a4
+- (void)passesWithReaderIdentifier:(id)identifier completion:(id)completion
 {
-  v24 = a3;
-  v22 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1013,7 +1013,7 @@ LABEL_27:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v24;
+      *(&buf + 4) = identifierCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: Request for payment passes with readerIdentifier %@", &buf, 0xCu);
     }
   }
@@ -1030,15 +1030,15 @@ LABEL_27:
   v21 = v9;
   if (v9)
   {
-    v11 = [(NPDCompanionAgentClient *)self dataSource];
-    v12 = [v11 companionPaymentPassDatabase];
-    v13 = [v12 uniqueIDs];
+    dataSource = [(NPDCompanionAgentClient *)self dataSource];
+    companionPaymentPassDatabase = [dataSource companionPaymentPassDatabase];
+    uniqueIDs = [companionPaymentPassDatabase uniqueIDs];
 
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v14 = v13;
+    v14 = uniqueIDs;
     v15 = [v14 countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v15)
     {
@@ -1058,7 +1058,7 @@ LABEL_27:
           v29[1] = 3221225472;
           v29[2] = sub_100024C28;
           v29[3] = &unk_100071F10;
-          v30 = v24;
+          v30 = identifierCopy;
           p_buf = &buf;
           v31 = v8;
           [(NPDCompanionAgentClient *)self paymentPassWithUniqueID:v18 reply:v29];
@@ -1078,18 +1078,18 @@ LABEL_27:
   block[2] = sub_100024CC4;
   block[3] = &unk_1000719A8;
   v28 = &buf;
-  v26 = v24;
-  v27 = v22;
-  v19 = v22;
-  v20 = v24;
+  v26 = identifierCopy;
+  v27 = completionCopy;
+  v19 = completionCopy;
+  v20 = identifierCopy;
   dispatch_group_notify(v8, &_dispatch_main_q, block);
 
   _Block_object_dispose(&buf, 8);
 }
 
-- (void)credentialedPassUniqueIDsWithReply:(id)a3
+- (void)credentialedPassUniqueIDsWithReply:(id)reply
 {
-  v16 = a3;
+  replyCopy = reply;
   v28[0] = 0;
   v28[1] = v28;
   v28[2] = 0x3032000000;
@@ -1102,15 +1102,15 @@ LABEL_27:
   v15 = v5;
   if (v5)
   {
-    v7 = [(NPDCompanionAgentClient *)self dataSource];
-    v8 = [v7 companionPaymentPassDatabase];
-    v9 = [v8 uniqueIDs];
+    dataSource = [(NPDCompanionAgentClient *)self dataSource];
+    companionPaymentPassDatabase = [dataSource companionPaymentPassDatabase];
+    uniqueIDs = [companionPaymentPassDatabase uniqueIDs];
 
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    obj = v9;
+    obj = uniqueIDs;
     v10 = [obj countByEnumeratingWithState:&v24 objects:v30 count:16];
     if (v10)
     {
@@ -1150,19 +1150,19 @@ LABEL_27:
   block[2] = sub_100025118;
   block[3] = &unk_100071F60;
   v20 = v28;
-  v19 = v16;
-  v14 = v16;
+  v19 = replyCopy;
+  v14 = replyCopy;
   dispatch_group_notify(v4, &_dispatch_main_q, block);
 
   _Block_object_dispose(v28, 8);
 }
 
-- (void)savePaymentPassData:(id)a3 withUniqueID:(id)a4 forPairingID:(id)a5 completion:(id)a6
+- (void)savePaymentPassData:(id)data withUniqueID:(id)d forPairingID:(id)iD completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   v14 = pk_Payment_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -1171,23 +1171,23 @@ LABEL_27:
     v16 = pk_Payment_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v12 UUIDString];
+      uUIDString = [iDCopy UUIDString];
       *buf = 138412546;
-      v59 = v11;
+      v59 = dCopy;
       v60 = 2112;
-      v61 = v17;
+      v61 = uUIDString;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Notice: Request to save payment pass with unique ID %@ for pairing ID %@", buf, 0x16u);
     }
   }
 
-  v49 = self;
-  v18 = [(NPDCompanionAgentClient *)self dataSource];
-  v19 = [v18 companionPaymentPassDatabase];
+  selfCopy = self;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  companionPaymentPassDatabase = [dataSource companionPaymentPassDatabase];
 
   v20 = NPKPairedOrPairingDevice();
   v21 = [v20 valueForProperty:NRDevicePropertyPairingID];
 
-  if (([v12 isEqual:v21] & 1) == 0)
+  if (([iDCopy isEqual:v21] & 1) == 0)
   {
     v22 = pk_Payment_log();
     v23 = os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT);
@@ -1197,12 +1197,12 @@ LABEL_27:
       v24 = pk_Payment_log();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
-        v25 = [v12 UUIDString];
-        v26 = [v21 UUIDString];
+        uUIDString2 = [iDCopy UUIDString];
+        uUIDString3 = [v21 UUIDString];
         *buf = 138412546;
-        v59 = v25;
+        v59 = uUIDString2;
         v60 = 2112;
-        v61 = v26;
+        v61 = uUIDString3;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Warning: Save pass requested for device with pairing ID %@, which does not match current pairing ID %@.", buf, 0x16u);
       }
     }
@@ -1213,13 +1213,13 @@ LABEL_27:
       v28 = [NPDCompanionPaymentPassDatabase alloc];
       v29 = [NPDOutstandingPassDeletionStore alloc];
       v30 = [NPSDomainAccessor alloc];
-      v31 = v10;
+      v31 = dataCopy;
       v32 = [v30 initWithDomain:NPKDefaultsDomain];
       v33 = [(NPDOutstandingPassDeletionStore *)v29 initWithDomainAccessor:v32];
       v34 = [(NPDCompanionPaymentPassDatabase *)v28 initWithDevice:v27 outstandingDeletionStore:v33];
 
-      v19 = v32;
-      v10 = v31;
+      companionPaymentPassDatabase = v32;
+      dataCopy = v31;
     }
 
     else
@@ -1227,34 +1227,34 @@ LABEL_27:
       v34 = 0;
     }
 
-    v19 = v34;
+    companionPaymentPassDatabase = v34;
   }
 
-  if (v19)
+  if (companionPaymentPassDatabase)
   {
-    v35 = [v19 uniqueIDs];
-    v36 = [v35 count];
+    uniqueIDs = [companionPaymentPassDatabase uniqueIDs];
+    v36 = [uniqueIDs count];
 
     v56 = 0;
     v57 = 0;
-    v48 = v10;
-    v37 = [PKPass createWithData:v10 warnings:&v57 error:&v56];
+    v48 = dataCopy;
+    v37 = [PKPass createWithData:dataCopy warnings:&v57 error:&v56];
     v38 = v57;
     v39 = v56;
-    v40 = [v37 paymentPass];
+    paymentPass = [v37 paymentPass];
 
-    if (v40)
+    if (paymentPass)
     {
       v50[0] = _NSConcreteStackBlock;
       v50[1] = 3221225472;
       v50[2] = sub_10002575C;
       v50[3] = &unk_100071F88;
-      v51 = v19;
-      v52 = v49;
+      v51 = companionPaymentPassDatabase;
+      v52 = selfCopy;
       v55 = v36 != 0;
-      v53 = v11;
-      v54 = v13;
-      [v51 savePaymentPass:v40 requireExisting:0 requireNewer:0 completion:v50];
+      v53 = dCopy;
+      v54 = completionCopy;
+      [v51 savePaymentPass:paymentPass requireExisting:0 requireNewer:0 completion:v50];
     }
 
     else
@@ -1268,7 +1268,7 @@ LABEL_27:
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
-          v59 = v11;
+          v59 = dCopy;
           v60 = 2112;
           v61 = v38;
           v62 = 2112;
@@ -1277,13 +1277,13 @@ LABEL_27:
         }
       }
 
-      if (v13)
+      if (completionCopy)
       {
-        (*(v13 + 2))(v13, 0);
+        (*(completionCopy + 2))(completionCopy, 0);
       }
     }
 
-    v10 = v48;
+    dataCopy = v48;
   }
 
   else
@@ -1296,26 +1296,26 @@ LABEL_27:
       v43 = pk_Payment_log();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
-        v44 = [v12 UUIDString];
+        uUIDString4 = [iDCopy UUIDString];
         *buf = 138412290;
-        v59 = v44;
+        v59 = uUIDString4;
         _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_DEFAULT, "Warning: Save pass requested for device with pairing ID %@, but that device is no longer paired; ignoring.", buf, 0xCu);
       }
     }
 
-    if (v13)
+    if (completionCopy)
     {
-      (*(v13 + 2))(v13, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)removePaymentPassWithUniqueID:(id)a3 forPairingID:(id)a4 waitForConfirmation:(BOOL)a5 completion:(id)a6
+- (void)removePaymentPassWithUniqueID:(id)d forPairingID:(id)iD waitForConfirmation:(BOOL)confirmation completion:(id)completion
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  confirmationCopy = confirmation;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   v13 = pk_Payment_log();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
 
@@ -1325,11 +1325,11 @@ LABEL_27:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v58 = v10;
+      v58 = dCopy;
       v59 = 2112;
-      v60 = v11;
+      v60 = iDCopy;
       v61 = 1024;
-      v62 = v7;
+      v62 = confirmationCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Notice: Request to remove payment pass with unique ID %@ for pairing ID %@ (wait for remote confirmation %d)", buf, 0x1Cu);
     }
   }
@@ -1337,17 +1337,17 @@ LABEL_27:
   v16 = NPKPairedOrPairingDevice();
   v17 = [v16 valueForProperty:NRDevicePropertyPairingID];
 
-  if ([v11 isEqual:v17])
+  if ([iDCopy isEqual:v17])
   {
-    v38 = v11;
+    v38 = iDCopy;
     v50[0] = _NSConcreteStackBlock;
     v50[1] = 3221225472;
     v50[2] = sub_100025EB8;
     v50[3] = &unk_100071FB0;
-    v37 = v12;
-    v52 = v12;
-    v39 = v10;
-    v18 = v10;
+    v37 = completionCopy;
+    v52 = completionCopy;
+    v39 = dCopy;
+    v18 = dCopy;
     v51 = v18;
     v19 = objc_retainBlock(v50);
     v47[0] = _NSConcreteStackBlock;
@@ -1368,11 +1368,11 @@ LABEL_27:
     v23 = v20;
     v46 = v23;
     v24 = objc_retainBlock(v45);
-    v25 = [(NPDCompanionAgentClient *)self dataSource];
-    v26 = [v25 companionPaymentPassDatabase];
-    v27 = [v26 paymentPassWithUniqueID:v23];
+    dataSource = [(NPDCompanionAgentClient *)self dataSource];
+    companionPaymentPassDatabase = [dataSource companionPaymentPassDatabase];
+    v27 = [companionPaymentPassDatabase paymentPassWithUniqueID:v23];
 
-    if (v7)
+    if (confirmationCopy)
     {
       if ([(NPDCompanionAgentClient *)self _isGizmoConnected])
       {
@@ -1410,11 +1410,11 @@ LABEL_27:
       v28 = v41;
     }
 
-    v11 = v38;
+    iDCopy = v38;
 
     v34 = v52;
-    v10 = v39;
-    v12 = v37;
+    dCopy = v39;
+    completionCopy = v37;
     goto LABEL_18;
   }
 
@@ -1426,23 +1426,23 @@ LABEL_27:
     v31 = pk_Payment_log();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
     {
-      v32 = [v11 UUIDString];
-      v33 = [v17 UUIDString];
+      uUIDString = [iDCopy UUIDString];
+      uUIDString2 = [v17 UUIDString];
       *buf = 138412546;
-      v58 = v32;
+      v58 = uUIDString;
       v59 = 2112;
-      v60 = v33;
+      v60 = uUIDString2;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEFAULT, "Warning: Remove requested for pairing ID %@ which does not match current pairing ID %@; ignoring.", buf, 0x16u);
     }
   }
 
-  if (v12)
+  if (completionCopy)
   {
     v55 = NSLocalizedDescriptionKey;
     v56 = @"Pairing ID doesn't match";
     v34 = [NSDictionary dictionaryWithObjects:&v56 forKeys:&v55 count:1];
     v35 = [NSError errorWithDomain:PKPassKitErrorDomain code:-1 userInfo:v34];
-    (*(v12 + 2))(v12, 0, v35);
+    (*(completionCopy + 2))(completionCopy, 0, v35);
 
 LABEL_18:
   }
@@ -1451,27 +1451,27 @@ LABEL_18:
 - (BOOL)_isGizmoConnected
 {
   v3 = NPKIsPairedDeviceStandalone();
-  v4 = [(NPDCompanionAgentClient *)self dataSource];
-  v5 = v4;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  v5 = dataSource;
   if (v3)
   {
-    v6 = [v4 passSyncService];
-    v7 = [v6 passSyncService];
+    passSyncService = [dataSource passSyncService];
+    v6PassSyncService = [passSyncService passSyncService];
   }
 
   else
   {
-    v7 = [v4 generalService];
+    v6PassSyncService = [dataSource generalService];
   }
 
   v8 = NPKIsConnectedToPairedOrPairingDeviceFromService();
   return v8;
 }
 
-- (void)setDefaultCard:(id)a3 completion:(id)a4
+- (void)setDefaultCard:(id)card completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  cardCopy = card;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1481,22 +1481,22 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v6;
+      v22 = cardCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Notice: Request to set default card to %@", buf, 0xCu);
     }
   }
 
-  v11 = [(NPDCompanionAgentClient *)self dataSource];
-  v12 = [v11 companionPaymentPassDatabase];
-  v13 = [v12 uniqueIDs];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  companionPaymentPassDatabase = [dataSource companionPaymentPassDatabase];
+  uniqueIDs = [companionPaymentPassDatabase uniqueIDs];
 
-  if (v6)
+  if (cardCopy)
   {
-    if ([v13 containsObject:v6])
+    if ([uniqueIDs containsObject:cardCopy])
     {
-      v14 = [(NPDCompanionAgentClient *)self dataSource];
-      v15 = [v14 npsDomainAccessor];
-      [v15 setObject:v6 forKey:NPKDefaultPaymentPassDefault];
+      dataSource2 = [(NPDCompanionAgentClient *)self dataSource];
+      npsDomainAccessor = [dataSource2 npsDomainAccessor];
+      [npsDomainAccessor setObject:cardCopy forKey:NPKDefaultPaymentPassDefault];
 LABEL_16:
 
       v19[0] = _NSConcreteStackBlock;
@@ -1504,18 +1504,18 @@ LABEL_16:
       v19[2] = sub_1000269F4;
       v19[3] = &unk_100071620;
       v19[4] = self;
-      v20 = v7;
+      v20 = completionCopy;
       dispatch_async(&_dispatch_main_q, v19);
 
       goto LABEL_17;
     }
   }
 
-  else if (![v13 count])
+  else if (![uniqueIDs count])
   {
-    v14 = [(NPDCompanionAgentClient *)self dataSource];
-    v15 = [v14 npsDomainAccessor];
-    [v15 removeObjectForKey:NPKDefaultPaymentPassDefault];
+    dataSource2 = [(NPDCompanionAgentClient *)self dataSource];
+    npsDomainAccessor = [dataSource2 npsDomainAccessor];
+    [npsDomainAccessor removeObjectForKey:NPKDefaultPaymentPassDefault];
     goto LABEL_16;
   }
 
@@ -1528,81 +1528,81 @@ LABEL_16:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v22 = v6;
+      v22 = cardCopy;
       v23 = 2112;
-      v24 = v13;
+      v24 = uniqueIDs;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Error: Rejecting invalid default card: %@, current cards = %@", buf, 0x16u);
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_17:
 }
 
-- (void)defaultCard:(id)a3
+- (void)defaultCard:(id)card
 {
-  if (a3)
+  if (card)
   {
-    v4 = a3;
-    v5 = [(NPDCompanionAgentClient *)self _defaultCard];
-    v4[2](v4, v5);
+    cardCopy = card;
+    _defaultCard = [(NPDCompanionAgentClient *)self _defaultCard];
+    cardCopy[2](cardCopy, _defaultCard);
   }
 }
 
 - (id)_defaultCard
 {
-  v3 = [(NPDCompanionAgentClient *)self dataSource];
-  v4 = [v3 npsDomainAccessor];
-  v5 = [v4 synchronize];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  npsDomainAccessor = [dataSource npsDomainAccessor];
+  synchronize = [npsDomainAccessor synchronize];
 
-  v6 = [(NPDCompanionAgentClient *)self dataSource];
-  v7 = [v6 npsDomainAccessor];
-  v8 = [v7 objectForKey:NPKDefaultPaymentPassDefault];
+  dataSource2 = [(NPDCompanionAgentClient *)self dataSource];
+  npsDomainAccessor2 = [dataSource2 npsDomainAccessor];
+  v8 = [npsDomainAccessor2 objectForKey:NPKDefaultPaymentPassDefault];
 
   return v8;
 }
 
-- (void)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)a3 completion:(id)a4
+- (void)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)default completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  if (v6)
+  defaultCopy = default;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    if (v9)
+    if (defaultCopy)
     {
-      v7 = [(NPDCompanionAgentClient *)self _defaultCard];
-      if (v7)
+      _defaultCard = [(NPDCompanionAgentClient *)self _defaultCard];
+      if (_defaultCard)
       {
         v8 = 0;
       }
 
       else
       {
-        v8 = [(NPDCompanionAgentClient *)self _isPassQualifiedToBeDefaultWithUniqueID:v9];
+        v8 = [(NPDCompanionAgentClient *)self _isPassQualifiedToBeDefaultWithUniqueID:defaultCopy];
       }
 
-      v6[2](v6, v8);
+      completionCopy[2](completionCopy, v8);
     }
 
     else
     {
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (BOOL)_isPassQualifiedToBeDefaultWithUniqueID:(id)a3
+- (BOOL)_isPassQualifiedToBeDefaultWithUniqueID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[NPKGizmoDatabase sharedDatabase];
-  v5 = [v4 passForUniqueID:v3];
-  v6 = [v5 paymentPass];
+  v5 = [v4 passForUniqueID:dCopy];
+  paymentPass = [v5 paymentPass];
 
-  if (v6)
+  if (paymentPass)
   {
     v7 = NPKPeerPaymentAccountPath();
     v8 = [NSData dataWithContentsOfFile:v7];
@@ -1618,19 +1618,19 @@ LABEL_17:
       v9 = 0;
     }
 
-    v11 = [v9 associatedPassUniqueID];
+    associatedPassUniqueID = [v9 associatedPassUniqueID];
     v12 = +[NPKGizmoDatabase sharedDatabase];
-    v13 = [v12 preferredPaymentApplicationForPaymentPass:v6];
+    v13 = [v12 preferredPaymentApplicationForPaymentPass:paymentPass];
 
-    v14 = [v13 state];
+    state = [v13 state];
     v15 = NPKPairedDeviceSecureElementIdentifiers();
     if ([v15 count])
     {
       NPKIdentifyDevicePaymentApplicationsForPass();
     }
 
-    v16 = [v11 isEqualToString:v3];
-    if ([v6 effectiveContactlessPaymentApplicationState] == 1)
+    v16 = [associatedPassUniqueID isEqualToString:dCopy];
+    if ([paymentPass effectiveContactlessPaymentApplicationState] == 1)
     {
       v17 = 1;
     }
@@ -1644,7 +1644,7 @@ LABEL_17:
 
       else
       {
-        v18 = v14 == 2;
+        v18 = state == 2;
       }
 
       v17 = v18;
@@ -1652,11 +1652,11 @@ LABEL_17:
 
     if (objc_opt_respondsToSelector())
     {
-      v19 = [v6 supportsDefaultCardSelection];
+      supportsDefaultCardSelection = [paymentPass supportsDefaultCardSelection];
       if ((v16 & 1) == 0)
       {
 LABEL_18:
-        v10 = v17 & v19;
+        v10 = v17 & supportsDefaultCardSelection;
 LABEL_21:
 
         goto LABEL_22;
@@ -1665,7 +1665,7 @@ LABEL_21:
 
     else
     {
-      v19 = 1;
+      supportsDefaultCardSelection = 1;
       if ((v16 & 1) == 0)
       {
         goto LABEL_18;
@@ -1682,12 +1682,12 @@ LABEL_22:
   return v10;
 }
 
-- (void)defaultPaymentApplicationForPassWithUniqueID:(id)a3 completion:(id)a4
+- (void)defaultPaymentApplicationForPassWithUniqueID:(id)d completion:(id)completion
 {
-  v13 = a3;
-  v5 = a4;
+  dCopy = d;
+  completionCopy = completion;
   v6 = +[NPKGizmoDatabase sharedDatabase];
-  v7 = [v6 passForUniqueID:v13];
+  v7 = [v6 passForUniqueID:dCopy];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -1696,12 +1696,12 @@ LABEL_22:
   }
 
   v8 = +[NPKGizmoDatabase sharedDatabase];
-  v9 = [v8 passForUniqueID:v13];
+  v9 = [v8 passForUniqueID:dCopy];
 
   if (!v9)
   {
 LABEL_7:
-    v5[2](v5, 0);
+    completionCopy[2](completionCopy, 0);
     goto LABEL_8;
   }
 
@@ -1713,23 +1713,23 @@ LABEL_7:
 
   v11 = +[NPKGizmoDatabase sharedDatabase];
   v12 = [v11 preferredPaymentApplicationForPaymentPass:v9];
-  (v5)[2](v5, v12);
+  (completionCopy)[2](completionCopy, v12);
 
 LABEL_8:
 }
 
-- (void)setDefaultPaymentApplication:(id)a3 forPassWithUniqueID:(id)a4 completion:(id)a5
+- (void)setDefaultPaymentApplication:(id)application forPassWithUniqueID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
+  applicationCopy = application;
+  dCopy = d;
   v25[0] = _NSConcreteStackBlock;
   v25[1] = 3221225472;
   v25[2] = sub_100027260;
   v25[3] = &unk_100072078;
-  v10 = a5;
-  v27 = v10;
+  completionCopy = completion;
+  v27 = completionCopy;
   v25[4] = self;
-  v11 = v9;
+  v11 = dCopy;
   v26 = v11;
   v12 = objc_retainBlock(v25);
   v13 = +[NPKGizmoDatabase sharedDatabase];
@@ -1753,70 +1753,70 @@ LABEL_6:
   }
 
   v17 = +[NPKGizmoDatabase sharedDatabase];
-  [v17 setPreferredPaymentApplication:v8 forPaymentPass:v16];
+  [v17 setPreferredPaymentApplication:applicationCopy forPaymentPass:v16];
 
   if (![(NPDCompanionAgentClient *)self _isGizmoConnected])
   {
     goto LABEL_6;
   }
 
-  v18 = [(NPDCompanionAgentClient *)self dataSource];
-  v19 = [v18 remoteAdminConnectionServiceAgent];
-  v20 = [v8 applicationIdentifier];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
+  applicationIdentifier = [applicationCopy applicationIdentifier];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_1000274E8;
   v21[3] = &unk_1000720A0;
   v16 = v16;
   v22 = v16;
-  v23 = v10;
+  v23 = completionCopy;
   v24 = v12;
-  [v19 handlePreferredAID:v20 forPassWithUniqueID:v11 completion:v21];
+  [remoteAdminConnectionServiceAgent handlePreferredAID:applicationIdentifier forPassWithUniqueID:v11 completion:v21];
 
 LABEL_7:
 }
 
-- (void)initiateConsistencyCheckWithCompletion:(id)a3
+- (void)initiateConsistencyCheckWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(NPDCompanionAgentClient *)self dataSource];
-  v5 = [v6 remoteAdminConnectionServiceAgent];
-  [v5 initiateConsistencyCheckWithCompletion:v4];
+  completionCopy = completion;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
+  [remoteAdminConnectionServiceAgent initiateConsistencyCheckWithCompletion:completionCopy];
 }
 
-- (void)redownloadAllPaymentPassesWithCompletion:(id)a3
+- (void)redownloadAllPaymentPassesWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(NPDCompanionAgentClient *)self dataSource];
-  v5 = [v6 remoteAdminConnectionServiceAgent];
-  [v5 redownloadAllPaymentPassesWithCompletion:v4];
+  completionCopy = completion;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
+  [remoteAdminConnectionServiceAgent redownloadAllPaymentPassesWithCompletion:completionCopy];
 }
 
-- (void)handlePendingUnpairingWithCompletion:(id)a3
+- (void)handlePendingUnpairingWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(NPDCompanionAgentClient *)self dataSource];
-  v5 = [v6 remoteAdminConnectionServiceAgent];
-  [v5 handlePendingUnpairingWithCompletion:v4];
+  completionCopy = completion;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
+  [remoteAdminConnectionServiceAgent handlePendingUnpairingWithCompletion:completionCopy];
 }
 
-- (void)handlePendingiCloudSignoutWithCompletion:(id)a3
+- (void)handlePendingiCloudSignoutWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(NPDCompanionAgentClient *)self dataSource];
-  v5 = [v6 remoteAdminConnectionServiceAgent];
-  [v5 handlePendingiCloudSignoutWithCompletion:v4];
+  completionCopy = completion;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
+  [remoteAdminConnectionServiceAgent handlePendingiCloudSignoutWithCompletion:completionCopy];
 }
 
-- (void)setSharedPaymentWebServiceContext:(id)a3 forPairingID:(id)a4 completion:(id)a5
+- (void)setSharedPaymentWebServiceContext:(id)context forPairingID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  dCopy = d;
+  completionCopy = completion;
   v11 = NPKPairedOrPairingDevice();
   v12 = [v11 valueForProperty:NRDevicePropertyPairingID];
 
-  if (![v9 isEqual:v12])
+  if (![dCopy isEqual:v12])
   {
     v17 = pk_Payment_log();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
@@ -1826,33 +1826,33 @@ LABEL_7:
       v19 = pk_Payment_log();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v9 UUIDString];
-        v21 = [v12 UUIDString];
+        uUIDString = [dCopy UUIDString];
+        uUIDString2 = [v12 UUIDString];
         *buf = 138412546;
-        v42 = v20;
+        v42 = uUIDString;
         v43 = 2112;
-        v44 = v21;
+        v44 = uUIDString2;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Warning: Got shared payment web service context for device with pairing ID %@, which does not match the current device (%@). Attempting to save in the correct pairing store location.", buf, 0x16u);
       }
     }
 
-    v15 = NPKDeviceWithPairingID();
-    if (!v15)
+    dataSource = NPKDeviceWithPairingID();
+    if (!dataSource)
     {
       v32 = pk_Payment_log();
       v33 = os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT);
 
       if (v33)
       {
-        v16 = pk_Payment_log();
-        if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+        remoteAdminConnectionServiceAgent = pk_Payment_log();
+        if (os_log_type_enabled(remoteAdminConnectionServiceAgent, OS_LOG_TYPE_DEFAULT))
         {
-          v34 = [v9 UUIDString];
+          uUIDString3 = [dCopy UUIDString];
           *buf = 138412546;
-          v42 = v34;
+          v42 = uUIDString3;
           v43 = 2112;
-          v44 = v8;
-          _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Warning: No device found with pairing ID %@. Ignoring web service context %@.", buf, 0x16u);
+          v44 = contextCopy;
+          _os_log_impl(&_mh_execute_header, remoteAdminConnectionServiceAgent, OS_LOG_TYPE_DEFAULT, "Warning: No device found with pairing ID %@. Ignoring web service context %@.", buf, 0x16u);
         }
 
         goto LABEL_37;
@@ -1861,20 +1861,20 @@ LABEL_7:
       goto LABEL_38;
     }
 
-    v16 = +[NSMutableArray array];
-    v22 = [v15 valueForProperty:NRDevicePropertySEID];
+    remoteAdminConnectionServiceAgent = +[NSMutableArray array];
+    v22 = [dataSource valueForProperty:NRDevicePropertySEID];
     if (v22)
     {
-      [v16 addObject:v22];
+      [remoteAdminConnectionServiceAgent addObject:v22];
     }
 
-    v23 = [v15 valueForProperty:NRDevicePropertyAdditionalSEIDs];
+    v23 = [dataSource valueForProperty:NRDevicePropertyAdditionalSEIDs];
     if (v23)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [v16 addObjectsFromArray:v23];
+        [remoteAdminConnectionServiceAgent addObjectsFromArray:v23];
       }
     }
 
@@ -1893,16 +1893,16 @@ LABEL_7:
           v28 = pk_Payment_log();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
           {
-            v29 = [v9 UUIDString];
+            uUIDString4 = [dCopy UUIDString];
             *buf = 138412546;
-            v42 = v29;
+            v42 = uUIDString4;
             v43 = 2112;
             v44 = v24;
             _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Notice: Archiving web service for device with pairing ID %@ at path %@", buf, 0x16u);
           }
         }
 
-        [v8 archiveAtPath:v24];
+        [contextCopy archiveAtPath:v24];
       }
 
       else
@@ -1914,9 +1914,9 @@ LABEL_7:
           v38 = pk_Payment_log();
           if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
           {
-            v39 = [v9 UUIDString];
+            uUIDString5 = [dCopy UUIDString];
             *buf = 138412290;
-            v42 = v39;
+            v42 = uUIDString5;
             _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_ERROR, "Error: No web service context path for device with pairing ID %@; not saving.", buf, 0xCu);
           }
         }
@@ -1941,7 +1941,7 @@ LABEL_36:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v42 = v8;
+        v42 = contextCopy;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_DEFAULT, "Warning: Not saving invalid web service context (%@) for non-current watch", buf, 0xCu);
       }
     }
@@ -1954,9 +1954,9 @@ LABEL_36:
 
   if (v14)
   {
-    v15 = [(NPDCompanionAgentClient *)self dataSource];
-    v16 = [v15 remoteAdminConnectionServiceAgent];
-    [v16 handleUpdatedSharedPaymentWebServiceContext:v8];
+    dataSource = [(NPDCompanionAgentClient *)self dataSource];
+    remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
+    [remoteAdminConnectionServiceAgent handleUpdatedSharedPaymentWebServiceContext:contextCopy];
 LABEL_37:
 
     goto LABEL_38;
@@ -1970,38 +1970,38 @@ LABEL_37:
     goto LABEL_39;
   }
 
-  v15 = pk_Payment_log();
-  if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
+  dataSource = pk_Payment_log();
+  if (os_log_type_enabled(dataSource, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v42 = v8;
-    _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Warning: Not saving invalid web service context (%@) for current watch", buf, 0xCu);
+    v42 = contextCopy;
+    _os_log_impl(&_mh_execute_header, dataSource, OS_LOG_TYPE_DEFAULT, "Warning: Not saving invalid web service context (%@) for current watch", buf, 0xCu);
   }
 
 LABEL_38:
 
 LABEL_39:
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10);
+    completionCopy[2](completionCopy);
   }
 }
 
-- (void)sharedPaymentWebServiceContextForPairingID:(id)a3 withCompletion:(id)a4
+- (void)sharedPaymentWebServiceContextForPairingID:(id)d withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v8 = NPKPairedOrPairingDevice();
     v9 = [v8 valueForProperty:NRDevicePropertyPairingID];
 
-    if ([v6 isEqual:v9])
+    if ([dCopy isEqual:v9])
     {
-      v10 = [(NPDCompanionAgentClient *)self dataSource];
-      v11 = [v10 remoteAdminConnectionServiceAgent];
-      v12 = [v11 sharedPaymentWebServiceContext];
-      v7[2](v7, v12);
+      dataSource = [(NPDCompanionAgentClient *)self dataSource];
+      remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
+      sharedPaymentWebServiceContext = [remoteAdminConnectionServiceAgent sharedPaymentWebServiceContext];
+      completionCopy[2](completionCopy, sharedPaymentWebServiceContext);
     }
 
     else
@@ -2014,52 +2014,52 @@ LABEL_39:
         v15 = pk_Payment_log();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          v16 = [v6 UUIDString];
-          v17 = [v9 UUIDString];
+          uUIDString = [dCopy UUIDString];
+          uUIDString2 = [v9 UUIDString];
           v18 = 138412546;
-          v19 = v16;
+          v19 = uUIDString;
           v20 = 2112;
-          v21 = v17;
+          v21 = uUIDString2;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Error: Got request for shared web service context for pairing ID %@, which does not match current pairing ID %@. Returning nil; the caller will need to create a fresh context and re-register.", &v18, 0x16u);
         }
       }
 
-      v7[2](v7, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)setSharedPeerPaymentWebServiceContext:(id)a3 forPairingID:(id)a4 completion:(id)a5
+- (void)setSharedPeerPaymentWebServiceContext:(id)context forPairingID:(id)d completion:(id)completion
 {
-  v9 = a5;
-  v6 = a3;
+  completionCopy = completion;
+  contextCopy = context;
   v7 = NPKPeerPaymentWebServiceContextPath();
-  [v6 archiveAtPath:v7];
+  [contextCopy archiveAtPath:v7];
 
   notify_post([NPKSharedPeerPaymentWebServiceChangedDarwinNotification UTF8String]);
-  v8 = v9;
-  if (v9)
+  v8 = completionCopy;
+  if (completionCopy)
   {
-    (*(v9 + 2))(v9);
-    v8 = v9;
+    (*(completionCopy + 2))(completionCopy);
+    v8 = completionCopy;
   }
 }
 
-- (void)sharedPeerPaymentWebServiceContextForPairingID:(id)a3 withCompletion:(id)a4
+- (void)sharedPeerPaymentWebServiceContextForPairingID:(id)d withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = NPKPairedOrPairingDevice();
     v8 = [v7 valueForProperty:NRDevicePropertyPairingID];
 
-    if ([v5 isEqual:v8])
+    if ([dCopy isEqual:v8])
     {
       v9 = NPKPeerPaymentWebServiceContextPath();
       v10 = [PKPeerPaymentWebServiceContext contextWithArchive:v9];
 
-      v6[2](v6, v10);
+      completionCopy[2](completionCopy, v10);
     }
 
     else
@@ -2072,47 +2072,47 @@ LABEL_39:
         v13 = pk_Payment_log();
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
-          v14 = [v5 UUIDString];
-          v15 = [v8 UUIDString];
+          uUIDString = [dCopy UUIDString];
+          uUIDString2 = [v8 UUIDString];
           v16 = 138412546;
-          v17 = v14;
+          v17 = uUIDString;
           v18 = 2112;
-          v19 = v15;
+          v19 = uUIDString2;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Error: Got request for shared peer payment web service context for pairing ID %@, which does not match current pairing ID %@. Returning nil; the caller will need to create a fresh context and re-register.", &v16, 0x16u);
         }
       }
 
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)setPeerPaymentAccount:(id)a3 forPairingID:(id)a4 completion:(id)a5
+- (void)setPeerPaymentAccount:(id)account forPairingID:(id)d completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v5 = NPKSecureArchiveObject();
   v6 = NPKPeerPaymentAccountPath();
   [v5 writeToFile:v6 atomically:1];
 
   notify_post([NPKPeerPaymentAccountChangedDarwinNotification UTF8String]);
-  v7 = v8;
-  if (v8)
+  v7 = completionCopy;
+  if (completionCopy)
   {
-    (*(v8 + 2))(v8);
-    v7 = v8;
+    (*(completionCopy + 2))(completionCopy);
+    v7 = completionCopy;
   }
 }
 
-- (void)peerPaymentAccountForPairingID:(id)a3 withCompletion:(id)a4
+- (void)peerPaymentAccountForPairingID:(id)d withCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  dCopy = d;
+  completionCopy = completion;
+  if (completionCopy)
   {
     v7 = NPKPairedOrPairingDevice();
     v8 = [v7 valueForProperty:NRDevicePropertyPairingID];
 
-    if ([v5 isEqual:v8])
+    if ([dCopy isEqual:v8])
     {
       v9 = NPKPeerPaymentAccountPath();
       v10 = [NSData dataWithContentsOfFile:v9];
@@ -2128,7 +2128,7 @@ LABEL_39:
         v11 = 0;
       }
 
-      v6[2](v6, v11);
+      completionCopy[2](completionCopy, v11);
     }
 
     else
@@ -2141,38 +2141,38 @@ LABEL_39:
         v14 = pk_Payment_log();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
-          v15 = [v5 UUIDString];
-          v16 = [v8 UUIDString];
+          uUIDString = [dCopy UUIDString];
+          uUIDString2 = [v8 UUIDString];
           v17 = 138412546;
-          v18 = v15;
+          v18 = uUIDString;
           v19 = 2112;
-          v20 = v16;
+          v20 = uUIDString2;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Error: Got request for peer payment account for pairing ID %@, which does not match current pairing ID %@. Returning nil.", &v17, 0x16u);
         }
       }
 
-      v6[2](v6, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)updateSettings:(unint64_t)a3 forPassWithUniqueID:(id)a4
+- (void)updateSettings:(unint64_t)settings forPassWithUniqueID:(id)d
 {
-  v9 = a4;
-  v6 = [(NPDCompanionAgentClient *)self delegate];
-  [v6 handleUpdatedSettings:a3 forPassWithUniqueID:v9];
+  dCopy = d;
+  delegate = [(NPDCompanionAgentClient *)self delegate];
+  [delegate handleUpdatedSettings:settings forPassWithUniqueID:dCopy];
 
   if (NPKIsPairedDeviceStandalone())
   {
-    v7 = [(NPDCompanionAgentClient *)self dataSource];
-    v8 = [v7 passSyncService];
-    [v8 handleSettingsChanged:a3 forPassWithUniqueID:v9];
+    dataSource = [(NPDCompanionAgentClient *)self dataSource];
+    passSyncService = [dataSource passSyncService];
+    [passSyncService handleSettingsChanged:settings forPassWithUniqueID:dCopy];
   }
 }
 
-- (void)countOfPassesWithCompletion:(id)a3
+- (void)countOfPassesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (NPKPairedOrPairingDeviceIsTinker())
   {
     v5 = pk_General_log();
@@ -2197,27 +2197,27 @@ LABEL_39:
     v8 = [v9 countPassesOfType:0];
   }
 
-  v10 = [(NPDCompanionAgentClient *)self dataSource];
-  v11 = [v10 companionPaymentPassDatabase];
-  v12 = [v11 uniqueIDs];
-  v13 = [v12 count];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  companionPaymentPassDatabase = [dataSource companionPaymentPassDatabase];
+  uniqueIDs = [companionPaymentPassDatabase uniqueIDs];
+  v13 = [uniqueIDs count];
 
-  if (v4)
+  if (completionCopy)
   {
-    (v4)[2](v4, &v8[v13]);
+    (completionCopy)[2](completionCopy, &v8[v13]);
   }
 }
 
-- (void)passesWithCompletion:(id)a3
+- (void)passesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(NSMutableArray);
   v6 = NPKPairedDeviceSecureElementIdentifiers();
   if (v6)
   {
-    v7 = [(NPDCompanionAgentClient *)self dataSource];
-    v8 = [v7 companionPaymentPassDatabase];
-    v9 = [v8 uniqueIDs];
+    dataSource = [(NPDCompanionAgentClient *)self dataSource];
+    companionPaymentPassDatabase = [dataSource companionPaymentPassDatabase];
+    uniqueIDs = [companionPaymentPassDatabase uniqueIDs];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_100028724;
@@ -2225,7 +2225,7 @@ LABEL_39:
     v15[4] = self;
     v16 = v6;
     v17 = v5;
-    [v9 enumerateObjectsUsingBlock:v15];
+    [uniqueIDs enumerateObjectsUsingBlock:v15];
   }
 
   if (NPKPairedOrPairingDeviceIsTinker())
@@ -2257,53 +2257,53 @@ LABEL_39:
   }
 
 LABEL_11:
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, v5);
+    completionCopy[2](completionCopy, v5);
   }
 }
 
-- (void)passesOfCardType:(int64_t)a3 withCompletion:(id)a4
+- (void)passesOfCardType:(int64_t)type withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v5 = a4;
+    completionCopy = completion;
     v6 = +[PKPassLibrary sharedInstance];
-    v7 = [v6 passesOfCardType:a3];
+    v7 = [v6 passesOfCardType:type];
 
-    v5[2](v5, v7);
+    completionCopy[2](completionCopy, v7);
   }
 }
 
-- (void)identityPassesOfTypes:(id)a3 withCompletion:(id)a4
+- (void)identityPassesOfTypes:(id)types withCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    v5 = a4;
-    v6 = a3;
+    completionCopy = completion;
+    typesCopy = types;
     v7 = +[PKPassLibrary sharedInstance];
-    v8 = [v6 allObjects];
+    allObjects = [typesCopy allObjects];
 
-    v9 = [v7 identityPassesOfTypes:v8];
+    v9 = [v7 identityPassesOfTypes:allObjects];
 
-    v5[2](v5, v9);
+    completionCopy[2](completionCopy, v9);
   }
 }
 
-- (void)deviceIDSIdentifierWithCompletion:(id)a3
+- (void)deviceIDSIdentifierWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NPDCompanionAgentClient *)self dataSource];
-  v6 = [v5 paymentWebService];
+  completionCopy = completion;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  paymentWebService = [dataSource paymentWebService];
 
-  v7 = [v6 targetDevice];
+  targetDevice = [paymentWebService targetDevice];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 deviceIDSIdentifier];
-    if (v4)
+    deviceIDSIdentifier = [targetDevice deviceIDSIdentifier];
+    if (completionCopy)
     {
-      v4[2](v4, v8);
+      completionCopy[2](completionCopy, deviceIDSIdentifier);
     }
   }
 
@@ -2318,33 +2318,33 @@ LABEL_11:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v12 = 138412290;
-        v13 = v7;
+        v13 = targetDevice;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_ERROR, "Error: Unexpected web service target device:%@, we can't continue this route", &v12, 0xCu);
       }
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 }
 
-- (void)initiateLostModeExitAuthWithCompletion:(id)a3
+- (void)initiateLostModeExitAuthWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = NPKIsPairedDeviceStandalone();
-  v6 = [(NPDCompanionAgentClient *)self dataSource];
-  v7 = v6;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  v7 = dataSource;
   if (v5)
   {
-    v8 = [v6 passSyncService];
-    v9 = [v8 passSyncService];
+    passSyncService = [dataSource passSyncService];
+    v8PassSyncService = [passSyncService passSyncService];
   }
 
   else
   {
-    v9 = [v6 generalService];
+    v8PassSyncService = [dataSource generalService];
   }
 
   v14 = 0;
@@ -2364,35 +2364,35 @@ LABEL_11:
   v12 = [NSDictionary dictionaryWithObjects:v21 forKeys:v20 count:3];
   v13 = NPKProtoSendWithOptions();
 
-  if (v4)
+  if (completionCopy)
   {
-    v4[2](v4, v15[5]);
+    completionCopy[2](completionCopy, v15[5]);
   }
 
   _Block_object_dispose(&v14, 8);
 }
 
-- (void)markAllAppletsForDeletionWithCompletion:(id)a3
+- (void)markAllAppletsForDeletionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(NPDCompanionAgentClient *)self dataSource];
-  v5 = [v6 remoteAdminConnectionServiceAgent];
-  [v5 markAllAppletsForDeletionWithCompletion:v4];
+  completionCopy = completion;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
+  [remoteAdminConnectionServiceAgent markAllAppletsForDeletionWithCompletion:completionCopy];
 }
 
-- (void)transactionsForTransactionSourceIdentifiers:(id)a3 withTransactionSource:(unint64_t)a4 withBackingData:(unint64_t)a5 startDate:(id)a6 endDate:(id)a7 orderedByDate:(int64_t)a8 limit:(int64_t)a9 completion:(id)a10
+- (void)transactionsForTransactionSourceIdentifiers:(id)identifiers withTransactionSource:(unint64_t)source withBackingData:(unint64_t)data startDate:(id)date endDate:(id)endDate orderedByDate:(int64_t)byDate limit:(int64_t)limit completion:(id)self0
 {
-  v14 = a3;
-  v42 = a6;
-  v41 = a7;
-  v36 = a10;
+  identifiersCopy = identifiers;
+  dateCopy = date;
+  endDateCopy = endDate;
+  completionCopy = completion;
   v40 = +[NSMutableSet set];
   v39 = +[NSMutableSet set];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  obj = v14;
+  obj = identifiersCopy;
   v15 = [obj countByEnumeratingWithState:&v47 objects:v62 count:16];
   if (v15)
   {
@@ -2409,7 +2409,7 @@ LABEL_11:
 
         v19 = *(*(&v47 + 1) + 8 * i);
         v20 = +[NPKGizmoDatabase sharedDatabase];
-        v21 = [v20 transactionsForTransactionSourceIdentifier:v19 withTransactionSource:a4 withBackingData:a5 startDate:v42 endDate:v41 orderedByDate:1 limit:a9];
+        v21 = [v20 transactionsForTransactionSourceIdentifier:v19 withTransactionSource:source withBackingData:data startDate:dateCopy endDate:endDateCopy orderedByDate:1 limit:limit];
 
         v22 = +[NPKGizmoDatabase sharedDatabase];
         v23 = [v22 passUniqueIDForTransactionSourceIdentifier:v19];
@@ -2445,18 +2445,18 @@ LABEL_11:
       v54 = 2112;
       v55 = v39;
       v56 = 1024;
-      v57 = a4;
+      sourceCopy = source;
       v58 = 1024;
-      v59 = a5;
+      dataCopy = data;
       v60 = 1024;
       v61 = v27;
       _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_DEFAULT, "Notice: Request for transactions with source identifiers %@ (unique IDs %@) with transaction source %u with backing data %u (%u transactions)", buf, 0x28u);
     }
   }
 
-  if (v36)
+  if (completionCopy)
   {
-    v36[2](v36, v40);
+    completionCopy[2](completionCopy, v40);
   }
 
   v45 = 0u;
@@ -2479,9 +2479,9 @@ LABEL_11:
         }
 
         v33 = *(*(&v43 + 1) + 8 * j);
-        v34 = [(NPDCompanionAgentClient *)self dataSource];
-        v35 = [v34 remoteAdminConnectionServiceAgent];
-        [v35 retrieveTransactionsForPassWithUniqueID:v33];
+        dataSource = [(NPDCompanionAgentClient *)self dataSource];
+        remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
+        [remoteAdminConnectionServiceAgent retrieveTransactionsForPassWithUniqueID:v33];
       }
 
       v30 = [v28 countByEnumeratingWithState:&v43 objects:v51 count:16];
@@ -2491,11 +2491,11 @@ LABEL_11:
   }
 }
 
-- (void)deletePaymentTransactionWithIdentifier:(id)a3 fromDeviceWithPairingID:(id)a4 completion:(id)a5
+- (void)deletePaymentTransactionWithIdentifier:(id)identifier fromDeviceWithPairingID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  dCopy = d;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -2505,9 +2505,9 @@ LABEL_11:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v33 = v9;
+      v33 = dCopy;
       v34 = 2112;
-      v35 = v8;
+      v35 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Notice: Request to delete from device with Pairing ID: %@ Transaction with Identifier: %@", buf, 0x16u);
     }
   }
@@ -2515,23 +2515,23 @@ LABEL_11:
   v14 = NPKPairedOrPairingDevice();
   v15 = [v14 valueForProperty:NRDevicePropertyPairingID];
 
-  if ([v15 isEqual:v9])
+  if ([v15 isEqual:dCopy])
   {
     v16 = +[NPKGizmoDatabase sharedDatabase];
-    v17 = [v16 transactionSourceIdentifierForTransactionWithIdentifier:v8];
+    v17 = [v16 transactionSourceIdentifierForTransactionWithIdentifier:identifierCopy];
 
     v18 = +[NPKGizmoDatabase sharedDatabase];
     v19 = [v18 passUniqueIDForTransactionSourceIdentifier:v17];
 
     v20 = +[NPKGizmoDatabase sharedDatabase];
-    [v20 removeTransactionWithIdentifier:v8];
+    [v20 removeTransactionWithIdentifier:identifierCopy];
 
-    v21 = [(NPDCompanionAgentClient *)self dataSource];
-    v22 = [v21 remoteAdminConnectionServiceAgent];
-    [v22 handleDeletePaymentTransactionWithIdentifier:v8 passUniqueIdentifier:v19];
+    dataSource = [(NPDCompanionAgentClient *)self dataSource];
+    remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
+    [remoteAdminConnectionServiceAgent handleDeletePaymentTransactionWithIdentifier:identifierCopy passUniqueIdentifier:v19];
 
-    v23 = [(NPDCompanionAgentClient *)self delegate];
-    [v23 transactionSourceIdentifier:v17 didRemoveTransactionWithIdentifier:v8];
+    delegate = [(NPDCompanionAgentClient *)self delegate];
+    [delegate transactionSourceIdentifier:v17 didRemoveTransactionWithIdentifier:identifierCopy];
 
     v24 = 0;
   }
@@ -2546,12 +2546,12 @@ LABEL_11:
       v27 = pk_Payment_log();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
       {
-        v28 = [v9 UUIDString];
-        v29 = [v15 UUIDString];
+        uUIDString = [dCopy UUIDString];
+        uUIDString2 = [v15 UUIDString];
         *buf = 138412546;
-        v33 = v28;
+        v33 = uUIDString;
         v34 = 2112;
-        v35 = v29;
+        v35 = uUIDString2;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_DEFAULT, "Warning: Remove requested for pairing ID %@ which does not match current pairing ID %@; ignoring.", buf, 0x16u);
       }
     }
@@ -2562,19 +2562,19 @@ LABEL_11:
     v24 = [NSError errorWithDomain:PKPassKitErrorDomain code:-1 userInfo:v17];
   }
 
-  if (v10)
+  if (completionCopy)
   {
-    v10[2](v10, v24);
+    completionCopy[2](completionCopy, v24);
   }
 }
 
-- (void)transitStateWithPassUniqueIdentifier:(id)a3 paymentApplication:(id)a4 completion:(id)a5
+- (void)transitStateWithPassUniqueIdentifier:(id)identifier paymentApplication:(id)application completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  applicationCopy = application;
+  completionCopy = completion;
   v10 = +[NPKGizmoDatabase sharedDatabase];
-  v11 = [v10 transitAppletStateForPassWithUniqueID:v7];
+  v11 = [v10 transitAppletStateForPassWithUniqueID:identifierCopy];
 
   v12 = pk_Payment_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
@@ -2585,27 +2585,27 @@ LABEL_11:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412802;
-      v16 = v7;
+      v16 = identifierCopy;
       v17 = 2112;
-      v18 = v8;
+      v18 = applicationCopy;
       v19 = 2112;
       v20 = v11;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Notice: Request for transit state for unique ID %@ payment application %@; returning %@", &v15, 0x20u);
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
-    v9[2](v9, v11);
+    completionCopy[2](completionCopy, v11);
   }
 }
 
-- (void)balancesForPaymentPassWithUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)balancesForPaymentPassWithUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v7 = +[NPKGizmoDatabase sharedDatabase];
-  v8 = [v7 paymentBalancesForPassWithUniqueID:v5];
+  v8 = [v7 paymentBalancesForPassWithUniqueID:identifierCopy];
 
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -2616,89 +2616,89 @@ LABEL_11:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = 138412546;
-      v13 = v5;
+      v13 = identifierCopy;
       v14 = 2112;
       v15 = v8;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Notice: (PKPaymentBalance get) Request for balances for unique ID %@; returning %@", &v12, 0x16u);
     }
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, v8);
+    completionCopy[2](completionCopy, v8);
   }
 }
 
-- (void)balanceReminderForBalance:(id)a3 pass:(id)a4 withCompletion:(id)a5
+- (void)balanceReminderForBalance:(id)balance pass:(id)pass withCompletion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
+    completionCopy = completion;
+    passCopy = pass;
+    balanceCopy = balance;
     v15 = NPKDomainAccessorForDomain();
-    v11 = [v9 uniqueID];
+    uniqueID = [passCopy uniqueID];
     v12 = NPKBalanceReminderIdentifierWithBalanceAndUniqueID();
     v13 = [v15 dataForKey:v12];
 
     objc_opt_class();
     v14 = NPKSecureUnarchiveObject();
-    v8[2](v8, v14);
+    completionCopy[2](completionCopy, v14);
 
-    [(NPDCompanionAgentClient *)self _updateLocalBalanceReminderForBalance:v10 pass:v9];
+    [(NPDCompanionAgentClient *)self _updateLocalBalanceReminderForBalance:balanceCopy pass:passCopy];
   }
 }
 
-- (void)setBalanceReminder:(id)a3 forBalance:(id)a4 pass:(id)a5 completion:(id)a6
+- (void)setBalanceReminder:(id)reminder forBalance:(id)balance pass:(id)pass completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  reminderCopy = reminder;
+  balanceCopy = balance;
+  passCopy = pass;
+  completionCopy = completion;
   v14 = pk_Payment_log();
-  LODWORD(a4) = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
+  LODWORD(balance) = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
-  if (a4)
+  if (balance)
   {
     v15 = pk_Payment_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v32 = v10;
+      v32 = reminderCopy;
       v33 = 2112;
-      v34 = v11;
+      v34 = balanceCopy;
       v35 = 2112;
-      v36 = v12;
+      v36 = passCopy;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Notice: Request to set balance reminder %@ for balance %@ of pass %@", buf, 0x20u);
     }
   }
 
   v16 = NPKSecureArchiveObject();
   v17 = NPKDomainAccessorForDomain();
-  v18 = [v12 uniqueID];
+  uniqueID = [passCopy uniqueID];
   v19 = NPKBalanceReminderIdentifierWithBalanceAndUniqueID();
   [v17 setObject:v16 forKey:v19];
 
-  v20 = [v17 synchronize];
+  synchronize = [v17 synchronize];
   objc_initWeak(buf, self);
-  v21 = [(NPDCompanionAgentClient *)self dataSource];
-  v22 = [v21 remoteAdminConnectionServiceAgent];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
   v26[0] = _NSConcreteStackBlock;
   v26[1] = 3221225472;
   v26[2] = sub_100029C90;
   v26[3] = &unk_100072118;
-  v23 = v10;
+  v23 = reminderCopy;
   v27 = v23;
-  v24 = v11;
+  v24 = balanceCopy;
   v28 = v24;
-  v25 = v12;
+  v25 = passCopy;
   v29 = v25;
   objc_copyWeak(&v30, buf);
-  [v22 setBalanceReminder:v23 forBalance:v24 pass:v25 completion:v26];
+  [remoteAdminConnectionServiceAgent setBalanceReminder:v23 forBalance:v24 pass:v25 completion:v26];
 
-  if (v13)
+  if (completionCopy)
   {
-    v13[2](v13, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   objc_destroyWeak(&v30);
@@ -2706,31 +2706,31 @@ LABEL_11:
   objc_destroyWeak(buf);
 }
 
-- (void)commutePlanReminderForCommutePlan:(id)a3 pass:(id)a4 withCompletion:(id)a5
+- (void)commutePlanReminderForCommutePlan:(id)plan pass:(id)pass withCompletion:(id)completion
 {
-  if (a5)
+  if (completion)
   {
-    v8 = a5;
-    v9 = a4;
-    v10 = a3;
+    completionCopy = completion;
+    passCopy = pass;
+    planCopy = plan;
     v15 = NPKDomainAccessorForDomain();
-    v11 = [(NPDCompanionAgentClient *)self _commutePlanReminderIdentifierWithCommutePlan:v10 pass:v9];
+    v11 = [(NPDCompanionAgentClient *)self _commutePlanReminderIdentifierWithCommutePlan:planCopy pass:passCopy];
     [v15 doubleForKey:v11];
     v13 = v12;
 
     v14 = [[PKPaymentCommutePlanReminder alloc] initWithTimeInterval:v13];
-    v8[2](v8, v14);
+    completionCopy[2](completionCopy, v14);
 
-    [(NPDCompanionAgentClient *)self _updateLocalCommutePlanReminderForCommutePlan:v10 pass:v9];
+    [(NPDCompanionAgentClient *)self _updateLocalCommutePlanReminderForCommutePlan:planCopy pass:passCopy];
   }
 }
 
-- (void)setCommutePlanReminder:(id)a3 forCommutePlan:(id)a4 pass:(id)a5 completion:(id)a6
+- (void)setCommutePlanReminder:(id)reminder forCommutePlan:(id)plan pass:(id)pass completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  reminderCopy = reminder;
+  planCopy = plan;
+  passCopy = pass;
+  completionCopy = completion;
   v14 = pk_Payment_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -2740,49 +2740,49 @@ LABEL_11:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v33 = v10;
+      v33 = reminderCopy;
       v34 = 2112;
-      v35 = v12;
+      v35 = passCopy;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Notice: Request to set commute plan reminder %@ for pass %@", buf, 0x16u);
     }
   }
 
   v17 = NPKDomainAccessorForDomain();
-  [v10 timeInterval];
+  [reminderCopy timeInterval];
   v19 = v18;
-  v20 = [(NPDCompanionAgentClient *)self _commutePlanReminderIdentifierWithCommutePlan:v11 pass:v12];
+  v20 = [(NPDCompanionAgentClient *)self _commutePlanReminderIdentifierWithCommutePlan:planCopy pass:passCopy];
   [v17 setDouble:v20 forKey:v19];
 
-  v21 = [v17 synchronize];
+  synchronize = [v17 synchronize];
   objc_initWeak(buf, self);
-  v22 = [(NPDCompanionAgentClient *)self dataSource];
-  v23 = [v22 remoteAdminConnectionServiceAgent];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_10002A174;
   v27[3] = &unk_100072140;
-  v24 = v10;
+  v24 = reminderCopy;
   v28 = v24;
-  v25 = v12;
+  v25 = passCopy;
   v29 = v25;
   objc_copyWeak(&v31, buf);
-  v26 = v11;
+  v26 = planCopy;
   v30 = v26;
-  [v23 setCommutePlanReminder:v24 forCommutePlan:v26 pass:v25 completion:v27];
+  [remoteAdminConnectionServiceAgent setCommutePlanReminder:v24 forCommutePlan:v26 pass:v25 completion:v27];
 
-  if (v13)
+  if (completionCopy)
   {
-    v13[2](v13, 1);
+    completionCopy[2](completionCopy, 1);
   }
 
   objc_destroyWeak(&v31);
   objc_destroyWeak(buf);
 }
 
-- (void)startBackgroundVerificationObserverForPass:(id)a3 verificationMethod:(id)a4
+- (void)startBackgroundVerificationObserverForPass:(id)pass verificationMethod:(id)method
 {
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  methodCopy = method;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -2791,38 +2791,38 @@ LABEL_11:
     v10 = pk_Payment_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 uniqueID];
+      uniqueID = [passCopy uniqueID];
       v14 = 138412290;
-      v15 = v11;
+      v15 = uniqueID;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Notice: Request to start background verification observer for pass %@", &v14, 0xCu);
     }
   }
 
-  v12 = [(NPDCompanionAgentClient *)self dataSource];
-  v13 = [v12 remoteAdminConnectionServiceAgent];
-  [v13 startBackgroundVerificationObserverForPass:v6 verificationMethod:v7];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
+  [remoteAdminConnectionServiceAgent startBackgroundVerificationObserverForPass:passCopy verificationMethod:methodCopy];
 }
 
-- (void)fetchPendingTransactionForPassWithUniqueID:(id)a3 completion:(id)a4
+- (void)fetchPendingTransactionForPassWithUniqueID:(id)d completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPDCompanionAgentClient *)self delegate];
-  [v8 fetchPendingTransactionForPassWithUniqueID:v7 completion:v6];
+  completionCopy = completion;
+  dCopy = d;
+  delegate = [(NPDCompanionAgentClient *)self delegate];
+  [delegate fetchPendingTransactionForPassWithUniqueID:dCopy completion:completionCopy];
 }
 
-- (void)markPendingTransactionAsProcessedForPassWithUniqueID:(id)a3
+- (void)markPendingTransactionAsProcessedForPassWithUniqueID:(id)d
 {
-  v4 = a3;
-  v5 = [(NPDCompanionAgentClient *)self delegate];
-  [v5 markPendingTransactionAsProcessedForPassWithUniqueID:v4];
+  dCopy = d;
+  delegate = [(NPDCompanionAgentClient *)self delegate];
+  [delegate markPendingTransactionAsProcessedForPassWithUniqueID:dCopy];
 }
 
-- (void)presentStandaloneTransaction:(int64_t)a3 forPassUniqueIdentifier:(id)a4 terminalReaderIdentifier:(id)a5 completion:(id)a6
+- (void)presentStandaloneTransaction:(int64_t)transaction forPassUniqueIdentifier:(id)identifier terminalReaderIdentifier:(id)readerIdentifier completion:(id)completion
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  readerIdentifierCopy = readerIdentifier;
+  completionCopy = completion;
   v13 = pk_Payment_log();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
 
@@ -2831,27 +2831,27 @@ LABEL_11:
     v15 = pk_Payment_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = objc_retainBlock(v12);
+      v16 = objc_retainBlock(completionCopy);
       v23 = 134218754;
-      v24 = a3;
+      transactionCopy = transaction;
       v25 = 2112;
-      v26 = v10;
+      v26 = identifierCopy;
       v27 = 2112;
-      v28 = v11;
+      v28 = readerIdentifierCopy;
       v29 = 2112;
       v30 = v16;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Notice: Request to present standalone transaction %lu for pass unique id: %@ readerID: %@ completion %@", &v23, 0x2Au);
     }
   }
 
-  v17 = [(NPDCompanionAgentClient *)self dataSource];
-  v18 = [v17 paymentWebService];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  paymentWebService = [dataSource paymentWebService];
 
-  v19 = [v18 targetDevice];
+  targetDevice = [paymentWebService targetDevice];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v19 paymentWebService:v18 presentStandaloneTransaction:a3 forPassUniqueIdentifier:v10 terminalReaderIdentifier:v11 completion:v12];
+    [targetDevice paymentWebService:paymentWebService presentStandaloneTransaction:transaction forPassUniqueIdentifier:identifierCopy terminalReaderIdentifier:readerIdentifierCopy completion:completionCopy];
   }
 
   else
@@ -2865,21 +2865,21 @@ LABEL_11:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         v23 = 138412290;
-        v24 = v19;
+        transactionCopy = targetDevice;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Error: Unexpected web service target device:%@, we can't continue this route", &v23, 0xCu);
       }
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      (*(v12 + 2))(v12, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)hasActiveExternallySharedPassesWithCompletion:(id)a3
+- (void)hasActiveExternallySharedPassesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -2888,24 +2888,24 @@ LABEL_11:
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = objc_retainBlock(v4);
+      v8 = objc_retainBlock(completionCopy);
       v12 = 138412290;
       v13 = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: Request to get has active externally shared passes completion %@", &v12, 0xCu);
     }
   }
 
-  v9 = [(NPDCompanionAgentClient *)self dataSource];
-  v10 = [v9 paymentWebService];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  paymentWebService = [dataSource paymentWebService];
 
-  v11 = [v10 targetDevice];
-  [v11 hasActiveExternallySharedPassesWithCompletion:v4];
+  targetDevice = [paymentWebService targetDevice];
+  [targetDevice hasActiveExternallySharedPassesWithCompletion:completionCopy];
 }
 
-- (void)expressModeEnabledForPassIdentifier:(id)a3 completion:(id)a4
+- (void)expressModeEnabledForPassIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -2914,34 +2914,34 @@ LABEL_11:
     v10 = pk_Payment_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = objc_retainBlock(v7);
+      v11 = objc_retainBlock(completionCopy);
       *buf = 138412546;
-      v19 = v6;
+      v19 = identifierCopy;
       v20 = 2112;
       v21 = v11;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Notice: Request to check express pass with identifier %@, completion %@", buf, 0x16u);
     }
   }
 
-  v12 = [(NPDCompanionAgentClient *)self dataSource];
-  v13 = [v12 paymentWebService];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  paymentWebService = [dataSource paymentWebService];
 
-  v14 = [v13 targetDevice];
+  targetDevice = [paymentWebService targetDevice];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_10002AA8C;
   v16[3] = &unk_100070E30;
-  v17 = v7;
-  v15 = v7;
-  [v14 expressModeEnabledForPassIdentifier:v6 completion:v16];
+  v17 = completionCopy;
+  v15 = completionCopy;
+  [targetDevice expressModeEnabledForPassIdentifier:identifierCopy completion:v16];
 }
 
-- (void)updateCredentials:(id)a3 forUniqueID:(id)a4 paymentApplicationIdentifier:(id)a5 completion:(id)a6
+- (void)updateCredentials:(id)credentials forUniqueID:(id)d paymentApplicationIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  credentialsCopy = credentials;
+  dCopy = d;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v14 = pk_Payment_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -2950,27 +2950,27 @@ LABEL_11:
     v16 = pk_Payment_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = objc_retainBlock(v13);
+      v17 = objc_retainBlock(completionCopy);
       v20 = 138413058;
-      v21 = v10;
+      v21 = credentialsCopy;
       v22 = 2112;
-      v23 = v11;
+      v23 = dCopy;
       v24 = 2112;
-      v25 = v12;
+      v25 = identifierCopy;
       v26 = 2112;
       v27 = v17;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Notice: Request to update credentials %@, for unique ID: %@, paymentApplicationIdentifier: %@, completion %@", &v20, 0x2Au);
     }
   }
 
-  v18 = [(NPDCompanionAgentClient *)self dataSource];
-  v19 = [v18 remoteAdminConnectionServiceAgent];
-  [v19 handleCredentialsUpdate:v10 forUniqueID:v11 paymentApplicationIdentifier:v12 completion:v13];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
+  [remoteAdminConnectionServiceAgent handleCredentialsUpdate:credentialsCopy forUniqueID:dCopy paymentApplicationIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)isIssuerAppProvisioningSupported:(id)a3
+- (void)isIssuerAppProvisioningSupported:(id)supported
 {
-  v3 = a3;
+  supportedCopy = supported;
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -3009,15 +3009,15 @@ LABEL_11:
     }
   }
 
-  if (v3)
+  if (supportedCopy)
   {
-    v3[2](v3, v8);
+    supportedCopy[2](supportedCopy, v8);
   }
 }
 
-- (void)bridgedClientInfoWithCompletion:(id)a3
+- (void)bridgedClientInfoWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -3026,18 +3026,18 @@ LABEL_11:
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = objc_retainBlock(v4);
+      v8 = objc_retainBlock(completionCopy);
       v16 = 138412290;
       v17 = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: Request for bridged client info with completion %@", &v16, 0xCu);
     }
   }
 
-  v9 = [(NPDCompanionAgentClient *)self dataSource];
-  v10 = [v9 paymentWebService];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  paymentWebService = [dataSource paymentWebService];
 
-  v11 = [v10 targetDevice];
-  v12 = [v11 bridgedClientInfo];
+  targetDevice = [paymentWebService targetDevice];
+  bridgedClientInfo = [targetDevice bridgedClientInfo];
   v13 = pk_General_log();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
 
@@ -3047,20 +3047,20 @@ LABEL_11:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138477827;
-      v17 = v12;
+      v17 = bridgedClientInfo;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "Notice: Returning bridgedClientInfo: %{private}@", &v16, 0xCu);
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    (*(v4 + 2))(v4, v12, 0);
+    (*(completionCopy + 2))(completionCopy, bridgedClientInfo, 0);
   }
 }
 
-- (void)canAddToCompanionPrecheckForegroundConnectivityWithCompletion:(id)a3
+- (void)canAddToCompanionPrecheckForegroundConnectivityWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -3069,16 +3069,16 @@ LABEL_11:
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = objc_retainBlock(v4);
+      v8 = objc_retainBlock(completionCopy);
       v14 = 138412290;
       v15 = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Notice: Requesting can add to companion precheck connectivity with completion %@", &v14, 0xCu);
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v9 = [(NPDCompanionAgentClient *)self _isGizmoConnected];
+    _isGizmoConnected = [(NPDCompanionAgentClient *)self _isGizmoConnected];
     v10 = pk_General_log();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -3094,15 +3094,15 @@ LABEL_11:
       }
     }
 
-    (*(v4 + 2))(v4, v9);
+    (*(completionCopy + 2))(completionCopy, _isGizmoConnected);
   }
 }
 
-- (void)addPendingProvisionings:(id)a3 identityTargetDeviceIdentifier:(id)a4 completion:(id)a5
+- (void)addPendingProvisionings:(id)provisionings identityTargetDeviceIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  provisioningsCopy = provisionings;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -3116,29 +3116,29 @@ LABEL_11:
     }
   }
 
-  if (!v9)
+  if (!identifierCopy)
   {
     goto LABEL_9;
   }
 
-  v14 = [(NPDCompanionAgentClient *)self dataSource];
-  v15 = [v14 deviceParingIDWithIDVRemoteDeviceID:v9];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  v15 = [dataSource deviceParingIDWithIDVRemoteDeviceID:identifierCopy];
 
   if (v15)
   {
 
     if ([(NPDCompanionAgentClient *)self shouldUseLegacyIdentityProvisioning])
     {
-      [(NPDCompanionAgentClient *)self legacyIdentityProvisioning:v8 targetDeviceIdentifier:v9 completion:v10];
+      [(NPDCompanionAgentClient *)self legacyIdentityProvisioning:provisioningsCopy targetDeviceIdentifier:identifierCopy completion:completionCopy];
       goto LABEL_15;
     }
 
 LABEL_9:
-    v16 = [(NPDCompanionAgentClient *)self dataSource];
-    v17 = [v16 paymentWebService];
+    dataSource2 = [(NPDCompanionAgentClient *)self dataSource];
+    paymentWebService = [dataSource2 paymentWebService];
 
-    v18 = [v17 targetDevice];
-    [v18 addPendingProvisionings:v8 completion:v10];
+    targetDevice = [paymentWebService targetDevice];
+    [targetDevice addPendingProvisionings:provisioningsCopy completion:completionCopy];
 
     goto LABEL_15;
   }
@@ -3152,21 +3152,21 @@ LABEL_9:
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138412290;
-      v24 = v9;
+      v24 = identifierCopy;
       _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_DEFAULT, "Warning: Could not find device paring ID for IDVD Target device Identifier:%@", &v23, 0xCu);
     }
   }
 
   v22 = NPKIDVRemoteDeviceSessionError();
-  v10[2](v10, v22);
+  completionCopy[2](completionCopy, v22);
 
 LABEL_15:
 }
 
-- (void)legacyIdentityProvisioning:(id)a3 targetDeviceIdentifier:(id)a4 completion:(id)a5
+- (void)legacyIdentityProvisioning:(id)provisioning targetDeviceIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a5;
-  v8 = a3;
+  completionCopy = completion;
+  provisioningCopy = provisioning;
   v9 = pk_General_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -3180,8 +3180,8 @@ LABEL_15:
     }
   }
 
-  v12 = [v8 firstObject];
-  v13 = [v8 count];
+  firstObject = [provisioningCopy firstObject];
+  v13 = [provisioningCopy count];
 
   if (v13 != 1)
   {
@@ -3202,35 +3202,35 @@ LABEL_15:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v17 = v12;
-    v18 = [v17 attestations];
-    if (v18)
+    v17 = firstObject;
+    attestations = [v17 attestations];
+    if (attestations)
     {
       v19 = [PKShareablePassMetadata alloc];
-      v20 = [v17 provisioningCredentialIdentifier];
-      v21 = [v17 cardConfigurationIdentifier];
-      v22 = [v17 sharingInstanceIdentifier];
-      v23 = [v19 initWithProvisioningCredentialIdentifier:v20 cardConfigurationIdentifier:v21 sharingInstanceIdentifier:v22];
+      provisioningCredentialIdentifier = [v17 provisioningCredentialIdentifier];
+      cardConfigurationIdentifier = [v17 cardConfigurationIdentifier];
+      sharingInstanceIdentifier = [v17 sharingInstanceIdentifier];
+      v23 = [v19 initWithProvisioningCredentialIdentifier:provisioningCredentialIdentifier cardConfigurationIdentifier:cardConfigurationIdentifier sharingInstanceIdentifier:sharingInstanceIdentifier];
 
       v24 = objc_alloc_init(PKIdentityProvisioningSupplementalData);
-      v25 = [v17 passTypeIdentifier];
-      [v24 setPassTypeIdentifier:v25];
+      passTypeIdentifier = [v17 passTypeIdentifier];
+      [v24 setPassTypeIdentifier:passTypeIdentifier];
 
-      v26 = [v17 passSerialNumber];
-      [v24 setPassSerialNumber:v26];
+      passSerialNumber = [v17 passSerialNumber];
+      [v24 setPassSerialNumber:passSerialNumber];
 
-      v27 = [v17 accountKeyIdentifier];
-      [v24 setAccountKeyIdentifier:v27];
+      accountKeyIdentifier = [v17 accountKeyIdentifier];
+      [v24 setAccountKeyIdentifier:accountKeyIdentifier];
 
-      v28 = [(NPDCompanionAgentClient *)self delegate];
-      v29 = [v17 credentialIdentifier];
-      v30 = [v24 dataRepresentation];
+      delegate = [(NPDCompanionAgentClient *)self delegate];
+      credentialIdentifier = [v17 credentialIdentifier];
+      dataRepresentation = [v24 dataRepresentation];
       v38[0] = _NSConcreteStackBlock;
       v38[1] = 3221225472;
       v38[2] = sub_10002B7AC;
       v38[3] = &unk_100072168;
       v39 = v17;
-      [v28 provisionCredentialWithType:1 metadata:v23 credentialIdentifier:v29 attestations:v18 supplementalData:v30 completion:v38];
+      [delegate provisionCredentialWithType:1 metadata:v23 credentialIdentifier:credentialIdentifier attestations:attestations supplementalData:dataRepresentation completion:v38];
     }
 
     else
@@ -3250,7 +3250,7 @@ LABEL_15:
       }
 
       v23 = NPKIDVRemoteDeviceSessionError();
-      v7[2](v7, v23);
+      completionCopy[2](completionCopy, v23);
     }
   }
 
@@ -3272,7 +3272,7 @@ LABEL_15:
     }
 
     v17 = NPKIDVRemoteDeviceSessionError();
-    v7[2](v7, v17);
+    completionCopy[2](completionCopy, v17);
   }
 }
 
@@ -3285,34 +3285,34 @@ LABEL_15:
   return v4 ^ 1;
 }
 
-- (void)trustedDeviceEnrollmentSignatureWithAccountDSID:(id)a3 sessionData:(id)a4 handler:(id)a5
+- (void)trustedDeviceEnrollmentSignatureWithAccountDSID:(id)d sessionData:(id)data handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(NPDCompanionAgentClient *)self dataSource];
-  v12 = [v11 paymentWebService];
+  handlerCopy = handler;
+  dataCopy = data;
+  dCopy = d;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  paymentWebService = [dataSource paymentWebService];
 
-  v13 = [v12 targetDevice];
-  v14 = [v13 trustedDeviceEnrollmentInfoForWebService:v12];
-  v15 = [v14 deviceUDID];
+  targetDevice = [paymentWebService targetDevice];
+  v14 = [targetDevice trustedDeviceEnrollmentInfoForWebService:paymentWebService];
+  deviceUDID = [v14 deviceUDID];
   v16 = objc_alloc_init(NSMutableData);
-  v17 = [v15 dataUsingEncoding:4];
+  v17 = [deviceUDID dataUsingEncoding:4];
   [v16 appendData:v17];
 
-  v18 = [v10 dataUsingEncoding:4];
+  v18 = [dCopy dataUsingEncoding:4];
 
   [v16 appendData:v18];
-  [v16 appendData:v9];
+  [v16 appendData:dataCopy];
 
-  v19 = [v16 SHA256Hash];
+  sHA256Hash = [v16 SHA256Hash];
   v21[0] = _NSConcreteStackBlock;
   v21[1] = 3221225472;
   v21[2] = sub_10002BB28;
   v21[3] = &unk_100072190;
-  v22 = v8;
-  v20 = v8;
-  [v13 paymentWebService:v12 signData:v19 signatureEntanglementMode:0 withCompletionHandler:v21];
+  v22 = handlerCopy;
+  v20 = handlerCopy;
+  [targetDevice paymentWebService:paymentWebService signData:sHA256Hash signatureEntanglementMode:0 withCompletionHandler:v21];
 }
 
 - (void)handlePeerPaymentTermsAndConditionsRequestFromGizmo
@@ -3333,47 +3333,47 @@ LABEL_15:
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = [v6 localizedStringForKey:@"SURF_TC_ACCEPTANCE_MESSAGE_SPECIFIC" value:&stru_100073088 table:@"NanoPassKit"];
 
-  v8 = [(NPDCompanionAgentClient *)self dataSource];
-  v9 = [v8 bulletinManager];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  bulletinManager = [dataSource bulletinManager];
   v10 = [NSBundle bundleForClass:objc_opt_class()];
   v11 = [v10 localizedStringForKey:@"APPLE_WATCH" value:&stru_100073088 table:@"NanoPassKit"];
   v12 = [NSURL URLWithString:@"bridge:root=com.apple.NanoPassbookBridgeSettings&action=ACCEPT_PP_TC"];
-  [v9 insertBridgeBulletinWithTitle:v11 message:v7 actionURL:v12 forPass:0];
+  [bulletinManager insertBridgeBulletinWithTitle:v11 message:v7 actionURL:v12 forPass:0];
 }
 
-- (void)currentSecureElementSnapshot:(id)a3
+- (void)currentSecureElementSnapshot:(id)snapshot
 {
-  v4 = a3;
-  v5 = [(NPDCompanionAgentClient *)self dataSource];
-  v7 = [v5 paymentWebService];
+  snapshotCopy = snapshot;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  paymentWebService = [dataSource paymentWebService];
 
-  v6 = [v7 targetDevice];
-  [v6 currentSecureElementSnapshot:v4];
+  targetDevice = [paymentWebService targetDevice];
+  [targetDevice currentSecureElementSnapshot:snapshotCopy];
 }
 
-- (void)allPaymentApplicationUsageSummaries:(id)a3
+- (void)allPaymentApplicationUsageSummaries:(id)summaries
 {
-  v4 = a3;
-  v5 = [(NPDCompanionAgentClient *)self dataSource];
-  v7 = [v5 paymentWebService];
+  summariesCopy = summaries;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  paymentWebService = [dataSource paymentWebService];
 
-  v6 = [v7 targetDevice];
-  [v6 allPaymentApplicationUsageSummariesWithCompletion:v4];
+  targetDevice = [paymentWebService targetDevice];
+  [targetDevice allPaymentApplicationUsageSummariesWithCompletion:summariesCopy];
 }
 
-- (void)reclaimUnusedSEMemory:(id)a3
+- (void)reclaimUnusedSEMemory:(id)memory
 {
-  v4 = a3;
-  v5 = [(NPDCompanionAgentClient *)self dataSource];
-  v7 = [v5 paymentWebService];
+  memoryCopy = memory;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  paymentWebService = [dataSource paymentWebService];
 
-  v6 = [v7 targetDevice];
-  [v6 reclaimUnusedSEMemory:v4];
+  targetDevice = [paymentWebService targetDevice];
+  [targetDevice reclaimUnusedSEMemory:memoryCopy];
 }
 
-- (void)_selectNewDefaultCardForUserAfterDeletionOfDefaultCardWithUniqueID:(id)a3
+- (void)_selectNewDefaultCardForUserAfterDeletionOfDefaultCardWithUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -3387,21 +3387,21 @@ LABEL_15:
   v21[4] = sub_10002432C;
   v22 = 0;
   v5 = +[NPKGizmoDatabase sharedDatabase];
-  v6 = [v5 passDescriptions];
+  passDescriptions = [v5 passDescriptions];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10002C224;
   v17[3] = &unk_1000721B8;
-  v7 = v4;
+  v7 = dCopy;
   v18 = v7;
   v19 = &v23;
   v20 = v21;
-  [v6 enumerateObjectsUsingBlock:v17];
+  [passDescriptions enumerateObjectsUsingBlock:v17];
 
   v8 = pk_General_log();
-  LODWORD(v6) = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
+  LODWORD(passDescriptions) = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
-  if (v6)
+  if (passDescriptions)
   {
     v9 = pk_General_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -3437,33 +3437,33 @@ LABEL_15:
   _Block_object_dispose(&v23, 8);
 }
 
-- (void)_applyIngestionDateToPass:(id)a3
+- (void)_applyIngestionDateToPass:(id)pass
 {
-  v7 = a3;
+  passCopy = pass;
   v3 = +[NPKGizmoDatabase sharedDatabase];
-  v4 = [v7 uniqueID];
-  v5 = [v3 passForUniqueID:v4];
+  uniqueID = [passCopy uniqueID];
+  v5 = [v3 passForUniqueID:uniqueID];
 
   if (!v5 || ([v5 ingestedDate], (v6 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v6 = +[NSDate distantPast];
   }
 
-  [v7 setIngestedDate:v6];
+  [passCopy setIngestedDate:v6];
 }
 
-- (id)_commutePlanReminderIdentifierWithCommutePlan:(id)a3 pass:(id)a4
+- (id)_commutePlanReminderIdentifierWithCommutePlan:(id)plan pass:(id)pass
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v6 uniqueID];
-  v8 = [NSString stringWithFormat:@"CommutePlanReminder-%@", v7];
+  planCopy = plan;
+  passCopy = pass;
+  uniqueID = [passCopy uniqueID];
+  v8 = [NSString stringWithFormat:@"CommutePlanReminder-%@", uniqueID];
 
-  v9 = [v6 transitCommutePlanType];
-  if (v9 == 2)
+  transitCommutePlanType = [passCopy transitCommutePlanType];
+  if (transitCommutePlanType == 2)
   {
-    v10 = [v5 identifier];
-    v11 = [v8 stringByAppendingFormat:@"-planID:%@", v10];
+    identifier = [planCopy identifier];
+    v11 = [v8 stringByAppendingFormat:@"-planID:%@", identifier];
 
     v8 = v11;
   }
@@ -3471,39 +3471,39 @@ LABEL_15:
   return v8;
 }
 
-- (void)_updateLocalBalanceReminderForBalance:(id)a3 pass:(id)a4
+- (void)_updateLocalBalanceReminderForBalance:(id)balance pass:(id)pass
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPDCompanionAgentClient *)self dataSource];
-  v9 = [v8 remoteAdminConnectionServiceAgent];
+  balanceCopy = balance;
+  passCopy = pass;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10002C764;
   v12[3] = &unk_100072208;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 balanceReminderForBalance:v11 pass:v10 completion:v12];
+  v13 = balanceCopy;
+  v14 = passCopy;
+  v10 = passCopy;
+  v11 = balanceCopy;
+  [remoteAdminConnectionServiceAgent balanceReminderForBalance:v11 pass:v10 completion:v12];
 }
 
-- (void)_updateLocalCommutePlanReminderForCommutePlan:(id)a3 pass:(id)a4
+- (void)_updateLocalCommutePlanReminderForCommutePlan:(id)plan pass:(id)pass
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPDCompanionAgentClient *)self dataSource];
-  v9 = [v8 remoteAdminConnectionServiceAgent];
+  planCopy = plan;
+  passCopy = pass;
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  remoteAdminConnectionServiceAgent = [dataSource remoteAdminConnectionServiceAgent];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10002C9DC;
   v12[3] = &unk_100072230;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v10 = v7;
-  v11 = v6;
-  [v9 commutePlanReminderForCommutePlan:v11 pass:v10 withCompletion:v12];
+  v13 = planCopy;
+  v14 = passCopy;
+  v10 = passCopy;
+  v11 = planCopy;
+  [remoteAdminConnectionServiceAgent commutePlanReminderForCommutePlan:v11 pass:v10 withCompletion:v12];
 }
 
 - (void)_removePendingAppleCardNotification
@@ -3514,9 +3514,9 @@ LABEL_15:
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 localizedStringForKey:@"ACCOUNTPASS_PROVISIONING_ERROR" value:&stru_100073088 table:@"AccountPass"];
 
-  v6 = [(NPDCompanionAgentClient *)self dataSource];
-  v7 = [v6 bulletinManager];
-  [v7 removeBridgeBulletinsWithTitle:v8 message:v5 actionURL:0];
+  dataSource = [(NPDCompanionAgentClient *)self dataSource];
+  bulletinManager = [dataSource bulletinManager];
+  [bulletinManager removeBridgeBulletinsWithTitle:v8 message:v5 actionURL:0];
 }
 
 - (NPDCompanionAgentClientDataSource)dataSource

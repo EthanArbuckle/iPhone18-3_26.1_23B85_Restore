@@ -3,26 +3,26 @@
 + (id)dateFormatter;
 + (id)logURLForCurrentTime;
 + (id)submittedLogsURL;
-+ (id)submitttedSpotlightReportsError:(id *)a3;
++ (id)submitttedSpotlightReportsError:(id *)error;
 @end
 
 @implementation SPMLLogging
 
-+ (id)submitttedSpotlightReportsError:(id *)a3
++ (id)submitttedSpotlightReportsError:(id *)error
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v5 = +[SPMLLogging submittedLogsURL];
   v13[0] = *MEMORY[0x1E695EBE8];
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   v12 = 0;
-  v7 = [v4 contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v6 options:0 error:&v12];
+  v7 = [defaultManager contentsOfDirectoryAtURL:v5 includingPropertiesForKeys:v6 options:0 error:&v12];
   v8 = v12;
 
-  if (a3 && v8)
+  if (error && v8)
   {
     v9 = v8;
-    *a3 = v8;
+    *error = v8;
   }
 
   v10 = *MEMORY[0x1E69E9840];
@@ -35,8 +35,8 @@
   v2 = +[SPMLLogging candidateLogsURL];
   v3 = MEMORY[0x1E696AEC0];
   v4 = +[SPMLLogging dateFormatter];
-  v5 = [MEMORY[0x1E695DF00] date];
-  v6 = [v4 stringFromDate:v5];
+  date = [MEMORY[0x1E695DF00] date];
+  v6 = [v4 stringFromDate:date];
   v7 = [v3 stringWithFormat:@"searchd-%@", v6];
 
   v8 = [v2 URLByAppendingPathComponent:v7];

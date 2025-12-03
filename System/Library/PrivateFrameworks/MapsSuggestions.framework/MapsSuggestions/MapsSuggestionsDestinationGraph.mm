@@ -1,17 +1,17 @@
 @interface MapsSuggestionsDestinationGraph
-- (BOOL)addBreadcrumb:(id)a3;
-- (BOOL)addETA:(id)a3 from:(id)a4 to:(id)a5;
-- (BOOL)addETA:(id)a3 to:(id)a4;
-- (BOOL)addEntry:(id)a3;
+- (BOOL)addBreadcrumb:(id)breadcrumb;
+- (BOOL)addETA:(id)a from:(id)from to:(id)to;
+- (BOOL)addETA:(id)a to:(id)to;
+- (BOOL)addEntry:(id)entry;
 - (BOOL)rebalance;
 - (MapsSuggestionsDestinationGraph)init;
 - (id).cxx_construct;
-- (id)destinationAtEntry:(id)a3;
-- (id)destinationAtLocation:(id)a3;
-- (id)destinationAtMapItem:(id)a3;
-- (id)destinationsAtTime:(id)a3;
+- (id)destinationAtEntry:(id)entry;
+- (id)destinationAtLocation:(id)location;
+- (id)destinationAtMapItem:(id)item;
+- (id)destinationsAtTime:(id)time;
 - (id)objectForJSON;
-- (id)predictedEntriesWithinPeriod:(id)a3;
+- (id)predictedEntriesWithinPeriod:(id)period;
 - (id)testing_allDestinationLinks;
 - (id)testing_allDestinations;
 @end
@@ -49,10 +49,10 @@
   return v2;
 }
 
-- (BOOL)addEntry:(id)a3
+- (BOOL)addEntry:(id)entry
 {
-  v4 = a3;
-  if (v4)
+  entryCopy = entry;
+  if (entryCopy)
   {
     objc_initWeak(location, self);
     v7[0] = _NSConcreteStackBlock;
@@ -60,7 +60,7 @@
     v7[2] = sub_100008D34;
     v7[3] = &unk_100075060;
     objc_copyWeak(&v9, location);
-    v8 = v4;
+    v8 = entryCopy;
     dispatch_async(self->_queue._innerQueue, v7);
 
     objc_destroyWeak(&v9);
@@ -84,21 +84,21 @@
     }
   }
 
-  return v4 != 0;
+  return entryCopy != 0;
 }
 
-- (id)destinationAtEntry:(id)a3
+- (id)destinationAtEntry:(id)entry
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (entryCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100009328;
     v9[3] = &unk_100075088;
     v9[4] = self;
-    v10 = v4;
+    v10 = entryCopy;
     v6 = sub_10000921C(&self->_queue, v9);
   }
 
@@ -124,13 +124,13 @@
   return v6;
 }
 
-- (id)destinationAtMapItem:(id)a3
+- (id)destinationAtMapItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
-    [v4 coordinate];
+    [itemCopy coordinate];
     v8 = [[CLLocation alloc] initWithLatitude:v6 longitude:v7];
     v9 = [(MapsSuggestionsDestinationGraph *)self destinationAtLocation:v8];
   }
@@ -157,18 +157,18 @@
   return v9;
 }
 
-- (id)destinationAtLocation:(id)a3
+- (id)destinationAtLocation:(id)location
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  locationCopy = location;
+  v5 = locationCopy;
+  if (locationCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_1000097B8;
     v9[3] = &unk_100075088;
     v9[4] = self;
-    v10 = v4;
+    v10 = locationCopy;
     v6 = sub_10000921C(&self->_queue, v9);
   }
 
@@ -194,18 +194,18 @@
   return v6;
 }
 
-- (id)destinationsAtTime:(id)a3
+- (id)destinationsAtTime:(id)time
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  timeCopy = time;
+  v5 = timeCopy;
+  if (timeCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100009BB4;
     v9[3] = &unk_1000750B0;
     v9[4] = self;
-    v10 = v4;
+    v10 = timeCopy;
     v6 = sub_100009AA8(&self->_queue, v9);
   }
 
@@ -231,18 +231,18 @@
   return v6;
 }
 
-- (id)predictedEntriesWithinPeriod:(id)a3
+- (id)predictedEntriesWithinPeriod:(id)period
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  periodCopy = period;
+  v5 = periodCopy;
+  if (periodCopy)
   {
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100009ECC;
     v9[3] = &unk_1000750B0;
     v9[4] = self;
-    v10 = v4;
+    v10 = periodCopy;
     v6 = sub_100009AA8(&self->_queue, v9);
   }
 
@@ -268,12 +268,12 @@
   return v6;
 }
 
-- (BOOL)addETA:(id)a3 to:(id)a4
+- (BOOL)addETA:(id)a to:(id)to
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  aCopy = a;
+  toCopy = to;
+  v8 = toCopy;
+  if (!aCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -292,7 +292,7 @@
     goto LABEL_9;
   }
 
-  if (!v7)
+  if (!toCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
@@ -321,7 +321,7 @@ LABEL_9:
   block[3] = &unk_1000750D8;
   objc_copyWeak(&v15, location);
   v13 = v8;
-  v14 = v6;
+  v14 = aCopy;
   dispatch_async(self->_queue._innerQueue, block);
 
   objc_destroyWeak(&v15);
@@ -332,13 +332,13 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)addETA:(id)a3 from:(id)a4 to:(id)a5
+- (BOOL)addETA:(id)a from:(id)from to:(id)to
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  aCopy = a;
+  fromCopy = from;
+  toCopy = to;
+  v11 = toCopy;
+  if (!aCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -357,7 +357,7 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (!v9)
+  if (!fromCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -376,7 +376,7 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (!v10)
+  if (!toCopy)
   {
     v13 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_FAULT))
@@ -405,8 +405,8 @@ LABEL_13:
   v15[3] = &unk_100075100;
   objc_copyWeak(&v19, location);
   v16 = v11;
-  v17 = v9;
-  v18 = v8;
+  v17 = fromCopy;
+  v18 = aCopy;
   dispatch_async(self->_queue._innerQueue, v15);
 
   objc_destroyWeak(&v19);
@@ -417,10 +417,10 @@ LABEL_14:
   return v12;
 }
 
-- (BOOL)addBreadcrumb:(id)a3
+- (BOOL)addBreadcrumb:(id)breadcrumb
 {
-  v4 = a3;
-  if (v4)
+  breadcrumbCopy = breadcrumb;
+  if (breadcrumbCopy)
   {
     objc_initWeak(location, self);
     v7[0] = _NSConcreteStackBlock;
@@ -428,7 +428,7 @@ LABEL_14:
     v7[2] = sub_10000AEC8;
     v7[3] = &unk_100075060;
     objc_copyWeak(&v9, location);
-    v8 = v4;
+    v8 = breadcrumbCopy;
     dispatch_async(self->_queue._innerQueue, v7);
 
     objc_destroyWeak(&v9);
@@ -452,7 +452,7 @@ LABEL_14:
     }
   }
 
-  return v4 != 0;
+  return breadcrumbCopy != 0;
 }
 
 - (BOOL)rebalance

@@ -1,53 +1,53 @@
 @interface _UIFeedbackCoreHapticsPlayer
-- (BOOL)_internal_playFeedbackData:(id)a3 forFeedback:(id)a4 atTime:(double)a5;
+- (BOOL)_internal_playFeedbackData:(id)data forFeedback:(id)feedback atTime:(double)time;
 - (_UIFeedbackCoreHapticsEngine)hapticEngine;
-- (_UIFeedbackCoreHapticsPlayer)initWithEngine:(id)a3;
-- (id)_internal_createEventsForFeedbackData:(id)a3 engine:(id)a4 parameters:(id *)a5 parameterCurves:(id *)a6;
-- (id)_internal_createEventsForFileFeedbackData:(id)a3 engine:(id)a4 parameters:(id *)a5 parameterCurves:(id *)a6;
-- (id)_internal_createEventsForLegacyFeedbackData:(id)a3;
-- (id)_internal_createEventsForLibraryFeedbackData:(id)a3 engine:(id)a4 parameters:(id *)a5 parameterCurves:(id *)a6;
-- (id)_internal_createEventsForTransientHapticData:(id)a3;
-- (id)_internal_createFixedParameterForParameters:(id)a3 withKey:(id)a4 forEventType:(id)a5;
-- (id)_internal_createPatternForFeedbackData:(id)a3 feedback:(id)a4 engine:(id)a5;
-- (id)_internal_createPlayerWithPattern:(id)a3;
-- (void)_internal_stopFeedbackData:(id)a3 forFeedback:(id)a4;
-- (void)_internal_updateValueForParameters:(id)a3 withKey:(id)a4;
-- (void)_playFeedback:(id)a3 atTime:(double)a4;
-- (void)_stopFeedback:(id)a3;
-- (void)_updateValueForParameters:(id)a3 withKey:(id)a4;
+- (_UIFeedbackCoreHapticsPlayer)initWithEngine:(id)engine;
+- (id)_internal_createEventsForFeedbackData:(id)data engine:(id)engine parameters:(id *)parameters parameterCurves:(id *)curves;
+- (id)_internal_createEventsForFileFeedbackData:(id)data engine:(id)engine parameters:(id *)parameters parameterCurves:(id *)curves;
+- (id)_internal_createEventsForLegacyFeedbackData:(id)data;
+- (id)_internal_createEventsForLibraryFeedbackData:(id)data engine:(id)engine parameters:(id *)parameters parameterCurves:(id *)curves;
+- (id)_internal_createEventsForTransientHapticData:(id)data;
+- (id)_internal_createFixedParameterForParameters:(id)parameters withKey:(id)key forEventType:(id)type;
+- (id)_internal_createPatternForFeedbackData:(id)data feedback:(id)feedback engine:(id)engine;
+- (id)_internal_createPlayerWithPattern:(id)pattern;
+- (void)_internal_stopFeedbackData:(id)data forFeedback:(id)feedback;
+- (void)_internal_updateValueForParameters:(id)parameters withKey:(id)key;
+- (void)_playFeedback:(id)feedback atTime:(double)time;
+- (void)_stopFeedback:(id)feedback;
+- (void)_updateValueForParameters:(id)parameters withKey:(id)key;
 @end
 
 @implementation _UIFeedbackCoreHapticsPlayer
 
-- (_UIFeedbackCoreHapticsPlayer)initWithEngine:(id)a3
+- (_UIFeedbackCoreHapticsPlayer)initWithEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v10.receiver = self;
   v10.super_class = _UIFeedbackCoreHapticsPlayer;
   v5 = [(_UIFeedbackCoreHapticsPlayer *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_hapticEngine, v4);
-    v7 = [objc_opt_class() _internalQueue];
+    objc_storeWeak(&v5->_hapticEngine, engineCopy);
+    _internalQueue = [objc_opt_class() _internalQueue];
     internalQueue = v6->_internalQueue;
-    v6->_internalQueue = v7;
+    v6->_internalQueue = _internalQueue;
   }
 
   return v6;
 }
 
-- (id)_internal_createPlayerWithPattern:(id)a3
+- (id)_internal_createPlayerWithPattern:(id)pattern
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
-  v6 = [v5 coreHapticsEngine];
+  patternCopy = pattern;
+  hapticEngine = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
+  coreHapticsEngine = [hapticEngine coreHapticsEngine];
 
-  if (v6)
+  if (coreHapticsEngine)
   {
     v20 = 0;
-    v7 = [v6 createPrivilegedPlayerWithPlayable:v4 error:&v20];
+    v7 = [coreHapticsEngine createPrivilegedPlayerWithPlayable:patternCopy error:&v20];
     v8 = v20;
     v9 = v8;
     if (!v7 || v8)
@@ -58,8 +58,8 @@
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           v16 = v15;
-          v17 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
-          v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%s: %p>", object_getClassName(v17), v17];
+          hapticEngine2 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
+          v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%s: %p>", object_getClassName(hapticEngine2), hapticEngine2];
           *buf = 138412546;
           v22 = v18;
           v23 = 2112;
@@ -85,8 +85,8 @@
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
       {
         v12 = v11;
-        v13 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
-        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%s: %p>", object_getClassName(v13), v13];
+        hapticEngine3 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
+        v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%s: %p>", object_getClassName(hapticEngine3), hapticEngine3];
         *buf = 138412290;
         v22 = v14;
         _os_log_impl(&dword_188A29000, v12, OS_LOG_TYPE_ERROR, "failed to create player with pattern because CHHapticEngine was nil for %@", buf, 0xCu);
@@ -99,41 +99,41 @@
   return v10;
 }
 
-- (id)_internal_createEventsForLibraryFeedbackData:(id)a3 engine:(id)a4 parameters:(id *)a5 parameterCurves:(id *)a6
+- (id)_internal_createEventsForLibraryFeedbackData:(id)data engine:(id)engine parameters:(id *)parameters parameterCurves:(id *)curves
 {
-  v8 = a3;
-  v9 = [v8 pattern];
-  _internal_populateParamtersFromPattern(v9, a5, a6);
+  dataCopy = data;
+  pattern = [dataCopy pattern];
+  _internal_populateParamtersFromPattern(pattern, parameters, curves);
 
-  v10 = [v8 pattern];
+  pattern2 = [dataCopy pattern];
 
-  v11 = [v10 events];
+  events = [pattern2 events];
 
-  return v11;
+  return events;
 }
 
-- (id)_internal_createEventsForFileFeedbackData:(id)a3 engine:(id)a4 parameters:(id *)a5 parameterCurves:(id *)a6
+- (id)_internal_createEventsForFileFeedbackData:(id)data engine:(id)engine parameters:(id *)parameters parameterCurves:(id *)curves
 {
   v61 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v44 = a4;
+  dataCopy = data;
+  engineCopy = engine;
   if (qword_1ED49A178 != -1)
   {
     dispatch_once(&qword_1ED49A178, &__block_literal_global_102_0);
   }
 
-  v11 = [v10 fileURL];
-  v12 = [qword_1ED49A170 objectForKeyedSubscript:v11];
-  if ([v10 fileFeedbackType] == 2)
+  fileURL = [dataCopy fileURL];
+  v12 = [qword_1ED49A170 objectForKeyedSubscript:fileURL];
+  if ([dataCopy fileFeedbackType] == 2)
   {
     v13 = v12;
     if (!v13)
     {
-      v14 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:v11];
+      v14 = [MEMORY[0x1E695DEF0] dataWithContentsOfURL:fileURL];
       v50 = 0;
       v13 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v14 options:0 error:&v50];
       v15 = v50;
-      [qword_1ED49A170 setObject:v13 forKeyedSubscript:v11];
+      [qword_1ED49A170 setObject:v13 forKeyedSubscript:fileURL];
       if (v15)
       {
         if ((_UIFeedbackLoggingDisabled & 1) == 0)
@@ -142,9 +142,9 @@
           if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
           {
             v17 = v16;
-            v18 = [v11 lastPathComponent];
+            lastPathComponent = [fileURL lastPathComponent];
             *buf = 138412546;
-            *&buf[4] = v18;
+            *&buf[4] = lastPathComponent;
             *&buf[12] = 2112;
             *&buf[14] = v15;
             _os_log_impl(&dword_188A29000, v17, OS_LOG_TYPE_ERROR, "failed loading haptic file %@: %@", buf, 0x16u);
@@ -170,28 +170,28 @@
       }
     }
 
-    _internal_populateParamtersFromPattern(v19, a5, a6);
-    v22 = [v19 events];
+    _internal_populateParamtersFromPattern(v19, parameters, curves);
+    events = [v19 events];
   }
 
   else
   {
-    if ([v10 fileFeedbackType] != 1)
+    if ([dataCopy fileFeedbackType] != 1)
     {
-      v22 = 0;
+      events = 0;
       goto LABEL_33;
     }
 
     v23 = v12;
-    v24 = [v23 unsignedIntegerValue];
-    if (v23 && (v25 = v24, ([v44 resourceIsRegistered:v24] & 1) != 0))
+    unsignedIntegerValue = [v23 unsignedIntegerValue];
+    if (v23 && (v25 = unsignedIntegerValue, ([engineCopy resourceIsRegistered:unsignedIntegerValue] & 1) != 0))
     {
       v13 = v23;
     }
 
     else
     {
-      if ([v10 disableEventUseVolumeEnvelope])
+      if ([dataCopy disableEventUseVolumeEnvelope])
       {
         v51 = 0;
         v52 = &v51;
@@ -215,9 +215,9 @@
         _Block_object_dispose(&v51, 8);
         if (!v26)
         {
-          v42 = [MEMORY[0x1E696AAA8] currentHandler];
+          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
           v43 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticAudioResourceKey getCHHapticAudioResourceKeyUseVolumeEnvelope(void)"];
-          [v42 handleFailureInFunction:v43 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:80 description:{@"%s", dlerror()}];
+          [currentHandler handleFailureInFunction:v43 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:80 description:{@"%s", dlerror()}];
 
           __break(1u);
         }
@@ -235,11 +235,11 @@
       }
 
       v48 = 0;
-      v25 = [v44 registerAudioResource:v11 options:v31 error:&v48];
+      v25 = [engineCopy registerAudioResource:fileURL options:v31 error:&v48];
       v32 = v48;
       v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v25];
 
-      [qword_1ED49A170 setObject:v13 forKeyedSubscript:v11];
+      [qword_1ED49A170 setObject:v13 forKeyedSubscript:fileURL];
       if (v32)
       {
         if ((_UIFeedbackLoggingDisabled & 1) == 0)
@@ -248,9 +248,9 @@
           if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
           {
             v34 = v33;
-            v35 = [v11 lastPathComponent];
+            lastPathComponent2 = [fileURL lastPathComponent];
             *buf = 138412546;
-            *&buf[4] = v35;
+            *&buf[4] = lastPathComponent2;
             *&buf[12] = 2112;
             *&buf[14] = v32;
             _os_log_impl(&dword_188A29000, v34, OS_LOG_TYPE_ERROR, "failed registering audio file %@: %@", buf, 0x16u);
@@ -259,82 +259,82 @@
       }
     }
 
-    v36 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v37 = +[_UIFeedbackParameters parameters];
     v45[0] = MEMORY[0x1E69E9820];
     v45[1] = 3221225472;
     v45[2] = __108___UIFeedbackCoreHapticsPlayer__internal_createEventsForFileFeedbackData_engine_parameters_parameterCurves___block_invoke_111;
     v45[3] = &unk_1E7107C98;
     v45[4] = self;
-    v38 = v10;
+    v38 = dataCopy;
     v46 = v38;
-    v47 = v36;
-    v20 = v36;
+    v47 = array;
+    v20 = array;
     [v37 enumerateKeysAndObjectsUsingBlock:v45];
 
     v39 = objc_alloc(getCHHapticEventClass());
     [v38 effectiveDelay];
     v40 = [v39 initWithAudioResourceID:v25 parameters:v20 relativeTime:?];
     v55 = v40;
-    v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
+    events = [MEMORY[0x1E695DEC8] arrayWithObjects:&v55 count:1];
   }
 
 LABEL_33:
 
-  return v22;
+  return events;
 }
 
-- (id)_internal_createEventsForLegacyFeedbackData:(id)a3
+- (id)_internal_createEventsForLegacyFeedbackData:(id)data
 {
   v47[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 effectiveEventType];
-  v6 = _coreHapticsEventTypeForEffectiveEventType(v5, 1);
+  dataCopy = data;
+  effectiveEventType = [dataCopy effectiveEventType];
+  v6 = _coreHapticsEventTypeForEffectiveEventType(effectiveEventType, 1);
   if (!v6)
   {
     v14 = 0;
     goto LABEL_34;
   }
 
-  v7 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v8 = +[_UIFeedbackParameters parameters];
   v37 = MEMORY[0x1E69E9820];
   v38 = 3221225472;
   v39 = __76___UIFeedbackCoreHapticsPlayer__internal_createEventsForLegacyFeedbackData___block_invoke;
   v40 = &unk_1E7107CC0;
-  v41 = self;
-  v9 = v4;
+  selfCopy = self;
+  v9 = dataCopy;
   v42 = v9;
   v10 = v6;
   v43 = v10;
-  v11 = v7;
+  v11 = array;
   v44 = v11;
   [v8 enumerateKeysAndObjectsUsingBlock:&v37];
 
   v12 = v11;
-  if (v5 > 17236)
+  if (effectiveEventType > 17236)
   {
-    if (v5 > 23380)
+    if (effectiveEventType > 23380)
     {
-      if ((v5 - 23381) >= 3 && (v5 - 26453) >= 3)
+      if ((effectiveEventType - 23381) >= 3 && (effectiveEventType - 26453) >= 3)
       {
         v13 = -29525;
         goto LABEL_17;
       }
 
 LABEL_18:
-      v15 = (8 * v5 + ((BYTE1(v5) - 31) / 0xCu) - 680) * 0.043478;
+      v15 = (8 * effectiveEventType + ((BYTE1(effectiveEventType) - 31) / 0xCu) - 680) * 0.043478;
       goto LABEL_19;
     }
 
-    if ((v5 - 17237) < 3)
+    if ((effectiveEventType - 17237) < 3)
     {
       goto LABEL_18;
     }
 
     v13 = -20309;
 LABEL_17:
-    if ((v5 + v13) >= 3)
+    if ((effectiveEventType + v13) >= 3)
     {
       goto LABEL_20;
     }
@@ -342,9 +342,9 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  if (v5 <= 14164)
+  if (effectiveEventType <= 14164)
   {
-    if ((v5 - 8021) < 3)
+    if ((effectiveEventType - 8021) < 3)
     {
       goto LABEL_18;
     }
@@ -353,17 +353,17 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  if (v5 > 15968)
+  if (effectiveEventType > 15968)
   {
-    if (v5 > 16480)
+    if (effectiveEventType > 16480)
     {
-      if (v5 == 16481)
+      if (effectiveEventType == 16481)
       {
         v15 = 0.5;
         goto LABEL_19;
       }
 
-      if (v5 == 16737)
+      if (effectiveEventType == 16737)
       {
         v15 = 1.0;
         goto LABEL_19;
@@ -372,13 +372,13 @@ LABEL_17:
 
     else
     {
-      if (v5 == 15969)
+      if (effectiveEventType == 15969)
       {
         v15 = -0.5;
         goto LABEL_19;
       }
 
-      if (v5 == 16225)
+      if (effectiveEventType == 16225)
       {
         v15 = 0.0;
         goto LABEL_19;
@@ -388,19 +388,19 @@ LABEL_17:
 
   else
   {
-    if ((v5 - 14165) < 3)
+    if ((effectiveEventType - 14165) < 3)
     {
       goto LABEL_18;
     }
 
     v15 = -1.0;
-    if (v5 == 15713)
+    if (effectiveEventType == 15713)
     {
 LABEL_19:
       v16 = objc_alloc(getCHHapticEventParameterClass());
       v17 = getCHHapticEventParameterIDHapticSharpness();
       *&v18 = v15;
-      v19 = [v16 initWithParameterID:v17 value:{v18, v37, v38, v39, v40, v41, v42, v43}];
+      v19 = [v16 initWithParameterID:v17 value:{v18, v37, v38, v39, v40, selfCopy, v42, v43}];
       [v12 addObject:v19];
     }
   }
@@ -423,7 +423,7 @@ LABEL_20:
 LABEL_26:
     v31 = objc_alloc(getCHHapticEventClass());
     [v9 effectiveDelay];
-    v29 = [v31 initWithAudioResourceID:v5 parameters:v12 relativeTime:?];
+    v29 = [v31 initWithAudioResourceID:effectiveEventType parameters:v12 relativeTime:?];
     v47[0] = v29;
     v30 = v47;
     goto LABEL_33;
@@ -459,25 +459,25 @@ LABEL_32:
   v45 = v29;
   v30 = &v45;
 LABEL_33:
-  v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:{1, v37, v38, v39, v40, v41}];
+  v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:{1, v37, v38, v39, v40, selfCopy}];
 
 LABEL_34:
 
   return v14;
 }
 
-- (id)_internal_createEventsForTransientHapticData:(id)a3
+- (id)_internal_createEventsForTransientHapticData:(id)data
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc(getCHHapticEventParameterClass());
   v5 = getCHHapticEventParameterIDHapticIntensity();
-  [v3 intensity];
+  [dataCopy intensity];
   v6 = [v4 initWithParameterID:v5 value:?];
 
   v7 = objc_alloc(getCHHapticEventParameterClass());
   v8 = getCHHapticEventParameterIDHapticSharpness();
-  [v3 sharpness];
+  [dataCopy sharpness];
   v9 = [v7 initWithParameterID:v8 value:?];
 
   v10 = objc_alloc(getCHHapticEventClass());
@@ -485,7 +485,7 @@ LABEL_34:
   v18[0] = v6;
   v18[1] = v9;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:2];
-  [v3 effectiveDelay];
+  [dataCopy effectiveDelay];
   v14 = v13;
 
   v15 = [v10 initWithEventType:v11 parameters:v12 relativeTime:v14];
@@ -495,36 +495,36 @@ LABEL_34:
   return v16;
 }
 
-- (id)_internal_createEventsForFeedbackData:(id)a3 engine:(id)a4 parameters:(id *)a5 parameterCurves:(id *)a6
+- (id)_internal_createEventsForFeedbackData:(id)data engine:(id)engine parameters:(id *)parameters parameterCurves:(id *)curves
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = [v10 pattern];
+  dataCopy = data;
+  engineCopy = engine;
+  pattern = [dataCopy pattern];
 
-  if (v12)
+  if (pattern)
   {
-    v13 = [(_UIFeedbackCoreHapticsPlayer *)self _internal_createEventsForLibraryFeedbackData:v10 engine:v11 parameters:a5 parameterCurves:a6];
+    v13 = [(_UIFeedbackCoreHapticsPlayer *)self _internal_createEventsForLibraryFeedbackData:dataCopy engine:engineCopy parameters:parameters parameterCurves:curves];
   }
 
   else
   {
-    v14 = [v10 fileURL];
+    fileURL = [dataCopy fileURL];
 
-    if (v14)
+    if (fileURL)
     {
-      v13 = [(_UIFeedbackCoreHapticsPlayer *)self _internal_createEventsForFileFeedbackData:v10 engine:v11 parameters:a5 parameterCurves:a6];
+      v13 = [(_UIFeedbackCoreHapticsPlayer *)self _internal_createEventsForFileFeedbackData:dataCopy engine:engineCopy parameters:parameters parameterCurves:curves];
     }
 
     else
     {
-      if ([v10 isTransientHaptic])
+      if ([dataCopy isTransientHaptic])
       {
-        [(_UIFeedbackCoreHapticsPlayer *)self _internal_createEventsForTransientHapticData:v10];
+        [(_UIFeedbackCoreHapticsPlayer *)self _internal_createEventsForTransientHapticData:dataCopy];
       }
 
       else
       {
-        [(_UIFeedbackCoreHapticsPlayer *)self _internal_createEventsForLegacyFeedbackData:v10];
+        [(_UIFeedbackCoreHapticsPlayer *)self _internal_createEventsForLegacyFeedbackData:dataCopy];
       }
       v13 = ;
     }
@@ -535,18 +535,18 @@ LABEL_34:
   return v15;
 }
 
-- (id)_internal_createPatternForFeedbackData:(id)a3 feedback:(id)a4 engine:(id)a5
+- (id)_internal_createPatternForFeedbackData:(id)data feedback:(id)feedback engine:(id)engine
 {
   v76 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v57 = a4;
-  v60 = a5;
-  v58 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v8, "count")}];
+  dataCopy = data;
+  feedbackCopy = feedback;
+  engineCopy = engine;
+  v58 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(dataCopy, "count")}];
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
-  obj = v8;
+  obj = dataCopy;
   v9 = [obj countByEnumeratingWithState:&v67 objects:v75 count:16];
   if (v9)
   {
@@ -555,7 +555,7 @@ LABEL_34:
     v12 = *v68;
     v13 = MEMORY[0x1E695E0F0];
     v14 = MEMORY[0x1E695E0F0];
-    v59 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v10; ++i)
@@ -566,12 +566,12 @@ LABEL_34:
         }
 
         v16 = *(*(&v67 + 1) + 8 * i);
-        v17 = [v16 effectiveEnabledFeedbackTypes];
-        if ((v17 & 3) == 3 || (v18 = v17, (v17 & 3) == 2) && (-[_UIFeedbackCoreHapticsPlayer hapticEngine](self, "hapticEngine"), v62 = v14, v19 = v13, v20 = objc_claimAutoreleasedReturnValue(), [v20 coreHapticsEngine], v21 = v10, v22 = v12, v23 = v11, v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "playsHapticsOnly"), v24, v11 = v23, v12 = v22, v10 = v21, v20, v13 = v19, v14 = v62, self = v59, v25))
+        effectiveEnabledFeedbackTypes = [v16 effectiveEnabledFeedbackTypes];
+        if ((effectiveEnabledFeedbackTypes & 3) == 3 || (v18 = effectiveEnabledFeedbackTypes, (effectiveEnabledFeedbackTypes & 3) == 2) && (-[_UIFeedbackCoreHapticsPlayer hapticEngine](self, "hapticEngine"), v62 = v14, v19 = v13, v20 = objc_claimAutoreleasedReturnValue(), [v20 coreHapticsEngine], v21 = v10, v22 = v12, v23 = v11, v24 = objc_claimAutoreleasedReturnValue(), v25 = objc_msgSend(v24, "playsHapticsOnly"), v24, v11 = v23, v12 = v22, v10 = v21, v20, v13 = v19, v14 = v62, self = selfCopy, v25))
         {
           v65 = v13;
           v66 = v14;
-          v26 = [(_UIFeedbackCoreHapticsPlayer *)self _internal_createEventsForFeedbackData:v16 engine:v60 parameters:&v66 parameterCurves:&v65];
+          v26 = [(_UIFeedbackCoreHapticsPlayer *)self _internal_createEventsForFeedbackData:v16 engine:engineCopy parameters:&v66 parameterCurves:&v65];
           v27 = v66;
 
           v28 = v65;
@@ -619,7 +619,7 @@ LABEL_34:
     v30 = v13;
     v31 = [v13 count];
     v32 = [CHHapticPatternClass alloc];
-    v33 = v57;
+    v33 = feedbackCopy;
     if (v31)
     {
       v64 = 0;
@@ -646,7 +646,7 @@ LABEL_34:
         v40 = v30;
         v41 = MEMORY[0x1E696AEC0];
         v42 = v11;
-        v43 = v57;
+        v43 = feedbackCopy;
         v44 = v39;
         v45 = [v41 stringWithFormat:@"<%s: %p>", object_getClassName(v43), v43];
 
@@ -665,19 +665,19 @@ LABEL_34:
   else if (_UIFeedbackLoggingDisabled)
   {
     v36 = 0;
-    v33 = v57;
+    v33 = feedbackCopy;
   }
 
   else
   {
     v46 = *(__UILogGetCategoryCachedImpl("Feedback", &qword_1ED49A198) + 8);
-    v33 = v57;
+    v33 = feedbackCopy;
     if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
     {
       v47 = v13;
       v48 = MEMORY[0x1E696AEC0];
       v49 = v11;
-      v50 = v57;
+      v50 = feedbackCopy;
       v51 = v46;
       ClassName = object_getClassName(v50);
       v52 = v48;
@@ -704,19 +704,19 @@ LABEL_34:
   return v36;
 }
 
-- (id)_internal_createFixedParameterForParameters:(id)a3 withKey:(id)a4 forEventType:(id)a5
+- (id)_internal_createFixedParameterForParameters:(id)parameters withKey:(id)key forEventType:(id)type
 {
   v88 = *MEMORY[0x1E69E9840];
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  typeCopy = type;
+  keyCopy = key;
+  parametersCopy = parameters;
   v10 = +[_UIFeedbackParameters parameters];
-  v11 = [v10 objectForKeyedSubscript:v8];
+  v11 = [v10 objectForKeyedSubscript:keyCopy];
 
-  [v9 _effectiveValueForParameterWithKey:v8];
+  [parametersCopy _effectiveValueForParameterWithKey:keyCopy];
   v13 = v12;
 
-  LODWORD(v10) = [v9 _isAudio];
+  LODWORD(v10) = [parametersCopy _isAudio];
   if (v10)
   {
     v14 = @"audioType";
@@ -728,10 +728,10 @@ LABEL_34:
   }
 
   v15 = [v11 objectForKeyedSubscript:v14];
-  v16 = [v15 intValue];
-  v17 = v16;
+  intValue = [v15 intValue];
+  v17 = intValue;
 
-  switch(v16)
+  switch(intValue)
   {
     case 0:
       v21 = getCHHapticEventParameterIDAudioVolume();
@@ -817,7 +817,7 @@ LABEL_34:
 
 LABEL_26:
       v22 = v21;
-      v23 = v7;
+      v23 = typeCopy;
       v24 = getCHHapticEventTypeHapticTransient();
       v25 = v24;
       if (v24 == v23)
@@ -1310,18 +1310,18 @@ LABEL_39:
   }
 }
 
-- (void)_updateValueForParameters:(id)a3 withKey:(id)a4
+- (void)_updateValueForParameters:(id)parameters withKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  keyCopy = key;
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __66___UIFeedbackCoreHapticsPlayer__updateValueForParameters_withKey___block_invoke;
   block[3] = &unk_1E70F6228;
   block[4] = self;
-  v14 = v6;
-  v15 = v7;
+  v14 = parametersCopy;
+  v15 = keyCopy;
   v9 = internalQueue;
   if (!v9)
   {
@@ -1329,22 +1329,22 @@ LABEL_39:
     v10 = MEMORY[0x1E69E96A0];
   }
 
-  v11 = v7;
-  v12 = v6;
+  v11 = keyCopy;
+  v12 = parametersCopy;
   dispatch_async(v9, block);
 }
 
-- (void)_internal_updateValueForParameters:(id)a3 withKey:(id)a4
+- (void)_internal_updateValueForParameters:(id)parameters withKey:(id)key
 {
   v92[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  parametersCopy = parameters;
+  keyCopy = key;
   v8 = +[_UIFeedbackParameters parameters];
-  v9 = [v8 objectForKeyedSubscript:v7];
+  v9 = [v8 objectForKeyedSubscript:keyCopy];
 
-  [v6 _effectiveValueForParameterWithKey:v7];
+  [parametersCopy _effectiveValueForParameterWithKey:keyCopy];
   v11 = v10;
-  if ([v6 _isAudio])
+  if ([parametersCopy _isAudio])
   {
     v12 = @"audioType";
   }
@@ -1355,9 +1355,9 @@ LABEL_39:
   }
 
   v13 = [v9 objectForKeyedSubscript:v12];
-  v14 = [v13 intValue];
+  intValue = [v13 intValue];
 
-  switch(v14)
+  switch(intValue)
   {
     case 0:
       v85 = 0;
@@ -1385,9 +1385,9 @@ LABEL_39:
         goto LABEL_56;
       }
 
-      v45 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticDynamicParameterID getCHHapticDynamicParameterIDAudioVolumeControl(void)"];
-      [v45 handleFailureInFunction:v46 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:70 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v46 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:70 description:{@"%s", dlerror()}];
 
       goto LABEL_76;
     case 1:
@@ -1416,9 +1416,9 @@ LABEL_39:
         goto LABEL_56;
       }
 
-      v49 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v50 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticDynamicParameterID getCHHapticDynamicParameterIDAudioPitchControl(void)"];
-      [v49 handleFailureInFunction:v50 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:73 description:{@"%s", dlerror()}];
+      [currentHandler2 handleFailureInFunction:v50 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:73 description:{@"%s", dlerror()}];
 
       goto LABEL_76;
     case 2:
@@ -1447,9 +1447,9 @@ LABEL_39:
         goto LABEL_56;
       }
 
-      v37 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v38 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticDynamicParameterID getCHHapticDynamicParameterIDAudioAttackTimeControl(void)"];
-      [v37 handleFailureInFunction:v38 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:74 description:{@"%s", dlerror()}];
+      [currentHandler3 handleFailureInFunction:v38 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:74 description:{@"%s", dlerror()}];
 
       goto LABEL_76;
     case 3:
@@ -1478,9 +1478,9 @@ LABEL_39:
         goto LABEL_56;
       }
 
-      v41 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v42 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticDynamicParameterID getCHHapticDynamicParameterIDAudioDecayTimeControl(void)"];
-      [v41 handleFailureInFunction:v42 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:75 description:{@"%s", dlerror()}];
+      [currentHandler4 handleFailureInFunction:v42 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:75 description:{@"%s", dlerror()}];
 
       goto LABEL_76;
     case 4:
@@ -1509,9 +1509,9 @@ LABEL_39:
         goto LABEL_56;
       }
 
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticDynamicParameterID getCHHapticDynamicParameterIDAudioReleaseTimeControl(void)"];
-      [v25 handleFailureInFunction:v26 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:76 description:{@"%s", dlerror()}];
+      [currentHandler5 handleFailureInFunction:v26 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:76 description:{@"%s", dlerror()}];
 
       goto LABEL_76;
     case 5:
@@ -1540,9 +1540,9 @@ LABEL_39:
         goto LABEL_56;
       }
 
-      v53 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
       v54 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticDynamicParameterID getCHHapticDynamicParameterIDAudioPanControl(void)"];
-      [v53 handleFailureInFunction:v54 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:71 description:{@"%s", dlerror()}];
+      [currentHandler6 handleFailureInFunction:v54 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:71 description:{@"%s", dlerror()}];
 
       goto LABEL_76;
     case 6:
@@ -1565,7 +1565,7 @@ LABEL_39:
       }
 
       *buf = 134217984;
-      *&buf[4] = v14;
+      *&buf[4] = intValue;
       v17 = "UIFeedbackParameterType (%ld) has no equivalent CHHapticDynamicParameterID";
       goto LABEL_44;
     case 7:
@@ -1594,9 +1594,9 @@ LABEL_39:
         goto LABEL_56;
       }
 
-      v82 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
       v83 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticDynamicParameterID getCHHapticDynamicParameterIDHapticIntensityControl(void)"];
-      [v82 handleFailureInFunction:v83 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:64 description:{@"%s", dlerror()}];
+      [currentHandler7 handleFailureInFunction:v83 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:64 description:{@"%s", dlerror()}];
 
       goto LABEL_76;
     case 8:
@@ -1625,9 +1625,9 @@ LABEL_39:
         goto LABEL_56;
       }
 
-      v33 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler8 = [MEMORY[0x1E696AAA8] currentHandler];
       v34 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticDynamicParameterID getCHHapticDynamicParameterIDHapticSharpnessControl(void)"];
-      [v33 handleFailureInFunction:v34 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:65 description:{@"%s", dlerror()}];
+      [currentHandler8 handleFailureInFunction:v34 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:65 description:{@"%s", dlerror()}];
 
       goto LABEL_76;
     case 9:
@@ -1656,9 +1656,9 @@ LABEL_39:
         goto LABEL_56;
       }
 
-      v57 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler9 = [MEMORY[0x1E696AAA8] currentHandler];
       v58 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticDynamicParameterID getCHHapticDynamicParameterIDHapticAttackTimeControl(void)"];
-      [v57 handleFailureInFunction:v58 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:66 description:{@"%s", dlerror()}];
+      [currentHandler9 handleFailureInFunction:v58 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:66 description:{@"%s", dlerror()}];
 
       goto LABEL_76;
     case 10:
@@ -1687,9 +1687,9 @@ LABEL_39:
         goto LABEL_56;
       }
 
-      v21 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler10 = [MEMORY[0x1E696AAA8] currentHandler];
       v22 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticDynamicParameterID getCHHapticDynamicParameterIDHapticDecayTimeControl(void)"];
-      [v21 handleFailureInFunction:v22 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:67 description:{@"%s", dlerror()}];
+      [currentHandler10 handleFailureInFunction:v22 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:67 description:{@"%s", dlerror()}];
 
       goto LABEL_76;
     case 11:
@@ -1715,9 +1715,9 @@ LABEL_39:
       _Block_object_dispose(&v85, 8);
       if (!v18)
       {
-        v29 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler11 = [MEMORY[0x1E696AAA8] currentHandler];
         v30 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"CHHapticDynamicParameterID getCHHapticDynamicParameterIDHapticReleaseTimeControl(void)"];
-        [v29 handleFailureInFunction:v30 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:68 description:{@"%s", dlerror()}];
+        [currentHandler11 handleFailureInFunction:v30 file:@"_UIFeedbackCoreHapticsEngineUtilities.h" lineNumber:68 description:{@"%s", dlerror()}];
 
 LABEL_76:
         __break(1u);
@@ -1763,17 +1763,17 @@ LABEL_56:
           if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
           {
             v79 = v78;
-            v80 = [v6 _isAudio];
+            _isAudio = [parametersCopy _isAudio];
             v81 = @"haptic";
             *buf = 138413058;
-            if (v80)
+            if (_isAudio)
             {
               v81 = @"audio";
             }
 
             *&buf[4] = v81;
             *&buf[12] = 2112;
-            *&buf[14] = v7;
+            *&buf[14] = keyCopy;
             *&buf[22] = 2048;
             v90 = v11;
             LOWORD(v91[0]) = 2112;
@@ -1783,9 +1783,9 @@ LABEL_56:
         }
       }
 
-      v70 = [(_UIFeedbackCoreHapticsPlayer *)self coreHapticsPlayer];
+      coreHapticsPlayer = [(_UIFeedbackCoreHapticsPlayer *)self coreHapticsPlayer];
       v84 = 0;
-      [v70 sendParameters:v68 atTime:&v84 error:0.0];
+      [coreHapticsPlayer sendParameters:v68 atTime:&v84 error:0.0];
       v71 = COERCE_DOUBLE(v84);
 
       if (v71 != 0.0 && (_UIFeedbackLoggingDisabled & 1) == 0)
@@ -1794,10 +1794,10 @@ LABEL_56:
         if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
         {
           v73 = v72;
-          v74 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
-          v75 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%s: %p>", object_getClassName(v74), v74];
+          hapticEngine = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
+          v75 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%s: %p>", object_getClassName(hapticEngine), hapticEngine];
           *buf = 138412802;
-          *&buf[4] = v7;
+          *&buf[4] = keyCopy;
           *&buf[12] = 2112;
           *&buf[14] = v75;
           *&buf[22] = 2112;
@@ -1820,7 +1820,7 @@ LABEL_56:
       }
 
       *buf = 134217984;
-      *&buf[4] = v14;
+      *&buf[4] = intValue;
       v17 = "Cannot convert UIFeedbackParameterType (%ld) to CHHapticDynamicParameterID";
 LABEL_44:
       _os_log_impl(&dword_188A29000, v16, OS_LOG_TYPE_ERROR, v17, buf, 0xCu);
@@ -1834,7 +1834,7 @@ LABEL_66:
           if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
           {
             *buf = 134218240;
-            *&buf[4] = v14;
+            *&buf[4] = intValue;
             *&buf[12] = 2048;
             *&buf[14] = v11;
             _os_log_impl(&dword_188A29000, v77, OS_LOG_TYPE_ERROR, "Ignoring UIFeedbackParameterType (%ld) with value %f", buf, 0x16u);
@@ -1846,19 +1846,19 @@ LABEL_66:
   }
 }
 
-- (void)_playFeedback:(id)a3 atTime:(double)a4
+- (void)_playFeedback:(id)feedback atTime:(double)time
 {
-  v6 = a3;
-  v7 = [v6 _effectiveFeedbackData];
+  feedbackCopy = feedback;
+  _effectiveFeedbackData = [feedbackCopy _effectiveFeedbackData];
   internalQueue = self->_internalQueue;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __53___UIFeedbackCoreHapticsPlayer__playFeedback_atTime___block_invoke;
   v13[3] = &unk_1E7107CE8;
   v13[4] = self;
-  v14 = v7;
-  v15 = v6;
-  v16 = a4;
+  v14 = _effectiveFeedbackData;
+  v15 = feedbackCopy;
+  timeCopy = time;
   v9 = internalQueue;
   if (!v9)
   {
@@ -1866,21 +1866,21 @@ LABEL_66:
     v10 = MEMORY[0x1E69E96A0];
   }
 
-  v11 = v6;
-  v12 = v7;
+  v11 = feedbackCopy;
+  v12 = _effectiveFeedbackData;
   dispatch_async(v9, v13);
 }
 
-- (BOOL)_internal_playFeedbackData:(id)a3 forFeedback:(id)a4 atTime:(double)a5
+- (BOOL)_internal_playFeedbackData:(id)data forFeedback:(id)feedback atTime:(double)time
 {
   v36 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  feedbackCopy = feedback;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v10 = v8;
+  v10 = dataCopy;
   v11 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
   if (v11)
   {
@@ -1912,37 +1912,37 @@ LABEL_66:
     }
   }
 
-  v15 = [(_UIFeedbackCoreHapticsPlayer *)self coreHapticsPlayer];
+  coreHapticsPlayer = [(_UIFeedbackCoreHapticsPlayer *)self coreHapticsPlayer];
 
-  if (v15)
+  if (coreHapticsPlayer)
   {
     goto LABEL_15;
   }
 
 LABEL_12:
-  v16 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
-  v17 = [v16 coreHapticsEngine];
-  v18 = [(_UIFeedbackCoreHapticsPlayer *)self _internal_createPatternForFeedbackData:v10 feedback:v9 engine:v17];
+  hapticEngine = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
+  coreHapticsEngine = [hapticEngine coreHapticsEngine];
+  v18 = [(_UIFeedbackCoreHapticsPlayer *)self _internal_createPatternForFeedbackData:v10 feedback:feedbackCopy engine:coreHapticsEngine];
 
   if (v18)
   {
-    v19 = [(_UIFeedbackCoreHapticsPlayer *)self _internal_createPlayerWithPattern:v18];
-    if (!v19)
+    coreHapticsPlayer2 = [(_UIFeedbackCoreHapticsPlayer *)self _internal_createPlayerWithPattern:v18];
+    if (!coreHapticsPlayer2)
     {
 LABEL_21:
 
       goto LABEL_22;
     }
 
-    [(_UIFeedbackCoreHapticsPlayer *)self setCoreHapticsPlayer:v19];
+    [(_UIFeedbackCoreHapticsPlayer *)self setCoreHapticsPlayer:coreHapticsPlayer2];
 
 LABEL_15:
-    v19 = [(_UIFeedbackCoreHapticsPlayer *)self coreHapticsPlayer];
+    coreHapticsPlayer2 = [(_UIFeedbackCoreHapticsPlayer *)self coreHapticsPlayer];
     v26 = 0;
-    [v19 startAtTime:&v26 error:a5];
+    [coreHapticsPlayer2 startAtTime:&v26 error:time];
     v18 = v26;
 
-    LOBYTE(v19) = v18 == 0;
+    LOBYTE(coreHapticsPlayer2) = v18 == 0;
     if (v18)
     {
       if ((_UIFeedbackLoggingDisabled & 1) == 0)
@@ -1951,8 +1951,8 @@ LABEL_15:
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
           v21 = v20;
-          v22 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
-          v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%s: %p>", object_getClassName(v22), v22];
+          hapticEngine2 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
+          v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%s: %p>", object_getClassName(hapticEngine2), hapticEngine2];
           *buf = 138412546;
           v32 = v23;
           v33 = 2112;
@@ -1964,8 +1964,8 @@ LABEL_15:
 
     else
     {
-      v24 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
-      [v24 _internal_willPlayFeedback:v9 atTime:a5];
+      hapticEngine3 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
+      [hapticEngine3 _internal_willPlayFeedback:feedbackCopy atTime:time];
 
       kdebug_trace();
     }
@@ -1973,24 +1973,24 @@ LABEL_15:
     goto LABEL_21;
   }
 
-  LOBYTE(v19) = 0;
+  LOBYTE(coreHapticsPlayer2) = 0;
 LABEL_22:
 
-  return v19;
+  return coreHapticsPlayer2;
 }
 
-- (void)_stopFeedback:(id)a3
+- (void)_stopFeedback:(id)feedback
 {
-  v4 = a3;
-  v5 = [v4 _effectiveFeedbackData];
+  feedbackCopy = feedback;
+  _effectiveFeedbackData = [feedbackCopy _effectiveFeedbackData];
   internalQueue = self->_internalQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __46___UIFeedbackCoreHapticsPlayer__stopFeedback___block_invoke;
   block[3] = &unk_1E70F6228;
   block[4] = self;
-  v12 = v5;
-  v13 = v4;
+  v12 = _effectiveFeedbackData;
+  v13 = feedbackCopy;
   v7 = internalQueue;
   if (!v7)
   {
@@ -1998,21 +1998,21 @@ LABEL_22:
     v8 = MEMORY[0x1E69E96A0];
   }
 
-  v9 = v4;
-  v10 = v5;
+  v9 = feedbackCopy;
+  v10 = _effectiveFeedbackData;
   dispatch_async(v7, block);
 }
 
-- (void)_internal_stopFeedbackData:(id)a3 forFeedback:(id)a4
+- (void)_internal_stopFeedbackData:(id)data forFeedback:(id)feedback
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
-  [v6 _internal_willCancelFeedback:v5];
+  feedbackCopy = feedback;
+  hapticEngine = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
+  [hapticEngine _internal_willCancelFeedback:feedbackCopy];
 
-  v7 = [(_UIFeedbackCoreHapticsPlayer *)self coreHapticsPlayer];
+  coreHapticsPlayer = [(_UIFeedbackCoreHapticsPlayer *)self coreHapticsPlayer];
   v13 = 0;
-  [v7 stopAtTime:&v13 error:0.0];
+  [coreHapticsPlayer stopAtTime:&v13 error:0.0];
   v8 = v13;
 
   if (v8)
@@ -2023,10 +2023,10 @@ LABEL_22:
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         v10 = v9;
-        v11 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
-        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%s: %p>", object_getClassName(v11), v11];
+        hapticEngine2 = [(_UIFeedbackCoreHapticsPlayer *)self hapticEngine];
+        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"<%s: %p>", object_getClassName(hapticEngine2), hapticEngine2];
         *buf = 138412802;
-        v15 = v5;
+        v15 = feedbackCopy;
         v16 = 2112;
         v17 = v12;
         v18 = 2112;

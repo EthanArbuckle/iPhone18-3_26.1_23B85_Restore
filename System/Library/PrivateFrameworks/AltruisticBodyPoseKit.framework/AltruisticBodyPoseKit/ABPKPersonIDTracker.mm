@@ -1,7 +1,7 @@
 @interface ABPKPersonIDTracker
 - (ABPKPersonIDTracker)init;
-- (CGRect)_rotateBoundingBoxToPortrait:(CGRect)a3 withImageRes:(CGSize)a4;
-- (int)runWithInput:(__CVBuffer *)a3 atTimeStamp:(double)a4 andOutput:(id)a5;
+- (CGRect)_rotateBoundingBoxToPortrait:(CGRect)portrait withImageRes:(CGSize)res;
+- (int)runWithInput:(__CVBuffer *)input atTimeStamp:(double)stamp andOutput:(id)output;
 @end
 
 @implementation ABPKPersonIDTracker
@@ -60,13 +60,13 @@ LABEL_12:
   return v10;
 }
 
-- (CGRect)_rotateBoundingBoxToPortrait:(CGRect)a3 withImageRes:(CGSize)a4
+- (CGRect)_rotateBoundingBoxToPortrait:(CGRect)portrait withImageRes:(CGSize)res
 {
-  width = a3.size.width;
-  v5 = a4.width * 0.5 - (a3.origin.y - a4.width * 0.5);
-  v6 = a4.height * 0.5 + a3.origin.x - a4.height * 0.5;
-  v7 = v5 - a3.size.height;
-  height = a3.size.height;
+  width = portrait.size.width;
+  v5 = res.width * 0.5 - (portrait.origin.y - res.width * 0.5);
+  v6 = res.height * 0.5 + portrait.origin.x - res.height * 0.5;
+  v7 = v5 - portrait.size.height;
+  height = portrait.size.height;
   v9 = width;
   result.size.height = v9;
   result.size.width = height;
@@ -75,11 +75,11 @@ LABEL_12:
   return result;
 }
 
-- (int)runWithInput:(__CVBuffer *)a3 atTimeStamp:(double)a4 andOutput:(id)a5
+- (int)runWithInput:(__CVBuffer *)input atTimeStamp:(double)stamp andOutput:(id)output
 {
   v53[1] = *MEMORY[0x277D85DE8];
-  v47 = a5;
-  if (!a3)
+  outputCopy = output;
+  if (!input)
   {
     v10 = __ABPKLogSharedInstance();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -91,9 +91,9 @@ LABEL_12:
     goto LABEL_30;
   }
 
-  Width = CVPixelBufferGetWidth(a3);
-  Height = CVPixelBufferGetHeight(a3);
-  PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
+  Width = CVPixelBufferGetWidth(input);
+  Height = CVPixelBufferGetHeight(input);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(input);
   if (Height > Width)
   {
     v10 = __ABPKLogSharedInstance();
@@ -170,7 +170,7 @@ LABEL_41:
 
     else if (v11 == 875704438)
     {
-      if (!convertFormatYCbCrToBGRA(a3, &pixelBufferOut))
+      if (!convertFormatYCbCrToBGRA(input, &pixelBufferOut))
       {
         goto LABEL_16;
       }
@@ -186,7 +186,7 @@ LABEL_41:
 
     else
     {
-      if (!changeChannelsARGB(a3, &pixelBufferOut))
+      if (!changeChannelsARGB(input, &pixelBufferOut))
       {
         goto LABEL_16;
       }
@@ -210,7 +210,7 @@ LABEL_41:
     _os_log_impl(&dword_23EDDC000, v12, OS_LOG_TYPE_DEBUG, " \t\t ABPKPersonIDTracker: Image is already BGRA type ", buf, 2u);
   }
 
-  pixelBufferOut = a3;
+  pixelBufferOut = input;
 LABEL_16:
   v13 = __ABPKLogSharedInstance();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -250,9 +250,9 @@ LABEL_16:
   {
     v22 = [ABPKTrackedObject alloc];
     v23 = [v18 objectAtIndexedSubscript:i];
-    v24 = [v23 objectID];
+    objectID = [v23 objectID];
     v25 = [v18 objectAtIndexedSubscript:i];
-    v26 = [v25 category];
+    category = [v25 category];
     v27 = [v18 objectAtIndexedSubscript:i];
     [v27 boundingBox];
     v29 = v28;
@@ -260,9 +260,9 @@ LABEL_16:
     v33 = v32;
     v35 = v34;
     v36 = [v18 objectAtIndexedSubscript:i];
-    v37 = -[ABPKTrackedObject initWithObjectID:category:boundingBox:confidence:](v22, "initWithObjectID:category:boundingBox:confidence:", v24, v26, [v36 confidence], v29, v31, v33, v35);
+    v37 = -[ABPKTrackedObject initWithObjectID:category:boundingBox:confidence:](v22, "initWithObjectID:category:boundingBox:confidence:", objectID, category, [v36 confidence], v29, v31, v33, v35);
 
-    [v47 addObject:v37];
+    [outputCopy addObject:v37];
   }
 
   v41 = 0;

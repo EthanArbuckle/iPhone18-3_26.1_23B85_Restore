@@ -1,59 +1,59 @@
 @interface MTFetchedResultsController
-- (BOOL)_hasManagedObjectChanged:(id)a3;
-- (BOOL)performFetch:(id *)a3;
-- (MTFetchedResultsController)initWithFetchRequest:(id)a3 managedObjectContext:(id)a4 sectionNameKeyPath:(id)a5 cacheName:(id)a6;
+- (BOOL)_hasManagedObjectChanged:(id)changed;
+- (BOOL)performFetch:(id *)fetch;
+- (MTFetchedResultsController)initWithFetchRequest:(id)request managedObjectContext:(id)context sectionNameKeyPath:(id)path cacheName:(id)name;
 - (NSFetchedResultsControllerDelegate)delegate;
-- (id)_dictionaryForObject:(id)a3;
-- (void)_updateCacheWithManagedObject:(id)a3;
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7;
-- (void)controllerDidChangeContent:(id)a3;
-- (void)controllerWillChangeContent:(id)a3;
-- (void)setPropertyKeys:(id)a3;
+- (id)_dictionaryForObject:(id)object;
+- (void)_updateCacheWithManagedObject:(id)object;
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath;
+- (void)controllerDidChangeContent:(id)content;
+- (void)controllerWillChangeContent:(id)content;
+- (void)setPropertyKeys:(id)keys;
 @end
 
 @implementation MTFetchedResultsController
 
-- (MTFetchedResultsController)initWithFetchRequest:(id)a3 managedObjectContext:(id)a4 sectionNameKeyPath:(id)a5 cacheName:(id)a6
+- (MTFetchedResultsController)initWithFetchRequest:(id)request managedObjectContext:(id)context sectionNameKeyPath:(id)path cacheName:(id)name
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  requestCopy = request;
+  contextCopy = context;
+  pathCopy = path;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = MTFetchedResultsController;
   v14 = [(MTFetchedResultsController *)&v22 init];
   if (v14)
   {
-    v15 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     propertyCache = v14->_propertyCache;
-    v14->_propertyCache = v15;
+    v14->_propertyCache = dictionary;
 
-    v17 = [objc_alloc(MEMORY[0x1E695D600]) initWithFetchRequest:v10 managedObjectContext:v11 sectionNameKeyPath:v12 cacheName:v13];
+    v17 = [objc_alloc(MEMORY[0x1E695D600]) initWithFetchRequest:requestCopy managedObjectContext:contextCopy sectionNameKeyPath:pathCopy cacheName:nameCopy];
     frc = v14->_frc;
     v14->_frc = v17;
 
     [(NSFetchedResultsController *)v14->_frc setDelegate:v14];
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     changes = v14->_changes;
-    v14->_changes = v19;
+    v14->_changes = array;
   }
 
   return v14;
 }
 
-- (BOOL)performFetch:(id *)a3
+- (BOOL)performFetch:(id *)fetch
 {
   v18 = *MEMORY[0x1E69E9840];
   [(NSMutableDictionary *)self->_propertyCache removeAllObjects];
-  v5 = [(NSFetchedResultsController *)self->_frc performFetch:a3];
+  v5 = [(NSFetchedResultsController *)self->_frc performFetch:fetch];
   if (v5)
   {
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [(NSFetchedResultsController *)self->_frc fetchedObjects];
-    v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    fetchedObjects = [(NSFetchedResultsController *)self->_frc fetchedObjects];
+    v7 = [fetchedObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
       v8 = v7;
@@ -65,14 +65,14 @@
         {
           if (*v14 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(fetchedObjects);
           }
 
           [(MTFetchedResultsController *)self _updateCacheWithManagedObject:*(*(&v13 + 1) + 8 * v10++)];
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v8 = [fetchedObjects countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v8);
@@ -83,49 +83,49 @@
   return v5;
 }
 
-- (void)setPropertyKeys:(id)a3
+- (void)setPropertyKeys:(id)keys
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  keysCopy = keys;
   p_propertyKeys = &self->_propertyKeys;
   propertyKeys = self->_propertyKeys;
-  if (propertyKeys != v5 && ![(NSArray *)propertyKeys isEqualToArray:v5])
+  if (propertyKeys != keysCopy && ![(NSArray *)propertyKeys isEqualToArray:keysCopy])
   {
-    if ([(NSArray *)v5 containsObject:@"episodes"])
+    if ([(NSArray *)keysCopy containsObject:@"episodes"])
     {
       v8 = _MTLogCategoryDatabase();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
       {
-        v9 = [(MTFetchedResultsController *)self fetchRequest];
-        v10 = [v9 entityName];
-        v11 = [(MTFetchedResultsController *)self fetchRequest];
-        v12 = [v11 predicate];
+        fetchRequest = [(MTFetchedResultsController *)self fetchRequest];
+        entityName = [fetchRequest entityName];
+        fetchRequest2 = [(MTFetchedResultsController *)self fetchRequest];
+        predicate = [fetchRequest2 predicate];
         v14 = 138543618;
-        v15 = v10;
+        v15 = entityName;
         v16 = 2114;
-        v17 = v12;
+        v17 = predicate;
         _os_log_impl(&dword_1D8CEC000, v8, OS_LOG_TYPE_ERROR, "MTFetchedResultsController with episodes within property keys detected - entity %{public}@ - predicate %{public}@", &v14, 0x16u);
       }
     }
 
-    objc_storeStrong(p_propertyKeys, a3);
+    objc_storeStrong(p_propertyKeys, keys);
   }
 
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)controller:(id)a3 didChangeObject:(id)a4 atIndexPath:(id)a5 forChangeType:(unint64_t)a6 newIndexPath:(id)a7
+- (void)controller:(id)controller didChangeObject:(id)object atIndexPath:(id)path forChangeType:(unint64_t)type newIndexPath:(id)indexPath
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  v16 = [(MTFetchedResultsController *)self propertyKeys];
-  v17 = [v16 count];
+  controllerCopy = controller;
+  objectCopy = object;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  propertyKeys = [(MTFetchedResultsController *)self propertyKeys];
+  v17 = [propertyKeys count];
 
   if (!v17)
   {
-    v19 = [(MTFetchedResultsController *)self delegate];
+    delegate = [(MTFetchedResultsController *)self delegate];
     v20 = objc_opt_respondsToSelector();
 
     if ((v20 & 1) == 0)
@@ -133,19 +133,19 @@
       goto LABEL_20;
     }
 
-    v21 = [(MTFetchedResultsController *)self delegate];
-    [v21 controller:v12 didChangeObject:v13 atIndexPath:v14 forChangeType:a6 newIndexPath:v15];
+    delegate2 = [(MTFetchedResultsController *)self delegate];
+    [delegate2 controller:controllerCopy didChangeObject:objectCopy atIndexPath:pathCopy forChangeType:type newIndexPath:indexPathCopy];
     goto LABEL_8;
   }
 
-  if (a6 <= 2)
+  if (type <= 2)
   {
-    if (a6 != 1)
+    if (type != 1)
     {
-      if (a6 == 2)
+      if (type == 2)
       {
-        v18 = [v13 objectID];
-        [(MTFetchedResultsController *)self _removeObjectFromCacheWithId:v18];
+        objectID = [objectCopy objectID];
+        [(MTFetchedResultsController *)self _removeObjectFromCacheWithId:objectID];
       }
 
       goto LABEL_13;
@@ -154,25 +154,25 @@
     goto LABEL_12;
   }
 
-  if (a6 == 3)
+  if (type == 3)
   {
 LABEL_12:
-    [(MTFetchedResultsController *)self _updateCacheWithManagedObject:v13];
+    [(MTFetchedResultsController *)self _updateCacheWithManagedObject:objectCopy];
     goto LABEL_13;
   }
 
-  if (a6 == 4)
+  if (type == 4)
   {
-    if ([(MTFetchedResultsController *)self _hasManagedObjectChanged:v13])
+    if ([(MTFetchedResultsController *)self _hasManagedObjectChanged:objectCopy])
     {
       goto LABEL_12;
     }
 
-    v21 = _MTLogCategoryDatabase();
-    if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
+    delegate2 = _MTLogCategoryDatabase();
+    if (os_log_type_enabled(delegate2, OS_LOG_TYPE_DEBUG))
     {
       *v25 = 0;
-      _os_log_impl(&dword_1D8CEC000, v21, OS_LOG_TYPE_DEBUG, "Managed object was updated, but none of the properties we care about changed", v25, 2u);
+      _os_log_impl(&dword_1D8CEC000, delegate2, OS_LOG_TYPE_DEBUG, "Managed object was updated, but none of the properties we care about changed", v25, 2u);
     }
 
 LABEL_8:
@@ -183,22 +183,22 @@ LABEL_8:
 LABEL_13:
   v22 = objc_opt_new();
   v23 = v22;
-  if (v13)
+  if (objectCopy)
   {
-    [v22 setObject:v13 forKeyedSubscript:@"object"];
+    [v22 setObject:objectCopy forKeyedSubscript:@"object"];
   }
 
-  if (v14)
+  if (pathCopy)
   {
-    [v23 setObject:v14 forKeyedSubscript:@"indexPath"];
+    [v23 setObject:pathCopy forKeyedSubscript:@"indexPath"];
   }
 
-  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a6];
+  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:type];
   [v23 setObject:v24 forKeyedSubscript:@"type"];
 
-  if (v15)
+  if (indexPathCopy)
   {
-    [v23 setObject:v15 forKeyedSubscript:@"newIndexPath"];
+    [v23 setObject:indexPathCopy forKeyedSubscript:@"newIndexPath"];
   }
 
   [(NSMutableArray *)self->_changes addObject:v23];
@@ -206,40 +206,40 @@ LABEL_13:
 LABEL_20:
 }
 
-- (void)controllerWillChangeContent:(id)a3
+- (void)controllerWillChangeContent:(id)content
 {
-  v9 = a3;
-  v4 = [(MTFetchedResultsController *)self propertyKeys];
-  v5 = [v4 count];
+  contentCopy = content;
+  propertyKeys = [(MTFetchedResultsController *)self propertyKeys];
+  v5 = [propertyKeys count];
 
   if (!v5)
   {
-    v6 = [(MTFetchedResultsController *)self delegate];
+    delegate = [(MTFetchedResultsController *)self delegate];
     v7 = objc_opt_respondsToSelector();
 
     if (v7)
     {
-      v8 = [(MTFetchedResultsController *)self delegate];
-      [v8 controllerWillChangeContent:v9];
+      delegate2 = [(MTFetchedResultsController *)self delegate];
+      [delegate2 controllerWillChangeContent:contentCopy];
     }
   }
 }
 
-- (void)controllerDidChangeContent:(id)a3
+- (void)controllerDidChangeContent:(id)content
 {
   v29 = *MEMORY[0x1E69E9840];
-  v23 = a3;
-  v4 = [(MTFetchedResultsController *)self propertyKeys];
-  v5 = [v4 count];
+  contentCopy = content;
+  propertyKeys = [(MTFetchedResultsController *)self propertyKeys];
+  v5 = [propertyKeys count];
 
   if (v5)
   {
     if ([(NSMutableArray *)self->_changes count])
     {
-      v6 = [(MTFetchedResultsController *)self delegate];
+      delegate = [(MTFetchedResultsController *)self delegate];
       if (objc_opt_respondsToSelector())
       {
-        [v6 controllerWillChangeContent:v23];
+        [delegate controllerWillChangeContent:contentCopy];
       }
 
       if (objc_opt_respondsToSelector())
@@ -248,7 +248,7 @@ LABEL_20:
         v27 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v21 = self;
+        selfCopy = self;
         obj = self->_changes;
         v7 = [(NSMutableArray *)obj countByEnumeratingWithState:&v24 objects:v28 count:16];
         if (v7)
@@ -268,9 +268,9 @@ LABEL_20:
               v12 = [v11 objectForKeyedSubscript:@"object"];
               v13 = [v11 objectForKeyedSubscript:@"indexPath"];
               v14 = [v11 objectForKeyedSubscript:@"type"];
-              v15 = [v14 unsignedIntegerValue];
+              unsignedIntegerValue = [v14 unsignedIntegerValue];
               v16 = [v11 objectForKeyedSubscript:@"newIndexPath"];
-              [v6 controller:v23 didChangeObject:v12 atIndexPath:v13 forChangeType:v15 newIndexPath:v16];
+              [delegate controller:contentCopy didChangeObject:v12 atIndexPath:v13 forChangeType:unsignedIntegerValue newIndexPath:v16];
             }
 
             v8 = [(NSMutableArray *)obj countByEnumeratingWithState:&v24 objects:v28 count:16];
@@ -279,85 +279,85 @@ LABEL_20:
           while (v8);
         }
 
-        self = v21;
+        self = selfCopy;
       }
 
       [(NSMutableArray *)self->_changes removeAllObjects];
       if (objc_opt_respondsToSelector())
       {
-        [v6 controllerDidChangeContent:v23];
+        [delegate controllerDidChangeContent:contentCopy];
       }
     }
   }
 
   else
   {
-    v17 = [(MTFetchedResultsController *)self delegate];
+    delegate2 = [(MTFetchedResultsController *)self delegate];
     v18 = objc_opt_respondsToSelector();
 
     if (v18)
     {
-      v19 = [(MTFetchedResultsController *)self delegate];
-      [v19 controllerDidChangeContent:v23];
+      delegate3 = [(MTFetchedResultsController *)self delegate];
+      [delegate3 controllerDidChangeContent:contentCopy];
     }
   }
 
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_dictionaryForObject:(id)a3
+- (id)_dictionaryForObject:(id)object
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MTFetchedResultsController *)self propertyKeys];
+  objectCopy = object;
+  propertyKeys = [(MTFetchedResultsController *)self propertyKeys];
 
-  if (!v5)
+  if (!propertyKeys)
   {
     v6 = _MTLogCategoryDatabase();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
-      v7 = [(MTFetchedResultsController *)self fetchRequest];
-      v8 = [v7 entityName];
-      v9 = [(MTFetchedResultsController *)self fetchRequest];
-      v10 = [v9 predicate];
+      fetchRequest = [(MTFetchedResultsController *)self fetchRequest];
+      entityName = [fetchRequest entityName];
+      fetchRequest2 = [(MTFetchedResultsController *)self fetchRequest];
+      predicate = [fetchRequest2 predicate];
       v15 = 138543618;
-      v16 = v8;
+      v16 = entityName;
       v17 = 2114;
-      v18 = v10;
+      v18 = predicate;
       _os_log_impl(&dword_1D8CEC000, v6, OS_LOG_TYPE_ERROR, "MTFetchedResultsController with null property keys detected - entity %{public}@ - predicate %{public}@", &v15, 0x16u);
     }
   }
 
-  v11 = [(MTFetchedResultsController *)self propertyKeys];
-  v12 = [v4 dictionaryWithValuesForKeys:v11];
+  propertyKeys2 = [(MTFetchedResultsController *)self propertyKeys];
+  v12 = [objectCopy dictionaryWithValuesForKeys:propertyKeys2];
 
   v13 = *MEMORY[0x1E69E9840];
 
   return v12;
 }
 
-- (void)_updateCacheWithManagedObject:(id)a3
+- (void)_updateCacheWithManagedObject:(id)object
 {
-  v7 = a3;
+  objectCopy = object;
   v4 = [(MTFetchedResultsController *)self _dictionaryForObject:?];
   if (v4)
   {
     propertyCache = self->_propertyCache;
-    v6 = [v7 objectID];
-    [(NSMutableDictionary *)propertyCache setObject:v4 forKeyedSubscript:v6];
+    objectID = [objectCopy objectID];
+    [(NSMutableDictionary *)propertyCache setObject:v4 forKeyedSubscript:objectID];
   }
 }
 
-- (BOOL)_hasManagedObjectChanged:(id)a3
+- (BOOL)_hasManagedObjectChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 objectID];
-  v6 = [(MTFetchedResultsController *)self _dictionaryFromCacheForObjectID:v5];
+  changedCopy = changed;
+  objectID = [changedCopy objectID];
+  v6 = [(MTFetchedResultsController *)self _dictionaryFromCacheForObjectID:objectID];
 
-  v7 = [(MTFetchedResultsController *)self _dictionaryForObject:v4];
+  v7 = [(MTFetchedResultsController *)self _dictionaryForObject:changedCopy];
 
-  LOBYTE(v4) = [v6 isEqualToDictionary:v7];
-  return v4 ^ 1;
+  LOBYTE(changedCopy) = [v6 isEqualToDictionary:v7];
+  return changedCopy ^ 1;
 }
 
 - (NSFetchedResultsControllerDelegate)delegate

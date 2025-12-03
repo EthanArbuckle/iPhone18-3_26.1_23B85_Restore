@@ -1,33 +1,33 @@
 @interface PKPaymentSetupOptionalExpressModeViewController
 - (CGSize)_snapshotSize;
-- (PKPaymentSetupOptionalExpressModeViewController)initWithProvisioningController:(id)a3 secureElementPass:(id)a4 context:(int64_t)a5;
+- (PKPaymentSetupOptionalExpressModeViewController)initWithProvisioningController:(id)controller secureElementPass:(id)pass context:(int64_t)context;
 - (PKPaymentSetupOptionalExpressModeViewControllerFlowDelegate)flowItemDelegate;
 - (void)_terminateSetupFlow;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)explanationViewDidSelectSetupLater:(id)a3;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)explanationViewDidSelectSetupLater:(id)later;
 - (void)loadView;
 - (void)proceedToNextScreen;
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 @end
 
 @implementation PKPaymentSetupOptionalExpressModeViewController
 
-- (PKPaymentSetupOptionalExpressModeViewController)initWithProvisioningController:(id)a3 secureElementPass:(id)a4 context:(int64_t)a5
+- (PKPaymentSetupOptionalExpressModeViewController)initWithProvisioningController:(id)controller secureElementPass:(id)pass context:(int64_t)context
 {
-  v9 = a3;
-  v10 = a4;
+  controllerCopy = controller;
+  passCopy = pass;
   v16.receiver = self;
   v16.super_class = PKPaymentSetupOptionalExpressModeViewController;
-  v11 = [(PKExplanationViewController *)&v16 initWithContext:a5];
+  v11 = [(PKExplanationViewController *)&v16 initWithContext:context];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_provisioningController, a3);
-    objc_storeStrong(&v12->_pass, a4);
-    v13 = [v9 provisioningTracker];
+    objc_storeStrong(&v11->_provisioningController, controller);
+    objc_storeStrong(&v12->_pass, pass);
+    provisioningTracker = [controllerCopy provisioningTracker];
     provisioningTracker = v12->_provisioningTracker;
-    v12->_provisioningTracker = v13;
+    v12->_provisioningTracker = provisioningTracker;
 
     [(PKSecureElementPass *)v12->_pass loadImageSetAsync:0 preheat:1 withCompletion:&__block_literal_global_196];
   }
@@ -50,57 +50,57 @@ void __108__PKPaymentSetupOptionalExpressModeViewController_initWithProvisioning
   v16.receiver = self;
   v16.super_class = PKPaymentSetupOptionalExpressModeViewController;
   [(PKExplanationViewController *)&v16 loadView];
-  v3 = [(PKExplanationViewController *)self explanationView];
-  v4 = [v3 dockView];
-  v5 = [v4 footerView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  footerView = [dockView footerView];
   v6 = PKLocalizedTransitString(&cfstr_OptionalExpres_0.isa);
-  [v3 setTitleText:v6];
+  [explanationView setTitleText:v6];
 
-  v7 = [v4 primaryButton];
+  primaryButton = [dockView primaryButton];
   v8 = PKLocalizedTransitString(&cfstr_OptionalExpres_1.isa);
-  [v7 setTitle:v8 forState:0];
+  [primaryButton setTitle:v8 forState:0];
 
-  [v3 setForceShowSetupLaterButton:1];
-  v9 = [(PKSecureElementPass *)self->_pass localizedDescription];
-  v10 = PKLocalizedTransitString(&cfstr_OptionalExpres_2.isa, &stru_1F3BD5BF0.isa, v9);
-  [v3 setBodyText:v10];
+  [explanationView setForceShowSetupLaterButton:1];
+  localizedDescription = [(PKSecureElementPass *)self->_pass localizedDescription];
+  v10 = PKLocalizedTransitString(&cfstr_OptionalExpres_2.isa, &stru_1F3BD5BF0.isa, localizedDescription);
+  [explanationView setBodyText:v10];
 
-  v11 = [v5 setUpLaterButton];
+  setUpLaterButton = [footerView setUpLaterButton];
   v12 = PKLocalizedTransitString(&cfstr_OptionalExpres_3.isa);
-  [v11 setTitle:v12 forState:0];
+  [setUpLaterButton setTitle:v12 forState:0];
 
   v13 = [[PKPassView alloc] initWithPass:self->_pass content:5 suppressedContent:1911];
   [(PKPaymentSetupOptionalExpressModeViewController *)self _snapshotSize];
   v14 = [(PKPassView *)v13 snapshotOfFrontFaceWithRequestedSize:?];
-  [v3 setImage:v14];
-  [v3 setShowPrivacyView:0];
-  [v3 setDelegate:self];
-  [v3 showCheckmark:0 animated:0];
-  [v3 setNeedsLayout];
+  [explanationView setImage:v14];
+  [explanationView setShowPrivacyView:0];
+  [explanationView setDelegate:self];
+  [explanationView showCheckmark:0 animated:0];
+  [explanationView setNeedsLayout];
   [(PKExplanationViewController *)self setShowCancelButton:0];
   [(PKExplanationViewController *)self setShowDoneButton:0];
-  v15 = [(PKPaymentSetupOptionalExpressModeViewController *)self navigationItem];
-  [v15 setHidesBackButton:1 animated:0];
+  navigationItem = [(PKPaymentSetupOptionalExpressModeViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:1 animated:0];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PKPaymentSetupOptionalExpressModeViewController;
-  [(PKPaymentSetupOptionalExpressModeViewController *)&v4 viewDidAppear:a3];
+  [(PKPaymentSetupOptionalExpressModeViewController *)&v4 viewDidAppear:appear];
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportViewAppeared];
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  continueCopy = continue;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PKSecureElementPass *)self->_pass uniqueID];
+    uniqueID = [(PKSecureElementPass *)self->_pass uniqueID];
     *buf = 138412290;
-    v14 = v6;
+    v14 = uniqueID;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "PKPaymentSetupOptionalExpressModeViewController: Selected to set pass with uniqueID:%@ as express", buf, 0xCu);
   }
 
@@ -108,14 +108,14 @@ void __108__PKPaymentSetupOptionalExpressModeViewController_initWithProvisioning
   [(PKExplanationViewController *)self showSpinner:1];
   objc_initWeak(buf, self);
   provisioningController = self->_provisioningController;
-  v8 = [(PKSecureElementPass *)self->_pass paymentPass];
+  paymentPass = [(PKSecureElementPass *)self->_pass paymentPass];
   provisioningTracker = self->_provisioningTracker;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __84__PKPaymentSetupOptionalExpressModeViewController_explanationViewDidSelectContinue___block_invoke;
   v11[3] = &unk_1E8011180;
   objc_copyWeak(&v12, buf);
-  [(PKPaymentProvisioningController *)provisioningController finishOptionalExpressModeSetupForPass:v8 withProvisioningTracker:provisioningTracker completion:v11];
+  [(PKPaymentProvisioningController *)provisioningController finishOptionalExpressModeSetupForPass:paymentPass withProvisioningTracker:provisioningTracker completion:v11];
 
   v10 = self->_provisioningTracker;
   self->_provisioningTracker = 0;
@@ -149,35 +149,35 @@ void __84__PKPaymentSetupOptionalExpressModeViewController_explanationViewDidSel
   }
 }
 
-- (void)explanationViewDidSelectSetupLater:(id)a3
+- (void)explanationViewDidSelectSetupLater:(id)later
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  laterCopy = later;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PKSecureElementPass *)self->_pass uniqueID];
+    uniqueID = [(PKSecureElementPass *)self->_pass uniqueID];
     *buf = 138412290;
-    v16 = v6;
+    v16 = uniqueID;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "PKPaymentSetupOptionalExpressModeViewController: Selected to not set pass with uniqueID:%@ as express", buf, 0xCu);
   }
 
   [(PKProvisioningAnalyticsSessionUIReporter *)self->_reporter reportButtonPressed:4];
   [(PKExplanationViewController *)self showSpinner:1];
-  v7 = [(PKExplanationViewController *)self explanationView];
-  v8 = [v7 dockView];
-  [v8 setButtonsEnabled:0];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
+  [dockView setButtonsEnabled:0];
 
   objc_initWeak(buf, self);
   provisioningController = self->_provisioningController;
-  v10 = [(PKSecureElementPass *)self->_pass paymentPass];
+  paymentPass = [(PKSecureElementPass *)self->_pass paymentPass];
   provisioningTracker = self->_provisioningTracker;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __86__PKPaymentSetupOptionalExpressModeViewController_explanationViewDidSelectSetupLater___block_invoke;
   v13[3] = &unk_1E8010998;
   objc_copyWeak(&v14, buf);
-  [(PKPaymentProvisioningController *)provisioningController handleOptionalExpressModeSetupDidFinishForPass:v10 withExpressModes:0 provisioningTracker:provisioningTracker completion:v13];
+  [(PKPaymentProvisioningController *)provisioningController handleOptionalExpressModeSetupDidFinishForPass:paymentPass withExpressModes:0 provisioningTracker:provisioningTracker completion:v13];
 
   v12 = self->_provisioningTracker;
   self->_provisioningTracker = 0;
@@ -242,13 +242,13 @@ LABEL_5:
   return result;
 }
 
-- (void)showLoadingUI:(BOOL)a3 animated:(BOOL)a4
+- (void)showLoadingUI:(BOOL)i animated:(BOOL)animated
 {
-  v4 = a3;
-  v6 = [(PKPaymentSetupOptionalExpressModeViewController *)self view:a3];
-  [v6 setUserInteractionEnabled:v4 ^ 1];
+  iCopy = i;
+  v6 = [(PKPaymentSetupOptionalExpressModeViewController *)self view:i];
+  [v6 setUserInteractionEnabled:iCopy ^ 1];
 
-  [(PKExplanationViewController *)self showSpinner:v4];
+  [(PKExplanationViewController *)self showSpinner:iCopy];
 }
 
 - (PKPaymentSetupOptionalExpressModeViewControllerFlowDelegate)flowItemDelegate

@@ -1,9 +1,9 @@
 @interface _HDOntologyShardDownloadTask
-- (BOOL)_handleResponse:(id)a3 task:(id)a4;
+- (BOOL)_handleResponse:(id)response task:(id)task;
 - (_HDOntologyShardDownloadTask)init;
-- (id)initForEntry:(id)a3 downloader:(id)a4 session:(id)a5 group:(id)a6;
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
+- (id)initForEntry:(id)entry downloader:(id)downloader session:(id)session group:(id)group;
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
 - (void)resume;
 @end
 
@@ -19,22 +19,22 @@
   return 0;
 }
 
-- (id)initForEntry:(id)a3 downloader:(id)a4 session:(id)a5 group:(id)a6
+- (id)initForEntry:(id)entry downloader:(id)downloader session:(id)session group:(id)group
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  entryCopy = entry;
+  downloaderCopy = downloader;
+  sessionCopy = session;
+  groupCopy = group;
   v19.receiver = self;
   v19.super_class = _HDOntologyShardDownloadTask;
   v15 = [(_HDOntologyShardDownloadTask *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_entry, a3);
-    objc_storeStrong(&v16->_downloader, a4);
-    objc_storeStrong(&v16->_session, a5);
-    objc_storeStrong(&v16->_group, a6);
+    objc_storeStrong(&v15->_entry, entry);
+    objc_storeStrong(&v16->_downloader, downloader);
+    objc_storeStrong(&v16->_session, session);
+    objc_storeStrong(&v16->_group, group);
     error = v16->_error;
     v16->_error = 0;
   }
@@ -45,8 +45,8 @@
 - (void)resume
 {
   v3 = MEMORY[0x277CCAD20];
-  v4 = [(HKOntologyShardRegistryEntry *)self->_entry availableURL];
-  v6 = [v3 requestWithURL:v4];
+  availableURL = [(HKOntologyShardRegistryEntry *)self->_entry availableURL];
+  v6 = [v3 requestWithURL:availableURL];
 
   v5 = [(NSURLSession *)self->_session downloadTaskWithRequest:v6];
   [v5 setDelegate:self];
@@ -54,22 +54,22 @@
   [v5 resume];
 }
 
-- (void)URLSession:(id)a3 downloadTask:(id)a4 didFinishDownloadingToURL:(id)a5
+- (void)URLSession:(id)session downloadTask:(id)task didFinishDownloadingToURL:(id)l
 {
   v37 = *MEMORY[0x277D85DE8];
-  v7 = a5;
-  v8 = a4;
-  v9 = [v8 response];
-  v10 = [(_HDOntologyShardDownloadTask *)self _handleResponse:v9 task:v8];
+  lCopy = l;
+  taskCopy = task;
+  response = [taskCopy response];
+  v10 = [(_HDOntologyShardDownloadTask *)self _handleResponse:response task:taskCopy];
 
   if (v10)
   {
-    v11 = [(HDOntologyShardDownloader *)self->_downloader updateCoordinator];
-    v12 = [v11 shardRegistry];
+    updateCoordinator = [(HDOntologyShardDownloader *)self->_downloader updateCoordinator];
+    shardRegistry = [updateCoordinator shardRegistry];
 
     entry = self->_entry;
     v29 = 0;
-    v14 = [v12 stageShardFileWithLocalURL:v7 entry:entry error:&v29];
+    v14 = [shardRegistry stageShardFileWithLocalURL:lCopy entry:entry error:&v29];
     v15 = v29;
     if (v14)
     {
@@ -88,7 +88,7 @@
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
           *buf = 138543874;
-          v32 = self;
+          selfCopy2 = self;
           v33 = 2114;
           v34 = v20;
           v35 = 2114;
@@ -110,7 +110,7 @@
       {
         v27 = self->_entry;
         *buf = 138543874;
-        v32 = self;
+        selfCopy2 = self;
         v33 = 2114;
         v34 = v27;
         v35 = 2114;
@@ -127,42 +127,42 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
-  v7 = a4;
-  v8 = a5;
-  if (v8)
+  taskCopy = task;
+  errorCopy = error;
+  if (errorCopy)
   {
     _HKInitializeLogging();
     v9 = HKLogHealthOntology();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [_HDOntologyShardDownloadTask URLSession:v8 task:v9 didCompleteWithError:?];
+      [_HDOntologyShardDownloadTask URLSession:errorCopy task:v9 didCompleteWithError:?];
     }
 
-    v10 = [v8 copy];
+    v10 = [errorCopy copy];
     error = self->_error;
     self->_error = v10;
   }
 
   else
   {
-    v12 = [v7 response];
-    [(_HDOntologyShardDownloadTask *)self _handleResponse:v12 task:v7];
+    response = [taskCopy response];
+    [(_HDOntologyShardDownloadTask *)self _handleResponse:response task:taskCopy];
   }
 
   dispatch_group_leave(self->_group);
 }
 
-- (BOOL)_handleResponse:(id)a3 task:(id)a4
+- (BOOL)_handleResponse:(id)response task:(id)task
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 statusCode];
-  v9 = v8 - 200;
-  if ((v8 - 200) >= 0x64)
+  responseCopy = response;
+  taskCopy = task;
+  statusCode = [responseCopy statusCode];
+  v9 = statusCode - 200;
+  if ((statusCode - 200) >= 0x64)
   {
-    v10 = v8;
+    v10 = statusCode;
     _HKInitializeLogging();
     v11 = HKLogHealthOntology();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -171,8 +171,8 @@
     }
 
     v12 = MEMORY[0x277CCA9B8];
-    v13 = [v7 currentRequest];
-    v14 = [v12 hk_HTTPErrorRepresentingResponse:v6 request:v13];
+    currentRequest = [taskCopy currentRequest];
+    v14 = [v12 hk_HTTPErrorRepresentingResponse:responseCopy request:currentRequest];
     error = self->_error;
     self->_error = v14;
   }

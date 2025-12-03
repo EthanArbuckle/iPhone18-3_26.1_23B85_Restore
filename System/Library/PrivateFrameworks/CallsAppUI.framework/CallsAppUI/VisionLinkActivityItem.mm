@@ -1,21 +1,21 @@
 @interface VisionLinkActivityItem
-- (_TtC10CallsAppUI22VisionLinkActivityItem)initWithTUConversationLink:(id)a3 title:(id)a4 placeholder:(id)a5;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewControllerLinkMetadata:(id)a3;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
+- (_TtC10CallsAppUI22VisionLinkActivityItem)initWithTUConversationLink:(id)link title:(id)title placeholder:(id)placeholder;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewControllerLinkMetadata:(id)metadata;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation VisionLinkActivityItem
 
-- (_TtC10CallsAppUI22VisionLinkActivityItem)initWithTUConversationLink:(id)a3 title:(id)a4 placeholder:(id)a5
+- (_TtC10CallsAppUI22VisionLinkActivityItem)initWithTUConversationLink:(id)link title:(id)title placeholder:(id)placeholder
 {
   v8 = sub_1CFC9BF28();
   v9 = *(v8 - 8);
   v10 = *(v9 + 64);
   MEMORY[0x1EEE9AC00](v8);
   v12 = &v22 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-  if (!a4)
+  if (!title)
   {
     sub_1CFC9BEF8();
     goto LABEL_5;
@@ -27,12 +27,12 @@
   if (!v14)
   {
 LABEL_5:
-    v17 = a3;
+    linkCopy = link;
     v16 = 0;
     goto LABEL_6;
   }
 
-  v15 = a3;
+  linkCopy2 = link;
   v16 = sub_1CFC9F728();
 
 LABEL_6:
@@ -40,13 +40,13 @@ LABEL_6:
   v19 = type metadata accessor for VisionLinkActivityItem();
   v22.receiver = self;
   v22.super_class = v19;
-  v20 = [(VisionLinkActivityItem *)&v22 initWithTUConversationLink:a3 title:v16 placeholder:v18];
+  v20 = [(VisionLinkActivityItem *)&v22 initWithTUConversationLink:link title:v16 placeholder:v18];
 
   (*(v9 + 8))(v12, v8);
   return v20;
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v4 = sub_1CFC9BF28();
   v5 = *(v4 - 8);
@@ -55,8 +55,8 @@ LABEL_6:
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x1EEE9AC00](v7);
   v11 = &v16 - v10;
-  v12 = self;
-  v13 = [(VisionLinkActivityItem *)v12 placeholder];
+  selfCopy = self;
+  placeholder = [(VisionLinkActivityItem *)selfCopy placeholder];
   sub_1CFC9BEF8();
 
   (*(v5 + 16))(v9, v11, v4);
@@ -66,11 +66,11 @@ LABEL_6:
   return v14;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  controllerCopy = controller;
+  typeCopy = type;
+  selfCopy = self;
   sub_1CFBDAF04(v17);
 
   v9 = v18;
@@ -95,15 +95,15 @@ LABEL_6:
   return v15;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  v9 = [(VisionLinkActivityItem *)v7 tuConversationLink];
-  v10 = [v9 linkName];
+  controllerCopy = controller;
+  selfCopy = self;
+  typeCopy = type;
+  tuConversationLink = [(VisionLinkActivityItem *)selfCopy tuConversationLink];
+  linkName = [tuConversationLink linkName];
 
-  if (v10)
+  if (linkName)
   {
     sub_1CFC9F768();
   }
@@ -117,10 +117,10 @@ LABEL_6:
   return v11;
 }
 
-- (id)activityViewControllerLinkMetadata:(id)a3
+- (id)activityViewControllerLinkMetadata:(id)metadata
 {
-  v4 = a3;
-  v5 = self;
+  metadataCopy = metadata;
+  selfCopy = self;
   v6 = sub_1CFBDB3B0();
 
   return v6;

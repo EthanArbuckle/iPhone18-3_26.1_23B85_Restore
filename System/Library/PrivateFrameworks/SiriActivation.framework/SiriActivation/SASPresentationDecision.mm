@@ -1,13 +1,13 @@
 @interface SASPresentationDecision
-+ (int64_t)activationPresentationForPresentationIdentifiers:(id)a3;
++ (int64_t)activationPresentationForPresentationIdentifiers:(id)identifiers;
 @end
 
 @implementation SASPresentationDecision
 
-+ (int64_t)activationPresentationForPresentationIdentifiers:(id)a3
++ (int64_t)activationPresentationForPresentationIdentifiers:(id)identifiers
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  identifiersCopy = identifiers;
   v4 = MEMORY[0x1E698D0A0];
   v5 = *MEMORY[0x1E698D0A0];
   if (os_log_type_enabled(*MEMORY[0x1E698D0A0], OS_LOG_TYPE_DEFAULT))
@@ -15,41 +15,41 @@
     v15 = 136315394;
     v16 = "+[SASPresentationDecision activationPresentationForPresentationIdentifiers:]";
     v17 = 2112;
-    v18 = v3;
+    v18 = identifiersCopy;
     _os_log_impl(&dword_1C8137000, v5, OS_LOG_TYPE_DEFAULT, "%s #activation SASPresentationDecision deciding between: %@", &v15, 0x16u);
   }
 
-  if ([v3 count] == 1)
+  if ([identifiersCopy count] == 1)
   {
     goto LABEL_4;
   }
 
-  v7 = 3;
+  siriPresentationIdentifier = 3;
   v8 = [MEMORY[0x1E696AEC0] stringWithSiriPresentationIdentifier:3];
-  v9 = [v3 containsObject:v8];
+  v9 = [identifiersCopy containsObject:v8];
 
   if ((v9 & 1) == 0)
   {
-    v7 = 2;
+    siriPresentationIdentifier = 2;
     v10 = [MEMORY[0x1E696AEC0] stringWithSiriPresentationIdentifier:2];
-    v11 = [v3 containsObject:v10];
+    v11 = [identifiersCopy containsObject:v10];
 
     if ((v11 & 1) == 0)
     {
       v14 = *v4;
       if (os_log_type_enabled(*v4, OS_LOG_TYPE_ERROR))
       {
-        [(SASPresentationDecision *)v14 activationPresentationForPresentationIdentifiers:v3];
+        [(SASPresentationDecision *)v14 activationPresentationForPresentationIdentifiers:identifiersCopy];
       }
 
 LABEL_4:
-      v6 = [v3 firstObject];
-      v7 = [v6 siriPresentationIdentifier];
+      firstObject = [identifiersCopy firstObject];
+      siriPresentationIdentifier = [firstObject siriPresentationIdentifier];
     }
   }
 
   v12 = *MEMORY[0x1E69E9840];
-  return v7;
+  return siriPresentationIdentifier;
 }
 
 + (void)activationPresentationForPresentationIdentifiers:(void *)a1 .cold.1(void *a1, void *a2)

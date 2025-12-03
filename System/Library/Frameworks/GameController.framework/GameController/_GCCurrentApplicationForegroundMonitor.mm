@@ -4,10 +4,10 @@
 - (_GCCurrentApplicationForegroundMonitor)init;
 - (void)CBApplicationDidBecomeActive;
 - (void)CBApplicationWillResignActive;
-- (void)addObserver:(id)a3;
-- (void)addObserver:(id)a3 notifyCurrent:(BOOL)a4;
+- (void)addObserver:(id)observer;
+- (void)addObserver:(id)observer notifyCurrent:(BOOL)current;
 - (void)dealloc;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation _GCCurrentApplicationForegroundMonitor
@@ -20,14 +20,14 @@
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v3, &state);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableSet *)v4->_observers copy];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableSet *)selfCopy->_observers copy];
+  objc_sync_exit(selfCopy);
 
-  [(_GCCurrentApplicationForegroundMonitor *)v4 willChangeValueForKey:@"appInBackground"];
-  atomic_store(0, &v4->_appInBackground);
-  [(_GCCurrentApplicationForegroundMonitor *)v4 didChangeValueForKey:@"appInBackground"];
+  [(_GCCurrentApplicationForegroundMonitor *)selfCopy willChangeValueForKey:@"appInBackground"];
+  atomic_store(0, &selfCopy->_appInBackground);
+  [(_GCCurrentApplicationForegroundMonitor *)selfCopy didChangeValueForKey:@"appInBackground"];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -57,8 +57,8 @@
     while (v7);
   }
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:@"GCApplicationDidBecomeActiveNotification" object:v4 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"GCApplicationDidBecomeActiveNotification" object:selfCopy userInfo:0];
 
   os_activity_scope_leave(&state);
   v11 = *MEMORY[0x1E69E9840];
@@ -72,14 +72,14 @@
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter(v3, &state);
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(NSMutableSet *)v4->_observers copy];
-  objc_sync_exit(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(NSMutableSet *)selfCopy->_observers copy];
+  objc_sync_exit(selfCopy);
 
-  [(_GCCurrentApplicationForegroundMonitor *)v4 willChangeValueForKey:@"appInBackground"];
-  atomic_store(1u, &v4->_appInBackground);
-  [(_GCCurrentApplicationForegroundMonitor *)v4 didChangeValueForKey:@"appInBackground"];
+  [(_GCCurrentApplicationForegroundMonitor *)selfCopy willChangeValueForKey:@"appInBackground"];
+  atomic_store(1u, &selfCopy->_appInBackground);
+  [(_GCCurrentApplicationForegroundMonitor *)selfCopy didChangeValueForKey:@"appInBackground"];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
@@ -109,8 +109,8 @@
     while (v7);
   }
 
-  v10 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v10 postNotificationName:@"GCApplicationWillResignActiveNotification" object:v4 userInfo:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"GCApplicationWillResignActiveNotification" object:selfCopy userInfo:0];
 
   os_activity_scope_leave(&state);
   v11 = *MEMORY[0x1E69E9840];
@@ -118,7 +118,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     LoadGameControllerUIFramework(1);
@@ -178,23 +178,23 @@
   [(_GCCurrentApplicationForegroundMonitor *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3 notifyCurrent:(BOOL)a4
+- (void)addObserver:(id)observer notifyCurrent:(BOOL)current
 {
-  v4 = a4;
-  v6 = a3;
-  if (v4)
+  currentCopy = current;
+  observerCopy = observer;
+  if (currentCopy)
   {
     if ([MEMORY[0x1E696AF00] isMainThread])
     {
-      [(_GCCurrentApplicationForegroundMonitor *)self addObserver:v6];
+      [(_GCCurrentApplicationForegroundMonitor *)self addObserver:observerCopy];
       if ([(_GCCurrentApplicationForegroundMonitor *)self isAppInBackground])
       {
-        [v6 CBApplicationWillResignActive];
+        [observerCopy CBApplicationWillResignActive];
       }
 
       else
       {
-        [v6 CBApplicationDidBecomeActive];
+        [observerCopy CBApplicationDidBecomeActive];
       }
     }
 
@@ -205,33 +205,33 @@
       v7[2] = __68___GCCurrentApplicationForegroundMonitor_addObserver_notifyCurrent___block_invoke;
       v7[3] = &unk_1E8418C50;
       v7[4] = self;
-      v8 = v6;
+      v8 = observerCopy;
       dispatch_async(MEMORY[0x1E69E96A0], v7);
     }
   }
 
   else
   {
-    [(_GCCurrentApplicationForegroundMonitor *)self addObserver:v6];
+    [(_GCCurrentApplicationForegroundMonitor *)self addObserver:observerCopy];
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableSet *)v4->_observers addObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_observers addObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableSet *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableSet *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
 @end

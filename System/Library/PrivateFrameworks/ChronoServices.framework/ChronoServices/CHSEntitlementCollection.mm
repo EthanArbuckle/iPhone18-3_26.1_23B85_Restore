@@ -1,12 +1,12 @@
 @interface CHSEntitlementCollection
-- (BOOL)isEqual:(id)a3;
-- (CHSEntitlementCollection)initWithCoder:(id)a3;
-- (id)_initFromCollection:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CHSEntitlementCollection)initWithCoder:(id)coder;
+- (id)_initFromCollection:(id)collection;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSEntitlementCollection
@@ -18,28 +18,28 @@
   return (v3.i8[0] | v3.i8[4] | ((v3.i32[0] | v3.i32[1]) >> 16)) ^ 0x1Fu;
 }
 
-- (id)_initFromCollection:(id)a3
+- (id)_initFromCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v8.receiver = self;
   v8.super_class = CHSEntitlementCollection;
   v5 = [(CHSEntitlementCollection *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    v5->_usesEventService = v4[8];
-    v5->_canOpenSystemURLs = v4[9];
-    v5->_canKeepAlive = v4[10];
-    v5->_invalidatesOnStorefrontChange = v4[11];
+    v5->_usesEventService = collectionCopy[8];
+    v5->_canOpenSystemURLs = collectionCopy[9];
+    v5->_canKeepAlive = collectionCopy[10];
+    v5->_invalidatesOnStorefrontChange = collectionCopy[11];
   }
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -49,7 +49,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       v6 = self->_usesEventService == v5[8] && self->_canOpenSystemURLs == v5[9] && self->_canKeepAlive == v5[10] && self->_invalidatesOnStorefrontChange == v5[11];
     }
 
@@ -62,48 +62,48 @@
   return v6;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [CHSMutableEntitlementCollection alloc];
 
   return [(CHSEntitlementCollection *)v4 _initFromCollection:self];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeBool:self->_usesEventService forKey:@"usesEventService"];
-  [v4 encodeBool:self->_canOpenSystemURLs forKey:@"canOpenSystemURLs"];
-  [v4 encodeBool:self->_canKeepAlive forKey:@"canKeepAlive"];
-  [v4 encodeBool:self->_invalidatesOnStorefrontChange forKey:@"invalidatesOnStorefrontChange"];
+  coderCopy = coder;
+  [coderCopy encodeBool:self->_usesEventService forKey:@"usesEventService"];
+  [coderCopy encodeBool:self->_canOpenSystemURLs forKey:@"canOpenSystemURLs"];
+  [coderCopy encodeBool:self->_canKeepAlive forKey:@"canKeepAlive"];
+  [coderCopy encodeBool:self->_invalidatesOnStorefrontChange forKey:@"invalidatesOnStorefrontChange"];
 }
 
-- (CHSEntitlementCollection)initWithCoder:(id)a3
+- (CHSEntitlementCollection)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = CHSEntitlementCollection;
   v5 = [(CHSEntitlementCollection *)&v7 init];
   if (v5)
   {
-    v5->_usesEventService = [v4 decodeBoolForKey:@"usesEventService"];
-    v5->_canOpenSystemURLs = [v4 decodeBoolForKey:@"canOpenSystemURLs"];
-    v5->_canKeepAlive = [v4 decodeBoolForKey:@"canKeepAlive"];
-    v5->_invalidatesOnStorefrontChange = [v4 decodeBoolForKey:@"invalidatesOnStorefrontChange"];
+    v5->_usesEventService = [coderCopy decodeBoolForKey:@"usesEventService"];
+    v5->_canOpenSystemURLs = [coderCopy decodeBoolForKey:@"canOpenSystemURLs"];
+    v5->_canKeepAlive = [coderCopy decodeBoolForKey:@"canKeepAlive"];
+    v5->_invalidatesOnStorefrontChange = [coderCopy decodeBoolForKey:@"invalidatesOnStorefrontChange"];
   }
 
   return v5;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(CHSEntitlementCollection *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(CHSEntitlementCollection *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v4 = [MEMORY[0x1E698E680] builderWithObject:self];
   v8[0] = MEMORY[0x1E69E9820];
@@ -112,7 +112,7 @@
   v8[3] = &unk_1E7453000;
   v5 = v4;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   [v5 appendProem:self block:v8];
   v6 = v5;
 

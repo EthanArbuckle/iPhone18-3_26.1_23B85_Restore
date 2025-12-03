@@ -1,8 +1,8 @@
 @interface PXPhotosGridToggleFaceModeActionPerformer
 - (NSString)activitySystemImageName;
 - (NSString)activityType;
-- (PXPhotosGridToggleFaceModeActionPerformer)initWithViewModel:(id)a3 actionType:(id)a4;
-- (id)localizedTitleForUseCase:(unint64_t)a3;
+- (PXPhotosGridToggleFaceModeActionPerformer)initWithViewModel:(id)model actionType:(id)type;
+- (id)localizedTitleForUseCase:(unint64_t)case;
 - (int64_t)menuElementState;
 - (void)performUserInteractionTask;
 @end
@@ -26,16 +26,16 @@
 
 - (int64_t)menuElementState
 {
-  v2 = self;
-  v3 = [(PXPhotosGridActionPerformer *)v2 viewModel];
-  v4 = [(PXPhotosViewModel *)v3 isFaceModeEnabled];
+  selfCopy = self;
+  viewModel = [(PXPhotosGridActionPerformer *)selfCopy viewModel];
+  isFaceModeEnabled = [(PXPhotosViewModel *)viewModel isFaceModeEnabled];
 
-  return v4;
+  return isFaceModeEnabled;
 }
 
-- (id)localizedTitleForUseCase:(unint64_t)a3
+- (id)localizedTitleForUseCase:(unint64_t)case
 {
-  v3 = self;
+  selfCopy = self;
   sub_1A49310A0();
   v5 = v4;
 
@@ -54,8 +54,8 @@
 
 - (void)performUserInteractionTask
 {
-  v2 = self;
-  v3 = [(PXPhotosGridActionPerformer *)v2 viewModel];
+  selfCopy = self;
+  viewModel = [(PXPhotosGridActionPerformer *)selfCopy viewModel];
   v5[4] = sub_1A4930F28;
   v5[5] = 0;
   v5[0] = MEMORY[0x1E69E9820];
@@ -63,16 +63,16 @@
   v5[2] = sub_1A3D7692C;
   v5[3] = &block_descriptor_3_11;
   v4 = _Block_copy(v5);
-  [(PXPhotosViewModel *)v3 performChanges:v4];
+  [(PXPhotosViewModel *)viewModel performChanges:v4];
 
   _Block_release(v4);
 }
 
-- (PXPhotosGridToggleFaceModeActionPerformer)initWithViewModel:(id)a3 actionType:(id)a4
+- (PXPhotosGridToggleFaceModeActionPerformer)initWithViewModel:(id)model actionType:(id)type
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(PXPhotosGridActionPerformer *)&v7 initWithViewModel:a3 actionType:a4];
+  return [(PXPhotosGridActionPerformer *)&v7 initWithViewModel:model actionType:type];
 }
 
 @end

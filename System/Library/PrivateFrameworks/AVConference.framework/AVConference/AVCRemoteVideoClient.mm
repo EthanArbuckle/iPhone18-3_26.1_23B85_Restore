@@ -1,38 +1,38 @@
 @interface AVCRemoteVideoClient
-- (AVCRemoteVideoClient)initWithStreamToken:(int64_t)a3 endpointID:(id)a4 delegate:(id)a5;
-- (BOOL)createCALayerHostForRootLayer:(id)a3 withContextId:(unsigned int)a4;
-- (BOOL)setVideoLayerHost:(id)a3 forMode:(int)a4;
-- (id)findInfoSubLayerFromLayer:(id)a3;
-- (id)newXPCObjectForFenceHandle:(id *)a3;
-- (id)slotForMode:(int)a3;
-- (id)subLayerForMode:(int)a3;
-- (id)subLayerRefForMode:(int)a3;
-- (void)adjustInfoSubLayerBounds:(CGRect)a3 forSuperLayer:(id)a4;
+- (AVCRemoteVideoClient)initWithStreamToken:(int64_t)token endpointID:(id)d delegate:(id)delegate;
+- (BOOL)createCALayerHostForRootLayer:(id)layer withContextId:(unsigned int)id;
+- (BOOL)setVideoLayerHost:(id)host forMode:(int)mode;
+- (id)findInfoSubLayerFromLayer:(id)layer;
+- (id)newXPCObjectForFenceHandle:(id *)handle;
+- (id)slotForMode:(int)mode;
+- (id)subLayerForMode:(int)mode;
+- (id)subLayerRefForMode:(int)mode;
+- (void)adjustInfoSubLayerBounds:(CGRect)bounds forSuperLayer:(id)layer;
 - (void)checkpointDidReceiveFirstFrame;
 - (void)checkpointVideoAttributesDidChange;
 - (void)cleanupLayerHost;
-- (void)cleanupSubLayerForMode:(int)a3;
+- (void)cleanupSubLayerForMode:(int)mode;
 - (void)cleanupVideoLayerForAllModes;
 - (void)dealloc;
 - (void)deregisterBlocksForNotifications;
-- (void)drawText:(id)a3 inSubLayer:(id)a4;
-- (void)insertInfoSubLayerIntoLayer:(id)a3 videoMode:(int)a4;
-- (void)insertSubLayerInLayer:(id)a3 videoMode:(int)a4 videoSlot:(id)a5;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)drawText:(id)text inSubLayer:(id)layer;
+- (void)insertInfoSubLayerIntoLayer:(id)layer videoMode:(int)mode;
+- (void)insertSubLayerInLayer:(id)layer videoMode:(int)mode videoSlot:(id)slot;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)registerBlocksForNotifications;
-- (void)setActiveVideoLayerForMode:(int)a3;
-- (void)setActiveVideoModeFromRemoteVideoAttribute:(id)a3;
-- (void)setLayerHostBounds:(CGRect)a3;
-- (void)setRemoteVideoLayerBounds:(CGRect)a3;
-- (void)setTransformForRemoteVideoOrientationEnabled:(BOOL)a3;
-- (void)setVideoLayer:(id)a3 forMode:(int)a4;
+- (void)setActiveVideoLayerForMode:(int)mode;
+- (void)setActiveVideoModeFromRemoteVideoAttribute:(id)attribute;
+- (void)setLayerHostBounds:(CGRect)bounds;
+- (void)setRemoteVideoLayerBounds:(CGRect)bounds;
+- (void)setTransformForRemoteVideoOrientationEnabled:(BOOL)enabled;
+- (void)setVideoLayer:(id)layer forMode:(int)mode;
 - (void)terminateConnection;
-- (void)updateConnectionInfoWithLocalInterfaceType:(id)a3 remoteInterfaceType:(id)a4;
+- (void)updateConnectionInfoWithLocalInterfaceType:(id)type remoteInterfaceType:(id)interfaceType;
 @end
 
 @implementation AVCRemoteVideoClient
 
-- (AVCRemoteVideoClient)initWithStreamToken:(int64_t)a3 endpointID:(id)a4 delegate:(id)a5
+- (AVCRemoteVideoClient)initWithStreamToken:(int64_t)token endpointID:(id)d delegate:(id)delegate
 {
   v33 = *MEMORY[0x1E69E9840];
   v22.receiver = self;
@@ -56,7 +56,7 @@
         v29 = 2048;
         v30 = v8;
         v31 = 2048;
-        v32 = a3;
+        tokenCopy = token;
         _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ AVCRemoteVideoClient-init (%p) streamToken=%ld", buf, 0x30u);
       }
     }
@@ -65,11 +65,11 @@
     CustomRootQueue = VCDispatchQueue_GetCustomRootQueue(47);
     v8->_avcRemoteVideoQueue = dispatch_queue_create_with_target_V2("com.apple.AVConference.remotevideo", 0, CustomRootQueue);
     v8->_activeVideoMode = 0;
-    v8->_streamToken = a3;
+    v8->_streamToken = token;
     v8->_transformForRemoteVideoOrientationEnabled = 1;
-    v12 = [+[VCDefaults sharedInstance](VCDefaults shouldDisplayVideoInfoLayer];
-    v8->_shouldDisplayVideoInfoLayer = v12;
-    if (v12 && VRTraceGetErrorLogLevelForModule() >= 7)
+    shouldDisplayVideoInfoLayer = [+[VCDefaults sharedInstance](VCDefaults shouldDisplayVideoInfoLayer];
+    v8->_shouldDisplayVideoInfoLayer = shouldDisplayVideoInfoLayer;
+    if (shouldDisplayVideoInfoLayer && VRTraceGetErrorLogLevelForModule() >= 7)
     {
       v13 = VRTraceErrorLogLevelToCSTR();
       v14 = *MEMORY[0x1E6986650];
@@ -86,10 +86,10 @@
     }
 
     v8->_connection = objc_alloc_init(AVConferenceXPCClient);
-    objc_storeWeak(&v8->_delegate, a5);
-    v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:a3];
+    objc_storeWeak(&v8->_delegate, delegate);
+    v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:token];
     v16 = [objc_alloc(MEMORY[0x1E695DF20]) initWithObjectsAndKeys:{v15, @"conferenceCallID", 0}];
-    v17 = [(AVConferenceXPCClient *)v8->_connection sendMessageSync:"vcRemoteVideoInitializeRemoteVideoForStreamToken" arguments:v16 xpcArguments:a4];
+    v17 = [(AVConferenceXPCClient *)v8->_connection sendMessageSync:"vcRemoteVideoInitializeRemoteVideoForStreamToken" arguments:v16 xpcArguments:d];
     if (v17)
     {
       v18 = v17;
@@ -174,7 +174,7 @@
       v14 = 1024;
       v15 = 247;
       v16 = 2048;
-      v17 = self;
+      selfCopy = self;
       v18 = 1024;
       v19 = streamToken;
       v20 = 1024;
@@ -190,9 +190,9 @@
   [(AVCRemoteVideoClient *)&v9 dealloc];
 }
 
-- (void)setVideoLayer:(id)a3 forMode:(int)a4
+- (void)setVideoLayer:(id)layer forMode:(int)mode
 {
-  v4 = *&a4;
+  v4 = *&mode;
   v30 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -207,7 +207,7 @@
       v22 = 1024;
       v23 = 256;
       v24 = 2112;
-      v25 = a3;
+      layerCopy2 = layer;
       v26 = 1024;
       v27 = v4;
       _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d videoLayer=%@, mode=%d", &v18, 0x2Cu);
@@ -220,9 +220,9 @@
     v10 = *MEMORY[0x1E6986650];
     if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
     {
-      if (a3)
+      if (layer)
       {
-        v11 = [objc_msgSend(a3 "description")];
+        v11 = [objc_msgSend(layer "description")];
       }
 
       else
@@ -237,7 +237,7 @@
       v22 = 1024;
       v23 = 257;
       v24 = 2080;
-      v25 = v11;
+      layerCopy2 = v11;
       v26 = 1024;
       v27 = v4;
       _os_log_impl(&dword_1DB56E000, v10, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d AVCRemoteVideoClient: setVideoLayer %s for mode %d", &v18, 0x2Cu);
@@ -248,13 +248,13 @@
   if (v4 == 2)
   {
     screenLayer = self->_screenLayer;
-    self->_screenLayer = a3;
+    self->_screenLayer = layer;
   }
 
   else if (v4 == 1)
   {
     screenLayer = self->_secondaryCameraLayer;
-    self->_secondaryCameraLayer = a3;
+    self->_secondaryCameraLayer = layer;
   }
 
   else if (v4)
@@ -274,24 +274,24 @@
   else
   {
     screenLayer = self->_primaryCameraLayer;
-    self->_primaryCameraLayer = a3;
+    self->_primaryCameraLayer = layer;
   }
 
-  if (a3)
+  if (layer)
   {
     v13 = -[NSDictionary objectForKeyedSubscript:](self->_slotsForModes, "objectForKeyedSubscript:", [objc_msgSend(MEMORY[0x1E696AD98] numberWithInt:{v4), "stringValue"}]);
     if (v13)
     {
       v14 = v13;
       [MEMORY[0x1E6979518] begin];
-      [(AVCRemoteVideoClient *)self insertSubLayerInLayer:a3 videoMode:v4 videoSlot:v14];
+      [(AVCRemoteVideoClient *)self insertSubLayerInLayer:layer videoMode:v4 videoSlot:v14];
       if (VRTraceGetErrorLogLevelForModule() >= 6)
       {
         v15 = VRTraceErrorLogLevelToCSTR();
         v16 = *MEMORY[0x1E6986650];
         if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v14 unsignedLongValue];
+          unsignedLongValue = [v14 unsignedLongValue];
           v18 = 136316418;
           v19 = v15;
           v20 = 2080;
@@ -299,17 +299,17 @@
           v22 = 1024;
           v23 = 286;
           v24 = 2048;
-          v25 = a3;
+          layerCopy2 = layer;
           v26 = 1024;
           v27 = v4;
           v28 = 2048;
-          v29 = v17;
+          v29 = unsignedLongValue;
           _os_log_impl(&dword_1DB56E000, v16, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d AVCRemoteVideoClient: connect layer %p mode=%d with  <--> slot %lu", &v18, 0x36u);
         }
       }
 
       [(AVCRemoteVideoClient *)self setActiveVideoLayerForMode:self->_activeVideoMode];
-      [(AVCRemoteVideoClient *)self insertInfoSubLayerIntoLayer:a3 videoMode:v4];
+      [(AVCRemoteVideoClient *)self insertInfoSubLayerIntoLayer:layer videoMode:v4];
       [MEMORY[0x1E6979518] commit];
     }
 
@@ -324,9 +324,9 @@
   }
 }
 
-- (id)slotForMode:(int)a3
+- (id)slotForMode:(int)mode
 {
-  v3 = *&a3;
+  v3 = *&mode;
   v19 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
@@ -377,10 +377,10 @@
   return v9;
 }
 
-- (BOOL)createCALayerHostForRootLayer:(id)a3 withContextId:(unsigned int)a4
+- (BOOL)createCALayerHostForRootLayer:(id)layer withContextId:(unsigned int)id
 {
   v43 = *MEMORY[0x1E69E9840];
-  if (!a3 || (v5 = *&a4, !a4))
+  if (!layer || (v5 = *&id, !id))
   {
     if (objc_opt_class() == self)
     {
@@ -425,9 +425,9 @@
     v33 = 1024;
     v34 = 342;
     v35 = 2112;
-    v36 = v20;
+    layerCopy = v20;
     v37 = 2048;
-    v38 = self;
+    selfCopy4 = self;
     v25 = " [%s] %s:%d %@(%p) Invalid rootLayer or contextId";
     goto LABEL_50;
   }
@@ -475,9 +475,9 @@ LABEL_44:
     v33 = 1024;
     v34 = 344;
     v35 = 2112;
-    v36 = v21;
+    layerCopy = v21;
     v37 = 2048;
-    v38 = self;
+    selfCopy4 = self;
     v25 = " [%s] %s:%d %@(%p) Failed to allocate layer host name";
 LABEL_50:
     _os_log_error_impl(&dword_1DB56E000, v24, OS_LOG_TYPE_ERROR, v25, buf, 0x30u);
@@ -529,9 +529,9 @@ LABEL_50:
           v33 = 1024;
           v34 = 353;
           v35 = 2112;
-          v36 = v22;
+          layerCopy = v22;
           v37 = 2048;
-          v38 = self;
+          selfCopy4 = self;
           _os_log_error_impl(&dword_1DB56E000, v28, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to allocate CALayerHost", buf, 0x30u);
         }
       }
@@ -541,17 +541,17 @@ LABEL_50:
   }
 
   [(CALayerHost *)v9 setContextId:v5];
-  [a3 bounds];
+  [layer bounds];
   [(AVCRemoteVideoClient *)self setLayerHostBounds:?];
   [(VCCALayerHost *)self->_caLayerHost setName:v8];
   [(CALayerHost *)self->_caLayerHost setPreservesFlip:1];
   [(VCCALayerHost *)self->_caLayerHost setGeometryFlipped:1];
   [(VCCALayerHost *)self->_caLayerHost setAllowsHitTesting:0];
-  [a3 addSublayer:self->_caLayerHost];
-  [a3 setMasksToBounds:1];
-  [a3 setContinuousCorners:1];
-  [a3 setAllowsHitTesting:0];
-  [a3 setName:@"RemoteParticipantVideoLayerScreen"];
+  [layer addSublayer:self->_caLayerHost];
+  [layer setMasksToBounds:1];
+  [layer setContinuousCorners:1];
+  [layer setAllowsHitTesting:0];
+  [layer setName:@"RemoteParticipantVideoLayerScreen"];
   [MEMORY[0x1E6979518] commit];
   [MEMORY[0x1E6979518] flush];
   [MEMORY[0x1E6979518] synchronize];
@@ -576,9 +576,9 @@ LABEL_50:
     v33 = 1024;
     v34 = 370;
     v35 = 2048;
-    v36 = a3;
+    layerCopy = layer;
     v37 = 1024;
-    LODWORD(v38) = v5;
+    LODWORD(selfCopy4) = v5;
     v13 = " [%s] %s:%d AVCRemoteVideoClient: connect layer=%p with  <--> contextId=%u";
     v14 = v12;
     v15 = 44;
@@ -615,11 +615,11 @@ LABEL_50:
     v33 = 1024;
     v34 = 370;
     v35 = 2112;
-    v36 = v10;
+    layerCopy = v10;
     v37 = 2048;
-    v38 = self;
+    selfCopy4 = self;
     v39 = 2048;
-    v40 = a3;
+    layerCopy2 = layer;
     v41 = 1024;
     v42 = v5;
     v13 = " [%s] %s:%d %@(%p) AVCRemoteVideoClient: connect layer=%p with  <--> contextId=%u";
@@ -635,21 +635,21 @@ LABEL_17:
   return v18;
 }
 
-- (id)newXPCObjectForFenceHandle:(id *)a3
+- (id)newXPCObjectForFenceHandle:(id *)handle
 {
   v35 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!handle)
   {
     goto LABEL_5;
   }
 
-  v5 = [MEMORY[0x1E6979370] newFenceFromDefaultServer];
-  *a3 = v5;
-  if (v5)
+  newFenceFromDefaultServer = [MEMORY[0x1E6979370] newFenceFromDefaultServer];
+  *handle = newFenceFromDefaultServer;
+  if (newFenceFromDefaultServer)
   {
     if ([-[VCCALayerHost context](self->_caLayerHost "context")])
     {
-      result = [*a3 createXPCRepresentation];
+      result = [*handle createXPCRepresentation];
       if (result)
       {
         return result;
@@ -672,7 +672,7 @@ LABEL_17:
         goto LABEL_5;
       }
 
-      v10 = *a3;
+      v10 = *handle;
       caLayerHost = self->_caLayerHost;
       v19 = 136316418;
       v20 = v8;
@@ -683,9 +683,9 @@ LABEL_17:
       v25 = 2048;
       v26 = v10;
       v27 = 2048;
-      v28 = caLayerHost;
+      selfCopy = caLayerHost;
       v29 = 2048;
-      v30 = [(VCCALayerHost *)caLayerHost context];
+      context = [(VCCALayerHost *)caLayerHost context];
       v12 = " [%s] %s:%d Failed to add fence=%p for root layer=%p with context=%p";
       v13 = v9;
       v14 = 58;
@@ -715,7 +715,7 @@ LABEL_17:
         goto LABEL_5;
       }
 
-      v17 = *a3;
+      v17 = *handle;
       v18 = self->_caLayerHost;
       v19 = 136316930;
       v20 = v15;
@@ -726,13 +726,13 @@ LABEL_17:
       v25 = 2112;
       v26 = v7;
       v27 = 2048;
-      v28 = self;
+      selfCopy = self;
       v29 = 2048;
-      v30 = v17;
+      context = v17;
       v31 = 2048;
       v32 = v18;
       v33 = 2048;
-      v34 = [(VCCALayerHost *)v18 context];
+      context2 = [(VCCALayerHost *)v18 context];
       v12 = " [%s] %s:%d %@(%p) Failed to add fence=%p for root layer=%p with context=%p";
       v13 = v16;
       v14 = 78;
@@ -747,24 +747,24 @@ LABEL_17:
   }
 
 LABEL_5:
-  result = *a3;
-  if (*a3)
+  result = *handle;
+  if (*handle)
   {
     [result invalidate];
 
     result = 0;
-    *a3 = 0;
+    *handle = 0;
   }
 
   return result;
 }
 
-- (void)setRemoteVideoLayerBounds:(CGRect)a3
+- (void)setRemoteVideoLayerBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v59 = *MEMORY[0x1E69E9840];
   v44 = 0;
   if (objc_opt_class() == self)
@@ -827,7 +827,7 @@ LABEL_11:
         v53 = 2112;
         p_isa = &v8->isa;
         v55 = 2048;
-        v56 = self;
+        selfCopy6 = self;
         v57 = 2112;
         v58 = NSStringFromRect(v61);
         v11 = " [%s] %s:%d %@(%p) bounds=%@";
@@ -891,7 +891,7 @@ LABEL_11:
     v53 = 2112;
     p_isa = &v25->isa;
     v55 = 2048;
-    v56 = self;
+    selfCopy6 = self;
     v57 = 2112;
     v58 = v35;
     v36 = " [%s] %s:%d %@(%p) Failed due to invalid root layer bounds=%@";
@@ -949,7 +949,7 @@ LABEL_75:
     v53 = 2112;
     p_isa = &v26->isa;
     v55 = 2048;
-    v56 = self;
+    selfCopy6 = self;
     v36 = " [%s] %s:%d %@(%p) CALayerHost invalid";
 LABEL_74:
     v37 = v40;
@@ -1006,7 +1006,7 @@ LABEL_67:
     v53 = 2112;
     p_isa = &v27->isa;
     v55 = 2048;
-    v56 = self;
+    selfCopy6 = self;
     v36 = " [%s] %s:%d %@(%p) Failed to allocate stream token number";
     goto LABEL_74;
   }
@@ -1063,7 +1063,7 @@ LABEL_67:
             v53 = 2112;
             p_isa = &v24->isa;
             v55 = 2048;
-            v56 = self;
+            selfCopy6 = self;
             _os_log_error_impl(&dword_1DB56E000, v30, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Set layer bounds xpc call failed", buf, 0x30u);
           }
         }
@@ -1112,7 +1112,7 @@ LABEL_67:
           v53 = 2112;
           p_isa = &v28->isa;
           v55 = 2048;
-          v56 = self;
+          selfCopy6 = self;
           _os_log_error_impl(&dword_1DB56E000, v43, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to create XPC representation for fence", buf, 0x30u);
         }
       }
@@ -1130,9 +1130,9 @@ LABEL_19:
   }
 }
 
-- (void)setTransformForRemoteVideoOrientationEnabled:(BOOL)a3
+- (void)setTransformForRemoteVideoOrientationEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v30 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() != self)
   {
@@ -1167,9 +1167,9 @@ LABEL_19:
     v24 = 2112;
     v25 = v5;
     v26 = 2048;
-    v27 = self;
+    selfCopy = self;
     v28 = 1024;
-    v29 = v3;
+    v29 = enabledCopy;
     v8 = " [%s] %s:%d %@(%p) transformForRemoteVideoOrientationEnabled=%d";
     v9 = v12;
     v10 = 54;
@@ -1189,7 +1189,7 @@ LABEL_19:
       v22 = 1024;
       v23 = 442;
       v24 = 1024;
-      LODWORD(v25) = v3;
+      LODWORD(v25) = enabledCopy;
       v8 = " [%s] %s:%d transformForRemoteVideoOrientationEnabled=%d";
       v9 = v7;
       v10 = 34;
@@ -1199,11 +1199,11 @@ LABEL_11:
   }
 
 LABEL_12:
-  self->_transformForRemoteVideoOrientationEnabled = v3;
+  self->_transformForRemoteVideoOrientationEnabled = enabledCopy;
   v13 = [MEMORY[0x1E696AD98] numberWithInteger:{self->_streamToken, @"conferenceCallID"}];
   v16[1] = @"conferenceTransformForRemoteVideoOrientationEnabled";
   v17[0] = v13;
-  v17[1] = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v17[1] = [MEMORY[0x1E696AD98] numberWithBool:enabledCopy];
   v14 = -[AVConferenceXPCClient sendMessageSync:arguments:](self->_connection, "sendMessageSync:arguments:", "vcRemoteVideoSetTransformForRemoteVideoOrientationEnabled", [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2]);
   if (!v14 || (v15 = v14, [v14 objectForKeyedSubscript:@"ERROR"]) || objc_msgSend(v15, "objectForKeyedSubscript:", @"SERVERDIED"))
   {
@@ -1211,7 +1211,7 @@ LABEL_12:
   }
 }
 
-- (BOOL)setVideoLayerHost:(id)a3 forMode:(int)a4
+- (BOOL)setVideoLayerHost:(id)host forMode:(int)mode
 {
   v64 = *MEMORY[0x1E69E9840];
   if (objc_opt_class() == self)
@@ -1222,7 +1222,7 @@ LABEL_12:
       v8 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        [a3 bounds];
+        [host bounds];
         *buf = 136316162;
         v51 = v7;
         v52 = 2080;
@@ -1230,9 +1230,9 @@ LABEL_12:
         v54 = 1024;
         v55 = 470;
         v56 = 2112;
-        v57 = a3;
+        hostCopy = host;
         v58 = 2112;
-        v59 = NSStringFromRect(v65);
+        selfCopy8 = NSStringFromRect(v65);
         v9 = " [%s] %s:%d rootLayer=%@ bounds=%@";
         v10 = v8;
         v11 = 48;
@@ -1260,7 +1260,7 @@ LABEL_11:
       v13 = *MEMORY[0x1E6986650];
       if (os_log_type_enabled(*MEMORY[0x1E6986650], OS_LOG_TYPE_DEFAULT))
       {
-        [a3 bounds];
+        [host bounds];
         *buf = 136316674;
         v51 = v12;
         v52 = 2080;
@@ -1268,11 +1268,11 @@ LABEL_11:
         v54 = 1024;
         v55 = 470;
         v56 = 2112;
-        v57 = v6;
+        hostCopy = v6;
         v58 = 2048;
-        v59 = self;
+        selfCopy8 = self;
         v60 = 2112;
-        v61 = a3;
+        hostCopy2 = host;
         v62 = 2112;
         v63 = NSStringFromRect(v66);
         v9 = " [%s] %s:%d %@(%p) rootLayer=%@ bounds=%@";
@@ -1283,7 +1283,7 @@ LABEL_11:
     }
   }
 
-  if (!a3)
+  if (!host)
   {
     if (objc_opt_class() == self)
     {
@@ -1328,9 +1328,9 @@ LABEL_11:
     v54 = 1024;
     v55 = 471;
     v56 = 2112;
-    v57 = v25;
+    hostCopy = v25;
     v58 = 2048;
-    v59 = self;
+    selfCopy8 = self;
     v36 = " [%s] %s:%d %@(%p) Invalid rootLayer parameter";
     goto LABEL_93;
   }
@@ -1380,15 +1380,15 @@ LABEL_11:
     v54 = 1024;
     v55 = 472;
     v56 = 2112;
-    v57 = v26;
+    hostCopy = v26;
     v58 = 2048;
-    v59 = self;
+    selfCopy8 = self;
     v36 = " [%s] %s:%d %@(%p) CALayerHost exist already, reconfigure not supported currently";
     goto LABEL_93;
   }
 
   self->_layerHostMode = 1;
-  [a3 bounds];
+  [host bounds];
   v14 = NSStringFromRect(v67);
   v15 = [objc_alloc(MEMORY[0x1E696AD98]) initWithInteger:self->_streamToken];
   if (!v15)
@@ -1432,9 +1432,9 @@ LABEL_74:
     v54 = 1024;
     v55 = 478;
     v56 = 2112;
-    v57 = v27;
+    hostCopy = v27;
     v58 = 2048;
-    v59 = self;
+    selfCopy8 = self;
     v36 = " [%s] %s:%d %@(%p) Failed to allocate stream token number";
 LABEL_93:
     _os_log_error_impl(&dword_1DB56E000, v35, OS_LOG_TYPE_ERROR, v36, buf, 0x30u);
@@ -1482,9 +1482,9 @@ LABEL_93:
           v54 = 1024;
           v55 = 480;
           v56 = 2112;
-          v57 = v28;
+          hostCopy = v28;
           v58 = 2048;
-          v59 = self;
+          selfCopy8 = self;
           _os_log_error_impl(&dword_1DB56E000, v40, OS_LOG_TYPE_ERROR, " [%s] %s:%d %@(%p) Failed to allocate args dictionary", buf, 0x30u);
         }
       }
@@ -1535,7 +1535,7 @@ LABEL_93:
       goto LABEL_91;
     }
 
-    v43 = [v16 unsignedIntValue];
+    unsignedIntValue = [v16 unsignedIntValue];
     *buf = 136316418;
     v51 = v41;
     v52 = 2080;
@@ -1543,11 +1543,11 @@ LABEL_93:
     v54 = 1024;
     v55 = 482;
     v56 = 2112;
-    v57 = v29;
+    hostCopy = v29;
     v58 = 2048;
-    v59 = self;
+    selfCopy8 = self;
     v60 = 1024;
-    LODWORD(v61) = v43;
+    LODWORD(hostCopy2) = unsignedIntValue;
     v44 = " [%s] %s:%d %@(%p) GetContextIdForStreamToken=%u failed";
     v45 = v42;
     v46 = 54;
@@ -1602,9 +1602,9 @@ LABEL_96:
     v54 = 1024;
     v55 = 484;
     v56 = 2112;
-    v57 = v30;
+    hostCopy = v30;
     v58 = 2048;
-    v59 = self;
+    selfCopy8 = self;
     v44 = " [%s] %s:%d %@(%p) Invalid contextIdForModes dictionary returned";
 LABEL_95:
     v45 = v48;
@@ -1653,9 +1653,9 @@ LABEL_91:
     v54 = 1024;
     v55 = 486;
     v56 = 2112;
-    v57 = v31;
+    hostCopy = v31;
     v58 = 2048;
-    v59 = self;
+    selfCopy8 = self;
     v44 = " [%s] %s:%d %@(%p) Failed to allocate slotsForModes dictionary";
     goto LABEL_95;
   }
@@ -1663,26 +1663,26 @@ LABEL_91:
   v22 = v21;
 
   self->_slotsForModes = v22;
-  v23 = -[AVCRemoteVideoClient createCALayerHostForRootLayer:withContextId:](self, "createCALayerHostForRootLayer:withContextId:", a3, [-[NSDictionary objectForKeyedSubscript:](v22 objectForKeyedSubscript:{objc_msgSend(&unk_1F579BEB0, "stringValue")), "unsignedIntValue"}]);
-  [(AVCRemoteVideoClient *)self setRootLayer:a3];
+  v23 = -[AVCRemoteVideoClient createCALayerHostForRootLayer:withContextId:](self, "createCALayerHostForRootLayer:withContextId:", host, [-[NSDictionary objectForKeyedSubscript:](v22 objectForKeyedSubscript:{objc_msgSend(&unk_1F579BEB0, "stringValue")), "unsignedIntValue"}]);
+  [(AVCRemoteVideoClient *)self setRootLayer:host];
 LABEL_20:
 
   return v23;
 }
 
-- (void)insertSubLayerInLayer:(id)a3 videoMode:(int)a4 videoSlot:(id)a5
+- (void)insertSubLayerInLayer:(id)layer videoMode:(int)mode videoSlot:(id)slot
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a3 && a5)
+  if (layer && slot)
   {
-    v6 = *&a4;
-    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"AVCRemoteVideoSubLayer%p(%d)", self, *&a4];
+    v6 = *&mode;
+    v9 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"AVCRemoteVideoSubLayer%p(%d)", self, *&mode];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v10 = [a3 sublayers];
-    v11 = [v10 countByEnumeratingWithState:&v24 objects:v23 count:16];
+    sublayers = [layer sublayers];
+    v11 = [sublayers countByEnumeratingWithState:&v24 objects:v23 count:16];
     if (v11)
     {
       v12 = v11;
@@ -1693,18 +1693,18 @@ LABEL_5:
       {
         if (*v25 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(sublayers);
         }
 
-        v15 = *(*(&v24 + 1) + 8 * v14);
-        if ([objc_msgSend(v15 "name")])
+        layer = *(*(&v24 + 1) + 8 * v14);
+        if ([objc_msgSend(layer "name")])
         {
           break;
         }
 
         if (v12 == ++v14)
         {
-          v12 = [v10 countByEnumeratingWithState:&v24 objects:v23 count:16];
+          v12 = [sublayers countByEnumeratingWithState:&v24 objects:v23 count:16];
           if (v12)
           {
             goto LABEL_5;
@@ -1714,40 +1714,40 @@ LABEL_5:
         }
       }
 
-      if (v15)
+      if (layer)
       {
         goto LABEL_14;
       }
     }
 
 LABEL_13:
-    v15 = [MEMORY[0x1E6979398] layer];
-    [a3 addSublayer:v15];
+    layer = [MEMORY[0x1E6979398] layer];
+    [layer addSublayer:layer];
 LABEL_14:
-    [a3 bounds];
+    [layer bounds];
     v17 = v16;
     v19 = v18;
-    [v15 setBounds:{0.0, 0.0, v18, v16}];
-    [v15 setPosition:{v17 * 0.5, v19 * 0.5}];
+    [layer setBounds:{0.0, 0.0, v18, v16}];
+    [layer setPosition:{v17 * 0.5, v19 * 0.5}];
     CGAffineTransformMakeRotation(&m, 1.57079633);
     CATransform3DMakeAffineTransform(&v22, &m);
-    [v15 setTransform:&v22];
-    [v15 setContentsGravity:*MEMORY[0x1E6979DF0]];
-    [v15 setName:v9];
-    [v15 setContents:{objc_msgSend(MEMORY[0x1E6979320], "objectForSlot:", objc_msgSend(a5, "intValue"))}];
-    [v15 setMasksToBounds:1];
+    [layer setTransform:&v22];
+    [layer setContentsGravity:*MEMORY[0x1E6979DF0]];
+    [layer setName:v9];
+    [layer setContents:{objc_msgSend(MEMORY[0x1E6979320], "objectForSlot:", objc_msgSend(slot, "intValue"))}];
+    [layer setMasksToBounds:1];
     v20 = [(AVCRemoteVideoClient *)self subLayerRefForMode:v6];
     if (v20)
     {
-      *v20 = v15;
+      *v20 = layer;
     }
   }
 }
 
-- (id)subLayerRefForMode:(int)a3
+- (id)subLayerRefForMode:(int)mode
 {
   v15 = *MEMORY[0x1E69E9840];
-  switch(a3)
+  switch(mode)
   {
     case 2:
       return &self->_screenSubLayer;
@@ -1770,7 +1770,7 @@ LABEL_14:
       v11 = 1024;
       v12 = 639;
       v13 = 1024;
-      v14 = a3;
+      modeCopy = mode;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Invalid video mode:%d", &v7, 0x22u);
     }
   }
@@ -1778,9 +1778,9 @@ LABEL_14:
   return 0;
 }
 
-- (id)subLayerForMode:(int)a3
+- (id)subLayerForMode:(int)mode
 {
-  result = [(AVCRemoteVideoClient *)self subLayerRefForMode:*&a3];
+  result = [(AVCRemoteVideoClient *)self subLayerRefForMode:*&mode];
   if (result)
   {
     return *result;
@@ -1789,14 +1789,14 @@ LABEL_14:
   return result;
 }
 
-- (void)setActiveVideoLayerForMode:(int)a3
+- (void)setActiveVideoLayerForMode:(int)mode
 {
   v5 = *MEMORY[0x1E69E9840];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __51__AVCRemoteVideoClient_setActiveVideoLayerForMode___block_invoke;
   block[3] = &unk_1E85F38B8;
-  v4 = a3;
+  modeCopy = mode;
   block[4] = self;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
@@ -1841,9 +1841,9 @@ LABEL_8:
   return [MEMORY[0x1E6979518] commit];
 }
 
-- (void)cleanupSubLayerForMode:(int)a3
+- (void)cleanupSubLayerForMode:(int)mode
 {
-  v4 = [(AVCRemoteVideoClient *)self subLayerRefForMode:*&a3];
+  v4 = [(AVCRemoteVideoClient *)self subLayerRefForMode:*&mode];
   if (v4)
   {
     v5 = v4;
@@ -1870,24 +1870,24 @@ LABEL_8:
   self->_connection = 0;
 }
 
-- (void)setActiveVideoModeFromRemoteVideoAttribute:(id)a3
+- (void)setActiveVideoModeFromRemoteVideoAttribute:(id)attribute
 {
-  if ([a3 videoSourceScreen])
+  if ([attribute videoSourceScreen])
   {
     v5 = 2;
   }
 
   else
   {
-    v6 = [a3 camera];
-    if (v6 == 1)
+    camera = [attribute camera];
+    if (camera == 1)
     {
       v5 = 1;
     }
 
     else
     {
-      if (!v6)
+      if (!camera)
       {
         self->_activeVideoMode = 0;
         return;
@@ -2653,7 +2653,7 @@ void __54__AVCRemoteVideoClient_registerBlocksForNotifications__block_invoke_142
       v12 = 1024;
       v13 = 978;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 1024;
       v17 = streamToken;
       v18 = 2048;
@@ -2686,7 +2686,7 @@ void __54__AVCRemoteVideoClient_registerBlocksForNotifications__block_invoke_142
       v13 = 1024;
       v14 = 982;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2112;
       v18 = remoteVideoAttributes;
       v19 = 1024;
@@ -2700,19 +2700,19 @@ void __54__AVCRemoteVideoClient_registerBlocksForNotifications__block_invoke_142
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if ([a3 isEqualToString:{@"bounds", a4, a5, a6}])
+  if ([path isEqualToString:{@"bounds", object, change, context}])
   {
-    v8 = [(AVCRemoteVideoClient *)self shouldDisplayVideoInfoLayer];
-    if (a4)
+    shouldDisplayVideoInfoLayer = [(AVCRemoteVideoClient *)self shouldDisplayVideoInfoLayer];
+    if (object)
     {
-      if (v8)
+      if (shouldDisplayVideoInfoLayer)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [a4 bounds];
+          [object bounds];
           x = v15.origin.x;
           y = v15.origin.y;
           width = v15.size.width;
@@ -2741,12 +2741,12 @@ void __54__AVCRemoteVideoClient_registerBlocksForNotifications__block_invoke_142
   }
 }
 
-- (void)adjustInfoSubLayerBounds:(CGRect)a3 forSuperLayer:(id)a4
+- (void)adjustInfoSubLayerBounds:(CGRect)bounds forSuperLayer:(id)layer
 {
-  height = a3.size.height;
-  width = a3.size.width;
+  height = bounds.size.height;
+  width = bounds.size.width;
   v21 = *MEMORY[0x1E69E9840];
-  v6 = [(AVCRemoteVideoClient *)self findInfoSubLayerFromLayer:a4, a3.origin.x, a3.origin.y];
+  v6 = [(AVCRemoteVideoClient *)self findInfoSubLayerFromLayer:layer, bounds.origin.x, bounds.origin.y];
   if (v6)
   {
     v7 = v6;
@@ -2796,47 +2796,47 @@ void __54__AVCRemoteVideoClient_registerBlocksForNotifications__block_invoke_142
   }
 }
 
-- (void)insertInfoSubLayerIntoLayer:(id)a3 videoMode:(int)a4
+- (void)insertInfoSubLayerIntoLayer:(id)layer videoMode:(int)mode
 {
-  v4 = *&a4;
+  v4 = *&mode;
   v19 = *MEMORY[0x1E69E9840];
   if ([(AVCRemoteVideoClient *)self shouldDisplayVideoInfoLayer])
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"AVCRemoteVideoInfoLayer%p(%d)", self, v4];
-    [a3 addObserver:self forKeyPath:@"bounds" options:1 context:0];
-    [a3 bounds];
+    [layer addObserver:self forKeyPath:@"bounds" options:1 context:0];
+    [layer bounds];
     v9 = v8;
     v11 = v10;
-    v12 = [MEMORY[0x1E6979508] layer];
+    layer = [MEMORY[0x1E6979508] layer];
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
-    [v12 setFontSize:14.0];
-    [v12 setWrapped:1];
+    [layer setFontSize:14.0];
+    [layer setWrapped:1];
     *components = xmmword_1DBD50E20;
     v18 = xmmword_1DBD50E20;
     v14 = CGColorCreate(DeviceRGB, components);
-    [v12 setForegroundColor:v14];
-    [v12 setBounds:{0.0, 0.0, v9, v11 * 0.5}];
-    [v12 setPosition:{v11 * 0.25, v9 * 0.5}];
-    [v12 setString:{-[AVCRemoteVideoClient connectionTypeString](self, "connectionTypeString")}];
-    [v12 setAlignmentMode:*MEMORY[0x1E6979560]];
+    [layer setForegroundColor:v14];
+    [layer setBounds:{0.0, 0.0, v9, v11 * 0.5}];
+    [layer setPosition:{v11 * 0.25, v9 * 0.5}];
+    [layer setString:{-[AVCRemoteVideoClient connectionTypeString](self, "connectionTypeString")}];
+    [layer setAlignmentMode:*MEMORY[0x1E6979560]];
     CGAffineTransformMakeRotation(&m, -1.57079633);
     CATransform3DMakeAffineTransform(&v16, &m);
-    [v12 setTransform:&v16];
-    [v12 setName:v7];
-    [-[AVCRemoteVideoClient subLayerForMode:](self subLayerForMode:{v4), "addSublayer:", v12}];
+    [layer setTransform:&v16];
+    [layer setName:v7];
+    [-[AVCRemoteVideoClient subLayerForMode:](self subLayerForMode:{v4), "addSublayer:", layer}];
 
     CGColorRelease(v14);
     CGColorSpaceRelease(DeviceRGB);
   }
 }
 
-- (void)updateConnectionInfoWithLocalInterfaceType:(id)a3 remoteInterfaceType:(id)a4
+- (void)updateConnectionInfoWithLocalInterfaceType:(id)type remoteInterfaceType:(id)interfaceType
 {
   v18 = *MEMORY[0x1E69E9840];
   [(AVCRemoteVideoClient *)self setActiveVideoLayerForMode:self->_activeVideoMode];
   if ([(AVCRemoteVideoClient *)self shouldDisplayVideoInfoLayer])
   {
-    -[AVCRemoteVideoClient setConnectionTypeString:](self, "setConnectionTypeString:", [MEMORY[0x1E696AEC0] stringWithFormat:@"L:%@ -- R:%@", a3, a4]);
+    -[AVCRemoteVideoClient setConnectionTypeString:](self, "setConnectionTypeString:", [MEMORY[0x1E696AEC0] stringWithFormat:@"L:%@ -- R:%@", type, interfaceType]);
     if (VRTraceGetErrorLogLevelForModule() >= 6)
     {
       v7 = VRTraceErrorLogLevelToCSTR();
@@ -2845,12 +2845,12 @@ void __54__AVCRemoteVideoClient_registerBlocksForNotifications__block_invoke_142
       {
         if ([(AVCRemoteVideoClient *)self connectionTypeString])
         {
-          v9 = [[(NSString *)[(AVCRemoteVideoClient *)self connectionTypeString] description] UTF8String];
+          uTF8String = [[(NSString *)[(AVCRemoteVideoClient *)self connectionTypeString] description] UTF8String];
         }
 
         else
         {
-          v9 = "<nil>";
+          uTF8String = "<nil>";
         }
 
         *buf = 136315906;
@@ -2860,7 +2860,7 @@ void __54__AVCRemoteVideoClient_registerBlocksForNotifications__block_invoke_142
         v14 = 1024;
         v15 = 1053;
         v16 = 2080;
-        v17 = v9;
+        v17 = uTF8String;
         _os_log_impl(&dword_1DB56E000, v8, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d HandoverReport: connection changed to: %s", buf, 0x26u);
       }
     }
@@ -2871,12 +2871,12 @@ void __54__AVCRemoteVideoClient_registerBlocksForNotifications__block_invoke_142
   }
 }
 
-- (void)drawText:(id)a3 inSubLayer:(id)a4
+- (void)drawText:(id)text inSubLayer:(id)layer
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a4)
+  if (layer)
   {
-    v5 = [(AVCRemoteVideoClient *)self findInfoSubLayerFromLayer:a4];
+    v5 = [(AVCRemoteVideoClient *)self findInfoSubLayerFromLayer:layer];
     if (v5)
     {
       v6 = v5;
@@ -2906,21 +2906,21 @@ void __54__AVCRemoteVideoClient_registerBlocksForNotifications__block_invoke_142
       }
 
       [MEMORY[0x1E6979518] begin];
-      [v6 setString:a3];
+      [v6 setString:text];
       [MEMORY[0x1E6979518] commit];
     }
   }
 }
 
-- (id)findInfoSubLayerFromLayer:(id)a3
+- (id)findInfoSubLayerFromLayer:(id)layer
 {
   v15 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a3 sublayers];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  sublayers = [layer sublayers];
+  v4 = [sublayers countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (!v4)
   {
     return 0;
@@ -2934,7 +2934,7 @@ LABEL_3:
   {
     if (*v12 != v6)
     {
-      objc_enumerationMutation(v3);
+      objc_enumerationMutation(sublayers);
     }
 
     v8 = *(*(&v11 + 1) + 8 * v7);
@@ -2945,7 +2945,7 @@ LABEL_3:
 
     if (v5 == ++v7)
     {
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v5 = [sublayers countByEnumeratingWithState:&v11 objects:v10 count:16];
       if (v5)
       {
         goto LABEL_3;
@@ -2956,13 +2956,13 @@ LABEL_3:
   }
 }
 
-- (void)setLayerHostBounds:(CGRect)a3
+- (void)setLayerHostBounds:(CGRect)bounds
 {
   if (self->_caLayerHost)
   {
-    height = a3.size.height;
-    width = a3.size.width;
-    if (!CGRectIsNull(a3))
+    height = bounds.size.height;
+    width = bounds.size.width;
+    if (!CGRectIsNull(bounds))
     {
       v16.origin.x = OUTLINED_FUNCTION_16_12();
       if (!CGRectIsEmpty(v16))

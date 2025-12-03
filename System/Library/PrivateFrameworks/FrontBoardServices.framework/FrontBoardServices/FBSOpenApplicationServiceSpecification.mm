@@ -43,7 +43,7 @@ void __51__FBSOpenApplicationServiceSpecification_interface__block_invoke()
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSOpenApplicationServiceSpecification.m";
     v16 = 1024;

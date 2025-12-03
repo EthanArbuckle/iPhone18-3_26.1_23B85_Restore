@@ -1,31 +1,31 @@
 @interface UIAlertControllerVisualStyleAlertModernTV
 - (CGSize)contentShadowOffset;
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3;
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view;
 - (double)_labelHorizontalInsets;
-- (double)_minimumAlertWidthWithContentView:(id)a3 withCandidateSizes:(id)a4 preferredSizeForContentContainers:(CGSize)a5;
-- (double)_minimumAlertWidthWithTitleLabel:(id)a3 withCandidateSizes:(id)a4;
-- (double)actionWidthForMinimumActionWidth:(double)a3 availableWidth:(double)a4;
+- (double)_minimumAlertWidthWithContentView:(id)view withCandidateSizes:(id)sizes preferredSizeForContentContainers:(CGSize)containers;
+- (double)_minimumAlertWidthWithTitleLabel:(id)label withCandidateSizes:(id)sizes;
+- (double)actionWidthForMinimumActionWidth:(double)width availableWidth:(double)availableWidth;
 - (double)contentCornerRadius;
 - (double)marginAboveMessageLabelFirstBaseline;
 - (double)marginBelowLastLabelLastBaseline;
 - (double)marginBelowMessageLabelLastBaseline;
-- (double)minimumWidthFittingContentView:(id)a3 titleLabel:(id)a4 minimumWidthForAllActions:(double)a5 preferredSizeForContentContainers:(CGSize)a6;
+- (double)minimumWidthFittingContentView:(id)view titleLabel:(id)label minimumWidthForAllActions:(double)actions preferredSizeForContentContainers:(CGSize)containers;
 - (id)contentBackdropView;
-- (id)dimmingViewForAlertController:(id)a3;
+- (id)dimmingViewForAlertController:(id)controller;
 - (id)messageCompositingFilter;
 - (int64_t)permittedActionLayoutDirection;
-- (void)animateAlertControllerView:(id)a3 ofAlertController:(id)a4 forPresentation:(BOOL)a5 inContainerView:(id)a6 descendantOfContainerView:(id)a7 duration:(double)a8 completionBlock:(id)a9;
+- (void)animateAlertControllerView:(id)view ofAlertController:(id)controller forPresentation:(BOOL)presentation inContainerView:(id)containerView descendantOfContainerView:(id)ofContainerView duration:(double)duration completionBlock:(id)block;
 @end
 
 @implementation UIAlertControllerVisualStyleAlertModernTV
 
 - (id)messageCompositingFilter
 {
-  v2 = [(UIAlertControllerVisualStyle *)self traitCollection];
-  v3 = [v2 userInterfaceStyle];
+  traitCollection = [(UIAlertControllerVisualStyle *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
   v4 = MEMORY[0x1E6979CF8];
-  if (v3 != 2)
+  if (userInterfaceStyle != 2)
   {
     v4 = MEMORY[0x1E6979CE8];
   }
@@ -37,11 +37,11 @@
 
 - (double)marginBelowLastLabelLastBaseline
 {
-  v3 = [(UIAlertControllerVisualStyleAlertModernTV *)self titleLabelFont];
+  titleLabelFont = [(UIAlertControllerVisualStyleAlertModernTV *)self titleLabelFont];
   CTFontGetLanguageAwareOutsets();
 
-  v4 = [(UIAlertControllerVisualStyleAlertModernTV *)self titleLabelFont];
-  [v4 descender];
+  titleLabelFont2 = [(UIAlertControllerVisualStyleAlertModernTV *)self titleLabelFont];
+  [titleLabelFont2 descender];
   v6 = 0.0 - v5;
 
   return v6;
@@ -49,11 +49,11 @@
 
 - (double)marginBelowMessageLabelLastBaseline
 {
-  v3 = [(UIAlertControllerVisualStyleAlertModernTV *)self messageLabelFont];
+  messageLabelFont = [(UIAlertControllerVisualStyleAlertModernTV *)self messageLabelFont];
   CTFontGetLanguageAwareOutsets();
 
-  v4 = [(UIAlertControllerVisualStyleAlertModernTV *)self messageLabelFont];
-  [v4 descender];
+  messageLabelFont2 = [(UIAlertControllerVisualStyleAlertModernTV *)self messageLabelFont];
+  [messageLabelFont2 descender];
   v6 = 0.0 - v5;
 
   return v6;
@@ -61,10 +61,10 @@
 
 - (double)marginAboveMessageLabelFirstBaseline
 {
-  v3 = [(UIAlertControllerVisualStyle *)self descriptor];
-  v4 = [v3 hasTitle];
+  descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+  hasTitle = [descriptor hasTitle];
 
-  if (v4)
+  if (hasTitle)
   {
     return 49.0;
   }
@@ -73,15 +73,15 @@
   return result;
 }
 
-- (double)minimumWidthFittingContentView:(id)a3 titleLabel:(id)a4 minimumWidthForAllActions:(double)a5 preferredSizeForContentContainers:(CGSize)a6
+- (double)minimumWidthFittingContentView:(id)view titleLabel:(id)label minimumWidthForAllActions:(double)actions preferredSizeForContentContainers:(CGSize)containers
 {
-  height = a6.height;
-  width = a6.width;
+  height = containers.height;
+  width = containers.width;
   v41[3] = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = [(UIAlertControllerVisualStyle *)self descriptor];
-  if ([v13 numberOfVisibleActions] != 2)
+  viewCopy = view;
+  labelCopy = label;
+  descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+  if ([descriptor numberOfVisibleActions] != 2)
   {
     v27 = MEMORY[0x1E696AD98];
     [(UIAlertControllerVisualStyleAlertModernTV *)self alertWidthDefault];
@@ -106,7 +106,7 @@
   v17 = v16;
   [(UIAlertControllerVisualStyle *)self actionSequenceEdgeInsets];
   v19 = MEMORY[0x1E696AD98];
-  if (a5 + a5 + v15 + v17 + v18 > 588.0)
+  if (actions + actions + v15 + v17 + v18 > 588.0)
   {
     [(UIAlertControllerVisualStyleAlertModernTV *)self alertWidthDefault];
     v20 = [v19 numberWithDouble:?];
@@ -137,7 +137,7 @@ LABEL_5:
   v30 = [MEMORY[0x1E695DEC8] arrayWithObjects:v40 count:2];
 LABEL_7:
 
-  [(UIAlertControllerVisualStyleAlertModernTV *)self _minimumAlertWidthWithTitleLabel:v12 withCandidateSizes:v30];
+  [(UIAlertControllerVisualStyleAlertModernTV *)self _minimumAlertWidthWithTitleLabel:labelCopy withCandidateSizes:v30];
   v33 = v32;
 
   v38[0] = MEMORY[0x1E69E9820];
@@ -150,24 +150,24 @@ LABEL_7:
 
   if ([v35 count])
   {
-    [(UIAlertControllerVisualStyleAlertModernTV *)self _minimumAlertWidthWithContentView:v11 withCandidateSizes:v35 preferredSizeForContentContainers:width, height];
+    [(UIAlertControllerVisualStyleAlertModernTV *)self _minimumAlertWidthWithContentView:viewCopy withCandidateSizes:v35 preferredSizeForContentContainers:width, height];
     v33 = v36;
   }
 
   return v33;
 }
 
-- (double)_minimumAlertWidthWithTitleLabel:(id)a3 withCandidateSizes:(id)a4
+- (double)_minimumAlertWidthWithTitleLabel:(id)label withCandidateSizes:(id)sizes
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
+  labelCopy = label;
+  sizesCopy = sizes;
+  v8 = sizesCopy;
   v9 = 0.0;
-  if (v6 && [v7 count])
+  if (labelCopy && [sizesCopy count])
   {
-    v10 = [v6 numberOfLines];
-    [v6 setNumberOfLines:0];
+    numberOfLines = [labelCopy numberOfLines];
+    [labelCopy setNumberOfLines:0];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
@@ -192,9 +192,9 @@ LABEL_5:
         [(UIAlertControllerVisualStyleAlertModernTV *)self _labelHorizontalInsets];
         v18 = v9 - (v17 + v17);
         v24 = 0;
-        v19 = [v6 text];
-        v20 = [v6 attributedText];
-        _UIComputedSizeForLabel(v6, v19, v20, 0, &v24, 0, 0, v18, 1.79769313e308);
+        text = [labelCopy text];
+        attributedText = [labelCopy attributedText];
+        _UIComputedSizeForLabel(labelCopy, text, attributedText, 0, &v24, 0, 0, v18, 1.79769313e308);
 
         v21 = v24;
         if (v21 <= [(UIAlertControllerVisualStyleAlertModernTV *)self maximumNumberOfLinesInTitleLabel])
@@ -216,7 +216,7 @@ LABEL_5:
       }
     }
 
-    [v6 setNumberOfLines:v10];
+    [labelCopy setNumberOfLines:numberOfLines];
     if (fabs(v9) < 2.22044605e-16)
     {
       [(UIAlertControllerVisualStyleAlertModernTV *)self alertWidthExtraLarge];
@@ -227,21 +227,21 @@ LABEL_5:
   return v9;
 }
 
-- (double)_minimumAlertWidthWithContentView:(id)a3 withCandidateSizes:(id)a4 preferredSizeForContentContainers:(CGSize)a5
+- (double)_minimumAlertWidthWithContentView:(id)view withCandidateSizes:(id)sizes preferredSizeForContentContainers:(CGSize)containers
 {
-  height = a5.height;
-  width = a5.width;
+  height = containers.height;
+  width = containers.width;
   v34 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = [(UIAlertControllerVisualStyle *)self descriptor];
+  viewCopy = view;
+  sizesCopy = sizes;
+  descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
   [(UIAlertControllerVisualStyleAlertModernTV *)self maximumContentHeight];
   v13 = v12;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v14 = v10;
+  v14 = sizesCopy;
   v15 = [v14 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v15)
   {
@@ -260,9 +260,9 @@ LABEL_5:
         v20 = v19;
         LODWORD(v21) = 1148846080;
         LODWORD(v22) = 1112014848;
-        [v9 systemLayoutSizeFittingSize:v19 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v21, v22}];
+        [viewCopy systemLayoutSizeFittingSize:v19 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v21, v22}];
         v24 = v23;
-        if (([v11 hasTitle] & 1) != 0 || objc_msgSend(v11, "hasMessage"))
+        if (([descriptor hasTitle] & 1) != 0 || objc_msgSend(descriptor, "hasMessage"))
         {
           v24 = height + v24;
         }
@@ -297,12 +297,12 @@ LABEL_14:
   return v25;
 }
 
-- (double)actionWidthForMinimumActionWidth:(double)a3 availableWidth:(double)a4
+- (double)actionWidthForMinimumActionWidth:(double)width availableWidth:(double)availableWidth
 {
   [objc_msgSend(objc_opt_class() "associatedAlertBackgroundViewClass")];
   v6 = v5 + v5;
   v7 = 640.0 - v6;
-  result = a4 - v6;
+  result = availableWidth - v6;
   if (v7 < result)
   {
     return v7;
@@ -311,9 +311,9 @@ LABEL_14:
   return result;
 }
 
-- (UIEdgeInsets)contentInsetsForContainerView:(id)a3
+- (UIEdgeInsets)contentInsetsForContainerView:(id)view
 {
-  v3 = _UIActionSheetPresentationControllerContentInsetsAdjustedForSafeAreaWithStandardContentInsets(a3, 60.0, 80.0, 60.0, 80.0);
+  v3 = _UIActionSheetPresentationControllerContentInsetsAdjustedForSafeAreaWithStandardContentInsets(view, 60.0, 80.0, 60.0, 80.0);
   result.right = v6;
   result.bottom = v5;
   result.left = v4;
@@ -323,10 +323,10 @@ LABEL_14:
 
 - (int64_t)permittedActionLayoutDirection
 {
-  v2 = [(UIAlertControllerVisualStyle *)self descriptor];
-  v3 = [v2 numberOfVisibleActions];
+  descriptor = [(UIAlertControllerVisualStyle *)self descriptor];
+  numberOfVisibleActions = [descriptor numberOfVisibleActions];
 
-  if (v3 == 2)
+  if (numberOfVisibleActions == 2)
   {
     return 2;
   }
@@ -337,7 +337,7 @@ LABEL_14:
   }
 }
 
-- (id)dimmingViewForAlertController:(id)a3
+- (id)dimmingViewForAlertController:(id)controller
 {
   if (_UIInternalPreferenceUsesDefault_1(&_MergedGlobals_944, @"TVAlert_BackgroundDimWhite"))
   {
@@ -368,11 +368,11 @@ LABEL_14:
   return v6;
 }
 
-- (void)animateAlertControllerView:(id)a3 ofAlertController:(id)a4 forPresentation:(BOOL)a5 inContainerView:(id)a6 descendantOfContainerView:(id)a7 duration:(double)a8 completionBlock:(id)a9
+- (void)animateAlertControllerView:(id)view ofAlertController:(id)controller forPresentation:(BOOL)presentation inContainerView:(id)containerView descendantOfContainerView:(id)ofContainerView duration:(double)duration completionBlock:(id)block
 {
-  v11 = a5;
-  v14 = a3;
-  v15 = a9;
+  presentationCopy = presentation;
+  viewCopy = view;
+  blockCopy = block;
   v16 = *(MEMORY[0x1E695EFD0] + 16);
   v52 = *MEMORY[0x1E695EFD0];
   v53 = v16;
@@ -380,10 +380,10 @@ LABEL_14:
   v49 = v52;
   v50 = v16;
   v51 = v54;
-  v17 = a4;
+  controllerCopy = controller;
   [(UIAlertControllerVisualStyleAlertModernTV *)self alertAnimationInitialScale];
   v19 = &v49;
-  if (v11)
+  if (presentationCopy)
   {
     v19 = &v52;
     v20 = 0.357142857;
@@ -394,7 +394,7 @@ LABEL_14:
     v20 = 0.5;
   }
 
-  if (v11)
+  if (presentationCopy)
   {
     v21 = 0.476190476;
   }
@@ -404,7 +404,7 @@ LABEL_14:
     v21 = 0.5;
   }
 
-  if (v11)
+  if (presentationCopy)
   {
     v22 = 0.523809524;
   }
@@ -414,7 +414,7 @@ LABEL_14:
     v22 = 0.0;
   }
 
-  if (v11)
+  if (presentationCopy)
   {
     v23 = 1.0;
   }
@@ -424,7 +424,7 @@ LABEL_14:
     v23 = 0.0;
   }
 
-  if (v11)
+  if (presentationCopy)
   {
     v24 = 0.0;
   }
@@ -435,31 +435,31 @@ LABEL_14:
   }
 
   CGAffineTransformMakeScale(v19, v18, v18);
-  v25 = [v17 _dimmingView];
+  _dimmingView = [controllerCopy _dimmingView];
 
   v48[0] = v52;
   v48[1] = v53;
   v48[2] = v54;
-  [v14 setTransform:v48];
-  [v14 setAlpha:v24];
-  v26 = [v14 _preferredActionView];
+  [viewCopy setTransform:v48];
+  [viewCopy setAlpha:v24];
+  _preferredActionView = [viewCopy _preferredActionView];
   v27 = [[_UIAlertControllerVisualStyleAlertTVCustomCurveFactory alloc] initWithCustomCurve:0];
   v28 = [[_UIAlertControllerVisualStyleAlertTVCustomCurveFactory alloc] initWithCustomCurve:1];
-  [v25 setAlpha:v24];
-  v44 = v15;
+  [_dimmingView setAlpha:v24];
+  v44 = blockCopy;
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
   v45[2] = __173__UIAlertControllerVisualStyleAlertModernTV_animateAlertControllerView_ofAlertController_forPresentation_inContainerView_descendantOfContainerView_duration_completionBlock___block_invoke;
   v45[3] = &unk_1E70F32F0;
-  v46 = v25;
+  v46 = _dimmingView;
   v47 = v23;
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
   v43[2] = __173__UIAlertControllerVisualStyleAlertModernTV_animateAlertControllerView_ofAlertController_forPresentation_inContainerView_descendantOfContainerView_duration_completionBlock___block_invoke_2;
   v43[3] = &unk_1E70F3608;
-  v29 = v15;
-  v30 = v25;
-  [UIView _animateWithDuration:393216 delay:v27 options:v45 factory:v43 animations:a8 completion:0.0];
+  v29 = blockCopy;
+  v30 = _dimmingView;
+  [UIView _animateWithDuration:393216 delay:v27 options:v45 factory:v43 animations:duration completion:0.0];
   [(UIAlertControllerVisualStyleAlertModernTV *)self alertAnimationHasDelay];
   if (v31 == 0.0)
   {
@@ -468,19 +468,19 @@ LABEL_14:
 
   else
   {
-    v32 = v22 * a8;
+    v32 = v22 * duration;
   }
 
   v38[0] = MEMORY[0x1E69E9820];
   v38[1] = 3221225472;
   v38[2] = __173__UIAlertControllerVisualStyleAlertModernTV_animateAlertControllerView_ofAlertController_forPresentation_inContainerView_descendantOfContainerView_duration_completionBlock___block_invoke_3;
   v38[3] = &unk_1E70F3DC8;
-  v33 = v14;
+  v33 = viewCopy;
   v39 = v33;
   v40 = v49;
   v41 = v50;
   v42 = v51;
-  [UIView _animateWithDuration:393216 delay:v28 options:v38 factory:0 animations:v21 * a8 completion:v32];
+  [UIView _animateWithDuration:393216 delay:v28 options:v38 factory:0 animations:v21 * duration completion:v32];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
   v35[2] = __173__UIAlertControllerVisualStyleAlertModernTV_animateAlertControllerView_ofAlertController_forPresentation_inContainerView_descendantOfContainerView_duration_completionBlock___block_invoke_4;
@@ -488,7 +488,7 @@ LABEL_14:
   v36 = v33;
   v37 = v23;
   v34 = v33;
-  [UIView _animateWithDuration:393216 delay:v27 options:v35 factory:0 animations:v20 * a8 completion:v32];
+  [UIView _animateWithDuration:393216 delay:v27 options:v35 factory:0 animations:v20 * duration completion:v32];
 }
 
 uint64_t __173__UIAlertControllerVisualStyleAlertModernTV_animateAlertControllerView_ofAlertController_forPresentation_inContainerView_descendantOfContainerView_duration_completionBlock___block_invoke_3(uint64_t a1)
@@ -512,9 +512,9 @@ uint64_t __173__UIAlertControllerVisualStyleAlertModernTV_animateAlertController
 
 - (double)contentCornerRadius
 {
-  v2 = [objc_opt_class() associatedAlertBackgroundViewClass];
+  associatedAlertBackgroundViewClass = [objc_opt_class() associatedAlertBackgroundViewClass];
 
-  [v2 contentCornerRadius];
+  [associatedAlertBackgroundViewClass contentCornerRadius];
   return result;
 }
 

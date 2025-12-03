@@ -1,15 +1,15 @@
 @interface RPPairingDaemonXPCConnection
 - (NSString)description;
 - (_TtC8rapportd28RPPairingDaemonXPCConnection)init;
-- (void)pairingValueUIVisibleUpdated:(BOOL)a3;
-- (void)startPairingReceiverController:(id)a3;
+- (void)pairingValueUIVisibleUpdated:(BOOL)updated;
+- (void)startPairingReceiverController:(id)controller;
 @end
 
 @implementation RPPairingDaemonXPCConnection
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000E5E48();
 
   v3 = String._bridgeToObjectiveC()();
@@ -17,17 +17,17 @@
   return v3;
 }
 
-- (void)startPairingReceiverController:(id)a3
+- (void)startPairingReceiverController:(id)controller
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000E5FD8(v4);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1000E5FD8(controllerCopy);
 }
 
-- (void)pairingValueUIVisibleUpdated:(BOOL)a3
+- (void)pairingValueUIVisibleUpdated:(BOOL)updated
 {
-  v4 = self;
-  sub_1000E629C(a3);
+  selfCopy = self;
+  sub_1000E629C(updated);
 }
 
 - (_TtC8rapportd28RPPairingDaemonXPCConnection)init

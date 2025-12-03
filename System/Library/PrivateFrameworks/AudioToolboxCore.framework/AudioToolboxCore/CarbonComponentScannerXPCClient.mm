@@ -1,11 +1,11 @@
 @interface CarbonComponentScannerXPCClient
-- (AudioComponentVector)initialScan:(SEL)a3;
+- (AudioComponentVector)initialScan:(SEL)scan;
 - (CarbonComponentScannerXPCClient)init;
 - (id)xpcConnection;
 - (void)closeService;
 - (void)dealloc;
-- (void)handleConnectionError:(BOOL)a3;
-- (void)rescan:(id)a3 added:(void *)a4 removed:(void *)a5;
+- (void)handleConnectionError:(BOOL)error;
+- (void)rescan:(id)rescan added:(void *)added removed:(void *)removed;
 @end
 
 @implementation CarbonComponentScannerXPCClient
@@ -37,10 +37,10 @@
   v5 = *MEMORY[0x1E69E9840];
 }
 
-- (void)rescan:(id)a3 added:(void *)a4 removed:(void *)a5
+- (void)rescan:(id)rescan added:(void *)added removed:(void *)removed
 {
   v27[4] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  rescanCopy = rescan;
   [(CarbonComponentScannerXPCClient *)self xpcConnection];
   aBlock.__begin_ = &unk_1F033F8D0;
   aBlock.__end_ = &v20;
@@ -72,7 +72,7 @@
   v13 = _Block_copy(&aBlock);
   std::__function::__value_func<void ()(NSError *,std::tuple<NSData * {__strong},NSData * {__strong}> &&)>::~__value_func[abi:ne200100](v26);
   std::__function::__value_func<void ()(NSError *,std::tuple<NSData * {__strong},NSData * {__strong}> &&)>::~__value_func[abi:ne200100](v27);
-  [v11 rescan:v8 reply:v13];
+  [v11 rescan:rescanCopy reply:v13];
 
   v14 = v22;
   if (v14)
@@ -101,19 +101,19 @@
     v19 = v23;
     objc_storeStrong(&v18, obj);
     AudioComponentVector::createWithSerializedData(&aBlock, v19);
-    std::vector<std::shared_ptr<APComponent>>::__vdeallocate(a4);
-    *a4 = *&aBlock.__begin_;
-    *(a4 + 2) = aBlock.__cap_;
+    std::vector<std::shared_ptr<APComponent>>::__vdeallocate(added);
+    *added = *&aBlock.__begin_;
+    *(added + 2) = aBlock.__cap_;
     memset(&aBlock, 0, 24);
-    *(a4 + 24) = aBlock.mSorted;
+    *(added + 24) = aBlock.mSorted;
     v27[0] = &aBlock;
     std::vector<std::shared_ptr<CA::ADMPackFormat>>::__destroy_vector::operator()[abi:ne200100](v27);
     AudioComponentVector::createWithSerializedData(&aBlock, v18);
-    std::vector<std::shared_ptr<APComponent>>::__vdeallocate(a5);
-    *a5 = *&aBlock.__begin_;
-    *(a5 + 2) = aBlock.__cap_;
+    std::vector<std::shared_ptr<APComponent>>::__vdeallocate(removed);
+    *removed = *&aBlock.__begin_;
+    *(removed + 2) = aBlock.__cap_;
     memset(&aBlock, 0, 24);
-    *(a5 + 24) = aBlock.mSorted;
+    *(removed + 24) = aBlock.mSorted;
     v27[0] = &aBlock;
     std::vector<std::shared_ptr<CA::ADMPackFormat>>::__destroy_vector::operator()[abi:ne200100](v27);
   }
@@ -122,7 +122,7 @@
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (AudioComponentVector)initialScan:(SEL)a3
+- (AudioComponentVector)initialScan:(SEL)scan
 {
   v24[4] = *MEMORY[0x1E69E9840];
   v6 = a4;
@@ -201,9 +201,9 @@
   return result;
 }
 
-- (void)handleConnectionError:(BOOL)a3
+- (void)handleConnectionError:(BOOL)error
 {
-  v3 = a3;
+  errorCopy = error;
   v15 = *MEMORY[0x1E69E9840];
   if (!gAudioComponentLogCategory)
   {
@@ -216,7 +216,7 @@
     v7 = "interrupted";
     *&v12[4] = "CarbonComponentScannerXPCClient.mm";
     *v12 = 136315650;
-    if (v3)
+    if (errorCopy)
     {
       v7 = "invalidated";
     }

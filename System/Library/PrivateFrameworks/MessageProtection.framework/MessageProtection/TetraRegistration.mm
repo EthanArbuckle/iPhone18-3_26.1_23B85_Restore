@@ -9,7 +9,7 @@
 
 - (NSData)serializedECDHPublicKey
 {
-  v2 = self;
+  selfCopy = self;
   result = P256.KeyAgreement.PublicKey.compactRepresentation.getter();
   if (v4 >> 60 == 15)
   {
@@ -42,7 +42,7 @@
 
 - (NSData)registrationData
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TetraRegistration.registrationData.getter();
   v5 = v4;
 

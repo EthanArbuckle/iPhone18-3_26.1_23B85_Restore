@@ -7,12 +7,12 @@
 
 - (_TtC8Podcasts19InterestSyncStorage)init
 {
-  v2 = [objc_opt_self() sharedInstance];
-  v3 = [v2 importContext];
+  sharedInstance = [objc_opt_self() sharedInstance];
+  importContext = [sharedInstance importContext];
 
   v4 = type metadata accessor for InterestSyncStorage();
   v5 = objc_allocWithZone(v4);
-  *&v5[OBJC_IVAR____TtC8Podcasts19InterestSyncStorage_importContext] = v3;
+  *&v5[OBJC_IVAR____TtC8Podcasts19InterestSyncStorage_importContext] = importContext;
   v8.receiver = v5;
   v8.super_class = v4;
   v6 = [(InterestSyncStorage *)&v8 init];

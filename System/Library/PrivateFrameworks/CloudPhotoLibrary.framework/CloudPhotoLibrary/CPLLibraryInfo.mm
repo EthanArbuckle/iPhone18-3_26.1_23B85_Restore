@@ -1,25 +1,25 @@
 @interface CPLLibraryInfo
-+ (id)cplAdditionalSecureClassesForProperty:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)cplAdditionalSecureClassesForProperty:(id)property;
+- (BOOL)isEqual:(id)equal;
 - (CPLAccountFlags)accountFlags;
-- (CPLLibraryInfo)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)prettyDescriptionWithAnchorDesciptionBlock:(id)a3;
+- (CPLLibraryInfo)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)prettyDescriptionWithAnchorDesciptionBlock:(id)block;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLLibraryInfo
 
-+ (id)cplAdditionalSecureClassesForProperty:(id)a3
++ (id)cplAdditionalSecureClassesForProperty:(id)property
 {
-  v4 = a3;
+  propertyCopy = property;
   if (cplAdditionalSecureClassesForProperty__onceToken_157 != -1)
   {
     dispatch_once(&cplAdditionalSecureClassesForProperty__onceToken_157, &__block_literal_global_159);
   }
 
-  v5 = [cplAdditionalSecureClassesForProperty__additionalClasses_156 objectForKey:v4];
+  v5 = [cplAdditionalSecureClassesForProperty__additionalClasses_156 objectForKey:propertyCopy];
   v6 = v5;
   if (v5)
   {
@@ -28,9 +28,9 @@
 
   else
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___CPLLibraryInfo;
-    v7 = objc_msgSendSuper2(&v10, sel_cplAdditionalSecureClassesForProperty_, v4);
+    v7 = objc_msgSendSuper2(&v10, sel_cplAdditionalSecureClassesForProperty_, propertyCopy);
   }
 
   v8 = v7;
@@ -62,10 +62,10 @@ void __69__CPLLibraryInfo_CPLNSCoding__cplAdditionalSecureClassesForProperty___b
   return v6 ^ [(NSNumber *)self->_featureCompatibleVersion hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v9 = 1;
     goto LABEL_23;
@@ -79,7 +79,7 @@ void __69__CPLLibraryInfo_CPLNSCoding__cplAdditionalSecureClassesForProperty___b
 
   v5 = self->_assetCounts;
   v6 = v5;
-  assetCounts = v4->_assetCounts;
+  assetCounts = equalCopy->_assetCounts;
   if (v5 && assetCounts)
   {
     v8 = [v5 isEqual:?];
@@ -102,7 +102,7 @@ void __69__CPLLibraryInfo_CPLNSCoding__cplAdditionalSecureClassesForProperty___b
 
   v11 = self->_featureVersionHistory;
   v12 = v11;
-  featureVersionHistory = v4->_featureVersionHistory;
+  featureVersionHistory = equalCopy->_featureVersionHistory;
   if (v11 && featureVersionHistory)
   {
     v14 = [v11 isEqual:?];
@@ -125,7 +125,7 @@ void __69__CPLLibraryInfo_CPLNSCoding__cplAdditionalSecureClassesForProperty___b
 
   v16 = self->_accountFlagsData;
   v17 = v16;
-  accountFlagsData = v4->_accountFlagsData;
+  accountFlagsData = equalCopy->_accountFlagsData;
   if (v16 && accountFlagsData)
   {
     v19 = [v16 isEqual:?];
@@ -150,7 +150,7 @@ LABEL_22:
 LABEL_19:
   v21 = self->_momentShare;
   v22 = v21;
-  momentShare = v4->_momentShare;
+  momentShare = equalCopy->_momentShare;
   if (v21 && momentShare)
   {
     v24 = [v21 isEqual:?];
@@ -172,7 +172,7 @@ LABEL_19:
   }
 
   v27 = self->_featureCompatibleVersion;
-  v28 = v4->_featureCompatibleVersion;
+  v28 = equalCopy->_featureCompatibleVersion;
   v29 = v28;
   v9 = v27 && v28 && ([v27 isEqual:v28] & 1) != 0 || (v27 | v29) == 0;
 
@@ -195,9 +195,9 @@ LABEL_23:
   return v3;
 }
 
-- (id)prettyDescriptionWithAnchorDesciptionBlock:(id)a3
+- (id)prettyDescriptionWithAnchorDesciptionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v42 = 0;
   v43 = &v42;
   v44 = 0x3032000000;
@@ -205,9 +205,9 @@ LABEL_23:
   v46 = __Block_byref_object_dispose__14286;
   v47 = 0;
   v5 = &__block_literal_global_24_14287;
-  if (v4)
+  if (blockCopy)
   {
-    v5 = v4;
+    v5 = blockCopy;
   }
 
   v36 = 0;
@@ -258,11 +258,11 @@ LABEL_23:
   }
 
   v12 = MEMORY[0x1E696AEC0];
-  v13 = [(CPLLibraryInfo *)self accountFlags];
-  v14 = v13;
-  if (v13)
+  accountFlags = [(CPLLibraryInfo *)self accountFlags];
+  v14 = accountFlags;
+  if (accountFlags)
   {
-    v15 = v13;
+    v15 = accountFlags;
   }
 
   else
@@ -270,10 +270,10 @@ LABEL_23:
     v15 = @"none";
   }
 
-  v16 = [(CPLLibraryInfo *)self assetCounts];
+  assetCounts = [(CPLLibraryInfo *)self assetCounts];
   featureCompatibleVersion = self->_featureCompatibleVersion;
-  v18 = [(CPLFeatureVersionHistory *)self->_featureVersionHistory currentFeatureVersion];
-  v19 = [v12 stringWithFormat:@"Account flags: %@\nAsset counts:\n%@\nFeature compatible version: %@\n\nCurrent feature version: %ld\n%@", v15, v16, featureCompatibleVersion, v18, v43[5]];
+  currentFeatureVersion = [(CPLFeatureVersionHistory *)self->_featureVersionHistory currentFeatureVersion];
+  v19 = [v12 stringWithFormat:@"Account flags: %@\nAsset counts:\n%@\nFeature compatible version: %@\n\nCurrent feature version: %ld\n%@", v15, assetCounts, featureCompatibleVersion, currentFeatureVersion, v43[5]];
 
   _Block_object_dispose(&v31, 8);
   _Block_object_dispose(v35, 8);
@@ -353,7 +353,7 @@ void __61__CPLLibraryInfo_prettyDescriptionWithAnchorDesciptionBlock___block_inv
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(CPLLibraryInfo);
   [(CPLLibraryInfo *)v4 setAssetCounts:self->_assetCounts];
@@ -370,20 +370,20 @@ LABEL_5:
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   assetCounts = self->_assetCounts;
-  v5 = a3;
-  [v5 encodeObject:assetCounts forKey:@"counts"];
-  [v5 encodeObject:self->_featureVersionHistory forKey:@"history"];
-  [v5 encodeObject:self->_accountFlagsData forKey:@"flags"];
-  [v5 encodeObject:self->_momentShare forKey:@"momentShare"];
-  [v5 encodeObject:self->_featureCompatibleVersion forKey:@"featureCompatibleVersion"];
+  coderCopy = coder;
+  [coderCopy encodeObject:assetCounts forKey:@"counts"];
+  [coderCopy encodeObject:self->_featureVersionHistory forKey:@"history"];
+  [coderCopy encodeObject:self->_accountFlagsData forKey:@"flags"];
+  [coderCopy encodeObject:self->_momentShare forKey:@"momentShare"];
+  [coderCopy encodeObject:self->_featureCompatibleVersion forKey:@"featureCompatibleVersion"];
 }
 
-- (CPLLibraryInfo)initWithCoder:(id)a3
+- (CPLLibraryInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v30.receiver = self;
   v30.super_class = CPLLibraryInfo;
   v5 = [(CPLLibraryInfo *)&v30 init];
@@ -394,7 +394,7 @@ LABEL_5:
       dispatch_once(&initWithCoder__onceToken_14332, &__block_literal_global_14333);
     }
 
-    v6 = [v4 decodeObjectOfClasses:initWithCoder__countsClasses forKey:@"counts"];
+    v6 = [coderCopy decodeObjectOfClasses:initWithCoder__countsClasses forKey:@"counts"];
     assetCounts = v5->_assetCounts;
     v5->_assetCounts = v6;
 
@@ -419,19 +419,19 @@ LABEL_5:
       goto LABEL_8;
     }
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:{@"history", v20, v21, v22, v23}];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:{@"history", v20, v21, v22, v23}];
     featureVersionHistory = v9->_featureVersionHistory;
     v9->_featureVersionHistory = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flags"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flags"];
     accountFlagsData = v9->_accountFlagsData;
     v9->_accountFlagsData = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"momentShare"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"momentShare"];
     momentShare = v9->_momentShare;
     v9->_momentShare = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"featureCompatibleVersion"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"featureCompatibleVersion"];
     featureCompatibleVersion = v9->_featureCompatibleVersion;
     v9->_featureCompatibleVersion = v16;
 

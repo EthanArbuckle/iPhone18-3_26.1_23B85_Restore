@@ -1,17 +1,17 @@
 @interface WiFiAppStateManager
 + (id)sharedWiFiAppStateManager;
-- (BOOL)_isMonitoringChangesForBundleID:(__CFString *)a3;
+- (BOOL)_isMonitoringChangesForBundleID:(__CFString *)d;
 - (WiFiAppStateManager)init;
-- (id)_getStringOfAppState:(unsigned int)a3;
-- (void)_applicationStateMonitorHandler:(__CFDictionary *)a3;
-- (void)_registerApplication:(__CFString *)a3 capabilities:(int)a4;
-- (void)_unRegisterApplication:(__CFString *)a3;
+- (id)_getStringOfAppState:(unsigned int)state;
+- (void)_applicationStateMonitorHandler:(__CFDictionary *)handler;
+- (void)_registerApplication:(__CFString *)application capabilities:(int)capabilities;
+- (void)_unRegisterApplication:(__CFString *)application;
 - (void)dealloc;
-- (void)externalAppUnregistered:(__CFDictionary *)a3;
-- (void)scheduleWithQueue:(id)a3;
-- (void)startMonitoringBundleId:(__CFString *)a3;
-- (void)stopMonitoringBundleId:(__CFString *)a3;
-- (void)unscheduleFromQueue:(id)a3;
+- (void)externalAppUnregistered:(__CFDictionary *)unregistered;
+- (void)scheduleWithQueue:(id)queue;
+- (void)startMonitoringBundleId:(__CFString *)id;
+- (void)stopMonitoringBundleId:(__CFString *)id;
+- (void)unscheduleFromQueue:(id)queue;
 @end
 
 @implementation WiFiAppStateManager
@@ -26,15 +26,15 @@
   return qword_100298AC0;
 }
 
-- (void)scheduleWithQueue:(id)a3
+- (void)scheduleWithQueue:(id)queue
 {
-  self->_queue = a3;
+  self->_queue = queue;
   DistributedCenter = CFNotificationCenterGetDistributedCenter();
 
   CFNotificationCenterAddObserver(DistributedCenter, self, sub_100106AE4, @"com.apple.LaunchServices.applicationUnregistered", 0, CFNotificationSuspensionBehaviorDeliverImmediately);
 }
 
-- (void)unscheduleFromQueue:(id)a3
+- (void)unscheduleFromQueue:(id)queue
 {
   DistributedCenter = CFNotificationCenterGetDistributedCenter();
   CFNotificationCenterRemoveObserver(DistributedCenter, self, @"com.apple.LaunchServices.applicationUnregistered", 0);
@@ -154,16 +154,16 @@ LABEL_25:
   return v2;
 }
 
-- (void)externalAppUnregistered:(__CFDictionary *)a3
+- (void)externalAppUnregistered:(__CFDictionary *)unregistered
 {
-  if (self->_unregisteredCallbackContext && a3 && self->_unregisteredCallbackFunction)
+  if (self->_unregisteredCallbackContext && unregistered && self->_unregisteredCallbackFunction)
   {
     if (self->_queue)
     {
       v6[0] = 0;
       v6[1] = v6;
       v6[2] = 0x2020000000;
-      v6[3] = CFRetain(a3);
+      v6[3] = CFRetain(unregistered);
       queue = self->_queue;
       v5[0] = _NSConcreteStackBlock;
       v5[1] = 3221225472;
@@ -231,7 +231,7 @@ LABEL_25:
   [(WiFiAppStateManager *)&v10 dealloc];
 }
 
-- (void)_applicationStateMonitorHandler:(__CFDictionary *)a3
+- (void)_applicationStateMonitorHandler:(__CFDictionary *)handler
 {
   value = 0;
   valuePtr = 0;
@@ -245,7 +245,7 @@ LABEL_25:
   v35 = sub_100002BA0;
   v36 = sub_1000067A0;
   v37 = 0;
-  if (!a3)
+  if (!handler)
   {
     v19 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -267,7 +267,7 @@ LABEL_25:
     goto LABEL_57;
   }
 
-  if (CFDictionaryGetValueIfPresent(a3, BKSApplicationStateProcessIDKey, &value))
+  if (CFDictionaryGetValueIfPresent(handler, BKSApplicationStateProcessIDKey, &value))
   {
     v5 = value == 0;
   }
@@ -293,7 +293,7 @@ LABEL_25:
     goto LABEL_57;
   }
 
-  v6 = CFDictionaryGetValue(a3, BKSApplicationStateDisplayIDKey);
+  v6 = CFDictionaryGetValue(handler, BKSApplicationStateDisplayIDKey);
   if (!v6)
   {
     v19 = objc_autoreleasePoolPush();
@@ -332,7 +332,7 @@ LABEL_25:
     [(WiFiAppStateManager *)self _registerApplication:v6 capabilities:v8];
   }
 
-  if (!CFDictionaryGetValueIfPresent(a3, BKSApplicationStateKey, &v39))
+  if (!CFDictionaryGetValueIfPresent(handler, BKSApplicationStateKey, &v39))
   {
     v19 = objc_autoreleasePoolPush();
     if (off_100298C40)
@@ -457,15 +457,15 @@ LABEL_44:
   _Block_object_dispose(&v32, 8);
 }
 
-- (void)_unRegisterApplication:(__CFString *)a3
+- (void)_unRegisterApplication:(__CFString *)application
 {
-  if (a3)
+  if (application)
   {
     applications = self->_applications;
     if (applications)
     {
 
-      CFDictionaryRemoveValue(applications, a3);
+      CFDictionaryRemoveValue(applications, application);
     }
 
     else
@@ -480,10 +480,10 @@ LABEL_44:
   }
 }
 
-- (void)_registerApplication:(__CFString *)a3 capabilities:(int)a4
+- (void)_registerApplication:(__CFString *)application capabilities:(int)capabilities
 {
-  valuePtr = a4;
-  if (a3)
+  valuePtr = capabilities;
+  if (application)
   {
     v6 = CFNumberCreate(kCFAllocatorDefault, kCFNumberIntType, &valuePtr);
     if (v6)
@@ -492,7 +492,7 @@ LABEL_44:
       applications = self->_applications;
       if (applications)
       {
-        CFDictionaryAddValue(applications, a3, v7);
+        CFDictionaryAddValue(applications, application, v7);
       }
 
       else
@@ -515,46 +515,46 @@ LABEL_44:
   }
 }
 
-- (id)_getStringOfAppState:(unsigned int)a3
+- (id)_getStringOfAppState:(unsigned int)state
 {
-  if (a3 - 1 > 7)
+  if (state - 1 > 7)
   {
     return @"WiFiApplicationStateUnknown";
   }
 
   else
   {
-    return off_1002628F0[a3 - 1];
+    return off_1002628F0[state - 1];
   }
 }
 
-- (void)startMonitoringBundleId:(__CFString *)a3
+- (void)startMonitoringBundleId:(__CFString *)id
 {
-  if (a3)
+  if (id)
   {
     bundleIdsToMonitor = self->_bundleIdsToMonitor;
     if (bundleIdsToMonitor)
     {
-      CFSetAddValue(bundleIdsToMonitor, a3);
+      CFSetAddValue(bundleIdsToMonitor, id);
     }
   }
 }
 
-- (void)stopMonitoringBundleId:(__CFString *)a3
+- (void)stopMonitoringBundleId:(__CFString *)id
 {
-  if (a3)
+  if (id)
   {
     bundleIdsToMonitor = self->_bundleIdsToMonitor;
     if (bundleIdsToMonitor)
     {
-      CFSetRemoveValue(bundleIdsToMonitor, a3);
+      CFSetRemoveValue(bundleIdsToMonitor, id);
     }
   }
 }
 
-- (BOOL)_isMonitoringChangesForBundleID:(__CFString *)a3
+- (BOOL)_isMonitoringChangesForBundleID:(__CFString *)d
 {
-  if (a3)
+  if (d)
   {
     bundleIdsToMonitor = self->_bundleIdsToMonitor;
     if (bundleIdsToMonitor)
@@ -562,7 +562,7 @@ LABEL_44:
       bundleIdsToMonitor = CFSetGetCount(bundleIdsToMonitor);
       if (bundleIdsToMonitor)
       {
-        LOBYTE(bundleIdsToMonitor) = CFSetContainsValue(self->_bundleIdsToMonitor, a3) != 0;
+        LOBYTE(bundleIdsToMonitor) = CFSetContainsValue(self->_bundleIdsToMonitor, d) != 0;
       }
     }
   }

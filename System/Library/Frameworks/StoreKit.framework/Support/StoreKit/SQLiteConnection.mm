@@ -1,49 +1,49 @@
 @interface SQLiteConnection
 - (BOOL)_close;
-- (BOOL)_executeStatement:(id)a3 error:(id *)a4;
-- (BOOL)_executeWithError:(id *)a3 usingBlock:(id)a4;
+- (BOOL)_executeStatement:(id)statement error:(id *)error;
+- (BOOL)_executeWithError:(id *)error usingBlock:(id)block;
 - (BOOL)_open;
 - (BOOL)_performResetAfterCorruptionError;
 - (BOOL)_resetAfterCorruptionError;
 - (BOOL)_resetAfterIOError;
-- (BOOL)addFunction:(id)a3;
-- (BOOL)executePreparedStatement:(id)a3 error:(id *)a4 bindings:(id)a5;
-- (BOOL)executeStatement:(id)a3 error:(id *)a4 bindings:(id)a5;
-- (BOOL)finalizePreparedStatement:(id)a3 error:(id *)a4;
-- (BOOL)performSavepoint:(id)a3;
-- (BOOL)removeFunction:(id)a3;
-- (BOOL)removeFunctionNamed:(id)a3 withArgumentCount:(int64_t)a4;
-- (BOOL)tableExists:(id)a3;
+- (BOOL)addFunction:(id)function;
+- (BOOL)executePreparedStatement:(id)statement error:(id *)error bindings:(id)bindings;
+- (BOOL)executeStatement:(id)statement error:(id *)error bindings:(id)bindings;
+- (BOOL)finalizePreparedStatement:(id)statement error:(id *)error;
+- (BOOL)performSavepoint:(id)savepoint;
+- (BOOL)removeFunction:(id)function;
+- (BOOL)removeFunctionNamed:(id)named withArgumentCount:(int64_t)count;
+- (BOOL)tableExists:(id)exists;
 - (BOOL)truncate;
 - (NSError)currentError;
-- (SQLiteConnection)initWithOptions:(id)a3;
+- (SQLiteConnection)initWithOptions:(id)options;
 - (SQLiteConnectionDelegate)delegate;
-- (id)_prepareStatement:(id)a3 error:(id *)a4;
-- (id)_statementForPreparedStatement:(id)a3 error:(id *)a4;
-- (id)_verifiedStatementForPreparedStatement:(id)a3 error:(id *)a4;
-- (id)_verifiedStatementForSQL:(id)a3 error:(id *)a4;
-- (id)prepareStatement:(id)a3 error:(id *)a4;
+- (id)_prepareStatement:(id)statement error:(id *)error;
+- (id)_statementForPreparedStatement:(id)statement error:(id *)error;
+- (id)_verifiedStatementForPreparedStatement:(id)statement error:(id *)error;
+- (id)_verifiedStatementForSQL:(id)l error:(id *)error;
+- (id)prepareStatement:(id)statement error:(id *)error;
 - (int64_t)lastChangeCount;
 - (void)_finalizeAllStatements;
 - (void)_flushAfterTransactionBlocks;
 - (void)dealloc;
-- (void)dispatchAfterTransaction:(id)a3;
-- (void)executePreparedQuery:(id)a3 withResults:(id)a4;
-- (void)executeQuery:(id)a3 withResults:(id)a4;
-- (void)performTransaction:(id)a3;
+- (void)dispatchAfterTransaction:(id)transaction;
+- (void)executePreparedQuery:(id)query withResults:(id)results;
+- (void)executeQuery:(id)query withResults:(id)results;
+- (void)performTransaction:(id)transaction;
 @end
 
 @implementation SQLiteConnection
 
-- (SQLiteConnection)initWithOptions:(id)a3
+- (SQLiteConnection)initWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v11.receiver = self;
   v11.super_class = SQLiteConnection;
   v5 = [(SQLiteConnection *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [optionsCopy copy];
     options = v5->_options;
     v5->_options = v6;
 
@@ -78,10 +78,10 @@
   [(SQLiteConnection *)&v4 dealloc];
 }
 
-- (void)dispatchAfterTransaction:(id)a3
+- (void)dispatchAfterTransaction:(id)transaction
 {
-  v4 = a3;
-  v10 = v4;
+  transactionCopy = transaction;
+  v10 = transactionCopy;
   if (self->_transactionDepth)
   {
     if (!self->_afterTransactionBlocks)
@@ -90,10 +90,10 @@
       afterTransactionBlocks = self->_afterTransactionBlocks;
       self->_afterTransactionBlocks = v5;
 
-      v4 = v10;
+      transactionCopy = v10;
     }
 
-    v7 = [v4 copy];
+    v7 = [transactionCopy copy];
     v8 = self->_afterTransactionBlocks;
     v9 = objc_retainBlock(v7);
     [(NSMutableArray *)v8 addObject:v9];
@@ -101,16 +101,16 @@
 
   else
   {
-    v4[2]();
+    transactionCopy[2]();
   }
 }
 
-- (void)executePreparedQuery:(id)a3 withResults:(id)a4
+- (void)executePreparedQuery:(id)query withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  resultsCopy = results;
   v11 = 0;
-  v8 = [(SQLiteConnection *)self _verifiedStatementForPreparedStatement:v6 error:&v11];
+  v8 = [(SQLiteConnection *)self _verifiedStatementForPreparedStatement:queryCopy error:&v11];
   v9 = v11;
   if (v8)
   {
@@ -122,29 +122,29 @@
     v10 = 0;
   }
 
-  v7[2](v7, v10, v9);
+  resultsCopy[2](resultsCopy, v10, v9);
   [v8 clearBindings];
   [v8 reset];
 }
 
-- (BOOL)executePreparedStatement:(id)a3 error:(id *)a4 bindings:(id)a5
+- (BOOL)executePreparedStatement:(id)statement error:(id *)error bindings:(id)bindings
 {
-  v8 = a5;
+  bindingsCopy = bindings;
   v16 = 0;
-  v9 = [(SQLiteConnection *)self _verifiedStatementForPreparedStatement:a3 error:&v16];
+  v9 = [(SQLiteConnection *)self _verifiedStatementForPreparedStatement:statement error:&v16];
   v10 = v16;
   if (v9)
   {
-    if (v8)
+    if (bindingsCopy)
     {
-      v8[2](v8, v9);
+      bindingsCopy[2](bindingsCopy, v9);
     }
 
     v15 = v10;
     v11 = [(SQLiteConnection *)self _executeStatement:v9 error:&v15];
     v12 = v15;
 
-    if (v8)
+    if (bindingsCopy)
     {
       [v9 clearBindings];
     }
@@ -158,23 +158,23 @@
   }
 
   [v9 reset];
-  if (a4 && !v11)
+  if (error && !v11)
   {
     v13 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v11;
 }
 
-- (void)executeQuery:(id)a3 withResults:(id)a4
+- (void)executeQuery:(id)query withResults:(id)results
 {
-  v6 = a3;
-  v7 = a4;
+  queryCopy = query;
+  resultsCopy = results;
   v12 = 0;
-  v8 = [(SQLiteConnection *)self _verifiedStatementForSQL:v6 error:&v12];
+  v8 = [(SQLiteConnection *)self _verifiedStatementForSQL:queryCopy error:&v12];
   v9 = v12;
-  v10 = [[SQLitePreparedStatement alloc] initWithConnection:self->_database SQL:v6];
+  v10 = [[SQLitePreparedStatement alloc] initWithConnection:self->_database SQL:queryCopy];
   if (v10)
   {
     [(NSMapTable *)self->_preparedStatements setObject:v8 forKey:v10];
@@ -190,7 +190,7 @@
     v11 = 0;
   }
 
-  v7[2](v7, v11, v9);
+  resultsCopy[2](resultsCopy, v11, v9);
   [v8 finalizeStatement];
   if (v10)
   {
@@ -198,14 +198,14 @@
   }
 }
 
-- (BOOL)executeStatement:(id)a3 error:(id *)a4 bindings:(id)a5
+- (BOOL)executeStatement:(id)statement error:(id *)error bindings:(id)bindings
 {
-  v8 = a5;
+  bindingsCopy = bindings;
   v18 = 0;
-  v9 = a3;
-  v10 = [(SQLiteConnection *)self _verifiedStatementForSQL:v9 error:&v18];
+  statementCopy = statement;
+  v10 = [(SQLiteConnection *)self _verifiedStatementForSQL:statementCopy error:&v18];
   v11 = v18;
-  v12 = [[SQLitePreparedStatement alloc] initWithConnection:self->_database SQL:v9];
+  v12 = [[SQLitePreparedStatement alloc] initWithConnection:self->_database SQL:statementCopy];
 
   if (v12)
   {
@@ -215,7 +215,7 @@
   if (!v10)
   {
     v13 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -223,9 +223,9 @@
     goto LABEL_11;
   }
 
-  if (v8)
+  if (bindingsCopy)
   {
-    v8[2](v8, v10);
+    bindingsCopy[2](bindingsCopy, v10);
   }
 
   v17 = v11;
@@ -239,13 +239,13 @@
   }
 
   v11 = v14;
-  if (a4)
+  if (error)
   {
 LABEL_11:
     if (!v13)
     {
       v15 = v11;
-      *a4 = v11;
+      *error = v11;
     }
   }
 
@@ -254,16 +254,16 @@ LABEL_13:
   return v13;
 }
 
-- (BOOL)finalizePreparedStatement:(id)a3 error:(id *)a4
+- (BOOL)finalizePreparedStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
+  statementCopy = statement;
   v13 = 0;
-  v7 = [(SQLiteConnection *)self _verifiedStatementForPreparedStatement:v6 error:&v13];
+  v7 = [(SQLiteConnection *)self _verifiedStatementForPreparedStatement:statementCopy error:&v13];
   v8 = v13;
   if (!v7)
   {
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_9;
     }
@@ -279,14 +279,14 @@ LABEL_13:
     v8 = v10;
   }
 
-  [(NSMapTable *)self->_preparedStatements removeObjectForKey:v6];
-  if (a4)
+  [(NSMapTable *)self->_preparedStatements removeObjectForKey:statementCopy];
+  if (error)
   {
 LABEL_7:
     if (!v9)
     {
       v11 = v8;
-      *a4 = v8;
+      *error = v8;
     }
   }
 
@@ -308,23 +308,23 @@ LABEL_9:
   }
 }
 
-- (BOOL)performSavepoint:(id)a3
+- (BOOL)performSavepoint:(id)savepoint
 {
-  v4 = a3;
+  savepointCopy = savepoint;
   v5 = +[NSUUID UUID];
-  v6 = [v5 UUIDString];
-  v7 = [v6 stringByReplacingOccurrencesOfString:@"-" withString:&stru_10039AA00];
+  uUIDString = [v5 UUIDString];
+  v7 = [uUIDString stringByReplacingOccurrencesOfString:@"-" withString:&stru_10039AA00];
   v8 = [NSString stringWithFormat:@"SP_%@", v7];
 
   v9 = [NSString stringWithFormat:@"SAVEPOINT %@", v8];
-  LODWORD(v6) = [(SQLiteConnection *)self executeStatement:v9 error:0];
+  LODWORD(uUIDString) = [(SQLiteConnection *)self executeStatement:v9 error:0];
 
-  if (!v6)
+  if (!uUIDString)
   {
     goto LABEL_5;
   }
 
-  if (!v4[2](v4))
+  if (!savepointCopy[2](savepointCopy))
   {
     v12 = [NSString stringWithFormat:@"ROLLBACK TRANSACTION TO SAVEPOINT %@", v8];
     [(SQLiteConnection *)self executeStatement:v12 error:0];
@@ -341,9 +341,9 @@ LABEL_6:
   return v11;
 }
 
-- (void)performTransaction:(id)a3
+- (void)performTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   transactionDepth = self->_transactionDepth;
   if (transactionDepth < 1)
   {
@@ -362,7 +362,7 @@ LABEL_6:
   }
 
   os_variant_has_internal_content();
-  v6 = v4[2](v4);
+  v6 = transactionCopy[2](transactionCopy);
   v7 = self->_transactionDepth;
   v8 = self->_transactionWantsRollback | v6 ^ 1;
   self->_transactionWantsRollback = v8 & 1;
@@ -386,17 +386,17 @@ LABEL_6:
 LABEL_10:
 }
 
-- (id)prepareStatement:(id)a3 error:(id *)a4
+- (id)prepareStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
+  statementCopy = statement;
   if ([(SQLiteConnection *)self _open])
   {
     v12 = 0;
-    v7 = [(SQLiteConnection *)self _prepareStatement:v6 error:&v12];
+    v7 = [(SQLiteConnection *)self _prepareStatement:statementCopy error:&v12];
     v8 = v12;
     if (v7)
     {
-      v9 = [[SQLitePreparedStatement alloc] initWithConnection:self SQL:v6];
+      v9 = [[SQLitePreparedStatement alloc] initWithConnection:self SQL:statementCopy];
       [(NSMapTable *)self->_preparedStatements setObject:v7 forKey:v9];
     }
 
@@ -405,7 +405,7 @@ LABEL_10:
       v9 = 0;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -415,7 +415,7 @@ LABEL_10:
   {
     v8 = [NSError errorWithDomain:@"SQLiteErrorDomain" code:-7700 userInfo:0];
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_10;
     }
@@ -424,7 +424,7 @@ LABEL_10:
   if (!v9)
   {
     v10 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_10:
@@ -452,7 +452,7 @@ LABEL_10:
   return v4;
 }
 
-- (BOOL)tableExists:(id)a3
+- (BOOL)tableExists:(id)exists
 {
   v9 = 0;
   v10 = &v9;
@@ -462,8 +462,8 @@ LABEL_10:
   v6[1] = 3221225472;
   v6[2] = sub_100026278;
   v6[3] = &unk_10037F9D8;
-  v4 = a3;
-  v7 = v4;
+  existsCopy = exists;
+  v7 = existsCopy;
   v8 = &v9;
   [(SQLiteConnection *)self executeQuery:@"SELECT name FROM sqlite_master where name = ?" withResults:v6];
   LOBYTE(self) = *(v10 + 24);
@@ -472,10 +472,10 @@ LABEL_10:
   return self;
 }
 
-- (BOOL)addFunction:(id)a3
+- (BOOL)addFunction:(id)function
 {
-  v4 = a3;
-  v5 = v4;
+  functionCopy = function;
+  v5 = functionCopy;
   if (self->_database)
   {
     v12 = 0;
@@ -487,7 +487,7 @@ LABEL_10:
     v9[2] = sub_100026408;
     v9[3] = &unk_100380A70;
     v9[4] = self;
-    v10 = v4;
+    v10 = functionCopy;
     v11 = &v12;
     [v10 withUnsafePropertyPointers:v9];
     v6 = *(v13 + 24);
@@ -514,25 +514,25 @@ LABEL_10:
   return v6 & 1;
 }
 
-- (BOOL)removeFunction:(id)a3
+- (BOOL)removeFunction:(id)function
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v4 argumentCount];
+  functionCopy = function;
+  name = [functionCopy name];
+  argumentCount = [functionCopy argumentCount];
 
-  LOBYTE(self) = [(SQLiteConnection *)self removeFunctionNamed:v5 withArgumentCount:v6];
+  LOBYTE(self) = [(SQLiteConnection *)self removeFunctionNamed:name withArgumentCount:argumentCount];
   return self;
 }
 
-- (BOOL)removeFunctionNamed:(id)a3 withArgumentCount:(int64_t)a4
+- (BOOL)removeFunctionNamed:(id)named withArgumentCount:(int64_t)count
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
+  countCopy = count;
+  namedCopy = named;
+  v7 = namedCopy;
   database = self->_database;
   if (database)
   {
-    v9 = sqlite3_create_function_v2(database, [v6 UTF8String], v4, 1, 0, 0, 0, 0, 0) == 0;
+    v9 = sqlite3_create_function_v2(database, [namedCopy UTF8String], countCopy, 1, 0, 0, 0, 0, 0) == 0;
   }
 
   else
@@ -585,11 +585,11 @@ LABEL_10:
     v5 = objc_opt_class();
     options = self->_options;
     v7 = v5;
-    v8 = [(SQLiteConnectionOptions *)options databasePath];
+    databasePath = [(SQLiteConnectionOptions *)options databasePath];
     v11 = 138543618;
     v12 = v5;
     v13 = 2114;
-    v14 = v8;
+    v14 = databasePath;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Closing database at path: %{public}@", &v11, 0x16u);
   }
 
@@ -609,33 +609,33 @@ LABEL_10:
   return result;
 }
 
-- (BOOL)_executeStatement:(id)a3 error:(id *)a4
+- (BOOL)_executeStatement:(id)statement error:(id *)error
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_10002686C;
   v9[3] = &unk_100380A98;
-  v6 = a3;
-  v10 = v6;
-  v7 = [(SQLiteConnection *)self _executeWithError:a4 usingBlock:v9];
+  statementCopy = statement;
+  v10 = statementCopy;
+  v7 = [(SQLiteConnection *)self _executeWithError:error usingBlock:v9];
   if (v7)
   {
-    [v6 reset];
+    [statementCopy reset];
   }
 
   return v7;
 }
 
-- (BOOL)_executeWithError:(id *)a3 usingBlock:(id)a4
+- (BOOL)_executeWithError:(id *)error usingBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = 0;
   v8 = 0;
   while (1)
   {
     v9 = objc_autoreleasePoolPush();
     v17 = 0;
-    v10 = v6[2](v6, &v17);
+    v10 = blockCopy[2](blockCopy, &v17);
     if (v10 <= 9)
     {
       if ((v10 - 5) >= 2)
@@ -673,7 +673,7 @@ LABEL_25:
         v7 = 1;
 LABEL_26:
         objc_autoreleasePoolPop(v9);
-        if (!a3)
+        if (!error)
         {
           goto LABEL_29;
         }
@@ -695,7 +695,7 @@ LABEL_9:
     if (v11)
     {
       v12 = 0;
-      if (!a3)
+      if (!error)
       {
         goto LABEL_29;
       }
@@ -711,7 +711,7 @@ LABEL_9:
       v12 = sub_100019A20(self->_database);
       objc_autoreleasePoolPop(v9);
       [(SQLiteConnection *)self _resetAfterCorruptionError];
-      if (!a3)
+      if (!error)
       {
         goto LABEL_29;
       }
@@ -725,7 +725,7 @@ LABEL_9:
   v12 = sub_100019A20(self->_database);
   objc_autoreleasePoolPop(v9);
   [(SQLiteConnection *)self _resetAfterIOError];
-  if (!a3)
+  if (!error)
   {
     goto LABEL_29;
   }
@@ -734,7 +734,7 @@ LABEL_27:
   if ((v7 & 1) == 0)
   {
     v15 = v12;
-    *a3 = v12;
+    *error = v12;
   }
 
 LABEL_29:
@@ -748,8 +748,8 @@ LABEL_29:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(NSMapTable *)self->_preparedStatements objectEnumerator];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)self->_preparedStatements objectEnumerator];
+  v4 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -761,7 +761,7 @@ LABEL_29:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         [*(*(&v10 + 1) + 8 * v7) finalizeStatement];
@@ -769,7 +769,7 @@ LABEL_29:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -829,11 +829,11 @@ LABEL_29:
     v6 = objc_opt_class();
     options = self->_options;
     v8 = v6;
-    v9 = [(SQLiteConnectionOptions *)options databasePath];
+    databasePath = [(SQLiteConnectionOptions *)options databasePath];
     *db = 138543618;
     *&db[4] = v6;
     v17 = 2114;
-    v18 = v9;
+    v18 = databasePath;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}@]: Opening database at path: %{public}@", db, 0x16u);
   }
 
@@ -886,8 +886,8 @@ LABEL_29:
       sub_1002C9570(v5);
     }
 
-    v6 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v6 connectionNeedsResetForCorruption:self];
+    databasePath = objc_loadWeakRetained(&self->_delegate);
+    v7 = [databasePath connectionNeedsResetForCorruption:self];
 LABEL_14:
     v8 = v7;
 
@@ -907,17 +907,17 @@ LABEL_14:
       sub_1002C9498(v9);
     }
 
-    v6 = [(SQLiteConnectionOptions *)self->_options databasePath];
-    v7 = sub_100019CF8(v6);
+    databasePath = [(SQLiteConnectionOptions *)self->_options databasePath];
+    v7 = sub_100019CF8(databasePath);
     goto LABEL_14;
   }
 
   return 0;
 }
 
-- (id)_prepareStatement:(id)a3 error:(id *)a4
+- (id)_prepareStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
+  statementCopy = statement;
   v10 = 0;
   v11 = &v10;
   v12 = 0x3032000000;
@@ -929,9 +929,9 @@ LABEL_14:
   v9[2] = sub_100027180;
   v9[3] = &unk_100380AC0;
   v9[5] = &v10;
-  v9[6] = [v6 UTF8String];
+  v9[6] = [statementCopy UTF8String];
   v9[4] = self;
-  [(SQLiteConnection *)self _executeWithError:a4 usingBlock:v9];
+  [(SQLiteConnection *)self _executeWithError:error usingBlock:v9];
   v7 = v11[5];
   _Block_object_dispose(&v10, 8);
 
@@ -982,7 +982,7 @@ LABEL_14:
     {
 LABEL_9:
       [(SQLiteConnection *)self _close];
-      v7 = [(SQLiteConnection *)self _performResetAfterCorruptionError];
+      _performResetAfterCorruptionError = [(SQLiteConnection *)self _performResetAfterCorruptionError];
       goto LABEL_10;
     }
 
@@ -1008,23 +1008,23 @@ LABEL_9:
     }
 
     v12 = objc_loadWeakRetained(&self->_delegate);
-    v7 = [v12 connectionNeedsResetForReopen:self];
+    _performResetAfterCorruptionError = [v12 connectionNeedsResetForReopen:self];
   }
 
   else
   {
-    v7 = 1;
+    _performResetAfterCorruptionError = 1;
   }
 
 LABEL_10:
 
-  return v7;
+  return _performResetAfterCorruptionError;
 }
 
-- (id)_statementForPreparedStatement:(id)a3 error:(id *)a4
+- (id)_statementForPreparedStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NSMapTable *)self->_preparedStatements objectForKey:v6];
+  statementCopy = statement;
+  v7 = [(NSMapTable *)self->_preparedStatements objectForKey:statementCopy];
   if (v7)
   {
     v8 = v7;
@@ -1033,21 +1033,21 @@ LABEL_10:
 
   else
   {
-    v10 = [v6 SQL];
+    v10 = [statementCopy SQL];
     v13 = 0;
     v8 = [(SQLiteConnection *)self _prepareStatement:v10 error:&v13];
     v9 = v13;
 
     if (v8)
     {
-      [(NSMapTable *)self->_preparedStatements setObject:v8 forKey:v6];
+      [(NSMapTable *)self->_preparedStatements setObject:v8 forKey:statementCopy];
     }
 
-    else if (a4)
+    else if (error)
     {
       v11 = v9;
       v8 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else
@@ -1059,15 +1059,15 @@ LABEL_10:
   return v8;
 }
 
-- (id)_verifiedStatementForPreparedStatement:(id)a3 error:(id *)a4
+- (id)_verifiedStatementForPreparedStatement:(id)statement error:(id *)error
 {
-  v6 = a3;
-  if ([v6 connectionPointer] == self)
+  statementCopy = statement;
+  if ([statementCopy connectionPointer] == self)
   {
     if ([(SQLiteConnection *)self _open])
     {
       v13 = 0;
-      v9 = [(SQLiteConnection *)self _statementForPreparedStatement:v6 error:&v13];
+      v9 = [(SQLiteConnection *)self _statementForPreparedStatement:statementCopy error:&v13];
       v8 = v13;
       if (v9)
       {
@@ -1090,7 +1090,7 @@ LABEL_10:
         v7 = 0;
       }
 
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -1100,7 +1100,7 @@ LABEL_10:
     {
       v8 = [NSError errorWithDomain:@"SQLiteErrorDomain" code:-7700 userInfo:0];
       v7 = 0;
-      if (!a4)
+      if (!error)
       {
         goto LABEL_16;
       }
@@ -1112,7 +1112,7 @@ LABEL_10:
     [NSException raise:NSInvalidArgumentException format:@"Statement from a different connection"];
     v7 = 0;
     v8 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_16;
     }
@@ -1121,7 +1121,7 @@ LABEL_10:
   if (!v7)
   {
     v11 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_16:
@@ -1129,13 +1129,13 @@ LABEL_16:
   return v7;
 }
 
-- (id)_verifiedStatementForSQL:(id)a3 error:(id *)a4
+- (id)_verifiedStatementForSQL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   if ([(SQLiteConnection *)self _open])
   {
     v13 = 0;
-    v7 = [(SQLiteConnection *)self _prepareStatement:v6 error:&v13];
+    v7 = [(SQLiteConnection *)self _prepareStatement:lCopy error:&v13];
     v8 = v13;
     if (v7)
     {
@@ -1159,7 +1159,7 @@ LABEL_16:
       v9 = 0;
     }
 
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -1169,7 +1169,7 @@ LABEL_16:
   {
     v8 = [NSError errorWithDomain:@"SQLiteErrorDomain" code:-7700 userInfo:0];
     v9 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_13;
     }
@@ -1178,7 +1178,7 @@ LABEL_16:
   if (!v9)
   {
     v11 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
 LABEL_13:

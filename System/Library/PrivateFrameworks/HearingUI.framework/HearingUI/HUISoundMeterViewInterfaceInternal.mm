@@ -1,13 +1,13 @@
 @interface HUISoundMeterViewInterfaceInternal
 - (HUISoundMeterViewInterfaceInternal)init;
-- (void)updateViewsWithSlowLeq:(double)a3 fastLeq:(double)a4 thresholdLevel:(unint64_t)a5;
+- (void)updateViewsWithSlowLeq:(double)leq fastLeq:(double)fastLeq thresholdLevel:(unint64_t)level;
 @end
 
 @implementation HUISoundMeterViewInterfaceInternal
 
-- (void)updateViewsWithSlowLeq:(double)a3 fastLeq:(double)a4 thresholdLevel:(unint64_t)a5
+- (void)updateViewsWithSlowLeq:(double)leq fastLeq:(double)fastLeq thresholdLevel:(unint64_t)level
 {
-  v5 = self;
+  selfCopy = self;
   sub_25219F644();
 }
 

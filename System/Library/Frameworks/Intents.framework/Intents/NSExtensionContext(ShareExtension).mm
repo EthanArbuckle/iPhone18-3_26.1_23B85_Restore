@@ -9,22 +9,22 @@
 - (id)intent
 {
   os_unfair_lock_lock(&extentionContextIntentAccessorLock);
-  v2 = [a1 _intents_intent];
-  if ([a1 _intents_accessedIntent])
+  _intents_intent = [self _intents_intent];
+  if ([self _intents_accessedIntent])
   {
-    v3 = v2;
+    v3 = _intents_intent;
   }
 
   else
   {
-    v4 = [a1 _UUID];
-    v5 = [MEMORY[0x1E6963618] bundleProxyForCurrentProcess];
-    if (v5)
+    _UUID = [self _UUID];
+    bundleProxyForCurrentProcess = [MEMORY[0x1E6963618] bundleProxyForCurrentProcess];
+    if (bundleProxyForCurrentProcess)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v6 = v5;
+        v6 = bundleProxyForCurrentProcess;
       }
 
       else
@@ -40,8 +40,8 @@
 
     v7 = v6;
 
-    v8 = [v7 protocol];
-    v9 = [v8 isEqualToString:@"com.apple.share-services"];
+    protocol = [v7 protocol];
+    v9 = [protocol isEqualToString:@"com.apple.share-services"];
 
     if ((v9 & 1) == 0)
     {
@@ -50,21 +50,21 @@
     }
 
     v10 = +[INImageServiceConnection sharedConnection];
-    v3 = [v10 fetchShareExtensionIntentForExtensionContextUUID:v4];
+    v3 = [v10 fetchShareExtensionIntentForExtensionContextUUID:_UUID];
 
-    [a1 _intents_setIntent:v3];
-    [a1 _intents_setAccessedIntent:1];
-    if (v4 && v3)
+    [self _intents_setIntent:v3];
+    [self _intents_setAccessedIntent:1];
+    if (_UUID && v3)
     {
-      v11 = [v3 _className];
-      [INIntent _setSharedExtensionContextUUID:v4 forIntentClassName:v11];
+      _className = [v3 _className];
+      [INIntent _setSharedExtensionContextUUID:_UUID forIntentClassName:_className];
     }
 
     v12 = objc_opt_class();
     v13 = NSStringFromClass(v12);
     if (!v3 || ([v3 _className], v14 = objc_claimAutoreleasedReturnValue(), v15 = objc_msgSend(v14, "isEqualToString:", v13), v14, (v15 & 1) == 0))
     {
-      [INIntent _setSharedExtensionContextUUID:v4 forIntentClassName:v13];
+      [INIntent _setSharedExtensionContextUUID:_UUID forIntentClassName:v13];
     }
   }
 
@@ -77,15 +77,15 @@
 {
   v2 = _accessedIntentPropertyKey;
   v3 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, v2, v3, 1);
+  objc_setAssociatedObject(self, v2, v3, 1);
 }
 
 - (uint64_t)_intents_accessedIntent
 {
-  v1 = objc_getAssociatedObject(a1, _accessedIntentPropertyKey);
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, _accessedIntentPropertyKey);
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 @end

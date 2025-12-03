@@ -21,7 +21,7 @@
   v39[2] = __114__NSFileManager_HealthContentDaemon__hk_enumerateDirectoryAtURL_includingPropertiesForKeys_options_error_handler___block_invoke;
   v39[3] = &unk_2796BA1B8;
   v39[4] = &v40;
-  [a1 enumeratorAtURL:v12 includingPropertiesForKeys:v13 options:a5 errorHandler:v39];
+  [self enumeratorAtURL:v12 includingPropertiesForKeys:v13 options:a5 errorHandler:v39];
   v26 = v12;
   v27 = v13;
   v35 = 0;

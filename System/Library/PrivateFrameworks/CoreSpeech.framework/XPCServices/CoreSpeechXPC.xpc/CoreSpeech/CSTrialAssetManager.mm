@@ -1,29 +1,29 @@
 @interface CSTrialAssetManager
 + (id)sharedInstance;
 - (CSTrialAssetManager)init;
-- (void)getInstalledAssetofType:(unint64_t)a3 forLocale:(id)a4 completion:(id)a5;
+- (void)getInstalledAssetofType:(unint64_t)type forLocale:(id)locale completion:(id)completion;
 @end
 
 @implementation CSTrialAssetManager
 
-- (void)getInstalledAssetofType:(unint64_t)a3 forLocale:(id)a4 completion:(id)a5
+- (void)getInstalledAssetofType:(unint64_t)type forLocale:(id)locale completion:(id)completion
 {
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100006380;
   v7[3] = &unk_10001C638;
   v7[4] = self;
-  v8 = a5;
-  v9 = a3;
-  v6 = v8;
-  [CSUtils getTrialIdsForAssetType:a3 withCompletion:v7];
+  completionCopy = completion;
+  typeCopy = type;
+  v6 = completionCopy;
+  [CSUtils getTrialIdsForAssetType:type withCompletion:v7];
 }
 
 - (CSTrialAssetManager)init
 {
   if ((+[CSUtils isDarwinOS]& 1) != 0)
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -62,13 +62,13 @@
               objc_enumerationMutation(v6);
             }
 
-            v11 = [*(*(&v16 + 1) + 8 * i) unsignedIntegerValue];
+            unsignedIntegerValue = [*(*(&v16 + 1) + 8 * i) unsignedIntegerValue];
             v14[0] = _NSConcreteStackBlock;
             v14[1] = 3221225472;
             v14[2] = sub_100006A20;
             v14[3] = &unk_10001C610;
             v15 = v5;
-            [CSUtils getTrialIdsForAssetType:v11 withCompletion:v14];
+            [CSUtils getTrialIdsForAssetType:unsignedIntegerValue withCompletion:v14];
           }
 
           v8 = [v6 countByEnumeratingWithState:&v16 objects:v21 count:16];
@@ -82,10 +82,10 @@
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (id)sharedInstance

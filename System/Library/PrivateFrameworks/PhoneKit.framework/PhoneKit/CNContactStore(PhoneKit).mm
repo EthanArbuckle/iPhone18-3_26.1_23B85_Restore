@@ -10,7 +10,7 @@
 
 + (id)contactStore
 {
-  if ([a1 phoneKit_isAuthorized])
+  if ([self phoneKit_isAuthorized])
   {
     v1 = objc_alloc_init(MEMORY[0x277CBDAC0]);
     [v1 setIncludeLocalContacts:1];
@@ -38,7 +38,7 @@
 
 + (id)suggestedContactStore
 {
-  if ([a1 phoneKit_isAuthorized])
+  if ([self phoneKit_isAuthorized])
   {
     v1 = objc_alloc_init(MEMORY[0x277CBDAC0]);
     [v1 setIncludeLocalContacts:1];
@@ -78,9 +78,9 @@
   v49 = v9;
   if (![v8 count])
   {
-    v16 = a1;
+    selfCopy6 = self;
     v17 = a5;
-    v18 = 0;
+    value = 0;
     goto LABEL_21;
   }
 
@@ -99,7 +99,7 @@
       *buf = 138740227;
       v56 = v10;
       v57 = 2117;
-      v58 = a1;
+      selfCopy3 = self;
       _os_log_impl(&dword_25E4EC000, v14, OS_LOG_TYPE_DEFAULT, "Executing contact fetch request %{sensitive}@ without always unifying labels using contact store %{sensitive}@", buf, 0x16u);
     }
 
@@ -113,23 +113,23 @@
       *buf = 138740227;
       v56 = v10;
       v57 = 2117;
-      v58 = a1;
+      selfCopy3 = self;
       _os_log_impl(&dword_25E4EC000, v14, OS_LOG_TYPE_DEFAULT, "Executing contact fetch request %{sensitive}@ using contact store %{sensitive}@", buf, 0x16u);
     }
   }
 
   v54 = 0;
-  v19 = [a1 executeFetchRequest:v10 error:&v54];
+  v19 = [self executeFetchRequest:v10 error:&v54];
   v20 = v54;
   v21 = v20;
   if (v19)
   {
-    v18 = [v19 value];
+    value = [v19 value];
     v22 = PHDefaultLog();
-    v16 = a1;
+    selfCopy6 = self;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = [v18 count];
+      v23 = [value count];
       *buf = 134217984;
       v56 = v23;
       _os_log_impl(&dword_25E4EC000, v22, OS_LOG_TYPE_DEFAULT, "Contact fetch request returned %lu results", buf, 0xCu);
@@ -144,27 +144,27 @@ LABEL_19:
   if (v20 && [v20 code] != 200)
   {
     v22 = PHDefaultLog();
-    v16 = a1;
+    selfCopy6 = self;
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
     {
       [(CNContactStore(PhoneKit) *)v21 contactsForHandles:v22 keyDescriptors:v24 alwaysUnifyLabeledValues:v25, v26, v27, v28, v29];
     }
 
-    v18 = 0;
+    value = 0;
     goto LABEL_19;
   }
 
-  v16 = a1;
+  selfCopy6 = self;
   v17 = a5;
-  v18 = 0;
+  value = 0;
 LABEL_20:
 
 LABEL_21:
   v30 = MEMORY[0x277CBEB98];
-  v31 = [v18 allKeys];
-  v32 = [v30 setWithArray:v31];
+  allKeys = [value allKeys];
+  v32 = [v30 setWithArray:allKeys];
 
-  v33 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
@@ -187,7 +187,7 @@ LABEL_21:
         v39 = *(*(&v50 + 1) + 8 * i);
         if (([v32 containsObject:v39] & 1) == 0)
         {
-          [v33 addObject:v39];
+          [array addObject:v39];
         }
       }
 
@@ -197,19 +197,19 @@ LABEL_21:
     while (v36);
   }
 
-  v40 = [v16 __contactsForHandles:v33 keyDescriptors:v49 alwaysUnifyLabeledValues:v17];
-  v41 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:v18];
+  v40 = [selfCopy6 __contactsForHandles:array keyDescriptors:v49 alwaysUnifyLabeledValues:v17];
+  v41 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:value];
   [v41 addEntriesFromDictionary:v40];
   v42 = PHDefaultLog();
   if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
   {
-    v43 = [v18 count];
+    v43 = [value count];
     v44 = [v40 count];
     v45 = [v41 count];
     *buf = 134218496;
     v56 = v43;
     v57 = 2048;
-    v58 = v44;
+    selfCopy3 = v44;
     v59 = 2048;
     v60 = v45;
     _os_log_impl(&dword_25E4EC000, v42, OS_LOG_TYPE_DEFAULT, "TOTAL contacts fetched: regular = %lu accepted = %lu, combined = %lu", buf, 0x20u);
@@ -226,13 +226,13 @@ LABEL_21:
   v37 = *MEMORY[0x277D85DE8];
   v6 = a3;
   v7 = a4;
-  v29 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ([v6 count])
   {
     [MEMORY[0x277CBDA58] predicateForContactsMatchingHandleStrings:v6];
     v26 = v34 = 0;
     v27 = v7;
-    v8 = [a1 unifiedContactsMatchingPredicate:? keysToFetch:? error:?];
+    v8 = [self unifiedContactsMatchingPredicate:? keysToFetch:? error:?];
     v25 = v34;
     v28 = v6;
     v9 = [MEMORY[0x277CBEB98] setWithArray:v6];
@@ -256,23 +256,23 @@ LABEL_21:
           }
 
           v15 = *(*(&v30 + 1) + 8 * i);
-          v16 = [v15 phoneNumbers];
-          v17 = [v16 firstObject];
-          v18 = [v17 value];
-          v19 = [v18 stringValue];
+          phoneNumbers = [v15 phoneNumbers];
+          firstObject = [phoneNumbers firstObject];
+          value = [firstObject value];
+          stringValue = [value stringValue];
 
-          if (!v19)
+          if (!stringValue)
           {
-            v20 = [v15 emailAddresses];
-            v21 = [v20 firstObject];
-            v19 = [v21 value];
+            emailAddresses = [v15 emailAddresses];
+            firstObject2 = [emailAddresses firstObject];
+            stringValue = [firstObject2 value];
           }
 
-          if ([v19 length] && objc_msgSend(v9, "containsObject:", v19))
+          if ([stringValue length] && objc_msgSend(v9, "containsObject:", stringValue))
           {
             v35 = v15;
             v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v35 count:1];
-            [v29 setObject:v22 forKeyedSubscript:v19];
+            [dictionary setObject:v22 forKeyedSubscript:stringValue];
           }
         }
 
@@ -288,13 +288,13 @@ LABEL_21:
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v29;
+  return dictionary;
 }
 
 + (void)contactStore
 {
   v9 = *MEMORY[0x277D85DE8];
-  OUTLINED_FUNCTION_0(&dword_25E4EC000, a1, a3, "%@", a5, a6, a7, a8, 2u);
+  OUTLINED_FUNCTION_0(&dword_25E4EC000, self, a3, "%@", a5, a6, a7, a8, 2u);
   v8 = *MEMORY[0x277D85DE8];
 }
 

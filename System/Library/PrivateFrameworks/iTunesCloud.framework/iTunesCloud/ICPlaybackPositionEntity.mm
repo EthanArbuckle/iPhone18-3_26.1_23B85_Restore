@@ -1,19 +1,19 @@
 @interface ICPlaybackPositionEntity
-+ (id)keyValueStoreItemIdentifierForUniqueStoreID:(int64_t)a3 itemTitle:(id)a4 albumName:(id)a5 itemArtistName:(id)a6 feedURL:(id)a7 feedGUID:(id)a8;
-- (BOOL)isEqual:(id)a3;
-- (ICPlaybackPositionEntity)initWithCoder:(id)a3;
-- (ICPlaybackPositionEntity)initWithDomain:(id)a3;
-- (ICPlaybackPositionEntity)initWithDomain:(id)a3 playbackPositionKey:(id)a4 persistentIdentifier:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)keyValueStoreItemIdentifierForUniqueStoreID:(int64_t)d itemTitle:(id)title albumName:(id)name itemArtistName:(id)artistName feedURL:(id)l feedGUID:(id)iD;
+- (BOOL)isEqual:(id)equal;
+- (ICPlaybackPositionEntity)initWithCoder:(id)coder;
+- (ICPlaybackPositionEntity)initWithDomain:(id)domain;
+- (ICPlaybackPositionEntity)initWithDomain:(id)domain playbackPositionKey:(id)key persistentIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICPlaybackPositionEntity
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithDomain:", self->_playbackPositionDomain}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithDomain:", self->_playbackPositionDomain}];
   [v4 setPlaybackPositionKey:self->_playbackPositionKey];
   [v4 setLibraryIdentifier:self->_libraryIdentifier];
   [v4 setItemPersistentIdentifier:self->_itemPersistentIdentifier];
@@ -24,38 +24,38 @@
   return v4;
 }
 
-- (ICPlaybackPositionEntity)initWithCoder:(id)a3
+- (ICPlaybackPositionEntity)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domain"];
   v6 = [(ICPlaybackPositionEntity *)self initWithDomain:v5];
   if (v6)
   {
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"key"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"key"];
     playbackPositionKey = v6->_playbackPositionKey;
     v6->_playbackPositionKey = v7;
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"libraryUID"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"libraryUID"];
     libraryIdentifier = v6->_libraryIdentifier;
     v6->_libraryIdentifier = v9;
 
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemPersistenIdentifier"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemPersistenIdentifier"];
     itemPersistentIdentifier = v6->_itemPersistentIdentifier;
     v6->_itemPersistentIdentifier = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bookmarkTimestamp"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bookmarkTimestamp"];
     bookmarkTimestamp = v6->_bookmarkTimestamp;
     v6->_bookmarkTimestamp = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bookmarkTime"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bookmarkTime"];
     bookmarkTime = v6->_bookmarkTime;
     v6->_bookmarkTime = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"playCount"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"playCount"];
     userPlayCount = v6->_userPlayCount;
     v6->_userPlayCount = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hasBeenPlayed"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hasBeenPlayed"];
     hasBeenPlayed = v6->_hasBeenPlayed;
     v6->_hasBeenPlayed = v19;
   }
@@ -63,18 +63,18 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   playbackPositionDomain = self->_playbackPositionDomain;
-  v5 = a3;
-  [v5 encodeObject:playbackPositionDomain forKey:@"domain"];
-  [v5 encodeObject:self->_playbackPositionKey forKey:@"key"];
-  [v5 encodeObject:self->_libraryIdentifier forKey:@"libraryUID"];
-  [v5 encodeObject:self->_itemPersistentIdentifier forKey:@"itemPersistenIdentifier"];
-  [v5 encodeObject:self->_bookmarkTimestamp forKey:@"bookmarkTimestamp"];
-  [v5 encodeObject:self->_bookmarkTime forKey:@"bookmarkTime"];
-  [v5 encodeObject:self->_userPlayCount forKey:@"playCount"];
-  [v5 encodeObject:self->_hasBeenPlayed forKey:@"hasBeenPlayed"];
+  coderCopy = coder;
+  [coderCopy encodeObject:playbackPositionDomain forKey:@"domain"];
+  [coderCopy encodeObject:self->_playbackPositionKey forKey:@"key"];
+  [coderCopy encodeObject:self->_libraryIdentifier forKey:@"libraryUID"];
+  [coderCopy encodeObject:self->_itemPersistentIdentifier forKey:@"itemPersistenIdentifier"];
+  [coderCopy encodeObject:self->_bookmarkTimestamp forKey:@"bookmarkTimestamp"];
+  [coderCopy encodeObject:self->_bookmarkTime forKey:@"bookmarkTime"];
+  [coderCopy encodeObject:self->_userPlayCount forKey:@"playCount"];
+  [coderCopy encodeObject:self->_hasBeenPlayed forKey:@"hasBeenPlayed"];
 }
 
 - (unint64_t)hash
@@ -232,42 +232,42 @@
   return (v105 + v106) ^ __ROR8__(v105, 47) ^ v108 ^ __ROR8__(v105 + v106, 32) ^ v108 ^ __ROR8__(v106 ^ v107, 43);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     playbackPositionDomain = self->_playbackPositionDomain;
-    v6 = [v4 playbackPositionDomain];
-    if ([(NSString *)playbackPositionDomain isEqual:v6])
+    playbackPositionDomain = [equalCopy playbackPositionDomain];
+    if ([(NSString *)playbackPositionDomain isEqual:playbackPositionDomain])
     {
       playbackPositionKey = self->_playbackPositionKey;
-      v8 = [v4 playbackPositionKey];
-      if ([(NSString *)playbackPositionKey isEqualToString:v8])
+      playbackPositionKey = [equalCopy playbackPositionKey];
+      if ([(NSString *)playbackPositionKey isEqualToString:playbackPositionKey])
       {
         libraryIdentifier = self->_libraryIdentifier;
-        v10 = [v4 libraryIdentifier];
-        if ([(NSString *)libraryIdentifier isEqualToString:v10])
+        libraryIdentifier = [equalCopy libraryIdentifier];
+        if ([(NSString *)libraryIdentifier isEqualToString:libraryIdentifier])
         {
           itemPersistentIdentifier = self->_itemPersistentIdentifier;
-          v12 = [v4 itemPersistentIdentifier];
-          if ([(NSNumber *)itemPersistentIdentifier isEqual:v12])
+          itemPersistentIdentifier = [equalCopy itemPersistentIdentifier];
+          if ([(NSNumber *)itemPersistentIdentifier isEqual:itemPersistentIdentifier])
           {
             bookmarkTimestamp = self->_bookmarkTimestamp;
-            v14 = [v4 bookmarkTimestamp];
-            if ([(NSNumber *)bookmarkTimestamp isEqual:v14])
+            bookmarkTimestamp = [equalCopy bookmarkTimestamp];
+            if ([(NSNumber *)bookmarkTimestamp isEqual:bookmarkTimestamp])
             {
               bookmarkTime = self->_bookmarkTime;
-              v16 = [v4 bookmarkTime];
-              if ([(NSNumber *)bookmarkTime isEqual:v16])
+              bookmarkTime = [equalCopy bookmarkTime];
+              if ([(NSNumber *)bookmarkTime isEqual:bookmarkTime])
               {
                 userPlayCount = self->_userPlayCount;
-                v18 = [v4 userPlayCount];
-                if ([(NSNumber *)userPlayCount isEqual:v18])
+                userPlayCount = [equalCopy userPlayCount];
+                if ([(NSNumber *)userPlayCount isEqual:userPlayCount])
                 {
                   hasBeenPlayed = self->_hasBeenPlayed;
-                  v20 = [v4 hasBeenPlayed];
-                  v21 = [(NSNumber *)hasBeenPlayed isEqual:v20];
+                  hasBeenPlayed = [equalCopy hasBeenPlayed];
+                  v21 = [(NSNumber *)hasBeenPlayed isEqual:hasBeenPlayed];
                 }
 
                 else
@@ -320,53 +320,53 @@
   return v21;
 }
 
-- (ICPlaybackPositionEntity)initWithDomain:(id)a3
+- (ICPlaybackPositionEntity)initWithDomain:(id)domain
 {
-  v5 = a3;
+  domainCopy = domain;
   v9.receiver = self;
   v9.super_class = ICPlaybackPositionEntity;
   v6 = [(ICPlaybackPositionEntity *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_playbackPositionDomain, a3);
+    objc_storeStrong(&v6->_playbackPositionDomain, domain);
   }
 
   return v7;
 }
 
-- (ICPlaybackPositionEntity)initWithDomain:(id)a3 playbackPositionKey:(id)a4 persistentIdentifier:(id)a5
+- (ICPlaybackPositionEntity)initWithDomain:(id)domain playbackPositionKey:(id)key persistentIdentifier:(id)identifier
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [(ICPlaybackPositionEntity *)self initWithDomain:a3];
+  keyCopy = key;
+  identifierCopy = identifier;
+  v11 = [(ICPlaybackPositionEntity *)self initWithDomain:domain];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_playbackPositionKey, a4);
-    objc_storeStrong(&v12->_itemPersistentIdentifier, a5);
+    objc_storeStrong(&v11->_playbackPositionKey, key);
+    objc_storeStrong(&v12->_itemPersistentIdentifier, identifier);
   }
 
   return v12;
 }
 
-+ (id)keyValueStoreItemIdentifierForUniqueStoreID:(int64_t)a3 itemTitle:(id)a4 albumName:(id)a5 itemArtistName:(id)a6 feedURL:(id)a7 feedGUID:(id)a8
++ (id)keyValueStoreItemIdentifierForUniqueStoreID:(int64_t)d itemTitle:(id)title albumName:(id)name itemArtistName:(id)artistName feedURL:(id)l feedGUID:(id)iD
 {
   v57[4] = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = v17;
-  if (!a3 || v16 || v17)
+  titleCopy = title;
+  nameCopy = name;
+  artistNameCopy = artistName;
+  lCopy = l;
+  iDCopy = iD;
+  v18 = iDCopy;
+  if (!d || lCopy || iDCopy)
   {
     v20 = getML3TrackPropertyTitle();
     v56[0] = v20;
-    v50 = v13;
-    if (v13)
+    v50 = titleCopy;
+    if (titleCopy)
     {
-      v21 = v13;
+      v21 = titleCopy;
     }
 
     else
@@ -377,9 +377,9 @@
     v57[0] = v21;
     v22 = getML3TrackPropertyAlbum();
     v56[1] = v22;
-    if (v14)
+    if (nameCopy)
     {
-      v23 = v14;
+      v23 = nameCopy;
     }
 
     else
@@ -390,9 +390,9 @@
     v57[1] = v23;
     v24 = getML3TrackPropertyArtist();
     v56[2] = v24;
-    if (v15)
+    if (artistNameCopy)
     {
-      v25 = v15;
+      v25 = artistNameCopy;
     }
 
     else
@@ -417,10 +417,10 @@
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v57 forKeys:v56 count:4];
     v29 = [v28 mutableCopy];
 
-    if (v16)
+    if (lCopy)
     {
       v30 = getML3TrackPropertyFeedURL();
-      [v29 setObject:v16 forKeyedSubscript:v30];
+      [v29 setObject:lCopy forKeyedSubscript:v30];
     }
 
     v31 = getML3TrackPropertyFeedURL();
@@ -430,7 +430,7 @@
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v55 count:2];
     v19 = ICPlaybackPositionEntityIdentifierForProperties(v33, v29);
 
-    v13 = v50;
+    titleCopy = v50;
     if (!v19)
     {
       v34 = getML3TrackPropertyTitle();
@@ -483,7 +483,7 @@
 
   else
   {
-    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", a3];
+    v19 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%llu", d];
   }
 
   return v19;

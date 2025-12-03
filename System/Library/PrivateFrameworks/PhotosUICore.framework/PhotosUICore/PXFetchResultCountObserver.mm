@@ -1,10 +1,10 @@
 @interface PXFetchResultCountObserver
 - (PXFetchResultCountObserver)init;
-- (PXFetchResultCountObserver)initWithQOSClass:(unsigned int)a3 photoLibrary:(id)a4 fetchResultBlock:(id)a5;
+- (PXFetchResultCountObserver)initWithQOSClass:(unsigned int)class photoLibrary:(id)library fetchResultBlock:(id)block;
 - (PXFetchResultCountObserverDelegate)delegate;
-- (void)_serialQueue_acquireFetchResultFromBlock:(id)a3;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)setFetchResultCount:(int64_t)a3;
+- (void)_serialQueue_acquireFetchResultFromBlock:(id)block;
+- (void)photoLibraryDidChange:(id)change;
+- (void)setFetchResultCount:(int64_t)count;
 @end
 
 @implementation PXFetchResultCountObserver
@@ -16,9 +16,9 @@
   return WeakRetained;
 }
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
@@ -35,18 +35,18 @@
   dispatch_sync(serialQueue, block);
   if (v19[5])
   {
-    v6 = [v4 changeDetailsForFetchResult:?];
+    v6 = [changeCopy changeDetailsForFetchResult:?];
     v7 = v6;
     if (v6)
     {
-      v8 = [v6 fetchResultAfterChanges];
+      fetchResultAfterChanges = [v6 fetchResultAfterChanges];
       v9 = self->_serialQueue;
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __52__PXFetchResultCountObserver_photoLibraryDidChange___block_invoke_2;
       v15[3] = &unk_1E774C620;
       v15[4] = self;
-      v10 = v8;
+      v10 = fetchResultAfterChanges;
       v16 = v10;
       dispatch_sync(v9, v15);
       v11 = [v10 count];
@@ -81,40 +81,40 @@ void __52__PXFetchResultCountObserver_photoLibraryDidChange___block_invoke_3(uin
   [WeakRetained setFetchResultCount:v1];
 }
 
-- (void)setFetchResultCount:(int64_t)a3
+- (void)setFetchResultCount:(int64_t)count
 {
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
-  if (self->_fetchResultCount != a3)
+  if (self->_fetchResultCount != count)
   {
-    self->_fetchResultCount = a3;
+    self->_fetchResultCount = count;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained fetchResultCountObserver:self didChangeFetchResultCount:a3];
+    [WeakRetained fetchResultCountObserver:self didChangeFetchResultCount:count];
   }
 }
 
-- (void)_serialQueue_acquireFetchResultFromBlock:(id)a3
+- (void)_serialQueue_acquireFetchResultFromBlock:(id)block
 {
   serialQueue = self->_serialQueue;
-  v6 = a3;
+  blockCopy = block;
   dispatch_assert_queue_V2(serialQueue);
-  v7 = v6[2](v6);
+  v7 = blockCopy[2](blockCopy);
 
   if (!v7)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"PXFetchResultCountObserver.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"fetchResult"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFetchResultCountObserver.m" lineNumber:62 description:{@"Invalid parameter not satisfying: %@", @"fetchResult"}];
   }
 
   [(PXFetchResultCountObserver *)self setFetchResult:v7];
-  v8 = [v7 photoLibrary];
-  v9 = [v8 photoLibraryURL];
-  v10 = [(PHPhotoLibrary *)self->_photoLibrary photoLibraryURL];
-  v11 = [v9 isEqual:v10];
+  photoLibrary = [v7 photoLibrary];
+  photoLibraryURL = [photoLibrary photoLibraryURL];
+  photoLibraryURL2 = [(PHPhotoLibrary *)self->_photoLibrary photoLibraryURL];
+  v11 = [photoLibraryURL isEqual:photoLibraryURL2];
 
   if ((v11 & 1) == 0)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PXFetchResultCountObserver.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"[photoLibrary.photoLibraryURL isEqual:_photoLibrary.photoLibraryURL]"}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXFetchResultCountObserver.m" lineNumber:66 description:{@"Invalid parameter not satisfying: %@", @"[photoLibrary.photoLibraryURL isEqual:_photoLibrary.photoLibraryURL]"}];
   }
 
   v12 = [v7 count];
@@ -137,14 +137,14 @@ void __71__PXFetchResultCountObserver__serialQueue_acquireFetchResultFromBlock__
   [WeakRetained setFetchResultCount:v1];
 }
 
-- (PXFetchResultCountObserver)initWithQOSClass:(unsigned int)a3 photoLibrary:(id)a4 fetchResultBlock:(id)a5
+- (PXFetchResultCountObserver)initWithQOSClass:(unsigned int)class photoLibrary:(id)library fetchResultBlock:(id)block
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  libraryCopy = library;
+  blockCopy = block;
+  v12 = blockCopy;
+  if (libraryCopy)
   {
-    if (v11)
+    if (blockCopy)
     {
       goto LABEL_3;
     }
@@ -152,8 +152,8 @@ void __71__PXFetchResultCountObserver__serialQueue_acquireFetchResultFromBlock__
 
   else
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PXFetchResultCountObserver.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXFetchResultCountObserver.m" lineNumber:34 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
 
     if (v12)
     {
@@ -161,8 +161,8 @@ void __71__PXFetchResultCountObserver__serialQueue_acquireFetchResultFromBlock__
     }
   }
 
-  v22 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v22 handleFailureInMethod:a2 object:self file:@"PXFetchResultCountObserver.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"fetchResultBlock"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PXFetchResultCountObserver.m" lineNumber:35 description:{@"Invalid parameter not satisfying: %@", @"fetchResultBlock"}];
 
 LABEL_3:
   v27.receiver = self;
@@ -173,13 +173,13 @@ LABEL_3:
   {
     v13->_fetchResultCount = -1;
     v15 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v16 = dispatch_queue_attr_make_with_qos_class(v15, a3, 0);
+    v16 = dispatch_queue_attr_make_with_qos_class(v15, class, 0);
 
     v17 = dispatch_queue_create("com.apple.PXFetchResultCountObserver", v16);
     serialQueue = v14->_serialQueue;
     v14->_serialQueue = v17;
 
-    objc_storeStrong(&v14->_photoLibrary, a4);
+    objc_storeStrong(&v14->_photoLibrary, library);
     [(PHPhotoLibrary *)v14->_photoLibrary registerChangeObserver:v14];
     objc_initWeak(&location, v14);
     block[0] = MEMORY[0x1E69E9820];
@@ -206,8 +206,8 @@ void __77__PXFetchResultCountObserver_initWithQOSClass_photoLibrary_fetchResultB
 
 - (PXFetchResultCountObserver)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXFetchResultCountObserver.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PXFetchResultCountObserver init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXFetchResultCountObserver.m" lineNumber:30 description:{@"%s is not available as initializer", "-[PXFetchResultCountObserver init]"}];
 
   abort();
 }

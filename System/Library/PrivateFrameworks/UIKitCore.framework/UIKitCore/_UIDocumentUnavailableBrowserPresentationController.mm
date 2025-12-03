@@ -1,26 +1,26 @@
 @interface _UIDocumentUnavailableBrowserPresentationController
-- (_UIDocumentUnavailableBrowserPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
+- (_UIDocumentUnavailableBrowserPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
 - (double)smallestDetentValue;
 - (id)browserDelegate;
 - (void)_sendDidChangeSelectedDetentIdentifier;
 - (void)_sendDidInvalidateDetentValues;
 - (void)_sendDidInvalidateUntransformedFrame;
 - (void)_sendPerformLayout;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)setSelectedDetentIdentifier:(id)a3;
+- (void)setSelectedDetentIdentifier:(id)identifier;
 @end
 
 @implementation _UIDocumentUnavailableBrowserPresentationController
 
-- (_UIDocumentUnavailableBrowserPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_UIDocumentUnavailableBrowserPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
   v14[2] = *MEMORY[0x1E69E9840];
   v13.receiver = self;
   v13.super_class = _UIDocumentUnavailableBrowserPresentationController;
-  v4 = [(UISheetPresentationController *)&v13 initWithPresentedViewController:a3 presentingViewController:a4];
+  v4 = [(UISheetPresentationController *)&v13 initWithPresentedViewController:controller presentingViewController:viewController];
   v5 = v4;
   if (v4)
   {
@@ -53,41 +53,41 @@
 
 - (double)smallestDetentValue
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v2 = [a1 _detentValues];
-  v3 = [v2 count];
+  _detentValues = [self _detentValues];
+  v3 = [_detentValues count];
 
   if (!v3)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:sel_smallestDetentValue object:a1 file:@"_UIDocumentUnavailableBrowserPresentationController.m" lineNumber:53 description:@"UIKit internal inconsistency: expected sheet detent in browser presentation controller."];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:sel_smallestDetentValue object:self file:@"_UIDocumentUnavailableBrowserPresentationController.m" lineNumber:53 description:@"UIKit internal inconsistency: expected sheet detent in browser presentation controller."];
   }
 
-  v4 = [a1 _detentValues];
-  v5 = [v4 firstObject];
-  [v5 doubleValue];
+  _detentValues2 = [self _detentValues];
+  firstObject = [_detentValues2 firstObject];
+  [firstObject doubleValue];
   v7 = v6;
 
   return v7;
 }
 
-- (void)setSelectedDetentIdentifier:(id)a3
+- (void)setSelectedDetentIdentifier:(id)identifier
 {
-  v5 = [(UISheetPresentationController *)self selectedDetentIdentifier];
+  selectedDetentIdentifier = [(UISheetPresentationController *)self selectedDetentIdentifier];
   v9.receiver = self;
   v9.super_class = _UIDocumentUnavailableBrowserPresentationController;
-  [(UISheetPresentationController *)&v9 setSelectedDetentIdentifier:a3];
-  v6 = [(UISheetPresentationController *)self selectedDetentIdentifier];
-  v7 = [v5 isEqualToString:v6];
+  [(UISheetPresentationController *)&v9 setSelectedDetentIdentifier:identifier];
+  selectedDetentIdentifier2 = [(UISheetPresentationController *)self selectedDetentIdentifier];
+  v7 = [selectedDetentIdentifier isEqualToString:selectedDetentIdentifier2];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v8 postNotificationName:@"_UIDocumentViewControllerLandingBrowserPresentationControllerDidChangeSelectedDetentIdentifierNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"_UIDocumentViewControllerLandingBrowserPresentationControllerDidChangeSelectedDetentIdentifierNotification" object:self];
   }
 }
 
@@ -96,8 +96,8 @@
   v4.receiver = self;
   v4.super_class = _UIDocumentUnavailableBrowserPresentationController;
   [(UISheetPresentationController *)&v4 _sendDidChangeSelectedDetentIdentifier];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 postNotificationName:@"_UIDocumentViewControllerLandingBrowserPresentationControllerDidChangeSelectedDetentIdentifierNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"_UIDocumentViewControllerLandingBrowserPresentationControllerDidChangeSelectedDetentIdentifierNotification" object:self];
 }
 
 - (void)_sendDidInvalidateDetentValues
@@ -105,8 +105,8 @@
   v4.receiver = self;
   v4.super_class = _UIDocumentUnavailableBrowserPresentationController;
   [(UISheetPresentationController *)&v4 _sendDidInvalidateDetentValues];
-  v3 = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
-  [v3 browserPresentationControllerDidInvalidateSheetDetentValues:self];
+  browserDelegate = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
+  [browserDelegate browserPresentationControllerDidInvalidateSheetDetentValues:self];
 }
 
 - (id)browserDelegate
@@ -125,8 +125,8 @@
   v4.receiver = self;
   v4.super_class = _UIDocumentUnavailableBrowserPresentationController;
   [(UISheetPresentationController *)&v4 _sendDidInvalidateUntransformedFrame];
-  v3 = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
-  [v3 browserPresentationControllerDidInvalidateUntransformedFrame:self];
+  browserDelegate = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
+  [browserDelegate browserPresentationControllerDidInvalidateUntransformedFrame:self];
 }
 
 - (void)_sendPerformLayout
@@ -134,8 +134,8 @@
   v4.receiver = self;
   v4.super_class = _UIDocumentUnavailableBrowserPresentationController;
   [(UISheetPresentationController *)&v4 _sendDidInvalidateUntransformedFrame];
-  v3 = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
-  [v3 browserPresentationControllerPerformLayout:self];
+  browserDelegate = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
+  [browserDelegate browserPresentationControllerPerformLayout:self];
 }
 
 - (void)presentationTransitionWillBegin
@@ -143,17 +143,17 @@
   v4.receiver = self;
   v4.super_class = _UIDocumentUnavailableBrowserPresentationController;
   [(UISheetPresentationController *)&v4 presentationTransitionWillBegin];
-  v3 = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
-  [v3 browserPresentationControllerPresentationTransitionWillBegin:self];
+  browserDelegate = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
+  [browserDelegate browserPresentationControllerPresentationTransitionWillBegin:self];
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
   v5.receiver = self;
   v5.super_class = _UIDocumentUnavailableBrowserPresentationController;
-  [(UISheetPresentationController *)&v5 presentationTransitionDidEnd:a3];
-  v4 = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
-  [v4 browserPresentationControllerPresentationTransitionDidEnd:self];
+  [(UISheetPresentationController *)&v5 presentationTransitionDidEnd:end];
+  browserDelegate = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
+  [browserDelegate browserPresentationControllerPresentationTransitionDidEnd:self];
 }
 
 - (void)dismissalTransitionWillBegin
@@ -161,17 +161,17 @@
   v4.receiver = self;
   v4.super_class = _UIDocumentUnavailableBrowserPresentationController;
   [(UISheetPresentationController *)&v4 dismissalTransitionWillBegin];
-  v3 = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
-  [v3 browserPresentationControllerDismissalTransitionWillBegin:self];
+  browserDelegate = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
+  [browserDelegate browserPresentationControllerDismissalTransitionWillBegin:self];
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
   v5.receiver = self;
   v5.super_class = _UIDocumentUnavailableBrowserPresentationController;
-  [(UISheetPresentationController *)&v5 dismissalTransitionDidEnd:a3];
-  v4 = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
-  [v4 browserPresentationControllerDismissalTransitionDidEnd:self];
+  [(UISheetPresentationController *)&v5 dismissalTransitionDidEnd:end];
+  browserDelegate = [(_UIDocumentUnavailableBrowserPresentationController *)&self->super.super.super.isa browserDelegate];
+  [browserDelegate browserPresentationControllerDismissalTransitionDidEnd:self];
 }
 
 @end

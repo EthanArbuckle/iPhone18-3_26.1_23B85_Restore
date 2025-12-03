@@ -1,34 +1,34 @@
 @interface SUUILockupSwooshPageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SUUILockupSwooshPageSection)initWithPageComponent:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SUUILockupSwooshPageSection)initWithPageComponent:(id)component;
 - (id)_artworkLoader;
 - (id)_missingItemLoader;
-- (id)_popSourceViewForOverlayController:(id)a3;
+- (id)_popSourceViewForOverlayController:(id)controller;
 - (id)_swooshViewController;
-- (id)cellForIndexPath:(id)a3;
-- (id)swoosh:(id)a3 imageForCellAtIndex:(int64_t)a4;
-- (id)swoosh:(id)a3 videoThumbnailForCellAtIndex:(int64_t)a4;
-- (void)_addImpressionForItemIndex:(int64_t)a3 toSession:(id)a4;
-- (void)_loadMissingItemsFromIndex:(int64_t)a3 withReason:(int64_t)a4;
-- (void)_showProductPageForItem:(id)a3 index:(int64_t)a4 animated:(BOOL)a5;
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4;
+- (id)cellForIndexPath:(id)path;
+- (id)swoosh:(id)swoosh imageForCellAtIndex:(int64_t)index;
+- (id)swoosh:(id)swoosh videoThumbnailForCellAtIndex:(int64_t)index;
+- (void)_addImpressionForItemIndex:(int64_t)index toSession:(id)session;
+- (void)_loadMissingItemsFromIndex:(int64_t)index withReason:(int64_t)reason;
+- (void)_showProductPageForItem:(id)item index:(int64_t)index animated:(BOOL)animated;
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session;
 - (void)dealloc;
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5;
-- (void)prefetchResourcesWithReason:(int64_t)a3;
-- (void)productPageOverlayDidDismiss:(id)a3;
-- (void)swoosh:(id)a3 didSelectCellAtIndex:(int64_t)a4;
-- (void)swoosh:(id)a3 willDisplayCellAtIndex:(int64_t)a4;
-- (void)swooshDidSelectSeeAll:(id)a3;
-- (void)willAppearInContext:(id)a3;
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers;
+- (void)prefetchResourcesWithReason:(int64_t)reason;
+- (void)productPageOverlayDidDismiss:(id)dismiss;
+- (void)swoosh:(id)swoosh didSelectCellAtIndex:(int64_t)index;
+- (void)swoosh:(id)swoosh willDisplayCellAtIndex:(int64_t)index;
+- (void)swooshDidSelectSeeAll:(id)all;
+- (void)willAppearInContext:(id)context;
 @end
 
 @implementation SUUILockupSwooshPageSection
 
-- (SUUILockupSwooshPageSection)initWithPageComponent:(id)a3
+- (SUUILockupSwooshPageSection)initWithPageComponent:(id)component
 {
   v4.receiver = self;
   v4.super_class = SUUILockupSwooshPageSection;
-  result = [(SUUIStorePageSection *)&v4 initWithPageComponent:a3];
+  result = [(SUUIStorePageSection *)&v4 initWithPageComponent:component];
   if (result)
   {
     result->_overlaySourceIndex = 0x7FFFFFFFFFFFFFFFLL;
@@ -47,14 +47,14 @@
   [(SUUIStorePageSection *)&v3 dealloc];
 }
 
-- (void)addImpressionsForIndexPath:(id)a3 toSession:(id)a4
+- (void)addImpressionsForIndexPath:(id)path toSession:(id)session
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SUUIStorePageSection *)self pageComponent];
-  v9 = [v8 viewElement];
-  [v7 addItemViewElement:v9];
+  pathCopy = path;
+  sessionCopy = session;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  viewElement = [pageComponent viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 
   [(SUUILockupSwooshViewController *)self->_swooshViewController indexPathsForVisibleItems];
   v17 = 0u;
@@ -78,7 +78,7 @@
 
         v15 = *(*(&v17 + 1) + 8 * v14);
         v16 = objc_autoreleasePoolPush();
-        -[SUUILockupSwooshPageSection _addImpressionForItemIndex:toSession:](self, "_addImpressionForItemIndex:toSession:", [v15 item], v7);
+        -[SUUILockupSwooshPageSection _addImpressionForItemIndex:toSession:](self, "_addImpressionForItemIndex:toSession:", [v15 item], sessionCopy);
         objc_autoreleasePoolPop(v16);
         ++v14;
       }
@@ -91,40 +91,40 @@
   }
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"SUUILockupSwooshPageSectionReuseIdentifier" forIndexPath:v4];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SUUILockupSwooshPageSectionReuseIdentifier" forIndexPath:pathCopy];
 
-  v8 = [(SUUILockupSwooshPageSection *)self _swooshViewController];
-  v9 = [v8 view];
+  _swooshViewController = [(SUUILockupSwooshPageSection *)self _swooshViewController];
+  view = [_swooshViewController view];
 
-  v10 = [v7 contentChildView];
+  contentChildView = [v7 contentChildView];
 
-  if (v9 != v10)
+  if (view != contentChildView)
   {
-    [v7 setContentChildView:v9];
+    [v7 setContentChildView:view];
     [v7 setContentInsets:{*MEMORY[0x277D768C8], *(MEMORY[0x277D768C8] + 8), *(MEMORY[0x277D768C8] + 16), *(MEMORY[0x277D768C8] + 24)}];
   }
 
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = [(SUUIStorePageSection *)self context];
-  v5 = [v4 collectionView];
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
 
-  v6 = [(SUUILockupSwooshPageSection *)self _swooshViewController];
-  v7 = [v6 view];
+  _swooshViewController = [(SUUILockupSwooshPageSection *)self _swooshViewController];
+  view = [_swooshViewController view];
 
-  [v7 sizeToFit];
-  [v7 frame];
+  [view sizeToFit];
+  [view frame];
   v9 = v8;
-  [v5 bounds];
+  [collectionView bounds];
   v11 = v10;
 
   v12 = v11;
@@ -134,40 +134,40 @@
   return result;
 }
 
-- (void)prefetchResourcesWithReason:(int64_t)a3
+- (void)prefetchResourcesWithReason:(int64_t)reason
 {
-  v5 = [(SUUILockupSwooshPageSection *)self _artworkLoader];
-  [v5 loadImagesForNextPageWithReason:a3];
+  _artworkLoader = [(SUUILockupSwooshPageSection *)self _artworkLoader];
+  [_artworkLoader loadImagesForNextPageWithReason:reason];
 
-  [(SUUILockupSwooshPageSection *)self _loadMissingItemsFromIndex:0 withReason:a3];
+  [(SUUILockupSwooshPageSection *)self _loadMissingItemsFromIndex:0 withReason:reason];
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v4 = a3;
-  v5 = [v4 collectionView];
-  [v5 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SUUILockupSwooshPageSectionReuseIdentifier"];
+  contextCopy = context;
+  collectionView = [contextCopy collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SUUILockupSwooshPageSectionReuseIdentifier"];
   v6.receiver = self;
   v6.super_class = SUUILockupSwooshPageSection;
-  [(SUUIStorePageSection *)&v6 willAppearInContext:v4];
+  [(SUUIStorePageSection *)&v6 willAppearInContext:contextCopy];
 }
 
-- (void)missingItemLoader:(id)a3 didLoadItems:(id)a4 invalidItemIdentifiers:(id)a5
+- (void)missingItemLoader:(id)loader didLoadItems:(id)items invalidItemIdentifiers:(id)identifiers
 {
-  v6 = a4;
-  if ([v6 count])
+  itemsCopy = items;
+  if ([itemsCopy count])
   {
-    v7 = [(SUUIStorePageSection *)self pageComponent];
-    v8 = [(SUUILockupSwooshViewController *)self->_swooshViewController view];
-    [v8 frame];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    view = [(SUUILockupSwooshViewController *)self->_swooshViewController view];
+    [view frame];
     v10 = v9;
     v12 = v11;
-    v13 = [v7 _updateLockupItemsWithItems:v6];
+    v13 = [pageComponent _updateLockupItemsWithItems:itemsCopy];
     swooshViewController = self->_swooshViewController;
-    v15 = [v7 lockups];
-    [(SUUILockupSwooshViewController *)swooshViewController setLockups:v15];
+    lockups = [pageComponent lockups];
+    [(SUUILockupSwooshViewController *)swooshViewController setLockups:lockups];
 
-    [v8 frame];
+    [view frame];
     if (v17 != v10 || v16 != v12)
     {
       v20[0] = MEMORY[0x277D85DD0];
@@ -178,8 +178,8 @@
       [MEMORY[0x277D75D18] performWithoutAnimation:v20];
     }
 
-    v19 = [(SUUILockupSwooshPageSection *)self _artworkLoader];
-    [v19 loadImagesForNextPageWithReason:0];
+    _artworkLoader = [(SUUILockupSwooshPageSection *)self _artworkLoader];
+    [_artworkLoader loadImagesForNextPageWithReason:0];
   }
 }
 
@@ -194,54 +194,54 @@ void __85__SUUILockupSwooshPageSection_missingItemLoader_didLoadItems_invalidIte
   [v4 reloadItemsAtIndexPaths:v5];
 }
 
-- (void)swoosh:(id)a3 didSelectCellAtIndex:(int64_t)a4
+- (void)swoosh:(id)swoosh didSelectCellAtIndex:(int64_t)index
 {
-  v14 = a3;
-  v6 = [v14 lockups];
-  v7 = [v6 objectAtIndex:a4];
+  swooshCopy = swoosh;
+  lockups = [swooshCopy lockups];
+  v7 = [lockups objectAtIndex:index];
 
-  v8 = [v7 item];
-  if (v8)
+  item = [v7 item];
+  if (item)
   {
-    v9 = [(SUUIStorePageSection *)self clickEventWithItem:v8 elementName:*MEMORY[0x277D6A4E0] index:a4];
+    v9 = [(SUUIStorePageSection *)self clickEventWithItem:item elementName:*MEMORY[0x277D6A4E0] index:index];
     if (v9)
     {
-      [v14 frameForItemAtIndex:a4];
+      [swooshCopy frameForItemAtIndex:index];
       SUUIMetricsSetClickEventPositionWithPoint(v9, v10, v11);
-      v12 = [(SUUIStorePageSection *)self context];
-      v13 = [v12 metricsController];
-      [v13 recordEvent:v9];
+      context = [(SUUIStorePageSection *)self context];
+      metricsController = [context metricsController];
+      [metricsController recordEvent:v9];
     }
 
-    [(SUUILockupSwooshPageSection *)self _showProductPageForItem:v8 index:a4 animated:1];
+    [(SUUILockupSwooshPageSection *)self _showProductPageForItem:item index:index animated:1];
   }
 }
 
-- (id)swoosh:(id)a3 imageForCellAtIndex:(int64_t)a4
+- (id)swoosh:(id)swoosh imageForCellAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(SUUILockupSwooshPageSection *)self _artworkLoader];
-  v8 = [v6 lockups];
+  swooshCopy = swoosh;
+  _artworkLoader = [(SUUILockupSwooshPageSection *)self _artworkLoader];
+  lockups = [swooshCopy lockups];
 
-  v9 = [v8 objectAtIndex:a4];
+  v9 = [lockups objectAtIndex:index];
 
-  v10 = [v9 item];
-  if (v10)
+  item = [v9 item];
+  if (item)
   {
-    v11 = [v7 cachedImageForItem:v10];
+    v11 = [_artworkLoader cachedImageForItem:item];
     if (v11)
     {
       goto LABEL_6;
     }
 
-    [v7 loadImageForItem:v10 reason:1];
-    v12 = v7;
-    v13 = v10;
+    [_artworkLoader loadImageForItem:item reason:1];
+    v12 = _artworkLoader;
+    v13 = item;
   }
 
   else
   {
-    v12 = v7;
+    v12 = _artworkLoader;
     v13 = 0;
   }
 
@@ -251,30 +251,30 @@ LABEL_6:
   return v11;
 }
 
-- (id)swoosh:(id)a3 videoThumbnailForCellAtIndex:(int64_t)a4
+- (id)swoosh:(id)swoosh videoThumbnailForCellAtIndex:(int64_t)index
 {
-  v6 = a3;
-  v7 = [(SUUILockupSwooshPageSection *)self _artworkLoader];
-  v8 = [v6 lockups];
+  swooshCopy = swoosh;
+  _artworkLoader = [(SUUILockupSwooshPageSection *)self _artworkLoader];
+  lockups = [swooshCopy lockups];
 
-  v9 = [v8 objectAtIndex:a4];
+  v9 = [lockups objectAtIndex:index];
 
-  v10 = [v9 item];
-  v11 = [v10 videos];
-  v12 = [v11 firstObject];
+  item = [v9 item];
+  videos = [item videos];
+  firstObject = [videos firstObject];
 
-  v13 = v7;
-  if (v12)
+  v13 = _artworkLoader;
+  if (firstObject)
   {
-    v14 = [v7 cachedImageForVideo:v12];
+    v14 = [_artworkLoader cachedImageForVideo:firstObject];
     if (v14)
     {
       goto LABEL_6;
     }
 
-    [v7 loadImageForVideo:v12 reason:1];
-    v13 = v7;
-    v15 = v12;
+    [_artworkLoader loadImageForVideo:firstObject reason:1];
+    v13 = _artworkLoader;
+    v15 = firstObject;
   }
 
   else
@@ -288,58 +288,58 @@ LABEL_6:
   return v14;
 }
 
-- (void)swoosh:(id)a3 willDisplayCellAtIndex:(int64_t)a4
+- (void)swoosh:(id)swoosh willDisplayCellAtIndex:(int64_t)index
 {
-  v6 = [(SUUIStorePageSection *)self context];
-  v7 = [v6 metricsController];
-  v8 = [v7 activeImpressionsSession];
+  context = [(SUUIStorePageSection *)self context];
+  metricsController = [context metricsController];
+  activeImpressionsSession = [metricsController activeImpressionsSession];
 
-  if (v8)
+  if (activeImpressionsSession)
   {
-    [(SUUILockupSwooshPageSection *)self _addImpressionForItemIndex:a4 toSession:v8];
+    [(SUUILockupSwooshPageSection *)self _addImpressionForItemIndex:index toSession:activeImpressionsSession];
   }
 
-  [(SUUILockupSwooshPageSection *)self _loadMissingItemsFromIndex:a4 withReason:1];
+  [(SUUILockupSwooshPageSection *)self _loadMissingItemsFromIndex:index withReason:1];
 }
 
-- (void)swooshDidSelectSeeAll:(id)a3
+- (void)swooshDidSelectSeeAll:(id)all
 {
-  v17 = a3;
-  v4 = [v17 seeAllURL];
-  if (v4)
+  allCopy = all;
+  seeAllURL = [allCopy seeAllURL];
+  if (seeAllURL)
   {
-    v5 = [[SUUILink alloc] initWithURL:v4];
+    v5 = [[SUUILink alloc] initWithURL:seeAllURL];
     v6 = [(SUUIStorePageSection *)self clickEventWithLink:v5 elementName:*MEMORY[0x277D6A4D0] index:0];
     if (v6)
     {
-      [v17 seeAllButtonFrame];
+      [allCopy seeAllButtonFrame];
       SUUIMetricsSetClickEventPositionWithPoint(v6, v7, v8);
-      v9 = [(SUUIStorePageSection *)self context];
-      v10 = [v9 metricsController];
-      [v10 recordEvent:v6];
+      context = [(SUUIStorePageSection *)self context];
+      metricsController = [context metricsController];
+      [metricsController recordEvent:v6];
     }
 
-    v11 = [(SUUIStorePageSection *)self context];
-    v12 = [v11 parentViewController];
+    context2 = [(SUUIStorePageSection *)self context];
+    parentViewController = [context2 parentViewController];
 
     v13 = objc_alloc_init(SUUIStorePageViewController);
-    v14 = [v12 clientContext];
-    [(SUUIStorePageViewController *)v13 setClientContext:v14];
+    clientContext = [parentViewController clientContext];
+    [(SUUIStorePageViewController *)v13 setClientContext:clientContext];
 
-    v15 = [v17 title];
-    [(SUUIStorePageViewController *)v13 setTitle:v15];
+    title = [allCopy title];
+    [(SUUIStorePageViewController *)v13 setTitle:title];
 
-    [(SUUIStorePageViewController *)v13 loadURL:v4 withCompletionBlock:0];
-    v16 = [v12 navigationController];
-    [v16 pushViewController:v13 animated:1];
+    [(SUUIStorePageViewController *)v13 loadURL:seeAllURL withCompletionBlock:0];
+    navigationController = [parentViewController navigationController];
+    [navigationController pushViewController:v13 animated:1];
   }
 }
 
-- (void)productPageOverlayDidDismiss:(id)a3
+- (void)productPageOverlayDidDismiss:(id)dismiss
 {
-  v4 = [(SUUIStorePageSection *)self context];
-  v5 = [v4 parentViewController];
-  [v5 _pageSectionDidDismissOverlayController:self->_overlayController];
+  context = [(SUUIStorePageSection *)self context];
+  parentViewController = [context parentViewController];
+  [parentViewController _pageSectionDidDismissOverlayController:self->_overlayController];
 
   [(SUUIProductPageOverlayController *)self->_overlayController setDelegate:0];
   overlayController = self->_overlayController;
@@ -349,16 +349,16 @@ LABEL_6:
   self->_overlaySourceIndex = 0x7FFFFFFFFFFFFFFFLL;
 }
 
-- (void)_addImpressionForItemIndex:(int64_t)a3 toSession:(id)a4
+- (void)_addImpressionForItemIndex:(int64_t)index toSession:(id)session
 {
   swooshViewController = self->_swooshViewController;
-  v6 = a4;
-  v7 = [(SUUILockupSwooshViewController *)swooshViewController lockups];
-  v9 = [v7 objectAtIndex:a3];
+  sessionCopy = session;
+  lockups = [(SUUILockupSwooshViewController *)swooshViewController lockups];
+  v9 = [lockups objectAtIndex:index];
 
-  [v6 addItemIdentifier:{objc_msgSend(v9, "itemIdentifier")}];
-  v8 = [v9 viewElement];
-  [v6 addItemViewElement:v8];
+  [sessionCopy addItemIdentifier:{objc_msgSend(v9, "itemIdentifier")}];
+  viewElement = [v9 viewElement];
+  [sessionCopy addItemViewElement:viewElement];
 }
 
 - (id)_artworkLoader
@@ -366,17 +366,17 @@ LABEL_6:
   artworkLoader = self->_artworkLoader;
   if (!artworkLoader)
   {
-    v4 = [(SUUIStorePageSection *)self context];
+    context = [(SUUIStorePageSection *)self context];
     v5 = [SUUILockupSwooshArtworkLoader alloc];
-    v6 = [v4 resourceLoader];
-    v7 = [(SUUILockupSwooshPageSection *)self _swooshViewController];
-    v8 = [(SUUILockupSwooshArtworkLoader *)v5 initWithArtworkLoader:v6 swoosh:v7];
+    resourceLoader = [context resourceLoader];
+    _swooshViewController = [(SUUILockupSwooshPageSection *)self _swooshViewController];
+    v8 = [(SUUILockupSwooshArtworkLoader *)v5 initWithArtworkLoader:resourceLoader swoosh:_swooshViewController];
     v9 = self->_artworkLoader;
     self->_artworkLoader = v8;
 
     v10 = self->_artworkLoader;
-    v11 = [v4 colorScheme];
-    [(SUUISwooshArtworkLoader *)v10 setPlaceholderColorWithColorScheme:v11];
+    colorScheme = [context colorScheme];
+    [(SUUISwooshArtworkLoader *)v10 setPlaceholderColorWithColorScheme:colorScheme];
 
     artworkLoader = self->_artworkLoader;
   }
@@ -384,13 +384,13 @@ LABEL_6:
   return artworkLoader;
 }
 
-- (void)_loadMissingItemsFromIndex:(int64_t)a3 withReason:(int64_t)a4
+- (void)_loadMissingItemsFromIndex:(int64_t)index withReason:(int64_t)reason
 {
-  v8 = [(SUUIStorePageSection *)self pageComponent];
-  if ([v8 isMissingItemData])
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  if ([pageComponent isMissingItemData])
   {
-    v7 = [(SUUILockupSwooshPageSection *)self _missingItemLoader];
-    [v7 loadItemsForPageComponent:v8 startIndex:a3 reason:a4];
+    _missingItemLoader = [(SUUILockupSwooshPageSection *)self _missingItemLoader];
+    [_missingItemLoader loadItemsForPageComponent:pageComponent startIndex:index reason:reason];
   }
 }
 
@@ -400,19 +400,19 @@ LABEL_6:
   if (!missingItemLoader)
   {
     v4 = [SUUIMissingItemLoader alloc];
-    v5 = [(SUUIStorePageSection *)self context];
-    v6 = [v5 resourceLoader];
-    v7 = [(SUUIMissingItemLoader *)v4 initWithResourceLoader:v6];
+    context = [(SUUIStorePageSection *)self context];
+    resourceLoader = [context resourceLoader];
+    v7 = [(SUUIMissingItemLoader *)v4 initWithResourceLoader:resourceLoader];
     v8 = self->_missingItemLoader;
     self->_missingItemLoader = v7;
 
     [(SUUIMissingItemLoader *)self->_missingItemLoader setDelegate:self];
-    v9 = [(SUUIStorePageSection *)self pageComponent];
-    v10 = [v9 platformKeyProfile];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    platformKeyProfile = [pageComponent platformKeyProfile];
 
-    if (v10)
+    if (platformKeyProfile)
     {
-      [(SUUIMissingItemLoader *)self->_missingItemLoader setKeyProfile:v10];
+      [(SUUIMissingItemLoader *)self->_missingItemLoader setKeyProfile:platformKeyProfile];
     }
 
     missingItemLoader = self->_missingItemLoader;
@@ -421,32 +421,32 @@ LABEL_6:
   return missingItemLoader;
 }
 
-- (id)_popSourceViewForOverlayController:(id)a3
+- (id)_popSourceViewForOverlayController:(id)controller
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self pageComponent];
-  v6 = v5;
-  if (v5)
+  controllerCopy = controller;
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  v6 = pageComponent;
+  if (pageComponent)
   {
-    [v5 lockupStyle];
+    [pageComponent lockupStyle];
   }
 
   if (self->_overlaySourceIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    [v4 numberOfVisibleOverlays];
+    [controllerCopy numberOfVisibleOverlays];
   }
 
   return 0;
 }
 
-- (void)_showProductPageForItem:(id)a3 index:(int64_t)a4 animated:(BOOL)a5
+- (void)_showProductPageForItem:(id)item index:(int64_t)index animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = [(SUUIStorePageSection *)self context];
-  v9 = [v8 parentViewController];
+  itemCopy = item;
+  context = [(SUUIStorePageSection *)self context];
+  parentViewController = [context parentViewController];
 
-  v10 = [v9 clientContext];
-  if (SUUIUserInterfaceIdiom(v10) == 1 && SUUIItemKindIsSoftwareKind([v7 itemKind]))
+  clientContext = [parentViewController clientContext];
+  if (SUUIUserInterfaceIdiom(clientContext) == 1 && SUUIItemKindIsSoftwareKind([itemCopy itemKind]))
   {
     if (!self->_overlayController)
     {
@@ -455,19 +455,19 @@ LABEL_6:
       v12[2] = __70__SUUILockupSwooshPageSection__showProductPageForItem_index_animated___block_invoke;
       v12[3] = &unk_2798F8500;
       v12[4] = self;
-      v13 = v9;
-      v14 = v10;
-      v16 = a4;
-      v15 = v7;
+      v13 = parentViewController;
+      v14 = clientContext;
+      indexCopy = index;
+      v15 = itemCopy;
       [(SUUIStorePageSection *)self sendXEventWithItem:v15 completionBlock:v12];
     }
   }
 
   else
   {
-    [(SUUIStorePageSection *)self showProductViewControllerWithItem:v7];
-    v11 = [(SUUILockupSwooshPageSection *)self _swooshViewController];
-    [v11 deselectAllItems];
+    [(SUUIStorePageSection *)self showProductViewControllerWithItem:itemCopy];
+    _swooshViewController = [(SUUILockupSwooshPageSection *)self _swooshViewController];
+    [_swooshViewController deselectAllItems];
   }
 }
 
@@ -495,24 +495,24 @@ void __70__SUUILockupSwooshPageSection__showProductPageForItem_index_animated___
   swooshViewController = self->_swooshViewController;
   if (!swooshViewController)
   {
-    v4 = [(SUUIStorePageSection *)self context];
-    v5 = [v4 parentViewController];
+    context = [(SUUIStorePageSection *)self context];
+    parentViewController = [context parentViewController];
     v6 = [SUUILockupSwooshViewController alloc];
-    v7 = [(SUUIStorePageSection *)self pageComponent];
-    v8 = [(SUUILockupSwooshViewController *)v6 initWithSwoosh:v7];
+    pageComponent = [(SUUIStorePageSection *)self pageComponent];
+    v8 = [(SUUILockupSwooshViewController *)v6 initWithSwoosh:pageComponent];
     v9 = self->_swooshViewController;
     self->_swooshViewController = v8;
 
     v10 = self->_swooshViewController;
-    v11 = [v5 clientContext];
-    [(SUUILockupSwooshViewController *)v10 setClientContext:v11];
+    clientContext = [parentViewController clientContext];
+    [(SUUILockupSwooshViewController *)v10 setClientContext:clientContext];
 
     [(SUUILockupSwooshViewController *)self->_swooshViewController setDelegate:self];
     v12 = self->_swooshViewController;
-    v13 = [v4 colorScheme];
-    [(SUUILockupSwooshViewController *)v12 setColorScheme:v13];
+    colorScheme = [context colorScheme];
+    [(SUUILockupSwooshViewController *)v12 setColorScheme:colorScheme];
 
-    [v5 addChildViewController:self->_swooshViewController];
+    [parentViewController addChildViewController:self->_swooshViewController];
     swooshViewController = self->_swooshViewController;
   }
 

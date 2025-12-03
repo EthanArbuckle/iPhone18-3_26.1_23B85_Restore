@@ -1,33 +1,33 @@
 @interface BSUIFeedCardDataSource
-- (BOOL)alwaysPresentNewCardSetForFeedOptions:(id)a3;
-- (BSUIFeedCardDataSource)initWithFeedArray:(id)a3 syncLayoutController:(id)a4 options:(id)a5;
+- (BOOL)alwaysPresentNewCardSetForFeedOptions:(id)options;
+- (BSUIFeedCardDataSource)initWithFeedArray:(id)array syncLayoutController:(id)controller options:(id)options;
 - (NSString)identifier;
-- (id)contentViewControllerForCardAtIndex:(int64_t)a3 cardContentScrollManager:(id)a4;
-- (id)representedObjectForCardAtIndex:(int64_t)a3;
-- (int64_t)_cardIndexForTarget:(id)a3 withKeyPath:(id)a4;
-- (int64_t)cardIndexForFeedOptions:(id)a3;
-- (int64_t)numberOfCards:(id)a3;
-- (void)appendNewDataToExistingDataSource:(id)a3 cardStackViewController:(id)a4;
+- (id)contentViewControllerForCardAtIndex:(int64_t)index cardContentScrollManager:(id)manager;
+- (id)representedObjectForCardAtIndex:(int64_t)index;
+- (int64_t)_cardIndexForTarget:(id)target withKeyPath:(id)path;
+- (int64_t)cardIndexForFeedOptions:(id)options;
+- (int64_t)numberOfCards:(id)cards;
+- (void)appendNewDataToExistingDataSource:(id)source cardStackViewController:(id)controller;
 @end
 
 @implementation BSUIFeedCardDataSource
 
-- (BSUIFeedCardDataSource)initWithFeedArray:(id)a3 syncLayoutController:(id)a4 options:(id)a5
+- (BSUIFeedCardDataSource)initWithFeedArray:(id)array syncLayoutController:(id)controller options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  arrayCopy = array;
+  controllerCopy = controller;
+  optionsCopy = options;
   v17.receiver = self;
   v17.super_class = BSUIFeedCardDataSource;
   v11 = [(BSUIFeedCardDataSource *)&v17 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [arrayCopy copy];
     cardArray = v11->_cardArray;
     v11->_cardArray = v12;
 
-    objc_storeStrong(&v11->_syncLayoutController, a4);
-    v14 = [v10 copy];
+    objc_storeStrong(&v11->_syncLayoutController, controller);
+    v14 = [optionsCopy copy];
     options = v11->_options;
     v11->_options = v14;
   }
@@ -35,17 +35,17 @@
   return v11;
 }
 
-- (void)appendNewDataToExistingDataSource:(id)a3 cardStackViewController:(id)a4
+- (void)appendNewDataToExistingDataSource:(id)source cardStackViewController:(id)controller
 {
-  self->_cardArray = [(NSArray *)self->_cardArray arrayByAddingObjectsFromArray:a3, a4];
+  self->_cardArray = [(NSArray *)self->_cardArray arrayByAddingObjectsFromArray:source, controller];
 
   _objc_release_x1();
 }
 
-- (int64_t)numberOfCards:(id)a3
+- (int64_t)numberOfCards:(id)cards
 {
-  v3 = [(BSUIFeedCardDataSource *)self cardArray];
-  v4 = [v3 count];
+  cardArray = [(BSUIFeedCardDataSource *)self cardArray];
+  v4 = [cardArray count];
 
   return v4;
 }
@@ -53,21 +53,21 @@
 - (NSString)identifier
 {
   objc_opt_class();
-  v3 = [(BSUIFeedCardDataSource *)self options];
-  v4 = [v3 objectForKeyedSubscript:BCCardStackIdentifierKey];
+  options = [(BSUIFeedCardDataSource *)self options];
+  v4 = [options objectForKeyedSubscript:BCCardStackIdentifierKey];
   v5 = BUDynamicCast();
 
   return v5;
 }
 
-- (int64_t)cardIndexForFeedOptions:(id)a3
+- (int64_t)cardIndexForFeedOptions:(id)options
 {
-  v4 = a3;
-  v5 = v4;
+  optionsCopy = options;
+  v5 = optionsCopy;
   v6 = 0x7FFFFFFFFFFFFFFFLL;
-  if (v4)
+  if (optionsCopy)
   {
-    v7 = [v4 objectForKeyedSubscript:@"url"];
+    v7 = [optionsCopy objectForKeyedSubscript:@"url"];
     v8 = [(BSUIFeedCardDataSource *)self _cardIndexForTarget:v7 withKeyPath:@"url"];
 
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
@@ -101,31 +101,31 @@
   return v6;
 }
 
-- (BOOL)alwaysPresentNewCardSetForFeedOptions:(id)a3
+- (BOOL)alwaysPresentNewCardSetForFeedOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   objc_opt_class();
-  v4 = [v3 objectForKeyedSubscript:@"alwaysPresentNewCardSet"];
+  v4 = [optionsCopy objectForKeyedSubscript:@"alwaysPresentNewCardSet"];
 
   v5 = BUDynamicCast();
-  LOBYTE(v3) = [v5 BOOLValue];
+  LOBYTE(optionsCopy) = [v5 BOOLValue];
 
-  return v3;
+  return optionsCopy;
 }
 
-- (id)representedObjectForCardAtIndex:(int64_t)a3
+- (id)representedObjectForCardAtIndex:(int64_t)index
 {
-  v4 = [(BSUIFeedCardDataSource *)self cardArray];
-  v5 = [v4 objectAtIndexedSubscript:a3];
+  cardArray = [(BSUIFeedCardDataSource *)self cardArray];
+  v5 = [cardArray objectAtIndexedSubscript:index];
 
   return v5;
 }
 
-- (id)contentViewControllerForCardAtIndex:(int64_t)a3 cardContentScrollManager:(id)a4
+- (id)contentViewControllerForCardAtIndex:(int64_t)index cardContentScrollManager:(id)manager
 {
-  v6 = a4;
-  v7 = [(BSUIFeedCardDataSource *)self cardArray];
-  v8 = [v7 objectAtIndexedSubscript:a3];
+  managerCopy = manager;
+  cardArray = [(BSUIFeedCardDataSource *)self cardArray];
+  v8 = [cardArray objectAtIndexedSubscript:index];
 
   v9 = [v8 objectForKeyedSubscript:@"isInCard"];
 
@@ -147,7 +147,7 @@
 
   v14 = [objc_alloc(*v13) initWithOptions:v8];
   [v14 configureWithSyncLayoutController:self->_syncLayoutController];
-  [v14 setCardContentScrollManager:v6];
+  [v14 setCardContentScrollManager:managerCopy];
 
   [v14 setOptions:1];
   v15 = [v14 suspendUpdatesUntilContentExceedsHeightWithCompletion:0];
@@ -156,12 +156,12 @@
   return v14;
 }
 
-- (int64_t)_cardIndexForTarget:(id)a3 withKeyPath:(id)a4
+- (int64_t)_cardIndexForTarget:(id)target withKeyPath:(id)path
 {
   cardArray = self->_cardArray;
-  v6 = a3;
-  v7 = [(NSArray *)cardArray valueForKeyPath:a4];
-  v8 = [v7 indexOfObject:v6];
+  targetCopy = target;
+  v7 = [(NSArray *)cardArray valueForKeyPath:path];
+  v8 = [v7 indexOfObject:targetCopy];
 
   return v8;
 }

@@ -1,8 +1,8 @@
 @interface PXPhotoKitAssetCollectionDropAssetsActionPerformer
-+ (BOOL)canPerformActionType:(id)a3 onAssetCollectionReference:(id)a4 withInputs:(id)a5;
-+ (id)dropAssetsActionPerformerForAssetCollection:(id)a3 dropSession:(id)a4;
++ (BOOL)canPerformActionType:(id)type onAssetCollectionReference:(id)reference withInputs:(id)inputs;
++ (id)dropAssetsActionPerformerForAssetCollection:(id)collection dropSession:(id)session;
 - (id)memoryAssetsActionFactory;
-- (void)completeUserInteractionTaskWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)completeUserInteractionTaskWithSuccess:(BOOL)success error:(id)error;
 - (void)performUserInteractionTask;
 @end
 
@@ -10,26 +10,26 @@
 
 - (id)memoryAssetsActionFactory
 {
-  v3 = [(PXActionPerformer *)self delegate];
+  delegate = [(PXActionPerformer *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(PXActionPerformer *)self delegate];
-    v5 = [v4 memoryAssetsActionFactory];
+    delegate2 = [(PXActionPerformer *)self delegate];
+    memoryAssetsActionFactory = [delegate2 memoryAssetsActionFactory];
   }
 
   else
   {
-    v5 = 0;
+    memoryAssetsActionFactory = 0;
   }
 
-  return v5;
+  return memoryAssetsActionFactory;
 }
 
-- (void)completeUserInteractionTaskWithSuccess:(BOOL)a3 error:(id)a4
+- (void)completeUserInteractionTaskWithSuccess:(BOOL)success error:(id)error
 {
   v5.receiver = self;
   v5.super_class = PXPhotoKitAssetCollectionDropAssetsActionPerformer;
-  [(PXActionPerformer *)&v5 completeUserInteractionTaskWithSuccess:a3 error:a4];
+  [(PXActionPerformer *)&v5 completeUserInteractionTaskWithSuccess:success error:error];
   [(PXAssetCollectionActionPerformer *)self setDragSession:0];
   [(PXAssetCollectionActionPerformer *)self setDropSession:0];
 }
@@ -37,13 +37,13 @@
 - (void)performUserInteractionTask
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = [(PXAssetCollectionActionPerformer *)self assetCollection];
-  v5 = [(PXAssetCollectionActionPerformer *)self dropSession];
-  if (![v4 px_assetsDropMode])
+  assetCollection = [(PXAssetCollectionActionPerformer *)self assetCollection];
+  dropSession = [(PXAssetCollectionActionPerformer *)self dropSession];
+  if (![assetCollection px_assetsDropMode])
   {
-    v6 = [(PXPhotoKitAssetCollectionDropAssetsActionPerformer *)self memoryAssetsActionFactory];
+    memoryAssetsActionFactory = [(PXPhotoKitAssetCollectionDropAssetsActionPerformer *)self memoryAssetsActionFactory];
 
-    if (!v6)
+    if (!memoryAssetsActionFactory)
     {
       v10 = PLDragAndDropGetLog();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -53,7 +53,7 @@
         *buf = 138412546;
         v23 = v12;
         v24 = 2112;
-        v25 = v4;
+        v25 = assetCollection;
         v13 = "%@ called with non-editable collection: %@";
         goto LABEL_12;
       }
@@ -65,7 +65,7 @@ LABEL_13:
     }
   }
 
-  if (!v5)
+  if (!dropSession)
   {
     v10 = PLDragAndDropGetLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -75,7 +75,7 @@ LABEL_13:
       *buf = 138412546;
       v23 = v12;
       v24 = 2112;
-      v25 = v4;
+      v25 = assetCollection;
       v13 = "%@ called without drop session: %@";
 LABEL_12:
       _os_log_impl(&dword_1A3C1C000, v10, OS_LOG_TYPE_ERROR, v13, buf, 0x16u);
@@ -86,17 +86,17 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v7 = [v4 px_isSharedAlbum];
+  px_isSharedAlbum = [assetCollection px_isSharedAlbum];
   v8 = +[PXImportManager defaultManager];
-  if (v7)
+  if (px_isSharedAlbum)
   {
     v19[0] = MEMORY[0x1E69E9820];
     v19[1] = 3221225472;
     v19[2] = __80__PXPhotoKitAssetCollectionDropAssetsActionPerformer_performUserInteractionTask__block_invoke;
     v19[3] = &unk_1E7743DF8;
     v19[4] = self;
-    v20 = v4;
-    v21 = v5;
+    v20 = assetCollection;
+    v21 = dropSession;
     [v8 fetchAssetsFromDrop:v21 importIfNeeded:0 completion:v19];
 
     v9 = v20;
@@ -110,8 +110,8 @@ LABEL_12:
     v15[3] = &unk_1E7743E20;
     v18 = a2;
     v15[4] = self;
-    v16 = v5;
-    v17 = v4;
+    v16 = dropSession;
+    v17 = assetCollection;
     [v8 fetchAssetsFromDrop:v16 importIfNeeded:1 completion:v15];
 
     v9 = v16;
@@ -394,29 +394,29 @@ void __80__PXPhotoKitAssetCollectionDropAssetsActionPerformer_performUserInterac
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-+ (id)dropAssetsActionPerformerForAssetCollection:(id)a3 dropSession:(id)a4
++ (id)dropAssetsActionPerformerForAssetCollection:(id)collection dropSession:(id)session
 {
-  v5 = a4;
-  v6 = a3;
+  sessionCopy = session;
+  collectionCopy = collection;
   v7 = [off_1E7721488 alloc];
   v12 = *off_1E7721F68;
   v13 = xmmword_1A5380D10;
   v14 = 0x7FFFFFFFFFFFFFFFLL;
-  v8 = [v7 initWithAssetCollection:v6 keyAssetReference:0 indexPath:&v12];
+  v8 = [v7 initWithAssetCollection:collectionCopy keyAssetReference:0 indexPath:&v12];
 
   v9 = [PXPhotoKitAssetCollectionDropAssetsActionPerformer alloc];
   v10 = [(PXAssetCollectionActionPerformer *)v9 initWithActionType:*off_1E7721D00 assetCollectionReference:v8 parameters:MEMORY[0x1E695E0F8]];
-  [(PXAssetCollectionActionPerformer *)v10 setDropSession:v5];
+  [(PXAssetCollectionActionPerformer *)v10 setDropSession:sessionCopy];
 
   return v10;
 }
 
-+ (BOOL)canPerformActionType:(id)a3 onAssetCollectionReference:(id)a4 withInputs:(id)a5
++ (BOOL)canPerformActionType:(id)type onAssetCollectionReference:(id)reference withInputs:(id)inputs
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = [a4 assetCollection];
-  if (v11)
+  typeCopy = type;
+  inputsCopy = inputs;
+  assetCollection = [reference assetCollection];
+  if (assetCollection)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -424,47 +424,47 @@ void __80__PXPhotoKitAssetCollectionDropAssetsActionPerformer_performUserInterac
       goto LABEL_3;
     }
 
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v29 = objc_opt_class();
     v28 = NSStringFromClass(v29);
-    v30 = [v11 px_descriptionForAssertionMessage];
-    [v26 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionDropAssetsActionPerformer.m" lineNumber:40 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v28, v30}];
+    px_descriptionForAssertionMessage = [assetCollection px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionDropAssetsActionPerformer.m" lineNumber:40 description:{@"%@ should be an instance inheriting from %@, but it is %@", @"assetCollectionReference.assetCollection", v28, px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v26 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v27 = objc_opt_class();
     v28 = NSStringFromClass(v27);
-    [v26 handleFailureInMethod:a2 object:a1 file:@"PXPhotoKitAssetCollectionDropAssetsActionPerformer.m" lineNumber:40 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v28}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotoKitAssetCollectionDropAssetsActionPerformer.m" lineNumber:40 description:{@"%@ should be an instance inheriting from %@, but it is nil", @"assetCollectionReference.assetCollection", v28}];
   }
 
 LABEL_3:
   if (objc_opt_respondsToSelector())
   {
-    v12 = [v10 dropSession];
+    dropSession = [inputsCopy dropSession];
   }
 
   else
   {
-    v12 = 0;
+    dropSession = 0;
   }
 
-  if ((objc_opt_respondsToSelector() & 1) != 0 && ([v10 memoryAssetsActionFactory], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
+  if ((objc_opt_respondsToSelector() & 1) != 0 && ([inputsCopy memoryAssetsActionFactory], v13 = objc_claimAutoreleasedReturnValue(), v13, v13))
   {
     v14 = 0;
-    v15 = 1;
+    px_assetsDropMode = 1;
   }
 
   else
   {
-    v15 = [v11 px_assetsDropMode];
+    px_assetsDropMode = [assetCollection px_assetsDropMode];
     v14 = 1;
   }
 
-  if (v12)
+  if (dropSession)
   {
-    v16 = v15 == 0;
+    v16 = px_assetsDropMode == 0;
   }
 
   else
@@ -473,11 +473,11 @@ LABEL_3:
   }
 
   v17 = !v16;
-  if ([v9 isEqualToString:*off_1E7721D38])
+  if ([typeCopy isEqualToString:*off_1E7721D38])
   {
     if (v14)
     {
-      v18 = [v11 canPerformEditOperation:5];
+      v18 = [assetCollection canPerformEditOperation:5];
     }
 
     else
@@ -490,12 +490,12 @@ LABEL_3:
       goto LABEL_28;
     }
 
-    v19 = [v10 dropTargetAssetReference];
-    if (v19)
+    dropTargetAssetReference = [inputsCopy dropTargetAssetReference];
+    if (dropTargetAssetReference)
     {
-      v20 = v19;
-      v21 = [v10 dropTargetAssetReference];
-      v22 = [v21 asset];
+      v20 = dropTargetAssetReference;
+      dropTargetAssetReference2 = [inputsCopy dropTargetAssetReference];
+      asset = [dropTargetAssetReference2 asset];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -513,12 +513,12 @@ LABEL_28:
     goto LABEL_29;
   }
 
-  if (v15 == 2 && !PXDropSessionHasItemsNeedingImport(v12))
+  if (px_assetsDropMode == 2 && !PXDropSessionHasItemsNeedingImport(dropSession))
   {
     goto LABEL_28;
   }
 
-  HasValidItems = PXDropSessionHasValidItems(v12);
+  HasValidItems = PXDropSessionHasValidItems(dropSession);
 LABEL_29:
 
   return HasValidItems;

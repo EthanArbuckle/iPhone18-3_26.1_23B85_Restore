@@ -10,12 +10,12 @@
   v6 = a4;
   if (v6)
   {
-    v7 = [a1 internal];
-    v8 = [v7 photos];
+    internal = [self internal];
+    photos = [internal photos];
 
-    if (v8)
+    if (photos)
     {
-      [a1 _loadPhotoForSize:a3 withCompletionHandler:v6];
+      [self _loadPhotoForSize:a3 withCompletionHandler:v6];
     }
 
     else
@@ -24,10 +24,10 @@
       v9[1] = 3221225472;
       v9[2] = __55__GKPlayer_UI__loadPhotoForSize_withCompletionHandler___block_invoke;
       v9[3] = &unk_27966D740;
-      v9[4] = a1;
+      v9[4] = self;
       v11 = a3;
       v10 = v6;
-      [a1 loadProfileWithCompletionHandler:v9];
+      [self loadProfileWithCompletionHandler:v9];
     }
   }
 }
@@ -45,7 +45,7 @@
     v15[1] = 3221225472;
     v15[2] = __56__GKPlayer_UI___loadPhotoForSize_withCompletionHandler___block_invoke;
     v15[3] = &unk_27966B2C0;
-    v15[4] = a1;
+    v15[4] = self;
     v17 = a3;
     v10 = v9;
     v16 = v10;

@@ -1,19 +1,19 @@
 @interface ParkedCarContextConfiguration
 - (_TtC4Maps29ParkedCarContextConfiguration)init;
-- (_TtC4Maps29ParkedCarContextConfiguration)initWithParkedCar:(id)a3 initialAction:(int64_t)a4 selectOnMap:(BOOL)a5;
+- (_TtC4Maps29ParkedCarContextConfiguration)initWithParkedCar:(id)car initialAction:(int64_t)action selectOnMap:(BOOL)map;
 @end
 
 @implementation ParkedCarContextConfiguration
 
-- (_TtC4Maps29ParkedCarContextConfiguration)initWithParkedCar:(id)a3 initialAction:(int64_t)a4 selectOnMap:(BOOL)a5
+- (_TtC4Maps29ParkedCarContextConfiguration)initWithParkedCar:(id)car initialAction:(int64_t)action selectOnMap:(BOOL)map
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps29ParkedCarContextConfiguration_parkedCar) = a3;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps29ParkedCarContextConfiguration_initialAction) = a4;
-  *(&self->super.isa + OBJC_IVAR____TtC4Maps29ParkedCarContextConfiguration_selectOnMap) = a5;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps29ParkedCarContextConfiguration_parkedCar) = car;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps29ParkedCarContextConfiguration_initialAction) = action;
+  *(&self->super.isa + OBJC_IVAR____TtC4Maps29ParkedCarContextConfiguration_selectOnMap) = map;
   v12.receiver = self;
   v12.super_class = ObjectType;
-  v10 = a3;
+  carCopy = car;
   return [(ParkedCarContextConfiguration *)&v12 init];
 }
 

@@ -6,10 +6,10 @@
 
 - (UIViewController)rootViewController
 {
-  v2 = [(UINavigationController *)self viewControllers];
-  if ([v2 count])
+  viewControllers = [(UINavigationController *)self viewControllers];
+  if ([viewControllers count])
   {
-    v3 = [v2 objectAtIndexedSubscript:0];
+    v3 = [viewControllers objectAtIndexedSubscript:0];
   }
 
   else

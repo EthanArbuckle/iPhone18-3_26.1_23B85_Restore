@@ -1,57 +1,57 @@
 @interface CKKSExternalKey
-- (id)initWithViewName:(id)a3 tlk:(id)a4;
-- (id)makeCKKSKey:(id)a3 contextID:(id)a4 error:(id *)a5;
-- (id)makeFakeCKKSClassKey:(id)a3 contextID:(id)a4 zoneiD:(id)a5 error:(id *)a6;
+- (id)initWithViewName:(id)name tlk:(id)tlk;
+- (id)makeCKKSKey:(id)key contextID:(id)d error:(id *)error;
+- (id)makeFakeCKKSClassKey:(id)key contextID:(id)d zoneiD:(id)zoneiD error:(id *)error;
 @end
 
 @implementation CKKSExternalKey
 
-- (id)makeFakeCKKSClassKey:(id)a3 contextID:(id)a4 zoneiD:(id)a5 error:(id *)a6
+- (id)makeFakeCKKSClassKey:(id)key contextID:(id)d zoneiD:(id)zoneiD error:(id *)error
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  zoneiDCopy = zoneiD;
+  dCopy = d;
+  keyCopy = key;
   v12 = [CKKSKey alloc];
-  v13 = [(CKKSExternalKey *)self keyData];
-  v14 = [(CKKSExternalKey *)self uuid];
-  v15 = [NSString stringWithFormat:@"%@-fake-%@", v14, v11];
-  v16 = [(CKKSExternalKey *)self parentKeyUUID];
-  v17 = [(CKKSKey *)v12 initWithWrappedKeyData:v13 contextID:v10 uuid:v15 parentKeyUUID:v16 keyclass:v11 state:@"remote" zoneID:v9 encodedCKRecord:0 currentkey:0];
+  keyData = [(CKKSExternalKey *)self keyData];
+  uuid = [(CKKSExternalKey *)self uuid];
+  keyCopy = [NSString stringWithFormat:@"%@-fake-%@", uuid, keyCopy];
+  parentKeyUUID = [(CKKSExternalKey *)self parentKeyUUID];
+  v17 = [(CKKSKey *)v12 initWithWrappedKeyData:keyData contextID:dCopy uuid:keyCopy parentKeyUUID:parentKeyUUID keyclass:keyCopy state:@"remote" zoneID:zoneiDCopy encodedCKRecord:0 currentkey:0];
 
   return v17;
 }
 
-- (id)makeCKKSKey:(id)a3 contextID:(id)a4 error:(id *)a5
+- (id)makeCKKSKey:(id)key contextID:(id)d error:(id *)error
 {
-  v7 = a3;
-  v8 = a4;
+  keyCopy = key;
+  dCopy = d;
   v9 = [CKKSKey alloc];
-  v10 = [(CKKSExternalKey *)self keyData];
-  v11 = [(CKKSExternalKey *)self uuid];
-  v12 = [(CKKSExternalKey *)self parentKeyUUID];
-  if (v12)
+  keyData = [(CKKSExternalKey *)self keyData];
+  uuid = [(CKKSExternalKey *)self uuid];
+  parentKeyUUID = [(CKKSExternalKey *)self parentKeyUUID];
+  if (parentKeyUUID)
   {
-    v13 = [(CKKSKey *)v9 initWithWrappedKeyData:v10 contextID:v8 uuid:v11 parentKeyUUID:v12 keyclass:@"tlk" state:@"remote" zoneID:v7 encodedCKRecord:0 currentkey:0];
+    v13 = [(CKKSKey *)v9 initWithWrappedKeyData:keyData contextID:dCopy uuid:uuid parentKeyUUID:parentKeyUUID keyclass:@"tlk" state:@"remote" zoneID:keyCopy encodedCKRecord:0 currentkey:0];
   }
 
   else
   {
-    v14 = [(CKKSExternalKey *)self uuid];
-    v13 = [(CKKSKey *)v9 initWithWrappedKeyData:v10 contextID:v8 uuid:v11 parentKeyUUID:v14 keyclass:@"tlk" state:@"remote" zoneID:v7 encodedCKRecord:0 currentkey:0];
+    uuid2 = [(CKKSExternalKey *)self uuid];
+    v13 = [(CKKSKey *)v9 initWithWrappedKeyData:keyData contextID:dCopy uuid:uuid parentKeyUUID:uuid2 keyclass:@"tlk" state:@"remote" zoneID:keyCopy encodedCKRecord:0 currentkey:0];
   }
 
   return v13;
 }
 
-- (id)initWithViewName:(id)a3 tlk:(id)a4
+- (id)initWithViewName:(id)name tlk:(id)tlk
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v6 uuid];
-  v9 = [v6 parentKeyUUID];
-  v10 = [v6 wrappedKeyData];
+  tlkCopy = tlk;
+  nameCopy = name;
+  uuid = [tlkCopy uuid];
+  parentKeyUUID = [tlkCopy parentKeyUUID];
+  wrappedKeyData = [tlkCopy wrappedKeyData];
 
-  v11 = [(CKKSExternalKey *)self initWithView:v7 uuid:v8 parentTLKUUID:v9 keyData:v10];
+  v11 = [(CKKSExternalKey *)self initWithView:nameCopy uuid:uuid parentTLKUUID:parentKeyUUID keyData:wrappedKeyData];
   return v11;
 }
 

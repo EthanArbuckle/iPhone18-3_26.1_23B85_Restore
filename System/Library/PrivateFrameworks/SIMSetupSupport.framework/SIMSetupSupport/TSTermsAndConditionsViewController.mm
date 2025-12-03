@@ -1,26 +1,26 @@
 @interface TSTermsAndConditionsViewController
 - (TSSIMSetupFlowDelegate)delegate;
-- (TSTermsAndConditionsViewController)initWithSourceIccid:(id)a3 mainText:(id)a4;
-- (void)_acceptClicked:(id)a3;
-- (void)_cancelTransfer:(id)a3;
+- (TSTermsAndConditionsViewController)initWithSourceIccid:(id)iccid mainText:(id)text;
+- (void)_acceptClicked:(id)clicked;
+- (void)_cancelTransfer:(id)transfer;
 - (void)loadView;
 - (void)viewDidLoad;
 @end
 
 @implementation TSTermsAndConditionsViewController
 
-- (TSTermsAndConditionsViewController)initWithSourceIccid:(id)a3 mainText:(id)a4
+- (TSTermsAndConditionsViewController)initWithSourceIccid:(id)iccid mainText:(id)text
 {
-  v7 = a3;
-  v8 = a4;
+  iccidCopy = iccid;
+  textCopy = text;
   v15.receiver = self;
   v15.super_class = TSTermsAndConditionsViewController;
   v9 = [(TSTermsAndConditionsViewController *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_mainText, a4);
-    objc_storeStrong(&v10->_sourceIccid, a3);
+    objc_storeStrong(&v9->_mainText, text);
+    objc_storeStrong(&v10->_sourceIccid, iccid);
     v11 = objc_alloc(MEMORY[0x277CC37B0]);
     v12 = [v11 initWithQueue:MEMORY[0x277D85CD0]];
     client = v10->_client;
@@ -69,13 +69,13 @@
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:3];
   [(TSTermsAndConditionsViewController *)self setToolbarItems:v14];
 
-  v15 = [(TSTermsAndConditionsViewController *)self navigationController];
-  [v15 setToolbarHidden:0 animated:0];
+  navigationController = [(TSTermsAndConditionsViewController *)self navigationController];
+  [navigationController setToolbarHidden:0 animated:0];
 
   [(UITextView *)self->_textView setEditable:0];
   v24 = *MEMORY[0x277D740C0];
-  v16 = [MEMORY[0x277D75348] labelColor];
-  v25 = v16;
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v25 = labelColor;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v25 forKeys:&v24 count:1];
 
   textView = self->_textView;
@@ -89,7 +89,7 @@
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_acceptClicked:(id)a3
+- (void)_acceptClicked:(id)clicked
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained startTimer:1];
@@ -112,7 +112,7 @@ void __53__TSTermsAndConditionsViewController__acceptClicked___block_invoke(uint
   }
 }
 
-- (void)_cancelTransfer:(id)a3
+- (void)_cancelTransfer:(id)transfer
 {
   v10 = *MEMORY[0x277D85DE8];
   v4 = _TSLogDomain();
@@ -128,8 +128,8 @@ void __53__TSTermsAndConditionsViewController__acceptClicked___block_invoke(uint
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained viewControllerDidComplete:self];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 postNotificationName:@"user.disagreed.terms.and.conditions" object:0 userInfo:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"user.disagreed.terms.and.conditions" object:0 userInfo:0];
 
   v7 = *MEMORY[0x277D85DE8];
 }

@@ -1,24 +1,24 @@
 @interface MPSGraphNormalizationOp
-- (id)partialDerivativesForInputTensors:(id)a3 incomingGradients:(id)a4 name:(id)a5;
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7;
+- (id)partialDerivativesForInputTensors:(id)tensors incomingGradients:(id)gradients name:(id)name;
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name;
 @end
 
 @implementation MPSGraphNormalizationOp
 
-- (void)makeMLIROpWithBuilder:(void *)a3 symbolTable:(void *)a4 inputValues:(void *)a5 opInitialization:(BOOL)a6 name:(id)a7
+- (void)makeMLIROpWithBuilder:(void *)builder symbolTable:(void *)table inputValues:(void *)values opInitialization:(BOOL)initialization name:(id)name
 {
   v59 = *MEMORY[0x1E69E9840];
-  v11 = a7;
+  nameCopy = name;
   mpsFileLoc("[MPSGraphNormalizationOp makeMLIROpWithBuilder:symbolTable:inputValues:opInitialization:name:]", "/Library/Caches/com.apple.xbs/Sources/MetalPerformanceShadersGraph/mpsgraph/MetalPerformanceShadersGraph/Core/Files/Operations/MPSGraphNormalizationOps.mm", __p);
-  v43 = v11;
+  v43 = nameCopy;
   v55 = 260;
   v54[0] = __p;
-  StringAttr = mlir::Builder::getStringAttr(a3, v54);
+  StringAttr = mlir::Builder::getStringAttr(builder, v54);
   v14 = mlir::FileLineColLoc::get(StringAttr, 0x2Du, 0);
   if (v43)
   {
-    v15 = [v43 UTF8String];
-    v16 = strlen(v15);
+    uTF8String = [v43 UTF8String];
+    v16 = strlen(uTF8String);
     if (v16 >= 0x7FFFFFFFFFFFFFF8)
     {
       std::string::__throw_length_error[abi:ne200100]();
@@ -33,7 +33,7 @@
     v58[6] = v16;
     if (v16)
     {
-      memmove(&__dst, v15, v16);
+      memmove(&__dst, uTF8String, v16);
     }
 
     v18 = &__dst + v17;
@@ -48,7 +48,7 @@
   }
 
   *v18 = 0;
-  MPSSymbolTable::insertOpInSymbolTable(a4, &__dst, v13, &v50);
+  MPSSymbolTable::insertOpInSymbolTable(table, &__dst, v13, &v50);
   v19 = v50.__r_.__value_.__r.__words[0];
   if ((v50.__r_.__value_.__r.__words[2] & 0x8000000000000000) == 0)
   {
@@ -64,7 +64,7 @@
   }
 
   LOBYTE(v55) = v20;
-  v21 = mlir::Builder::getStringAttr(a3, v54);
+  v21 = mlir::Builder::getStringAttr(builder, v54);
   v22 = mlir::NameLoc::get(v21, v14);
   if (SHIBYTE(v50.__r_.__value_.__r.__words[2]) < 0)
   {
@@ -88,8 +88,8 @@ LABEL_16:
     operator delete(__p[0]);
   }
 
-  v23 = *a5;
-  v24 = *(a5 + 1) - *a5;
+  v23 = *values;
+  v24 = *(values + 1) - *values;
   if (!v24 || (v24 >> 3) < 2 || v24 == 16 || (v24 >> 3) < 4 || v24 == 32)
   {
     std::vector<mlir::Value>::__throw_out_of_range[abi:ne200100]();
@@ -130,7 +130,7 @@ LABEL_16:
     llvm::detail::IEEEFloat::IEEEFloat(&__dst + 8, &v53);
   }
 
-  mlir::mps::NormalizationOp::build(a3, v54, v30, v31, v32, v33, v34, &__dst);
+  mlir::mps::NormalizationOp::build(builder, v54, v30, v31, v32, v33, v34, &__dst);
   if (v37 == *(&__dst + 1))
   {
     llvm::detail::DoubleAPFloat::~DoubleAPFloat((&__dst + 8));
@@ -141,7 +141,7 @@ LABEL_16:
     llvm::detail::IEEEFloat::~IEEEFloat((&__dst + 8));
   }
 
-  v38 = mlir::OpBuilder::create(a3, v54);
+  v38 = mlir::OpBuilder::create(builder, v54);
   v39 = *(*(v38 + 48) + 16);
   mlir::OperationState::~OperationState(v54);
   if (v39 == &mlir::detail::TypeIDResolver<mlir::mps::NormalizationOp,void>::id)
@@ -170,21 +170,21 @@ LABEL_16:
   return DefiningOp;
 }
 
-- (id)partialDerivativesForInputTensors:(id)a3 incomingGradients:(id)a4 name:(id)a5
+- (id)partialDerivativesForInputTensors:(id)tensors incomingGradients:(id)gradients name:(id)name
 {
   v138[5] = *MEMORY[0x1E69E9840];
-  v137 = a3;
-  v8 = a4;
-  v9 = a5;
-  v99 = v8;
-  v136 = [v8 objectAtIndexedSubscript:0];
+  tensorsCopy = tensors;
+  gradientsCopy = gradients;
+  nameCopy = name;
+  v99 = gradientsCopy;
+  v136 = [gradientsCopy objectAtIndexedSubscript:0];
   v134 = [(NSArray *)self->super._inputTensors objectAtIndexedSubscript:0];
   v132 = [(NSArray *)self->super._inputTensors objectAtIndexedSubscript:1];
   v135 = [(NSArray *)self->super._inputTensors objectAtIndexedSubscript:2];
   v133 = [(NSArray *)self->super._inputTensors objectAtIndexedSubscript:3];
   v131 = [(NSArray *)self->super._inputTensors objectAtIndexedSubscript:4];
-  v10 = [(MPSGraphOperation *)self outputTensors];
-  v119 = [v10 objectAtIndexedSubscript:0];
+  outputTensors = [(MPSGraphOperation *)self outputTensors];
+  v119 = [outputTensors objectAtIndexedSubscript:0];
 
   WeakRetained = objc_loadWeakRetained(&self->super._graph);
   v125 = [WeakRetained broadcastGradientArgsForPrimaryTensor:v136 withSecondaryTensor:v134 name:0];
@@ -205,10 +205,10 @@ LABEL_16:
   v127 = [v16 constantWithScalar:&unk_1F5B77708 shape:268435488 dataType:self->_eps];
 
   v17 = objc_loadWeakRetained(&self->super._graph);
-  v18 = [v135 dataType];
-  if (v9)
+  dataType = [v135 dataType];
+  if (nameCopy)
   {
-    v19 = [v9 stringByAppendingFormat:@"/cast"];
+    v19 = [nameCopy stringByAppendingFormat:@"/cast"];
   }
 
   else
@@ -216,12 +216,12 @@ LABEL_16:
     v19 = @"normalizationGradient/cast";
   }
 
-  v126 = [v17 castTensor:v127 toType:v18 name:v19];
-  if (v9)
+  v126 = [v17 castTensor:v127 toType:dataType name:v19];
+  if (nameCopy)
   {
 
     v20 = objc_loadWeakRetained(&self->super._graph);
-    v21 = [v9 stringByAppendingString:@"/addition"];
+    v21 = [nameCopy stringByAppendingString:@"/addition"];
   }
 
   else
@@ -232,11 +232,11 @@ LABEL_16:
   }
 
   v129 = [v20 additionWithPrimaryTensor:v135 secondaryTensor:v126 name:v21];
-  if (v9)
+  if (nameCopy)
   {
 
     v22 = objc_loadWeakRetained(&self->super._graph);
-    v23 = [v9 stringByAppendingString:@"/sqrt"];
+    v23 = [nameCopy stringByAppendingString:@"/sqrt"];
   }
 
   else
@@ -247,11 +247,11 @@ LABEL_16:
   }
 
   v128 = [v22 squareRootWithTensor:v129 name:v23];
-  if (v9)
+  if (nameCopy)
   {
 
     v24 = objc_loadWeakRetained(&self->super._graph);
-    v25 = [v9 stringByAppendingString:@"/divison"];
+    v25 = [nameCopy stringByAppendingString:@"/divison"];
   }
 
   else
@@ -262,11 +262,11 @@ LABEL_16:
   }
 
   v124 = [v24 divisionWithPrimaryTensor:v133 secondaryTensor:v128 name:v25];
-  if (v9)
+  if (nameCopy)
   {
 
     v26 = objc_loadWeakRetained(&self->super._graph);
-    v27 = [v9 stringByAppendingString:@"/multiplication"];
+    v27 = [nameCopy stringByAppendingString:@"/multiplication"];
   }
 
   else
@@ -277,11 +277,11 @@ LABEL_16:
   }
 
   v130 = [v26 multiplicationWithPrimaryTensor:v136 secondaryTensor:v124 name:v27];
-  if (v9)
+  if (nameCopy)
   {
 
     v28 = objc_loadWeakRetained(&self->super._graph);
-    v29 = [v9 stringByAppendingFormat:@"/sum"];
+    v29 = [nameCopy stringByAppendingFormat:@"/sum"];
   }
 
   else
@@ -292,11 +292,11 @@ LABEL_16:
   }
 
   v122 = [v28 reductionSumWithTensor:v130 axesTensor:v125 name:v29];
-  if (v9)
+  if (nameCopy)
   {
 
     v30 = objc_loadWeakRetained(&self->super._graph);
-    v31 = [v9 stringByAppendingString:@"/broadcastGradShape"];
+    v31 = [nameCopy stringByAppendingString:@"/broadcastGradShape"];
   }
 
   else
@@ -307,11 +307,11 @@ LABEL_16:
   }
 
   v121 = [v30 shapeOfTensor:v134 name:v31];
-  if (v9)
+  if (nameCopy)
   {
 
     v32 = objc_loadWeakRetained(&self->super._graph);
-    v33 = [v9 stringByAppendingString:@"/broadcastGradReshape"];
+    v33 = [nameCopy stringByAppendingString:@"/broadcastGradReshape"];
   }
 
   else
@@ -322,11 +322,11 @@ LABEL_16:
   }
 
   v104 = [v32 reshapeTensor:v122 withShapeTensor:v121 name:v33];
-  if (v9)
+  if (nameCopy)
   {
 
     v34 = objc_loadWeakRetained(&self->super._graph);
-    v35 = [v9 stringByAppendingString:@"/meannegative"];
+    v35 = [nameCopy stringByAppendingString:@"/meannegative"];
   }
 
   else
@@ -337,11 +337,11 @@ LABEL_16:
   }
 
   v120 = [v34 negativeWithTensor:v130 name:v35];
-  if (v9)
+  if (nameCopy)
   {
 
     v36 = objc_loadWeakRetained(&self->super._graph);
-    v37 = [v9 stringByAppendingFormat:@"/mean/sum"];
+    v37 = [nameCopy stringByAppendingFormat:@"/mean/sum"];
   }
 
   else
@@ -352,11 +352,11 @@ LABEL_16:
   }
 
   v118 = [v36 reductionSumWithTensor:v120 axesTensor:v123 name:v37];
-  if (v9)
+  if (nameCopy)
   {
 
     v38 = objc_loadWeakRetained(&self->super._graph);
-    v39 = [v9 stringByAppendingString:@"/mean/broadcastGradShape"];
+    v39 = [nameCopy stringByAppendingString:@"/mean/broadcastGradShape"];
   }
 
   else
@@ -367,11 +367,11 @@ LABEL_16:
   }
 
   v117 = [v38 shapeOfTensor:v132 name:v39];
-  if (v9)
+  if (nameCopy)
   {
 
     v40 = objc_loadWeakRetained(&self->super._graph);
-    v41 = [v9 stringByAppendingString:@"/mean/broadcastGradReshape"];
+    v41 = [nameCopy stringByAppendingString:@"/mean/broadcastGradReshape"];
   }
 
   else
@@ -382,7 +382,7 @@ LABEL_16:
   }
 
   v102 = [v40 reshapeTensor:v118 withShapeTensor:v117 name:v41];
-  if (v9)
+  if (nameCopy)
   {
   }
 
@@ -390,9 +390,9 @@ LABEL_16:
   v115 = [v42 constantWithScalar:objc_msgSend(v134 dataType:{"dataType"), -0.5}];
 
   v43 = objc_loadWeakRetained(&self->super._graph);
-  if (v9)
+  if (nameCopy)
   {
-    v44 = [v9 stringByAppendingString:@"/variance/multiplication"];
+    v44 = [nameCopy stringByAppendingString:@"/variance/multiplication"];
   }
 
   else
@@ -401,11 +401,11 @@ LABEL_16:
   }
 
   v114 = [v43 multiplicationWithPrimaryTensor:v136 secondaryTensor:v115 name:v44];
-  if (v9)
+  if (nameCopy)
   {
 
     v45 = objc_loadWeakRetained(&self->super._graph);
-    v46 = [v9 stringByAppendingString:@"/variance/subtraction"];
+    v46 = [nameCopy stringByAppendingString:@"/variance/subtraction"];
   }
 
   else
@@ -416,11 +416,11 @@ LABEL_16:
   }
 
   v113 = [v45 subtractionWithPrimaryTensor:v119 secondaryTensor:v131 name:v46];
-  if (v9)
+  if (nameCopy)
   {
 
     v47 = objc_loadWeakRetained(&self->super._graph);
-    v48 = [v9 stringByAppendingString:@"/variance/multiplication"];
+    v48 = [nameCopy stringByAppendingString:@"/variance/multiplication"];
   }
 
   else
@@ -431,11 +431,11 @@ LABEL_16:
   }
 
   v112 = [v47 multiplicationWithPrimaryTensor:v114 secondaryTensor:v113 name:v48];
-  if (v9)
+  if (nameCopy)
   {
 
     v49 = objc_loadWeakRetained(&self->super._graph);
-    v50 = [v9 stringByAppendingString:@"/variance/divison"];
+    v50 = [nameCopy stringByAppendingString:@"/variance/divison"];
   }
 
   else
@@ -446,11 +446,11 @@ LABEL_16:
   }
 
   v110 = [v49 divisionWithPrimaryTensor:v112 secondaryTensor:v129 name:v50];
-  if (v9)
+  if (nameCopy)
   {
 
     v51 = objc_loadWeakRetained(&self->super._graph);
-    v52 = [v9 stringByAppendingFormat:@"/variance/sum"];
+    v52 = [nameCopy stringByAppendingFormat:@"/variance/sum"];
   }
 
   else
@@ -461,11 +461,11 @@ LABEL_16:
   }
 
   v108 = [v51 reductionSumWithTensor:v110 axesTensor:v116 name:v52];
-  if (v9)
+  if (nameCopy)
   {
 
     v53 = objc_loadWeakRetained(&self->super._graph);
-    v54 = [v9 stringByAppendingString:@"/variance/broadcastGradShape"];
+    v54 = [nameCopy stringByAppendingString:@"/variance/broadcastGradShape"];
   }
 
   else
@@ -476,11 +476,11 @@ LABEL_16:
   }
 
   v107 = [v53 shapeOfTensor:v135 name:v54];
-  if (v9)
+  if (nameCopy)
   {
 
     v55 = objc_loadWeakRetained(&self->super._graph);
-    v56 = [v9 stringByAppendingString:@"/variance/broadcastGradReshape"];
+    v56 = [nameCopy stringByAppendingString:@"/variance/broadcastGradReshape"];
   }
 
   else
@@ -491,11 +491,11 @@ LABEL_16:
   }
 
   v100 = [v55 reshapeTensor:v108 withShapeTensor:v107 name:v56];
-  if (v9)
+  if (nameCopy)
   {
 
     v57 = objc_loadWeakRetained(&self->super._graph);
-    v58 = [v9 stringByAppendingString:@"/gamma/subtraction"];
+    v58 = [nameCopy stringByAppendingString:@"/gamma/subtraction"];
   }
 
   else
@@ -506,11 +506,11 @@ LABEL_16:
   }
 
   v106 = [v57 subtractionWithPrimaryTensor:v134 secondaryTensor:v132 name:v58];
-  if (v9)
+  if (nameCopy)
   {
 
     v59 = objc_loadWeakRetained(&self->super._graph);
-    v60 = [v9 stringByAppendingString:@"/gamma/divison"];
+    v60 = [nameCopy stringByAppendingString:@"/gamma/divison"];
   }
 
   else
@@ -521,11 +521,11 @@ LABEL_16:
   }
 
   v105 = [v59 divisionWithPrimaryTensor:v106 secondaryTensor:v128 name:v60];
-  if (v9)
+  if (nameCopy)
   {
 
     v61 = objc_loadWeakRetained(&self->super._graph);
-    v62 = [v9 stringByAppendingString:@"/gamma/multiplication"];
+    v62 = [nameCopy stringByAppendingString:@"/gamma/multiplication"];
   }
 
   else
@@ -536,11 +536,11 @@ LABEL_16:
   }
 
   v103 = [v61 multiplicationWithPrimaryTensor:v136 secondaryTensor:v105 name:v62];
-  if (v9)
+  if (nameCopy)
   {
 
     v63 = objc_loadWeakRetained(&self->super._graph);
-    v64 = [v9 stringByAppendingFormat:@"/gamma/sum"];
+    v64 = [nameCopy stringByAppendingFormat:@"/gamma/sum"];
   }
 
   else
@@ -551,11 +551,11 @@ LABEL_16:
   }
 
   v101 = [v63 reductionSumWithTensor:v103 axesTensor:v111 name:v64];
-  if (v9)
+  if (nameCopy)
   {
 
     v65 = objc_loadWeakRetained(&self->super._graph);
-    v66 = [v9 stringByAppendingString:@"/gamma/broadcastGradShape"];
+    v66 = [nameCopy stringByAppendingString:@"/gamma/broadcastGradShape"];
   }
 
   else
@@ -566,11 +566,11 @@ LABEL_16:
   }
 
   v67 = [v65 shapeOfTensor:v133 name:v66];
-  if (v9)
+  if (nameCopy)
   {
 
     v68 = objc_loadWeakRetained(&self->super._graph);
-    v69 = [v9 stringByAppendingString:@"/gamma/broadcastGradReshape"];
+    v69 = [nameCopy stringByAppendingString:@"/gamma/broadcastGradReshape"];
   }
 
   else
@@ -581,11 +581,11 @@ LABEL_16:
   }
 
   v70 = [v68 reshapeTensor:v101 withShapeTensor:v67 name:v69];
-  if (v9)
+  if (nameCopy)
   {
 
     v71 = objc_loadWeakRetained(&self->super._graph);
-    v72 = [v9 stringByAppendingFormat:@"/beta/sum"];
+    v72 = [nameCopy stringByAppendingFormat:@"/beta/sum"];
   }
 
   else
@@ -596,11 +596,11 @@ LABEL_16:
   }
 
   v73 = [v71 reductionSumWithTensor:v136 axesTensor:v109 name:v72];
-  if (v9)
+  if (nameCopy)
   {
 
     v74 = objc_loadWeakRetained(&self->super._graph);
-    v75 = [v9 stringByAppendingString:@"/beta/broadcastGradShape"];
+    v75 = [nameCopy stringByAppendingString:@"/beta/broadcastGradShape"];
   }
 
   else
@@ -611,11 +611,11 @@ LABEL_16:
   }
 
   v76 = [v74 shapeOfTensor:v131 name:v75];
-  if (v9)
+  if (nameCopy)
   {
 
     v77 = objc_loadWeakRetained(&self->super._graph);
-    v78 = [v9 stringByAppendingString:@"/beta/broadcastGradReshape"];
+    v78 = [nameCopy stringByAppendingString:@"/beta/broadcastGradReshape"];
   }
 
   else
@@ -626,7 +626,7 @@ LABEL_16:
   }
 
   v79 = [v77 reshapeTensor:v73 withShapeTensor:v76 name:v78];
-  if (v9)
+  if (nameCopy)
   {
   }
 
@@ -638,53 +638,53 @@ LABEL_16:
   v80 = [MEMORY[0x1E695DEC8] arrayWithObjects:v138 count:5];
   v81 = [v80 mutableCopy];
 
-  v82 = [v137 objectAtIndexedSubscript:0];
+  v82 = [tensorsCopy objectAtIndexedSubscript:0];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v84 = [v137 objectAtIndexedSubscript:0];
+    v84 = [tensorsCopy objectAtIndexedSubscript:0];
     [v81 setObject:v84 atIndexedSubscript:0];
   }
 
-  v85 = [v137 objectAtIndexedSubscript:1];
+  v85 = [tensorsCopy objectAtIndexedSubscript:1];
   objc_opt_class();
   v86 = objc_opt_isKindOfClass();
 
   if (v86)
   {
-    v87 = [v137 objectAtIndexedSubscript:1];
+    v87 = [tensorsCopy objectAtIndexedSubscript:1];
     [v81 setObject:v87 atIndexedSubscript:1];
   }
 
-  v88 = [v137 objectAtIndexedSubscript:2];
+  v88 = [tensorsCopy objectAtIndexedSubscript:2];
   objc_opt_class();
   v89 = objc_opt_isKindOfClass();
 
   if (v89)
   {
-    v90 = [v137 objectAtIndexedSubscript:2];
+    v90 = [tensorsCopy objectAtIndexedSubscript:2];
     [v81 setObject:v90 atIndexedSubscript:2];
   }
 
-  v91 = [v137 objectAtIndexedSubscript:3];
+  v91 = [tensorsCopy objectAtIndexedSubscript:3];
   objc_opt_class();
   v92 = objc_opt_isKindOfClass();
 
   if (v92)
   {
-    v93 = [v137 objectAtIndexedSubscript:3];
+    v93 = [tensorsCopy objectAtIndexedSubscript:3];
     [v81 setObject:v93 atIndexedSubscript:3];
   }
 
-  v94 = [v137 objectAtIndexedSubscript:4];
+  v94 = [tensorsCopy objectAtIndexedSubscript:4];
   objc_opt_class();
   v95 = objc_opt_isKindOfClass();
 
   if (v95)
   {
-    v96 = [v137 objectAtIndexedSubscript:4];
+    v96 = [tensorsCopy objectAtIndexedSubscript:4];
     [v81 setObject:v96 atIndexedSubscript:4];
   }
 

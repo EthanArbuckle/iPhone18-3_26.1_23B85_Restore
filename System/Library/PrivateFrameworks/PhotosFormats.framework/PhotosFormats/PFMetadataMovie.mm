@@ -1,26 +1,26 @@
 @interface PFMetadataMovie
-+ (AudioStreamBasicDescription)audioStreamBasicDescriptionForAsset:(SEL)a3;
-+ (BOOL)parseISO6709String:(id)a3 outLatitude:(double *)a4 outLongitude:(double *)a5;
-+ (id)exifTimezoneOffsetFromDateString:(id)a3 offsetInSeconds:(int64_t *)a4;
-+ (void)_enumerateTracksOfType:(id)a3 onAsset:(id)a4 withBlock:(id)a5;
-+ (void)firstAudioTrackForAsset:(id)a3 resultBlock:(id)a4;
-+ (void)firstVideoTrackForAsset:(id)a3 resultBlock:(id)a4;
++ (AudioStreamBasicDescription)audioStreamBasicDescriptionForAsset:(SEL)asset;
++ (BOOL)parseISO6709String:(id)string outLatitude:(double *)latitude outLongitude:(double *)longitude;
++ (id)exifTimezoneOffsetFromDateString:(id)string offsetInSeconds:(int64_t *)seconds;
++ (void)_enumerateTracksOfType:(id)type onAsset:(id)asset withBlock:(id)block;
++ (void)firstAudioTrackForAsset:(id)asset resultBlock:(id)block;
++ (void)firstVideoTrackForAsset:(id)asset resultBlock:(id)block;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)duration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)stillImageDisplayTime;
 - (AudioStreamBasicDescription)_audioStreamBasicDescription;
 - (BOOL)_computeIsProRes;
-- (BOOL)_configureWithAVAsset:(id)a3;
-- (BOOL)_configureWithAVProxyData:(id)a3;
-- (BOOL)_configureWithAVURL:(id)a3;
+- (BOOL)_configureWithAVAsset:(id)asset;
+- (BOOL)_configureWithAVProxyData:(id)data;
+- (BOOL)_configureWithAVURL:(id)l;
 - (BOOL)_convertToAVAssetProxyIfPossible;
-- (BOOL)configureWithMetadataPlist:(id)a3;
+- (BOOL)configureWithMetadataPlist:(id)plist;
 - (BOOL)hasSpatialAudio;
 - (BOOL)hasVitality;
 - (BOOL)isActionCam;
 - (BOOL)isAutoLivePhoto;
 - (BOOL)isCinematicVideo;
 - (BOOL)isDecodable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFrontAndRearComposition;
 - (BOOL)isHDR;
 - (BOOL)isPlayable;
@@ -30,22 +30,22 @@
 - (BOOL)isSpatialOverCapture;
 - (BOOL)isTimelapse;
 - (BOOL)livePhotoVitalityLimitingAllowed;
-- (BOOL)verifyShouldLoadTrackMetadata:(const char *)a3;
-- (PFMetadataMovie)initWithAVAsset:(id)a3 options:(unsigned __int16)a4 timeZoneLookup:(id)a5;
-- (PFMetadataMovie)initWithAVAsset:(id)a3 options:(unsigned __int16)a4 timeZoneLookup:(id)a5 preloadValues:(BOOL)a6;
-- (PFMetadataMovie)initWithAVProxyData:(id)a3 timeZoneLookup:(id)a4;
-- (PFMetadataMovie)initWithAVURL:(id)a3 options:(unsigned __int16)a4 timeZoneLookup:(id)a5;
-- (id)_apacProfileLevelDescriptionForFormatDescription:(opaqueCMFormatDescription *)a3 audioStreamBasicDescription:(AudioStreamBasicDescription *)a4;
-- (id)_cachedValueForKey:(id)a3 usingBlock:(id)a4;
+- (BOOL)verifyShouldLoadTrackMetadata:(const char *)metadata;
+- (PFMetadataMovie)initWithAVAsset:(id)asset options:(unsigned __int16)options timeZoneLookup:(id)lookup;
+- (PFMetadataMovie)initWithAVAsset:(id)asset options:(unsigned __int16)options timeZoneLookup:(id)lookup preloadValues:(BOOL)values;
+- (PFMetadataMovie)initWithAVProxyData:(id)data timeZoneLookup:(id)lookup;
+- (PFMetadataMovie)initWithAVURL:(id)l options:(unsigned __int16)options timeZoneLookup:(id)lookup;
+- (id)_apacProfileLevelDescriptionForFormatDescription:(opaqueCMFormatDescription *)description audioStreamBasicDescription:(AudioStreamBasicDescription *)basicDescription;
+- (id)_cachedValueForKey:(id)key usingBlock:(id)block;
 - (id)_computeApacAudioTrackInfo;
-- (id)_computeFirstTrackOfType:(id)a3;
+- (id)_computeFirstTrackOfType:(id)type;
 - (id)_computeHEVCProfileInfo;
 - (id)_computeStillImageDisplayTimeDictionary;
-- (id)_contextForKeys:(id)a3 collectionKeys:(id)a4;
-- (id)_exifTimezoneOffsetFromDateString:(id)a3 offsetInSeconds:(int64_t *)a4;
+- (id)_contextForKeys:(id)keys collectionKeys:(id)collectionKeys;
+- (id)_exifTimezoneOffsetFromDateString:(id)string offsetInSeconds:(int64_t *)seconds;
 - (id)_firstAudioTrack;
 - (id)_firstVideoTrack;
-- (id)_makeDateTimePropertiesForAsset:(id)a3;
+- (id)_makeDateTimePropertiesForAsset:(id)asset;
 - (id)_makeGPSProperties;
 - (id)_makeGeometryProperties;
 - (id)apacAudioTrackBedChannelCount;
@@ -70,7 +70,7 @@
 - (id)cinematicVideoIntent;
 - (id)collectionKeysToLoad;
 - (id)colorPrimaries;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)firstVideoTrackCodecString;
 - (id)firstVideoTrackFormatDebugDescription;
 - (id)focalLengthIn35mm;
@@ -102,10 +102,10 @@
 - (id)videoCodecName;
 - (id)videoDataRate;
 - (id)videoDynamicRange;
-- (int64_t)_audioVideoProxyPropertyListForAsset:(id)a3 propertyList:(id *)a4 error:(id *)a5;
-- (int64_t)_spatialVideoRecommendationForImmersiveModeForAssetVideoTrack:(id)a3;
+- (int64_t)_audioVideoProxyPropertyListForAsset:(id)asset propertyList:(id *)list error:(id *)error;
+- (int64_t)_spatialVideoRecommendationForImmersiveModeForAssetVideoTrack:(id)track;
 - (int64_t)spatialVideoRecommendationForImmersiveMode;
-- (opaqueCMFormatDescription)_computeFirstFormatDescriptionOfType:(id)a3;
+- (opaqueCMFormatDescription)_computeFirstFormatDescriptionOfType:(id)type;
 - (opaqueCMFormatDescription)_firstVideoTrackFormatDescription;
 - (signed)smartStyleVideoCastValue;
 - (unsigned)firstVideoTrackCodec;
@@ -113,26 +113,26 @@
 - (void)_cacheCommonMetadataProperties;
 - (void)_cacheComputedTrackMetadataProperties;
 - (void)_cacheIndirectTrackMetadataProperties;
-- (void)_checkHFRMetadataKeyShouldPlayAtFullFrameRate:(BOOL *)a3 containsHFRPlaybackKey:(BOOL *)a4;
-- (void)_computeChannelCountsForApacAudioTrackInfo:(id)a3 maxChannelCount:(unint64_t)a4 audioChannelLayout:(const AudioChannelLayout *)a5;
+- (void)_checkHFRMetadataKeyShouldPlayAtFullFrameRate:(BOOL *)rate containsHFRPlaybackKey:(BOOL *)key;
+- (void)_computeChannelCountsForApacAudioTrackInfo:(id)info maxChannelCount:(unint64_t)count audioChannelLayout:(const AudioChannelLayout *)layout;
 - (void)_computeFirstVideoTrackCodecAndName;
-- (void)_loadMetadataForAsset:(id)a3 withKeys:(id)a4 collectionKeys:(id)a5;
-- (void)_loadMetadataForAsset:(id)a3 withKeys:(id)a4 collectionKeys:(id)a5 completionHandler:(id)a6;
-- (void)_verifyAllValuesLoadedForAsset:(id)a3;
-- (void)_verifyTrackValuesLoadedForAsset:(id)a3;
-- (void)loadMetadataWithCompletionHandler:(id)a3;
+- (void)_loadMetadataForAsset:(id)asset withKeys:(id)keys collectionKeys:(id)collectionKeys;
+- (void)_loadMetadataForAsset:(id)asset withKeys:(id)keys collectionKeys:(id)collectionKeys completionHandler:(id)handler;
+- (void)_verifyAllValuesLoadedForAsset:(id)asset;
+- (void)_verifyTrackValuesLoadedForAsset:(id)asset;
+- (void)loadMetadataWithCompletionHandler:(id)handler;
 @end
 
 @implementation PFMetadataMovie
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v12.receiver = self;
   v12.super_class = PFMetadataMovie;
-  if ([(PFMetadata *)&v12 isEqual:v4])
+  if ([(PFMetadata *)&v12 isEqual:equalCopy])
   {
-    v5 = v4;
+    v5 = equalCopy;
     asset = self->_asset;
     if (v5[22])
     {
@@ -151,9 +151,9 @@
 
     else
     {
-      v8 = [(AVAsset *)asset propertyListForProxy];
-      v9 = [v5[22] propertyListForProxy];
-      v10 = [v8 isEqualToDictionary:v9];
+      propertyListForProxy = [(AVAsset *)asset propertyListForProxy];
+      propertyListForProxy2 = [v5[22] propertyListForProxy];
+      v10 = [propertyListForProxy isEqualToDictionary:propertyListForProxy2];
     }
   }
 
@@ -165,11 +165,11 @@
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = PFMetadataMovie;
-  v4 = [(PFMetadata *)&v6 copyWithZone:a3];
+  v4 = [(PFMetadata *)&v6 copyWithZone:zone];
   objc_storeStrong(v4 + 22, self->_asset);
   objc_storeStrong(v4 + 23, self->_cached_values);
   return v4;
@@ -178,48 +178,48 @@
 - (id)ptpMediaMetadata
 {
   v28[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  [v3 setObject:&unk_1F2AAB410 forKeyedSubscript:*MEMORY[0x1E696DE78]];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:&unk_1F2AAB410 forKeyedSubscript:*MEMORY[0x1E696DE78]];
   v4 = MEMORY[0x1E696AD98];
   [(PFMetadata *)self orientedPixelSize];
   v5 = [v4 numberWithDouble:?];
-  [v3 setObject:v5 forKeyedSubscript:*MEMORY[0x1E696DED8]];
+  [dictionary setObject:v5 forKeyedSubscript:*MEMORY[0x1E696DED8]];
 
   v6 = MEMORY[0x1E696AD98];
   [(PFMetadata *)self orientedPixelSize];
   v8 = [v6 numberWithDouble:v7];
-  [v3 setObject:v8 forKeyedSubscript:*MEMORY[0x1E696DD58]];
+  [dictionary setObject:v8 forKeyedSubscript:*MEMORY[0x1E696DD58]];
 
-  v9 = [(PFMetadataMovie *)self cameraMake];
-  if (v9)
+  cameraMake = [(PFMetadataMovie *)self cameraMake];
+  if (cameraMake)
   {
   }
 
   else
   {
-    v10 = [(PFMetadataMovie *)self cameraModel];
+    cameraModel = [(PFMetadataMovie *)self cameraModel];
 
-    if (!v10)
+    if (!cameraModel)
     {
       goto LABEL_5;
     }
   }
 
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  v12 = [(PFMetadataMovie *)self cameraMake];
-  [v11 setObject:v12 forKeyedSubscript:*MEMORY[0x1E696DF48]];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+  cameraMake2 = [(PFMetadataMovie *)self cameraMake];
+  [dictionary2 setObject:cameraMake2 forKeyedSubscript:*MEMORY[0x1E696DF48]];
 
-  v13 = [(PFMetadataMovie *)self cameraModel];
-  [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x1E696DF50]];
+  cameraModel2 = [(PFMetadataMovie *)self cameraModel];
+  [dictionary2 setObject:cameraModel2 forKeyedSubscript:*MEMORY[0x1E696DF50]];
 
-  [v3 setObject:v11 forKeyedSubscript:*MEMORY[0x1E696DF28]];
+  [dictionary setObject:dictionary2 forKeyedSubscript:*MEMORY[0x1E696DF28]];
 LABEL_5:
-  v14 = [(PFMetadata *)self gpsLocation];
-  [v14 coordinate];
+  gpsLocation = [(PFMetadata *)self gpsLocation];
+  [gpsLocation coordinate];
   if (v15 != 0.0)
   {
-    v16 = [(PFMetadata *)self gpsLocation];
-    [v16 coordinate];
+    gpsLocation2 = [(PFMetadata *)self gpsLocation];
+    [gpsLocation2 coordinate];
     v18 = v17;
 
     if (v18 == 0.0)
@@ -229,37 +229,37 @@ LABEL_5:
 
     v27[0] = *MEMORY[0x1E696DC18];
     v19 = MEMORY[0x1E696AD98];
-    v14 = [(PFMetadata *)self gpsLocation];
-    [v14 coordinate];
+    gpsLocation = [(PFMetadata *)self gpsLocation];
+    [gpsLocation coordinate];
     v20 = [v19 numberWithDouble:?];
     v28[0] = v20;
     v27[1] = *MEMORY[0x1E696DC28];
     v21 = MEMORY[0x1E696AD98];
-    v22 = [(PFMetadata *)self gpsLocation];
-    [v22 coordinate];
+    gpsLocation3 = [(PFMetadata *)self gpsLocation];
+    [gpsLocation3 coordinate];
     v24 = [v21 numberWithDouble:v23];
     v28[1] = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v28 forKeys:v27 count:2];
-    [v3 setObject:v25 forKeyedSubscript:*MEMORY[0x1E696DBF0]];
+    [dictionary setObject:v25 forKeyedSubscript:*MEMORY[0x1E696DBF0]];
   }
 
 LABEL_9:
 
-  return v3;
+  return dictionary;
 }
 
 - (id)plistForEncoding
 {
   v10.receiver = self;
   v10.super_class = PFMetadataMovie;
-  v3 = [(PFMetadata *)&v10 plistForEncoding];
-  v4 = [v3 mutableCopy];
+  plistForEncoding = [(PFMetadata *)&v10 plistForEncoding];
+  v4 = [plistForEncoding mutableCopy];
 
   asset = self->_asset;
   if (asset)
   {
-    v6 = [(AVAsset *)asset propertyListForProxy];
-    [v4 setObject:v6 forKeyedSubscript:PFMetadataPlistAsset];
+    propertyListForProxy = [(AVAsset *)asset propertyListForProxy];
+    [v4 setObject:propertyListForProxy forKeyedSubscript:PFMetadataPlistAsset];
 
     v7 = [(NSMutableDictionary *)self->_cached_values objectForKeyedSubscript:PFMetadataPlistIdentifyingTagClass];
     [v4 setObject:v7 forKeyedSubscript:PFMetadataPlistIdentifyingTagClass];
@@ -271,25 +271,25 @@ LABEL_9:
   return v4;
 }
 
-- (void)_checkHFRMetadataKeyShouldPlayAtFullFrameRate:(BOOL *)a3 containsHFRPlaybackKey:(BOOL *)a4
+- (void)_checkHFRMetadataKeyShouldPlayAtFullFrameRate:(BOOL *)rate containsHFRPlaybackKey:(BOOL *)key
 {
-  v7 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v8 = +[PFMetadataIdentifier quicktimeMetadataFullFrameRatePlaybackIntent];
-  v9 = [(AVAsset *)self->_asset metadata];
-  v11 = [v7 valueForAVMetadataIdentifier:v8 fromAVMetadataItems:v9];
+  metadata = [(AVAsset *)self->_asset metadata];
+  v11 = [typeVerifier valueForAVMetadataIdentifier:v8 fromAVMetadataItems:metadata];
 
   v10 = v11;
   if (v11)
   {
-    *a3 = [v11 BOOLValue];
+    *rate = [v11 BOOLValue];
     v10 = v11;
-    *a4 = 1;
+    *key = 1;
   }
 }
 
-- (id)_computeFirstTrackOfType:(id)a3
+- (id)_computeFirstTrackOfType:(id)type
 {
-  v4 = a3;
+  typeCopy = type;
   v9 = 0;
   v10 = &v9;
   v11 = 0x3032000000;
@@ -302,27 +302,27 @@ LABEL_9:
   v8[2] = __44__PFMetadataMovie__computeFirstTrackOfType___block_invoke;
   v8[3] = &unk_1E7B65170;
   v8[4] = &v9;
-  [PFMetadataMovie _enumerateTracksOfType:v4 onAsset:asset withBlock:v8];
+  [PFMetadataMovie _enumerateTracksOfType:typeCopy onAsset:asset withBlock:v8];
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
 
   return v6;
 }
 
-- (opaqueCMFormatDescription)_computeFirstFormatDescriptionOfType:(id)a3
+- (opaqueCMFormatDescription)_computeFirstFormatDescriptionOfType:(id)type
 {
-  v3 = [(PFMetadataMovie *)self _computeFirstTrackOfType:a3];
-  v4 = [v3 formatDescriptions];
-  v5 = [v4 firstObject];
+  v3 = [(PFMetadataMovie *)self _computeFirstTrackOfType:type];
+  formatDescriptions = [v3 formatDescriptions];
+  firstObject = [formatDescriptions firstObject];
 
-  return v5;
+  return firstObject;
 }
 
-- (void)_verifyTrackValuesLoadedForAsset:(id)a3
+- (void)_verifyTrackValuesLoadedForAsset:(id)asset
 {
   v40 = *MEMORY[0x1E69E9840];
-  v20 = a3;
-  [v20 tracks];
+  assetCopy = asset;
+  [assetCopy tracks];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -381,7 +381,7 @@ LABEL_9:
 
                   v31 = v10;
                   v32 = 2048;
-                  v33 = v20;
+                  v33 = assetCopy;
                   v34 = 2048;
                   v35 = v4;
                   v36 = 2112;
@@ -412,10 +412,10 @@ LABEL_9:
   }
 }
 
-- (void)_verifyAllValuesLoadedForAsset:(id)a3
+- (void)_verifyAllValuesLoadedForAsset:(id)asset
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  assetCopy = asset;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -439,7 +439,7 @@ LABEL_9:
 
         v11 = *(*(&v17 + 1) + 8 * v9);
         v16 = v7;
-        v12 = [v4 statusOfValueForKey:v11 error:&v16];
+        v12 = [assetCopy statusOfValueForKey:v11 error:&v16];
         v7 = v16;
 
         if (v12 != 2)
@@ -474,7 +474,7 @@ LABEL_9:
 
   if ([&unk_1F2AAB908 containsObject:@"tracks"])
   {
-    [(PFMetadataMovie *)self _verifyTrackValuesLoadedForAsset:v4];
+    [(PFMetadataMovie *)self _verifyTrackValuesLoadedForAsset:assetCopy];
   }
 }
 
@@ -628,24 +628,24 @@ void __33__PFMetadataMovie_outOfBandHints__block_invoke_2(uint64_t a1, void *a2,
   }
 }
 
-- (int64_t)_audioVideoProxyPropertyListForAsset:(id)a3 propertyList:(id *)a4 error:(id *)a5
+- (int64_t)_audioVideoProxyPropertyListForAsset:(id)asset propertyList:(id *)list error:(id *)error
 {
   v61[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  assetCopy = asset;
   v9 = self->_stateHandler;
-  v10 = [v8 propertyListForProxy];
-  if (v10)
+  propertyListForProxy = [assetCopy propertyListForProxy];
+  if (propertyListForProxy)
   {
-    v11 = 0;
+    error = 0;
     v12 = 0;
-    if (!a4)
+    if (!list)
     {
       goto LABEL_21;
     }
 
 LABEL_20:
-    v36 = v10;
-    *a4 = v10;
+    v36 = propertyListForProxy;
+    *list = propertyListForProxy;
     goto LABEL_21;
   }
 
@@ -675,22 +675,22 @@ LABEL_20:
     v44 = v14;
     v50 = v44;
     v40 = v17;
-    [v15 determineCompatibilityOfExportPreset:v16 withAsset:v8 outputFileType:v17 completionHandler:v49];
+    [v15 determineCompatibilityOfExportPreset:v16 withAsset:assetCopy outputFileType:v17 completionHandler:v49];
     dispatch_block_wait(v44, 0xFFFFFFFFFFFFFFFFLL);
     [(PFMetadataStateHandler *)v13 addBreadcrumb:@"%s: Completed +determineCompatibilityOfExportPreset:", "[PFMetadataMovie _audioVideoProxyPropertyListForAsset:propertyList:error:]"];
     if (*(v55 + 24) == 1)
     {
       v45 = MEMORY[0x1E695DFF8];
       v18 = NSTemporaryDirectory();
-      v19 = [MEMORY[0x1E696AFB0] UUID];
-      v20 = [v19 UUIDString];
-      v21 = [v20 stringByAppendingPathExtension:@"mov"];
+      uUID = [MEMORY[0x1E696AFB0] UUID];
+      uUIDString = [uUID UUIDString];
+      v21 = [uUIDString stringByAppendingPathExtension:@"mov"];
       v22 = [v18 stringByAppendingPathComponent:v21];
       v46 = [v45 fileURLWithPath:v22];
 
       if (v46)
       {
-        v23 = [objc_alloc(MEMORY[0x1E6987E60]) initWithAsset:v8 presetName:v42];
+        v23 = [objc_alloc(MEMORY[0x1E6987E60]) initWithAsset:assetCopy presetName:v42];
         [v23 setOutputFileType:v40];
         [v23 setOutputURL:v46];
         v47[0] = MEMORY[0x1E69E9820];
@@ -711,27 +711,27 @@ LABEL_20:
 
           if (v26)
           {
-            v10 = [v26 propertyListForProxy];
+            propertyListForProxy = [v26 propertyListForProxy];
             v12 = 1;
           }
 
           else
           {
-            v10 = 0;
+            propertyListForProxy = 0;
             v12 = 0;
           }
 
-          v35 = [MEMORY[0x1E696AC08] defaultManager];
-          [v35 removeItemAtURL:v46 error:0];
+          defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+          [defaultManager removeItemAtURL:v46 error:0];
 
-          v11 = 0;
-          v8 = v26;
+          error = 0;
+          assetCopy = v26;
         }
 
         else
         {
-          v11 = [v23 error];
-          v10 = 0;
+          error = [v23 error];
+          propertyListForProxy = 0;
           v12 = 3;
         }
 
@@ -744,18 +744,18 @@ LABEL_20:
         v60 = *MEMORY[0x1E696A578];
         v29 = MEMORY[0x1E696AEC0];
         v23 = NSTemporaryDirectory();
-        v43 = [MEMORY[0x1E696AFB0] UUID];
-        v41 = [(PFMetadataStateHandler *)v43 UUIDString];
-        v30 = [v41 stringByAppendingPathExtension:@"mov"];
+        uUID2 = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString2 = [(PFMetadataStateHandler *)uUID2 UUIDString];
+        v30 = [uUIDString2 stringByAppendingPathExtension:@"mov"];
         v31 = [v23 stringByAppendingPathComponent:v30];
         v32 = [v29 stringWithFormat:@"Failed to create a URL for path '%@'", v31];
         v61[0] = v32;
         v33 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v61 forKeys:&v60 count:1];
-        v11 = [v39 errorWithDomain:@"com.apple.PhotosFormats" code:3 userInfo:v33];
+        error = [v39 errorWithDomain:@"com.apple.PhotosFormats" code:3 userInfo:v33];
 
-        v10 = 0;
+        propertyListForProxy = 0;
         v12 = 3;
-        v34 = v43;
+        v34 = uUID2;
         v25 = v44;
       }
     }
@@ -767,13 +767,13 @@ LABEL_20:
       v59 = @"Asset, is not compatible with the AVAssetExportPresetPassthrough export preset";
       v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v59 forKeys:&v58 count:1];
       v12 = 3;
-      v11 = [v27 errorWithDomain:@"com.apple.PhotosFormats" code:3 userInfo:v28];
-      v10 = 0;
+      error = [v27 errorWithDomain:@"com.apple.PhotosFormats" code:3 userInfo:v28];
+      propertyListForProxy = 0;
       v25 = v44;
     }
 
     _Block_object_dispose(&v54, 8);
-    if (a4)
+    if (list)
     {
       goto LABEL_20;
     }
@@ -781,55 +781,55 @@ LABEL_20:
 
   else
   {
-    v11 = 0;
-    v10 = 0;
+    error = 0;
+    propertyListForProxy = 0;
     v12 = 2;
-    if (a4)
+    if (list)
     {
       goto LABEL_20;
     }
   }
 
 LABEL_21:
-  if (a5)
+  if (error)
   {
-    v37 = v11;
-    *a5 = v11;
+    v37 = error;
+    *error = error;
   }
 
   return v12;
 }
 
-- (id)_exifTimezoneOffsetFromDateString:(id)a3 offsetInSeconds:(int64_t *)a4
+- (id)_exifTimezoneOffsetFromDateString:(id)string offsetInSeconds:(int64_t *)seconds
 {
-  v5 = a3;
+  stringCopy = string;
   if (_exifTimezoneOffsetFromDateString_offsetInSeconds__onceToken != -1)
   {
     dispatch_once(&_exifTimezoneOffsetFromDateString_offsetInSeconds__onceToken, &__block_literal_global_287);
   }
 
-  v6 = [_exifTimezoneOffsetFromDateString_offsetInSeconds__timeZoneSuffixRegex firstMatchInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
+  v6 = [_exifTimezoneOffsetFromDateString_offsetInSeconds__timeZoneSuffixRegex firstMatchInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
   v7 = v6;
   if (v6)
   {
     v8 = [v6 rangeAtIndex:1];
-    v10 = [v5 substringWithRange:{v8, v9}];
+    v10 = [stringCopy substringWithRange:{v8, v9}];
     v11 = [v7 rangeAtIndex:2];
-    v13 = [v5 substringWithRange:{v11, v12}];
+    v13 = [stringCopy substringWithRange:{v11, v12}];
     v14 = [v7 rangeAtIndex:3];
-    v16 = [v5 substringWithRange:{v14, v15}];
+    v16 = [stringCopy substringWithRange:{v14, v15}];
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@:%@", v10, v13, v16];
-    if (a4)
+    if (seconds)
     {
       v18 = [v10 isEqualToString:@"-"];
-      v19 = [v13 intValue];
-      v20 = 3600 * v19 + 60 * [v16 intValue];
+      intValue = [v13 intValue];
+      v20 = 3600 * intValue + 60 * [v16 intValue];
       if (v18)
       {
         v20 = -v20;
       }
 
-      *a4 = v20;
+      *seconds = v20;
     }
   }
 
@@ -917,17 +917,17 @@ id __52__PFMetadataMovie__firstVideoTrackFormatDescription__block_invoke(uint64_
   return v2;
 }
 
-- (id)_apacProfileLevelDescriptionForFormatDescription:(opaqueCMFormatDescription *)a3 audioStreamBasicDescription:(AudioStreamBasicDescription *)a4
+- (id)_apacProfileLevelDescriptionForFormatDescription:(opaqueCMFormatDescription *)description audioStreamBasicDescription:(AudioStreamBasicDescription *)basicDescription
 {
   v22 = *MEMORY[0x1E69E9840];
   sizeOut = 0;
-  MagicCookie = CMAudioFormatDescriptionGetMagicCookie(a3, &sizeOut);
+  MagicCookie = CMAudioFormatDescriptionGetMagicCookie(description, &sizeOut);
   v17 = 0;
   v18 = 0;
-  v6 = *&a4->mBytesPerPacket;
-  inSpecifier[0] = *&a4->mSampleRate;
+  v6 = *&basicDescription->mBytesPerPacket;
+  inSpecifier[0] = *&basicDescription->mSampleRate;
   inSpecifier[1] = v6;
-  v15 = *&a4->mBitsPerChannel;
+  v15 = *&basicDescription->mBitsPerChannel;
   v16 = MagicCookie;
   LODWORD(v17) = sizeOut;
   LODWORD(v18) = 1836069990;
@@ -956,20 +956,20 @@ id __52__PFMetadataMovie__firstVideoTrackFormatDescription__block_invoke(uint64_
   return v10;
 }
 
-- (id)_contextForKeys:(id)a3 collectionKeys:(id)a4
+- (id)_contextForKeys:(id)keys collectionKeys:(id)collectionKeys
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 componentsJoinedByString:{@", "}];
-  if ([v6 count])
+  keysCopy = keys;
+  collectionKeysCopy = collectionKeys;
+  v7 = [keysCopy componentsJoinedByString:{@", "}];
+  if ([collectionKeysCopy count])
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v5;
-    v8 = v5;
+    v18 = keysCopy;
+    v8 = keysCopy;
     v9 = [v8 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v9)
     {
@@ -984,7 +984,7 @@ id __52__PFMetadataMovie__firstVideoTrackFormatDescription__block_invoke(uint64_
             objc_enumerationMutation(v8);
           }
 
-          v13 = [v6 objectForKeyedSubscript:*(*(&v19 + 1) + 8 * i)];
+          v13 = [collectionKeysCopy objectForKeyedSubscript:*(*(&v19 + 1) + 8 * i)];
           v14 = v13;
           if (v13)
           {
@@ -1001,38 +1001,38 @@ id __52__PFMetadataMovie__firstVideoTrackFormatDescription__block_invoke(uint64_
       while (v10);
     }
 
-    v5 = v18;
+    keysCopy = v18;
   }
 
   return v7;
 }
 
-- (id)_cachedValueForKey:(id)a3 usingBlock:(id)a4
+- (id)_cachedValueForKey:(id)key usingBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMutableDictionary *)self->_cached_values objectForKeyedSubscript:v6];
+  keyCopy = key;
+  blockCopy = block;
+  v8 = [(NSMutableDictionary *)self->_cached_values objectForKeyedSubscript:keyCopy];
   if (!v8)
   {
-    v9 = v7[2](v7);
+    v9 = blockCopy[2](blockCopy);
     v10 = v9;
     if (v9)
     {
-      v11 = v9;
+      null = v9;
     }
 
     else
     {
-      v11 = [MEMORY[0x1E695DFB0] null];
+      null = [MEMORY[0x1E695DFB0] null];
     }
 
-    v8 = v11;
+    v8 = null;
 
-    [(NSMutableDictionary *)self->_cached_values setObject:v8 forKeyedSubscript:v6];
+    [(NSMutableDictionary *)self->_cached_values setObject:v8 forKeyedSubscript:keyCopy];
   }
 
-  v12 = [MEMORY[0x1E695DFB0] null];
-  if ([v8 isEqual:v12])
+  null2 = [MEMORY[0x1E695DFB0] null];
+  if ([v8 isEqual:null2])
   {
     v13 = 0;
   }
@@ -1102,17 +1102,17 @@ id __42__PFMetadataMovie__makeGeometryProperties__block_invoke(uint64_t a1)
   return v13;
 }
 
-- (id)_makeDateTimePropertiesForAsset:(id)a3
+- (id)_makeDateTimePropertiesForAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   v5 = PFMetadataPlistOriginalAssetDateProperties;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __51__PFMetadataMovie__makeDateTimePropertiesForAsset___block_invoke;
   v9[3] = &unk_1E7B65198;
-  v10 = v4;
-  v11 = self;
-  v6 = v4;
+  v10 = assetCopy;
+  selfCopy = self;
+  v6 = assetCopy;
   v7 = [(PFMetadataMovie *)self _cachedValueForKey:v5 usingBlock:v9];
 
   return v7;
@@ -1256,17 +1256,17 @@ id __37__PFMetadataMovie__makeGPSProperties__block_invoke(uint64_t a1)
   return v2;
 }
 
-- (void)_computeChannelCountsForApacAudioTrackInfo:(id)a3 maxChannelCount:(unint64_t)a4 audioChannelLayout:(const AudioChannelLayout *)a5
+- (void)_computeChannelCountsForApacAudioTrackInfo:(id)info maxChannelCount:(unint64_t)count audioChannelLayout:(const AudioChannelLayout *)layout
 {
-  v20 = a3;
-  if ([objc_opt_class() _channelLayoutUsesChannelDescriptions:a5])
+  infoCopy = info;
+  if ([objc_opt_class() _channelLayoutUsesChannelDescriptions:layout])
   {
-    mNumberChannelDescriptions = a5->mNumberChannelDescriptions;
+    mNumberChannelDescriptions = layout->mNumberChannelDescriptions;
     if (mNumberChannelDescriptions)
     {
       v8 = 0;
       mChannelLayoutTag_low = 0;
-      mChannelDescriptions = a5->mChannelDescriptions;
+      mChannelDescriptions = layout->mChannelDescriptions;
       do
       {
         mChannelLabel = mChannelDescriptions->mChannelLabel;
@@ -1292,15 +1292,15 @@ id __37__PFMetadataMovie__makeGPSProperties__block_invoke(uint64_t a1)
       v8 = 0;
     }
 
-    v15 = a4 - v8 - mChannelLayoutTag_low;
+    v15 = count - v8 - mChannelLayoutTag_low;
   }
 
   else
   {
     v15 = 0;
-    if ([objc_opt_class() _channelLayoutUsesHOA:a5])
+    if ([objc_opt_class() _channelLayoutUsesHOA:layout])
     {
-      mChannelLayoutTag_low = LOWORD(a5->mChannelLayoutTag);
+      mChannelLayoutTag_low = LOWORD(layout->mChannelLayoutTag);
     }
 
     else
@@ -1309,25 +1309,25 @@ id __37__PFMetadataMovie__makeGPSProperties__block_invoke(uint64_t a1)
     }
   }
 
-  if (a4)
+  if (count)
   {
-    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a4];
-    [v20 setObject:v16 forKeyedSubscript:@"channelCount"];
+    v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:count];
+    [infoCopy setObject:v16 forKeyedSubscript:@"channelCount"];
   }
 
   if (mChannelLayoutTag_low)
   {
     v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:mChannelLayoutTag_low];
-    [v20 setObject:v17 forKeyedSubscript:@"hoaChannelCount"];
+    [infoCopy setObject:v17 forKeyedSubscript:@"hoaChannelCount"];
   }
 
-  v18 = v20;
+  v18 = infoCopy;
   if (v15)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v15];
-    [v20 setObject:v19 forKeyedSubscript:@"bedChannelCount"];
+    [infoCopy setObject:v19 forKeyedSubscript:@"bedChannelCount"];
 
-    v18 = v20;
+    v18 = infoCopy;
   }
 }
 
@@ -1426,21 +1426,21 @@ void __45__PFMetadataMovie__computeApacAudioTrackInfo__block_invoke_2(uint64_t a
   return v3;
 }
 
-- (int64_t)_spatialVideoRecommendationForImmersiveModeForAssetVideoTrack:(id)a3
+- (int64_t)_spatialVideoRecommendationForImmersiveModeForAssetVideoTrack:(id)track
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"spatialVideoRecommendationForImmersiveMode.%d", objc_msgSend(v4, "trackID")];
+  trackCopy = track;
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"spatialVideoRecommendationForImmersiveMode.%d", objc_msgSend(trackCopy, "trackID")];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __81__PFMetadataMovie__spatialVideoRecommendationForImmersiveModeForAssetVideoTrack___block_invoke;
   v10[3] = &unk_1E7B65198;
   v10[4] = self;
-  v11 = v4;
-  v6 = v4;
+  v11 = trackCopy;
+  v6 = trackCopy;
   v7 = [(PFMetadataMovie *)self _cachedValueForKey:v5 usingBlock:v10];
-  v8 = [v7 integerValue];
+  integerValue = [v7 integerValue];
 
-  return v8;
+  return integerValue;
 }
 
 id __81__PFMetadataMovie__spatialVideoRecommendationForImmersiveModeForAssetVideoTrack___block_invoke(uint64_t a1)
@@ -1476,16 +1476,16 @@ id __81__PFMetadataMovie__spatialVideoRecommendationForImmersiveModeForAssetVide
 
 - (int64_t)spatialVideoRecommendationForImmersiveMode
 {
-  v3 = [(PFMetadataMovie *)self spatialMediaTrack];
-  v4 = [(PFMetadataMovie *)self _spatialVideoRecommendationForImmersiveModeForAssetVideoTrack:v3];
+  spatialMediaTrack = [(PFMetadataMovie *)self spatialMediaTrack];
+  v4 = [(PFMetadataMovie *)self _spatialVideoRecommendationForImmersiveModeForAssetVideoTrack:spatialMediaTrack];
 
   return v4;
 }
 
 - (BOOL)isSpatialMedia
 {
-  v2 = [(PFMetadataMovie *)self spatialMediaTrack];
-  v3 = v2 != 0;
+  spatialMediaTrack = [(PFMetadataMovie *)self spatialMediaTrack];
+  v3 = spatialMediaTrack != 0;
 
   return v3;
 }
@@ -1561,22 +1561,22 @@ void __36__PFMetadataMovie_spatialMediaTrack__block_invoke_2(uint64_t a1, void *
 
 - (BOOL)_computeIsProRes
 {
-  v2 = [(PFMetadataMovie *)self firstVideoTrackCodec];
+  firstVideoTrackCodec = [(PFMetadataMovie *)self firstVideoTrackCodec];
   result = 1;
-  if (v2 <= 1634743415)
+  if (firstVideoTrackCodec <= 1634743415)
   {
-    if (v2 != 1634742376 && v2 != 1634742888)
+    if (firstVideoTrackCodec != 1634742376 && firstVideoTrackCodec != 1634742888)
     {
       v4 = 13416;
 LABEL_9:
-      if (v2 != (v4 | 0x61700000))
+      if (firstVideoTrackCodec != (v4 | 0x61700000))
       {
         return 0;
       }
     }
   }
 
-  else if (((v2 - 1634755432) > 0xB || ((1 << (v2 - 104)) & 0x8C1) == 0) && ((v2 - 1634759272) > 6 || ((1 << (v2 - 104)) & 0x51) == 0))
+  else if (((firstVideoTrackCodec - 1634755432) > 0xB || ((1 << (firstVideoTrackCodec - 104)) & 0x8C1) == 0) && ((firstVideoTrackCodec - 1634759272) > 6 || ((1 << (firstVideoTrackCodec - 104)) & 0x51) == 0))
   {
     v4 = 13432;
     goto LABEL_9;
@@ -1593,17 +1593,17 @@ LABEL_9:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     v29 = v3;
-    v4 = [(PFMetadata *)self fileURL];
+    fileURL = [(PFMetadata *)self fileURL];
 
-    if (!v4)
+    if (!fileURL)
     {
       goto LABEL_27;
     }
 
     v5 = MEMORY[0x1E6988168];
-    v6 = [(PFMetadata *)self fileURL];
-    v7 = [(PFMetadata *)self noOutOfProcess];
-    if (v7)
+    fileURL2 = [(PFMetadata *)self fileURL];
+    noOutOfProcess = [(PFMetadata *)self noOutOfProcess];
+    if (noOutOfProcess)
     {
       v41 = *MEMORY[0x1E6987388];
       v42[0] = MEMORY[0x1E695E118];
@@ -1615,9 +1615,9 @@ LABEL_9:
       v8 = 0;
     }
 
-    v9 = [v5 URLAssetWithURL:v6 options:v8];
+    v9 = [v5 URLAssetWithURL:fileURL2 options:v8];
 
-    if (v7)
+    if (noOutOfProcess)
     {
     }
 
@@ -1658,22 +1658,22 @@ LABEL_9:
       v17 = *MEMORY[0x1E69629E0];
       do
       {
-        v18 = [v15 copyNextSampleBuffer];
-        v19 = v18;
-        if (!v18)
+        copyNextSampleBuffer = [v15 copyNextSampleBuffer];
+        v19 = copyNextSampleBuffer;
+        if (!copyNextSampleBuffer)
         {
           break;
         }
 
-        if (CMSampleBufferGetNumSamples(v18))
+        if (CMSampleBufferGetNumSamples(copyNextSampleBuffer))
         {
           v20 = [objc_alloc(MEMORY[0x1E6988160]) initWithSampleBuffer:v19];
           v21 = MEMORY[0x1E6987FE0];
-          v22 = [v20 items];
-          v23 = [v21 metadataItemsFromArray:v22 filteredByIdentifier:v17];
-          v24 = [v23 firstObject];
+          items = [v20 items];
+          v23 = [v21 metadataItemsFromArray:items filteredByIdentifier:v17];
+          firstObject = [v23 firstObject];
 
-          if (v24)
+          if (firstObject)
           {
             CMSampleBufferGetOutputPresentationTimeStamp(&time, v19);
             value = time.value;
@@ -1709,19 +1709,19 @@ LABEL_9:
     time.timescale = timescale;
     time.flags = flags;
     time.epoch = epoch;
-    v4 = CMTimeCopyAsDictionary(&time, v26);
+    fileURL = CMTimeCopyAsDictionary(&time, v26);
   }
 
   else
   {
-    v4 = 0;
+    fileURL = 0;
   }
 
   _Block_object_dispose(&v32, 8);
 
 LABEL_27:
 
-  return v4;
+  return fileURL;
 }
 
 void __58__PFMetadataMovie__computeStillImageDisplayTimeDictionary__block_invoke(uint64_t a1, void *a2, const opaqueCMFormatDescription *a3, uint64_t a4, _BYTE *a5)
@@ -1737,10 +1737,10 @@ void __58__PFMetadataMovie__computeStillImageDisplayTimeDictionary__block_invoke
 
 - (BOOL)isFrontAndRearComposition
 {
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = +[PFMetadataIdentifier quicktimeMetadataFrontAndRearComposition];
-  v5 = [(AVAsset *)self->_asset metadata];
-  v6 = [v3 valueForAVMetadataIdentifier:v4 fromAVMetadataItems:v5];
+  metadata = [(AVAsset *)self->_asset metadata];
+  v6 = [typeVerifier valueForAVMetadataIdentifier:v4 fromAVMetadataItems:metadata];
   v7 = [v6 intValue] != 0;
 
   return v7;
@@ -1748,13 +1748,13 @@ void __58__PFMetadataMovie__computeStillImageDisplayTimeDictionary__block_invoke
 
 - (signed)smartStyleVideoCastValue
 {
-  v3 = [(PFMetadata *)self typeVerifier];
+  typeVerifier = [(PFMetadata *)self typeVerifier];
   v4 = +[PFMetadataIdentifier quicktimeMetadataSmartStyleCast];
-  v5 = [(AVAsset *)self->_asset metadata];
-  v6 = [v3 valueForAVMetadataIdentifier:v4 fromAVMetadataItems:v5];
-  v7 = [v6 intValue];
+  metadata = [(AVAsset *)self->_asset metadata];
+  v6 = [typeVerifier valueForAVMetadataIdentifier:v4 fromAVMetadataItems:metadata];
+  intValue = [v6 intValue];
 
-  return v7;
+  return intValue;
 }
 
 - (id)hevcProfileInfo
@@ -1837,32 +1837,32 @@ LABEL_10:
 
 - (id)apacAudioTrackCodecProfileLevelDescription
 {
-  v2 = [(PFMetadataMovie *)self _computeApacAudioTrackInfo];
-  v3 = [v2 objectForKeyedSubscript:@"codecProfileLevelDescription"];
+  _computeApacAudioTrackInfo = [(PFMetadataMovie *)self _computeApacAudioTrackInfo];
+  v3 = [_computeApacAudioTrackInfo objectForKeyedSubscript:@"codecProfileLevelDescription"];
 
   return v3;
 }
 
 - (id)apacAudioTrackBedChannelCount
 {
-  v2 = [(PFMetadataMovie *)self _computeApacAudioTrackInfo];
-  v3 = [v2 objectForKeyedSubscript:@"bedChannelCount"];
+  _computeApacAudioTrackInfo = [(PFMetadataMovie *)self _computeApacAudioTrackInfo];
+  v3 = [_computeApacAudioTrackInfo objectForKeyedSubscript:@"bedChannelCount"];
 
   return v3;
 }
 
 - (id)apacAudioTrackHoaChannelCount
 {
-  v2 = [(PFMetadataMovie *)self _computeApacAudioTrackInfo];
-  v3 = [v2 objectForKeyedSubscript:@"hoaChannelCount"];
+  _computeApacAudioTrackInfo = [(PFMetadataMovie *)self _computeApacAudioTrackInfo];
+  v3 = [_computeApacAudioTrackInfo objectForKeyedSubscript:@"hoaChannelCount"];
 
   return v3;
 }
 
 - (id)apacAudioTrackChannelCount
 {
-  v2 = [(PFMetadataMovie *)self _computeApacAudioTrackInfo];
-  v3 = [v2 objectForKeyedSubscript:@"channelCount"];
+  _computeApacAudioTrackInfo = [(PFMetadataMovie *)self _computeApacAudioTrackInfo];
+  v3 = [_computeApacAudioTrackInfo objectForKeyedSubscript:@"channelCount"];
 
   return v3;
 }
@@ -1875,9 +1875,9 @@ LABEL_10:
   v5[3] = &unk_1E7B650F8;
   v5[4] = self;
   v2 = [(PFMetadataMovie *)self _cachedValueForKey:@"isPlayable" usingBlock:v5];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 uint64_t __29__PFMetadataMovie_isPlayable__block_invoke(uint64_t a1)
@@ -1896,9 +1896,9 @@ uint64_t __29__PFMetadataMovie_isPlayable__block_invoke(uint64_t a1)
   v5[3] = &unk_1E7B650F8;
   v5[4] = self;
   v2 = [(PFMetadataMovie *)self _cachedValueForKey:@"isDecodable" usingBlock:v5];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 id __30__PFMetadataMovie_isDecodable__block_invoke(uint64_t a1)
@@ -2072,9 +2072,9 @@ id __32__PFMetadataMovie_montageString__block_invoke(uint64_t a1)
   v7[3] = &unk_1E7B650F8;
   v7[4] = self;
   v4 = [(PFMetadataMovie *)self _cachedValueForKey:v3 usingBlock:v7];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 id __30__PFMetadataMovie_isActionCam__block_invoke(uint64_t a1)
@@ -2097,9 +2097,9 @@ id __30__PFMetadataMovie_isActionCam__block_invoke(uint64_t a1)
   v5[3] = &unk_1E7B650F8;
   v5[4] = self;
   v2 = [(PFMetadataMovie *)self _cachedValueForKey:@"isProRes" usingBlock:v5];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 uint64_t __27__PFMetadataMovie_isProRes__block_invoke(uint64_t a1)
@@ -2112,8 +2112,8 @@ uint64_t __27__PFMetadataMovie_isProRes__block_invoke(uint64_t a1)
 
 - (BOOL)isTimelapse
 {
-  v2 = [(PFMetadataMovie *)self captureMode];
-  v3 = [v2 isEqualToString:@"Time-lapse"];
+  captureMode = [(PFMetadataMovie *)self captureMode];
+  v3 = [captureMode isEqualToString:@"Time-lapse"];
 
   return v3;
 }
@@ -2126,9 +2126,9 @@ uint64_t __27__PFMetadataMovie_isProRes__block_invoke(uint64_t a1)
   v5[3] = &unk_1E7B650F8;
   v5[4] = self;
   v2 = [(PFMetadataMovie *)self _cachedValueForKey:@"hasSpatialAudio" usingBlock:v5];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 id __34__PFMetadataMovie_hasSpatialAudio__block_invoke(uint64_t a1)
@@ -2188,11 +2188,11 @@ id __39__PFMetadataMovie_cinematicVideoIntent__block_invoke(uint64_t a1)
 
 - (BOOL)isCinematicVideo
 {
-  v3 = [(PFMetadataMovie *)self cinematicVideoIntent];
-  v4 = v3;
-  if (v3 && ![v3 BOOLValue])
+  cinematicVideoIntent = [(PFMetadataMovie *)self cinematicVideoIntent];
+  v4 = cinematicVideoIntent;
+  if (cinematicVideoIntent && ![cinematicVideoIntent BOOLValue])
   {
-    v6 = 0;
+    bOOLValue = 0;
   }
 
   else
@@ -2203,10 +2203,10 @@ id __39__PFMetadataMovie_cinematicVideoIntent__block_invoke(uint64_t a1)
     v8[3] = &unk_1E7B650F8;
     v8[4] = self;
     v5 = [(PFMetadataMovie *)self _cachedValueForKey:@"isCinematicVideo" usingBlock:v8];
-    v6 = [v5 BOOLValue];
+    bOOLValue = [v5 BOOLValue];
   }
 
-  return v6;
+  return bOOLValue;
 }
 
 id __35__PFMetadataMovie_isCinematicVideo__block_invoke(uint64_t a1)
@@ -2263,9 +2263,9 @@ void __35__PFMetadataMovie_isCinematicVideo__block_invoke_2(uint64_t a1, int a2,
   v5[3] = &unk_1E7B650F8;
   v5[4] = self;
   v2 = [(PFMetadataMovie *)self _cachedValueForKey:@"isSloMo" usingBlock:v5];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 id __26__PFMetadataMovie_isSloMo__block_invoke(uint64_t a1)
@@ -2346,24 +2346,24 @@ id __36__PFMetadataMovie_videoDynamicRange__block_invoke(uint64_t a1)
 
 - (id)firstVideoTrackCodecString
 {
-  v2 = [(PFMetadataMovie *)self firstVideoTrackCodec];
+  firstVideoTrackCodec = [(PFMetadataMovie *)self firstVideoTrackCodec];
 
-  return [PFMediaUtilities stringFromFourCharCode:v2];
+  return [PFMediaUtilities stringFromFourCharCode:firstVideoTrackCodec];
 }
 
 - (unsigned)firstVideoTrackCodec
 {
   [(PFMetadataMovie *)self _computeFirstVideoTrackCodecAndName];
   v3 = [(NSMutableDictionary *)self->_cached_values objectForKeyedSubscript:@"firstVideoTrackCodec"];
-  v4 = [v3 unsignedIntegerValue];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (void)_computeFirstVideoTrackCodecAndName
 {
-  v3 = [(PFMetadataMovie *)self _firstVideoTrackFormatDescription];
-  MediaType = CMFormatDescriptionGetMediaType(v3);
+  _firstVideoTrackFormatDescription = [(PFMetadataMovie *)self _firstVideoTrackFormatDescription];
+  MediaType = CMFormatDescriptionGetMediaType(_firstVideoTrackFormatDescription);
   if (MediaType)
   {
     v5 = MediaType;
@@ -2376,7 +2376,7 @@ id __36__PFMetadataMovie_videoDynamicRange__block_invoke(uint64_t a1)
     v10[2] = __54__PFMetadataMovie__computeFirstVideoTrackCodecAndName__block_invoke;
     v10[3] = &unk_1E7B65120;
     v10[4] = v11;
-    v10[5] = v3;
+    v10[5] = _firstVideoTrackFormatDescription;
     v6 = [(PFMetadataMovie *)self _cachedValueForKey:@"firstVideoTrackCodec" usingBlock:v10];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -2437,9 +2437,9 @@ id __48__PFMetadataMovie_livePhotoMinimumClientVersion__block_invoke(uint64_t a1
   v7[3] = &unk_1E7B650F8;
   v7[4] = self;
   v4 = [(PFMetadataMovie *)self _cachedValueForKey:v3 usingBlock:v7];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 id __51__PFMetadataMovie_livePhotoVitalityLimitingAllowed__block_invoke(uint64_t a1)
@@ -2461,9 +2461,9 @@ id __51__PFMetadataMovie_livePhotoVitalityLimitingAllowed__block_invoke(uint64_t
   v7[3] = &unk_1E7B650F8;
   v7[4] = self;
   v4 = [(PFMetadataMovie *)self _cachedValueForKey:v3 usingBlock:v7];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5 ^ 1;
+  return bOOLValue ^ 1;
 }
 
 id __30__PFMetadataMovie_hasVitality__block_invoke(uint64_t a1)
@@ -2531,9 +2531,9 @@ id __41__PFMetadataMovie_livePhotoVitalityScore__block_invoke(uint64_t a1)
   v6[3] = &unk_1E7B650F8;
   v6[4] = self;
   v3 = [(PFMetadataMovie *)self _cachedValueForKey:v2 usingBlock:v6];
-  v4 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 id __34__PFMetadataMovie_isAutoLivePhoto__block_invoke(uint64_t a1)
@@ -2721,8 +2721,8 @@ id __35__PFMetadataMovie_nominalFrameRate__block_invoke(uint64_t a1)
 
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)stillImageDisplayTime
 {
-  v5 = [(PFMetadataMovie *)self stillImageDisplayTimeDictionary];
-  CMTimeMakeFromDictionary(retstr, v5);
+  stillImageDisplayTimeDictionary = [(PFMetadataMovie *)self stillImageDisplayTimeDictionary];
+  CMTimeMakeFromDictionary(retstr, stillImageDisplayTimeDictionary);
 
   return result;
 }
@@ -2853,10 +2853,10 @@ id __24__PFMetadataMovie_title__block_invoke(uint64_t a1)
 
 - (BOOL)isHDR
 {
-  v2 = [(PFMetadataMovie *)self videoDynamicRange];
-  v3 = [v2 integerValue];
+  videoDynamicRange = [(PFMetadataMovie *)self videoDynamicRange];
+  integerValue = [videoDynamicRange integerValue];
 
-  return v3 > 1;
+  return integerValue > 1;
 }
 
 - (BOOL)isSpatialOverCapture
@@ -2868,9 +2868,9 @@ id __24__PFMetadataMovie_title__block_invoke(uint64_t a1)
   v7[3] = &unk_1E7B650F8;
   v7[4] = self;
   v4 = [(PFMetadataMovie *)self _cachedValueForKey:v3 usingBlock:v7];
-  v5 = [v4 BOOLValue];
+  bOOLValue = [v4 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 id __39__PFMetadataMovie_isSpatialOverCapture__block_invoke(uint64_t a1)
@@ -3142,20 +3142,20 @@ id __45__PFMetadataMovie_livePhotoPairingIdentifier__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (BOOL)verifyShouldLoadTrackMetadata:(const char *)a3
+- (BOOL)verifyShouldLoadTrackMetadata:(const char *)metadata
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = [(PFMetadata *)self shouldLoadTrackMetadata];
-  v5 = v4;
-  if (a3)
+  shouldLoadTrackMetadata = [(PFMetadata *)self shouldLoadTrackMetadata];
+  v5 = shouldLoadTrackMetadata;
+  if (metadata)
   {
-    if (!v4)
+    if (!shouldLoadTrackMetadata)
     {
       v6 = metadataLog;
       if (os_log_type_enabled(metadataLog, OS_LOG_TYPE_DEBUG))
       {
         v8 = 136315138;
-        v9 = a3;
+        metadataCopy = metadata;
         _os_log_debug_impl(&dword_1B35C1000, v6, OS_LOG_TYPE_DEBUG, "%s requires track metadata loaded. Specify the PFMetdataLoadOptionsLoadTrackMetadata at initialization.", &v8, 0xCu);
       }
     }
@@ -3220,7 +3220,7 @@ id __45__PFMetadataMovie_livePhotoPairingIdentifier__block_invoke(uint64_t a1)
   [(PFMetadataMovie *)self outOfBandHintsBase64String];
 
   [(PFMetadataMovie *)self focalLengthIn35mm];
-  v3 = [(PFMetadataMovie *)self _makeGeometryProperties];
+  _makeGeometryProperties = [(PFMetadataMovie *)self _makeGeometryProperties];
 
   [(PFMetadataMovie *)self isSloMo];
 }
@@ -3234,8 +3234,8 @@ id __45__PFMetadataMovie_livePhotoPairingIdentifier__block_invoke(uint64_t a1)
     _os_log_impl(&dword_1B35C1000, v3, OS_LOG_TYPE_INFO, "Computing all track metadata properties from AVAsset.", v7, 2u);
   }
 
-  v4 = [(PFMetadataMovie *)self _firstVideoTrack];
-  v5 = [(PFMetadataMovie *)self _firstAudioTrack];
+  _firstVideoTrack = [(PFMetadataMovie *)self _firstVideoTrack];
+  _firstAudioTrack = [(PFMetadataMovie *)self _firstAudioTrack];
   [(PFMetadataMovie *)self stillImageDisplayTimeDictionary];
 
   [(PFMetadataMovie *)self _audioStreamBasicDescription];
@@ -3243,7 +3243,7 @@ id __45__PFMetadataMovie_livePhotoPairingIdentifier__block_invoke(uint64_t a1)
   [(PFMetadataMovie *)self isCinematicVideo];
   [(PFMetadataMovie *)self hasSpatialAudio];
   [(PFMetadataMovie *)self isDecodable];
-  v6 = [(PFMetadataMovie *)self _computeApacAudioTrackInfo];
+  _computeApacAudioTrackInfo = [(PFMetadataMovie *)self _computeApacAudioTrackInfo];
   [(PFMetadataMovie *)self outOfBandHints];
 
   [(PFMetadataMovie *)self spatialMediaTrack];
@@ -3308,37 +3308,37 @@ id __45__PFMetadataMovie_livePhotoPairingIdentifier__block_invoke(uint64_t a1)
   [(PFMetadataMovie *)self _cacheIndirectTrackMetadataProperties];
 }
 
-- (void)loadMetadataWithCompletionHandler:(id)a3
+- (void)loadMetadataWithCompletionHandler:(id)handler
 {
   asset = self->_asset;
-  v5 = a3;
-  v7 = [(PFMetadataMovie *)self keysToLoad];
-  v6 = [(PFMetadataMovie *)self collectionKeysToLoad];
-  [(PFMetadataMovie *)self _loadMetadataForAsset:asset withKeys:v7 collectionKeys:v6 completionHandler:v5];
+  handlerCopy = handler;
+  keysToLoad = [(PFMetadataMovie *)self keysToLoad];
+  collectionKeysToLoad = [(PFMetadataMovie *)self collectionKeysToLoad];
+  [(PFMetadataMovie *)self _loadMetadataForAsset:asset withKeys:keysToLoad collectionKeys:collectionKeysToLoad completionHandler:handlerCopy];
 }
 
-- (void)_loadMetadataForAsset:(id)a3 withKeys:(id)a4 collectionKeys:(id)a5 completionHandler:(id)a6
+- (void)_loadMetadataForAsset:(id)asset withKeys:(id)keys collectionKeys:(id)collectionKeys completionHandler:(id)handler
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  keysCopy = keys;
+  collectionKeysCopy = collectionKeys;
+  handlerCopy = handler;
   v13 = self->_stateHandler;
-  v14 = a3;
-  [(PFMetadataStateHandler *)v13 addBreadcrumb:@"%s: Calling [%p loadValuesAsynchronouslyForKeys:%@]", "[PFMetadataMovie _loadMetadataForAsset:withKeys:collectionKeys:completionHandler:]", v14, v10, v11];
+  assetCopy = asset;
+  [(PFMetadataStateHandler *)v13 addBreadcrumb:@"%s: Calling [%p loadValuesAsynchronouslyForKeys:%@]", "[PFMetadataMovie _loadMetadataForAsset:withKeys:collectionKeys:completionHandler:]", assetCopy, keysCopy, collectionKeysCopy];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __83__PFMetadataMovie__loadMetadataForAsset_withKeys_collectionKeys_completionHandler___block_invoke;
   v19[3] = &unk_1E7B650D0;
   v20 = v13;
-  v21 = self;
-  v22 = v10;
-  v23 = v11;
-  v24 = v12;
-  v15 = v12;
-  v16 = v11;
-  v17 = v10;
+  selfCopy = self;
+  v22 = keysCopy;
+  v23 = collectionKeysCopy;
+  v24 = handlerCopy;
+  v15 = handlerCopy;
+  v16 = collectionKeysCopy;
+  v17 = keysCopy;
   v18 = v13;
-  [v14 loadValuesAsynchronouslyForKeys:v17 keysForCollectionKeys:v16 completionHandler:v19];
+  [assetCopy loadValuesAsynchronouslyForKeys:v17 keysForCollectionKeys:v16 completionHandler:v19];
 }
 
 uint64_t __83__PFMetadataMovie__loadMetadataForAsset_withKeys_collectionKeys_completionHandler___block_invoke(uint64_t a1)
@@ -3355,11 +3355,11 @@ uint64_t __83__PFMetadataMovie__loadMetadataForAsset_withKeys_collectionKeys_com
   return result;
 }
 
-- (void)_loadMetadataForAsset:(id)a3 withKeys:(id)a4 collectionKeys:(id)a5
+- (void)_loadMetadataForAsset:(id)asset withKeys:(id)keys collectionKeys:(id)collectionKeys
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  collectionKeysCopy = collectionKeys;
+  keysCopy = keys;
+  assetCopy = asset;
   v11 = dispatch_block_create(0, &__block_literal_global_4808);
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
@@ -3367,7 +3367,7 @@ uint64_t __83__PFMetadataMovie__loadMetadataForAsset_withKeys_collectionKeys_com
   v13[3] = &unk_1E7B650A8;
   v14 = v11;
   v12 = v11;
-  [(PFMetadataMovie *)self _loadMetadataForAsset:v10 withKeys:v9 collectionKeys:v8 completionHandler:v13];
+  [(PFMetadataMovie *)self _loadMetadataForAsset:assetCopy withKeys:keysCopy collectionKeys:collectionKeysCopy completionHandler:v13];
 
   dispatch_block_wait(v12, 0xFFFFFFFFFFFFFFFFLL);
 }
@@ -3416,25 +3416,25 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)_configureWithAVAsset:(id)a3
+- (BOOL)_configureWithAVAsset:(id)asset
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (v5)
+  assetCopy = asset;
+  if (assetCopy)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     cached_values = self->_cached_values;
-    self->_cached_values = v6;
+    self->_cached_values = dictionary;
 
     v8 = [[PFMetadataStateHandler alloc] initWithMetadata:self];
     stateHandler = self->_stateHandler;
     self->_stateHandler = v8;
 
-    objc_storeStrong(&self->_asset, a3);
+    objc_storeStrong(&self->_asset, asset);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [v5 URL];
+      v10 = [assetCopy URL];
     }
 
     else
@@ -3445,8 +3445,8 @@ LABEL_10:
     if ([v10 isFileURL])
     {
       [(PFMetadata *)self setFileURL:v10];
-      v12 = [(AVAsset *)self->_asset identifyingTagClass];
-      [(NSMutableDictionary *)self->_cached_values setObject:v12 forKeyedSubscript:PFMetadataPlistIdentifyingTagClass];
+      identifyingTagClass = [(AVAsset *)self->_asset identifyingTagClass];
+      [(NSMutableDictionary *)self->_cached_values setObject:identifyingTagClass forKeyedSubscript:PFMetadataPlistIdentifyingTagClass];
     }
 
     if ([(PFMetadata *)self shouldCreateProxy]&& ![(PFMetadataMovie *)self _convertToAVAssetProxyIfPossible])
@@ -3455,9 +3455,9 @@ LABEL_10:
       if (os_log_type_enabled(metadataLog, OS_LOG_TYPE_ERROR))
       {
         v18 = v13;
-        v19 = [(PFMetadata *)self fileURL];
+        fileURL = [(PFMetadata *)self fileURL];
         v20 = 138412290;
-        v21 = v19;
+        v21 = fileURL;
         _os_log_error_impl(&dword_1B35C1000, v18, OS_LOG_TYPE_ERROR, "Failed to create a proxy for AVAsset %@. Computing all properties immediately to avoid holding an open file handle.", &v20, 0xCu);
       }
 
@@ -3490,12 +3490,12 @@ LABEL_10:
   return v11;
 }
 
-- (BOOL)_configureWithAVProxyData:(id)a3
+- (BOOL)_configureWithAVProxyData:(id)data
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 length])
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy && [dataCopy length])
   {
     v14 = 0;
     v6 = [PFMetadata propertyListObjectFromEncodedData:v5 expectedClass:objc_opt_class() options:0 error:&v14];
@@ -3544,16 +3544,16 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)_configureWithAVURL:(id)a3
+- (BOOL)_configureWithAVURL:(id)l
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  lCopy = l;
+  v5 = lCopy;
+  if (lCopy)
   {
-    v6 = [v4 path];
+    path = [lCopy path];
     memset(&v14, 0, sizeof(v14));
-    v7 = stat([v6 fileSystemRepresentation], &v14);
+    v7 = stat([path fileSystemRepresentation], &v14);
     st_mode = v14.st_mode;
 
     v9 = 0;
@@ -3586,27 +3586,27 @@ LABEL_10:
   return v9;
 }
 
-- (BOOL)configureWithMetadataPlist:(id)a3
+- (BOOL)configureWithMetadataPlist:(id)plist
 {
-  v4 = a3;
+  plistCopy = plist;
   v13.receiver = self;
   v13.super_class = PFMetadataMovie;
-  if ([(PFMetadata *)&v13 configureWithMetadataPlist:v4])
+  if ([(PFMetadata *)&v13 configureWithMetadataPlist:plistCopy])
   {
     v5 = MEMORY[0x1E6987E28];
-    v6 = [v4 objectForKeyedSubscript:PFMetadataPlistAsset];
+    v6 = [plistCopy objectForKeyedSubscript:PFMetadataPlistAsset];
     v7 = [v5 assetProxyWithPropertyList:v6];
 
     v8 = [(PFMetadataMovie *)self _configureWithAVAsset:v7];
     if (v8)
     {
-      v9 = [v4 objectForKeyedSubscript:PFMetadataPlistIdentifyingTagClass];
+      v9 = [plistCopy objectForKeyedSubscript:PFMetadataPlistIdentifyingTagClass];
       [(NSMutableDictionary *)self->_cached_values setObject:v9 forKeyedSubscript:PFMetadataPlistIdentifyingTagClass];
 
-      v10 = [v4 objectForKeyedSubscript:PFMetadataPlistOriginalAssetDateProperties];
+      v10 = [plistCopy objectForKeyedSubscript:PFMetadataPlistOriginalAssetDateProperties];
       [(NSMutableDictionary *)self->_cached_values setObject:v10 forKeyedSubscript:PFMetadataPlistOriginalAssetDateProperties];
 
-      v11 = [v4 objectForKeyedSubscript:PFMetadataPlistSourceType];
+      v11 = [plistCopy objectForKeyedSubscript:PFMetadataPlistSourceType];
       -[PFMetadata setSourceType:](self, "setSourceType:", [v11 integerValue]);
     }
   }
@@ -3619,15 +3619,15 @@ LABEL_10:
   return v8;
 }
 
-- (PFMetadataMovie)initWithAVAsset:(id)a3 options:(unsigned __int16)a4 timeZoneLookup:(id)a5
+- (PFMetadataMovie)initWithAVAsset:(id)asset options:(unsigned __int16)options timeZoneLookup:(id)lookup
 {
-  v6 = a4;
-  v8 = a3;
+  optionsCopy = options;
+  assetCopy = asset;
   v12.receiver = self;
   v12.super_class = PFMetadataMovie;
-  v9 = [(PFMetadata *)&v12 initWithContentType:0 options:v6 timeZoneLookup:a5];
+  v9 = [(PFMetadata *)&v12 initWithContentType:0 options:optionsCopy timeZoneLookup:lookup];
   v10 = v9;
-  if (v9 && ![(PFMetadataMovie *)v9 _configureWithAVAsset:v8])
+  if (v9 && ![(PFMetadataMovie *)v9 _configureWithAVAsset:assetCopy])
   {
 
     v10 = 0;
@@ -3636,13 +3636,13 @@ LABEL_10:
   return v10;
 }
 
-- (PFMetadataMovie)initWithAVAsset:(id)a3 options:(unsigned __int16)a4 timeZoneLookup:(id)a5 preloadValues:(BOOL)a6
+- (PFMetadataMovie)initWithAVAsset:(id)asset options:(unsigned __int16)options timeZoneLookup:(id)lookup preloadValues:(BOOL)values
 {
-  v7 = a4;
-  v9 = a3;
-  v10 = [(PFMetadata *)self initWithContentType:0 options:v7 timeZoneLookup:a5];
+  optionsCopy = options;
+  assetCopy = asset;
+  v10 = [(PFMetadata *)self initWithContentType:0 options:optionsCopy timeZoneLookup:lookup];
   v11 = v10;
-  if (v10 && ![(PFMetadataMovie *)v10 _configureWithAVAsset:v9])
+  if (v10 && ![(PFMetadataMovie *)v10 _configureWithAVAsset:assetCopy])
   {
 
     v11 = 0;
@@ -3651,12 +3651,12 @@ LABEL_10:
   return v11;
 }
 
-- (PFMetadataMovie)initWithAVProxyData:(id)a3 timeZoneLookup:(id)a4
+- (PFMetadataMovie)initWithAVProxyData:(id)data timeZoneLookup:(id)lookup
 {
-  v6 = a3;
-  v7 = [(PFMetadata *)self initWithContentType:0 options:13 timeZoneLookup:a4];
+  dataCopy = data;
+  v7 = [(PFMetadata *)self initWithContentType:0 options:13 timeZoneLookup:lookup];
   v8 = v7;
-  if (v7 && ![(PFMetadataMovie *)v7 _configureWithAVProxyData:v6])
+  if (v7 && ![(PFMetadataMovie *)v7 _configureWithAVProxyData:dataCopy])
   {
 
     v8 = 0;
@@ -3665,13 +3665,13 @@ LABEL_10:
   return v8;
 }
 
-- (PFMetadataMovie)initWithAVURL:(id)a3 options:(unsigned __int16)a4 timeZoneLookup:(id)a5
+- (PFMetadataMovie)initWithAVURL:(id)l options:(unsigned __int16)options timeZoneLookup:(id)lookup
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(PFMetadata *)self initWithContentType:0 options:v6 timeZoneLookup:a5];
+  optionsCopy = options;
+  lCopy = l;
+  v9 = [(PFMetadata *)self initWithContentType:0 options:optionsCopy timeZoneLookup:lookup];
   v10 = v9;
-  if (v9 && ![(PFMetadataMovie *)v9 _configureWithAVURL:v8])
+  if (v9 && ![(PFMetadataMovie *)v9 _configureWithAVURL:lCopy])
   {
 
     v10 = 0;
@@ -3680,17 +3680,17 @@ LABEL_10:
   return v10;
 }
 
-+ (void)firstAudioTrackForAsset:(id)a3 resultBlock:(id)a4
++ (void)firstAudioTrackForAsset:(id)asset resultBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = *MEMORY[0x1E69875A0];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__PFMetadataMovie_firstAudioTrackForAsset_resultBlock___block_invoke;
   v8[3] = &unk_1E7B65238;
-  v9 = v5;
-  v7 = v5;
-  [PFMetadataMovie _enumerateTracksOfType:v6 onAsset:a3 withBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [PFMetadataMovie _enumerateTracksOfType:v6 onAsset:asset withBlock:v8];
 }
 
 uint64_t __55__PFMetadataMovie_firstAudioTrackForAsset_resultBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, _BYTE *a5)
@@ -3700,17 +3700,17 @@ uint64_t __55__PFMetadataMovie_firstAudioTrackForAsset_resultBlock___block_invok
   return result;
 }
 
-+ (void)firstVideoTrackForAsset:(id)a3 resultBlock:(id)a4
++ (void)firstVideoTrackForAsset:(id)asset resultBlock:(id)block
 {
-  v5 = a4;
+  blockCopy = block;
   v6 = *MEMORY[0x1E6987608];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __55__PFMetadataMovie_firstVideoTrackForAsset_resultBlock___block_invoke;
   v8[3] = &unk_1E7B65238;
-  v9 = v5;
-  v7 = v5;
-  [PFMetadataMovie _enumerateTracksOfType:v6 onAsset:a3 withBlock:v8];
+  v9 = blockCopy;
+  v7 = blockCopy;
+  [PFMetadataMovie _enumerateTracksOfType:v6 onAsset:asset withBlock:v8];
 }
 
 uint64_t __55__PFMetadataMovie_firstVideoTrackForAsset_resultBlock___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, _BYTE *a5)
@@ -3720,36 +3720,36 @@ uint64_t __55__PFMetadataMovie_firstVideoTrackForAsset_resultBlock___block_invok
   return result;
 }
 
-+ (id)exifTimezoneOffsetFromDateString:(id)a3 offsetInSeconds:(int64_t *)a4
++ (id)exifTimezoneOffsetFromDateString:(id)string offsetInSeconds:(int64_t *)seconds
 {
-  v5 = a3;
+  stringCopy = string;
   if (exifTimezoneOffsetFromDateString_offsetInSeconds__onceToken[0] != -1)
   {
     dispatch_once(exifTimezoneOffsetFromDateString_offsetInSeconds__onceToken, &__block_literal_global_263);
   }
 
-  v6 = [exifTimezoneOffsetFromDateString_offsetInSeconds__timeZoneSuffixRegex firstMatchInString:v5 options:0 range:{0, objc_msgSend(v5, "length")}];
+  v6 = [exifTimezoneOffsetFromDateString_offsetInSeconds__timeZoneSuffixRegex firstMatchInString:stringCopy options:0 range:{0, objc_msgSend(stringCopy, "length")}];
   v7 = v6;
   if (v6)
   {
     v8 = [v6 rangeAtIndex:1];
-    v10 = [v5 substringWithRange:{v8, v9}];
+    v10 = [stringCopy substringWithRange:{v8, v9}];
     v11 = [v7 rangeAtIndex:2];
-    v13 = [v5 substringWithRange:{v11, v12}];
+    v13 = [stringCopy substringWithRange:{v11, v12}];
     v14 = [v7 rangeAtIndex:3];
-    v16 = [v5 substringWithRange:{v14, v15}];
+    v16 = [stringCopy substringWithRange:{v14, v15}];
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@:%@", v10, v13, v16];
-    if (a4)
+    if (seconds)
     {
       v18 = [v10 isEqualToString:@"-"];
-      v19 = [v13 intValue];
-      v20 = 3600 * v19 + 60 * [v16 intValue];
+      intValue = [v13 intValue];
+      v20 = 3600 * intValue + 60 * [v16 intValue];
       if (v18)
       {
         v20 = -v20;
       }
 
-      *a4 = v20;
+      *seconds = v20;
     }
   }
 
@@ -3768,22 +3768,22 @@ uint64_t __68__PFMetadataMovie_exifTimezoneOffsetFromDateString_offsetInSeconds_
   return MEMORY[0x1EEE66BB8]();
 }
 
-+ (BOOL)parseISO6709String:(id)a3 outLatitude:(double *)a4 outLongitude:(double *)a5
++ (BOOL)parseISO6709String:(id)string outLatitude:(double *)latitude outLongitude:(double *)longitude
 {
-  v7 = a3;
-  if ([v7 length] >= 3)
+  stringCopy = string;
+  if ([stringCopy length] >= 3)
   {
-    if (a4)
+    if (latitude)
     {
-      *a4 = 0.0;
+      *latitude = 0.0;
     }
 
-    if (a5)
+    if (longitude)
     {
-      *a5 = 0.0;
+      *longitude = 0.0;
     }
 
-    v9 = [MEMORY[0x1E696AE88] scannerWithString:v7];
+    v9 = [MEMORY[0x1E696AE88] scannerWithString:stringCopy];
     v10 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"+-"];
     v63 = 0;
     v11 = [v9 scanCharactersFromSet:v10 intoString:&v63];
@@ -3797,9 +3797,9 @@ LABEL_47:
       goto LABEL_48;
     }
 
-    v13 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+    decimalDigitCharacterSet = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
     v62 = 0;
-    v14 = [v9 scanCharactersFromSet:v13 intoString:&v62];
+    v14 = [v9 scanCharactersFromSet:decimalDigitCharacterSet intoString:&v62];
     v15 = v62;
 
     if (v14)
@@ -3850,9 +3850,9 @@ LABEL_45:
           }
 
           v57 = v28;
-          v34 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
+          decimalDigitCharacterSet2 = [MEMORY[0x1E696AB08] decimalDigitCharacterSet];
           v59 = 0;
-          v35 = [v9 scanCharactersFromSet:v34 intoString:&v59];
+          v35 = [v9 scanCharactersFromSet:decimalDigitCharacterSet2 intoString:&v59];
           v36 = v59;
 
           if (v35)
@@ -3889,14 +3889,14 @@ LABEL_34:
               }
 
               v28 = v57;
-              if (a4)
+              if (latitude)
               {
-                *a4 = v30;
+                *latitude = v30;
               }
 
-              if (a5)
+              if (longitude)
               {
-                *a5 = v53;
+                *longitude = v53;
               }
 
               v8 = 1;
@@ -3963,15 +3963,15 @@ LABEL_48:
   return v8;
 }
 
-+ (void)_enumerateTracksOfType:(id)a3 onAsset:(id)a4 withBlock:(id)a5
++ (void)_enumerateTracksOfType:(id)type onAsset:(id)asset withBlock:(id)block
 {
   v32 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  blockCopy = block;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = [PFMediaUtilities tracksWithMediaType:a3 forAsset:a4];
+  obj = [PFMediaUtilities tracksWithMediaType:type forAsset:asset];
   v8 = [obj countByEnumeratingWithState:&v26 objects:v31 count:16];
   if (v8)
   {
@@ -3992,8 +3992,8 @@ LABEL_3:
       v22 = 0u;
       v23 = 0u;
       v24 = 0u;
-      v12 = [v11 formatDescriptions];
-      v13 = [v12 countByEnumeratingWithState:&v21 objects:v30 count:16];
+      formatDescriptions = [v11 formatDescriptions];
+      v13 = [formatDescriptions countByEnumeratingWithState:&v21 objects:v30 count:16];
       if (v13)
       {
         v14 = v13;
@@ -4004,12 +4004,12 @@ LABEL_8:
         {
           if (*v22 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(formatDescriptions);
           }
 
           v17 = *(*(&v21 + 1) + 8 * v16);
           MediaSubType = CMFormatDescriptionGetMediaSubType(v17);
-          v7[2](v7, v11, v17, MediaSubType, &v25);
+          blockCopy[2](blockCopy, v11, v17, MediaSubType, &v25);
           if (v25)
           {
             break;
@@ -4017,7 +4017,7 @@ LABEL_8:
 
           if (v14 == ++v16)
           {
-            v14 = [v12 countByEnumeratingWithState:&v21 objects:v30 count:16];
+            v14 = [formatDescriptions countByEnumeratingWithState:&v21 objects:v30 count:16];
             if (v14)
             {
               goto LABEL_8;
@@ -4047,7 +4047,7 @@ LABEL_8:
   }
 }
 
-+ (AudioStreamBasicDescription)audioStreamBasicDescriptionForAsset:(SEL)a3
++ (AudioStreamBasicDescription)audioStreamBasicDescriptionForAsset:(SEL)asset
 {
   v6 = a4;
   v12 = 0;

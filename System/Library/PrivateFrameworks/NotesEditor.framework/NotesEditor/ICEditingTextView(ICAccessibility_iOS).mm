@@ -6,9 +6,9 @@
 
 - (void)_icaxAddObservationsForCalculate
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__icaxResetCalculationErrorsForCalculateDocumentUpdate name:*MEMORY[0x277D364C8] object:0];
-  [v3 addObserver:self selector:sel__icaxResetCalculationErrorsForCalculateDocumentUpdate name:*MEMORY[0x277D364D0] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__icaxResetCalculationErrorsForCalculateDocumentUpdate name:*MEMORY[0x277D364C8] object:0];
+  [defaultCenter addObserver:self selector:sel__icaxResetCalculationErrorsForCalculateDocumentUpdate name:*MEMORY[0x277D364D0] object:0];
 }
 
 @end

@@ -30,7 +30,7 @@
             objc_enumerationMutation(v5);
           }
 
-          [a1 addObject:*(*(&v11 + 1) + 8 * v9++)];
+          [self addObject:*(*(&v11 + 1) + 8 * v9++)];
         }
 
         while (v7 != v9);

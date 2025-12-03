@@ -1,12 +1,12 @@
 @interface MFAssistantEmailCreate
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MFAssistantEmailCreate
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   if (MSCanSendMail())
   {
     v3 = 0;
@@ -18,8 +18,8 @@
     v3 = [v4 initWithErrorCode:SAEmailNoAccountErrorCode];
   }
 
-  v5 = [v3 dictionary];
-  v6[2](v6, v5);
+  dictionary = [v3 dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

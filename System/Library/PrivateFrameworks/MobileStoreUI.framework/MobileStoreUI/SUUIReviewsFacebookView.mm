@@ -1,29 +1,29 @@
 @interface SUUIReviewsFacebookView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (SUUIReviewsFacebookView)initWithClientContext:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (SUUIReviewsFacebookView)initWithClientContext:(id)context;
 - (UIEdgeInsets)contentInsets;
-- (id)_composedStringForNames:(id)a3 userLiked:(BOOL)a4;
+- (id)_composedStringForNames:(id)names userLiked:(BOOL)liked;
 - (void)_reloadFriendNamesLabel;
 - (void)_reloadLikeButtonState;
 - (void)layoutSubviews;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColorScheme:(id)a3;
-- (void)setFriendNames:(id)a3;
-- (void)setUserLiked:(BOOL)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setColorScheme:(id)scheme;
+- (void)setFriendNames:(id)names;
+- (void)setUserLiked:(BOOL)liked;
 @end
 
 @implementation SUUIReviewsFacebookView
 
-- (SUUIReviewsFacebookView)initWithClientContext:(id)a3
+- (SUUIReviewsFacebookView)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v40.receiver = self;
   v40.super_class = SUUIReviewsFacebookView;
   v6 = [(SUUIReviewsFacebookView *)&v40 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
     v8 = objc_alloc_init(MEMORY[0x277D756B8]);
     titleLabel = v7->_titleLabel;
     v7->_titleLabel = v8;
@@ -33,9 +33,9 @@
     [(UILabel *)v10 setFont:v11];
 
     v12 = v7->_titleLabel;
-    if (v5)
+    if (contextCopy)
     {
-      [v5 localizedStringForKey:@"REVIEWS_FACEBOOK_TITLE" inTable:@"ProductPage"];
+      [contextCopy localizedStringForKey:@"REVIEWS_FACEBOOK_TITLE" inTable:@"ProductPage"];
     }
 
     else
@@ -46,16 +46,16 @@
     [(UILabel *)v12 setText:v13];
 
     v14 = v7->_titleLabel;
-    v15 = [(SUUIColorScheme *)v7->_colorScheme secondaryTextColor];
-    if (v15)
+    secondaryTextColor = [(SUUIColorScheme *)v7->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [(UILabel *)v14 setTextColor:v15];
+      [(UILabel *)v14 setTextColor:secondaryTextColor];
     }
 
     else
     {
-      v16 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)v14 setTextColor:v16];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)v14 setTextColor:blackColor];
     }
 
     [(SUUIReviewsFacebookView *)v7 addSubview:v7->_titleLabel];
@@ -65,8 +65,8 @@
 
     [(UILabel *)v7->_friendsLabel setNumberOfLines:5];
     v19 = v7->_friendsLabel;
-    v20 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v19 setBackgroundColor:v20];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v19 setBackgroundColor:clearColor];
 
     [(SUUIReviewsFacebookView *)v7 addSubview:v7->_friendsLabel];
     [(SUUIReviewsFacebookView *)v7 _reloadFriendNamesLabel];
@@ -75,22 +75,22 @@
     v7->_likeButton = v21;
 
     v23 = v7->_likeButton;
-    v24 = [(SUUIColorScheme *)v7->_colorScheme secondaryTextColor];
-    if (v24)
+    secondaryTextColor2 = [(SUUIColorScheme *)v7->_colorScheme secondaryTextColor];
+    if (secondaryTextColor2)
     {
-      [(UIButton *)v23 setTitleColor:v24 forState:0];
+      [(UIButton *)v23 setTitleColor:secondaryTextColor2 forState:0];
     }
 
     else
     {
-      v25 = [(SUUIReviewsFacebookView *)v7 tintColor];
-      [(UIButton *)v23 setTitleColor:v25 forState:0];
+      tintColor = [(SUUIReviewsFacebookView *)v7 tintColor];
+      [(UIButton *)v23 setTitleColor:tintColor forState:0];
     }
 
     [(UIButton *)v7->_likeButton setShowsTouchWhenHighlighted:1];
-    v26 = [(UIButton *)v7->_likeButton titleLabel];
+    titleLabel = [(UIButton *)v7->_likeButton titleLabel];
     v27 = [MEMORY[0x277D74300] systemFontOfSize:17.0];
-    [v26 setFont:v27];
+    [titleLabel setFont:v27];
 
     [(SUUIReviewsFacebookView *)v7 addSubview:v7->_likeButton];
     [(SUUIReviewsFacebookView *)v7 _reloadLikeButtonState];
@@ -108,10 +108,10 @@
     v7->_separatorView = v34;
 
     v36 = v7->_separatorView;
-    v37 = [(SUUIColorScheme *)v7->_colorScheme primaryTextColor];
-    if (v37)
+    primaryTextColor = [(SUUIColorScheme *)v7->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(UIView *)v36 setBackgroundColor:v37];
+      [(UIView *)v36 setBackgroundColor:primaryTextColor];
     }
 
     else
@@ -126,31 +126,31 @@
   return v7;
 }
 
-- (void)setColorScheme:(id)a3
+- (void)setColorScheme:(id)scheme
 {
-  v5 = a3;
-  if (self->_colorScheme != v5)
+  schemeCopy = scheme;
+  if (self->_colorScheme != schemeCopy)
   {
-    v15 = v5;
-    objc_storeStrong(&self->_colorScheme, a3);
+    v15 = schemeCopy;
+    objc_storeStrong(&self->_colorScheme, scheme);
     titleLabel = self->_titleLabel;
-    v7 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v7)
+    secondaryTextColor = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor)
     {
-      [(UILabel *)titleLabel setTextColor:v7];
+      [(UILabel *)titleLabel setTextColor:secondaryTextColor];
     }
 
     else
     {
-      v8 = [MEMORY[0x277D75348] blackColor];
-      [(UILabel *)titleLabel setTextColor:v8];
+      blackColor = [MEMORY[0x277D75348] blackColor];
+      [(UILabel *)titleLabel setTextColor:blackColor];
     }
 
     separatorView = self->_separatorView;
-    v10 = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
-    if (v10)
+    primaryTextColor = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
+    if (primaryTextColor)
     {
-      [(UIView *)separatorView setBackgroundColor:v10];
+      [(UIView *)separatorView setBackgroundColor:primaryTextColor];
     }
 
     else
@@ -160,28 +160,28 @@
     }
 
     likeButton = self->_likeButton;
-    v13 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
-    if (v13)
+    secondaryTextColor2 = [(SUUIColorScheme *)self->_colorScheme secondaryTextColor];
+    if (secondaryTextColor2)
     {
-      [(UIButton *)likeButton setTitleColor:v13 forState:0];
+      [(UIButton *)likeButton setTitleColor:secondaryTextColor2 forState:0];
     }
 
     else
     {
-      v14 = [(SUUIReviewsFacebookView *)self tintColor];
-      [(UIButton *)likeButton setTitleColor:v14 forState:0];
+      tintColor = [(SUUIReviewsFacebookView *)self tintColor];
+      [(UIButton *)likeButton setTitleColor:tintColor forState:0];
     }
 
     [(SUUIReviewsFacebookView *)self _reloadFriendNamesLabel];
-    v5 = v15;
+    schemeCopy = v15;
   }
 }
 
-- (void)setFriendNames:(id)a3
+- (void)setFriendNames:(id)names
 {
-  if (self->_friendNames != a3)
+  if (self->_friendNames != names)
   {
-    v4 = [a3 copy];
+    v4 = [names copy];
     friendNames = self->_friendNames;
     self->_friendNames = v4;
 
@@ -189,11 +189,11 @@
   }
 }
 
-- (void)setUserLiked:(BOOL)a3
+- (void)setUserLiked:(BOOL)liked
 {
-  if (self->_userLiked != a3)
+  if (self->_userLiked != liked)
   {
-    self->_userLiked = a3;
+    self->_userLiked = liked;
     [(SUUIReviewsFacebookView *)self _reloadLikeButtonState];
     [(SUUIReviewsFacebookView *)self _reloadFriendNamesLabel];
 
@@ -251,8 +251,8 @@
     v43 = v9;
     v25 = v5;
     v27 = v26;
-    v28 = [(UIButton *)self->_likeButton titleLabel];
-    [v28 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+    titleLabel = [(UIButton *)self->_likeButton titleLabel];
+    [titleLabel sizeThatFits:{1.79769313e308, 1.79769313e308}];
     v30 = v29;
     [v24 size];
     v32 = v30 + v31 + 6.0;
@@ -281,8 +281,8 @@
   if (separatorView)
   {
     [(UIView *)separatorView frame];
-    v37 = [MEMORY[0x277D759A0] mainScreen];
-    [v37 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v39 = 1.0 / v38;
 
     v40 = self->_separatorView;
@@ -292,26 +292,26 @@
   }
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   likeButton = self->_likeButton;
-  v5 = a3;
-  [(UIButton *)likeButton setBackgroundColor:v5];
-  [(UIImageView *)self->_logoImageView setBackgroundColor:v5];
-  [(UILabel *)self->_titleLabel setBackgroundColor:v5];
+  colorCopy = color;
+  [(UIButton *)likeButton setBackgroundColor:colorCopy];
+  [(UIImageView *)self->_logoImageView setBackgroundColor:colorCopy];
+  [(UILabel *)self->_titleLabel setBackgroundColor:colorCopy];
   v6.receiver = self;
   v6.super_class = SUUIReviewsFacebookView;
-  [(SUUIReviewsFacebookView *)&v6 setBackgroundColor:v5];
+  [(SUUIReviewsFacebookView *)&v6 setBackgroundColor:colorCopy];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   titleLabel = self->_titleLabel;
   if (titleLabel)
   {
-    [(UILabel *)titleLabel sizeThatFits:a3.width, a3.height];
+    [(UILabel *)titleLabel sizeThatFits:fits.width, fits.height];
     v8 = v7 + -4.0 + -4.0 + 10.0 + 30.0;
   }
 
@@ -335,8 +335,8 @@
   likeButton = self->_likeButton;
   if (likeButton)
   {
-    v17 = [(UIButton *)likeButton titleLabel];
-    [v17 sizeThatFits:{1.79769313e308, 1.79769313e308}];
+    titleLabel = [(UIButton *)likeButton titleLabel];
+    [titleLabel sizeThatFits:{1.79769313e308, 1.79769313e308}];
     v19 = v18;
     v9 = v20;
 
@@ -374,13 +374,13 @@
   return result;
 }
 
-- (id)_composedStringForNames:(id)a3 userLiked:(BOOL)a4
+- (id)_composedStringForNames:(id)names userLiked:(BOOL)liked
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 count];
+  likedCopy = liked;
+  namesCopy = names;
+  v7 = [namesCopy count];
   v8 = v7;
-  if (!v4)
+  if (!likedCopy)
   {
     if (v7 > 1)
     {
@@ -398,7 +398,7 @@
         }
         v15 = ;
         v25 = MEMORY[0x277CCACA8];
-        v26 = [v6 objectAtIndex:0];
+        firstObject = [namesCopy objectAtIndex:0];
         goto LABEL_50;
       }
 
@@ -416,10 +416,10 @@
         }
         v15 = ;
         v34 = MEMORY[0x277CCACA8];
-        v17 = [v6 objectAtIndex:0];
-        v28 = [v6 objectAtIndex:1];
-        v30 = [v6 objectAtIndex:2];
-        [v34 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@%@%@" error:0, v17, v28, v30];
+        v17 = [namesCopy objectAtIndex:0];
+        v28 = [namesCopy objectAtIndex:1];
+        firstObject2 = [namesCopy objectAtIndex:2];
+        [v34 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@%@%@" error:0, v17, v28, firstObject2];
         v33 = LABEL_43:;
 LABEL_44:
 
@@ -459,7 +459,7 @@ LABEL_46:
         }
         v15 = ;
         v23 = MEMORY[0x277CCACA8];
-        v24 = [v6 objectAtIndex:0];
+        firstObject3 = [namesCopy objectAtIndex:0];
         goto LABEL_40;
       }
     }
@@ -481,9 +481,9 @@ LABEL_46:
     }
     v28 = ;
     v31 = MEMORY[0x277CCACA8];
-    v30 = [v6 objectAtIndex:0];
-    v32 = [v6 objectAtIndex:1];
-    v33 = [v31 stringWithValidatedFormat:v28 validFormatSpecifiers:@"%@%@%@" error:0, v30, v32, v17];
+    firstObject2 = [namesCopy objectAtIndex:0];
+    v32 = [namesCopy objectAtIndex:1];
+    v33 = [v31 stringWithValidatedFormat:v28 validFormatSpecifiers:@"%@%@%@" error:0, firstObject2, v32, v17];
 
     goto LABEL_44;
   }
@@ -502,10 +502,10 @@ LABEL_46:
     }
     v15 = ;
     v25 = MEMORY[0x277CCACA8];
-    v26 = [v6 firstObject];
+    firstObject = [namesCopy firstObject];
 LABEL_50:
-    v17 = v26;
-    v28 = [v6 objectAtIndex:1];
+    v17 = firstObject;
+    v28 = [namesCopy objectAtIndex:1];
     v33 = [v25 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@%@" error:0, v17, v28];
     goto LABEL_51;
   }
@@ -546,8 +546,8 @@ LABEL_47:
     }
     v28 = ;
     v29 = MEMORY[0x277CCACA8];
-    v30 = [v6 firstObject];
-    [v29 stringWithValidatedFormat:v28 validFormatSpecifiers:@"%@%@" error:0, v30, v17, v36];
+    firstObject2 = [namesCopy firstObject];
+    [v29 stringWithValidatedFormat:v28 validFormatSpecifiers:@"%@%@" error:0, firstObject2, v17, v36];
     goto LABEL_43;
   }
 
@@ -563,10 +563,10 @@ LABEL_47:
   }
   v15 = ;
   v23 = MEMORY[0x277CCACA8];
-  v24 = [v6 firstObject];
+  firstObject3 = [namesCopy firstObject];
 LABEL_40:
-  v17 = v24;
-  v33 = [v23 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@" error:0, v24];
+  v17 = firstObject3;
+  v33 = [v23 stringWithValidatedFormat:v15 validFormatSpecifiers:@"%@" error:0, firstObject3];
 LABEL_52:
 
 LABEL_53:
@@ -589,16 +589,16 @@ LABEL_53:
   v6 = *MEMORY[0x277D740C0];
   v13[1] = v5;
   v13[2] = v6;
-  v7 = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
-  v8 = v7;
-  if (!v7)
+  primaryTextColor = [(SUUIColorScheme *)self->_colorScheme primaryTextColor];
+  v8 = primaryTextColor;
+  if (!primaryTextColor)
   {
     v8 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.800000012];
   }
 
   v14[2] = v8;
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v14 forKeys:v13 count:3];
-  if (!v7)
+  if (!primaryTextColor)
   {
   }
 

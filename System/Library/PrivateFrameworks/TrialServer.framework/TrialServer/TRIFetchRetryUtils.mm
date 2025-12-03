@@ -1,37 +1,37 @@
 @interface TRIFetchRetryUtils
-+ (id)fetchRetryDateFromRetryAfterSeconds:(id)a3 isDeferral:(BOOL)a4 isRetryable:(BOOL)a5 isNonDiscretionary:(BOOL)a6;
++ (id)fetchRetryDateFromRetryAfterSeconds:(id)seconds isDeferral:(BOOL)deferral isRetryable:(BOOL)retryable isNonDiscretionary:(BOOL)discretionary;
 @end
 
 @implementation TRIFetchRetryUtils
 
-+ (id)fetchRetryDateFromRetryAfterSeconds:(id)a3 isDeferral:(BOOL)a4 isRetryable:(BOOL)a5 isNonDiscretionary:(BOOL)a6
++ (id)fetchRetryDateFromRetryAfterSeconds:(id)seconds isDeferral:(BOOL)deferral isRetryable:(BOOL)retryable isNonDiscretionary:(BOOL)discretionary
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = v9;
-  if (v9)
+  discretionaryCopy = discretionary;
+  retryableCopy = retryable;
+  deferralCopy = deferral;
+  secondsCopy = seconds;
+  v10 = secondsCopy;
+  if (secondsCopy)
   {
     v11 = MEMORY[0x277CBEAA8];
-    [v9 doubleValue];
+    [secondsCopy doubleValue];
     v13 = v11;
 LABEL_5:
     v14 = [v13 dateWithTimeIntervalSinceNow:v12];
     goto LABEL_6;
   }
 
-  if (v8)
+  if (deferralCopy)
   {
     v13 = MEMORY[0x277CBEAA8];
     v12 = 3600.0;
     goto LABEL_5;
   }
 
-  if (v7)
+  if (retryableCopy)
   {
     v13 = MEMORY[0x277CBEAA8];
-    if (v6)
+    if (discretionaryCopy)
     {
       v12 = 300.0;
     }

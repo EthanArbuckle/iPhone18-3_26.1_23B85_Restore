@@ -1,14 +1,14 @@
 @interface TSUReadWriteQueue
-- (TSUReadWriteQueue)initWithIdentifier:(id)a3;
+- (TSUReadWriteQueue)initWithIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)performAsyncWrite:(id)a3;
-- (void)performSyncRead:(id)a3;
-- (void)performSyncWrite:(id)a3;
+- (void)performAsyncWrite:(id)write;
+- (void)performSyncRead:(id)read;
+- (void)performSyncWrite:(id)write;
 @end
 
 @implementation TSUReadWriteQueue
 
-- (TSUReadWriteQueue)initWithIdentifier:(id)a3
+- (TSUReadWriteQueue)initWithIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = TSUReadWriteQueue;
@@ -34,18 +34,18 @@
   [(TSUReadWriteQueue *)&v3 dealloc];
 }
 
-- (void)performSyncRead:(id)a3
+- (void)performSyncRead:(id)read
 {
   dispatch_semaphore_wait(self->mCanEnqueueReaders, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_group_enter(self->mInFlightReaders);
   dispatch_semaphore_signal(self->mCanEnqueueReaders);
-  (*(a3 + 2))(a3);
+  (*(read + 2))(read);
   mInFlightReaders = self->mInFlightReaders;
 
   dispatch_group_leave(mInFlightReaders);
 }
 
-- (void)performAsyncWrite:(id)a3
+- (void)performAsyncWrite:(id)write
 {
   mInFlightWriters = self->mInFlightWriters;
   mGlobalQueue = self->mGlobalQueue;
@@ -54,16 +54,16 @@
   v5[2] = sub_27708C19C;
   v5[3] = &unk_27A702400;
   v5[4] = self;
-  v5[5] = a3;
+  v5[5] = write;
   dispatch_group_async(mInFlightWriters, mGlobalQueue, v5);
 }
 
-- (void)performSyncWrite:(id)a3
+- (void)performSyncWrite:(id)write
 {
   dispatch_group_enter(self->mInFlightWriters);
   dispatch_semaphore_wait(self->mCanEnqueueReaders, 0xFFFFFFFFFFFFFFFFLL);
   dispatch_group_wait(self->mInFlightReaders, 0xFFFFFFFFFFFFFFFFLL);
-  (*(a3 + 2))(a3);
+  (*(write + 2))(write);
   dispatch_semaphore_signal(self->mCanEnqueueReaders);
   mInFlightWriters = self->mInFlightWriters;
 

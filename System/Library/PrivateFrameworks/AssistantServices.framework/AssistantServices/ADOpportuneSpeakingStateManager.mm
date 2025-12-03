@@ -1,8 +1,8 @@
 @interface ADOpportuneSpeakingStateManager
-- (ADOpportuneSpeakingStateManager)initWithQueue:(id)a3;
+- (ADOpportuneSpeakingStateManager)initWithQueue:(id)queue;
 - (void)_listeningEdgeDetectorIDsChanged;
-- (void)beginListeningForEdgeDetectorWithID:(id)a3;
-- (void)endListeningForEdgeDetectorWithID:(id)a3;
+- (void)beginListeningForEdgeDetectorWithID:(id)d;
+- (void)endListeningForEdgeDetectorWithID:(id)d;
 @end
 
 @implementation ADOpportuneSpeakingStateManager
@@ -19,10 +19,10 @@
   [(AFNotifyStatePublisher *)statePublisher publishStateWithBlock:v5];
 }
 
-- (void)endListeningForEdgeDetectorWithID:(id)a3
+- (void)endListeningForEdgeDetectorWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v5 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -30,7 +30,7 @@
       *buf = 136315394;
       v10 = "[ADOpportuneSpeakingStateManager endListeningForEdgeDetectorWithID:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = dCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s edgeDetectorID = %@", buf, 0x16u);
     }
 
@@ -40,15 +40,15 @@
     v7[2] = sub_1002279E8;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (void)beginListeningForEdgeDetectorWithID:(id)a3
+- (void)beginListeningForEdgeDetectorWithID:(id)d
 {
-  v4 = a3;
-  if (v4)
+  dCopy = d;
+  if (dCopy)
   {
     v5 = AFSiriLogContextDaemon;
     if (os_log_type_enabled(AFSiriLogContextDaemon, OS_LOG_TYPE_INFO))
@@ -56,7 +56,7 @@
       *buf = 136315394;
       v10 = "[ADOpportuneSpeakingStateManager beginListeningForEdgeDetectorWithID:]";
       v11 = 2112;
-      v12 = v4;
+      v12 = dCopy;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s edgeDetectorID = %@", buf, 0x16u);
     }
 
@@ -66,21 +66,21 @@
     v7[2] = sub_100227B60;
     v7[3] = &unk_10051E010;
     v7[4] = self;
-    v8 = v4;
+    v8 = dCopy;
     dispatch_async(queue, v7);
   }
 }
 
-- (ADOpportuneSpeakingStateManager)initWithQueue:(id)a3
+- (ADOpportuneSpeakingStateManager)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v15.receiver = self;
   v15.super_class = ADOpportuneSpeakingStateManager;
   v6 = [(ADOpportuneSpeakingStateManager *)&v15 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_queue, a3);
+    objc_storeStrong(&v6->_queue, queue);
     v8 = objc_alloc_init(NSMutableSet);
     listeningEdgeDetectorIDs = v7->_listeningEdgeDetectorIDs;
     v7->_listeningEdgeDetectorIDs = v8;

@@ -1,18 +1,18 @@
 @interface SBScreenSharingOverlayUISceneController
 + (BOOL)_isEssoniteEnabled;
 + (id)_setupInfo;
-- (CGAffineTransform)_convertTransformToReferenceSpace:(SEL)a3;
+- (CGAffineTransform)_convertTransformToReferenceSpace:(SEL)space;
 - (NSValue)_clientPreferredAdditionalRootLayerTransform;
 - (id)_rootSceneWindow;
 - (id)_systemGestureWindow;
 - (id)displayConfiguration;
-- (void)_setCanSetAdditionalRootLayerTransform:(BOOL)a3;
-- (void)_setClientPreferredAdditionalRootLayerTransform:(id)a3;
+- (void)_setCanSetAdditionalRootLayerTransform:(BOOL)transform;
+- (void)_setClientPreferredAdditionalRootLayerTransform:(id)transform;
 - (void)_updateAdditionalRootLayerTransformsIfNeeded;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)scenePresenter:(id)a3 didPresentScene:(id)a4;
-- (void)scenePresenter:(id)a3 willDismissScene:(id)a4;
-- (void)setDefaultPresenter:(id)a3;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)scenePresenter:(id)presenter didPresentScene:(id)scene;
+- (void)scenePresenter:(id)presenter willDismissScene:(id)scene;
+- (void)setDefaultPresenter:(id)presenter;
 @end
 
 @implementation SBScreenSharingOverlayUISceneController
@@ -39,7 +39,7 @@ void __61__SBScreenSharingOverlayUISceneController__isEssoniteEnabled__block_inv
   v8[0] = @"class";
   v9[0] = objc_opt_class();
   v8[1] = @"enabled";
-  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(a1, "_isEssoniteEnabled")}];
+  v3 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(self, "_isEssoniteEnabled")}];
   v9[1] = v3;
   v9[2] = @"SBTraitsParticipantRoleSystemUIScene";
   v8[2] = @"traitsRole";
@@ -47,8 +47,8 @@ void __61__SBScreenSharingOverlayUISceneController__isEssoniteEnabled__block_inv
   v9[3] = &unk_28336F5F0;
   v8[4] = @"jobLabel";
   v4 = objc_opt_new();
-  v5 = [v4 uiSceneSessionRole];
-  v9[4] = v5;
+  uiSceneSessionRole = [v4 uiSceneSessionRole];
+  v9[4] = uiSceneSessionRole;
   v9[5] = &unk_283371A38;
   v8[5] = @"presentationStyle";
   v8[6] = @"vendingStrategy";
@@ -58,57 +58,57 @@ void __61__SBScreenSharingOverlayUISceneController__isEssoniteEnabled__block_inv
   return v6;
 }
 
-- (void)scenePresenter:(id)a3 willDismissScene:(id)a4
+- (void)scenePresenter:(id)presenter willDismissScene:(id)scene
 {
-  v5 = a4;
+  sceneCopy = scene;
   [(SBScreenSharingOverlayUISceneController *)self _setCanSetAdditionalRootLayerTransform:0];
-  [v5 removeObserver:self];
+  [sceneCopy removeObserver:self];
 }
 
-- (void)scenePresenter:(id)a3 didPresentScene:(id)a4
+- (void)scenePresenter:(id)presenter didPresentScene:(id)scene
 {
-  v7 = a4;
-  v5 = [v7 clientSettings];
-  v6 = [v5 preferredSystemRootTransform];
-  [(SBScreenSharingOverlayUISceneController *)self _setClientPreferredAdditionalRootLayerTransform:v6];
+  sceneCopy = scene;
+  clientSettings = [sceneCopy clientSettings];
+  preferredSystemRootTransform = [clientSettings preferredSystemRootTransform];
+  [(SBScreenSharingOverlayUISceneController *)self _setClientPreferredAdditionalRootLayerTransform:preferredSystemRootTransform];
 
   [(SBScreenSharingOverlayUISceneController *)self _setCanSetAdditionalRootLayerTransform:1];
-  [v7 addObserver:self];
+  [sceneCopy addObserver:self];
 }
 
-- (void)setDefaultPresenter:(id)a3
+- (void)setDefaultPresenter:(id)presenter
 {
-  v4 = a3;
+  presenterCopy = presenter;
   v5.receiver = self;
   v5.super_class = SBScreenSharingOverlayUISceneController;
-  [(SBSystemUISceneController *)&v5 setDefaultPresenter:v4];
+  [(SBSystemUISceneController *)&v5 setDefaultPresenter:presenterCopy];
   if (objc_opt_respondsToSelector())
   {
-    [v4 setPresentingDelegate:self];
+    [presenterCopy setPresentingDelegate:self];
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v6 = [a3 clientSettings];
-  v5 = [v6 preferredSystemRootTransform];
-  [(SBScreenSharingOverlayUISceneController *)self _setClientPreferredAdditionalRootLayerTransform:v5];
+  clientSettings = [scene clientSettings];
+  preferredSystemRootTransform = [clientSettings preferredSystemRootTransform];
+  [(SBScreenSharingOverlayUISceneController *)self _setClientPreferredAdditionalRootLayerTransform:preferredSystemRootTransform];
 }
 
 - (id)_systemGestureWindow
 {
-  v2 = [(SBScreenSharingOverlayUISceneController *)self _systemGestureManager];
-  v3 = [v2 windowForSystemGestures];
+  _systemGestureManager = [(SBScreenSharingOverlayUISceneController *)self _systemGestureManager];
+  windowForSystemGestures = [_systemGestureManager windowForSystemGestures];
 
-  return v3;
+  return windowForSystemGestures;
 }
 
 - (id)_rootSceneWindow
 {
   v2 = +[SBMainDisplayRootWindowScenePresentationBinder sharedInstance];
-  v3 = [v2 rootWindow];
+  rootWindow = [v2 rootWindow];
 
-  return v3;
+  return rootWindow;
 }
 
 - (NSValue)_clientPreferredAdditionalRootLayerTransform
@@ -131,12 +131,12 @@ void __61__SBScreenSharingOverlayUISceneController__isEssoniteEnabled__block_inv
   return v3;
 }
 
-- (void)_setClientPreferredAdditionalRootLayerTransform:(id)a3
+- (void)_setClientPreferredAdditionalRootLayerTransform:(id)transform
 {
-  v5 = a3;
+  transformCopy = transform;
   if (![(NSValue *)self->__clientPreferredAdditionalRootLayerTransform isEqualToValue:?])
   {
-    objc_storeStrong(&self->__clientPreferredAdditionalRootLayerTransform, a3);
+    objc_storeStrong(&self->__clientPreferredAdditionalRootLayerTransform, transform);
     if ([(SBScreenSharingOverlayUISceneController *)self _canSetAdditionalRootLayerTransform])
     {
       [(SBScreenSharingOverlayUISceneController *)self _updateAdditionalRootLayerTransformsIfNeeded];
@@ -144,11 +144,11 @@ void __61__SBScreenSharingOverlayUISceneController__isEssoniteEnabled__block_inv
   }
 }
 
-- (void)_setCanSetAdditionalRootLayerTransform:(BOOL)a3
+- (void)_setCanSetAdditionalRootLayerTransform:(BOOL)transform
 {
-  if (self->__canSetAdditionalRootLayerTransform != a3)
+  if (self->__canSetAdditionalRootLayerTransform != transform)
   {
-    self->__canSetAdditionalRootLayerTransform = a3;
+    self->__canSetAdditionalRootLayerTransform = transform;
     [(SBScreenSharingOverlayUISceneController *)self _updateAdditionalRootLayerTransformsIfNeeded];
   }
 }
@@ -187,14 +187,14 @@ void __63__SBScreenSharingOverlayUISceneController_displayConfiguration__block_i
   }
 }
 
-- (CGAffineTransform)_convertTransformToReferenceSpace:(SEL)a3
+- (CGAffineTransform)_convertTransformToReferenceSpace:(SEL)space
 {
-  v7 = [(SBScreenSharingOverlayUISceneController *)self displayConfiguration];
-  [v7 pointScale];
+  displayConfiguration = [(SBScreenSharingOverlayUISceneController *)self displayConfiguration];
+  [displayConfiguration pointScale];
   v9 = v8;
 
-  v10 = [(SBScreenSharingOverlayUISceneController *)self displayConfiguration];
-  [v10 nativeOrientation];
+  displayConfiguration2 = [(SBScreenSharingOverlayUISceneController *)self displayConfiguration];
+  [displayConfiguration2 nativeOrientation];
   v12 = v11;
 
   v13 = 6.28318531 - v12;
@@ -224,11 +224,11 @@ void __63__SBScreenSharingOverlayUISceneController_displayConfiguration__block_i
   *&v21.tx = *(MEMORY[0x277CBF2C0] + 32);
   if ([(SBScreenSharingOverlayUISceneController *)self _canSetAdditionalRootLayerTransform])
   {
-    v4 = [(SBScreenSharingOverlayUISceneController *)self _clientPreferredAdditionalRootLayerTransform];
-    v5 = v4;
-    if (v4)
+    _clientPreferredAdditionalRootLayerTransform = [(SBScreenSharingOverlayUISceneController *)self _clientPreferredAdditionalRootLayerTransform];
+    v5 = _clientPreferredAdditionalRootLayerTransform;
+    if (_clientPreferredAdditionalRootLayerTransform)
     {
-      [v4 CGAffineTransformValue];
+      [_clientPreferredAdditionalRootLayerTransform CGAffineTransformValue];
     }
 
     else
@@ -241,11 +241,11 @@ void __63__SBScreenSharingOverlayUISceneController_displayConfiguration__block_i
 
   v20 = v21;
   IsIdentity = CGAffineTransformIsIdentity(&v20);
-  v7 = [(SBScreenSharingOverlayUISceneController *)self _requireSystemGesturesShouldIgnoreHIDEdgeFlagsAssertion];
-  v8 = v7;
+  _requireSystemGesturesShouldIgnoreHIDEdgeFlagsAssertion = [(SBScreenSharingOverlayUISceneController *)self _requireSystemGesturesShouldIgnoreHIDEdgeFlagsAssertion];
+  v8 = _requireSystemGesturesShouldIgnoreHIDEdgeFlagsAssertion;
   if (IsIdentity)
   {
-    [v7 invalidate];
+    [_requireSystemGesturesShouldIgnoreHIDEdgeFlagsAssertion invalidate];
 
     [(SBScreenSharingOverlayUISceneController *)self _setRequireSystemGesturesShouldIgnoreHIDEdgeFlagsAssertion:0];
   }
@@ -255,25 +255,25 @@ void __63__SBScreenSharingOverlayUISceneController_displayConfiguration__block_i
 
     if (!v8)
     {
-      v9 = [(SBScreenSharingOverlayUISceneController *)self _systemGestureManager];
-      v10 = [v9 acquireSystemEdgeGesturesIgnoreHIDEdgeFlagsForReason:@"Screen Sharing Overlay UI requests it"];
+      _systemGestureManager = [(SBScreenSharingOverlayUISceneController *)self _systemGestureManager];
+      v10 = [_systemGestureManager acquireSystemEdgeGesturesIgnoreHIDEdgeFlagsForReason:@"Screen Sharing Overlay UI requests it"];
 
       [(SBScreenSharingOverlayUISceneController *)self _setRequireSystemGesturesShouldIgnoreHIDEdgeFlagsAssertion:v10];
     }
   }
 
   v11 = SBFIsShellSceneKitAvailable();
-  v12 = [(SBScreenSharingOverlayUISceneController *)self _systemGestureWindow];
+  _systemGestureWindow = [(SBScreenSharingOverlayUISceneController *)self _systemGestureWindow];
   v20 = v21;
-  [v12 _setAdditionalRootLayerAffineTransform:&v20];
+  [_systemGestureWindow _setAdditionalRootLayerAffineTransform:&v20];
 
   if (v11)
   {
-    v13 = [SBApp displayProfileManager];
+    displayProfileManager = [SBApp displayProfileManager];
     v19 = v21;
     [(SBScreenSharingOverlayUISceneController *)self _convertTransformToReferenceSpace:&v19];
-    v14 = [(SBScreenSharingOverlayUISceneController *)self displayConfiguration];
-    [v13 setSystemRootTransform:&v20 forDisplayConfiguration:v14];
+    displayConfiguration = [(SBScreenSharingOverlayUISceneController *)self displayConfiguration];
+    [displayProfileManager setSystemRootTransform:&v20 forDisplayConfiguration:displayConfiguration];
 
     v15 = +[SBTouchRegionManager sharedInstance];
     v20 = v21;
@@ -282,18 +282,18 @@ void __63__SBScreenSharingOverlayUISceneController_displayConfiguration__block_i
 
   else
   {
-    v16 = [(SBScreenSharingOverlayUISceneController *)self _rootSceneWindow];
+    _rootSceneWindow = [(SBScreenSharingOverlayUISceneController *)self _rootSceneWindow];
     v20 = v21;
-    [v16 _setAdditionalRootLayerAffineTransform:&v20];
+    [_rootSceneWindow _setAdditionalRootLayerAffineTransform:&v20];
 
     v17 = +[SBTouchRegionManager sharedInstance];
     v20 = v21;
     [v17 setRootWindowTransform:&v20];
   }
 
-  v18 = [SBApp mousePointerManager];
+  mousePointerManager = [SBApp mousePointerManager];
   v20 = v21;
-  [v18 setRootWindowTransformForEmbeddedDisplay:&v20];
+  [mousePointerManager setRootWindowTransformForEmbeddedDisplay:&v20];
 }
 
 @end

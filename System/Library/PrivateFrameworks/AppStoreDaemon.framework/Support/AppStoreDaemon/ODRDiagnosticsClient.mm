@@ -1,46 +1,46 @@
 @interface ODRDiagnosticsClient
-- (void)allRegisteredODRAppsWithReply:(id)a3;
-- (void)assetsForBundleID:(id)a3 withReply:(id)a4;
-- (void)cancelMaintenanceWithReply:(id)a3;
-- (void)cancelRequestWithUUID:(id)a3 withCompletion:(id)a4;
-- (void)expireAssetURLSForBundleIDs:(id)a3 withReply:(id)a4;
-- (void)fakeWorkWithCount:(id)a3 reply:(id)a4;
-- (void)fetchManifestForAdamID:(id)a3 externalVersionID:(id)a4 variant:(id)a5 withFetchCompletion:(id)a6;
-- (void)getSimulatedBandwidthWithReply:(id)a3;
-- (void)getSpaceReductionWithReply:(id)a3;
-- (void)loadSourceURL:(id)a3 intoDestinationURL:(id)a4 isUrgent:(BOOL)a5 isStreaming:(BOOL)a6 withRequestCompletion:(id)a7;
-- (void)manifestDictionaryForBundleID:(id)a3 withReply:(id)a4;
-- (void)nonPurgeableAssetsWithReply:(id)a3;
-- (void)pauseRequestWithUUID:(id)a3 withCompletion:(id)a4;
-- (void)performMaintenanceWithReply:(id)a3;
-- (void)purgeAllAssetsForApplication:(id)a3 withRequestCompletion:(id)a4;
-- (void)purgeAllAssetsForApplications:(id)a3 withRequestCompletion:(id)a4;
-- (void)purgeAssetWithIdentifier:(id)a3 withRequestCompletion:(id)a4;
-- (void)purgeBytes:(int64_t)a3 odrOnly:(BOOL)a4 urgency:(int)a5 withReply:(id)a6;
-- (void)purgeableAssetsWithReply:(id)a3;
-- (void)registerManifest:(id)a3 forBundleID:(id)a4 withRequestCompletion:(id)a5;
-- (void)resumeRequestWithUUID:(id)a3 withCompletion:(id)a4;
-- (void)setLoggingEnabled:(BOOL)a3 reply:(id)a4;
-- (void)setSampler:(id)a3 enabled:(BOOL)a4 samplingInterval:(double)a5 reply:(id)a6;
-- (void)setSimulatedBandwidth:(unint64_t)a3 withReply:(id)a4;
-- (void)setSpaceReduction:(unint64_t)a3 withReply:(id)a4;
-- (void)statusWithReply:(id)a3;
-- (void)testPurgeBytes:(int64_t)a3 urgency:(int)a4 withReply:(id)a5;
+- (void)allRegisteredODRAppsWithReply:(id)reply;
+- (void)assetsForBundleID:(id)d withReply:(id)reply;
+- (void)cancelMaintenanceWithReply:(id)reply;
+- (void)cancelRequestWithUUID:(id)d withCompletion:(id)completion;
+- (void)expireAssetURLSForBundleIDs:(id)ds withReply:(id)reply;
+- (void)fakeWorkWithCount:(id)count reply:(id)reply;
+- (void)fetchManifestForAdamID:(id)d externalVersionID:(id)iD variant:(id)variant withFetchCompletion:(id)completion;
+- (void)getSimulatedBandwidthWithReply:(id)reply;
+- (void)getSpaceReductionWithReply:(id)reply;
+- (void)loadSourceURL:(id)l intoDestinationURL:(id)rL isUrgent:(BOOL)urgent isStreaming:(BOOL)streaming withRequestCompletion:(id)completion;
+- (void)manifestDictionaryForBundleID:(id)d withReply:(id)reply;
+- (void)nonPurgeableAssetsWithReply:(id)reply;
+- (void)pauseRequestWithUUID:(id)d withCompletion:(id)completion;
+- (void)performMaintenanceWithReply:(id)reply;
+- (void)purgeAllAssetsForApplication:(id)application withRequestCompletion:(id)completion;
+- (void)purgeAllAssetsForApplications:(id)applications withRequestCompletion:(id)completion;
+- (void)purgeAssetWithIdentifier:(id)identifier withRequestCompletion:(id)completion;
+- (void)purgeBytes:(int64_t)bytes odrOnly:(BOOL)only urgency:(int)urgency withReply:(id)reply;
+- (void)purgeableAssetsWithReply:(id)reply;
+- (void)registerManifest:(id)manifest forBundleID:(id)d withRequestCompletion:(id)completion;
+- (void)resumeRequestWithUUID:(id)d withCompletion:(id)completion;
+- (void)setLoggingEnabled:(BOOL)enabled reply:(id)reply;
+- (void)setSampler:(id)sampler enabled:(BOOL)enabled samplingInterval:(double)interval reply:(id)reply;
+- (void)setSimulatedBandwidth:(unint64_t)bandwidth withReply:(id)reply;
+- (void)setSpaceReduction:(unint64_t)reduction withReply:(id)reply;
+- (void)statusWithReply:(id)reply;
+- (void)testPurgeBytes:(int64_t)bytes urgency:(int)urgency withReply:(id)reply;
 @end
 
 @implementation ODRDiagnosticsClient
 
-- (void)manifestDictionaryForBundleID:(id)a3 withReply:(id)a4
+- (void)manifestDictionaryForBundleID:(id)d withReply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = sub_10037B41C;
   v17 = sub_10037B42C;
   v18 = 0;
-  v7 = sub_100399B78(ODRApplication, v5);
+  v7 = sub_100399B78(ODRApplication, dCopy);
   v8 = sub_100208FBC();
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
@@ -51,13 +51,13 @@
   v12 = &v13;
   [v8 readUsingSession:v10];
 
-  v6[2](v6, v14[5], 0);
+  replyCopy[2](replyCopy, v14[5], 0);
   _Block_object_dispose(&v13, 8);
 }
 
-- (void)allRegisteredODRAppsWithReply:(id)a3
+- (void)allRegisteredODRAppsWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v6 = 0;
   v7 = &v6;
   v8 = 0x3032000000;
@@ -72,14 +72,14 @@
   v5[4] = &v6;
   [v4 readUsingSession:v5];
 
-  v3[2](v3, v7[5], 0);
+  replyCopy[2](replyCopy, v7[5], 0);
   _Block_object_dispose(&v6, 8);
 }
 
-- (void)assetsForBundleID:(id)a3 withReply:(id)a4
+- (void)assetsForBundleID:(id)d withReply:(id)reply
 {
-  v5 = a3;
-  v58 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v89 = 0;
   v90 = &v89;
   v91 = 0x3032000000;
@@ -92,8 +92,8 @@
   v86 = sub_10037B41C;
   v87 = sub_10037B42C;
   v88 = 0;
-  v56 = v5;
-  v6 = sub_100399B78(ODRApplication, v5);
+  v56 = dCopy;
+  v6 = sub_100399B78(ODRApplication, dCopy);
   v7 = sub_100208FBC();
   v79[0] = _NSConcreteStackBlock;
   v79[1] = 3221225472;
@@ -226,8 +226,8 @@
         if (v29)
         {
           v30 = sub_100269390(v17);
-          v31 = [v30 absoluteString];
-          [v70 setObject:v31 forKeyedSubscript:@"localURL"];
+          absoluteString = [v30 absoluteString];
+          [v70 setObject:absoluteString forKeyedSubscript:@"localURL"];
         }
 
         v32 = sub_1002692E8(v17);
@@ -334,49 +334,49 @@
     while (v55);
   }
 
-  v58[2](v58, v61, 0);
+  replyCopy[2](replyCopy, v61, 0);
   _Block_object_dispose(&v83, 8);
 
   _Block_object_dispose(&v89, 8);
 }
 
-- (void)expireAssetURLSForBundleIDs:(id)a3 withReply:(id)a4
+- (void)expireAssetURLSForBundleIDs:(id)ds withReply:(id)reply
 {
-  v9 = a4;
-  v5 = a3;
+  replyCopy = reply;
+  dsCopy = ds;
   v6 = sub_100220330();
-  v7 = sub_100220BD0(v6, v5);
+  v7 = sub_100220BD0(v6, dsCopy);
 
   if (v7)
   {
-    v9[2](v9, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   else
   {
     v8 = [NSError errorWithDomain:@"_OnDemandResourcesErrorDomain" code:900 userInfo:0];
-    (v9)[2](v9, v8);
+    (replyCopy)[2](replyCopy, v8);
   }
 }
 
-- (void)fakeWorkWithCount:(id)a3 reply:(id)a4
+- (void)fakeWorkWithCount:(id)count reply:(id)reply
 {
-  v5 = a3;
-  v6 = a4;
+  countCopy = count;
+  replyCopy = reply;
   v7 = ASDLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8[0] = 67109120;
-    v8[1] = [v5 intValue];
+    v8[1] = [countCopy intValue];
     _os_log_debug_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "Creating [%d] fake work items.", v8, 8u);
   }
 
-  v6[2](v6);
+  replyCopy[2](replyCopy);
 }
 
-- (void)statusWithReply:(id)a3
+- (void)statusWithReply:(id)reply
 {
-  v13 = a3;
+  replyCopy = reply;
   v3 = sub_100220330();
   v4 = sub_1002230D4(v3);
 
@@ -388,8 +388,8 @@
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = [qword_1005AAD10 allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    allKeys = [qword_1005AAD10 allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
     {
       v7 = *v15;
@@ -399,16 +399,16 @@
         {
           if (*v15 != v7)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
           v9 = *(*(&v14 + 1) + 8 * i);
           v10 = [qword_1005AAD10 objectForKey:v9];
-          v11 = [v10 currentStatsString];
-          [v4 appendFormat:@"\t%@ : %@", v9, v11];
+          currentStatsString = [v10 currentStatsString];
+          [v4 appendFormat:@"\t%@ : %@", v9, currentStatsString];
         }
 
-        v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v6 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v6);
@@ -419,47 +419,47 @@
 
   [qword_1005AAD18 unlock];
   v12 = [v4 copy];
-  v13[2](v13, v12, 0);
+  replyCopy[2](replyCopy, v12, 0);
 }
 
-- (void)performMaintenanceWithReply:(id)a3
+- (void)performMaintenanceWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v3 = sub_1001C13C8();
   sub_1001C15E8(v3);
 
-  v4[2](v4, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)cancelMaintenanceWithReply:(id)a3
+- (void)cancelMaintenanceWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v3 = sub_1001C13C8();
   sub_1001C14D8(v3);
 
-  v4[2](v4, 0);
+  replyCopy[2](replyCopy, 0);
 }
 
-- (void)setLoggingEnabled:(BOOL)a3 reply:(id)a4
+- (void)setLoggingEnabled:(BOOL)enabled reply:(id)reply
 {
   v7 = NSDebugDescriptionErrorKey;
   v8 = @"No longer supported - logging is always on.";
-  v4 = a4;
+  replyCopy = reply;
   v5 = [NSDictionary dictionaryWithObjects:&v8 forKeys:&v7 count:1];
   v6 = [NSError errorWithDomain:@"_OnDemandResourcesErrorDomain" code:108 userInfo:v5];
-  v4[2](v4, 0, v6);
+  replyCopy[2](replyCopy, 0, v6);
 }
 
-- (void)setSampler:(id)a3 enabled:(BOOL)a4 samplingInterval:(double)a5 reply:(id)a6
+- (void)setSampler:(id)sampler enabled:(BOOL)enabled samplingInterval:(double)interval reply:(id)reply
 {
-  v8 = a4;
-  v18 = a3;
-  v9 = a6;
+  enabledCopy = enabled;
+  samplerCopy = sampler;
+  replyCopy = reply;
   [qword_1005AAD18 lock];
-  if ([v18 isEqualToString:@"memory"])
+  if ([samplerCopy isEqualToString:@"memory"])
   {
     v10 = qword_1005AAD10;
-    if (v8)
+    if (enabledCopy)
     {
       if (!qword_1005AAD10)
       {
@@ -478,12 +478,12 @@
         [qword_1005AAD10 removeObjectForKey:@"memory"];
       }
 
-      v15 = sub_10031FB5C([ODRMemorySampler alloc], a5);
+      v15 = sub_10031FB5C([ODRMemorySampler alloc], interval);
 
       [qword_1005AAD10 setObject:v15 forKey:@"memory"];
       sub_10031FBE0(v15);
-      v16 = [NSString stringWithFormat:@"Sampler '%@' enabled with %f sampling interval.", v18, *&a5];
-      v9[2](v9, v16, 0);
+      samplerCopy = [NSString stringWithFormat:@"Sampler '%@' enabled with %f sampling interval.", samplerCopy, *&interval];
+      replyCopy[2](replyCopy, samplerCopy, 0);
     }
 
     else
@@ -493,14 +493,14 @@
       if (v17)
       {
         sub_10031FD5C(v17);
-        v16 = [NSString stringWithFormat:@"Sampler '%@' disabled.", v18];
-        v9[2](v9, v16, 0);
+        samplerCopy = [NSString stringWithFormat:@"Sampler '%@' disabled.", samplerCopy];
+        replyCopy[2](replyCopy, samplerCopy, 0);
       }
 
       else
       {
-        v16 = [NSError errorWithDomain:@"_OnDemandResourcesErrorDomain" code:113 userInfo:0];
-        (v9)[2](v9, @"Sampler not found", v16);
+        samplerCopy = [NSError errorWithDomain:@"_OnDemandResourcesErrorDomain" code:113 userInfo:0];
+        (replyCopy)[2](replyCopy, @"Sampler not found", samplerCopy);
       }
     }
   }
@@ -508,50 +508,50 @@
   else
   {
     v15 = [NSError errorWithDomain:@"_OnDemandResourcesErrorDomain" code:112 userInfo:0];
-    (v9)[2](v9, @"Unknown sampler", v15);
+    (replyCopy)[2](replyCopy, @"Unknown sampler", v15);
   }
 
   [qword_1005AAD18 unlock];
 }
 
-- (void)loadSourceURL:(id)a3 intoDestinationURL:(id)a4 isUrgent:(BOOL)a5 isStreaming:(BOOL)a6 withRequestCompletion:(id)a7
+- (void)loadSourceURL:(id)l intoDestinationURL:(id)rL isUrgent:(BOOL)urgent isStreaming:(BOOL)streaming withRequestCompletion:(id)completion
 {
-  v8 = a7;
+  completionCopy = completion;
   v9 = [NSError errorWithDomain:@"_OnDemandResourcesErrorDomain" code:3000 userInfo:0];
-  (*(a7 + 2))(v8, v9);
+  (*(completion + 2))(completionCopy, v9);
 }
 
-- (void)cancelRequestWithUUID:(id)a3 withCompletion:(id)a4
+- (void)cancelRequestWithUUID:(id)d withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = [NSError errorWithDomain:@"_OnDemandResourcesErrorDomain" code:3000 userInfo:0];
-  (*(a4 + 2))(v5, v6);
+  (*(completion + 2))(completionCopy, v6);
 }
 
-- (void)pauseRequestWithUUID:(id)a3 withCompletion:(id)a4
+- (void)pauseRequestWithUUID:(id)d withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = [NSError errorWithDomain:@"_OnDemandResourcesErrorDomain" code:3000 userInfo:0];
-  (*(a4 + 2))(v5, v6);
+  (*(completion + 2))(completionCopy, v6);
 }
 
-- (void)resumeRequestWithUUID:(id)a3 withCompletion:(id)a4
+- (void)resumeRequestWithUUID:(id)d withCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = [NSError errorWithDomain:@"_OnDemandResourcesErrorDomain" code:3000 userInfo:0];
-  (*(a4 + 2))(v5, v6);
+  (*(completion + 2))(completionCopy, v6);
 }
 
-- (void)fetchManifestForAdamID:(id)a3 externalVersionID:(id)a4 variant:(id)a5 withFetchCompletion:(id)a6
+- (void)fetchManifestForAdamID:(id)d externalVersionID:(id)iD variant:(id)variant withFetchCompletion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  variantCopy = variant;
+  completionCopy = completion;
   v13 = sub_100399CD8([ODRMutableApplication alloc], @"com.apple.AppStore");
-  sub_10039C490(v13, v9);
-  sub_10039C634(v13, v10);
-  sub_10039C3EC(v13, v11);
+  sub_10039C490(v13, dCopy);
+  sub_10039C634(v13, iDCopy);
+  sub_10039C3EC(v13, variantCopy);
   v14 = sub_10024D554([ODRManifestRequestTask alloc], v13);
   objc_initWeak(&location, v14);
   v16[0] = _NSConcreteStackBlock;
@@ -559,7 +559,7 @@
   v16[2] = sub_10037CDFC;
   v16[3] = &unk_100522188;
   objc_copyWeak(&v18, &location);
-  v15 = v12;
+  v15 = completionCopy;
   v17 = v15;
   [v14 setCompletionBlock:v16];
   sub_10023EDE4(ODRTaskQueue, v14, -1);
@@ -568,26 +568,26 @@
   objc_destroyWeak(&location);
 }
 
-- (void)registerManifest:(id)a3 forBundleID:(id)a4 withRequestCompletion:(id)a5
+- (void)registerManifest:(id)manifest forBundleID:(id)d withRequestCompletion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = sub_100399B78(ODRApplication, v8);
+  manifestCopy = manifest;
+  dCopy = d;
+  completionCopy = completion;
+  v10 = sub_100399B78(ODRApplication, dCopy);
   if (v10)
   {
     v11 = ASDLogHandleForCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v19 = [v7 length];
+      v19 = [manifestCopy length];
       v20 = 2114;
       v21 = v10;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "[Diagnostics] Importing %{iec-bytes}lu manifest for %{public}@", buf, 0x16u);
     }
 
     v12 = sub_100338694([ODRApplicationImportTask alloc], v10);
-    v14 = sub_100280A90([ODRManifest alloc], v7, v8, 0);
+    v14 = sub_100280A90([ODRManifest alloc], manifestCopy, dCopy, 0);
     if (v12)
     {
       objc_setProperty_atomic(v12, v13, v14, 48);
@@ -599,7 +599,7 @@
     v15[2] = sub_10037D14C;
     v15[3] = &unk_100522188;
     objc_copyWeak(&v17, buf);
-    v16 = v9;
+    v16 = completionCopy;
     [v12 setCompletionBlock:v15];
     sub_10023EDE4(ODRTaskQueue, v12, -1);
 
@@ -609,13 +609,13 @@
 
   else
   {
-    (*(v9 + 2))(v9, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 }
 
-- (void)purgeableAssetsWithReply:(id)a3
+- (void)purgeableAssetsWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -634,21 +634,21 @@
   if (v5)
   {
     v6 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"\nAsset Packs : %lu asset packs are purgeable.\n\n", [v5 count]);
-    v3[2](v3, v6, 0);
+    replyCopy[2](replyCopy, v6, 0);
   }
 
   else
   {
     v6 = [NSError errorWithDomain:@"_OnDemandResourcesErrorDomain" code:900 userInfo:0];
-    (v3)[2](v3, 0, v6);
+    (replyCopy)[2](replyCopy, 0, v6);
   }
 
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)nonPurgeableAssetsWithReply:(id)a3
+- (void)nonPurgeableAssetsWithReply:(id)reply
 {
-  v3 = a3;
+  replyCopy = reply;
   v8 = 0;
   v9 = &v8;
   v10 = 0x3032000000;
@@ -667,61 +667,61 @@
   if (v5)
   {
     v6 = +[NSMutableString stringWithFormat:](NSMutableString, "stringWithFormat:", @"\nAsset Packs : %lu asset packs are not purgeable.\n\n", [v5 count]);
-    v3[2](v3, v6, 0);
+    replyCopy[2](replyCopy, v6, 0);
   }
 
   else
   {
     v6 = [NSError errorWithDomain:@"_OnDemandResourcesErrorDomain" code:900 userInfo:0];
-    (v3)[2](v3, 0, v6);
+    (replyCopy)[2](replyCopy, 0, v6);
   }
 
   _Block_object_dispose(&v8, 8);
 }
 
-- (void)purgeBytes:(int64_t)a3 odrOnly:(BOOL)a4 urgency:(int)a5 withReply:(id)a6
+- (void)purgeBytes:(int64_t)bytes odrOnly:(BOOL)only urgency:(int)urgency withReply:(id)reply
 {
-  v7 = a4;
-  v11 = a6;
+  onlyCopy = only;
+  replyCopy = reply;
   v9 = sub_100220330();
-  v10 = sub_100220884(v9, a3, v7, a5);
+  v10 = sub_100220884(v9, bytes, onlyCopy, urgency);
 
-  v11[2](v11, v10, 0);
+  replyCopy[2](replyCopy, v10, 0);
 }
 
-- (void)testPurgeBytes:(int64_t)a3 urgency:(int)a4 withReply:(id)a5
+- (void)testPurgeBytes:(int64_t)bytes urgency:(int)urgency withReply:(id)reply
 {
-  v5 = *&a4;
+  v5 = *&urgency;
   v12 = 0;
-  v7 = a5;
+  replyCopy = reply;
   v8 = sub_100220330();
-  v9 = sub_100222470(v8, v5, a3, &v12);
+  v9 = sub_100222470(v8, v5, bytes, &v12);
 
   v10 = objc_alloc_init(NSMutableString);
   v11 = [v9 count];
-  [v10 appendFormat:@"\nAsset Packs Purge Test : %lu asset packs to purge for urgency %d (requested bytes : %lld; actual bytes : %lld).\n\n", v11, v5, a3, v12];
-  v7[2](v7, v10, 0);
+  [v10 appendFormat:@"\nAsset Packs Purge Test : %lu asset packs to purge for urgency %d (requested bytes : %lld; actual bytes : %lld).\n\n", v11, v5, bytes, v12];
+  replyCopy[2](replyCopy, v10, 0);
 }
 
-- (void)purgeAllAssetsForApplication:(id)a3 withRequestCompletion:(id)a4
+- (void)purgeAllAssetsForApplication:(id)application withRequestCompletion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
+  applicationCopy = application;
+  completionCopy = completion;
   v6 = sub_100220330();
-  sub_100222B74(v6, v7, 2);
+  sub_100222B74(v6, applicationCopy, 2);
 
-  v5[2](v5, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)purgeAllAssetsForApplications:(id)a3 withRequestCompletion:(id)a4
+- (void)purgeAllAssetsForApplications:(id)applications withRequestCompletion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  applicationsCopy = applications;
+  completionCopy = completion;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v7 = [applicationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
     v8 = v7;
@@ -733,7 +733,7 @@
       {
         if (*v14 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(applicationsCopy);
         }
 
         v11 = *(*(&v13 + 1) + 8 * v10);
@@ -744,44 +744,44 @@
       }
 
       while (v8 != v10);
-      v8 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v8 = [applicationsCopy countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v8);
   }
 
-  v6[2](v6, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)purgeAssetWithIdentifier:(id)a3 withRequestCompletion:(id)a4
+- (void)purgeAssetWithIdentifier:(id)identifier withRequestCompletion:(id)completion
 {
-  v7 = a3;
-  v5 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v6 = sub_100220330();
-  sub_100222DB8(v6, v7, 2);
+  sub_100222DB8(v6, identifierCopy, 2);
 
-  v5[2](v5, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)getSimulatedBandwidthWithReply:(id)a3
+- (void)getSimulatedBandwidthWithReply:(id)reply
 {
-  v5 = a3;
+  replyCopy = reply;
   v4 = sub_1002B3D88();
-  (*(a3 + 2))(v5, v4, 0);
+  (*(reply + 2))(replyCopy, v4, 0);
 }
 
-- (void)setSimulatedBandwidth:(unint64_t)a3 withReply:(id)a4
+- (void)setSimulatedBandwidth:(unint64_t)bandwidth withReply:(id)reply
 {
-  v6 = a4;
-  sub_1002B3D04(ODRSimulatedDownloadsManager, a3);
+  replyCopy = reply;
+  sub_1002B3D04(ODRSimulatedDownloadsManager, bandwidth);
   v5 = sub_1002B3D88();
-  v6[2](v6, v5, 0);
+  replyCopy[2](replyCopy, v5, 0);
 }
 
-- (void)getSpaceReductionWithReply:(id)a3
+- (void)getSpaceReductionWithReply:(id)reply
 {
   v3 = qword_1005AAD08;
-  v4 = a3;
+  replyCopy = reply;
   if (v3)
   {
     v5 = *(v3 + 8);
@@ -792,16 +792,16 @@
     v5 = 0;
   }
 
-  v6 = v4;
-  (*(v4 + 2))(v4, v5, 0);
+  v6 = replyCopy;
+  (*(replyCopy + 2))(replyCopy, v5, 0);
 }
 
-- (void)setSpaceReduction:(unint64_t)a3 withReply:(id)a4
+- (void)setSpaceReduction:(unint64_t)reduction withReply:(id)reply
 {
-  v7 = a4;
-  if (a3)
+  replyCopy = reply;
+  if (reduction)
   {
-    v5 = sub_1002E9EE8([ODRSpaceReduction alloc], a3);
+    v5 = sub_1002E9EE8([ODRSpaceReduction alloc], reduction);
   }
 
   else
@@ -812,7 +812,7 @@
   v6 = qword_1005AAD08;
   qword_1005AAD08 = v5;
 
-  v7[2](v7, a3, 0);
+  replyCopy[2](replyCopy, reduction, 0);
 }
 
 @end

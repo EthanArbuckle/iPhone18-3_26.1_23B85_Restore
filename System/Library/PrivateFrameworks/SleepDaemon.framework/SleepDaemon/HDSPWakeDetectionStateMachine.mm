@@ -1,33 +1,33 @@
 @interface HDSPWakeDetectionStateMachine
 - (BOOL)isWatch;
 - (BOOL)sleepModeIsOff;
-- (HDSPWakeDetectionStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7;
+- (HDSPWakeDetectionStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider;
 - (HKSPSleepScheduleModel)sleepScheduleModel;
 - (HKSPSleepScheduleOccurrence)relevantOccurrence;
 - (NSDate)currentDate;
 - (NSDate)nextWakeUp;
 - (NSDate)upcomingStartDetection;
 - (id)allStates;
-- (id)detectionWindowForType:(unint64_t)a3;
+- (id)detectionWindowForType:(unint64_t)type;
 - (unint64_t)activeTypes;
 - (unint64_t)sleepScheduleState;
 - (void)earlyWakeUpWasNotifiedRemotely;
-- (void)postWakeDetectionNotification:(unint64_t)a3;
-- (void)startWakeDetection:(unint64_t)a3;
-- (void)wakeupEventDetected:(unint64_t)a3 date:(id)a4;
+- (void)postWakeDetectionNotification:(unint64_t)notification;
+- (void)startWakeDetection:(unint64_t)detection;
+- (void)wakeupEventDetected:(unint64_t)detected date:(id)date;
 @end
 
 @implementation HDSPWakeDetectionStateMachine
 
-- (HDSPWakeDetectionStateMachine)initWithIdentifier:(id)a3 persistence:(id)a4 delegate:(id)a5 infoProvider:(id)a6 currentDateProvider:(id)a7
+- (HDSPWakeDetectionStateMachine)initWithIdentifier:(id)identifier persistence:(id)persistence delegate:(id)delegate infoProvider:(id)provider currentDateProvider:(id)dateProvider
 {
   v37[5] = *MEMORY[0x277D85DE8];
   v12 = MEMORY[0x277CBEB98];
-  v13 = a7;
-  v14 = a6;
-  v15 = a5;
-  v16 = a4;
-  v17 = a3;
+  dateProviderCopy = dateProvider;
+  providerCopy = provider;
+  delegateCopy = delegate;
+  persistenceCopy = persistence;
+  identifierCopy = identifier;
   v37[0] = objc_opt_class();
   v37[1] = objc_opt_class();
   v37[2] = objc_opt_class();
@@ -38,7 +38,7 @@
 
   v36.receiver = self;
   v36.super_class = HDSPWakeDetectionStateMachine;
-  v20 = [(HKSPPersistentStateMachine *)&v36 initWithIdentifier:v17 allowedStates:v19 persistence:v16 delegate:v15 infoProvider:v14 currentDateProvider:v13];
+  v20 = [(HKSPPersistentStateMachine *)&v36 initWithIdentifier:identifierCopy allowedStates:v19 persistence:persistenceCopy delegate:delegateCopy infoProvider:providerCopy currentDateProvider:dateProviderCopy];
 
   if (v20)
   {
@@ -62,9 +62,9 @@
     notifiedState = v20->_notifiedState;
     v20->_notifiedState = v29;
 
-    v31 = [(HKSPPersistentStateMachine *)v20 persistedState];
-    v32 = v31;
-    if (!v31)
+    persistedState = [(HKSPPersistentStateMachine *)v20 persistedState];
+    v32 = persistedState;
+    if (!persistedState)
     {
       v32 = v20->_disabledState;
     }
@@ -94,115 +94,115 @@
   return v4;
 }
 
-- (void)wakeupEventDetected:(unint64_t)a3 date:(id)a4
+- (void)wakeupEventDetected:(unint64_t)detected date:(id)date
 {
-  v6 = a4;
-  v7 = [(HKSPStateMachine *)self currentState];
-  [v7 wakeupEventDetected:a3 date:v6];
+  dateCopy = date;
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState wakeupEventDetected:detected date:dateCopy];
 }
 
 - (void)earlyWakeUpWasNotifiedRemotely
 {
-  v2 = [(HKSPStateMachine *)self currentState];
-  [v2 earlyWakeUpWasNotifiedRemotely];
+  currentState = [(HKSPStateMachine *)self currentState];
+  [currentState earlyWakeUpWasNotifiedRemotely];
 }
 
-- (void)startWakeDetection:(unint64_t)a3
+- (void)startWakeDetection:(unint64_t)detection
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __52__HDSPWakeDetectionStateMachine_startWakeDetection___block_invoke;
   v3[3] = &__block_descriptor_40_e49_v16__0___HDSPWakeDetectionStateMachineDelegate__8l;
-  v3[4] = a3;
+  v3[4] = detection;
   [(HKSPStateMachine *)self notifyDelegateWithBlock:v3];
 }
 
-- (void)postWakeDetectionNotification:(unint64_t)a3
+- (void)postWakeDetectionNotification:(unint64_t)notification
 {
   v3[0] = MEMORY[0x277D85DD0];
   v3[1] = 3221225472;
   v3[2] = __63__HDSPWakeDetectionStateMachine_postWakeDetectionNotification___block_invoke;
   v3[3] = &__block_descriptor_40_e49_v16__0___HDSPWakeDetectionStateMachineDelegate__8l;
-  v3[4] = a3;
+  v3[4] = notification;
   [(HKSPStateMachine *)self notifyDelegateWithBlock:v3];
 }
 
 - (NSDate)currentDate
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 currentDate];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  currentDate = [infoProvider currentDate];
 
-  return v3;
+  return currentDate;
 }
 
 - (HKSPSleepScheduleOccurrence)relevantOccurrence
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 relevantOccurrence];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  relevantOccurrence = [infoProvider relevantOccurrence];
 
-  return v3;
+  return relevantOccurrence;
 }
 
 - (HKSPSleepScheduleModel)sleepScheduleModel
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepScheduleModel];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepScheduleModel = [infoProvider sleepScheduleModel];
 
-  return v3;
+  return sleepScheduleModel;
 }
 
 - (unint64_t)sleepScheduleState
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepScheduleState];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepScheduleState = [infoProvider sleepScheduleState];
 
-  return v3;
+  return sleepScheduleState;
 }
 
 - (BOOL)sleepModeIsOff
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 sleepModeIsOff];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  sleepModeIsOff = [infoProvider sleepModeIsOff];
 
-  return v3;
+  return sleepModeIsOff;
 }
 
 - (BOOL)isWatch
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 isWatch];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  isWatch = [infoProvider isWatch];
 
-  return v3;
+  return isWatch;
 }
 
 - (unint64_t)activeTypes
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 activeTypes];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  activeTypes = [infoProvider activeTypes];
 
-  return v3;
+  return activeTypes;
 }
 
 - (NSDate)nextWakeUp
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 nextWakeUp];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  nextWakeUp = [infoProvider nextWakeUp];
 
-  return v3;
+  return nextWakeUp;
 }
 
 - (NSDate)upcomingStartDetection
 {
-  v2 = [(HKSPStateMachine *)self infoProvider];
-  v3 = [v2 upcomingStartDetection];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  upcomingStartDetection = [infoProvider upcomingStartDetection];
 
-  return v3;
+  return upcomingStartDetection;
 }
 
-- (id)detectionWindowForType:(unint64_t)a3
+- (id)detectionWindowForType:(unint64_t)type
 {
-  v4 = [(HKSPStateMachine *)self infoProvider];
-  v5 = [v4 detectionWindowForType:a3];
+  infoProvider = [(HKSPStateMachine *)self infoProvider];
+  v5 = [infoProvider detectionWindowForType:type];
 
   return v5;
 }

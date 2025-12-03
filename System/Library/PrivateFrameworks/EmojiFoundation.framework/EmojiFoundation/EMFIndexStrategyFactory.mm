@@ -1,14 +1,14 @@
 @interface EMFIndexStrategyFactory
-+ (id)defaultStrategyWithTermIndex:(id)a3 andDocumentIndex:(id)a4;
-+ (id)inferStrategyForIndex:(id)a3;
++ (id)defaultStrategyWithTermIndex:(id)index andDocumentIndex:(id)documentIndex;
++ (id)inferStrategyForIndex:(id)index;
 @end
 
 @implementation EMFIndexStrategyFactory
 
-+ (id)inferStrategyForIndex:(id)a3
++ (id)inferStrategyForIndex:(id)index
 {
-  v3 = a3;
-  v4 = _strategyClassForIndex(v3);
+  indexCopy = index;
+  v4 = _strategyClassForIndex(indexCopy);
   if (!v4)
   {
     v10 = emf_logging_get_default_log();
@@ -21,18 +21,18 @@
   }
 
   v5 = [v4 alloc];
-  v6 = [v3 termIndex];
-  v7 = [v3 documentIndex];
-  v8 = [v5 initWithTermIndex:v6 andDocumentIndex:v7];
+  termIndex = [indexCopy termIndex];
+  documentIndex = [indexCopy documentIndex];
+  v8 = [v5 initWithTermIndex:termIndex andDocumentIndex:documentIndex];
 
   return v8;
 }
 
-+ (id)defaultStrategyWithTermIndex:(id)a3 andDocumentIndex:(id)a4
++ (id)defaultStrategyWithTermIndex:(id)index andDocumentIndex:(id)documentIndex
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(EMFAbstractIndexStrategy *)[EMFIndexStrategyDefault alloc] initWithTermIndex:v6 andDocumentIndex:v5];
+  documentIndexCopy = documentIndex;
+  indexCopy = index;
+  v7 = [(EMFAbstractIndexStrategy *)[EMFIndexStrategyDefault alloc] initWithTermIndex:indexCopy andDocumentIndex:documentIndexCopy];
 
   return v7;
 }

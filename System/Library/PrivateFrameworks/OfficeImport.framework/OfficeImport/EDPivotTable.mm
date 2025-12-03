@@ -1,15 +1,15 @@
 @interface EDPivotTable
-+ (id)pivotTableWithResources:(id)a3;
-- (EDPivotTable)initWithResources:(id)a3;
++ (id)pivotTableWithResources:(id)resources;
+- (EDPivotTable)initWithResources:(id)resources;
 - (id)description;
 - (id)style;
-- (void)setColumnHeaderCaption:(id)a3;
-- (void)setName:(id)a3;
-- (void)setPageStyleName:(id)a3;
-- (void)setPivotTableRange:(id)a3;
-- (void)setRowHeaderCaption:(id)a3;
-- (void)setStyle:(id)a3;
-- (void)setStyleName:(id)a3;
+- (void)setColumnHeaderCaption:(id)caption;
+- (void)setName:(id)name;
+- (void)setPageStyleName:(id)name;
+- (void)setPivotTableRange:(id)range;
+- (void)setRowHeaderCaption:(id)caption;
+- (void)setStyle:(id)style;
+- (void)setStyleName:(id)name;
 @end
 
 @implementation EDPivotTable
@@ -17,16 +17,16 @@
 - (id)style
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained tableStyles];
+  tableStyles = [WeakRetained tableStyles];
 
   mStyleName = self->mStyleName;
-  v6 = mStyleName;
+  defaultPivotStyleName = mStyleName;
   if (!mStyleName)
   {
-    v6 = [v4 defaultPivotStyleName];
+    defaultPivotStyleName = [tableStyles defaultPivotStyleName];
   }
 
-  v7 = [v4 objectWithName:v6];
+  v7 = [tableStyles objectWithName:defaultPivotStyleName];
   if (!mStyleName)
   {
   }
@@ -34,16 +34,16 @@
   return v7;
 }
 
-- (EDPivotTable)initWithResources:(id)a3
+- (EDPivotTable)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v26.receiver = self;
   v26.super_class = EDPivotTable;
   v5 = [(EDPivotTable *)&v26 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
     v6->mStyleIndex = -1;
     *&v6->mShowLastColumn = 0;
     *&v6->mApplyPatternFormats = 0;
@@ -95,98 +95,98 @@
   return v6;
 }
 
-+ (id)pivotTableWithResources:(id)a3
++ (id)pivotTableWithResources:(id)resources
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithResources:v3];
+  resourcesCopy = resources;
+  v4 = [objc_alloc(objc_opt_class()) initWithResources:resourcesCopy];
 
   return v4;
 }
 
-- (void)setStyle:(id)a3
+- (void)setStyle:(id)style
 {
-  v6 = a3;
+  styleCopy = style;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained tableStyles];
+  tableStyles = [WeakRetained tableStyles];
 
-  self->mStyleIndex = [v5 addObject:v6];
+  self->mStyleIndex = [tableStyles addObject:styleCopy];
 }
 
-- (void)setColumnHeaderCaption:(id)a3
+- (void)setColumnHeaderCaption:(id)caption
 {
-  v5 = a3;
+  captionCopy = caption;
   mColumnHeaderCaption = self->mColumnHeaderCaption;
   p_mColumnHeaderCaption = &self->mColumnHeaderCaption;
-  if (mColumnHeaderCaption != v5)
+  if (mColumnHeaderCaption != captionCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mColumnHeaderCaption, a3);
-    v5 = v8;
+    v8 = captionCopy;
+    objc_storeStrong(p_mColumnHeaderCaption, caption);
+    captionCopy = v8;
   }
 }
 
-- (void)setRowHeaderCaption:(id)a3
+- (void)setRowHeaderCaption:(id)caption
 {
-  v5 = a3;
+  captionCopy = caption;
   mRowHeaderCaption = self->mRowHeaderCaption;
   p_mRowHeaderCaption = &self->mRowHeaderCaption;
-  if (mRowHeaderCaption != v5)
+  if (mRowHeaderCaption != captionCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mRowHeaderCaption, a3);
-    v5 = v8;
+    v8 = captionCopy;
+    objc_storeStrong(p_mRowHeaderCaption, caption);
+    captionCopy = v8;
   }
 }
 
-- (void)setPageStyleName:(id)a3
+- (void)setPageStyleName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   mPageStyleName = self->mPageStyleName;
   p_mPageStyleName = &self->mPageStyleName;
-  if (mPageStyleName != v5)
+  if (mPageStyleName != nameCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mPageStyleName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_mPageStyleName, name);
+    nameCopy = v8;
   }
 }
 
-- (void)setStyleName:(id)a3
+- (void)setStyleName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   mStyleName = self->mStyleName;
   p_mStyleName = &self->mStyleName;
-  if (mStyleName != v5)
+  if (mStyleName != nameCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mStyleName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_mStyleName, name);
+    nameCopy = v8;
   }
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   mName = self->mName;
   p_mName = &self->mName;
-  if (mName != v5)
+  if (mName != nameCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_mName, name);
+    nameCopy = v8;
   }
 }
 
-- (void)setPivotTableRange:(id)a3
+- (void)setPivotTableRange:(id)range
 {
-  v5 = a3;
+  rangeCopy = range;
   mPivotTableRange = self->mPivotTableRange;
   p_mPivotTableRange = &self->mPivotTableRange;
-  if (mPivotTableRange != v5)
+  if (mPivotTableRange != rangeCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mPivotTableRange, a3);
-    v5 = v8;
+    v8 = rangeCopy;
+    objc_storeStrong(p_mPivotTableRange, range);
+    rangeCopy = v8;
   }
 }
 

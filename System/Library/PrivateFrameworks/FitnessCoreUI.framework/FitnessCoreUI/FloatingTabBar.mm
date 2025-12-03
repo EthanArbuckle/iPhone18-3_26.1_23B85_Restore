@@ -1,7 +1,7 @@
 @interface FloatingTabBar
 - (CGSize)intrinsicContentSize;
-- (_TtC13FitnessCoreUI14FloatingTabBar)initWithCoder:(id)a3;
-- (_TtC13FitnessCoreUI14FloatingTabBar)initWithFrame:(CGRect)a3;
+- (_TtC13FitnessCoreUI14FloatingTabBar)initWithCoder:(id)coder;
+- (_TtC13FitnessCoreUI14FloatingTabBar)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -38,12 +38,12 @@
   return result;
 }
 
-- (_TtC13FitnessCoreUI14FloatingTabBar)initWithFrame:(CGRect)a3
+- (_TtC13FitnessCoreUI14FloatingTabBar)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   sub_20C3E8E3C();
   sub_20C3E8E2C();
   sub_20C3E8E1C();
@@ -58,7 +58,7 @@
   return v8;
 }
 
-- (_TtC13FitnessCoreUI14FloatingTabBar)initWithCoder:(id)a3
+- (_TtC13FitnessCoreUI14FloatingTabBar)initWithCoder:(id)coder
 {
   sub_20C3E8E3C();
   sub_20C3E8E2C();
@@ -68,7 +68,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = a3;
+  coderCopy = coder;
   _s13FitnessCoreUI14FloatingTabBarC5coderACSgSo7NSCoderC_tcfc_0();
 }
 
@@ -84,7 +84,7 @@
 
   v4.receiver = self;
   v4.super_class = type metadata accessor for FloatingTabBar();
-  v3 = self;
+  selfCopy = self;
   [(FloatingTabBar *)&v4 layoutSubviews];
   sub_20C3979A8(0);
 }

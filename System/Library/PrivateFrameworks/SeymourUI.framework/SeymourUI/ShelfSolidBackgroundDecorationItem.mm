@@ -1,21 +1,21 @@
 @interface ShelfSolidBackgroundDecorationItem
-- (_TtC9SeymourUI34ShelfSolidBackgroundDecorationItem)initWithCoder:(id)a3;
-- (_TtC9SeymourUI34ShelfSolidBackgroundDecorationItem)initWithFrame:(CGRect)a3;
+- (_TtC9SeymourUI34ShelfSolidBackgroundDecorationItem)initWithCoder:(id)coder;
+- (_TtC9SeymourUI34ShelfSolidBackgroundDecorationItem)initWithFrame:(CGRect)frame;
 @end
 
 @implementation ShelfSolidBackgroundDecorationItem
 
-- (_TtC9SeymourUI34ShelfSolidBackgroundDecorationItem)initWithFrame:(CGRect)a3
+- (_TtC9SeymourUI34ShelfSolidBackgroundDecorationItem)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v13.receiver = self;
   v13.super_class = type metadata accessor for ShelfSolidBackgroundDecorationItem();
-  v7 = [(ShelfSolidBackgroundDecorationItem *)&v13 initWithFrame:x, y, width, height];
+  height = [(ShelfSolidBackgroundDecorationItem *)&v13 initWithFrame:x, y, width, height];
   v8 = qword_27C760D20;
-  v9 = v7;
+  v9 = height;
   if (v8 != -1)
   {
     v12 = v9;
@@ -29,7 +29,7 @@
   return v10;
 }
 
-- (_TtC9SeymourUI34ShelfSolidBackgroundDecorationItem)initWithCoder:(id)a3
+- (_TtC9SeymourUI34ShelfSolidBackgroundDecorationItem)initWithCoder:(id)coder
 {
   result = sub_20C13DE24();
   __break(1u);

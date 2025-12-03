@@ -9,55 +9,55 @@
 - (BOOL)shouldDisableAutoDownloadUpdates;
 - (BOOL)shouldDisableAutoInstallUpdates;
 - (BOOL)shouldDisableRSR;
-- (SUUIMobilePreferencesManager)initWithSUPreferencesInstance:(id)a3 andSUManagerClient:(id)a4;
-- (void)addObserver:(id)a3;
+- (SUUIMobilePreferencesManager)initWithSUPreferencesInstance:(id)instance andSUManagerClient:(id)client;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)preferences:(id)a3 didChangePreference:(id)a4 toValue:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)setAutoInstallSecurityResponse:(BOOL)a3;
-- (void)setAutoInstallSystemAndDataFiles:(BOOL)a3;
-- (void)setAutomaticDownloadEnabled:(BOOL)a3;
-- (void)setAutomaticUpdateEnabled:(BOOL)a3;
-- (void)setPreviousUserSpecifiedAutoInstallSecurityResponse:(BOOL)a3;
-- (void)setPreviousUserSpecifiedAutomaticUpdateEnabled:(BOOL)a3;
+- (void)preferences:(id)preferences didChangePreference:(id)preference toValue:(id)value;
+- (void)removeObserver:(id)observer;
+- (void)setAutoInstallSecurityResponse:(BOOL)response;
+- (void)setAutoInstallSystemAndDataFiles:(BOOL)files;
+- (void)setAutomaticDownloadEnabled:(BOOL)enabled;
+- (void)setAutomaticUpdateEnabled:(BOOL)enabled;
+- (void)setPreviousUserSpecifiedAutoInstallSecurityResponse:(BOOL)response;
+- (void)setPreviousUserSpecifiedAutomaticUpdateEnabled:(BOOL)enabled;
 @end
 
 @implementation SUUIMobilePreferencesManager
 
 - (BOOL)automaticDownloadEnabled
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   *&v5[1] = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  *v5 = [(SUPreferences *)v4->_preferences isAutomaticDownloadEnabled]& 1;
+  *v5 = [(SUPreferences *)selfCopy->_preferences isAutomaticDownloadEnabled]& 1;
   v7 = v3;
   os_unfair_lock_unlock(p_lock);
   return v5[0] & 1;
 }
 
-- (void)setAutomaticDownloadEnabled:(BOOL)a3
+- (void)setAutomaticDownloadEnabled:(BOOL)enabled
 {
   v22 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  enabledCopy = enabled;
   v13[0] = 2;
   p_lock = &self->_lock;
   v17 = 0;
   os_unfair_lock_lock_with_options();
   v13[1] = p_lock;
-  v8 = [MEMORY[0x277D64B58] mobileLogger];
-  oslog = [v8 oslog];
-  MEMORY[0x277D82BD8](v8);
+  mobileLogger = [MEMORY[0x277D64B58] mobileLogger];
+  oslog = [mobileLogger oslog];
+  MEMORY[0x277D82BD8](mobileLogger);
   type = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
-    v20 = v14;
-    if (v14)
+    v20 = enabledCopy;
+    if (enabledCopy)
     {
       v3 = @"YES";
     }
@@ -78,7 +78,7 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUPreferences *)v16->_preferences enableAutomaticDownload:v14];
+  [(SUPreferences *)selfCopy->_preferences enableAutomaticDownload:enabledCopy];
   v12 = 2;
   v19 = v13;
   switch(v13[0])
@@ -100,38 +100,38 @@
 
 - (BOOL)automaticUpdateEnabled
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   *&v5[1] = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  *v5 = [(SUPreferences *)v4->_preferences isAutomaticUpdateV2Enabled]& 1;
+  *v5 = [(SUPreferences *)selfCopy->_preferences isAutomaticUpdateV2Enabled]& 1;
   v7 = v3;
   os_unfair_lock_unlock(p_lock);
   return v5[0] & 1;
 }
 
-- (void)setAutomaticUpdateEnabled:(BOOL)a3
+- (void)setAutomaticUpdateEnabled:(BOOL)enabled
 {
   v22 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  enabledCopy = enabled;
   v13[0] = 2;
   p_lock = &self->_lock;
   v17 = 0;
   os_unfair_lock_lock_with_options();
   v13[1] = p_lock;
-  v8 = [MEMORY[0x277D64B58] mobileLogger];
-  oslog = [v8 oslog];
-  MEMORY[0x277D82BD8](v8);
+  mobileLogger = [MEMORY[0x277D64B58] mobileLogger];
+  oslog = [mobileLogger oslog];
+  MEMORY[0x277D82BD8](mobileLogger);
   type = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
-    v20 = v14;
-    if (v14)
+    v20 = enabledCopy;
+    if (enabledCopy)
     {
       v3 = @"YES";
     }
@@ -152,7 +152,7 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUPreferences *)v16->_preferences enableAutomaticUpdateV2:v14];
+  [(SUPreferences *)selfCopy->_preferences enableAutomaticUpdateV2:enabledCopy];
   v12 = 2;
   v19 = v13;
   switch(v13[0])
@@ -174,38 +174,38 @@
 
 - (BOOL)previousUserSpecifiedAutomaticUpdateEnabled
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   *&v5[1] = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  *v5 = [(SUPreferences *)v4->_preferences previousUserSpecifiedAutomaticUpdateV2Enabled]& 1;
+  *v5 = [(SUPreferences *)selfCopy->_preferences previousUserSpecifiedAutomaticUpdateV2Enabled]& 1;
   v7 = v3;
   os_unfair_lock_unlock(p_lock);
   return v5[0] & 1;
 }
 
-- (void)setPreviousUserSpecifiedAutomaticUpdateEnabled:(BOOL)a3
+- (void)setPreviousUserSpecifiedAutomaticUpdateEnabled:(BOOL)enabled
 {
   v22 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  enabledCopy = enabled;
   v13[0] = 2;
   p_lock = &self->_lock;
   v17 = 0;
   os_unfair_lock_lock_with_options();
   v13[1] = p_lock;
-  v8 = [MEMORY[0x277D64B58] mobileLogger];
-  oslog = [v8 oslog];
-  MEMORY[0x277D82BD8](v8);
+  mobileLogger = [MEMORY[0x277D64B58] mobileLogger];
+  oslog = [mobileLogger oslog];
+  MEMORY[0x277D82BD8](mobileLogger);
   type = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
-    v20 = v14;
-    if (v14)
+    v20 = enabledCopy;
+    if (enabledCopy)
     {
       v3 = @"YES";
     }
@@ -226,7 +226,7 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUPreferences *)v16->_preferences enablePreviousUserSpecifiedAutomaticUpdateV2:v14];
+  [(SUPreferences *)selfCopy->_preferences enablePreviousUserSpecifiedAutomaticUpdateV2:enabledCopy];
   v12 = 2;
   v19 = v13;
   switch(v13[0])
@@ -248,38 +248,38 @@
 
 - (BOOL)autoInstallSecurityResponse
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   *&v5[1] = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  *v5 = [(SUPreferences *)v4->_preferences autoInstallSecurityResponse]& 1;
+  *v5 = [(SUPreferences *)selfCopy->_preferences autoInstallSecurityResponse]& 1;
   v7 = v3;
   os_unfair_lock_unlock(p_lock);
   return v5[0] & 1;
 }
 
-- (void)setAutoInstallSecurityResponse:(BOOL)a3
+- (void)setAutoInstallSecurityResponse:(BOOL)response
 {
   v22 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  responseCopy = response;
   v13[0] = 2;
   p_lock = &self->_lock;
   v17 = 0;
   os_unfair_lock_lock_with_options();
   v13[1] = p_lock;
-  v8 = [MEMORY[0x277D64B58] mobileLogger];
-  oslog = [v8 oslog];
-  MEMORY[0x277D82BD8](v8);
+  mobileLogger = [MEMORY[0x277D64B58] mobileLogger];
+  oslog = [mobileLogger oslog];
+  MEMORY[0x277D82BD8](mobileLogger);
   type = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
-    v20 = v14;
-    if (v14)
+    v20 = responseCopy;
+    if (responseCopy)
     {
       v3 = @"YES";
     }
@@ -300,7 +300,7 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUPreferences *)v16->_preferences enableAutoInstallSecurityResponse:v14];
+  [(SUPreferences *)selfCopy->_preferences enableAutoInstallSecurityResponse:responseCopy];
   v12 = 2;
   v19 = v13;
   switch(v13[0])
@@ -322,38 +322,38 @@
 
 - (BOOL)previousUserSpecifiedAutoInstallSecurityResponse
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   *&v5[1] = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  *v5 = [(SUPreferences *)v4->_preferences previousUserSpecifiedAutoInstallSecurityResponse]& 1;
+  *v5 = [(SUPreferences *)selfCopy->_preferences previousUserSpecifiedAutoInstallSecurityResponse]& 1;
   v7 = v3;
   os_unfair_lock_unlock(p_lock);
   return v5[0] & 1;
 }
 
-- (void)setPreviousUserSpecifiedAutoInstallSecurityResponse:(BOOL)a3
+- (void)setPreviousUserSpecifiedAutoInstallSecurityResponse:(BOOL)response
 {
   v22 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  responseCopy = response;
   v13[0] = 2;
   p_lock = &self->_lock;
   v17 = 0;
   os_unfair_lock_lock_with_options();
   v13[1] = p_lock;
-  v8 = [MEMORY[0x277D64B58] mobileLogger];
-  oslog = [v8 oslog];
-  MEMORY[0x277D82BD8](v8);
+  mobileLogger = [MEMORY[0x277D64B58] mobileLogger];
+  oslog = [mobileLogger oslog];
+  MEMORY[0x277D82BD8](mobileLogger);
   type = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
-    v20 = v14;
-    if (v14)
+    v20 = responseCopy;
+    if (responseCopy)
     {
       v3 = @"YES";
     }
@@ -374,7 +374,7 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUPreferences *)v16->_preferences enablePreviousUserSpecifiedAutoInstallSecurityResponse:v14];
+  [(SUPreferences *)selfCopy->_preferences enablePreviousUserSpecifiedAutoInstallSecurityResponse:responseCopy];
   v12 = 2;
   v19 = v13;
   switch(v13[0])
@@ -396,38 +396,38 @@
 
 - (BOOL)autoInstallSystemAndDataFiles
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   *&v5[1] = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  *v5 = [(SUPreferences *)v4->_preferences autoInstallSystemAndDataFiles]& 1;
+  *v5 = [(SUPreferences *)selfCopy->_preferences autoInstallSystemAndDataFiles]& 1;
   v7 = v3;
   os_unfair_lock_unlock(p_lock);
   return v5[0] & 1;
 }
 
-- (void)setAutoInstallSystemAndDataFiles:(BOOL)a3
+- (void)setAutoInstallSystemAndDataFiles:(BOOL)files
 {
   v22 = *MEMORY[0x277D85DE8];
-  v16 = self;
+  selfCopy = self;
   v15 = a2;
-  v14 = a3;
+  filesCopy = files;
   v13[0] = 2;
   p_lock = &self->_lock;
   v17 = 0;
   os_unfair_lock_lock_with_options();
   v13[1] = p_lock;
-  v8 = [MEMORY[0x277D64B58] mobileLogger];
-  oslog = [v8 oslog];
-  MEMORY[0x277D82BD8](v8);
+  mobileLogger = [MEMORY[0x277D64B58] mobileLogger];
+  oslog = [mobileLogger oslog];
+  MEMORY[0x277D82BD8](mobileLogger);
   type = OS_LOG_TYPE_INFO;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
-    v20 = v14;
-    if (v14)
+    v20 = filesCopy;
+    if (filesCopy)
     {
       v3 = @"YES";
     }
@@ -448,7 +448,7 @@
   }
 
   objc_storeStrong(&oslog, 0);
-  [(SUPreferences *)v16->_preferences enableAutoInstallSystemAndDataFiles:v14];
+  [(SUPreferences *)selfCopy->_preferences enableAutoInstallSystemAndDataFiles:filesCopy];
   v12 = 2;
   v19 = v13;
   switch(v13[0])
@@ -470,14 +470,14 @@
 
 - (BOOL)autoInstallSecurityResponseForceOn
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   *&v5[1] = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  *v5 = [(SUPreferences *)v4->_preferences autoInstallSecurityResponseForceOn]& 1;
+  *v5 = [(SUPreferences *)selfCopy->_preferences autoInstallSecurityResponseForceOn]& 1;
   v7 = v3;
   os_unfair_lock_unlock(p_lock);
   return v5[0] & 1;
@@ -485,14 +485,14 @@
 
 - (BOOL)shouldDisableAutoDownloadUpdates
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   *&v5[1] = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  *v5 = [(SUManagerClient *)v4->_client shouldDisableAutoDownloadIOSUpdatesToggle]& 1;
+  *v5 = [(SUManagerClient *)selfCopy->_client shouldDisableAutoDownloadIOSUpdatesToggle]& 1;
   v7 = v3;
   os_unfair_lock_unlock(p_lock);
   return v5[0] & 1;
@@ -500,14 +500,14 @@
 
 - (BOOL)shouldDisableAutoInstallUpdates
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   *&v5[1] = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  *v5 = [(SUManagerClient *)v4->_client shouldDisableAutoInstallIOSUpdatesToggle]& 1;
+  *v5 = [(SUManagerClient *)selfCopy->_client shouldDisableAutoInstallIOSUpdatesToggle]& 1;
   v7 = v3;
   os_unfair_lock_unlock(p_lock);
   return v5[0] & 1;
@@ -515,93 +515,93 @@
 
 - (BOOL)shouldDisableRSR
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 2;
   p_lock = &self->_lock;
   *&v5[1] = 0;
   os_unfair_lock_lock_with_options();
   v3[1] = p_lock;
-  *v5 = [(SUManagerClient *)v4->_client shouldDisableAutoInstallRSRToggle]& 1;
+  *v5 = [(SUManagerClient *)selfCopy->_client shouldDisableAutoInstallRSRToggle]& 1;
   v7 = v3;
   os_unfair_lock_unlock(p_lock);
   return v5[0] & 1;
 }
 
-- (SUUIMobilePreferencesManager)initWithSUPreferencesInstance:(id)a3 andSUManagerClient:(id)a4
+- (SUUIMobilePreferencesManager)initWithSUPreferencesInstance:(id)instance andSUManagerClient:(id)client
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, instance);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
-  v4 = v12;
-  v12 = 0;
+  objc_storeStrong(&v10, client);
+  v4 = selfCopy;
+  selfCopy = 0;
   v9.receiver = v4;
   v9.super_class = SUUIMobilePreferencesManager;
   v8 = [(SUUIMobilePreferencesManager *)&v9 init];
-  v12 = v8;
-  objc_storeStrong(&v12, v8);
+  selfCopy = v8;
+  objc_storeStrong(&selfCopy, v8);
   if (v8)
   {
-    objc_storeStrong(&v12->_preferences, location[0]);
-    objc_storeStrong(&v12->_client, v10);
-    v12->_lock._os_unfair_lock_opaque = 0;
-    [(SUUIMobilePreferencesManager *)v12 addObserver:v12];
+    objc_storeStrong(&selfCopy->_preferences, location[0]);
+    objc_storeStrong(&selfCopy->_client, v10);
+    selfCopy->_lock._os_unfair_lock_opaque = 0;
+    [(SUUIMobilePreferencesManager *)selfCopy addObserver:selfCopy];
   }
 
-  v6 = MEMORY[0x277D82BE0](v12);
+  v6 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v6;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   [(SUPreferences *)self->_preferences removeObserver:self];
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = SUUIMobilePreferencesManager;
   [(SUUIMobilePreferencesManager *)&v2 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUPreferences *)v4->_preferences addObserver:location[0]];
+  objc_storeStrong(location, observer);
+  [(SUPreferences *)selfCopy->_preferences addObserver:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUPreferences *)v4->_preferences removeObserver:location[0]];
+  objc_storeStrong(location, observer);
+  [(SUPreferences *)selfCopy->_preferences removeObserver:location[0]];
   objc_storeStrong(location, 0);
 }
 
-- (void)preferences:(id)a3 didChangePreference:(id)a4 toValue:(id)a5
+- (void)preferences:(id)preferences didChangePreference:(id)preference toValue:(id)value
 {
   v13 = *MEMORY[0x277D85DE8];
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, preferences);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, preference);
   v9 = 0;
-  objc_storeStrong(&v9, a5);
-  v5 = [MEMORY[0x277D64B58] mobileLogger];
-  oslog = [v5 oslog];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(&v9, value);
+  mobileLogger = [MEMORY[0x277D64B58] mobileLogger];
+  oslog = [mobileLogger oslog];
+  MEMORY[0x277D82BD8](mobileLogger);
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
   {
     __os_log_helper_16_2_2_8_32_8_66(v12, "[SUUIMobilePreferencesManager preferences:didChangePreference:toValue:]", v10);

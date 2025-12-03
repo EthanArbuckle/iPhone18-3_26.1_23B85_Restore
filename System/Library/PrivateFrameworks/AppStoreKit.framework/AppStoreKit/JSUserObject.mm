@@ -5,7 +5,7 @@
 - (BOOL)isUnderThirteen;
 - (NSString)dsid;
 - (_TtC11AppStoreKit12JSUserObject)init;
-- (id)onDevicePersonalizationDataContainerForAppIds:(id)a3;
+- (id)onDevicePersonalizationDataContainerForAppIds:(id)ids;
 - (void)queryFitnessAppInstallationAllowed;
 @end
 
@@ -13,7 +13,7 @@
 
 - (NSString)dsid
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E1645B48();
   v4 = v3;
 
@@ -35,7 +35,7 @@
   v3 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1ECEBBA70);
   MEMORY[0x1EEE9AC00](v3 - 8);
   v5 = &v12 - v4;
-  v6 = self;
+  selfCopy = self;
   MEMORY[0x1E68FE6D0]();
   v7 = sub_1E1AF594C();
   v8 = *(v7 - 8);
@@ -50,15 +50,15 @@
   {
     v10 = sub_1E1AF593C();
     (*(v8 + 8))(v5, v7);
-    v11 = [v10 ams_isManagedAppleID];
+    ams_isManagedAppleID = [v10 ams_isManagedAppleID];
 
-    return v11;
+    return ams_isManagedAppleID;
   }
 }
 
 - (BOOL)isUnderThirteen
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E1646414(MEMORY[0x1E698C4B8]);
 
   return v3 & 1;
@@ -66,7 +66,7 @@
 
 - (BOOL)isFitnessAppInstallationAllowed
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E1645EC4();
 
   return v3 & 1;
@@ -84,7 +84,7 @@
   v7[2] = sub_1E1623918;
   v7[3] = &block_descriptor_38;
   v5 = _Block_copy(v7);
-  v6 = self;
+  selfCopy = self;
 
   [v3 fetchIsFitnessAvailableForDeviceWithCompletion_];
 
@@ -93,16 +93,16 @@
 
 - (BOOL)isOnDevicePersonalizationEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1E1646414(MEMORY[0x1E698C4B0]);
 
   return v3 & 1;
 }
 
-- (id)onDevicePersonalizationDataContainerForAppIds:(id)a3
+- (id)onDevicePersonalizationDataContainerForAppIds:(id)ids
 {
   v4 = sub_1E1AF621C();
-  v5 = self;
+  selfCopy = self;
   v6 = sub_1E16465E8(v4);
 
   return v6;

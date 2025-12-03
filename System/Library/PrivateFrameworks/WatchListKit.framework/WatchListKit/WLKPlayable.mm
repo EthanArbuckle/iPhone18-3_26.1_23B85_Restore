@@ -1,28 +1,28 @@
 @interface WLKPlayable
-+ (id)playablesWithDictionaries:(id)a3 context:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)playablesWithDictionaries:(id)dictionaries context:(id)context;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)storeOffers;
-- (WLKPlayable)initWithDictionary:(id)a3 context:(id)a4;
+- (WLKPlayable)initWithDictionary:(id)dictionary context:(id)context;
 - (WLKStoreOffer)bestStoreBuyOffer;
 - (WLKStoreOffer)bestStoreRentalOffer;
 - (WLKStoreOffer)bestStoreSubscriptionOffer;
-- (id)_localesArrayForDictionary:(id)a3 andKey:(id)a4;
+- (id)_localesArrayForDictionary:(id)dictionary andKey:(id)key;
 - (id)description;
 @end
 
 @implementation WLKPlayable
 
-+ (id)playablesWithDictionaries:(id)a3 context:(id)a4
++ (id)playablesWithDictionaries:(id)dictionaries context:(id)context
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  dictionariesCopy = dictionaries;
+  contextCopy = context;
   v8 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = v6;
+  v9 = dictionariesCopy;
   v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v10)
   {
@@ -42,8 +42,8 @@
         if (objc_opt_isKindOfClass())
         {
           v15 = objc_autoreleasePoolPush();
-          v16 = [a1 alloc];
-          v17 = [v16 initWithDictionary:v14 context:{v7, v20}];
+          v16 = [self alloc];
+          v17 = [v16 initWithDictionary:v14 context:{contextCopy, v20}];
           [v8 addObject:v17];
 
           objc_autoreleasePoolPop(v15);
@@ -61,11 +61,11 @@
   return v8;
 }
 
-- (WLKPlayable)initWithDictionary:(id)a3 context:(id)a4
+- (WLKPlayable)initWithDictionary:(id)dictionary context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  dictionaryCopy = dictionary;
+  contextCopy = context;
+  if (dictionaryCopy)
   {
     v114.receiver = self;
     v114.super_class = WLKPlayable;
@@ -74,11 +74,11 @@
     {
 LABEL_65:
       self = v8;
-      v11 = self;
+      selfCopy = self;
       goto LABEL_66;
     }
 
-    v9 = [v6 wlk_stringForKey:@"airingType"];
+    v9 = [dictionaryCopy wlk_stringForKey:@"airingType"];
     if ([v9 isEqual:@"Live"])
     {
       v10 = 1;
@@ -102,28 +102,28 @@ LABEL_65:
 
     v8->_airingType = v10;
 LABEL_12:
-    v12 = [v6 wlk_arrayForKey:@"audioTrackFormats"];
+    v12 = [dictionaryCopy wlk_arrayForKey:@"audioTrackFormats"];
     v13 = [v12 copy];
     audioTrackFormats = v8->_audioTrackFormats;
     v8->_audioTrackFormats = v13;
 
-    v15 = [v6 wlk_stringForKey:@"channelId"];
+    v15 = [dictionaryCopy wlk_stringForKey:@"channelId"];
     v16 = [v15 copy];
     channelID = v8->_channelID;
     v8->_channelID = v16;
 
-    v18 = [v6 wlk_stringForKey:@"id"];
+    v18 = [dictionaryCopy wlk_stringForKey:@"id"];
     v19 = [v18 copy];
     playableID = v8->_playableID;
     v8->_playableID = v19;
 
-    v21 = [v6 wlk_stringForKey:@"contentId"];
+    v21 = [dictionaryCopy wlk_stringForKey:@"contentId"];
     v22 = [v21 copy];
     contentID = v8->_contentID;
     v8->_contentID = v22;
 
-    v8->_duration = [v6 wlk_numberForKey:@"duration"];
-    v24 = [v6 valueForKey:@"isEntitledToPlayOnDevice"];
+    v8->_duration = [dictionaryCopy wlk_numberForKey:@"duration"];
+    v24 = [dictionaryCopy valueForKey:@"isEntitledToPlayOnDevice"];
 
     if (v24)
     {
@@ -135,31 +135,31 @@ LABEL_12:
       v25 = @"isEntitled";
     }
 
-    v8->_entitled = [v6 wlk_BOOLForKey:v25 defaultValue:0];
-    v8->_entitledAnywhere = [v6 wlk_BOOLForKey:@"isEntitledToPlay" defaultValue:0];
-    v26 = [v6 wlk_stringForKey:@"externalId"];
+    v8->_entitled = [dictionaryCopy wlk_BOOLForKey:v25 defaultValue:0];
+    v8->_entitledAnywhere = [dictionaryCopy wlk_BOOLForKey:@"isEntitledToPlay" defaultValue:0];
+    v26 = [dictionaryCopy wlk_stringForKey:@"externalId"];
     v27 = [v26 copy];
     externalID = v8->_externalID;
     v8->_externalID = v27;
 
-    v29 = [v6 wlk_stringForKey:@"externalServiceId"];
+    v29 = [dictionaryCopy wlk_stringForKey:@"externalServiceId"];
     v30 = [v29 copy];
     externalServiceID = v8->_externalServiceID;
     v8->_externalServiceID = v30;
 
-    v8->_itunes = [v6 wlk_BOOLForKey:@"isItunes" defaultValue:0];
-    v8->_subtitled = [v6 wlk_BOOLForKey:@"isSubtitled" defaultValue:0];
-    v32 = [v6 wlk_stringForKey:@"videoQuality"];
+    v8->_itunes = [dictionaryCopy wlk_BOOLForKey:@"isItunes" defaultValue:0];
+    v8->_subtitled = [dictionaryCopy wlk_BOOLForKey:@"isSubtitled" defaultValue:0];
+    v32 = [dictionaryCopy wlk_stringForKey:@"videoQuality"];
     v33 = [v32 copy];
     videoQuality = v8->_videoQuality;
     v8->_videoQuality = v33;
 
-    v35 = [v6 wlk_stringForKey:@"videoColorRange"];
+    v35 = [dictionaryCopy wlk_stringForKey:@"videoColorRange"];
     v36 = [v35 copy];
     videoColorRange = v8->_videoColorRange;
     v8->_videoColorRange = v36;
 
-    v38 = v7;
+    v38 = contextCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -184,7 +184,7 @@ LABEL_12:
       v8->_channelDetails = v43;
     }
 
-    v110 = [v6 wlk_dictionaryForKey:@"eventTime"];
+    v110 = [dictionaryCopy wlk_dictionaryForKey:@"eventTime"];
     v45 = [v110 wlk_dictionaryForKey:@"tuneInTime"];
     v46 = [v45 wlk_dateFromMillisecondsSince1970ForKey:@"startTime"];
     startAirTime = v8->_startAirTime;
@@ -196,7 +196,7 @@ LABEL_12:
     v8->_endAirTime = v48;
 
     v8->_contentSourceType = -1;
-    v50 = [v6 wlk_stringForKey:@"type"];
+    v50 = [dictionaryCopy wlk_stringForKey:@"type"];
     if ([v50 length])
     {
       if ([v50 isEqualToString:@"Vod"])
@@ -218,7 +218,7 @@ LABEL_12:
     }
 
 LABEL_25:
-    v52 = [v6 wlk_dictionaryForKey:@"content"];
+    v52 = [dictionaryCopy wlk_dictionaryForKey:@"content"];
     if (v52)
     {
       v53 = [[WLKBasicContentMetadata alloc] initWithDictionary:v52];
@@ -228,14 +228,14 @@ LABEL_25:
       }
     }
 
-    v54 = [[WLKComingSoonInfo alloc] initWithDictionary:v6 brandID:v8->_channelID];
+    v54 = [[WLKComingSoonInfo alloc] initWithDictionary:dictionaryCopy brandID:v8->_channelID];
     comingSoonInfo = v8->_comingSoonInfo;
     v8->_comingSoonInfo = v54;
 
     v108 = v50;
     if (v8->_itunes)
     {
-      v56 = [v6 wlk_dictionaryForKey:@"itunesMediaApiData"];
+      v56 = [dictionaryCopy wlk_dictionaryForKey:@"itunesMediaApiData"];
       v57 = [v56 wlk_arrayForKey:@"movieClips"];
       if (v57)
       {
@@ -260,7 +260,7 @@ LABEL_25:
     }
 
     v107 = v52;
-    v63 = [v6 wlk_arrayForKey:@"subscriptionOffers"];
+    v63 = [dictionaryCopy wlk_arrayForKey:@"subscriptionOffers"];
     if (v63)
     {
       v64 = [WLKStoreOffer offersWithSubscriptionDictionaries:v63];
@@ -268,47 +268,47 @@ LABEL_25:
       v8->_subscriptionOffers = v64;
     }
 
-    v66 = [v6 wlk_dictionaryForKey:@"punchoutUrls"];
+    v66 = [dictionaryCopy wlk_dictionaryForKey:@"punchoutUrls"];
     v67 = [v66 copy];
     punchoutUrls = v8->_punchoutUrls;
     v8->_punchoutUrls = v67;
 
-    v69 = [v6 wlk_stringForKey:@"url"];
+    v69 = [dictionaryCopy wlk_stringForKey:@"url"];
     v70 = [v69 copy];
 
     v71 = [MEMORY[0x277CBEBC0] URLWithString:v70];
     tvAppDeeplinkURL = v8->_tvAppDeeplinkURL;
     v8->_tvAppDeeplinkURL = v71;
 
-    v73 = [(WLKPlayable *)v8 _localesArrayForDictionary:v6 andKey:@"closedCaptionedLocales"];
+    v73 = [(WLKPlayable *)v8 _localesArrayForDictionary:dictionaryCopy andKey:@"closedCaptionedLocales"];
     closedCaptionLocales = v8->_closedCaptionLocales;
     v8->_closedCaptionLocales = v73;
 
-    v75 = [(WLKPlayable *)v8 _localesArrayForDictionary:v6 andKey:@"subtitledLocales"];
+    v75 = [(WLKPlayable *)v8 _localesArrayForDictionary:dictionaryCopy andKey:@"subtitledLocales"];
     if (v75)
     {
       objc_storeStrong(&v8->_subtitledLocales, v75);
     }
 
-    v76 = [(WLKPlayable *)v8 _localesArrayForDictionary:v6 andKey:@"audioTrackLocales"];
+    v76 = [(WLKPlayable *)v8 _localesArrayForDictionary:dictionaryCopy andKey:@"audioTrackLocales"];
     audioTrackLocales = v8->_audioTrackLocales;
     v8->_audioTrackLocales = v76;
 
-    v78 = [(WLKPlayable *)v8 _localesArrayForDictionary:v6 andKey:@"adLocales"];
+    v78 = [(WLKPlayable *)v8 _localesArrayForDictionary:dictionaryCopy andKey:@"adLocales"];
     adLocales = v8->_adLocales;
     v8->_adLocales = v78;
 
     v80 = [WLKLocale alloc];
-    v81 = [v6 wlk_dictionaryForKey:@"primaryLocale"];
+    v81 = [dictionaryCopy wlk_dictionaryForKey:@"primaryLocale"];
     v82 = [(WLKLocale *)v80 initWithDictionary:v81];
     primaryLocale = v8->_primaryLocale;
     v8->_primaryLocale = v82;
 
-    v84 = [(WLKPlayable *)v8 _localesArrayForDictionary:v6 andKey:@"sdhLocales"];
+    v84 = [(WLKPlayable *)v8 _localesArrayForDictionary:dictionaryCopy andKey:@"sdhLocales"];
     SDHLocales = v8->_SDHLocales;
     v8->_SDHLocales = v84;
 
-    v86 = [v6 wlk_dictionaryForKey:@"playEvent"];
+    v86 = [dictionaryCopy wlk_dictionaryForKey:@"playEvent"];
     if (v86)
     {
       v87 = [[WLKPlayEvent alloc] initWithDictionary:v86];
@@ -325,27 +325,27 @@ LABEL_25:
     v105 = v38;
     v106 = v9;
     v89 = v8->_punchoutUrls;
-    v90 = v7;
+    v90 = contextCopy;
     if (v89)
     {
-      v91 = [(NSDictionary *)v89 mutableCopy];
+      dictionary = [(NSDictionary *)v89 mutableCopy];
     }
 
     else
     {
-      v91 = [MEMORY[0x277CBEB38] dictionary];
+      dictionary = [MEMORY[0x277CBEB38] dictionary];
     }
 
-    v92 = v91;
-    v93 = [v91 wlk_stringForKey:@"open"];
+    v92 = dictionary;
+    v93 = [dictionary wlk_stringForKey:@"open"];
     v94 = [v93 length];
 
     if (!v94)
     {
-      v95 = [(NSURL *)v8->_tvAppDeeplinkURL absoluteString];
-      if (v95)
+      absoluteString = [(NSURL *)v8->_tvAppDeeplinkURL absoluteString];
+      if (absoluteString)
       {
-        [v92 setObject:v95 forKey:@"open"];
+        [v92 setObject:absoluteString forKey:@"open"];
       }
     }
 
@@ -356,7 +356,7 @@ LABEL_63:
       v103 = v8->_punchoutUrls;
       v8->_punchoutUrls = v102;
 
-      v7 = v90;
+      contextCopy = v90;
       v38 = v105;
       v9 = v106;
 LABEL_64:
@@ -370,9 +370,9 @@ LABEL_64:
       v99 = v98;
       if (v98)
       {
-        v100 = [v98 absoluteString];
+        absoluteString2 = [v98 absoluteString];
 LABEL_58:
-        v101 = v100;
+        v101 = absoluteString2;
 LABEL_60:
 
         if (v101)
@@ -389,7 +389,7 @@ LABEL_60:
       v99 = [v111 wlk_stringForKey:@"id"];
       if (v99)
       {
-        v100 = [MEMORY[0x277CCACA8] stringWithFormat:@"videos://play?adam-id=%@&allowCloudPlayback=1", v99];
+        absoluteString2 = [MEMORY[0x277CCACA8] stringWithFormat:@"videos://play?adam-id=%@&allowCloudPlayback=1", v99];
         goto LABEL_58;
       }
     }
@@ -398,10 +398,10 @@ LABEL_60:
     goto LABEL_60;
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_66:
 
-  return v11;
+  return selfCopy;
 }
 
 void __42__WLKPlayable_initWithDictionary_context___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)
@@ -421,34 +421,34 @@ void __42__WLKPlayable_initWithDictionary_context___block_invoke(uint64_t a1, vo
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(WLKPlayable *)self canonicalID];
-  v6 = [(WLKPlayable *)self channelDetails];
-  v7 = [v6 title];
-  v8 = [v3 stringWithFormat:@"<%@: %p> ID: %@, Channel: %@, Source Type: %ld, Entitled: %d", v4, self, v5, v7, -[WLKPlayable contentSourceType](self, "contentSourceType"), -[WLKPlayable isEntitled](self, "isEntitled")];;
+  canonicalID = [(WLKPlayable *)self canonicalID];
+  channelDetails = [(WLKPlayable *)self channelDetails];
+  title = [channelDetails title];
+  v8 = [v3 stringWithFormat:@"<%@: %p> ID: %@, Channel: %@, Source Type: %ld, Entitled: %d", v4, self, canonicalID, title, -[WLKPlayable contentSourceType](self, "contentSourceType"), -[WLKPlayable isEntitled](self, "isEntitled")];;
 
   return v8;
 }
 
 - (NSArray)storeOffers
 {
-  v2 = [(WLKPlayable *)self offerListing];
-  v3 = [v2 storeOffers];
+  offerListing = [(WLKPlayable *)self offerListing];
+  storeOffers = [offerListing storeOffers];
 
-  return v3;
+  return storeOffers;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(WLKPlayable *)self playableID];
-    v6 = [v4 playableID];
-    if ([v5 isEqualToString:v6])
+    playableID = [(WLKPlayable *)self playableID];
+    playableID2 = [equalCopy playableID];
+    if ([playableID isEqualToString:playableID2])
     {
-      v7 = [(WLKPlayable *)self canonicalID];
-      v8 = [v4 canonicalID];
-      v9 = [v7 isEqualToString:v8];
+      canonicalID = [(WLKPlayable *)self canonicalID];
+      canonicalID2 = [equalCopy canonicalID];
+      v9 = [canonicalID isEqualToString:canonicalID2];
     }
 
     else
@@ -467,40 +467,40 @@ void __42__WLKPlayable_initWithDictionary_context___block_invoke(uint64_t a1, vo
 
 - (WLKStoreOffer)bestStoreBuyOffer
 {
-  v2 = [(WLKPlayable *)self offerListing];
-  v3 = [v2 bestStoreBuyOffer];
+  offerListing = [(WLKPlayable *)self offerListing];
+  bestStoreBuyOffer = [offerListing bestStoreBuyOffer];
 
-  return v3;
+  return bestStoreBuyOffer;
 }
 
 - (WLKStoreOffer)bestStoreRentalOffer
 {
-  v2 = [(WLKPlayable *)self offerListing];
-  v3 = [v2 bestStoreRentalOffer];
+  offerListing = [(WLKPlayable *)self offerListing];
+  bestStoreRentalOffer = [offerListing bestStoreRentalOffer];
 
-  return v3;
+  return bestStoreRentalOffer;
 }
 
 - (WLKStoreOffer)bestStoreSubscriptionOffer
 {
-  v2 = [(WLKPlayable *)self subscriptionOffers];
-  v3 = [v2 firstObject];
+  subscriptionOffers = [(WLKPlayable *)self subscriptionOffers];
+  firstObject = [subscriptionOffers firstObject];
 
-  return v3;
+  return firstObject;
 }
 
-- (id)_localesArrayForDictionary:(id)a3 andKey:(id)a4
+- (id)_localesArrayForDictionary:(id)dictionary andKey:(id)key
 {
-  v4 = [a3 wlk_arrayForKey:a4];
+  v4 = [dictionary wlk_arrayForKey:key];
   if (v4)
   {
-    v5 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __49__WLKPlayable__localesArrayForDictionary_andKey___block_invoke;
     v9[3] = &unk_279E5F4A8;
-    v10 = v5;
-    v6 = v5;
+    v10 = array;
+    v6 = array;
     [v4 enumerateObjectsUsingBlock:v9];
     v7 = [v6 copy];
   }

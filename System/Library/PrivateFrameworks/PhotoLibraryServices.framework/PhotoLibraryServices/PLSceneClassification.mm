@@ -1,15 +1,15 @@
 @interface PLSceneClassification
-+ (BOOL)isUtilityAssetForSharedLibrary:(id)a3;
-+ (id)PLJunkSceneClassificationIDForLabel:(id)a3;
-+ (id)fetchSceneClassificationsForAdditionalAttributes:(id)a3 managedObjectContext:(id)a4;
-+ (id)insertIntoPhotoLibrary:(id)a3 asset:(id)a4 sceneIdentifier:(unint64_t)a5 confidence:(double)a6 packedBoundingBoxRect:(int64_t)a7 startTime:(double)a8 duration:(double)a9 classificationType:(int64_t)a10 thumbnailIdentifier:(id)a11;
-+ (unint64_t)_pool_countOfOrphanedSceneClassificationsWithLimit:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-+ (unint64_t)countOfOrphanedSceneClassificationsWithLimit:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-+ (void)batchFetchScenesByAssetObjectIDWithAssetObjectIDs:(id)a3 library:(id)a4 includeTemporalClassifications:(BOOL)a5 sceneClassificationTypePredicate:(id)a6 completion:(id)a7;
-- (BOOL)_validateInterpropertyValues:(id *)a3;
++ (BOOL)isUtilityAssetForSharedLibrary:(id)library;
++ (id)PLJunkSceneClassificationIDForLabel:(id)label;
++ (id)fetchSceneClassificationsForAdditionalAttributes:(id)attributes managedObjectContext:(id)context;
++ (id)insertIntoPhotoLibrary:(id)library asset:(id)asset sceneIdentifier:(unint64_t)identifier confidence:(double)confidence packedBoundingBoxRect:(int64_t)rect startTime:(double)time duration:(double)duration classificationType:(int64_t)self0 thumbnailIdentifier:(id)self1;
++ (unint64_t)_pool_countOfOrphanedSceneClassificationsWithLimit:(unint64_t)limit inContext:(id)context error:(id *)error;
++ (unint64_t)countOfOrphanedSceneClassificationsWithLimit:(unint64_t)limit inContext:(id)context error:(id *)error;
++ (void)batchFetchScenesByAssetObjectIDWithAssetObjectIDs:(id)ds library:(id)library includeTemporalClassifications:(BOOL)classifications sceneClassificationTypePredicate:(id)predicate completion:(id)completion;
+- (BOOL)_validateInterpropertyValues:(id *)values;
 - (BOOL)isDocumentClassification;
 - (BOOL)isScreenshotClassification;
-- (BOOL)validateForInsert:(id *)a3;
+- (BOOL)validateForInsert:(id *)insert;
 - (id)debugLogDescription;
 - (void)_checkForOrphanedSceneClassification;
 - (void)willSave;
@@ -20,23 +20,23 @@
 - (void)_checkForOrphanedSceneClassification
 {
   v9 = *MEMORY[0x1E69E9840];
-  v3 = [(PLSceneClassification *)self assetAttributes];
-  if (v3)
+  assetAttributes = [(PLSceneClassification *)self assetAttributes];
+  if (assetAttributes)
   {
   }
 
   else
   {
-    v4 = [(PLSceneClassification *)self assetAttributesForTemporalSceneClassifications];
+    assetAttributesForTemporalSceneClassifications = [(PLSceneClassification *)self assetAttributesForTemporalSceneClassifications];
 
-    if (!v4)
+    if (!assetAttributesForTemporalSceneClassifications)
     {
       v5 = PLBackendGetLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_FAULT))
       {
-        v6 = [(NSManagedObject *)self pl_shortDescription];
+        pl_shortDescription = [(NSManagedObject *)self pl_shortDescription];
         v7 = 138543362;
-        v8 = v6;
+        v8 = pl_shortDescription;
         _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_FAULT, "Detected orphaned scene classification: %{public}@", &v7, 0xCu);
       }
     }
@@ -45,9 +45,9 @@
 
 - (BOOL)isScreenshotClassification
 {
-  v3 = [(PLSceneClassification *)self sceneIdentifier];
+  sceneIdentifier = [(PLSceneClassification *)self sceneIdentifier];
   v4 = [PLSceneClassification PLJunkSceneClassificationIDForLabel:@"screenshot"];
-  if (v3 == [v4 unsignedIntegerValue])
+  if (sceneIdentifier == [v4 unsignedIntegerValue])
   {
     [(PLSceneClassification *)self confidence];
     v6 = v5 >= 0.58;
@@ -63,9 +63,9 @@
 
 - (BOOL)isDocumentClassification
 {
-  v3 = [(PLSceneClassification *)self sceneIdentifier];
+  sceneIdentifier = [(PLSceneClassification *)self sceneIdentifier];
   v4 = [PLSceneClassification PLJunkSceneClassificationIDForLabel:@"hier_text_document"];
-  if (v3 == [v4 unsignedIntegerValue])
+  if (sceneIdentifier == [v4 unsignedIntegerValue])
   {
     [(PLSceneClassification *)self confidence];
     v6 = v5 >= 0.59;
@@ -84,11 +84,11 @@
   v9.receiver = self;
   v9.super_class = PLSceneClassification;
   [(PLManagedObject *)&v9 willSave];
-  v3 = [(PLSceneClassification *)self managedObjectContext];
+  managedObjectContext = [(PLSceneClassification *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(PLSceneClassification *)self changedValues];
+    changedValues = [(PLSceneClassification *)self changedValues];
     if (([(PLSceneClassification *)self isDeleted]& 1) != 0)
     {
 LABEL_12:
@@ -96,14 +96,14 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v5 = [v4 objectForKeyedSubscript:@"sceneIdentifier"];
+    v5 = [changedValues objectForKeyedSubscript:@"sceneIdentifier"];
     if (v5)
     {
     }
 
     else
     {
-      v6 = [v4 objectForKeyedSubscript:@"confidence"];
+      v6 = [changedValues objectForKeyedSubscript:@"confidence"];
 
       if (!v6)
       {
@@ -115,8 +115,8 @@ LABEL_12:
     {
       v7 = 16;
 LABEL_10:
-      v8 = [(PLSceneClassification *)self assetAttributes];
-      [v8 addDuplicateDetectorPerceptualProcessingStates:v7 removeProcessingStates:0];
+      assetAttributes = [(PLSceneClassification *)self assetAttributes];
+      [assetAttributes addDuplicateDetectorPerceptualProcessingStates:v7 removeProcessingStates:0];
 
       goto LABEL_11;
     }
@@ -135,20 +135,20 @@ LABEL_11:
 LABEL_13:
 }
 
-- (BOOL)validateForInsert:(id *)a3
+- (BOOL)validateForInsert:(id *)insert
 {
   v7.receiver = self;
   v7.super_class = PLSceneClassification;
   v5 = [(PLSceneClassification *)&v7 validateForInsert:?];
   if (v5)
   {
-    LOBYTE(v5) = [(PLSceneClassification *)self _validateInterpropertyValues:a3];
+    LOBYTE(v5) = [(PLSceneClassification *)self _validateInterpropertyValues:insert];
   }
 
   return v5;
 }
 
-- (BOOL)_validateInterpropertyValues:(id *)a3
+- (BOOL)_validateInterpropertyValues:(id *)values
 {
   v37 = *MEMORY[0x1E69E9840];
   v5 = [(PLSceneClassification *)self objectIDsForRelationshipNamed:@"assetAttributes"];
@@ -230,12 +230,12 @@ LABEL_7:
 
 LABEL_13:
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(PLSceneClassification *)self assetAttributes];
-  v16 = [(PLSceneClassification *)self assetAttributesForTemporalSceneClassifications];
+  assetAttributes = [(PLSceneClassification *)self assetAttributes];
+  assetAttributesForTemporalSceneClassifications = [(PLSceneClassification *)self assetAttributesForTemporalSceneClassifications];
   [(PLSceneClassification *)self startTime];
   v18 = v17;
   [(PLSceneClassification *)self duration];
-  v20 = objc_msgSend(v14, "stringWithFormat:", @"There was a validation issue when attempting to insert PLSceneClassification (assetAttributes: %p, assetAttributesForTemporalSceneClassifications: %p, startTime: %g, duration: %g, classificationType: %d"), v15, v16, v18, v19, -[PLSceneClassification classificationType](self, "classificationType");
+  v20 = objc_msgSend(v14, "stringWithFormat:", @"There was a validation issue when attempting to insert PLSceneClassification (assetAttributes: %p, assetAttributesForTemporalSceneClassifications: %p, startTime: %g, duration: %g, classificationType: %d"), assetAttributes, assetAttributesForTemporalSceneClassifications, v18, v19, -[PLSceneClassification classificationType](self, "classificationType");
 
   v21 = PLBackendGetLog();
   if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
@@ -245,14 +245,14 @@ LABEL_13:
     _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
   }
 
-  if (a3)
+  if (values)
   {
     v22 = MEMORY[0x1E696ABC0];
     v23 = *MEMORY[0x1E69BFF48];
     v33 = *MEMORY[0x1E696A278];
     v34 = v20;
     v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
-    *a3 = [v22 errorWithDomain:v23 code:46502 userInfo:v24];
+    *values = [v22 errorWithDomain:v23 code:46502 userInfo:v24];
   }
 
   return 0;
@@ -263,38 +263,38 @@ LABEL_13:
   [(PLSceneClassification *)self packedBoundingBoxRect];
   PLSplitToCGRectFromInt64();
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(PLSceneClassification *)self classificationType];
-  v5 = [(PLSceneClassification *)self sceneIdentifier];
+  classificationType = [(PLSceneClassification *)self classificationType];
+  sceneIdentifier = [(PLSceneClassification *)self sceneIdentifier];
   [(PLSceneClassification *)self confidence];
   v7 = v6;
   v13.origin = 0u;
   v13.size = 0u;
   v8 = NSStringFromRect(v13);
-  v9 = [(PLSceneClassification *)self thumbnailIdentifier];
-  v10 = [v3 stringWithFormat:@"PLSceneClassification: sceneClassificationType: %d, sceneID: %lld, confidence: %f, boundingBox: %@ thumbID: %@", v4, v5, v7, v8, v9];
+  thumbnailIdentifier = [(PLSceneClassification *)self thumbnailIdentifier];
+  v10 = [v3 stringWithFormat:@"PLSceneClassification: sceneClassificationType: %d, sceneID: %lld, confidence: %f, boundingBox: %@ thumbID: %@", classificationType, sceneIdentifier, v7, v8, thumbnailIdentifier];
 
   return v10;
 }
 
-+ (BOOL)isUtilityAssetForSharedLibrary:(id)a3
++ (BOOL)isUtilityAssetForSharedLibrary:(id)library
 {
   v37 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (([v3 isVideo] & 1) != 0 || (objc_msgSend(v3, "additionalAttributes"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "sceneAnalysisVersion"), v4, v5 < 0x56))
+  libraryCopy = library;
+  if (([libraryCopy isVideo] & 1) != 0 || (objc_msgSend(libraryCopy, "additionalAttributes"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "sceneAnalysisVersion"), v4, v5 < 0x56))
   {
     v20 = 0;
     goto LABEL_48;
   }
 
-  v6 = [v3 additionalAttributes];
-  v7 = [v6 sceneClassifications];
+  additionalAttributes = [libraryCopy additionalAttributes];
+  sceneClassifications = [additionalAttributes sceneClassifications];
 
-  v26 = [v3 uuid];
+  uuid = [libraryCopy uuid];
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v8 = v7;
+  v8 = sceneClassifications;
   v9 = [v8 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (!v9)
   {
@@ -305,7 +305,7 @@ LABEL_13:
   }
 
   v10 = v9;
-  v25 = v3;
+  v25 = libraryCopy;
   v27 = 0;
   v11 = 0;
   v12 = *v29;
@@ -319,12 +319,12 @@ LABEL_13:
       }
 
       v14 = *(*(&v28 + 1) + 8 * i);
-      v15 = [v14 sceneIdentifier];
+      sceneIdentifier = [v14 sceneIdentifier];
       [v14 confidence];
       v17 = v16;
-      if (v15 <= 2147483643)
+      if (sceneIdentifier <= 2147483643)
       {
-        if (v15 == 2147483629)
+        if (sceneIdentifier == 2147483629)
         {
           if (v16 < 0.59)
           {
@@ -336,7 +336,7 @@ LABEL_13:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v33 = v26;
+            v33 = uuid;
             v34 = 2048;
             v35 = v17;
             _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "Asset %@ - text document scene: %.3f", buf, 0x16u);
@@ -347,7 +347,7 @@ LABEL_13:
 
         else
         {
-          if (v15 != 2147483631)
+          if (sceneIdentifier != 2147483631)
           {
             continue;
           }
@@ -362,7 +362,7 @@ LABEL_13:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
-            v33 = v26;
+            v33 = uuid;
             v34 = 2048;
             v35 = v17;
             _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "Asset %@ - tragic failure scene: %.3f", buf, 0x16u);
@@ -376,7 +376,7 @@ LABEL_30:
         continue;
       }
 
-      if (v15 == 2147483646)
+      if (sceneIdentifier == 2147483646)
       {
         if (v16 < 0.54)
         {
@@ -388,7 +388,7 @@ LABEL_30:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v33 = v26;
+          v33 = uuid;
           v34 = 2048;
           v35 = v17;
           _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEBUG, "Asset %@ - poor quality scene: %.3f", buf, 0x16u);
@@ -398,13 +398,13 @@ LABEL_30:
         goto LABEL_30;
       }
 
-      if (v15 == 2147483644 && v16 >= 0.31)
+      if (sceneIdentifier == 2147483644 && v16 >= 0.31)
       {
         v21 = PLBackendSharingGetLog();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138412546;
-          v33 = v26;
+          v33 = uuid;
           v34 = 2048;
           v35 = v17;
           _os_log_impl(&dword_19BF1F000, v21, OS_LOG_TYPE_DEBUG, "Asset %@ - negative utility scene: %.3f", buf, 0x16u);
@@ -412,7 +412,7 @@ LABEL_30:
 
         v20 = 0;
         v23 = v8;
-        v3 = v25;
+        libraryCopy = v25;
         goto LABEL_46;
       }
     }
@@ -426,7 +426,7 @@ LABEL_30:
     break;
   }
 
-  v3 = v25;
+  libraryCopy = v25;
   v19 = BYTE4(v27);
   if (v27)
   {
@@ -441,7 +441,7 @@ LABEL_43:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v33 = v26;
+      v33 = uuid;
       _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEBUG, "Asset %@ is considered as utility", buf, 0xCu);
     }
 
@@ -458,16 +458,16 @@ LABEL_48:
   return v20;
 }
 
-+ (id)PLJunkSceneClassificationIDForLabel:(id)a3
++ (id)PLJunkSceneClassificationIDForLabel:(id)label
 {
   v3 = PLJunkSceneClassificationIDForLabel__once;
-  v4 = a3;
+  labelCopy = label;
   if (v3 != -1)
   {
     dispatch_once(&PLJunkSceneClassificationIDForLabel__once, &__block_literal_global_57343);
   }
 
-  v5 = [PLJunkSceneClassificationIDForLabel__mapping objectForKeyedSubscript:v4];
+  v5 = [PLJunkSceneClassificationIDForLabel__mapping objectForKeyedSubscript:labelCopy];
 
   return v5;
 }
@@ -522,25 +522,25 @@ void __61__PLSceneClassification_PLJunkSceneClassificationIDForLabel___block_inv
   PLJunkSceneClassificationIDForLabel__mapping = v0;
 }
 
-+ (void)batchFetchScenesByAssetObjectIDWithAssetObjectIDs:(id)a3 library:(id)a4 includeTemporalClassifications:(BOOL)a5 sceneClassificationTypePredicate:(id)a6 completion:(id)a7
++ (void)batchFetchScenesByAssetObjectIDWithAssetObjectIDs:(id)ds library:(id)library includeTemporalClassifications:(BOOL)classifications sceneClassificationTypePredicate:(id)predicate completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
+  dsCopy = ds;
+  libraryCopy = library;
+  predicateCopy = predicate;
+  completionCopy = completion;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __158__PLSceneClassification_batchFetchScenesByAssetObjectIDWithAssetObjectIDs_library_includeTemporalClassifications_sceneClassificationTypePredicate_completion___block_invoke;
   v19[3] = &unk_1E7572620;
-  v20 = v12;
-  v21 = v11;
-  v24 = a5;
-  v22 = v13;
-  v23 = v14;
-  v15 = v11;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
+  v20 = libraryCopy;
+  v21 = dsCopy;
+  classificationsCopy = classifications;
+  v22 = predicateCopy;
+  v23 = completionCopy;
+  v15 = dsCopy;
+  v16 = completionCopy;
+  v17 = predicateCopy;
+  v18 = libraryCopy;
   [v18 performBlockAndWait:v19];
 }
 
@@ -806,11 +806,11 @@ LABEL_38:
 LABEL_39:
 }
 
-+ (unint64_t)_pool_countOfOrphanedSceneClassificationsWithLimit:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
++ (unint64_t)_pool_countOfOrphanedSceneClassificationsWithLimit:(unint64_t)limit inContext:(id)context error:(id *)error
 {
   v19[2] = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E695D5E0];
-  v8 = a4;
+  contextCopy = context;
   v9 = +[PLSceneClassification entityName];
   v10 = [v7 fetchRequestWithEntityName:v9];
 
@@ -822,9 +822,9 @@ LABEL_39:
   v15 = [v11 andPredicateWithSubpredicates:v14];
   [v10 setPredicate:v15];
 
-  [v10 setFetchLimit:a3];
+  [v10 setFetchLimit:limit];
   [v10 setResultType:1];
-  v16 = [v8 executeFetchRequest:v10 error:a5];
+  v16 = [contextCopy executeFetchRequest:v10 error:error];
 
   if (v16)
   {
@@ -839,58 +839,58 @@ LABEL_39:
   return v17;
 }
 
-+ (unint64_t)countOfOrphanedSceneClassificationsWithLimit:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
++ (unint64_t)countOfOrphanedSceneClassificationsWithLimit:(unint64_t)limit inContext:(id)context error:(id *)error
 {
-  v8 = a4;
+  contextCopy = context;
   v9 = objc_autoreleasePoolPush();
   v14 = 0;
-  v10 = [a1 _pool_countOfOrphanedSceneClassificationsWithLimit:a3 inContext:v8 error:&v14];
+  v10 = [self _pool_countOfOrphanedSceneClassificationsWithLimit:limit inContext:contextCopy error:&v14];
   v11 = v14;
   objc_autoreleasePoolPop(v9);
-  if (a5)
+  if (error)
   {
     v12 = v11;
-    *a5 = v11;
+    *error = v11;
   }
 
   return v10;
 }
 
-+ (id)insertIntoPhotoLibrary:(id)a3 asset:(id)a4 sceneIdentifier:(unint64_t)a5 confidence:(double)a6 packedBoundingBoxRect:(int64_t)a7 startTime:(double)a8 duration:(double)a9 classificationType:(int64_t)a10 thumbnailIdentifier:(id)a11
++ (id)insertIntoPhotoLibrary:(id)library asset:(id)asset sceneIdentifier:(unint64_t)identifier confidence:(double)confidence packedBoundingBoxRect:(int64_t)rect startTime:(double)time duration:(double)duration classificationType:(int64_t)self0 thumbnailIdentifier:(id)self1
 {
-  v21 = a3;
-  v22 = a4;
-  v23 = a11;
-  if (!v21)
+  libraryCopy = library;
+  assetCopy = asset;
+  thumbnailIdentifierCopy = thumbnailIdentifier;
+  if (!libraryCopy)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:a1 file:@"PLSceneClassification.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLSceneClassification.m" lineNumber:171 description:{@"Invalid parameter not satisfying: %@", @"library"}];
   }
 
-  v24 = [v21 managedObjectContext];
-  if (v22)
+  managedObjectContext = [libraryCopy managedObjectContext];
+  if (assetCopy)
   {
-    v25 = [a1 entityName];
-    v26 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(v25, v24, 0);
+    entityName = [self entityName];
+    v26 = PLSafeInsertNewObjectForEntityForNameInManagedObjectContext(entityName, managedObjectContext, 0);
 
-    [v26 setSceneIdentifier:a5];
-    [v26 setConfidence:a6];
-    [v26 setPackedBoundingBoxRect:a7];
-    [v26 setStartTime:a8];
-    [v26 setDuration:a9];
-    [v26 setClassificationType:a10];
-    [v26 setThumbnailIdentifier:v23];
-    v27 = [v22 additionalAttributes];
-    if (a10 <= 7)
+    [v26 setSceneIdentifier:identifier];
+    [v26 setConfidence:confidence];
+    [v26 setPackedBoundingBoxRect:rect];
+    [v26 setStartTime:time];
+    [v26 setDuration:duration];
+    [v26 setClassificationType:type];
+    [v26 setThumbnailIdentifier:thumbnailIdentifierCopy];
+    additionalAttributes = [assetCopy additionalAttributes];
+    if (type <= 7)
     {
-      if (((1 << a10) & 0xF3) != 0)
+      if (((1 << type) & 0xF3) != 0)
       {
-        [v26 setAssetAttributes:v27];
+        [v26 setAssetAttributes:additionalAttributes];
       }
 
       else
       {
-        [v26 setAssetAttributesForTemporalSceneClassifications:v27];
+        [v26 setAssetAttributesForTemporalSceneClassifications:additionalAttributes];
       }
     }
   }
@@ -913,19 +913,19 @@ LABEL_39:
   return v26;
 }
 
-+ (id)fetchSceneClassificationsForAdditionalAttributes:(id)a3 managedObjectContext:(id)a4
++ (id)fetchSceneClassificationsForAdditionalAttributes:(id)attributes managedObjectContext:(id)context
 {
   v5 = MEMORY[0x1E695D5E0];
-  v6 = a4;
-  v7 = a3;
+  contextCopy = context;
+  attributesCopy = attributes;
   v8 = +[PLSceneClassification entityName];
   v9 = [v5 fetchRequestWithEntityName:v8];
 
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ OR %K == %@", @"assetAttributes", v7, @"assetAttributesForTemporalSceneClassifications", v7];
+  attributesCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"%K == %@ OR %K == %@", @"assetAttributes", attributesCopy, @"assetAttributesForTemporalSceneClassifications", attributesCopy];
 
-  [v9 setPredicate:v10];
+  [v9 setPredicate:attributesCopy];
   v15 = 0;
-  v11 = [v6 executeFetchRequest:v9 error:&v15];
+  v11 = [contextCopy executeFetchRequest:v9 error:&v15];
 
   v12 = v15;
   if (v11)

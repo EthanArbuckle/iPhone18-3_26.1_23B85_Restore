@@ -1,29 +1,29 @@
 @interface AVTViewSession
-- (AVTViewSession)initWithBecomeActiveHandler:(id)a3 tearDownHandler:(id)a4 aspectRatio:(CGSize)a5;
+- (AVTViewSession)initWithBecomeActiveHandler:(id)handler tearDownHandler:(id)downHandler aspectRatio:(CGSize)ratio;
 - (AVTViewSessionDelegate)delegate;
 - (CGSize)aspectRatio;
-- (void)activateWithAVTView:(id)a3 container:(id)a4 updater:(id)a5;
-- (void)tearDownWithCompletionHandler:(id)a3;
+- (void)activateWithAVTView:(id)view container:(id)container updater:(id)updater;
+- (void)tearDownWithCompletionHandler:(id)handler;
 @end
 
 @implementation AVTViewSession
 
-- (AVTViewSession)initWithBecomeActiveHandler:(id)a3 tearDownHandler:(id)a4 aspectRatio:(CGSize)a5
+- (AVTViewSession)initWithBecomeActiveHandler:(id)handler tearDownHandler:(id)downHandler aspectRatio:(CGSize)ratio
 {
-  height = a5.height;
-  width = a5.width;
-  v9 = a3;
-  v10 = a4;
+  height = ratio.height;
+  width = ratio.width;
+  handlerCopy = handler;
+  downHandlerCopy = downHandler;
   v17.receiver = self;
   v17.super_class = AVTViewSession;
   v11 = [(AVTViewSession *)&v17 init];
   if (v11)
   {
-    v12 = [v9 copy];
+    v12 = [handlerCopy copy];
     becomeActiveHandler = v11->_becomeActiveHandler;
     v11->_becomeActiveHandler = v12;
 
-    v14 = [v10 copy];
+    v14 = [downHandlerCopy copy];
     tearDownHandler = v11->_tearDownHandler;
     v11->_tearDownHandler = v14;
 
@@ -35,37 +35,37 @@
   return v11;
 }
 
-- (void)activateWithAVTView:(id)a3 container:(id)a4 updater:(id)a5
+- (void)activateWithAVTView:(id)view container:(id)container updater:(id)updater
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
+  viewCopy = view;
+  containerCopy = container;
+  updaterCopy = updater;
   if (![(AVTViewSession *)self isActive])
   {
     [(AVTViewSession *)self setActive:1];
-    [(AVTViewSession *)self setAvtView:v11];
-    [(AVTViewSession *)self setAvtViewContainer:v8];
-    [(AVTViewSession *)self setAvtViewUpdater:v9];
-    v10 = [(AVTViewSession *)self becomeActiveHandler];
-    (v10)[2](v10, self);
+    [(AVTViewSession *)self setAvtView:viewCopy];
+    [(AVTViewSession *)self setAvtViewContainer:containerCopy];
+    [(AVTViewSession *)self setAvtViewUpdater:updaterCopy];
+    becomeActiveHandler = [(AVTViewSession *)self becomeActiveHandler];
+    (becomeActiveHandler)[2](becomeActiveHandler, self);
   }
 }
 
-- (void)tearDownWithCompletionHandler:(id)a3
+- (void)tearDownWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __48__AVTViewSession_tearDownWithCompletionHandler___block_invoke;
   v12 = &unk_1E7F3ACA0;
-  v13 = self;
-  v14 = v4;
-  v5 = v4;
+  selfCopy = self;
+  v14 = handlerCopy;
+  v5 = handlerCopy;
   v6 = MEMORY[0x1BFB0DE80](&v9);
   if ([(AVTViewSession *)self isActive:v9]&& ([(AVTViewSession *)self setActive:0], [(AVTViewSession *)self tearDownHandler], v7 = objc_claimAutoreleasedReturnValue(), v7, v7))
   {
-    v8 = [(AVTViewSession *)self tearDownHandler];
-    (v8)[2](v8, self, v6);
+    tearDownHandler = [(AVTViewSession *)self tearDownHandler];
+    (tearDownHandler)[2](tearDownHandler, self, v6);
   }
 
   else

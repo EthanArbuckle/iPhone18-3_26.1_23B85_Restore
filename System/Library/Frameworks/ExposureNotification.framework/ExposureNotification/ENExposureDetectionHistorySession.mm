@@ -1,30 +1,30 @@
 @interface ENExposureDetectionHistorySession
 - (ENExposureDetectionHistorySession)init;
-- (ENExposureDetectionHistorySession)initWithUUID:(id)a3;
-- (ENExposureDetectionHistorySession)initWithXPCObject:(id)a3 error:(id *)a4;
+- (ENExposureDetectionHistorySession)initWithUUID:(id)d;
+- (ENExposureDetectionHistorySession)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ENExposureDetectionHistorySession
 
 - (ENExposureDetectionHistorySession)init
 {
-  v3 = [MEMORY[0x277CCAD78] UUID];
-  v4 = [(ENExposureDetectionHistorySession *)self initWithUUID:v3];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  v4 = [(ENExposureDetectionHistorySession *)self initWithUUID:uUID];
 
   return v4;
 }
 
-- (ENExposureDetectionHistorySession)initWithUUID:(id)a3
+- (ENExposureDetectionHistorySession)initWithUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = ENExposureDetectionHistorySession;
   v5 = [(ENExposureDetectionHistorySession *)&v10 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dCopy copy];
     UUID = v5->_UUID;
     v5->_UUID = v6;
 
@@ -34,24 +34,24 @@
   return v5;
 }
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSString *)self->_appBundleIdentifier UTF8String];
-  if (v5)
+  objectCopy = object;
+  uTF8String = [(NSString *)self->_appBundleIdentifier UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(v4, "aBid", v5);
+    xpc_dictionary_set_string(objectCopy, "aBid", uTF8String);
   }
 
   [(NSDate *)self->_date timeIntervalSinceReferenceDate];
-  xpc_dictionary_set_double(v4, "date", v6);
+  xpc_dictionary_set_double(objectCopy, "date", v6);
   exposureClassificationIdentifier = self->_exposureClassificationIdentifier;
-  v8 = v4;
-  v9 = [(NSString *)exposureClassificationIdentifier UTF8String];
-  if (v9)
+  v8 = objectCopy;
+  uTF8String2 = [(NSString *)exposureClassificationIdentifier UTF8String];
+  if (uTF8String2)
   {
-    xpc_dictionary_set_string(v8, "expCID", v9);
+    xpc_dictionary_set_string(v8, "expCID", uTF8String2);
   }
 
   fileCount = self->_fileCount;
@@ -69,10 +69,10 @@
 
   systemBuildVersion = self->_systemBuildVersion;
   v13 = v8;
-  v14 = [(NSString *)systemBuildVersion UTF8String];
-  if (v14)
+  uTF8String3 = [(NSString *)systemBuildVersion UTF8String];
+  if (uTF8String3)
   {
-    xpc_dictionary_set_string(v13, "sysBV", v14);
+    xpc_dictionary_set_string(v13, "sysBV", uTF8String3);
   }
 
   v15 = self->_UUID;
@@ -141,9 +141,9 @@
   return v10;
 }
 
-- (ENExposureDetectionHistorySession)initWithXPCObject:(id)a3 error:(id *)a4
+- (ENExposureDetectionHistorySession)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   if (!CUXPCDecodeNSUUID())
   {
     goto LABEL_14;
@@ -152,11 +152,11 @@
   v7 = [(ENExposureDetectionHistorySession *)self initWithUUID:0];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       ENErrorF(2);
       self = 0;
-      *a4 = v17 = 0;
+      *error = selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -171,7 +171,7 @@
     goto LABEL_14;
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:{xpc_dictionary_get_double(v6, "date")}];
+  v8 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:{xpc_dictionary_get_double(objectCopy, "date")}];
   date = self->_date;
   self->_date = v8;
 
@@ -191,12 +191,12 @@
   if (v10 == 5)
   {
 LABEL_14:
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_10;
   }
 
 LABEL_8:
-  self->_matchCount = xpc_dictionary_get_uint64(v6, "mtKC");
+  self->_matchCount = xpc_dictionary_get_uint64(objectCopy, "mtKC");
   objc_opt_class();
   v11 = OUTLINED_FUNCTION_0_0();
   v15 = ENXPCDecodeSecureObjectIfPresent(v11, v12, v13, v14);
@@ -210,10 +210,10 @@ LABEL_8:
   }
 
   self = self;
-  v17 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v17;
+  return selfCopy;
 }
 
 @end

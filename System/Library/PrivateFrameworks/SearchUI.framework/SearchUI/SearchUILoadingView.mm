@@ -1,6 +1,6 @@
 @interface SearchUILoadingView
 - (SearchUILoadingView)init;
-- (void)setLoadingState:(unint64_t)a3;
+- (void)setLoadingState:(unint64_t)state;
 @end
 
 @implementation SearchUILoadingView
@@ -40,38 +40,38 @@
   return v2;
 }
 
-- (void)setLoadingState:(unint64_t)a3
+- (void)setLoadingState:(unint64_t)state
 {
-  self->_loadingState = a3;
-  if (a3 == 2)
+  self->_loadingState = state;
+  if (state == 2)
   {
-    v6 = [(SearchUILoadingView *)self loadingSpinner];
-    [v6 setHidden:1];
+    loadingSpinner = [(SearchUILoadingView *)self loadingSpinner];
+    [loadingSpinner setHidden:1];
 
-    v8 = [SearchUIUtilities localizedStringForKey:@"CARD_LOADING_ERROR"];
-    v7 = [(SearchUILoadingView *)self loadingLabel];
-    [v7 setText:v8];
+    loadingSpinner2 = [SearchUIUtilities localizedStringForKey:@"CARD_LOADING_ERROR"];
+    loadingLabel = [(SearchUILoadingView *)self loadingLabel];
+    [loadingLabel setText:loadingSpinner2];
   }
 
-  else if (a3 == 1)
+  else if (state == 1)
   {
-    v8 = [(SearchUILoadingView *)self loadingSpinner];
-    [v8 stopAnimating];
+    loadingSpinner2 = [(SearchUILoadingView *)self loadingSpinner];
+    [loadingSpinner2 stopAnimating];
   }
 
   else
   {
-    if (a3)
+    if (state)
     {
       return;
     }
 
     v4 = [SearchUIUtilities localizedStringForKey:@"CARD_LOADING"];
-    v5 = [(SearchUILoadingView *)self loadingLabel];
-    [v5 setText:v4];
+    loadingLabel2 = [(SearchUILoadingView *)self loadingLabel];
+    [loadingLabel2 setText:v4];
 
-    v8 = [(SearchUILoadingView *)self loadingSpinner];
-    [v8 startAnimating];
+    loadingSpinner2 = [(SearchUILoadingView *)self loadingSpinner];
+    [loadingSpinner2 startAnimating];
   }
 }
 

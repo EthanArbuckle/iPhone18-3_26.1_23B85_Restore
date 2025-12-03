@@ -1,14 +1,14 @@
 @interface FASettingProtoAccountRestrictionsRequest
-- (void)setRestrictionsWithCompletion:(id)a3;
+- (void)setRestrictionsWithCompletion:(id)completion;
 @end
 
 @implementation FASettingProtoAccountRestrictionsRequest
 
-- (void)setRestrictionsWithCompletion:(id)a3
+- (void)setRestrictionsWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = [(FAFamilyCircleRequest *)self serviceRemoteObjectWithErrorHandler:&__block_literal_global_15];
-  [v5 setRestrictionsForProtoAccountWithCompletion:v4];
+  [v5 setRestrictionsForProtoAccountWithCompletion:completionCopy];
 }
 
 void __74__FASettingProtoAccountRestrictionsRequest_setRestrictionsWithCompletion___block_invoke(uint64_t a1, void *a2)

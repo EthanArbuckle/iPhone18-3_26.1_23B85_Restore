@@ -1,9 +1,9 @@
 @interface TCCDReminderMonitor
-+ (double)positiveDoubleValueAtPreferenceKey:(id)a3 withFallback:(double)a4;
++ (double)positiveDoubleValueAtPreferenceKey:(id)key withFallback:(double)fallback;
 - (TCCDReminderMonitor)init;
-- (id)reportResourceUsage:(id)a3;
-- (void)setReminderCooldownPeriod:(int64_t)a3 with:(int64_t)a4;
-- (void)showReminderPrompt:(id)a3 result:(id)a4;
+- (id)reportResourceUsage:(id)usage;
+- (void)setReminderCooldownPeriod:(int64_t)period with:(int64_t)with;
+- (void)showReminderPrompt:(id)prompt result:(id)result;
 @end
 
 @implementation TCCDReminderMonitor
@@ -25,14 +25,14 @@
   return v2;
 }
 
-+ (double)positiveDoubleValueAtPreferenceKey:(id)a3 withFallback:(double)a4
++ (double)positiveDoubleValueAtPreferenceKey:(id)key withFallback:(double)fallback
 {
-  v5 = a3;
+  keyCopy = key;
   valuePtr = 0.0;
   v6 = 0.0;
   if (os_variant_allows_internal_security_policies())
   {
-    v7 = CFPreferencesCopyValue(v5, @"com.apple.tccd", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
+    v7 = CFPreferencesCopyValue(keyCopy, @"com.apple.tccd", kCFPreferencesCurrentUser, kCFPreferencesAnyHost);
     if (v7)
     {
       v8 = v7;
@@ -49,17 +49,17 @@
 
   if (v6 > 0.0)
   {
-    a4 = v6;
+    fallback = v6;
   }
 
-  return a4;
+  return fallback;
 }
 
-- (id)reportResourceUsage:(id)a3
+- (id)reportResourceUsage:(id)usage
 {
-  v4 = a3;
-  v5 = [v4 subjectIdentity];
-  [v4 attributionChain];
+  usageCopy = usage;
+  subjectIdentity = [usageCopy subjectIdentity];
+  [usageCopy attributionChain];
   v6 = v33 = self;
   v68[0] = 0;
   v68[1] = v68;
@@ -95,9 +95,9 @@
   v43[1] = 3221225472;
   v43[2] = sub_1000279F8;
   v43[3] = &unk_1000A5318;
-  v7 = v5;
+  v7 = subjectIdentity;
   v44 = v7;
-  v45 = v4;
+  v45 = usageCopy;
   v34[0] = _NSConcreteStackBlock;
   v34[1] = 3221225472;
   v34[2] = sub_100027B40;
@@ -118,8 +118,8 @@
     v10 = tcc_access_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v8 service];
-      sub_1000282BC(v9, v11, buf, v10);
+      service = [v8 service];
+      sub_1000282BC(v9, service, buf, v10);
     }
 
     v12 = 0;
@@ -153,11 +153,11 @@
 
     if (*(v63 + 24) == 1)
     {
-      v16 = self;
-      objc_sync_enter(v16);
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
       v17 = v47[3];
-      lastReminderTime = v16->_lastReminderTime;
-      [(TCCDReminderMonitor *)v16 systemCooldown];
+      lastReminderTime = selfCopy->_lastReminderTime;
+      [(TCCDReminderMonitor *)selfCopy systemCooldown];
       v20 = v17 - lastReminderTime <= v19;
       if (v17 - lastReminderTime <= v19)
       {
@@ -165,9 +165,9 @@
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           v22 = *(v47 + 3);
-          v23 = v16->_lastReminderTime;
-          [(TCCDReminderMonitor *)v16 systemCooldown];
-          v24 = v47[3] - v16->_lastReminderTime;
+          v23 = selfCopy->_lastReminderTime;
+          [(TCCDReminderMonitor *)selfCopy systemCooldown];
+          v24 = v47[3] - selfCopy->_lastReminderTime;
           *buf = 134218752;
           v71 = v22;
           v72 = 2048;
@@ -187,9 +187,9 @@
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
         {
           v28 = *(v47 + 3);
-          v29 = v16->_lastReminderTime;
-          [(TCCDReminderMonitor *)v16 systemCooldown];
-          v30 = v47[3] - v16->_lastReminderTime;
+          v29 = selfCopy->_lastReminderTime;
+          [(TCCDReminderMonitor *)selfCopy systemCooldown];
+          v30 = v47[3] - selfCopy->_lastReminderTime;
           *buf = 134218752;
           v71 = v28;
           v72 = 2048;
@@ -202,10 +202,10 @@
           self = v33;
         }
 
-        v16->_lastReminderTime = v47[3];
+        selfCopy->_lastReminderTime = v47[3];
       }
 
-      objc_sync_exit(v16);
+      objc_sync_exit(selfCopy);
     }
 
     else
@@ -245,59 +245,59 @@
   return v12;
 }
 
-- (void)showReminderPrompt:(id)a3 result:(id)a4
+- (void)showReminderPrompt:(id)prompt result:(id)result
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 service];
+  promptCopy = prompt;
+  resultCopy = result;
+  service = [promptCopy service];
   v8 = [TCCDAccessIdentity alloc];
-  v9 = [v5 attributionChain];
-  v10 = -[TCCDAccessIdentity initWithAttributionChain:preferMostSpecificIdentifier:](v8, "initWithAttributionChain:preferMostSpecificIdentifier:", v9, [v7 hasParanoidSecurityPolicy]);
+  attributionChain = [promptCopy attributionChain];
+  v10 = -[TCCDAccessIdentity initWithAttributionChain:preferMostSpecificIdentifier:](v8, "initWithAttributionChain:preferMostSpecificIdentifier:", attributionChain, [service hasParanoidSecurityPolicy]);
 
-  v11 = [(TCCDAccessIdentity *)v10 displayName];
-  if (v11)
+  displayName = [(TCCDAccessIdentity *)v10 displayName];
+  if (displayName)
   {
-    v23 = v6;
-    v12 = [v7 reminderTitleTextLocalizationKey];
-    if (!v12)
+    v23 = resultCopy;
+    reminderTitleTextLocalizationKey = [service reminderTitleTextLocalizationKey];
+    if (!reminderTitleTextLocalizationKey)
     {
-      v12 = [v7 requestTitleTextLocalizationKey];
+      reminderTitleTextLocalizationKey = [service requestTitleTextLocalizationKey];
     }
 
-    v13 = [v7 reminderLimitedButtonTitleTextLocalizationKey];
-    if (!v13)
+    reminderLimitedButtonTitleTextLocalizationKey = [service reminderLimitedButtonTitleTextLocalizationKey];
+    if (!reminderLimitedButtonTitleTextLocalizationKey)
     {
-      v13 = [v7 buttonTitleLocalizationKeyForAuthorization:objc_msgSend(v7 desiredAuth:{"downgradeAuthRight"), 2}];
+      reminderLimitedButtonTitleTextLocalizationKey = [service buttonTitleLocalizationKeyForAuthorization:objc_msgSend(service desiredAuth:{"downgradeAuthRight"), 2}];
     }
 
-    v22 = [v7 localizedTextWithKey:v13];
-    v14 = [v7 downgradeAuthRight];
-    v15 = [v7 reminderAllowButtonTitleTextLocalizationKey];
-    if (!v15)
+    v22 = [service localizedTextWithKey:reminderLimitedButtonTitleTextLocalizationKey];
+    downgradeAuthRight = [service downgradeAuthRight];
+    reminderAllowButtonTitleTextLocalizationKey = [service reminderAllowButtonTitleTextLocalizationKey];
+    if (!reminderAllowButtonTitleTextLocalizationKey)
     {
-      v15 = [v7 allowAuthorizationButtonTitleLocalizationKey];
+      reminderAllowButtonTitleTextLocalizationKey = [service allowAuthorizationButtonTitleLocalizationKey];
     }
 
-    v21 = [v7 localizedTextWithKey:v15];
-    v16 = [v7 localizedTextWithKey:v12];
+    v21 = [service localizedTextWithKey:reminderAllowButtonTitleTextLocalizationKey];
+    v16 = [service localizedTextWithKey:reminderTitleTextLocalizationKey];
     if (!v16)
     {
       v17 = tcc_access_log();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v25 = v7;
+        v25 = service;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Could not find localized string for service: %@", buf, 0xCu);
       }
 
       goto LABEL_20;
     }
 
-    v17 = [NSString stringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:0, v11];
+    v17 = [NSString stringWithValidatedFormat:v16 validFormatSpecifiers:@"%@" error:0, displayName];
     if (v17)
     {
-      [v5 setReminderPrompt:1];
-      [v5 presentSynchronousPromptWithHeader:v17 message:0 aButtonTitle:v21 aButtonAuth:v14 bButtonTitle:v22 bButtonAuth:2 currentAuth:2 updatingResult:v23];
+      [promptCopy setReminderPrompt:1];
+      [promptCopy presentSynchronousPromptWithHeader:v17 message:0 aButtonTitle:v21 aButtonAuth:downgradeAuthRight bButtonTitle:v22 bButtonAuth:2 currentAuth:2 updatingResult:v23];
       v18 = tcc_access_log();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -315,51 +315,51 @@ LABEL_18:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v25 = v7;
+        v25 = service;
         v19 = "Could not find localized request string for service: %@";
         goto LABEL_18;
       }
     }
 
 LABEL_20:
-    v6 = v23;
+    resultCopy = v23;
     goto LABEL_21;
   }
 
-  v12 = tcc_access_log();
-  if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
+  reminderTitleTextLocalizationKey = tcc_access_log();
+  if (os_log_type_enabled(reminderTitleTextLocalizationKey, OS_LOG_TYPE_DEFAULT))
   {
-    v20 = [(TCCDAccessIdentity *)v10 identifier];
+    identifier = [(TCCDAccessIdentity *)v10 identifier];
     *buf = 138412546;
-    v25 = v20;
+    v25 = identifier;
     v26 = 2112;
-    v27 = v7;
-    _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "reminder prompt: cannot find display name: %@ service: %@", buf, 0x16u);
+    v27 = service;
+    _os_log_impl(&_mh_execute_header, reminderTitleTextLocalizationKey, OS_LOG_TYPE_DEFAULT, "reminder prompt: cannot find display name: %@ service: %@", buf, 0x16u);
   }
 
 LABEL_21:
 }
 
-- (void)setReminderCooldownPeriod:(int64_t)a3 with:(int64_t)a4
+- (void)setReminderCooldownPeriod:(int64_t)period with:(int64_t)with
 {
-  if (a4 | a3)
+  if (with | period)
   {
-    if (a3 < 1 || a4 < 1)
+    if (period < 1 || with < 1)
     {
       return;
     }
 
-    [(TCCDReminderMonitor *)self setSystemCooldown:a3];
-    v6 = a4;
+    [(TCCDReminderMonitor *)self setSystemCooldown:period];
+    withCopy = with;
   }
 
   else
   {
     [(TCCDReminderMonitor *)self setSystemCooldown:604800.0];
-    v6 = 15552000.0;
+    withCopy = 15552000.0;
   }
 
-  [(TCCDReminderMonitor *)self setServiceCooldown:v6];
+  [(TCCDReminderMonitor *)self setServiceCooldown:withCopy];
 }
 
 @end

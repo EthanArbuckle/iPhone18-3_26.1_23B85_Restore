@@ -1,19 +1,19 @@
 @interface PAEFracturedFilter
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6;
-- (PAEFracturedFilter)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info;
+- (PAEFracturedFilter)initWithAPIManager:(id)manager;
 - (id).cxx_construct;
 - (void)dealloc;
-- (void)onVTBUserInteractionEventNotification:(id)a3;
+- (void)onVTBUserInteractionEventNotification:(id)notification;
 @end
 
 @implementation PAEFracturedFilter
 
-- (PAEFracturedFilter)initWithAPIManager:(id)a3
+- (PAEFracturedFilter)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEFracturedFilter;
-  if ([(PAESharedDefaultBase *)&v4 initWithAPIManager:a3])
+  if ([(PAESharedDefaultBase *)&v4 initWithAPIManager:manager])
   {
     operator new();
   }
@@ -57,21 +57,21 @@
   [(PAESharedDefaultBase *)&v6 dealloc];
 }
 
-- (void)onVTBUserInteractionEventNotification:(id)a3
+- (void)onVTBUserInteractionEventNotification:(id)notification
 {
-  v4 = [a3 userInfo];
-  [objc_msgSend(v4 objectForKeyedSubscript:{@"X", "doubleValue"}];
+  userInfo = [notification userInfo];
+  [objc_msgSend(userInfo objectForKeyedSubscript:{@"X", "doubleValue"}];
   v6 = v5;
-  [objc_msgSend(v4 objectForKeyedSubscript:{@"Y", "doubleValue"}];
+  [objc_msgSend(userInfo objectForKeyedSubscript:{@"Y", "doubleValue"}];
   v8 = v7;
-  [objc_msgSend(v4 objectForKeyedSubscript:{@"VelocityX", "doubleValue"}];
+  [objc_msgSend(userInfo objectForKeyedSubscript:{@"VelocityX", "doubleValue"}];
   v10 = v9;
-  [objc_msgSend(v4 objectForKeyedSubscript:{@"VelocityY", "doubleValue"}];
+  [objc_msgSend(userInfo objectForKeyedSubscript:{@"VelocityY", "doubleValue"}];
   v12 = v11;
-  [objc_msgSend(v4 objectForKeyedSubscript:{@"Scale", "doubleValue"}];
-  [objc_msgSend(v4 objectForKeyedSubscript:{@"ScaleVelocity", "doubleValue"}];
-  [objc_msgSend(v4 objectForKeyedSubscript:{@"Rotation", "doubleValue"}];
-  [objc_msgSend(v4 objectForKeyedSubscript:{@"RotationVelocity", "doubleValue"}];
+  [objc_msgSend(userInfo objectForKeyedSubscript:{@"Scale", "doubleValue"}];
+  [objc_msgSend(userInfo objectForKeyedSubscript:{@"ScaleVelocity", "doubleValue"}];
+  [objc_msgSend(userInfo objectForKeyedSubscript:{@"Rotation", "doubleValue"}];
+  [objc_msgSend(userInfo objectForKeyedSubscript:{@"RotationVelocity", "doubleValue"}];
   *&v13 = v6;
   FracturedUtils::_lastTouchX = v13;
   *&v14 = v8;
@@ -88,15 +88,15 @@
   [(NSLock *)fxPoolLock unlock];
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   LODWORD(v5) = FracturedUtils::_lastTouchX;
   LODWORD(v6) = FracturedUtils::_lastTouchY;
   if (*&FracturedUtils::_lastTouchX == -1.0 || *&FracturedUtils::_lastTouchY == -1.0)
   {
-    if (a4)
+    if (input)
     {
-      [a4 heliumRef];
+      [input heliumRef];
     }
 
     else
@@ -104,7 +104,7 @@
       v17 = 0;
     }
 
-    [a3 setHeliumRef:&v17];
+    [output setHeliumRef:&v17];
     if (v17)
     {
       (*(*v17 + 24))(v17);
@@ -121,16 +121,16 @@
     v15 = FracturedUtils::_lastVelocityTouchY;
     LODWORD(fxParams->var27[0]) = FracturedUtils::_lastVelocityTouchX;
     LODWORD(fxParams->var27[1]) = v15;
-    FracturedUtils::renderOutput(self, self->super.super._apiManager, ReadyEffect, fxParams, a3, a4, 0, &a5->var0.var0, 0.0, 0);
+    FracturedUtils::renderOutput(self, self->super.super._apiManager, ReadyEffect, fxParams, output, input, 0, &info->var0.var0, 0.0, 0);
   }
 
   return 1;
 }
 
-- (BOOL)getOutputWidth:(unint64_t *)a3 height:(unint64_t *)a4 withInput:(id *)a5 withInfo:(id *)a6
+- (BOOL)getOutputWidth:(unint64_t *)width height:(unint64_t *)height withInput:(id *)input withInfo:(id *)info
 {
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735B780];
-  if (a3)
+  if (width)
   {
     v11 = v10 == 0;
   }
@@ -140,15 +140,15 @@
     v11 = 1;
   }
 
-  v12 = v11 || a4 == 0;
+  v12 = v11 || height == 0;
   v13 = !v12;
   if (!v12)
   {
     v16 = 0.0;
-    [v10 getFloatValue:&v16 fromParm:19 atFxTime:a6->var0.var1];
+    [v10 getFloatValue:&v16 fromParm:19 atFxTime:info->var0.var1];
     v14 = v16;
-    *a3 = (v16 * a5->var0);
-    *a4 = (v14 * a5->var1);
+    *width = (v16 * input->var0);
+    *height = (v14 * input->var1);
   }
 
   return v13;

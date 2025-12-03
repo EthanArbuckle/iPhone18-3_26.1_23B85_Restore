@@ -1,32 +1,32 @@
 @interface ENScanInstance
-- (ENScanInstance)initWithXPCObject:(id)a3 error:(id *)a4;
+- (ENScanInstance)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ENScanInstance
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
-  xdict = v4;
+  objectCopy = object;
+  xdict = objectCopy;
   if (self->_minimumAttenuation)
   {
-    xpc_dictionary_set_uint64(v4, "minAttn", self->_minimumAttenuation);
-    v4 = xdict;
+    xpc_dictionary_set_uint64(objectCopy, "minAttn", self->_minimumAttenuation);
+    objectCopy = xdict;
   }
 
   if (self->_typicalAttenuation)
   {
     xpc_dictionary_set_uint64(xdict, "typAttn", self->_typicalAttenuation);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 
   secondsSinceLastScan = self->_secondsSinceLastScan;
   if (secondsSinceLastScan)
   {
     xpc_dictionary_set_int64(xdict, "secsLS", secondsSinceLastScan);
-    v4 = xdict;
+    objectCopy = xdict;
   }
 }
 
@@ -49,26 +49,26 @@
   return v4;
 }
 
-- (ENScanInstance)initWithXPCObject:(id)a3 error:(id *)a4
+- (ENScanInstance)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = [(ENScanInstance *)self init];
   if (!v7)
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_18;
     }
 
 LABEL_17:
     ENErrorF(2);
-    *a4 = v11 = 0;
+    *error = v11 = 0;
     goto LABEL_13;
   }
 
-  if (MEMORY[0x2383EE9C0](v6) != MEMORY[0x277D86468])
+  if (MEMORY[0x2383EE9C0](objectCopy) != MEMORY[0x277D86468])
   {
-    if (!a4)
+    if (!error)
     {
       goto LABEL_18;
     }

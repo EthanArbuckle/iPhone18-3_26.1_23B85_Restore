@@ -1,41 +1,41 @@
 @interface SUUILockupComponent
 - (BOOL)_needsItemData;
-- (SUUILockupComponent)initWithCustomPageContext:(id)a3;
-- (SUUILockupComponent)initWithItem:(id)a3 style:(SUUILockupStyle *)a4;
-- (SUUILockupComponent)initWithItemIdentifier:(int64_t)a3 style:(SUUILockupStyle *)a4;
-- (SUUILockupComponent)initWithViewElement:(id)a3;
-- (void)_setItem:(id)a3;
-- (void)_setLockupStyle:(SUUILockupStyle *)a3;
+- (SUUILockupComponent)initWithCustomPageContext:(id)context;
+- (SUUILockupComponent)initWithItem:(id)item style:(SUUILockupStyle *)style;
+- (SUUILockupComponent)initWithItemIdentifier:(int64_t)identifier style:(SUUILockupStyle *)style;
+- (SUUILockupComponent)initWithViewElement:(id)element;
+- (void)_setItem:(id)item;
+- (void)_setLockupStyle:(SUUILockupStyle *)style;
 @end
 
 @implementation SUUILockupComponent
 
-- (SUUILockupComponent)initWithCustomPageContext:(id)a3
+- (SUUILockupComponent)initWithCustomPageContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v19.receiver = self;
   v19.super_class = SUUILockupComponent;
-  v5 = [(SUUIPageComponent *)&v19 initWithCustomPageContext:v4];
+  v5 = [(SUUIPageComponent *)&v19 initWithCustomPageContext:contextCopy];
   if (v5)
   {
-    v6 = [v4 componentDictionary];
-    v7 = [v6 objectForKey:@"adamId"];
+    componentDictionary = [contextCopy componentDictionary];
+    v7 = [componentDictionary objectForKey:@"adamId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v4 itemForItemIdentifier:v7];
+      v8 = [contextCopy itemForItemIdentifier:v7];
       item = v5->_item;
       v5->_item = v8;
 
       v5->_itemIdentifier = [v7 longLongValue];
     }
 
-    v10 = [v6 objectForKey:@"editorial"];
+    v10 = [componentDictionary objectForKey:@"editorial"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [v4 copy];
+      v11 = [contextCopy copy];
       [v11 setComponentDictionary:v10];
       v12 = [[SUUIEditorialComponent alloc] initWithCustomPageContext:v11];
       editorial = v5->_editorial;
@@ -44,12 +44,12 @@
       if ([(SUUIEditorialComponent *)v5->_editorial _usesLockupTitle])
       {
         v14 = v5->_editorial;
-        v15 = [(SUUIItem *)v5->_item title];
-        [(SUUIEditorialComponent *)v14 _setTitleText:v15];
+        title = [(SUUIItem *)v5->_item title];
+        [(SUUIEditorialComponent *)v14 _setTitleText:title];
       }
     }
 
-    SUUILockupStyleForDictionary(v6, v4, &v17);
+    SUUILockupStyleForDictionary(componentDictionary, contextCopy, &v17);
     *&v5->_lockupStyle.artworkSize = v17;
     v5->_lockupStyle.visibleFields = v18;
   }
@@ -57,54 +57,54 @@
   return v5;
 }
 
-- (SUUILockupComponent)initWithItemIdentifier:(int64_t)a3 style:(SUUILockupStyle *)a4
+- (SUUILockupComponent)initWithItemIdentifier:(int64_t)identifier style:(SUUILockupStyle *)style
 {
   v8.receiver = self;
   v8.super_class = SUUILockupComponent;
   result = [(SUUILockupComponent *)&v8 init];
   if (result)
   {
-    result->_itemIdentifier = a3;
-    v7 = *&a4->artworkSize;
-    result->_lockupStyle.visibleFields = a4->visibleFields;
+    result->_itemIdentifier = identifier;
+    v7 = *&style->artworkSize;
+    result->_lockupStyle.visibleFields = style->visibleFields;
     *&result->_lockupStyle.artworkSize = v7;
   }
 
   return result;
 }
 
-- (SUUILockupComponent)initWithItem:(id)a3 style:(SUUILockupStyle *)a4
+- (SUUILockupComponent)initWithItem:(id)item style:(SUUILockupStyle *)style
 {
-  v7 = a3;
+  itemCopy = item;
   v11.receiver = self;
   v11.super_class = SUUILockupComponent;
   v8 = [(SUUILockupComponent *)&v11 init];
   if (v8)
   {
-    v8->_itemIdentifier = [v7 itemIdentifier];
-    objc_storeStrong(&v8->_item, a3);
-    visibleFields = a4->visibleFields;
-    *&v8->_lockupStyle.artworkSize = *&a4->artworkSize;
+    v8->_itemIdentifier = [itemCopy itemIdentifier];
+    objc_storeStrong(&v8->_item, item);
+    visibleFields = style->visibleFields;
+    *&v8->_lockupStyle.artworkSize = *&style->artworkSize;
     v8->_lockupStyle.visibleFields = visibleFields;
   }
 
   return v8;
 }
 
-- (SUUILockupComponent)initWithViewElement:(id)a3
+- (SUUILockupComponent)initWithViewElement:(id)element
 {
   v4.receiver = self;
   v4.super_class = SUUILockupComponent;
-  return [(SUUIPageComponent *)&v4 initWithViewElement:a3];
+  return [(SUUIPageComponent *)&v4 initWithViewElement:element];
 }
 
 - (BOOL)_needsItemData
 {
-  v2 = [(SUUIItem *)self->_item artworksProvider];
-  v3 = v2;
-  if (v2)
+  artworksProvider = [(SUUIItem *)self->_item artworksProvider];
+  v3 = artworksProvider;
+  if (artworksProvider)
   {
-    v4 = [v2 hasArtwork] ^ 1;
+    v4 = [artworksProvider hasArtwork] ^ 1;
   }
 
   else
@@ -115,33 +115,33 @@
   return v4;
 }
 
-- (void)_setItem:(id)a3
+- (void)_setItem:(id)item
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_item != v5)
+  itemCopy = item;
+  v6 = itemCopy;
+  if (self->_item != itemCopy)
   {
-    v9 = v5;
-    objc_storeStrong(&self->_item, a3);
-    v5 = [(SUUIEditorialComponent *)self->_editorial _usesLockupTitle];
+    v9 = itemCopy;
+    objc_storeStrong(&self->_item, item);
+    itemCopy = [(SUUIEditorialComponent *)self->_editorial _usesLockupTitle];
     v6 = v9;
-    if (v5)
+    if (itemCopy)
     {
       editorial = self->_editorial;
-      v8 = [(SUUIItem *)self->_item title];
-      [(SUUIEditorialComponent *)editorial _setTitleText:v8];
+      title = [(SUUIItem *)self->_item title];
+      [(SUUIEditorialComponent *)editorial _setTitleText:title];
 
       v6 = v9;
     }
   }
 
-  MEMORY[0x2821F96F8](v5, v6);
+  MEMORY[0x2821F96F8](itemCopy, v6);
 }
 
-- (void)_setLockupStyle:(SUUILockupStyle *)a3
+- (void)_setLockupStyle:(SUUILockupStyle *)style
 {
-  visibleFields = a3->visibleFields;
-  *&self->_lockupStyle.artworkSize = *&a3->artworkSize;
+  visibleFields = style->visibleFields;
+  *&self->_lockupStyle.artworkSize = *&style->artworkSize;
   self->_lockupStyle.visibleFields = visibleFields;
 }
 

@@ -1,32 +1,32 @@
 @interface HUCameraStreamFullScreenAnimator
-- (CGRect)_adjustPresentedViewFrame:(CGRect)a3 forTransitionContext:(id)a4;
-- (CGRect)_toViewFinalFrame:(id)a3;
-- (HUCameraStreamFullScreenAnimator)initWithSourceCameraCell:(id)a3;
+- (CGRect)_adjustPresentedViewFrame:(CGRect)frame forTransitionContext:(id)context;
+- (CGRect)_toViewFinalFrame:(id)frame;
+- (HUCameraStreamFullScreenAnimator)initWithSourceCameraCell:(id)cell;
 @end
 
 @implementation HUCameraStreamFullScreenAnimator
 
-- (HUCameraStreamFullScreenAnimator)initWithSourceCameraCell:(id)a3
+- (HUCameraStreamFullScreenAnimator)initWithSourceCameraCell:(id)cell
 {
-  v5 = a3;
+  cellCopy = cell;
   v9.receiver = self;
   v9.super_class = HUCameraStreamFullScreenAnimator;
   v6 = [(HUCameraStreamFullScreenAnimator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sourceCameraCell, a3);
+    objc_storeStrong(&v6->_sourceCameraCell, cell);
   }
 
   return v7;
 }
 
-- (CGRect)_toViewFinalFrame:(id)a3
+- (CGRect)_toViewFinalFrame:(id)frame
 {
   v3 = *MEMORY[0x277D77240];
-  v4 = a3;
-  v5 = [v4 viewControllerForKey:v3];
-  [v4 finalFrameForViewController:v5];
+  frameCopy = frame;
+  v5 = [frameCopy viewControllerForKey:v3];
+  [frameCopy finalFrameForViewController:v5];
   v7 = v6;
   v9 = v8;
   v11 = v10;
@@ -43,17 +43,17 @@
   return result;
 }
 
-- (CGRect)_adjustPresentedViewFrame:(CGRect)a3 forTransitionContext:(id)a4
+- (CGRect)_adjustPresentedViewFrame:(CGRect)frame forTransitionContext:(id)context
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  contextCopy = context;
   if ([MEMORY[0x277D14CE8] isAMac])
   {
-    v9 = [v8 containerView];
-    [v9 safeAreaInsets];
+    containerView = [contextCopy containerView];
+    [containerView safeAreaInsets];
     x = x + v10;
     y = y + v11;
     width = width - (v10 + v12);

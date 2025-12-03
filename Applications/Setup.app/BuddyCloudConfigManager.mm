@@ -1,26 +1,26 @@
 @interface BuddyCloudConfigManager
 + (id)sharedManager;
-- (BOOL)cloudConfigWantsToSkipControllerClass:(Class)a3;
+- (BOOL)cloudConfigWantsToSkipControllerClass:(Class)class;
 - (BOOL)hasCloudConfiguration;
 - (BOOL)isMultiUser;
 - (BuddyCloudConfigManager)init;
 - (NSDictionary)cloudConfigurationDetails;
 - (id)profileConnection;
-- (void)_setProfileConnection:(id)a3;
-- (void)_updateSkipKeysWithCachedDetails:(id)a3;
+- (void)_setProfileConnection:(id)connection;
+- (void)_updateSkipKeysWithCachedDetails:(id)details;
 - (void)cloudConfigMayHaveChanged;
-- (void)setCloudConfigurationDetails:(id)a3;
+- (void)setCloudConfigurationDetails:(id)details;
 @end
 
 @implementation BuddyCloudConfigManager
 
-- (void)_setProfileConnection:(id)a3
+- (void)_setProfileConnection:(id)connection
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  objc_storeStrong(&v4->_profileConnection, location[0]);
+  objc_storeStrong(location, connection);
+  objc_storeStrong(&selfCopy->_profileConnection, location[0]);
   objc_storeStrong(location, 0);
 }
 
@@ -98,20 +98,20 @@
   return v6;
 }
 
-- (void)setCloudConfigurationDetails:(id)a3
+- (void)setCloudConfigurationDetails:(id)details
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  if (v16->_cloudConfigurationDetails != location[0] && ([location[0] isEqualToDictionary:v16->_cloudConfigurationDetails] & 1) == 0)
+  objc_storeStrong(location, details);
+  if (selfCopy->_cloudConfigurationDetails != location[0] && ([location[0] isEqualToDictionary:selfCopy->_cloudConfigurationDetails] & 1) == 0)
   {
-    objc_storeStrong(&v16->_cloudConfigurationDetails, location[0]);
+    objc_storeStrong(&selfCopy->_cloudConfigurationDetails, location[0]);
     oslog = _BYLoggingFacility();
     v13 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      sub_100077E48(buf, v16->_cloudConfigurationDetails);
+      sub_100077E48(buf, selfCopy->_cloudConfigurationDetails);
       _os_log_impl(&_mh_execute_header, oslog, v13, "Cloud Config changed: %p", buf, 0xCu);
     }
 
@@ -120,18 +120,18 @@
     v11 = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      sub_10006AE18(v17, v16->_cloudConfigurationDetails);
+      sub_10006AE18(v17, selfCopy->_cloudConfigurationDetails);
       _os_log_debug_impl(&_mh_execute_header, v12, v11, "%@", v17, 0xCu);
     }
 
     objc_storeStrong(&v12, 0);
-    skipKeysQueue = v16->skipKeysQueue;
+    skipKeysQueue = selfCopy->skipKeysQueue;
     block = _NSConcreteStackBlock;
     v5 = -1073741824;
     v6 = 0;
     v7 = sub_1001E0DEC;
     v8 = &unk_10032B838;
-    v9 = v16;
+    v9 = selfCopy;
     v10 = location[0];
     dispatch_sync(skipKeysQueue, &block);
     objc_storeStrong(&v10, 0);
@@ -145,9 +145,9 @@
 {
   if (!self->_cloudConfigurationDetails)
   {
-    v2 = [(BuddyCloudConfigManager *)self profileConnection];
-    v3 = [v2 cloudConfigurationDetails];
-    [(BuddyCloudConfigManager *)self setCloudConfigurationDetails:v3];
+    profileConnection = [(BuddyCloudConfigManager *)self profileConnection];
+    cloudConfigurationDetails = [profileConnection cloudConfigurationDetails];
+    [(BuddyCloudConfigManager *)self setCloudConfigurationDetails:cloudConfigurationDetails];
   }
 
   cloudConfigurationDetails = self->_cloudConfigurationDetails;
@@ -165,24 +165,24 @@
 
 - (void)cloudConfigMayHaveChanged
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
-  v2 = [(BuddyCloudConfigManager *)self profileConnection];
-  location[0] = [v2 cloudConfigurationDetails];
+  profileConnection = [(BuddyCloudConfigManager *)self profileConnection];
+  location[0] = [profileConnection cloudConfigurationDetails];
 
   if (location[0])
   {
-    [(BuddyCloudConfigManager *)v4 setCloudConfigurationDetails:location[0]];
+    [(BuddyCloudConfigManager *)selfCopy setCloudConfigurationDetails:location[0]];
   }
 
   objc_storeStrong(location, 0);
 }
 
-- (BOOL)cloudConfigWantsToSkipControllerClass:(Class)a3
+- (BOOL)cloudConfigWantsToSkipControllerClass:(Class)class
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
-  v19 = a3;
+  classCopy = class;
   v14 = 0;
   v15 = &v14;
   v16 = 0x20000000;
@@ -190,16 +190,16 @@
   v18 = 0;
   if (objc_opt_respondsToSelector())
   {
-    location = [(objc_class *)v19 cloudConfigSkipKey];
+    location = [(objc_class *)classCopy cloudConfigSkipKey];
     if (location)
     {
-      skipKeysQueue = v21->skipKeysQueue;
+      skipKeysQueue = selfCopy->skipKeysQueue;
       block = _NSConcreteStackBlock;
       v7 = -1073741824;
       v8 = 0;
       v9 = sub_1001E1114;
       v10 = &unk_10032EBD0;
-      v11 = v21;
+      v11 = selfCopy;
       v12[0] = location;
       v12[1] = &v14;
       dispatch_sync(skipKeysQueue, &block);
@@ -220,22 +220,22 @@
   v2 = +[BYManagedAppleIDBootstrap isMultiUser];
   v8 = 0;
   v6 = 0;
-  v3 = 1;
+  bOOLValue = 1;
   if ((v2 & 1) == 0)
   {
     v4 = +[BYManagedAppleIDBootstrap isSettingUpMultiUser];
-    v3 = 1;
+    bOOLValue = 1;
     if ((v4 & 1) == 0)
     {
-      v9 = [(BuddyCloudConfigManager *)self cloudConfigurationDetails];
+      cloudConfigurationDetails = [(BuddyCloudConfigManager *)self cloudConfigurationDetails];
       v8 = 1;
-      v7 = [(NSDictionary *)v9 objectForKeyedSubscript:kMCCCIsMultiUserKey];
+      v7 = [(NSDictionary *)cloudConfigurationDetails objectForKeyedSubscript:kMCCCIsMultiUserKey];
       v6 = 1;
-      v3 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
     }
   }
 
-  v11 = v3 & 1;
+  v11 = bOOLValue & 1;
   if (v6)
   {
   }
@@ -247,29 +247,29 @@
   return v11;
 }
 
-- (void)_updateSkipKeysWithCachedDetails:(id)a3
+- (void)_updateSkipKeysWithCachedDetails:(id)details
 {
-  v19 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, details);
   v17 = +[NSMutableSet set];
   v3 = +[MCProfileConnection sharedConnection];
-  v4 = [v3 skipSetupKeys];
-  [v17 addObjectsFromArray:v4];
+  skipSetupKeys = [v3 skipSetupKeys];
+  [v17 addObjectsFromArray:skipSetupKeys];
 
   v5 = [location[0] objectForKeyedSubscript:kMCCCSkipSetupKey];
   [v17 addObjectsFromArray:v5];
 
   v6 = [v17 copy];
-  skipSetupKeys = v19->_skipSetupKeys;
-  v19->_skipSetupKeys = v6;
+  skipSetupKeys = selfCopy->_skipSetupKeys;
+  selfCopy->_skipSetupKeys = v6;
 
   oslog = _BYLoggingFacility();
   v15 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
   {
-    sub_10006AE18(buf, v19->_skipSetupKeys);
+    sub_10006AE18(buf, selfCopy->_skipSetupKeys);
     _os_log_debug_impl(&_mh_execute_header, oslog, v15, "Skip keys are: %@", buf, 0xCu);
   }
 
@@ -280,7 +280,7 @@
   v11 = 0;
   v12 = sub_1001E1514;
   v13 = &unk_10032B0D0;
-  v14 = v19;
+  v14 = selfCopy;
   dispatch_async(v8, &block);
 
   objc_storeStrong(&v14, 0);

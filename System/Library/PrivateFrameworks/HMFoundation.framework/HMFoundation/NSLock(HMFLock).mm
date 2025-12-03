@@ -10,10 +10,10 @@
   if (v4)
   {
     v6 = v4;
-    v5 = a1;
-    [v5 lock];
+    selfCopy = self;
+    [selfCopy lock];
     v6[2](v6);
-    [v5 unlock];
+    [selfCopy unlock];
 
     v4 = v6;
   }

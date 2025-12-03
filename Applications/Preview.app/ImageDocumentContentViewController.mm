@@ -1,9 +1,9 @@
 @interface ImageDocumentContentViewController
 - (BOOL)isEditing;
 - (_TtC7Preview34ImageDocumentContentViewController)init;
-- (void)setEditing:(BOOL)a3;
+- (void)setEditing:(BOOL)editing;
 - (void)viewDidLoad;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation ImageDocumentContentViewController
@@ -20,14 +20,14 @@
 
   v5.receiver = self;
   v5.super_class = type metadata accessor for ImageDocumentContentViewController();
-  v3 = [(ImageDocumentContentViewController *)&v5 isEditing];
+  isEditing = [(ImageDocumentContentViewController *)&v5 isEditing];
 
-  return v3;
+  return isEditing;
 }
 
-- (void)setEditing:(BOOL)a3
+- (void)setEditing:(BOOL)editing
 {
-  v3 = a3;
+  editingCopy = editing;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -38,8 +38,8 @@
 
   v6.receiver = self;
   v6.super_class = type metadata accessor for ImageDocumentContentViewController();
-  v5 = self;
-  [(ImageDocumentContentViewController *)&v6 setEditing:v3];
+  selfCopy = self;
+  [(ImageDocumentContentViewController *)&v6 setEditing:editingCopy];
   sub_100062344();
 }
 
@@ -53,13 +53,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   sub_100062AD0();
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -70,8 +70,8 @@
 
   v7.receiver = self;
   v7.super_class = type metadata accessor for ImageDocumentContentViewController();
-  v5 = self;
-  [(ImageDocumentContentViewController *)&v7 viewWillDisappear:v3];
+  selfCopy = self;
+  [(ImageDocumentContentViewController *)&v7 viewWillDisappear:disappearCopy];
   swift_beginAccess();
   sub_1000685C0(&v6, 0);
   swift_endAccess();

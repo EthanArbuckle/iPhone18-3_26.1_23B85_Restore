@@ -1,7 +1,7 @@
 @interface MultiUserStartWorkoutInterceptor
 - (_TtC9SeymourUI32MultiUserStartWorkoutInterceptor)init;
-- (void)dynamicViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5;
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5;
+- (void)dynamicViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error;
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error;
 @end
 
 @implementation MultiUserStartWorkoutInterceptor
@@ -13,22 +13,22 @@
   return result;
 }
 
-- (void)dynamicViewController:(id)a3 didFinishWithPurchaseResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didFinishWithPurchaseResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  sub_20BCB53F4(a5);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  sub_20BCB53F4(error);
 }
 
-- (void)dynamicViewController:(id)a3 didFinishPurchaseWithResult:(id)a4 error:(id)a5
+- (void)dynamicViewController:(id)controller didFinishPurchaseWithResult:(id)result error:(id)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = self;
-  v11 = a5;
-  MultiUserStartWorkoutInterceptor.dynamicViewController(_:didFinishPurchaseWith:error:)(v8, a4, a5);
+  controllerCopy = controller;
+  resultCopy = result;
+  selfCopy = self;
+  errorCopy = error;
+  MultiUserStartWorkoutInterceptor.dynamicViewController(_:didFinishPurchaseWith:error:)(controllerCopy, result, error);
 }
 
 @end

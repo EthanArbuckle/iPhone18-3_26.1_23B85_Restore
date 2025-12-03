@@ -1,11 +1,11 @@
 @interface CKTypingIndicatorBackgroundLayer
-- (_TtC7ChatKit32CKTypingIndicatorBackgroundLayer)initWithCoder:(id)a3;
+- (_TtC7ChatKit32CKTypingIndicatorBackgroundLayer)initWithCoder:(id)coder;
 - (void)layoutSublayers;
 @end
 
 @implementation CKTypingIndicatorBackgroundLayer
 
-- (_TtC7ChatKit32CKTypingIndicatorBackgroundLayer)initWithCoder:(id)a3
+- (_TtC7ChatKit32CKTypingIndicatorBackgroundLayer)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC7ChatKit32CKTypingIndicatorBackgroundLayer_backgroundLayer) = 0;
   v4 = OBJC_IVAR____TtC7ChatKit32CKTypingIndicatorBackgroundLayer_fillStyle;

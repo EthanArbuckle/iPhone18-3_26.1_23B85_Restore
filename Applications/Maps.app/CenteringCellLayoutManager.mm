@@ -1,14 +1,14 @@
 @interface CenteringCellLayoutManager
-+ (id)layoutManagerForTableViewCellStyle:(int64_t)a3;
-- (CGRect)_adjustedContentViewFrame:(CGRect)a3 cell:(id)a4 rowWidth:(double)a5 accessoryViewFrame:(CGRect)a6;
-- (CGRect)_offsetAccessoryViewFrame:(CGRect)a3 forCell:(id)a4;
-- (CGRect)accessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)accessoryStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)contentEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4;
-- (CGRect)contentRectForCell:(id)a3 forState:(unint64_t)a4 rowWidth:(double)a5;
-- (CGRect)contentStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4;
-- (CenteringCellLayoutManager)initWithTableViewCellStyle:(int64_t)a3;
-- (UIEdgeInsets)_marginForRowWith:(double)a3;
++ (id)layoutManagerForTableViewCellStyle:(int64_t)style;
+- (CGRect)_adjustedContentViewFrame:(CGRect)frame cell:(id)cell rowWidth:(double)width accessoryViewFrame:(CGRect)viewFrame;
+- (CGRect)_offsetAccessoryViewFrame:(CGRect)frame forCell:(id)cell;
+- (CGRect)accessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)accessoryStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)contentEndingRectForCell:(id)cell forNewEditingState:(BOOL)state;
+- (CGRect)contentRectForCell:(id)cell forState:(unint64_t)state rowWidth:(double)width;
+- (CGRect)contentStartingRectForCell:(id)cell forNewEditingState:(BOOL)state;
+- (CenteringCellLayoutManager)initWithTableViewCellStyle:(int64_t)style;
+- (UIEdgeInsets)_marginForRowWith:(double)with;
 - (UIEdgeInsets)minimumHorizontalMargins;
 @end
 
@@ -27,10 +27,10 @@
   return result;
 }
 
-- (UIEdgeInsets)_marginForRowWith:(double)a3
+- (UIEdgeInsets)_marginForRowWith:(double)with
 {
   [(CenteringCellLayoutManager *)self maximumCellContentWidth];
-  v6 = a3 - v5;
+  v6 = with - v5;
   [(CenteringCellLayoutManager *)self minimumHorizontalMargins];
   v8 = v7;
   [(CenteringCellLayoutManager *)self minimumHorizontalMargins];
@@ -54,13 +54,13 @@
   return result;
 }
 
-- (CGRect)_offsetAccessoryViewFrame:(CGRect)a3 forCell:(id)a4
+- (CGRect)_offsetAccessoryViewFrame:(CGRect)frame forCell:(id)cell
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  cellCopy = cell;
   v17.origin.x = CGRectZero.origin.x;
   v17.origin.y = CGRectZero.origin.y;
   v17.size.width = CGRectZero.size.width;
@@ -72,12 +72,12 @@
   v10 = x;
   if (!CGRectEqualToRect(v17, v22))
   {
-    [v9 bounds];
+    [cellCopy bounds];
     [(CenteringCellLayoutManager *)self _marginForRowWith:CGRectGetWidth(v18)];
     v10 = v11;
-    if (+[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", [v9 semanticContentAttribute]) != 1)
+    if (+[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", [cellCopy semanticContentAttribute]) != 1)
     {
-      [v9 bounds];
+      [cellCopy bounds];
       MaxX = CGRectGetMaxX(v19);
       v20.origin.x = x;
       v20.origin.y = y;
@@ -98,15 +98,15 @@
   return result;
 }
 
-- (CGRect)accessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)accessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
-  v5 = a5;
-  v6 = a4;
+  confirmationCopy = confirmation;
+  stateCopy = state;
   v21.receiver = self;
   v21.super_class = CenteringCellLayoutManager;
-  v8 = a3;
-  [(CenteringCellLayoutManager *)&v21 accessoryEndingRectForCell:v8 forNewEditingState:v6 showingDeleteConfirmation:v5];
-  [(CenteringCellLayoutManager *)self _offsetAccessoryViewFrame:v8 forCell:v21.receiver, v21.super_class];
+  cellCopy = cell;
+  [(CenteringCellLayoutManager *)&v21 accessoryEndingRectForCell:cellCopy forNewEditingState:stateCopy showingDeleteConfirmation:confirmationCopy];
+  [(CenteringCellLayoutManager *)self _offsetAccessoryViewFrame:cellCopy forCell:v21.receiver, v21.super_class];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -123,15 +123,15 @@
   return result;
 }
 
-- (CGRect)accessoryStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)accessoryStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
-  v5 = a5;
-  v6 = a4;
+  confirmationCopy = confirmation;
+  stateCopy = state;
   v21.receiver = self;
   v21.super_class = CenteringCellLayoutManager;
-  v8 = a3;
-  [(CenteringCellLayoutManager *)&v21 accessoryStartingRectForCell:v8 forNewEditingState:v6 showingDeleteConfirmation:v5];
-  [(CenteringCellLayoutManager *)self _offsetAccessoryViewFrame:v8 forCell:v21.receiver, v21.super_class];
+  cellCopy = cell;
+  [(CenteringCellLayoutManager *)&v21 accessoryStartingRectForCell:cellCopy forNewEditingState:stateCopy showingDeleteConfirmation:confirmationCopy];
+  [(CenteringCellLayoutManager *)self _offsetAccessoryViewFrame:cellCopy forCell:v21.receiver, v21.super_class];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -148,17 +148,17 @@
   return result;
 }
 
-- (CGRect)_adjustedContentViewFrame:(CGRect)a3 cell:(id)a4 rowWidth:(double)a5 accessoryViewFrame:(CGRect)a6
+- (CGRect)_adjustedContentViewFrame:(CGRect)frame cell:(id)cell rowWidth:(double)width accessoryViewFrame:(CGRect)viewFrame
 {
-  y = a3.origin.y;
-  height = a3.size.height;
-  v8 = a4;
-  [(CenteringCellLayoutManager *)self _marginForRowWith:a5];
+  y = frame.origin.y;
+  height = frame.size.height;
+  cellCopy = cell;
+  [(CenteringCellLayoutManager *)self _marginForRowWith:width];
   v10 = v9;
   v12 = v11;
-  v13 = [v8 semanticContentAttribute];
+  semanticContentAttribute = [cellCopy semanticContentAttribute];
 
-  v14 = [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:v13];
+  v14 = [UIView userInterfaceLayoutDirectionForSemanticContentAttribute:semanticContentAttribute];
   if (v14 == UIUserInterfaceLayoutDirectionRightToLeft)
   {
     v15 = v12;
@@ -169,12 +169,12 @@
     v15 = v10;
   }
 
-  v16 = a5 - (v12 + v10);
+  v16 = width - (v12 + v10);
   v32.origin.x = CGRectZero.origin.x;
   v32.origin.y = CGRectZero.origin.y;
   v32.size.width = CGRectZero.size.width;
   v32.size.height = CGRectZero.size.height;
-  if (CGRectEqualToRect(v32, a6))
+  if (CGRectEqualToRect(v32, viewFrame))
   {
     v18 = y;
     v17 = height;
@@ -182,7 +182,7 @@
 
   else if (v14 == UIUserInterfaceLayoutDirectionRightToLeft)
   {
-    MaxX = CGRectGetMaxX(a6);
+    MaxX = CGRectGetMaxX(viewFrame);
     v33.origin.x = v12;
     v18 = y;
     v17 = height;
@@ -203,7 +203,7 @@
     v34.size.height = height;
     v29 = CGRectGetMaxX(v34);
     v18 = y;
-    MinX = CGRectGetMinX(a6);
+    MinX = CGRectGetMinX(viewFrame);
     [(CenteringCellLayoutManager *)self minimumHorizontalMargins];
     v23 = v16 + MinX;
     v17 = height;
@@ -222,24 +222,24 @@
   return result;
 }
 
-- (CGRect)contentEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4
+- (CGRect)contentEndingRectForCell:(id)cell forNewEditingState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v35.receiver = self;
   v35.super_class = CenteringCellLayoutManager;
-  v6 = a3;
-  [(CenteringCellLayoutManager *)&v35 contentEndingRectForCell:v6 forNewEditingState:v4];
+  cellCopy = cell;
+  [(CenteringCellLayoutManager *)&v35 contentEndingRectForCell:cellCopy forNewEditingState:stateCopy];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  -[CenteringCellLayoutManager accessoryEndingRectForCell:forNewEditingState:showingDeleteConfirmation:](self, "accessoryEndingRectForCell:forNewEditingState:showingDeleteConfirmation:", v6, v4, [v6 showingDeleteConfirmation]);
+  -[CenteringCellLayoutManager accessoryEndingRectForCell:forNewEditingState:showingDeleteConfirmation:](self, "accessoryEndingRectForCell:forNewEditingState:showingDeleteConfirmation:", cellCopy, stateCopy, [cellCopy showingDeleteConfirmation]);
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  [v6 bounds];
-  [(CenteringCellLayoutManager *)self _adjustedContentViewFrame:v6 cell:v8 rowWidth:v10 accessoryViewFrame:v12, v14, CGRectGetWidth(v36), v16, v18, v20, v22, v35.receiver, v35.super_class];
+  [cellCopy bounds];
+  [(CenteringCellLayoutManager *)self _adjustedContentViewFrame:cellCopy cell:v8 rowWidth:v10 accessoryViewFrame:v12, v14, CGRectGetWidth(v36), v16, v18, v20, v22, v35.receiver, v35.super_class];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -256,24 +256,24 @@
   return result;
 }
 
-- (CGRect)contentStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4
+- (CGRect)contentStartingRectForCell:(id)cell forNewEditingState:(BOOL)state
 {
-  v4 = a4;
+  stateCopy = state;
   v35.receiver = self;
   v35.super_class = CenteringCellLayoutManager;
-  v6 = a3;
-  [(CenteringCellLayoutManager *)&v35 contentStartingRectForCell:v6 forNewEditingState:v4];
+  cellCopy = cell;
+  [(CenteringCellLayoutManager *)&v35 contentStartingRectForCell:cellCopy forNewEditingState:stateCopy];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  -[CenteringCellLayoutManager accessoryStartingRectForCell:forNewEditingState:showingDeleteConfirmation:](self, "accessoryStartingRectForCell:forNewEditingState:showingDeleteConfirmation:", v6, v4, [v6 showingDeleteConfirmation]);
+  -[CenteringCellLayoutManager accessoryStartingRectForCell:forNewEditingState:showingDeleteConfirmation:](self, "accessoryStartingRectForCell:forNewEditingState:showingDeleteConfirmation:", cellCopy, stateCopy, [cellCopy showingDeleteConfirmation]);
   v16 = v15;
   v18 = v17;
   v20 = v19;
   v22 = v21;
-  [v6 bounds];
-  [(CenteringCellLayoutManager *)self _adjustedContentViewFrame:v6 cell:v8 rowWidth:v10 accessoryViewFrame:v12, v14, CGRectGetWidth(v36), v16, v18, v20, v22, v35.receiver, v35.super_class];
+  [cellCopy bounds];
+  [(CenteringCellLayoutManager *)self _adjustedContentViewFrame:cellCopy cell:v8 rowWidth:v10 accessoryViewFrame:v12, v14, CGRectGetWidth(v36), v16, v18, v20, v22, v35.receiver, v35.super_class];
   v24 = v23;
   v26 = v25;
   v28 = v27;
@@ -290,18 +290,18 @@
   return result;
 }
 
-- (CGRect)contentRectForCell:(id)a3 forState:(unint64_t)a4 rowWidth:(double)a5
+- (CGRect)contentRectForCell:(id)cell forState:(unint64_t)state rowWidth:(double)width
 {
   v33.receiver = self;
   v33.super_class = CenteringCellLayoutManager;
-  v8 = a3;
-  [(CenteringCellLayoutManager *)&v33 contentRectForCell:v8 forState:a4 rowWidth:a5];
+  cellCopy = cell;
+  [(CenteringCellLayoutManager *)&v33 contentRectForCell:cellCopy forState:state rowWidth:width];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  -[CenteringCellLayoutManager accessoryEndingRectForCell:forNewEditingState:showingDeleteConfirmation:](self, "accessoryEndingRectForCell:forNewEditingState:showingDeleteConfirmation:", v8, [v8 isEditing], objc_msgSend(v8, "showingDeleteConfirmation"));
-  [(CenteringCellLayoutManager *)self _adjustedContentViewFrame:v8 cell:v10 rowWidth:v12 accessoryViewFrame:v14, v16, a5, v17, v18, v19, v20, v33.receiver, v33.super_class];
+  -[CenteringCellLayoutManager accessoryEndingRectForCell:forNewEditingState:showingDeleteConfirmation:](self, "accessoryEndingRectForCell:forNewEditingState:showingDeleteConfirmation:", cellCopy, [cellCopy isEditing], objc_msgSend(cellCopy, "showingDeleteConfirmation"));
+  [(CenteringCellLayoutManager *)self _adjustedContentViewFrame:cellCopy cell:v10 rowWidth:v12 accessoryViewFrame:v14, v16, width, v17, v18, v19, v20, v33.receiver, v33.super_class];
   v22 = v21;
   v24 = v23;
   v26 = v25;
@@ -318,7 +318,7 @@
   return result;
 }
 
-- (CenteringCellLayoutManager)initWithTableViewCellStyle:(int64_t)a3
+- (CenteringCellLayoutManager)initWithTableViewCellStyle:(int64_t)style
 {
   v7.receiver = self;
   v7.super_class = CenteringCellLayoutManager;
@@ -333,9 +333,9 @@
   return v4;
 }
 
-+ (id)layoutManagerForTableViewCellStyle:(int64_t)a3
++ (id)layoutManagerForTableViewCellStyle:(int64_t)style
 {
-  v3 = [[a1 alloc] initWithTableViewCellStyle:a3];
+  v3 = [[self alloc] initWithTableViewCellStyle:style];
 
   return v3;
 }

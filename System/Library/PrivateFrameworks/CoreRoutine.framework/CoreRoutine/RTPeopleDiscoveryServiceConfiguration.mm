@@ -1,25 +1,25 @@
 @interface RTPeopleDiscoveryServiceConfiguration
-+ (double)secondsForStorageDuration:(unint64_t)a3;
-+ (unint64_t)aggregateObservationInterval:(unint64_t)a3 with:(unint64_t)a4;
-+ (unint64_t)aggregateServiceLevel:(unint64_t)a3 with:(unint64_t)a4;
-+ (unint64_t)aggregateStorageDuration:(unint64_t)a3 with:(unint64_t)a4;
-- (BOOL)isEqual:(id)a3;
-- (RTPeopleDiscoveryServiceConfiguration)initWithAdvertisingCapability:(unint64_t)a3 serviceLevel:(unint64_t)a4 observationInterval:(unint64_t)a5 storageDuration:(unint64_t)a6 densityCallbackConfiguration:(id)a7;
-- (RTPeopleDiscoveryServiceConfiguration)initWithAggregation:(id)a3;
-- (RTPeopleDiscoveryServiceConfiguration)initWithCoder:(id)a3;
-- (RTPeopleDiscoveryServiceConfiguration)initWithServiceLevel:(unint64_t)a3 storageDuration:(unint64_t)a4 observationInterval:(unint64_t)a5 densityCallbackConfiguration:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
++ (double)secondsForStorageDuration:(unint64_t)duration;
++ (unint64_t)aggregateObservationInterval:(unint64_t)interval with:(unint64_t)with;
++ (unint64_t)aggregateServiceLevel:(unint64_t)level with:(unint64_t)with;
++ (unint64_t)aggregateStorageDuration:(unint64_t)duration with:(unint64_t)with;
+- (BOOL)isEqual:(id)equal;
+- (RTPeopleDiscoveryServiceConfiguration)initWithAdvertisingCapability:(unint64_t)capability serviceLevel:(unint64_t)level observationInterval:(unint64_t)interval storageDuration:(unint64_t)duration densityCallbackConfiguration:(id)configuration;
+- (RTPeopleDiscoveryServiceConfiguration)initWithAggregation:(id)aggregation;
+- (RTPeopleDiscoveryServiceConfiguration)initWithCoder:(id)coder;
+- (RTPeopleDiscoveryServiceConfiguration)initWithServiceLevel:(unint64_t)level storageDuration:(unint64_t)duration observationInterval:(unint64_t)interval densityCallbackConfiguration:(id)configuration;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)descriptionDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RTPeopleDiscoveryServiceConfiguration
 
-- (RTPeopleDiscoveryServiceConfiguration)initWithServiceLevel:(unint64_t)a3 storageDuration:(unint64_t)a4 observationInterval:(unint64_t)a5 densityCallbackConfiguration:(id)a6
+- (RTPeopleDiscoveryServiceConfiguration)initWithServiceLevel:(unint64_t)level storageDuration:(unint64_t)duration observationInterval:(unint64_t)interval densityCallbackConfiguration:(id)configuration
 {
   v22 = *MEMORY[0x1E69E9840];
-  v11 = a6;
+  configurationCopy = configuration;
   v19.receiver = self;
   v19.super_class = RTPeopleDiscoveryServiceConfiguration;
   v12 = [(RTPeopleDiscoveryServiceConfiguration *)&v19 init];
@@ -27,130 +27,130 @@
   if (v12)
   {
     v12->_advertisingCapability = 0;
-    if (a3 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+    if (level - 3 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v14 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        v21 = a3;
+        intervalCopy = level;
         _os_log_error_impl(&dword_1BF1C4000, v14, OS_LOG_TYPE_ERROR, "serviceLevel %d out of bounds", buf, 8u);
       }
 
-      a3 = 1;
+      level = 1;
     }
 
-    v13->_serviceLevel = a3;
-    if (a4 - 4 <= 0xFFFFFFFFFFFFFFFCLL)
+    v13->_serviceLevel = level;
+    if (duration - 4 <= 0xFFFFFFFFFFFFFFFCLL)
     {
       v15 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        v21 = a4;
+        intervalCopy = duration;
         _os_log_error_impl(&dword_1BF1C4000, v15, OS_LOG_TYPE_ERROR, "storageDuration %d out of bounds", buf, 8u);
       }
 
-      a4 = 1;
+      duration = 1;
     }
 
-    v13->_storageDuration = a4;
-    if (a5 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+    v13->_storageDuration = duration;
+    if (interval - 3 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v16 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        v21 = a5;
+        intervalCopy = interval;
         _os_log_error_impl(&dword_1BF1C4000, v16, OS_LOG_TYPE_ERROR, "observationInterval %d out of bounds", buf, 8u);
       }
 
-      a5 = 1;
+      interval = 1;
     }
 
-    v13->_observationInterval = a5;
-    objc_storeStrong(&v13->_densityCallbackConfiguration, a6);
+    v13->_observationInterval = interval;
+    objc_storeStrong(&v13->_densityCallbackConfiguration, configuration);
   }
 
   v17 = *MEMORY[0x1E69E9840];
   return v13;
 }
 
-- (RTPeopleDiscoveryServiceConfiguration)initWithAdvertisingCapability:(unint64_t)a3 serviceLevel:(unint64_t)a4 observationInterval:(unint64_t)a5 storageDuration:(unint64_t)a6 densityCallbackConfiguration:(id)a7
+- (RTPeopleDiscoveryServiceConfiguration)initWithAdvertisingCapability:(unint64_t)capability serviceLevel:(unint64_t)level observationInterval:(unint64_t)interval storageDuration:(unint64_t)duration densityCallbackConfiguration:(id)configuration
 {
   v24 = *MEMORY[0x1E69E9840];
-  v13 = a7;
+  configurationCopy = configuration;
   v21.receiver = self;
   v21.super_class = RTPeopleDiscoveryServiceConfiguration;
   v14 = [(RTPeopleDiscoveryServiceConfiguration *)&v21 init];
   v15 = v14;
   if (v14)
   {
-    v14->_advertisingCapability = a3;
-    if (a4 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+    v14->_advertisingCapability = capability;
+    if (level - 3 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v16 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        v23 = a4;
+        durationCopy = level;
         _os_log_error_impl(&dword_1BF1C4000, v16, OS_LOG_TYPE_ERROR, "serviceLevel %d out of bounds", buf, 8u);
       }
 
-      a4 = 1;
+      level = 1;
     }
 
-    v15->_serviceLevel = a4;
-    if (a5 - 3 <= 0xFFFFFFFFFFFFFFFDLL)
+    v15->_serviceLevel = level;
+    if (interval - 3 <= 0xFFFFFFFFFFFFFFFDLL)
     {
       v17 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        v23 = a5;
+        durationCopy = interval;
         _os_log_error_impl(&dword_1BF1C4000, v17, OS_LOG_TYPE_ERROR, "observationInterval %d out of bounds", buf, 8u);
       }
 
-      a5 = 1;
+      interval = 1;
     }
 
-    v15->_observationInterval = a5;
-    if (a6 - 4 <= 0xFFFFFFFFFFFFFFFCLL)
+    v15->_observationInterval = interval;
+    if (duration - 4 <= 0xFFFFFFFFFFFFFFFCLL)
     {
       v18 = _rt_log_facility_get_os_log(RTLogFacilityGathering);
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
         *buf = 67109120;
-        v23 = a6;
+        durationCopy = duration;
         _os_log_error_impl(&dword_1BF1C4000, v18, OS_LOG_TYPE_ERROR, "storageDuration %d out of bounds", buf, 8u);
       }
 
-      a6 = 1;
+      duration = 1;
     }
 
-    v15->_storageDuration = a6;
-    objc_storeStrong(&v15->_densityCallbackConfiguration, a7);
+    v15->_storageDuration = duration;
+    objc_storeStrong(&v15->_densityCallbackConfiguration, configuration);
   }
 
   v19 = *MEMORY[0x1E69E9840];
   return v15;
 }
 
-+ (unint64_t)aggregateServiceLevel:(unint64_t)a3 with:(unint64_t)a4
++ (unint64_t)aggregateServiceLevel:(unint64_t)level with:(unint64_t)with
 {
-  v4 = a4;
-  v5 = a3;
+  withCopy = with;
+  levelCopy = level;
   v13 = *MEMORY[0x1E69E9840];
-  if (a3 - 3 >= 0xFFFFFFFFFFFFFFFELL && a4 - 3 > 0xFFFFFFFFFFFFFFFDLL)
+  if (level - 3 >= 0xFFFFFFFFFFFFFFFELL && with - 3 > 0xFFFFFFFFFFFFFFFDLL)
   {
-    if (dword_1BF231920[a3] <= dword_1BF231920[a4])
+    if (dword_1BF231920[level] <= dword_1BF231920[with])
     {
-      result = a4;
+      result = with;
     }
 
     else
     {
-      result = a3;
+      result = level;
     }
   }
 
@@ -160,9 +160,9 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v10[0] = 67109376;
-      v10[1] = v5;
+      v10[1] = levelCopy;
       v11 = 1024;
-      v12 = v4;
+      v12 = withCopy;
       _os_log_error_impl(&dword_1BF1C4000, v7, OS_LOG_TYPE_ERROR, "service level %d or %d out of bounds", v10, 0xEu);
     }
 
@@ -173,21 +173,21 @@
   return result;
 }
 
-+ (unint64_t)aggregateObservationInterval:(unint64_t)a3 with:(unint64_t)a4
++ (unint64_t)aggregateObservationInterval:(unint64_t)interval with:(unint64_t)with
 {
-  v4 = a4;
-  v5 = a3;
+  withCopy = with;
+  intervalCopy = interval;
   v13 = *MEMORY[0x1E69E9840];
-  if (a3 - 3 >= 0xFFFFFFFFFFFFFFFELL && a4 - 3 > 0xFFFFFFFFFFFFFFFDLL)
+  if (interval - 3 >= 0xFFFFFFFFFFFFFFFELL && with - 3 > 0xFFFFFFFFFFFFFFFDLL)
   {
-    if (dword_1BF23192C[a3] <= dword_1BF23192C[a4])
+    if (dword_1BF23192C[interval] <= dword_1BF23192C[with])
     {
-      result = a4;
+      result = with;
     }
 
     else
     {
-      result = a3;
+      result = interval;
     }
   }
 
@@ -197,9 +197,9 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v10[0] = 67109376;
-      v10[1] = v5;
+      v10[1] = intervalCopy;
       v11 = 1024;
-      v12 = v4;
+      v12 = withCopy;
       _os_log_error_impl(&dword_1BF1C4000, v7, OS_LOG_TYPE_ERROR, "observation interval %d or %d out of bounds", v10, 0xEu);
     }
 
@@ -210,21 +210,21 @@
   return result;
 }
 
-+ (unint64_t)aggregateStorageDuration:(unint64_t)a3 with:(unint64_t)a4
++ (unint64_t)aggregateStorageDuration:(unint64_t)duration with:(unint64_t)with
 {
-  v4 = a4;
-  v5 = a3;
+  withCopy = with;
+  durationCopy = duration;
   v13 = *MEMORY[0x1E69E9840];
-  if (a3 - 4 >= 0xFFFFFFFFFFFFFFFDLL && a4 - 4 > 0xFFFFFFFFFFFFFFFCLL)
+  if (duration - 4 >= 0xFFFFFFFFFFFFFFFDLL && with - 4 > 0xFFFFFFFFFFFFFFFCLL)
   {
-    if (dword_1BF231910[a3] <= dword_1BF231910[a4])
+    if (dword_1BF231910[duration] <= dword_1BF231910[with])
     {
-      result = a4;
+      result = with;
     }
 
     else
     {
-      result = a3;
+      result = duration;
     }
   }
 
@@ -234,9 +234,9 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v10[0] = 67109376;
-      v10[1] = v5;
+      v10[1] = durationCopy;
       v11 = 1024;
-      v12 = v4;
+      v12 = withCopy;
       _os_log_error_impl(&dword_1BF1C4000, v7, OS_LOG_TYPE_ERROR, "storage duration %d or %d out of bounds", v10, 0xEu);
     }
 
@@ -247,15 +247,15 @@
   return result;
 }
 
-+ (double)secondsForStorageDuration:(unint64_t)a3
++ (double)secondsForStorageDuration:(unint64_t)duration
 {
   result = 86400.0;
-  if (a3 != 2)
+  if (duration != 2)
   {
     result = 0.0;
   }
 
-  if (a3 == 3)
+  if (duration == 3)
   {
     return 2419200.0;
   }
@@ -263,10 +263,10 @@
   return result;
 }
 
-- (RTPeopleDiscoveryServiceConfiguration)initWithAggregation:(id)a3
+- (RTPeopleDiscoveryServiceConfiguration)initWithAggregation:(id)aggregation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  aggregationCopy = aggregation;
   v19.receiver = self;
   v19.super_class = RTPeopleDiscoveryServiceConfiguration;
   v5 = [(RTPeopleDiscoveryServiceConfiguration *)&v19 init];
@@ -279,7 +279,7 @@
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v4;
+    v7 = aggregationCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v8)
     {
@@ -315,10 +315,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -328,24 +328,24 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(RTPeopleDiscoveryServiceConfiguration *)self densityCallbackConfiguration];
-      if (v6)
+      v5 = equalCopy;
+      densityCallbackConfiguration = [(RTPeopleDiscoveryServiceConfiguration *)self densityCallbackConfiguration];
+      if (densityCallbackConfiguration)
       {
         v7 = 0;
       }
 
       else
       {
-        v9 = [(RTPeopleDiscoveryServiceConfiguration *)v5 densityCallbackConfiguration];
-        v7 = v9 == 0;
+        densityCallbackConfiguration2 = [(RTPeopleDiscoveryServiceConfiguration *)v5 densityCallbackConfiguration];
+        v7 = densityCallbackConfiguration2 == 0;
       }
 
-      v10 = [(RTPeopleDiscoveryServiceConfiguration *)self advertisingCapability];
-      if (v10 == [(RTPeopleDiscoveryServiceConfiguration *)v5 advertisingCapability]&& (v11 = [(RTPeopleDiscoveryServiceConfiguration *)self serviceLevel], v11 == [(RTPeopleDiscoveryServiceConfiguration *)v5 serviceLevel]) && (v12 = [(RTPeopleDiscoveryServiceConfiguration *)self observationInterval], v12 == [(RTPeopleDiscoveryServiceConfiguration *)v5 observationInterval]))
+      advertisingCapability = [(RTPeopleDiscoveryServiceConfiguration *)self advertisingCapability];
+      if (advertisingCapability == [(RTPeopleDiscoveryServiceConfiguration *)v5 advertisingCapability]&& (v11 = [(RTPeopleDiscoveryServiceConfiguration *)self serviceLevel], v11 == [(RTPeopleDiscoveryServiceConfiguration *)v5 serviceLevel]) && (v12 = [(RTPeopleDiscoveryServiceConfiguration *)self observationInterval], v12 == [(RTPeopleDiscoveryServiceConfiguration *)v5 observationInterval]))
       {
-        v13 = [(RTPeopleDiscoveryServiceConfiguration *)self storageDuration];
-        v8 = v13 == [(RTPeopleDiscoveryServiceConfiguration *)v5 storageDuration];
+        storageDuration = [(RTPeopleDiscoveryServiceConfiguration *)self storageDuration];
+        v8 = storageDuration == [(RTPeopleDiscoveryServiceConfiguration *)v5 storageDuration];
         if (v8)
         {
           v14 = 0;
@@ -358,9 +358,9 @@
 
         if (((v14 | v7) & 1) == 0)
         {
-          v15 = [(RTPeopleDiscoveryServiceConfiguration *)self densityCallbackConfiguration];
-          v16 = [(RTPeopleDiscoveryServiceConfiguration *)v5 densityCallbackConfiguration];
-          v8 = [v15 isEqual:v16];
+          densityCallbackConfiguration3 = [(RTPeopleDiscoveryServiceConfiguration *)self densityCallbackConfiguration];
+          densityCallbackConfiguration4 = [(RTPeopleDiscoveryServiceConfiguration *)v5 densityCallbackConfiguration];
+          v8 = [densityCallbackConfiguration3 isEqual:densityCallbackConfiguration4];
         }
       }
 
@@ -510,9 +510,9 @@
 - (id)description
 {
   v17 = *MEMORY[0x1E69E9840];
-  v2 = [(RTPeopleDiscoveryServiceConfiguration *)self descriptionDictionary];
+  descriptionDictionary = [(RTPeopleDiscoveryServiceConfiguration *)self descriptionDictionary];
   v12 = 0;
-  v3 = [MEMORY[0x1E696ACB0] JSONStringFromNSDictionary:v2 error:&v12];
+  v3 = [MEMORY[0x1E696ACB0] JSONStringFromNSDictionary:descriptionDictionary error:&v12];
   v4 = v12;
   if (v4)
   {
@@ -528,22 +528,22 @@
       _os_log_error_impl(&dword_1BF1C4000, v5, OS_LOG_TYPE_ERROR, "%@ instance failed to create description:%@", buf, 0x16u);
     }
 
-    v6 = [MEMORY[0x1E696AEC0] string];
+    string = [MEMORY[0x1E696AEC0] string];
   }
 
   else
   {
-    v6 = v3;
+    string = v3;
   }
 
-  v7 = v6;
+  v7 = string;
 
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   advertisingCapability = self->_advertisingCapability;
@@ -555,28 +555,28 @@
   return [v4 initWithAdvertisingCapability:advertisingCapability serviceLevel:serviceLevel observationInterval:observationInterval storageDuration:storageDuration densityCallbackConfiguration:densityCallbackConfiguration];
 }
 
-- (RTPeopleDiscoveryServiceConfiguration)initWithCoder:(id)a3
+- (RTPeopleDiscoveryServiceConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"AdvertisingCapability"];
-  v6 = [v4 decodeIntegerForKey:@"ServiceLevel"];
-  v7 = [v4 decodeIntegerForKey:@"ObservationInterval"];
-  v8 = [v4 decodeIntegerForKey:@"StorageDuration"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DensityCallbackConfig"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"AdvertisingCapability"];
+  v6 = [coderCopy decodeIntegerForKey:@"ServiceLevel"];
+  v7 = [coderCopy decodeIntegerForKey:@"ObservationInterval"];
+  v8 = [coderCopy decodeIntegerForKey:@"StorageDuration"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DensityCallbackConfig"];
 
   v10 = [(RTPeopleDiscoveryServiceConfiguration *)self initWithAdvertisingCapability:v5 serviceLevel:v6 observationInterval:v7 storageDuration:v8 densityCallbackConfiguration:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   advertisingCapability = self->_advertisingCapability;
-  v5 = a3;
-  [v5 encodeInteger:advertisingCapability forKey:@"AdvertisingCapability"];
-  [v5 encodeInteger:self->_serviceLevel forKey:@"ServiceLevel"];
-  [v5 encodeInteger:self->_observationInterval forKey:@"ObservationInterval"];
-  [v5 encodeInteger:self->_storageDuration forKey:@"StorageDuration"];
-  [v5 encodeObject:self->_densityCallbackConfiguration forKey:@"DensityCallbackConfig"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:advertisingCapability forKey:@"AdvertisingCapability"];
+  [coderCopy encodeInteger:self->_serviceLevel forKey:@"ServiceLevel"];
+  [coderCopy encodeInteger:self->_observationInterval forKey:@"ObservationInterval"];
+  [coderCopy encodeInteger:self->_storageDuration forKey:@"StorageDuration"];
+  [coderCopy encodeObject:self->_densityCallbackConfiguration forKey:@"DensityCallbackConfig"];
 }
 
 @end

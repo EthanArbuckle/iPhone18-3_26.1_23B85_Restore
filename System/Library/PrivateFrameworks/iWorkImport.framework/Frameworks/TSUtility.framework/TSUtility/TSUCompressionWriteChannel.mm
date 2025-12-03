@@ -1,25 +1,25 @@
 @interface TSUCompressionWriteChannel
-- (TSUCompressionWriteChannel)initWithWriteChannel:(id)a3 compressionAlgorithm:(int)a4 operation:(int)a5;
+- (TSUCompressionWriteChannel)initWithWriteChannel:(id)channel compressionAlgorithm:(int)algorithm operation:(int)operation;
 - (void)close;
 - (void)dealloc;
-- (void)flushWithCompletion:(id)a3;
-- (void)writeData:(id)a3 handler:(id)a4;
+- (void)flushWithCompletion:(id)completion;
+- (void)writeData:(id)data handler:(id)handler;
 @end
 
 @implementation TSUCompressionWriteChannel
 
-- (TSUCompressionWriteChannel)initWithWriteChannel:(id)a3 compressionAlgorithm:(int)a4 operation:(int)a5
+- (TSUCompressionWriteChannel)initWithWriteChannel:(id)channel compressionAlgorithm:(int)algorithm operation:(int)operation
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v9 = a3;
+  v5 = *&operation;
+  v6 = *&algorithm;
+  channelCopy = channel;
   v15.receiver = self;
   v15.super_class = TSUCompressionWriteChannel;
   v10 = [(TSUCompressionWriteChannel *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_writeChannel, a3);
+    objc_storeStrong(&v10->_writeChannel, channel);
     v12 = [[TSUStreamCompression alloc] initWithAlgorithm:v6 operation:v5];
     compressor = v11->_compressor;
     v11->_compressor = v12;
@@ -55,22 +55,22 @@
   self->_compressor = 0;
 }
 
-- (void)flushWithCompletion:(id)a3
+- (void)flushWithCompletion:(id)completion
 {
   v4 = MEMORY[0x277CCACA8];
-  v7 = a3;
+  completionCopy = completion;
   v5 = [v4 stringWithUTF8String:"-[TSUCompressionWriteChannel flushWithCompletion:]"];
   v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/utility/TSUCompressionWriteChannel.m"];
   [TSUAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:54 isFatal:0 description:"Flushing Compression write channel does not flush what's buffered in the compressor."];
 
   +[TSUAssertionHandler logBacktraceThrottled];
-  [(TSUStreamWriteChannel *)self->_writeChannel flushWithCompletion:v7];
+  [(TSUStreamWriteChannel *)self->_writeChannel flushWithCompletion:completionCopy];
 }
 
-- (void)writeData:(id)a3 handler:(id)a4
+- (void)writeData:(id)data handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  handlerCopy = handler;
   v16[0] = 0;
   v16[1] = v16;
   v16[2] = 0x2020000000;
@@ -83,7 +83,7 @@
   v15 = v16;
   v9 = v8;
   v13 = v9;
-  v10 = v7;
+  v10 = handlerCopy;
   v14 = v10;
   [(TSUStreamCompression *)self->_compressor setHandler:v12];
   v11[0] = MEMORY[0x277D85DD0];
@@ -91,7 +91,7 @@
   v11[2] = sub_27706DA14;
   v11[3] = &unk_27A701B60;
   v11[4] = self;
-  dispatch_data_apply(v6, v11);
+  dispatch_data_apply(dataCopy, v11);
 
   _Block_object_dispose(v16, 8);
 }

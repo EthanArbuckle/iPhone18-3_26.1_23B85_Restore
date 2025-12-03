@@ -4,7 +4,7 @@
 - (BOOL)isDraggingInteractionEnabled;
 - (BOOL)isTouchOutsideDismissalEnabled;
 - (BSAnimationSettings)bannerSizeTransitionAnimationSettings;
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
 - (NSSet)backgroundActivitiesToSuppress;
 - (NSString)associatedAppBundleIdentifier;
 - (NSString)elementIdentifier;
@@ -18,21 +18,21 @@
 - (UIColor)keyColor;
 - (UIEdgeInsets)bannerContentOutsets;
 - (UIViewController)viewController;
-- (_TtC15ConversationKit30SystemBannerHostViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit30SystemBannerHostViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (int64_t)maximumLayoutMode;
 - (int64_t)preferredLayoutMode;
 - (unint64_t)presentationBehaviors;
-- (void)callStatusChanged:(id)a3;
-- (void)didMoveToParentViewController:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
+- (void)callStatusChanged:(id)changed;
+- (void)didMoveToParentViewController:(id)controller;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
 - (void)requestPreferredLayoutMode;
-- (void)setCanRequestAlertingAssertion:(BOOL)a3;
-- (void)setPresentableContext:(id)a3;
-- (void)setRequesterIdentifier:(id)a3;
+- (void)setCanRequestAlertingAssertion:(BOOL)assertion;
+- (void)setPresentableContext:(id)context;
+- (void)setRequesterIdentifier:(id)identifier;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation SystemBannerHostViewController
@@ -53,9 +53,9 @@
   return v4;
 }
 
-- (void)setRequesterIdentifier:(id)a3
+- (void)setRequesterIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v6 = v5;
@@ -67,7 +67,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   SystemBannerHostViewController.requesterIdentifier.setter(v4, v6);
 }
 
@@ -78,21 +78,21 @@
   return v2;
 }
 
-- (void)setPresentableContext:(id)a3
+- (void)setPresentableContext:(id)context
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   SystemBannerHostViewController.presentableContext.setter();
 }
 
-- (void)callStatusChanged:(id)a3
+- (void)callStatusChanged:(id)changed
 {
   v4 = type metadata accessor for Notification();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   static Notification._unconditionallyBridgeFromObjectiveC(_:)();
-  v8 = self;
+  selfCopy = self;
   SystemBannerHostViewController.callStatusChanged(_:)();
 
   (*(v5 + 8))(v7, v4);
@@ -100,44 +100,44 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   SystemBannerHostViewController.viewDidLoad()();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  SystemBannerHostViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  SystemBannerHostViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (void)viewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SystemBannerHostViewController.viewWillLayoutSubviews()();
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  SystemBannerHostViewController.didMove(toParent:)(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  SystemBannerHostViewController.didMove(toParent:)(controller);
 }
 
 - (void)requestPreferredLayoutMode
 {
-  v2 = self;
+  selfCopy = self;
   SystemBannerHostViewController.requestPreferredLayoutMode()();
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  reasonCopy = reason;
+  selfCopy = self;
   SystemBannerHostViewController.presentableDidDisappear(asBanner:withReason:)();
   swift_unknownObjectRelease();
 }
@@ -159,7 +159,7 @@
 
 - (UIEdgeInsets)bannerContentOutsets
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SystemBannerHostViewController.bannerContentOutsets.getter();
   v5 = v4;
   v7 = v6;
@@ -178,7 +178,7 @@
 
 - (BOOL)isTouchOutsideDismissalEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SystemBannerHostViewController.isTouchOutsideDismissalEnabled.getter();
 
   return v3;
@@ -186,7 +186,7 @@
 
 - (BOOL)isDraggingDismissalEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SystemBannerHostViewController.eligibleForDismissal.getter();
 
   return v3 & 1;
@@ -194,7 +194,7 @@
 
 - (BOOL)isDraggingInteractionEnabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SystemBannerHostViewController.isDraggingInteractionEnabled.getter();
 
   return v3 & 1;
@@ -202,17 +202,17 @@
 
 - (BSAnimationSettings)bannerSizeTransitionAnimationSettings
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SystemBannerHostViewController.bannerSizeTransitionAnimationSettings.getter();
 
   return v3;
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   v9 = SystemBannerHostViewController.preferredContentSize(withPresentationSize:containerSize:)(__PAIR128__(*&height, *&width), __PAIR128__(v8, v7));
 
   v10 = v9.width;
@@ -224,21 +224,21 @@
 
 - (SBUISystemApertureElement)systemApertureElementViewController
 {
-  v2 = self;
+  selfCopy = self;
   SystemBannerHostViewController.systemApertureElementViewController.getter();
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)setCanRequestAlertingAssertion:(BOOL)a3
+- (void)setCanRequestAlertingAssertion:(BOOL)assertion
 {
-  v4 = self;
-  SystemBannerHostViewController.canRequestAlertingAssertion.setter(a3);
+  selfCopy = self;
+  SystemBannerHostViewController.canRequestAlertingAssertion.setter(assertion);
 }
 
 - (int64_t)preferredLayoutMode
 {
-  v2 = self;
+  selfCopy = self;
   SystemBannerHostViewController.preferredLayoutMode.getter();
   v4 = v3;
 
@@ -247,7 +247,7 @@
 
 - (int64_t)maximumLayoutMode
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SystemBannerHostViewController.maximumLayoutMode.getter();
 
   return v3;
@@ -290,7 +290,7 @@
 
 - (NSString)associatedAppBundleIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   SystemBannerHostViewController.associatedAppBundleIdentifier.getter();
   v4 = v3;
   v6 = v5;
@@ -310,7 +310,7 @@
 
 - (NSSet)backgroundActivitiesToSuppress
 {
-  v2 = self;
+  selfCopy = self;
   SystemBannerHostViewController.backgroundActivitiesToSuppress.getter();
 
   type metadata accessor for STBackgroundActivityIdentifier(0);
@@ -322,7 +322,7 @@
 
 - (unint64_t)presentationBehaviors
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SystemBannerHostViewController.presentationBehaviors.getter();
 
   return v3;
@@ -335,22 +335,22 @@
   return v2;
 }
 
-- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)a3
+- (void)viewWillLayoutSubviewsWithTransitionCoordinator:(id)coordinator
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   SystemBannerHostViewController.viewWillLayoutSubviews(with:)();
   swift_unknownObjectRelease();
 }
 
-- (_TtC15ConversationKit30SystemBannerHostViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit30SystemBannerHostViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   SystemBannerHostViewController.init(nibName:bundle:)();
 }
 

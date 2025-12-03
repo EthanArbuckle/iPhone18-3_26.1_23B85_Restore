@@ -1,8 +1,8 @@
 @interface SBHLightSourceManagerAssertion
 - (SBHLightSourceManager)lightSourceManager;
-- (SBHLightSourceManagerAssertion)initWithLightSourceManager:(id)a3 type:(int64_t)a4 reason:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBHLightSourceManagerAssertion)initWithLightSourceManager:(id)manager type:(int64_t)type reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -10,19 +10,19 @@
 
 @implementation SBHLightSourceManagerAssertion
 
-- (SBHLightSourceManagerAssertion)initWithLightSourceManager:(id)a3 type:(int64_t)a4 reason:(id)a5
+- (SBHLightSourceManagerAssertion)initWithLightSourceManager:(id)manager type:(int64_t)type reason:(id)reason
 {
-  v8 = a3;
-  v9 = a5;
+  managerCopy = manager;
+  reasonCopy = reason;
   v15.receiver = self;
   v15.super_class = SBHLightSourceManagerAssertion;
   v10 = [(SBHLightSourceManagerAssertion *)&v15 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeWeak(&v10->_lightSourceManager, v8);
-    v11->_type = a4;
-    v12 = [v9 copy];
+    objc_storeWeak(&v10->_lightSourceManager, managerCopy);
+    v11->_type = type;
+    v12 = [reasonCopy copy];
     reason = v11->_reason;
     v11->_reason = v12;
   }
@@ -35,8 +35,8 @@
   if (![(SBHLightSourceManagerAssertion *)self isInvalidated])
   {
     [(SBHLightSourceManagerAssertion *)self setInvalidated:1];
-    v3 = [(SBHLightSourceManagerAssertion *)self lightSourceManager];
-    [v3 invalidateAssertion:self];
+    lightSourceManager = [(SBHLightSourceManagerAssertion *)self lightSourceManager];
+    [lightSourceManager invalidateAssertion:self];
   }
 }
 
@@ -55,33 +55,33 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBHLightSourceManagerAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBHLightSourceManagerAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBHLightSourceManagerAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBHLightSourceManagerAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBHLightSourceManagerAssertion *)self succinctDescriptionBuilder];
-  v5 = [(SBHLightSourceManagerAssertion *)self lightSourceManager];
-  v6 = [v4 appendPointer:v5 withName:@"lightSourceManager"];
+  succinctDescriptionBuilder = [(SBHLightSourceManagerAssertion *)self succinctDescriptionBuilder];
+  lightSourceManager = [(SBHLightSourceManagerAssertion *)self lightSourceManager];
+  v6 = [succinctDescriptionBuilder appendPointer:lightSourceManager withName:@"lightSourceManager"];
 
-  v7 = [v4 appendInteger:-[SBHLightSourceManagerAssertion type](self withName:{"type"), @"type"}];
-  v8 = [(SBHLightSourceManagerAssertion *)self reason];
-  v9 = [v4 appendObject:v8 withName:@"reason"];
+  v7 = [succinctDescriptionBuilder appendInteger:-[SBHLightSourceManagerAssertion type](self withName:{"type"), @"type"}];
+  reason = [(SBHLightSourceManagerAssertion *)self reason];
+  v9 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
-  v10 = [v4 appendBool:-[SBHLightSourceManagerAssertion isInvalidated](self withName:"isInvalidated") ifEqualTo:{@"isInvalidated", 1}];
+  v10 = [succinctDescriptionBuilder appendBool:-[SBHLightSourceManagerAssertion isInvalidated](self withName:"isInvalidated") ifEqualTo:{@"isInvalidated", 1}];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 - (SBHLightSourceManager)lightSourceManager

@@ -1,50 +1,50 @@
 @interface HDActivityCacheStatisticsBuilder
 - (HDActivityCacheStatisticsBuilder)init;
-- (HDActivityCacheStatisticsBuilder)initWithDateInterval:(id)a3 loggingName:(id)a4;
+- (HDActivityCacheStatisticsBuilder)initWithDateInterval:(id)interval loggingName:(id)name;
 - (HDActivityCacheStatisticsBuilderSourceDelegate)sourceDelegate;
 - (id).cxx_construct;
 - (id)activeEnergyValue;
-- (id)createExerciseStatisticsWithIntervalComponents:(id)a3 calendar:(id)a4;
-- (id)createMoveMinuteStatisticsWithIntervalComponents:(id)a3 calendar:(id)a4;
-- (id)createMoveStatisticsWithIntervalComponents:(id)a3 calendar:(id)a4;
-- (id)createStandStatisticsWithCalendar:(id)a3;
-- (id)createStatisticsCollectionWithType:(id)a3 intervalComponents:(id)a4 calendar:(id)a5;
+- (id)createExerciseStatisticsWithIntervalComponents:(id)components calendar:(id)calendar;
+- (id)createMoveMinuteStatisticsWithIntervalComponents:(id)components calendar:(id)calendar;
+- (id)createMoveStatisticsWithIntervalComponents:(id)components calendar:(id)calendar;
+- (id)createStandStatisticsWithCalendar:(id)calendar;
+- (id)createStatisticsCollectionWithType:(id)type intervalComponents:(id)components calendar:(id)calendar;
 - (id)distanceWalkingValue;
-- (id)workoutSamplesWithSourceManager:(id)a3;
+- (id)workoutSamplesWithSourceManager:(id)manager;
 - (int64_t)exerciseMinuteValue;
 - (int64_t)flightsClimbedValue;
 - (int64_t)moveMinuteValue;
 - (int64_t)pushCountValue;
 - (int64_t)standHourValue;
 - (int64_t)stepCountValue;
-- (void)addActivationLogSamples:(const void *)a3;
-- (void)addDeviceSample:(HDActivityCacheStatisticsBuilderSample *)a3 typeCode:(int64_t)a4;
-- (void)addDeviceSamples:(const void *)a3 typeCode:(int64_t)a4;
-- (void)addStandHourSamples:(const void *)a3;
-- (void)addWorkoutSample:(HDActivityCacheStatisticsBuilderSample *)a3 typeCode:(int64_t)a4;
-- (void)addWorkouts:(const void *)a3;
+- (void)addActivationLogSamples:(const void *)samples;
+- (void)addDeviceSample:(HDActivityCacheStatisticsBuilderSample *)sample typeCode:(int64_t)code;
+- (void)addDeviceSamples:(const void *)samples typeCode:(int64_t)code;
+- (void)addStandHourSamples:(const void *)samples;
+- (void)addWorkoutSample:(HDActivityCacheStatisticsBuilderSample *)sample typeCode:(int64_t)code;
+- (void)addWorkouts:(const void *)workouts;
 @end
 
 @implementation HDActivityCacheStatisticsBuilder
 
-- (HDActivityCacheStatisticsBuilder)initWithDateInterval:(id)a3 loggingName:(id)a4
+- (HDActivityCacheStatisticsBuilder)initWithDateInterval:(id)interval loggingName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  intervalCopy = interval;
+  nameCopy = name;
   v15.receiver = self;
   v15.super_class = HDActivityCacheStatisticsBuilder;
   v8 = [(HDActivityCacheStatisticsBuilder *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_loggingName, a4);
+    objc_storeStrong(&v8->_loggingName, name);
     *&v9->_intervalDuration = HDActivityCacheStatisticsBuilderDefaultIntervalDuration;
-    v10 = [v6 startDate];
-    [v10 timeIntervalSinceReferenceDate];
+    startDate = [intervalCopy startDate];
+    [startDate timeIntervalSinceReferenceDate];
     v9->_builderStartTime = v11;
 
-    v12 = [v6 endDate];
-    [v12 timeIntervalSinceReferenceDate];
+    endDate = [intervalCopy endDate];
+    [endDate timeIntervalSinceReferenceDate];
     v9->_builderEndTime = v13;
 
     v9->_deepBreathingDurationValue = 0.0;
@@ -330,11 +330,11 @@
   return [(NSNumber *)lastExerciseMinuteValue integerValue];
 }
 
-- (void)addWorkouts:(const void *)a3
+- (void)addWorkouts:(const void *)workouts
 {
-  v5 = *a3;
-  v6 = *(a3 + 1);
-  v7 = *a3;
+  v5 = *workouts;
+  v6 = *(workouts + 1);
+  v7 = *workouts;
   if (v6 != v7)
   {
     v8 = (v6 - v7) >> 6;
@@ -349,7 +349,7 @@
     else
     {
       sub_169C0(&self->_workouts.__begin_, v8 + (v11 >> 6));
-      sub_16A60(&self->_workouts.__begin_, self->_workouts.__end_, *a3, *(a3 + 1), (*(a3 + 1) - *a3) >> 6);
+      sub_16A60(&self->_workouts.__begin_, self->_workouts.__end_, *workouts, *(workouts + 1), (*(workouts + 1) - *workouts) >> 6);
       sub_16C90(self->_workouts.__begin_, self->_workouts.__begin_ + v11, self->_workouts.__end_, &v12);
     }
 
@@ -365,16 +365,16 @@ LABEL_8:
   }
 }
 
-- (void)addStandHourSamples:(const void *)a3
+- (void)addStandHourSamples:(const void *)samples
 {
-  sub_1A950(&self->_standHourSamples.__begin_, self->_standHourSamples.__end_, *a3, *(a3 + 1), 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3));
+  sub_1A950(&self->_standHourSamples.__begin_, self->_standHourSamples.__end_, *samples, *(samples + 1), 0xAAAAAAAAAAAAAAABLL * ((*(samples + 1) - *samples) >> 3));
   lastStandHourValue = self->_lastStandHourValue;
   self->_lastStandHourValue = 0;
 }
 
-- (void)addActivationLogSamples:(const void *)a3
+- (void)addActivationLogSamples:(const void *)samples
 {
-  sub_18DE0(self, a3, &v8);
+  sub_18DE0(self, samples, &v8);
   if (v9 == v8)
   {
     sub_21AA0(self);
@@ -411,17 +411,17 @@ LABEL_9:
   sub_CBB8(&v11);
 }
 
-- (id)createStatisticsCollectionWithType:(id)a3 intervalComponents:(id)a4 calendar:(id)a5
+- (id)createStatisticsCollectionWithType:(id)type intervalComponents:(id)components calendar:(id)calendar
 {
-  v8 = a3;
-  v9 = a4;
-  v35 = a5;
-  v42[0] = [v8 code];
-  v10 = [v8 canonicalUnit];
+  typeCopy = type;
+  componentsCopy = components;
+  calendarCopy = calendar;
+  v42[0] = [typeCopy code];
+  canonicalUnit = [typeCopy canonicalUnit];
   v11 = [NSDate dateWithTimeIntervalSinceReferenceDate:self->_builderStartTime];
-  v12 = [v35 dateByAddingComponents:v9 toDate:v11 options:0];
+  v12 = [calendarCopy dateByAddingComponents:componentsCopy toDate:v11 options:0];
   v36 = [NSDate dateWithTimeIntervalSinceReferenceDate:self->_builderEndTime];
-  v13 = [[HKStatisticsCollection alloc] initWithAnchorDate:v11 statisticsInterval:v9];
+  v13 = [[HKStatisticsCollection alloc] initWithAnchorDate:v11 statisticsInterval:componentsCopy];
   sub_179D8(self, v42[0], &__p);
   v42[2] = v42;
   v14 = sub_1CB64(&self->_sourceTotalsByIntervalIndexByTypeCode, v42);
@@ -431,7 +431,7 @@ LABEL_9:
   {
     v20 = self->_builderStartTime + *(v14[5] + 32) * self->_intervalDuration;
     v21 = sub_21CD4(self, (v14 + 5));
-    v34 = v10;
+    v34 = canonicalUnit;
     while (1)
     {
       [v11 timeIntervalSinceReferenceDate];
@@ -466,20 +466,20 @@ LABEL_9:
 
         if (v29 > 0.00000011920929)
         {
-          v30 = [[HKStatistics alloc] initWithDataType:v8 startDate:v11 endDate:v12];
-          v31 = [HKQuantity quantityWithUnit:v10 doubleValue:v29];
+          v30 = [[HKStatistics alloc] initWithDataType:typeCopy startDate:v11 endDate:v12];
+          v31 = [HKQuantity quantityWithUnit:canonicalUnit doubleValue:v29];
           [v30 setSumQuantity:v31];
 
           [v30 setDataCount:1];
           [v13 _insertStatistics:v30];
 
-          v10 = v34;
+          canonicalUnit = v34;
         }
       }
 
       v32 = v12;
 
-      v33 = [v35 dateByAddingComponents:v9 toDate:v32 options:0];
+      v33 = [calendarCopy dateByAddingComponents:componentsCopy toDate:v32 options:0];
 
       v12 = v33;
       v11 = v32;
@@ -505,39 +505,39 @@ LABEL_9:
   return v13;
 }
 
-- (id)createMoveStatisticsWithIntervalComponents:(id)a3 calendar:(id)a4
+- (id)createMoveStatisticsWithIntervalComponents:(id)components calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  calendarCopy = calendar;
   v8 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierActiveEnergyBurned];
-  v9 = sub_199C0(self, v8, v6, v7);
+  v9 = sub_199C0(self, v8, componentsCopy, calendarCopy);
 
   return v9;
 }
 
-- (id)createMoveMinuteStatisticsWithIntervalComponents:(id)a3 calendar:(id)a4
+- (id)createMoveMinuteStatisticsWithIntervalComponents:(id)components calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  calendarCopy = calendar;
   v8 = [HKQuantityType quantityTypeForIdentifier:HKQuantityTypeIdentifierAppleMoveTime];
-  v9 = sub_199C0(self, v8, v6, v7);
+  v9 = sub_199C0(self, v8, componentsCopy, calendarCopy);
 
   return v9;
 }
 
-- (id)createExerciseStatisticsWithIntervalComponents:(id)a3 calendar:(id)a4
+- (id)createExerciseStatisticsWithIntervalComponents:(id)components calendar:(id)calendar
 {
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  calendarCopy = calendar;
   v8 = +[HKQuantityType briskMinuteDataType];
-  v9 = sub_199C0(self, v8, v6, v7);
+  v9 = sub_199C0(self, v8, componentsCopy, calendarCopy);
 
   return v9;
 }
 
-- (id)createStandStatisticsWithCalendar:(id)a3
+- (id)createStandStatisticsWithCalendar:(id)calendar
 {
-  v4 = a3;
+  calendarCopy = calendar;
   begin = self->_standHourSamples.__begin_;
   end = self->_standHourSamples.__end_;
   if (end == begin)
@@ -622,9 +622,9 @@ LABEL_9:
   return v21;
 }
 
-- (id)workoutSamplesWithSourceManager:(id)a3
+- (id)workoutSamplesWithSourceManager:(id)manager
 {
-  v4 = a3;
+  managerCopy = manager;
   v18 = [[NSMutableArray alloc] initWithCapacity:(self->_workouts.__end_ - self->_workouts.__begin_) >> 6];
   begin = self->_workouts.__begin_;
   end = self->_workouts.__end_;
@@ -636,7 +636,7 @@ LABEL_9:
     {
       v8 = [NSNumber numberWithLongLong:*(begin + 4), v17];
       v19 = 0;
-      v9 = [v4 clientSourceForPersistentID:v8 error:&v19];
+      v9 = [managerCopy clientSourceForPersistentID:v8 error:&v19];
       v10 = v19;
 
       if (v9)
@@ -694,26 +694,26 @@ LABEL_9:
   return self;
 }
 
-- (void)addDeviceSample:(HDActivityCacheStatisticsBuilderSample *)a3 typeCode:(int64_t)a4
+- (void)addDeviceSample:(HDActivityCacheStatisticsBuilderSample *)sample typeCode:(int64_t)code
 {
-  *&v10 = sub_1DD04(self, a2, a3, a4, v4, v5, v6, v7, v14, v15).n128_u64[0];
+  *&v10 = sub_1DD04(self, a2, sample, code, v4, v5, v6, v7, v14, v15).n128_u64[0];
   v13 = sub_1DD24(v11, v12, &std::piecewise_construct, v10);
   sub_18F18(v9, v16, v13 + 5, 0);
   sub_21910(v9, v8);
 }
 
-- (void)addDeviceSamples:(const void *)a3 typeCode:(int64_t)a4
+- (void)addDeviceSamples:(const void *)samples typeCode:(int64_t)code
 {
-  v8[0] = a4;
+  v8[0] = code;
   v8[2] = v8;
   v7 = sub_1CB64(&self->_sourceTotalsByIntervalIndexByTypeCode, v8);
-  sub_21C08(self, a3, v7 + 5, 0);
-  sub_21910(self, a4);
+  sub_21C08(self, samples, v7 + 5, 0);
+  sub_21910(self, code);
 }
 
-- (void)addWorkoutSample:(HDActivityCacheStatisticsBuilderSample *)a3 typeCode:(int64_t)a4
+- (void)addWorkoutSample:(HDActivityCacheStatisticsBuilderSample *)sample typeCode:(int64_t)code
 {
-  *&v10 = sub_1DD04(self, a2, a3, a4, v4, v5, v6, v7, v14, v15).n128_u64[0];
+  *&v10 = sub_1DD04(self, a2, sample, code, v4, v5, v6, v7, v14, v15).n128_u64[0];
   v13 = sub_1DD24(v11, v12, &std::piecewise_construct, v10);
   sub_18F18(v9, v16, v13 + 5, 1);
   sub_21910(v9, v8);

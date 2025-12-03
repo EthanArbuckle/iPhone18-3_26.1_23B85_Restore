@@ -1,31 +1,31 @@
 @interface ATXAnchorModelInferenceEngine
 + (id)sharedInstance;
 - (ATXAnchorModelInferenceEngine)init;
-- (id)currentDuetEventForAnchor:(id)a3;
-- (id)entranceCallbackForAnchor:(id)a3;
-- (id)exitCallbackForAnchor:(id)a3;
-- (id)exitNotificationIdentifierForAnchor:(id)a3;
-- (id)notificationIdentifierForAnchor:(id)a3;
+- (id)currentDuetEventForAnchor:(id)anchor;
+- (id)entranceCallbackForAnchor:(id)anchor;
+- (id)exitCallbackForAnchor:(id)anchor;
+- (id)exitNotificationIdentifierForAnchor:(id)anchor;
+- (id)notificationIdentifierForAnchor:(id)anchor;
 - (id)supportedAnchorsForInference;
 - (void)dealloc;
-- (void)handleAnchorEventForAnchor:(id)a3;
+- (void)handleAnchorEventForAnchor:(id)anchor;
 - (void)handleAnchorEventForGymArrival;
 - (void)handleAnchorEventForIdleTimeBegin;
 - (void)handleAnchorEventForMicrolocationVisitAnchor;
 - (void)handleAnchorExitEventForGymArrival;
-- (void)handleInferenceEvent:(id)a3;
+- (void)handleInferenceEvent:(id)event;
 - (void)handleLOIEntrance;
 - (void)handleLOIExit;
-- (void)queueHandleInferenceEvent:(id)a3;
-- (void)registerAnchorEventListenerForAnchor:(id)a3;
+- (void)queueHandleInferenceEvent:(id)event;
+- (void)registerAnchorEventListenerForAnchor:(id)anchor;
 - (void)registerAnchorEventListeners;
-- (void)registerForAnchorEntrance:(id)a3 cdContext:(id)a4;
-- (void)registerForAnchorExit:(id)a3 cdContext:(id)a4;
-- (void)registerForWakingNotificationForAnchor:(id)a3 cdContext:(id)a4;
+- (void)registerForAnchorEntrance:(id)entrance cdContext:(id)context;
+- (void)registerForAnchorExit:(id)exit cdContext:(id)context;
+- (void)registerForWakingNotificationForAnchor:(id)anchor cdContext:(id)context;
 - (void)retryPreviouslyIncompleteInference;
-- (void)setupContextStoreListenerForAnchor:(id)a3 context:(id)a4;
+- (void)setupContextStoreListenerForAnchor:(id)anchor context:(id)context;
 - (void)start;
-- (void)unregisterAnchorEventListenerForAnchor:(id)a3;
+- (void)unregisterAnchorEventListenerForAnchor:(id)anchor;
 - (void)unregisterAnchorEventListeners;
 @end
 
@@ -75,9 +75,9 @@ void __47__ATXAnchorModelInferenceEngine_sharedInstance__block_invoke()
 
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
-    v8 = [v7 UTF8String];
+    uTF8String = [v7 UTF8String];
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v10 = dispatch_queue_create(v8, v9);
+    v10 = dispatch_queue_create(uTF8String, v9);
     queue = v3->_queue;
     v3->_queue = v10;
 
@@ -139,8 +139,8 @@ uint64_t __38__ATXAnchorModelInferenceEngine_start__block_invoke(uint64_t a1)
 - (id)supportedAnchorsForInference
 {
   v2 = +[ATXAnchorModelHyperParameters sharedInstance];
-  v3 = [v2 enabledAnchors];
-  v4 = [v3 _pas_mappedArrayWithTransform:&__block_literal_global_28_1];
+  enabledAnchors = [v2 enabledAnchors];
+  v4 = [enabledAnchors _pas_mappedArrayWithTransform:&__block_literal_global_28_1];
 
   return v4;
 }
@@ -160,8 +160,8 @@ id __61__ATXAnchorModelInferenceEngine_supportedAnchorsForInference__block_invok
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(ATXAnchorModelInferenceEngine *)self supportedAnchorsForInference];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  supportedAnchorsForInference = [(ATXAnchorModelInferenceEngine *)self supportedAnchorsForInference];
+  v4 = [supportedAnchorsForInference countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -173,14 +173,14 @@ id __61__ATXAnchorModelInferenceEngine_supportedAnchorsForInference__block_invok
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(supportedAnchorsForInference);
         }
 
         [(ATXAnchorModelInferenceEngine *)self registerAnchorEventListenerForAnchor:*(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [supportedAnchorsForInference countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -189,14 +189,14 @@ id __61__ATXAnchorModelInferenceEngine_supportedAnchorsForInference__block_invok
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerAnchorEventListenerForAnchor:(id)a3
+- (void)registerAnchorEventListenerForAnchor:(id)anchor
 {
   location[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  anchorCopy = anchor;
   if ([objc_opt_class() usesContextStoreForRealTimeNotifications])
   {
-    v5 = [(ATXCoreDuetContextHelper *)self->_contextHelper context];
-    [(ATXAnchorModelInferenceEngine *)self setupContextStoreListenerForAnchor:v4 context:v5];
+    context = [(ATXCoreDuetContextHelper *)self->_contextHelper context];
+    [(ATXAnchorModelInferenceEngine *)self setupContextStoreListenerForAnchor:anchorCopy context:context];
 
     goto LABEL_36;
   }
@@ -210,13 +210,13 @@ id __61__ATXAnchorModelInferenceEngine_supportedAnchorsForInference__block_invok
     }
 
     objc_initWeak(location, self);
-    v7 = [MEMORY[0x277CEBC98] sharedInstance];
+    mEMORY[0x277CEBC98] = [MEMORY[0x277CEBC98] sharedInstance];
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __70__ATXAnchorModelInferenceEngine_registerAnchorEventListenerForAnchor___block_invoke;
     v20[3] = &unk_278596D20;
     objc_copyWeak(&v21, location);
-    v8 = [v7 subscribeWithCallback:v20 onQueue:self->_queue];
+    v8 = [mEMORY[0x277CEBC98] subscribeWithCallback:v20 onQueue:self->_queue];
     microLocationSchedulerToken = self->_microLocationSchedulerToken;
     self->_microLocationSchedulerToken = v8;
 
@@ -275,7 +275,7 @@ LABEL_14:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v4;
+      *(location + 4) = anchorCopy;
       _os_log_impl(&dword_2263AA000, v14, OS_LOG_TYPE_DEFAULT, "Inference: (%@) Setting up Anchor Event listener.", location, 0xCu);
     }
 
@@ -284,7 +284,7 @@ LABEL_14:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v4;
+      *(location + 4) = anchorCopy;
       _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_DEFAULT, "Inference: (%@) Done registering.", location, 0xCu);
     }
 
@@ -301,7 +301,7 @@ LABEL_26:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v4;
+      *(location + 4) = anchorCopy;
       _os_log_impl(&dword_2263AA000, v18, OS_LOG_TYPE_DEFAULT, "Inference: (%@) Setting up Anchor Event listener.", location, 0xCu);
     }
 
@@ -310,7 +310,7 @@ LABEL_26:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(location[0]) = 138412290;
-      *(location + 4) = v4;
+      *(location + 4) = anchorCopy;
       _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_DEFAULT, "Inference: (%@) Done registering.", location, 0xCu);
     }
 
@@ -344,8 +344,8 @@ void __70__ATXAnchorModelInferenceEngine_registerAnchorEventListenerForAnchor___
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(ATXAnchorModelInferenceEngine *)self supportedAnchorsForInference];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  supportedAnchorsForInference = [(ATXAnchorModelInferenceEngine *)self supportedAnchorsForInference];
+  v4 = [supportedAnchorsForInference countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -357,14 +357,14 @@ void __70__ATXAnchorModelInferenceEngine_registerAnchorEventListenerForAnchor___
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(supportedAnchorsForInference);
         }
 
         [(ATXAnchorModelInferenceEngine *)self unregisterAnchorEventListenerForAnchor:*(*(&v9 + 1) + 8 * v7++)];
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [supportedAnchorsForInference countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -373,9 +373,9 @@ void __70__ATXAnchorModelInferenceEngine_registerAnchorEventListenerForAnchor___
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)unregisterAnchorEventListenerForAnchor:(id)a3
+- (void)unregisterAnchorEventListenerForAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   if (([objc_opt_class() usesContextStoreForRealTimeNotifications] & 1) == 0)
   {
     if ([objc_opt_class() anchorType] == 8 || objc_msgSend(objc_opt_class(), "anchorType") == 7 || objc_msgSend(objc_opt_class(), "anchorType") == 3 || objc_msgSend(objc_opt_class(), "anchorType") == 22)
@@ -404,8 +404,8 @@ void __70__ATXAnchorModelInferenceEngine_registerAnchorEventListenerForAnchor___
 
       if (self->_microLocationSchedulerToken)
       {
-        v8 = [MEMORY[0x277CEBC98] sharedInstance];
-        [v8 unSubscribeWithToken:self->_microLocationSchedulerToken];
+        mEMORY[0x277CEBC98] = [MEMORY[0x277CEBC98] sharedInstance];
+        [mEMORY[0x277CEBC98] unSubscribeWithToken:self->_microLocationSchedulerToken];
 
         microLocationSchedulerToken = self->_microLocationSchedulerToken;
         self->_microLocationSchedulerToken = 0;
@@ -456,50 +456,50 @@ void __46__ATXAnchorModelInferenceEngine_handleLOIExit__block_invoke(uint64_t a1
   [v1 handleAnchorEventForAnchor:v2];
 }
 
-- (void)setupContextStoreListenerForAnchor:(id)a3 context:(id)a4
+- (void)setupContextStoreListenerForAnchor:(id)anchor context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  anchorCopy = anchor;
+  contextCopy = context;
   v8 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [ATXAnchorModelInferenceEngine registerAnchorEventListenerForAnchor:];
   }
 
-  [(ATXAnchorModelInferenceEngine *)self registerForWakingNotificationForAnchor:v6 cdContext:v7];
+  [(ATXAnchorModelInferenceEngine *)self registerForWakingNotificationForAnchor:anchorCopy cdContext:contextCopy];
 }
 
-- (void)registerForWakingNotificationForAnchor:(id)a3 cdContext:(id)a4
+- (void)registerForWakingNotificationForAnchor:(id)anchor cdContext:(id)context
 {
   v13 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  anchorCopy = anchor;
+  contextCopy = context;
   v8 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = anchorCopy;
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_INFO, "Inference: (%@) Registering with ContextStore for Anchor Event callbacks.", &v11, 0xCu);
   }
 
-  [(ATXAnchorModelInferenceEngine *)self registerForAnchorEntrance:v6 cdContext:v7];
-  [(ATXAnchorModelInferenceEngine *)self registerForAnchorExit:v6 cdContext:v7];
+  [(ATXAnchorModelInferenceEngine *)self registerForAnchorEntrance:anchorCopy cdContext:contextCopy];
+  [(ATXAnchorModelInferenceEngine *)self registerForAnchorExit:anchorCopy cdContext:contextCopy];
 
   v9 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138412290;
-    v12 = v6;
+    v12 = anchorCopy;
     _os_log_impl(&dword_2263AA000, v9, OS_LOG_TYPE_DEFAULT, "Inference: (%@) Done registering with the ContextStore.", &v11, 0xCu);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForAnchorEntrance:(id)a3 cdContext:(id)a4
+- (void)registerForAnchorEntrance:(id)entrance cdContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  entranceCopy = entrance;
+  contextCopy = context;
   v8 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -507,9 +507,9 @@ void __46__ATXAnchorModelInferenceEngine_handleLOIExit__block_invoke(uint64_t a1
   }
 
   v9 = objc_opt_class();
-  v10 = [(ATXAnchorModelInferenceEngine *)self entranceCallbackForAnchor:v6];
-  v11 = [(ATXAnchorModelInferenceEngine *)self notificationIdentifierForAnchor:v6];
-  [v9 registerWithContextStoreForAnchorEntranceWithCallback:v10 notificationId:v11 registrationPersistenceContext:v7];
+  v10 = [(ATXAnchorModelInferenceEngine *)self entranceCallbackForAnchor:entranceCopy];
+  v11 = [(ATXAnchorModelInferenceEngine *)self notificationIdentifierForAnchor:entranceCopy];
+  [v9 registerWithContextStoreForAnchorEntranceWithCallback:v10 notificationId:v11 registrationPersistenceContext:contextCopy];
 
   v12 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
@@ -518,23 +518,23 @@ void __46__ATXAnchorModelInferenceEngine_handleLOIExit__block_invoke(uint64_t a1
   }
 }
 
-- (void)registerForAnchorExit:(id)a3 cdContext:(id)a4
+- (void)registerForAnchorExit:(id)exit cdContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  exitCopy = exit;
+  contextCopy = context;
   v8 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
     [ATXAnchorModelInferenceEngine registerForAnchorExit:cdContext:];
   }
 
-  v9 = [objc_opt_class() invalidationPredicateForContextStoreRegistration];
-  if (v9)
+  invalidationPredicateForContextStoreRegistration = [objc_opt_class() invalidationPredicateForContextStoreRegistration];
+  if (invalidationPredicateForContextStoreRegistration)
   {
     v10 = objc_opt_class();
-    v11 = [(ATXAnchorModelInferenceEngine *)self exitCallbackForAnchor:v6];
-    v12 = [(ATXAnchorModelInferenceEngine *)self exitNotificationIdentifierForAnchor:v6];
-    [v10 registerWithContextStoreForAnchorExitWithCallback:v11 notificationId:v12 registrationPersistenceContext:v7];
+    v11 = [(ATXAnchorModelInferenceEngine *)self exitCallbackForAnchor:exitCopy];
+    v12 = [(ATXAnchorModelInferenceEngine *)self exitNotificationIdentifierForAnchor:exitCopy];
+    [v10 registerWithContextStoreForAnchorExitWithCallback:v11 notificationId:v12 registrationPersistenceContext:contextCopy];
 
     v13 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
@@ -557,13 +557,13 @@ void __46__ATXAnchorModelInferenceEngine_handleLOIExit__block_invoke(uint64_t a1
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = objc_opt_new();
-  v4 = [v3 inferenceEventsToTryAgain];
+  inferenceEventsToTryAgain = [v3 inferenceEventsToTryAgain];
 
   v5 = __atxlog_handle_anchor();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v22 = [v4 count];
+    v22 = [inferenceEventsToTryAgain count];
     _os_log_impl(&dword_2263AA000, v5, OS_LOG_TYPE_DEFAULT, "Retrieved %lu incomplete inference events from Inference Tracker.", buf, 0xCu);
   }
 
@@ -571,7 +571,7 @@ void __46__ATXAnchorModelInferenceEngine_handleLOIExit__block_invoke(uint64_t a1
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = inferenceEventsToTryAgain;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -624,9 +624,9 @@ void __46__ATXAnchorModelInferenceEngine_handleLOIExit__block_invoke(uint64_t a1
 
   if (v4)
   {
-    v5 = [v4 identifier];
+    identifier = [v4 identifier];
     v6 = [(NSUserDefaults *)self->_defaults stringForKey:@"ATXMicrolocationAnchorLastIdentifierKey"];
-    v7 = [v5 isEqualToString:v6];
+    v7 = [identifier isEqualToString:v6];
 
     if (v7)
     {
@@ -641,8 +641,8 @@ void __46__ATXAnchorModelInferenceEngine_handleLOIExit__block_invoke(uint64_t a1
     else
     {
       defaults = self->_defaults;
-      v10 = [v4 identifier];
-      [(NSUserDefaults *)defaults setValue:v10 forKey:@"ATXMicrolocationAnchorLastIdentifierKey"];
+      identifier2 = [v4 identifier];
+      [(NSUserDefaults *)defaults setValue:identifier2 forKey:@"ATXMicrolocationAnchorLastIdentifierKey"];
 
       v11 = [ATXAnchorModelIncompleteInferenceEvent alloc];
       v12 = objc_opt_new();
@@ -711,13 +711,13 @@ void __46__ATXAnchorModelInferenceEngine_handleLOIExit__block_invoke(uint64_t a1
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAnchorEventForAnchor:(id)a3
+- (void)handleAnchorEventForAnchor:(id)anchor
 {
-  v4 = a3;
-  v5 = [(ATXAnchorModelInferenceEngine *)self currentDuetEventForAnchor:v4];
+  anchorCopy = anchor;
+  v5 = [(ATXAnchorModelInferenceEngine *)self currentDuetEventForAnchor:anchorCopy];
   if (v5)
   {
-    v6 = [[ATXAnchorModelIncompleteInferenceEvent alloc] initWithAnchor:v4 anchorEvent:v5];
+    v6 = [[ATXAnchorModelIncompleteInferenceEvent alloc] initWithAnchor:anchorCopy anchorEvent:v5];
     [(ATXAnchorModelInferenceEngine *)self handleInferenceEvent:v6];
   }
 
@@ -731,9 +731,9 @@ void __46__ATXAnchorModelInferenceEngine_handleLOIExit__block_invoke(uint64_t a1
   }
 }
 
-- (id)currentDuetEventForAnchor:(id)a3
+- (id)currentDuetEventForAnchor:(id)anchor
 {
-  v3 = a3;
+  anchorCopy = anchor;
   v4 = [objc_alloc(objc_msgSend(objc_msgSend(objc_opt_class() "supportedDuetDataProviderClass")];
   if (([objc_opt_class() anchorType] & 0xFFFFFFFFFFFFFFFELL) != 0x14)
   {
@@ -769,61 +769,61 @@ LABEL_11:
   return v6;
 }
 
-- (void)queueHandleInferenceEvent:(id)a3
+- (void)queueHandleInferenceEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__ATXAnchorModelInferenceEngine_queueHandleInferenceEvent___block_invoke;
   v7[3] = &unk_278596C10;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)handleInferenceEvent:(id)a3
+- (void)handleInferenceEvent:(id)event
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 anchor];
+  eventCopy = event;
+  anchor = [eventCopy anchor];
 
-  if (v5)
+  if (anchor)
   {
     v6 = objc_opt_new();
-    [v6 trackInferenceStartedForInferenceEvent:v4];
+    [v6 trackInferenceStartedForInferenceEvent:eventCopy];
 
     v7 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 anchor];
-      v9 = [v4 anchorEvent];
+      anchor2 = [eventCopy anchor];
+      anchorEvent = [eventCopy anchorEvent];
       v22 = 138412546;
-      v23 = v8;
+      v23 = anchor2;
       v24 = 2112;
-      v25 = v9;
+      v25 = anchorEvent;
       _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "Inference: Handling anchor event for anchor: %@, anchorEvent: %@", &v22, 0x16u);
     }
 
     v10 = [ATXAnchorModelAnchorEventHandler alloc];
-    v11 = [v4 anchor];
-    v12 = [v4 anchorEvent];
-    v13 = [(ATXAnchorModelAnchorEventHandler *)v10 initWithAnchor:v11 anchorEvent:v12];
+    anchor3 = [eventCopy anchor];
+    anchorEvent2 = [eventCopy anchorEvent];
+    v13 = [(ATXAnchorModelAnchorEventHandler *)v10 initWithAnchor:anchor3 anchorEvent:anchorEvent2];
 
-    v14 = [v13 predictionsForAnchorEvent];
+    predictionsForAnchorEvent = [v13 predictionsForAnchorEvent];
     v15 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v14 count];
+      v16 = [predictionsForAnchorEvent count];
       v22 = 134217984;
       v23 = v16;
       _os_log_impl(&dword_2263AA000, v15, OS_LOG_TYPE_DEFAULT, "Inference: Generated %lu anchor model predictions. Sending predictions to the scheduler...", &v22, 0xCu);
     }
 
     predictionScheduler = self->_predictionScheduler;
-    v18 = [v4 anchor];
-    [(ATXAnchorModelPredictionScheduler *)predictionScheduler schedulePredictions:v14 anchor:v18];
+    anchor4 = [eventCopy anchor];
+    [(ATXAnchorModelPredictionScheduler *)predictionScheduler schedulePredictions:predictionsForAnchorEvent anchor:anchor4];
 
     v19 = __atxlog_handle_anchor();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -833,7 +833,7 @@ LABEL_11:
     }
 
     v20 = objc_opt_new();
-    [v20 trackInferenceFinishedForInferenceEvent:v4];
+    [v20 trackInferenceFinishedForInferenceEvent:eventCopy];
   }
 
   else
@@ -848,40 +848,40 @@ LABEL_11:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)notificationIdentifierForAnchor:(id)a3
+- (id)notificationIdentifierForAnchor:(id)anchor
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = [v3 alloc];
-  v6 = [v4 anchorTypeString];
+  anchorTypeString = [anchorCopy anchorTypeString];
 
-  v7 = [v5 initWithFormat:@"com.apple.duetexpertd.ATXAnchorModel.%@", v6];
+  v7 = [v5 initWithFormat:@"com.apple.duetexpertd.ATXAnchorModel.%@", anchorTypeString];
 
   return v7;
 }
 
-- (id)exitNotificationIdentifierForAnchor:(id)a3
+- (id)exitNotificationIdentifierForAnchor:(id)anchor
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = a3;
+  anchorCopy = anchor;
   v5 = [v3 alloc];
-  v6 = [v4 anchorTypeString];
+  anchorTypeString = [anchorCopy anchorTypeString];
 
-  v7 = [v5 initWithFormat:@"com.apple.duetexpertd.ATXAnchorModel.invalidate.%@", v6];
+  v7 = [v5 initWithFormat:@"com.apple.duetexpertd.ATXAnchorModel.invalidate.%@", anchorTypeString];
 
   return v7;
 }
 
-- (id)entranceCallbackForAnchor:(id)a3
+- (id)entranceCallbackForAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __59__ATXAnchorModelInferenceEngine_entranceCallbackForAnchor___block_invoke;
   aBlock[3] = &unk_2785A1DC8;
-  v10 = v4;
-  v5 = v4;
+  v10 = anchorCopy;
+  v5 = anchorCopy;
   objc_copyWeak(&v11, &location);
   v6 = _Block_copy(aBlock);
   v7 = _Block_copy(v6);
@@ -936,16 +936,16 @@ id __59__ATXAnchorModelInferenceEngine_entranceCallbackForAnchor___block_invoke_
   return objc_opt_self();
 }
 
-- (id)exitCallbackForAnchor:(id)a3
+- (id)exitCallbackForAnchor:(id)anchor
 {
-  v4 = a3;
+  anchorCopy = anchor;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __55__ATXAnchorModelInferenceEngine_exitCallbackForAnchor___block_invoke;
   aBlock[3] = &unk_2785A1DC8;
-  v10 = v4;
-  v5 = v4;
+  v10 = anchorCopy;
+  v5 = anchorCopy;
   objc_copyWeak(&v11, &location);
   v6 = _Block_copy(aBlock);
   v7 = _Block_copy(v6);

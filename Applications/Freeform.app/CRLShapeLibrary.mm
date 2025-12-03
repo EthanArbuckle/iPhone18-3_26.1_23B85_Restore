@@ -1,26 +1,26 @@
 @interface CRLShapeLibrary
 + (CRLShapeLibrary)sharedLibrary;
-+ (void)loadDataIfNeededWithCompletion:(id)a3;
-- (CRLShapeLibrary)initWithShapeLibraryURL:(id)a3 categorySortURL:(id)a4 locale:(id)a5;
++ (void)loadDataIfNeededWithCompletion:(id)completion;
+- (CRLShapeLibrary)initWithShapeLibraryURL:(id)l categorySortURL:(id)rL locale:(id)locale;
 - (CRLShapeSearchIndex)p_searchIndex;
 - (NSArray)categories;
-- (id)p_keywordDelimiterFromLibrary:(id)a3;
-- (id)p_libraryByRemovingDenyListedShapes:(id)a3;
+- (id)p_keywordDelimiterFromLibrary:(id)library;
+- (id)p_libraryByRemovingDenyListedShapes:(id)shapes;
 - (id)p_parseLibraryFromJSON;
 - (id)p_shapeDictionariesByID;
-- (id)p_sortedCategoriesFromLibrary:(id)a3;
-- (id)resultsForSearchTerm:(id)a3;
-- (id)shapeFromSearchResult:(id)a3;
-- (id)shapeWithID:(id)a3;
-- (id)shapeWithLocalizationKey:(id)a3;
+- (id)p_sortedCategoriesFromLibrary:(id)library;
+- (id)resultsForSearchTerm:(id)term;
+- (id)shapeFromSearchResult:(id)result;
+- (id)shapeWithID:(id)d;
+- (id)shapeWithLocalizationKey:(id)key;
 - (int64_t)p_setupLibrary;
-- (void)p_cacheDataAfterParsingWithSearchIndex:(id)a3;
-- (void)p_createSearchIndexWithCompletionHandler:(id)a3;
+- (void)p_cacheDataAfterParsingWithSearchIndex:(id)index;
+- (void)p_createSearchIndexWithCompletionHandler:(id)handler;
 - (void)p_loadCategoriesAndSearchIndexIfNeeded;
-- (void)p_loadDataWithCompletion:(id)a3;
+- (void)p_loadDataWithCompletion:(id)completion;
 - (void)p_setupLibraryIfNeeded;
-- (void)setDataLoadStatus:(int64_t)a3;
-- (void)setP_searchIndexStatus:(int64_t)a3;
+- (void)setDataLoadStatus:(int64_t)status;
+- (void)setP_searchIndexStatus:(int64_t)status;
 @end
 
 @implementation CRLShapeLibrary
@@ -51,9 +51,9 @@
 
 - (int64_t)p_setupLibrary
 {
-  v3 = [(CRLShapeLibrary *)self p_parseLibraryFromJSON];
+  p_parseLibraryFromJSON = [(CRLShapeLibrary *)self p_parseLibraryFromJSON];
   library = self->_library;
-  self->_library = v3;
+  self->_library = p_parseLibraryFromJSON;
 
   if (!self->_library)
   {
@@ -77,8 +77,8 @@
 
 - (id)p_parseLibraryFromJSON
 {
-  v3 = [(CRLShapeLibrary *)self p_libraryURL];
-  v4 = [NSData dataWithContentsOfURL:v3];
+  p_libraryURL = [(CRLShapeLibrary *)self p_libraryURL];
+  v4 = [NSData dataWithContentsOfURL:p_libraryURL];
 
   if (!v4)
   {
@@ -107,8 +107,8 @@
 
     v6 = [NSString stringWithUTF8String:"[CRLShapeLibrary p_parseLibraryFromJSON]"];
     v5 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLShapeLibrary.m"];
-    v12 = [(CRLShapeLibrary *)self p_libraryURL];
-    [CRLAssertionHandler handleFailureInFunction:v6 file:v5 lineNumber:306 isFatal:0 description:"No data found at search library URL: %@", v12];
+    p_libraryURL2 = [(CRLShapeLibrary *)self p_libraryURL];
+    [CRLAssertionHandler handleFailureInFunction:v6 file:v5 lineNumber:306 isFatal:0 description:"No data found at search library URL: %@", p_libraryURL2];
 
     goto LABEL_24;
   }
@@ -175,32 +175,32 @@ LABEL_26:
 
   else
   {
-    v4 = [(CRLShapeLibrary *)self p_library];
-    v3 = [(CRLShapeLibrary *)self p_shapeDictionariesByIDFromLibrary:v4];
+    p_library = [(CRLShapeLibrary *)self p_library];
+    v3 = [(CRLShapeLibrary *)self p_shapeDictionariesByIDFromLibrary:p_library];
   }
 
   return v3;
 }
 
-+ (void)loadDataIfNeededWithCompletion:(id)a3
++ (void)loadDataIfNeededWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[CRLShapeLibrary sharedLibrary];
-  [v4 p_loadDataWithCompletion:v3];
+  [v4 p_loadDataWithCompletion:completionCopy];
 }
 
-- (CRLShapeLibrary)initWithShapeLibraryURL:(id)a3 categorySortURL:(id)a4 locale:(id)a5
+- (CRLShapeLibrary)initWithShapeLibraryURL:(id)l categorySortURL:(id)rL locale:(id)locale
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  lCopy = l;
+  rLCopy = rL;
+  localeCopy = locale;
   v30.receiver = self;
   v30.super_class = CRLShapeLibrary;
   v12 = [(CRLShapeLibrary *)&v30 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_libraryURL, a3);
+    objc_storeStrong(&v12->_libraryURL, l);
     if (!v13->_libraryURL)
     {
       +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -230,7 +230,7 @@ LABEL_26:
       [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:86 isFatal:0 description:"Invalid parameter not satisfying: %{public}s", "_libraryURL != nil"];
     }
 
-    v17 = [NSDictionary dictionaryWithContentsOfURL:v10];
+    v17 = [NSDictionary dictionaryWithContentsOfURL:rLCopy];
     v18 = [v17 objectForKeyedSubscript:@"CRLShapeLibraryCategorySort"];
     categorySort = v13->_categorySort;
     v13->_categorySort = v18;
@@ -275,7 +275,7 @@ LABEL_26:
     shapeCache = v13->_shapeCache;
     v13->_shapeCache = v27;
 
-    objc_storeStrong(&v13->_locale, a5);
+    objc_storeStrong(&v13->_locale, locale);
   }
 
   return v13;
@@ -289,12 +289,12 @@ LABEL_26:
   return categories;
 }
 
-- (void)setDataLoadStatus:(int64_t)a3
+- (void)setDataLoadStatus:(int64_t)status
 {
-  if (self->_dataLoadStatus != a3)
+  if (self->_dataLoadStatus != status)
   {
-    self->_dataLoadStatus = a3;
-    if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+    self->_dataLoadStatus = status;
+    if ((status & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
       v7 = @"CRLShapeLibraryLoadingDidFinishNotificationStatusKey";
       v4 = [NSNumber numberWithInteger:?];
@@ -307,9 +307,9 @@ LABEL_26:
   }
 }
 
-- (id)shapeWithID:(id)a3
+- (id)shapeWithID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   [(CRLShapeLibrary *)self p_setupLibraryIfNeeded];
   if (self->_dataLoadStatus == 3)
   {
@@ -318,23 +318,23 @@ LABEL_26:
 
   else
   {
-    v6 = [v4 stringValue];
-    v7 = [(CRLShapeLibrary *)self p_shapeCache];
-    v5 = [v7 objectForKey:v6];
+    stringValue = [dCopy stringValue];
+    p_shapeCache = [(CRLShapeLibrary *)self p_shapeCache];
+    v5 = [p_shapeCache objectForKey:stringValue];
 
     if (!v5)
     {
-      v8 = [(CRLShapeLibrary *)self p_shapeDictionariesByID];
-      v9 = [v8 objectForKeyedSubscript:v6];
+      p_shapeDictionariesByID = [(CRLShapeLibrary *)self p_shapeDictionariesByID];
+      v9 = [p_shapeDictionariesByID objectForKeyedSubscript:stringValue];
       if (v9)
       {
         v10 = [CRLShapeLibraryShape alloc];
-        v11 = [(CRLShapeLibrary *)self p_library];
-        v12 = [(CRLShapeLibrary *)self p_keywordDelimiterFromLibrary:v11];
+        p_library = [(CRLShapeLibrary *)self p_library];
+        v12 = [(CRLShapeLibrary *)self p_keywordDelimiterFromLibrary:p_library];
         v5 = [(CRLShapeLibraryShape *)v10 initWithDictionary:v9 keywordDelimiter:v12];
 
-        v13 = [(CRLShapeLibrary *)self p_shapeCache];
-        [v13 setObject:v5 forKey:v6];
+        p_shapeCache2 = [(CRLShapeLibrary *)self p_shapeCache];
+        [p_shapeCache2 setObject:v5 forKey:stringValue];
       }
 
       else
@@ -347,9 +347,9 @@ LABEL_26:
   return v5;
 }
 
-- (id)shapeWithLocalizationKey:(id)a3
+- (id)shapeWithLocalizationKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   [(CRLShapeLibrary *)self p_setupLibraryIfNeeded];
   if (self->_dataLoadStatus == 3)
   {
@@ -358,10 +358,10 @@ LABEL_26:
 
   else
   {
-    v6 = [(CRLShapeLibrary *)self p_library];
-    v7 = [(CRLShapeLibrary *)self p_shapeIDByLocalizationKeyFromLibrary:v6];
+    p_library = [(CRLShapeLibrary *)self p_library];
+    v7 = [(CRLShapeLibrary *)self p_shapeIDByLocalizationKeyFromLibrary:p_library];
 
-    v8 = [v7 objectForKeyedSubscript:v4];
+    v8 = [v7 objectForKeyedSubscript:keyCopy];
     if (v8)
     {
       v5 = [(CRLShapeLibrary *)self shapeWithID:v8];
@@ -376,20 +376,20 @@ LABEL_26:
   return v5;
 }
 
-- (id)resultsForSearchTerm:(id)a3
+- (id)resultsForSearchTerm:(id)term
 {
-  v4 = a3;
-  v5 = [(CRLShapeLibrary *)self p_searchIndex];
-  v6 = [v5 resultsForSearchTerm:v4];
+  termCopy = term;
+  p_searchIndex = [(CRLShapeLibrary *)self p_searchIndex];
+  v6 = [p_searchIndex resultsForSearchTerm:termCopy];
 
   return v6;
 }
 
-- (id)shapeFromSearchResult:(id)a3
+- (id)shapeFromSearchResult:(id)result
 {
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(CRLShapeLibrary *)self shapeWithID:v5];
+  resultCopy = result;
+  identifier = [resultCopy identifier];
+  v6 = [(CRLShapeLibrary *)self shapeWithID:identifier];
 
   if (!v6)
   {
@@ -417,18 +417,18 @@ LABEL_26:
 
     v8 = [NSString stringWithUTF8String:"[CRLShapeLibrary shapeFromSearchResult:]"];
     v9 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLShapeLibrary.m"];
-    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:163 isFatal:0 description:"Shape library shape from result is nil: %@", v4];
+    [CRLAssertionHandler handleFailureInFunction:v8 file:v9 lineNumber:163 isFatal:0 description:"Shape library shape from result is nil: %@", resultCopy];
   }
 
   return v6;
 }
 
-- (void)setP_searchIndexStatus:(int64_t)a3
+- (void)setP_searchIndexStatus:(int64_t)status
 {
-  if (self->_searchIndexStatus != a3)
+  if (self->_searchIndexStatus != status)
   {
-    self->_searchIndexStatus = a3;
-    if (a3 == 2)
+    self->_searchIndexStatus = status;
+    if (status == 2)
     {
       v4 = +[NSNotificationCenter defaultCenter];
       [v4 postNotificationName:@"CRLShapeLibraryIndexingDidFinishNotification" object:self];
@@ -479,9 +479,9 @@ LABEL_26:
   }
 }
 
-- (void)p_loadDataWithCompletion:(id)a3
+- (void)p_loadDataWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -512,7 +512,7 @@ LABEL_26:
   }
 
   [(CRLShapeLibrary *)self p_setupLibraryIfNeeded];
-  v4[2](v4, self->_dataLoadStatus);
+  completionCopy[2](completionCopy, self->_dataLoadStatus);
 
   if (self->_dataLoadStatus == 2 && !self->_searchIndexStatus)
   {
@@ -528,9 +528,9 @@ LABEL_26:
   }
 }
 
-- (void)p_cacheDataAfterParsingWithSearchIndex:(id)a3
+- (void)p_cacheDataAfterParsingWithSearchIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   if (!+[NSThread isMainThread])
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -561,46 +561,46 @@ LABEL_26:
   }
 
   searchIndex = self->_searchIndex;
-  self->_searchIndex = v4;
+  self->_searchIndex = indexCopy;
 
   [(CRLShapeLibrary *)self setP_searchIndexStatus:2];
 }
 
-- (void)p_createSearchIndexWithCompletionHandler:(id)a3
+- (void)p_createSearchIndexWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [CRLShapeSearchIndex alloc];
-  v6 = [(CRLShapeLibrary *)self locale];
-  v7 = [(CRLShapeSearchIndex *)v5 initWithLocale:v6];
+  locale = [(CRLShapeLibrary *)self locale];
+  v7 = [(CRLShapeSearchIndex *)v5 initWithLocale:locale];
 
-  v8 = [(CRLShapeLibrary *)self p_shapeDictionariesByID];
-  v9 = [(CRLShapeLibrary *)self p_library];
-  v10 = [(CRLShapeLibrary *)self p_keywordDelimiterFromLibrary:v9];
+  p_shapeDictionariesByID = [(CRLShapeLibrary *)self p_shapeDictionariesByID];
+  p_library = [(CRLShapeLibrary *)self p_library];
+  v10 = [(CRLShapeLibrary *)self p_keywordDelimiterFromLibrary:p_library];
 
-  v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v8 count]);
-  v12 = [(CRLShapeLibrary *)self locale];
-  v13 = [CRLShapeLibraryHelper shouldAddBaseShapeNameAndKeywordsForLocale:v12];
+  v11 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [p_shapeDictionariesByID count]);
+  locale2 = [(CRLShapeLibrary *)self locale];
+  v13 = [CRLShapeLibraryHelper shouldAddBaseShapeNameAndKeywordsForLocale:locale2];
 
   v16 = _NSConcreteStackBlock;
   v17 = 3221225472;
   v18 = sub_10011391C;
   v19 = &unk_10183D668;
-  v20 = self;
+  selfCopy = self;
   v21 = v10;
   v23 = v13;
   v22 = v11;
   v14 = v11;
   v15 = v10;
-  [v8 enumerateKeysAndObjectsUsingBlock:&v16];
-  [(CRLShapeSearchIndex *)v7 addSearchResults:v14, v16, v17, v18, v19, v20];
-  v4[2](v4, v7);
+  [p_shapeDictionariesByID enumerateKeysAndObjectsUsingBlock:&v16];
+  [(CRLShapeSearchIndex *)v7 addSearchResults:v14, v16, v17, v18, v19, selfCopy];
+  handlerCopy[2](handlerCopy, v7);
 }
 
-- (id)p_sortedCategoriesFromLibrary:(id)a3
+- (id)p_sortedCategoriesFromLibrary:(id)library
 {
-  v4 = [a3 objectForKeyedSubscript:@"categories"];
-  v5 = [(CRLShapeLibrary *)self p_categorySort];
-  v6 = [v5 count];
+  v4 = [library objectForKeyedSubscript:@"categories"];
+  p_categorySort = [(CRLShapeLibrary *)self p_categorySort];
+  v6 = [p_categorySort count];
   if (v6 != [v4 count])
   {
     v7 = +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -623,7 +623,7 @@ LABEL_26:
       v71 = 1024;
       v72 = 323;
       v73 = 2048;
-      v74 = [v5 count];
+      v74 = [p_categorySort count];
       v8 = &_s10Foundation9IndexPathVSHAAMc_ptr;
       v75 = 2048;
       v76 = [v4 count];
@@ -643,10 +643,10 @@ LABEL_26:
 
     v11 = [v8[101] stringWithUTF8String:"-[CRLShapeLibrary p_sortedCategoriesFromLibrary:]"];
     v12 = [v8[101] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLShapeLibrary.m"];
-    +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v11, v12, 323, 0, "The number of categories in the plist (%lu) must equal the number of categories in the shape librarian data (%lu)", [v5 count], objc_msgSend(v4, "count"));
+    +[CRLAssertionHandler handleFailureInFunction:file:lineNumber:isFatal:description:](CRLAssertionHandler, "handleFailureInFunction:file:lineNumber:isFatal:description:", v11, v12, 323, 0, "The number of categories in the plist (%lu) must equal the number of categories in the shape librarian data (%lu)", [p_categorySort count], objc_msgSend(v4, "count"));
   }
 
-  v49 = v5;
+  v49 = p_categorySort;
   v51 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v4 count]);
   v52 = +[NSMutableSet set];
   v59 = 0u;
@@ -688,7 +688,7 @@ LABEL_26:
 
         else
         {
-          v23 = self;
+          selfCopy = self;
           if ([v20 count])
           {
             v24 = [v19 mutableCopy];
@@ -700,10 +700,10 @@ LABEL_26:
           }
 
           v22 = [(CRLShapeLibraryObject *)[CRLShapeLibraryCategory alloc] initWithDictionary:v17];
-          v26 = [(CRLShapeLibraryCategory *)v22 localizationKey];
-          [v51 setObject:v22 forKeyedSubscript:v26];
+          localizationKey = [(CRLShapeLibraryCategory *)v22 localizationKey];
+          [v51 setObject:v22 forKeyedSubscript:localizationKey];
 
-          self = v23;
+          self = selfCopy;
         }
       }
 
@@ -844,10 +844,10 @@ LABEL_26:
   return searchIndex;
 }
 
-- (id)p_keywordDelimiterFromLibrary:(id)a3
+- (id)p_keywordDelimiterFromLibrary:(id)library
 {
-  v3 = a3;
-  if (!v3)
+  libraryCopy = library;
+  if (!libraryCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -876,7 +876,7 @@ LABEL_26:
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:391 isFatal:0 description:"invalid nil value for '%{public}s'", "library"];
   }
 
-  v7 = [v3 objectForKeyedSubscript:@"keywordDelimiter"];
+  v7 = [libraryCopy objectForKeyedSubscript:@"keywordDelimiter"];
   if (!v7)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -909,23 +909,23 @@ LABEL_26:
   return v7;
 }
 
-- (id)p_libraryByRemovingDenyListedShapes:(id)a3
+- (id)p_libraryByRemovingDenyListedShapes:(id)shapes
 {
-  v4 = a3;
-  v5 = [(CRLShapeLibrary *)self p_shapeDictionariesByIDFromLibrary:v4];
+  shapesCopy = shapes;
+  v5 = [(CRLShapeLibrary *)self p_shapeDictionariesByIDFromLibrary:shapesCopy];
   v6 = [v5 mutableCopy];
 
-  v7 = [(CRLShapeLibrary *)self p_shapeIDByLocalizationKeyFromLibrary:v4];
+  v7 = [(CRLShapeLibrary *)self p_shapeIDByLocalizationKeyFromLibrary:shapesCopy];
   v23 = [v7 mutableCopy];
 
-  v22 = v4;
-  v8 = [(CRLShapeLibrary *)self p_keywordDelimiterFromLibrary:v4];
+  v22 = shapesCopy;
+  v8 = [(CRLShapeLibrary *)self p_keywordDelimiterFromLibrary:shapesCopy];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = [(CRLShapeLibrary *)self p_shapeIDsToRemove];
-  v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  p_shapeIDsToRemove = [(CRLShapeLibrary *)self p_shapeIDsToRemove];
+  v10 = [p_shapeIDsToRemove countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
     v11 = v10;
@@ -936,25 +936,25 @@ LABEL_26:
       {
         if (*v25 != v12)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(p_shapeIDsToRemove);
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        v15 = [v14 stringValue];
-        v16 = [v6 objectForKeyedSubscript:v15];
+        stringValue = [v14 stringValue];
+        v16 = [v6 objectForKeyedSubscript:stringValue];
 
         if (v16)
         {
           v17 = [[CRLShapeLibraryShape alloc] initWithDictionary:v16 keywordDelimiter:v8];
-          v18 = [(CRLShapeLibraryShape *)v17 localizationKey];
-          [v23 removeObjectForKey:v18];
+          localizationKey = [(CRLShapeLibraryShape *)v17 localizationKey];
+          [v23 removeObjectForKey:localizationKey];
         }
 
-        v19 = [v14 stringValue];
-        [v6 removeObjectForKey:v19];
+        stringValue2 = [v14 stringValue];
+        [v6 removeObjectForKey:stringValue2];
       }
 
-      v11 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v11 = [p_shapeIDsToRemove countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v11);

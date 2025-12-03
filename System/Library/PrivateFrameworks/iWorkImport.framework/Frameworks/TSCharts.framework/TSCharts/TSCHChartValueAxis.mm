@@ -1,41 +1,41 @@
 @interface TSCHChartValueAxis
-+ (id)axisForInfo:(id)a3;
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromFixedMinValue:(SEL)a3 fixedMaxValue:(double)a4 spreadRanges:(double)a5;
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromFixedNegativeMinValue:(SEL)a3 positiveMaxValue:(double)a4 spreadRanges:(double)a5;
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromFixedPositiveMinValue:(SEL)a3 positiveMaxValue:(double)a4 spreadRanges:(double)a5;
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromMinValue:(SEL)a3 maxValue:(double)a4 userValues:(double)a5;
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromNegativeMinValue:(SEL)a3 fixedPositiveMaxValue:(double)a4 spreadRanges:(double)a5;
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromNegativeMinValue:(SEL)a3 positiveMaxValue:(double)a4 spreadRanges:(double)a5;
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromPositiveMinValue:(SEL)a3 fixedPositiveMaxValue:(double)a4 spreadRanges:(double)a5;
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromPositiveMinValue:(SEL)a3 positiveMaxValue:(double)a4 spreadRanges:(double)a5;
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_calculateAxisDescFromMinValue:(SEL)a3 maxValue:(double)a4 userValues:(double)a5;
++ (id)axisForInfo:(id)info;
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromFixedMinValue:(SEL)value fixedMaxValue:(double)maxValue spreadRanges:(double)ranges;
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromFixedNegativeMinValue:(SEL)value positiveMaxValue:(double)maxValue spreadRanges:(double)ranges;
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromFixedPositiveMinValue:(SEL)value positiveMaxValue:(double)maxValue spreadRanges:(double)ranges;
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromMinValue:(SEL)value maxValue:(double)maxValue userValues:(double)values;
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromNegativeMinValue:(SEL)value fixedPositiveMaxValue:(double)maxValue spreadRanges:(double)ranges;
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromNegativeMinValue:(SEL)value positiveMaxValue:(double)maxValue spreadRanges:(double)ranges;
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromPositiveMinValue:(SEL)value fixedPositiveMaxValue:(double)maxValue spreadRanges:(double)ranges;
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromPositiveMinValue:(SEL)value positiveMaxValue:(double)maxValue spreadRanges:(double)ranges;
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_calculateAxisDescFromMinValue:(SEL)value maxValue:(double)maxValue userValues:(double)values;
 - (BOOL)supportsReferenceLines;
 - (NSNumber)userMax;
 - (NSNumber)userMin;
-- (double)p_calculateAxisDeltaFromSpread:(double)a3 spreadRanges:(id *)a4;
-- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)a3;
+- (double)p_calculateAxisDeltaFromSpread:(double)spread spreadRanges:(id *)ranges;
+- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)analysis;
 - (id)defaultProperties;
 - (id)g_genericToSpecificPropertyMap;
-- (id)p_computeMajorGridlines:(int64_t)a3 analysis:(id)a4;
-- (id)p_computeMajorGridlinesAutomaticallyInAnalysis:(id)a3 forHorizChart:(BOOL)a4;
-- (int)specificPropertyForGeneric:(int)a3;
+- (id)p_computeMajorGridlines:(int64_t)gridlines analysis:(id)analysis;
+- (id)p_computeMajorGridlinesAutomaticallyInAnalysis:(id)analysis forHorizChart:(BOOL)chart;
+- (int)specificPropertyForGeneric:(int)generic;
 - (pair<TSCH3DAxisLabelEnumerator)labelEnumeratorPair;
-- (void)adjustMinMaxForDataRangeInAnalysis:(id)a3;
-- (void)p_includeZeroWithMinValue:(double *)a3 maxValue:(double *)a4 userValues:(int64_t)a5;
-- (void)updateModelAxisAnalysis:(id)a3;
-- (void)updateModelMinMaxForErrorBarsOnSeries:(id)a3 axisID:(id)a4 analysis:(id)a5;
-- (void)updateModelMinMaxForTrendLineOnSeries:(id)a3 axisID:(id)a4 analysis:(id)a5;
+- (void)adjustMinMaxForDataRangeInAnalysis:(id)analysis;
+- (void)p_includeZeroWithMinValue:(double *)value maxValue:(double *)maxValue userValues:(int64_t)values;
+- (void)updateModelAxisAnalysis:(id)analysis;
+- (void)updateModelMinMaxForErrorBarsOnSeries:(id)series axisID:(id)d analysis:(id)analysis;
+- (void)updateModelMinMaxForTrendLineOnSeries:(id)series axisID:(id)d analysis:(id)analysis;
 @end
 
 @implementation TSCHChartValueAxis
 
-+ (id)axisForInfo:(id)a3
++ (id)axisForInfo:(id)info
 {
-  v3 = a3;
-  v8 = objc_msgSend_chartType(v3, v4, v5, v6, v7);
+  infoCopy = info;
+  v8 = objc_msgSend_chartType(infoCopy, v4, v5, v6, v7);
   isHorizontal = objc_msgSend_isHorizontal(v8, v9, v10, v11, v12);
 
-  v19 = objc_msgSend_model(v3, v14, v15, v16, v17);
+  v19 = objc_msgSend_model(infoCopy, v14, v15, v16, v17);
   if (isHorizontal)
   {
     objc_msgSend_axisIDWithType_ordinal_(TSCHChartAxisID, v18, v20, v21, v22, 1, 0);
@@ -116,13 +116,13 @@
   return v10;
 }
 
-- (void)updateModelAxisAnalysis:(id)a3
+- (void)updateModelAxisAnalysis:(id)analysis
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  analysisCopy = analysis;
   v40.receiver = self;
   v40.super_class = TSCHChartValueAxis;
-  [(TSCHChartAxis *)&v40 updateModelAxisAnalysis:v4];
+  [(TSCHChartAxis *)&v40 updateModelAxisAnalysis:analysisCopy];
   v9 = objc_msgSend_axisID(self, v5, v6, v7, v8);
   v36 = 0u;
   v37 = 0u;
@@ -146,8 +146,8 @@
         }
 
         v31 = *(*(&v36 + 1) + 8 * i);
-        objc_msgSend_updateModelMinMaxForTrendLineOnSeries_axisID_analysis_(self, v24, v25, v26, v27, v31, v9, v4);
-        objc_msgSend_updateModelMinMaxForErrorBarsOnSeries_axisID_analysis_(self, v32, v33, v34, v35, v31, v9, v4);
+        objc_msgSend_updateModelMinMaxForTrendLineOnSeries_axisID_analysis_(self, v24, v25, v26, v27, v31, v9, analysisCopy);
+        objc_msgSend_updateModelMinMaxForErrorBarsOnSeries_axisID_analysis_(self, v32, v33, v34, v35, v31, v9, analysisCopy);
       }
 
       v28 = objc_msgSend_countByEnumeratingWithState_objects_count_(v18, v24, v25, v26, v27, &v36, v41, 16);
@@ -157,81 +157,81 @@
   }
 }
 
-- (void)updateModelMinMaxForTrendLineOnSeries:(id)a3 axisID:(id)a4 analysis:(id)a5
+- (void)updateModelMinMaxForTrendLineOnSeries:(id)series axisID:(id)d analysis:(id)analysis
 {
-  v47 = a3;
-  v8 = a4;
-  v9 = a5;
-  objc_msgSend_modelMin(v9, v10, v11, v12, v13);
+  seriesCopy = series;
+  dCopy = d;
+  analysisCopy = analysis;
+  objc_msgSend_modelMin(analysisCopy, v10, v11, v12, v13);
   v15 = v14;
-  objc_msgSend_modelMax(v9, v16, v14, v17, v18);
+  objc_msgSend_modelMax(analysisCopy, v16, v14, v17, v18);
   v20 = v19;
-  v24 = objc_msgSend_trendLineData(v47, v21, v19, v22, v23);
+  v24 = objc_msgSend_trendLineData(seriesCopy, v21, v19, v22, v23);
   v29 = v24;
-  if (v24 && objc_msgSend_showTrendLineForAxisID_(v24, v25, v26, v27, v28, v8))
+  if (v24 && objc_msgSend_showTrendLineForAxisID_(v24, v25, v26, v27, v28, dCopy))
   {
-    objc_msgSend_minValueForAxisID_(v29, v25, v30, v27, v28, v8);
-    objc_msgSend_doubleModelToAxisValue_forSeries_(self, v31, v32, v33, v34, v47);
+    objc_msgSend_minValueForAxisID_(v29, v25, v30, v27, v28, dCopy);
+    objc_msgSend_doubleModelToAxisValue_forSeries_(self, v31, v32, v33, v34, seriesCopy);
     if (v36 < v15)
     {
       v15 = v36;
     }
 
-    objc_msgSend_maxValueForAxisID_(v29, v35, v36, v37, v38, v8);
-    objc_msgSend_doubleModelToAxisValue_forSeries_(self, v39, v40, v41, v42, v47);
+    objc_msgSend_maxValueForAxisID_(v29, v35, v36, v37, v38, dCopy);
+    objc_msgSend_doubleModelToAxisValue_forSeries_(self, v39, v40, v41, v42, seriesCopy);
     if (v43 > v20)
     {
       v20 = v43;
     }
   }
 
-  objc_msgSend_setModelMin_(v9, v25, v15, v27, v28);
-  objc_msgSend_setModelMax_(v9, v44, v20, v45, v46);
+  objc_msgSend_setModelMin_(analysisCopy, v25, v15, v27, v28);
+  objc_msgSend_setModelMax_(analysisCopy, v44, v20, v45, v46);
 }
 
-- (void)updateModelMinMaxForErrorBarsOnSeries:(id)a3 axisID:(id)a4 analysis:(id)a5
+- (void)updateModelMinMaxForErrorBarsOnSeries:(id)series axisID:(id)d analysis:(id)analysis
 {
-  v47 = a3;
-  v8 = a4;
-  v9 = a5;
-  objc_msgSend_modelMin(v9, v10, v11, v12, v13);
+  seriesCopy = series;
+  dCopy = d;
+  analysisCopy = analysis;
+  objc_msgSend_modelMin(analysisCopy, v10, v11, v12, v13);
   v15 = v14;
-  objc_msgSend_modelMax(v9, v16, v14, v17, v18);
+  objc_msgSend_modelMax(analysisCopy, v16, v14, v17, v18);
   v20 = v19;
-  v24 = objc_msgSend_errorBarData(v47, v21, v19, v22, v23);
+  v24 = objc_msgSend_errorBarData(seriesCopy, v21, v19, v22, v23);
   v29 = v24;
-  if (v24 && objc_msgSend_showErrorBarsForAxisID_(v24, v25, v26, v27, v28, v8))
+  if (v24 && objc_msgSend_showErrorBarsForAxisID_(v24, v25, v26, v27, v28, dCopy))
   {
-    objc_msgSend_minValueForAxisID_(v29, v25, v30, v27, v28, v8);
-    objc_msgSend_doubleModelToAxisValue_forSeries_(self, v31, v32, v33, v34, v47);
+    objc_msgSend_minValueForAxisID_(v29, v25, v30, v27, v28, dCopy);
+    objc_msgSend_doubleModelToAxisValue_forSeries_(self, v31, v32, v33, v34, seriesCopy);
     if (v36 < v15)
     {
       v15 = v36;
     }
 
-    objc_msgSend_maxValueForAxisID_(v29, v35, v36, v37, v38, v8);
-    objc_msgSend_doubleModelToAxisValue_forSeries_(self, v39, v40, v41, v42, v47);
+    objc_msgSend_maxValueForAxisID_(v29, v35, v36, v37, v38, dCopy);
+    objc_msgSend_doubleModelToAxisValue_forSeries_(self, v39, v40, v41, v42, seriesCopy);
     if (v43 > v20)
     {
       v20 = v43;
     }
   }
 
-  objc_msgSend_setModelMin_(v9, v25, v15, v27, v28);
-  objc_msgSend_setModelMax_(v9, v44, v20, v45, v46);
+  objc_msgSend_setModelMin_(analysisCopy, v25, v15, v27, v28);
+  objc_msgSend_setModelMax_(analysisCopy, v44, v20, v45, v46);
 }
 
-- (void)adjustMinMaxForDataRangeInAnalysis:(id)a3
+- (void)adjustMinMaxForDataRangeInAnalysis:(id)analysis
 {
   v107 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  objc_msgSend_min(v4, v5, v6, v7, v8);
+  analysisCopy = analysis;
+  objc_msgSend_min(analysisCopy, v5, v6, v7, v8);
   v10 = v9;
-  objc_msgSend_max(v4, v11, v9, v12, v13);
+  objc_msgSend_max(analysisCopy, v11, v9, v12, v13);
   v15 = v14;
   if (objc_msgSend_supportsReferenceLines(self, v16, v14, v17, v18))
   {
-    v101 = v4;
+    v101 = analysisCopy;
     v104 = 0u;
     v105 = 0u;
     v102 = 0u;
@@ -278,7 +278,7 @@
       while (v29);
     }
 
-    v4 = v101;
+    analysisCopy = v101;
   }
 
   v52 = v10 - v15;
@@ -315,7 +315,7 @@
         v10 = sub_27628B14C(v64, v79, v10, v81, v82);
         if (v10 > 0.0 && (v53 > v15 * 0.165 || v52 == 0.0))
         {
-          objc_msgSend_setMin_(v4, v70, 0.0, v72.n128_f64[0], v73);
+          objc_msgSend_setMin_(analysisCopy, v70, 0.0, v72.n128_f64[0], v73);
           goto LABEL_22;
         }
 
@@ -404,25 +404,25 @@ LABEL_50:
       {
         objc_msgSend_doubleValue(v59, v70, v95, v72.n128_f64[0], v73);
         v96 = fmin(v53, 10.0);
-        objc_msgSend_setMin_(v4, v98, v97 - v96, v96, v99);
+        objc_msgSend_setMin_(analysisCopy, v98, v97 - v96, v96, v99);
         goto LABEL_22;
       }
     }
   }
 
 LABEL_21:
-  objc_msgSend_setMin_(v4, v70, v10, v72.n128_f64[0], v73);
+  objc_msgSend_setMin_(analysisCopy, v70, v10, v72.n128_f64[0], v73);
 LABEL_22:
-  objc_msgSend_setMax_(v4, v76, v15, v77, v78);
+  objc_msgSend_setMax_(analysisCopy, v76, v15, v77, v78);
 }
 
-- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)a3
+- (id)computeMajorGridlinesFromMinMaxInAnalysis:(id)analysis
 {
-  v4 = a3;
+  analysisCopy = analysis;
   v9 = objc_msgSend_intValueForProperty_defaultValue_(self, v5, v6, v7, v8, 1045, 1);
   if (v9)
   {
-    v14 = objc_msgSend_p_computeMajorGridlines_analysis_(self, v10, v11, v12, v13, v9, v4);
+    v14 = objc_msgSend_p_computeMajorGridlines_analysis_(self, v10, v11, v12, v13, v9, analysisCopy);
   }
 
   else
@@ -431,18 +431,18 @@ LABEL_22:
     v20 = objc_msgSend_chartInfo(v15, v16, v17, v18, v19);
     v25 = objc_msgSend_chartType(v20, v21, v22, v23, v24);
     isHorizontal = objc_msgSend_isHorizontal(v25, v26, v27, v28, v29);
-    v14 = objc_msgSend_p_computeMajorGridlinesAutomaticallyInAnalysis_forHorizChart_(self, v31, v32, v33, v34, v4, isHorizontal);
+    v14 = objc_msgSend_p_computeMajorGridlinesAutomaticallyInAnalysis_forHorizChart_(self, v31, v32, v33, v34, analysisCopy, isHorizontal);
   }
 
   return v14;
 }
 
-- (id)p_computeMajorGridlines:(int64_t)a3 analysis:(id)a4
+- (id)p_computeMajorGridlines:(int64_t)gridlines analysis:(id)analysis
 {
-  v6 = a4;
-  objc_msgSend_min(v6, v7, v8, v9, v10);
+  analysisCopy = analysis;
+  objc_msgSend_min(analysisCopy, v7, v8, v9, v10);
   v12 = v11;
-  objc_msgSend_max(v6, v13, v11, v14, v15);
+  objc_msgSend_max(analysisCopy, v13, v11, v14, v15);
   v17 = v16;
   v21 = objc_msgSend_userMin(self, v18, v16, v19, v20);
   v27 = objc_msgSend_userMax(self, v22, v23, v24, v25);
@@ -465,14 +465,14 @@ LABEL_22:
   v34 = v33;
   v35 = v17 - v33;
   v36 = v31 - v33;
-  if (a3 < 0)
+  if (gridlines < 0)
   {
-    v37 = 1;
+    gridlinesCopy = 1;
   }
 
   else
   {
-    v37 = a3;
+    gridlinesCopy = gridlines;
   }
 
   if (v35 <= 0.0 && v36 >= 0.0 || v35 == 0.0 && v36 < 0.0)
@@ -481,7 +481,7 @@ LABEL_22:
     {
       v38 = fabs(v35) - fabs(v36);
 LABEL_30:
-      v41 = v38 / v37;
+      v41 = v38 / gridlinesCopy;
       goto LABEL_31;
     }
 
@@ -493,12 +493,12 @@ LABEL_30:
       {
         if (v36 == 0.0)
         {
-          v36 = v35 + v37;
+          v36 = v35 + gridlinesCopy;
           v41 = 1.0;
           goto LABEL_31;
         }
 
-        v41 = (v39 - fmax(v35, 0.0)) / v37;
+        v41 = (v39 - fmax(v35, 0.0)) / gridlinesCopy;
         if (v21 || v41 == 0.0)
         {
 LABEL_31:
@@ -520,7 +520,7 @@ LABEL_31:
             v47 = v50;
           }
 
-          v43 = v47 / v37;
+          v43 = v47 / gridlinesCopy;
           v44 = 1;
           if (v36 == v35)
           {
@@ -557,7 +557,7 @@ LABEL_69:
 
       if (!(v27 | v21))
       {
-        v41 = (v40 - fmin(v36, 0.0)) / v37;
+        v41 = (v40 - fmin(v36, 0.0)) / gridlinesCopy;
         v36 = v41 * ceil(v36 / v41);
         goto LABEL_31;
       }
@@ -565,7 +565,7 @@ LABEL_69:
 
     else if (!(v27 | v21))
     {
-      v41 = (v39 - fmax(v35, 0.0)) / v37;
+      v41 = (v39 - fmax(v35, 0.0)) / gridlinesCopy;
       goto LABEL_69;
     }
 
@@ -579,8 +579,8 @@ LABEL_69:
     v42 = 1.79769313e308;
   }
 
-  v41 = v42 / v37;
-  v43 = v35 + v37;
+  v41 = v42 / gridlinesCopy;
+  v43 = v35 + gridlinesCopy;
   v44 = 0;
   if (v36 == v35)
   {
@@ -594,7 +594,7 @@ LABEL_69:
 
   if (v36 == v35)
   {
-    v46 = v35 + v37;
+    v46 = v35 + gridlinesCopy;
   }
 
   else
@@ -675,36 +675,36 @@ LABEL_44:
     }
   }
 
-  objc_msgSend_setMin_(v6, v51, v34 + v35, v53, v54);
-  objc_msgSend_setMax_(v6, v71, v34 + v46, v72, v73);
+  objc_msgSend_setMin_(analysisCopy, v51, v34 + v35, v53, v54);
+  objc_msgSend_setMax_(analysisCopy, v71, v34 + v46, v72, v73);
 
   return v52;
 }
 
-- (void)p_includeZeroWithMinValue:(double *)a3 maxValue:(double *)a4 userValues:(int64_t)a5
+- (void)p_includeZeroWithMinValue:(double *)value maxValue:(double *)maxValue userValues:(int64_t)values
 {
-  if (a3 && a4 && (v11 = *a3, v10 = *a4, *a3 <= *a4))
+  if (value && maxValue && (v11 = *value, v10 = *maxValue, *value <= *maxValue))
   {
-    v29 = *a3;
-    if ((~a5 & 3) != 0 && v11 != 0.0)
+    v29 = *value;
+    if ((~values & 3) != 0 && v11 != 0.0)
     {
-      v30 = *a4;
-      if (*a4 != 0.0 && (v29 >= 0.0 || v30 < 0.0))
+      v30 = *maxValue;
+      if (*maxValue != 0.0 && (v29 >= 0.0 || v30 < 0.0))
       {
         v31 = vabdd_f64(v30, v29);
         if (v31 != INFINITY && v31 / fmin(fabs(v30), fabs(v29)) > 0.2)
         {
-          if ((a5 & 2) != 0 || v29 >= 0.0)
+          if ((values & 2) != 0 || v29 >= 0.0)
           {
-            if ((a5 & 1) == 0 && v30 > 0.0)
+            if ((values & 1) == 0 && v30 > 0.0)
             {
-              *a3 = 0.0;
+              *value = 0.0;
             }
           }
 
           else
           {
-            *a4 = 0.0;
+            *maxValue = 0.0;
           }
         }
       }
@@ -715,7 +715,7 @@ LABEL_44:
   {
     v32 = v5;
     v13 = MEMORY[0x277D81150];
-    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v10, v11, v12, "[TSCHChartValueAxis p_includeZeroWithMinValue:maxValue:userValues:]", a4, a5, v8, v7, v6, v32);
+    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, v10, v11, v12, "[TSCHChartValueAxis p_includeZeroWithMinValue:maxValue:userValues:]", maxValue, values, v8, v7, v6, v32);
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartValueAxis.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v20, v21, v22, v23, v14, v19, 384, 0, "Invalid arguments");
 
@@ -725,122 +725,122 @@ LABEL_44:
   }
 }
 
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromPositiveMinValue:(SEL)a3 positiveMaxValue:(double)a4 spreadRanges:(double)a5
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromPositiveMinValue:(SEL)value positiveMaxValue:(double)maxValue spreadRanges:(double)ranges
 {
-  if (a4 >= a5 || a4 < 0.0 || a5 <= 0.0)
+  if (maxValue >= ranges || maxValue < 0.0 || ranges <= 0.0)
   {
     v12 = MEMORY[0x277D81150];
-    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a3, a4, a5, v6, "[TSCHChartValueAxis p_axisDescFromPositiveMinValue:positiveMaxValue:spreadRanges:]");
+    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], value, maxValue, ranges, v6, "[TSCHChartValueAxis p_axisDescFromPositiveMinValue:positiveMaxValue:spreadRanges:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartValueAxis.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 495, 0, "Arguments are not valid");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  if (a4 == 0.0)
+  if (maxValue == 0.0)
   {
     v27 = 0.0;
   }
 
   else
   {
-    v27 = -(a5 - a4 * 3.0) * 0.5;
+    v27 = -(ranges - maxValue * 3.0) * 0.5;
   }
 
   retstr->var0 = v27;
-  v28 = a5 - v27;
-  objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, a3, a5 - v27, 0.0, v6, a6);
+  v28 = ranges - v27;
+  objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, value, ranges - v27, 0.0, v6, a6);
   v30 = v29;
   retstr->var2 = v29;
-  if (a4 != 0.0)
+  if (maxValue != 0.0)
   {
     v27 = v27 - fmod(v27, v29);
     retstr->var0 = v27;
-    v28 = a5 - v27;
+    v28 = ranges - v27;
   }
 
-  v32 = a5 + v28 * 0.05 + v30 - fmod(a5 + v28 * 0.05, v30);
+  v32 = ranges + v28 * 0.05 + v30 - fmod(ranges + v28 * 0.05, v30);
   retstr->var1 = v32;
   retstr->var3 = vcvtad_u64_f64((v32 - v27) / v30);
   return result;
 }
 
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromNegativeMinValue:(SEL)a3 positiveMaxValue:(double)a4 spreadRanges:(double)a5
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromNegativeMinValue:(SEL)value positiveMaxValue:(double)maxValue spreadRanges:(double)ranges
 {
-  if (a4 >= a5 || a4 >= 0.0 || a5 <= 0.0)
+  if (maxValue >= ranges || maxValue >= 0.0 || ranges <= 0.0)
   {
     v12 = MEMORY[0x277D81150];
-    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a3, a4, a5, v6, "[TSCHChartValueAxis p_axisDescFromNegativeMinValue:positiveMaxValue:spreadRanges:]");
+    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], value, maxValue, ranges, v6, "[TSCHChartValueAxis p_axisDescFromNegativeMinValue:positiveMaxValue:spreadRanges:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartValueAxis.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 517, 0, "Arguments are not valid");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  v27 = a5 - a4;
-  objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, a3, a5 - a4, a5, v6, a6);
+  v27 = ranges - maxValue;
+  objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, value, ranges - maxValue, ranges, v6, a6);
   v29 = v28;
   retstr->var2 = v28;
-  v30 = a4 + (a5 - a4) * -0.05 - (v28 - fmod(-(a4 + (a5 - a4) * -0.05), v28));
+  v30 = maxValue + (ranges - maxValue) * -0.05 - (v28 - fmod(-(maxValue + (ranges - maxValue) * -0.05), v28));
   retstr->var0 = v30;
-  v32 = a5 + v27 * 0.05 + v29 - fmod(a5 + v27 * 0.05, v29);
+  v32 = ranges + v27 * 0.05 + v29 - fmod(ranges + v27 * 0.05, v29);
   retstr->var1 = v32;
   retstr->var3 = vcvtad_u64_f64((v32 - v30) / v29);
   return result;
 }
 
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromFixedPositiveMinValue:(SEL)a3 positiveMaxValue:(double)a4 spreadRanges:(double)a5
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromFixedPositiveMinValue:(SEL)value positiveMaxValue:(double)maxValue spreadRanges:(double)ranges
 {
-  if (a4 >= a5 || a4 < 0.0 || a5 <= 0.0)
+  if (maxValue >= ranges || maxValue < 0.0 || ranges <= 0.0)
   {
     v12 = MEMORY[0x277D81150];
-    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a3, a4, a5, v6, "[TSCHChartValueAxis p_axisDescFromFixedPositiveMinValue:positiveMaxValue:spreadRanges:]");
+    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], value, maxValue, ranges, v6, "[TSCHChartValueAxis p_axisDescFromFixedPositiveMinValue:positiveMaxValue:spreadRanges:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartValueAxis.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 533, 0, "Arguments are not valid");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, a3, a5 - a4, a5, v6, a6);
+  objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, value, ranges - maxValue, ranges, v6, a6);
   v28 = v27;
   retstr->var2 = v27;
-  v29 = fmod(a4, v27);
-  retstr->var0 = a4;
-  v31 = a5 - v29 + (a5 - a4) * 0.05 + v29 + v28 - fmod(a5 - v29 + (a5 - a4) * 0.05, v28);
+  v29 = fmod(maxValue, v27);
+  retstr->var0 = maxValue;
+  v31 = ranges - v29 + (ranges - maxValue) * 0.05 + v29 + v28 - fmod(ranges - v29 + (ranges - maxValue) * 0.05, v28);
   retstr->var1 = v31;
-  retstr->var3 = vcvtad_u64_f64((v31 - a4) / v28);
+  retstr->var3 = vcvtad_u64_f64((v31 - maxValue) / v28);
   return result;
 }
 
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromFixedNegativeMinValue:(SEL)a3 positiveMaxValue:(double)a4 spreadRanges:(double)a5
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromFixedNegativeMinValue:(SEL)value positiveMaxValue:(double)maxValue spreadRanges:(double)ranges
 {
-  if (a4 >= a5 || a4 >= 0.0 || a5 < 0.0)
+  if (maxValue >= ranges || maxValue >= 0.0 || ranges < 0.0)
   {
     v12 = MEMORY[0x277D81150];
-    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a3, a4, a5, v6, "[TSCHChartValueAxis p_axisDescFromFixedNegativeMinValue:positiveMaxValue:spreadRanges:]");
+    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], value, maxValue, ranges, v6, "[TSCHChartValueAxis p_axisDescFromFixedNegativeMinValue:positiveMaxValue:spreadRanges:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartValueAxis.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 551, 0, "Arguments are not valid");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, a3, a5 - a4, a5, v6, a6);
+  objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, value, ranges - maxValue, ranges, v6, a6);
   v28 = v27;
   retstr->var2 = v27;
-  v29 = fmod(-a4, v27);
-  retstr->var0 = a4;
-  v31 = a5 + (a5 - a4) * 0.05 + v29 + v28 - fmod(a5 + (a5 - a4) * 0.05 + v29, v28) - v29;
+  v29 = fmod(-maxValue, v27);
+  retstr->var0 = maxValue;
+  v31 = ranges + (ranges - maxValue) * 0.05 + v29 + v28 - fmod(ranges + (ranges - maxValue) * 0.05 + v29, v28) - v29;
   retstr->var1 = v31;
-  retstr->var3 = vcvtad_u64_f64((v31 - a4) / v28);
+  retstr->var3 = vcvtad_u64_f64((v31 - maxValue) / v28);
   return result;
 }
 
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromPositiveMinValue:(SEL)a3 fixedPositiveMaxValue:(double)a4 spreadRanges:(double)a5
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromPositiveMinValue:(SEL)value fixedPositiveMaxValue:(double)maxValue spreadRanges:(double)ranges
 {
-  if (a4 >= a5 || a4 < 0.0 || a5 <= 0.0)
+  if (maxValue >= ranges || maxValue < 0.0 || ranges <= 0.0)
   {
     v12 = MEMORY[0x277D81150];
-    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a3, a4, a5, v6, "[TSCHChartValueAxis p_axisDescFromPositiveMinValue:fixedPositiveMaxValue:spreadRanges:]");
+    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], value, maxValue, ranges, v6, "[TSCHChartValueAxis p_axisDescFromPositiveMinValue:fixedPositiveMaxValue:spreadRanges:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartValueAxis.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 569, 0, "Arguments are not valid");
 
@@ -850,13 +850,13 @@ LABEL_44:
   retstr->var0 = 0.0;
   retstr->var1 = 0.0;
   retstr->var2 = 0.0;
-  objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, a3, a5 - a4, a5, v6, a6);
+  objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, value, ranges - maxValue, ranges, v6, a6);
   v28 = v27;
   retstr->var2 = v27;
-  if (a4 == 0.0)
+  if (maxValue == 0.0)
   {
     retstr->var0 = 0.0;
-    v30 = fmod(a5, v27);
+    v30 = fmod(ranges, v27);
     if (v30 == 0.0)
     {
       v31 = 0.0;
@@ -868,7 +868,7 @@ LABEL_44:
 
   else
   {
-    v32 = fmod(a5, v27);
+    v32 = fmod(ranges, v27);
     if (v32 == 0.0)
     {
       v33 = v32;
@@ -879,32 +879,32 @@ LABEL_44:
       v33 = v28 - v32;
     }
 
-    v31 = (v33 - (a5 - a4 * 3.0)) * 0.5 - (v33 + fmod((v33 - (a5 - a4 * 3.0)) * 0.5, v28));
+    v31 = (v33 - (ranges - maxValue * 3.0)) * 0.5 - (v33 + fmod((v33 - (ranges - maxValue * 3.0)) * 0.5, v28));
   }
 
   retstr->var0 = v31;
 LABEL_14:
-  retstr->var1 = a5;
-  retstr->var3 = vcvtad_u64_f64((a5 - v31) / v28);
+  retstr->var1 = ranges;
+  retstr->var3 = vcvtad_u64_f64((ranges - v31) / v28);
   return result;
 }
 
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromNegativeMinValue:(SEL)a3 fixedPositiveMaxValue:(double)a4 spreadRanges:(double)a5
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromNegativeMinValue:(SEL)value fixedPositiveMaxValue:(double)maxValue spreadRanges:(double)ranges
 {
-  if (a4 >= a5 || a4 >= 0.0 || a5 <= 0.0)
+  if (maxValue >= ranges || maxValue >= 0.0 || ranges <= 0.0)
   {
     v12 = MEMORY[0x277D81150];
-    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a3, a4, a5, v6, "[TSCHChartValueAxis p_axisDescFromNegativeMinValue:fixedPositiveMaxValue:spreadRanges:]");
+    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], value, maxValue, ranges, v6, "[TSCHChartValueAxis p_axisDescFromNegativeMinValue:fixedPositiveMaxValue:spreadRanges:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartValueAxis.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 600, 0, "Arguments are not valid");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, a3, a5 - a4, a5, v6, a6);
+  objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, value, ranges - maxValue, ranges, v6, a6);
   v28 = v27;
   retstr->var2 = v27;
-  v29 = fmod(a5, v27);
+  v29 = fmod(ranges, v27);
   if (v29 == 0.0)
   {
     v30 = v29;
@@ -915,40 +915,40 @@ LABEL_14:
     v30 = v28 - v29;
   }
 
-  v32 = a4 + (a5 - a4) * -0.05 + v30 - (v30 + v28 - fmod(-(a4 + (a5 - a4) * -0.05 + v30), v28));
+  v32 = maxValue + (ranges - maxValue) * -0.05 + v30 - (v30 + v28 - fmod(-(maxValue + (ranges - maxValue) * -0.05 + v30), v28));
   retstr->var0 = v32;
-  retstr->var1 = a5;
-  retstr->var3 = vcvtad_u64_f64((a5 - v32) / v28);
+  retstr->var1 = ranges;
+  retstr->var3 = vcvtad_u64_f64((ranges - v32) / v28);
   return result;
 }
 
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromFixedMinValue:(SEL)a3 fixedMaxValue:(double)a4 spreadRanges:(double)a5
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromFixedMinValue:(SEL)value fixedMaxValue:(double)maxValue spreadRanges:(double)ranges
 {
-  if (a4 >= a5)
+  if (maxValue >= ranges)
   {
     v12 = MEMORY[0x277D81150];
-    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a3, a4, a5, v6, "[TSCHChartValueAxis p_axisDescFromFixedMinValue:fixedMaxValue:spreadRanges:]");
+    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], value, maxValue, ranges, v6, "[TSCHChartValueAxis p_axisDescFromFixedMinValue:fixedMaxValue:spreadRanges:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartValueAxis.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 621, 0, "Arguments are not valid");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v23, v24, v25, v26);
   }
 
-  result = objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, a3, a5 - a4, a5, v6, a6);
-  retstr->var1 = a5;
+  result = objc_msgSend_p_calculateAxisDeltaFromSpread_spreadRanges_(self, value, ranges - maxValue, ranges, v6, a6);
+  retstr->var1 = ranges;
   retstr->var2 = v28;
-  retstr->var0 = a4;
-  retstr->var3 = (__PAIR128__(vcvtad_u64_f64((a5 - a4) / v28), *&a5) - COERCE_UNSIGNED_INT64(a4 + round((a5 - a4) / v28) * v28)) >> 64;
+  retstr->var0 = maxValue;
+  retstr->var3 = (__PAIR128__(vcvtad_u64_f64((ranges - maxValue) / v28), *&ranges) - COERCE_UNSIGNED_INT64(maxValue + round((ranges - maxValue) / v28) * v28)) >> 64;
   return result;
 }
 
-- (double)p_calculateAxisDeltaFromSpread:(double)a3 spreadRanges:(id *)a4
+- (double)p_calculateAxisDeltaFromSpread:(double)spread spreadRanges:(id *)ranges
 {
-  v7 = a3;
-  if (a3 <= 0.0)
+  spreadCopy = spread;
+  if (spread <= 0.0)
   {
     v8 = MEMORY[0x277D81150];
-    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, a3, v4, v5, "[TSCHChartValueAxis p_calculateAxisDeltaFromSpread:spreadRanges:]");
+    v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, spread, v4, v5, "[TSCHChartValueAxis p_calculateAxisDeltaFromSpread:spreadRanges:]");
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, v11, v12, v13, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartValueAxis.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v15, v16, v17, v18, v9, v14, 638, 0, "Argument is not valid");
 
@@ -958,42 +958,42 @@ LABEL_14:
   result = 0.1;
   while (1)
   {
-    while (v7 <= a4->var0)
+    while (spreadCopy <= ranges->var0)
     {
-      v7 = v7 * 10.0;
+      spreadCopy = spreadCopy * 10.0;
       result = result / 10.0;
     }
 
-    if (v7 <= a4->var1)
+    if (spreadCopy <= ranges->var1)
     {
       v24 = 0.2;
       return result * v24;
     }
 
-    if (a4[1].var0 < v7 && v7 <= a4[1].var1)
+    if (ranges[1].var0 < spreadCopy && spreadCopy <= ranges[1].var1)
     {
       break;
     }
 
-    if (a4[2].var0 < v7 && v7 <= a4[2].var1)
+    if (ranges[2].var0 < spreadCopy && spreadCopy <= ranges[2].var1)
     {
       return result;
     }
 
     result = result * 10.0;
-    v7 = v7 / 10.0;
+    spreadCopy = spreadCopy / 10.0;
   }
 
   v24 = 0.5;
   return result * v24;
 }
 
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_calculateAxisDescFromMinValue:(SEL)a3 maxValue:(double)a4 userValues:(double)a5
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_calculateAxisDescFromMinValue:(SEL)value maxValue:(double)maxValue userValues:(double)values
 {
-  if (a5 <= 0.0 || a4 >= a5)
+  if (values <= 0.0 || maxValue >= values)
   {
     v13 = MEMORY[0x277D81150];
-    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a3, a4, a5, v6, "[TSCHChartValueAxis p_calculateAxisDescFromMinValue:maxValue:userValues:]");
+    v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], value, maxValue, values, v6, "[TSCHChartValueAxis p_calculateAxisDescFromMinValue:maxValue:userValues:]");
     v19 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, v16, v17, v18, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartValueAxis.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v20, v21, v22, v23, v14, v19, 663, 0, "Values are not correct");
 
@@ -1007,49 +1007,49 @@ LABEL_14:
     case 0:
     case 8:
 
-      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromPositiveMinValue_positiveMaxValue_spreadRanges_, a4, a5, v6);
+      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromPositiveMinValue_positiveMaxValue_spreadRanges_, maxValue, values, v6);
       break;
     case 1:
     case 9:
 
-      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromFixedPositiveMinValue_positiveMaxValue_spreadRanges_, a4, a5, v6);
+      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromFixedPositiveMinValue_positiveMaxValue_spreadRanges_, maxValue, values, v6);
       break;
     case 2:
     case 10:
 
-      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromPositiveMinValue_fixedPositiveMaxValue_spreadRanges_, a4, a5, v6);
+      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromPositiveMinValue_fixedPositiveMaxValue_spreadRanges_, maxValue, values, v6);
       break;
     case 4:
     case 12:
 
-      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromNegativeMinValue_positiveMaxValue_spreadRanges_, a4, a5, v6);
+      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromNegativeMinValue_positiveMaxValue_spreadRanges_, maxValue, values, v6);
       break;
     case 5:
     case 13:
 
-      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromFixedNegativeMinValue_positiveMaxValue_spreadRanges_, a4, a5, v6);
+      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromFixedNegativeMinValue_positiveMaxValue_spreadRanges_, maxValue, values, v6);
       break;
     case 6:
     case 14:
 
-      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromNegativeMinValue_fixedPositiveMaxValue_spreadRanges_, a4, a5, v6);
+      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromNegativeMinValue_fixedPositiveMaxValue_spreadRanges_, maxValue, values, v6);
       break;
     default:
 
-      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromFixedMinValue_fixedMaxValue_spreadRanges_, a4, a5, v6);
+      result = MEMORY[0x2821F9670](self, sel_p_axisDescFromFixedMinValue_fixedMaxValue_spreadRanges_, maxValue, values, v6);
       break;
   }
 
   return result;
 }
 
-- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromMinValue:(SEL)a3 maxValue:(double)a4 userValues:(double)a5
+- ($78FA2DCC9A9B4AE6DCC3A2946DFE0BC9)p_axisDescFromMinValue:(SEL)value maxValue:(double)maxValue userValues:(double)values
 {
-  v10 = self;
-  if (a4 > a5)
+  selfCopy = self;
+  if (maxValue > values)
   {
     v12 = MEMORY[0x277D81150];
-    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a3, a4, a5, v6, "[TSCHChartValueAxis p_axisDescFromMinValue:maxValue:userValues:]");
+    v13 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], value, maxValue, values, v6, "[TSCHChartValueAxis p_axisDescFromMinValue:maxValue:userValues:]");
     v18 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v14, v15, v16, v17, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/charts/Classes/TSCHChartValueAxis.m");
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v12, v19, v20, v21, v22, v13, v18, 737, 0, "Values are not correct");
 
@@ -1058,12 +1058,12 @@ LABEL_14:
 
   *&retstr->var0 = 0u;
   *&retstr->var2 = 0u;
-  if (a4 >= 0.0 || a5 > 0.0)
+  if (maxValue >= 0.0 || values > 0.0)
   {
-    if (a4 == a5)
+    if (maxValue == values)
     {
-      retstr->var0 = a4;
-      retstr->var1 = a4 + 1.0;
+      retstr->var0 = maxValue;
+      retstr->var1 = maxValue + 1.0;
       retstr->var2 = 1.0;
       retstr->var3 = 1;
     }
@@ -1071,26 +1071,26 @@ LABEL_14:
     else
     {
 
-      return MEMORY[0x2821F9670](v10, sel_p_calculateAxisDescFromMinValue_maxValue_userValues_, a4, a5, v6);
+      return MEMORY[0x2821F9670](selfCopy, sel_p_calculateAxisDescFromMinValue_maxValue_userValues_, maxValue, values, v6);
     }
   }
 
   else
   {
-    self = objc_msgSend_p_axisDescFromMinValue_maxValue_userValues_(v10, a3, -a5, -a4, v6, a6);
+    self = objc_msgSend_p_axisDescFromMinValue_maxValue_userValues_(selfCopy, value, -values, -maxValue, v6, a6);
     *&retstr->var0 = vnegq_f64(vextq_s8(*&retstr->var0, *&retstr->var0, 8uLL));
   }
 
   return self;
 }
 
-- (id)p_computeMajorGridlinesAutomaticallyInAnalysis:(id)a3 forHorizChart:(BOOL)a4
+- (id)p_computeMajorGridlinesAutomaticallyInAnalysis:(id)analysis forHorizChart:(BOOL)chart
 {
-  v4 = a4;
-  v6 = a3;
-  objc_msgSend_modelMin(v6, v7, v8, v9, v10);
+  chartCopy = chart;
+  analysisCopy = analysis;
+  objc_msgSend_modelMin(analysisCopy, v7, v8, v9, v10);
   v12 = v11;
-  objc_msgSend_modelMax(v6, v13, v11, v14, v15);
+  objc_msgSend_modelMax(analysisCopy, v13, v11, v14, v15);
   v17 = v16;
   v21 = objc_msgSend_userMin(self, v18, v16, v19, v20);
 
@@ -1119,7 +1119,7 @@ LABEL_14:
     v17 = v43;
   }
 
-  if (v4)
+  if (chartCopy)
   {
     v44 = v32 | 8;
   }
@@ -1170,8 +1170,8 @@ LABEL_14:
         }
 
         while (!v62);
-        objc_msgSend_setMin_(v6, v61, v49 + v74, v68, v69);
-        objc_msgSend_setMax_(v6, v70, v49 + 0.0, v71, v72);
+        objc_msgSend_setMin_(analysisCopy, v61, v49 + v74, v68, v69);
+        objc_msgSend_setMax_(analysisCopy, v70, v49 + 0.0, v71, v72);
       }
     }
   }
@@ -1195,9 +1195,9 @@ LABEL_14:
   return v36;
 }
 
-- (int)specificPropertyForGeneric:(int)a3
+- (int)specificPropertyForGeneric:(int)generic
 {
-  v6 = *&a3;
+  v6 = *&generic;
   v8 = objc_msgSend_p_GetGenericToValuePropertyMap(self, a2, v3, v4, v5);
   if (!objc_msgSend_containsKey_(v8, v9, v10, v11, v12, v6) || (v17 = objc_msgSend_intForKey_(v8, v13, v14, v15, v16, v6)) == 0)
   {

@@ -1,7 +1,7 @@
 @interface DBGFont
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5;
-+ (id)withDescription:(id)a3;
-- (DBGFont)initWithDescription:(id)a3;
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error;
++ (id)withDescription:(id)description;
+- (DBGFont)initWithDescription:(id)description;
 - (NSString)debugDescription;
 - (NSString)description;
 - (id)JSONCompatibleRepresentation;
@@ -11,24 +11,24 @@
 
 @implementation DBGFont
 
-+ (id)withDescription:(id)a3
++ (id)withDescription:(id)description
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDescription:v4];
+  descriptionCopy = description;
+  v5 = [[self alloc] initWithDescription:descriptionCopy];
 
   return v5;
 }
 
-- (DBGFont)initWithDescription:(id)a3
+- (DBGFont)initWithDescription:(id)description
 {
-  v5 = a3;
+  descriptionCopy = description;
   v9.receiver = self;
   v9.super_class = DBGFont;
   v6 = [(DBGFont *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fontDescription, a3);
+    objc_storeStrong(&v6->_fontDescription, description);
   }
 
   return v7;
@@ -36,15 +36,15 @@
 
 - (id)displayString
 {
-  v3 = [(DBGFont *)self fontDescription];
+  fontDescription = [(DBGFont *)self fontDescription];
 
-  if (v3)
+  if (fontDescription)
   {
-    v4 = [(DBGFont *)self fontDescription];
-    v5 = [v4 objectForKeyedSubscript:@"fontName"];
+    fontDescription2 = [(DBGFont *)self fontDescription];
+    v5 = [fontDescription2 objectForKeyedSubscript:@"fontName"];
 
-    v6 = [(DBGFont *)self fontDescription];
-    v7 = [v6 objectForKeyedSubscript:@"pointSize"];
+    fontDescription3 = [(DBGFont *)self fontDescription];
+    v7 = [fontDescription3 objectForKeyedSubscript:@"pointSize"];
 
     v8 = 0;
     if (v5 && v7)
@@ -64,15 +64,15 @@
 
 - (id)objectValue
 {
-  v3 = [(DBGFont *)self fontDescription];
+  fontDescription = [(DBGFont *)self fontDescription];
 
-  if (v3)
+  if (fontDescription)
   {
-    v4 = [(DBGFont *)self fontDescription];
-    v5 = [v4 objectForKeyedSubscript:@"fontName"];
+    fontDescription2 = [(DBGFont *)self fontDescription];
+    v5 = [fontDescription2 objectForKeyedSubscript:@"fontName"];
 
-    v6 = [(DBGFont *)self fontDescription];
-    v7 = [v6 objectForKeyedSubscript:@"pointSize"];
+    fontDescription3 = [(DBGFont *)self fontDescription];
+    v7 = [fontDescription3 objectForKeyedSubscript:@"pointSize"];
   }
 
   return [(DBGFont *)self displayString];
@@ -80,8 +80,8 @@
 
 - (NSString)description
 {
-  v2 = [(DBGFont *)self objectValue];
-  v3 = [v2 description];
+  objectValue = [(DBGFont *)self objectValue];
+  v3 = [objectValue description];
 
   return v3;
 }
@@ -96,20 +96,20 @@
   return v6;
 }
 
-+ (id)valueWithEncodedValue:(id)a3 format:(id)a4 error:(id *)a5
++ (id)valueWithEncodedValue:(id)value format:(id)format error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  valueCopy = value;
+  formatCopy = format;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v10 = DBGDecodeValueFromJSONCompatibleValue();
     v11 = 0;
-    v12 = [a1 withDescription:v10];
-    if (a5 && v11)
+    v12 = [self withDescription:v10];
+    if (error && v11)
     {
       v13 = v11;
-      *a5 = v11;
+      *error = v11;
     }
   }
 
@@ -123,14 +123,14 @@
 
 - (id)JSONCompatibleRepresentation
 {
-  v2 = [(DBGFont *)self fontDescription];
+  fontDescription = [(DBGFont *)self fontDescription];
   v3 = DBGEncodeValueAsJSONCompatibleValue();
   v4 = 0;
 
   if (v4)
   {
-    v5 = [v4 localizedDescription];
-    NSLog(&cfstr_SError_0.isa, "[DBGFont(JSONSerialization) JSONCompatibleRepresentation]", v5);
+    localizedDescription = [v4 localizedDescription];
+    NSLog(&cfstr_SError_0.isa, "[DBGFont(JSONSerialization) JSONCompatibleRepresentation]", localizedDescription);
 
     v3 = 0;
   }

@@ -1,20 +1,20 @@
 @interface CKDPAssetUploadTokenRetrieveRequest
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)authPutTypeAsString:(int)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)authPutTypeAsString:(int)string;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAuthPutType:(id)a3;
+- (int)StringAsAuthPutType:(id)type;
 - (int)authPutType;
 - (unint64_t)hash;
-- (void)addAssets:(id)a3;
-- (void)addContentRequestHeaders:(id)a3;
-- (void)addUploads:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAuthPutType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addAssets:(id)assets;
+- (void)addContentRequestHeaders:(id)headers;
+- (void)addUploads:(id)uploads;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAuthPutType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPAssetUploadTokenRetrieveRequest
@@ -31,58 +31,58 @@
   return v3;
 }
 
-- (void)addAssets:(id)a3
+- (void)addAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   assets = self->_assets;
-  v8 = v4;
+  v8 = assetsCopy;
   if (!assets)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_assets;
     self->_assets = v6;
 
-    v4 = v8;
+    assetsCopy = v8;
     assets = self->_assets;
   }
 
-  objc_msgSend_addObject_(assets, v4, v4);
+  objc_msgSend_addObject_(assets, assetsCopy, assetsCopy);
 }
 
-- (void)addUploads:(id)a3
+- (void)addUploads:(id)uploads
 {
-  v4 = a3;
+  uploadsCopy = uploads;
   uploads = self->_uploads;
-  v8 = v4;
+  v8 = uploadsCopy;
   if (!uploads)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_uploads;
     self->_uploads = v6;
 
-    v4 = v8;
+    uploadsCopy = v8;
     uploads = self->_uploads;
   }
 
-  objc_msgSend_addObject_(uploads, v4, v4);
+  objc_msgSend_addObject_(uploads, uploadsCopy, uploadsCopy);
 }
 
-- (void)addContentRequestHeaders:(id)a3
+- (void)addContentRequestHeaders:(id)headers
 {
-  v4 = a3;
+  headersCopy = headers;
   contentRequestHeaders = self->_contentRequestHeaders;
-  v8 = v4;
+  v8 = headersCopy;
   if (!contentRequestHeaders)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_contentRequestHeaders;
     self->_contentRequestHeaders = v6;
 
-    v4 = v8;
+    headersCopy = v8;
     contentRequestHeaders = self->_contentRequestHeaders;
   }
 
-  objc_msgSend_addObject_(contentRequestHeaders, v4, v4);
+  objc_msgSend_addObject_(contentRequestHeaders, headersCopy, headersCopy);
 }
 
 - (int)authPutType
@@ -98,9 +98,9 @@
   }
 }
 
-- (void)setHasAuthPutType:(BOOL)a3
+- (void)setHasAuthPutType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 2;
   }
@@ -113,35 +113,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)authPutTypeAsString:(int)a3
+- (id)authPutTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 3)
+  if ((string - 1) >= 3)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854C800[a3 - 1];
+    v4 = off_27854C800[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsAuthPutType:(id)a3
+- (int)StringAsAuthPutType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"authorizePut"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"authorizePut"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"reReference"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"reReference"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"authorizeClone"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"authorizeClone"))
   {
     v6 = 3;
   }
@@ -331,10 +331,10 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (self->_type)
   {
     PBDataWriterWriteSubmessage();
@@ -454,24 +454,24 @@
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v36 = a3;
+  toCopy = to;
   type = self->_type;
   if (type)
   {
-    objc_msgSend_setType_(v36, v4, type);
+    objc_msgSend_setType_(toCopy, v4, type);
   }
 
   field = self->_field;
   if (field)
   {
-    objc_msgSend_setField_(v36, v4, field);
+    objc_msgSend_setField_(toCopy, v4, field);
   }
 
   if (objc_msgSend_assetsCount(self, v4, field))
   {
-    objc_msgSend_clearAssets(v36, v7, v8);
+    objc_msgSend_clearAssets(toCopy, v7, v8);
     v11 = objc_msgSend_assetsCount(self, v9, v10);
     if (v11)
     {
@@ -479,14 +479,14 @@
       for (i = 0; i != v12; ++i)
       {
         v14 = objc_msgSend_assetsAtIndex_(self, v7, i);
-        objc_msgSend_addAssets_(v36, v15, v14);
+        objc_msgSend_addAssets_(toCopy, v15, v14);
       }
     }
   }
 
   if (objc_msgSend_uploadsCount(self, v7, v8))
   {
-    objc_msgSend_clearUploads(v36, v16, v17);
+    objc_msgSend_clearUploads(toCopy, v16, v17);
     v20 = objc_msgSend_uploadsCount(self, v18, v19);
     if (v20)
     {
@@ -494,14 +494,14 @@
       for (j = 0; j != v21; ++j)
       {
         v23 = objc_msgSend_uploadsAtIndex_(self, v16, j);
-        objc_msgSend_addUploads_(v36, v24, v23);
+        objc_msgSend_addUploads_(toCopy, v24, v23);
       }
     }
   }
 
   if (objc_msgSend_contentRequestHeadersCount(self, v16, v17))
   {
-    objc_msgSend_clearContentRequestHeaders(v36, v25, v26);
+    objc_msgSend_clearContentRequestHeaders(toCopy, v25, v26);
     v29 = objc_msgSend_contentRequestHeadersCount(self, v27, v28);
     if (v29)
     {
@@ -509,7 +509,7 @@
       for (k = 0; k != v30; ++k)
       {
         v32 = objc_msgSend_contentRequestHeadersAtIndex_(self, v25, k);
-        objc_msgSend_addContentRequestHeaders_(v36, v33, v32);
+        objc_msgSend_addContentRequestHeaders_(toCopy, v33, v32);
       }
     }
   }
@@ -517,35 +517,35 @@
   authPutRequest = self->_authPutRequest;
   if (authPutRequest)
   {
-    objc_msgSend_setAuthPutRequest_(v36, v25, authPutRequest);
+    objc_msgSend_setAuthPutRequest_(toCopy, v25, authPutRequest);
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(v36 + 8) = self->_authPutType;
-    *(v36 + 72) |= 2u;
+    *(toCopy + 8) = self->_authPutType;
+    *(toCopy + 72) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(v36 + 1) = self->_options;
-    *(v36 + 72) |= 1u;
+    *(toCopy + 1) = self->_options;
+    *(toCopy + 72) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v65 = *MEMORY[0x277D85DE8];
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_type, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_type, v11, zone);
   v13 = *(v10 + 56);
   *(v10 + 56) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_field, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_field, v14, zone);
   v16 = *(v10 + 48);
   *(v10 + 48) = v15;
 
@@ -568,7 +568,7 @@
           objc_enumerationMutation(v17);
         }
 
-        v24 = objc_msgSend_copyWithZone_(*(*(&v58 + 1) + 8 * i), v20, a3);
+        v24 = objc_msgSend_copyWithZone_(*(*(&v58 + 1) + 8 * i), v20, zone);
         objc_msgSend_addAssets_(v10, v25, v24);
       }
 
@@ -597,7 +597,7 @@
           objc_enumerationMutation(v26);
         }
 
-        v33 = objc_msgSend_copyWithZone_(*(*(&v54 + 1) + 8 * j), v29, a3);
+        v33 = objc_msgSend_copyWithZone_(*(*(&v54 + 1) + 8 * j), v29, zone);
         objc_msgSend_addUploads_(v10, v34, v33);
       }
 
@@ -626,7 +626,7 @@
           objc_enumerationMutation(v35);
         }
 
-        v42 = objc_msgSend_copyWithZone_(*(*(&v50 + 1) + 8 * k), v38, a3, v50);
+        v42 = objc_msgSend_copyWithZone_(*(*(&v50 + 1) + 8 * k), v38, zone, v50);
         objc_msgSend_addContentRequestHeaders_(v10, v43, v42);
       }
 
@@ -636,7 +636,7 @@
     while (v39);
   }
 
-  v45 = objc_msgSend_copyWithZone_(self->_authPutRequest, v44, a3);
+  v45 = objc_msgSend_copyWithZone_(self->_authPutRequest, v44, zone);
   v46 = *(v10 + 24);
   *(v10 + 24) = v45;
 
@@ -658,17 +658,17 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_23;
   }
 
   type = self->_type;
-  v9 = v4[7];
+  v9 = equalCopy[7];
   if (type | v9)
   {
     if (!objc_msgSend_isEqual_(type, v7, v9))
@@ -678,7 +678,7 @@
   }
 
   field = self->_field;
-  v11 = v4[6];
+  v11 = equalCopy[6];
   if (field | v11)
   {
     if (!objc_msgSend_isEqual_(field, v7, v11))
@@ -688,7 +688,7 @@
   }
 
   assets = self->_assets;
-  v13 = v4[2];
+  v13 = equalCopy[2];
   if (assets | v13)
   {
     if (!objc_msgSend_isEqual_(assets, v7, v13))
@@ -698,7 +698,7 @@
   }
 
   uploads = self->_uploads;
-  v15 = v4[8];
+  v15 = equalCopy[8];
   if (uploads | v15)
   {
     if (!objc_msgSend_isEqual_(uploads, v7, v15))
@@ -708,7 +708,7 @@
   }
 
   contentRequestHeaders = self->_contentRequestHeaders;
-  v17 = v4[5];
+  v17 = equalCopy[5];
   if (contentRequestHeaders | v17)
   {
     if (!objc_msgSend_isEqual_(contentRequestHeaders, v7, v17))
@@ -718,7 +718,7 @@
   }
 
   authPutRequest = self->_authPutRequest;
-  v19 = v4[3];
+  v19 = equalCopy[3];
   if (authPutRequest | v19)
   {
     if (!objc_msgSend_isEqual_(authPutRequest, v7, v19))
@@ -729,23 +729,23 @@
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((v4[9] & 2) == 0 || self->_authPutType != *(v4 + 8))
+    if ((equalCopy[9] & 2) == 0 || self->_authPutType != *(equalCopy + 8))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((v4[9] & 2) != 0)
+  else if ((equalCopy[9] & 2) != 0)
   {
 LABEL_23:
     v20 = 0;
     goto LABEL_24;
   }
 
-  v20 = (v4[9] & 1) == 0;
+  v20 = (equalCopy[9] & 1) == 0;
   if (*&self->_has)
   {
-    if ((v4[9] & 1) == 0 || self->_options != v4[1])
+    if ((equalCopy[9] & 1) == 0 || self->_options != equalCopy[1])
     {
       goto LABEL_23;
     }
@@ -790,12 +790,12 @@ LABEL_3:
   return v7 ^ v4 ^ v10 ^ v13 ^ v16 ^ v19 ^ v20 ^ v21;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v50 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  fromCopy = from;
   type = self->_type;
-  v7 = *(v5 + 7);
+  v7 = *(fromCopy + 7);
   if (type)
   {
     if (v7)
@@ -810,7 +810,7 @@ LABEL_3:
   }
 
   field = self->_field;
-  v9 = *(v5 + 6);
+  v9 = *(fromCopy + 6);
   if (field)
   {
     if (v9)
@@ -828,7 +828,7 @@ LABEL_3:
   v46 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v10 = *(v5 + 2);
+  v10 = *(fromCopy + 2);
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v10, v11, &v43, v49, 16);
   if (v12)
   {
@@ -856,7 +856,7 @@ LABEL_3:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v17 = *(v5 + 8);
+  v17 = *(fromCopy + 8);
   v19 = objc_msgSend_countByEnumeratingWithState_objects_count_(v17, v18, &v39, v48, 16);
   if (v19)
   {
@@ -884,7 +884,7 @@ LABEL_3:
   v38 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v24 = *(v5 + 5);
+  v24 = *(fromCopy + 5);
   v26 = objc_msgSend_countByEnumeratingWithState_objects_count_(v24, v25, &v35, v47, 16);
   if (v26)
   {
@@ -908,23 +908,23 @@ LABEL_3:
     while (v28);
   }
 
-  v32 = *(v5 + 3);
+  v32 = *(fromCopy + 3);
   if (v32)
   {
     objc_msgSend_setAuthPutRequest_(self, v31, v32);
   }
 
-  v33 = *(v5 + 72);
+  v33 = *(fromCopy + 72);
   if ((v33 & 2) != 0)
   {
-    self->_authPutType = *(v5 + 8);
+    self->_authPutType = *(fromCopy + 8);
     *&self->_has |= 2u;
-    v33 = *(v5 + 72);
+    v33 = *(fromCopy + 72);
   }
 
   if (v33)
   {
-    self->_options = *(v5 + 1);
+    self->_options = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

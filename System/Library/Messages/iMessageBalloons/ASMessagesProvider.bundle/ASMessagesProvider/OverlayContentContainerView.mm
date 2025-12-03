@@ -1,40 +1,40 @@
 @interface OverlayContentContainerView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (_TtC18ASMessagesProviderP33_A13096A9E7C66318CD41C376931EE6CA27OverlayContentContainerView)initWithCoder:(id)a3;
-- (_TtC18ASMessagesProviderP33_A13096A9E7C66318CD41C376931EE6CA27OverlayContentContainerView)initWithFrame:(CGRect)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (_TtC18ASMessagesProviderP33_A13096A9E7C66318CD41C376931EE6CA27OverlayContentContainerView)initWithCoder:(id)coder;
+- (_TtC18ASMessagesProviderP33_A13096A9E7C66318CD41C376931EE6CA27OverlayContentContainerView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation OverlayContentContainerView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  v4 = a4;
-  y = a3.y;
-  x = a3.x;
-  v8 = a4;
-  v9 = self;
-  LOBYTE(v4) = sub_6DD68C(v4, x, y);
+  eventCopy = event;
+  y = inside.y;
+  x = inside.x;
+  eventCopy2 = event;
+  selfCopy = self;
+  LOBYTE(eventCopy) = sub_6DD68C(eventCopy, x, y);
 
-  return v4 & 1;
+  return eventCopy & 1;
 }
 
-- (_TtC18ASMessagesProviderP33_A13096A9E7C66318CD41C376931EE6CA27OverlayContentContainerView)initWithFrame:(CGRect)a3
+- (_TtC18ASMessagesProviderP33_A13096A9E7C66318CD41C376931EE6CA27OverlayContentContainerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8.receiver = self;
   v8.super_class = swift_getObjectType();
   return [(OverlayContentContainerView *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (_TtC18ASMessagesProviderP33_A13096A9E7C66318CD41C376931EE6CA27OverlayContentContainerView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProviderP33_A13096A9E7C66318CD41C376931EE6CA27OverlayContentContainerView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  v4 = a3;
-  v5 = [(OverlayContentContainerView *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(OverlayContentContainerView *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

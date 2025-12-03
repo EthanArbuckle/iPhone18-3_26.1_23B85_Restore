@@ -1,63 +1,63 @@
 @interface REMStructuredLocation
-- (BOOL)isContentEqual:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (REMStructuredLocation)initWithCoder:(id)a3;
-- (REMStructuredLocation)initWithTitle:(id)a3;
-- (REMStructuredLocation)initWithTitle:(id)a3 locationUID:(id)a4;
-- (REMStructuredLocation)initWithTitle:(id)a3 locationUID:(id)a4 latitude:(double)a5 longitude:(double)a6 radius:(double)a7 address:(id)a8 routing:(id)a9 referenceFrameString:(id)a10 contactLabel:(id)a11 mapKitHandle:(id)a12;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isContentEqual:(id)equal;
+- (BOOL)isEqual:(id)equal;
+- (REMStructuredLocation)initWithCoder:(id)coder;
+- (REMStructuredLocation)initWithTitle:(id)title;
+- (REMStructuredLocation)initWithTitle:(id)title locationUID:(id)d;
+- (REMStructuredLocation)initWithTitle:(id)title locationUID:(id)d latitude:(double)latitude longitude:(double)longitude radius:(double)radius address:(id)address routing:(id)routing referenceFrameString:(id)self0 contactLabel:(id)self1 mapKitHandle:(id)self2;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
 - (id)description;
 - (id)displayName;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMStructuredLocation
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [REMStructuredLocation alloc];
-  v5 = [(REMStructuredLocation *)self title];
-  v6 = [(REMStructuredLocation *)self locationUID];
+  title = [(REMStructuredLocation *)self title];
+  locationUID = [(REMStructuredLocation *)self locationUID];
   [(REMStructuredLocation *)self latitude];
   v8 = v7;
   [(REMStructuredLocation *)self longitude];
   v10 = v9;
   [(REMStructuredLocation *)self radius];
   v12 = v11;
-  v13 = [(REMStructuredLocation *)self address];
-  v14 = [(REMStructuredLocation *)self routing];
-  v15 = [(REMStructuredLocation *)self referenceFrameString];
-  v16 = [(REMStructuredLocation *)self contactLabel];
-  v17 = [(REMStructuredLocation *)self mapKitHandle];
-  v18 = [(REMStructuredLocation *)v4 initWithTitle:v5 locationUID:v6 latitude:v13 longitude:v14 radius:v15 address:v16 routing:v8 referenceFrameString:v10 contactLabel:v12 mapKitHandle:v17];
+  address = [(REMStructuredLocation *)self address];
+  routing = [(REMStructuredLocation *)self routing];
+  referenceFrameString = [(REMStructuredLocation *)self referenceFrameString];
+  contactLabel = [(REMStructuredLocation *)self contactLabel];
+  mapKitHandle = [(REMStructuredLocation *)self mapKitHandle];
+  v18 = [(REMStructuredLocation *)v4 initWithTitle:title locationUID:locationUID latitude:address longitude:routing radius:referenceFrameString address:contactLabel routing:v8 referenceFrameString:v10 contactLabel:v12 mapKitHandle:mapKitHandle];
 
   return v18;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMStructuredLocation *)self locationUID];
-      v8 = [(REMStructuredLocation *)v6 locationUID];
-      v9 = v8;
-      if (v7 == v8)
+      locationUID = [(REMStructuredLocation *)self locationUID];
+      locationUID2 = [(REMStructuredLocation *)v6 locationUID];
+      v9 = locationUID2;
+      if (locationUID == locationUID2)
       {
       }
 
       else
       {
-        v10 = [(REMStructuredLocation *)self locationUID];
-        v11 = [(REMStructuredLocation *)v6 locationUID];
-        v12 = [v10 isEqual:v11];
+        locationUID3 = [(REMStructuredLocation *)self locationUID];
+        locationUID4 = [(REMStructuredLocation *)v6 locationUID];
+        v12 = [locationUID3 isEqual:locationUID4];
 
         if (!v12)
         {
@@ -82,28 +82,28 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)isContentEqual:(id)a3
+- (BOOL)isContentEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 != self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy != self)
   {
-    v6 = v4;
+    v6 = equalCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [(REMStructuredLocation *)self title];
-      v8 = [(REMStructuredLocation *)v6 title];
-      v9 = v8;
-      if (v7 == v8)
+      title = [(REMStructuredLocation *)self title];
+      title2 = [(REMStructuredLocation *)v6 title];
+      v9 = title2;
+      if (title == title2)
       {
       }
 
       else
       {
-        v10 = [(REMStructuredLocation *)self title];
-        v11 = [(REMStructuredLocation *)v6 title];
-        v12 = [v10 isEqual:v11];
+        title3 = [(REMStructuredLocation *)self title];
+        title4 = [(REMStructuredLocation *)v6 title];
+        v12 = [title3 isEqual:title4];
 
         if (!v12)
         {
@@ -135,18 +135,18 @@ LABEL_10:
         goto LABEL_25;
       }
 
-      v23 = [(REMStructuredLocation *)self address];
-      v24 = [(REMStructuredLocation *)v6 address];
-      v25 = v24;
-      if (v23 == v24)
+      address = [(REMStructuredLocation *)self address];
+      address2 = [(REMStructuredLocation *)v6 address];
+      v25 = address2;
+      if (address == address2)
       {
       }
 
       else
       {
-        v26 = [(REMStructuredLocation *)self address];
-        v27 = [(REMStructuredLocation *)v6 address];
-        v28 = [v26 isEqual:v27];
+        address3 = [(REMStructuredLocation *)self address];
+        address4 = [(REMStructuredLocation *)v6 address];
+        v28 = [address3 isEqual:address4];
 
         if (!v28)
         {
@@ -154,18 +154,18 @@ LABEL_10:
         }
       }
 
-      v29 = [(REMStructuredLocation *)self routing];
-      v30 = [(REMStructuredLocation *)v6 routing];
-      v31 = v30;
-      if (v29 == v30)
+      routing = [(REMStructuredLocation *)self routing];
+      routing2 = [(REMStructuredLocation *)v6 routing];
+      v31 = routing2;
+      if (routing == routing2)
       {
       }
 
       else
       {
-        v32 = [(REMStructuredLocation *)self routing];
-        v33 = [(REMStructuredLocation *)v6 routing];
-        v34 = [v32 isEqual:v33];
+        routing3 = [(REMStructuredLocation *)self routing];
+        routing4 = [(REMStructuredLocation *)v6 routing];
+        v34 = [routing3 isEqual:routing4];
 
         if (!v34)
         {
@@ -173,18 +173,18 @@ LABEL_10:
         }
       }
 
-      v35 = [(REMStructuredLocation *)self referenceFrameString];
-      v36 = [(REMStructuredLocation *)v6 referenceFrameString];
-      v37 = v36;
-      if (v35 == v36)
+      referenceFrameString = [(REMStructuredLocation *)self referenceFrameString];
+      referenceFrameString2 = [(REMStructuredLocation *)v6 referenceFrameString];
+      v37 = referenceFrameString2;
+      if (referenceFrameString == referenceFrameString2)
       {
       }
 
       else
       {
-        v38 = [(REMStructuredLocation *)self referenceFrameString];
-        v39 = [(REMStructuredLocation *)v6 referenceFrameString];
-        v40 = [v38 isEqual:v39];
+        referenceFrameString3 = [(REMStructuredLocation *)self referenceFrameString];
+        referenceFrameString4 = [(REMStructuredLocation *)v6 referenceFrameString];
+        v40 = [referenceFrameString3 isEqual:referenceFrameString4];
 
         if (!v40)
         {
@@ -192,18 +192,18 @@ LABEL_10:
         }
       }
 
-      v41 = [(REMStructuredLocation *)self contactLabel];
-      v42 = [(REMStructuredLocation *)v6 contactLabel];
-      v43 = v42;
-      if (v41 == v42)
+      contactLabel = [(REMStructuredLocation *)self contactLabel];
+      contactLabel2 = [(REMStructuredLocation *)v6 contactLabel];
+      v43 = contactLabel2;
+      if (contactLabel == contactLabel2)
       {
       }
 
       else
       {
-        v44 = [(REMStructuredLocation *)self contactLabel];
-        v45 = [(REMStructuredLocation *)v6 contactLabel];
-        v46 = [v44 isEqual:v45];
+        contactLabel3 = [(REMStructuredLocation *)self contactLabel];
+        contactLabel4 = [(REMStructuredLocation *)v6 contactLabel];
+        v46 = [contactLabel3 isEqual:contactLabel4];
 
         if (!v46)
         {
@@ -211,18 +211,18 @@ LABEL_10:
         }
       }
 
-      v48 = [(REMStructuredLocation *)self mapKitHandle];
-      v49 = [(REMStructuredLocation *)v6 mapKitHandle];
-      if (v48 == v49)
+      mapKitHandle = [(REMStructuredLocation *)self mapKitHandle];
+      mapKitHandle2 = [(REMStructuredLocation *)v6 mapKitHandle];
+      if (mapKitHandle == mapKitHandle2)
       {
         v13 = 1;
       }
 
       else
       {
-        v50 = [(REMStructuredLocation *)self mapKitHandle];
-        v51 = [(REMStructuredLocation *)v6 mapKitHandle];
-        v13 = [v50 isEqual:v51];
+        mapKitHandle3 = [(REMStructuredLocation *)self mapKitHandle];
+        mapKitHandle4 = [(REMStructuredLocation *)v6 mapKitHandle];
+        v13 = [mapKitHandle3 isEqual:mapKitHandle4];
       }
 
       goto LABEL_26;
@@ -243,26 +243,26 @@ LABEL_27:
 
 - (unint64_t)hash
 {
-  v3 = [(REMStructuredLocation *)self title];
-  v4 = [v3 hash];
+  title = [(REMStructuredLocation *)self title];
+  v4 = [title hash];
 
-  v5 = [(REMStructuredLocation *)self locationUID];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  locationUID = [(REMStructuredLocation *)self locationUID];
+  v6 = [locationUID hash] - v4 + 32 * v4;
 
-  v7 = [(REMStructuredLocation *)self address];
-  v8 = [v7 hash] - v6 + 32 * v6;
+  address = [(REMStructuredLocation *)self address];
+  v8 = [address hash] - v6 + 32 * v6;
 
-  v9 = [(REMStructuredLocation *)self routing];
-  v10 = [v9 hash] - v8 + 32 * v8;
+  routing = [(REMStructuredLocation *)self routing];
+  v10 = [routing hash] - v8 + 32 * v8;
 
-  v11 = [(REMStructuredLocation *)self referenceFrameString];
-  v12 = [v11 hash] - v10 + 32 * v10;
+  referenceFrameString = [(REMStructuredLocation *)self referenceFrameString];
+  v12 = [referenceFrameString hash] - v10 + 32 * v10;
 
-  v13 = [(REMStructuredLocation *)self contactLabel];
-  v14 = [v13 hash] - v12 + 32 * v12;
+  contactLabel = [(REMStructuredLocation *)self contactLabel];
+  v14 = [contactLabel hash] - v12 + 32 * v12;
 
-  v15 = [(REMStructuredLocation *)self mapKitHandle];
-  v16 = [v15 hash] - v14 + 32 * v14;
+  mapKitHandle = [(REMStructuredLocation *)self mapKitHandle];
+  v16 = [mapKitHandle hash] - v14 + 32 * v14;
 
   return v16;
 }
@@ -271,8 +271,8 @@ LABEL_27:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMStructuredLocation *)self locationUID];
-  v6 = [v3 stringWithFormat:@"%@ {locationUID = %@}", v4, v5];
+  locationUID = [(REMStructuredLocation *)self locationUID];
+  v6 = [v3 stringWithFormat:@"%@ {locationUID = %@}", v4, locationUID];
 
   return v6;
 }
@@ -281,72 +281,72 @@ LABEL_27:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMStructuredLocation *)self title];
+  title = [(REMStructuredLocation *)self title];
   [(REMStructuredLocation *)self latitude];
   v7 = v6;
   [(REMStructuredLocation *)self longitude];
   v9 = v8;
   [(REMStructuredLocation *)self radius];
   v11 = v10;
-  v12 = [(REMStructuredLocation *)self locationUID];
-  v13 = [v3 stringWithFormat:@"%@ {title: %@ latlong: (%f, %f); radius: %f; locationUID = %@}", v4, v5, v7, v9, v11, v12];;
+  locationUID = [(REMStructuredLocation *)self locationUID];
+  v13 = [v3 stringWithFormat:@"%@ {title: %@ latlong: (%f, %f); radius: %f; locationUID = %@}", v4, title, v7, v9, v11, locationUID];;
 
   return v13;
 }
 
-- (REMStructuredLocation)initWithTitle:(id)a3
+- (REMStructuredLocation)initWithTitle:(id)title
 {
   v4 = MEMORY[0x1E696AFB0];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v6 UUIDString];
-  v8 = [(REMStructuredLocation *)self initWithTitle:v5 locationUID:v7];
+  titleCopy = title;
+  uUID = [v4 UUID];
+  uUIDString = [uUID UUIDString];
+  v8 = [(REMStructuredLocation *)self initWithTitle:titleCopy locationUID:uUIDString];
 
   return v8;
 }
 
-- (REMStructuredLocation)initWithTitle:(id)a3 locationUID:(id)a4
+- (REMStructuredLocation)initWithTitle:(id)title locationUID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = REMStructuredLocation;
   v9 = [(REMStructuredLocation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_title, a3);
-    objc_storeStrong(&v10->_locationUID, a4);
+    objc_storeStrong(&v9->_title, title);
+    objc_storeStrong(&v10->_locationUID, d);
   }
 
   return v10;
 }
 
-- (REMStructuredLocation)initWithTitle:(id)a3 locationUID:(id)a4 latitude:(double)a5 longitude:(double)a6 radius:(double)a7 address:(id)a8 routing:(id)a9 referenceFrameString:(id)a10 contactLabel:(id)a11 mapKitHandle:(id)a12
+- (REMStructuredLocation)initWithTitle:(id)title locationUID:(id)d latitude:(double)latitude longitude:(double)longitude radius:(double)radius address:(id)address routing:(id)routing referenceFrameString:(id)self0 contactLabel:(id)self1 mapKitHandle:(id)self2
 {
-  v31 = a3;
-  v30 = a4;
-  v29 = a8;
-  v28 = a9;
-  v27 = a10;
-  v22 = a11;
-  v23 = a12;
+  titleCopy = title;
+  dCopy = d;
+  addressCopy = address;
+  routingCopy = routing;
+  stringCopy = string;
+  labelCopy = label;
+  handleCopy = handle;
   v32.receiver = self;
   v32.super_class = REMStructuredLocation;
   v24 = [(REMStructuredLocation *)&v32 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_title, a3);
-    objc_storeStrong(&v25->_locationUID, a4);
-    v25->_latitude = a5;
-    v25->_longitude = a6;
-    v25->_radius = a7;
-    objc_storeStrong(&v25->_address, a8);
-    objc_storeStrong(&v25->_routing, a9);
-    objc_storeStrong(&v25->_referenceFrameString, a10);
-    objc_storeStrong(&v25->_contactLabel, a11);
-    objc_storeStrong(&v25->_mapKitHandle, a12);
+    objc_storeStrong(&v24->_title, title);
+    objc_storeStrong(&v25->_locationUID, d);
+    v25->_latitude = latitude;
+    v25->_longitude = longitude;
+    v25->_radius = radius;
+    objc_storeStrong(&v25->_address, address);
+    objc_storeStrong(&v25->_routing, routing);
+    objc_storeStrong(&v25->_referenceFrameString, string);
+    objc_storeStrong(&v25->_contactLabel, label);
+    objc_storeStrong(&v25->_mapKitHandle, handle);
   }
 
   return v25;
@@ -354,76 +354,76 @@ LABEL_27:
 
 - (id)displayName
 {
-  v3 = [(REMStructuredLocation *)self contactLabel];
-  v4 = [v3 length];
+  contactLabel = [(REMStructuredLocation *)self contactLabel];
+  v4 = [contactLabel length];
 
   if (v4)
   {
-    v5 = [(REMStructuredLocation *)self contactLabel];
-    v6 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v5];
-    v7 = [v6 host];
-    v8 = [v7 length];
+    contactLabel2 = [(REMStructuredLocation *)self contactLabel];
+    v6 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:contactLabel2];
+    host = [v6 host];
+    v8 = [host length];
 
     if (v8)
     {
-      v9 = [v6 host];
+      host2 = [v6 host];
     }
 
     else
     {
-      v9 = v5;
+      host2 = contactLabel2;
     }
 
-    v10 = v9;
+    title = host2;
   }
 
   else
   {
-    v10 = [(REMStructuredLocation *)self title];
+    title = [(REMStructuredLocation *)self title];
   }
 
-  return v10;
+  return title;
 }
 
-- (REMStructuredLocation)initWithCoder:(id)a3
+- (REMStructuredLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = REMStructuredLocation;
   v5 = [(REMStructuredLocation *)&v24 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    [v4 decodeDoubleForKey:@"latitude"];
+    [coderCopy decodeDoubleForKey:@"latitude"];
     v5->_latitude = v8;
-    [v4 decodeDoubleForKey:@"longitude"];
+    [coderCopy decodeDoubleForKey:@"longitude"];
     v5->_longitude = v9;
-    [v4 decodeDoubleForKey:@"radius"];
+    [coderCopy decodeDoubleForKey:@"radius"];
     v5->_radius = v10;
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"locationUID"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"locationUID"];
     locationUID = v5->_locationUID;
     v5->_locationUID = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"address"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"address"];
     address = v5->_address;
     v5->_address = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"routing"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"routing"];
     routing = v5->_routing;
     v5->_routing = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"referenceFrameString"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"referenceFrameString"];
     referenceFrameString = v5->_referenceFrameString;
     v5->_referenceFrameString = v17;
 
-    v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"contactLabel"];
+    v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"contactLabel"];
     contactLabel = v5->_contactLabel;
     v5->_contactLabel = v19;
 
-    v21 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mapKitHandle"];
+    v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mapKitHandle"];
     mapKitHandle = v5->_mapKitHandle;
     v5->_mapKitHandle = v21;
   }
@@ -431,35 +431,35 @@ LABEL_27:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMStructuredLocation *)self title];
-  [v4 encodeObject:v5 forKey:@"title"];
+  coderCopy = coder;
+  title = [(REMStructuredLocation *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
   [(REMStructuredLocation *)self latitude];
-  [v4 encodeDouble:@"latitude" forKey:?];
+  [coderCopy encodeDouble:@"latitude" forKey:?];
   [(REMStructuredLocation *)self longitude];
-  [v4 encodeDouble:@"longitude" forKey:?];
+  [coderCopy encodeDouble:@"longitude" forKey:?];
   [(REMStructuredLocation *)self radius];
-  [v4 encodeDouble:@"radius" forKey:?];
-  v6 = [(REMStructuredLocation *)self locationUID];
-  [v4 encodeObject:v6 forKey:@"locationUID"];
+  [coderCopy encodeDouble:@"radius" forKey:?];
+  locationUID = [(REMStructuredLocation *)self locationUID];
+  [coderCopy encodeObject:locationUID forKey:@"locationUID"];
 
-  v7 = [(REMStructuredLocation *)self address];
-  [v4 encodeObject:v7 forKey:@"address"];
+  address = [(REMStructuredLocation *)self address];
+  [coderCopy encodeObject:address forKey:@"address"];
 
-  v8 = [(REMStructuredLocation *)self routing];
-  [v4 encodeObject:v8 forKey:@"routing"];
+  routing = [(REMStructuredLocation *)self routing];
+  [coderCopy encodeObject:routing forKey:@"routing"];
 
-  v9 = [(REMStructuredLocation *)self referenceFrameString];
-  [v4 encodeObject:v9 forKey:@"referenceFrameString"];
+  referenceFrameString = [(REMStructuredLocation *)self referenceFrameString];
+  [coderCopy encodeObject:referenceFrameString forKey:@"referenceFrameString"];
 
-  v10 = [(REMStructuredLocation *)self contactLabel];
-  [v4 encodeObject:v10 forKey:@"contactLabel"];
+  contactLabel = [(REMStructuredLocation *)self contactLabel];
+  [coderCopy encodeObject:contactLabel forKey:@"contactLabel"];
 
-  v11 = [(REMStructuredLocation *)self mapKitHandle];
-  [v4 encodeObject:v11 forKey:@"mapKitHandle"];
+  mapKitHandle = [(REMStructuredLocation *)self mapKitHandle];
+  [coderCopy encodeObject:mapKitHandle forKey:@"mapKitHandle"];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface _UIFluidSliderInelasticPanDriver
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (UIView)view;
 - (_UIFluidSliderDirectDrivingDelegate)delegate;
 - (_UIFluidSliderDrivable)drivable;
 - (_UIFluidSliderInelasticPanDriver)init;
 - (double)_trackLength;
-- (void)_handleGesture:(id)a3;
-- (void)_issueUpdateWithValue:(double)a3 isActive:(BOOL)a4;
+- (void)_handleGesture:(id)gesture;
+- (void)_issueUpdateWithValue:(double)value isActive:(BOOL)active;
 - (void)cancel;
-- (void)setEnabled:(BOOL)a3;
-- (void)setView:(id)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setView:(id)view;
 @end
 
 @implementation _UIFluidSliderInelasticPanDriver
@@ -35,65 +35,65 @@
   return v2;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  obj = a3;
+  obj = view;
   WeakRetained = objc_loadWeakRetained(&self->_view);
 
   v5 = obj;
   if (WeakRetained != obj)
   {
     v6 = objc_loadWeakRetained(&self->_view);
-    v7 = [(_UIFluidSliderInelasticPanDriver *)self panGestureRecognizer];
-    [v6 removeGestureRecognizer:v7];
+    panGestureRecognizer = [(_UIFluidSliderInelasticPanDriver *)self panGestureRecognizer];
+    [v6 removeGestureRecognizer:panGestureRecognizer];
 
     v8 = objc_storeWeak(&self->_view, obj);
     v5 = obj;
     if (obj)
     {
       v9 = objc_loadWeakRetained(&self->_view);
-      v10 = [(_UIFluidSliderInelasticPanDriver *)self panGestureRecognizer];
-      [v9 addGestureRecognizer:v10];
+      panGestureRecognizer2 = [(_UIFluidSliderInelasticPanDriver *)self panGestureRecognizer];
+      [v9 addGestureRecognizer:panGestureRecognizer2];
 
       v5 = obj;
     }
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    v4 = a3;
-    self->_enabled = a3;
-    v5 = [(_UIFluidSliderInelasticPanDriver *)self panGestureRecognizer];
-    [v5 setEnabled:v4];
+    enabledCopy = enabled;
+    self->_enabled = enabled;
+    panGestureRecognizer = [(_UIFluidSliderInelasticPanDriver *)self panGestureRecognizer];
+    [panGestureRecognizer setEnabled:enabledCopy];
   }
 }
 
 - (void)cancel
 {
-  v3 = [(_UIFluidSliderInelasticPanDriver *)self panGestureRecognizer];
-  v4 = [v3 isEnabled];
+  panGestureRecognizer = [(_UIFluidSliderInelasticPanDriver *)self panGestureRecognizer];
+  isEnabled = [panGestureRecognizer isEnabled];
 
-  if (v4)
+  if (isEnabled)
   {
-    v5 = [(_UIFluidSliderInelasticPanDriver *)self panGestureRecognizer];
-    [v5 setEnabled:0];
+    panGestureRecognizer2 = [(_UIFluidSliderInelasticPanDriver *)self panGestureRecognizer];
+    [panGestureRecognizer2 setEnabled:0];
 
-    v6 = [(_UIFluidSliderInelasticPanDriver *)self panGestureRecognizer];
-    [v6 setEnabled:1];
+    panGestureRecognizer3 = [(_UIFluidSliderInelasticPanDriver *)self panGestureRecognizer];
+    [panGestureRecognizer3 setEnabled:1];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
+  beginCopy = begin;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained)
   {
     v6 = objc_loadWeakRetained(&self->_view);
-    [v4 locationInView:v6];
+    [beginCopy locationInView:v6];
     v7 = [WeakRetained driver:self shouldBeginAtPoint:?];
   }
 
@@ -105,20 +105,20 @@
   return v7;
 }
 
-- (void)_handleGesture:(id)a3
+- (void)_handleGesture:(id)gesture
 {
-  v4 = a3;
-  if ([v4 state] < 1 || objc_msgSend(v4, "state") > 2)
+  gestureCopy = gesture;
+  if ([gestureCopy state] < 1 || objc_msgSend(gestureCopy, "state") > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    if ([v4 state] == 1)
+    if ([gestureCopy state] == 1)
     {
-      v5 = [(_UIFluidSliderInelasticPanDriver *)self drivable];
-      [v5 presentationValue];
+      drivable = [(_UIFluidSliderInelasticPanDriver *)self drivable];
+      [drivable presentationValue];
       [(_UIFluidSliderInelasticPanDriver *)self set_previousValue:?];
 
       [(_UIFluidSliderInelasticPanDriver *)self set_previousTranslation:0.0];
@@ -127,8 +127,8 @@
     v6 = 1;
   }
 
-  v7 = [v4 view];
-  [v4 translationInView:v7];
+  view = [gestureCopy view];
+  [gestureCopy translationInView:view];
   v9 = v8;
   v11 = v10;
 
@@ -147,13 +147,13 @@
   [(_UIFluidSliderInelasticPanDriver *)self velocityMultiplier];
   v19 = v15 + v17 * v18;
   [(_UIFluidSliderInelasticPanDriver *)self set_previousValue:v19];
-  v20 = [(_UIFluidSliderInelasticPanDriver *)self delegate];
+  delegate = [(_UIFluidSliderInelasticPanDriver *)self delegate];
 
-  if (v20)
+  if (delegate)
   {
     v35 = -1.0;
-    v21 = [(_UIFluidSliderInelasticPanDriver *)self delegate];
-    v22 = [v21 driver:self shouldAdjustValueForProposedValue:&v35 adjustedValue:0 startValue:0 endValue:v19];
+    delegate2 = [(_UIFluidSliderInelasticPanDriver *)self delegate];
+    v22 = [delegate2 driver:self shouldAdjustValueForProposedValue:&v35 adjustedValue:0 startValue:0 endValue:v19];
 
     if (v22)
     {
@@ -161,34 +161,34 @@
     }
   }
 
-  v23 = [(_UIFluidSliderInelasticPanDriver *)self drivable];
-  v24 = [v23 isLocked];
-  v25 = [(_UIFluidSliderInelasticPanDriver *)self drivable];
-  v26 = v25;
-  if (v24)
+  drivable2 = [(_UIFluidSliderInelasticPanDriver *)self drivable];
+  isLocked = [drivable2 isLocked];
+  drivable3 = [(_UIFluidSliderInelasticPanDriver *)self drivable];
+  v26 = drivable3;
+  if (isLocked)
   {
-    [v25 value];
+    [drivable3 value];
   }
 
   else
   {
-    [v25 minValue];
+    [drivable3 minValue];
   }
 
   v28 = v27;
 
-  v29 = [(_UIFluidSliderInelasticPanDriver *)self drivable];
-  v30 = [v29 isLocked];
-  v31 = [(_UIFluidSliderInelasticPanDriver *)self drivable];
-  v32 = v31;
-  if (v30)
+  drivable4 = [(_UIFluidSliderInelasticPanDriver *)self drivable];
+  isLocked2 = [drivable4 isLocked];
+  drivable5 = [(_UIFluidSliderInelasticPanDriver *)self drivable];
+  v32 = drivable5;
+  if (isLocked2)
   {
-    [v31 value];
+    [drivable5 value];
   }
 
   else
   {
-    [v31 maxValue];
+    [drivable5 maxValue];
   }
 
   v34 = v33;
@@ -196,22 +196,22 @@
   [(_UIFluidSliderInelasticPanDriver *)self _issueUpdateWithValue:v6 isActive:fmax(v28, fmin(v19, v34))];
 }
 
-- (void)_issueUpdateWithValue:(double)a3 isActive:(BOOL)a4
+- (void)_issueUpdateWithValue:(double)value isActive:(BOOL)active
 {
-  v6 = a4;
-  v7 = [(_UIFluidSliderInelasticPanDriver *)self drivable];
-  *v8 = a3;
+  activeCopy = active;
+  drivable = [(_UIFluidSliderInelasticPanDriver *)self drivable];
+  *v8 = value;
   v8[1] = 0x3FF0000000000000;
-  v8[2] = v6;
+  v8[2] = activeCopy;
   v8[3] = 1;
   v8[4] = 0xBFF0000000000000;
-  [v7 fluidSliderDriver:self didGenerateUpdate:v8];
+  [drivable fluidSliderDriver:self didGenerateUpdate:v8];
 }
 
 - (double)_trackLength
 {
-  v2 = [(_UIFluidSliderInelasticPanDriver *)self drivable];
-  [v2 currentTrackLength];
+  drivable = [(_UIFluidSliderInelasticPanDriver *)self drivable];
+  [drivable currentTrackLength];
   v4 = v3;
 
   return v4;

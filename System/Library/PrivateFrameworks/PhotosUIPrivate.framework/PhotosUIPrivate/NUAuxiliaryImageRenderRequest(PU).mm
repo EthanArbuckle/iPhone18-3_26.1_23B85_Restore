@@ -21,8 +21,8 @@
   v8 = v13;
   if (v7)
   {
-    v9 = [v7 auxiliaryImage];
-    v10 = [v9 cgImageRef];
+    auxiliaryImage = [v7 auxiliaryImage];
+    cgImageRef = [auxiliaryImage cgImageRef];
   }
 
   else
@@ -40,10 +40,10 @@
       _os_log_error_impl(&dword_1B36F3000, v11, OS_LOG_TYPE_ERROR, "Could not load gain image: %@", buf, 0xCu);
     }
 
-    v10 = 0;
+    cgImageRef = 0;
   }
 
-  return v10;
+  return cgImageRef;
 }
 
 @end

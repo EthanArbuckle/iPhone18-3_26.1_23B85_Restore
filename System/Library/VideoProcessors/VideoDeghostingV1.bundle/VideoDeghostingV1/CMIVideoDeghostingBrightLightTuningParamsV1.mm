@@ -1,9 +1,9 @@
 @interface CMIVideoDeghostingBrightLightTuningParamsV1
 - (BrightLightTuning)tuningParams;
 - (CMIVideoDeghostingBrightLightTuningParamsV1)init;
-- (int)readPlist:(id)a3;
+- (int)readPlist:(id)plist;
 - (void)setDefaultTuningParams;
-- (void)setTuningParams:(BrightLightTuning *)a3;
+- (void)setTuningParams:(BrightLightTuning *)params;
 @end
 
 @implementation CMIVideoDeghostingBrightLightTuningParamsV1
@@ -52,10 +52,10 @@
   return v2;
 }
 
-- (int)readPlist:(id)a3
+- (int)readPlist:(id)plist
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"enabled"];
+  plistCopy = plist;
+  v5 = [plistCopy objectForKeyedSubscript:@"enabled"];
 
   if (!v5)
   {
@@ -63,10 +63,10 @@
     goto LABEL_57;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"enabled"];
+  v6 = [plistCopy objectForKeyedSubscript:@"enabled"];
   self->_tuningParams.enabled = [v6 BOOLValue];
 
-  v7 = [v4 objectForKeyedSubscript:@"useClippingData"];
+  v7 = [plistCopy objectForKeyedSubscript:@"useClippingData"];
 
   if (!v7)
   {
@@ -74,10 +74,10 @@
     goto LABEL_57;
   }
 
-  v8 = [v4 objectForKeyedSubscript:@"useClippingData"];
+  v8 = [plistCopy objectForKeyedSubscript:@"useClippingData"];
   self->_tuningParams.useClippingData = [v8 BOOLValue];
 
-  v9 = [v4 objectForKeyedSubscript:@"clipping"];
+  v9 = [plistCopy objectForKeyedSubscript:@"clipping"];
   if (!v9)
   {
     sub_18F78();
@@ -133,7 +133,7 @@
   [v21 floatValue];
   self->_tuningParams.clippingDataParams.maxClippedTilesCount = v22;
 
-  v23 = [v4 objectForKeyedSubscript:@"detection"];
+  v23 = [plistCopy objectForKeyedSubscript:@"detection"];
   if (!v23)
   {
     sub_18D48(v10);
@@ -388,19 +388,19 @@ LABEL_31:
   return self;
 }
 
-- (void)setTuningParams:(BrightLightTuning *)a3
+- (void)setTuningParams:(BrightLightTuning *)params
 {
-  v3 = *&a3->enabled;
-  v4 = *&a3->clippingDataParams.maxClippedTilesCount;
-  v5 = *&a3->blDetectionParams.detectionParams.var0;
-  *&self->_tuningParams.blDetectionParams.detectionParams.var2 = *&a3->blDetectionParams.detectionParams.var2;
+  v3 = *&params->enabled;
+  v4 = *&params->clippingDataParams.maxClippedTilesCount;
+  v5 = *&params->blDetectionParams.detectionParams.var0;
+  *&self->_tuningParams.blDetectionParams.detectionParams.var2 = *&params->blDetectionParams.detectionParams.var2;
   *&self->_tuningParams.blDetectionParams.detectionParams.var0 = v5;
   *&self->_tuningParams.clippingDataParams.maxClippedTilesCount = v4;
   *&self->_tuningParams.enabled = v3;
-  v6 = *&a3[1].enabled;
-  v7 = *&a3[1].clippingDataParams.maxClippedTilesCount;
-  v8 = *&a3[1].blDetectionParams.detectionParams.var0;
-  *&self[1]._tuningParams.blDetectionParams.detectionParams.var1 = *&a3[1].blDetectionParams.detectionParams.var2;
+  v6 = *&params[1].enabled;
+  v7 = *&params[1].clippingDataParams.maxClippedTilesCount;
+  v8 = *&params[1].blDetectionParams.detectionParams.var0;
+  *&self[1]._tuningParams.blDetectionParams.detectionParams.var1 = *&params[1].blDetectionParams.detectionParams.var2;
   *&self[1]._tuningParams.blDetectionParams.detectionParams.brightParams.threshold = v8;
   *&self[1]._tuningParams.clippingDataParams.minClippedPixelRatio = v7;
   *&self[1].super.isa = v6;

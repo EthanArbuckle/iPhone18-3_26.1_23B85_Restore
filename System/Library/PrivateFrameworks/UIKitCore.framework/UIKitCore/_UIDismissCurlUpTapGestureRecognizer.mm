@@ -1,18 +1,18 @@
 @interface _UIDismissCurlUpTapGestureRecognizer
-- (BOOL)_shouldReceiveTouch:(id)a3 forEvent:(id)a4 recognizerView:(id)a5;
+- (BOOL)_shouldReceiveTouch:(id)touch forEvent:(id)event recognizerView:(id)view;
 @end
 
 @implementation _UIDismissCurlUpTapGestureRecognizer
 
-- (BOOL)_shouldReceiveTouch:(id)a3 forEvent:(id)a4 recognizerView:(id)a5
+- (BOOL)_shouldReceiveTouch:(id)touch forEvent:(id)event recognizerView:(id)view
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (_IsKindOfUIView(v10))
+  touchCopy = touch;
+  eventCopy = event;
+  viewCopy = view;
+  if (_IsKindOfUIView(viewCopy))
   {
-    v11 = v10;
-    [v8 locationInView:v11];
+    v11 = viewCopy;
+    [touchCopy locationInView:v11];
     v13 = v12;
     v15 = v14;
     [v11 bounds];
@@ -44,7 +44,7 @@
       {
         v28.receiver = self;
         v28.super_class = _UIDismissCurlUpTapGestureRecognizer;
-        v22 = [(UIGestureRecognizer *)&v28 _shouldReceiveTouch:v8 forEvent:v9 recognizerView:v11];
+        v22 = [(UIGestureRecognizer *)&v28 _shouldReceiveTouch:touchCopy forEvent:eventCopy recognizerView:v11];
         goto LABEL_5;
       }
     }

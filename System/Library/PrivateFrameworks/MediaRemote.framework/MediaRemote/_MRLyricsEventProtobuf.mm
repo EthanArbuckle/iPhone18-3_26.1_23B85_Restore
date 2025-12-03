@@ -1,20 +1,20 @@
 @interface _MRLyricsEventProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasStartTime:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasStartTime:(BOOL)time;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRLyricsEventProtobuf
 
-- (void)setHasStartTime:(BOOL)a3
+- (void)setHasStartTime:(BOOL)time
 {
-  if (a3)
+  if (time)
   {
     v3 = 2;
   }
@@ -33,20 +33,20 @@
   v8.receiver = self;
   v8.super_class = _MRLyricsEventProtobuf;
   v4 = [(_MRLyricsEventProtobuf *)&v8 description];
-  v5 = [(_MRLyricsEventProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRLyricsEventProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithDouble:self->_startTime];
-    [v3 setObject:v5 forKey:@"startTime"];
+    [dictionary setObject:v5 forKey:@"startTime"];
 
     has = self->_has;
   }
@@ -54,29 +54,29 @@
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithDouble:self->_endTime];
-    [v3 setObject:v6 forKey:@"endTime"];
+    [dictionary setObject:v6 forKey:@"endTime"];
   }
 
   token = self->_token;
   if (token)
   {
-    v8 = [(_MRLyricsTokenProtobuf *)token dictionaryRepresentation];
-    [v3 setObject:v8 forKey:@"token"];
+    dictionaryRepresentation = [(_MRLyricsTokenProtobuf *)token dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"token"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v8 = v4;
+  v8 = toCopy;
   if ((has & 2) != 0)
   {
     startTime = self->_startTime;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
     has = self->_has;
   }
 
@@ -84,44 +84,44 @@
   {
     endTime = self->_endTime;
     PBDataWriterWriteDoubleField();
-    v4 = v8;
+    toCopy = v8;
   }
 
   if (self->_token)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[2] = *&self->_startTime;
-    *(v4 + 32) |= 2u;
+    toCopy[2] = *&self->_startTime;
+    *(toCopy + 32) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    v4[1] = *&self->_endTime;
-    *(v4 + 32) |= 1u;
+    toCopy[1] = *&self->_endTime;
+    *(toCopy + 32) |= 1u;
   }
 
   if (self->_token)
   {
-    v6 = v4;
-    [v4 setToken:?];
-    v4 = v6;
+    v6 = toCopy;
+    [toCopy setToken:?];
+    toCopy = v6;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -137,31 +137,31 @@
     *(v5 + 32) |= 1u;
   }
 
-  v8 = [(_MRLyricsTokenProtobuf *)self->_token copyWithZone:a3];
+  v8 = [(_MRLyricsTokenProtobuf *)self->_token copyWithZone:zone];
   v9 = v6[3];
   v6[3] = v8;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
-  v5 = *(v4 + 32);
+  v5 = *(equalCopy + 32);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 32) & 2) == 0 || self->_startTime != *(v4 + 2))
+    if ((*(equalCopy + 32) & 2) == 0 || self->_startTime != *(equalCopy + 2))
     {
       goto LABEL_14;
     }
   }
 
-  else if ((*(v4 + 32) & 2) != 0)
+  else if ((*(equalCopy + 32) & 2) != 0)
   {
 LABEL_14:
     v7 = 0;
@@ -170,19 +170,19 @@ LABEL_14:
 
   if (*&self->_has)
   {
-    if ((*(v4 + 32) & 1) == 0 || self->_endTime != *(v4 + 1))
+    if ((*(equalCopy + 32) & 1) == 0 || self->_endTime != *(equalCopy + 1))
     {
       goto LABEL_14;
     }
   }
 
-  else if (*(v4 + 32))
+  else if (*(equalCopy + 32))
   {
     goto LABEL_14;
   }
 
   token = self->_token;
-  if (token | *(v4 + 3))
+  if (token | *(equalCopy + 3))
   {
     v7 = [(_MRLyricsTokenProtobuf *)token isEqual:?];
   }
@@ -269,21 +269,21 @@ LABEL_15:
   return v12 ^ v8 ^ [(_MRLyricsTokenProtobuf *)self->_token hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  v6 = *(v4 + 32);
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = *(fromCopy + 32);
   if ((v6 & 2) != 0)
   {
-    self->_startTime = *(v4 + 2);
+    self->_startTime = *(fromCopy + 2);
     *&self->_has |= 2u;
-    v6 = *(v4 + 32);
+    v6 = *(fromCopy + 32);
   }
 
   if (v6)
   {
-    self->_endTime = *(v4 + 1);
+    self->_endTime = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

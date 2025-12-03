@@ -1,6 +1,6 @@
 @interface CKTranscriptHeaderCell
 + (double)defaultCellHeight;
-- (CKTranscriptHeaderCell)initWithFrame:(CGRect)a3;
+- (CKTranscriptHeaderCell)initWithFrame:(CGRect)frame;
 - (void)_stopLoadingIndicatorAnimatingIfNeeded;
 - (void)dealloc;
 - (void)layoutSubviewsForAlignmentContents;
@@ -10,29 +10,29 @@
 
 @implementation CKTranscriptHeaderCell
 
-- (CKTranscriptHeaderCell)initWithFrame:(CGRect)a3
+- (CKTranscriptHeaderCell)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = CKTranscriptHeaderCell;
-  v3 = [(CKTranscriptCell *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKTranscriptCell *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v5 = [v4 showsLoadMoreItem];
+    showsLoadMoreItem = [v4 showsLoadMoreItem];
 
-    if (v5)
+    if (showsLoadMoreItem)
     {
       v6 = +[CKUIBehavior sharedBehaviors];
-      v7 = [v6 transcriptLoadingIndicatorStyle];
+      transcriptLoadingIndicatorStyle = [v6 transcriptLoadingIndicatorStyle];
 
-      v8 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:v7];
+      v8 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:transcriptLoadingIndicatorStyle];
       loadingIndicator = v3->_loadingIndicator;
       v3->_loadingIndicator = v8;
 
       [(UIActivityIndicatorView *)v3->_loadingIndicator sizeToFit];
       [(UIActivityIndicatorView *)v3->_loadingIndicator startAnimating];
-      v10 = [(CKEditableCollectionViewCell *)v3 contentView];
-      [v10 addSubview:v3->_loadingIndicator];
+      contentView = [(CKEditableCollectionViewCell *)v3 contentView];
+      [contentView addSubview:v3->_loadingIndicator];
     }
   }
 
@@ -61,12 +61,12 @@
   v19.super_class = CKTranscriptHeaderCell;
   [(CKEditableCollectionViewCell *)&v19 layoutSubviewsForAlignmentContents];
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 showsLoadMoreItem];
+  showsLoadMoreItem = [v3 showsLoadMoreItem];
 
-  if (v4)
+  if (showsLoadMoreItem)
   {
-    v5 = [(CKTranscriptHeaderCell *)self loadingIndicator];
-    [v5 frame];
+    loadingIndicator = [(CKTranscriptHeaderCell *)self loadingIndicator];
+    [loadingIndicator frame];
     v7 = v6;
     v9 = v8;
     [(CKEditableCollectionViewCell *)self contentAlignmentRect];
@@ -85,23 +85,23 @@
       v18 = *&CKMainScreenScale_sMainScreenScale_16;
     }
 
-    [v5 setFrame:{floor((v11 + (v15 - v7) * 0.5) * v18) / v18, floor((v13 + (v17 - v9) * 0.5) * v18) / v18, v7, v9}];
+    [loadingIndicator setFrame:{floor((v11 + (v15 - v7) * 0.5) * v18) / v18, floor((v13 + (v17 - v9) * 0.5) * v18) / v18, v7, v9}];
   }
 }
 
 + (double)defaultCellHeight
 {
   v2 = +[CKUIBehavior sharedBehaviors];
-  v3 = [v2 showsLoadMoreItem];
+  showsLoadMoreItem = [v2 showsLoadMoreItem];
 
   result = 0.0;
-  if (v3)
+  if (showsLoadMoreItem)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 theme];
-    v7 = [v6 transcriptLoadingIndicatorStyle];
+    theme = [v5 theme];
+    transcriptLoadingIndicatorStyle = [theme transcriptLoadingIndicatorStyle];
 
-    [MEMORY[0x1E69DC638] defaultSizeForStyle:v7];
+    [MEMORY[0x1E69DC638] defaultSizeForStyle:transcriptLoadingIndicatorStyle];
     return v8;
   }
 
@@ -121,9 +121,9 @@
 - (void)_stopLoadingIndicatorAnimatingIfNeeded
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 showsLoadMoreItem];
+  showsLoadMoreItem = [v3 showsLoadMoreItem];
 
-  if (v4 && [(UIActivityIndicatorView *)self->_loadingIndicator isAnimating])
+  if (showsLoadMoreItem && [(UIActivityIndicatorView *)self->_loadingIndicator isAnimating])
   {
     loadingIndicator = self->_loadingIndicator;
 

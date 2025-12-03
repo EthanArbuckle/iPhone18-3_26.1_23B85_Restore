@@ -2,46 +2,46 @@
 + (double)_resumeToTodayTimeout;
 + (id)_setUpModel;
 + (id)createNewCalendarModel;
-+ (void)_setModelDateForLaunch:(id)a3 restoreLastViewedDateFromPreferenceIfNeeded:(BOOL)a4;
++ (void)_setModelDateForLaunch:(id)launch restoreLastViewedDateFromPreferenceIfNeeded:(BOOL)needed;
 - (Application)init;
 - (ApplicationTester)tester;
 - (BOOL)_showingSplashScreen;
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
 - (BOOL)optionKeyIsDown;
 - (MainWindowRootViewController)rootViewController;
 - (NSArray)allSceneManagers;
 - (RootNavigationController)rootNavigationController;
 - (id)_extendLaunchTest;
 - (id)_findSomeCalendarModel;
-- (id)_rootNavigationControllerForModel:(id)a3;
-- (id)_rootViewControllerForModel:(id)a3;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)_rootNavigationControllerForModel:(id)model;
+- (id)_rootViewControllerForModel:(id)model;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 - (id)eventStore;
-- (int64_t)_extractViewTypeFromUserInfo:(id)a3 withKey:(id)a4;
-- (void)_collapsedSectionIdentifiersSaveToPreferencesNotificationReceived:(id)a3;
-- (void)_displayedOccurrencesChangedForTheFirstTime:(id)a3;
-- (void)_extendedLaunchCompletedByView:(int64_t)a3;
+- (int64_t)_extractViewTypeFromUserInfo:(id)info withKey:(id)key;
+- (void)_collapsedSectionIdentifiersSaveToPreferencesNotificationReceived:(id)received;
+- (void)_displayedOccurrencesChangedForTheFirstTime:(id)time;
+- (void)_extendedLaunchCompletedByView:(int64_t)view;
 - (void)_mobilecalDidBecomeActive;
 - (void)_mobilecalDidEnterBackground;
 - (void)_mobilecalWillResignActive;
 - (void)_persistActiveViewModeSettingToPreferences;
-- (void)_refreshAccountListAndViewContentsIfNeededForModel:(id)a3;
+- (void)_refreshAccountListAndViewContentsIfNeededForModel:(id)model;
 - (void)_sceneManagerDidDismissSplashScreen;
-- (void)_selectedCalendarSaveToPreferencesNotificationReceived:(id)a3;
-- (void)_topMainViewControllerCompletedExtendedLaunch:(id)a3;
-- (void)application:(id)a3 performFetchWithCompletionHandler:(id)a4;
+- (void)_selectedCalendarSaveToPreferencesNotificationReceived:(id)received;
+- (void)_topMainViewControllerCompletedExtendedLaunch:(id)launch;
+- (void)application:(id)application performFetchWithCompletionHandler:(id)handler;
 - (void)applicationWillTerminate;
-- (void)buildMenuWithBuilder:(id)a3;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
+- (void)buildMenuWithBuilder:(id)builder;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
 - (void)registerAppIntentsDependencies;
 - (void)registerForStateCapture;
 - (void)requestLocationAuthorization;
 - (void)requestNotificationAuthorization;
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5;
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler;
 @end
 
 @implementation Application
@@ -66,9 +66,9 @@
     {
       v8 = v7;
       v9 = +[NSProcessInfo processInfo];
-      v10 = [v9 processName];
+      processName = [v9 processName];
       *buf = 138412290;
-      v14 = v10;
+      v14 = processName;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Launching [%@]", buf, 0xCu);
     }
 
@@ -93,17 +93,17 @@
 
 - (void)registerAppIntentsDependencies
 {
-  v2 = self;
+  selfCopy = self;
   Application.registerAppIntentsDependencies()();
 }
 
 + (id)createNewCalendarModel
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [a1 _setUpModel];
+  _setUpModel = [self _setUpModel];
   objc_autoreleasePoolPop(v3);
 
-  return v4;
+  return _setUpModel;
 }
 
 + (id)_setUpModel
@@ -124,10 +124,10 @@
 + (double)_resumeToTodayTimeout
 {
   v2 = +[CUIKPreferences sharedPreferences];
-  v3 = [v2 isShortResumeToTodayTimeout];
+  isShortResumeToTodayTimeout = [v2 isShortResumeToTodayTimeout];
 
   result = 480.0;
-  if (v3)
+  if (isShortResumeToTodayTimeout)
   {
     return 5.0;
   }
@@ -138,17 +138,17 @@
 - (NSArray)allSceneManagers
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 connectedScenes];
-  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v3 count]);
+  connectedScenes = [v2 connectedScenes];
+  v4 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [connectedScenes count]);
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 connectedScenes];
+  connectedScenes2 = [v5 connectedScenes];
 
-  v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  v7 = [connectedScenes2 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
     v8 = v7;
@@ -159,22 +159,22 @@
       {
         if (*v17 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(connectedScenes2);
         }
 
         v11 = *(*(&v16 + 1) + 8 * i);
-        v12 = [v11 delegate];
+        delegate = [v11 delegate];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v14 = [v11 delegate];
-          [v4 addObject:v14];
+          delegate2 = [v11 delegate];
+          [v4 addObject:delegate2];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v8 = [connectedScenes2 countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v8);
@@ -190,9 +190,9 @@
   v20 = 0u;
   v21 = 0u;
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 connectedScenes];
+  connectedScenes = [v3 connectedScenes];
 
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v24 count:16];
+  v5 = [connectedScenes countByEnumeratingWithState:&v18 objects:v24 count:16];
   if (v5)
   {
     v6 = v5;
@@ -204,26 +204,26 @@
       {
         if (*v19 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedScenes);
         }
 
-        v10 = [*(*(&v18 + 1) + 8 * i) session];
-        v11 = [v10 configuration];
+        session = [*(*(&v18 + 1) + 8 * i) session];
+        configuration = [session configuration];
 
-        v12 = [v11 role];
-        v13 = [v12 isEqualToString:v8];
+        role = [configuration role];
+        v13 = [role isEqualToString:v8];
 
         if (!v13)
         {
 
-          v15 = [(Application *)self tester];
-          v14 = [v15 extendedLaunchTestName];
+          tester = [(Application *)self tester];
+          extendedLaunchTestName = [tester extendedLaunchTestName];
 
           v16 = kCalUILogTestHandle;
           if (os_log_type_enabled(kCalUILogTestHandle, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412290;
-            v23 = v14;
+            v23 = extendedLaunchTestName;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEBUG, "Extended launch test name: [%@]", buf, 0xCu);
           }
 
@@ -231,7 +231,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v18 objects:v24 count:16];
+      v6 = [connectedScenes countByEnumeratingWithState:&v18 objects:v24 count:16];
       if (v6)
       {
         continue;
@@ -241,10 +241,10 @@
     }
   }
 
-  v14 = 0;
+  extendedLaunchTestName = 0;
 LABEL_12:
 
-  return v14;
+  return extendedLaunchTestName;
 }
 
 - (ApplicationTester)tester
@@ -264,11 +264,11 @@ LABEL_12:
 
 - (id)_findSomeCalendarModel
 {
-  v2 = [(Application *)self allSceneManagers];
-  v3 = [v2 firstObject];
-  v4 = [v3 model];
+  allSceneManagers = [(Application *)self allSceneManagers];
+  firstObject = [allSceneManagers firstObject];
+  model = [firstObject model];
 
-  return v4;
+  return model;
 }
 
 - (void)_mobilecalDidBecomeActive
@@ -312,13 +312,13 @@ LABEL_12:
   if (!self->_requestedNotificationAuthorization && !self->_notificationAuthorizationGranted)
   {
     self->_requestedNotificationAuthorization = 1;
-    v3 = [(Application *)self userNotificationCenter];
+    userNotificationCenter = [(Application *)self userNotificationCenter];
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_100013C24;
     v4[3] = &unk_100212060;
     v4[4] = self;
-    [v3 requestAuthorizationWithOptions:7 completionHandler:v4];
+    [userNotificationCenter requestAuthorizationWithOptions:7 completionHandler:v4];
   }
 }
 
@@ -377,23 +377,23 @@ LABEL_11:
 
 - (RootNavigationController)rootNavigationController
 {
-  v3 = [(Application *)self tester];
-  v4 = [v3 model];
-  v5 = [(Application *)self _rootNavigationControllerForModel:v4];
+  tester = [(Application *)self tester];
+  model = [tester model];
+  v5 = [(Application *)self _rootNavigationControllerForModel:model];
 
   return v5;
 }
 
-- (id)_rootNavigationControllerForModel:(id)a3
+- (id)_rootNavigationControllerForModel:(id)model
 {
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = [UIApplication sharedApplication:a3];
-  v5 = [v4 connectedScenes];
+  v4 = [UIApplication sharedApplication:model];
+  connectedScenes = [v4 connectedScenes];
 
-  v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  v6 = [connectedScenes countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
     v7 = v6;
@@ -404,31 +404,31 @@ LABEL_11:
       {
         if (*v20 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v10 = *(*(&v19 + 1) + 8 * i);
-        v11 = [v10 delegate];
+        delegate = [v10 delegate];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v13 = [v10 delegate];
-          v14 = [v13 model];
-          v15 = [(Application *)self tester];
-          v16 = [v15 model];
+          delegate2 = [v10 delegate];
+          model = [delegate2 model];
+          tester = [(Application *)self tester];
+          model2 = [tester model];
 
-          if (v14 == v16)
+          if (model == model2)
           {
-            v17 = [v13 rootNavigationController];
+            rootNavigationController = [delegate2 rootNavigationController];
 
             goto LABEL_13;
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v7 = [connectedScenes countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v7)
       {
         continue;
@@ -438,31 +438,31 @@ LABEL_11:
     }
   }
 
-  v17 = 0;
+  rootNavigationController = 0;
 LABEL_13:
 
-  return v17;
+  return rootNavigationController;
 }
 
 - (MainWindowRootViewController)rootViewController
 {
-  v3 = [(Application *)self tester];
-  v4 = [v3 model];
-  v5 = [(Application *)self _rootViewControllerForModel:v4];
+  tester = [(Application *)self tester];
+  model = [tester model];
+  v5 = [(Application *)self _rootViewControllerForModel:model];
 
   return v5;
 }
 
-- (id)_rootViewControllerForModel:(id)a3
+- (id)_rootViewControllerForModel:(id)model
 {
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = [UIApplication sharedApplication:a3];
-  v5 = [v4 connectedScenes];
+  v4 = [UIApplication sharedApplication:model];
+  connectedScenes = [v4 connectedScenes];
 
-  v6 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v6 = [connectedScenes countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v6)
   {
     v7 = v6;
@@ -473,32 +473,32 @@ LABEL_13:
       {
         if (*v21 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 delegate];
+        delegate = [v10 delegate];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v13 = [v10 delegate];
-          v14 = [v13 model];
-          v15 = [(Application *)self tester];
-          v16 = [v15 model];
+          delegate2 = [v10 delegate];
+          model = [delegate2 model];
+          tester = [(Application *)self tester];
+          model2 = [tester model];
 
-          if (v14 == v16)
+          if (model == model2)
           {
-            v18 = [v13 mobileCalWindow];
-            v17 = [v18 rootViewController];
+            mobileCalWindow = [delegate2 mobileCalWindow];
+            rootViewController = [mobileCalWindow rootViewController];
 
             goto LABEL_13;
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v7 = [connectedScenes countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v7)
       {
         continue;
@@ -508,21 +508,21 @@ LABEL_13:
     }
   }
 
-  v17 = 0;
+  rootViewController = 0;
 LABEL_13:
 
-  return v17;
+  return rootViewController;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
-  v5 = a3;
+  applicationCopy = application;
   [CalMCSignpost beginLaunch:0];
   v6 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v37 = 138412290;
-    v38 = v5;
+    v38 = applicationCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Calendar Finished Launching [%@]", &v37, 0xCu);
   }
 
@@ -553,23 +553,23 @@ LABEL_13:
   v21 = v20;
   if (v20)
   {
-    v22 = [v20 integerValue];
+    integerValue = [v20 integerValue];
     v23 = +[EKPreferences shared];
-    [v23 setLastConfirmedSplashScreenVersion:v22];
+    [v23 setLastConfirmedSplashScreenVersion:integerValue];
   }
 
   v24 = [v19 stringForKey:@"UITestingShowListView"];
   v25 = v24;
   if (v24)
   {
-    v26 = [v24 BOOLValue];
+    bOOLValue = [v24 BOOLValue];
     v27 = +[CUIKPreferences sharedPreferences];
-    [v27 setShowListView:v26];
+    [v27 setShowListView:bOOLValue];
   }
 
   v28 = +[NSProcessInfo processInfo];
-  v29 = [v28 environment];
-  v30 = [v29 objectForKeyedSubscript:@"StartingViewOverride"];
+  environment = [v28 environment];
+  v30 = [environment objectForKeyedSubscript:@"StartingViewOverride"];
 
   if (v30)
   {
@@ -611,8 +611,8 @@ LABEL_21:
   v33 = +[UNUserNotificationCenter currentNotificationCenter];
   [(Application *)self setUserNotificationCenter:v33];
 
-  v34 = [(Application *)self userNotificationCenter];
-  [v34 setDelegate:self];
+  userNotificationCenter = [(Application *)self userNotificationCenter];
+  [userNotificationCenter setDelegate:self];
 
   v35 = +[NSNotificationCenter defaultCenter];
   [v35 addObserver:self selector:"_mobilecalDidEnterBackground" name:UIApplicationDidEnterBackgroundNotification object:0];
@@ -634,40 +634,40 @@ LABEL_21:
   return 1;
 }
 
-- (int64_t)_extractViewTypeFromUserInfo:(id)a3 withKey:(id)a4
+- (int64_t)_extractViewTypeFromUserInfo:(id)info withKey:(id)key
 {
-  v4 = [a3 objectForKey:a4];
+  v4 = [info objectForKey:key];
   v5 = v4;
   if (v4)
   {
-    v6 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
   {
-    v6 = -1;
+    integerValue = -1;
   }
 
-  return v6;
+  return integerValue;
 }
 
-- (void)_displayedOccurrencesChangedForTheFirstTime:(id)a3
+- (void)_displayedOccurrencesChangedForTheFirstTime:(id)time
 {
-  v4 = [a3 userInfo];
-  v5 = [(Application *)self _extractViewTypeFromUserInfo:v4 withKey:@"_CalendarSceneManagerDidChangeDisplayedOccurrencesForTheFirstTimeNotification_CalendarContentViewType_Key"];
+  userInfo = [time userInfo];
+  v5 = [(Application *)self _extractViewTypeFromUserInfo:userInfo withKey:@"_CalendarSceneManagerDidChangeDisplayedOccurrencesForTheFirstTimeNotification_CalendarContentViewType_Key"];
 
   [(Application *)self _extendedLaunchCompletedByView:v5];
 }
 
-- (void)_topMainViewControllerCompletedExtendedLaunch:(id)a3
+- (void)_topMainViewControllerCompletedExtendedLaunch:(id)launch
 {
-  v4 = [a3 userInfo];
-  v5 = [(Application *)self _extractViewTypeFromUserInfo:v4 withKey:@"_MainViewControllerExtendedLaunchDidCompleteNotification_CalendarContentViewType_Key"];
+  userInfo = [launch userInfo];
+  v5 = [(Application *)self _extractViewTypeFromUserInfo:userInfo withKey:@"_MainViewControllerExtendedLaunchDidCompleteNotification_CalendarContentViewType_Key"];
 
   [(Application *)self _extendedLaunchCompletedByView:v5];
 }
 
-- (void)_extendedLaunchCompletedByView:(int64_t)a3
+- (void)_extendedLaunchCompletedByView:(int64_t)view
 {
   v5 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
@@ -679,11 +679,11 @@ LABEL_21:
   if ([UIApp shouldRecordExtendedLaunchTime])
   {
     v6 = UIApp;
-    v7 = [UIApp _launchTestName];
-    [v6 finishedTest:v7 extraResults:0];
+    _launchTestName = [UIApp _launchTestName];
+    [v6 finishedTest:_launchTestName extraResults:0];
   }
 
-  [CalMCSignpost endLaunchToView:a3 extended:1];
+  [CalMCSignpost endLaunchToView:view extended:1];
   v8 = +[NSNotificationCenter defaultCenter];
   [v8 removeObserver:self name:@"_CalendarSceneManagerDidChangeDisplayedOccurrencesForTheFirstTimeNotification" object:0];
 
@@ -702,9 +702,9 @@ LABEL_21:
 
     +[CalWidgetUtils refreshEventWidgets];
     +[CalWidgetUtils refreshDateWidgets];
-    v11 = [(Application *)self _findSomeCalendarModel];
-    v12 = [v11 eventStore];
-    [EKUIDiscoverabilityUtilities scanEventsForDiscoveredConferencesIfNeeded:v12];
+    _findSomeCalendarModel = [(Application *)self _findSomeCalendarModel];
+    eventStore = [_findSomeCalendarModel eventStore];
+    [EKUIDiscoverabilityUtilities scanEventsForDiscoveredConferencesIfNeeded:eventStore];
   }
 }
 
@@ -768,9 +768,9 @@ LABEL_21:
   v32 = 0u;
   v33 = 0u;
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 connectedScenes];
+  connectedScenes = [v2 connectedScenes];
 
-  v4 = [v3 countByEnumeratingWithState:&v30 objects:v34 count:16];
+  v4 = [connectedScenes countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v4)
   {
     v5 = v4;
@@ -781,11 +781,11 @@ LABEL_3:
     {
       if (*v31 != v6)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(connectedScenes);
       }
 
       v8 = *(*(&v30 + 1) + 8 * v7);
-      v9 = [v8 delegate];
+      delegate = [v8 delegate];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
@@ -796,7 +796,7 @@ LABEL_3:
 
       if (v5 == ++v7)
       {
-        v5 = [v3 countByEnumeratingWithState:&v30 objects:v34 count:16];
+        v5 = [connectedScenes countByEnumeratingWithState:&v30 objects:v34 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -806,63 +806,63 @@ LABEL_3:
       }
     }
 
-    v11 = [v8 delegate];
+    delegate2 = [v8 delegate];
 
-    if (!v11)
+    if (!delegate2)
     {
       return;
     }
 
-    v12 = [v11 rootNavigationController];
-    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v12 currentViewType]);
+    rootNavigationController = [delegate2 rootNavigationController];
+    v13 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [rootNavigationController currentViewType]);
     v14 = +[CUIKPreferences sharedPreferences];
     [v14 setLastViewMode:v13];
 
     v15 = [[NSTimeZone alloc] initWithName:@"GMT"];
-    v16 = [v12 model];
-    v17 = [v16 selectedDate];
-    v18 = [v17 calendarDateInTimeZone:v15];
+    model = [rootNavigationController model];
+    selectedDate = [model selectedDate];
+    v18 = [selectedDate calendarDateInTimeZone:v15];
 
     [v18 absoluteTime];
     v20 = [[NSNumber alloc] initWithDouble:v19];
     v21 = +[CUIKPreferences sharedPreferences];
     [v21 setLastViewedDate:v20];
 
-    if ([v12 shouldSaveSelectedEvent])
+    if ([rootNavigationController shouldSaveSelectedEvent])
     {
-      v22 = [v11 model];
-      v23 = [v22 selectedOccurrence];
+      model2 = [delegate2 model];
+      selectedOccurrence = [model2 selectedOccurrence];
     }
 
     else
     {
-      v23 = 0;
+      selectedOccurrence = 0;
     }
 
     v24 = +[CUIKPreferences sharedPreferences];
     if (CalDraftUIEnabled())
     {
-      [v23 eventOccurrenceID];
+      [selectedOccurrence eventOccurrenceID];
     }
 
     else
     {
-      [v23 uniqueID];
+      [selectedOccurrence uniqueID];
     }
     v25 = ;
     [v24 setLastViewedOccurrenceUID:v25];
 
     v26 = +[CUIKPreferences sharedPreferences];
-    v27 = [v23 startDate];
-    [v26 setLastViewedOccurrenceDate:v27];
+    startDate = [selectedOccurrence startDate];
+    [v26 setLastViewedOccurrenceDate:startDate];
 
-    if ([v23 isNew])
+    if ([selectedOccurrence isNew])
     {
       if (CalDraftUIEnabled())
       {
-        v28 = [v11 model];
-        v29 = [v28 eventStore];
-        [v29 saveDraftOfEvent:v23];
+        model3 = [delegate2 model];
+        eventStore = [model3 eventStore];
+        [eventStore saveDraftOfEvent:selectedOccurrence];
       }
     }
   }
@@ -870,7 +870,7 @@ LABEL_3:
   else
   {
 LABEL_9:
-    v11 = v3;
+    delegate2 = connectedScenes;
   }
 }
 
@@ -887,18 +887,18 @@ LABEL_9:
   [v4 removeObserver:self];
 }
 
-- (void)buildMenuWithBuilder:(id)a3
+- (void)buildMenuWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v141.receiver = self;
   v141.super_class = Application;
-  [(Application *)&v141 buildMenuWithBuilder:v4];
-  v5 = [v4 system];
+  [(Application *)&v141 buildMenuWithBuilder:builderCopy];
+  system = [builderCopy system];
   v6 = +[UIMenuSystem mainSystem];
 
-  if (v5 == v6)
+  if (system == v6)
   {
-    v130 = v4;
+    v130 = builderCopy;
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"Save Event" value:&stru_1002133B8 table:0];
     v9 = [UIKeyCommand commandWithTitle:v8 image:0 action:"handleSaveKeyCommand" input:@"s" modifierFlags:0x100000 propertyList:0];
@@ -1105,7 +1105,7 @@ LABEL_9:
     v70 = [NSArray arrayWithObjects:&v143 count:1];
     v71 = [UIMenu menuWithTitle:&stru_1002133B8 image:0 identifier:0 options:1 children:v70];
 
-    v4 = v130;
+    builderCopy = v130;
     [v130 insertChildMenu:v71 atEndOfMenuForIdentifier:UIMenuWindow];
     if (+[EKFeatureSet mustDisplaySplashScreenToUser])
     {
@@ -1120,14 +1120,14 @@ LABEL_9:
   }
 }
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = [a4 configuration];
-  v6 = [v5 copy];
-  v7 = [v5 role];
-  v8 = [v7 isEqualToString:_UIWindowSceneSessionRoleCarPlay];
+  configuration = [session configuration];
+  v6 = [configuration copy];
+  role = [configuration role];
+  v8 = [role isEqualToString:_UIWindowSceneSessionRoleCarPlay];
 
-  if ((v8 & 1) != 0 || ([v5 role], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", UIWindowSceneSessionRoleApplication), v9, v10))
+  if ((v8 & 1) != 0 || ([configuration role], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isEqualToString:", UIWindowSceneSessionRoleApplication), v9, v10))
   {
     [v6 setDelegateClass:objc_opt_class()];
   }
@@ -1135,21 +1135,21 @@ LABEL_9:
   return v6;
 }
 
-- (void)_collapsedSectionIdentifiersSaveToPreferencesNotificationReceived:(id)a3
+- (void)_collapsedSectionIdentifiersSaveToPreferencesNotificationReceived:(id)received
 {
-  v4 = a3;
-  v5 = [v4 object];
+  receivedCopy = received;
+  object = [receivedCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v7 = [(Application *)self allSceneManagers];
+    allSceneManagers = [(Application *)self allSceneManagers];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v8 = [allSceneManagers countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1161,24 +1161,24 @@ LABEL_9:
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allSceneManagers);
           }
 
-          v13 = [*(*(&v20 + 1) + 8 * i) model];
-          v14 = [v13 collapsedSectionIdentifiers];
-          v15 = v14;
+          model = [*(*(&v20 + 1) + 8 * i) model];
+          collapsedSectionIdentifiers = [model collapsedSectionIdentifiers];
+          v15 = collapsedSectionIdentifiers;
           if (v10)
           {
-            [v10 intersectSet:v14];
+            [v10 intersectSet:collapsedSectionIdentifiers];
           }
 
           else
           {
-            v10 = [v14 mutableCopy];
+            v10 = [collapsedSectionIdentifiers mutableCopy];
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v9 = [allSceneManagers countByEnumeratingWithState:&v20 objects:v24 count:16];
       }
 
       while (v9);
@@ -1189,11 +1189,11 @@ LABEL_9:
       v10 = 0;
     }
 
-    v16 = [v10 allObjects];
-    v17 = v16;
-    if (v16)
+    allObjects = [v10 allObjects];
+    v17 = allObjects;
+    if (allObjects)
     {
-      v18 = v16;
+      v18 = allObjects;
     }
 
     else
@@ -1206,10 +1206,10 @@ LABEL_9:
   }
 }
 
-- (void)_selectedCalendarSaveToPreferencesNotificationReceived:(id)a3
+- (void)_selectedCalendarSaveToPreferencesNotificationReceived:(id)received
 {
-  v4 = a3;
-  v5 = [v4 object];
+  receivedCopy = received;
+  object = [receivedCopy object];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1234,10 +1234,10 @@ LABEL_9:
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v40 + 1) + 8 * i) model];
-          v13 = [v12 sourceForSelectedIdentity];
+          model = [*(*(&v40 + 1) + 8 * i) model];
+          sourceForSelectedIdentity = [model sourceForSelectedIdentity];
 
-          if (!v13)
+          if (!sourceForSelectedIdentity)
           {
             v14 = 0;
             goto LABEL_12;
@@ -1280,26 +1280,26 @@ LABEL_12:
           v21 = *(*(&v36 + 1) + 8 * j);
           if ((v14 & 1) == 0)
           {
-            v22 = [*(*(&v36 + 1) + 8 * j) model];
-            v23 = [v22 sourceForSelectedIdentity];
+            model2 = [*(*(&v36 + 1) + 8 * j) model];
+            sourceForSelectedIdentity2 = [model2 sourceForSelectedIdentity];
 
-            if (v23)
+            if (sourceForSelectedIdentity2)
             {
               continue;
             }
           }
 
-          v24 = [v21 model];
-          v25 = [v24 unselectedCalendarsIgnoringFocus];
-          v26 = v25;
+          model3 = [v21 model];
+          unselectedCalendarsIgnoringFocus = [model3 unselectedCalendarsIgnoringFocus];
+          v26 = unselectedCalendarsIgnoringFocus;
           if (v18)
           {
-            [v18 intersectSet:v25];
+            [v18 intersectSet:unselectedCalendarsIgnoringFocus];
           }
 
           else
           {
-            v18 = [v25 mutableCopy];
+            v18 = [unselectedCalendarsIgnoringFocus mutableCopy];
           }
         }
 
@@ -1314,15 +1314,15 @@ LABEL_12:
       v18 = 0;
     }
 
-    v27 = [v4 userInfo];
-    v28 = [v27 objectForKeyedSubscript:CUIKCalendarModelVisibleCalendarPreferenceRequiresSavingNotificationReasonKey];
+    userInfo = [receivedCopy userInfo];
+    v28 = [userInfo objectForKeyedSubscript:CUIKCalendarModelVisibleCalendarPreferenceRequiresSavingNotificationReasonKey];
 
     v29 = +[EKPreferences shared];
-    v30 = [v18 allObjects];
-    v31 = v30;
-    if (v30)
+    allObjects = [v18 allObjects];
+    v31 = allObjects;
+    if (allObjects)
     {
-      v32 = v30;
+      v32 = allObjects;
     }
 
     else
@@ -1360,9 +1360,9 @@ LABEL_12:
   v4 = +[NSNotificationCenter defaultCenter];
   [v4 removeObserver:self name:@"_CalendarSceneManagerDidCompleteSplashScreenNotification" object:0];
 
-  v5 = [(Application *)self applicationRequestDelayer];
+  applicationRequestDelayer = [(Application *)self applicationRequestDelayer];
 
-  if (v5)
+  if (applicationRequestDelayer)
   {
     v6 = kCalUILogHandle;
     if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEBUG))
@@ -1371,8 +1371,8 @@ LABEL_12:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "Executing delayed application request.", v9, 2u);
     }
 
-    v7 = [(Application *)self applicationRequestDelayer];
-    v7[2]();
+    applicationRequestDelayer2 = [(Application *)self applicationRequestDelayer];
+    applicationRequestDelayer2[2]();
 
     [(Application *)self setApplicationRequestDelayer:0];
   }
@@ -1383,10 +1383,10 @@ LABEL_12:
   [v8 setNeedsRebuild];
 }
 
-- (void)application:(id)a3 performFetchWithCompletionHandler:(id)a4
+- (void)application:(id)application performFetchWithCompletionHandler:(id)handler
 {
-  v27 = a3;
-  v28 = a4;
+  applicationCopy = application;
+  handlerCopy = handler;
   v5 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_INFO))
   {
@@ -1422,13 +1422,13 @@ LABEL_12:
         }
 
         v10 = *(*(&v51 + 1) + 8 * i);
-        v11 = [v10 delegate];
+        delegate = [v10 delegate];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v13 = [v10 delegate];
+          delegate2 = [v10 delegate];
           if ([v10 activationState])
           {
             v49[0] = 0;
@@ -1457,7 +1457,7 @@ LABEL_12:
             v15 = objc_retainBlock(v43);
             dispatch_group_enter(v14);
             v16 = +[NSNotificationCenter defaultCenter];
-            v17 = [v13 model];
+            model = [delegate2 model];
             v18 = +[NSOperationQueue mainQueue];
             v39[0] = _NSConcreteStackBlock;
             v39[1] = 3221225472;
@@ -1468,7 +1468,7 @@ LABEL_12:
             v42 = v49;
             v19 = v15;
             v40 = v19;
-            v20 = [v16 addObserverForName:v29 object:v17 queue:v18 usingBlock:v39];
+            v20 = [v16 addObserverForName:v29 object:model queue:v18 usingBlock:v39];
             v21 = *(*(&buf + 1) + 40);
             *(*(&buf + 1) + 40) = v20;
 
@@ -1483,8 +1483,8 @@ LABEL_12:
             v23 = v19;
             v36 = v23;
             dispatch_after(v22, &_dispatch_main_q, block);
-            v24 = [v13 model];
-            [v24 updateAfterAppResume];
+            model2 = [delegate2 model];
+            [model2 updateAfterAppResume];
 
             _Block_object_dispose(&buf, 8);
             _Block_object_dispose(v47, 8);
@@ -1514,60 +1514,60 @@ LABEL_12:
   v32[1] = 3221225472;
   v32[2] = sub_10013670C;
   v32[3] = &unk_100212038;
-  v33 = v28;
+  v33 = handlerCopy;
   v34 = v55;
-  v26 = v28;
+  v26 = handlerCopy;
   dispatch_group_notify(group, &_dispatch_main_q, v32);
 
   _Block_object_dispose(v55, 8);
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(Application *)self tester];
-  v12 = [v11 model];
+  optionsCopy = options;
+  testCopy = test;
+  applicationCopy = application;
+  tester = [(Application *)self tester];
+  model = [tester model];
 
-  if (!v12)
+  if (!model)
   {
-    v13 = [(Application *)self _findSomeCalendarModel];
-    v14 = [(Application *)self tester];
-    [v14 setModel:v13];
+    _findSomeCalendarModel = [(Application *)self _findSomeCalendarModel];
+    tester2 = [(Application *)self tester];
+    [tester2 setModel:_findSomeCalendarModel];
   }
 
-  v15 = [(Application *)self tester];
-  v16 = [v15 application:v10 runTest:v9 options:v8];
+  tester3 = [(Application *)self tester];
+  v16 = [tester3 application:applicationCopy runTest:testCopy options:optionsCopy];
 
   return v16;
 }
 
-+ (void)_setModelDateForLaunch:(id)a3 restoreLastViewedDateFromPreferenceIfNeeded:(BOOL)a4
++ (void)_setModelDateForLaunch:(id)launch restoreLastViewedDateFromPreferenceIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v31 = a3;
-  v6 = [v31 eventStore];
-  v7 = [v6 timeZone];
+  neededCopy = needed;
+  launchCopy = launch;
+  eventStore = [launchCopy eventStore];
+  timeZone = [eventStore timeZone];
 
   v8 = +[CUIKPreferences sharedPreferences];
-  v9 = [v8 lastSuspendTime];
+  lastSuspendTime = [v8 lastSuspendTime];
 
   v10 = CUIKNowDate();
-  [a1 _resumeToTodayTimeout];
+  [self _resumeToTodayTimeout];
   v12 = v11;
   [v10 timeIntervalSinceReferenceDate];
   v14 = v13;
-  [v9 doubleValue];
-  if (!v4 || !v9 || v14 - v15 > v12 || ([UIApp launchedToTest] & 1) != 0 || (+[CUIKPreferences sharedPreferences](CUIKPreferences, "sharedPreferences"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "lastViewedDate"), v17 = objc_claimAutoreleasedReturnValue(), v16, !v17) || (objc_msgSend(v17, "doubleValue"), v19 = v18, v20 = objc_msgSend([NSTimeZone alloc], "initWithName:", @"GMT"), v21 = objc_msgSend([EKCalendarDate alloc], "initWithAbsoluteTime:timeZone:", v20, v19), objc_msgSend(v21, "calendarDateInTimeZone:", v7), v22 = objc_claimAutoreleasedReturnValue(), v21, v20, v17, !v22))
+  [lastSuspendTime doubleValue];
+  if (!neededCopy || !lastSuspendTime || v14 - v15 > v12 || ([UIApp launchedToTest] & 1) != 0 || (+[CUIKPreferences sharedPreferences](CUIKPreferences, "sharedPreferences"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v16, "lastViewedDate"), v17 = objc_claimAutoreleasedReturnValue(), v16, !v17) || (objc_msgSend(v17, "doubleValue"), v19 = v18, v20 = objc_msgSend([NSTimeZone alloc], "initWithName:", @"GMT"), v21 = objc_msgSend([EKCalendarDate alloc], "initWithAbsoluteTime:timeZone:", v20, v19), objc_msgSend(v21, "calendarDateInTimeZone:", timeZone), v22 = objc_claimAutoreleasedReturnValue(), v21, v20, v17, !v22))
   {
     v23 = CUIKNowComponents();
-    v22 = [[EKCalendarDate alloc] initWithDateComponents:v23 timeZone:v7];
+    v22 = [[EKCalendarDate alloc] initWithDateComponents:v23 timeZone:timeZone];
   }
 
   v24 = +[NSProcessInfo processInfo];
-  v25 = [v24 environment];
-  v26 = [v25 objectForKeyedSubscript:@"SelectedDateName"];
+  environment = [v24 environment];
+  v26 = [environment objectForKeyedSubscript:@"SelectedDateName"];
 
   if (v26)
   {
@@ -1581,33 +1581,33 @@ LABEL_12:
     if (v28 > 0.00001)
     {
       v29 = [NSDate dateWithTimeIntervalSinceReferenceDate:?];
-      v30 = [[EKCalendarDate alloc] initWithDate:v29 timeZone:v7];
+      v30 = [[EKCalendarDate alloc] initWithDate:v29 timeZone:timeZone];
 
       v22 = v30;
     }
   }
 
-  [v31 setSelectedDate:v22];
+  [launchCopy setSelectedDate:v22];
 }
 
-- (void)_refreshAccountListAndViewContentsIfNeededForModel:(id)a3
+- (void)_refreshAccountListAndViewContentsIfNeededForModel:(id)model
 {
-  v3 = a3;
+  modelCopy = model;
   v4 = dispatch_get_global_queue(0, 0);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100136B28;
   block[3] = &unk_10020EB00;
-  v7 = v3;
-  v5 = v3;
+  v7 = modelCopy;
+  v5 = modelCopy;
   dispatch_async(v4, block);
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v4 = [a3 authorizationStatus];
+  authorizationStatus = [authorization authorizationStatus];
   locationManager = self->_locationManager;
-  if (v4)
+  if (authorizationStatus)
   {
     [(CLLocationManager *)locationManager setDelegate:0];
     v6 = self->_locationManager;
@@ -1621,27 +1621,27 @@ LABEL_12:
   }
 }
 
-- (void)userNotificationCenter:(id)a3 willPresentNotification:(id)a4 withCompletionHandler:(id)a5
+- (void)userNotificationCenter:(id)center willPresentNotification:(id)notification withCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a5;
+  notificationCopy = notification;
+  handlerCopy = handler;
   v8 = kCalUILogHandle;
   if (os_log_type_enabled(kCalUILogHandle, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
     v10 = [NSNumber numberWithUnsignedInteger:26];
-    v11 = [v6 request];
-    v12 = [v11 identifier];
+    request = [notificationCopy request];
+    identifier = [request identifier];
     v13 = 138543874;
     v14 = v10;
     v15 = 2114;
-    v16 = v12;
+    v16 = identifier;
     v17 = 2112;
-    v18 = v6;
+    v18 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Will present notification with options = %{public}@, notification identifier = %{public}@, notification = %@", &v13, 0x20u);
   }
 
-  v7[2](v7, 26);
+  handlerCopy[2](handlerCopy, 26);
 }
 
 - (BOOL)optionKeyIsDown
@@ -1658,15 +1658,15 @@ LABEL_12:
   return self->_optionKeyDown != 0;
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v18 = a4;
+  beganCopy = began;
+  eventCopy = event;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  v7 = [beganCopy countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1677,22 +1677,22 @@ LABEL_12:
       {
         if (*v21 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(beganCopy);
         }
 
         v11 = *(*(&v20 + 1) + 8 * i);
         v12 = [v11 key];
-        v13 = [v12 characters];
-        if ([v13 length])
+        characters = [v12 characters];
+        if ([characters length])
         {
         }
 
         else
         {
           v14 = [v11 key];
-          v15 = [v14 modifierFlags];
+          modifierFlags = [v14 modifierFlags];
 
-          if ((v15 & 0x80000) != 0)
+          if ((modifierFlags & 0x80000) != 0)
           {
             ++self->_optionKeyDown;
             v16 = kCalUILogHandle;
@@ -1707,7 +1707,7 @@ LABEL_12:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v8 = [beganCopy countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v8);
@@ -1715,20 +1715,20 @@ LABEL_12:
 
   v19.receiver = self;
   v19.super_class = Application;
-  [(Application *)&v19 pressesBegan:v6 withEvent:v18];
+  [(Application *)&v19 pressesBegan:beganCopy withEvent:eventCopy];
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v18 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if (self->_optionKeyDown)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    v7 = [endedCopy countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1739,22 +1739,22 @@ LABEL_12:
         {
           if (*v21 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(endedCopy);
           }
 
           v11 = *(*(&v20 + 1) + 8 * i);
           v12 = [v11 key];
-          v13 = [v12 characters];
-          if ([v13 length])
+          characters = [v12 characters];
+          if ([characters length])
           {
           }
 
           else
           {
             v14 = [v11 key];
-            v15 = [v14 modifierFlags];
+            modifierFlags = [v14 modifierFlags];
 
-            if ((v15 & 0x80000) != 0)
+            if ((modifierFlags & 0x80000) != 0)
             {
               --self->_optionKeyDown;
               v16 = kCalUILogHandle;
@@ -1769,7 +1769,7 @@ LABEL_12:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+        v8 = [endedCopy countByEnumeratingWithState:&v20 objects:v26 count:16];
       }
 
       while (v8);
@@ -1778,20 +1778,20 @@ LABEL_12:
 
   v19.receiver = self;
   v19.super_class = Application;
-  [(Application *)&v19 pressesEnded:v6 withEvent:v18];
+  [(Application *)&v19 pressesEnded:endedCopy withEvent:eventCopy];
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v18 = a4;
+  cancelledCopy = cancelled;
+  eventCopy = event;
   if (self->_optionKeyDown)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v7 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    v7 = [cancelledCopy countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v7)
     {
       v8 = v7;
@@ -1802,22 +1802,22 @@ LABEL_12:
         {
           if (*v21 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(cancelledCopy);
           }
 
           v11 = *(*(&v20 + 1) + 8 * i);
           v12 = [v11 key];
-          v13 = [v12 characters];
-          if ([v13 length])
+          characters = [v12 characters];
+          if ([characters length])
           {
           }
 
           else
           {
             v14 = [v11 key];
-            v15 = [v14 modifierFlags];
+            modifierFlags = [v14 modifierFlags];
 
-            if ((v15 & 0x80000) != 0)
+            if ((modifierFlags & 0x80000) != 0)
             {
               --self->_optionKeyDown;
               v16 = kCalUILogHandle;
@@ -1832,7 +1832,7 @@ LABEL_12:
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v20 objects:v26 count:16];
+        v8 = [cancelledCopy countByEnumeratingWithState:&v20 objects:v26 count:16];
       }
 
       while (v8);
@@ -1841,12 +1841,12 @@ LABEL_12:
 
   v19.receiver = self;
   v19.super_class = Application;
-  [(Application *)&v19 pressesCancelled:v6 withEvent:v18];
+  [(Application *)&v19 pressesCancelled:cancelledCopy withEvent:eventCopy];
 }
 
 - (id)eventStore
 {
-  v2 = self;
+  selfCopy = self;
   v3 = Application.eventStore()();
 
   return v3;

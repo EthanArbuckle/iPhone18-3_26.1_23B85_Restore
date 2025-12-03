@@ -3,13 +3,13 @@
 - (IDSDGroupContextDataSource)init;
 - (id)_sponsorAccount;
 - (id)_sponsorAlias;
-- (void)_groupFromServerResponse:(id)a3 context:(id)a4 groupID:(id)a5 error:(id)a6 resultCode:(int64_t)a7 resultDictionary:(id)a8 allEntries:(id)a9 completion:(id)a10;
-- (void)groupContext:(id)a3 fetchGroupWithID:(id)a4 completion:(id)a5;
-- (void)groupContext:(id)a3 upsertGroupWithInfo:(id)a4 previousGroup:(id)a5 completion:(id)a6;
-- (void)groupFromPublicDataRepresentation:(id)a3 inContext:(id)a4 completion:(id)a5;
-- (void)participantsForCypher:(id)a3 completion:(id)a4;
-- (void)publicDataRepresentationForGroup:(id)a3 inContext:(id)a4 completion:(id)a5;
-- (void)validateCachedGroup:(id)a3 isParentOfGroup:(id)a4 completion:(id)a5;
+- (void)_groupFromServerResponse:(id)response context:(id)context groupID:(id)d error:(id)error resultCode:(int64_t)code resultDictionary:(id)dictionary allEntries:(id)entries completion:(id)self0;
+- (void)groupContext:(id)context fetchGroupWithID:(id)d completion:(id)completion;
+- (void)groupContext:(id)context upsertGroupWithInfo:(id)info previousGroup:(id)group completion:(id)completion;
+- (void)groupFromPublicDataRepresentation:(id)representation inContext:(id)context completion:(id)completion;
+- (void)participantsForCypher:(id)cypher completion:(id)completion;
+- (void)publicDataRepresentationForGroup:(id)group inContext:(id)context completion:(id)completion;
+- (void)validateCachedGroup:(id)group isParentOfGroup:(id)ofGroup completion:(id)completion;
 @end
 
 @implementation IDSDGroupContextDataSource
@@ -41,33 +41,33 @@
   return v2;
 }
 
-- (void)groupContext:(id)a3 upsertGroupWithInfo:(id)a4 previousGroup:(id)a5 completion:(id)a6
+- (void)groupContext:(id)context upsertGroupWithInfo:(id)info previousGroup:(id)group completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 accountIdentity];
-  v15 = [v14 deviceKey];
+  contextCopy = context;
+  infoCopy = info;
+  groupCopy = group;
+  completionCopy = completion;
+  accountIdentity = [contextCopy accountIdentity];
+  deviceKey = [accountIdentity deviceKey];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v48 = v15;
-    v16 = [v10 accountIdentity];
-    v17 = [v16 deviceKey];
+    v48 = deviceKey;
+    accountIdentity2 = [contextCopy accountIdentity];
+    deviceKey2 = [accountIdentity2 deviceKey];
 
-    v50 = [v12 cypher];
-    [v50 conversationGroup];
+    cypher = [groupCopy cypher];
+    [cypher conversationGroup];
     v49 = v66 = 0;
-    v51 = v11;
-    v18 = [IDSDGroupContextDataSource _groupWithDeviceIdentity:"_groupWithDeviceIdentity:parent:groupInfo:error:" parent:v17 groupInfo:? error:?];
+    v51 = infoCopy;
+    v18 = [IDSDGroupContextDataSource _groupWithDeviceIdentity:"_groupWithDeviceIdentity:parent:groupInfo:error:" parent:deviceKey2 groupInfo:? error:?];
     v19 = v66;
-    v52 = v17;
-    v20 = [v17 accountIdentity];
-    v21 = [v20 signingIdentity];
+    v52 = deviceKey2;
+    accountIdentity3 = [deviceKey2 accountIdentity];
+    signingIdentity = [accountIdentity3 signingIdentity];
     v65 = v19;
-    v22 = [v18 publicDataRepresentationWithSponsor:v21 error:&v65];
+    v22 = [v18 publicDataRepresentationWithSponsor:signingIdentity error:&v65];
     v23 = v65;
 
     v24 = v22;
@@ -81,77 +81,77 @@
       v26 = v18;
       if (v25)
       {
-        v27 = [v18 publicKeyData];
-        if (v12)
+        publicKeyData = [v18 publicKeyData];
+        if (groupCopy)
         {
-          v43 = [v18 forwardingTicket];
-          v28 = [v12 groupID];
-          [v28 stableGroupID];
+          forwardingTicket = [v18 forwardingTicket];
+          groupID = [groupCopy groupID];
+          [groupID stableGroupID];
           v30 = v29 = v25;
-          v45 = [v30 dataRepresentation];
+          dataRepresentation = [v30 dataRepresentation];
 
-          v31 = [v12 groupID];
-          v44 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [v31 generation]);
+          groupID2 = [groupCopy groupID];
+          v44 = +[NSNumber numberWithLong:](NSNumber, "numberWithLong:", [groupID2 generation]);
 
           v25 = v29;
         }
 
         else
         {
-          v43 = 0;
+          forwardingTicket = 0;
           v44 = 0;
-          v45 = 0;
+          dataRepresentation = 0;
         }
 
         v41 = v25;
-        v42 = [(IDSDGroupContextDataSource *)self groupServer];
+        groupServer = [(IDSDGroupContextDataSource *)self groupServer];
         v53[0] = _NSConcreteStackBlock;
         v53[1] = 3221225472;
         v53[2] = sub_10041AC64;
         v53[3] = &unk_100BDB758;
         v53[4] = self;
-        v54 = v10;
+        v54 = contextCopy;
         v55 = v47;
-        v63 = v13;
+        v63 = completionCopy;
         v56 = v26;
         v57 = v52;
         v58 = v51;
-        v59 = v27;
+        v59 = publicKeyData;
         v60 = v24;
         v61 = v25;
-        v62 = v43;
-        v37 = v43;
-        v38 = v27;
+        v62 = forwardingTicket;
+        v37 = forwardingTicket;
+        v38 = publicKeyData;
         v39 = v37;
         v40 = v38;
-        v11 = v51;
-        [v42 publishGroupForKey:v40 data:v60 signature:v61 forwardingSig:v39 ENID:v45 version:v44 completion:v53];
+        infoCopy = v51;
+        [groupServer publishGroupForKey:v40 data:v60 signature:v61 forwardingSig:v39 ENID:dataRepresentation version:v44 completion:v53];
 
         v36 = v41;
         v35 = v47;
-        v15 = v48;
+        deviceKey = v48;
       }
 
       else
       {
         v34 = +[ENLog groupContext];
-        v11 = v51;
+        infoCopy = v51;
         v35 = v47;
-        v15 = v48;
+        deviceKey = v48;
         if (os_log_type_enabled(v34, OS_LOG_TYPE_FAULT))
         {
           *buf = 138478595;
           v68 = v51;
           v69 = 2113;
-          v70 = v10;
+          v70 = contextCopy;
           v71 = 2114;
-          v72 = v12;
+          v72 = groupCopy;
           v73 = 2114;
           v74 = v47;
           _os_log_fault_impl(&_mh_execute_header, v34, OS_LOG_TYPE_FAULT, "Unable to create group signature {groupInfo: %{private}@, groupContext: %{private}@, previousGroup: %{public}@, error: %{public}@}", buf, 0x2Au);
         }
 
-        (*(v13 + 2))(v13, 0, v47);
+        (*(completionCopy + 2))(completionCopy, 0, v47);
         v36 = 0;
       }
 
@@ -161,23 +161,23 @@
     else
     {
       v33 = +[ENLog groupContext];
-      v11 = v51;
+      infoCopy = v51;
       if (os_log_type_enabled(v33, OS_LOG_TYPE_FAULT))
       {
         *buf = 138478595;
         v68 = v51;
         v69 = 2113;
-        v70 = v10;
+        v70 = contextCopy;
         v71 = 2114;
-        v72 = v12;
+        v72 = groupCopy;
         v73 = 2114;
         v74 = v23;
         _os_log_fault_impl(&_mh_execute_header, v33, OS_LOG_TYPE_FAULT, "Unable to get group.publicRepresentation {groupInfo: %{private}@, groupContext: %{private}@, previousGroup: %{public}@, error: %{public}@}", buf, 0x2Au);
       }
 
-      (*(v13 + 2))(v13, 0, v23);
+      (*(completionCopy + 2))(completionCopy, 0, v23);
       v26 = v18;
-      v15 = v48;
+      deviceKey = v48;
     }
   }
 
@@ -189,30 +189,30 @@
       sub_10091D5B0();
     }
 
-    (*(v13 + 2))(v13, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)_groupFromServerResponse:(id)a3 context:(id)a4 groupID:(id)a5 error:(id)a6 resultCode:(int64_t)a7 resultDictionary:(id)a8 allEntries:(id)a9 completion:(id)a10
+- (void)_groupFromServerResponse:(id)response context:(id)context groupID:(id)d error:(id)error resultCode:(int64_t)code resultDictionary:(id)dictionary allEntries:(id)entries completion:(id)self0
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
-  v59 = a10;
-  v20 = [v15 accountIdentity];
-  v21 = [v20 deviceKey];
+  responseCopy = response;
+  contextCopy = context;
+  dCopy = d;
+  errorCopy = error;
+  dictionaryCopy = dictionary;
+  entriesCopy = entries;
+  completionCopy = completion;
+  accountIdentity = [contextCopy accountIdentity];
+  deviceKey = [accountIdentity deviceKey];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v22 = [v15 accountIdentity];
-    v65 = [v22 deviceKey];
+    accountIdentity2 = [contextCopy accountIdentity];
+    deviceKey2 = [accountIdentity2 deviceKey];
 
     v58 = objc_alloc_init(NSMutableArray);
-    if (v17 || ![v19 count])
+    if (errorCopy || ![entriesCopy count])
     {
       v23 = +[ENLog groupContext];
       if (os_log_type_enabled(v23, OS_LOG_TYPE_FAULT))
@@ -220,38 +220,38 @@
         sub_10091D77C();
       }
 
-      v24 = v59;
-      (*(v59 + 2))(v59, 0, v17);
+      v24 = completionCopy;
+      (*(completionCopy + 2))(completionCopy, 0, errorCopy);
     }
 
     else
     {
-      v51 = v21;
-      v55 = v15;
+      v51 = deviceKey;
+      v55 = contextCopy;
       v26 = +[ENLog groupContext];
       if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
       {
         *buf = 138413058;
-        v90 = v14;
+        v90 = responseCopy;
         v91 = 2112;
         v92 = 0;
         v93 = 2112;
-        v94 = v18;
+        v94 = dictionaryCopy;
         v95 = 2112;
-        v96 = v19;
+        v96 = entriesCopy;
         _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_INFO, "Got groups {%@ %@ %@ %@}", buf, 0x2Au);
       }
 
-      v53 = v18;
-      v56 = v14;
+      v53 = dictionaryCopy;
+      v56 = responseCopy;
 
-      v27 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v19, "count")}];
+      v27 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(entriesCopy, "count")}];
       v83 = 0u;
       v84 = 0u;
       v85 = 0u;
       v86 = 0u;
-      v52 = v19;
-      obj = v19;
+      v52 = entriesCopy;
+      obj = entriesCopy;
       v28 = [obj countByEnumeratingWithState:&v83 objects:v88 count:16];
       if (v28)
       {
@@ -268,8 +268,8 @@
 
             v32 = *(*(&v83 + 1) + 8 * i);
             v33 = [IDSMPConversationGroupEntry alloc];
-            v34 = [v16 stableGroupID];
-            v35 = [(IDSMPConversationGroupEntry *)v33 initWithStableGroupID:v34 groupServerEntry:v32];
+            stableGroupID = [dCopy stableGroupID];
+            v35 = [(IDSMPConversationGroupEntry *)v33 initWithStableGroupID:stableGroupID groupServerEntry:v32];
 
             [v27 addObject:v35];
           }
@@ -280,7 +280,7 @@
         while (v29);
       }
 
-      v54 = v16;
+      v54 = dCopy;
 
       v62 = [[NSMutableDictionary alloc] initWithCapacity:{objc_msgSend(obj, "count")}];
       v63 = objc_alloc_init(NSMutableSet);
@@ -303,23 +303,23 @@
             }
 
             v37 = *(*(&v79 + 1) + 8 * j);
-            v38 = [v37 data];
-            v39 = [v37 publicKeyData];
-            v40 = [v37 signature];
-            v41 = [v37 groupID];
-            v42 = [v37 forwardingTicket];
-            v43 = [v65 modernIdentity];
+            data = [v37 data];
+            publicKeyData = [v37 publicKeyData];
+            signature = [v37 signature];
+            groupID = [v37 groupID];
+            forwardingTicket = [v37 forwardingTicket];
+            modernIdentity = [deviceKey2 modernIdentity];
             v78 = 0;
-            v44 = [IDSMPConversationGroup conversationSponsorPairFromPublicData:v38 publicKey:v39 signature:v40 groupID:v41 parent:0 parentPublicKey:0 forwardingTicket:v42 fullDeviceIdentity:v43 error:&v78];
+            v44 = [IDSMPConversationGroup conversationSponsorPairFromPublicData:data publicKey:publicKeyData signature:signature groupID:groupID parent:0 parentPublicKey:0 forwardingTicket:forwardingTicket fullDeviceIdentity:modernIdentity error:&v78];
             v45 = v78;
 
             if (v44)
             {
-              v46 = [v37 publicKeyData];
-              [v62 setObject:v44 forKeyedSubscript:v46];
+              publicKeyData2 = [v37 publicKeyData];
+              [v62 setObject:v44 forKeyedSubscript:publicKeyData2];
 
-              v47 = [v44 sponsorAlias];
-              [v63 addObject:v47];
+              sponsorAlias = [v44 sponsorAlias];
+              [v63 addObject:sponsorAlias];
             }
           }
 
@@ -329,7 +329,7 @@
         while (v66);
       }
 
-      v48 = [v63 allObjects];
+      allObjects = [v63 allObjects];
       v67[0] = _NSConcreteStackBlock;
       v67[1] = 3221225472;
       v67[2] = sub_10041B910;
@@ -337,25 +337,25 @@
       v68 = v60;
       v69 = v62;
       v70 = v58;
-      v71 = v65;
+      v71 = deviceKey2;
       v72 = 0;
-      v16 = v54;
+      dCopy = v54;
       v73 = v54;
-      v74 = self;
-      v15 = v55;
+      selfCopy = self;
+      contextCopy = v55;
       v75 = v55;
-      v24 = v59;
-      v77 = v59;
+      v24 = completionCopy;
+      v77 = completionCopy;
       v76 = obj;
       v49 = v62;
       v50 = v60;
-      [(IDSDGroupContextDataSource *)self _participantsForDestinations:v48 completion:v67];
+      [(IDSDGroupContextDataSource *)self _participantsForDestinations:allObjects completion:v67];
 
-      v14 = v56;
-      v18 = v53;
-      v17 = 0;
-      v21 = v51;
-      v19 = v52;
+      responseCopy = v56;
+      dictionaryCopy = v53;
+      errorCopy = 0;
+      deviceKey = v51;
+      entriesCopy = v52;
     }
   }
 
@@ -367,49 +367,49 @@
       sub_10091D5B0();
     }
 
-    v24 = v59;
-    (*(v59 + 2))(v59, 0, 0);
+    v24 = completionCopy;
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)groupContext:(id)a3 fetchGroupWithID:(id)a4 completion:(id)a5
+- (void)groupContext:(id)context fetchGroupWithID:(id)d completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 stableGroupID];
-  v12 = [v11 dataRepresentation];
+  contextCopy = context;
+  dCopy = d;
+  completionCopy = completion;
+  stableGroupID = [dCopy stableGroupID];
+  dataRepresentation = [stableGroupID dataRepresentation];
 
-  v13 = [(IDSDGroupContextDataSource *)self groupServer];
+  groupServer = [(IDSDGroupContextDataSource *)self groupServer];
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_10041C528;
   v17[3] = &unk_100BDB7D0;
   v17[4] = self;
-  v18 = v8;
-  v19 = v9;
-  v20 = v10;
-  v14 = v10;
-  v15 = v9;
-  v16 = v8;
-  [v13 queryGroupServerForENID:v12 withCompletion:v17];
+  v18 = contextCopy;
+  v19 = dCopy;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = dCopy;
+  v16 = contextCopy;
+  [groupServer queryGroupServerForENID:dataRepresentation withCompletion:v17];
 }
 
-- (void)publicDataRepresentationForGroup:(id)a3 inContext:(id)a4 completion:(id)a5
+- (void)publicDataRepresentationForGroup:(id)group inContext:(id)context completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  groupCopy = group;
+  contextCopy = context;
+  completionCopy = completion;
   v10 = +[ENLog groupContext];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v52 = v7;
+    v52 = groupCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "group->groupPublicData -- Start {group: %{private}@}", buf, 0xCu);
   }
 
-  v11 = [v8 accountIdentity];
-  v12 = [v11 accountKey];
+  accountIdentity = [contextCopy accountIdentity];
+  accountKey = [accountIdentity accountKey];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -418,7 +418,7 @@
     v36 = +[ENLog groupContext];
     if (os_log_type_enabled(v36, OS_LOG_TYPE_FAULT))
     {
-      sub_10091D8B4(v8);
+      sub_10091D8B4(contextCopy);
     }
 
     v37 = ENGroupContextErrorDomain;
@@ -429,7 +429,7 @@
     goto LABEL_19;
   }
 
-  v14 = [v7 cypher];
+  cypher = [groupCopy cypher];
   objc_opt_class();
   v15 = objc_opt_isKindOfClass();
 
@@ -438,7 +438,7 @@
     v40 = +[ENLog groupContext];
     if (os_log_type_enabled(v40, OS_LOG_TYPE_FAULT))
     {
-      sub_10091D950(v7);
+      sub_10091D950(groupCopy);
     }
 
     v37 = ENGroupContextErrorDomain;
@@ -448,45 +448,45 @@
     v39 = &v55;
 LABEL_19:
     v22 = [NSDictionary dictionaryWithObjects:v38 forKeys:v39 count:1];
-    v17 = [NSError errorWithDomain:v37 code:-1000 userInfo:v22];
-    v9[2](v9, 0, v17);
+    accountKey2 = [NSError errorWithDomain:v37 code:-1000 userInfo:v22];
+    completionCopy[2](completionCopy, 0, accountKey2);
     goto LABEL_32;
   }
 
-  v16 = [v8 accountIdentity];
-  v17 = [v16 accountKey];
+  accountIdentity2 = [contextCopy accountIdentity];
+  accountKey2 = [accountIdentity2 accountKey];
 
-  v18 = [v7 cypher];
-  v19 = [v18 conversationGroup];
-  v20 = [v17 signingIdentity];
+  cypher2 = [groupCopy cypher];
+  conversationGroup = [cypher2 conversationGroup];
+  signingIdentity = [accountKey2 signingIdentity];
   v50 = 0;
-  v21 = [v19 publicDataRepresentationWithSponsor:v20 error:&v50];
+  v21 = [conversationGroup publicDataRepresentationWithSponsor:signingIdentity error:&v50];
   v22 = v50;
 
   if (v21)
   {
     v49 = v22;
-    [v19 signData:v21 error:&v49];
-    v23 = v19;
+    [conversationGroup signData:v21 error:&v49];
+    v23 = conversationGroup;
     v25 = v24 = v21;
     v46 = v49;
 
     v47 = v24;
     if (v25)
     {
-      v45 = v18;
+      v45 = cypher2;
       v26 = objc_alloc_init(IDSMPConversationGroupEntry);
       [(IDSMPConversationGroupEntry *)v26 setData:v24];
       v44 = v25;
       [(IDSMPConversationGroupEntry *)v26 setSignature:v25];
-      v27 = [v23 publicKeyData];
-      [(IDSMPConversationGroupEntry *)v26 setPublicKeyData:v27];
+      publicKeyData = [v23 publicKeyData];
+      [(IDSMPConversationGroupEntry *)v26 setPublicKeyData:publicKeyData];
 
-      v28 = [v23 groupID];
-      [(IDSMPConversationGroupEntry *)v26 setGroupID:v28];
+      groupID = [v23 groupID];
+      [(IDSMPConversationGroupEntry *)v26 setGroupID:groupID];
 
-      v29 = [v23 forwardingTicket];
-      [(IDSMPConversationGroupEntry *)v26 setForwardingTicket:v29];
+      forwardingTicket = [v23 forwardingTicket];
+      [(IDSMPConversationGroupEntry *)v26 setForwardingTicket:forwardingTicket];
 
       v48 = v46;
       v30 = [(IDSMPConversationGroupEntry *)v26 publicDataRepresentationWithError:&v48];
@@ -494,7 +494,7 @@ LABEL_19:
 
       v31 = +[ENLog groupContext];
       v32 = v31;
-      v19 = v23;
+      conversationGroup = v23;
       if (v30)
       {
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
@@ -511,7 +511,7 @@ LABEL_19:
           sub_10091D9EC();
         }
 
-        (v9)[2](v9, v30, 0);
+        (completionCopy)[2](completionCopy, v30, 0);
         v35 = v43;
         v25 = v44;
       }
@@ -524,15 +524,15 @@ LABEL_19:
           *buf = 138543619;
           v52 = v43;
           v53 = 2113;
-          v54 = v7;
+          v54 = groupCopy;
           _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Failed group->groupPublicData -- could not create data from entry {error: %{public}@, group: %{private}@}", buf, 0x16u);
         }
 
-        v9[2](v9, 0, v43);
+        completionCopy[2](completionCopy, 0, v43);
         v25 = v44;
       }
 
-      v18 = v45;
+      cypher2 = v45;
     }
 
     else
@@ -544,12 +544,12 @@ LABEL_19:
         *buf = 138543619;
         v52 = v46;
         v53 = 2113;
-        v54 = v7;
+        v54 = groupCopy;
         _os_log_impl(&_mh_execute_header, v42, OS_LOG_TYPE_DEFAULT, "Failed group->groupPublicData -- could not create signature {error: %{public}@, group: %{private}@}", buf, 0x16u);
       }
 
-      v9[2](v9, 0, v46);
-      v19 = v23;
+      completionCopy[2](completionCopy, 0, v46);
+      conversationGroup = v23;
     }
 
     v22 = v35;
@@ -564,85 +564,85 @@ LABEL_19:
       *buf = 138543619;
       v52 = v22;
       v53 = 2113;
-      v54 = v7;
+      v54 = groupCopy;
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "Failed group->groupPublicData -- could not create publicGroupData {error: %{public}@, group: %{private}@}", buf, 0x16u);
     }
 
-    v9[2](v9, 0, v22);
+    completionCopy[2](completionCopy, 0, v22);
   }
 
 LABEL_32:
 }
 
-- (void)groupFromPublicDataRepresentation:(id)a3 inContext:(id)a4 completion:(id)a5
+- (void)groupFromPublicDataRepresentation:(id)representation inContext:(id)context completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  representationCopy = representation;
+  contextCopy = context;
+  completionCopy = completion;
   v11 = +[ENLog groupContext];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138477827;
-    v54 = v8;
+    v54 = representationCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "groupPublicData->Group -- Start {data: %{private}@}", buf, 0xCu);
   }
 
   v49 = 0;
-  v12 = [IDSMPConversationGroupEntry entryFromPublicDataRepresentation:v8 error:&v49];
+  v12 = [IDSMPConversationGroupEntry entryFromPublicDataRepresentation:representationCopy error:&v49];
   v13 = v49;
   if (v12)
   {
-    v14 = [v9 accountIdentity];
-    v15 = [v14 deviceKey];
+    accountIdentity = [contextCopy accountIdentity];
+    deviceKey = [accountIdentity deviceKey];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v35 = self;
-      v39 = v8;
-      v17 = [v9 accountIdentity];
-      v18 = [v17 deviceKey];
+      selfCopy = self;
+      v39 = representationCopy;
+      accountIdentity2 = [contextCopy accountIdentity];
+      deviceKey2 = [accountIdentity2 deviceKey];
 
-      v19 = [v12 data];
-      v20 = [v12 publicKeyData];
-      v21 = [v12 signature];
-      v22 = [v12 groupID];
+      data = [v12 data];
+      publicKeyData = [v12 publicKeyData];
+      signature = [v12 signature];
+      groupID = [v12 groupID];
       [v12 forwardingTicket];
-      v37 = v9;
-      v23 = v38 = v18;
-      v24 = [v18 modernIdentity];
+      v37 = contextCopy;
+      v23 = v38 = deviceKey2;
+      modernIdentity = [deviceKey2 modernIdentity];
       v48 = v13;
-      v25 = [IDSMPConversationGroup conversationSponsorPairFromPublicData:v19 publicKey:v20 signature:v21 groupID:v22 parent:0 parentPublicKey:0 forwardingTicket:v23 fullDeviceIdentity:v24 error:&v48];
+      v25 = [IDSMPConversationGroup conversationSponsorPairFromPublicData:data publicKey:publicKeyData signature:signature groupID:groupID parent:0 parentPublicKey:0 forwardingTicket:v23 fullDeviceIdentity:modernIdentity error:&v48];
       v36 = v48;
 
       if (v25)
       {
-        v26 = [v25 sponsorAlias];
-        v50 = v26;
+        sponsorAlias = [v25 sponsorAlias];
+        v50 = sponsorAlias;
         v27 = [NSArray arrayWithObjects:&v50 count:1];
         v40[0] = _NSConcreteStackBlock;
         v40[1] = 3221225472;
         v40[2] = sub_10041D104;
         v40[3] = &unk_100BDB7F8;
         v41 = v25;
-        v47 = v10;
+        v47 = completionCopy;
         v42 = v12;
         v43 = v36;
-        v44 = v35;
+        v44 = selfCopy;
         v45 = v38;
-        v9 = v37;
+        contextCopy = v37;
         v46 = v37;
-        [(IDSDGroupContextDataSource *)v35 _participantsForDestinations:v27 completion:v40];
+        [(IDSDGroupContextDataSource *)selfCopy _participantsForDestinations:v27 completion:v40];
 
-        v8 = v39;
+        representationCopy = v39;
         v28 = v38;
         v13 = v36;
       }
 
       else
       {
-        v9 = v37;
+        contextCopy = v37;
         v28 = v38;
         v34 = +[ENLog groupContext];
         v13 = v36;
@@ -651,8 +651,8 @@ LABEL_32:
           sub_10091DAFC();
         }
 
-        (*(v10 + 2))(v10, 0, v36);
-        v8 = v39;
+        (*(completionCopy + 2))(completionCopy, 0, v36);
+        representationCopy = v39;
       }
     }
 
@@ -661,7 +661,7 @@ LABEL_32:
       v30 = +[ENLog groupContext];
       if (os_log_type_enabled(v30, OS_LOG_TYPE_FAULT))
       {
-        sub_10091DA60(v9);
+        sub_10091DA60(contextCopy);
       }
 
       v31 = ENGroupContextErrorDomain;
@@ -669,7 +669,7 @@ LABEL_32:
       v52 = @"Unepxcted device key class. Expected IDSDeviceIdentity";
       v32 = [NSDictionary dictionaryWithObjects:&v52 forKeys:&v51 count:1];
       v33 = [NSError errorWithDomain:v31 code:-1000 userInfo:v32];
-      (*(v10 + 2))(v10, 0, v33);
+      (*(completionCopy + 2))(completionCopy, 0, v33);
     }
   }
 
@@ -681,32 +681,32 @@ LABEL_32:
       *buf = 138543619;
       v54 = v13;
       v55 = 2113;
-      v56 = v8;
+      v56 = representationCopy;
       _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Failed groupPublicData->Group {error: %{public}@, data: %{private}@}", buf, 0x16u);
     }
 
-    (*(v10 + 2))(v10, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
   }
 }
 
-- (void)participantsForCypher:(id)a3 completion:(id)a4
+- (void)participantsForCypher:(id)cypher completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  cypherCopy = cypher;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
-    v9 = [v8 conversationGroup];
-    v10 = [v9 groupMembers];
+    v8 = cypherCopy;
+    conversationGroup = [v8 conversationGroup];
+    groupMembers = [conversationGroup groupMembers];
 
-    v11 = [v10 allKeys];
+    allKeys = [groupMembers allKeys];
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
     v13[2] = sub_10041D8F8;
     v13[3] = &unk_100BDB820;
-    v14 = v7;
-    [(IDSDGroupContextDataSource *)self _participantsForDestinations:v11 completion:v13];
+    v14 = completionCopy;
+    [(IDSDGroupContextDataSource *)self _participantsForDestinations:allKeys completion:v13];
   }
 
   else
@@ -717,29 +717,29 @@ LABEL_32:
       sub_10091DBDC();
     }
 
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)validateCachedGroup:(id)a3 isParentOfGroup:(id)a4 completion:(id)a5
+- (void)validateCachedGroup:(id)group isParentOfGroup:(id)ofGroup completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v12 = [a3 cypher];
-  v9 = [v12 conversationGroup];
-  v10 = [v8 cypher];
+  completionCopy = completion;
+  ofGroupCopy = ofGroup;
+  cypher = [group cypher];
+  conversationGroup = [cypher conversationGroup];
+  cypher2 = [ofGroupCopy cypher];
 
-  v11 = [v10 conversationGroup];
-  v7[2](v7, [v9 isParentOfGroup:v11], 0);
+  conversationGroup2 = [cypher2 conversationGroup];
+  completionCopy[2](completionCopy, [conversationGroup isParentOfGroup:conversationGroup2], 0);
 }
 
 - (id)_sponsorAlias
 {
-  v2 = [(IDSDGroupContextDataSource *)self _sponsorAccount];
-  v3 = [v2 prefixedURIStringsFromRegistration];
-  v4 = [v3 firstObject];
+  _sponsorAccount = [(IDSDGroupContextDataSource *)self _sponsorAccount];
+  prefixedURIStringsFromRegistration = [_sponsorAccount prefixedURIStringsFromRegistration];
+  firstObject = [prefixedURIStringsFromRegistration firstObject];
 
-  return v4;
+  return firstObject;
 }
 
 - (id)_sponsorAccount
@@ -750,9 +750,9 @@ LABEL_32:
   v4 = +[IDSDAccountController sharedInstance];
   v5 = [v4 accountsOnService:v3];
 
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  return v6;
+  return firstObject;
 }
 
 @end

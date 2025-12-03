@@ -1,21 +1,21 @@
 @interface CDMComposerServiceUtils
-+ (void)logNluRequestForInsights:(id)a3;
++ (void)logNluRequestForInsights:(id)insights;
 @end
 
 @implementation CDMComposerServiceUtils
 
-+ (void)logNluRequestForInsights:(id)a3
++ (void)logNluRequestForInsights:(id)insights
 {
   v207[2] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  insightsCopy = insights;
   v4 = CDMLogContext;
-  v201 = v3;
+  v201 = insightsCopy;
   if (os_log_type_enabled(CDMLogContext, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [v3 siriNLUTypeObj];
-    v7 = [v6 requestId];
-    v8 = [v7 idA];
+    siriNLUTypeObj = [insightsCopy siriNLUTypeObj];
+    requestId = [siriNLUTypeObj requestId];
+    v8 = [requestId idA];
     *buf = 136315650;
     v203 = "+[CDMComposerServiceUtils logNluRequestForInsights:]";
     v204 = 2112;
@@ -30,9 +30,9 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
     v193 = v4;
-    v194 = [v3 siriNLUTypeObj];
-    v195 = [v194 requestId];
-    v196 = [v195 idA];
+    siriNLUTypeObj2 = [insightsCopy siriNLUTypeObj];
+    requestId2 = [siriNLUTypeObj2 requestId];
+    v196 = [requestId2 idA];
     *buf = 136315650;
     v203 = "+[CDMComposerServiceUtils logNluRequestForInsights:]";
     v204 = 2112;
@@ -47,15 +47,15 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v4;
-    v10 = [v3 siriNLUTypeObj];
-    v11 = [v10 currentTurnInput];
-    v12 = [v11 startTimestamp];
+    siriNLUTypeObj3 = [insightsCopy siriNLUTypeObj];
+    currentTurnInput = [siriNLUTypeObj3 currentTurnInput];
+    startTimestamp = [currentTurnInput startTimestamp];
     *buf = 136315650;
     v203 = "+[CDMComposerServiceUtils logNluRequestForInsights:]";
     v204 = 2112;
     v205 = @"summary";
     v206 = 2048;
-    v207[0] = v12;
+    v207[0] = startTimestamp;
     _os_log_impl(&dword_1DC287000, v9, OS_LOG_TYPE_DEFAULT, "%s [insights-cdm-%@]:\nCurrent Turn Timestamp: %llu", buf, 0x20u);
 
     v4 = CDMLogContext;
@@ -64,17 +64,17 @@
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v13 = v4;
-    v14 = [v3 siriNLUTypeObj];
-    v15 = [v14 currentTurnInput];
-    v16 = [v15 asrOutputs];
-    v17 = [v16 firstObject];
-    v18 = [v17 utterance];
+    siriNLUTypeObj4 = [insightsCopy siriNLUTypeObj];
+    currentTurnInput2 = [siriNLUTypeObj4 currentTurnInput];
+    asrOutputs = [currentTurnInput2 asrOutputs];
+    firstObject = [asrOutputs firstObject];
+    utterance = [firstObject utterance];
     *buf = 136315650;
     v203 = "+[CDMComposerServiceUtils logNluRequestForInsights:]";
     v204 = 2112;
     v205 = @"summary";
     v206 = 2112;
-    v207[0] = v18;
+    v207[0] = utterance;
     _os_log_impl(&dword_1DC287000, v13, OS_LOG_TYPE_DEFAULT, "%s [insights-cdm-%@]:\nCurrent Turn Utterance: %@", buf, 0x20u);
 
     v4 = CDMLogContext;
@@ -109,20 +109,20 @@
     _os_log_impl(&dword_1DC287000, v4, OS_LOG_TYPE_DEFAULT, "%s [insights-cdm-%@]:\n========== Active Tasks ========", buf, 0x16u);
   }
 
-  v19 = [v3 siriNLUTypeObj];
-  v20 = [v19 currentTurnInput];
-  v21 = [v20 turnContext];
-  v22 = [v21 nlContext];
-  v23 = [v22 activeTasks];
-  if (v23)
+  siriNLUTypeObj5 = [insightsCopy siriNLUTypeObj];
+  currentTurnInput3 = [siriNLUTypeObj5 currentTurnInput];
+  turnContext = [currentTurnInput3 turnContext];
+  nlContext = [turnContext nlContext];
+  activeTasks = [nlContext activeTasks];
+  if (activeTasks)
   {
-    v24 = v23;
-    v25 = [v3 siriNLUTypeObj];
-    v26 = [v25 currentTurnInput];
-    v27 = [v26 turnContext];
-    v28 = [v27 nlContext];
-    [v28 activeTasks];
-    v30 = v29 = v19;
+    v24 = activeTasks;
+    siriNLUTypeObj6 = [insightsCopy siriNLUTypeObj];
+    currentTurnInput4 = [siriNLUTypeObj6 currentTurnInput];
+    turnContext2 = [currentTurnInput4 turnContext];
+    nlContext2 = [turnContext2 nlContext];
+    [nlContext2 activeTasks];
+    v30 = v29 = siriNLUTypeObj5;
     v200 = [v30 count];
 
     v31 = &unk_1EDAC9000;
@@ -153,12 +153,12 @@ LABEL_21:
   v34 = v201;
   while (1)
   {
-    v35 = [v34 siriNLUTypeObj];
-    v36 = [v35 currentTurnInput];
-    v37 = [v36 turnContext];
-    v38 = [v37 nlContext];
-    v39 = [v38 activeTasks];
-    v40 = [v39 count];
+    siriNLUTypeObj7 = [v34 siriNLUTypeObj];
+    currentTurnInput5 = [siriNLUTypeObj7 currentTurnInput];
+    turnContext3 = [currentTurnInput5 turnContext];
+    nlContext3 = [turnContext3 nlContext];
+    activeTasks2 = [nlContext3 activeTasks];
+    v40 = [activeTasks2 count];
 
     v41 = *(v31 + 219);
     v42 = os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT);
@@ -171,12 +171,12 @@ LABEL_21:
     {
       v43 = MEMORY[0x1E69D1438];
       v44 = v41;
-      v45 = [v34 siriNLUTypeObj];
-      v46 = [v45 currentTurnInput];
-      v47 = [v46 turnContext];
-      v48 = [v47 nlContext];
-      v49 = [v48 activeTasks];
-      v50 = [v49 objectAtIndexedSubscript:v33];
+      siriNLUTypeObj8 = [v34 siriNLUTypeObj];
+      currentTurnInput6 = [siriNLUTypeObj8 currentTurnInput];
+      turnContext4 = [currentTurnInput6 turnContext];
+      nlContext4 = [turnContext4 nlContext];
+      activeTasks3 = [nlContext4 activeTasks];
+      v50 = [activeTasks3 objectAtIndexedSubscript:v33];
       v51 = [v43 printableTask:v50];
       *buf = 136315906;
       v203 = "+[CDMComposerServiceUtils logNluRequestForInsights:]";
@@ -204,21 +204,21 @@ LABEL_21:
     _os_log_impl(&dword_1DC287000, v41, OS_LOG_TYPE_DEFAULT, "%s [insights-cdm-%@]:\n========== Executed Tasks =======", buf, 0x16u);
   }
 
-  v52 = [v34 siriNLUTypeObj];
-  v53 = [v52 currentTurnInput];
-  [v53 turnContext];
+  siriNLUTypeObj9 = [v34 siriNLUTypeObj];
+  currentTurnInput7 = [siriNLUTypeObj9 currentTurnInput];
+  [currentTurnInput7 turnContext];
   v55 = v54 = v34;
-  v56 = [v55 nlContext];
-  v57 = [v56 executedTasks];
-  if (v57)
+  nlContext5 = [v55 nlContext];
+  executedTasks = [nlContext5 executedTasks];
+  if (executedTasks)
   {
-    v58 = v57;
-    v59 = [v54 siriNLUTypeObj];
-    v60 = [v59 currentTurnInput];
-    v61 = [v60 turnContext];
-    v62 = [v61 nlContext];
-    [v62 executedTasks];
-    v64 = v63 = v52;
+    v58 = executedTasks;
+    siriNLUTypeObj10 = [v54 siriNLUTypeObj];
+    currentTurnInput8 = [siriNLUTypeObj10 currentTurnInput];
+    turnContext5 = [currentTurnInput8 turnContext];
+    nlContext6 = [turnContext5 nlContext];
+    [nlContext6 executedTasks];
+    v64 = v63 = siriNLUTypeObj9;
     v197 = [v64 count];
 
     v65 = &unk_1EDAC9000;
@@ -249,12 +249,12 @@ LABEL_34:
   v68 = v201;
   while (1)
   {
-    v69 = [v68 siriNLUTypeObj];
-    v70 = [v69 currentTurnInput];
-    v71 = [v70 turnContext];
-    v72 = [v71 nlContext];
-    v73 = [v72 executedTasks];
-    v74 = [v73 count];
+    siriNLUTypeObj11 = [v68 siriNLUTypeObj];
+    currentTurnInput9 = [siriNLUTypeObj11 currentTurnInput];
+    turnContext6 = [currentTurnInput9 turnContext];
+    nlContext7 = [turnContext6 nlContext];
+    executedTasks2 = [nlContext7 executedTasks];
+    v74 = [executedTasks2 count];
 
     v75 = *(v65 + 219);
     v76 = os_log_type_enabled(v75, OS_LOG_TYPE_DEFAULT);
@@ -267,12 +267,12 @@ LABEL_34:
     {
       v77 = MEMORY[0x1E69D1438];
       v78 = v75;
-      v79 = [v68 siriNLUTypeObj];
-      v80 = [v79 currentTurnInput];
-      v81 = [v80 turnContext];
-      v82 = [v81 nlContext];
-      v83 = [v82 executedTasks];
-      v84 = [v83 objectAtIndexedSubscript:v67];
+      siriNLUTypeObj12 = [v68 siriNLUTypeObj];
+      currentTurnInput10 = [siriNLUTypeObj12 currentTurnInput];
+      turnContext7 = [currentTurnInput10 turnContext];
+      nlContext8 = [turnContext7 nlContext];
+      executedTasks3 = [nlContext8 executedTasks];
+      v84 = [executedTasks3 objectAtIndexedSubscript:v67];
       v85 = [v77 printableTask:v84];
       *buf = 136315906;
       v203 = "+[CDMComposerServiceUtils logNluRequestForInsights:]";
@@ -300,21 +300,21 @@ LABEL_34:
     _os_log_impl(&dword_1DC287000, v75, OS_LOG_TYPE_DEFAULT, "%s [insights-cdm-%@]:\n========== Salient Entities ====", buf, 0x16u);
   }
 
-  v86 = [v68 siriNLUTypeObj];
-  v87 = [v86 currentTurnInput];
-  [v87 turnContext];
+  siriNLUTypeObj13 = [v68 siriNLUTypeObj];
+  currentTurnInput11 = [siriNLUTypeObj13 currentTurnInput];
+  [currentTurnInput11 turnContext];
   v89 = v88 = v68;
-  v90 = [v89 nlContext];
-  v91 = [v90 salientEntities];
-  if (v91)
+  nlContext9 = [v89 nlContext];
+  salientEntities = [nlContext9 salientEntities];
+  if (salientEntities)
   {
-    v92 = v91;
-    v93 = [v88 siriNLUTypeObj];
-    v94 = [v93 currentTurnInput];
-    v95 = [v94 turnContext];
-    v96 = [v95 nlContext];
-    [v96 salientEntities];
-    v98 = v97 = v86;
+    v92 = salientEntities;
+    siriNLUTypeObj14 = [v88 siriNLUTypeObj];
+    currentTurnInput12 = [siriNLUTypeObj14 currentTurnInput];
+    turnContext8 = [currentTurnInput12 turnContext];
+    nlContext10 = [turnContext8 nlContext];
+    [nlContext10 salientEntities];
+    v98 = v97 = siriNLUTypeObj13;
     v198 = [v98 count];
 
     if (v198)
@@ -325,12 +325,12 @@ LABEL_34:
       if (os_log_type_enabled(CDMLogContext, OS_LOG_TYPE_DEFAULT))
       {
         v102 = v100;
-        v103 = [v201 siriNLUTypeObj];
-        v104 = [v103 currentTurnInput];
-        v105 = [v104 turnContext];
-        v106 = [v105 nlContext];
-        v107 = [v106 salientEntities];
-        v108 = [v107 count];
+        siriNLUTypeObj15 = [v201 siriNLUTypeObj];
+        currentTurnInput13 = [siriNLUTypeObj15 currentTurnInput];
+        turnContext9 = [currentTurnInput13 turnContext];
+        nlContext11 = [turnContext9 nlContext];
+        salientEntities2 = [nlContext11 salientEntities];
+        v108 = [salientEntities2 count];
         *buf = 136315650;
         v203 = "+[CDMComposerServiceUtils logNluRequestForInsights:]";
         v204 = 2112;
@@ -378,12 +378,12 @@ LABEL_50:
   v199 = 136315907;
   while (1)
   {
-    v111 = [v101 siriNLUTypeObj];
-    v112 = [v111 currentTurnInput];
-    v113 = [v112 turnContext];
-    v114 = [v113 nlContext];
-    v115 = [v114 salientEntities];
-    v116 = [v115 count];
+    siriNLUTypeObj16 = [v101 siriNLUTypeObj];
+    currentTurnInput14 = [siriNLUTypeObj16 currentTurnInput];
+    turnContext10 = [currentTurnInput14 turnContext];
+    nlContext12 = [turnContext10 nlContext];
+    salientEntities3 = [nlContext12 salientEntities];
+    v116 = [salientEntities3 count];
 
     v117 = *(v99 + 219);
     if (v116 <= v110)
@@ -395,12 +395,12 @@ LABEL_50:
     {
       v118 = MEMORY[0x1E69D1438];
       v119 = v117;
-      v120 = [v101 siriNLUTypeObj];
-      v121 = [v120 currentTurnInput];
-      v122 = [v121 turnContext];
-      v123 = [v122 nlContext];
-      v124 = [v123 salientEntities];
-      v125 = [v124 objectAtIndexedSubscript:v110];
+      siriNLUTypeObj17 = [v101 siriNLUTypeObj];
+      currentTurnInput15 = [siriNLUTypeObj17 currentTurnInput];
+      turnContext11 = [currentTurnInput15 turnContext];
+      nlContext13 = [turnContext11 nlContext];
+      salientEntities4 = [nlContext13 salientEntities];
+      v125 = [salientEntities4 objectAtIndexedSubscript:v110];
       v126 = [v118 printableEntityCandidate:v125];
       *buf = v199;
       v203 = "+[CDMComposerServiceUtils logNluRequestForInsights:]";
@@ -428,21 +428,21 @@ LABEL_50:
     _os_log_impl(&dword_1DC287000, v117, OS_LOG_TYPE_DEFAULT, "%s [insights-cdm-%@]:\n========== SDAs ================", buf, 0x16u);
   }
 
-  v127 = [v101 siriNLUTypeObj];
-  v128 = [v127 currentTurnInput];
-  [v128 turnContext];
+  siriNLUTypeObj18 = [v101 siriNLUTypeObj];
+  currentTurnInput16 = [siriNLUTypeObj18 currentTurnInput];
+  [currentTurnInput16 turnContext];
   v130 = v129 = v101;
-  v131 = [v130 nlContext];
-  v132 = [v131 systemDialogActs];
-  if (v132)
+  nlContext14 = [v130 nlContext];
+  systemDialogActs = [nlContext14 systemDialogActs];
+  if (systemDialogActs)
   {
-    v133 = v132;
-    v134 = [v129 siriNLUTypeObj];
-    v135 = [v134 currentTurnInput];
-    v136 = [v135 turnContext];
-    v137 = [v136 nlContext];
-    [v137 systemDialogActs];
-    v139 = v138 = v127;
+    v133 = systemDialogActs;
+    siriNLUTypeObj19 = [v129 siriNLUTypeObj];
+    currentTurnInput17 = [siriNLUTypeObj19 currentTurnInput];
+    turnContext12 = [currentTurnInput17 turnContext];
+    nlContext15 = [turnContext12 nlContext];
+    [nlContext15 systemDialogActs];
+    v139 = v138 = siriNLUTypeObj18;
     v199 = [v139 count];
 
     if (v199)
@@ -452,12 +452,12 @@ LABEL_50:
       v142 = &unk_1EDAC9000;
       while (1)
       {
-        v143 = [v141 siriNLUTypeObj];
-        v144 = [v143 currentTurnInput];
-        v145 = [v144 turnContext];
-        v146 = [v145 nlContext];
-        v147 = [v146 systemDialogActs];
-        v148 = [v147 count];
+        siriNLUTypeObj20 = [v141 siriNLUTypeObj];
+        currentTurnInput18 = [siriNLUTypeObj20 currentTurnInput];
+        turnContext13 = [currentTurnInput18 turnContext];
+        nlContext16 = [turnContext13 nlContext];
+        systemDialogActs2 = [nlContext16 systemDialogActs];
+        v148 = [systemDialogActs2 count];
 
         if (v148 <= v140)
         {
@@ -469,12 +469,12 @@ LABEL_50:
         {
           v150 = MEMORY[0x1E69D1438];
           v151 = v149;
-          v152 = [v141 siriNLUTypeObj];
-          v153 = [v152 currentTurnInput];
-          v154 = [v153 turnContext];
-          v155 = [v154 nlContext];
-          v156 = [v155 systemDialogActs];
-          v157 = [v156 objectAtIndexedSubscript:v140];
+          siriNLUTypeObj21 = [v141 siriNLUTypeObj];
+          currentTurnInput19 = [siriNLUTypeObj21 currentTurnInput];
+          turnContext14 = [currentTurnInput19 turnContext];
+          nlContext17 = [turnContext14 nlContext];
+          systemDialogActs3 = [nlContext17 systemDialogActs];
+          v157 = [systemDialogActs3 objectAtIndexedSubscript:v140];
           v158 = [v150 printableSystemDialogAct:v157];
           *buf = 136315906;
           v203 = "+[CDMComposerServiceUtils logNluRequestForInsights:]";
@@ -529,16 +529,16 @@ LABEL_67:
   {
     v161 = v142;
     v162 = v160;
-    v163 = [v141 siriNLUTypeObj];
-    v164 = [v163 currentTurnInput];
-    v165 = [v164 turnContext];
-    v166 = [v165 legacyNlContext];
+    siriNLUTypeObj22 = [v141 siriNLUTypeObj];
+    currentTurnInput20 = [siriNLUTypeObj22 currentTurnInput];
+    turnContext15 = [currentTurnInput20 turnContext];
+    legacyNlContext = [turnContext15 legacyNlContext];
     *buf = 136315650;
     v203 = "+[CDMComposerServiceUtils logNluRequestForInsights:]";
     v204 = 2112;
     v205 = @"summary";
     v206 = 2112;
-    v207[0] = v166;
+    v207[0] = legacyNlContext;
     _os_log_impl(&dword_1DC287000, v162, OS_LOG_TYPE_DEFAULT, "%s [insights-cdm-%@]:\n%@", buf, 0x20u);
 
     v160 = *(v161 + 219);
@@ -547,9 +547,9 @@ LABEL_67:
   if (os_log_type_enabled(v160, OS_LOG_TYPE_DEFAULT))
   {
     v167 = v160;
-    v168 = [v201 siriNLUTypeObj];
-    v169 = [v168 previousTurnInputs];
-    v170 = [v169 count];
+    siriNLUTypeObj23 = [v201 siriNLUTypeObj];
+    previousTurnInputs = [siriNLUTypeObj23 previousTurnInputs];
+    v170 = [previousTurnInputs count];
     *buf = 136315650;
     v203 = "+[CDMComposerServiceUtils logNluRequestForInsights:]";
     v204 = 2112;
@@ -559,9 +559,9 @@ LABEL_67:
     _os_log_impl(&dword_1DC287000, v167, OS_LOG_TYPE_DEFAULT, "%s [insights-cdm-%@]:\nPrevious turn input count: %zu", buf, 0x20u);
   }
 
-  v171 = [v201 siriNLUTypeObj];
-  v172 = [v171 previousTurnInputs];
-  v173 = [v172 count];
+  siriNLUTypeObj24 = [v201 siriNLUTypeObj];
+  previousTurnInputs2 = [siriNLUTypeObj24 previousTurnInputs];
+  v173 = [previousTurnInputs2 count];
 
   if (v173)
   {
@@ -573,10 +573,10 @@ LABEL_67:
       {
         v176 = v175;
         v177 = v201;
-        v178 = [v201 siriNLUTypeObj];
-        v179 = [v178 previousTurnInputs];
-        v180 = [v179 objectAtIndexedSubscript:v174];
-        v181 = [v180 startTimestamp];
+        siriNLUTypeObj25 = [v201 siriNLUTypeObj];
+        previousTurnInputs3 = [siriNLUTypeObj25 previousTurnInputs];
+        v180 = [previousTurnInputs3 objectAtIndexedSubscript:v174];
+        startTimestamp2 = [v180 startTimestamp];
         *buf = 136315906;
         v203 = "+[CDMComposerServiceUtils logNluRequestForInsights:]";
         v204 = 2112;
@@ -584,7 +584,7 @@ LABEL_67:
         v206 = 1024;
         LODWORD(v207[0]) = v174;
         WORD2(v207[0]) = 2048;
-        *(v207 + 6) = v181;
+        *(v207 + 6) = startTimestamp2;
         _os_log_impl(&dword_1DC287000, v176, OS_LOG_TYPE_DEFAULT, "%s [insights-cdm-%@]:\nPrevious Turn %d Timestamp: %llu", buf, 0x26u);
 
         v175 = CDMLogContext;
@@ -598,12 +598,12 @@ LABEL_67:
       if (os_log_type_enabled(v175, OS_LOG_TYPE_DEFAULT))
       {
         v182 = v175;
-        v183 = [v177 siriNLUTypeObj];
-        v184 = [v183 previousTurnInputs];
-        v185 = [v184 objectAtIndexedSubscript:v174];
-        v186 = [v185 asrOutputs];
-        v187 = [v186 firstObject];
-        v188 = [v187 utterance];
+        siriNLUTypeObj26 = [v177 siriNLUTypeObj];
+        previousTurnInputs4 = [siriNLUTypeObj26 previousTurnInputs];
+        v185 = [previousTurnInputs4 objectAtIndexedSubscript:v174];
+        asrOutputs2 = [v185 asrOutputs];
+        firstObject2 = [asrOutputs2 firstObject];
+        utterance2 = [firstObject2 utterance];
         *buf = 136315906;
         v203 = "+[CDMComposerServiceUtils logNluRequestForInsights:]";
         v204 = 2112;
@@ -611,16 +611,16 @@ LABEL_67:
         v206 = 1024;
         LODWORD(v207[0]) = v174;
         WORD2(v207[0]) = 2112;
-        *(v207 + 6) = v188;
+        *(v207 + 6) = utterance2;
         _os_log_impl(&dword_1DC287000, v182, OS_LOG_TYPE_DEFAULT, "%s [insights-cdm-%@]:\nPrevious Turn %d Utterance: %@", buf, 0x26u);
 
         v177 = v201;
       }
 
       ++v174;
-      v189 = [v177 siriNLUTypeObj];
-      v190 = [v189 previousTurnInputs];
-      v191 = [v190 count];
+      siriNLUTypeObj27 = [v177 siriNLUTypeObj];
+      previousTurnInputs5 = [siriNLUTypeObj27 previousTurnInputs];
+      v191 = [previousTurnInputs5 count];
     }
 
     while (v191 > v174);

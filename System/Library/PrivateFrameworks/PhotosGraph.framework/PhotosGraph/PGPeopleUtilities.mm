@@ -1,63 +1,63 @@
 @interface PGPeopleUtilities
-+ (BOOL)_hasMomentsForPersonLocalIdentifiers:(id)a3 inGraph:(id)a4 photoLibrary:(id)a5 usePersonMoments:(BOOL)a6;
-+ (id)_validPersonLocalIdentifiersFromSocialGroups:(id)a3 withPhotoLibrary:(id)a4;
-+ (id)validateKeyedSocialGroups:(id)a3 withPhotoLibrary:(id)a4 graph:(id)a5;
-+ (id)validateSocialGroups:(id)a3 withPhotoLibrary:(id)a4 graph:(id)a5 usePersonMoments:(BOOL)a6;
-+ (unsigned)ageTypeFromAgeCategory:(unint64_t)a3;
++ (BOOL)_hasMomentsForPersonLocalIdentifiers:(id)identifiers inGraph:(id)graph photoLibrary:(id)library usePersonMoments:(BOOL)moments;
++ (id)_validPersonLocalIdentifiersFromSocialGroups:(id)groups withPhotoLibrary:(id)library;
++ (id)validateKeyedSocialGroups:(id)groups withPhotoLibrary:(id)library graph:(id)graph;
++ (id)validateSocialGroups:(id)groups withPhotoLibrary:(id)library graph:(id)graph usePersonMoments:(BOOL)moments;
++ (unsigned)ageTypeFromAgeCategory:(unint64_t)category;
 @end
 
 @implementation PGPeopleUtilities
 
-+ (unsigned)ageTypeFromAgeCategory:(unint64_t)a3
++ (unsigned)ageTypeFromAgeCategory:(unint64_t)category
 {
-  if (a3 - 1 > 4)
+  if (category - 1 > 4)
   {
     return 0;
   }
 
   else
   {
-    return word_22F78C1C8[a3 - 1];
+    return word_22F78C1C8[category - 1];
   }
 }
 
-+ (BOOL)_hasMomentsForPersonLocalIdentifiers:(id)a3 inGraph:(id)a4 photoLibrary:(id)a5 usePersonMoments:(BOOL)a6
++ (BOOL)_hasMomentsForPersonLocalIdentifiers:(id)identifiers inGraph:(id)graph photoLibrary:(id)library usePersonMoments:(BOOL)moments
 {
-  v6 = a6;
-  v9 = a4;
-  v10 = a5;
-  v11 = [PGGraphPersonNodeCollection personNodesForArrayOfLocalIdentifiers:a3 inGraph:v9];
+  momentsCopy = moments;
+  graphCopy = graph;
+  libraryCopy = library;
+  v11 = [PGGraphPersonNodeCollection personNodesForArrayOfLocalIdentifiers:identifiers inGraph:graphCopy];
   if ([v11 count])
   {
-    if (v6)
+    if (momentsCopy)
     {
-      v12 = [v11 momentNodes];
-      v13 = [v12 localIdentifiers];
+      momentNodes = [v11 momentNodes];
+      localIdentifiers = [momentNodes localIdentifiers];
     }
 
     else
     {
-      v14 = [v11 asSocialGroupMemberNodeCollection];
-      v12 = [v9 socialGroupNodeForMemberNodes:v14];
+      asSocialGroupMemberNodeCollection = [v11 asSocialGroupMemberNodeCollection];
+      momentNodes = [graphCopy socialGroupNodeForMemberNodes:asSocialGroupMemberNodeCollection];
 
-      v15 = [v12 momentNodes];
-      v13 = [v15 localIdentifiers];
+      v12MomentNodes = [momentNodes momentNodes];
+      localIdentifiers = [v12MomentNodes localIdentifiers];
     }
   }
 
   else
   {
-    v13 = 0;
+    localIdentifiers = 0;
   }
 
-  if ([v13 count])
+  if ([localIdentifiers count])
   {
-    v16 = [v10 librarySpecificFetchOptions];
-    [v16 setShouldPrefetchCount:1];
-    [v16 setFetchLimit:1];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setShouldPrefetchCount:1];
+    [librarySpecificFetchOptions setFetchLimit:1];
     v17 = MEMORY[0x277CD97B8];
-    v18 = [v13 allObjects];
-    v19 = [v17 fetchAssetCollectionsWithLocalIdentifiers:v18 options:v16];
+    allObjects = [localIdentifiers allObjects];
+    v19 = [v17 fetchAssetCollectionsWithLocalIdentifiers:allObjects options:librarySpecificFetchOptions];
 
     v20 = [v19 count] != 0;
   }
@@ -70,12 +70,12 @@
   return v20;
 }
 
-+ (id)validateSocialGroups:(id)a3 withPhotoLibrary:(id)a4 graph:(id)a5 usePersonMoments:(BOOL)a6
++ (id)validateSocialGroups:(id)groups withPhotoLibrary:(id)library graph:(id)graph usePersonMoments:(BOOL)moments
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = [a1 _validPersonLocalIdentifiersFromSocialGroups:v10 withPhotoLibrary:v11];
+  groupsCopy = groups;
+  libraryCopy = library;
+  graphCopy = graph;
+  v13 = [self _validPersonLocalIdentifiersFromSocialGroups:groupsCopy withPhotoLibrary:libraryCopy];
   if ([v13 count])
   {
     v17[0] = MEMORY[0x277D85DD0];
@@ -83,12 +83,12 @@
     v17[2] = __82__PGPeopleUtilities_validateSocialGroups_withPhotoLibrary_graph_usePersonMoments___block_invoke;
     v17[3] = &unk_27887F488;
     v18 = v13;
-    v21 = a1;
-    v19 = v12;
-    v20 = v11;
-    v22 = a6;
-    v14 = [v10 indexesOfObjectsPassingTest:v17];
-    v15 = [v10 objectsAtIndexes:v14];
+    selfCopy = self;
+    v19 = graphCopy;
+    v20 = libraryCopy;
+    momentsCopy = moments;
+    v14 = [groupsCopy indexesOfObjectsPassingTest:v17];
+    v15 = [groupsCopy objectsAtIndexes:v14];
   }
 
   else
@@ -150,14 +150,14 @@ LABEL_11:
   return v8;
 }
 
-+ (id)validateKeyedSocialGroups:(id)a3 withPhotoLibrary:(id)a4 graph:(id)a5
++ (id)validateKeyedSocialGroups:(id)groups withPhotoLibrary:(id)library graph:(id)graph
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
-  v12 = [v11 objectEnumerator];
-  v13 = [a1 _validPersonLocalIdentifiersFromSocialGroups:v12 withPhotoLibrary:v9];
+  groupsCopy = groups;
+  libraryCopy = library;
+  graphCopy = graph;
+  v11 = groupsCopy;
+  objectEnumerator = [v11 objectEnumerator];
+  v13 = [self _validPersonLocalIdentifiersFromSocialGroups:objectEnumerator withPhotoLibrary:libraryCopy];
 
   if ([v13 count])
   {
@@ -167,9 +167,9 @@ LABEL_11:
     v20[2] = __70__PGPeopleUtilities_validateKeyedSocialGroups_withPhotoLibrary_graph___block_invoke;
     v20[3] = &unk_27887F460;
     v21 = v13;
-    v25 = a1;
-    v22 = v10;
-    v23 = v9;
+    selfCopy = self;
+    v22 = graphCopy;
+    v23 = libraryCopy;
     v15 = v14;
     v24 = v15;
     [v11 enumerateKeysAndObjectsUsingBlock:v20];
@@ -251,17 +251,17 @@ LABEL_12:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_validPersonLocalIdentifiersFromSocialGroups:(id)a3 withPhotoLibrary:(id)a4
++ (id)_validPersonLocalIdentifiersFromSocialGroups:(id)groups withPhotoLibrary:(id)library
 {
   v37 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  groupsCopy = groups;
+  libraryCopy = library;
   v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v8 = v5;
+  v8 = groupsCopy;
   v9 = [v8 countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v9)
   {
@@ -287,10 +287,10 @@ LABEL_12:
 
   if ([v7 count])
   {
-    v13 = [v6 librarySpecificFetchOptions];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
     v14 = MEMORY[0x277CD9938];
-    v15 = [v7 allObjects];
-    v16 = [v14 fetchPersonsWithLocalIdentifiers:v15 options:v13];
+    allObjects = [v7 allObjects];
+    v16 = [v14 fetchPersonsWithLocalIdentifiers:allObjects options:librarySpecificFetchOptions];
 
     v17 = [objc_alloc(MEMORY[0x277CBEB58]) initWithCapacity:{objc_msgSend(v16, "count")}];
     v27 = 0u;
@@ -315,8 +315,8 @@ LABEL_12:
           v23 = *(*(&v27 + 1) + 8 * j);
           if ([v23 type] != -1)
           {
-            v24 = [v23 localIdentifier];
-            [v17 addObject:v24];
+            localIdentifier = [v23 localIdentifier];
+            [v17 addObject:localIdentifier];
           }
         }
 

@@ -1,38 +1,38 @@
 @interface LyonHomeDelegate
 - (_TtC10seserviced16LyonHomeDelegate)init;
-- (void)homeDidUpdateAccessControlForCurrentUser:(id)a3;
-- (void)homeDidUpdateHomeLocationStatus:(id)a3;
-- (void)restrictedGuestAllowedPeriodEnded:(id)a3;
-- (void)restrictedGuestAllowedPeriodStarted:(id)a3;
+- (void)homeDidUpdateAccessControlForCurrentUser:(id)user;
+- (void)homeDidUpdateHomeLocationStatus:(id)status;
+- (void)restrictedGuestAllowedPeriodEnded:(id)ended;
+- (void)restrictedGuestAllowedPeriodStarted:(id)started;
 @end
 
 @implementation LyonHomeDelegate
 
-- (void)homeDidUpdateHomeLocationStatus:(id)a3
+- (void)homeDidUpdateHomeLocationStatus:(id)status
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001DF2A0(v4);
+  statusCopy = status;
+  selfCopy = self;
+  sub_1001DF2A0(statusCopy);
 }
 
-- (void)homeDidUpdateAccessControlForCurrentUser:(id)a3
+- (void)homeDidUpdateAccessControlForCurrentUser:(id)user
 {
-  v4 = a3;
-  v5 = self;
-  sub_1001DF68C(v4);
+  userCopy = user;
+  selfCopy = self;
+  sub_1001DF68C(userCopy);
 }
 
-- (void)restrictedGuestAllowedPeriodStarted:(id)a3
+- (void)restrictedGuestAllowedPeriodStarted:(id)started
 {
-  v4 = a3;
-  v5 = self;
+  startedCopy = started;
+  selfCopy = self;
   sub_1001E03B4(&unk_1004CB3A8, sub_1001E06D0, &unk_1004CB3C0);
 }
 
-- (void)restrictedGuestAllowedPeriodEnded:(id)a3
+- (void)restrictedGuestAllowedPeriodEnded:(id)ended
 {
-  v4 = a3;
-  v5 = self;
+  endedCopy = ended;
+  selfCopy = self;
   sub_1001E03B4(&unk_1004CB358, sub_1001E06A8, &unk_1004CB370);
 }
 

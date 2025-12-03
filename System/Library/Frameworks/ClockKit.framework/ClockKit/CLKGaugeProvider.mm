@@ -1,18 +1,18 @@
 @interface CLKGaugeProvider
-+ (CLKGaugeProvider)providerWithJSONObjectRepresentation:(id)a3 bundle:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (CLKGaugeProvider)providerWithJSONObjectRepresentation:(id)representation bundle:(id)bundle;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)needsTimerUpdates;
 - (BOOL)validate;
-- (CLKGaugeProvider)initWithCoder:(id)a3;
-- (CLKGaugeProvider)initWithJSONObjectRepresentation:(id)a3;
-- (double)progressFractionForNow:(id)a3;
+- (CLKGaugeProvider)initWithCoder:(id)coder;
+- (CLKGaugeProvider)initWithJSONObjectRepresentation:(id)representation;
+- (double)progressFractionForNow:(id)now;
 - (id)JSONObjectRepresentation;
 - (id)_init;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)startUpdatesWithHandler:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)startUpdatesWithHandler:(id)handler;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)stopUpdatesForToken:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)stopUpdatesForToken:(id)token;
 @end
 
 @implementation CLKGaugeProvider
@@ -24,45 +24,45 @@
   return [(CLKGaugeProvider *)&v3 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   style = self->_style;
-  v5 = a3;
-  [v5 encodeInteger:style forKey:@"_StyleKey"];
-  [v5 encodeObject:self->_gaugeColors forKey:@"_GaugeColorsKey"];
-  [v5 encodeObject:self->_gaugeColorLocations forKey:@"_GaugeColorLocationsKey"];
-  [v5 encodeBool:self->_finalized forKey:@"Finalized"];
-  [v5 encodeObject:self->_accessibilityLabel forKey:@"AccessibilityLabel"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:style forKey:@"_StyleKey"];
+  [coderCopy encodeObject:self->_gaugeColors forKey:@"_GaugeColorsKey"];
+  [coderCopy encodeObject:self->_gaugeColorLocations forKey:@"_GaugeColorLocationsKey"];
+  [coderCopy encodeBool:self->_finalized forKey:@"Finalized"];
+  [coderCopy encodeObject:self->_accessibilityLabel forKey:@"AccessibilityLabel"];
 }
 
-- (CLKGaugeProvider)initWithCoder:(id)a3
+- (CLKGaugeProvider)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CLKGaugeProvider *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(CLKGaugeProvider *)self _init];
+  if (_init)
   {
-    v5->_style = [v4 decodeIntegerForKey:@"_StyleKey"];
+    _init->_style = [coderCopy decodeIntegerForKey:@"_StyleKey"];
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = [v6 setWithObjects:{v7, objc_opt_class(), 0}];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"_GaugeColorsKey"];
-    gaugeColors = v5->_gaugeColors;
-    v5->_gaugeColors = v9;
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"_GaugeColorsKey"];
+    gaugeColors = _init->_gaugeColors;
+    _init->_gaugeColors = v9;
 
     v11 = MEMORY[0x277CBEB98];
     v12 = objc_opt_class();
     v13 = [v11 setWithObjects:{v12, objc_opt_class(), 0}];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"_GaugeColorLocationsKey"];
-    gaugeColorLocations = v5->_gaugeColorLocations;
-    v5->_gaugeColorLocations = v14;
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"_GaugeColorLocationsKey"];
+    gaugeColorLocations = _init->_gaugeColorLocations;
+    _init->_gaugeColorLocations = v14;
 
-    v5->_finalized = [v4 decodeBoolForKey:@"Finalized"];
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"AccessibilityLabel"];
-    accessibilityLabel = v5->_accessibilityLabel;
-    v5->_accessibilityLabel = v16;
+    _init->_finalized = [coderCopy decodeBoolForKey:@"Finalized"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"AccessibilityLabel"];
+    accessibilityLabel = _init->_accessibilityLabel;
+    _init->_accessibilityLabel = v16;
   }
 
-  return v5;
+  return _init;
 }
 
 - (BOOL)needsTimerUpdates
@@ -72,44 +72,44 @@
   return 0;
 }
 
-- (double)progressFractionForNow:(id)a3
+- (double)progressFractionForNow:(id)now
 {
   objc_opt_class();
   CLKRequestConcreteImplementation(self);
   return 0.0;
 }
 
-- (id)startUpdatesWithHandler:(id)a3
+- (id)startUpdatesWithHandler:(id)handler
 {
   objc_opt_class();
   CLKRequestConcreteImplementation(self);
   return &unk_284A340E0;
 }
 
-- (void)stopUpdatesForToken:(id)a3
+- (void)stopUpdatesForToken:(id)token
 {
   objc_opt_class();
 
   CLKRequestConcreteImplementation(self);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (style = self->_style, style == [v4 style]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (style = self->_style, style == [equalCopy style]))
   {
     gaugeColors = self->_gaugeColors;
-    v7 = [v4 gaugeColors];
-    if (CLKEqualObjects(gaugeColors, v7))
+    gaugeColors = [equalCopy gaugeColors];
+    if (CLKEqualObjects(gaugeColors, gaugeColors))
     {
       gaugeColorLocations = self->_gaugeColorLocations;
-      v9 = [v4 gaugeColorLocations];
-      if (CLKEqualObjects(gaugeColorLocations, v9))
+      gaugeColorLocations = [equalCopy gaugeColorLocations];
+      if (CLKEqualObjects(gaugeColorLocations, gaugeColorLocations))
       {
         accessibilityLabel = self->_accessibilityLabel;
-        v11 = [v4 accessibilityLabel];
-        v12 = CLKEqualObjects(accessibilityLabel, v11);
+        accessibilityLabel = [equalCopy accessibilityLabel];
+        v12 = CLKEqualObjects(accessibilityLabel, accessibilityLabel);
       }
 
       else
@@ -143,7 +143,7 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   if (self->_finalized)
   {
@@ -153,7 +153,7 @@
 
   else
   {
-    v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+    v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
     *(v5 + 16) = self->_style;
     objc_storeStrong((v5 + 24), self->_gaugeColors);
     objc_storeStrong((v5 + 32), self->_gaugeColorLocations);
@@ -165,16 +165,16 @@
   }
 }
 
-+ (CLKGaugeProvider)providerWithJSONObjectRepresentation:(id)a3 bundle:(id)a4
++ (CLKGaugeProvider)providerWithJSONObjectRepresentation:(id)representation bundle:(id)bundle
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"must be a dictionary. Invalid value: %@", v4}];
+    [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"must be a dictionary. Invalid value: %@", representationCopy}];
   }
 
-  v5 = [v4 objectForKeyedSubscript:@"class"];
+  v5 = [representationCopy objectForKeyedSubscript:@"class"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -187,30 +187,30 @@
     [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"class: %@ must be a CLKGaugeProvider class", v5}];
   }
 
-  v7 = [[v6 alloc] initWithJSONObjectRepresentation:v4];
+  v7 = [[v6 alloc] initWithJSONObjectRepresentation:representationCopy];
 
   return v7;
 }
 
-- (CLKGaugeProvider)initWithJSONObjectRepresentation:(id)a3
+- (CLKGaugeProvider)initWithJSONObjectRepresentation:(id)representation
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v26 = [(CLKGaugeProvider *)self _init];
-  if (v26)
+  representationCopy = representation;
+  _init = [(CLKGaugeProvider *)self _init];
+  if (_init)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"must be a dictionary. Invalid value: %@", v4}];
+      [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"must be a dictionary. Invalid value: %@", representationCopy}];
     }
 
-    v27 = v4;
-    v24 = [v4 objectForKeyedSubscript:@"gaugeStyle"];
+    v27 = representationCopy;
+    v24 = [representationCopy objectForKeyedSubscript:@"gaugeStyle"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v26->_style = [v24 integerValue];
+      _init->_style = [v24 integerValue];
     }
 
     else
@@ -218,13 +218,13 @@
       [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"value for key '%@' must be a integer - invalid value: %@", @"gaugeStyle", v24}];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"gaugeColors"];
+    v25 = [representationCopy objectForKeyedSubscript:@"gaugeColors"];
     if (v25)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [MEMORY[0x277CBEB18] array];
+        array = [MEMORY[0x277CBEB18] array];
         v34 = 0u;
         v35 = 0u;
         v32 = 0u;
@@ -248,7 +248,7 @@
               if (objc_opt_isKindOfClass())
               {
                 v11 = [objc_alloc(MEMORY[0x277D75348]) initWithJSONObjectRepresentation:v10];
-                [(NSArray *)v5 addObject:v11];
+                [(NSArray *)array addObject:v11];
               }
 
               else
@@ -263,8 +263,8 @@
           while (v7);
         }
 
-        gaugeColors = v26->_gaugeColors;
-        v26->_gaugeColors = v5;
+        gaugeColors = _init->_gaugeColors;
+        _init->_gaugeColors = array;
       }
 
       else
@@ -320,8 +320,8 @@
         if ([v14 count])
         {
           v20 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v14];
-          gaugeColorLocations = v26->_gaugeColorLocations;
-          v26->_gaugeColorLocations = v20;
+          gaugeColorLocations = _init->_gaugeColorLocations;
+          _init->_gaugeColorLocations = v20;
         }
       }
 
@@ -340,13 +340,13 @@
         [MEMORY[0x277CBEAD8] raise:@"CLKComplicationBundleException" format:{@"value for key '%@' must be a string - invalid value: %@", @"accessibilityLabel", v22}];
       }
 
-      objc_storeStrong(&v26->_accessibilityLabel, v22);
+      objc_storeStrong(&_init->_accessibilityLabel, v22);
     }
 
-    v4 = v27;
+    representationCopy = v27;
   }
 
-  return v26;
+  return _init;
 }
 
 - (id)JSONObjectRepresentation
@@ -360,7 +360,7 @@
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:self->_style];
   [v3 setObject:v6 forKeyedSubscript:@"gaugeStyle"];
 
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -380,8 +380,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * i) JSONObjectRepresentation];
-        [v7 addObject:v13];
+        jSONObjectRepresentation = [*(*(&v16 + 1) + 8 * i) JSONObjectRepresentation];
+        [array addObject:jSONObjectRepresentation];
       }
 
       v10 = [(NSArray *)v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
@@ -390,7 +390,7 @@
     while (v10);
   }
 
-  [v3 setObject:v7 forKeyedSubscript:@"gaugeColors"];
+  [v3 setObject:array forKeyedSubscript:@"gaugeColors"];
   gaugeColorLocations = self->_gaugeColorLocations;
   if (gaugeColorLocations)
   {

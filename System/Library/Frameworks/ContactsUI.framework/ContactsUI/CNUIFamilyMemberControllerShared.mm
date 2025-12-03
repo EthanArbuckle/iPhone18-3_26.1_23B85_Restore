@@ -1,34 +1,34 @@
 @interface CNUIFamilyMemberControllerShared
-+ (id)actionTitleAddNewContactForFamilyMember:(id)a3;
-+ (id)actionTitleChooseFromContactsForFamilyMember:(id)a3;
-+ (id)addContactsOptionsSheetForFamilyMember:(id)a3 delegate:(id)a4;
-+ (id)addContactsToWhitelistOptionsSheetForFamilyMember:(id)a3 offerChooseFromFamilyMemberContactsOption:(BOOL)a4 delegate:(id)a5;
-+ (id)contactMatchingFamilyMemberContactItem:(id)a3 fetchedFromContactStore:(id)a4 schedulerProvider:(id)a5;
-+ (id)contactViewControllerForContact:(id)a3 fromStore:(id)a4;
-+ (id)formattedNameOfFamilyMember:(id)a3;
-+ (int64_t)contactsUIFetchStatusFromContactsUICoreFetchStatus:(int64_t)a3;
++ (id)actionTitleAddNewContactForFamilyMember:(id)member;
++ (id)actionTitleChooseFromContactsForFamilyMember:(id)member;
++ (id)addContactsOptionsSheetForFamilyMember:(id)member delegate:(id)delegate;
++ (id)addContactsToWhitelistOptionsSheetForFamilyMember:(id)member offerChooseFromFamilyMemberContactsOption:(BOOL)option delegate:(id)delegate;
++ (id)contactMatchingFamilyMemberContactItem:(id)item fetchedFromContactStore:(id)store schedulerProvider:(id)provider;
++ (id)contactViewControllerForContact:(id)contact fromStore:(id)store;
++ (id)formattedNameOfFamilyMember:(id)member;
++ (int64_t)contactsUIFetchStatusFromContactsUICoreFetchStatus:(int64_t)status;
 @end
 
 @implementation CNUIFamilyMemberControllerShared
 
-+ (int64_t)contactsUIFetchStatusFromContactsUICoreFetchStatus:(int64_t)a3
++ (int64_t)contactsUIFetchStatusFromContactsUICoreFetchStatus:(int64_t)status
 {
-  if ((a3 - 1) > 2)
+  if ((status - 1) > 2)
   {
     return 0;
   }
 
   else
   {
-    return qword_199E43F08[a3 - 1];
+    return qword_199E43F08[status - 1];
   }
 }
 
-+ (id)actionTitleChooseFromContactsForFamilyMember:(id)a3
++ (id)actionTitleChooseFromContactsForFamilyMember:(id)member
 {
-  if (a3)
+  if (member)
   {
-    v3 = [a1 formattedNameOfFamilyMember:?];
+    v3 = [self formattedNameOfFamilyMember:?];
     v4 = v3;
     if (v3 && [v3 length])
     {
@@ -54,11 +54,11 @@
   return v8;
 }
 
-+ (id)actionTitleAddNewContactForFamilyMember:(id)a3
++ (id)actionTitleAddNewContactForFamilyMember:(id)member
 {
-  if (a3)
+  if (member)
   {
-    v3 = [a1 formattedNameOfFamilyMember:?];
+    v3 = [self formattedNameOfFamilyMember:?];
     v4 = v3;
     if (v3 && [v3 length])
     {
@@ -84,12 +84,12 @@
   return v8;
 }
 
-+ (id)addContactsToWhitelistOptionsSheetForFamilyMember:(id)a3 offerChooseFromFamilyMemberContactsOption:(BOOL)a4 delegate:(id)a5
++ (id)addContactsToWhitelistOptionsSheetForFamilyMember:(id)member offerChooseFromFamilyMemberContactsOption:(BOOL)option delegate:(id)delegate
 {
-  v34 = a4;
-  v7 = a5;
+  optionCopy = option;
+  delegateCopy = delegate;
   v8 = MEMORY[0x1E69DC650];
-  v9 = a3;
+  memberCopy = member;
   v10 = [v8 alertControllerWithTitle:0 message:0 preferredStyle:0];
   v11 = MEMORY[0x1E69DC648];
   v12 = CNContactsUIBundle();
@@ -98,13 +98,13 @@
   v46[1] = 3221225472;
   v46[2] = __137__CNUIFamilyMemberControllerShared_addContactsToWhitelistOptionsSheetForFamilyMember_offerChooseFromFamilyMemberContactsOption_delegate___block_invoke;
   v46[3] = &unk_1E74E7308;
-  v14 = v7;
+  v14 = delegateCopy;
   v47 = v14;
   v15 = v10;
   v48 = v15;
   v35 = [v11 actionWithTitle:v13 style:0 handler:v46];
 
-  v16 = [a1 actionTitleChooseFromContactsForFamilyMember:v9];
+  v16 = [self actionTitleChooseFromContactsForFamilyMember:memberCopy];
   v17 = MEMORY[0x1E69DC648];
   v43[0] = MEMORY[0x1E69E9820];
   v43[1] = 3221225472;
@@ -116,7 +116,7 @@
   v45 = v19;
   v36 = v16;
   v20 = [v17 actionWithTitle:v16 style:0 handler:v43];
-  v21 = [a1 actionTitleAddNewContactForFamilyMember:v9];
+  v21 = [self actionTitleAddNewContactForFamilyMember:memberCopy];
 
   v22 = MEMORY[0x1E69DC648];
   v40[0] = MEMORY[0x1E69E9820];
@@ -142,7 +142,7 @@
   v31 = [v26 actionWithTitle:v28 style:1 handler:v37];
 
   [v29 addAction:v35];
-  if (v9 && v34)
+  if (memberCopy && optionCopy)
   {
     [v29 addAction:v20];
   }
@@ -154,11 +154,11 @@
   return v29;
 }
 
-+ (id)addContactsOptionsSheetForFamilyMember:(id)a3 delegate:(id)a4
++ (id)addContactsOptionsSheetForFamilyMember:(id)member delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v7 = MEMORY[0x1E69DC650];
-  v8 = a3;
+  memberCopy = member;
   v9 = [v7 alertControllerWithTitle:0 message:0 preferredStyle:0];
   v10 = MEMORY[0x1E69DC648];
   v11 = CNContactsUIBundle();
@@ -167,13 +167,13 @@
   v35[1] = 3221225472;
   v35[2] = __84__CNUIFamilyMemberControllerShared_addContactsOptionsSheetForFamilyMember_delegate___block_invoke;
   v35[3] = &unk_1E74E7308;
-  v13 = v6;
+  v13 = delegateCopy;
   v36 = v13;
   v14 = v9;
   v37 = v14;
   v15 = [v10 actionWithTitle:v12 style:0 handler:v35];
 
-  v16 = [a1 actionTitleAddNewContactForFamilyMember:v8];
+  v16 = [self actionTitleAddNewContactForFamilyMember:memberCopy];
 
   v17 = MEMORY[0x1E69DC648];
   v32[0] = MEMORY[0x1E69E9820];
@@ -206,19 +206,19 @@
   return v24;
 }
 
-+ (id)contactMatchingFamilyMemberContactItem:(id)a3 fetchedFromContactStore:(id)a4 schedulerProvider:(id)a5
++ (id)contactMatchingFamilyMemberContactItem:(id)item fetchedFromContactStore:(id)store schedulerProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  storeCopy = store;
   v9 = MEMORY[0x1E6996720];
   v16 = MEMORY[0x1E69E9820];
-  v17 = v8;
-  v18 = v7;
-  v10 = v7;
-  v11 = v8;
-  v12 = a5;
-  v13 = [v12 backgroundScheduler];
-  v14 = [v9 futureWithBlock:&v16 scheduler:v13 schedulerProvider:v12];
+  v17 = storeCopy;
+  v18 = itemCopy;
+  v10 = itemCopy;
+  v11 = storeCopy;
+  providerCopy = provider;
+  backgroundScheduler = [providerCopy backgroundScheduler];
+  v14 = [v9 futureWithBlock:&v16 scheduler:backgroundScheduler schedulerProvider:providerCopy];
 
   return v14;
 }
@@ -249,34 +249,34 @@ id __117__CNUIFamilyMemberControllerShared_contactMatchingFamilyMemberContactIte
   return v7;
 }
 
-+ (id)contactViewControllerForContact:(id)a3 fromStore:(id)a4
++ (id)contactViewControllerForContact:(id)contact fromStore:(id)store
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [CNContactViewController viewControllerForContact:v6];
+  storeCopy = store;
+  contactCopy = contact;
+  v7 = [CNContactViewController viewControllerForContact:contactCopy];
   [v7 setActions:127];
   [v7 setIgnoresParentalRestrictions:1];
-  v8 = [MEMORY[0x1E6996B20] propertyKeysContainingSenstiveData];
-  [v7 setProhibitedPropertyKeys:v8];
+  propertyKeysContainingSenstiveData = [MEMORY[0x1E6996B20] propertyKeysContainingSenstiveData];
+  [v7 setProhibitedPropertyKeys:propertyKeysContainingSenstiveData];
 
-  [v7 setContactStore:v5];
+  [v7 setContactStore:storeCopy];
   [v7 setDisplayMode:2];
-  [v7 setContact:v6];
+  [v7 setContact:contactCopy];
 
   return v7;
 }
 
-+ (id)formattedNameOfFamilyMember:(id)a3
++ (id)formattedNameOfFamilyMember:(id)member
 {
   v3 = MEMORY[0x1E695CF18];
-  v4 = a3;
+  memberCopy = member;
   v5 = objc_alloc_init(v3);
-  v6 = [v4 firstName];
-  [v5 setGivenName:v6];
+  firstName = [memberCopy firstName];
+  [v5 setGivenName:firstName];
 
-  v7 = [v4 lastName];
+  lastName = [memberCopy lastName];
 
-  [v5 setFamilyName:v7];
+  [v5 setFamilyName:lastName];
   v8 = [MEMORY[0x1E695CD80] stringFromContact:v5 style:1000];
 
   return v8;

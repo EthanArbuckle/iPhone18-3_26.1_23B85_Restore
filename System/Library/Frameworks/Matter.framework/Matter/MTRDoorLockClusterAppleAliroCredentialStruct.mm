@@ -1,6 +1,6 @@
 @interface MTRDoorLockClusterAppleAliroCredentialStruct
 - (MTRDoorLockClusterAppleAliroCredentialStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDoorLockClusterAppleAliroCredentialStruct);
-  v5 = [(MTRDoorLockClusterAppleAliroCredentialStruct *)self credentialType];
-  [(MTRDoorLockClusterAppleAliroCredentialStruct *)v4 setCredentialType:v5];
+  credentialType = [(MTRDoorLockClusterAppleAliroCredentialStruct *)self credentialType];
+  [(MTRDoorLockClusterAppleAliroCredentialStruct *)v4 setCredentialType:credentialType];
 
-  v6 = [(MTRDoorLockClusterAppleAliroCredentialStruct *)self credentialIndex];
-  [(MTRDoorLockClusterAppleAliroCredentialStruct *)v4 setCredentialIndex:v6];
+  credentialIndex = [(MTRDoorLockClusterAppleAliroCredentialStruct *)self credentialIndex];
+  [(MTRDoorLockClusterAppleAliroCredentialStruct *)v4 setCredentialIndex:credentialIndex];
 
   return v4;
 }

@@ -1,56 +1,56 @@
 @interface MMCSHTTPContext
 - (BOOL)createNewRequestBodyInputStream;
 - (BOOL)requestBodyCanAcceptData;
-- (MMCSHTTPContext)initWithContext:(mmcs_http_context *)a3 options:(const mmcs_http_context_options *)a4 activityMarker:(os_activity_s *)a5;
+- (MMCSHTTPContext)initWithContext:(mmcs_http_context *)context options:(const mmcs_http_context_options *)options activityMarker:(os_activity_s *)marker;
 - (NSString)description;
 - (__CFError)send;
 - (int64_t)countOfRequestBodyBytesSent;
-- (int64_t)writeRequestBody:(const char *)a3 maxLength:(unint64_t)a4;
-- (void)URLSession:(id)a3 _willRetryBackgroundDataTask:(id)a4 withError:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5;
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6;
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7;
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5;
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7;
+- (int64_t)writeRequestBody:(const char *)body maxLength:(unint64_t)length;
+- (void)URLSession:(id)session _willRetryBackgroundDataTask:(id)task withError:(id)error;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data;
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler;
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error;
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send;
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream;
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler;
 - (void)cleanupResponse;
 - (void)dealloc;
 - (void)invalidate;
 - (void)invalidateStreamPair;
 - (void)requestBodyDone;
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4;
+- (void)stream:(id)stream handleEvent:(unint64_t)event;
 @end
 
 @implementation MMCSHTTPContext
 
-- (void)stream:(id)a3 handleEvent:(unint64_t)a4
+- (void)stream:(id)stream handleEvent:(unint64_t)event
 {
   v47 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  streamCopy = stream;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter([(MMCSHTTPContext *)self hc][584], &state);
-  v7 = self;
-  v8 = [(MMCSHTTPContext *)v7 outputStream];
-  if (v8 == v6 && ![(MMCSHTTPContext *)v7 isTaskDone])
+  selfCopy = self;
+  outputStream = [(MMCSHTTPContext *)selfCopy outputStream];
+  if (outputStream == streamCopy && ![(MMCSHTTPContext *)selfCopy isTaskDone])
   {
-    v13 = [(MMCSHTTPContext *)v7 isValid];
+    isValid = [(MMCSHTTPContext *)selfCopy isValid];
 
-    if (!v13)
+    if (!isValid)
     {
       goto LABEL_4;
     }
 
-    if (a4 > 7)
+    if (event > 7)
     {
-      if (a4 == 8)
+      if (event == 8)
       {
         v29 = mmcs_logging_logger_default();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
-          v30 = [v6 streamError];
-          v31 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ stream %@ error %@", v7, v6, v30);
+          streamError = [streamCopy streamError];
+          v31 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ stream %@ error %@", selfCopy, streamCopy, streamError);
 
           v32 = mmcs_logging_logger_default();
           if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -67,31 +67,31 @@
         }
 
         v33 = MEMORY[0x277CCACA8];
-        v34 = [v6 streamError];
-        v35 = [v33 stringWithFormat:@"Write stream had error:%@", v34];
+        streamError2 = [streamCopy streamError];
+        v35 = [v33 stringWithFormat:@"Write stream had error:%@", streamError2];
 
-        v36 = [v6 streamError];
-        error_with_underlying_error = mmcs_cferror_create_error_with_underlying_error(@"com.apple.mmcs", 38, v36, @"%@", v37, v38, v39, v40, v35);
-        mmcs_http_context_set_error([(MMCSHTTPContext *)v7 hc], error_with_underlying_error);
+        streamError3 = [streamCopy streamError];
+        error_with_underlying_error = mmcs_cferror_create_error_with_underlying_error(@"com.apple.mmcs", 38, streamError3, @"%@", v37, v38, v39, v40, v35);
+        mmcs_http_context_set_error([(MMCSHTTPContext *)selfCopy hc], error_with_underlying_error);
         if (error_with_underlying_error)
         {
           CFRelease(error_with_underlying_error);
         }
 
-        v42 = [(MMCSHTTPContext *)v7 outputStream];
-        [v42 close];
+        outputStream2 = [(MMCSHTTPContext *)selfCopy outputStream];
+        [outputStream2 close];
 
-        if (![(MMCSHTTPContext *)v7 hc][496])
+        if (![(MMCSHTTPContext *)selfCopy hc][496])
         {
           __assert_rtn("[MMCSHTTPContext stream:handleEvent:]", "MMCSHTTPContext.m", 138, "self.hc->requestBodyCallback");
         }
 
-        ([(MMCSHTTPContext *)v7 hc][496])([(MMCSHTTPContext *)v7 hc], [(MMCSHTTPContext *)v7 hc][576], 3);
+        ([(MMCSHTTPContext *)selfCopy hc][496])([(MMCSHTTPContext *)selfCopy hc], [(MMCSHTTPContext *)selfCopy hc][576], 3);
 
         goto LABEL_9;
       }
 
-      if (a4 != 16)
+      if (event != 16)
       {
         goto LABEL_33;
       }
@@ -101,7 +101,7 @@
         v17 = mmcs_logging_logger_default();
         if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
         {
-          v18 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ stream %@ ended", v7, v6);
+          v18 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ stream %@ ended", selfCopy, streamCopy);
           v19 = mmcs_logging_logger_default();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
           {
@@ -117,30 +117,30 @@
         }
       }
 
-      if (![(MMCSHTTPContext *)v7 hc][496])
+      if (![(MMCSHTTPContext *)selfCopy hc][496])
       {
         v43 = 148;
         goto LABEL_59;
       }
 
-      v20 = [(MMCSHTTPContext *)v7 hc][496];
-      v21 = [(MMCSHTTPContext *)v7 hc];
-      v22 = [(MMCSHTTPContext *)v7 hc];
+      v20 = [(MMCSHTTPContext *)selfCopy hc][496];
+      v21 = [(MMCSHTTPContext *)selfCopy hc];
+      v22 = [(MMCSHTTPContext *)selfCopy hc];
       v23 = 4;
     }
 
     else
     {
-      if (a4 != 1)
+      if (event != 1)
       {
-        if (a4 == 4)
+        if (event == 4)
         {
           if (gMMCS_DebugLevel >= 5)
           {
             v14 = mmcs_logging_logger_default();
             if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
             {
-              v15 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ stream %@ has space available", v7, v6);
+              v15 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ stream %@ has space available", selfCopy, streamCopy);
               v16 = mmcs_logging_logger_default();
               if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
               {
@@ -156,12 +156,12 @@
             }
           }
 
-          if ([(MMCSHTTPContext *)v7 hc][496])
+          if ([(MMCSHTTPContext *)selfCopy hc][496])
           {
-            ([(MMCSHTTPContext *)v7 hc][496])([(MMCSHTTPContext *)v7 hc], [(MMCSHTTPContext *)v7 hc][576], 2);
-            if (![(MMCSHTTPContext *)v7 isTaskDone])
+            ([(MMCSHTTPContext *)selfCopy hc][496])([(MMCSHTTPContext *)selfCopy hc], [(MMCSHTTPContext *)selfCopy hc][576], 2);
+            if (![(MMCSHTTPContext *)selfCopy isTaskDone])
             {
-              [(MMCSHTTPContext *)v7 isValid];
+              [(MMCSHTTPContext *)selfCopy isValid];
             }
 
             goto LABEL_9;
@@ -176,7 +176,7 @@ LABEL_33:
         v24 = mmcs_logging_logger_default();
         if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
         {
-          v10 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ ignoring stream event %u from stream %@", v7, a4, v6);
+          v10 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ ignoring stream event %u from stream %@", selfCopy, event, streamCopy);
           v25 = mmcs_logging_logger_default();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
@@ -199,7 +199,7 @@ LABEL_33:
         v26 = mmcs_logging_logger_default();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
         {
-          v27 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ stream %@ opened", v7, v6);
+          v27 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ stream %@ opened", selfCopy, streamCopy);
           v28 = mmcs_logging_logger_default();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
           {
@@ -215,15 +215,15 @@ LABEL_33:
         }
       }
 
-      if (![(MMCSHTTPContext *)v7 hc][496])
+      if (![(MMCSHTTPContext *)selfCopy hc][496])
       {
         v43 = 113;
         goto LABEL_59;
       }
 
-      v20 = [(MMCSHTTPContext *)v7 hc][496];
-      v21 = [(MMCSHTTPContext *)v7 hc];
-      v22 = [(MMCSHTTPContext *)v7 hc];
+      v20 = [(MMCSHTTPContext *)selfCopy hc][496];
+      v21 = [(MMCSHTTPContext *)selfCopy hc];
+      v22 = [(MMCSHTTPContext *)selfCopy hc];
       v23 = 1;
     }
 
@@ -235,7 +235,7 @@ LABEL_4:
   v9 = mmcs_logging_logger_default();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
   {
-    v10 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ ignoring stream event %u from stream %@", v7, a4, v6);
+    v10 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ ignoring stream event %u from stream %@", selfCopy, event, streamCopy);
     v11 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -257,25 +257,25 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)writeRequestBody:(const char *)a3 maxLength:(unint64_t)a4
+- (int64_t)writeRequestBody:(const char *)body maxLength:(unint64_t)length
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = self;
-  objc_sync_enter(v6);
-  v7 = [(MMCSHTTPContext *)v6 outputStream];
-  v8 = [(MMCSHTTPContext *)v6 isHandlingError];
-  objc_sync_exit(v6);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  outputStream = [(MMCSHTTPContext *)selfCopy outputStream];
+  isHandlingError = [(MMCSHTTPContext *)selfCopy isHandlingError];
+  objc_sync_exit(selfCopy);
 
-  if (v7 == 0 || v8)
+  if (outputStream == 0 || isHandlingError)
   {
     v9 = mmcs_logging_logger_default();
-    if (v7)
+    if (outputStream)
     {
-      if (!v8)
+      if (!isHandlingError)
       {
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
-          v10 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ not writing to output stream for unknown reason; attempted to write %lu bytes.", v6, a4);
+          v10 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ not writing to output stream for unknown reason; attempted to write %lu bytes.", selfCopy, length);
           v19 = mmcs_logging_logger_default();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
@@ -301,7 +301,7 @@ LABEL_9:
 
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
-        v10 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ writing 0 bytes because request cannot accept data at the moment.", v6);
+        v10 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ writing 0 bytes because request cannot accept data at the moment.", selfCopy);
         v11 = mmcs_logging_logger_default();
         if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
         {
@@ -325,7 +325,7 @@ LABEL_14:
       goto LABEL_14;
     }
 
-    v10 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ output stream is nil; attempted to write %lu bytes.", v6, a4);
+    v10 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ output stream is nil; attempted to write %lu bytes.", selfCopy, length);
     v18 = mmcs_logging_logger_default();
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -342,7 +342,7 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v14 = [v7 write:a3 maxLength:a4];
+  v14 = [outputStream write:body maxLength:length];
   if (v14 != -1)
   {
     goto LABEL_28;
@@ -354,19 +354,19 @@ LABEL_25:
     goto LABEL_14;
   }
 
-  v16 = [v7 streamStatus];
-  if (v16 > 7)
+  streamStatus = [outputStream streamStatus];
+  if (streamStatus > 7)
   {
     v17 = @"none";
   }
 
   else
   {
-    v17 = off_279845078[v16];
+    v17 = off_279845078[streamStatus];
   }
 
-  v20 = [v7 streamError];
-  v10 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ output stream %@ had an error writing in state %@: stream error %@: Ignoring this, and treating this as if the stream cannot accept data at the moment", v6, v7, v17, v20);
+  streamError = [outputStream streamError];
+  v10 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ output stream %@ had an error writing in state %@: stream error %@: Ignoring this, and treating this as if the stream cannot accept data at the moment", selfCopy, outputStream, v17, streamError);
 
   v18 = mmcs_logging_logger_default();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -393,12 +393,12 @@ LABEL_28:
 - (void)requestBodyDone
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(MMCSHTTPContext *)self outputStream];
+  outputStream = [(MMCSHTTPContext *)self outputStream];
 
-  if (v3)
+  if (outputStream)
   {
-    v9 = [(MMCSHTTPContext *)self outputStream];
-    [v9 close];
+    outputStream2 = [(MMCSHTTPContext *)self outputStream];
+    [outputStream2 close];
     v4 = *MEMORY[0x277D85DE8];
   }
 
@@ -459,20 +459,20 @@ LABEL_28:
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy_;
   v16 = __Block_byref_object_dispose_;
-  v17 = [(MMCSHTTPContext *)self inputStream];
+  inputStream = [(MMCSHTTPContext *)self inputStream];
   v6 = 0;
   v7 = &v6;
   v8 = 0x3032000000;
   v9 = __Block_byref_object_copy_;
   v10 = __Block_byref_object_dispose_;
-  v11 = [(MMCSHTTPContext *)self outputStream];
+  outputStream = [(MMCSHTTPContext *)self outputStream];
   if (v13[5] || v7[5])
   {
-    v3 = [(MMCSHTTPContext *)self outputStream];
-    [v3 setDelegate:0];
+    outputStream2 = [(MMCSHTTPContext *)self outputStream];
+    [outputStream2 setDelegate:0];
 
-    v4 = [(MMCSHTTPContext *)self outputStream];
-    [v4 close];
+    outputStream3 = [(MMCSHTTPContext *)self outputStream];
+    [outputStream3 close];
 
     [(MMCSHTTPContext *)self setOutputStream:0];
     [(MMCSHTTPContext *)self setInputStream:0];
@@ -504,27 +504,27 @@ void __39__MMCSHTTPContext_invalidateStreamPair__block_invoke(uint64_t a1)
 - (BOOL)requestBodyCanAcceptData
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(MMCSHTTPContext *)v2 outputStream];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  outputStream = [(MMCSHTTPContext *)selfCopy outputStream];
 
-  if (v3)
+  if (outputStream)
   {
-    v4 = [(MMCSHTTPContext *)v2 outputStream];
-    v5 = [v4 hasSpaceAvailable];
+    outputStream2 = [(MMCSHTTPContext *)selfCopy outputStream];
+    hasSpaceAvailable = [outputStream2 hasSpaceAvailable];
 
-    if (v5)
+    if (hasSpaceAvailable)
     {
-      LODWORD(v3) = ![(MMCSHTTPContext *)v2 isHandlingError];
+      LODWORD(outputStream) = ![(MMCSHTTPContext *)selfCopy isHandlingError];
     }
 
     else
     {
-      LODWORD(v3) = 0;
+      LODWORD(outputStream) = 0;
     }
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   if (gMMCS_DebugLevel >= 5)
   {
@@ -532,12 +532,12 @@ void __39__MMCSHTTPContext_invalidateStreamPair__block_invoke(uint64_t a1)
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v7 = @"NO";
-      if (v3)
+      if (outputStream)
       {
         v7 = @"YES";
       }
 
-      v8 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ canAcceptData %@", v2, v7);
+      v8 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ canAcceptData %@", selfCopy, v7);
       v9 = mmcs_logging_logger_default();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
       {
@@ -554,15 +554,15 @@ void __39__MMCSHTTPContext_invalidateStreamPair__block_invoke(uint64_t a1)
   }
 
   v10 = *MEMORY[0x277D85DE8];
-  return v3;
+  return outputStream;
 }
 
 - (int64_t)countOfRequestBodyBytesSent
 {
-  v2 = [(MMCSHTTPContext *)self dataTask];
-  v3 = [v2 countOfBytesSent];
+  dataTask = [(MMCSHTTPContext *)self dataTask];
+  countOfBytesSent = [dataTask countOfBytesSent];
 
-  return v3;
+  return countOfBytesSent;
 }
 
 - (BOOL)createNewRequestBodyInputStream
@@ -612,13 +612,13 @@ void __39__MMCSHTTPContext_invalidateStreamPair__block_invoke(uint64_t a1)
   {
     [(MMCSHTTPContext *)self setInputStream:v6];
     [(MMCSHTTPContext *)self setOutputStream:v8];
-    v11 = self;
-    objc_sync_enter(v11);
-    [(MMCSHTTPContext *)v11 setIsHandlingError:0];
-    objc_sync_exit(v11);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
+    [(MMCSHTTPContext *)selfCopy setIsHandlingError:0];
+    objc_sync_exit(selfCopy);
 
-    [v8 setDelegate:v11];
-    mmcs_nshttp_schedule_stream([(MMCSHTTPContext *)v11 hc]);
+    [v8 setDelegate:selfCopy];
+    mmcs_nshttp_schedule_stream([(MMCSHTTPContext *)selfCopy hc]);
     [v8 open];
   }
 
@@ -626,29 +626,29 @@ void __39__MMCSHTTPContext_invalidateStreamPair__block_invoke(uint64_t a1)
   return v10;
 }
 
-- (MMCSHTTPContext)initWithContext:(mmcs_http_context *)a3 options:(const mmcs_http_context_options *)a4 activityMarker:(os_activity_s *)a5
+- (MMCSHTTPContext)initWithContext:(mmcs_http_context *)context options:(const mmcs_http_context_options *)options activityMarker:(os_activity_s *)marker
 {
-  if (!a3)
+  if (!context)
   {
     [MMCSHTTPContext initWithContext:options:activityMarker:];
   }
 
   v12.receiver = self;
   v12.super_class = MMCSHTTPContext;
-  v7 = [(MMCSHTTPContext *)&v12 init:a3];
+  v7 = [(MMCSHTTPContext *)&v12 init:context];
   v8 = v7;
   if (v7)
   {
-    [(MMCSHTTPContext *)v7 setHc:a3];
+    [(MMCSHTTPContext *)v7 setHc:context];
     C3BaseRetain([(MMCSHTTPContext *)v8 hc]);
     *([(MMCSHTTPContext *)v8 hc]+ 560) = appendTrailers;
     [(MMCSHTTPContext *)v8 setIsValid:1];
-    if (a5)
+    if (marker)
     {
-      os_retain(a5);
+      os_retain(marker);
     }
 
-    [(MMCSHTTPContext *)v8 setActivityMarker:a5];
+    [(MMCSHTTPContext *)v8 setActivityMarker:marker];
     valuePtr = 0;
     if (*([(MMCSHTTPContext *)v8 hc][368] + 136))
     {
@@ -671,7 +671,7 @@ void __39__MMCSHTTPContext_invalidateStreamPair__block_invoke(uint64_t a1)
 {
   v3 = [(MMCSHTTPContext *)self hc][368];
   [(MMCSHTTPContext *)self setIsHandlingError:0];
-  v4 = [MEMORY[0x277CF36D8] sharedManager];
+  mEMORY[0x277CF36D8] = [MEMORY[0x277CF36D8] sharedManager];
   v5 = CFHTTPMessageCopyRequestURL([(MMCSHTTPContext *)self hc][336]);
   v6 = [objc_alloc(MEMORY[0x277CCAB70]) initWithURL:v5 cachePolicy:0 timeoutInterval:300.0];
   v7 = CFHTTPMessageCopyRequestMethod([(MMCSHTTPContext *)self hc][336]);
@@ -718,9 +718,9 @@ void __39__MMCSHTTPContext_invalidateStreamPair__block_invoke(uint64_t a1)
       v48 = v7;
       v11 = v9;
       v12 = v5;
-      v13 = v4;
-      v14 = [(MMCSHTTPContext *)self inputStream];
-      [v6 setHTTPBodyStream:v14];
+      v13 = mEMORY[0x277CF36D8];
+      inputStream = [(MMCSHTTPContext *)self inputStream];
+      [v6 setHTTPBodyStream:inputStream];
     }
 
     else
@@ -728,11 +728,11 @@ void __39__MMCSHTTPContext_invalidateStreamPair__block_invoke(uint64_t a1)
       v48 = v7;
       v11 = v9;
       v12 = v5;
-      v14 = CFHTTPMessageCopyBody([(MMCSHTTPContext *)self hc][336]);
-      v13 = v4;
-      if (v14)
+      inputStream = CFHTTPMessageCopyBody([(MMCSHTTPContext *)self hc][336]);
+      v13 = mEMORY[0x277CF36D8];
+      if (inputStream)
       {
-        [v6 setHTTPBody:v14];
+        [v6 setHTTPBody:inputStream];
       }
     }
 
@@ -752,7 +752,7 @@ void __39__MMCSHTTPContext_invalidateStreamPair__block_invoke(uint64_t a1)
       [v6 _setPayloadTransmissionTimeout:3600.0];
     }
 
-    v4 = v13;
+    mEMORY[0x277CF36D8] = v13;
     if (v13)
     {
       v47 = v13;
@@ -829,7 +829,7 @@ void __39__MMCSHTTPContext_invalidateStreamPair__block_invoke(uint64_t a1)
       }
 
       v29 = *(v22 + 136);
-      v4 = v47;
+      mEMORY[0x277CF36D8] = v47;
       if (v29)
       {
         *valuePtr = 0;
@@ -859,24 +859,24 @@ void __39__MMCSHTTPContext_invalidateStreamPair__block_invoke(uint64_t a1)
       v31 = v50;
       [(MMCSHTTPContext *)self setDataTask:v30];
 
-      v32 = [(MMCSHTTPContext *)self dataTask];
+      dataTask = [(MMCSHTTPContext *)self dataTask];
 
-      if (v32)
+      if (dataTask)
       {
         if (mmcs_http_request_options_is_background(v3))
         {
           v33 = [(MMCSHTTPContext *)self hc][352];
           if (v33 != -1)
           {
-            v34 = [(MMCSHTTPContext *)self dataTask];
-            [v34 setCountOfBytesClientExpectsToSend:v33];
+            dataTask2 = [(MMCSHTTPContext *)self dataTask];
+            [dataTask2 setCountOfBytesClientExpectsToSend:v33];
           }
 
           v35 = [(MMCSHTTPContext *)self hc][360];
           if (v35 != -1)
           {
-            v36 = [(MMCSHTTPContext *)self dataTask];
-            [v36 setCountOfBytesClientExpectsToReceive:v35];
+            dataTask3 = [(MMCSHTTPContext *)self dataTask];
+            [dataTask3 setCountOfBytesClientExpectsToReceive:v35];
           }
         }
 
@@ -930,13 +930,13 @@ void __39__MMCSHTTPContext_invalidateStreamPair__block_invoke(uint64_t a1)
       v7 = v48;
     }
 
-    v42 = [(MMCSHTTPContext *)self dataTask];
+    dataTask4 = [(MMCSHTTPContext *)self dataTask];
 
-    if (v42)
+    if (dataTask4)
     {
       [(MMCSHTTPContext *)self setUrlSession:v31];
-      v43 = [(MMCSHTTPContext *)self dataTask];
-      [v43 resume];
+      dataTask5 = [(MMCSHTTPContext *)self dataTask];
+      [dataTask5 resume];
 
       error = 0;
       goto LABEL_70;
@@ -1031,31 +1031,31 @@ LABEL_70:
 
   [(MMCSHTTPContext *)self invalidateStreamPair];
   [(MMCSHTTPContext *)self setIsValid:0];
-  v6 = [(MMCSHTTPContext *)self dataTask];
-  [v6 cancel];
+  dataTask = [(MMCSHTTPContext *)self dataTask];
+  [dataTask cancel];
 
   [(MMCSHTTPContext *)self setDataTask:0];
   [(MMCSHTTPContext *)self setUrlSession:0];
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 willPerformHTTPRedirection:(id)a5 newRequest:(id)a6 completionHandler:(id)a7
+- (void)URLSession:(id)session task:(id)task willPerformHTTPRedirection:(id)redirection newRequest:(id)request completionHandler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  sessionCopy = session;
+  taskCopy = task;
+  redirectionCopy = redirection;
+  requestCopy = request;
+  handlerCopy = handler;
   os_activity_scope_enter([(MMCSHTTPContext *)self activityMarker:0], &v17);
-  v16[2](v16, v15);
+  handlerCopy[2](handlerCopy, requestCopy);
   os_activity_scope_leave(&v17);
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didSendBodyData:(int64_t)a5 totalBytesSent:(int64_t)a6 totalBytesExpectedToSend:(int64_t)a7
+- (void)URLSession:(id)session task:(id)task didSendBodyData:(int64_t)data totalBytesSent:(int64_t)sent totalBytesExpectedToSend:(int64_t)send
 {
   v36 = *MEMORY[0x277D85DE8];
-  v31 = a3;
-  v11 = a4;
+  sessionCopy = session;
+  taskCopy = task;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter([(MMCSHTTPContext *)self activityMarker], &state);
@@ -1064,7 +1064,7 @@ LABEL_70:
     v12 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ %@ %@ didSendBodyData:%lld totalBytesSent:%lld totalBytesExpectedToSend:%lld", self, v31, v11, a5, a6, a7);
+      v13 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ %@ %@ didSendBodyData:%lld totalBytesSent:%lld totalBytesExpectedToSend:%lld", self, sessionCopy, taskCopy, data, sent, send);
       v14 = mmcs_logging_logger_default();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
@@ -1082,14 +1082,14 @@ LABEL_70:
 
   if ([(MMCSHTTPContext *)self isValid])
   {
-    v15 = [(MMCSHTTPContext *)self dataTask];
-    v16 = [v15 taskDescription];
-    if (v16)
+    dataTask = [(MMCSHTTPContext *)self dataTask];
+    taskDescription = [dataTask taskDescription];
+    if (taskDescription)
     {
-      v17 = [(MMCSHTTPContext *)self dataTask];
-      v18 = [v17 taskDescription];
-      v19 = [v11 taskDescription];
-      v20 = [v18 isEqualToString:v19];
+      dataTask2 = [(MMCSHTTPContext *)self dataTask];
+      taskDescription2 = [dataTask2 taskDescription];
+      taskDescription3 = [taskCopy taskDescription];
+      v20 = [taskDescription2 isEqualToString:taskDescription3];
 
       if (v20)
       {
@@ -1098,9 +1098,9 @@ LABEL_70:
         v32[2] = __91__MMCSHTTPContext_URLSession_task_didSendBodyData_totalBytesSent_totalBytesExpectedToSend___block_invoke;
         v32[3] = &unk_279844F90;
         v32[4] = self;
-        v32[5] = a5;
-        v32[6] = a6;
-        v32[7] = a7;
+        v32[5] = data;
+        v32[6] = sent;
+        v32[7] = send;
         HttpContextPerformBlockAsync(self, v32);
         goto LABEL_22;
       }
@@ -1113,10 +1113,10 @@ LABEL_70:
     v24 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v11 taskDescription];
-      v26 = [(MMCSHTTPContext *)self dataTask];
-      v27 = [v26 taskDescription];
-      v22 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", self, v25, v27);
+      taskDescription4 = [taskCopy taskDescription];
+      dataTask3 = [(MMCSHTTPContext *)self dataTask];
+      taskDescription5 = [dataTask3 taskDescription];
+      v22 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", self, taskDescription4, taskDescription5);
 
       v28 = mmcs_logging_logger_default();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -1199,12 +1199,12 @@ void __91__MMCSHTTPContext_URLSession_task_didSendBodyData_totalBytesSent_totalB
   }
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 needNewBodyStream:(id)a5
+- (void)URLSession:(id)session task:(id)task needNewBodyStream:(id)stream
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  streamCopy = stream;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter([(MMCSHTTPContext *)self activityMarker], &state);
@@ -1213,7 +1213,7 @@ void __91__MMCSHTTPContext_URLSession_task_didSendBodyData_totalBytesSent_totalB
     v11 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ %@ %@ needNewBodyStream", self, v8, v9);
+      v12 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ %@ %@ needNewBodyStream", self, sessionCopy, taskCopy);
       v13 = mmcs_logging_logger_default();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
@@ -1254,22 +1254,22 @@ void __91__MMCSHTTPContext_URLSession_task_didSendBodyData_totalBytesSent_totalB
 LABEL_21:
     CFRelease(v21);
 LABEL_22:
-    v10[2](v10, 0);
+    streamCopy[2](streamCopy, 0);
     goto LABEL_23;
   }
 
-  v14 = [(MMCSHTTPContext *)self dataTask];
-  v15 = [v14 taskDescription];
-  if (!v15)
+  dataTask = [(MMCSHTTPContext *)self dataTask];
+  taskDescription = [dataTask taskDescription];
+  if (!taskDescription)
   {
 
     goto LABEL_17;
   }
 
-  v16 = [(MMCSHTTPContext *)self dataTask];
-  v17 = [v16 taskDescription];
-  v18 = [v9 taskDescription];
-  v19 = [v17 isEqualToString:v18];
+  dataTask2 = [(MMCSHTTPContext *)self dataTask];
+  taskDescription2 = [dataTask2 taskDescription];
+  taskDescription3 = [taskCopy taskDescription];
+  v19 = [taskDescription2 isEqualToString:taskDescription3];
 
   if ((v19 & 1) == 0)
   {
@@ -1280,10 +1280,10 @@ LABEL_17:
       goto LABEL_22;
     }
 
-    v24 = [v9 taskDescription];
-    v25 = [(MMCSHTTPContext *)self dataTask];
-    v26 = [v25 taskDescription];
-    v21 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", self, v24, v26);
+    taskDescription4 = [taskCopy taskDescription];
+    dataTask3 = [(MMCSHTTPContext *)self dataTask];
+    taskDescription5 = [dataTask3 taskDescription];
+    v21 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", self, taskDescription4, taskDescription5);
 
     v27 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
@@ -1306,9 +1306,9 @@ LABEL_17:
   v29[2] = __53__MMCSHTTPContext_URLSession_task_needNewBodyStream___block_invoke;
   v29[3] = &unk_279844FB8;
   v29[4] = self;
-  v32 = v10;
-  v30 = v8;
-  v31 = v9;
+  v32 = streamCopy;
+  v30 = sessionCopy;
+  v31 = taskCopy;
   HttpContextPerformBlockAsync(self, v29);
 
 LABEL_23:
@@ -1383,12 +1383,12 @@ void __53__MMCSHTTPContext_URLSession_task_needNewBodyStream___block_invoke(uint
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 didCompleteWithError:(id)a5
+- (void)URLSession:(id)session task:(id)task didCompleteWithError:(id)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter([(MMCSHTTPContext *)self activityMarker], &state);
@@ -1399,19 +1399,19 @@ void __53__MMCSHTTPContext_URLSession_task_needNewBodyStream___block_invoke(uint
     *([(MMCSHTTPContext *)self hc]+ 120) = Current;
   }
 
-  v12 = self;
-  objc_sync_enter(v12);
-  [(MMCSHTTPContext *)v12 setIsHandlingError:1];
-  objc_sync_exit(v12);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(MMCSHTTPContext *)selfCopy setIsHandlingError:1];
+  objc_sync_exit(selfCopy);
 
   v13 = mmcs_logging_logger_default();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = [v9 originalRequest];
-    v15 = [v14 URL];
-    if (v10)
+    originalRequest = [taskCopy originalRequest];
+    v15 = [originalRequest URL];
+    if (errorCopy)
     {
-      v16 = [v10 description];
+      v16 = [errorCopy description];
     }
 
     else
@@ -1419,8 +1419,8 @@ void __53__MMCSHTTPContext_URLSession_task_needNewBodyStream___block_invoke(uint
       v16 = &stru_2868BF3F0;
     }
 
-    v17 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ with %@ did complete %@", v12, v15, v16);
-    if (v10)
+    v17 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ with %@ did complete %@", selfCopy, v15, v16);
+    if (errorCopy)
     {
     }
 
@@ -1438,16 +1438,16 @@ void __53__MMCSHTTPContext_URLSession_task_needNewBodyStream___block_invoke(uint
     }
   }
 
-  if ([(MMCSHTTPContext *)v12 isValid])
+  if ([(MMCSHTTPContext *)selfCopy isValid])
   {
-    v19 = [(MMCSHTTPContext *)v12 dataTask];
-    v20 = [v19 taskDescription];
-    if (v20)
+    dataTask = [(MMCSHTTPContext *)selfCopy dataTask];
+    taskDescription = [dataTask taskDescription];
+    if (taskDescription)
     {
-      v21 = [(MMCSHTTPContext *)v12 dataTask];
-      v22 = [v21 taskDescription];
-      v23 = [v9 taskDescription];
-      v24 = [v22 isEqualToString:v23];
+      dataTask2 = [(MMCSHTTPContext *)selfCopy dataTask];
+      taskDescription2 = [dataTask2 taskDescription];
+      taskDescription3 = [taskCopy taskDescription];
+      v24 = [taskDescription2 isEqualToString:taskDescription3];
 
       if (v24)
       {
@@ -1455,10 +1455,10 @@ void __53__MMCSHTTPContext_URLSession_task_needNewBodyStream___block_invoke(uint
         v34[1] = 3221225472;
         v34[2] = __56__MMCSHTTPContext_URLSession_task_didCompleteWithError___block_invoke;
         v34[3] = &unk_279844FE0;
-        v34[4] = v12;
-        v35 = v9;
-        v36 = v10;
-        HttpContextPerformBlockAsync(v12, v34);
+        v34[4] = selfCopy;
+        v35 = taskCopy;
+        v36 = errorCopy;
+        HttpContextPerformBlockAsync(selfCopy, v34);
 
         goto LABEL_28;
       }
@@ -1471,10 +1471,10 @@ void __53__MMCSHTTPContext_URLSession_task_needNewBodyStream___block_invoke(uint
     v28 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
     {
-      v29 = [v9 taskDescription];
-      v30 = [(MMCSHTTPContext *)v12 dataTask];
-      v31 = [v30 taskDescription];
-      v26 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", v12, v29, v31);
+      taskDescription4 = [taskCopy taskDescription];
+      dataTask3 = [(MMCSHTTPContext *)selfCopy dataTask];
+      taskDescription5 = [dataTask3 taskDescription];
+      v26 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", selfCopy, taskDescription4, taskDescription5);
 
       v32 = mmcs_logging_logger_default();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -1497,7 +1497,7 @@ LABEL_27:
     v25 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
-      v26 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ invalid: ignoring delegate callback", v12);
+      v26 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ invalid: ignoring delegate callback", selfCopy);
       v27 = mmcs_logging_logger_default();
       if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
       {
@@ -1591,25 +1591,25 @@ void __56__MMCSHTTPContext_URLSession_task_didCompleteWithError___block_invoke(i
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveData:(id)a5
+- (void)URLSession:(id)session dataTask:(id)task didReceiveData:(id)data
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  dataCopy = data;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter([(MMCSHTTPContext *)self activityMarker], &state);
   if ([(MMCSHTTPContext *)self isValid])
   {
-    v11 = [(MMCSHTTPContext *)self dataTask];
-    v12 = [v11 taskDescription];
-    if (v12)
+    dataTask = [(MMCSHTTPContext *)self dataTask];
+    taskDescription = [dataTask taskDescription];
+    if (taskDescription)
     {
-      v13 = [(MMCSHTTPContext *)self dataTask];
-      v14 = [v13 taskDescription];
-      v15 = [v9 taskDescription];
-      v16 = [v14 isEqualToString:v15];
+      dataTask2 = [(MMCSHTTPContext *)self dataTask];
+      taskDescription2 = [dataTask2 taskDescription];
+      taskDescription3 = [taskCopy taskDescription];
+      v16 = [taskDescription2 isEqualToString:taskDescription3];
 
       if (v16)
       {
@@ -1619,8 +1619,8 @@ LABEL_16:
         v27[2] = __54__MMCSHTTPContext_URLSession_dataTask_didReceiveData___block_invoke;
         v27[3] = &unk_279844FE0;
         v27[4] = self;
-        v28 = v9;
-        v29 = v10;
+        v28 = taskCopy;
+        v29 = dataCopy;
         HttpContextPerformBlockSync(self, v27);
 
         goto LABEL_17;
@@ -1634,10 +1634,10 @@ LABEL_16:
     v20 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v21 = [v9 taskDescription];
-      v22 = [(MMCSHTTPContext *)self dataTask];
-      v23 = [v22 taskDescription];
-      v24 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", self, v21, v23);
+      taskDescription4 = [taskCopy taskDescription];
+      dataTask3 = [(MMCSHTTPContext *)self dataTask];
+      taskDescription5 = [dataTask3 taskDescription];
+      v24 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", self, taskDescription4, taskDescription5);
 
       v25 = mmcs_logging_logger_default();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
@@ -1740,20 +1740,20 @@ void __54__MMCSHTTPContext_URLSession_dataTask_didReceiveData___block_invoke(id 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 dataTask:(id)a4 didReceiveResponse:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session dataTask:(id)task didReceiveResponse:(id)response completionHandler:(id)handler
 {
   v38 = *MEMORY[0x277D85DE8];
-  v32 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  responseCopy = response;
+  handlerCopy = handler;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter([(MMCSHTTPContext *)self activityMarker], &state);
   v13 = mmcs_logging_logger_default();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
-    v14 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ URLSession:%@ dataTask:%@ didReceiveResponse:%@", self, v32, v10, v11);
+    v14 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ URLSession:%@ dataTask:%@ didReceiveResponse:%@", self, sessionCopy, taskCopy, responseCopy);
     v15 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
     {
@@ -1799,22 +1799,22 @@ void __54__MMCSHTTPContext_URLSession_dataTask_didReceiveData___block_invoke(id 
 LABEL_22:
     CFRelease(v24);
 LABEL_23:
-    v12[2](v12, 0);
+    handlerCopy[2](handlerCopy, 0);
     goto LABEL_24;
   }
 
-  v17 = [(MMCSHTTPContext *)self dataTask];
-  v18 = [v17 taskDescription];
-  if (!v18)
+  dataTask = [(MMCSHTTPContext *)self dataTask];
+  taskDescription = [dataTask taskDescription];
+  if (!taskDescription)
   {
 
     goto LABEL_18;
   }
 
-  v19 = [(MMCSHTTPContext *)self dataTask];
-  v20 = [v19 taskDescription];
-  v21 = [v10 taskDescription];
-  v22 = [v20 isEqualToString:v21];
+  dataTask2 = [(MMCSHTTPContext *)self dataTask];
+  taskDescription2 = [dataTask2 taskDescription];
+  taskDescription3 = [taskCopy taskDescription];
+  v22 = [taskDescription2 isEqualToString:taskDescription3];
 
   if ((v22 & 1) == 0)
   {
@@ -1825,10 +1825,10 @@ LABEL_18:
       goto LABEL_23;
     }
 
-    v27 = [v10 taskDescription];
-    v28 = [(MMCSHTTPContext *)self dataTask];
-    v29 = [v28 taskDescription];
-    v24 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", self, v27, v29);
+    taskDescription4 = [taskCopy taskDescription];
+    dataTask3 = [(MMCSHTTPContext *)self dataTask];
+    taskDescription5 = [dataTask3 taskDescription];
+    v24 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", self, taskDescription4, taskDescription5);
 
     v30 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -1851,7 +1851,7 @@ LABEL_18:
   v33[2] = __76__MMCSHTTPContext_URLSession_dataTask_didReceiveResponse_completionHandler___block_invoke;
   v33[3] = &unk_279845008;
   v33[4] = self;
-  v34 = v12;
+  v34 = handlerCopy;
   HttpContextPerformBlockAsync(self, v33);
 
 LABEL_24:
@@ -1904,13 +1904,13 @@ uint64_t __76__MMCSHTTPContext_URLSession_dataTask_didReceiveResponse_completion
   return result;
 }
 
-- (void)URLSession:(id)a3 task:(id)a4 _willSendRequestForEstablishedConnection:(id)a5 completionHandler:(id)a6
+- (void)URLSession:(id)session task:(id)task _willSendRequestForEstablishedConnection:(id)connection completionHandler:(id)handler
 {
   v52 = *MEMORY[0x277D85DE8];
-  v42 = a3;
-  v10 = a4;
-  v43 = a5;
-  v11 = a6;
+  sessionCopy = session;
+  taskCopy = task;
+  connectionCopy = connection;
+  handlerCopy = handler;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter([(MMCSHTTPContext *)self activityMarker], &state);
@@ -1919,7 +1919,7 @@ uint64_t __76__MMCSHTTPContext_URLSession_dataTask_didReceiveResponse_completion
     v12 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      v13 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ %@ %@ %@", self, v42, v10, v43);
+      v13 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ %@ %@ %@", self, sessionCopy, taskCopy, connectionCopy);
       v14 = mmcs_logging_logger_default();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
       {
@@ -1962,22 +1962,22 @@ LABEL_25:
 LABEL_26:
     v33 = 0;
 LABEL_27:
-    (v11)[2](v11, v33);
+    (handlerCopy)[2](handlerCopy, v33);
     goto LABEL_28;
   }
 
-  v15 = [(MMCSHTTPContext *)self dataTask];
-  v16 = [v15 taskDescription];
-  if (!v16)
+  dataTask = [(MMCSHTTPContext *)self dataTask];
+  taskDescription = [dataTask taskDescription];
+  if (!taskDescription)
   {
 
     goto LABEL_21;
   }
 
-  v17 = [(MMCSHTTPContext *)self dataTask];
-  v18 = [v17 taskDescription];
-  v19 = [v10 taskDescription];
-  v20 = [v18 isEqualToString:v19];
+  dataTask2 = [(MMCSHTTPContext *)self dataTask];
+  taskDescription2 = [dataTask2 taskDescription];
+  taskDescription3 = [taskCopy taskDescription];
+  v20 = [taskDescription2 isEqualToString:taskDescription3];
 
   if ((v20 & 1) == 0)
   {
@@ -1988,10 +1988,10 @@ LABEL_21:
       goto LABEL_26;
     }
 
-    v29 = [v10 taskDescription];
-    v30 = [(MMCSHTTPContext *)self dataTask];
-    v31 = [v30 taskDescription];
-    v26 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", self, v29, v31);
+    taskDescription4 = [taskCopy taskDescription];
+    dataTask3 = [(MMCSHTTPContext *)self dataTask];
+    taskDescription5 = [dataTask3 taskDescription];
+    v26 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", self, taskDescription4, taskDescription5);
 
     v32 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
@@ -2011,7 +2011,7 @@ LABEL_21:
 
   if (![(MMCSHTTPContext *)self requestIsStreamed])
   {
-    v33 = v43;
+    v33 = connectionCopy;
     if (gMMCS_DebugLevel < 5)
     {
       goto LABEL_27;
@@ -2019,13 +2019,13 @@ LABEL_21:
 
     v35 = mmcs_logging_logger_default();
     v36 = os_log_type_enabled(v35, OS_LOG_TYPE_DEBUG);
-    v33 = v43;
+    v33 = connectionCopy;
     if (!v36)
     {
       goto LABEL_27;
     }
 
-    v37 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ %@ %@ %@ is not streamed; using as is.", self, v42, v10, v43);
+    v37 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ %@ %@ %@ is not streamed; using as is.", self, sessionCopy, taskCopy, connectionCopy);
     v38 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
     {
@@ -2034,7 +2034,7 @@ LABEL_21:
       _os_log_impl(&dword_2577D8000, v38, OS_LOG_TYPE_DEBUG, "%{public}@", buf, 0xCu);
     }
 
-    v33 = v43;
+    v33 = connectionCopy;
     if (!v37)
     {
       goto LABEL_27;
@@ -2042,22 +2042,22 @@ LABEL_21:
 
 LABEL_34:
     CFRelease(v37);
-    v33 = v43;
+    v33 = connectionCopy;
     goto LABEL_27;
   }
 
   if ([(MMCSHTTPContext *)self requestIsStreamed])
   {
-    v21 = [v43 HTTPBodyStream];
-    if (v21)
+    hTTPBodyStream = [connectionCopy HTTPBodyStream];
+    if (hTTPBodyStream)
     {
-      v22 = [v43 HTTPBodyStream];
-      v23 = [(MMCSHTTPContext *)self inputStream];
-      v24 = v22 == v23;
+      hTTPBodyStream2 = [connectionCopy HTTPBodyStream];
+      inputStream = [(MMCSHTTPContext *)self inputStream];
+      v24 = hTTPBodyStream2 == inputStream;
 
       if (v24)
       {
-        v33 = v43;
+        v33 = connectionCopy;
         if (gMMCS_DebugLevel < 5)
         {
           goto LABEL_27;
@@ -2065,13 +2065,13 @@ LABEL_34:
 
         v39 = mmcs_logging_logger_default();
         v40 = os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG);
-        v33 = v43;
+        v33 = connectionCopy;
         if (!v40)
         {
           goto LABEL_27;
         }
 
-        v37 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ %@ %@ %@ is streamed, and the request input stream is non-nil and equal context input stream; using as is.", self, v42, v10, v43);
+        v37 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ %@ %@ %@ is streamed, and the request input stream is non-nil and equal context input stream; using as is.", self, sessionCopy, taskCopy, connectionCopy);
         v41 = mmcs_logging_logger_default();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_DEBUG))
         {
@@ -2080,7 +2080,7 @@ LABEL_34:
           _os_log_impl(&dword_2577D8000, v41, OS_LOG_TYPE_DEBUG, "%{public}@", buf, 0xCu);
         }
 
-        v33 = v43;
+        v33 = connectionCopy;
         if (!v37)
         {
           goto LABEL_27;
@@ -2096,10 +2096,10 @@ LABEL_34:
   v44[2] = __94__MMCSHTTPContext_URLSession_task__willSendRequestForEstablishedConnection_completionHandler___block_invoke;
   v44[3] = &unk_279845030;
   v44[4] = self;
-  v48 = v11;
-  v45 = v42;
-  v46 = v10;
-  v47 = v43;
+  v48 = handlerCopy;
+  v45 = sessionCopy;
+  v46 = taskCopy;
+  v47 = connectionCopy;
   HttpContextPerformBlockAsync(self, v44);
 
 LABEL_28:
@@ -2213,19 +2213,19 @@ LABEL_24:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)URLSession:(id)a3 _willRetryBackgroundDataTask:(id)a4 withError:(id)a5
+- (void)URLSession:(id)session _willRetryBackgroundDataTask:(id)task withError:(id)error
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  taskCopy = task;
+  errorCopy = error;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   os_activity_scope_enter([(MMCSHTTPContext *)self activityMarker], &state);
   v11 = mmcs_logging_logger_default();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    v12 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ %@ %@ _willRetryBackgroundDataTask after error %@", self, v8, v9, v10);
+    v12 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ %@ %@ _willRetryBackgroundDataTask after error %@", self, sessionCopy, taskCopy, errorCopy);
     v13 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -2242,30 +2242,30 @@ LABEL_24:
 
   if ([(MMCSHTTPContext *)self isValid])
   {
-    v14 = [(MMCSHTTPContext *)self dataTask];
-    v15 = [v14 taskDescription];
-    if (v15)
+    dataTask = [(MMCSHTTPContext *)self dataTask];
+    taskDescription = [dataTask taskDescription];
+    if (taskDescription)
     {
-      v16 = [(MMCSHTTPContext *)self dataTask];
-      v17 = [v16 taskDescription];
-      v18 = [v9 taskDescription];
-      v19 = [v17 isEqualToString:v18];
+      dataTask2 = [(MMCSHTTPContext *)self dataTask];
+      taskDescription2 = [dataTask2 taskDescription];
+      taskDescription3 = [taskCopy taskDescription];
+      v19 = [taskDescription2 isEqualToString:taskDescription3];
 
       if (v19)
       {
-        v20 = self;
-        objc_sync_enter(v20);
-        [(MMCSHTTPContext *)v20 setIsHandlingError:1];
-        objc_sync_exit(v20);
+        selfCopy = self;
+        objc_sync_enter(selfCopy);
+        [(MMCSHTTPContext *)selfCopy setIsHandlingError:1];
+        objc_sync_exit(selfCopy);
 
         v30[0] = MEMORY[0x277D85DD0];
         v30[1] = 3221225472;
         v30[2] = __69__MMCSHTTPContext_URLSession__willRetryBackgroundDataTask_withError___block_invoke;
         v30[3] = &unk_279844FE0;
-        v30[4] = v20;
-        v31 = v9;
-        v32 = v10;
-        HttpContextPerformBlockSync(v20, v30);
+        v30[4] = selfCopy;
+        v31 = taskCopy;
+        v32 = errorCopy;
+        HttpContextPerformBlockSync(selfCopy, v30);
 
         goto LABEL_21;
       }
@@ -2278,10 +2278,10 @@ LABEL_24:
     v24 = mmcs_logging_logger_default();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG))
     {
-      v25 = [v9 taskDescription];
-      v26 = [(MMCSHTTPContext *)self dataTask];
-      v27 = [v26 taskDescription];
-      v22 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", self, v25, v27);
+      taskDescription4 = [taskCopy taskDescription];
+      dataTask3 = [(MMCSHTTPContext *)self dataTask];
+      taskDescription5 = [dataTask3 taskDescription];
+      v22 = CFStringCreateWithFormat(*MEMORY[0x277CBECE8], 0, @"%@ unknown task %@. Expected %@: ignoring delegate callback", self, taskDescription4, taskDescription5);
 
       v28 = mmcs_logging_logger_default();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))

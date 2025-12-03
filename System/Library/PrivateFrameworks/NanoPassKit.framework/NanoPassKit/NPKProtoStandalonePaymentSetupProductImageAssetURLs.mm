@@ -1,12 +1,12 @@
 @interface NPKProtoStandalonePaymentSetupProductImageAssetURLs
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NPKProtoStandalonePaymentSetupProductImageAssetURLs
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NPKProtoStandalonePaymentSetupProductImageAssetURLs;
   v4 = [(NPKProtoStandalonePaymentSetupProductImageAssetURLs *)&v8 description];
-  v5 = [(NPKProtoStandalonePaymentSetupProductImageAssetURLs *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NPKProtoStandalonePaymentSetupProductImageAssetURLs *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   digitalCardImageUrl = self->_digitalCardImageUrl;
   if (digitalCardImageUrl)
   {
-    [v3 setObject:digitalCardImageUrl forKey:@"digitalCardImageUrl"];
+    [dictionary setObject:digitalCardImageUrl forKey:@"digitalCardImageUrl"];
   }
 
   thumbnailImageUrl = self->_thumbnailImageUrl;
@@ -48,77 +48,77 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_digitalCardImageUrl)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_thumbnailImageUrl)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_logoImageUrl)
   {
     PBDataWriterWriteStringField();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_digitalCardImageUrl)
   {
-    [v4 setDigitalCardImageUrl:?];
-    v4 = v5;
+    [toCopy setDigitalCardImageUrl:?];
+    toCopy = v5;
   }
 
   if (self->_thumbnailImageUrl)
   {
     [v5 setThumbnailImageUrl:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_logoImageUrl)
   {
     [v5 setLogoImageUrl:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_digitalCardImageUrl copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_digitalCardImageUrl copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_thumbnailImageUrl copyWithZone:a3];
+  v8 = [(NSString *)self->_thumbnailImageUrl copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_logoImageUrl copyWithZone:a3];
+  v10 = [(NSString *)self->_logoImageUrl copyWithZone:zone];
   v11 = v5[2];
   v5[2] = v10;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((digitalCardImageUrl = self->_digitalCardImageUrl, !(digitalCardImageUrl | v4[1])) || -[NSString isEqual:](digitalCardImageUrl, "isEqual:")) && ((thumbnailImageUrl = self->_thumbnailImageUrl, !(thumbnailImageUrl | v4[3])) || -[NSString isEqual:](thumbnailImageUrl, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((digitalCardImageUrl = self->_digitalCardImageUrl, !(digitalCardImageUrl | equalCopy[1])) || -[NSString isEqual:](digitalCardImageUrl, "isEqual:")) && ((thumbnailImageUrl = self->_thumbnailImageUrl, !(thumbnailImageUrl | equalCopy[3])) || -[NSString isEqual:](thumbnailImageUrl, "isEqual:")))
   {
     logoImageUrl = self->_logoImageUrl;
-    if (logoImageUrl | v4[2])
+    if (logoImageUrl | equalCopy[2])
     {
       v8 = [(NSString *)logoImageUrl isEqual:?];
     }
@@ -144,26 +144,26 @@
   return v4 ^ [(NSString *)self->_logoImageUrl hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(NPKProtoStandalonePaymentSetupProductImageAssetURLs *)self setDigitalCardImageUrl:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
     [(NPKProtoStandalonePaymentSetupProductImageAssetURLs *)self setThumbnailImageUrl:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(NPKProtoStandalonePaymentSetupProductImageAssetURLs *)self setLogoImageUrl:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

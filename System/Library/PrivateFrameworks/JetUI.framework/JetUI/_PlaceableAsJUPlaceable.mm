@@ -1,24 +1,24 @@
 @interface _PlaceableAsJUPlaceable
-- (JUMeasurements)measureToFit:(CGSize)a3 withTraitCollection:(id)a4;
+- (JUMeasurements)measureToFit:(CGSize)fit withTraitCollection:(id)collection;
 - (NSString)description;
 - (_TtC5JetUI23_PlaceableAsJUPlaceable)init;
-- (void)placeAtRect:(CGRect)a3 withTraitCollection:(id)a4;
+- (void)placeAtRect:(CGRect)rect withTraitCollection:(id)collection;
 @end
 
 @implementation _PlaceableAsJUPlaceable
 
-- (JUMeasurements)measureToFit:(CGSize)a3 withTraitCollection:(id)a4
+- (JUMeasurements)measureToFit:(CGSize)fit withTraitCollection:(id)collection
 {
-  height = a3.height;
-  width = a3.width;
+  height = fit.height;
+  width = fit.width;
   v8 = (&self->super.isa + OBJC_IVAR____TtC5JetUI23_PlaceableAsJUPlaceable_base);
   v9 = v8[3];
   v10 = v8[4];
   __swift_project_boxed_opaque_existential_1(v8, v9);
   v11 = *(v10 + 8);
-  v12 = a4;
-  v13 = self;
-  v14 = v11(v12, v9, v10, width, height);
+  collectionCopy = collection;
+  selfCopy = self;
+  v14 = v11(collectionCopy, v9, v10, width, height);
   v16 = v15;
   v18 = v17;
   v20 = v19;
@@ -34,20 +34,20 @@
   return result;
 }
 
-- (void)placeAtRect:(CGRect)a3 withTraitCollection:(id)a4
+- (void)placeAtRect:(CGRect)rect withTraitCollection:(id)collection
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v10 = (&self->super.isa + OBJC_IVAR____TtC5JetUI23_PlaceableAsJUPlaceable_base);
   v11 = v10[3];
   v12 = v10[4];
   __swift_project_boxed_opaque_existential_1(v10, v11);
   v13 = *(v12 + 16);
-  v14 = a4;
-  v15 = self;
-  v13(v14, v11, v12, x, y, width, height);
+  collectionCopy = collection;
+  selfCopy = self;
+  v13(collectionCopy, v11, v12, x, y, width, height);
 }
 
 - (NSString)description

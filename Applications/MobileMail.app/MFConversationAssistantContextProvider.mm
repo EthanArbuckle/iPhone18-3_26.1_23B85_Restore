@@ -1,8 +1,8 @@
 @interface MFConversationAssistantContextProvider
 + (id)log;
-- (BOOL)allowContextProvider:(id)a3;
-- (MFConversationAssistantContextProvider)initWithCurrentVisibileMessageStrategy:(id)a3 contactStore:(id)a4;
-- (id)_saPersonAttributesFromEmailAddresses:(id)a3;
+- (BOOL)allowContextProvider:(id)provider;
+- (MFConversationAssistantContextProvider)initWithCurrentVisibileMessageStrategy:(id)strategy contactStore:(id)store;
+- (id)_saPersonAttributesFromEmailAddresses:(id)addresses;
 - (id)getCurrentContext;
 - (void)dealloc;
 @end
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001B638C;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD450 != -1)
   {
     dispatch_once(&qword_1006DD450, block);
@@ -26,18 +26,18 @@
   return v2;
 }
 
-- (MFConversationAssistantContextProvider)initWithCurrentVisibileMessageStrategy:(id)a3 contactStore:(id)a4
+- (MFConversationAssistantContextProvider)initWithCurrentVisibileMessageStrategy:(id)strategy contactStore:(id)store
 {
-  v7 = a3;
-  v8 = a4;
+  strategyCopy = strategy;
+  storeCopy = store;
   v13.receiver = self;
   v13.super_class = MFConversationAssistantContextProvider;
   v9 = [(MFConversationAssistantContextProvider *)&v13 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contactStore, a4);
-    objc_storeStrong(&v10->_visibleMessageStrategy, a3);
+    objc_storeStrong(&v9->_contactStore, store);
+    objc_storeStrong(&v10->_visibleMessageStrategy, strategy);
     v11 = +[AFContextManager defaultContextManager];
     [v11 addContextProvider:v10];
   }
@@ -55,7 +55,7 @@
   [(MFConversationAssistantContextProvider *)&v4 dealloc];
 }
 
-- (BOOL)allowContextProvider:(id)a3
+- (BOOL)allowContextProvider:(id)provider
 {
   v3 = +[MFConversationAssistantContextProvider log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
@@ -88,77 +88,77 @@
 
   v4 = v3;
   _Block_object_dispose(v41, 8);
-  v5 = [v3 email];
-  if (v5)
+  email = [v3 email];
+  if (email)
   {
-    v6 = [(MFConversationAssistantContextProvider *)self visibleMessageStrategy];
-    v36 = [v6 currentVisibleMessageContentRequest];
+    visibleMessageStrategy = [(MFConversationAssistantContextProvider *)self visibleMessageStrategy];
+    currentVisibleMessageContentRequest = [visibleMessageStrategy currentVisibleMessageContentRequest];
 
-    v7 = [v36 waitForResult];
-    if (v7)
+    waitForResult = [currentVisibleMessageContentRequest waitForResult];
+    if (waitForResult)
     {
-      v8 = [v36 message];
-      v9 = [v8 date];
-      [v5 setDateSent:v9];
+      message = [currentVisibleMessageContentRequest message];
+      date = [message date];
+      [email setDateSent:date];
 
-      v10 = [v8 toList];
-      v11 = [(MFConversationAssistantContextProvider *)self _saPersonAttributesFromEmailAddresses:v10];
-      [v5 setRecipientsTo:v11];
+      toList = [message toList];
+      v11 = [(MFConversationAssistantContextProvider *)self _saPersonAttributesFromEmailAddresses:toList];
+      [email setRecipientsTo:v11];
 
-      v12 = [v8 ccList];
-      v13 = [(MFConversationAssistantContextProvider *)self _saPersonAttributesFromEmailAddresses:v12];
-      [v5 setRecipientsCc:v13];
+      ccList = [message ccList];
+      v13 = [(MFConversationAssistantContextProvider *)self _saPersonAttributesFromEmailAddresses:ccList];
+      [email setRecipientsCc:v13];
 
-      v14 = [v8 bccList];
-      v15 = [(MFConversationAssistantContextProvider *)self _saPersonAttributesFromEmailAddresses:v14];
-      [v5 setRecipientsBcc:v15];
+      bccList = [message bccList];
+      v15 = [(MFConversationAssistantContextProvider *)self _saPersonAttributesFromEmailAddresses:bccList];
+      [email setRecipientsBcc:v15];
 
-      v16 = [v8 senderList];
-      v17 = [(MFConversationAssistantContextProvider *)self _saPersonAttributesFromEmailAddresses:v16];
-      v18 = [v17 lastObject];
-      [v5 setFromEmail:v18];
+      senderList = [message senderList];
+      v17 = [(MFConversationAssistantContextProvider *)self _saPersonAttributesFromEmailAddresses:senderList];
+      lastObject = [v17 lastObject];
+      [email setFromEmail:lastObject];
 
-      v19 = [v8 mailboxes];
-      v20 = [v19 ef_map:&stru_1006539A0];
-      v21 = [v20 ef_flatten];
-      v22 = [v21 ef_compactMap:&stru_1006539E0];
+      mailboxes = [message mailboxes];
+      v20 = [mailboxes ef_map:&stru_1006539A0];
+      ef_flatten = [v20 ef_flatten];
+      v22 = [ef_flatten ef_compactMap:&stru_1006539E0];
       v23 = [NSSet setWithArray:v22];
-      v24 = [v23 allObjects];
-      [v5 setReceivingAddresses:v24];
+      allObjects = [v23 allObjects];
+      [email setReceivingAddresses:allObjects];
 
-      v25 = [v8 mailboxes];
-      v26 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v25 ef_any:&stru_100653A00]);
-      [v5 setOutgoing:v26];
+      mailboxes2 = [message mailboxes];
+      v26 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [mailboxes2 ef_any:&stru_100653A00]);
+      [email setOutgoing:v26];
 
-      v27 = [v7 publicMessageURL];
-      [v5 setIdentifier:v27];
+      publicMessageURL = [waitForResult publicMessageURL];
+      [email setIdentifier:publicMessageURL];
     }
 
     else
     {
-      v8 = +[MFConversationAssistantContextProvider log];
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+      message = +[MFConversationAssistantContextProvider log];
+      if (os_log_type_enabled(message, OS_LOG_TYPE_ERROR))
       {
-        v29 = [(MFConversationAssistantContextProvider *)self visibleMessageStrategy];
-        v30 = [v29 currentVisibleMessageContentRequest];
-        sub_10048B284(v30, v41, v8, v29);
+        visibleMessageStrategy2 = [(MFConversationAssistantContextProvider *)self visibleMessageStrategy];
+        currentVisibleMessageContentRequest2 = [visibleMessageStrategy2 currentVisibleMessageContentRequest];
+        sub_10048B284(currentVisibleMessageContentRequest2, v41, message, visibleMessageStrategy2);
       }
     }
 
     v31 = +[MFConversationAssistantContextProvider log];
     if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
     {
-      v32 = [v5 dictionary];
-      v33 = [v5 identifier];
+      dictionary = [email dictionary];
+      identifier = [email identifier];
       *buf = 138412546;
-      *&buf[4] = v32;
+      *&buf[4] = dictionary;
       *&buf[12] = 2114;
-      *&buf[14] = v33;
+      *&buf[14] = identifier;
       _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "Returning %@, %{public}@.", buf, 0x16u);
     }
 
-    v34 = [v5 dictionary];
-    v37 = v34;
+    dictionary2 = [email dictionary];
+    v37 = dictionary2;
     v28 = [NSArray arrayWithObjects:&v37 count:1];
   }
 
@@ -170,15 +170,15 @@
   return v28;
 }
 
-- (id)_saPersonAttributesFromEmailAddresses:(id)a3
+- (id)_saPersonAttributesFromEmailAddresses:(id)addresses
 {
-  v4 = a3;
+  addressesCopy = addresses;
   v21 = +[NSMutableArray array];
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  obj = v4;
+  obj = addressesCopy;
   v5 = [obj countByEnumeratingWithState:&v23 objects:v32 count:16];
   if (v5)
   {
@@ -192,13 +192,13 @@
           objc_enumerationMutation(obj);
         }
 
-        v8 = [*(*(&v23 + 1) + 8 * i) emailAddressValue];
-        v9 = v8;
-        if (v8)
+        emailAddressValue = [*(*(&v23 + 1) + 8 * i) emailAddressValue];
+        v9 = emailAddressValue;
+        if (emailAddressValue)
         {
-          v10 = [v8 simpleAddress];
-          v11 = [v9 displayName];
-          if ([v10 length])
+          simpleAddress = [emailAddressValue simpleAddress];
+          displayName = [v9 displayName];
+          if ([simpleAddress length])
           {
             v28 = 0;
             v29 = &v28;
@@ -218,10 +218,10 @@
 
             v13 = v12;
             _Block_object_dispose(&v28, 8);
-            v14 = [v12 personAttribute];
-            [v14 setData:v10];
-            v15 = [(MFConversationAssistantContextProvider *)self contactStore];
-            v16 = [v15 displayNameForEmailAddress:v10];
+            personAttribute = [v12 personAttribute];
+            [personAttribute setData:simpleAddress];
+            contactStore = [(MFConversationAssistantContextProvider *)self contactStore];
+            v16 = [contactStore displayNameForEmailAddress:simpleAddress];
 
             if ([v16 length])
             {
@@ -230,18 +230,18 @@
 
             else
             {
-              v17 = v11;
+              v17 = displayName;
             }
 
-            [v14 setDisplayText:v17];
-            [v21 addObject:v14];
+            [personAttribute setDisplayText:v17];
+            [v21 addObject:personAttribute];
           }
         }
 
         else
         {
-          v11 = 0;
-          v10 = 0;
+          displayName = 0;
+          simpleAddress = 0;
         }
       }
 

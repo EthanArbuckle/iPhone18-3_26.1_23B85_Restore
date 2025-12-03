@@ -1,13 +1,13 @@
 @interface OAXBlipContext
-- (BOOL)loadDelayedNode:(id)a3;
+- (BOOL)loadDelayedNode:(id)node;
 - (id)description;
 @end
 
 @implementation OAXBlipContext
 
-- (BOOL)loadDelayedNode:(id)a3
+- (BOOL)loadDelayedNode:(id)node
 {
-  v4 = a3;
+  nodeCopy = node;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -16,8 +16,8 @@
     v7 = v5 != 0;
     if (v5)
     {
-      v8 = [v5 data];
-      [v4 setData:v8];
+      data = [v5 data];
+      [nodeCopy setData:data];
 
       [(OCPPackage *)self->super.mPackage resetPartForLocation:self->super.mTargetLocation];
     }

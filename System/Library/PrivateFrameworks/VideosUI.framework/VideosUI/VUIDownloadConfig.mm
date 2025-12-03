@@ -13,13 +13,13 @@
   if (v2)
   {
     v2->_allowEnhancedDownloads = 0;
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v5 = [v4 objectForKey:@"allowEnhancedDownloads"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v5 = [standardUserDefaults objectForKey:@"allowEnhancedDownloads"];
 
     if (v5)
     {
-      v6 = [MEMORY[0x1E695E000] standardUserDefaults];
-      v3->_allowEnhancedDownloads = [v6 BOOLForKey:@"allowEnhancedDownloads"];
+      standardUserDefaults2 = [MEMORY[0x1E695E000] standardUserDefaults];
+      v3->_allowEnhancedDownloads = [standardUserDefaults2 BOOLForKey:@"allowEnhancedDownloads"];
     }
 
     v3->_updateCoverArtForExistingDownloads = 1;

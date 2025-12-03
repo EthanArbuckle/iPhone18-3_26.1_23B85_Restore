@@ -1,18 +1,18 @@
 @interface VehicleConnectorCell
-- (VehicleConnectorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (VehicleConnectorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)_setup;
-- (void)setActive:(BOOL)a3;
-- (void)setConnectorType:(unint64_t)a3;
+- (void)setActive:(BOOL)active;
+- (void)setConnectorType:(unint64_t)type;
 @end
 
 @implementation VehicleConnectorCell
 
-- (void)setActive:(BOOL)a3
+- (void)setActive:(BOOL)active
 {
-  if (self->_active != a3)
+  if (self->_active != active)
   {
-    self->_active = a3;
-    if (a3)
+    self->_active = active;
+    if (active)
     {
       v3 = 3;
     }
@@ -26,32 +26,32 @@
   }
 }
 
-- (void)setConnectorType:(unint64_t)a3
+- (void)setConnectorType:(unint64_t)type
 {
-  if (self->_connectorType == a3)
+  if (self->_connectorType == type)
   {
     return;
   }
 
-  self->_connectorType = a3;
+  self->_connectorType = type;
   v6 = [NSBundle bundleForClass:objc_opt_class()];
-  v7 = [(VehicleConnectorCell *)self traitCollection];
+  traitCollection = [(VehicleConnectorCell *)self traitCollection];
   v8 = v6;
-  v9 = v7;
-  if (a3 > 15)
+  v9 = traitCollection;
+  if (type > 15)
   {
     goto LABEL_10;
   }
 
-  if (a3 > 3)
+  if (type > 3)
   {
-    if (a3 == 4)
+    if (type == 4)
     {
       v10 = @"Plug_CCS2";
       goto LABEL_13;
     }
 
-    if (a3 == 8)
+    if (type == 8)
     {
       v10 = @"Plug_CHAdeMO";
       goto LABEL_13;
@@ -62,13 +62,13 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  if (a3 == 1)
+  if (type == 1)
   {
     v10 = @"Plug_J1772";
     goto LABEL_13;
   }
 
-  if (a3 != 2)
+  if (type != 2)
   {
     goto LABEL_10;
   }
@@ -79,16 +79,16 @@ LABEL_13:
 LABEL_14:
   v12 = v11;
 
-  v13 = [(VehicleConnectorCell *)self iconView];
-  [v13 setImage:v12];
+  iconView = [(VehicleConnectorCell *)self iconView];
+  [iconView setImage:v12];
 
-  v14 = sub_100A64170(a3);
-  v15 = [(VehicleConnectorCell *)self nameLabel];
-  [v15 setText:v14];
+  v14 = sub_100A64170(type);
+  nameLabel = [(VehicleConnectorCell *)self nameLabel];
+  [nameLabel setText:v14];
 
   v16 = @"EV_Routing_AC_Power";
-  v17 = a3 - 1;
-  if (a3 - 1 <= 0x3F)
+  v17 = type - 1;
+  if (type - 1 <= 0x3F)
   {
     if (((1 << v17) & 0x8000008ALL) != 0)
     {
@@ -101,14 +101,14 @@ LABEL_14:
       goto LABEL_22;
     }
 
-    if (a3 == 64)
+    if (type == 64)
     {
       v16 = @"EV_Routing_DC_Power";
       goto LABEL_22;
     }
   }
 
-  if (a3 != 128 && a3 != 256)
+  if (type != 128 && type != 256)
   {
     v20 = 0;
     goto LABEL_23;
@@ -119,8 +119,8 @@ LABEL_22:
   v20 = [v18 localizedStringForKey:v16 value:@"localized string not found" table:0];
 
 LABEL_23:
-  v19 = [(VehicleConnectorCell *)self powerLabel];
-  [v19 setText:v20];
+  powerLabel = [(VehicleConnectorCell *)self powerLabel];
+  [powerLabel setText:v20];
 }
 
 - (void)_setup
@@ -160,64 +160,64 @@ LABEL_23:
   v13 = [UIFont preferredFontForTextStyle:UIFontTextStyleSubheadline];
   [(UILabel *)self->_powerLabel setFont:v13];
 
-  v14 = [(VehicleConnectorCell *)self contentView];
-  [v14 addSubview:self->_iconView];
+  contentView = [(VehicleConnectorCell *)self contentView];
+  [contentView addSubview:self->_iconView];
 
-  v15 = [(VehicleConnectorCell *)self contentView];
-  [v15 addSubview:self->_nameLabel];
+  contentView2 = [(VehicleConnectorCell *)self contentView];
+  [contentView2 addSubview:self->_nameLabel];
 
-  v16 = [(VehicleConnectorCell *)self contentView];
-  [v16 addSubview:self->_powerLabel];
+  contentView3 = [(VehicleConnectorCell *)self contentView];
+  [contentView3 addSubview:self->_powerLabel];
 
-  v47 = [(UIImageView *)self->_iconView leadingAnchor];
-  v48 = [(VehicleConnectorCell *)self contentView];
-  v46 = [v48 leadingAnchor];
-  v45 = [v47 constraintEqualToAnchor:v46 constant:16.0];
+  leadingAnchor = [(UIImageView *)self->_iconView leadingAnchor];
+  contentView4 = [(VehicleConnectorCell *)self contentView];
+  leadingAnchor2 = [contentView4 leadingAnchor];
+  v45 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:16.0];
   v49[0] = v45;
-  v43 = [(UIImageView *)self->_iconView centerYAnchor];
-  v44 = [(VehicleConnectorCell *)self contentView];
-  v42 = [v44 centerYAnchor];
-  v41 = [v43 constraintEqualToAnchor:v42];
+  centerYAnchor = [(UIImageView *)self->_iconView centerYAnchor];
+  contentView5 = [(VehicleConnectorCell *)self contentView];
+  centerYAnchor2 = [contentView5 centerYAnchor];
+  v41 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v49[1] = v41;
-  v40 = [(UIImageView *)self->_iconView widthAnchor];
-  v39 = [v40 constraintEqualToConstant:30.0];
+  widthAnchor = [(UIImageView *)self->_iconView widthAnchor];
+  v39 = [widthAnchor constraintEqualToConstant:30.0];
   v49[2] = v39;
-  v38 = [(UILabel *)self->_nameLabel leadingAnchor];
-  v37 = [(UIImageView *)self->_iconView trailingAnchor];
-  v36 = [v38 constraintEqualToAnchor:v37 constant:10.0];
+  leadingAnchor3 = [(UILabel *)self->_nameLabel leadingAnchor];
+  trailingAnchor = [(UIImageView *)self->_iconView trailingAnchor];
+  v36 = [leadingAnchor3 constraintEqualToAnchor:trailingAnchor constant:10.0];
   v49[3] = v36;
-  v34 = [(UILabel *)self->_nameLabel topAnchor];
-  v35 = [(VehicleConnectorCell *)self contentView];
-  v33 = [v35 topAnchor];
-  v32 = [v34 constraintEqualToAnchor:v33 constant:16.0];
+  topAnchor = [(UILabel *)self->_nameLabel topAnchor];
+  contentView6 = [(VehicleConnectorCell *)self contentView];
+  topAnchor2 = [contentView6 topAnchor];
+  v32 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
   v49[4] = v32;
-  v30 = [(UILabel *)self->_nameLabel trailingAnchor];
-  v31 = [(VehicleConnectorCell *)self contentView];
-  v29 = [v31 trailingAnchor];
-  v28 = [v30 constraintEqualToAnchor:v29 constant:-16.0];
+  trailingAnchor2 = [(UILabel *)self->_nameLabel trailingAnchor];
+  contentView7 = [(VehicleConnectorCell *)self contentView];
+  trailingAnchor3 = [contentView7 trailingAnchor];
+  v28 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-16.0];
   v49[5] = v28;
-  v27 = [(UILabel *)self->_powerLabel leadingAnchor];
-  v17 = [(UIImageView *)self->_iconView trailingAnchor];
-  v18 = [v27 constraintEqualToAnchor:v17 constant:10.0];
+  leadingAnchor4 = [(UILabel *)self->_powerLabel leadingAnchor];
+  trailingAnchor4 = [(UIImageView *)self->_iconView trailingAnchor];
+  v18 = [leadingAnchor4 constraintEqualToAnchor:trailingAnchor4 constant:10.0];
   v49[6] = v18;
-  v19 = [(UILabel *)self->_powerLabel topAnchor];
-  v20 = [(UILabel *)self->_nameLabel bottomAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20 constant:3.0];
+  topAnchor3 = [(UILabel *)self->_powerLabel topAnchor];
+  bottomAnchor = [(UILabel *)self->_nameLabel bottomAnchor];
+  v21 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:3.0];
   v49[7] = v21;
-  v22 = [(UILabel *)self->_powerLabel trailingAnchor];
-  v23 = [(VehicleConnectorCell *)self contentView];
-  v24 = [v23 trailingAnchor];
-  v25 = [v22 constraintEqualToAnchor:v24 constant:-16.0];
+  trailingAnchor5 = [(UILabel *)self->_powerLabel trailingAnchor];
+  contentView8 = [(VehicleConnectorCell *)self contentView];
+  trailingAnchor6 = [contentView8 trailingAnchor];
+  v25 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-16.0];
   v49[8] = v25;
   v26 = [NSArray arrayWithObjects:v49 count:9];
   [NSLayoutConstraint activateConstraints:v26];
 }
 
-- (VehicleConnectorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (VehicleConnectorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v7.receiver = self;
   v7.super_class = VehicleConnectorCell;
-  v4 = [(VehicleConnectorCell *)&v7 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(VehicleConnectorCell *)&v7 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {

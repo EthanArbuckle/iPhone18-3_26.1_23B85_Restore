@@ -1,40 +1,40 @@
 @interface CRLZipArchive
 - (BOOL)hasNonEmptyEntries;
 - (BOOL)isValid;
-- (BOOL)readCentralFileHeaderWithBuffer:(const void *)a3 dataSize:(unint64_t *)a4 error:(id *)a5;
-- (BOOL)readExtraFieldsFromBuffer:(const void *)a3 extraFieldsLength:(unsigned __int16)a4 entry:(id)a5 dataSize:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)readFileCommentFromBuffer:(const void *)a3 fileCommentLength:(unsigned __int16)a4 entry:(id)a5 dataSize:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)readFilenameFromBuffer:(const void *)a3 nameLength:(unsigned __int16)a4 entry:(id)a5 dataSize:(unint64_t *)a6 error:(id *)a7;
-- (BOOL)readLocalFileHeaderFilenameAndExtraFieldsData:(id)a3 forEntry:(id)a4 error:(id *)a5;
-- (BOOL)readZip64ExtraFieldFromBuffer:(const void *)a3 dataLength:(unsigned __int16)a4 entry:(id)a5 error:(id *)a6;
-- (BOOL)validateCRCAndReturnError:(id *)a3;
-- (CRLZipArchive)initWithOptions:(unint64_t)a3;
+- (BOOL)readCentralFileHeaderWithBuffer:(const void *)buffer dataSize:(unint64_t *)size error:(id *)error;
+- (BOOL)readExtraFieldsFromBuffer:(const void *)buffer extraFieldsLength:(unsigned __int16)length entry:(id)entry dataSize:(unint64_t *)size error:(id *)error;
+- (BOOL)readFileCommentFromBuffer:(const void *)buffer fileCommentLength:(unsigned __int16)length entry:(id)entry dataSize:(unint64_t *)size error:(id *)error;
+- (BOOL)readFilenameFromBuffer:(const void *)buffer nameLength:(unsigned __int16)length entry:(id)entry dataSize:(unint64_t *)size error:(id *)error;
+- (BOOL)readLocalFileHeaderFilenameAndExtraFieldsData:(id)data forEntry:(id)entry error:(id *)error;
+- (BOOL)readZip64ExtraFieldFromBuffer:(const void *)buffer dataLength:(unsigned __int16)length entry:(id)entry error:(id *)error;
+- (BOOL)validateCRCAndReturnError:(id *)error;
+- (CRLZipArchive)initWithOptions:(unint64_t)options;
 - (id)debugDescription;
-- (id)entryForName:(id)a3;
+- (id)entryForName:(id)name;
 - (id)newArchiveReadChannel;
-- (id)normalizeEntryName:(id)a3;
-- (id)readChannelForEntry:(id)a3 validateCRC:(BOOL)a4;
-- (id)streamReadChannelForEntry:(id)a3 validateCRC:(BOOL)a4;
+- (id)normalizeEntryName:(id)name;
+- (id)readChannelForEntry:(id)entry validateCRC:(BOOL)c;
+- (id)streamReadChannelForEntry:(id)entry validateCRC:(BOOL)c;
 - (unint64_t)archiveLength;
-- (void)addEntry:(id)a3;
+- (void)addEntry:(id)entry;
 - (void)collapseCommonRootDirectory;
-- (void)enumerateEntriesUsingBlock:(id)a3;
-- (void)readArchiveWithQueue:(id)a3 completion:(id)a4;
-- (void)readCentralDirectoryData:(id)a3 entryCount:(unint64_t)a4 completion:(id)a5;
-- (void)readCentralDirectoryWithEntryCount:(unint64_t)a3 offset:(int64_t)a4 size:(unint64_t)a5 channel:(id)a6 completion:(id)a7;
-- (void)readEndOfCentralDirectoryData:(id)a3 eocdOffset:(int64_t)a4 channel:(id)a5 completion:(id)a6;
-- (void)readLocalFileHeaderData:(id)a3 atOffset:(int64_t)a4 channel:(id)a5 completion:(id)a6;
-- (void)readLocalFileHeaderEntriesFromChannel:(id)a3 offset:(int64_t)a4 previousEntry:(id)a5 seekAttempts:(unsigned int)a6 seekForward:(BOOL)a7 completion:(id)a8;
-- (void)readZip64EndOfCentralDirectoryData:(id)a3 channel:(id)a4 completion:(id)a5;
-- (void)readZip64EndOfCentralDirectoryLocatorData:(id)a3 channel:(id)a4 completion:(id)a5;
-- (void)readZip64EndOfCentralDirectoryLocatorWithChannel:(id)a3 eocdOffset:(int64_t)a4 completion:(id)a5;
-- (void)readZip64EndOfCentralDirectoryWithChannel:(id)a3 offset:(int64_t)a4 completion:(id)a5;
-- (void)validateCRCWithQueue:(id)a3 completion:(id)a4;
+- (void)enumerateEntriesUsingBlock:(id)block;
+- (void)readArchiveWithQueue:(id)queue completion:(id)completion;
+- (void)readCentralDirectoryData:(id)data entryCount:(unint64_t)count completion:(id)completion;
+- (void)readCentralDirectoryWithEntryCount:(unint64_t)count offset:(int64_t)offset size:(unint64_t)size channel:(id)channel completion:(id)completion;
+- (void)readEndOfCentralDirectoryData:(id)data eocdOffset:(int64_t)offset channel:(id)channel completion:(id)completion;
+- (void)readLocalFileHeaderData:(id)data atOffset:(int64_t)offset channel:(id)channel completion:(id)completion;
+- (void)readLocalFileHeaderEntriesFromChannel:(id)channel offset:(int64_t)offset previousEntry:(id)entry seekAttempts:(unsigned int)attempts seekForward:(BOOL)forward completion:(id)completion;
+- (void)readZip64EndOfCentralDirectoryData:(id)data channel:(id)channel completion:(id)completion;
+- (void)readZip64EndOfCentralDirectoryLocatorData:(id)data channel:(id)channel completion:(id)completion;
+- (void)readZip64EndOfCentralDirectoryLocatorWithChannel:(id)channel eocdOffset:(int64_t)offset completion:(id)completion;
+- (void)readZip64EndOfCentralDirectoryWithChannel:(id)channel offset:(int64_t)offset completion:(id)completion;
+- (void)validateCRCWithQueue:(id)queue completion:(id)completion;
 @end
 
 @implementation CRLZipArchive
 
-- (CRLZipArchive)initWithOptions:(unint64_t)a3
+- (CRLZipArchive)initWithOptions:(unint64_t)options
 {
   v11.receiver = self;
   v11.super_class = CRLZipArchive;
@@ -42,7 +42,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_options = a3;
+    v4->_options = options;
     v6 = objc_alloc_init(NSMutableDictionary);
     entriesMap = v5->_entriesMap;
     v5->_entriesMap = v6;
@@ -72,25 +72,25 @@
   return v2;
 }
 
-- (void)readArchiveWithQueue:(id)a3 completion:(id)a4
+- (void)readArchiveWithQueue:(id)queue completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CRLZipArchive *)self archiveLength];
-  v9 = [(CRLZipArchive *)self newArchiveReadChannel];
-  v10 = v9;
-  if (v9)
+  queueCopy = queue;
+  completionCopy = completion;
+  archiveLength = [(CRLZipArchive *)self archiveLength];
+  newArchiveReadChannel = [(CRLZipArchive *)self newArchiveReadChannel];
+  v10 = newArchiveReadChannel;
+  if (newArchiveReadChannel)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1001DF420;
     v20[3] = &unk_101847198;
     v11 = v21;
-    v12 = v9;
+    v12 = newArchiveReadChannel;
     v21[0] = v12;
     v21[1] = self;
-    v22 = v6;
-    v23 = v7;
+    v22 = queueCopy;
+    v23 = completionCopy;
     v13 = objc_retainBlock(v20);
     if ((self->_options & 8) != 0)
     {
@@ -104,10 +104,10 @@
       v16[2] = sub_1001DF530;
       v16[3] = &unk_101847208;
       v16[4] = self;
-      v19 = v8 - 22;
+      v19 = archiveLength - 22;
       v17 = v12;
       v18 = v13;
-      [CRLIOUtils readAllFromChannel:v17 offset:v8 - 22 length:22 completion:v16];
+      [CRLIOUtils readAllFromChannel:v17 offset:archiveLength - 22 length:22 completion:v16];
     }
   }
 
@@ -118,18 +118,18 @@
     block[2] = sub_1001DF7D0;
     block[3] = &unk_10183B230;
     v11 = &v15;
-    v15 = v7;
-    dispatch_async(v6, block);
+    v15 = completionCopy;
+    dispatch_async(queueCopy, block);
   }
 }
 
-- (void)readEndOfCentralDirectoryData:(id)a3 eocdOffset:(int64_t)a4 channel:(id)a5 completion:(id)a6
+- (void)readEndOfCentralDirectoryData:(id)data eocdOffset:(int64_t)offset channel:(id)channel completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  channelCopy = channel;
+  completionCopy = completion;
   size_ptr = 0;
   buffer_ptr = 0;
-  v12 = dispatch_data_create_map(a3, &buffer_ptr, &size_ptr);
+  v12 = dispatch_data_create_map(data, &buffer_ptr, &size_ptr);
   if (size_ptr <= 0x15)
   {
     v26 = @"CRLZipArchiveErrorDescription";
@@ -151,13 +151,13 @@ LABEL_8:
 
     if (v16)
     {
-      v11[2](v11, v16);
+      completionCopy[2](completionCopy, v16);
     }
 
     else
     {
       v17 = [NSError crl_fileReadUnknownErrorWithUserInfo:0];
-      v11[2](v11, v17);
+      completionCopy[2](completionCopy, v17);
     }
 
     goto LABEL_11;
@@ -174,7 +174,7 @@ LABEL_8:
 
   if (*(buffer_ptr + 5) == 0xFFFFLL || *(buffer_ptr + 4) == -1 || *(buffer_ptr + 3) == -1)
   {
-    [(CRLZipArchive *)self readZip64EndOfCentralDirectoryLocatorWithChannel:v10 eocdOffset:a4 completion:v11];
+    [(CRLZipArchive *)self readZip64EndOfCentralDirectoryLocatorWithChannel:channelCopy eocdOffset:offset completion:completionCopy];
   }
 
   else
@@ -185,20 +185,20 @@ LABEL_8:
 LABEL_11:
 }
 
-- (void)readZip64EndOfCentralDirectoryLocatorWithChannel:(id)a3 eocdOffset:(int64_t)a4 completion:(id)a5
+- (void)readZip64EndOfCentralDirectoryLocatorWithChannel:(id)channel eocdOffset:(int64_t)offset completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if (a4 > 0x13)
+  channelCopy = channel;
+  completionCopy = completion;
+  if (offset > 0x13)
   {
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1001DFBE8;
     v12[3] = &unk_101847230;
     v12[4] = self;
-    v13 = v8;
-    v14 = v9;
-    [CRLIOUtils readAllFromChannel:v13 offset:a4 - 20 length:20 completion:v12];
+    v13 = channelCopy;
+    v14 = completionCopy;
+    [CRLIOUtils readAllFromChannel:v13 offset:offset - 20 length:20 completion:v12];
   }
 
   else
@@ -207,17 +207,17 @@ LABEL_11:
     v16 = @"File isn't long enough for Zip64 locator";
     v10 = [NSDictionary dictionaryWithObjects:&v16 forKeys:&v15 count:1];
     v11 = [NSError crl_fileReadCorruptedFileErrorWithUserInfo:v10];
-    (*(v9 + 2))(v9, v11);
+    (*(completionCopy + 2))(completionCopy, v11);
   }
 }
 
-- (void)readZip64EndOfCentralDirectoryLocatorData:(id)a3 channel:(id)a4 completion:(id)a5
+- (void)readZip64EndOfCentralDirectoryLocatorData:(id)data channel:(id)channel completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  channelCopy = channel;
+  completionCopy = completion;
   size_ptr = 0;
   buffer_ptr = 0;
-  v10 = dispatch_data_create_map(a3, &buffer_ptr, &size_ptr);
+  v10 = dispatch_data_create_map(data, &buffer_ptr, &size_ptr);
   if (size_ptr <= 0x13)
   {
     v22 = @"CRLZipArchiveErrorDescription";
@@ -230,7 +230,7 @@ LABEL_11:
   {
     if (!*(buffer_ptr + 1) && *(buffer_ptr + 4) == 1)
     {
-      [(CRLZipArchive *)self readZip64EndOfCentralDirectoryWithChannel:v8 offset:*(buffer_ptr + 1) completion:v9];
+      [(CRLZipArchive *)self readZip64EndOfCentralDirectoryWithChannel:channelCopy offset:*(buffer_ptr + 1) completion:completionCopy];
       goto LABEL_12;
     }
 
@@ -253,39 +253,39 @@ LABEL_11:
 
   if (v14)
   {
-    v9[2](v9, v14);
+    completionCopy[2](completionCopy, v14);
   }
 
   else
   {
     v15 = [NSError crl_fileReadUnknownErrorWithUserInfo:0];
-    v9[2](v9, v15);
+    completionCopy[2](completionCopy, v15);
   }
 
 LABEL_12:
 }
 
-- (void)readZip64EndOfCentralDirectoryWithChannel:(id)a3 offset:(int64_t)a4 completion:(id)a5
+- (void)readZip64EndOfCentralDirectoryWithChannel:(id)channel offset:(int64_t)offset completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001DFEE0;
   v9[3] = &unk_101847230;
   v9[4] = self;
-  v10 = a3;
-  v11 = a5;
-  v7 = v11;
-  v8 = v10;
-  [CRLIOUtils readAllFromChannel:v8 offset:a4 length:56 completion:v9];
+  channelCopy = channel;
+  completionCopy = completion;
+  v7 = completionCopy;
+  v8 = channelCopy;
+  [CRLIOUtils readAllFromChannel:v8 offset:offset length:56 completion:v9];
 }
 
-- (void)readZip64EndOfCentralDirectoryData:(id)a3 channel:(id)a4 completion:(id)a5
+- (void)readZip64EndOfCentralDirectoryData:(id)data channel:(id)channel completion:(id)completion
 {
-  v8 = a4;
-  v9 = a5;
+  channelCopy = channel;
+  completionCopy = completion;
   size_ptr = 0;
   buffer_ptr = 0;
-  v10 = dispatch_data_create_map(a3, &buffer_ptr, &size_ptr);
+  v10 = dispatch_data_create_map(data, &buffer_ptr, &size_ptr);
   if (size_ptr <= 0x37)
   {
     v22 = @"CRLZipArchiveErrorDescription";
@@ -298,7 +298,7 @@ LABEL_12:
   {
     if (!*(buffer_ptr + 4) && !*(buffer_ptr + 5))
     {
-      [(CRLZipArchive *)self readCentralDirectoryWithEntryCount:*(buffer_ptr + 4) offset:*(buffer_ptr + 6) size:*(buffer_ptr + 5) channel:v8 completion:v9];
+      [(CRLZipArchive *)self readCentralDirectoryWithEntryCount:*(buffer_ptr + 4) offset:*(buffer_ptr + 6) size:*(buffer_ptr + 5) channel:channelCopy completion:completionCopy];
       goto LABEL_11;
     }
 
@@ -321,39 +321,39 @@ LABEL_12:
 
   if (v14)
   {
-    v9[2](v9, v14);
+    completionCopy[2](completionCopy, v14);
   }
 
   else
   {
     v15 = [NSError crl_fileReadUnknownErrorWithUserInfo:0];
-    v9[2](v9, v15);
+    completionCopy[2](completionCopy, v15);
   }
 
 LABEL_11:
 }
 
-- (void)readCentralDirectoryWithEntryCount:(unint64_t)a3 offset:(int64_t)a4 size:(unint64_t)a5 channel:(id)a6 completion:(id)a7
+- (void)readCentralDirectoryWithEntryCount:(unint64_t)count offset:(int64_t)offset size:(unint64_t)size channel:(id)channel completion:(id)completion
 {
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_1001E01CC;
   v13[3] = &unk_101847258;
-  v14 = a7;
-  v15 = a3;
+  completionCopy = completion;
+  countCopy = count;
   v13[4] = self;
-  v12 = v14;
-  [CRLIOUtils readAllFromChannel:a6 offset:a4 length:a5 completion:v13];
+  v12 = completionCopy;
+  [CRLIOUtils readAllFromChannel:channel offset:offset length:size completion:v13];
 }
 
-- (void)readCentralDirectoryData:(id)a3 entryCount:(unint64_t)a4 completion:(id)a5
+- (void)readCentralDirectoryData:(id)data entryCount:(unint64_t)count completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   size_ptr = 0;
   buffer_ptr = 0;
-  v9 = dispatch_data_create_map(a3, &buffer_ptr, &size_ptr);
+  v9 = dispatch_data_create_map(data, &buffer_ptr, &size_ptr);
   v10 = 0;
-  if (!a4)
+  if (!count)
   {
     goto LABEL_7;
   }
@@ -372,7 +372,7 @@ LABEL_11:
     }
   }
 
-  while (v11++ < a4);
+  while (v11++ < count);
   if ((v13 & 1) == 0)
   {
     if (!v10)
@@ -380,21 +380,21 @@ LABEL_11:
       v10 = [NSError crl_fileReadUnknownErrorWithUserInfo:0];
     }
 
-    v8[2](v8, v10);
+    completionCopy[2](completionCopy, v10);
   }
 
   else
   {
 LABEL_7:
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (BOOL)readCentralFileHeaderWithBuffer:(const void *)a3 dataSize:(unint64_t *)a4 error:(id *)a5
+- (BOOL)readCentralFileHeaderWithBuffer:(const void *)buffer dataSize:(unint64_t *)size error:(id *)error
 {
   v9 = objc_alloc_init(CRLZipEntry);
   v10 = v9;
-  if (*a4 <= 0x2D)
+  if (*size <= 0x2D)
   {
     v41 = @"CRLZipArchiveErrorDescription";
     v42 = @"Central directory too short";
@@ -403,11 +403,11 @@ LABEL_7:
     goto LABEL_9;
   }
 
-  v11 = *a3;
-  v12 = *a3 + 46;
-  v13 = **a3;
-  *a4 -= 46;
-  *a3 = v12;
+  v11 = *buffer;
+  v12 = *buffer + 46;
+  v13 = **buffer;
+  *size -= 46;
+  *buffer = v12;
   if (v13 != 33639248)
   {
     v39 = @"CRLZipArchiveErrorDescription";
@@ -471,14 +471,14 @@ LABEL_9:
   [(CRLZipEntry *)v10 setExtraFieldsLength:v11[15]];
   v24 = v11[14];
   v32 = 0;
-  v25 = [(CRLZipArchive *)self readFilenameFromBuffer:a3 nameLength:v24 entry:v10 dataSize:a4 error:&v32];
+  v25 = [(CRLZipArchive *)self readFilenameFromBuffer:buffer nameLength:v24 entry:v10 dataSize:size error:&v32];
   v26 = v32;
   v17 = v26;
   if (v25)
   {
-    if (!v11[15] || (v31 = v26, v27 = [CRLZipArchive readExtraFieldsFromBuffer:"readExtraFieldsFromBuffer:extraFieldsLength:entry:dataSize:error:" extraFieldsLength:a3 entry:? dataSize:? error:?], v28 = v31, v17, v17 = v28, v27))
+    if (!v11[15] || (v31 = v26, v27 = [CRLZipArchive readExtraFieldsFromBuffer:"readExtraFieldsFromBuffer:extraFieldsLength:entry:dataSize:error:" extraFieldsLength:buffer entry:? dataSize:? error:?], v28 = v31, v17, v17 = v28, v27))
     {
-      if (!v11[16] || (v29 = [CRLZipArchive readFileCommentFromBuffer:"readFileCommentFromBuffer:fileCommentLength:entry:dataSize:error:" fileCommentLength:a3 entry:? dataSize:? error:?], v30 = v17, v17, v17 = v30, v29))
+      if (!v11[16] || (v29 = [CRLZipArchive readFileCommentFromBuffer:"readFileCommentFromBuffer:fileCommentLength:entry:dataSize:error:" fileCommentLength:buffer entry:? dataSize:? error:?], v30 = v17, v17, v17 = v30, v29))
       {
         [(CRLZipArchive *)self addEntry:v10];
         v19 = 1;
@@ -488,11 +488,11 @@ LABEL_9:
   }
 
 LABEL_10:
-  if (a5)
+  if (error)
   {
     v18 = v17;
     v19 = 0;
-    *a5 = v17;
+    *error = v17;
   }
 
   else
@@ -505,11 +505,11 @@ LABEL_13:
   return v19;
 }
 
-- (BOOL)readFilenameFromBuffer:(const void *)a3 nameLength:(unsigned __int16)a4 entry:(id)a5 dataSize:(unint64_t *)a6 error:(id *)a7
+- (BOOL)readFilenameFromBuffer:(const void *)buffer nameLength:(unsigned __int16)length entry:(id)entry dataSize:(unint64_t *)size error:(id *)error
 {
-  v9 = a4;
-  v11 = a5;
-  if (*a6 < v9)
+  lengthCopy = length;
+  entryCopy = entry;
+  if (*size < lengthCopy)
   {
     v19 = @"CRLZipArchiveErrorDescription";
     v20 = @"Central directory too short";
@@ -520,11 +520,11 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  v14 = v9;
-  v12 = [[NSString alloc] initWithBytes:*a3 length:v9 encoding:4];
-  [v11 setName:v12];
-  *a6 -= v14;
-  *a3 = *a3 + v14;
+  v14 = lengthCopy;
+  v12 = [[NSString alloc] initWithBytes:*buffer length:lengthCopy encoding:4];
+  [entryCopy setName:v12];
+  *size -= v14;
+  *buffer = *buffer + v14;
   v15 = v12 != 0;
   if (!v12)
   {
@@ -539,47 +539,47 @@ LABEL_6:
   v13 = 0;
 LABEL_7:
 
-  if (a7 && !v15)
+  if (error && !v15)
   {
     v17 = v13;
-    *a7 = v13;
+    *error = v13;
   }
 
   return v15;
 }
 
-- (BOOL)readExtraFieldsFromBuffer:(const void *)a3 extraFieldsLength:(unsigned __int16)a4 entry:(id)a5 dataSize:(unint64_t *)a6 error:(id *)a7
+- (BOOL)readExtraFieldsFromBuffer:(const void *)buffer extraFieldsLength:(unsigned __int16)length entry:(id)entry dataSize:(unint64_t *)size error:(id *)error
 {
-  v9 = a4;
-  v12 = a5;
-  v13 = v12;
-  if (*a6 < v9)
+  lengthCopy = length;
+  entryCopy = entry;
+  v13 = entryCopy;
+  if (*size < lengthCopy)
   {
     v35 = @"CRLZipArchiveErrorDescription";
     v36 = @"Central directory too short";
-    v14 = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
-    v15 = [NSError crl_fileReadCorruptedFileErrorWithUserInfo:v14];
+    errorCopy = [NSDictionary dictionaryWithObjects:&v36 forKeys:&v35 count:1];
+    v15 = [NSError crl_fileReadCorruptedFileErrorWithUserInfo:errorCopy];
     v16 = 0;
     goto LABEL_24;
   }
 
-  v33 = a7;
-  v34 = v12;
+  errorCopy = error;
+  v34 = entryCopy;
   v15 = 0;
-  v17 = *a3 + v9;
+  v17 = *buffer + lengthCopy;
   while (2)
   {
-    v18 = *a3;
-    v19 = *a3 + 4;
+    v18 = *buffer;
+    v19 = *buffer + 4;
     v16 = v19 > v17;
     if (v19 > v17)
     {
-      v23 = *a3;
+      v23 = *buffer;
     }
 
     else
     {
-      v20 = *a6;
+      v20 = *size;
       while (1)
       {
         v21 = v20 - 4;
@@ -587,8 +587,8 @@ LABEL_7:
         v23 = &v19[v22];
         if (&v19[v22] > v17)
         {
-          *a6 = v21;
-          *a3 = v19;
+          *size = v21;
+          *buffer = v19;
           v37 = @"CRLZipArchiveErrorDescription";
           v38 = @"Invalid Zip entry extra field length";
           v28 = [NSDictionary dictionaryWithObjects:&v38 forKeys:&v37 count:1];
@@ -608,21 +608,21 @@ LABEL_7:
         v16 = v23 + 4 > v17;
         if (v23 + 4 > v17)
         {
-          *a6 = v20;
-          *a3 = v23;
+          *size = v20;
+          *buffer = v23;
           goto LABEL_14;
         }
       }
 
-      *a6 = v21;
-      *a3 = v19;
+      *size = v21;
+      *buffer = v19;
       v24 = [CRLZipArchive readZip64ExtraFieldFromBuffer:"readZip64ExtraFieldFromBuffer:dataLength:entry:error:" dataLength:? entry:? error:?];
       v25 = v15;
 
       v26 = v18[1];
-      v27 = *a3;
-      *a6 -= v26;
-      *a3 = &v27[v26];
+      v27 = *buffer;
+      *size -= v26;
+      *buffer = &v27[v26];
       v15 = v25;
       if (v24)
       {
@@ -630,7 +630,7 @@ LABEL_7:
       }
 
 LABEL_13:
-      v23 = *a3;
+      v23 = *buffer;
       v15 = v25;
     }
 
@@ -638,7 +638,7 @@ LABEL_13:
   }
 
 LABEL_14:
-  a7 = v33;
+  error = errorCopy;
   if (v23 != v17)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -663,14 +663,14 @@ LABEL_14:
       sub_10130EFC0(v29);
     }
 
-    v14 = [NSString stringWithUTF8String:"[CRLZipArchive readExtraFieldsFromBuffer:extraFieldsLength:entry:dataSize:error:]", v33];
+    errorCopy = [NSString stringWithUTF8String:"[CRLZipArchive readExtraFieldsFromBuffer:extraFieldsLength:entry:dataSize:error:]", errorCopy];
     v30 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLUtility/Zip/CRLZipArchive.m"];
-    [CRLAssertionHandler handleFailureInFunction:v14 file:v30 lineNumber:458 isFatal:0 description:"Unexpected buffer position while reading extra fields."];
+    [CRLAssertionHandler handleFailureInFunction:errorCopy file:v30 lineNumber:458 isFatal:0 description:"Unexpected buffer position while reading extra fields."];
 
     v13 = v34;
 LABEL_24:
 
-    if (!a7)
+    if (!error)
     {
       goto LABEL_27;
     }
@@ -679,7 +679,7 @@ LABEL_24:
   }
 
   v13 = v34;
-  if (!v33)
+  if (!errorCopy)
   {
     goto LABEL_27;
   }
@@ -688,7 +688,7 @@ LABEL_25:
   if (!v16)
   {
     v31 = v15;
-    *a7 = v15;
+    *error = v15;
   }
 
 LABEL_27:
@@ -696,14 +696,14 @@ LABEL_27:
   return v16;
 }
 
-- (BOOL)readZip64ExtraFieldFromBuffer:(const void *)a3 dataLength:(unsigned __int16)a4 entry:(id)a5 error:(id *)a6
+- (BOOL)readZip64ExtraFieldFromBuffer:(const void *)buffer dataLength:(unsigned __int16)length entry:(id)entry error:(id *)error
 {
-  v7 = a4;
-  v9 = a5;
-  if ([v9 size] == 0xFFFFFFFFLL)
+  lengthCopy = length;
+  entryCopy = entry;
+  if ([entryCopy size] == 0xFFFFFFFFLL)
   {
-    v10 = v7 >= 8;
-    LOWORD(v7) = v7 - 8;
+    v10 = lengthCopy >= 8;
+    LOWORD(lengthCopy) = lengthCopy - 8;
     if (!v10)
     {
       v24 = @"CRLZipArchiveErrorDescription";
@@ -713,14 +713,14 @@ LABEL_27:
       goto LABEL_14;
     }
 
-    v11 = *a3;
-    a3 = a3 + 8;
-    [v9 setSize:v11];
+    v11 = *buffer;
+    buffer = buffer + 8;
+    [entryCopy setSize:v11];
   }
 
-  if ([v9 compressedSize] == 0xFFFFFFFFLL)
+  if ([entryCopy compressedSize] == 0xFFFFFFFFLL)
   {
-    if (v7 < 8u)
+    if (lengthCopy < 8u)
     {
       v22 = @"CRLZipArchiveErrorDescription";
       v23 = @"Not enough room for Zip64 compressed size";
@@ -729,13 +729,13 @@ LABEL_27:
       goto LABEL_14;
     }
 
-    v12 = *a3;
-    a3 = a3 + 8;
-    [v9 setCompressedSize:v12];
-    LOWORD(v7) = v7 - 8;
+    v12 = *buffer;
+    buffer = buffer + 8;
+    [entryCopy setCompressedSize:v12];
+    LOWORD(lengthCopy) = lengthCopy - 8;
   }
 
-  if ([v9 offset] != 0xFFFFFFFFLL)
+  if ([entryCopy offset] != 0xFFFFFFFFLL)
   {
 LABEL_11:
     v13 = 0;
@@ -743,9 +743,9 @@ LABEL_11:
     goto LABEL_17;
   }
 
-  if (v7 >= 8u)
+  if (lengthCopy >= 8u)
   {
-    [v9 setOffset:*a3];
+    [entryCopy setOffset:*buffer];
     goto LABEL_11;
   }
 
@@ -757,11 +757,11 @@ LABEL_14:
   v17 = [NSDictionary dictionaryWithObjects:v15 forKeys:v16 count:1];
   v13 = [NSError crl_fileReadCorruptedFileErrorWithUserInfo:v17];
 
-  if (a6)
+  if (error)
   {
     v18 = v13;
     v14 = 0;
-    *a6 = v13;
+    *error = v13;
   }
 
   else
@@ -774,64 +774,64 @@ LABEL_17:
   return v14;
 }
 
-- (BOOL)readFileCommentFromBuffer:(const void *)a3 fileCommentLength:(unsigned __int16)a4 entry:(id)a5 dataSize:(unint64_t *)a6 error:(id *)a7
+- (BOOL)readFileCommentFromBuffer:(const void *)buffer fileCommentLength:(unsigned __int16)length entry:(id)entry dataSize:(unint64_t *)size error:(id *)error
 {
-  v9 = a4;
-  v11 = a5;
-  v12 = *a6;
-  v13 = v9;
-  if (*a6 < v9)
+  lengthCopy = length;
+  entryCopy = entry;
+  v12 = *size;
+  v13 = lengthCopy;
+  if (*size < lengthCopy)
   {
     v18 = @"CRLZipArchiveErrorDescription";
     v19 = @"Central directory too short";
     v15 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
     v14 = [NSError crl_fileReadCorruptedFileErrorWithUserInfo:v15];
 
-    if (a7)
+    if (error)
     {
       v16 = v14;
-      *a7 = v14;
+      *error = v14;
     }
   }
 
   else
   {
     v14 = 0;
-    *a6 = v12 - v13;
-    *a3 = *a3 + v13;
+    *size = v12 - v13;
+    *buffer = *buffer + v13;
   }
 
   return v12 >= v13;
 }
 
-- (void)readLocalFileHeaderEntriesFromChannel:(id)a3 offset:(int64_t)a4 previousEntry:(id)a5 seekAttempts:(unsigned int)a6 seekForward:(BOOL)a7 completion:(id)a8
+- (void)readLocalFileHeaderEntriesFromChannel:(id)channel offset:(int64_t)offset previousEntry:(id)entry seekAttempts:(unsigned int)attempts seekForward:(BOOL)forward completion:(id)completion
 {
-  v14 = a3;
-  v15 = a5;
+  channelCopy = channel;
+  entryCopy = entry;
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_1001E103C;
   v19[3] = &unk_101847348;
-  v22 = a8;
-  v23 = a4;
+  completionCopy = completion;
+  offsetCopy = offset;
   v19[4] = self;
-  v20 = v14;
-  v25 = a7;
-  v24 = a6;
-  v21 = v15;
-  v16 = v22;
-  v17 = v15;
-  v18 = v14;
-  [CRLIOUtils readAllFromChannel:v18 offset:a4 length:30 completion:v19];
+  v20 = channelCopy;
+  forwardCopy = forward;
+  attemptsCopy = attempts;
+  v21 = entryCopy;
+  v16 = completionCopy;
+  v17 = entryCopy;
+  v18 = channelCopy;
+  [CRLIOUtils readAllFromChannel:v18 offset:offset length:30 completion:v19];
 }
 
-- (void)readLocalFileHeaderData:(id)a3 atOffset:(int64_t)a4 channel:(id)a5 completion:(id)a6
+- (void)readLocalFileHeaderData:(id)data atOffset:(int64_t)offset channel:(id)channel completion:(id)completion
 {
-  v10 = a5;
-  v11 = a6;
+  channelCopy = channel;
+  completionCopy = completion;
   size_ptr = 0;
   buffer_ptr = 0;
-  v12 = dispatch_data_create_map(a3, &buffer_ptr, &size_ptr);
+  v12 = dispatch_data_create_map(data, &buffer_ptr, &size_ptr);
   if (size_ptr <= 0x1D)
   {
     v40 = @"CRLZipArchiveErrorDescription";
@@ -856,7 +856,7 @@ LABEL_13:
 
     if ([(NSMutableOrderedSet *)self->_entries count])
     {
-      (*(v11 + 2))(v11, 0, 0, v20);
+      (*(completionCopy + 2))(completionCopy, 0, 0, v20);
       goto LABEL_21;
     }
 
@@ -902,7 +902,7 @@ LABEL_13:
       [(CRLZipEntry *)v16 setCRC:*(v13 + 7)];
       [(CRLZipEntry *)v16 setCompressedSize:*(v13 + 9)];
       [(CRLZipEntry *)v16 setSize:*(v13 + 11)];
-      [(CRLZipEntry *)v16 setOffset:a4];
+      [(CRLZipEntry *)v16 setOffset:offset];
       [(CRLZipEntry *)v16 setNameLength:v13[13]];
       [(CRLZipEntry *)v16 setExtraFieldsLength:v13[14]];
       v18 = v13[14] + v13[13];
@@ -913,9 +913,9 @@ LABEL_13:
       v27[3] = &unk_101847230;
       v27[4] = self;
       v28 = v16;
-      v29 = v11;
+      v29 = completionCopy;
       v19 = v16;
-      [CRLIOUtils readAllFromChannel:v10 offset:a4 + 30 length:v18 completion:v27];
+      [CRLIOUtils readAllFromChannel:channelCopy offset:offset + 30 length:v18 completion:v27];
 
       goto LABEL_21;
     }
@@ -935,27 +935,27 @@ LABEL_18:
     v19 = [NSError crl_fileReadUnknownErrorWithUserInfo:0];
   }
 
-  (*(v11 + 2))(v11, 0, v19, 0);
+  (*(completionCopy + 2))(completionCopy, 0, v19, 0);
 LABEL_21:
 }
 
-- (BOOL)readLocalFileHeaderFilenameAndExtraFieldsData:(id)a3 forEntry:(id)a4 error:(id *)a5
+- (BOOL)readLocalFileHeaderFilenameAndExtraFieldsData:(id)data forEntry:(id)entry error:(id *)error
 {
-  v8 = a4;
+  entryCopy = entry;
   size_ptr = 0;
   buffer_ptr = 0;
-  v9 = dispatch_data_create_map(a3, &buffer_ptr, &size_ptr);
+  v9 = dispatch_data_create_map(data, &buffer_ptr, &size_ptr);
   v10 = size_ptr;
-  v11 = [v8 nameLength];
-  if (v10 >= [v8 extraFieldsLength] + v11)
+  nameLength = [entryCopy nameLength];
+  if (v10 >= [entryCopy extraFieldsLength] + nameLength)
   {
     v19 = 0;
-    v15 = -[CRLZipArchive readFilenameFromBuffer:nameLength:entry:dataSize:error:](self, "readFilenameFromBuffer:nameLength:entry:dataSize:error:", &buffer_ptr, [v8 nameLength], v8, &size_ptr, &v19);
+    v15 = -[CRLZipArchive readFilenameFromBuffer:nameLength:entry:dataSize:error:](self, "readFilenameFromBuffer:nameLength:entry:dataSize:error:", &buffer_ptr, [entryCopy nameLength], entryCopy, &size_ptr, &v19);
     v12 = v19;
     if (!v15)
     {
       v14 = 0;
-      if (!a5)
+      if (!error)
       {
         goto LABEL_11;
       }
@@ -963,14 +963,14 @@ LABEL_21:
       goto LABEL_9;
     }
 
-    if (![v8 extraFieldsLength])
+    if (![entryCopy extraFieldsLength])
     {
       v14 = 1;
       goto LABEL_11;
     }
 
     v18 = v12;
-    v14 = -[CRLZipArchive readExtraFieldsFromBuffer:extraFieldsLength:entry:dataSize:error:](self, "readExtraFieldsFromBuffer:extraFieldsLength:entry:dataSize:error:", &buffer_ptr, [v8 extraFieldsLength], v8, &size_ptr, &v18);
+    v14 = -[CRLZipArchive readExtraFieldsFromBuffer:extraFieldsLength:entry:dataSize:error:](self, "readExtraFieldsFromBuffer:extraFieldsLength:entry:dataSize:error:", &buffer_ptr, [entryCopy extraFieldsLength], entryCopy, &size_ptr, &v18);
     v13 = v18;
   }
 
@@ -984,7 +984,7 @@ LABEL_21:
   }
 
   v12 = v13;
-  if (!a5)
+  if (!error)
   {
     goto LABEL_11;
   }
@@ -994,7 +994,7 @@ LABEL_9:
   {
     v16 = v12;
     v14 = 0;
-    *a5 = v12;
+    *error = v12;
   }
 
 LABEL_11:
@@ -1002,14 +1002,14 @@ LABEL_11:
   return v14;
 }
 
-- (void)addEntry:(id)a3
+- (void)addEntry:(id)entry
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  entryCopy = entry;
+  v5 = entryCopy;
+  if (entryCopy)
   {
-    v6 = [v4 name];
-    v7 = [(CRLZipArchive *)self normalizeEntryName:v6];
+    name = [entryCopy name];
+    v7 = [(CRLZipArchive *)self normalizeEntryName:name];
 
     v8 = [(NSMutableDictionary *)self->_entriesMap objectForKeyedSubscript:v7];
 
@@ -1034,14 +1034,14 @@ LABEL_11:
   }
 }
 
-- (id)readChannelForEntry:(id)a3 validateCRC:(BOOL)a4
+- (id)readChannelForEntry:(id)entry validateCRC:(BOOL)c
 {
-  v4 = a4;
-  v6 = a3;
-  if ([(NSMutableOrderedSet *)self->_entries containsObject:v6])
+  cCopy = c;
+  entryCopy = entry;
+  if ([(NSMutableOrderedSet *)self->_entries containsObject:entryCopy])
   {
-    v7 = [v6 isCompressed] ^ 1;
-    v8 = [[CRLZipReadChannel alloc] initWithEntry:v6 archive:self validateCRC:v4 & v7];
+    v7 = [entryCopy isCompressed] ^ 1;
+    v8 = [[CRLZipReadChannel alloc] initWithEntry:entryCopy archive:self validateCRC:cCopy & v7];
     if (v7)
     {
       goto LABEL_14;
@@ -1052,8 +1052,8 @@ LABEL_11:
     v15[1] = 3221225472;
     v15[2] = sub_1001E1EF8;
     v15[3] = &unk_101847390;
-    v16 = v6;
-    v17 = v4;
+    v16 = entryCopy;
+    v17 = cCopy;
     v10 = [(CRLBufferedReadChannel *)v9 initWithReadChannel:v8 blockInfos:0 streamReadChannelBlock:v15];
 
     v11 = v16;
@@ -1096,19 +1096,19 @@ LABEL_14:
   return v8;
 }
 
-- (id)streamReadChannelForEntry:(id)a3 validateCRC:(BOOL)a4
+- (id)streamReadChannelForEntry:(id)entry validateCRC:(BOOL)c
 {
-  v4 = a4;
-  v6 = a3;
-  if ([(NSMutableOrderedSet *)self->_entries containsObject:v6])
+  cCopy = c;
+  entryCopy = entry;
+  if ([(NSMutableOrderedSet *)self->_entries containsObject:entryCopy])
   {
-    v7 = [v6 isCompressed] ^ 1;
-    v8 = [[CRLZipReadChannel alloc] initWithEntry:v6 archive:self validateCRC:v4 & v7];
+    v7 = [entryCopy isCompressed] ^ 1;
+    v8 = [[CRLZipReadChannel alloc] initWithEntry:entryCopy archive:self validateCRC:cCopy & v7];
     if ((v7 & 1) == 0)
     {
       v9 = [CRLZipInflateReadChannel alloc];
-      [v6 size];
-      v10 = -[CRLZipInflateReadChannel initWithReadChannel:uncompressedSize:CRC:validateCRC:](v9, "initWithReadChannel:uncompressedSize:CRC:validateCRC:", v8, [v6 size], objc_msgSend(v6, "CRC"), v4);
+      [entryCopy size];
+      v10 = -[CRLZipInflateReadChannel initWithReadChannel:uncompressedSize:CRC:validateCRC:](v9, "initWithReadChannel:uncompressedSize:CRC:validateCRC:", v8, [entryCopy size], objc_msgSend(entryCopy, "CRC"), cCopy);
 
       v8 = v10;
     }
@@ -1148,29 +1148,29 @@ LABEL_14:
   return v8;
 }
 
-- (id)normalizeEntryName:(id)a3
+- (id)normalizeEntryName:(id)name
 {
-  v4 = a3;
-  v5 = v4;
+  nameCopy = name;
+  v5 = nameCopy;
   if ((self->_options & 2) != 0)
   {
-    v6 = [v4 lowercaseString];
+    lowercaseString = [nameCopy lowercaseString];
 
-    v5 = v6;
+    v5 = lowercaseString;
   }
 
-  v7 = [v5 precomposedStringWithCanonicalMapping];
+  precomposedStringWithCanonicalMapping = [v5 precomposedStringWithCanonicalMapping];
 
-  return v7;
+  return precomposedStringWithCanonicalMapping;
 }
 
-- (id)entryForName:(id)a3
+- (id)entryForName:(id)name
 {
-  v4 = a3;
-  if (v4)
+  nameCopy = name;
+  if (nameCopy)
   {
-    v5 = v4;
-    v6 = [(CRLZipArchive *)self normalizeEntryName:v4];
+    v5 = nameCopy;
+    v6 = [(CRLZipArchive *)self normalizeEntryName:nameCopy];
 
     v7 = [(NSMutableDictionary *)self->_entriesMap objectForKeyedSubscript:v6];
   }
@@ -1183,9 +1183,9 @@ LABEL_14:
   return v7;
 }
 
-- (void)enumerateEntriesUsingBlock:(id)a3
+- (void)enumerateEntriesUsingBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v17 = 0;
   v13 = 0u;
   v14 = 0u;
@@ -1207,16 +1207,16 @@ LABEL_3:
       }
 
       v10 = *(*(&v13 + 1) + 8 * v9);
-      v11 = [v10 collapsedName];
-      if (v11)
+      collapsedName = [v10 collapsedName];
+      if (collapsedName)
       {
-        v4[2](v4, v11, v10, &v17);
+        blockCopy[2](blockCopy, collapsedName, v10, &v17);
       }
 
       else
       {
-        v12 = [v10 name];
-        v4[2](v4, v12, v10, &v17);
+        name = [v10 name];
+        blockCopy[2](blockCopy, name, v10, &v17);
       }
 
       if (v17)
@@ -1280,7 +1280,7 @@ LABEL_3:
     v16 = v7;
     v11 = v8;
     v14 = v11;
-    v15 = self;
+    selfCopy = self;
     [(NSMutableDictionary *)v10 enumerateKeysAndObjectsUsingBlock:v13];
 
     objc_autoreleasePoolPop(v9);
@@ -1468,10 +1468,10 @@ LABEL_3:
   objc_exception_throw(v17);
 }
 
-- (void)validateCRCWithQueue:(id)a3 completion:(id)a4
+- (void)validateCRCWithQueue:(id)queue completion:(id)completion
 {
-  v16 = a3;
-  v15 = a4;
+  queueCopy = queue;
+  completionCopy = completion;
   v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
   v7 = dispatch_queue_create("CRLZipArchive.Validation", v6);
 
@@ -1525,17 +1525,17 @@ LABEL_3:
   v17[1] = 3221225472;
   v17[2] = sub_1001E3874;
   v17[3] = &unk_1018475B8;
-  v18 = v16;
-  v19 = v15;
+  v18 = queueCopy;
+  v19 = completionCopy;
   v20 = v28;
-  v13 = v16;
-  v14 = v15;
+  v13 = queueCopy;
+  v14 = completionCopy;
   dispatch_async(v7, v17);
 
   _Block_object_dispose(v28, 8);
 }
 
-- (BOOL)validateCRCAndReturnError:(id *)a3
+- (BOOL)validateCRCAndReturnError:(id *)error
 {
   v11 = 0;
   v12 = &v11;
@@ -1554,10 +1554,10 @@ LABEL_3:
   [(CRLZipArchive *)self validateCRCWithQueue:v6 completion:v10];
   dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
   v7 = v12[5];
-  if (a3 && v7)
+  if (error && v7)
   {
     v7 = v7;
-    *a3 = v7;
+    *error = v7;
   }
 
   v8 = v7 == 0;
@@ -1569,13 +1569,13 @@ LABEL_3:
 - (id)debugDescription
 {
   v3 = [CRLDescription descriptionWithObject:self class:objc_opt_class()];
-  v4 = [(NSMutableOrderedSet *)self->_entries array];
-  v5 = sub_1000FAE40(v4);
+  array = [(NSMutableOrderedSet *)self->_entries array];
+  v5 = sub_1000FAE40(array);
   [v3 addField:@"entries" value:v5];
 
-  v6 = [v3 descriptionString];
+  descriptionString = [v3 descriptionString];
 
-  return v6;
+  return descriptionString;
 }
 
 @end

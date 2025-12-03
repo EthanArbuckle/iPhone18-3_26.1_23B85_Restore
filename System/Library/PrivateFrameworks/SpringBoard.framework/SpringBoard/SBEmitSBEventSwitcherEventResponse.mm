@@ -1,22 +1,22 @@
 @interface SBEmitSBEventSwitcherEventResponse
-- (SBEmitSBEventSwitcherEventResponse)initWithSBEventWithEventType:(unint64_t)a3 payload:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
+- (SBEmitSBEventSwitcherEventResponse)initWithSBEventWithEventType:(unint64_t)type payload:(id)payload;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBEmitSBEventSwitcherEventResponse
 
-- (SBEmitSBEventSwitcherEventResponse)initWithSBEventWithEventType:(unint64_t)a3 payload:(id)a4
+- (SBEmitSBEventSwitcherEventResponse)initWithSBEventWithEventType:(unint64_t)type payload:(id)payload
 {
-  v6 = a4;
+  payloadCopy = payload;
   v12.receiver = self;
   v12.super_class = SBEmitSBEventSwitcherEventResponse;
   v7 = [(SBChainableModifierEventResponse *)&v12 init];
   v8 = v7;
   if (v7)
   {
-    v7->_eventType = a3;
-    v9 = [v6 copy];
+    v7->_eventType = type;
+    v9 = [payloadCopy copy];
     payload = v8->_payload;
     v8->_payload = v9;
   }
@@ -28,20 +28,20 @@
 {
   v7.receiver = self;
   v7.super_class = SBEmitSBEventSwitcherEventResponse;
-  v3 = [(SBChainableModifierEventResponse *)&v7 succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBChainableModifierEventResponse *)&v7 succinctDescriptionBuilder];
   v4 = NSStringFromAnalyticsEventType();
-  [v3 appendString:v4 withName:@"eventType"];
+  [succinctDescriptionBuilder appendString:v4 withName:@"eventType"];
 
-  v5 = [v3 appendUnsignedInteger:-[NSDictionary count](self->_payload withName:{"count"), @"payloadCount"}];
+  v5 = [succinctDescriptionBuilder appendUnsignedInteger:-[NSDictionary count](self->_payload withName:{"count"), @"payloadCount"}];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v7.receiver = self;
   v7.super_class = SBEmitSBEventSwitcherEventResponse;
-  v4 = [(SBChainableModifierEventResponse *)&v7 descriptionBuilderWithMultilinePrefix:a3];
+  v4 = [(SBChainableModifierEventResponse *)&v7 descriptionBuilderWithMultilinePrefix:prefix];
   v5 = NSStringFromAnalyticsEventType();
   [v4 appendString:v5 withName:@"eventType"];
 

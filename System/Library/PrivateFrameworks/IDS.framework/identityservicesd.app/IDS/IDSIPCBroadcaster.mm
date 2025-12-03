@@ -1,6 +1,6 @@
 @interface IDSIPCBroadcaster
 - (IDSIPCBroadcaster)init;
-- (id)broadcastProxyForTargets:(id)a3 messageContext:(id)a4 protocol:(id)a5;
+- (id)broadcastProxyForTargets:(id)targets messageContext:(id)context protocol:(id)protocol;
 @end
 
 @implementation IDSIPCBroadcaster
@@ -24,18 +24,18 @@
   return v2;
 }
 
-- (id)broadcastProxyForTargets:(id)a3 messageContext:(id)a4 protocol:(id)a5
+- (id)broadcastProxyForTargets:(id)targets messageContext:(id)context protocol:(id)protocol
 {
-  v8 = a3;
-  v9 = a4;
-  v30 = a5;
+  targetsCopy = targets;
+  contextCopy = context;
+  protocolCopy = protocol;
   v10 = objc_alloc_init(NSMutableArray);
   v11 = objc_alloc_init(NSMutableArray);
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v12 = v8;
+  v12 = targetsCopy;
   v13 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v13)
   {
@@ -51,11 +51,11 @@
         }
 
         v17 = *(*(&v31 + 1) + 8 * i);
-        v18 = [v17 type];
+        type = [v17 type];
         v19 = v10;
-        if (v18)
+        if (type)
         {
-          if (v18 != 1)
+          if (type != 1)
           {
             continue;
           }
@@ -63,8 +63,8 @@
           v19 = v11;
         }
 
-        v20 = [v17 remoteObject];
-        [v19 addObject:v20];
+        remoteObject = [v17 remoteObject];
+        [v19 addObject:remoteObject];
       }
 
       v14 = [v12 countByEnumeratingWithState:&v31 objects:v35 count:16];
@@ -74,13 +74,13 @@
   }
 
   v21 = [IDSIPCBroadcastProxy alloc];
-  v22 = [(IDSIPCBroadcaster *)self xpcBroadcaster];
+  xpcBroadcaster = [(IDSIPCBroadcaster *)self xpcBroadcaster];
   v23 = [v10 copy];
-  [v22 broadcastProxyForTargets:v23 messageContext:v9 protocol:v30];
-  v24 = v29 = v9;
-  v25 = [(IDSIPCBroadcaster *)self nwBroadcaster];
-  v26 = [v25 broadcastProxyForTargets:v11];
-  v27 = [(IDSIPCBroadcastProxy *)v21 initWithProtocol:v30 xpcProxy:v24 nwProxy:v26];
+  [xpcBroadcaster broadcastProxyForTargets:v23 messageContext:contextCopy protocol:protocolCopy];
+  v24 = v29 = contextCopy;
+  nwBroadcaster = [(IDSIPCBroadcaster *)self nwBroadcaster];
+  v26 = [nwBroadcaster broadcastProxyForTargets:v11];
+  v27 = [(IDSIPCBroadcastProxy *)v21 initWithProtocol:protocolCopy xpcProxy:v24 nwProxy:v26];
 
   return v27;
 }

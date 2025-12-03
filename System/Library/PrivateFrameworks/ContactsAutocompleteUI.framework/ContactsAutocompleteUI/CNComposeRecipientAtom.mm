@@ -1,52 +1,52 @@
 @interface CNComposeRecipientAtom
-- (CNComposeRecipientAtom)initWithFrame:(CGRect)a3 recipient:(id)a4 presentationOptions:(unint64_t)a5;
+- (CNComposeRecipientAtom)initWithFrame:(CGRect)frame recipient:(id)recipient presentationOptions:(unint64_t)options;
 - (CNComposeRecipientAtomDelegate)delegate;
 - (id)keyCommands;
 - (id)menuConfigurationForChevronButton;
-- (void)moveLeft:(id)a3;
-- (void)moveRight:(id)a3;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)moveLeft:(id)left;
+- (void)moveRight:(id)right;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation CNComposeRecipientAtom
 
-- (CNComposeRecipientAtom)initWithFrame:(CGRect)a3 recipient:(id)a4 presentationOptions:(unint64_t)a5
+- (CNComposeRecipientAtom)initWithFrame:(CGRect)frame recipient:(id)recipient presentationOptions:(unint64_t)options
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v12 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  recipientCopy = recipient;
   v17.receiver = self;
   v17.super_class = CNComposeRecipientAtom;
-  v13 = [(CNAtomView *)&v17 initWithFrame:a5 presentationOptions:0 separatorStyle:0 wrappingSupported:x, y, width, height];
-  v14 = v13;
-  if (v13)
+  height = [(CNAtomView *)&v17 initWithFrame:options presentationOptions:0 separatorStyle:0 wrappingSupported:x, y, width, height];
+  v14 = height;
+  if (height)
   {
-    objc_storeStrong(&v13->_recipient, a4);
-    v15 = [v12 compositeName];
-    [(CNAtomView *)v14 setTitle:v15];
+    objc_storeStrong(&height->_recipient, recipient);
+    compositeName = [recipientCopy compositeName];
+    [(CNAtomView *)v14 setTitle:compositeName];
   }
 
   return v14;
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v5 = a4;
+  eventCopy = event;
   *(self + 576) = *(self + 576) & 0xFE | [(CNAtomView *)self isSelected];
   *(self + 576) &= ~2u;
-  v6 = [v5 modifierFlags];
+  modifierFlags = [eventCopy modifierFlags];
 
-  *(self + 576) = *(self + 576) & 0xFB | (v6 >> 15) & 4;
+  *(self + 576) = *(self + 576) & 0xFB | (modifierFlags >> 15) & 4;
   if ((*(self + 576) & 1) == 0)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v8 = WeakRetained;
-    if (((v6 >> 15) & 4) != 0)
+    if (((modifierFlags >> 15) & 4) != 0)
     {
       [WeakRetained shiftSelectComposeRecipientAtom:self];
     }
@@ -58,15 +58,15 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v10 = a3;
-  v6 = a4;
+  movedCopy = moved;
+  eventCopy = event;
   if ((*(self + 576) & 2) == 0 && (*(self + 576) & 4) == 0)
   {
-    v7 = [v10 anyObject];
-    [v7 locationInView:self];
-    v8 = [(CNComposeRecipientAtom *)self hitTest:v6 withEvent:?];
+    anyObject = [movedCopy anyObject];
+    [anyObject locationInView:self];
+    v8 = [(CNComposeRecipientAtom *)self hitTest:eventCopy withEvent:?];
 
     if (!v8)
     {
@@ -80,7 +80,7 @@
   }
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   *(self + 576) |= 2u;
   if ((*(self + 576) & 1) == 0)
@@ -90,7 +90,7 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if ((*(self + 576) & 2) == 0)
   {
@@ -110,19 +110,19 @@
 
   v9.receiver = self;
   v9.super_class = CNComposeRecipientAtom;
-  v6 = [(CNComposeRecipientAtom *)&v9 keyCommands];
-  v7 = [v5 arrayByAddingObjectsFromArray:v6];
+  keyCommands = [(CNComposeRecipientAtom *)&v9 keyCommands];
+  v7 = [v5 arrayByAddingObjectsFromArray:keyCommands];
 
   return v7;
 }
 
-- (void)moveLeft:(id)a3
+- (void)moveLeft:(id)left
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained composeRecipientAtomSelectPrevious:self];
 }
 
-- (void)moveRight:(id)a3
+- (void)moveRight:(id)right
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained composeRecipientAtomSelectNext:self];

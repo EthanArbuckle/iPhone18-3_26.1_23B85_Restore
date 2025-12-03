@@ -1,27 +1,27 @@
 @interface DTActivityTraceTapMessageHandler
-- (id)messageReceived:(id)a3;
+- (id)messageReceived:(id)received;
 @end
 
 @implementation DTActivityTraceTapMessageHandler
 
-- (id)messageReceived:(id)a3
+- (id)messageReceived:(id)received
 {
-  v4 = a3;
+  receivedCopy = received;
   v14.receiver = self;
   v14.super_class = DTActivityTraceTapMessageHandler;
-  v5 = [(DTTapMessageHandler *)&v14 messageReceived:v4];
+  v5 = [(DTTapMessageHandler *)&v14 messageReceived:receivedCopy];
   v6 = v5;
-  if (v4 && !v5)
+  if (receivedCopy && !v5)
   {
-    if ([v4 getBufferWithReturnedLength:0])
+    if ([receivedCopy getBufferWithReturnedLength:0])
     {
-      v6 = [[DTActivityTraceTapMemo alloc] initWithMessage:v4];
+      v6 = [[DTActivityTraceTapMemo alloc] initWithMessage:receivedCopy];
     }
 
     else
     {
       v7 = [MEMORY[0x277CBEB98] setWithObject:objc_opt_class()];
-      v8 = [v4 objectWithAllowedClasses:v7];
+      v8 = [receivedCopy objectWithAllowedClasses:v7];
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) != 0 && ((v9 = [v8 kind], v9 == 8) || v9 == 5))

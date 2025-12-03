@@ -1,23 +1,23 @@
 @interface DOCDocumentSource
-+ (id)applicationIconForBundleIdentifier:(id)a3 size:(int64_t)a4;
-+ (id)defaultSourceForBundleIdentifier:(id)a3 defaultSourceIdentifier:(id)a4 sources:(id)a5;
-+ (id)defaultSourceIdentifierForBundleIdentifier:(id)a3;
-+ (id)iconForFileProvider:(id)a3 size:(int64_t)a4;
-+ (id)sourceIdentifierOrderWithDefault:(id)a3;
-+ (id)startSearchingSourcesForBundleIdentifier:(id)a3 updateBlock:(id)a4;
-+ (void)defaultSourceForBundleIdentifier:(id)a3 completionBlock:(id)a4;
-+ (void)defaultSourceForBundleIdentifier:(id)a3 selectedSourceIdentifier:(id)a4 completionBlock:(id)a5;
-+ (void)endSearchingSources:(id)a3;
-+ (void)setDefaultSource:(id)a3 forBundleIdentifier:(id)a4;
-+ (void)setDefaultSourceIdentifier:(id)a3 forBundleIdentifier:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValidForConfiguration:(id)a3;
++ (id)applicationIconForBundleIdentifier:(id)identifier size:(int64_t)size;
++ (id)defaultSourceForBundleIdentifier:(id)identifier defaultSourceIdentifier:(id)sourceIdentifier sources:(id)sources;
++ (id)defaultSourceIdentifierForBundleIdentifier:(id)identifier;
++ (id)iconForFileProvider:(id)provider size:(int64_t)size;
++ (id)sourceIdentifierOrderWithDefault:(id)default;
++ (id)startSearchingSourcesForBundleIdentifier:(id)identifier updateBlock:(id)block;
++ (void)defaultSourceForBundleIdentifier:(id)identifier completionBlock:(id)block;
++ (void)defaultSourceForBundleIdentifier:(id)identifier selectedSourceIdentifier:(id)sourceIdentifier completionBlock:(id)block;
++ (void)endSearchingSources:(id)sources;
++ (void)setDefaultSource:(id)source forBundleIdentifier:(id)identifier;
++ (void)setDefaultSourceIdentifier:(id)identifier forBundleIdentifier:(id)bundleIdentifier;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValidForConfiguration:(id)configuration;
 - (DOCDocumentSource)init;
-- (DOCDocumentSource)initWithCoder:(id)a3;
-- (id)iconForSize:(int64_t)a3;
-- (id)loadIconForSize:(int64_t)a3;
+- (DOCDocumentSource)initWithCoder:(id)coder;
+- (id)iconForSize:(int64_t)size;
+- (id)loadIconForSize:(int64_t)size;
 - (id)sanitizedSource;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DOCDocumentSource
@@ -36,19 +36,19 @@
   return v3;
 }
 
-+ (id)startSearchingSourcesForBundleIdentifier:(id)a3 updateBlock:(id)a4
++ (id)startSearchingSourcesForBundleIdentifier:(id)identifier updateBlock:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  blockCopy = block;
   v7 = MEMORY[0x1E69673E8];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __85__DOCDocumentSource_Searching__startSearchingSourcesForBundleIdentifier_updateBlock___block_invoke;
   v17 = &unk_1E8782FB8;
-  v18 = v5;
-  v19 = v6;
-  v8 = v6;
-  v9 = v5;
+  v18 = identifierCopy;
+  v19 = blockCopy;
+  v8 = blockCopy;
+  v9 = identifierCopy;
   v10 = [v7 beginMonitoringProviderDomainChangesWithHandler:&v14];
   v11 = [DOCSourceSearchingContext alloc];
   v12 = [(DOCSourceSearchingContext *)v11 initWithMonitoringContext:v10, v14, v15, v16, v17];
@@ -190,31 +190,31 @@ LABEL_5:
   }
 }
 
-+ (void)endSearchingSources:(id)a3
++ (void)endSearchingSources:(id)sources
 {
   v3 = MEMORY[0x1E69673E8];
-  v4 = [a3 monitoringContext];
-  [v3 endMonitoringProviderDomainChanges:v4];
+  monitoringContext = [sources monitoringContext];
+  [v3 endMonitoringProviderDomainChanges:monitoringContext];
 }
 
-+ (void)defaultSourceForBundleIdentifier:(id)a3 completionBlock:(id)a4
++ (void)defaultSourceForBundleIdentifier:(id)identifier completionBlock:(id)block
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 defaultSourceIdentifierForBundleIdentifier:v7];
-  [a1 defaultSourceForBundleIdentifier:v7 selectedSourceIdentifier:v8 completionBlock:v6];
+  blockCopy = block;
+  identifierCopy = identifier;
+  v8 = [self defaultSourceIdentifierForBundleIdentifier:identifierCopy];
+  [self defaultSourceForBundleIdentifier:identifierCopy selectedSourceIdentifier:v8 completionBlock:blockCopy];
 }
 
-+ (void)setDefaultSource:(id)a3 forBundleIdentifier:(id)a4
++ (void)setDefaultSource:(id)source forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [a3 identifier];
-  [a1 setDefaultSourceIdentifier:v7 forBundleIdentifier:v6];
+  identifierCopy = identifier;
+  identifier = [source identifier];
+  [self setDefaultSourceIdentifier:identifier forBundleIdentifier:identifierCopy];
 }
 
-+ (id)defaultSourceIdentifierForBundleIdentifier:(id)a3
++ (id)defaultSourceIdentifierForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_alloc(MEMORY[0x1E695E000]);
   v6 = [v5 initWithSuiteName:*MEMORY[0x1E699A360]];
   v7 = [v6 valueForKey:@"DOCDefaultFileProviderIdentifierKey"];
@@ -224,10 +224,10 @@ LABEL_5:
     goto LABEL_15;
   }
 
-  v8 = [v7 objectForKeyedSubscript:v4];
+  v8 = [v7 objectForKeyedSubscript:identifierCopy];
   if ([v8 isEqualToString:@"com.apple.automatic.Local"])
   {
-    [a1 setDefaultSourceIdentifier:@"com.apple.automatic.Local" forBundleIdentifier:v4];
+    [self setDefaultSourceIdentifier:@"com.apple.automatic.Local" forBundleIdentifier:identifierCopy];
     v9 = @"com.apple.automatic.Local";
   }
 
@@ -242,7 +242,7 @@ LABEL_5:
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          if ([v12 containsObject:v4])
+          if ([v12 containsObject:identifierCopy])
           {
             v11 = @"com.apple.automatic.Local";
           }
@@ -265,11 +265,11 @@ LABEL_15:
   return v10;
 }
 
-+ (void)defaultSourceForBundleIdentifier:(id)a3 selectedSourceIdentifier:(id)a4 completionBlock:(id)a5
++ (void)defaultSourceForBundleIdentifier:(id)identifier selectedSourceIdentifier:(id)sourceIdentifier completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  sourceIdentifierCopy = sourceIdentifier;
+  blockCopy = block;
   v11 = dispatch_group_create();
   v36[0] = 0;
   v36[1] = v36;
@@ -300,24 +300,24 @@ LABEL_15:
   v26 = v36;
   v27 = v32;
   v28 = v34;
-  v29 = a1;
-  v12 = v8;
+  selfCopy = self;
+  v12 = identifierCopy;
   v23 = v12;
-  v13 = v9;
+  v13 = sourceIdentifierCopy;
   v24 = v13;
   v14 = v11;
   v25 = v14;
-  v31 = [a1 startSearchingSourcesForBundleIdentifier:v12 updateBlock:v22];
+  v31 = [self startSearchingSourcesForBundleIdentifier:v12 updateBlock:v22];
   v15 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __111__DOCDocumentSource_SearchInternal__defaultSourceForBundleIdentifier_selectedSourceIdentifier_completionBlock___block_invoke_54;
   block[3] = &unk_1E8783008;
-  v18 = v10;
+  v18 = blockCopy;
   v19 = v34;
   v20 = v32;
   v21 = v30;
-  v16 = v10;
+  v16 = blockCopy;
   dispatch_group_notify(v14, v15, block);
 
   _Block_object_dispose(v30, 8);
@@ -411,17 +411,17 @@ uint64_t __111__DOCDocumentSource_SearchInternal__defaultSourceForBundleIdentifi
   return result;
 }
 
-+ (id)defaultSourceForBundleIdentifier:(id)a3 defaultSourceIdentifier:(id)a4 sources:(id)a5
++ (id)defaultSourceForBundleIdentifier:(id)identifier defaultSourceIdentifier:(id)sourceIdentifier sources:(id)sources
 {
   v94 = *MEMORY[0x1E69E9840];
-  v67 = a3;
-  v8 = a4;
-  v9 = a5;
+  identifierCopy = identifier;
+  sourceIdentifierCopy = sourceIdentifier;
+  sourcesCopy = sources;
   v84 = 0u;
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v10 = [a1 sourceIdentifierOrderWithDefault:v8];
+  v10 = [self sourceIdentifierOrderWithDefault:sourceIdentifierCopy];
   v69 = [v10 countByEnumeratingWithState:&v84 objects:v93 count:16];
   if (v69)
   {
@@ -432,8 +432,8 @@ uint64_t __111__DOCDocumentSource_SearchInternal__defaultSourceForBundleIdentifi
     v58 = *MEMORY[0x1E699A388];
     *&v11 = 138412290;
     v57 = v11;
-    v64 = v8;
-    v65 = v9;
+    v64 = sourceIdentifierCopy;
+    v65 = sourcesCopy;
     v63 = v10;
     v60 = *MEMORY[0x1E699A370];
     v61 = *v85;
@@ -448,8 +448,8 @@ uint64_t __111__DOCDocumentSource_SearchInternal__defaultSourceForBundleIdentifi
         }
 
         v68 = *(*(&v84 + 1) + 8 * v14);
-        v15 = [v9 objectForKeyedSubscript:v57];
-        v16 = v8;
+        firstObject = [sourcesCopy objectForKeyedSubscript:v57];
+        v16 = sourceIdentifierCopy;
         if ([v16 hasPrefix:v13] & 1) != 0 || (objc_msgSend(v16, "hasPrefix:", v62) & 1) != 0 || (objc_msgSend(v16, "hasPrefix:", v59))
         {
           v17 = 1;
@@ -460,7 +460,7 @@ uint64_t __111__DOCDocumentSource_SearchInternal__defaultSourceForBundleIdentifi
           v17 = [v16 hasPrefix:v58];
         }
 
-        if (v15)
+        if (firstObject)
         {
           v18 = 0;
         }
@@ -470,19 +470,19 @@ uint64_t __111__DOCDocumentSource_SearchInternal__defaultSourceForBundleIdentifi
           v18 = v17;
         }
 
-        if (!v8 || v18)
+        if (!sourceIdentifierCopy || v18)
         {
-          v70 = v15;
-          v19 = [MEMORY[0x1E699A3F8] defaultPermission];
-          v71 = [v19 dataOwnerStateForBundleIdentifier:v67];
+          v70 = firstObject;
+          defaultPermission = [MEMORY[0x1E699A3F8] defaultPermission];
+          v71 = [defaultPermission dataOwnerStateForBundleIdentifier:identifierCopy];
 
           v20 = [MEMORY[0x1E695DF70] arrayWithCapacity:2];
           v80 = 0u;
           v81 = 0u;
           v82 = 0u;
           v83 = 0u;
-          v21 = [v9 allValues];
-          v22 = [v21 countByEnumeratingWithState:&v80 objects:v92 count:16];
+          allValues = [sourcesCopy allValues];
+          v22 = [allValues countByEnumeratingWithState:&v80 objects:v92 count:16];
           if (v22)
           {
             v23 = v22;
@@ -493,17 +493,17 @@ uint64_t __111__DOCDocumentSource_SearchInternal__defaultSourceForBundleIdentifi
               {
                 if (*v81 != v24)
                 {
-                  objc_enumerationMutation(v21);
+                  objc_enumerationMutation(allValues);
                 }
 
                 v26 = *(*(&v80 + 1) + 8 * i);
-                v27 = [v26 searching_fileProviderDomain];
-                if ([v27 isiCloudDriveProvider])
+                searching_fileProviderDomain = [v26 searching_fileProviderDomain];
+                if ([searching_fileProviderDomain isiCloudDriveProvider])
                 {
-                  v28 = [v26 searching_fileProviderDomain];
-                  v29 = [v28 isHidden];
+                  searching_fileProviderDomain2 = [v26 searching_fileProviderDomain];
+                  isHidden = [searching_fileProviderDomain2 isHidden];
 
-                  if ((v29 & 1) == 0)
+                  if ((isHidden & 1) == 0)
                   {
                     [v20 addObject:v26];
                   }
@@ -514,7 +514,7 @@ uint64_t __111__DOCDocumentSource_SearchInternal__defaultSourceForBundleIdentifi
                 }
               }
 
-              v23 = [v21 countByEnumeratingWithState:&v80 objects:v92 count:16];
+              v23 = [allValues countByEnumeratingWithState:&v80 objects:v92 count:16];
             }
 
             while (v23);
@@ -522,7 +522,7 @@ uint64_t __111__DOCDocumentSource_SearchInternal__defaultSourceForBundleIdentifi
 
           if ([v20 count] == 1)
           {
-            v15 = [v20 firstObject];
+            firstObject = [v20 firstObject];
             v30 = v70;
             v10 = v63;
             goto LABEL_28;
@@ -531,7 +531,7 @@ uint64_t __111__DOCDocumentSource_SearchInternal__defaultSourceForBundleIdentifi
           v10 = v63;
           if ([v20 count] < 2)
           {
-            v15 = v70;
+            firstObject = v70;
             v12 = v61;
           }
 
@@ -557,10 +557,10 @@ uint64_t __111__DOCDocumentSource_SearchInternal__defaultSourceForBundleIdentifi
                   }
 
                   v35 = *(*(&v76 + 1) + 8 * j);
-                  v36 = [v35 searching_fileProviderDomain];
-                  v37 = [v36 isEnterpriseDomain];
+                  searching_fileProviderDomain3 = [v35 searching_fileProviderDomain];
+                  isEnterpriseDomain = [searching_fileProviderDomain3 isEnterpriseDomain];
 
-                  if (v37)
+                  if (isEnterpriseDomain)
                   {
                     v38 = v71 == 1;
                   }
@@ -572,19 +572,19 @@ uint64_t __111__DOCDocumentSource_SearchInternal__defaultSourceForBundleIdentifi
 
                   if (!v38)
                   {
-                    v39 = [v35 searching_fileProviderDomain];
-                    v40 = [v39 isEnterpriseDomain];
+                    searching_fileProviderDomain4 = [v35 searching_fileProviderDomain];
+                    isEnterpriseDomain2 = [searching_fileProviderDomain4 isEnterpriseDomain];
 
-                    if ((v40 & 1) != 0 || v71 == 1)
+                    if ((isEnterpriseDomain2 & 1) != 0 || v71 == 1)
                     {
                       continue;
                     }
                   }
 
-                  v55 = v35;
+                  firstObject2 = v35;
 
-                  v8 = v64;
-                  v9 = v65;
+                  sourceIdentifierCopy = v64;
+                  sourcesCopy = v65;
                   goto LABEL_72;
                 }
 
@@ -598,19 +598,19 @@ uint64_t __111__DOCDocumentSource_SearchInternal__defaultSourceForBundleIdentifi
               }
             }
 
-            v15 = v70;
+            firstObject = v70;
 LABEL_28:
             v12 = v61;
           }
 
-          v8 = v64;
-          v9 = v65;
+          sourceIdentifierCopy = v64;
+          sourcesCopy = v65;
           v13 = v60;
         }
 
-        if (v15)
+        if (firstObject)
         {
-          v55 = v15;
+          firstObject2 = firstObject;
 
           goto LABEL_73;
         }
@@ -640,19 +640,19 @@ LABEL_28:
     while (v42);
   }
 
-  v43 = [v9 allValues];
-  v44 = [MEMORY[0x1E699A3F8] defaultPermission];
-  v45 = [v44 defaultFileProviderForAppBundle:v67];
+  allValues2 = [sourcesCopy allValues];
+  defaultPermission2 = [MEMORY[0x1E699A3F8] defaultPermission];
+  v45 = [defaultPermission2 defaultFileProviderForAppBundle:identifierCopy];
 
   v70 = v45;
   if (v45)
   {
-    v66 = v9;
+    v66 = sourcesCopy;
     v74 = 0u;
     v75 = 0u;
     v72 = 0u;
     v73 = 0u;
-    v46 = v43;
+    v46 = allValues2;
     v47 = [v46 countByEnumeratingWithState:&v72 objects:v88 count:16];
     if (v47)
     {
@@ -668,16 +668,16 @@ LABEL_28:
           }
 
           v51 = *(*(&v72 + 1) + 8 * k);
-          v52 = [v51 searching_fileProviderDomain];
-          v53 = [v52 topLevelBundleIdentifier];
-          v54 = [v53 isEqualToString:v45];
+          searching_fileProviderDomain5 = [v51 searching_fileProviderDomain];
+          topLevelBundleIdentifier = [searching_fileProviderDomain5 topLevelBundleIdentifier];
+          v54 = [topLevelBundleIdentifier isEqualToString:v45];
 
           if (v54)
           {
-            v55 = v51;
+            firstObject2 = v51;
             v10 = v46;
 
-            v9 = v66;
+            sourcesCopy = v66;
             goto LABEL_72;
           }
 
@@ -694,35 +694,35 @@ LABEL_28:
       }
     }
 
-    v9 = v66;
+    sourcesCopy = v66;
   }
 
-  if ([v43 count] == 1)
+  if ([allValues2 count] == 1)
   {
-    v55 = [v43 firstObject];
+    firstObject2 = [allValues2 firstObject];
   }
 
   else
   {
-    v55 = 0;
+    firstObject2 = 0;
   }
 
-  v10 = v43;
+  v10 = allValues2;
 LABEL_72:
 
 LABEL_73:
 
-  return v55;
+  return firstObject2;
 }
 
-+ (id)sourceIdentifierOrderWithDefault:(id)a3
++ (id)sourceIdentifierOrderWithDefault:(id)default
 {
-  v3 = a3;
+  defaultCopy = default;
   v4 = [MEMORY[0x1E695DFA0] orderedSetWithCapacity:3];
   v5 = MEMORY[0x1E699A390];
-  if (v3)
+  if (defaultCopy)
   {
-    if ([v3 isEqualToString:@"com.apple.automatic.Local"])
+    if ([defaultCopy isEqualToString:@"com.apple.automatic.Local"])
     {
       v6 = *v5;
       v7 = v4;
@@ -731,7 +731,7 @@ LABEL_73:
     else
     {
       v7 = v4;
-      v6 = v3;
+      v6 = defaultCopy;
     }
 
     [v7 addObject:v6];
@@ -750,10 +750,10 @@ LABEL_73:
   return v4;
 }
 
-+ (void)setDefaultSourceIdentifier:(id)a3 forBundleIdentifier:(id)a4
++ (void)setDefaultSourceIdentifier:(id)identifier forBundleIdentifier:(id)bundleIdentifier
 {
-  v15 = a3;
-  v5 = a4;
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
   v6 = objc_alloc(MEMORY[0x1E695E000]);
   v7 = [v6 initWithSuiteName:*MEMORY[0x1E699A360]];
   v8 = [v7 valueForKey:@"DOCDefaultFileProviderIdentifierKey"];
@@ -780,19 +780,19 @@ LABEL_73:
   }
 
   v13 = v12;
-  if (@"com.apple.automatic.Local" == v15)
+  if (@"com.apple.automatic.Local" == identifierCopy)
   {
-    [v11 setValue:*MEMORY[0x1E699A390] forKey:v5];
-    if (([v13 containsObject:v5] & 1) == 0)
+    [v11 setValue:*MEMORY[0x1E699A390] forKey:bundleIdentifierCopy];
+    if (([v13 containsObject:bundleIdentifierCopy] & 1) == 0)
     {
-      [v13 addObject:v5];
+      [v13 addObject:bundleIdentifierCopy];
     }
   }
 
   else
   {
-    [v11 setValue:v15 forKey:v5];
-    [v13 removeObject:v5];
+    [v11 setValue:identifierCopy forKey:bundleIdentifierCopy];
+    [v13 removeObject:bundleIdentifierCopy];
   }
 
   [v7 setValue:v11 forKey:@"DOCDefaultFileProviderIdentifierKey"];
@@ -802,34 +802,34 @@ LABEL_73:
   dispatch_after(v14, MEMORY[0x1E69E96A0], &__block_literal_global_3);
 }
 
-- (DOCDocumentSource)initWithCoder:(id)a3
+- (DOCDocumentSource)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = DOCDocumentSource;
   v5 = [(DOCDocumentSource *)&v18 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"displayName"];
     [(DOCDocumentSource *)v5 setDisplayName:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"providerName"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"providerName"];
     [(DOCDocumentSource *)v5 setProviderName:v7];
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"domainName"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"domainName"];
     [(DOCDocumentSource *)v5 setDomainName:v8];
 
-    v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     [(DOCDocumentSource *)v5 setIdentifier:v9];
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"promptText"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"promptText"];
     [(DOCDocumentSource *)v5 setPromptText:v10];
 
     v11 = MEMORY[0x1E695DFD8];
     v12 = objc_opt_class();
     v13 = objc_opt_class();
     v14 = [v11 setWithObjects:{v12, v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"iconsBySize"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"iconsBySize"];
     [(DOCDocumentSource *)v5 setIconsBySize:v15];
 
     v16 = v5;
@@ -838,14 +838,14 @@ LABEL_73:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 identifier];
-    v6 = [v5 isEqual:self->_identifier];
+    identifier = [equalCopy identifier];
+    v6 = [identifier isEqual:self->_identifier];
   }
 
   else
@@ -856,88 +856,88 @@ LABEL_73:
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v17 = a3;
-  v4 = [(DOCDocumentSource *)self displayName];
+  coderCopy = coder;
+  displayName = [(DOCDocumentSource *)self displayName];
 
-  if (v4)
+  if (displayName)
   {
-    v5 = [(DOCDocumentSource *)self displayName];
-    [v17 encodeObject:v5 forKey:@"displayName"];
+    displayName2 = [(DOCDocumentSource *)self displayName];
+    [coderCopy encodeObject:displayName2 forKey:@"displayName"];
   }
 
-  v6 = [(DOCDocumentSource *)self providerName];
+  providerName = [(DOCDocumentSource *)self providerName];
 
-  if (v6)
+  if (providerName)
   {
-    v7 = [(DOCDocumentSource *)self providerName];
-    [v17 encodeObject:v7 forKey:@"providerName"];
+    providerName2 = [(DOCDocumentSource *)self providerName];
+    [coderCopy encodeObject:providerName2 forKey:@"providerName"];
   }
 
-  v8 = [(DOCDocumentSource *)self domainName];
+  domainName = [(DOCDocumentSource *)self domainName];
 
-  if (v8)
+  if (domainName)
   {
-    v9 = [(DOCDocumentSource *)self domainName];
-    [v17 encodeObject:v9 forKey:@"domainName"];
+    domainName2 = [(DOCDocumentSource *)self domainName];
+    [coderCopy encodeObject:domainName2 forKey:@"domainName"];
   }
 
-  v10 = [(DOCDocumentSource *)self identifier];
+  identifier = [(DOCDocumentSource *)self identifier];
 
-  if (v10)
+  if (identifier)
   {
-    v11 = [(DOCDocumentSource *)self identifier];
-    [v17 encodeObject:v11 forKey:@"identifier"];
+    identifier2 = [(DOCDocumentSource *)self identifier];
+    [coderCopy encodeObject:identifier2 forKey:@"identifier"];
   }
 
-  v12 = [(DOCDocumentSource *)self promptText];
+  promptText = [(DOCDocumentSource *)self promptText];
 
-  if (v12)
+  if (promptText)
   {
-    v13 = [(DOCDocumentSource *)self identifier];
-    [v17 encodeObject:v13 forKey:@"promptText"];
+    identifier3 = [(DOCDocumentSource *)self identifier];
+    [coderCopy encodeObject:identifier3 forKey:@"promptText"];
   }
 
-  v14 = [(DOCDocumentSource *)self iconsBySize];
+  iconsBySize = [(DOCDocumentSource *)self iconsBySize];
 
-  v15 = v17;
-  if (v14)
+  v15 = coderCopy;
+  if (iconsBySize)
   {
-    v16 = [(DOCDocumentSource *)self iconsBySize];
-    [v17 encodeObject:v16 forKey:@"iconsBySize"];
+    iconsBySize2 = [(DOCDocumentSource *)self iconsBySize];
+    [coderCopy encodeObject:iconsBySize2 forKey:@"iconsBySize"];
 
-    v15 = v17;
+    v15 = coderCopy;
   }
 }
 
 - (id)sanitizedSource
 {
   v3 = objc_alloc_init(DOCDocumentSource);
-  v4 = [(DOCDocumentSource *)self displayName];
-  [(DOCDocumentSource *)v3 setDisplayName:v4];
+  displayName = [(DOCDocumentSource *)self displayName];
+  [(DOCDocumentSource *)v3 setDisplayName:displayName];
 
-  v5 = [(DOCDocumentSource *)self providerName];
-  [(DOCDocumentSource *)v3 setProviderName:v5];
+  providerName = [(DOCDocumentSource *)self providerName];
+  [(DOCDocumentSource *)v3 setProviderName:providerName];
 
-  v6 = [(DOCDocumentSource *)self domainName];
-  [(DOCDocumentSource *)v3 setDomainName:v6];
+  domainName = [(DOCDocumentSource *)self domainName];
+  [(DOCDocumentSource *)v3 setDomainName:domainName];
 
-  v7 = [(DOCDocumentSource *)self identifier];
-  [(DOCDocumentSource *)v3 setIdentifier:v7];
+  identifier = [(DOCDocumentSource *)self identifier];
+  [(DOCDocumentSource *)v3 setIdentifier:identifier];
 
-  v8 = [(DOCDocumentSource *)self iconsBySize];
-  [(DOCDocumentSource *)v3 setIconsBySize:v8];
+  iconsBySize = [(DOCDocumentSource *)self iconsBySize];
+  [(DOCDocumentSource *)v3 setIconsBySize:iconsBySize];
 
   return v3;
 }
 
-- (BOOL)isValidForConfiguration:(id)a3
+- (BOOL)isValidForConfiguration:(id)configuration
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 documentContentTypes];
-  v6 = [v5 containsObject:*MEMORY[0x1E6982E50]];
+  configurationCopy = configuration;
+  documentContentTypes = [configurationCopy documentContentTypes];
+  v6 = [documentContentTypes containsObject:*MEMORY[0x1E6982E50]];
 
   if (v6)
   {
@@ -950,8 +950,8 @@ LABEL_73:
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = [(DOCDocumentSource *)self documentContentTypes];
-    v9 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    documentContentTypes2 = [(DOCDocumentSource *)self documentContentTypes];
+    v9 = [documentContentTypes2 countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v9)
     {
       v10 = v9;
@@ -963,7 +963,7 @@ LABEL_73:
         {
           if (*v27 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(documentContentTypes2);
           }
 
           v13 = *(*(&v26 + 1) + 8 * i);
@@ -971,8 +971,8 @@ LABEL_73:
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v14 = [v4 documentContentTypes];
-          v15 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          documentContentTypes3 = [configurationCopy documentContentTypes];
+          v15 = [documentContentTypes3 countByEnumeratingWithState:&v22 objects:v30 count:16];
           if (v15)
           {
             v16 = v15;
@@ -983,7 +983,7 @@ LABEL_73:
               {
                 if (*v23 != v17)
                 {
-                  objc_enumerationMutation(v14);
+                  objc_enumerationMutation(documentContentTypes3);
                 }
 
                 v19 = *(*(&v22 + 1) + 8 * j);
@@ -995,7 +995,7 @@ LABEL_73:
                 }
               }
 
-              v16 = [v14 countByEnumeratingWithState:&v22 objects:v30 count:16];
+              v16 = [documentContentTypes3 countByEnumeratingWithState:&v22 objects:v30 count:16];
               v11 = v21;
               if (v16)
               {
@@ -1007,7 +1007,7 @@ LABEL_73:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v10 = [documentContentTypes2 countByEnumeratingWithState:&v26 objects:v31 count:16];
         v7 = 0;
       }
 
@@ -1025,23 +1025,23 @@ LABEL_22:
   return v7;
 }
 
-- (id)iconForSize:(int64_t)a3
+- (id)iconForSize:(int64_t)size
 {
-  v5 = [(DOCDocumentSource *)self iconsBySize];
-  v6 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v7 = [v5 objectForKeyedSubscript:v6];
+  iconsBySize = [(DOCDocumentSource *)self iconsBySize];
+  v6 = [MEMORY[0x1E696AD98] numberWithInteger:size];
+  v7 = [iconsBySize objectForKeyedSubscript:v6];
 
   if (!v7)
   {
-    v8 = [(DOCDocumentSource *)self iconsBySize];
+    iconsBySize2 = [(DOCDocumentSource *)self iconsBySize];
 
-    if (!v8)
+    if (!iconsBySize2)
     {
-      v9 = [MEMORY[0x1E695DF90] dictionary];
-      [(DOCDocumentSource *)self setIconsBySize:v9];
+      dictionary = [MEMORY[0x1E695DF90] dictionary];
+      [(DOCDocumentSource *)self setIconsBySize:dictionary];
     }
 
-    v10 = [(DOCDocumentSource *)self loadIconForSize:a3];
+    v10 = [(DOCDocumentSource *)self loadIconForSize:size];
     v11 = v10;
     if (v10)
     {
@@ -1055,9 +1055,9 @@ LABEL_22:
 
     v7 = v12;
 
-    v13 = [(DOCDocumentSource *)self iconsBySize];
-    v14 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-    [v13 setObject:v7 forKeyedSubscript:v14];
+    iconsBySize3 = [(DOCDocumentSource *)self iconsBySize];
+    v14 = [MEMORY[0x1E696AD98] numberWithInteger:size];
+    [iconsBySize3 setObject:v7 forKeyedSubscript:v14];
   }
 
   v15 = v7;
@@ -1065,7 +1065,7 @@ LABEL_22:
   return v15;
 }
 
-- (id)loadIconForSize:(int64_t)a3
+- (id)loadIconForSize:(int64_t)size
 {
   v3 = MEMORY[0x1E699A478];
   v4 = *MEMORY[0x1E699A478];
@@ -1083,39 +1083,39 @@ LABEL_22:
   return 0;
 }
 
-+ (id)iconForFileProvider:(id)a3 size:(int64_t)a4
++ (id)iconForFileProvider:(id)provider size:(int64_t)size
 {
-  v5 = a3;
+  providerCopy = provider;
   v6 = +[DOCIconService shared];
-  v7 = [v6 iconForFileProvider:v5 size:a4];
+  v7 = [v6 iconForFileProvider:providerCopy size:size];
 
   return v7;
 }
 
-+ (id)applicationIconForBundleIdentifier:(id)a3 size:(int64_t)a4
++ (id)applicationIconForBundleIdentifier:(id)identifier size:(int64_t)size
 {
-  v7 = a3;
-  if (a4 == 2)
+  identifierCopy = identifier;
+  if (size == 2)
   {
-    v8 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v9 = [MEMORY[0x1E696AD98] numberWithInteger:2];
-    [v8 handleFailureInMethod:a2 object:a1 file:@"DOCDocumentSource.m" lineNumber:191 description:{@"Invalid icon size %@", v9}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"DOCDocumentSource.m" lineNumber:191 description:{@"Invalid icon size %@", v9}];
   }
 
-  else if (a4 == 1)
+  else if (size == 1)
   {
-    a4 = 2;
+    size = 2;
   }
 
   else
   {
-    a4 = 0;
+    size = 0;
   }
 
   v10 = MEMORY[0x1E69DCAB8];
-  v11 = [MEMORY[0x1E69DCEB0] mainScreen];
-  [v11 scale];
-  v12 = [v10 _applicationIconImageForBundleIdentifier:v7 format:a4 scale:?];
+  mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+  [mainScreen scale];
+  v12 = [v10 _applicationIconImageForBundleIdentifier:identifierCopy format:size scale:?];
 
   return v12;
 }

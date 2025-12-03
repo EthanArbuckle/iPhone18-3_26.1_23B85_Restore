@@ -1,26 +1,26 @@
 @interface IFTSchemaIFTToolDefinition
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTToolDefinition)initWithDictionary:(id)a3;
-- (IFTSchemaIFTToolDefinition)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTToolDefinition)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTToolDefinition)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTToolDefinition
 
-- (IFTSchemaIFTToolDefinition)initWithDictionary:(id)a3
+- (IFTSchemaIFTToolDefinition)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = IFTSchemaIFTToolDefinition;
   v5 = [(IFTSchemaIFTToolDefinition *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"toolId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"toolId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -28,7 +28,7 @@
       [(IFTSchemaIFTToolDefinition *)v5 setToolId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"toolType"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"toolType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTToolDefinition)initWithJSON:(id)a3
+- (IFTSchemaIFTToolDefinition)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTToolDefinition *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTToolDefinition *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTToolDefinition *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,12 +77,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_toolId)
   {
-    v4 = [(IFTSchemaIFTToolDefinition *)self toolId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"toolId"];
+    toolId = [(IFTSchemaIFTToolDefinition *)self toolId];
+    v5 = [toolId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"toolId"];
   }
 
   if (*&self->_has)
@@ -98,12 +98,12 @@
       v7 = off_1E78D85C8[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"toolType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"toolType"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -122,18 +122,18 @@
   return v4 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(IFTSchemaIFTToolDefinition *)self toolId];
-  v6 = [v4 toolId];
-  v7 = v6;
-  if ((v5 != 0) == (v6 == 0))
+  toolId = [(IFTSchemaIFTToolDefinition *)self toolId];
+  toolId2 = [equalCopy toolId];
+  v7 = toolId2;
+  if ((toolId != 0) == (toolId2 == 0))
   {
 
 LABEL_12:
@@ -141,13 +141,13 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v8 = [(IFTSchemaIFTToolDefinition *)self toolId];
-  if (v8)
+  toolId3 = [(IFTSchemaIFTToolDefinition *)self toolId];
+  if (toolId3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTToolDefinition *)self toolId];
-    v11 = [v4 toolId];
-    v12 = [v10 isEqual:v11];
+    v9 = toolId3;
+    toolId4 = [(IFTSchemaIFTToolDefinition *)self toolId];
+    toolId5 = [equalCopy toolId];
+    v12 = [toolId4 isEqual:toolId5];
 
     if (!v12)
     {
@@ -159,7 +159,7 @@ LABEL_12:
   {
   }
 
-  if ((*&self->_has & 1) != (v4[20] & 1))
+  if ((*&self->_has & 1) != (equalCopy[20] & 1))
   {
     goto LABEL_12;
   }
@@ -167,7 +167,7 @@ LABEL_12:
   if (*&self->_has)
   {
     toolType = self->_toolType;
-    if (toolType != [v4 toolType])
+    if (toolType != [equalCopy toolType])
     {
       goto LABEL_12;
     }
@@ -179,12 +179,12 @@ LABEL_13:
   return v14;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
-  v4 = [(IFTSchemaIFTToolDefinition *)self toolId];
+  toCopy = to;
+  toolId = [(IFTSchemaIFTToolDefinition *)self toolId];
 
-  if (v4)
+  if (toolId)
   {
     PBDataWriterWriteStringField();
   }
@@ -195,13 +195,13 @@ LABEL_13:
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v8.receiver = self;
   v8.super_class = IFTSchemaIFTToolDefinition;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:v4];
-  v6 = [v4 isConditionSet:{4, v8.receiver, v8.super_class}];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v8 applySensitiveConditionsPolicy:policyCopy];
+  v6 = [policyCopy isConditionSet:{4, v8.receiver, v8.super_class}];
 
   if (v6)
   {

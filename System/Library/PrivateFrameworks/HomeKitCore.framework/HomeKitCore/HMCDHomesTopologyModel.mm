@@ -1,14 +1,14 @@
 @interface HMCDHomesTopologyModel
-- (HMCDHomesTopologyModel)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (HMCDHomesTopologyModel)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation HMCDHomesTopologyModel
 
-- (HMCDHomesTopologyModel)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (HMCDHomesTopologyModel)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for HMCDHomesTopologyModel();
-  return [(HMCDHomesTopologyModel *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(HMCDHomesTopologyModel *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

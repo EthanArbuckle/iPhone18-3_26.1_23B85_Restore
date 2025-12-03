@@ -1,9 +1,9 @@
 @interface ASDTIOA2BooleanControl
 - (ASDTIOA2Device)ioa2Device;
-- (BOOL)synchronizeWithRegistryDictionary:(id)a3;
+- (BOOL)synchronizeWithRegistryDictionary:(id)dictionary;
 - (NSArray)propertySelectorInfo;
 - (id).cxx_construct;
-- (void)setValue:(BOOL)a3;
+- (void)setValue:(BOOL)value;
 @end
 
 @implementation ASDTIOA2BooleanControl
@@ -24,10 +24,10 @@
   return v3;
 }
 
-- (BOOL)synchronizeWithRegistryDictionary:(id)a3
+- (BOOL)synchronizeWithRegistryDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"value"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"value"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -41,7 +41,7 @@
     goto LABEL_7;
   }
 
-  v6 = [v4 objectForKeyedSubscript:@"property selectors"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"property selectors"];
   v7 = [(ASDControl *)self asdtAddControlProperties:v6];
 
   if (!v7)
@@ -58,15 +58,15 @@ LABEL_8:
   return v8;
 }
 
-- (void)setValue:(BOOL)a3
+- (void)setValue:(BOOL)value
 {
-  v6 = a3;
+  valueCopy = value;
   WeakRetained = objc_loadWeakRetained(self + 24);
-  v5 = [WeakRetained _setControlValue:&v6 forControl:*(self + 43)];
+  v5 = [WeakRetained _setControlValue:&valueCopy forControl:*(self + 43)];
 
   if (v5)
   {
-    [(ASDTIOA2BooleanControl *)self doSetValue:v6];
+    [(ASDTIOA2BooleanControl *)self doSetValue:valueCopy];
   }
 }
 

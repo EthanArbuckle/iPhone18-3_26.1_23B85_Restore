@@ -1,26 +1,26 @@
 @interface StockChartData
-- ($87A9BE3275E22128A73FF46D0B92144E)allocateStockValuesWithCount:(unsigned int)a3;
+- ($87A9BE3275E22128A73FF46D0B92144E)allocateStockValuesWithCount:(unsigned int)count;
 - (Stock)stock;
-- (StockChartData)initWithStock:(id)a3 interval:(int64_t)a4;
+- (StockChartData)initWithStock:(id)stock interval:(int64_t)interval;
 - (id)description;
-- (int64_t)labelPlacementForDisplayMode:(id)a3;
+- (int64_t)labelPlacementForDisplayMode:(id)mode;
 - (void)dealloc;
-- (void)setLabelPlacement:(int64_t)a3 forDisplayMode:(id)a4;
+- (void)setLabelPlacement:(int64_t)placement forDisplayMode:(id)mode;
 @end
 
 @implementation StockChartData
 
-- (StockChartData)initWithStock:(id)a3 interval:(int64_t)a4
+- (StockChartData)initWithStock:(id)stock interval:(int64_t)interval
 {
-  v6 = a3;
+  stockCopy = stock;
   v18.receiver = self;
   v18.super_class = StockChartData;
   v7 = [(StockChartData *)&v18 init];
   v8 = v7;
   if (v7)
   {
-    [(StockChartData *)v7 setStock:v6];
-    v8->_chartInterval = a4;
+    [(StockChartData *)v7 setStock:stockCopy];
+    v8->_chartInterval = interval;
     v9 = objc_opt_new();
     imageSetCache = v8->_imageSetCache;
     v8->_imageSetCache = v9;
@@ -41,38 +41,38 @@
   return v8;
 }
 
-- ($87A9BE3275E22128A73FF46D0B92144E)allocateStockValuesWithCount:(unsigned int)a3
+- ($87A9BE3275E22128A73FF46D0B92144E)allocateStockValuesWithCount:(unsigned int)count
 {
-  result = malloc_type_calloc(0x18uLL, a3, 0x1000040504FFAC1uLL);
+  result = malloc_type_calloc(0x18uLL, count, 0x1000040504FFAC1uLL);
   self->_stockValues = result;
-  self->_stockValueCount = a3;
+  self->_stockValueCount = count;
   return result;
 }
 
-- (int64_t)labelPlacementForDisplayMode:(id)a3
+- (int64_t)labelPlacementForDisplayMode:(id)mode
 {
-  v3 = [(NSMutableDictionary *)self->_labelPlacementCache objectForKey:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSMutableDictionary *)self->_labelPlacementCache objectForKey:mode];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setLabelPlacement:(int64_t)a3 forDisplayMode:(id)a4
+- (void)setLabelPlacement:(int64_t)placement forDisplayMode:(id)mode
 {
   labelPlacementCache = self->_labelPlacementCache;
   v6 = MEMORY[0x277CCABB0];
-  v7 = a4;
-  v8 = [v6 numberWithInteger:a3];
-  [(NSMutableDictionary *)labelPlacementCache setObject:v8 forKey:v7];
+  modeCopy = mode;
+  v8 = [v6 numberWithInteger:placement];
+  [(NSMutableDictionary *)labelPlacementCache setObject:v8 forKey:modeCopy];
 }
 
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(StockChartData *)self stock];
-  v5 = [v4 symbol];
+  stock = [(StockChartData *)self stock];
+  symbol = [stock symbol];
   v6 = [ChartUpdater _rangeStringForInterval:self->_chartInterval];
-  v7 = [v3 stringWithFormat:@"<StockChartData: %p, symbol = %@, interval = %@", self, v5, v6];
+  v7 = [v3 stringWithFormat:@"<StockChartData: %p, symbol = %@, interval = %@", self, symbol, v6];
 
   return v7;
 }

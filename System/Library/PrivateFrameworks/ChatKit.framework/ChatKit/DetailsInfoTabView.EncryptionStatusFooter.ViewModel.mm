@@ -1,10 +1,10 @@
 @interface DetailsInfoTabView.EncryptionStatusFooter.ViewModel
-- (void)handleKeyTransparencyStatusChanged:(id)a3;
+- (void)handleKeyTransparencyStatusChanged:(id)changed;
 @end
 
 @implementation DetailsInfoTabView.EncryptionStatusFooter.ViewModel
 
-- (void)handleKeyTransparencyStatusChanged:(id)a3
+- (void)handleKeyTransparencyStatusChanged:(id)changed
 {
   sub_190D50920();
   sub_190C690DC();

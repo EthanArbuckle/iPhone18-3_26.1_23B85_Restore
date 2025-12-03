@@ -1,10 +1,10 @@
 @interface CNNumberFormatting
-+ (id)localizedStringWithInteger:(int64_t)a3;
++ (id)localizedStringWithInteger:(int64_t)integer;
 @end
 
 @implementation CNNumberFormatting
 
-+ (id)localizedStringWithInteger:(int64_t)a3
++ (id)localizedStringWithInteger:(int64_t)integer
 {
   if (localizedStringWithInteger__cn_once_token_0 != -1)
   {
@@ -13,7 +13,7 @@
 
   v4 = MEMORY[0x1E696AD98];
   v5 = localizedStringWithInteger__cn_once_object_0;
-  v6 = [v4 numberWithInteger:a3];
+  v6 = [v4 numberWithInteger:integer];
   v7 = [v5 stringFromNumber:v6];
 
   return v7;

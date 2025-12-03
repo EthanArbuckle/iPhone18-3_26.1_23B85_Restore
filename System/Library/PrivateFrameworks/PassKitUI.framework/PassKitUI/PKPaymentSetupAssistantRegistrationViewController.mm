@@ -1,47 +1,47 @@
 @interface PKPaymentSetupAssistantRegistrationViewController
-+ (id)defaultWebServiceForContext:(int64_t)a3;
-- (PKPaymentSetupAssistantRegistrationViewController)initWithPaymentWebService:(id)a3 context:(int64_t)a4 delegate:(id)a5;
-- (void)_setUserInteractionEnabled:(BOOL)a3;
-- (void)explanationViewDidSelectContinue:(id)a3;
-- (void)preflightWithCompletion:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
++ (id)defaultWebServiceForContext:(int64_t)context;
+- (PKPaymentSetupAssistantRegistrationViewController)initWithPaymentWebService:(id)service context:(int64_t)context delegate:(id)delegate;
+- (void)_setUserInteractionEnabled:(BOOL)enabled;
+- (void)explanationViewDidSelectContinue:(id)continue;
+- (void)preflightWithCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
 @end
 
 @implementation PKPaymentSetupAssistantRegistrationViewController
 
-+ (id)defaultWebServiceForContext:(int64_t)a3
++ (id)defaultWebServiceForContext:(int64_t)context
 {
   if (PKPaymentSetupContextIsBridge())
   {
     v3 = objc_alloc_init(getNPKCompanionAgentConnectionClass[0]());
-    v4 = [v3 watchPaymentWebService];
+    watchPaymentWebService = [v3 watchPaymentWebService];
   }
 
   else
   {
-    v4 = [MEMORY[0x1E69B8EF8] sharedService];
+    watchPaymentWebService = [MEMORY[0x1E69B8EF8] sharedService];
   }
 
-  return v4;
+  return watchPaymentWebService;
 }
 
-- (PKPaymentSetupAssistantRegistrationViewController)initWithPaymentWebService:(id)a3 context:(int64_t)a4 delegate:(id)a5
+- (PKPaymentSetupAssistantRegistrationViewController)initWithPaymentWebService:(id)service context:(int64_t)context delegate:(id)delegate
 {
   v8 = MEMORY[0x1E69B8D48];
-  v9 = a5;
-  v10 = a3;
-  v11 = [[v8 alloc] initWithWebService:v10];
+  delegateCopy = delegate;
+  serviceCopy = service;
+  v11 = [[v8 alloc] initWithWebService:serviceCopy];
 
-  v12 = [[PKPaymentSetupAssistantDelegateProxy alloc] initWithDelegate:v9 provisioningController:v11];
+  v12 = [[PKPaymentSetupAssistantDelegateProxy alloc] initWithDelegate:delegateCopy provisioningController:v11];
   v17.receiver = self;
   v17.super_class = PKPaymentSetupAssistantRegistrationViewController;
-  v13 = [(PKPaymentSetupHeroViewController *)&v17 initWithProvisioningController:v11 context:a4 delegate:v12 product:0 selectedMethod:0 allowsManualEntry:0];
+  v13 = [(PKPaymentSetupHeroViewController *)&v17 initWithProvisioningController:v11 context:context delegate:v12 product:0 selectedMethod:0 allowsManualEntry:0];
   v14 = v13;
   if (v13)
   {
-    v15 = [(PKPaymentSetupAssistantRegistrationViewController *)v13 navigationItem];
-    [v15 setLeftBarButtonItem:0];
+    navigationItem = [(PKPaymentSetupAssistantRegistrationViewController *)v13 navigationItem];
+    [navigationItem setLeftBarButtonItem:0];
 
     objc_storeStrong(&v14->_delegateProxy, v12);
   }
@@ -49,12 +49,12 @@
   return v14;
 }
 
-- (void)preflightWithCompletion:(id)a3
+- (void)preflightWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = PKLogFacilityTypeGetObject();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
-  if (v4)
+  if (completionCopy)
   {
     if (v6)
     {
@@ -86,13 +86,13 @@
       setupAssistantCoreController = self->_setupAssistantCoreController;
     }
 
-    v14 = [(PKPaymentSetupHeroViewController *)self provisioningController];
+    provisioningController = [(PKPaymentSetupHeroViewController *)self provisioningController];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __77__PKPaymentSetupAssistantRegistrationViewController_preflightWithCompletion___block_invoke;
     v15[3] = &unk_1E80120F0;
-    v16 = v4;
-    [(PKPaymentSetupAssistantCoreController *)setupAssistantCoreController _preflightPaymentSetupProvisioningController:v14 completion:v15];
+    v16 = completionCopy;
+    [(PKPaymentSetupAssistantCoreController *)setupAssistantCoreController _preflightPaymentSetupProvisioningController:provisioningController completion:v15];
 
     v5 = v16;
   }
@@ -123,30 +123,30 @@ void __77__PKPaymentSetupAssistantRegistrationViewController_preflightWithComple
   MEMORY[0x1BFB41980](*MEMORY[0x1E69BA020], 0);
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = PKPaymentSetupAssistantRegistrationViewController;
-  [(PKPaymentSetupHeroViewController *)&v5 viewDidAppear:a3];
-  v4 = [(PKPaymentSetupHeroViewController *)self delegate];
+  [(PKPaymentSetupHeroViewController *)&v5 viewDidAppear:appear];
+  delegate = [(PKPaymentSetupHeroViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v4 viewControllerDidBeginSetupFlow:self];
+    [delegate viewControllerDidBeginSetupFlow:self];
   }
 }
 
-- (void)explanationViewDidSelectContinue:(id)a3
+- (void)explanationViewDidSelectContinue:(id)continue
 {
-  v4 = a3;
+  continueCopy = continue;
   [(PKPaymentSetupAssistantRegistrationViewController *)self _setUserInteractionEnabled:0];
   v5 = objc_alloc(MEMORY[0x1E69B90E0]);
-  v6 = [(PKExplanationViewController *)self context];
-  v7 = [(PKPaymentSetupHeroViewController *)self provisioningController];
-  v8 = [v5 initWithEnvironment:v6 provisioningController:v7 groupsController:0];
+  context = [(PKExplanationViewController *)self context];
+  provisioningController = [(PKPaymentSetupHeroViewController *)self provisioningController];
+  v8 = [v5 initWithEnvironment:context provisioningController:provisioningController groupsController:0];
 
   [v8 setIsFollowupSetupAssistant:1];
   objc_initWeak(&location, self);
-  v9 = [(PKPaymentSetupAssistantRegistrationViewController *)self navigationController];
+  navigationController = [(PKPaymentSetupAssistantRegistrationViewController *)self navigationController];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __86__PKPaymentSetupAssistantRegistrationViewController_explanationViewDidSelectContinue___block_invoke;
@@ -157,7 +157,7 @@ void __77__PKPaymentSetupAssistantRegistrationViewController_preflightWithComple
   v10[2] = __86__PKPaymentSetupAssistantRegistrationViewController_explanationViewDidSelectContinue___block_invoke_2;
   v10[3] = &unk_1E8010998;
   objc_copyWeak(&v11, &location);
-  [PKProvisioningFlowBridge startSetupAssistantFollowupFlowWithUnownedNavController:v9 context:v8 preflightCompletion:v12 completion:v10];
+  [PKProvisioningFlowBridge startSetupAssistantFollowupFlowWithUnownedNavController:navigationController context:v8 preflightCompletion:v12 completion:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&v13);
@@ -183,18 +183,18 @@ void __86__PKPaymentSetupAssistantRegistrationViewController_explanationViewDidS
   }
 }
 
-- (void)_setUserInteractionEnabled:(BOOL)a3
+- (void)_setUserInteractionEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  v5 = [(PKPaymentSetupAssistantRegistrationViewController *)self view];
-  [v5 setUserInteractionEnabled:v3];
+  enabledCopy = enabled;
+  view = [(PKPaymentSetupAssistantRegistrationViewController *)self view];
+  [view setUserInteractionEnabled:enabledCopy];
 
-  v6 = [(PKExplanationViewController *)self explanationView];
-  v8 = [v6 dockView];
+  explanationView = [(PKExplanationViewController *)self explanationView];
+  dockView = [explanationView dockView];
 
-  [v8 setButtonsEnabled:v3];
-  v7 = [v8 primaryButton];
-  [v7 setShowSpinner:v3 ^ 1];
+  [dockView setButtonsEnabled:enabledCopy];
+  primaryButton = [dockView primaryButton];
+  [primaryButton setShowSpinner:enabledCopy ^ 1];
 }
 
 @end

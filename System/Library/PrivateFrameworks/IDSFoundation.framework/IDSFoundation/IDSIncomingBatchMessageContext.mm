@@ -1,50 +1,50 @@
 @interface IDSIncomingBatchMessageContext
-- (IDSIncomingBatchMessageContext)initWithBatchIdentifier:(id)a3 serverStorageFetchContext:(id)a4;
-- (IDSIncomingBatchMessageContext)initWithCoder:(id)a3;
+- (IDSIncomingBatchMessageContext)initWithBatchIdentifier:(id)identifier serverStorageFetchContext:(id)context;
+- (IDSIncomingBatchMessageContext)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSIncomingBatchMessageContext
 
-- (IDSIncomingBatchMessageContext)initWithBatchIdentifier:(id)a3 serverStorageFetchContext:(id)a4
+- (IDSIncomingBatchMessageContext)initWithBatchIdentifier:(id)identifier serverStorageFetchContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  identifierCopy = identifier;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = IDSIncomingBatchMessageContext;
   v9 = [(IDSIncomingBatchMessageContext *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_batchIdentifier, a3);
-    objc_storeStrong(&v10->_serverStorageFetchContext, a4);
+    objc_storeStrong(&v9->_batchIdentifier, identifier);
+    objc_storeStrong(&v10->_serverStorageFetchContext, context);
   }
 
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   batchIdentifier = self->_batchIdentifier;
-  v5 = a3;
-  [v5 encodeObject:batchIdentifier forKey:@"IDSIncomingBatchMessageContextBatchIdentifierKey"];
-  [v5 encodeObject:self->_serverStorageFetchContext forKey:@"IDSIncomingBatchMessageContextServerStorageFetchContextKey"];
-  [v5 encodeBool:self->_isLastFromStorage forKey:@"IDSIncomingBatchMessageContextIsLastFromStorageKey"];
-  [v5 encodeObject:self->_batchNumber forKey:@"IDSIncomingBatchMessageContextBatchNumberKey"];
-  [v5 encodeObject:self->_totalBatchCount forKey:@"IDSIncomingBatchMessageContextTotalBatchCountKey"];
-  [v5 encodeBool:self->_firstMessageAfterTimeout forKey:@"IDSIncomingBatchMessageContextFirstMessageAfterTimeoutKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:batchIdentifier forKey:@"IDSIncomingBatchMessageContextBatchIdentifierKey"];
+  [coderCopy encodeObject:self->_serverStorageFetchContext forKey:@"IDSIncomingBatchMessageContextServerStorageFetchContextKey"];
+  [coderCopy encodeBool:self->_isLastFromStorage forKey:@"IDSIncomingBatchMessageContextIsLastFromStorageKey"];
+  [coderCopy encodeObject:self->_batchNumber forKey:@"IDSIncomingBatchMessageContextBatchNumberKey"];
+  [coderCopy encodeObject:self->_totalBatchCount forKey:@"IDSIncomingBatchMessageContextTotalBatchCountKey"];
+  [coderCopy encodeBool:self->_firstMessageAfterTimeout forKey:@"IDSIncomingBatchMessageContextFirstMessageAfterTimeoutKey"];
 }
 
-- (IDSIncomingBatchMessageContext)initWithCoder:(id)a3
+- (IDSIncomingBatchMessageContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSIncomingBatchMessageContextBatchIdentifierKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSIncomingBatchMessageContextServerStorageFetchContextKey"];
-  v7 = [v4 decodeBoolForKey:@"IDSIncomingBatchMessageContextIsLastFromStorageKey"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSIncomingBatchMessageContextBatchNumberKey"];
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSIncomingBatchMessageContextTotalBatchCountKey"];
-  v10 = [v4 decodeBoolForKey:@"IDSIncomingBatchMessageContextFirstMessageAfterTimeoutKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSIncomingBatchMessageContextBatchIdentifierKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSIncomingBatchMessageContextServerStorageFetchContextKey"];
+  v7 = [coderCopy decodeBoolForKey:@"IDSIncomingBatchMessageContextIsLastFromStorageKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSIncomingBatchMessageContextBatchNumberKey"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSIncomingBatchMessageContextTotalBatchCountKey"];
+  v10 = [coderCopy decodeBoolForKey:@"IDSIncomingBatchMessageContextFirstMessageAfterTimeoutKey"];
 
   v11 = [(IDSIncomingBatchMessageContext *)self initWithBatchIdentifier:v5 serverStorageFetchContext:v6];
   [(IDSIncomingBatchMessageContext *)v11 setIsLastFromStorage:v7];

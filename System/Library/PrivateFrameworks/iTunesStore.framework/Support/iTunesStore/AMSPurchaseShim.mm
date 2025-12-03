@@ -1,31 +1,31 @@
 @interface AMSPurchaseShim
-- (AMSPurchaseShim)initWithPurchase:(id)a3 auditTokenData:(id)a4 clientIdentifier:(id)a5;
-- (id)_legacyErrorFromError:(id)a3;
-- (id)runPurchase:(id *)a3;
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
-- (void)purchase:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5;
-- (void)purchase:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5;
-- (void)purchase:(id)a3 handleEngagementRequest:(id)a4 completion:(id)a5;
+- (AMSPurchaseShim)initWithPurchase:(id)purchase auditTokenData:(id)data clientIdentifier:(id)identifier;
+- (id)_legacyErrorFromError:(id)error;
+- (id)runPurchase:(id *)purchase;
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion;
+- (void)purchase:(id)purchase handleAuthenticateRequest:(id)request completion:(id)completion;
+- (void)purchase:(id)purchase handleDialogRequest:(id)request completion:(id)completion;
+- (void)purchase:(id)purchase handleEngagementRequest:(id)request completion:(id)completion;
 @end
 
 @implementation AMSPurchaseShim
 
-- (AMSPurchaseShim)initWithPurchase:(id)a3 auditTokenData:(id)a4 clientIdentifier:(id)a5
+- (AMSPurchaseShim)initWithPurchase:(id)purchase auditTokenData:(id)data clientIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  purchaseCopy = purchase;
+  dataCopy = data;
+  identifierCopy = identifier;
   v24.receiver = self;
   v24.super_class = AMSPurchaseShim;
   v11 = [(AMSPurchaseShim *)&v24 init];
   if (v11)
   {
-    v12 = [v8 newAMSPurchase];
-    [(AMSPurchaseShim *)v11 setPurchase:v12];
+    newAMSPurchase = [purchaseCopy newAMSPurchase];
+    [(AMSPurchaseShim *)v11 setPurchase:newAMSPurchase];
 
-    [(AMSPurchaseShim *)v11 setSsPurchase:v8];
-    [(AMSPurchaseShim *)v11 setAuditTokenData:v9];
-    [(AMSPurchaseShim *)v11 setClientIdentifier:v10];
+    [(AMSPurchaseShim *)v11 setSsPurchase:purchaseCopy];
+    [(AMSPurchaseShim *)v11 setAuditTokenData:dataCopy];
+    [(AMSPurchaseShim *)v11 setClientIdentifier:identifierCopy];
     v13 = +[AMSPurchaseTask createBagForSubProfile];
     [(AMSPurchaseShim *)v11 setBag:v13];
 
@@ -35,19 +35,19 @@
       v14 = +[SSLogConfig sharedConfig];
     }
 
-    v15 = [v14 shouldLog];
+    shouldLog = [v14 shouldLog];
     if ([v14 shouldLogToDisk])
     {
-      v16 = v15 | 2;
+      v16 = shouldLog | 2;
     }
 
     else
     {
-      v16 = v15;
+      v16 = shouldLog;
     }
 
-    v17 = [v14 OSLogObject];
-    if (!os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+    oSLogObject = [v14 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
     {
       v16 &= 2u;
     }
@@ -71,7 +71,7 @@ LABEL_13:
         goto LABEL_14;
       }
 
-      v17 = [NSString stringWithCString:v21 encoding:4, &v25, v23];
+      oSLogObject = [NSString stringWithCString:v21 encoding:4, &v25, v23];
       free(v21);
       SSFileLog();
     }
@@ -84,7 +84,7 @@ LABEL_14:
   return v11;
 }
 
-- (id)runPurchase:(id *)a3
+- (id)runPurchase:(id *)purchase
 {
   v5 = AMSSetLogKeyIfNeeded();
   v6 = +[SSLogConfig sharedStoreServicesConfig];
@@ -93,19 +93,19 @@ LABEL_14:
     v6 = +[SSLogConfig sharedConfig];
   }
 
-  v7 = [v6 shouldLog];
+  shouldLog = [v6 shouldLog];
   if ([v6 shouldLogToDisk])
   {
-    v8 = v7 | 2;
+    v8 = shouldLog | 2;
   }
 
   else
   {
-    v8 = v7;
+    v8 = shouldLog;
   }
 
-  v9 = [v6 OSLogObject];
-  if (!os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
+  oSLogObject = [v6 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject, OS_LOG_TYPE_INFO))
   {
     v8 &= 2u;
   }
@@ -126,35 +126,35 @@ LABEL_14:
       goto LABEL_12;
     }
 
-    v9 = [NSString stringWithCString:v11 encoding:4, &v60, v51];
+    oSLogObject = [NSString stringWithCString:v11 encoding:4, &v60, v51];
     free(v11);
-    v50 = v9;
+    v50 = oSLogObject;
     SSFileLog();
   }
 
 LABEL_12:
-  v12 = [(AMSPurchaseShim *)self purchase];
-  [v12 setLogUUID:v5];
-  v13 = [v12 mediaType];
-  v14 = [v12 accountIdentifier];
+  purchase = [(AMSPurchaseShim *)self purchase];
+  [purchase setLogUUID:v5];
+  mediaType = [purchase mediaType];
+  accountIdentifier = [purchase accountIdentifier];
 
-  v55 = v13;
-  if (v14)
+  v55 = mediaType;
+  if (accountIdentifier)
   {
-    v15 = [ACAccountStore ams_sharedAccountStoreForMediaType:v13];
-    v16 = [ACAccountStore ams_accountTypeIdentifierForMediaType:v13];
-    v17 = [v12 accountIdentifier];
-    [v15 ams_accountWithAltDSID:0 DSID:v17 username:0 accountTypeIdentifier:v16];
-    v19 = v18 = a3;
+    v15 = [ACAccountStore ams_sharedAccountStoreForMediaType:mediaType];
+    v16 = [ACAccountStore ams_accountTypeIdentifierForMediaType:mediaType];
+    accountIdentifier2 = [purchase accountIdentifier];
+    [v15 ams_accountWithAltDSID:0 DSID:accountIdentifier2 username:0 accountTypeIdentifier:v16];
+    v19 = v18 = purchase;
     v20 = [AMSPromise promiseWithResult:v19];
 
-    a3 = v18;
+    purchase = v18;
   }
 
   else
   {
     v15 = +[ACAccountStore ams_sharedAccountStore];
-    v20 = [v15 ams_activeiTunesAccountForMediaType:v13];
+    v20 = [v15 ams_activeiTunesAccountForMediaType:mediaType];
   }
 
   v57[0] = _NSConcreteStackBlock;
@@ -164,7 +164,7 @@ LABEL_12:
   v57[4] = self;
   v21 = v5;
   v58 = v21;
-  v22 = v12;
+  v22 = purchase;
   v59 = v22;
   v54 = v20;
   [v20 continueWithBlock:v57];
@@ -173,7 +173,7 @@ LABEL_12:
   v24 = v56;
   if (v24)
   {
-    v25 = v24;
+    oSLogObject3 = v24;
     v26 = [(AMSPurchaseShim *)self _legacyErrorFromError:v24];
     if (!v26)
     {
@@ -186,33 +186,33 @@ LABEL_12:
       v27 = +[SSLogConfig sharedConfig];
     }
 
-    v28 = [v27 shouldLog];
+    shouldLog2 = [v27 shouldLog];
     if ([v27 shouldLogToDisk])
     {
-      v28 |= 2u;
+      shouldLog2 |= 2u;
     }
 
-    v29 = [v27 OSLogObject];
-    if (!os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
+    oSLogObject2 = [v27 OSLogObject];
+    if (!os_log_type_enabled(oSLogObject2, OS_LOG_TYPE_INFO))
     {
-      v28 &= 2u;
+      shouldLog2 &= 2u;
     }
 
     v52 = v21;
-    if (v28)
+    if (shouldLog2)
     {
       v30 = objc_opt_class();
       v60 = 138543618;
       v61 = v30;
       v62 = 2114;
       v63 = v21;
-      v31 = a3;
+      purchaseCopy = purchase;
       v32 = v30;
       LODWORD(v51) = 22;
       v50 = &v60;
       v33 = _os_log_send_and_compose_impl();
 
-      a3 = v31;
+      purchase = purchaseCopy;
       if (!v33)
       {
 LABEL_27:
@@ -222,13 +222,13 @@ LABEL_27:
         v21 = v52;
 LABEL_38:
 
-        v25 = v34;
+        oSLogObject3 = v34;
         goto LABEL_39;
       }
 
-      v29 = [NSString stringWithCString:v33 encoding:4, &v60, v51];
+      oSLogObject2 = [NSString stringWithCString:v33 encoding:4, &v60, v51];
       free(v33);
-      v50 = v29;
+      v50 = oSLogObject2;
       SSFileLog();
     }
 
@@ -241,19 +241,19 @@ LABEL_38:
     v26 = +[SSLogConfig sharedConfig];
   }
 
-  v35 = [v26 shouldLog];
+  shouldLog3 = [v26 shouldLog];
   if ([v26 shouldLogToDisk])
   {
-    v35 |= 2u;
+    shouldLog3 |= 2u;
   }
 
-  v25 = [v26 OSLogObject];
-  if (!os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
+  oSLogObject3 = [v26 OSLogObject];
+  if (!os_log_type_enabled(oSLogObject3, OS_LOG_TYPE_INFO))
   {
-    v35 &= 2u;
+    shouldLog3 &= 2u;
   }
 
-  if (!v35)
+  if (!shouldLog3)
   {
 LABEL_37:
     v34 = 0;
@@ -272,50 +272,50 @@ LABEL_37:
 
   if (v38)
   {
-    v25 = [NSString stringWithCString:v38 encoding:4, &v60, v51];
+    oSLogObject3 = [NSString stringWithCString:v38 encoding:4, &v60, v51];
     free(v38);
-    v50 = v25;
+    v50 = oSLogObject3;
     SSFileLog();
     goto LABEL_37;
   }
 
-  v25 = 0;
+  oSLogObject3 = 0;
 LABEL_39:
 
-  if (a3)
+  if (purchase)
   {
-    v39 = v25;
-    *a3 = v25;
+    v39 = oSLogObject3;
+    *purchase = oSLogObject3;
   }
 
-  v40 = [(AMSPurchaseShim *)self ssPurchase];
-  v41 = [v23 newSSPurchaseResponseWithSSPurchase:v40];
+  ssPurchase = [(AMSPurchaseShim *)self ssPurchase];
+  v41 = [v23 newSSPurchaseResponseWithSSPurchase:ssPurchase];
 
-  v42 = [v41 URLResponse];
+  uRLResponse = [v41 URLResponse];
   [(AMSPurchaseShim *)self setResult:v23];
-  v43 = [v22 account];
-  v44 = [v43 ams_DSID];
-  [(AMSPurchaseShim *)self setAuthenticatedAccountDSID:v44];
+  account = [v22 account];
+  ams_DSID = [account ams_DSID];
+  [(AMSPurchaseShim *)self setAuthenticatedAccountDSID:ams_DSID];
 
-  v45 = [v23 responseDictionary];
-  [(AMSPurchaseShim *)self setRawOutput:v45];
+  responseDictionary = [v23 responseDictionary];
+  [(AMSPurchaseShim *)self setRawOutput:responseDictionary];
 
   [(AMSPurchaseShim *)self setRequestPerformanceMetrics:0];
-  [(AMSPurchaseShim *)self setURLResponse:v42];
-  v46 = [v42 storeCorrelationID];
-  [(AMSPurchaseShim *)self setStoreCorrelationID:v46];
+  [(AMSPurchaseShim *)self setURLResponse:uRLResponse];
+  storeCorrelationID = [uRLResponse storeCorrelationID];
+  [(AMSPurchaseShim *)self setStoreCorrelationID:storeCorrelationID];
 
-  v47 = [(AMSPurchaseShim *)self ssPurchase];
-  v48 = [v47 tidHeaders];
-  [(AMSPurchaseShim *)self setTidHeaders:v48];
+  ssPurchase2 = [(AMSPurchaseShim *)self ssPurchase];
+  tidHeaders = [ssPurchase2 tidHeaders];
+  [(AMSPurchaseShim *)self setTidHeaders:tidHeaders];
 
   return v23;
 }
 
-- (id)_legacyErrorFromError:(id)a3
+- (id)_legacyErrorFromError:(id)error
 {
-  v3 = [a3 userInfo];
-  v4 = [v3 objectForKeyedSubscript:AMSErrorUserInfoKeyServerPayload];
+  userInfo = [error userInfo];
+  v4 = [userInfo objectForKeyedSubscript:AMSErrorUserInfoKeyServerPayload];
 
   v5 = [v4 objectForKey:kISDialogKey];
   v6 = [v4 objectForKey:kISFailureTypeKey];
@@ -326,12 +326,12 @@ LABEL_39:
     goto LABEL_28;
   }
 
-  v9 = [v7 buttons];
+  buttons = [v7 buttons];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v10 = [buttons countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (!v10)
   {
     goto LABEL_22;
@@ -347,22 +347,22 @@ LABEL_39:
     {
       if (*v21 != v14)
       {
-        objc_enumerationMutation(v9);
+        objc_enumerationMutation(buttons);
       }
 
-      v16 = [*(*(&v20 + 1) + 8 * i) actionType];
-      if (v16 == 1)
+      actionType = [*(*(&v20 + 1) + 8 * i) actionType];
+      if (actionType == 1)
       {
         v12 = 1;
       }
 
-      else if (v16 == 11 || v16 == 3)
+      else if (actionType == 11 || actionType == 3)
       {
         v13 = 1;
       }
     }
 
-    v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    v11 = [buttons countByEnumeratingWithState:&v20 objects:v24 count:16];
   }
 
   while (v11);
@@ -401,41 +401,41 @@ LABEL_28:
   return v8;
 }
 
-- (void)purchase:(id)a3 handleAuthenticateRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleAuthenticateRequest:(id)request completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
+  completionCopy = completion;
+  requestCopy = request;
   v9 = [AMSAuthenticateTask alloc];
   v10 = [(AMSPurchaseShim *)self bag];
-  v12 = [v9 initWithRequest:v8 bag:v10];
+  v12 = [v9 initWithRequest:requestCopy bag:v10];
 
   [v12 setDelegate:self];
-  v11 = [v12 performAuthentication];
-  [v11 addFinishBlock:v7];
+  performAuthentication = [v12 performAuthentication];
+  [performAuthentication addFinishBlock:completionCopy];
 }
 
-- (void)purchase:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleDialogRequest:(id)request completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v9 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v7];
+  completionCopy = completion;
+  requestCopy = request;
+  v9 = [[AMSSystemAlertDialogTask alloc] initWithRequest:requestCopy];
 
-  v8 = [v9 present];
-  [v8 addFinishBlock:v6];
+  present = [v9 present];
+  [present addFinishBlock:completionCopy];
 }
 
-- (void)purchase:(id)a3 handleEngagementRequest:(id)a4 completion:(id)a5
+- (void)purchase:(id)purchase handleEngagementRequest:(id)request completion:(id)completion
 {
-  v7 = a5;
-  v8 = a4;
-  v15 = [[AMSSystemEngagementTask alloc] initWithRequest:v8];
+  completionCopy = completion;
+  requestCopy = request;
+  v15 = [[AMSSystemEngagementTask alloc] initWithRequest:requestCopy];
 
-  v9 = [(AMSPurchaseShim *)self clientIdentifier];
-  if (v9)
+  clientIdentifier = [(AMSPurchaseShim *)self clientIdentifier];
+  if (clientIdentifier)
   {
     v10 = [AMSProcessInfo alloc];
-    v11 = [(AMSPurchaseShim *)self clientIdentifier];
-    v12 = [v10 initWithBundleIdentifier:v11];
+    clientIdentifier2 = [(AMSPurchaseShim *)self clientIdentifier];
+    v12 = [v10 initWithBundleIdentifier:clientIdentifier2];
   }
 
   else
@@ -443,22 +443,22 @@ LABEL_28:
     v12 = +[AMSProcessInfo currentProcess];
   }
 
-  v13 = [(AMSPurchaseShim *)self auditTokenData];
-  [v12 setAuditTokenData:v13];
+  auditTokenData = [(AMSPurchaseShim *)self auditTokenData];
+  [v12 setAuditTokenData:auditTokenData];
 
   [v15 setClientInfo:v12];
-  v14 = [v15 present];
-  [v14 addFinishBlock:v7];
+  present = [v15 present];
+  [present addFinishBlock:completionCopy];
 }
 
-- (void)authenticateTask:(id)a3 handleDialogRequest:(id)a4 completion:(id)a5
+- (void)authenticateTask:(id)task handleDialogRequest:(id)request completion:(id)completion
 {
-  v6 = a5;
-  v7 = a4;
-  v9 = [[AMSSystemAlertDialogTask alloc] initWithRequest:v7];
+  completionCopy = completion;
+  requestCopy = request;
+  v9 = [[AMSSystemAlertDialogTask alloc] initWithRequest:requestCopy];
 
-  v8 = [v9 present];
-  [v8 addFinishBlock:v6];
+  present = [v9 present];
+  [present addFinishBlock:completionCopy];
 }
 
 @end

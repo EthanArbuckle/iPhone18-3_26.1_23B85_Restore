@@ -1,12 +1,12 @@
 @interface NSSAirplaneModeSettingsMsg
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NSSAirplaneModeSettingsMsg
@@ -17,33 +17,33 @@
   v8.receiver = self;
   v8.super_class = NSSAirplaneModeSettingsMsg;
   v4 = [(NSSAirplaneModeSettingsMsg *)&v8 description];
-  v5 = [(NSSAirplaneModeSettingsMsg *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NSSAirplaneModeSettingsMsg *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithBool:self->_cellularOn];
-    [v3 setObject:v4 forKey:@"cellularOn"];
+    [dictionary setObject:v4 forKey:@"cellularOn"];
   }
 
   v5 = [MEMORY[0x277CCABB0] numberWithBool:self->_wifiOn];
-  [v3 setObject:v5 forKey:@"wifiOn"];
+  [dictionary setObject:v5 forKey:@"wifiOn"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithBool:self->_bluetoothOn];
-  [v3 setObject:v6 forKey:@"bluetoothOn"];
+  [dictionary setObject:v6 forKey:@"bluetoothOn"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v7 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     cellularOn = self->_cellularOn;
@@ -56,21 +56,21 @@
   PBDataWriterWriteBOOLField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 9) = self->_cellularOn;
-    *(a3 + 12) |= 1u;
+    *(to + 9) = self->_cellularOn;
+    *(to + 12) |= 1u;
   }
 
-  *(a3 + 10) = self->_wifiOn;
-  *(a3 + 8) = self->_bluetoothOn;
+  *(to + 10) = self->_wifiOn;
+  *(to + 8) = self->_bluetoothOn;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (*&self->_has)
   {
     *(result + 9) = self->_cellularOn;
@@ -82,29 +82,29 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = v4[12];
+  v5 = equalCopy[12];
   if ((*&self->_has & 1) == 0)
   {
     goto LABEL_3;
   }
 
-  if ((v4[12] & 1) == 0)
+  if ((equalCopy[12] & 1) == 0)
   {
     goto LABEL_12;
   }
 
-  v5 = v4[9];
+  v5 = equalCopy[9];
   if (self->_cellularOn)
   {
-    if ((v4[9] & 1) == 0)
+    if ((equalCopy[9] & 1) == 0)
     {
       goto LABEL_12;
     }
@@ -119,19 +119,19 @@ LABEL_3:
     }
   }
 
-  v6 = v4[10];
+  v6 = equalCopy[10];
   if (self->_wifiOn)
   {
-    if (v4[10])
+    if (equalCopy[10])
     {
       goto LABEL_14;
     }
   }
 
-  else if ((v4[10] & 1) == 0)
+  else if ((equalCopy[10] & 1) == 0)
   {
 LABEL_14:
-    v7 = self->_bluetoothOn == v4[8];
+    v7 = self->_bluetoothOn == equalCopy[8];
     goto LABEL_13;
   }
 
@@ -157,16 +157,16 @@ LABEL_13:
   return (2654435761 * self->_wifiOn) ^ v2 ^ (2654435761 * self->_bluetoothOn);
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 12))
+  if (*(from + 12))
   {
-    self->_cellularOn = *(a3 + 9);
+    self->_cellularOn = *(from + 9);
     *&self->_has |= 1u;
   }
 
-  self->_wifiOn = *(a3 + 10);
-  self->_bluetoothOn = *(a3 + 8);
+  self->_wifiOn = *(from + 10);
+  self->_bluetoothOn = *(from + 8);
 }
 
 @end

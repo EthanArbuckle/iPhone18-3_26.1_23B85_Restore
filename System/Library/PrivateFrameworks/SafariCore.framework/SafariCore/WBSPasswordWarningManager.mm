@@ -1,36 +1,36 @@
 @interface WBSPasswordWarningManager
-- (BOOL)_historyContainsItemForDomain:(id)a3;
+- (BOOL)_historyContainsItemForDomain:(id)domain;
 - (BOOL)hasUnacknowledgedHighPriorityWarnings;
 - (WBSPasswordEvaluator)passwordEvaluator;
-- (WBSPasswordWarningManager)initWithSavedAccountStore:(id)a3 autoFillQuirksManager:(id)a4 userDefaults:(id)a5 highLevelDomainsProvider:(id)a6;
-- (WBSPasswordWarningManager)initWithSavedAccountStore:(id)a3 autoFillQuirksManager:(id)a4 userDefaults:(id)a5 highLevelDomainsProvider:(id)a6 websiteMetadataStore:(id)a7;
+- (WBSPasswordWarningManager)initWithSavedAccountStore:(id)store autoFillQuirksManager:(id)manager userDefaults:(id)defaults highLevelDomainsProvider:(id)provider;
+- (WBSPasswordWarningManager)initWithSavedAccountStore:(id)store autoFillQuirksManager:(id)manager userDefaults:(id)defaults highLevelDomainsProvider:(id)provider websiteMetadataStore:(id)metadataStore;
 - (id)_passwordBreachHelperProxy;
-- (id)_scoredWarningForSavedAccount:(id)a3 topFraudTargets:(id)a4 breachResultRecord:(id)a5;
-- (id)_warningForSavedAccount:(id)a3 breachResultRecord:(id)a4;
-- (int64_t)_scoreForSavedAccount:(id)a3 issueTypes:(unint64_t)a4 topFraudTargets:(id)a5;
+- (id)_scoredWarningForSavedAccount:(id)account topFraudTargets:(id)targets breachResultRecord:(id)record;
+- (id)_warningForSavedAccount:(id)account breachResultRecord:(id)record;
+- (int64_t)_scoreForSavedAccount:(id)account issueTypes:(unint64_t)types topFraudTargets:(id)targets;
 - (int64_t)numberOfNonHiddenWarningsWithSpecifiedPriority;
-- (unint64_t)_issuesForPassword:(id)a3 withWeakPasswordEvaluation:(id)a4 passwordIsReused:(BOOL)a5 websiteMetadataEntry:(id)a6 breachResultRecord:(id)a7;
-- (void)_getBreachResultRecordsForPasswords:(id)a3 startSessionIfNecessary:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)_scoreWarnings:(id)a3 topFraudTargets:(id)a4;
-- (void)_sortWarningsBySeverity:(id)a3 intoHighPriorityBucket:(id)a4 standardPriorityBucket:(id)a5 informationalPriorityBucket:(id)a6 unspecifiedSeverityBucket:(id)a7 savedAccountMap:(id)a8 highPriorityWarningHashes:(id)a9;
-- (void)_updateUserDefaultsWithWarningHashes:(id)a3;
+- (unint64_t)_issuesForPassword:(id)password withWeakPasswordEvaluation:(id)evaluation passwordIsReused:(BOOL)reused websiteMetadataEntry:(id)entry breachResultRecord:(id)record;
+- (void)_getBreachResultRecordsForPasswords:(id)passwords startSessionIfNecessary:(BOOL)necessary withCompletionHandler:(id)handler;
+- (void)_scoreWarnings:(id)warnings topFraudTargets:(id)targets;
+- (void)_sortWarningsBySeverity:(id)severity intoHighPriorityBucket:(id)bucket standardPriorityBucket:(id)priorityBucket informationalPriorityBucket:(id)informationalPriorityBucket unspecifiedSeverityBucket:(id)severityBucket savedAccountMap:(id)map highPriorityWarningHashes:(id)hashes;
+- (void)_updateUserDefaultsWithWarningHashes:(id)hashes;
 - (void)_writePasswordEvaluationsToCache;
 - (void)acknowledgeHighPriorityWarnings;
 - (void)dealloc;
-- (void)getAllWarningsForcingUpdate:(BOOL)a3 completionHandler:(id)a4;
-- (void)getWarningForSavedAccount:(id)a3 completionHandler:(id)a4;
-- (void)preWarmWarningsWithCompletionHandler:(id)a3;
-- (void)removeWarningForSavedAccount:(id)a3;
+- (void)getAllWarningsForcingUpdate:(BOOL)update completionHandler:(id)handler;
+- (void)getWarningForSavedAccount:(id)account completionHandler:(id)handler;
+- (void)preWarmWarningsWithCompletionHandler:(id)handler;
+- (void)removeWarningForSavedAccount:(id)account;
 @end
 
 @implementation WBSPasswordWarningManager
 
-- (WBSPasswordWarningManager)initWithSavedAccountStore:(id)a3 autoFillQuirksManager:(id)a4 userDefaults:(id)a5 highLevelDomainsProvider:(id)a6
+- (WBSPasswordWarningManager)initWithSavedAccountStore:(id)store autoFillQuirksManager:(id)manager userDefaults:(id)defaults highLevelDomainsProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  storeCopy = store;
+  managerCopy = manager;
+  defaultsCopy = defaults;
+  providerCopy = provider;
   v31.receiver = self;
   v31.super_class = WBSPasswordWarningManager;
   v15 = [(WBSPasswordWarningManager *)&v31 init];
@@ -47,14 +47,14 @@
 
     v15->_cachedDataLock._os_unfair_lock_opaque = 0;
     v15->_passwordEvaluatorLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v15->_historyHighLevelDomainsProvider, a6);
+    objc_storeStrong(&v15->_historyHighLevelDomainsProvider, provider);
     [(WBSHistoricalHighLevelDomainsProvider *)v15->_historyHighLevelDomainsProvider performBlockAfterHistoryHasLoaded:&__block_literal_global_52];
-    objc_storeStrong(&v15->_accountStore, a3);
-    v21 = [[WBSPasswordAuditor alloc] initWithSavedAccountStore:v11 autoFillQuirksManager:v12];
+    objc_storeStrong(&v15->_accountStore, store);
+    v21 = [[WBSPasswordAuditor alloc] initWithSavedAccountStore:storeCopy autoFillQuirksManager:managerCopy];
     passwordAuditor = v15->_passwordAuditor;
     v15->_passwordAuditor = v21;
 
-    objc_storeStrong(&v15->_userDefaults, a5);
+    objc_storeStrong(&v15->_userDefaults, defaults);
     v23 = objc_alloc_init(WBSPasswordWarningTopFraudTargetsManager);
     topFraudTargetsManager = v15->_topFraudTargetsManager;
     v15->_topFraudTargetsManager = v23;
@@ -74,19 +74,19 @@
   return v15;
 }
 
-- (WBSPasswordWarningManager)initWithSavedAccountStore:(id)a3 autoFillQuirksManager:(id)a4 userDefaults:(id)a5 highLevelDomainsProvider:(id)a6 websiteMetadataStore:(id)a7
+- (WBSPasswordWarningManager)initWithSavedAccountStore:(id)store autoFillQuirksManager:(id)manager userDefaults:(id)defaults highLevelDomainsProvider:(id)provider websiteMetadataStore:(id)metadataStore
 {
-  v7 = [(WBSPasswordWarningManager *)self initWithSavedAccountStore:a3 autoFillQuirksManager:a4 userDefaults:a5 highLevelDomainsProvider:a6, a7];
-  if (v7)
+  metadataStore = [(WBSPasswordWarningManager *)self initWithSavedAccountStore:store autoFillQuirksManager:manager userDefaults:defaults highLevelDomainsProvider:provider, metadataStore];
+  if (metadataStore)
   {
     v8 = [[WBSPasswordManagerWebsiteMetadataStore alloc] initWithMetadataEntryClass:objc_opt_class()];
-    websiteMetadataStore = v7->_websiteMetadataStore;
-    v7->_websiteMetadataStore = v8;
+    websiteMetadataStore = metadataStore->_websiteMetadataStore;
+    metadataStore->_websiteMetadataStore = v8;
 
-    v10 = v7;
+    v10 = metadataStore;
   }
 
-  return v7;
+  return metadataStore;
 }
 
 - (void)dealloc
@@ -140,15 +140,15 @@
   return v6;
 }
 
-- (void)preWarmWarningsWithCompletionHandler:(id)a3
+- (void)preWarmWarningsWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __66__WBSPasswordWarningManager_preWarmWarningsWithCompletionHandler___block_invoke;
   v6[3] = &unk_1E7CF3908;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(WBSPasswordWarningManager *)self getAllWarningsForcingUpdate:1 completionHandler:v6];
 }
 
@@ -163,22 +163,22 @@ uint64_t __66__WBSPasswordWarningManager_preWarmWarningsWithCompletionHandler___
   return result;
 }
 
-- (void)getAllWarningsForcingUpdate:(BOOL)a3 completionHandler:(id)a4
+- (void)getAllWarningsForcingUpdate:(BOOL)update completionHandler:(id)handler
 {
   v65 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  handlerCopy = handler;
   dispatch_suspend(self->_callbackQueue);
   callbackQueue = self->_callbackQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __75__WBSPasswordWarningManager_getAllWarningsForcingUpdate_completionHandler___block_invoke;
   block[3] = &unk_1E7CF1888;
-  v8 = v6;
+  v8 = handlerCopy;
   block[4] = self;
   v63 = v8;
   dispatch_async(callbackQueue, block);
   os_unfair_lock_lock(&self->_cachedDataLock);
-  if (self->_updateInProgress || !a3 && self->_cachedWarnings)
+  if (self->_updateInProgress || !update && self->_cachedWarnings)
   {
     os_unfair_lock_unlock(&self->_cachedDataLock);
     dispatch_resume(self->_callbackQueue);
@@ -186,7 +186,7 @@ uint64_t __66__WBSPasswordWarningManager_preWarmWarningsWithCompletionHandler___
 
   else
   {
-    v30 = a3;
+    updateCopy = update;
     self->_updateInProgress = 1;
     os_unfair_lock_unlock(&self->_cachedDataLock);
     v9 = WBS_LOG_CHANNEL_PREFIXPasswords();
@@ -197,8 +197,8 @@ uint64_t __66__WBSPasswordWarningManager_preWarmWarningsWithCompletionHandler___
     }
 
     v10 = dispatch_group_create();
-    v11 = [(WBSSavedAccountStore *)self->_accountStore savedAccountsExcludingNeverSaveMarkerPasswords];
-    v31 = [v11 safari_filterObjectsUsingBlock:&__block_literal_global_26_0];
+    savedAccountsExcludingNeverSaveMarkerPasswords = [(WBSSavedAccountStore *)self->_accountStore savedAccountsExcludingNeverSaveMarkerPasswords];
+    v31 = [savedAccountsExcludingNeverSaveMarkerPasswords safari_filterObjectsUsingBlock:&__block_literal_global_26_0];
 
     if (self->_historyHighLevelDomainsProvider)
     {
@@ -252,8 +252,8 @@ uint64_t __66__WBSPasswordWarningManager_preWarmWarningsWithCompletionHandler___
       v45 = 0u;
       v42 = 0u;
       v43 = 0u;
-      v17 = [(WBSSavedAccountStore *)self->_accountStore savedAccountsWithPasswords];
-      v18 = [v17 countByEnumeratingWithState:&v42 objects:v64 count:16];
+      savedAccountsWithPasswords = [(WBSSavedAccountStore *)self->_accountStore savedAccountsWithPasswords];
+      v18 = [savedAccountsWithPasswords countByEnumeratingWithState:&v42 objects:v64 count:16];
       if (v18)
       {
         v19 = *v43;
@@ -263,7 +263,7 @@ uint64_t __66__WBSPasswordWarningManager_preWarmWarningsWithCompletionHandler___
           {
             if (*v43 != v19)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(savedAccountsWithPasswords);
             }
 
             v21 = *(*(&v42 + 1) + 8 * i);
@@ -274,23 +274,23 @@ uint64_t __66__WBSPasswordWarningManager_preWarmWarningsWithCompletionHandler___
             }
           }
 
-          v18 = [v17 countByEnumeratingWithState:&v42 objects:v64 count:16];
+          v18 = [savedAccountsWithPasswords countByEnumeratingWithState:&v42 objects:v64 count:16];
         }
 
         while (v18);
       }
 
-      v23 = [(WBSPasswordWarningManager *)self _passwordBreachHelperProxy];
-      v24 = [v16 allKeys];
+      _passwordBreachHelperProxy = [(WBSPasswordWarningManager *)self _passwordBreachHelperProxy];
+      allKeys = [v16 allKeys];
       v38[0] = MEMORY[0x1E69E9820];
       v38[1] = 3221225472;
       v38[2] = __75__WBSPasswordWarningManager_getAllWarningsForcingUpdate_completionHandler___block_invoke_3;
       v38[3] = &unk_1E7CF39A0;
       v25 = v16;
       v39 = v25;
-      v40 = self;
+      selfCopy = self;
       v41 = v15;
-      [v23 getPasswordEvaluationsForPersistentIdentifiers:v24 completionHandler:v38];
+      [_passwordBreachHelperProxy getPasswordEvaluationsForPersistentIdentifiers:allKeys completionHandler:v38];
     }
 
     workQueue = self->_workQueue;
@@ -298,7 +298,7 @@ uint64_t __66__WBSPasswordWarningManager_preWarmWarningsWithCompletionHandler___
     v32[1] = 3221225472;
     v32[2] = __75__WBSPasswordWarningManager_getAllWarningsForcingUpdate_completionHandler___block_invoke_4;
     v32[3] = &unk_1E7CF3A18;
-    v37 = v30;
+    v37 = updateCopy;
     v32[4] = self;
     v33 = v31;
     v34 = v15;
@@ -490,22 +490,22 @@ void __75__WBSPasswordWarningManager_getAllWarningsForcingUpdate_completionHandl
   dispatch_resume(*(*(a1 + 32) + 16));
 }
 
-- (void)getWarningForSavedAccount:(id)a3 completionHandler:(id)a4
+- (void)getWarningForSavedAccount:(id)account completionHandler:(id)handler
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v15[0] = v6;
+  accountCopy = account;
+  handlerCopy = handler;
+  v15[0] = accountCopy;
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __73__WBSPasswordWarningManager_getWarningForSavedAccount_completionHandler___block_invoke;
   v12[3] = &unk_1E7CF3A90;
   v12[4] = self;
-  v13 = v6;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v13 = accountCopy;
+  v14 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = accountCopy;
   [(WBSPasswordWarningManager *)self _getBreachResultRecordsForPasswords:v8 startSessionIfNecessary:0 withCompletionHandler:v12];
 
   v11 = *MEMORY[0x1E69E9840];
@@ -559,13 +559,13 @@ void __73__WBSPasswordWarningManager_getWarningForSavedAccount_completionHandler
   (*(*(a1 + 64) + 16))();
 }
 
-- (void)removeWarningForSavedAccount:(id)a3
+- (void)removeWarningForSavedAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   os_unfair_lock_lock(&self->_cachedDataLock);
-  v11 = [(NSMapTable *)self->_cachedWarningsForSavedAccounts objectForKey:v4];
+  v11 = [(NSMapTable *)self->_cachedWarningsForSavedAccounts objectForKey:accountCopy];
   v5 = [(NSMapTable *)self->_cachedWarningsForSavedAccounts mutableCopy];
-  [v5 removeObjectForKey:v4];
+  [v5 removeObjectForKey:accountCopy];
 
   v6 = [v5 copy];
   cachedWarningsForSavedAccounts = self->_cachedWarningsForSavedAccounts;
@@ -583,15 +583,15 @@ void __73__WBSPasswordWarningManager_getWarningForSavedAccount_completionHandler
 - (BOOL)hasUnacknowledgedHighPriorityWarnings
 {
   v2 = [(NSUserDefaults *)self->_userDefaults objectForKey:@"lastPasswordWarningManagerUpdateHasNewWarnings"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (void)acknowledgeHighPriorityWarnings
 {
   v8 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 56);
+  v2 = *(self + 56);
   v3 = a2;
   v4 = [v2 arrayForKey:@"lastPasswordWarningManagerUpdateHashes"];
   v6 = 134217984;
@@ -617,35 +617,35 @@ void __73__WBSPasswordWarningManager_getWarningForSavedAccount_completionHandler
   return v5;
 }
 
-- (id)_warningForSavedAccount:(id)a3 breachResultRecord:(id)a4
+- (id)_warningForSavedAccount:(id)account breachResultRecord:(id)record
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 password];
-  v9 = [(NSMutableDictionary *)self->_cachedPasswordEvaluations objectForKeyedSubscript:v8];
-  if (v9 || ([(NSMutableDictionary *)self->_inMemoryCachedPasswordEvaluations objectForKeyedSubscript:v8], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
+  accountCopy = account;
+  recordCopy = record;
+  password = [accountCopy password];
+  v9 = [(NSMutableDictionary *)self->_cachedPasswordEvaluations objectForKeyedSubscript:password];
+  if (v9 || ([(NSMutableDictionary *)self->_inMemoryCachedPasswordEvaluations objectForKeyedSubscript:password], (v9 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v10 = v9;
   }
 
   else
   {
-    v26 = [(WBSPasswordWarningManager *)self passwordEvaluator];
-    v10 = [v26 evaluatePassword:v8];
+    passwordEvaluator = [(WBSPasswordWarningManager *)self passwordEvaluator];
+    v10 = [passwordEvaluator evaluatePassword:password];
 
-    if (v8)
+    if (password)
     {
-      [(NSMutableDictionary *)self->_inMemoryCachedPasswordEvaluations setObject:v10 forKeyedSubscript:v8];
+      [(NSMutableDictionary *)self->_inMemoryCachedPasswordEvaluations setObject:v10 forKeyedSubscript:password];
     }
   }
 
-  v11 = [(WBSPasswordAuditor *)self->_passwordAuditor savedAccountsWithDuplicatedPassword:v6];
+  v11 = [(WBSPasswordAuditor *)self->_passwordAuditor savedAccountsWithDuplicatedPassword:accountCopy];
   v12 = [v11 safari_mapObjectsUsingBlock:&__block_literal_global_38];
-  if (+[WBSFeatureAvailability isPromotePasskeyUpgradesEnabled](WBSFeatureAvailability, "isPromotePasskeyUpgradesEnabled") && self->_websiteMetadataStore && [v6 hasValidWebsite])
+  if (+[WBSFeatureAvailability isPromotePasskeyUpgradesEnabled](WBSFeatureAvailability, "isPromotePasskeyUpgradesEnabled") && self->_websiteMetadataStore && [accountCopy hasValidWebsite])
   {
     websiteMetadataStore = self->_websiteMetadataStore;
-    v14 = [v6 highLevelDomain];
-    v15 = [(WBSPasswordManagerWebsiteMetadataStore *)websiteMetadataStore synchronousMetadataForDomain:v14];
+    highLevelDomain = [accountCopy highLevelDomain];
+    v15 = [(WBSPasswordManagerWebsiteMetadataStore *)websiteMetadataStore synchronousMetadataForDomain:highLevelDomain];
   }
 
   else
@@ -653,19 +653,19 @@ void __73__WBSPasswordWarningManager_getWarningForSavedAccount_completionHandler
     v15 = 0;
   }
 
-  v16 = -[WBSPasswordWarningManager _issuesForPassword:withWeakPasswordEvaluation:passwordIsReused:websiteMetadataEntry:breachResultRecord:](self, "_issuesForPassword:withWeakPasswordEvaluation:passwordIsReused:websiteMetadataEntry:breachResultRecord:", v6, v10, [v11 count] != 0, v15, v7);
+  v16 = -[WBSPasswordWarningManager _issuesForPassword:withWeakPasswordEvaluation:passwordIsReused:websiteMetadataEntry:breachResultRecord:](self, "_issuesForPassword:withWeakPasswordEvaluation:passwordIsReused:websiteMetadataEntry:breachResultRecord:", accountCopy, v10, [v11 count] != 0, v15, recordCopy);
 
   accountStore = self->_accountStore;
-  v18 = [v6 highLevelDomain];
-  v19 = [(WBSSavedAccountStore *)accountStore numberOfSavedAccountsInPersonalKeychainForHighLevelDomain:v18]== 1;
+  highLevelDomain2 = [accountCopy highLevelDomain];
+  v19 = [(WBSSavedAccountStore *)accountStore numberOfSavedAccountsInPersonalKeychainForHighLevelDomain:highLevelDomain2]== 1;
 
-  v20 = [[WBSPasswordWarning alloc] initWithSavedAccount:v6 issueTypes:v16 weakPasswordEvaluation:v10 titlesOfSavedAccountsWithReusedPassword:v12 savedAccountIsOnlySavedAccountForHighLevelDomain:v19];
+  v20 = [[WBSPasswordWarning alloc] initWithSavedAccount:accountCopy issueTypes:v16 weakPasswordEvaluation:v10 titlesOfSavedAccountsWithReusedPassword:v12 savedAccountIsOnlySavedAccountForHighLevelDomain:v19];
   if (v15 && (v16 & 0x40) != 0)
   {
     v21 = [_TtC10SafariCore33WBSWebsitePasskeyAvailabilityInfo alloc];
-    v22 = [v15 enrollPasskeyURL];
-    v23 = [v15 managePasskeyURL];
-    v24 = [(WBSWebsitePasskeyAvailabilityInfo *)v21 initWithSupportsPasskeys:1 enrollURL:v22 manageURL:v23];
+    enrollPasskeyURL = [v15 enrollPasskeyURL];
+    managePasskeyURL = [v15 managePasskeyURL];
+    v24 = [(WBSWebsitePasskeyAvailabilityInfo *)v21 initWithSupportsPasskeys:1 enrollURL:enrollPasskeyURL manageURL:managePasskeyURL];
 
     [(WBSPasswordWarning *)v20 setWebsitePasskeyAvailabilityInfo:v24];
   }
@@ -689,49 +689,49 @@ id __72__WBSPasswordWarningManager__warningForSavedAccount_breachResultRecord___
   return v3;
 }
 
-- (id)_scoredWarningForSavedAccount:(id)a3 topFraudTargets:(id)a4 breachResultRecord:(id)a5
+- (id)_scoredWarningForSavedAccount:(id)account topFraudTargets:(id)targets breachResultRecord:(id)record
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(WBSPasswordWarningManager *)self _warningForSavedAccount:v9 breachResultRecord:a5];
-  v11 = -[WBSPasswordWarningManager _scoreForSavedAccount:issueTypes:topFraudTargets:](self, "_scoreForSavedAccount:issueTypes:topFraudTargets:", v9, [v10 issueTypes], v8);
+  targetsCopy = targets;
+  accountCopy = account;
+  v10 = [(WBSPasswordWarningManager *)self _warningForSavedAccount:accountCopy breachResultRecord:record];
+  v11 = -[WBSPasswordWarningManager _scoreForSavedAccount:issueTypes:topFraudTargets:](self, "_scoreForSavedAccount:issueTypes:topFraudTargets:", accountCopy, [v10 issueTypes], targetsCopy);
 
   [v10 setSeverityScore:v11];
 
   return v10;
 }
 
-- (unint64_t)_issuesForPassword:(id)a3 withWeakPasswordEvaluation:(id)a4 passwordIsReused:(BOOL)a5 websiteMetadataEntry:(id)a6 breachResultRecord:(id)a7
+- (unint64_t)_issuesForPassword:(id)password withWeakPasswordEvaluation:(id)evaluation passwordIsReused:(BOOL)reused websiteMetadataEntry:(id)entry breachResultRecord:(id)record
 {
-  v9 = a5;
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  v15 = [v12 password];
-  if ([v15 length] == 1 && (objc_msgSend(&unk_1F308EAF0, "containsObject:", v15) & 1) != 0)
+  reusedCopy = reused;
+  passwordCopy = password;
+  evaluationCopy = evaluation;
+  entryCopy = entry;
+  recordCopy = record;
+  password = [evaluationCopy password];
+  if ([password length] == 1 && (objc_msgSend(&unk_1F308EAF0, "containsObject:", password) & 1) != 0)
   {
     v16 = 0;
   }
 
   else
   {
-    v17 = [v12 userShouldBeShownPassiveWarning];
+    userShouldBeShownPassiveWarning = [evaluationCopy userShouldBeShownPassiveWarning];
     v18 = 2;
-    if (!v17)
+    if (!userShouldBeShownPassiveWarning)
     {
       v18 = 0;
     }
 
-    v19 = v18 | v9;
-    v20 = [v14 result];
+    v19 = v18 | reusedCopy;
+    result = [recordCopy result];
     v21 = v19 | 4;
-    if (v20 != 2)
+    if (result != 2)
     {
       v21 = v19;
     }
 
-    if (v20 == 3)
+    if (result == 3)
     {
       v22 = v19 | 8;
     }
@@ -741,16 +741,16 @@ id __72__WBSPasswordWarningManager__warningForSavedAccount_breachResultRecord___
       v22 = v21;
     }
 
-    v23 = [v11 formerlySharedPasswordMarker];
+    formerlySharedPasswordMarker = [passwordCopy formerlySharedPasswordMarker];
 
-    if (v23)
+    if (formerlySharedPasswordMarker)
     {
       v22 |= 0x10uLL;
     }
 
-    v24 = [v11 formerlySharedPasskeyMarker];
+    formerlySharedPasskeyMarker = [passwordCopy formerlySharedPasskeyMarker];
 
-    if (v24)
+    if (formerlySharedPasskeyMarker)
     {
       v16 = v22 | 0x20;
     }
@@ -761,12 +761,12 @@ id __72__WBSPasswordWarningManager__warningForSavedAccount_breachResultRecord___
     }
 
     v25 = +[WBSFeatureAvailability isPromotePasskeyUpgradesEnabled];
-    if (v13 && v25 && [v11 hasValidWebsite])
+    if (entryCopy && v25 && [passwordCopy hasValidWebsite])
     {
-      v26 = [v11 credentialTypes] == 1;
-      v27 = [v13 supportsPasskeys];
+      v26 = [passwordCopy credentialTypes] == 1;
+      supportsPasskeys = [entryCopy supportsPasskeys];
       v28 = 64;
-      if ((v26 & v27) == 0)
+      if ((v26 & supportsPasskeys) == 0)
       {
         v28 = 0;
       }
@@ -778,28 +778,28 @@ id __72__WBSPasswordWarningManager__warningForSavedAccount_breachResultRecord___
   return v16;
 }
 
-- (int64_t)_scoreForSavedAccount:(id)a3 issueTypes:(unint64_t)a4 topFraudTargets:(id)a5
+- (int64_t)_scoreForSavedAccount:(id)account issueTypes:(unint64_t)types topFraudTargets:(id)targets
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8)
+  typesCopy = types;
+  accountCopy = account;
+  targetsCopy = targets;
+  v10 = targetsCopy;
+  if (accountCopy)
   {
-    v11 = [v9 highPriorityFraudTargets];
-    v12 = [v8 highLevelDomain];
-    v13 = [v11 containsObject:v12];
+    highPriorityFraudTargets = [targetsCopy highPriorityFraudTargets];
+    highLevelDomain = [accountCopy highLevelDomain];
+    v13 = [highPriorityFraudTargets containsObject:highLevelDomain];
 
-    if (v13 & 1) != 0 || ([v10 financialFraudTargets], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v8, "highLevelDomain"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "containsObject:", v15), v15, v14, (v16))
+    if (v13 & 1) != 0 || ([v10 financialFraudTargets], v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend(accountCopy, "highLevelDomain"), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v14, "containsObject:", v15), v15, v14, (v16))
     {
       v17 = 10;
     }
 
     else
     {
-      v19 = [v10 fraudTargets];
-      v20 = [v8 highLevelDomain];
-      v21 = [v19 containsObject:v20];
+      fraudTargets = [v10 fraudTargets];
+      highLevelDomain2 = [accountCopy highLevelDomain];
+      v21 = [fraudTargets containsObject:highLevelDomain2];
 
       if (v21)
       {
@@ -812,27 +812,27 @@ id __72__WBSPasswordWarningManager__warningForSavedAccount_breachResultRecord___
       }
     }
 
-    v22 = [v8 highLevelDomain];
-    v23 = [(WBSPasswordWarningManager *)self _historyContainsItemForDomain:v22];
+    highLevelDomain3 = [accountCopy highLevelDomain];
+    v23 = [(WBSPasswordWarningManager *)self _historyContainsItemForDomain:highLevelDomain3];
 
     v24 = v17 | v23;
-    if ((v6 & 8) != 0)
+    if ((typesCopy & 8) != 0)
     {
       v24 += 12;
     }
 
-    if ((v6 & 4) != 0)
+    if ((typesCopy & 4) != 0)
     {
       v24 += 11;
     }
 
-    if ((v6 & 2) != 0)
+    if ((typesCopy & 2) != 0)
     {
       v24 += 3;
     }
 
-    v25 = v24 + 2 * (v6 & 1);
-    if ((v6 & 0x30) != 0)
+    v25 = v24 + 2 * (typesCopy & 1);
+    if ((typesCopy & 0x30) != 0)
     {
       v18 = v25 + 10;
     }
@@ -851,9 +851,9 @@ id __72__WBSPasswordWarningManager__warningForSavedAccount_breachResultRecord___
   return v18;
 }
 
-- (BOOL)_historyContainsItemForDomain:(id)a3
+- (BOOL)_historyContainsItemForDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   historyHighLevelDomains = self->_historyHighLevelDomains;
   if (!historyHighLevelDomains)
   {
@@ -867,7 +867,7 @@ id __72__WBSPasswordWarningManager__warningForSavedAccount_breachResultRecord___
     historyHighLevelDomains = self->_historyHighLevelDomains;
   }
 
-  v7 = [(NSSet *)historyHighLevelDomains containsObject:v4];
+  v7 = [(NSSet *)historyHighLevelDomains containsObject:domainCopy];
 
   return v7;
 }
@@ -887,19 +887,19 @@ id __72__WBSPasswordWarningManager__warningForSavedAccount_breachResultRecord___
   return passwordBreachHelperProxy;
 }
 
-- (void)_getBreachResultRecordsForPasswords:(id)a3 startSessionIfNecessary:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)_getBreachResultRecordsForPasswords:(id)passwords startSessionIfNecessary:(BOOL)necessary withCompletionHandler:(id)handler
 {
-  v29 = self;
+  selfCopy = self;
   v52 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v30 = a5;
+  passwordsCopy = passwords;
+  handlerCopy = handler;
   v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v8 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
-  obj = v6;
+  obj = passwordsCopy;
   v35 = [obj countByEnumeratingWithState:&v44 objects:v51 count:16];
   if (v35)
   {
@@ -916,8 +916,8 @@ id __72__WBSPasswordWarningManager__warningForSavedAccount_breachResultRecord___
         }
 
         v10 = *(*(&v44 + 1) + 8 * i);
-        v11 = [v10 persistentIdentifiersForWarningManager];
-        v12 = [v11 count];
+        persistentIdentifiersForWarningManager = [v10 persistentIdentifiersForWarningManager];
+        v12 = [persistentIdentifiersForWarningManager count];
 
         if (v12)
         {
@@ -926,8 +926,8 @@ id __72__WBSPasswordWarningManager__warningForSavedAccount_breachResultRecord___
           v43 = 0u;
           v40 = 0u;
           v41 = 0u;
-          v13 = [v10 persistentIdentifiersForWarningManager];
-          v14 = [v13 countByEnumeratingWithState:&v40 objects:v48 count:16];
+          persistentIdentifiersForWarningManager2 = [v10 persistentIdentifiersForWarningManager];
+          v14 = [persistentIdentifiersForWarningManager2 countByEnumeratingWithState:&v40 objects:v48 count:16];
           if (v14)
           {
             v15 = v14;
@@ -938,19 +938,19 @@ id __72__WBSPasswordWarningManager__warningForSavedAccount_breachResultRecord___
               {
                 if (*v41 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(persistentIdentifiersForWarningManager2);
                 }
 
                 v18 = *(*(&v40 + 1) + 8 * j);
                 [v7 setObject:v10 forKeyedSubscript:v18];
                 v19 = [WBSPasswordBreachResultQuery alloc];
-                v20 = [v10 lastModifiedDate];
-                v21 = [(WBSPasswordBreachResultQuery *)v19 initWithPersistentIdentifier:v18 dateLastModified:v20];
+                lastModifiedDate = [v10 lastModifiedDate];
+                v21 = [(WBSPasswordBreachResultQuery *)v19 initWithPersistentIdentifier:v18 dateLastModified:lastModifiedDate];
 
                 [v8 addObject:v21];
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v40 objects:v48 count:16];
+              v15 = [persistentIdentifiersForWarningManager2 countByEnumeratingWithState:&v40 objects:v48 count:16];
             }
 
             while (v15);
@@ -985,17 +985,17 @@ id __72__WBSPasswordWarningManager__warningForSavedAccount_breachResultRecord___
   }
 
   v24 = [WBSPasswordBreachResultQuery dictionaryRepresentationsForResultQueries:v8];
-  v25 = [(WBSPasswordWarningManager *)v29 _passwordBreachHelperProxy];
+  _passwordBreachHelperProxy = [(WBSPasswordWarningManager *)selfCopy _passwordBreachHelperProxy];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __111__WBSPasswordWarningManager__getBreachResultRecordsForPasswords_startSessionIfNecessary_withCompletionHandler___block_invoke;
   v37[3] = &unk_1E7CF3AD8;
   v38 = v7;
-  v39 = v30;
+  v39 = handlerCopy;
   v26 = v7;
-  v27 = v30;
-  [v25 getResultRecordDictionariesForResultQueryDictionaries:v24 withCompletionHandler:v37];
-  [v25 runLookupSessionIgnoringMinimumDelay:0 completionHandler:&__block_literal_global_62];
+  v27 = handlerCopy;
+  [_passwordBreachHelperProxy getResultRecordDictionariesForResultQueryDictionaries:v24 withCompletionHandler:v37];
+  [_passwordBreachHelperProxy runLookupSessionIgnoringMinimumDelay:0 completionHandler:&__block_literal_global_62];
 
   v28 = *MEMORY[0x1E69E9840];
 }
@@ -1082,16 +1082,16 @@ void __111__WBSPasswordWarningManager__getBreachResultRecordsForPasswords_startS
   }
 }
 
-- (void)_scoreWarnings:(id)a3 topFraudTargets:(id)a4
+- (void)_scoreWarnings:(id)warnings topFraudTargets:(id)targets
 {
   v20 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  warningsCopy = warnings;
+  targetsCopy = targets;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v8 = [warningsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v8)
   {
     v9 = v8;
@@ -1102,15 +1102,15 @@ void __111__WBSPasswordWarningManager__getBreachResultRecordsForPasswords_startS
       {
         if (*v16 != v10)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(warningsCopy);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        v13 = [v12 savedAccount];
-        [v12 setSeverityScore:{-[WBSPasswordWarningManager _scoreForSavedAccount:issueTypes:topFraudTargets:](self, "_scoreForSavedAccount:issueTypes:topFraudTargets:", v13, objc_msgSend(v12, "issueTypes"), v7)}];
+        savedAccount = [v12 savedAccount];
+        [v12 setSeverityScore:{-[WBSPasswordWarningManager _scoreForSavedAccount:issueTypes:topFraudTargets:](self, "_scoreForSavedAccount:issueTypes:topFraudTargets:", savedAccount, objc_msgSend(v12, "issueTypes"), targetsCopy)}];
       }
 
-      v9 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v9 = [warningsCopy countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v9);
@@ -1119,21 +1119,21 @@ void __111__WBSPasswordWarningManager__getBreachResultRecordsForPasswords_startS
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_sortWarningsBySeverity:(id)a3 intoHighPriorityBucket:(id)a4 standardPriorityBucket:(id)a5 informationalPriorityBucket:(id)a6 unspecifiedSeverityBucket:(id)a7 savedAccountMap:(id)a8 highPriorityWarningHashes:(id)a9
+- (void)_sortWarningsBySeverity:(id)severity intoHighPriorityBucket:(id)bucket standardPriorityBucket:(id)priorityBucket informationalPriorityBucket:(id)informationalPriorityBucket unspecifiedSeverityBucket:(id)severityBucket savedAccountMap:(id)map highPriorityWarningHashes:(id)hashes
 {
   v36 = *MEMORY[0x1E69E9840];
-  v14 = a3;
-  v30 = a4;
-  v29 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v18 = a9;
+  severityCopy = severity;
+  bucketCopy = bucket;
+  priorityBucketCopy = priorityBucket;
+  informationalPriorityBucketCopy = informationalPriorityBucket;
+  severityBucketCopy = severityBucket;
+  mapCopy = map;
+  hashesCopy = hashes;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v19 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  v19 = [severityCopy countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v19)
   {
     v20 = v19;
@@ -1144,51 +1144,51 @@ void __111__WBSPasswordWarningManager__getBreachResultRecordsForPasswords_startS
       {
         if (*v32 != v21)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(severityCopy);
         }
 
         v23 = *(*(&v31 + 1) + 8 * i);
-        v24 = [v23 savedAccount];
-        [v17 setObject:v23 forKey:v24];
+        savedAccount = [v23 savedAccount];
+        [mapCopy setObject:v23 forKey:savedAccount];
 
-        v25 = [v23 severity];
-        if (v25 > 1)
+        severity = [v23 severity];
+        if (severity > 1)
         {
-          if (v25 == 2)
+          if (severity == 2)
           {
-            v27 = v29;
+            v27 = priorityBucketCopy;
           }
 
           else
           {
-            if (v25 != 3)
+            if (severity != 3)
             {
               continue;
             }
 
-            v27 = v15;
+            v27 = informationalPriorityBucketCopy;
           }
 
           goto LABEL_15;
         }
 
-        if (!v25)
+        if (!severity)
         {
-          v27 = v16;
+          v27 = severityBucketCopy;
 LABEL_15:
           [v27 addObject:v23];
           continue;
         }
 
-        if (v25 == 1)
+        if (severity == 1)
         {
-          [v30 addObject:v23];
+          [bucketCopy addObject:v23];
           v26 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(v23, "hashForUserAcknowlegement")}];
-          [v18 addObject:v26];
+          [hashesCopy addObject:v26];
         }
       }
 
-      v20 = [v14 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v20 = [severityCopy countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v20);
@@ -1197,22 +1197,22 @@ LABEL_15:
   v28 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_updateUserDefaultsWithWarningHashes:(id)a3
+- (void)_updateUserDefaultsWithWarningHashes:(id)hashes
 {
-  v4 = a3;
+  hashesCopy = hashes;
   v5 = [(NSUserDefaults *)self->_userDefaults arrayForKey:@"lastPasswordWarningManagerUpdateHashes"];
   userDefaults = self->_userDefaults;
-  v7 = [MEMORY[0x1E695DF00] date];
-  [(NSUserDefaults *)userDefaults safari_setDate:v7 forKey:@"lastPasswordWarningManagerUpdate"];
+  date = [MEMORY[0x1E695DF00] date];
+  [(NSUserDefaults *)userDefaults safari_setDate:date forKey:@"lastPasswordWarningManagerUpdate"];
 
-  [(NSUserDefaults *)self->_userDefaults setObject:v4 forKey:@"lastPasswordWarningManagerUpdateHashes"];
-  v8 = [v4 count];
+  [(NSUserDefaults *)self->_userDefaults setObject:hashesCopy forKey:@"lastPasswordWarningManagerUpdateHashes"];
+  v8 = [hashesCopy count];
   if (v8 <= [v5 count])
   {
-    v10 = [v4 count];
+    v10 = [hashesCopy count];
     if (v10 == [v5 count])
     {
-      v9 = [v4 isEqualToArray:v5] ^ 1;
+      v9 = [hashesCopy isEqualToArray:v5] ^ 1;
     }
 
     else
@@ -1229,7 +1229,7 @@ LABEL_15:
   v11 = WBS_LOG_CHANNEL_PREFIXPasswords();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
-    [(WBSPasswordWarningManager *)v11 _updateUserDefaultsWithWarningHashes:v4, v5];
+    [(WBSPasswordWarningManager *)v11 _updateUserDefaultsWithWarningHashes:hashesCopy, v5];
   }
 
   v12 = [(NSUserDefaults *)self->_userDefaults BOOLForKey:@"lastPasswordWarningManagerUpdateHasNewWarnings"];

@@ -1,18 +1,18 @@
 @interface SUNavigationBarBackgroundView
-- (SUNavigationBarBackgroundView)initWithFrame:(CGRect)a3;
+- (SUNavigationBarBackgroundView)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setBackdropStyle:(int64_t)a3;
-- (void)setSeparatorOnTop:(BOOL)a3;
+- (void)setBackdropStyle:(int64_t)style;
+- (void)setSeparatorOnTop:(BOOL)top;
 @end
 
 @implementation SUNavigationBarBackgroundView
 
-- (SUNavigationBarBackgroundView)initWithFrame:(CGRect)a3
+- (SUNavigationBarBackgroundView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = SUNavigationBarBackgroundView;
-  v3 = [(SUNavigationBarBackgroundView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SUNavigationBarBackgroundView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -38,10 +38,10 @@
   [(SUNavigationBarBackgroundView *)&v3 dealloc];
 }
 
-- (void)setBackdropStyle:(int64_t)a3
+- (void)setBackdropStyle:(int64_t)style
 {
   backdropView = self->_backdropView;
-  v5 = [objc_alloc(MEMORY[0x1E69DD370]) initWithPrivateStyle:a3];
+  v5 = [objc_alloc(MEMORY[0x1E69DD370]) initWithPrivateStyle:style];
   self->_backdropView = v5;
   [(_UIBackdropView *)backdropView frame];
   [(_UIBackdropView *)v5 setFrame:?];
@@ -60,11 +60,11 @@
   [MEMORY[0x1E69DD250] animateWithDuration:v7 animations:v6 completion:0.3];
 }
 
-- (void)setSeparatorOnTop:(BOOL)a3
+- (void)setSeparatorOnTop:(BOOL)top
 {
-  if (self->_separatorOnTop != a3)
+  if (self->_separatorOnTop != top)
   {
-    self->_separatorOnTop = a3;
+    self->_separatorOnTop = top;
     [(SUNavigationBarBackgroundView *)self setNeedsLayout];
   }
 }

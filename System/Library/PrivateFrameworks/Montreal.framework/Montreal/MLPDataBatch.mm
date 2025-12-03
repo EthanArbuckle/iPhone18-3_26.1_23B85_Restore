@@ -1,15 +1,15 @@
 @interface MLPDataBatch
-+ (id)dataBatch:(id)a3 batchSize:(unint64_t)a4 network:(id)a5;
-- (MLPDataBatch)initWithDataBatch:(id)a3 batchSize:(unint64_t)a4 network:(id)a5;
++ (id)dataBatch:(id)batch batchSize:(unint64_t)size network:(id)network;
+- (MLPDataBatch)initWithDataBatch:(id)batch batchSize:(unint64_t)size network:(id)network;
 @end
 
 @implementation MLPDataBatch
 
-+ (id)dataBatch:(id)a3 batchSize:(unint64_t)a4 network:(id)a5
++ (id)dataBatch:(id)batch batchSize:(unint64_t)size network:(id)network
 {
-  v7 = a3;
-  v8 = a5;
-  v11 = objc_msgSend_objectForKeyedSubscript_(v7, v9, MLPModelSampleDataFeatureValuesKey, v10);
+  batchCopy = batch;
+  networkCopy = network;
+  v11 = objc_msgSend_objectForKeyedSubscript_(batchCopy, v9, MLPModelSampleDataFeatureValuesKey, v10);
   v15 = objc_msgSend_length(v11, v12, v13, v14);
 
   if (v15)
@@ -19,7 +19,7 @@
 
   else
   {
-    v19 = objc_msgSend_objectForKeyedSubscript_(v7, v16, MLPModelSampleDataBatchOfSequencesKey, v17);
+    v19 = objc_msgSend_objectForKeyedSubscript_(batchCopy, v16, MLPModelSampleDataBatchOfSequencesKey, v17);
 
     if (!v19)
     {
@@ -30,15 +30,15 @@
   }
 
   v27 = [v18 alloc];
-  v29 = objc_msgSend_initWithDataBatch_batchSize_network_(v27, v28, v7, a4, v8);
+  v29 = objc_msgSend_initWithDataBatch_batchSize_network_(v27, v28, batchCopy, size, networkCopy);
 
   return v29;
 }
 
-- (MLPDataBatch)initWithDataBatch:(id)a3 batchSize:(unint64_t)a4 network:(id)a5
+- (MLPDataBatch)initWithDataBatch:(id)batch batchSize:(unint64_t)size network:(id)network
 {
-  v7 = a3;
-  v8 = a5;
+  batchCopy = batch;
+  networkCopy = network;
   v9 = MEMORY[0x1E695DF30];
   v10 = *MEMORY[0x1E695D930];
   v11 = MEMORY[0x1E696AEC0];

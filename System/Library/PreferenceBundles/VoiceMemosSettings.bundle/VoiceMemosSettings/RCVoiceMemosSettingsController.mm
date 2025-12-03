@@ -1,8 +1,8 @@
 @interface RCVoiceMemosSettingsController
 - (id)specifiers;
-- (void)_reloadAfterSettingPreferenceValue:(id)a3 specifier:(id)a4;
+- (void)_reloadAfterSettingPreferenceValue:(id)value specifier:(id)specifier;
 - (void)dealloc;
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4;
+- (void)setPreferenceValue:(id)value specifier:(id)specifier;
 - (void)viewDidLoad;
 @end
 
@@ -28,9 +28,9 @@
     v8 = [v6 initWithBundleIdentifier:RCVoiceMemosBundleID];
     [(RCVoiceMemosSettingsController *)self setAppPolicy:v8];
 
-    v9 = [(RCVoiceMemosSettingsController *)self appPolicy];
-    v10 = [v9 specifiers];
-    v11 = [v10 mutableCopy];
+    appPolicy = [(RCVoiceMemosSettingsController *)self appPolicy];
+    specifiers = [appPolicy specifiers];
+    v11 = [specifiers mutableCopy];
 
     v12 = RCLocalizedFrameworkString();
     v13 = [PSSpecifier groupSpecifierWithID:@"RecordingOptions" name:v12];
@@ -173,13 +173,13 @@
   return v3;
 }
 
-- (void)setPreferenceValue:(id)a3 specifier:(id)a4
+- (void)setPreferenceValue:(id)value specifier:(id)specifier
 {
   v7.receiver = self;
   v7.super_class = RCVoiceMemosSettingsController;
-  v6 = a4;
-  [(RCVoiceMemosSettingsController *)&v7 setPreferenceValue:a3 specifier:v6];
-  [(RCVoiceMemosSettingsController *)self reloadSpecifier:v6, v7.receiver, v7.super_class];
+  specifierCopy = specifier;
+  [(RCVoiceMemosSettingsController *)&v7 setPreferenceValue:value specifier:specifierCopy];
+  [(RCVoiceMemosSettingsController *)self reloadSpecifier:specifierCopy, v7.receiver, v7.super_class];
 }
 
 - (void)viewDidLoad
@@ -210,9 +210,9 @@
   [(RCVoiceMemosSettingsController *)&v4 dealloc];
 }
 
-- (void)_reloadAfterSettingPreferenceValue:(id)a3 specifier:(id)a4
+- (void)_reloadAfterSettingPreferenceValue:(id)value specifier:(id)specifier
 {
-  [(RCVoiceMemosSettingsController *)self setPreferenceValue:a3 specifier:a4];
+  [(RCVoiceMemosSettingsController *)self setPreferenceValue:value specifier:specifier];
 
   [(RCVoiceMemosSettingsController *)self reloadSpecifiers];
 }

@@ -1,27 +1,27 @@
 @interface CISmartBlackAndWhite
 + (id)customAttributes;
 - (float)createHueArray;
-- (id)hueArrayImage:(float *)a3;
+- (id)hueArrayImage:(float *)image;
 - (id)outputImage;
-- (void)getNonNormalizedSettings:(id *)a3;
+- (void)getNonNormalizedSettings:(id *)settings;
 @end
 
 @implementation CISmartBlackAndWhite
 
-- (void)getNonNormalizedSettings:(id *)a3
+- (void)getNonNormalizedSettings:(id *)settings
 {
-  a3->var0 = 1;
+  settings->var0 = 1;
   [(NSNumber *)self->inputHue floatValue];
-  a3->var1 = v5;
+  settings->var1 = v5;
   [(NSNumber *)self->inputStrength floatValue];
-  a3->var2 = v6;
+  settings->var2 = v6;
   [(NSNumber *)self->inputNeutralGamma floatValue];
-  a3->var3 = v7;
+  settings->var3 = v7;
   [(NSNumber *)self->inputTone floatValue];
   v28 = v8;
-  a3->var4 = v8;
-  var1 = a3->var1;
-  var2 = a3->var2;
+  settings->var4 = v8;
+  var1 = settings->var1;
+  var2 = settings->var2;
   v10 = var2;
   v11 = var2 * cos((0.60167 - var1) * 6.28318531) + 1.0;
   if (v11 <= 1.0)
@@ -63,12 +63,12 @@
   v21 = v20;
   v22 = powf(0.1, v21);
   v23 = v22 + (v14 + v18);
-  a3->var5[0] = v14 / v23;
-  a3->var5[1] = v18 / v23;
-  a3->var5[2] = v22 / v23;
-  if (a3->var0)
+  settings->var5[0] = v14 / v23;
+  settings->var5[1] = v18 / v23;
+  settings->var5[2] = v22 / v23;
+  if (settings->var0)
   {
-    a3->var0 = 0;
+    settings->var0 = 0;
     v24 = var1 * 0.5 + 0.35;
     if (v24 < 0.0)
     {
@@ -81,16 +81,16 @@
       v25 = var2 * 0.8;
     }
 
-    a3->var1 = v24;
-    a3->var2 = v25;
+    settings->var1 = v24;
+    settings->var2 = v25;
     v26 = v28 + v28;
     if (v28 <= 0.0)
     {
       v26 = v28;
     }
 
-    a3->var3 = a3->var3 + 1.0;
-    a3->var4 = v26;
+    settings->var3 = settings->var3 + 1.0;
+    settings->var4 = v26;
   }
 }
 
@@ -137,29 +137,29 @@
   return v2;
 }
 
-- (id)hueArrayImage:(float *)a3
+- (id)hueArrayImage:(float *)image
 {
   v13[5] = *MEMORY[0x1E69E9840];
-  v4 = [(CISmartBlackAndWhite *)self createHueArray];
+  createHueArray = [(CISmartBlackAndWhite *)self createHueArray];
   v5 = [MEMORY[0x1E695DF88] dataWithLength:368];
   v6 = v5;
-  v7 = *v4;
+  v7 = *createHueArray;
   for (i = 1; i != 360; ++i)
   {
-    if (v7 <= v4[i])
+    if (v7 <= createHueArray[i])
     {
-      v7 = v4[i];
+      v7 = createHueArray[i];
     }
   }
 
-  v9 = [v5 mutableBytes];
+  mutableBytes = [v5 mutableBytes];
   for (j = 0; j != 360; ++j)
   {
-    *(v9 + j) = fmaxf(fminf((v4[j] * 255.0) / v7, 255.0), 0.0);
+    *(mutableBytes + j) = fmaxf(fminf((createHueArray[j] * 255.0) / v7, 255.0), 0.0);
   }
 
-  *a3 = v7;
-  free(v4);
+  *image = v7;
+  free(createHueArray);
   v12[0] = @"CIImageColorSpace";
   v12[1] = @"CIImageFlipped";
   v12[2] = @"CIImageClampToEdge";
@@ -294,15 +294,15 @@
   {
     [(CISmartBlackAndWhite *)self getNonNormalizedSettings:v20];
     v4 = [CIVector vectorWithX:v23 Y:v24 Z:v25 W:v26];
-    v5 = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
+    imageByUnpremultiplyingAlpha = [(CIImage *)self->inputImage imageByUnpremultiplyingAlpha];
     v6 = [CIVector vectorWithX:0.997222245 Y:0.00138888892 Z:v21 W:v22];
-    v7 = [(CISmartBlackAndWhite *)self _kernel];
+    _kernel = [(CISmartBlackAndWhite *)self _kernel];
     [(CIImage *)self->inputImage extent];
-    v29[0] = v5;
+    v29[0] = imageByUnpremultiplyingAlpha;
     v29[1] = v3;
     v29[2] = v4;
     v29[3] = v6;
-    v3 = [objc_msgSend(v7 applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v29, 4), v8, v9, v10, v11), "imageByPremultiplyingAlpha"}];
+    v3 = [objc_msgSend(_kernel applyWithExtent:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v29, 4), v8, v9, v10, v11), "imageByPremultiplyingAlpha"}];
     [(NSNumber *)self->inputGrain floatValue];
     if (v12 > 0.0)
     {

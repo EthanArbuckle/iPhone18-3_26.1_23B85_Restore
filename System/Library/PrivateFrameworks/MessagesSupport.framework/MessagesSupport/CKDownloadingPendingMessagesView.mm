@@ -1,17 +1,17 @@
 @interface CKDownloadingPendingMessagesView
 - (CGSize)intrinsicContentSize;
-- (CKDownloadingPendingMessagesView)initWithFrame:(CGRect)a3;
+- (CKDownloadingPendingMessagesView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 - (void)startAppearanceAnimations;
-- (void)updateForLayoutDirectionWithScale:(double)a3;
-- (void)updateMessageCountWith:(id)a3;
+- (void)updateForLayoutDirectionWithScale:(double)scale;
+- (void)updateMessageCountWith:(id)with;
 @end
 
 @implementation CKDownloadingPendingMessagesView
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CKDownloadingPendingMessagesView.intrinsicContentSize.getter();
   v5 = v4;
 
@@ -22,28 +22,28 @@
   return result;
 }
 
-- (void)updateMessageCountWith:(id)a3
+- (void)updateMessageCountWith:(id)with
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR___CKDownloadingPendingMessagesView_pendingMessageCountLabel);
-  v5 = a3;
-  v6 = self;
+  withCopy = with;
+  selfCopy = self;
   [v4 setAttributedText_];
   sub_215685908();
 }
 
-- (void)updateForLayoutDirectionWithScale:(double)a3
+- (void)updateForLayoutDirectionWithScale:(double)scale
 {
-  v4 = self;
-  CKDownloadingPendingMessagesView.updateForLayoutDirection(withScale:)(a3);
+  selfCopy = self;
+  CKDownloadingPendingMessagesView.updateForLayoutDirection(withScale:)(scale);
 }
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   CKDownloadingPendingMessagesView.layoutSubviews()();
 }
 
-- (CKDownloadingPendingMessagesView)initWithFrame:(CGRect)a3
+- (CKDownloadingPendingMessagesView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
@@ -52,7 +52,7 @@
 
 - (void)startAppearanceAnimations
 {
-  v2 = self;
+  selfCopy = self;
   sub_2156867A0();
 }
 

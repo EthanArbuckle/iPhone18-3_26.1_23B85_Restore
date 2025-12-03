@@ -1,8 +1,8 @@
 @interface FeedbackHandler
-+ (id)configureClass:(id)a3;
++ (id)configureClass:(id)class;
 + (id)sharedInstance;
-- (BOOL)noteSymptom:(id)a3;
-- (int)read:(id)a3 returnedValues:(id)a4;
+- (BOOL)noteSymptom:(id)symptom;
+- (int)read:(id)read returnedValues:(id)values;
 @end
 
 @implementation FeedbackHandler
@@ -13,7 +13,7 @@
   block[1] = 3221225472;
   block[2] = __33__FeedbackHandler_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_pred_13 != -1)
   {
     dispatch_once(&sharedInstance_pred_13, block);
@@ -36,20 +36,20 @@ void __33__FeedbackHandler_sharedInstance__block_invoke(uint64_t a1)
   [ConfigurationHandler setConfigurationObject:v3 forName:v5];
 }
 
-+ (id)configureClass:(id)a3
++ (id)configureClass:(id)class
 {
-  v3 = a3;
+  classCopy = class;
   v4 = +[FeedbackHandler sharedInstance];
-  [v4 configureInstance:v3];
+  [v4 configureInstance:classCopy];
 
   return v4;
 }
 
-- (BOOL)noteSymptom:(id)a3
+- (BOOL)noteSymptom:(id)symptom
 {
   v36 = *MEMORY[0x277D85DE8];
-  v3 = [a3 eventData];
-  v4 = *(v3 + 4);
+  eventData = [symptom eventData];
+  v4 = *(eventData + 4);
   if ((v4 & 1) == 0)
   {
     v5 = evaluationLogHandle;
@@ -59,7 +59,7 @@ void __33__FeedbackHandler_sharedInstance__block_invoke(uint64_t a1)
       _os_log_impl(&dword_23255B000, v5, OS_LOG_TYPE_ERROR, "Feedback symptom with no qualifier", buf, 2u);
     }
 
-    v4 = *(v3 + 4);
+    v4 = *(eventData + 4);
   }
 
   if ((v4 & 2) == 0)
@@ -75,8 +75,8 @@ void __33__FeedbackHandler_sharedInstance__block_invoke(uint64_t a1)
   v7 = evaluationLogHandle;
   if (os_log_type_enabled(evaluationLogHandle, OS_LOG_TYPE_DEBUG))
   {
-    v8 = *(v3 + 24);
-    v9 = *(v3 + 32);
+    v8 = *(eventData + 24);
+    v9 = *(eventData + 32);
     *buf = 134218240;
     v33 = v8;
     v34 = 2048;
@@ -84,7 +84,7 @@ void __33__FeedbackHandler_sharedInstance__block_invoke(uint64_t a1)
     _os_log_impl(&dword_23255B000, v7, OS_LOG_TYPE_DEBUG, "Feedback on notification %lld has value %lld", buf, 0x16u);
   }
 
-  v10 = [ManagedEventTransport feedbackForEventId:*(v3 + 24)];
+  v10 = [ManagedEventTransport feedbackForEventId:*(eventData + 24)];
   v11 = v10;
   if (v10)
   {
@@ -115,18 +115,18 @@ void __33__FeedbackHandler_sharedInstance__block_invoke(uint64_t a1)
           {
             v19 = v18;
             v20 = [v17 description];
-            v21 = [v20 UTF8String];
+            uTF8String = [v20 UTF8String];
             *buf = v26;
-            v33 = v21;
+            v33 = uTF8String;
             _os_log_impl(&dword_23255B000, v19, OS_LOG_TYPE_DEBUG, "About to calibrate Evaluation %s", buf, 0xCu);
           }
 
-          v22 = [v17 callback];
+          callback = [v17 callback];
 
-          if (v22)
+          if (callback)
           {
-            v23 = [v17 callback];
-            v23[2](v23, *(v3 + 32));
+            callback2 = [v17 callback];
+            callback2[2](callback2, *(eventData + 32));
           }
 
           ++v16;
@@ -144,12 +144,12 @@ void __33__FeedbackHandler_sharedInstance__block_invoke(uint64_t a1)
   return 0;
 }
 
-- (int)read:(id)a3 returnedValues:(id)a4
+- (int)read:(id)read returnedValues:(id)values
 {
-  v4 = a4;
+  valuesCopy = values;
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
+  [valuesCopy setObject:v6 forKey:@"GENERIC_CONFIG_TARGET"];
 
   return 0;
 }

@@ -1,13 +1,13 @@
 @interface VCVideoRuleCollectionsRemoteCameraEmbedded
 + (id)sharedInstance;
 - (BOOL)initSupportedPayloads;
-- (VCVideoRuleCollectionsRemoteCameraEmbedded)initWithHardwareSettings:(id)a3;
+- (VCVideoRuleCollectionsRemoteCameraEmbedded)initWithHardwareSettings:(id)settings;
 - (void)initSupportedPayloads;
 @end
 
 @implementation VCVideoRuleCollectionsRemoteCameraEmbedded
 
-- (VCVideoRuleCollectionsRemoteCameraEmbedded)initWithHardwareSettings:(id)a3
+- (VCVideoRuleCollectionsRemoteCameraEmbedded)initWithHardwareSettings:(id)settings
 {
   v10 = *MEMORY[0x1E69E9840];
   v9.receiver = self;
@@ -16,7 +16,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_hardwareSettings = a3;
+    v4->_hardwareSettings = settings;
     if (![(VCVideoRuleCollectionsRemoteCameraEmbedded *)v4 initSupportedPayloads]|| ![(VCVideoRuleCollectionsRemoteCamera *)v5 setupHEVCRules])
     {
       if (VRTraceGetErrorLogLevelForModule() >= 3)
@@ -89,18 +89,18 @@ VCVideoRuleCollectionsRemoteCameraEmbedded *__60__VCVideoRuleCollectionsRemoteCa
 - (void)initSupportedPayloads
 {
   v18 = *MEMORY[0x1E69E9840];
-  v6 = [*a2 deviceClass];
-  v7 = [*a2 vcpSupportsHEVCEncoder];
+  deviceClass = [*a2 deviceClass];
+  vcpSupportsHEVCEncoder = [*a2 vcpSupportsHEVCEncoder];
   v8 = 136316162;
-  v9 = a1;
+  selfCopy = self;
   v10 = 2080;
   v11 = "[VCVideoRuleCollectionsRemoteCameraEmbedded initSupportedPayloads]";
   v12 = 1024;
   v13 = 49;
   v14 = 2048;
-  v15 = v6;
+  v15 = deviceClass;
   v16 = 1024;
-  v17 = v7;
+  v17 = vcpSupportsHEVCEncoder;
   _os_log_error_impl(&dword_1DB56E000, a3, OS_LOG_TYPE_ERROR, " [%s] %s:%d Empty supported payload: device classType=%ld, vcpSupportsHEVCEncoder=%d", &v8, 0x2Cu);
 }
 

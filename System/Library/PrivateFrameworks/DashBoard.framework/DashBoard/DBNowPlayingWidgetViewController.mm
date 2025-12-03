@@ -1,6 +1,6 @@
 @interface DBNowPlayingWidgetViewController
 - (CALayer)placeholderLayer;
-- (DBNowPlayingWidgetViewController)initWithEnvironment:(id)a3 animationManager:(id)a4 widgetSizeManager:(id)a5;
+- (DBNowPlayingWidgetViewController)initWithEnvironment:(id)environment animationManager:(id)manager widgetSizeManager:(id)sizeManager;
 - (id)getIconPlaceholderLayerView;
 - (void)_updatePlaceholderForTraitChange;
 - (void)_updatePlaceholderImageIfNeeded;
@@ -8,12 +8,12 @@
 
 @implementation DBNowPlayingWidgetViewController
 
-- (DBNowPlayingWidgetViewController)initWithEnvironment:(id)a3 animationManager:(id)a4 widgetSizeManager:(id)a5
+- (DBNowPlayingWidgetViewController)initWithEnvironment:(id)environment animationManager:(id)manager widgetSizeManager:(id)sizeManager
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = DBNowPlayingWidgetViewController;
-  v5 = [(DBSceneWidgetViewController *)&v11 initWithEnvironment:a3 animationManager:a4 widgetSizeManager:a5];
+  v5 = [(DBSceneWidgetViewController *)&v11 initWithEnvironment:environment animationManager:manager widgetSizeManager:sizeManager];
   if (v5)
   {
     v6 = objc_opt_self();
@@ -33,8 +33,8 @@
   if (!nowPlayingPlaceholderLayerView)
   {
     v4 = objc_alloc_init(_TtC9DashBoard15DBIconLayerView);
-    v5 = [(DBNowPlayingWidgetViewController *)self placeholderLayer];
-    [(DBIconLayerView *)v4 setIconLayer:v5 animated:1];
+    placeholderLayer = [(DBNowPlayingWidgetViewController *)self placeholderLayer];
+    [(DBIconLayerView *)v4 setIconLayer:placeholderLayer animated:1];
 
     [(DBIconLayerView *)v4 setTranslatesAutoresizingMaskIntoConstraints:0];
     v6 = self->_nowPlayingPlaceholderLayerView;
@@ -69,9 +69,9 @@
 
   else
   {
-    v4 = [(DBWidgetViewController *)self environment];
-    v5 = [v4 environmentConfiguration];
-    [v5 pointScale];
+    environment = [(DBWidgetViewController *)self environment];
+    environmentConfiguration = [environment environmentConfiguration];
+    [environmentConfiguration pointScale];
 
     v6 = DBLogForCategory(0xCuLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -81,8 +81,8 @@
     }
 
     v7 = MEMORY[0x277D75C80];
-    v8 = [(DBNowPlayingWidgetViewController *)self traitCollection];
-    v9 = [v7 sbh_iconImageAppearanceFromTraitCollection:v8];
+    traitCollection = [(DBNowPlayingWidgetViewController *)self traitCollection];
+    v9 = [v7 sbh_iconImageAppearanceFromTraitCollection:traitCollection];
     v10 = SBHGetGraphicIconLayerWithImageAppearance();
 
     placeholderLayer = self->_placeholderLayer;
@@ -98,28 +98,28 @@
 
 - (void)_updatePlaceholderImageIfNeeded
 {
-  v3 = [(DBNowPlayingWidgetViewController *)self nowPlayingPlaceholderLayerView];
-  v4 = v3;
-  if (v3)
+  nowPlayingPlaceholderLayerView = [(DBNowPlayingWidgetViewController *)self nowPlayingPlaceholderLayerView];
+  v4 = nowPlayingPlaceholderLayerView;
+  if (nowPlayingPlaceholderLayerView)
   {
-    v9 = v3;
-    v3 = [(DBNowPlayingWidgetViewController *)self needsNewPlaceholderLayer];
+    v9 = nowPlayingPlaceholderLayerView;
+    nowPlayingPlaceholderLayerView = [(DBNowPlayingWidgetViewController *)self needsNewPlaceholderLayer];
     v4 = v9;
-    if (v3)
+    if (nowPlayingPlaceholderLayerView)
     {
       [(DBNowPlayingWidgetViewController *)self updateTraitsIfNeeded];
-      v5 = [(DBNowPlayingWidgetViewController *)self placeholderLayer];
-      [v9 setIconLayer:v5 animated:1];
-      v6 = [v9 traitOverrides];
+      placeholderLayer = [(DBNowPlayingWidgetViewController *)self placeholderLayer];
+      [v9 setIconLayer:placeholderLayer animated:1];
+      traitOverrides = [v9 traitOverrides];
       v7 = MEMORY[0x277D75C80];
-      v8 = [(DBNowPlayingWidgetViewController *)self traitCollection];
-      [v6 setUserInterfaceStyle:{objc_msgSend(v7, "sbh_iconGlassUserInterfaceStyleFromTraitCollection:", v8)}];
+      traitCollection = [(DBNowPlayingWidgetViewController *)self traitCollection];
+      [traitOverrides setUserInterfaceStyle:{objc_msgSend(v7, "sbh_iconGlassUserInterfaceStyleFromTraitCollection:", traitCollection)}];
 
       v4 = v9;
     }
   }
 
-  MEMORY[0x2821F96F8](v3, v4);
+  MEMORY[0x2821F96F8](nowPlayingPlaceholderLayerView, v4);
 }
 
 @end

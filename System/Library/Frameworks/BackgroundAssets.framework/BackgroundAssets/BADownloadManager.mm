@@ -9,19 +9,19 @@
 - (id)delegate;
 - (id)extensionConnection;
 - (uint64_t)setScheduleLocked:(uint64_t)result;
-- (void)downloadIdentifier:(id)a3 didFailWithError:(id)a4 wasHandled:(id)a5;
-- (void)downloadIdentifier:(id)a3 didReceiveChallenge:(id)a4 authChallengeHandler:(id)a5;
-- (void)downloadIdentifier:(id)a3 didWriteBytes:(int64_t)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6;
-- (void)downloadIdentifierDidBegin:(id)a3;
-- (void)downloadIdentifierDidFinish:(id)a3 sandboxExtensionToken:(id)a4 wasHandled:(id)a5;
-- (void)downloadIdentifierDidPause:(id)a3;
+- (void)downloadIdentifier:(id)identifier didFailWithError:(id)error wasHandled:(id)handled;
+- (void)downloadIdentifier:(id)identifier didReceiveChallenge:(id)challenge authChallengeHandler:(id)handler;
+- (void)downloadIdentifier:(id)identifier didWriteBytes:(int64_t)bytes totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write;
+- (void)downloadIdentifierDidBegin:(id)begin;
+- (void)downloadIdentifierDidFinish:(id)finish sandboxExtensionToken:(id)token wasHandled:(id)handled;
+- (void)downloadIdentifierDidPause:(id)pause;
 - (void)fetchCurrentDownloadsWithCompletionHandler:(void *)completionHandler;
-- (void)initWithApplicationIdentifier:(void *)a1;
+- (void)initWithApplicationIdentifier:(void *)identifier;
 - (void)performWithExclusiveControl:(void *)performHandler;
 - (void)performWithExclusiveControlBeforeDate:(NSDate *)date performHandler:(void *)performHandler;
-- (void)removeDownloadIdentifier:(id)a3;
-- (void)setExtensionConnection:(uint64_t)a1;
-- (void)syncDownloads:(id)a3;
+- (void)removeDownloadIdentifier:(id)identifier;
+- (void)setExtensionConnection:(uint64_t)connection;
+- (void)syncDownloads:(id)downloads;
 @end
 
 @implementation BADownloadManager
@@ -48,15 +48,15 @@ void __34__BADownloadManager_sharedManager__block_invoke()
   sharedManager_sDownloader = v3;
 }
 
-- (void)initWithApplicationIdentifier:(void *)a1
+- (void)initWithApplicationIdentifier:(void *)identifier
 {
   v3 = a2;
-  if (!a1)
+  if (!identifier)
   {
     goto LABEL_3;
   }
 
-  v14.receiver = a1;
+  v14.receiver = identifier;
   v14.super_class = BADownloadManager;
   v4 = objc_msgSendSuper2(&v14, sel_init);
   if (!v4)
@@ -183,8 +183,8 @@ LABEL_13:
   }
 
   v3 = v7;
-  v4 = [(BADownloadManager *)self extensionConnection];
-  if (!v4)
+  extensionConnection = [(BADownloadManager *)self extensionConnection];
+  if (!extensionConnection)
   {
     [(BADownloadManager *)self performWithExclusiveControl:v28, v3];
     goto LABEL_8;
@@ -196,8 +196,8 @@ LABEL_13:
     [(BADownloadManager *)self performWithExclusiveControl:v8, v9, v10, v11, v12, v13, v14];
   }
 
-  v15 = [(BADownloadManager *)self extensionConnection];
-  v5 = [v15 acquireWakeAssertion];
+  extensionConnection2 = [(BADownloadManager *)self extensionConnection];
+  acquireWakeAssertion = [extensionConnection2 acquireWakeAssertion];
 
   if (!self)
   {
@@ -212,8 +212,8 @@ LABEL_7:
   v29[3] = &unk_278A0D288;
   v29[4] = self;
   v30 = v3;
-  v31 = v5;
-  v18 = v5;
+  v31 = acquireWakeAssertion;
+  v18 = acquireWakeAssertion;
   v19 = v3;
   [(BAAgentClientProxy *)Property acquireExclusiveControlWithHandler:v29];
 
@@ -255,8 +255,8 @@ LABEL_17:
     goto LABEL_8;
   }
 
-  v4 = [(BADownloadManager *)self extensionConnection];
-  if (!v4)
+  extensionConnection = [(BADownloadManager *)self extensionConnection];
+  if (!extensionConnection)
   {
     [(BADownloadManager *)self performWithExclusiveControlBeforeDate:v38 performHandler:performHandler, v8];
     goto LABEL_9;
@@ -268,8 +268,8 @@ LABEL_17:
     [(BADownloadManager *)self performWithExclusiveControl:v10, v11, v12, v13, v14, v15, v16];
   }
 
-  v17 = [(BADownloadManager *)self extensionConnection];
-  v5 = [v17 acquireWakeAssertion];
+  extensionConnection2 = [(BADownloadManager *)self extensionConnection];
+  acquireWakeAssertion = [extensionConnection2 acquireWakeAssertion];
 
   if (!self)
   {
@@ -284,8 +284,8 @@ LABEL_8:
   v39[3] = &unk_278A0D288;
   v39[4] = self;
   v40 = performHandler;
-  v41 = v5;
-  v20 = v5;
+  v41 = acquireWakeAssertion;
+  v20 = acquireWakeAssertion;
   v21 = performHandler;
   [(BAAgentClientProxy *)Property acquireExclusiveControlBeforeDate:v8 handler:v39];
 
@@ -379,16 +379,16 @@ LABEL_6:
   return WeakRetained;
 }
 
-- (void)syncDownloads:(id)a3
+- (void)syncDownloads:(id)downloads
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  downloadsCopy = downloads;
   os_unfair_lock_lock(&self->_stateLock);
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v4;
+  v5 = downloadsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
@@ -416,8 +416,8 @@ LABEL_6:
         }
 
         v13 = Property;
-        v14 = [v11 uniqueIdentifier];
-        v15 = [v13 objectForKey:v14];
+        uniqueIdentifier = [v11 uniqueIdentifier];
+        v15 = [v13 objectForKey:uniqueIdentifier];
 
         if (v15)
         {
@@ -527,11 +527,11 @@ void __99__BADownloadManager_XPCDownloadSync__downloadIdentifierDidFinish_sandbo
 
 - (id)extensionConnection
 {
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 8));
-    WeakRetained = objc_loadWeakRetained((a1 + 16));
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_lock((self + 8));
+    WeakRetained = objc_loadWeakRetained((self + 16));
+    os_unfair_lock_unlock((self + 8));
   }
 
   else
@@ -542,15 +542,15 @@ void __99__BADownloadManager_XPCDownloadSync__downloadIdentifierDidFinish_sandbo
   return WeakRetained;
 }
 
-- (void)setExtensionConnection:(uint64_t)a1
+- (void)setExtensionConnection:(uint64_t)connection
 {
-  if (a1)
+  if (connection)
   {
     v3 = a2;
-    os_unfair_lock_lock((a1 + 8));
-    objc_storeWeak((a1 + 16), v3);
+    os_unfair_lock_lock((connection + 8));
+    objc_storeWeak((connection + 16), v3);
 
-    os_unfair_lock_unlock((a1 + 8));
+    os_unfair_lock_unlock((connection + 8));
   }
 }
 
@@ -774,9 +774,9 @@ void __64__BADownloadManager_fetchCurrentDownloadsWithCompletionHandler___block_
   return result;
 }
 
-- (void)downloadIdentifierDidBegin:(id)a3
+- (void)downloadIdentifierDidBegin:(id)begin
 {
-  v5 = a3;
+  beginCopy = begin;
   os_unfair_lock_lock(&self->_stateLock);
   if (self)
   {
@@ -789,14 +789,14 @@ void __64__BADownloadManager_fetchCurrentDownloadsWithCompletionHandler___block_
     Property = 0;
   }
 
-  v11 = [Property objectForKey:v5];
+  v11 = [Property objectForKey:beginCopy];
   os_unfair_lock_unlock(&self->_stateLock);
   if (v11)
   {
     [(BADownloadManager *)self delegate];
     if (objc_claimAutoreleasedReturnValue())
     {
-      v12 = [OUTLINED_FUNCTION_17() delegate];
+      delegate = [OUTLINED_FUNCTION_17() delegate];
       v13 = objc_opt_respondsToSelector();
 
       if (v13)
@@ -823,9 +823,9 @@ void __64__BADownloadManager_fetchCurrentDownloadsWithCompletionHandler___block_
   }
 }
 
-- (void)downloadIdentifierDidPause:(id)a3
+- (void)downloadIdentifierDidPause:(id)pause
 {
-  v5 = a3;
+  pauseCopy = pause;
   os_unfair_lock_lock(&self->_stateLock);
   if (self)
   {
@@ -838,14 +838,14 @@ void __64__BADownloadManager_fetchCurrentDownloadsWithCompletionHandler___block_
     Property = 0;
   }
 
-  v11 = [Property objectForKey:v5];
+  v11 = [Property objectForKey:pauseCopy];
   os_unfair_lock_unlock(&self->_stateLock);
   if (v11)
   {
     [(BADownloadManager *)self delegate];
     if (objc_claimAutoreleasedReturnValue())
     {
-      v12 = [OUTLINED_FUNCTION_17() delegate];
+      delegate = [OUTLINED_FUNCTION_17() delegate];
       v13 = objc_opt_respondsToSelector();
 
       if (v13)
@@ -872,9 +872,9 @@ void __64__BADownloadManager_fetchCurrentDownloadsWithCompletionHandler___block_
   }
 }
 
-- (void)downloadIdentifier:(id)a3 didWriteBytes:(int64_t)a4 totalBytesWritten:(int64_t)a5 totalBytesExpectedToWrite:(int64_t)a6
+- (void)downloadIdentifier:(id)identifier didWriteBytes:(int64_t)bytes totalBytesWritten:(int64_t)written totalBytesExpectedToWrite:(int64_t)write
 {
-  v21 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_stateLock);
   if (self)
   {
@@ -887,27 +887,27 @@ void __64__BADownloadManager_fetchCurrentDownloadsWithCompletionHandler___block_
     Property = 0;
   }
 
-  v15 = [Property objectForKey:v21];
+  v15 = [Property objectForKey:identifierCopy];
   os_unfair_lock_unlock(&self->_stateLock);
   if (v15)
   {
-    v16 = [(BADownloadManager *)self delegate];
-    if (v16)
+    delegate = [(BADownloadManager *)self delegate];
+    if (delegate)
     {
-      v17 = v16;
-      v18 = [(BADownloadManager *)self delegate];
+      v17 = delegate;
+      delegate2 = [(BADownloadManager *)self delegate];
       v19 = objc_opt_respondsToSelector();
 
       if (v19)
       {
-        v20 = [(BADownloadManager *)self delegate];
-        [v20 download:v15 didWriteBytes:a4 totalBytesWritten:a5 totalBytesExpectedToWrite:a6];
+        delegate3 = [(BADownloadManager *)self delegate];
+        [delegate3 download:v15 didWriteBytes:bytes totalBytesWritten:written totalBytesExpectedToWrite:write];
       }
     }
   }
 }
 
-- (void)downloadIdentifier:(id)a3 didReceiveChallenge:(id)a4 authChallengeHandler:(id)a5
+- (void)downloadIdentifier:(id)identifier didReceiveChallenge:(id)challenge authChallengeHandler:(id)handler
 {
   OUTLINED_FUNCTION_10_1();
   v10 = v9;
@@ -967,7 +967,7 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)downloadIdentifier:(id)a3 didFailWithError:(id)a4 wasHandled:(id)a5
+- (void)downloadIdentifier:(id)identifier didFailWithError:(id)error wasHandled:(id)handled
 {
   OUTLINED_FUNCTION_10_1();
   v10 = v9;
@@ -992,7 +992,7 @@ LABEL_12:
     [(os_unfair_lock_s *)v7 delegate];
     if (objc_claimAutoreleasedReturnValue())
     {
-      v19 = [OUTLINED_FUNCTION_12_1() delegate];
+      delegate = [OUTLINED_FUNCTION_12_1() delegate];
       v20 = objc_opt_respondsToSelector();
 
       if (v20)
@@ -1023,7 +1023,7 @@ LABEL_12:
   v25(v24);
 }
 
-- (void)downloadIdentifierDidFinish:(id)a3 sandboxExtensionToken:(id)a4 wasHandled:(id)a5
+- (void)downloadIdentifierDidFinish:(id)finish sandboxExtensionToken:(id)token wasHandled:(id)handled
 {
   OUTLINED_FUNCTION_10_1();
   v111 = *MEMORY[0x277D85DE8];
@@ -1071,7 +1071,7 @@ LABEL_12:
       goto LABEL_27;
     }
 
-    v27 = [OUTLINED_FUNCTION_12_1() delegate];
+    delegate = [OUTLINED_FUNCTION_12_1() delegate];
     v28 = objc_opt_respondsToSelector();
 
     if ((v28 & 1) == 0)
@@ -1113,22 +1113,22 @@ LABEL_12:
       v43 = BAClientLogObject();
       if (os_log_type_enabled(v43, OS_LOG_TYPE_ERROR))
       {
-        v76 = [v17 identifier];
+        identifier = [v17 identifier];
         v77 = [v20 description];
         *buf = 138543618;
-        v108 = v76;
+        v108 = identifier;
         v109 = 2114;
         v110 = v77;
         OUTLINED_FUNCTION_22(&dword_236E28000, v43, v78, "Download %{public}@ failed to be cloned after download. Error:%{public}@", buf);
       }
 
       [(BADownload *)v17 setInternalState:?];
-      v44 = [(os_unfair_lock_s *)v7 delegate];
-      if (v44)
+      delegate2 = [(os_unfair_lock_s *)v7 delegate];
+      if (delegate2)
       {
-        v45 = v44;
+        v45 = delegate2;
         v46 = v19;
-        v47 = [(os_unfair_lock_s *)v7 delegate];
+        delegate3 = [(os_unfair_lock_s *)v7 delegate];
         v48 = objc_opt_respondsToSelector();
 
         if (v48)
@@ -1201,16 +1201,16 @@ LABEL_12:
         v64 = BAClientLogObject();
         if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
         {
-          v79 = [v17 identifier];
+          identifier2 = [v17 identifier];
           v80 = [v22 description];
           OUTLINED_FUNCTION_9_1(v80, 5.8382e-34);
           OUTLINED_FUNCTION_22(&dword_236E28000, v64, v81, "Download %{public}@ failed to mark cloned file as purgeable. Error:%{public}@", buf);
         }
 
         [(BADownload *)v17 setInternalState:?];
-        v65 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager = [MEMORY[0x277CCAA00] defaultManager];
         v96 = 0;
-        v66 = [v65 removeItemAtURL:v86 error:&v96];
+        v66 = [defaultManager removeItemAtURL:v86 error:&v96];
         v67 = v96;
 
         if ((v66 & 1) == 0)
@@ -1218,7 +1218,7 @@ LABEL_12:
           v68 = BAClientLogObject();
           if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
           {
-            v82 = [v17 identifier];
+            identifier3 = [v17 identifier];
             v85 = [v67 description];
             OUTLINED_FUNCTION_9_1(v85, 5.8382e-34);
             OUTLINED_FUNCTION_22(&dword_236E28000, v68, v83, "Download %{public}@ failed to remove cloned file failing to be marked as purgeable. Error:%{public}@", buf);
@@ -1226,11 +1226,11 @@ LABEL_12:
         }
 
         v84 = v67;
-        v69 = [(os_unfair_lock_s *)v7 delegate];
-        if (v69)
+        delegate4 = [(os_unfair_lock_s *)v7 delegate];
+        if (delegate4)
         {
-          v70 = v69;
-          v71 = [(os_unfair_lock_s *)v7 delegate];
+          v70 = delegate4;
+          delegate5 = [(os_unfair_lock_s *)v7 delegate];
           v72 = objc_opt_respondsToSelector();
 
           if (v72)
@@ -1262,13 +1262,13 @@ LABEL_12:
       }
     }
 
-    v55 = [(os_unfair_lock_s *)v7 delegate];
-    if (v55 && (v57 = v55, [(os_unfair_lock_s *)v7 delegate], v58 = objc_claimAutoreleasedReturnValue(), v59 = objc_opt_respondsToSelector(), v58, v57, (v59 & 1) != 0))
+    delegate6 = [(os_unfair_lock_s *)v7 delegate];
+    if (delegate6 && (v57 = delegate6, [(os_unfair_lock_s *)v7 delegate], v58 = objc_claimAutoreleasedReturnValue(), v59 = objc_opt_respondsToSelector(), v58, v57, (v59 & 1) != 0))
     {
       v19 = v86;
       if (v7)
       {
-        v60 = OUTLINED_FUNCTION_5_1(v55, v56);
+        v60 = OUTLINED_FUNCTION_5_1(delegate6, v56);
       }
 
       else
@@ -1296,7 +1296,7 @@ LABEL_12:
 
     if (v7)
     {
-      v7 = OUTLINED_FUNCTION_5_1(v55, v56);
+      v7 = OUTLINED_FUNCTION_5_1(delegate6, v56);
     }
 
     v87[0] = MEMORY[0x277D85DD0];
@@ -1325,7 +1325,7 @@ LABEL_49:
   [(os_unfair_lock_s *)v7 delegate];
   if (objc_claimAutoreleasedReturnValue())
   {
-    v36 = [OUTLINED_FUNCTION_12_1() delegate];
+    delegate7 = [OUTLINED_FUNCTION_12_1() delegate];
     v37 = objc_opt_respondsToSelector();
 
     if (v37)
@@ -1360,9 +1360,9 @@ LABEL_50:
   v63 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeDownloadIdentifier:(id)a3
+- (void)removeDownloadIdentifier:(id)identifier
 {
-  v9 = a3;
+  identifierCopy = identifier;
   os_unfair_lock_lock(&self->_stateLock);
   if (self)
   {
@@ -1375,7 +1375,7 @@ LABEL_50:
     Property = 0;
   }
 
-  [Property removeObjectForKey:v9];
+  [Property removeObjectForKey:identifierCopy];
   os_unfair_lock_unlock(&self->_stateLock);
 }
 

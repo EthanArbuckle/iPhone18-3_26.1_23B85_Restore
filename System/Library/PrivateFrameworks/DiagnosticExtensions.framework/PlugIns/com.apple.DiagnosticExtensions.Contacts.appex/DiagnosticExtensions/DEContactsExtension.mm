@@ -1,10 +1,10 @@
 @interface DEContactsExtension
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation DEContactsExtension
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
   v4 = objc_opt_new();
   v5 = +[NSFileManager defaultManager];

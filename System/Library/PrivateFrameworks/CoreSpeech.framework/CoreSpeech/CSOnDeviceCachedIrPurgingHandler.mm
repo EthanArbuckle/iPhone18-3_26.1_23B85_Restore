@@ -1,19 +1,19 @@
 @interface CSOnDeviceCachedIrPurgingHandler
 + (id)sharedHandler;
 - (CSOnDeviceCachedIrPurgingHandler)init;
-- (void)CSVoiceTriggerEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4;
-- (void)_purgeCachedIrFilesWithAsset:(id)a3;
+- (void)CSVoiceTriggerEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled;
+- (void)_purgeCachedIrFilesWithAsset:(id)asset;
 - (void)dealloc;
-- (void)mitigationAssetHandler:(id)a3 endpointId:(id)a4 didChangeCachedAsset:(id)a5;
+- (void)mitigationAssetHandler:(id)handler endpointId:(id)id didChangeCachedAsset:(id)asset;
 - (void)startRegistration;
-- (void)voiceTriggerAssetHandler:(id)a3 endpointId:(id)a4 didChangeCachedAsset:(id)a5;
+- (void)voiceTriggerAssetHandler:(id)handler endpointId:(id)id didChangeCachedAsset:(id)asset;
 @end
 
 @implementation CSOnDeviceCachedIrPurgingHandler
 
-- (void)_purgeCachedIrFilesWithAsset:(id)a3
+- (void)_purgeCachedIrFilesWithAsset:(id)asset
 {
-  v4 = a3;
+  assetCopy = asset;
   if (CSIsHorseman())
   {
     v5 = CSLogContextFacilityCoreSpeech;
@@ -32,15 +32,15 @@
     block[1] = 3221225472;
     block[2] = sub_1001679C4;
     block[3] = &unk_100253C20;
-    v8 = v4;
+    v8 = assetCopy;
     dispatch_async(queue, block);
   }
 }
 
-- (void)CSVoiceTriggerEnabledMonitor:(id)a3 didReceiveEnabled:(BOOL)a4
+- (void)CSVoiceTriggerEnabledMonitor:(id)monitor didReceiveEnabled:(BOOL)enabled
 {
-  v6 = a3;
-  if (!a4)
+  monitorCopy = monitor;
+  if (!enabled)
   {
     v7 = CSLogContextFacilityCoreSpeech;
     if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
@@ -54,38 +54,38 @@
   }
 }
 
-- (void)mitigationAssetHandler:(id)a3 endpointId:(id)a4 didChangeCachedAsset:(id)a5
+- (void)mitigationAssetHandler:(id)handler endpointId:(id)id didChangeCachedAsset:(id)asset
 {
-  v7 = a4;
-  v8 = a5;
+  idCopy = id;
+  assetCopy = asset;
   v9 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[CSOnDeviceCachedIrPurgingHandler mitigationAssetHandler:endpointId:didChangeCachedAsset:]";
     v12 = 2112;
-    v13 = v7;
+    v13 = idCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s received notification to purge mitigation asset with endPoint id: %@", &v10, 0x16u);
   }
 
-  [(CSOnDeviceCachedIrPurgingHandler *)self _purgeCachedIrFilesWithAsset:v8];
+  [(CSOnDeviceCachedIrPurgingHandler *)self _purgeCachedIrFilesWithAsset:assetCopy];
 }
 
-- (void)voiceTriggerAssetHandler:(id)a3 endpointId:(id)a4 didChangeCachedAsset:(id)a5
+- (void)voiceTriggerAssetHandler:(id)handler endpointId:(id)id didChangeCachedAsset:(id)asset
 {
-  v7 = a4;
-  v8 = a5;
+  idCopy = id;
+  assetCopy = asset;
   v9 = CSLogContextFacilityCoreSpeech;
   if (os_log_type_enabled(CSLogContextFacilityCoreSpeech, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 136315394;
     v11 = "[CSOnDeviceCachedIrPurgingHandler voiceTriggerAssetHandler:endpointId:didChangeCachedAsset:]";
     v12 = 2112;
-    v13 = v7;
+    v13 = idCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s received notification to purge voice trigger asset with endPoint id: %@", &v10, 0x16u);
   }
 
-  [(CSOnDeviceCachedIrPurgingHandler *)self _purgeCachedIrFilesWithAsset:v8];
+  [(CSOnDeviceCachedIrPurgingHandler *)self _purgeCachedIrFilesWithAsset:assetCopy];
 }
 
 - (void)startRegistration

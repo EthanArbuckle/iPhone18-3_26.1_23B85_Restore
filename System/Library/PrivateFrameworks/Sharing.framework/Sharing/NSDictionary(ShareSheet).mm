@@ -7,8 +7,8 @@
 - (id)sh_removingUnsupportedTypes
 {
   v25 = *MEMORY[0x1E69E9840];
-  v17 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:a1];
-  v2 = [a1 objectForKey:@"attachments"];
+  v17 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:self];
+  v2 = [self objectForKey:@"attachments"];
   v18 = [v2 mutableCopy];
   if ([v2 count])
   {

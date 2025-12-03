@@ -1,18 +1,18 @@
 @interface MRDLightweightReconnaissanceSession
-+ (void)searchEndpointsForOutputDeviceUID:(id)a3 timeout:(double)a4 details:(id)a5 queue:(id)a6 completion:(id)a7;
++ (void)searchEndpointsForOutputDeviceUID:(id)d timeout:(double)timeout details:(id)details queue:(id)queue completion:(id)completion;
 @end
 
 @implementation MRDLightweightReconnaissanceSession
 
-+ (void)searchEndpointsForOutputDeviceUID:(id)a3 timeout:(double)a4 details:(id)a5 queue:(id)a6 completion:(id)a7
++ (void)searchEndpointsForOutputDeviceUID:(id)d timeout:(double)timeout details:(id)details queue:(id)queue completion:(id)completion
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  if (!v13)
+  dCopy = d;
+  detailsCopy = details;
+  queueCopy = queue;
+  completionCopy = completion;
+  if (!queueCopy)
   {
-    v13 = &_dispatch_main_q;
+    queueCopy = &_dispatch_main_q;
     v15 = &_dispatch_main_q;
   }
 
@@ -29,27 +29,27 @@
   v113 = sub_1000359A4;
   v114 = [MRAVRoutingDiscoverySession discoverySessionWithEndpointFeatures:8];
   v16 = +[NSDate date];
-  v17 = [v12 requestID];
+  requestID = [detailsCopy requestID];
   v103 = 0;
   v104 = &v103;
   v105 = 0x3032000000;
   v106 = sub_100034FC0;
   v107 = sub_1000359A4;
-  v76 = v11;
+  v76 = dCopy;
   v108 = v76;
-  v18 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"MRDLightweightReconnaissanceSession.searchEndpointsForOutputDeviceUID", v17];
+  v18 = [[NSMutableString alloc] initWithFormat:@"%@<%@>", @"MRDLightweightReconnaissanceSession.searchEndpointsForOutputDeviceUID", requestID];
   v19 = v18;
   if (v104[5])
   {
     [(__CFString *)v18 appendFormat:@" for %@", v104[5]];
   }
 
-  v20 = [v12 label];
+  label = [detailsCopy label];
 
-  if (v20)
+  if (label)
   {
-    v21 = [v12 label];
-    [(__CFString *)v19 appendFormat:@" because %@", v21];
+    label2 = [detailsCopy label];
+    [(__CFString *)v19 appendFormat:@" because %@", label2];
   }
 
   v22 = _MRLogForCategory();
@@ -66,17 +66,17 @@
   v93[3] = &unk_1004B7B78;
   v99 = &v103;
   v94 = @"MRDLightweightReconnaissanceSession.searchEndpointsForOutputDeviceUID";
-  v23 = v17;
+  v23 = requestID;
   v95 = v23;
   v75 = v16;
   v96 = v75;
-  v73 = v13;
+  v73 = queueCopy;
   v97 = v73;
-  v74 = v14;
+  v74 = completionCopy;
   v98 = v74;
   v100 = &v109;
   v101 = &v115;
-  v102 = a1;
+  selfCopy = self;
   v24 = objc_retainBlock(v93);
   v25 = [MRBlockGuard alloc];
   v26 = [[NSString alloc] initWithFormat:@"%@<%@>", @"MRDLightweightReconnaissanceSession.searchEndpointsForOutputDeviceUID", v23];
@@ -86,7 +86,7 @@
   v91[3] = &unk_1004B6FE8;
   v27 = v24;
   v92 = v27;
-  v28 = [v25 initWithTimeout:v26 reason:v91 handler:a4];
+  v28 = [v25 initWithTimeout:v26 reason:v91 handler:timeout];
 
   v88[0] = _NSConcreteStackBlock;
   v88[1] = 3221225472;
@@ -98,7 +98,7 @@
   v90 = v30;
   v31 = objc_retainBlock(v88);
   v32 = +[MRDMediaRemoteServer server];
-  v33 = [v32 deviceInfo];
+  deviceInfo = [v32 deviceInfo];
 
   v34 = v104[5];
   v35 = +[MRAVOutputDevice localDeviceUID];
@@ -107,14 +107,14 @@
     goto LABEL_14;
   }
 
-  v36 = [v33 deviceUID];
-  v37 = v36 == 0;
+  deviceUID = [deviceInfo deviceUID];
+  v37 = deviceUID == 0;
 
   if (!v37)
   {
     v38 = [NSString alloc];
-    v39 = [v33 deviceUID];
-    v35 = [v38 initWithFormat:@"substituting deviceUID <%@> for outputDeviceUID...", v39];
+    deviceUID2 = [deviceInfo deviceUID];
+    v35 = [v38 initWithFormat:@"substituting deviceUID <%@> for outputDeviceUID...", deviceUID2];
 
     v40 = _MRLogForCategory();
     if (os_log_type_enabled(v40, OS_LOG_TYPE_DEFAULT))
@@ -128,23 +128,23 @@
       _os_log_impl(&_mh_execute_header, v40, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
     }
 
-    v41 = [v33 deviceUID];
+    deviceUID3 = [deviceInfo deviceUID];
     v42 = v104[5];
-    v104[5] = v41;
+    v104[5] = deviceUID3;
 
 LABEL_14:
   }
 
   if (!v104[5])
   {
-    v43 = [v33 deviceUID];
-    v44 = v43 == 0;
+    deviceUID4 = [deviceInfo deviceUID];
+    v44 = deviceUID4 == 0;
 
     if (!v44)
     {
       v45 = [NSString alloc];
-      v46 = [v33 deviceUID];
-      v47 = [v45 initWithFormat:@"substituting deviceUID <%@> for outputDeviceUID...", v46];
+      deviceUID5 = [deviceInfo deviceUID];
+      v47 = [v45 initWithFormat:@"substituting deviceUID <%@> for outputDeviceUID...", deviceUID5];
 
       v48 = _MRLogForCategory();
       if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
@@ -158,9 +158,9 @@ LABEL_14:
         _os_log_impl(&_mh_execute_header, v48, OS_LOG_TYPE_DEFAULT, "Update: %{public}@<%{public}@> %@", buf, 0x20u);
       }
 
-      v49 = [v33 deviceUID];
+      deviceUID6 = [deviceInfo deviceUID];
       v50 = v104[5];
-      v104[5] = v49;
+      v104[5] = deviceUID6;
     }
   }
 
@@ -191,7 +191,7 @@ LABEL_14:
   v84[1] = 3221225472;
   v84[2] = sub_10006241C;
   v84[3] = &unk_1004B7C08;
-  v57 = v33;
+  v57 = deviceInfo;
   v85 = v57;
   v86 = @"MRDLightweightReconnaissanceSession.searchEndpointsForOutputDeviceUID";
   v58 = v23;
@@ -202,15 +202,15 @@ LABEL_14:
     goto LABEL_40;
   }
 
-  v60 = +[MRAVLocalEndpoint sharedLocalEndpoint];
+  selfCopy2 = +[MRAVLocalEndpoint sharedLocalEndpoint];
   v61 = v104[5];
   v62 = +[MRAVOutputDevice localDeviceUID];
   LODWORD(v61) = [v61 compare:v62 options:1] == 0;
 
   if (!v61)
   {
-    v63 = [v57 deviceUID];
-    v64 = [v63 isEqualToString:v104[5]];
+    deviceUID7 = [v57 deviceUID];
+    v64 = [deviceUID7 isEqualToString:v104[5]];
 
     if (v64)
     {
@@ -231,8 +231,8 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v66 = [v57 identifier];
-    v67 = [v66 isEqualToString:v104[5]];
+    identifier = [v57 identifier];
+    v67 = [identifier isEqualToString:v104[5]];
 
     if (v67)
     {
@@ -256,7 +256,7 @@ LABEL_37:
     v83[2] = sub_100062754;
     v83[3] = &unk_1004B7C30;
     v83[4] = &v103;
-    v68 = [v60 outputDevicesMatchingPredicate:v83];
+    v68 = [selfCopy2 outputDevicesMatchingPredicate:v83];
     v69 = [v68 count] == 0;
 
     if (!v69)
@@ -277,8 +277,8 @@ LABEL_37:
     }
 
 LABEL_40:
-    v60 = a1;
-    objc_sync_enter(v60);
+    selfCopy2 = self;
+    objc_sync_enter(selfCopy2);
     [v110[5] setDiscoveryMode:3];
     v70 = v110[5];
     v78[0] = _NSConcreteStackBlock;
@@ -293,7 +293,7 @@ LABEL_40:
     v72 = v116[5];
     v116[5] = v71;
 
-    objc_sync_exit(v60);
+    objc_sync_exit(selfCopy2);
     goto LABEL_41;
   }
 
@@ -311,7 +311,7 @@ LABEL_40:
 
 LABEL_38:
 
-  (v31[2])(v31, v60, 0);
+  (v31[2])(v31, selfCopy2, 0);
 LABEL_41:
 
   _Block_object_dispose(&v103, 8);

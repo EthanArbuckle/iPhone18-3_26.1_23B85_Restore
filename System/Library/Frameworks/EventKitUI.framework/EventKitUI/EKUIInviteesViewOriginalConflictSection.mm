@@ -1,13 +1,13 @@
 @interface EKUIInviteesViewOriginalConflictSection
-- (BOOL)canSelectRow:(id)a3;
+- (BOOL)canSelectRow:(id)row;
 - (EKUIInviteesViewOriginalConflictSection)init;
-- (id)cellForIndexPath:(id)a3 inTableView:(id)a4;
+- (id)cellForIndexPath:(id)path inTableView:(id)view;
 - (id)debugTitle;
 - (unint64_t)numberOfRows;
-- (void)availabilitySearcherChangedState:(int64_t)a3;
-- (void)reloadAndRegisterReusableCellsWithTableView:(id)a3;
-- (void)selectRow:(id)a3;
-- (void)setChecked:(BOOL)a3;
+- (void)availabilitySearcherChangedState:(int64_t)state;
+- (void)reloadAndRegisterReusableCellsWithTableView:(id)view;
+- (void)selectRow:(id)row;
+- (void)setChecked:(BOOL)checked;
 @end
 
 @implementation EKUIInviteesViewOriginalConflictSection
@@ -44,11 +44,11 @@
     return 0;
   }
 
-  v3 = [(EKUIInviteesViewOriginalConflictSection *)self startDate];
-  if (v3)
+  startDate = [(EKUIInviteesViewOriginalConflictSection *)self startDate];
+  if (startDate)
   {
-    v4 = [(EKUIInviteesViewOriginalConflictSection *)self endDate];
-    v5 = v4 != 0;
+    endDate = [(EKUIInviteesViewOriginalConflictSection *)self endDate];
+    v5 = endDate != 0;
   }
 
   else
@@ -59,16 +59,16 @@
   return v5;
 }
 
-- (id)cellForIndexPath:(id)a3 inTableView:(id)a4
+- (id)cellForIndexPath:(id)path inTableView:(id)view
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 row];
+  pathCopy = path;
+  viewCopy = view;
+  v8 = [pathCopy row];
   if ([(EKUIInviteesViewOriginalConflictSection *)self _isValidRow:v8])
   {
-    v9 = [(EKUIInviteesViewOriginalConflictSection *)self cachedCellReuseIdentifier];
-    v10 = [v7 dequeueReusableCellWithIdentifier:v9 forIndexPath:v6];
+    cachedCellReuseIdentifier = [(EKUIInviteesViewOriginalConflictSection *)self cachedCellReuseIdentifier];
+    v10 = [viewCopy dequeueReusableCellWithIdentifier:cachedCellReuseIdentifier forIndexPath:pathCopy];
 
     objc_initWeak(location, self);
     v27[0] = MEMORY[0x1E69E9820];
@@ -84,18 +84,18 @@
     objc_copyWeak(v26, location);
     v26[1] = v8;
     [(EKUIInviteesViewTimeSlotCell *)v10 setShowAllConflictedParticipantsTapped:v25];
-    v11 = [(EKUIInviteesViewOriginalConflictSection *)self rowsShowingAllParticipants];
+    rowsShowingAllParticipants = [(EKUIInviteesViewOriginalConflictSection *)self rowsShowingAllParticipants];
     v12 = [MEMORY[0x1E696AD98] numberWithInteger:v8];
-    v13 = [v11 containsObject:v12];
+    v13 = [rowsShowingAllParticipants containsObject:v12];
 
-    v14 = [(EKUIInviteesViewOriginalConflictSection *)self busyParticipants];
-    -[EKUIInviteesViewOriginalConflictCell setConflict:](v10, "setConflict:", [v14 count] != 0);
+    busyParticipants = [(EKUIInviteesViewOriginalConflictSection *)self busyParticipants];
+    -[EKUIInviteesViewOriginalConflictCell setConflict:](v10, "setConflict:", [busyParticipants count] != 0);
 
-    v15 = [(EKUIInviteesViewOriginalConflictSection *)self startDate];
-    v16 = [(EKUIInviteesViewOriginalConflictSection *)self endDate];
-    v17 = [(EKUIInviteesViewOriginalConflictSection *)self timeZone];
-    v18 = [(EKUIInviteesViewOriginalConflictSection *)self busyParticipants];
-    [(EKUIInviteesViewTimeSlotCell *)v10 updateWithStartDate:v15 endDate:v16 timeZone:v17 busyParticipants:v18 showAllParticipants:v13 checked:[(EKUIInviteesViewOriginalConflictSection *)self checked]];
+    startDate = [(EKUIInviteesViewOriginalConflictSection *)self startDate];
+    endDate = [(EKUIInviteesViewOriginalConflictSection *)self endDate];
+    timeZone = [(EKUIInviteesViewOriginalConflictSection *)self timeZone];
+    busyParticipants2 = [(EKUIInviteesViewOriginalConflictSection *)self busyParticipants];
+    [(EKUIInviteesViewTimeSlotCell *)v10 updateWithStartDate:startDate endDate:endDate timeZone:timeZone busyParticipants:busyParticipants2 showAllParticipants:v13 checked:[(EKUIInviteesViewOriginalConflictSection *)self checked]];
 
     objc_destroyWeak(v26);
     objc_destroyWeak(&v28);
@@ -147,9 +147,9 @@ void __72__EKUIInviteesViewOriginalConflictSection_cellForIndexPath_inTableView_
   [v2 addObject:v3];
 }
 
-- (void)reloadAndRegisterReusableCellsWithTableView:(id)a3
+- (void)reloadAndRegisterReusableCellsWithTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v5 = objc_opt_class();
   v6 = objc_alloc(MEMORY[0x1E696AEC0]);
   v7 = NSStringFromClass(v5);
@@ -157,18 +157,18 @@ void __72__EKUIInviteesViewOriginalConflictSection_cellForIndexPath_inTableView_
   v9 = [v6 initWithFormat:@"%@-%@", v7, v8];
   [(EKUIInviteesViewOriginalConflictSection *)self setCachedCellReuseIdentifier:v9];
 
-  v10 = [(EKUIInviteesViewOriginalConflictSection *)self cachedCellReuseIdentifier];
-  [v4 registerClass:v5 forCellReuseIdentifier:v10];
+  cachedCellReuseIdentifier = [(EKUIInviteesViewOriginalConflictSection *)self cachedCellReuseIdentifier];
+  [viewCopy registerClass:v5 forCellReuseIdentifier:cachedCellReuseIdentifier];
 
   v11 = [(EKUIInviteesViewOriginalConflictSection *)self reuseIdentifierVersion]+ 1;
 
   [(EKUIInviteesViewOriginalConflictSection *)self setReuseIdentifierVersion:v11];
 }
 
-- (BOOL)canSelectRow:(id)a3
+- (BOOL)canSelectRow:(id)row
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = [a3 row];
+  v4 = [row row];
   if ([(EKUIInviteesViewOriginalConflictSection *)self _isValidRow:v4])
   {
     LOBYTE(v5) = ![(EKUIInviteesViewOriginalConflictSection *)self checked];
@@ -194,10 +194,10 @@ void __72__EKUIInviteesViewOriginalConflictSection_cellForIndexPath_inTableView_
   return v5;
 }
 
-- (void)selectRow:(id)a3
+- (void)selectRow:(id)row
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = [a3 row];
+  v4 = [row row];
   if ([(EKUIInviteesViewOriginalConflictSection *)self _isValidRow:v4])
   {
 
@@ -219,67 +219,67 @@ void __72__EKUIInviteesViewOriginalConflictSection_cellForIndexPath_inTableView_
   }
 }
 
-- (void)availabilitySearcherChangedState:(int64_t)a3
+- (void)availabilitySearcherChangedState:(int64_t)state
 {
-  if (a3 == 1)
+  if (state == 1)
   {
-    v5 = [(EKUIInviteesViewOriginalConflictSection *)self availabilitySearcher];
-    v6 = [v5 originalStartDate];
-    [(EKUIInviteesViewOriginalConflictSection *)self setStartDate:v6];
+    availabilitySearcher = [(EKUIInviteesViewOriginalConflictSection *)self availabilitySearcher];
+    originalStartDate = [availabilitySearcher originalStartDate];
+    [(EKUIInviteesViewOriginalConflictSection *)self setStartDate:originalStartDate];
 
-    v7 = [(EKUIInviteesViewOriginalConflictSection *)self availabilitySearcher];
-    v8 = [v7 originalEndDate];
-    [(EKUIInviteesViewOriginalConflictSection *)self setEndDate:v8];
+    availabilitySearcher2 = [(EKUIInviteesViewOriginalConflictSection *)self availabilitySearcher];
+    originalEndDate = [availabilitySearcher2 originalEndDate];
+    [(EKUIInviteesViewOriginalConflictSection *)self setEndDate:originalEndDate];
 
     v9 = MEMORY[0x1E6966A88];
-    v10 = [(EKUIInviteesViewOriginalConflictSection *)self availabilitySearcher];
-    v11 = [v10 originalConflictedParticipants];
-    v12 = [v9 participantsForSortingWithEKParticipants:v11];
+    availabilitySearcher3 = [(EKUIInviteesViewOriginalConflictSection *)self availabilitySearcher];
+    originalConflictedParticipants = [availabilitySearcher3 originalConflictedParticipants];
+    v12 = [v9 participantsForSortingWithEKParticipants:originalConflictedParticipants];
 
     [(EKUIInviteesViewOriginalConflictSection *)self setBusyParticipants:v12];
     [(EKUIInviteesViewOriginalConflictSection *)self setConflictFound:1];
   }
 
-  else if (!a3)
+  else if (!state)
   {
     [(EKUIInviteesViewOriginalConflictSection *)self setStartDate:?];
     [(EKUIInviteesViewOriginalConflictSection *)self setEndDate:0];
     [(EKUIInviteesViewOriginalConflictSection *)self setChecked:1];
     [(EKUIInviteesViewOriginalConflictSection *)self setBusyParticipants:0];
-    v4 = [(EKUIInviteesViewOriginalConflictSection *)self rowsShowingAllParticipants];
-    [v4 removeAllObjects];
+    rowsShowingAllParticipants = [(EKUIInviteesViewOriginalConflictSection *)self rowsShowingAllParticipants];
+    [rowsShowingAllParticipants removeAllObjects];
 
     [(EKUIInviteesViewOriginalConflictSection *)self setConflictFound:0];
   }
 }
 
-- (void)setChecked:(BOOL)a3
+- (void)setChecked:(BOOL)checked
 {
-  v3 = a3;
-  self->_checked = a3;
-  v5 = [(EKUIInviteesViewOriginalConflictSection *)self tableViewCellHook];
+  checkedCopy = checked;
+  self->_checked = checked;
+  tableViewCellHook = [(EKUIInviteesViewOriginalConflictSection *)self tableViewCellHook];
 
-  if (v5)
+  if (tableViewCellHook)
   {
-    v6 = [(EKUIInviteesViewOriginalConflictSection *)self tableViewCellHook];
-    v7 = v6[2](v6, 0);
+    tableViewCellHook2 = [(EKUIInviteesViewOriginalConflictSection *)self tableViewCellHook];
+    v7 = tableViewCellHook2[2](tableViewCellHook2, 0);
 
-    [v7 setChecked:v3];
+    [v7 setChecked:checkedCopy];
     [v7 setSelected:0];
   }
 
-  if (v3)
+  if (checkedCopy)
   {
-    v8 = [(EKUIInviteesViewOriginalConflictSection *)self newTimeChosen];
+    newTimeChosen = [(EKUIInviteesViewOriginalConflictSection *)self newTimeChosen];
 
-    if (v8)
+    if (newTimeChosen)
     {
-      v11 = [(EKUIInviteesViewOriginalConflictSection *)self startDate];
-      v9 = [(EKUIInviteesViewOriginalConflictSection *)self endDate];
-      if (v11 && v9)
+      startDate = [(EKUIInviteesViewOriginalConflictSection *)self startDate];
+      endDate = [(EKUIInviteesViewOriginalConflictSection *)self endDate];
+      if (startDate && endDate)
       {
-        v10 = [(EKUIInviteesViewOriginalConflictSection *)self newTimeChosen];
-        (v10)[2](v10, v11, v9);
+        newTimeChosen2 = [(EKUIInviteesViewOriginalConflictSection *)self newTimeChosen];
+        (newTimeChosen2)[2](newTimeChosen2, startDate, endDate);
       }
     }
   }

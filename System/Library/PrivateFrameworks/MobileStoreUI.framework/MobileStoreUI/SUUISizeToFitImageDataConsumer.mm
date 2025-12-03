@@ -1,41 +1,41 @@
 @interface SUUISizeToFitImageDataConsumer
-+ (id)consumerWithConstraintSize2:(CGSize)a3;
-+ (id)consumerWithConstraintSize:(CGSize)a3;
++ (id)consumerWithConstraintSize2:(CGSize)size2;
++ (id)consumerWithConstraintSize:(CGSize)size;
 - (CGSize)constraintSize;
-- (id)imageForImage:(id)a3;
-- (void)_drawGradientWithContext:(CGContext *)a3 imageRect:(CGRect)a4;
+- (id)imageForImage:(id)image;
+- (void)_drawGradientWithContext:(CGContext *)context imageRect:(CGRect)rect;
 @end
 
 @implementation SUUISizeToFitImageDataConsumer
 
-+ (id)consumerWithConstraintSize:(CGSize)a3
++ (id)consumerWithConstraintSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  result = [a1 consumer];
+  height = size.height;
+  width = size.width;
+  result = [self consumer];
   *(result + 1) = width;
   *(result + 2) = height;
   return result;
 }
 
-+ (id)consumerWithConstraintSize2:(CGSize)a3
++ (id)consumerWithConstraintSize2:(CGSize)size2
 {
-  height = a3.height;
-  width = a3.width;
-  result = [a1 consumer];
+  height = size2.height;
+  width = size2.width;
+  result = [self consumer];
   *(result + 1) = width;
   *(result + 2) = height;
   *(result + 24) = 1;
   return result;
 }
 
-- (id)imageForImage:(id)a3
+- (id)imageForImage:(id)image
 {
-  v4 = a3;
-  v5 = v4;
+  imageCopy = image;
+  v5 = imageCopy;
   if (!self->_custom)
   {
-    [v4 size];
+    [imageCopy size];
     width = self->_constraintSize.width;
     height = self->_constraintSize.height;
     if (height == 0.0)
@@ -70,10 +70,10 @@ LABEL_9:
 
   v21.width = 0.0;
   v21.height = 0.0;
-  [v4 size];
+  [imageCopy size];
   SUUIIconFrameForIconSize(&v21.width, 0, v6, v7, self->_constraintSize.width, self->_constraintSize.height, 0.0);
-  v8 = [MEMORY[0x277D759A0] mainScreen];
-  [v8 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   UIGraphicsBeginImageContextWithOptions(v21, 0, v9);
 
   CurrentContext = UIGraphicsGetCurrentContext();
@@ -92,15 +92,15 @@ LABEL_11:
   return v15;
 }
 
-- (void)_drawGradientWithContext:(CGContext *)a3 imageRect:(CGRect)a4
+- (void)_drawGradientWithContext:(CGContext *)context imageRect:(CGRect)rect
 {
   v17 = *MEMORY[0x277D85DE8];
   if (self->_gradientEndColor)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     *locations = xmmword_259FCAE10;
     v11 = [(UIColor *)self->_gradientEndColor colorWithAlphaComponent:0.0];
@@ -121,7 +121,7 @@ LABEL_11:
     v18.x = 0.0;
     v19.x = 0.0;
     v18.y = v14;
-    CGContextDrawLinearGradient(a3, v13, v18, v19, 0);
+    CGContextDrawLinearGradient(context, v13, v18, v19, 0);
     CGGradientRelease(v13);
     CFRelease(v12);
     CGColorSpaceRelease(DeviceRGB);

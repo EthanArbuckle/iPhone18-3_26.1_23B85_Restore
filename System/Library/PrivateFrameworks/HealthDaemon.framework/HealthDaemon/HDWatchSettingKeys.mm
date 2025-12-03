@@ -1,48 +1,48 @@
 @interface HDWatchSettingKeys
-- (BOOL)isEqual:(id)a3;
-- (HDWatchSettingKeys)initWithFeatureIdentifier:(id)a3 defaultsEnabledKey:(id)a4;
-- (HDWatchSettingKeys)initWithFeatureIdentifier:(id)a3 featureSettingEnabledKey:(id)a4 defaultsEnabledKey:(id)a5 lastReconciledEnabledKey:(id)a6;
+- (BOOL)isEqual:(id)equal;
+- (HDWatchSettingKeys)initWithFeatureIdentifier:(id)identifier defaultsEnabledKey:(id)key;
+- (HDWatchSettingKeys)initWithFeatureIdentifier:(id)identifier featureSettingEnabledKey:(id)key defaultsEnabledKey:(id)enabledKey lastReconciledEnabledKey:(id)reconciledEnabledKey;
 - (unint64_t)hash;
 @end
 
 @implementation HDWatchSettingKeys
 
-- (HDWatchSettingKeys)initWithFeatureIdentifier:(id)a3 defaultsEnabledKey:(id)a4
+- (HDWatchSettingKeys)initWithFeatureIdentifier:(id)identifier defaultsEnabledKey:(id)key
 {
   v6 = *MEMORY[0x277CCC120];
   v7 = MEMORY[0x277CCACA8];
-  v8 = a4;
-  v9 = a3;
-  v10 = [v7 stringWithFormat:@"%@_lastReconciledValue", v8];
-  v11 = [(HDWatchSettingKeys *)self initWithFeatureIdentifier:v9 featureSettingEnabledKey:v6 defaultsEnabledKey:v8 lastReconciledEnabledKey:v10];
+  keyCopy = key;
+  identifierCopy = identifier;
+  keyCopy = [v7 stringWithFormat:@"%@_lastReconciledValue", keyCopy];
+  v11 = [(HDWatchSettingKeys *)self initWithFeatureIdentifier:identifierCopy featureSettingEnabledKey:v6 defaultsEnabledKey:keyCopy lastReconciledEnabledKey:keyCopy];
 
   return v11;
 }
 
-- (HDWatchSettingKeys)initWithFeatureIdentifier:(id)a3 featureSettingEnabledKey:(id)a4 defaultsEnabledKey:(id)a5 lastReconciledEnabledKey:(id)a6
+- (HDWatchSettingKeys)initWithFeatureIdentifier:(id)identifier featureSettingEnabledKey:(id)key defaultsEnabledKey:(id)enabledKey lastReconciledEnabledKey:(id)reconciledEnabledKey
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  keyCopy = key;
+  enabledKeyCopy = enabledKey;
+  reconciledEnabledKeyCopy = reconciledEnabledKey;
   v24.receiver = self;
   v24.super_class = HDWatchSettingKeys;
   v14 = [(HDWatchSettingKeys *)&v24 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [identifierCopy copy];
     featureIdentifier = v14->_featureIdentifier;
     v14->_featureIdentifier = v15;
 
-    v17 = [v11 copy];
+    v17 = [keyCopy copy];
     featureSettingEnabledKey = v14->_featureSettingEnabledKey;
     v14->_featureSettingEnabledKey = v17;
 
-    v19 = [v12 copy];
+    v19 = [enabledKeyCopy copy];
     defaultsEnabledKey = v14->_defaultsEnabledKey;
     v14->_defaultsEnabledKey = v19;
 
-    v21 = [v13 copy];
+    v21 = [reconciledEnabledKeyCopy copy];
     lastReconciledEnabledKey = v14->_lastReconciledEnabledKey;
     v14->_lastReconciledEnabledKey = v21;
   }
@@ -50,10 +50,10 @@
   return v14;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v14 = 1;
   }
@@ -63,7 +63,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       featureIdentifier = self->_featureIdentifier;
       v7 = v5->_featureIdentifier;
       if (featureIdentifier != v7 && (!v7 || ![(NSString *)featureIdentifier isEqual:?]))

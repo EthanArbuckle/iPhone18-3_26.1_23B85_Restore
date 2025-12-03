@@ -9,16 +9,16 @@
 
 - (id)accessibilityLabel
 {
-  v2 = [(LinkedTextViewAccessibility *)self _accessibilityLinkedTextView];
-  v3 = [v2 accessibilityLabel];
+  _accessibilityLinkedTextView = [(LinkedTextViewAccessibility *)self _accessibilityLinkedTextView];
+  accessibilityLabel = [_accessibilityLinkedTextView accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v2 = [(LinkedTextViewAccessibility *)self _accessibilityLinkedTextView];
-  [v2 accessibilityFrame];
+  _accessibilityLinkedTextView = [(LinkedTextViewAccessibility *)self _accessibilityLinkedTextView];
+  [_accessibilityLinkedTextView accessibilityFrame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -37,10 +37,10 @@
 
 - (BOOL)accessibilityActivate
 {
-  v2 = [(LinkedTextViewAccessibility *)self _accessibilityLinkedTextView];
-  v3 = [v2 accessibilityActivate];
+  _accessibilityLinkedTextView = [(LinkedTextViewAccessibility *)self _accessibilityLinkedTextView];
+  accessibilityActivate = [_accessibilityLinkedTextView accessibilityActivate];
 
-  return v3;
+  return accessibilityActivate;
 }
 
 - (id)_accessibilityLinkedTextView

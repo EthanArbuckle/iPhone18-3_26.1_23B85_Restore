@@ -8,9 +8,9 @@
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [a1 inAppAdamID];
-  v4 = [a1 offerID];
-  if ([a1 isTrialPeriod])
+  inAppAdamID = [self inAppAdamID];
+  offerID = [self offerID];
+  if ([self isTrialPeriod])
   {
     v5 = @"YES";
   }
@@ -20,7 +20,7 @@
     v5 = @"NO";
   }
 
-  if ([a1 isPurchaser])
+  if ([self isPurchaser])
   {
     v6 = @"YES";
   }
@@ -30,7 +30,7 @@
     v6 = @"NO";
   }
 
-  v7 = [v2 stringWithFormat:@"{purchaseId=%@, offerId=%@, isTrialPeriod=%@, isPurchaser=%@}", v3, v4, v5, v6];
+  v7 = [v2 stringWithFormat:@"{purchaseId=%@, offerId=%@, isTrialPeriod=%@, isPurchaser=%@}", inAppAdamID, offerID, v5, v6];
 
   return v7;
 }
@@ -38,12 +38,12 @@
 - (id)servicesBundlePurchaseID
 {
   objc_opt_class();
-  v2 = [a1 subscriptionBundleID];
-  if (v2)
+  subscriptionBundleID = [self subscriptionBundleID];
+  if (subscriptionBundleID)
   {
     if (objc_opt_isKindOfClass())
     {
-      v3 = v2;
+      v3 = subscriptionBundleID;
     }
 
     else
@@ -63,24 +63,24 @@
   {
     if ([v4 intValue])
     {
-      v5 = [v4 stringValue];
+      stringValue = [v4 stringValue];
     }
 
     else
     {
-      v5 = 0;
+      stringValue = 0;
     }
   }
 
   else
   {
     objc_opt_class();
-    v6 = [a1 subscriptionBundleID];
-    if (v6)
+    subscriptionBundleID2 = [self subscriptionBundleID];
+    if (subscriptionBundleID2)
     {
       if (objc_opt_isKindOfClass())
       {
-        v7 = v6;
+        v7 = subscriptionBundleID2;
       }
 
       else
@@ -94,10 +94,10 @@
       v7 = 0;
     }
 
-    v5 = v7;
+    stringValue = v7;
   }
 
-  return v5;
+  return stringValue;
 }
 
 @end

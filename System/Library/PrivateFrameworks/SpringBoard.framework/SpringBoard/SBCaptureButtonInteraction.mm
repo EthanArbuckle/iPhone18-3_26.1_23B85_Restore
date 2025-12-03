@@ -1,10 +1,10 @@
 @interface SBCaptureButtonInteraction
-+ (id)fromString:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)fromString:(id)string;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)launched;
 - (BOOL)mitigated;
-- (SBCaptureButtonInteraction)initWithContext:(id)a3 response:(id)a4 responseLogs:(id)a5;
-- (SBCaptureButtonInteraction)initWithDictionary:(id)a3;
+- (SBCaptureButtonInteraction)initWithContext:(id)context response:(id)response responseLogs:(id)logs;
+- (SBCaptureButtonInteraction)initWithDictionary:(id)dictionary;
 - (id)JSONString;
 - (id)_coreAnalyticsDictionaryRepresentation;
 - (id)dictionaryRepresentation;
@@ -14,36 +14,36 @@
 
 @implementation SBCaptureButtonInteraction
 
-- (SBCaptureButtonInteraction)initWithContext:(id)a3 response:(id)a4 responseLogs:(id)a5
+- (SBCaptureButtonInteraction)initWithContext:(id)context response:(id)response responseLogs:(id)logs
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  contextCopy = context;
+  responseCopy = response;
+  logsCopy = logs;
   v15.receiver = self;
   v15.super_class = SBCaptureButtonInteraction;
   v12 = [(SBCaptureButtonInteraction *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_context, a3);
-    objc_storeStrong(&v13->_response, a4);
-    objc_storeStrong(&v13->_responseLogs, a5);
+    objc_storeStrong(&v12->_context, context);
+    objc_storeStrong(&v13->_response, response);
+    objc_storeStrong(&v13->_responseLogs, logs);
     v13->_intention = 0;
   }
 
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CF0C20] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x277CF0C20] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   context = self->_context;
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __38__SBCaptureButtonInteraction_isEqual___block_invoke;
   v20[3] = &unk_2783ACDB8;
-  v7 = v4;
+  v7 = equalCopy;
   v21 = v7;
   v8 = [v5 appendObject:context counterpart:v20];
   response = self->_response;
@@ -69,29 +69,29 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x277CF0C40] builder];
-  v4 = [v3 appendObject:self->_context];
-  v5 = [v3 appendObject:self->_response];
-  v6 = [v3 appendObject:self->_responseLogs];
-  v7 = [v3 hash];
+  builder = [MEMORY[0x277CF0C40] builder];
+  v4 = [builder appendObject:self->_context];
+  v5 = [builder appendObject:self->_response];
+  v6 = [builder appendObject:self->_responseLogs];
+  v7 = [builder hash];
 
   return v7;
 }
 
-- (SBCaptureButtonInteraction)initWithDictionary:(id)a3
+- (SBCaptureButtonInteraction)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = [SBCaptureButtonContext alloc];
-  v6 = [v4 objectForKeyedSubscript:@"Context"];
+  v6 = [dictionaryCopy objectForKeyedSubscript:@"Context"];
   v7 = [(SBCaptureButtonContext *)v5 initWithDictionary:v6];
   v8 = [SBCaptureButtonBehaviorsResponse alloc];
-  v9 = [v4 objectForKeyedSubscript:@"Response"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"Response"];
   v10 = [(SBCaptureButtonBehaviorsResponse *)v8 initWithDictionary:v9];
-  v11 = [v4 objectForKeyedSubscript:@"ResponseLogs"];
+  v11 = [dictionaryCopy objectForKeyedSubscript:@"ResponseLogs"];
   v12 = [v11 bs_compactMap:&__block_literal_global_252];
   v13 = [(SBCaptureButtonInteraction *)self initWithContext:v7 response:v10 responseLogs:v12];
 
-  v14 = [v4 objectForKeyedSubscript:@"Intentional"];
+  v14 = [dictionaryCopy objectForKeyedSubscript:@"Intentional"];
 
   -[SBCaptureButtonInteraction setIntention:](v13, "setIntention:", [v14 integerValue]);
   return v13;
@@ -109,14 +109,14 @@ SBCaptureButtonBehaviorsResponseLog *__49__SBCaptureButtonInteraction_initWithDi
 {
   v11[5] = *MEMORY[0x277D85DE8];
   v10[0] = @"Context";
-  v3 = [(SBCaptureButtonContext *)self->_context dictionaryRepresentation];
-  v11[0] = v3;
+  dictionaryRepresentation = [(SBCaptureButtonContext *)self->_context dictionaryRepresentation];
+  v11[0] = dictionaryRepresentation;
   v10[1] = @"ComputedContext";
-  v4 = [(SBCaptureButtonContext *)self->_context computedContext];
-  v11[1] = v4;
+  computedContext = [(SBCaptureButtonContext *)self->_context computedContext];
+  v11[1] = computedContext;
   v10[2] = @"Response";
-  v5 = [(SBCaptureButtonBehaviorsResponse *)self->_response dictionaryRepresentation];
-  v11[2] = v5;
+  dictionaryRepresentation2 = [(SBCaptureButtonBehaviorsResponse *)self->_response dictionaryRepresentation];
+  v11[2] = dictionaryRepresentation2;
   v10[3] = @"ResponseLogs";
   v6 = [(NSArray *)self->_responseLogs bs_compactMap:&__block_literal_global_22_1];
   v11[3] = v6;
@@ -130,16 +130,16 @@ SBCaptureButtonBehaviorsResponseLog *__49__SBCaptureButtonInteraction_initWithDi
 
 - (id)JSONString
 {
-  v2 = [(SBCaptureButtonInteraction *)self dictionaryRepresentation];
-  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:v2 options:2 error:0];
+  dictionaryRepresentation = [(SBCaptureButtonInteraction *)self dictionaryRepresentation];
+  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionaryRepresentation options:2 error:0];
   v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v3 encoding:4];
 
   return v4;
 }
 
-+ (id)fromString:(id)a3
++ (id)fromString:(id)string
 {
-  v3 = [a3 dataUsingEncoding:4];
+  v3 = [string dataUsingEncoding:4];
   v4 = [MEMORY[0x277CCAAA0] JSONObjectWithData:v3 options:0 error:0];
   v5 = [[SBCaptureButtonInteraction alloc] initWithDictionary:v4];
 
@@ -151,13 +151,13 @@ SBCaptureButtonBehaviorsResponseLog *__49__SBCaptureButtonInteraction_initWithDi
   v88[42] = *MEMORY[0x277D85DE8];
   v87[0] = @"allowLaunchIfUnobstructedPromptlyAfterButtonUp";
   v3 = MEMORY[0x277CCABB0];
-  v86 = [(SBCaptureButtonContext *)self->_context policy];
-  v85 = [v3 numberWithBool:{objc_msgSend(v86, "launchIfUnobstructedPromptlyAfterButtonUpEnabled")}];
+  policy = [(SBCaptureButtonContext *)self->_context policy];
+  v85 = [v3 numberWithBool:{objc_msgSend(policy, "launchIfUnobstructedPromptlyAfterButtonUpEnabled")}];
   v88[0] = v85;
   v87[1] = @"allowLaunchIfUnobstructedWhileButtonDown";
   v4 = MEMORY[0x277CCABB0];
-  v84 = [(SBCaptureButtonContext *)self->_context policy];
-  v83 = [v4 numberWithBool:{objc_msgSend(v84, "launchIfUnobstructedWhileButtonDownEnabled")}];
+  policy2 = [(SBCaptureButtonContext *)self->_context policy];
+  v83 = [v4 numberWithBool:{objc_msgSend(policy2, "launchIfUnobstructedWhileButtonDownEnabled")}];
   v88[1] = v83;
   v87[2] = @"backlightState";
   v82 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SBCaptureButtonContext backlightState](self->_context, "backlightState")}];
@@ -182,25 +182,25 @@ SBCaptureButtonBehaviorsResponseLog *__49__SBCaptureButtonInteraction_initWithDi
   v88[8] = v76;
   v87[9] = @"consoleModeMitigationEnabled";
   v5 = MEMORY[0x277CCABB0];
-  v75 = [(SBCaptureButtonContext *)self->_context policy];
-  v74 = [v5 numberWithBool:{objc_msgSend(v75, "consoleModeMitigationEnabled")}];
+  policy3 = [(SBCaptureButtonContext *)self->_context policy];
+  v74 = [v5 numberWithBool:{objc_msgSend(policy3, "consoleModeMitigationEnabled")}];
   v88[9] = v74;
   v87[10] = @"deviceAngleX";
   v6 = MEMORY[0x277CCABB0];
-  v73 = [(SBCaptureButtonContext *)self->_context gravity];
-  [v73 x];
+  gravity = [(SBCaptureButtonContext *)self->_context gravity];
+  [gravity x];
   v72 = [v6 numberWithDouble:?];
   v88[10] = v72;
   v87[11] = @"deviceAngleY";
   v7 = MEMORY[0x277CCABB0];
-  v71 = [(SBCaptureButtonContext *)self->_context gravity];
-  [v71 y];
+  gravity2 = [(SBCaptureButtonContext *)self->_context gravity];
+  [gravity2 y];
   v70 = [v7 numberWithDouble:?];
   v88[11] = v70;
   v87[12] = @"deviceAngleZ";
   v8 = MEMORY[0x277CCABB0];
-  v69 = [(SBCaptureButtonContext *)self->_context gravity];
-  [v69 z];
+  gravity3 = [(SBCaptureButtonContext *)self->_context gravity];
+  [gravity3 z];
   v68 = [v8 numberWithDouble:?];
   v88[12] = v68;
   v87[13] = @"deviceOrientation";
@@ -208,49 +208,49 @@ SBCaptureButtonBehaviorsResponseLog *__49__SBCaptureButtonInteraction_initWithDi
   v88[13] = v67;
   v87[14] = @"deviceStationaryDetectionEnabled";
   v9 = MEMORY[0x277CCABB0];
-  v66 = [(SBCaptureButtonContext *)self->_context policy];
-  v65 = [v9 numberWithBool:{objc_msgSend(v66, "deviceStationaryDetectionEnabled")}];
+  policy4 = [(SBCaptureButtonContext *)self->_context policy];
+  v65 = [v9 numberWithBool:{objc_msgSend(policy4, "deviceStationaryDetectionEnabled")}];
   v88[14] = v65;
   v87[15] = @"deviceStationaryDetectionEnabledWhenUnlocked";
   v10 = MEMORY[0x277CCABB0];
-  v64 = [(SBCaptureButtonContext *)self->_context policy];
-  v63 = [v10 numberWithBool:{objc_msgSend(v64, "deviceStationaryDetectionEnabledWhenUnlocked")}];
+  policy5 = [(SBCaptureButtonContext *)self->_context policy];
+  v63 = [v10 numberWithBool:{objc_msgSend(policy5, "deviceStationaryDetectionEnabledWhenUnlocked")}];
   v88[15] = v63;
   v87[16] = @"deviceStationaryDetectionStationaryDebounceInterval";
   v11 = MEMORY[0x277CCABB0];
-  v62 = [(SBCaptureButtonContext *)self->_context policy];
-  [v62 deviceStationaryDetectionStationaryDebounceInterval];
+  policy6 = [(SBCaptureButtonContext *)self->_context policy];
+  [policy6 deviceStationaryDetectionStationaryDebounceInterval];
   v61 = [v11 numberWithDouble:?];
   v88[16] = v61;
   v87[17] = @"deviceStationaryDetectionStationaryPickUpBuffer";
   v12 = MEMORY[0x277CCABB0];
-  v60 = [(SBCaptureButtonContext *)self->_context policy];
-  [v60 deviceStationaryDetectionStationaryPickUpBuffer];
+  policy7 = [(SBCaptureButtonContext *)self->_context policy];
+  [policy7 deviceStationaryDetectionStationaryPickUpBuffer];
   v59 = [v12 numberWithDouble:?];
   v88[17] = v59;
   v87[18] = @"deviceStationaryDetectionStationaryThreshold";
   v13 = MEMORY[0x277CCABB0];
-  v58 = [(SBCaptureButtonContext *)self->_context policy];
-  [v58 deviceStationaryDetectionStationaryThreshold];
+  policy8 = [(SBCaptureButtonContext *)self->_context policy];
+  [policy8 deviceStationaryDetectionStationaryThreshold];
   v57 = [v13 numberWithDouble:?];
   v88[18] = v57;
   v87[19] = @"directLaunchAfterUnsuppressEnabled";
   v14 = MEMORY[0x277CCABB0];
-  v56 = [(SBCaptureButtonContext *)self->_context policy];
-  v55 = [v14 numberWithBool:{objc_msgSend(v56, "directLaunchAfterUnsuppressEnabled")}];
+  policy9 = [(SBCaptureButtonContext *)self->_context policy];
+  v55 = [v14 numberWithBool:{objc_msgSend(policy9, "directLaunchAfterUnsuppressEnabled")}];
   v88[19] = v55;
   v87[20] = @"directLaunchAfterUnsuppressGracePeriod";
   v15 = MEMORY[0x277CCABB0];
-  v54 = [(SBCaptureButtonContext *)self->_context policy];
-  [v54 directLaunchAfterUnsuppressGracePeriod];
+  policy10 = [(SBCaptureButtonContext *)self->_context policy];
+  [policy10 directLaunchAfterUnsuppressGracePeriod];
   v53 = [v15 numberWithDouble:?];
   v88[20] = v53;
   v87[21] = @"captureAppBundleID";
-  v16 = [(SBCaptureButtonContext *)self->_context captureAppBundleID];
-  v52 = v16;
-  if (v16)
+  captureAppBundleID = [(SBCaptureButtonContext *)self->_context captureAppBundleID];
+  v52 = captureAppBundleID;
+  if (captureAppBundleID)
   {
-    v17 = v16;
+    v17 = captureAppBundleID;
   }
 
   else
@@ -260,12 +260,12 @@ SBCaptureButtonBehaviorsResponseLog *__49__SBCaptureButtonInteraction_initWithDi
 
   v88[21] = v17;
   v87[22] = @"foregroundAppBundleID";
-  v51 = [(SBCaptureButtonContext *)self->_context foregroundAppBundleID];
-  v18 = [v51 sb_filteredFirstPartyAppBundleID];
-  v50 = v18;
-  if (v18)
+  foregroundAppBundleID = [(SBCaptureButtonContext *)self->_context foregroundAppBundleID];
+  sb_filteredFirstPartyAppBundleID = [foregroundAppBundleID sb_filteredFirstPartyAppBundleID];
+  v50 = sb_filteredFirstPartyAppBundleID;
+  if (sb_filteredFirstPartyAppBundleID)
   {
-    v19 = v18;
+    v19 = sb_filteredFirstPartyAppBundleID;
   }
 
   else
@@ -333,8 +333,8 @@ SBCaptureButtonBehaviorsResponseLog *__49__SBCaptureButtonInteraction_initWithDi
   v88[37] = v29;
   v87[38] = @"wakeEnabled";
   v30 = MEMORY[0x277CCABB0];
-  v31 = [(SBCaptureButtonContext *)self->_context policy];
-  v32 = [v30 numberWithBool:{objc_msgSend(v31, "wakeEnabled")}];
+  policy11 = [(SBCaptureButtonContext *)self->_context policy];
+  v32 = [v30 numberWithBool:{objc_msgSend(policy11, "wakeEnabled")}];
   v88[38] = v32;
   v87[39] = @"wakeIntent";
   v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SBCaptureButtonBehaviorsResponse wakeIntent](self->_response, "wakeIntent")}];
@@ -354,16 +354,16 @@ SBCaptureButtonBehaviorsResponseLog *__49__SBCaptureButtonInteraction_initWithDi
 
 - (BOOL)launched
 {
-  v2 = [(SBCaptureButtonInteraction *)self response];
-  v3 = [v2 launchIntent] == 2;
+  response = [(SBCaptureButtonInteraction *)self response];
+  v3 = [response launchIntent] == 2;
 
   return v3;
 }
 
 - (BOOL)mitigated
 {
-  v2 = [(SBCaptureButtonInteraction *)self response];
-  v3 = [v2 launchIntent] == 1;
+  response = [(SBCaptureButtonInteraction *)self response];
+  v3 = [response launchIntent] == 1;
 
   return v3;
 }
@@ -380,7 +380,7 @@ SBCaptureButtonBehaviorsResponseLog *__49__SBCaptureButtonInteraction_initWithDi
   if (v4)
   {
     v5 = v4;
-    v6 = 0;
+    behaviorIdentifier = 0;
     v7 = *v14;
     do
     {
@@ -392,12 +392,12 @@ SBCaptureButtonBehaviorsResponseLog *__49__SBCaptureButtonInteraction_initWithDi
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 response];
-        v11 = [v10 launchIntent];
+        response = [v9 response];
+        launchIntent = [response launchIntent];
 
-        if (v11 && v11 == [(SBCaptureButtonBehaviorsResponse *)self->_response launchIntent])
+        if (launchIntent && launchIntent == [(SBCaptureButtonBehaviorsResponse *)self->_response launchIntent])
         {
-          v6 = [v9 behaviorIdentifier];
+          behaviorIdentifier = [v9 behaviorIdentifier];
         }
       }
 
@@ -409,10 +409,10 @@ SBCaptureButtonBehaviorsResponseLog *__49__SBCaptureButtonInteraction_initWithDi
 
   else
   {
-    v6 = 0;
+    behaviorIdentifier = 0;
   }
 
-  return v6;
+  return behaviorIdentifier;
 }
 
 @end

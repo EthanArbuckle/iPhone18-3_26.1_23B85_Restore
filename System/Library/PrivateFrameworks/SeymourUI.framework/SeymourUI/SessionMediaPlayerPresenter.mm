@@ -1,10 +1,10 @@
 @interface SessionMediaPlayerPresenter
-- (void)handleAudioInterruptionWithNotification:(id)a3;
+- (void)handleAudioInterruptionWithNotification:(id)notification;
 @end
 
 @implementation SessionMediaPlayerPresenter
 
-- (void)handleAudioInterruptionWithNotification:(id)a3
+- (void)handleAudioInterruptionWithNotification:(id)notification
 {
   v3 = sub_20C132614();
   v4 = *(v3 - 8);

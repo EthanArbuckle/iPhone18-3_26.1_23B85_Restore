@@ -1,9 +1,9 @@
 @interface MusicKit_SoftLinking_MPMutableSectionedCollection
 - (MusicKit_SoftLinking_MPMutableSectionedCollection)init;
-- (MusicKit_SoftLinking_MPMutableSectionedCollection)initWithUnderlyingSectionedCollection:(id)a3;
-- (void)appendItem:(id)a3;
-- (void)appendItems:(id)a3;
-- (void)appendSection:(id)a3;
+- (MusicKit_SoftLinking_MPMutableSectionedCollection)initWithUnderlyingSectionedCollection:(id)collection;
+- (void)appendItem:(id)item;
+- (void)appendItems:(id)items;
+- (void)appendSection:(id)section;
 @end
 
 @implementation MusicKit_SoftLinking_MPMutableSectionedCollection
@@ -41,48 +41,48 @@
   return v2;
 }
 
-- (MusicKit_SoftLinking_MPMutableSectionedCollection)initWithUnderlyingSectionedCollection:(id)a3
+- (MusicKit_SoftLinking_MPMutableSectionedCollection)initWithUnderlyingSectionedCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = MusicKit_SoftLinking_MPMutableSectionedCollection;
   v6 = [(MusicKit_SoftLinking_MPSectionedCollection *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingSectionedCollection, a3);
+    objc_storeStrong(&v6->_underlyingSectionedCollection, collection);
   }
 
   return v7;
 }
 
-- (void)appendSection:(id)a3
+- (void)appendSection:(id)section
 {
-  v5 = a3;
-  v4 = v5;
-  if ([v5 conformsToProtocol:&unk_28298E028])
+  sectionCopy = section;
+  underlyingObject = sectionCopy;
+  if ([sectionCopy conformsToProtocol:&unk_28298E028])
   {
-    v4 = [v5 underlyingObject];
+    underlyingObject = [sectionCopy underlyingObject];
   }
 
-  [(MPMutableSectionedCollection *)self->_underlyingSectionedCollection appendSection:v4];
+  [(MPMutableSectionedCollection *)self->_underlyingSectionedCollection appendSection:underlyingObject];
 }
 
-- (void)appendItem:(id)a3
+- (void)appendItem:(id)item
 {
-  v5 = a3;
-  v4 = v5;
-  if ([v5 conformsToProtocol:&unk_28298E028])
+  itemCopy = item;
+  underlyingObject = itemCopy;
+  if ([itemCopy conformsToProtocol:&unk_28298E028])
   {
-    v4 = [v5 underlyingObject];
+    underlyingObject = [itemCopy underlyingObject];
   }
 
-  [(MPMutableSectionedCollection *)self->_underlyingSectionedCollection appendItem:v4];
+  [(MPMutableSectionedCollection *)self->_underlyingSectionedCollection appendItem:underlyingObject];
 }
 
-- (void)appendItems:(id)a3
+- (void)appendItems:(id)items
 {
-  v4 = [a3 msv_map:&__block_literal_global_7];
+  v4 = [items msv_map:&__block_literal_global_7];
   [(MPMutableSectionedCollection *)self->_underlyingSectionedCollection appendItems:v4];
 }
 

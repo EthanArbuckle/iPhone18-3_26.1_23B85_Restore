@@ -1,57 +1,57 @@
 @interface APAdvertiserBTLEManager
-+ (id)stringForBTLEMode:(unsigned __int16)a3;
-+ (id)stringForBTLEState:(int64_t)a3;
-- (APAdvertiserBTLEManager)initWithEventContext:(void *)a3;
++ (id)stringForBTLEMode:(unsigned __int16)mode;
++ (id)stringForBTLEState:(int64_t)state;
+- (APAdvertiserBTLEManager)initWithEventContext:(void *)context;
 - (BOOL)shouldScanForSourceWithScreenOff;
 - (id)createBTLEAdvertiser;
 - (id)createBTLEDiscoverer;
-- (int)setAccessControlType:(unsigned int)a3;
-- (int)setBTLEMode:(unsigned __int16)a3;
-- (int)setEventHandler:(void *)a3 withContext:(void *)a4;
-- (int)setIsP2PAllowed:(BOOL)a3;
-- (int)setProperty:(id)a3 withValue:(id)a4;
-- (int)setReceiverPort:(unsigned __int16)a3;
-- (int)setRequireAltBrowser:(BOOL)a3;
+- (int)setAccessControlType:(unsigned int)type;
+- (int)setBTLEMode:(unsigned __int16)mode;
+- (int)setEventHandler:(void *)handler withContext:(void *)context;
+- (int)setIsP2PAllowed:(BOOL)allowed;
+- (int)setProperty:(id)property withValue:(id)value;
+- (int)setReceiverPort:(unsigned __int16)port;
+- (int)setRequireAltBrowser:(BOOL)browser;
 - (int)setupEventHandlerState;
-- (int)showDebugWithDataBuffer:(id *)a3 verbose:(BOOL)a4;
+- (int)showDebugWithDataBuffer:(id *)buffer verbose:(BOOL)verbose;
 - (int)start;
 - (int)startMonitoringForNetworkChanges;
 - (int)startP2PSoloQueryTimer;
 - (int)stop;
 - (int)stopMonitoringForNetworkChanges;
-- (int)supportsSolo:(BOOL *)a3;
+- (int)supportsSolo:(BOOL *)solo;
 - (int)update;
 - (int)updatePreferences;
-- (int)updateSupportsSoloAndForceReadFromPrefs:(BOOL)a3;
+- (int)updateSupportsSoloAndForceReadFromPrefs:(BOOL)prefs;
 - (int64_t)btleManagerState;
 - (void)cleanupEventHandlerState;
 - (void)computeNearbyDeviceTypesAndDispatchEventIfNecessary;
 - (void)dealloc;
-- (void)dispatchEvent:(unsigned int)a3;
-- (void)handleFoundDevice:(id)a3;
-- (void)handleLostDevice:(id)a3 withGoodbye:(BOOL)a4;
+- (void)dispatchEvent:(unsigned int)event;
+- (void)handleFoundDevice:(id)device;
+- (void)handleLostDevice:(id)device withGoodbye:(BOOL)goodbye;
 - (void)handleP2PSoloQueryTimerCancelled;
 - (void)handleP2PSoloQueryTimerFired;
 - (void)invalidate;
 - (void)removeExpiredDevices;
-- (void)removeLostDeviceWithIdentifier:(id)a3;
+- (void)removeLostDeviceWithIdentifier:(id)identifier;
 - (void)restartAdvertisingIfNecessary;
 - (void)startAdvertising;
 - (void)startScanning;
 - (void)stopAdvertising;
-- (void)stopAdvertisingWithSeed:(int)a3;
+- (void)stopAdvertisingWithSeed:(int)seed;
 - (void)stopScanning;
-- (void)stopScanningWithSeed:(int)a3;
+- (void)stopScanningWithSeed:(int)seed;
 - (void)updateLostLegacyDeviceTimer;
 @end
 
 @implementation APAdvertiserBTLEManager
 
-- (int)showDebugWithDataBuffer:(id *)a3 verbose:(BOOL)a4
+- (int)showDebugWithDataBuffer:(id *)buffer verbose:(BOOL)verbose
 {
   v30 = *MEMORY[0x277D85DE8];
   memset(v29, 0, sizeof(v29));
-  if ([(APAdvertiserBTLEManager *)self isEnabled:a3])
+  if ([(APAdvertiserBTLEManager *)self isEnabled:buffer])
   {
     v6 = "yes";
   }
@@ -108,13 +108,13 @@
   {
     [(CBAdvertiser *)[(APAdvertiserBTLEManager *)self btleAdvertiser] airplayTargetIPv4];
     IPv4AddressToCString();
-    v11 = [(CBAdvertiser *)[(APAdvertiserBTLEManager *)self btleAdvertiser] airplayTargetFlags];
-    v12 = [(CBAdvertiser *)[(APAdvertiserBTLEManager *)self btleAdvertiser] airplayTargetConfigSeed];
+    airplayTargetFlags = [(CBAdvertiser *)[(APAdvertiserBTLEManager *)self btleAdvertiser] airplayTargetFlags];
+    airplayTargetConfigSeed = [(CBAdvertiser *)[(APAdvertiserBTLEManager *)self btleAdvertiser] airplayTargetConfigSeed];
     v25 = v29;
-    v26 = [(CBAdvertiser *)[(APAdvertiserBTLEManager *)self btleAdvertiser] airplayTargetPort];
+    airplayTargetPort = [(CBAdvertiser *)[(APAdvertiserBTLEManager *)self btleAdvertiser] airplayTargetPort];
     v22 = &unk_23EAA1C34;
-    v24 = v12;
-    v21 = v11;
+    v24 = airplayTargetConfigSeed;
+    v21 = airplayTargetFlags;
     DataBuffer_AppendF();
   }
 
@@ -128,7 +128,7 @@
     v13 = 0;
   }
 
-  v23 = [(APAdvertiserBTLEManager *)self soloDeviceFlags];
+  soloDeviceFlags = [(APAdvertiserBTLEManager *)self soloDeviceFlags];
   DataBuffer_AppendF();
   if (v13)
   {
@@ -138,85 +138,85 @@
     v27[1] = 3221225472;
     v27[2] = __59__APAdvertiserBTLEManager_showDebugWithDataBuffer_verbose___block_invoke;
     v27[3] = &__block_descriptor_40_e35_v32__0__NSString_8__NSNumber_16_B24l;
-    v27[4] = a3;
+    v27[4] = buffer;
     [(NSMutableDictionary *)v14 enumerateKeysAndObjectsUsingBlock:v27];
   }
 
   return v7;
 }
 
-- (void)removeLostDeviceWithIdentifier:(id)a3
+- (void)removeLostDeviceWithIdentifier:(id)identifier
 {
   if (gLogCategory_APAdvertiserBTLEManager <= 40 && (gLogCategory_APAdvertiserBTLEManager != -1 || _LogCategory_Initialize()))
   {
-    v5 = a3;
+    identifierCopy = identifier;
     LogPrintF();
   }
 
-  [(NSMutableDictionary *)[(APAdvertiserBTLEManager *)self soloDevices] removeObjectForKey:a3];
+  [(NSMutableDictionary *)[(APAdvertiserBTLEManager *)self soloDevices] removeObjectForKey:identifier];
 
   [(APAdvertiserBTLEManager *)self computeNearbyDeviceTypesAndDispatchEventIfNecessary];
 }
 
-- (void)handleLostDevice:(id)a3 withGoodbye:(BOOL)a4
+- (void)handleLostDevice:(id)device withGoodbye:(BOOL)goodbye
 {
-  v4 = a4;
-  if (-[NSMutableDictionary objectForKeyedSubscript:](-[APAdvertiserBTLEManager soloDevices](self, "soloDevices"), "objectForKeyedSubscript:", [a3 identifier]))
+  goodbyeCopy = goodbye;
+  if (-[NSMutableDictionary objectForKeyedSubscript:](-[APAdvertiserBTLEManager soloDevices](self, "soloDevices"), "objectForKeyedSubscript:", [device identifier]))
   {
-    if (v4)
+    if (goodbyeCopy)
     {
-      v7 = [a3 identifier];
+      identifier = [device identifier];
 
-      [(APAdvertiserBTLEManager *)self removeLostDeviceWithIdentifier:v7];
+      [(APAdvertiserBTLEManager *)self removeLostDeviceWithIdentifier:identifier];
     }
 
-    else if (!-[NSMutableDictionary objectForKeyedSubscript:](-[APAdvertiserBTLEManager pendingLostLegacyDevices](self, "pendingLostLegacyDevices"), "objectForKeyedSubscript:", [a3 identifier]))
+    else if (!-[NSMutableDictionary objectForKeyedSubscript:](-[APAdvertiserBTLEManager pendingLostLegacyDevices](self, "pendingLostLegacyDevices"), "objectForKeyedSubscript:", [device identifier]))
     {
       if (gLogCategory_APAdvertiserBTLEManager <= 40 && (gLogCategory_APAdvertiserBTLEManager != -1 || _LogCategory_Initialize()))
       {
-        [a3 identifier];
+        [device identifier];
         LogPrintF();
       }
 
-      -[NSMutableDictionary setObject:forKeyedSubscript:](-[APAdvertiserBTLEManager pendingLostLegacyDevices](self, "pendingLostLegacyDevices"), "setObject:forKeyedSubscript:", [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{dispatch_time(0, 15000000000)}], objc_msgSend(a3, "identifier"));
+      -[NSMutableDictionary setObject:forKeyedSubscript:](-[APAdvertiserBTLEManager pendingLostLegacyDevices](self, "pendingLostLegacyDevices"), "setObject:forKeyedSubscript:", [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{dispatch_time(0, 15000000000)}], objc_msgSend(device, "identifier"));
 
       [(APAdvertiserBTLEManager *)self updateLostLegacyDeviceTimer];
     }
   }
 }
 
-- (void)handleFoundDevice:(id)a3
+- (void)handleFoundDevice:(id)device
 {
   if (gLogCategory_APAdvertiserBTLEManager <= 40)
   {
     if (gLogCategory_APAdvertiserBTLEManager != -1 || _LogCategory_Initialize())
     {
-      v5 = [a3 identifier];
-      v6 = [a3 airplaySourceFlags];
-      v10 = [a3 deviceFlags];
+      identifier = [device identifier];
+      airplaySourceFlags = [device airplaySourceFlags];
+      deviceFlags = [device deviceFlags];
       v11 = &unk_23EAA1D26;
-      v8 = v6;
+      v8 = airplaySourceFlags;
       v9 = &unk_23EAA1CCA;
-      v7 = v5;
+      v7 = identifier;
       LogPrintF();
     }
 
     if (gLogCategory_APAdvertiserBTLEManager <= 40 && (gLogCategory_APAdvertiserBTLEManager != -1 || _LogCategory_Initialize()))
     {
-      [a3 identifier];
+      [device identifier];
       LogPrintF();
     }
   }
 
   if (APSShouldStartAdvertistingForAirPlaySourceBeacon())
   {
-    -[NSMutableDictionary setObject:forKeyedSubscript:](-[APAdvertiserBTLEManager soloDevices](self, "soloDevices"), "setObject:forKeyedSubscript:", [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(a3, "airplaySourceFlags")}], objc_msgSend(a3, "identifier"));
-    -[NSMutableDictionary removeObjectForKey:](-[APAdvertiserBTLEManager pendingLostLegacyDevices](self, "pendingLostLegacyDevices"), "removeObjectForKey:", [a3 identifier]);
+    -[NSMutableDictionary setObject:forKeyedSubscript:](-[APAdvertiserBTLEManager soloDevices](self, "soloDevices"), "setObject:forKeyedSubscript:", [MEMORY[0x277CCABB0] numberWithUnsignedChar:{objc_msgSend(device, "airplaySourceFlags")}], objc_msgSend(device, "identifier"));
+    -[NSMutableDictionary removeObjectForKey:](-[APAdvertiserBTLEManager pendingLostLegacyDevices](self, "pendingLostLegacyDevices"), "removeObjectForKey:", [device identifier]);
   }
 
   else
   {
-    [(APAdvertiserBTLEManager *)self handleLostDevice:a3 withGoodbye:1];
+    [(APAdvertiserBTLEManager *)self handleLostDevice:device withGoodbye:1];
   }
 
   [(APAdvertiserBTLEManager *)self computeNearbyDeviceTypesAndDispatchEventIfNecessary];
@@ -228,27 +228,27 @@
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v3 = [(APAdvertiserBTLEManager *)self soloDevices];
+  soloDevices = [(APAdvertiserBTLEManager *)self soloDevices];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __78__APAdvertiserBTLEManager_computeNearbyDeviceTypesAndDispatchEventIfNecessary__block_invoke;
   v11[3] = &unk_278C60AC8;
   v11[4] = &v12;
-  [(NSMutableDictionary *)v3 enumerateKeysAndObjectsUsingBlock:v11];
+  [(NSMutableDictionary *)soloDevices enumerateKeysAndObjectsUsingBlock:v11];
   v4 = *(v13 + 6);
   if (v4 == [(APAdvertiserBTLEManager *)self soloDeviceFlags])
   {
     goto LABEL_16;
   }
 
-  v5 = [(APAdvertiserBTLEManager *)self soloDeviceFlags];
+  soloDeviceFlags = [(APAdvertiserBTLEManager *)self soloDeviceFlags];
   v6 = *(v13 + 6);
-  v7 = [(APAdvertiserBTLEManager *)self soloDeviceFlags];
+  soloDeviceFlags2 = [(APAdvertiserBTLEManager *)self soloDeviceFlags];
   v8 = *(v13 + 6);
   [(APAdvertiserBTLEManager *)self setSoloDeviceFlags:v8];
-  if ((v6 & 0x80000000) == 0 || (v5 & 0x80000000) != 0)
+  if ((v6 & 0x80000000) == 0 || (soloDeviceFlags & 0x80000000) != 0)
   {
-    if (v6 < 0 || (v5 & 0x80000000) == 0)
+    if (v6 < 0 || (soloDeviceFlags & 0x80000000) == 0)
     {
       goto LABEL_9;
     }
@@ -263,7 +263,7 @@
 
   [(APAdvertiserBTLEManager *)self dispatchEvent:v9];
 LABEL_9:
-  if ((v8 & 8) != 0 && (v7 & 8) == 0)
+  if ((v8 & 8) != 0 && (soloDeviceFlags2 & 8) == 0)
   {
     v10 = 2;
 LABEL_15:
@@ -271,7 +271,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if ((v8 & 8) == 0 && (v7 & 8) != 0)
+  if ((v8 & 8) == 0 && (soloDeviceFlags2 & 8) != 0)
   {
     v10 = 3;
     goto LABEL_15;
@@ -296,7 +296,7 @@ uint64_t __78__APAdvertiserBTLEManager_computeNearbyDeviceTypesAndDispatchEventI
   if (v4)
   {
     v5 = v4;
-    v6 = [(APAdvertiserBTLEManager *)self pendingLostLegacyDevices];
+    pendingLostLegacyDevices = [(APAdvertiserBTLEManager *)self pendingLostLegacyDevices];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __47__APAdvertiserBTLEManager_removeExpiredDevices__block_invoke;
@@ -304,7 +304,7 @@ uint64_t __78__APAdvertiserBTLEManager_computeNearbyDeviceTypesAndDispatchEventI
     v7[5] = v5;
     v7[6] = v3;
     v7[4] = self;
-    [(NSMutableDictionary *)v6 enumerateKeysAndObjectsUsingBlock:v7];
+    [(NSMutableDictionary *)pendingLostLegacyDevices enumerateKeysAndObjectsUsingBlock:v7];
     [(NSMutableDictionary *)[(APAdvertiserBTLEManager *)self pendingLostLegacyDevices] removeObjectsForKeys:v5];
 
     [(APAdvertiserBTLEManager *)self updateLostLegacyDeviceTimer];
@@ -339,13 +339,13 @@ unint64_t __47__APAdvertiserBTLEManager_removeExpiredDevices__block_invoke(uint6
   v15 = -1;
   if ([(NSMutableDictionary *)[(APAdvertiserBTLEManager *)self pendingLostLegacyDevices] count])
   {
-    v3 = [(APAdvertiserBTLEManager *)self pendingLostLegacyDevices];
+    pendingLostLegacyDevices = [(APAdvertiserBTLEManager *)self pendingLostLegacyDevices];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __54__APAdvertiserBTLEManager_updateLostLegacyDeviceTimer__block_invoke;
     v11[3] = &unk_278C60AC8;
     v11[4] = &v12;
-    [(NSMutableDictionary *)v3 enumerateKeysAndObjectsUsingBlock:v11];
+    [(NSMutableDictionary *)pendingLostLegacyDevices enumerateKeysAndObjectsUsingBlock:v11];
     if (![(APAdvertiserBTLEManager *)self lostLegacyDeviceTimer])
     {
       [(APAdvertiserBTLEManager *)self setLostLegacyDeviceTimer:dispatch_source_create(MEMORY[0x277D85D38], 0, 0, self->_internalQueue)];
@@ -355,27 +355,27 @@ unint64_t __47__APAdvertiserBTLEManager_removeExpiredDevices__block_invoke(uint6
         goto LABEL_8;
       }
 
-      v4 = self;
-      v5 = [(APAdvertiserBTLEManager *)self lostLegacyDeviceTimer];
+      selfCopy = self;
+      lostLegacyDeviceTimer = [(APAdvertiserBTLEManager *)self lostLegacyDeviceTimer];
       handler[0] = MEMORY[0x277D85DD0];
       handler[1] = 3221225472;
       handler[2] = __54__APAdvertiserBTLEManager_updateLostLegacyDeviceTimer__block_invoke_2;
       handler[3] = &unk_278C608C8;
-      handler[4] = v4;
-      dispatch_source_set_event_handler(v5, handler);
-      v6 = [(APAdvertiserBTLEManager *)self lostLegacyDeviceTimer];
+      handler[4] = selfCopy;
+      dispatch_source_set_event_handler(lostLegacyDeviceTimer, handler);
+      lostLegacyDeviceTimer2 = [(APAdvertiserBTLEManager *)self lostLegacyDeviceTimer];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __54__APAdvertiserBTLEManager_updateLostLegacyDeviceTimer__block_invoke_3;
       v9[3] = &unk_278C608C8;
-      v9[4] = v4;
-      dispatch_source_set_cancel_handler(v6, v9);
+      v9[4] = selfCopy;
+      dispatch_source_set_cancel_handler(lostLegacyDeviceTimer2, v9);
       dispatch_source_set_timer([(APAdvertiserBTLEManager *)self lostLegacyDeviceTimer], 0xFFFFFFFFFFFFFFFFLL, 0, 0);
       dispatch_resume([(APAdvertiserBTLEManager *)self lostLegacyDeviceTimer]);
     }
 
-    v7 = [(APAdvertiserBTLEManager *)self lostLegacyDeviceTimer];
-    dispatch_source_set_timer(v7, v13[3], 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
+    lostLegacyDeviceTimer3 = [(APAdvertiserBTLEManager *)self lostLegacyDeviceTimer];
+    dispatch_source_set_timer(lostLegacyDeviceTimer3, v13[3], 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
   }
 
   else
@@ -405,7 +405,7 @@ unint64_t __54__APAdvertiserBTLEManager_updateLostLegacyDeviceTimer__block_invok
   return result;
 }
 
-- (void)dispatchEvent:(unsigned int)a3
+- (void)dispatchEvent:(unsigned int)event
 {
   weakSelf = self->_weakSelf;
   FigSimpleMutexLock();
@@ -419,16 +419,16 @@ unint64_t __54__APAdvertiserBTLEManager_updateLostLegacyDeviceTimer__block_invok
       CFRetain(weakSelf);
     }
 
-    v7 = [(APAdvertiserBTLEManager *)self eventQueue];
+    eventQueue = [(APAdvertiserBTLEManager *)self eventQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __41__APAdvertiserBTLEManager_dispatchEvent___block_invoke;
     block[3] = &__block_descriptor_64_e5_v8__0l;
     block[4] = weakSelf;
     v12 = seed;
-    v13 = a3;
+    eventCopy = event;
     v11 = v9;
-    dispatch_async(v7, block);
+    dispatch_async(eventQueue, block);
   }
 }
 
@@ -458,9 +458,9 @@ void __41__APAdvertiserBTLEManager_dispatchEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)stopScanningWithSeed:(int)a3
+- (void)stopScanningWithSeed:(int)seed
 {
-  if ([(APAdvertiserBTLEManager *)self btleDiscovererSeed]== a3)
+  if ([(APAdvertiserBTLEManager *)self btleDiscovererSeed]== seed)
   {
     if ([(APAdvertiserBTLEManager *)self isScanning]&& gLogCategory_APAdvertiserBTLEManager <= 50 && (gLogCategory_APAdvertiserBTLEManager != -1 || _LogCategory_Initialize()))
     {
@@ -481,9 +481,9 @@ void __41__APAdvertiserBTLEManager_dispatchEvent___block_invoke(uint64_t a1)
 
 - (void)stopScanning
 {
-  v3 = [(APAdvertiserBTLEManager *)self btleDiscovererSeed];
+  btleDiscovererSeed = [(APAdvertiserBTLEManager *)self btleDiscovererSeed];
 
-  [(APAdvertiserBTLEManager *)self stopScanningWithSeed:v3];
+  [(APAdvertiserBTLEManager *)self stopScanningWithSeed:btleDiscovererSeed];
 }
 
 - (void)startScanning
@@ -499,17 +499,17 @@ void __41__APAdvertiserBTLEManager_dispatchEvent___block_invoke(uint64_t a1)
         LogPrintF();
       }
 
-      v3 = self;
+      selfCopy = self;
       v4 = [(APAdvertiserBTLEManager *)self btleDiscovererSeed]+ 1;
       [(APAdvertiserBTLEManager *)self setBtleDiscovererSeed:v4];
-      v5 = [(APAdvertiserBTLEManager *)self btleDiscoverer];
+      btleDiscoverer = [(APAdvertiserBTLEManager *)self btleDiscoverer];
       v6[0] = MEMORY[0x277D85DD0];
       v6[1] = 3221225472;
       v6[2] = __40__APAdvertiserBTLEManager_startScanning__block_invoke;
       v6[3] = &unk_278C60A80;
-      v6[4] = v3;
+      v6[4] = selfCopy;
       v7 = v4;
-      [(CBDiscovery *)v5 activateWithCompletion:v6];
+      [(CBDiscovery *)btleDiscoverer activateWithCompletion:v6];
     }
 
     else
@@ -552,18 +552,18 @@ void __40__APAdvertiserBTLEManager_startScanning__block_invoke(uint64_t a1, uint
   [(APAdvertiserBTLEManager *)self update];
 }
 
-- (void)stopAdvertisingWithSeed:(int)a3
+- (void)stopAdvertisingWithSeed:(int)seed
 {
-  if ([(APAdvertiserBTLEManager *)self btleAdvertiserSeed]== a3)
+  if ([(APAdvertiserBTLEManager *)self btleAdvertiserSeed]== seed)
   {
     if ([(APAdvertiserBTLEManager *)self isAdvertising]&& gLogCategory_APAdvertiserBTLEManager <= 50 && (gLogCategory_APAdvertiserBTLEManager != -1 || _LogCategory_Initialize()))
     {
-      v4 = self;
-      v5 = [(APAdvertiserBTLEManager *)self btleAdvertiser];
+      selfCopy = self;
+      btleAdvertiser = [(APAdvertiserBTLEManager *)self btleAdvertiser];
       LogPrintF();
     }
 
-    [(CBAdvertiser *)[(APAdvertiserBTLEManager *)self btleAdvertiser:v4] invalidate];
+    [(CBAdvertiser *)[(APAdvertiserBTLEManager *)self btleAdvertiser:selfCopy] invalidate];
 
     [(APAdvertiserBTLEManager *)self setBtleAdvertiser:0];
 
@@ -573,9 +573,9 @@ void __40__APAdvertiserBTLEManager_startScanning__block_invoke(uint64_t a1, uint
 
 - (void)stopAdvertising
 {
-  v3 = [(APAdvertiserBTLEManager *)self btleAdvertiserSeed];
+  btleAdvertiserSeed = [(APAdvertiserBTLEManager *)self btleAdvertiserSeed];
 
-  [(APAdvertiserBTLEManager *)self stopAdvertisingWithSeed:v3];
+  [(APAdvertiserBTLEManager *)self stopAdvertisingWithSeed:btleAdvertiserSeed];
 }
 
 - (void)startAdvertising
@@ -592,27 +592,27 @@ void __40__APAdvertiserBTLEManager_startScanning__block_invoke(uint64_t a1, uint
         LogPrintF();
       }
 
-      v3 = self;
-      v4 = [(APAdvertiserBTLEManager *)self btleAdvertiser];
+      selfCopy = self;
+      btleAdvertiser = [(APAdvertiserBTLEManager *)self btleAdvertiser];
       v5 = [(APAdvertiserBTLEManager *)self btleAdvertiserSeed]+ 1;
       [(APAdvertiserBTLEManager *)self setBtleAdvertiserSeed:v5];
-      v6 = [(APAdvertiserBTLEManager *)self btleAdvertiser];
+      btleAdvertiser2 = [(APAdvertiserBTLEManager *)self btleAdvertiser];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __43__APAdvertiserBTLEManager_startAdvertising__block_invoke;
       v9[3] = &unk_278C60A30;
-      v9[4] = v3;
-      v9[5] = v4;
+      v9[4] = selfCopy;
+      v9[5] = btleAdvertiser;
       v10 = v5;
-      [(CBAdvertiser *)v6 activateWithCompletion:v9];
-      v7 = [(APAdvertiserBTLEManager *)self btleAdvertiser];
+      [(CBAdvertiser *)btleAdvertiser2 activateWithCompletion:v9];
+      btleAdvertiser3 = [(APAdvertiserBTLEManager *)self btleAdvertiser];
       v8[0] = MEMORY[0x277D85DD0];
       v8[1] = 3221225472;
       v8[2] = __43__APAdvertiserBTLEManager_startAdvertising__block_invoke_2;
       v8[3] = &unk_278C60A58;
-      v8[4] = v3;
-      v8[5] = v4;
-      [(CBAdvertiser *)v7 setInvalidationHandler:v8];
+      v8[4] = selfCopy;
+      v8[5] = btleAdvertiser;
+      [(CBAdvertiser *)btleAdvertiser3 setInvalidationHandler:v8];
     }
 
     else
@@ -817,12 +817,12 @@ uint64_t __59__APAdvertiserBTLEManager_startMonitoringForNetworkChanges__block_i
   }
 }
 
-- (int)setEventHandler:(void *)a3 withContext:(void *)a4
+- (int)setEventHandler:(void *)handler withContext:(void *)context
 {
   FigSimpleMutexLock();
   ++self->_eventHandlerState.seed;
-  self->_eventHandlerState.func = a3;
-  self->_eventHandlerState.context = a4;
+  self->_eventHandlerState.func = handler;
+  self->_eventHandlerState.context = context;
   FigSimpleMutexUnlock();
   return 0;
 }
@@ -840,11 +840,11 @@ uint64_t __59__APAdvertiserBTLEManager_startMonitoringForNetworkChanges__block_i
   return -72312;
 }
 
-- (int)setProperty:(id)a3 withValue:(id)a4
+- (int)setProperty:(id)property withValue:(id)value
 {
-  if ([a3 isEqualToString:@"isP2PAllowed"])
+  if ([property isEqualToString:@"isP2PAllowed"])
   {
-    v7 = -[APAdvertiserBTLEManager setIsP2PAllowed:](self, "setIsP2PAllowed:", [a4 BOOLValueSafe]);
+    v7 = -[APAdvertiserBTLEManager setIsP2PAllowed:](self, "setIsP2PAllowed:", [value BOOLValueSafe]);
     if (v7)
     {
 LABEL_12:
@@ -852,18 +852,18 @@ LABEL_12:
     }
   }
 
-  else if ([a3 isEqualToString:@"requireAltBrowser"])
+  else if ([property isEqualToString:@"requireAltBrowser"])
   {
-    v7 = -[APAdvertiserBTLEManager setRequireAltBrowser:](self, "setRequireAltBrowser:", [a4 BOOLValueSafe]);
+    v7 = -[APAdvertiserBTLEManager setRequireAltBrowser:](self, "setRequireAltBrowser:", [value BOOLValueSafe]);
     if (v7)
     {
       goto LABEL_12;
     }
   }
 
-  else if ([a3 isEqualToString:@"receiverPort"])
+  else if ([property isEqualToString:@"receiverPort"])
   {
-    v7 = -[APAdvertiserBTLEManager setReceiverPort:](self, "setReceiverPort:", [a4 int64ValueSafe]);
+    v7 = -[APAdvertiserBTLEManager setReceiverPort:](self, "setReceiverPort:", [value int64ValueSafe]);
     if (v7)
     {
       goto LABEL_12;
@@ -872,12 +872,12 @@ LABEL_12:
 
   else
   {
-    if (![a3 isEqualToString:@"accessControlType"])
+    if (![property isEqualToString:@"accessControlType"])
     {
       return -72311;
     }
 
-    v7 = -[APAdvertiserBTLEManager setAccessControlType:](self, "setAccessControlType:", [a4 int64ValueSafe]);
+    v7 = -[APAdvertiserBTLEManager setAccessControlType:](self, "setAccessControlType:", [value int64ValueSafe]);
     if (v7)
     {
       goto LABEL_12;
@@ -887,12 +887,12 @@ LABEL_12:
   return v7;
 }
 
-- (int)setAccessControlType:(unsigned int)a3
+- (int)setAccessControlType:(unsigned int)type
 {
   accessControlType = self->_accessControlType;
-  if (accessControlType != a3)
+  if (accessControlType != type)
   {
-    v4 = *&a3;
+    v4 = *&type;
     if (gLogCategory_APAdvertiserBTLEManager <= 50)
     {
       if (gLogCategory_APAdvertiserBTLEManager == -1)
@@ -919,12 +919,12 @@ LABEL_6:
   return 0;
 }
 
-- (int)setReceiverPort:(unsigned __int16)a3
+- (int)setReceiverPort:(unsigned __int16)port
 {
   receiverPort = self->_receiverPort;
-  if (receiverPort != a3)
+  if (receiverPort != port)
   {
-    v4 = a3;
+    portCopy = port;
     if (gLogCategory_APAdvertiserBTLEManager <= 50)
     {
       if (gLogCategory_APAdvertiserBTLEManager == -1)
@@ -938,25 +938,25 @@ LABEL_6:
       }
 
       v7 = receiverPort;
-      v8 = v4;
+      v8 = portCopy;
       LogPrintF();
     }
 
 LABEL_6:
-    self->_receiverPort = v4;
+    self->_receiverPort = portCopy;
     [(APAdvertiserBTLEManager *)self restartAdvertisingIfNecessary:v7];
   }
 
   return 0;
 }
 
-- (int)setRequireAltBrowser:(BOOL)a3
+- (int)setRequireAltBrowser:(BOOL)browser
 {
-  v3 = a3;
+  browserCopy = browser;
   if (![(APAdvertiserBTLEManager *)self isAdvertising])
   {
     requireAltBrowser = self->_requireAltBrowser;
-    if (requireAltBrowser == v3)
+    if (requireAltBrowser == browserCopy)
     {
       return 0;
     }
@@ -977,7 +977,7 @@ LABEL_5:
           v7 = "NO";
         }
 
-        if (v3)
+        if (browserCopy)
         {
           v6 = "YES";
         }
@@ -996,7 +996,7 @@ LABEL_5:
     }
 
 LABEL_12:
-    self->_requireAltBrowser = v3;
+    self->_requireAltBrowser = browserCopy;
     [(APAdvertiserBTLEManager *)self update:v9];
     return 0;
   }
@@ -1005,15 +1005,15 @@ LABEL_12:
   return -72314;
 }
 
-- (int)setIsP2PAllowed:(BOOL)a3
+- (int)setIsP2PAllowed:(BOOL)allowed
 {
   isP2PAllowed = self->_isP2PAllowed;
-  if (isP2PAllowed == a3)
+  if (isP2PAllowed == allowed)
   {
     return 0;
   }
 
-  v4 = a3;
+  allowedCopy = allowed;
   if (gLogCategory_APAdvertiserBTLEManager <= 50)
   {
     if (gLogCategory_APAdvertiserBTLEManager != -1)
@@ -1030,7 +1030,7 @@ LABEL_4:
         v7 = "NO";
       }
 
-      if (v4)
+      if (allowedCopy)
       {
         v6 = "YES";
       }
@@ -1049,7 +1049,7 @@ LABEL_4:
   }
 
 LABEL_11:
-  self->_isP2PAllowed = v4;
+  self->_isP2PAllowed = allowedCopy;
   v8 = [(APAdvertiserBTLEManager *)self update:v10];
   if (v8)
   {
@@ -1059,10 +1059,10 @@ LABEL_11:
   return v8;
 }
 
-- (int)setBTLEMode:(unsigned __int16)a3
+- (int)setBTLEMode:(unsigned __int16)mode
 {
-  v3 = a3;
-  if (self->_btleMode == a3)
+  modeCopy = mode;
+  if (self->_btleMode == mode)
   {
     return 0;
   }
@@ -1070,23 +1070,23 @@ LABEL_11:
   if (gLogCategory_APAdvertiserBTLEManager <= 40 && (gLogCategory_APAdvertiserBTLEManager != -1 || _LogCategory_Initialize()))
   {
     [APAdvertiserBTLEManager stringForBTLEMode:?];
-    [APAdvertiserBTLEManager stringForBTLEMode:v3];
+    [APAdvertiserBTLEManager stringForBTLEMode:modeCopy];
     LogPrintF();
   }
 
-  if (v3 == 1)
+  if (modeCopy == 1)
   {
-    v5 = [(APAdvertiserBTLEManager *)self start];
-    if (v5)
+    start = [(APAdvertiserBTLEManager *)self start];
+    if (start)
     {
 LABEL_11:
       APSLogErrorAt();
     }
   }
 
-  else if (v3)
+  else if (modeCopy)
   {
-    v5 = -72313;
+    start = -72313;
     if (gLogCategory_APAdvertiserBTLEManager <= 90 && (gLogCategory_APAdvertiserBTLEManager != -1 || _LogCategory_Initialize()))
     {
       LogPrintF();
@@ -1095,14 +1095,14 @@ LABEL_11:
 
   else
   {
-    v5 = [(APAdvertiserBTLEManager *)self stop];
-    if (v5)
+    start = [(APAdvertiserBTLEManager *)self stop];
+    if (start)
     {
       goto LABEL_11;
     }
   }
 
-  return v5;
+  return start;
 }
 
 - (int64_t)btleManagerState
@@ -1152,7 +1152,7 @@ LABEL_11:
   return v2;
 }
 
-- (int)supportsSolo:(BOOL *)a3
+- (int)supportsSolo:(BOOL *)solo
 {
   if (self->_p2pSoloQueried)
   {
@@ -1166,14 +1166,14 @@ LABEL_11:
     result = -72310;
   }
 
-  *a3 = p2pSolo;
+  *solo = p2pSolo;
   return result;
 }
 
-- (int)updateSupportsSoloAndForceReadFromPrefs:(BOOL)a3
+- (int)updateSupportsSoloAndForceReadFromPrefs:(BOOL)prefs
 {
   result = 0;
-  if (!self->_p2pSoloQueried || a3)
+  if (!self->_p2pSoloQueried || prefs)
   {
     v6 = APSSettingsGetInt64() != 0;
     if (self->_p2pSolo == v6)
@@ -1397,21 +1397,21 @@ LABEL_17:
   }
 
   self->_btleMode = 0;
-  v3 = [(APAdvertiserBTLEManager *)self stopMonitoringForNetworkChanges];
-  if (v3)
+  stopMonitoringForNetworkChanges = [(APAdvertiserBTLEManager *)self stopMonitoringForNetworkChanges];
+  if (stopMonitoringForNetworkChanges)
   {
-    v4 = v3;
+    update = stopMonitoringForNetworkChanges;
     goto LABEL_11;
   }
 
-  v4 = [(APAdvertiserBTLEManager *)self update];
-  if (v4)
+  update = [(APAdvertiserBTLEManager *)self update];
+  if (update)
   {
 LABEL_11:
     APSLogErrorAt();
   }
 
-  return v4;
+  return update;
 }
 
 - (int)start
@@ -1425,7 +1425,7 @@ LABEL_11:
   {
     if (gLogCategory_APAdvertiserBTLEManager <= 40 && (gLogCategory_APAdvertiserBTLEManager != -1 || _LogCategory_Initialize()))
     {
-      v4 = self;
+      selfCopy = self;
       LogPrintF();
     }
 
@@ -1465,24 +1465,24 @@ LABEL_11:
     }
 
     [v3 setBleRSSIThresholdHint:{v12, v7, v8}];
-    v5 = self;
+    selfCopy = self;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __47__APAdvertiserBTLEManager_createBTLEDiscoverer__block_invoke;
     v11[3] = &unk_278C609E0;
-    v11[4] = v5;
+    v11[4] = selfCopy;
     [v3 setDeviceFoundHandler:v11];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __47__APAdvertiserBTLEManager_createBTLEDiscoverer__block_invoke_2;
     v10[3] = &unk_278C609E0;
-    v10[4] = v5;
+    v10[4] = selfCopy;
     [v3 setDeviceLostHandler:v10];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __47__APAdvertiserBTLEManager_createBTLEDiscoverer__block_invoke_3;
     v9[3] = &unk_278C608C8;
-    v9[4] = v5;
+    v9[4] = selfCopy;
     [v3 setInvalidationHandler:v9];
   }
 
@@ -1521,19 +1521,19 @@ uint64_t __47__APAdvertiserBTLEManager_createBTLEDiscoverer__block_invoke(uint64
   }
 
   [v3 setDispatchQueue:{-[APAdvertiserBTLEManager internalQueue](self, "internalQueue")}];
-  v4 = [(APAdvertiserBTLEManager *)self seed];
-  [(APAdvertiserBTLEManager *)self setSeed:(v4 + 1)];
-  [v3 setAirplayTargetConfigSeed:v4];
+  seed = [(APAdvertiserBTLEManager *)self seed];
+  [(APAdvertiserBTLEManager *)self setSeed:(seed + 1)];
+  [v3 setAirplayTargetConfigSeed:seed];
   [v3 setAirplayTargetFlags:{objc_msgSend(v3, "airplayTargetFlags") | 2}];
   if (self->_p2pSolo)
   {
     [v3 setAirplayTargetFlags:{objc_msgSend(v3, "airplayTargetFlags") | 1}];
   }
 
-  v5 = [(APAdvertiserBTLEManager *)self netInterfaceMonitor];
-  if (v5)
+  netInterfaceMonitor = [(APAdvertiserBTLEManager *)self netInterfaceMonitor];
+  if (netInterfaceMonitor)
   {
-    [(CUNetInterfaceMonitor *)v5 primaryIPv4Addr];
+    [(CUNetInterfaceMonitor *)netInterfaceMonitor primaryIPv4Addr];
   }
 
   else
@@ -1634,14 +1634,14 @@ LABEL_18:
   [(APAdvertiserBTLEManager *)&v7 dealloc];
 }
 
-- (APAdvertiserBTLEManager)initWithEventContext:(void *)a3
+- (APAdvertiserBTLEManager)initWithEventContext:(void *)context
 {
-  v3 = self;
+  selfCopy = self;
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
   v24 = 0;
-  if (!a3)
+  if (!context)
   {
     APSLogErrorAt();
     v16 = v22;
@@ -1654,16 +1654,16 @@ LABEL_19:
   v20.receiver = self;
   v20.super_class = APAdvertiserBTLEManager;
   v5 = [(APAdvertiserBTLEManager *)&v20 init];
-  v3 = v5;
+  selfCopy = v5;
   if (!v5)
   {
     goto LABEL_10;
   }
 
-  v5->_eventContext = a3;
+  v5->_eventContext = context;
   v6 = FigCFWeakReferenceHolderCreateWithReferencedObject();
-  v3->_weakSelf = v6;
-  if (!v6 || (v7 = dispatch_queue_create("APAdvertiserBTLEManagerInternalQueue", 0), (v3->_internalQueue = v7) == 0) || (v8 = dispatch_queue_create("APAdvertiserBTLEManagerEventQueue", 0), (v3->_eventQueue = v8) == 0) || (v9 = objc_alloc_init(MEMORY[0x277CBEB38]), (v3->_soloDevices = v9) == 0) || (v10 = objc_alloc_init(MEMORY[0x277CBEB38]), (v3->_pendingLostLegacyDevices = v10) == 0))
+  selfCopy->_weakSelf = v6;
+  if (!v6 || (v7 = dispatch_queue_create("APAdvertiserBTLEManagerInternalQueue", 0), (selfCopy->_internalQueue = v7) == 0) || (v8 = dispatch_queue_create("APAdvertiserBTLEManagerEventQueue", 0), (selfCopy->_eventQueue = v8) == 0) || (v9 = objc_alloc_init(MEMORY[0x277CBEB38]), (selfCopy->_soloDevices = v9) == 0) || (v10 = objc_alloc_init(MEMORY[0x277CBEB38]), (selfCopy->_pendingLostLegacyDevices = v10) == 0))
   {
     APSLogErrorAt();
     v16 = v22;
@@ -1671,29 +1671,29 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v11 = [(APAdvertiserBTLEManager *)v3 setupEventHandlerState];
-  *(v22 + 6) = v11;
-  if (v11)
+  setupEventHandlerState = [(APAdvertiserBTLEManager *)selfCopy setupEventHandlerState];
+  *(v22 + 6) = setupEventHandlerState;
+  if (setupEventHandlerState)
   {
     APSLogErrorAt();
   }
 
   else
   {
-    internalQueue = v3->_internalQueue;
+    internalQueue = selfCopy->_internalQueue;
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
     handler[2] = __48__APAdvertiserBTLEManager_initWithEventContext___block_invoke;
     handler[3] = &unk_278C609B8;
-    handler[4] = v3;
-    v13 = notify_register_dispatch("com.apple.TouchRemote.deviceSetupActive", &v3->_touchSetupActiveNotifyToken, internalQueue, handler);
+    handler[4] = selfCopy;
+    v13 = notify_register_dispatch("com.apple.TouchRemote.deviceSetupActive", &selfCopy->_touchSetupActiveNotifyToken, internalQueue, handler);
     *(v22 + 6) = v13;
-    v14 = v3->_internalQueue;
+    v14 = selfCopy->_internalQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __48__APAdvertiserBTLEManager_initWithEventContext___block_invoke_2;
     block[3] = &unk_278C60990;
-    block[4] = v3;
+    block[4] = selfCopy;
     block[5] = &v21;
     dispatch_sync(v14, block);
   }
@@ -1706,11 +1706,11 @@ LABEL_10:
       LogPrintF();
     }
 
-    v3 = 0;
+    selfCopy = 0;
   }
 
   _Block_object_dispose(&v21, 8);
-  return v3;
+  return selfCopy;
 }
 
 uint64_t __48__APAdvertiserBTLEManager_initWithEventContext___block_invoke_2(uint64_t a1)
@@ -1725,11 +1725,11 @@ uint64_t __48__APAdvertiserBTLEManager_initWithEventContext___block_invoke_2(uin
   return result;
 }
 
-+ (id)stringForBTLEState:(int64_t)a3
++ (id)stringForBTLEState:(int64_t)state
 {
-  if (a3 < 6)
+  if (state < 6)
   {
-    return off_278C60B30[a3];
+    return off_278C60B30[state];
   }
 
   if (gLogCategory_APAdvertiserBTLEManager <= 60 && (gLogCategory_APAdvertiserBTLEManager != -1 || _LogCategory_Initialize()))
@@ -1740,14 +1740,14 @@ uint64_t __48__APAdvertiserBTLEManager_initWithEventContext___block_invoke_2(uin
   return @"unknown";
 }
 
-+ (id)stringForBTLEMode:(unsigned __int16)a3
++ (id)stringForBTLEMode:(unsigned __int16)mode
 {
-  if (!a3)
+  if (!mode)
   {
     return @"None";
   }
 
-  if (a3 == 1)
+  if (mode == 1)
   {
     return @"Discoverable";
   }

@@ -30,26 +30,26 @@
 
 - (int64_t)bestSuggestionSectionType
 {
-  v3 = [(MUPersonalizedSuggestionSectionArbiter *)self placeNotesSectionController];
-  v4 = [v3 hasContentBeforePersonalizedSuggestionArbitration];
+  placeNotesSectionController = [(MUPersonalizedSuggestionSectionArbiter *)self placeNotesSectionController];
+  hasContentBeforePersonalizedSuggestionArbitration = [placeNotesSectionController hasContentBeforePersonalizedSuggestionArbitration];
 
-  if (v4)
+  if (hasContentBeforePersonalizedSuggestionArbitration)
   {
     return 1;
   }
 
-  v6 = [(MUPersonalizedSuggestionSectionArbiter *)self placeCallToActionSectionController];
-  v7 = [v6 hasContentBeforePersonalizedSuggestionArbitration];
+  placeCallToActionSectionController = [(MUPersonalizedSuggestionSectionArbiter *)self placeCallToActionSectionController];
+  hasContentBeforePersonalizedSuggestionArbitration2 = [placeCallToActionSectionController hasContentBeforePersonalizedSuggestionArbitration];
 
-  if (v7)
+  if (hasContentBeforePersonalizedSuggestionArbitration2)
   {
     return 2;
   }
 
-  v8 = [(MUPersonalizedSuggestionSectionArbiter *)self hikingTipSectionController];
-  v9 = [v8 hasContentBeforePersonalizedSuggestionArbitration];
+  hikingTipSectionController = [(MUPersonalizedSuggestionSectionArbiter *)self hikingTipSectionController];
+  hasContentBeforePersonalizedSuggestionArbitration3 = [hikingTipSectionController hasContentBeforePersonalizedSuggestionArbitration];
 
-  if (v9)
+  if (hasContentBeforePersonalizedSuggestionArbitration3)
   {
     return 3;
   }

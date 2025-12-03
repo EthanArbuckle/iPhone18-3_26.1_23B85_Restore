@@ -1,11 +1,11 @@
 @interface NSSQLAttributeExtensionFactory
-+ (uint64_t)createUnvalidatedTriggerForString:(void *)a3 onAttribute:;
-+ (void)newExtensionsForAttribute:(uint64_t *)a3 error:;
++ (uint64_t)createUnvalidatedTriggerForString:(void *)string onAttribute:;
++ (void)newExtensionsForAttribute:(uint64_t *)attribute error:;
 @end
 
 @implementation NSSQLAttributeExtensionFactory
 
-+ (void)newExtensionsForAttribute:(uint64_t *)a3 error:
++ (void)newExtensionsForAttribute:(uint64_t *)attribute error:
 {
   v23[1] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -41,8 +41,8 @@
 
     if ([v5 count] == 1)
     {
-      v13 = [v5 lastObject];
-      if (v13)
+      lastObject = [v5 lastObject];
+      if (lastObject)
       {
         goto LABEL_10;
       }
@@ -53,14 +53,14 @@
       v14 = *MEMORY[0x1E696A250];
       v22 = @"NSDetailedErrors";
       v23[0] = v5;
-      v13 = [MEMORY[0x1E696ABC0] errorWithDomain:v14 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v23, &v22, 1)}];
-      if (v13)
+      lastObject = [MEMORY[0x1E696ABC0] errorWithDomain:v14 code:134060 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v23, &v22, 1)}];
+      if (lastObject)
       {
 LABEL_10:
-        if (a3)
+        if (attribute)
         {
           v12 = 0;
-          *a3 = v13;
+          *attribute = lastObject;
           goto LABEL_18;
         }
 
@@ -99,10 +99,10 @@ LABEL_18:
   return v12;
 }
 
-+ (uint64_t)createUnvalidatedTriggerForString:(void *)a3 onAttribute:
++ (uint64_t)createUnvalidatedTriggerForString:(void *)string onAttribute:
 {
   objc_opt_self();
-  v5 = [a3 entity];
+  entity = [string entity];
   v6 = [a2 stringByTrimmingCharactersInSet:{objc_msgSend(MEMORY[0x1E696AB08], "whitespaceAndNewlineCharacterSet")}];
   v7 = [objc_msgSend(v6 "lowercaseString")];
   v8 = off_1E6EC0BA0;
@@ -112,9 +112,9 @@ LABEL_18:
   }
 
   v9 = objc_alloc(*v8);
-  v10 = [a3 name];
+  name = [string name];
 
-  return [v9 initWithObjectFromUserInfo:v6 onAttributeNamed:v10 onEntity:v5];
+  return [v9 initWithObjectFromUserInfo:v6 onAttributeNamed:name onEntity:entity];
 }
 
 @end

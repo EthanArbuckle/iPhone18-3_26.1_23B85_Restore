@@ -1,11 +1,11 @@
 @interface FCDerivedPersonalizationData
 - (FCDerivedPersonalizationData)init;
-- (FCDerivedPersonalizationData)initWithAggregates:(id)a3 scoringType:(unint64_t)a4 decayRate:(double)a5;
-- (FCDerivedPersonalizationData)initWithCoder:(id)a3;
-- (id)aggregateForFeatureKey:(id)a3;
-- (id)aggregatesForFeatureKeys:(id)a3;
+- (FCDerivedPersonalizationData)initWithAggregates:(id)aggregates scoringType:(unint64_t)type decayRate:(double)rate;
+- (FCDerivedPersonalizationData)initWithCoder:(id)coder;
+- (id)aggregateForFeatureKey:(id)key;
+- (id)aggregatesForFeatureKeys:(id)keys;
 - (id)allAggregates;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCDerivedPersonalizationData
@@ -36,11 +36,11 @@
   objc_exception_throw(v6);
 }
 
-- (FCDerivedPersonalizationData)initWithAggregates:(id)a3 scoringType:(unint64_t)a4 decayRate:(double)a5
+- (FCDerivedPersonalizationData)initWithAggregates:(id)aggregates scoringType:(unint64_t)type decayRate:(double)rate
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  if (!v8 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  aggregatesCopy = aggregates;
+  if (!aggregatesCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v14 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "aggregates"];
     *buf = 136315906;
@@ -60,9 +60,9 @@
   v10 = v9;
   if (v9)
   {
-    if (v8)
+    if (aggregatesCopy)
     {
-      v11 = v8;
+      v11 = aggregatesCopy;
     }
 
     else
@@ -71,8 +71,8 @@
     }
 
     objc_storeStrong(&v9->_aggregatesByFeatureKey, v11);
-    v10->_scoringType = a4;
-    v10->_decayRate = a5;
+    v10->_scoringType = type;
+    v10->_decayRate = rate;
   }
 
   v12 = *MEMORY[0x1E69E9840];
@@ -89,32 +89,32 @@
   return self;
 }
 
-- (id)aggregatesForFeatureKeys:(id)a3
+- (id)aggregatesForFeatureKeys:(id)keys
 {
   if (self)
   {
     self = self->_aggregatesByFeatureKey;
   }
 
-  return [(FCDerivedPersonalizationData *)self fc_subdictionaryForKeys:a3];
+  return [(FCDerivedPersonalizationData *)self fc_subdictionaryForKeys:keys];
 }
 
-- (id)aggregateForFeatureKey:(id)a3
+- (id)aggregateForFeatureKey:(id)key
 {
   if (self)
   {
     self = self->_aggregatesByFeatureKey;
   }
 
-  return [(FCDerivedPersonalizationData *)self objectForKeyedSubscript:a3];
+  return [(FCDerivedPersonalizationData *)self objectForKeyedSubscript:key];
 }
 
-- (FCDerivedPersonalizationData)initWithCoder:(id)a3
+- (FCDerivedPersonalizationData)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"version"];
-  v6 = [v4 decodeIntegerForKey:@"scoringType"];
-  [v4 decodeDoubleForKey:@"decayRate"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"version"];
+  v6 = [coderCopy decodeIntegerForKey:@"scoringType"];
+  [coderCopy decodeDoubleForKey:@"decayRate"];
   v8 = v7;
   if (v5 == 5)
   {
@@ -122,7 +122,7 @@
     v10 = objc_opt_class();
     v11 = objc_opt_class();
     v12 = [v9 setWithObjects:{v10, v11, objc_opt_class(), 0}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"aggregatesByFeatureKey"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"aggregatesByFeatureKey"];
   }
 
   else
@@ -135,10 +135,10 @@
   return v14;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:5 forKey:@"version"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:5 forKey:@"version"];
   if (self)
   {
     aggregatesByFeatureKey = self->_aggregatesByFeatureKey;
@@ -149,10 +149,10 @@
     aggregatesByFeatureKey = 0;
   }
 
-  [v5 encodeObject:aggregatesByFeatureKey forKey:@"aggregatesByFeatureKey"];
-  [v5 encodeInteger:-[FCDerivedPersonalizationData scoringType](self forKey:{"scoringType"), @"scoringType"}];
+  [coderCopy encodeObject:aggregatesByFeatureKey forKey:@"aggregatesByFeatureKey"];
+  [coderCopy encodeInteger:-[FCDerivedPersonalizationData scoringType](self forKey:{"scoringType"), @"scoringType"}];
   [(FCDerivedPersonalizationData *)self decayRate];
-  [v5 encodeDouble:@"decayRate" forKey:?];
+  [coderCopy encodeDouble:@"decayRate" forKey:?];
 }
 
 @end

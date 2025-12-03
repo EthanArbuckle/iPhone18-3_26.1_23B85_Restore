@@ -11,12 +11,12 @@
 - (BOOL)settingsShouldAppear;
 - (BOOL)shouldAdvertise;
 - (HKRPOxygenSaturationOnboardingManager)init;
-- (HKRPOxygenSaturationOnboardingManager)initWithDataSource:(id)a3;
-- (HKRPOxygenSaturationOnboardingManager)initWithDevice:(id)a3;
+- (HKRPOxygenSaturationOnboardingManager)initWithDataSource:(id)source;
+- (HKRPOxygenSaturationOnboardingManager)initWithDevice:(id)device;
 - (void)_currentDeviceHasCapability;
 - (void)bloodOxygenRemoteDisabled;
 - (void)cacheCompletedOnboardingStateIfNeeded;
-- (void)onboardWithCompletion:(id)a3;
+- (void)onboardWithCompletion:(id)completion;
 - (void)onboardingComplete;
 @end
 
@@ -30,25 +30,25 @@
   return v4;
 }
 
-- (HKRPOxygenSaturationOnboardingManager)initWithDevice:(id)a3
+- (HKRPOxygenSaturationOnboardingManager)initWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[_HKRPOxygenSaturationOnboardingManagerStaticDeviceDataSource alloc] initWithDevice:v4];
+  deviceCopy = device;
+  v5 = [[_HKRPOxygenSaturationOnboardingManagerStaticDeviceDataSource alloc] initWithDevice:deviceCopy];
 
   v6 = [(HKRPOxygenSaturationOnboardingManager *)self initWithDataSource:v5];
   return v6;
 }
 
-- (HKRPOxygenSaturationOnboardingManager)initWithDataSource:(id)a3
+- (HKRPOxygenSaturationOnboardingManager)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = HKRPOxygenSaturationOnboardingManager;
   v6 = [(HKRPOxygenSaturationOnboardingManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;
@@ -67,7 +67,7 @@
 - (BOOL)bloodOxygenFeatureEnabled
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource isBloodOxygenSaturationEnabled];
+  isBloodOxygenSaturationEnabled = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource isBloodOxygenSaturationEnabled];
   _HKInitializeLogging();
   v3 = HKLogRespiratoryCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -75,13 +75,13 @@
     v7 = 138543618;
     v8 = objc_opt_class();
     v9 = 1024;
-    v10 = v2;
+    v10 = isBloodOxygenSaturationEnabled;
     v4 = v8;
     _os_log_impl(&dword_262078000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Feature is enabled: %d", &v7, 0x12u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
-  return v2;
+  return isBloodOxygenSaturationEnabled;
 }
 
 - (BOOL)pairedDeviceIsAppropriate
@@ -109,14 +109,14 @@
       _os_log_impl(&dword_262078000, v3, OS_LOG_TYPE_DEFAULT, "[%{public}@] Device check override is in place", buf, 0xCu);
     }
 
-    v5 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v6 = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource featureAvailabilityProvider];
+    featureAvailabilityProvider = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource featureAvailabilityProvider];
     v14 = 0;
-    v7 = [v6 isFeatureCapabilitySupportedOnActivePairedDeviceWithError:&v14];
+    v7 = [featureAvailabilityProvider isFeatureCapabilitySupportedOnActivePairedDeviceWithError:&v14];
     v3 = v14;
 
     _HKInitializeLogging();
@@ -135,7 +135,7 @@
         _os_log_impl(&dword_262078000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Device check result: %{public}@", buf, 0x16u);
       }
 
-      v5 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
     }
 
     else
@@ -145,23 +145,23 @@
         [HKRPOxygenSaturationOnboardingManager _currentDeviceHasCapability];
       }
 
-      v5 = 0;
+      bOOLValue = 0;
     }
   }
 
   v12 = *MEMORY[0x277D85DE8];
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)_isAlternateDevice
 {
   v15 = *MEMORY[0x277D85DE8];
-  v2 = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource device];
-  v3 = v2;
-  if (v2)
+  device = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource device];
+  v3 = device;
+  if (device)
   {
-    v4 = [v2 valueForProperty:*MEMORY[0x277D2BB28]];
-    v5 = [v4 BOOLValue];
+    v4 = [device valueForProperty:*MEMORY[0x277D2BB28]];
+    bOOLValue = [v4 BOOLValue];
 
     _HKInitializeLogging();
     v6 = HKLogRespiratoryCategory();
@@ -170,7 +170,7 @@
       v11 = 138543618;
       v12 = objc_opt_class();
       v13 = 1024;
-      v14 = v5;
+      v14 = bOOLValue;
       v7 = v12;
       _os_log_impl(&dword_262078000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Alternate device check: alternate device flag: %d", &v11, 0x12u);
     }
@@ -188,17 +188,17 @@
       _os_log_impl(&dword_262078000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Alternate device check: active device is nil", &v11, 0xCu);
     }
 
-    LOBYTE(v5) = 1;
+    LOBYTE(bOOLValue) = 1;
   }
 
   v9 = *MEMORY[0x277D85DE8];
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)ageIsAppropriate
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource isAgeGated];
+  isAgeGated = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource isAgeGated];
   _HKInitializeLogging();
   v3 = HKLogRespiratoryCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -206,7 +206,7 @@
     v4 = objc_opt_class();
     v5 = MEMORY[0x277CCABB0];
     v6 = v4;
-    v7 = [v5 numberWithBool:v2 ^ 1u];
+    v7 = [v5 numberWithBool:isAgeGated ^ 1u];
     v10 = 138543618;
     v11 = v4;
     v12 = 2114;
@@ -215,13 +215,13 @@
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v2 ^ 1;
+  return isAgeGated ^ 1;
 }
 
 - (BOOL)shouldAdvertise
 {
   v14 = *MEMORY[0x277D85DE8];
-  v2 = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource shouldAdvertise];
+  shouldAdvertise = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource shouldAdvertise];
   _HKInitializeLogging();
   v3 = HKLogRespiratoryCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
@@ -229,7 +229,7 @@
     v4 = objc_opt_class();
     v5 = MEMORY[0x277CCABB0];
     v6 = v4;
-    v7 = [v5 numberWithBool:v2];
+    v7 = [v5 numberWithBool:shouldAdvertise];
     v10 = 138543618;
     v11 = v4;
     v12 = 2114;
@@ -238,18 +238,18 @@
   }
 
   v8 = *MEMORY[0x277D85DE8];
-  return v2;
+  return shouldAdvertise;
 }
 
 - (BOOL)onboardingShouldAppear
 {
-  v3 = [(HKRPOxygenSaturationOnboardingManager *)self settingsShouldAppear];
-  if (v3)
+  settingsShouldAppear = [(HKRPOxygenSaturationOnboardingManager *)self settingsShouldAppear];
+  if (settingsShouldAppear)
   {
-    LOBYTE(v3) = ![(HKRPOxygenSaturationOnboardingManager *)self onboardingComplete];
+    LOBYTE(settingsShouldAppear) = ![(HKRPOxygenSaturationOnboardingManager *)self onboardingComplete];
   }
 
-  return v3;
+  return settingsShouldAppear;
 }
 
 - (BOOL)onboardingDuringPairingShouldAppear
@@ -265,14 +265,14 @@
 - (BOOL)onboardingComplete
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource featureAvailabilityProvider];
+  featureAvailabilityProvider = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource featureAvailabilityProvider];
   v14 = 0;
-  v3 = [v2 onboardedCountryCodeSupportedStateWithError:&v14];
+  v3 = [featureAvailabilityProvider onboardedCountryCodeSupportedStateWithError:&v14];
   v4 = v14;
 
   if (v3)
   {
-    v5 = [v3 integerValue];
+    integerValue = [v3 integerValue];
     _HKInitializeLogging();
     v6 = HKLogRespiratoryCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -287,9 +287,9 @@
       _os_log_impl(&dword_262078000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Onboarding completed state: %{public}@", buf, 0x16u);
     }
 
-    if (v5 <= 5)
+    if (integerValue <= 5)
     {
-      v10 = 5u >> v5;
+      v10 = 5u >> integerValue;
     }
 
     else
@@ -317,9 +317,9 @@
 - (BOOL)bloodOxygenRemoteDisabled
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource featureAvailabilityProvider];
+  featureAvailabilityProvider = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource featureAvailabilityProvider];
   v20 = 0;
-  v4 = [v3 onboardedCountryCodeSupportedStateWithError:&v20];
+  v4 = [featureAvailabilityProvider onboardedCountryCodeSupportedStateWithError:&v20];
   v5 = v20;
 
   if (!v4)
@@ -334,7 +334,7 @@
     goto LABEL_14;
   }
 
-  v6 = [v4 integerValue];
+  integerValue = [v4 integerValue];
   _HKInitializeLogging();
   v7 = HKLogRespiratoryCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -349,19 +349,19 @@
     _os_log_impl(&dword_262078000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Onboarding completed state: %{public}@", buf, 0x16u);
   }
 
-  if ((v6 - 2) < 2 || v6 == 5)
+  if ((integerValue - 2) < 2 || integerValue == 5)
   {
 LABEL_14:
     LOBYTE(v14) = 0;
     goto LABEL_15;
   }
 
-  if (v6 == 1)
+  if (integerValue == 1)
   {
 
-    v12 = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource featureAvailabilityProvider];
+    featureAvailabilityProvider2 = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource featureAvailabilityProvider];
     v19 = 0;
-    v13 = [v12 onboardingEligibilityForCountryCode:0 error:&v19];
+    v13 = [featureAvailabilityProvider2 onboardingEligibilityForCountryCode:0 error:&v19];
     v5 = v19;
 
     if (v13)
@@ -393,10 +393,10 @@ LABEL_15:
   return v14;
 }
 
-- (void)onboardWithCompletion:(id)a3
+- (void)onboardWithCompletion:(id)completion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_opt_class();
   _HKInitializeLogging();
   v6 = HKLogRespiratoryCategory();
@@ -408,17 +408,17 @@ LABEL_15:
   }
 
   objc_initWeak(buf, self);
-  v7 = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource mobileCountryCodeManager];
+  mobileCountryCodeManager = [(HKRPOxygenSaturationOnboardingManagerDataSource *)self->_dataSource mobileCountryCodeManager];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __63__HKRPOxygenSaturationOnboardingManager_onboardWithCompletion___block_invoke;
   v10[3] = &unk_279B0D568;
   v12[1] = v5;
-  v8 = v4;
+  v8 = completionCopy;
   v10[4] = self;
   v11 = v8;
   objc_copyWeak(v12, buf);
-  [v7 fetchMobileCountryCodeFromCellularWithCompletion:v10];
+  [mobileCountryCodeManager fetchMobileCountryCodeFromCellularWithCompletion:v10];
 
   objc_destroyWeak(v12);
   objc_destroyWeak(buf);

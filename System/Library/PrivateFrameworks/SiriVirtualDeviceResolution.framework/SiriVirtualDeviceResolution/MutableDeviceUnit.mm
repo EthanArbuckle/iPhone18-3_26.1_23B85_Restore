@@ -3,10 +3,10 @@
 - (NSString)mediaRouteIdentifier;
 - (NSString)name;
 - (NSString)roomName;
-- (void)setHomeKitAccessoryIdentifier:(id)a3;
-- (void)setMediaRouteIdentifier:(id)a3;
-- (void)setName:(id)a3;
-- (void)setRoomName:(id)a3;
+- (void)setHomeKitAccessoryIdentifier:(id)identifier;
+- (void)setMediaRouteIdentifier:(id)identifier;
+- (void)setName:(id)name;
+- (void)setRoomName:(id)name;
 @end
 
 @implementation MutableDeviceUnit
@@ -29,9 +29,9 @@
   return v4;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_26990390C();
   }
@@ -65,9 +65,9 @@
   return v4;
 }
 
-- (void)setRoomName:(id)a3
+- (void)setRoomName:(id)name
 {
-  if (a3)
+  if (name)
   {
     v4 = sub_26990390C();
   }
@@ -101,9 +101,9 @@
   return v4;
 }
 
-- (void)setMediaRouteIdentifier:(id)a3
+- (void)setMediaRouteIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_26990390C();
   }
@@ -137,9 +137,9 @@
   return v4;
 }
 
-- (void)setHomeKitAccessoryIdentifier:(id)a3
+- (void)setHomeKitAccessoryIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v4 = sub_26990390C();
   }

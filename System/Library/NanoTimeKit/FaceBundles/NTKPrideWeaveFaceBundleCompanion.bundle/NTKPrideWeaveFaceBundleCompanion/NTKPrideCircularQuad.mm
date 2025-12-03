@@ -1,41 +1,41 @@
 @interface NTKPrideCircularQuad
 - ($8EF4127CF77ECA3DDB612FCF233DC3A8)noiseConfiguration;
-- ($F17434BF0011F66C835719901D77F978)advanceConfig:(id)a3;
+- ($F17434BF0011F66C835719901D77F978)advanceConfig:(id)config;
 - ($F17434BF0011F66C835719901D77F978)advanceCurrentConfig;
-- ($F17434BF0011F66C835719901D77F978)generateNextRandomConfigFromConfig:(id)a3;
+- ($F17434BF0011F66C835719901D77F978)generateNextRandomConfigFromConfig:(id)config;
 - ($F17434BF0011F66C835719901D77F978)generateNextRandomConfigFromCurrentConfig;
-- (BOOL)postSemaphoreComputeForTime:(double)a3;
-- (BOOL)preSemaphoreComputeForTime:(double)a3;
+- (BOOL)postSemaphoreComputeForTime:(double)time;
+- (BOOL)preSemaphoreComputeForTime:(double)time;
 - (BOOL)shouldForceRender;
-- (BOOL)willConsumeTouch:(id)a3;
-- (NTKPrideCircularQuad)initWithDevice:(id)a3 useXRsRGB:(BOOL)a4;
-- (float)_dampingFactorForSpline:(int)a3;
-- (float)_dialRadiusForSpline:(int)a3;
-- (float)_rectRadiusForSpline:(int)a3;
+- (BOOL)willConsumeTouch:(id)touch;
+- (NTKPrideCircularQuad)initWithDevice:(id)device useXRsRGB:(BOOL)b;
+- (float)_dampingFactorForSpline:(int)spline;
+- (float)_dialRadiusForSpline:(int)spline;
+- (float)_rectRadiusForSpline:(int)spline;
 - (float)currentSplineWidth;
-- (float)globalAmplitudeForTime:(double)a3;
-- (float)interpolationStepSizeForSpline:(int)a3;
+- (float)globalAmplitudeForTime:(double)time;
+- (float)interpolationStepSizeForSpline:(int)spline;
 - (float)softness;
 - (id)generateVignetteTextureData;
 - (id)getNTKPrideSplineDefinitionFiller;
 - (id)renderPipelineManager;
-- (id)splineColorAtIndex:(int)a3;
-- (int)_numVertsForSpline:(int)a3;
+- (id)splineColorAtIndex:(int)index;
+- (int)_numVertsForSpline:(int)spline;
 - (int)numControlPointsPerSpline;
 - (int)numSplines;
 - (void)_generateControlPointDampingCoefficients;
-- (void)applyTransitionFromDialToFullScreenWithFraction:(double)a3;
+- (void)applyTransitionFromDialToFullScreenWithFraction:(double)fraction;
 - (void)clearWaves;
 - (void)dealloc;
 - (void)handleScreenOff;
 - (void)initializePerSplineData;
 - (void)performWristRaiseAnimation;
-- (void)processSpline:(int)a3;
+- (void)processSpline:(int)spline;
 - (void)randomizeSplineColors;
-- (void)setColorConfig:(id)a3;
+- (void)setColorConfig:(id)config;
 - (void)setDialMode;
 - (void)setFullscreenMode;
-- (void)startWavesAtTime:(double)a3;
+- (void)startWavesAtTime:(double)time;
 @end
 
 @implementation NTKPrideCircularQuad
@@ -45,8 +45,8 @@
   *(&v4 + 1) = 0;
   v6 = 0;
   v5 = 0;
-  v2 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_120BC(v2, &v4);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_120BC(clkDevice, &v4);
 
   return *(&v4 + 2);
 }
@@ -56,8 +56,8 @@
   v7 = 0uLL;
   v9 = 0;
   v8 = 0;
-  v3 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_120BC(v3, &v7);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_120BC(clkDevice, &v7);
 
   v4 = *&self->_perSplineData;
   CLKInterpolateBetweenFloatsClipped();
@@ -65,14 +65,14 @@
   return (*&v5 - *(&v7 + 3)) / (v7 - 1);
 }
 
-- (void)processSpline:(int)a3
+- (void)processSpline:(int)spline
 {
   LODWORD(v14) = 0;
   v5 = [(NTKPrideMetalQuad *)self clkDevice:0];
   sub_120BC(v5, &v13);
 
-  v6 = *&self->super._amplitudeMultiplier + 704 * a3;
-  v7 = [*(v6 + 640) controlPointsBuffer];
+  v6 = *&self->super._amplitudeMultiplier + 704 * spline;
+  controlPointsBuffer = [*(v6 + 640) controlPointsBuffer];
   v8 = DWORD1(v13);
   if (SDWORD1(v13) >= 1)
   {
@@ -81,7 +81,7 @@
     do
     {
       v11 = vadd_f32(vadd_f32(*v10, vmul_n_f32(v10[48], *(v6 + 688) * *(v6 + 256 + 4 * v9))), 0xBF000000BF000000);
-      *(*v7 + 8 * v9++) = vadd_f32(v11, v11);
+      *(*controlPointsBuffer + 8 * v9++) = vadd_f32(v11, v11);
       ++v10;
     }
 
@@ -93,23 +93,23 @@
   [v12 process];
 }
 
-- (id)splineColorAtIndex:(int)a3
+- (id)splineColorAtIndex:(int)index
 {
   v19 = 0uLL;
   v21 = 0;
   v20 = 0;
-  v5 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_120BC(v5, &v19);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_120BC(clkDevice, &v19);
 
-  v6 = v19 - 1;
-  if (v19 > a3)
+  indexCopy = v19 - 1;
+  if (v19 > index)
   {
-    v6 = a3;
+    indexCopy = index;
   }
 
-  if (a3 >= 0)
+  if (index >= 0)
   {
-    v7 = ~v6;
+    v7 = ~indexCopy;
   }
 
   else
@@ -141,10 +141,10 @@
   return v12;
 }
 
-- ($F17434BF0011F66C835719901D77F978)generateNextRandomConfigFromConfig:(id)a3
+- ($F17434BF0011F66C835719901D77F978)generateNextRandomConfigFromConfig:(id)config
 {
-  v3 = *&a3.var2;
-  v4 = *&a3.var0;
+  v3 = *&config.var2;
+  v4 = *&config.var0;
   v5 = rand();
   if (v5 <= 0)
   {
@@ -177,10 +177,10 @@
   return result;
 }
 
-- ($F17434BF0011F66C835719901D77F978)advanceConfig:(id)a3
+- ($F17434BF0011F66C835719901D77F978)advanceConfig:(id)config
 {
-  v3 = *&a3.var2;
-  v4 = *&a3.var0 & 0xFFFFFF0000000000 | *&a3.var2 & 0x1FFFFFFFFLL;
+  v3 = *&config.var2;
+  v4 = *&config.var0 & 0xFFFFFF0000000000 | *&config.var2 & 0x1FFFFFFFFLL;
   result.var2 = v3;
   result.var3 = BYTE4(v3);
   result.var0 = v4;
@@ -216,17 +216,17 @@
   [(NTKPrideCircularQuad *)self setColorConfig:v6, v5];
 }
 
-- (void)setColorConfig:(id)a3
+- (void)setColorConfig:(id)config
 {
-  v3 = *&a3.var2;
-  *(&self->_currentStyle + 4) = *&a3.var0;
-  *&self->_currentColorConfig.startColor = *&a3.var2;
+  v3 = *&config.var2;
+  *(&self->_currentStyle + 4) = *&config.var0;
+  *&self->_currentColorConfig.startColor = *&config.var2;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_10B3C;
   v6[3] = &unk_24AE8;
   v6[4] = self;
-  [(NTKPrideCircularQuad *)self _colorSequenceForStartIndex:*&a3.var0 reverseDirection:a3.var1 colorSequence:v6];
+  [(NTKPrideCircularQuad *)self _colorSequenceForStartIndex:*&config.var0 reverseDirection:config.var1 colorSequence:v6];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10B5C;
@@ -240,8 +240,8 @@
   v4 = 0uLL;
   v6 = 0;
   v5 = 0;
-  v2 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_120BC(v2, &v4);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_120BC(clkDevice, &v4);
 
   return v4;
 }
@@ -255,13 +255,13 @@
   return DWORD1(v4);
 }
 
-- (float)interpolationStepSizeForSpline:(int)a3
+- (float)interpolationStepSizeForSpline:(int)spline
 {
   LODWORD(v8) = 0;
   v5 = [(NTKPrideMetalQuad *)self clkDevice:0];
   sub_120BC(v5, &v7);
 
-  return SDWORD1(v7) / ((*(*&self->super._amplitudeMultiplier + 704 * a3 + 700) >> 1) - 1);
+  return SDWORD1(v7) / ((*(*&self->super._amplitudeMultiplier + 704 * spline + 700) >> 1) - 1);
 }
 
 - (id)generateVignetteTextureData
@@ -287,11 +287,11 @@
   return v2;
 }
 
-- (float)_dampingFactorForSpline:(int)a3
+- (float)_dampingFactorForSpline:(int)spline
 {
-  if (a3 <= 4)
+  if (spline <= 4)
   {
-    v4 = a3 - 5;
+    v4 = spline - 5;
 LABEL_5:
     v8 = v4 * 0.523598776;
     *&v7 = cosf(v8) * 0.4 + 0.6;
@@ -299,11 +299,11 @@ LABEL_5:
     return *&v7;
   }
 
-  v6 = [(NTKPrideCircularQuad *)self numSplines];
+  numSplines = [(NTKPrideCircularQuad *)self numSplines];
   LODWORD(v7) = 1.0;
-  if ((v6 - 5) <= a3)
+  if ((numSplines - 5) <= spline)
   {
-    v4 = [(NTKPrideCircularQuad *)self numSplines]- a3 - 6;
+    v4 = [(NTKPrideCircularQuad *)self numSplines]- spline - 6;
     goto LABEL_5;
   }
 
@@ -315,8 +315,8 @@ LABEL_5:
   v8 = 0uLL;
   v10 = 0;
   v9 = 0;
-  v3 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_120BC(v3, &v8);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_120BC(clkDevice, &v8);
 
   v4 = v8;
   if (v8 >= 1)
@@ -335,37 +335,37 @@ LABEL_5:
   }
 }
 
-- (float)_dialRadiusForSpline:(int)a3
+- (float)_dialRadiusForSpline:(int)spline
 {
   v6 = 0uLL;
   v8 = 0;
   v7 = 0;
-  v4 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_120BC(v4, &v6);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_120BC(clkDevice, &v6);
 
-  return *(&v6 + 3) + ((a3 / (v6 - 1)) * (*&v7 - *(&v6 + 3)));
+  return *(&v6 + 3) + ((spline / (v6 - 1)) * (*&v7 - *(&v6 + 3)));
 }
 
-- (float)_rectRadiusForSpline:(int)a3
+- (float)_rectRadiusForSpline:(int)spline
 {
   v6 = 0uLL;
   v8 = 0;
   v7 = 0;
-  v4 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_120BC(v4, &v6);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_120BC(clkDevice, &v6);
 
-  return *(&v6 + 3) + ((a3 / (v6 - 1)) * (*(&v7 + 1) - *(&v6 + 3)));
+  return *(&v6 + 3) + ((spline / (v6 - 1)) * (*(&v7 + 1) - *(&v6 + 3)));
 }
 
-- (int)_numVertsForSpline:(int)a3
+- (int)_numVertsForSpline:(int)spline
 {
   v13 = 0;
   v12 = 0;
   v5 = [(NTKPrideMetalQuad *)self clkDevice:0];
   sub_120BC(v5, &v11);
 
-  v6 = [(NTKPrideMetalQuad *)self clkDevice];
-  if ([v6 deviceCategory] == &dword_0 + 1)
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  if ([clkDevice deviceCategory] == &dword_0 + 1)
   {
     v7 = 125;
   }
@@ -375,8 +375,8 @@ LABEL_5:
     v7 = 200;
   }
 
-  v8 = [(NTKPrideMetalQuad *)self clkDevice];
-  if ([v8 deviceCategory] == &dword_0 + 1)
+  clkDevice2 = [(NTKPrideMetalQuad *)self clkDevice];
+  if ([clkDevice2 deviceCategory] == &dword_0 + 1)
   {
     v9 = 60;
   }
@@ -386,15 +386,15 @@ LABEL_5:
     v9 = 100;
   }
 
-  return 2 * (((*(*&self->super._amplitudeMultiplier + 704 * a3 + 696) * (v7 - v9)) / *&v12) + v9) + 2;
+  return 2 * (((*(*&self->super._amplitudeMultiplier + 704 * spline + 696) * (v7 - v9)) / *&v12) + v9) + 2;
 }
 
 - (void)initializePerSplineData
 {
   memset(count, 0, sizeof(count));
   v12 = 0;
-  v3 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_120BC(v3, count);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_120BC(clkDevice, count);
 
   v4 = SLODWORD(count[0]);
   *&self->super._amplitudeMultiplier = malloc_type_calloc(SLODWORD(count[0]), 0x2C0uLL, 0x10800409D81A95DuLL);
@@ -431,24 +431,24 @@ LABEL_5:
   return v3;
 }
 
-- (NTKPrideCircularQuad)initWithDevice:(id)a3 useXRsRGB:(BOOL)a4
+- (NTKPrideCircularQuad)initWithDevice:(id)device useXRsRGB:(BOOL)b
 {
-  v6 = a3;
+  deviceCopy = device;
   v14 = 0uLL;
   v16 = 0;
   v15 = 0;
-  sub_120BC(v6, &v14);
+  sub_120BC(deviceCopy, &v14);
   v7 = [NTKPrideTouchCrownHandler alloc];
   LODWORD(v8) = 4.0;
   LODWORD(v9) = 2.25;
   v10 = [(NTKPrideTouchCrownHandler *)v7 initWithNumSplines:v14 strumWidth:0 strumSpeed:2 isCyclical:v8 padding:v9];
   v13.receiver = self;
   v13.super_class = NTKPrideCircularQuad;
-  v11 = [(NTKPrideSplinesQuad *)&v13 initWithDevice:v6 touchCrownHandler:v10];
+  v11 = [(NTKPrideSplinesQuad *)&v13 initWithDevice:deviceCopy touchCrownHandler:v10];
 
   if (v11)
   {
-    v11->_currentColorConfig.endReversed = a4;
+    v11->_currentColorConfig.endReversed = b;
     [(NTKPrideCircularQuad *)v11 initializePerSplineData];
     [(NTKPrideCircularQuad *)v11 setDefaultSplineColors];
     [(NTKPrideCircularQuad *)v11 _generateControlPointDampingCoefficients];
@@ -457,7 +457,7 @@ LABEL_5:
     LOBYTE(v11->_displayMode) = 1;
     v11->_complicationAlphaCallback = 0;
     [(NTKPrideSplinesQuad *)v11 setControlPointsNeedUpdate];
-    if ([v6 deviceCategory] != &dword_0 + 1)
+    if ([deviceCopy deviceCategory] != &dword_0 + 1)
     {
       [(NTKPrideCircularQuad *)v11 setDialMode];
     }
@@ -471,8 +471,8 @@ LABEL_5:
   v9 = 0uLL;
   v11 = 0;
   v10 = 0;
-  v3 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_120BC(v3, &v9);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_120BC(clkDevice, &v9);
 
   v4 = v9;
   if (v9 >= 1)
@@ -497,7 +497,7 @@ LABEL_5:
   [(NTKPrideSplinesQuad *)&v8 dealloc];
 }
 
-- (void)applyTransitionFromDialToFullScreenWithFraction:(double)a3
+- (void)applyTransitionFromDialToFullScreenWithFraction:(double)fraction
 {
   CLKInterpolateBetweenFloatsUnclipped();
   *&v4 = v4;
@@ -544,27 +544,27 @@ LABEL_5:
   [(NTKPrideCircularQuad *)self clearWaves];
   [(NTKPrideCircularQuad *)self randomizeSplineColors];
   HIDWORD(self->_perSplineData) = 0;
-  v3 = [(NTKPrideCircularQuad *)self quadView];
-  [v3 discardContents];
+  quadView = [(NTKPrideCircularQuad *)self quadView];
+  [quadView discardContents];
 }
 
-- (BOOL)willConsumeTouch:(id)a3
+- (BOOL)willConsumeTouch:(id)touch
 {
-  v4 = a3;
-  v5 = [(NTKPrideCircularQuad *)self quadView];
-  [v5 bounds];
+  touchCopy = touch;
+  quadView = [(NTKPrideCircularQuad *)self quadView];
+  [quadView bounds];
   v22 = v7;
   v23 = v6;
-  [v4 locationInView:v5];
+  [touchCopy locationInView:quadView];
   v21 = v8;
-  [v4 locationInView:v5];
+  [touchCopy locationInView:quadView];
   v20 = v9;
 
   v24 = 0uLL;
   v26 = 0;
   v25 = 0;
-  v10 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_120BC(v10, &v24);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_120BC(clkDevice, &v24);
 
   v11 = *&self->_paused;
   if (v11 == 1)
@@ -603,9 +603,9 @@ LABEL_5:
   HIDWORD(self->_perSplineData) = 1065353216;
 }
 
-- (float)globalAmplitudeForTime:(double)a3
+- (float)globalAmplitudeForTime:(double)time
 {
-  v3 = a3 - self->_currentFade;
+  v3 = time - self->_currentFade;
   v4 = 4.0;
   if (v3 < 0.0)
   {
@@ -622,14 +622,14 @@ LABEL_5:
   return v5 * v6;
 }
 
-- (void)startWavesAtTime:(double)a3
+- (void)startWavesAtTime:(double)time
 {
-  v7 = [(NTKPrideSplinesQuad *)self touchCrownHandler];
+  touchCrownHandler = [(NTKPrideSplinesQuad *)self touchCrownHandler];
   [(NTKPrideMetalQuad *)self currentTime];
   v5 = v4;
   LODWORD(v4) = 0.5;
   LODWORD(v6) = 0.5;
-  [v7 startWaveAtX:v4 y:v6 atTime:v5];
+  [touchCrownHandler startWaveAtX:v4 y:v6 atTime:v5];
 }
 
 - (BOOL)shouldForceRender
@@ -651,17 +651,17 @@ LABEL_5:
 
 - ($8EF4127CF77ECA3DDB612FCF233DC3A8)noiseConfiguration
 {
-  v2 = [(NTKPrideMetalQuad *)self clkDevice];
-  v3 = _NoiseConfiguration(v2, 2);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  v3 = _NoiseConfiguration(clkDevice, 2);
 
   return v3;
 }
 
-- (BOOL)preSemaphoreComputeForTime:(double)a3
+- (BOOL)preSemaphoreComputeForTime:(double)time
 {
   v13.receiver = self;
   v13.super_class = NTKPrideCircularQuad;
-  v4 = [(NTKPrideSplinesQuad *)&v13 preSemaphoreComputeForTime:a3];
+  v4 = [(NTKPrideSplinesQuad *)&v13 preSemaphoreComputeForTime:time];
   if (v4)
   {
     v5 = *(&self->_perSplineData + 1);
@@ -698,8 +698,8 @@ LABEL_5:
 - (id)getNTKPrideSplineDefinitionFiller
 {
   memset(v9, 0, 28);
-  v3 = [(NTKPrideMetalQuad *)self clkDevice];
-  sub_120BC(v3, v9);
+  clkDevice = [(NTKPrideMetalQuad *)self clkDevice];
+  sub_120BC(clkDevice, v9);
 
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
@@ -714,11 +714,11 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)postSemaphoreComputeForTime:(double)a3
+- (BOOL)postSemaphoreComputeForTime:(double)time
 {
   v6.receiver = self;
   v6.super_class = NTKPrideCircularQuad;
-  [(NTKPrideSplinesQuad *)&v6 postSemaphoreComputeForTime:a3];
+  [(NTKPrideSplinesQuad *)&v6 postSemaphoreComputeForTime:time];
   v4 = *&self->_useXRsRGB;
   if (v4 && !*&self->_paused && *&self->_perSplineData == 1.0)
   {

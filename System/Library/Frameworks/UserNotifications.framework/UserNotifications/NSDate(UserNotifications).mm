@@ -11,10 +11,10 @@
   v3 = [MEMORY[0x1E695DF58] localeWithLocaleIdentifier:@"en_US_POSIX"];
   [v2 setLocale:v3];
 
-  v4 = [MEMORY[0x1E695DFE8] localTimeZone];
-  [v2 setTimeZone:v4];
+  localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+  [v2 setTimeZone:localTimeZone];
 
-  v5 = [v2 stringFromDate:a1];
+  v5 = [v2 stringFromDate:self];
 
   return v5;
 }

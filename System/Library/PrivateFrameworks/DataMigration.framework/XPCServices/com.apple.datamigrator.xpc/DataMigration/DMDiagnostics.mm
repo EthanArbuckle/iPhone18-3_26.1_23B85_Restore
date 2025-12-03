@@ -1,6 +1,6 @@
 @interface DMDiagnostics
 + (id)sharedInstance;
-- (void)captureDiagnosticsForIncident:(id)a3 async:(BOOL)a4;
+- (void)captureDiagnosticsForIncident:(id)incident async:(BOOL)async;
 @end
 
 @implementation DMDiagnostics
@@ -17,16 +17,16 @@
   return v3;
 }
 
-- (void)captureDiagnosticsForIncident:(id)a3 async:(BOOL)a4
+- (void)captureDiagnosticsForIncident:(id)incident async:(BOOL)async
 {
-  v4 = a4;
-  v5 = a3;
-  v14 = v5;
+  asyncCopy = async;
+  incidentCopy = incident;
+  v14 = incidentCopy;
   if (qword_1000309F0 != -1)
   {
     sub_100012B10();
-    v5 = v14;
-    if (v4)
+    incidentCopy = v14;
+    if (asyncCopy)
     {
       goto LABEL_3;
     }
@@ -38,9 +38,9 @@ LABEL_8:
       goto LABEL_10;
     }
 
-    v11 = [v5 diagnosticMessage];
+    diagnosticMessage = [incidentCopy diagnosticMessage];
     v12 = getpid();
-    v13 = v10(v11, 3135167405, v12);
+    v13 = v10(diagnosticMessage, 3135167405, v12);
 
     if ((v13 & 1) == 0)
     {
@@ -50,14 +50,14 @@ LABEL_8:
     goto LABEL_11;
   }
 
-  if (!v4)
+  if (!asyncCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
   v6 = off_1000309E0;
-  if (!off_1000309E0 || ([v5 diagnosticMessage], v7 = objc_claimAutoreleasedReturnValue(), v8 = getpid(), v9 = v6(v7, 3135167405, v8), v7, (v9 & 1) == 0))
+  if (!off_1000309E0 || ([incidentCopy diagnosticMessage], v7 = objc_claimAutoreleasedReturnValue(), v8 = getpid(), v9 = v6(v7, 3135167405, v8), v7, (v9 & 1) == 0))
   {
 LABEL_10:
     _DMLogFunc();

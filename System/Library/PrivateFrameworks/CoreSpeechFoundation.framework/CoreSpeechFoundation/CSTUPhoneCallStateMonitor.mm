@@ -4,9 +4,9 @@
 - (CSTUPhoneCallStateMonitor)init;
 - (unint64_t)_fetchTUPhoneCallState;
 - (unint64_t)phoneCallState;
-- (void)_callStatusDidChangeHandler:(id)a3;
+- (void)_callStatusDidChangeHandler:(id)handler;
 - (void)_registerPhoneCallStateChangeNotifier;
-- (void)_startMonitoringWithQueue:(id)a3;
+- (void)_startMonitoringWithQueue:(id)queue;
 - (void)_stopMonitoring;
 @end
 
@@ -256,11 +256,11 @@ LABEL_18:
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_callStatusDidChangeHandler:(id)a3
+- (void)_callStatusDidChangeHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [v4 name];
-  if ([v5 isEqualToString:*MEMORY[0x1E69D8E10]])
+  handlerCopy = handler;
+  name = [handlerCopy name];
+  if ([name isEqualToString:*MEMORY[0x1E69D8E10]])
   {
 
 LABEL_4:
@@ -273,8 +273,8 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v6 = [v4 name];
-  v7 = [v6 isEqualToString:*MEMORY[0x1E69D8E60]];
+  name2 = [handlerCopy name];
+  v7 = [name2 isEqualToString:*MEMORY[0x1E69D8E60]];
 
   if (v7)
   {
@@ -307,11 +307,11 @@ void __57__CSTUPhoneCallStateMonitor__callStatusDidChangeHandler___block_invoke(
       _os_log_impl(&dword_1DDA4B000, v2, OS_LOG_TYPE_DEFAULT, "%s register tuCallCenter notification call backs", &v7, 0xCu);
     }
 
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:self selector:sel__callStatusDidChangeHandler_ name:*MEMORY[0x1E69D8E10] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__callStatusDidChangeHandler_ name:*MEMORY[0x1E69D8E10] object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:self selector:sel__callStatusDidChangeHandler_ name:*MEMORY[0x1E69D8E60] object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:self selector:sel__callStatusDidChangeHandler_ name:*MEMORY[0x1E69D8E60] object:0];
 
     [(CSPhoneCallStateMonitor *)self registerDropInCallNotificationIfNeeded];
   }
@@ -328,11 +328,11 @@ void __57__CSTUPhoneCallStateMonitor__callStatusDidChangeHandler___block_invoke(
 
 - (void)_stopMonitoring
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69D8E10] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D8E10] object:0];
 
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 removeObserver:self name:*MEMORY[0x1E69D8E60] object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 removeObserver:self name:*MEMORY[0x1E69D8E60] object:0];
 
   self->_tuPhoneCallState = 0;
   tuCallCenter = self->_tuCallCenter;
@@ -341,7 +341,7 @@ void __57__CSTUPhoneCallStateMonitor__callStatusDidChangeHandler___block_invoke(
   [(CSPhoneCallStateMonitor *)self deregisterDropInCallNotification];
 }
 
-- (void)_startMonitoringWithQueue:(id)a3
+- (void)_startMonitoringWithQueue:(id)queue
 {
   v4 = [MEMORY[0x1E69D8A50] callCenterWithQueue:self->_queue];
   tuCallCenter = self->_tuCallCenter;
@@ -356,7 +356,7 @@ void __57__CSTUPhoneCallStateMonitor__callStatusDidChangeHandler___block_invoke(
 {
   if (+[CSUtils isDarwinOS])
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
   else
@@ -372,10 +372,10 @@ void __57__CSTUPhoneCallStateMonitor__callStatusDidChangeHandler___block_invoke(
     }
 
     self = v4;
-    v3 = self;
+    selfCopy = self;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (id)sharedInstance

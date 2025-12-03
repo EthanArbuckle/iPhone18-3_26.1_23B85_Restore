@@ -1,6 +1,6 @@
 @interface MTRMessagesClusterMessagePresentedEvent
 - (MTRMessagesClusterMessagePresentedEvent)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -13,19 +13,19 @@
   v2 = [(MTRMessagesClusterMessagePresentedEvent *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     messageID = v2->_messageID;
-    v2->_messageID = v3;
+    v2->_messageID = data;
   }
 
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRMessagesClusterMessagePresentedEvent);
-  v5 = [(MTRMessagesClusterMessagePresentedEvent *)self messageID];
-  [(MTRMessagesClusterMessagePresentedEvent *)v4 setMessageID:v5];
+  messageID = [(MTRMessagesClusterMessagePresentedEvent *)self messageID];
+  [(MTRMessagesClusterMessagePresentedEvent *)v4 setMessageID:messageID];
 
   return v4;
 }

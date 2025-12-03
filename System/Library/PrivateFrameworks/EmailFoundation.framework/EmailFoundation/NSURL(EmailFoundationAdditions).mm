@@ -1,10 +1,5 @@
 @interface NSURL(EmailFoundationAdditions)
-+ (id)ef_accountAllowedCharacterSet;
-+ (id)ef_defaultAllowedCharacterSet;
-+ (id)ef_gmailAuthAllowedCharacterSet;
-+ (id)ef_messageAllowedCharacterSet;
 + (id)ef_urlWithString:()EmailFoundationAdditions;
-+ (id)ef_yahooAuthAllowedCharacterSet;
 - (BOOL)ef_isHTTPOrHTTPSURL;
 - (id)ef_URLByAppendingTimestampedPathComponent:()EmailFoundationAdditions withExtension:;
 - (id)ef_caseNormalizedURL;
@@ -27,8 +22,8 @@
   v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v3];
   if (!v4)
   {
-    v5 = [MEMORY[0x1E695DFF8] ef_defaultAllowedCharacterSet];
-    v6 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:v5];
+    ef_defaultAllowedCharacterSet = [MEMORY[0x1E695DFF8] ef_defaultAllowedCharacterSet];
+    v6 = [v3 stringByAddingPercentEncodingWithAllowedCharacters:ef_defaultAllowedCharacterSet];
 
     v4 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v6];
   }
@@ -38,14 +33,14 @@
 
 - (id)ef_caseNormalizedURL
 {
-  v1 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
-  v2 = [v1 scheme];
-  v3 = [v2 lowercaseString];
-  [v1 setScheme:v3];
+  v1 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
+  scheme = [v1 scheme];
+  lowercaseString = [scheme lowercaseString];
+  [v1 setScheme:lowercaseString];
 
-  v4 = [v1 host];
-  v5 = [v4 lowercaseString];
-  [v1 setHost:v5];
+  host = [v1 host];
+  lowercaseString2 = [host lowercaseString];
+  [v1 setHost:lowercaseString2];
 
   v6 = [v1 URL];
 
@@ -55,8 +50,8 @@
 - (uint64_t)ef_hasScheme:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 scheme];
-  v6 = [v5 ef_caseInsensitiveIsEqualToString:v4];
+  scheme = [self scheme];
+  v6 = [scheme ef_caseInsensitiveIsEqualToString:v4];
 
   return v6;
 }
@@ -64,19 +59,19 @@
 - (uint64_t)ef_hasHost:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [a1 host];
-  v6 = [v5 ef_caseInsensitiveIsEqualToString:v4];
+  host = [self host];
+  v6 = [host ef_caseInsensitiveIsEqualToString:v4];
 
   return v6;
 }
 
 - (BOOL)ef_isHTTPOrHTTPSURL
 {
-  v1 = [a1 scheme];
-  v2 = v1;
-  if (v1)
+  scheme = [self scheme];
+  v2 = scheme;
+  if (scheme)
   {
-    if ([v1 caseInsensitiveCompare:@"http"])
+    if ([scheme caseInsensitiveCompare:@"http"])
     {
       v3 = [v2 caseInsensitiveCompare:@"https"] == 0;
     }
@@ -97,13 +92,13 @@
 
 - (uint64_t)ef_isEligibleForRichLink
 {
-  if ([a1 ef_isHTTPOrHTTPSURL])
+  if ([self ef_isHTTPOrHTTPSURL])
   {
     return 1;
   }
 
-  v3 = [a1 scheme];
-  v2 = [v3 length] == 0;
+  scheme = [self scheme];
+  v2 = [scheme length] == 0;
 
   return v2;
 }
@@ -111,11 +106,11 @@
 - (id)ef_urlByAddingSchemeIfNeeded
 {
   v18 = *MEMORY[0x1E69E9840];
-  v2 = [a1 absoluteString];
-  if ([v2 length] && !objc_msgSend(a1, "ef_isHTTPOrHTTPSURL"))
+  absoluteString = [self absoluteString];
+  if ([absoluteString length] && !objc_msgSend(self, "ef_isHTTPOrHTTPSURL"))
   {
     v4 = [MEMORY[0x1E696AB60] dataDetectorWithTypes:32 error:0];
-    [v4 matchesInString:v2 options:1 range:{0, objc_msgSend(v2, "length")}];
+    [v4 matchesInString:absoluteString options:1 range:{0, objc_msgSend(absoluteString, "length")}];
     v15 = 0u;
     v16 = 0u;
     v13 = 0u;
@@ -138,7 +133,7 @@
 
           if (v10)
           {
-            v3 = [v9 URL];
+            selfCopy2 = [v9 URL];
 
             goto LABEL_14;
           }
@@ -154,34 +149,34 @@
       }
     }
 
-    v3 = a1;
+    selfCopy2 = self;
 LABEL_14:
   }
 
   else
   {
-    v3 = a1;
+    selfCopy2 = self;
   }
 
   v11 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return selfCopy2;
 }
 
 - (id)ef_highLevelDomain
 {
-  v1 = [a1 ef_urlByAddingSchemeIfNeeded];
-  v2 = [v1 _lp_highLevelDomain];
+  ef_urlByAddingSchemeIfNeeded = [self ef_urlByAddingSchemeIfNeeded];
+  _lp_highLevelDomain = [ef_urlByAddingSchemeIfNeeded _lp_highLevelDomain];
 
-  return v2;
+  return _lp_highLevelDomain;
 }
 
 - (void)ef_hostNilForEmpty
 {
-  v1 = [a1 host];
-  if ([v1 length])
+  host = [self host];
+  if ([host length])
   {
-    v2 = v1;
+    v2 = host;
   }
 
   else
@@ -197,7 +192,7 @@ LABEL_14:
 - (id)ef_urlByReplacingSchemeWithScheme:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
+  v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
   [v5 setScheme:v4];
   v6 = [v5 URL];
 
@@ -207,9 +202,9 @@ LABEL_14:
 - (id)ef_urlByAddingPrefixToScheme:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
-  v6 = [v5 scheme];
-  v7 = [v4 stringByAppendingString:v6];
+  v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
+  scheme = [v5 scheme];
+  v7 = [v4 stringByAppendingString:scheme];
   [v5 setScheme:v7];
 
   v8 = [v5 URL];
@@ -220,9 +215,9 @@ LABEL_14:
 - (id)ef_urlByRemovingPrefixFromScheme:()EmailFoundationAdditions
 {
   v4 = a3;
-  v5 = [MEMORY[0x1E696AF20] componentsWithURL:a1 resolvingAgainstBaseURL:1];
-  v6 = [v5 scheme];
-  v7 = [v6 substringFromIndex:{objc_msgSend(v4, "length")}];
+  v5 = [MEMORY[0x1E696AF20] componentsWithURL:self resolvingAgainstBaseURL:1];
+  scheme = [v5 scheme];
+  v7 = [scheme substringFromIndex:{objc_msgSend(v4, "length")}];
   [v5 setScheme:v7];
 
   v8 = [v5 URL];
@@ -235,50 +230,15 @@ LABEL_14:
   v6 = a3;
   v7 = a4;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [MEMORY[0x1E696AB78] ef_isoDateFormatter];
-  v10 = [MEMORY[0x1E695DF00] date];
-  v11 = [v9 stringFromDate:v10];
+  ef_isoDateFormatter = [MEMORY[0x1E696AB78] ef_isoDateFormatter];
+  date = [MEMORY[0x1E695DF00] date];
+  v11 = [ef_isoDateFormatter stringFromDate:date];
   v12 = [v8 stringWithFormat:@"%@_%@", v6, v11];
 
-  v13 = [a1 URLByAppendingPathComponent:v12];
+  v13 = [self URLByAppendingPathComponent:v12];
   v14 = [v13 URLByAppendingPathExtension:v7];
 
   return v14;
-}
-
-+ (id)ef_defaultAllowedCharacterSet
-  v0 = {;
-  v1 = [v0 invertedSet];
-
-  return v1;
-}
-
-+ (id)ef_accountAllowedCharacterSet
-  v0 = {;
-  v1 = [v0 invertedSet];
-
-  return v1;
-}
-
-+ (id)ef_messageAllowedCharacterSet
-  v0 = {;
-  v1 = [v0 invertedSet];
-
-  return v1;
-}
-
-+ (id)ef_gmailAuthAllowedCharacterSet
-  v0 = {;
-  v1 = [v0 invertedSet];
-
-  return v1;
-}
-
-+ (id)ef_yahooAuthAllowedCharacterSet
-  v0 = {;
-  v1 = [v0 invertedSet];
-
-  return v1;
 }
 
 @end

@@ -1,12 +1,12 @@
 @interface VCPProtoKeypoint
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCPProtoKeypoint
@@ -17,58 +17,58 @@
   v8.receiver = self;
   v8.super_class = VCPProtoKeypoint;
   v4 = [(VCPProtoKeypoint *)&v8 description];
-  v5 = [(VCPProtoKeypoint *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(VCPProtoKeypoint *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   *&v4 = self->_x;
   v5 = [MEMORY[0x1E696AD98] numberWithFloat:v4];
-  [v3 setObject:v5 forKey:@"x"];
+  [dictionary setObject:v5 forKey:@"x"];
 
   *&v6 = self->_y;
   v7 = [MEMORY[0x1E696AD98] numberWithFloat:v6];
-  [v3 setObject:v7 forKey:@"y"];
+  [dictionary setObject:v7 forKey:@"y"];
 
   *&v8 = self->_confidence;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
-  [v3 setObject:v9 forKey:@"confidence"];
+  [dictionary setObject:v9 forKey:@"confidence"];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v3 = a3;
+  toCopy = to;
   PBDataWriterWriteFloatField();
   PBDataWriterWriteFloatField();
   PBDataWriterWriteFloatField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 3) = LODWORD(self->_x);
-  *(a3 + 4) = LODWORD(self->_y);
-  *(a3 + 2) = LODWORD(self->_confidence);
+  *(to + 3) = LODWORD(self->_x);
+  *(to + 4) = LODWORD(self->_y);
+  *(to + 2) = LODWORD(self->_confidence);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 3) = LODWORD(self->_x);
   *(result + 4) = LODWORD(self->_y);
   *(result + 2) = LODWORD(self->_confidence);
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [v4 isMemberOfClass:objc_opt_class()] && self->_x == v4[3] && self->_y == v4[4] && self->_confidence == v4[2];
+  equalCopy = equal;
+  v5 = [equalCopy isMemberOfClass:objc_opt_class()] && self->_x == equalCopy[3] && self->_y == equalCopy[4] && self->_confidence == equalCopy[2];
 
   return v5;
 }
@@ -151,11 +151,11 @@
   return v20 ^ v13 ^ v26;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_x = *(a3 + 3);
-  self->_y = *(a3 + 4);
-  self->_confidence = *(a3 + 2);
+  self->_x = *(from + 3);
+  self->_y = *(from + 4);
+  self->_confidence = *(from + 2);
 }
 
 @end

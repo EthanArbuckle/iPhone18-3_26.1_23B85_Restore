@@ -1,34 +1,34 @@
 @interface PKBCBPBarcodeFlightLeg
-- (BOOL)isEqual:(id)a3;
-- (PKBCBPBarcodeFlightLeg)initWithCoder:(id)a3;
-- (PKBCBPBarcodeFlightLeg)initWithPassengerNameRecordNumber:(id)a3 departureAirportCode:(id)a4 destinationAirportCode:(id)a5 airlineCode:(id)a6 flightNumber:(unint64_t)a7 dayOfYear:(unint64_t)a8 seatNumber:(id)a9;
+- (BOOL)isEqual:(id)equal;
+- (PKBCBPBarcodeFlightLeg)initWithCoder:(id)coder;
+- (PKBCBPBarcodeFlightLeg)initWithPassengerNameRecordNumber:(id)number departureAirportCode:(id)code destinationAirportCode:(id)airportCode airlineCode:(id)airlineCode flightNumber:(unint64_t)flightNumber dayOfYear:(unint64_t)year seatNumber:(id)seatNumber;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKBCBPBarcodeFlightLeg
 
-- (PKBCBPBarcodeFlightLeg)initWithPassengerNameRecordNumber:(id)a3 departureAirportCode:(id)a4 destinationAirportCode:(id)a5 airlineCode:(id)a6 flightNumber:(unint64_t)a7 dayOfYear:(unint64_t)a8 seatNumber:(id)a9
+- (PKBCBPBarcodeFlightLeg)initWithPassengerNameRecordNumber:(id)number departureAirportCode:(id)code destinationAirportCode:(id)airportCode airlineCode:(id)airlineCode flightNumber:(unint64_t)flightNumber dayOfYear:(unint64_t)year seatNumber:(id)seatNumber
 {
-  v23 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a9;
+  numberCopy = number;
+  codeCopy = code;
+  airportCodeCopy = airportCode;
+  airlineCodeCopy = airlineCode;
+  seatNumberCopy = seatNumber;
   v24.receiver = self;
   v24.super_class = PKBCBPBarcodeFlightLeg;
   v18 = [(PKBCBPBarcodeFlightLeg *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_passengerNameRecordNumber, a3);
-    objc_storeStrong(&v19->_departureAirportCode, a4);
-    objc_storeStrong(&v19->_destinationAirportCode, a5);
-    objc_storeStrong(&v19->_airlineCode, a6);
-    v19->_flightNumber = a7;
-    v19->_dayOfYear = a8;
-    objc_storeStrong(&v19->_seatNumber, a9);
+    objc_storeStrong(&v18->_passengerNameRecordNumber, number);
+    objc_storeStrong(&v19->_departureAirportCode, code);
+    objc_storeStrong(&v19->_destinationAirportCode, airportCode);
+    objc_storeStrong(&v19->_airlineCode, airlineCode);
+    v19->_flightNumber = flightNumber;
+    v19->_dayOfYear = year;
+    objc_storeStrong(&v19->_seatNumber, seatNumber);
   }
 
   return v19;
@@ -50,18 +50,18 @@
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -213,37 +213,37 @@ LABEL_40:
   return SipHash();
 }
 
-- (PKBCBPBarcodeFlightLeg)initWithCoder:(id)a3
+- (PKBCBPBarcodeFlightLeg)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = PKBCBPBarcodeFlightLeg;
   v5 = [(PKBCBPBarcodeFlightLeg *)&v19 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"pnr"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"pnr"];
     passengerNameRecordNumber = v5->_passengerNameRecordNumber;
     v5->_passengerNameRecordNumber = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"departureAirportCode"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"departureAirportCode"];
     departureAirportCode = v5->_departureAirportCode;
     v5->_departureAirportCode = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"destinationAirportCode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"destinationAirportCode"];
     destinationAirportCode = v5->_destinationAirportCode;
     v5->_destinationAirportCode = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"airlineCode"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"airlineCode"];
     airlineCode = v5->_airlineCode;
     v5->_airlineCode = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flightNumber"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flightNumber"];
     v5->_flightNumber = [v14 unsignedIntegerValue];
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"dayOfYear"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"dayOfYear"];
     v5->_dayOfYear = [v15 unsignedIntegerValue];
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"seatNumber"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"seatNumber"];
     seatNumber = v5->_seatNumber;
     v5->_seatNumber = v16;
   }
@@ -251,21 +251,21 @@ LABEL_40:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   passengerNameRecordNumber = self->_passengerNameRecordNumber;
-  v7 = a3;
-  [v7 encodeObject:passengerNameRecordNumber forKey:@"pnr"];
-  [v7 encodeObject:self->_departureAirportCode forKey:@"departureAirportCode"];
-  [v7 encodeObject:self->_destinationAirportCode forKey:@"destinationAirportCode"];
-  [v7 encodeObject:self->_airlineCode forKey:@"airlineCode"];
+  coderCopy = coder;
+  [coderCopy encodeObject:passengerNameRecordNumber forKey:@"pnr"];
+  [coderCopy encodeObject:self->_departureAirportCode forKey:@"departureAirportCode"];
+  [coderCopy encodeObject:self->_destinationAirportCode forKey:@"destinationAirportCode"];
+  [coderCopy encodeObject:self->_airlineCode forKey:@"airlineCode"];
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_flightNumber];
-  [v7 encodeObject:v5 forKey:@"flightNumber"];
+  [coderCopy encodeObject:v5 forKey:@"flightNumber"];
 
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_dayOfYear];
-  [v7 encodeObject:v6 forKey:@"dayOfYear"];
+  [coderCopy encodeObject:v6 forKey:@"dayOfYear"];
 
-  [v7 encodeObject:self->_seatNumber forKey:@"seatNumber"];
+  [coderCopy encodeObject:self->_seatNumber forKey:@"seatNumber"];
 }
 
 @end

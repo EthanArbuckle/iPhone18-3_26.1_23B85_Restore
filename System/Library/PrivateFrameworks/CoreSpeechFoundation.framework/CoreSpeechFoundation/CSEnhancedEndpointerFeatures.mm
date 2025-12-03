@@ -1,5 +1,5 @@
 @interface CSEnhancedEndpointerFeatures
-- (CSEnhancedEndpointerFeatures)initWithTrailingSilenceDuration:(int64_t)a3 clientSilenceFramesCount:(double)a4 endOfSentenceLikelihood:(double)a5 wordCount:(int64_t)a6 serverFeaturesLatency:(double)a7 clientSilenceProbability:(double)a8 rcTrailingSilenceDuration:(int64_t)a9 rcEndOfSentenceLikelihood:(double)a10 rcWordCount:(int64_t)a11 rcServerFeaturesLatency:(double)a12 silencePosterior:(double)a13 acousticEndpointerScore:(double)a14 silencePosteriorNF:(float)a15;
+- (CSEnhancedEndpointerFeatures)initWithTrailingSilenceDuration:(int64_t)duration clientSilenceFramesCount:(double)count endOfSentenceLikelihood:(double)likelihood wordCount:(int64_t)wordCount serverFeaturesLatency:(double)latency clientSilenceProbability:(double)probability rcTrailingSilenceDuration:(int64_t)silenceDuration rcEndOfSentenceLikelihood:(double)self0 rcWordCount:(int64_t)self1 rcServerFeaturesLatency:(double)self2 silencePosterior:(double)self3 acousticEndpointerScore:(double)self4 silencePosteriorNF:(float)self5;
 - (id)toFeatureArray;
 @end
 
@@ -51,26 +51,26 @@
   return v3;
 }
 
-- (CSEnhancedEndpointerFeatures)initWithTrailingSilenceDuration:(int64_t)a3 clientSilenceFramesCount:(double)a4 endOfSentenceLikelihood:(double)a5 wordCount:(int64_t)a6 serverFeaturesLatency:(double)a7 clientSilenceProbability:(double)a8 rcTrailingSilenceDuration:(int64_t)a9 rcEndOfSentenceLikelihood:(double)a10 rcWordCount:(int64_t)a11 rcServerFeaturesLatency:(double)a12 silencePosterior:(double)a13 acousticEndpointerScore:(double)a14 silencePosteriorNF:(float)a15
+- (CSEnhancedEndpointerFeatures)initWithTrailingSilenceDuration:(int64_t)duration clientSilenceFramesCount:(double)count endOfSentenceLikelihood:(double)likelihood wordCount:(int64_t)wordCount serverFeaturesLatency:(double)latency clientSilenceProbability:(double)probability rcTrailingSilenceDuration:(int64_t)silenceDuration rcEndOfSentenceLikelihood:(double)self0 rcWordCount:(int64_t)self1 rcServerFeaturesLatency:(double)self2 silencePosterior:(double)self3 acousticEndpointerScore:(double)self4 silencePosteriorNF:(float)self5
 {
   v28.receiver = self;
   v28.super_class = CSEnhancedEndpointerFeatures;
   result = [(CSEnhancedEndpointerFeatures *)&v28 init];
   if (result)
   {
-    result->_trailingSilenceDuration = a3;
-    result->_clientSilenceFramesCount = a4;
-    result->_endOfSentenceLikelihood = a5;
-    result->_wordCount = a6;
-    result->_serverFeaturesLatency = a7;
-    result->_clientSilenceProbability = a8;
-    result->_rcTrailingSilenceDuration = a9;
-    result->_rcEndOfSentenceLikelihood = a10;
-    result->_rcWordCount = a11;
-    result->_rcServerFeaturesLatency = a12;
-    result->_silencePosterior = a13;
-    result->_acousticEndpointerScore = a14;
-    result->_silencePosteriorNF = a15;
+    result->_trailingSilenceDuration = duration;
+    result->_clientSilenceFramesCount = count;
+    result->_endOfSentenceLikelihood = likelihood;
+    result->_wordCount = wordCount;
+    result->_serverFeaturesLatency = latency;
+    result->_clientSilenceProbability = probability;
+    result->_rcTrailingSilenceDuration = silenceDuration;
+    result->_rcEndOfSentenceLikelihood = sentenceLikelihood;
+    result->_rcWordCount = rcWordCount;
+    result->_rcServerFeaturesLatency = featuresLatency;
+    result->_silencePosterior = posterior;
+    result->_acousticEndpointerScore = score;
+    result->_silencePosteriorNF = f;
   }
 
   return result;

@@ -1,5 +1,5 @@
 @interface GAXFeatureViewController
-+ (GAXFeatureViewController)allocWithZone:(_NSZone *)a3;
++ (GAXFeatureViewController)allocWithZone:(_NSZone *)zone;
 - (BOOL)_isUsingAppRestrictions;
 - (BOOL)isTouchEnabled;
 - (BOOL)shouldDisplayMiniToolbar;
@@ -13,40 +13,40 @@
 - (id)_viewForPresentingOverlayUserInterface;
 - (int64_t)applicationInterfaceOrientation;
 - (unint64_t)_numFeatures;
-- (void)_enumerateAppFeatureViewsParametersUsingBlock:(id)a3;
-- (void)_enumerateHardwareFeatureViewsParametersUsingBlock:(id)a3;
-- (void)_enumerateSystemFeatureViewsParametersUsingBlock:(id)a3;
-- (void)dismissOptionsAnimated:(BOOL)a3;
+- (void)_enumerateAppFeatureViewsParametersUsingBlock:(id)block;
+- (void)_enumerateHardwareFeatureViewsParametersUsingBlock:(id)block;
+- (void)_enumerateSystemFeatureViewsParametersUsingBlock:(id)block;
+- (void)dismissOptionsAnimated:(BOOL)animated;
 - (void)loadView;
-- (void)presentOptionsAnimated:(BOOL)a3;
+- (void)presentOptionsAnimated:(BOOL)animated;
 - (void)viewDidLayoutSubviews;
 @end
 
 @implementation GAXFeatureViewController
 
-+ (GAXFeatureViewController)allocWithZone:(_NSZone *)a3
++ (GAXFeatureViewController)allocWithZone:(_NSZone *)zone
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     GAXUserInterfaceIdiomIsPad();
     v6 = objc_opt_class();
 
-    return [v6 allocWithZone:a3];
+    return [v6 allocWithZone:zone];
   }
 
   else
   {
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___GAXFeatureViewController;
-    return objc_msgSendSuper2(&v7, "allocWithZone:", a3);
+    return objc_msgSendSuper2(&v7, "allocWithZone:", zone);
   }
 }
 
 - (void)loadView
 {
-  v3 = [(GAXFeatureViewController *)self styleProvider];
+  styleProvider = [(GAXFeatureViewController *)self styleProvider];
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v4 preferredContentSizeCategory];
   v6 = _UIContentSizeCategoryCompareToContentSizeCategory();
 
   v7 = [GAXGroupingView alloc];
@@ -64,9 +64,9 @@
   [v13 setIdentifier:@"usableSpaceGuide"];
   v14 = v13;
   [(GAXGroupingView *)v9 addLayoutGuide:v13];
-  v110 = [v3 featureViewControllerInstructionsFont];
+  featureViewControllerInstructionsFont = [styleProvider featureViewControllerInstructionsFont];
   v109 = GAXLocString(@"HELP_INTEREST_AREA");
-  v15 = [GAXInterfaceUtilities labelWithText:v109 font:v110 allowMultipleLines:1 styleProvider:v3];
+  v15 = [GAXInterfaceUtilities labelWithText:v109 font:featureViewControllerInstructionsFont allowMultipleLines:1 styleProvider:styleProvider];
   v111 = v15;
   if ([(GAXFeatureViewController *)self isTouchEnabled])
   {
@@ -79,19 +79,19 @@
   }
 
   [v15 setAlpha:v16];
-  v17 = [v3 featureViewControllerInstructionsColor];
-  [v15 setTextColor:v17];
+  featureViewControllerInstructionsColor = [styleProvider featureViewControllerInstructionsColor];
+  [v15 setTextColor:featureViewControllerInstructionsColor];
 
   [v15 setTranslatesAutoresizingMaskIntoConstraints:0];
   [(GAXFeatureViewController *)self setInstructionsLabel:v15];
   [(GAXGroupingView *)v9 addSubview:v15];
   v112[0] = NSFontAttributeName;
-  v18 = v3;
-  v19 = [v3 featureViewControllerOptionsButtonFont];
-  v113[0] = v19;
+  v18 = styleProvider;
+  featureViewControllerOptionsButtonFont = [styleProvider featureViewControllerOptionsButtonFont];
+  v113[0] = featureViewControllerOptionsButtonFont;
   v112[1] = NSForegroundColorAttributeName;
-  v20 = [v3 defaultLabelTextColor];
-  v21 = v20;
+  defaultLabelTextColor = [styleProvider defaultLabelTextColor];
+  v21 = defaultLabelTextColor;
   v112[2] = NSUnderlineStyleAttributeName;
   v22 = &off_61798;
   if (v6 == -1)
@@ -99,7 +99,7 @@
     v22 = &off_617B0;
   }
 
-  v113[1] = v20;
+  v113[1] = defaultLabelTextColor;
   v113[2] = v22;
   v108 = [NSDictionary dictionaryWithObjects:v113 forKeys:v112 count:3];
 
@@ -111,32 +111,32 @@
   [(GAXFeatureViewController *)self setOptionsButton:v25];
 
   v26 = +[UIColor systemBlueColor];
-  v27 = [(GAXFeatureViewController *)self optionsButton];
-  [v27 setBackgroundColor:v26];
+  optionsButton = [(GAXFeatureViewController *)self optionsButton];
+  [optionsButton setBackgroundColor:v26];
 
-  [v3 optionsButtonCornerRadius];
+  [styleProvider optionsButtonCornerRadius];
   v29 = v28;
-  v30 = [(GAXFeatureViewController *)self optionsButton];
-  v31 = [v30 layer];
-  [v31 setCornerRadius:v29];
+  optionsButton2 = [(GAXFeatureViewController *)self optionsButton];
+  layer = [optionsButton2 layer];
+  [layer setCornerRadius:v29];
 
-  v32 = [(GAXFeatureViewController *)self optionsButton];
-  [v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+  optionsButton3 = [(GAXFeatureViewController *)self optionsButton];
+  [optionsButton3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v33 = [(GAXFeatureViewController *)self optionsButton];
-  [v33 setClipsToBounds:1];
+  optionsButton4 = [(GAXFeatureViewController *)self optionsButton];
+  [optionsButton4 setClipsToBounds:1];
 
-  v34 = [(GAXFeatureViewController *)self optionsButton];
-  [v34 setAccessibilityIdentifier:@"OPTIONS_BUTTON"];
+  optionsButton5 = [(GAXFeatureViewController *)self optionsButton];
+  [optionsButton5 setAccessibilityIdentifier:@"OPTIONS_BUTTON"];
 
-  v35 = [(GAXFeatureViewController *)self optionsButton];
-  [v35 addTarget:self action:"_handleTouchUpInside:" forControlEvents:64];
+  optionsButton6 = [(GAXFeatureViewController *)self optionsButton];
+  [optionsButton6 addTarget:self action:"_handleTouchUpInside:" forControlEvents:64];
 
-  v36 = [(GAXFeatureViewController *)self optionsButton];
-  [v36 setAttributedTitle:v107 forState:0];
+  optionsButton7 = [(GAXFeatureViewController *)self optionsButton];
+  [optionsButton7 setAttributedTitle:v107 forState:0];
 
-  v37 = [(GAXFeatureViewController *)self optionsButton];
-  [(GAXGroupingView *)v9 addSubview:v37];
+  optionsButton8 = [(GAXFeatureViewController *)self optionsButton];
+  [(GAXGroupingView *)v9 addSubview:optionsButton8];
 
   v106 = v10;
   [v10 ax_constrainLayoutAttribute:4 asEqualToValueOfView:v9];
@@ -144,105 +144,105 @@
   [v10 ax_constrainLayoutAttribute:6 asEqualToValueOfView:v9];
   [v10 ax_constrainLayoutAttribute:3 asEqualToValueOfView:v9];
   v38 = +[NSMutableArray array];
-  v39 = [v12 bottomAnchor];
-  v40 = [(GAXGroupingView *)v9 bottomAnchor];
-  v41 = [v39 constraintEqualToAnchor:v40];
+  bottomAnchor = [v12 bottomAnchor];
+  bottomAnchor2 = [(GAXGroupingView *)v9 bottomAnchor];
+  v41 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v38 addObject:v41];
 
-  v42 = [v12 leadingAnchor];
-  v43 = [(GAXGroupingView *)v9 leadingAnchor];
-  v44 = [v42 constraintEqualToAnchor:v43];
+  leadingAnchor = [v12 leadingAnchor];
+  leadingAnchor2 = [(GAXGroupingView *)v9 leadingAnchor];
+  v44 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v38 addObject:v44];
 
   v105 = v12;
-  v45 = [v12 trailingAnchor];
-  v46 = [(GAXGroupingView *)v9 trailingAnchor];
-  v47 = [v45 constraintEqualToAnchor:v46];
+  trailingAnchor = [v12 trailingAnchor];
+  trailingAnchor2 = [(GAXGroupingView *)v9 trailingAnchor];
+  v47 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v38 addObject:v47];
 
-  v48 = [v14 bottomAnchor];
-  v49 = [v12 topAnchor];
-  v50 = [v48 constraintEqualToAnchor:v49];
+  bottomAnchor3 = [v14 bottomAnchor];
+  topAnchor = [v12 topAnchor];
+  v50 = [bottomAnchor3 constraintEqualToAnchor:topAnchor];
   [v38 addObject:v50];
 
-  v51 = [v14 topAnchor];
-  v52 = [(GAXGroupingView *)v9 topAnchor];
-  v53 = [v51 constraintEqualToAnchor:v52];
+  topAnchor2 = [v14 topAnchor];
+  topAnchor3 = [(GAXGroupingView *)v9 topAnchor];
+  v53 = [topAnchor2 constraintEqualToAnchor:topAnchor3];
   [v38 addObject:v53];
 
-  v54 = [v14 leadingAnchor];
-  v55 = [(GAXGroupingView *)v9 safeAreaLayoutGuide];
-  v56 = [v55 leadingAnchor];
-  v57 = [v54 constraintEqualToAnchor:v56];
+  leadingAnchor3 = [v14 leadingAnchor];
+  safeAreaLayoutGuide = [(GAXGroupingView *)v9 safeAreaLayoutGuide];
+  leadingAnchor4 = [safeAreaLayoutGuide leadingAnchor];
+  v57 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
   [v38 addObject:v57];
 
-  v58 = [v14 trailingAnchor];
-  v59 = [(GAXGroupingView *)v9 safeAreaLayoutGuide];
-  v60 = [v59 trailingAnchor];
-  v61 = [v58 constraintEqualToAnchor:v60];
+  trailingAnchor3 = [v14 trailingAnchor];
+  safeAreaLayoutGuide2 = [(GAXGroupingView *)v9 safeAreaLayoutGuide];
+  trailingAnchor4 = [safeAreaLayoutGuide2 trailingAnchor];
+  v61 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
   [v38 addObject:v61];
 
-  v62 = [v111 topAnchor];
-  v63 = [v14 topAnchor];
+  topAnchor4 = [v111 topAnchor];
+  topAnchor5 = [v14 topAnchor];
   [v18 workspaceInstructionsLabelPadding];
-  v64 = [v62 constraintEqualToAnchor:v63 constant:?];
+  v64 = [topAnchor4 constraintEqualToAnchor:topAnchor5 constant:?];
   [v38 addObject:v64];
 
-  v65 = [v111 widthAnchor];
-  v66 = [v14 widthAnchor];
-  v67 = [v65 constraintEqualToAnchor:v66];
+  widthAnchor = [v111 widthAnchor];
+  widthAnchor2 = [v14 widthAnchor];
+  v67 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   [v38 addObject:v67];
 
-  v68 = [v111 bottomAnchor];
-  v69 = [(GAXFeatureViewController *)self optionsButton];
-  v70 = [v69 topAnchor];
+  bottomAnchor4 = [v111 bottomAnchor];
+  optionsButton9 = [(GAXFeatureViewController *)self optionsButton];
+  topAnchor6 = [optionsButton9 topAnchor];
   [v18 workspaceInstructionsLabelPadding];
-  v72 = [v68 constraintEqualToAnchor:v70 constant:-v71];
+  v72 = [bottomAnchor4 constraintEqualToAnchor:topAnchor6 constant:-v71];
   [v38 addObject:v72];
 
-  v73 = [v111 centerXAnchor];
-  v74 = [v14 centerXAnchor];
-  v75 = [v73 constraintEqualToAnchor:v74];
+  centerXAnchor = [v111 centerXAnchor];
+  centerXAnchor2 = [v14 centerXAnchor];
+  v75 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v38 addObject:v75];
 
-  v76 = [(GAXFeatureViewController *)self optionsButton];
-  v77 = [v76 centerXAnchor];
+  optionsButton10 = [(GAXFeatureViewController *)self optionsButton];
+  centerXAnchor3 = [optionsButton10 centerXAnchor];
   v104 = v14;
-  v78 = [v14 centerXAnchor];
-  v79 = [v77 constraintEqualToAnchor:v78];
+  centerXAnchor4 = [v14 centerXAnchor];
+  v79 = [centerXAnchor3 constraintEqualToAnchor:centerXAnchor4];
   [v38 addObject:v79];
 
-  v80 = [(GAXFeatureViewController *)self optionsButton];
-  v81 = [v80 bottomAnchor];
-  v82 = [v14 bottomAnchor];
+  optionsButton11 = [(GAXFeatureViewController *)self optionsButton];
+  bottomAnchor5 = [optionsButton11 bottomAnchor];
+  bottomAnchor6 = [v14 bottomAnchor];
   v83 = v18;
   [v18 optionsButtonBottomPadding];
-  v84 = [v81 constraintEqualToAnchor:v82 constant:?];
+  v84 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6 constant:?];
   [v38 addObject:v84];
 
-  v85 = [(GAXFeatureViewController *)self optionsButton];
-  v86 = [v85 titleLabel];
-  v87 = [v86 leadingAnchor];
-  v88 = [(GAXFeatureViewController *)self optionsButton];
-  v89 = [v88 leadingAnchor];
+  optionsButton12 = [(GAXFeatureViewController *)self optionsButton];
+  titleLabel = [optionsButton12 titleLabel];
+  leadingAnchor5 = [titleLabel leadingAnchor];
+  optionsButton13 = [(GAXFeatureViewController *)self optionsButton];
+  leadingAnchor6 = [optionsButton13 leadingAnchor];
   [v18 optionsButtonLabelPadding];
-  v90 = [v87 constraintEqualToAnchor:v89 constant:?];
+  v90 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:?];
   [v38 addObject:v90];
 
-  v91 = [(GAXFeatureViewController *)self optionsButton];
-  v92 = [v91 titleLabel];
-  v93 = [v92 trailingAnchor];
-  v94 = [(GAXFeatureViewController *)self optionsButton];
-  v95 = [v94 trailingAnchor];
+  optionsButton14 = [(GAXFeatureViewController *)self optionsButton];
+  titleLabel2 = [optionsButton14 titleLabel];
+  trailingAnchor5 = [titleLabel2 trailingAnchor];
+  optionsButton15 = [(GAXFeatureViewController *)self optionsButton];
+  trailingAnchor6 = [optionsButton15 trailingAnchor];
   [v83 optionsButtonLabelPadding];
-  v97 = [v93 constraintEqualToAnchor:v95 constant:-v96];
+  v97 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6 constant:-v96];
   [v38 addObject:v97];
 
-  v98 = [v105 topAnchor];
-  v99 = [(GAXFeatureViewController *)self view];
-  v100 = [v99 safeAreaLayoutGuide];
-  v101 = [v100 bottomAnchor];
-  v102 = [v98 constraintEqualToAnchor:v101];
+  topAnchor7 = [v105 topAnchor];
+  view = [(GAXFeatureViewController *)self view];
+  safeAreaLayoutGuide3 = [view safeAreaLayoutGuide];
+  bottomAnchor7 = [safeAreaLayoutGuide3 bottomAnchor];
+  v102 = [topAnchor7 constraintEqualToAnchor:bottomAnchor7];
   safeAreaStrutHeightConstraint = self->_safeAreaStrutHeightConstraint;
   self->_safeAreaStrutHeightConstraint = v102;
 
@@ -255,57 +255,57 @@
   v28.receiver = self;
   v28.super_class = GAXFeatureViewController;
   [(GAXFeatureViewController *)&v28 viewDidLayoutSubviews];
-  v3 = [(GAXFeatureViewController *)self styleProvider];
-  v4 = [(GAXFeatureViewController *)self view];
-  v5 = [(GAXFeatureViewController *)self instructionsLabel];
-  v6 = [v5 font];
-  [v5 frame];
+  styleProvider = [(GAXFeatureViewController *)self styleProvider];
+  view = [(GAXFeatureViewController *)self view];
+  instructionsLabel = [(GAXFeatureViewController *)self instructionsLabel];
+  font = [instructionsLabel font];
+  [instructionsLabel frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
   [(GAXFeatureViewController *)self instructionsLabelHorizontalOffset];
   v16 = v15;
-  v17 = [v5 text];
-  [v4 frame];
+  text = [instructionsLabel text];
+  [view frame];
   Width = CGRectGetWidth(v29);
   v30.origin.x = v8;
   v30.origin.y = v10;
   v30.size.width = v12;
   v30.size.height = v14;
   MaxX = CGRectGetMaxX(v30);
-  [GAXInterfaceUtilities labelSizeThatFitsText:v17 constrainedToSize:v6 font:v3 styleProvider:v12, 1.79769313e308];
+  [GAXInterfaceUtilities labelSizeThatFitsText:text constrainedToSize:font font:styleProvider styleProvider:v12, 1.79769313e308];
   v20 = Width - MaxX;
   if (v21 > v14 && v20 != v16)
   {
     v23 = +[UIApplication sharedApplication];
-    v24 = [v23 preferredContentSizeCategory];
+    preferredContentSizeCategory = [v23 preferredContentSizeCategory];
     v25 = _UIContentSizeCategoryCompareToContentSizeCategory();
 
     if (v25 == -1)
     {
-      v26 = [(GAXFeatureViewController *)self instructionsLabelWidthConstraint];
-      [v4 removeConstraint:v26];
+      instructionsLabelWidthConstraint = [(GAXFeatureViewController *)self instructionsLabelWidthConstraint];
+      [view removeConstraint:instructionsLabelWidthConstraint];
 
-      v27 = [NSLayoutConstraint constraintWithItem:v5 attribute:6 relatedBy:0 toItem:v4 attribute:6 multiplier:1.0 constant:-v16];
+      v27 = [NSLayoutConstraint constraintWithItem:instructionsLabel attribute:6 relatedBy:0 toItem:view attribute:6 multiplier:1.0 constant:-v16];
       [(GAXFeatureViewController *)self setInstructionsLabelWidthConstraint:v27];
-      [v4 addConstraint:v27];
-      [v4 layoutIfNeeded];
+      [view addConstraint:v27];
+      [view layoutIfNeeded];
     }
   }
 }
 
 - (double)instructionsLabelHorizontalOffset
 {
-  v3 = [(GAXFeatureViewController *)self styleProvider];
+  styleProvider = [(GAXFeatureViewController *)self styleProvider];
   if ([(GAXFeatureViewController *)self shouldDisplayMiniToolbar])
   {
-    [v3 featureViewControllerInstructionsMiniHorizontalOffset];
+    [styleProvider featureViewControllerInstructionsMiniHorizontalOffset];
   }
 
   else
   {
-    [v3 featureViewControllerInstructionsHorizontalOffset];
+    [styleProvider featureViewControllerInstructionsHorizontalOffset];
   }
 
   v5 = v4;
@@ -315,23 +315,23 @@
 
 - (BOOL)isTouchEnabled
 {
-  v2 = [(GAXFeatureViewController *)self userInterfaceServer];
-  v3 = [v2 allowsTouch];
+  userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+  allowsTouch = [userInterfaceServer allowsTouch];
 
-  return v3;
+  return allowsTouch;
 }
 
 - (UIOffset)optionsButtonOffset
 {
-  v3 = [(GAXFeatureViewController *)self styleProvider];
+  styleProvider = [(GAXFeatureViewController *)self styleProvider];
   if ([(GAXFeatureViewController *)self shouldDisplayMiniToolbar])
   {
-    [v3 featureViewControllerOptionsButtonMiniOffset];
+    [styleProvider featureViewControllerOptionsButtonMiniOffset];
   }
 
   else
   {
-    [v3 featureViewControllerOptionsButtonOffset];
+    [styleProvider featureViewControllerOptionsButtonOffset];
   }
 
   v6 = v4;
@@ -346,15 +346,15 @@
 
 - (double)featureViewControllerHeight
 {
-  v3 = [(GAXFeatureViewController *)self styleProvider];
+  styleProvider = [(GAXFeatureViewController *)self styleProvider];
   if ([(GAXFeatureViewController *)self shouldDisplayMiniToolbar])
   {
-    [v3 featureViewControllerMiniHeight];
+    [styleProvider featureViewControllerMiniHeight];
   }
 
   else
   {
-    [v3 featureViewControllerHeight];
+    [styleProvider featureViewControllerHeight];
   }
 
   v5 = v4;
@@ -365,9 +365,9 @@
 - (int64_t)applicationInterfaceOrientation
 {
   v2 = +[AXUIDisplayManager sharedDisplayManager];
-  v3 = [v2 activeInterfaceOrientation];
+  activeInterfaceOrientation = [v2 activeInterfaceOrientation];
 
-  return v3;
+  return activeInterfaceOrientation;
 }
 
 - (NSArray)hardwareFeatureViewsParameters
@@ -384,10 +384,10 @@
 
 - (BOOL)shouldDisplayMiniToolbar
 {
-  v3 = [(GAXFeatureViewController *)self delegate];
+  delegate = [(GAXFeatureViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 shouldDisplayMiniToolbarForController:self];
+    v4 = [delegate shouldDisplayMiniToolbarForController:self];
   }
 
   else
@@ -412,15 +412,15 @@
 
 - (unint64_t)_numFeatures
 {
-  v3 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
-  v4 = [v3 count];
-  v5 = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
-  v6 = [v5 count];
+  hardwareFeatureViewsParameters = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
+  v4 = [hardwareFeatureViewsParameters count];
+  systemFeatureViewsParameters = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
+  v6 = [systemFeatureViewsParameters count];
   if ([(GAXFeatureViewController *)self _isUsingAppRestrictions])
   {
-    v7 = [(GAXFeatureViewController *)self userInterfaceServer];
-    v8 = [v7 appRestrictionIdentifiers];
-    v9 = [v8 count];
+    userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+    appRestrictionIdentifiers = [userInterfaceServer appRestrictionIdentifiers];
+    v9 = [appRestrictionIdentifiers count];
   }
 
   else
@@ -431,68 +431,68 @@
   return v6 + v4 + v9 + 1;
 }
 
-- (void)_enumerateAppFeatureViewsParametersUsingBlock:(id)a3
+- (void)_enumerateAppFeatureViewsParametersUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(GAXFeatureViewController *)self userInterfaceServer];
-  v6 = [v5 appRestrictionIdentifiers];
+  blockCopy = block;
+  userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+  appRestrictionIdentifiers = [userInterfaceServer appRestrictionIdentifiers];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_23ED0;
   v9[3] = &unk_5DB30;
-  v10 = v5;
-  v11 = v4;
-  v7 = v4;
-  v8 = v5;
-  [v6 enumerateObjectsUsingBlock:v9];
+  v10 = userInterfaceServer;
+  v11 = blockCopy;
+  v7 = blockCopy;
+  v8 = userInterfaceServer;
+  [appRestrictionIdentifiers enumerateObjectsUsingBlock:v9];
 }
 
-- (void)_enumerateHardwareFeatureViewsParametersUsingBlock:(id)a3
+- (void)_enumerateHardwareFeatureViewsParametersUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(GAXFeatureViewController *)self styleProvider];
-  v6 = [(GAXFeatureViewController *)self userInterfaceServer];
-  v7 = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
+  blockCopy = block;
+  styleProvider = [(GAXFeatureViewController *)self styleProvider];
+  userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+  hardwareFeatureViewsParameters = [(GAXFeatureViewController *)self hardwareFeatureViewsParameters];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_240B4;
   v11[3] = &unk_5DB58;
-  v12 = v5;
-  v13 = v6;
-  v14 = v4;
-  v8 = v4;
-  v9 = v6;
-  v10 = v5;
-  [v7 enumerateObjectsUsingBlock:v11];
+  v12 = styleProvider;
+  v13 = userInterfaceServer;
+  v14 = blockCopy;
+  v8 = blockCopy;
+  v9 = userInterfaceServer;
+  v10 = styleProvider;
+  [hardwareFeatureViewsParameters enumerateObjectsUsingBlock:v11];
 }
 
-- (void)_enumerateSystemFeatureViewsParametersUsingBlock:(id)a3
+- (void)_enumerateSystemFeatureViewsParametersUsingBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(GAXFeatureViewController *)self styleProvider];
-  v6 = [(GAXFeatureViewController *)self userInterfaceServer];
-  v7 = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
+  blockCopy = block;
+  styleProvider = [(GAXFeatureViewController *)self styleProvider];
+  userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+  systemFeatureViewsParameters = [(GAXFeatureViewController *)self systemFeatureViewsParameters];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_242C4;
   v11[3] = &unk_5DB58;
-  v12 = v5;
-  v13 = v6;
-  v14 = v4;
-  v8 = v4;
-  v9 = v6;
-  v10 = v5;
-  [v7 enumerateObjectsUsingBlock:v11];
+  v12 = styleProvider;
+  v13 = userInterfaceServer;
+  v14 = blockCopy;
+  v8 = blockCopy;
+  v9 = userInterfaceServer;
+  v10 = styleProvider;
+  [systemFeatureViewsParameters enumerateObjectsUsingBlock:v11];
 }
 
 - (BOOL)_isUsingAppRestrictions
 {
-  v2 = [(GAXFeatureViewController *)self userInterfaceServer];
-  v3 = [v2 appRestrictionIdentifiers];
+  userInterfaceServer = [(GAXFeatureViewController *)self userInterfaceServer];
+  appRestrictionIdentifiers = [userInterfaceServer appRestrictionIdentifiers];
 
-  if (v3)
+  if (appRestrictionIdentifiers)
   {
-    v4 = [v3 count] != 0;
+    v4 = [appRestrictionIdentifiers count] != 0;
   }
 
   else
@@ -505,10 +505,10 @@
 
 - (id)_viewForPresentingOverlayUserInterface
 {
-  v3 = [(GAXFeatureViewController *)self delegate];
+  delegate = [(GAXFeatureViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 viewForPresentingOverlayUserInterfaceForFeatureViewController:self];
+    v4 = [delegate viewForPresentingOverlayUserInterfaceForFeatureViewController:self];
   }
 
   else
@@ -533,14 +533,14 @@
   return WeakRetained;
 }
 
-- (void)dismissOptionsAnimated:(BOOL)a3
+- (void)dismissOptionsAnimated:(BOOL)animated
 {
   objc_opt_class();
 
   NSRequestConcreteImplementation();
 }
 
-- (void)presentOptionsAnimated:(BOOL)a3
+- (void)presentOptionsAnimated:(BOOL)animated
 {
   objc_opt_class();
 

@@ -1,10 +1,10 @@
 @interface HMCollectionSettingItem
-- (HMCollectionSettingItem)initWithCoder:(id)a3;
+- (HMCollectionSettingItem)initWithCoder:(id)coder;
 @end
 
 @implementation HMCollectionSettingItem
 
-- (HMCollectionSettingItem)initWithCoder:(id)a3
+- (HMCollectionSettingItem)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = HMCollectionSettingItem;

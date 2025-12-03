@@ -1,15 +1,15 @@
 @interface _INPBListRideOptionsIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBListRideOptionsIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBListRideOptionsIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addPaymentMethods:(id)a3;
-- (void)addRideOptions:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setPaymentMethods:(id)a3;
-- (void)setRideOptions:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addPaymentMethods:(id)methods;
+- (void)addRideOptions:(id)options;
+- (void)encodeWithCoder:(id)coder;
+- (void)setPaymentMethods:(id)methods;
+- (void)setRideOptions:(id)options;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBListRideOptionsIntentResponse
@@ -17,14 +17,14 @@
 - (id)dictionaryRepresentation
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = [(_INPBListRideOptionsIntentResponse *)self expirationDate];
-  v5 = [v4 dictionaryRepresentation];
-  [v3 setObject:v5 forKeyedSubscript:@"expirationDate"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  expirationDate = [(_INPBListRideOptionsIntentResponse *)self expirationDate];
+  dictionaryRepresentation = [expirationDate dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"expirationDate"];
 
   if ([(NSArray *)self->_paymentMethods count])
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -44,8 +44,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation2 = [*(*(&v27 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v9 = [(NSArray *)v7 countByEnumeratingWithState:&v27 objects:v32 count:16];
@@ -54,12 +54,12 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKeyedSubscript:@"paymentMethods"];
+    [dictionary setObject:array forKeyedSubscript:@"paymentMethods"];
   }
 
   if ([(NSArray *)self->_rideOptions count])
   {
-    v13 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -79,8 +79,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v23 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation3 = [*(*(&v23 + 1) + 8 * j) dictionaryRepresentation];
+          [array2 addObject:dictionaryRepresentation3];
         }
 
         v16 = [(NSArray *)v14 countByEnumeratingWithState:&v23 objects:v31 count:16];
@@ -89,18 +89,18 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKeyedSubscript:@"rideOptions"];
+    [dictionary setObject:array2 forKeyedSubscript:@"rideOptions"];
   }
 
   if ([(_INPBListRideOptionsIntentResponse *)self hasSupportsApplePayForPayment])
   {
     v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBListRideOptionsIntentResponse supportsApplePayForPayment](self, "supportsApplePayForPayment")}];
-    [v3 setObject:v20 forKeyedSubscript:@"supportsApplePayForPayment"];
+    [dictionary setObject:v20 forKeyedSubscript:@"supportsApplePayForPayment"];
   }
 
   v21 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -121,28 +121,28 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBListRideOptionsIntentResponse *)self expirationDate];
-  v6 = [v4 expirationDate];
-  if ((v5 != 0) == (v6 == 0))
+  expirationDate = [(_INPBListRideOptionsIntentResponse *)self expirationDate];
+  expirationDate2 = [equalCopy expirationDate];
+  if ((expirationDate != 0) == (expirationDate2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBListRideOptionsIntentResponse *)self expirationDate];
-  if (v7)
+  expirationDate3 = [(_INPBListRideOptionsIntentResponse *)self expirationDate];
+  if (expirationDate3)
   {
-    v8 = v7;
-    v9 = [(_INPBListRideOptionsIntentResponse *)self expirationDate];
-    v10 = [v4 expirationDate];
-    v11 = [v9 isEqual:v10];
+    v8 = expirationDate3;
+    expirationDate4 = [(_INPBListRideOptionsIntentResponse *)self expirationDate];
+    expirationDate5 = [equalCopy expirationDate];
+    v11 = [expirationDate4 isEqual:expirationDate5];
 
     if (!v11)
     {
@@ -154,20 +154,20 @@
   {
   }
 
-  v5 = [(_INPBListRideOptionsIntentResponse *)self paymentMethods];
-  v6 = [v4 paymentMethods];
-  if ((v5 != 0) == (v6 == 0))
+  expirationDate = [(_INPBListRideOptionsIntentResponse *)self paymentMethods];
+  expirationDate2 = [equalCopy paymentMethods];
+  if ((expirationDate != 0) == (expirationDate2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBListRideOptionsIntentResponse *)self paymentMethods];
-  if (v12)
+  paymentMethods = [(_INPBListRideOptionsIntentResponse *)self paymentMethods];
+  if (paymentMethods)
   {
-    v13 = v12;
-    v14 = [(_INPBListRideOptionsIntentResponse *)self paymentMethods];
-    v15 = [v4 paymentMethods];
-    v16 = [v14 isEqual:v15];
+    v13 = paymentMethods;
+    paymentMethods2 = [(_INPBListRideOptionsIntentResponse *)self paymentMethods];
+    paymentMethods3 = [equalCopy paymentMethods];
+    v16 = [paymentMethods2 isEqual:paymentMethods3];
 
     if (!v16)
     {
@@ -179,22 +179,22 @@
   {
   }
 
-  v5 = [(_INPBListRideOptionsIntentResponse *)self rideOptions];
-  v6 = [v4 rideOptions];
-  if ((v5 != 0) == (v6 == 0))
+  expirationDate = [(_INPBListRideOptionsIntentResponse *)self rideOptions];
+  expirationDate2 = [equalCopy rideOptions];
+  if ((expirationDate != 0) == (expirationDate2 == 0))
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v17 = [(_INPBListRideOptionsIntentResponse *)self rideOptions];
-  if (v17)
+  rideOptions = [(_INPBListRideOptionsIntentResponse *)self rideOptions];
+  if (rideOptions)
   {
-    v18 = v17;
-    v19 = [(_INPBListRideOptionsIntentResponse *)self rideOptions];
-    v20 = [v4 rideOptions];
-    v21 = [v19 isEqual:v20];
+    v18 = rideOptions;
+    rideOptions2 = [(_INPBListRideOptionsIntentResponse *)self rideOptions];
+    rideOptions3 = [equalCopy rideOptions];
+    v21 = [rideOptions2 isEqual:rideOptions3];
 
     if (!v21)
     {
@@ -206,10 +206,10 @@ LABEL_16:
   {
   }
 
-  v24 = [(_INPBListRideOptionsIntentResponse *)self hasSupportsApplePayForPayment];
-  if (v24 == [v4 hasSupportsApplePayForPayment])
+  hasSupportsApplePayForPayment = [(_INPBListRideOptionsIntentResponse *)self hasSupportsApplePayForPayment];
+  if (hasSupportsApplePayForPayment == [equalCopy hasSupportsApplePayForPayment])
   {
-    if (!-[_INPBListRideOptionsIntentResponse hasSupportsApplePayForPayment](self, "hasSupportsApplePayForPayment") || ![v4 hasSupportsApplePayForPayment] || (supportsApplePayForPayment = self->_supportsApplePayForPayment, supportsApplePayForPayment == objc_msgSend(v4, "supportsApplePayForPayment")))
+    if (!-[_INPBListRideOptionsIntentResponse hasSupportsApplePayForPayment](self, "hasSupportsApplePayForPayment") || ![equalCopy hasSupportsApplePayForPayment] || (supportsApplePayForPayment = self->_supportsApplePayForPayment, supportsApplePayForPayment == objc_msgSend(equalCopy, "supportsApplePayForPayment")))
     {
       v22 = 1;
       goto LABEL_18;
@@ -223,16 +223,16 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBListRideOptionsIntentResponse allocWithZone:](_INPBListRideOptionsIntentResponse init];
-  v6 = [(_INPBTimestamp *)self->_expirationDate copyWithZone:a3];
+  v6 = [(_INPBTimestamp *)self->_expirationDate copyWithZone:zone];
   [(_INPBListRideOptionsIntentResponse *)v5 setExpirationDate:v6];
 
-  v7 = [(NSArray *)self->_paymentMethods copyWithZone:a3];
+  v7 = [(NSArray *)self->_paymentMethods copyWithZone:zone];
   [(_INPBListRideOptionsIntentResponse *)v5 setPaymentMethods:v7];
 
-  v8 = [(NSArray *)self->_rideOptions copyWithZone:a3];
+  v8 = [(NSArray *)self->_rideOptions copyWithZone:zone];
   [(_INPBListRideOptionsIntentResponse *)v5 setRideOptions:v8];
 
   if ([(_INPBListRideOptionsIntentResponse *)self hasSupportsApplePayForPayment])
@@ -243,39 +243,39 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBListRideOptionsIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBListRideOptionsIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBListRideOptionsIntentResponse)initWithCoder:(id)a3
+- (_INPBListRideOptionsIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBListRideOptionsIntentResponse *)self initWithData:v6];
+    self = [(_INPBListRideOptionsIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBListRideOptionsIntentResponse *)self expirationDate];
+  toCopy = to;
+  expirationDate = [(_INPBListRideOptionsIntentResponse *)self expirationDate];
 
-  if (v5)
+  if (expirationDate)
   {
-    v6 = [(_INPBListRideOptionsIntentResponse *)self expirationDate];
+    expirationDate2 = [(_INPBListRideOptionsIntentResponse *)self expirationDate];
     PBDataWriterWriteSubmessage();
   }
 
@@ -352,54 +352,54 @@ LABEL_18:
   v20 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addRideOptions:(id)a3
+- (void)addRideOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   rideOptions = self->_rideOptions;
-  v8 = v4;
+  v8 = optionsCopy;
   if (!rideOptions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_rideOptions;
-    self->_rideOptions = v6;
+    self->_rideOptions = array;
 
-    v4 = v8;
+    optionsCopy = v8;
     rideOptions = self->_rideOptions;
   }
 
-  [(NSArray *)rideOptions addObject:v4];
+  [(NSArray *)rideOptions addObject:optionsCopy];
 }
 
-- (void)setRideOptions:(id)a3
+- (void)setRideOptions:(id)options
 {
-  v4 = [a3 mutableCopy];
+  v4 = [options mutableCopy];
   rideOptions = self->_rideOptions;
   self->_rideOptions = v4;
 
   MEMORY[0x1EEE66BB8](v4, rideOptions);
 }
 
-- (void)addPaymentMethods:(id)a3
+- (void)addPaymentMethods:(id)methods
 {
-  v4 = a3;
+  methodsCopy = methods;
   paymentMethods = self->_paymentMethods;
-  v8 = v4;
+  v8 = methodsCopy;
   if (!paymentMethods)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_paymentMethods;
-    self->_paymentMethods = v6;
+    self->_paymentMethods = array;
 
-    v4 = v8;
+    methodsCopy = v8;
     paymentMethods = self->_paymentMethods;
   }
 
-  [(NSArray *)paymentMethods addObject:v4];
+  [(NSArray *)paymentMethods addObject:methodsCopy];
 }
 
-- (void)setPaymentMethods:(id)a3
+- (void)setPaymentMethods:(id)methods
 {
-  v4 = [a3 mutableCopy];
+  v4 = [methods mutableCopy];
   paymentMethods = self->_paymentMethods;
   self->_paymentMethods = v4;
 

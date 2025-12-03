@@ -1,41 +1,41 @@
 @interface CarSlideUpTransition
-- (double)transitionDuration:(id)a3;
-- (void)_animateTransitionForPop:(id)a3;
-- (void)_animateTransitionForPush:(id)a3;
-- (void)_bringNavigationBarToFront:(id)a3;
-- (void)_sendNavigationBarToBack:(id)a3;
-- (void)animateTransition:(id)a3;
+- (double)transitionDuration:(id)duration;
+- (void)_animateTransitionForPop:(id)pop;
+- (void)_animateTransitionForPush:(id)push;
+- (void)_bringNavigationBarToFront:(id)front;
+- (void)_sendNavigationBarToBack:(id)back;
+- (void)animateTransition:(id)transition;
 @end
 
 @implementation CarSlideUpTransition
 
-- (void)_animateTransitionForPop:(id)a3
+- (void)_animateTransitionForPop:(id)pop
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v7 = [v6 view];
-  [v5 addSubview:v7];
-  v8 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v9 = [v8 view];
-  [v5 addSubview:v9];
-  [v4 finalFrameForViewController:v6];
-  [v7 setFrame:?];
-  [v7 setAlpha:0.0];
-  [v9 frame];
+  popCopy = pop;
+  containerView = [popCopy containerView];
+  v6 = [popCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  view = [v6 view];
+  [containerView addSubview:view];
+  v8 = [popCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  view2 = [v8 view];
+  [containerView addSubview:view2];
+  [popCopy finalFrameForViewController:v6];
+  [view setFrame:?];
+  [view setAlpha:0.0];
+  [view2 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  [v5 bounds];
+  [containerView bounds];
   Height = CGRectGetHeight(v31);
-  [(CarSlideUpTransition *)self transitionDuration:v4];
+  [(CarSlideUpTransition *)self transitionDuration:popCopy];
   v18 = v17;
   v24[0] = _NSConcreteStackBlock;
   v24[1] = 3221225472;
   v24[2] = sub_100E22014;
   v24[3] = &unk_101655C38;
-  v25 = v7;
-  v26 = v9;
+  v25 = view;
+  v26 = view2;
   v27 = v11;
   v28 = Height;
   v29 = v13;
@@ -45,38 +45,38 @@
   v22[2] = sub_100E2205C;
   v22[3] = &unk_101661570;
   v22[4] = self;
-  v23 = v4;
-  v19 = v4;
-  v20 = v9;
-  v21 = v7;
+  v23 = popCopy;
+  v19 = popCopy;
+  v20 = view2;
+  v21 = view;
   [UIView animateWithDuration:0x20000 delay:v24 options:v22 animations:v18 completion:0.0];
 }
 
-- (void)_animateTransitionForPush:(id)a3
+- (void)_animateTransitionForPush:(id)push
 {
-  v4 = a3;
-  v5 = [v4 containerView];
-  v6 = [v4 viewControllerForKey:UITransitionContextFromViewControllerKey];
-  v7 = [v6 view];
-  [v5 addSubview:v7];
-  v8 = [v4 viewControllerForKey:UITransitionContextToViewControllerKey];
-  v9 = [v8 view];
-  [v5 addSubview:v9];
-  [v4 finalFrameForViewController:v8];
+  pushCopy = push;
+  containerView = [pushCopy containerView];
+  v6 = [pushCopy viewControllerForKey:UITransitionContextFromViewControllerKey];
+  view = [v6 view];
+  [containerView addSubview:view];
+  v8 = [pushCopy viewControllerForKey:UITransitionContextToViewControllerKey];
+  view2 = [v8 view];
+  [containerView addSubview:view2];
+  [pushCopy finalFrameForViewController:v8];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [v5 bounds];
-  [v9 setFrame:{v11, CGRectGetHeight(v34), v15, v17}];
-  [(CarSlideUpTransition *)self transitionDuration:v4];
+  [containerView bounds];
+  [view2 setFrame:{v11, CGRectGetHeight(v34), v15, v17}];
+  [(CarSlideUpTransition *)self transitionDuration:pushCopy];
   v19 = v18;
   v27[0] = _NSConcreteStackBlock;
   v27[1] = 3221225472;
   v27[2] = sub_100E222DC;
   v27[3] = &unk_101655C38;
-  v28 = v7;
-  v29 = v9;
+  v28 = view;
+  v29 = view2;
   v30 = v11;
   v31 = v13;
   v32 = v15;
@@ -86,34 +86,34 @@
   v23[2] = sub_100E22324;
   v23[3] = &unk_10165EB30;
   v24 = v28;
-  v25 = self;
-  v26 = v4;
-  v20 = v4;
+  selfCopy = self;
+  v26 = pushCopy;
+  v20 = pushCopy;
   v21 = v28;
-  v22 = v9;
+  v22 = view2;
   [UIView animateWithDuration:0x20000 delay:v27 options:v23 animations:v19 completion:0.0];
 }
 
-- (void)_bringNavigationBarToFront:(id)a3
+- (void)_bringNavigationBarToFront:(id)front
 {
   WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
 
   if (WeakRetained)
   {
     v7 = objc_loadWeakRetained(&self->_navigationBar);
-    v5 = [v7 superview];
+    superview = [v7 superview];
     v6 = objc_loadWeakRetained(&self->_navigationBar);
-    [v5 bringSubviewToFront:v6];
+    [superview bringSubviewToFront:v6];
   }
 }
 
-- (void)_sendNavigationBarToBack:(id)a3
+- (void)_sendNavigationBarToBack:(id)back
 {
-  v4 = [a3 containerView];
-  v5 = [v4 superview];
-  if (v5)
+  containerView = [back containerView];
+  superview = [containerView superview];
+  if (superview)
   {
-    v6 = v5;
+    v6 = superview;
     do
     {
       WeakRetained = objc_loadWeakRetained(&self->_navigationBar);
@@ -127,8 +127,8 @@
       v21 = 0u;
       v18 = 0u;
       v19 = 0u;
-      v8 = [v6 subviews];
-      v9 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      subviews = [v6 subviews];
+      v9 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v9)
       {
         v10 = v9;
@@ -139,7 +139,7 @@
           {
             if (*v19 != v11)
             {
-              objc_enumerationMutation(v8);
+              objc_enumerationMutation(subviews);
             }
 
             v13 = *(*(&v18 + 1) + 8 * i);
@@ -147,15 +147,15 @@
             if (objc_opt_isKindOfClass())
             {
               v14 = objc_storeWeak(&self->_navigationBar, v13);
-              v15 = [v13 superview];
+              superview2 = [v13 superview];
               v16 = objc_loadWeakRetained(&self->_navigationBar);
-              [v15 sendSubviewToBack:v16];
+              [superview2 sendSubviewToBack:v16];
 
               goto LABEL_14;
             }
           }
 
-          v10 = [v8 countByEnumeratingWithState:&v18 objects:v22 count:16];
+          v10 = [subviews countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v10)
           {
             continue;
@@ -167,50 +167,50 @@
 
 LABEL_14:
 
-      v17 = [v6 superview];
+      superview3 = [v6 superview];
 
-      v6 = v17;
+      v6 = superview3;
     }
 
-    while (v17);
+    while (superview3);
   }
 }
 
-- (void)animateTransition:(id)a3
+- (void)animateTransition:(id)transition
 {
-  v6 = a3;
+  transitionCopy = transition;
   [(CarSlideUpTransition *)self _sendNavigationBarToBack:?];
-  v4 = [(CarSlideUpTransition *)self operation];
-  if (v4 == 1)
+  operation = [(CarSlideUpTransition *)self operation];
+  if (operation == 1)
   {
-    [(CarSlideUpTransition *)self _animateTransitionForPush:v6];
+    [(CarSlideUpTransition *)self _animateTransitionForPush:transitionCopy];
   }
 
   else
   {
-    v5 = v6;
-    if (v4 != 2)
+    v5 = transitionCopy;
+    if (operation != 2)
     {
       goto LABEL_6;
     }
 
-    [(CarSlideUpTransition *)self _animateTransitionForPop:v6];
+    [(CarSlideUpTransition *)self _animateTransitionForPop:transitionCopy];
   }
 
-  v5 = v6;
+  v5 = transitionCopy;
 LABEL_6:
 }
 
-- (double)transitionDuration:(id)a3
+- (double)transitionDuration:(id)duration
 {
-  v3 = [(CarSlideUpTransition *)self operation];
+  operation = [(CarSlideUpTransition *)self operation];
   result = 0.3;
-  if (v3 != 1)
+  if (operation != 1)
   {
     result = 0.0;
   }
 
-  if (v3 == 2)
+  if (operation == 2)
   {
     return 0.2;
   }

@@ -1,26 +1,26 @@
 @interface TVURLImageRequest
 - (NSString)identifier;
-- (TVURLImageRequest)initWithURL:(id)a3 headers:(id)a4 identifier:(id)a5 decrypter:(id)a6;
+- (TVURLImageRequest)initWithURL:(id)l headers:(id)headers identifier:(id)identifier decrypter:(id)decrypter;
 @end
 
 @implementation TVURLImageRequest
 
-- (TVURLImageRequest)initWithURL:(id)a3 headers:(id)a4 identifier:(id)a5 decrypter:(id)a6
+- (TVURLImageRequest)initWithURL:(id)l headers:(id)headers identifier:(id)identifier decrypter:(id)decrypter
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  lCopy = l;
+  headersCopy = headers;
+  identifierCopy = identifier;
+  decrypterCopy = decrypter;
   v18.receiver = self;
   v18.super_class = TVURLImageRequest;
   v15 = [(TVURLImageRequest *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_url, a3);
-    objc_storeStrong(&v16->_headers, a4);
-    objc_storeStrong(&v16->_identifier, a5);
-    objc_storeStrong(&v16->_decrypter, a6);
+    objc_storeStrong(&v15->_url, l);
+    objc_storeStrong(&v16->_headers, headers);
+    objc_storeStrong(&v16->_identifier, identifier);
+    objc_storeStrong(&v16->_decrypter, decrypter);
   }
 
   return v16;
@@ -31,15 +31,15 @@
   identifier = self->_identifier;
   if (identifier)
   {
-    v3 = identifier;
+    absoluteString = identifier;
   }
 
   else
   {
-    v3 = [(NSURL *)self->_url absoluteString];
+    absoluteString = [(NSURL *)self->_url absoluteString];
   }
 
-  return v3;
+  return absoluteString;
 }
 
 @end

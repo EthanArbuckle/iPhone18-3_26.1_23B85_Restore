@@ -1,6 +1,6 @@
 @interface DADClientGrantedDelegatesListResponseDelegate
-- (void)finishWithError:(id)a3;
-- (void)grantedDelegatesListRequestFinishedWithResults:(id)a3 error:(id)a4;
+- (void)finishWithError:(id)error;
+- (void)grantedDelegatesListRequestFinishedWithResults:(id)results error:(id)error;
 - (void)performRequest;
 @end
 
@@ -12,8 +12,8 @@
   if (![(DADisableableObject *)self isDisabled])
   {
     v3 = +[DADAgentManager sharedManager];
-    v4 = [(DADClientDelegate *)self accountID];
-    v5 = [v3 accountWithAccountID:v4];
+    accountID = [(DADClientDelegate *)self accountID];
+    v5 = [v3 accountWithAccountID:accountID];
 
     if (v5)
     {
@@ -28,9 +28,9 @@
       v9 = *(MEMORY[0x277D03988] + 3);
       if (os_log_type_enabled(v8, v9))
       {
-        v10 = [(DADClientDelegate *)self accountID];
+        accountID2 = [(DADClientDelegate *)self accountID];
         v13 = 138543362;
-        v14 = v10;
+        v14 = accountID2;
         _os_log_impl(&dword_248524000, v8, v9, "Could not get an account with the ID [%{public}@]", &v13, 0xCu);
       }
 
@@ -42,17 +42,17 @@
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)grantedDelegatesListRequestFinishedWithResults:(id)a3 error:(id)a4
+- (void)grantedDelegatesListRequestFinishedWithResults:(id)results error:(id)error
 {
-  objc_storeStrong(&self->_results, a3);
-  v6 = a4;
-  [(DADClientGrantedDelegatesListResponseDelegate *)self finishWithError:v6];
+  objc_storeStrong(&self->_results, results);
+  errorCopy = error;
+  [(DADClientGrantedDelegatesListResponseDelegate *)self finishWithError:errorCopy];
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   if (![(DADisableableObject *)self isDisabled]&& ![(DADClientDelegate *)self finished])
   {
     [(DADClientDelegate *)self setFinished:1];
@@ -64,32 +64,32 @@
       *v27 = 138412546;
       *&v27[4] = objc_opt_class();
       *&v27[12] = 2112;
-      *&v27[14] = v4;
+      *&v27[14] = errorCopy;
       v8 = *&v27[4];
       _os_log_impl(&dword_248524000, v5, v7, "[%@] finished with error %@", v27, 0x16u);
     }
 
     if (self->_requestID)
     {
-      v9 = [v4 domain];
-      if ([v9 isEqualToString:*MEMORY[0x277D038E0]])
+      domain = [errorCopy domain];
+      if ([domain isEqualToString:*MEMORY[0x277D038E0]])
       {
-        v10 = [v4 code];
+        code = [errorCopy code];
 
-        if (v10 == -1)
+        if (code == -1)
         {
           v11 = +[DADAgentManager sharedManager];
-          v12 = [(DADClientDelegate *)self accountID];
-          v13 = [v11 accountWithAccountID:v12];
+          accountID = [(DADClientDelegate *)self accountID];
+          rawConnection = [v11 accountWithAccountID:accountID];
 
-          if (v13)
+          if (rawConnection)
           {
-            [v13 cancelGrantedDelegatesListRequestWithID:self->_requestID];
+            [rawConnection cancelGrantedDelegatesListRequestWithID:self->_requestID];
 LABEL_18:
 
-            v20 = [(DADClientDelegate *)self client];
-            v21 = [(DADClientDelegate *)self delegateID];
-            [v20 delegateWithIDIsGoingAway:v21];
+            client = [(DADClientDelegate *)self client];
+            delegateID = [(DADClientDelegate *)self delegateID];
+            [client delegateWithIDIsGoingAway:delegateID];
 
             goto LABEL_19;
           }
@@ -100,11 +100,11 @@ LABEL_18:
           {
             v24 = objc_opt_class();
             v25 = v24;
-            v26 = [(DADClientDelegate *)self accountID];
+            accountID2 = [(DADClientDelegate *)self accountID];
             *v27 = 138412546;
             *&v27[4] = v24;
             *&v27[12] = 2114;
-            *&v27[14] = v26;
+            *&v27[14] = accountID2;
             _os_log_impl(&dword_248524000, v15, v23, "[%@] finished, but could not find an account with the ID %{public}@", v27, 0x16u);
           }
 
@@ -120,21 +120,21 @@ LABEL_17:
     }
 
     v14 = [(DADClientDelegate *)self client:*v27];
-    v13 = [v14 rawConnection];
+    rawConnection = [v14 rawConnection];
 
-    if (!v13)
+    if (!rawConnection)
     {
       goto LABEL_18;
     }
 
     v15 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [v15 setObject:*MEMORY[0x277D03BF0] forKeyedSubscript:*MEMORY[0x277D03C88]];
-    v16 = [(DADClientDelegate *)self delegateID];
-    [v15 setObject:v16 forKeyedSubscript:*MEMORY[0x277D03BF8]];
+    delegateID2 = [(DADClientDelegate *)self delegateID];
+    [v15 setObject:delegateID2 forKeyedSubscript:*MEMORY[0x277D03BF8]];
 
-    if (v4)
+    if (errorCopy)
     {
-      v17 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4];
+      v17 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:errorCopy];
       [v15 setObject:v17 forKeyedSubscript:*MEMORY[0x277D03B40]];
     }
 
@@ -145,7 +145,7 @@ LABEL_17:
     }
 
     v19 = _CFXPCCreateXPCObjectFromCFObject();
-    xpc_connection_send_message(v13, v19);
+    xpc_connection_send_message(rawConnection, v19);
 
     goto LABEL_17;
   }

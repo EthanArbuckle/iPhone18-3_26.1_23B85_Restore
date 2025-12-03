@@ -1,31 +1,31 @@
 @interface PHPersistentChangeFetchResult
-+ (PHPersistentChangeFetchResult)fetchResultWithToken:(id)a3 options:(id)a4 photoLibrary:(id)a5 error:(id *)a6;
-- (PHPersistentChangeFetchResult)initWithTransactions:(id)a3 options:(id)a4 photoLibrary:(id)a5;
++ (PHPersistentChangeFetchResult)fetchResultWithToken:(id)token options:(id)options photoLibrary:(id)library error:(id *)error;
+- (PHPersistentChangeFetchResult)initWithTransactions:(id)transactions options:(id)options photoLibrary:(id)library;
 - (id)_managedObjectContext;
 - (id)iteratorForPersistentChangeEnumeration;
-- (id)nextPersistentChangeWithIterator:(id)a3;
+- (id)nextPersistentChangeWithIterator:(id)iterator;
 - (void)enumerateChangesWithBlock:(void *)block;
-- (void)enumeratePHChangesWithBlock:(id)a3;
+- (void)enumeratePHChangesWithBlock:(id)block;
 @end
 
 @implementation PHPersistentChangeFetchResult
 
-- (void)enumeratePHChangesWithBlock:(id)a3
+- (void)enumeratePHChangesWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc(MEMORY[0x1E69BE5F8]);
   transactions = self->_transactions;
-  v7 = [(PHPersistentChangeFetchResult *)self _managedObjectContext];
-  v8 = [v5 initWithTransactions:transactions managedObjectObjectContext:v7];
+  _managedObjectContext = [(PHPersistentChangeFetchResult *)self _managedObjectContext];
+  v8 = [v5 initWithTransactions:transactions managedObjectObjectContext:_managedObjectContext];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __61__PHPersistentChangeFetchResult_enumeratePHChangesWithBlock___block_invoke;
   v11[3] = &unk_1E75A5158;
   v12 = v8;
-  v13 = self;
-  v14 = v4;
-  v9 = v4;
+  selfCopy = self;
+  v14 = blockCopy;
+  v9 = blockCopy;
   v10 = v8;
   [v10 enumerateRemainingTransactionsWithBlock:v11];
 }
@@ -64,9 +64,9 @@ void __61__PHPersistentChangeFetchResult_enumeratePHChangesWithBlock___block_inv
   *(v3 + 40) = v2;
 }
 
-- (id)nextPersistentChangeWithIterator:(id)a3
+- (id)nextPersistentChangeWithIterator:(id)iterator
 {
-  v4 = a3;
+  iteratorCopy = iterator;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -77,8 +77,8 @@ void __61__PHPersistentChangeFetchResult_enumeratePHChangesWithBlock___block_inv
   v9[1] = 3221225472;
   v9[2] = __66__PHPersistentChangeFetchResult_nextPersistentChangeWithIterator___block_invoke;
   v9[3] = &unk_1E75A5130;
-  v5 = v4;
-  v11 = self;
+  v5 = iteratorCopy;
+  selfCopy = self;
   v12 = &v13;
   v10 = v5;
   if ([v5 enumerateOneTransactionWithBlock:v9])
@@ -129,8 +129,8 @@ void __66__PHPersistentChangeFetchResult_nextPersistentChangeWithIterator___bloc
 {
   v3 = objc_alloc(MEMORY[0x1E69BE5F8]);
   transactions = self->_transactions;
-  v5 = [(PHPersistentChangeFetchResult *)self _managedObjectContext];
-  v6 = [v3 initWithTransactions:transactions managedObjectObjectContext:v5];
+  _managedObjectContext = [(PHPersistentChangeFetchResult *)self _managedObjectContext];
+  v6 = [v3 initWithTransactions:transactions managedObjectObjectContext:_managedObjectContext];
 
   v7 = objc_alloc_init(PHPersistentChangeEnumerationContext);
   v8 = [MEMORY[0x1E695DF90] dictionaryWithObject:v7 forKey:@"PHPersistentChangeEnumerationContext"];
@@ -144,8 +144,8 @@ void __66__PHPersistentChangeFetchResult_nextPersistentChangeWithIterator___bloc
   v4 = block;
   v5 = objc_alloc(MEMORY[0x1E69BE5F8]);
   transactions = self->_transactions;
-  v7 = [(PHPersistentChangeFetchResult *)self _managedObjectContext];
-  v8 = [v5 initWithTransactions:transactions managedObjectObjectContext:v7];
+  _managedObjectContext = [(PHPersistentChangeFetchResult *)self _managedObjectContext];
+  v8 = [v5 initWithTransactions:transactions managedObjectObjectContext:_managedObjectContext];
 
   v9 = objc_alloc_init(PHPersistentChangeEnumerationContext);
   v13[0] = MEMORY[0x1E69E9820];
@@ -153,7 +153,7 @@ void __66__PHPersistentChangeFetchResult_nextPersistentChangeWithIterator___bloc
   v13[2] = __59__PHPersistentChangeFetchResult_enumerateChangesWithBlock___block_invoke;
   v13[3] = &unk_1E75A5108;
   v14 = v8;
-  v15 = self;
+  selfCopy = self;
   v16 = v9;
   v17 = v4;
   v10 = v4;
@@ -199,35 +199,35 @@ void __59__PHPersistentChangeFetchResult_enumerateChangesWithBlock___block_invok
 
 - (id)_managedObjectContext
 {
-  v2 = [(PHPhotoLibrary *)self->_library changeHandlingPhotoLibrary];
-  v3 = [v2 managedObjectContext];
+  changeHandlingPhotoLibrary = [(PHPhotoLibrary *)self->_library changeHandlingPhotoLibrary];
+  managedObjectContext = [changeHandlingPhotoLibrary managedObjectContext];
 
-  return v3;
+  return managedObjectContext;
 }
 
-- (PHPersistentChangeFetchResult)initWithTransactions:(id)a3 options:(id)a4 photoLibrary:(id)a5
+- (PHPersistentChangeFetchResult)initWithTransactions:(id)transactions options:(id)options photoLibrary:(id)library
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  transactionsCopy = transactions;
+  optionsCopy = options;
+  libraryCopy = library;
   v21.receiver = self;
   v21.super_class = PHPersistentChangeFetchResult;
   v11 = [(PHPersistentChangeFetchResult *)&v21 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_library, a5);
-    objc_storeStrong(&v12->_options, a4);
-    v13 = [(PHPhotoLibrary *)v12->_library changeHandlingPhotoLibrary];
-    v14 = [v13 managedObjectContext];
+    objc_storeStrong(&v11->_library, library);
+    objc_storeStrong(&v12->_options, options);
+    changeHandlingPhotoLibrary = [(PHPhotoLibrary *)v12->_library changeHandlingPhotoLibrary];
+    managedObjectContext = [changeHandlingPhotoLibrary managedObjectContext];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __75__PHPersistentChangeFetchResult_initWithTransactions_options_photoLibrary___block_invoke;
     v18[3] = &unk_1E75AAEB0;
     v15 = v12;
     v19 = v15;
-    v20 = v8;
-    [v14 performBlockAndWait:v18];
+    v20 = transactionsCopy;
+    [managedObjectContext performBlockAndWait:v18];
 
     v16 = v15;
   }
@@ -247,24 +247,24 @@ uint64_t __75__PHPersistentChangeFetchResult_initWithTransactions_options_photoL
   return result;
 }
 
-+ (PHPersistentChangeFetchResult)fetchResultWithToken:(id)a3 options:(id)a4 photoLibrary:(id)a5 error:(id *)a6
++ (PHPersistentChangeFetchResult)fetchResultWithToken:(id)token options:(id)options photoLibrary:(id)library error:(id *)error
 {
   v35[1] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
-  v12 = [a3 persistentHistoryToken];
-  v13 = [MEMORY[0x1E69BE5F0] markerWithToken:v12];
-  v14 = [v11 changeHandlingPhotoLibrary];
-  v15 = [v14 managedObjectContext];
+  optionsCopy = options;
+  libraryCopy = library;
+  persistentHistoryToken = [token persistentHistoryToken];
+  v13 = [MEMORY[0x1E69BE5F0] markerWithToken:persistentHistoryToken];
+  changeHandlingPhotoLibrary = [libraryCopy changeHandlingPhotoLibrary];
+  managedObjectContext = [changeHandlingPhotoLibrary managedObjectContext];
 
-  if (v15)
+  if (managedObjectContext)
   {
     v31 = 0;
-    v16 = [MEMORY[0x1E69BE600] fetchTransactionsSinceMarker:v13 withFetchRequest:0 batchSize:100 context:v15 error:&v31];
+    v16 = [MEMORY[0x1E69BE600] fetchTransactionsSinceMarker:v13 withFetchRequest:0 batchSize:100 context:managedObjectContext error:&v31];
     v17 = v31;
     if (v16)
     {
-      v18 = [[a1 alloc] initWithTransactions:v16 options:v10 photoLibrary:v11];
+      v18 = [[self alloc] initWithTransactions:v16 options:optionsCopy photoLibrary:libraryCopy];
       v19 = 0;
       goto LABEL_14;
     }
@@ -324,11 +324,11 @@ LABEL_14:
 
   v23 = v22;
 LABEL_15:
-  if (a6)
+  if (error)
   {
     v27 = v23;
     v18 = 0;
-    *a6 = v23;
+    *error = v23;
   }
 
   else

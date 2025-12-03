@@ -1,16 +1,16 @@
 @interface VCPCNNPoolingBlock
-+ (id)poolingBlockWithPoolX:(int)a3 poolY:(int)a4 chunk:(int)a5;
-- (VCPCNNPoolingBlock)initWithParameters:(int)a3 poolY:(int)a4 chunk:(int)a5;
-- (int)constructBlock:(id)a3 context:(id)a4;
++ (id)poolingBlockWithPoolX:(int)x poolY:(int)y chunk:(int)chunk;
+- (VCPCNNPoolingBlock)initWithParameters:(int)parameters poolY:(int)y chunk:(int)chunk;
+- (int)constructBlock:(id)block context:(id)context;
 @end
 
 @implementation VCPCNNPoolingBlock
 
-+ (id)poolingBlockWithPoolX:(int)a3 poolY:(int)a4 chunk:(int)a5
++ (id)poolingBlockWithPoolX:(int)x poolY:(int)y chunk:(int)chunk
 {
-  v5 = *&a5;
-  v6 = *&a4;
-  v7 = *&a3;
+  v5 = *&chunk;
+  v6 = *&y;
+  v7 = *&x;
   if (!+[VCPCNNMetalContext supportGPU])
   {
     +[VCPCNNMetalContext supportVectorForward];
@@ -21,47 +21,47 @@
   return v8;
 }
 
-- (VCPCNNPoolingBlock)initWithParameters:(int)a3 poolY:(int)a4 chunk:(int)a5
+- (VCPCNNPoolingBlock)initWithParameters:(int)parameters poolY:(int)y chunk:(int)chunk
 {
-  v5 = 0;
-  if (a3 >= 2 && a4 >= 2)
+  selfCopy = 0;
+  if (parameters >= 2 && y >= 2)
   {
     v11.receiver = self;
     v11.super_class = VCPCNNPoolingBlock;
     v9 = [(VCPCNNPoolingBlock *)&v11 init];
     if (v9)
     {
-      *(&v9->super._executedOnGPU + 3) = a3;
-      v9->_px = a4;
-      v9->_py = a5;
+      *(&v9->super._executedOnGPU + 3) = parameters;
+      v9->_px = y;
+      v9->_py = chunk;
       v9->super._executedOnGPU = 0;
     }
 
     self = v9;
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
-- (int)constructBlock:(id)a3 context:(id)a4
+- (int)constructBlock:(id)block context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->super._context, a4);
-  v8 = objc_storeWeak(&self->super._inputSize, v6);
-  v9 = [v6 objectAtIndexedSubscript:0];
-  v10 = [v9 intValue];
+  blockCopy = block;
+  contextCopy = context;
+  objc_storeStrong(&self->super._context, context);
+  v8 = objc_storeWeak(&self->super._inputSize, blockCopy);
+  v9 = [blockCopy objectAtIndexedSubscript:0];
+  intValue = [v9 intValue];
 
   WeakRetained = objc_loadWeakRetained(&self->super._inputSize);
   v12 = [WeakRetained objectAtIndexedSubscript:1];
-  v13 = [v12 intValue];
+  intValue2 = [v12 intValue];
 
   v14 = objc_loadWeakRetained(&self->super._inputSize);
   v15 = [v14 objectAtIndexedSubscript:2];
-  v16 = [v15 intValue];
+  intValue3 = [v15 intValue];
 
-  v17 = [VCPCNNData cnnDataWithGPUContext:v7];
+  v17 = [VCPCNNData cnnDataWithGPUContext:contextCopy];
   output = self->super._output;
   self->super._output = v17;
 
@@ -71,15 +71,15 @@
 
   if (self->super._output && (v21 = self->super._outputSize) != 0)
   {
-    v22 = [MEMORY[0x1E696AD98] numberWithInt:v10];
+    v22 = [MEMORY[0x1E696AD98] numberWithInt:intValue];
     [(NSMutableArray *)v21 addObject:v22];
 
     v23 = self->super._outputSize;
-    v24 = [MEMORY[0x1E696AD98] numberWithInt:(v13 / self->_px)];
+    v24 = [MEMORY[0x1E696AD98] numberWithInt:(intValue2 / self->_px)];
     [(NSMutableArray *)v23 addObject:v24];
 
     v25 = self->super._outputSize;
-    v26 = [MEMORY[0x1E696AD98] numberWithInt:(v16 / *(&self->super._executedOnGPU + 3))];
+    v26 = [MEMORY[0x1E696AD98] numberWithInt:(intValue3 / *(&self->super._executedOnGPU + 3))];
     [(NSMutableArray *)v25 addObject:v26];
 
     [(VCPCNNData *)self->super._output setSize:self->super._outputSize];

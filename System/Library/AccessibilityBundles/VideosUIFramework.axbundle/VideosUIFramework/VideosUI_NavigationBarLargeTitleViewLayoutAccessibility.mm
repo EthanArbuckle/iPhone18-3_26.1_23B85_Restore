@@ -1,15 +1,15 @@
 @interface VideosUI_NavigationBarLargeTitleViewLayoutAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation VideosUI_NavigationBarLargeTitleViewLayoutAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_UINavigationBarLargeTitleViewLayout" hasInstanceMethod:@"_titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_UINavigationBarLargeTitleViewLayout" hasInstanceMethod:@"layoutViewsWithOffset:useRestingTitleHeight:" withFullSignature:{"v", "{UIOffset=dd}", "B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_UINavigationBarLargeTitleViewLayout" hasInstanceMethod:@"_titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_UINavigationBarLargeTitleViewLayout" hasInstanceMethod:@"layoutViewsWithOffset:useRestingTitleHeight:" withFullSignature:{"v", "{UIOffset=dd}", "B", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -22,13 +22,13 @@
   v3 = [(VideosUI_NavigationBarLargeTitleViewLayoutAccessibility *)self safeValueForKey:@"_titleLabel"];
   v4 = __UIAccessibilityCastAsClass();
 
-  v5 = [v4 _accessibilityViewIsVisible];
-  v6 = [v4 text];
-  v7 = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
-  v8 = [v6 stringByTrimmingCharactersInSet:v7];
+  _accessibilityViewIsVisible = [v4 _accessibilityViewIsVisible];
+  text = [v4 text];
+  whitespaceAndNewlineCharacterSet = [MEMORY[0x29EDB9F50] whitespaceAndNewlineCharacterSet];
+  v8 = [text stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
   v9 = [v8 length];
 
-  if (v5 && v9)
+  if (_accessibilityViewIsVisible && v9)
   {
     objc_initWeak(&location, self);
     objc_copyWeak(&v10, &location);

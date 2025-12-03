@@ -1,18 +1,18 @@
 @interface AVTAvatarActionsViewControllerTransitionStartingLayout
-- (AVTAvatarActionsViewControllerTransitionStartingLayout)initWithContainerSize:(CGSize)a3 insets:(UIEdgeInsets)a4 buttonCount:(int64_t)a5 avtViewLayoutInfo:(id)a6 startingAvatarViewFrame:(CGRect)a7;
+- (AVTAvatarActionsViewControllerTransitionStartingLayout)initWithContainerSize:(CGSize)size insets:(UIEdgeInsets)insets buttonCount:(int64_t)count avtViewLayoutInfo:(id)info startingAvatarViewFrame:(CGRect)frame;
 - (CGRect)avatarContainerViewFrame;
 @end
 
 @implementation AVTAvatarActionsViewControllerTransitionStartingLayout
 
-- (AVTAvatarActionsViewControllerTransitionStartingLayout)initWithContainerSize:(CGSize)a3 insets:(UIEdgeInsets)a4 buttonCount:(int64_t)a5 avtViewLayoutInfo:(id)a6 startingAvatarViewFrame:(CGRect)a7
+- (AVTAvatarActionsViewControllerTransitionStartingLayout)initWithContainerSize:(CGSize)size insets:(UIEdgeInsets)insets buttonCount:(int64_t)count avtViewLayoutInfo:(id)info startingAvatarViewFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = AVTAvatarActionsViewControllerTransitionStartingLayout;
-  result = [(AVTAvatarActionsViewControllerLayout *)&v8 initWithContainerSize:a5 insets:a6 buttonCount:a3.width avtViewLayoutInfo:a3.height, a4.top, a4.left, a4.bottom, a4.right];
+  result = [(AVTAvatarActionsViewControllerLayout *)&v8 initWithContainerSize:count insets:info buttonCount:size.width avtViewLayoutInfo:size.height, insets.top, insets.left, insets.bottom, insets.right];
   if (result)
   {
-    result->_avatarContainerViewFrame = a7;
+    result->_avatarContainerViewFrame = frame;
   }
 
   return result;

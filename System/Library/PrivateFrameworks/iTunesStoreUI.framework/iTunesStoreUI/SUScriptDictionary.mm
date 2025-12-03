@@ -1,18 +1,18 @@
 @interface SUScriptDictionary
-+ (BOOL)isSelectorExcludedFromWebScript:(SEL)a3;
++ (BOOL)isSelectorExcludedFromWebScript:(SEL)script;
 + (void)initialize;
-- (SUScriptDictionary)initWithDictionary:(id)a3;
+- (SUScriptDictionary)initWithDictionary:(id)dictionary;
 - (id)stringRepresentation;
-- (id)valueForNotNativelySupportedKey:(id)a3;
-- (void)setValue:(id)a3 forKey:(id)a4;
+- (id)valueForNotNativelySupportedKey:(id)key;
+- (void)setValue:(id)value forKey:(id)key;
 @end
 
 @implementation SUScriptDictionary
 
-- (SUScriptDictionary)initWithDictionary:(id)a3
+- (SUScriptDictionary)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = SUScriptDictionary;
   v5 = [(SUScriptDictionary *)&v25 init];
@@ -23,7 +23,7 @@
     accessQueue = v5->_accessQueue;
     v5->_accessQueue = v7;
 
-    v9 = [v4 copy];
+    v9 = [dictionaryCopy copy];
     dictionary = v5->_dictionary;
     v5->_dictionary = v9;
 
@@ -73,16 +73,16 @@
   return v5;
 }
 
-- (void)setValue:(id)a3 forKey:(id)a4
+- (void)setValue:(id)value forKey:(id)key
 {
   v4 = MEMORY[0x1E69E2F88];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", a4];
+  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ is readonly", key];
   [v4 throwException:v5];
 }
 
-- (id)valueForNotNativelySupportedKey:(id)a3
+- (id)valueForNotNativelySupportedKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -94,10 +94,10 @@
   block[1] = 3221225472;
   block[2] = __54__SUScriptDictionary_valueForNotNativelySupportedKey___block_invoke;
   block[3] = &unk_1E81660C8;
-  v10 = v4;
+  v10 = keyCopy;
   v11 = &v12;
   block[4] = self;
-  v6 = v4;
+  v6 = keyCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 
@@ -169,9 +169,9 @@ void __54__SUScriptDictionary_valueForNotNativelySupportedKey___block_invoke(voi
   return v4;
 }
 
-+ (BOOL)isSelectorExcludedFromWebScript:(SEL)a3
++ (BOOL)isSelectorExcludedFromWebScript:(SEL)script
 {
-  v3 = [a1 webScriptNameForSelector:a3];
+  v3 = [self webScriptNameForSelector:script];
   v4 = v3 == 0;
 
   return v4;
@@ -179,7 +179,7 @@ void __54__SUScriptDictionary_valueForNotNativelySupportedKey___block_invoke(voi
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_36 = sel_stringRepresentation;
     unk_1EBF3B280 = @"toString";

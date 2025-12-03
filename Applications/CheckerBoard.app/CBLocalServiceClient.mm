@@ -1,26 +1,26 @@
 @interface CBLocalServiceClient
-- (CBLocalServiceClient)initWithMainNavController:(id)a3;
+- (CBLocalServiceClient)initWithMainNavController:(id)controller;
 - (UINavigationController)mainNavController;
 - (void)_ping;
 - (void)invalidate;
-- (void)moveToDiagnosticsAppWithcompletion:(id)a3;
+- (void)moveToDiagnosticsAppWithcompletion:(id)withcompletion;
 - (void)relaunchToDiagnosticsApp;
 - (void)resume;
-- (void)setProxyServer:(id)a3 completion:(id)a4;
+- (void)setProxyServer:(id)server completion:(id)completion;
 @end
 
 @implementation CBLocalServiceClient
 
-- (CBLocalServiceClient)initWithMainNavController:(id)a3
+- (CBLocalServiceClient)initWithMainNavController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = CBLocalServiceClient;
   v5 = [(CBLocalServiceClient *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_mainNavController, v4);
+    objc_storeWeak(&v5->_mainNavController, controllerCopy);
     v6->_didMoveToEndgame = 0;
     v7 = [[NSXPCConnection alloc] initWithMachServiceName:@"com.apple.checkerboardd" options:4096];
     connection = v6->_connection;
@@ -42,27 +42,27 @@
 
 - (void)resume
 {
-  v3 = [(CBLocalServiceClient *)self connection];
-  [v3 resume];
+  connection = [(CBLocalServiceClient *)self connection];
+  [connection resume];
 
   [(CBLocalServiceClient *)self _ping];
 }
 
 - (void)invalidate
 {
-  v3 = [(CBLocalServiceClient *)self connection];
+  connection = [(CBLocalServiceClient *)self connection];
 
-  if (v3)
+  if (connection)
   {
-    v4 = [(CBLocalServiceClient *)self connection];
-    [v4 invalidate];
+    connection2 = [(CBLocalServiceClient *)self connection];
+    [connection2 invalidate];
   }
 }
 
 - (void)_ping
 {
-  v2 = [(CBLocalServiceClient *)self connection];
-  v3 = [v2 synchronousRemoteObjectProxyWithErrorHandler:&stru_10007E0E0];
+  connection = [(CBLocalServiceClient *)self connection];
+  v3 = [connection synchronousRemoteObjectProxyWithErrorHandler:&stru_10007E0E0];
 
   [v3 ping:&stru_10007E100];
 }
@@ -74,9 +74,9 @@
   [(CBLocalServiceClient *)self moveToDiagnosticsAppWithcompletion:&stru_10007E120];
 }
 
-- (void)moveToDiagnosticsAppWithcompletion:(id)a3
+- (void)moveToDiagnosticsAppWithcompletion:(id)withcompletion
 {
-  v4 = a3;
+  withcompletionCopy = withcompletion;
   v5 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -93,21 +93,21 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Local XPC - already moved to Diagnostics app", buf, 2u);
     }
 
-    v4[2](v4, 0);
+    withcompletionCopy[2](withcompletionCopy, 0);
   }
 
   else
   {
-    v7 = [(CBLocalServiceClient *)self mainNavController];
+    mainNavController = [(CBLocalServiceClient *)self mainNavController];
 
-    if (v7)
+    if (mainNavController)
     {
       v10[0] = _NSConcreteStackBlock;
       v10[1] = 3221225472;
       v10[2] = sub_100024758;
       v10[3] = &unk_10007E148;
       v10[4] = self;
-      v11 = v4;
+      v11 = withcompletionCopy;
       dispatch_async(&_dispatch_main_q, v10);
     }
 
@@ -121,30 +121,30 @@
       }
 
       v9 = [NSError errorWithDomain:@"com.apple.CheckerBoard.daemonXPCErrorDomain" code:2 userInfo:0];
-      (v4)[2](v4, v9);
+      (withcompletionCopy)[2](withcompletionCopy, v9);
     }
   }
 }
 
-- (void)setProxyServer:(id)a3 completion:(id)a4
+- (void)setProxyServer:(id)server completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  serverCopy = server;
+  completionCopy = completion;
   v7 = CheckerBoardLogHandleForCategory();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v13 = 138412290;
-    v14 = v5;
+    v14 = serverCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Local XPC - Receive proxy server info. proxyServer = %@;", &v13, 0xCu);
   }
 
   v8 = +[CBUserSettings sharedInstance];
-  [v8 assignProxyServer:v5];
+  [v8 assignProxyServer:serverCopy];
 
   v9 = +[CBUserSettings sharedInstance];
-  v10 = [v9 proxyServer];
+  proxyServer = [v9 proxyServer];
 
-  if ([v10 isEqual:v5])
+  if ([proxyServer isEqual:serverCopy])
   {
     v11 = 0;
   }
@@ -155,16 +155,16 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412546;
-      v14 = v10;
+      v14 = proxyServer;
       v15 = 2112;
-      v16 = v5;
+      v16 = serverCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Local XPC - Failed to set assignedProxyServer = %@; proxyServer = %@;", &v13, 0x16u);
     }
 
     v11 = [NSError errorWithDomain:@"com.apple.CheckerBoard.daemonXPCErrorDomain" code:1 userInfo:0];
   }
 
-  v6[2](v6, v11);
+  completionCopy[2](completionCopy, v11);
 }
 
 - (UINavigationController)mainNavController

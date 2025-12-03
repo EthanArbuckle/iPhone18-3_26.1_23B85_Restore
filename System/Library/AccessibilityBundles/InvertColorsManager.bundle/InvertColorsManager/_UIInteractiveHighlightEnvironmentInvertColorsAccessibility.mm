@@ -1,22 +1,22 @@
 @interface _UIInteractiveHighlightEnvironmentInvertColorsAccessibility
-- (id)newViewRecordForView:(id)a3 options:(unint64_t)a4;
+- (id)newViewRecordForView:(id)view options:(unint64_t)options;
 @end
 
 @implementation _UIInteractiveHighlightEnvironmentInvertColorsAccessibility
 
-- (id)newViewRecordForView:(id)a3 options:(unint64_t)a4
+- (id)newViewRecordForView:(id)view options:(unint64_t)options
 {
-  v6 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = _UIInteractiveHighlightEnvironmentInvertColorsAccessibility;
-  v7 = [(_UIInteractiveHighlightEnvironmentInvertColorsAccessibility *)&v12 newViewRecordForView:v6 options:a4];
+  v7 = [(_UIInteractiveHighlightEnvironmentInvertColorsAccessibility *)&v12 newViewRecordForView:viewCopy options:options];
   if (_AXSInvertColorsEnabled())
   {
     objc_opt_class();
     v8 = __UIAccessibilityCastAsClass();
-    v9 = [v8 accessibilityIgnoresInvertColors];
+    accessibilityIgnoresInvertColors = [v8 accessibilityIgnoresInvertColors];
 
-    if (v9)
+    if (accessibilityIgnoresInvertColors)
     {
       v10 = [v7 safeUIViewForKey:@"_effectView"];
       [v10 setAccessibilityIgnoresInvertColors:1];

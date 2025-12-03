@@ -10,20 +10,20 @@
   v9 = a3;
   if (!v9)
   {
-    [NSFileManager(DOCItemImportSPI) _doc_importItemAtURL:a2 toDestination:a1 error:?];
+    [NSFileManager(DOCItemImportSPI) _doc_importItemAtURL:a2 toDestination:self error:?];
   }
 
   if ((a4 - 1) > 1)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:a1 file:@"DOCDownloadImportManager.m" lineNumber:209 description:{@"Unexpected _DOCFileDestination %ld", a4}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"DOCDownloadImportManager.m" lineNumber:209 description:{@"Unexpected _DOCFileDestination %ld", a4}];
     v11 = 0;
   }
 
   else
   {
-    v10 = objc_opt_new();
-    v11 = [v10 _moveItemAtURL:v9 toNamedLocation:a4 error:a5];
+    currentHandler = objc_opt_new();
+    v11 = [currentHandler _moveItemAtURL:v9 toNamedLocation:a4 error:a5];
   }
 
   return v11;
@@ -33,15 +33,15 @@
 {
   if ((a3 - 1) > 1)
   {
-    v4 = [MEMORY[0x277CCA890] currentHandler];
-    [v4 handleFailureInMethod:a2 object:a1 file:@"DOCDownloadImportManager.m" lineNumber:224 description:{@"Unexpected _DOCFileDestination %ld", a3}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"DOCDownloadImportManager.m" lineNumber:224 description:{@"Unexpected _DOCFileDestination %ld", a3}];
     v5 = 0;
   }
 
   else
   {
-    v4 = objc_opt_new();
-    v5 = [v4 _doc_destinationLocationExists:a3];
+    currentHandler = objc_opt_new();
+    v5 = [currentHandler _doc_destinationLocationExists:a3];
   }
 
   return v5;

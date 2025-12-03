@@ -1,19 +1,19 @@
 @interface PLPropertyListFromDataTransformer
-- (id)reverseTransformedValue:(id)a3;
-- (id)transformedValue:(id)a3;
+- (id)reverseTransformedValue:(id)value;
+- (id)transformedValue:(id)value;
 @end
 
 @implementation PLPropertyListFromDataTransformer
 
-- (id)reverseTransformedValue:(id)a3
+- (id)reverseTransformedValue:(id)value
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = 0;
-    v4 = [MEMORY[0x1E696AE40] propertyListWithData:v3 options:0 format:0 error:&v6];
+    v4 = [MEMORY[0x1E696AE40] propertyListWithData:valueCopy options:0 format:0 error:&v6];
   }
 
   else
@@ -24,14 +24,14 @@
   return v4;
 }
 
-- (id)transformedValue:(id)a3
+- (id)transformedValue:(id)value
 {
   v11 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (v3)
+  valueCopy = value;
+  if (valueCopy)
   {
     v8 = 0;
-    v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:v3 format:200 options:0 error:&v8];
+    v4 = [MEMORY[0x1E696AE40] dataWithPropertyList:valueCopy format:200 options:0 error:&v8];
     v5 = v8;
     if (!v4)
     {

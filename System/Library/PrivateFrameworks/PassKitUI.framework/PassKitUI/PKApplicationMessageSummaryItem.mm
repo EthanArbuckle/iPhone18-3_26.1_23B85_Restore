@@ -1,45 +1,45 @@
 @interface PKApplicationMessageSummaryItem
-- (BOOL)isEqual:(id)a3;
-- (id)initWithTitle:(void *)a3 messageIcon:(char)a4 badged:;
+- (BOOL)isEqual:(id)equal;
+- (id)initWithTitle:(void *)title messageIcon:(char)icon badged:;
 @end
 
 @implementation PKApplicationMessageSummaryItem
 
-- (id)initWithTitle:(void *)a3 messageIcon:(char)a4 badged:
+- (id)initWithTitle:(void *)title messageIcon:(char)icon badged:
 {
   v7 = a2;
-  v8 = a3;
-  if (a1)
+  titleCopy = title;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = PKApplicationMessageSummaryItem;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v12, sel_init);
+    if (self)
     {
       v9 = [v7 copy];
-      v10 = a1[2];
-      a1[2] = v9;
+      v10 = self[2];
+      self[2] = v9;
 
-      objc_storeStrong(a1 + 3, a3);
-      *(a1 + 8) = a4;
+      objc_storeStrong(self + 3, title);
+      *(self + 8) = icon;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -47,16 +47,16 @@
         v6 = v5;
         title = self->_title;
         v8 = v6[2];
-        v9 = title;
+        image2 = title;
         v10 = v8;
-        v11 = v10;
-        if (v9 == v10)
+        image = v10;
+        if (image2 == v10)
         {
         }
 
         else
         {
-          if (!v9 || !v10)
+          if (!image2 || !v10)
           {
 
             v13 = 0;
@@ -65,7 +65,7 @@ LABEL_15:
             goto LABEL_16;
           }
 
-          v12 = [(NSString *)v9 isEqualToString:v10];
+          v12 = [(NSString *)image2 isEqualToString:v10];
 
           if (!v12)
           {
@@ -86,9 +86,9 @@ LABEL_18:
           goto LABEL_18;
         }
 
-        v11 = [(PKApplicationMessageIcon *)self->_messageIcon image];
-        v9 = [v6[3] image];
-        v13 = [v11 isEqual:v9];
+        image = [(PKApplicationMessageIcon *)self->_messageIcon image];
+        image2 = [v6[3] image];
+        v13 = [image isEqual:image2];
         goto LABEL_15;
       }
     }

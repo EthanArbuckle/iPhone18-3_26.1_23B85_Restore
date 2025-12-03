@@ -1,14 +1,14 @@
 @interface SKUIBorderView
 - (UIColor)color;
-- (void)setBackgroundColor:(id)a3;
-- (void)setColor:(id)a3;
+- (void)setBackgroundColor:(id)color;
+- (void)setColor:(id)color;
 @end
 
 @implementation SKUIBorderView
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v4 = a3;
+  colorCopy = color;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -23,7 +23,7 @@
 
   v13.receiver = self;
   v13.super_class = SKUIBorderView;
-  [(SKUIBorderView *)&v13 setBackgroundColor:v4];
+  [(SKUIBorderView *)&v13 setBackgroundColor:colorCopy];
 }
 
 - (UIColor)color
@@ -42,12 +42,12 @@
 
   v13.receiver = self;
   v13.super_class = SKUIBorderView;
-  v11 = [(SKUIBorderView *)&v13 backgroundColor];
+  backgroundColor = [(SKUIBorderView *)&v13 backgroundColor];
 
-  return v11;
+  return backgroundColor;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl())
   {

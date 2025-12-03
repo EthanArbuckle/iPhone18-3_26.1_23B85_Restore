@@ -1,22 +1,22 @@
 @interface ContaineeState
-- (ContaineeState)initWithContainee:(id)a3;
-- (void)setLayout:(unint64_t)a3 forStyle:(unint64_t)a4;
+- (ContaineeState)initWithContainee:(id)containee;
+- (void)setLayout:(unint64_t)layout forStyle:(unint64_t)style;
 @end
 
 @implementation ContaineeState
 
-- (void)setLayout:(unint64_t)a3 forStyle:(unint64_t)a4
+- (void)setLayout:(unint64_t)layout forStyle:(unint64_t)style
 {
-  self->layoutByStyle[a4] = a3;
-  if (a4 == 1)
+  self->layoutByStyle[style] = layout;
+  if (style == 1)
   {
-    self->layoutByStyle[5] = 4 * (a3 == 3);
+    self->layoutByStyle[5] = 4 * (layout == 3);
   }
 
-  else if (a4 == 5)
+  else if (style == 5)
   {
     v4 = 2;
-    if (a3 == 4)
+    if (layout == 4)
     {
       v4 = 3;
     }
@@ -25,16 +25,16 @@
   }
 }
 
-- (ContaineeState)initWithContainee:(id)a3
+- (ContaineeState)initWithContainee:(id)containee
 {
-  v5 = a3;
+  containeeCopy = containee;
   v9.receiver = self;
   v9.super_class = ContaineeState;
   v6 = [(ContaineeState *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_viewController, a3);
+    objc_storeStrong(&v6->_viewController, containee);
   }
 
   return v7;

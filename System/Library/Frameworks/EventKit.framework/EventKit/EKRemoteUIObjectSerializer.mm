@@ -1,18 +1,18 @@
 @interface EKRemoteUIObjectSerializer
-- (id)deserializedRepresentationWithSerializedDictionary:(id)a3 objectIDToChangeSetDictionaryMap:(id)a4 objectIDToPersistentDictionaryMap:(id)a5 eventStore:(id)a6 occurrenceDate:(id)a7;
-- (id)serializedRepresentationWithEkObject:(id)a3;
-- (id)serializedRepresentationWithEkObject:(id)a3 obfuscateKeyProperties:(BOOL)a4;
+- (id)deserializedRepresentationWithSerializedDictionary:(id)dictionary objectIDToChangeSetDictionaryMap:(id)map objectIDToPersistentDictionaryMap:(id)dictionaryMap eventStore:(id)store occurrenceDate:(id)date;
+- (id)serializedRepresentationWithEkObject:(id)object;
+- (id)serializedRepresentationWithEkObject:(id)object obfuscateKeyProperties:(BOOL)properties;
 @end
 
 @implementation EKRemoteUIObjectSerializer
 
-- (id)serializedRepresentationWithEkObject:(id)a3 obfuscateKeyProperties:(BOOL)a4
+- (id)serializedRepresentationWithEkObject:(id)object obfuscateKeyProperties:(BOOL)properties
 {
   v16 = MEMORY[0x1E69E7CC8];
   v17 = MEMORY[0x1E69E7CC8];
-  v6 = a3;
-  v7 = self;
-  v8 = sub_1A8189CFC(v6, a4, &v17, &v16);
+  objectCopy = object;
+  selfCopy = self;
+  v8 = sub_1A8189CFC(objectCopy, properties, &v17, &v16);
   v10 = v16;
   v9 = v17;
   v11 = type metadata accessor for EKRemoteUISerializedObject();
@@ -27,13 +27,13 @@
   return v13;
 }
 
-- (id)serializedRepresentationWithEkObject:(id)a3
+- (id)serializedRepresentationWithEkObject:(id)object
 {
   v14 = MEMORY[0x1E69E7CC8];
   v15 = MEMORY[0x1E69E7CC8];
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1A8189CFC(v4, 0, &v15, &v14);
+  objectCopy = object;
+  selfCopy = self;
+  v6 = sub_1A8189CFC(objectCopy, 0, &v15, &v14);
   v8 = v14;
   v7 = v15;
   v9 = type metadata accessor for EKRemoteUISerializedObject();
@@ -48,9 +48,9 @@
   return v11;
 }
 
-- (id)deserializedRepresentationWithSerializedDictionary:(id)a3 objectIDToChangeSetDictionaryMap:(id)a4 objectIDToPersistentDictionaryMap:(id)a5 eventStore:(id)a6 occurrenceDate:(id)a7
+- (id)deserializedRepresentationWithSerializedDictionary:(id)dictionary objectIDToChangeSetDictionaryMap:(id)map objectIDToPersistentDictionaryMap:(id)dictionaryMap eventStore:(id)store occurrenceDate:(id)date
 {
-  v23 = self;
+  selfCopy = self;
   v9 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB2E2810, &qword_1A81C4330);
   v10 = *(*(v9 - 8) + 64);
   MEMORY[0x1EEE9AC00](v9 - 8);
@@ -61,7 +61,7 @@
   sub_1A819550C(&qword_1EB2E2828, &qword_1EB2E2650, off_1E77FBA00);
   v14 = sub_1A81ACC94();
   v15 = sub_1A81ACC94();
-  if (a7)
+  if (date)
   {
     sub_1A81ACA44();
     v16 = sub_1A81ACA54();
@@ -74,9 +74,9 @@
     (*(*(v17 - 8) + 56))(v12, 1, 1, v17);
   }
 
-  v18 = a6;
-  v19 = v23;
-  v20 = EKRemoteUIObjectSerializer.deserializedRepresentation(serializedDictionary:objectIDToChangeSetDictionaryMap:objectIDToPersistentDictionaryMap:eventStore:occurrenceDate:)(v13, v14, v15, v18, v12);
+  storeCopy = store;
+  v19 = selfCopy;
+  v20 = EKRemoteUIObjectSerializer.deserializedRepresentation(serializedDictionary:objectIDToChangeSetDictionaryMap:objectIDToPersistentDictionaryMap:eventStore:occurrenceDate:)(v13, v14, v15, storeCopy, v12);
 
   sub_1A8188C34(v12, &unk_1EB2E2810, &qword_1A81C4330);
 

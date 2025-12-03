@@ -1,18 +1,18 @@
 @interface APSBAAClientIdentityProvider
 - (APSBAAClientIdentityProvider)init;
-- (BOOL)generateNonceAndSignatureWithPublicKey:(__SecKey *)a3 privateKey:(__SecKey *)a4 dataToSign:(id)a5 time:(id)a6 useIDSNonceVersion:(BOOL)a7 nonceOut:(id *)a8 signatureOut:(id *)a9;
+- (BOOL)generateNonceAndSignatureWithPublicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey dataToSign:(id)sign time:(id)time useIDSNonceVersion:(BOOL)version nonceOut:(id *)out signatureOut:(id *)signatureOut;
 - (BOOL)isReadyToFetchIdentity;
-- (id)_parseDERCertificatesFromChain:(id)a3;
-- (id)fetchVMHostCertsAndSignData:(id)a3 error:(id *)a4;
+- (id)_parseDERCertificatesFromChain:(id)chain;
+- (id)fetchVMHostCertsAndSignData:(id)data error:(id *)error;
 - (uint64_t)supportsFetchingVMHostCerts;
 - (void)_processPotentialIdentityChanged;
 - (void)dealloc;
-- (void)debugForceDeleteIdentity:(id)a3;
+- (void)debugForceDeleteIdentity:(id)identity;
 - (void)debugForceIdentitySwap;
-- (void)fetchClientIdentityWithReason:(unint64_t)a3 hasExistingToken:(BOOL)a4 completionHandler:(id)a5;
-- (void)forceIdentityRefresh:(id)a3;
+- (void)fetchClientIdentityWithReason:(unint64_t)reason hasExistingToken:(BOOL)token completionHandler:(id)handler;
+- (void)forceIdentityRefresh:(id)refresh;
 - (void)noteInvalidServerPresence;
-- (void)preloadIdentity:(id)a3;
+- (void)preloadIdentity:(id)identity;
 @end
 
 @implementation APSBAAClientIdentityProvider
@@ -71,12 +71,12 @@
 
   else
   {
-    v4 = [(APSBAAClientIdentityProvider *)self identityAvailabilityDidChangeBlock];
+    identityAvailabilityDidChangeBlock = [(APSBAAClientIdentityProvider *)self identityAvailabilityDidChangeBlock];
 
-    if (v4)
+    if (identityAvailabilityDidChangeBlock)
     {
-      v5 = [(APSBAAClientIdentityProvider *)self identityAvailabilityDidChangeBlock];
-      v5[2](v5, [(APSBAAClientIdentityProvider *)self isReadyToFetchIdentity]);
+      identityAvailabilityDidChangeBlock2 = [(APSBAAClientIdentityProvider *)self identityAvailabilityDidChangeBlock];
+      identityAvailabilityDidChangeBlock2[2](identityAvailabilityDidChangeBlock2, [(APSBAAClientIdentityProvider *)self isReadyToFetchIdentity]);
     }
   }
 }
@@ -110,17 +110,17 @@ LABEL_6:
   return v3 ^ 1;
 }
 
-- (void)preloadIdentity:(id)a3
+- (void)preloadIdentity:(id)identity
 {
-  if (a3)
+  if (identity)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(identity + 2))(identity, 1);
   }
 }
 
-- (void)forceIdentityRefresh:(id)a3
+- (void)forceIdentityRefresh:(id)refresh
 {
-  v3 = a3;
+  refreshCopy = refresh;
   v4 = +[APSLog courier];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -128,15 +128,15 @@ LABEL_6:
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "APSBAAClientIdentityProvider not refreshing BAA certs", v5, 2u);
   }
 
-  if (v3)
+  if (refreshCopy)
   {
-    v3[2](v3);
+    refreshCopy[2](refreshCopy);
   }
 }
 
-- (void)fetchClientIdentityWithReason:(unint64_t)a3 hasExistingToken:(BOOL)a4 completionHandler:(id)a5
+- (void)fetchClientIdentityWithReason:(unint64_t)reason hasExistingToken:(BOOL)token completionHandler:(id)handler
 {
-  v6 = a5;
+  handlerCopy = handler;
   v7 = +[APSLog courier];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -154,7 +154,7 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "APSBAAClientIdentityProvider fetching BAA cert", buf, 2u);
     }
 
-    v11 = v6;
+    v11 = handlerCopy;
     DeviceIdentityIssueClientCertificateWithCompletion();
   }
 
@@ -167,16 +167,16 @@ LABEL_6:
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Device Identity is not supported, can't fetch a BAA cert", buf, 2u);
     }
 
-    if (v6)
+    if (handlerCopy)
     {
-      (*(v6 + 2))(v6, 0, 0, 0);
+      (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     }
   }
 }
 
-- (id)fetchVMHostCertsAndSignData:(id)a3 error:(id *)a4
+- (id)fetchVMHostCertsAndSignData:(id)data error:(id *)error
 {
-  v6 = a3;
+  dataCopy = data;
   if (([APSBAAClientIdentityProvider supportsFetchingVMHostCerts]_0() & 1) == 0)
   {
     v8 = +[APSLog courier];
@@ -193,7 +193,7 @@ LABEL_17:
     goto LABEL_23;
   }
 
-  if (!v6)
+  if (!dataCopy)
   {
     v8 = +[APSLog courier];
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -209,12 +209,12 @@ LABEL_17:
   v19 = 769;
   v7 = DeviceIdentityCreateHostSignature();
   v8 = 0;
-  if (a4 && *a4)
+  if (error && *error)
   {
     v9 = +[APSLog courier];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = *a4;
+      v10 = *error;
       *buf = 138412290;
       v21 = v10;
       v11 = "APSBAAClientIdentityProvider failed to sign nonce with host VM identity, error: %@";
@@ -241,7 +241,7 @@ LABEL_20:
       v17 = [(APSBAAClientIdentityProvider *)self _parseDERCertificatesFromChain:v8];
       [(APSDProtoHostCertificateInfo *)v16 setCertificates:v17];
 
-      [(APSDProtoHostCertificateInfo *)v16 setNonce:v6];
+      [(APSDProtoHostCertificateInfo *)v16 setNonce:dataCopy];
       v9 = [NSMutableData dataWithBytes:&v19 length:2];
       [v9 appendData:v7];
       [(APSDProtoHostCertificateInfo *)v16 setSignature:v9];
@@ -266,14 +266,14 @@ LABEL_23:
   return v16;
 }
 
-- (BOOL)generateNonceAndSignatureWithPublicKey:(__SecKey *)a3 privateKey:(__SecKey *)a4 dataToSign:(id)a5 time:(id)a6 useIDSNonceVersion:(BOOL)a7 nonceOut:(id *)a8 signatureOut:(id *)a9
+- (BOOL)generateNonceAndSignatureWithPublicKey:(__SecKey *)key privateKey:(__SecKey *)privateKey dataToSign:(id)sign time:(id)time useIDSNonceVersion:(BOOL)version nonceOut:(id *)out signatureOut:(id *)signatureOut
 {
-  v10 = a7;
-  v15 = a6;
-  v16 = a5;
-  LOBYTE(a8) = sub_10001BDD8(a3, a4, v16, v15, v10, [(APSBAAClientIdentityProvider *)self signatureTypeForSigning], a8, a9);
+  versionCopy = version;
+  timeCopy = time;
+  signCopy = sign;
+  LOBYTE(out) = sub_10001BDD8(key, privateKey, signCopy, timeCopy, versionCopy, [(APSBAAClientIdentityProvider *)self signatureTypeForSigning], out, signatureOut);
 
-  return a8;
+  return out;
 }
 
 - (void)debugForceIdentitySwap
@@ -282,7 +282,7 @@ LABEL_23:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ swapping identity providers not supported, not using a multi identity provider", &v4, 0xCu);
   }
 }
@@ -293,18 +293,18 @@ LABEL_23:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412290;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%@ informed of an invalid server presence. Not doing anything, the next presence will use the same identity.", &v4, 0xCu);
   }
 }
 
-- (id)_parseDERCertificatesFromChain:(id)a3
+- (id)_parseDERCertificatesFromChain:(id)chain
 {
-  v3 = a3;
+  chainCopy = chain;
   memset(v19, 0, sizeof(v19));
   v14 = 0;
-  v4 = [v3 bytes];
-  v5 = CTParseCertificateSet(v4, [v3 length] + v4, v19, 3, &v14);
+  bytes = [chainCopy bytes];
+  v5 = CTParseCertificateSet(bytes, [chainCopy length] + bytes, v19, 3, &v14);
   if (v5 || !v14)
   {
     v7 = +[APSLog courier];
@@ -361,9 +361,9 @@ LABEL_15:
   return v7;
 }
 
-- (void)debugForceDeleteIdentity:(id)a3
+- (void)debugForceDeleteIdentity:(id)identity
 {
-  v4 = a3;
+  identityCopy = identity;
   v5 = +[APSLog courier];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -372,7 +372,7 @@ LABEL_15:
   }
 
   v6 = [(APSBAAClientIdentityProvider *)self createBAAOptions:1];
-  v7 = v4;
+  v7 = identityCopy;
   DeviceIdentityIssueClientCertificateWithCompletion();
 }
 

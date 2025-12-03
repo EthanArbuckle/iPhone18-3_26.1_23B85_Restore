@@ -1,8 +1,8 @@
 @interface PXUIButtonConfiguration
-+ (id)configurationWithCursorEffect:(int64_t)a3;
++ (id)configurationWithCursorEffect:(int64_t)effect;
 - (PXUIButtonConfiguration)init;
 - (UIEdgeInsets)hitTestOutset;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXUIButtonConfiguration
@@ -20,9 +20,9 @@
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_opt_class() allocWithZone:a3];
+  result = [objc_opt_class() allocWithZone:zone];
   v5 = *&self->_hitTestOutset.bottom;
   *(result + 1) = *&self->_hitTestOutset.top;
   *(result + 2) = v5;
@@ -46,11 +46,11 @@
   return result;
 }
 
-+ (id)configurationWithCursorEffect:(int64_t)a3
++ (id)configurationWithCursorEffect:(int64_t)effect
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   [v4 setHitTestOutset:{*off_1E7721FA8, *(off_1E7721FA8 + 1), *(off_1E7721FA8 + 2), *(off_1E7721FA8 + 3)}];
-  [v4 setCursorEffect:a3];
+  [v4 setCursorEffect:effect];
 
   return v4;
 }

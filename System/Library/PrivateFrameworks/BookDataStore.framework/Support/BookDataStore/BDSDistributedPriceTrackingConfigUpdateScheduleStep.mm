@@ -1,25 +1,25 @@
 @interface BDSDistributedPriceTrackingConfigUpdateScheduleStep
-- (BDSDistributedPriceTrackingConfigUpdateScheduleStep)initWithCoder:(id)a3;
-- (BDSDistributedPriceTrackingConfigUpdateScheduleStep)initWithDuration:(int64_t)a3 minUpdateInterval:(int64_t)a4 schedulerConfigIdealInterval:(int64_t)a5 schedulerConfigMinInterval:(int64_t)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToStep:(id)a3;
+- (BDSDistributedPriceTrackingConfigUpdateScheduleStep)initWithCoder:(id)coder;
+- (BDSDistributedPriceTrackingConfigUpdateScheduleStep)initWithDuration:(int64_t)duration minUpdateInterval:(int64_t)interval schedulerConfigIdealInterval:(int64_t)idealInterval schedulerConfigMinInterval:(int64_t)minInterval;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToStep:(id)step;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSDistributedPriceTrackingConfigUpdateScheduleStep
 
-- (BDSDistributedPriceTrackingConfigUpdateScheduleStep)initWithDuration:(int64_t)a3 minUpdateInterval:(int64_t)a4 schedulerConfigIdealInterval:(int64_t)a5 schedulerConfigMinInterval:(int64_t)a6
+- (BDSDistributedPriceTrackingConfigUpdateScheduleStep)initWithDuration:(int64_t)duration minUpdateInterval:(int64_t)interval schedulerConfigIdealInterval:(int64_t)idealInterval schedulerConfigMinInterval:(int64_t)minInterval
 {
   v11.receiver = self;
   v11.super_class = BDSDistributedPriceTrackingConfigUpdateScheduleStep;
   result = [(BDSDistributedPriceTrackingConfigUpdateScheduleStep *)&v11 init];
   if (result)
   {
-    result->_duration = a3;
-    result->_minUpdateInterval = a4;
-    result->_schedulerConfigIdealInterval = a5;
-    result->_schedulerConfigMinInterval = a6;
+    result->_duration = duration;
+    result->_minUpdateInterval = interval;
+    result->_schedulerConfigIdealInterval = idealInterval;
+    result->_schedulerConfigMinInterval = minInterval;
   }
 
   return result;
@@ -27,15 +27,15 @@
 
 - (unint64_t)hash
 {
-  v3 = [(BDSDistributedPriceTrackingConfigUpdateScheduleStep *)self duration];
-  v4 = [(BDSDistributedPriceTrackingConfigUpdateScheduleStep *)self minUpdateInterval]^ v3;
-  v5 = [(BDSDistributedPriceTrackingConfigUpdateScheduleStep *)self schedulerConfigIdealInterval];
-  return v4 ^ v5 ^ [(BDSDistributedPriceTrackingConfigUpdateScheduleStep *)self schedulerConfigIdealInterval];
+  duration = [(BDSDistributedPriceTrackingConfigUpdateScheduleStep *)self duration];
+  v4 = [(BDSDistributedPriceTrackingConfigUpdateScheduleStep *)self minUpdateInterval]^ duration;
+  schedulerConfigIdealInterval = [(BDSDistributedPriceTrackingConfigUpdateScheduleStep *)self schedulerConfigIdealInterval];
+  return v4 ^ schedulerConfigIdealInterval ^ [(BDSDistributedPriceTrackingConfigUpdateScheduleStep *)self schedulerConfigIdealInterval];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = BUDynamicCast();
 
@@ -43,14 +43,14 @@
   return self;
 }
 
-- (BOOL)isEqualToStep:(id)a3
+- (BOOL)isEqualToStep:(id)step
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = [v4 duration], v6 == -[BDSDistributedPriceTrackingConfigUpdateScheduleStep duration](self, "duration")) && (v7 = objc_msgSend(v5, "minUpdateInterval"), v7 == -[BDSDistributedPriceTrackingConfigUpdateScheduleStep minUpdateInterval](self, "minUpdateInterval")) && (v8 = objc_msgSend(v5, "schedulerConfigIdealInterval"), v8 == -[BDSDistributedPriceTrackingConfigUpdateScheduleStep schedulerConfigIdealInterval](self, "schedulerConfigIdealInterval")))
+  stepCopy = step;
+  v5 = stepCopy;
+  if (stepCopy && (v6 = [stepCopy duration], v6 == -[BDSDistributedPriceTrackingConfigUpdateScheduleStep duration](self, "duration")) && (v7 = objc_msgSend(v5, "minUpdateInterval"), v7 == -[BDSDistributedPriceTrackingConfigUpdateScheduleStep minUpdateInterval](self, "minUpdateInterval")) && (v8 = objc_msgSend(v5, "schedulerConfigIdealInterval"), v8 == -[BDSDistributedPriceTrackingConfigUpdateScheduleStep schedulerConfigIdealInterval](self, "schedulerConfigIdealInterval")))
   {
-    v9 = [v5 schedulerConfigMinInterval];
-    v10 = v9 == [(BDSDistributedPriceTrackingConfigUpdateScheduleStep *)self schedulerConfigMinInterval];
+    schedulerConfigMinInterval = [v5 schedulerConfigMinInterval];
+    v10 = schedulerConfigMinInterval == [(BDSDistributedPriceTrackingConfigUpdateScheduleStep *)self schedulerConfigMinInterval];
   }
 
   else
@@ -61,22 +61,22 @@
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[BDSDistributedPriceTrackingConfigUpdateScheduleStep duration](self forKey:{"duration"), @"duration"}];
-  [v4 encodeInteger:-[BDSDistributedPriceTrackingConfigUpdateScheduleStep minUpdateInterval](self forKey:{"minUpdateInterval"), @"minUpdateInterval"}];
-  [v4 encodeInteger:-[BDSDistributedPriceTrackingConfigUpdateScheduleStep schedulerConfigIdealInterval](self forKey:{"schedulerConfigIdealInterval"), @"schedulerConfigIdealInterval"}];
-  [v4 encodeInteger:-[BDSDistributedPriceTrackingConfigUpdateScheduleStep schedulerConfigMinInterval](self forKey:{"schedulerConfigMinInterval"), @"schedulerConfigMinInterval"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[BDSDistributedPriceTrackingConfigUpdateScheduleStep duration](self forKey:{"duration"), @"duration"}];
+  [coderCopy encodeInteger:-[BDSDistributedPriceTrackingConfigUpdateScheduleStep minUpdateInterval](self forKey:{"minUpdateInterval"), @"minUpdateInterval"}];
+  [coderCopy encodeInteger:-[BDSDistributedPriceTrackingConfigUpdateScheduleStep schedulerConfigIdealInterval](self forKey:{"schedulerConfigIdealInterval"), @"schedulerConfigIdealInterval"}];
+  [coderCopy encodeInteger:-[BDSDistributedPriceTrackingConfigUpdateScheduleStep schedulerConfigMinInterval](self forKey:{"schedulerConfigMinInterval"), @"schedulerConfigMinInterval"}];
 }
 
-- (BDSDistributedPriceTrackingConfigUpdateScheduleStep)initWithCoder:(id)a3
+- (BDSDistributedPriceTrackingConfigUpdateScheduleStep)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"duration"];
-  v6 = [v4 decodeIntegerForKey:@"minUpdateInterval"];
-  v7 = [v4 decodeIntegerForKey:@"schedulerConfigIdealInterval"];
-  v8 = [v4 decodeIntegerForKey:@"schedulerConfigMinInterval"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"duration"];
+  v6 = [coderCopy decodeIntegerForKey:@"minUpdateInterval"];
+  v7 = [coderCopy decodeIntegerForKey:@"schedulerConfigIdealInterval"];
+  v8 = [coderCopy decodeIntegerForKey:@"schedulerConfigMinInterval"];
 
   return [(BDSDistributedPriceTrackingConfigUpdateScheduleStep *)self initWithDuration:v5 minUpdateInterval:v6 schedulerConfigIdealInterval:v7 schedulerConfigMinInterval:v8];
 }

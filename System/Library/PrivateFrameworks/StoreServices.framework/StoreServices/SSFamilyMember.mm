@@ -1,15 +1,15 @@
 @interface SSFamilyMember
-- (SSFamilyMember)initWithCacheRepresentation:(id)a3;
-- (SSFamilyMember)initWithXPCEncoding:(id)a3;
+- (SSFamilyMember)initWithCacheRepresentation:(id)representation;
+- (SSFamilyMember)initWithXPCEncoding:(id)encoding;
 - (id)copyXPCEncoding;
 - (id)newCacheRepresentation;
 @end
 
 @implementation SSFamilyMember
 
-- (SSFamilyMember)initWithCacheRepresentation:(id)a3
+- (SSFamilyMember)initWithCacheRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -18,13 +18,13 @@
     v5 = [(SSFamilyMember *)&v25 init];
     if (v5)
     {
-      v6 = [v4 objectForKey:@"askToBuy"];
+      v6 = [representationCopy objectForKey:@"askToBuy"];
       if (objc_opt_respondsToSelector())
       {
         v5->_askToBuy = [v6 BOOLValue];
       }
 
-      v7 = [v4 objectForKey:@"firstName"];
+      v7 = [representationCopy objectForKey:@"firstName"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -33,7 +33,7 @@
         v5->_firstName = v8;
       }
 
-      v10 = [v4 objectForKey:@"iCloudName"];
+      v10 = [representationCopy objectForKey:@"iCloudName"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -43,7 +43,7 @@
         v5->_iCloudAccountName = v11;
       }
 
-      v13 = [v4 objectForKey:@"lastName"];
+      v13 = [representationCopy objectForKey:@"lastName"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -53,7 +53,7 @@
         v5->_lastName = v14;
       }
 
-      v16 = [v4 objectForKey:@"iCloudID"];
+      v16 = [representationCopy objectForKey:@"iCloudID"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -62,7 +62,7 @@
         v5->_iCloudIdentifier = v17;
       }
 
-      v19 = [v4 objectForKey:@"iTunesID"];
+      v19 = [representationCopy objectForKey:@"iTunesID"];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -72,14 +72,14 @@
         v5->_iTunesIdentifier = v20;
       }
 
-      v22 = [v4 objectForKey:@"isMe"];
+      v22 = [representationCopy objectForKey:@"isMe"];
 
       if (objc_opt_respondsToSelector())
       {
         v5->_me = [v22 BOOLValue];
       }
 
-      v23 = [v4 objectForKey:@"sharing"];
+      v23 = [representationCopy objectForKey:@"sharing"];
 
       if (objc_opt_respondsToSelector())
       {
@@ -162,11 +162,11 @@
   return v3;
 }
 
-- (SSFamilyMember)initWithXPCEncoding:(id)a3
+- (SSFamilyMember)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x1DA6E0380](v4) == MEMORY[0x1E69E9E80])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x1DA6E0380](encodingCopy) == MEMORY[0x1E69E9E80])
   {
     v30.receiver = self;
     v30.super_class = SSFamilyMember;

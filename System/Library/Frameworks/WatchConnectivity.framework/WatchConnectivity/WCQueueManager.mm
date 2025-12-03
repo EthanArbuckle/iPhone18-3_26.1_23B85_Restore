@@ -3,19 +3,19 @@
 - (id)onqueue_peekMessage;
 - (void)allowMessageSending;
 - (void)cancelQueuedMessages;
-- (void)handleSentMessageWithIdentifier:(id)a3 error:(id)a4;
+- (void)handleSentMessageWithIdentifier:(id)identifier error:(id)error;
 - (void)onqueue_allowMessageSending;
 - (void)onqueue_attemptToSend;
 - (void)onqueue_cancelDaemonMessages;
 - (void)onqueue_cancelQueuedMessages;
 - (void)onqueue_clearQueuedMessages;
 - (void)onqueue_dequeueMessage;
-- (void)onqueue_enqueueMessage:(id)a3;
-- (void)onqueue_handleAcceptanceWithCurrentAccepted:(BOOL)a3 nextAvailable:(BOOL)a4;
-- (void)onqueue_handleFailedDaemonConnectionForQueuedMessage:(id)a3;
-- (void)onqueue_handleSentMessageWithIdentifier:(id)a3 error:(id)a4;
-- (void)onqueue_sendMessage:(id)a3 completionHandler:(id)a4;
-- (void)sendMessage:(id)a3 completionHandler:(id)a4;
+- (void)onqueue_enqueueMessage:(id)message;
+- (void)onqueue_handleAcceptanceWithCurrentAccepted:(BOOL)accepted nextAvailable:(BOOL)available;
+- (void)onqueue_handleFailedDaemonConnectionForQueuedMessage:(id)message;
+- (void)onqueue_handleSentMessageWithIdentifier:(id)identifier error:(id)error;
+- (void)onqueue_sendMessage:(id)message completionHandler:(id)handler;
+- (void)sendMessage:(id)message completionHandler:(id)handler;
 @end
 
 @implementation WCQueueManager
@@ -63,28 +63,28 @@
   [(WCQueueManager *)self onqueue_attemptToSend];
 }
 
-- (void)sendMessage:(id)a3 completionHandler:(id)a4
+- (void)sendMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  handlerCopy = handler;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __48__WCQueueManager_sendMessage_completionHandler___block_invoke;
   block[3] = &unk_278B7C590;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = messageCopy;
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = messageCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)onqueue_sendMessage:(id)a3 completionHandler:(id)a4
+- (void)onqueue_sendMessage:(id)message completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[WCQueuedMessage alloc] initWithMessage:v7 completionHandler:v6];
+  handlerCopy = handler;
+  messageCopy = message;
+  v8 = [[WCQueuedMessage alloc] initWithMessage:messageCopy completionHandler:handlerCopy];
 
   [(WCQueueManager *)self onqueue_enqueueMessage:v8];
 }
@@ -93,18 +93,18 @@
 {
   if ([(WCQueueManager *)self canSend]&& ![(WCQueueManager *)self messageOutstanding])
   {
-    v3 = [(WCQueueManager *)self onqueue_peekMessage];
-    if (v3)
+    onqueue_peekMessage = [(WCQueueManager *)self onqueue_peekMessage];
+    if (onqueue_peekMessage)
     {
-      v4 = [(WCQueueManager *)self inFlightMessages];
-      v5 = [v3 message];
-      v6 = [v5 identifier];
-      [v4 setObject:v3 forKeyedSubscript:v6];
+      inFlightMessages = [(WCQueueManager *)self inFlightMessages];
+      message = [onqueue_peekMessage message];
+      identifier = [message identifier];
+      [inFlightMessages setObject:onqueue_peekMessage forKeyedSubscript:identifier];
 
       v7 = +[WCXPCManager sharedManager];
-      v8 = [v3 message];
-      v9 = [v3 message];
-      v10 = [v9 pairingID];
+      message2 = [onqueue_peekMessage message];
+      message3 = [onqueue_peekMessage message];
+      pairingID = [message3 pairingID];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __39__WCQueueManager_onqueue_attemptToSend__block_invoke;
@@ -115,8 +115,8 @@
       v11[2] = __39__WCQueueManager_onqueue_attemptToSend__block_invoke_3;
       v11[3] = &unk_278B7BF50;
       v11[4] = self;
-      v12 = v3;
-      [v7 sendMessage:v8 clientPairingID:v10 acceptanceHandler:v13 errorHandler:v11];
+      v12 = onqueue_peekMessage;
+      [v7 sendMessage:message2 clientPairingID:pairingID acceptanceHandler:v13 errorHandler:v11];
 
       [(WCQueueManager *)self setMessageOutstanding:1];
     }
@@ -175,31 +175,31 @@ uint64_t __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4(uint64_t a1)
   return [*(a1 + 40) onqueue_handleFailedDaemonConnectionForQueuedMessage:*(a1 + 48)];
 }
 
-- (void)onqueue_handleFailedDaemonConnectionForQueuedMessage:(id)a3
+- (void)onqueue_handleFailedDaemonConnectionForQueuedMessage:(id)message
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   [(WCQueueManager *)self setMessageOutstanding:0];
-  if ([v4 retryCount] > 1)
+  if ([messageCopy retryCount] > 1)
   {
     [(WCQueueManager *)self onqueue_dequeueMessage];
-    v6 = [v4 message];
-    v7 = [v6 identifier];
+    message = [messageCopy message];
+    identifier = [message identifier];
     v8 = [MEMORY[0x277CCA9B8] wcErrorWithCode:7001];
-    [(WCQueueManager *)self onqueue_handleSentMessageWithIdentifier:v7 error:v8];
+    [(WCQueueManager *)self onqueue_handleSentMessageWithIdentifier:identifier error:v8];
   }
 
   else
   {
     [(WCQueueManager *)self onqueue_attemptToSend];
-    [v4 setRetryCount:{objc_msgSend(v4, "retryCount") + 1}];
+    [messageCopy setRetryCount:{objc_msgSend(messageCopy, "retryCount") + 1}];
     v5 = wc_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 136446466;
       v11 = "[WCQueueManager onqueue_handleFailedDaemonConnectionForQueuedMessage:]";
       v12 = 2048;
-      v13 = [v4 retryCount];
+      retryCount = [messageCopy retryCount];
       _os_log_impl(&dword_23B2FA000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s retrying %ld", &v10, 0x16u);
     }
   }
@@ -207,17 +207,17 @@ uint64_t __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4(uint64_t a1)
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onqueue_handleAcceptanceWithCurrentAccepted:(BOOL)a3 nextAvailable:(BOOL)a4
+- (void)onqueue_handleAcceptanceWithCurrentAccepted:(BOOL)accepted nextAvailable:(BOOL)available
 {
-  v4 = a4;
-  v5 = a3;
+  availableCopy = available;
+  acceptedCopy = accepted;
   v13 = *MEMORY[0x277D85DE8];
   v7 = wc_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v8 = "NO";
     *&v11[4] = "[WCQueueManager onqueue_handleAcceptanceWithCurrentAccepted:nextAvailable:]";
-    if (v5)
+    if (acceptedCopy)
     {
       v9 = "YES";
     }
@@ -230,7 +230,7 @@ uint64_t __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4(uint64_t a1)
     *v11 = 136446722;
     *&v11[14] = v9;
     *&v11[12] = 2080;
-    if (v4)
+    if (availableCopy)
     {
       v8 = "YES";
     }
@@ -240,7 +240,7 @@ uint64_t __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4(uint64_t a1)
     _os_log_impl(&dword_23B2FA000, v7, OS_LOG_TYPE_DEFAULT, "%{public}s current %s, next %s", v11, 0x20u);
   }
 
-  if (v5 && ([(WCQueueManager *)self onqueue_dequeueMessage], v4))
+  if (acceptedCopy && ([(WCQueueManager *)self onqueue_dequeueMessage], availableCopy))
   {
     [(WCQueueManager *)self onqueue_attemptToSend];
   }
@@ -253,28 +253,28 @@ uint64_t __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleSentMessageWithIdentifier:(id)a3 error:(id)a4
+- (void)handleSentMessageWithIdentifier:(id)identifier error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   workQueue = self->_workQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __56__WCQueueManager_handleSentMessageWithIdentifier_error___block_invoke;
   block[3] = &unk_278B7C068;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = identifierCopy;
+  v13 = errorCopy;
+  v9 = errorCopy;
+  v10 = identifierCopy;
   dispatch_async(workQueue, block);
 }
 
-- (void)onqueue_handleSentMessageWithIdentifier:(id)a3 error:(id)a4
+- (void)onqueue_handleSentMessageWithIdentifier:(id)identifier error:(id)error
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  errorCopy = error;
   v8 = wc_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -282,24 +282,24 @@ uint64_t __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4(uint64_t a1)
     *buf = 136446722;
     v17 = "[WCQueueManager onqueue_handleSentMessageWithIdentifier:error:]";
     v18 = 2114;
-    v19 = v6;
+    v19 = identifierCopy;
     v20 = 2114;
     v21 = v9;
     _os_log_impl(&dword_23B2FA000, v8, OS_LOG_TYPE_DEFAULT, "%{public}s id: %{public}@ with %{public}@", buf, 0x20u);
   }
 
-  v10 = [(WCQueueManager *)self inFlightMessages];
-  v11 = [v10 objectForKeyedSubscript:v6];
+  inFlightMessages = [(WCQueueManager *)self inFlightMessages];
+  v11 = [inFlightMessages objectForKeyedSubscript:identifierCopy];
 
-  v12 = [v11 completionHandler];
+  completionHandler = [v11 completionHandler];
 
-  if (v12)
+  if (completionHandler)
   {
-    v13 = [v11 completionHandler];
-    (v13)[2](v13, v7);
+    completionHandler2 = [v11 completionHandler];
+    (completionHandler2)[2](completionHandler2, errorCopy);
 
-    v14 = [(WCQueueManager *)self inFlightMessages];
-    [v14 removeObjectForKey:v6];
+    inFlightMessages2 = [(WCQueueManager *)self inFlightMessages];
+    [inFlightMessages2 removeObjectForKey:identifierCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -319,16 +319,16 @@ uint64_t __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4(uint64_t a1)
 - (void)onqueue_cancelQueuedMessages
 {
   v45 = *MEMORY[0x277D85DE8];
-  v2 = [(WCQueueManager *)self inFlightMessages];
-  v3 = [v2 allValues];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  inFlightMessages = [(WCQueueManager *)self inFlightMessages];
+  allValues = [inFlightMessages allValues];
+  v4 = [allValues sortedArrayUsingSelector:sel_compare_];
 
   v5 = wc_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = WCCompactStringFromCollection(v4);
-    v7 = [(WCQueueManager *)self messageQueue];
-    v8 = WCCompactStringFromCollection(v7);
+    messageQueue = [(WCQueueManager *)self messageQueue];
+    v8 = WCCompactStringFromCollection(messageQueue);
     *buf = 136446722;
     v40 = "[WCQueueManager onqueue_cancelQueuedMessages]";
     v41 = 2114;
@@ -369,8 +369,8 @@ uint64_t __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4(uint64_t a1)
           _os_log_impl(&dword_23B2FA000, v15, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
         }
 
-        v16 = [v14 completionHandler];
-        (v16)[2](v16, v9);
+        completionHandler = [v14 completionHandler];
+        (completionHandler)[2](completionHandler, v9);
       }
 
       v11 = [obj countByEnumeratingWithState:&v33 objects:v38 count:16];
@@ -383,8 +383,8 @@ uint64_t __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4(uint64_t a1)
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v17 = [(WCQueueManager *)self messageQueue];
-  v18 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
+  messageQueue2 = [(WCQueueManager *)self messageQueue];
+  v18 = [messageQueue2 countByEnumeratingWithState:&v29 objects:v37 count:16];
   if (v18)
   {
     v19 = v18;
@@ -395,7 +395,7 @@ uint64_t __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4(uint64_t a1)
       {
         if (*v30 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(messageQueue2);
         }
 
         v22 = *(*(&v29 + 1) + 8 * j);
@@ -409,18 +409,18 @@ uint64_t __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4(uint64_t a1)
           _os_log_impl(&dword_23B2FA000, v23, OS_LOG_TYPE_DEFAULT, "%{public}s %{public}@", buf, 0x16u);
         }
 
-        v24 = [v22 completionHandler];
-        (v24)[2](v24, v9);
+        completionHandler2 = [v22 completionHandler];
+        (completionHandler2)[2](completionHandler2, v9);
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      v19 = [messageQueue2 countByEnumeratingWithState:&v29 objects:v37 count:16];
     }
 
     while (v19);
   }
 
-  v25 = [(WCQueueManager *)self inFlightMessages];
-  [v25 removeAllObjects];
+  inFlightMessages2 = [(WCQueueManager *)self inFlightMessages];
+  [inFlightMessages2 removeAllObjects];
 
   [(WCQueueManager *)self onqueue_clearQueuedMessages];
   [(WCQueueManager *)self onqueue_cancelDaemonMessages];
@@ -445,24 +445,24 @@ uint64_t __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4(uint64_t a1)
   v4 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onqueue_enqueueMessage:(id)a3
+- (void)onqueue_enqueueMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(WCQueueManager *)self messageQueue];
-  [v5 addObject:v4];
+  messageCopy = message;
+  messageQueue = [(WCQueueManager *)self messageQueue];
+  [messageQueue addObject:messageCopy];
 
   [(WCQueueManager *)self onqueue_attemptToSend];
 }
 
 - (id)onqueue_peekMessage
 {
-  v3 = [(WCQueueManager *)self messageQueue];
-  v4 = [v3 count];
+  messageQueue = [(WCQueueManager *)self messageQueue];
+  v4 = [messageQueue count];
 
   if (v4)
   {
-    v5 = [(WCQueueManager *)self messageQueue];
-    v6 = [v5 objectAtIndex:0];
+    messageQueue2 = [(WCQueueManager *)self messageQueue];
+    v6 = [messageQueue2 objectAtIndex:0];
   }
 
   else
@@ -475,20 +475,20 @@ uint64_t __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4(uint64_t a1)
 
 - (void)onqueue_dequeueMessage
 {
-  v3 = [(WCQueueManager *)self messageQueue];
-  v4 = [v3 count];
+  messageQueue = [(WCQueueManager *)self messageQueue];
+  v4 = [messageQueue count];
 
   if (v4)
   {
-    v5 = [(WCQueueManager *)self messageQueue];
-    [v5 removeObjectAtIndex:0];
+    messageQueue2 = [(WCQueueManager *)self messageQueue];
+    [messageQueue2 removeObjectAtIndex:0];
   }
 }
 
 - (void)onqueue_clearQueuedMessages
 {
-  v2 = [(WCQueueManager *)self messageQueue];
-  [v2 removeAllObjects];
+  messageQueue = [(WCQueueManager *)self messageQueue];
+  [messageQueue removeAllObjects];
 }
 
 void __39__WCQueueManager_onqueue_attemptToSend__block_invoke_4_cold_1(uint64_t a1, NSObject *a2)

@@ -1,41 +1,41 @@
 @interface WFPropertyListParameterValue
-+ (Class)classForValueType:(int64_t)a3;
-+ (Class)processedClassForValueType:(int64_t)a3;
-+ (id)defaultStateForValueType:(int64_t)a3;
-+ (id)localizedTitleForValueType:(int64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (Class)classForValueType:(int64_t)type;
++ (Class)processedClassForValueType:(int64_t)type;
++ (id)defaultStateForValueType:(int64_t)type;
++ (id)localizedTitleForValueType:(int64_t)type;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)containedVariables;
 - (WFPropertyListObject)serializedRepresentation;
-- (WFPropertyListParameterValue)initWithArray:(id)a3;
-- (WFPropertyListParameterValue)initWithBoolean:(id)a3;
-- (WFPropertyListParameterValue)initWithChooseFromMenuItem:(id)a3;
-- (WFPropertyListParameterValue)initWithChooseFromMenuString:(id)a3;
-- (WFPropertyListParameterValue)initWithDictionary:(id)a3;
-- (WFPropertyListParameterValue)initWithNumber:(id)a3;
-- (WFPropertyListParameterValue)initWithObject:(id)a3;
-- (WFPropertyListParameterValue)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5;
-- (WFPropertyListParameterValue)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5 valueType:(int64_t)a6 variableStringStateClass:(Class)a7;
-- (WFPropertyListParameterValue)initWithString:(id)a3;
-- (WFPropertyListParameterValue)initWithType:(int64_t)a3 state:(id)a4;
-- (WFPropertyListParameterValue)initWithType:(int64_t)a3 state:(id)a4 identity:(id)a5;
+- (WFPropertyListParameterValue)initWithArray:(id)array;
+- (WFPropertyListParameterValue)initWithBoolean:(id)boolean;
+- (WFPropertyListParameterValue)initWithChooseFromMenuItem:(id)item;
+- (WFPropertyListParameterValue)initWithChooseFromMenuString:(id)string;
+- (WFPropertyListParameterValue)initWithDictionary:(id)dictionary;
+- (WFPropertyListParameterValue)initWithNumber:(id)number;
+- (WFPropertyListParameterValue)initWithObject:(id)object;
+- (WFPropertyListParameterValue)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter;
+- (WFPropertyListParameterValue)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter valueType:(int64_t)type variableStringStateClass:(Class)class;
+- (WFPropertyListParameterValue)initWithString:(id)string;
+- (WFPropertyListParameterValue)initWithType:(int64_t)type state:(id)state;
+- (WFPropertyListParameterValue)initWithType:(int64_t)type state:(id)state identity:(id)identity;
 - (unint64_t)hash;
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5;
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler;
 @end
 
 @implementation WFPropertyListParameterValue
 
 - (unint64_t)hash
 {
-  v2 = [(WFPropertyListParameterValue *)self state];
-  v3 = [v2 hash];
+  state = [(WFPropertyListParameterValue *)self state];
+  v3 = [state hash];
 
   return v3 ^ 0x700F00D5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -45,25 +45,25 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFPropertyListParameterValue *)v4 state];
-      v6 = [(WFPropertyListParameterValue *)self state];
-      if ([v5 isEqual:v6])
+      state = [(WFPropertyListParameterValue *)equalCopy state];
+      state2 = [(WFPropertyListParameterValue *)self state];
+      if ([state isEqual:state2])
       {
         v7 = 1;
       }
 
       else
       {
-        v8 = [(WFPropertyListParameterValue *)v4 state];
-        if (v8)
+        state3 = [(WFPropertyListParameterValue *)equalCopy state];
+        if (state3)
         {
           v7 = 0;
         }
 
         else
         {
-          v9 = [(WFPropertyListParameterValue *)self state];
-          v7 = v9 == 0;
+          state4 = [(WFPropertyListParameterValue *)self state];
+          v7 = state4 == 0;
         }
       }
     }
@@ -79,33 +79,33 @@
 
 - (NSArray)containedVariables
 {
-  v2 = [(WFPropertyListParameterValue *)self state];
-  v3 = [v2 containedVariables];
+  state = [(WFPropertyListParameterValue *)self state];
+  containedVariables = [state containedVariables];
 
-  return v3;
+  return containedVariables;
 }
 
-- (void)processWithContext:(id)a3 userInputRequiredHandler:(id)a4 valueHandler:(id)a5
+- (void)processWithContext:(id)context userInputRequiredHandler:(id)handler valueHandler:(id)valueHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(WFPropertyListParameterValue *)self state];
-  if (v11)
+  contextCopy = context;
+  handlerCopy = handler;
+  valueHandlerCopy = valueHandler;
+  state = [(WFPropertyListParameterValue *)self state];
+  if (state)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __89__WFPropertyListParameterValue_processWithContext_userInputRequiredHandler_valueHandler___block_invoke;
     v12[3] = &unk_1E837C818;
     v12[4] = self;
-    v14 = v10;
-    v13 = v8;
-    [v11 processWithContext:v13 userInputRequiredHandler:v9 valueHandler:v12];
+    v14 = valueHandlerCopy;
+    v13 = contextCopy;
+    [state processWithContext:v13 userInputRequiredHandler:handlerCopy valueHandler:v12];
   }
 
   else
   {
-    (*(v10 + 2))(v10, 0, 0);
+    (*(valueHandlerCopy + 2))(valueHandlerCopy, 0, 0);
   }
 }
 
@@ -164,47 +164,47 @@ void __89__WFPropertyListParameterValue_processWithContext_userInputRequiredHand
 - (WFPropertyListObject)serializedRepresentation
 {
   v3 = objc_opt_new();
-  v4 = [(WFPropertyListParameterValue *)self valueType];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
+  valueType = [(WFPropertyListParameterValue *)self valueType];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:valueType];
   [v3 setObject:v5 forKey:@"WFItemType"];
 
-  v6 = [(WFPropertyListParameterValue *)self state];
-  v7 = v6;
-  if (v6)
+  state = [(WFPropertyListParameterValue *)self state];
+  v7 = state;
+  if (state)
   {
-    if (v4 > 2)
+    if (valueType > 2)
     {
-      if (v4 == 6)
+      if (valueType == 6)
       {
-        v13 = [v6 serializedRepresentation];
-        [v3 setObject:v13 forKey:@"WFValue"];
+        serializedRepresentation = [state serializedRepresentation];
+        [v3 setObject:serializedRepresentation forKey:@"WFValue"];
 
         [v3 setObject:&unk_1F4A9AD08 forKey:@"WFItemType"];
         goto LABEL_21;
       }
 
-      if (v4 == 4)
+      if (valueType == 4)
       {
-        v12 = [v6 numberSubstitutableState];
+        numberSubstitutableState = [state numberSubstitutableState];
         goto LABEL_19;
       }
 
-      if (v4 != 3)
+      if (valueType != 3)
       {
         goto LABEL_13;
       }
     }
 
-    else if (v4)
+    else if (valueType)
     {
-      if (v4 == 1)
+      if (valueType == 1)
       {
-        v14 = WFSerializedVariableObject(v6);
+        v14 = WFSerializedVariableObject(state);
         v9 = [v14 mutableCopy];
 
-        v15 = [v7 variable];
+        variable = [v7 variable];
 
-        if (!v15)
+        if (!variable)
         {
           v11 = @"WFDictionaryFieldValue";
           goto LABEL_16;
@@ -217,14 +217,14 @@ LABEL_20:
         goto LABEL_21;
       }
 
-      if (v4 == 2)
+      if (valueType == 2)
       {
-        v8 = WFSerializedVariableObject(v6);
+        v8 = WFSerializedVariableObject(state);
         v9 = [v8 mutableCopy];
 
-        v10 = [v7 variable];
+        variable2 = [v7 variable];
 
-        if (!v10)
+        if (!variable2)
         {
           v11 = @"WFArrayParameterState";
 LABEL_16:
@@ -236,14 +236,14 @@ LABEL_16:
       }
 
 LABEL_13:
-      v9 = WFSerializedVariableObject(v6);
+      v9 = WFSerializedVariableObject(state);
       goto LABEL_17;
     }
 
-    v12 = [v6 variableString];
+    numberSubstitutableState = [state variableString];
 LABEL_19:
-    v9 = v12;
-    v16 = WFSerializedVariableObject(v12);
+    v9 = numberSubstitutableState;
+    v16 = WFSerializedVariableObject(numberSubstitutableState);
     [v3 setObject:v16 forKey:@"WFValue"];
 
     goto LABEL_20;
@@ -254,19 +254,19 @@ LABEL_21:
   return v3;
 }
 
-- (WFPropertyListParameterValue)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5 valueType:(int64_t)a6 variableStringStateClass:(Class)a7
+- (WFPropertyListParameterValue)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter valueType:(int64_t)type variableStringStateClass:(Class)class
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = [a3 objectForKey:@"WFValue"];
-  if (a6 > 3)
+  providerCopy = provider;
+  parameterCopy = parameter;
+  v14 = [representation objectForKey:@"WFValue"];
+  if (type > 3)
   {
-    if (a6 == 4)
+    if (type == 4)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = WFDeserializedVariableObject(v14, v12, v13);
+        v17 = WFDeserializedVariableObject(v14, providerCopy, parameterCopy);
         v20 = [[WFBooleanSubstitutableState alloc] initWithNumberSubstitutableState:v17];
         goto LABEL_31;
       }
@@ -274,9 +274,9 @@ LABEL_21:
       goto LABEL_25;
     }
 
-    if (a6 == 6)
+    if (type == 6)
     {
-      v16 = [[WFChooseFromMenuItemParameterState alloc] initWithSerializedRepresentation:v14 variableProvider:v12 parameter:v13];
+      v16 = [[WFChooseFromMenuItemParameterState alloc] initWithSerializedRepresentation:v14 variableProvider:providerCopy parameter:parameterCopy];
       if (v16)
       {
         goto LABEL_26;
@@ -299,7 +299,7 @@ LABEL_10:
       {
         if (![v17 isEqualToString:@"WFArrayParameterState"])
         {
-          v20 = WFDeserializedVariableObject(v14, v12, v13);
+          v20 = WFDeserializedVariableObject(v14, providerCopy, parameterCopy);
 LABEL_31:
           v16 = v20;
 
@@ -314,16 +314,16 @@ LABEL_31:
         v18 = WFArraySubstitutableParameterState;
       }
 
-      v20 = [[v18 alloc] initWithSerializedRepresentation:v14 variableProvider:v12 parameter:v13];
+      v20 = [[v18 alloc] initWithSerializedRepresentation:v14 variableProvider:providerCopy parameter:parameterCopy];
       goto LABEL_31;
     }
 
 LABEL_25:
-    v16 = [objc_opt_class() defaultStateForValueType:a6];
+    v16 = [objc_opt_class() defaultStateForValueType:type];
     goto LABEL_26;
   }
 
-  if (a6 && a6 != 3)
+  if (type && type != 3)
   {
     goto LABEL_10;
   }
@@ -331,7 +331,7 @@ LABEL_25:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v15 = WFDeserializedVariableObject(v14, v12, v13);
+    v15 = WFDeserializedVariableObject(v14, providerCopy, parameterCopy);
 LABEL_15:
     v19 = v15;
     goto LABEL_19;
@@ -349,7 +349,7 @@ LABEL_19:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v16 = [[a7 alloc] initWithVariableString:v19];
+    v16 = [[class alloc] initWithVariableString:v19];
   }
 
   else
@@ -357,7 +357,7 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v21 = [a7 alloc];
+      v21 = [class alloc];
       v22 = [[WFVariableString alloc] initWithVariable:v19];
       v16 = [v21 initWithVariableString:v22];
     }
@@ -374,32 +374,32 @@ LABEL_19:
   }
 
 LABEL_26:
-  v23 = [(WFPropertyListParameterValue *)self initWithType:a6 state:v16];
+  v23 = [(WFPropertyListParameterValue *)self initWithType:type state:v16];
 
   return v23;
 }
 
-- (WFPropertyListParameterValue)initWithSerializedRepresentation:(id)a3 variableProvider:(id)a4 parameter:(id)a5
+- (WFPropertyListParameterValue)initWithSerializedRepresentation:(id)representation variableProvider:(id)provider parameter:(id)parameter
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [v10 objectForKey:@"WFItemType"];
-  v12 = [v11 integerValue];
+  parameterCopy = parameter;
+  providerCopy = provider;
+  representationCopy = representation;
+  v11 = [representationCopy objectForKey:@"WFItemType"];
+  integerValue = [v11 integerValue];
 
-  v13 = [(WFPropertyListParameterValue *)self initWithSerializedRepresentation:v10 variableProvider:v9 parameter:v8 valueType:v12 variableStringStateClass:objc_opt_class()];
+  v13 = [(WFPropertyListParameterValue *)self initWithSerializedRepresentation:representationCopy variableProvider:providerCopy parameter:parameterCopy valueType:integerValue variableStringStateClass:objc_opt_class()];
   return v13;
 }
 
-- (WFPropertyListParameterValue)initWithType:(int64_t)a3 state:(id)a4 identity:(id)a5
+- (WFPropertyListParameterValue)initWithType:(int64_t)type state:(id)state identity:(id)identity
 {
-  v9 = a4;
-  v10 = a5;
-  [objc_opt_class() classForValueType:a3];
-  if ((objc_opt_isKindOfClass() & 1) == 0 && (a3 != 5 || v9))
+  stateCopy = state;
+  identityCopy = identity;
+  [objc_opt_class() classForValueType:type];
+  if ((objc_opt_isKindOfClass() & 1) == 0 && (type != 5 || stateCopy))
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFPropertyListParameterValue.m" lineNumber:108 description:@"State for WFPropertyListParameterValue is not of the expected class"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFPropertyListParameterValue.m" lineNumber:108 description:@"State for WFPropertyListParameterValue is not of the expected class"];
   }
 
   v18.receiver = self;
@@ -408,33 +408,33 @@ LABEL_26:
   v12 = v11;
   if (v11)
   {
-    v11->_valueType = a3;
-    v13 = [v9 copyWithZone:MEMORY[0x1CCAA2CE0]()];
+    v11->_valueType = type;
+    v13 = [stateCopy copyWithZone:MEMORY[0x1CCAA2CE0]()];
     state = v12->_state;
     v12->_state = v13;
 
-    objc_storeStrong(&v12->_identity, a5);
+    objc_storeStrong(&v12->_identity, identity);
     v15 = v12;
   }
 
   return v12;
 }
 
-- (WFPropertyListParameterValue)initWithType:(int64_t)a3 state:(id)a4
+- (WFPropertyListParameterValue)initWithType:(int64_t)type state:(id)state
 {
   v6 = MEMORY[0x1E696AFB0];
-  v7 = a4;
-  v8 = [v6 UUID];
-  v9 = [(WFPropertyListParameterValue *)self initWithType:a3 state:v7 identity:v8];
+  stateCopy = state;
+  uUID = [v6 UUID];
+  v9 = [(WFPropertyListParameterValue *)self initWithType:type state:stateCopy identity:uUID];
 
   return v9;
 }
 
-+ (Class)processedClassForValueType:(int64_t)a3
++ (Class)processedClassForValueType:(int64_t)type
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3 > 2)
+    if (type > 2)
     {
       goto LABEL_10;
     }
@@ -442,9 +442,9 @@ LABEL_26:
     goto LABEL_9;
   }
 
-  if (a3 <= 4)
+  if (type <= 4)
   {
-    if (a3 != 3)
+    if (type != 3)
     {
       v4 = [MEMORY[0x1E696AD98] numberWithBool:1];
       v3 = objc_opt_class();
@@ -455,7 +455,7 @@ LABEL_26:
     goto LABEL_9;
   }
 
-  if (a3 == 5 || a3 == 6)
+  if (type == 5 || type == 6)
   {
 LABEL_9:
     v3 = objc_opt_class();
@@ -466,25 +466,25 @@ LABEL_10:
   return v3;
 }
 
-+ (Class)classForValueType:(int64_t)a3
++ (Class)classForValueType:(int64_t)type
 {
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    v4 = *off_1E837BDD0[a3];
-    a1 = objc_opt_class();
+    v4 = *off_1E837BDD0[type];
+    self = objc_opt_class();
   }
 
-  return a1;
+  return self;
 }
 
-+ (id)defaultStateForValueType:(int64_t)a3
++ (id)defaultStateForValueType:(int64_t)type
 {
   v3 = 0;
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3)
+    if (type)
     {
-      if (a3 == 1)
+      if (type == 1)
       {
         v11 = [WFDictionarySubstitutableParameterState alloc];
         v5 = [(WFDictionarySubstitutableParameterState *)v11 initWithKeyValuePairs:MEMORY[0x1E695E0F0]];
@@ -492,7 +492,7 @@ LABEL_10:
 
       else
       {
-        if (a3 != 2)
+        if (type != 2)
         {
           goto LABEL_17;
         }
@@ -508,7 +508,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (a3 == 3)
+  if (type == 3)
   {
     v7 = [WFVariableStringParameterState alloc];
     v8 = [WFVariableString alloc];
@@ -516,9 +516,9 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (a3 != 4)
+  if (type != 4)
   {
-    if (a3 != 6)
+    if (type != 6)
     {
       goto LABEL_17;
     }
@@ -544,23 +544,23 @@ LABEL_17:
   return v3;
 }
 
-+ (id)localizedTitleForValueType:(int64_t)a3
++ (id)localizedTitleForValueType:(int64_t)type
 {
-  if (a3 <= 6)
+  if (type <= 6)
   {
-    a1 = WFLocalizedString(off_1E837BD98[a3]);
+    self = WFLocalizedString(off_1E837BD98[type]);
   }
 
-  return a1;
+  return self;
 }
 
-- (WFPropertyListParameterValue)initWithObject:(id)a3
+- (WFPropertyListParameterValue)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(WFPropertyListParameterValue *)self initWithString:v4];
+    v5 = [(WFPropertyListParameterValue *)self initWithString:objectCopy];
   }
 
   else
@@ -568,7 +568,7 @@ LABEL_17:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(WFPropertyListParameterValue *)self initWithDictionary:v4];
+      v5 = [(WFPropertyListParameterValue *)self initWithDictionary:objectCopy];
     }
 
     else
@@ -576,15 +576,15 @@ LABEL_17:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v5 = [(WFPropertyListParameterValue *)self initWithArray:v4];
+        v5 = [(WFPropertyListParameterValue *)self initWithArray:objectCopy];
       }
 
       else
       {
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && WFNumberIsBoolean(v4))
+        if ((objc_opt_isKindOfClass() & 1) != 0 && WFNumberIsBoolean(objectCopy))
         {
-          v5 = [(WFPropertyListParameterValue *)self initWithBoolean:v4];
+          v5 = [(WFPropertyListParameterValue *)self initWithBoolean:objectCopy];
         }
 
         else
@@ -592,7 +592,7 @@ LABEL_17:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v5 = [(WFPropertyListParameterValue *)self initWithNumber:v4];
+            v5 = [(WFPropertyListParameterValue *)self initWithNumber:objectCopy];
           }
 
           else
@@ -600,11 +600,11 @@ LABEL_17:
             objc_opt_class();
             if ((objc_opt_isKindOfClass() & 1) == 0)
             {
-              v6 = 0;
+              selfCopy = 0;
               goto LABEL_15;
             }
 
-            v5 = [(WFPropertyListParameterValue *)self initWithChooseFromMenuItem:v4];
+            v5 = [(WFPropertyListParameterValue *)self initWithChooseFromMenuItem:objectCopy];
           }
         }
       }
@@ -612,26 +612,26 @@ LABEL_17:
   }
 
   self = v5;
-  v6 = self;
+  selfCopy = self;
 LABEL_15:
 
-  return v6;
+  return selfCopy;
 }
 
-- (WFPropertyListParameterValue)initWithChooseFromMenuItem:(id)a3
+- (WFPropertyListParameterValue)initWithChooseFromMenuItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = [WFVariableString alloc];
-  v6 = [v4 string];
-  v7 = [(WFVariableString *)v5 initWithString:v6];
+  string = [itemCopy string];
+  v7 = [(WFVariableString *)v5 initWithString:string];
 
-  v8 = [v4 synonyms];
-  v9 = [v8 if_map:&__block_literal_global_342];
+  synonyms = [itemCopy synonyms];
+  v9 = [synonyms if_map:&__block_literal_global_342];
 
   v10 = [WFVariableString alloc];
-  v11 = [v4 subtitle];
+  subtitle = [itemCopy subtitle];
 
-  v12 = [(WFVariableString *)v10 initWithString:v11];
+  v12 = [(WFVariableString *)v10 initWithString:subtitle];
   v13 = [[WFChooseFromMenuItemParameterState alloc] initWithVariableString:v7 synonyms:v9 subtitle:v12];
   v14 = [(WFPropertyListParameterValue *)self initWithChooseFromMenuItemState:v13];
 
@@ -650,32 +650,32 @@ WFChooseFromMenuItemSynonym *__72__WFPropertyListParameterValue_Convenience__ini
   return v6;
 }
 
-- (WFPropertyListParameterValue)initWithBoolean:(id)a3
+- (WFPropertyListParameterValue)initWithBoolean:(id)boolean
 {
-  v4 = a3;
-  v5 = [(WFNumberSubstitutableState *)[WFBooleanSubstitutableState alloc] initWithNumber:v4];
+  booleanCopy = boolean;
+  v5 = [(WFNumberSubstitutableState *)[WFBooleanSubstitutableState alloc] initWithNumber:booleanCopy];
 
   v6 = [(WFPropertyListParameterValue *)self initWithBooleanState:v5];
   return v6;
 }
 
-- (WFPropertyListParameterValue)initWithNumber:(id)a3
+- (WFPropertyListParameterValue)initWithNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v5 = [WFVariableStringParameterState alloc];
   v6 = [WFVariableString alloc];
-  v7 = [v4 stringValue];
+  stringValue = [numberCopy stringValue];
 
-  v8 = [(WFVariableString *)v6 initWithString:v7];
+  v8 = [(WFVariableString *)v6 initWithString:stringValue];
   v9 = [(WFVariableStringParameterState *)v5 initWithVariableString:v8];
   v10 = [(WFPropertyListParameterValue *)self initWithNumberState:v9];
 
   return v10;
 }
 
-- (WFPropertyListParameterValue)initWithArray:(id)a3
+- (WFPropertyListParameterValue)initWithArray:(id)array
 {
-  v4 = [a3 if_map:&__block_literal_global_54751];
+  v4 = [array if_map:&__block_literal_global_54751];
   v5 = [[WFArraySubstitutableParameterState alloc] initWithValues:v4];
   v6 = [(WFPropertyListParameterValue *)self initWithArrayState:v5];
 
@@ -690,9 +690,9 @@ WFPropertyListParameterValue *__59__WFPropertyListParameterValue_Convenience__in
   return v3;
 }
 
-- (WFPropertyListParameterValue)initWithDictionary:(id)a3
+- (WFPropertyListParameterValue)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v5 = objc_opt_new();
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -700,7 +700,7 @@ WFPropertyListParameterValue *__59__WFPropertyListParameterValue_Convenience__in
   v10[3] = &unk_1E837BD38;
   v11 = v5;
   v6 = v5;
-  [v4 enumerateKeysAndObjectsUsingBlock:v10];
+  [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v10];
 
   v7 = [[WFDictionarySubstitutableParameterState alloc] initWithKeyValuePairs:v6];
   v8 = [(WFPropertyListParameterValue *)self initWithDictionaryState:v7];
@@ -733,11 +733,11 @@ void __64__WFPropertyListParameterValue_Convenience__initWithDictionary___block_
   }
 }
 
-- (WFPropertyListParameterValue)initWithChooseFromMenuString:(id)a3
+- (WFPropertyListParameterValue)initWithChooseFromMenuString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [WFChooseFromMenuItemParameterState alloc];
-  v6 = [[WFVariableString alloc] initWithString:v4];
+  v6 = [[WFVariableString alloc] initWithString:stringCopy];
 
   v7 = [(WFVariableStringParameterState *)v5 initWithVariableString:v6];
   v8 = [(WFPropertyListParameterValue *)self initWithChooseFromMenuItemState:v7];
@@ -745,11 +745,11 @@ void __64__WFPropertyListParameterValue_Convenience__initWithDictionary___block_
   return v8;
 }
 
-- (WFPropertyListParameterValue)initWithString:(id)a3
+- (WFPropertyListParameterValue)initWithString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v5 = [WFVariableStringParameterState alloc];
-  v6 = [[WFVariableString alloc] initWithString:v4];
+  v6 = [[WFVariableString alloc] initWithString:stringCopy];
 
   v7 = [(WFVariableStringParameterState *)v5 initWithVariableString:v6];
   v8 = [(WFPropertyListParameterValue *)self initWithStringState:v7];

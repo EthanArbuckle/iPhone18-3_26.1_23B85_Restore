@@ -1,25 +1,25 @@
 @interface NLXSchemaContextualSpanData
-- (BOOL)isEqual:(id)a3;
-- (NLXSchemaContextualSpanData)initWithDictionary:(id)a3;
-- (NLXSchemaContextualSpanData)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NLXSchemaContextualSpanData)initWithDictionary:(id)dictionary;
+- (NLXSchemaContextualSpanData)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NLXSchemaContextualSpanData
 
-- (NLXSchemaContextualSpanData)initWithDictionary:(id)a3
+- (NLXSchemaContextualSpanData)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = NLXSchemaContextualSpanData;
   v5 = [(NLXSchemaContextualSpanData *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isSurroundingTextMatched"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isSurroundingTextMatched"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -32,30 +32,30 @@
   return v5;
 }
 
-- (NLXSchemaContextualSpanData)initWithJSON:(id)a3
+- (NLXSchemaContextualSpanData)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NLXSchemaContextualSpanData *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NLXSchemaContextualSpanData *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NLXSchemaContextualSpanData *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -68,16 +68,16 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*(&self->_isSurroundingTextMatched + 1))
   {
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[NLXSchemaContextualSpanData isSurroundingTextMatched](self, "isSurroundingTextMatched")}];
-    [v3 setObject:v4 forKeyedSubscript:@"isSurroundingTextMatched"];
+    [dictionary setObject:v4 forKeyedSubscript:@"isSurroundingTextMatched"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -93,15 +93,15 @@
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v6 = 0;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    if (*(&self->_isSurroundingTextMatched + 1) == (v4[9] & 1))
+    if (*(&self->_isSurroundingTextMatched + 1) == (equalCopy[9] & 1))
     {
-      if (!*(&self->_isSurroundingTextMatched + 1) || (isSurroundingTextMatched = self->_isSurroundingTextMatched, isSurroundingTextMatched == [v4 isSurroundingTextMatched]))
+      if (!*(&self->_isSurroundingTextMatched + 1) || (isSurroundingTextMatched = self->_isSurroundingTextMatched, isSurroundingTextMatched == [equalCopy isSurroundingTextMatched]))
       {
         v6 = 1;
       }
@@ -111,7 +111,7 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*(&self->_isSurroundingTextMatched + 1))
   {

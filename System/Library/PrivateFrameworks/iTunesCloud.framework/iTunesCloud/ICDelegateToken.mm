@@ -1,29 +1,29 @@
 @interface ICDelegateToken
-- (BOOL)expiresBeforeDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)expiresBeforeDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isExpired;
-- (ICDelegateToken)initWithCoder:(id)a3;
-- (ICDelegateToken)initWithType:(int64_t)a3 data:(id)a4 expirationDate:(id)a5;
+- (ICDelegateToken)initWithCoder:(id)coder;
+- (ICDelegateToken)initWithType:(int64_t)type data:(id)data expirationDate:(id)date;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ICDelegateToken
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   data = self->_data;
-  v5 = a3;
-  [v5 encodeObject:data forKey:@"d"];
-  [v5 encodeObject:self->_expirationDate forKey:@"e"];
-  [v5 encodeInteger:self->_type forKey:@"t"];
+  coderCopy = coder;
+  [coderCopy encodeObject:data forKey:@"d"];
+  [coderCopy encodeObject:self->_expirationDate forKey:@"e"];
+  [coderCopy encodeInteger:self->_type forKey:@"t"];
 }
 
-- (ICDelegateToken)initWithCoder:(id)a3
+- (ICDelegateToken)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"d"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"d"];
   if (v5)
   {
     v11.receiver = self;
@@ -33,11 +33,11 @@
     if (v6)
     {
       objc_storeStrong(&v6->_data, v5);
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"e"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"e"];
       expirationDate = v7->_expirationDate;
       v7->_expirationDate = v8;
 
-      v7->_type = [v4 decodeIntegerForKey:@"t"];
+      v7->_type = [coderCopy decodeIntegerForKey:@"t"];
     }
   }
 
@@ -50,17 +50,17 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_type != v4[2])
+  if ((objc_opt_isKindOfClass() & 1) == 0 || self->_type != equalCopy[2])
   {
     goto LABEL_11;
   }
 
   expirationDate = self->_expirationDate;
-  v6 = v4[3];
+  v6 = equalCopy[3];
   if (expirationDate != v6)
   {
     v7 = 0;
@@ -78,7 +78,7 @@ LABEL_11:
   }
 
   data = self->_data;
-  v9 = v4[1];
+  v9 = equalCopy[1];
   if (data == v9)
   {
     v7 = 1;
@@ -168,30 +168,30 @@ LABEL_6:
   return v4;
 }
 
-- (BOOL)expiresBeforeDate:(id)a3
+- (BOOL)expiresBeforeDate:(id)date
 {
   expirationDate = self->_expirationDate;
   if (expirationDate)
   {
-    LOBYTE(expirationDate) = [(NSDate *)expirationDate compare:a3]== NSOrderedAscending;
+    LOBYTE(expirationDate) = [(NSDate *)expirationDate compare:date]== NSOrderedAscending;
   }
 
   return expirationDate;
 }
 
-- (ICDelegateToken)initWithType:(int64_t)a3 data:(id)a4 expirationDate:(id)a5
+- (ICDelegateToken)initWithType:(int64_t)type data:(id)data expirationDate:(id)date
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (a3 != 1 || v9)
+  dataCopy = data;
+  dateCopy = date;
+  v10 = dateCopy;
+  if (type != 1 || dateCopy)
   {
     v17.receiver = self;
     v17.super_class = ICDelegateToken;
     v11 = [(ICDelegateToken *)&v17 init];
     if (v11)
     {
-      v12 = [v8 copy];
+      v12 = [dataCopy copy];
       data = v11->_data;
       v11->_data = v12;
 
@@ -199,7 +199,7 @@ LABEL_6:
       expirationDate = v11->_expirationDate;
       v11->_expirationDate = v14;
 
-      v11->_type = a3;
+      v11->_type = type;
     }
   }
 

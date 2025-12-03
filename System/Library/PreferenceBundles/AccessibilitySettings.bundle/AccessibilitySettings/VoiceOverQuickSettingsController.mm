@@ -1,10 +1,10 @@
 @interface VoiceOverQuickSettingsController
-- (BOOL)isItemEnabled:(id)a3;
-- (id)identifierForItem:(id)a3;
-- (id)itemAfterTogglingEnabledState:(id)a3;
+- (BOOL)isItemEnabled:(id)enabled;
+- (id)identifierForItem:(id)item;
+- (id)itemAfterTogglingEnabledState:(id)state;
 - (id)itemsFromPreferences;
-- (id)titleForItem:(id)a3;
-- (void)updateItemsInPreferences:(id)a3;
+- (id)titleForItem:(id)item;
+- (void)updateItemsInPreferences:(id)preferences;
 @end
 
 @implementation VoiceOverQuickSettingsController
@@ -12,53 +12,53 @@
 - (id)itemsFromPreferences
 {
   v2 = +[VOSSettingsHelper sharedInstance];
-  v3 = [v2 userSettingsItems];
+  userSettingsItems = [v2 userSettingsItems];
 
-  return v3;
+  return userSettingsItems;
 }
 
-- (void)updateItemsInPreferences:(id)a3
+- (void)updateItemsInPreferences:(id)preferences
 {
-  v3 = a3;
+  preferencesCopy = preferences;
   v4 = +[VOSSettingsHelper sharedInstance];
-  [v4 saveUserSettingsItems:v3];
+  [v4 saveUserSettingsItems:preferencesCopy];
 }
 
-- (id)titleForItem:(id)a3
+- (id)titleForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = +[VOSSettingsHelper sharedInstance];
-  v5 = [v3 objectForKey:@"Item"];
+  v5 = [itemCopy objectForKey:@"Item"];
 
   v6 = [v4 nameForItem:v5];
 
   return v6;
 }
 
-- (id)identifierForItem:(id)a3
+- (id)identifierForItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   v4 = +[VOSSettingsHelper sharedInstance];
-  v5 = [v3 objectForKey:@"Item"];
+  v5 = [itemCopy objectForKey:@"Item"];
 
   v6 = [v4 identifierForItem:v5];
 
   return v6;
 }
 
-- (BOOL)isItemEnabled:(id)a3
+- (BOOL)isItemEnabled:(id)enabled
 {
-  v3 = [a3 objectForKeyedSubscript:@"Included"];
-  v4 = [v3 BOOLValue];
+  v3 = [enabled objectForKeyedSubscript:@"Included"];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
-- (id)itemAfterTogglingEnabledState:(id)a3
+- (id)itemAfterTogglingEnabledState:(id)state
 {
-  v3 = a3;
-  v4 = [v3 mutableCopy];
-  v5 = [v3 objectForKeyedSubscript:@"Included"];
+  stateCopy = state;
+  v4 = [stateCopy mutableCopy];
+  v5 = [stateCopy objectForKeyedSubscript:@"Included"];
 
   v6 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 BOOLValue] ^ 1);
   [v4 setObject:v6 forKeyedSubscript:@"Included"];

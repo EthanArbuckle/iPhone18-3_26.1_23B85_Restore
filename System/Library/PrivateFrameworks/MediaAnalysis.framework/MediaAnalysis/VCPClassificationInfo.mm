@@ -1,13 +1,13 @@
 @interface VCPClassificationInfo
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)duration;
-- (VCPClassificationInfo)initWithTimeRange:(id *)a3 confidence:(float)a4;
-- (void)setDuration:(id *)a3;
-- (void)update:(id *)a3 confidence:(float)a4;
+- (VCPClassificationInfo)initWithTimeRange:(id *)range confidence:(float)confidence;
+- (void)setDuration:(id *)duration;
+- (void)update:(id *)update confidence:(float)confidence;
 @end
 
 @implementation VCPClassificationInfo
 
-- (VCPClassificationInfo)initWithTimeRange:(id *)a3 confidence:(float)a4
+- (VCPClassificationInfo)initWithTimeRange:(id *)range confidence:(float)confidence
 {
   v11.receiver = self;
   v11.super_class = VCPClassificationInfo;
@@ -15,31 +15,31 @@
   v7 = v6;
   if (v6)
   {
-    v8 = *&a3->var1.var0;
-    *(v6 + 28) = a3->var1.var3;
+    v8 = *&range->var1.var0;
+    *(v6 + 28) = range->var1.var3;
     *(v6 + 12) = v8;
-    *(v6 + 2) = a4;
+    *(v6 + 2) = confidence;
     v9 = v6;
   }
 
   return v7;
 }
 
-- (void)update:(id *)a3 confidence:(float)a4
+- (void)update:(id *)update confidence:(float)confidence
 {
-  time = a3->var1;
+  time = update->var1;
   Seconds = CMTimeGetSeconds(&time);
   confidence = self->_confidence;
   *&time.value = *(&self->_confidence + 1);
   time.epoch = *&self->_duration.flags;
-  v9 = (Seconds * a4) + confidence * CMTimeGetSeconds(&time);
+  v9 = (Seconds * confidence) + confidence * CMTimeGetSeconds(&time);
   *&time.value = *(&self->_confidence + 1);
   time.epoch = *&self->_duration.flags;
   v10 = v9 / (CMTimeGetSeconds(&time) + Seconds);
   self->_confidence = v10;
   *&lhs.value = *(&self->_confidence + 1);
   lhs.epoch = *&self->_duration.flags;
-  var1 = a3->var1;
+  var1 = update->var1;
   CMTimeAdd(&time, &lhs, &var1);
   *(&self->_confidence + 1) = *&time.value;
   *&self->_duration.flags = time.epoch;
@@ -52,10 +52,10 @@
   return self;
 }
 
-- (void)setDuration:(id *)a3
+- (void)setDuration:(id *)duration
 {
-  v3 = *&a3->var0;
-  *&self->_duration.flags = a3->var3;
+  v3 = *&duration->var0;
+  *&self->_duration.flags = duration->var3;
   *(&self->_confidence + 1) = v3;
 }
 

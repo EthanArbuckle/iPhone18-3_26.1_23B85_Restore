@@ -1,7 +1,7 @@
 @interface MSDEnrollPassword
 + (id)sharedInstance;
-- (id)createPasswordFor:(id)a3 pairingCode:(id)a4;
-- (id)encodeBase64:(char *)a3 ofLength:(unsigned int)a4;
+- (id)createPasswordFor:(id)for pairingCode:(id)code;
+- (id)encodeBase64:(char *)base64 ofLength:(unsigned int)length;
 @end
 
 @implementation MSDEnrollPassword
@@ -18,39 +18,39 @@
   return v3;
 }
 
-- (id)encodeBase64:(char *)a3 ofLength:(unsigned int)a4
+- (id)encodeBase64:(char *)base64 ofLength:(unsigned int)length
 {
-  if (a4)
+  if (length)
   {
-    v6 = (2 * ((2863311531u * (a4 + 2)) >> 32)) & 0xFFFFFFFC;
-    v7 = malloc_type_malloc((4 * ((a4 + 2) / 3)) | 1, 0xBE1226CCuLL);
+    v6 = (2 * ((2863311531u * (length + 2)) >> 32)) & 0xFFFFFFFC;
+    v7 = malloc_type_malloc((4 * ((length + 2) / 3)) | 1, 0xBE1226CCuLL);
     v8 = v7;
     v9 = 0;
     v10 = 0;
     do
     {
-      v11 = a3[v10] << 8;
+      v11 = base64[v10] << 8;
       v12 = v10 + 1;
-      if (v10 + 1 < a4)
+      if (v10 + 1 < length)
       {
-        v11 |= a3[v12];
+        v11 |= base64[v12];
       }
 
       v13 = (v11 << 8);
-      if (v10 + 2 >= a4)
+      if (v10 + 2 >= length)
       {
         v15 = 61;
       }
 
       else
       {
-        v14 = a3[v10 + 2];
+        v14 = base64[v10 + 2];
         v13 = v13 | v14;
         v15 = aAbcdefghijklmn[v14 & 0x3F];
       }
 
       *(v7 + v9 + 3) = v15;
-      if (v12 >= a4)
+      if (v12 >= length)
       {
         v16 = 61;
       }
@@ -67,7 +67,7 @@
       v9 += 4;
     }
 
-    while (v10 < a4);
+    while (v10 < length);
     *(v7 + v6) = 0;
     v17 = [NSString stringWithCString:v7 encoding:4];
     free(v8);
@@ -81,17 +81,17 @@
   return v17;
 }
 
-- (id)createPasswordFor:(id)a3 pairingCode:(id)a4
+- (id)createPasswordFor:(id)for pairingCode:(id)code
 {
-  v6 = a4;
-  v7 = a3;
+  codeCopy = code;
+  forCopy = for;
   v8 = [NSMutableData dataWithBytes:&unk_1001A53A8 length:216];
-  v9 = [v7 cStringUsingEncoding:4];
-  v10 = [v7 length];
+  v9 = [forCopy cStringUsingEncoding:4];
+  v10 = [forCopy length];
 
   [v8 appendBytes:v9 length:v10];
-  v11 = [v6 cStringUsingEncoding:4];
-  v12 = [v6 length];
+  v11 = [codeCopy cStringUsingEncoding:4];
+  v12 = [codeCopy length];
 
   [v8 appendBytes:v11 length:v12];
   v13 = malloc_type_calloc(1uLL, 0x14uLL, 0x100004077774924uLL);

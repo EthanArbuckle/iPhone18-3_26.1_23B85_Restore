@@ -1,49 +1,49 @@
 @interface UIStatusBarOpenInSafariItemView
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
-- (id)_displayStringFromURL:(id)a3;
-- (id)_nominalTitleWithDestinationText:(id)a3;
-- (id)shortenedTitleWithCompressionLevel:(int)a3;
-- (void)userDidActivateButton:(id)a3;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
+- (id)_displayStringFromURL:(id)l;
+- (id)_nominalTitleWithDestinationText:(id)text;
+- (id)shortenedTitleWithCompressionLevel:(int)level;
+- (void)userDidActivateButton:(id)button;
 @end
 
 @implementation UIStatusBarOpenInSafariItemView
 
-- (id)_displayStringFromURL:(id)a3
+- (id)_displayStringFromURL:(id)l
 {
-  if (a3)
+  if (l)
   {
-    v3 = [MEMORY[0x1E696AF20] componentsWithURL:a3 resolvingAgainstBaseURL:0];
-    v4 = [v3 host];
+    v3 = [MEMORY[0x1E696AF20] componentsWithURL:l resolvingAgainstBaseURL:0];
+    host = [v3 host];
   }
 
   else
   {
-    v4 = 0;
+    host = 0;
   }
 
-  return v4;
+  return host;
 }
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v5 = a3;
-  v6 = [v5 rawData];
-  if (*(v6 + 2793))
+  dataCopy = data;
+  rawData = [dataCopy rawData];
+  if (*(rawData + 2793))
   {
-    v7 = v6;
+    v7 = rawData;
     [(UIStatusBarOpenInSafariItemView *)self setSystemNavigationAction:0];
     v8 = MEMORY[0x1E695DFF8];
-    v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v7 + 2793];
-    [v8 URLWithString:v9 encodingInvalidCharacters:0];
+    2793 = [MEMORY[0x1E696AEC0] stringWithUTF8String:v7 + 2793];
+    [v8 URLWithString:2793 encodingInvalidCharacters:0];
   }
 
   else
   {
-    v10 = [v5 systemNavigationItem];
-    [(UIStatusBarOpenInSafariItemView *)self setSystemNavigationAction:v10];
+    systemNavigationItem = [dataCopy systemNavigationItem];
+    [(UIStatusBarOpenInSafariItemView *)self setSystemNavigationAction:systemNavigationItem];
 
-    v9 = [(UIStatusBarOpenInSafariItemView *)self systemNavigationAction];
-    [v9 URLForDestination:1];
+    2793 = [(UIStatusBarOpenInSafariItemView *)self systemNavigationAction];
+    [2793 URLForDestination:1];
   }
   v11 = ;
 
@@ -73,8 +73,8 @@
       }
 
       v18 = _MergedGlobals_1_23;
-      v19 = [v15 lastObject];
-      if ([v18 containsObject:v19])
+      lastObject = [v15 lastObject];
+      if ([v18 containsObject:lastObject])
       {
         v20 = 3;
       }
@@ -98,8 +98,8 @@
     v21 = 0;
   }
 
-  v22 = [(UIStatusBarOpenInSafariItemView *)self destinationText];
-  v23 = [v22 isEqualToString:v21];
+  destinationText = [(UIStatusBarOpenInSafariItemView *)self destinationText];
+  v23 = [destinationText isEqualToString:v21];
 
   if ((v23 & 1) == 0)
   {
@@ -118,48 +118,48 @@ void __60__UIStatusBarOpenInSafariItemView_updateForNewData_actions___block_invo
   _MergedGlobals_1_23 = &unk_1EFE2D558;
 }
 
-- (void)userDidActivateButton:(id)a3
+- (void)userDidActivateButton:(id)button
 {
-  v4 = [(UIStatusBarOpenInSafariItemView *)self systemNavigationAction];
-  v5 = [v4 canSendResponse];
+  systemNavigationAction = [(UIStatusBarOpenInSafariItemView *)self systemNavigationAction];
+  canSendResponse = [systemNavigationAction canSendResponse];
 
-  if (v5)
+  if (canSendResponse)
   {
-    v6 = [(UIStatusBarOpenInSafariItemView *)self systemNavigationAction];
-    [v6 sendResponseForDestination:1];
+    systemNavigationAction2 = [(UIStatusBarOpenInSafariItemView *)self systemNavigationAction];
+    [systemNavigationAction2 sendResponseForDestination:1];
   }
 }
 
-- (id)_nominalTitleWithDestinationText:(id)a3
+- (id)_nominalTitleWithDestinationText:(id)text
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = a3;
+  textCopy = text;
   v5 = _UILocalizedStringInSystemLanguage(@"StatusBar: Website", @"%@");
-  v6 = [v3 stringWithFormat:v5, v4];
+  textCopy = [v3 stringWithFormat:v5, textCopy];
 
-  return v6;
+  return textCopy;
 }
 
-- (id)shortenedTitleWithCompressionLevel:(int)a3
+- (id)shortenedTitleWithCompressionLevel:(int)level
 {
-  if (a3 == 1)
+  if (level == 1)
   {
     v5 = _UILocalizedStringInSystemLanguage(@"StatusBar: Webpage", @"Webpage");
 LABEL_7:
-    v4 = 0;
+    destinationText = 0;
     goto LABEL_8;
   }
 
-  if (a3)
+  if (level)
   {
     v5 = 0;
     goto LABEL_7;
   }
 
-  v4 = [(UIStatusBarOpenInSafariItemView *)self destinationText];
-  if ([v4 length])
+  destinationText = [(UIStatusBarOpenInSafariItemView *)self destinationText];
+  if ([destinationText length])
   {
-    v5 = [(UIStatusBarOpenInSafariItemView *)self _nominalTitleWithDestinationText:v4];
+    v5 = [(UIStatusBarOpenInSafariItemView *)self _nominalTitleWithDestinationText:destinationText];
   }
 
   else

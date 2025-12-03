@@ -1,7 +1,7 @@
 @interface MySportsScrollTestCase
 - (NSString)testName;
 - (_TtC7NewsUI222MySportsScrollTestCase)init;
-- (id)scrollViewWithContext:(id)a3;
+- (id)scrollViewWithContext:(id)context;
 @end
 
 @implementation MySportsScrollTestCase
@@ -14,11 +14,11 @@
   return v2;
 }
 
-- (id)scrollViewWithContext:(id)a3
+- (id)scrollViewWithContext:(id)context
 {
-  v4 = a3;
-  v5 = self;
-  sub_218FD303C(v4);
+  contextCopy = context;
+  selfCopy = self;
+  sub_218FD303C(contextCopy);
   v7 = v6;
 
   return v7;

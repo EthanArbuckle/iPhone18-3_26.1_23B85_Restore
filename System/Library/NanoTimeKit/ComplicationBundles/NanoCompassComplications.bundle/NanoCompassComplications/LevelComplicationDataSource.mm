@@ -1,7 +1,7 @@
 @interface LevelComplicationDataSource
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4;
-- (LevelComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
-- (id)_templateNoData:(BOOL)a3 calibrated:(BOOL)a4 showAlwaysOnState:(BOOL)a5 heading:(id)a6 bearing:(id)a7 incline:(id)a8;
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device;
+- (LevelComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
+- (id)_templateNoData:(BOOL)data calibrated:(BOOL)calibrated showAlwaysOnState:(BOOL)state heading:(id)heading bearing:(id)bearing incline:(id)incline;
 - (id)newTemplate;
 - (id)randomizedTemplate;
 - (id)sampleTemplate;
@@ -9,9 +9,9 @@
 
 @implementation LevelComplicationDataSource
 
-+ (BOOL)acceptsComplicationFamily:(int64_t)a3 forDevice:(id)a4
++ (BOOL)acceptsComplicationFamily:(int64_t)family forDevice:(id)device
 {
-  if (!objc_msgSend_supportsUrsa(a4, a2, a3, a4))
+  if (!objc_msgSend_supportsUrsa(device, a2, family, device))
   {
 LABEL_6:
     LOBYTE(v9) = 0;
@@ -30,8 +30,8 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v9 = 0x1700u >> a3;
-  if (a3 > 0xC)
+  v9 = 0x1700u >> family;
+  if (family > 0xC)
   {
     LOBYTE(v9) = 0;
   }
@@ -39,11 +39,11 @@ LABEL_6:
   return v9 & 1;
 }
 
-- (LevelComplicationDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (LevelComplicationDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v6.receiver = self;
   v6.super_class = LevelComplicationDataSource;
-  return [(NanoCompassBaseComplicationDataSource *)&v6 initWithComplication:a3 family:a4 forDevice:a5 mode:3];
+  return [(NanoCompassBaseComplicationDataSource *)&v6 initWithComplication:complication family:family forDevice:device mode:3];
 }
 
 - (id)sampleTemplate
@@ -80,22 +80,22 @@ LABEL_6:
   return v15;
 }
 
-- (id)_templateNoData:(BOOL)a3 calibrated:(BOOL)a4 showAlwaysOnState:(BOOL)a5 heading:(id)a6 bearing:(id)a7 incline:(id)a8
+- (id)_templateNoData:(BOOL)data calibrated:(BOOL)calibrated showAlwaysOnState:(BOOL)state heading:(id)heading bearing:(id)bearing incline:(id)incline
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  stateCopy = state;
+  calibratedCopy = calibrated;
+  dataCopy = data;
   v121[4] = *MEMORY[0x277D85DE8];
-  v14 = a6;
-  v15 = a7;
-  v19 = a8;
-  v20 = !v11 | v12;
+  headingCopy = heading;
+  bearingCopy = bearing;
+  inclineCopy = incline;
+  v20 = !calibratedCopy | dataCopy;
   if (v20 == 1)
   {
 
-    v19 = 0;
-    v15 = 0;
-    v14 = 0;
+    inclineCopy = 0;
+    bearingCopy = 0;
+    headingCopy = 0;
   }
 
   v21 = objc_msgSend_family(self, v16, v17, v18);
@@ -112,16 +112,16 @@ LABEL_6:
       v26 = objc_opt_class();
       v24 = objc_msgSend_fullColorImageProviderWithImageViewClass_(v25, v27, v26, v28);
       v120[0] = @"heading";
-      v32 = v14;
-      if (!v14)
+      v32 = headingCopy;
+      if (!headingCopy)
       {
         v32 = objc_msgSend_null(MEMORY[0x277CBEB68], v29, v30, v31);
       }
 
       v121[0] = v32;
       v120[1] = @"incline";
-      v33 = v19;
-      if (!v19)
+      v33 = inclineCopy;
+      if (!inclineCopy)
       {
         v33 = objc_msgSend_null(MEMORY[0x277CBEB68], v29, v30, v31);
       }
@@ -131,14 +131,14 @@ LABEL_6:
       v34 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v29, v20, v31);
       v121[2] = v34;
       v120[3] = @"alwayson";
-      v37 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v35, v10, v36);
+      v37 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v35, stateCopy, v36);
       v121[3] = v37;
       v39 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v38, v121, v120, 4);
       objc_msgSend_setMetadata_(v24, v40, v39, v41);
 
-      if (v19)
+      if (inclineCopy)
       {
-        if (v14)
+        if (headingCopy)
         {
 LABEL_16:
           objc_msgSend_templateWithImageProvider_(MEMORY[0x277CBB850], v42, v24, v43);
@@ -150,7 +150,7 @@ LABEL_16:
       else
       {
 
-        if (v14)
+        if (headingCopy)
         {
           goto LABEL_16;
         }
@@ -163,16 +163,16 @@ LABEL_16:
     v58 = objc_opt_class();
     v24 = objc_msgSend_fullColorImageProviderWithImageViewClass_(v57, v59, v58, v60);
     v118[0] = @"heading";
-    v64 = v14;
-    if (!v14)
+    v64 = headingCopy;
+    if (!headingCopy)
     {
       v64 = objc_msgSend_null(MEMORY[0x277CBEB68], v61, v62, v63);
     }
 
     v119[0] = v64;
     v118[1] = @"incline";
-    v65 = v19;
-    if (!v19)
+    v65 = inclineCopy;
+    if (!inclineCopy)
     {
       v65 = objc_msgSend_null(MEMORY[0x277CBEB68], v61, v62, v63);
     }
@@ -182,14 +182,14 @@ LABEL_16:
     v66 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v61, v20, v63);
     v119[2] = v66;
     v118[3] = @"alwayson";
-    v69 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v67, v10, v68);
+    v69 = objc_msgSend_numberWithBool_(MEMORY[0x277CCABB0], v67, stateCopy, v68);
     v119[3] = v69;
     v71 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v70, v119, v118, 4);
     objc_msgSend_setMetadata_(v24, v72, v71, v73);
 
-    if (v19)
+    if (inclineCopy)
     {
-      if (v14)
+      if (headingCopy)
       {
 LABEL_28:
         objc_msgSend_templateWithImageProvider_(MEMORY[0x277CBB938], v74, v24, v75);
@@ -200,7 +200,7 @@ LABEL_28:
     else
     {
 
-      if (v14)
+      if (headingCopy)
       {
         goto LABEL_28;
       }
@@ -211,7 +211,7 @@ LABEL_28:
 
   if (v21 == 8)
   {
-    if (v10)
+    if (stateCopy)
     {
       v47 = NanoCompassLocalizedString(@"LEVEL_COMPLICATION_NAME");
       v51 = objc_msgSend_localizedUppercaseString(v47, v48, v49, v50);
@@ -230,7 +230,7 @@ LABEL_28:
 
       else
       {
-        NanoCompassComplicationHeadingDirectionBearingTextProvider(v14, v15);
+        NanoCompassComplicationHeadingDirectionBearingTextProvider(headingCopy, bearingCopy);
       }
       v24 = ;
     }
@@ -239,8 +239,8 @@ LABEL_28:
     v97 = objc_opt_class();
     v83 = objc_msgSend_fullColorImageProviderWithImageViewClass_(v96, v98, v97, v99);
     v114[0] = @"incline";
-    v103 = v19;
-    if (!v19)
+    v103 = inclineCopy;
+    if (!inclineCopy)
     {
       v103 = objc_msgSend_null(MEMORY[0x277CBEB68], v100, v101, v102);
     }
@@ -252,7 +252,7 @@ LABEL_28:
     v106 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v105, v115, v114, 2);
     objc_msgSend_setMetadata_(v83, v107, v106, v108);
 
-    if (!v19)
+    if (!inclineCopy)
     {
     }
 
@@ -269,23 +269,23 @@ LABEL_28:
 
     else
     {
-      v24 = NanoCompassComplicationHeadingDirectionBearingTextProvider(v14, v15);
+      v24 = NanoCompassComplicationHeadingDirectionBearingTextProvider(headingCopy, bearingCopy);
     }
 
     v76 = MEMORY[0x277CBBB10];
     v77 = objc_opt_class();
     v83 = objc_msgSend_fullColorImageProviderWithImageViewClass_(v76, v78, v77, v79);
     v116[0] = @"heading";
-    v84 = v14;
-    if (!v14)
+    v84 = headingCopy;
+    if (!headingCopy)
     {
       v84 = objc_msgSend_null(MEMORY[0x277CBEB68], v80, v81, v82);
     }
 
     v117[0] = v84;
     v116[1] = @"incline";
-    v85 = v19;
-    if (!v19)
+    v85 = inclineCopy;
+    if (!inclineCopy)
     {
       v85 = objc_msgSend_null(MEMORY[0x277CBEB68], v80, v81, v82);
     }
@@ -297,9 +297,9 @@ LABEL_28:
     v88 = objc_msgSend_dictionaryWithObjects_forKeys_count_(MEMORY[0x277CBEAC0], v87, v117, v116, 3);
     objc_msgSend_setMetadata_(v83, v89, v88, v90);
 
-    if (v19)
+    if (inclineCopy)
     {
-      if (v14)
+      if (headingCopy)
       {
 LABEL_37:
         v93 = MEMORY[0x277CBB810];
@@ -314,7 +314,7 @@ LABEL_53:
     else
     {
 
-      if (v14)
+      if (headingCopy)
       {
         goto LABEL_37;
       }

@@ -1,6 +1,6 @@
 @interface MTRTimeSynchronizationClusterTrustedTimeSourceStruct
 - (MTRTimeSynchronizationClusterTrustedTimeSourceStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRTimeSynchronizationClusterTrustedTimeSourceStruct);
-  v5 = [(MTRTimeSynchronizationClusterTrustedTimeSourceStruct *)self fabricIndex];
-  [(MTRTimeSynchronizationClusterTrustedTimeSourceStruct *)v4 setFabricIndex:v5];
+  fabricIndex = [(MTRTimeSynchronizationClusterTrustedTimeSourceStruct *)self fabricIndex];
+  [(MTRTimeSynchronizationClusterTrustedTimeSourceStruct *)v4 setFabricIndex:fabricIndex];
 
-  v6 = [(MTRTimeSynchronizationClusterTrustedTimeSourceStruct *)self nodeID];
-  [(MTRTimeSynchronizationClusterTrustedTimeSourceStruct *)v4 setNodeID:v6];
+  nodeID = [(MTRTimeSynchronizationClusterTrustedTimeSourceStruct *)self nodeID];
+  [(MTRTimeSynchronizationClusterTrustedTimeSourceStruct *)v4 setNodeID:nodeID];
 
-  v7 = [(MTRTimeSynchronizationClusterTrustedTimeSourceStruct *)self endpoint];
-  [(MTRTimeSynchronizationClusterTrustedTimeSourceStruct *)v4 setEndpoint:v7];
+  endpoint = [(MTRTimeSynchronizationClusterTrustedTimeSourceStruct *)self endpoint];
+  [(MTRTimeSynchronizationClusterTrustedTimeSourceStruct *)v4 setEndpoint:endpoint];
 
   return v4;
 }

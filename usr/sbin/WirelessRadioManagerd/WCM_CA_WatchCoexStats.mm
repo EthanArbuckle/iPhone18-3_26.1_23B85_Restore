@@ -1,9 +1,9 @@
 @interface WCM_CA_WatchCoexStats
 + (id)singleton;
 - (WCM_CA_WatchCoexStats)init;
-- (id)findBTAFHEntry:(id)a3 issueType:(id)a4;
-- (id)findBTEntry:(id)a3 issueType:(id)a4 hasIssue:(BOOL)a5;
-- (id)findWiFiEntry:(id)a3 issueType:(id)a4 hasIssue:(BOOL)a5;
+- (id)findBTAFHEntry:(id)entry issueType:(id)type;
+- (id)findBTEntry:(id)entry issueType:(id)type hasIssue:(BOOL)issue;
+- (id)findWiFiEntry:(id)entry issueType:(id)type hasIssue:(BOOL)issue;
 - (void)resetFastChargingFreqDurationStats;
 - (void)startFastChargingDurationTimer;
 - (void)submitBTAFHStats;
@@ -12,8 +12,8 @@
 - (void)submitFastChargingFreqStats;
 - (void)submitTxBlankingStats;
 - (void)submitWiFiAGCStats;
-- (void)updateCABTAFHIssue:(id)a3 issueType:(id)a4;
-- (void)updateCABTPreferredMap:(id)a3;
+- (void)updateCABTAFHIssue:(id)issue issueType:(id)type;
+- (void)updateCABTPreferredMap:(id)map;
 @end
 
 @implementation WCM_CA_WatchCoexStats
@@ -24,7 +24,7 @@
   block[1] = 3221225472;
   block[2] = sub_100081460;
   block[3] = &unk_10023DD00;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002B7E50 != -1)
   {
     dispatch_once(&qword_1002B7E50, block);
@@ -129,13 +129,13 @@
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (id)findWiFiEntry:(id)a3 issueType:(id)a4 hasIssue:(BOOL)a5
+- (id)findWiFiEntry:(id)entry issueType:(id)type hasIssue:(BOOL)issue
 {
-  v24 = a5;
-  v7 = a3;
-  v26 = a4;
-  v8 = [(WCM_CA_WatchCoexStats *)self wrmWiFiAGCCAStats];
-  if (v8 && (v9 = v8, -[WCM_CA_WatchCoexStats wrmWiFiAGCCAStats](self, "wrmWiFiAGCCAStats"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v9, v11))
+  issueCopy = issue;
+  entryCopy = entry;
+  typeCopy = type;
+  wrmWiFiAGCCAStats = [(WCM_CA_WatchCoexStats *)self wrmWiFiAGCCAStats];
+  if (wrmWiFiAGCCAStats && (v9 = wrmWiFiAGCCAStats, -[WCM_CA_WatchCoexStats wrmWiFiAGCCAStats](self, "wrmWiFiAGCCAStats"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v9, v11))
   {
     v29 = 0u;
     v30 = 0u;
@@ -160,11 +160,11 @@
           v17 = [v16 objectForKeyedSubscript:@"IssueBand"];
           v18 = [v16 objectForKeyedSubscript:@"IssueType"];
           v19 = [v16 objectForKeyedSubscript:@"HasIssue"];
-          v20 = [v19 BOOLValue];
+          bOOLValue = [v19 BOOLValue];
 
-          if ([v17 isEqualToString:v7])
+          if ([v17 isEqualToString:entryCopy])
           {
-            if ([v18 isEqualToString:v26] && v20 == v24)
+            if ([v18 isEqualToString:typeCopy] && bOOLValue == issueCopy)
             {
               v22 = v16;
 
@@ -195,13 +195,13 @@ LABEL_18:
   return v22;
 }
 
-- (id)findBTEntry:(id)a3 issueType:(id)a4 hasIssue:(BOOL)a5
+- (id)findBTEntry:(id)entry issueType:(id)type hasIssue:(BOOL)issue
 {
-  v24 = a5;
-  v7 = a3;
-  v26 = a4;
-  v8 = [(WCM_CA_WatchCoexStats *)self wrmBTAGCCAStats];
-  if (v8 && (v9 = v8, -[WCM_CA_WatchCoexStats wrmBTAGCCAStats](self, "wrmBTAGCCAStats"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v9, v11))
+  issueCopy = issue;
+  entryCopy = entry;
+  typeCopy = type;
+  wrmBTAGCCAStats = [(WCM_CA_WatchCoexStats *)self wrmBTAGCCAStats];
+  if (wrmBTAGCCAStats && (v9 = wrmBTAGCCAStats, -[WCM_CA_WatchCoexStats wrmBTAGCCAStats](self, "wrmBTAGCCAStats"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 count], v10, v9, v11))
   {
     v29 = 0u;
     v30 = 0u;
@@ -226,11 +226,11 @@ LABEL_18:
           v17 = [v16 objectForKeyedSubscript:@"IssueBand"];
           v18 = [v16 objectForKeyedSubscript:@"IssueType"];
           v19 = [v16 objectForKeyedSubscript:@"HasIssue"];
-          v20 = [v19 BOOLValue];
+          bOOLValue = [v19 BOOLValue];
 
-          if ([v17 isEqualToString:v7])
+          if ([v17 isEqualToString:entryCopy])
           {
-            if ([v18 isEqualToString:v26] && v20 == v24)
+            if ([v18 isEqualToString:typeCopy] && bOOLValue == issueCopy)
             {
               v22 = v16;
 
@@ -261,15 +261,15 @@ LABEL_18:
   return v22;
 }
 
-- (id)findBTAFHEntry:(id)a3 issueType:(id)a4
+- (id)findBTAFHEntry:(id)entry issueType:(id)type
 {
-  v6 = a3;
-  v19 = a4;
-  v7 = [(WCM_CA_WatchCoexStats *)self wrmBTAFHStats];
-  if (v7)
+  entryCopy = entry;
+  typeCopy = type;
+  wrmBTAFHStats = [(WCM_CA_WatchCoexStats *)self wrmBTAFHStats];
+  if (wrmBTAFHStats)
   {
-    v8 = [(WCM_CA_WatchCoexStats *)self wrmBTAFHStats];
-    v9 = [v8 count];
+    wrmBTAFHStats2 = [(WCM_CA_WatchCoexStats *)self wrmBTAFHStats];
+    v9 = [wrmBTAFHStats2 count];
 
     if (v9)
     {
@@ -277,8 +277,8 @@ LABEL_18:
       v23 = 0u;
       v20 = 0u;
       v21 = 0u;
-      v10 = [(WCM_CA_WatchCoexStats *)self wrmBTAFHStats];
-      v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      wrmBTAFHStats3 = [(WCM_CA_WatchCoexStats *)self wrmBTAFHStats];
+      v11 = [wrmBTAFHStats3 countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v11)
       {
         v12 = v11;
@@ -289,21 +289,21 @@ LABEL_18:
           {
             if (*v21 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(wrmBTAFHStats3);
             }
 
             v15 = *(*(&v20 + 1) + 8 * i);
             v16 = [v15 objectForKeyedSubscript:@"IssueBand"];
             v17 = [v15 objectForKeyedSubscript:@"IssueType"];
-            if ([v16 isEqualToString:v6] && (objc_msgSend(v17, "isEqualToString:", v19) & 1) != 0)
+            if ([v16 isEqualToString:entryCopy] && (objc_msgSend(v17, "isEqualToString:", typeCopy) & 1) != 0)
             {
-              v7 = v15;
+              wrmBTAFHStats = v15;
 
               goto LABEL_15;
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v12 = [wrmBTAFHStats3 countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v12)
           {
             continue;
@@ -313,17 +313,17 @@ LABEL_18:
         }
       }
 
-      v7 = 0;
+      wrmBTAFHStats = 0;
 LABEL_15:
     }
 
     else
     {
-      v7 = 0;
+      wrmBTAFHStats = 0;
     }
   }
 
-  return v7;
+  return wrmBTAFHStats;
 }
 
 - (void)submitTxBlankingStats
@@ -331,8 +331,8 @@ LABEL_15:
   obj = [(WCM_CA_WatchCoexStats *)self lockObjectTxBlankingFreqStats];
   objc_sync_enter(obj);
   [WCM_Logging logLevel:3 message:@"TxBlankingCADebug_ submitTxBlankingStats"];
-  v2 = [(WCM_CA_WatchCoexStats *)self wrmTxBlankingFreqStat];
-  v3 = [NSArray arrayWithArray:v2];
+  wrmTxBlankingFreqStat = [(WCM_CA_WatchCoexStats *)self wrmTxBlankingFreqStat];
+  v3 = [NSArray arrayWithArray:wrmTxBlankingFreqStat];
 
   v23 = 0u;
   v24 = 0u;
@@ -373,8 +373,8 @@ LABEL_15:
     while (v4);
   }
 
-  v14 = [(WCM_CA_WatchCoexStats *)self wrmTxBlankingFreqStat];
-  [v14 removeAllObjects];
+  wrmTxBlankingFreqStat2 = [(WCM_CA_WatchCoexStats *)self wrmTxBlankingFreqStat];
+  [wrmTxBlankingFreqStat2 removeAllObjects];
 
   objc_sync_exit(obj);
 }
@@ -383,28 +383,28 @@ LABEL_15:
 {
   obj = [(WCM_CA_WatchCoexStats *)self lockObjectFastChargingFreqStats];
   objc_sync_enter(obj);
-  v3 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
-  v4 = [v3 objectForKeyedSubscript:@"EnableCount"];
-  v5 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
-  v6 = [v5 objectForKeyedSubscript:@"DisableCount"];
-  v7 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
-  v8 = [v7 objectForKeyedSubscript:@"LowBandDisableCount"];
-  v9 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
-  v10 = [v9 objectForKeyedSubscript:@"NonLowBandDisableCount"];
+  wrmFastChargingFreqStat = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
+  v4 = [wrmFastChargingFreqStat objectForKeyedSubscript:@"EnableCount"];
+  wrmFastChargingFreqStat2 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
+  v6 = [wrmFastChargingFreqStat2 objectForKeyedSubscript:@"DisableCount"];
+  wrmFastChargingFreqStat3 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
+  v8 = [wrmFastChargingFreqStat3 objectForKeyedSubscript:@"LowBandDisableCount"];
+  wrmFastChargingFreqStat4 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
+  v10 = [wrmFastChargingFreqStat4 objectForKeyedSubscript:@"NonLowBandDisableCount"];
   [WCM_Logging logLevel:3 message:@"FChargingCADebug_ submitFastChargingFreqStats EnableCount = %@, DisableCount = %@, LowBandDisableCount = %@, NonLowBandDisableCount = %@", v4, v6, v8, v10];
 
   AnalyticsSendEventLazy();
-  v11 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
-  [v11 setObject:&off_1002707A0 forKeyedSubscript:@"DisableCount"];
+  wrmFastChargingFreqStat5 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
+  [wrmFastChargingFreqStat5 setObject:&off_1002707A0 forKeyedSubscript:@"DisableCount"];
 
-  v12 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
-  [v12 setObject:&off_1002707A0 forKeyedSubscript:@"EnableCount"];
+  wrmFastChargingFreqStat6 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
+  [wrmFastChargingFreqStat6 setObject:&off_1002707A0 forKeyedSubscript:@"EnableCount"];
 
-  v13 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
-  [v13 setObject:&off_1002707A0 forKeyedSubscript:@"LowBandDisableCount"];
+  wrmFastChargingFreqStat7 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
+  [wrmFastChargingFreqStat7 setObject:&off_1002707A0 forKeyedSubscript:@"LowBandDisableCount"];
 
-  v14 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
-  [v14 setObject:&off_1002707A0 forKeyedSubscript:@"NonLowBandDisableCount"];
+  wrmFastChargingFreqStat8 = [(WCM_CA_WatchCoexStats *)self wrmFastChargingFreqStat];
+  [wrmFastChargingFreqStat8 setObject:&off_1002707A0 forKeyedSubscript:@"NonLowBandDisableCount"];
 
   objc_sync_exit(obj);
 }
@@ -426,8 +426,8 @@ LABEL_15:
 
 - (void)submitFastChargingDurationStats
 {
-  v3 = [(WCM_CA_WatchCoexStats *)self lockObjectFastChargingDurationStats];
-  objc_sync_enter(v3);
+  lockObjectFastChargingDurationStats = [(WCM_CA_WatchCoexStats *)self lockObjectFastChargingDurationStats];
+  objc_sync_enter(lockObjectFastChargingDurationStats);
   [WCM_Logging logLevel:3 message:@"FChargingCADebug_ submitFastChargingDurationStats totalDuration = %d, disableDuration = %d, lowBandDisableDuration = %d, noneLowBandDisableDuration = %d, fastChargingHasRecord = %d", [(WCM_CA_WatchCoexStats *)self totalDuration], [(WCM_CA_WatchCoexStats *)self disableDuration], [(WCM_CA_WatchCoexStats *)self lowBandDisableDuration], [(WCM_CA_WatchCoexStats *)self noneLowBandDisableDuration], [(WCM_CA_WatchCoexStats *)self fastChargingHasRecord]];
   if ([(WCM_CA_WatchCoexStats *)self fastChargingHasRecord])
   {
@@ -439,8 +439,8 @@ LABEL_15:
 
     else
     {
-      v4 = [(WCM_CA_WatchCoexStats *)self disableDuration];
-      v5 = ((100 * v4) / [(WCM_CA_WatchCoexStats *)self totalDuration]);
+      disableDuration = [(WCM_CA_WatchCoexStats *)self disableDuration];
+      v5 = ((100 * disableDuration) / [(WCM_CA_WatchCoexStats *)self totalDuration]);
     }
 
     if ([(WCM_CA_WatchCoexStats *)self totalDuration]< 1)
@@ -450,8 +450,8 @@ LABEL_15:
 
     else
     {
-      v6 = [(WCM_CA_WatchCoexStats *)self lowBandDisableDuration];
-      v7 = ((100 * v6) / [(WCM_CA_WatchCoexStats *)self totalDuration]);
+      lowBandDisableDuration = [(WCM_CA_WatchCoexStats *)self lowBandDisableDuration];
+      v7 = ((100 * lowBandDisableDuration) / [(WCM_CA_WatchCoexStats *)self totalDuration]);
     }
 
     if ([(WCM_CA_WatchCoexStats *)self totalDuration]< 1)
@@ -461,8 +461,8 @@ LABEL_15:
 
     else
     {
-      v8 = [(WCM_CA_WatchCoexStats *)self noneLowBandDisableDuration];
-      v9 = ((100 * v8) / [(WCM_CA_WatchCoexStats *)self totalDuration]);
+      noneLowBandDisableDuration = [(WCM_CA_WatchCoexStats *)self noneLowBandDisableDuration];
+      v9 = ((100 * noneLowBandDisableDuration) / [(WCM_CA_WatchCoexStats *)self totalDuration]);
     }
 
     [WCM_Logging logLevel:3 message:@"FChargingCADebug_ submitFastChargingDurationStats disableDurationPercent=%f lowBandDisableDurationPercent=%f noneLowBandDurationPercent=%f TotalDuration: %d", *&v5, *&v7, *&v9, [(WCM_CA_WatchCoexStats *)self totalDuration]];
@@ -470,16 +470,16 @@ LABEL_15:
   }
 
   [(WCM_CA_WatchCoexStats *)self resetFastChargingFreqDurationStats];
-  objc_sync_exit(v3);
+  objc_sync_exit(lockObjectFastChargingDurationStats);
 }
 
 - (void)submitWiFiAGCStats
 {
-  v3 = [(WCM_CA_WatchCoexStats *)self lockObjectWifiAGCStats];
-  objc_sync_enter(v3);
+  lockObjectWifiAGCStats = [(WCM_CA_WatchCoexStats *)self lockObjectWifiAGCStats];
+  objc_sync_enter(lockObjectWifiAGCStats);
   [WCM_Logging logLevel:2 message:@"submitWifiAGCStats"];
-  v4 = [(WCM_CA_WatchCoexStats *)self wrmWiFiAGCCAStats];
-  v5 = [NSArray arrayWithArray:v4];
+  wrmWiFiAGCCAStats = [(WCM_CA_WatchCoexStats *)self wrmWiFiAGCCAStats];
+  v5 = [NSArray arrayWithArray:wrmWiFiAGCCAStats];
 
   v14 = 0u;
   v15 = 0u;
@@ -509,19 +509,19 @@ LABEL_15:
     while (v7);
   }
 
-  v10 = [(WCM_CA_WatchCoexStats *)self wrmWiFiAGCCAStats];
-  [v10 removeAllObjects];
+  wrmWiFiAGCCAStats2 = [(WCM_CA_WatchCoexStats *)self wrmWiFiAGCCAStats];
+  [wrmWiFiAGCCAStats2 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(lockObjectWifiAGCStats);
 }
 
 - (void)submitBTAGCStats
 {
-  v3 = [(WCM_CA_WatchCoexStats *)self lockObjectBTAGCStats];
-  objc_sync_enter(v3);
+  lockObjectBTAGCStats = [(WCM_CA_WatchCoexStats *)self lockObjectBTAGCStats];
+  objc_sync_enter(lockObjectBTAGCStats);
   [WCM_Logging logLevel:2 message:@"submitBtAGCStats"];
-  v4 = [(WCM_CA_WatchCoexStats *)self wrmBTAGCCAStats];
-  v5 = [NSArray arrayWithArray:v4];
+  wrmBTAGCCAStats = [(WCM_CA_WatchCoexStats *)self wrmBTAGCCAStats];
+  v5 = [NSArray arrayWithArray:wrmBTAGCCAStats];
 
   v14 = 0u;
   v15 = 0u;
@@ -551,19 +551,19 @@ LABEL_15:
     while (v7);
   }
 
-  v10 = [(WCM_CA_WatchCoexStats *)self wrmBTAGCCAStats];
-  [v10 removeAllObjects];
+  wrmBTAGCCAStats2 = [(WCM_CA_WatchCoexStats *)self wrmBTAGCCAStats];
+  [wrmBTAGCCAStats2 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(lockObjectBTAGCStats);
 }
 
 - (void)submitBTAFHStats
 {
-  v3 = [(WCM_CA_WatchCoexStats *)self lockObjectBTAFHStats];
-  objc_sync_enter(v3);
+  lockObjectBTAFHStats = [(WCM_CA_WatchCoexStats *)self lockObjectBTAFHStats];
+  objc_sync_enter(lockObjectBTAFHStats);
   [WCM_Logging logLevel:2 message:@"submitAFHStats"];
-  v4 = [(WCM_CA_WatchCoexStats *)self wrmBTAFHStats];
-  v5 = [NSArray arrayWithArray:v4];
+  wrmBTAFHStats = [(WCM_CA_WatchCoexStats *)self wrmBTAFHStats];
+  v5 = [NSArray arrayWithArray:wrmBTAFHStats];
 
   v14 = 0u;
   v15 = 0u;
@@ -593,47 +593,47 @@ LABEL_15:
     while (v7);
   }
 
-  v10 = [(WCM_CA_WatchCoexStats *)self wrmBTAFHStats];
-  [v10 removeAllObjects];
+  wrmBTAFHStats2 = [(WCM_CA_WatchCoexStats *)self wrmBTAFHStats];
+  [wrmBTAFHStats2 removeAllObjects];
 
-  objc_sync_exit(v3);
+  objc_sync_exit(lockObjectBTAFHStats);
 }
 
-- (void)updateCABTAFHIssue:(id)a3 issueType:(id)a4
+- (void)updateCABTAFHIssue:(id)issue issueType:(id)type
 {
-  if (a3)
+  if (issue)
   {
-    v6 = a4;
-    [(WCM_CA_WatchCoexStats *)self setBtAFHIssueBand:a3];
-    [(WCM_CA_WatchCoexStats *)self setBtAFHIssueType:v6];
+    typeCopy = type;
+    [(WCM_CA_WatchCoexStats *)self setBtAFHIssueBand:issue];
+    [(WCM_CA_WatchCoexStats *)self setBtAFHIssueType:typeCopy];
   }
 }
 
-- (void)updateCABTPreferredMap:(id)a3
+- (void)updateCABTPreferredMap:(id)map
 {
-  v44 = a3;
+  mapCopy = map;
   [WCM_Logging logLevel:2 message:@"updateCABTAGCStats"];
-  v4 = [(WCM_CA_WatchCoexStats *)self btAFHIssueBand];
-  if (v4)
+  btAFHIssueBand = [(WCM_CA_WatchCoexStats *)self btAFHIssueBand];
+  if (btAFHIssueBand)
   {
-    v5 = v4;
-    v6 = [(WCM_CA_WatchCoexStats *)self btAFHIssueBand];
-    v7 = [v6 isEqualToString:&stru_100255120];
+    v5 = btAFHIssueBand;
+    btAFHIssueBand2 = [(WCM_CA_WatchCoexStats *)self btAFHIssueBand];
+    v7 = [btAFHIssueBand2 isEqualToString:&stru_100255120];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [(WCM_CA_WatchCoexStats *)self btAFHIssueType];
-      if (v8)
+      btAFHIssueType = [(WCM_CA_WatchCoexStats *)self btAFHIssueType];
+      if (btAFHIssueType)
       {
-        v9 = v8;
-        v10 = [(WCM_CA_WatchCoexStats *)self btAFHIssueType];
-        v11 = [v10 isEqualToString:&stru_100255120];
+        v9 = btAFHIssueType;
+        btAFHIssueType2 = [(WCM_CA_WatchCoexStats *)self btAFHIssueType];
+        v11 = [btAFHIssueType2 isEqualToString:&stru_100255120];
 
-        if (v44)
+        if (mapCopy)
         {
           if ((v11 & 1) == 0)
           {
-            v12 = sub_100084C18(v44);
+            v12 = sub_100084C18(mapCopy);
             if (v12 >= 21)
             {
               if (v12 >= 0x28)
@@ -674,11 +674,11 @@ LABEL_15:
               v16 = 1;
             }
 
-            v17 = [(WCM_CA_WatchCoexStats *)self lockObjectBTAFHStats];
-            objc_sync_enter(v17);
-            v18 = [(WCM_CA_WatchCoexStats *)self btAFHIssueBand];
-            v19 = [(WCM_CA_WatchCoexStats *)self btAFHIssueType];
-            v20 = [(WCM_CA_WatchCoexStats *)self findBTAFHEntry:v18 issueType:v19];
+            lockObjectBTAFHStats = [(WCM_CA_WatchCoexStats *)self lockObjectBTAFHStats];
+            objc_sync_enter(lockObjectBTAFHStats);
+            btAFHIssueBand3 = [(WCM_CA_WatchCoexStats *)self btAFHIssueBand];
+            btAFHIssueType3 = [(WCM_CA_WatchCoexStats *)self btAFHIssueType];
+            v20 = [(WCM_CA_WatchCoexStats *)self findBTAFHEntry:btAFHIssueBand3 issueType:btAFHIssueType3];
 
             if (v20)
             {
@@ -703,18 +703,18 @@ LABEL_15:
               [v20 setObject:v30 forKeyedSubscript:@"AFH_61_79"];
 
               v31 = [v20 objectForKeyedSubscript:@"AFH_ALL"];
-              v32 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v31 intValue] + v43);
-              [v20 setObject:v32 forKeyedSubscript:@"AFH_ALL"];
+              wrmBTAFHStats = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v31 intValue] + v43);
+              [v20 setObject:wrmBTAFHStats forKeyedSubscript:@"AFH_ALL"];
             }
 
             else
             {
               v31 = objc_alloc_init(NSMutableDictionary);
-              v33 = [(WCM_CA_WatchCoexStats *)self btAFHIssueBand];
-              [v31 setObject:v33 forKeyedSubscript:@"IssueBand"];
+              btAFHIssueBand4 = [(WCM_CA_WatchCoexStats *)self btAFHIssueBand];
+              [v31 setObject:btAFHIssueBand4 forKeyedSubscript:@"IssueBand"];
 
-              v34 = [(WCM_CA_WatchCoexStats *)self btAFHIssueType];
-              [v31 setObject:v34 forKeyedSubscript:@"IssueType"];
+              btAFHIssueType4 = [(WCM_CA_WatchCoexStats *)self btAFHIssueType];
+              [v31 setObject:btAFHIssueType4 forKeyedSubscript:@"IssueType"];
 
               [v31 setObject:&off_1002707B8 forKeyedSubscript:@"count"];
               v35 = [NSNumber numberWithInt:v16];
@@ -732,11 +732,11 @@ LABEL_15:
               v39 = [NSNumber numberWithInt:v43];
               [v31 setObject:v39 forKeyedSubscript:@"AFH_ALL"];
 
-              v32 = [(WCM_CA_WatchCoexStats *)self wrmBTAFHStats];
-              [v32 addObject:v31];
+              wrmBTAFHStats = [(WCM_CA_WatchCoexStats *)self wrmBTAFHStats];
+              [wrmBTAFHStats addObject:v31];
             }
 
-            objc_sync_exit(v17);
+            objc_sync_exit(lockObjectBTAFHStats);
             +[NSDate timeIntervalSinceReferenceDate];
             v41 = v40;
             [(WCM_CA_WatchCoexStats *)self previousBTAFHStartTime];

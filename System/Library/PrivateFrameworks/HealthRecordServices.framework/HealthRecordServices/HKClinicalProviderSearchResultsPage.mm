@@ -1,69 +1,69 @@
 @interface HKClinicalProviderSearchResultsPage
-- (HKClinicalProviderSearchResultsPage)initWithCoder:(id)a3;
-- (HKClinicalProviderSearchResultsPage)initWithSearchResults:(id)a3 from:(int64_t)a4 nextFrom:(int64_t)a5 size:(int64_t)a6;
-- (id)copyWithSearchResults:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (HKClinicalProviderSearchResultsPage)initWithCoder:(id)coder;
+- (HKClinicalProviderSearchResultsPage)initWithSearchResults:(id)results from:(int64_t)from nextFrom:(int64_t)nextFrom size:(int64_t)size;
+- (id)copyWithSearchResults:(id)results;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKClinicalProviderSearchResultsPage
 
-- (HKClinicalProviderSearchResultsPage)initWithSearchResults:(id)a3 from:(int64_t)a4 nextFrom:(int64_t)a5 size:(int64_t)a6
+- (HKClinicalProviderSearchResultsPage)initWithSearchResults:(id)results from:(int64_t)from nextFrom:(int64_t)nextFrom size:(int64_t)size
 {
-  v10 = a3;
+  resultsCopy = results;
   v15.receiver = self;
   v15.super_class = HKClinicalProviderSearchResultsPage;
   v11 = [(HKClinicalProviderSearchResultsPage *)&v15 init];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [resultsCopy copy];
     searchResults = v11->_searchResults;
     v11->_searchResults = v12;
 
-    v11->_from = a4;
-    v11->_nextFrom = a5;
-    v11->_size = a6;
+    v11->_from = from;
+    v11->_nextFrom = nextFrom;
+    v11->_size = size;
   }
 
   return v11;
 }
 
-- (id)copyWithSearchResults:(id)a3
+- (id)copyWithSearchResults:(id)results
 {
-  v4 = a3;
-  v5 = [[HKClinicalProviderSearchResultsPage alloc] initWithSearchResults:v4 from:self->_from nextFrom:self->_nextFrom size:self->_size];
+  resultsCopy = results;
+  v5 = [[HKClinicalProviderSearchResultsPage alloc] initWithSearchResults:resultsCopy from:self->_from nextFrom:self->_nextFrom size:self->_size];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(HKClinicalProviderSearchResultsPage *)self searchResults];
-  [v5 encodeObject:v4 forKey:@"SearchResultsKey"];
+  coderCopy = coder;
+  searchResults = [(HKClinicalProviderSearchResultsPage *)self searchResults];
+  [coderCopy encodeObject:searchResults forKey:@"SearchResultsKey"];
 
-  [v5 encodeInteger:-[HKClinicalProviderSearchResultsPage from](self forKey:{"from"), @"FromKey"}];
-  [v5 encodeInteger:-[HKClinicalProviderSearchResultsPage nextFrom](self forKey:{"nextFrom"), @"NextFromKey"}];
-  [v5 encodeInteger:-[HKClinicalProviderSearchResultsPage size](self forKey:{"size"), @"SizeKey"}];
+  [coderCopy encodeInteger:-[HKClinicalProviderSearchResultsPage from](self forKey:{"from"), @"FromKey"}];
+  [coderCopy encodeInteger:-[HKClinicalProviderSearchResultsPage nextFrom](self forKey:{"nextFrom"), @"NextFromKey"}];
+  [coderCopy encodeInteger:-[HKClinicalProviderSearchResultsPage size](self forKey:{"size"), @"SizeKey"}];
 }
 
-- (HKClinicalProviderSearchResultsPage)initWithCoder:(id)a3
+- (HKClinicalProviderSearchResultsPage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [MEMORY[0x277CBEB98] hk_typesForArrayOf:objc_opt_class()];
-  v6 = [v4 decodeObjectOfClasses:v5 forKey:@"SearchResultsKey"];
-  if (v6 && [v4 containsValueForKey:@"FromKey"] && objc_msgSend(v4, "containsValueForKey:", @"NextFromKey") && (objc_msgSend(v4, "containsValueForKey:", @"SizeKey") & 1) != 0)
+  v6 = [coderCopy decodeObjectOfClasses:v5 forKey:@"SearchResultsKey"];
+  if (v6 && [coderCopy containsValueForKey:@"FromKey"] && objc_msgSend(coderCopy, "containsValueForKey:", @"NextFromKey") && (objc_msgSend(coderCopy, "containsValueForKey:", @"SizeKey") & 1) != 0)
   {
-    self = -[HKClinicalProviderSearchResultsPage initWithSearchResults:from:nextFrom:size:](self, "initWithSearchResults:from:nextFrom:size:", v6, [v4 decodeIntegerForKey:@"FromKey"], objc_msgSend(v4, "decodeIntegerForKey:", @"NextFromKey"), objc_msgSend(v4, "decodeIntegerForKey:", @"SizeKey"));
-    v7 = self;
+    self = -[HKClinicalProviderSearchResultsPage initWithSearchResults:from:nextFrom:size:](self, "initWithSearchResults:from:nextFrom:size:", v6, [coderCopy decodeIntegerForKey:@"FromKey"], objc_msgSend(coderCopy, "decodeIntegerForKey:", @"NextFromKey"), objc_msgSend(coderCopy, "decodeIntegerForKey:", @"SizeKey"));
+    selfCopy = self;
   }
 
   else
   {
-    [v4 hrs_failWithCocoaValueNotFoundError];
-    v7 = 0;
+    [coderCopy hrs_failWithCocoaValueNotFoundError];
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
 @end

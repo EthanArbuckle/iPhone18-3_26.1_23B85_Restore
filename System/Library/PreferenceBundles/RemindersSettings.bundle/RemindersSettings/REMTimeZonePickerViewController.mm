@@ -1,17 +1,17 @@
 @interface REMTimeZonePickerViewController
-- (_TtC17RemindersSettings31REMTimeZonePickerViewController)initWithCoder:(id)a3;
-- (_TtC17RemindersSettings31REMTimeZonePickerViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC17RemindersSettings31REMTimeZonePickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)presentationControllerDidAttemptToDismiss:(id)a3;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)searchBarCancelButtonClicked:(id)a3;
+- (_TtC17RemindersSettings31REMTimeZonePickerViewController)initWithCoder:(id)coder;
+- (_TtC17RemindersSettings31REMTimeZonePickerViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC17RemindersSettings31REMTimeZonePickerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)searchBarCancelButtonClicked:(id)clicked;
 - (void)viewDidLoad;
 @end
 
 @implementation REMTimeZonePickerViewController
 
-- (_TtC17RemindersSettings31REMTimeZonePickerViewController)initWithCoder:(id)a3
+- (_TtC17RemindersSettings31REMTimeZonePickerViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC17RemindersSettings31REMTimeZonePickerViewController_dataSource) = 0;
   v3 = (self + OBJC_IVAR____TtC17RemindersSettings31REMTimeZonePickerViewController_lastConsumedViewModel);
@@ -29,25 +29,25 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_18094();
 }
 
-- (_TtC17RemindersSettings31REMTimeZonePickerViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC17RemindersSettings31REMTimeZonePickerViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC17RemindersSettings31REMTimeZonePickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC17RemindersSettings31REMTimeZonePickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
   v6 = sub_23730();
   v7 = *(v6 - 8);
@@ -55,33 +55,33 @@
   __chkstk_darwin(v6);
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_23720();
-  v11 = a3;
-  v12 = self;
-  sub_19970(v11);
+  viewCopy = view;
+  selfCopy = self;
+  sub_19970(viewCopy);
 
   (*(v7 + 8))(v10, v6);
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
   v5 = sub_23C90();
   v7 = v6;
   v8 = *(&self->super.super.super.super.isa + OBJC_IVAR____TtC17RemindersSettings31REMTimeZonePickerViewController_presenter);
-  v9 = self;
+  selfCopy = self;
   sub_1203C(v5, v7);
 }
 
-- (void)searchBarCancelButtonClicked:(id)a3
+- (void)searchBarCancelButtonClicked:(id)clicked
 {
-  v4 = a3;
-  v5 = self;
-  sub_19CC8(v4);
+  clickedCopy = clicked;
+  selfCopy = self;
+  sub_19CC8(clickedCopy);
 }
 
-- (void)presentationControllerDidAttemptToDismiss:(id)a3
+- (void)presentationControllerDidAttemptToDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
+  dismissCopy = dismiss;
+  selfCopy = self;
   sub_19F64();
 }
 

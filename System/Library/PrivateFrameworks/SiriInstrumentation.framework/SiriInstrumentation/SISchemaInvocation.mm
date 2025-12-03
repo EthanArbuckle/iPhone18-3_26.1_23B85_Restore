@@ -1,17 +1,17 @@
 @interface SISchemaInvocation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (SISchemaBluetoothCarInvocationContext)bluetoothCarInvocationContext;
 - (SISchemaCarPlayInvocationContext)carPlayInvocationContext;
 - (SISchemaCardSectionKeyboardInvocationContext)keyboardInvocationContext;
 - (SISchemaHardwareButtonInvocationContext)hardwareButtonInvocationContext;
-- (SISchemaInvocation)initWithDictionary:(id)a3;
-- (SISchemaInvocation)initWithJSON:(id)a3;
+- (SISchemaInvocation)initWithDictionary:(id)dictionary;
+- (SISchemaInvocation)initWithJSON:(id)n;
 - (SISchemaTVRemoteInvocationContext)tvRemoteInvocationContext;
 - (SISchemaTapToEditInvocationContext)tapToEditContext;
 - (SISchemaTypeToSiriInvocationContext)typeToSiriContext;
 - (SISchemaVerticalLayoutCardSectionInvocationContext)cardInvocationContext;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -23,85 +23,85 @@
 - (void)deleteTapToEditContext;
 - (void)deleteTvRemoteInvocationContext;
 - (void)deleteTypeToSiriContext;
-- (void)setBluetoothCarInvocationContext:(id)a3;
-- (void)setCarPlayInvocationContext:(id)a3;
-- (void)setCardInvocationContext:(id)a3;
-- (void)setHardwareButtonInvocationContext:(id)a3;
-- (void)setHasInvocationSource:(BOOL)a3;
-- (void)setHasIsDeviceLocked:(BOOL)a3;
-- (void)setKeyboardInvocationContext:(id)a3;
-- (void)setTapToEditContext:(id)a3;
-- (void)setTvRemoteInvocationContext:(id)a3;
-- (void)setTypeToSiriContext:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setBluetoothCarInvocationContext:(id)context;
+- (void)setCarPlayInvocationContext:(id)context;
+- (void)setCardInvocationContext:(id)context;
+- (void)setHardwareButtonInvocationContext:(id)context;
+- (void)setHasInvocationSource:(BOOL)source;
+- (void)setHasIsDeviceLocked:(BOOL)locked;
+- (void)setKeyboardInvocationContext:(id)context;
+- (void)setTapToEditContext:(id)context;
+- (void)setTvRemoteInvocationContext:(id)context;
+- (void)setTypeToSiriContext:(id)context;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaInvocation
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_bluetoothCarInvocationContext)
   {
-    v4 = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    bluetoothCarInvocationContext = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
+    dictionaryRepresentation = [bluetoothCarInvocationContext dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"bluetoothCarInvocationContext"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"bluetoothCarInvocationContext"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"bluetoothCarInvocationContext"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"bluetoothCarInvocationContext"];
     }
   }
 
   if (self->_carPlayInvocationContext)
   {
-    v7 = [(SISchemaInvocation *)self carPlayInvocationContext];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    carPlayInvocationContext = [(SISchemaInvocation *)self carPlayInvocationContext];
+    dictionaryRepresentation2 = [carPlayInvocationContext dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"carPlayInvocationContext"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"carPlayInvocationContext"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"carPlayInvocationContext"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"carPlayInvocationContext"];
     }
   }
 
   if (self->_cardInvocationContext)
   {
-    v10 = [(SISchemaInvocation *)self cardInvocationContext];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    cardInvocationContext = [(SISchemaInvocation *)self cardInvocationContext];
+    dictionaryRepresentation3 = [cardInvocationContext dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"cardInvocationContext"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"cardInvocationContext"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"cardInvocationContext"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"cardInvocationContext"];
     }
   }
 
   if (self->_hardwareButtonInvocationContext)
   {
-    v13 = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    hardwareButtonInvocationContext = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
+    dictionaryRepresentation4 = [hardwareButtonInvocationContext dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"hardwareButtonInvocationContext"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"hardwareButtonInvocationContext"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"hardwareButtonInvocationContext"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"hardwareButtonInvocationContext"];
     }
   }
 
@@ -119,7 +119,7 @@
       v21 = off_1E78E4DE0[v20];
     }
 
-    [v3 setObject:v21 forKeyedSubscript:@"invocationAction"];
+    [dictionary setObject:v21 forKeyedSubscript:@"invocationAction"];
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -149,114 +149,114 @@ LABEL_23:
     v23 = off_1E78E4E58[v22];
   }
 
-  [v3 setObject:v23 forKeyedSubscript:@"invocationSource"];
+  [dictionary setObject:v23 forKeyedSubscript:@"invocationSource"];
   if ((*&self->_has & 4) != 0)
   {
 LABEL_24:
     v17 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaInvocation isDeviceLocked](self, "isDeviceLocked")}];
-    [v3 setObject:v17 forKeyedSubscript:@"isDeviceLocked"];
+    [dictionary setObject:v17 forKeyedSubscript:@"isDeviceLocked"];
   }
 
 LABEL_25:
   if (self->_keyboardInvocationContext)
   {
-    v18 = [(SISchemaInvocation *)self keyboardInvocationContext];
-    v19 = [v18 dictionaryRepresentation];
-    if (v19)
+    keyboardInvocationContext = [(SISchemaInvocation *)self keyboardInvocationContext];
+    dictionaryRepresentation5 = [keyboardInvocationContext dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v19 forKeyedSubscript:@"keyboardInvocationContext"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"keyboardInvocationContext"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"keyboardInvocationContext"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"keyboardInvocationContext"];
     }
   }
 
   if (self->_linkId)
   {
-    v25 = [(SISchemaInvocation *)self linkId];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    linkId = [(SISchemaInvocation *)self linkId];
+    dictionaryRepresentation6 = [linkId dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"linkId"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"linkId"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"linkId"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"linkId"];
     }
   }
 
   if (self->_tapToEditContext)
   {
-    v28 = [(SISchemaInvocation *)self tapToEditContext];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    tapToEditContext = [(SISchemaInvocation *)self tapToEditContext];
+    dictionaryRepresentation7 = [tapToEditContext dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"tapToEditContext"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"tapToEditContext"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"tapToEditContext"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"tapToEditContext"];
     }
   }
 
   if (self->_tvRemoteInvocationContext)
   {
-    v31 = [(SISchemaInvocation *)self tvRemoteInvocationContext];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    tvRemoteInvocationContext = [(SISchemaInvocation *)self tvRemoteInvocationContext];
+    dictionaryRepresentation8 = [tvRemoteInvocationContext dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"tvRemoteInvocationContext"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"tvRemoteInvocationContext"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"tvRemoteInvocationContext"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"tvRemoteInvocationContext"];
     }
   }
 
   if (self->_typeToSiriContext)
   {
-    v34 = [(SISchemaInvocation *)self typeToSiriContext];
-    v35 = [v34 dictionaryRepresentation];
-    if (v35)
+    typeToSiriContext = [(SISchemaInvocation *)self typeToSiriContext];
+    dictionaryRepresentation9 = [typeToSiriContext dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v35 forKeyedSubscript:@"typeToSiriContext"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"typeToSiriContext"];
     }
 
     else
     {
-      v36 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v36 forKeyedSubscript:@"typeToSiriContext"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"typeToSiriContext"];
     }
   }
 
   if (self->_viewContainer)
   {
-    v37 = [(SISchemaInvocation *)self viewContainer];
-    v38 = [v37 dictionaryRepresentation];
-    if (v38)
+    viewContainer = [(SISchemaInvocation *)self viewContainer];
+    dictionaryRepresentation10 = [viewContainer dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v38 forKeyedSubscript:@"viewContainer"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"viewContainer"];
     }
 
     else
     {
-      v39 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v39 forKeyedSubscript:@"viewContainer"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"viewContainer"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (SISchemaCarPlayInvocationContext)carPlayInvocationContext
@@ -364,15 +364,15 @@ LABEL_25:
   return v3;
 }
 
-- (SISchemaInvocation)initWithDictionary:(id)a3
+- (SISchemaInvocation)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v37.receiver = self;
   v37.super_class = SISchemaInvocation;
   v5 = [(SISchemaInvocation *)&v37 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"invocationAction"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"invocationAction"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -380,7 +380,7 @@ LABEL_25:
     }
 
     v36 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"invocationSource"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"invocationSource"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -388,7 +388,7 @@ LABEL_25:
     }
 
     v35 = v7;
-    v8 = [v4 objectForKeyedSubscript:@"viewContainer"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"viewContainer"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -396,7 +396,7 @@ LABEL_25:
       [(SISchemaInvocation *)v5 setViewContainer:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"carPlayInvocationContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"carPlayInvocationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -404,7 +404,7 @@ LABEL_25:
       [(SISchemaInvocation *)v5 setCarPlayInvocationContext:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"cardInvocationContext"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"cardInvocationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -412,7 +412,7 @@ LABEL_25:
       [(SISchemaInvocation *)v5 setCardInvocationContext:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"tvRemoteInvocationContext"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"tvRemoteInvocationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -420,7 +420,7 @@ LABEL_25:
       [(SISchemaInvocation *)v5 setTvRemoteInvocationContext:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:{@"keyboardInvocationContext", v14}];
+    v16 = [dictionaryCopy objectForKeyedSubscript:{@"keyboardInvocationContext", v14}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -429,7 +429,7 @@ LABEL_25:
     }
 
     v34 = v8;
-    v18 = [v4 objectForKeyedSubscript:@"hardwareButtonInvocationContext"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"hardwareButtonInvocationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -438,7 +438,7 @@ LABEL_25:
     }
 
     v33 = v10;
-    v20 = [v4 objectForKeyedSubscript:@"bluetoothCarInvocationContext"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"bluetoothCarInvocationContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -447,7 +447,7 @@ LABEL_25:
     }
 
     v32 = v12;
-    v22 = [v4 objectForKeyedSubscript:@"tapToEditContext"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"tapToEditContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -455,7 +455,7 @@ LABEL_25:
       [(SISchemaInvocation *)v5 setTapToEditContext:v23];
     }
 
-    v24 = [v4 objectForKeyedSubscript:@"typeToSiriContext"];
+    v24 = [dictionaryCopy objectForKeyedSubscript:@"typeToSiriContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -463,14 +463,14 @@ LABEL_25:
       [(SISchemaInvocation *)v5 setTypeToSiriContext:v25];
     }
 
-    v26 = [v4 objectForKeyedSubscript:@"isDeviceLocked"];
+    v26 = [dictionaryCopy objectForKeyedSubscript:@"isDeviceLocked"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaInvocation setIsDeviceLocked:](v5, "setIsDeviceLocked:", [v26 BOOLValue]);
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"linkId"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"linkId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -484,30 +484,30 @@ LABEL_25:
   return v5;
 }
 
-- (SISchemaInvocation)initWithJSON:(id)a3
+- (SISchemaInvocation)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaInvocation *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaInvocation *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaInvocation *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -564,22 +564,22 @@ LABEL_6:
   return v15 ^ v16 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13 ^ [(SISchemaUUID *)self->_linkId hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_63;
   }
 
   whichInvocationcontext = self->_whichInvocationcontext;
-  if (whichInvocationcontext != [v4 whichInvocationcontext])
+  if (whichInvocationcontext != [equalCopy whichInvocationcontext])
   {
     goto LABEL_63;
   }
 
   has = self->_has;
-  v7 = v4[104];
+  v7 = equalCopy[104];
   if ((*&has & 1) != (v7 & 1))
   {
     goto LABEL_63;
@@ -588,13 +588,13 @@ LABEL_6:
   if (*&has)
   {
     invocationAction = self->_invocationAction;
-    if (invocationAction != [v4 invocationAction])
+    if (invocationAction != [equalCopy invocationAction])
     {
       goto LABEL_63;
     }
 
     has = self->_has;
-    v7 = v4[104];
+    v7 = equalCopy[104];
   }
 
   v9 = (*&has >> 1) & 1;
@@ -606,26 +606,26 @@ LABEL_6:
   if (v9)
   {
     invocationSource = self->_invocationSource;
-    if (invocationSource != [v4 invocationSource])
+    if (invocationSource != [equalCopy invocationSource])
     {
       goto LABEL_63;
     }
   }
 
-  v11 = [(SISchemaInvocation *)self viewContainer];
-  v12 = [v4 viewContainer];
-  if ((v11 != 0) == (v12 == 0))
+  viewContainer = [(SISchemaInvocation *)self viewContainer];
+  viewContainer2 = [equalCopy viewContainer];
+  if ((viewContainer != 0) == (viewContainer2 == 0))
   {
     goto LABEL_62;
   }
 
-  v13 = [(SISchemaInvocation *)self viewContainer];
-  if (v13)
+  viewContainer3 = [(SISchemaInvocation *)self viewContainer];
+  if (viewContainer3)
   {
-    v14 = v13;
-    v15 = [(SISchemaInvocation *)self viewContainer];
-    v16 = [v4 viewContainer];
-    v17 = [v15 isEqual:v16];
+    v14 = viewContainer3;
+    viewContainer4 = [(SISchemaInvocation *)self viewContainer];
+    viewContainer5 = [equalCopy viewContainer];
+    v17 = [viewContainer4 isEqual:viewContainer5];
 
     if (!v17)
     {
@@ -637,20 +637,20 @@ LABEL_6:
   {
   }
 
-  v11 = [(SISchemaInvocation *)self carPlayInvocationContext];
-  v12 = [v4 carPlayInvocationContext];
-  if ((v11 != 0) == (v12 == 0))
+  viewContainer = [(SISchemaInvocation *)self carPlayInvocationContext];
+  viewContainer2 = [equalCopy carPlayInvocationContext];
+  if ((viewContainer != 0) == (viewContainer2 == 0))
   {
     goto LABEL_62;
   }
 
-  v18 = [(SISchemaInvocation *)self carPlayInvocationContext];
-  if (v18)
+  carPlayInvocationContext = [(SISchemaInvocation *)self carPlayInvocationContext];
+  if (carPlayInvocationContext)
   {
-    v19 = v18;
-    v20 = [(SISchemaInvocation *)self carPlayInvocationContext];
-    v21 = [v4 carPlayInvocationContext];
-    v22 = [v20 isEqual:v21];
+    v19 = carPlayInvocationContext;
+    carPlayInvocationContext2 = [(SISchemaInvocation *)self carPlayInvocationContext];
+    carPlayInvocationContext3 = [equalCopy carPlayInvocationContext];
+    v22 = [carPlayInvocationContext2 isEqual:carPlayInvocationContext3];
 
     if (!v22)
     {
@@ -662,20 +662,20 @@ LABEL_6:
   {
   }
 
-  v11 = [(SISchemaInvocation *)self cardInvocationContext];
-  v12 = [v4 cardInvocationContext];
-  if ((v11 != 0) == (v12 == 0))
+  viewContainer = [(SISchemaInvocation *)self cardInvocationContext];
+  viewContainer2 = [equalCopy cardInvocationContext];
+  if ((viewContainer != 0) == (viewContainer2 == 0))
   {
     goto LABEL_62;
   }
 
-  v23 = [(SISchemaInvocation *)self cardInvocationContext];
-  if (v23)
+  cardInvocationContext = [(SISchemaInvocation *)self cardInvocationContext];
+  if (cardInvocationContext)
   {
-    v24 = v23;
-    v25 = [(SISchemaInvocation *)self cardInvocationContext];
-    v26 = [v4 cardInvocationContext];
-    v27 = [v25 isEqual:v26];
+    v24 = cardInvocationContext;
+    cardInvocationContext2 = [(SISchemaInvocation *)self cardInvocationContext];
+    cardInvocationContext3 = [equalCopy cardInvocationContext];
+    v27 = [cardInvocationContext2 isEqual:cardInvocationContext3];
 
     if (!v27)
     {
@@ -687,20 +687,20 @@ LABEL_6:
   {
   }
 
-  v11 = [(SISchemaInvocation *)self tvRemoteInvocationContext];
-  v12 = [v4 tvRemoteInvocationContext];
-  if ((v11 != 0) == (v12 == 0))
+  viewContainer = [(SISchemaInvocation *)self tvRemoteInvocationContext];
+  viewContainer2 = [equalCopy tvRemoteInvocationContext];
+  if ((viewContainer != 0) == (viewContainer2 == 0))
   {
     goto LABEL_62;
   }
 
-  v28 = [(SISchemaInvocation *)self tvRemoteInvocationContext];
-  if (v28)
+  tvRemoteInvocationContext = [(SISchemaInvocation *)self tvRemoteInvocationContext];
+  if (tvRemoteInvocationContext)
   {
-    v29 = v28;
-    v30 = [(SISchemaInvocation *)self tvRemoteInvocationContext];
-    v31 = [v4 tvRemoteInvocationContext];
-    v32 = [v30 isEqual:v31];
+    v29 = tvRemoteInvocationContext;
+    tvRemoteInvocationContext2 = [(SISchemaInvocation *)self tvRemoteInvocationContext];
+    tvRemoteInvocationContext3 = [equalCopy tvRemoteInvocationContext];
+    v32 = [tvRemoteInvocationContext2 isEqual:tvRemoteInvocationContext3];
 
     if (!v32)
     {
@@ -712,20 +712,20 @@ LABEL_6:
   {
   }
 
-  v11 = [(SISchemaInvocation *)self keyboardInvocationContext];
-  v12 = [v4 keyboardInvocationContext];
-  if ((v11 != 0) == (v12 == 0))
+  viewContainer = [(SISchemaInvocation *)self keyboardInvocationContext];
+  viewContainer2 = [equalCopy keyboardInvocationContext];
+  if ((viewContainer != 0) == (viewContainer2 == 0))
   {
     goto LABEL_62;
   }
 
-  v33 = [(SISchemaInvocation *)self keyboardInvocationContext];
-  if (v33)
+  keyboardInvocationContext = [(SISchemaInvocation *)self keyboardInvocationContext];
+  if (keyboardInvocationContext)
   {
-    v34 = v33;
-    v35 = [(SISchemaInvocation *)self keyboardInvocationContext];
-    v36 = [v4 keyboardInvocationContext];
-    v37 = [v35 isEqual:v36];
+    v34 = keyboardInvocationContext;
+    keyboardInvocationContext2 = [(SISchemaInvocation *)self keyboardInvocationContext];
+    keyboardInvocationContext3 = [equalCopy keyboardInvocationContext];
+    v37 = [keyboardInvocationContext2 isEqual:keyboardInvocationContext3];
 
     if (!v37)
     {
@@ -737,20 +737,20 @@ LABEL_6:
   {
   }
 
-  v11 = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
-  v12 = [v4 hardwareButtonInvocationContext];
-  if ((v11 != 0) == (v12 == 0))
+  viewContainer = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
+  viewContainer2 = [equalCopy hardwareButtonInvocationContext];
+  if ((viewContainer != 0) == (viewContainer2 == 0))
   {
     goto LABEL_62;
   }
 
-  v38 = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
-  if (v38)
+  hardwareButtonInvocationContext = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
+  if (hardwareButtonInvocationContext)
   {
-    v39 = v38;
-    v40 = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
-    v41 = [v4 hardwareButtonInvocationContext];
-    v42 = [v40 isEqual:v41];
+    v39 = hardwareButtonInvocationContext;
+    hardwareButtonInvocationContext2 = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
+    hardwareButtonInvocationContext3 = [equalCopy hardwareButtonInvocationContext];
+    v42 = [hardwareButtonInvocationContext2 isEqual:hardwareButtonInvocationContext3];
 
     if (!v42)
     {
@@ -762,20 +762,20 @@ LABEL_6:
   {
   }
 
-  v11 = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
-  v12 = [v4 bluetoothCarInvocationContext];
-  if ((v11 != 0) == (v12 == 0))
+  viewContainer = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
+  viewContainer2 = [equalCopy bluetoothCarInvocationContext];
+  if ((viewContainer != 0) == (viewContainer2 == 0))
   {
     goto LABEL_62;
   }
 
-  v43 = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
-  if (v43)
+  bluetoothCarInvocationContext = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
+  if (bluetoothCarInvocationContext)
   {
-    v44 = v43;
-    v45 = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
-    v46 = [v4 bluetoothCarInvocationContext];
-    v47 = [v45 isEqual:v46];
+    v44 = bluetoothCarInvocationContext;
+    bluetoothCarInvocationContext2 = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
+    bluetoothCarInvocationContext3 = [equalCopy bluetoothCarInvocationContext];
+    v47 = [bluetoothCarInvocationContext2 isEqual:bluetoothCarInvocationContext3];
 
     if (!v47)
     {
@@ -787,20 +787,20 @@ LABEL_6:
   {
   }
 
-  v11 = [(SISchemaInvocation *)self tapToEditContext];
-  v12 = [v4 tapToEditContext];
-  if ((v11 != 0) == (v12 == 0))
+  viewContainer = [(SISchemaInvocation *)self tapToEditContext];
+  viewContainer2 = [equalCopy tapToEditContext];
+  if ((viewContainer != 0) == (viewContainer2 == 0))
   {
     goto LABEL_62;
   }
 
-  v48 = [(SISchemaInvocation *)self tapToEditContext];
-  if (v48)
+  tapToEditContext = [(SISchemaInvocation *)self tapToEditContext];
+  if (tapToEditContext)
   {
-    v49 = v48;
-    v50 = [(SISchemaInvocation *)self tapToEditContext];
-    v51 = [v4 tapToEditContext];
-    v52 = [v50 isEqual:v51];
+    v49 = tapToEditContext;
+    tapToEditContext2 = [(SISchemaInvocation *)self tapToEditContext];
+    tapToEditContext3 = [equalCopy tapToEditContext];
+    v52 = [tapToEditContext2 isEqual:tapToEditContext3];
 
     if (!v52)
     {
@@ -812,20 +812,20 @@ LABEL_6:
   {
   }
 
-  v11 = [(SISchemaInvocation *)self typeToSiriContext];
-  v12 = [v4 typeToSiriContext];
-  if ((v11 != 0) == (v12 == 0))
+  viewContainer = [(SISchemaInvocation *)self typeToSiriContext];
+  viewContainer2 = [equalCopy typeToSiriContext];
+  if ((viewContainer != 0) == (viewContainer2 == 0))
   {
     goto LABEL_62;
   }
 
-  v53 = [(SISchemaInvocation *)self typeToSiriContext];
-  if (v53)
+  typeToSiriContext = [(SISchemaInvocation *)self typeToSiriContext];
+  if (typeToSiriContext)
   {
-    v54 = v53;
-    v55 = [(SISchemaInvocation *)self typeToSiriContext];
-    v56 = [v4 typeToSiriContext];
-    v57 = [v55 isEqual:v56];
+    v54 = typeToSiriContext;
+    typeToSiriContext2 = [(SISchemaInvocation *)self typeToSiriContext];
+    typeToSiriContext3 = [equalCopy typeToSiriContext];
+    v57 = [typeToSiriContext2 isEqual:typeToSiriContext3];
 
     if (!v57)
     {
@@ -838,7 +838,7 @@ LABEL_6:
   }
 
   v58 = (*&self->_has >> 2) & 1;
-  if (v58 != ((v4[104] >> 2) & 1))
+  if (v58 != ((equalCopy[104] >> 2) & 1))
   {
     goto LABEL_63;
   }
@@ -846,18 +846,18 @@ LABEL_6:
   if (v58)
   {
     isDeviceLocked = self->_isDeviceLocked;
-    if (isDeviceLocked != [v4 isDeviceLocked])
+    if (isDeviceLocked != [equalCopy isDeviceLocked])
     {
       goto LABEL_63;
     }
   }
 
-  v11 = [(SISchemaInvocation *)self linkId];
-  v12 = [v4 linkId];
-  if ((v11 != 0) != (v12 == 0))
+  viewContainer = [(SISchemaInvocation *)self linkId];
+  viewContainer2 = [equalCopy linkId];
+  if ((viewContainer != 0) != (viewContainer2 == 0))
   {
-    v60 = [(SISchemaInvocation *)self linkId];
-    if (!v60)
+    linkId = [(SISchemaInvocation *)self linkId];
+    if (!linkId)
     {
 
 LABEL_66:
@@ -865,10 +865,10 @@ LABEL_66:
       goto LABEL_64;
     }
 
-    v61 = v60;
-    v62 = [(SISchemaInvocation *)self linkId];
-    v63 = [v4 linkId];
-    v64 = [v62 isEqual:v63];
+    v61 = linkId;
+    linkId2 = [(SISchemaInvocation *)self linkId];
+    linkId3 = [equalCopy linkId];
+    v64 = [linkId2 isEqual:linkId3];
 
     if (v64)
     {
@@ -888,9 +888,9 @@ LABEL_64:
   return v65;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v26 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -903,75 +903,75 @@ LABEL_64:
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(SISchemaInvocation *)self viewContainer];
+  viewContainer = [(SISchemaInvocation *)self viewContainer];
 
-  if (v5)
+  if (viewContainer)
   {
-    v6 = [(SISchemaInvocation *)self viewContainer];
+    viewContainer2 = [(SISchemaInvocation *)self viewContainer];
     PBDataWriterWriteSubmessage();
   }
 
-  v7 = [(SISchemaInvocation *)self carPlayInvocationContext];
+  carPlayInvocationContext = [(SISchemaInvocation *)self carPlayInvocationContext];
 
-  if (v7)
+  if (carPlayInvocationContext)
   {
-    v8 = [(SISchemaInvocation *)self carPlayInvocationContext];
+    carPlayInvocationContext2 = [(SISchemaInvocation *)self carPlayInvocationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v9 = [(SISchemaInvocation *)self cardInvocationContext];
+  cardInvocationContext = [(SISchemaInvocation *)self cardInvocationContext];
 
-  if (v9)
+  if (cardInvocationContext)
   {
-    v10 = [(SISchemaInvocation *)self cardInvocationContext];
+    cardInvocationContext2 = [(SISchemaInvocation *)self cardInvocationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v11 = [(SISchemaInvocation *)self tvRemoteInvocationContext];
+  tvRemoteInvocationContext = [(SISchemaInvocation *)self tvRemoteInvocationContext];
 
-  if (v11)
+  if (tvRemoteInvocationContext)
   {
-    v12 = [(SISchemaInvocation *)self tvRemoteInvocationContext];
+    tvRemoteInvocationContext2 = [(SISchemaInvocation *)self tvRemoteInvocationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(SISchemaInvocation *)self keyboardInvocationContext];
+  keyboardInvocationContext = [(SISchemaInvocation *)self keyboardInvocationContext];
 
-  if (v13)
+  if (keyboardInvocationContext)
   {
-    v14 = [(SISchemaInvocation *)self keyboardInvocationContext];
+    keyboardInvocationContext2 = [(SISchemaInvocation *)self keyboardInvocationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v15 = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
+  hardwareButtonInvocationContext = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
 
-  if (v15)
+  if (hardwareButtonInvocationContext)
   {
-    v16 = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
+    hardwareButtonInvocationContext2 = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v17 = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
+  bluetoothCarInvocationContext = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
 
-  if (v17)
+  if (bluetoothCarInvocationContext)
   {
-    v18 = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
+    bluetoothCarInvocationContext2 = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v19 = [(SISchemaInvocation *)self tapToEditContext];
+  tapToEditContext = [(SISchemaInvocation *)self tapToEditContext];
 
-  if (v19)
+  if (tapToEditContext)
   {
-    v20 = [(SISchemaInvocation *)self tapToEditContext];
+    tapToEditContext2 = [(SISchemaInvocation *)self tapToEditContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v21 = [(SISchemaInvocation *)self typeToSiriContext];
+  typeToSiriContext = [(SISchemaInvocation *)self typeToSiriContext];
 
-  if (v21)
+  if (typeToSiriContext)
   {
-    v22 = [(SISchemaInvocation *)self typeToSiriContext];
+    typeToSiriContext2 = [(SISchemaInvocation *)self typeToSiriContext];
     PBDataWriterWriteSubmessage();
   }
 
@@ -980,21 +980,21 @@ LABEL_64:
     PBDataWriterWriteBOOLField();
   }
 
-  v23 = [(SISchemaInvocation *)self linkId];
+  linkId = [(SISchemaInvocation *)self linkId];
 
-  v24 = v26;
-  if (v23)
+  v24 = toCopy;
+  if (linkId)
   {
-    v25 = [(SISchemaInvocation *)self linkId];
+    linkId2 = [(SISchemaInvocation *)self linkId];
     PBDataWriterWriteSubmessage();
 
-    v24 = v26;
+    v24 = toCopy;
   }
 }
 
-- (void)setHasIsDeviceLocked:(BOOL)a3
+- (void)setHasIsDeviceLocked:(BOOL)locked
 {
-  if (a3)
+  if (locked)
   {
     v3 = 4;
   }
@@ -1032,9 +1032,9 @@ LABEL_64:
   return v3;
 }
 
-- (void)setTypeToSiriContext:(id)a3
+- (void)setTypeToSiriContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   carPlayInvocationContext = self->_carPlayInvocationContext;
   self->_carPlayInvocationContext = 0;
 
@@ -1057,14 +1057,14 @@ LABEL_64:
   self->_tapToEditContext = 0;
 
   v12 = 13;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichInvocationcontext = v12;
   typeToSiriContext = self->_typeToSiriContext;
-  self->_typeToSiriContext = v4;
+  self->_typeToSiriContext = contextCopy;
 }
 
 - (void)deleteTapToEditContext
@@ -1077,9 +1077,9 @@ LABEL_64:
   }
 }
 
-- (void)setTapToEditContext:(id)a3
+- (void)setTapToEditContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   carPlayInvocationContext = self->_carPlayInvocationContext;
   self->_carPlayInvocationContext = 0;
 
@@ -1102,14 +1102,14 @@ LABEL_64:
   self->_typeToSiriContext = 0;
 
   v12 = 11;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichInvocationcontext = v12;
   tapToEditContext = self->_tapToEditContext;
-  self->_tapToEditContext = v4;
+  self->_tapToEditContext = contextCopy;
 }
 
 - (void)deleteBluetoothCarInvocationContext
@@ -1122,9 +1122,9 @@ LABEL_64:
   }
 }
 
-- (void)setBluetoothCarInvocationContext:(id)a3
+- (void)setBluetoothCarInvocationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   carPlayInvocationContext = self->_carPlayInvocationContext;
   self->_carPlayInvocationContext = 0;
 
@@ -1147,14 +1147,14 @@ LABEL_64:
   self->_typeToSiriContext = 0;
 
   v12 = 10;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichInvocationcontext = v12;
   bluetoothCarInvocationContext = self->_bluetoothCarInvocationContext;
-  self->_bluetoothCarInvocationContext = v4;
+  self->_bluetoothCarInvocationContext = contextCopy;
 }
 
 - (void)deleteHardwareButtonInvocationContext
@@ -1167,9 +1167,9 @@ LABEL_64:
   }
 }
 
-- (void)setHardwareButtonInvocationContext:(id)a3
+- (void)setHardwareButtonInvocationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   carPlayInvocationContext = self->_carPlayInvocationContext;
   self->_carPlayInvocationContext = 0;
 
@@ -1192,14 +1192,14 @@ LABEL_64:
   self->_typeToSiriContext = 0;
 
   v12 = 9;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichInvocationcontext = v12;
   hardwareButtonInvocationContext = self->_hardwareButtonInvocationContext;
-  self->_hardwareButtonInvocationContext = v4;
+  self->_hardwareButtonInvocationContext = contextCopy;
 }
 
 - (void)deleteKeyboardInvocationContext
@@ -1212,9 +1212,9 @@ LABEL_64:
   }
 }
 
-- (void)setKeyboardInvocationContext:(id)a3
+- (void)setKeyboardInvocationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   carPlayInvocationContext = self->_carPlayInvocationContext;
   self->_carPlayInvocationContext = 0;
 
@@ -1236,9 +1236,9 @@ LABEL_64:
   typeToSiriContext = self->_typeToSiriContext;
   self->_typeToSiriContext = 0;
 
-  self->_whichInvocationcontext = 8 * (v4 != 0);
+  self->_whichInvocationcontext = 8 * (contextCopy != 0);
   keyboardInvocationContext = self->_keyboardInvocationContext;
-  self->_keyboardInvocationContext = v4;
+  self->_keyboardInvocationContext = contextCopy;
 }
 
 - (void)deleteTvRemoteInvocationContext
@@ -1251,9 +1251,9 @@ LABEL_64:
   }
 }
 
-- (void)setTvRemoteInvocationContext:(id)a3
+- (void)setTvRemoteInvocationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   carPlayInvocationContext = self->_carPlayInvocationContext;
   self->_carPlayInvocationContext = 0;
 
@@ -1276,14 +1276,14 @@ LABEL_64:
   self->_typeToSiriContext = 0;
 
   v12 = 7;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichInvocationcontext = v12;
   tvRemoteInvocationContext = self->_tvRemoteInvocationContext;
-  self->_tvRemoteInvocationContext = v4;
+  self->_tvRemoteInvocationContext = contextCopy;
 }
 
 - (void)deleteCardInvocationContext
@@ -1296,9 +1296,9 @@ LABEL_64:
   }
 }
 
-- (void)setCardInvocationContext:(id)a3
+- (void)setCardInvocationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   carPlayInvocationContext = self->_carPlayInvocationContext;
   self->_carPlayInvocationContext = 0;
 
@@ -1321,14 +1321,14 @@ LABEL_64:
   self->_typeToSiriContext = 0;
 
   v12 = 5;
-  if (!v4)
+  if (!contextCopy)
   {
     v12 = 0;
   }
 
   self->_whichInvocationcontext = v12;
   cardInvocationContext = self->_cardInvocationContext;
-  self->_cardInvocationContext = v4;
+  self->_cardInvocationContext = contextCopy;
 }
 
 - (void)deleteCarPlayInvocationContext
@@ -1341,9 +1341,9 @@ LABEL_64:
   }
 }
 
-- (void)setCarPlayInvocationContext:(id)a3
+- (void)setCarPlayInvocationContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   cardInvocationContext = self->_cardInvocationContext;
   self->_cardInvocationContext = 0;
 
@@ -1365,14 +1365,14 @@ LABEL_64:
   typeToSiriContext = self->_typeToSiriContext;
   self->_typeToSiriContext = 0;
 
-  self->_whichInvocationcontext = 4 * (v4 != 0);
+  self->_whichInvocationcontext = 4 * (contextCopy != 0);
   carPlayInvocationContext = self->_carPlayInvocationContext;
-  self->_carPlayInvocationContext = v4;
+  self->_carPlayInvocationContext = contextCopy;
 }
 
-- (void)setHasInvocationSource:(BOOL)a3
+- (void)setHasInvocationSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 2;
   }
@@ -1385,98 +1385,98 @@ LABEL_64:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v37.receiver = self;
   v37.super_class = SISchemaInvocation;
-  v5 = [(SISchemaInstrumentationMessage *)&v37 applySensitiveConditionsPolicy:v4];
-  v6 = [(SISchemaInvocation *)self viewContainer];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v37 applySensitiveConditionsPolicy:policyCopy];
+  viewContainer = [(SISchemaInvocation *)self viewContainer];
+  v7 = [viewContainer applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(SISchemaInvocation *)self deleteViewContainer];
   }
 
-  v9 = [(SISchemaInvocation *)self carPlayInvocationContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  carPlayInvocationContext = [(SISchemaInvocation *)self carPlayInvocationContext];
+  v10 = [carPlayInvocationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(SISchemaInvocation *)self deleteCarPlayInvocationContext];
   }
 
-  v12 = [(SISchemaInvocation *)self cardInvocationContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  cardInvocationContext = [(SISchemaInvocation *)self cardInvocationContext];
+  v13 = [cardInvocationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(SISchemaInvocation *)self deleteCardInvocationContext];
   }
 
-  v15 = [(SISchemaInvocation *)self tvRemoteInvocationContext];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  tvRemoteInvocationContext = [(SISchemaInvocation *)self tvRemoteInvocationContext];
+  v16 = [tvRemoteInvocationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(SISchemaInvocation *)self deleteTvRemoteInvocationContext];
   }
 
-  v18 = [(SISchemaInvocation *)self keyboardInvocationContext];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  keyboardInvocationContext = [(SISchemaInvocation *)self keyboardInvocationContext];
+  v19 = [keyboardInvocationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(SISchemaInvocation *)self deleteKeyboardInvocationContext];
   }
 
-  v21 = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  hardwareButtonInvocationContext = [(SISchemaInvocation *)self hardwareButtonInvocationContext];
+  v22 = [hardwareButtonInvocationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(SISchemaInvocation *)self deleteHardwareButtonInvocationContext];
   }
 
-  v24 = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  bluetoothCarInvocationContext = [(SISchemaInvocation *)self bluetoothCarInvocationContext];
+  v25 = [bluetoothCarInvocationContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(SISchemaInvocation *)self deleteBluetoothCarInvocationContext];
   }
 
-  v27 = [(SISchemaInvocation *)self tapToEditContext];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  tapToEditContext = [(SISchemaInvocation *)self tapToEditContext];
+  v28 = [tapToEditContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(SISchemaInvocation *)self deleteTapToEditContext];
   }
 
-  v30 = [(SISchemaInvocation *)self typeToSiriContext];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  typeToSiriContext = [(SISchemaInvocation *)self typeToSiriContext];
+  v31 = [typeToSiriContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(SISchemaInvocation *)self deleteTypeToSiriContext];
   }
 
-  v33 = [(SISchemaInvocation *)self linkId];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  linkId = [(SISchemaInvocation *)self linkId];
+  v34 = [linkId applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(SISchemaInvocation *)self deleteLinkId];
   }

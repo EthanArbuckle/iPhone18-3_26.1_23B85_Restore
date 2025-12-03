@@ -1,9 +1,9 @@
 @interface SBIconListViewPlaceholderAssertion
-- (SBIconListViewPlaceholderAssertion)initWithGridCellIndex:(unint64_t)a3 gridSizeClass:(id)a4 reason:(id)a5 options:(unint64_t)a6 listView:(id)a7;
-- (SBIconListViewPlaceholderAssertion)initWithGridCellIndex:(unint64_t)a3 representedIcon:(id)a4 reason:(id)a5 options:(unint64_t)a6 listView:(id)a7;
+- (SBIconListViewPlaceholderAssertion)initWithGridCellIndex:(unint64_t)index gridSizeClass:(id)class reason:(id)reason options:(unint64_t)options listView:(id)view;
+- (SBIconListViewPlaceholderAssertion)initWithGridCellIndex:(unint64_t)index representedIcon:(id)icon reason:(id)reason options:(unint64_t)options listView:(id)view;
 - (SBPlaceholderIcon)placeholderIcon;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (unint64_t)effectiveGridCellIndex;
 - (unint64_t)folderMutationOptions;
@@ -11,69 +11,69 @@
 - (void)dealloc;
 - (void)didChangePlaceholderPosition;
 - (void)invalidate;
-- (void)placeAboveIcon:(id)a3;
-- (void)placeAfterIcon:(id)a3;
-- (void)placeBeforeIcon:(id)a3;
-- (void)placeBelowIcon:(id)a3;
-- (void)setGridCellIndex:(unint64_t)a3;
-- (void)setGridSizeClass:(id)a3;
-- (void)setOptions:(unint64_t)a3;
-- (void)swapWithIcon:(id)a3;
+- (void)placeAboveIcon:(id)icon;
+- (void)placeAfterIcon:(id)icon;
+- (void)placeBeforeIcon:(id)icon;
+- (void)placeBelowIcon:(id)icon;
+- (void)setGridCellIndex:(unint64_t)index;
+- (void)setGridSizeClass:(id)class;
+- (void)setOptions:(unint64_t)options;
+- (void)swapWithIcon:(id)icon;
 @end
 
 @implementation SBIconListViewPlaceholderAssertion
 
-- (SBIconListViewPlaceholderAssertion)initWithGridCellIndex:(unint64_t)a3 gridSizeClass:(id)a4 reason:(id)a5 options:(unint64_t)a6 listView:(id)a7
+- (SBIconListViewPlaceholderAssertion)initWithGridCellIndex:(unint64_t)index gridSizeClass:(id)class reason:(id)reason options:(unint64_t)options listView:(id)view
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
+  classCopy = class;
+  reasonCopy = reason;
+  viewCopy = view;
   v22.receiver = self;
   v22.super_class = SBIconListViewPlaceholderAssertion;
   v15 = [(SBIconListViewPlaceholderAssertion *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    v15->_gridCellIndex = a3;
-    v17 = [v12 copy];
+    v15->_gridCellIndex = index;
+    v17 = [classCopy copy];
     gridSizeClass = v16->_gridSizeClass;
     v16->_gridSizeClass = v17;
 
-    v19 = [v13 copy];
+    v19 = [reasonCopy copy];
     reason = v16->_reason;
     v16->_reason = v19;
 
-    v16->_options = a6;
-    objc_storeStrong(&v16->_listView, a7);
+    v16->_options = options;
+    objc_storeStrong(&v16->_listView, view);
   }
 
   return v16;
 }
 
-- (SBIconListViewPlaceholderAssertion)initWithGridCellIndex:(unint64_t)a3 representedIcon:(id)a4 reason:(id)a5 options:(unint64_t)a6 listView:(id)a7
+- (SBIconListViewPlaceholderAssertion)initWithGridCellIndex:(unint64_t)index representedIcon:(id)icon reason:(id)reason options:(unint64_t)options listView:(id)view
 {
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  iconCopy = icon;
+  reasonCopy = reason;
+  viewCopy = view;
   v24.receiver = self;
   v24.super_class = SBIconListViewPlaceholderAssertion;
   v16 = [(SBIconListViewPlaceholderAssertion *)&v24 init];
   v17 = v16;
   if (v16)
   {
-    v16->_gridCellIndex = a3;
-    v18 = [v13 gridSizeClass];
-    v19 = [v18 copy];
+    v16->_gridCellIndex = index;
+    gridSizeClass = [iconCopy gridSizeClass];
+    v19 = [gridSizeClass copy];
     gridSizeClass = v17->_gridSizeClass;
     v17->_gridSizeClass = v19;
 
-    objc_storeStrong(&v17->_representedIcon, a4);
-    v21 = [v14 copy];
+    objc_storeStrong(&v17->_representedIcon, icon);
+    v21 = [reasonCopy copy];
     reason = v17->_reason;
     v17->_reason = v21;
 
-    v17->_options = a6;
-    objc_storeStrong(&v17->_listView, a7);
+    v17->_options = options;
+    objc_storeStrong(&v17->_listView, view);
   }
 
   return v17;
@@ -94,113 +94,113 @@
 
 - (unint64_t)effectiveGridCellIndex
 {
-  v3 = [(SBIconListViewPlaceholderAssertion *)self placeholderIcon];
-  v4 = [(SBIconListViewPlaceholderAssertion *)self listView];
-  v5 = [v4 layoutMetrics];
-  v6 = [v5 gridCellInfo];
-  v7 = [v5 listModel];
-  v8 = [v7 indexForIcon:v3];
+  placeholderIcon = [(SBIconListViewPlaceholderAssertion *)self placeholderIcon];
+  listView = [(SBIconListViewPlaceholderAssertion *)self listView];
+  layoutMetrics = [listView layoutMetrics];
+  gridCellInfo = [layoutMetrics gridCellInfo];
+  listModel = [layoutMetrics listModel];
+  v8 = [listModel indexForIcon:placeholderIcon];
   v9 = 0x7FFFFFFFFFFFFFFFLL;
   if (v8 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v9 = [v6 gridCellIndexForIconIndex:v8];
+    v9 = [gridCellInfo gridCellIndexForIconIndex:v8];
   }
 
   return v9;
 }
 
-- (void)setGridCellIndex:(unint64_t)a3
+- (void)setGridCellIndex:(unint64_t)index
 {
-  if (self->_gridCellIndex != a3 || [(SBIconListViewPlaceholderAssertion *)self positioningType])
+  if (self->_gridCellIndex != index || [(SBIconListViewPlaceholderAssertion *)self positioningType])
   {
-    self->_gridCellIndex = a3;
+    self->_gridCellIndex = index;
     [(SBIconListViewPlaceholderAssertion *)self setPositioningType:0];
 
     [(SBIconListViewPlaceholderAssertion *)self didChangePlaceholderPosition];
   }
 }
 
-- (void)swapWithIcon:(id)a3
+- (void)swapWithIcon:(id)icon
 {
-  [(SBIconListViewPlaceholderAssertion *)self setPositioningRelativeIcon:a3];
+  [(SBIconListViewPlaceholderAssertion *)self setPositioningRelativeIcon:icon];
   [(SBIconListViewPlaceholderAssertion *)self setPositioningType:1];
 
   [(SBIconListViewPlaceholderAssertion *)self didChangePlaceholderPosition];
 }
 
-- (void)placeAfterIcon:(id)a3
+- (void)placeAfterIcon:(id)icon
 {
-  [(SBIconListViewPlaceholderAssertion *)self setPositioningRelativeIcon:a3];
+  [(SBIconListViewPlaceholderAssertion *)self setPositioningRelativeIcon:icon];
   [(SBIconListViewPlaceholderAssertion *)self setPositioningType:2];
 
   [(SBIconListViewPlaceholderAssertion *)self didChangePlaceholderPosition];
 }
 
-- (void)placeBeforeIcon:(id)a3
+- (void)placeBeforeIcon:(id)icon
 {
-  [(SBIconListViewPlaceholderAssertion *)self setPositioningRelativeIcon:a3];
+  [(SBIconListViewPlaceholderAssertion *)self setPositioningRelativeIcon:icon];
   [(SBIconListViewPlaceholderAssertion *)self setPositioningType:3];
 
   [(SBIconListViewPlaceholderAssertion *)self didChangePlaceholderPosition];
 }
 
-- (void)placeAboveIcon:(id)a3
+- (void)placeAboveIcon:(id)icon
 {
-  [(SBIconListViewPlaceholderAssertion *)self setPositioningRelativeIcon:a3];
+  [(SBIconListViewPlaceholderAssertion *)self setPositioningRelativeIcon:icon];
   [(SBIconListViewPlaceholderAssertion *)self setPositioningType:4];
 
   [(SBIconListViewPlaceholderAssertion *)self didChangePlaceholderPosition];
 }
 
-- (void)placeBelowIcon:(id)a3
+- (void)placeBelowIcon:(id)icon
 {
-  [(SBIconListViewPlaceholderAssertion *)self setPositioningRelativeIcon:a3];
+  [(SBIconListViewPlaceholderAssertion *)self setPositioningRelativeIcon:icon];
   [(SBIconListViewPlaceholderAssertion *)self setPositioningType:5];
 
   [(SBIconListViewPlaceholderAssertion *)self didChangePlaceholderPosition];
 }
 
-- (void)setOptions:(unint64_t)a3
+- (void)setOptions:(unint64_t)options
 {
-  if (self->_options != a3)
+  if (self->_options != options)
   {
-    self->_options = a3;
+    self->_options = options;
     [(SBIconListViewPlaceholderAssertion *)self didChangePlaceholderPosition];
   }
 }
 
-- (void)setGridSizeClass:(id)a3
+- (void)setGridSizeClass:(id)class
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_gridSizeClass != v4)
+  classCopy = class;
+  v5 = classCopy;
+  if (self->_gridSizeClass != classCopy)
   {
-    v9 = v4;
-    v4 = [v4 isEqualToString:?];
+    v9 = classCopy;
+    classCopy = [classCopy isEqualToString:?];
     v5 = v9;
-    if ((v4 & 1) == 0)
+    if ((classCopy & 1) == 0)
     {
       v6 = [v9 copy];
       gridSizeClass = self->_gridSizeClass;
       self->_gridSizeClass = v6;
 
-      v8 = [(SBIconListViewPlaceholderAssertion *)self placeholderIcon];
-      [v8 setGridSizeClass:v9];
+      placeholderIcon = [(SBIconListViewPlaceholderAssertion *)self placeholderIcon];
+      [placeholderIcon setGridSizeClass:v9];
       [(SBIconListViewPlaceholderAssertion *)self didChangePlaceholderPosition];
 
       v5 = v9;
     }
   }
 
-  MEMORY[0x1EEE66BB8](v4, v5);
+  MEMORY[0x1EEE66BB8](classCopy, v5);
 }
 
 - (void)didChangePlaceholderPosition
 {
   if (![(SBIconListViewPlaceholderAssertion *)self isInvalidated])
   {
-    v3 = [(SBIconListViewPlaceholderAssertion *)self listView];
-    [v3 placeholderAssertionDidChangePosition:self];
+    listView = [(SBIconListViewPlaceholderAssertion *)self listView];
+    [listView placeholderAssertionDidChangePosition:self];
   }
 }
 
@@ -209,13 +209,13 @@
   placeholderIcon = self->_placeholderIcon;
   if (!placeholderIcon)
   {
-    v4 = [(SBIconListViewPlaceholderAssertion *)self reason];
-    v5 = [(SBIconListViewPlaceholderAssertion *)self gridSizeClass];
-    v6 = [SBPlaceholderIcon placeholderForReason:v4];
+    reason = [(SBIconListViewPlaceholderAssertion *)self reason];
+    gridSizeClass = [(SBIconListViewPlaceholderAssertion *)self gridSizeClass];
+    v6 = [SBPlaceholderIcon placeholderForReason:reason];
     v7 = self->_placeholderIcon;
     self->_placeholderIcon = v6;
 
-    [(SBIcon *)self->_placeholderIcon setGridSizeClass:v5];
+    [(SBIcon *)self->_placeholderIcon setGridSizeClass:gridSizeClass];
     placeholderIcon = self->_placeholderIcon;
   }
 
@@ -224,18 +224,18 @@
 
 - (unint64_t)listMutationOptions
 {
-  v3 = [(SBIconListViewPlaceholderAssertion *)self options];
-  v4 = (v3 & 1) << 21;
-  v5 = [(SBIconListViewPlaceholderAssertion *)self gridSizeClass];
-  v6 = v5;
-  if (v5 == @"SBHIconGridSizeClassDefault")
+  options = [(SBIconListViewPlaceholderAssertion *)self options];
+  v4 = (options & 1) << 21;
+  gridSizeClass = [(SBIconListViewPlaceholderAssertion *)self gridSizeClass];
+  v6 = gridSizeClass;
+  if (gridSizeClass == @"SBHIconGridSizeClassDefault")
   {
   }
 
   else
   {
-    v7 = [(SBIconListViewPlaceholderAssertion *)self gridSizeClass];
-    v8 = [v7 isEqualToString:@"SBHIconGridSizeClassDefault"];
+    gridSizeClass2 = [(SBIconListViewPlaceholderAssertion *)self gridSizeClass];
+    v8 = [gridSizeClass2 isEqualToString:@"SBHIconGridSizeClassDefault"];
 
     if ((v8 & 1) == 0)
     {
@@ -243,11 +243,11 @@
     }
   }
 
-  v9 = (v3 << 6) & 0x180 | (((v3 >> 4) & 1) << 9) | v4;
-  v10 = [(SBIconListViewPlaceholderAssertion *)self listView];
-  v11 = [v10 allowsGaps];
+  v9 = (options << 6) & 0x180 | (((options >> 4) & 1) << 9) | v4;
+  listView = [(SBIconListViewPlaceholderAssertion *)self listView];
+  allowsGaps = [listView allowsGaps];
 
-  if (v11)
+  if (allowsGaps)
   {
     return v9 | 0x100000;
   }
@@ -260,8 +260,8 @@
 
 - (unint64_t)folderMutationOptions
 {
-  v3 = [(SBIconListViewPlaceholderAssertion *)self options];
-  if (v3)
+  options = [(SBIconListViewPlaceholderAssertion *)self options];
+  if (options)
   {
     v4 = 25165826;
   }
@@ -271,16 +271,16 @@
     v4 = 8388610;
   }
 
-  v5 = [(SBIconListViewPlaceholderAssertion *)self gridSizeClass];
-  v6 = v5;
-  if (v5 == @"SBHIconGridSizeClassDefault")
+  gridSizeClass = [(SBIconListViewPlaceholderAssertion *)self gridSizeClass];
+  v6 = gridSizeClass;
+  if (gridSizeClass == @"SBHIconGridSizeClassDefault")
   {
   }
 
   else
   {
-    v7 = [(SBIconListViewPlaceholderAssertion *)self gridSizeClass];
-    v8 = [v7 isEqualToString:@"SBHIconGridSizeClassDefault"];
+    gridSizeClass2 = [(SBIconListViewPlaceholderAssertion *)self gridSizeClass];
+    v8 = [gridSizeClass2 isEqualToString:@"SBHIconGridSizeClassDefault"];
 
     if ((v8 & 1) == 0)
     {
@@ -288,11 +288,11 @@
     }
   }
 
-  v9 = (v3 << 7) & 0x300 | (((v3 >> 4) & 1) << 10) | v4;
-  v10 = [(SBIconListViewPlaceholderAssertion *)self listView];
-  v11 = [v10 allowsGaps];
+  v9 = (options << 7) & 0x300 | (((options >> 4) & 1) << 10) | v4;
+  listView = [(SBIconListViewPlaceholderAssertion *)self listView];
+  allowsGaps = [listView allowsGaps];
 
-  if (v11)
+  if (allowsGaps)
   {
     return v9 | 0x400000;
   }
@@ -307,8 +307,8 @@
 {
   if (![(SBIconListViewPlaceholderAssertion *)self isInvalidated])
   {
-    v3 = [(SBIconListViewPlaceholderAssertion *)self listView];
-    [v3 removePlaceholderAssertion:self];
+    listView = [(SBIconListViewPlaceholderAssertion *)self listView];
+    [listView removePlaceholderAssertion:self];
 
     [(SBIconListViewPlaceholderAssertion *)self setInvalidated:1];
   }
@@ -316,46 +316,46 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBIconListViewPlaceholderAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBIconListViewPlaceholderAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBIconListViewPlaceholderAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBIconListViewPlaceholderAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBIconListViewPlaceholderAssertion *)self listView];
-  v5 = [v4 gridSizeClassDomain];
-  v6 = [(SBIconListViewPlaceholderAssertion *)self succinctDescriptionBuilder];
-  v7 = [v6 appendInteger:-[SBIconListViewPlaceholderAssertion gridCellIndex](self withName:{"gridCellIndex"), @"gridCellIndex"}];
-  v8 = [(SBIconListViewPlaceholderAssertion *)self gridSizeClass];
-  v9 = [v5 descriptionForGridSizeClass:v8];
-  [v6 appendString:v9 withName:@"gridSizeClass"];
+  listView = [(SBIconListViewPlaceholderAssertion *)self listView];
+  gridSizeClassDomain = [listView gridSizeClassDomain];
+  succinctDescriptionBuilder = [(SBIconListViewPlaceholderAssertion *)self succinctDescriptionBuilder];
+  v7 = [succinctDescriptionBuilder appendInteger:-[SBIconListViewPlaceholderAssertion gridCellIndex](self withName:{"gridCellIndex"), @"gridCellIndex"}];
+  gridSizeClass = [(SBIconListViewPlaceholderAssertion *)self gridSizeClass];
+  v9 = [gridSizeClassDomain descriptionForGridSizeClass:gridSizeClass];
+  [succinctDescriptionBuilder appendString:v9 withName:@"gridSizeClass"];
 
-  v10 = [(SBIconListViewPlaceholderAssertion *)self representedIcon];
-  v11 = [v6 appendObject:v10 withName:@"representedIcon" skipIfNil:1];
+  representedIcon = [(SBIconListViewPlaceholderAssertion *)self representedIcon];
+  v11 = [succinctDescriptionBuilder appendObject:representedIcon withName:@"representedIcon" skipIfNil:1];
 
-  v12 = [(SBIconListViewPlaceholderAssertion *)self reason];
-  v13 = [v6 appendObject:v12 withName:@"reason"];
+  reason = [(SBIconListViewPlaceholderAssertion *)self reason];
+  v13 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
-  v14 = [(SBIconListViewPlaceholderAssertion *)self options];
+  options = [(SBIconListViewPlaceholderAssertion *)self options];
   v15 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v16 = v15;
-  if (v14)
+  if (options)
   {
     [v15 addObject:@"minimizing layout disruption"];
-    if ((v14 & 2) == 0)
+    if ((options & 2) == 0)
     {
 LABEL_3:
-      if ((v14 & 0x10) == 0)
+      if ((options & 0x10) == 0)
       {
         goto LABEL_4;
       }
@@ -364,16 +364,16 @@ LABEL_3:
     }
   }
 
-  else if ((v14 & 2) == 0)
+  else if ((options & 2) == 0)
   {
     goto LABEL_3;
   }
 
   [v16 addObject:@"fixed"];
-  if ((v14 & 0x10) == 0)
+  if ((options & 0x10) == 0)
   {
 LABEL_4:
-    if ((v14 & 4) == 0)
+    if ((options & 4) == 0)
     {
       goto LABEL_5;
     }
@@ -383,10 +383,10 @@ LABEL_4:
 
 LABEL_11:
   [v16 addObject:@"fixed if necessary"];
-  if ((v14 & 4) == 0)
+  if ((options & 4) == 0)
   {
 LABEL_5:
-    if ((v14 & 8) == 0)
+    if ((options & 8) == 0)
     {
       goto LABEL_7;
     }
@@ -396,7 +396,7 @@ LABEL_5:
 
 LABEL_12:
   [v16 addObject:@"displacing existing fixed icons"];
-  if ((v14 & 8) != 0)
+  if ((options & 8) != 0)
   {
 LABEL_6:
     [v16 addObject:@"disallowing icon removal"];
@@ -405,26 +405,26 @@ LABEL_6:
 LABEL_7:
   v17 = [v16 componentsJoinedByString:{@", "}];
 
-  [v6 appendString:v17 withName:@"options"];
-  v18 = [(SBIconListViewPlaceholderAssertion *)self positioningRelativeIcon];
-  v19 = [v6 appendObject:v18 withName:@"positioningRelativeIcon" skipIfNil:1];
+  [succinctDescriptionBuilder appendString:v17 withName:@"options"];
+  positioningRelativeIcon = [(SBIconListViewPlaceholderAssertion *)self positioningRelativeIcon];
+  v19 = [succinctDescriptionBuilder appendObject:positioningRelativeIcon withName:@"positioningRelativeIcon" skipIfNil:1];
 
-  v20 = [(SBIconListViewPlaceholderAssertion *)self positioningType];
-  if (v20 > 5)
+  positioningType = [(SBIconListViewPlaceholderAssertion *)self positioningType];
+  if (positioningType > 5)
   {
     v21 = 0;
   }
 
   else
   {
-    v21 = off_1E808D0D0[v20];
+    v21 = off_1E808D0D0[positioningType];
   }
 
-  [v6 appendString:v21 withName:@"positioningType"];
-  v22 = [(SBIconListViewPlaceholderAssertion *)self listView];
-  v23 = [v6 appendPointer:v22 withName:@"listView"];
+  [succinctDescriptionBuilder appendString:v21 withName:@"positioningType"];
+  listView2 = [(SBIconListViewPlaceholderAssertion *)self listView];
+  v23 = [succinctDescriptionBuilder appendPointer:listView2 withName:@"listView"];
 
-  return v6;
+  return succinctDescriptionBuilder;
 }
 
 @end

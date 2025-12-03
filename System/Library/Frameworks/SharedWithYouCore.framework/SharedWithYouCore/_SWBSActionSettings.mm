@@ -1,7 +1,7 @@
 @interface _SWBSActionSettings
 - (_SWBSActionSettings)init;
 - (id)bsSettings;
-- (void)setObject:(id)a3 forSetting:(unint64_t)a4;
+- (void)setObject:(id)object forSetting:(unint64_t)setting;
 @end
 
 @implementation _SWBSActionSettings
@@ -23,17 +23,17 @@
 
 - (id)bsSettings
 {
-  v2 = [(_SWBSActionSettings *)self mutableSettings];
-  v3 = [v2 copy];
+  mutableSettings = [(_SWBSActionSettings *)self mutableSettings];
+  v3 = [mutableSettings copy];
 
   return v3;
 }
 
-- (void)setObject:(id)a3 forSetting:(unint64_t)a4
+- (void)setObject:(id)object forSetting:(unint64_t)setting
 {
-  v6 = a3;
-  v7 = [(_SWBSActionSettings *)self mutableSettings];
-  [v7 setObject:v6 forSetting:a4];
+  objectCopy = object;
+  mutableSettings = [(_SWBSActionSettings *)self mutableSettings];
+  [mutableSettings setObject:objectCopy forSetting:setting];
 }
 
 @end

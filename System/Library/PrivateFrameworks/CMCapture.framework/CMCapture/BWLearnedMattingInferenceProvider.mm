@@ -1,16 +1,16 @@
 @interface BWLearnedMattingInferenceProvider
-- (BWLearnedMattingInferenceProvider)initWithConfiguration:(id)a3 resourceProvider:(id)a4;
-- (int)createInputTiles:(id)a3 withInputs:(id)a4 atPosition:(id *)a5 cmdBuffer:;
-- (int)preProcessOutputBuffer:(__CVBuffer *)a3 forMediaKey:(id)a4;
-- (int)prepareForSubmissionWithWorkQueue:(id)a3;
-- (int)propagateInferenceResultForOutputRequirement:(id)a3 storage:(id)a4 propagationSampleBuffer:(opaqueCMSampleBuffer *)a5;
-- (int)reconcileWithPlaceholderProvider:(id)a3;
-- (int)writeOutputFor:(id)a3 to:(__CVBuffer *)a4 fromNetworkOutputTiles:(id)a5 withAdditionalPixelBuffers:(id)a6 withInputTilePixelBuffers:(id)a7 withInputFullPixelBuffers:(id)a8 atPosition:(id *)a9 cmdBuffer:;
+- (BWLearnedMattingInferenceProvider)initWithConfiguration:(id)configuration resourceProvider:(id)provider;
+- (int)createInputTiles:(id)tiles withInputs:(id)inputs atPosition:(id *)position cmdBuffer:;
+- (int)preProcessOutputBuffer:(__CVBuffer *)buffer forMediaKey:(id)key;
+- (int)prepareForSubmissionWithWorkQueue:(id)queue;
+- (int)propagateInferenceResultForOutputRequirement:(id)requirement storage:(id)storage propagationSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (int)reconcileWithPlaceholderProvider:(id)provider;
+- (int)writeOutputFor:(id)for to:(__CVBuffer *)to fromNetworkOutputTiles:(id)tiles withAdditionalPixelBuffers:(id)buffers withInputTilePixelBuffers:(id)pixelBuffers withInputFullPixelBuffers:(id)fullPixelBuffers atPosition:(id *)position cmdBuffer:;
 - (unint64_t)_updateTileCount;
 - (void)dealloc;
 - (void)migrateVideoRequirementsToTiledHarness;
-- (void)setOutputFormatDescription:(opaqueCMFormatDescription *)a3;
-- (void)setOutputLowResSegmentationCloneFormatDescription:(opaqueCMFormatDescription *)a3;
+- (void)setOutputFormatDescription:(opaqueCMFormatDescription *)description;
+- (void)setOutputLowResSegmentationCloneFormatDescription:(opaqueCMFormatDescription *)description;
 @end
 
 @implementation BWLearnedMattingInferenceProvider
@@ -44,17 +44,17 @@
   -[BWTiledEspressoInferenceProvider migrateInputVideoRequirements:outputVideoRequirements:](&v9, sel_migrateInputVideoRequirements_outputVideoRequirements_, v4, [v6 arrayWithObjects:p_outputAlphaVideoRequirement count:v8]);
 }
 
-- (BWLearnedMattingInferenceProvider)initWithConfiguration:(id)a3 resourceProvider:(id)a4
+- (BWLearnedMattingInferenceProvider)initWithConfiguration:(id)configuration resourceProvider:(id)provider
 {
-  if (a3)
+  if (configuration)
   {
-    [a3 mainImageDownscalingFactor];
+    [configuration mainImageDownscalingFactor];
     if (v7 > 0.0)
     {
-      self->_configuration = a3;
+      self->_configuration = configuration;
       v9.receiver = self;
       v9.super_class = BWLearnedMattingInferenceProvider;
-      result = [(BWTiledEspressoInferenceProvider *)&v9 initWithConfiguration:a3 inputVideoRequirements:0 outputVideoRequirements:0 resourceProvider:a4];
+      result = [(BWTiledEspressoInferenceProvider *)&v9 initWithConfiguration:configuration inputVideoRequirements:0 outputVideoRequirements:0 resourceProvider:provider];
       if (result)
       {
         return result;
@@ -87,10 +87,10 @@
   [(BWTiledEspressoInferenceProvider *)&v5 dealloc];
 }
 
-- (int)preProcessOutputBuffer:(__CVBuffer *)a3 forMediaKey:(id)a4
+- (int)preProcessOutputBuffer:(__CVBuffer *)buffer forMediaKey:(id)key
 {
-  v7 = [a4 isEqualToString:0x1F21AABB0];
-  if ((v7 | [a4 isEqualToString:0x1F21AADF0]))
+  v7 = [key isEqualToString:0x1F21AABB0];
+  if ((v7 | [key isEqualToString:0x1F21AADF0]))
   {
     result = 0;
   }
@@ -104,17 +104,17 @@
   {
     metalProcessor = self->_metalProcessor;
 
-    return [(FigLearnedMattingMetalStage *)metalProcessor clearBuffer:a3];
+    return [(FigLearnedMattingMetalStage *)metalProcessor clearBuffer:buffer];
   }
 
   return result;
 }
 
-- (int)createInputTiles:(id)a3 withInputs:(id)a4 atPosition:(id *)a5 cmdBuffer:
+- (int)createInputTiles:(id)tiles withInputs:(id)inputs atPosition:(id *)position cmdBuffer:
 {
   v6 = v5;
-  v7 = a5;
-  if ([a3 count] != 2)
+  positionCopy = position;
+  if ([tiles count] != 2)
   {
     v20 = 155;
 LABEL_14:
@@ -122,7 +122,7 @@ LABEL_14:
     return v22;
   }
 
-  v11 = [a3 objectForKeyedSubscript:@"alpha"];
+  v11 = [tiles objectForKeyedSubscript:@"alpha"];
   if (!v11)
   {
     v20 = 159;
@@ -131,9 +131,9 @@ LABEL_14:
 
   v12.f32[0] = *self->_inputTileSize;
   v12.f32[1] = HIWORD(*self->_inputTileSize);
-  v13.f32[0] = v7;
-  v13.f32[1] = HIWORD(v7);
-  if (-[FigLearnedMattingMetalStage createTileFrom:to:withStart:withScale:outCommandBuffer:](self->_metalProcessor, "createTileFrom:to:withStart:withScale:outCommandBuffer:", [a4 objectForKeyedSubscript:0x1F219E750], v11, v6, COERCE_DOUBLE(vmul_f32(v13, vmul_f32(*self->_inputAlphaScale, vsub_f32(v12, *&self->_inputTileOverlap[4])))), *self->_inputAlphaScale))
+  v13.f32[0] = positionCopy;
+  v13.f32[1] = HIWORD(positionCopy);
+  if (-[FigLearnedMattingMetalStage createTileFrom:to:withStart:withScale:outCommandBuffer:](self->_metalProcessor, "createTileFrom:to:withStart:withScale:outCommandBuffer:", [inputs objectForKeyedSubscript:0x1F219E750], v11, v6, COERCE_DOUBLE(vmul_f32(v13, vmul_f32(*self->_inputAlphaScale, vsub_f32(v12, *&self->_inputTileOverlap[4])))), *self->_inputAlphaScale))
   {
     v20 = 165;
     goto LABEL_14;
@@ -145,14 +145,14 @@ LABEL_14:
     goto LABEL_14;
   }
 
-  v14 = [a3 objectForKeyedSubscript:@"image"];
+  v14 = [tiles objectForKeyedSubscript:@"image"];
   if (!v14)
   {
     v20 = 171;
     goto LABEL_14;
   }
 
-  v15.i32[0] = v7;
+  v15.i32[0] = positionCopy;
   v16.i16[0] = *self->_outputTileSize;
   v16.i16[2] = *&self->_outputTileSize[2];
   v17.i16[0] = *self->_outputTileOverlap;
@@ -160,7 +160,7 @@ LABEL_14:
   v18 = vmul_s32(vsub_s32(v16, v17), *&vmovl_u16(v15));
   HIWORD(v21) = v18.i16[2];
   LOWORD(v21) = v18.i16[0];
-  result = -[FigLearnedMattingMetalStage createTileFrom:to:withStart:commandBuffer:](self->_metalProcessor, "createTileFrom:to:withStart:commandBuffer:", [a4 objectForKeyedSubscript:@"PrimaryFormat"], v14, v21, *v6);
+  result = -[FigLearnedMattingMetalStage createTileFrom:to:withStart:commandBuffer:](self->_metalProcessor, "createTileFrom:to:withStart:commandBuffer:", [inputs objectForKeyedSubscript:@"PrimaryFormat"], v14, v21, *v6);
   if (result)
   {
     v20 = 177;
@@ -170,10 +170,10 @@ LABEL_14:
   return result;
 }
 
-- (int)writeOutputFor:(id)a3 to:(__CVBuffer *)a4 fromNetworkOutputTiles:(id)a5 withAdditionalPixelBuffers:(id)a6 withInputTilePixelBuffers:(id)a7 withInputFullPixelBuffers:(id)a8 atPosition:(id *)a9 cmdBuffer:
+- (int)writeOutputFor:(id)for to:(__CVBuffer *)to fromNetworkOutputTiles:(id)tiles withAdditionalPixelBuffers:(id)buffers withInputTilePixelBuffers:(id)pixelBuffers withInputFullPixelBuffers:(id)fullPixelBuffers atPosition:(id *)position cmdBuffer:
 {
-  v13 = [a3 isEqualToString:{0x1F21AABB0, a4, a5, a6, a7, a8}];
-  if ((v13 | [a3 isEqualToString:0x1F21AADF0]))
+  v13 = [for isEqualToString:{0x1F21AABB0, to, tiles, buffers, pixelBuffers, fullPixelBuffers}];
+  if ((v13 | [for isEqualToString:0x1F21AADF0]))
   {
     result = 0;
   }
@@ -185,7 +185,7 @@ LABEL_14:
 
   if (v13)
   {
-    v15.i32[0] = a9;
+    v15.i32[0] = position;
     v24 = vmovl_u16(v15);
     v14.i64[0] = 0xFFFF0000FFFFLL;
     v19 = vand_s8(*v24.i8, 0xFFFF0000FFFFLL);
@@ -246,7 +246,7 @@ LABEL_14:
 
     LOWORD(v33) = v28;
     WORD1(v33) = v31;
-    v32 = -[FigLearnedMattingMetalStage pasteTileFrom:to:withStart:withNoOverlapStart:withNoOverlapEnd:outCommandBuffer:](self->_metalProcessor, "pasteTileFrom:to:withStart:withNoOverlapStart:withNoOverlapEnd:outCommandBuffer:", [a5 objectForKeyedSubscript:{@"alpha_refined", v33}], a4, v35, v34, v33, v40);
+    v32 = -[FigLearnedMattingMetalStage pasteTileFrom:to:withStart:withNoOverlapStart:withNoOverlapEnd:outCommandBuffer:](self->_metalProcessor, "pasteTileFrom:to:withStart:withNoOverlapStart:withNoOverlapEnd:outCommandBuffer:", [tiles objectForKeyedSubscript:{@"alpha_refined", v33}], to, v35, v34, v33, v40);
     result = 0;
     if (v32)
     {
@@ -258,15 +258,15 @@ LABEL_14:
   return result;
 }
 
-- (void)setOutputFormatDescription:(opaqueCMFormatDescription *)a3
+- (void)setOutputFormatDescription:(opaqueCMFormatDescription *)description
 {
   outputFormatDescription = self->_outputFormatDescription;
-  if (outputFormatDescription != a3)
+  if (outputFormatDescription != description)
   {
-    self->_outputFormatDescription = a3;
-    if (a3)
+    self->_outputFormatDescription = description;
+    if (description)
     {
-      CFRetain(a3);
+      CFRetain(description);
     }
 
     if (outputFormatDescription)
@@ -277,15 +277,15 @@ LABEL_14:
   }
 }
 
-- (void)setOutputLowResSegmentationCloneFormatDescription:(opaqueCMFormatDescription *)a3
+- (void)setOutputLowResSegmentationCloneFormatDescription:(opaqueCMFormatDescription *)description
 {
   outputLowResSegmentationCloneFormatDescription = self->_outputLowResSegmentationCloneFormatDescription;
-  if (outputLowResSegmentationCloneFormatDescription != a3)
+  if (outputLowResSegmentationCloneFormatDescription != description)
   {
-    self->_outputLowResSegmentationCloneFormatDescription = a3;
-    if (a3)
+    self->_outputLowResSegmentationCloneFormatDescription = description;
+    if (description)
     {
-      CFRetain(a3);
+      CFRetain(description);
     }
 
     if (outputLowResSegmentationCloneFormatDescription)
@@ -296,10 +296,10 @@ LABEL_14:
   }
 }
 
-- (int)propagateInferenceResultForOutputRequirement:(id)a3 storage:(id)a4 propagationSampleBuffer:(opaqueCMSampleBuffer *)a5
+- (int)propagateInferenceResultForOutputRequirement:(id)requirement storage:(id)storage propagationSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   target = 0;
-  v8 = [a4 pixelBufferForRequirement:?];
+  v8 = [storage pixelBufferForRequirement:?];
   if (!v8)
   {
     fig_log_get_emitter();
@@ -308,8 +308,8 @@ LABEL_14:
   }
 
   v9 = v8;
-  v10 = [objc_msgSend(a3 "attachedMediaKey")];
-  v11 = [objc_msgSend(a3 "attachedMediaKey")];
+  v10 = [objc_msgSend(requirement "attachedMediaKey")];
+  v11 = [objc_msgSend(requirement "attachedMediaKey")];
   if ((v10 & 1) == 0 && !v11)
   {
     return -31710;
@@ -326,7 +326,7 @@ LABEL_14:
 
   if (v11)
   {
-    v12 = [a4 pixelBufferForRequirement:self->_inputAlphaVideoRequirement];
+    v12 = [storage pixelBufferForRequirement:self->_inputAlphaVideoRequirement];
     if (v12)
     {
       v13 = v12;
@@ -349,48 +349,48 @@ LABEL_14:
   return 0;
 }
 
-- (int)reconcileWithPlaceholderProvider:(id)a3
+- (int)reconcileWithPlaceholderProvider:(id)provider
 {
-  v5 = [(BWLearnedMattingInferenceProvider *)self type];
-  if (v5 != [a3 type] || !-[NSString isEqualToString:](-[BWTiledEspressoInferenceProvider customInferenceIdentifier](self, "customInferenceIdentifier"), "isEqualToString:", objc_msgSend(a3, "customInferenceIdentifier")))
+  type = [(BWLearnedMattingInferenceProvider *)self type];
+  if (type != [provider type] || !-[NSString isEqualToString:](-[BWTiledEspressoInferenceProvider customInferenceIdentifier](self, "customInferenceIdentifier"), "isEqualToString:", objc_msgSend(provider, "customInferenceIdentifier")))
   {
     return -31783;
   }
 
-  self->_inputImageVideoRequirement = [a3 inputImageVideoRequirement];
-  self->_inputAlphaVideoRequirement = [a3 inputAlphaVideoRequirement];
+  self->_inputImageVideoRequirement = [provider inputImageVideoRequirement];
+  self->_inputAlphaVideoRequirement = [provider inputAlphaVideoRequirement];
 
-  self->_outputAlphaVideoRequirement = [a3 outputAlphaVideoRequirement];
-  self->_outputLowResSegmentationCloneVideoRequirement = [a3 outputLowResSegmentationCloneVideoRequirement];
+  self->_outputAlphaVideoRequirement = [provider outputAlphaVideoRequirement];
+  self->_outputLowResSegmentationCloneVideoRequirement = [provider outputLowResSegmentationCloneVideoRequirement];
   outputFormatDescription = self->_outputFormatDescription;
   if (outputFormatDescription)
   {
     CFRelease(outputFormatDescription);
   }
 
-  v7 = [a3 outputFormatDescription];
-  if (v7)
+  outputFormatDescription = [provider outputFormatDescription];
+  if (outputFormatDescription)
   {
-    v7 = CFRetain(v7);
+    outputFormatDescription = CFRetain(outputFormatDescription);
   }
 
-  self->_outputFormatDescription = v7;
+  self->_outputFormatDescription = outputFormatDescription;
   outputLowResSegmentationCloneFormatDescription = self->_outputLowResSegmentationCloneFormatDescription;
   if (outputLowResSegmentationCloneFormatDescription)
   {
     CFRelease(outputLowResSegmentationCloneFormatDescription);
   }
 
-  v9 = [a3 outputLowResSegmentationCloneFormatDescription];
-  if (v9)
+  outputLowResSegmentationCloneFormatDescription = [provider outputLowResSegmentationCloneFormatDescription];
+  if (outputLowResSegmentationCloneFormatDescription)
   {
-    v9 = CFRetain(v9);
+    outputLowResSegmentationCloneFormatDescription = CFRetain(outputLowResSegmentationCloneFormatDescription);
   }
 
-  self->_outputLowResSegmentationCloneFormatDescription = v9;
+  self->_outputLowResSegmentationCloneFormatDescription = outputLowResSegmentationCloneFormatDescription;
   v14.receiver = self;
   v14.super_class = BWLearnedMattingInferenceProvider;
-  v10 = [(BWTiledEspressoInferenceProvider *)&v14 reconcileWithPlaceholderProvider:a3];
+  v10 = [(BWTiledEspressoInferenceProvider *)&v14 reconcileWithPlaceholderProvider:provider];
   [(BWLearnedMattingInferenceProvider *)self _updateTileCount];
   v11 = *&self->_didConfigureAndLoadEspressoNetwork;
   v13.receiver = self;
@@ -461,7 +461,7 @@ LABEL_14:
   return result;
 }
 
-- (int)prepareForSubmissionWithWorkQueue:(id)a3
+- (int)prepareForSubmissionWithWorkQueue:(id)queue
 {
   if ([(BWLearnedMattingInferenceConfiguration *)self->_configuration produceLowResPersonMaskClone]&& !self->_lowResSegmentationCloneCopySession && VTPixelTransferSessionCreate(*MEMORY[0x1E695E480], &self->_lowResSegmentationCloneCopySession))
   {
@@ -500,8 +500,8 @@ LABEL_7:
   }
 
   [(BWLearnedMattingInferenceProvider *)self _updateTileCount];
-  v9 = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters learnedMattingVersion];
-  v7 = +[BWEspressoInferenceAdapter espressoNetworkURLForPlatformedResourceBaseName:embedPlatformOrDeviceID:](BWEspressoInferenceAdapter, "espressoNetworkURLForPlatformedResourceBaseName:embedPlatformOrDeviceID:", [MEMORY[0x1E696AEC0] stringWithFormat:@"learnedmatting-f16-v%d", v9], 1);
+  learnedMattingVersion = [+[FigCaptureCameraParameters sharedInstance](FigCaptureCameraParameters learnedMattingVersion];
+  v7 = +[BWEspressoInferenceAdapter espressoNetworkURLForPlatformedResourceBaseName:embedPlatformOrDeviceID:](BWEspressoInferenceAdapter, "espressoNetworkURLForPlatformedResourceBaseName:embedPlatformOrDeviceID:", [MEMORY[0x1E696AEC0] stringWithFormat:@"learnedmatting-f16-v%d", learnedMattingVersion], 1);
   if (v7)
   {
     v10 = v7;
@@ -510,11 +510,11 @@ LABEL_7:
     v13 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v11, @"image", v12, @"alpha", 0}];
     v14 = [BWTiledEspressoInferenceProvider videoFormatWithPixelFormat:1278226536 size:*self->_outputTileSize];
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v14, @"alpha_refined", 0}];
-    v16 = [(BWLearnedMattingInferenceProvider *)self type];
+    type = [(BWLearnedMattingInferenceProvider *)self type];
     v17 = *&self->_didConfigureAndLoadEspressoNetwork;
     v20.receiver = self;
     v20.super_class = BWLearnedMattingInferenceProvider;
-    if ([(BWTiledEspressoInferenceProvider *)&v20 loadNetworkWithURL:v10 configName:@"832x768" inferenceType:v16 maxTileCount:v17 inputFormatsByBindingName:v13 outputFormatsByBindingName:v15 additionalVideoRequirements:0])
+    if ([(BWTiledEspressoInferenceProvider *)&v20 loadNetworkWithURL:v10 configName:@"832x768" inferenceType:type maxTileCount:v17 inputFormatsByBindingName:v13 outputFormatsByBindingName:v15 additionalVideoRequirements:0])
     {
       fig_log_get_emitter();
       OUTLINED_FUNCTION_0_4();
@@ -525,7 +525,7 @@ LABEL_7:
     {
       v19.receiver = self;
       v19.super_class = BWLearnedMattingInferenceProvider;
-      LODWORD(v7) = [(BWTiledEspressoInferenceProvider *)&v19 prepareForSubmissionWithWorkQueue:a3];
+      LODWORD(v7) = [(BWTiledEspressoInferenceProvider *)&v19 prepareForSubmissionWithWorkQueue:queue];
       *(&self->_didConfigureAndLoadEspressoNetwork + 4) = 1;
     }
   }

@@ -1,27 +1,27 @@
 @interface GKButtonView
-+ (void)registerSupplementaryViewClassesForKind:(id)a3 withCollectionView:(id)a4;
-- (GKButtonView)initWithFrame:(CGRect)a3;
++ (void)registerSupplementaryViewClassesForKind:(id)kind withCollectionView:(id)view;
+- (GKButtonView)initWithFrame:(CGRect)frame;
 - (SEL)action;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)buttonPressed:(id)a3;
-- (void)setAction:(SEL)a3;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)buttonPressed:(id)pressed;
+- (void)setAction:(SEL)action;
 - (void)updateConstraints;
 @end
 
 @implementation GKButtonView
 
-+ (void)registerSupplementaryViewClassesForKind:(id)a3 withCollectionView:(id)a4
++ (void)registerSupplementaryViewClassesForKind:(id)kind withCollectionView:(id)view
 {
-  v5 = a4;
-  v6 = a3;
-  [v5 _gkRegisterClass:objc_opt_class() forSupplementaryViewOfKind:v6];
+  viewCopy = view;
+  kindCopy = kind;
+  [viewCopy _gkRegisterClass:objc_opt_class() forSupplementaryViewOfKind:kindCopy];
 }
 
-- (GKButtonView)initWithFrame:(CGRect)a3
+- (GKButtonView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = GKButtonView;
-  v3 = [(GKButtonView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(GKButtonView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [GKButton alloc];
@@ -61,24 +61,24 @@
   [(GKButtonView *)self addConstraints:self->_buttonConstraints];
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
-  v5 = a3;
+  attributesCopy = attributes;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v5 dataSource];
-    [(GKButtonView *)self setDataSource:v4];
+    dataSource = [attributesCopy dataSource];
+    [(GKButtonView *)self setDataSource:dataSource];
   }
 }
 
-- (void)buttonPressed:(id)a3
+- (void)buttonPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   action = self->_action;
   if (action)
   {
-    v11 = v4;
+    v11 = pressedCopy;
     v6 = [(GKCollectionViewDataSource *)self->_dataSource targetForAction:action];
     v7 = v6;
     if (self->_action)
@@ -104,7 +104,7 @@
 
     v9(v7, v10);
 
-    v4 = v11;
+    pressedCopy = v11;
   }
 }
 
@@ -121,19 +121,19 @@
   }
 }
 
-- (void)setAction:(SEL)a3
+- (void)setAction:(SEL)action
 {
-  if (a3)
+  if (action)
   {
-    v3 = a3;
+    actionCopy = action;
   }
 
   else
   {
-    v3 = 0;
+    actionCopy = 0;
   }
 
-  self->_action = v3;
+  self->_action = actionCopy;
 }
 
 @end

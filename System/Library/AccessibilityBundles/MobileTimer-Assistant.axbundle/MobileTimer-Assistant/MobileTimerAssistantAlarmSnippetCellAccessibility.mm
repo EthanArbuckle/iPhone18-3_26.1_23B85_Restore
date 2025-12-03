@@ -15,18 +15,18 @@
 
   v5 = [(MobileTimerAssistantAlarmSnippetCellAccessibility *)self safeValueForKey:@"alarm"];
   v6 = [v5 safeValueForKey:@"hour"];
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
 
   v8 = [v5 safeValueForKey:@"minute"];
-  v9 = [v8 integerValue];
+  integerValue2 = [v8 integerValue];
 
-  v10 = [MEMORY[0x29EDB8D98] currentCalendar];
-  v11 = [MEMORY[0x29EDB8DB0] date];
-  v12 = [v10 components:28 fromDate:v11];
+  currentCalendar = [MEMORY[0x29EDB8D98] currentCalendar];
+  date = [MEMORY[0x29EDB8DB0] date];
+  v12 = [currentCalendar components:28 fromDate:date];
 
-  [v12 setHour:v7];
-  [v12 setMinute:v9];
-  v13 = [v10 dateFromComponents:v12];
+  [v12 setHour:integerValue];
+  [v12 setMinute:integerValue2];
+  v13 = [currentCalendar dateFromComponents:v12];
   v14 = [MEMORY[0x29EDB9F78] localizedStringFromDate:v13 dateStyle:0 timeStyle:1];
   v15 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v14];
   [v15 setAttribute:*MEMORY[0x29EDB8F00] forKey:*MEMORY[0x29EDBD888]];
@@ -50,10 +50,10 @@
 {
   v8.receiver = self;
   v8.super_class = MobileTimerAssistantAlarmSnippetCellAccessibility;
-  v3 = [(MobileTimerAssistantAlarmSnippetCellAccessibility *)&v8 accessibilityTraits];
+  accessibilityTraits = [(MobileTimerAssistantAlarmSnippetCellAccessibility *)&v8 accessibilityTraits];
   v4 = [(MobileTimerAssistantAlarmSnippetCellAccessibility *)self safeValueForKey:@"_alarmView"];
   v5 = [v4 safeValueForKey:@"enabledSwitch"];
-  v6 = [v5 accessibilityTraits] | v3;
+  v6 = [v5 accessibilityTraits] | accessibilityTraits;
 
   return *MEMORY[0x29EDC7F70] ^ v6;
 }
@@ -62,9 +62,9 @@
 {
   v2 = [(MobileTimerAssistantAlarmSnippetCellAccessibility *)self safeValueForKey:@"_alarmView"];
   v3 = [v2 safeValueForKey:@"enabledSwitch"];
-  v4 = [v3 accessibilityValue];
+  accessibilityValue = [v3 accessibilityValue];
 
-  return v4;
+  return accessibilityValue;
 }
 
 - (CGPoint)accessibilityActivationPoint

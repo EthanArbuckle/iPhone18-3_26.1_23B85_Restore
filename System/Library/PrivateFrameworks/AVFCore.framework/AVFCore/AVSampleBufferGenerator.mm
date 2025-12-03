@@ -4,7 +4,7 @@
 - (AVSampleBufferGeneratorBatch)makeBatch;
 - (CMSampleBufferRef)createSampleBufferForRequest:(AVSampleBufferRequest *)request addingToBatch:(AVSampleBufferGeneratorBatch *)batch error:(NSError *)outError;
 - (CMSampleBufferRef)createSampleBufferForRequest:(AVSampleBufferRequest *)request error:(NSError *)outError;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -18,11 +18,11 @@
   if (result)
   {
     v7 = result;
-    v8 = [(AVAsset *)asset _figAsset];
-    v9 = [(AVAsset *)asset _copyFormatReader];
+    _figAsset = [(AVAsset *)asset _figAsset];
+    _copyFormatReader = [(AVAsset *)asset _copyFormatReader];
     v10 = objc_alloc_init(AVSampleBufferGeneratorInternal);
     v7->_generator = v10;
-    if (v10 && (CFRetain(v10), asset) && (v7->_generator ? (v11 = v8 == 0) : (v11 = 1), !v11 ? (v12 = v9 == 0) : (v12 = 1), !v12))
+    if (v10 && (CFRetain(v10), asset) && (v7->_generator ? (v11 = _figAsset == 0) : (v11 = 1), !v11 ? (v12 = _copyFormatReader == 0) : (v12 = 1), !v12))
     {
       v7->_generator->weakReferenceToAsset = [(AVAsset *)asset _weakReference];
       if (timebase)
@@ -44,13 +44,13 @@
 
       v7 = 0;
       result = 0;
-      if (!v9)
+      if (!_copyFormatReader)
       {
         return result;
       }
     }
 
-    CFRelease(v9);
+    CFRelease(_copyFormatReader);
     return v7;
   }
 
@@ -84,13 +84,13 @@
   [(AVSampleBufferGenerator *)&v5 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [AVSampleBufferGenerator alloc];
-  v5 = [(AVWeakReference *)self->_generator->weakReferenceToAsset referencedObject];
+  referencedObject = [(AVWeakReference *)self->_generator->weakReferenceToAsset referencedObject];
   timebase = self->_generator->timebase;
 
-  return [(AVSampleBufferGenerator *)v4 initWithAsset:v5 timebase:timebase];
+  return [(AVSampleBufferGenerator *)v4 initWithAsset:referencedObject timebase:timebase];
 }
 
 - (AVSampleBufferGeneratorBatch)makeBatch
@@ -110,17 +110,17 @@
 
   v22 = 0;
   figSampleGenerator = self->_generator->figSampleGenerator;
-  v11 = [(AVSampleCursor *)[(AVSampleBufferRequest *)request startCursor] _figSampleCursor];
-  v12 = [(AVSampleBufferRequest *)request preferredMinSampleCount];
-  v13 = [(AVSampleBufferRequest *)request maxSampleCount];
-  v14 = [(AVSampleBufferRequest *)request direction];
-  v15 = [(AVSampleCursor *)[(AVSampleBufferRequest *)request limitCursor] _figSampleCursor];
-  v16 = [(AVSampleBufferRequest *)request _figSampleGeneratorReadPolicy];
-  v17 = [(AVSampleBufferRequest *)request _figSampleGeneratorReadFlags];
+  _figSampleCursor = [(AVSampleCursor *)[(AVSampleBufferRequest *)request startCursor] _figSampleCursor];
+  preferredMinSampleCount = [(AVSampleBufferRequest *)request preferredMinSampleCount];
+  maxSampleCount = [(AVSampleBufferRequest *)request maxSampleCount];
+  direction = [(AVSampleBufferRequest *)request direction];
+  _figSampleCursor2 = [(AVSampleCursor *)[(AVSampleBufferRequest *)request limitCursor] _figSampleCursor];
+  _figSampleGeneratorReadPolicy = [(AVSampleBufferRequest *)request _figSampleGeneratorReadPolicy];
+  _figSampleGeneratorReadFlags = [(AVSampleBufferRequest *)request _figSampleGeneratorReadFlags];
   v18 = *(*(CMBaseObjectGetVTable() + 16) + 8);
   if (v18)
   {
-    v19 = v18(figSampleGenerator, v11, v12, v13, v14, v15, v16, v17, AVSampleBufferGenerator_remapSampleBufferTiming, request, 0, &v22);
+    v19 = v18(figSampleGenerator, _figSampleCursor, preferredMinSampleCount, maxSampleCount, direction, _figSampleCursor2, _figSampleGeneratorReadPolicy, _figSampleGeneratorReadFlags, AVSampleBufferGenerator_remapSampleBufferTiming, request, 0, &v22);
     if (!outError)
     {
       return v22;

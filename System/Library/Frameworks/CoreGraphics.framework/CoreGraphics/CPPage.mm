@@ -1,23 +1,23 @@
 @interface CPPage
-+ (void)sortByReadingOrder:(id)a3;
-- (BOOL)populatePDFLayout:(CGPDFLayout *)a3;
++ (void)sortByReadingOrder:(id)order;
+- (BOOL)populatePDFLayout:(CGPDFLayout *)layout;
 - (CGPDFLayout)layout;
 - (CGRect)pageCropBox;
 - (CPPage)init;
-- (CPPage)initWithPDFPage:(CGPDFPage *)a3;
+- (CPPage)initWithPDFPage:(CGPDFPage *)page;
 - (id)bodyZone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)hitTest;
 - (id)textLinesOnPage;
-- (unsigned)setCellPositionsOf:(id)a3 from:(unsigned int)a4;
-- (unsigned)setGraphicPositions:(id)a3 from:(unsigned int)a4;
-- (unsigned)setPositionsOf:(id)a3 from:(unsigned int)a4;
-- (unsigned)setReadingOrder:(id)a3 from:(unsigned int)a4;
-- (unsigned)traverse:(id)a3 ordinal:(unsigned int)a4;
-- (void)addAnnotation:(id)a3;
-- (void)addColumns:(id)a3;
-- (void)addImage:(id)a3;
-- (void)addShape:(id)a3;
+- (unsigned)setCellPositionsOf:(id)of from:(unsigned int)from;
+- (unsigned)setGraphicPositions:(id)positions from:(unsigned int)from;
+- (unsigned)setPositionsOf:(id)of from:(unsigned int)from;
+- (unsigned)setReadingOrder:(id)order from:(unsigned int)from;
+- (unsigned)traverse:(id)traverse ordinal:(unsigned int)ordinal;
+- (void)addAnnotation:(id)annotation;
+- (void)addColumns:(id)columns;
+- (void)addImage:(id)image;
+- (void)addShape:(id)shape;
 - (void)dealloc;
 - (void)dispose;
 - (void)finalize;
@@ -25,13 +25,13 @@
 - (void)layDownObjectsOnPageOld;
 - (void)reconstruct;
 - (void)restoreBackGroundObjectToPage;
-- (void)setBackground:(id)a3;
-- (void)setRotation:(int)a3;
+- (void)setBackground:(id)background;
+- (void)setRotation:(int)rotation;
 @end
 
 @implementation CPPage
 
-- (void)addColumns:(id)a3
+- (void)addColumns:(id)columns
 {
   columnsOnPage = self->columnsOnPage;
   if (!columnsOnPage)
@@ -40,7 +40,7 @@
     self->columnsOnPage = columnsOnPage;
   }
 
-  [(NSMutableArray *)columnsOnPage addObjectsFromArray:a3];
+  [(NSMutableArray *)columnsOnPage addObjectsFromArray:columns];
 }
 
 - (id)textLinesOnPage
@@ -139,7 +139,7 @@ LABEL_8:
           v15 = 0;
           while (1)
           {
-            v16 = [v12 childAtIndex:v15];
+            firstChild = [v12 childAtIndex:v15];
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
@@ -160,9 +160,9 @@ LABEL_23:
             }
           }
 
-          v16 = [v16 firstChild];
+          firstChild = [firstChild firstChild];
 LABEL_22:
-          [v9 addObject:v16];
+          [v9 addObject:firstChild];
           goto LABEL_23;
         }
 
@@ -214,25 +214,25 @@ LABEL_33:
 
 - (void)layDownObjectsOnPage
 {
-  v3 = [(CPPage *)self bodyZone];
+  bodyZone = [(CPPage *)self bodyZone];
 
-  [(CPPage *)self setReadingOrder:v3 from:0];
+  [(CPPage *)self setReadingOrder:bodyZone from:0];
 }
 
-- (unsigned)setReadingOrder:(id)a3 from:(unsigned int)a4
+- (unsigned)setReadingOrder:(id)order from:(unsigned int)from
 {
-  v4 = *&a4;
+  v4 = *&from;
   v27 = *MEMORY[0x1E69E9840];
   v7 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:1];
-  v21 = a3;
-  v8 = [a3 count];
+  orderCopy = order;
+  v8 = [order count];
   if (v8)
   {
     v9 = v8;
     v10 = 0;
     do
     {
-      v11 = [a3 childAtIndex:v10];
+      v11 = [order childAtIndex:v10];
       objc_opt_class();
       if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
       {
@@ -318,64 +318,64 @@ LABEL_23:
     while (v19);
   }
 
-  [v21 setChunkPosition:v4];
+  [orderCopy setChunkPosition:v4];
 
   return v4 + 1;
 }
 
-- (unsigned)setGraphicPositions:(id)a3 from:(unsigned int)a4
+- (unsigned)setGraphicPositions:(id)positions from:(unsigned int)from
 {
-  v4 = *&a4;
-  v7 = [a3 count];
+  v4 = *&from;
+  v7 = [positions count];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
     do
     {
-      v4 = -[CPPage setGraphicPositions:from:](self, "setGraphicPositions:from:", [a3 childAtIndex:v9], v4);
+      v4 = -[CPPage setGraphicPositions:from:](self, "setGraphicPositions:from:", [positions childAtIndex:v9], v4);
       v9 = (v9 + 1);
     }
 
     while (v8 != v9);
   }
 
-  [a3 setChunkPosition:v4];
+  [positions setChunkPosition:v4];
   return v4 + 1;
 }
 
-- (unsigned)setCellPositionsOf:(id)a3 from:(unsigned int)a4
+- (unsigned)setCellPositionsOf:(id)of from:(unsigned int)from
 {
-  v4 = *&a4;
-  v7 = [a3 count];
+  v4 = *&from;
+  v7 = [of count];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
     do
     {
-      v4 = -[CPPage setReadingOrder:from:](self, "setReadingOrder:from:", [a3 childAtIndex:v9], v4);
+      v4 = -[CPPage setReadingOrder:from:](self, "setReadingOrder:from:", [of childAtIndex:v9], v4);
       v9 = (v9 + 1);
     }
 
     while (v8 != v9);
   }
 
-  [a3 setChunkPosition:v4];
+  [of setChunkPosition:v4];
   return v4 + 1;
 }
 
-- (unsigned)setPositionsOf:(id)a3 from:(unsigned int)a4
+- (unsigned)setPositionsOf:(id)of from:(unsigned int)from
 {
-  v4 = *&a4;
-  v6 = [a3 count];
+  v4 = *&from;
+  v6 = [of count];
   if (v6)
   {
     v7 = v6;
     v8 = 0;
     do
     {
-      v9 = [a3 childAtIndex:v8];
+      v9 = [of childAtIndex:v8];
       v10 = [v9 count];
       if (v10)
       {
@@ -405,22 +405,22 @@ LABEL_23:
     while (v8 != v7);
   }
 
-  [a3 setChunkPosition:v4];
+  [of setChunkPosition:v4];
   return v4 + 1;
 }
 
-- (unsigned)traverse:(id)a3 ordinal:(unsigned int)a4
+- (unsigned)traverse:(id)traverse ordinal:(unsigned int)ordinal
 {
-  v6 = a4 + 1;
-  [a3 setChunkPosition:*&a4];
-  v7 = [a3 count];
+  v6 = ordinal + 1;
+  [traverse setChunkPosition:*&ordinal];
+  v7 = [traverse count];
   if (v7)
   {
     v8 = v7;
     v9 = 0;
     do
     {
-      v6 = -[CPPage traverse:ordinal:](self, "traverse:ordinal:", [a3 childAtIndex:v9], v6);
+      v6 = -[CPPage traverse:ordinal:](self, "traverse:ordinal:", [traverse childAtIndex:v9], v6);
       v9 = (v9 + 1);
     }
 
@@ -439,26 +439,26 @@ LABEL_23:
   }
 }
 
-- (void)setBackground:(id)a3
+- (void)setBackground:(id)background
 {
   background = self->background;
-  if (background != a3)
+  if (background != background)
   {
 
-    self->background = a3;
+    self->background = background;
   }
 }
 
-- (void)setRotation:(int)a3
+- (void)setRotation:(int)rotation
 {
-  if (a3 / -90 >= 0)
+  if (rotation / -90 >= 0)
   {
-    v3 = -((a3 / -90) & 3);
+    v3 = -((rotation / -90) & 3);
   }
 
   else
   {
-    v3 = (a3 / 90) & 3;
+    v3 = (rotation / 90) & 3;
   }
 
   if (v3 >= 0)
@@ -502,28 +502,28 @@ LABEL_23:
   return v6;
 }
 
-- (void)addAnnotation:(id)a3
+- (void)addAnnotation:(id)annotation
 {
   [(NSMutableArray *)self->graphicsOnPage addObject:?];
   annotationsOnPage = self->annotationsOnPage;
 
-  [(NSMutableArray *)annotationsOnPage addObject:a3];
+  [(NSMutableArray *)annotationsOnPage addObject:annotation];
 }
 
-- (void)addImage:(id)a3
+- (void)addImage:(id)image
 {
   [(NSMutableArray *)self->graphicsOnPage addObject:?];
   imagesOnPage = self->imagesOnPage;
 
-  [(NSMutableArray *)imagesOnPage addObject:a3];
+  [(NSMutableArray *)imagesOnPage addObject:image];
 }
 
-- (void)addShape:(id)a3
+- (void)addShape:(id)shape
 {
   [(NSMutableArray *)self->graphicsOnPage addObject:?];
   shapesOnPage = self->shapesOnPage;
 
-  [(NSMutableArray *)shapesOnPage addObject:a3];
+  [(NSMutableArray *)shapesOnPage addObject:shape];
 }
 
 - (CGRect)pageCropBox
@@ -539,11 +539,11 @@ LABEL_23:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CPPage;
-  v4 = [(CPChunk *)&v8 copyWithZone:a3];
+  v4 = [(CPChunk *)&v8 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -725,7 +725,7 @@ LABEL_35:
           v38 = *(*&v20 + 96);
           if (v38)
           {
-            v55 = 1;
+            selfCopy = 1;
             info = v37;
             v52 = 0;
             v53 = 0;
@@ -764,13 +764,13 @@ LABEL_35:
         }
 
 LABEL_37:
-        v44 = [(CPPage *)self pdfPage];
+        pdfPage = [(CPPage *)self pdfPage];
         info = MEMORY[0x1E69E9820];
         v52 = 3221225472;
         v53 = __MapContextToPage_block_invoke;
         v54 = &unk_1E6E18E78;
-        v55 = self;
-        CGPDFPageEnumerateAnnotations(v44, &info);
+        selfCopy = self;
+        CGPDFPageEnumerateAnnotations(pdfPage, &info);
         v45 = [objc_alloc(MEMORY[0x1E695DF70]) initWithArray:{-[CPPage graphicsOnPage](self, "graphicsOnPage")}];
         [(CPChunk *)self setChildren:v45];
 
@@ -780,10 +780,10 @@ LABEL_37:
       v46 = objc_alloc_init(CPZoneMaker);
       [(CPZoneMaker *)v46 makeZonesIn:self];
 
-      v47 = [(CPPage *)self bodyZone];
-      if (v47)
+      bodyZone = [(CPPage *)self bodyZone];
+      if (bodyZone)
       {
-        v48 = v47;
+        v48 = bodyZone;
         v49 = objc_alloc_init(CPBuilder);
         [(CPBuilder *)v49 prepareZone:v48];
       }
@@ -850,16 +850,16 @@ LABEL_37:
   }
 }
 
-- (CPPage)initWithPDFPage:(CGPDFPage *)a3
+- (CPPage)initWithPDFPage:(CGPDFPage *)page
 {
   v4 = [(CPPage *)self init];
   v5 = v4;
   if (v4)
   {
-    v4->pdfPage = a3;
-    if (a3)
+    v4->pdfPage = page;
+    if (page)
     {
-      CFRetain(a3);
+      CFRetain(page);
       pdfPage = v5->pdfPage;
       if (pdfPage)
       {
@@ -906,7 +906,7 @@ LABEL_37:
   return v3;
 }
 
-+ (void)sortByReadingOrder:(id)a3
++ (void)sortByReadingOrder:(id)order
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -917,17 +917,17 @@ LABEL_37:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [a3 sortUsingSelector:sel_compareChunkPosition_];
+        [order sortUsingSelector:sel_compareChunkPosition_];
       }
 
-      v4 = [a3 count];
+      v4 = [order count];
       if (v4)
       {
         v5 = v4;
         v6 = 0;
         do
         {
-          +[CPPage sortByReadingOrder:](CPPage, "sortByReadingOrder:", [a3 childAtIndex:v6]);
+          +[CPPage sortByReadingOrder:](CPPage, "sortByReadingOrder:", [order childAtIndex:v6]);
           v6 = (v6 + 1);
         }
 
@@ -999,15 +999,15 @@ LABEL_11:
   return result;
 }
 
-- (BOOL)populatePDFLayout:(CGPDFLayout *)a3
+- (BOOL)populatePDFLayout:(CGPDFLayout *)layout
 {
   v10 = 0;
   cf = 0;
   v9 = 0;
-  v5 = CGPDFNodeMakeFromCPChunk(self, a3, 0, &v9, &cf);
+  v5 = CGPDFNodeMakeFromCPChunk(self, layout, 0, &v9, &cf);
   if (v5)
   {
-    v6 = CGPDFNodePopulateFromCPChunk(v5, self, a3, &v10, &v9, &cf);
+    v6 = CGPDFNodePopulateFromCPChunk(v5, self, layout, &v10, &v9, &cf);
   }
 
   else

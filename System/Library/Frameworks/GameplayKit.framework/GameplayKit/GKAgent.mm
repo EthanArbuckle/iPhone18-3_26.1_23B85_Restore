@@ -1,23 +1,23 @@
 @interface GKAgent
 - (GKAgent)init;
-- (GKAgent)initWithCoder:(id)a3;
-- (__n128)steerForAlignment:(float)a3 maxDistance:(uint64_t)a4 maxAngle:(void *)a5;
-- (__n128)steerForCohesion:(float)a3 maxDistance:(uint64_t)a4 maxAngle:(void *)a5;
-- (__n128)steerForIntercept:(uint64_t)a3 maxPredictionTime:(void *)a4;
-- (__n128)steerForSeparation:(float)a3 maxDistance:(uint64_t)a4 maxAngle:(void *)a5;
-- (__n128)steerToAvoidAgents:(uint64_t)a3 timeBeforeCollisionToAvoid:(void *)a4;
-- (__n128)steerToAvoidObstacles:(uint64_t)a3 timeBeforeCollisionToAvoid:(void *)a4;
-- (__n128)steerToFollowPath:(uint64_t)a3 maxPredictionTime:(void *)a4 forward:(int)a5;
-- (__n128)steerToStayOnPath:(void *)a3 maxPredictionTime:;
-- (__n64)steerForFlee:(void *)a1;
-- (__n64)steerForWander:(float)a3 speed:;
+- (GKAgent)initWithCoder:(id)coder;
+- (__n128)steerForAlignment:(float)alignment maxDistance:(uint64_t)distance maxAngle:(void *)angle;
+- (__n128)steerForCohesion:(float)cohesion maxDistance:(uint64_t)distance maxAngle:(void *)angle;
+- (__n128)steerForIntercept:(uint64_t)intercept maxPredictionTime:(void *)time;
+- (__n128)steerForSeparation:(float)separation maxDistance:(uint64_t)distance maxAngle:(void *)angle;
+- (__n128)steerToAvoidAgents:(uint64_t)agents timeBeforeCollisionToAvoid:(void *)avoid;
+- (__n128)steerToAvoidObstacles:(uint64_t)obstacles timeBeforeCollisionToAvoid:(void *)avoid;
+- (__n128)steerToFollowPath:(uint64_t)path maxPredictionTime:(void *)time forward:(int)forward;
+- (__n128)steerToStayOnPath:(void *)path maxPredictionTime:;
+- (__n64)steerForFlee:(void *)flee;
+- (__n64)steerForWander:(float)wander speed:;
 - (double)position3;
 - (double)velocity3;
 - (float)maxAcceleration;
-- (float32x2_t)steerForSeek:(void *)a1;
-- (float32x2_t)steerForTargetSpeed:(void *)a1;
+- (float32x2_t)steerForSeek:(void *)seek;
+- (float32x2_t)steerForTargetSpeed:(void *)speed;
 - (id)delegate;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)setMaxAcceleration:(float)maxAcceleration;
 @end
 
@@ -57,12 +57,12 @@
   return v2;
 }
 
-- (GKAgent)initWithCoder:(id)a3
+- (GKAgent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = GKAgent;
-  v5 = [(GKComponent *)&v22 initWithCoder:v4];
+  v5 = [(GKComponent *)&v22 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
@@ -92,52 +92,52 @@
     LODWORD(v6->_vehicle._smoothedAcceleration.z) = dword_27DF48758;
     *&v6->_vehicle._smoothedAcceleration.x = v13;
     [(GKAgent *)v6 setDelegate:0];
-    [v4 decodeFloatForKey:@"mass"];
+    [coderCopy decodeFloatForKey:@"mass"];
     [(GKAgent *)v6 setMass:?];
-    [v4 decodeFloatForKey:@"radius"];
+    [coderCopy decodeFloatForKey:@"radius"];
     [(GKAgent *)v6 setRadius:?];
-    [v4 decodeFloatForKey:@"speed"];
+    [coderCopy decodeFloatForKey:@"speed"];
     [(GKAgent *)v6 setSpeed:?];
-    [v4 decodeFloatForKey:@"maxAcceleration"];
+    [coderCopy decodeFloatForKey:@"maxAcceleration"];
     [(GKAgent *)v6 setMaxAcceleration:?];
-    [v4 decodeFloatForKey:@"maxSpeed"];
+    [coderCopy decodeFloatForKey:@"maxSpeed"];
     [(GKAgent *)v6 setMaxSpeed:?];
-    [v4 decodeFloatForKey:@"positionX"];
+    [coderCopy decodeFloatForKey:@"positionX"];
     v15 = v14;
-    [v4 decodeFloatForKey:@"positionY"];
+    [coderCopy decodeFloatForKey:@"positionY"];
     v17 = v16;
-    [v4 decodeFloatForKey:@"positionZ"];
+    [coderCopy decodeFloatForKey:@"positionZ"];
     v19 = v18;
-    v20 = [(GKAgent *)v6 vehicle];
-    v20[11] = v15;
-    v20[12] = v17;
-    v20[13] = v19;
+    vehicle = [(GKAgent *)v6 vehicle];
+    vehicle[11] = v15;
+    vehicle[12] = v17;
+    vehicle[13] = v19;
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v7 = a3;
+  coderCopy = coder;
   [(GKAgent *)self mass];
-  [v7 encodeFloat:@"mass" forKey:?];
+  [coderCopy encodeFloat:@"mass" forKey:?];
   [(GKAgent *)self radius];
-  [v7 encodeFloat:@"radius" forKey:?];
+  [coderCopy encodeFloat:@"radius" forKey:?];
   [(GKAgent *)self speed];
-  [v7 encodeFloat:@"speed" forKey:?];
+  [coderCopy encodeFloat:@"speed" forKey:?];
   [(GKAgent *)self maxAcceleration];
-  [v7 encodeFloat:@"maxAcceleration" forKey:?];
+  [coderCopy encodeFloat:@"maxAcceleration" forKey:?];
   [(GKAgent *)self maxSpeed];
-  [v7 encodeFloat:@"maxSpeed" forKey:?];
+  [coderCopy encodeFloat:@"maxSpeed" forKey:?];
   [(GKAgent *)self position3];
-  [v7 encodeFloat:@"positionX" forKey:?];
+  [coderCopy encodeFloat:@"positionX" forKey:?];
   [(GKAgent *)self position3];
   LODWORD(v4) = HIDWORD(v4);
-  [v7 encodeFloat:@"positionY" forKey:v4];
+  [coderCopy encodeFloat:@"positionY" forKey:v4];
   [(GKAgent *)self position3];
   LODWORD(v6) = v5;
-  [v7 encodeFloat:@"positionZ" forKey:v6];
+  [coderCopy encodeFloat:@"positionZ" forKey:v6];
 }
 
 - (float)maxAcceleration
@@ -159,8 +159,8 @@
 
 - (double)position3
 {
-  v1 = a1 + 40;
-  v2 = (*(*(a1 + 40) + 48))(a1 + 40);
+  v1 = self + 40;
+  v2 = (*(*(self + 40) + 48))(self + 40);
   v6 = LODWORD(v2);
   (*(*v1 + 48))(v1);
   v5 = v3;
@@ -170,8 +170,8 @@
 
 - (double)velocity3
 {
-  v1 = a1 + 40;
-  v2 = (*(*(a1 + 40) + 192))(a1 + 40);
+  v1 = self + 40;
+  v2 = (*(*(self + 40) + 192))(self + 40);
   v6 = LODWORD(v2);
   (*(*v1 + 192))(v1);
   v5 = v3;
@@ -179,10 +179,10 @@
   return COERCE_DOUBLE(__PAIR64__(v5, v6));
 }
 
-- (float32x2_t)steerForSeek:(void *)a1
+- (float32x2_t)steerForSeek:(void *)seek
 {
-  v2 = [a1 vehicle];
-  v3 = (*(*v2 + 48))(v2);
+  vehicle = [seek vehicle];
+  v3 = (*(*vehicle + 48))(vehicle);
   v5 = v4;
   v6 = *&a2 - v3;
   if (v6 == 0.0)
@@ -191,15 +191,15 @@
   }
 
   v10 = v6;
-  v7.f32[0] = (*(*v2 + 192))(v2);
+  v7.f32[0] = (*(*vehicle + 192))(vehicle);
   v7.f32[1] = v5 + v8;
   return vsub_f32(__PAIR64__(HIDWORD(a2), LODWORD(v10)), v7);
 }
 
-- (__n64)steerForFlee:(void *)a1
+- (__n64)steerForFlee:(void *)flee
 {
-  v2 = [a1 vehicle];
-  v3 = (*(*v2 + 48))(v2);
+  vehicle = [flee vehicle];
+  v3 = (*(*vehicle + 48))(vehicle);
   v5 = v4;
   v6 = v3 - *&a2;
   if (v6 == 0.0)
@@ -212,19 +212,19 @@
     v7 = v6;
   }
 
-  result.n64_f32[0] = v7 - (*(*v2 + 192))(v2);
+  result.n64_f32[0] = v7 - (*(*vehicle + 192))(vehicle);
   result.n64_f32[1] = v5 - (*(&a2 + 1) + v8);
   return result;
 }
 
-- (__n128)steerToAvoidObstacles:(uint64_t)a3 timeBeforeCollisionToAvoid:(void *)a4
+- (__n128)steerToAvoidObstacles:(uint64_t)obstacles timeBeforeCollisionToAvoid:(void *)avoid
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  avoidCopy = avoid;
   __p = 0;
   v24 = 0;
   v25 = 0;
-  v7 = [v6 count];
+  v7 = [avoidCopy count];
   if (v7)
   {
     if (!(v7 >> 61))
@@ -239,7 +239,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = avoidCopy;
   if ([v8 countByEnumeratingWithState:&v19 objects:v26 count:16])
   {
     *v20;
@@ -248,9 +248,9 @@
     operator new();
   }
 
-  v9 = [a1 vehicle];
+  vehicle = [self vehicle];
   v10 = a2;
-  OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerToAvoidObstacles(v9, &__p, v10);
+  OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerToAvoidObstacles(vehicle, &__p, v10);
   v16 = v11;
   v17 = v13;
   v18 = v12;
@@ -267,14 +267,14 @@
   return result;
 }
 
-- (__n128)steerToAvoidAgents:(uint64_t)a3 timeBeforeCollisionToAvoid:(void *)a4
+- (__n128)steerToAvoidAgents:(uint64_t)agents timeBeforeCollisionToAvoid:(void *)avoid
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  avoidCopy = avoid;
   __p = 0;
   v24 = 0;
   v25 = 0;
-  v7 = [v6 count];
+  v7 = [avoidCopy count];
   if (v7)
   {
     if (!(v7 >> 61))
@@ -289,7 +289,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = v6;
+  v8 = avoidCopy;
   if ([v8 countByEnumeratingWithState:&v19 objects:v26 count:16])
   {
     *v20;
@@ -298,9 +298,9 @@
     operator new();
   }
 
-  v9 = [a1 vehicle];
+  vehicle = [self vehicle];
   v10 = a2;
-  OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerToAvoidNeighbors(v9, &__p, v10);
+  OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerToAvoidNeighbors(vehicle, &__p, v10);
   v16 = v11;
   v17 = v13;
   v18 = v12;
@@ -317,14 +317,14 @@
   return result;
 }
 
-- (__n128)steerForSeparation:(float)a3 maxDistance:(uint64_t)a4 maxAngle:(void *)a5
+- (__n128)steerForSeparation:(float)separation maxDistance:(uint64_t)distance maxAngle:(void *)angle
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  angleCopy = angle;
   __p = 0;
   v26 = 0;
   v27 = 0;
-  v9 = [v8 count];
+  v9 = [angleCopy count];
   if (v9)
   {
     if (!(v9 >> 61))
@@ -339,7 +339,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v8;
+  v10 = angleCopy;
   if ([v10 countByEnumeratingWithState:&v21 objects:v28 count:16])
   {
     *v22;
@@ -348,9 +348,9 @@
     operator new();
   }
 
-  v11 = [a1 vehicle];
-  v12 = cosf(a3);
-  v13 = OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerForSeparation(v11, &__p, a2, v12);
+  vehicle = [self vehicle];
+  v12 = cosf(separation);
+  v13 = OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerForSeparation(vehicle, &__p, a2, v12);
   v18 = v14;
   v19 = v15;
   v20 = LODWORD(v13);
@@ -367,14 +367,14 @@
   return result;
 }
 
-- (__n128)steerForAlignment:(float)a3 maxDistance:(uint64_t)a4 maxAngle:(void *)a5
+- (__n128)steerForAlignment:(float)alignment maxDistance:(uint64_t)distance maxAngle:(void *)angle
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  angleCopy = angle;
   __p = 0;
   v26 = 0;
   v27 = 0;
-  v9 = [v8 count];
+  v9 = [angleCopy count];
   if (v9)
   {
     if (!(v9 >> 61))
@@ -389,7 +389,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v8;
+  v10 = angleCopy;
   if ([v10 countByEnumeratingWithState:&v21 objects:v28 count:16])
   {
     *v22;
@@ -398,9 +398,9 @@
     operator new();
   }
 
-  v11 = [a1 vehicle];
-  v12 = cosf(a3);
-  v13 = OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerForAlignment(v11, &__p, a2, v12);
+  vehicle = [self vehicle];
+  v12 = cosf(alignment);
+  v13 = OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerForAlignment(vehicle, &__p, a2, v12);
   v18 = v14;
   v19 = v15;
   v20 = LODWORD(v13);
@@ -417,14 +417,14 @@
   return result;
 }
 
-- (__n128)steerForCohesion:(float)a3 maxDistance:(uint64_t)a4 maxAngle:(void *)a5
+- (__n128)steerForCohesion:(float)cohesion maxDistance:(uint64_t)distance maxAngle:(void *)angle
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  angleCopy = angle;
   __p = 0;
   v26 = 0;
   v27 = 0;
-  v9 = [v8 count];
+  v9 = [angleCopy count];
   if (v9)
   {
     if (!(v9 >> 61))
@@ -439,7 +439,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v8;
+  v10 = angleCopy;
   if ([v10 countByEnumeratingWithState:&v21 objects:v28 count:16])
   {
     *v22;
@@ -448,9 +448,9 @@
     operator new();
   }
 
-  v11 = [a1 vehicle];
-  v12 = cosf(a3);
-  v13 = OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerForCohesion(v11, &__p, a2, v12);
+  vehicle = [self vehicle];
+  v12 = cosf(cohesion);
+  v13 = OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerForCohesion(vehicle, &__p, a2, v12);
   v18 = v14;
   v19 = v15;
   v20 = LODWORD(v13);
@@ -467,12 +467,12 @@
   return result;
 }
 
-- (float32x2_t)steerForTargetSpeed:(void *)a1
+- (float32x2_t)steerForTargetSpeed:(void *)speed
 {
-  v3 = [a1 vehicle];
-  v4 = (*(*v3 + 224))(v3);
-  v5 = a2 - (*(*v3 + 200))(v3);
-  (*(*v3 + 32))(v3);
+  vehicle = [speed vehicle];
+  v4 = (*(*vehicle + 224))(vehicle);
+  v5 = a2 - (*(*vehicle + 200))(vehicle);
+  (*(*vehicle + 32))(vehicle);
   v6 = fminf(v5, v4);
   v8.i32[1] = v7;
   if (v5 >= -v4)
@@ -488,31 +488,31 @@
   return vmul_n_f32(v8, v9);
 }
 
-- (__n64)steerForWander:(float)a3 speed:
+- (__n64)steerForWander:(float)wander speed:
 {
-  v5 = [a1 vehicle];
+  vehicle = [self vehicle];
   v6 = a2;
-  v7 = v6 * a3;
-  v5[14] = fmaxf(fminf(v5[14] - (v7 - (vcvts_n_f32_s32(rand(), 0x1EuLL) * v7)), 1.0), -1.0);
-  v5[15] = fmaxf(fminf(v5[15] - (v7 - (vcvts_n_f32_s32(rand(), 0x1EuLL) * v7)), 1.0), -1.0);
-  v8 = (**v5)(v5);
-  v9 = v5[14];
+  v7 = v6 * wander;
+  vehicle[14] = fmaxf(fminf(vehicle[14] - (v7 - (vcvts_n_f32_s32(rand(), 0x1EuLL) * v7)), 1.0), -1.0);
+  vehicle[15] = fmaxf(fminf(vehicle[15] - (v7 - (vcvts_n_f32_s32(rand(), 0x1EuLL) * v7)), 1.0), -1.0);
+  v8 = (**vehicle)(vehicle);
+  v9 = vehicle[14];
   v10 = v8 * v9;
   *&a2 = v11 * v9;
-  v12 = (*(*v5 + 16))(v5);
-  v13 = v5[15];
+  v12 = (*(*vehicle + 16))(vehicle);
+  v13 = vehicle[15];
   result.n64_f32[0] = v10 + (v12 * v13);
   result.n64_f32[1] = *&a2 + (v14 * v13);
   return result;
 }
 
-- (__n128)steerForIntercept:(uint64_t)a3 maxPredictionTime:(void *)a4
+- (__n128)steerForIntercept:(uint64_t)intercept maxPredictionTime:(void *)time
 {
-  v6 = a4;
-  v7 = [a1 vehicle];
-  v8 = [v6 vehicle];
+  timeCopy = time;
+  vehicle = [self vehicle];
+  vehicle2 = [timeCopy vehicle];
   v9 = a2;
-  v10 = OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerForPursuit(v7, v8, v9);
+  v10 = OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerForPursuit(vehicle, vehicle2, v9);
   v14 = v11;
   v15 = v12;
   v16 = LODWORD(v10);
@@ -523,10 +523,10 @@
   return result;
 }
 
-- (__n128)steerToFollowPath:(uint64_t)a3 maxPredictionTime:(void *)a4 forward:(int)a5
+- (__n128)steerToFollowPath:(uint64_t)path maxPredictionTime:(void *)time forward:(int)forward
 {
-  v8 = a4;
-  if (a5)
+  timeCopy = time;
+  if (forward)
   {
     v9 = 1;
   }
@@ -536,10 +536,10 @@
     v9 = -1;
   }
 
-  v10 = [a1 vehicle];
-  v11 = [v8 pathway];
+  vehicle = [self vehicle];
+  pathway = [timeCopy pathway];
   v12 = a2;
-  OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerToFollowPath(v10, v9, v11, v12);
+  OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerToFollowPath(vehicle, v9, pathway, v12);
   v17 = v13;
   v18 = v15;
   v19 = v14;
@@ -550,10 +550,10 @@
   return result;
 }
 
-- (__n128)steerToStayOnPath:(void *)a3 maxPredictionTime:
+- (__n128)steerToStayOnPath:(void *)path maxPredictionTime:
 {
-  v4 = a3;
-  v5 = OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerToStayOnPath([a1 vehicle], objc_msgSend(v4, "pathway"));
+  pathCopy = path;
+  v5 = OpenSteer::SteerLibraryMixin<OpenSteer::LocalSpaceMixin<OpenSteer::AbstractVehicle>>::steerToStayOnPath([self vehicle], objc_msgSend(pathCopy, "pathway"));
   v9 = v6;
   v10 = v7;
   v11 = LODWORD(v5);

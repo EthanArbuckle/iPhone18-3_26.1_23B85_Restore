@@ -1,11 +1,11 @@
 @interface OKWidgetContentGaussianBlurFilter
-+ (id)filterWithInputRadius:(id)a3;
++ (id)filterWithInputRadius:(id)radius;
 + (id)supportedSettings;
-+ (void)setupJavascriptContext:(id)a3;
++ (void)setupJavascriptContext:(id)context;
 - (id)inputKeys;
 - (id)outputImage;
 - (void)dealloc;
-- (void)setSettingInputRadius:(id)a3;
+- (void)setSettingInputRadius:(id)radius;
 @end
 
 @implementation OKWidgetContentGaussianBlurFilter
@@ -27,7 +27,7 @@
 + (id)supportedSettings
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKWidgetContentGaussianBlurFilter;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v7 = @"inputRadius";
@@ -40,7 +40,7 @@
   return v2;
 }
 
-- (void)setSettingInputRadius:(id)a3
+- (void)setSettingInputRadius:(id)radius
 {
   inputRadius = self->_inputRadius;
   if (inputRadius)
@@ -49,7 +49,7 @@
     self->_inputRadius = 0;
   }
 
-  self->_inputRadius = a3;
+  self->_inputRadius = radius;
 }
 
 - (id)inputKeys
@@ -69,18 +69,18 @@
   return [v2 valueForKey:v3];
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
-  [a3 setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentGaussianBlurFilter"];
+  [context setObject:objc_opt_class() forKeyedSubscript:@"OKWidgetContentGaussianBlurFilter"];
   v4 = objc_opt_class();
 
-  [OKSettings exportClassSettings:v4 toJavaScriptContext:a3];
+  [OKSettings exportClassSettings:v4 toJavaScriptContext:context];
 }
 
-+ (id)filterWithInputRadius:(id)a3
++ (id)filterWithInputRadius:(id)radius
 {
   v4 = objc_alloc_init(OKWidgetContentGaussianBlurFilter);
-  [(OKWidgetContentGaussianBlurFilter *)v4 setInputRadius:a3];
+  [(OKWidgetContentGaussianBlurFilter *)v4 setInputRadius:radius];
 
   return v4;
 }

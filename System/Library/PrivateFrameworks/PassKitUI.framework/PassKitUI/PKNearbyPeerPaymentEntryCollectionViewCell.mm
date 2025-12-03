@@ -1,12 +1,12 @@
 @interface PKNearbyPeerPaymentEntryCollectionViewCell
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKNearbyPeerPaymentEntryCollectionViewCell)initWithCoder:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKNearbyPeerPaymentEntryCollectionViewCell)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation PKNearbyPeerPaymentEntryCollectionViewCell
 
-- (PKNearbyPeerPaymentEntryCollectionViewCell)initWithCoder:(id)a3
+- (PKNearbyPeerPaymentEntryCollectionViewCell)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR___PKNearbyPeerPaymentEntryCollectionViewCell_imageView;
   *(&self->super.super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x1E69DCAE0]) init];
@@ -19,21 +19,21 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1BD9AD898();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   v5 = *(&self->super.super.super.super.super.isa + OBJC_IVAR___PKNearbyPeerPaymentEntryCollectionViewCell_titleLabel);
-  v6 = self;
-  v7 = [v5 font];
-  if (v7)
+  selfCopy = self;
+  font = [v5 font];
+  if (font)
   {
-    v10 = v7;
-    [v7 lineHeight];
+    v10 = font;
+    [font lineHeight];
     v12 = v11;
 
     v9 = fmin(width + 6.0 + v12, height);

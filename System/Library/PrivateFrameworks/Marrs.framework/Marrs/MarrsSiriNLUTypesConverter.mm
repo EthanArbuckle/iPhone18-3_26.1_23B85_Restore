@@ -1,36 +1,36 @@
 @interface MarrsSiriNLUTypesConverter
 + (QRInteraction)toPluginInteraction:(QRInteraction *__return_ptr)retstr;
-+ (QRRequest)toPluginRequestObj:(SEL)a3;
++ (QRRequest)toPluginRequestObj:(SEL)obj;
 + (QRToken)internalTokentoPluginToken:(QRToken *__return_ptr)retstr;
 + (QRToken)toPluginToken:(QRToken *__return_ptr)retstr;
 + (QRUtterance)toPluginUtterance:(QRUtterance *__return_ptr)retstr;
-+ (Uuid)toPluginUuid:(id)a3;
++ (Uuid)toPluginUuid:(id)uuid;
 + (basic_string<char,)NSString2StdString:(std::allocator<char>> *__return_ptr)retstr;
-+ (id)StdVectorStdString2NSMutableArrayNSString:()vector<std:(std::allocator<std::string>> *)a3 :string;
-+ (id)fromPluginHypothesis:(QRHypothesis *)a3;
-+ (id)fromPluginInteraction:(QRInteraction *)a3;
-+ (id)fromPluginResponseObj:(const void *)a3;
-+ (id)fromPluginResponsePtr:(const void *)a3;
-+ (id)fromPluginToken:(QRToken *)a3;
-+ (id)fromPluginUtterance:(QRUtterance *)a3;
-+ (id)fromPluginUuid:(Uuid)a3;
-+ (id)internalTokenfromPluginToken:(QRToken *)a3;
++ (id)StdVectorStdString2NSMutableArrayNSString:()vector<std:(std::allocator<std::string>> *)std :string;
++ (id)fromPluginHypothesis:(QRHypothesis *)hypothesis;
++ (id)fromPluginInteraction:(QRInteraction *)interaction;
++ (id)fromPluginResponseObj:(const void *)obj;
++ (id)fromPluginResponsePtr:(const void *)ptr;
++ (id)fromPluginToken:(QRToken *)token;
++ (id)fromPluginUtterance:(QRUtterance *)utterance;
++ (id)fromPluginUuid:(Uuid)uuid;
++ (id)internalTokenfromPluginToken:(QRToken *)token;
 + (id)stdString2NSString:()basic_string<char;
-+ (int)fromPluginRepetitionType:(int)a3;
-+ (int)toPluginRequester:(int)a3;
-+ (unique_ptr<marrs::qr::orchestration::QRRequest,)toPluginRequestPtr:(id)a3;
-+ (vector<std::string,)NSMutableArrayNSString2StdVectorStdString:(id)a2;
++ (int)fromPluginRepetitionType:(int)type;
++ (int)toPluginRequester:(int)requester;
++ (unique_ptr<marrs::qr::orchestration::QRRequest,)toPluginRequestPtr:(id)ptr;
++ (vector<std::string,)NSMutableArrayNSString2StdVectorStdString:(id)string;
 @end
 
 @implementation MarrsSiriNLUTypesConverter
 
-+ (id)fromPluginResponseObj:(const void *)a3
++ (id)fromPluginResponseObj:(const void *)obj
 {
   v4 = objc_opt_new();
-  v5 = *(a3 + 1);
-  if (*a3 != v5)
+  v5 = *(obj + 1);
+  if (*obj != v5)
   {
-    v6 = *a3 + 16;
+    v6 = *obj + 16;
     do
     {
       v16 = *(v6 - 16);
@@ -87,16 +87,16 @@ LABEL_14:
 
   v10 = objc_alloc_init(MEMORY[0x277D5DE50]);
   [v10 setRewriteHypotheses:v4];
-  [v10 setRepetitionType:{+[MarrsSiriNLUTypesConverter fromPluginRepetitionType:](MarrsSiriNLUTypesConverter, "fromPluginRepetitionType:", *(a3 + 6))}];
+  [v10 setRepetitionType:{+[MarrsSiriNLUTypesConverter fromPluginRepetitionType:](MarrsSiriNLUTypesConverter, "fromPluginRepetitionType:", *(obj + 6))}];
 
   return v10;
 }
 
-+ (id)fromPluginResponsePtr:(const void *)a3
++ (id)fromPluginResponsePtr:(const void *)ptr
 {
   v4 = objc_opt_new();
-  v5 = **a3;
-  v6 = *(*a3 + 8);
+  v5 = **ptr;
+  v6 = *(*ptr + 8);
   if (v5 != v6)
   {
     v7 = v5 + 16;
@@ -156,27 +156,27 @@ LABEL_14:
 
   v11 = objc_alloc_init(MEMORY[0x277D5DE50]);
   [v11 setRewriteHypotheses:v4];
-  [v11 setRepetitionType:{+[MarrsSiriNLUTypesConverter fromPluginRepetitionType:](MarrsSiriNLUTypesConverter, "fromPluginRepetitionType:", *(*a3 + 24))}];
+  [v11 setRepetitionType:{+[MarrsSiriNLUTypesConverter fromPluginRepetitionType:](MarrsSiriNLUTypesConverter, "fromPluginRepetitionType:", *(*ptr + 24))}];
 
   return v11;
 }
 
-+ (QRRequest)toPluginRequestObj:(SEL)a3
++ (QRRequest)toPluginRequestObj:(SEL)obj
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = a4;
   v29 = 0;
   v30 = 0;
   v31 = 0;
-  v6 = [v5 originalInteractions];
-  std::vector<marrs::qr::orchestration::QRInteraction>::reserve(&v29, [v6 count]);
+  originalInteractions = [v5 originalInteractions];
+  std::vector<marrs::qr::orchestration::QRInteraction>::reserve(&v29, [originalInteractions count]);
 
   v27 = 0u;
   v28 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v7 = [v5 originalInteractions];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+  originalInteractions2 = [v5 originalInteractions];
+  v8 = [originalInteractions2 countByEnumeratingWithState:&v25 objects:v33 count:16];
   if (v8)
   {
     v9 = *v26;
@@ -187,7 +187,7 @@ LABEL_14:
       {
         if (*v26 != v9)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(originalInteractions2);
         }
 
         [MarrsSiriNLUTypesConverter toPluginInteraction:*(*(&v25 + 1) + 8 * v10), v16];
@@ -243,14 +243,14 @@ LABEL_14:
       }
 
       while (v8 != v10);
-      v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+      v8 = [originalInteractions2 countByEnumeratingWithState:&v25 objects:v33 count:16];
     }
 
     while (v8);
   }
 
-  v13 = [v5 cdmRequestId];
-  retstr->var0 = +[MarrsSiriNLUTypesConverter toPluginRequester:](MarrsSiriNLUTypesConverter, "toPluginRequester:", [v13 requester]);
+  cdmRequestId = [v5 cdmRequestId];
+  retstr->var0 = +[MarrsSiriNLUTypesConverter toPluginRequester:](MarrsSiriNLUTypesConverter, "toPluginRequester:", [cdmRequestId requester]);
   retstr->var1.var0 = 0;
   retstr->var1.var1 = 0;
   retstr->var1.var2 = 0;
@@ -268,40 +268,40 @@ LABEL_14:
   return result;
 }
 
-+ (unique_ptr<marrs::qr::orchestration::QRRequest,)toPluginRequestPtr:(id)a3
++ (unique_ptr<marrs::qr::orchestration::QRRequest,)toPluginRequestPtr:(id)ptr
 {
   v4 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  ptrCopy = ptr;
   operator new();
 }
 
-+ (int)toPluginRequester:(int)a3
++ (int)toPluginRequester:(int)requester
 {
-  if ((a3 - 1) >= 3)
+  if ((requester - 1) >= 3)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return requester;
   }
 }
 
-+ (id)fromPluginHypothesis:(QRHypothesis *)a3
++ (id)fromPluginHypothesis:(QRHypothesis *)hypothesis
 {
   v4 = objc_alloc_init(MEMORY[0x277D5DE58]);
-  v5 = [MarrsSiriNLUTypesConverter fromPluginUuid:a3->var0.var0, a3->var0.var1];
+  v5 = [MarrsSiriNLUTypesConverter fromPluginUuid:hypothesis->var0.var0, hypothesis->var0.var1];
   [v4 setAsrId:v5];
 
-  if (*(&a3->var1.var0.var1 + 23) < 0)
+  if (*(&hypothesis->var1.var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&__p, a3->var1.var0.var1.var0, a3->var1.var0.var1.var1);
+    std::string::__init_copy_ctor_external(&__p, hypothesis->var1.var0.var1.var0, hypothesis->var1.var0.var1.var1);
   }
 
   else
   {
-    __p = a3->var1;
+    __p = hypothesis->var1;
   }
 
   v6 = [MarrsSiriNLUTypesConverter stdString2NSString:&__p];
@@ -312,21 +312,21 @@ LABEL_14:
     operator delete(__p.var0.var1.var0);
   }
 
-  [v4 setConfidence:{*&a3[1].var0.var0, *__p.var0.var0.var0, *(&__p.var0.var1 + 2)}];
-  [v4 setRewriteType:{+[MarrsSiriNLUTypesConverter fromPluginRewriteType:](MarrsSiriNLUTypesConverter, "fromPluginRewriteType:", LODWORD(a3[1].var0.var1))}];
+  [v4 setConfidence:{*&hypothesis[1].var0.var0, *__p.var0.var0.var0, *(&__p.var0.var1 + 2)}];
+  [v4 setRewriteType:{+[MarrsSiriNLUTypesConverter fromPluginRewriteType:](MarrsSiriNLUTypesConverter, "fromPluginRewriteType:", LODWORD(hypothesis[1].var0.var1))}];
 
   return v4;
 }
 
-+ (id)fromPluginInteraction:(QRInteraction *)a3
++ (id)fromPluginInteraction:(QRInteraction *)interaction
 {
   v4 = objc_opt_new();
-  v16 = a3;
-  var1 = a3->var0.var1;
+  interactionCopy = interaction;
+  var1 = interaction->var0.var1;
   v18 = v4;
-  if (a3->var0.var0 != var1)
+  if (interaction->var0.var0 != var1)
   {
-    p_var1 = &a3->var0.var0->var1;
+    p_var1 = &interaction->var0.var0->var1;
     do
     {
       v28 = *&p_var1[-1].var0.var1.var1;
@@ -396,8 +396,8 @@ LABEL_14:
   }
 
   v9 = objc_opt_new();
-  v11 = v16->var2.var0;
-  for (i = v16->var2.var1; v11 != i; v11 = (v11 + 160))
+  v11 = interactionCopy->var2.var0;
+  for (i = interactionCopy->var2.var1; v11 != i; v11 = (v11 + 160))
   {
     marrs::qr::orchestration::QRToken::QRToken(&v28, v11);
     marrs::qr::orchestration::QRToken::QRToken(&v20, &v28);
@@ -452,14 +452,14 @@ LABEL_14:
   v13 = objc_alloc_init(MEMORY[0x277D5DE60]);
   [v13 setOriginalUtterances:v18];
   [v13 setSiriResponses:v9];
-  if (*(&v16->var3.var0.var1 + 23) < 0)
+  if (*(&interactionCopy->var3.var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&var3, v16->var3.var0.var1.var0, v16->var3.var0.var1.var1);
+    std::string::__init_copy_ctor_external(&var3, interactionCopy->var3.var0.var1.var0, interactionCopy->var3.var0.var1.var1);
   }
 
   else
   {
-    var3 = v16->var3;
+    var3 = interactionCopy->var3;
   }
 
   v14 = [MarrsSiriNLUTypesConverter stdString2NSString:&var3];
@@ -470,8 +470,8 @@ LABEL_14:
     operator delete(var3.__r_.__value_.__l.__data_);
   }
 
-  [v13 setTap2edit:LOBYTE(v16[1].var0.var0)];
-  [v13 setStartTimestamp:v16[1].var0.var1];
+  [v13 setTap2edit:LOBYTE(interactionCopy[1].var0.var0)];
+  [v13 setStartTimestamp:interactionCopy[1].var0.var1];
 
   return v13;
 }
@@ -482,9 +482,9 @@ LABEL_14:
   v3 = v1;
   v56 = 0;
   v57 = 0uLL;
-  v4 = [v3 originalUtterances];
+  originalUtterances = [v3 originalUtterances];
   v35 = v3;
-  v5 = [v4 count];
+  v5 = [originalUtterances count];
   if (v5)
   {
     if (v5 <= 0x2AAAAAAAAAAAAAALL)
@@ -629,15 +629,15 @@ LABEL_14:
   v59 = 0;
   v60 = 0;
   *&v61 = 0;
-  v20 = [v35 siriResponses];
-  std::vector<marrs::qr::orchestration::QRToken>::reserve(&v59, [v20 count]);
+  siriResponses = [v35 siriResponses];
+  std::vector<marrs::qr::orchestration::QRToken>::reserve(&v59, [siriResponses count]);
 
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
   v49 = 0u;
-  v21 = [v35 siriResponses];
-  v22 = [v21 countByEnumeratingWithState:&v48 objects:v63 count:16];
+  siriResponses2 = [v35 siriResponses];
+  v22 = [siriResponses2 countByEnumeratingWithState:&v48 objects:v63 count:16];
   if (v22)
   {
     v23 = *v49;
@@ -647,7 +647,7 @@ LABEL_14:
       {
         if (*v49 != v23)
         {
-          objc_enumerationMutation(v21);
+          objc_enumerationMutation(siriResponses2);
         }
 
         [MarrsSiriNLUTypesConverter internalTokentoPluginToken:*(*(&v48 + 1) + 8 * j)];
@@ -718,7 +718,7 @@ LABEL_14:
         }
       }
 
-      v22 = [v21 countByEnumeratingWithState:&v48 objects:v63 count:16];
+      v22 = [siriResponses2 countByEnumeratingWithState:&v48 objects:v63 count:16];
     }
 
     while (v22);
@@ -732,8 +732,8 @@ LABEL_14:
   *&v34->var1.var2 = 0u;
   *&v34->var2.var1 = 0u;
   std::vector<marrs::qr::orchestration::QRToken>::__init_with_size[abi:ne200100]<marrs::qr::orchestration::QRToken*,marrs::qr::orchestration::QRToken*>(&v34->var2, v59, v60, 0xCCCCCCCCCCCCCCCDLL * ((v60 - v59) >> 5));
-  v31 = [v35 locale];
-  [MarrsSiriNLUTypesConverter NSString2StdString:v31];
+  locale = [v35 locale];
+  [MarrsSiriNLUTypesConverter NSString2StdString:locale];
   LOBYTE(v34[1].var0.var0) = [v35 tap2edit];
   v34[1].var0.var1 = [v35 startTimestamp];
 
@@ -746,11 +746,11 @@ LABEL_14:
   return result;
 }
 
-+ (id)fromPluginUtterance:(QRUtterance *)a3
++ (id)fromPluginUtterance:(QRUtterance *)utterance
 {
   v4 = objc_opt_new();
-  var0 = a3[1].var0.var0;
-  for (i = a3[1].var0.var1; var0 != i; var0 = (var0 + 160))
+  var0 = utterance[1].var0.var0;
+  for (i = utterance[1].var0.var1; var0 != i; var0 = (var0 + 160))
   {
     marrs::qr::orchestration::QRToken::QRToken(&v33, var0);
     marrs::qr::orchestration::QRToken::QRToken(&v25, &v33);
@@ -803,8 +803,8 @@ LABEL_14:
   }
 
   v8 = objc_opt_new();
-  var1 = a3[1].var1.var0.var1.var1;
-  for (j = *(&a3[1].var1.var0.var1 + 2); var1 != j; var1 = (var1 + 160))
+  var1 = utterance[1].var1.var0.var1.var1;
+  for (j = *(&utterance[1].var1.var0.var1 + 2); var1 != j; var1 = (var1 + 160))
   {
     marrs::qr::orchestration::QRToken::QRToken(&v33, var1);
     marrs::qr::orchestration::QRToken::QRToken(&v17, &v33);
@@ -857,17 +857,17 @@ LABEL_14:
   }
 
   v12 = objc_alloc_init(MEMORY[0x277D5DE70]);
-  v13 = [MarrsSiriNLUTypesConverter fromPluginUuid:a3->var0.var0, a3->var0.var1];
+  v13 = [MarrsSiriNLUTypesConverter fromPluginUuid:utterance->var0.var0, utterance->var0.var1];
   [v12 setAsrId:v13];
 
-  if (*(&a3->var1.var0.var1 + 23) < 0)
+  if (*(&utterance->var1.var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&v16, a3->var1.var0.var1.var0, a3->var1.var0.var1.var1);
+    std::string::__init_copy_ctor_external(&v16, utterance->var1.var0.var1.var0, utterance->var1.var0.var1.var1);
   }
 
   else
   {
-    v16 = a3->var1;
+    v16 = utterance->var1;
   }
 
   v14 = [MarrsSiriNLUTypesConverter stdString2NSString:&v16];
@@ -880,7 +880,7 @@ LABEL_14:
 
   [v12 setNluInternalTokens:{v4, *v16.var0.var0.var0, *(&v16.var0.var1 + 2)}];
   [v12 setAsrUtteranceTokens:v8];
-  [v12 setConfidence:*&a3[2].var0.var1];
+  [v12 setConfidence:*&utterance[2].var0.var1];
 
   return v12;
 }
@@ -892,15 +892,15 @@ LABEL_14:
   v56 = 0;
   v57 = 0;
   v58 = 0;
-  v4 = [v3 nluInternalTokens];
-  std::vector<marrs::qr::orchestration::QRToken>::reserve(&v56, [v4 count]);
+  nluInternalTokens = [v3 nluInternalTokens];
+  std::vector<marrs::qr::orchestration::QRToken>::reserve(&v56, [nluInternalTokens count]);
 
   v54 = 0u;
   v55 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v5 = [v3 nluInternalTokens];
-  v6 = [v5 countByEnumeratingWithState:&v52 objects:v61 count:16];
+  nluInternalTokens2 = [v3 nluInternalTokens];
+  v6 = [nluInternalTokens2 countByEnumeratingWithState:&v52 objects:v61 count:16];
   if (v6)
   {
     v7 = *v53;
@@ -910,7 +910,7 @@ LABEL_14:
       {
         if (*v53 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(nluInternalTokens2);
         }
 
         [MarrsSiriNLUTypesConverter internalTokentoPluginToken:*(*(&v52 + 1) + 8 * i)];
@@ -979,7 +979,7 @@ LABEL_14:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v52 objects:v61 count:16];
+      v6 = [nluInternalTokens2 countByEnumeratingWithState:&v52 objects:v61 count:16];
     }
 
     while (v6);
@@ -988,15 +988,15 @@ LABEL_14:
   v36 = 0;
   v37 = 0;
   v38 = 0;
-  v15 = [v3 asrUtteranceTokens];
-  std::vector<marrs::qr::orchestration::QRToken>::reserve(&v36, [v15 count]);
+  asrUtteranceTokens = [v3 asrUtteranceTokens];
+  std::vector<marrs::qr::orchestration::QRToken>::reserve(&v36, [asrUtteranceTokens count]);
 
   v34 = 0u;
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v16 = [v3 asrUtteranceTokens];
-  v17 = [v16 countByEnumeratingWithState:&v32 objects:v60 count:16];
+  asrUtteranceTokens2 = [v3 asrUtteranceTokens];
+  v17 = [asrUtteranceTokens2 countByEnumeratingWithState:&v32 objects:v60 count:16];
   if (v17)
   {
     v18 = *v33;
@@ -1006,7 +1006,7 @@ LABEL_14:
       {
         if (*v33 != v18)
         {
-          objc_enumerationMutation(v16);
+          objc_enumerationMutation(asrUtteranceTokens2);
         }
 
         [MarrsSiriNLUTypesConverter toPluginToken:*(*(&v32 + 1) + 8 * j)];
@@ -1075,17 +1075,17 @@ LABEL_14:
         }
       }
 
-      v17 = [v16 countByEnumeratingWithState:&v32 objects:v60 count:16];
+      v17 = [asrUtteranceTokens2 countByEnumeratingWithState:&v32 objects:v60 count:16];
     }
 
     while (v17);
   }
 
-  v26 = [v3 asrId];
-  retstr->var0.var0 = [MarrsSiriNLUTypesConverter toPluginUuid:v26];
+  asrId = [v3 asrId];
+  retstr->var0.var0 = [MarrsSiriNLUTypesConverter toPluginUuid:asrId];
   retstr->var0.var1 = v27;
-  v28 = [v3 utterance];
-  [MarrsSiriNLUTypesConverter NSString2StdString:v28];
+  utterance = [v3 utterance];
+  [MarrsSiriNLUTypesConverter NSString2StdString:utterance];
   retstr[1].var0.var0 = 0;
   retstr[1].var0.var1 = 0;
   retstr[1].var1.var0.var1.var0 = 0;
@@ -1106,17 +1106,17 @@ LABEL_14:
   return result;
 }
 
-+ (id)internalTokenfromPluginToken:(QRToken *)a3
++ (id)internalTokenfromPluginToken:(QRToken *)token
 {
   v4 = objc_alloc_init(MEMORY[0x277D5DED0]);
-  if (*(&a3->var0.var0.var1 + 23) < 0)
+  if (*(&token->var0.var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&v11, a3->var0.var0.var1.var0, a3->var0.var0.var1.var1);
+    std::string::__init_copy_ctor_external(&v11, token->var0.var0.var1.var0, token->var0.var0.var1.var1);
   }
 
   else
   {
-    v11 = *a3;
+    v11 = *token;
   }
 
   v5 = [MarrsSiriNLUTypesConverter stdString2NSString:&v11];
@@ -1127,14 +1127,14 @@ LABEL_14:
     operator delete(v11.__r_.__value_.__l.__data_);
   }
 
-  if (*(&a3[1].var0.var0.var1 + 23) < 0)
+  if (*(&token[1].var0.var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&v10, a3[1].var0.var0.var1.var0, a3[1].var0.var0.var1.var1);
+    std::string::__init_copy_ctor_external(&v10, token[1].var0.var0.var1.var0, token[1].var0.var0.var1.var1);
   }
 
   else
   {
-    v10 = a3[1];
+    v10 = token[1];
   }
 
   v6 = [MarrsSiriNLUTypesConverter stdString2NSString:&v10];
@@ -1146,29 +1146,29 @@ LABEL_14:
   }
 
   memset(v9, 0, sizeof(v9));
-  std::vector<std::string>::__init_with_size[abi:ne200100]<std::string*,std::string*>(v9, a3[2].var0.var0.var1.var0, a3[2].var0.var0.var1.var1, 0xAAAAAAAAAAAAAAABLL * ((a3[2].var0.var0.var1.var1 - a3[2].var0.var0.var1.var0) >> 3));
+  std::vector<std::string>::__init_with_size[abi:ne200100]<std::string*,std::string*>(v9, token[2].var0.var0.var1.var0, token[2].var0.var0.var1.var1, 0xAAAAAAAAAAAAAAABLL * ((token[2].var0.var0.var1.var1 - token[2].var0.var0.var1.var0) >> 3));
   v7 = [MarrsSiriNLUTypesConverter StdVectorStdString2NSMutableArrayNSString:v9];
   [v4 setNormalizedValues:v7];
 
   v12 = v9;
   std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&v12);
-  [v4 setIsSignificant:a3[3].var0.var0.var0.var0[0]];
-  [v4 setIsWhitespace:a3[3].var0.var0.var0.var0[1]];
+  [v4 setIsSignificant:token[3].var0.var0.var0.var0[0]];
+  [v4 setIsWhitespace:token[3].var0.var0.var0.var0[1]];
 
   return v4;
 }
 
-+ (id)fromPluginToken:(QRToken *)a3
++ (id)fromPluginToken:(QRToken *)token
 {
   v4 = objc_alloc_init(MEMORY[0x277D5DE68]);
-  if (*(&a3->var0.var0.var1 + 23) < 0)
+  if (*(&token->var0.var0.var1 + 23) < 0)
   {
-    std::string::__init_copy_ctor_external(&v9, a3->var0.var0.var1.var0, a3->var0.var0.var1.var1);
+    std::string::__init_copy_ctor_external(&v9, token->var0.var0.var1.var0, token->var0.var0.var1.var1);
   }
 
   else
   {
-    v9 = *a3;
+    v9 = *token;
   }
 
   v5 = [MarrsSiriNLUTypesConverter stdString2NSString:&v9];
@@ -1179,17 +1179,17 @@ LABEL_14:
     operator delete(v9.__r_.__value_.__l.__data_);
   }
 
-  [v4 setStartIndex:LODWORD(a3[3].var0.var0.var1.var1)];
-  [v4 setEndIndex:*(&a3[3].var0.var0.var1 + 4)];
-  [v4 setAsrConfidence:*&a3[4].var0.var0.var1.var0];
-  if (a3[5].var0.var0.var0.var0[7] < 0)
+  [v4 setStartIndex:LODWORD(token[3].var0.var0.var1.var1)];
+  [v4 setEndIndex:*(&token[3].var0.var0.var1 + 4)];
+  [v4 setAsrConfidence:*&token[4].var0.var0.var1.var0];
+  if (token[5].var0.var0.var0.var0[7] < 0)
   {
-    std::string::__init_copy_ctor_external(&__p, a3[4].var0.var0.var1.var1, *(&a3[4].var0.var0.var1 + 2));
+    std::string::__init_copy_ctor_external(&__p, token[4].var0.var0.var1.var1, *(&token[4].var0.var0.var1 + 2));
   }
 
   else
   {
-    __p = *(a3 + 104);
+    __p = *(token + 104);
   }
 
   v6 = [MarrsSiriNLUTypesConverter stdString2NSString:&__p];
@@ -1200,7 +1200,7 @@ LABEL_14:
     operator delete(__p.__r_.__value_.__l.__data_);
   }
 
-  [v4 setRemoveSpaceAfter:{a3[5].var0.var0.var0.var0[8], *&__p.__r_.__value_.__l.__data_, __p.__r_.__value_.__r.__words[2]}];
+  [v4 setRemoveSpaceAfter:{token[5].var0.var0.var0.var0[8], *&__p.__r_.__value_.__l.__data_, __p.__r_.__value_.__r.__words[2]}];
 
   return v4;
 }
@@ -1208,12 +1208,12 @@ LABEL_14:
 + (QRToken)internalTokentoPluginToken:(QRToken *__return_ptr)retstr
 {
   v3 = v1;
-  v4 = [v3 value];
-  [MarrsSiriNLUTypesConverter NSString2StdString:v4];
-  v5 = [v3 cleanValue];
-  [MarrsSiriNLUTypesConverter NSString2StdString:v5];
-  v6 = [v3 normalizedValues];
-  [MarrsSiriNLUTypesConverter NSMutableArrayNSString2StdVectorStdString:v6];
+  value = [v3 value];
+  [MarrsSiriNLUTypesConverter NSString2StdString:value];
+  cleanValue = [v3 cleanValue];
+  [MarrsSiriNLUTypesConverter NSString2StdString:cleanValue];
+  normalizedValues = [v3 normalizedValues];
+  [MarrsSiriNLUTypesConverter NSMutableArrayNSString2StdVectorStdString:normalizedValues];
   marrs::qr::orchestration::QRToken::QRToken(retstr, &v11, &__p, v8, [v3 isSignificant], objc_msgSend(v3, "isWhitespace"));
   v13 = v8;
   std::vector<std::string>::__destroy_vector::operator()[abi:ne200100](&v13);
@@ -1240,8 +1240,8 @@ LABEL_14:
 + (QRToken)toPluginToken:(QRToken *__return_ptr)retstr
 {
   v3 = v1;
-  v4 = [v3 value];
-  [MarrsSiriNLUTypesConverter NSString2StdString:v4];
+  value = [v3 value];
+  [MarrsSiriNLUTypesConverter NSString2StdString:value];
   marrs::qr::orchestration::QRToken::QRToken(retstr, __p);
   if (SHIBYTE(v9) < 0)
   {
@@ -1252,8 +1252,8 @@ LABEL_14:
   *(&retstr[3].var0.var0.var1 + 2) = [v3 endIndex];
   [v3 asrConfidence];
   retstr[4].var0.var0.var1.var0 = v5;
-  v6 = [v3 phoneSequence];
-  [MarrsSiriNLUTypesConverter NSString2StdString:v6];
+  phoneSequence = [v3 phoneSequence];
+  [MarrsSiriNLUTypesConverter NSString2StdString:phoneSequence];
   if (retstr[5].var0.var0.var0.var0[7] < 0)
   {
     operator delete(retstr[4].var0.var0.var1.var1);
@@ -1268,10 +1268,10 @@ LABEL_14:
   return result;
 }
 
-+ (id)fromPluginUuid:(Uuid)a3
++ (id)fromPluginUuid:(Uuid)uuid
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = uuid.var1;
+  var0 = uuid.var0;
   v5 = objc_alloc_init(MEMORY[0x277D5DDD0]);
   [v5 setLowInt:var1];
   [v5 setHighInt:var0];
@@ -1279,38 +1279,38 @@ LABEL_14:
   return v5;
 }
 
-+ (Uuid)toPluginUuid:(id)a3
++ (Uuid)toPluginUuid:(id)uuid
 {
-  v3 = a3;
-  v4 = [v3 highInt];
-  v5 = [v3 lowInt];
+  uuidCopy = uuid;
+  highInt = [uuidCopy highInt];
+  lowInt = [uuidCopy lowInt];
 
-  v6 = v4;
-  v7 = v5;
+  v6 = highInt;
+  v7 = lowInt;
   result.var1 = v7;
   result.var0 = v6;
   return result;
 }
 
-+ (int)fromPluginRepetitionType:(int)a3
++ (int)fromPluginRepetitionType:(int)type
 {
-  if (a3 >= 4)
+  if (type >= 4)
   {
     return 1;
   }
 
   else
   {
-    return a3;
+    return type;
   }
 }
 
-+ (id)StdVectorStdString2NSMutableArrayNSString:()vector<std:(std::allocator<std::string>> *)a3 :string
++ (id)StdVectorStdString2NSMutableArrayNSString:()vector<std:(std::allocator<std::string>> *)std :string
 {
   v4 = objc_opt_new();
-  var0 = a3->var0;
-  var1 = a3->var1;
-  if (a3->var0 != var1)
+  var0 = std->var0;
+  var1 = std->var1;
+  if (std->var0 != var1)
   {
     do
     {
@@ -1372,7 +1372,7 @@ LABEL_13:
   return [MEMORY[0x277CCACA8] stringWithUTF8String:var0];
 }
 
-+ (vector<std::string,)NSMutableArrayNSString2StdVectorStdString:(id)a2
++ (vector<std::string,)NSMutableArrayNSString2StdVectorStdString:(id)string
 {
   v34 = *MEMORY[0x277D85DE8];
   v5 = a4;

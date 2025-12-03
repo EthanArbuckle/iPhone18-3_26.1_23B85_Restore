@@ -1,8 +1,8 @@
 @interface OTFollowup
-- (BOOL)clearAllRepairFollowUps:(id)a3 error:(id *)a4;
-- (BOOL)hasPosted:(unsigned __int8)a3;
-- (OTFollowup)initWithFollowupController:(id)a3;
-- (id)createCDPFollowupContext:(unsigned __int8)a3;
+- (BOOL)clearAllRepairFollowUps:(id)ups error:(id *)error;
+- (BOOL)hasPosted:(unsigned __int8)posted;
+- (OTFollowup)initWithFollowupController:(id)controller;
+- (id)createCDPFollowupContext:(unsigned __int8)context;
 - (id)sfaStatus;
 - (id)sysdiagnoseStatus;
 - (void)clearAllPostedFlags;
@@ -51,12 +51,12 @@
           }
 
           v9 = *(*(&v22 + 1) + 8 * i);
-          v10 = [v9 notification];
-          v11 = [v10 creationDate];
+          notification = [v9 notification];
+          creationDate = [notification creationDate];
 
-          if (v11)
+          if (creationDate)
           {
-            v12 = [CKKSAnalytics fuzzyDaysSinceDate:v11];
+            v12 = [CKKSAnalytics fuzzyDaysSinceDate:creationDate];
           }
 
           else
@@ -64,8 +64,8 @@
             v12 = 10000;
           }
 
-          v13 = [v9 uniqueIdentifier];
-          v14 = [NSString stringWithFormat:@"OACFU-%@", v13];
+          uniqueIdentifier = [v9 uniqueIdentifier];
+          v14 = [NSString stringWithFormat:@"OACFU-%@", uniqueIdentifier];
 
           v15 = [NSNumber numberWithInteger:v12];
           [v21 setObject:v15 forKeyedSubscript:v14];
@@ -133,21 +133,21 @@
           }
 
           v12 = *(*(&v21 + 1) + 8 * i);
-          v13 = [v12 notification];
-          v14 = [v13 creationDate];
+          notification = [v12 notification];
+          creationDate = [notification creationDate];
 
-          if (v14)
+          if (creationDate)
           {
-            v15 = objc_alloc_init(NSISO8601DateFormatter);
-            v16 = [v15 stringForObjectValue:v14];
-            v17 = [v12 uniqueIdentifier];
-            [v2 setObject:v16 forKeyedSubscript:v17];
+            uniqueIdentifier2 = objc_alloc_init(NSISO8601DateFormatter);
+            v16 = [uniqueIdentifier2 stringForObjectValue:creationDate];
+            uniqueIdentifier = [v12 uniqueIdentifier];
+            [v2 setObject:v16 forKeyedSubscript:uniqueIdentifier];
           }
 
           else
           {
-            v15 = [v12 uniqueIdentifier];
-            [v2 setObject:@"creation-date-missing" forKeyedSubscript:v15];
+            uniqueIdentifier2 = [v12 uniqueIdentifier];
+            [v2 setObject:@"creation-date-missing" forKeyedSubscript:uniqueIdentifier2];
           }
         }
 
@@ -166,27 +166,27 @@
   return v2;
 }
 
-- (BOOL)clearAllRepairFollowUps:(id)a3 error:(id *)a4
+- (BOOL)clearAllRepairFollowUps:(id)ups error:(id *)error
 {
-  v6 = a3;
-  v7 = [(OTFollowup *)self clearFollowUp:3 activeAccount:v6 error:a4];
-  v8 = v7 & [(OTFollowup *)self clearFollowUp:5 activeAccount:v6 error:a4];
-  LOBYTE(a4) = [(OTFollowup *)self clearFollowUp:4 activeAccount:v6 error:a4];
+  upsCopy = ups;
+  v7 = [(OTFollowup *)self clearFollowUp:3 activeAccount:upsCopy error:error];
+  v8 = v7 & [(OTFollowup *)self clearFollowUp:5 activeAccount:upsCopy error:error];
+  LOBYTE(error) = [(OTFollowup *)self clearFollowUp:4 activeAccount:upsCopy error:error];
 
-  return v8 & a4;
+  return v8 & error;
 }
 
-- (id)createCDPFollowupContext:(unsigned __int8)a3
+- (id)createCDPFollowupContext:(unsigned __int8)context
 {
   v3 = 0;
-  if (a3 <= 2)
+  if (context <= 2)
   {
-    if (a3 == 1)
+    if (context == 1)
     {
       v3 = +[CDPFollowUpContext contextForRecoveryKeyRepair];
     }
 
-    else if (a3 == 2)
+    else if (context == 2)
     {
       v3 = +[CDPFollowUpContext contextForStateRepair];
     }
@@ -194,7 +194,7 @@
 
   else
   {
-    switch(a3)
+    switch(context)
     {
       case 3u:
         v3 = +[CDPFollowUpContext contextForConfirmExistingSecret];
@@ -211,16 +211,16 @@
   return v3;
 }
 
-- (OTFollowup)initWithFollowupController:(id)a3
+- (OTFollowup)initWithFollowupController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = OTFollowup;
   v5 = [(OTFollowup *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    [(OTFollowup *)v5 setCdpd:v4];
+    [(OTFollowup *)v5 setCdpd:controllerCopy];
     v7 = +[NSMutableSet set];
     postedCFUTypes = v6->_postedCFUTypes;
     v6->_postedCFUTypes = v7;
@@ -231,26 +231,26 @@
 
 - (void)clearAllPostedFlags
 {
-  v2 = [(OTFollowup *)self postedCFUTypes];
-  [v2 removeAllObjects];
+  postedCFUTypes = [(OTFollowup *)self postedCFUTypes];
+  [postedCFUTypes removeAllObjects];
 }
 
-- (BOOL)hasPosted:(unsigned __int8)a3
+- (BOOL)hasPosted:(unsigned __int8)posted
 {
-  v3 = a3;
-  v4 = [(OTFollowup *)self postedCFUTypes];
-  v5 = v4;
-  if ((v3 - 1) > 4)
+  postedCopy = posted;
+  postedCFUTypes = [(OTFollowup *)self postedCFUTypes];
+  v5 = postedCFUTypes;
+  if ((postedCopy - 1) > 4)
   {
     v6 = @"none";
   }
 
   else
   {
-    v6 = *(&off_100343A40 + (v3 - 1));
+    v6 = *(&off_100343A40 + (postedCopy - 1));
   }
 
-  v7 = [v4 containsObject:v6];
+  v7 = [postedCFUTypes containsObject:v6];
 
   return v7;
 }

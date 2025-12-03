@@ -1,16 +1,16 @@
 @interface VCMediaNegotiationBlobV2CodecFeatures
-- (BOOL)isEqual:(id)a3;
-- (VCMediaNegotiationBlobV2CodecFeatures)initWithAllowAudioRecording:(BOOL)a3 videoFeatures:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (VCMediaNegotiationBlobV2CodecFeatures)initWithAllowAudioRecording:(BOOL)recording videoFeatures:(id)features;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
 - (unsigned)audioFeatures;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)printWithLogFile:(void *)a3 prefix:(id)a4;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)printWithLogFile:(void *)file prefix:(id)prefix;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobV2CodecFeatures
@@ -47,22 +47,22 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (*&self->_has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_audioFeatures), @"audioFeatures"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_audioFeatures), @"audioFeatures"}];
   }
 
   videoFeatures = self->_videoFeatures;
   if (videoFeatures)
   {
-    [v3 setObject:videoFeatures forKey:@"videoFeatures"];
+    [dictionary setObject:videoFeatures forKey:@"videoFeatures"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   if (*&self->_has)
   {
@@ -76,24 +76,24 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   if (*&self->_has)
   {
-    *(a3 + 2) = self->_audioFeatures;
-    *(a3 + 24) |= 1u;
+    *(to + 2) = self->_audioFeatures;
+    *(to + 24) |= 1u;
   }
 
   videoFeatures = self->_videoFeatures;
   if (videoFeatures)
   {
-    [a3 setVideoFeatures:videoFeatures];
+    [to setVideoFeatures:videoFeatures];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -101,24 +101,24 @@
     *(v5 + 24) |= 1u;
   }
 
-  v6[2] = [(NSData *)self->_videoFeatures copyWithZone:a3];
+  v6[2] = [(NSData *)self->_videoFeatures copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     if (*&self->_has)
     {
-      if ((*(a3 + 24) & 1) == 0 || self->_audioFeatures != *(a3 + 2))
+      if ((*(equal + 24) & 1) == 0 || self->_audioFeatures != *(equal + 2))
       {
         goto LABEL_9;
       }
     }
 
-    else if (*(a3 + 24))
+    else if (*(equal + 24))
     {
 LABEL_9:
       LOBYTE(v5) = 0;
@@ -126,7 +126,7 @@ LABEL_9:
     }
 
     videoFeatures = self->_videoFeatures;
-    if (videoFeatures | *(a3 + 2))
+    if (videoFeatures | *(equal + 2))
     {
 
       LOBYTE(v5) = [(NSData *)videoFeatures isEqual:?];
@@ -156,48 +156,48 @@ LABEL_9:
   return [(NSData *)self->_videoFeatures hash]^ v2;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 24))
+  if (*(from + 24))
   {
-    self->_audioFeatures = *(a3 + 2);
+    self->_audioFeatures = *(from + 2);
     *&self->_has |= 1u;
   }
 
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(VCMediaNegotiationBlobV2CodecFeatures *)self setVideoFeatures:?];
   }
 }
 
-- (VCMediaNegotiationBlobV2CodecFeatures)initWithAllowAudioRecording:(BOOL)a3 videoFeatures:(id)a4
+- (VCMediaNegotiationBlobV2CodecFeatures)initWithAllowAudioRecording:(BOOL)recording videoFeatures:(id)features
 {
-  v5 = a3;
+  recordingCopy = recording;
   v6 = [(VCMediaNegotiationBlobV2CodecFeatures *)self init];
   v7 = v6;
   if (v6)
   {
-    if ([(VCMediaNegotiationBlobV2CodecFeatures *)v6 audioFeatures]!= v5)
+    if ([(VCMediaNegotiationBlobV2CodecFeatures *)v6 audioFeatures]!= recordingCopy)
     {
-      [(VCMediaNegotiationBlobV2CodecFeatures *)v7 setAudioFeatures:v5];
+      [(VCMediaNegotiationBlobV2CodecFeatures *)v7 setAudioFeatures:recordingCopy];
     }
 
-    if (!-[VCMediaNegotiationBlobV2CodecFeatures videoFeatures](v7, "videoFeatures") || ([a4 isEqualToData:{-[VCMediaNegotiationBlobV2CodecFeatures videoFeatures](v7, "videoFeatures")}] & 1) == 0)
+    if (!-[VCMediaNegotiationBlobV2CodecFeatures videoFeatures](v7, "videoFeatures") || ([features isEqualToData:{-[VCMediaNegotiationBlobV2CodecFeatures videoFeatures](v7, "videoFeatures")}] & 1) == 0)
     {
-      [(VCMediaNegotiationBlobV2CodecFeatures *)v7 setVideoFeatures:a4];
+      [(VCMediaNegotiationBlobV2CodecFeatures *)v7 setVideoFeatures:features];
     }
   }
 
   return v7;
 }
 
-- (void)printWithLogFile:(void *)a3 prefix:(id)a4
+- (void)printWithLogFile:(void *)file prefix:(id)prefix
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = [MEMORY[0x1E696AD60] stringWithFormat:@"[%lu] %@", objc_msgSend(-[VCMediaNegotiationBlobV2CodecFeatures data](self, "data"), "length"), a4];
-  [v6 appendFormat:@"Codec Featues: allowAudioRecording=%d videoFeatures=%@", -[VCMediaNegotiationBlobV2CodecFeatures allowAudioRecording](self, "allowAudioRecording"), -[VCMediaNegotiationBlobV2CodecFeatures videoFeatures](self, "videoFeatures")];
-  v7 = [v6 UTF8String];
-  VRLogfilePrintWithTimestamp(a3, "%s\n", v8, v9, v10, v11, v12, v13, v7);
+  prefix = [MEMORY[0x1E696AD60] stringWithFormat:@"[%lu] %@", objc_msgSend(-[VCMediaNegotiationBlobV2CodecFeatures data](self, "data"), "length"), prefix];
+  [prefix appendFormat:@"Codec Featues: allowAudioRecording=%d videoFeatures=%@", -[VCMediaNegotiationBlobV2CodecFeatures allowAudioRecording](self, "allowAudioRecording"), -[VCMediaNegotiationBlobV2CodecFeatures videoFeatures](self, "videoFeatures")];
+  uTF8String = [prefix UTF8String];
+  VRLogfilePrintWithTimestamp(file, "%s\n", v8, v9, v10, v11, v12, v13, uTF8String);
   if (VRTraceGetErrorLogLevelForModule() >= 6)
   {
     v14 = VRTraceErrorLogLevelToCSTR();
@@ -211,7 +211,7 @@ LABEL_9:
       v20 = 1024;
       v21 = 36;
       v22 = 2112;
-      v23 = v6;
+      v23 = prefix;
       _os_log_impl(&dword_1DB56E000, v15, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d %@", buf, 0x26u);
     }
   }

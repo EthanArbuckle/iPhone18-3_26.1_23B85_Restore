@@ -1,20 +1,20 @@
 @interface BWLimitedGMErrorLogger
-- (BWLimitedGMErrorLogger)initWithName:(id)a3 maxLoggingCount:(int)a4;
+- (BWLimitedGMErrorLogger)initWithName:(id)name maxLoggingCount:(int)count;
 - (void)dealloc;
-- (void)logErrorNumber:(int)a3 errorString:(id)a4;
+- (void)logErrorNumber:(int)number errorString:(id)string;
 @end
 
 @implementation BWLimitedGMErrorLogger
 
-- (BWLimitedGMErrorLogger)initWithName:(id)a3 maxLoggingCount:(int)a4
+- (BWLimitedGMErrorLogger)initWithName:(id)name maxLoggingCount:(int)count
 {
   v8.receiver = self;
   v8.super_class = BWLimitedGMErrorLogger;
   v6 = [(BWLimitedGMErrorLogger *)&v8 init];
   if (v6)
   {
-    v6->_name = a3;
-    v6->_maxLoggingCount = a4;
+    v6->_name = name;
+    v6->_maxLoggingCount = count;
     v6->_currentLoggingCount = 0;
   }
 
@@ -28,7 +28,7 @@
   [(BWLimitedGMErrorLogger *)&v3 dealloc];
 }
 
-- (void)logErrorNumber:(int)a3 errorString:(id)a4
+- (void)logErrorNumber:(int)number errorString:(id)string
 {
   currentLoggingCount = self->_currentLoggingCount;
   if (currentLoggingCount < self->_maxLoggingCount)

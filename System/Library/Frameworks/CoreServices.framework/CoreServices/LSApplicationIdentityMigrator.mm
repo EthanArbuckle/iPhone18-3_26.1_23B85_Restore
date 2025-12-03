@@ -1,20 +1,20 @@
 @interface LSApplicationIdentityMigrator
-- (id)migrateIdentities:(id)a3 error:(id *)a4;
-- (id)migrateIdentity:(id)a3 error:(id *)a4;
+- (id)migrateIdentities:(id)identities error:(id *)error;
+- (id)migrateIdentity:(id)identity error:(id *)error;
 @end
 
 @implementation LSApplicationIdentityMigrator
 
-- (id)migrateIdentities:(id)a3 error:(id *)a4
+- (id)migrateIdentities:(id)identities error:(id *)error
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  identitiesCopy = identities;
   v5 = objc_alloc_init(LSApplicationIdentityMigrationResult);
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = v4;
+  v6 = identitiesCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v22 count:16];
   if (v7)
   {
@@ -56,10 +56,10 @@
   return v5;
 }
 
-- (id)migrateIdentity:(id)a3 error:(id *)a4
+- (id)migrateIdentity:(id)identity error:(id *)error
 {
-  v6 = [MEMORY[0x1E695DFD8] setWithObject:a3];
-  v7 = [(LSApplicationIdentityMigrator *)self migrateIdentities:v6 error:a4];
+  v6 = [MEMORY[0x1E695DFD8] setWithObject:identity];
+  v7 = [(LSApplicationIdentityMigrator *)self migrateIdentities:v6 error:error];
 
   return v7;
 }

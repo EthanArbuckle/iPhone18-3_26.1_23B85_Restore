@@ -1,21 +1,21 @@
 @interface BUZipFileWriter
-+ (void)zipDirectoryAtURL:(id)a3 customDirectoryFilename:(id)a4 toURL:(id)a5 queue:(id)a6 progressHandler:(id)a7;
-+ (void)zipDirectoryAtURL:(id)a3 toURL:(id)a4 queue:(id)a5 completion:(id)a6;
-- (BUZipFileWriter)initWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (BUZipFileWriter)initWithZipFileArchive:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-- (id)prepareWriteChannelWithCloseCompletionHandler:(id)a3;
-- (void)copyEntriesFromZipFileWriter:(id)a3 readingFromURL:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6;
-- (void)copyRemainingEntries:(id)a3 fromArchive:(id)a4 progress:(id)a5 completionHandler:(id)a6;
++ (void)zipDirectoryAtURL:(id)l customDirectoryFilename:(id)filename toURL:(id)rL queue:(id)queue progressHandler:(id)handler;
++ (void)zipDirectoryAtURL:(id)l toURL:(id)rL queue:(id)queue completion:(id)completion;
+- (BUZipFileWriter)initWithURL:(id)l options:(unint64_t)options error:(id *)error;
+- (BUZipFileWriter)initWithZipFileArchive:(id)archive options:(unint64_t)options error:(id *)error;
+- (id)prepareWriteChannelWithCloseCompletionHandler:(id)handler;
+- (void)copyEntriesFromZipFileWriter:(id)writer readingFromURL:(id)l options:(unint64_t)options completionHandler:(id)handler;
+- (void)copyRemainingEntries:(id)entries fromArchive:(id)archive progress:(id)progress completionHandler:(id)handler;
 @end
 
 @implementation BUZipFileWriter
 
-- (BUZipFileWriter)initWithURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BUZipFileWriter)initWithURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
+  lCopy = l;
   v23.receiver = self;
   v23.super_class = BUZipFileWriter;
-  v9 = [(BUZipWriter *)&v23 initWithOptions:a4];
+  v9 = [(BUZipWriter *)&v23 initWithOptions:options];
   if (v9)
   {
     objc_initWeak(&location, v9);
@@ -25,7 +25,7 @@
     v19 = sub_241DBAE48;
     v20 = &unk_278D1D540;
     objc_copyWeak(&v21, &location);
-    v12 = objc_msgSend_initForRandomWritingURL_error_cleanupHandler_(v10, v11, v8, a5, &v17);
+    v12 = objc_msgSend_initForRandomWritingURL_error_cleanupHandler_(v10, v11, lCopy, error, &v17);
     writeChannel = v9->_writeChannel;
     v9->_writeChannel = v12;
 
@@ -48,10 +48,10 @@
   return v9;
 }
 
-- (BUZipFileWriter)initWithZipFileArchive:(id)a3 options:(unint64_t)a4 error:(id *)a5
+- (BUZipFileWriter)initWithZipFileArchive:(id)archive options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
-  v11 = objc_msgSend_URL(v8, v9, v10);
+  archiveCopy = archive;
+  v11 = objc_msgSend_URL(archiveCopy, v9, v10);
   v45 = 0;
   v46 = &v45;
   v47 = 0x3032000000;
@@ -60,11 +60,11 @@
   v50 = 0;
   v44.receiver = self;
   v44.super_class = BUZipFileWriter;
-  v12 = [(BUZipWriter *)&v44 initWithOptions:a4];
+  v12 = [(BUZipWriter *)&v44 initWithOptions:options];
   if (!v12)
   {
     v13 = 0;
-    if (!a5)
+    if (!error)
     {
       goto LABEL_8;
     }
@@ -78,8 +78,8 @@
   v42[3] = &unk_278D1D568;
   v13 = v12;
   v43 = v13;
-  objc_msgSend_enumerateEntriesUsingBlock_(v8, v14, v42);
-  Entry = objc_msgSend_endOfLastEntry(v8, v15, v16);
+  objc_msgSend_enumerateEntriesUsingBlock_(archiveCopy, v14, v42);
+  Entry = objc_msgSend_endOfLastEntry(archiveCopy, v15, v16);
   objc_msgSend_setEntryInsertionOffset_(v13, v18, Entry);
   objc_initWeak(&location, v13);
   v19 = [BUFileIOChannel alloc];
@@ -102,7 +102,7 @@
     v26 = dispatch_group_create();
     dispatch_group_enter(v26);
     v27 = v13->_writeChannel;
-    v30 = objc_msgSend_endOfLastEntry(v8, v28, v29);
+    v30 = objc_msgSend_endOfLastEntry(archiveCopy, v28, v29);
     v35[0] = MEMORY[0x277D85DD0];
     v35[1] = 3221225472;
     v35[2] = sub_241DBB2BC;
@@ -123,10 +123,10 @@
   objc_destroyWeak(&v39);
   objc_destroyWeak(&location);
 
-  if (a5)
+  if (error)
   {
 LABEL_7:
-    *a5 = v46[5];
+    *error = v46[5];
   }
 
 LABEL_8:
@@ -136,16 +136,16 @@ LABEL_8:
   return v33;
 }
 
-- (void)copyEntriesFromZipFileWriter:(id)a3 readingFromURL:(id)a4 options:(unint64_t)a5 completionHandler:(id)a6
+- (void)copyEntriesFromZipFileWriter:(id)writer readingFromURL:(id)l options:(unint64_t)options completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (objc_msgSend_isClosed(v10, v13, v14))
+  writerCopy = writer;
+  lCopy = l;
+  handlerCopy = handler;
+  if (objc_msgSend_isClosed(writerCopy, v13, v14))
   {
     v15 = [BUZipFileArchive alloc];
     v45 = 0;
-    v17 = objc_msgSend_initWithWriter_forReadingFromURL_options_error_(v15, v16, v10, v11, a5, &v45);
+    v17 = objc_msgSend_initWithWriter_forReadingFromURL_options_error_(v15, v16, writerCopy, lCopy, options, &v45);
     v18 = v45;
     if (v17)
     {
@@ -166,14 +166,14 @@ LABEL_8:
       objc_msgSend_enumerateEntriesUsingBlock_(v17, v26, v38);
       objc_msgSend_sortUsingComparator_(v25, v27, &unk_2853F2C28);
       v29 = objc_msgSend_progressWithTotalUnitCount_(MEMORY[0x277CCAC48], v28, v42[3]);
-      objc_msgSend_copyRemainingEntries_fromArchive_progress_completionHandler_(self, v30, v25, v17, v29, v12);
+      objc_msgSend_copyRemainingEntries_fromArchive_progress_completionHandler_(self, v30, v25, v17, v29, handlerCopy);
 
       _Block_object_dispose(&v41, 8);
     }
 
     else
     {
-      v34 = MEMORY[0x245D00360](v12);
+      v34 = MEMORY[0x245D00360](handlerCopy);
       v36 = v34;
       if (v34)
       {
@@ -193,7 +193,7 @@ LABEL_8:
 
   else
   {
-    v32 = MEMORY[0x245D00360](v12);
+    v32 = MEMORY[0x245D00360](handlerCopy);
     if (v32)
     {
       v33 = objc_msgSend_bu_fileWriteUnknownErrorWithUserInfo_(MEMORY[0x277CCA9B8], v31, 0);
@@ -202,17 +202,17 @@ LABEL_8:
   }
 }
 
-- (void)copyRemainingEntries:(id)a3 fromArchive:(id)a4 progress:(id)a5 completionHandler:(id)a6
+- (void)copyRemainingEntries:(id)entries fromArchive:(id)archive progress:(id)progress completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v17 = objc_msgSend_firstObject(v10, v14, v15);
+  entriesCopy = entries;
+  archiveCopy = archive;
+  progressCopy = progress;
+  handlerCopy = handler;
+  v17 = objc_msgSend_firstObject(entriesCopy, v14, v15);
   if (v17)
   {
-    objc_msgSend_removeObjectAtIndex_(v10, v16, 0);
-    v21 = objc_msgSend_streamReadChannelForEntry_(v11, v18, v17);
+    objc_msgSend_removeObjectAtIndex_(entriesCopy, v16, 0);
+    v21 = objc_msgSend_streamReadChannelForEntry_(archiveCopy, v18, v17);
     if (v21)
     {
       v22 = objc_msgSend_name(v17, v19, v20);
@@ -223,18 +223,18 @@ LABEL_8:
       v37[1] = 3221225472;
       v37[2] = sub_241DBB888;
       v37[3] = &unk_278D1D600;
-      v43 = v13;
-      v38 = v12;
+      v43 = handlerCopy;
+      v38 = progressCopy;
       v39 = v17;
-      v40 = self;
-      v41 = v10;
-      v42 = v11;
+      selfCopy = self;
+      v41 = entriesCopy;
+      v42 = archiveCopy;
       objc_msgSend_writeEntryWithName_force32BitSize_lastModificationDate_size_CRC_fromReadChannel_completion_(self, v30, v22, 0, v25, v36, v35, v21, v37);
     }
 
     else
     {
-      v33 = MEMORY[0x245D00360](v13);
+      v33 = MEMORY[0x245D00360](handlerCopy);
       if (v33)
       {
         v34 = objc_msgSend_bu_fileWriteUnknownErrorWithUserInfo_(MEMORY[0x277CCA9B8], v32, 0);
@@ -245,7 +245,7 @@ LABEL_8:
 
   else
   {
-    v31 = MEMORY[0x245D00360](v13);
+    v31 = MEMORY[0x245D00360](handlerCopy);
     v21 = v31;
     if (v31)
     {
@@ -254,9 +254,9 @@ LABEL_8:
   }
 }
 
-- (id)prepareWriteChannelWithCloseCompletionHandler:(id)a3
+- (id)prepareWriteChannelWithCloseCompletionHandler:(id)handler
 {
-  v4 = objc_msgSend_copy(a3, a2, a3);
+  v4 = objc_msgSend_copy(handler, a2, handler);
   writeChannelCompletionHandler = self->_writeChannelCompletionHandler;
   self->_writeChannelCompletionHandler = v4;
 
@@ -265,37 +265,37 @@ LABEL_8:
   return writeChannel;
 }
 
-+ (void)zipDirectoryAtURL:(id)a3 toURL:(id)a4 queue:(id)a5 completion:(id)a6
++ (void)zipDirectoryAtURL:(id)l toURL:(id)rL queue:(id)queue completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = sub_241DBBA88;
   v13[3] = &unk_278D1D628;
-  v14 = v10;
-  v11 = v10;
-  objc_msgSend_zipDirectoryAtURL_customDirectoryFilename_toURL_queue_progressHandler_(a1, v12, a3, 0, a4, a5, v13);
+  v14 = completionCopy;
+  v11 = completionCopy;
+  objc_msgSend_zipDirectoryAtURL_customDirectoryFilename_toURL_queue_progressHandler_(self, v12, l, 0, rL, queue, v13);
 }
 
-+ (void)zipDirectoryAtURL:(id)a3 customDirectoryFilename:(id)a4 toURL:(id)a5 queue:(id)a6 progressHandler:(id)a7
++ (void)zipDirectoryAtURL:(id)l customDirectoryFilename:(id)filename toURL:(id)rL queue:(id)queue progressHandler:(id)handler
 {
   v140[2] = *MEMORY[0x277D85DE8];
-  v95 = a3;
-  v101 = a4;
-  v11 = a5;
-  queue = a6;
-  v100 = a7;
+  lCopy = l;
+  filenameCopy = filename;
+  rLCopy = rL;
+  queue = queue;
+  handlerCopy = handler;
   v12 = [BUZipFileWriter alloc];
   v137 = 0;
-  v92 = v11;
-  v102 = objc_msgSend_initWithURL_error_(v12, v13, v11, &v137);
+  v92 = rLCopy;
+  v102 = objc_msgSend_initWithURL_error_(v12, v13, rLCopy, &v137);
   v14 = v137;
   v93 = v14;
   if (v102)
   {
-    v17 = objc_msgSend_path(v95, v15, v16);
+    v17 = objc_msgSend_path(lCopy, v15, v16);
     v20 = v17;
-    if (!v101)
+    if (!filenameCopy)
     {
       v21 = objc_msgSend_stringByDeletingLastPathComponent(v17, v18, v19);
 
@@ -313,7 +313,7 @@ LABEL_8:
     v140[1] = v31;
     v103 = v31;
     v33 = objc_msgSend_arrayWithObjects_count_(MEMORY[0x277CBEA60], v32, v140, 2);
-    v35 = objc_msgSend_enumeratorAtURL_includingPropertiesForKeys_options_errorHandler_(v29, v34, v95, v33, 0, 0);
+    v35 = objc_msgSend_enumeratorAtURL_includingPropertiesForKeys_options_errorHandler_(v29, v34, lCopy, v33, 0, 0);
 
     v133[0] = 0;
     v133[1] = v133;
@@ -401,9 +401,9 @@ LABEL_8:
           v69 = objc_msgSend_precomposedStringWithCanonicalMapping(v66, v67, v68);
 
           v72 = objc_msgSend_substringFromIndex_(v69, v70, v99 + 1);
-          if (v101)
+          if (filenameCopy)
           {
-            v73 = objc_msgSend_stringByAppendingPathComponent_(v101, v71, v72);
+            v73 = objc_msgSend_stringByAppendingPathComponent_(filenameCopy, v71, v72);
 
             v72 = v73;
           }
@@ -445,7 +445,7 @@ LABEL_8:
           v109[2] = sub_241DBC2A8;
           v109[3] = &unk_278D1D650;
           v111 = v133;
-          v110 = v100;
+          v110 = handlerCopy;
           v112 = &v121;
           v113 = v104;
           objc_msgSend_writeEntryWithName_force32BitSize_lastModificationDate_size_CRC_fromReadChannel_writeHandler_(v102, v89, v72, 0, v87, v88, 0, v77, v109);
@@ -467,7 +467,7 @@ LABEL_35:
     v105[1] = 3221225472;
     v105[2] = sub_241DBC398;
     v105[3] = &unk_278D1D678;
-    v106 = v100;
+    v106 = handlerCopy;
     v107 = &v121;
     v108 = v104;
     objc_msgSend_closeWithQueue_completion_(v102, v90, queue, v105);
@@ -485,7 +485,7 @@ LABEL_35:
     block[1] = 3221225472;
     block[2] = sub_241DBC264;
     block[3] = &unk_278D1CEA0;
-    v136 = v100;
+    v136 = handlerCopy;
     v135 = v55;
     dispatch_async(queue, block);
 

@@ -1,21 +1,21 @@
 @interface PGSharingSuggestionPhotoKitBasedSource
-- (BOOL)canRunWithInput:(id)a3;
+- (BOOL)canRunWithInput:(id)input;
 @end
 
 @implementation PGSharingSuggestionPhotoKitBasedSource
 
-- (BOOL)canRunWithInput:(id)a3
+- (BOOL)canRunWithInput:(id)input
 {
-  v3 = [a3 moments];
-  if ([v3 count])
+  moments = [input moments];
+  if ([moments count])
   {
-    v4 = [v3 firstObject];
-    v5 = [v4 startDate];
+    firstObject = [moments firstObject];
+    startDate = [firstObject startDate];
 
-    v6 = [v3 lastObject];
-    v7 = [v6 endDate];
+    lastObject = [moments lastObject];
+    endDate = [lastObject endDate];
 
-    [v7 timeIntervalSinceDate:v5];
+    [endDate timeIntervalSinceDate:startDate];
     v9 = v8 < 7776000.0;
   }
 

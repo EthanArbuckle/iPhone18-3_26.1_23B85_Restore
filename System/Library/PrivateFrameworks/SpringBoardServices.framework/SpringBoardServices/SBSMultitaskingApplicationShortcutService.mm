@@ -1,11 +1,11 @@
 @interface SBSMultitaskingApplicationShortcutService
 - (id)_connection;
-- (unint64_t)supportedShortcutActionsForBundleIdentifier:(id)a3;
+- (unint64_t)supportedShortcutActionsForBundleIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)performMultitaskingShortcutAction:(int64_t)a3 forBundleIdentifier:(id)a4;
-- (void)startObservingSupportedShortcutsForBundleIdentifier:(id)a3;
-- (void)stopObservingSupportedShortcutsForBundleIdentifier:(id)a3;
-- (void)updateSupportedShortcutActionsForBundleIdentifiers:(id)a3;
+- (void)performMultitaskingShortcutAction:(int64_t)action forBundleIdentifier:(id)identifier;
+- (void)startObservingSupportedShortcutsForBundleIdentifier:(id)identifier;
+- (void)stopObservingSupportedShortcutsForBundleIdentifier:(id)identifier;
+- (void)updateSupportedShortcutActionsForBundleIdentifiers:(id)identifiers;
 @end
 
 @implementation SBSMultitaskingApplicationShortcutService
@@ -24,9 +24,9 @@
   [(SBSMultitaskingApplicationShortcutService *)&v5 dealloc];
 }
 
-- (void)startObservingSupportedShortcutsForBundleIdentifier:(id)a3
+- (void)startObservingSupportedShortcutsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   trackedBundleIdentifiers = self->_trackedBundleIdentifiers;
   if (!trackedBundleIdentifiers)
   {
@@ -37,17 +37,17 @@
     trackedBundleIdentifiers = self->_trackedBundleIdentifiers;
   }
 
-  [(NSCountedSet *)trackedBundleIdentifiers addObject:v4];
-  v8 = [(SBSMultitaskingApplicationShortcutService *)self _connection];
-  v9 = [v8 remoteTarget];
+  [(NSCountedSet *)trackedBundleIdentifiers addObject:identifierCopy];
+  _connection = [(SBSMultitaskingApplicationShortcutService *)self _connection];
+  remoteTarget = [_connection remoteTarget];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __97__SBSMultitaskingApplicationShortcutService_startObservingSupportedShortcutsForBundleIdentifier___block_invoke;
   v11[3] = &unk_1E7360978;
   v11[4] = self;
-  v12 = v4;
-  v10 = v4;
-  [v9 fetchSupportedShortcutActionsForBundleIdentifier:v10 withCompletionHandler:v11];
+  v12 = identifierCopy;
+  v10 = identifierCopy;
+  [remoteTarget fetchSupportedShortcutActionsForBundleIdentifier:v10 withCompletionHandler:v11];
 }
 
 void __97__SBSMultitaskingApplicationShortcutService_startObservingSupportedShortcutsForBundleIdentifier___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -90,40 +90,40 @@ void __97__SBSMultitaskingApplicationShortcutService_startObservingSupportedShor
   }
 }
 
-- (void)stopObservingSupportedShortcutsForBundleIdentifier:(id)a3
+- (void)stopObservingSupportedShortcutsForBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  [(NSCountedSet *)self->_trackedBundleIdentifiers removeObject:v6];
-  if (![(NSCountedSet *)self->_trackedBundleIdentifiers countForObject:v6])
+  identifierCopy = identifier;
+  [(NSCountedSet *)self->_trackedBundleIdentifiers removeObject:identifierCopy];
+  if (![(NSCountedSet *)self->_trackedBundleIdentifiers countForObject:identifierCopy])
   {
-    [(NSMutableDictionary *)self->_supportedShortcutsByBundleIdentifier removeObjectForKey:v6];
-    v4 = [(SBSMultitaskingApplicationShortcutService *)self _connection];
-    v5 = [v4 remoteTarget];
-    [v5 stopObservingUpdatesForBundleIdentifier:v6];
+    [(NSMutableDictionary *)self->_supportedShortcutsByBundleIdentifier removeObjectForKey:identifierCopy];
+    _connection = [(SBSMultitaskingApplicationShortcutService *)self _connection];
+    remoteTarget = [_connection remoteTarget];
+    [remoteTarget stopObservingUpdatesForBundleIdentifier:identifierCopy];
   }
 }
 
-- (unint64_t)supportedShortcutActionsForBundleIdentifier:(id)a3
+- (unint64_t)supportedShortcutActionsForBundleIdentifier:(id)identifier
 {
-  v3 = [(NSMutableDictionary *)self->_supportedShortcutsByBundleIdentifier objectForKey:a3];
-  v4 = [v3 integerValue];
+  v3 = [(NSMutableDictionary *)self->_supportedShortcutsByBundleIdentifier objectForKey:identifier];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)performMultitaskingShortcutAction:(int64_t)a3 forBundleIdentifier:(id)a4
+- (void)performMultitaskingShortcutAction:(int64_t)action forBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v9 = [(SBSMultitaskingApplicationShortcutService *)self _connection];
-  v7 = [v9 remoteTarget];
-  v8 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v7 performShortcutAction:v8 forBundleIdentifier:v6];
+  identifierCopy = identifier;
+  _connection = [(SBSMultitaskingApplicationShortcutService *)self _connection];
+  remoteTarget = [_connection remoteTarget];
+  v8 = [MEMORY[0x1E696AD98] numberWithInteger:action];
+  [remoteTarget performShortcutAction:v8 forBundleIdentifier:identifierCopy];
 }
 
-- (void)updateSupportedShortcutActionsForBundleIdentifiers:(id)a3
+- (void)updateSupportedShortcutActionsForBundleIdentifiers:(id)identifiers
 {
-  v4 = a3;
-  v3 = v4;
+  identifiersCopy = identifiers;
+  v3 = identifiersCopy;
   BSDispatchMain();
 }
 
@@ -170,9 +170,9 @@ void __96__SBSMultitaskingApplicationShortcutService_updateSupportedShortcutActi
   if (!connection)
   {
     v4 = MEMORY[0x1E698F498];
-    v5 = [MEMORY[0x1E698F498] defaultShellMachName];
+    defaultShellMachName = [MEMORY[0x1E698F498] defaultShellMachName];
     v6 = +[SBSMultitaskingApplicationShortcutServiceSpecification identifier];
-    v7 = [v4 endpointForMachName:v5 service:v6 instance:0];
+    v7 = [v4 endpointForMachName:defaultShellMachName service:v6 instance:0];
 
     v8 = BSDispatchQueueCreateWithQualityOfService();
     connectionQueue = self->_connectionQueue;

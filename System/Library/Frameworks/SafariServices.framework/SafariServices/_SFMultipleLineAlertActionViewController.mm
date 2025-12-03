@@ -1,27 +1,27 @@
 @interface _SFMultipleLineAlertActionViewController
 - (CGSize)preferredContentSize;
-- (_SFMultipleLineAlertActionViewController)initWithTitle:(id)a3 detail:(id)a4 style:(int64_t)a5;
+- (_SFMultipleLineAlertActionViewController)initWithTitle:(id)title detail:(id)detail style:(int64_t)style;
 - (void)loadView;
 @end
 
 @implementation _SFMultipleLineAlertActionViewController
 
-- (_SFMultipleLineAlertActionViewController)initWithTitle:(id)a3 detail:(id)a4 style:(int64_t)a5
+- (_SFMultipleLineAlertActionViewController)initWithTitle:(id)title detail:(id)detail style:(int64_t)style
 {
-  v8 = a3;
-  v9 = a4;
+  titleCopy = title;
+  detailCopy = detail;
   v10 = [(_SFMultipleLineAlertActionViewController *)self initWithNibName:0 bundle:0];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [titleCopy copy];
     title = v10->_title;
     v10->_title = v11;
 
-    v13 = [v9 copy];
+    v13 = [detailCopy copy];
     detail = v10->_detail;
     v10->_detail = v13;
 
-    v10->_style = a5;
+    v10->_style = style;
     v15 = v10;
   }
 
@@ -33,25 +33,25 @@
   v8 = objc_alloc_init(_SFMultipleLineAlertActionView);
   if (self->_style == 2)
   {
-    v3 = [MEMORY[0x1E69DC888] systemRedColor];
-    [(_SFMultipleLineAlertActionView *)v8 setTintColor:v3];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    [(_SFMultipleLineAlertActionView *)v8 setTintColor:systemRedColor];
   }
 
   title = self->_title;
-  v5 = [(_SFMultipleLineAlertActionView *)v8 titleLabel];
-  [v5 setText:title];
+  titleLabel = [(_SFMultipleLineAlertActionView *)v8 titleLabel];
+  [titleLabel setText:title];
 
   detail = self->_detail;
-  v7 = [(_SFMultipleLineAlertActionView *)v8 detailLabel];
-  [v7 setText:detail];
+  detailLabel = [(_SFMultipleLineAlertActionView *)v8 detailLabel];
+  [detailLabel setText:detail];
 
   [(_SFMultipleLineAlertActionViewController *)self setView:v8];
 }
 
 - (CGSize)preferredContentSize
 {
-  v2 = [(_SFMultipleLineAlertActionViewController *)self view];
-  [v2 systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
+  view = [(_SFMultipleLineAlertActionViewController *)self view];
+  [view systemLayoutSizeFittingSize:{*MEMORY[0x1E69DE090], *(MEMORY[0x1E69DE090] + 8)}];
   v4 = v3;
   v6 = v5;
 

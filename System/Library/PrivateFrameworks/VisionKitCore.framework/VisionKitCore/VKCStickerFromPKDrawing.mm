@@ -1,12 +1,12 @@
 @interface VKCStickerFromPKDrawing
-- (CGImage)recreateImage:(CGImage *)a3;
-- (VKCStickerFromPKDrawing)initWithFrameVar:(CGRect)a3 currentView:(id)a4 inputtedImage:(CGImage *)a5;
+- (CGImage)recreateImage:(CGImage *)image;
+- (VKCStickerFromPKDrawing)initWithFrameVar:(CGRect)var currentView:(id)view inputtedImage:(CGImage *)image;
 - (VKCStickerFromPKDrawingDelegate)delegate;
-- (void)_generateStickerRepresentations:(CGImage *)a3 type:(unint64_t)a4 completion:(id)a5;
+- (void)_generateStickerRepresentations:(CGImage *)representations type:(unint64_t)type completion:(id)completion;
 - (void)dealloc;
-- (void)generateAndAddStickerRepresentations:(unint64_t)a3;
-- (void)presentStickerPickerViewController:(CGRect)a3;
-- (void)setInputImage:(CGImage *)a3;
+- (void)generateAndAddStickerRepresentations:(unint64_t)representations;
+- (void)presentStickerPickerViewController:(CGRect)controller;
+- (void)setInputImage:(CGImage *)image;
 - (void)stickerPickerViewControllerDidLoad;
 @end
 
@@ -14,8 +14,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   CGImageRelease(self->_inputImage);
   v4.receiver = self;
@@ -23,21 +23,21 @@
   [(VKCStickerFromPKDrawing *)&v4 dealloc];
 }
 
-- (VKCStickerFromPKDrawing)initWithFrameVar:(CGRect)a3 currentView:(id)a4 inputtedImage:(CGImage *)a5
+- (VKCStickerFromPKDrawing)initWithFrameVar:(CGRect)var currentView:(id)view inputtedImage:(CGImage *)image
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v11 = a4;
+  height = var.size.height;
+  width = var.size.width;
+  y = var.origin.y;
+  x = var.origin.x;
+  viewCopy = view;
   v17.receiver = self;
   v17.super_class = VKCStickerFromPKDrawing;
-  v12 = [(VKCStickerFromPKDrawing *)&v17 initWithFrame:x, y, width, height];
-  v13 = v12;
-  if (v12)
+  height = [(VKCStickerFromPKDrawing *)&v17 initWithFrame:x, y, width, height];
+  v13 = height;
+  if (height)
   {
-    [(VKCStickerFromPKDrawing *)v12 setInputImage:a5];
-    [(VKCStickerFromPKDrawing *)v13 setCurrentView:v11];
+    [(VKCStickerFromPKDrawing *)height setInputImage:image];
+    [(VKCStickerFromPKDrawing *)v13 setCurrentView:viewCopy];
     v14 = objc_alloc_init(MEMORY[0x1E69DCF40]);
     feedbackGenerator = v13->_feedbackGenerator;
     v13->_feedbackGenerator = v14;
@@ -46,25 +46,25 @@
   return v13;
 }
 
-- (void)presentStickerPickerViewController:(CGRect)a3
+- (void)presentStickerPickerViewController:(CGRect)controller
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = controller.size.height;
+  width = controller.size.width;
+  y = controller.origin.y;
+  x = controller.origin.x;
   v8 = objc_alloc_init(VKCStickerPickerViewController);
   [(VKCStickerFromPKDrawing *)self setStickerPickerViewController:v8];
 
-  v9 = [(VKCStickerFromPKDrawing *)self stickerPickerViewController];
-  [v9 setDelegate:self];
+  stickerPickerViewController = [(VKCStickerFromPKDrawing *)self stickerPickerViewController];
+  [stickerPickerViewController setDelegate:self];
 
-  v10 = [(VKCStickerFromPKDrawing *)self currentView];
-  v11 = [(VKCStickerFromPKDrawing *)self stickerPickerViewController];
-  v12 = [v11 popoverPresentationController];
-  [v12 setSourceView:v10];
+  currentView = [(VKCStickerFromPKDrawing *)self currentView];
+  stickerPickerViewController2 = [(VKCStickerFromPKDrawing *)self stickerPickerViewController];
+  popoverPresentationController = [stickerPickerViewController2 popoverPresentationController];
+  [popoverPresentationController setSourceView:currentView];
 
-  v13 = [(VKCStickerFromPKDrawing *)self stickerPickerViewController];
-  [v13 setModalTransitionStyle:0];
+  stickerPickerViewController3 = [(VKCStickerFromPKDrawing *)self stickerPickerViewController];
+  [stickerPickerViewController3 setModalTransitionStyle:0];
 
   v31.origin.x = x;
   v31.origin.y = y;
@@ -76,26 +76,26 @@
   v32.size.width = width;
   v32.size.height = height;
   v15 = CGRectGetMidY(v32) + -20.0;
-  v16 = [(VKCStickerFromPKDrawing *)self stickerPickerViewController];
-  [v16 setSourceView:self];
+  stickerPickerViewController4 = [(VKCStickerFromPKDrawing *)self stickerPickerViewController];
+  [stickerPickerViewController4 setSourceView:self];
 
   v18 = VKMRectWithOriginAndSize(v17, v14, v15, 40.0, 40.0);
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(VKCStickerFromPKDrawing *)self stickerPickerViewController];
-  [v25 setSourceRect:{v18, v20, v22, v24}];
+  stickerPickerViewController5 = [(VKCStickerFromPKDrawing *)self stickerPickerViewController];
+  [stickerPickerViewController5 setSourceRect:{v18, v20, v22, v24}];
 
-  v26 = [(VKCStickerFromPKDrawing *)self currentView];
-  v27 = [v26 window];
-  v28 = [v27 rootViewController];
-  v29 = [(VKCStickerFromPKDrawing *)self stickerPickerViewController];
+  currentView2 = [(VKCStickerFromPKDrawing *)self currentView];
+  window = [currentView2 window];
+  rootViewController = [window rootViewController];
+  stickerPickerViewController6 = [(VKCStickerFromPKDrawing *)self stickerPickerViewController];
   v30[0] = MEMORY[0x1E69E9820];
   v30[1] = 3221225472;
   v30[2] = __62__VKCStickerFromPKDrawing_presentStickerPickerViewController___block_invoke;
   v30[3] = &unk_1E7BE4208;
   v30[4] = self;
-  [v28 presentViewController:v29 animated:0 completion:v30];
+  [rootViewController presentViewController:stickerPickerViewController6 animated:0 completion:v30];
 }
 
 void __62__VKCStickerFromPKDrawing_presentStickerPickerViewController___block_invoke(uint64_t a1)
@@ -104,12 +104,12 @@ void __62__VKCStickerFromPKDrawing_presentStickerPickerViewController___block_in
   [v1 becomeFirstResponder];
 }
 
-- (CGImage)recreateImage:(CGImage *)a3
+- (CGImage)recreateImage:(CGImage *)image
 {
-  Image = a3;
-  if (a3)
+  Image = image;
+  if (image)
   {
-    Width = CGImageGetWidth(a3);
+    Width = CGImageGetWidth(image);
     Height = CGImageGetHeight(Image);
     DeviceRGB = CGColorSpaceCreateDeviceRGB();
     if (DeviceRGB)
@@ -145,15 +145,15 @@ void __62__VKCStickerFromPKDrawing_presentStickerPickerViewController___block_in
   return Image;
 }
 
-- (void)_generateStickerRepresentations:(CGImage *)a3 type:(unint64_t)a4 completion:(id)a5
+- (void)_generateStickerRepresentations:(CGImage *)representations type:(unint64_t)type completion:(id)completion
 {
-  v5 = a4;
+  typeCopy = type;
   v41[1] = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (a3)
+  completionCopy = completion;
+  if (representations)
   {
-    v9 = [(VKCStickerFromPKDrawing *)self recreateImage:a3];
-    v10 = v9 != a3;
+    v9 = [(VKCStickerFromPKDrawing *)self recreateImage:representations];
+    v10 = v9 != representations;
     v11 = [MEMORY[0x1E69DCAB8] vk_imageWithCGImage:v9];
     v12 = !v10;
     if (!v9)
@@ -181,7 +181,7 @@ void __62__VKCStickerFromPKDrawing_presentStickerPickerViewController___block_in
     v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v41 forKeys:&v40 count:1];
     v16 = [v14 initWithDomain:@"com.apple.VisionKit.Sticker" code:-14 userInfo:v15];
 
-    (*(v8 + 2))(v8, 0, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v16);
     v11 = 0;
   }
 
@@ -190,7 +190,7 @@ void __62__VKCStickerFromPKDrawing_presentStickerPickerViewController___block_in
   v38[2] = 0x3032000000;
   v38[3] = __Block_byref_object_copy_;
   v38[4] = __Block_byref_object_dispose_;
-  v39 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v36[0] = 0;
   v36[1] = v36;
   v36[2] = 0x2810000000;
@@ -198,7 +198,7 @@ void __62__VKCStickerFromPKDrawing_presentStickerPickerViewController___block_in
   v37 = 0;
   v17 = dispatch_group_create();
   v18 = +[VKImageDataRequirements stickerRequirements];
-  if (v5)
+  if (typeCopy)
   {
     dispatch_group_enter(v17);
     v31[0] = MEMORY[0x1E69E9820];
@@ -212,7 +212,7 @@ void __62__VKCStickerFromPKDrawing_presentStickerPickerViewController___block_in
     [v11 vk_imageDataWithRequirements:v32 completion:v31];
   }
 
-  if ((v5 & 4) != 0)
+  if ((typeCopy & 4) != 0)
   {
     dispatch_group_enter(v17);
     v19 = +[VKImageDataRequirements stickerThumbnailRequirements];
@@ -231,10 +231,10 @@ void __62__VKCStickerFromPKDrawing_presentStickerPickerViewController___block_in
   block[2] = __75__VKCStickerFromPKDrawing__generateStickerRepresentations_type_completion___block_invoke_3;
   block[3] = &unk_1E7BE4320;
   v23 = v11;
-  v24 = self;
-  v25 = v8;
+  selfCopy = self;
+  v25 = completionCopy;
   v26 = v38;
-  v20 = v8;
+  v20 = completionCopy;
   v21 = v11;
   dispatch_group_notify(v17, MEMORY[0x1E69E96A0], block);
 
@@ -333,16 +333,16 @@ void __61__VKCStickerFromPKDrawing_stickerPickerViewControllerDidLoad__block_inv
   }
 }
 
-- (void)generateAndAddStickerRepresentations:(unint64_t)a3
+- (void)generateAndAddStickerRepresentations:(unint64_t)representations
 {
   objc_initWeak(&location, self);
-  v5 = [(VKCStickerFromPKDrawing *)self inputImage];
+  inputImage = [(VKCStickerFromPKDrawing *)self inputImage];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __64__VKCStickerFromPKDrawing_generateAndAddStickerRepresentations___block_invoke;
   v6[3] = &unk_1E7BE4390;
   objc_copyWeak(&v7, &location);
-  [(VKCStickerFromPKDrawing *)self _generateStickerRepresentations:v5 type:a3 completion:v6];
+  [(VKCStickerFromPKDrawing *)self _generateStickerRepresentations:inputImage type:representations completion:v6];
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);
 }
@@ -388,17 +388,17 @@ void __64__VKCStickerFromPKDrawing_generateAndAddStickerRepresentations___block_
   }
 }
 
-- (void)setInputImage:(CGImage *)a3
+- (void)setInputImage:(CGImage *)image
 {
   inputImage = self->_inputImage;
-  if (inputImage != a3)
+  if (inputImage != image)
   {
     CGImageRelease(inputImage);
-    self->_inputImage = a3;
-    if (a3)
+    self->_inputImage = image;
+    if (image)
     {
 
-      CGImageRetain(a3);
+      CGImageRetain(image);
     }
   }
 }

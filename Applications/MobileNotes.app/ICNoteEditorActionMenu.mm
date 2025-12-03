@@ -1,28 +1,28 @@
 @interface ICNoteEditorActionMenu
-+ (id)deferredActionMenuElementWithNote:(id)a3 invitation:(id)a4 presentingViewController:(id)a5 viewControllerManager:(id)a6 delegate:(id)a7 completion:(id)a8;
-+ (id)menuWithNote:(id)a3 invitation:(id)a4 presentingViewController:(id)a5 presentingBarButtonItem:(id)a6 viewControllerManager:(id)a7 deferredChildren:(BOOL)a8 delegate:(id)a9 completion:(id)a10;
-+ (id)menuWithNote:(id)a3 invitation:(id)a4 presentingViewController:(id)a5 presentingBarButtonItem:(id)a6 viewControllerManager:(id)a7 delegate:(id)a8 completion:(id)aBlock;
++ (id)deferredActionMenuElementWithNote:(id)note invitation:(id)invitation presentingViewController:(id)controller viewControllerManager:(id)manager delegate:(id)delegate completion:(id)completion;
++ (id)menuWithNote:(id)note invitation:(id)invitation presentingViewController:(id)controller presentingBarButtonItem:(id)item viewControllerManager:(id)manager deferredChildren:(BOOL)children delegate:(id)delegate completion:(id)self0;
++ (id)menuWithNote:(id)note invitation:(id)invitation presentingViewController:(id)controller presentingBarButtonItem:(id)item viewControllerManager:(id)manager delegate:(id)delegate completion:(id)aBlock;
 - (ICNAEventReporter)eventReporter;
 - (ICNoteEditorActionMenu)init;
-- (ICNoteEditorActionMenu)initWithNote:(id)a3 invitation:(id)a4 presentingViewController:(id)a5 presentingBarButtonItem:(id)a6 viewControllerManager:(id)a7 delegate:(id)a8 completion:(id)aBlock;
+- (ICNoteEditorActionMenu)initWithNote:(id)note invitation:(id)invitation presentingViewController:(id)controller presentingBarButtonItem:(id)item viewControllerManager:(id)manager delegate:(id)delegate completion:(id)aBlock;
 - (ICNoteEditorActionMenuDelegate)delegate;
 - (ICViewControllerManager)viewControllerManager;
 - (UIViewController)presentingViewController;
 - (id)completion;
 - (id)menuSections;
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4;
-- (void)setCompletion:(id)a3;
-- (void)setInvitation:(id)a3;
-- (void)setNote:(id)a3;
-- (void)setPresentingBarButtonItem:(id)a3;
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls;
+- (void)setCompletion:(id)completion;
+- (void)setInvitation:(id)invitation;
+- (void)setNote:(id)note;
+- (void)setPresentingBarButtonItem:(id)item;
 - (void)willShowMenu;
 @end
 
 @implementation ICNoteEditorActionMenu
 
-+ (id)deferredActionMenuElementWithNote:(id)a3 invitation:(id)a4 presentingViewController:(id)a5 viewControllerManager:(id)a6 delegate:(id)a7 completion:(id)a8
++ (id)deferredActionMenuElementWithNote:(id)note invitation:(id)invitation presentingViewController:(id)controller viewControllerManager:(id)manager delegate:(id)delegate completion:(id)completion
 {
-  v13 = _Block_copy(a8);
+  v13 = _Block_copy(completion);
   if (v13)
   {
     v14 = swift_allocObject();
@@ -35,12 +35,12 @@
     v14 = 0;
   }
 
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
+  noteCopy = note;
+  invitationCopy = invitation;
+  controllerCopy = controller;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v19 = sub_10001D0F0(a3, a4, v17, v18, a7, v13, v14);
+  v19 = sub_10001D0F0(note, invitation, controllerCopy, managerCopy, delegate, v13, v14);
   sub_10000C840(v13);
 
   swift_unknownObjectRelease();
@@ -48,18 +48,18 @@
   return v19;
 }
 
-- (void)setNote:(id)a3
+- (void)setNote:(id)note
 {
   v4 = *(self + OBJC_IVAR___ICNoteEditorActionMenu_note);
-  *(self + OBJC_IVAR___ICNoteEditorActionMenu_note) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___ICNoteEditorActionMenu_note) = note;
+  noteCopy = note;
 }
 
-- (void)setInvitation:(id)a3
+- (void)setInvitation:(id)invitation
 {
   v4 = *(self + OBJC_IVAR___ICNoteEditorActionMenu_invitation);
-  *(self + OBJC_IVAR___ICNoteEditorActionMenu_invitation) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___ICNoteEditorActionMenu_invitation) = invitation;
+  invitationCopy = invitation;
 }
 
 - (ICNoteEditorActionMenuDelegate)delegate
@@ -79,24 +79,24 @@
     v4 = swift_dynamicCastObjCClass();
     if (v4)
     {
-      v5 = [v4 eventReporter];
+      eventReporter = [v4 eventReporter];
     }
 
     else
     {
-      v5 = 0;
+      eventReporter = 0;
     }
   }
 
   else
   {
-    v5 = 0;
+    eventReporter = 0;
   }
 
-  return v5;
+  return eventReporter;
 }
 
-- (ICNoteEditorActionMenu)initWithNote:(id)a3 invitation:(id)a4 presentingViewController:(id)a5 presentingBarButtonItem:(id)a6 viewControllerManager:(id)a7 delegate:(id)a8 completion:(id)aBlock
+- (ICNoteEditorActionMenu)initWithNote:(id)note invitation:(id)invitation presentingViewController:(id)controller presentingBarButtonItem:(id)item viewControllerManager:(id)manager delegate:(id)delegate completion:(id)aBlock
 {
   v14 = _Block_copy(aBlock);
   if (v14)
@@ -111,20 +111,20 @@
     v15 = 0;
   }
 
-  v22 = a3;
-  v21 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
+  noteCopy = note;
+  invitationCopy = invitation;
+  controllerCopy = controller;
+  itemCopy = item;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v19 = sub_10046FDCC(a3, a4, v16, a6, v18, a8, v14, v15);
+  v19 = sub_10046FDCC(note, invitation, controllerCopy, item, managerCopy, delegate, v14, v15);
   sub_10000C840(v14);
 
   swift_unknownObjectRelease();
   return v19;
 }
 
-+ (id)menuWithNote:(id)a3 invitation:(id)a4 presentingViewController:(id)a5 presentingBarButtonItem:(id)a6 viewControllerManager:(id)a7 delegate:(id)a8 completion:(id)aBlock
++ (id)menuWithNote:(id)note invitation:(id)invitation presentingViewController:(id)controller presentingBarButtonItem:(id)item viewControllerManager:(id)manager delegate:(id)delegate completion:(id)aBlock
 {
   v15 = _Block_copy(aBlock);
   if (v15)
@@ -139,13 +139,13 @@
     v16 = 0;
   }
 
-  v23 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  noteCopy = note;
+  invitationCopy = invitation;
+  controllerCopy = controller;
+  itemCopy = item;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v21 = sub_10046FF80(a3, a4, v18, a6, v20, a8, v15, v16);
+  v21 = sub_10046FF80(note, invitation, controllerCopy, item, managerCopy, delegate, v15, v16);
   sub_10000C840(v15);
 
   swift_unknownObjectRelease();
@@ -153,9 +153,9 @@
   return v21;
 }
 
-+ (id)menuWithNote:(id)a3 invitation:(id)a4 presentingViewController:(id)a5 presentingBarButtonItem:(id)a6 viewControllerManager:(id)a7 deferredChildren:(BOOL)a8 delegate:(id)a9 completion:(id)a10
++ (id)menuWithNote:(id)note invitation:(id)invitation presentingViewController:(id)controller presentingBarButtonItem:(id)item viewControllerManager:(id)manager deferredChildren:(BOOL)children delegate:(id)delegate completion:(id)self0
 {
-  v15 = _Block_copy(a10);
+  v15 = _Block_copy(completion);
   if (v15)
   {
     v16 = swift_allocObject();
@@ -168,13 +168,13 @@
     v16 = 0;
   }
 
-  v23 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  noteCopy = note;
+  invitationCopy = invitation;
+  controllerCopy = controller;
+  itemCopy = item;
+  managerCopy = manager;
   swift_unknownObjectRetain();
-  v21 = sub_100470168(a3, a4, v18, a6, v20, a8, a9, v15, v16);
+  v21 = sub_100470168(note, invitation, controllerCopy, item, managerCopy, children, delegate, v15, v16);
   sub_10000C840(v15);
 
   swift_unknownObjectRelease();
@@ -204,9 +204,9 @@
   return v3;
 }
 
-- (void)setCompletion:(id)a3
+- (void)setCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -224,7 +224,7 @@
   v8 = *(self + OBJC_IVAR___ICNoteEditorActionMenu_completion);
   *v7 = v6;
   v7[1] = v4;
-  v9 = self;
+  selfCopy = self;
   sub_10000C840(v8);
 }
 
@@ -235,11 +235,11 @@
   return Strong;
 }
 
-- (void)setPresentingBarButtonItem:(id)a3
+- (void)setPresentingBarButtonItem:(id)item
 {
   v4 = *(self + OBJC_IVAR___ICNoteEditorActionMenu_presentingBarButtonItem);
-  *(self + OBJC_IVAR___ICNoteEditorActionMenu_presentingBarButtonItem) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___ICNoteEditorActionMenu_presentingBarButtonItem) = item;
+  itemCopy = item;
 }
 
 - (ICViewControllerManager)viewControllerManager
@@ -251,13 +251,13 @@
 
 - (void)willShowMenu
 {
-  v2 = self;
+  selfCopy = self;
   sub_10046C16C();
 }
 
 - (id)menuSections
 {
-  v2 = self;
+  selfCopy = self;
   sub_10046C324();
 
   sub_1000054A4(0, &qword_1006C6400);
@@ -273,12 +273,12 @@
   return result;
 }
 
-- (void)documentPicker:(id)a3 didPickDocumentsAtURLs:(id)a4
+- (void)documentPicker:(id)picker didPickDocumentsAtURLs:(id)ls
 {
   type metadata accessor for URL();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
-  v7 = a3;
-  v8 = self;
+  pickerCopy = picker;
+  selfCopy = self;
   sub_100470364(v6);
 }
 

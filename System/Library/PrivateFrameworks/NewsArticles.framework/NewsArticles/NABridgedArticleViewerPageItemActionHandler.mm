@@ -1,11 +1,11 @@
 @interface NABridgedArticleViewerPageItemActionHandler
 - (NABridgedArticleViewerPageItemActionHandler)init;
-- (NABridgedArticleViewerPageItemActionHandler)initWithDelegate:(id)a3;
+- (NABridgedArticleViewerPageItemActionHandler)initWithDelegate:(id)delegate;
 @end
 
 @implementation NABridgedArticleViewerPageItemActionHandler
 
-- (NABridgedArticleViewerPageItemActionHandler)initWithDelegate:(id)a3
+- (NABridgedArticleViewerPageItemActionHandler)initWithDelegate:(id)delegate
 {
   ObjectType = swift_getObjectType();
   swift_unknownObjectWeakInit();

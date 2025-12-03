@@ -1,10 +1,10 @@
 @interface HKRPOxygenSaturationAvailability
-+ (BOOL)isCountryAllowed:(id)a3;
++ (BOOL)isCountryAllowed:(id)allowed;
 + (NSSet)allowedCountryCodesISO3166;
 - (BOOL)isDeviceSupported;
 - (HKRPOxygenSaturationAvailability)init;
-- (HKRPOxygenSaturationAvailability)initWithDataSource:(id)a3;
-- (HKRPOxygenSaturationAvailability)initWithDevice:(id)a3;
+- (HKRPOxygenSaturationAvailability)initWithDataSource:(id)source;
+- (HKRPOxygenSaturationAvailability)initWithDevice:(id)device;
 @end
 
 @implementation HKRPOxygenSaturationAvailability
@@ -12,18 +12,18 @@
 + (NSSet)allowedCountryCodesISO3166
 {
   v2 = MEMORY[0x277CBEB98];
-  v3 = [objc_opt_class() allowedCountrySet];
-  v4 = [v3 allCountryCodes];
-  v5 = [v2 setWithArray:v4];
+  allowedCountrySet = [objc_opt_class() allowedCountrySet];
+  allCountryCodes = [allowedCountrySet allCountryCodes];
+  v5 = [v2 setWithArray:allCountryCodes];
 
   return v5;
 }
 
-+ (BOOL)isCountryAllowed:(id)a3
++ (BOOL)isCountryAllowed:(id)allowed
 {
-  v3 = a3;
-  v4 = [objc_opt_class() allowedCountrySet];
-  v5 = [v4 containsCountryCode:v3];
+  allowedCopy = allowed;
+  allowedCountrySet = [objc_opt_class() allowedCountrySet];
+  v5 = [allowedCountrySet containsCountryCode:allowedCopy];
 
   return v5;
 }
@@ -36,25 +36,25 @@
   return v4;
 }
 
-- (HKRPOxygenSaturationAvailability)initWithDevice:(id)a3
+- (HKRPOxygenSaturationAvailability)initWithDevice:(id)device
 {
-  v4 = a3;
-  v5 = [[_HKRPOxygenSaturationAvailabilityDataSource alloc] initWithDevice:v4];
+  deviceCopy = device;
+  v5 = [[_HKRPOxygenSaturationAvailabilityDataSource alloc] initWithDevice:deviceCopy];
 
   v6 = [(HKRPOxygenSaturationAvailability *)self initWithDataSource:v5];
   return v6;
 }
 
-- (HKRPOxygenSaturationAvailability)initWithDataSource:(id)a3
+- (HKRPOxygenSaturationAvailability)initWithDataSource:(id)source
 {
-  v5 = a3;
+  sourceCopy = source;
   v9.receiver = self;
   v9.super_class = HKRPOxygenSaturationAvailability;
   v6 = [(HKRPOxygenSaturationAvailability *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_dataSource, a3);
+    objc_storeStrong(&v6->_dataSource, source);
   }
 
   return v7;

@@ -1,7 +1,7 @@
 @interface _UIWindowSceneGeometrySettingsDiffAction
 - (UIApplicationSceneSettingsDiffInspector)sceneSettingsGeometryMutationDiffInspector;
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8;
-- (void)_updateSceneGeometryWithSettingObserverContext:(id)a3 windowScene:(id)a4 transitionContext:(id)a5;
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type;
+- (void)_updateSceneGeometryWithSettingObserverContext:(id)context windowScene:(id)scene transitionContext:(id)transitionContext;
 @end
 
 @implementation _UIWindowSceneGeometrySettingsDiffAction
@@ -26,51 +26,51 @@
   return sceneSettingsGeometryMutationDiffInspector;
 }
 
-- (void)_performActionsForUIScene:(id)a3 withUpdatedFBSScene:(id)a4 settingsDiff:(id)a5 fromSettings:(id)a6 transitionContext:(id)a7 lifecycleActionType:(unsigned int)a8
+- (void)_performActionsForUIScene:(id)scene withUpdatedFBSScene:(id)sScene settingsDiff:(id)diff fromSettings:(id)settings transitionContext:(id)context lifecycleActionType:(unsigned int)type
 {
   v64 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a6;
-  v15 = a7;
-  v16 = a5;
+  sceneCopy = scene;
+  settingsCopy = settings;
+  contextCopy = context;
+  diffCopy = diff;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v53 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v53 handleFailureInMethod:a2 object:self file:@"_UIWindowSceneGeometrySettingsDiffAction.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIWindowSceneGeometrySettingsDiffAction.m" lineNumber:85 description:{@"Invalid parameter not satisfying: %@", @"[uiScene isKindOfClass:[UIWindowScene class]]"}];
   }
 
-  v17 = v13;
+  v17 = sceneCopy;
   v55 = 0;
-  v18 = [(_UIWindowSceneGeometrySettingsDiffAction *)self sceneSettingsGeometryMutationDiffInspector];
-  [v18 inspectDiff:v16 withContext:&v55];
+  sceneSettingsGeometryMutationDiffInspector = [(_UIWindowSceneGeometrySettingsDiffAction *)self sceneSettingsGeometryMutationDiffInspector];
+  [sceneSettingsGeometryMutationDiffInspector inspectDiff:diffCopy withContext:&v55];
 
   v19 = v55;
   if ((v55 & 4) != 0)
   {
-    v20 = [v14 otherSettings];
-    v21 = [v20 objectForSetting:35];
-    v22 = [v21 unsignedIntegerValue];
+    otherSettings = [settingsCopy otherSettings];
+    v21 = [otherSettings objectForSetting:35];
+    unsignedIntegerValue = [v21 unsignedIntegerValue];
 
-    v23 = [v17 _effectiveUISettings];
-    v24 = [v23 interfaceOrientationMode];
+    _effectiveUISettings = [v17 _effectiveUISettings];
+    interfaceOrientationMode = [_effectiveUISettings interfaceOrientationMode];
 
-    if (v22 && v22 != v24 && (v22 == 100 || v24 == 100 || !v24))
+    if (unsignedIntegerValue && unsignedIntegerValue != interfaceOrientationMode && (unsignedIntegerValue == 100 || interfaceOrientationMode == 100 || !interfaceOrientationMode))
     {
-      v25 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v26 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _UIAssertIsValidOrientationModeChange(UIApplicationSceneInterfaceOrientationMode, UIApplicationSceneInterfaceOrientationMode)"}];
-      UIApplicationSceneStringForInterfaceOrientationMode(v22);
-      v28 = v27 = v14;
-      v29 = UIApplicationSceneStringForInterfaceOrientationMode(v24);
-      [v25 handleFailureInFunction:v26 file:@"_UIWindowSceneGeometrySettingsDiffAction.m" lineNumber:44 description:{@"Unsupported change of scene orientation mode %@ -> %@", v28, v29}];
+      UIApplicationSceneStringForInterfaceOrientationMode(unsignedIntegerValue);
+      v28 = v27 = settingsCopy;
+      v29 = UIApplicationSceneStringForInterfaceOrientationMode(interfaceOrientationMode);
+      [currentHandler2 handleFailureInFunction:v26 file:@"_UIWindowSceneGeometrySettingsDiffAction.m" lineNumber:44 description:{@"Unsupported change of scene orientation mode %@ -> %@", v28, v29}];
 
-      v14 = v27;
+      settingsCopy = v27;
     }
 
     v30 = *(__UILogGetCategoryCachedImpl("Orientation", &_MergedGlobals_1028) + 8);
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
     {
-      v54 = v14;
+      v54 = settingsCopy;
       v31 = v17;
       if (v31)
       {
@@ -86,20 +86,20 @@
       }
 
       v36 = v35;
-      v37 = [v31 _persistenceIdentifier];
-      v38 = UIApplicationSceneStringForInterfaceOrientationMode(v22);
-      v39 = UIApplicationSceneStringForInterfaceOrientationMode(v24);
+      _persistenceIdentifier = [v31 _persistenceIdentifier];
+      v38 = UIApplicationSceneStringForInterfaceOrientationMode(unsignedIntegerValue);
+      v39 = UIApplicationSceneStringForInterfaceOrientationMode(interfaceOrientationMode);
       *buf = 138544130;
       v57 = v35;
       v58 = 2114;
-      v59 = v37;
+      v59 = _persistenceIdentifier;
       v60 = 2114;
       v61 = v38;
       v62 = 2114;
       v63 = v39;
       _os_log_impl(&dword_188A29000, v30, OS_LOG_TYPE_DEFAULT, "%{public}@ (%{public}@) Scene did update orientation mode: %{public}@ -> %{public}@", buf, 0x2Au);
 
-      v14 = v54;
+      settingsCopy = v54;
     }
 
     v19 = v55;
@@ -109,10 +109,10 @@
   {
     if ([(UIScene *)v17 _systemShellOwnsInterfaceOrientation])
     {
-      v40 = [v17 _effectiveUISettings];
-      v41 = [v40 interfaceOrientation];
+      _effectiveUISettings2 = [v17 _effectiveUISettings];
+      interfaceOrientation = [_effectiveUISettings2 interfaceOrientation];
 
-      if (!v41)
+      if (!interfaceOrientation)
       {
         v42 = *(__UILogGetCategoryCachedImpl("Orientation", &qword_1ED49CC40) + 8);
         if (os_log_type_enabled(v42, OS_LOG_TYPE_FAULT))
@@ -132,24 +132,24 @@
           }
 
           v48 = v47;
-          v49 = [v43 _persistenceIdentifier];
+          _persistenceIdentifier2 = [v43 _persistenceIdentifier];
           *buf = 138543618;
           v57 = v47;
           v58 = 2114;
-          v59 = v49;
+          v59 = _persistenceIdentifier2;
           _os_log_impl(&dword_188A29000, v42, OS_LOG_TYPE_FAULT, "%{public}@ (%{public}@) The scene is being updated with an unknown interface orientation!", buf, 0x16u);
         }
       }
     }
   }
 
-  v50 = [v17 _effectiveUISettings];
-  v51 = [v50 inLiveResize];
+  _effectiveUISettings3 = [v17 _effectiveUISettings];
+  inLiveResize = [_effectiveUISettings3 inLiveResize];
 
   if ((v55 & 0x10) != 0)
   {
     v52 = _UISceneLiveResizeSnapshotsEnabled();
-    if ((v52 & 1) == 0 && ((v51 ^ 1) & 1) == 0)
+    if ((v52 & 1) == 0 && ((inLiveResize ^ 1) & 1) == 0)
     {
       _UIQOSManagedCommitsBegin(self, @"LiveResizeAnimation");
       v52 = 0;
@@ -161,29 +161,29 @@
     v52 = 1;
   }
 
-  [(_UIWindowSceneGeometrySettingsDiffAction *)self _updateSceneGeometryWithSettingObserverContext:v55 windowScene:v17 transitionContext:v15];
-  [v17 _completeGeometryUpdatesWithTransitionContext:v15];
+  [(_UIWindowSceneGeometrySettingsDiffAction *)self _updateSceneGeometryWithSettingObserverContext:v55 windowScene:v17 transitionContext:contextCopy];
+  [v17 _completeGeometryUpdatesWithTransitionContext:contextCopy];
 
-  if (((v52 | v51) & 1) == 0)
+  if (((v52 | inLiveResize) & 1) == 0)
   {
     _UIQOSManagedCommitsEnd(self, @"LiveResizeAnimation");
   }
 }
 
-- (void)_updateSceneGeometryWithSettingObserverContext:(id)a3 windowScene:(id)a4 transitionContext:(id)a5
+- (void)_updateSceneGeometryWithSettingObserverContext:(id)context windowScene:(id)scene transitionContext:(id)transitionContext
 {
-  v6 = a3;
+  contextCopy = context;
   v41 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v8 _effectiveUISettings];
-  v11 = [v10 inLiveResize];
+  contextCopy2 = context;
+  sceneCopy = scene;
+  transitionContextCopy = transitionContext;
+  _effectiveUISettings = [sceneCopy _effectiveUISettings];
+  inLiveResize = [_effectiveUISettings inLiveResize];
 
-  if (!v11)
+  if (!inLiveResize)
   {
 LABEL_7:
-    if ((v7 & 8) == 0)
+    if ((contextCopy2 & 8) == 0)
     {
       goto LABEL_14;
     }
@@ -194,7 +194,7 @@ LABEL_7:
   AnimationMode = _UISceneLiveResizeGetAnimationMode();
   if (AnimationMode == 2)
   {
-    [v9 setAnimationSettings:0];
+    [transitionContextCopy setAnimationSettings:0];
     goto LABEL_7;
   }
 
@@ -203,53 +203,53 @@ LABEL_7:
     goto LABEL_7;
   }
 
-  v13 = [v9 animationSettings];
-  if (v13)
+  animationSettings = [transitionContextCopy animationSettings];
+  if (animationSettings)
   {
-    [v9 setAnimationSettings:v13];
+    [transitionContextCopy setAnimationSettings:animationSettings];
   }
 
   else
   {
     v16 = [MEMORY[0x1E698E780] settingsWithMass:3.0 stiffness:1000.0 damping:500.0];
-    [v9 setAnimationSettings:v16];
+    [transitionContextCopy setAnimationSettings:v16];
   }
 
-  if ((v7 & 8) == 0)
+  if ((contextCopy2 & 8) == 0)
   {
     goto LABEL_14;
   }
 
 LABEL_8:
-  if ([v8 _canDynamicallySpecifySupportedInterfaceOrientations])
+  if ([sceneCopy _canDynamicallySpecifySupportedInterfaceOrientations])
   {
     v14 = 0;
-    v15 = v7 & 2;
-    if ((v6 & 1) == 0 && (v7 & 2) == 0)
+    v15 = contextCopy2 & 2;
+    if ((contextCopy & 1) == 0 && (contextCopy2 & 2) == 0)
     {
-      v14 = (v7 & 4) == 0;
+      v14 = (contextCopy2 & 4) == 0;
     }
 
     goto LABEL_17;
   }
 
 LABEL_14:
-  if ((v6 & 1) == 0 && (v7 & 6) == 0)
+  if ((contextCopy & 1) == 0 && (contextCopy2 & 6) == 0)
   {
     goto LABEL_26;
   }
 
   v14 = 0;
-  v15 = v7 & 2;
+  v15 = contextCopy2 & 2;
 LABEL_17:
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __121___UIWindowSceneGeometrySettingsDiffAction__updateSceneGeometryWithSettingObserverContext_windowScene_transitionContext___block_invoke;
   aBlock[3] = &unk_1E70F8A60;
   v34 = v14;
-  v17 = v8;
+  v17 = sceneCopy;
   v32 = v17;
-  v18 = v9;
+  v18 = transitionContextCopy;
   v33 = v18;
   v19 = _Block_copy(aBlock);
   if (v15)
@@ -272,13 +272,13 @@ LABEL_17:
       }
 
       v26 = v25;
-      v27 = [v21 _persistenceIdentifier];
+      _persistenceIdentifier = [v21 _persistenceIdentifier];
       [v21 _interfaceOrientation];
       v28 = BSInterfaceOrientationDescription();
       *buf = 138543874;
       v36 = v25;
       v37 = 2114;
-      v38 = v27;
+      v38 = _persistenceIdentifier;
       v39 = 2114;
       v40 = v28;
       _os_log_impl(&dword_188A29000, v20, OS_LOG_TYPE_DEFAULT, "%{public}@ (%{public}@) Scene will change interface orientation: %{public}@", buf, 0x20u);

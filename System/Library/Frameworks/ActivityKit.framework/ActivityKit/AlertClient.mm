@@ -1,18 +1,18 @@
 @interface AlertClient
-- (void)dismissAlertWithActivityIdentifier:(id)a3;
-- (void)presentAlertWithActivityIdentifier:(id)a3 payload:(id)a4 options:(id)a5 completion:(id)a6;
+- (void)dismissAlertWithActivityIdentifier:(id)identifier;
+- (void)presentAlertWithActivityIdentifier:(id)identifier payload:(id)payload options:(id)options completion:(id)completion;
 @end
 
 @implementation AlertClient
 
-- (void)presentAlertWithActivityIdentifier:(id)a3 payload:(id)a4 options:(id)a5 completion:(id)a6
+- (void)presentAlertWithActivityIdentifier:(id)identifier payload:(id)payload options:(id)options completion:(id)completion
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(completion);
   v10 = sub_1A2D08444();
   v12 = v11;
-  v13 = a4;
-  v14 = a5;
-  v15 = self;
+  payloadCopy = payload;
+  optionsCopy = options;
+  selfCopy = self;
   v16 = sub_1A2D07F44();
   v18 = v17;
 
@@ -27,7 +27,7 @@
   sub_1A2C55840(v16, v18);
 }
 
-- (void)dismissAlertWithActivityIdentifier:(id)a3
+- (void)dismissAlertWithActivityIdentifier:(id)identifier
 {
   v4 = sub_1A2D08444();
   v6 = v5;
@@ -38,7 +38,7 @@
     v8 = *(v7 + 1);
     ObjectType = swift_getObjectType();
     v10 = *(v8 + 16);
-    v11 = self;
+    selfCopy = self;
     v10(v4, v6, ObjectType, v8);
     swift_unknownObjectRelease();
   }

@@ -1,17 +1,17 @@
 @interface CRLCursor
-+ (CRLCursor)cursorWithEffect:(id)a3 preview:(id)a4;
-+ (CRLCursor)cursorWithEffect:(id)a3 preview:(id)a4 activeScaledRect:(CGRect)a5;
-+ (CRLCursor)cursorWithShape:(id)a3 activeScaledRect:(CGRect)a4;
++ (CRLCursor)cursorWithEffect:(id)effect preview:(id)preview;
++ (CRLCursor)cursorWithEffect:(id)effect preview:(id)preview activeScaledRect:(CGRect)rect;
++ (CRLCursor)cursorWithShape:(id)shape activeScaledRect:(CGRect)rect;
 + (CRLCursor)defaultCursor;
 + (CRLCursor)repContentPlatformViewPlaceholder;
-+ (id)addPointCursorWithActiveScaledRect:(CGRect)a3;
-+ (id)cursorForResizeType:(unint64_t)a3 activeScaledRect:(CGRect)a4;
-+ (id)cursorForRotateType:(unint64_t)a3 activeScaledRect:(CGRect)a4;
-+ (id)moveCursorWithActiveScaledRect:(CGRect)a3;
-+ (id)tableResizeCursorForOrientation:(int)a3 activeScaledRect:(CGRect)a4;
++ (id)addPointCursorWithActiveScaledRect:(CGRect)rect;
++ (id)cursorForResizeType:(unint64_t)type activeScaledRect:(CGRect)rect;
++ (id)cursorForRotateType:(unint64_t)type activeScaledRect:(CGRect)rect;
++ (id)moveCursorWithActiveScaledRect:(CGRect)rect;
++ (id)tableResizeCursorForOrientation:(int)orientation activeScaledRect:(CGRect)rect;
 - (CGRect)activeScaledRect;
-- (CRLCursor)initWithEffect:(id)a3 preview:(id)a4 activeScaledRect:(CGRect)a5;
-- (CRLCursor)initWithShape:(id)a3 activeScaledRect:(CGRect)a4;
+- (CRLCursor)initWithEffect:(id)effect preview:(id)preview activeScaledRect:(CGRect)rect;
+- (CRLCursor)initWithShape:(id)shape activeScaledRect:(CGRect)rect;
 - (id)description;
 - (id)initDefaultCursor;
 - (id)initRepContentPlatformViewPlaceholder;
@@ -19,17 +19,17 @@
 
 @implementation CRLCursor
 
-- (CRLCursor)initWithEffect:(id)a3 preview:(id)a4 activeScaledRect:(CGRect)a5
+- (CRLCursor)initWithEffect:(id)effect preview:(id)preview activeScaledRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3;
-  v13 = a4;
-  if (v13)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  effectCopy = effect;
+  previewCopy = preview;
+  if (previewCopy)
   {
-    if (v12)
+    if (effectCopy)
     {
       goto LABEL_22;
     }
@@ -63,7 +63,7 @@
   v16 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCursor.m"];
   [CRLAssertionHandler handleFailureInFunction:v15 file:v16 lineNumber:278 isFatal:0 description:"Invalid parameter not satisfying: %{public}s", "hoverPreview != nil"];
 
-  if (!v12)
+  if (!effectCopy)
   {
 LABEL_13:
     +[CRLAssertionHandler _atomicIncrementAssertCount];
@@ -100,8 +100,8 @@ LABEL_22:
   v21 = v20;
   if (v20)
   {
-    objc_storeStrong(&v20->_effect, a3);
-    objc_storeStrong(&v21->_preview, a4);
+    objc_storeStrong(&v20->_effect, effect);
+    objc_storeStrong(&v21->_preview, preview);
     v21->_activeScaledRect.origin.x = x;
     v21->_activeScaledRect.origin.y = y;
     v21->_activeScaledRect.size.width = width;
@@ -113,39 +113,39 @@ LABEL_22:
   return v21;
 }
 
-+ (CRLCursor)cursorWithEffect:(id)a3 preview:(id)a4 activeScaledRect:(CGRect)a5
++ (CRLCursor)cursorWithEffect:(id)effect preview:(id)preview activeScaledRect:(CGRect)rect
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithEffect:v12 preview:v11 activeScaledRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  previewCopy = preview;
+  effectCopy = effect;
+  v13 = [[self alloc] initWithEffect:effectCopy preview:previewCopy activeScaledRect:{x, y, width, height}];
 
   return v13;
 }
 
-+ (CRLCursor)cursorWithEffect:(id)a3 preview:(id)a4
++ (CRLCursor)cursorWithEffect:(id)effect preview:(id)preview
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [a1 alloc];
-  v9 = [v6 view];
-  [v9 frame];
-  v10 = [v8 initWithEffect:v7 preview:v6 activeScaledRect:?];
+  previewCopy = preview;
+  effectCopy = effect;
+  v8 = [self alloc];
+  view = [previewCopy view];
+  [view frame];
+  v10 = [v8 initWithEffect:effectCopy preview:previewCopy activeScaledRect:?];
 
   return v10;
 }
 
-- (CRLCursor)initWithShape:(id)a3 activeScaledRect:(CGRect)a4
+- (CRLCursor)initWithShape:(id)shape activeScaledRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v10 = a3;
-  if (!v10)
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  shapeCopy = shape;
+  if (!shapeCopy)
   {
     +[CRLAssertionHandler _atomicIncrementAssertCount];
     if (qword_101AD5A10 != -1)
@@ -180,7 +180,7 @@ LABEL_22:
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_shape, a3);
+    objc_storeStrong(&v14->_shape, shape);
     v15->_activeScaledRect.origin.x = x;
     v15->_activeScaledRect.origin.y = y;
     v15->_activeScaledRect.size.width = width;
@@ -194,14 +194,14 @@ LABEL_22:
   return v15;
 }
 
-+ (CRLCursor)cursorWithShape:(id)a3 activeScaledRect:(CGRect)a4
++ (CRLCursor)cursorWithShape:(id)shape activeScaledRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [[a1 alloc] initWithShape:v9 activeScaledRect:{x, y, width, height}];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  shapeCopy = shape;
+  v10 = [[self alloc] initWithShape:shapeCopy activeScaledRect:{x, y, width, height}];
 
   return v10;
 }
@@ -219,7 +219,7 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = sub_1003AD650;
   block[3] = &unk_10183B690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_101A34D68 != -1)
   {
     dispatch_once(&qword_101A34D68, block);
@@ -230,14 +230,14 @@ LABEL_22:
   return v2;
 }
 
-+ (id)cursorForResizeType:(unint64_t)a3 activeScaledRect:(CGRect)a4
++ (id)cursorForResizeType:(unint64_t)type activeScaledRect:(CGRect)rect
 {
-  if (a3 < 4)
+  if (type < 4)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     v13 = qword_101A34D70;
     if (!qword_101A34D70)
     {
@@ -277,15 +277,15 @@ LABEL_22:
       v13 = qword_101A34D70;
     }
 
-    v5 = [v13 objectAtIndexedSubscript:a3];
+    v5 = [v13 objectAtIndexedSubscript:type];
     v6 = [UIPointerShape shapeWithPath:v5];
-    v7 = [CRLCursor cursorWithShape:v6 activeScaledRect:x, y, width, height];
-    [v7 setConstrainedAxes:3];
+    height = [CRLCursor cursorWithShape:v6 activeScaledRect:x, y, width, height];
+    [height setConstrainedAxes:3];
   }
 
   else
   {
-    [CRLAssertionHandler _atomicIncrementAssertCount:a4.origin.x];
+    [CRLAssertionHandler _atomicIncrementAssertCount:rect.origin.x];
     if (qword_101AD5A10 != -1)
     {
       sub_101362F14();
@@ -310,20 +310,20 @@ LABEL_22:
     v5 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLCursor cursorForResizeType:activeScaledRect:]");
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCursor.m"];
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:331 isFatal:0 description:"Asking for invalid cursor type"];
-    v7 = 0;
+    height = 0;
   }
 
-  return v7;
+  return height;
 }
 
-+ (id)cursorForRotateType:(unint64_t)a3 activeScaledRect:(CGRect)a4
++ (id)cursorForRotateType:(unint64_t)type activeScaledRect:(CGRect)rect
 {
-  if (a3 < 8)
+  if (type < 8)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     v13 = qword_101A34D78;
     if (!qword_101A34D78)
     {
@@ -404,15 +404,15 @@ LABEL_22:
       v13 = qword_101A34D78;
     }
 
-    v5 = [v13 objectAtIndexedSubscript:a3];
+    v5 = [v13 objectAtIndexedSubscript:type];
     v6 = [UIPointerShape shapeWithPath:v5];
-    v7 = [CRLCursor cursorWithShape:v6 activeScaledRect:x, y, width, height];
-    [v7 setConstrainedAxes:3];
+    height = [CRLCursor cursorWithShape:v6 activeScaledRect:x, y, width, height];
+    [height setConstrainedAxes:3];
   }
 
   else
   {
-    [CRLAssertionHandler _atomicIncrementAssertCount:a4.origin.x];
+    [CRLAssertionHandler _atomicIncrementAssertCount:rect.origin.x];
     if (qword_101AD5A10 != -1)
     {
       sub_101362FE0();
@@ -437,18 +437,18 @@ LABEL_22:
     v5 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLCursor cursorForRotateType:activeScaledRect:]");
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCursor.m"];
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:387 isFatal:0 description:"Asking for invalid cursor type"];
-    v7 = 0;
+    height = 0;
   }
 
-  return v7;
+  return height;
 }
 
-+ (id)moveCursorWithActiveScaledRect:(CGRect)a3
++ (id)moveCursorWithActiveScaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = qword_101A34D80;
   if (!qword_101A34D80)
   {
@@ -486,18 +486,18 @@ LABEL_22:
   v16 = [v7 copy];
   v17 = [UIPointerShape shapeWithPath:v16];
 
-  v18 = [CRLCursor cursorWithShape:v17 activeScaledRect:x, y, width, height];
-  [v18 setConstrainedAxes:3];
+  height = [CRLCursor cursorWithShape:v17 activeScaledRect:x, y, width, height];
+  [height setConstrainedAxes:3];
 
-  return v18;
+  return height;
 }
 
-+ (id)addPointCursorWithActiveScaledRect:(CGRect)a3
++ (id)addPointCursorWithActiveScaledRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v7 = qword_101A34D88;
   if (!qword_101A34D88)
   {
@@ -539,19 +539,19 @@ LABEL_22:
   v16 = [v7 copy];
   v17 = [UIPointerShape shapeWithPath:v16];
 
-  v18 = [CRLCursor cursorWithShape:v17 activeScaledRect:x, y, width, height];
+  height = [CRLCursor cursorWithShape:v17 activeScaledRect:x, y, width, height];
 
-  return v18;
+  return height;
 }
 
-+ (id)tableResizeCursorForOrientation:(int)a3 activeScaledRect:(CGRect)a4
++ (id)tableResizeCursorForOrientation:(int)orientation activeScaledRect:(CGRect)rect
 {
-  if (a3 < 2)
+  if (orientation < 2)
   {
-    height = a4.size.height;
-    width = a4.size.width;
-    y = a4.origin.y;
-    x = a4.origin.x;
+    height = rect.size.height;
+    width = rect.size.width;
+    y = rect.origin.y;
+    x = rect.origin.x;
     v13 = qword_101A34D90;
     if (!qword_101A34D90)
     {
@@ -593,16 +593,16 @@ LABEL_22:
       v13 = qword_101A34D90;
     }
 
-    v5 = [v13 objectAtIndexedSubscript:a3];
+    v5 = [v13 objectAtIndexedSubscript:orientation];
     v21 = [v5 copy];
     v6 = [UIPointerShape shapeWithPath:v21];
 
-    v7 = [CRLCursor cursorWithShape:v6 activeScaledRect:x, y, width, height];
+    height = [CRLCursor cursorWithShape:v6 activeScaledRect:x, y, width, height];
   }
 
   else
   {
-    [CRLAssertionHandler _atomicIncrementAssertCount:a4.origin.x];
+    [CRLAssertionHandler _atomicIncrementAssertCount:rect.origin.x];
     if (qword_101AD5A10 != -1)
     {
       sub_1013630AC();
@@ -627,10 +627,10 @@ LABEL_22:
     v5 = +[NSString stringWithUTF8String:](NSString, "stringWithUTF8String:", "+[CRLCursor tableResizeCursorForOrientation:activeScaledRect:]");
     v6 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/Freeform/Source/CRLCanvas/CRLCursor.m"];
     [CRLAssertionHandler handleFailureInFunction:v5 file:v6 lineNumber:554 isFatal:0 description:"Asking for invalid cursor type"];
-    v7 = 0;
+    height = 0;
   }
 
-  return v7;
+  return height;
 }
 
 + (CRLCursor)repContentPlatformViewPlaceholder
@@ -658,10 +658,10 @@ LABEL_22:
   v4 = NSStringFromClass(v3);
   [(CRLCursor *)self activeScaledRect];
   v5 = NSStringFromCGRect(v12);
-  v6 = [(CRLCursor *)self effect];
-  v7 = [(CRLCursor *)self shape];
-  v8 = [(CRLCursor *)self identifierSuffix];
-  v9 = [NSString stringWithFormat:@"<%@ %p activeScaledRect=%@ effect=%@ shape=%@ identifierSuffix=%@ constrainedAxes=%lu>", v4, self, v5, v6, v7, v8, [(CRLCursor *)self constrainedAxes]];
+  effect = [(CRLCursor *)self effect];
+  shape = [(CRLCursor *)self shape];
+  identifierSuffix = [(CRLCursor *)self identifierSuffix];
+  v9 = [NSString stringWithFormat:@"<%@ %p activeScaledRect=%@ effect=%@ shape=%@ identifierSuffix=%@ constrainedAxes=%lu>", v4, self, v5, effect, shape, identifierSuffix, [(CRLCursor *)self constrainedAxes]];
 
   return v9;
 }

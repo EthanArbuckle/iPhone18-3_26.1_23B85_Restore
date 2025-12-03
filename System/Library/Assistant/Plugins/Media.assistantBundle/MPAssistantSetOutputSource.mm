@@ -1,21 +1,21 @@
 @interface MPAssistantSetOutputSource
-- (void)performWithCompletion:(id)a3;
+- (void)performWithCompletion:(id)completion;
 @end
 
 @implementation MPAssistantSetOutputSource
 
-- (void)performWithCompletion:(id)a3
+- (void)performWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(MPAssistantSetOutputSource *)self _validate];
-  if (!v5)
+  completionCopy = completion;
+  _validate = [(MPAssistantSetOutputSource *)self _validate];
+  if (!_validate)
   {
-    v5 = [(MPAssistantSetOutputSource *)self _perform];
+    _validate = [(MPAssistantSetOutputSource *)self _perform];
   }
 
-  v7 = v5;
-  v6 = [v5 dictionary];
-  v4[2](v4, v6);
+  v7 = _validate;
+  dictionary = [_validate dictionary];
+  completionCopy[2](completionCopy, dictionary);
 }
 
 @end

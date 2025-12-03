@@ -1,19 +1,19 @@
 @interface RBTransition
 + (RBTransition)defaultTransition;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSArray)effects;
 - (RBAnimation)animation;
 - (RBTransition)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (uint64_t)_copyOnWrite;
 - (uint64_t)setTransition:(uint64_t)result;
 - (unint64_t)hash;
-- (void)addEffect:(id)a3;
-- (void)setAddRemoveDuration:(float)a3;
-- (void)setAnimation:(id)a3;
-- (void)setMaxChanges:(unsigned int)a3;
-- (void)setMethod:(unsigned int)a3;
-- (void)setReplaceable:(BOOL)a3;
+- (void)addEffect:(id)effect;
+- (void)setAddRemoveDuration:(float)duration;
+- (void)setAnimation:(id)animation;
+- (void)setMaxChanges:(unsigned int)changes;
+- (void)setMethod:(unsigned int)method;
+- (void)setReplaceable:(BOOL)replaceable;
 @end
 
 @implementation RBTransition
@@ -56,7 +56,7 @@
   return +[RBTransition defaultTransition]::default_transition;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_opt_new();
   v5 = v4[1];
@@ -84,9 +84,9 @@
   return v4;
 }
 
-- (void)setMethod:(unsigned int)a3
+- (void)setMethod:(unsigned int)method
 {
-  v4 = rb_transition_method(a3);
+  v4 = rb_transition_method(method);
   if (*(self->_transition._p + 3) != v4)
   {
     if (self->_is_default)
@@ -113,7 +113,7 @@
   return v3;
 }
 
-- (void)setAnimation:(id)a3
+- (void)setAnimation:(id)animation
 {
   if (self->_is_default)
   {
@@ -121,20 +121,20 @@
   }
 
   [(RBTransition *)self _copyOnWrite];
-  v5 = [(RBAnimation *)a3 rb_animation];
+  rb_animation = [(RBAnimation *)animation rb_animation];
   p = self->_transition._p;
   *(p + 22) = 0;
-  if (*(v5 + 24))
+  if (*(rb_animation + 24))
   {
-    v7 = *(v5 + 24);
+    v7 = *(rb_animation + 24);
   }
 
   else
   {
-    v7 = v5;
+    v7 = rb_animation;
   }
 
-  v8 = *(v5 + 32);
+  v8 = *(rb_animation + 32);
   if (*(p + 23) < v8)
   {
     RB::vector<RB::Animation::TermOrArg,6ul,unsigned int>::reserve_slow(p + 56, v8);
@@ -174,35 +174,35 @@ LABEL_14:
   *(p + 22) = v14 + v8;
 }
 
-- (void)setMaxChanges:(unsigned int)a3
+- (void)setMaxChanges:(unsigned int)changes
 {
-  if (*(self->_transition._p + 5) != a3)
+  if (*(self->_transition._p + 5) != changes)
   {
     [(RBTransition *)self _copyOnWrite];
-    *(self->_transition._p + 5) = a3;
+    *(self->_transition._p + 5) = changes;
   }
 }
 
-- (void)setReplaceable:(BOOL)a3
+- (void)setReplaceable:(BOOL)replaceable
 {
-  if (*(self->_transition._p + 16) != a3)
+  if (*(self->_transition._p + 16) != replaceable)
   {
     [(RBTransition *)self _copyOnWrite];
-    *(self->_transition._p + 16) = a3;
+    *(self->_transition._p + 16) = replaceable;
   }
 }
 
-- (void)addEffect:(id)a3
+- (void)addEffect:(id)effect
 {
   if (self->_is_default)
   {
     [(RBTransition *)self setMethod:a2];
   }
 
-  if (a3)
+  if (effect)
   {
     [(RBTransition *)self _copyOnWrite];
-    v5 = *(a3 + 2);
+    v5 = *(effect + 2);
     p = self->_transition._p;
     v7 = *(p + 12);
     if (*(p + 13) < (v7 + 1))
@@ -221,7 +221,7 @@ LABEL_14:
     ++*(p + 12);
     if (((0x187FA3uLL >> v5) & 1) == 0)
     {
-      v9 = (a3 + 12);
+      v9 = (effect + 12);
       if (RB::Transition::_effect_args[v5 & 0x3F] <= 1u)
       {
         v10 = 1;
@@ -266,7 +266,7 @@ LABEL_14:
     return MEMORY[0x1E695E0F0];
   }
 
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   p = self->_transition._p;
   if (*(p + 12))
   {
@@ -304,7 +304,7 @@ LABEL_14:
         }
       }
 
-      [(NSArray *)v3 addObject:v9];
+      [(NSArray *)array addObject:v9];
       v17 = RB::Transition::_effect_args[*v8 & 0x3F];
 
       v5 += v17 + 1;
@@ -314,15 +314,15 @@ LABEL_14:
     while (v5 < *(p + 12));
   }
 
-  return v3;
+  return array;
 }
 
-- (void)setAddRemoveDuration:(float)a3
+- (void)setAddRemoveDuration:(float)duration
 {
   [(RBTransition *)self _copyOnWrite];
   p = self->_transition._p;
 
-  RB::Transition::set_add_remove_duration(p, a3);
+  RB::Transition::set_add_remove_duration(p, duration);
 }
 
 - (uint64_t)setTransition:(uint64_t)result
@@ -354,7 +354,7 @@ LABEL_14:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -363,7 +363,7 @@ LABEL_14:
   }
 
   p = self->_transition._p;
-  v6 = *(a3 + 1);
+  v6 = *(equal + 1);
 
   return RB::Transition::operator==(p, v6);
 }

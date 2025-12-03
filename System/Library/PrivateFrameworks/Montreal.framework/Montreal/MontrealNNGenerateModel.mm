@@ -1,21 +1,21 @@
 @interface MontrealNNGenerateModel
-- (MontrealNNGenerateModel)initWithWeightFormat:(unint64_t)a3;
+- (MontrealNNGenerateModel)initWithWeightFormat:(unint64_t)format;
 - (MontrealNeuralNetwork)nnObject;
 - (id)modelContainerPath;
 - (id)networkInputs;
 - (id)networkOutputs;
-- (void)addInputs:(id)a3;
-- (void)addOutputs:(id)a3;
+- (void)addInputs:(id)inputs;
+- (void)addOutputs:(id)outputs;
 - (void)dealloc;
 - (void)generateModelContainer;
-- (void)merge:(id)a3;
-- (void)removeInput:(id)a3;
-- (void)removeOutput:(id)a3;
+- (void)merge:(id)merge;
+- (void)removeInput:(id)input;
+- (void)removeOutput:(id)output;
 @end
 
 @implementation MontrealNNGenerateModel
 
-- (MontrealNNGenerateModel)initWithWeightFormat:(unint64_t)a3
+- (MontrealNNGenerateModel)initWithWeightFormat:(unint64_t)format
 {
   v19.receiver = self;
   v19.super_class = MontrealNNGenerateModel;
@@ -23,7 +23,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_weightFormat = a3;
+    v4->_weightFormat = format;
     v6 = objc_alloc_init(MontrealNNModelNetwork);
     network = v5->_network;
     v5->_network = v6;
@@ -68,24 +68,24 @@
   return result;
 }
 
-- (void)merge:(id)a3
+- (void)merge:(id)merge
 {
-  v51 = a3;
+  mergeCopy = merge;
   v7 = objc_msgSend_network(self, v4, v5, v6);
   v11 = objc_msgSend_nodes(v7, v8, v9, v10);
-  v15 = objc_msgSend_node(v51, v12, v13, v14);
+  v15 = objc_msgSend_node(mergeCopy, v12, v13, v14);
   v18 = objc_msgSend_containsObject_(v11, v16, v15, v17);
 
   if (v18)
   {
-    sub_19D2C78CC(@"Failed to merge %@ to the network as there is one which already exists with the same name", v19, v20, v21, v22, v23, v24, v25, v51);
+    sub_19D2C78CC(@"Failed to merge %@ to the network as there is one which already exists with the same name", v19, v20, v21, v22, v23, v24, v25, mergeCopy);
   }
 
   v26 = objc_msgSend_network(self, v19, v20, v21);
   v30 = objc_msgSend_nodes(v26, v27, v28, v29);
   v34 = objc_msgSend_mutableCopy(v30, v31, v32, v33);
 
-  v38 = objc_msgSend_node(v51, v35, v36, v37);
+  v38 = objc_msgSend_node(mergeCopy, v35, v36, v37);
   objc_msgSend_addObject_(v34, v39, v38, v40);
 
   v44 = objc_msgSend_copy(v34, v41, v42, v43);
@@ -164,14 +164,14 @@
   return v51;
 }
 
-- (void)addInputs:(id)a3
+- (void)addInputs:(id)inputs
 {
   v35 = *MEMORY[0x1E69E9840];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = a3;
+  obj = inputs;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v30, v34, 16);
   if (v8)
   {
@@ -206,26 +206,26 @@
   }
 }
 
-- (void)removeInput:(id)a3
+- (void)removeInput:(id)input
 {
-  v24 = a3;
+  inputCopy = input;
   v4 = MEMORY[0x1E696AD98];
   v8 = objc_msgSend_inputs(self, v5, v6, v7);
-  v11 = objc_msgSend_objectForKeyedSubscript_(v8, v9, v24, v10);
+  v11 = objc_msgSend_objectForKeyedSubscript_(v8, v9, inputCopy, v10);
   v15 = objc_msgSend_unsignedIntegerValue(v11, v12, v13, v14);
   v18 = objc_msgSend_numberWithUnsignedInteger_(v4, v16, v15 - 1, v17);
   v22 = objc_msgSend_inputs(self, v19, v20, v21);
-  objc_msgSend_setObject_forKeyedSubscript_(v22, v23, v18, v24);
+  objc_msgSend_setObject_forKeyedSubscript_(v22, v23, v18, inputCopy);
 }
 
-- (void)addOutputs:(id)a3
+- (void)addOutputs:(id)outputs
 {
   v35 = *MEMORY[0x1E69E9840];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = a3;
+  obj = outputs;
   v8 = objc_msgSend_countByEnumeratingWithState_objects_count_(obj, v4, &v30, v34, 16);
   if (v8)
   {
@@ -260,16 +260,16 @@
   }
 }
 
-- (void)removeOutput:(id)a3
+- (void)removeOutput:(id)output
 {
-  v24 = a3;
+  outputCopy = output;
   v4 = MEMORY[0x1E696AD98];
   v8 = objc_msgSend_outputs(self, v5, v6, v7);
-  v11 = objc_msgSend_objectForKeyedSubscript_(v8, v9, v24, v10);
+  v11 = objc_msgSend_objectForKeyedSubscript_(v8, v9, outputCopy, v10);
   v15 = objc_msgSend_unsignedIntegerValue(v11, v12, v13, v14);
   v18 = objc_msgSend_numberWithUnsignedInteger_(v4, v16, v15 - 1, v17);
   v22 = objc_msgSend_outputs(self, v19, v20, v21);
-  objc_msgSend_setObject_forKeyedSubscript_(v22, v23, v18, v24);
+  objc_msgSend_setObject_forKeyedSubscript_(v22, v23, v18, outputCopy);
 }
 
 - (id)networkInputs

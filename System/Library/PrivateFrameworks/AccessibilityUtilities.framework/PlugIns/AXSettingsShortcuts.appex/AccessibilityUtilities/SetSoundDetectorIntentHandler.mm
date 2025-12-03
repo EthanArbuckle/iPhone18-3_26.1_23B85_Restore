@@ -1,10 +1,10 @@
 @interface SetSoundDetectorIntentHandler
 - (SetSoundDetectorIntentHandler)init;
-- (void)handleSetSoundDetector:(id)a3 completion:(id)a4;
-- (void)provideParameterOptionsCollectionForSetSoundDetector:(id)a3 withCompletion:(id)a4;
-- (void)resolveOperationForSetSoundDetector:(id)a3 withCompletion:(id)a4;
-- (void)resolveParameterForSetSoundDetector:(id)a3 withCompletion:(id)a4;
-- (void)resolveStateForSetSoundDetector:(id)a3 withCompletion:(id)a4;
+- (void)handleSetSoundDetector:(id)detector completion:(id)completion;
+- (void)provideParameterOptionsCollectionForSetSoundDetector:(id)detector withCompletion:(id)completion;
+- (void)resolveOperationForSetSoundDetector:(id)detector withCompletion:(id)completion;
+- (void)resolveParameterForSetSoundDetector:(id)detector withCompletion:(id)completion;
+- (void)resolveStateForSetSoundDetector:(id)detector withCompletion:(id)completion;
 @end
 
 @implementation SetSoundDetectorIntentHandler
@@ -23,45 +23,45 @@
   return v2;
 }
 
-- (void)resolveOperationForSetSoundDetector:(id)a3 withCompletion:(id)a4
+- (void)resolveOperationForSetSoundDetector:(id)detector withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXOperationResolutionResult successWithResolvedOperation:](AXOperationResolutionResult, "successWithResolvedOperation:", [a3 operation]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXOperationResolutionResult successWithResolvedOperation:](AXOperationResolutionResult, "successWithResolvedOperation:", [detector operation]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)resolveParameterForSetSoundDetector:(id)a3 withCompletion:(id)a4
+- (void)resolveParameterForSetSoundDetector:(id)detector withCompletion:(id)completion
 {
-  v6 = a4;
-  v8 = [a3 parameter];
-  v7 = [AXSoundResolutionResult successWithResolvedSound:v8];
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  parameter = [detector parameter];
+  v7 = [AXSoundResolutionResult successWithResolvedSound:parameter];
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)resolveStateForSetSoundDetector:(id)a3 withCompletion:(id)a4
+- (void)resolveStateForSetSoundDetector:(id)detector withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = +[AXStateResolutionResult successWithResolvedState:](AXStateResolutionResult, "successWithResolvedState:", [a3 state]);
-  (*(a4 + 2))(v6, v7);
+  completionCopy = completion;
+  v7 = +[AXStateResolutionResult successWithResolvedState:](AXStateResolutionResult, "successWithResolvedState:", [detector state]);
+  (*(completion + 2))(completionCopy, v7);
 }
 
-- (void)provideParameterOptionsCollectionForSetSoundDetector:(id)a3 withCompletion:(id)a4
+- (void)provideParameterOptionsCollectionForSetSoundDetector:(id)detector withCompletion:(id)completion
 {
-  v4 = a4;
+  completionCopy = completion;
   v5 = +[AXSDSettings sharedInstance];
-  v6 = [v5 soundDetectionState];
+  soundDetectionState = [v5 soundDetectionState];
 
-  if (!v6)
+  if (!soundDetectionState)
   {
     v7 = [NSError ax_errorWithDomain:@"SiriShortcutsSoundRecognition" description:@"Sound Recognition is currently not enabled. Enable the feature in Accessibility Settings."];
-    v4[2](v4, 0, v7);
+    completionCopy[2](completionCopy, 0, v7);
   }
 
-  v43 = v4;
+  v43 = completionCopy;
   v8 = &AXDeviceSupportsWatchRemoteScreen_ptr;
   v9 = +[AXSDDetectorStore sharedInstance];
-  v10 = [v9 localizedNamesByIdentifier];
-  v11 = [v10 mutableCopy];
+  localizedNamesByIdentifier = [v9 localizedNamesByIdentifier];
+  v11 = [localizedNamesByIdentifier mutableCopy];
 
   v46 = objc_opt_new();
   v60 = 0u;
@@ -136,13 +136,13 @@
           while (v17);
         }
 
-        v24 = [v11 allKeys];
+        allKeys = [v11 allKeys];
         v52 = 0u;
         v53 = 0u;
         v54 = 0u;
         v55 = 0u;
-        v49 = v24;
-        v25 = [v24 countByEnumeratingWithState:&v52 objects:v64 count:16];
+        v49 = allKeys;
+        v25 = [allKeys countByEnumeratingWithState:&v52 objects:v64 count:16];
         if (v25)
         {
           v26 = v25;
@@ -158,31 +158,31 @@
               }
 
               v29 = *(*(&v52 + 1) + 8 * v28);
-              v30 = [v8[108] sharedInstance];
-              v31 = [v30 detectorWithIdentifier:v29];
+              sharedInstance = [v8[108] sharedInstance];
+              v31 = [sharedInstance detectorWithIdentifier:v29];
 
               if (v31)
               {
                 if ([v31 isCustom])
                 {
-                  v32 = [v31 category];
-                  v33 = [v32 isEqualToString:v51];
+                  category = [v31 category];
+                  v33 = [category isEqualToString:v51];
 
                   if (v33)
                   {
                     if ([v31 isTrainingComplete])
                     {
                       v34 = [AXSound alloc];
-                      v35 = [v31 identifier];
+                      identifier = [v31 identifier];
                       [v31 name];
                       v37 = v36 = v11;
-                      v38 = [(AXSound *)v34 initWithIdentifier:v35 displayString:v37];
+                      v38 = [(AXSound *)v34 initWithIdentifier:identifier displayString:v37];
 
                       v11 = v36;
                       v8 = &AXDeviceSupportsWatchRemoteScreen_ptr;
 
-                      v39 = [v31 category];
-                      [(AXSound *)v38 setCategory:v39];
+                      category2 = [v31 category];
+                      [(AXSound *)v38 setCategory:category2];
 
                       [(AXSound *)v38 setIsCustom:&__kCFBooleanTrue];
                       [v50 addObject:v38];
@@ -220,13 +220,13 @@
   (v43)[2](v43, v42, 0);
 }
 
-- (void)handleSetSoundDetector:(id)a3 completion:(id)a4
+- (void)handleSetSoundDetector:(id)detector completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 parameter];
-  v8 = [v7 identifier];
-  if (!v8)
+  detectorCopy = detector;
+  completionCopy = completion;
+  parameter = [detectorCopy parameter];
+  identifier = [parameter identifier];
+  if (!identifier)
   {
     v18 = AXLogSiriShortcuts();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -238,12 +238,12 @@
     goto LABEL_26;
   }
 
-  if ([v5 operation] == 1 && !objc_msgSend(v5, "state"))
+  if ([detectorCopy operation] == 1 && !objc_msgSend(detectorCopy, "state"))
   {
     v18 = AXLogSiriShortcuts();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      sub_10000D80C(v5, v18);
+      sub_10000D80C(detectorCopy, v18);
     }
 
 LABEL_26:
@@ -252,66 +252,66 @@ LABEL_26:
     v31 = 5;
 LABEL_27:
     v28 = [(AXSetSoundDetectorIntentResponse *)v30 initWithCode:v31 userActivity:0];
-    v6[2](v6, v28);
+    completionCopy[2](completionCopy, v28);
     goto LABEL_28;
   }
 
   v9 = +[AXSDSettings sharedInstance];
-  v10 = [v9 enabledSoundDetectionTypes];
-  v11 = [v7 identifier];
-  v12 = [v10 containsObject:v11];
+  enabledSoundDetectionTypes = [v9 enabledSoundDetectionTypes];
+  identifier2 = [parameter identifier];
+  v12 = [enabledSoundDetectionTypes containsObject:identifier2];
 
-  v13 = [v7 isCustom];
-  LODWORD(v10) = [v13 BOOLValue];
+  isCustom = [parameter isCustom];
+  LODWORD(enabledSoundDetectionTypes) = [isCustom BOOLValue];
 
-  if (v10)
+  if (enabledSoundDetectionTypes)
   {
     v14 = +[AXSDSettings sharedInstance];
-    v15 = [v14 enabledKShotDetectorIdentifiers];
-    v16 = [v7 identifier];
-    v12 = [v15 containsObject:v16];
+    enabledKShotDetectorIdentifiers = [v14 enabledKShotDetectorIdentifiers];
+    identifier3 = [parameter identifier];
+    v12 = [enabledKShotDetectorIdentifiers containsObject:identifier3];
   }
 
-  if ([v5 operation] == 2)
+  if ([detectorCopy operation] == 2)
   {
     v17 = v12 ^ 1;
   }
 
   else
   {
-    v17 = [v5 state] == 1;
+    v17 = [detectorCopy state] == 1;
   }
 
-  v19 = [v7 isCustom];
-  v20 = [v19 BOOLValue];
+  isCustom2 = [parameter isCustom];
+  bOOLValue = [isCustom2 BOOLValue];
 
-  if ((v20 & 1) == 0)
+  if ((bOOLValue & 1) == 0)
   {
     v26 = v12 | ~v17;
     v23 = +[AXSDSettings sharedInstance];
-    v25 = [v7 identifier];
+    identifier4 = [parameter identifier];
     if (v26)
     {
-      [v23 removeSoundDetectionType:v25];
+      [v23 removeSoundDetectionType:identifier4];
     }
 
     else
     {
-      [v23 addSoundDetectionType:v25];
+      [v23 addSoundDetectionType:identifier4];
     }
 
     goto LABEL_21;
   }
 
   v21 = +[AXSDDetectorStore sharedInstance];
-  v22 = [v7 identifier];
-  v23 = [v21 detectorWithIdentifier:v22];
+  identifier5 = [parameter identifier];
+  v23 = [v21 detectorWithIdentifier:identifier5];
 
   if (v23 && [v23 isCustom])
   {
     v24 = v12 ^ 1;
-    v25 = +[AXSDSettings sharedInstance];
-    [v25 setKShotDetectorIsEnabled:v23 isEnabled:v17 & v24];
+    identifier4 = +[AXSDSettings sharedInstance];
+    [identifier4 setKShotDetectorIsEnabled:v23 isEnabled:v17 & v24];
 LABEL_21:
 
     if (v17)
@@ -328,11 +328,11 @@ LABEL_21:
   v27 = AXLogSiriShortcuts();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
   {
-    sub_10000D964(v7, v27);
+    sub_10000D964(parameter, v27);
   }
 
   v28 = [[AXSetSoundDetectorIntentResponse alloc] initWithCode:5 userActivity:0];
-  v6[2](v6, v28);
+  completionCopy[2](completionCopy, v28);
 
 LABEL_28:
 }

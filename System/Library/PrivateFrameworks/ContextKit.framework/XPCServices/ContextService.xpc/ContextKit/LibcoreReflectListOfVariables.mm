@@ -1,13 +1,13 @@
 @interface LibcoreReflectListOfVariables
 - (LibcoreReflectListOfVariables)init;
 - (id)getArray;
-- (void)addWithJavaLangReflectTypeVariable:(id)a3;
+- (void)addWithJavaLangReflectTypeVariable:(id)variable;
 - (void)dealloc;
 @end
 
 @implementation LibcoreReflectListOfVariables
 
-- (void)addWithJavaLangReflectTypeVariable:(id)a3
+- (void)addWithJavaLangReflectTypeVariable:(id)variable
 {
   array = self->array_;
   if (!array)
@@ -15,7 +15,7 @@
     JreThrowNullPointerException();
   }
 
-  [(JavaUtilArrayList *)array addWithId:a3];
+  [(JavaUtilArrayList *)array addWithId:variable];
 }
 
 - (id)getArray

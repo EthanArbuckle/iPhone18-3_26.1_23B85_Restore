@@ -1,23 +1,23 @@
 @interface SBLegacyLockScreenEnvironment
 - (SBControlCenterPresenting)controlCenterPresenter;
-- (SBLegacyLockScreenEnvironment)initWithLockScreenViewController:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (SBLegacyLockScreenEnvironment)initWithLockScreenViewController:(id)controller;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation SBLegacyLockScreenEnvironment
 
-- (SBLegacyLockScreenEnvironment)initWithLockScreenViewController:(id)a3
+- (SBLegacyLockScreenEnvironment)initWithLockScreenViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v9.receiver = self;
   v9.super_class = SBLegacyLockScreenEnvironment;
   v6 = [(SBLegacyLockScreenEnvironment *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_lockScreenViewController, a3);
+    objc_storeStrong(&v6->_lockScreenViewController, controller);
   }
 
   return v7;
@@ -25,18 +25,18 @@
 
 - (SBControlCenterPresenting)controlCenterPresenter
 {
-  v2 = [(UIViewController *)self->_lockScreenViewController _sbWindowScene];
-  v3 = [v2 controlCenterController];
+  _sbWindowScene = [(UIViewController *)self->_lockScreenViewController _sbWindowScene];
+  controlCenterController = [_sbWindowScene controlCenterController];
 
-  return v3;
+  return controlCenterController;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(SBLegacyLockScreenEnvironment *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBLegacyLockScreenEnvironment *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -47,12 +47,12 @@
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBLegacyLockScreenEnvironment *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBLegacyLockScreenEnvironment *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

@@ -5,7 +5,7 @@
 - (id)delimiterString;
 - (void)clearContents;
 - (void)layoutSubviews;
-- (void)setTitle:(id)a3 highlightTitleRanges:(id)a4 detailText:(id)a5 style:(unint64_t)a6;
+- (void)setTitle:(id)title highlightTitleRanges:(id)ranges detailText:(id)text style:(unint64_t)style;
 - (void)updateLabels;
 - (void)updateTheme;
 @end
@@ -21,22 +21,22 @@
 
   v3 = qword_10195E658;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
-  LODWORD(v3) = [v3 containsObject:v5];
+  preferredContentSizeCategory = [v4 preferredContentSizeCategory];
+  LODWORD(v3) = [v3 containsObject:preferredContentSizeCategory];
 
   if (!v3)
   {
     return 0;
   }
 
-  v6 = [(QuerySuggestionView *)self title];
-  v7 = [(QuerySuggestionView *)self delimiterString];
-  v8 = [(QuerySuggestionView *)self detailText];
-  v9 = [NSString stringWithFormat:@"%@%@%@", v6, v7, v8];
+  title = [(QuerySuggestionView *)self title];
+  delimiterString = [(QuerySuggestionView *)self delimiterString];
+  detailText = [(QuerySuggestionView *)self detailText];
+  v9 = [NSString stringWithFormat:@"%@%@%@", title, delimiterString, detailText];
 
   v27 = NSFontAttributeName;
-  v10 = [(QuerySuggestionView *)self titleFont];
-  v28 = v10;
+  titleFont = [(QuerySuggestionView *)self titleFont];
+  v28 = titleFont;
   v11 = [NSDictionary dictionaryWithObjects:&v28 forKeys:&v27 count:1];
   [v9 sizeWithAttributes:v11];
   v13 = ceil(v12);
@@ -64,166 +64,166 @@
 
 - (BOOL)shouldDistributeProportionally
 {
-  v2 = self;
-  v3 = [(QuerySuggestionView *)self title];
-  v4 = [(QuerySuggestionView *)v2 delimiterString];
-  v5 = [(QuerySuggestionView *)v2 detailText];
-  v6 = [NSString stringWithFormat:@"%@%@%@", v3, v4, v5];
+  selfCopy = self;
+  title = [(QuerySuggestionView *)self title];
+  delimiterString = [(QuerySuggestionView *)selfCopy delimiterString];
+  detailText = [(QuerySuggestionView *)selfCopy detailText];
+  v6 = [NSString stringWithFormat:@"%@%@%@", title, delimiterString, detailText];
 
   v17 = NSFontAttributeName;
-  v7 = [(QuerySuggestionView *)v2 titleFont];
-  v18 = v7;
+  titleFont = [(QuerySuggestionView *)selfCopy titleFont];
+  v18 = titleFont;
   v8 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
   [v6 sizeWithAttributes:v8];
   v10 = ceil(v9);
 
-  [(QuerySuggestionView *)v2 layoutIfNeeded];
-  [(QuerySuggestionView *)v2 frame];
+  [(QuerySuggestionView *)selfCopy layoutIfNeeded];
+  [(QuerySuggestionView *)selfCopy frame];
   v12 = v11;
-  [(UIImageView *)v2->_iconImageView frame];
+  [(UIImageView *)selfCopy->_iconImageView frame];
   v14 = v13;
-  [(UIImageView *)v2->_iconImageView frame];
-  LOBYTE(v2) = v10 >= v12 + -15.0 - (v14 + v15);
+  [(UIImageView *)selfCopy->_iconImageView frame];
+  LOBYTE(selfCopy) = v10 >= v12 + -15.0 - (v14 + v15);
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)updateLabels
 {
-  v3 = [(QuerySuggestionView *)self title];
-  v4 = [v3 length];
+  title = [(QuerySuggestionView *)self title];
+  v4 = [title length];
 
   if (!v4)
   {
     return;
   }
 
-  v5 = [(QuerySuggestionView *)self querySuggestionStyle];
-  if (v5 != 1)
+  querySuggestionStyle = [(QuerySuggestionView *)self querySuggestionStyle];
+  if (querySuggestionStyle != 1)
   {
-    if (v5)
+    if (querySuggestionStyle)
     {
       return;
     }
 
     v6 = +[UIColor secondaryLabelColor];
-    v7 = [(QuerySuggestionView *)self titleLabel];
-    [v7 setTextColor:v6];
+    titleLabel = [(QuerySuggestionView *)self titleLabel];
+    [titleLabel setTextColor:v6];
 
-    v8 = [(QuerySuggestionView *)self highlightRanges];
-    v9 = [v8 count];
+    highlightRanges = [(QuerySuggestionView *)self highlightRanges];
+    v9 = [highlightRanges count];
 
     if (v9)
     {
-      v10 = [(QuerySuggestionView *)self title];
-      v11 = [(QuerySuggestionView *)self highlightRanges];
-      v12 = [(QuerySuggestionView *)self titleFont];
-      v13 = [(QuerySuggestionView *)self titleFont];
+      title2 = [(QuerySuggestionView *)self title];
+      highlightRanges2 = [(QuerySuggestionView *)self highlightRanges];
+      titleFont = [(QuerySuggestionView *)self titleFont];
+      titleFont2 = [(QuerySuggestionView *)self titleFont];
       v14 = +[UIColor labelColor];
-      v45 = [NSAttributedString attributedStringWithText:v10 highlightRanges:v11 font:v12 highlightedFont:v13 highlightedTextColor:v14];
+      delimiterLabel5 = [NSAttributedString attributedStringWithText:title2 highlightRanges:highlightRanges2 font:titleFont highlightedFont:titleFont2 highlightedTextColor:v14];
     }
 
     else
     {
       v37 = [NSAttributedString alloc];
-      v10 = [(QuerySuggestionView *)self title];
-      v45 = [v37 initWithString:v10];
+      title2 = [(QuerySuggestionView *)self title];
+      delimiterLabel5 = [v37 initWithString:title2];
     }
 
-    v38 = [(QuerySuggestionView *)self titleLabel];
-    [v38 setAttributedText:v45];
+    titleLabel2 = [(QuerySuggestionView *)self titleLabel];
+    [titleLabel2 setAttributedText:delimiterLabel5];
 
-    v39 = [(QuerySuggestionView *)self detailLabel];
-    [v39 setText:0];
+    detailLabel = [(QuerySuggestionView *)self detailLabel];
+    [detailLabel setText:0];
 
-    v40 = [(QuerySuggestionView *)self delimiterLabel];
-    [v40 setHidden:1];
+    delimiterLabel = [(QuerySuggestionView *)self delimiterLabel];
+    [delimiterLabel setHidden:1];
 
     goto LABEL_14;
   }
 
-  v15 = [(QuerySuggestionView *)self title];
-  v16 = [(QuerySuggestionView *)self titleLabel];
-  [v16 setText:v15];
+  title3 = [(QuerySuggestionView *)self title];
+  titleLabel3 = [(QuerySuggestionView *)self titleLabel];
+  [titleLabel3 setText:title3];
 
   v17 = +[UIColor labelColor];
-  v18 = [(QuerySuggestionView *)self titleLabel];
-  [v18 setTextColor:v17];
+  titleLabel4 = [(QuerySuggestionView *)self titleLabel];
+  [titleLabel4 setTextColor:v17];
 
-  v19 = [(QuerySuggestionView *)self titleFont];
-  v20 = [(QuerySuggestionView *)self titleLabel];
-  [v20 setFont:v19];
+  titleFont3 = [(QuerySuggestionView *)self titleFont];
+  titleLabel5 = [(QuerySuggestionView *)self titleLabel];
+  [titleLabel5 setFont:titleFont3];
 
-  v21 = [(QuerySuggestionView *)self delimiterString];
-  v22 = [(QuerySuggestionView *)self delimiterLabel];
-  [v22 setText:v21];
+  delimiterString = [(QuerySuggestionView *)self delimiterString];
+  delimiterLabel2 = [(QuerySuggestionView *)self delimiterLabel];
+  [delimiterLabel2 setText:delimiterString];
 
-  v23 = [(QuerySuggestionView *)self titleFont];
-  v24 = [(QuerySuggestionView *)self delimiterLabel];
-  [v24 setFont:v23];
+  titleFont4 = [(QuerySuggestionView *)self titleFont];
+  delimiterLabel3 = [(QuerySuggestionView *)self delimiterLabel];
+  [delimiterLabel3 setFont:titleFont4];
 
   v25 = +[UIColor secondaryLabelColor];
-  v26 = [(QuerySuggestionView *)self delimiterLabel];
-  [v26 setTextColor:v25];
+  delimiterLabel4 = [(QuerySuggestionView *)self delimiterLabel];
+  [delimiterLabel4 setTextColor:v25];
 
-  v27 = [(QuerySuggestionView *)self detailText];
-  v28 = [(QuerySuggestionView *)self detailLabel];
-  [v28 setText:v27];
+  detailText = [(QuerySuggestionView *)self detailText];
+  detailLabel2 = [(QuerySuggestionView *)self detailLabel];
+  [detailLabel2 setText:detailText];
 
   v29 = +[UIColor secondaryLabelColor];
-  v30 = [(QuerySuggestionView *)self detailLabel];
-  [v30 setTextColor:v29];
+  detailLabel3 = [(QuerySuggestionView *)self detailLabel];
+  [detailLabel3 setTextColor:v29];
 
-  v31 = [(QuerySuggestionView *)self titleFont];
-  v32 = [(QuerySuggestionView *)self detailLabel];
-  [v32 setFont:v31];
+  titleFont5 = [(QuerySuggestionView *)self titleFont];
+  detailLabel4 = [(QuerySuggestionView *)self detailLabel];
+  [detailLabel4 setFont:titleFont5];
 
-  v33 = [(QuerySuggestionView *)self detailText];
-  v34 = [v33 length];
+  detailText2 = [(QuerySuggestionView *)self detailText];
+  v34 = [detailText2 length];
 
   if (!v34)
   {
-    v36 = [(QuerySuggestionView *)self detailLabel];
-    [v36 setText:0];
+    detailLabel5 = [(QuerySuggestionView *)self detailLabel];
+    [detailLabel5 setText:0];
     goto LABEL_13;
   }
 
   if ([(QuerySuggestionView *)self needsTwoLinesLayout])
   {
-    v35 = [(QuerySuggestionView *)self labelStackView];
-    [v35 setDistribution:0];
+    labelStackView = [(QuerySuggestionView *)self labelStackView];
+    [labelStackView setDistribution:0];
 
-    v36 = [(QuerySuggestionView *)self labelStackView];
-    [v36 setAxis:1];
+    detailLabel5 = [(QuerySuggestionView *)self labelStackView];
+    [detailLabel5 setAxis:1];
 LABEL_13:
 
-    v45 = [(QuerySuggestionView *)self delimiterLabel];
-    [v45 setHidden:1];
+    delimiterLabel5 = [(QuerySuggestionView *)self delimiterLabel];
+    [delimiterLabel5 setHidden:1];
     goto LABEL_14;
   }
 
-  v41 = [(QuerySuggestionView *)self delimiterLabel];
-  [v41 setHidden:0];
+  delimiterLabel6 = [(QuerySuggestionView *)self delimiterLabel];
+  [delimiterLabel6 setHidden:0];
 
-  v42 = [(QuerySuggestionView *)self labelStackView];
-  [v42 setAxis:0];
+  labelStackView2 = [(QuerySuggestionView *)self labelStackView];
+  [labelStackView2 setAxis:0];
 
   if ([(QuerySuggestionView *)self shouldDistributeProportionally])
   {
-    v43 = [(QuerySuggestionView *)self labelStackView];
-    [v43 setDistribution:2];
+    labelStackView3 = [(QuerySuggestionView *)self labelStackView];
+    [labelStackView3 setDistribution:2];
 
-    v45 = [(QuerySuggestionView *)self delimeterWidthConstraint];
-    [v45 setActive:1];
+    delimiterLabel5 = [(QuerySuggestionView *)self delimeterWidthConstraint];
+    [delimiterLabel5 setActive:1];
   }
 
   else
   {
-    v44 = [(QuerySuggestionView *)self delimeterWidthConstraint];
-    [v44 setActive:0];
+    delimeterWidthConstraint = [(QuerySuggestionView *)self delimeterWidthConstraint];
+    [delimeterWidthConstraint setActive:0];
 
-    v45 = [(QuerySuggestionView *)self labelStackView];
-    [v45 setDistribution:0];
+    delimiterLabel5 = [(QuerySuggestionView *)self labelStackView];
+    [delimiterLabel5 setDistribution:0];
   }
 
 LABEL_14:
@@ -237,15 +237,15 @@ LABEL_14:
   [(QuerySuggestionView *)self updateLabels];
 }
 
-- (void)setTitle:(id)a3 highlightTitleRanges:(id)a4 detailText:(id)a5 style:(unint64_t)a6
+- (void)setTitle:(id)title highlightTitleRanges:(id)ranges detailText:(id)text style:(unint64_t)style
 {
-  v10 = a5;
-  v11 = a4;
-  [(QuerySuggestionView *)self setTitle:a3];
-  [(QuerySuggestionView *)self setHighlightRanges:v11];
+  textCopy = text;
+  rangesCopy = ranges;
+  [(QuerySuggestionView *)self setTitle:title];
+  [(QuerySuggestionView *)self setHighlightRanges:rangesCopy];
 
-  [(QuerySuggestionView *)self setDetailText:v10];
-  [(QuerySuggestionView *)self setQuerySuggestionStyle:a6];
+  [(QuerySuggestionView *)self setDetailText:textCopy];
+  [(QuerySuggestionView *)self setQuerySuggestionStyle:style];
 
   [(QuerySuggestionView *)self updateLabels];
 }
@@ -274,12 +274,12 @@ LABEL_14:
 {
   [(QuerySuggestionView *)self setTitle:0];
   [(QuerySuggestionView *)self setHighlightRanges:0];
-  v3 = [(QuerySuggestionView *)self titleLabel];
-  [v3 setAttributedText:0];
+  titleLabel = [(QuerySuggestionView *)self titleLabel];
+  [titleLabel setAttributedText:0];
 
   [(QuerySuggestionView *)self setDetailText:0];
-  v4 = [(QuerySuggestionView *)self detailLabel];
-  [v4 setText:0];
+  detailLabel = [(QuerySuggestionView *)self detailLabel];
+  [detailLabel setText:0];
 }
 
 - (QuerySuggestionView)init
@@ -317,8 +317,8 @@ LABEL_14:
     LODWORD(v13) = 1144750080;
     [(UILabel *)v2->_delimiterLabel setContentHuggingPriority:0 forAxis:v13];
     [(UILabel *)v2->_delimiterLabel setAccessibilityIdentifier:@"QuerySuggestionDelimiter"];
-    v14 = [(UILabel *)v2->_delimiterLabel widthAnchor];
-    v15 = [v14 constraintEqualToConstant:14.0];
+    widthAnchor = [(UILabel *)v2->_delimiterLabel widthAnchor];
+    v15 = [widthAnchor constraintEqualToConstant:14.0];
     delimeterWidthConstraint = v2->_delimeterWidthConstraint;
     v2->_delimeterWidthConstraint = v15;
 
@@ -361,35 +361,35 @@ LABEL_14:
 
     [(UIImageView *)v2->_iconImageView setAccessibilityIdentifier:@"QuerySuggestionIcon"];
     [(QuerySuggestionView *)v2 addSubview:v2->_iconImageView];
-    v54 = [(UIStackView *)v2->_labelStackView topAnchor];
-    v53 = [(QuerySuggestionView *)v2 topAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53 constant:10.0];
+    topAnchor = [(UIStackView *)v2->_labelStackView topAnchor];
+    topAnchor2 = [(QuerySuggestionView *)v2 topAnchor];
+    v52 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:10.0];
     v56[0] = v52;
-    v51 = [(UIStackView *)v2->_labelStackView bottomAnchor];
-    v50 = [(QuerySuggestionView *)v2 bottomAnchor];
-    v49 = [v51 constraintEqualToAnchor:v50 constant:-10.0];
+    bottomAnchor = [(UIStackView *)v2->_labelStackView bottomAnchor];
+    bottomAnchor2 = [(QuerySuggestionView *)v2 bottomAnchor];
+    v49 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-10.0];
     v56[1] = v49;
-    v48 = [(UIStackView *)v2->_labelStackView leadingAnchor];
-    v47 = [(UIImageView *)v2->_iconImageView trailingAnchor];
-    v46 = [v48 constraintEqualToAnchor:v47 constant:15.0];
+    leadingAnchor = [(UIStackView *)v2->_labelStackView leadingAnchor];
+    trailingAnchor = [(UIImageView *)v2->_iconImageView trailingAnchor];
+    v46 = [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:15.0];
     v56[2] = v46;
-    v45 = [(UIStackView *)v2->_labelStackView trailingAnchor];
-    v44 = [(QuerySuggestionView *)v2 trailingAnchor];
-    v43 = [v45 constraintEqualToAnchor:v44 constant:-15.0];
+    trailingAnchor2 = [(UIStackView *)v2->_labelStackView trailingAnchor];
+    trailingAnchor3 = [(QuerySuggestionView *)v2 trailingAnchor];
+    v43 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3 constant:-15.0];
     v56[3] = v43;
-    v42 = [(UIImageView *)v2->_iconImageView centerYAnchor];
-    v30 = [(QuerySuggestionView *)v2 centerYAnchor];
-    v31 = [v42 constraintEqualToAnchor:v30];
+    centerYAnchor = [(UIImageView *)v2->_iconImageView centerYAnchor];
+    centerYAnchor2 = [(QuerySuggestionView *)v2 centerYAnchor];
+    v31 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
     v56[4] = v31;
-    v32 = [(UIImageView *)v2->_iconImageView leadingAnchor];
-    v33 = [(QuerySuggestionView *)v2 leadingAnchor];
-    v34 = [v32 constraintEqualToAnchor:v33 constant:16.0];
+    leadingAnchor2 = [(UIImageView *)v2->_iconImageView leadingAnchor];
+    leadingAnchor3 = [(QuerySuggestionView *)v2 leadingAnchor];
+    v34 = [leadingAnchor2 constraintEqualToAnchor:leadingAnchor3 constant:16.0];
     v56[5] = v34;
-    v35 = [(UIImageView *)v2->_iconImageView widthAnchor];
-    v36 = [v35 constraintEqualToConstant:20.0];
+    widthAnchor2 = [(UIImageView *)v2->_iconImageView widthAnchor];
+    v36 = [widthAnchor2 constraintEqualToConstant:20.0];
     v56[6] = v36;
-    v37 = [(UIImageView *)v2->_iconImageView heightAnchor];
-    v38 = [v37 constraintEqualToConstant:20.0];
+    heightAnchor = [(UIImageView *)v2->_iconImageView heightAnchor];
+    v38 = [heightAnchor constraintEqualToConstant:20.0];
     v56[7] = v38;
     v41 = [NSArray arrayWithObjects:v56 count:8];
 

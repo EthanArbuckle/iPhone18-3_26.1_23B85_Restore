@@ -1,14 +1,14 @@
 @interface SBDynamicFlashlightState
 + (id)offState;
-+ (id)onStateWithInitialIntensity:(double)a3 width:(double)a4;
++ (id)onStateWithInitialIntensity:(double)intensity width:(double)width;
 + (id)unavailableState;
 @end
 
 @implementation SBDynamicFlashlightState
 
-+ (id)onStateWithInitialIntensity:(double)a3 width:(double)a4
++ (id)onStateWithInitialIntensity:(double)intensity width:(double)width
 {
-  v4 = [[SBDynamicFlashlightStateOn alloc] initWithInitialIntensity:a3 width:a4];
+  v4 = [[SBDynamicFlashlightStateOn alloc] initWithInitialIntensity:intensity width:width];
 
   return v4;
 }

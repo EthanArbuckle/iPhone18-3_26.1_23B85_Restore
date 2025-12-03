@@ -1,5 +1,5 @@
 @interface IFTSchemaIFTASTFlatExpr
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (IFTSchemaASTExprContinuePlanningVariant)continuePlanning;
 - (IFTSchemaASTFlatExprCallVariant)call;
 - (IFTSchemaASTFlatExprCancelVariant)cancel;
@@ -18,10 +18,10 @@
 - (IFTSchemaASTFlatExprUpdateParametersVariant)updateParameters;
 - (IFTSchemaASTFlatExprUpdateVariant)update;
 - (IFTSchemaASTFlatValue)value;
-- (IFTSchemaIFTASTFlatExpr)initWithDictionary:(id)a3;
-- (IFTSchemaIFTASTFlatExpr)initWithJSON:(id)a3;
+- (IFTSchemaIFTASTFlatExpr)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTASTFlatExpr)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
@@ -45,40 +45,40 @@
 - (void)deleteUpdate;
 - (void)deleteUpdateParameters;
 - (void)deleteValue;
-- (void)setCall:(id)a3;
-- (void)setCancel:(id)a3;
-- (void)setConfirm:(id)a3;
-- (void)setContinuePlanning:(id)a3;
-- (void)setDot:(id)a3;
-- (void)setEndOfPlan:(BOOL)a3;
-- (void)setIndex:(id)a3;
-- (void)setInfix:(id)a3;
-- (void)setNoMatchingTool:(BOOL)a3;
-- (void)setPick:(id)a3;
-- (void)setPickOne:(id)a3;
-- (void)setPrefix:(id)a3;
-- (void)setReject:(id)a3;
-- (void)setResolveTool:(id)a3;
-- (void)setSay:(id)a3;
-- (void)setSearch:(id)a3;
-- (void)setUndo:(id)a3;
-- (void)setUpdate:(id)a3;
-- (void)setUpdateParameters:(id)a3;
-- (void)setValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCall:(id)call;
+- (void)setCancel:(id)cancel;
+- (void)setConfirm:(id)confirm;
+- (void)setContinuePlanning:(id)planning;
+- (void)setDot:(id)dot;
+- (void)setEndOfPlan:(BOOL)plan;
+- (void)setIndex:(id)index;
+- (void)setInfix:(id)infix;
+- (void)setNoMatchingTool:(BOOL)tool;
+- (void)setPick:(id)pick;
+- (void)setPickOne:(id)one;
+- (void)setPrefix:(id)prefix;
+- (void)setReject:(id)reject;
+- (void)setResolveTool:(id)tool;
+- (void)setSay:(id)say;
+- (void)setSearch:(id)search;
+- (void)setUndo:(id)undo;
+- (void)setUpdate:(id)update;
+- (void)setUpdateParameters:(id)parameters;
+- (void)setValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTASTFlatExpr
 
-- (IFTSchemaIFTASTFlatExpr)initWithDictionary:(id)a3
+- (IFTSchemaIFTASTFlatExpr)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v59.receiver = self;
   v59.super_class = IFTSchemaIFTASTFlatExpr;
   v5 = [(IFTSchemaIFTASTFlatExpr *)&v59 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"value"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"value"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,7 +86,7 @@
       [(IFTSchemaIFTASTFlatExpr *)v5 setValue:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"prefix"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"prefix"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -94,7 +94,7 @@
       [(IFTSchemaIFTASTFlatExpr *)v5 setPrefix:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"infix"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"infix"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -102,7 +102,7 @@
       [(IFTSchemaIFTASTFlatExpr *)v5 setInfix:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"dot"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"dot"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -110,7 +110,7 @@
       [(IFTSchemaIFTASTFlatExpr *)v5 setDot:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"index"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"index"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -118,7 +118,7 @@
       [(IFTSchemaIFTASTFlatExpr *)v5 setIndex:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"call"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"call"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,7 +127,7 @@
     }
 
     v54 = v6;
-    v18 = [v4 objectForKeyedSubscript:@"update"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"update"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -136,7 +136,7 @@
     }
 
     v48 = v18;
-    v20 = [v4 objectForKeyedSubscript:@"endOfPlan"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"endOfPlan"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -144,7 +144,7 @@
     }
 
     v47 = v20;
-    v21 = [v4 objectForKeyedSubscript:@"say"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"say"];
     objc_opt_class();
     v58 = v21;
     if (objc_opt_isKindOfClass())
@@ -153,7 +153,7 @@
       [(IFTSchemaIFTASTFlatExpr *)v5 setSay:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"pick"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"pick"];
     objc_opt_class();
     v57 = v23;
     if (objc_opt_isKindOfClass())
@@ -162,7 +162,7 @@
       [(IFTSchemaIFTASTFlatExpr *)v5 setPick:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"confirm"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"confirm"];
     objc_opt_class();
     v56 = v25;
     if (objc_opt_isKindOfClass())
@@ -171,7 +171,7 @@
       [(IFTSchemaIFTASTFlatExpr *)v5 setConfirm:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"search"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"search"];
     objc_opt_class();
     v55 = v27;
     if (objc_opt_isKindOfClass())
@@ -181,7 +181,7 @@
     }
 
     v51 = v12;
-    v29 = [v4 objectForKeyedSubscript:@"pickOne"];
+    v29 = [dictionaryCopy objectForKeyedSubscript:@"pickOne"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -191,7 +191,7 @@
 
     v46 = v29;
     v50 = v14;
-    v31 = [v4 objectForKeyedSubscript:@"noMatchingTool"];
+    v31 = [dictionaryCopy objectForKeyedSubscript:@"noMatchingTool"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -199,7 +199,7 @@
     }
 
     v49 = v16;
-    v32 = [v4 objectForKeyedSubscript:@"undo"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"undo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -207,7 +207,7 @@
       [(IFTSchemaIFTASTFlatExpr *)v5 setUndo:v33];
     }
 
-    v34 = [v4 objectForKeyedSubscript:@"resolveTool"];
+    v34 = [dictionaryCopy objectForKeyedSubscript:@"resolveTool"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -216,7 +216,7 @@
     }
 
     v53 = v8;
-    v36 = [v4 objectForKeyedSubscript:@"reject"];
+    v36 = [dictionaryCopy objectForKeyedSubscript:@"reject"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -225,7 +225,7 @@
     }
 
     v52 = v10;
-    v38 = [v4 objectForKeyedSubscript:@"cancel"];
+    v38 = [dictionaryCopy objectForKeyedSubscript:@"cancel"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -233,7 +233,7 @@
       [(IFTSchemaIFTASTFlatExpr *)v5 setCancel:v39];
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"continuePlanning"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"continuePlanning"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -241,7 +241,7 @@
       [(IFTSchemaIFTASTFlatExpr *)v5 setContinuePlanning:v41];
     }
 
-    v42 = [v4 objectForKeyedSubscript:@"updateParameters"];
+    v42 = [dictionaryCopy objectForKeyedSubscript:@"updateParameters"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -255,30 +255,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTASTFlatExpr)initWithJSON:(id)a3
+- (IFTSchemaIFTASTFlatExpr)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTASTFlatExpr *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTASTFlatExpr *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTASTFlatExpr *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -291,310 +291,310 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_call)
   {
-    v4 = [(IFTSchemaIFTASTFlatExpr *)self call];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    call = [(IFTSchemaIFTASTFlatExpr *)self call];
+    dictionaryRepresentation = [call dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"call"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"call"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"call"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"call"];
     }
   }
 
   if (self->_cancel)
   {
-    v7 = [(IFTSchemaIFTASTFlatExpr *)self cancel];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    cancel = [(IFTSchemaIFTASTFlatExpr *)self cancel];
+    dictionaryRepresentation2 = [cancel dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"cancel"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"cancel"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"cancel"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"cancel"];
     }
   }
 
   if (self->_confirm)
   {
-    v10 = [(IFTSchemaIFTASTFlatExpr *)self confirm];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    confirm = [(IFTSchemaIFTASTFlatExpr *)self confirm];
+    dictionaryRepresentation3 = [confirm dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"confirm"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"confirm"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"confirm"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"confirm"];
     }
   }
 
   if (self->_continuePlanning)
   {
-    v13 = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    continuePlanning = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
+    dictionaryRepresentation4 = [continuePlanning dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"continuePlanning"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"continuePlanning"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"continuePlanning"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"continuePlanning"];
     }
   }
 
   if (self->_dot)
   {
     v16 = [(IFTSchemaIFTASTFlatExpr *)self dot];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    dictionaryRepresentation5 = [v16 dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"dot"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"dot"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"dot"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"dot"];
     }
   }
 
   if (self->_whichOneof_Astflatexpr == 8)
   {
     v19 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTASTFlatExpr endOfPlan](self, "endOfPlan")}];
-    [v3 setObject:v19 forKeyedSubscript:@"endOfPlan"];
+    [dictionary setObject:v19 forKeyedSubscript:@"endOfPlan"];
   }
 
   if (self->_index)
   {
-    v20 = [(IFTSchemaIFTASTFlatExpr *)self index];
-    v21 = [v20 dictionaryRepresentation];
-    if (v21)
+    index = [(IFTSchemaIFTASTFlatExpr *)self index];
+    dictionaryRepresentation6 = [index dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v21 forKeyedSubscript:@"index"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"index"];
     }
 
     else
     {
-      v22 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v22 forKeyedSubscript:@"index"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"index"];
     }
   }
 
   if (self->_infix)
   {
-    v23 = [(IFTSchemaIFTASTFlatExpr *)self infix];
-    v24 = [v23 dictionaryRepresentation];
-    if (v24)
+    infix = [(IFTSchemaIFTASTFlatExpr *)self infix];
+    dictionaryRepresentation7 = [infix dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v24 forKeyedSubscript:@"infix"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"infix"];
     }
 
     else
     {
-      v25 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v25 forKeyedSubscript:@"infix"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"infix"];
     }
   }
 
   if (self->_whichOneof_Astflatexpr == 14)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[IFTSchemaIFTASTFlatExpr noMatchingTool](self, "noMatchingTool")}];
-    [v3 setObject:v26 forKeyedSubscript:@"noMatchingTool"];
+    [dictionary setObject:v26 forKeyedSubscript:@"noMatchingTool"];
   }
 
   if (self->_pick)
   {
-    v27 = [(IFTSchemaIFTASTFlatExpr *)self pick];
-    v28 = [v27 dictionaryRepresentation];
-    if (v28)
+    pick = [(IFTSchemaIFTASTFlatExpr *)self pick];
+    dictionaryRepresentation8 = [pick dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v28 forKeyedSubscript:@"pick"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"pick"];
     }
 
     else
     {
-      v29 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v29 forKeyedSubscript:@"pick"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"pick"];
     }
   }
 
   if (self->_pickOne)
   {
-    v30 = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
-    v31 = [v30 dictionaryRepresentation];
-    if (v31)
+    pickOne = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
+    dictionaryRepresentation9 = [pickOne dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v31 forKeyedSubscript:@"pickOne"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"pickOne"];
     }
 
     else
     {
-      v32 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v32 forKeyedSubscript:@"pickOne"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"pickOne"];
     }
   }
 
   if (self->_prefix)
   {
-    v33 = [(IFTSchemaIFTASTFlatExpr *)self prefix];
-    v34 = [v33 dictionaryRepresentation];
-    if (v34)
+    prefix = [(IFTSchemaIFTASTFlatExpr *)self prefix];
+    dictionaryRepresentation10 = [prefix dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v34 forKeyedSubscript:@"prefix"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"prefix"];
     }
 
     else
     {
-      v35 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v35 forKeyedSubscript:@"prefix"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"prefix"];
     }
   }
 
   if (self->_reject)
   {
-    v36 = [(IFTSchemaIFTASTFlatExpr *)self reject];
-    v37 = [v36 dictionaryRepresentation];
-    if (v37)
+    reject = [(IFTSchemaIFTASTFlatExpr *)self reject];
+    dictionaryRepresentation11 = [reject dictionaryRepresentation];
+    if (dictionaryRepresentation11)
     {
-      [v3 setObject:v37 forKeyedSubscript:@"reject"];
+      [dictionary setObject:dictionaryRepresentation11 forKeyedSubscript:@"reject"];
     }
 
     else
     {
-      v38 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v38 forKeyedSubscript:@"reject"];
+      null11 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null11 forKeyedSubscript:@"reject"];
     }
   }
 
   if (self->_resolveTool)
   {
-    v39 = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
-    v40 = [v39 dictionaryRepresentation];
-    if (v40)
+    resolveTool = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
+    dictionaryRepresentation12 = [resolveTool dictionaryRepresentation];
+    if (dictionaryRepresentation12)
     {
-      [v3 setObject:v40 forKeyedSubscript:@"resolveTool"];
+      [dictionary setObject:dictionaryRepresentation12 forKeyedSubscript:@"resolveTool"];
     }
 
     else
     {
-      v41 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v41 forKeyedSubscript:@"resolveTool"];
+      null12 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null12 forKeyedSubscript:@"resolveTool"];
     }
   }
 
   if (self->_say)
   {
     v42 = [(IFTSchemaIFTASTFlatExpr *)self say];
-    v43 = [v42 dictionaryRepresentation];
-    if (v43)
+    dictionaryRepresentation13 = [v42 dictionaryRepresentation];
+    if (dictionaryRepresentation13)
     {
-      [v3 setObject:v43 forKeyedSubscript:@"say"];
+      [dictionary setObject:dictionaryRepresentation13 forKeyedSubscript:@"say"];
     }
 
     else
     {
-      v44 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v44 forKeyedSubscript:@"say"];
+      null13 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null13 forKeyedSubscript:@"say"];
     }
   }
 
   if (self->_search)
   {
-    v45 = [(IFTSchemaIFTASTFlatExpr *)self search];
-    v46 = [v45 dictionaryRepresentation];
-    if (v46)
+    search = [(IFTSchemaIFTASTFlatExpr *)self search];
+    dictionaryRepresentation14 = [search dictionaryRepresentation];
+    if (dictionaryRepresentation14)
     {
-      [v3 setObject:v46 forKeyedSubscript:@"search"];
+      [dictionary setObject:dictionaryRepresentation14 forKeyedSubscript:@"search"];
     }
 
     else
     {
-      v47 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v47 forKeyedSubscript:@"search"];
+      null14 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null14 forKeyedSubscript:@"search"];
     }
   }
 
   if (self->_undo)
   {
-    v48 = [(IFTSchemaIFTASTFlatExpr *)self undo];
-    v49 = [v48 dictionaryRepresentation];
-    if (v49)
+    undo = [(IFTSchemaIFTASTFlatExpr *)self undo];
+    dictionaryRepresentation15 = [undo dictionaryRepresentation];
+    if (dictionaryRepresentation15)
     {
-      [v3 setObject:v49 forKeyedSubscript:@"undo"];
+      [dictionary setObject:dictionaryRepresentation15 forKeyedSubscript:@"undo"];
     }
 
     else
     {
-      v50 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v50 forKeyedSubscript:@"undo"];
+      null15 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null15 forKeyedSubscript:@"undo"];
     }
   }
 
   if (self->_update)
   {
-    v51 = [(IFTSchemaIFTASTFlatExpr *)self update];
-    v52 = [v51 dictionaryRepresentation];
-    if (v52)
+    update = [(IFTSchemaIFTASTFlatExpr *)self update];
+    dictionaryRepresentation16 = [update dictionaryRepresentation];
+    if (dictionaryRepresentation16)
     {
-      [v3 setObject:v52 forKeyedSubscript:@"update"];
+      [dictionary setObject:dictionaryRepresentation16 forKeyedSubscript:@"update"];
     }
 
     else
     {
-      v53 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v53 forKeyedSubscript:@"update"];
+      null16 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null16 forKeyedSubscript:@"update"];
     }
   }
 
   if (self->_updateParameters)
   {
-    v54 = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
-    v55 = [v54 dictionaryRepresentation];
-    if (v55)
+    updateParameters = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
+    dictionaryRepresentation17 = [updateParameters dictionaryRepresentation];
+    if (dictionaryRepresentation17)
     {
-      [v3 setObject:v55 forKeyedSubscript:@"updateParameters"];
+      [dictionary setObject:dictionaryRepresentation17 forKeyedSubscript:@"updateParameters"];
     }
 
     else
     {
-      v56 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v56 forKeyedSubscript:@"updateParameters"];
+      null17 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null17 forKeyedSubscript:@"updateParameters"];
     }
   }
 
   if (self->_value)
   {
-    v57 = [(IFTSchemaIFTASTFlatExpr *)self value];
-    v58 = [v57 dictionaryRepresentation];
-    if (v58)
+    value = [(IFTSchemaIFTASTFlatExpr *)self value];
+    dictionaryRepresentation18 = [value dictionaryRepresentation];
+    if (dictionaryRepresentation18)
     {
-      [v3 setObject:v58 forKeyedSubscript:@"value"];
+      [dictionary setObject:dictionaryRepresentation18 forKeyedSubscript:@"value"];
     }
 
     else
     {
-      v59 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v59 forKeyedSubscript:@"value"];
+      null18 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null18 forKeyedSubscript:@"value"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -639,34 +639,34 @@
   return v13 ^ v16 ^ [(IFTSchemaASTFlatExprUpdateParametersVariant *)self->_updateParameters hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_95;
   }
 
   whichOneof_Astflatexpr = self->_whichOneof_Astflatexpr;
-  if (whichOneof_Astflatexpr != [v4 whichOneof_Astflatexpr])
+  if (whichOneof_Astflatexpr != [equalCopy whichOneof_Astflatexpr])
   {
     goto LABEL_95;
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self value];
-  v7 = [v4 value];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self value];
+  value2 = [equalCopy value];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v8 = [(IFTSchemaIFTASTFlatExpr *)self value];
-  if (v8)
+  value3 = [(IFTSchemaIFTASTFlatExpr *)self value];
+  if (value3)
   {
-    v9 = v8;
-    v10 = [(IFTSchemaIFTASTFlatExpr *)self value];
-    v11 = [v4 value];
-    v12 = [v10 isEqual:v11];
+    v9 = value3;
+    value4 = [(IFTSchemaIFTASTFlatExpr *)self value];
+    value5 = [equalCopy value];
+    v12 = [value4 isEqual:value5];
 
     if (!v12)
     {
@@ -678,20 +678,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self prefix];
-  v7 = [v4 prefix];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self prefix];
+  value2 = [equalCopy prefix];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v13 = [(IFTSchemaIFTASTFlatExpr *)self prefix];
-  if (v13)
+  prefix = [(IFTSchemaIFTASTFlatExpr *)self prefix];
+  if (prefix)
   {
-    v14 = v13;
-    v15 = [(IFTSchemaIFTASTFlatExpr *)self prefix];
-    v16 = [v4 prefix];
-    v17 = [v15 isEqual:v16];
+    v14 = prefix;
+    prefix2 = [(IFTSchemaIFTASTFlatExpr *)self prefix];
+    prefix3 = [equalCopy prefix];
+    v17 = [prefix2 isEqual:prefix3];
 
     if (!v17)
     {
@@ -703,20 +703,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self infix];
-  v7 = [v4 infix];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self infix];
+  value2 = [equalCopy infix];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v18 = [(IFTSchemaIFTASTFlatExpr *)self infix];
-  if (v18)
+  infix = [(IFTSchemaIFTASTFlatExpr *)self infix];
+  if (infix)
   {
-    v19 = v18;
-    v20 = [(IFTSchemaIFTASTFlatExpr *)self infix];
-    v21 = [v4 infix];
-    v22 = [v20 isEqual:v21];
+    v19 = infix;
+    infix2 = [(IFTSchemaIFTASTFlatExpr *)self infix];
+    infix3 = [equalCopy infix];
+    v22 = [infix2 isEqual:infix3];
 
     if (!v22)
     {
@@ -728,9 +728,9 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self dot];
-  v7 = [v4 dot];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self dot];
+  value2 = [equalCopy dot];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
@@ -740,7 +740,7 @@
   {
     v24 = v23;
     v25 = [(IFTSchemaIFTASTFlatExpr *)self dot];
-    v26 = [v4 dot];
+    v26 = [equalCopy dot];
     v27 = [v25 isEqual:v26];
 
     if (!v27)
@@ -753,20 +753,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self index];
-  v7 = [v4 index];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self index];
+  value2 = [equalCopy index];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v28 = [(IFTSchemaIFTASTFlatExpr *)self index];
-  if (v28)
+  index = [(IFTSchemaIFTASTFlatExpr *)self index];
+  if (index)
   {
-    v29 = v28;
-    v30 = [(IFTSchemaIFTASTFlatExpr *)self index];
-    v31 = [v4 index];
-    v32 = [v30 isEqual:v31];
+    v29 = index;
+    index2 = [(IFTSchemaIFTASTFlatExpr *)self index];
+    index3 = [equalCopy index];
+    v32 = [index2 isEqual:index3];
 
     if (!v32)
     {
@@ -778,20 +778,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self call];
-  v7 = [v4 call];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self call];
+  value2 = [equalCopy call];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v33 = [(IFTSchemaIFTASTFlatExpr *)self call];
-  if (v33)
+  call = [(IFTSchemaIFTASTFlatExpr *)self call];
+  if (call)
   {
-    v34 = v33;
-    v35 = [(IFTSchemaIFTASTFlatExpr *)self call];
-    v36 = [v4 call];
-    v37 = [v35 isEqual:v36];
+    v34 = call;
+    call2 = [(IFTSchemaIFTASTFlatExpr *)self call];
+    call3 = [equalCopy call];
+    v37 = [call2 isEqual:call3];
 
     if (!v37)
     {
@@ -803,20 +803,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self update];
-  v7 = [v4 update];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self update];
+  value2 = [equalCopy update];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v38 = [(IFTSchemaIFTASTFlatExpr *)self update];
-  if (v38)
+  update = [(IFTSchemaIFTASTFlatExpr *)self update];
+  if (update)
   {
-    v39 = v38;
-    v40 = [(IFTSchemaIFTASTFlatExpr *)self update];
-    v41 = [v4 update];
-    v42 = [v40 isEqual:v41];
+    v39 = update;
+    update2 = [(IFTSchemaIFTASTFlatExpr *)self update];
+    update3 = [equalCopy update];
+    v42 = [update2 isEqual:update3];
 
     if (!v42)
     {
@@ -829,14 +829,14 @@
   }
 
   endOfPlan = self->_endOfPlan;
-  if (endOfPlan != [v4 endOfPlan])
+  if (endOfPlan != [equalCopy endOfPlan])
   {
     goto LABEL_95;
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self say];
-  v7 = [v4 say];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self say];
+  value2 = [equalCopy say];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
@@ -846,7 +846,7 @@
   {
     v45 = v44;
     v46 = [(IFTSchemaIFTASTFlatExpr *)self say];
-    v47 = [v4 say];
+    v47 = [equalCopy say];
     v48 = [v46 isEqual:v47];
 
     if (!v48)
@@ -859,20 +859,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self pick];
-  v7 = [v4 pick];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self pick];
+  value2 = [equalCopy pick];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v49 = [(IFTSchemaIFTASTFlatExpr *)self pick];
-  if (v49)
+  pick = [(IFTSchemaIFTASTFlatExpr *)self pick];
+  if (pick)
   {
-    v50 = v49;
-    v51 = [(IFTSchemaIFTASTFlatExpr *)self pick];
-    v52 = [v4 pick];
-    v53 = [v51 isEqual:v52];
+    v50 = pick;
+    pick2 = [(IFTSchemaIFTASTFlatExpr *)self pick];
+    pick3 = [equalCopy pick];
+    v53 = [pick2 isEqual:pick3];
 
     if (!v53)
     {
@@ -884,20 +884,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self confirm];
-  v7 = [v4 confirm];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self confirm];
+  value2 = [equalCopy confirm];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v54 = [(IFTSchemaIFTASTFlatExpr *)self confirm];
-  if (v54)
+  confirm = [(IFTSchemaIFTASTFlatExpr *)self confirm];
+  if (confirm)
   {
-    v55 = v54;
-    v56 = [(IFTSchemaIFTASTFlatExpr *)self confirm];
-    v57 = [v4 confirm];
-    v58 = [v56 isEqual:v57];
+    v55 = confirm;
+    confirm2 = [(IFTSchemaIFTASTFlatExpr *)self confirm];
+    confirm3 = [equalCopy confirm];
+    v58 = [confirm2 isEqual:confirm3];
 
     if (!v58)
     {
@@ -909,20 +909,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self search];
-  v7 = [v4 search];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self search];
+  value2 = [equalCopy search];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v59 = [(IFTSchemaIFTASTFlatExpr *)self search];
-  if (v59)
+  search = [(IFTSchemaIFTASTFlatExpr *)self search];
+  if (search)
   {
-    v60 = v59;
-    v61 = [(IFTSchemaIFTASTFlatExpr *)self search];
-    v62 = [v4 search];
-    v63 = [v61 isEqual:v62];
+    v60 = search;
+    search2 = [(IFTSchemaIFTASTFlatExpr *)self search];
+    search3 = [equalCopy search];
+    v63 = [search2 isEqual:search3];
 
     if (!v63)
     {
@@ -934,20 +934,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
-  v7 = [v4 pickOne];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
+  value2 = [equalCopy pickOne];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v64 = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
-  if (v64)
+  pickOne = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
+  if (pickOne)
   {
-    v65 = v64;
-    v66 = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
-    v67 = [v4 pickOne];
-    v68 = [v66 isEqual:v67];
+    v65 = pickOne;
+    pickOne2 = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
+    pickOne3 = [equalCopy pickOne];
+    v68 = [pickOne2 isEqual:pickOne3];
 
     if (!v68)
     {
@@ -960,25 +960,25 @@
   }
 
   noMatchingTool = self->_noMatchingTool;
-  if (noMatchingTool != [v4 noMatchingTool])
+  if (noMatchingTool != [equalCopy noMatchingTool])
   {
     goto LABEL_95;
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self undo];
-  v7 = [v4 undo];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self undo];
+  value2 = [equalCopy undo];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v70 = [(IFTSchemaIFTASTFlatExpr *)self undo];
-  if (v70)
+  undo = [(IFTSchemaIFTASTFlatExpr *)self undo];
+  if (undo)
   {
-    v71 = v70;
-    v72 = [(IFTSchemaIFTASTFlatExpr *)self undo];
-    v73 = [v4 undo];
-    v74 = [v72 isEqual:v73];
+    v71 = undo;
+    undo2 = [(IFTSchemaIFTASTFlatExpr *)self undo];
+    undo3 = [equalCopy undo];
+    v74 = [undo2 isEqual:undo3];
 
     if (!v74)
     {
@@ -990,20 +990,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
-  v7 = [v4 resolveTool];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
+  value2 = [equalCopy resolveTool];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v75 = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
-  if (v75)
+  resolveTool = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
+  if (resolveTool)
   {
-    v76 = v75;
-    v77 = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
-    v78 = [v4 resolveTool];
-    v79 = [v77 isEqual:v78];
+    v76 = resolveTool;
+    resolveTool2 = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
+    resolveTool3 = [equalCopy resolveTool];
+    v79 = [resolveTool2 isEqual:resolveTool3];
 
     if (!v79)
     {
@@ -1015,20 +1015,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self reject];
-  v7 = [v4 reject];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self reject];
+  value2 = [equalCopy reject];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v80 = [(IFTSchemaIFTASTFlatExpr *)self reject];
-  if (v80)
+  reject = [(IFTSchemaIFTASTFlatExpr *)self reject];
+  if (reject)
   {
-    v81 = v80;
-    v82 = [(IFTSchemaIFTASTFlatExpr *)self reject];
-    v83 = [v4 reject];
-    v84 = [v82 isEqual:v83];
+    v81 = reject;
+    reject2 = [(IFTSchemaIFTASTFlatExpr *)self reject];
+    reject3 = [equalCopy reject];
+    v84 = [reject2 isEqual:reject3];
 
     if (!v84)
     {
@@ -1040,20 +1040,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self cancel];
-  v7 = [v4 cancel];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self cancel];
+  value2 = [equalCopy cancel];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v85 = [(IFTSchemaIFTASTFlatExpr *)self cancel];
-  if (v85)
+  cancel = [(IFTSchemaIFTASTFlatExpr *)self cancel];
+  if (cancel)
   {
-    v86 = v85;
-    v87 = [(IFTSchemaIFTASTFlatExpr *)self cancel];
-    v88 = [v4 cancel];
-    v89 = [v87 isEqual:v88];
+    v86 = cancel;
+    cancel2 = [(IFTSchemaIFTASTFlatExpr *)self cancel];
+    cancel3 = [equalCopy cancel];
+    v89 = [cancel2 isEqual:cancel3];
 
     if (!v89)
     {
@@ -1065,20 +1065,20 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
-  v7 = [v4 continuePlanning];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
+  value2 = [equalCopy continuePlanning];
+  if ((value != 0) == (value2 == 0))
   {
     goto LABEL_94;
   }
 
-  v90 = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
-  if (v90)
+  continuePlanning = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
+  if (continuePlanning)
   {
-    v91 = v90;
-    v92 = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
-    v93 = [v4 continuePlanning];
-    v94 = [v92 isEqual:v93];
+    v91 = continuePlanning;
+    continuePlanning2 = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
+    continuePlanning3 = [equalCopy continuePlanning];
+    v94 = [continuePlanning2 isEqual:continuePlanning3];
 
     if (!v94)
     {
@@ -1090,17 +1090,17 @@
   {
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
-  v7 = [v4 updateParameters];
-  if ((v6 != 0) == (v7 == 0))
+  value = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
+  value2 = [equalCopy updateParameters];
+  if ((value != 0) == (value2 == 0))
   {
 LABEL_94:
 
     goto LABEL_95;
   }
 
-  v95 = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
-  if (!v95)
+  updateParameters = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
+  if (!updateParameters)
   {
 
 LABEL_98:
@@ -1108,10 +1108,10 @@ LABEL_98:
     goto LABEL_96;
   }
 
-  v96 = v95;
-  v97 = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
-  v98 = [v4 updateParameters];
-  v99 = [v97 isEqual:v98];
+  v96 = updateParameters;
+  updateParameters2 = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
+  updateParameters3 = [equalCopy updateParameters];
+  v99 = [updateParameters2 isEqual:updateParameters3];
 
   if (v99)
   {
@@ -1125,30 +1125,30 @@ LABEL_96:
   return v100;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v41 = a3;
-  v4 = [(IFTSchemaIFTASTFlatExpr *)self value];
+  toCopy = to;
+  value = [(IFTSchemaIFTASTFlatExpr *)self value];
 
-  if (v4)
+  if (value)
   {
-    v5 = [(IFTSchemaIFTASTFlatExpr *)self value];
+    value2 = [(IFTSchemaIFTASTFlatExpr *)self value];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self prefix];
+  prefix = [(IFTSchemaIFTASTFlatExpr *)self prefix];
 
-  if (v6)
+  if (prefix)
   {
-    v7 = [(IFTSchemaIFTASTFlatExpr *)self prefix];
+    prefix2 = [(IFTSchemaIFTASTFlatExpr *)self prefix];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(IFTSchemaIFTASTFlatExpr *)self infix];
+  infix = [(IFTSchemaIFTASTFlatExpr *)self infix];
 
-  if (v8)
+  if (infix)
   {
-    v9 = [(IFTSchemaIFTASTFlatExpr *)self infix];
+    infix2 = [(IFTSchemaIFTASTFlatExpr *)self infix];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1160,27 +1160,27 @@ LABEL_96:
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(IFTSchemaIFTASTFlatExpr *)self index];
+  index = [(IFTSchemaIFTASTFlatExpr *)self index];
 
-  if (v12)
+  if (index)
   {
-    v13 = [(IFTSchemaIFTASTFlatExpr *)self index];
+    index2 = [(IFTSchemaIFTASTFlatExpr *)self index];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(IFTSchemaIFTASTFlatExpr *)self call];
+  call = [(IFTSchemaIFTASTFlatExpr *)self call];
 
-  if (v14)
+  if (call)
   {
-    v15 = [(IFTSchemaIFTASTFlatExpr *)self call];
+    call2 = [(IFTSchemaIFTASTFlatExpr *)self call];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(IFTSchemaIFTASTFlatExpr *)self update];
+  update = [(IFTSchemaIFTASTFlatExpr *)self update];
 
-  if (v16)
+  if (update)
   {
-    v17 = [(IFTSchemaIFTASTFlatExpr *)self update];
+    update2 = [(IFTSchemaIFTASTFlatExpr *)self update];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1197,35 +1197,35 @@ LABEL_96:
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(IFTSchemaIFTASTFlatExpr *)self pick];
+  pick = [(IFTSchemaIFTASTFlatExpr *)self pick];
 
-  if (v20)
+  if (pick)
   {
-    v21 = [(IFTSchemaIFTASTFlatExpr *)self pick];
+    pick2 = [(IFTSchemaIFTASTFlatExpr *)self pick];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(IFTSchemaIFTASTFlatExpr *)self confirm];
+  confirm = [(IFTSchemaIFTASTFlatExpr *)self confirm];
 
-  if (v22)
+  if (confirm)
   {
-    v23 = [(IFTSchemaIFTASTFlatExpr *)self confirm];
+    confirm2 = [(IFTSchemaIFTASTFlatExpr *)self confirm];
     PBDataWriterWriteSubmessage();
   }
 
-  v24 = [(IFTSchemaIFTASTFlatExpr *)self search];
+  search = [(IFTSchemaIFTASTFlatExpr *)self search];
 
-  if (v24)
+  if (search)
   {
-    v25 = [(IFTSchemaIFTASTFlatExpr *)self search];
+    search2 = [(IFTSchemaIFTASTFlatExpr *)self search];
     PBDataWriterWriteSubmessage();
   }
 
-  v26 = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
+  pickOne = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
 
-  if (v26)
+  if (pickOne)
   {
-    v27 = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
+    pickOne2 = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1234,55 +1234,55 @@ LABEL_96:
     PBDataWriterWriteBOOLField();
   }
 
-  v28 = [(IFTSchemaIFTASTFlatExpr *)self undo];
+  undo = [(IFTSchemaIFTASTFlatExpr *)self undo];
 
-  if (v28)
+  if (undo)
   {
-    v29 = [(IFTSchemaIFTASTFlatExpr *)self undo];
+    undo2 = [(IFTSchemaIFTASTFlatExpr *)self undo];
     PBDataWriterWriteSubmessage();
   }
 
-  v30 = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
+  resolveTool = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
 
-  if (v30)
+  if (resolveTool)
   {
-    v31 = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
+    resolveTool2 = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
     PBDataWriterWriteSubmessage();
   }
 
-  v32 = [(IFTSchemaIFTASTFlatExpr *)self reject];
+  reject = [(IFTSchemaIFTASTFlatExpr *)self reject];
 
-  if (v32)
+  if (reject)
   {
-    v33 = [(IFTSchemaIFTASTFlatExpr *)self reject];
+    reject2 = [(IFTSchemaIFTASTFlatExpr *)self reject];
     PBDataWriterWriteSubmessage();
   }
 
-  v34 = [(IFTSchemaIFTASTFlatExpr *)self cancel];
+  cancel = [(IFTSchemaIFTASTFlatExpr *)self cancel];
 
-  if (v34)
+  if (cancel)
   {
-    v35 = [(IFTSchemaIFTASTFlatExpr *)self cancel];
+    cancel2 = [(IFTSchemaIFTASTFlatExpr *)self cancel];
     PBDataWriterWriteSubmessage();
   }
 
-  v36 = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
+  continuePlanning = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
 
-  if (v36)
+  if (continuePlanning)
   {
-    v37 = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
+    continuePlanning2 = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
     PBDataWriterWriteSubmessage();
   }
 
-  v38 = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
+  updateParameters = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
 
-  v39 = v41;
-  if (v38)
+  v39 = toCopy;
+  if (updateParameters)
   {
-    v40 = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
+    updateParameters2 = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
     PBDataWriterWriteSubmessage();
 
-    v39 = v41;
+    v39 = toCopy;
   }
 }
 
@@ -1311,9 +1311,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setUpdateParameters:(id)a3
+- (void)setUpdateParameters:(id)parameters
 {
-  v4 = a3;
+  parametersCopy = parameters;
   value = self->_value;
   self->_value = 0;
 
@@ -1368,14 +1368,14 @@ LABEL_96:
   self->_continuePlanning = 0;
 
   v22 = 20;
-  if (!v4)
+  if (!parametersCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   updateParameters = self->_updateParameters;
-  self->_updateParameters = v4;
+  self->_updateParameters = parametersCopy;
 }
 
 - (void)deleteContinuePlanning
@@ -1403,9 +1403,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setContinuePlanning:(id)a3
+- (void)setContinuePlanning:(id)planning
 {
-  v4 = a3;
+  planningCopy = planning;
   value = self->_value;
   self->_value = 0;
 
@@ -1460,14 +1460,14 @@ LABEL_96:
   self->_updateParameters = 0;
 
   v22 = 19;
-  if (!v4)
+  if (!planningCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   continuePlanning = self->_continuePlanning;
-  self->_continuePlanning = v4;
+  self->_continuePlanning = planningCopy;
 }
 
 - (void)deleteCancel
@@ -1495,9 +1495,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setCancel:(id)a3
+- (void)setCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   value = self->_value;
   self->_value = 0;
 
@@ -1552,14 +1552,14 @@ LABEL_96:
   self->_updateParameters = 0;
 
   v22 = 18;
-  if (!v4)
+  if (!cancelCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   cancel = self->_cancel;
-  self->_cancel = v4;
+  self->_cancel = cancelCopy;
 }
 
 - (void)deleteReject
@@ -1587,9 +1587,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setReject:(id)a3
+- (void)setReject:(id)reject
 {
-  v4 = a3;
+  rejectCopy = reject;
   value = self->_value;
   self->_value = 0;
 
@@ -1644,14 +1644,14 @@ LABEL_96:
   self->_updateParameters = 0;
 
   v22 = 17;
-  if (!v4)
+  if (!rejectCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   reject = self->_reject;
-  self->_reject = v4;
+  self->_reject = rejectCopy;
 }
 
 - (void)deleteResolveTool
@@ -1679,9 +1679,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setResolveTool:(id)a3
+- (void)setResolveTool:(id)tool
 {
-  v4 = a3;
+  toolCopy = tool;
   value = self->_value;
   self->_value = 0;
 
@@ -1735,9 +1735,9 @@ LABEL_96:
   updateParameters = self->_updateParameters;
   self->_updateParameters = 0;
 
-  self->_whichOneof_Astflatexpr = 16 * (v4 != 0);
+  self->_whichOneof_Astflatexpr = 16 * (toolCopy != 0);
   resolveTool = self->_resolveTool;
-  self->_resolveTool = v4;
+  self->_resolveTool = toolCopy;
 }
 
 - (void)deleteUndo
@@ -1765,9 +1765,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setUndo:(id)a3
+- (void)setUndo:(id)undo
 {
-  v4 = a3;
+  undoCopy = undo;
   value = self->_value;
   self->_value = 0;
 
@@ -1822,14 +1822,14 @@ LABEL_96:
   self->_updateParameters = 0;
 
   v22 = 15;
-  if (!v4)
+  if (!undoCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   undo = self->_undo;
-  self->_undo = v4;
+  self->_undo = undoCopy;
 }
 
 - (void)deleteNoMatchingTool
@@ -1841,7 +1841,7 @@ LABEL_96:
   }
 }
 
-- (void)setNoMatchingTool:(BOOL)a3
+- (void)setNoMatchingTool:(BOOL)tool
 {
   value = self->_value;
   self->_value = 0;
@@ -1899,7 +1899,7 @@ LABEL_96:
   self->_updateParameters = 0;
 
   self->_whichOneof_Astflatexpr = 14;
-  self->_noMatchingTool = a3;
+  self->_noMatchingTool = tool;
 }
 
 - (void)deletePickOne
@@ -1927,9 +1927,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setPickOne:(id)a3
+- (void)setPickOne:(id)one
 {
-  v4 = a3;
+  oneCopy = one;
   value = self->_value;
   self->_value = 0;
 
@@ -1984,14 +1984,14 @@ LABEL_96:
   self->_updateParameters = 0;
 
   v22 = 13;
-  if (!v4)
+  if (!oneCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   pickOne = self->_pickOne;
-  self->_pickOne = v4;
+  self->_pickOne = oneCopy;
 }
 
 - (void)deleteSearch
@@ -2019,9 +2019,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setSearch:(id)a3
+- (void)setSearch:(id)search
 {
-  v4 = a3;
+  searchCopy = search;
   value = self->_value;
   self->_value = 0;
 
@@ -2076,14 +2076,14 @@ LABEL_96:
   self->_updateParameters = 0;
 
   v22 = 12;
-  if (!v4)
+  if (!searchCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   search = self->_search;
-  self->_search = v4;
+  self->_search = searchCopy;
 }
 
 - (void)deleteConfirm
@@ -2111,9 +2111,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setConfirm:(id)a3
+- (void)setConfirm:(id)confirm
 {
-  v4 = a3;
+  confirmCopy = confirm;
   value = self->_value;
   self->_value = 0;
 
@@ -2168,14 +2168,14 @@ LABEL_96:
   self->_updateParameters = 0;
 
   v22 = 11;
-  if (!v4)
+  if (!confirmCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   confirm = self->_confirm;
-  self->_confirm = v4;
+  self->_confirm = confirmCopy;
 }
 
 - (void)deletePick
@@ -2203,9 +2203,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setPick:(id)a3
+- (void)setPick:(id)pick
 {
-  v4 = a3;
+  pickCopy = pick;
   value = self->_value;
   self->_value = 0;
 
@@ -2260,14 +2260,14 @@ LABEL_96:
   self->_updateParameters = 0;
 
   v22 = 10;
-  if (!v4)
+  if (!pickCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   pick = self->_pick;
-  self->_pick = v4;
+  self->_pick = pickCopy;
 }
 
 - (void)deleteSay
@@ -2295,9 +2295,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setSay:(id)a3
+- (void)setSay:(id)say
 {
-  v4 = a3;
+  sayCopy = say;
   value = self->_value;
   self->_value = 0;
 
@@ -2352,14 +2352,14 @@ LABEL_96:
   self->_updateParameters = 0;
 
   v22 = 9;
-  if (!v4)
+  if (!sayCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   say = self->_say;
-  self->_say = v4;
+  self->_say = sayCopy;
 }
 
 - (void)deleteEndOfPlan
@@ -2371,7 +2371,7 @@ LABEL_96:
   }
 }
 
-- (void)setEndOfPlan:(BOOL)a3
+- (void)setEndOfPlan:(BOOL)plan
 {
   value = self->_value;
   self->_value = 0;
@@ -2429,7 +2429,7 @@ LABEL_96:
   self->_updateParameters = 0;
 
   self->_whichOneof_Astflatexpr = 8;
-  self->_endOfPlan = a3;
+  self->_endOfPlan = plan;
 }
 
 - (void)deleteUpdate
@@ -2457,9 +2457,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setUpdate:(id)a3
+- (void)setUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   value = self->_value;
   self->_value = 0;
 
@@ -2514,14 +2514,14 @@ LABEL_96:
   self->_updateParameters = 0;
 
   v22 = 7;
-  if (!v4)
+  if (!updateCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   update = self->_update;
-  self->_update = v4;
+  self->_update = updateCopy;
 }
 
 - (void)deleteCall
@@ -2549,9 +2549,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setCall:(id)a3
+- (void)setCall:(id)call
 {
-  v4 = a3;
+  callCopy = call;
   value = self->_value;
   self->_value = 0;
 
@@ -2606,14 +2606,14 @@ LABEL_96:
   self->_updateParameters = 0;
 
   v22 = 6;
-  if (!v4)
+  if (!callCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   call = self->_call;
-  self->_call = v4;
+  self->_call = callCopy;
 }
 
 - (void)deleteIndex
@@ -2641,9 +2641,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setIndex:(id)a3
+- (void)setIndex:(id)index
 {
-  v4 = a3;
+  indexCopy = index;
   value = self->_value;
   self->_value = 0;
 
@@ -2698,14 +2698,14 @@ LABEL_96:
   self->_updateParameters = 0;
 
   v22 = 5;
-  if (!v4)
+  if (!indexCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   index = self->_index;
-  self->_index = v4;
+  self->_index = indexCopy;
 }
 
 - (void)deleteDot
@@ -2733,9 +2733,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setDot:(id)a3
+- (void)setDot:(id)dot
 {
-  v4 = a3;
+  dotCopy = dot;
   value = self->_value;
   self->_value = 0;
 
@@ -2789,9 +2789,9 @@ LABEL_96:
   updateParameters = self->_updateParameters;
   self->_updateParameters = 0;
 
-  self->_whichOneof_Astflatexpr = 4 * (v4 != 0);
+  self->_whichOneof_Astflatexpr = 4 * (dotCopy != 0);
   dot = self->_dot;
-  self->_dot = v4;
+  self->_dot = dotCopy;
 }
 
 - (void)deleteInfix
@@ -2819,9 +2819,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setInfix:(id)a3
+- (void)setInfix:(id)infix
 {
-  v4 = a3;
+  infixCopy = infix;
   value = self->_value;
   self->_value = 0;
 
@@ -2876,14 +2876,14 @@ LABEL_96:
   self->_updateParameters = 0;
 
   v22 = 3;
-  if (!v4)
+  if (!infixCopy)
   {
     v22 = 0;
   }
 
   self->_whichOneof_Astflatexpr = v22;
   infix = self->_infix;
-  self->_infix = v4;
+  self->_infix = infixCopy;
 }
 
 - (void)deletePrefix
@@ -2911,9 +2911,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setPrefix:(id)a3
+- (void)setPrefix:(id)prefix
 {
-  v4 = a3;
+  prefixCopy = prefix;
   value = self->_value;
   self->_value = 0;
 
@@ -2967,9 +2967,9 @@ LABEL_96:
   updateParameters = self->_updateParameters;
   self->_updateParameters = 0;
 
-  self->_whichOneof_Astflatexpr = 2 * (v4 != 0);
+  self->_whichOneof_Astflatexpr = 2 * (prefixCopy != 0);
   prefix = self->_prefix;
-  self->_prefix = v4;
+  self->_prefix = prefixCopy;
 }
 
 - (void)deleteValue
@@ -2997,9 +2997,9 @@ LABEL_96:
   return v3;
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   prefix = self->_prefix;
   self->_prefix = 0;
 
@@ -3053,175 +3053,175 @@ LABEL_96:
   updateParameters = self->_updateParameters;
   self->_updateParameters = 0;
 
-  self->_whichOneof_Astflatexpr = v4 != 0;
+  self->_whichOneof_Astflatexpr = valueCopy != 0;
   value = self->_value;
-  self->_value = v4;
+  self->_value = valueCopy;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v61.receiver = self;
   v61.super_class = IFTSchemaIFTASTFlatExpr;
-  v5 = [(SISchemaInstrumentationMessage *)&v61 applySensitiveConditionsPolicy:v4];
-  v6 = [(IFTSchemaIFTASTFlatExpr *)self value];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v61 applySensitiveConditionsPolicy:policyCopy];
+  value = [(IFTSchemaIFTASTFlatExpr *)self value];
+  v7 = [value applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteValue];
   }
 
-  v9 = [(IFTSchemaIFTASTFlatExpr *)self prefix];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  prefix = [(IFTSchemaIFTASTFlatExpr *)self prefix];
+  v10 = [prefix applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deletePrefix];
   }
 
-  v12 = [(IFTSchemaIFTASTFlatExpr *)self infix];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  infix = [(IFTSchemaIFTASTFlatExpr *)self infix];
+  v13 = [infix applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteInfix];
   }
 
   v15 = [(IFTSchemaIFTASTFlatExpr *)self dot];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  v16 = [v15 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteDot];
   }
 
-  v18 = [(IFTSchemaIFTASTFlatExpr *)self index];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  index = [(IFTSchemaIFTASTFlatExpr *)self index];
+  v19 = [index applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteIndex];
   }
 
-  v21 = [(IFTSchemaIFTASTFlatExpr *)self call];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  call = [(IFTSchemaIFTASTFlatExpr *)self call];
+  v22 = [call applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteCall];
   }
 
-  v24 = [(IFTSchemaIFTASTFlatExpr *)self update];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  update = [(IFTSchemaIFTASTFlatExpr *)self update];
+  v25 = [update applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteUpdate];
   }
 
   v27 = [(IFTSchemaIFTASTFlatExpr *)self say];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  v28 = [v27 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteSay];
   }
 
-  v30 = [(IFTSchemaIFTASTFlatExpr *)self pick];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  pick = [(IFTSchemaIFTASTFlatExpr *)self pick];
+  v31 = [pick applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deletePick];
   }
 
-  v33 = [(IFTSchemaIFTASTFlatExpr *)self confirm];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  confirm = [(IFTSchemaIFTASTFlatExpr *)self confirm];
+  v34 = [confirm applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteConfirm];
   }
 
-  v36 = [(IFTSchemaIFTASTFlatExpr *)self search];
-  v37 = [v36 applySensitiveConditionsPolicy:v4];
-  v38 = [v37 suppressMessage];
+  search = [(IFTSchemaIFTASTFlatExpr *)self search];
+  v37 = [search applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage11 = [v37 suppressMessage];
 
-  if (v38)
+  if (suppressMessage11)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteSearch];
   }
 
-  v39 = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
-  v40 = [v39 applySensitiveConditionsPolicy:v4];
-  v41 = [v40 suppressMessage];
+  pickOne = [(IFTSchemaIFTASTFlatExpr *)self pickOne];
+  v40 = [pickOne applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage12 = [v40 suppressMessage];
 
-  if (v41)
+  if (suppressMessage12)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deletePickOne];
   }
 
-  v42 = [(IFTSchemaIFTASTFlatExpr *)self undo];
-  v43 = [v42 applySensitiveConditionsPolicy:v4];
-  v44 = [v43 suppressMessage];
+  undo = [(IFTSchemaIFTASTFlatExpr *)self undo];
+  v43 = [undo applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage13 = [v43 suppressMessage];
 
-  if (v44)
+  if (suppressMessage13)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteUndo];
   }
 
-  v45 = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
-  v46 = [v45 applySensitiveConditionsPolicy:v4];
-  v47 = [v46 suppressMessage];
+  resolveTool = [(IFTSchemaIFTASTFlatExpr *)self resolveTool];
+  v46 = [resolveTool applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage14 = [v46 suppressMessage];
 
-  if (v47)
+  if (suppressMessage14)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteResolveTool];
   }
 
-  v48 = [(IFTSchemaIFTASTFlatExpr *)self reject];
-  v49 = [v48 applySensitiveConditionsPolicy:v4];
-  v50 = [v49 suppressMessage];
+  reject = [(IFTSchemaIFTASTFlatExpr *)self reject];
+  v49 = [reject applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage15 = [v49 suppressMessage];
 
-  if (v50)
+  if (suppressMessage15)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteReject];
   }
 
-  v51 = [(IFTSchemaIFTASTFlatExpr *)self cancel];
-  v52 = [v51 applySensitiveConditionsPolicy:v4];
-  v53 = [v52 suppressMessage];
+  cancel = [(IFTSchemaIFTASTFlatExpr *)self cancel];
+  v52 = [cancel applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage16 = [v52 suppressMessage];
 
-  if (v53)
+  if (suppressMessage16)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteCancel];
   }
 
-  v54 = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
-  v55 = [v54 applySensitiveConditionsPolicy:v4];
-  v56 = [v55 suppressMessage];
+  continuePlanning = [(IFTSchemaIFTASTFlatExpr *)self continuePlanning];
+  v55 = [continuePlanning applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage17 = [v55 suppressMessage];
 
-  if (v56)
+  if (suppressMessage17)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteContinuePlanning];
   }
 
-  v57 = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
-  v58 = [v57 applySensitiveConditionsPolicy:v4];
-  v59 = [v58 suppressMessage];
+  updateParameters = [(IFTSchemaIFTASTFlatExpr *)self updateParameters];
+  v58 = [updateParameters applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage18 = [v58 suppressMessage];
 
-  if (v59)
+  if (suppressMessage18)
   {
     [(IFTSchemaIFTASTFlatExpr *)self deleteUpdateParameters];
   }

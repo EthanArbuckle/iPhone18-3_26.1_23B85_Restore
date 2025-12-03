@@ -1,6 +1,6 @@
 @interface AMBNRBuffers
-+ (int)createAMBNRPyramidForWidth:(int)a3 height:(int)a4 startingLevel:(int)a5 pyramid:(id)a6 metal:(id)a7 scratchBuffer:(id)a8 offset:(unint64_t *)a9;
-+ (unint64_t)calculateBytesRequiredForAMBNRPyramidWithWidth:(int)a3 height:(int)a4 startingLevel:(int)a5;
++ (int)createAMBNRPyramidForWidth:(int)width height:(int)height startingLevel:(int)level pyramid:(id)pyramid metal:(id)metal scratchBuffer:(id)buffer offset:(unint64_t *)offset;
++ (unint64_t)calculateBytesRequiredForAMBNRPyramidWithWidth:(int)width height:(int)height startingLevel:(int)level;
 - (AMBNRBuffers)init;
 - (void)releaseBuffers;
 - (void)releasePyramidsBottom;
@@ -54,26 +54,26 @@
   objc_msgSend_clearLevel_(sharpeningPyramid, v6, 0, v7);
 }
 
-+ (unint64_t)calculateBytesRequiredForAMBNRPyramidWithWidth:(int)a3 height:(int)a4 startingLevel:(int)a5
++ (unint64_t)calculateBytesRequiredForAMBNRPyramidWithWidth:(int)width height:(int)height startingLevel:(int)level
 {
-  if (a3)
+  if (width)
   {
     sub_2958927C4();
     return v12;
   }
 
-  if (a4)
+  if (height)
   {
     sub_295892870();
     return v12;
   }
 
-  if (a5 <= 3)
+  if (level <= 3)
   {
     result = 0;
-    v6 = a4 >> a5;
-    v7 = a3 >> a5;
-    v8 = a5 - 4;
+    v6 = height >> level;
+    v7 = width >> level;
+    v8 = level - 4;
     while (1)
     {
       if (v7)
@@ -105,13 +105,13 @@
   return 0;
 }
 
-+ (int)createAMBNRPyramidForWidth:(int)a3 height:(int)a4 startingLevel:(int)a5 pyramid:(id)a6 metal:(id)a7 scratchBuffer:(id)a8 offset:(unint64_t *)a9
++ (int)createAMBNRPyramidForWidth:(int)width height:(int)height startingLevel:(int)level pyramid:(id)pyramid metal:(id)metal scratchBuffer:(id)buffer offset:(unint64_t *)offset
 {
-  LODWORD(i) = a5;
-  v14 = a6;
-  v15 = a7;
-  v17 = a8;
-  if (a3)
+  LODWORD(i) = level;
+  pyramidCopy = pyramid;
+  metalCopy = metal;
+  bufferCopy = buffer;
+  if (width)
   {
     sub_295892A74(&v29);
 LABEL_20:
@@ -119,18 +119,18 @@ LABEL_20:
     goto LABEL_15;
   }
 
-  if (a4)
+  if (height)
   {
     sub_295892B20(&v29);
     goto LABEL_20;
   }
 
-  v14[2] = 4;
-  if (v14[2] > i)
+  pyramidCopy[2] = 4;
+  if (pyramidCopy[2] > i)
   {
-    v18 = a4 >> i;
-    v19 = a3 >> i;
-    for (i = i; i < v14[2]; ++i)
+    v18 = height >> i;
+    v19 = width >> i;
+    for (i = i; i < pyramidCopy[2]; ++i)
     {
       if (v19)
       {
@@ -144,16 +144,16 @@ LABEL_20:
         goto LABEL_20;
       }
 
-      if (v17)
+      if (bufferCopy)
       {
-        v20 = objc_msgSend_aliasAMBNRPyramidLevel_lvl_width_height_metal_scratchBuffer_offset_(AMBNRBuffers, v16, v14, i, v19, v18, v15, v17, a9);
+        v20 = objc_msgSend_aliasAMBNRPyramidLevel_lvl_width_height_metal_scratchBuffer_offset_(AMBNRBuffers, v16, pyramidCopy, i, v19, v18, metalCopy, bufferCopy, offset);
         if (v20)
         {
           sub_295892D24(v20, &v29);
           goto LABEL_20;
         }
 
-        *(v14 + i + 664) = 1;
+        *(pyramidCopy + i + 664) = 1;
         v19 >>= 1;
         v18 >>= 1;
       }
@@ -171,19 +171,19 @@ LABEL_20:
         v19 >>= 1;
         v18 >>= 1;
         v23 = CreatePixelBuffer();
-        v24 = v15;
-        v26 = objc_msgSend_setPixelBufferForLuma_optionalChroma_level_metal_(v14, v25, v22, v23, i, v15);
+        v24 = metalCopy;
+        v26 = objc_msgSend_setPixelBufferForLuma_optionalChroma_level_metal_(pyramidCopy, v25, v22, v23, i, metalCopy);
         CFRelease(v22);
         CFRelease(v23);
         if (v26)
         {
           sub_295892DF8(&v29);
           v27 = v29;
-          v15 = v24;
+          metalCopy = v24;
           goto LABEL_15;
         }
 
-        v15 = v24;
+        metalCopy = v24;
       }
     }
   }

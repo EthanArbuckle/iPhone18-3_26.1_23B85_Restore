@@ -1,48 +1,48 @@
 @interface RFTableCell
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFTableCell)initWithCoder:(id)a3;
-- (RFTableCell)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFTableCell)initWithCoder:(id)coder;
+- (RFTableCell)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setText:(id)a3;
-- (void)setVisual:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setText:(id)text;
+- (void)setVisual:(id)visual;
 @end
 
 @implementation RFTableCell
 
 - (unint64_t)hash
 {
-  v3 = [(RFTableCell *)self text];
-  v4 = [v3 hash];
-  v5 = [(RFTableCell *)self visual];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RFTableCell *)self column_span];
-  v8 = [v7 hash];
+  text = [(RFTableCell *)self text];
+  v4 = [text hash];
+  visual = [(RFTableCell *)self visual];
+  v6 = [visual hash] ^ v4;
+  column_span = [(RFTableCell *)self column_span];
+  v8 = [column_span hash];
   v9 = v6 ^ v8 ^ [(RFTableCell *)self horizontal_alignment];
-  v10 = [(RFTableCell *)self applySmallCaps];
+  applySmallCaps = [(RFTableCell *)self applySmallCaps];
 
-  return v9 ^ v10;
+  return v9 ^ applySmallCaps;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v11) = 1;
   }
 
   else
   {
-    if ([(RFTableCell *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(RFTableCell *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(RFTableCell *)self text];
-      v8 = [(RFTableCell *)v6 text];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      text = [(RFTableCell *)self text];
+      text2 = [(RFTableCell *)v6 text];
+      if ((text != 0) == (text2 == 0))
       {
         LOBYTE(v11) = 0;
 LABEL_36:
@@ -50,66 +50,66 @@ LABEL_36:
         goto LABEL_37;
       }
 
-      v9 = [(RFTableCell *)self text];
-      if (v9)
+      text3 = [(RFTableCell *)self text];
+      if (text3)
       {
-        v10 = [(RFTableCell *)self text];
-        v3 = [(RFTableCell *)v6 text];
-        if (![v10 isEqual:v3])
+        text4 = [(RFTableCell *)self text];
+        text5 = [(RFTableCell *)v6 text];
+        if (![text4 isEqual:text5])
         {
           LOBYTE(v11) = 0;
           goto LABEL_34;
         }
 
-        v36 = v10;
+        v36 = text4;
       }
 
-      v12 = [(RFTableCell *)self visual];
-      v13 = [(RFTableCell *)v6 visual];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      visual = [(RFTableCell *)self visual];
+      visual2 = [(RFTableCell *)v6 visual];
+      v14 = visual2;
+      if ((visual != 0) == (visual2 == 0))
       {
 
         LOBYTE(v11) = 0;
         goto LABEL_33;
       }
 
-      v15 = [(RFTableCell *)self visual];
-      if (v15)
+      visual3 = [(RFTableCell *)self visual];
+      if (visual3)
       {
         v29 = v14;
-        v16 = v12;
-        v17 = [(RFTableCell *)self visual];
-        v31 = [(RFTableCell *)v6 visual];
-        v32 = v17;
-        if (![v17 isEqual:?])
+        v16 = visual;
+        visual4 = [(RFTableCell *)self visual];
+        visual5 = [(RFTableCell *)v6 visual];
+        v32 = visual4;
+        if (![visual4 isEqual:?])
         {
           LOBYTE(v11) = 0;
-          v12 = v16;
+          visual = v16;
           v14 = v29;
           goto LABEL_31;
         }
 
-        v33 = v15;
-        v34 = v3;
-        v12 = v16;
+        v33 = visual3;
+        v34 = text5;
+        visual = v16;
         v14 = v29;
       }
 
       else
       {
         v33 = 0;
-        v34 = v3;
+        v34 = text5;
       }
 
-      v18 = [(RFTableCell *)self column_span];
-      v19 = [(RFTableCell *)v6 column_span];
-      if ((v18 != 0) == (v19 == 0))
+      column_span = [(RFTableCell *)self column_span];
+      column_span2 = [(RFTableCell *)v6 column_span];
+      if ((column_span != 0) == (column_span2 == 0))
       {
 
         LOBYTE(v11) = 0;
-        v15 = v33;
-        v3 = v34;
+        visual3 = v33;
+        text5 = v34;
         if (!v33)
         {
           goto LABEL_32;
@@ -118,17 +118,17 @@ LABEL_36:
         goto LABEL_31;
       }
 
-      v27 = v19;
-      v28 = v18;
+      v27 = column_span2;
+      v28 = column_span;
       [(RFTableCell *)self column_span];
-      v30 = v15 = v33;
+      v30 = visual3 = v33;
       if (v30)
       {
-        v20 = [(RFTableCell *)self column_span];
+        column_span3 = [(RFTableCell *)self column_span];
         [(RFTableCell *)v6 column_span];
-        v26 = v25 = v20;
-        v21 = [v20 isEqual:?];
-        v3 = v34;
+        v26 = v25 = column_span3;
+        v21 = [column_span3 isEqual:?];
+        text5 = v34;
         if (!v21)
         {
           LOBYTE(v11) = 0;
@@ -139,14 +139,14 @@ LABEL_36:
 
       else
       {
-        v3 = v34;
+        text5 = v34;
       }
 
-      v35 = [(RFTableCell *)self horizontal_alignment];
-      if (v35 == [(RFTableCell *)v6 horizontal_alignment])
+      horizontal_alignment = [(RFTableCell *)self horizontal_alignment];
+      if (horizontal_alignment == [(RFTableCell *)v6 horizontal_alignment])
       {
-        v23 = [(RFTableCell *)self applySmallCaps];
-        v11 = v23 ^ [(RFTableCell *)v6 applySmallCaps]^ 1;
+        applySmallCaps = [(RFTableCell *)self applySmallCaps];
+        v11 = applySmallCaps ^ [(RFTableCell *)v6 applySmallCaps]^ 1;
       }
 
       else
@@ -164,8 +164,8 @@ LABEL_30:
 LABEL_32:
 
 LABEL_33:
-          v10 = v36;
-          if (!v9)
+          text4 = v36;
+          if (!text3)
           {
 LABEL_35:
 
@@ -195,25 +195,25 @@ LABEL_37:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if ([(RFTableCell *)self hasText])
   {
-    v5 = [(RFTableCell *)self text];
-    v6 = [v5 copy];
+    text = [(RFTableCell *)self text];
+    v6 = [text copy];
     [v4 setText:v6];
   }
 
   if ([(RFTableCell *)self hasVisual])
   {
-    v7 = [(RFTableCell *)self visual];
-    v8 = [v7 copy];
+    visual = [(RFTableCell *)self visual];
+    v8 = [visual copy];
     [v4 setVisual:v8];
   }
 
-  v9 = [(RFTableCell *)self column_span];
-  v10 = [v9 copy];
+  column_span = [(RFTableCell *)self column_span];
+  v10 = [column_span copy];
   [v4 setColumn_span:v10];
 
   [v4 setHorizontal_alignment:{-[RFTableCell horizontal_alignment](self, "horizontal_alignment")}];
@@ -224,31 +224,31 @@ LABEL_37:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFTableCell alloc] initWithFacade:self];
-  v3 = [(_SFPBRFTableCell *)v2 jsonData];
+  jsonData = [(_SFPBRFTableCell *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFTableCell alloc] initWithFacade:self];
-  v3 = [(_SFPBRFTableCell *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFTableCell *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFTableCell alloc] initWithFacade:self];
-  v5 = [(_SFPBRFTableCell *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFTableCell *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFTableCell)initWithCoder:(id)a3
+- (RFTableCell)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFTableCell alloc] initWithData:v5];
   v7 = [(RFTableCell *)self initWithProtobuf:v6];
@@ -256,68 +256,68 @@ LABEL_37:
   return v7;
 }
 
-- (void)setVisual:(id)a3
+- (void)setVisual:(id)visual
 {
   *&self->_has |= 2u;
-  objc_storeStrong(&self->_visual, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_visual, visual);
+  visualCopy = visual;
   *&self->_has &= ~1u;
   text = self->_text;
   self->_text = 0;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   *&self->_has |= 1u;
-  objc_storeStrong(&self->_text, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_text, text);
+  textCopy = text;
   *&self->_has &= ~2u;
   visual = self->_visual;
   self->_visual = 0;
 }
 
-- (RFTableCell)initWithProtobuf:(id)a3
+- (RFTableCell)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v17.receiver = self;
   v17.super_class = RFTableCell;
   v5 = [(RFTableCell *)&v17 init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [protobufCopy text];
 
-    if (v6)
+    if (text)
     {
       v7 = [RFTextProperty alloc];
-      v8 = [v4 text];
-      v9 = [(RFTextProperty *)v7 initWithProtobuf:v8];
+      text2 = [protobufCopy text];
+      v9 = [(RFTextProperty *)v7 initWithProtobuf:text2];
       [(RFTableCell *)v5 setText:v9];
     }
 
-    v10 = [v4 visual];
+    visual = [protobufCopy visual];
 
-    if (v10)
+    if (visual)
     {
       v11 = [RFVisualProperty alloc];
-      v12 = [v4 visual];
-      v13 = [(RFVisualProperty *)v11 initWithProtobuf:v12];
+      visual2 = [protobufCopy visual];
+      v13 = [(RFVisualProperty *)v11 initWithProtobuf:visual2];
       [(RFTableCell *)v5 setVisual:v13];
     }
 
-    if ([v4 column_span])
+    if ([protobufCopy column_span])
     {
-      v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v4, "column_span")}];
+      v14 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "column_span")}];
       [(RFTableCell *)v5 setColumn_span:v14];
     }
 
-    if ([v4 horizontal_alignment])
+    if ([protobufCopy horizontal_alignment])
     {
-      -[RFTableCell setHorizontal_alignment:](v5, "setHorizontal_alignment:", [v4 horizontal_alignment]);
+      -[RFTableCell setHorizontal_alignment:](v5, "setHorizontal_alignment:", [protobufCopy horizontal_alignment]);
     }
 
-    if ([v4 applySmallCaps])
+    if ([protobufCopy applySmallCaps])
     {
-      -[RFTableCell setApplySmallCaps:](v5, "setApplySmallCaps:", [v4 applySmallCaps]);
+      -[RFTableCell setApplySmallCaps:](v5, "setApplySmallCaps:", [protobufCopy applySmallCaps]);
     }
 
     v15 = v5;

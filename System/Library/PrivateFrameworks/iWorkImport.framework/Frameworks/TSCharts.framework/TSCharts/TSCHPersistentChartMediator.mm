@@ -1,21 +1,21 @@
 @interface TSCHPersistentChartMediator
-- (TSCHPersistentChartMediator)initWithContext:(id)a3 andMediator:(id)a4;
-- (void)loadFromArchive:(const void *)a3;
-- (void)saveToArchive:(void *)a3;
+- (TSCHPersistentChartMediator)initWithContext:(id)context andMediator:(id)mediator;
+- (void)loadFromArchive:(const void *)archive;
+- (void)saveToArchive:(void *)archive;
 @end
 
 @implementation TSCHPersistentChartMediator
 
-- (TSCHPersistentChartMediator)initWithContext:(id)a3 andMediator:(id)a4
+- (TSCHPersistentChartMediator)initWithContext:(id)context andMediator:(id)mediator
 {
-  v7 = a4;
+  mediatorCopy = mediator;
   v20.receiver = self;
   v20.super_class = TSCHPersistentChartMediator;
-  v8 = [(TSCHPersistentChartMediator *)&v20 initWithContext:a3];
+  v8 = [(TSCHPersistentChartMediator *)&v20 initWithContext:context];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_mediator, a4);
+    objc_storeStrong(&v8->_mediator, mediator);
     v14 = objc_msgSend_mediator(v9, v10, v11, v12, v13);
     objc_msgSend_setObjectToNotify_(v14, v15, v16, v17, v18, v9);
   }
@@ -23,7 +23,7 @@
   return v9;
 }
 
-- (void)loadFromArchive:(const void *)a3
+- (void)loadFromArchive:(const void *)archive
 {
   v4 = objc_opt_class();
   if (objc_msgSend_isMemberOfClass_(self, v5, v6, v7, v8, v4))
@@ -40,7 +40,7 @@
   objc_msgSend_setObjectToNotify_(v32, v27, v28, v29, v30, self);
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   v4 = objc_opt_class();
   if (objc_msgSend_isMemberOfClass_(self, v5, v6, v7, v8, v4))

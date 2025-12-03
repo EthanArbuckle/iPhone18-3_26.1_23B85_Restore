@@ -1,16 +1,16 @@
 @interface SASHeater
 - (SASHeaterDelegate)delegate;
-- (id)_convertVirtualAudioSubTypeToString:(unsigned int)a3;
+- (id)_convertVirtualAudioSubTypeToString:(unsigned int)string;
 - (void)_cancelPreparation;
 - (void)_suggestPreheat;
-- (void)cancelPreparationForButtonIdentifier:(int64_t)a3;
-- (void)prepareForUseAfterTimeInterval:(double)a3;
+- (void)cancelPreparationForButtonIdentifier:(int64_t)identifier;
+- (void)prepareForUseAfterTimeInterval:(double)interval;
 - (void)updatePredictedRouteIsZLL;
 @end
 
 @implementation SASHeater
 
-- (void)prepareForUseAfterTimeInterval:(double)a3
+- (void)prepareForUseAfterTimeInterval:(double)interval
 {
   objc_initWeak(&location, self);
   v4[0] = MEMORY[0x1E69E9820];
@@ -18,7 +18,7 @@
   v4[2] = __44__SASHeater_prepareForUseAfterTimeInterval___block_invoke;
   v4[3] = &unk_1E82F36A8;
   objc_copyWeak(v5, &location);
-  v5[1] = *&a3;
+  v5[1] = *&interval;
   SiriInvokeOnMainQueue(v4);
   objc_destroyWeak(v5);
   objc_destroyWeak(&location);
@@ -54,18 +54,18 @@ void __44__SASHeater_prepareForUseAfterTimeInterval___block_invoke(uint64_t a1)
   [v10 setPreheatTimer:v9];
 }
 
-- (void)cancelPreparationForButtonIdentifier:(int64_t)a3
+- (void)cancelPreparationForButtonIdentifier:(int64_t)identifier
 {
-  v5 = [MEMORY[0x1E696AE30] processInfo];
-  [v5 systemUptime];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  [processInfo systemUptime];
   v7 = v6;
   [(SASHeater *)self _preparationStartTime];
   v9 = v7 - v8;
 
   [(SASHeater *)self _cancelPreparation];
-  v11 = [(SASHeater *)self delegate];
+  delegate = [(SASHeater *)self delegate];
   [(SASHeater *)self preheatTimeInterval];
-  [v11 heater:self cancelledPreparationWithButtonIdentifier:a3 duration:v9 targetDuration:v10];
+  [delegate heater:self cancelledPreparationWithButtonIdentifier:identifier duration:v9 targetDuration:v10];
 }
 
 - (void)_cancelPreparation
@@ -93,8 +93,8 @@ void __31__SASHeater__cancelPreparation__block_invoke(uint64_t a1)
 
 - (void)_suggestPreheat
 {
-  v3 = [(SASHeater *)self delegate];
-  [v3 heaterSuggestsPreheating:self];
+  delegate = [(SASHeater *)self delegate];
+  [delegate heaterSuggestsPreheating:self];
 
   [(SASHeater *)self updatePredictedRouteIsZLL];
 }
@@ -232,14 +232,14 @@ void __38__SASHeater_updatePredictedRouteIsZLL__block_invoke_58(uint64_t a1)
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_convertVirtualAudioSubTypeToString:(unsigned int)a3
+- (id)_convertVirtualAudioSubTypeToString:(unsigned int)string
 {
-  if (a3)
+  if (string)
   {
-    cStr[0] = HIBYTE(a3);
-    cStr[1] = BYTE2(a3);
-    cStr[2] = BYTE1(a3);
-    cStr[3] = a3;
+    cStr[0] = HIBYTE(string);
+    cStr[1] = BYTE2(string);
+    cStr[2] = BYTE1(string);
+    cStr[3] = string;
     cStr[4] = 0;
     v4 = CFStringCreateWithCString(*MEMORY[0x1E695E480], cStr, 0);
   }

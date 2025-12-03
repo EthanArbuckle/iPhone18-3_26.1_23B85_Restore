@@ -1,5 +1,5 @@
 @interface HMDSharedUserInviteOwnerSendLogEvent
-- (HMDSharedUserInviteOwnerSendLogEvent)initWithHome:(id)a3;
+- (HMDSharedUserInviteOwnerSendLogEvent)initWithHome:(id)home;
 - (id)coreAnalyticsEventDictionary;
 @end
 
@@ -10,8 +10,8 @@
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v13.receiver = self;
   v13.super_class = HMDSharedUserInviteOwnerSendLogEvent;
-  v4 = [(HMDSharedUserInviteLogEvent *)&v13 coreAnalyticsEventDictionary];
-  [v3 addEntriesFromDictionary:v4];
+  coreAnalyticsEventDictionary = [(HMDSharedUserInviteLogEvent *)&v13 coreAnalyticsEventDictionary];
+  [v3 addEntriesFromDictionary:coreAnalyticsEventDictionary];
 
   v5 = [MEMORY[0x277CCABB0] numberWithLongLong:{-[HMDSharedUserInviteOwnerSendLogEvent createShareMS](self, "createShareMS")}];
   [v3 setObject:v5 forKeyedSubscript:@"createShareMS"];
@@ -36,12 +36,12 @@
   return v11;
 }
 
-- (HMDSharedUserInviteOwnerSendLogEvent)initWithHome:(id)a3
+- (HMDSharedUserInviteOwnerSendLogEvent)initWithHome:(id)home
 {
-  v4 = [a3 uuid];
+  uuid = [home uuid];
   v7.receiver = self;
   v7.super_class = HMDSharedUserInviteOwnerSendLogEvent;
-  v5 = [(HMDSharedUserInviteLogEvent *)&v7 initWithHomeUUID:v4];
+  v5 = [(HMDSharedUserInviteLogEvent *)&v7 initWithHomeUUID:uuid];
 
   return v5;
 }

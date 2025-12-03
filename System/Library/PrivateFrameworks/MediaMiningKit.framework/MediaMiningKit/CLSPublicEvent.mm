@@ -2,12 +2,12 @@
 + (NSSet)supportedCategories;
 - (CLLocationCoordinate2D)businessItemCoordinates;
 - (CLSPublicEvent)init;
-- (CLSPublicEvent)initWithCoder:(id)a3;
+- (CLSPublicEvent)initWithCoder:(id)coder;
 - (NSDateInterval)universalDateIntervalIncludingTime;
-- (id)_calculateUniversalDateFromLocalDate:(id)a3 includingTimeZone:(id)a4 localStartTime:(double)a5;
+- (id)_calculateUniversalDateFromLocalDate:(id)date includingTimeZone:(id)zone localStartTime:(double)time;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLSPublicEvent
@@ -21,111 +21,111 @@
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   muid = self->_muid;
-  v5 = a3;
-  [v5 encodeInteger:muid forKey:@"muid"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_name forKey:@"name"];
-  [v5 encodeObject:self->_localDateInterval forKey:@"universalDateInterval"];
-  [v5 encodeDouble:@"localStartTime" forKey:self->_localStartTime];
-  [v5 encodeDouble:@"localEndTime" forKey:self->_localEndTime];
-  [v5 encodeObject:self->_timeZone forKey:@"timeZone"];
-  [v5 encodeObject:self->_performers forKey:@"performers"];
-  [v5 encodeObject:self->_categories forKey:@"categories"];
-  [v5 encodeInteger:self->_businessItemMuid forKey:@"businessItemMuid"];
-  [v5 encodeObject:self->_businessItemPlaceID forKey:@"businessItemPlaceID"];
-  [v5 encodeDouble:@"businessItemCoordinatesLatitude" forKey:self->_businessItemCoordinates.latitude];
-  [v5 encodeDouble:@"businessItemCoordinatesLongitude" forKey:self->_businessItemCoordinates.longitude];
-  [v5 encodeInteger:self->_expectedAttendance forKey:@"expectedAttendance"];
-  [v5 encodeInt64:self->_sourceService forKey:@"sourceService"];
-  [v5 encodeBool:self->_supportsEventExperience forKey:@"supportsEventExperience"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:muid forKey:@"muid"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_localDateInterval forKey:@"universalDateInterval"];
+  [coderCopy encodeDouble:@"localStartTime" forKey:self->_localStartTime];
+  [coderCopy encodeDouble:@"localEndTime" forKey:self->_localEndTime];
+  [coderCopy encodeObject:self->_timeZone forKey:@"timeZone"];
+  [coderCopy encodeObject:self->_performers forKey:@"performers"];
+  [coderCopy encodeObject:self->_categories forKey:@"categories"];
+  [coderCopy encodeInteger:self->_businessItemMuid forKey:@"businessItemMuid"];
+  [coderCopy encodeObject:self->_businessItemPlaceID forKey:@"businessItemPlaceID"];
+  [coderCopy encodeDouble:@"businessItemCoordinatesLatitude" forKey:self->_businessItemCoordinates.latitude];
+  [coderCopy encodeDouble:@"businessItemCoordinatesLongitude" forKey:self->_businessItemCoordinates.longitude];
+  [coderCopy encodeInteger:self->_expectedAttendance forKey:@"expectedAttendance"];
+  [coderCopy encodeInt64:self->_sourceService forKey:@"sourceService"];
+  [coderCopy encodeBool:self->_supportsEventExperience forKey:@"supportsEventExperience"];
 }
 
-- (CLSPublicEvent)initWithCoder:(id)a3
+- (CLSPublicEvent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v32.receiver = self;
   v32.super_class = CLSPublicEvent;
   v5 = [(CLSPublicEvent *)&v32 init];
   if (v5)
   {
-    v5->_muid = [v4 decodeIntegerForKey:@"muid"];
-    v6 = [v4 decodeObjectForKey:@"identifier"];
+    v5->_muid = [coderCopy decodeIntegerForKey:@"muid"];
+    v6 = [coderCopy decodeObjectForKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"universalDateInterval"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"universalDateInterval"];
     localDateInterval = v5->_localDateInterval;
     v5->_localDateInterval = v10;
 
-    [v4 decodeDoubleForKey:@"localStartTime"];
+    [coderCopy decodeDoubleForKey:@"localStartTime"];
     v5->_localStartTime = v12;
-    [v4 decodeDoubleForKey:@"localEndTime"];
+    [coderCopy decodeDoubleForKey:@"localEndTime"];
     v5->_localEndTime = v13;
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
     timeZone = v5->_timeZone;
     v5->_timeZone = v14;
 
     v16 = MEMORY[0x277CBEB98];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"performers"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"performers"];
     performers = v5->_performers;
     v5->_performers = v19;
 
     v21 = MEMORY[0x277CBEB98];
     v22 = objc_opt_class();
     v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-    v24 = [v4 decodeObjectOfClasses:v23 forKey:@"categories"];
+    v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"categories"];
     categories = v5->_categories;
     v5->_categories = v24;
 
-    v5->_businessItemMuid = [v4 decodeIntegerForKey:@"businessItemMuid"];
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"businessItemPlaceID"];
+    v5->_businessItemMuid = [coderCopy decodeIntegerForKey:@"businessItemMuid"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"businessItemPlaceID"];
     businessItemPlaceID = v5->_businessItemPlaceID;
     v5->_businessItemPlaceID = v26;
 
-    [v4 decodeDoubleForKey:@"businessItemCoordinatesLatitude"];
+    [coderCopy decodeDoubleForKey:@"businessItemCoordinatesLatitude"];
     v29 = v28;
-    [v4 decodeDoubleForKey:@"businessItemCoordinatesLongitude"];
+    [coderCopy decodeDoubleForKey:@"businessItemCoordinatesLongitude"];
     v5->_businessItemCoordinates = CLLocationCoordinate2DMake(v29, v30);
-    v5->_expectedAttendance = [v4 decodeIntegerForKey:@"expectedAttendance"];
-    v5->_sourceService = [v4 decodeInt64ForKey:@"sourceService"];
-    v5->_supportsEventExperience = [v4 decodeBoolForKey:@"supportsEventExperience"];
+    v5->_expectedAttendance = [coderCopy decodeIntegerForKey:@"expectedAttendance"];
+    v5->_sourceService = [coderCopy decodeInt64ForKey:@"sourceService"];
+    v5->_supportsEventExperience = [coderCopy decodeBoolForKey:@"supportsEventExperience"];
   }
 
   return v5;
 }
 
-- (id)_calculateUniversalDateFromLocalDate:(id)a3 includingTimeZone:(id)a4 localStartTime:(double)a5
+- (id)_calculateUniversalDateFromLocalDate:(id)date includingTimeZone:(id)zone localStartTime:(double)time
 {
-  v7 = a3;
-  v8 = [v7 dateByAddingTimeInterval:{a5 - objc_msgSend(a4, "secondsFromGMTForDate:", v7)}];
+  dateCopy = date;
+  v8 = [dateCopy dateByAddingTimeInterval:{time - objc_msgSend(zone, "secondsFromGMTForDate:", dateCopy)}];
 
   return v8;
 }
 
 - (NSDateInterval)universalDateIntervalIncludingTime
 {
-  v3 = [(NSDateInterval *)self->_localDateInterval startDate];
-  v4 = [(NSDateInterval *)self->_localDateInterval endDate];
+  startDate = [(NSDateInterval *)self->_localDateInterval startDate];
+  endDate = [(NSDateInterval *)self->_localDateInterval endDate];
   localStartTime = self->_localStartTime;
   localEndTime = self->_localEndTime;
-  if (localEndTime < localStartTime && [v3 compare:v4] != -1)
+  if (localEndTime < localStartTime && [startDate compare:endDate] != -1)
   {
-    v7 = [CLSCalendar dateByAddingDays:1 toDate:v3];
+    v7 = [CLSCalendar dateByAddingDays:1 toDate:startDate];
 
-    v4 = v7;
+    endDate = v7;
   }
 
-  v8 = [(CLSPublicEvent *)self _calculateUniversalDateFromLocalDate:v3 includingTimeZone:self->_timeZone localStartTime:localStartTime];
-  v9 = [(CLSPublicEvent *)self _calculateUniversalDateFromLocalDate:v4 includingTimeZone:self->_timeZone localStartTime:localEndTime];
+  v8 = [(CLSPublicEvent *)self _calculateUniversalDateFromLocalDate:startDate includingTimeZone:self->_timeZone localStartTime:localStartTime];
+  v9 = [(CLSPublicEvent *)self _calculateUniversalDateFromLocalDate:endDate includingTimeZone:self->_timeZone localStartTime:localEndTime];
   v10 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v8 endDate:v9];
 
   return v10;

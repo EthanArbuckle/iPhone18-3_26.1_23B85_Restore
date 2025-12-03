@@ -1,40 +1,40 @@
 @interface DMTTaskOperationBuilder
-+ (Class)validationClassForRequest:(id)a3;
-- (BOOL)validateRequest:(id)a3 error:(id *)a4;
-- (DMTTaskOperationBuilder)initWithDeviceInfoPrimitives:(id)a3 enrollmentPrerequisiteReceiver:(id)a4 enrollmentInitiator:(id)a5 enrollmentStateProvider:(id)a6;
-- (id)taskOperationForRequest:(id)a3;
++ (Class)validationClassForRequest:(id)request;
+- (BOOL)validateRequest:(id)request error:(id *)error;
+- (DMTTaskOperationBuilder)initWithDeviceInfoPrimitives:(id)primitives enrollmentPrerequisiteReceiver:(id)receiver enrollmentInitiator:(id)initiator enrollmentStateProvider:(id)provider;
+- (id)taskOperationForRequest:(id)request;
 @end
 
 @implementation DMTTaskOperationBuilder
 
-- (DMTTaskOperationBuilder)initWithDeviceInfoPrimitives:(id)a3 enrollmentPrerequisiteReceiver:(id)a4 enrollmentInitiator:(id)a5 enrollmentStateProvider:(id)a6
+- (DMTTaskOperationBuilder)initWithDeviceInfoPrimitives:(id)primitives enrollmentPrerequisiteReceiver:(id)receiver enrollmentInitiator:(id)initiator enrollmentStateProvider:(id)provider
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  primitivesCopy = primitives;
+  receiverCopy = receiver;
+  initiatorCopy = initiator;
+  providerCopy = provider;
   v18.receiver = self;
   v18.super_class = DMTTaskOperationBuilder;
   v15 = [(DMTTaskOperationBuilder *)&v18 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_deviceInfoPrimitives, a3);
-    objc_storeStrong(&v16->_enrollmentPrerequisiteReceiver, a4);
-    objc_storeStrong(&v16->_enrollmentInitiator, a5);
-    objc_storeStrong(&v16->_enrollmentStateProvider, a6);
+    objc_storeStrong(&v15->_deviceInfoPrimitives, primitives);
+    objc_storeStrong(&v16->_enrollmentPrerequisiteReceiver, receiver);
+    objc_storeStrong(&v16->_enrollmentInitiator, initiator);
+    objc_storeStrong(&v16->_enrollmentStateProvider, provider);
   }
 
   return v16;
 }
 
-- (BOOL)validateRequest:(id)a3 error:(id *)a4
+- (BOOL)validateRequest:(id)request error:(id *)error
 {
-  v5 = a3;
-  v6 = [DMTTaskOperationBuilder validationClassForRequest:v5];
+  requestCopy = request;
+  v6 = [DMTTaskOperationBuilder validationClassForRequest:requestCopy];
   if (v6)
   {
-    v7 = [(objc_class *)v6 validateRequest:v5 error:a4];
+    v7 = [(objc_class *)v6 validateRequest:requestCopy error:error];
   }
 
   else
@@ -45,14 +45,14 @@
   return v7;
 }
 
-- (id)taskOperationForRequest:(id)a3
+- (id)taskOperationForRequest:(id)request
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  requestCopy = request;
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
     v5 = [DMTFetchAutomatedDeviceEnrollmentPrerequisitesOperation alloc];
-    v6 = [(DMTTaskOperationBuilder *)self deviceInfoPrimitives];
-    v7 = [(DMTFetchAutomatedDeviceEnrollmentPrerequisitesOperation *)v5 initWithRequest:v4 deviceInformationPrimitives:v6];
+    deviceInfoPrimitives = [(DMTTaskOperationBuilder *)self deviceInfoPrimitives];
+    v7 = [(DMTFetchAutomatedDeviceEnrollmentPrerequisitesOperation *)v5 initWithRequest:requestCopy deviceInformationPrimitives:deviceInfoPrimitives];
 LABEL_3:
     v8 = v7;
 LABEL_6:
@@ -60,21 +60,21 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
     v9 = [DMTPerformAutomatedDeviceEnrollmentOperation alloc];
-    v6 = [(DMTTaskOperationBuilder *)self enrollmentPrerequisiteReceiver];
-    v10 = [(DMTTaskOperationBuilder *)self enrollmentInitiator];
-    v8 = [(DMTPerformAutomatedDeviceEnrollmentOperation *)v9 initWithRequest:v4 prerequisiteReceiver:v6 enrollmentInitiator:v10];
+    deviceInfoPrimitives = [(DMTTaskOperationBuilder *)self enrollmentPrerequisiteReceiver];
+    enrollmentInitiator = [(DMTTaskOperationBuilder *)self enrollmentInitiator];
+    v8 = [(DMTPerformAutomatedDeviceEnrollmentOperation *)v9 initWithRequest:requestCopy prerequisiteReceiver:deviceInfoPrimitives enrollmentInitiator:enrollmentInitiator];
 
     goto LABEL_6;
   }
 
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  if ([requestCopy isMemberOfClass:objc_opt_class()])
   {
     v12 = [DMTFetchAutomatedDeviceEnrollmentStateOperation alloc];
-    v6 = [(DMTTaskOperationBuilder *)self enrollmentStateProvider];
-    v7 = [(DMTFetchAutomatedDeviceEnrollmentStateOperation *)v12 initWithRequest:v4 enrollmentStateProvider:v6];
+    deviceInfoPrimitives = [(DMTTaskOperationBuilder *)self enrollmentStateProvider];
+    v7 = [(DMTFetchAutomatedDeviceEnrollmentStateOperation *)v12 initWithRequest:requestCopy enrollmentStateProvider:deviceInfoPrimitives];
     goto LABEL_3;
   }
 
@@ -84,7 +84,7 @@ LABEL_7:
   return v8;
 }
 
-+ (Class)validationClassForRequest:(id)a3
++ (Class)validationClassForRequest:(id)request
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v3 = objc_opt_class();

@@ -5,74 +5,74 @@
 - (CGPoint)position;
 - (CGSize)size;
 - (MPLayer)init;
-- (id)allSlides:(BOOL)a3;
+- (id)allSlides:(BOOL)slides;
 - (id)allSongs;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)fullDebugLog;
 - (id)layerKey;
 - (id)parentDocument;
 - (id)scriptingAnimations;
 - (int64_t)zIndex;
-- (void)addEffectContainer:(id)a3;
-- (void)addEffectContainers:(id)a3;
-- (void)addFilter:(id)a3;
-- (void)addFilters:(id)a3;
+- (void)addEffectContainer:(id)container;
+- (void)addEffectContainers:(id)containers;
+- (void)addFilter:(id)filter;
+- (void)addFilters:(id)filters;
 - (void)cleanup;
 - (void)configureActions;
-- (void)copyActions:(id)a3;
-- (void)copyAnimationPaths:(id)a3;
-- (void)copyAudioPlaylist:(id)a3;
-- (void)copyEffectContainers:(id)a3;
-- (void)copyFilters:(id)a3;
-- (void)copyStruct:(id)a3;
+- (void)copyActions:(id)actions;
+- (void)copyAnimationPaths:(id)paths;
+- (void)copyAudioPlaylist:(id)playlist;
+- (void)copyEffectContainers:(id)containers;
+- (void)copyFilters:(id)filters;
+- (void)copyStruct:(id)struct;
 - (void)dealloc;
-- (void)insertFilters:(id)a3 atIndex:(int64_t)a4;
-- (void)insertObject:(id)a3 inEffectContainersAtIndex:(int64_t)a4;
-- (void)insertObject:(id)a3 inFiltersAtIndex:(int64_t)a4;
-- (void)moveFiltersFromIndices:(id)a3 toIndex:(int64_t)a4;
+- (void)insertFilters:(id)filters atIndex:(int64_t)index;
+- (void)insertObject:(id)object inEffectContainersAtIndex:(int64_t)index;
+- (void)insertObject:(id)object inFiltersAtIndex:(int64_t)index;
+- (void)moveFiltersFromIndices:(id)indices toIndex:(int64_t)index;
 - (void)reconnectAllTransitions;
-- (void)reconnectTransitionForEffectContainerAtIndex:(int64_t)a3;
-- (void)removeActionForKey:(id)a3;
+- (void)reconnectTransitionForEffectContainerAtIndex:(int64_t)index;
+- (void)removeActionForKey:(id)key;
 - (void)removeAllEffectContainers;
 - (void)removeAllFilters;
-- (void)removeAnimationPathForKey:(id)a3;
-- (void)removeFiltersAtIndices:(id)a3;
-- (void)removeObjectFromEffectContainersAtIndex:(int64_t)a3;
-- (void)removeObjectFromFiltersAtIndex:(int64_t)a3;
-- (void)replaceObjectInEffectContainersAtIndex:(int64_t)a3 withObject:(id)a4;
-- (void)replaceObjectInFiltersAtIndex:(int64_t)a3 withObject:(id)a4;
+- (void)removeAnimationPathForKey:(id)key;
+- (void)removeFiltersAtIndices:(id)indices;
+- (void)removeObjectFromEffectContainersAtIndex:(int64_t)index;
+- (void)removeObjectFromFiltersAtIndex:(int64_t)index;
+- (void)replaceObjectInEffectContainersAtIndex:(int64_t)index withObject:(id)object;
+- (void)replaceObjectInFiltersAtIndex:(int64_t)index withObject:(id)object;
 - (void)resetStartTimes;
-- (void)setAction:(id)a3 forKey:(id)a4;
-- (void)setAnimationPath:(id)a3 forKey:(id)a4;
-- (void)setAudioPriority:(int64_t)a3;
-- (void)setDuration:(double)a3;
-- (void)setHeight:(double)a3;
-- (void)setIsAudioLayer:(BOOL)a3;
-- (void)setIsTriggered:(BOOL)a3;
-- (void)setMontage:(id)a3;
-- (void)setNumberOfLoops:(double)a3;
-- (void)setOpacity:(double)a3;
-- (void)setParent:(id)a3;
-- (void)setPhaseInDuration:(double)a3;
-- (void)setPhaseOutDuration:(double)a3;
-- (void)setPlug:(id)a3;
-- (void)setPosition:(CGPoint)a3;
-- (void)setRotationAngle:(double)a3;
-- (void)setScale:(double)a3;
-- (void)setScriptingAnimations:(id)a3;
-- (void)setSize:(CGSize)a3;
-- (void)setSkipTimeCalculations:(BOOL)a3;
-- (void)setStartsPaused:(BOOL)a3;
-- (void)setTimeIn:(double)a3;
-- (void)setWidth:(double)a3;
-- (void)setXPosition:(double)a3;
-- (void)setXRotationAngle:(double)a3;
-- (void)setYPosition:(double)a3;
-- (void)setYRotationAngle:(double)a3;
-- (void)setZIndex:(int64_t)a3;
-- (void)setZPosition:(double)a3;
-- (void)updateDurationPadding:(double)a3;
+- (void)setAction:(id)action forKey:(id)key;
+- (void)setAnimationPath:(id)path forKey:(id)key;
+- (void)setAudioPriority:(int64_t)priority;
+- (void)setDuration:(double)duration;
+- (void)setHeight:(double)height;
+- (void)setIsAudioLayer:(BOOL)layer;
+- (void)setIsTriggered:(BOOL)triggered;
+- (void)setMontage:(id)montage;
+- (void)setNumberOfLoops:(double)loops;
+- (void)setOpacity:(double)opacity;
+- (void)setParent:(id)parent;
+- (void)setPhaseInDuration:(double)duration;
+- (void)setPhaseOutDuration:(double)duration;
+- (void)setPlug:(id)plug;
+- (void)setPosition:(CGPoint)position;
+- (void)setRotationAngle:(double)angle;
+- (void)setScale:(double)scale;
+- (void)setScriptingAnimations:(id)animations;
+- (void)setSize:(CGSize)size;
+- (void)setSkipTimeCalculations:(BOOL)calculations;
+- (void)setStartsPaused:(BOOL)paused;
+- (void)setTimeIn:(double)in;
+- (void)setWidth:(double)width;
+- (void)setXPosition:(double)position;
+- (void)setXRotationAngle:(double)angle;
+- (void)setYPosition:(double)position;
+- (void)setYRotationAngle:(double)angle;
+- (void)setZIndex:(int64_t)index;
+- (void)setZPosition:(double)position;
+- (void)updateDurationPadding:(double)padding;
 - (void)updateMainDuration;
 @end
 
@@ -161,9 +161,9 @@
   return [(NSString *)v5 stringByAppendingFormat:@"\t                Has Layer Plug: %@\n", v6];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 copyStruct:self->_internal];
   [v4 copyEffectContainers:self->_effectContainers];
   [v4 copyFilters:self->_filters];
@@ -197,17 +197,17 @@
   [(MPLayer *)&v4 dealloc];
 }
 
-- (void)addEffectContainer:(id)a3
+- (void)addEffectContainer:(id)container
 {
-  v4 = [[NSArray alloc] initWithObjects:{a3, 0}];
+  v4 = [[NSArray alloc] initWithObjects:{container, 0}];
   [(MPLayer *)self insertEffectContainers:v4 atIndex:[(NSMutableArray *)self->_effectContainers count]];
 }
 
-- (void)addEffectContainers:(id)a3
+- (void)addEffectContainers:(id)containers
 {
   v5 = [(NSMutableArray *)self->_effectContainers count];
 
-  [(MPLayer *)self insertEffectContainers:a3 atIndex:v5];
+  [(MPLayer *)self insertEffectContainers:containers atIndex:v5];
 }
 
 - (void)removeAllEffectContainers
@@ -219,25 +219,25 @@
   }
 }
 
-- (void)addFilter:(id)a3
+- (void)addFilter:(id)filter
 {
-  v4 = [NSArray arrayWithObject:a3];
+  v4 = [NSArray arrayWithObject:filter];
   v5 = [(NSMutableArray *)self->_filters count];
 
   [(MPLayer *)self insertFilters:v4 atIndex:v5];
 }
 
-- (void)addFilters:(id)a3
+- (void)addFilters:(id)filters
 {
   v5 = [(NSMutableArray *)self->_filters count];
 
-  [(MPLayer *)self insertFilters:a3 atIndex:v5];
+  [(MPLayer *)self insertFilters:filters atIndex:v5];
 }
 
-- (void)insertFilters:(id)a3 atIndex:(int64_t)a4
+- (void)insertFilters:(id)filters atIndex:(int64_t)index
 {
-  v4 = a4;
-  v7 = [[NSIndexSet alloc] initWithIndexesInRange:{a4, objc_msgSend(a3, "count")}];
+  indexCopy = index;
+  v7 = [[NSIndexSet alloc] initWithIndexesInRange:{index, objc_msgSend(filters, "count")}];
   [(MPLayer *)self willChange:2 valuesAtIndexes:v7 forKey:@"filters"];
   filters = self->_filters;
   if (!filters)
@@ -246,12 +246,12 @@
     self->_filters = filters;
   }
 
-  [(NSMutableArray *)filters insertObjects:a3 atIndexes:v7];
+  [(NSMutableArray *)filters insertObjects:filters atIndexes:v7];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v9 = [a3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  v9 = [filters countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v9)
   {
     v10 = v9;
@@ -263,7 +263,7 @@
       {
         if (*v23 != v11)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(filters);
         }
 
         [*(*(&v22 + 1) + 8 * v12) setParent:self];
@@ -271,7 +271,7 @@
       }
 
       while (v10 != v12);
-      v10 = [a3 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v10 = [filters countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v10);
@@ -283,7 +283,7 @@
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v13 = [a3 countByEnumeratingWithState:&v18 objects:v26 count:16];
+    v13 = [filters countByEnumeratingWithState:&v18 objects:v26 count:16];
     if (v13)
     {
       v14 = v13;
@@ -291,22 +291,22 @@
       do
       {
         v16 = 0;
-        v17 = v4;
+        v17 = indexCopy;
         do
         {
           if (*v19 != v15)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(filters);
           }
 
-          v4 = v17 + 1;
+          indexCopy = v17 + 1;
           [*(*(&v18 + 1) + 8 * v16) setFilter:{-[MCPlugParallel insertFilterWithFilterID:atIndex:](self->_plug, "insertFilterWithFilterID:atIndex:", objc_msgSend(*(*(&v18 + 1) + 8 * v16), "filterID"), v17)}];
           v16 = v16 + 1;
           ++v17;
         }
 
         while (v14 != v16);
-        v14 = [a3 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        v14 = [filters countByEnumeratingWithState:&v18 objects:v26 count:16];
       }
 
       while (v14);
@@ -316,15 +316,15 @@
   [(MPLayer *)self didChange:2 valuesAtIndexes:v7 forKey:@"filters"];
 }
 
-- (void)removeFiltersAtIndices:(id)a3
+- (void)removeFiltersAtIndices:(id)indices
 {
   if ([(NSMutableArray *)self->_filters count])
   {
-    [(MPLayer *)self willChange:3 valuesAtIndexes:a3 forKey:@"filters"];
-    v5 = [a3 lastIndex];
-    if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+    [(MPLayer *)self willChange:3 valuesAtIndexes:indices forKey:@"filters"];
+    lastIndex = [indices lastIndex];
+    if (lastIndex != 0x7FFFFFFFFFFFFFFFLL)
     {
-      for (i = v5; i != 0x7FFFFFFFFFFFFFFFLL; i = [a3 indexLessThanIndex:i])
+      for (i = lastIndex; i != 0x7FFFFFFFFFFFFFFFLL; i = [indices indexLessThanIndex:i])
       {
         v7 = [(NSMutableArray *)self->_filters objectAtIndex:i];
         [v7 setParent:0];
@@ -335,12 +335,12 @@
     plug = self->_plug;
     if (plug)
     {
-      [(MCPlugParallel *)plug removeFiltersAtIndices:a3];
+      [(MCPlugParallel *)plug removeFiltersAtIndices:indices];
     }
 
-    [(NSMutableArray *)self->_filters removeObjectsAtIndexes:a3];
+    [(NSMutableArray *)self->_filters removeObjectsAtIndexes:indices];
 
-    [(MPLayer *)self didChange:3 valuesAtIndexes:a3 forKey:@"filters"];
+    [(MPLayer *)self didChange:3 valuesAtIndexes:indices forKey:@"filters"];
   }
 }
 
@@ -353,19 +353,19 @@
   }
 }
 
-- (void)moveFiltersFromIndices:(id)a3 toIndex:(int64_t)a4
+- (void)moveFiltersFromIndices:(id)indices toIndex:(int64_t)index
 {
-  v7 = [a3 firstIndex];
-  if (v7 != 0x7FFFFFFFFFFFFFFFLL)
+  firstIndex = [indices firstIndex];
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = v7;
+    v8 = firstIndex;
     do
     {
       v9 = [(NSMutableArray *)self->_filters objectAtIndex:v8];
       [(NSMutableArray *)self->_filters removeObjectAtIndex:v8];
-      [(NSMutableArray *)self->_filters insertObject:v9 atIndex:a4 - (v8 < a4)];
-      v8 = [a3 indexGreaterThanIndex:v8];
-      ++a4;
+      [(NSMutableArray *)self->_filters insertObject:v9 atIndex:index - (v8 < index)];
+      v8 = [indices indexGreaterThanIndex:v8];
+      ++index;
     }
 
     while (v8 != 0x7FFFFFFFFFFFFFFFLL);
@@ -375,15 +375,15 @@
   if (plug)
   {
 
-    [(MCPlugParallel *)plug moveFiltersAtIndices:a3 toIndex:a4];
+    [(MCPlugParallel *)plug moveFiltersAtIndices:indices toIndex:index];
   }
 }
 
-- (void)setAnimationPath:(id)a3 forKey:(id)a4
+- (void)setAnimationPath:(id)path forKey:(id)key
 {
-  if (a3)
+  if (path)
   {
-    v7 = [(MPLayer *)self animationPathForKey:a4];
+    v7 = [(MPLayer *)self animationPathForKey:key];
     if (v7)
     {
       v8 = v7;
@@ -391,7 +391,7 @@
       [v8 setAnimationPath:0];
     }
 
-    [a3 setParent:self];
+    [path setParent:self];
     animationPaths = self->_animationPaths;
     if (!animationPaths)
     {
@@ -399,11 +399,11 @@
       self->_animationPaths = animationPaths;
     }
 
-    [(NSMutableDictionary *)animationPaths setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)animationPaths setObject:path forKey:key];
     plug = self->_plug;
     if (plug)
     {
-      [(MCPlug *)plug removeAnimationPathForKey:a4];
+      [(MCPlug *)plug removeAnimationPathForKey:key];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
       v12 = off_1A4CB0;
@@ -412,55 +412,55 @@
         v12 = off_1A4CB8;
       }
 
-      v13 = [(__objc2_class *)*v12 animationPathWithKey:a4];
+      v13 = [(__objc2_class *)*v12 animationPathWithKey:key];
       [(MCPlug *)self->_plug addAnimationPath:v13];
 
-      [a3 setAnimationPath:v13];
+      [path setAnimationPath:v13];
     }
   }
 
   else
   {
 
-    [(MPLayer *)self removeAnimationPathForKey:a4];
+    [(MPLayer *)self removeAnimationPathForKey:key];
   }
 }
 
-- (void)removeAnimationPathForKey:(id)a3
+- (void)removeAnimationPathForKey:(id)key
 {
   v5 = [(MPLayer *)self animationPathForKey:?];
   plug = self->_plug;
   if (plug)
   {
-    [(MCPlug *)plug removeAnimationPathForKey:a3];
+    [(MCPlug *)plug removeAnimationPathForKey:key];
     [v5 setAnimationPath:0];
   }
 
   [v5 setParent:0];
   animationPaths = self->_animationPaths;
 
-  [(NSMutableDictionary *)animationPaths removeObjectForKey:a3];
+  [(NSMutableDictionary *)animationPaths removeObjectForKey:key];
 }
 
-- (void)setOpacity:(double)a3
+- (void)setOpacity:(double)opacity
 {
   [(MPLayerInternal *)self->_internal setOpacity:?];
   plug = self->_plug;
   if (plug)
   {
 
-    [(MCPlugParallel *)plug setOpacity:a3];
+    [(MCPlugParallel *)plug setOpacity:opacity];
   }
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
   [(MPLayerInternal *)self->_internal setScale:?];
   plug = self->_plug;
   if (plug)
   {
 
-    [(MCPlugParallel *)plug setScale:a3];
+    [(MCPlugParallel *)plug setScale:scale];
   }
 }
 
@@ -472,10 +472,10 @@
   return result;
 }
 
-- (void)setPosition:(CGPoint)a3
+- (void)setPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   [(MPLayerInternal *)self->_internal setPosition:?];
   plug = self->_plug;
   if (plug)
@@ -485,25 +485,25 @@
   }
 }
 
-- (void)setZPosition:(double)a3
+- (void)setZPosition:(double)position
 {
   [(MPLayerInternal *)self->_internal setZPosition:?];
   plug = self->_plug;
   if (plug)
   {
 
-    [(MCPlugParallel *)plug setZPosition:a3];
+    [(MCPlugParallel *)plug setZPosition:position];
   }
 }
 
-- (void)setRotationAngle:(double)a3
+- (void)setRotationAngle:(double)angle
 {
   [(MPLayerInternal *)self->_internal setRotationAngle:?];
   plug = self->_plug;
   if (plug)
   {
 
-    [(MCPlugParallel *)plug setRotationAngle:a3];
+    [(MCPlugParallel *)plug setRotationAngle:angle];
   }
 }
 
@@ -515,10 +515,10 @@
   return result;
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(MPLayerInternal *)self->_internal setSize:?];
   plug = self->_plug;
   if (plug)
@@ -528,25 +528,25 @@
   }
 }
 
-- (void)setXRotationAngle:(double)a3
+- (void)setXRotationAngle:(double)angle
 {
   [(MPLayerInternal *)self->_internal setXRotationAngle:?];
   plug = self->_plug;
   if (plug)
   {
 
-    [(MCPlugParallel *)plug setXRotationAngle:a3];
+    [(MCPlugParallel *)plug setXRotationAngle:angle];
   }
 }
 
-- (void)setYRotationAngle:(double)a3
+- (void)setYRotationAngle:(double)angle
 {
   [(MPLayerInternal *)self->_internal setYRotationAngle:?];
   plug = self->_plug;
   if (plug)
   {
 
-    [(MCPlugParallel *)plug setYRotationAngle:a3];
+    [(MCPlugParallel *)plug setYRotationAngle:angle];
   }
 }
 
@@ -563,9 +563,9 @@
   return [(MPLayerInternal *)internal zIndex];
 }
 
-- (void)setZIndex:(int64_t)a3
+- (void)setZIndex:(int64_t)index
 {
-  v3 = a3;
+  indexCopy = index;
   [(MPLayerInternal *)self->_internal setZIndex:?];
   if ([-[MPLayer parent](self "parent")])
   {
@@ -573,68 +573,68 @@
     if (plug)
     {
 
-      [(MCPlugParallel *)plug setZIndex:v3];
+      [(MCPlugParallel *)plug setZIndex:indexCopy];
     }
   }
 }
 
-- (void)setTimeIn:(double)a3
+- (void)setTimeIn:(double)in
 {
   [(MPLayerInternal *)self->_internal setTimeIn:?];
   plug = self->_plug;
   if (plug)
   {
 
-    [(MCPlugParallel *)plug setTimeIn:a3];
+    [(MCPlugParallel *)plug setTimeIn:in];
   }
 }
 
-- (void)setDuration:(double)a3
+- (void)setDuration:(double)duration
 {
-  if (a3 < 0.0)
+  if (duration < 0.0)
   {
     NSLog(@"iLifeSlideshow: Trying to set a duration less than 0.", a2);
-    a3 = 0.0;
+    duration = 0.0;
   }
 
-  [(MPLayerInternal *)self->_internal setDuration:a3];
+  [(MPLayerInternal *)self->_internal setDuration:duration];
   [(MPLayer *)self updateMainDuration];
   [(MPLayer *)self resetStartTimes];
   if (!self->_skipTimeCalculations)
   {
-    v4 = [(MPLayer *)self parent];
+    parent = [(MPLayer *)self parent];
 
-    [v4 resetDuration];
+    [parent resetDuration];
   }
 }
 
-- (void)setPhaseInDuration:(double)a3
+- (void)setPhaseInDuration:(double)duration
 {
   [(MPLayerInternal *)self->_internal setPhaseInDuration:?];
   plug = self->_plug;
   if (plug)
   {
-    [(MCPlug *)plug setPhaseInDuration:a3];
+    [(MCPlug *)plug setPhaseInDuration:duration];
 
     [(MPLayer *)self updateMainDuration];
   }
 }
 
-- (void)setPhaseOutDuration:(double)a3
+- (void)setPhaseOutDuration:(double)duration
 {
   [(MPLayerInternal *)self->_internal setPhaseOutDuration:?];
   plug = self->_plug;
   if (plug)
   {
-    [(MCPlug *)plug setPhaseOutDuration:a3];
+    [(MCPlug *)plug setPhaseOutDuration:duration];
 
     [(MPLayer *)self updateMainDuration];
   }
 }
 
-- (void)setIsTriggered:(BOOL)a3
+- (void)setIsTriggered:(BOOL)triggered
 {
-  v3 = a3;
+  triggeredCopy = triggered;
   [(MPLayerInternal *)self->_internal setIsTriggered:?];
   if (self->_plug)
   {
@@ -643,42 +643,42 @@
     {
       plug = self->_plug;
 
-      [(MCPlugParallel *)plug setIsTriggered:v3];
+      [(MCPlugParallel *)plug setIsTriggered:triggeredCopy];
     }
   }
 }
 
-- (void)setStartsPaused:(BOOL)a3
+- (void)setStartsPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   [(MPLayerInternal *)self->_internal setStartsPaused:?];
   plug = self->_plug;
   if (plug)
   {
 
-    [(MCPlug *)plug setStartsPaused:v3];
+    [(MCPlug *)plug setStartsPaused:pausedCopy];
   }
 }
 
-- (void)setAudioPriority:(int64_t)a3
+- (void)setAudioPriority:(int64_t)priority
 {
-  v3 = a3;
+  priorityCopy = priority;
   [(MPLayerInternal *)self->_internal setAudioPriority:?];
   plug = self->_plug;
   if (plug)
   {
 
-    [(MCPlugParallel *)plug setAudioPriority:v3];
+    [(MCPlugParallel *)plug setAudioPriority:priorityCopy];
   }
 }
 
-- (void)setNumberOfLoops:(double)a3
+- (void)setNumberOfLoops:(double)loops
 {
   [(MPLayerInternal *)self->_internal setNumberOfLoops:?];
   plug = self->_plug;
   if (plug)
   {
-    [(MCPlug *)plug setNumberOfLoops:a3];
+    [(MCPlug *)plug setNumberOfLoops:loops];
     [(MPLayer *)self updateMainDuration];
   }
 
@@ -687,9 +687,9 @@
   [parent resetDuration];
 }
 
-- (void)setIsAudioLayer:(BOOL)a3
+- (void)setIsAudioLayer:(BOOL)layer
 {
-  [(MPLayerInternal *)self->_internal setIsAudioLayer:a3];
+  [(MPLayerInternal *)self->_internal setIsAudioLayer:layer];
   if ([(MPLayerInternal *)self->_internal isAudioLayer])
   {
     height = CGSizeZero.height;
@@ -706,62 +706,62 @@
   }
 
   v3 = [-[MPLayer parent](self "parent")];
-  v4 = [(MPLayer *)self uuid];
+  uuid = [(MPLayer *)self uuid];
 
-  return [v3 objectForKey:v4];
+  return [v3 objectForKey:uuid];
 }
 
-- (void)setAction:(id)a3 forKey:(id)a4
+- (void)setAction:(id)action forKey:(id)key
 {
-  if (a3)
+  if (action)
   {
     if (!self->_actions)
     {
       self->_actions = objc_alloc_init(NSMutableDictionary);
     }
 
-    v7 = [(MPLayer *)self actionForKey:a4];
+    v7 = [(MPLayer *)self actionForKey:key];
     if (v7)
     {
       [v7 setParent:0];
     }
 
-    [a3 setParent:self];
-    [(NSMutableDictionary *)self->_actions setObject:a3 forKey:a4];
+    [action setParent:self];
+    [(NSMutableDictionary *)self->_actions setObject:action forKey:key];
     plug = self->_plug;
     if (plug)
     {
-      v9 = [MPUtilities createMCAction:a3 forPlug:plug withKey:a4];
+      v9 = [MPUtilities createMCAction:action forPlug:plug withKey:key];
 
-      [a3 setAction:v9];
+      [action setAction:v9];
     }
   }
 
   else
   {
 
-    [(MPLayer *)self removeActionForKey:a4];
+    [(MPLayer *)self removeActionForKey:key];
   }
 }
 
-- (void)removeActionForKey:(id)a3
+- (void)removeActionForKey:(id)key
 {
   v5 = [(MPLayer *)self actionForKey:?];
   plug = self->_plug;
   if (plug)
   {
-    [(MCPlug *)plug removeActionForKey:a3];
+    [(MCPlug *)plug removeActionForKey:key];
   }
 
   [v5 setParent:0];
   actions = self->_actions;
 
-  [(NSMutableDictionary *)actions removeObjectForKey:a3];
+  [(NSMutableDictionary *)actions removeObjectForKey:key];
 }
 
-- (id)allSlides:(BOOL)a3
+- (id)allSlides:(BOOL)slides
 {
-  v31 = a3;
+  slidesCopy = slides;
   v4 = +[NSMutableArray array];
   [(NSLock *)[(MPLayerInternal *)self->_internal containerLock] lock];
   v5 = [(NSMutableArray *)self->_effectContainers copy];
@@ -839,7 +839,7 @@
                 while (v15);
               }
 
-              if (v31)
+              if (slidesCopy)
               {
                 v19 = [objc_msgSend(v12 "secondarySlides")];
                 v32 = 0u;
@@ -922,8 +922,8 @@
         v19 = 0u;
         v16 = 0u;
         v17 = 0u;
-        v10 = [v9 effects];
-        v11 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        effects = [v9 effects];
+        v11 = [effects countByEnumeratingWithState:&v16 objects:v24 count:16];
         if (v11)
         {
           v12 = v11;
@@ -934,13 +934,13 @@
             {
               if (*v17 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(effects);
               }
 
               [v3 addObjectsFromArray:{objc_msgSend(objc_msgSend(*(*(&v16 + 1) + 8 * j), "audioPlaylist"), "songs")}];
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v16 objects:v24 count:16];
+            v12 = [effects countByEnumeratingWithState:&v16 objects:v24 count:16];
           }
 
           while (v12);
@@ -1021,64 +1021,64 @@
 
 - (id)parentDocument
 {
-  v2 = [(MPLayer *)self parent];
+  parent = [(MPLayer *)self parent];
   objc_opt_class();
-  while ((objc_opt_isKindOfClass() & 1) == 0 && v2)
+  while ((objc_opt_isKindOfClass() & 1) == 0 && parent)
   {
-    v2 = [v2 parent];
+    parent = [parent parent];
     objc_opt_class();
   }
 
-  return v2;
+  return parent;
 }
 
-- (void)copyStruct:(id)a3
+- (void)copyStruct:(id)struct
 {
-  [a3 numberOfLoops];
+  [struct numberOfLoops];
   [(MPLayerInternal *)self->_internal setNumberOfLoops:?];
-  [a3 position];
+  [struct position];
   [(MPLayerInternal *)self->_internal setPosition:?];
-  [a3 size];
+  [struct size];
   [(MPLayerInternal *)self->_internal setSize:?];
-  [a3 zPosition];
+  [struct zPosition];
   [(MPLayerInternal *)self->_internal setZPosition:?];
-  [a3 rotationAngle];
+  [struct rotationAngle];
   [(MPLayerInternal *)self->_internal setRotationAngle:?];
-  [a3 xRotationAngle];
+  [struct xRotationAngle];
   [(MPLayerInternal *)self->_internal setXRotationAngle:?];
-  [a3 yRotationAngle];
+  [struct yRotationAngle];
   [(MPLayerInternal *)self->_internal setYRotationAngle:?];
-  [a3 scale];
+  [struct scale];
   [(MPLayerInternal *)self->_internal setScale:?];
-  [a3 opacity];
+  [struct opacity];
   [(MPLayerInternal *)self->_internal setOpacity:?];
-  [a3 timeIn];
+  [struct timeIn];
   [(MPLayerInternal *)self->_internal setTimeIn:?];
-  -[MPLayerInternal setIsTriggered:](self->_internal, "setIsTriggered:", [a3 isTriggered]);
-  -[MPLayerInternal setStartsPaused:](self->_internal, "setStartsPaused:", [a3 startsPaused]);
-  [a3 duration];
+  -[MPLayerInternal setIsTriggered:](self->_internal, "setIsTriggered:", [struct isTriggered]);
+  -[MPLayerInternal setStartsPaused:](self->_internal, "setStartsPaused:", [struct startsPaused]);
+  [struct duration];
   [(MPLayerInternal *)self->_internal setDuration:?];
-  [a3 phaseInDuration];
+  [struct phaseInDuration];
   [(MPLayerInternal *)self->_internal setPhaseInDuration:?];
-  [a3 phaseOutDuration];
+  [struct phaseOutDuration];
   [(MPLayerInternal *)self->_internal setPhaseOutDuration:?];
-  -[MPLayerInternal setAudioPriority:](self->_internal, "setAudioPriority:", [a3 audioPriority]);
-  -[MPLayerInternal setTitle:](self->_internal, "setTitle:", [objc_msgSend(a3 "title")]);
-  -[MPLayerInternal setLayerID:](self->_internal, "setLayerID:", [objc_msgSend(a3 "layerID")]);
-  -[MPLayerInternal setZIndex:](self->_internal, "setZIndex:", [a3 zIndex]);
+  -[MPLayerInternal setAudioPriority:](self->_internal, "setAudioPriority:", [struct audioPriority]);
+  -[MPLayerInternal setTitle:](self->_internal, "setTitle:", [objc_msgSend(struct "title")]);
+  -[MPLayerInternal setLayerID:](self->_internal, "setLayerID:", [objc_msgSend(struct "layerID")]);
+  -[MPLayerInternal setZIndex:](self->_internal, "setZIndex:", [struct zIndex]);
   internal = self->_internal;
 
   [(MPLayerInternal *)internal setUuid:0];
 }
 
-- (void)copyEffectContainers:(id)a3
+- (void)copyEffectContainers:(id)containers
 {
   v5 = objc_alloc_init(NSMutableArray);
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v6 = [containers countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -1090,7 +1090,7 @@
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(containers);
         }
 
         v10 = [*(*(&v11 + 1) + 8 * v9) copy];
@@ -1100,7 +1100,7 @@
       }
 
       while (v7 != v9);
-      v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [containers countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -1109,16 +1109,16 @@
   [(MPLayer *)self addEffectContainers:v5];
 }
 
-- (void)copyFilters:(id)a3
+- (void)copyFilters:(id)filters
 {
-  if (a3)
+  if (filters)
   {
     v5 = objc_alloc_init(NSMutableArray);
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v6 = [filters countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1130,7 +1130,7 @@
         {
           if (*v12 != v8)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(filters);
           }
 
           v10 = [*(*(&v11 + 1) + 8 * v9) copy];
@@ -1140,23 +1140,23 @@
         }
 
         while (v7 != v9);
-        v7 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v7 = [filters countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v7);
     }
 
-    [(MPLayer *)self addFilters:a3];
+    [(MPLayer *)self addFilters:filters];
   }
 }
 
-- (void)copyAnimationPaths:(id)a3
+- (void)copyAnimationPaths:(id)paths
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [paths countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1167,28 +1167,28 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(paths);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [objc_msgSend(a3 objectForKey:{v9), "copy"}];
+        v10 = [objc_msgSend(paths objectForKey:{v9), "copy"}];
         [(MPLayer *)self setAnimationPath:v10 forKey:v9];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [paths countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)copyActions:(id)a3
+- (void)copyActions:(id)actions
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v5 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1199,24 +1199,24 @@
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(actions);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
-        v10 = [objc_msgSend(a3 objectForKey:{v9), "copy"}];
+        v10 = [objc_msgSend(actions objectForKey:{v9), "copy"}];
         [(MPLayer *)self setAction:v10 forKey:v9];
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [actions countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)copyAudioPlaylist:(id)a3
+- (void)copyAudioPlaylist:(id)playlist
 {
-  v4 = [a3 copy];
+  v4 = [playlist copy];
   [(MPLayer *)self setAudioPlaylist:v4];
 }
 
@@ -1226,12 +1226,12 @@
   self->_skipTimeCalculations = 1;
   [(MPLayer *)self removeAllEffectContainers];
   [(MPLayer *)self removeAllFilters];
-  v3 = [(NSMutableDictionary *)self->_animationPaths allKeys];
+  allKeys = [(NSMutableDictionary *)self->_animationPaths allKeys];
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -1243,7 +1243,7 @@
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allKeys);
         }
 
         [(MPLayer *)self removeAnimationPathForKey:*(*(&v8 + 1) + 8 * v7)];
@@ -1251,7 +1251,7 @@
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [allKeys countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
@@ -1260,11 +1260,11 @@
   [(MPLayer *)self setAudioPlaylist:0];
 }
 
-- (void)setPlug:(id)a3
+- (void)setPlug:(id)plug
 {
-  v5 = a3;
-  self->_plug = v5;
-  if (v5)
+  plugCopy = plug;
+  self->_plug = plugCopy;
+  if (plugCopy)
   {
     [(MPLayer *)self numberOfLoops];
     [(MCPlug *)self->_plug setNumberOfLoops:?];
@@ -1461,14 +1461,14 @@
   }
 }
 
-- (void)setParent:(id)a3
+- (void)setParent:(id)parent
 {
-  if (a3 && self->_parent)
+  if (parent && self->_parent)
   {
     objc_exception_throw([NSException exceptionWithName:@"ManyToOneException" reason:@"A layer may one have one parent.  Please remove it first.  This is unsupported." userInfo:0]);
   }
 
-  self->_parent = a3;
+  self->_parent = parent;
   if (![(MPLayerInternal *)self->_internal uuid])
   {
     v4 = +[MPUtilities stringWithNewUUID];
@@ -1478,7 +1478,7 @@
   }
 }
 
-- (void)setMontage:(id)a3
+- (void)setMontage:(id)montage
 {
   montage = self->_montage;
   if (montage)
@@ -1487,26 +1487,26 @@
     self->_montage = 0;
   }
 
-  self->_montage = a3;
+  self->_montage = montage;
 }
 
-- (void)setSkipTimeCalculations:(BOOL)a3
+- (void)setSkipTimeCalculations:(BOOL)calculations
 {
-  self->_skipTimeCalculations = a3;
+  self->_skipTimeCalculations = calculations;
   [(MPLayer *)self resetStartTimes];
   if (!self->_skipTimeCalculations)
   {
-    v4 = [(MPLayer *)self parent];
+    parent = [(MPLayer *)self parent];
 
-    [v4 resetDuration];
+    [parent resetDuration];
   }
 }
 
-- (void)updateDurationPadding:(double)a3
+- (void)updateDurationPadding:(double)padding
 {
   internal = self->_internal;
   [(MPLayerInternal *)internal durationPadding];
-  [(MPLayerInternal *)internal setDurationPadding:v6 + a3];
+  [(MPLayerInternal *)internal setDurationPadding:v6 + padding];
   [(MPLayerInternal *)self->_internal durationPadding];
   if (v7 < 0.0)
   {
@@ -1514,11 +1514,11 @@
   }
 
   [(MPLayer *)self updateMainDuration];
-  v8 = [(MPLayer *)self parent];
+  parent = [(MPLayer *)self parent];
   [-[MPLayer parent](self "parent")];
-  v10 = v9 + a3;
+  v10 = v9 + padding;
 
-  [v8 setDurationPadding:v10];
+  [parent setDurationPadding:v10];
 }
 
 - (void)updateMainDuration
@@ -1549,17 +1549,17 @@
   }
 }
 
-- (void)reconnectTransitionForEffectContainerAtIndex:(int64_t)a3
+- (void)reconnectTransitionForEffectContainerAtIndex:(int64_t)index
 {
-  if ([(MPLayer *)self countOfEffectContainers]> a3)
+  if ([(MPLayer *)self countOfEffectContainers]> index)
   {
-    v5 = [(NSMutableArray *)self->_effectContainers objectAtIndex:a3];
+    v5 = [(NSMutableArray *)self->_effectContainers objectAtIndex:index];
     if (([v5 isTransitionConnected] & 1) == 0)
     {
       [objc_msgSend(v5 "transition")];
       [(MPLayer *)self updateDurationPadding:-v6];
       effectContainers = self->_effectContainers;
-      v8 = a3 ? [(NSMutableArray *)effectContainers objectAtIndex:a3 - 1]: [(NSMutableArray *)effectContainers lastObject];
+      v8 = index ? [(NSMutableArray *)effectContainers objectAtIndex:index - 1]: [(NSMutableArray *)effectContainers lastObject];
       v9 = v8;
       if (([v8 isTransitionConnected] & 1) == 0)
       {
@@ -1684,76 +1684,76 @@
   }
 }
 
-- (void)insertObject:(id)a3 inEffectContainersAtIndex:(int64_t)a4
+- (void)insertObject:(id)object inEffectContainersAtIndex:(int64_t)index
 {
-  v6 = [NSArray arrayWithObject:a3];
+  v6 = [NSArray arrayWithObject:object];
 
-  [(MPLayer *)self insertEffectContainers:v6 atIndex:a4];
+  [(MPLayer *)self insertEffectContainers:v6 atIndex:index];
 }
 
-- (void)removeObjectFromEffectContainersAtIndex:(int64_t)a3
+- (void)removeObjectFromEffectContainersAtIndex:(int64_t)index
 {
-  v4 = [NSIndexSet indexSetWithIndex:a3];
+  v4 = [NSIndexSet indexSetWithIndex:index];
 
   [(MPLayer *)self removeEffectContainersAtIndices:v4];
 }
 
-- (void)replaceObjectInEffectContainersAtIndex:(int64_t)a3 withObject:(id)a4
+- (void)replaceObjectInEffectContainersAtIndex:(int64_t)index withObject:(id)object
 {
   [(MPLayer *)self removeEffectContainersAtIndices:[NSIndexSet indexSetWithIndex:?]];
-  v7 = [NSArray arrayWithObject:a4];
+  v7 = [NSArray arrayWithObject:object];
 
-  [(MPLayer *)self insertEffectContainers:v7 atIndex:a3];
+  [(MPLayer *)self insertEffectContainers:v7 atIndex:index];
 }
 
-- (void)insertObject:(id)a3 inFiltersAtIndex:(int64_t)a4
+- (void)insertObject:(id)object inFiltersAtIndex:(int64_t)index
 {
-  v6 = [NSArray arrayWithObject:a3];
+  v6 = [NSArray arrayWithObject:object];
 
-  [(MPLayer *)self insertFilters:v6 atIndex:a4];
+  [(MPLayer *)self insertFilters:v6 atIndex:index];
 }
 
-- (void)removeObjectFromFiltersAtIndex:(int64_t)a3
+- (void)removeObjectFromFiltersAtIndex:(int64_t)index
 {
-  v4 = [NSIndexSet indexSetWithIndex:a3];
+  v4 = [NSIndexSet indexSetWithIndex:index];
 
   [(MPLayer *)self removeFiltersAtIndices:v4];
 }
 
-- (void)replaceObjectInFiltersAtIndex:(int64_t)a3 withObject:(id)a4
+- (void)replaceObjectInFiltersAtIndex:(int64_t)index withObject:(id)object
 {
   [(MPLayer *)self removeFiltersAtIndices:[NSIndexSet indexSetWithIndex:?]];
-  v7 = [NSArray arrayWithObject:a4];
+  v7 = [NSArray arrayWithObject:object];
 
-  [(MPLayer *)self insertFilters:v7 atIndex:a3];
+  [(MPLayer *)self insertFilters:v7 atIndex:index];
 }
 
-- (void)setXPosition:(double)a3
+- (void)setXPosition:(double)position
 {
   [(MPLayer *)self yPosition];
 
-  [(MPLayer *)self setPosition:a3, v5];
+  [(MPLayer *)self setPosition:position, v5];
 }
 
-- (void)setYPosition:(double)a3
+- (void)setYPosition:(double)position
 {
   [(MPLayer *)self xPosition];
 
   [(MPLayer *)self setPosition:?];
 }
 
-- (void)setHeight:(double)a3
+- (void)setHeight:(double)height
 {
   [(MPLayer *)self width];
 
   [(MPLayer *)self setSize:?];
 }
 
-- (void)setWidth:(double)a3
+- (void)setWidth:(double)width
 {
   [(MPLayer *)self height];
 
-  [(MPLayer *)self setSize:a3, v5];
+  [(MPLayer *)self setSize:width, v5];
 }
 
 - (id)scriptingAnimations
@@ -1788,8 +1788,8 @@
         v26 = 0u;
         v27 = 0u;
         v28 = 0u;
-        v7 = [v4 orderedKeyframes];
-        v8 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+        orderedKeyframes = [v4 orderedKeyframes];
+        v8 = [orderedKeyframes countByEnumeratingWithState:&v25 objects:v33 count:16];
         if (v8)
         {
           v9 = v8;
@@ -1800,7 +1800,7 @@
             {
               if (*v26 != v10)
               {
-                objc_enumerationMutation(v7);
+                objc_enumerationMutation(orderedKeyframes);
               }
 
               v12 = *(*(&v25 + 1) + 8 * i);
@@ -1825,7 +1825,7 @@
               [v5 addObject:{+[NSNumber numberWithDouble:](NSNumber, "numberWithDouble:")}];
             }
 
-            v9 = [v7 countByEnumeratingWithState:&v25 objects:v33 count:16];
+            v9 = [orderedKeyframes countByEnumeratingWithState:&v25 objects:v33 count:16];
           }
 
           while (v9);
@@ -1847,13 +1847,13 @@
   return v20;
 }
 
-- (void)setScriptingAnimations:(id)a3
+- (void)setScriptingAnimations:(id)animations
 {
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v21 = [a3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+  v21 = [animations countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v21)
   {
     v19 = *v24;
@@ -1863,11 +1863,11 @@
       {
         if (*v24 != v19)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(animations);
         }
 
         v5 = *(*(&v23 + 1) + 8 * i);
-        v6 = [a3 objectForKey:{v5, v19}];
+        v6 = [animations objectForKey:{v5, v19}];
         v7 = [v6 objectForKey:@"times"];
         v8 = [v6 objectForKey:@"values"];
         v9 = +[MPAnimationPathKeyframed animationPath];
@@ -1900,7 +1900,7 @@
         [(MPLayer *)self setAnimationPath:v9 forKey:v5];
       }
 
-      v21 = [a3 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      v21 = [animations countByEnumeratingWithState:&v23 objects:v27 count:16];
     }
 
     while (v21);

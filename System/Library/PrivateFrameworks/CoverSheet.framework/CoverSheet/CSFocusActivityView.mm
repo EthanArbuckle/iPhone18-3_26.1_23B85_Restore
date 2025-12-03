@@ -1,15 +1,15 @@
 @interface CSFocusActivityView
 + (CGSize)activityViewSize;
 - (CGRect)_activityIndicatorFrame;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CSFocusActivityViewDelegate)delegate;
 - (void)_addActivityIndicatorTargetActions;
-- (void)_handleButtonPress:(id)a3;
+- (void)_handleButtonPress:(id)press;
 - (void)_removeActivityIndicatorTargetActions;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)removeIndicator;
-- (void)setActivity:(id)a3;
+- (void)setActivity:(id)activity;
 @end
 
 @implementation CSFocusActivityView
@@ -32,9 +32,9 @@
   [(CSFocusActivityIndicator *)activityIndicator setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [CSFocusActivityIndicator activityIndicatorExpandedSize:a3.width];
+  [CSFocusActivityIndicator activityIndicatorExpandedSize:fits.width];
   result.height = v4;
   result.width = v3;
   return result;
@@ -48,11 +48,11 @@
   return result;
 }
 
-- (void)setActivity:(id)a3
+- (void)setActivity:(id)activity
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4 && !self->_activityIndicator)
+  activityCopy = activity;
+  v7 = activityCopy;
+  if (activityCopy && !self->_activityIndicator)
   {
     v5 = objc_alloc_init(CSFocusActivityIndicator);
     activityIndicator = self->_activityIndicator;
@@ -61,10 +61,10 @@
     [(CSFocusActivityIndicator *)self->_activityIndicator sizeToFit];
     [(CSFocusActivityView *)self addSubview:self->_activityIndicator];
     [(CSFocusActivityView *)self _addActivityIndicatorTargetActions];
-    v4 = v7;
+    activityCopy = v7;
   }
 
-  [(CSFocusActivityIndicator *)self->_activityIndicator setActivity:v4];
+  [(CSFocusActivityIndicator *)self->_activityIndicator setActivity:activityCopy];
   [(CSFocusActivityView *)self setNeedsLayout];
 }
 
@@ -75,16 +75,16 @@
   activityIndicator = self->_activityIndicator;
   self->_activityIndicator = 0;
 
-  v4 = [(CSFocusActivityView *)self delegate];
-  [v4 focusActivityViewIndicatorDidChangeToVisible:{-[CSFocusActivityView isActivityIndicatorVisible](self, "isActivityIndicatorVisible")}];
+  delegate = [(CSFocusActivityView *)self delegate];
+  [delegate focusActivityViewIndicatorDidChangeToVisible:{-[CSFocusActivityView isActivityIndicatorVisible](self, "isActivityIndicatorVisible")}];
   [(CSFocusActivityView *)self setNeedsLayout];
 }
 
-- (void)_handleButtonPress:(id)a3
+- (void)_handleButtonPress:(id)press
 {
-  v4 = a3;
+  pressCopy = press;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained focusActivityViewIndicatorPressed:v4];
+  [WeakRetained focusActivityViewIndicatorPressed:pressCopy];
 }
 
 - (void)_addActivityIndicatorTargetActions

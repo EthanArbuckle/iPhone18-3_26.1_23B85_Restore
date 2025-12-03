@@ -1,13 +1,13 @@
 @interface IMStopWatch
 + (id)stopwatch;
-+ (id)stopwatchWithDescription:(id)a3;
++ (id)stopwatchWithDescription:(id)description;
 + (void)initialize;
 - (IMStopWatch)init;
 - (double)time;
 - (id)description;
 - (void)report;
-- (void)reportWithMarker:(id)a3;
-- (void)setDescription:(id)a3;
+- (void)reportWithMarker:(id)marker;
+- (void)setDescription:(id)description;
 - (void)start;
 @end
 
@@ -15,7 +15,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
 
     mach_timebase_info(&timeBase);
@@ -36,11 +36,11 @@
   return v3;
 }
 
-+ (id)stopwatchWithDescription:(id)a3
++ (id)stopwatchWithDescription:(id)description
 {
-  v3 = a3;
+  descriptionCopy = description;
   v4 = objc_opt_new();
-  [v4 setDescription:v3];
+  [v4 setDescription:descriptionCopy];
 
   [v4 start];
 
@@ -75,14 +75,14 @@
   return (v3 - self->_startTime) * v4 / v5 / 1000000000.0;
 }
 
-- (void)setDescription:(id)a3
+- (void)setDescription:(id)description
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithFormat:@" %@", v5];
+  descriptionCopy = description;
+  descriptionCopy = [[v4 alloc] initWithFormat:@" %@", descriptionCopy];
 
   descriptionString = self->_descriptionString;
-  self->_descriptionString = v6;
+  self->_descriptionString = descriptionCopy;
 }
 
 - (id)description
@@ -108,9 +108,9 @@
   NSLog(&stru_1F5490430.isa, v2);
 }
 
-- (void)reportWithMarker:(id)a3
+- (void)reportWithMarker:(id)marker
 {
-  v6 = a3;
+  markerCopy = marker;
   [(IMStopWatch *)self time];
   descriptionString = &stru_1F548B930;
   if (self->_descriptionString)
@@ -118,7 +118,7 @@
     descriptionString = self->_descriptionString;
   }
 
-  NSLog(&cfstr_PElapsedTime05_0.isa, self, v6, descriptionString, *&v4, v4 * 1000.0);
+  NSLog(&cfstr_PElapsedTime05_0.isa, self, markerCopy, descriptionString, *&v4, v4 * 1000.0);
 }
 
 @end

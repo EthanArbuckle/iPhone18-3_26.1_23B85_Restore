@@ -32,16 +32,16 @@
   if (v3)
   {
     v4 = objc_opt_self();
-    v5 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
-    v6 = [v4 defaultCenter];
-    [v6 removeObserver:v3];
+    defaultCenter = [v4 defaultCenter];
+    [defaultCenter removeObserver:v3];
     swift_unknownObjectRelease();
   }
 
   else
   {
-    v7 = self;
+    selfCopy2 = self;
   }
 
   v8.receiver = self;

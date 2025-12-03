@@ -1,10 +1,10 @@
 @interface PTSerializationTypeInfo
-- (PTSerializationTypeInfo)initWithType:(unsigned int)a3 providerClass:(Class)a4;
+- (PTSerializationTypeInfo)initWithType:(unsigned int)type providerClass:(Class)class;
 @end
 
 @implementation PTSerializationTypeInfo
 
-- (PTSerializationTypeInfo)initWithType:(unsigned int)a3 providerClass:(Class)a4
+- (PTSerializationTypeInfo)initWithType:(unsigned int)type providerClass:(Class)class
 {
   v9.receiver = self;
   v9.super_class = PTSerializationTypeInfo;
@@ -12,8 +12,8 @@
   v7 = v6;
   if (v6)
   {
-    v6->_type = a3;
-    objc_storeStrong(&v6->_providerClass, a4);
+    v6->_type = type;
+    objc_storeStrong(&v6->_providerClass, class);
   }
 
   return v7;

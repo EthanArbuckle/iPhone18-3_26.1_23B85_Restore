@@ -1,15 +1,15 @@
 @interface CPInterval
-- (BOOL)contains:(id)a3;
-- (BOOL)intersects:(id)a3;
-- (id)initLeft:(double)a3 right:(double)a4;
-- (void)add:(id)a3;
+- (BOOL)contains:(id)contains;
+- (BOOL)intersects:(id)intersects;
+- (id)initLeft:(double)left right:(double)right;
+- (void)add:(id)add;
 @end
 
 @implementation CPInterval
 
-- (BOOL)contains:(id)a3
+- (BOOL)contains:(id)contains
 {
-  [a3 normalizedBounds];
+  [contains normalizedBounds];
   x = v4;
   v9 = v5;
   width = v6;
@@ -39,17 +39,17 @@
   return x + width <= self->right;
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
   right = self->right;
-  self->left = fmin(self->left, *(a3 + 1));
-  self->right = fmax(right, *(a3 + 2));
+  self->left = fmin(self->left, *(add + 1));
+  self->right = fmax(right, *(add + 2));
 }
 
-- (BOOL)intersects:(id)a3
+- (BOOL)intersects:(id)intersects
 {
   right = self->right;
-  v4 = *(a3 + 1);
+  v4 = *(intersects + 1);
   if (right < v4)
   {
     v5 = v4 - right;
@@ -57,7 +57,7 @@
   }
 
   left = self->left;
-  v7 = *(a3 + 2);
+  v7 = *(intersects + 2);
   if (left > v7)
   {
     v5 = left - v7;
@@ -67,15 +67,15 @@
   return 1;
 }
 
-- (id)initLeft:(double)a3 right:(double)a4
+- (id)initLeft:(double)left right:(double)right
 {
   v7.receiver = self;
   v7.super_class = CPInterval;
   result = [(CPInterval *)&v7 init];
   if (result)
   {
-    *(result + 1) = a3;
-    *(result + 2) = a4;
+    *(result + 1) = left;
+    *(result + 2) = right;
   }
 
   return result;

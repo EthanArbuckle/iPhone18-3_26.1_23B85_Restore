@@ -6,7 +6,7 @@
 - (int)nextPosition;
 - (int)startOffset;
 - (void)dealloc;
-- (void)resetWithInt:(int)a3 withInt:(int)a4 withIntArray:(id)a5 withIntArray:(id)a6 withIntArray:(id)a7 withOrgApacheLuceneUtilBytesRef:(id)a8 withIntArray:(id)a9;
+- (void)resetWithInt:(int)int withInt:(int)withInt withIntArray:(id)array withIntArray:(id)intArray withIntArray:(id)withIntArray withOrgApacheLuceneUtilBytesRef:(id)ref withIntArray:(id)a9;
 @end
 
 @implementation OrgApacheLuceneCodecsCompressingCompressingTermVectorsReader_TVPostingsEnum
@@ -20,19 +20,19 @@
   return self;
 }
 
-- (void)resetWithInt:(int)a3 withInt:(int)a4 withIntArray:(id)a5 withIntArray:(id)a6 withIntArray:(id)a7 withOrgApacheLuceneUtilBytesRef:(id)a8 withIntArray:(id)a9
+- (void)resetWithInt:(int)int withInt:(int)withInt withIntArray:(id)array withIntArray:(id)intArray withIntArray:(id)withIntArray withOrgApacheLuceneUtilBytesRef:(id)ref withIntArray:(id)a9
 {
-  self->termFreq_ = a3;
-  self->positionIndex_ = a4;
-  JreStrongAssign(&self->positions_, a5);
-  JreStrongAssign(&self->startOffsets_, a6);
-  JreStrongAssign(&self->lengths_, a7);
-  if (!a8 || (self->basePayloadOffset_ = *(a8 + 4), (payload = self->payload_) == 0))
+  self->termFreq_ = int;
+  self->positionIndex_ = withInt;
+  JreStrongAssign(&self->positions_, array);
+  JreStrongAssign(&self->startOffsets_, intArray);
+  JreStrongAssign(&self->lengths_, withIntArray);
+  if (!ref || (self->basePayloadOffset_ = *(ref + 4), (payload = self->payload_) == 0))
   {
     JreThrowNullPointerException();
   }
 
-  JreStrongAssign(&payload->bytes_, *(a8 + 1));
+  JreStrongAssign(&payload->bytes_, *(ref + 1));
   self->payload_->length_ = 0;
   self->payload_->offset_ = 0;
   JreStrongAssign(&self->payloadIndex_, a9);

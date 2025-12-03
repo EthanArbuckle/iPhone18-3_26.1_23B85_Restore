@@ -2,9 +2,9 @@
 - (CLPCReportingReadResult)init;
 - (id).cxx_construct;
 - (id)debugDescription;
-- (id)rowsForSchemaID:(unint64_t)a3 error:(id *)a4;
-- (unint64_t)hasRowsForSchemaID:(unint64_t)a3 error:(id *)a4;
-- (void)enumerate:(id)a3;
+- (id)rowsForSchemaID:(unint64_t)d error:(id *)error;
+- (unint64_t)hasRowsForSchemaID:(unint64_t)d error:(id *)error;
+- (void)enumerate:(id)enumerate;
 @end
 
 @implementation CLPCReportingReadResult
@@ -37,14 +37,14 @@
   return self;
 }
 
-- (unint64_t)hasRowsForSchemaID:(unint64_t)a3 error:(id *)a4
+- (unint64_t)hasRowsForSchemaID:(unint64_t)d error:(id *)error
 {
-  if (a3 >= 0xB)
+  if (d >= 0xB)
   {
     return 0;
   }
 
-  else if (self->rows_by_schema.__elems_[a3])
+  else if (self->rows_by_schema.__elems_[d])
   {
     return 2;
   }
@@ -55,27 +55,27 @@
   }
 }
 
-- (id)rowsForSchemaID:(unint64_t)a3 error:(id *)a4
+- (id)rowsForSchemaID:(unint64_t)d error:(id *)error
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  if (a3 >= 0xB)
+  if (d >= 0xB)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = self->rows_by_schema.__elems_[a3];
+    v6 = self->rows_by_schema.__elems_[d];
     v7 = v6;
     if (!v6 || (-[CLPCReportingRows rows](v6, "rows"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 count], v8, !v9))
     {
-      if (a4)
+      if (error)
       {
-        v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"There are no rows for schema ID %lu.", a3];
+        v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"There are no rows for schema ID %lu.", d];
         v14 = *MEMORY[0x277CCA068];
         v15[0] = v10;
         v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-        *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870206 userInfo:v11];
+        *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"CLPCErrorDomain" code:-536870206 userInfo:v11];
       }
     }
   }
@@ -85,23 +85,23 @@
   return v7;
 }
 
-- (void)enumerate:(id)a3
+- (void)enumerate:(id)enumerate
 {
   v3 = 0;
   p_rows_by_schema = &self->rows_by_schema;
-  v9 = a3;
+  enumerateCopy = enumerate;
   while (1)
   {
     v5 = p_rows_by_schema->__elems_[v3];
     v6 = v5;
     if (v5)
     {
-      v7 = [(CLPCReportingRows *)v5 rows];
-      v8 = [v7 count];
+      rows = [(CLPCReportingRows *)v5 rows];
+      v8 = [rows count];
 
       if (v8)
       {
-        if ((v9[2](v9, v3, v6) & 1) == 0)
+        if ((enumerateCopy[2](enumerateCopy, v3, v6) & 1) == 0)
         {
           break;
         }
@@ -119,12 +119,12 @@ LABEL_8:
 
 - (id)debugDescription
 {
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__CLPCReportingReadResult_debugDescription__block_invoke;
   v7[3] = &unk_279A184D0;
-  v4 = v3;
+  v4 = array;
   v8 = v4;
   [(CLPCReportingReadResult *)self enumerate:v7];
   v5 = [v4 description];

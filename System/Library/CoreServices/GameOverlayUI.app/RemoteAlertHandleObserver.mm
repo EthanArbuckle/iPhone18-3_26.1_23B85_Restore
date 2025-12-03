@@ -1,8 +1,8 @@
 @interface RemoteAlertHandleObserver
 - (_TtC13GameOverlayUI25RemoteAlertHandleObserver)init;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
 - (void)remoteAlertHandleDidActivate:;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation RemoteAlertHandleObserver
@@ -16,19 +16,19 @@
   return [(RemoteAlertHandleObserver *)&v4 init];
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v3 = a3;
+  deactivateCopy = deactivate;
 
-  sub_10009C254(v3);
+  sub_10009C254(deactivateCopy);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v5 = a3;
+  handleCopy = handle;
 
-  v6 = a4;
-  sub_10009C65C(v5, a4);
+  errorCopy = error;
+  sub_10009C65C(handleCopy, error);
 }
 
 - (void)remoteAlertHandleDidActivate:

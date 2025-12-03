@@ -1,25 +1,25 @@
 @interface CLEEDMediaServiceRequest
 - (BOOL)anyItemsToProcess;
-- (CLEEDMediaServiceRequest)initWithCoder:(id)a3;
-- (CLEEDMediaServiceRequest)initWithRequestID:(id)a3 callUUID:(id)a4 uploadURL:(id)a5 sharedInfoPrefix:(id)a6 combinedSecret:(id)a7 token:(id)a8;
+- (CLEEDMediaServiceRequest)initWithCoder:(id)coder;
+- (CLEEDMediaServiceRequest)initWithRequestID:(id)d callUUID:(id)iD uploadURL:(id)l sharedInfoPrefix:(id)prefix combinedSecret:(id)secret token:(id)token;
 - (id)description;
-- (id)generateDeviceKeyConfirmationFromSharedInfoPrefix:(id)a3 combinedSecret:(id)a4;
-- (unint64_t)filterAndAddMediaList:(id)a3;
-- (unint64_t)updateQueueForDelayedMediaItem:(id)a3;
-- (unint64_t)updateQueueForProcessedMediaItem:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)generateDeviceKeyConfirmationFromSharedInfoPrefix:(id)prefix combinedSecret:(id)secret;
+- (unint64_t)filterAndAddMediaList:(id)list;
+- (unint64_t)updateQueueForDelayedMediaItem:(id)item;
+- (unint64_t)updateQueueForProcessedMediaItem:(id)item;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLEEDMediaServiceRequest
 
-- (CLEEDMediaServiceRequest)initWithRequestID:(id)a3 callUUID:(id)a4 uploadURL:(id)a5 sharedInfoPrefix:(id)a6 combinedSecret:(id)a7 token:(id)a8
+- (CLEEDMediaServiceRequest)initWithRequestID:(id)d callUUID:(id)iD uploadURL:(id)l sharedInfoPrefix:(id)prefix combinedSecret:(id)secret token:(id)token
 {
-  v38 = a3;
-  v37 = a4;
-  v36 = a5;
-  v34 = a6;
-  v15 = a7;
-  v16 = a8;
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
+  prefixCopy = prefix;
+  secretCopy = secret;
+  tokenCopy = token;
   if (qword_100029E70 != -1)
   {
     sub_100013344();
@@ -42,12 +42,12 @@
     goto LABEL_8;
   }
 
-  objc_storeStrong(&v18->_requestID, a3);
-  objc_storeStrong(&v19->_callUUID, a4);
-  objc_storeStrong(&v19->_uploadURL, a5);
-  objc_storeStrong(&v19->_sharedInfoPrefix, a6);
-  objc_storeStrong(&v19->_combinedSecret, a7);
-  objc_storeStrong(&v19->_token, a8);
+  objc_storeStrong(&v18->_requestID, d);
+  objc_storeStrong(&v19->_callUUID, iD);
+  objc_storeStrong(&v19->_uploadURL, l);
+  objc_storeStrong(&v19->_sharedInfoPrefix, prefix);
+  objc_storeStrong(&v19->_combinedSecret, secret);
+  objc_storeStrong(&v19->_token, token);
   v20 = +[NSDate date];
   requestTimestamp = v19->_requestTimestamp;
   v19->_requestTimestamp = v20;
@@ -100,32 +100,32 @@ LABEL_14:
 
 - (id)description
 {
-  v15 = [(CLEEDMediaServiceRequest *)self requestID];
-  v3 = [(CLEEDMediaServiceRequest *)self uploadURL];
-  v4 = [(CLEEDMediaServiceRequest *)self callUUID];
-  v5 = [(CLEEDMediaServiceRequest *)self requestTimestamp];
-  v6 = [(CLEEDMediaServiceRequest *)self filteredQueue];
-  v7 = [v6 count];
-  v8 = [(CLEEDMediaServiceRequest *)self pendingQueue];
-  v9 = [v8 count];
-  v10 = [(CLEEDMediaServiceRequest *)self delayQueue];
-  v11 = [v10 count];
-  v12 = [(CLEEDMediaServiceRequest *)self completedQueue];
-  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" <CLEEDMediaServiceRequest: ID:%@, uploadURL:%@, callUUID:%@, requestTimestamp:%@, numFiltered:%lu, numPending:%lu, numDelay:%lu, numComplete:%lu>", v15, v3, v4, v5, v7, v9, v11, [v12 count]);
+  requestID = [(CLEEDMediaServiceRequest *)self requestID];
+  uploadURL = [(CLEEDMediaServiceRequest *)self uploadURL];
+  callUUID = [(CLEEDMediaServiceRequest *)self callUUID];
+  requestTimestamp = [(CLEEDMediaServiceRequest *)self requestTimestamp];
+  filteredQueue = [(CLEEDMediaServiceRequest *)self filteredQueue];
+  v7 = [filteredQueue count];
+  pendingQueue = [(CLEEDMediaServiceRequest *)self pendingQueue];
+  v9 = [pendingQueue count];
+  delayQueue = [(CLEEDMediaServiceRequest *)self delayQueue];
+  v11 = [delayQueue count];
+  completedQueue = [(CLEEDMediaServiceRequest *)self completedQueue];
+  v13 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @" <CLEEDMediaServiceRequest: ID:%@, uploadURL:%@, callUUID:%@, requestTimestamp:%@, numFiltered:%lu, numPending:%lu, numDelay:%lu, numComplete:%lu>", requestID, uploadURL, callUUID, requestTimestamp, v7, v9, v11, [completedQueue count]);
 
   return v13;
 }
 
-- (id)generateDeviceKeyConfirmationFromSharedInfoPrefix:(id)a3 combinedSecret:(id)a4
+- (id)generateDeviceKeyConfirmationFromSharedInfoPrefix:(id)prefix combinedSecret:(id)secret
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && v6)
+  prefixCopy = prefix;
+  secretCopy = secret;
+  v7 = secretCopy;
+  if (prefixCopy && secretCopy)
   {
     v8 = [@"device key confirmation" dataUsingEncoding:4];
-    v9 = +[NSMutableData dataWithCapacity:](NSMutableData, "dataWithCapacity:", [v5 length] + objc_msgSend(@"device key confirmation", "length"));
-    [v9 appendData:v5];
+    v9 = +[NSMutableData dataWithCapacity:](NSMutableData, "dataWithCapacity:", [prefixCopy length] + objc_msgSend(@"device key confirmation", "length"));
+    [v9 appendData:prefixCopy];
     [v9 appendData:v8];
     if (qword_100029E70 != -1)
     {
@@ -168,18 +168,18 @@ LABEL_14:
     {
       log = v15;
       v25 = [v12 base64EncodedStringWithOptions:0];
-      v22 = [v25 UTF8String];
+      uTF8String = [v25 UTF8String];
       v23 = [v13 base64EncodedStringWithOptions:0];
-      v19 = [v23 UTF8String];
+      uTF8String2 = [v23 UTF8String];
       v21 = [v14 base64EncodedStringWithOptions:0];
       *buf = 136446979;
       v27 = "[CLEEDMediaServiceRequest generateDeviceKeyConfirmationFromSharedInfoPrefix:combinedSecret:]";
       v28 = 2081;
-      v29 = v22;
+      v29 = uTF8String;
       v30 = 2081;
-      v31 = v19;
+      v31 = uTF8String2;
       v32 = 2081;
-      v33 = [v21 UTF8String];
+      uTF8String3 = [v21 UTF8String];
       _os_log_debug_impl(&_mh_execute_header, log, OS_LOG_TYPE_DEBUG, "#EED2EMS,%{public}s, Derived key blob:%{private}s, derived key:%{private}s, derived IV blob:%{private}s", buf, 0x2Au);
 
       if (!v13)
@@ -262,19 +262,19 @@ LABEL_42:
   return v16;
 }
 
-- (unint64_t)updateQueueForProcessedMediaItem:(id)a3
+- (unint64_t)updateQueueForProcessedMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CLEEDMediaServiceRequest *)self pendingQueue];
-  v6 = [v5 member:v4];
+  itemCopy = item;
+  pendingQueue = [(CLEEDMediaServiceRequest *)self pendingQueue];
+  v6 = [pendingQueue member:itemCopy];
 
   if (v6)
   {
-    v7 = [(CLEEDMediaServiceRequest *)self completedQueue];
-    [v7 addObject:v4];
+    completedQueue = [(CLEEDMediaServiceRequest *)self completedQueue];
+    [completedQueue addObject:itemCopy];
 
-    v8 = [(CLEEDMediaServiceRequest *)self pendingQueue];
-    [v8 removeObject:v4];
+    pendingQueue2 = [(CLEEDMediaServiceRequest *)self pendingQueue];
+    [pendingQueue2 removeObject:itemCopy];
   }
 
   else
@@ -290,36 +290,36 @@ LABEL_42:
     }
   }
 
-  v9 = [(CLEEDMediaServiceRequest *)self pendingQueue];
-  v10 = [v9 count];
+  pendingQueue3 = [(CLEEDMediaServiceRequest *)self pendingQueue];
+  v10 = [pendingQueue3 count];
 
   if (!v10)
   {
-    v11 = [(CLEEDMediaServiceRequest *)self durationRequestHandlingMs];
-    v12 = [(CLEEDMediaServiceRequest *)self requestTimestamp];
-    [v12 timeIntervalSinceNow];
-    [(CLEEDMediaServiceRequest *)self setDurationRequestHandlingMs:(v11 + fabs(v13) * 1000.0)];
+    durationRequestHandlingMs = [(CLEEDMediaServiceRequest *)self durationRequestHandlingMs];
+    requestTimestamp = [(CLEEDMediaServiceRequest *)self requestTimestamp];
+    [requestTimestamp timeIntervalSinceNow];
+    [(CLEEDMediaServiceRequest *)self setDurationRequestHandlingMs:(durationRequestHandlingMs + fabs(v13) * 1000.0)];
   }
 
-  v14 = [(CLEEDMediaServiceRequest *)self pendingQueue];
-  v15 = [v14 count];
+  pendingQueue4 = [(CLEEDMediaServiceRequest *)self pendingQueue];
+  v15 = [pendingQueue4 count];
 
   return v15;
 }
 
-- (unint64_t)updateQueueForDelayedMediaItem:(id)a3
+- (unint64_t)updateQueueForDelayedMediaItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CLEEDMediaServiceRequest *)self pendingQueue];
-  v6 = [v5 member:v4];
+  itemCopy = item;
+  pendingQueue = [(CLEEDMediaServiceRequest *)self pendingQueue];
+  v6 = [pendingQueue member:itemCopy];
 
   if (v6)
   {
-    v7 = [(CLEEDMediaServiceRequest *)self delayQueue];
-    [v7 addObject:v4];
+    delayQueue = [(CLEEDMediaServiceRequest *)self delayQueue];
+    [delayQueue addObject:itemCopy];
 
-    v8 = [(CLEEDMediaServiceRequest *)self pendingQueue];
-    [v8 removeObject:v4];
+    pendingQueue2 = [(CLEEDMediaServiceRequest *)self pendingQueue];
+    [pendingQueue2 removeObject:itemCopy];
   }
 
   else
@@ -335,26 +335,26 @@ LABEL_42:
     }
   }
 
-  v9 = [(CLEEDMediaServiceRequest *)self pendingQueue];
-  v10 = [v9 count];
+  pendingQueue3 = [(CLEEDMediaServiceRequest *)self pendingQueue];
+  v10 = [pendingQueue3 count];
 
   if (!v10)
   {
-    v11 = [(CLEEDMediaServiceRequest *)self durationRequestHandlingMs];
-    v12 = [(CLEEDMediaServiceRequest *)self requestTimestamp];
-    [v12 timeIntervalSinceNow];
-    [(CLEEDMediaServiceRequest *)self setDurationRequestHandlingMs:(v11 + fabs(v13) * 1000.0)];
+    durationRequestHandlingMs = [(CLEEDMediaServiceRequest *)self durationRequestHandlingMs];
+    requestTimestamp = [(CLEEDMediaServiceRequest *)self requestTimestamp];
+    [requestTimestamp timeIntervalSinceNow];
+    [(CLEEDMediaServiceRequest *)self setDurationRequestHandlingMs:(durationRequestHandlingMs + fabs(v13) * 1000.0)];
   }
 
-  v14 = [(CLEEDMediaServiceRequest *)self pendingQueue];
-  v15 = [v14 count];
+  pendingQueue4 = [(CLEEDMediaServiceRequest *)self pendingQueue];
+  v15 = [pendingQueue4 count];
 
   return v15;
 }
 
-- (unint64_t)filterAndAddMediaList:(id)a3
+- (unint64_t)filterAndAddMediaList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   if (![(CLEEDMediaServiceRequest *)self anyItemsToProcess])
   {
     [(CLEEDMediaServiceRequest *)self setHasPendingPhotos:0];
@@ -365,7 +365,7 @@ LABEL_42:
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v5 = v4;
+  v5 = listCopy;
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v6)
   {
@@ -382,23 +382,23 @@ LABEL_42:
         }
 
         v10 = *(*(&v23 + 1) + 8 * v9);
-        v11 = [(CLEEDMediaServiceRequest *)self filteredQueue];
-        v12 = [v11 member:v10];
+        filteredQueue = [(CLEEDMediaServiceRequest *)self filteredQueue];
+        v12 = [filteredQueue member:v10];
 
         if (!v12)
         {
-          v13 = [(CLEEDMediaServiceRequest *)self pendingQueue];
-          v14 = [v13 member:v10];
+          pendingQueue = [(CLEEDMediaServiceRequest *)self pendingQueue];
+          v14 = [pendingQueue member:v10];
 
           if (!v14)
           {
-            v15 = [(CLEEDMediaServiceRequest *)self delayQueue];
-            v16 = [v15 member:v10];
+            delayQueue = [(CLEEDMediaServiceRequest *)self delayQueue];
+            v16 = [delayQueue member:v10];
 
             if (!v16)
             {
-              v17 = [(CLEEDMediaServiceRequest *)self completedQueue];
-              v18 = [v17 member:v10];
+              completedQueue = [(CLEEDMediaServiceRequest *)self completedQueue];
+              v18 = [completedQueue member:v10];
 
               if (!v18)
               {
@@ -412,8 +412,8 @@ LABEL_42:
                   [(CLEEDMediaServiceRequest *)self setHasPendingVideos:1];
                 }
 
-                v19 = [(CLEEDMediaServiceRequest *)self filteredQueue];
-                [v19 addObject:v10];
+                filteredQueue2 = [(CLEEDMediaServiceRequest *)self filteredQueue];
+                [filteredQueue2 addObject:v10];
               }
             }
           }
@@ -429,41 +429,41 @@ LABEL_42:
     while (v7);
   }
 
-  v20 = [(CLEEDMediaServiceRequest *)self filteredQueue];
-  v21 = [v20 count];
+  filteredQueue3 = [(CLEEDMediaServiceRequest *)self filteredQueue];
+  v21 = [filteredQueue3 count];
 
   return v21;
 }
 
 - (BOOL)anyItemsToProcess
 {
-  v3 = [(CLEEDMediaServiceRequest *)self pendingQueue];
-  if ([v3 count])
+  pendingQueue = [(CLEEDMediaServiceRequest *)self pendingQueue];
+  if ([pendingQueue count])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(CLEEDMediaServiceRequest *)self delayQueue];
-    if ([v5 count])
+    delayQueue = [(CLEEDMediaServiceRequest *)self delayQueue];
+    if ([delayQueue count])
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(CLEEDMediaServiceRequest *)self filteredQueue];
-      v4 = [v6 count] != 0;
+      filteredQueue = [(CLEEDMediaServiceRequest *)self filteredQueue];
+      v4 = [filteredQueue count] != 0;
     }
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   if (qword_100029E70 != -1)
   {
     sub_100013344();
@@ -475,91 +475,91 @@ LABEL_42:
     sub_100013848(self, v5);
   }
 
-  [v4 encodeObject:self->_requestID forKey:@"requestID"];
-  [v4 encodeObject:self->_callUUID forKey:@"callUUID"];
-  [v4 encodeObject:self->_requestTimestamp forKey:@"requestTimestamp"];
-  [v4 encodeObject:self->_uploadURL forKey:@"uploadURL"];
-  [v4 encodeObject:self->_sharedInfoPrefix forKey:@"sharedInfoPrefix"];
-  [v4 encodeObject:self->_combinedSecret forKey:@"combinedSecret"];
-  [v4 encodeObject:self->_token forKey:@"token"];
-  [v4 encodeObject:self->_deviceKeyConfirmation forKey:@"deviceKeyConfirmation"];
-  [v4 encodeObject:self->_filteredQueue forKey:@"filteredQueue"];
-  [v4 encodeObject:self->_pendingQueue forKey:@"pendingQueue"];
-  [v4 encodeObject:self->_delayQueue forKey:@"delayQueue"];
-  [v4 encodeObject:self->_completedQueue forKey:@"completedQueue"];
-  [v4 encodeInteger:self->_numAdditionalMediaItemsSelected forKey:@"numAdditionalMediaItemsSelected"];
-  [v4 encodeInteger:self->_durationRequestHandlingMs forKey:@"durationRequestHandlingMs"];
-  [v4 encodeBool:self->_didUserCancelUpload forKey:@"didUserCancelUpload"];
-  [v4 encodeBool:self->_metricProcessed forKey:@"metricProcessed"];
-  [v4 encodeBool:self->_hasPendingVideos forKey:@"hasPendingVideos"];
-  [v4 encodeBool:self->_hasPendingPhotos forKey:@"hasPendingPhotos"];
+  [coderCopy encodeObject:self->_requestID forKey:@"requestID"];
+  [coderCopy encodeObject:self->_callUUID forKey:@"callUUID"];
+  [coderCopy encodeObject:self->_requestTimestamp forKey:@"requestTimestamp"];
+  [coderCopy encodeObject:self->_uploadURL forKey:@"uploadURL"];
+  [coderCopy encodeObject:self->_sharedInfoPrefix forKey:@"sharedInfoPrefix"];
+  [coderCopy encodeObject:self->_combinedSecret forKey:@"combinedSecret"];
+  [coderCopy encodeObject:self->_token forKey:@"token"];
+  [coderCopy encodeObject:self->_deviceKeyConfirmation forKey:@"deviceKeyConfirmation"];
+  [coderCopy encodeObject:self->_filteredQueue forKey:@"filteredQueue"];
+  [coderCopy encodeObject:self->_pendingQueue forKey:@"pendingQueue"];
+  [coderCopy encodeObject:self->_delayQueue forKey:@"delayQueue"];
+  [coderCopy encodeObject:self->_completedQueue forKey:@"completedQueue"];
+  [coderCopy encodeInteger:self->_numAdditionalMediaItemsSelected forKey:@"numAdditionalMediaItemsSelected"];
+  [coderCopy encodeInteger:self->_durationRequestHandlingMs forKey:@"durationRequestHandlingMs"];
+  [coderCopy encodeBool:self->_didUserCancelUpload forKey:@"didUserCancelUpload"];
+  [coderCopy encodeBool:self->_metricProcessed forKey:@"metricProcessed"];
+  [coderCopy encodeBool:self->_hasPendingVideos forKey:@"hasPendingVideos"];
+  [coderCopy encodeBool:self->_hasPendingPhotos forKey:@"hasPendingPhotos"];
 }
 
-- (CLEEDMediaServiceRequest)initWithCoder:(id)a3
+- (CLEEDMediaServiceRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestID"];
   requestID = self->_requestID;
   self->_requestID = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
   callUUID = self->_callUUID;
   self->_callUUID = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestTimestamp"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestTimestamp"];
   requestTimestamp = self->_requestTimestamp;
   self->_requestTimestamp = v9;
 
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uploadURL"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uploadURL"];
   uploadURL = self->_uploadURL;
   self->_uploadURL = v11;
 
-  v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharedInfoPrefix"];
+  v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharedInfoPrefix"];
   sharedInfoPrefix = self->_sharedInfoPrefix;
   self->_sharedInfoPrefix = v13;
 
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"combinedSecret"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"combinedSecret"];
   combinedSecret = self->_combinedSecret;
   self->_combinedSecret = v15;
 
-  v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceKeyConfirmation"];
+  v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceKeyConfirmation"];
   deviceKeyConfirmation = self->_deviceKeyConfirmation;
   self->_deviceKeyConfirmation = v17;
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token"];
   token = self->_token;
   self->_token = v19;
 
   v21 = objc_opt_class();
   v22 = [NSSet setWithObjects:v21, objc_opt_class(), 0];
-  v23 = [v4 decodeObjectOfClasses:v22 forKey:@"filteredQueue"];
+  v23 = [coderCopy decodeObjectOfClasses:v22 forKey:@"filteredQueue"];
   filteredQueue = self->_filteredQueue;
   self->_filteredQueue = v23;
 
   v25 = objc_opt_class();
   v26 = [NSSet setWithObjects:v25, objc_opt_class(), 0];
-  v27 = [v4 decodeObjectOfClasses:v26 forKey:@"pendingQueue"];
+  v27 = [coderCopy decodeObjectOfClasses:v26 forKey:@"pendingQueue"];
   pendingQueue = self->_pendingQueue;
   self->_pendingQueue = v27;
 
   v29 = objc_opt_class();
   v30 = [NSSet setWithObjects:v29, objc_opt_class(), 0];
-  v31 = [v4 decodeObjectOfClasses:v30 forKey:@"delayQueue"];
+  v31 = [coderCopy decodeObjectOfClasses:v30 forKey:@"delayQueue"];
   delayQueue = self->_delayQueue;
   self->_delayQueue = v31;
 
   v33 = objc_opt_class();
   v34 = [NSSet setWithObjects:v33, objc_opt_class(), 0];
-  v35 = [v4 decodeObjectOfClasses:v34 forKey:@"completedQueue"];
+  v35 = [coderCopy decodeObjectOfClasses:v34 forKey:@"completedQueue"];
   completedQueue = self->_completedQueue;
   self->_completedQueue = v35;
 
-  self->_numAdditionalMediaItemsSelected = [v4 decodeIntegerForKey:@"numAdditionalMediaItemsSelected"];
-  self->_durationRequestHandlingMs = [v4 decodeIntegerForKey:@"durationRequestHandlingMs"];
-  self->_didUserCancelUpload = [v4 decodeBoolForKey:@"didUserCancelUpload"];
-  self->_metricProcessed = [v4 decodeBoolForKey:@"metricProcessed"];
-  self->_hasPendingVideos = [v4 decodeBoolForKey:@"hasPendingVideos"];
-  LOBYTE(v34) = [v4 decodeBoolForKey:@"hasPendingPhotos"];
+  self->_numAdditionalMediaItemsSelected = [coderCopy decodeIntegerForKey:@"numAdditionalMediaItemsSelected"];
+  self->_durationRequestHandlingMs = [coderCopy decodeIntegerForKey:@"durationRequestHandlingMs"];
+  self->_didUserCancelUpload = [coderCopy decodeBoolForKey:@"didUserCancelUpload"];
+  self->_metricProcessed = [coderCopy decodeBoolForKey:@"metricProcessed"];
+  self->_hasPendingVideos = [coderCopy decodeBoolForKey:@"hasPendingVideos"];
+  LOBYTE(v34) = [coderCopy decodeBoolForKey:@"hasPendingPhotos"];
 
   self->_hasPendingPhotos = v34;
   if (qword_100029E70 != -1)

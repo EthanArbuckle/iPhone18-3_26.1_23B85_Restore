@@ -1,18 +1,18 @@
 @interface ADDeviceSyncTimerProvider
-- (ADDeviceSyncTimerProvider)initWithDelegate:(id)a3;
-- (void)clockTimerObserver:(id)a3 snapshotDidUpdateFrom:(id)a4 to:(id)a5;
-- (void)clockTimerObserver:(id)a3 timerDidDismiss:(id)a4;
-- (void)clockTimerObserver:(id)a3 timerDidFire:(id)a4;
-- (void)getGenerationWithCompletion:(id)a3;
-- (void)getIncrementalChangesAfterGeneration:(unint64_t)a3 limit:(unint64_t)a4 completion:(id)a5;
-- (void)getSnapshotWithCompletion:(id)a3;
+- (ADDeviceSyncTimerProvider)initWithDelegate:(id)delegate;
+- (void)clockTimerObserver:(id)observer snapshotDidUpdateFrom:(id)from to:(id)to;
+- (void)clockTimerObserver:(id)observer timerDidDismiss:(id)dismiss;
+- (void)clockTimerObserver:(id)observer timerDidFire:(id)fire;
+- (void)getGenerationWithCompletion:(id)completion;
+- (void)getIncrementalChangesAfterGeneration:(unint64_t)generation limit:(unint64_t)limit completion:(id)completion;
+- (void)getSnapshotWithCompletion:(id)completion;
 @end
 
 @implementation ADDeviceSyncTimerProvider
 
-- (void)getSnapshotWithCompletion:(id)a3
+- (void)getSnapshotWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
@@ -21,7 +21,7 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  if (v3)
+  if (completionCopy)
   {
     v5 = AFSiriLogContextDeviceSync;
     if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
@@ -36,51 +36,51 @@
     v7[1] = 3221225472;
     v7[2] = sub_1002D6184;
     v7[3] = &unk_10051A310;
-    v8 = v3;
+    v8 = completionCopy;
     [v6 getTimerSnapshotWithCompletion:v7];
   }
 }
 
-- (void)getIncrementalChangesAfterGeneration:(unint64_t)a3 limit:(unint64_t)a4 completion:(id)a5
+- (void)getIncrementalChangesAfterGeneration:(unint64_t)generation limit:(unint64_t)limit completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     *buf = 136315650;
     v18 = "[ADDeviceSyncTimerProvider getIncrementalChangesAfterGeneration:limit:completion:]";
     v19 = 2048;
-    v20 = a3;
+    generationCopy = generation;
     v21 = 2048;
-    v22 = a4;
+    limitCopy = limit;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "%s generation = %llu, limit = %llu", buf, 0x20u);
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v10 = AFSiriLogContextDeviceSync;
     if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_ERROR))
     {
       v15 = v10;
-      v16 = [(ADDeviceSyncTimerProvider *)self type];
+      type = [(ADDeviceSyncTimerProvider *)self type];
       *buf = 136315394;
       v18 = "[ADDeviceSyncTimerProvider getIncrementalChangesAfterGeneration:limit:completion:]";
       v19 = 2112;
-      v20 = v16;
+      generationCopy = type;
       _os_log_error_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "%s Delta pulling mode is not supported for type %@.", buf, 0x16u);
     }
 
     v11 = [NSString alloc];
-    v12 = [(ADDeviceSyncTimerProvider *)self type];
-    v13 = [v11 initWithFormat:@"Delta pulling mode is not supported for type %@.", v12];
+    type2 = [(ADDeviceSyncTimerProvider *)self type];
+    v13 = [v11 initWithFormat:@"Delta pulling mode is not supported for type %@.", type2];
     v14 = [AFError errorWithCode:2415 description:v13 underlyingError:0];
-    v8[2](v8, 0, v14);
+    completionCopy[2](completionCopy, 0, v14);
   }
 }
 
-- (void)getGenerationWithCompletion:(id)a3
+- (void)getGenerationWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
@@ -89,7 +89,7 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%s ", buf, 0xCu);
   }
 
-  if (v3)
+  if (completionCopy)
   {
     v5 = AFSiriLogContextDeviceSync;
     if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
@@ -104,23 +104,23 @@
     v7[1] = 3221225472;
     v7[2] = sub_1002D6880;
     v7[3] = &unk_10051A310;
-    v8 = v3;
+    v8 = completionCopy;
     [v6 getTimerSnapshotWithCompletion:v7];
   }
 }
 
-- (void)clockTimerObserver:(id)a3 snapshotDidUpdateFrom:(id)a4 to:(id)a5
+- (void)clockTimerObserver:(id)observer snapshotDidUpdateFrom:(id)from to:(id)to
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observerCopy = observer;
+  fromCopy = from;
+  toCopy = to;
   v11 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     v13 = 136315394;
     v14 = "[ADDeviceSyncTimerProvider clockTimerObserver:snapshotDidUpdateFrom:to:]";
     v15 = 2112;
-    v16 = v9;
+    v16 = fromCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s fromSnapshot = %@", &v13, 0x16u);
     v11 = AFSiriLogContextDeviceSync;
   }
@@ -130,7 +130,7 @@
     v13 = 136315394;
     v14 = "[ADDeviceSyncTimerProvider clockTimerObserver:snapshotDidUpdateFrom:to:]";
     v15 = 2112;
-    v16 = v10;
+    v16 = toCopy;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "%s toSnapshot = %@", &v13, 0x16u);
   }
 
@@ -138,44 +138,44 @@
   [WeakRetained deviceSyncDataProviderDidUpdate:self];
 }
 
-- (void)clockTimerObserver:(id)a3 timerDidDismiss:(id)a4
+- (void)clockTimerObserver:(id)observer timerDidDismiss:(id)dismiss
 {
-  v4 = a4;
+  dismissCopy = dismiss;
   v5 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     v6 = 136315394;
     v7 = "[ADDeviceSyncTimerProvider clockTimerObserver:timerDidDismiss:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = dismissCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s dismissedTimerID = %@", &v6, 0x16u);
   }
 }
 
-- (void)clockTimerObserver:(id)a3 timerDidFire:(id)a4
+- (void)clockTimerObserver:(id)observer timerDidFire:(id)fire
 {
-  v4 = a4;
+  fireCopy = fire;
   v5 = AFSiriLogContextDeviceSync;
   if (os_log_type_enabled(AFSiriLogContextDeviceSync, OS_LOG_TYPE_INFO))
   {
     v6 = 136315394;
     v7 = "[ADDeviceSyncTimerProvider clockTimerObserver:timerDidFire:]";
     v8 = 2112;
-    v9 = v4;
+    v9 = fireCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%s firedTimerID = %@", &v6, 0x16u);
   }
 }
 
-- (ADDeviceSyncTimerProvider)initWithDelegate:(id)a3
+- (ADDeviceSyncTimerProvider)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v9.receiver = self;
   v9.super_class = ADDeviceSyncTimerProvider;
   v5 = [(ADDeviceSyncTimerProvider *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = +[SOClockTimerObserver sharedObserver];
     [v7 addListener:v6];
   }

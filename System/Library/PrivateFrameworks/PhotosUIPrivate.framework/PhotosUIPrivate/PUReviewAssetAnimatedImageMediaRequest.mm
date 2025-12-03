@@ -1,5 +1,5 @@
 @interface PUReviewAssetAnimatedImageMediaRequest
-- (PUReviewAssetAnimatedImageMediaRequest)initWithAnimatedImageRequestID:(int64_t)a3;
+- (PUReviewAssetAnimatedImageMediaRequest)initWithAnimatedImageRequestID:(int64_t)d;
 - (void)cancelRequest;
 @end
 
@@ -7,20 +7,20 @@
 
 - (void)cancelRequest
 {
-  v2 = [(PUReviewAssetAnimatedImageMediaRequest *)self _animatedRequestID];
+  _animatedRequestID = [(PUReviewAssetAnimatedImageMediaRequest *)self _animatedRequestID];
   v3 = MEMORY[0x1E6978618];
 
-  [v3 cancelAnimatedImageRequest:v2];
+  [v3 cancelAnimatedImageRequest:_animatedRequestID];
 }
 
-- (PUReviewAssetAnimatedImageMediaRequest)initWithAnimatedImageRequestID:(int64_t)a3
+- (PUReviewAssetAnimatedImageMediaRequest)initWithAnimatedImageRequestID:(int64_t)d
 {
   v5.receiver = self;
   v5.super_class = PUReviewAssetAnimatedImageMediaRequest;
   result = [(PUReviewAssetAnimatedImageMediaRequest *)&v5 init];
   if (result)
   {
-    result->__animatedRequestID = a3;
+    result->__animatedRequestID = d;
   }
 
   return result;

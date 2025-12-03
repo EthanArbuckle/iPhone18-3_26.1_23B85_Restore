@@ -1,16 +1,16 @@
 @interface S8pgSO8xKPVrzNgN
-- (void)bQfuQcBGI0pnDtDP:(unint64_t)a3 completion:(id)a4;
+- (void)bQfuQcBGI0pnDtDP:(unint64_t)p completion:(id)completion;
 @end
 
 @implementation S8pgSO8xKPVrzNgN
 
-- (void)bQfuQcBGI0pnDtDP:(unint64_t)a3 completion:(id)a4
+- (void)bQfuQcBGI0pnDtDP:(unint64_t)p completion:(id)completion
 {
-  v4 = a3;
-  v10 = a4;
+  pCopy = p;
+  completionCopy = completion;
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  if ((v4 & 1) == 0)
+  if ((pCopy & 1) == 0)
   {
     goto LABEL_4;
   }
@@ -25,11 +25,11 @@
     [v5 insertObject:v6 atIndex:0];
 
 LABEL_4:
-    v9 = v10[2];
+    v9 = completionCopy[2];
     goto LABEL_5;
   }
 
-  v9 = v10[2];
+  v9 = completionCopy[2];
 LABEL_5:
   v9();
 }

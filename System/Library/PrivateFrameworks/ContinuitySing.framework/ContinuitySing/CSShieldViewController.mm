@@ -1,16 +1,16 @@
 @interface CSShieldViewController
 - (BOOL)_isOnLockScreen;
 - (BOOL)_needsMicConfirmation;
-- (CSShieldViewController)initWithDisconnectHandler:(id)a3;
+- (CSShieldViewController)initWithDisconnectHandler:(id)handler;
 - (id)_localizedAddSongString;
-- (id)_topButtonItemWithImageNamed:(id)a3 action:(id)a4;
+- (id)_topButtonItemWithImageNamed:(id)named action:(id)action;
 - (id)_tryBootstrapAgainAction;
-- (id)emojiButtonWithEmoji:(id)a3;
+- (id)emojiButtonWithEmoji:(id)emoji;
 - (id)emojiSelectionButton;
-- (id)identifierSetForPersistentID:(int64_t)a3 mediaItem:(id)a4;
+- (id)identifierSetForPersistentID:(int64_t)d mediaItem:(id)item;
 - (void)_activateEnableMicTimer;
-- (void)_addPostLoadingTask:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
+- (void)_addPostLoadingTask:(id)task;
+- (void)_applicationWillEnterForeground:(id)foreground;
 - (void)_cancelEnableMicTimer;
 - (void)_confirmAndTeardown;
 - (void)_dismissEmojiKeyboard;
@@ -18,7 +18,7 @@
 - (void)_handleInvalidMusicAccountError;
 - (void)_handleMusicProfileUpdateNeeded;
 - (void)_presentAccountError;
-- (void)_presentConfirmationCardType:(unint64_t)a3 completion:(id)a4;
+- (void)_presentConfirmationCardType:(unint64_t)type completion:(id)completion;
 - (void)_presentContinuityCameraDisabledError;
 - (void)_presentEndpointDisconnectedError;
 - (void)_presentErrorAlertIfNeeded;
@@ -26,40 +26,40 @@
 - (void)_presentHelpCard;
 - (void)_presentOnboardingCardIfNeeded;
 - (void)_presentPairingError;
-- (void)_presentVersionMismatchError:(BOOL)a3;
-- (void)_reverbButtonStateChangedToState:(unint64_t)a3;
+- (void)_presentVersionMismatchError:(BOOL)error;
+- (void)_reverbButtonStateChangedToState:(unint64_t)state;
 - (void)_sendConnectMicRequest;
 - (void)_sendEnableMicRequest;
-- (void)_showInternalErrorAlert:(id)a3;
+- (void)_showInternalErrorAlert:(id)alert;
 - (void)_showMusicUpsell;
-- (void)_showReaction:(id)a3 from:(id)a4;
-- (void)_showReactionSendingAnimation:(id)a3 at:(id)a4;
+- (void)_showReaction:(id)reaction from:(id)from;
+- (void)_showReactionSendingAnimation:(id)animation at:(id)at;
 - (void)_teardown;
 - (void)_updateControlVisibility;
-- (void)_updateMiniPlayerState:(id)a3;
-- (void)_updateReverbButtonForLevel:(int64_t)a3;
+- (void)_updateMiniPlayerState:(id)state;
+- (void)_updateReverbButtonForLevel:(int64_t)level;
 - (void)_updateVocalAttenuationButtonActiveState;
-- (void)_updateVocalAttenuationButtonForLevel:(double)a3;
+- (void)_updateVocalAttenuationButtonForLevel:(double)level;
 - (void)_updateVocalAttenuationButtonLevel;
-- (void)_updateWithState:(id)a3;
+- (void)_updateWithState:(id)state;
 - (void)_userRequestedMicOn;
-- (void)_vocalAttenuationButtonStateChangedToState:(unint64_t)a3;
-- (void)clearAlertWithCompletion:(id)a3;
-- (void)connectionManager:(id)a3 didRequestTeardownShieldWithError:(id)a4;
-- (void)connectionManager:(id)a3 didUpdatePresentationError:(id)a4;
-- (void)consumeSinglePressDownForButtonKind:(int64_t)a3;
+- (void)_vocalAttenuationButtonStateChangedToState:(unint64_t)state;
+- (void)clearAlertWithCompletion:(id)completion;
+- (void)connectionManager:(id)manager didRequestTeardownShieldWithError:(id)error;
+- (void)connectionManager:(id)manager didUpdatePresentationError:(id)error;
+- (void)consumeSinglePressDownForButtonKind:(int64_t)kind;
 - (void)dealloc;
-- (void)handleOpenQueueTap:(id)a3;
+- (void)handleOpenQueueTap:(id)tap;
 - (void)invalidateVolumeButtonConsumers;
-- (void)mediaPicker:(id)a3 didPickMediaItems:(id)a4;
-- (void)micControl:(id)a3 didChangetoState:(unint64_t)a4;
-- (void)micControl:(id)a3 didRequestToTurnOffFromState:(unint64_t)a4;
-- (void)micControl:(id)a3 didRequestToTurnOnFromState:(unint64_t)a4;
-- (void)playbackManager:(id)a3 didUpdateState:(id)a4;
+- (void)mediaPicker:(id)picker didPickMediaItems:(id)items;
+- (void)micControl:(id)control didChangetoState:(unint64_t)state;
+- (void)micControl:(id)control didRequestToTurnOffFromState:(unint64_t)state;
+- (void)micControl:(id)control didRequestToTurnOnFromState:(unint64_t)state;
+- (void)playbackManager:(id)manager didUpdateState:(id)state;
 - (void)presentCustomEmojiPicker;
 - (void)presentMusicPicker;
-- (void)presentMusicPickerWithNotificationSender:(id)a3;
-- (void)presentReactionPickerFrom:(id)a3 reactionSender:(id)a4;
+- (void)presentMusicPickerWithNotificationSender:(id)sender;
+- (void)presentReactionPickerFrom:(id)from reactionSender:(id)sender;
 - (void)setupConstraints;
 - (void)setupControlButtonConstraints;
 - (void)setupControlButtons;
@@ -78,10 +78,10 @@
 - (void)setupViews;
 - (void)setupVolumeButtonConsumers;
 - (void)setupVolumeHintsViewController;
-- (void)shieldManager:(id)a3 didUpdateSessionState:(id)a4;
-- (void)shieldManagerDidFinishLoading:(id)a3 withPlaybackManager:(id)a4;
-- (void)shieldManagerDidReceiveDisconnectRequest:(id)a3;
-- (void)textViewDidChange:(id)a3;
+- (void)shieldManager:(id)manager didUpdateSessionState:(id)state;
+- (void)shieldManagerDidFinishLoading:(id)loading withPlaybackManager:(id)manager;
+- (void)shieldManagerDidReceiveDisconnectRequest:(id)request;
+- (void)textViewDidChange:(id)change;
 - (void)updateUI;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
@@ -89,15 +89,15 @@
 
 @implementation CSShieldViewController
 
-- (CSShieldViewController)initWithDisconnectHandler:(id)a3
+- (CSShieldViewController)initWithDisconnectHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v13.receiver = self;
   v13.super_class = CSShieldViewController;
   v5 = [(CSShieldViewController *)&v13 initWithNibName:0 bundle:0];
   if (v5)
   {
-    v6 = _Block_copy(v4);
+    v6 = _Block_copy(handlerCopy);
     disconnectHandler = v5->_disconnectHandler;
     v5->_disconnectHandler = v6;
 
@@ -117,8 +117,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = +[CSShieldManager sharedManager];
   [v4 removeObserver:self];
@@ -127,13 +127,13 @@
   [v5 removeObserver:self];
 
   v6 = +[CSShieldManager sharedManager];
-  v7 = [v6 playbackManager];
-  [v7 removeObserver:self];
+  playbackManager = [v6 playbackManager];
+  [playbackManager removeObserver:self];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
   v9 = *MEMORY[0x277D76760];
-  v10 = [MEMORY[0x277D75130] sharedApplication];
-  [v8 removeObserver:self name:v9 object:v10];
+  mEMORY[0x277D75130] = [MEMORY[0x277D75130] sharedApplication];
+  [defaultCenter2 removeObserver:self name:v9 object:mEMORY[0x277D75130]];
 
   v11.receiver = self;
   v11.super_class = CSShieldViewController;
@@ -145,45 +145,45 @@
   v26.receiver = self;
   v26.super_class = CSShieldViewController;
   [(CSShieldViewController *)&v26 viewDidLoad];
-  v3 = [MEMORY[0x277D75340] blackColor];
-  v4 = [(CSShieldViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  blackColor = [MEMORY[0x277D75340] blackColor];
+  view = [(CSShieldViewController *)self view];
+  [view setBackgroundColor:blackColor];
 
-  v5 = [(CSShieldViewController *)self view];
-  [v5 setAccessibilityIdentifier:@"ContinuitySing.CSShieldViewController.View"];
+  view2 = [(CSShieldViewController *)self view];
+  [view2 setAccessibilityIdentifier:@"ContinuitySing.CSShieldViewController.View"];
 
   [(CSShieldViewController *)self setOverrideUserInterfaceStyle:2];
-  v6 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   postLoadingTasks = self->_postLoadingTasks;
-  self->_postLoadingTasks = v6;
+  self->_postLoadingTasks = array;
 
   [(CSShieldViewController *)self setupViews];
   [(CSShieldViewController *)self setupConstraints];
   [(CSShieldViewController *)self setupVolumeHintsViewController];
   [(CSShieldViewController *)self setupMiniPlayerViewController];
-  v8 = [(CSShieldViewController *)self view];
-  [v8 layoutIfNeeded];
+  view3 = [(CSShieldViewController *)self view];
+  [view3 layoutIfNeeded];
 
-  v9 = [MEMORY[0x277CF6C58] sharedInstance];
-  [v9 skipPlacementStep];
+  mEMORY[0x277CF6C58] = [MEMORY[0x277CF6C58] sharedInstance];
+  [mEMORY[0x277CF6C58] skipPlacementStep];
 
   objc_initWeak(&location, self);
-  v10 = [MEMORY[0x277CCAB98] defaultCenter];
-  v11 = [MEMORY[0x277CCABD8] mainQueue];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  mainQueue = [MEMORY[0x277CCABD8] mainQueue];
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __37__CSShieldViewController_viewDidLoad__block_invoke;
   v23 = &unk_278E0B7D0;
   objc_copyWeak(&v24, &location);
-  v12 = [v10 addObserverForName:@"ReactionEvent" object:0 queue:v11 usingBlock:&v20];
+  v12 = [defaultCenter addObserverForName:@"ReactionEvent" object:0 queue:mainQueue usingBlock:&v20];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  v14 = [MEMORY[0x277D75130] sharedApplication];
-  [v13 addObserver:self selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D76760] object:v14];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  mEMORY[0x277D75130] = [MEMORY[0x277D75130] sharedApplication];
+  [defaultCenter2 addObserver:self selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D76760] object:mEMORY[0x277D75130]];
 
   v15 = MEMORY[0x277D7FB80];
-  v16 = [MEMORY[0x277D7FCA0] autoupdatingActiveAccount];
-  v17 = [v15 sharedMonitorForIdentity:v16];
+  autoupdatingActiveAccount = [MEMORY[0x277D7FCA0] autoupdatingActiveAccount];
+  v17 = [v15 sharedMonitorForIdentity:autoupdatingActiveAccount];
   v18 = [v17 beginObservingSubscriptionStatusWithHandler:&__block_literal_global_9];
   subscriptionStatusObservationToken = self->_subscriptionStatusObservationToken;
   self->_subscriptionStatusObservationToken = v18;
@@ -212,21 +212,21 @@ void __37__CSShieldViewController_viewDidLoad__block_invoke(uint64_t a1, void *a
   v8.receiver = self;
   v8.super_class = CSShieldViewController;
   [(CSShieldViewController *)&v8 viewDidLayoutSubviews];
-  v3 = [(UIButton *)self->_emojiMoreButton configuration];
+  configuration = [(UIButton *)self->_emojiMoreButton configuration];
   [(UIButton *)self->_emojiMoreButton frame];
   v4 = CGRectGetWidth(v9) * 0.375;
-  v5 = [v3 background];
-  [v5 setCornerRadius:v4];
+  background = [configuration background];
+  [background setCornerRadius:v4];
 
   [(UIButton *)self->_emojiMoreButton frame];
   v6 = CGRectGetWidth(v10) * 0.15625;
-  v7 = [v3 background];
-  [v7 setBackgroundInsets:{v6, v6, v6, v6}];
+  background2 = [configuration background];
+  [background2 setBackgroundInsets:{v6, v6, v6, v6}];
 
-  [(UIButton *)self->_emojiMoreButton setConfiguration:v3];
+  [(UIButton *)self->_emojiMoreButton setConfiguration:configuration];
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   v4 = ContinuitySingLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -234,7 +234,7 @@ void __37__CSShieldViewController_viewDidLoad__block_invoke(uint64_t a1, void *a
     v5 = 136315650;
     v6 = "[CSShieldViewController _applicationWillEnterForeground:]";
     v7 = 2114;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[CSShieldViewController _applicationWillEnterForeground:]";
     _os_log_impl(&dword_2441FB000, v4, OS_LOG_TYPE_INFO, "%s: %{public}@ %s", &v5, 0x20u);
@@ -246,14 +246,14 @@ void __37__CSShieldViewController_viewDidLoad__block_invoke(uint64_t a1, void *a
 - (void)updateUI
 {
   v3 = +[CSShieldManager sharedManager];
-  v4 = [v3 isMicStreaming];
+  isMicStreaming = [v3 isMicStreaming];
 
   if ([(CSMicControl *)self->_micControl micState]== 3)
   {
     enableMicTimer = self->_enableMicTimer;
     if (enableMicTimer)
     {
-      v6 = v4 == 0;
+      v6 = isMicStreaming == 0;
     }
 
     else
@@ -263,7 +263,7 @@ void __37__CSShieldViewController_viewDidLoad__block_invoke(uint64_t a1, void *a
 
     if (!v6)
     {
-      [(CSMicControl *)self->_micControl setMicControlState:v4 animated:1];
+      [(CSMicControl *)self->_micControl setMicControlState:isMicStreaming animated:1];
 
       [(CSShieldViewController *)self _cancelEnableMicTimer];
       return;
@@ -277,28 +277,28 @@ void __37__CSShieldViewController_viewDidLoad__block_invoke(uint64_t a1, void *a
 
   micControl = self->_micControl;
 
-  [(CSMicControl *)micControl setMicControlState:v4 animated:1];
+  [(CSMicControl *)micControl setMicControlState:isMicStreaming animated:1];
 }
 
-- (void)_updateWithState:(id)a3
+- (void)_updateWithState:(id)state
 {
-  v5 = a3;
+  stateCopy = state;
   [(CSShieldViewController *)self _updateRightBarButtonsAnimated:1];
-  v4 = v5;
-  if (v5)
+  v4 = stateCopy;
+  if (stateCopy)
   {
-    -[CSShieldViewController _updateReverbButtonForLevel:](self, "_updateReverbButtonForLevel:", [v5 reverbLevel]);
+    -[CSShieldViewController _updateReverbButtonForLevel:](self, "_updateReverbButtonForLevel:", [stateCopy reverbLevel]);
     [(CSShieldViewController *)self _presentOnboardingCardIfNeeded];
-    v4 = v5;
+    v4 = stateCopy;
   }
 }
 
-- (void)_updateReverbButtonForLevel:(int64_t)a3
+- (void)_updateReverbButtonForLevel:(int64_t)level
 {
   v5 = ContinuitySingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = NSStringFromCSReverbLevel(a3);
+    v6 = NSStringFromCSReverbLevel(level);
     v8 = 136315394;
     v9 = "[CSShieldViewController _updateReverbButtonForLevel:]";
     v10 = 2112;
@@ -306,27 +306,27 @@ void __37__CSShieldViewController_viewDidLoad__block_invoke(uint64_t a1, void *a
     _os_log_impl(&dword_2441FB000, v5, OS_LOG_TYPE_DEFAULT, "%s: Update reverb button for level %@", &v8, 0x16u);
   }
 
-  if ((a3 - 1) >= 3)
+  if ((level - 1) >= 3)
   {
-    v7 = 0;
+    levelCopy = 0;
   }
 
   else
   {
-    v7 = a3;
+    levelCopy = level;
   }
 
-  [(CSToggleButton *)self->_reverbButton setToggleState:v7];
+  [(CSToggleButton *)self->_reverbButton setToggleState:levelCopy];
 }
 
-- (void)_updateVocalAttenuationButtonForLevel:(double)a3
+- (void)_updateVocalAttenuationButtonForLevel:(double)level
 {
   v5 = +[CSShieldManager sharedManager];
-  v6 = [v5 playbackManager];
-  v7 = [v6 currentState];
-  v8 = [v7 vocalAttenuationIsAvailable];
+  playbackManager = [v5 playbackManager];
+  currentState = [playbackManager currentState];
+  vocalAttenuationIsAvailable = [currentState vocalAttenuationIsAvailable];
 
-  if (v8)
+  if (vocalAttenuationIsAvailable)
   {
     v9 = ContinuitySingLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -334,15 +334,15 @@ void __37__CSShieldViewController_viewDidLoad__block_invoke(uint64_t a1, void *a
       v21 = 136315394;
       v22 = "[CSShieldViewController _updateVocalAttenuationButtonForLevel:]";
       v23 = 2048;
-      v24 = a3;
+      levelCopy = level;
       _os_log_impl(&dword_2441FB000, v9, OS_LOG_TYPE_DEFAULT, "%s: Update vocal attenuation button for level %f", &v21, 0x16u);
     }
 
     v10 = 0.35;
     v11 = 0.5;
     v12 = (0.35 + 1.0) * 0.5;
-    v13 = vabdd_f64(a3, v12);
-    v15 = v12 < a3;
+    v13 = vabdd_f64(level, v12);
+    v15 = v12 < level;
     v14 = 2.22044605e-16;
     v15 = v15 || v13 < 2.22044605e-16;
     if (v15)
@@ -355,9 +355,9 @@ void __37__CSShieldViewController_viewDidLoad__block_invoke(uint64_t a1, void *a
     {
       v14 = 0.05;
       v19 = (0.35 + 0.05) * 0.5;
-      v11 = vabdd_f64(a3, v19);
+      v11 = vabdd_f64(level, v19);
       vocalAttenuationButton = self->_vocalAttenuationButton;
-      v15 = v19 < a3;
+      v15 = v19 < level;
       v10 = 2.22044605e-16;
       if (v15 || v11 < 2.22044605e-16)
       {
@@ -381,13 +381,13 @@ void __37__CSShieldViewController_viewDidLoad__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)_addPostLoadingTask:(id)a3
+- (void)_addPostLoadingTask:(id)task
 {
-  aBlock = a3;
+  aBlock = task;
   v4 = +[CSShieldManager sharedManager];
-  v5 = [v4 isLoading];
+  isLoading = [v4 isLoading];
 
-  if (v5)
+  if (isLoading)
   {
     postLoadingTasks = self->_postLoadingTasks;
     v7 = _Block_copy(aBlock);
@@ -410,7 +410,7 @@ void __37__CSShieldViewController_viewDidLoad__block_invoke(uint64_t a1, void *a
     *buf = 136315650;
     v14 = "[CSShieldViewController _endLoadingScreen]";
     v15 = 2114;
-    v16 = self;
+    selfCopy = self;
     v17 = 2080;
     v18 = "[CSShieldViewController _endLoadingScreen]";
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %{public}@ %s", buf, 0x20u);
@@ -418,8 +418,8 @@ void __37__CSShieldViewController_viewDidLoad__block_invoke(uint64_t a1, void *a
 
   v4 = self->_loadingSpinner;
   v5 = +[CSShieldManager sharedManager];
-  v6 = [v5 playbackManager];
-  [v6 addObserver:self];
+  playbackManager = [v5 playbackManager];
+  [playbackManager addObserver:self];
 
   v7 = MEMORY[0x277D75D18];
   v11[0] = MEMORY[0x277D85DD0];
@@ -489,7 +489,7 @@ void __43__CSShieldViewController__endLoadingScreen__block_invoke(uint64_t a1)
       v4 = 136315650;
       v5 = "[CSShieldViewController _teardown]";
       v6 = 2114;
-      v7 = self;
+      selfCopy = self;
       v8 = 2080;
       v9 = "[CSShieldViewController _teardown]";
       _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %{public}@ %s", &v4, 0x20u);
@@ -523,8 +523,8 @@ void __43__CSShieldViewController__endLoadingScreen__block_invoke(uint64_t a1)
   v5 = +[CSShieldManager sharedManager];
   -[CSMicControl setUserInteractionEnabled:](self->_micControl, "setUserInteractionEnabled:", [v5 isLoading] ^ 1);
 
-  v6 = [(CSShieldViewController *)self view];
-  [v6 addSubview:self->_micControl];
+  view = [(CSShieldViewController *)self view];
+  [view addSubview:self->_micControl];
 
   [(CSMicControl *)self->_micControl setAlpha:0.0];
   objc_initWeak(&location, self);
@@ -557,11 +557,11 @@ void __41__CSShieldViewController_setupMicControl__block_invoke(uint64_t a1)
   self->_micPlacementTipView = v3;
 
   v5 = self->_micPlacementTipView;
-  v6 = [MEMORY[0x277D75340] clearColor];
-  [(UIView *)v5 setBackgroundColor:v6];
+  clearColor = [MEMORY[0x277D75340] clearColor];
+  [(UIView *)v5 setBackgroundColor:clearColor];
 
-  v7 = [(CSShieldViewController *)self view];
-  [v7 addSubview:self->_micPlacementTipView];
+  view = [(CSShieldViewController *)self view];
+  [view addSubview:self->_micPlacementTipView];
 
   if (![(CSShieldViewController *)self _isOnLockScreen])
   {
@@ -593,11 +593,11 @@ void __50__CSShieldViewController_setupMicPlacementTipView__block_invoke(uint64_
 - (void)setupTopButtons
 {
   objc_initWeak(location, self);
-  v3 = [(CSShieldViewController *)self _localizedAddSongString];
-  v4 = [MEMORY[0x277D75228] plainButtonConfiguration];
-  [v4 setAttributedTitle:v3];
-  [v4 contentInsets];
-  [v4 setContentInsets:?];
+  _localizedAddSongString = [(CSShieldViewController *)self _localizedAddSongString];
+  plainButtonConfiguration = [MEMORY[0x277D75228] plainButtonConfiguration];
+  [plainButtonConfiguration setAttributedTitle:_localizedAddSongString];
+  [plainButtonConfiguration contentInsets];
+  [plainButtonConfiguration setContentInsets:?];
   v5 = MEMORY[0x277D75220];
   v6 = MEMORY[0x277D750C0];
   v38[0] = MEMORY[0x277D85DD0];
@@ -606,10 +606,10 @@ void __50__CSShieldViewController_setupMicPlacementTipView__block_invoke(uint64_
   v38[3] = &unk_278E0B3C0;
   objc_copyWeak(&v39, location);
   v7 = [v6 actionWithHandler:v38];
-  v8 = [v5 buttonWithConfiguration:v4 primaryAction:v7];
+  v8 = [v5 buttonWithConfiguration:plainButtonConfiguration primaryAction:v7];
 
-  v9 = [MEMORY[0x277D75340] labelColor];
-  [v8 setTintColor:v9];
+  labelColor = [MEMORY[0x277D75340] labelColor];
+  [v8 setTintColor:labelColor];
 
   v10 = [objc_alloc(MEMORY[0x277D751E8]) initWithCustomView:v8];
   addSongButtonItem = self->_addSongButtonItem;
@@ -652,16 +652,16 @@ void __50__CSShieldViewController_setupMicPlacementTipView__block_invoke(uint64_
   self->_rightBarButtonItemsPartial = v21;
 
   v30[0] = v14;
-  v23 = [MEMORY[0x277D751E8] fixedSpaceItem];
+  fixedSpaceItem = [MEMORY[0x277D751E8] fixedSpaceItem];
   v24 = self->_helpButtonItem;
-  v30[1] = v23;
+  v30[1] = fixedSpaceItem;
   v30[2] = v24;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:3];
   rightBarButtonItemsFull = self->_rightBarButtonItemsFull;
   self->_rightBarButtonItemsFull = v25;
 
-  v27 = [(CSShieldViewController *)self navigationItem];
-  [v27 setRightBarButtonItems:self->_rightBarButtonItemsPartial];
+  navigationItem = [(CSShieldViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItems:self->_rightBarButtonItemsPartial];
 
   v28[0] = MEMORY[0x277D85DD0];
   v28[1] = 3221225472;
@@ -716,12 +716,12 @@ void __41__CSShieldViewController_setupTopButtons__block_invoke_5(uint64_t a1)
   [WeakRetained _updateRightBarButtonsAnimated:1];
 }
 
-- (id)_topButtonItemWithImageNamed:(id)a3 action:(id)a4
+- (id)_topButtonItemWithImageNamed:(id)named action:(id)action
 {
   v5 = MEMORY[0x277D755B0];
-  v6 = a4;
-  v7 = [v5 _systemImageNamed:a3];
-  v8 = [objc_alloc(MEMORY[0x277D751E8]) initWithPrimaryAction:v6];
+  actionCopy = action;
+  v7 = [v5 _systemImageNamed:named];
+  v8 = [objc_alloc(MEMORY[0x277D751E8]) initWithPrimaryAction:actionCopy];
 
   [v8 setImage:v7];
 
@@ -735,8 +735,8 @@ void __41__CSShieldViewController_setupTopButtons__block_invoke_5(uint64_t a1)
   v4 = [v3 localizedStringForKey:@"BUTTON_LABEL_ADD_SONG" value:&stru_285797E10 table:0];
   v5 = [v2 initWithString:v4];
 
-  v6 = [v5 string];
-  v7 = [v6 rangeOfString:@"%@"];
+  string = [v5 string];
+  v7 = [string rangeOfString:@"%@"];
   v9 = v8;
 
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -794,9 +794,9 @@ void __41__CSShieldViewController_setupOnboarding__block_invoke(uint64_t a1)
   [v29 setAccessibilityIdentifier:@"Rock.On.Emoji"];
   v28 = [(CSShieldViewController *)self emojiButtonWithEmoji:@"⭐️"];
   [v28 setAccessibilityIdentifier:@"Star.Emoji"];
-  v3 = [(CSShieldViewController *)self emojiSelectionButton];
+  emojiSelectionButton = [(CSShieldViewController *)self emojiSelectionButton];
   emojiMoreButton = self->_emojiMoreButton;
-  self->_emojiMoreButton = v3;
+  self->_emojiMoreButton = emojiSelectionButton;
 
   [(UIButton *)self->_emojiMoreButton setAccessibilityIdentifier:@"More.Emoji"];
   v5 = objc_alloc(MEMORY[0x277D75A70]);
@@ -832,29 +832,29 @@ void __41__CSShieldViewController_setupOnboarding__block_invoke(uint64_t a1)
 
   [(UIStackView *)self->_emojiPickerContainer setAxis:1];
   [(UIStackView *)self->_emojiPickerContainer setSpacing:0.0];
-  v17 = [(CSShieldViewController *)self view];
-  [v17 addSubview:self->_emojiPickerContainer];
+  view = [(CSShieldViewController *)self view];
+  [view addSubview:self->_emojiPickerContainer];
 
   [(UIStackView *)self->_emojiPickerContainer setAlpha:0.0];
   [(CSShieldViewController *)self _updateControlVisibility];
   [(UIButton *)self->_emojiMoreButton setTranslatesAutoresizingMaskIntoConstraints:0];
   v18 = MEMORY[0x277CCAAD0];
-  v19 = [(UIButton *)self->_emojiMoreButton widthAnchor];
-  v20 = [v27 widthAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  widthAnchor = [(UIButton *)self->_emojiMoreButton widthAnchor];
+  widthAnchor2 = [v27 widthAnchor];
+  v21 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v34[0] = v21;
-  v22 = [(UIButton *)self->_emojiMoreButton heightAnchor];
-  v23 = [(UIButton *)self->_emojiMoreButton widthAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  heightAnchor = [(UIButton *)self->_emojiMoreButton heightAnchor];
+  widthAnchor3 = [(UIButton *)self->_emojiMoreButton widthAnchor];
+  v24 = [heightAnchor constraintEqualToAnchor:widthAnchor3];
   v34[1] = v24;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
   [v18 activateConstraints:v25];
 }
 
-- (id)emojiButtonWithEmoji:(id)a3
+- (id)emojiButtonWithEmoji:(id)emoji
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277D75228] borderlessButtonConfiguration];
+  emojiCopy = emoji;
+  borderlessButtonConfiguration = [MEMORY[0x277D75228] borderlessButtonConfiguration];
   objc_initWeak(location, self);
   v6 = MEMORY[0x277D75220];
   v7 = MEMORY[0x277D750C0];
@@ -863,11 +863,11 @@ void __41__CSShieldViewController_setupOnboarding__block_invoke(uint64_t a1)
   v33[2] = __47__CSShieldViewController_emojiButtonWithEmoji___block_invoke;
   v33[3] = &unk_278E0B818;
   objc_copyWeak(&v35, location);
-  v29 = v4;
+  v29 = emojiCopy;
   v34 = v29;
   v8 = [v7 actionWithHandler:v33];
-  v9 = [v6 buttonWithConfiguration:v5 primaryAction:v8];
-  v25 = v5;
+  v9 = [v6 buttonWithConfiguration:borderlessButtonConfiguration primaryAction:v8];
+  v25 = borderlessButtonConfiguration;
 
   v10 = objc_alloc_init(MEMORY[0x277D756C0]);
   v11 = objc_alloc(MEMORY[0x277CCA898]);
@@ -883,19 +883,19 @@ void __41__CSShieldViewController_setupOnboarding__block_invoke(uint64_t a1)
   [v10 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   v24 = MEMORY[0x277CCAAD0];
-  v28 = [v9 widthAnchor];
-  v27 = [v28 constraintEqualToConstant:81.0];
+  widthAnchor = [v9 widthAnchor];
+  v27 = [widthAnchor constraintEqualToConstant:81.0];
   v30[0] = v27;
-  v26 = [v9 heightAnchor];
-  v15 = [v26 constraintEqualToConstant:81.0];
+  heightAnchor = [v9 heightAnchor];
+  v15 = [heightAnchor constraintEqualToConstant:81.0];
   v30[1] = v15;
-  v16 = [v10 centerXAnchor];
-  v17 = [v9 centerXAnchor];
-  v18 = [v16 constraintEqualToAnchor:v17];
+  centerXAnchor = [v10 centerXAnchor];
+  centerXAnchor2 = [v9 centerXAnchor];
+  v18 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v30[2] = v18;
-  v19 = [v10 centerYAnchor];
-  v20 = [v9 centerYAnchor];
-  v21 = [v19 constraintEqualToAnchor:v20];
+  centerYAnchor = [v10 centerYAnchor];
+  centerYAnchor2 = [v9 centerYAnchor];
+  v21 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v30[3] = v21;
   v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
   [v24 activateConstraints:v22];
@@ -926,13 +926,13 @@ void __47__CSShieldViewController_emojiButtonWithEmoji___block_invoke(uint64_t a
 
 - (id)emojiSelectionButton
 {
-  v3 = [MEMORY[0x277D751C8] clearConfiguration];
+  clearConfiguration = [MEMORY[0x277D751C8] clearConfiguration];
   v4 = [MEMORY[0x277D75340] colorWithWhite:1.0 alpha:0.1];
-  [v3 setBackgroundColor:v4];
+  [clearConfiguration setBackgroundColor:v4];
 
-  v5 = [MEMORY[0x277D75228] tintedButtonConfiguration];
-  [v5 setCornerStyle:-1];
-  [v5 setBackground:v3];
+  tintedButtonConfiguration = [MEMORY[0x277D75228] tintedButtonConfiguration];
+  [tintedButtonConfiguration setCornerStyle:-1];
+  [tintedButtonConfiguration setBackground:clearConfiguration];
   objc_initWeak(location, self);
   v6 = MEMORY[0x277D75220];
   v7 = MEMORY[0x277D750C0];
@@ -942,9 +942,9 @@ void __47__CSShieldViewController_emojiButtonWithEmoji___block_invoke(uint64_t a
   v33[3] = &unk_278E0B3C0;
   objc_copyWeak(&v34, location);
   v8 = [v7 actionWithHandler:v33];
-  v9 = [v6 buttonWithConfiguration:v5 primaryAction:v8];
-  v26 = v5;
-  v27 = v3;
+  v9 = [v6 buttonWithConfiguration:tintedButtonConfiguration primaryAction:v8];
+  v26 = tintedButtonConfiguration;
+  v27 = clearConfiguration;
 
   v10 = [MEMORY[0x277D755B0] systemImageNamed:@"plus"];
   v11 = MEMORY[0x277D755D8];
@@ -953,27 +953,27 @@ void __47__CSShieldViewController_emojiButtonWithEmoji___block_invoke(uint64_t a
   v31 = [v10 imageByApplyingSymbolConfiguration:v13];
 
   v14 = [objc_alloc(MEMORY[0x277D755E8]) initWithImage:v31];
-  v15 = [MEMORY[0x277D75340] whiteColor];
-  [v14 setTintColor:v15];
+  whiteColor = [MEMORY[0x277D75340] whiteColor];
+  [v14 setTintColor:whiteColor];
 
   [v9 addSubview:v14];
   [v14 sizeToFit];
   [v14 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
   v25 = MEMORY[0x277CCAAD0];
-  v30 = [v9 widthAnchor];
-  v29 = [v30 constraintEqualToConstant:81.0];
+  widthAnchor = [v9 widthAnchor];
+  v29 = [widthAnchor constraintEqualToConstant:81.0];
   v32[0] = v29;
-  v28 = [v9 heightAnchor];
-  v16 = [v28 constraintEqualToConstant:81.0];
+  heightAnchor = [v9 heightAnchor];
+  v16 = [heightAnchor constraintEqualToConstant:81.0];
   v32[1] = v16;
-  v17 = [v14 centerXAnchor];
-  v18 = [v9 centerXAnchor];
-  v19 = [v17 constraintEqualToAnchor:v18];
+  centerXAnchor = [v14 centerXAnchor];
+  centerXAnchor2 = [v9 centerXAnchor];
+  v19 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v32[2] = v19;
-  v20 = [v14 centerYAnchor];
-  v21 = [v9 centerYAnchor];
-  v22 = [v20 constraintEqualToAnchor:v21];
+  centerYAnchor = [v14 centerYAnchor];
+  centerYAnchor2 = [v9 centerYAnchor];
+  v22 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v32[3] = v22;
   v23 = [MEMORY[0x277CBEA60] arrayWithObjects:v32 count:4];
   [v25 activateConstraints:v23];
@@ -1011,15 +1011,15 @@ void __46__CSShieldViewController_emojiSelectionButton__block_invoke(uint64_t a1
     self->_emojiTapToDismissGestureRecognizer = v6;
 
     [(UITapGestureRecognizer *)self->_emojiTapToDismissGestureRecognizer setCancelsTouchesInView:0];
-    v8 = [(CSShieldViewController *)self view];
-    [v8 addGestureRecognizer:self->_emojiTapToDismissGestureRecognizer];
+    view = [(CSShieldViewController *)self view];
+    [view addGestureRecognizer:self->_emojiTapToDismissGestureRecognizer];
 
     emojiTapToDismissGestureRecognizer = self->_emojiTapToDismissGestureRecognizer;
   }
 
   [(UITapGestureRecognizer *)emojiTapToDismissGestureRecognizer setEnabled:1];
-  v9 = [(CSShieldViewController *)self view];
-  [v9 addSubview:self->_emojiPickerTextView];
+  view2 = [(CSShieldViewController *)self view];
+  [view2 addSubview:self->_emojiPickerTextView];
 
   v10 = self->_emojiPickerTextView;
 
@@ -1033,13 +1033,13 @@ void __46__CSShieldViewController_emojiSelectionButton__block_invoke(uint64_t a1
   self->_reactionView = v3;
 
   [(CSReactionView *)self->_reactionView setUserInteractionEnabled:0];
-  v5 = [(CSShieldViewController *)self view];
-  [v5 bounds];
+  view = [(CSShieldViewController *)self view];
+  [view bounds];
   [(CSReactionView *)self->_reactionView setFrame:?];
 
   [(CSReactionView *)self->_reactionView setAutoresizingMask:18];
-  v6 = [(CSShieldViewController *)self view];
-  [v6 addSubview:self->_reactionView];
+  view2 = [(CSShieldViewController *)self view];
+  [view2 addSubview:self->_reactionView];
 }
 
 - (void)setupControlButtons
@@ -1083,8 +1083,8 @@ void __46__CSShieldViewController_emojiSelectionButton__block_invoke(uint64_t a1
   [(UIStackView *)self->_activeControlButtonContainer setSpacing:30.0];
   [(UIStackView *)self->_activeControlButtonContainer setAlpha:0.0];
   [(UIStackView *)self->_activeControlButtonContainer setAlignment:1];
-  v15 = [(CSShieldViewController *)self view];
-  [v15 addSubview:self->_activeControlButtonContainer];
+  view = [(CSShieldViewController *)self view];
+  [view addSubview:self->_activeControlButtonContainer];
 
   [(UIStackView *)self->_activeControlButtonContainer addArrangedSubview:self->_vocalAttenuationButton];
   [(UIStackView *)self->_activeControlButtonContainer addArrangedSubview:self->_controlButtonsDivider];
@@ -1132,13 +1132,13 @@ void __45__CSShieldViewController_setupControlButtons__block_invoke_3(uint64_t a
 - (void)_updateControlVisibility
 {
   v3 = +[CSShieldManager sharedManager];
-  v4 = [v3 isLoading];
+  isLoading = [v3 isLoading];
 
-  if ((v4 & 1) == 0)
+  if ((isLoading & 1) == 0)
   {
-    v5 = [(CSMicControl *)self->_micControl micState];
+    micState = [(CSMicControl *)self->_micControl micState];
     activeControlButtonContainer = self->_activeControlButtonContainer;
-    if (v5 == 1)
+    if (micState == 1)
     {
       v7 = 1.0;
     }
@@ -1148,7 +1148,7 @@ void __45__CSShieldViewController_setupControlButtons__block_invoke_3(uint64_t a
       v7 = 0.0;
     }
 
-    if (v5 == 1)
+    if (micState == 1)
     {
       v8 = 0.0;
     }
@@ -1171,11 +1171,11 @@ void __45__CSShieldViewController_setupControlButtons__block_invoke_3(uint64_t a
   loadingSpinner = self->_loadingSpinner;
   self->_loadingSpinner = v3;
 
-  v5 = [MEMORY[0x277D75340] whiteColor];
-  [(UIActivityIndicatorView *)self->_loadingSpinner setColor:v5];
+  whiteColor = [MEMORY[0x277D75340] whiteColor];
+  [(UIActivityIndicatorView *)self->_loadingSpinner setColor:whiteColor];
 
-  v6 = [(CSShieldViewController *)self view];
-  [v6 addSubview:self->_loadingSpinner];
+  view = [(CSShieldViewController *)self view];
+  [view addSubview:self->_loadingSpinner];
 
   v7 = self->_loadingSpinner;
 
@@ -1197,14 +1197,14 @@ void __45__CSShieldViewController_setupControlButtons__block_invoke_3(uint64_t a
   [(CSMicControl *)self->_micControl setTranslatesAutoresizingMaskIntoConstraints:0];
   v3 = MEMORY[0x277CCAAD0];
   micControl = self->_micControl;
-  v5 = [(CSShieldViewController *)self view];
-  v6 = [v3 constraintWithItem:micControl attribute:3 relatedBy:0 toItem:v5 attribute:4 multiplier:0.3075 constant:0.0];
+  view = [(CSShieldViewController *)self view];
+  v6 = [v3 constraintWithItem:micControl attribute:3 relatedBy:0 toItem:view attribute:4 multiplier:0.3075 constant:0.0];
 
   v7 = MEMORY[0x277CCAAD0];
-  v8 = [(CSMicControl *)self->_micControl centerXAnchor];
-  v9 = [(CSShieldViewController *)self view];
-  v10 = [v9 centerXAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  centerXAnchor = [(CSMicControl *)self->_micControl centerXAnchor];
+  view2 = [(CSShieldViewController *)self view];
+  centerXAnchor2 = [view2 centerXAnchor];
+  v11 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v13[0] = v11;
   v13[1] = v6;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
@@ -1215,23 +1215,23 @@ void __45__CSShieldViewController_setupControlButtons__block_invoke_3(uint64_t a
 {
   [(UIView *)self->_micPlacementTipView setTranslatesAutoresizingMaskIntoConstraints:0];
   v13 = MEMORY[0x277CCAAD0];
-  v17 = [(UIView *)self->_micPlacementTipView topAnchor];
-  v18 = [(CSShieldViewController *)self view];
-  v16 = [v18 topAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  topAnchor = [(UIView *)self->_micPlacementTipView topAnchor];
+  view = [(CSShieldViewController *)self view];
+  topAnchor2 = [view topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v19[0] = v15;
-  v14 = [(UIView *)self->_micPlacementTipView leadingAnchor];
-  v3 = [(CSShieldViewController *)self view];
-  v4 = [v3 leadingAnchor];
-  v5 = [v14 constraintEqualToAnchor:v4 constant:12.0];
+  leadingAnchor = [(UIView *)self->_micPlacementTipView leadingAnchor];
+  view2 = [(CSShieldViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v5 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:12.0];
   v19[1] = v5;
-  v6 = [(UIView *)self->_micPlacementTipView trailingAnchor];
-  v7 = [(CSShieldViewController *)self view];
-  v8 = [v7 trailingAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8 constant:-12.0];
+  trailingAnchor = [(UIView *)self->_micPlacementTipView trailingAnchor];
+  view3 = [(CSShieldViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v9 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-12.0];
   v19[2] = v9;
-  v10 = [(UIView *)self->_micPlacementTipView heightAnchor];
-  v11 = [v10 constraintEqualToConstant:1.0];
+  heightAnchor = [(UIView *)self->_micPlacementTipView heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:1.0];
   v19[3] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:4];
   [v13 activateConstraints:v12];
@@ -1241,34 +1241,34 @@ void __45__CSShieldViewController_setupControlButtons__block_invoke_3(uint64_t a
 {
   [(UIStackView *)self->_activeControlButtonContainer setTranslatesAutoresizingMaskIntoConstraints:0];
   v17 = MEMORY[0x277CCAAD0];
-  v25 = [(UIStackView *)self->_activeControlButtonContainer centerXAnchor];
-  v26 = [(CSShieldViewController *)self view];
-  v24 = [v26 centerXAnchor];
-  v23 = [v25 constraintEqualToAnchor:v24];
+  centerXAnchor = [(UIStackView *)self->_activeControlButtonContainer centerXAnchor];
+  view = [(CSShieldViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v23 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v27[0] = v23;
-  v22 = [(UIStackView *)self->_activeControlButtonContainer topAnchor];
-  v21 = [(CSMicControl *)self->_micControl bottomAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21 constant:90.0];
+  topAnchor = [(UIStackView *)self->_activeControlButtonContainer topAnchor];
+  bottomAnchor = [(CSMicControl *)self->_micControl bottomAnchor];
+  v20 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:90.0];
   v27[1] = v20;
-  v18 = [(UIStackView *)self->_activeControlButtonContainer leadingAnchor];
-  v19 = [(CSShieldViewController *)self view];
-  v16 = [v19 leadingAnchor];
-  v15 = [v18 constraintGreaterThanOrEqualToAnchor:v16];
+  leadingAnchor = [(UIStackView *)self->_activeControlButtonContainer leadingAnchor];
+  view2 = [(CSShieldViewController *)self view];
+  leadingAnchor2 = [view2 leadingAnchor];
+  v15 = [leadingAnchor constraintGreaterThanOrEqualToAnchor:leadingAnchor2];
   v27[2] = v15;
-  v13 = [(UIStackView *)self->_activeControlButtonContainer trailingAnchor];
-  v14 = [(CSShieldViewController *)self view];
-  v3 = [v14 trailingAnchor];
-  v4 = [v13 constraintLessThanOrEqualToAnchor:v3];
+  trailingAnchor = [(UIStackView *)self->_activeControlButtonContainer trailingAnchor];
+  view3 = [(CSShieldViewController *)self view];
+  trailingAnchor2 = [view3 trailingAnchor];
+  v4 = [trailingAnchor constraintLessThanOrEqualToAnchor:trailingAnchor2];
   v27[3] = v4;
-  v5 = [(CSToggleButton *)self->_vocalAttenuationButton widthAnchor];
-  v6 = [(CSToggleButton *)self->_reverbButton widthAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  widthAnchor = [(CSToggleButton *)self->_vocalAttenuationButton widthAnchor];
+  widthAnchor2 = [(CSToggleButton *)self->_reverbButton widthAnchor];
+  v7 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
   v27[4] = v7;
-  v8 = [(CSToggleButtonDivider *)self->_controlButtonsDivider widthAnchor];
-  v9 = [v8 constraintEqualToConstant:2.0];
+  widthAnchor3 = [(CSToggleButtonDivider *)self->_controlButtonsDivider widthAnchor];
+  v9 = [widthAnchor3 constraintEqualToConstant:2.0];
   v27[5] = v9;
-  v10 = [(CSToggleButtonDivider *)self->_controlButtonsDivider heightAnchor];
-  v11 = [v10 constraintEqualToConstant:56.0];
+  heightAnchor = [(CSToggleButtonDivider *)self->_controlButtonsDivider heightAnchor];
+  v11 = [heightAnchor constraintEqualToConstant:56.0];
   v27[6] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v27 count:7];
   [v17 activateConstraints:v12];
@@ -1278,13 +1278,13 @@ void __45__CSShieldViewController_setupControlButtons__block_invoke_3(uint64_t a
 {
   [(UIStackView *)self->_emojiPickerContainer setTranslatesAutoresizingMaskIntoConstraints:0];
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(UIStackView *)self->_emojiPickerContainer centerXAnchor];
-  v5 = [(CSShieldViewController *)self view];
-  v6 = [v5 centerXAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
-  v8 = [(UIStackView *)self->_emojiPickerContainer topAnchor];
-  v9 = [(CSMicControl *)self->_micControl bottomAnchor];
-  v10 = [v8 constraintEqualToAnchor:v9 constant:66.0];
+  centerXAnchor = [(UIStackView *)self->_emojiPickerContainer centerXAnchor];
+  view = [(CSShieldViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  topAnchor = [(UIStackView *)self->_emojiPickerContainer topAnchor];
+  bottomAnchor = [(CSMicControl *)self->_micControl bottomAnchor];
+  v10 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:66.0];
   v12[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
   [v3 activateConstraints:v11];
@@ -1294,14 +1294,14 @@ void __45__CSShieldViewController_setupControlButtons__block_invoke_3(uint64_t a
 {
   [(UIActivityIndicatorView *)self->_loadingSpinner setTranslatesAutoresizingMaskIntoConstraints:0];
   v3 = MEMORY[0x277CCAAD0];
-  v4 = [(UIActivityIndicatorView *)self->_loadingSpinner centerXAnchor];
-  v5 = [(CSShieldViewController *)self view];
-  v6 = [v5 centerXAnchor];
-  v7 = [v4 constraintEqualToAnchor:v6];
-  v8 = [(UIActivityIndicatorView *)self->_loadingSpinner centerYAnchor];
-  v9 = [(CSShieldViewController *)self view];
-  v10 = [v9 centerYAnchor];
-  v11 = [v8 constraintEqualToAnchor:v10];
+  centerXAnchor = [(UIActivityIndicatorView *)self->_loadingSpinner centerXAnchor];
+  view = [(CSShieldViewController *)self view];
+  centerXAnchor2 = [view centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
+  centerYAnchor = [(UIActivityIndicatorView *)self->_loadingSpinner centerYAnchor];
+  view2 = [(CSShieldViewController *)self view];
+  centerYAnchor2 = [view2 centerYAnchor];
+  v11 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v13[1] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v13 count:2];
   [v3 activateConstraints:v12];
@@ -1316,21 +1316,21 @@ void __45__CSShieldViewController_setupControlButtons__block_invoke_3(uint64_t a
   [(TVRUIHintsViewController *)self->_volumeHintViewController setAllowSiriHint:0];
   [(TVRUIHintsViewController *)self->_volumeHintViewController setAllowTips:0];
   [(CSShieldViewController *)self addChildViewController:self->_volumeHintViewController];
-  v5 = [(CSShieldViewController *)self view];
-  v6 = [(TVRUIHintsViewController *)self->_volumeHintViewController view];
-  [v5 addSubview:v6];
+  view = [(CSShieldViewController *)self view];
+  view2 = [(TVRUIHintsViewController *)self->_volumeHintViewController view];
+  [view addSubview:view2];
 
-  v7 = [(CSShieldViewController *)self view];
-  [v7 bounds];
+  view3 = [(CSShieldViewController *)self view];
+  [view3 bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(TVRUIHintsViewController *)self->_volumeHintViewController view];
-  [v16 setFrame:{v9, v11, v13, v15}];
+  view4 = [(TVRUIHintsViewController *)self->_volumeHintViewController view];
+  [view4 setFrame:{v9, v11, v13, v15}];
 
-  v17 = [(TVRUIHintsViewController *)self->_volumeHintViewController view];
-  [v17 setAutoresizingMask:18];
+  view5 = [(TVRUIHintsViewController *)self->_volumeHintViewController view];
+  [view5 setAutoresizingMask:18];
 }
 
 - (void)setupMiniPlayerViewController
@@ -1341,45 +1341,45 @@ void __45__CSShieldViewController_setupControlButtons__block_invoke_3(uint64_t a
 
   self->_miniPlayerIsHidden = 1;
   [(CSShieldViewController *)self addChildViewController:self->_miniPlayerViewController];
-  v5 = [(CSShieldViewController *)self view];
-  v6 = [(CSMiniPlayerViewController *)self->_miniPlayerViewController view];
-  [v5 addSubview:v6];
+  view = [(CSShieldViewController *)self view];
+  view2 = [(CSMiniPlayerViewController *)self->_miniPlayerViewController view];
+  [view addSubview:view2];
 
-  v7 = [(CSMiniPlayerViewController *)self->_miniPlayerViewController view];
-  v8 = [(CSMiniPlayerViewController *)self->_miniPlayerViewController view];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [(CSMiniPlayerViewController *)self->_miniPlayerViewController view];
+  view4 = [(CSMiniPlayerViewController *)self->_miniPlayerViewController view];
+  [view4 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [v7 bottomAnchor];
-  v10 = [(CSShieldViewController *)self view];
-  v11 = [v10 bottomAnchor];
-  v12 = [v9 constraintEqualToAnchor:v11 constant:60.0];
+  bottomAnchor = [view3 bottomAnchor];
+  view5 = [(CSShieldViewController *)self view];
+  bottomAnchor2 = [view5 bottomAnchor];
+  v12 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:60.0];
   miniPlayerBottomConstraint = self->_miniPlayerBottomConstraint;
   self->_miniPlayerBottomConstraint = v12;
 
   v22 = MEMORY[0x277CCAAD0];
   v25[0] = self->_miniPlayerBottomConstraint;
-  v23 = [v7 leadingAnchor];
-  v24 = [(CSShieldViewController *)self view];
-  v14 = [v24 leadingAnchor];
-  v15 = [v23 constraintEqualToAnchor:v14 constant:28.0];
+  leadingAnchor = [view3 leadingAnchor];
+  view6 = [(CSShieldViewController *)self view];
+  leadingAnchor2 = [view6 leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:28.0];
   v25[1] = v15;
-  v16 = [v7 trailingAnchor];
-  v17 = [(CSShieldViewController *)self view];
-  v18 = [v17 trailingAnchor];
-  v19 = [v16 constraintEqualToAnchor:v18 constant:-28.0];
+  trailingAnchor = [view3 trailingAnchor];
+  view7 = [(CSShieldViewController *)self view];
+  trailingAnchor2 = [view7 trailingAnchor];
+  v19 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-28.0];
   v25[2] = v19;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:3];
   [v22 activateConstraints:v20];
 
   [(CSMiniPlayerViewController *)self->_miniPlayerViewController didMoveToParentViewController:self];
   v21 = [objc_alloc(MEMORY[0x277D75B78]) initWithTarget:self action:sel_handleOpenQueueTap_];
-  [v7 addGestureRecognizer:v21];
+  [view3 addGestureRecognizer:v21];
 }
 
-- (void)handleOpenQueueTap:(id)a3
+- (void)handleOpenQueueTap:(id)tap
 {
-  v4 = a3;
-  if ([v4 state] == 3)
+  tapCopy = tap;
+  if ([tapCopy state] == 3)
   {
     objc_initWeak(&location, self);
     v5 = [CSQueueViewController alloc];
@@ -1404,20 +1404,20 @@ void __45__CSShieldViewController_handleOpenQueueTap___block_invoke(uint64_t a1)
 
 - (void)setupVolumeButtonConsumers
 {
-  v3 = [(CSShieldViewController *)self view];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  [v5 _setSystemVolumeHUDEnabled:0];
+  view = [(CSShieldViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  [windowScene _setSystemVolumeHUDEnabled:0];
 
   if (*&self->_volumeDecreaseInvalidator == 0)
   {
-    v6 = [MEMORY[0x277D66AA0] sharedInstance];
-    v7 = [v6 beginConsumingPressesForButtonKind:4 eventConsumer:self priority:0];
+    mEMORY[0x277D66AA0] = [MEMORY[0x277D66AA0] sharedInstance];
+    v7 = [mEMORY[0x277D66AA0] beginConsumingPressesForButtonKind:4 eventConsumer:self priority:0];
     volumeDecreaseInvalidator = self->_volumeDecreaseInvalidator;
     self->_volumeDecreaseInvalidator = v7;
 
-    v11 = [MEMORY[0x277D66AA0] sharedInstance];
-    v9 = [v11 beginConsumingPressesForButtonKind:3 eventConsumer:self priority:0];
+    mEMORY[0x277D66AA0]2 = [MEMORY[0x277D66AA0] sharedInstance];
+    v9 = [mEMORY[0x277D66AA0]2 beginConsumingPressesForButtonKind:3 eventConsumer:self priority:0];
     volumeIncreaseInvalidator = self->_volumeIncreaseInvalidator;
     self->_volumeIncreaseInvalidator = v9;
   }
@@ -1434,23 +1434,23 @@ void __45__CSShieldViewController_handleOpenQueueTap___block_invoke(uint64_t a1)
   self->_volumeIncreaseInvalidator = 0;
 }
 
-- (void)_reverbButtonStateChangedToState:(unint64_t)a3
+- (void)_reverbButtonStateChangedToState:(unint64_t)state
 {
-  if (a3 < 2)
+  if (state < 2)
   {
     [(CSHapticsPlayer *)self->_hapticsPlayer playReverbButtonFeedbackWithIntensity:0];
   }
 
   else
   {
-    if (a3 == 2)
+    if (state == 2)
     {
       [(CSHapticsPlayer *)self->_hapticsPlayer playReverbButtonFeedbackWithIntensity:1];
       v4 = 2;
       goto LABEL_11;
     }
 
-    if (a3 == 3)
+    if (state == 3)
     {
       [(CSHapticsPlayer *)self->_hapticsPlayer playReverbButtonFeedbackWithIntensity:2];
       v4 = 3;
@@ -1469,7 +1469,7 @@ LABEL_11:
   v6 = ContinuitySingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
     v8 = [MEMORY[0x277CCABB0] numberWithInteger:v4];
     v12 = 136315650;
     v13 = "[CSShieldViewController _reverbButtonStateChangedToState:]";
@@ -1484,14 +1484,14 @@ LABEL_11:
   [v9 updateReverbLevel:v4];
 
   v10 = +[CSShieldManager sharedManager];
-  v11 = [v10 requestClient];
-  [v11 sendReverb:v4];
+  requestClient = [v10 requestClient];
+  [requestClient sendReverb:v4];
 }
 
-- (void)_vocalAttenuationButtonStateChangedToState:(unint64_t)a3
+- (void)_vocalAttenuationButtonStateChangedToState:(unint64_t)state
 {
   v4 = 1.0;
-  switch(a3)
+  switch(state)
   {
     case 3uLL:
       hapticsPlayer = self->_hapticsPlayer;
@@ -1521,7 +1521,7 @@ LABEL_11:
   v8 = ContinuitySingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+    v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:state];
     v10 = [MEMORY[0x277CCABB0] numberWithDouble:v4];
     v15 = 136315650;
     v16 = "[CSShieldViewController _vocalAttenuationButtonStateChangedToState:]";
@@ -1533,12 +1533,12 @@ LABEL_11:
   }
 
   v11 = +[CSShieldManager sharedManager];
-  v12 = [v11 playbackManager];
-  [v12 setVocalAttenuationLevel:v4];
+  playbackManager = [v11 playbackManager];
+  [playbackManager setVocalAttenuationLevel:v4];
 
   v13 = +[CSShieldManager sharedManager];
-  v14 = [v13 requestClient];
-  [v14 sendVocalLevel:v4];
+  requestClient = [v13 requestClient];
+  [requestClient sendVocalLevel:v4];
 }
 
 - (void)presentMusicPicker
@@ -1568,9 +1568,9 @@ LABEL_11:
     }
 
     v10 = SBSCreateOpenApplicationService();
-    v11 = [MEMORY[0x277CCA8D8] mainBundle];
-    v12 = [v11 bundleIdentifier];
-    [v10 openApplication:v12 withOptions:v8 completion:&__block_literal_global_154];
+    mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [v10 openApplication:bundleIdentifier withOptions:v8 completion:&__block_literal_global_154];
   }
 
   else
@@ -1601,38 +1601,38 @@ void __44__CSShieldViewController_presentMusicPicker__block_invoke_155(uint64_t 
   [v5 sendQueuedSongsNotificationWithTracks:v4 shouldQueueOnServer:a3];
 }
 
-- (void)_showReaction:(id)a3 from:(id)a4
+- (void)_showReaction:(id)reaction from:(id)from
 {
-  v6 = a3;
-  v7 = a4;
+  reactionCopy = reaction;
+  fromCopy = from;
   v8 = ContinuitySingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 136315650;
     v10 = "[CSShieldViewController _showReaction:from:]";
     v11 = 2112;
-    v12 = v6;
+    v12 = reactionCopy;
     v13 = 2112;
-    v14 = v7;
+    v14 = fromCopy;
     _os_log_impl(&dword_2441FB000, v8, OS_LOG_TYPE_DEFAULT, "%s: Received reaction %@ from sender: %@", &v9, 0x20u);
   }
 
-  [(CSReactionView *)self->_reactionView showReaction:v6 from:v7];
+  [(CSReactionView *)self->_reactionView showReaction:reactionCopy from:fromCopy];
 }
 
-- (void)_showReactionSendingAnimation:(id)a3 at:(id)a4
+- (void)_showReactionSendingAnimation:(id)animation at:(id)at
 {
-  v21 = a4;
-  v6 = a3;
-  v7 = [(CSShieldViewController *)self view];
-  v8 = [v7 containsView:v21];
+  atCopy = at;
+  animationCopy = animation;
+  view = [(CSShieldViewController *)self view];
+  v8 = [view containsView:atCopy];
 
-  v9 = [(CSShieldViewController *)self view];
-  v10 = v9;
+  view2 = [(CSShieldViewController *)self view];
+  v10 = view2;
   if (v8)
   {
-    [v21 bounds];
-    [v10 convertRect:v21 fromView:?];
+    [atCopy bounds];
+    [v10 convertRect:atCopy fromView:?];
     v12 = v11;
     v14 = v13;
     v16 = v15;
@@ -1652,53 +1652,53 @@ void __44__CSShieldViewController_presentMusicPicker__block_invoke_155(uint64_t 
 
   else
   {
-    [v9 bounds];
+    [view2 bounds];
     MidX = CGRectGetMidX(v25);
     [(CSMicControl *)self->_micControl frame];
     MidY = CGRectGetMaxY(v26) + 150.0;
   }
 
-  [(CSReactionView *)self->_reactionView showReactionSendingAnimation:v6 at:MidX, MidY];
+  [(CSReactionView *)self->_reactionView showReactionSendingAnimation:animationCopy at:MidX, MidY];
 }
 
 - (void)_updateVocalAttenuationButtonActiveState
 {
   v3 = +[CSShieldManager sharedManager];
-  v4 = [v3 playbackManager];
-  v5 = [v4 currentState];
-  v6 = [v5 vocalAttenuationIsAvailable];
+  playbackManager = [v3 playbackManager];
+  currentState = [playbackManager currentState];
+  vocalAttenuationIsAvailable = [currentState vocalAttenuationIsAvailable];
 
   vocalAttenuationButton = self->_vocalAttenuationButton;
 
-  [(CSToggleButton *)vocalAttenuationButton setEnabled:v6];
+  [(CSToggleButton *)vocalAttenuationButton setEnabled:vocalAttenuationIsAvailable];
 }
 
 - (void)_updateVocalAttenuationButtonLevel
 {
   v5 = +[CSShieldManager sharedManager];
-  v3 = [v5 playbackManager];
-  v4 = [v3 currentState];
-  [v4 vocalAttenuationLevel];
+  playbackManager = [v5 playbackManager];
+  currentState = [playbackManager currentState];
+  [currentState vocalAttenuationLevel];
   [(CSShieldViewController *)self _updateVocalAttenuationButtonForLevel:?];
 }
 
-- (void)_updateMiniPlayerState:(id)a3
+- (void)_updateMiniPlayerState:(id)state
 {
-  v4 = a3;
-  v5 = [v4 currentSong];
-  v6 = v5 == 0;
+  stateCopy = state;
+  currentSong = [stateCopy currentSong];
+  v6 = currentSong == 0;
 
   if (self->_miniPlayerIsHidden == v6)
   {
-    [(CSMiniPlayerViewController *)self->_miniPlayerViewController updatePlaybackState:v4];
+    [(CSMiniPlayerViewController *)self->_miniPlayerViewController updatePlaybackState:stateCopy];
   }
 
   else
   {
     self->_miniPlayerIsHidden = v6;
-    if (v5)
+    if (currentSong)
     {
-      [(CSMiniPlayerViewController *)self->_miniPlayerViewController updatePlaybackState:v4];
+      [(CSMiniPlayerViewController *)self->_miniPlayerViewController updatePlaybackState:stateCopy];
     }
 
     objc_initWeak(&location, self);
@@ -1715,7 +1715,7 @@ void __44__CSShieldViewController_presentMusicPicker__block_invoke_155(uint64_t 
     v8[3] = &unk_278E0B8A8;
     objc_copyWeak(&v10, &location);
     v11 = v6;
-    v9 = v4;
+    v9 = stateCopy;
     [v7 animateWithDuration:4 delay:v12 usingSpringWithDamping:v8 initialSpringVelocity:1.0 options:0.0 animations:0.5 completion:0.0];
 
     objc_destroyWeak(&v10);
@@ -1749,41 +1749,41 @@ void __49__CSShieldViewController__updateMiniPlayerState___block_invoke_2(uint64
 
 - (BOOL)_isOnLockScreen
 {
-  v2 = [(CSShieldViewController *)self view];
-  v3 = [v2 window];
-  v4 = [v3 windowScene];
-  v5 = [v4 session];
-  v6 = [v5 role];
-  v7 = v6 == *MEMORY[0x277D776D8];
+  view = [(CSShieldViewController *)self view];
+  window = [view window];
+  windowScene = [window windowScene];
+  session = [windowScene session];
+  role = [session role];
+  v7 = role == *MEMORY[0x277D776D8];
 
   return v7;
 }
 
-- (void)consumeSinglePressDownForButtonKind:(int64_t)a3
+- (void)consumeSinglePressDownForButtonKind:(int64_t)kind
 {
-  if (a3 == 4)
+  if (kind == 4)
   {
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 postNotificationName:*MEMORY[0x277D6C5C8] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:*MEMORY[0x277D6C5C8] object:0];
 
     v6 = +[CSShieldManager sharedManager];
-    v4 = [v6 requestClient];
-    [v4 decreaseMicrophoneVolume:&__block_literal_global_164];
+    requestClient = [v6 requestClient];
+    [requestClient decreaseMicrophoneVolume:&__block_literal_global_164];
   }
 
   else
   {
-    if (a3 != 3)
+    if (kind != 3)
     {
       return;
     }
 
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 postNotificationName:*MEMORY[0x277D6C5D0] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 postNotificationName:*MEMORY[0x277D6C5D0] object:0];
 
     v6 = +[CSShieldManager sharedManager];
-    v4 = [v6 requestClient];
-    [v4 increaseMicrophoneVolume:&__block_literal_global_161];
+    requestClient = [v6 requestClient];
+    [requestClient increaseMicrophoneVolume:&__block_literal_global_161];
   }
 }
 
@@ -1837,19 +1837,19 @@ void __62__CSShieldViewController_consumeSinglePressDownForButtonKind___block_in
   }
 }
 
-- (void)micControl:(id)a3 didRequestToTurnOnFromState:(unint64_t)a4
+- (void)micControl:(id)control didRequestToTurnOnFromState:(unint64_t)state
 {
-  v5 = a3;
+  controlCopy = control;
   v6 = ContinuitySingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = [MEMORY[0x277CF6C50] sharedInstance];
-    v9 = [v7 numberWithInteger:{objc_msgSend(v8, "uiState")}];
+    mEMORY[0x277CF6C50] = [MEMORY[0x277CF6C50] sharedInstance];
+    v9 = [v7 numberWithInteger:{objc_msgSend(mEMORY[0x277CF6C50], "uiState")}];
     *buf = 136315906;
     v22 = "[CSShieldViewController micControl:didRequestToTurnOnFromState:]";
     v23 = 2112;
-    v24 = self;
+    selfCopy = self;
     v25 = 2080;
     v26 = "[CSShieldViewController micControl:didRequestToTurnOnFromState:]";
     v27 = 2112;
@@ -1863,14 +1863,14 @@ void __62__CSShieldViewController_consumeSinglePressDownForButtonKind___block_in
   aBlock[2] = __65__CSShieldViewController_micControl_didRequestToTurnOnFromState___block_invoke;
   aBlock[3] = &unk_278E0B8D0;
   aBlock[4] = self;
-  v10 = v5;
+  v10 = controlCopy;
   v20 = v10;
   v11 = _Block_copy(aBlock);
-  v12 = [(CSShieldViewController *)self _needsMicConfirmation];
-  v13 = [MEMORY[0x277CF6C50] sharedInstance];
-  v14 = [v13 uiState];
+  _needsMicConfirmation = [(CSShieldViewController *)self _needsMicConfirmation];
+  mEMORY[0x277CF6C50]2 = [MEMORY[0x277CF6C50] sharedInstance];
+  uiState = [mEMORY[0x277CF6C50]2 uiState];
 
-  if (v14 == 4 || v12)
+  if (uiState == 4 || _needsMicConfirmation)
   {
     v16 = 3;
   }
@@ -1881,7 +1881,7 @@ void __62__CSShieldViewController_consumeSinglePressDownForButtonKind___block_in
   }
 
   [v10 setMicControlState:v16 animated:1];
-  if (v12)
+  if (_needsMicConfirmation)
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
@@ -1917,10 +1917,10 @@ void __65__CSShieldViewController_micControl_didRequestToTurnOnFromState___block
 - (BOOL)_needsMicConfirmation
 {
   v2 = +[CSShieldManager sharedManager];
-  v3 = [v2 sessionState];
-  v4 = [v3 activeMicRemoteDisplayID];
+  sessionState = [v2 sessionState];
+  activeMicRemoteDisplayID = [sessionState activeMicRemoteDisplayID];
 
-  if (v4)
+  if (activeMicRemoteDisplayID)
   {
     v5 = [v2 isMicLocal] ^ 1;
   }
@@ -1931,14 +1931,14 @@ void __65__CSShieldViewController_micControl_didRequestToTurnOnFromState___block
   }
 
   v6 = +[CSShieldManager sharedManager];
-  v7 = [v6 hasConfirmedMicTakeover];
+  hasConfirmedMicTakeover = [v6 hasConfirmedMicTakeover];
 
   v8 = ContinuitySingLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"NO";
     v10 = @"YES";
-    if (!v7)
+    if (!hasConfirmedMicTakeover)
     {
       v10 = @"NO";
     }
@@ -1949,7 +1949,7 @@ void __65__CSShieldViewController_micControl_didRequestToTurnOnFromState___block
     v15 = v10;
     if (v5)
     {
-      v9 = v4;
+      v9 = activeMicRemoteDisplayID;
     }
 
     v16 = 2112;
@@ -1957,22 +1957,22 @@ void __65__CSShieldViewController_micControl_didRequestToTurnOnFromState___block
     _os_log_impl(&dword_2441FB000, v8, OS_LOG_TYPE_DEFAULT, "%s: mic control previously confirmed: %@ - mic is in use: %@ ", &v12, 0x20u);
   }
 
-  return v5 & (v7 ^ 1);
+  return v5 & (hasConfirmedMicTakeover ^ 1);
 }
 
-- (void)micControl:(id)a3 didRequestToTurnOffFromState:(unint64_t)a4
+- (void)micControl:(id)control didRequestToTurnOffFromState:(unint64_t)state
 {
-  v5 = a3;
+  controlCopy = control;
   v6 = ContinuitySingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = [MEMORY[0x277CF6C50] sharedInstance];
-    v9 = [v7 numberWithInteger:{objc_msgSend(v8, "uiState")}];
+    mEMORY[0x277CF6C50] = [MEMORY[0x277CF6C50] sharedInstance];
+    v9 = [v7 numberWithInteger:{objc_msgSend(mEMORY[0x277CF6C50], "uiState")}];
     v13 = 136315906;
     v14 = "[CSShieldViewController micControl:didRequestToTurnOffFromState:]";
     v15 = 2112;
-    v16 = self;
+    selfCopy = self;
     v17 = 2080;
     v18 = "[CSShieldViewController micControl:didRequestToTurnOffFromState:]";
     v19 = 2112;
@@ -1981,48 +1981,48 @@ void __65__CSShieldViewController_micControl_didRequestToTurnOnFromState___block
   }
 
   [(CSHapticsPlayer *)self->_hapticsPlayer playButtonFeedback];
-  [v5 setMicControlState:0 animated:1];
+  [controlCopy setMicControlState:0 animated:1];
 
-  v10 = [MEMORY[0x277CF6C50] sharedInstance];
-  v11 = [v10 uiState];
+  mEMORY[0x277CF6C50]2 = [MEMORY[0x277CF6C50] sharedInstance];
+  uiState = [mEMORY[0x277CF6C50]2 uiState];
 
-  if (v11 == 1)
+  if (uiState == 1)
   {
-    v12 = [MEMORY[0x277CF6C58] sharedInstance];
-    [v12 pauseSessionForEvent:0];
+    mEMORY[0x277CF6C58] = [MEMORY[0x277CF6C58] sharedInstance];
+    [mEMORY[0x277CF6C58] pauseSessionForEvent:0];
   }
 
   else
   {
-    v12 = ContinuitySingLog();
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    mEMORY[0x277CF6C58] = ContinuitySingLog();
+    if (os_log_type_enabled(mEMORY[0x277CF6C58], OS_LOG_TYPE_ERROR))
     {
       [CSShieldViewController micControl:didRequestToTurnOffFromState:];
     }
   }
 }
 
-- (void)micControl:(id)a3 didChangetoState:(unint64_t)a4
+- (void)micControl:(id)control didChangetoState:(unint64_t)state
 {
   v6 = ContinuitySingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = MEMORY[0x277CCABB0];
-    v8 = [MEMORY[0x277CF6C50] sharedInstance];
-    v9 = [v7 numberWithInteger:{objc_msgSend(v8, "uiState")}];
+    mEMORY[0x277CF6C50] = [MEMORY[0x277CF6C50] sharedInstance];
+    v9 = [v7 numberWithInteger:{objc_msgSend(mEMORY[0x277CF6C50], "uiState")}];
     v14 = 136315906;
     v15 = "[CSShieldViewController micControl:didChangetoState:]";
     v16 = 2112;
-    v17 = self;
+    selfCopy = self;
     v18 = 2048;
-    v19 = a4;
+    stateCopy = state;
     v20 = 2112;
     v21 = v9;
     _os_log_impl(&dword_2441FB000, v6, OS_LOG_TYPE_DEFAULT, "%s: %@ mic control state changed to %zu with current state %@", &v14, 0x2Au);
   }
 
   [(CSShieldViewController *)self _updateControlVisibility];
-  if (a4 == 1)
+  if (state == 1)
   {
     [(CSShieldViewController *)self setupVolumeButtonConsumers];
     volumeHintViewController = self->_volumeHintViewController;
@@ -2064,8 +2064,8 @@ void __65__CSShieldViewController_micControl_didRequestToTurnOnFromState___block
 - (void)_userRequestedMicOn
 {
   v0 = MEMORY[0x277CCABB0];
-  v1 = [MEMORY[0x277CF6C50] sharedInstance];
-  v2 = [v0 numberWithInteger:{objc_msgSend(v1, "uiState")}];
+  mEMORY[0x277CF6C50] = [MEMORY[0x277CF6C50] sharedInstance];
+  v2 = [v0 numberWithInteger:{objc_msgSend(mEMORY[0x277CF6C50], "uiState")}];
   OUTLINED_FUNCTION_2_2();
   OUTLINED_FUNCTION_5_0(&dword_2441FB000, v3, v4, "%s: %@ %s unhandled current state %@", v5, v6, v7, v8, 2u);
 }
@@ -2076,12 +2076,12 @@ void __65__CSShieldViewController_micControl_didRequestToTurnOnFromState___block
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [MEMORY[0x277CF6C50] sharedInstance];
-    v6 = [v4 numberWithInteger:{objc_msgSend(v5, "uiState")}];
+    mEMORY[0x277CF6C50] = [MEMORY[0x277CF6C50] sharedInstance];
+    v6 = [v4 numberWithInteger:{objc_msgSend(mEMORY[0x277CF6C50], "uiState")}];
     *buf = 136315906;
     v13 = "[CSShieldViewController _activateEnableMicTimer]";
     v14 = 2112;
-    v15 = self;
+    selfCopy = self;
     v16 = 2080;
     v17 = "[CSShieldViewController _activateEnableMicTimer]";
     v18 = 2112;
@@ -2131,12 +2131,12 @@ void __49__CSShieldViewController__activateEnableMicTimer__block_invoke(uint64_t
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = MEMORY[0x277CCABB0];
-    v5 = [MEMORY[0x277CF6C50] sharedInstance];
-    v6 = [v4 numberWithInteger:{objc_msgSend(v5, "uiState")}];
+    mEMORY[0x277CF6C50] = [MEMORY[0x277CF6C50] sharedInstance];
+    v6 = [v4 numberWithInteger:{objc_msgSend(mEMORY[0x277CF6C50], "uiState")}];
     v8 = 136315906;
     v9 = "[CSShieldViewController _cancelEnableMicTimer]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     v12 = 2080;
     v13 = "[CSShieldViewController _cancelEnableMicTimer]";
     v14 = 2112;
@@ -2193,7 +2193,7 @@ uint64_t __48__CSShieldViewController__sendConnectMicRequest__block_invoke_2(uin
     *buf = 136315650;
     v9 = "[CSShieldViewController _sendEnableMicRequest]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     v12 = 2080;
     v13 = "[CSShieldViewController _sendEnableMicRequest]";
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@ %s", buf, 0x20u);
@@ -2201,13 +2201,13 @@ uint64_t __48__CSShieldViewController__sendConnectMicRequest__block_invoke_2(uin
 
   objc_initWeak(buf, self);
   v4 = +[CSShieldManager sharedManager];
-  v5 = [v4 requestClient];
+  requestClient = [v4 requestClient];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __47__CSShieldViewController__sendEnableMicRequest__block_invoke;
   v6[3] = &unk_278E0B948;
   objc_copyWeak(&v7, buf);
-  [v5 sendEnableMicRequest:v6];
+  [requestClient sendEnableMicRequest:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(buf);
@@ -2310,14 +2310,14 @@ void __45__CSShieldViewController__confirmAndTeardown__block_invoke(uint64_t a1,
 - (void)_presentOnboardingCardIfNeeded
 {
   v3 = +[CSShieldManager sharedManager];
-  v4 = [v3 sessionState];
+  sessionState = [v3 sessionState];
 
-  if (v4)
+  if (sessionState)
   {
     v5 = +[CSShieldManager sharedManager];
-    v6 = [v5 hasDisplayedOnboarding];
+    hasDisplayedOnboarding = [v5 hasDisplayedOnboarding];
 
-    if (v6)
+    if (hasDisplayedOnboarding)
     {
       v7 = ContinuitySingLog();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -2336,9 +2336,9 @@ LABEL_10:
       [v9 setDisplayedOnboarding:1];
 
       v10 = +[CSShieldManager sharedManager];
-      v11 = [v10 sessionState];
-      v12 = [v11 participants];
-      v13 = [v12 count];
+      sessionState2 = [v10 sessionState];
+      participants = [sessionState2 participants];
+      v13 = [participants count];
 
       if (v13 < 2)
       {
@@ -2418,16 +2418,16 @@ void __56__CSShieldViewController__presentOnboardingCardIfNeeded__block_invoke(u
 {
   v3 = [CSHelpPanelViewController alloc];
   v4 = +[CSShieldManager sharedManager];
-  v5 = [v4 requestClient];
-  v10 = [(CSHelpPanelViewController *)v3 initWithRequestClient:v5];
+  requestClient = [v4 requestClient];
+  v10 = [(CSHelpPanelViewController *)v3 initWithRequestClient:requestClient];
 
   v6 = [objc_alloc(MEMORY[0x277D75798]) initWithRootViewController:v10];
-  v7 = [v6 sheetPresentationController];
-  v8 = v7;
-  if (v7)
+  sheetPresentationController = [v6 sheetPresentationController];
+  v8 = sheetPresentationController;
+  if (sheetPresentationController)
   {
-    v9 = [v7 traitOverrides];
-    [v9 setUserInterfaceStyle:2];
+    traitOverrides = [sheetPresentationController traitOverrides];
+    [traitOverrides setUserInterfaceStyle:2];
 
     [v8 setPrefersGrabberVisible:1];
   }
@@ -2435,18 +2435,18 @@ void __56__CSShieldViewController__presentOnboardingCardIfNeeded__block_invoke(u
   [(CSShieldViewController *)self presentViewController:v6 animated:1 completion:0];
 }
 
-- (void)_presentConfirmationCardType:(unint64_t)a3 completion:(id)a4
+- (void)_presentConfirmationCardType:(unint64_t)type completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = ContinuitySingLog();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315650;
     v19 = "[CSShieldViewController _presentConfirmationCardType:completion:]";
     v20 = 2112;
-    v21 = self;
+    selfCopy = self;
     v22 = 2048;
-    v23 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_2441FB000, v7, OS_LOG_TYPE_DEFAULT, "%s: %@ Presenting confirmation card for type:%zu", buf, 0x20u);
   }
 
@@ -2455,10 +2455,10 @@ void __56__CSShieldViewController__presentOnboardingCardIfNeeded__block_invoke(u
   v13 = 3221225472;
   v14 = __66__CSShieldViewController__presentConfirmationCardType_completion___block_invoke;
   v15 = &unk_278E0B970;
-  v16 = v6;
-  v17 = a3;
-  v9 = v6;
-  v10 = [(CSConfirmMicCardViewController *)v8 initWithType:a3 confirmationHandler:&v12];
+  v16 = completionCopy;
+  typeCopy2 = type;
+  v9 = completionCopy;
+  v10 = [(CSConfirmMicCardViewController *)v8 initWithType:type confirmationHandler:&v12];
   v11 = [(CSShieldViewController *)self presentProxCardFlowWithDelegate:self initialViewController:v10, v12, v13, v14, v15];
 }
 
@@ -2480,30 +2480,30 @@ uint64_t __66__CSShieldViewController__presentConfirmationCardType_completion___
   return (*(*(a1 + 32) + 16))();
 }
 
-- (void)mediaPicker:(id)a3 didPickMediaItems:(id)a4
+- (void)mediaPicker:(id)picker didPickMediaItems:(id)items
 {
-  v5 = a4;
+  itemsCopy = items;
   v6 = ContinuitySingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315906;
     v24 = "[CSShieldViewController mediaPicker:didPickMediaItems:]";
     v25 = 2112;
-    v26 = self;
+    selfCopy = self;
     v27 = 2080;
     v28 = "[CSShieldViewController mediaPicker:didPickMediaItems:]";
     v29 = 2112;
-    v30 = v5;
+    v30 = itemsCopy;
     _os_log_impl(&dword_2441FB000, v6, OS_LOG_TYPE_DEFAULT, "%s: %@ %s %@", buf, 0x2Au);
   }
 
   [(CSShieldViewController *)self dismissViewControllerAnimated:1 completion:0];
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  obj = [v5 items];
+  obj = [itemsCopy items];
   v8 = [obj countByEnumeratingWithState:&v19 objects:v18 count:16];
   if (v8)
   {
@@ -2527,7 +2527,7 @@ uint64_t __66__CSShieldViewController__presentConfirmationCardType_completion___
         v17[3] = &unk_278E0B998;
         v17[4] = v12;
         v15 = [v14 initWithIdentifiers:v13 block:v17];
-        [v7 addObject:v15];
+        [array addObject:v15];
       }
 
       v9 = [obj countByEnumeratingWithState:&v19 objects:v18 count:16];
@@ -2536,7 +2536,7 @@ uint64_t __66__CSShieldViewController__presentConfirmationCardType_completion___
     while (v9);
   }
 
-  [(CSShieldViewController *)self insertSongs:v7];
+  [(CSShieldViewController *)self insertSongs:array];
 }
 
 void __56__CSShieldViewController_mediaPicker_didPickMediaItems___block_invoke(uint64_t a1, void *a2)
@@ -2550,18 +2550,18 @@ void __56__CSShieldViewController_mediaPicker_didPickMediaItems___block_invoke(u
   [v4 setTrackCount:{objc_msgSend(*(a1 + 32), "albumTrackCount")}];
 }
 
-- (id)identifierSetForPersistentID:(int64_t)a3 mediaItem:(id)a4
+- (id)identifierSetForPersistentID:(int64_t)d mediaItem:(id)item
 {
-  v5 = a4;
+  itemCopy = item;
   v6 = objc_alloc(MEMORY[0x277CD5DA8]);
   v7 = [MEMORY[0x277CD5F60] kindWithVariants:1];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __65__CSShieldViewController_identifierSetForPersistentID_mediaItem___block_invoke;
   v11[3] = &unk_278E0BA28;
-  v12 = v5;
-  v13 = a3;
-  v8 = v5;
+  v12 = itemCopy;
+  dCopy = d;
+  v8 = itemCopy;
   v9 = [v6 initWithSource:@"ContinuitySingShieldPicker" modelKind:v7 block:v11];
 
   return v9;
@@ -2611,28 +2611,28 @@ void __65__CSShieldViewController_identifierSetForPersistentID_mediaItem___block
   [v5 setSubscriptionAdamID:{objc_msgSend(v8, "longLongValue")}];
 }
 
-- (void)shieldManagerDidFinishLoading:(id)a3 withPlaybackManager:(id)a4
+- (void)shieldManagerDidFinishLoading:(id)loading withPlaybackManager:(id)manager
 {
-  v5 = a3;
+  loadingCopy = loading;
   v6 = ContinuitySingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 136315650;
     v9 = "[CSShieldViewController shieldManagerDidFinishLoading:withPlaybackManager:]";
     v10 = 2112;
-    v11 = self;
+    selfCopy = self;
     v12 = 2080;
     v13 = "[CSShieldViewController shieldManagerDidFinishLoading:withPlaybackManager:]";
     _os_log_impl(&dword_2441FB000, v6, OS_LOG_TYPE_DEFAULT, "%s: %@ %s", &v8, 0x20u);
   }
 
   [(CSShieldViewController *)self _endLoadingScreen];
-  v7 = [v5 sessionState];
+  sessionState = [loadingCopy sessionState];
 
-  [(CSShieldViewController *)self _updateWithState:v7];
+  [(CSShieldViewController *)self _updateWithState:sessionState];
 }
 
-- (void)shieldManagerDidReceiveDisconnectRequest:(id)a3
+- (void)shieldManagerDidReceiveDisconnectRequest:(id)request
 {
   v4 = ContinuitySingLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2640,7 +2640,7 @@ void __65__CSShieldViewController_identifierSetForPersistentID_mediaItem___block
     v5 = 136315650;
     v6 = "[CSShieldViewController shieldManagerDidReceiveDisconnectRequest:]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     v9 = 2080;
     v10 = "[CSShieldViewController shieldManagerDidReceiveDisconnectRequest:]";
     _os_log_impl(&dword_2441FB000, v4, OS_LOG_TYPE_DEFAULT, "%s: %@ %s", &v5, 0x20u);
@@ -2649,53 +2649,53 @@ void __65__CSShieldViewController_identifierSetForPersistentID_mediaItem___block
   [(CSShieldViewController *)self _teardown];
 }
 
-- (void)shieldManager:(id)a3 didUpdateSessionState:(id)a4
+- (void)shieldManager:(id)manager didUpdateSessionState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = ContinuitySingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315650;
     v8 = "[CSShieldViewController shieldManager:didUpdateSessionState:]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[CSShieldViewController shieldManager:didUpdateSessionState:]";
     _os_log_impl(&dword_2441FB000, v6, OS_LOG_TYPE_DEFAULT, "%s: %@ %s", &v7, 0x20u);
   }
 
-  [(CSShieldViewController *)self _updateWithState:v5];
+  [(CSShieldViewController *)self _updateWithState:stateCopy];
 }
 
-- (void)playbackManager:(id)a3 didUpdateState:(id)a4
+- (void)playbackManager:(id)manager didUpdateState:(id)state
 {
-  v5 = a4;
+  stateCopy = state;
   v6 = ContinuitySingLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 136315650;
     v8 = "[CSShieldViewController playbackManager:didUpdateState:]";
     v9 = 2112;
-    v10 = self;
+    selfCopy = self;
     v11 = 2080;
     v12 = "[CSShieldViewController playbackManager:didUpdateState:]";
     _os_log_impl(&dword_2441FB000, v6, OS_LOG_TYPE_DEFAULT, "%s: %@ %s", &v7, 0x20u);
   }
 
-  [(CSShieldViewController *)self _updateMiniPlayerState:v5];
+  [(CSShieldViewController *)self _updateMiniPlayerState:stateCopy];
   [(CSShieldViewController *)self _updateVocalAttenuationButtonActiveState];
   [(CSShieldViewController *)self _updateVocalAttenuationButtonLevel];
 }
 
-- (void)textViewDidChange:(id)a3
+- (void)textViewDidChange:(id)change
 {
-  v6 = [a3 text];
-  if ([v6 length])
+  text = [change text];
+  if ([text length])
   {
-    [(CSShieldViewController *)self _showReactionSendingAnimation:v6 at:self->_emojiMoreButton];
+    [(CSShieldViewController *)self _showReactionSendingAnimation:text at:self->_emojiMoreButton];
     v4 = +[CSShieldManager sharedManager];
-    v5 = [v4 requestClient];
-    [v5 sendReaction:v6];
+    requestClient = [v4 requestClient];
+    [requestClient sendReaction:text];
 
     [(CSShieldViewController *)self _dismissEmojiKeyboard];
   }
@@ -2714,7 +2714,7 @@ void __65__CSShieldViewController_identifierSetForPersistentID_mediaItem___block
   [(UITapGestureRecognizer *)emojiTapToDismissGestureRecognizer setEnabled:0];
 }
 
-- (void)connectionManager:(id)a3 didUpdatePresentationError:(id)a4
+- (void)connectionManager:(id)manager didUpdatePresentationError:(id)error
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -2724,7 +2724,7 @@ void __65__CSShieldViewController_identifierSetForPersistentID_mediaItem___block
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (void)connectionManager:(id)a3 didRequestTeardownShieldWithError:(id)a4
+- (void)connectionManager:(id)manager didRequestTeardownShieldWithError:(id)error
 {
   v5 = ContinuitySingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -2732,7 +2732,7 @@ void __65__CSShieldViewController_identifierSetForPersistentID_mediaItem___block
     v6 = 136315650;
     v7 = "[CSShieldViewController connectionManager:didRequestTeardownShieldWithError:]";
     v8 = 2112;
-    v9 = self;
+    selfCopy = self;
     v10 = 2080;
     v11 = "[CSShieldViewController connectionManager:didRequestTeardownShieldWithError:]";
     _os_log_impl(&dword_2441FB000, v5, OS_LOG_TYPE_DEFAULT, "%s: %@ %s", &v6, 0x20u);
@@ -2741,16 +2741,16 @@ void __65__CSShieldViewController_identifierSetForPersistentID_mediaItem___block
   (*(self->_disconnectHandler + 2))();
 }
 
-- (void)clearAlertWithCompletion:(id)a3
+- (void)clearAlertWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __51__CSShieldViewController_clearAlertWithCompletion___block_invoke;
   v6[3] = &unk_278E0AF88;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = completionCopy;
+  v5 = completionCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
@@ -2771,42 +2771,42 @@ uint64_t __51__CSShieldViewController_clearAlertWithCompletion___block_invoke(ui
 - (void)_presentErrorAlertIfNeeded
 {
   v3 = +[CSShieldConnectionManager sharedManager];
-  v4 = [v3 presentationErrorDetails];
+  presentationErrorDetails = [v3 presentationErrorDetails];
 
   v5 = ContinuitySingLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 errorCode];
+    errorCode = [presentationErrorDetails errorCode];
     v7 = self->_alertController != 0;
     v11 = 136316162;
     v12 = "[CSShieldViewController _presentErrorAlertIfNeeded]";
     v13 = 2112;
-    v14 = self;
+    selfCopy = self;
     v15 = 2080;
     v16 = "[CSShieldViewController _presentErrorAlertIfNeeded]";
     v17 = 2048;
-    v18 = v6;
+    v18 = errorCode;
     v19 = 1024;
     v20 = v7;
     _os_log_impl(&dword_2441FB000, v5, OS_LOG_TYPE_DEFAULT, "%s: %@ %s %zu isShowingAlert:%d", &v11, 0x30u);
   }
 
-  if (v4 && !self->_alertController)
+  if (presentationErrorDetails && !self->_alertController)
   {
-    if ([v4 exitSession])
+    if ([presentationErrorDetails exitSession])
     {
       v8 = +[CSShieldManager sharedManager];
       [v8 exitSingSession];
     }
 
-    if ([v4 shouldShowInternalErrorDetails])
+    if ([presentationErrorDetails shouldShowInternalErrorDetails])
     {
-      [(CSShieldViewController *)self _showInternalErrorAlert:v4];
+      [(CSShieldViewController *)self _showInternalErrorAlert:presentationErrorDetails];
     }
 
     else
     {
-      switch([v4 errorCode])
+      switch([presentationErrorDetails errorCode])
       {
         case -117:
           [(CSShieldViewController *)self _presentContinuityCameraDisabledError];
@@ -2829,14 +2829,14 @@ uint64_t __51__CSShieldViewController_clearAlertWithCompletion___block_invoke(ui
           [(CSShieldViewController *)self _presentEndpointDisconnectedError];
           break;
         case -108:
-          v9 = self;
+          selfCopy3 = self;
           v10 = 0;
           goto LABEL_19;
         case -107:
-          v9 = self;
+          selfCopy3 = self;
           v10 = 1;
 LABEL_19:
-          [(CSShieldViewController *)v9 _presentVersionMismatchError:v10];
+          [(CSShieldViewController *)selfCopy3 _presentVersionMismatchError:v10];
           break;
         case -105:
           [(CSShieldViewController *)self _handleInvalidMusicAccountError];
@@ -2862,7 +2862,7 @@ LABEL_19:
     *buf = 136315650;
     v25 = "[CSShieldViewController _presentPairingError]";
     v26 = 2112;
-    v27 = self;
+    selfCopy = self;
     v28 = 2080;
     v29 = "[CSShieldViewController _presentPairingError]";
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@ %s", buf, 0x20u);
@@ -2891,8 +2891,8 @@ LABEL_19:
     v10 = WiFiCopyCurrentNetworkInfoEx();
     CFStringGetTypeID();
     v11 = CFDictionaryGetTypedValue();
-    v12 = [v11 lowercaseString];
-    v13 = [v12 containsString:@"applewifi"];
+    lowercaseString = [v11 lowercaseString];
+    v13 = [lowercaseString containsString:@"applewifi"];
 
     if (v13)
     {
@@ -2903,10 +2903,10 @@ LABEL_19:
   }
 
   v15 = [CSSecureAlertController alertControllerWithTitle:v5 message:v9 preferredStyle:1];
-  v16 = [(CSShieldViewController *)self _tryBootstrapAgainAction];
-  if (v16)
+  _tryBootstrapAgainAction = [(CSShieldViewController *)self _tryBootstrapAgainAction];
+  if (_tryBootstrapAgainAction)
   {
-    [(UIAlertController *)v15 addAction:v16];
+    [(UIAlertController *)v15 addAction:_tryBootstrapAgainAction];
   }
 
   v17 = MEMORY[0x277D75100];
@@ -2958,7 +2958,7 @@ uint64_t __46__CSShieldViewController__presentPairingError__block_invoke(uint64_
     *buf = 136315650;
     v18 = "[CSShieldViewController _presentErrorRequestingGroupSession]";
     v19 = 2112;
-    v20 = self;
+    selfCopy = self;
     v21 = 2080;
     v22 = "[CSShieldViewController _presentErrorRequestingGroupSession]";
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@ %s", buf, 0x20u);
@@ -2971,10 +2971,10 @@ uint64_t __46__CSShieldViewController__presentPairingError__block_invoke(uint64_
   v7 = [v6 localizedStringForKey:@"GROUP_SESSION_REQUEST_ERROR_MESSAGE" value:&stru_285797E10 table:0];
 
   v8 = [CSSecureAlertController alertControllerWithTitle:v5 message:v7 preferredStyle:1];
-  v9 = [(CSShieldViewController *)self _tryBootstrapAgainAction];
-  if (v9)
+  _tryBootstrapAgainAction = [(CSShieldViewController *)self _tryBootstrapAgainAction];
+  if (_tryBootstrapAgainAction)
   {
-    [(UIAlertController *)v8 addAction:v9];
+    [(UIAlertController *)v8 addAction:_tryBootstrapAgainAction];
   }
 
   v10 = MEMORY[0x277D75100];
@@ -3018,15 +3018,15 @@ uint64_t __61__CSShieldViewController__presentErrorRequestingGroupSession__block
   return [v4 clearAlertWithCompletion:v6];
 }
 
-- (void)_presentVersionMismatchError:(BOOL)a3
+- (void)_presentVersionMismatchError:(BOOL)error
 {
-  v3 = a3;
+  errorCopy = error;
   v5 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
   v6 = [v5 localizedStringForKey:@"VERSION_MISMATCH_ERROR_ALERT_TITLE" value:&stru_285797E10 table:0];
 
   v7 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
   v8 = v7;
-  if (v3)
+  if (errorCopy)
   {
     v9 = @"VERSION_MISMATCH_ERROR_MESSAGE_UPDATE_IPHONE";
   }
@@ -3088,7 +3088,7 @@ uint64_t __55__CSShieldViewController__presentVersionMismatchError___block_invok
     *buf = 136315394;
     v6 = "[CSShieldViewController _showMusicUpsell]";
     v7 = 2112;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@ Music not installed, show alert", buf, 0x16u);
   }
 
@@ -3173,7 +3173,7 @@ uint64_t __42__CSShieldViewController__showMusicUpsell__block_invoke_4(uint64_t 
     *buf = 136315650;
     v23 = "[CSShieldViewController _handleInvalidMusicAccountError]";
     v24 = 2112;
-    v25 = self;
+    selfCopy = self;
     v26 = 2080;
     v27 = "[CSShieldViewController _handleInvalidMusicAccountError]";
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@ %s", buf, 0x20u);
@@ -3309,16 +3309,16 @@ void __57__CSShieldViewController__handleInvalidMusicAccountError__block_invoke_
     *buf = 136315650;
     v35 = "[CSShieldViewController _handleMusicProfileUpdateNeeded]";
     v36 = 2112;
-    v37 = self;
+    selfCopy = self;
     v38 = 2080;
     v39 = "[CSShieldViewController _handleMusicProfileUpdateNeeded]";
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@ %s", buf, 0x20u);
   }
 
   v4 = +[CSShieldConnectionManager sharedManager];
-  v5 = [v4 musicTokenURL];
+  musicTokenURL = [v4 musicTokenURL];
 
-  if (v5)
+  if (musicTokenURL)
   {
     objc_initWeak(buf, self);
     v6 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
@@ -3336,7 +3336,7 @@ void __57__CSShieldViewController__handleInvalidMusicAccountError__block_invoke_
     v31[2] = __57__CSShieldViewController__handleMusicProfileUpdateNeeded__block_invoke_2;
     v31[3] = &unk_278E0BAA0;
     objc_copyWeak(&v33, buf);
-    v32 = v5;
+    v32 = musicTokenURL;
     v14 = [v11 actionWithTitle:v13 style:0 handler:v31];
 
     v15 = MEMORY[0x277D75100];
@@ -3451,7 +3451,7 @@ void __57__CSShieldViewController__handleMusicProfileUpdateNeeded__block_invoke_
     *buf = 136315650;
     v18 = "[CSShieldViewController _presentEndpointDisconnectedError]";
     v19 = 2112;
-    v20 = self;
+    selfCopy = self;
     v21 = 2080;
     v22 = "[CSShieldViewController _presentEndpointDisconnectedError]";
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@ %s", buf, 0x20u);
@@ -3464,10 +3464,10 @@ void __57__CSShieldViewController__handleMusicProfileUpdateNeeded__block_invoke_
   v7 = [v6 localizedStringForKey:@"CONNECTION_LOST_ERROR_ALERT_MESSAGE" value:&stru_285797E10 table:0];
 
   v8 = [CSSecureAlertController alertControllerWithTitle:v5 message:v7 preferredStyle:1];
-  v9 = [(CSShieldViewController *)self _tryBootstrapAgainAction];
-  if (v9)
+  _tryBootstrapAgainAction = [(CSShieldViewController *)self _tryBootstrapAgainAction];
+  if (_tryBootstrapAgainAction)
   {
-    [(UIAlertController *)v8 addAction:v9];
+    [(UIAlertController *)v8 addAction:_tryBootstrapAgainAction];
   }
 
   v10 = MEMORY[0x277D75100];
@@ -3514,9 +3514,9 @@ uint64_t __59__CSShieldViewController__presentEndpointDisconnectedError__block_i
 - (id)_tryBootstrapAgainAction
 {
   v3 = +[CSShieldConnectionManager sharedManager];
-  v4 = [v3 singURL];
+  singURL = [v3 singURL];
 
-  if (v4)
+  if (singURL)
   {
     v5 = MEMORY[0x277D75100];
     v6 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
@@ -3526,17 +3526,17 @@ uint64_t __59__CSShieldViewController__presentEndpointDisconnectedError__block_i
     v18[2] = __50__CSShieldViewController__tryBootstrapAgainAction__block_invoke;
     v18[3] = &unk_278E0BAC8;
     v18[4] = self;
-    v19 = v4;
+    v19 = singURL;
     v8 = [v5 actionWithTitle:v7 style:0 handler:v18];
   }
 
   else
   {
-    v9 = [MEMORY[0x277CF6C50] sharedInstance];
-    v10 = [v9 activeConfiguration];
-    v11 = [v10 remoteDisplayIdentifier];
+    mEMORY[0x277CF6C50] = [MEMORY[0x277CF6C50] sharedInstance];
+    activeConfiguration = [mEMORY[0x277CF6C50] activeConfiguration];
+    remoteDisplayIdentifier = [activeConfiguration remoteDisplayIdentifier];
 
-    if (v11)
+    if (remoteDisplayIdentifier)
     {
       v12 = MEMORY[0x277D75100];
       v13 = [MEMORY[0x277CCA8D8] bundleWithIdentifier:@"com.apple.ContinuitySing"];
@@ -3546,7 +3546,7 @@ uint64_t __59__CSShieldViewController__presentEndpointDisconnectedError__block_i
       v16[2] = __50__CSShieldViewController__tryBootstrapAgainAction__block_invoke_2;
       v16[3] = &unk_278E0BAC8;
       v16[4] = self;
-      v17 = v11;
+      v17 = remoteDisplayIdentifier;
       v8 = [v12 actionWithTitle:v14 style:0 handler:v16];
     }
 
@@ -3629,7 +3629,7 @@ void __50__CSShieldViewController__tryBootstrapAgainAction__block_invoke_310(uin
     *buf = 136315650;
     v17 = "[CSShieldViewController _presentAccountError]";
     v18 = 2112;
-    v19 = self;
+    selfCopy = self;
     v20 = 2080;
     v21 = "[CSShieldViewController _presentAccountError]";
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@ %s", buf, 0x20u);
@@ -3692,7 +3692,7 @@ uint64_t __46__CSShieldViewController__presentAccountError__block_invoke(uint64_
     *buf = 136315650;
     v22 = "[CSShieldViewController _presentContinuityCameraDisabledError]";
     v23 = 2112;
-    v24 = self;
+    selfCopy = self;
     v25 = 2080;
     v26 = "[CSShieldViewController _presentContinuityCameraDisabledError]";
     _os_log_impl(&dword_2441FB000, v3, OS_LOG_TYPE_DEFAULT, "%s: %@ %s", buf, 0x20u);
@@ -3801,23 +3801,23 @@ uint64_t __63__CSShieldViewController__presentContinuityCameraDisabledError__blo
   return [v4 clearAlertWithCompletion:v6];
 }
 
-- (void)_showInternalErrorAlert:(id)a3
+- (void)_showInternalErrorAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v5 = MEMORY[0x277CCACA8];
-  v6 = [v4 subsystemName];
-  v7 = [v5 stringWithFormat:@"%@ Error %ld", v6, objc_msgSend(v4, "errorCode")];
+  subsystemName = [alertCopy subsystemName];
+  v7 = [v5 stringWithFormat:@"%@ Error %ld", subsystemName, objc_msgSend(alertCopy, "errorCode")];
 
-  v8 = [v4 technicalDescription];
-  v9 = [CSSecureAlertController alertControllerWithTitle:v7 message:v8 preferredStyle:1];
+  technicalDescription = [alertCopy technicalDescription];
+  v9 = [CSSecureAlertController alertControllerWithTitle:v7 message:technicalDescription preferredStyle:1];
   v10 = MEMORY[0x277D75100];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __50__CSShieldViewController__showInternalErrorAlert___block_invoke;
   v18[3] = &unk_278E0BAC8;
-  v11 = v4;
+  v11 = alertCopy;
   v19 = v11;
-  v20 = self;
+  selfCopy = self;
   v12 = [v10 actionWithTitle:@"Copy and Exit" style:0 handler:v18];
   [v9 addAction:v12];
   if (!-[CSShieldViewController _errorCodeShowsUserFacingAlert:](self, "_errorCodeShowsUserFacingAlert:", [v11 errorCode]))
@@ -3828,7 +3828,7 @@ uint64_t __63__CSShieldViewController__presentContinuityCameraDisabledError__blo
     v15[2] = __50__CSShieldViewController__showInternalErrorAlert___block_invoke_3;
     v15[3] = &unk_278E0BAC8;
     v16 = v11;
-    v17 = self;
+    selfCopy2 = self;
     v14 = [v13 actionWithTitle:@"Copy Only" style:0 handler:v15];
     [v9 addAction:v14];
   }
@@ -3862,7 +3862,7 @@ uint64_t __50__CSShieldViewController__showInternalErrorAlert___block_invoke_3(u
   return [v4 clearAlertWithCompletion:&__block_literal_global_347];
 }
 
-- (void)presentMusicPickerWithNotificationSender:(id)a3
+- (void)presentMusicPickerWithNotificationSender:(id)sender
 {
   v5 = sub_244257868();
   v6 = *(v5 - 8);
@@ -3877,16 +3877,16 @@ uint64_t __50__CSShieldViewController__showInternalErrorAlert___block_invoke_3(u
     swift_task_reportUnexpectedExecutor();
   }
 
-  v10 = _Block_copy(a3);
+  v10 = _Block_copy(sender);
   v11 = swift_allocObject();
   *(v11 + 16) = v10;
   (*(v6 + 104))(v9, *MEMORY[0x277D2AE28], v5);
-  v12 = self;
+  selfCopy = self;
   sub_244257878();
-  v13 = [(CSShieldViewController *)v12 presentedViewController];
-  if (!v13)
+  presentedViewController = [(CSShieldViewController *)selfCopy presentedViewController];
+  if (!presentedViewController)
   {
-    v13 = v12;
+    presentedViewController = selfCopy;
   }
 
   type metadata accessor for MusicPickerSheetContainerView();
@@ -3894,10 +3894,10 @@ uint64_t __50__CSShieldViewController__showInternalErrorAlert___block_invoke_3(u
   *(v14 + 16) = sub_24424CF14;
   *(v14 + 24) = v11;
 
-  sub_244237C00(v13, MEMORY[0x277D84F90], sub_24424D2DC, v14);
+  sub_244237C00(presentedViewController, MEMORY[0x277D84F90], sub_24424D2DC, v14);
 }
 
-- (void)presentReactionPickerFrom:(id)a3 reactionSender:(id)a4
+- (void)presentReactionPickerFrom:(id)from reactionSender:(id)sender
 {
   sub_244257BB8();
   sub_244257BA8();
@@ -3907,12 +3907,12 @@ uint64_t __50__CSShieldViewController__showInternalErrorAlert___block_invoke_3(u
     swift_task_reportUnexpectedExecutor();
   }
 
-  v7 = _Block_copy(a4);
+  v7 = _Block_copy(sender);
   v8 = swift_allocObject();
   *(v8 + 16) = v7;
-  v9 = a3;
-  v10 = self;
-  sub_24424C88C(v9, sub_24424CEBC, v8);
+  fromCopy = from;
+  selfCopy = self;
+  sub_24424C88C(fromCopy, sub_24424CEBC, v8);
 }
 
 void __62__CSShieldViewController_consumeSinglePressDownForButtonKind___block_invoke_2_cold_1(uint64_t *a1)

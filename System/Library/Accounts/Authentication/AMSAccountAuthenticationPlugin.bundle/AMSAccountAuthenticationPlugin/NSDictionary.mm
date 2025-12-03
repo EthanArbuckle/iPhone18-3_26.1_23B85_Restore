@@ -125,15 +125,15 @@
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"failureType"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (NSString)ams_firstName
@@ -158,15 +158,15 @@
   v2 = [(NSDictionary *)self objectForKeyedSubscript:@"isManagedStudent"];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)ams_lastName

@@ -1,12 +1,12 @@
 @interface PCDispatchTimer
 - (BOOL)isValid;
 - (NSDate)fireDate;
-- (PCDispatchTimer)initWithQueue:(id)a3 target:(id)a4 selector:(SEL)a5 fireTime:(unint64_t)a6;
+- (PCDispatchTimer)initWithQueue:(id)queue target:(id)target selector:(SEL)selector fireTime:(unint64_t)time;
 - (void)_callTarget;
 - (void)_cleanupTimer;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setFireDate:(id)a3;
+- (void)setFireDate:(id)date;
 - (void)start;
 @end
 
@@ -15,7 +15,7 @@
 - (void)invalidate
 {
   *buf = 138543618;
-  *(buf + 4) = a1;
+  *(buf + 4) = self;
   *(buf + 6) = 2114;
   *(buf + 14) = a2;
   _os_log_debug_impl(&dword_25E3EF000, log, OS_LOG_TYPE_DEBUG, "%{public}@ is invalidated \nCallstack %{public}@", buf, 0x16u);
@@ -48,17 +48,17 @@
 - (void)start
 {
   v20 = *MEMORY[0x277D85DE8];
-  v2 = self;
-  objc_sync_enter(v2);
-  v2->_isValid = 1;
-  dispatch_source_set_timer(v2->_timerSource, v2->_fireTime, 0xFFFFFFFFFFFFFFFFLL, 0);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  selfCopy->_isValid = 1;
+  dispatch_source_set_timer(selfCopy->_timerSource, selfCopy->_fireTime, 0xFFFFFFFFFFFFFFFFLL, 0);
   v3 = +[PCLog timer];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    target = v2->_target;
-    if (v2->_selector)
+    target = selfCopy->_target;
+    if (selfCopy->_selector)
     {
-      selector = v2->_selector;
+      selector = selfCopy->_selector;
     }
 
     else
@@ -67,10 +67,10 @@
     }
 
     Name = sel_getName(selector);
-    fireTime = v2->_fireTime;
-    timerSource = v2->_timerSource;
+    fireTime = selfCopy->_fireTime;
+    timerSource = selfCopy->_timerSource;
     v10 = 138544386;
-    v11 = v2;
+    v11 = selfCopy;
     v12 = 2114;
     v13 = target;
     v14 = 2082;
@@ -82,16 +82,16 @@
     _os_log_debug_impl(&dword_25E3EF000, v3, OS_LOG_TYPE_DEBUG, "%{public}@ start with target %{public}@ selector %{public}s firetime %llu timerSource %{public}@", &v10, 0x34u);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   v4 = *MEMORY[0x277D85DE8];
 }
 
 - (BOOL)isValid
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  isValid = v2->_isValid;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  isValid = selfCopy->_isValid;
+  objc_sync_exit(selfCopy);
 
   return isValid;
 }
@@ -104,35 +104,35 @@
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (PCDispatchTimer)initWithQueue:(id)a3 target:(id)a4 selector:(SEL)a5 fireTime:(unint64_t)a6
+- (PCDispatchTimer)initWithQueue:(id)queue target:(id)target selector:(SEL)selector fireTime:(unint64_t)time
 {
   v41 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
+  queueCopy = queue;
+  targetCopy = target;
   v32.receiver = self;
   v32.super_class = PCDispatchTimer;
   v13 = [(PCDispatchTimer *)&v32 init];
   v14 = v13;
-  if (v11 && v13)
+  if (queueCopy && v13)
   {
-    objc_storeStrong(&v13->_queue, a3);
-    v15 = [MEMORY[0x277CFB990] weakRefWithObject:v12];
+    objc_storeStrong(&v13->_queue, queue);
+    v15 = [MEMORY[0x277CFB990] weakRefWithObject:targetCopy];
     target = v14->_target;
     v14->_target = v15;
 
-    if (a5)
+    if (selector)
     {
-      v17 = a5;
+      selectorCopy = selector;
     }
 
     else
     {
-      v17 = 0;
+      selectorCopy = 0;
     }
 
-    v14->_selector = v17;
+    v14->_selector = selectorCopy;
     v14->_isValid = 1;
-    v14->_fireTime = a6;
+    v14->_fireTime = time;
     v18 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v14->_queue);
     timerSource = v14->_timerSource;
     v14->_timerSource = v18;
@@ -141,7 +141,7 @@
     v20 = +[PCLog timer];
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
     {
-      v26 = [(CUTWeakReference *)v14->_target object];
+      object = [(CUTWeakReference *)v14->_target object];
       if (v14->_selector)
       {
         selector = v14->_selector;
@@ -157,7 +157,7 @@
       *buf = 138544130;
       v34 = v14;
       v35 = 2114;
-      v36 = v26;
+      v36 = object;
       v37 = 2082;
       v38 = Name;
       v39 = 2114;
@@ -194,13 +194,13 @@ void __58__PCDispatchTimer_initWithQueue_target_selector_fireTime___block_invoke
   [v1 _callTarget];
 }
 
-- (void)setFireDate:(id)a3
+- (void)setFireDate:(id)date
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = self;
-  objc_sync_enter(v6);
-  [(NSDate *)v5 timeIntervalSinceNow];
+  dateCopy = date;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSDate *)dateCopy timeIntervalSinceNow];
   v8 = fmax(v7, 0.0);
   if (v8 >= 9223372040.0)
   {
@@ -213,17 +213,17 @@ void __58__PCDispatchTimer_initWithQueue_target_selector_fireTime___block_invoke
   }
 
   v10 = dispatch_time(0, v9);
-  v6->_fireTime = v10;
-  if (v6->_isValid)
+  selfCopy->_fireTime = v10;
+  if (selfCopy->_isValid)
   {
-    dispatch_source_set_timer(v6->_timerSource, v10, 0xFFFFFFFFFFFFFFFFLL, 0x989680uLL);
+    dispatch_source_set_timer(selfCopy->_timerSource, v10, 0xFFFFFFFFFFFFFFFFLL, 0x989680uLL);
     v11 = +[PCLog timer];
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
-      v12 = [(CUTWeakReference *)v6->_target object];
-      if (v6->_selector)
+      object = [(CUTWeakReference *)selfCopy->_target object];
+      if (selfCopy->_selector)
       {
-        selector = v6->_selector;
+        selector = selfCopy->_selector;
       }
 
       else
@@ -232,16 +232,16 @@ void __58__PCDispatchTimer_initWithQueue_target_selector_fireTime___block_invoke
       }
 
       Name = sel_getName(selector);
-      fireTime = v6->_fireTime;
+      fireTime = selfCopy->_fireTime;
       v17 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceNow:v9 / 1000000000.0];
       v18 = PCStringFromDate(v17);
-      timerSource = v6->_timerSource;
+      timerSource = selfCopy->_timerSource;
       v20 = 138544898;
-      v21 = v6;
+      v21 = selfCopy;
       v22 = 2114;
-      v23 = v5;
+      v23 = dateCopy;
       v24 = 2114;
-      v25 = v12;
+      v25 = object;
       v26 = 2082;
       v27 = Name;
       v28 = 2048;
@@ -263,22 +263,22 @@ void __58__PCDispatchTimer_initWithQueue_target_selector_fireTime___block_invoke
     }
   }
 
-  if (v6->_fireDate != v5)
+  if (selfCopy->_fireDate != dateCopy)
   {
-    objc_storeStrong(&v6->_fireDate, a3);
+    objc_storeStrong(&selfCopy->_fireDate, date);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
 - (NSDate)fireDate
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fireDate;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_fireDate;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }

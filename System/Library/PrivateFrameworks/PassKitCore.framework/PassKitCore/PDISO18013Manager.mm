@@ -1,86 +1,86 @@
 @interface PDISO18013Manager
-- (PDISO18013Manager)initWithSecureElement:(id)a3 userNotificationManager:(id)a4 databaseManager:(id)a5;
-- (void)_elementsChanged:(id)a3 forPass:(id)a4;
-- (void)_getAllCredentialIdsWithCompletion:(id)a3;
-- (void)_handleIdentityTokenCleanupIfNeededForPass:(id)a3;
-- (void)_handleIdentityTokenCleanupIfNeededForPassID:(id)a3;
-- (void)_identityPassCredentialPropertiesForPassUniqueIdentifier:(id)a3 completion:(id)a4;
-- (void)_isoCredentialIdentifierForSubCredentialId:(id)a3 cardType:(int64_t)a4 store:(id)a5 completion:(id)a6;
-- (void)_performOperationOnCredentials:(id)a3 operation:(id)a4 completion:(id)a5;
-- (void)_updateCredentialsForCredentialIds:(id)a3 toState:(unint64_t)a4 completion:(id)a5;
-- (void)_updateISO18013Blob:(id)a3 metadata:(id)a4 paymentApplication:(id)a5 subcredential:(id)a6 paymentPass:(id)a7 store:(id)a8 priorSubcredentialIdentifiers:(id)a9 cardType:(int64_t)a10 completion:(id)a11;
-- (void)accessCredentialStoreWithHandler:(id)a3;
-- (void)addISO18013Blobs:(id)a3 cardType:(int64_t)a4 completion:(id)a5;
-- (void)addISO18013BlobsFromCredentials:(id)a3 cardType:(int64_t)a4 completion:(id)a5;
-- (void)allCredentialsWithCompletion:(id)a3;
-- (void)biometricResetAffectedPassesFrom:(id)a3 completion:(id)a4;
-- (void)createISOBiometricBindingWithCompletion:(id)a3;
-- (void)createISOCredentialIdentifierForIdentityPartitionWithCompletion:(id)a3;
-- (void)deleteSubCredentialIdentifiers:(id)a3 cardType:(int64_t)a4 completion:(id)a5;
-- (void)generateAccountKeyAuthorizationForSubcredentialID:(id)a3 cardType:(int64_t)a4 accountKeyIdentifier:(id)a5 completion:(id)a6;
-- (void)generateISOEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4;
-- (void)generateISOEncryptionKeyForCardType:(int64_t)a3 subCredentialId:(id)a4 attestationType:(int64_t)a5 completion:(id)a6;
-- (void)generateKeySigningKeyForCardType:(int64_t)a3 subCredentialId:(id)a4 completion:(id)a5;
-- (void)generatePresentmentKeyForCardType:(int64_t)a3 numberOfKeys:(int64_t)a4 subCredentialId:(id)a5 completion:(id)a6;
+- (PDISO18013Manager)initWithSecureElement:(id)element userNotificationManager:(id)manager databaseManager:(id)databaseManager;
+- (void)_elementsChanged:(id)changed forPass:(id)pass;
+- (void)_getAllCredentialIdsWithCompletion:(id)completion;
+- (void)_handleIdentityTokenCleanupIfNeededForPass:(id)pass;
+- (void)_handleIdentityTokenCleanupIfNeededForPassID:(id)d;
+- (void)_identityPassCredentialPropertiesForPassUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)_isoCredentialIdentifierForSubCredentialId:(id)id cardType:(int64_t)type store:(id)store completion:(id)completion;
+- (void)_performOperationOnCredentials:(id)credentials operation:(id)operation completion:(id)completion;
+- (void)_updateCredentialsForCredentialIds:(id)ids toState:(unint64_t)state completion:(id)completion;
+- (void)_updateISO18013Blob:(id)blob metadata:(id)metadata paymentApplication:(id)application subcredential:(id)subcredential paymentPass:(id)pass store:(id)store priorSubcredentialIdentifiers:(id)identifiers cardType:(int64_t)self0 completion:(id)self1;
+- (void)accessCredentialStoreWithHandler:(id)handler;
+- (void)addISO18013Blobs:(id)blobs cardType:(int64_t)type completion:(id)completion;
+- (void)addISO18013BlobsFromCredentials:(id)credentials cardType:(int64_t)type completion:(id)completion;
+- (void)allCredentialsWithCompletion:(id)completion;
+- (void)biometricResetAffectedPassesFrom:(id)from completion:(id)completion;
+- (void)createISOBiometricBindingWithCompletion:(id)completion;
+- (void)createISOCredentialIdentifierForIdentityPartitionWithCompletion:(id)completion;
+- (void)deleteSubCredentialIdentifiers:(id)identifiers cardType:(int64_t)type completion:(id)completion;
+- (void)generateAccountKeyAuthorizationForSubcredentialID:(id)d cardType:(int64_t)type accountKeyIdentifier:(id)identifier completion:(id)completion;
+- (void)generateISOEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion;
+- (void)generateISOEncryptionKeyForCardType:(int64_t)type subCredentialId:(id)id attestationType:(int64_t)attestationType completion:(id)completion;
+- (void)generateKeySigningKeyForCardType:(int64_t)type subCredentialId:(id)id completion:(id)completion;
+- (void)generatePresentmentKeyForCardType:(int64_t)type numberOfKeys:(int64_t)keys subCredentialId:(id)id completion:(id)completion;
 - (void)handlePIITokenCleanupIfNeeded;
-- (void)handlePaymentPassUpdateFrom:(id)a3 priorPaymentApplications:(id)a4 completion:(id)a5;
-- (void)identityPassCacheCredentialsForPassAddedOrUpdated:(id)a3;
-- (void)identityPassDeleteCredentialFromCacheWithPassUniqueID:(id)a3;
-- (void)isAccountKeySigningKeyAvailableForAccountKeyIdentifier:(id)a3 completion:(id)a4;
-- (void)needsPresentmentKeyRefreshForPass:(id)a3 numberOfKeys:(int64_t)a4 subCredentialId:(id)a5 completion:(id)a6;
-- (void)passWillBeRemoved:(id)a3;
+- (void)handlePaymentPassUpdateFrom:(id)from priorPaymentApplications:(id)applications completion:(id)completion;
+- (void)identityPassCacheCredentialsForPassAddedOrUpdated:(id)updated;
+- (void)identityPassDeleteCredentialFromCacheWithPassUniqueID:(id)d;
+- (void)isAccountKeySigningKeyAvailableForAccountKeyIdentifier:(id)identifier completion:(id)completion;
+- (void)needsPresentmentKeyRefreshForPass:(id)pass numberOfKeys:(int64_t)keys subCredentialId:(id)id completion:(id)completion;
+- (void)passWillBeRemoved:(id)removed;
 - (void)processPendingISO18013CredentialsWithIdentityPassCredentialProperties;
 @end
 
 @implementation PDISO18013Manager
 
-- (PDISO18013Manager)initWithSecureElement:(id)a3 userNotificationManager:(id)a4 databaseManager:(id)a5
+- (PDISO18013Manager)initWithSecureElement:(id)element userNotificationManager:(id)manager databaseManager:(id)databaseManager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  elementCopy = element;
+  managerCopy = manager;
+  databaseManagerCopy = databaseManager;
   v15.receiver = self;
   v15.super_class = PDISO18013Manager;
   v12 = [(PDISO18013Manager *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_secureElement, a3);
-    objc_storeStrong(&v13->_userNotificationManager, a4);
-    objc_storeStrong(&v13->_databaseManager, a5);
+    objc_storeStrong(&v12->_secureElement, element);
+    objc_storeStrong(&v13->_userNotificationManager, manager);
+    objc_storeStrong(&v13->_databaseManager, databaseManager);
   }
 
   return v13;
 }
 
-- (void)identityPassDeleteCredentialFromCacheWithPassUniqueID:(id)a3
+- (void)identityPassDeleteCredentialFromCacheWithPassUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = dCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Deleting identity credential cache for pass with unique ID %@", &v6, 0xCu);
   }
 
-  [(PDDatabaseManager *)self->_databaseManager identityPassDeleteCredentialFromCacheWithPassUniqueID:v4];
+  [(PDDatabaseManager *)self->_databaseManager identityPassDeleteCredentialFromCacheWithPassUniqueID:dCopy];
 }
 
-- (void)identityPassCacheCredentialsForPassAddedOrUpdated:(id)a3
+- (void)identityPassCacheCredentialsForPassAddedOrUpdated:(id)updated
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_1001A2CE8;
   v3[3] = &unk_10083DAE0;
   v3[4] = self;
-  [(PDISO18013Manager *)self _identityPassCredentialPropertiesForPassUniqueIdentifier:a3 completion:v3];
+  [(PDISO18013Manager *)self _identityPassCredentialPropertiesForPassUniqueIdentifier:updated completion:v3];
 }
 
-- (void)_identityPassCredentialPropertiesForPassUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)_identityPassCredentialPropertiesForPassUniqueIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v14[0] = 0;
   v14[1] = v14;
   v14[2] = 0x3032000000;
@@ -92,10 +92,10 @@
   v10[2] = sub_1001A2F20;
   v10[3] = &unk_10084B398;
   v10[4] = self;
-  v8 = v6;
+  v8 = identifierCopy;
   v11 = v8;
   v13 = v14;
-  v9 = v7;
+  v9 = completionCopy;
   v12 = v9;
   [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v10];
 
@@ -104,34 +104,34 @@
 
 - (void)processPendingISO18013CredentialsWithIdentityPassCredentialProperties
 {
-  v3 = [(PDDatabaseManager *)self->_databaseManager identityPassCredentialPropertiesForIdentityPasses];
-  if ([v3 count])
+  identityPassCredentialPropertiesForIdentityPasses = [(PDDatabaseManager *)self->_databaseManager identityPassCredentialPropertiesForIdentityPasses];
+  if ([identityPassCredentialPropertiesForIdentityPasses count])
   {
     v4[0] = _NSConcreteStackBlock;
     v4[1] = 3221225472;
     v4[2] = sub_1001A344C;
     v4[3] = &unk_10084B3E8;
-    v5 = v3;
-    v6 = self;
+    v5 = identityPassCredentialPropertiesForIdentityPasses;
+    selfCopy = self;
     [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v4];
   }
 }
 
-- (void)handlePaymentPassUpdateFrom:(id)a3 priorPaymentApplications:(id)a4 completion:(id)a5
+- (void)handlePaymentPassUpdateFrom:(id)from priorPaymentApplications:(id)applications completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v67 = a5;
-  v69 = self;
-  v10 = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
-  v70 = v8;
-  v68 = [v8 cardType];
+  fromCopy = from;
+  applicationsCopy = applications;
+  completionCopy = completion;
+  selfCopy = self;
+  secureElementIdentifiers = [(PKSecureElement *)self->_secureElement secureElementIdentifiers];
+  v70 = fromCopy;
+  cardType = [fromCopy cardType];
   v78 = objc_alloc_init(NSMutableSet);
   v114 = 0u;
   v115 = 0u;
   v116 = 0u;
   v117 = 0u;
-  obj = v9;
+  obj = applicationsCopy;
   v11 = [obj countByEnumeratingWithState:&v114 objects:v126 count:16];
   if (v11)
   {
@@ -147,8 +147,8 @@
         }
 
         v15 = *(*(&v114 + 1) + 8 * i);
-        v16 = [v15 secureElementIdentifier];
-        if ([v10 containsObject:v16])
+        secureElementIdentifier = [v15 secureElementIdentifier];
+        if ([secureElementIdentifiers containsObject:secureElementIdentifier])
         {
           v17 = [v15 paymentType] - 1002;
 
@@ -161,8 +161,8 @@
           v113 = 0u;
           v110 = 0u;
           v111 = 0u;
-          v16 = [v15 subcredentials];
-          v18 = [v16 countByEnumeratingWithState:&v110 objects:v125 count:16];
+          secureElementIdentifier = [v15 subcredentials];
+          v18 = [secureElementIdentifier countByEnumeratingWithState:&v110 objects:v125 count:16];
           if (v18)
           {
             v19 = v18;
@@ -173,14 +173,14 @@
               {
                 if (*v111 != v20)
                 {
-                  objc_enumerationMutation(v16);
+                  objc_enumerationMutation(secureElementIdentifier);
                 }
 
-                v22 = [*(*(&v110 + 1) + 8 * j) identifier];
-                [v78 addObject:v22];
+                identifier = [*(*(&v110 + 1) + 8 * j) identifier];
+                [v78 addObject:identifier];
               }
 
-              v19 = [v16 countByEnumeratingWithState:&v110 objects:v125 count:16];
+              v19 = [secureElementIdentifier countByEnumeratingWithState:&v110 objects:v125 count:16];
             }
 
             while (v19);
@@ -200,9 +200,9 @@
   v107 = 0u;
   v108 = 0u;
   v109 = 0u;
-  v76 = [v70 devicePaymentApplications];
-  v23 = [v76 countByEnumeratingWithState:&v106 objects:v124 count:16];
-  v71 = v10;
+  devicePaymentApplications = [v70 devicePaymentApplications];
+  v23 = [devicePaymentApplications countByEnumeratingWithState:&v106 objects:v124 count:16];
+  v71 = secureElementIdentifiers;
   if (v23)
   {
     v24 = v23;
@@ -213,7 +213,7 @@
       {
         if (*v107 != v25)
         {
-          objc_enumerationMutation(v76);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
         v27 = *(*(&v106 + 1) + 8 * k);
@@ -223,8 +223,8 @@
           v105 = 0u;
           v102 = 0u;
           v103 = 0u;
-          v28 = [v27 subcredentials];
-          v29 = [v28 countByEnumeratingWithState:&v102 objects:v123 count:16];
+          subcredentials = [v27 subcredentials];
+          v29 = [subcredentials countByEnumeratingWithState:&v102 objects:v123 count:16];
           if (v29)
           {
             v30 = v29;
@@ -235,12 +235,12 @@
               {
                 if (*v103 != v31)
                 {
-                  objc_enumerationMutation(v28);
+                  objc_enumerationMutation(subcredentials);
                 }
 
                 v33 = *(*(&v102 + 1) + 8 * m);
-                v34 = [v33 identifier];
-                [v80 addObject:v34];
+                identifier2 = [v33 identifier];
+                [v80 addObject:identifier2];
 
                 v122[0] = v27;
                 v122[1] = v33;
@@ -248,24 +248,24 @@
                 [v79 addObject:v35];
               }
 
-              v30 = [v28 countByEnumeratingWithState:&v102 objects:v123 count:16];
+              v30 = [subcredentials countByEnumeratingWithState:&v102 objects:v123 count:16];
             }
 
             while (v30);
           }
 
-          v10 = v71;
+          secureElementIdentifiers = v71;
         }
       }
 
-      v24 = [v76 countByEnumeratingWithState:&v106 objects:v124 count:16];
+      v24 = [devicePaymentApplications countByEnumeratingWithState:&v106 objects:v124 count:16];
     }
 
     while (v24);
   }
 
-  v36 = [v70 credentialsAndISO18013BlobsForSecureElementIdentifiers:v10];
-  v65 = [v70 iso18013BlobsMetdataForSecureElementIdentifiers:v10];
+  v36 = [v70 credentialsAndISO18013BlobsForSecureElementIdentifiers:secureElementIdentifiers];
+  v65 = [v70 iso18013BlobsMetdataForSecureElementIdentifiers:secureElementIdentifiers];
   v37 = objc_alloc_init(NSMutableDictionary);
   v66 = objc_alloc_init(NSMutableDictionary);
   v98 = 0u;
@@ -310,10 +310,10 @@
 
               v45 = *(*(&v94 + 1) + 8 * n);
               v46 = [v40 objectForKey:v45];
-              v47 = [v39 applicationIdentifier];
-              v119[0] = v47;
-              v48 = [v45 identifier];
-              v119[1] = v48;
+              applicationIdentifier = [v39 applicationIdentifier];
+              v119[0] = applicationIdentifier;
+              identifier3 = [v45 identifier];
+              v119[1] = identifier3;
               v49 = [NSArray arrayWithObjects:v119 count:2];
               [v37 setObject:v46 forKey:v49];
             }
@@ -355,8 +355,8 @@
 
         v55 = *(*(&v90 + 1) + 8 * ii);
         v56 = [v50 objectForKey:v55];
-        v57 = [v55 identifier];
-        [v66 setObject:v56 forKey:v57];
+        identifier4 = [v55 identifier];
+        [v66 setObject:v56 forKey:identifier4];
       }
 
       v52 = [v50 countByEnumeratingWithState:&v90 objects:v118 count:16];
@@ -375,34 +375,34 @@
   v83 = v37;
   v84 = v78;
   v85 = v66;
-  v86 = v69;
+  v86 = selfCopy;
   v87 = v70;
-  v88 = v67;
-  v89 = v68;
-  v59 = v67;
+  v88 = completionCopy;
+  v89 = cardType;
+  v59 = completionCopy;
   v60 = v70;
   v61 = v66;
   v62 = v78;
   v63 = v37;
   v64 = v79;
-  [(PDISO18013Manager *)v69 accessCredentialStoreWithHandler:v81];
-  [(PDISO18013Manager *)v69 deleteSubCredentialIdentifiers:v58 cardType:v68 completion:0];
+  [(PDISO18013Manager *)selfCopy accessCredentialStoreWithHandler:v81];
+  [(PDISO18013Manager *)selfCopy deleteSubCredentialIdentifiers:v58 cardType:cardType completion:0];
 }
 
-- (void)deleteSubCredentialIdentifiers:(id)a3 cardType:(int64_t)a4 completion:(id)a5
+- (void)deleteSubCredentialIdentifiers:(id)identifiers cardType:(int64_t)type completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
-  if ([v8 count])
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  if ([identifiersCopy count])
   {
     v10 = objc_alloc_init(NSMutableArray);
-    v11 = [v8 allObjects];
+    allObjects = [identifiersCopy allObjects];
     v16[0] = _NSConcreteStackBlock;
     v16[1] = 3221225472;
     v16[2] = sub_1001A497C;
     v16[3] = &unk_10084B528;
     v16[4] = self;
-    v18 = a4;
+    typeCopy = type;
     v17 = v10;
     v13[0] = _NSConcreteStackBlock;
     v13[1] = 3221225472;
@@ -410,24 +410,24 @@
     v13[3] = &unk_10084B550;
     v13[4] = self;
     v14 = v17;
-    v15 = v9;
+    v15 = completionCopy;
     v12 = v17;
-    [(PDISO18013Manager *)self _performOperationOnCredentials:v11 operation:v16 completion:v13];
+    [(PDISO18013Manager *)self _performOperationOnCredentials:allObjects operation:v16 completion:v13];
   }
 }
 
-- (void)_handleIdentityTokenCleanupIfNeededForPassID:(id)a3
+- (void)_handleIdentityTokenCleanupIfNeededForPassID:(id)d
 {
-  v4 = a3;
-  v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:v4];
-  v6 = [v5 anyObject];
-  if (v6)
+  dCopy = d;
+  v5 = [(PDDatabaseManager *)self->_databaseManager transactionSourceIdentifiersForPassUniqueIdentifier:dCopy];
+  anyObject = [v5 anyObject];
+  if (anyObject)
   {
-    v7 = [(PDDatabaseManager *)self->_databaseManager primarySubcredentialIdentifiersForPassUniqueIdentifier:v4];
+    v7 = [(PDDatabaseManager *)self->_databaseManager primarySubcredentialIdentifiersForPassUniqueIdentifier:dCopy];
     v8 = v7;
     if (v7 && [v7 count])
     {
-      v9 = [(PDDatabaseManager *)self->_databaseManager primaryAccountIdentifierForTransactionSourceIdentifier:v6];
+      v9 = [(PDDatabaseManager *)self->_databaseManager primaryAccountIdentifierForTransactionSourceIdentifier:anyObject];
       v10 = PKLogFacilityTypeGetObject();
       v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
       if (v9)
@@ -435,7 +435,7 @@
         if (v11)
         {
           *buf = 138412290;
-          v17 = v4;
+          v17 = dCopy;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Requesting cleanup of the assiciated PII token as the deleted pass %@ relies on one", buf, 0xCu);
         }
 
@@ -443,7 +443,7 @@
         v12[1] = 3221225472;
         v12[2] = sub_1001A4D4C;
         v12[3] = &unk_10084B5A0;
-        v13 = v4;
+        v13 = dCopy;
         v14 = v8;
         v15 = v9;
         [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v12];
@@ -454,7 +454,7 @@
       else if (v11)
       {
         *buf = 138412290;
-        v17 = v4;
+        v17 = dCopy;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "No cleanup of PII because primary account identifier is nil for pass %@", buf, 0xCu);
       }
     }
@@ -465,7 +465,7 @@
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v17 = v4;
+        v17 = dCopy;
         _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "No cleanup of PII because subcredential identifiers do not exist for pass %@", buf, 0xCu);
       }
     }
@@ -477,77 +477,77 @@
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v17 = v4;
+      v17 = dCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "No cleanup of PII because transaction source identifier is nil for pass %@", buf, 0xCu);
     }
   }
 }
 
-- (void)_handleIdentityTokenCleanupIfNeededForPass:(id)a3
+- (void)_handleIdentityTokenCleanupIfNeededForPass:(id)pass
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && [v4 identityType] == 5)
+  passCopy = pass;
+  v5 = passCopy;
+  if (passCopy && [passCopy identityType] == 5)
   {
-    v6 = [v5 uniqueID];
-    v7 = [v5 devicePrimaryPaymentApplication];
-    v8 = [v7 subcredentials];
-    v9 = [v8 anyObject];
+    uniqueID = [v5 uniqueID];
+    devicePrimaryPaymentApplication = [v5 devicePrimaryPaymentApplication];
+    subcredentials = [devicePrimaryPaymentApplication subcredentials];
+    anyObject = [subcredentials anyObject];
 
-    v10 = [v9 identifier];
+    identifier = [anyObject identifier];
     v11 = PKLogFacilityTypeGetObject();
     v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
-    if (v10)
+    if (identifier)
     {
       if (v12)
       {
         *buf = 138412290;
-        v19 = v6;
+        v19 = uniqueID;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Requesting cleanup of the assiciated PII token as the deleted pass %@ relies on one", buf, 0xCu);
       }
 
-      v13 = [v5 primaryAccountIdentifier];
+      primaryAccountIdentifier = [v5 primaryAccountIdentifier];
       v14[0] = _NSConcreteStackBlock;
       v14[1] = 3221225472;
       v14[2] = sub_1001A53A8;
       v14[3] = &unk_10084B5A0;
-      v15 = v6;
-      v16 = v13;
-      v17 = v10;
-      v11 = v13;
+      v15 = uniqueID;
+      v16 = primaryAccountIdentifier;
+      v17 = identifier;
+      v11 = primaryAccountIdentifier;
       [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v14];
     }
 
     else if (v12)
     {
       *buf = 138412546;
-      v19 = v9;
+      v19 = anyObject;
       v20 = 2112;
-      v21 = v6;
+      v21 = uniqueID;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "No cleanup of PII because subcredential %@ lacks an identifier for pass %@", buf, 0x16u);
     }
   }
 }
 
-- (void)passWillBeRemoved:(id)a3
+- (void)passWillBeRemoved:(id)removed
 {
-  v4 = a3;
-  if ([v4 isIdentityPass])
+  removedCopy = removed;
+  if ([removedCopy isIdentityPass])
   {
-    [(PDISO18013Manager *)self _handleIdentityTokenCleanupIfNeededForPass:v4];
-    v5 = [v4 uniqueID];
-    [(PDISO18013Manager *)self identityPassDeleteCredentialFromCacheWithPassUniqueID:v5];
+    [(PDISO18013Manager *)self _handleIdentityTokenCleanupIfNeededForPass:removedCopy];
+    uniqueID = [removedCopy uniqueID];
+    [(PDISO18013Manager *)self identityPassDeleteCredentialFromCacheWithPassUniqueID:uniqueID];
   }
 
-  v19 = self;
+  selfCopy = self;
   v6 = objc_alloc_init(NSMutableSet);
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v20 = v4;
-  v7 = [v4 devicePaymentApplications];
-  v8 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+  v20 = removedCopy;
+  devicePaymentApplications = [removedCopy devicePaymentApplications];
+  v8 = [devicePaymentApplications countByEnumeratingWithState:&v25 objects:v30 count:16];
   if (v8)
   {
     v9 = v8;
@@ -558,7 +558,7 @@
       {
         if (*v26 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(devicePaymentApplications);
         }
 
         v12 = *(*(&v25 + 1) + 8 * i);
@@ -568,8 +568,8 @@
           v24 = 0u;
           v21 = 0u;
           v22 = 0u;
-          v13 = [v12 subcredentials];
-          v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+          subcredentials = [v12 subcredentials];
+          v14 = [subcredentials countByEnumeratingWithState:&v21 objects:v29 count:16];
           if (v14)
           {
             v15 = v14;
@@ -580,14 +580,14 @@
               {
                 if (*v22 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(subcredentials);
                 }
 
-                v18 = [*(*(&v21 + 1) + 8 * j) identifier];
-                [v6 addObject:v18];
+                identifier = [*(*(&v21 + 1) + 8 * j) identifier];
+                [v6 addObject:identifier];
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
+              v15 = [subcredentials countByEnumeratingWithState:&v21 objects:v29 count:16];
             }
 
             while (v15);
@@ -595,49 +595,49 @@
         }
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
+      v9 = [devicePaymentApplications countByEnumeratingWithState:&v25 objects:v30 count:16];
     }
 
     while (v9);
   }
 
-  -[PDISO18013Manager deleteSubCredentialIdentifiers:cardType:completion:](v19, "deleteSubCredentialIdentifiers:cardType:completion:", v6, [v20 cardType], 0);
+  -[PDISO18013Manager deleteSubCredentialIdentifiers:cardType:completion:](selfCopy, "deleteSubCredentialIdentifiers:cardType:completion:", v6, [v20 cardType], 0);
 }
 
-- (void)addISO18013BlobsFromCredentials:(id)a3 cardType:(int64_t)a4 completion:(id)a5
+- (void)addISO18013BlobsFromCredentials:(id)credentials cardType:(int64_t)type completion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001A5A34;
   v10[3] = &unk_10084B618;
-  v11 = a3;
-  v12 = self;
-  v13 = a5;
-  v14 = a4;
-  v8 = v13;
-  v9 = v11;
+  credentialsCopy = credentials;
+  selfCopy = self;
+  completionCopy = completion;
+  typeCopy = type;
+  v8 = completionCopy;
+  v9 = credentialsCopy;
   [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v10];
 }
 
-- (void)addISO18013Blobs:(id)a3 cardType:(int64_t)a4 completion:(id)a5
+- (void)addISO18013Blobs:(id)blobs cardType:(int64_t)type completion:(id)completion
 {
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001A6094;
   v10[3] = &unk_10084B618;
-  v11 = a3;
-  v12 = self;
-  v13 = a5;
-  v14 = a4;
-  v8 = v13;
-  v9 = v11;
+  blobsCopy = blobs;
+  selfCopy = self;
+  completionCopy = completion;
+  typeCopy = type;
+  v8 = completionCopy;
+  v9 = blobsCopy;
   [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v10];
 }
 
-- (void)accessCredentialStoreWithHandler:(id)a3
+- (void)accessCredentialStoreWithHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     os_unfair_lock_lock(&self->_lockStorage);
     isoStorage = self->_isoStorage;
@@ -666,62 +666,62 @@
     v12[4] = self;
     v12[5] = v13;
     v11 = objc_retainBlock(v12);
-    v4[2](v4, self->_isoStorage, v11);
+    handlerCopy[2](handlerCopy, self->_isoStorage, v11);
 
     _Block_object_dispose(v13, 8);
   }
 }
 
-- (void)_isoCredentialIdentifierForSubCredentialId:(id)a3 cardType:(int64_t)a4 store:(id)a5 completion:(id)a6
+- (void)_isoCredentialIdentifierForSubCredentialId:(id)id cardType:(int64_t)type store:(id)store completion:(id)completion
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = a6;
-  if (a4 == 4)
+  idCopy = id;
+  storeCopy = store;
+  completionCopy = completion;
+  if (type == 4)
   {
     v12 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v21 = v9;
+      v21 = idCopy;
       v22 = 2112;
-      v23 = v9;
+      v23 = idCopy;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "ISO credential identifier %@ found for identity subCredentialId %@", buf, 0x16u);
     }
 
-    v11[2](v11, v9);
+    completionCopy[2](completionCopy, idCopy);
   }
 
   else
   {
-    v13 = [v9 pk_decodeHexadecimal];
+    pk_decodeHexadecimal = [idCopy pk_decodeHexadecimal];
     v15[0] = _NSConcreteStackBlock;
     v15[1] = 3221225472;
     v15[2] = sub_1001A6994;
     v15[3] = &unk_10084B690;
-    v16 = v9;
-    v19 = v11;
-    v17 = v10;
-    v18 = v13;
-    v14 = v13;
+    v16 = idCopy;
+    v19 = completionCopy;
+    v17 = storeCopy;
+    v18 = pk_decodeHexadecimal;
+    v14 = pk_decodeHexadecimal;
     [v17 credentialIdentifierForPublicKeyIdentifier:v14 completion:v15];
   }
 }
 
-- (void)createISOCredentialIdentifierForIdentityPartitionWithCompletion:(id)a3
+- (void)createISOCredentialIdentifierForIdentityPartitionWithCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001A6ED0;
   v5[3] = &unk_10084B6E0;
-  v6 = a3;
-  v4 = v6;
+  completionCopy = completion;
+  v4 = completionCopy;
   [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v5];
 }
 
-- (void)createISOBiometricBindingWithCompletion:(id)a3
+- (void)createISOBiometricBindingWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = objc_alloc_init(DCBiometricStore);
   v5 = objc_alloc_init(PKAsyncUnaryOperationComposer);
   v28[0] = 0;
@@ -766,7 +766,7 @@
   v11[2] = sub_1001A77A8;
   v11[3] = &unk_10084B730;
   v13 = v24;
-  v9 = v3;
+  v9 = completionCopy;
   v12 = v9;
   v14 = v28;
   v15 = v26;
@@ -778,19 +778,19 @@
   _Block_object_dispose(v28, 8);
 }
 
-- (void)_updateISO18013Blob:(id)a3 metadata:(id)a4 paymentApplication:(id)a5 subcredential:(id)a6 paymentPass:(id)a7 store:(id)a8 priorSubcredentialIdentifiers:(id)a9 cardType:(int64_t)a10 completion:(id)a11
+- (void)_updateISO18013Blob:(id)blob metadata:(id)metadata paymentApplication:(id)application subcredential:(id)subcredential paymentPass:(id)pass store:(id)store priorSubcredentialIdentifiers:(id)identifiers cardType:(int64_t)self0 completion:(id)self1
 {
-  v47 = a3;
-  v48 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v22 = a11;
-  v23 = [v18 identifier];
-  v24 = [v17 paymentType];
-  v25 = [v17 paymentNetworkIdentifier];
+  blobCopy = blob;
+  metadataCopy = metadata;
+  applicationCopy = application;
+  subcredentialCopy = subcredential;
+  passCopy = pass;
+  storeCopy = store;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
+  identifier = [subcredentialCopy identifier];
+  paymentType = [applicationCopy paymentType];
+  paymentNetworkIdentifier = [applicationCopy paymentNetworkIdentifier];
   v92[0] = 0;
   v92[1] = v92;
   v92[2] = 0x3032000000;
@@ -800,12 +800,12 @@
   v90[0] = 0;
   v90[1] = v90;
   v90[2] = 0x2020000000;
-  v44 = v17;
-  v46 = v24;
-  if ([v19 isIdentityPass])
+  v44 = applicationCopy;
+  v46 = paymentType;
+  if ([passCopy isIdentityPass])
   {
-    v26 = [v21 containsObject:v23];
-    if (v48)
+    v26 = [identifiersCopy containsObject:identifier];
+    if (metadataCopy)
     {
       v27 = v26;
     }
@@ -821,9 +821,9 @@
     v27 = 0;
   }
 
-  v28 = v25;
-  v45 = v22;
-  v43 = v21;
+  v28 = paymentNetworkIdentifier;
+  v45 = completionCopy;
+  v43 = identifiersCopy;
   v91 = v27;
   v88[0] = 0;
   v88[1] = v88;
@@ -843,9 +843,9 @@
   v81[2] = sub_1001A7E00;
   v81[3] = &unk_10084B780;
   v81[4] = self;
-  v81[5] = v23;
-  v85 = a10;
-  v30 = v20;
+  v81[5] = identifier;
+  typeCopy = type;
+  v30 = storeCopy;
   v82 = v30;
   v83 = v86;
   v84 = v92;
@@ -866,12 +866,12 @@
   v32 = v31;
   v71 = v32;
   v75 = v86;
-  v33 = v47;
+  v33 = blobCopy;
   v72 = v33;
-  v34 = v18;
+  v34 = subcredentialCopy;
   v76 = v92;
   v73 = v34;
-  v74 = v23;
+  v74 = identifier;
   [v29 addOperation:v70];
   v66[0] = _NSConcreteStackBlock;
   v66[1] = 3221225472;
@@ -893,19 +893,19 @@
   v37 = v35;
   v63 = v88;
   v58 = v37;
-  v59 = self;
+  selfCopy = self;
   v62 = v86;
-  v60 = v23;
+  v60 = identifier;
   [v29 addOperation:v57];
   v52[0] = _NSConcreteStackBlock;
   v52[1] = 3221225472;
   v52[2] = sub_1001A8B4C;
   v52[3] = &unk_10084B870;
   v56 = v90;
-  v38 = v48;
+  v38 = metadataCopy;
   v53 = v38;
-  v54 = self;
-  v39 = v19;
+  selfCopy2 = self;
+  v39 = passCopy;
   v55 = v39;
   [v29 addOperation:v52];
   v40 = +[NSNull null];
@@ -925,80 +925,80 @@
   _Block_object_dispose(v92, 8);
 }
 
-- (void)generateISOEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4
+- (void)generateISOEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001A8E64;
   v8[3] = &unk_10084B910;
-  v9 = a3;
-  v10 = a4;
+  idCopy = id;
+  completionCopy = completion;
   v8[4] = self;
-  v6 = v9;
-  v7 = v10;
+  v6 = idCopy;
+  v7 = completionCopy;
   [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v8];
 }
 
-- (void)generateISOEncryptionKeyForCardType:(int64_t)a3 subCredentialId:(id)a4 attestationType:(int64_t)a5 completion:(id)a6
+- (void)generateISOEncryptionKeyForCardType:(int64_t)type subCredentialId:(id)id attestationType:(int64_t)attestationType completion:(id)completion
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001A93C4;
   v11[3] = &unk_10084B988;
-  v12 = self;
-  v13 = a4;
-  v15 = a3;
-  v16 = a5;
-  v14 = a6;
-  v9 = v14;
-  v10 = v13;
-  [(PDISO18013Manager *)v12 accessCredentialStoreWithHandler:v11];
+  selfCopy = self;
+  idCopy = id;
+  typeCopy = type;
+  attestationTypeCopy = attestationType;
+  completionCopy = completion;
+  v9 = completionCopy;
+  v10 = idCopy;
+  [(PDISO18013Manager *)selfCopy accessCredentialStoreWithHandler:v11];
 }
 
-- (void)generateKeySigningKeyForCardType:(int64_t)a3 subCredentialId:(id)a4 completion:(id)a5
+- (void)generateKeySigningKeyForCardType:(int64_t)type subCredentialId:(id)id completion:(id)completion
 {
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1001A9740;
   v9[3] = &unk_10084B618;
-  v10 = self;
-  v11 = a4;
-  v12 = a5;
-  v13 = a3;
-  v7 = v12;
-  v8 = v11;
-  [(PDISO18013Manager *)v10 accessCredentialStoreWithHandler:v9];
+  selfCopy = self;
+  idCopy = id;
+  completionCopy = completion;
+  typeCopy = type;
+  v7 = completionCopy;
+  v8 = idCopy;
+  [(PDISO18013Manager *)selfCopy accessCredentialStoreWithHandler:v9];
 }
 
-- (void)generatePresentmentKeyForCardType:(int64_t)a3 numberOfKeys:(int64_t)a4 subCredentialId:(id)a5 completion:(id)a6
+- (void)generatePresentmentKeyForCardType:(int64_t)type numberOfKeys:(int64_t)keys subCredentialId:(id)id completion:(id)completion
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001A9AB4;
   v11[3] = &unk_10084B988;
-  v12 = self;
-  v13 = a5;
-  v15 = a3;
-  v16 = a4;
-  v14 = a6;
-  v9 = v14;
-  v10 = v13;
-  [(PDISO18013Manager *)v12 accessCredentialStoreWithHandler:v11];
+  selfCopy = self;
+  idCopy = id;
+  typeCopy = type;
+  keysCopy = keys;
+  completionCopy = completion;
+  v9 = completionCopy;
+  v10 = idCopy;
+  [(PDISO18013Manager *)selfCopy accessCredentialStoreWithHandler:v11];
 }
 
-- (void)needsPresentmentKeyRefreshForPass:(id)a3 numberOfKeys:(int64_t)a4 subCredentialId:(id)a5 completion:(id)a6
+- (void)needsPresentmentKeyRefreshForPass:(id)pass numberOfKeys:(int64_t)keys subCredentialId:(id)id completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (a4 > 1)
+  passCopy = pass;
+  idCopy = id;
+  completionCopy = completion;
+  if (keys > 1)
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1001A9EA8;
     v14[3] = &unk_10084BA28;
-    v15 = v11;
-    v16 = v12;
+    v15 = idCopy;
+    v16 = completionCopy;
     [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v14];
   }
 
@@ -1011,31 +1011,31 @@
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "needsPresentmentKeyRefreshForPass not refreshing because numberOfKeys < 2", buf, 2u);
     }
 
-    (*(v12 + 2))(v12, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
-- (void)biometricResetAffectedPassesFrom:(id)a3 completion:(id)a4
+- (void)biometricResetAffectedPassesFrom:(id)from completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  fromCopy = from;
+  completionCopy = completion;
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001AA190;
   v11[3] = &unk_10084BAA0;
-  v12 = v6;
+  v12 = fromCopy;
   v13 = objc_alloc_init(NSMutableSet);
-  v14 = v7;
-  v8 = v7;
+  v14 = completionCopy;
+  v8 = completionCopy;
   v9 = v13;
-  v10 = v6;
+  v10 = fromCopy;
   [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v11];
 }
 
-- (void)_elementsChanged:(id)a3 forPass:(id)a4
+- (void)_elementsChanged:(id)changed forPass:(id)pass
 {
-  v5 = a3;
-  v31 = a4;
+  changedCopy = changed;
+  passCopy = pass;
   v50 = 0;
   v51 = &v50;
   v52 = 0x2020000000;
@@ -1055,7 +1055,7 @@
   v44 = 0u;
   v41 = 0u;
   v42 = 0u;
-  obj = v5;
+  obj = changedCopy;
   v33 = [obj countByEnumeratingWithState:&v41 objects:v59 count:16];
   if (v33)
   {
@@ -1164,7 +1164,7 @@
     while (v33);
   }
 
-  v18 = [v31 identityType];
+  identityType = [passCopy identityType];
   if (*(v51 + 24) == 1)
   {
     v19 = @"NOTIFICATION_DL_INFO_CHANGE";
@@ -1181,7 +1181,7 @@
         v20 = @"NOTIFICATION_STATE_ID_PERSONAL_INFO_CHANGE";
         break;
       case 3:
-        if (v18 == 2)
+        if (identityType == 2)
         {
           goto LABEL_37;
         }
@@ -1197,7 +1197,7 @@
     }
   }
 
-  if (v18 == 2)
+  if (identityType == 2)
   {
     v21 = v20;
   }
@@ -1212,12 +1212,12 @@ LABEL_35:
   if (v22)
   {
     v23 = [PDISO18013UpdateUserNotification alloc];
-    v24 = [v31 uniqueID];
-    v25 = [(PDISO18013UpdateUserNotification *)v23 initWithMessage:v22 forPassUniqueIdentifier:v24];
+    uniqueID = [passCopy uniqueID];
+    v25 = [(PDISO18013UpdateUserNotification *)v23 initWithMessage:v22 forPassUniqueIdentifier:uniqueID];
 
     v26 = [NSString alloc];
-    v27 = [v31 uniqueID];
-    v28 = [v26 initWithFormat:@"%@-iso18013", v27];
+    uniqueID2 = [passCopy uniqueID];
+    v28 = [v26 initWithFormat:@"%@-iso18013", uniqueID2];
     [(PDUserNotification *)v25 setNotificationIdentifier:v28];
 
     [(PDUserNotification *)v25 setReissueBannerOnUpdate:1];
@@ -1230,87 +1230,87 @@ LABEL_37:
   _Block_object_dispose(&v50, 8);
 }
 
-- (void)allCredentialsWithCompletion:(id)a3
+- (void)allCredentialsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  completionCopy = completion;
+  v5 = completionCopy;
+  if (completionCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_1001AAF78;
     v6[3] = &unk_100842780;
     v6[4] = self;
-    v7 = v4;
+    v7 = completionCopy;
     [(PDISO18013Manager *)self _getAllCredentialIdsWithCompletion:v6];
   }
 }
 
-- (void)_updateCredentialsForCredentialIds:(id)a3 toState:(unint64_t)a4 completion:(id)a5
+- (void)_updateCredentialsForCredentialIds:(id)ids toState:(unint64_t)state completion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001AB810;
   v5[3] = &unk_10084BBA0;
-  v5[4] = a4;
-  [(PDISO18013Manager *)self _performOperationOnCredentials:a3 operation:v5 completion:a5];
+  v5[4] = state;
+  [(PDISO18013Manager *)self _performOperationOnCredentials:ids operation:v5 completion:completion];
 }
 
-- (void)_performOperationOnCredentials:(id)a3 operation:(id)a4 completion:(id)a5
+- (void)_performOperationOnCredentials:(id)credentials operation:(id)operation completion:(id)completion
 {
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1001ABB4C;
   v11[3] = &unk_10084BC18;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v8 = v14;
-  v9 = v13;
-  v10 = v12;
+  credentialsCopy = credentials;
+  operationCopy = operation;
+  completionCopy = completion;
+  v8 = completionCopy;
+  v9 = operationCopy;
+  v10 = credentialsCopy;
   [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v11];
 }
 
-- (void)_getAllCredentialIdsWithCompletion:(id)a3
+- (void)_getAllCredentialIdsWithCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_1001AC09C;
   v5[3] = &unk_10084B6E0;
-  v6 = a3;
-  v4 = v6;
+  completionCopy = completion;
+  v4 = completionCopy;
   [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v5];
 }
 
-- (void)generateAccountKeyAuthorizationForSubcredentialID:(id)a3 cardType:(int64_t)a4 accountKeyIdentifier:(id)a5 completion:(id)a6
+- (void)generateAccountKeyAuthorizationForSubcredentialID:(id)d cardType:(int64_t)type accountKeyIdentifier:(id)identifier completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
+  dCopy = d;
+  identifierCopy = identifier;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1001AC380;
   v15[3] = &unk_10084BCB8;
   v15[4] = self;
-  v16 = v10;
-  v18 = a6;
-  v19 = a4;
-  v17 = v11;
-  v12 = v18;
-  v13 = v11;
-  v14 = v10;
+  v16 = dCopy;
+  completionCopy = completion;
+  typeCopy = type;
+  v17 = identifierCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  v14 = dCopy;
   [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v15];
 }
 
-- (void)isAccountKeySigningKeyAvailableForAccountKeyIdentifier:(id)a3 completion:(id)a4
+- (void)isAccountKeySigningKeyAvailableForAccountKeyIdentifier:(id)identifier completion:(id)completion
 {
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1001AC820;
   v8[3] = &unk_10084BA28;
-  v9 = a3;
-  v10 = a4;
-  v6 = v10;
-  v7 = v9;
+  identifierCopy = identifier;
+  completionCopy = completion;
+  v6 = completionCopy;
+  v7 = identifierCopy;
   [(PDISO18013Manager *)self accessCredentialStoreWithHandler:v8];
 }
 

@@ -1,48 +1,48 @@
 @interface Coordinator
-- (void)cardViewController:(id)a3 preferredContentSizeDidChange:(CGSize)a4 animated:(BOOL)a5;
-- (void)lockupViewEngagedForAppIdentifier:(id)a3;
-- (void)lockupViewForAppIdentifier:(id)a3 didChangeState:(id)a4;
-- (void)lockupViewForAppIdentifier:(id)a3 didFailRequestWithError:(id)a4;
+- (void)cardViewController:(id)controller preferredContentSizeDidChange:(CGSize)change animated:(BOOL)animated;
+- (void)lockupViewEngagedForAppIdentifier:(id)identifier;
+- (void)lockupViewForAppIdentifier:(id)identifier didChangeState:(id)state;
+- (void)lockupViewForAppIdentifier:(id)identifier didFailRequestWithError:(id)error;
 @end
 
 @implementation Coordinator
 
-- (void)cardViewController:(id)a3 preferredContentSizeDidChange:(CGSize)a4 animated:(BOOL)a5
+- (void)cardViewController:(id)controller preferredContentSizeDidChange:(CGSize)change animated:(BOOL)animated
 {
-  v7 = a3;
-  v8 = self;
-  sub_2661C1E54(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_2661C1E54(controller);
 }
 
-- (void)lockupViewForAppIdentifier:(id)a3 didFailRequestWithError:(id)a4
+- (void)lockupViewForAppIdentifier:(id)identifier didFailRequestWithError:(id)error
 {
-  if (a3)
+  if (identifier)
   {
     sub_2661CA090();
   }
 
-  v6 = a4;
-  v7 = self;
+  errorCopy = error;
+  selfCopy = self;
   sub_2661C1F80();
 }
 
-- (void)lockupViewEngagedForAppIdentifier:(id)a3
+- (void)lockupViewEngagedForAppIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     sub_2661CA090();
   }
 
-  v4 = self;
+  selfCopy = self;
   sub_2661C22A8();
 }
 
-- (void)lockupViewForAppIdentifier:(id)a3 didChangeState:(id)a4
+- (void)lockupViewForAppIdentifier:(id)identifier didChangeState:(id)state
 {
-  if (a3)
+  if (identifier)
   {
     sub_2661CA090();
-    if (!a4)
+    if (!state)
     {
       goto LABEL_5;
     }
@@ -50,14 +50,14 @@
     goto LABEL_3;
   }
 
-  if (a4)
+  if (state)
   {
 LABEL_3:
     sub_2661CA090();
   }
 
 LABEL_5:
-  v6 = self;
+  selfCopy = self;
   sub_2661C258C();
 }
 

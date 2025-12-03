@@ -1,25 +1,25 @@
 @interface DNDSSettingsManager
-- (BOOL)setBehaviorSettings:(id)a3 withError:(id *)a4;
-- (BOOL)setScheduleSettings:(id)a3 withError:(id *)a4;
-- (DNDSSettingsManager)initWithBackingStore:(id)a3 contactStore:(id)a4;
+- (BOOL)setBehaviorSettings:(id)settings withError:(id *)error;
+- (BOOL)setScheduleSettings:(id)settings withError:(id *)error;
+- (DNDSSettingsManager)initWithBackingStore:(id)store contactStore:(id)contactStore;
 - (DNDSSettingsManagerDelegate)delegate;
-- (id)_readSettingsReturningError:(id *)a3;
-- (id)behaviorSettingsWithError:(id *)a3;
-- (id)phoneCallBypassSettingsWithError:(id *)a3;
-- (id)scheduleSettingsWithError:(id *)a3;
-- (unint64_t)_saveBehaviorSettings:(id)a3 scheduleSettings:(id)a4 error:(id *)a5;
-- (unint64_t)_saveConfiguration:(id)a3 forModeIdentifier:(id)a4 error:(id *)a5;
-- (unint64_t)_writeSettingsRecord:(id)a3 error:(id *)a4;
+- (id)_readSettingsReturningError:(id *)error;
+- (id)behaviorSettingsWithError:(id *)error;
+- (id)phoneCallBypassSettingsWithError:(id *)error;
+- (id)scheduleSettingsWithError:(id *)error;
+- (unint64_t)_saveBehaviorSettings:(id)settings scheduleSettings:(id)scheduleSettings error:(id *)error;
+- (unint64_t)_saveConfiguration:(id)configuration forModeIdentifier:(id)identifier error:(id *)error;
+- (unint64_t)_writeSettingsRecord:(id)record error:(id *)error;
 - (void)dealloc;
-- (void)syncSettingsProvider:(id)a3 didReceiveUpdatedSyncSettings:(id)a4;
+- (void)syncSettingsProvider:(id)provider didReceiveUpdatedSyncSettings:(id)settings;
 @end
 
 @implementation DNDSSettingsManager
 
-- (DNDSSettingsManager)initWithBackingStore:(id)a3 contactStore:(id)a4
+- (DNDSSettingsManager)initWithBackingStore:(id)store contactStore:(id)contactStore
 {
-  v7 = a3;
-  v8 = a4;
+  storeCopy = store;
+  contactStoreCopy = contactStore;
   v15.receiver = self;
   v15.super_class = DNDSSettingsManager;
   v9 = [(DNDSSettingsManager *)&v15 init];
@@ -29,8 +29,8 @@
     queue = v9->_queue;
     v9->_queue = v10;
 
-    objc_storeStrong(&v9->_backingStore, a3);
-    objc_storeStrong(&v9->_contactStore, a4);
+    objc_storeStrong(&v9->_backingStore, store);
+    objc_storeStrong(&v9->_contactStore, contactStore);
     v12 = objc_alloc_init(DNDSSyncSettingsProvider);
     syncSettingsProvider = v9->_syncSettingsProvider;
     v9->_syncSettingsProvider = v12;
@@ -50,15 +50,15 @@
   [(DNDSSettingsManager *)&v3 dealloc];
 }
 
-- (id)behaviorSettingsWithError:(id *)a3
+- (id)behaviorSettingsWithError:(id *)error
 {
-  v3 = [(DNDSSettingsManager *)self _readSettingsReturningError:a3];
+  v3 = [(DNDSSettingsManager *)self _readSettingsReturningError:error];
   v4 = v3;
   if (v3)
   {
     v5 = MEMORY[0x277D058D0];
-    v6 = [v3 behaviorSettings];
-    v7 = [v5 settingsForRecord:v6];
+    behaviorSettings = [v3 behaviorSettings];
+    v7 = [v5 settingsForRecord:behaviorSettings];
   }
 
   else
@@ -69,10 +69,10 @@
   return v7;
 }
 
-- (BOOL)setBehaviorSettings:(id)a3 withError:(id *)a4
+- (BOOL)setBehaviorSettings:(id)settings withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(DNDSSettingsManager *)self _saveBehaviorSettings:v6 scheduleSettings:0 error:a4];
+  settingsCopy = settings;
+  v7 = [(DNDSSettingsManager *)self _saveBehaviorSettings:settingsCopy scheduleSettings:0 error:error];
   if (v7 != 1)
   {
     if (v7 != 2)
@@ -81,8 +81,8 @@
       goto LABEL_6;
     }
 
-    v8 = [(DNDSSettingsManager *)self delegate];
-    [v8 settingsManager:self didReceiveUpdatedBehaviorSettings:v6];
+    delegate = [(DNDSSettingsManager *)self delegate];
+    [delegate settingsManager:self didReceiveUpdatedBehaviorSettings:settingsCopy];
   }
 
   v9 = 1;
@@ -91,15 +91,15 @@ LABEL_6:
   return v9;
 }
 
-- (id)phoneCallBypassSettingsWithError:(id *)a3
+- (id)phoneCallBypassSettingsWithError:(id *)error
 {
-  v3 = [(DNDSSettingsManager *)self _readSettingsReturningError:a3];
+  v3 = [(DNDSSettingsManager *)self _readSettingsReturningError:error];
   v4 = v3;
   if (v3)
   {
     v5 = MEMORY[0x277D058D8];
-    v6 = [v3 phoneCallBypassSettings];
-    v7 = [v5 settingsForRecord:v6];
+    phoneCallBypassSettings = [v3 phoneCallBypassSettings];
+    v7 = [v5 settingsForRecord:phoneCallBypassSettings];
   }
 
   else
@@ -110,14 +110,14 @@ LABEL_6:
   return v7;
 }
 
-- (id)scheduleSettingsWithError:(id *)a3
+- (id)scheduleSettingsWithError:(id *)error
 {
-  v3 = [(DNDSSettingsManager *)self _readSettingsReturningError:a3];
+  v3 = [(DNDSSettingsManager *)self _readSettingsReturningError:error];
   v4 = v3;
   if (v3)
   {
-    v5 = [v3 scheduleSettings];
-    v6 = [DNDSScheduleSettings settingsForRecord:v5];
+    scheduleSettings = [v3 scheduleSettings];
+    v6 = [DNDSScheduleSettings settingsForRecord:scheduleSettings];
   }
 
   else
@@ -128,10 +128,10 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)setScheduleSettings:(id)a3 withError:(id *)a4
+- (BOOL)setScheduleSettings:(id)settings withError:(id *)error
 {
-  v6 = a3;
-  v7 = [(DNDSSettingsManager *)self _saveBehaviorSettings:0 scheduleSettings:v6 error:a4];
+  settingsCopy = settings;
+  v7 = [(DNDSSettingsManager *)self _saveBehaviorSettings:0 scheduleSettings:settingsCopy error:error];
   if (v7 != 1)
   {
     if (v7 != 2)
@@ -140,8 +140,8 @@ LABEL_6:
       goto LABEL_6;
     }
 
-    v8 = [(DNDSSettingsManager *)self delegate];
-    [v8 settingsManager:self didReceiveUpdatedScheduleSettings:v6];
+    delegate = [(DNDSSettingsManager *)self delegate];
+    [delegate settingsManager:self didReceiveUpdatedScheduleSettings:settingsCopy];
   }
 
   v9 = 1;
@@ -150,7 +150,7 @@ LABEL_6:
   return v9;
 }
 
-- (id)_readSettingsReturningError:(id *)a3
+- (id)_readSettingsReturningError:(id *)error
 {
   backingStore = self->_backingStore;
   v11 = 0;
@@ -159,10 +159,10 @@ LABEL_6:
   v7 = v6;
   if (v6)
   {
-    if (a3)
+    if (error)
     {
       v8 = v6;
-      *a3 = v7;
+      *error = v7;
     }
 
     v9 = DNDSLogSettings;
@@ -177,10 +177,10 @@ LABEL_6:
   return v5;
 }
 
-- (unint64_t)_saveBehaviorSettings:(id)a3 scheduleSettings:(id)a4 error:(id *)a5
+- (unint64_t)_saveBehaviorSettings:(id)settings scheduleSettings:(id)scheduleSettings error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  settingsCopy = settings;
+  scheduleSettingsCopy = scheduleSettings;
   v10 = [(DNDSBackingStore *)self->_backingStore readRecordWithError:0];
   v11 = [v10 mutableCopy];
   v12 = v11;
@@ -196,9 +196,9 @@ LABEL_6:
 
   v14 = v13;
 
-  if (!v8)
+  if (!settingsCopy)
   {
-    if (!v9)
+    if (!scheduleSettingsCopy)
     {
       goto LABEL_26;
     }
@@ -207,20 +207,20 @@ LABEL_6:
     goto LABEL_17;
   }
 
-  v15 = [v8 makeRecord];
-  v16 = [(DNDSSettingsRecord *)v14 behaviorSettings];
-  v17 = v16;
-  if (v16 == v15)
+  makeRecord = [settingsCopy makeRecord];
+  behaviorSettings = [(DNDSSettingsRecord *)v14 behaviorSettings];
+  v17 = behaviorSettings;
+  if (behaviorSettings == makeRecord)
   {
 
     v23 = 0;
     goto LABEL_16;
   }
 
-  v35 = a5;
-  v18 = [(DNDSSettingsRecord *)v14 behaviorSettings];
-  v19 = v18;
-  if (!v18 || !v15)
+  errorCopy = error;
+  behaviorSettings2 = [(DNDSSettingsRecord *)v14 behaviorSettings];
+  v19 = behaviorSettings2;
+  if (!behaviorSettings2 || !makeRecord)
   {
 
     goto LABEL_14;
@@ -228,23 +228,23 @@ LABEL_6:
 
   [(DNDSSettingsRecord *)v14 behaviorSettings];
   v21 = v20 = self;
-  v22 = [v21 isEqual:v15];
+  v22 = [v21 isEqual:makeRecord];
 
   self = v20;
   if ((v22 & 1) == 0)
   {
 LABEL_14:
-    [(DNDSMutableSettingsRecord *)v14 setBehaviorSettings:v15];
+    [(DNDSMutableSettingsRecord *)v14 setBehaviorSettings:makeRecord];
     v23 = 1;
     goto LABEL_15;
   }
 
   v23 = 0;
 LABEL_15:
-  a5 = v35;
+  error = errorCopy;
 LABEL_16:
 
-  if (!v9)
+  if (!scheduleSettingsCopy)
   {
     if (v23)
     {
@@ -255,35 +255,35 @@ LABEL_16:
   }
 
 LABEL_17:
-  v24 = [v9 makeRecord];
-  v25 = [(DNDSSettingsRecord *)v14 scheduleSettings];
-  v26 = v25;
-  if (v25 == v24)
+  makeRecord2 = [scheduleSettingsCopy makeRecord];
+  scheduleSettings = [(DNDSSettingsRecord *)v14 scheduleSettings];
+  v26 = scheduleSettings;
+  if (scheduleSettings == makeRecord2)
   {
   }
 
   else
   {
-    v27 = [(DNDSSettingsRecord *)v14 scheduleSettings];
-    v28 = v27;
-    if (!v27 || !v24)
+    scheduleSettings2 = [(DNDSSettingsRecord *)v14 scheduleSettings];
+    v28 = scheduleSettings2;
+    if (!scheduleSettings2 || !makeRecord2)
     {
 
 LABEL_28:
-      [(DNDSMutableSettingsRecord *)v14 setScheduleSettings:v24];
+      [(DNDSMutableSettingsRecord *)v14 setScheduleSettings:makeRecord2];
 
       goto LABEL_29;
     }
 
     [(DNDSSettingsRecord *)v14 scheduleSettings];
-    v36 = self;
+    selfCopy = self;
     v29 = v10;
-    v31 = v30 = a5;
-    v34 = [v31 isEqual:v24];
+    v31 = v30 = error;
+    v34 = [v31 isEqual:makeRecord2];
 
-    a5 = v30;
+    error = v30;
     v10 = v29;
-    self = v36;
+    self = selfCopy;
 
     if ((v34 & 1) == 0)
     {
@@ -294,7 +294,7 @@ LABEL_28:
   if (v23)
   {
 LABEL_29:
-    v32 = [(DNDSSettingsManager *)self _writeSettingsRecord:v14 error:a5];
+    v32 = [(DNDSSettingsManager *)self _writeSettingsRecord:v14 error:error];
     goto LABEL_30;
   }
 
@@ -305,10 +305,10 @@ LABEL_30:
   return v32;
 }
 
-- (unint64_t)_saveConfiguration:(id)a3 forModeIdentifier:(id)a4 error:(id *)a5
+- (unint64_t)_saveConfiguration:(id)configuration forModeIdentifier:(id)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  configurationCopy = configuration;
+  identifierCopy = identifier;
   v10 = [(DNDSBackingStore *)self->_backingStore readRecordWithError:0];
   v11 = [v10 mutableCopy];
   v12 = v11;
@@ -324,8 +324,8 @@ LABEL_30:
 
   v14 = v13;
 
-  v15 = [v10 configurations];
-  v16 = [v15 mutableCopy];
+  configurations = [v10 configurations];
+  v16 = [configurations mutableCopy];
   v17 = v16;
   if (v16)
   {
@@ -339,31 +339,31 @@ LABEL_30:
 
   v19 = v18;
 
-  v20 = [v15 configurationForModeIdentifier:v9];
-  v21 = [v8 makeRecord];
-  v22 = v21;
-  if (v20 == v21 || v20 && v21 && ([v20 isEqual:v21] & 1) != 0)
+  v20 = [configurations configurationForModeIdentifier:identifierCopy];
+  makeRecord = [configurationCopy makeRecord];
+  v22 = makeRecord;
+  if (v20 == makeRecord || v20 && makeRecord && ([v20 isEqual:makeRecord] & 1) != 0)
   {
     v23 = 1;
   }
 
   else
   {
-    [(DNDSMutableConfigurationsRecord *)v19 setConfiguration:v8 forModeIdentifier:v9];
+    [(DNDSMutableConfigurationsRecord *)v19 setConfiguration:configurationCopy forModeIdentifier:identifierCopy];
     [(DNDSMutableSettingsRecord *)v14 setConfigurations:v19];
-    v23 = [(DNDSSettingsManager *)self _writeSettingsRecord:v14 error:a5];
+    v23 = [(DNDSSettingsManager *)self _writeSettingsRecord:v14 error:error];
   }
 
   return v23;
 }
 
-- (unint64_t)_writeSettingsRecord:(id)a3 error:(id *)a4
+- (unint64_t)_writeSettingsRecord:(id)record error:(id *)error
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  recordCopy = record;
   backingStore = self->_backingStore;
   v18 = 0;
-  v8 = [(DNDSBackingStore *)backingStore writeRecord:v6 error:&v18];
+  v8 = [(DNDSBackingStore *)backingStore writeRecord:recordCopy error:&v18];
   v9 = v18;
   v10 = v9;
   if (v8)
@@ -385,7 +385,7 @@ LABEL_30:
       if (os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v20 = v6;
+        v20 = recordCopy;
         _os_log_impl(&dword_24912E000, v11, OS_LOG_TYPE_DEFAULT, "Saved settings; settingsRecord=%{public}@", buf, 0xCu);
       }
 
@@ -397,16 +397,16 @@ LABEL_30:
     goto LABEL_16;
   }
 
-  if (a4 && v9)
+  if (error && v9)
   {
     v14 = v9;
-    *a4 = v10;
+    *error = v10;
   }
 
   v15 = DNDSLogSettings;
   if (os_log_type_enabled(DNDSLogSettings, OS_LOG_TYPE_ERROR))
   {
-    [(DNDSSettingsManager *)v6 _writeSettingsRecord:v10 error:v15];
+    [(DNDSSettingsManager *)recordCopy _writeSettingsRecord:v10 error:v15];
   }
 
   _DNDSRequestRadar(@"Error saving settings", v10, 0, @"/Library/Caches/com.apple.xbs/Sources/DoNotDisturbServer/DoNotDisturbServer/DNDSSettingsManager.m", 239);
@@ -417,11 +417,11 @@ LABEL_16:
   return v12;
 }
 
-- (void)syncSettingsProvider:(id)a3 didReceiveUpdatedSyncSettings:(id)a4
+- (void)syncSettingsProvider:(id)provider didReceiveUpdatedSyncSettings:(id)settings
 {
-  v5 = a4;
-  v6 = [(DNDSSettingsManager *)self delegate];
-  [v6 settingsManager:self didReceiveUpdatedSyncSettings:v5];
+  settingsCopy = settings;
+  delegate = [(DNDSSettingsManager *)self delegate];
+  [delegate settingsManager:self didReceiveUpdatedSyncSettings:settingsCopy];
 }
 
 - (DNDSSettingsManagerDelegate)delegate

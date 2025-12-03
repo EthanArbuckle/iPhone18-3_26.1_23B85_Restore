@@ -1,7 +1,7 @@
 @interface _SBRootFolderViewElementBorrowedAssertion
-- (_SBRootFolderViewElementBorrowedAssertion)initWithFolderView:(id)a3 reason:(id)a4;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (_SBRootFolderViewElementBorrowedAssertion)initWithFolderView:(id)view reason:(id)reason;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (void)dealloc;
 - (void)invalidate;
@@ -9,18 +9,18 @@
 
 @implementation _SBRootFolderViewElementBorrowedAssertion
 
-- (_SBRootFolderViewElementBorrowedAssertion)initWithFolderView:(id)a3 reason:(id)a4
+- (_SBRootFolderViewElementBorrowedAssertion)initWithFolderView:(id)view reason:(id)reason
 {
-  v7 = a3;
-  v8 = a4;
+  viewCopy = view;
+  reasonCopy = reason;
   v14.receiver = self;
   v14.super_class = _SBRootFolderViewElementBorrowedAssertion;
   v9 = [(_SBRootFolderViewElementBorrowedAssertion *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_folderView, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_folderView, view);
+    v11 = [reasonCopy copy];
     reason = v10->_reason;
     v10->_reason = v11;
   }
@@ -31,7 +31,7 @@
 - (void)dealloc
 {
   v5 = *MEMORY[0x1E69E9840];
-  v2 = *(a1 + 8);
+  v2 = *(self + 8);
   v3 = 138543362;
   v4 = v2;
   _os_log_error_impl(&dword_1BEB18000, a2, OS_LOG_TYPE_ERROR, "_SBRootFolderViewElementBorrowedAssertion deallocated but not invalidated! Reason: %{public}@", &v3, 0xCu);
@@ -39,38 +39,38 @@
 
 - (void)invalidate
 {
-  v3 = [(_SBRootFolderViewElementBorrowedAssertion *)self folderView];
-  [v3 elementBorrowedAssertionDidInvalidate:self];
+  folderView = [(_SBRootFolderViewElementBorrowedAssertion *)self folderView];
+  [folderView elementBorrowedAssertionDidInvalidate:self];
 
   [(_SBRootFolderViewElementBorrowedAssertion *)self setFolderView:0];
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_SBRootFolderViewElementBorrowedAssertion *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_SBRootFolderViewElementBorrowedAssertion *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_SBRootFolderViewElementBorrowedAssertion *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_SBRootFolderViewElementBorrowedAssertion *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(_SBRootFolderViewElementBorrowedAssertion *)self succinctDescriptionBuilder];
-  v5 = [(_SBRootFolderViewElementBorrowedAssertion *)self reason];
-  v6 = [v4 appendObject:v5 withName:@"reason"];
+  succinctDescriptionBuilder = [(_SBRootFolderViewElementBorrowedAssertion *)self succinctDescriptionBuilder];
+  reason = [(_SBRootFolderViewElementBorrowedAssertion *)self reason];
+  v6 = [succinctDescriptionBuilder appendObject:reason withName:@"reason"];
 
-  v7 = [(_SBRootFolderViewElementBorrowedAssertion *)self folderView];
-  v8 = [v4 appendPointer:v7 withName:@"folderView"];
+  folderView = [(_SBRootFolderViewElementBorrowedAssertion *)self folderView];
+  v8 = [succinctDescriptionBuilder appendPointer:folderView withName:@"folderView"];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

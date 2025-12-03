@@ -1,23 +1,23 @@
 @interface ICDocCamProcessingBlocker
 - (BOOL)blocked;
-- (ICDocCamProcessingBlocker)initWithDelegate:(id)a3;
+- (ICDocCamProcessingBlocker)initWithDelegate:(id)delegate;
 - (ICDocCamProcessingBlockerDelegate)delegate;
-- (void)addBlockerOfType:(id)a3 clearRectangles:(BOOL)a4 clearQueue:(BOOL)a5;
-- (void)removeBlockerOfType:(id)a3;
+- (void)addBlockerOfType:(id)type clearRectangles:(BOOL)rectangles clearQueue:(BOOL)queue;
+- (void)removeBlockerOfType:(id)type;
 @end
 
 @implementation ICDocCamProcessingBlocker
 
-- (ICDocCamProcessingBlocker)initWithDelegate:(id)a3
+- (ICDocCamProcessingBlocker)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = ICDocCamProcessingBlocker;
   v5 = [(ICDocCamProcessingBlocker *)&v10 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = objc_alloc_init(MEMORY[0x277CBEB58]);
     blockerSet = v6->_blockerSet;
     v6->_blockerSet = v7;
@@ -28,49 +28,49 @@
 
 - (BOOL)blocked
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(ICDocCamProcessingBlocker *)v2 blockerSet];
-  v4 = [v3 count] != 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  blockerSet = [(ICDocCamProcessingBlocker *)selfCopy blockerSet];
+  v4 = [blockerSet count] != 0;
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
   return v4;
 }
 
-- (void)addBlockerOfType:(id)a3 clearRectangles:(BOOL)a4 clearQueue:(BOOL)a5
+- (void)addBlockerOfType:(id)type clearRectangles:(BOOL)rectangles clearQueue:(BOOL)queue
 {
-  v5 = a5;
-  v6 = a4;
-  v12 = a3;
-  v8 = self;
-  objc_sync_enter(v8);
-  v9 = [(ICDocCamProcessingBlocker *)v8 blockerSet];
-  [v9 addObject:v12];
+  queueCopy = queue;
+  rectanglesCopy = rectangles;
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  blockerSet = [(ICDocCamProcessingBlocker *)selfCopy blockerSet];
+  [blockerSet addObject:typeCopy];
 
-  if (v6)
+  if (rectanglesCopy)
   {
-    v10 = [(ICDocCamProcessingBlocker *)v8 delegate];
-    [v10 clearRectangles];
+    delegate = [(ICDocCamProcessingBlocker *)selfCopy delegate];
+    [delegate clearRectangles];
   }
 
-  if (v5)
+  if (queueCopy)
   {
-    v11 = [(ICDocCamProcessingBlocker *)v8 delegate];
-    [v11 clearQueue];
+    delegate2 = [(ICDocCamProcessingBlocker *)selfCopy delegate];
+    [delegate2 clearQueue];
   }
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)removeBlockerOfType:(id)a3
+- (void)removeBlockerOfType:(id)type
 {
-  v6 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(ICDocCamProcessingBlocker *)v4 blockerSet];
-  [v5 removeObject:v6];
+  typeCopy = type;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  blockerSet = [(ICDocCamProcessingBlocker *)selfCopy blockerSet];
+  [blockerSet removeObject:typeCopy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (ICDocCamProcessingBlockerDelegate)delegate

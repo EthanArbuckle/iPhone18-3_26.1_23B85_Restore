@@ -6,8 +6,8 @@
 
 - (void)nc_setScreenCaptureProhibited:()NCScreenCaptureAdditions
 {
-  v6 = [a1 layer];
-  v4 = [v6 disableUpdateMask] & 0xFFFFFFEDLL;
+  layer = [self layer];
+  v4 = [layer disableUpdateMask] & 0xFFFFFFEDLL;
   if (a3)
   {
     v5 = 18;
@@ -18,7 +18,7 @@
     v5 = 0;
   }
 
-  [v6 setDisableUpdateMask:v4 | v5];
+  [layer setDisableUpdateMask:v4 | v5];
 }
 
 @end

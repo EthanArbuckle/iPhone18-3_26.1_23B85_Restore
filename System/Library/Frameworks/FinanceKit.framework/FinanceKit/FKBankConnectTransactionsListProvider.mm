@@ -1,19 +1,19 @@
 @interface FKBankConnectTransactionsListProvider
-- (FKBankConnectTransactionsListProvider)initWithPrimaryAccountIdentifier:(id)a3 dateFromYear:(id)a4 groupType:(unint64_t)a5;
+- (FKBankConnectTransactionsListProvider)initWithPrimaryAccountIdentifier:(id)identifier dateFromYear:(id)year groupType:(unint64_t)type;
 @end
 
 @implementation FKBankConnectTransactionsListProvider
 
-- (FKBankConnectTransactionsListProvider)initWithPrimaryAccountIdentifier:(id)a3 dateFromYear:(id)a4 groupType:(unint64_t)a5
+- (FKBankConnectTransactionsListProvider)initWithPrimaryAccountIdentifier:(id)identifier dateFromYear:(id)year groupType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  yearCopy = year;
   v14.receiver = self;
   v14.super_class = FKBankConnectTransactionsListProvider;
   v10 = [(FKBankConnectTransactionsListProvider *)&v14 init];
   if (v10)
   {
-    v11 = [_TtC10FinanceKit24TransactionsListProvider makeProviderWithPrimaryAccountIdentifier:v8 dateFromYear:v9 groupType:a5];
+    v11 = [_TtC10FinanceKit24TransactionsListProvider makeProviderWithPrimaryAccountIdentifier:identifierCopy dateFromYear:yearCopy groupType:type];
     dataProvider = v10->_dataProvider;
     v10->_dataProvider = v11;
   }

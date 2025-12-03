@@ -1,28 +1,28 @@
 @interface _SSSScreenshotAnnotationControllerAKOverlayContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityLabelForOverlayView;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)_axMarkupAKOverlayView;
-- (void)setManagedView:(id)a3;
+- (void)setManagedView:(id)view;
 @end
 
 @implementation _SSSScreenshotAnnotationControllerAKOverlayContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SSSScreenshotsView" hasInstanceVariable:@"_screenshotViews" withType:"NSMutableArray"];
-  [v3 validateClass:@"SSSScreenshotsView"];
-  [v3 validateClass:@"SSSScreenshotView"];
-  [v3 validateClass:@"_SSSScreenshotAnnotationControllerAKOverlayContainerView" hasInstanceMethod:@"managedView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"_SSSScreenshotAnnotationControllerAKOverlayContainerView" hasInstanceMethod:@"setManagedView:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SSSScreenshotsView" hasInstanceVariable:@"_screenshotViews" withType:"NSMutableArray"];
+  [validationsCopy validateClass:@"SSSScreenshotsView"];
+  [validationsCopy validateClass:@"SSSScreenshotView"];
+  [validationsCopy validateClass:@"_SSSScreenshotAnnotationControllerAKOverlayContainerView" hasInstanceMethod:@"managedView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"_SSSScreenshotAnnotationControllerAKOverlayContainerView" hasInstanceMethod:@"setManagedView:" withFullSignature:{"v", "@", 0}];
 }
 
-- (void)setManagedView:(id)a3
+- (void)setManagedView:(id)view
 {
   v4.receiver = self;
   v4.super_class = _SSSScreenshotAnnotationControllerAKOverlayContainerViewAccessibility;
-  [(_SSSScreenshotAnnotationControllerAKOverlayContainerViewAccessibility *)&v4 setManagedView:a3];
+  [(_SSSScreenshotAnnotationControllerAKOverlayContainerViewAccessibility *)&v4 setManagedView:view];
   [(_SSSScreenshotAnnotationControllerAKOverlayContainerViewAccessibility *)self _axMarkupAKOverlayView];
 }
 

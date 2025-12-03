@@ -1,12 +1,12 @@
 @interface SFPerformContactQueryCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFPerformContactQueryCommand)initWithCoder:(id)a3;
-- (SFPerformContactQueryCommand)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFPerformContactQueryCommand)initWithCoder:(id)coder;
+- (SFPerformContactQueryCommand)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFPerformContactQueryCommand
@@ -16,38 +16,38 @@
   v7.receiver = self;
   v7.super_class = SFPerformContactQueryCommand;
   v3 = [(SFCommand *)&v7 hash];
-  v4 = [(SFPerformContactQueryCommand *)self contactIdentifier];
-  v5 = [v4 hash];
+  contactIdentifier = [(SFPerformContactQueryCommand *)self contactIdentifier];
+  v5 = [contactIdentifier hash];
 
   return v5 ^ v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
-  else if ([(SFPerformContactQueryCommand *)v4 isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFPerformContactQueryCommand, [(SFCommand *)&v13 isEqual:v4]))
+  else if ([(SFPerformContactQueryCommand *)equalCopy isMemberOfClass:objc_opt_class()]&& (v13.receiver = self, v13.super_class = SFPerformContactQueryCommand, [(SFCommand *)&v13 isEqual:equalCopy]))
   {
-    v5 = v4;
-    v6 = [(SFPerformContactQueryCommand *)self contactIdentifier];
-    v7 = [(SFPerformContactQueryCommand *)v5 contactIdentifier];
-    if ((v6 != 0) == (v7 == 0))
+    v5 = equalCopy;
+    contactIdentifier = [(SFPerformContactQueryCommand *)self contactIdentifier];
+    contactIdentifier2 = [(SFPerformContactQueryCommand *)v5 contactIdentifier];
+    if ((contactIdentifier != 0) == (contactIdentifier2 == 0))
     {
       v11 = 0;
     }
 
     else
     {
-      v8 = [(SFPerformContactQueryCommand *)self contactIdentifier];
-      if (v8)
+      contactIdentifier3 = [(SFPerformContactQueryCommand *)self contactIdentifier];
+      if (contactIdentifier3)
       {
-        v9 = [(SFPerformContactQueryCommand *)self contactIdentifier];
-        v10 = [(SFPerformContactQueryCommand *)v5 contactIdentifier];
-        v11 = [v9 isEqual:v10];
+        contactIdentifier4 = [(SFPerformContactQueryCommand *)self contactIdentifier];
+        contactIdentifier5 = [(SFPerformContactQueryCommand *)v5 contactIdentifier];
+        v11 = [contactIdentifier4 isEqual:contactIdentifier5];
       }
 
       else
@@ -65,13 +65,13 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = SFPerformContactQueryCommand;
-  v4 = [(SFCommand *)&v8 copyWithZone:a3];
-  v5 = [(SFPerformContactQueryCommand *)self contactIdentifier];
-  v6 = [v5 copy];
+  v4 = [(SFCommand *)&v8 copyWithZone:zone];
+  contactIdentifier = [(SFPerformContactQueryCommand *)self contactIdentifier];
+  v6 = [contactIdentifier copy];
   [v4 setContactIdentifier:v6];
 
   return v4;
@@ -80,70 +80,70 @@
 - (NSData)jsonData
 {
   v2 = [[_SFPBPerformContactQueryCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBPerformContactQueryCommand *)v2 jsonData];
+  jsonData = [(_SFPBPerformContactQueryCommand *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBPerformContactQueryCommand alloc] initWithFacade:self];
-  v3 = [(_SFPBPerformContactQueryCommand *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBPerformContactQueryCommand *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = SFPerformContactQueryCommand;
-  [(SFCommand *)&v3 encodeWithCoder:a3];
+  [(SFCommand *)&v3 encodeWithCoder:coder];
 }
 
-- (SFPerformContactQueryCommand)initWithCoder:(id)a3
+- (SFPerformContactQueryCommand)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(SFPerformContactQueryCommand *)self init];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v7 = [[_SFPBCommand alloc] initWithData:v6];
   v8 = [[SFCommand alloc] initWithProtobuf:v7];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = [(SFCommand *)v8 contactIdentifier];
-    [(SFPerformContactQueryCommand *)v5 setContactIdentifier:v9];
+    contactIdentifier = [(SFCommand *)v8 contactIdentifier];
+    [(SFPerformContactQueryCommand *)v5 setContactIdentifier:contactIdentifier];
 
-    v10 = [(SFCommand *)v8 commandDetail];
-    [(SFCommand *)v5 setCommandDetail:v10];
+    commandDetail = [(SFCommand *)v8 commandDetail];
+    [(SFCommand *)v5 setCommandDetail:commandDetail];
 
-    v11 = [(SFCommand *)v8 normalizedTopic];
-    [(SFCommand *)v5 setNormalizedTopic:v11];
+    normalizedTopic = [(SFCommand *)v8 normalizedTopic];
+    [(SFCommand *)v5 setNormalizedTopic:normalizedTopic];
 
-    v12 = [(SFCommand *)v8 backendData];
-    [(SFCommand *)v5 setBackendData:v12];
+    backendData = [(SFCommand *)v8 backendData];
+    [(SFCommand *)v5 setBackendData:backendData];
 
-    v13 = [(SFCommand *)v8 commandReference];
-    [(SFCommand *)v5 setCommandReference:v13];
+    commandReference = [(SFCommand *)v8 commandReference];
+    [(SFCommand *)v5 setCommandReference:commandReference];
   }
 
   return v5;
 }
 
-- (SFPerformContactQueryCommand)initWithProtobuf:(id)a3
+- (SFPerformContactQueryCommand)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v10.receiver = self;
   v10.super_class = SFPerformContactQueryCommand;
   v5 = [(SFPerformContactQueryCommand *)&v10 init];
   if (v5)
   {
-    v6 = [v4 contactIdentifier];
+    contactIdentifier = [protobufCopy contactIdentifier];
 
-    if (v6)
+    if (contactIdentifier)
     {
-      v7 = [v4 contactIdentifier];
-      [(SFPerformContactQueryCommand *)v5 setContactIdentifier:v7];
+      contactIdentifier2 = [protobufCopy contactIdentifier];
+      [(SFPerformContactQueryCommand *)v5 setContactIdentifier:contactIdentifier2];
     }
 
     v8 = v5;

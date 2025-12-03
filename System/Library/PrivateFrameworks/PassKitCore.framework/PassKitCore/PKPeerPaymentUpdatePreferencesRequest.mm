@@ -1,32 +1,32 @@
 @interface PKPeerPaymentUpdatePreferencesRequest
-- (PKPeerPaymentUpdatePreferencesRequest)initWithPeerPaymentPreferences:(id)a3;
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4;
+- (PKPeerPaymentUpdatePreferencesRequest)initWithPeerPaymentPreferences:(id)preferences;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information;
 @end
 
 @implementation PKPeerPaymentUpdatePreferencesRequest
 
-- (PKPeerPaymentUpdatePreferencesRequest)initWithPeerPaymentPreferences:(id)a3
+- (PKPeerPaymentUpdatePreferencesRequest)initWithPeerPaymentPreferences:(id)preferences
 {
-  v5 = a3;
+  preferencesCopy = preferences;
   v9.receiver = self;
   v9.super_class = PKPeerPaymentUpdatePreferencesRequest;
   v6 = [(PKOverlayableWebServiceRequest *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_peerPaymentPreferences, a3);
+    objc_storeStrong(&v6->_peerPaymentPreferences, preferences);
   }
 
   return v7;
 }
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (!v6)
+  lCopy = l;
+  informationCopy = information;
+  v8 = informationCopy;
+  if (!lCopy)
   {
     v14 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -46,7 +46,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!informationCopy)
   {
     v14 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -65,12 +65,12 @@ LABEL_11:
 
   if (self->_peerPaymentPreferences)
   {
-    v9 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v6 endpointComponents:&unk_1F23B47D8 queryParameters:0 appleAccountInformation:v7];
+    v9 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B47D8 queryParameters:0 appleAccountInformation:informationCopy];
     [v9 setHTTPMethod:@"POST"];
     [v9 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
     v10 = objc_opt_class();
-    v11 = [(PKPeerPaymentPreferences *)self->_peerPaymentPreferences dictionaryRepresentation];
-    v12 = [v10 _HTTPBodyWithDictionary:v11];
+    dictionaryRepresentation = [(PKPeerPaymentPreferences *)self->_peerPaymentPreferences dictionaryRepresentation];
+    v12 = [v10 _HTTPBodyWithDictionary:dictionaryRepresentation];
     [v9 setHTTPBody:v12];
 
     v13 = [v9 copy];

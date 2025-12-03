@@ -1,20 +1,20 @@
 @interface SBDeleteNonAppIconAlertItem
-- (SBDeleteNonAppIconAlertItem)initWithIcon:(id)a3 location:(id)a4 iconController:(id)a5;
+- (SBDeleteNonAppIconAlertItem)initWithIcon:(id)icon location:(id)location iconController:(id)controller;
 - (id)iconManager;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 - (void)didActivate;
 @end
 
 @implementation SBDeleteNonAppIconAlertItem
 
-- (SBDeleteNonAppIconAlertItem)initWithIcon:(id)a3 location:(id)a4 iconController:(id)a5
+- (SBDeleteNonAppIconAlertItem)initWithIcon:(id)icon location:(id)location iconController:(id)controller
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isApplicationIcon])
+  iconCopy = icon;
+  locationCopy = location;
+  controllerCopy = controller;
+  if ([iconCopy isApplicationIcon])
   {
-    [SBDeleteNonAppIconAlertItem initWithIcon:a2 location:self iconController:v10];
+    [SBDeleteNonAppIconAlertItem initWithIcon:a2 location:self iconController:iconCopy];
   }
 
   v18.receiver = self;
@@ -23,12 +23,12 @@
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_icon, a3);
-    v15 = [v11 copy];
+    objc_storeStrong(&v13->_icon, icon);
+    v15 = [locationCopy copy];
     iconLocation = v14->_iconLocation;
     v14->_iconLocation = v15;
 
-    objc_storeStrong(&v14->_iconController, a5);
+    objc_storeStrong(&v14->_iconController, controller);
   }
 
   return v14;
@@ -36,10 +36,10 @@
 
 - (id)iconManager
 {
-  v2 = [(SBDeleteNonAppIconAlertItem *)self iconController];
-  v3 = [v2 iconManager];
+  iconController = [(SBDeleteNonAppIconAlertItem *)self iconController];
+  iconManager = [iconController iconManager];
 
-  return v3;
+  return iconManager;
 }
 
 - (void)didActivate
@@ -57,53 +57,53 @@
   v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:v10 count:2];
   v6 = MEMORY[0x277D65DD0];
   v7 = v5;
-  v8 = [v6 sharedInstance];
-  [v8 emitEvent:18 withPayload:v7];
+  sharedInstance = [v6 sharedInstance];
+  [sharedInstance emitEvent:18 withPayload:v7];
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
-  v6 = [(SBIcon *)self->_icon uninstallAlertTitle];
-  [v5 setTitle:v6];
+  v5 = [(SBAlertItem *)self alertController:configure];
+  uninstallAlertTitle = [(SBIcon *)self->_icon uninstallAlertTitle];
+  [v5 setTitle:uninstallAlertTitle];
 
-  v7 = [(SBIcon *)self->_icon uninstallAlertBody];
-  [v5 setMessage:v7];
+  uninstallAlertBody = [(SBIcon *)self->_icon uninstallAlertBody];
+  [v5 setMessage:uninstallAlertBody];
 
   v8 = MEMORY[0x277D750F8];
-  v9 = [(SBIcon *)self->_icon uninstallAlertConfirmTitle];
+  uninstallAlertConfirmTitle = [(SBIcon *)self->_icon uninstallAlertConfirmTitle];
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __67__SBDeleteNonAppIconAlertItem_configure_requirePasscodeForActions___block_invoke;
   v27[3] = &unk_2783A8A40;
   v27[4] = self;
-  v10 = [v8 actionWithTitle:v9 style:2 handler:v27];
+  v10 = [v8 actionWithTitle:uninstallAlertConfirmTitle style:2 handler:v27];
 
   [v5 addAction:v10];
-  v11 = [(SBDeleteNonAppIconAlertItem *)self icon];
-  if (![v11 isBookmarkIcon])
+  icon = [(SBDeleteNonAppIconAlertItem *)self icon];
+  if (![icon isBookmarkIcon])
   {
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v12 = [(SBDeleteNonAppIconAlertItem *)self iconController];
-  v13 = [(SBDeleteNonAppIconAlertItem *)self icon];
-  v14 = [(SBDeleteNonAppIconAlertItem *)self iconLocation];
-  v15 = [v12 isHideSupportedForIcon:v13 inLocation:v14];
+  iconController = [(SBDeleteNonAppIconAlertItem *)self iconController];
+  icon2 = [(SBDeleteNonAppIconAlertItem *)self icon];
+  iconLocation = [(SBDeleteNonAppIconAlertItem *)self iconLocation];
+  v15 = [iconController isHideSupportedForIcon:icon2 inLocation:iconLocation];
 
   if (v15)
   {
-    v16 = [(SBDeleteNonAppIconAlertItem *)self icon];
-    v17 = [v16 bookmark];
-    v11 = [v17 webClip];
+    icon3 = [(SBDeleteNonAppIconAlertItem *)self icon];
+    bookmark = [icon3 bookmark];
+    icon = [bookmark webClip];
 
-    if (([v11 isAppClip] & 1) == 0)
+    if (([icon isAppClip] & 1) == 0)
     {
       v18 = MEMORY[0x277D750F8];
-      v19 = [MEMORY[0x277CCA8D8] mainBundle];
-      v20 = [v19 localizedStringForKey:@"REMOVE_FROM_HOME_SCREEN" value:&stru_283094718 table:@"SpringBoard"];
+      mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+      v20 = [mainBundle localizedStringForKey:@"REMOVE_FROM_HOME_SCREEN" value:&stru_283094718 table:@"SpringBoard"];
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __67__SBDeleteNonAppIconAlertItem_configure_requirePasscodeForActions___block_invoke_37;
@@ -118,13 +118,13 @@ LABEL_5:
 
 LABEL_6:
   v22 = MEMORY[0x277D750F8];
-  v23 = [(SBIcon *)self->_icon uninstallAlertCancelTitle];
+  uninstallAlertCancelTitle = [(SBIcon *)self->_icon uninstallAlertCancelTitle];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __67__SBDeleteNonAppIconAlertItem_configure_requirePasscodeForActions___block_invoke_40;
   v25[3] = &unk_2783A8A40;
   v25[4] = self;
-  v24 = [v22 actionWithTitle:v23 style:1 handler:v25];
+  v24 = [v22 actionWithTitle:uninstallAlertCancelTitle style:1 handler:v25];
   [v5 addAction:v24];
 
   [v5 setPreferredAction:v10];

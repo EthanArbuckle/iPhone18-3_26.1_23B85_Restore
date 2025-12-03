@@ -1,22 +1,22 @@
 @interface HKScalarGraphCollectionViewController
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path;
 - (CGSize)preferredContentSize;
 - (HKScalarGraphCollectionViewCell)currentCell;
-- (HKScalarGraphCollectionViewController)initWithMinimumHeight:(double)a3 unitController:(id)a4;
+- (HKScalarGraphCollectionViewController)initWithMinimumHeight:(double)height unitController:(id)controller;
 - (HKScalarGraphCollectionViewDelegate)delegate;
 - (id)_buildCollectionViewLayout;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (void)_pinView:(id)a3 toParentGuide:(id)a4;
-- (void)_resetScrollPositionForIndex:(int64_t)a3;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (void)_pinView:(id)view toParentGuide:(id)guide;
+- (void)_resetScrollPositionForIndex:(int64_t)index;
 - (void)_setupChartCollectionView;
 - (void)redrawCurrentCell;
 - (void)reload;
-- (void)resetToIndex:(int64_t)a3;
+- (void)resetToIndex:(int64_t)index;
 - (void)resetToMostRecent;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setCollectionViewHeight:(double)a3;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setCollectionViewHeight:(double)height;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
@@ -24,17 +24,17 @@
 
 @implementation HKScalarGraphCollectionViewController
 
-- (HKScalarGraphCollectionViewController)initWithMinimumHeight:(double)a3 unitController:(id)a4
+- (HKScalarGraphCollectionViewController)initWithMinimumHeight:(double)height unitController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = HKScalarGraphCollectionViewController;
   v7 = [(HKScalarGraphCollectionViewController *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    [(HKScalarGraphCollectionViewController *)v7 setMinimumHeight:a3];
-    [(HKScalarGraphCollectionViewController *)v8 setUnitController:v6];
+    [(HKScalarGraphCollectionViewController *)v7 setMinimumHeight:height];
+    [(HKScalarGraphCollectionViewController *)v8 setUnitController:controllerCopy];
   }
 
   return v8;
@@ -45,18 +45,18 @@
   v9.receiver = self;
   v9.super_class = HKScalarGraphCollectionViewController;
   [(HKScalarGraphCollectionViewController *)&v9 viewDidLoad];
-  v3 = [(HKScalarGraphCollectionViewController *)self view];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view = [(HKScalarGraphCollectionViewController *)self view];
+  [view setTranslatesAutoresizingMaskIntoConstraints:0];
 
   [(HKScalarGraphCollectionViewController *)self _setupChartCollectionView];
-  v4 = [(HKScalarGraphCollectionViewController *)self view];
-  v5 = [(HKScalarGraphCollectionViewController *)self collectionView];
-  [v4 addSubview:v5];
+  view2 = [(HKScalarGraphCollectionViewController *)self view];
+  collectionView = [(HKScalarGraphCollectionViewController *)self collectionView];
+  [view2 addSubview:collectionView];
 
   collectionView = self->_collectionView;
-  v7 = [(HKScalarGraphCollectionViewController *)self view];
-  v8 = [v7 safeAreaLayoutGuide];
-  [(HKScalarGraphCollectionViewController *)self _pinView:collectionView toParentGuide:v8];
+  view3 = [(HKScalarGraphCollectionViewController *)self view];
+  safeAreaLayoutGuide = [view3 safeAreaLayoutGuide];
+  [(HKScalarGraphCollectionViewController *)self _pinView:collectionView toParentGuide:safeAreaLayoutGuide];
 
   [(HKScalarGraphCollectionViewController *)self reload];
 }
@@ -66,8 +66,8 @@
   v4.receiver = self;
   v4.super_class = HKScalarGraphCollectionViewController;
   [(HKScalarGraphCollectionViewController *)&v4 viewWillLayoutSubviews];
-  v3 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  [v3 invalidateLayout];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (void)viewDidLayoutSubviews
@@ -75,8 +75,8 @@
   v5.receiver = self;
   v5.super_class = HKScalarGraphCollectionViewController;
   [(HKScalarGraphCollectionViewController *)&v5 viewDidLayoutSubviews];
-  v3 = [(HKScalarGraphCollectionViewController *)self collectionView];
-  [v3 bounds];
+  collectionView = [(HKScalarGraphCollectionViewController *)self collectionView];
+  [collectionView bounds];
   [(HKScalarGraphCollectionViewController *)self setCollectionViewHeight:v4];
 
   [(HKScalarGraphCollectionViewController *)self _resetScrollPositionForIndex:self->_currentIndex];
@@ -98,38 +98,38 @@
   [v5 setGraphSeries:v4];
 
   v6 = objc_loadWeakRetained(&self->_currentCell);
-  v7 = [v6 graphViewController];
-  v8 = [v7 graphView];
-  [v8 setNeedsReloadSeries];
+  graphViewController = [v6 graphViewController];
+  graphView = [graphViewController graphView];
+  [graphView setNeedsReloadSeries];
 
   v11 = objc_loadWeakRetained(&self->_currentCell);
-  v9 = [v11 graphViewController];
-  v10 = [v9 graphView];
-  [v10 autoscaleYAxesAnimated:0 specificRange:0 onlyIfNeeded:0 completion:0];
+  graphViewController2 = [v11 graphViewController];
+  graphView2 = [graphViewController2 graphView];
+  [graphView2 autoscaleYAxesAnimated:0 specificRange:0 onlyIfNeeded:0 completion:0];
 }
 
-- (void)_resetScrollPositionForIndex:(int64_t)a3
+- (void)_resetScrollPositionForIndex:(int64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained numberOfItemsInCollection];
+  numberOfItemsInCollection = [WeakRetained numberOfItemsInCollection];
 
-  if (v6 > a3)
+  if (numberOfItemsInCollection > index)
   {
-    v7 = [MEMORY[0x1E696AC88] indexPathForRow:a3 inSection:0];
+    v7 = [MEMORY[0x1E696AC88] indexPathForRow:index inSection:0];
     [(UICollectionView *)self->_collectionView scrollToItemAtIndexPath:v7 atScrollPosition:8 animated:0];
     [(UICollectionView *)self->_collectionView layoutIfNeeded];
   }
 }
 
-- (void)resetToIndex:(int64_t)a3
+- (void)resetToIndex:(int64_t)index
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v6 = [WeakRetained numberOfItemsInCollection];
+  numberOfItemsInCollection = [WeakRetained numberOfItemsInCollection];
 
-  if (v6)
+  if (numberOfItemsInCollection)
   {
-    self->_currentIndex = a3;
-    [(HKScalarGraphCollectionViewController *)self _resetScrollPositionForIndex:a3];
+    self->_currentIndex = index;
+    [(HKScalarGraphCollectionViewController *)self _resetScrollPositionForIndex:index];
     v9 = [MEMORY[0x1E696AC88] indexPathForRow:self->_currentIndex inSection:0];
     v7 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v9];
     objc_storeWeak(&self->_currentCell, v7);
@@ -142,19 +142,19 @@
 - (void)resetToMostRecent
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v4 = [WeakRetained numberOfItemsInCollection];
+  numberOfItemsInCollection = [WeakRetained numberOfItemsInCollection];
 
-  if (v4)
+  if (numberOfItemsInCollection)
   {
 
-    [(HKScalarGraphCollectionViewController *)self resetToIndex:v4 - 1];
+    [(HKScalarGraphCollectionViewController *)self resetToIndex:numberOfItemsInCollection - 1];
   }
 }
 
 - (CGSize)preferredContentSize
 {
-  v3 = [(HKScalarGraphCollectionViewController *)self view];
-  [v3 frame];
+  view = [(HKScalarGraphCollectionViewController *)self view];
+  [view frame];
   v5 = v4;
   collectionViewHeight = self->_collectionViewHeight;
 
@@ -168,58 +168,58 @@
 - (void)_setupChartCollectionView
 {
   v3 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  v4 = [(HKScalarGraphCollectionViewController *)self _buildCollectionViewLayout];
-  v5 = [v3 initWithFrame:v4 collectionViewLayout:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+  _buildCollectionViewLayout = [(HKScalarGraphCollectionViewController *)self _buildCollectionViewLayout];
+  v5 = [v3 initWithFrame:_buildCollectionViewLayout collectionViewLayout:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   [(HKScalarGraphCollectionViewController *)self setCollectionView:v5];
 
-  v6 = [(HKScalarGraphCollectionViewController *)self collectionView];
+  collectionView = [(HKScalarGraphCollectionViewController *)self collectionView];
   v7 = objc_opt_class();
   v8 = +[HKScalarGraphCollectionViewCell reuseIdentifier];
-  [v6 registerClass:v7 forCellWithReuseIdentifier:v8];
+  [collectionView registerClass:v7 forCellWithReuseIdentifier:v8];
 
-  v9 = [(HKScalarGraphCollectionViewController *)self collectionView];
-  v10 = [v9 heightAnchor];
+  collectionView2 = [(HKScalarGraphCollectionViewController *)self collectionView];
+  heightAnchor = [collectionView2 heightAnchor];
   [(HKScalarGraphCollectionViewController *)self minimumHeight];
-  v11 = [v10 constraintGreaterThanOrEqualToConstant:?];
+  v11 = [heightAnchor constraintGreaterThanOrEqualToConstant:?];
   [v11 setActive:1];
 
-  v12 = [(HKScalarGraphCollectionViewController *)self collectionView];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  collectionView3 = [(HKScalarGraphCollectionViewController *)self collectionView];
+  [collectionView3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v13 = [MEMORY[0x1E69DC888] clearColor];
-  v14 = [(HKScalarGraphCollectionViewController *)self collectionView];
-  [v14 setBackgroundColor:v13];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  collectionView4 = [(HKScalarGraphCollectionViewController *)self collectionView];
+  [collectionView4 setBackgroundColor:clearColor];
 
-  v15 = [(HKScalarGraphCollectionViewController *)self collectionView];
-  [v15 setDelegate:self];
+  collectionView5 = [(HKScalarGraphCollectionViewController *)self collectionView];
+  [collectionView5 setDelegate:self];
 
-  v16 = [(HKScalarGraphCollectionViewController *)self collectionView];
-  [v16 setDataSource:self];
+  collectionView6 = [(HKScalarGraphCollectionViewController *)self collectionView];
+  [collectionView6 setDataSource:self];
 
-  v17 = [(HKScalarGraphCollectionViewController *)self collectionView];
-  [v17 setAllowsSelection:0];
+  collectionView7 = [(HKScalarGraphCollectionViewController *)self collectionView];
+  [collectionView7 setAllowsSelection:0];
 
-  v18 = [(HKScalarGraphCollectionViewController *)self collectionView];
-  [v18 setAllowsMultipleSelection:0];
+  collectionView8 = [(HKScalarGraphCollectionViewController *)self collectionView];
+  [collectionView8 setAllowsMultipleSelection:0];
 
-  v19 = [(HKScalarGraphCollectionViewController *)self collectionView];
-  [v19 setPagingEnabled:1];
+  collectionView9 = [(HKScalarGraphCollectionViewController *)self collectionView];
+  [collectionView9 setPagingEnabled:1];
 
-  v20 = [(HKScalarGraphCollectionViewController *)self collectionView];
-  [v20 setShowsHorizontalScrollIndicator:0];
+  collectionView10 = [(HKScalarGraphCollectionViewController *)self collectionView];
+  [collectionView10 setShowsHorizontalScrollIndicator:0];
 }
 
-- (void)setCollectionViewHeight:(double)a3
+- (void)setCollectionViewHeight:(double)height
 {
   collectionViewHeight = self->_collectionViewHeight;
-  self->_collectionViewHeight = a3;
-  if (collectionViewHeight != a3)
+  self->_collectionViewHeight = height;
+  if (collectionViewHeight != height)
   {
-    v6 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-    [v6 invalidateLayout];
+    collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
 
-    v7 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-    [v7 prepareLayout];
+    collectionViewLayout2 = [(UICollectionView *)self->_collectionView collectionViewLayout];
+    [collectionViewLayout2 prepareLayout];
 
     [(HKScalarGraphCollectionViewController *)self reload];
     currentIndex = self->_currentIndex;
@@ -228,31 +228,31 @@
   }
 }
 
-- (void)_pinView:(id)a3 toParentGuide:(id)a4
+- (void)_pinView:(id)view toParentGuide:(id)guide
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v7 = [v6 leadingAnchor];
-  v8 = [v5 leadingAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  guideCopy = guide;
+  viewCopy = view;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  leadingAnchor = [viewCopy leadingAnchor];
+  leadingAnchor2 = [guideCopy leadingAnchor];
+  v9 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v9 setActive:1];
 
-  v10 = [v6 trailingAnchor];
-  v11 = [v5 trailingAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11];
+  trailingAnchor = [viewCopy trailingAnchor];
+  trailingAnchor2 = [guideCopy trailingAnchor];
+  v12 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v12 setActive:1];
 
-  v13 = [v6 topAnchor];
-  v14 = [v5 topAnchor];
-  v15 = [v13 constraintEqualToAnchor:v14];
+  topAnchor = [viewCopy topAnchor];
+  topAnchor2 = [guideCopy topAnchor];
+  v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v15 setActive:1];
 
-  v18 = [v6 bottomAnchor];
+  bottomAnchor = [viewCopy bottomAnchor];
 
-  v16 = [v5 bottomAnchor];
+  bottomAnchor2 = [guideCopy bottomAnchor];
 
-  v17 = [v18 constraintEqualToAnchor:v16];
+  v17 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v17 setActive:1];
 }
 
@@ -266,9 +266,9 @@
   return v2;
 }
 
-- (CGSize)collectionView:(id)a3 layout:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)collectionView:(id)view layout:(id)layout sizeForItemAtIndexPath:(id)path
 {
-  v6 = [(HKScalarGraphCollectionViewController *)self collectionView:a3];
+  v6 = [(HKScalarGraphCollectionViewController *)self collectionView:view];
   [v6 visibleSize];
   v8 = v7;
   collectionViewHeight = self->_collectionViewHeight;
@@ -280,38 +280,38 @@
   return result;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v5 = [WeakRetained numberOfItemsInCollection];
+  numberOfItemsInCollection = [WeakRetained numberOfItemsInCollection];
 
-  return v5;
+  return numberOfItemsInCollection;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
+  pathCopy = path;
+  viewCopy = view;
   v8 = +[HKScalarGraphCollectionViewCell reuseIdentifier];
-  v9 = [v7 dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:v6];
+  v9 = [viewCopy dequeueReusableCellWithReuseIdentifier:v8 forIndexPath:pathCopy];
 
-  v10 = [v9 graphViewController];
+  graphViewController = [v9 graphViewController];
 
-  if (v10)
+  if (graphViewController)
   {
-    v11 = [v9 graphViewController];
-    [v11 willMoveToParentViewController:0];
+    graphViewController2 = [v9 graphViewController];
+    [graphViewController2 willMoveToParentViewController:0];
 
-    v12 = [v9 graphViewController];
-    v13 = [v12 view];
-    [v13 removeFromSuperview];
+    graphViewController3 = [v9 graphViewController];
+    view = [graphViewController3 view];
+    [view removeFromSuperview];
 
-    v14 = [v9 graphViewController];
-    [v14 removeFromParentViewController];
+    graphViewController4 = [v9 graphViewController];
+    [graphViewController4 removeFromParentViewController];
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v16 = [WeakRetained graphViewControllerForIndex:{objc_msgSend(v6, "row")}];
+  v16 = [WeakRetained graphViewControllerForIndex:{objc_msgSend(pathCopy, "row")}];
 
   [(HKScalarGraphCollectionViewController *)self addChildViewController:v16];
   [v9 bounds];
@@ -319,36 +319,36 @@
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [v16 view];
-  [v25 setFrame:{v18, v20, v22, v24}];
+  view2 = [v16 view];
+  [view2 setFrame:{v18, v20, v22, v24}];
 
-  v26 = [v16 view];
-  [v9 addSubview:v26];
+  view3 = [v16 view];
+  [v9 addSubview:view3];
 
   [v16 didMoveToParentViewController:self];
   [v9 setGraphViewController:v16];
   v27 = objc_loadWeakRetained(&self->_delegate);
-  v28 = [v27 graphSeriesForIndex:{objc_msgSend(v6, "row")}];
+  v28 = [v27 graphSeriesForIndex:{objc_msgSend(pathCopy, "row")}];
   [v9 setGraphSeries:v28];
 
   v29 = objc_loadWeakRetained(&self->_delegate);
-  v30 = [v29 lollipopControllerForGraphCollectionView];
-  [v9 setLollipopController:v30];
+  lollipopControllerForGraphCollectionView = [v29 lollipopControllerForGraphCollectionView];
+  [v9 setLollipopController:lollipopControllerForGraphCollectionView];
 
   v31 = objc_loadWeakRetained(&self->_delegate);
-  v32 = [v31 headerViewForLollipop];
-  [v9 setHeader:v32];
+  headerViewForLollipop = [v31 headerViewForLollipop];
+  [v9 setHeader:headerViewForLollipop];
 
-  v33 = [v16 graphView];
-  [v33 setDelegate:v9];
+  graphView = [v16 graphView];
+  [graphView setDelegate:v9];
 
-  v34 = [v16 graphView];
-  [v34 setNeedsReloadSeries];
+  graphView2 = [v16 graphView];
+  [graphView2 setNeedsReloadSeries];
 
   return v9;
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
   [(UICollectionView *)self->_collectionView contentOffset];
   v5 = v4;
@@ -372,19 +372,19 @@
     objc_storeWeak(&self->_currentCell, v13);
 
     self->_currentIndex = [v20 row];
-    v14 = [(HKScalarGraphCollectionViewController *)self delegate];
+    delegate = [(HKScalarGraphCollectionViewController *)self delegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(HKScalarGraphCollectionViewController *)self delegate];
-      [v16 graphCollectionView:self didChangeVisibleIndex:self->_currentIndex];
+      delegate2 = [(HKScalarGraphCollectionViewController *)self delegate];
+      [delegate2 graphCollectionView:self didChangeVisibleIndex:self->_currentIndex];
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_currentCell);
-    v18 = [WeakRetained graphViewController];
-    v19 = [v18 graphView];
-    [v19 setNeedsReloadSeries];
+    graphViewController = [WeakRetained graphViewController];
+    graphView = [graphViewController graphView];
+    [graphView setNeedsReloadSeries];
 
     v12 = v20;
   }
@@ -392,11 +392,11 @@
   MEMORY[0x1EEE66BB8](v11, v12);
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   WeakRetained = objc_loadWeakRetained(&self->_currentCell);
-  v3 = [WeakRetained lollipopController];
-  [v3 setInvisibleAnimated:0];
+  lollipopController = [WeakRetained lollipopController];
+  [lollipopController setInvisibleAnimated:0];
 }
 
 - (HKScalarGraphCollectionViewDelegate)delegate

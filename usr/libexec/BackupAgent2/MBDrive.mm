@@ -1,51 +1,51 @@
 @interface MBDrive
-+ (BOOL)singleFromMultiErrorWithReturnValue:(BOOL)a3 results:(id)a4 error:(id *)a5;
-- (BOOL)downloadFileAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)moveItemAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)removeItemAtPath:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)uploadData:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)uploadFileAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)uploadPropertyList:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)usageOfDirectoryAtPath:(id)a3 count:(unint64_t *)a4 size:(unint64_t *)a5 options:(id)a6 error:(id *)a7;
-- (id)_usageOfDirectoryAtPath:(id)a3 count:(unint64_t *)a4 size:(unint64_t *)a5 options:(id)a6;
-- (id)dataAtPath:(id)a3 options:(id)a4 error:(id *)a5;
-- (id)enumerateContentsOfDirectoryAtPath:(id)a3 options:(id)a4 recurse:(BOOL)a5 foundItem:(id)a6;
-- (id)propertyListAtPath:(id)a3 options:(id)a4 error:(id *)a5;
-- (void)finishBatchUploadsWithOptions:(id)a3 completion:(id)a4;
-- (void)uploadBatch:(id)a3 options:(id)a4 completion:(id)a5;
++ (BOOL)singleFromMultiErrorWithReturnValue:(BOOL)value results:(id)results error:(id *)error;
+- (BOOL)downloadFileAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error;
+- (BOOL)moveItemAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error;
+- (BOOL)removeItemAtPath:(id)path options:(id)options error:(id *)error;
+- (BOOL)uploadData:(id)data toPath:(id)path options:(id)options error:(id *)error;
+- (BOOL)uploadFileAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error;
+- (BOOL)uploadPropertyList:(id)list toPath:(id)path options:(id)options error:(id *)error;
+- (BOOL)usageOfDirectoryAtPath:(id)path count:(unint64_t *)count size:(unint64_t *)size options:(id)options error:(id *)error;
+- (id)_usageOfDirectoryAtPath:(id)path count:(unint64_t *)count size:(unint64_t *)size options:(id)options;
+- (id)dataAtPath:(id)path options:(id)options error:(id *)error;
+- (id)enumerateContentsOfDirectoryAtPath:(id)path options:(id)options recurse:(BOOL)recurse foundItem:(id)item;
+- (id)propertyListAtPath:(id)path options:(id)options error:(id *)error;
+- (void)finishBatchUploadsWithOptions:(id)options completion:(id)completion;
+- (void)uploadBatch:(id)batch options:(id)options completion:(id)completion;
 @end
 
 @implementation MBDrive
 
-+ (BOOL)singleFromMultiErrorWithReturnValue:(BOOL)a3 results:(id)a4 error:(id *)a5
++ (BOOL)singleFromMultiErrorWithReturnValue:(BOOL)value results:(id)results error:(id *)error
 {
-  v9 = a4;
-  if (a5 && !a3 && [MBError isError:*a5 withCode:2])
+  resultsCopy = results;
+  if (error && !value && [MBError isError:*error withCode:2])
   {
-    if ([v9 count] != 1)
+    if ([resultsCopy count] != 1)
     {
-      sub_10009BE98(a2, a1);
+      sub_10009BE98(a2, self);
     }
 
-    v10 = [v9 allValues];
-    *a5 = [v10 lastObject];
+    allValues = [resultsCopy allValues];
+    *error = [allValues lastObject];
   }
 
-  return a3;
+  return value;
 }
 
-- (id)enumerateContentsOfDirectoryAtPath:(id)a3 options:(id)a4 recurse:(BOOL)a5 foundItem:(id)a6
+- (id)enumerateContentsOfDirectoryAtPath:(id)path options:(id)options recurse:(BOOL)recurse foundItem:(id)item
 {
-  v33 = a5;
-  v9 = a3;
-  v10 = a4;
-  v11 = a6;
+  recurseCopy = recurse;
+  pathCopy = path;
+  optionsCopy = options;
+  itemCopy = item;
   v12 = objc_autoreleasePoolPush();
   v38 = 0;
-  v28 = self;
-  v30 = v10;
-  v31 = v9;
-  v13 = [(MBDrive *)self contentsOfDirectoryAtPath:v9 options:v10 error:&v38];
+  selfCopy = self;
+  v30 = optionsCopy;
+  v31 = pathCopy;
+  v13 = [(MBDrive *)self contentsOfDirectoryAtPath:pathCopy options:optionsCopy error:&v38];
   v14 = v38;
   if (v13)
   {
@@ -72,7 +72,7 @@
           v18 = *(*(&v34 + 1) + 8 * i);
           v19 = objc_autoreleasePoolPush();
           v20 = [v13 objectForKeyedSubscript:v18];
-          if ((v11[2](v11, v18, v20) & 1) == 0)
+          if ((itemCopy[2](itemCopy, v18, v20) & 1) == 0)
           {
             v25 = [MBError errorWithCode:1 format:@"Enumeration canceled"];
 
@@ -83,12 +83,12 @@ LABEL_18:
             goto LABEL_19;
           }
 
-          v21 = [v20 fileType];
-          v22 = [v21 isEqualToString:NSFileTypeDirectory];
+          fileType = [v20 fileType];
+          v22 = [fileType isEqualToString:NSFileTypeDirectory];
 
           if (v22)
           {
-            v23 = !v33;
+            v23 = !recurseCopy;
           }
 
           else
@@ -99,7 +99,7 @@ LABEL_18:
           if (!v23)
           {
             v24 = [v31 stringByAppendingPathComponent:v18];
-            v25 = [(MBDrive *)v28 enumerateContentsOfDirectoryAtPath:v24 options:v30 recurse:0 foundItem:v11];
+            v25 = [(MBDrive *)selfCopy enumerateContentsOfDirectoryAtPath:v24 options:v30 recurse:0 foundItem:itemCopy];
 
             if (v25)
             {
@@ -132,13 +132,13 @@ LABEL_19:
   return v14;
 }
 
-- (BOOL)usageOfDirectoryAtPath:(id)a3 count:(unint64_t *)a4 size:(unint64_t *)a5 options:(id)a6 error:(id *)a7
+- (BOOL)usageOfDirectoryAtPath:(id)path count:(unint64_t *)count size:(unint64_t *)size options:(id)options error:(id *)error
 {
-  v8 = [(MBDrive *)self _usageOfDirectoryAtPath:a3 count:a4 size:a5 options:a6];
-  if (a7 && v8)
+  v8 = [(MBDrive *)self _usageOfDirectoryAtPath:path count:count size:size options:options];
+  if (error && v8)
   {
     v8 = v8;
-    *a7 = v8;
+    *error = v8;
   }
 
   v9 = v8 == 0;
@@ -146,14 +146,14 @@ LABEL_19:
   return v9;
 }
 
-- (id)_usageOfDirectoryAtPath:(id)a3 count:(unint64_t *)a4 size:(unint64_t *)a5 options:(id)a6
+- (id)_usageOfDirectoryAtPath:(id)path count:(unint64_t *)count size:(unint64_t *)size options:(id)options
 {
-  v8 = a3;
+  pathCopy = path;
   v36 = 0;
-  v27 = self;
-  v28 = a6;
-  v29 = v8;
-  v9 = [MBDrive contentsOfDirectoryAtPath:"contentsOfDirectoryAtPath:options:error:" options:v8 error:?];
+  selfCopy = self;
+  optionsCopy = options;
+  v29 = pathCopy;
+  v9 = [MBDrive contentsOfDirectoryAtPath:"contentsOfDirectoryAtPath:options:error:" options:pathCopy error:?];
   v10 = 0;
   v11 = v10;
   if (v9)
@@ -181,11 +181,11 @@ LABEL_19:
           v17 = *(*(&v32 + 1) + 8 * i);
           v18 = objc_autoreleasePoolPush();
           v19 = [v12 objectForKeyedSubscript:v17];
-          v20 = [v19 fileType];
-          if ([v20 isEqualToString:NSFileTypeDirectory])
+          fileType = [v19 fileType];
+          if ([fileType isEqualToString:NSFileTypeDirectory])
           {
             v21 = [v29 stringByAppendingPathComponent:v17];
-            v22 = [(MBDrive *)v27 _usageOfDirectoryAtPath:v21 count:a4 size:a5 options:v28];
+            v22 = [(MBDrive *)selfCopy _usageOfDirectoryAtPath:v21 count:count size:size options:optionsCopy];
             v23 = v11;
             v11 = v22;
 
@@ -199,10 +199,10 @@ LABEL_19:
             }
           }
 
-          else if ([v20 isEqualToString:NSFileTypeRegular])
+          else if ([fileType isEqualToString:NSFileTypeRegular])
           {
-            ++*a4;
-            *a5 += [v19 fileSize];
+            ++*count;
+            *size += [v19 fileSize];
           }
 
           objc_autoreleasePoolPop(v18);
@@ -232,33 +232,33 @@ LABEL_17:
   return v24;
 }
 
-- (BOOL)uploadFileAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)uploadFileAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error
 {
-  v18 = a3;
-  v19 = a4;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
+  pathCopy = path;
+  toPathCopy = toPath;
+  optionsCopy = options;
+  toPathCopy2 = toPath;
+  pathCopy2 = path;
+  v13 = [NSDictionary dictionaryWithObjects:&toPathCopy forKeys:&pathCopy count:1];
   v17 = 0;
-  v14 = [(MBDrive *)self uploadFilesAtPaths:v13 options:v10 results:&v17 error:a6];
+  v14 = [(MBDrive *)self uploadFilesAtPaths:v13 options:optionsCopy results:&v17 error:error];
 
   v15 = v17;
-  LOBYTE(a6) = [MBDrive singleFromMultiErrorWithReturnValue:v14 results:v15 error:a6];
+  LOBYTE(error) = [MBDrive singleFromMultiErrorWithReturnValue:v14 results:v15 error:error];
 
-  return a6;
+  return error;
 }
 
-- (void)uploadBatch:(id)a3 options:(id)a4 completion:(id)a5
+- (void)uploadBatch:(id)batch options:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  batchCopy = batch;
+  optionsCopy = options;
+  completionCopy = completion;
   memset(v17, 0, sizeof(v17));
-  v11 = [v8 paths];
+  paths = [batchCopy paths];
   v15 = 0;
   v16 = 0;
-  v12 = [(MBDrive *)self uploadFilesAtPaths:v11 options:v9 results:&v16 error:&v15];
+  v12 = [(MBDrive *)self uploadFilesAtPaths:paths options:optionsCopy results:&v16 error:&v15];
   v13 = v16;
   v14 = v15;
 
@@ -267,39 +267,39 @@ LABEL_17:
     sub_10009BF0C();
   }
 
-  v10[2](v10, v17, v13, v14);
+  completionCopy[2](completionCopy, v17, v13, v14);
 }
 
-- (void)finishBatchUploadsWithOptions:(id)a3 completion:(id)a4
+- (void)finishBatchUploadsWithOptions:(id)options completion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    (*(a4 + 2))(a4, 0);
+    (*(completion + 2))(completion, 0);
   }
 }
 
-- (BOOL)downloadFileAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)downloadFileAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error
 {
-  v18 = a3;
-  v19 = a4;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
+  pathCopy = path;
+  toPathCopy = toPath;
+  optionsCopy = options;
+  toPathCopy2 = toPath;
+  pathCopy2 = path;
+  v13 = [NSDictionary dictionaryWithObjects:&toPathCopy forKeys:&pathCopy count:1];
   v17 = 0;
-  v14 = [(MBDrive *)self downloadFilesAtPaths:v13 options:v10 results:&v17 error:a6];
+  v14 = [(MBDrive *)self downloadFilesAtPaths:v13 options:optionsCopy results:&v17 error:error];
 
   v15 = v17;
-  LOBYTE(a6) = [MBDrive singleFromMultiErrorWithReturnValue:v14 results:v15 error:a6];
+  LOBYTE(error) = [MBDrive singleFromMultiErrorWithReturnValue:v14 results:v15 error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)uploadData:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)uploadData:(id)data toPath:(id)path options:(id)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  pathCopy = path;
+  optionsCopy = options;
   v26 = 0;
   v13 = [MBTemporaryDirectory temporaryDirectoryOnSameVolumeAsPath:@"/private/var" identifiedBy:@"drive-upload-data" error:&v26];
   v14 = v26;
@@ -314,13 +314,13 @@ LABEL_17:
       _MBLog();
     }
 
-    if (a6)
+    if (error)
     {
       v20 = v14;
       v21 = v14;
 LABEL_21:
       LOBYTE(self) = 0;
-      *a6 = v21;
+      *error = v21;
       goto LABEL_23;
     }
 
@@ -329,15 +329,15 @@ LABEL_22:
     goto LABEL_23;
   }
 
-  v15 = [v13 makeTemporaryFilePath];
+  makeTemporaryFilePath = [v13 makeTemporaryFilePath];
   v25 = v14;
-  v16 = [v10 writeToFile:v15 options:1 error:&v25];
+  v16 = [dataCopy writeToFile:makeTemporaryFilePath options:1 error:&v25];
   v17 = v25;
 
   v14 = v17;
   if (v16)
   {
-    LOBYTE(self) = [(MBDrive *)self uploadFileAtPath:v15 toPath:v11 options:v12 error:a6];
+    LOBYTE(self) = [(MBDrive *)self uploadFileAtPath:makeTemporaryFilePath toPath:pathCopy options:optionsCopy error:error];
     v18 = 0;
     goto LABEL_18;
   }
@@ -349,8 +349,8 @@ LABEL_22:
     goto LABEL_13;
   }
 
-  v22 = [v17 domain];
-  if (([v22 isEqualToString:NSPOSIXErrorDomain] & 1) == 0)
+  domain = [v17 domain];
+  if (([domain isEqualToString:NSPOSIXErrorDomain] & 1) == 0)
   {
 
     goto LABEL_16;
@@ -366,11 +366,11 @@ LABEL_16:
   }
 
 LABEL_13:
-  if (a6)
+  if (error)
   {
     [MBError errorWithCode:106 format:@"No space writing data to temporary file"];
     v18 = 0;
-    *a6 = LOBYTE(self) = 0;
+    *error = LOBYTE(self) = 0;
   }
 
   else
@@ -384,7 +384,7 @@ LABEL_18:
   [v13 dispose];
   if (v18)
   {
-    if (a6)
+    if (error)
     {
       v21 = [MBError errorWithCode:102 format:@"Error writing data to temporary file"];
       goto LABEL_21;
@@ -398,17 +398,17 @@ LABEL_23:
   return self & 1;
 }
 
-- (id)dataAtPath:(id)a3 options:(id)a4 error:(id *)a5
+- (id)dataAtPath:(id)path options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  pathCopy = path;
+  optionsCopy = options;
   v28 = 0;
   v10 = [MBTemporaryDirectory temporaryDirectoryOnSameVolumeAsPath:@"/private/var" identifiedBy:@"drive-download-data" error:&v28];
   v11 = v28;
   if (v10)
   {
-    v12 = [v10 makeTemporaryFilePath];
-    if (![(MBDrive *)self downloadFileAtPath:v8 toPath:v12 options:v9 error:a5])
+    makeTemporaryFilePath = [v10 makeTemporaryFilePath];
+    if (![(MBDrive *)self downloadFileAtPath:pathCopy toPath:makeTemporaryFilePath options:optionsCopy error:error])
     {
       v24 = 0;
 LABEL_22:
@@ -418,12 +418,12 @@ LABEL_22:
     }
 
     v13 = +[NSFileManager defaultManager];
-    v14 = [v13 attributesOfItemAtPath:v12 error:0];
+    v14 = [v13 attributesOfItemAtPath:makeTemporaryFilePath error:0];
 
-    v15 = [v9 objectForKeyedSubscript:@"MemoryMapped"];
-    v16 = [v15 BOOLValue];
+    v15 = [optionsCopy objectForKeyedSubscript:@"MemoryMapped"];
+    bOOLValue = [v15 BOOLValue];
 
-    if (v16)
+    if (bOOLValue)
     {
       v17 = MBGetDefaultLog();
       if (!os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -436,11 +436,11 @@ LABEL_22:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v18 = [v14 objectForKeyedSubscript:NSFileSize];
-        v19 = [v18 unsignedIntegerValue];
+        unsignedIntegerValue = [v18 unsignedIntegerValue];
         *buf = 138412546;
-        v30 = v12;
+        v30 = makeTemporaryFilePath;
         v31 = 2048;
-        v32 = v19;
+        v32 = unsignedIntegerValue;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Opening file mapped at '%@' (%{bytes}lu)", buf, 0x16u);
       }
 
@@ -463,11 +463,11 @@ LABEL_22:
       if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
       {
         v25 = [v14 objectForKeyedSubscript:NSFileSize];
-        v26 = [v25 unsignedIntegerValue];
+        unsignedIntegerValue2 = [v25 unsignedIntegerValue];
         *buf = 138412546;
-        v30 = v12;
+        v30 = makeTemporaryFilePath;
         v31 = 2048;
-        v32 = v26;
+        v32 = unsignedIntegerValue2;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Opening file unmapped at '%@' (%{bytes}lu)", buf, 0x16u);
       }
 
@@ -478,7 +478,7 @@ LABEL_22:
     }
 
 LABEL_21:
-    v24 = [NSData dataWithContentsOfFile:v12 options:v21 error:a5];
+    v24 = [NSData dataWithContentsOfFile:makeTemporaryFilePath options:v21 error:error];
 
     goto LABEL_22;
   }
@@ -492,11 +492,11 @@ LABEL_21:
     _MBLog();
   }
 
-  if (a5)
+  if (error)
   {
     v23 = v11;
     v24 = 0;
-    *a5 = v11;
+    *error = v11;
   }
 
   else
@@ -509,21 +509,21 @@ LABEL_23:
   return v24;
 }
 
-- (BOOL)uploadPropertyList:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)uploadPropertyList:(id)list toPath:(id)path options:(id)options error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  optionsCopy = options;
   v15 = 0;
-  v12 = [NSPropertyListSerialization dataFromPropertyList:a3 format:200 errorDescription:&v15];
+  v12 = [NSPropertyListSerialization dataFromPropertyList:list format:200 errorDescription:&v15];
   if (v12)
   {
-    v13 = [(MBDrive *)self uploadData:v12 toPath:v10 options:v11 error:a6];
+    v13 = [(MBDrive *)self uploadData:v12 toPath:pathCopy options:optionsCopy error:error];
   }
 
-  else if (a6)
+  else if (error)
   {
     [MBError errorWithCode:10 format:@"Error serializing property list: %@", v15];
-    *a6 = v13 = 0;
+    *error = v13 = 0;
   }
 
   else
@@ -534,11 +534,11 @@ LABEL_23:
   return v13;
 }
 
-- (id)propertyListAtPath:(id)a3 options:(id)a4 error:(id *)a5
+- (id)propertyListAtPath:(id)path options:(id)options error:(id *)error
 {
-  v8 = a3;
+  pathCopy = path;
   v14 = 0;
-  v9 = [(MBDrive *)self dataAtPath:v8 options:a4 error:a5];
+  v9 = [(MBDrive *)self dataAtPath:pathCopy options:options error:error];
   if (v9)
   {
     v10 = [NSPropertyListSerialization propertyListFromData:v9 mutabilityOption:0 format:0 errorDescription:&v14];
@@ -548,9 +548,9 @@ LABEL_23:
       v12 = v10;
     }
 
-    else if (a5)
+    else if (error)
     {
-      *a5 = [MBError errorWithCode:11 path:v8 format:@"Error deserializing property list: %@", v14];
+      *error = [MBError errorWithCode:11 path:pathCopy format:@"Error deserializing property list: %@", v14];
     }
   }
 
@@ -562,36 +562,36 @@ LABEL_23:
   return v11;
 }
 
-- (BOOL)moveItemAtPath:(id)a3 toPath:(id)a4 options:(id)a5 error:(id *)a6
+- (BOOL)moveItemAtPath:(id)path toPath:(id)toPath options:(id)options error:(id *)error
 {
-  v18 = a3;
-  v19 = a4;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [NSDictionary dictionaryWithObjects:&v19 forKeys:&v18 count:1];
+  pathCopy = path;
+  toPathCopy = toPath;
+  optionsCopy = options;
+  toPathCopy2 = toPath;
+  pathCopy2 = path;
+  v13 = [NSDictionary dictionaryWithObjects:&toPathCopy forKeys:&pathCopy count:1];
   v17 = 0;
-  v14 = [(MBDrive *)self moveItemsAtPaths:v13 options:v10 results:&v17 error:a6];
+  v14 = [(MBDrive *)self moveItemsAtPaths:v13 options:optionsCopy results:&v17 error:error];
 
   v15 = v17;
-  LOBYTE(a6) = [MBDrive singleFromMultiErrorWithReturnValue:v14 results:v15 error:a6];
+  LOBYTE(error) = [MBDrive singleFromMultiErrorWithReturnValue:v14 results:v15 error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)removeItemAtPath:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)removeItemAtPath:(id)path options:(id)options error:(id *)error
 {
-  v15 = a3;
-  v8 = a4;
-  v9 = a3;
-  v10 = [NSArray arrayWithObjects:&v15 count:1];
+  pathCopy = path;
+  optionsCopy = options;
+  pathCopy2 = path;
+  v10 = [NSArray arrayWithObjects:&pathCopy count:1];
   v14 = 0;
-  v11 = [(MBDrive *)self removeItemsAtPaths:v10 options:v8 results:&v14 error:a5];
+  v11 = [(MBDrive *)self removeItemsAtPaths:v10 options:optionsCopy results:&v14 error:error];
 
   v12 = v14;
-  LOBYTE(a5) = [MBDrive singleFromMultiErrorWithReturnValue:v11 results:v12 error:a5];
+  LOBYTE(error) = [MBDrive singleFromMultiErrorWithReturnValue:v11 results:v12 error:error];
 
-  return a5;
+  return error;
 }
 
 @end

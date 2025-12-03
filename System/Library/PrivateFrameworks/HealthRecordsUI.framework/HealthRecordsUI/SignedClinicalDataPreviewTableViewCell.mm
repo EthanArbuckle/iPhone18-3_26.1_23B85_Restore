@@ -1,13 +1,13 @@
 @interface SignedClinicalDataPreviewTableViewCell
-- (_TtC15HealthRecordsUI38SignedClinicalDataPreviewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (_TtC15HealthRecordsUI38SignedClinicalDataPreviewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 presentationOptions:(int64_t)a5;
+- (_TtC15HealthRecordsUI38SignedClinicalDataPreviewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (_TtC15HealthRecordsUI38SignedClinicalDataPreviewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier presentationOptions:(int64_t)options;
 @end
 
 @implementation SignedClinicalDataPreviewTableViewCell
 
-- (_TtC15HealthRecordsUI38SignedClinicalDataPreviewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC15HealthRecordsUI38SignedClinicalDataPreviewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
     sub_1D139016C();
     v6 = sub_1D139012C();
@@ -20,12 +20,12 @@
 
   v9.receiver = self;
   v9.super_class = type metadata accessor for SignedClinicalDataPreviewTableViewCell();
-  v7 = [(HKObjectPickerTableViewCell *)&v9 initWithStyle:a3 reuseIdentifier:v6 presentationOptions:0];
+  v7 = [(HKObjectPickerTableViewCell *)&v9 initWithStyle:style reuseIdentifier:v6 presentationOptions:0];
 
   return v7;
 }
 
-- (_TtC15HealthRecordsUI38SignedClinicalDataPreviewTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4 presentationOptions:(int64_t)a5
+- (_TtC15HealthRecordsUI38SignedClinicalDataPreviewTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier presentationOptions:(int64_t)options
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

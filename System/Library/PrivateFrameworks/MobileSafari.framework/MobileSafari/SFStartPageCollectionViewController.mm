@@ -1,88 +1,88 @@
 @interface SFStartPageCollectionViewController
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridLocationForIndexPath:(id)a3 inSection:(id)a4;
-- ($4E34F1DA1F1A31EFC59C0F9E582921FC)_siteIconLayoutForEnvironment:(SEL)a3 sectionInsets:(id)a4;
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridLocationForIndexPath:(id)path inSection:(id)section;
+- ($4E34F1DA1F1A31EFC59C0F9E582921FC)_siteIconLayoutForEnvironment:(SEL)environment sectionInsets:(id)insets;
 - (BOOL)_canDrop;
-- (BOOL)_shouldShowContextMenuForCellAtIndexPath:(id)a3 fromPoint:(CGPoint)a4;
+- (BOOL)_shouldShowContextMenuForCellAtIndexPath:(id)path fromPoint:(CGPoint)point;
 - (BOOL)_supportsPaginatedSectionLayouts;
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
 - (NSDirectionalEdgeInsets)_sectionContentInsets;
 - (SFStartPageCollectionDataSource)dataSource;
 - (SFStartPageCollectionDelegate)delegate;
-- (SFStartPageCollectionViewController)initWithVisualStyleProvider:(id)a3;
+- (SFStartPageCollectionViewController)initWithVisualStyleProvider:(id)provider;
 - (double)_actualSectionWidth;
 - (double)_effectiveLayoutWidth;
 - (double)scrollDistance;
-- (id)_attributedRichLinkSectionLayoutForEnvironment:(id)a3 maximumNumberOfPages:(int64_t)a4 numberOfItems:(int64_t)a5;
-- (id)_bannerSectionLayoutForEnvironment:(id)a3 includingHeader:(BOOL)a4;
-- (id)_collectionView:(id)a3 supplementaryViewWithKind:(id)a4 forIndexPath:(id)a5;
+- (id)_attributedRichLinkSectionLayoutForEnvironment:(id)environment maximumNumberOfPages:(int64_t)pages numberOfItems:(int64_t)items;
+- (id)_bannerSectionLayoutForEnvironment:(id)environment includingHeader:(BOOL)header;
+- (id)_collectionView:(id)view supplementaryViewWithKind:(id)kind forIndexPath:(id)path;
 - (id)_currentSnapshot;
 - (id)_customizationSection;
-- (id)_dragPreviewParametersForSourceView:(id)a3 atIndexPath:(id)a4;
-- (id)_layoutForSectionAtIndex:(int64_t)a3 inEnvironment:(id)a4;
+- (id)_dragPreviewParametersForSourceView:(id)view atIndexPath:(id)path;
+- (id)_layoutForSectionAtIndex:(int64_t)index inEnvironment:(id)environment;
 - (id)_makeCollectionViewLayout;
-- (id)_previewForCellAtIndexPath:(id)a3;
-- (id)_reuseIdentifierForCellWithIdentifier:(id)a3 indexPath:(id)a4;
-- (id)_reuseIdentifierForCellWithIdentifier:(id)a3 section:(id)a4;
-- (id)_sectionForIdentifier:(id)a3;
-- (id)_siteCardSectionLayoutForEnvironment:(id)a3 numberOfItems:(int64_t)a4;
-- (id)_siteIconSectionLayoutForEnvironment:(id)a3;
-- (id)_siteRowSectionLayoutForEnvironment:(id)a3;
-- (id)_toggleExpandedActionForSectionIdentifier:(id)a3;
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5;
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5;
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5;
-- (id)collectionView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4;
-- (id)collectionView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4;
+- (id)_previewForCellAtIndexPath:(id)path;
+- (id)_reuseIdentifierForCellWithIdentifier:(id)identifier indexPath:(id)path;
+- (id)_reuseIdentifierForCellWithIdentifier:(id)identifier section:(id)section;
+- (id)_sectionForIdentifier:(id)identifier;
+- (id)_siteCardSectionLayoutForEnvironment:(id)environment numberOfItems:(int64_t)items;
+- (id)_siteIconSectionLayoutForEnvironment:(id)environment;
+- (id)_siteRowSectionLayoutForEnvironment:(id)environment;
+- (id)_toggleExpandedActionForSectionIdentifier:(id)identifier;
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point;
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path;
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path;
+- (id)collectionView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration;
+- (id)collectionView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration;
 - (id)sections;
-- (int64_t)_collapsedCapacityForSection:(id)a3;
-- (int64_t)_numberOfColumnsInSection:(id)a3;
-- (int64_t)_numberOfItemsPerPageInSection:(id)a3;
-- (unint64_t)_itemLimitForSection:(id)a3;
-- (void)_applyCurrentSnapshotAnimatingDifferences:(BOOL)a3;
-- (void)_applyStylingToLayoutGroup:(id)a3 withSectionItemType:(int64_t)a4 defaultInterItemSpacing:(double)a5;
-- (void)_configureCell:(id)a3 forIdentifier:(id)a4 indexPath:(id)a5;
-- (void)_configureHeader:(id)a3 forSection:(id)a4 atIndexPath:(id)a5;
-- (void)_didCompleteOnboardingItem:(id)a3 wasClosed:(BOOL)a4;
+- (int64_t)_collapsedCapacityForSection:(id)section;
+- (int64_t)_numberOfColumnsInSection:(id)section;
+- (int64_t)_numberOfItemsPerPageInSection:(id)section;
+- (unint64_t)_itemLimitForSection:(id)section;
+- (void)_applyCurrentSnapshotAnimatingDifferences:(BOOL)differences;
+- (void)_applyStylingToLayoutGroup:(id)group withSectionItemType:(int64_t)type defaultInterItemSpacing:(double)spacing;
+- (void)_configureCell:(id)cell forIdentifier:(id)identifier indexPath:(id)path;
+- (void)_configureHeader:(id)header forSection:(id)section atIndexPath:(id)path;
+- (void)_didCompleteOnboardingItem:(id)item wasClosed:(BOOL)closed;
 - (void)_receivedTapToDismissGesture;
-- (void)_setUpDataSource:(id)a3;
+- (void)_setUpDataSource:(id)source;
 - (void)_updateCustomTopBackdrops;
 - (void)_updateInteractionEnabled;
-- (void)_updateInteractionEnabledForView:(id)a3;
-- (void)_updateNavigationItemAnimated:(BOOL)a3;
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4;
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidEnd:(id)a4;
-- (void)collectionView:(id)a3 dropSessionDidExit:(id)a4;
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4;
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5;
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5;
-- (void)configureModelWithIdentifier:(id)a3 usingBlock:(id)a4;
-- (void)didStartOnboardingItem:(id)a3;
-- (void)keyboardDidChangeFrame:(id)a3;
-- (void)presentViewController:(id)a3 fromItemWithIdentifier:(id)a4;
-- (void)reloadDataAnimatingDifferences:(BOOL)a3;
-- (void)reloadNavigationItemAnimated:(BOOL)a3;
-- (void)reloadSection:(id)a3 animated:(BOOL)a4;
+- (void)_updateInteractionEnabledForView:(id)view;
+- (void)_updateNavigationItemAnimated:(BOOL)animated;
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin;
+- (void)collectionView:(id)view dropSessionDidEnd:(id)end;
+- (void)collectionView:(id)view dropSessionDidExit:(id)exit;
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator;
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator;
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator;
+- (void)configureModelWithIdentifier:(id)identifier usingBlock:(id)block;
+- (void)didStartOnboardingItem:(id)item;
+- (void)keyboardDidChangeFrame:(id)frame;
+- (void)presentViewController:(id)controller fromItemWithIdentifier:(id)identifier;
+- (void)reloadDataAnimatingDifferences:(BOOL)differences;
+- (void)reloadNavigationItemAnimated:(BOOL)animated;
+- (void)reloadSection:(id)section animated:(BOOL)animated;
 - (void)scrollToTop;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)setDataSource:(id)a3;
-- (void)setDisplaysSectionHeaders:(BOOL)a3;
-- (void)setHidesEmptyNavigationBar:(BOOL)a3;
-- (void)setStrongDataSource:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)setDataSource:(id)source;
+- (void)setDisplaysSectionHeaders:(BOOL)headers;
+- (void)setHidesEmptyNavigationBar:(BOOL)bar;
+- (void)setStrongDataSource:(id)source;
 - (void)showPrivacyPrompt;
 - (void)updateBackgroundStyle;
 - (void)updateCollectionViewContentInset;
-- (void)updateKeyboardBottomInsetFromKeyboardFrame:(CGRect)a3;
+- (void)updateKeyboardBottomInsetFromKeyboardFrame:(CGRect)frame;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewLayoutMarginsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -94,23 +94,23 @@
   v90.receiver = self;
   v90.super_class = SFStartPageCollectionViewController;
   [(SFStartPageCollectionViewController *)&v90 viewDidLoad];
-  v3 = [(SFStartPageCollectionViewController *)self view];
+  view = [(SFStartPageCollectionViewController *)self view];
   v4 = [SFStartPageBackgroundUIVisualEffectBackdropView alloc];
-  [v3 bounds];
+  [view bounds];
   v5 = [(SFStartPageBackgroundUIVisualEffectBackdropView *)v4 initWithFrame:?];
   cellBackdropCaptureView = self->_cellBackdropCaptureView;
   self->_cellBackdropCaptureView = v5;
 
   [(_UIVisualEffectBackdropView *)self->_cellBackdropCaptureView setAutoresizingMask:18];
-  [v3 addSubview:self->_cellBackdropCaptureView];
+  [view addSubview:self->_cellBackdropCaptureView];
   v7 = objc_alloc(MEMORY[0x1E69DC7F0]);
-  [v3 bounds];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
-  v16 = [(SFStartPageCollectionViewController *)self _makeCollectionViewLayout];
-  v17 = [v7 initWithFrame:v16 collectionViewLayout:{v9, v11, v13, v15}];
+  _makeCollectionViewLayout = [(SFStartPageCollectionViewController *)self _makeCollectionViewLayout];
+  v17 = [v7 initWithFrame:_makeCollectionViewLayout collectionViewLayout:{v9, v11, v13, v15}];
   collectionView = self->_collectionView;
   self->_collectionView = v17;
 
@@ -198,10 +198,10 @@
 
   [(SFStartPageCollectionViewController *)self _setUpDataSource:self->_collectionView];
   [(SFStartPageCollectionViewController *)self setContentScrollView:self->_collectionView forEdge:15];
-  [v3 addSubview:self->_collectionView];
-  v61 = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
+  [view addSubview:self->_collectionView];
+  weakToStrongObjectsMapTable = [MEMORY[0x1E696AD18] weakToStrongObjectsMapTable];
   contextMenuToItemIdentifierMap = self->_contextMenuToItemIdentifierMap;
-  self->_contextMenuToItemIdentifierMap = v61;
+  self->_contextMenuToItemIdentifierMap = weakToStrongObjectsMapTable;
 
   v63 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__receivedTapToDismissGesture];
   tapToDismissGestureRecognizer = self->_tapToDismissGestureRecognizer;
@@ -222,11 +222,11 @@
   }
 
   v93 = *MEMORY[0x1E69DB650];
-  v67 = [MEMORY[0x1E69DC888] sf_alternateLabelColor];
-  v94[0] = v67;
+  sf_alternateLabelColor = [MEMORY[0x1E69DC888] sf_alternateLabelColor];
+  v94[0] = sf_alternateLabelColor;
   v68 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v94 forKeys:&v93 count:1];
 
-  v69 = [(SFStartPageCollectionViewController *)self navigationItem];
+  navigationItem = [(SFStartPageCollectionViewController *)self navigationItem];
   v70 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
   v71 = v70;
   if (v66)
@@ -240,46 +240,46 @@
   }
 
   [v71 setLargeTitleTextAttributes:v68];
-  [v69 setStandardAppearance:v71];
+  [navigationItem setStandardAppearance:v71];
 
   v72 = objc_alloc_init(MEMORY[0x1E69DCCC8]);
   [v72 configureWithTransparentBackground];
   [v72 setTitleTextAttributes:v68];
   [v72 setLargeTitleTextAttributes:v68];
-  [v69 setScrollEdgeAppearance:v72];
+  [navigationItem setScrollEdgeAppearance:v72];
 
-  v73 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v73 addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x1E69DE080] object:0];
-  [v73 addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x1E69DDF68] object:0];
-  [v73 addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x1E69DE078] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x1E69DE080] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x1E69DDF68] object:0];
+  [defaultCenter addObserver:self selector:sel_keyboardDidChangeFrame_ name:*MEMORY[0x1E69DE078] object:0];
   if (v66)
   {
     v74 = objc_opt_new();
-    v75 = [v74 backgroundEffect];
+    backgroundEffect = [v74 backgroundEffect];
 
-    v76 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v75];
+    v76 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:backgroundEffect];
     statusBarBackdrop = self->_statusBarBackdrop;
     self->_statusBarBackdrop = v76;
 
     [(UIVisualEffectView *)self->_statusBarBackdrop _setGroupName:@"com.apple.mobilesafari.CustomStartPageTopBackdrop"];
     [(UIVisualEffectView *)self->_statusBarBackdrop setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v3 addSubview:self->_statusBarBackdrop];
-    v78 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:v75];
+    [view addSubview:self->_statusBarBackdrop];
+    v78 = [objc_alloc(MEMORY[0x1E69DD298]) initWithEffect:backgroundEffect];
     navigationBarBackdrop = self->_navigationBarBackdrop;
     self->_navigationBarBackdrop = v78;
 
     [(UIVisualEffectView *)self->_navigationBarBackdrop _setGroupName:@"com.apple.mobilesafari.CustomStartPageTopBackdrop"];
     [(UIVisualEffectView *)self->_navigationBarBackdrop setTranslatesAutoresizingMaskIntoConstraints:0];
-    [v3 addSubview:self->_navigationBarBackdrop];
+    [view addSubview:self->_navigationBarBackdrop];
     v80 = objc_alloc_init(MEMORY[0x1E69DD250]);
     navigationBarSeparator = self->_navigationBarSeparator;
     self->_navigationBarSeparator = v80;
 
     [(UIView *)self->_navigationBarSeparator setTranslatesAutoresizingMaskIntoConstraints:0];
-    v82 = [MEMORY[0x1E69DC888] sf_barHairlineShadowColor];
-    [(UIView *)self->_navigationBarSeparator setBackgroundColor:v82];
+    sf_barHairlineShadowColor = [MEMORY[0x1E69DC888] sf_barHairlineShadowColor];
+    [(UIView *)self->_navigationBarSeparator setBackgroundColor:sf_barHairlineShadowColor];
 
-    [v3 addSubview:self->_navigationBarSeparator];
+    [view addSubview:self->_navigationBarSeparator];
   }
 
   v92[0] = objc_opt_class();
@@ -331,15 +331,15 @@
 
 - (void)_updateCustomTopBackdrops
 {
-  v3 = [(SFStartPageCollectionViewController *)self navigationController];
-  v21 = v3;
+  navigationController = [(SFStartPageCollectionViewController *)self navigationController];
+  v21 = navigationController;
   if (!self->_statusBarBackdrop)
   {
     statusBarBackdrop = 0;
     goto LABEL_5;
   }
 
-  if ([v3 isNavigationBarHidden])
+  if ([navigationController isNavigationBarHidden])
   {
     statusBarBackdrop = self->_statusBarBackdrop;
 LABEL_5:
@@ -349,16 +349,16 @@ LABEL_5:
     goto LABEL_12;
   }
 
-  v7 = [v21 view];
-  [v7 safeAreaInsets];
+  view = [v21 view];
+  [view safeAreaInsets];
   v9 = v8;
 
-  v10 = [(SFStartPageCollectionViewController *)self view];
-  [v10 safeAreaInsets];
+  view2 = [(SFStartPageCollectionViewController *)self view];
+  [view2 safeAreaInsets];
   v12 = v11;
 
-  v13 = [(SFStartPageCollectionViewController *)self view];
-  [v13 bounds];
+  view3 = [(SFStartPageCollectionViewController *)self view];
+  [view3 bounds];
   Width = CGRectGetWidth(v23);
 
   v5 = 0.0;
@@ -366,10 +366,10 @@ LABEL_5:
   [(UIVisualEffectView *)self->_navigationBarBackdrop setFrame:0.0, v9, Width, v12 - v9];
   p_navigationBarBackdrop = &self->_navigationBarSeparator;
   [(UIView *)self->_navigationBarSeparator setFrame:0.0, v12, Width, _SFOnePixel()];
-  v15 = [(SFStartPageCollectionViewController *)self navigationItem];
-  v16 = [v15 sf_isEmpty];
+  navigationItem = [(SFStartPageCollectionViewController *)self navigationItem];
+  sf_isEmpty = [navigationItem sf_isEmpty];
 
-  if (v16)
+  if (sf_isEmpty)
   {
     [(SFStartPageCollectionViewController *)self scrollDistance];
     [(UIVisualEffectView *)self->_statusBarBackdrop setAlpha:_SFClampPercent(v17, v12 - v9, v12 - v9 + 16.0)];
@@ -409,7 +409,7 @@ LABEL_12:
   v9.receiver = self;
   v9.super_class = SFStartPageCollectionViewController;
   [(SFStartPageCollectionViewController *)&v9 viewDidLayoutSubviews];
-  v3 = [(SFStartPageCollectionViewController *)self interfaceOrientation];
+  interfaceOrientation = [(SFStartPageCollectionViewController *)self interfaceOrientation];
   [(UICollectionView *)self->_collectionView bounds];
   Width = CGRectGetWidth(v10);
   if (Width != 0.0)
@@ -423,13 +423,13 @@ LABEL_12:
       }
     }
 
-    else if (!self->_shouldIgnoreLastLayoutSize && v3 == self->_lastLayoutOrientation)
+    else if (!self->_shouldIgnoreLastLayoutSize && interfaceOrientation == self->_lastLayoutOrientation)
     {
-      v6 = [MEMORY[0x1E695E000] safari_browserDefaults];
-      v7 = [v6 BOOLForKey:@"DebugStartPageAllowsAnimatedReloadOnResize"];
+      safari_browserDefaults = [MEMORY[0x1E695E000] safari_browserDefaults];
+      v7 = [safari_browserDefaults BOOLForKey:@"DebugStartPageAllowsAnimatedReloadOnResize"];
 
       self->_lastLayoutWidth = v5;
-      self->_lastLayoutOrientation = v3;
+      self->_lastLayoutOrientation = interfaceOrientation;
       self->_shouldIgnoreLastLayoutSize = 0;
       if (!v7)
       {
@@ -441,8 +441,8 @@ LABEL_11:
 LABEL_9:
       if ([MEMORY[0x1E69DD250] areAnimationsEnabled])
       {
-        v8 = [(SFStartPageCollectionViewController *)self traitCollection];
-        -[SFStartPageCollectionViewController reloadDataAnimatingDifferences:](self, "reloadDataAnimatingDifferences:", [v8 _presentationSemanticContext] != 3);
+        traitCollection = [(SFStartPageCollectionViewController *)self traitCollection];
+        -[SFStartPageCollectionViewController reloadDataAnimatingDifferences:](self, "reloadDataAnimatingDifferences:", [traitCollection _presentationSemanticContext] != 3);
 
         return;
       }
@@ -451,7 +451,7 @@ LABEL_9:
     }
 
     self->_lastLayoutWidth = Width;
-    self->_lastLayoutOrientation = v3;
+    self->_lastLayoutOrientation = interfaceOrientation;
     self->_shouldIgnoreLastLayoutSize = 0;
     goto LABEL_9;
   }
@@ -459,15 +459,15 @@ LABEL_9:
 
 - (void)updateCollectionViewContentInset
 {
-  v3 = [(SFStartPageCollectionViewController *)self navigationController];
-  v32 = [v3 navigationBar];
+  navigationController = [(SFStartPageCollectionViewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
 
   [(SFStartPageCollectionViewController *)self scrollDistance];
   v5 = v4;
   visualStyleProvider = self->_visualStyleProvider;
-  v7 = [v32 barPosition];
-  v8 = [(SFStartPageCollectionViewController *)self traitCollection];
-  [(SFStartPageVisualStyleProviding *)visualStyleProvider collectionViewContentInsetsWithNavigationBarPosition:v7 traitCollection:v8];
+  barPosition = [navigationBar barPosition];
+  traitCollection = [(SFStartPageCollectionViewController *)self traitCollection];
+  [(SFStartPageVisualStyleProviding *)visualStyleProvider collectionViewContentInsetsWithNavigationBarPosition:barPosition traitCollection:traitCollection];
   v10 = v9;
   v12 = v11;
   v14 = v13;
@@ -484,9 +484,9 @@ LABEL_9:
 
   if ([MEMORY[0x1E69C8880] isSolariumEnabled])
   {
-    v20 = [(SFStartPageCollectionViewController *)self presentingViewController];
+    presentingViewController = [(SFStartPageCollectionViewController *)self presentingViewController];
 
-    if (v20)
+    if (presentingViewController)
     {
       v14 = 22.0;
     }
@@ -509,10 +509,10 @@ LABEL_9:
   v26 = *MEMORY[0x1E69DDCE0];
   v25 = *(MEMORY[0x1E69DDCE0] + 8);
   v27 = *(MEMORY[0x1E69DDCE0] + 24);
-  v28 = [(SFStartPageCollectionViewController *)self _isInPopoverPresentation];
+  _isInPopoverPresentation = [(SFStartPageCollectionViewController *)self _isInPopoverPresentation];
   v29 = 7.0;
   v30 = fmax(7.0, v23);
-  if (v28)
+  if (_isInPopoverPresentation)
   {
     v31 = v30;
   }
@@ -522,7 +522,7 @@ LABEL_9:
     v31 = v23;
   }
 
-  if (!v28)
+  if (!_isInPopoverPresentation)
   {
     v29 = v26;
   }
@@ -536,11 +536,11 @@ LABEL_9:
 
 - (void)scrollToTop
 {
-  v3 = [(SFStartPageCollectionViewController *)self navigationController];
-  v4 = [v3 viewControllers];
-  v5 = [v4 firstObject];
-  v6 = v5;
-  if (v5 != self)
+  navigationController = [(SFStartPageCollectionViewController *)self navigationController];
+  viewControllers = [navigationController viewControllers];
+  firstObject = [viewControllers firstObject];
+  v6 = firstObject;
+  if (firstObject != self)
   {
 
 LABEL_3:
@@ -551,23 +551,23 @@ LABEL_3:
     return;
   }
 
-  v9 = [(SFStartPageCollectionViewController *)self navigationItem];
-  v10 = [v9 title];
-  v11 = [v10 length];
+  navigationItem = [(SFStartPageCollectionViewController *)self navigationItem];
+  title = [navigationItem title];
+  v11 = [title length];
 
   if (!v11)
   {
     goto LABEL_3;
   }
 
-  v12 = [(SFStartPageCollectionViewController *)self navigationController];
-  v13 = [v12 navigationBar];
-  [v13 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
+  navigationController2 = [(SFStartPageCollectionViewController *)self navigationController];
+  navigationBar = [navigationController2 navigationBar];
+  [navigationBar sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v15 = v14;
 
-  v16 = [(SFStartPageCollectionViewController *)self navigationController];
-  v17 = [v16 navigationBar];
-  [v17 frame];
+  navigationController3 = [(SFStartPageCollectionViewController *)self navigationController];
+  navigationBar2 = [navigationController3 navigationBar];
+  [navigationBar2 frame];
   v19 = -(v15 + v18);
 
   [(UICollectionView *)self->_collectionView setContentOffset:0.0, v19];
@@ -581,8 +581,8 @@ LABEL_3:
   v4.receiver = self;
   v4.super_class = SFStartPageCollectionViewController;
   [(SFStartPageCollectionViewController *)&v4 viewLayoutMarginsDidChange];
-  v3 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-  [v3 invalidateLayout];
+  collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+  [collectionViewLayout invalidateLayout];
 }
 
 - (id)_currentSnapshot
@@ -601,8 +601,8 @@ LABEL_3:
 
   if (![WeakRetained customizationControlPolicyForStartPageCollectionViewController:self])
   {
-    v8 = [(SFStartPageCollectionViewController *)self _customizationSection];
-    v9 = [v7 arrayByAddingObject:v8];
+    _customizationSection = [(SFStartPageCollectionViewController *)self _customizationSection];
+    v9 = [v7 arrayByAddingObject:_customizationSection];
 
     v7 = v9;
   }
@@ -647,8 +647,8 @@ LABEL_3:
 
 - (double)_effectiveLayoutWidth
 {
-  v3 = [(SFStartPageCollectionViewController *)self view];
-  [v3 safeAreaInsets];
+  view = [(SFStartPageCollectionViewController *)self view];
+  [view safeAreaInsets];
   v5 = v4;
   v7 = v6;
 
@@ -657,8 +657,8 @@ LABEL_3:
 
 - (NSDirectionalEdgeInsets)_sectionContentInsets
 {
-  v3 = [(SFStartPageCollectionViewController *)self view];
-  [v3 directionalLayoutMargins];
+  view = [(SFStartPageCollectionViewController *)self view];
+  [view directionalLayoutMargins];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -669,14 +669,14 @@ LABEL_3:
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(SFStartPageCollectionViewController *)self view];
-  [v20 bounds];
+  view2 = [(SFStartPageCollectionViewController *)self view];
+  [view2 bounds];
   v21 = CGRectGetWidth(v28) - v19 - v15;
 
   if (v21 < 200.0)
   {
-    v22 = [(SFStartPageCollectionViewController *)self view];
-    [v22 bounds];
+    view3 = [(SFStartPageCollectionViewController *)self view];
+    [view3 bounds];
     v21 = CGRectGetWidth(v29) + -16.0 + -16.0;
 
     v19 = 16.0;
@@ -685,9 +685,9 @@ LABEL_3:
 
   if ([MEMORY[0x1E69C8880] isSolariumEnabled])
   {
-    v23 = [(SFStartPageCollectionViewController *)self presentingViewController];
+    presentingViewController = [(SFStartPageCollectionViewController *)self presentingViewController];
 
-    if (v23)
+    if (presentingViewController)
     {
       v19 = 32.0;
       v15 = 32.0;
@@ -752,27 +752,27 @@ id __64__SFStartPageCollectionViewController__makeCollectionViewLayout__block_in
 
 - (id)sections
 {
-  v2 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
-  v3 = [v2 sectionIdentifiers];
+  snapshot = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
+  sectionIdentifiers = [snapshot sectionIdentifiers];
 
-  return v3;
+  return sectionIdentifiers;
 }
 
 - (void)updateBackgroundStyle
 {
-  v16 = [(SFStartPageCollectionViewController *)self traitCollection];
-  v3 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  v4 = [v16 sf_usesVibrantAppearance];
-  if (v4)
+  traitCollection = [(SFStartPageCollectionViewController *)self traitCollection];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  sf_usesVibrantAppearance = [traitCollection sf_usesVibrantAppearance];
+  if (sf_usesVibrantAppearance)
   {
-    v5 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
   }
 
   else
   {
-    v6 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
-    v7 = [v6 sectionIdentifiers];
-    v8 = [v7 count];
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
+    sectionIdentifiers = [snapshot sectionIdentifiers];
+    v8 = [sectionIdentifiers count];
 
     if (v8)
     {
@@ -780,18 +780,18 @@ id __64__SFStartPageCollectionViewController__makeCollectionViewLayout__block_in
       goto LABEL_7;
     }
 
-    v5 = [MEMORY[0x1E69DC888] sf_colorNamed:@"StartPageEmptyContentBackground"];
+    clearColor = [MEMORY[0x1E69DC888] sf_colorNamed:@"StartPageEmptyContentBackground"];
   }
 
-  v10 = v5;
-  v9 = v4 ^ 1;
+  v10 = clearColor;
+  v9 = sf_usesVibrantAppearance ^ 1;
 
-  v3 = v10;
+  systemGroupedBackgroundColor = v10;
 LABEL_7:
-  if ([v16 sf_usesVibrantAppearance])
+  if ([traitCollection sf_usesVibrantAppearance])
   {
-    v11 = [v16 sf_backgroundBlurEffect];
-    v12 = v11 == 0;
+    sf_backgroundBlurEffect = [traitCollection sf_backgroundBlurEffect];
+    v12 = sf_backgroundBlurEffect == 0;
   }
 
   else
@@ -800,12 +800,12 @@ LABEL_7:
   }
 
   [(_UIVisualEffectBackdropView *)self->_cellBackdropCaptureView setRenderMode:v12];
-  v13 = [(UICollectionView *)self->_collectionView backgroundColor];
+  backgroundColor = [(UICollectionView *)self->_collectionView backgroundColor];
   v14 = WBSIsEqual();
 
   if ((v14 & 1) == 0)
   {
-    [(UICollectionView *)self->_collectionView setBackgroundColor:v3];
+    [(UICollectionView *)self->_collectionView setBackgroundColor:systemGroupedBackgroundColor];
     self->_wantsWallpaperHiddenForCurrentBackgroundStyle = v9;
     [(SFStartPageCollectionViewController *)self _updateCustomTopBackdrops];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -839,9 +839,9 @@ LABEL_7:
   return cachedCustomizationSection;
 }
 
-- (SFStartPageCollectionViewController)initWithVisualStyleProvider:(id)a3
+- (SFStartPageCollectionViewController)initWithVisualStyleProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = SFStartPageCollectionViewController;
   v6 = [(SFStartPageCollectionViewController *)&v10 initWithNibName:0 bundle:0];
@@ -850,7 +850,7 @@ LABEL_7:
   {
     v6->_displaysSectionHeaders = 1;
     v6->_hidesEmptyNavigationBar = 1;
-    objc_storeStrong(&v6->_visualStyleProvider, a3);
+    objc_storeStrong(&v6->_visualStyleProvider, provider);
     v8 = v7;
   }
 
@@ -870,43 +870,43 @@ void __50__SFStartPageCollectionViewController_viewDidLoad__block_invoke(uint64_
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
   v4.receiver = self;
   v4.super_class = SFStartPageCollectionViewController;
-  [(SFStartPageCollectionViewController *)&v4 viewIsAppearing:a3];
+  [(SFStartPageCollectionViewController *)&v4 viewIsAppearing:appearing];
   [(SFStartPageCollectionViewController *)self navigationBarPositionDidChange];
   [MEMORY[0x1E69DCD68] visiblePeripheralFrame];
   [(SFStartPageCollectionViewController *)self updateKeyboardBottomInsetFromKeyboardFrame:?];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = SFStartPageCollectionViewController;
   [(SFStartPageCollectionViewController *)&v5 viewWillAppear:?];
-  [(SFStartPageCollectionViewController *)self _updateNavigationItemAnimated:v3];
+  [(SFStartPageCollectionViewController *)self _updateNavigationItemAnimated:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   WeakRetained = objc_loadWeakRetained(&self->_privacyPresenter);
-  v6 = [WeakRetained presentingViewController];
-  [v6 dismissViewControllerAnimated:v3 completion:0];
+  presentingViewController = [WeakRetained presentingViewController];
+  [presentingViewController dismissViewControllerAnimated:disappearCopy completion:0];
 
   v7.receiver = self;
   v7.super_class = SFStartPageCollectionViewController;
-  [(SFStartPageCollectionViewController *)&v7 viewWillDisappear:v3];
+  [(SFStartPageCollectionViewController *)&v7 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
   v10.receiver = self;
   v10.super_class = SFStartPageCollectionViewController;
-  [(SFStartPageCollectionViewController *)&v10 viewDidMoveToWindow:a3 shouldAppearOrDisappear:a4];
-  if (a3)
+  [(SFStartPageCollectionViewController *)&v10 viewDidMoveToWindow:window shouldAppearOrDisappear:disappear];
+  if (window)
   {
     if (self->_hasDeferredUpdates)
     {
@@ -942,16 +942,16 @@ uint64_t __83__SFStartPageCollectionViewController_viewDidMoveToWindow_shouldApp
   return [MEMORY[0x1E69DD250] performWithoutAnimation:v2];
 }
 
-- (void)setStrongDataSource:(id)a3
+- (void)setStrongDataSource:(id)source
 {
-  objc_storeStrong(&self->_strongDataSource, a3);
-  v5 = a3;
-  [(SFStartPageCollectionViewController *)self setDataSource:v5];
+  objc_storeStrong(&self->_strongDataSource, source);
+  sourceCopy = source;
+  [(SFStartPageCollectionViewController *)self setDataSource:sourceCopy];
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -974,112 +974,112 @@ uint64_t __83__SFStartPageCollectionViewController_viewDidMoveToWindow_shouldApp
   }
 }
 
-- (void)setDisplaysSectionHeaders:(BOOL)a3
+- (void)setDisplaysSectionHeaders:(BOOL)headers
 {
-  if (self->_displaysSectionHeaders != a3)
+  if (self->_displaysSectionHeaders != headers)
   {
-    self->_displaysSectionHeaders = a3;
-    v4 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-    [v4 invalidateLayout];
+    self->_displaysSectionHeaders = headers;
+    collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+    [collectionViewLayout invalidateLayout];
   }
 }
 
-- (void)setHidesEmptyNavigationBar:(BOOL)a3
+- (void)setHidesEmptyNavigationBar:(BOOL)bar
 {
-  if (self->_hidesEmptyNavigationBar != a3)
+  if (self->_hidesEmptyNavigationBar != bar)
   {
-    self->_hidesEmptyNavigationBar = a3;
+    self->_hidesEmptyNavigationBar = bar;
     [(SFStartPageCollectionViewController *)self reloadNavigationItemAnimated:0];
   }
 }
 
-- (void)configureModelWithIdentifier:(id)a3 usingBlock:(id)a4
+- (void)configureModelWithIdentifier:(id)identifier usingBlock:(id)block
 {
-  v10 = a4;
-  v6 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource indexPathForItemIdentifier:a3];
+  blockCopy = block;
+  v6 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource indexPathForItemIdentifier:identifier];
   if (v6)
   {
     v7 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v6];
     if (v7)
     {
-      v8 = [(SFStartPageCollectionViewController *)self sections];
-      v9 = [v8 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+      sections = [(SFStartPageCollectionViewController *)self sections];
+      v9 = [sections objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
 
       if (([v9 itemType] - 2) <= 3)
       {
-        v10[2](v10, v7);
+        blockCopy[2](blockCopy, v7);
       }
     }
   }
 }
 
-- (void)presentViewController:(id)a3 fromItemWithIdentifier:(id)a4
+- (void)presentViewController:(id)controller fromItemWithIdentifier:(id)identifier
 {
-  v6 = a3;
+  controllerCopy = controller;
   v7 = MEMORY[0x1E69C8A40];
-  v8 = a4;
+  identifierCopy = identifier;
   v9 = objc_alloc_init(v7);
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __84__SFStartPageCollectionViewController_presentViewController_fromItemWithIdentifier___block_invoke;
   v19 = &unk_1E721B400;
-  v20 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = controllerCopy;
   v21 = v10;
   [v9 setHandler:&v16];
-  v11 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource indexPathForItemIdentifier:v8, v16, v17, v18, v19, v20];
+  selfCopy = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource indexPathForItemIdentifier:identifierCopy, v16, v17, v18, v19, selfCopy];
 
-  if (v11)
+  if (selfCopy)
   {
-    v12 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:v11];
+    v12 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:selfCopy];
     if (v12)
     {
       [v10 setModalPresentationStyle:7];
-      v13 = [v10 popoverPresentationController];
-      [v13 setSourceView:v12];
+      popoverPresentationController = [v10 popoverPresentationController];
+      [popoverPresentationController setSourceView:v12];
     }
 
     else
     {
-      v14 = [(UICollectionView *)self->_collectionView collectionViewLayout];
-      v13 = [v14 layoutAttributesForItemAtIndexPath:v11];
+      collectionViewLayout = [(UICollectionView *)self->_collectionView collectionViewLayout];
+      popoverPresentationController = [collectionViewLayout layoutAttributesForItemAtIndexPath:selfCopy];
 
-      if (v13)
+      if (popoverPresentationController)
       {
         [v10 setModalPresentationStyle:7];
-        v15 = [v10 popoverPresentationController];
-        [v15 setSourceView:self->_collectionView];
-        [v13 frame];
-        [v15 setSourceRect:?];
+        popoverPresentationController2 = [v10 popoverPresentationController];
+        [popoverPresentationController2 setSourceView:self->_collectionView];
+        [popoverPresentationController frame];
+        [popoverPresentationController2 setSourceRect:?];
       }
     }
   }
 }
 
-- (void)_updateNavigationItemAnimated:(BOOL)a3
+- (void)_updateNavigationItemAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
   [WeakRetained startPageCollectionViewControllerWillUpdateNavigationBar:self];
 
-  v10 = [(SFStartPageCollectionViewController *)self navigationController];
-  v6 = [v10 topViewController];
+  navigationController = [(SFStartPageCollectionViewController *)self navigationController];
+  topViewController = [navigationController topViewController];
 
-  if (v6 == self)
+  if (topViewController == self)
   {
-    v7 = [(SFStartPageCollectionViewController *)self navigationItem];
-    v8 = v7;
+    navigationItem = [(SFStartPageCollectionViewController *)self navigationItem];
+    v8 = navigationItem;
     if (self->_hidesEmptyNavigationBar)
     {
-      v9 = [v7 sf_isEmpty];
+      sf_isEmpty = [navigationItem sf_isEmpty];
     }
 
     else
     {
-      v9 = 0;
+      sf_isEmpty = 0;
     }
 
-    [v10 setNavigationBarHidden:v9 animated:v3];
+    [navigationController setNavigationBarHidden:sf_isEmpty animated:animatedCopy];
   }
 }
 
@@ -1089,10 +1089,10 @@ uint64_t __83__SFStartPageCollectionViewController_viewDidMoveToWindow_shouldApp
   [WeakRetained startPageCollectionViewControllerDidCompleteDismissGesture:self];
 }
 
-- (void)keyboardDidChangeFrame:(id)a3
+- (void)keyboardDidChangeFrame:(id)frame
 {
-  v4 = [a3 userInfo];
-  v6 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [frame userInfo];
+  v6 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
 
   v5 = v6;
   if (v6)
@@ -1103,13 +1103,13 @@ uint64_t __83__SFStartPageCollectionViewController_viewDidMoveToWindow_shouldApp
   }
 }
 
-- (void)updateKeyboardBottomInsetFromKeyboardFrame:(CGRect)a3
+- (void)updateKeyboardBottomInsetFromKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  IsEmpty = CGRectIsEmpty(a3);
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  IsEmpty = CGRectIsEmpty(frame);
   v9 = 0.0;
   if (!IsEmpty)
   {
@@ -1136,11 +1136,11 @@ uint64_t __83__SFStartPageCollectionViewController_viewDidMoveToWindow_shouldApp
   }
 }
 
-- (void)reloadDataAnimatingDifferences:(BOOL)a3
+- (void)reloadDataAnimatingDifferences:(BOOL)differences
 {
-  v3 = a3;
-  v5 = [(SFStartPageCollectionViewController *)self _appearState];
-  if (!self->_isPresentingContextMenu && (v6 = v5, -[SFStartPageCollectionViewController viewIfLoaded](self, "viewIfLoaded"), v7 = objc_claimAutoreleasedReturnValue(), [v7 window], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8) && v6)
+  differencesCopy = differences;
+  _appearState = [(SFStartPageCollectionViewController *)self _appearState];
+  if (!self->_isPresentingContextMenu && (v6 = _appearState, -[SFStartPageCollectionViewController viewIfLoaded](self, "viewIfLoaded"), v7 = objc_claimAutoreleasedReturnValue(), [v7 window], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8) && v6)
   {
     if (([MEMORY[0x1E696AF00] isMainThread] & 1) == 0)
     {
@@ -1151,7 +1151,7 @@ uint64_t __83__SFStartPageCollectionViewController_viewDidMoveToWindow_shouldApp
       }
     }
 
-    v10 = v6 == 2 && v3;
+    v10 = v6 == 2 && differencesCopy;
     [(SFStartPageCollectionViewController *)self _applyCurrentSnapshotAnimatingDifferences:v10];
   }
 
@@ -1161,21 +1161,21 @@ uint64_t __83__SFStartPageCollectionViewController_viewDidMoveToWindow_shouldApp
   }
 }
 
-- (void)reloadSection:(id)a3 animated:(BOOL)a4
+- (void)reloadSection:(id)section animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v32[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  sectionCopy = section;
   if ([(SFStartPageCollectionViewController *)self isViewLoaded])
   {
-    v7 = [(SFStartPageCollectionViewController *)self traitCollection];
-    v8 = [v7 _presentationSemanticContext];
+    traitCollection = [(SFStartPageCollectionViewController *)self traitCollection];
+    _presentationSemanticContext = [traitCollection _presentationSemanticContext];
 
-    v9 = v8 != 3 && v4;
-    v10 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
-    v11 = [(SFStartPageCollectionViewController *)self _currentSnapshot];
-    v12 = [v10 indexOfSectionIdentifier:v6];
-    v13 = [v11 indexOfSectionIdentifier:v6];
+    v9 = _presentationSemanticContext != 3 && animatedCopy;
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
+    _currentSnapshot = [(SFStartPageCollectionViewController *)self _currentSnapshot];
+    v12 = [snapshot indexOfSectionIdentifier:sectionCopy];
+    v13 = [_currentSnapshot indexOfSectionIdentifier:sectionCopy];
     v14 = v13;
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
@@ -1186,8 +1186,8 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v15 = [v10 sectionIdentifiers];
-      v16 = [v15 count];
+      sectionIdentifiers = [snapshot sectionIdentifiers];
+      v16 = [sectionIdentifiers count];
 
       if (v14 > v16)
       {
@@ -1195,48 +1195,48 @@ LABEL_21:
         goto LABEL_21;
       }
 
-      v24 = [v11 sectionIdentifiers];
-      v18 = [v24 objectAtIndexedSubscript:v14];
+      sectionIdentifiers2 = [_currentSnapshot sectionIdentifiers];
+      v18 = [sectionIdentifiers2 objectAtIndexedSubscript:v14];
 
-      v25 = [v10 sectionIdentifiers];
-      v26 = [v25 count];
+      sectionIdentifiers3 = [snapshot sectionIdentifiers];
+      v26 = [sectionIdentifiers3 count];
 
       if (v14 == v26)
       {
         v32[0] = v18;
         v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:1];
-        [v10 appendSectionsWithIdentifiers:v27];
+        [snapshot appendSectionsWithIdentifiers:v27];
       }
 
       else
       {
         v31 = v18;
         v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v31 count:1];
-        v28 = [v10 sectionIdentifiers];
-        v29 = [v28 objectAtIndexedSubscript:v14];
-        [v10 insertSectionsWithIdentifiers:v27 beforeSectionWithIdentifier:v29];
+        sectionIdentifiers4 = [snapshot sectionIdentifiers];
+        v29 = [sectionIdentifiers4 objectAtIndexedSubscript:v14];
+        [snapshot insertSectionsWithIdentifiers:v27 beforeSectionWithIdentifier:v29];
       }
 
-      v19 = [v11 itemIdentifiersInSectionWithIdentifier:v18];
-      [v10 appendItemsWithIdentifiers:v19 intoSectionWithIdentifier:v18];
+      v19 = [_currentSnapshot itemIdentifiersInSectionWithIdentifier:v18];
+      [snapshot appendItemsWithIdentifiers:v19 intoSectionWithIdentifier:v18];
     }
 
     else
     {
-      v17 = [v10 sectionIdentifiers];
-      v18 = [v17 objectAtIndexedSubscript:v12];
+      sectionIdentifiers5 = [snapshot sectionIdentifiers];
+      v18 = [sectionIdentifiers5 objectAtIndexedSubscript:v12];
 
       if (v14 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v20 = objc_alloc_init(MEMORY[0x1E69DC5D0]);
-        v21 = [v11 itemIdentifiersInSectionWithIdentifier:v18];
+        v21 = [_currentSnapshot itemIdentifiersInSectionWithIdentifier:v18];
         [v20 appendItems:v21];
 
         [(UICollectionViewDiffableDataSource *)self->_collectionDataSource applySnapshot:v20 toSection:v18 animatingDifferences:v9];
         if ([MEMORY[0x1E69C8880] is2024PrivacyReportEnabled])
         {
-          v22 = [v6 identifier];
-          v23 = [v22 isEqualToString:*MEMORY[0x1E69C96A0]];
+          identifier = [sectionCopy identifier];
+          v23 = [identifier isEqualToString:*MEMORY[0x1E69C96A0]];
 
           if (v23)
           {
@@ -1249,10 +1249,10 @@ LABEL_21:
 
       v30 = v18;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
-      [v10 deleteSectionsWithIdentifiers:v19];
+      [snapshot deleteSectionsWithIdentifiers:v19];
     }
 
-    [(UICollectionViewDiffableDataSource *)self->_collectionDataSource applySnapshot:v10 animatingDifferences:v9];
+    [(UICollectionViewDiffableDataSource *)self->_collectionDataSource applySnapshot:snapshot animatingDifferences:v9];
 LABEL_20:
 
     goto LABEL_21;
@@ -1261,15 +1261,15 @@ LABEL_20:
 LABEL_22:
 }
 
-- (void)reloadNavigationItemAnimated:(BOOL)a3
+- (void)reloadNavigationItemAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(SFStartPageCollectionViewController *)self parentViewController];
+  animatedCopy = animated;
+  parentViewController = [(SFStartPageCollectionViewController *)self parentViewController];
 
-  if (v5)
+  if (parentViewController)
   {
-    [(SFStartPageCollectionViewController *)self _updateNavigationItemAnimated:v3];
-    if (v3)
+    [(SFStartPageCollectionViewController *)self _updateNavigationItemAnimated:animatedCopy];
+    if (animatedCopy)
     {
       v6 = *MEMORY[0x1E69DE248];
       v7[0] = MEMORY[0x1E69E9820];
@@ -1289,11 +1289,11 @@ LABEL_22:
   }
 }
 
-- (BOOL)_shouldShowContextMenuForCellAtIndexPath:(id)a3 fromPoint:(CGPoint)a4
+- (BOOL)_shouldShowContextMenuForCellAtIndexPath:(id)path fromPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:a3];
+  y = point.y;
+  x = point.x;
+  v7 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:path];
   if (objc_opt_respondsToSelector())
   {
     [v7 convertPoint:self->_collectionView fromView:{x, y}];
@@ -1308,17 +1308,17 @@ LABEL_22:
   return v8;
 }
 
-- (id)collectionView:(id)a3 contextMenuConfigurationForItemAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)collectionView:(id)view contextMenuConfigurationForItemAtIndexPath:(id)path point:(CGPoint)point
 {
-  y = a5.y;
-  x = a5.x;
-  v8 = a4;
-  if ([(SFStartPageCollectionViewController *)self _shouldShowContextMenuForCellAtIndexPath:v8 fromPoint:x, y])
+  y = point.y;
+  x = point.x;
+  pathCopy = path;
+  if ([(SFStartPageCollectionViewController *)self _shouldShowContextMenuForCellAtIndexPath:pathCopy fromPoint:x, y])
   {
-    v9 = [(SFStartPageCollectionViewController *)self sections];
-    v10 = [v9 objectAtIndexedSubscript:{objc_msgSend(v8, "section")}];
+    sections = [(SFStartPageCollectionViewController *)self sections];
+    v10 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    v11 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource itemIdentifierForIndexPath:v8];
+    v11 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource itemIdentifierForIndexPath:pathCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1327,9 +1327,9 @@ LABEL_22:
 
     else
     {
-      v13 = [v10 contextMenuProvider];
+      contextMenuProvider = [v10 contextMenuProvider];
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v12 = (v13)[2](v13, v11, WeakRetained);
+      v12 = (contextMenuProvider)[2](contextMenuProvider, v11, WeakRetained);
 
       if (v12)
       {
@@ -1346,36 +1346,36 @@ LABEL_22:
   return v12;
 }
 
-- (void)collectionView:(id)a3 willPerformPreviewActionForMenuWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willPerformPreviewActionForMenuWithConfiguration:(id)configuration animator:(id)animator
 {
-  v8 = a4;
-  v9 = a5;
-  [(SFStartPageCollectionViewController *)self collectionView:a3 willEndContextMenuInteractionWithConfiguration:v8 animator:v9];
-  v10 = [v9 previewViewController];
+  configurationCopy = configuration;
+  animatorCopy = animator;
+  [(SFStartPageCollectionViewController *)self collectionView:view willEndContextMenuInteractionWithConfiguration:configurationCopy animator:animatorCopy];
+  previewViewController = [animatorCopy previewViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v9 setPreferredCommitStyle:1];
+    [animatorCopy setPreferredCommitStyle:1];
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __112__SFStartPageCollectionViewController_collectionView_willPerformPreviewActionForMenuWithConfiguration_animator___block_invoke;
     v16[3] = &unk_1E721B400;
     v16[4] = self;
-    v17 = v10;
-    [v9 addAnimations:v16];
+    v17 = previewViewController;
+    [animatorCopy addAnimations:v16];
   }
 
   else
   {
-    v11 = [(NSMapTable *)self->_contextMenuToItemIdentifierMap objectForKey:v8];
+    v11 = [(NSMapTable *)self->_contextMenuToItemIdentifierMap objectForKey:configurationCopy];
     v12 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource indexPathForItemIdentifier:v11];
     if (v12)
     {
-      v13 = [(SFStartPageCollectionViewController *)self sections];
-      v14 = [v13 objectAtIndexedSubscript:{objc_msgSend(v12, "section")}];
+      sections = [(SFStartPageCollectionViewController *)self sections];
+      v14 = [sections objectAtIndexedSubscript:{objc_msgSend(v12, "section")}];
 
-      v15 = [v14 contextMenuCommitHandler];
-      (v15)[2](v15, v8, v11, v9);
+      contextMenuCommitHandler = [v14 contextMenuCommitHandler];
+      (contextMenuCommitHandler)[2](contextMenuCommitHandler, configurationCopy, v11, animatorCopy);
     }
   }
 }
@@ -1386,76 +1386,76 @@ void __112__SFStartPageCollectionViewController_collectionView_willPerformPrevie
   [v2 pushViewController:*(a1 + 40) animated:1];
 }
 
-- (id)collectionView:(id)a3 previewForHighlightingContextMenuWithConfiguration:(id)a4
+- (id)collectionView:(id)view previewForHighlightingContextMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = [(NSMapTable *)self->_contextMenuToItemIdentifierMap objectForKey:a4];
+  viewCopy = view;
+  v7 = [(NSMapTable *)self->_contextMenuToItemIdentifierMap objectForKey:configuration];
   v8 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource indexPathForItemIdentifier:v7];
   if (v8)
   {
-    v9 = [v6 cellForItemAtIndexPath:v8];
+    v9 = [viewCopy cellForItemAtIndexPath:v8];
     if (v9)
     {
       if (objc_opt_respondsToSelector())
       {
-        v10 = [v9 contextMenuPreviewView];
+        contextMenuPreviewView = [v9 contextMenuPreviewView];
       }
 
       else
       {
-        v10 = 0;
+        contextMenuPreviewView = 0;
       }
 
-      v11 = [v10 window];
+      window = [contextMenuPreviewView window];
 
-      if (v11)
+      if (window)
       {
-        v11 = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:v10];
+        window = [objc_alloc(MEMORY[0x1E69DD070]) initWithView:contextMenuPreviewView];
       }
     }
 
     else
     {
-      v11 = 0;
+      window = 0;
     }
   }
 
   else
   {
-    v11 = 0;
+    window = 0;
   }
 
-  return v11;
+  return window;
 }
 
-- (id)collectionView:(id)a3 previewForDismissingContextMenuWithConfiguration:(id)a4
+- (id)collectionView:(id)view previewForDismissingContextMenuWithConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NSMapTable *)self->_contextMenuToItemIdentifierMap objectForKey:v7];
+  viewCopy = view;
+  configurationCopy = configuration;
+  v8 = [(NSMapTable *)self->_contextMenuToItemIdentifierMap objectForKey:configurationCopy];
   v9 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource indexPathForItemIdentifier:v8];
   if (v9)
   {
-    v10 = [(SFStartPageCollectionViewController *)self sections];
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v9, "section")}];
+    sections = [(SFStartPageCollectionViewController *)self sections];
+    v11 = [sections objectAtIndexedSubscript:{objc_msgSend(v9, "section")}];
 
-    v12 = [v11 contextMenuDismissHandler];
-    (v12)[2](v12, v7, v8);
+    contextMenuDismissHandler = [v11 contextMenuDismissHandler];
+    (contextMenuDismissHandler)[2](contextMenuDismissHandler, configurationCopy, v8);
   }
 
-  v13 = [(SFStartPageCollectionViewController *)self collectionView:v6 previewForHighlightingContextMenuWithConfiguration:v7];
+  v13 = [(SFStartPageCollectionViewController *)self collectionView:viewCopy previewForHighlightingContextMenuWithConfiguration:configurationCopy];
 
   return v13;
 }
 
-- (void)collectionView:(id)a3 willEndContextMenuInteractionWithConfiguration:(id)a4 animator:(id)a5
+- (void)collectionView:(id)view willEndContextMenuInteractionWithConfiguration:(id)configuration animator:(id)animator
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __110__SFStartPageCollectionViewController_collectionView_willEndContextMenuInteractionWithConfiguration_animator___block_invoke;
   v5[3] = &unk_1E721B360;
   v5[4] = self;
-  [a5 addAnimations:{v5, a4}];
+  [animator addAnimations:{v5, configuration}];
 }
 
 _BYTE *__110__SFStartPageCollectionViewController_collectionView_willEndContextMenuInteractionWithConfiguration_animator___block_invoke(uint64_t a1)
@@ -1471,13 +1471,13 @@ _BYTE *__110__SFStartPageCollectionViewController_collectionView_willEndContextM
   return result;
 }
 
-- (BOOL)collectionView:(id)a3 shouldHighlightItemAtIndexPath:(id)a4
+- (BOOL)collectionView:(id)view shouldHighlightItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(SFStartPageCollectionViewController *)self sections];
-  v7 = [v5 section];
+  pathCopy = path;
+  sections = [(SFStartPageCollectionViewController *)self sections];
+  section = [pathCopy section];
 
-  v8 = [v6 objectAtIndexedSubscript:v7];
+  v8 = [sections objectAtIndexedSubscript:section];
 
   if ([v8 itemType])
   {
@@ -1486,12 +1486,12 @@ _BYTE *__110__SFStartPageCollectionViewController_collectionView_willEndContextM
 
   else
   {
-    v10 = [v8 contentBanner];
-    v11 = [v10 contentVariant];
+    contentBanner = [v8 contentBanner];
+    contentVariant = [contentBanner contentVariant];
 
-    if (v11 <= 6)
+    if (contentVariant <= 6)
     {
-      v9 = 6u >> v11;
+      v9 = 6u >> contentVariant;
     }
 
     else
@@ -1503,77 +1503,77 @@ _BYTE *__110__SFStartPageCollectionViewController_collectionView_willEndContextM
   return v9 & 1;
 }
 
-- (void)collectionView:(id)a3 didSelectItemAtIndexPath:(id)a4
+- (void)collectionView:(id)view didSelectItemAtIndexPath:(id)path
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(SFStartPageCollectionViewController *)self sections];
-  v8 = [v7 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  viewCopy = view;
+  pathCopy = path;
+  sections = [(SFStartPageCollectionViewController *)self sections];
+  v8 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  v9 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource itemIdentifierForIndexPath:v6];
+  v9 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource itemIdentifierForIndexPath:pathCopy];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v11 = [v8 itemType];
-  if ((v11 - 3) < 3)
+  itemType = [v8 itemType];
+  if ((itemType - 3) < 3)
   {
     goto LABEL_2;
   }
 
-  if (v11 == 2)
+  if (itemType == 2)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
 LABEL_2:
-      v12 = [(SFStartPageCollectionViewController *)self _gridLocationForIndexPath:v6 inSection:v8];
+      v12 = [(SFStartPageCollectionViewController *)self _gridLocationForIndexPath:pathCopy inSection:v8];
       [WeakRetained startPageCollectionViewController:self didSelectItemWithIdentifier:v9 atGridLocation:{v12, v13}];
       goto LABEL_10;
     }
 
-    v15 = [v8 supplementaryAction];
-    [v15 performAction];
+    supplementaryAction = [v8 supplementaryAction];
+    [supplementaryAction performAction];
   }
 
   else
   {
-    if (v11)
+    if (itemType)
     {
       goto LABEL_10;
     }
 
-    [v16 deselectItemAtIndexPath:v6 animated:1];
-    v14 = [v8 contentBanner];
-    v15 = [v14 action];
+    [viewCopy deselectItemAtIndexPath:pathCopy animated:1];
+    contentBanner = [v8 contentBanner];
+    supplementaryAction = [contentBanner action];
 
-    if (v15)
+    if (supplementaryAction)
     {
-      v15[2](v15);
+      supplementaryAction[2](supplementaryAction);
     }
   }
 
 LABEL_10:
 }
 
-- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridLocationForIndexPath:(id)a3 inSection:(id)a4
+- ($0AC6E346AE4835514AAA8AC86D8F4844)_gridLocationForIndexPath:(id)path inSection:(id)section
 {
   visualStyleProvider = self->_visualStyleProvider;
-  v7 = a3;
-  v8 = [a4 itemType];
+  pathCopy = path;
+  itemType = [section itemType];
   [(SFStartPageCollectionViewController *)self _actualSectionWidth];
   v10 = v9;
-  v11 = [(SFStartPageCollectionViewController *)self traitCollection];
-  v12 = [(SFStartPageVisualStyleProviding *)visualStyleProvider numberOfColumnsForSectionItemType:v8 sectionWidth:v11 traitCollection:v10];
+  traitCollection = [(SFStartPageCollectionViewController *)self traitCollection];
+  v12 = [(SFStartPageVisualStyleProviding *)visualStyleProvider numberOfColumnsForSectionItemType:itemType sectionWidth:traitCollection traitCollection:v10];
 
-  v13 = [v7 item] / v12;
-  v14 = [v7 item];
+  v13 = [pathCopy item] / v12;
+  item = [pathCopy item];
 
-  v15 = v14 % v12;
+  v15 = item % v12;
   v16 = v13;
   result.var1 = v16;
   result.var0 = v15;
   return result;
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained startPageCollectionViewControllerDidScroll:self];
@@ -1581,17 +1581,17 @@ LABEL_10:
   [(SFStartPageCollectionViewController *)self _updateCustomTopBackdrops];
 }
 
-- (id)_sectionForIdentifier:(id)a3
+- (id)_sectionForIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SFStartPageCollectionViewController *)self sections];
+  identifierCopy = identifier;
+  sections = [(SFStartPageCollectionViewController *)self sections];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __61__SFStartPageCollectionViewController__sectionForIdentifier___block_invoke;
   v9[3] = &unk_1E721EFF0;
-  v10 = v4;
-  v6 = v4;
-  v7 = [v5 safari_firstObjectPassingTest:v9];
+  v10 = identifierCopy;
+  v6 = identifierCopy;
+  v7 = [sections safari_firstObjectPassingTest:v9];
 
   return v7;
 }
@@ -1604,9 +1604,9 @@ uint64_t __61__SFStartPageCollectionViewController__sectionForIdentifier___block
   return v4;
 }
 
-- (void)_setUpDataSource:(id)a3
+- (void)_setUpDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   objc_initWeak(&location, self);
   v5 = objc_alloc(MEMORY[0x1E69DC820]);
   v10[0] = MEMORY[0x1E69E9820];
@@ -1614,7 +1614,7 @@ uint64_t __61__SFStartPageCollectionViewController__sectionForIdentifier___block
   v10[2] = __56__SFStartPageCollectionViewController__setUpDataSource___block_invoke;
   v10[3] = &unk_1E721F018;
   objc_copyWeak(&v11, &location);
-  v6 = [v5 initWithCollectionView:v4 cellProvider:v10];
+  v6 = [v5 initWithCollectionView:sourceCopy cellProvider:v10];
   collectionDataSource = self->_collectionDataSource;
   self->_collectionDataSource = v6;
 
@@ -1672,36 +1672,36 @@ id __56__SFStartPageCollectionViewController__setUpDataSource___block_invoke_2(u
   return v11;
 }
 
-- (id)_reuseIdentifierForCellWithIdentifier:(id)a3 indexPath:(id)a4
+- (id)_reuseIdentifierForCellWithIdentifier:(id)identifier indexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(SFStartPageCollectionViewController *)self sections];
-  v9 = [v6 section];
+  pathCopy = path;
+  identifierCopy = identifier;
+  sections = [(SFStartPageCollectionViewController *)self sections];
+  section = [pathCopy section];
 
-  v10 = [v8 objectAtIndexedSubscript:v9];
+  v10 = [sections objectAtIndexedSubscript:section];
 
-  v11 = [(SFStartPageCollectionViewController *)self _reuseIdentifierForCellWithIdentifier:v7 section:v10];
+  v11 = [(SFStartPageCollectionViewController *)self _reuseIdentifierForCellWithIdentifier:identifierCopy section:v10];
 
   return v11;
 }
 
-- (id)_reuseIdentifierForCellWithIdentifier:(id)a3 section:(id)a4
+- (id)_reuseIdentifierForCellWithIdentifier:(id)identifier section:(id)section
 {
-  v5 = a4;
-  v6 = [v5 itemType];
-  if (v6 > 2)
+  sectionCopy = section;
+  itemType = [sectionCopy itemType];
+  if (itemType > 2)
   {
-    if (v6 > 4)
+    if (itemType > 4)
     {
-      if (v6 == 5)
+      if (itemType == 5)
       {
         v7 = SFSiteRowCell;
       }
 
       else
       {
-        if (v6 != 6)
+        if (itemType != 6)
         {
           goto LABEL_32;
         }
@@ -1710,7 +1710,7 @@ id __56__SFStartPageCollectionViewController__setUpDataSource___block_invoke_2(u
       }
     }
 
-    else if (v6 == 3)
+    else if (itemType == 3)
     {
       v7 = SFSiteCardCell;
     }
@@ -1723,11 +1723,11 @@ id __56__SFStartPageCollectionViewController__setUpDataSource___block_invoke_2(u
     goto LABEL_31;
   }
 
-  if (v6)
+  if (itemType)
   {
-    if (v6 != 1)
+    if (itemType != 1)
     {
-      if (v6 != 2)
+      if (itemType != 2)
       {
         goto LABEL_32;
       }
@@ -1739,27 +1739,27 @@ id __56__SFStartPageCollectionViewController__setUpDataSource___block_invoke_2(u
 LABEL_30:
     v7 = SFStartPageFooterCell;
 LABEL_31:
-    v4 = [(__objc2_class *)v7 reuseIdentifier];
+    reuseIdentifier = [(__objc2_class *)v7 reuseIdentifier];
     goto LABEL_32;
   }
 
-  v8 = [v5 contentBanner];
-  v9 = [v8 contentVariant];
-  if (v9 > 2)
+  contentBanner = [sectionCopy contentBanner];
+  contentVariant = [contentBanner contentVariant];
+  if (contentVariant > 2)
   {
-    if ((v9 - 4) < 2)
+    if ((contentVariant - 4) < 2)
     {
       v10 = off_1E7218CD8;
     }
 
-    else if (v9 == 3)
+    else if (contentVariant == 3)
     {
       v10 = off_1E7218CE0;
     }
 
     else
     {
-      if (v9 != 6)
+      if (contentVariant != 6)
       {
         goto LABEL_29;
       }
@@ -1768,13 +1768,13 @@ LABEL_31:
     }
   }
 
-  else if (v9)
+  else if (contentVariant)
   {
-    if (v9 != 1)
+    if (contentVariant != 1)
     {
-      if (v9 == 2)
+      if (contentVariant == 2)
       {
-        if ([MEMORY[0x1E69C8880] is2024PrivacyReportEnabled] && _SFDeviceIsPad() && !objc_msgSend(v8, "isPrivateBrowsingEnabled"))
+        if ([MEMORY[0x1E69C8880] is2024PrivacyReportEnabled] && _SFDeviceIsPad() && !objc_msgSend(contentBanner, "isPrivateBrowsingEnabled"))
         {
           v10 = off_1E7218CC0;
         }
@@ -1801,35 +1801,35 @@ LABEL_29:
   }
 
 LABEL_36:
-  v4 = [(__objc2_class *)*v10 reuseIdentifier];
+  reuseIdentifier = [(__objc2_class *)*v10 reuseIdentifier];
 
 LABEL_32:
 
-  return v4;
+  return reuseIdentifier;
 }
 
-- (void)_configureCell:(id)a3 forIdentifier:(id)a4 indexPath:(id)a5
+- (void)_configureCell:(id)cell forIdentifier:(id)identifier indexPath:(id)path
 {
-  v30 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(SFStartPageCollectionViewController *)self sections];
-  v11 = [v9 section];
+  cellCopy = cell;
+  identifierCopy = identifier;
+  pathCopy = path;
+  sections = [(SFStartPageCollectionViewController *)self sections];
+  section = [pathCopy section];
 
-  v12 = [v10 objectAtIndexedSubscript:v11];
+  v12 = [sections objectAtIndexedSubscript:section];
 
-  v13 = [v12 itemType];
+  itemType = [v12 itemType];
   if (objc_opt_respondsToSelector())
   {
-    [v30 setBackdropCaptureView:self->_cellBackdropCaptureView];
+    [cellCopy setBackdropCaptureView:self->_cellBackdropCaptureView];
   }
 
-  if (v13 > 2)
+  if (itemType > 2)
   {
-    if (v13 <= 4)
+    if (itemType <= 4)
     {
-      v14 = v30;
-      if (v13 == 3)
+      v14 = cellCopy;
+      if (itemType == 3)
       {
         [v12 siteCardConfigurationProvider];
       }
@@ -1838,111 +1838,111 @@ LABEL_32:
       {
         [v12 attributedRichLinkConfigurationProvider];
       }
-      v15 = ;
+      siteRowConfigurationProvider = ;
       goto LABEL_23;
     }
 
-    if (v13 == 5)
+    if (itemType == 5)
     {
-      v14 = v30;
-      v15 = [v12 siteRowConfigurationProvider];
+      v14 = cellCopy;
+      siteRowConfigurationProvider = [v12 siteRowConfigurationProvider];
 LABEL_23:
-      v16 = v15;
-      (*(v15 + 16))(v15, v14, v8);
+      v16 = siteRowConfigurationProvider;
+      (*(siteRowConfigurationProvider + 16))(siteRowConfigurationProvider, v14, identifierCopy);
 
 LABEL_28:
       goto LABEL_37;
     }
 
-    if (v13 != 6)
+    if (itemType != 6)
     {
       goto LABEL_37;
     }
 
-    v21 = v30;
-    [v21 setStartPageOnboardingCellDelegate:self];
-    v22 = v8;
+    actions = cellCopy;
+    [actions setStartPageOnboardingCellDelegate:self];
+    contentBanner = identifierCopy;
     [(SFStartPageCollectionViewController *)self _actualSectionWidth];
     v24 = v23;
     +[_TtC12MobileSafari25SFStartPageOnboardingCell preferredCellWidthForWideLayout];
-    [v22 setIsCompact:v24 < v25];
-    [v21 setConfiguration:v22];
+    [contentBanner setIsCompact:v24 < v25];
+    [actions setConfiguration:contentBanner];
     goto LABEL_35;
   }
 
-  if (v13)
+  if (itemType)
   {
-    if (v13 != 1)
+    if (itemType != 1)
     {
-      if (v13 != 2)
+      if (itemType != 2)
       {
         goto LABEL_37;
       }
 
-      v16 = v30;
+      v16 = cellCopy;
       [v16 setVisualEffectGroupName:@"start-page-cell"];
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v17 = [v12 supplementaryAction];
-        v18 = [(SFStartPageVisualStyleProviding *)self->_visualStyleProvider backgroundEffectForSupplementaryActions];
-        v19 = [v17 makeUIAction];
-        [v16 configureUsingAction:v19 backgroundEffect:v18];
+        supplementaryAction = [v12 supplementaryAction];
+        backgroundEffectForSupplementaryActions = [(SFStartPageVisualStyleProviding *)self->_visualStyleProvider backgroundEffectForSupplementaryActions];
+        makeUIAction = [supplementaryAction makeUIAction];
+        [v16 configureUsingAction:makeUIAction backgroundEffect:backgroundEffectForSupplementaryActions];
 
-        v20 = [(SFStartPageVisualStyleProviding *)self->_visualStyleProvider tintColorForSupplementaryActions];
-        [v16 setTintColor:v20];
+        tintColorForSupplementaryActions = [(SFStartPageVisualStyleProviding *)self->_visualStyleProvider tintColorForSupplementaryActions];
+        [v16 setTintColor:tintColorForSupplementaryActions];
       }
 
       else
       {
-        v17 = [v12 siteIconConfigurationProvider];
-        (v17)[2](v17, v16, v8);
+        supplementaryAction = [v12 siteIconConfigurationProvider];
+        (supplementaryAction)[2](supplementaryAction, v16, identifierCopy);
       }
 
       goto LABEL_28;
     }
 
-    v27 = v30;
-    v21 = [v12 actions];
-    v22 = [v21 objectAtIndexedSubscript:0];
-    v28 = [v22 makeUIAction];
-    [v27 setAction:v28];
+    v27 = cellCopy;
+    actions = [v12 actions];
+    contentBanner = [actions objectAtIndexedSubscript:0];
+    makeUIAction2 = [contentBanner makeUIAction];
+    [v27 setAction:makeUIAction2];
     goto LABEL_25;
   }
 
-  v21 = [v12 contentBanner];
-  v26 = [v21 contentVariant];
-  if (v26 > 2)
+  actions = [v12 contentBanner];
+  contentVariant = [actions contentVariant];
+  if (contentVariant > 2)
   {
-    if ((v26 - 4) >= 2 && v26 != 3 && v26 != 6)
+    if ((contentVariant - 4) >= 2 && contentVariant != 3 && contentVariant != 6)
     {
       goto LABEL_36;
     }
 
-    v22 = [v12 contentBanner];
+    contentBanner = [v12 contentBanner];
     goto LABEL_33;
   }
 
-  if (v26 < 2)
+  if (contentVariant < 2)
   {
-    v29 = v30;
-    v22 = [v12 contentBanner];
-    [v29 configureUsingBanner:v22];
+    v29 = cellCopy;
+    contentBanner = [v12 contentBanner];
+    [v29 configureUsingBanner:contentBanner];
 
     goto LABEL_35;
   }
 
-  if (v26 == 2)
+  if (contentVariant == 2)
   {
-    v22 = v8;
+    contentBanner = identifierCopy;
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      v27 = v30;
-      [v27 setNumberOfTrackers:{objc_msgSend(v22, "numberOfTrackers")}];
-      [v27 setPrivateBrowsingEnabled:{objc_msgSend(v22, "isPrivateBrowsingEnabled")}];
-      v28 = [v12 contentBanner];
-      [v27 configureUsingBanner:v28];
+      v27 = cellCopy;
+      [v27 setNumberOfTrackers:{objc_msgSend(contentBanner, "numberOfTrackers")}];
+      [v27 setPrivateBrowsingEnabled:{objc_msgSend(contentBanner, "isPrivateBrowsingEnabled")}];
+      makeUIAction2 = [v12 contentBanner];
+      [v27 configureUsingBanner:makeUIAction2];
 LABEL_25:
 
 LABEL_35:
@@ -1950,30 +1950,30 @@ LABEL_35:
     }
 
 LABEL_33:
-    [v30 configureUsingBanner:v22];
+    [cellCopy configureUsingBanner:contentBanner];
     goto LABEL_35;
   }
 
 LABEL_36:
 
-  [(SFStartPageCollectionViewController *)self _updateInteractionEnabledForView:v30];
+  [(SFStartPageCollectionViewController *)self _updateInteractionEnabledForView:cellCopy];
 LABEL_37:
 }
 
-- (id)_collectionView:(id)a3 supplementaryViewWithKind:(id)a4 forIndexPath:(id)a5
+- (id)_collectionView:(id)view supplementaryViewWithKind:(id)kind forIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SFStartPageCollectionViewController *)self sections];
-  v12 = [v11 objectAtIndexedSubscript:{objc_msgSend(v10, "section")}];
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  sections = [(SFStartPageCollectionViewController *)self sections];
+  v12 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  if ([v9 isEqualToString:*MEMORY[0x1E69DDC08]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69DDC08]])
   {
     v13 = +[SFStartPageSectionHeader reuseIdentifier];
-    v14 = [v8 dequeueReusableSupplementaryViewOfKind:v9 withReuseIdentifier:v13 forIndexPath:v10];
+    v14 = [viewCopy dequeueReusableSupplementaryViewOfKind:kindCopy withReuseIdentifier:v13 forIndexPath:pathCopy];
 
-    [(SFStartPageCollectionViewController *)self _configureHeader:v14 forSection:v12 atIndexPath:v10];
+    [(SFStartPageCollectionViewController *)self _configureHeader:v14 forSection:v12 atIndexPath:pathCopy];
     [(SFStartPageCollectionViewController *)self _updateInteractionEnabledForView:v14];
   }
 
@@ -1985,27 +1985,27 @@ LABEL_37:
   return v14;
 }
 
-- (void)_configureHeader:(id)a3 forSection:(id)a4 atIndexPath:(id)a5
+- (void)_configureHeader:(id)header forSection:(id)section atIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a3;
+  sectionCopy = section;
+  headerCopy = header;
   v9 = 0.0;
-  if (([v7 usesLargeTitle] & 1) == 0 && (objc_msgSend(v7, "showsTopSeparator") & 1) == 0)
+  if (([sectionCopy usesLargeTitle] & 1) == 0 && (objc_msgSend(sectionCopy, "showsTopSeparator") & 1) == 0)
   {
-    -[SFStartPageVisualStyleProviding sectionHeaderBottomGapForSectionItemType:](self->_visualStyleProvider, "sectionHeaderBottomGapForSectionItemType:", [v7 itemType]);
+    -[SFStartPageVisualStyleProviding sectionHeaderBottomGapForSectionItemType:](self->_visualStyleProvider, "sectionHeaderBottomGapForSectionItemType:", [sectionCopy itemType]);
     v9 = v10;
   }
 
-  [v8 setBottomGap:v9];
+  [headerCopy setBottomGap:v9];
   visualStyleProvider = self->_visualStyleProvider;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __79__SFStartPageCollectionViewController__configureHeader_forSection_atIndexPath___block_invoke;
   v13[3] = &unk_1E721F068;
   v13[4] = self;
-  v14 = v7;
-  v12 = v7;
-  [v8 configureUsingSection:v12 visualStyleProvider:visualStyleProvider resolvingActionsUsingBlock:v13];
+  v14 = sectionCopy;
+  v12 = sectionCopy;
+  [headerCopy configureUsingSection:v12 visualStyleProvider:visualStyleProvider resolvingActionsUsingBlock:v13];
 }
 
 id __79__SFStartPageCollectionViewController__configureHeader_forSection_atIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -2029,46 +2029,46 @@ id __79__SFStartPageCollectionViewController__configureHeader_forSection_atIndex
   return v8;
 }
 
-- (void)_applyCurrentSnapshotAnimatingDifferences:(BOOL)a3
+- (void)_applyCurrentSnapshotAnimatingDifferences:(BOOL)differences
 {
-  v3 = a3;
+  differencesCopy = differences;
   v54 = *MEMORY[0x1E69E9840];
-  v5 = [(SFStartPageCollectionViewController *)self viewIfLoaded];
-  v6 = [v5 window];
+  viewIfLoaded = [(SFStartPageCollectionViewController *)self viewIfLoaded];
+  window = [viewIfLoaded window];
 
-  if (v6)
+  if (window)
   {
-    v7 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
-    v8 = [v7 sectionIdentifiers];
-    v9 = [v8 count];
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
+    sectionIdentifiers = [snapshot sectionIdentifiers];
+    v9 = [sectionIdentifiers count];
 
-    v10 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
-    v11 = [(SFStartPageCollectionViewController *)self _currentSnapshot];
-    v12 = [v11 sectionIdentifiers];
-    v13 = [v12 count];
+    snapshot2 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
+    _currentSnapshot = [(SFStartPageCollectionViewController *)self _currentSnapshot];
+    sectionIdentifiers2 = [_currentSnapshot sectionIdentifiers];
+    v13 = [sectionIdentifiers2 count];
 
-    v14 = [v11 isEqual:v10];
+    v14 = [_currentSnapshot isEqual:snapshot2];
     v15 = v14 ^ 1;
     if ((v14 & 1) == 0)
     {
       v16 = MEMORY[0x1E695DFD8];
-      v17 = [v10 sectionIdentifiers];
-      v18 = [v16 setWithArray:v17];
+      sectionIdentifiers3 = [snapshot2 sectionIdentifiers];
+      v18 = [v16 setWithArray:sectionIdentifiers3];
 
-      v19 = [v11 sectionIdentifiers];
+      sectionIdentifiers4 = [_currentSnapshot sectionIdentifiers];
       v48[0] = MEMORY[0x1E69E9820];
       v48[1] = 3221225472;
       v48[2] = __81__SFStartPageCollectionViewController__applyCurrentSnapshotAnimatingDifferences___block_invoke;
       v48[3] = &unk_1E721F0B8;
       v49 = v18;
-      v50 = v10;
-      v51 = self;
-      v52 = v11;
+      v50 = snapshot2;
+      selfCopy = self;
+      v52 = _currentSnapshot;
       v20 = v18;
-      [v19 enumerateObjectsUsingBlock:v48];
+      [sectionIdentifiers4 enumerateObjectsUsingBlock:v48];
     }
 
-    v37 = v10;
+    v37 = snapshot2;
     collectionDataSource = self->_collectionDataSource;
     v46[0] = MEMORY[0x1E69E9820];
     v46[1] = 3221225472;
@@ -2076,11 +2076,11 @@ id __79__SFStartPageCollectionViewController__configureHeader_forSection_atIndex
     v46[3] = &unk_1E721BFA8;
     v46[4] = self;
     v47 = v15;
-    [(UICollectionViewDiffableDataSource *)collectionDataSource applySnapshot:v11 animatingDifferences:v3 completion:v46];
+    [(UICollectionViewDiffableDataSource *)collectionDataSource applySnapshot:_currentSnapshot animatingDifferences:differencesCopy completion:v46];
     if (self->_hasAppliedInitialSnapshot && (v9 == 0) != (v13 != 0) || ([(SFStartPageCollectionViewController *)self updateBackgroundStyle], self->_hasAppliedInitialSnapshot))
     {
-      v36 = v11;
-      v35 = v3;
+      v36 = _currentSnapshot;
+      v35 = differencesCopy;
       v22 = *MEMORY[0x1E69DDC08];
       [(UICollectionView *)self->_collectionView indexPathsForVisibleSupplementaryElementsOfKind:*MEMORY[0x1E69DDC08]];
       v42 = 0u;
@@ -2120,18 +2120,18 @@ id __79__SFStartPageCollectionViewController__configureHeader_forSection_atIndex
         while (v24);
       }
 
-      v30 = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
+      indexPathsForVisibleItems = [(UICollectionView *)self->_collectionView indexPathsForVisibleItems];
       v41[0] = MEMORY[0x1E69E9820];
       v41[1] = 3221225472;
       v41[2] = __81__SFStartPageCollectionViewController__applyCurrentSnapshotAnimatingDifferences___block_invoke_4;
       v41[3] = &unk_1E721F0E0;
       v41[4] = self;
-      v31 = [v30 safari_mapObjectsUsingBlock:v41];
-      v11 = v36;
+      v31 = [indexPathsForVisibleItems safari_mapObjectsUsingBlock:v41];
+      _currentSnapshot = v36;
       [v36 reconfigureItemsWithIdentifiers:v31];
 
       v32 = v37;
-      if ([obj count] || objc_msgSend(v30, "count"))
+      if ([obj count] || objc_msgSend(indexPathsForVisibleItems, "count"))
       {
         aBlock[0] = MEMORY[0x1E69E9820];
         aBlock[1] = 3221225472;
@@ -2156,7 +2156,7 @@ id __79__SFStartPageCollectionViewController__configureHeader_forSection_atIndex
     else
     {
       self->_hasAppliedInitialSnapshot = 1;
-      v32 = v10;
+      v32 = snapshot2;
     }
   }
 }
@@ -2246,12 +2246,12 @@ void __60__SFStartPageCollectionViewController__customizationSection__block_invo
   }
 }
 
-- (unint64_t)_itemLimitForSection:(id)a3
+- (unint64_t)_itemLimitForSection:(id)section
 {
-  v4 = a3;
-  if ([v4 itemType])
+  sectionCopy = section;
+  if ([sectionCopy itemType])
   {
-    if ([v4 itemType] == 6)
+    if ([sectionCopy itemType] == 6)
     {
       v5 = 5;
     }
@@ -2259,7 +2259,7 @@ void __60__SFStartPageCollectionViewController__customizationSection__block_invo
     else
     {
       WeakRetained = objc_loadWeakRetained(&self->_dataSource);
-      v7 = [WeakRetained startPageCollectionViewController:self isSectionExpanded:v4];
+      v7 = [WeakRetained startPageCollectionViewController:self isSectionExpanded:sectionCopy];
 
       if (v7)
       {
@@ -2268,7 +2268,7 @@ void __60__SFStartPageCollectionViewController__customizationSection__block_invo
 
       else
       {
-        v5 = [(SFStartPageCollectionViewController *)self _collapsedCapacityForSection:v4];
+        v5 = [(SFStartPageCollectionViewController *)self _collapsedCapacityForSection:sectionCopy];
       }
     }
   }
@@ -2281,18 +2281,18 @@ void __60__SFStartPageCollectionViewController__customizationSection__block_invo
   return v5;
 }
 
-- (int64_t)_collapsedCapacityForSection:(id)a3
+- (int64_t)_collapsedCapacityForSection:(id)section
 {
-  v4 = a3;
-  v5 = [(SFStartPageCollectionViewController *)self _numberOfColumnsInSection:v4];
-  v6 = [(SFStartPageCollectionViewController *)self traitCollection];
-  v7 = [v6 horizontalSizeClass];
+  sectionCopy = section;
+  v5 = [(SFStartPageCollectionViewController *)self _numberOfColumnsInSection:sectionCopy];
+  traitCollection = [(SFStartPageCollectionViewController *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  v8 = [v4 maximumNumberOfPages];
-  v9 = v8;
-  if (v7 == 1)
+  maximumNumberOfPages = [sectionCopy maximumNumberOfPages];
+  v9 = maximumNumberOfPages;
+  if (horizontalSizeClass == 1)
   {
-    v10 = [v4 numberOfRowsVisibleWhenCollapsedInCompactWidth] * v5;
+    v10 = [sectionCopy numberOfRowsVisibleWhenCollapsedInCompactWidth] * v5;
     if (!v9)
     {
       goto LABEL_9;
@@ -2301,16 +2301,16 @@ void __60__SFStartPageCollectionViewController__customizationSection__block_invo
 
   else
   {
-    if (!v8 || ![(SFStartPageCollectionViewController *)self _supportsPaginatedSectionLayouts])
+    if (!maximumNumberOfPages || ![(SFStartPageCollectionViewController *)self _supportsPaginatedSectionLayouts])
     {
-      v10 = [v4 numberOfRowsVisibleWhenCollapsed] * v5;
+      v10 = [sectionCopy numberOfRowsVisibleWhenCollapsed] * v5;
       goto LABEL_9;
     }
 
-    v10 = [v4 numberOfRowsVisibleWhenCollapsed] * v5;
+    v10 = [sectionCopy numberOfRowsVisibleWhenCollapsed] * v5;
   }
 
-  v10 *= [v4 maximumNumberOfPages];
+  v10 *= [sectionCopy maximumNumberOfPages];
 LABEL_9:
 
   return v10;
@@ -2324,58 +2324,58 @@ LABEL_9:
   return v4 - v5 - v6;
 }
 
-- (int64_t)_numberOfColumnsInSection:(id)a3
+- (int64_t)_numberOfColumnsInSection:(id)section
 {
   visualStyleProvider = self->_visualStyleProvider;
-  v5 = [a3 itemType];
+  itemType = [section itemType];
   [(SFStartPageCollectionViewController *)self _actualSectionWidth];
   v7 = v6;
-  v8 = [(SFStartPageCollectionViewController *)self traitCollection];
-  v9 = [(SFStartPageVisualStyleProviding *)visualStyleProvider numberOfColumnsForSectionItemType:v5 sectionWidth:v8 traitCollection:v7];
+  traitCollection = [(SFStartPageCollectionViewController *)self traitCollection];
+  v9 = [(SFStartPageVisualStyleProviding *)visualStyleProvider numberOfColumnsForSectionItemType:itemType sectionWidth:traitCollection traitCollection:v7];
 
   return v9;
 }
 
-- (int64_t)_numberOfItemsPerPageInSection:(id)a3
+- (int64_t)_numberOfItemsPerPageInSection:(id)section
 {
-  v4 = a3;
-  v5 = [(SFStartPageCollectionViewController *)self traitCollection];
-  if ([v5 horizontalSizeClass] == 1)
+  sectionCopy = section;
+  traitCollection = [(SFStartPageCollectionViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
-    v6 = [v4 numberOfRowsVisibleWhenCollapsedInCompactWidth];
+    numberOfRowsVisibleWhenCollapsedInCompactWidth = [sectionCopy numberOfRowsVisibleWhenCollapsedInCompactWidth];
   }
 
   else
   {
-    v6 = [v4 numberOfRowsVisibleWhenCollapsed];
+    numberOfRowsVisibleWhenCollapsedInCompactWidth = [sectionCopy numberOfRowsVisibleWhenCollapsed];
   }
 
-  v7 = v6;
+  v7 = numberOfRowsVisibleWhenCollapsedInCompactWidth;
 
-  v8 = [(SFStartPageCollectionViewController *)self _numberOfColumnsInSection:v4]* v7;
+  v8 = [(SFStartPageCollectionViewController *)self _numberOfColumnsInSection:sectionCopy]* v7;
   return v8;
 }
 
-- (id)_toggleExpandedActionForSectionIdentifier:(id)a3
+- (id)_toggleExpandedActionForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SFStartPageCollectionViewController *)self _sectionForIdentifier:v4];
+  identifierCopy = identifier;
+  v5 = [(SFStartPageCollectionViewController *)self _sectionForIdentifier:identifierCopy];
   v6 = [(SFStartPageCollectionViewController *)self _collapsedCapacityForSection:v5];
   if ([v5 effectiveItemIdentifiersCount] > v6 || objc_msgSend(v5, "maximumNumberOfPages") && (v7 = objc_msgSend(v5, "effectiveItemIdentifiersCount"), v7 > -[SFStartPageCollectionViewController _numberOfItemsPerPageInSection:](self, "_numberOfItemsPerPageInSection:", v5)))
   {
-    v8 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
-    v9 = [v8 numberOfItemsInSection:v5];
+    snapshot = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource snapshot];
+    v9 = [snapshot numberOfItemsInSection:v5];
 
     objc_initWeak(&location, self);
     v10 = MEMORY[0x1E69DC628];
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", *MEMORY[0x1E69C9918], v4];
+    identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@.%@", *MEMORY[0x1E69C9918], identifierCopy];
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionIdentifier___block_invoke;
     v14[3] = &unk_1E721C6E0;
     objc_copyWeak(&v16, &location);
-    v15 = v4;
-    v12 = [v10 actionWithTitle:&stru_1EFF36230 image:0 identifier:v11 handler:v14];
+    v15 = identifierCopy;
+    v12 = [v10 actionWithTitle:&stru_1EFF36230 image:0 identifier:identifierCopy handler:v14];
 
     [v12 setState:v9 > v6];
     objc_destroyWeak(&v16);
@@ -2415,12 +2415,12 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
   }
 }
 
-- (id)_bannerSectionLayoutForEnvironment:(id)a3 includingHeader:(BOOL)a4
+- (id)_bannerSectionLayoutForEnvironment:(id)environment includingHeader:(BOOL)header
 {
   v45[1] = *MEMORY[0x1E69E9840];
   v6 = MEMORY[0x1E6995588];
   v7 = MEMORY[0x1E6995558];
-  v8 = a3;
+  environmentCopy = environment;
   v9 = [v7 fractionalWidthDimension:1.0];
   v10 = [MEMORY[0x1E6995558] estimatedDimension:78.0];
   v11 = [v6 sizeWithWidthDimension:v9 heightDimension:v10];
@@ -2438,7 +2438,7 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
 
   v20 = [MEMORY[0x1E6995580] sectionWithGroup:v19];
   v21 = v20;
-  if (a4)
+  if (header)
   {
     v22 = headerSupplementaryItemLayout();
     v44 = v22;
@@ -2453,9 +2453,9 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
 
   [(SFStartPageCollectionViewController *)self _sectionContentInsets];
   [v21 setContentInsets:?];
-  v24 = [v8 container];
+  container = [environmentCopy container];
 
-  [v24 effectiveContentSize];
+  [container effectiveContentSize];
   v26 = v25;
   v28 = v27;
   [v21 contentInsets];
@@ -2468,9 +2468,9 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
   v35 = v34;
   v37 = v36;
   v39 = v38;
-  v40 = [MEMORY[0x1E69C8880] is2024PrivacyReportEnabled];
+  is2024PrivacyReportEnabled = [MEMORY[0x1E69C8880] is2024PrivacyReportEnabled];
   v41 = v37 + 8.0;
-  if (v40)
+  if (is2024PrivacyReportEnabled)
   {
     v42 = v33 + 8.0;
   }
@@ -2480,7 +2480,7 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
     v42 = v33;
   }
 
-  if (!v40)
+  if (!is2024PrivacyReportEnabled)
   {
     v41 = v37;
   }
@@ -2490,22 +2490,22 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
   return v21;
 }
 
-- ($4E34F1DA1F1A31EFC59C0F9E582921FC)_siteIconLayoutForEnvironment:(SEL)a3 sectionInsets:(id)a4
+- ($4E34F1DA1F1A31EFC59C0F9E582921FC)_siteIconLayoutForEnvironment:(SEL)environment sectionInsets:(id)insets
 {
   trailing = a5.trailing;
   leading = a5.leading;
-  v9 = a4;
-  v10 = [v9 container];
-  [v10 effectiveContentSize];
+  insetsCopy = insets;
+  container = [insetsCopy container];
+  [container effectiveContentSize];
   v12 = v11;
   v14 = v13 - leading - trailing;
 
   [(SFStartPageVisualStyleProviding *)self->_visualStyleProvider siteIconSizeForContainerSize:v14, v12];
   v16 = v15;
   visualStyleProvider = self->_visualStyleProvider;
-  v18 = [v9 traitCollection];
+  traitCollection = [insetsCopy traitCollection];
 
-  v19 = [(SFStartPageVisualStyleProviding *)visualStyleProvider numberOfColumnsForSectionItemType:2 sectionWidth:v18 traitCollection:v14];
+  v19 = [(SFStartPageVisualStyleProviding *)visualStyleProvider numberOfColumnsForSectionItemType:2 sectionWidth:traitCollection traitCollection:v14];
   [(SFStartPageVisualStyleProviding *)self->_visualStyleProvider rowSpacingForSectionItemType:2 containerSize:v14, v12];
   v21 = v20;
   retstr->var0 = v16;
@@ -2515,32 +2515,32 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
   return result;
 }
 
-- (void)_applyStylingToLayoutGroup:(id)a3 withSectionItemType:(int64_t)a4 defaultInterItemSpacing:(double)a5
+- (void)_applyStylingToLayoutGroup:(id)group withSectionItemType:(int64_t)type defaultInterItemSpacing:(double)spacing
 {
-  v10 = a3;
-  v8 = [(SFStartPageVisualStyleProviding *)self->_visualStyleProvider interItemSpacingForSectionItemType:a4];
+  groupCopy = group;
+  v8 = [(SFStartPageVisualStyleProviding *)self->_visualStyleProvider interItemSpacingForSectionItemType:type];
   if (v8)
   {
-    [v10 setInterItemSpacing:v8];
+    [groupCopy setInterItemSpacing:v8];
   }
 
   else
   {
-    v9 = [MEMORY[0x1E6995590] fixedSpacing:a5];
-    [v10 setInterItemSpacing:v9];
+    v9 = [MEMORY[0x1E6995590] fixedSpacing:spacing];
+    [groupCopy setInterItemSpacing:v9];
   }
 }
 
-- (id)_siteIconSectionLayoutForEnvironment:(id)a3
+- (id)_siteIconSectionLayoutForEnvironment:(id)environment
 {
   v29[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  environmentCopy = environment;
   [(SFStartPageCollectionViewController *)self _sectionContentInsets];
   v6 = v5;
   v8 = v7;
   v10 = v9;
   v12 = v11;
-  [(SFStartPageCollectionViewController *)self _siteIconLayoutForEnvironment:v4 sectionInsets:v5];
+  [(SFStartPageCollectionViewController *)self _siteIconLayoutForEnvironment:environmentCopy sectionInsets:v5];
 
   v13 = [MEMORY[0x1E6995558] absoluteDimension:0.0];
   v14 = MEMORY[0x1E6995588];
@@ -2586,24 +2586,24 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
   return v25;
 }
 
-- (id)_siteCardSectionLayoutForEnvironment:(id)a3 numberOfItems:(int64_t)a4
+- (id)_siteCardSectionLayoutForEnvironment:(id)environment numberOfItems:(int64_t)items
 {
   v54[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  environmentCopy = environment;
   [(SFStartPageCollectionViewController *)self _sectionContentInsets];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v6 container];
-  [v15 effectiveContentSize];
+  container = [environmentCopy container];
+  [container effectiveContentSize];
   v17 = v16;
   v19 = v18 - v10 - v14;
 
   visualStyleProvider = self->_visualStyleProvider;
-  v53 = v6;
-  v21 = [v6 traitCollection];
-  v22 = [(SFStartPageVisualStyleProviding *)visualStyleProvider numberOfColumnsForSectionItemType:3 sectionWidth:v21 traitCollection:v19];
+  v53 = environmentCopy;
+  traitCollection = [environmentCopy traitCollection];
+  v22 = [(SFStartPageVisualStyleProviding *)visualStyleProvider numberOfColumnsForSectionItemType:3 sectionWidth:traitCollection traitCollection:v19];
 
   v23 = [MEMORY[0x1E6995558] estimatedDimension:112.0];
   v24 = MEMORY[0x1E6995588];
@@ -2625,8 +2625,8 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
   {
     [(SFStartPageCollectionViewController *)self _applyStylingToLayoutGroup:v32 withSectionItemType:3 defaultInterItemSpacing:0.0];
     v33 = self->_visualStyleProvider;
-    v34 = [(SFStartPageCollectionViewController *)self traitCollection];
-    v35 = -[SFStartPageVisualStyleProviding numberOfRowsForSection:traitCollectionIsHorizontalCompact:](v33, "numberOfRowsForSection:traitCollectionIsHorizontalCompact:", 3, [v34 horizontalSizeClass] == 1);
+    traitCollection2 = [(SFStartPageCollectionViewController *)self traitCollection];
+    v35 = -[SFStartPageVisualStyleProviding numberOfRowsForSection:traitCollectionIsHorizontalCompact:](v33, "numberOfRowsForSection:traitCollectionIsHorizontalCompact:", 3, [traitCollection2 horizontalSizeClass] == 1);
 
     if (v35 < 2)
     {
@@ -2642,7 +2642,7 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
       v39 = v30;
       do
       {
-        if (v38 < a4)
+        if (v38 < items)
         {
           ++v37;
         }
@@ -2706,23 +2706,23 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
   return v46;
 }
 
-- (id)_attributedRichLinkSectionLayoutForEnvironment:(id)a3 maximumNumberOfPages:(int64_t)a4 numberOfItems:(int64_t)a5
+- (id)_attributedRichLinkSectionLayoutForEnvironment:(id)environment maximumNumberOfPages:(int64_t)pages numberOfItems:(int64_t)items
 {
   v51[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  environmentCopy = environment;
   [(SFStartPageCollectionViewController *)self _sectionContentInsets];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v6 container];
-  [v15 effectiveContentSize];
+  container = [environmentCopy container];
+  [container effectiveContentSize];
   v17 = v16;
   v19 = v18 - v10 - v14;
 
   visualStyleProvider = self->_visualStyleProvider;
-  v21 = [v6 traitCollection];
-  v22 = [(SFStartPageVisualStyleProviding *)visualStyleProvider numberOfColumnsForSectionItemType:4 sectionWidth:v21 traitCollection:v19];
+  traitCollection = [environmentCopy traitCollection];
+  v22 = [(SFStartPageVisualStyleProviding *)visualStyleProvider numberOfColumnsForSectionItemType:4 sectionWidth:traitCollection traitCollection:v19];
 
   v23 = [MEMORY[0x1E6995558] estimatedDimension:150.0];
   v24 = MEMORY[0x1E6995588];
@@ -2731,23 +2731,23 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
 
   v49 = v26;
   v27 = [MEMORY[0x1E6995578] itemWithLayoutSize:v26];
-  [(SFStartPageCollectionViewController *)self _siteIconLayoutForEnvironment:v6 sectionInsets:v8, v10, v12, v14];
+  [(SFStartPageCollectionViewController *)self _siteIconLayoutForEnvironment:environmentCopy sectionInsets:v8, v10, v12, v14];
 
-  v28 = [(SFStartPageCollectionViewController *)self _supportsPaginatedSectionLayouts];
+  _supportsPaginatedSectionLayouts = [(SFStartPageCollectionViewController *)self _supportsPaginatedSectionLayouts];
   v29 = MEMORY[0x1E6995588];
   v30 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
   v31 = v23;
   v32 = [v29 sizeWithWidthDimension:v30 heightDimension:v23];
 
   v33 = [MEMORY[0x1E6995568] horizontalGroupWithLayoutSize:v32 repeatingSubitem:v27 count:v22];
-  if (a4 >= 2 && v28)
+  if (pages >= 2 && _supportsPaginatedSectionLayouts)
   {
     [(SFStartPageCollectionViewController *)self _applyStylingToLayoutGroup:v33 withSectionItemType:4 defaultInterItemSpacing:0.0];
     v34 = MEMORY[0x1E6995588];
     v35 = [MEMORY[0x1E6995558] fractionalWidthDimension:0.9];
     v36 = [v34 sizeWithWidthDimension:v35 heightDimension:v31];
 
-    if (v22 >= a5)
+    if (v22 >= items)
     {
       v39 = 1;
     }
@@ -2755,8 +2755,8 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
     else
     {
       v37 = self->_visualStyleProvider;
-      v38 = [(SFStartPageCollectionViewController *)self traitCollection];
-      v39 = -[SFStartPageVisualStyleProviding numberOfRowsForSection:traitCollectionIsHorizontalCompact:](v37, "numberOfRowsForSection:traitCollectionIsHorizontalCompact:", 4, [v38 horizontalSizeClass] == 1);
+      traitCollection2 = [(SFStartPageCollectionViewController *)self traitCollection];
+      v39 = -[SFStartPageVisualStyleProviding numberOfRowsForSection:traitCollectionIsHorizontalCompact:](v37, "numberOfRowsForSection:traitCollectionIsHorizontalCompact:", 4, [traitCollection2 horizontalSizeClass] == 1);
     }
 
     v40 = [MEMORY[0x1E6995568] verticalGroupWithLayoutSize:v36 repeatingSubitem:v33 count:v39];
@@ -2793,8 +2793,8 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
   [(SFStartPageVisualStyleProviding *)self->_visualStyleProvider rowSpacingForSectionItemType:4 containerSize:v19, v17];
   [v43 setInterGroupSpacing:?];
   [v43 setContentInsets:{v8, v10, v12, v14}];
-  v46 = [(SFStartPageCollectionViewController *)self _supportsPaginatedSectionLayouts];
-  if (a4 >= 2 && v46 && [MEMORY[0x1E69C8880] is2024SuggestionsEnabled])
+  _supportsPaginatedSectionLayouts2 = [(SFStartPageCollectionViewController *)self _supportsPaginatedSectionLayouts];
+  if (pages >= 2 && _supportsPaginatedSectionLayouts2 && [MEMORY[0x1E69C8880] is2024SuggestionsEnabled])
   {
     [v43 setOrthogonalScrollingBehavior:4];
   }
@@ -2802,12 +2802,12 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
   return v43;
 }
 
-- (id)_siteRowSectionLayoutForEnvironment:(id)a3
+- (id)_siteRowSectionLayoutForEnvironment:(id)environment
 {
   v39[1] = *MEMORY[0x1E69E9840];
   v4 = MEMORY[0x1E6995588];
   v5 = MEMORY[0x1E6995558];
-  v6 = a3;
+  environmentCopy = environment;
   v7 = [v5 fractionalWidthDimension:1.0];
   v8 = [MEMORY[0x1E6995558] estimatedDimension:40.0];
   v9 = [v4 sizeWithWidthDimension:v7 heightDimension:v8];
@@ -2818,16 +2818,16 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [v6 container];
-  [v19 effectiveContentSize];
+  container = [environmentCopy container];
+  [container effectiveContentSize];
   v21 = v20;
   v23 = v22 - v14 - v18;
 
   visualStyleProvider = self->_visualStyleProvider;
-  v25 = [v6 traitCollection];
-  v26 = [(SFStartPageVisualStyleProviding *)visualStyleProvider numberOfColumnsForSectionItemType:5 sectionWidth:v25 traitCollection:v23];
+  traitCollection = [environmentCopy traitCollection];
+  v26 = [(SFStartPageVisualStyleProviding *)visualStyleProvider numberOfColumnsForSectionItemType:5 sectionWidth:traitCollection traitCollection:v23];
 
-  [(SFStartPageCollectionViewController *)self _siteIconLayoutForEnvironment:v6 sectionInsets:v12, v14, v16, v18, 0, 0];
+  [(SFStartPageCollectionViewController *)self _siteIconLayoutForEnvironment:environmentCopy sectionInsets:v12, v14, v16, v18, 0, 0];
   v27 = MEMORY[0x1E6995588];
   v28 = [MEMORY[0x1E6995558] fractionalWidthDimension:1.0];
   v29 = [MEMORY[0x1E6995558] estimatedDimension:40.0];
@@ -2868,73 +2868,73 @@ void __81__SFStartPageCollectionViewController__toggleExpandedActionForSectionId
   return v35;
 }
 
-- (id)_layoutForSectionAtIndex:(int64_t)a3 inEnvironment:(id)a4
+- (id)_layoutForSectionAtIndex:(int64_t)index inEnvironment:(id)environment
 {
-  v7 = a4;
-  v8 = [(SFStartPageCollectionViewController *)self sections];
-  v9 = [v8 objectAtIndexedSubscript:a3];
-  v10 = [v9 itemType];
-  if (v10 > 2)
+  environmentCopy = environment;
+  sections = [(SFStartPageCollectionViewController *)self sections];
+  v9 = [sections objectAtIndexedSubscript:index];
+  itemType = [v9 itemType];
+  if (itemType > 2)
   {
-    if (v10 <= 4)
+    if (itemType <= 4)
     {
-      if (v10 == 3)
+      if (itemType == 3)
       {
-        -[SFStartPageCollectionViewController _siteCardSectionLayoutForEnvironment:numberOfItems:](self, "_siteCardSectionLayoutForEnvironment:numberOfItems:", v7, [v9 effectiveItemIdentifiersCount]);
+        -[SFStartPageCollectionViewController _siteCardSectionLayoutForEnvironment:numberOfItems:](self, "_siteCardSectionLayoutForEnvironment:numberOfItems:", environmentCopy, [v9 effectiveItemIdentifiersCount]);
       }
 
       else
       {
-        -[SFStartPageCollectionViewController _attributedRichLinkSectionLayoutForEnvironment:maximumNumberOfPages:numberOfItems:](self, "_attributedRichLinkSectionLayoutForEnvironment:maximumNumberOfPages:numberOfItems:", v7, [v9 maximumNumberOfPages], objc_msgSend(v9, "effectiveItemIdentifiersCount"));
+        -[SFStartPageCollectionViewController _attributedRichLinkSectionLayoutForEnvironment:maximumNumberOfPages:numberOfItems:](self, "_attributedRichLinkSectionLayoutForEnvironment:maximumNumberOfPages:numberOfItems:", environmentCopy, [v9 maximumNumberOfPages], objc_msgSend(v9, "effectiveItemIdentifiersCount"));
       }
       v11 = ;
       goto LABEL_19;
     }
 
-    if (v10 == 5)
+    if (itemType == 5)
     {
-      v11 = [(SFStartPageCollectionViewController *)self _siteRowSectionLayoutForEnvironment:v7];
+      v11 = [(SFStartPageCollectionViewController *)self _siteRowSectionLayoutForEnvironment:environmentCopy];
       goto LABEL_19;
     }
 
-    if (v10 != 6)
+    if (itemType != 6)
     {
       goto LABEL_20;
     }
 
 LABEL_12:
-    v11 = [(SFStartPageCollectionViewController *)self _bannerSectionLayoutForEnvironment:v7 includingHeader:0];
+    v11 = [(SFStartPageCollectionViewController *)self _bannerSectionLayoutForEnvironment:environmentCopy includingHeader:0];
 LABEL_19:
     v4 = v11;
     goto LABEL_20;
   }
 
-  if (v10)
+  if (itemType)
   {
-    if (v10 != 1)
+    if (itemType != 1)
     {
-      if (v10 != 2)
+      if (itemType != 2)
       {
         goto LABEL_20;
       }
 
-      v11 = [(SFStartPageCollectionViewController *)self _siteIconSectionLayoutForEnvironment:v7];
+      v11 = [(SFStartPageCollectionViewController *)self _siteIconSectionLayoutForEnvironment:environmentCopy];
       goto LABEL_19;
     }
 
     goto LABEL_12;
   }
 
-  v12 = [v9 title];
-  if ([v12 length] || objc_msgSend(v9, "showsTopSeparator"))
+  title = [v9 title];
+  if ([title length] || objc_msgSend(v9, "showsTopSeparator"))
   {
-    v4 = [(SFStartPageCollectionViewController *)self _bannerSectionLayoutForEnvironment:v7 includingHeader:1];
+    v4 = [(SFStartPageCollectionViewController *)self _bannerSectionLayoutForEnvironment:environmentCopy includingHeader:1];
   }
 
   else
   {
-    v14 = [v9 actions];
-    v4 = -[SFStartPageCollectionViewController _bannerSectionLayoutForEnvironment:includingHeader:](self, "_bannerSectionLayoutForEnvironment:includingHeader:", v7, [v14 count] != 0);
+    actions = [v9 actions];
+    v4 = -[SFStartPageCollectionViewController _bannerSectionLayoutForEnvironment:includingHeader:](self, "_bannerSectionLayoutForEnvironment:includingHeader:", environmentCopy, [actions count] != 0);
   }
 
 LABEL_20:
@@ -2944,8 +2944,8 @@ LABEL_20:
 
 - (BOOL)_supportsPaginatedSectionLayouts
 {
-  v2 = [(SFStartPageCollectionViewController *)self traitCollection];
-  if ([v2 horizontalSizeClass] == 1)
+  traitCollection = [(SFStartPageCollectionViewController *)self traitCollection];
+  if ([traitCollection horizontalSizeClass] == 1)
   {
     LOBYTE(v3) = 1;
   }
@@ -2958,18 +2958,18 @@ LABEL_20:
   return v3;
 }
 
-- (id)collectionView:(id)a3 itemsForBeginningDragSession:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view itemsForBeginningDragSession:(id)session atIndexPath:(id)path
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  [v8 locationInView:a3];
-  if ([(SFStartPageCollectionViewController *)self _shouldShowContextMenuForCellAtIndexPath:v9 fromPoint:?])
+  sessionCopy = session;
+  pathCopy = path;
+  [sessionCopy locationInView:view];
+  if ([(SFStartPageCollectionViewController *)self _shouldShowContextMenuForCellAtIndexPath:pathCopy fromPoint:?])
   {
-    v10 = [(SFStartPageCollectionViewController *)self sections];
-    v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v9, "section")}];
+    sections = [(SFStartPageCollectionViewController *)self sections];
+    v11 = [sections objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-    v12 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource itemIdentifierForIndexPath:v9];
+    v12 = [(UICollectionViewDiffableDataSource *)self->_collectionDataSource itemIdentifierForIndexPath:pathCopy];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -2978,21 +2978,21 @@ LABEL_20:
 
     else
     {
-      v14 = [v11 dragItemProvider];
-      v15 = (v14)[2](v14, v12, v8);
+      dragItemProvider = [v11 dragItemProvider];
+      v15 = (dragItemProvider)[2](dragItemProvider, v12, sessionCopy);
 
       v17 = MEMORY[0x1E69E9820];
       v18 = 3221225472;
       v19 = __95__SFStartPageCollectionViewController_collectionView_itemsForBeginningDragSession_atIndexPath___block_invoke;
       v20 = &unk_1E721F130;
-      v21 = self;
-      v22 = v9;
+      selfCopy = self;
+      v22 = pathCopy;
       [v15 setPreviewProvider:&v17];
       if (v15)
       {
         self->_hasActiveDrag = 1;
         v23[0] = v15;
-        v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:{1, v17, v18, v19, v20, v21}];
+        v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:{1, v17, v18, v19, v20, selfCopy}];
       }
 
       else
@@ -3029,13 +3029,13 @@ id __95__SFStartPageCollectionViewController_collectionView_itemsForBeginningDra
   return v5;
 }
 
-- (id)collectionView:(id)a3 dragPreviewParametersForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view dragPreviewParametersForItemAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(SFStartPageCollectionViewController *)self _previewForCellAtIndexPath:v5];
+  pathCopy = path;
+  v6 = [(SFStartPageCollectionViewController *)self _previewForCellAtIndexPath:pathCopy];
   if (v6)
   {
-    v7 = [(SFStartPageCollectionViewController *)self _dragPreviewParametersForSourceView:v6 atIndexPath:v5];
+    v7 = [(SFStartPageCollectionViewController *)self _dragPreviewParametersForSourceView:v6 atIndexPath:pathCopy];
   }
 
   else
@@ -3046,22 +3046,22 @@ id __95__SFStartPageCollectionViewController_collectionView_itemsForBeginningDra
   return v7;
 }
 
-- (id)_previewForCellAtIndexPath:(id)a3
+- (id)_previewForCellAtIndexPath:(id)path
 {
-  v3 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:a3];
+  v3 = [(UICollectionView *)self->_collectionView cellForItemAtIndexPath:path];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 contextMenuPreviewView];
+    contextMenuPreviewView = [v3 contextMenuPreviewView];
   }
 
   else
   {
-    v4 = 0;
+    contextMenuPreviewView = 0;
   }
 
-  if (v4)
+  if (contextMenuPreviewView)
   {
-    v5 = v4;
+    v5 = contextMenuPreviewView;
   }
 
   else
@@ -3074,30 +3074,30 @@ id __95__SFStartPageCollectionViewController_collectionView_itemsForBeginningDra
   return v5;
 }
 
-- (id)_dragPreviewParametersForSourceView:(id)a3 atIndexPath:(id)a4
+- (id)_dragPreviewParametersForSourceView:(id)view atIndexPath:(id)path
 {
-  v6 = a3;
+  viewCopy = view;
   v7 = MEMORY[0x1E69DC9A0];
-  v8 = a4;
+  pathCopy = path;
   v9 = objc_alloc_init(v7);
-  v10 = [MEMORY[0x1E69DC888] clearColor];
-  [v9 setBackgroundColor:v10];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
+  [v9 setBackgroundColor:clearColor];
 
-  v11 = [(SFStartPageCollectionViewController *)self sections];
-  v12 = [v8 section];
+  sections = [(SFStartPageCollectionViewController *)self sections];
+  section = [pathCopy section];
 
-  v13 = [v11 objectAtIndexedSubscript:v12];
+  v13 = [sections objectAtIndexedSubscript:section];
 
-  v14 = [v13 itemType];
-  if ((v14 - 3) >= 2 && v14 == 2)
+  itemType = [v13 itemType];
+  if ((itemType - 3) >= 2 && itemType == 2)
   {
     +[_SFSiteIcon cornerRadius];
-    v15 = [MEMORY[0x1E69DC888] clearColor];
-    [v9 setBackgroundColor:v15];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [v9 setBackgroundColor:clearColor2];
   }
 
   v16 = MEMORY[0x1E69DC728];
-  [v6 bounds];
+  [viewCopy bounds];
   v17 = [v16 bezierPathWithRoundedRect:? cornerRadius:?];
   [v9 setVisiblePath:v17];
 
@@ -3106,8 +3106,8 @@ id __95__SFStartPageCollectionViewController_collectionView_itemsForBeginningDra
 
 - (BOOL)_canDrop
 {
-  v2 = [(SFStartPageCollectionViewController *)self sections];
-  v3 = [v2 safari_containsObjectPassingTest:&__block_literal_global_61];
+  sections = [(SFStartPageCollectionViewController *)self sections];
+  v3 = [sections safari_containsObjectPassingTest:&__block_literal_global_61];
 
   return v3;
 }
@@ -3120,20 +3120,20 @@ BOOL __47__SFStartPageCollectionViewController__canDrop__block_invoke(uint64_t a
   return v3;
 }
 
-- (void)collectionView:(id)a3 dragSessionWillBegin:(id)a4
+- (void)collectionView:(id)view dragSessionWillBegin:(id)begin
 {
   v5 = MEMORY[0x1E69C8810];
-  v6 = a4;
-  v7 = [v5 sharedLogger];
-  [v7 didStartDragWithDragContentType:5];
+  beginCopy = begin;
+  sharedLogger = [v5 sharedLogger];
+  [sharedLogger didStartDragWithDragContentType:5];
 
-  v8 = [(UICollectionView *)self->_collectionView window];
-  [v6 setLocalContext:v8];
+  window = [(UICollectionView *)self->_collectionView window];
+  [beginCopy setLocalContext:window];
 
   [(SFStartPageCollectionViewController *)self _updateInteractionEnabled];
 }
 
-- (void)collectionView:(id)a3 dragSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dragSessionDidEnd:(id)end
 {
   self->_hasActiveDrag = 0;
   block[0] = MEMORY[0x1E69E9820];
@@ -3177,13 +3177,13 @@ BOOL __47__SFStartPageCollectionViewController__canDrop__block_invoke(uint64_t a
     while (v5);
   }
 
-  v8 = [(SFStartPageCollectionViewController *)self sections];
+  sections = [(SFStartPageCollectionViewController *)self sections];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__SFStartPageCollectionViewController__updateInteractionEnabled__block_invoke;
   v9[3] = &unk_1E721F178;
   v9[4] = self;
-  [v8 enumerateObjectsUsingBlock:v9];
+  [sections enumerateObjectsUsingBlock:v9];
 }
 
 void __64__SFStartPageCollectionViewController__updateInteractionEnabled__block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -3197,21 +3197,21 @@ void __64__SFStartPageCollectionViewController__updateInteractionEnabled__block_
   }
 }
 
-- (void)_updateInteractionEnabledForView:(id)a3
+- (void)_updateInteractionEnabledForView:(id)view
 {
   collectionView = self->_collectionView;
-  v7 = a3;
+  viewCopy = view;
   if ([(UICollectionView *)collectionView hasActiveDrag])
   {
-    [v7 setUserInteractionEnabled:0];
+    [viewCopy setUserInteractionEnabled:0];
     v5 = 2;
   }
 
   else
   {
-    v6 = [(UICollectionView *)self->_collectionView hasActiveDrop];
-    [v7 setUserInteractionEnabled:!v6];
-    if (v6)
+    hasActiveDrop = [(UICollectionView *)self->_collectionView hasActiveDrop];
+    [viewCopy setUserInteractionEnabled:!hasActiveDrop];
+    if (hasActiveDrop)
     {
       v5 = 2;
     }
@@ -3222,21 +3222,21 @@ void __64__SFStartPageCollectionViewController__updateInteractionEnabled__block_
     }
   }
 
-  [v7 setTintAdjustmentMode:v5];
+  [viewCopy setTintAdjustmentMode:v5];
 }
 
-- (id)collectionView:(id)a3 dropSessionDidUpdate:(id)a4 withDestinationIndexPath:(id)a5
+- (id)collectionView:(id)view dropSessionDidUpdate:(id)update withDestinationIndexPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  viewCopy = view;
+  updateCopy = update;
+  pathCopy = path;
   v35 = 0;
   v36 = &v35;
   v37 = 0x3032000000;
   v38 = __Block_byref_object_copy__9;
   v39 = __Block_byref_object_dispose__9;
   v40 = 0;
-  [v9 locationInView:v8];
+  [updateCopy locationInView:viewCopy];
   v12 = v11;
   v14 = v13;
   v27 = MEMORY[0x1E69E9820];
@@ -3244,21 +3244,21 @@ void __64__SFStartPageCollectionViewController__updateInteractionEnabled__block_
   v29 = __100__SFStartPageCollectionViewController_collectionView_dropSessionDidUpdate_withDestinationIndexPath___block_invoke;
   v30 = &unk_1E721F1A0;
   v32 = &v35;
-  v15 = v8;
+  v15 = viewCopy;
   v31 = v15;
   v33 = v12;
   v34 = v14;
   [v15 performUsingPresentationValues:&v27];
   v16 = v36[5];
 
-  v17 = [v16 section];
-  v18 = [(SFStartPageCollectionViewController *)self sections];
-  v19 = v18;
-  if (v16 && v17 < [v18 count])
+  section = [v16 section];
+  sections = [(SFStartPageCollectionViewController *)self sections];
+  v19 = sections;
+  if (v16 && section < [sections count])
   {
-    v20 = [v19 objectAtIndexedSubscript:v17];
-    v21 = [v20 dropOperationProvider];
-    v22 = (v21)[2](v21, [v16 item], v9);
+    v20 = [v19 objectAtIndexedSubscript:section];
+    dropOperationProvider = [v20 dropOperationProvider];
+    v22 = (dropOperationProvider)[2](dropOperationProvider, [v16 item], updateCopy);
 
     v23 = objc_alloc(MEMORY[0x1E69DC838]);
     if ((v22 & 0xFFFFFFFFFFFFFFFELL) == 2)
@@ -3292,23 +3292,23 @@ void __100__SFStartPageCollectionViewController_collectionView_dropSessionDidUpd
   *(v3 + 40) = v2;
 }
 
-- (void)collectionView:(id)a3 performDropWithCoordinator:(id)a4
+- (void)collectionView:(id)view performDropWithCoordinator:(id)coordinator
 {
-  v10 = a4;
-  v5 = [(SFStartPageCollectionViewController *)self sections];
-  v6 = [v10 destinationIndexPath];
-  v7 = [v5 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  coordinatorCopy = coordinator;
+  sections = [(SFStartPageCollectionViewController *)self sections];
+  destinationIndexPath = [coordinatorCopy destinationIndexPath];
+  v7 = [sections objectAtIndexedSubscript:{objc_msgSend(destinationIndexPath, "section")}];
 
-  v8 = [v7 dropHandler];
+  dropHandler = [v7 dropHandler];
 
-  if (v8)
+  if (dropHandler)
   {
-    v9 = [v7 dropHandler];
-    (v9)[2](v9, v10);
+    dropHandler2 = [v7 dropHandler];
+    (dropHandler2)[2](dropHandler2, coordinatorCopy);
   }
 }
 
-- (void)collectionView:(id)a3 dropSessionDidExit:(id)a4
+- (void)collectionView:(id)view dropSessionDidExit:(id)exit
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3318,7 +3318,7 @@ void __100__SFStartPageCollectionViewController_collectionView_dropSessionDidUpd
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)collectionView:(id)a3 dropSessionDidEnd:(id)a4
+- (void)collectionView:(id)view dropSessionDidEnd:(id)end
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -3328,13 +3328,13 @@ void __100__SFStartPageCollectionViewController_collectionView_dropSessionDidUpd
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a4;
-  v7 = v6;
-  if (self->_tapToDismissGestureRecognizer == a3)
+  touchCopy = touch;
+  v7 = touchCopy;
+  if (self->_tapToDismissGestureRecognizer == recognizer)
   {
-    v9 = [v6 view];
+    view = [touchCopy view];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3358,17 +3358,17 @@ void __100__SFStartPageCollectionViewController_collectionView_dropSessionDidUpd
   return v8;
 }
 
-- (void)_didCompleteOnboardingItem:(id)a3 wasClosed:(BOOL)a4
+- (void)_didCompleteOnboardingItem:(id)item wasClosed:(BOOL)closed
 {
-  v4 = a4;
+  closedCopy = closed;
   v6 = MEMORY[0x1E69C8810];
-  v7 = a3;
-  v8 = [v6 sharedLogger];
-  v9 = [v7 identifier];
-  [v8 didInteractWithOnboardingItem:v9 userClosedCard:v4];
+  itemCopy = item;
+  sharedLogger = [v6 sharedLogger];
+  identifier = [itemCopy identifier];
+  [sharedLogger didInteractWithOnboardingItem:identifier userClosedCard:closedCopy];
 
   v10 = +[SFOnboardingCoordinator sharedCoordinator];
-  [v10 didComplete:v7];
+  [v10 didComplete:itemCopy];
 
   v11 = +[SFOnboardingCoordinator sharedCoordinator];
   [v11 pauseStartPageOnboarding];
@@ -3376,19 +3376,19 @@ void __100__SFStartPageCollectionViewController_collectionView_dropSessionDidUpd
   v12 = MEMORY[0x1E69C9860];
   v13 = *MEMORY[0x1E69C9698];
   v14 = +[SFOnboardingCoordinator sharedCoordinator];
-  v15 = [v14 onboardingProvidersForStartPage];
-  v16 = [v12 onboardingSectionWithIdentifier:v13 items:v15];
+  onboardingProvidersForStartPage = [v14 onboardingProvidersForStartPage];
+  v16 = [v12 onboardingSectionWithIdentifier:v13 items:onboardingProvidersForStartPage];
 
   [(SFStartPageCollectionViewController *)self reloadSection:v16 animated:1];
 }
 
-- (void)didStartOnboardingItem:(id)a3
+- (void)didStartOnboardingItem:(id)item
 {
-  v19 = a3;
+  itemCopy = item;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [(SFStartPageCollectionViewController *)self _didCompleteOnboardingItem:v19 wasClosed:0];
-  v5 = [v19 identifier];
-  v6 = [v5 isEqual:*MEMORY[0x1E69C93D0]];
+  [(SFStartPageCollectionViewController *)self _didCompleteOnboardingItem:itemCopy wasClosed:0];
+  identifier = [itemCopy identifier];
+  v6 = [identifier isEqual:*MEMORY[0x1E69C93D0]];
 
   if (v6)
   {
@@ -3396,8 +3396,8 @@ void __100__SFStartPageCollectionViewController_collectionView_dropSessionDidUpd
     goto LABEL_12;
   }
 
-  v7 = [v19 identifier];
-  v8 = [v7 isEqual:*MEMORY[0x1E69C93E8]];
+  identifier2 = [itemCopy identifier];
+  v8 = [identifier2 isEqual:*MEMORY[0x1E69C93E8]];
 
   if (v8)
   {
@@ -3405,8 +3405,8 @@ void __100__SFStartPageCollectionViewController_collectionView_dropSessionDidUpd
     goto LABEL_12;
   }
 
-  v9 = [v19 identifier];
-  v10 = [v9 isEqual:*MEMORY[0x1E69C93E0]];
+  identifier3 = [itemCopy identifier];
+  v10 = [identifier3 isEqual:*MEMORY[0x1E69C93E0]];
 
   if (v10)
   {
@@ -3414,33 +3414,33 @@ void __100__SFStartPageCollectionViewController_collectionView_dropSessionDidUpd
     goto LABEL_12;
   }
 
-  v11 = [v19 identifier];
-  v12 = [v11 isEqual:*MEMORY[0x1E69C93D8]];
+  identifier4 = [itemCopy identifier];
+  v12 = [identifier4 isEqual:*MEMORY[0x1E69C93D8]];
 
   if (v12)
   {
-    v13 = [MEMORY[0x1E6963608] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     v14 = MEMORY[0x1E695DFF8];
     v15 = @"settings-navigation://com.apple.Settings.iCloud/com.apple.Dataclass#Safari";
   }
 
   else
   {
-    v16 = [v19 identifier];
-    v17 = [v16 isEqual:*MEMORY[0x1E69C93F0]];
+    identifier5 = [itemCopy identifier];
+    v17 = [identifier5 isEqual:*MEMORY[0x1E69C93F0]];
 
     if (!v17)
     {
       goto LABEL_12;
     }
 
-    v13 = [MEMORY[0x1E6963608] defaultWorkspace];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     v14 = MEMORY[0x1E695DFF8];
     v15 = @"settings-navigation://com.apple.Settings.Apps/com.apple.Settings.Apps.DefaultApps";
   }
 
   v18 = [v14 URLWithString:v15];
-  [v13 openSensitiveURL:v18 withOptions:0];
+  [defaultWorkspace openSensitiveURL:v18 withOptions:0];
 
 LABEL_12:
 }

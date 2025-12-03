@@ -1,25 +1,25 @@
 @interface PTUINumericKeypad
 + (id)sharedKeypad;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)stringValue;
 - (PTUINumericKeypad)init;
-- (double)_layoutButtonRow:(id)a3 atY:(double)a4 stretch:(BOOL)a5;
+- (double)_layoutButtonRow:(id)row atY:(double)y stretch:(BOOL)stretch;
 - (double)doubleValue;
 - (unint64_t)_remainingAllowedDigits;
-- (void)_appendDigit:(unint64_t)a3;
+- (void)_appendDigit:(unint64_t)digit;
 - (void)_appendDot;
 - (void)_backspace;
 - (void)_clear;
 - (void)_dismissButtonPress;
 - (void)_flash;
 - (void)_updateDisplayedValue;
-- (void)hideAnimated:(BOOL)a3;
-- (void)keyPress:(id)a3;
+- (void)hideAnimated:(BOOL)animated;
+- (void)keyPress:(id)press;
 - (void)layoutSubviews;
-- (void)setDoubleValue:(double)a3;
-- (void)setStringValue:(id)a3;
-- (void)showAnimated:(BOOL)a3 forDelegate:(id)a4;
+- (void)setDoubleValue:(double)value;
+- (void)setStringValue:(id)value;
+- (void)showAnimated:(BOOL)animated forDelegate:(id)delegate;
 @end
 
 @implementation PTUINumericKeypad
@@ -30,7 +30,7 @@
   block[1] = 3221225472;
   block[2] = __33__PTUINumericKeypad_sharedKeypad__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedKeypad_onceToken != -1)
   {
     dispatch_once(&sharedKeypad_onceToken, block);
@@ -55,31 +55,31 @@ uint64_t __33__PTUINumericKeypad_sharedKeypad__block_invoke(uint64_t a1)
   v2 = [(PTUINumericKeypad *)&v43 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     digitsBeforeDot = v2->_digitsBeforeDot;
-    v2->_digitsBeforeDot = v3;
+    v2->_digitsBeforeDot = array;
 
-    v5 = [MEMORY[0x277CBEB18] array];
+    array2 = [MEMORY[0x277CBEB18] array];
     digitsAfterDot = v2->_digitsAfterDot;
-    v2->_digitsAfterDot = v5;
+    v2->_digitsAfterDot = array2;
 
     v7 = objc_alloc_init(MEMORY[0x277D75D18]);
     backgroundView = v2->_backgroundView;
     v2->_backgroundView = v7;
 
     v9 = v2->_backgroundView;
-    v10 = [MEMORY[0x277D75348] whiteColor];
-    [(UIView *)v9 setBackgroundColor:v10];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(UIView *)v9 setBackgroundColor:whiteColor];
 
-    v11 = [(UIView *)v2->_backgroundView layer];
-    [v11 setCornerRadius:10.0];
+    layer = [(UIView *)v2->_backgroundView layer];
+    [layer setCornerRadius:10.0];
 
-    v12 = [(UIView *)v2->_backgroundView layer];
-    [v12 setBorderWidth:2.0];
+    layer2 = [(UIView *)v2->_backgroundView layer];
+    [layer2 setBorderWidth:2.0];
 
-    v13 = [(UIView *)v2->_backgroundView layer];
+    layer3 = [(UIView *)v2->_backgroundView layer];
     v14 = _KeypadForegroundColor();
-    [v13 setBorderColor:{objc_msgSend(v14, "CGColor")}];
+    [layer3 setBorderColor:{objc_msgSend(v14, "CGColor")}];
 
     [(PTUINumericKeypad *)v2 addSubview:v2->_backgroundView];
     v15 = objc_alloc_init(MEMORY[0x277D756B8]);
@@ -87,8 +87,8 @@ uint64_t __33__PTUINumericKeypad_sharedKeypad__block_invoke(uint64_t a1)
     v2->_valueLabel = v15;
 
     v17 = v2->_valueLabel;
-    v18 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v17 setBackgroundColor:v18];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v17 setBackgroundColor:clearColor];
 
     v19 = v2->_valueLabel;
     v20 = _KeypadForegroundColor();
@@ -106,15 +106,15 @@ uint64_t __33__PTUINumericKeypad_sharedKeypad__block_invoke(uint64_t a1)
 
     [(_KeypadDismissButton *)v2->_dismissButton addTarget:v2 action:sel__dismissButtonPress forControlEvents:64];
     [(PTUINumericKeypad *)v2 addSubview:v2->_dismissButton];
-    v25 = [MEMORY[0x277CBEB18] array];
+    array3 = [MEMORY[0x277CBEB18] array];
     for (i = 0; i != 10; ++i)
     {
       v27 = [[_KeypadButton alloc] initWithDigit:i target:v2];
-      [v25 addObject:v27];
+      [array3 addObject:v27];
       [(PTUINumericKeypad *)v2 addSubview:v27];
     }
 
-    v28 = [v25 copy];
+    v28 = [array3 copy];
     digitButtons = v2->_digitButtons;
     v2->_digitButtons = v28;
 
@@ -138,30 +138,30 @@ uint64_t __33__PTUINumericKeypad_sharedKeypad__block_invoke(uint64_t a1)
     v2->_backspaceButton = v36;
 
     [(PTUINumericKeypad *)v2 addSubview:v2->_backspaceButton];
-    v38 = [(PTUINumericKeypad *)v2 layer];
-    [v38 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+    layer4 = [(PTUINumericKeypad *)v2 layer];
+    [layer4 setShadowOffset:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
 
-    v39 = [(PTUINumericKeypad *)v2 layer];
+    layer5 = [(PTUINumericKeypad *)v2 layer];
     LODWORD(v40) = 1053609165;
-    [v39 setShadowOpacity:v40];
+    [layer5 setShadowOpacity:v40];
 
-    v41 = [(PTUINumericKeypad *)v2 layer];
-    [v41 setShadowRadius:8.0];
+    layer6 = [(PTUINumericKeypad *)v2 layer];
+    [layer6 setShadowRadius:8.0];
   }
 
   return v2;
 }
 
-- (void)showAnimated:(BOOL)a3 forDelegate:(id)a4
+- (void)showAnimated:(BOOL)animated forDelegate:(id)delegate
 {
-  v5 = a3;
-  v7 = a4;
-  objc_storeStrong(&self->_delegate, a4);
+  animatedCopy = animated;
+  delegateCopy = delegate;
+  objc_storeStrong(&self->_delegate, delegate);
   if (!self->_showing)
   {
-    v8 = [(PTUINumericKeypad *)self superview];
+    superview = [(PTUINumericKeypad *)self superview];
 
-    if (!v8)
+    if (!superview)
     {
       [__numericKeypadWindow addSubview:self];
       [__numericKeypadWindow bringSubviewToFront:self];
@@ -182,7 +182,7 @@ uint64_t __33__PTUINumericKeypad_sharedKeypad__block_invoke(uint64_t a1)
     v15[4] = self;
     v10 = MEMORY[0x2666F6670](v15);
     v11 = v10;
-    if (v5)
+    if (animatedCopy)
     {
       v12 = MEMORY[0x277D75D18];
       v13[0] = MEMORY[0x277D85DD0];
@@ -213,15 +213,15 @@ uint64_t __46__PTUINumericKeypad_showAnimated_forDelegate___block_invoke(uint64_
   return [*(a1 + 32) setAlpha:1.0];
 }
 
-- (void)hideAnimated:(BOOL)a3
+- (void)hideAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   delegate = self->_delegate;
   self->_delegate = 0;
 
   if (self->_showing)
   {
-    if (v3)
+    if (animatedCopy)
     {
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
@@ -277,9 +277,9 @@ _BYTE *__34__PTUINumericKeypad_hideAnimated___block_invoke_2(uint64_t a1)
       do
       {
         v7 = [(NSMutableArray *)self->_digitsBeforeDot objectAtIndex:v4];
-        v8 = [v7 integerValue];
+        integerValue = [v7 integerValue];
 
-        v6 = v6 + v8 * v5;
+        v6 = v6 + integerValue * v5;
         v5 = v5 * 10.0;
         ++v4;
       }
@@ -299,9 +299,9 @@ _BYTE *__34__PTUINumericKeypad_hideAnimated___block_invoke_2(uint64_t a1)
       do
       {
         v11 = [(NSMutableArray *)self->_digitsAfterDot objectAtIndex:v9];
-        v12 = [v11 integerValue];
+        integerValue2 = [v11 integerValue];
 
-        v6 = v6 + v12 * v10;
+        v6 = v6 + integerValue2 * v10;
         v10 = v10 * 0.1;
         ++v9;
       }
@@ -327,12 +327,12 @@ _BYTE *__34__PTUINumericKeypad_hideAnimated___block_invoke_2(uint64_t a1)
   return v16;
 }
 
-- (void)setDoubleValue:(double)a3
+- (void)setDoubleValue:(double)value
 {
   [(NSMutableArray *)self->_digitsBeforeDot removeAllObjects];
   [(NSMutableArray *)self->_digitsAfterDot removeAllObjects];
-  self->_negative = a3 < 0.0;
-  v5 = fabs(a3);
+  self->_negative = value < 0.0;
+  v5 = fabs(value);
   v6 = vcvtmd_u64_f64(v5);
   if (v6)
   {
@@ -355,8 +355,8 @@ _BYTE *__34__PTUINumericKeypad_hideAnimated___block_invoke_2(uint64_t a1)
     while (v8 <= v6);
   }
 
-  v11 = [(PTUINumericKeypad *)self _remainingAllowedDigits];
-  if (v11 != -1)
+  _remainingAllowedDigits = [(PTUINumericKeypad *)self _remainingAllowedDigits];
+  if (_remainingAllowedDigits != -1)
   {
     v13 = 0;
     v14 = 0;
@@ -385,13 +385,13 @@ _BYTE *__34__PTUINumericKeypad_hideAnimated___block_invoke_2(uint64_t a1)
       }
 
       v12 = v15 - v16;
-      v26 = v14++ == v11;
+      v26 = v14++ == _remainingAllowedDigits;
     }
 
     while (!v26);
   }
 
-  if (-[NSMutableArray count](self->_digitsAfterDot, "count", v12) <= v11 || (-[NSMutableArray lastObject](self->_digitsAfterDot, "lastObject"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 integerValue], v19, -[NSMutableArray removeLastObject](self->_digitsAfterDot, "removeLastObject"), v20 < 5))
+  if (-[NSMutableArray count](self->_digitsAfterDot, "count", v12) <= _remainingAllowedDigits || (-[NSMutableArray lastObject](self->_digitsAfterDot, "lastObject"), v19 = objc_claimAutoreleasedReturnValue(), v20 = [v19 integerValue], v19, -[NSMutableArray removeLastObject](self->_digitsAfterDot, "removeLastObject"), v20 < 5))
   {
 LABEL_19:
     v25 = 0;
@@ -401,8 +401,8 @@ LABEL_19:
   {
     while ([(NSMutableArray *)self->_digitsAfterDot count])
     {
-      v21 = [(NSMutableArray *)self->_digitsAfterDot lastObject];
-      v22 = [v21 integerValue] + 1;
+      lastObject = [(NSMutableArray *)self->_digitsAfterDot lastObject];
+      v22 = [lastObject integerValue] + 1;
 
       [(NSMutableArray *)self->_digitsAfterDot removeLastObject];
       if (v22 <= 9)
@@ -434,18 +434,18 @@ LABEL_19:
     do
     {
       v28 = [(NSMutableArray *)self->_digitsBeforeDot objectAtIndex:v27 - 1];
-      v29 = [v28 integerValue];
-      v30 = v29 + 1;
+      integerValue = [v28 integerValue];
+      v30 = integerValue + 1;
 
-      LOBYTE(v25) = v29 == 9;
-      if (v29 == 9)
+      LOBYTE(v25) = integerValue == 9;
+      if (integerValue == 9)
       {
         v31 = 0;
       }
 
       else
       {
-        v31 = v29 + 1;
+        v31 = integerValue + 1;
       }
 
       v32 = self->_digitsBeforeDot;
@@ -471,11 +471,11 @@ LABEL_19:
   cachedStringValue = self->_cachedStringValue;
   if (!cachedStringValue)
   {
-    v4 = [MEMORY[0x277CCAB68] string];
-    v5 = v4;
+    string = [MEMORY[0x277CCAB68] string];
+    v5 = string;
     if (self->_negative)
     {
-      [v4 appendString:@"-"];
+      [string appendString:@"-"];
     }
 
     if ([(NSMutableArray *)self->_digitsBeforeDot count])
@@ -517,14 +517,14 @@ LABEL_19:
   return cachedStringValue;
 }
 
-- (void)setStringValue:(id)a3
+- (void)setStringValue:(id)value
 {
-  [a3 doubleValue];
+  [value doubleValue];
 
   [(PTUINumericKeypad *)self setDoubleValue:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 210.0;
   v4 = 310.0;
@@ -595,19 +595,19 @@ LABEL_19:
   [(PTUINumericKeypad *)self _layoutButtonRow:v36 atY:v33];
 
   [(_KeypadDismissButton *)self->_dismissButton setFrame:-20.0, -20.0, 40.0, 40.0];
-  v37 = [(_KeypadDismissButton *)self->_dismissButton layer];
-  [v37 setCornerRadius:20.0];
+  layer = [(_KeypadDismissButton *)self->_dismissButton layer];
+  [layer setCornerRadius:20.0];
 
   v38 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = inside.y;
+  x = inside.x;
+  eventCopy = event;
   [(_KeypadDismissButton *)self->_dismissButton convertPoint:self fromView:x, y];
-  if (([(_KeypadDismissButton *)self->_dismissButton pointInside:v7 withEvent:?]& 1) != 0)
+  if (([(_KeypadDismissButton *)self->_dismissButton pointInside:eventCopy withEvent:?]& 1) != 0)
   {
     v8 = 1;
   }
@@ -616,25 +616,25 @@ LABEL_19:
   {
     v10.receiver = self;
     v10.super_class = PTUINumericKeypad;
-    v8 = [(PTUINumericKeypad *)&v10 pointInside:v7 withEvent:x, y];
+    v8 = [(PTUINumericKeypad *)&v10 pointInside:eventCopy withEvent:x, y];
   }
 
   return v8;
 }
 
-- (double)_layoutButtonRow:(id)a3 atY:(double)a4 stretch:(BOOL)a5
+- (double)_layoutButtonRow:(id)row atY:(double)y stretch:(BOOL)stretch
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = [v7 count];
-  if (v8 != 3 && !v5)
+  stretchCopy = stretch;
+  rowCopy = row;
+  v8 = [rowCopy count];
+  if (v8 != 3 && !stretchCopy)
   {
     if (v8 == 1)
     {
-      v12 = [v7 firstObject];
-      v13 = v12;
+      firstObject = [rowCopy firstObject];
+      v13 = firstObject;
       v14 = 78.0;
-      v15 = a4;
+      yCopy2 = y;
     }
 
     else
@@ -644,16 +644,16 @@ LABEL_19:
         goto LABEL_15;
       }
 
-      v11 = [v7 firstObject];
-      [v11 setFrame:{16.0, a4, 54.0, 40.0}];
+      firstObject2 = [rowCopy firstObject];
+      [firstObject2 setFrame:{16.0, y, 54.0, 40.0}];
 
-      v12 = [v7 lastObject];
-      v13 = v12;
+      firstObject = [rowCopy lastObject];
+      v13 = firstObject;
       v14 = 140.0;
-      v15 = a4;
+      yCopy2 = y;
     }
 
-    [v12 setFrame:{v14, v15, 54.0, 40.0}];
+    [firstObject setFrame:{v14, yCopy2, 54.0, 40.0}];
 
     goto LABEL_15;
   }
@@ -678,13 +678,13 @@ LABEL_19:
   v17[2] = __50__PTUINumericKeypad__layoutButtonRow_atY_stretch___block_invoke;
   v17[3] = &unk_279ACA988;
   v17[4] = v18;
-  *&v17[5] = a4;
+  *&v17[5] = y;
   *&v17[6] = v10;
-  [v7 enumerateObjectsUsingBlock:v17];
+  [rowCopy enumerateObjectsUsingBlock:v17];
   _Block_object_dispose(v18, 8);
 LABEL_15:
 
-  return a4 + 40.0 + 8.0;
+  return y + 40.0 + 8.0;
 }
 
 CGFloat __50__PTUINumericKeypad__layoutButtonRow_atY_stretch___block_invoke(double *a1, void *a2)
@@ -711,23 +711,23 @@ CGFloat __50__PTUINumericKeypad__layoutButtonRow_atY_stretch___block_invoke(doub
   self->_cachedStringValue = 0;
 
   valueLabel = self->_valueLabel;
-  v6 = [(PTUINumericKeypad *)self stringValue];
-  [(UILabel *)valueLabel setText:v6];
+  stringValue = [(PTUINumericKeypad *)self stringValue];
+  [(UILabel *)valueLabel setText:stringValue];
 
   delegate = self->_delegate;
 
   [(PTUINumericKeypadDelegate *)delegate numericKeypadDidUpdateValue:self];
 }
 
-- (void)keyPress:(id)a3
+- (void)keyPress:(id)press
 {
-  v5 = a3;
-  v4 = [v5 keyType];
-  if (v4 <= 1)
+  pressCopy = press;
+  keyType = [pressCopy keyType];
+  if (keyType <= 1)
   {
-    if (v4)
+    if (keyType)
     {
-      if (v4 == 1)
+      if (keyType == 1)
       {
         [(PTUINumericKeypad *)self _appendDot];
       }
@@ -735,13 +735,13 @@ CGFloat __50__PTUINumericKeypad__layoutButtonRow_atY_stretch___block_invoke(doub
 
     else
     {
-      -[PTUINumericKeypad _appendDigit:](self, "_appendDigit:", [v5 digit]);
+      -[PTUINumericKeypad _appendDigit:](self, "_appendDigit:", [pressCopy digit]);
     }
   }
 
   else
   {
-    switch(v4)
+    switch(keyType)
     {
       case 2:
         [(PTUINumericKeypad *)self _changeSign];
@@ -756,20 +756,20 @@ CGFloat __50__PTUINumericKeypad__layoutButtonRow_atY_stretch___block_invoke(doub
   }
 }
 
-- (void)_appendDigit:(unint64_t)a3
+- (void)_appendDigit:(unint64_t)digit
 {
   if ([(PTUINumericKeypad *)self _remainingAllowedDigits])
   {
     if (self->_hasDot)
     {
       digitsAfterDot = self->_digitsAfterDot;
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:digit];
       [(NSMutableArray *)digitsAfterDot addObject:v6];
     }
 
     else
     {
-      if (!([(NSMutableArray *)self->_digitsBeforeDot count]| a3))
+      if (!([(NSMutableArray *)self->_digitsBeforeDot count]| digit))
       {
 LABEL_10:
 
@@ -778,7 +778,7 @@ LABEL_10:
       }
 
       digitsBeforeDot = self->_digitsBeforeDot;
-      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+      v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:digit];
       [(NSMutableArray *)digitsBeforeDot insertObject:v6 atIndex:0];
     }
 

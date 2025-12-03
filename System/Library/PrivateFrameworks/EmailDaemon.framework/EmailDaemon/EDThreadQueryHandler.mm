@@ -1,35 +1,35 @@
 @interface EDThreadQueryHandler
 + (OS_os_log)log;
 - (BOOL)start;
-- (EDThreadQueryHandler)initWithQuery:(id)a3 messagePersistence:(id)a4 threadPersistence:(id)a5 hookRegistry:(id)a6 vipManager:(id)a7 searchProvider:(id)a8 remindMeNotificationController:(id)a9 observer:(id)a10 observationIdentifier:(id)a11 delegate:(id)a12 observationResumer:(id)a13 threadMigratorManager:(id)a14;
+- (EDThreadQueryHandler)initWithQuery:(id)query messagePersistence:(id)persistence threadPersistence:(id)threadPersistence hookRegistry:(id)registry vipManager:(id)manager searchProvider:(id)provider remindMeNotificationController:(id)controller observer:(id)self0 observationIdentifier:(id)self1 delegate:(id)self2 observationResumer:(id)self3 threadMigratorManager:(id)self4;
 - (EDThreadQueryHandlerDelegate)delegate;
-- (id)_addSnippetHintsToExtraInfo:(id)a3;
-- (id)inMemoryMessageObjectIDsForThread:(id)a3;
-- (id)messageListItemForObjectID:(id)a3 isPersisted:(BOOL *)a4 error:(id *)a5;
-- (id)messagesInConversationIDs:(id)a3 limit:(int64_t)a4;
+- (id)_addSnippetHintsToExtraInfo:(id)info;
+- (id)inMemoryMessageObjectIDsForThread:(id)thread;
+- (id)messageListItemForObjectID:(id)d isPersisted:(BOOL *)persisted error:(id *)error;
+- (id)messagesInConversationIDs:(id)ds limit:(int64_t)limit;
 - (id)threadReconciliationQueries;
 - (void)_createUnderlyingHandlerIfNeededAndStart;
-- (void)_tearDownWithQueryHandlerBlock:(id)a3;
+- (void)_tearDownWithQueryHandlerBlock:(id)block;
 - (void)cancel;
 - (void)dealloc;
-- (void)observer:(id)a3 matchedAddedObjectIDs:(id)a4 after:(id)a5 extraInfo:(id)a6;
-- (void)observer:(id)a3 matchedAddedObjectIDs:(id)a4 before:(id)a5 extraInfo:(id)a6;
-- (void)observer:(id)a3 matchedChangesForObjectIDs:(id)a4;
-- (void)observer:(id)a3 matchedDeletedObjectIDs:(id)a4;
-- (void)observer:(id)a3 matchedMovedObjectIDs:(id)a4 after:(id)a5 extraInfo:(id)a6;
-- (void)observer:(id)a3 matchedMovedObjectIDs:(id)a4 before:(id)a5 extraInfo:(id)a6;
-- (void)observer:(id)a3 matchedOldestItemsUpdatedForMailboxes:(id)a4;
-- (void)observer:(id)a3 replacedExistingObjectID:(id)a4 withNewObjectID:(id)a5;
-- (void)observer:(id)a3 wasUpdated:(id)a4;
-- (void)observerDidFailInitialLoad:(id)a3 extraInfo:(id)a4;
-- (void)observerDidFinishInitialLoad:(id)a3 extraInfo:(id)a4;
-- (void)observerDidFinishRemoteSearch:(id)a3;
-- (void)observerWillRestart:(id)a3;
-- (void)persistenceDidResetThreadScope:(id)a3;
-- (void)requestSummaryForMessageObjectID:(id)a3;
+- (void)observer:(id)observer matchedAddedObjectIDs:(id)ds after:(id)after extraInfo:(id)info;
+- (void)observer:(id)observer matchedAddedObjectIDs:(id)ds before:(id)before extraInfo:(id)info;
+- (void)observer:(id)observer matchedChangesForObjectIDs:(id)ds;
+- (void)observer:(id)observer matchedDeletedObjectIDs:(id)ds;
+- (void)observer:(id)observer matchedMovedObjectIDs:(id)ds after:(id)after extraInfo:(id)info;
+- (void)observer:(id)observer matchedMovedObjectIDs:(id)ds before:(id)before extraInfo:(id)info;
+- (void)observer:(id)observer matchedOldestItemsUpdatedForMailboxes:(id)mailboxes;
+- (void)observer:(id)observer replacedExistingObjectID:(id)d withNewObjectID:(id)iD;
+- (void)observer:(id)observer wasUpdated:(id)updated;
+- (void)observerDidFailInitialLoad:(id)load extraInfo:(id)info;
+- (void)observerDidFinishInitialLoad:(id)load extraInfo:(id)info;
+- (void)observerDidFinishRemoteSearch:(id)search;
+- (void)observerWillRestart:(id)restart;
+- (void)persistenceDidResetThreadScope:(id)scope;
+- (void)requestSummaryForMessageObjectID:(id)d;
 - (void)start;
 - (void)test_tearDown;
-- (void)threadMigratorDidComplete:(id)a3;
+- (void)threadMigratorDidComplete:(id)complete;
 @end
 
 @implementation EDThreadQueryHandler
@@ -445,7 +445,7 @@ void __64__EDThreadQueryHandler__createUnderlyingHandlerIfNeededAndStart__block_
   v3 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
   {
-    v4 = [(EDThreadQueryHandler *)self threadScope];
+    threadScope = [(EDThreadQueryHandler *)self threadScope];
     [(EDThreadQueryHandler *)self start];
   }
 
@@ -454,8 +454,8 @@ void __64__EDThreadQueryHandler__createUnderlyingHandlerIfNeededAndStart__block_
   v6 = v5 == 0;
   if (!v5)
   {
-    v7 = [(EDThreadQueryHandler *)self hookRegistry];
-    [v7 registerThreadChangeHookResponder:self];
+    hookRegistry = [(EDThreadQueryHandler *)self hookRegistry];
+    [hookRegistry registerThreadChangeHookResponder:self];
 
     [(EDThreadQueryHandler *)self _createUnderlyingHandlerIfNeededAndStart];
   }
@@ -519,7 +519,7 @@ void __64__EDThreadQueryHandler__createUnderlyingHandlerIfNeededAndStart__block_
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v3 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v21[0] = MEMORY[0x1E69E9820];
   v21[1] = 3221225472;
   v21[2] = __64__EDThreadQueryHandler__createUnderlyingHandlerIfNeededAndStart__block_invoke;
@@ -534,22 +534,22 @@ void __64__EDThreadQueryHandler__createUnderlyingHandlerIfNeededAndStart__block_
   v21[11] = &v22;
   v21[12] = &v32;
   v21[13] = &v26;
-  [v3 performWhileLocked:v21];
+  [underlyingHandler performWhileLocked:v21];
 
-  v4 = self;
+  selfCopy = self;
   if (*(v23 + 24) == 1 && (atomic_exchange(&self->_isRunning._Value, 1u) & 1) != 0)
   {
     v5 = +[EDThreadQueryHandler log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v67 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEFAULT, "%p: Notifying observer about restart.", buf, 0xCu);
     }
 
-    v6 = [(EDThreadQueryHandler *)self resultsObserver];
-    v7 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v6 observerWillRestart:v7];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observerWillRestart:observationIdentifier];
 
     v8 = 1;
   }
@@ -565,12 +565,12 @@ void __64__EDThreadQueryHandler__createUnderlyingHandlerIfNeededAndStart__block_
     [v39[5] tearDown];
   }
 
-  v9 = [v61[5] start];
-  v10 = [v55[5] start];
+  start = [v61[5] start];
+  start2 = [v55[5] start];
   if (v8)
   {
-    v11 = v10;
-    if ((v9 | v10))
+    v11 = start2;
+    if ((start | start2))
     {
       v12 = +[EDThreadQueryHandler log];
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -578,11 +578,11 @@ void __64__EDThreadQueryHandler__createUnderlyingHandlerIfNeededAndStart__block_
         v13 = v61[5];
         v14 = v55[5];
         *buf = 134219008;
-        v67 = v4;
+        selfCopy2 = selfCopy;
         v68 = 2048;
         v69 = v13;
         v70 = 1024;
-        *v71 = v9;
+        *v71 = start;
         *&v71[4] = 2048;
         *&v71[6] = v14;
         v72 = 1024;
@@ -599,7 +599,7 @@ void __64__EDThreadQueryHandler__createUnderlyingHandlerIfNeededAndStart__block_
         v19 = v61[5];
         v20 = v55[5];
         *buf = 134219008;
-        v67 = v4;
+        selfCopy2 = selfCopy;
         v68 = 2048;
         v69 = v19;
         v70 = 1024;
@@ -621,7 +621,7 @@ void __64__EDThreadQueryHandler__createUnderlyingHandlerIfNeededAndStart__block_
       v16 = v49[5];
       v17 = v61[5];
       *buf = 134218496;
-      v67 = v4;
+      selfCopy2 = selfCopy;
       v68 = 2048;
       v69 = v16;
       v70 = 2048;
@@ -652,7 +652,7 @@ void __64__EDThreadQueryHandler__createUnderlyingHandlerIfNeededAndStart__block_
   block[1] = 3221225472;
   block[2] = __27__EDThreadQueryHandler_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_103 != -1)
   {
     dispatch_once(&log_onceToken_103, block);
@@ -724,54 +724,54 @@ void __27__EDThreadQueryHandler_log__block_invoke(uint64_t a1)
   log_log_103 = v1;
 }
 
-- (EDThreadQueryHandler)initWithQuery:(id)a3 messagePersistence:(id)a4 threadPersistence:(id)a5 hookRegistry:(id)a6 vipManager:(id)a7 searchProvider:(id)a8 remindMeNotificationController:(id)a9 observer:(id)a10 observationIdentifier:(id)a11 delegate:(id)a12 observationResumer:(id)a13 threadMigratorManager:(id)a14
+- (EDThreadQueryHandler)initWithQuery:(id)query messagePersistence:(id)persistence threadPersistence:(id)threadPersistence hookRegistry:(id)registry vipManager:(id)manager searchProvider:(id)provider remindMeNotificationController:(id)controller observer:(id)self0 observationIdentifier:(id)self1 delegate:(id)self2 observationResumer:(id)self3 threadMigratorManager:(id)self4
 {
-  v54 = a3;
-  v38 = a4;
-  v53 = a4;
-  v39 = a5;
-  v51 = a5;
-  v40 = a6;
-  v50 = a6;
-  v49 = a7;
-  v48 = a8;
-  v47 = a9;
-  v46 = a10;
-  v45 = a11;
-  v52 = a12;
-  v44 = a13;
-  v43 = a14;
+  queryCopy = query;
+  persistenceCopy = persistence;
+  persistenceCopy2 = persistence;
+  threadPersistenceCopy = threadPersistence;
+  threadPersistenceCopy2 = threadPersistence;
+  registryCopy = registry;
+  registryCopy2 = registry;
+  managerCopy = manager;
+  providerCopy = provider;
+  controllerCopy = controller;
+  observerCopy = observer;
+  identifierCopy = identifier;
+  delegateCopy = delegate;
+  resumerCopy = resumer;
+  migratorManagerCopy = migratorManager;
   v55.receiver = self;
   v55.super_class = EDThreadQueryHandler;
   v19 = [(EDThreadQueryHandler *)&v55 init];
   v20 = v19;
   if (v19)
   {
-    objc_storeStrong(&v19->_query, a3);
+    objc_storeStrong(&v19->_query, query);
     v21 = MEMORY[0x1E699ADA0];
-    v22 = [v54 predicate];
-    v23 = [v53 mailboxPersistence];
-    v24 = [v21 threadScopeForPredicate:v22 withMailboxTypeResolver:v23];
+    predicate = [queryCopy predicate];
+    mailboxPersistence = [persistenceCopy2 mailboxPersistence];
+    v24 = [v21 threadScopeForPredicate:predicate withMailboxTypeResolver:mailboxPersistence];
     threadScope = v20->_threadScope;
     v20->_threadScope = v24;
 
-    objc_storeStrong(&v20->_messagePersistence, v38);
-    objc_storeStrong(&v20->_threadPersistence, v39);
-    objc_storeStrong(&v20->_hookRegistry, v40);
-    objc_storeStrong(&v20->_vipManager, a7);
-    objc_storeStrong(&v20->_searchProvider, a8);
-    objc_storeStrong(&v20->_remindMeNotificationController, a9);
-    objc_storeStrong(&v20->_resultsObserver, a10);
-    objc_storeStrong(&v20->_observationIdentifier, a11);
+    objc_storeStrong(&v20->_messagePersistence, persistenceCopy);
+    objc_storeStrong(&v20->_threadPersistence, threadPersistenceCopy);
+    objc_storeStrong(&v20->_hookRegistry, registryCopy);
+    objc_storeStrong(&v20->_vipManager, manager);
+    objc_storeStrong(&v20->_searchProvider, provider);
+    objc_storeStrong(&v20->_remindMeNotificationController, controller);
+    objc_storeStrong(&v20->_resultsObserver, observer);
+    objc_storeStrong(&v20->_observationIdentifier, identifier);
     v26 = objc_alloc(MEMORY[0x1E699B7F0]);
     v27 = objc_alloc_init(_EDThreadQueryUnderlyingHandlers);
     v28 = [v26 initWithObject:v27];
     underlyingHandler = v20->_underlyingHandler;
     v20->_underlyingHandler = v28;
 
-    objc_storeWeak(&v20->_delegate, v52);
-    objc_storeStrong(&v20->_observerResumer, a13);
-    objc_storeStrong(&v20->_threadMigratorManager, a14);
+    objc_storeWeak(&v20->_delegate, delegateCopy);
+    objc_storeStrong(&v20->_observerResumer, resumer);
+    objc_storeStrong(&v20->_threadMigratorManager, migratorManager);
     v30 = +[EDThreadQueryHandler log];
     if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
     {
@@ -782,9 +782,9 @@ void __27__EDThreadQueryHandler_log__block_invoke(uint64_t a1)
   return v20;
 }
 
-- (void)_tearDownWithQueryHandlerBlock:(id)a3
+- (void)_tearDownWithQueryHandlerBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   if (atomic_exchange(&self->_state, 2u) != 2)
   {
     v20 = 0;
@@ -805,7 +805,7 @@ void __27__EDThreadQueryHandler_log__block_invoke(uint64_t a1)
     v11 = __Block_byref_object_copy__49;
     v12 = __Block_byref_object_dispose__49;
     v13 = 0;
-    v5 = [(EDThreadQueryHandler *)self underlyingHandler];
+    underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
     v7[2] = __55__EDThreadQueryHandler__tearDownWithQueryHandlerBlock___block_invoke;
@@ -813,7 +813,7 @@ void __27__EDThreadQueryHandler_log__block_invoke(uint64_t a1)
     v7[4] = &v20;
     v7[5] = &v14;
     v7[6] = &v8;
-    [v5 performWhileLocked:v7];
+    [underlyingHandler performWhileLocked:v7];
 
     v6 = v9[5];
     if (v6)
@@ -823,10 +823,10 @@ void __27__EDThreadQueryHandler_log__block_invoke(uint64_t a1)
 
     else
     {
-      v4[2](v4, v21[5]);
+      blockCopy[2](blockCopy, v21[5]);
     }
 
-    v4[2](v4, v15[5]);
+    blockCopy[2](blockCopy, v15[5]);
     _Block_object_dispose(&v8, 8);
 
     _Block_object_dispose(&v14, 8);
@@ -861,16 +861,16 @@ void __55__EDThreadQueryHandler__tearDownWithQueryHandlerBlock___block_invoke(vo
 {
   if ((EFIsRunningUnitTests() & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"EDThreadQueryHandler.m" lineNumber:339 description:{@"%s can only be called from unit tests", "-[EDThreadQueryHandler test_tearDown]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDThreadQueryHandler.m" lineNumber:339 description:{@"%s can only be called from unit tests", "-[EDThreadQueryHandler test_tearDown]"}];
   }
 
   [(EDThreadQueryHandler *)self _tearDownWithQueryHandlerBlock:&__block_literal_global_94];
 }
 
-- (void)requestSummaryForMessageObjectID:(id)a3
+- (void)requestSummaryForMessageObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -883,17 +883,17 @@ void __55__EDThreadQueryHandler__tearDownWithQueryHandlerBlock___block_invoke(vo
   v10 = __Block_byref_object_copy__49;
   v11 = __Block_byref_object_dispose__49;
   v12 = 0;
-  v5 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __57__EDThreadQueryHandler_requestSummaryForMessageObjectID___block_invoke;
   v6[3] = &unk_1E8258D20;
   v6[4] = &v13;
   v6[5] = &v7;
-  [v5 performWhileLocked:v6];
+  [underlyingHandler performWhileLocked:v6];
 
-  [v14[5] requestSummaryForMessageObjectID:v4];
-  [v8[5] requestSummaryForMessageObjectID:v4];
+  [v14[5] requestSummaryForMessageObjectID:dCopy];
+  [v8[5] requestSummaryForMessageObjectID:dCopy];
   _Block_object_dispose(&v7, 8);
 
   _Block_object_dispose(&v13, 8);
@@ -913,14 +913,14 @@ void __57__EDThreadQueryHandler_requestSummaryForMessageObjectID___block_invoke(
   *(v7 + 40) = v6;
 }
 
-- (id)messageListItemForObjectID:(id)a3 isPersisted:(BOOL *)a4 error:(id *)a5
+- (id)messageListItemForObjectID:(id)d isPersisted:(BOOL *)persisted error:(id *)error
 {
-  v9 = a3;
+  dCopy = d;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v16 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"EDThreadQueryHandler.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"[objectID isKindOfClass:[EMThreadObjectID class]]"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"EDThreadQueryHandler.m" lineNumber:363 description:{@"Invalid parameter not satisfying: %@", @"[objectID isKindOfClass:[EMThreadObjectID class]]"}];
   }
 
   EFContentProtectionValidateObservedStateIsUnlocked();
@@ -942,7 +942,7 @@ void __57__EDThreadQueryHandler_requestSummaryForMessageObjectID___block_invoke(
   v21 = __Block_byref_object_copy__49;
   v22 = __Block_byref_object_dispose__49;
   v23 = 0;
-  v10 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __69__EDThreadQueryHandler_messageListItemForObjectID_isPersisted_error___block_invoke;
@@ -950,14 +950,14 @@ void __57__EDThreadQueryHandler_requestSummaryForMessageObjectID___block_invoke(
   v17[4] = &v30;
   v17[5] = &v24;
   v17[6] = &v18;
-  [v10 performWhileLocked:v17];
+  [underlyingHandler performWhileLocked:v17];
 
   v11 = v25[5];
   if (v11)
   {
-    v12 = [v11 messageListItemForObjectID:v9 error:a5];
+    v12 = [v11 messageListItemForObjectID:dCopy error:error];
     v13 = v12;
-    if (a4 && v12)
+    if (persisted && v12)
     {
       v14 = 1;
       goto LABEL_10;
@@ -969,15 +969,15 @@ void __57__EDThreadQueryHandler_requestSummaryForMessageObjectID___block_invoke(
     }
   }
 
-  v13 = [v31[5] messageListItemForObjectID:v9 error:a5];
-  if (!a4)
+  v13 = [v31[5] messageListItemForObjectID:dCopy error:error];
+  if (!persisted)
   {
     goto LABEL_11;
   }
 
   v14 = v19[5] != 0;
 LABEL_10:
-  *a4 = v14;
+  *persisted = v14;
 LABEL_11:
   _Block_object_dispose(&v18, 8);
 
@@ -1006,24 +1006,24 @@ void __69__EDThreadQueryHandler_messageListItemForObjectID_isPersisted_error___b
   *(v10 + 40) = v9;
 }
 
-- (id)inMemoryMessageObjectIDsForThread:(id)a3
+- (id)inMemoryMessageObjectIDsForThread:(id)thread
 {
-  v4 = a3;
+  threadCopy = thread;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__49;
   v17 = __Block_byref_object_dispose__49;
   v18 = 0;
-  v5 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __58__EDThreadQueryHandler_inMemoryMessageObjectIDsForThread___block_invoke;
   v12[3] = &unk_1E8258D48;
   v12[4] = &v13;
-  [v5 performWhileLocked:v12];
+  [underlyingHandler performWhileLocked:v12];
 
-  v6 = [v14[5] messagesForThread:v4];
+  v6 = [v14[5] messagesForThread:threadCopy];
   v7 = [v6 ef_mapSelector:sel_objectID];
   v8 = v7;
   v9 = MEMORY[0x1E695E0F0];
@@ -1048,28 +1048,28 @@ void __58__EDThreadQueryHandler_inMemoryMessageObjectIDsForThread___block_invoke
   *(v4 + 40) = v3;
 }
 
-- (id)messagesInConversationIDs:(id)a3 limit:(int64_t)a4
+- (id)messagesInConversationIDs:(id)ds limit:(int64_t)limit
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = a3;
+  dsCopy = ds;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__49;
   v20 = __Block_byref_object_dispose__49;
   v21 = 0;
-  v8 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __56__EDThreadQueryHandler_messagesInConversationIDs_limit___block_invoke;
   v15[3] = &unk_1E8258D48;
   v15[4] = &v16;
-  [v8 performWhileLocked:v15];
+  [underlyingHandler performWhileLocked:v15];
 
   v9 = v17[5];
   if (v9)
   {
-    v10 = [v9 messagesInConversationIDs:v7 limit:a4];
+    v10 = [v9 messagesInConversationIDs:dsCopy limit:limit];
   }
 
   else
@@ -1100,23 +1100,23 @@ void __56__EDThreadQueryHandler_messagesInConversationIDs_limit___block_invoke(u
   *(v4 + 40) = v3;
 }
 
-- (void)threadMigratorDidComplete:(id)a3
+- (void)threadMigratorDidComplete:(id)complete
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  completeCopy = complete;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = -86;
-  v5 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v10 = MEMORY[0x1E69E9820];
   v11 = 3221225472;
   v12 = __50__EDThreadQueryHandler_threadMigratorDidComplete___block_invoke;
   v13 = &unk_1E8258D70;
   v15 = &v16;
-  v6 = v4;
+  v6 = completeCopy;
   v14 = v6;
-  [v5 performWhileLocked:&v10];
+  [underlyingHandler performWhileLocked:&v10];
 
   if (*(v17 + 24) == 1)
   {
@@ -1124,27 +1124,27 @@ void __56__EDThreadQueryHandler_messagesInConversationIDs_limit___block_invoke(u
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2048;
       v23 = v6;
       _os_log_impl(&dword_1C61EF000, v7, OS_LOG_TYPE_DEFAULT, "%p: Thread migrator %p did complete.", buf, 0x16u);
     }
 
     [(EDThreadQueryHandler *)self _createUnderlyingHandlerIfNeededAndStart];
-    v8 = [(EDThreadQueryHandler *)self delegate];
-    [v8 threadQueryHandlerStateDidChange:self];
+    delegate = [(EDThreadQueryHandler *)self delegate];
+    [delegate threadQueryHandlerStateDidChange:self];
   }
 
   else
   {
-    v8 = [EDThreadQueryHandler log:v10];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    delegate = [EDThreadQueryHandler log:v10];
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v21 = self;
+      selfCopy2 = self;
       v22 = 2048;
       v23 = v6;
-      _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "%p: Unknown thread migrator %p did complete.", buf, 0x16u);
+      _os_log_impl(&dword_1C61EF000, delegate, OS_LOG_TYPE_DEFAULT, "%p: Unknown thread migrator %p did complete.", buf, 0x16u);
     }
   }
 
@@ -1161,11 +1161,11 @@ void __50__EDThreadQueryHandler_threadMigratorDidComplete___block_invoke(uint64_
   *(*(*(a1 + 40) + 8) + 24) = v4 == v5;
 }
 
-- (void)observer:(id)a3 wasUpdated:(id)a4
+- (void)observer:(id)observer wasUpdated:(id)updated
 {
   v28 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  updatedCopy = updated;
   v8 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1176,22 +1176,22 @@ void __50__EDThreadQueryHandler_threadMigratorDidComplete___block_invoke(uint64_
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = -86;
-  v9 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __44__EDThreadQueryHandler_observer_wasUpdated___block_invoke;
   v15[3] = &unk_1E8258D98;
   v17 = &v18;
   v15[4] = self;
-  v10 = v6;
+  v10 = observerCopy;
   v16 = v10;
-  [v9 performWhileLocked:v15];
+  [underlyingHandler performWhileLocked:v15];
 
   if (*(v19 + 24) == 1)
   {
-    v11 = [(EDThreadQueryHandler *)self resultsObserver];
-    v12 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v11 observer:v12 wasUpdated:v7];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observer:observationIdentifier wasUpdated:updatedCopy];
   }
 
   else
@@ -1200,15 +1200,15 @@ void __50__EDThreadQueryHandler_threadMigratorDidComplete___block_invoke(uint64_
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218498;
-      v23 = self;
+      selfCopy = self;
       v24 = 2114;
       v25 = v10;
       v26 = 2114;
-      v27 = v7;
+      v27 = updatedCopy;
       _os_log_impl(&dword_1C61EF000, v13, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler for %{public}@: %{public}@.", buf, 0x20u);
     }
 
-    [v7 invoke];
+    [updatedCopy invoke];
   }
 
   _Block_object_dispose(&v18, 8);
@@ -1227,17 +1227,17 @@ void __44__EDThreadQueryHandler_observer_wasUpdated___block_invoke(uint64_t a1, 
   *(*(*(a1 + 48) + 8) + 24) = v3;
 }
 
-- (id)_addSnippetHintsToExtraInfo:(id)a3
+- (id)_addSnippetHintsToExtraInfo:(id)info
 {
   v39 = *MEMORY[0x1E69E9840];
-  v28 = a3;
-  v4 = [MEMORY[0x1E696AF00] currentThread];
-  v5 = [v4 threadDictionary];
-  v29 = [v5 objectForKeyedSubscript:@"EDSearchableIndexQueryTransformer.snippetHints"];
+  infoCopy = info;
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v29 = [threadDictionary objectForKeyedSubscript:@"EDSearchableIndexQueryTransformer.snippetHints"];
 
-  v6 = [MEMORY[0x1E696AF00] currentThread];
-  v7 = [v6 threadDictionary];
-  [v7 setObject:0 forKeyedSubscript:@"EDSearchableIndexQueryTransformer.snippetHints"];
+  currentThread2 = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary2 = [currentThread2 threadDictionary];
+  [threadDictionary2 setObject:0 forKeyedSubscript:@"EDSearchableIndexQueryTransformer.snippetHints"];
 
   if ([v29 count])
   {
@@ -1262,12 +1262,12 @@ void __44__EDThreadQueryHandler_observer_wasUpdated___block_invoke(uint64_t a1, 
           }
 
           v14 = *(*(&v34 + 1) + 8 * i);
-          v15 = [v14 snippetHints];
-          v16 = [v14 searchableItemIdentifier];
-          [v8 setObject:v15 forKeyedSubscript:v16];
+          snippetHints = [v14 snippetHints];
+          searchableItemIdentifier = [v14 searchableItemIdentifier];
+          [v8 setObject:snippetHints forKeyedSubscript:searchableItemIdentifier];
 
-          v17 = [v14 searchableItemIdentifier];
-          [v9 addObject:v17];
+          searchableItemIdentifier2 = [v14 searchableItemIdentifier];
+          [v9 addObject:searchableItemIdentifier2];
         }
 
         v11 = [v10 countByEnumeratingWithState:&v34 objects:v38 count:16];
@@ -1276,29 +1276,29 @@ void __44__EDThreadQueryHandler_observer_wasUpdated___block_invoke(uint64_t a1, 
       while (v11);
     }
 
-    v18 = [(EDThreadQueryHandler *)self messagePersistence];
-    v19 = [v18 messageObjectIDsForSearchableItemIdentifiers:v9];
+    messagePersistence = [(EDThreadQueryHandler *)self messagePersistence];
+    v19 = [messagePersistence messageObjectIDsForSearchableItemIdentifiers:v9];
 
-    v20 = [v19 second];
+    second = [v19 second];
     v21 = objc_opt_new();
     v30[0] = MEMORY[0x1E69E9820];
     v30[1] = 3221225472;
     v30[2] = __52__EDThreadQueryHandler__addSnippetHintsToExtraInfo___block_invoke;
     v30[3] = &unk_1E8258DC0;
-    v22 = v20;
+    v22 = second;
     v31 = v22;
     v23 = v21;
     v32 = v23;
     v24 = v8;
     v33 = v24;
     [v9 enumerateObjectsUsingBlock:v30];
-    v25 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v28];
+    v25 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:infoCopy];
     [v25 setObject:v23 forKeyedSubscript:*MEMORY[0x1E699A7D8]];
   }
 
   else
   {
-    v25 = v28;
+    v25 = infoCopy;
   }
 
   v26 = *MEMORY[0x1E69E9840];
@@ -1317,13 +1317,13 @@ void __52__EDThreadQueryHandler__addSnippetHintsToExtraInfo___block_invoke(id *a
   }
 }
 
-- (void)observer:(id)a3 matchedAddedObjectIDs:(id)a4 before:(id)a5 extraInfo:(id)a6
+- (void)observer:(id)observer matchedAddedObjectIDs:(id)ds before:(id)before extraInfo:(id)info
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  observerCopy = observer;
+  dsCopy = ds;
+  beforeCopy = before;
+  infoCopy = info;
   v14 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -1340,41 +1340,41 @@ void __52__EDThreadQueryHandler__addSnippetHintsToExtraInfo___block_invoke(id *a
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = -86;
-  v15 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __72__EDThreadQueryHandler_observer_matchedAddedObjectIDs_before_extraInfo___block_invoke;
   v24 = &unk_1E8258DE8;
   v27 = &v33;
   v28 = &v29;
-  v25 = self;
-  v16 = v10;
+  selfCopy = self;
+  v16 = observerCopy;
   v26 = v16;
-  [v15 performWhileLocked:&v21];
+  [underlyingHandler performWhileLocked:&v21];
 
   if (*(v30 + 24) == 1)
   {
-    [v34[5] addObjectIDsToMigrate:{v11, v21, v22, v23, v24, v25}];
+    [v34[5] addObjectIDsToMigrate:{dsCopy, v21, v22, v23, v24, selfCopy}];
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
-      v17 = [(EDThreadQueryHandler *)self _addSnippetHintsToExtraInfo:v13];
+      v17 = [(EDThreadQueryHandler *)self _addSnippetHintsToExtraInfo:infoCopy];
 
-      v13 = v17;
+      infoCopy = v17;
     }
 
-    v18 = [(EDThreadQueryHandler *)self resultsObserver];
-    v19 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v18 observer:v19 matchedAddedObjectIDs:v11 before:v12 extraInfo:v13];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observer:observationIdentifier matchedAddedObjectIDs:dsCopy before:beforeCopy extraInfo:infoCopy];
   }
 
   else
   {
-    v18 = [EDThreadQueryHandler log:v21];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    resultsObserver = [EDThreadQueryHandler log:v21];
+    if (os_log_type_enabled(resultsObserver, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v40 = self;
-      _os_log_impl(&dword_1C61EF000, v18, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_1C61EF000, resultsObserver, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
     }
   }
 
@@ -1401,13 +1401,13 @@ void __72__EDThreadQueryHandler_observer_matchedAddedObjectIDs_before_extraInfo_
   *(*(*(a1 + 56) + 8) + 24) = v6;
 }
 
-- (void)observer:(id)a3 matchedAddedObjectIDs:(id)a4 after:(id)a5 extraInfo:(id)a6
+- (void)observer:(id)observer matchedAddedObjectIDs:(id)ds after:(id)after extraInfo:(id)info
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  observerCopy = observer;
+  dsCopy = ds;
+  afterCopy = after;
+  infoCopy = info;
   v14 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -1424,41 +1424,41 @@ void __72__EDThreadQueryHandler_observer_matchedAddedObjectIDs_before_extraInfo_
   v30 = &v29;
   v31 = 0x2020000000;
   v32 = -86;
-  v15 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v21 = MEMORY[0x1E69E9820];
   v22 = 3221225472;
   v23 = __71__EDThreadQueryHandler_observer_matchedAddedObjectIDs_after_extraInfo___block_invoke;
   v24 = &unk_1E8258DE8;
   v27 = &v33;
   v28 = &v29;
-  v25 = self;
-  v16 = v10;
+  selfCopy = self;
+  v16 = observerCopy;
   v26 = v16;
-  [v15 performWhileLocked:&v21];
+  [underlyingHandler performWhileLocked:&v21];
 
   if (*(v30 + 24) == 1)
   {
-    [v34[5] addObjectIDsToMigrate:{v11, v21, v22, v23, v24, v25}];
+    [v34[5] addObjectIDsToMigrate:{dsCopy, v21, v22, v23, v24, selfCopy}];
     if ((_os_feature_enabled_impl() & 1) == 0)
     {
-      v17 = [(EDThreadQueryHandler *)self _addSnippetHintsToExtraInfo:v13];
+      v17 = [(EDThreadQueryHandler *)self _addSnippetHintsToExtraInfo:infoCopy];
 
-      v13 = v17;
+      infoCopy = v17;
     }
 
-    v18 = [(EDThreadQueryHandler *)self resultsObserver];
-    v19 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v18 observer:v19 matchedAddedObjectIDs:v11 after:v12 extraInfo:v13];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observer:observationIdentifier matchedAddedObjectIDs:dsCopy after:afterCopy extraInfo:infoCopy];
   }
 
   else
   {
-    v18 = [EDThreadQueryHandler log:v21];
-    if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
+    resultsObserver = [EDThreadQueryHandler log:v21];
+    if (os_log_type_enabled(resultsObserver, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v40 = self;
-      _os_log_impl(&dword_1C61EF000, v18, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_1C61EF000, resultsObserver, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
     }
   }
 
@@ -1485,13 +1485,13 @@ void __71__EDThreadQueryHandler_observer_matchedAddedObjectIDs_after_extraInfo__
   *(*(*(a1 + 56) + 8) + 24) = v6;
 }
 
-- (void)observer:(id)a3 matchedMovedObjectIDs:(id)a4 before:(id)a5 extraInfo:(id)a6
+- (void)observer:(id)observer matchedMovedObjectIDs:(id)ds before:(id)before extraInfo:(id)info
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  observerCopy = observer;
+  dsCopy = ds;
+  beforeCopy = before;
+  infoCopy = info;
   v14 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -1502,32 +1502,32 @@ void __71__EDThreadQueryHandler_observer_matchedAddedObjectIDs_after_extraInfo__
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = -86;
-  v15 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __72__EDThreadQueryHandler_observer_matchedMovedObjectIDs_before_extraInfo___block_invoke;
   v20[3] = &unk_1E8258D98;
   v22 = &v23;
   v20[4] = self;
-  v16 = v10;
+  v16 = observerCopy;
   v21 = v16;
-  [v15 performWhileLocked:v20];
+  [underlyingHandler performWhileLocked:v20];
 
   if (*(v24 + 24) == 1)
   {
-    v17 = [(EDThreadQueryHandler *)self resultsObserver];
-    v18 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v17 observer:v18 matchedMovedObjectIDs:v11 before:v12 extraInfo:v13];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observer:observationIdentifier matchedMovedObjectIDs:dsCopy before:beforeCopy extraInfo:infoCopy];
   }
 
   else
   {
-    v17 = +[EDThreadQueryHandler log];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    resultsObserver = +[EDThreadQueryHandler log];
+    if (os_log_type_enabled(resultsObserver, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v28 = self;
-      _os_log_impl(&dword_1C61EF000, v17, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_1C61EF000, resultsObserver, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
     }
   }
 
@@ -1547,13 +1547,13 @@ void __72__EDThreadQueryHandler_observer_matchedMovedObjectIDs_before_extraInfo_
   *(*(*(a1 + 48) + 8) + 24) = v3;
 }
 
-- (void)observer:(id)a3 matchedMovedObjectIDs:(id)a4 after:(id)a5 extraInfo:(id)a6
+- (void)observer:(id)observer matchedMovedObjectIDs:(id)ds after:(id)after extraInfo:(id)info
 {
   v29 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  observerCopy = observer;
+  dsCopy = ds;
+  afterCopy = after;
+  infoCopy = info;
   v14 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
   {
@@ -1564,32 +1564,32 @@ void __72__EDThreadQueryHandler_observer_matchedMovedObjectIDs_before_extraInfo_
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = -86;
-  v15 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v20[0] = MEMORY[0x1E69E9820];
   v20[1] = 3221225472;
   v20[2] = __71__EDThreadQueryHandler_observer_matchedMovedObjectIDs_after_extraInfo___block_invoke;
   v20[3] = &unk_1E8258D98;
   v22 = &v23;
   v20[4] = self;
-  v16 = v10;
+  v16 = observerCopy;
   v21 = v16;
-  [v15 performWhileLocked:v20];
+  [underlyingHandler performWhileLocked:v20];
 
   if (*(v24 + 24) == 1)
   {
-    v17 = [(EDThreadQueryHandler *)self resultsObserver];
-    v18 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v17 observer:v18 matchedMovedObjectIDs:v11 after:v12 extraInfo:v13];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observer:observationIdentifier matchedMovedObjectIDs:dsCopy after:afterCopy extraInfo:infoCopy];
   }
 
   else
   {
-    v17 = +[EDThreadQueryHandler log];
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    resultsObserver = +[EDThreadQueryHandler log];
+    if (os_log_type_enabled(resultsObserver, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v28 = self;
-      _os_log_impl(&dword_1C61EF000, v17, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_1C61EF000, resultsObserver, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
     }
   }
 
@@ -1609,11 +1609,11 @@ void __71__EDThreadQueryHandler_observer_matchedMovedObjectIDs_after_extraInfo__
   *(*(*(a1 + 48) + 8) + 24) = v3;
 }
 
-- (void)observer:(id)a3 matchedChangesForObjectIDs:(id)a4
+- (void)observer:(id)observer matchedChangesForObjectIDs:(id)ds
 {
   v36 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  dsCopy = ds;
   v8 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1630,37 +1630,37 @@ void __71__EDThreadQueryHandler_observer_matchedMovedObjectIDs_after_extraInfo__
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = -86;
-  v9 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __60__EDThreadQueryHandler_observer_matchedChangesForObjectIDs___block_invoke;
   v19 = &unk_1E8258DE8;
   v22 = &v28;
   v23 = &v24;
-  v20 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = observerCopy;
   v21 = v10;
-  [v9 performWhileLocked:&v16];
+  [underlyingHandler performWhileLocked:&v16];
 
   if (*(v25 + 24) == 1)
   {
     v11 = v29[5];
-    v12 = [v7 allKeys];
-    [v11 changeObjectIDsToMigrate:v12];
+    allKeys = [dsCopy allKeys];
+    [v11 changeObjectIDsToMigrate:allKeys];
 
-    v13 = [(EDThreadQueryHandler *)self resultsObserver];
-    v14 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v13 observer:v14 matchedChangesForObjectIDs:v7];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observer:observationIdentifier matchedChangesForObjectIDs:dsCopy];
   }
 
   else
   {
-    v13 = [EDThreadQueryHandler log:v16];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
+    resultsObserver = [EDThreadQueryHandler log:v16];
+    if (os_log_type_enabled(resultsObserver, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v35 = self;
-      _os_log_impl(&dword_1C61EF000, v13, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_1C61EF000, resultsObserver, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
     }
   }
 
@@ -1687,11 +1687,11 @@ void __60__EDThreadQueryHandler_observer_matchedChangesForObjectIDs___block_invo
   *(*(*(a1 + 56) + 8) + 24) = v6;
 }
 
-- (void)observer:(id)a3 matchedDeletedObjectIDs:(id)a4
+- (void)observer:(id)observer matchedDeletedObjectIDs:(id)ds
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  dsCopy = ds;
   v8 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1708,34 +1708,34 @@ void __60__EDThreadQueryHandler_observer_matchedChangesForObjectIDs___block_invo
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = -86;
-  v9 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v14 = MEMORY[0x1E69E9820];
   v15 = 3221225472;
   v16 = __57__EDThreadQueryHandler_observer_matchedDeletedObjectIDs___block_invoke;
   v17 = &unk_1E8258DE8;
   v20 = &v26;
   v21 = &v22;
-  v18 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = observerCopy;
   v19 = v10;
-  [v9 performWhileLocked:&v14];
+  [underlyingHandler performWhileLocked:&v14];
 
   if (*(v23 + 24) == 1)
   {
-    [v27[5] deleteObjectIDsToMigrate:{v7, v14, v15, v16, v17, v18}];
-    v11 = [(EDThreadQueryHandler *)self resultsObserver];
-    v12 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v11 observer:v12 matchedDeletedObjectIDs:v7];
+    [v27[5] deleteObjectIDsToMigrate:{dsCopy, v14, v15, v16, v17, selfCopy}];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observer:observationIdentifier matchedDeletedObjectIDs:dsCopy];
   }
 
   else
   {
-    v11 = [EDThreadQueryHandler log:v14];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    resultsObserver = [EDThreadQueryHandler log:v14];
+    if (os_log_type_enabled(resultsObserver, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v33 = self;
-      _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_1C61EF000, resultsObserver, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
     }
   }
 
@@ -1762,11 +1762,11 @@ void __57__EDThreadQueryHandler_observer_matchedDeletedObjectIDs___block_invoke(
   *(*(*(a1 + 56) + 8) + 24) = v6;
 }
 
-- (void)observerDidFinishInitialLoad:(id)a3 extraInfo:(id)a4
+- (void)observerDidFinishInitialLoad:(id)load extraInfo:(id)info
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  loadCopy = load;
+  infoCopy = info;
   v8 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1783,17 +1783,17 @@ void __57__EDThreadQueryHandler_observer_matchedDeletedObjectIDs___block_invoke(
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = -86;
-  v9 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __63__EDThreadQueryHandler_observerDidFinishInitialLoad_extraInfo___block_invoke;
   v20 = &unk_1E8258DE8;
   v23 = &v29;
   v24 = &v25;
-  v21 = self;
-  v10 = v6;
+  selfCopy = self;
+  v10 = loadCopy;
   v22 = v10;
-  [v9 performWhileLocked:&v17];
+  [underlyingHandler performWhileLocked:&v17];
 
   if (*(v26 + 24) == 1)
   {
@@ -1804,7 +1804,7 @@ void __57__EDThreadQueryHandler_observer_matchedDeletedObjectIDs___block_invoke(
       {
         v12 = v30[5];
         *buf = 134218240;
-        v36 = self;
+        selfCopy3 = self;
         v37 = 2048;
         v38 = v12;
         _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_INFO, "%p: Starting migrator %p.", buf, 0x16u);
@@ -1819,19 +1819,19 @@ void __57__EDThreadQueryHandler_observer_matchedDeletedObjectIDs___block_invoke(
     }
 
     [v13 start];
-    v14 = [(EDThreadQueryHandler *)self resultsObserver];
-    v15 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v14 observerDidFinishInitialLoad:v15 extraInfo:v7];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observerDidFinishInitialLoad:observationIdentifier extraInfo:infoCopy];
   }
 
   else
   {
-    v14 = [EDThreadQueryHandler log:v17];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    resultsObserver = [EDThreadQueryHandler log:v17];
+    if (os_log_type_enabled(resultsObserver, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v36 = self;
-      _os_log_impl(&dword_1C61EF000, v14, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
+      selfCopy3 = self;
+      _os_log_impl(&dword_1C61EF000, resultsObserver, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
     }
   }
 
@@ -1858,11 +1858,11 @@ void __63__EDThreadQueryHandler_observerDidFinishInitialLoad_extraInfo___block_i
   *(*(*(a1 + 56) + 8) + 24) = v6;
 }
 
-- (void)observerDidFailInitialLoad:(id)a3 extraInfo:(id)a4
+- (void)observerDidFailInitialLoad:(id)load extraInfo:(id)info
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  loadCopy = load;
+  infoCopy = info;
   v8 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -1873,32 +1873,32 @@ void __63__EDThreadQueryHandler_observerDidFinishInitialLoad_extraInfo___block_i
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = -86;
-  v9 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __61__EDThreadQueryHandler_observerDidFailInitialLoad_extraInfo___block_invoke;
   v14[3] = &unk_1E8258D98;
   v16 = &v17;
   v14[4] = self;
-  v10 = v6;
+  v10 = loadCopy;
   v15 = v10;
-  [v9 performWhileLocked:v14];
+  [underlyingHandler performWhileLocked:v14];
 
   if (*(v18 + 24) == 1)
   {
-    v11 = [(EDThreadQueryHandler *)self resultsObserver];
-    v12 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v11 observerDidFailInitialLoad:v12 extraInfo:v7];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observerDidFailInitialLoad:observationIdentifier extraInfo:infoCopy];
   }
 
   else
   {
-    v11 = +[EDThreadQueryHandler log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    resultsObserver = +[EDThreadQueryHandler log];
+    if (os_log_type_enabled(resultsObserver, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v22 = self;
-      _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_1C61EF000, resultsObserver, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
     }
   }
 
@@ -1918,10 +1918,10 @@ void __61__EDThreadQueryHandler_observerDidFailInitialLoad_extraInfo___block_inv
   *(*(*(a1 + 48) + 8) + 24) = v3;
 }
 
-- (void)observerDidFinishRemoteSearch:(id)a3
+- (void)observerDidFinishRemoteSearch:(id)search
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  searchCopy = search;
   v5 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -1932,32 +1932,32 @@ void __61__EDThreadQueryHandler_observerDidFailInitialLoad_extraInfo___block_inv
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = -86;
-  v6 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __54__EDThreadQueryHandler_observerDidFinishRemoteSearch___block_invoke;
   v11[3] = &unk_1E8258D98;
   v13 = &v14;
   v11[4] = self;
-  v7 = v4;
+  v7 = searchCopy;
   v12 = v7;
-  [v6 performWhileLocked:v11];
+  [underlyingHandler performWhileLocked:v11];
 
   if (*(v15 + 24) == 1)
   {
-    v8 = [(EDThreadQueryHandler *)self resultsObserver];
-    v9 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v8 observerDidFinishRemoteSearch:v9];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observerDidFinishRemoteSearch:observationIdentifier];
   }
 
   else
   {
-    v8 = +[EDThreadQueryHandler log];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    resultsObserver = +[EDThreadQueryHandler log];
+    if (os_log_type_enabled(resultsObserver, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v19 = self;
-      _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_1C61EF000, resultsObserver, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
     }
   }
 
@@ -1977,12 +1977,12 @@ void __54__EDThreadQueryHandler_observerDidFinishRemoteSearch___block_invoke(uin
   *(*(*(a1 + 48) + 8) + 24) = v3;
 }
 
-- (void)observer:(id)a3 replacedExistingObjectID:(id)a4 withNewObjectID:(id)a5
+- (void)observer:(id)observer replacedExistingObjectID:(id)d withNewObjectID:(id)iD
 {
   v26 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  observerCopy = observer;
+  dCopy = d;
+  iDCopy = iD;
   v11 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
@@ -1993,32 +1993,32 @@ void __54__EDThreadQueryHandler_observerDidFinishRemoteSearch___block_invoke(uin
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = -86;
-  v12 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __74__EDThreadQueryHandler_observer_replacedExistingObjectID_withNewObjectID___block_invoke;
   v17[3] = &unk_1E8258D98;
   v19 = &v20;
   v17[4] = self;
-  v13 = v8;
+  v13 = observerCopy;
   v18 = v13;
-  [v12 performWhileLocked:v17];
+  [underlyingHandler performWhileLocked:v17];
 
   if (*(v21 + 24) == 1)
   {
-    v14 = [(EDThreadQueryHandler *)self resultsObserver];
-    v15 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v14 observer:v15 replacedExistingObjectID:v9 withNewObjectID:v10];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observer:observationIdentifier replacedExistingObjectID:dCopy withNewObjectID:iDCopy];
   }
 
   else
   {
-    v14 = +[EDThreadQueryHandler log];
-    if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
+    resultsObserver = +[EDThreadQueryHandler log];
+    if (os_log_type_enabled(resultsObserver, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v25 = self;
-      _os_log_impl(&dword_1C61EF000, v14, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_1C61EF000, resultsObserver, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
     }
   }
 
@@ -2038,10 +2038,10 @@ void __74__EDThreadQueryHandler_observer_replacedExistingObjectID_withNewObjectI
   *(*(*(a1 + 48) + 8) + 24) = v3;
 }
 
-- (void)observerWillRestart:(id)a3
+- (void)observerWillRestart:(id)restart
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  restartCopy = restart;
   v5 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2058,34 +2058,34 @@ void __74__EDThreadQueryHandler_observer_replacedExistingObjectID_withNewObjectI
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = -86;
-  v6 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __44__EDThreadQueryHandler_observerWillRestart___block_invoke;
   v14 = &unk_1E8258DE8;
   v17 = &v23;
   v18 = &v19;
-  v15 = self;
-  v7 = v4;
+  selfCopy = self;
+  v7 = restartCopy;
   v16 = v7;
-  [v6 performWhileLocked:&v11];
+  [underlyingHandler performWhileLocked:&v11];
 
   if (*(v20 + 24) == 1)
   {
     [v24[5] reset];
-    v8 = [(EDThreadQueryHandler *)self resultsObserver];
-    v9 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v8 observerWillRestart:v9];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observerWillRestart:observationIdentifier];
   }
 
   else
   {
-    v8 = [EDThreadQueryHandler log:v11];
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    resultsObserver = [EDThreadQueryHandler log:v11];
+    if (os_log_type_enabled(resultsObserver, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v30 = self;
-      _os_log_impl(&dword_1C61EF000, v8, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
+      selfCopy2 = self;
+      _os_log_impl(&dword_1C61EF000, resultsObserver, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
     }
   }
 
@@ -2112,11 +2112,11 @@ void __44__EDThreadQueryHandler_observerWillRestart___block_invoke(uint64_t a1, 
   *(*(*(a1 + 56) + 8) + 24) = v6;
 }
 
-- (void)observer:(id)a3 matchedOldestItemsUpdatedForMailboxes:(id)a4
+- (void)observer:(id)observer matchedOldestItemsUpdatedForMailboxes:(id)mailboxes
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  observerCopy = observer;
+  mailboxesCopy = mailboxes;
   v8 = +[EDThreadQueryHandler log];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
@@ -2127,32 +2127,32 @@ void __44__EDThreadQueryHandler_observerWillRestart___block_invoke(uint64_t a1, 
   v18 = &v17;
   v19 = 0x2020000000;
   v20 = -86;
-  v9 = [(EDThreadQueryHandler *)self underlyingHandler];
+  underlyingHandler = [(EDThreadQueryHandler *)self underlyingHandler];
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __71__EDThreadQueryHandler_observer_matchedOldestItemsUpdatedForMailboxes___block_invoke;
   v14[3] = &unk_1E8258D98;
   v16 = &v17;
   v14[4] = self;
-  v10 = v6;
+  v10 = observerCopy;
   v15 = v10;
-  [v9 performWhileLocked:v14];
+  [underlyingHandler performWhileLocked:v14];
 
   if (*(v18 + 24) == 1)
   {
-    v11 = [(EDThreadQueryHandler *)self resultsObserver];
-    v12 = [(EDThreadQueryHandler *)self observationIdentifier];
-    [v11 observer:v12 matchedOldestItemsUpdatedForMailboxes:v7];
+    resultsObserver = [(EDThreadQueryHandler *)self resultsObserver];
+    observationIdentifier = [(EDThreadQueryHandler *)self observationIdentifier];
+    [resultsObserver observer:observationIdentifier matchedOldestItemsUpdatedForMailboxes:mailboxesCopy];
   }
 
   else
   {
-    v11 = +[EDThreadQueryHandler log];
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+    resultsObserver = +[EDThreadQueryHandler log];
+    if (os_log_type_enabled(resultsObserver, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v22 = self;
-      _os_log_impl(&dword_1C61EF000, v11, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
+      selfCopy = self;
+      _os_log_impl(&dword_1C61EF000, resultsObserver, OS_LOG_TYPE_DEFAULT, "%p: Observer callback from unknown (old?) underlying handler.", buf, 0xCu);
     }
   }
 
@@ -2172,11 +2172,11 @@ void __71__EDThreadQueryHandler_observer_matchedOldestItemsUpdatedForMailboxes__
   *(*(*(a1 + 48) + 8) + 24) = v3;
 }
 
-- (void)persistenceDidResetThreadScope:(id)a3
+- (void)persistenceDidResetThreadScope:(id)scope
 {
-  v6 = a3;
-  v4 = [(EDThreadQueryHandler *)self threadScope];
-  v5 = [v6 isEqual:v4];
+  scopeCopy = scope;
+  threadScope = [(EDThreadQueryHandler *)self threadScope];
+  v5 = [scopeCopy isEqual:threadScope];
 
   if (v5)
   {
@@ -2187,13 +2187,13 @@ void __71__EDThreadQueryHandler_observer_matchedOldestItemsUpdatedForMailboxes__
 - (id)threadReconciliationQueries
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(EDThreadQueryHandler *)self query];
-  v4 = [v3 queryOptions];
+  query = [(EDThreadQueryHandler *)self query];
+  queryOptions = [query queryOptions];
 
-  if ((v4 & 8) != 0)
+  if ((queryOptions & 8) != 0)
   {
-    v6 = [(EDThreadQueryHandler *)self query];
-    v9[0] = v6;
+    query2 = [(EDThreadQueryHandler *)self query];
+    v9[0] = query2;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v9 count:1];
   }
 
@@ -2242,7 +2242,7 @@ void __64__EDThreadQueryHandler__createUnderlyingHandlerIfNeededAndStart__block_
 
 - (void)start
 {
-  OUTLINED_FUNCTION_0_0(a1, a2, a3, 3.8521e-34);
+  OUTLINED_FUNCTION_0_0(self, a2, a3, 3.8521e-34);
   _os_log_debug_impl(&dword_1C61EF000, v5, OS_LOG_TYPE_DEBUG, "%p: Starting EDThreadQueryHandler for threadscope\n%{public}@", v4, 0x16u);
 }
 

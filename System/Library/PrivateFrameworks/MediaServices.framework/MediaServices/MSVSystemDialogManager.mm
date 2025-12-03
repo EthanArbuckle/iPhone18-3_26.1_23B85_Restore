@@ -1,15 +1,15 @@
 @interface MSVSystemDialogManager
 + (id)sharedManager;
 - (MSVSystemDialogManager)init;
-- (id)systemDialogForUserNotification:(__CFUserNotification *)a3;
+- (id)systemDialogForUserNotification:(__CFUserNotification *)notification;
 - (void)dealloc;
-- (void)registerSystemDialog:(id)a3 forUserNotification:(__CFUserNotification *)a4;
-- (void)unregisterSystemDialogWithUserNotification:(__CFUserNotification *)a3;
+- (void)registerSystemDialog:(id)dialog forUserNotification:(__CFUserNotification *)notification;
+- (void)unregisterSystemDialogWithUserNotification:(__CFUserNotification *)notification;
 @end
 
 @implementation MSVSystemDialogManager
 
-- (void)unregisterSystemDialogWithUserNotification:(__CFUserNotification *)a3
+- (void)unregisterSystemDialogWithUserNotification:(__CFUserNotification *)notification
 {
   serialQueue = self->_serialQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -17,11 +17,11 @@
   v4[2] = __69__MSVSystemDialogManager_unregisterSystemDialogWithUserNotification___block_invoke;
   v4[3] = &unk_1E7982898;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = notification;
   dispatch_sync(serialQueue, v4);
 }
 
-- (id)systemDialogForUserNotification:(__CFUserNotification *)a3
+- (id)systemDialogForUserNotification:(__CFUserNotification *)notification
 {
   v7 = 0;
   v8 = &v7;
@@ -36,7 +36,7 @@
   block[3] = &unk_1E7982870;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = notification;
   dispatch_sync(serialQueue, block);
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -54,18 +54,18 @@ uint64_t __58__MSVSystemDialogManager_systemDialogForUserNotification___block_in
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)registerSystemDialog:(id)a3 forUserNotification:(__CFUserNotification *)a4
+- (void)registerSystemDialog:(id)dialog forUserNotification:(__CFUserNotification *)notification
 {
-  v6 = a3;
+  dialogCopy = dialog;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __67__MSVSystemDialogManager_registerSystemDialog_forUserNotification___block_invoke;
   block[3] = &unk_1E7982848;
-  v10 = v6;
-  v11 = a4;
+  v10 = dialogCopy;
+  notificationCopy = notification;
   block[4] = self;
-  v8 = v6;
+  v8 = dialogCopy;
   dispatch_sync(serialQueue, block);
 }
 

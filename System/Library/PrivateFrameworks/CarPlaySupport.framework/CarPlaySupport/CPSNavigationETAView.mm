@@ -1,187 +1,187 @@
 @interface CPSNavigationETAView
 + (id)createPlatterView;
-- (CPSNavigationETAView)initWithTrip:(id)a3 style:(unint64_t)a4;
+- (CPSNavigationETAView)initWithTrip:(id)trip style:(unint64_t)style;
 - (id)backgroundColorFromEstimatesStyle;
 - (void)_updateStyle;
-- (void)setTripEstimateStyle:(unint64_t)a3;
-- (void)showManeuvers:(id)a3;
-- (void)updateEstimates:(id)a3 forManeuver:(id)a4;
+- (void)setTripEstimateStyle:(unint64_t)style;
+- (void)showManeuvers:(id)maneuvers;
+- (void)updateEstimates:(id)estimates forManeuver:(id)maneuver;
 @end
 
 @implementation CPSNavigationETAView
 
-- (CPSNavigationETAView)initWithTrip:(id)a3 style:(unint64_t)a4
+- (CPSNavigationETAView)initWithTrip:(id)trip style:(unint64_t)style
 {
   v62[4] = *MEMORY[0x277D85DE8];
-  v60 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v58 = a4;
-  v4 = v60;
-  v60 = 0;
+  objc_storeStrong(location, trip);
+  styleCopy = style;
+  v4 = selfCopy;
+  selfCopy = 0;
   v57.receiver = v4;
   v57.super_class = CPSNavigationETAView;
   v52 = [(CPSNavigationETAView *)&v57 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
-  v60 = v52;
-  objc_storeStrong(&v60, v52);
+  selfCopy = v52;
+  objc_storeStrong(&selfCopy, v52);
   if (v52)
   {
-    objc_storeStrong(&v60->_trip, location[0]);
-    v60->_tripEstimateStyle = v58;
+    objc_storeStrong(&selfCopy->_trip, location[0]);
+    selfCopy->_tripEstimateStyle = styleCopy;
     if (_UISolariumEnabled())
     {
       v56 = +[_TtC14CarPlaySupport12CPSGlassView createWithTemplateConfiguration];
-      v50 = [v56 layer];
-      [v50 setCornerRadius:18.0];
-      *&v5 = MEMORY[0x277D82BD8](v50).n128_u64[0];
+      layer = [v56 layer];
+      [layer setCornerRadius:18.0];
+      *&v5 = MEMORY[0x277D82BD8](layer).n128_u64[0];
       [v56 setTranslatesAutoresizingMaskIntoConstraints:{0, v5}];
-      objc_storeStrong(&v60->_contentView, v56);
+      objc_storeStrong(&selfCopy->_contentView, v56);
       objc_storeStrong(&v56, 0);
     }
 
     else
     {
-      v55 = [objc_opt_class() createPlatterView];
-      v49 = [(CPSNavigationETAView *)v60 backgroundColorFromEstimatesStyle];
-      [v55 setPlatterBackgroundColor:?];
-      MEMORY[0x277D82BD8](v49);
-      [v55 setShadowWithRadius:20.0 opacity:0.18];
-      objc_storeStrong(&v60->_contentView, v55);
-      objc_storeStrong(&v55, 0);
+      createPlatterView = [objc_opt_class() createPlatterView];
+      backgroundColorFromEstimatesStyle = [(CPSNavigationETAView *)selfCopy backgroundColorFromEstimatesStyle];
+      [createPlatterView setPlatterBackgroundColor:?];
+      MEMORY[0x277D82BD8](backgroundColorFromEstimatesStyle);
+      [createPlatterView setShadowWithRadius:20.0 opacity:0.18];
+      objc_storeStrong(&selfCopy->_contentView, createPlatterView);
+      objc_storeStrong(&createPlatterView, 0);
     }
 
-    [(CPSNavigationETAView *)v60 addSubview:v60->_contentView];
+    [(CPSNavigationETAView *)selfCopy addSubview:selfCopy->_contentView];
     v35 = MEMORY[0x277CCAAD0];
-    v48 = [(UIView *)v60->_contentView leadingAnchor];
-    v47 = [(CPSNavigationETAView *)v60 leadingAnchor];
-    v46 = [(NSLayoutXAxisAnchor *)v48 constraintEqualToAnchor:?];
+    leadingAnchor = [(UIView *)selfCopy->_contentView leadingAnchor];
+    leadingAnchor2 = [(CPSNavigationETAView *)selfCopy leadingAnchor];
+    v46 = [(NSLayoutXAxisAnchor *)leadingAnchor constraintEqualToAnchor:?];
     v62[0] = v46;
-    v45 = [(UIView *)v60->_contentView topAnchor];
-    v44 = [(CPSNavigationETAView *)v60 topAnchor];
-    v43 = [(NSLayoutYAxisAnchor *)v45 constraintEqualToAnchor:?];
+    topAnchor = [(UIView *)selfCopy->_contentView topAnchor];
+    topAnchor2 = [(CPSNavigationETAView *)selfCopy topAnchor];
+    v43 = [(NSLayoutYAxisAnchor *)topAnchor constraintEqualToAnchor:?];
     v62[1] = v43;
-    v42 = [(UIView *)v60->_contentView trailingAnchor];
-    v41 = [(CPSNavigationETAView *)v60 trailingAnchor];
-    v40 = [(NSLayoutXAxisAnchor *)v42 constraintEqualToAnchor:?];
+    trailingAnchor = [(UIView *)selfCopy->_contentView trailingAnchor];
+    trailingAnchor2 = [(CPSNavigationETAView *)selfCopy trailingAnchor];
+    v40 = [(NSLayoutXAxisAnchor *)trailingAnchor constraintEqualToAnchor:?];
     v62[2] = v40;
-    v39 = [(UIView *)v60->_contentView bottomAnchor];
-    v38 = [(CPSNavigationETAView *)v60 bottomAnchor];
-    v37 = [(NSLayoutYAxisAnchor *)v39 constraintEqualToAnchor:?];
+    bottomAnchor = [(UIView *)selfCopy->_contentView bottomAnchor];
+    bottomAnchor2 = [(CPSNavigationETAView *)selfCopy bottomAnchor];
+    v37 = [(NSLayoutYAxisAnchor *)bottomAnchor constraintEqualToAnchor:?];
     v62[3] = v37;
     v36 = [MEMORY[0x277CBEA60] arrayWithObjects:v62 count:4];
     [v35 activateConstraints:?];
     MEMORY[0x277D82BD8](v36);
     MEMORY[0x277D82BD8](v37);
-    MEMORY[0x277D82BD8](v38);
-    MEMORY[0x277D82BD8](v39);
+    MEMORY[0x277D82BD8](bottomAnchor2);
+    MEMORY[0x277D82BD8](bottomAnchor);
     MEMORY[0x277D82BD8](v40);
-    MEMORY[0x277D82BD8](v41);
-    MEMORY[0x277D82BD8](v42);
+    MEMORY[0x277D82BD8](trailingAnchor2);
+    MEMORY[0x277D82BD8](trailingAnchor);
     MEMORY[0x277D82BD8](v43);
-    MEMORY[0x277D82BD8](v44);
-    MEMORY[0x277D82BD8](v45);
+    MEMORY[0x277D82BD8](topAnchor2);
+    MEMORY[0x277D82BD8](topAnchor);
     MEMORY[0x277D82BD8](v46);
-    MEMORY[0x277D82BD8](v47);
-    *&v6 = MEMORY[0x277D82BD8](v48).n128_u64[0];
-    [(CPSNavigationETAView *)v60 setTranslatesAutoresizingMaskIntoConstraints:0, v6];
-    v54 = [location[0] destination];
+    MEMORY[0x277D82BD8](leadingAnchor2);
+    *&v6 = MEMORY[0x277D82BD8](leadingAnchor).n128_u64[0];
+    [(CPSNavigationETAView *)selfCopy setTranslatesAutoresizingMaskIntoConstraints:0, v6];
+    destination = [location[0] destination];
     v7 = [CPSRouteEstimatesView alloc];
-    v8 = [(CPSRouteEstimatesView *)v7 initWithStyle:v58];
-    routeEstimatesView = v60->_routeEstimatesView;
-    v60->_routeEstimatesView = v8;
-    v53 = [v54 timeZone];
-    if (v53)
+    v8 = [(CPSRouteEstimatesView *)v7 initWithStyle:styleCopy];
+    routeEstimatesView = selfCopy->_routeEstimatesView;
+    selfCopy->_routeEstimatesView = v8;
+    timeZone = [destination timeZone];
+    if (timeZone)
     {
-      v34 = [(CPSNavigationETAView *)v60 routeEstimatesView];
-      [(CPSRouteEstimatesView *)v34 setArrivalTimeZone:v53];
-      MEMORY[0x277D82BD8](v34);
+      routeEstimatesView = [(CPSNavigationETAView *)selfCopy routeEstimatesView];
+      [(CPSRouteEstimatesView *)routeEstimatesView setArrivalTimeZone:timeZone];
+      MEMORY[0x277D82BD8](routeEstimatesView);
     }
 
-    contentView = v60->_contentView;
-    v15 = [(CPSNavigationETAView *)v60 routeEstimatesView];
+    contentView = selfCopy->_contentView;
+    routeEstimatesView2 = [(CPSNavigationETAView *)selfCopy routeEstimatesView];
     [(UIView *)contentView addSubview:?];
-    *&v10 = MEMORY[0x277D82BD8](v15).n128_u64[0];
+    *&v10 = MEMORY[0x277D82BD8](routeEstimatesView2).n128_u64[0];
     v16 = MEMORY[0x277CCAAD0];
-    v33 = [(CPSNavigationETAView *)v60 routeEstimatesView];
-    v32 = [(CPSRouteEstimatesView *)v33 leadingAnchor];
-    v31 = [(UIView *)v60->_contentView leadingAnchor];
-    v30 = [v32 constraintEqualToAnchor:?];
+    routeEstimatesView3 = [(CPSNavigationETAView *)selfCopy routeEstimatesView];
+    leadingAnchor3 = [(CPSRouteEstimatesView *)routeEstimatesView3 leadingAnchor];
+    leadingAnchor4 = [(UIView *)selfCopy->_contentView leadingAnchor];
+    v30 = [leadingAnchor3 constraintEqualToAnchor:?];
     v61[0] = v30;
-    v29 = [(CPSNavigationETAView *)v60 routeEstimatesView];
-    v28 = [(CPSRouteEstimatesView *)v29 trailingAnchor];
-    v27 = [(UIView *)v60->_contentView trailingAnchor];
-    v26 = [v28 constraintEqualToAnchor:?];
+    routeEstimatesView4 = [(CPSNavigationETAView *)selfCopy routeEstimatesView];
+    trailingAnchor3 = [(CPSRouteEstimatesView *)routeEstimatesView4 trailingAnchor];
+    trailingAnchor4 = [(UIView *)selfCopy->_contentView trailingAnchor];
+    v26 = [trailingAnchor3 constraintEqualToAnchor:?];
     v61[1] = v26;
-    v25 = [(CPSNavigationETAView *)v60 routeEstimatesView];
-    v24 = [(CPSRouteEstimatesView *)v25 centerYAnchor];
-    v23 = [(UIView *)v60->_contentView centerYAnchor];
-    v22 = [v24 constraintEqualToAnchor:?];
+    routeEstimatesView5 = [(CPSNavigationETAView *)selfCopy routeEstimatesView];
+    centerYAnchor = [(CPSRouteEstimatesView *)routeEstimatesView5 centerYAnchor];
+    centerYAnchor2 = [(UIView *)selfCopy->_contentView centerYAnchor];
+    v22 = [centerYAnchor constraintEqualToAnchor:?];
     v61[2] = v22;
-    v21 = [(CPSNavigationETAView *)v60 routeEstimatesView];
-    v20 = [(CPSRouteEstimatesView *)v21 bottomAnchor];
-    v19 = [(UIView *)v60->_contentView bottomAnchor];
-    v18 = [v20 constraintEqualToAnchor:8.0 constant:?];
+    routeEstimatesView6 = [(CPSNavigationETAView *)selfCopy routeEstimatesView];
+    bottomAnchor3 = [(CPSRouteEstimatesView *)routeEstimatesView6 bottomAnchor];
+    bottomAnchor4 = [(UIView *)selfCopy->_contentView bottomAnchor];
+    v18 = [bottomAnchor3 constraintEqualToAnchor:8.0 constant:?];
     v61[3] = v18;
     v17 = [MEMORY[0x277CBEA60] arrayWithObjects:v61 count:4];
     [v16 activateConstraints:?];
     MEMORY[0x277D82BD8](v17);
     MEMORY[0x277D82BD8](v18);
-    MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v21);
+    MEMORY[0x277D82BD8](bottomAnchor4);
+    MEMORY[0x277D82BD8](bottomAnchor3);
+    MEMORY[0x277D82BD8](routeEstimatesView6);
     MEMORY[0x277D82BD8](v22);
-    MEMORY[0x277D82BD8](v23);
-    MEMORY[0x277D82BD8](v24);
-    MEMORY[0x277D82BD8](v25);
+    MEMORY[0x277D82BD8](centerYAnchor2);
+    MEMORY[0x277D82BD8](centerYAnchor);
+    MEMORY[0x277D82BD8](routeEstimatesView5);
     MEMORY[0x277D82BD8](v26);
-    MEMORY[0x277D82BD8](v27);
-    MEMORY[0x277D82BD8](v28);
-    MEMORY[0x277D82BD8](v29);
+    MEMORY[0x277D82BD8](trailingAnchor4);
+    MEMORY[0x277D82BD8](trailingAnchor3);
+    MEMORY[0x277D82BD8](routeEstimatesView4);
     MEMORY[0x277D82BD8](v30);
-    MEMORY[0x277D82BD8](v31);
-    MEMORY[0x277D82BD8](v32);
-    *&v11 = MEMORY[0x277D82BD8](v33).n128_u64[0];
-    [(CPSNavigationETAView *)v60 _updateStyle];
-    objc_storeStrong(&v53, 0);
-    objc_storeStrong(&v54, 0);
+    MEMORY[0x277D82BD8](leadingAnchor4);
+    MEMORY[0x277D82BD8](leadingAnchor3);
+    *&v11 = MEMORY[0x277D82BD8](routeEstimatesView3).n128_u64[0];
+    [(CPSNavigationETAView *)selfCopy _updateStyle];
+    objc_storeStrong(&timeZone, 0);
+    objc_storeStrong(&destination, 0);
   }
 
-  v13 = MEMORY[0x277D82BE0](v60);
+  v13 = MEMORY[0x277D82BE0](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v60, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v13;
 }
 
-- (void)setTripEstimateStyle:(unint64_t)a3
+- (void)setTripEstimateStyle:(unint64_t)style
 {
-  if (self->_tripEstimateStyle != a3)
+  if (self->_tripEstimateStyle != style)
   {
-    self->_tripEstimateStyle = a3;
+    self->_tripEstimateStyle = style;
     [(CPSNavigationETAView *)self _updateStyle];
   }
 }
 
 - (void)_updateStyle
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(CPSNavigationETAView *)self backgroundColorFromEstimatesStyle];
   if (_UISolariumEnabled())
   {
-    [(UIView *)v5->_contentView setGlassTintColor:location[0]];
+    [(UIView *)selfCopy->_contentView setGlassTintColor:location[0]];
   }
 
   else
   {
-    v3 = [(CPSNavigationETAView *)v5 contentView];
-    [(UIView *)v3 setPlatterBackgroundColor:location[0]];
-    MEMORY[0x277D82BD8](v3);
+    contentView = [(CPSNavigationETAView *)selfCopy contentView];
+    [(UIView *)contentView setPlatterBackgroundColor:location[0]];
+    MEMORY[0x277D82BD8](contentView);
   }
 
-  v2 = [(CPSNavigationETAView *)v5 routeEstimatesView];
-  [(CPSRouteEstimatesView *)v2 setTripEstimateStyle:[(CPSNavigationETAView *)v5 tripEstimateStyle]];
-  MEMORY[0x277D82BD8](v2);
+  routeEstimatesView = [(CPSNavigationETAView *)selfCopy routeEstimatesView];
+  [(CPSRouteEstimatesView *)routeEstimatesView setTripEstimateStyle:[(CPSNavigationETAView *)selfCopy tripEstimateStyle]];
+  MEMORY[0x277D82BD8](routeEstimatesView);
   objc_storeStrong(location, 0);
 }
 
@@ -189,41 +189,41 @@
 {
   if ([(CPSNavigationETAView *)self tripEstimateStyle]== 1)
   {
-    v4 = [MEMORY[0x277D75348] blackColor];
-    v5 = [v4 colorWithAlphaComponent:0.65];
-    MEMORY[0x277D82BD8](v4);
+    blackColor = [MEMORY[0x277D75348] blackColor];
+    v5 = [blackColor colorWithAlphaComponent:0.65];
+    MEMORY[0x277D82BD8](blackColor);
   }
 
   else
   {
-    v3 = [MEMORY[0x277D75348] whiteColor];
-    v5 = [v3 colorWithAlphaComponent:0.75];
-    MEMORY[0x277D82BD8](v3);
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    v5 = [whiteColor colorWithAlphaComponent:0.75];
+    MEMORY[0x277D82BD8](whiteColor);
   }
 
   return v5;
 }
 
-- (void)showManeuvers:(id)a3
+- (void)showManeuvers:(id)maneuvers
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, maneuvers);
   objc_storeStrong(location, 0);
 }
 
-- (void)updateEstimates:(id)a3 forManeuver:(id)a4
+- (void)updateEstimates:(id)estimates forManeuver:(id)maneuver
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, estimates);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(CPSNavigationETAView *)v8 routeEstimatesView];
-  [(CPSRouteEstimatesView *)v5 setCurrentTravelEstimates:location[0]];
-  MEMORY[0x277D82BD8](v5);
+  objc_storeStrong(&v6, maneuver);
+  routeEstimatesView = [(CPSNavigationETAView *)selfCopy routeEstimatesView];
+  [(CPSRouteEstimatesView *)routeEstimatesView setCurrentTravelEstimates:location[0]];
+  MEMORY[0x277D82BD8](routeEstimatesView);
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }

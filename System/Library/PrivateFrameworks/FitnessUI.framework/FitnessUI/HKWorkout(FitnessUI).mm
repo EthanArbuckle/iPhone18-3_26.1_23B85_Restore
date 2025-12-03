@@ -37,34 +37,34 @@
 
 + (uint64_t)_isHeartRateSupportedInPrivacySettings
 {
-  v0 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v1 = [v0 persistentDomainForName:*MEMORY[0x1E696C8E0]];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v1 = [standardUserDefaults persistentDomainForName:*MEMORY[0x1E696C8E0]];
 
   v2 = [v1 objectForKey:*MEMORY[0x1E696C8E8]];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (uint64_t)fiui_strokeStyle
 {
   v54 = *MEMORY[0x1E69E9840];
-  v2 = [a1 metadata];
+  metadata = [self metadata];
   v3 = *MEMORY[0x1E696BB60];
-  v4 = [v2 objectForKeyedSubscript:*MEMORY[0x1E696BB60]];
+  v4 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696BB60]];
 
   if (v4)
   {
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
   }
 
   else
@@ -74,7 +74,7 @@
     v48 = 0u;
     v49 = 0u;
     v50 = 0u;
-    v7 = [a1 fiui_eventsOfType:3];
+    v7 = [self fiui_eventsOfType:3];
     v8 = [v7 countByEnumeratingWithState:&v47 objects:v53 count:16];
     if (v8)
     {
@@ -89,8 +89,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v47 + 1) + 8 * i) metadata];
-          v13 = [v12 objectForKeyedSubscript:v3];
+          metadata2 = [*(*(&v47 + 1) + 8 * i) metadata];
+          v13 = [metadata2 objectForKeyedSubscript:v3];
 
           if (v13)
           {
@@ -98,8 +98,8 @@
             if (v14)
             {
               v15 = v14;
-              v16 = [v14 integerValue];
-              v17 = [MEMORY[0x1E696AD98] numberWithInteger:v16 + 1];
+              integerValue2 = [v14 integerValue];
+              v17 = [MEMORY[0x1E696AD98] numberWithInteger:integerValue2 + 1];
             }
 
             else
@@ -118,14 +118,14 @@
     }
 
     v18 = [v6 count];
-    v5 = v18;
+    integerValue = v18;
     if (v18)
     {
       if (v18 == 1)
       {
-        v19 = [v6 allKeys];
-        v20 = [v19 firstObject];
-        v5 = [v20 integerValue];
+        allKeys = [v6 allKeys];
+        firstObject = [allKeys firstObject];
+        integerValue = [firstObject integerValue];
 
         v4 = 0;
       }
@@ -136,8 +136,8 @@
         v46 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v21 = [v6 allValues];
-        v22 = [v21 countByEnumeratingWithState:&v43 objects:v52 count:16];
+        allValues = [v6 allValues];
+        v22 = [allValues countByEnumeratingWithState:&v43 objects:v52 count:16];
         if (v22)
         {
           v23 = v22;
@@ -150,14 +150,14 @@
             {
               if (*v44 != v24)
               {
-                objc_enumerationMutation(v21);
+                objc_enumerationMutation(allValues);
               }
 
               [*(*(&v43 + 1) + 8 * j) floatValue];
               v25 = v25 + v27;
             }
 
-            v23 = [v21 countByEnumeratingWithState:&v43 objects:v52 count:16];
+            v23 = [allValues countByEnumeratingWithState:&v43 objects:v52 count:16];
           }
 
           while (v23);
@@ -173,8 +173,8 @@
         v42 = 0u;
         v39 = 0u;
         v40 = 0u;
-        v19 = [v6 allKeys];
-        v28 = [v19 countByEnumeratingWithState:&v39 objects:v51 count:16];
+        allKeys = [v6 allKeys];
+        v28 = [allKeys countByEnumeratingWithState:&v39 objects:v51 count:16];
         if (v28)
         {
           v29 = v28;
@@ -189,14 +189,14 @@
             v32 = v25 + -1.0;
           }
 
-          v5 = 1;
+          integerValue = 1;
           while (2)
           {
             for (k = 0; k != v29; ++k)
             {
               if (*v40 != v30)
               {
-                objc_enumerationMutation(v19);
+                objc_enumerationMutation(allKeys);
               }
 
               v34 = *(*(&v39 + 1) + 8 * k);
@@ -206,12 +206,12 @@
 
               if ((v37 / v32) > 0.9)
               {
-                v5 = [v34 integerValue];
+                integerValue = [v34 integerValue];
                 goto LABEL_45;
               }
             }
 
-            v29 = [v19 countByEnumeratingWithState:&v39 objects:v51 count:16];
+            v29 = [allKeys countByEnumeratingWithState:&v39 objects:v51 count:16];
             if (v29)
             {
               continue;
@@ -223,7 +223,7 @@
 
         else
         {
-          v5 = 1;
+          integerValue = 1;
         }
       }
 
@@ -236,63 +236,63 @@ LABEL_45:
     }
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (double)fiui_completionFactor
 {
-  v2 = [a1 _goalType];
+  _goalType = [self _goalType];
   v3 = 0.0;
-  if (v2 > 1)
+  if (_goalType > 1)
   {
-    if (v2 != 2)
+    if (_goalType != 2)
     {
-      if (v2 != 3)
+      if (_goalType != 3)
       {
         return v3;
       }
 
-      v10 = [a1 totalEnergyBurned];
-      v11 = [MEMORY[0x1E696C510] jouleUnit];
-      [v10 doubleValueForUnit:v11];
+      totalEnergyBurned = [self totalEnergyBurned];
+      jouleUnit = [MEMORY[0x1E696C510] jouleUnit];
+      [totalEnergyBurned doubleValueForUnit:jouleUnit];
       v7 = v12;
 
-      v8 = [a1 _goal];
-      v9 = [MEMORY[0x1E696C510] jouleUnit];
+      _goal = [self _goal];
+      jouleUnit2 = [MEMORY[0x1E696C510] jouleUnit];
       goto LABEL_8;
     }
 
-    v16 = [a1 _goal];
-    v17 = [MEMORY[0x1E696C510] secondUnit];
-    [v16 doubleValueForUnit:v17];
+    _goal2 = [self _goal];
+    secondUnit = [MEMORY[0x1E696C510] secondUnit];
+    [_goal2 doubleValueForUnit:secondUnit];
     v19 = v18;
 
     if (v19 > 2.22044605e-16)
     {
-      [a1 duration];
+      [self duration];
       return v20 / v19;
     }
   }
 
   else
   {
-    if (!v2)
+    if (!_goalType)
     {
       return 1.0;
     }
 
-    if (v2 == 1)
+    if (_goalType == 1)
     {
-      v4 = [a1 totalDistance];
-      v5 = [MEMORY[0x1E696C510] meterUnit];
-      [v4 doubleValueForUnit:v5];
+      totalDistance = [self totalDistance];
+      meterUnit = [MEMORY[0x1E696C510] meterUnit];
+      [totalDistance doubleValueForUnit:meterUnit];
       v7 = v6;
 
-      v8 = [a1 _goal];
-      v9 = [MEMORY[0x1E696C510] meterUnit];
+      _goal = [self _goal];
+      jouleUnit2 = [MEMORY[0x1E696C510] meterUnit];
 LABEL_8:
-      v13 = v9;
-      [v8 doubleValueForUnit:v9];
+      v13 = jouleUnit2;
+      [_goal doubleValueForUnit:jouleUnit2];
       v15 = v14;
 
       if (v15 <= 2.22044605e-16)
@@ -312,37 +312,37 @@ LABEL_8:
 
 - (BOOL)fiui_hasAveragePace
 {
-  v1 = [a1 _fiui_averagePaceQty];
-  v2 = v1 != 0;
+  _fiui_averagePaceQty = [self _fiui_averagePaceQty];
+  v2 = _fiui_averagePaceQty != 0;
 
   return v2;
 }
 
 - (id)_fiui_averagePaceQty
 {
-  v1 = [a1 metadata];
-  v2 = [v1 objectForKey:*MEMORY[0x1E696C798]];
+  metadata = [self metadata];
+  v2 = [metadata objectForKey:*MEMORY[0x1E696C798]];
 
   return v2;
 }
 
 - (id)fiui_eventsOfType:()FitnessUI
 {
-  v4 = [a1 workoutEvents];
+  workoutEvents = [self workoutEvents];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __42__HKWorkout_FitnessUI__fiui_eventsOfType___block_invoke;
   v8[3] = &__block_descriptor_40_e41_B24__0__HKWorkoutEvent_8__NSDictionary_16l;
   v8[4] = a3;
   v5 = [MEMORY[0x1E696AE18] predicateWithBlock:v8];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [workoutEvents filteredArrayUsingPredicate:v5];
 
   return v6;
 }
 
 - (uint64_t)fiui_numberOfEventsOfType:()FitnessUI
 {
-  v1 = [a1 fiui_eventsOfType:?];
+  v1 = [self fiui_eventsOfType:?];
   v2 = [v1 count];
 
   return v2;
@@ -352,58 +352,58 @@ LABEL_8:
 {
   v40[8] = *MEMORY[0x1E69E9840];
   v39[0] = @"activityType";
-  [a1 workoutActivityType];
+  [self workoutActivityType];
   v38 = _HKWorkoutActivityNameForActivityType();
   v40[0] = v38;
   v39[1] = @"duration";
   v2 = MEMORY[0x1E696AEC0];
-  [a1 duration];
+  [self duration];
   v37 = [v2 stringWithFormat:@"%f", v3];
   v40[1] = v37;
   v39[2] = @"distance";
-  v36 = [a1 totalDistance];
-  v35 = [MEMORY[0x1E696C510] meterUnit];
+  totalDistance = [self totalDistance];
+  meterUnit = [MEMORY[0x1E696C510] meterUnit];
   v4 = MEMORY[0x1E696AEC0];
-  [v36 doubleValueForUnit:v35];
+  [totalDistance doubleValueForUnit:meterUnit];
   v34 = [v4 stringWithFormat:@"%f", v5];
   v40[2] = v34;
   v39[3] = @"activeCalories";
-  v33 = [a1 totalEnergyBurned];
-  v32 = [MEMORY[0x1E696C510] kilocalorieUnit];
+  totalEnergyBurned = [self totalEnergyBurned];
+  kilocalorieUnit = [MEMORY[0x1E696C510] kilocalorieUnit];
   v6 = MEMORY[0x1E696AEC0];
-  [v33 doubleValueForUnit:v32];
+  [totalEnergyBurned doubleValueForUnit:kilocalorieUnit];
   v31 = [v6 stringWithFormat:@"%f", v7];
   v40[3] = v31;
   v39[4] = @"basalCalories";
-  v30 = [a1 _totalBasalEnergyBurned];
-  v29 = [MEMORY[0x1E696C510] kilocalorieUnit];
+  _totalBasalEnergyBurned = [self _totalBasalEnergyBurned];
+  kilocalorieUnit2 = [MEMORY[0x1E696C510] kilocalorieUnit];
   v8 = MEMORY[0x1E696AEC0];
-  [v30 doubleValueForUnit:v29];
+  [_totalBasalEnergyBurned doubleValueForUnit:kilocalorieUnit2];
   v10 = [v8 stringWithFormat:@"%f", v9];
   v40[4] = v10;
   v39[5] = @"flightsClimbed";
-  v11 = [a1 totalFlightsClimbed];
-  v12 = [MEMORY[0x1E696C510] countUnit];
+  totalFlightsClimbed = [self totalFlightsClimbed];
+  countUnit = [MEMORY[0x1E696C510] countUnit];
   v13 = MEMORY[0x1E696AEC0];
-  [v11 doubleValueForUnit:v12];
+  [totalFlightsClimbed doubleValueForUnit:countUnit];
   v15 = [v13 stringWithFormat:@"%f", v14];
   v40[5] = v15;
   v39[6] = @"strokeCount";
-  v16 = [a1 totalSwimmingStrokeCount];
-  v17 = [MEMORY[0x1E696C510] countUnit];
+  totalSwimmingStrokeCount = [self totalSwimmingStrokeCount];
+  countUnit2 = [MEMORY[0x1E696C510] countUnit];
   v18 = MEMORY[0x1E696AEC0];
-  [v16 doubleValueForUnit:v17];
+  [totalSwimmingStrokeCount doubleValueForUnit:countUnit2];
   v20 = [v18 stringWithFormat:@"%f", v19];
   v40[6] = v20;
   v39[7] = @"uuid";
-  v21 = [a1 UUID];
-  v40[7] = v21;
+  uUID = [self UUID];
+  v40[7] = uUID;
   v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v40 forKeys:v39 count:8];
 
   v23 = MEMORY[0x1E696AEC0];
   v24 = _KeyValueStringFromDictionary(v22);
-  v25 = [a1 metadata];
-  v26 = _KeyValueStringFromDictionary(v25);
+  metadata = [self metadata];
+  v26 = _KeyValueStringFromDictionary(metadata);
   v27 = [v23 stringWithFormat:@"%@ metadata={ %@ }", v24, v26];
 
   return v27;
@@ -411,16 +411,16 @@ LABEL_8:
 
 - (BOOL)fiui_hasWeatherData
 {
-  v2 = [a1 metadata];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E696C780]];
+  metadata = [self metadata];
+  v3 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696C780]];
   if (v3)
   {
-    v4 = [a1 metadata];
-    v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E696BBC0]];
+    metadata2 = [self metadata];
+    v5 = [metadata2 objectForKeyedSubscript:*MEMORY[0x1E696BBC0]];
     if (v5)
     {
-      v6 = [a1 metadata];
-      v7 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696BBB8]];
+      metadata3 = [self metadata];
+      v7 = [metadata3 objectForKeyedSubscript:*MEMORY[0x1E696BBB8]];
       v8 = v7 != 0;
     }
 
@@ -440,30 +440,30 @@ LABEL_8:
 
 - (uint64_t)fiui_hasNonZeroElevationGain
 {
-  v1 = [a1 fiui_elevationGain];
-  v2 = v1;
-  if (v1)
+  fiui_elevationGain = [self fiui_elevationGain];
+  v2 = fiui_elevationGain;
+  if (fiui_elevationGain)
   {
-    v3 = [v1 fiui_isNonzero];
+    fiui_isNonzero = [fiui_elevationGain fiui_isNonzero];
   }
 
   else
   {
-    v3 = 0;
+    fiui_isNonzero = 0;
   }
 
-  return v3;
+  return fiui_isNonzero;
 }
 
 - (id)fiui_elevationGain
 {
-  v2 = [a1 metadata];
-  v3 = [v2 objectForKey:*MEMORY[0x1E696BA98]];
+  metadata = [self metadata];
+  v3 = [metadata objectForKey:*MEMORY[0x1E696BA98]];
 
   if (!v3)
   {
-    v4 = [a1 metadata];
-    v3 = [v4 objectForKey:*MEMORY[0x1E696C7A8]];
+    metadata2 = [self metadata];
+    v3 = [metadata2 objectForKey:*MEMORY[0x1E696C7A8]];
   }
 
   return v3;
@@ -471,19 +471,19 @@ LABEL_8:
 
 - (double)fiui_duration
 {
-  v2 = [a1 metadata];
-  v3 = [v2 objectForKey:*MEMORY[0x1E696BAA8]];
+  metadata = [self metadata];
+  v3 = [metadata objectForKey:*MEMORY[0x1E696BAA8]];
 
   if (v3)
   {
-    v4 = [MEMORY[0x1E696C510] secondUnit];
-    [v3 doubleValueForUnit:v4];
+    secondUnit = [MEMORY[0x1E696C510] secondUnit];
+    [v3 doubleValueForUnit:secondUnit];
     v6 = v5;
   }
 
   else
   {
-    [a1 duration];
+    [self duration];
     v6 = v7;
   }
 
@@ -492,38 +492,38 @@ LABEL_8:
 
 - (id)fiui_totalDistance
 {
-  v2 = [a1 metadata];
-  v3 = [v2 objectForKey:*MEMORY[0x1E696BAF8]];
+  metadata = [self metadata];
+  v3 = [metadata objectForKey:*MEMORY[0x1E696BAF8]];
 
-  v4 = [a1 metadata];
-  v5 = [v4 objectForKey:*MEMORY[0x1E696BA70]];
+  metadata2 = [self metadata];
+  v5 = [metadata2 objectForKey:*MEMORY[0x1E696BA70]];
 
   if (v3)
   {
-    v6 = v3;
+    totalDistance = v3;
   }
 
   else if (v5)
   {
-    v6 = v5;
+    totalDistance = v5;
   }
 
   else
   {
-    v6 = [a1 totalDistance];
+    totalDistance = [self totalDistance];
   }
 
-  v7 = v6;
+  v7 = totalDistance;
 
   return v7;
 }
 
 - (double)fiui_totalStepCount
 {
-  v1 = [a1 metadata];
-  v2 = [v1 objectForKey:*MEMORY[0x1E696C7C0]];
-  v3 = [MEMORY[0x1E696C510] countUnit];
-  [v2 doubleValueForUnit:v3];
+  metadata = [self metadata];
+  v2 = [metadata objectForKey:*MEMORY[0x1E696C7C0]];
+  countUnit = [MEMORY[0x1E696C510] countUnit];
+  [v2 doubleValueForUnit:countUnit];
   v5 = v4;
 
   return v5;
@@ -531,13 +531,13 @@ LABEL_8:
 
 - (BOOL)fiui_hasAverageCadence
 {
-  if (![a1 supportsMetric:16])
+  if (![self supportsMetric:16])
   {
     return 0;
   }
 
   v2 = [MEMORY[0x1E696C370] quantityTypeForIdentifier:*MEMORY[0x1E696BDC8]];
-  v3 = [a1 statisticsForType:v2];
+  v3 = [self statisticsForType:v2];
   if (v3)
   {
     v4 = 1;
@@ -546,7 +546,7 @@ LABEL_8:
   else
   {
     v5 = [MEMORY[0x1E696C370] quantityTypeForIdentifier:*MEMORY[0x1E696BCA8]];
-    v6 = [a1 statisticsForType:v5];
+    v6 = [self statisticsForType:v5];
     if (v6)
     {
       v4 = 1;
@@ -554,8 +554,8 @@ LABEL_8:
 
     else
     {
-      v7 = [a1 metadata];
-      v8 = [v7 objectForKey:*MEMORY[0x1E696C790]];
+      metadata = [self metadata];
+      v8 = [metadata objectForKey:*MEMORY[0x1E696C790]];
       v4 = v8 != 0;
     }
   }
@@ -566,41 +566,41 @@ LABEL_8:
 - (double)fiui_averageCadence
 {
   v2 = [MEMORY[0x1E696C370] quantityTypeForIdentifier:*MEMORY[0x1E696BCA8]];
-  v3 = [a1 statisticsForType:v2];
-  v4 = [v3 averageQuantity];
+  v3 = [self statisticsForType:v2];
+  averageQuantity = [v3 averageQuantity];
 
-  if (v4)
+  if (averageQuantity)
   {
-    v5 = [MEMORY[0x1E696C510] _countPerMinuteUnit];
-    [v4 doubleValueForUnit:v5];
+    _countPerMinuteUnit = [MEMORY[0x1E696C510] _countPerMinuteUnit];
+    [averageQuantity doubleValueForUnit:_countPerMinuteUnit];
     v7 = v6;
   }
 
   else
   {
     v8 = [MEMORY[0x1E696C370] quantityTypeForIdentifier:*MEMORY[0x1E696BDC8]];
-    v9 = [a1 statisticsForType:v8];
-    v5 = [v9 sumQuantity];
+    v9 = [self statisticsForType:v8];
+    _countPerMinuteUnit = [v9 sumQuantity];
 
-    if (v5 && ([a1 duration], v10 > 0.0))
+    if (_countPerMinuteUnit && ([self duration], v10 > 0.0))
     {
-      v11 = [MEMORY[0x1E696C510] countUnit];
-      [v5 doubleValueForUnit:v11];
+      countUnit = [MEMORY[0x1E696C510] countUnit];
+      [_countPerMinuteUnit doubleValueForUnit:countUnit];
       v13 = v12;
 
-      [a1 duration];
+      [self duration];
       v7 = v13 / (v14 / 60.0);
     }
 
     else
     {
-      v15 = [a1 metadata];
-      v16 = [v15 objectForKey:*MEMORY[0x1E696C790]];
+      metadata = [self metadata];
+      v16 = [metadata objectForKey:*MEMORY[0x1E696C790]];
 
       if (v16)
       {
-        v17 = [MEMORY[0x1E696C510] _countPerMinuteUnit];
-        [v16 doubleValueForUnit:v17];
+        _countPerMinuteUnit2 = [MEMORY[0x1E696C510] _countPerMinuteUnit];
+        [v16 doubleValueForUnit:_countPerMinuteUnit2];
         v7 = v18;
       }
 
@@ -616,17 +616,17 @@ LABEL_8:
 
 - (BOOL)fiui_hasAveragePower
 {
-  v1 = [a1 _averagePowerQuantity];
-  v2 = v1 != 0;
+  _averagePowerQuantity = [self _averagePowerQuantity];
+  v2 = _averagePowerQuantity != 0;
 
   return v2;
 }
 
 - (double)fiui_averagePower
 {
-  v1 = [a1 _averagePowerQuantity];
-  v2 = [MEMORY[0x1E696C510] wattUnit];
-  v3 = [v1 isCompatibleWithUnit:v2];
+  _averagePowerQuantity = [self _averagePowerQuantity];
+  wattUnit = [MEMORY[0x1E696C510] wattUnit];
+  v3 = [_averagePowerQuantity isCompatibleWithUnit:wattUnit];
 
   if (v3)
   {
@@ -638,7 +638,7 @@ LABEL_8:
     [MEMORY[0x1E696C510] unitFromString:@"J/s"];
   }
   v4 = ;
-  [v1 doubleValueForUnit:v4];
+  [_averagePowerQuantity doubleValueForUnit:v4];
   v6 = v5;
 
   return v6;
@@ -647,29 +647,29 @@ LABEL_8:
 - (id)_averagePowerQuantity
 {
   v2 = [MEMORY[0x1E696C370] quantityTypeForIdentifier:*MEMORY[0x1E696BD90]];
-  v3 = [a1 statisticsForType:v2];
-  v4 = [v3 averageQuantity];
-  v5 = v4;
-  if (v4)
+  v3 = [self statisticsForType:v2];
+  averageQuantity = [v3 averageQuantity];
+  v5 = averageQuantity;
+  if (averageQuantity)
   {
-    v6 = v4;
+    v6 = averageQuantity;
   }
 
   else
   {
     v7 = [MEMORY[0x1E696C370] quantityTypeForIdentifier:*MEMORY[0x1E696BCB0]];
-    v8 = [a1 statisticsForType:v7];
-    v9 = [v8 averageQuantity];
-    v10 = v9;
-    if (v9)
+    v8 = [self statisticsForType:v7];
+    averageQuantity2 = [v8 averageQuantity];
+    v10 = averageQuantity2;
+    if (averageQuantity2)
     {
-      v6 = v9;
+      v6 = averageQuantity2;
     }
 
     else
     {
-      v11 = [a1 metadata];
-      v6 = [v11 objectForKey:*MEMORY[0x1E696C7A0]];
+      metadata = [self metadata];
+      v6 = [metadata objectForKey:*MEMORY[0x1E696C7A0]];
     }
   }
 
@@ -678,9 +678,9 @@ LABEL_8:
 
 - (double)fiui_averagePace
 {
-  v1 = [a1 _fiui_averagePaceQty];
+  _fiui_averagePaceQty = [self _fiui_averagePaceQty];
   v2 = [MEMORY[0x1E696C510] unitFromString:@"m/s"];
-  [v1 doubleValueForUnit:v2];
+  [_fiui_averagePaceQty doubleValueForUnit:v2];
   v4 = v3;
 
   return v4;
@@ -688,47 +688,47 @@ LABEL_8:
 
 - (id)fiui_finalWorkoutUUID
 {
-  v2 = [a1 metadata];
-  v3 = [v2 objectForKey:*MEMORY[0x1E696C7D8]];
+  metadata = [self metadata];
+  v3 = [metadata objectForKey:*MEMORY[0x1E696C7D8]];
 
   if (v3)
   {
-    v4 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v3];
+    uUID = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v3];
   }
 
   else
   {
-    v4 = [a1 UUID];
+    uUID = [self UUID];
   }
 
-  v5 = v4;
+  v5 = uUID;
 
   return v5;
 }
 
 - (id)fiui_connectedGymBrandName
 {
-  v2 = [a1 device];
-  v3 = [v2 _isConnectedGymDevice];
+  device = [self device];
+  _isConnectedGymDevice = [device _isConnectedGymDevice];
 
-  if (v3)
+  if (_isConnectedGymDevice)
   {
-    v4 = [a1 device];
-    v5 = [v4 manufacturer];
+    device2 = [self device];
+    manufacturer = [device2 manufacturer];
 LABEL_5:
-    v9 = v5;
+    v9 = manufacturer;
 
     goto LABEL_6;
   }
 
-  v6 = [a1 metadata];
+  metadata = [self metadata];
   v7 = *MEMORY[0x1E696C7B8];
-  v8 = [v6 objectForKeyedSubscript:*MEMORY[0x1E696C7B8]];
+  v8 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696C7B8]];
 
   if (v8)
   {
-    v4 = [a1 metadata];
-    v5 = [v4 objectForKeyedSubscript:v7];
+    device2 = [self metadata];
+    manufacturer = [device2 objectForKeyedSubscript:v7];
     goto LABEL_5;
   }
 
@@ -740,23 +740,23 @@ LABEL_6:
 
 - (double)fiui_averageTimePerLap
 {
-  v2 = [a1 fiui_numberOfEventsOfType:3];
+  v2 = [self fiui_numberOfEventsOfType:3];
   if (v2 < 1)
   {
     return 0.0;
   }
 
   v3 = v2;
-  [a1 duration];
+  [self duration];
   return v4 / v3;
 }
 
 - (id)fiui_lapLength
 {
-  if ([a1 workoutActivityType] == 46)
+  if ([self workoutActivityType] == 46)
   {
-    v2 = [a1 metadata];
-    v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E696BB10]];
+    metadata = [self metadata];
+    v3 = [metadata objectForKeyedSubscript:*MEMORY[0x1E696BB10]];
   }
 
   else
@@ -794,7 +794,7 @@ LABEL_6:
   v30 = 0x3032000000;
   v31 = __Block_byref_object_copy__0;
   v32 = __Block_byref_object_dispose__0;
-  v33 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
   v18 = __97__HKWorkout_FitnessUI__fiui_splitsFromDistanceSamples_distanceInMetersPerSplit_workoutStartDate___block_invoke;
@@ -809,7 +809,7 @@ LABEL_6:
   v25 = &v41;
   v26 = &v28;
   v27 = a2;
-  [a1 _enumerateActiveTimePeriods:&v16];
+  [self _enumerateActiveTimePeriods:&v16];
   if (v42[3] != 0.0)
   {
     v12 = [FIUIWorkoutSplit alloc];
@@ -835,7 +835,7 @@ LABEL_6:
   v7 = a3;
   v24 = a4;
   v8 = a5;
-  v9 = [MEMORY[0x1E695DF88] data];
+  data = [MEMORY[0x1E695DF88] data];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
@@ -856,13 +856,13 @@ LABEL_6:
         }
 
         v15 = *(*(&v25 + 1) + 8 * i);
-        v16 = [v15 startDate];
-        v17 = [v15 quantity];
-        v18 = [MEMORY[0x1E696C510] _countPerMinuteUnit];
-        [v17 doubleValueForUnit:v18];
+        startDate = [v15 startDate];
+        quantity = [v15 quantity];
+        _countPerMinuteUnit = [MEMORY[0x1E696C510] _countPerMinuteUnit];
+        [quantity doubleValueForUnit:_countPerMinuteUnit];
         v20 = v19;
 
-        [v9 fiui_appendHeartRate:v16 date:v20];
+        [data fiui_appendHeartRate:startDate date:v20];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
@@ -871,7 +871,7 @@ LABEL_6:
     while (v12);
   }
 
-  [v9 fiui_weightedAverageHeartRateWithStartDate:v24 endDate:v8];
+  [data fiui_weightedAverageHeartRateWithStartDate:v24 endDate:v8];
   v22 = v21;
 
   return v22;
@@ -882,9 +882,9 @@ LABEL_6:
   v5 = a3;
   v6 = [[FIUIWorkoutSettingsManager alloc] initWithWorkoutActivityType:v5 activityMoveMode:a4];
 
-  v7 = [(FIUIWorkoutSettingsManager *)v6 orderedSupportedMetrics];
+  orderedSupportedMetrics = [(FIUIWorkoutSettingsManager *)v6 orderedSupportedMetrics];
 
-  return v7;
+  return orderedSupportedMetrics;
 }
 
 + (id)fiui_supportedGoalTypesForActivityType:()FitnessUI activityMoveMode:
@@ -892,17 +892,17 @@ LABEL_6:
   v6 = a3;
   v7 = [[FIUIWorkoutSettingsManager alloc] initWithWorkoutActivityType:v6 activityMoveMode:a4];
 
-  v8 = [a1 fiui_supportedGoalTypesForWorkoutSettingsManager:v7];
+  v8 = [self fiui_supportedGoalTypesForWorkoutSettingsManager:v7];
 
   return v8;
 }
 
 + (id)fiui_supportedGoalTypesForWorkoutSettingsManager:()FitnessUI
 {
-  v3 = [a3 orderedSupportedMetrics];
+  orderedSupportedMetrics = [a3 orderedSupportedMetrics];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(MEMORY[0x1E696C588], "fiui_associatedMetricForGoalType:", 3)}];
-  v6 = [v3 containsObject:v5];
+  v6 = [orderedSupportedMetrics containsObject:v5];
 
   if (v6)
   {
@@ -910,7 +910,7 @@ LABEL_6:
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(MEMORY[0x1E696C588], "fiui_associatedMetricForGoalType:", 2)}];
-  v8 = [v3 containsObject:v7];
+  v8 = [orderedSupportedMetrics containsObject:v7];
 
   if (v8)
   {
@@ -918,7 +918,7 @@ LABEL_6:
   }
 
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{objc_msgSend(MEMORY[0x1E696C588], "fiui_associatedMetricForGoalType:", 1)}];
-  v10 = [v3 containsObject:v9];
+  v10 = [orderedSupportedMetrics containsObject:v9];
 
   if (v10)
   {
@@ -937,8 +937,8 @@ LABEL_6:
     return 1;
   }
 
-  v6 = [a1 _isHeartRateSupportedInPowerSettingsForActivityType:a3];
-  return v6 & [a1 _isHeartRateSupportedInPrivacySettings];
+  v6 = [self _isHeartRateSupportedInPowerSettingsForActivityType:a3];
+  return v6 & [self _isHeartRateSupportedInPrivacySettings];
 }
 
 + (uint64_t)fiui_associatedMetricForGoalType:()FitnessUI

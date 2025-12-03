@@ -1,36 +1,36 @@
 @interface VideoWriter
 - (__CVBuffer)createPixelBuffer;
-- (id)addFrame:(CGImage *)a3;
-- (id)addFrameAsPixelBuf:(__CVBuffer *)a3;
-- (id)addFrameAsPixelBuf:(__CVBuffer *)a3 atFrameTime:(id *)a4;
+- (id)addFrame:(CGImage *)frame;
+- (id)addFrameAsPixelBuf:(__CVBuffer *)buf;
+- (id)addFrameAsPixelBuf:(__CVBuffer *)buf atFrameTime:(id *)time;
 - (id)finish;
-- (id)initForPath:(const char *)a3 fileType:(id)a4 codecType:(id)a5 imgWidth:(unsigned int)a6 imgHeight:(unsigned int)a7 fps:(float)a8 pixFormat:(unsigned int)a9 metadata:(id)a10;
-- (id)initForURL:(id)a3 fileType:(id)a4 codecType:(id)a5 imgWidth:(unsigned int)a6 imgHeight:(unsigned int)a7 fps:(float)a8 pixFormat:(unsigned int)a9 metadata:(id)a10;
-- (id)initForURL:(id)a3 fileType:(id)a4 codecType:(id)a5 imgWidth:(unsigned int)a6 imgHeight:(unsigned int)a7 fps:(float)a8 timeScale:(int)a9 transform:(CGAffineTransform *)a10 pixFormat:(unsigned int)a11 metadata:(id)a12;
-- (void)endSessionAtTime:(id *)a3;
+- (id)initForPath:(const char *)path fileType:(id)type codecType:(id)codecType imgWidth:(unsigned int)width imgHeight:(unsigned int)height fps:(float)fps pixFormat:(unsigned int)format metadata:(id)self0;
+- (id)initForURL:(id)l fileType:(id)type codecType:(id)codecType imgWidth:(unsigned int)width imgHeight:(unsigned int)height fps:(float)fps pixFormat:(unsigned int)format metadata:(id)self0;
+- (id)initForURL:(id)l fileType:(id)type codecType:(id)codecType imgWidth:(unsigned int)width imgHeight:(unsigned int)height fps:(float)fps timeScale:(int)scale transform:(CGAffineTransform *)self0 pixFormat:(unsigned int)self1 metadata:(id)self2;
+- (void)endSessionAtTime:(id *)time;
 - (void)endSessionInfer;
 - (void)setInputReady;
 @end
 
 @implementation VideoWriter
 
-- (id)initForURL:(id)a3 fileType:(id)a4 codecType:(id)a5 imgWidth:(unsigned int)a6 imgHeight:(unsigned int)a7 fps:(float)a8 pixFormat:(unsigned int)a9 metadata:(id)a10
+- (id)initForURL:(id)l fileType:(id)type codecType:(id)codecType imgWidth:(unsigned int)width imgHeight:(unsigned int)height fps:(float)fps pixFormat:(unsigned int)format metadata:(id)self0
 {
   v10 = *(MEMORY[0x277CBF2C0] + 16);
   v13[0] = *MEMORY[0x277CBF2C0];
   v13[1] = v10;
   v13[2] = *(MEMORY[0x277CBF2C0] + 32);
-  LODWORD(v12) = a9;
-  return [(VideoWriter *)self initForURL:a3 fileType:a4 codecType:a5 imgWidth:*&a6 imgHeight:*&a7 fps:0 timeScale:v13 transform:v12 pixFormat:a10 metadata:?];
+  LODWORD(v12) = format;
+  return [(VideoWriter *)self initForURL:l fileType:type codecType:codecType imgWidth:*&width imgHeight:*&height fps:0 timeScale:v13 transform:v12 pixFormat:metadata metadata:?];
 }
 
-- (id)initForURL:(id)a3 fileType:(id)a4 codecType:(id)a5 imgWidth:(unsigned int)a6 imgHeight:(unsigned int)a7 fps:(float)a8 timeScale:(int)a9 transform:(CGAffineTransform *)a10 pixFormat:(unsigned int)a11 metadata:(id)a12
+- (id)initForURL:(id)l fileType:(id)type codecType:(id)codecType imgWidth:(unsigned int)width imgHeight:(unsigned int)height fps:(float)fps timeScale:(int)scale transform:(CGAffineTransform *)self0 pixFormat:(unsigned int)self1 metadata:(id)self2
 {
   v80 = *MEMORY[0x277D85DE8];
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a12;
+  lCopy = l;
+  typeCopy = type;
+  codecTypeCopy = codecType;
+  metadataCopy = metadata;
   v78.receiver = self;
   v78.super_class = VideoWriter;
   v23 = [(VideoWriter *)&v78 init];
@@ -49,37 +49,37 @@
   inputAdaptor = v24->_inputAdaptor;
   v24->_inputAdaptor = 0;
 
-  v24->fps = a8;
+  v24->fps = fps;
   v24->currFrame = 0;
   v24->_currFrameTime = 0;
-  v24->imgWidth = a6;
-  v24->imgHeight = a7;
+  v24->imgWidth = width;
+  v24->imgHeight = height;
   v24->_initFailed = 0;
-  if (a9)
+  if (scale)
   {
-    v24->timeScale = a9;
-    v28 = a9;
+    v24->timeScale = scale;
+    scaleCopy = scale;
   }
 
-  else if (a8 == 60.0)
+  else if (fps == 60.0)
   {
     v24->timeScale = 6000;
-    v28 = 6000.0;
+    scaleCopy = 6000.0;
   }
 
   else
   {
     v24->timeScale = 90000;
-    v28 = 90000.0;
+    scaleCopy = 90000.0;
   }
 
-  v24->pixelFormat = a11;
-  v29 = *&a10->a;
-  v30 = *&a10->c;
-  *&v24->preferredTransform.tx = *&a10->tx;
+  v24->pixelFormat = format;
+  v29 = *&transform->a;
+  v30 = *&transform->c;
+  *&v24->preferredTransform.tx = *&transform->tx;
   *&v24->preferredTransform.c = v30;
   *&v24->preferredTransform.a = v29;
-  v24->_frameIncr = (v28 / a8);
+  v24->_frameIncr = (scaleCopy / fps);
   v31 = [objc_alloc(MEMORY[0x277CCA930]) initWithCondition:1];
   inputLock = v24->_inputLock;
   v24->_inputLock = v31;
@@ -88,10 +88,10 @@
   frameWriteQueue = v24->_frameWriteQueue;
   v24->_frameWriteQueue = v33;
 
-  [v19 getFileSystemRepresentation:v79 maxLength:1000];
+  [lCopy getFileSystemRepresentation:v79 maxLength:1000];
   unlink(v79);
   v77 = 0;
-  v35 = [objc_alloc(MEMORY[0x277CE6460]) initWithURL:v19 fileType:v20 error:&v77];
+  v35 = [objc_alloc(MEMORY[0x277CE6460]) initWithURL:lCopy fileType:typeCopy error:&v77];
   v36 = v77;
   v37 = v24->_assetWriter;
   v24->_assetWriter = v35;
@@ -111,16 +111,16 @@ LABEL_29:
   }
 
   v69 = v36;
-  v70 = v20;
-  v38 = v22;
+  v70 = typeCopy;
+  v38 = metadataCopy;
   v39 = MEMORY[0x277CBEAC0];
   v40 = *MEMORY[0x277CE62C8];
   v41 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v24->imgWidth];
-  v42 = v21;
+  v42 = codecTypeCopy;
   v43 = *MEMORY[0x277CE63C0];
   v44 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:v24->imgHeight];
   v68 = v43;
-  v21 = v42;
+  codecTypeCopy = v42;
   v45 = [v39 dictionaryWithObjectsAndKeys:{v42, v40, v41, v68, v44, *MEMORY[0x277CE6360], 0}];
 
   v46 = [MEMORY[0x277CE6468] assetWriterInputWithMediaType:*MEMORY[0x277CE5EA8] outputSettings:v45];
@@ -133,8 +133,8 @@ LABEL_29:
     NSLog(&cfstr_Avassetwriteri.isa);
 
     v58 = 0;
-    v22 = v38;
-    v20 = v70;
+    metadataCopy = v38;
+    typeCopy = v70;
     goto LABEL_30;
   }
 
@@ -145,34 +145,34 @@ LABEL_29:
   v76 = *&v24->preferredTransform.tx;
   [(AVAssetWriterInput *)v24->_writerInput setTransform:v75];
   [(AVAssetWriter *)v24->_assetWriter setMovieTimeScale:v24->timeScale];
-  if (a11)
+  if (format)
   {
-    v50 = a11;
+    formatCopy = format;
   }
 
   else
   {
-    v50 = 193;
+    formatCopy = 193;
   }
 
-  v51 = sub_241903CF4(v50, 0);
+  v51 = sub_241903CF4(formatCopy, 0);
   v52 = [MEMORY[0x277CE6478] assetWriterInputPixelBufferAdaptorWithAssetWriterInput:v24->_writerInput sourcePixelBufferAttributes:v51];
   v53 = v24->_inputAdaptor;
   v24->_inputAdaptor = v52;
 
-  v22 = v38;
+  metadataCopy = v38;
   v54 = v69;
   if (!v24->_inputAdaptor)
   {
     NSLog(&cfstr_Avassetwriteri_0.isa);
     v58 = 0;
-    v20 = v70;
+    typeCopy = v70;
 LABEL_28:
 
     goto LABEL_29;
   }
 
-  v20 = v70;
+  typeCopy = v70;
   if (![(AVAssetWriter *)v24->_assetWriter canAddInput:v24->_writerInput])
   {
     NSLog(&cfstr_AvassetwriterC.isa);
@@ -181,24 +181,24 @@ LABEL_28:
   }
 
   [(AVAssetWriter *)v24->_assetWriter addInput:v24->_writerInput];
-  if (v22)
+  if (metadataCopy)
   {
-    [(AVAssetWriter *)v24->_assetWriter setMetadata:v22];
+    [(AVAssetWriter *)v24->_assetWriter setMetadata:metadataCopy];
   }
 
   if (![(AVAssetWriter *)v24->_assetWriter startWriting])
   {
     NSLog(&cfstr_ErrorInVideowr.isa);
     NSLog(&cfstr_VideowriterSta.isa, [(AVAssetWriter *)v24->_assetWriter status]);
-    v60 = [(AVAssetWriter *)v24->_assetWriter error];
-    NSLog(&cfstr_Error.isa, v60);
+    error = [(AVAssetWriter *)v24->_assetWriter error];
+    NSLog(&cfstr_Error.isa, error);
 
-    v61 = [(AVAssetWriter *)v24->_assetWriter error];
-    v62 = [v61 userInfo];
+    error2 = [(AVAssetWriter *)v24->_assetWriter error];
+    userInfo = [error2 userInfo];
 
-    if (v62)
+    if (userInfo)
     {
-      v63 = [v62 objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
+      v63 = [userInfo objectForKeyedSubscript:*MEMORY[0x277CCA7E8]];
       v64 = v63;
       if (v63)
       {
@@ -206,9 +206,9 @@ LABEL_28:
       }
     }
 
-    v65 = [(AVAssetWriter *)v24->_assetWriter error];
+    error3 = [(AVAssetWriter *)v24->_assetWriter error];
     v66 = v24->lastError;
-    v24->lastError = v65;
+    v24->lastError = error3;
 
     v24->_initFailed = 1;
     v58 = v24;
@@ -238,19 +238,19 @@ LABEL_30:
   return v58;
 }
 
-- (id)initForPath:(const char *)a3 fileType:(id)a4 codecType:(id)a5 imgWidth:(unsigned int)a6 imgHeight:(unsigned int)a7 fps:(float)a8 pixFormat:(unsigned int)a9 metadata:(id)a10
+- (id)initForPath:(const char *)path fileType:(id)type codecType:(id)codecType imgWidth:(unsigned int)width imgHeight:(unsigned int)height fps:(float)fps pixFormat:(unsigned int)format metadata:(id)self0
 {
-  v10 = *&a9;
-  v12 = *&a7;
-  v13 = *&a6;
+  v10 = *&format;
+  v12 = *&height;
+  v13 = *&width;
   v18 = MEMORY[0x277CCACA8];
-  v19 = a10;
-  v20 = a5;
-  v21 = a4;
-  v22 = [v18 stringWithCString:a3 encoding:4];
+  metadataCopy = metadata;
+  codecTypeCopy = codecType;
+  typeCopy = type;
+  v22 = [v18 stringWithCString:path encoding:4];
   v23 = [MEMORY[0x277CBEBC0] fileURLWithPath:v22 isDirectory:0];
-  *&v24 = a8;
-  v25 = [(VideoWriter *)self initForURL:v23 fileType:v21 codecType:v20 imgWidth:v13 imgHeight:v12 fps:v10 pixFormat:v24 metadata:v19];
+  *&v24 = fps;
+  v25 = [(VideoWriter *)self initForURL:v23 fileType:typeCopy codecType:codecTypeCopy imgWidth:v13 imgHeight:v12 fps:v10 pixFormat:v24 metadata:metadataCopy];
 
   return v25;
 }
@@ -263,55 +263,55 @@ LABEL_30:
   [(NSConditionLock *)inputLock unlockWithCondition:0];
 }
 
-- (id)addFrame:(CGImage *)a3
+- (id)addFrame:(CGImage *)frame
 {
   if (self->_initFailed)
   {
     lastError = self->lastError;
     if (lastError)
     {
-      v5 = [(NSError *)lastError localizedDescription];
+      localizedDescription = [(NSError *)lastError localizedDescription];
     }
 
     else
     {
-      v5 = @"VideoWriter: init I/O failure";
+      localizedDescription = @"VideoWriter: init I/O failure";
     }
   }
 
   else
   {
-    v6 = sub_24190B00C(a3);
+    v6 = sub_24190B00C(frame);
     if (v6)
     {
       v7 = v6;
-      v5 = [(VideoWriter *)self addFrameAsPixelBuf:v6];
+      localizedDescription = [(VideoWriter *)self addFrameAsPixelBuf:v6];
       CFRelease(v7);
     }
 
     else
     {
-      v5 = @"Error creating CVPixelBufferRef";
+      localizedDescription = @"Error creating CVPixelBufferRef";
       NSLog(&stru_285381D50.isa, @"Error creating CVPixelBufferRef");
     }
   }
 
-  return v5;
+  return localizedDescription;
 }
 
-- (id)addFrameAsPixelBuf:(__CVBuffer *)a3
+- (id)addFrameAsPixelBuf:(__CVBuffer *)buf
 {
   if (self->_initFailed)
   {
     lastError = self->lastError;
     if (lastError)
     {
-      v5 = [(NSError *)lastError localizedDescription];
+      localizedDescription = [(NSError *)lastError localizedDescription];
     }
 
     else
     {
-      v5 = @"VideoWriter: init I/O failure";
+      localizedDescription = @"VideoWriter: init I/O failure";
     }
   }
 
@@ -334,43 +334,43 @@ LABEL_30:
     ++self->currFrame;
     inputAdaptor = self->_inputAdaptor;
     v14 = v15;
-    v8 = [(AVAssetWriterInputPixelBufferAdaptor *)inputAdaptor appendPixelBuffer:a3 withPresentationTime:&v14];
-    v5 = 0;
+    v8 = [(AVAssetWriterInputPixelBufferAdaptor *)inputAdaptor appendPixelBuffer:buf withPresentationTime:&v14];
+    localizedDescription = 0;
     if (!v8)
     {
       NSLog(&cfstr_Avassetwriteri_1.isa);
-      v9 = [(AVAssetWriter *)self->_assetWriter error];
-      NSLog(&cfstr_AssetwriterErr.isa, v9);
+      error = [(AVAssetWriter *)self->_assetWriter error];
+      NSLog(&cfstr_AssetwriterErr.isa, error);
 
       NSLog(&cfstr_AssetwriterSta.isa, [(AVAssetWriter *)self->_assetWriter status]);
-      v10 = [(AVAssetWriter *)self->_assetWriter error];
+      error2 = [(AVAssetWriter *)self->_assetWriter error];
       v11 = self->lastError;
-      self->lastError = v10;
+      self->lastError = error2;
 
-      v12 = [(AVAssetWriter *)self->_assetWriter error];
-      v5 = [v12 localizedDescription];
+      error3 = [(AVAssetWriter *)self->_assetWriter error];
+      localizedDescription = [error3 localizedDescription];
     }
 
     [(NSConditionLock *)self->_inputLock lock];
     [(NSConditionLock *)self->_inputLock unlockWithCondition:1];
   }
 
-  return v5;
+  return localizedDescription;
 }
 
-- (id)addFrameAsPixelBuf:(__CVBuffer *)a3 atFrameTime:(id *)a4
+- (id)addFrameAsPixelBuf:(__CVBuffer *)buf atFrameTime:(id *)time
 {
   if (self->_initFailed)
   {
     lastError = self->lastError;
     if (lastError)
     {
-      v6 = [(NSError *)lastError localizedDescription:a3];
+      localizedDescription = [(NSError *)lastError localizedDescription:buf];
     }
 
     else
     {
-      v6 = @"VideoWriter: init I/O failure";
+      localizedDescription = @"VideoWriter: init I/O failure";
     }
   }
 
@@ -388,42 +388,42 @@ LABEL_30:
     }
 
     timeScale = self->timeScale;
-    if (a4->var1 != timeScale)
+    if (time->var1 != timeScale)
     {
-      time = *a4;
+      time = *time;
       CMTimeConvertScale(&v17, &time, timeScale, kCMTimeRoundingMethod_RoundHalfAwayFromZero);
-      *a4 = v17;
+      *time = v17;
     }
 
-    self->_currFrameTime = a4->var0;
+    self->_currFrameTime = time->var0;
     ++self->currFrame;
     inputAdaptor = self->_inputAdaptor;
-    v17 = *a4;
-    if ([(AVAssetWriterInputPixelBufferAdaptor *)inputAdaptor appendPixelBuffer:a3 withPresentationTime:&v17])
+    v17 = *time;
+    if ([(AVAssetWriterInputPixelBufferAdaptor *)inputAdaptor appendPixelBuffer:buf withPresentationTime:&v17])
     {
-      v6 = 0;
+      localizedDescription = 0;
     }
 
     else
     {
       NSLog(&cfstr_Avassetwriteri_1.isa);
-      v11 = [(AVAssetWriter *)self->_assetWriter error];
-      NSLog(&cfstr_AssetwriterErr.isa, v11);
+      error = [(AVAssetWriter *)self->_assetWriter error];
+      NSLog(&cfstr_AssetwriterErr.isa, error);
 
       NSLog(&cfstr_AssetwriterSta.isa, [(AVAssetWriter *)self->_assetWriter status]);
-      v12 = [(AVAssetWriter *)self->_assetWriter error];
+      error2 = [(AVAssetWriter *)self->_assetWriter error];
       v13 = self->lastError;
-      self->lastError = v12;
+      self->lastError = error2;
 
-      v14 = [(AVAssetWriter *)self->_assetWriter error];
-      v6 = [v14 localizedDescription];
+      error3 = [(AVAssetWriter *)self->_assetWriter error];
+      localizedDescription = [error3 localizedDescription];
     }
 
     [(NSConditionLock *)self->_inputLock lock];
     [(NSConditionLock *)self->_inputLock unlockWithCondition:1];
   }
 
-  return v6;
+  return localizedDescription;
 }
 
 - (__CVBuffer)createPixelBuffer
@@ -453,10 +453,10 @@ LABEL_30:
   return result;
 }
 
-- (void)endSessionAtTime:(id *)a3
+- (void)endSessionAtTime:(id *)time
 {
   assetWriter = self->_assetWriter;
-  v4 = *a3;
+  v4 = *time;
   [(AVAssetWriter *)assetWriter endSessionAtSourceTime:&v4];
 }
 
@@ -477,12 +477,12 @@ LABEL_30:
     lastError = self->lastError;
     if (lastError)
     {
-      v4 = [(NSError *)lastError localizedDescription];
+      localizedDescription = [(NSError *)lastError localizedDescription];
     }
 
     else
     {
-      v4 = @"VideoWriter: init I/O failure";
+      localizedDescription = @"VideoWriter: init I/O failure";
     }
   }
 
@@ -507,27 +507,27 @@ LABEL_30:
     [(NSConditionLock *)self->_inputLock unlockWithCondition:1];
     if ([(AVAssetWriter *)self->_assetWriter status]== AVAssetWriterStatusCompleted)
     {
-      v4 = 0;
+      localizedDescription = 0;
     }
 
     else
     {
       NSLog(&cfstr_AssetwriterSta_0.isa, [(AVAssetWriter *)self->_assetWriter status]);
-      v6 = [(AVAssetWriter *)self->_assetWriter error];
-      v4 = [v6 localizedDescription];
+      error = [(AVAssetWriter *)self->_assetWriter error];
+      localizedDescription = [error localizedDescription];
 
-      v7 = [(AVAssetWriter *)self->_assetWriter error];
-      NSLog(&cfstr_Error.isa, v7);
+      error2 = [(AVAssetWriter *)self->_assetWriter error];
+      NSLog(&cfstr_Error.isa, error2);
 
-      v8 = [(AVAssetWriter *)self->_assetWriter error];
+      error3 = [(AVAssetWriter *)self->_assetWriter error];
       v9 = self->lastError;
-      self->lastError = v8;
+      self->lastError = error3;
     }
 
     _Block_object_dispose(&v12, 8);
   }
 
-  return v4;
+  return localizedDescription;
 }
 
 @end

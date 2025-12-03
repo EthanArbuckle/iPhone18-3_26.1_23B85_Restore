@@ -14,30 +14,30 @@
   if (os_log_type_enabled(*MEMORY[0x277CD38C8], OS_LOG_TYPE_INFO))
   {
     v14 = v13;
-    v15 = [a3 backingStore];
+    backingStore = [a3 backingStore];
     *buf = 136315394;
     v27 = "[SAIntentGroupConfirmIntent(INSExtensionService) ins_sendIntent:toExtensionProxy:onQueue:completionHandler:]";
     v28 = 2112;
-    v29 = v15;
+    v29 = backingStore;
     _os_log_impl(&dword_25553C000, v14, OS_LOG_TYPE_INFO, "%s intent.backingStore = %@", buf, 0x16u);
   }
 
   v16 = +[INSAnalytics sharedAnalytics];
-  v17 = [a1 ins_afAnalyticsContext];
-  [v16 logEventWithType:611 context:v17 contextNoCopy:1];
+  ins_afAnalyticsContext = [self ins_afAnalyticsContext];
+  [v16 logEventWithType:611 context:ins_afAnalyticsContext contextNoCopy:1];
 
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __109__SAIntentGroupConfirmIntent_INSExtensionService__ins_sendIntent_toExtensionProxy_onQueue_completionHandler___block_invoke;
   v25[3] = &unk_2797EAC50;
-  v25[4] = a1;
+  v25[4] = self;
   [v10 setResponseHandler:v25];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __109__SAIntentGroupConfirmIntent_INSExtensionService__ins_sendIntent_toExtensionProxy_onQueue_completionHandler___block_invoke_2;
   v21[3] = &unk_2797EACE8;
   v22 = v11;
-  v23 = a1;
+  selfCopy = self;
   v24 = v12;
   v18 = v12;
   v19 = v11;

@@ -1,16 +1,16 @@
 @interface WOCyclingPowerZonesConfigurationEditor
-+ (BOOL)isManualZonesEqualToAutomaticUsing:(id)a3;
++ (BOOL)isManualZonesEqualToAutomaticUsing:(id)using;
 + (id)allSupportedSizes;
-+ (id)changeConfigurationTypeTo:(int64_t)a3 using:(id)a4;
-+ (id)changeFunctionalThresholdPowerTo:(double)a3 using:(id)a4;
-+ (id)changeZonesSizeTo:(int64_t)a3 using:(id)a4;
-+ (id)resetManualZonesUsing:(id)a3;
++ (id)changeConfigurationTypeTo:(int64_t)to using:(id)using;
++ (id)changeFunctionalThresholdPowerTo:(double)to using:(id)using;
++ (id)changeZonesSizeTo:(int64_t)to using:(id)using;
++ (id)resetManualZonesUsing:(id)using;
 - (WOCyclingPowerZonesConfigurationEditor)init;
 @end
 
 @implementation WOCyclingPowerZonesConfigurationEditor
 
-+ (id)changeFunctionalThresholdPowerTo:(double)a3 using:(id)a4
++ (id)changeFunctionalThresholdPowerTo:(double)to using:(id)using
 {
   v5 = sub_22254();
   v6 = *(*(v5 - 8) + 64);
@@ -23,10 +23,10 @@
   sub_22714();
   sub_225A4();
   (*(v8 + 104))(v11, enum case for FunctionalThresholdPowerSource.other(_:), v7);
-  v12 = a4;
+  usingCopy = using;
   sub_22234();
   sub_22584();
-  v13 = *&v12[OBJC_IVAR___WOCyclingPowerZonesConfiguration_configuration];
+  v13 = *&usingCopy[OBJC_IVAR___WOCyclingPowerZonesConfiguration_configuration];
   v14 = sub_226C4();
 
   v15 = type metadata accessor for CyclingPowerZonesConfigurationBridge();
@@ -39,15 +39,15 @@
   return v17;
 }
 
-+ (id)changeConfigurationTypeTo:(int64_t)a3 using:(id)a4
++ (id)changeConfigurationTypeTo:(int64_t)to using:(id)using
 {
-  v5 = a4;
-  v6 = _s25SessionTrackerAppSettings42CyclingPowerZonesConfigurationEditorBridgeC06changeH4Type2to5usingAA0efghJ0CAA0efghlJ0O_AHtFZ_0(a3, v5);
+  usingCopy = using;
+  v6 = _s25SessionTrackerAppSettings42CyclingPowerZonesConfigurationEditorBridgeC06changeH4Type2to5usingAA0efghJ0CAA0efghlJ0O_AHtFZ_0(to, usingCopy);
 
   return v6;
 }
 
-+ (id)changeZonesSizeTo:(int64_t)a3 using:(id)a4
++ (id)changeZonesSizeTo:(int64_t)to using:(id)using
 {
   v5 = sub_224A4();
   v6 = *(v5 - 8);
@@ -55,9 +55,9 @@
   __chkstk_darwin(v5);
   v9 = &v17 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_22714();
-  v10 = a4;
+  usingCopy = using;
   sub_22474();
-  v11 = *&v10[OBJC_IVAR___WOCyclingPowerZonesConfiguration_configuration];
+  v11 = *&usingCopy[OBJC_IVAR___WOCyclingPowerZonesConfiguration_configuration];
   v12 = sub_226D4();
   (*(v6 + 8))(v9, v5);
   v13 = type metadata accessor for CyclingPowerZonesConfigurationBridge();
@@ -71,11 +71,11 @@
   return v15;
 }
 
-+ (id)resetManualZonesUsing:(id)a3
++ (id)resetManualZonesUsing:(id)using
 {
   sub_22714();
-  v4 = *(a3 + OBJC_IVAR___WOCyclingPowerZonesConfiguration_configuration);
-  v5 = a3;
+  v4 = *(using + OBJC_IVAR___WOCyclingPowerZonesConfiguration_configuration);
+  usingCopy = using;
   v6 = sub_226B4();
   v7 = type metadata accessor for CyclingPowerZonesConfigurationBridge();
   v8 = objc_allocWithZone(v7);
@@ -96,11 +96,11 @@
   return v2.super.isa;
 }
 
-+ (BOOL)isManualZonesEqualToAutomaticUsing:(id)a3
++ (BOOL)isManualZonesEqualToAutomaticUsing:(id)using
 {
   sub_22714();
-  v4 = *(a3 + OBJC_IVAR___WOCyclingPowerZonesConfiguration_configuration);
-  v5 = a3;
+  v4 = *(using + OBJC_IVAR___WOCyclingPowerZonesConfiguration_configuration);
+  usingCopy = using;
   v6 = sub_226F4();
 
   return v6 & 1;

@@ -1,27 +1,27 @@
 @interface AXSBPositionUtilities
-+ (id)_sectionDescription:(int64_t)a3;
-+ (id)_sections:(id)a3 intersectingBounds:(CGRect)a4;
-+ (id)_threeByThreeSectionsOfRect:(CGRect)a3;
-+ (id)areaDescriptionOfContainerElement:(CGRect)a3 underElementWithBounds:(CGRect)a4;
-+ (id)areaSizeDescriptionForContainer:(id)a3;
-+ (id)positionDescriptionFromTopLeftCornerWithOrigin:(CGPoint)a3;
++ (id)_sectionDescription:(int64_t)description;
++ (id)_sections:(id)_sections intersectingBounds:(CGRect)bounds;
++ (id)_threeByThreeSectionsOfRect:(CGRect)rect;
++ (id)areaDescriptionOfContainerElement:(CGRect)element underElementWithBounds:(CGRect)bounds;
++ (id)areaSizeDescriptionForContainer:(id)container;
++ (id)positionDescriptionFromTopLeftCornerWithOrigin:(CGPoint)origin;
 @end
 
 @implementation AXSBPositionUtilities
 
-+ (id)areaDescriptionOfContainerElement:(CGRect)a3 underElementWithBounds:(CGRect)a4
++ (id)areaDescriptionOfContainerElement:(CGRect)element underElementWithBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3.size.height;
-  v9 = a3.size.width;
-  v10 = a3.origin.y;
-  v11 = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  v8 = element.size.height;
+  v9 = element.size.width;
+  v10 = element.origin.y;
+  v11 = element.origin.x;
   v12 = [AXSBPositionUtilities _threeByThreeSectionsOfRect:?];
-  v13 = [AXSBPositionUtilities _sections:v12 intersectingBounds:x, y, width, height];
-  v14 = [v13 count];
+  height = [AXSBPositionUtilities _sections:v12 intersectingBounds:x, y, width, height];
+  v14 = [height count];
   if (v14 == 9)
   {
     v15 = width * height / (v9 * v8);
@@ -48,11 +48,11 @@
   }
 
   v17 = v14;
-  v18 = [v13 firstObject];
-  v19 = +[AXSBPositionUtilities _sectionDescription:](AXSBPositionUtilities, "_sectionDescription:", [v18 integerValue]);
+  firstObject = [height firstObject];
+  v19 = +[AXSBPositionUtilities _sectionDescription:](AXSBPositionUtilities, "_sectionDescription:", [firstObject integerValue]);
 
-  v20 = [v13 lastObject];
-  v21 = +[AXSBPositionUtilities _sectionDescription:](AXSBPositionUtilities, "_sectionDescription:", [v20 integerValue]);
+  lastObject = [height lastObject];
+  v21 = +[AXSBPositionUtilities _sectionDescription:](AXSBPositionUtilities, "_sectionDescription:", [lastObject integerValue]);
 
   v22 = MEMORY[0x29EDBA0F8];
   v23 = accessibilityLocalizedString(@"window.area.covered.sections");
@@ -109,13 +109,13 @@ LABEL_19:
   return v31;
 }
 
-+ (id)positionDescriptionFromTopLeftCornerWithOrigin:(CGPoint)a3
++ (id)positionDescriptionFromTopLeftCornerWithOrigin:(CGPoint)origin
 {
-  if (a3.x >= 0.0 || a3.y >= 0.0)
+  if (origin.x >= 0.0 || origin.y >= 0.0)
   {
-    if (a3.x < 0.0 || a3.y >= 0.0)
+    if (origin.x < 0.0 || origin.y >= 0.0)
     {
-      if (a3.y >= 0.0 && a3.x < 0.0)
+      if (origin.y >= 0.0 && origin.x < 0.0)
       {
         v4 = @"window.position.left.down";
       }
@@ -138,27 +138,27 @@ LABEL_19:
   }
 
   v6 = MEMORY[0x29EDBA0F8];
-  v7 = fabs(a3.y);
-  v8 = fabs(a3.x);
+  v7 = fabs(origin.y);
+  v8 = fabs(origin.x);
   v9 = accessibilityLocalizedString(v4);
   v10 = [v6 localizedStringWithFormat:v9, v8, v7];
 
   return v10;
 }
 
-+ (id)areaSizeDescriptionForContainer:(id)a3
++ (id)areaSizeDescriptionForContainer:(id)container
 {
-  v3 = a3;
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 screen];
-  [v6 bounds];
+  containerCopy = container;
+  window = [containerCopy window];
+  windowScene = [window windowScene];
+  screen = [windowScene screen];
+  [screen bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  [v3 bounds];
+  [containerCopy bounds];
   v16 = v15;
   v18 = v17;
   v19 = MEMORY[0x29EDBA0F8];
@@ -169,7 +169,7 @@ LABEL_19:
   v23 = accessibilityLocalizedString(@"window.size.height");
   v24 = [v22 localizedStringWithFormat:v23, v18];
 
-  [v3 frame];
+  [containerCopy frame];
   v26 = v25;
   v28 = v27;
   v30 = v29;
@@ -181,14 +181,14 @@ LABEL_19:
   return v34;
 }
 
-+ (id)_threeByThreeSectionsOfRect:(CGRect)a3
++ (id)_threeByThreeSectionsOfRect:(CGRect)rect
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v5 = a3.size.width / 3.0;
-  v6 = (a3.size.width / 3.0);
-  v7 = a3.size.height / 3.0;
-  v8 = (a3.size.height / 3.0);
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v5 = rect.size.width / 3.0;
+  v6 = (rect.size.width / 3.0);
+  v7 = rect.size.height / 3.0;
+  v8 = (rect.size.height / 3.0);
   v9 = objc_opt_new();
   v10 = 0;
   v11 = v5;
@@ -216,21 +216,21 @@ LABEL_19:
   return v16;
 }
 
-+ (id)_sections:(id)a3 intersectingBounds:(CGRect)a4
++ (id)_sections:(id)_sections intersectingBounds:(CGRect)bounds
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
-  v9 = [v8 count];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  _sectionsCopy = _sections;
+  v9 = [_sectionsCopy count];
   v10 = objc_alloc_init(MEMORY[0x29EDB8DE8]);
   if (v9)
   {
     v11 = 0;
     do
     {
-      v12 = [v8 objectAtIndexedSubscript:v11];
+      v12 = [_sectionsCopy objectAtIndexedSubscript:v11];
       [v12 rectValue];
       v14 = v13;
       v16 = v15;
@@ -261,9 +261,9 @@ LABEL_19:
   return v22;
 }
 
-+ (id)_sectionDescription:(int64_t)a3
++ (id)_sectionDescription:(int64_t)description
 {
-  if ((a3 - 1) > 8)
+  if ((description - 1) > 8)
   {
     v7 = 0;
   }
@@ -272,8 +272,8 @@ LABEL_19:
   {
     v3 = MEMORY[0x29EDBA0F8];
     v4 = [MEMORY[0x29EDBA070] numberWithInteger:?];
-    v5 = [v4 stringValue];
-    v6 = [v3 stringWithFormat:@"%@.%@", @"window.section", v5];
+    stringValue = [v4 stringValue];
+    v6 = [v3 stringWithFormat:@"%@.%@", @"window.section", stringValue];
     v7 = accessibilityLocalizedString(v6);
   }
 

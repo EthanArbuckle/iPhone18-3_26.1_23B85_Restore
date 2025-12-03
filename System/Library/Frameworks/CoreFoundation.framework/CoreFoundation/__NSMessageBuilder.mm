@@ -1,15 +1,15 @@
 @interface __NSMessageBuilder
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 @end
 
 @implementation __NSMessageBuilder
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  [a3 setTarget:self->_target];
+  [invocation setTarget:self->_target];
   if (self->_addr)
   {
-    *self->_addr = a3;
+    *self->_addr = invocation;
   }
 }
 

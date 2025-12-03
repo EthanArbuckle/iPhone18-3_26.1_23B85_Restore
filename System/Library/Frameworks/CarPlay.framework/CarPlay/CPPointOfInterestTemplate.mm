@@ -1,17 +1,17 @@
 @interface CPPointOfInterestTemplate
-- (CPPointOfInterestTemplate)initWithCoder:(id)a3;
+- (CPPointOfInterestTemplate)initWithCoder:(id)coder;
 - (CPPointOfInterestTemplate)initWithTitle:(NSString *)title pointsOfInterest:(NSArray *)pointsOfInterest selectedIndex:(NSUInteger)selectedIndex;
 - (NSArray)pointsOfInterest;
 - (NSString)title;
-- (id)_pointOfInterestWithIdentifier:(id)a3;
+- (id)_pointOfInterestWithIdentifier:(id)identifier;
 - (id)pointOfInterestDelegate;
-- (void)encodeWithCoder:(id)a3;
-- (void)handleActionForControlIdentifier:(id)a3;
-- (void)handleDidSelectPointOfInterestWithIdentifier:(id)a3;
-- (void)handleMapRegionDidChange:(id *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)handleActionForControlIdentifier:(id)identifier;
+- (void)handleDidSelectPointOfInterestWithIdentifier:(id)identifier;
+- (void)handleMapRegionDidChange:(id *)change;
 - (void)performUpdate;
 - (void)setPointsOfInterest:(NSArray *)pointsOfInterest selectedIndex:(NSUInteger)selectedIndex;
-- (void)setPointsOfInterest:(id)a3;
+- (void)setPointsOfInterest:(id)interest;
 - (void)setSelectedIndex:(NSUInteger)selectedIndex;
 - (void)setTitle:(NSString *)title;
 @end
@@ -51,49 +51,49 @@
   return v10;
 }
 
-- (CPPointOfInterestTemplate)initWithCoder:(id)a3
+- (CPPointOfInterestTemplate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = CPPointOfInterestTemplate;
-  v5 = [(CPTemplate *)&v10 initWithCoder:v4];
+  v5 = [(CPTemplate *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CPEntity"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CPEntity"];
     poiEntity = v5->_poiEntity;
     v5->_poiEntity = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"PointOfInterestTemplateSelectedIndex"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"PointOfInterestTemplateSelectedIndex"];
     v5->_selectedIndex = [v8 unsignedIntegerValue];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CPPointOfInterestTemplate;
-  v4 = a3;
-  [(CPTemplate *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(CPTemplate *)&v7 encodeWithCoder:coderCopy];
   v5 = [(CPPointOfInterestTemplate *)self poiEntity:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"CPEntity"];
+  [coderCopy encodeObject:v5 forKey:@"CPEntity"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[CPPointOfInterestTemplate selectedIndex](self, "selectedIndex")}];
-  [v4 encodeObject:v6 forKey:@"PointOfInterestTemplateSelectedIndex"];
+  [coderCopy encodeObject:v6 forKey:@"PointOfInterestTemplateSelectedIndex"];
 }
 
 - (void)setTitle:(NSString *)title
 {
   v8 = title;
-  v4 = [(CPPointOfInterestTemplate *)self poiEntity];
-  v5 = [v4 title];
-  v6 = [v5 isEqualToString:v8];
+  poiEntity = [(CPPointOfInterestTemplate *)self poiEntity];
+  title = [poiEntity title];
+  v6 = [title isEqualToString:v8];
 
   if ((v6 & 1) == 0)
   {
-    v7 = [(CPPointOfInterestTemplate *)self poiEntity];
-    [v7 setTitle:v8];
+    poiEntity2 = [(CPPointOfInterestTemplate *)self poiEntity];
+    [poiEntity2 setTitle:v8];
 
     [(CPTemplate *)self setNeedsUpdate];
   }
@@ -101,10 +101,10 @@
 
 - (NSString)title
 {
-  v2 = [(CPPointOfInterestTemplate *)self poiEntity];
-  v3 = [v2 title];
+  poiEntity = [(CPPointOfInterestTemplate *)self poiEntity];
+  title = [poiEntity title];
 
-  return v3;
+  return title;
 }
 
 - (void)setPointsOfInterest:(NSArray *)pointsOfInterest selectedIndex:(NSUInteger)selectedIndex
@@ -144,21 +144,21 @@
   }
 }
 
-- (void)setPointsOfInterest:(id)a3
+- (void)setPointsOfInterest:(id)interest
 {
-  v4 = a3;
-  v5 = [(CPPointOfInterestTemplate *)self entity];
-  [v5 setPointsOfInterest:v4];
+  interestCopy = interest;
+  entity = [(CPPointOfInterestTemplate *)self entity];
+  [entity setPointsOfInterest:interestCopy];
 
   [(CPTemplate *)self setNeedsUpdate];
 }
 
 - (NSArray)pointsOfInterest
 {
-  v2 = [(CPPointOfInterestTemplate *)self poiEntity];
-  v3 = [v2 pointsOfInterest];
+  poiEntity = [(CPPointOfInterestTemplate *)self poiEntity];
+  pointsOfInterest = [poiEntity pointsOfInterest];
 
-  return v3;
+  return pointsOfInterest;
 }
 
 - (void)performUpdate
@@ -167,13 +167,13 @@
   v8.super_class = CPPointOfInterestTemplate;
   [(CPTemplate *)&v8 performUpdate];
   objc_initWeak(&location, self);
-  v3 = [(CPTemplate *)self templateProviderFuture];
+  templateProviderFuture = [(CPTemplate *)self templateProviderFuture];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __42__CPPointOfInterestTemplate_performUpdate__block_invoke;
   v5[3] = &unk_278A11790;
   objc_copyWeak(&v6, &location);
-  v4 = [v3 addSuccessBlock:v5];
+  v4 = [templateProviderFuture addSuccessBlock:v5];
 
   objc_destroyWeak(&v6);
   objc_destroyWeak(&location);
@@ -186,54 +186,54 @@ void __42__CPPointOfInterestTemplate_performUpdate__block_invoke(uint64_t a1, vo
   [v3 updateEntityTemplate:WeakRetained withProxyDelegate:WeakRetained];
 }
 
-- (void)handleMapRegionDidChange:(id *)a3
+- (void)handleMapRegionDidChange:(id *)change
 {
   v7 = v6;
   v8 = v5;
   v9 = v4;
   v10 = v3;
-  v12 = [(CPPointOfInterestTemplate *)self pointOfInterestDelegate];
-  [v12 pointOfInterestTemplate:self didChangeMapRegion:{v10, v9, v8, v7}];
+  pointOfInterestDelegate = [(CPPointOfInterestTemplate *)self pointOfInterestDelegate];
+  [pointOfInterestDelegate pointOfInterestTemplate:self didChangeMapRegion:{v10, v9, v8, v7}];
 }
 
-- (void)handleDidSelectPointOfInterestWithIdentifier:(id)a3
+- (void)handleDidSelectPointOfInterestWithIdentifier:(id)identifier
 {
-  v8 = a3;
-  v4 = [(CPPointOfInterestTemplate *)self pointOfInterestDelegate];
+  identifierCopy = identifier;
+  pointOfInterestDelegate = [(CPPointOfInterestTemplate *)self pointOfInterestDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CPPointOfInterestTemplate *)self _pointOfInterestWithIdentifier:v8];
+    v6 = [(CPPointOfInterestTemplate *)self _pointOfInterestWithIdentifier:identifierCopy];
     if (v6)
     {
-      v7 = [(CPPointOfInterestTemplate *)self pointOfInterestDelegate];
-      [v7 pointOfInterestTemplate:self didSelectPointOfInterest:v6];
+      pointOfInterestDelegate2 = [(CPPointOfInterestTemplate *)self pointOfInterestDelegate];
+      [pointOfInterestDelegate2 pointOfInterestTemplate:self didSelectPointOfInterest:v6];
     }
   }
 
   MEMORY[0x2821F9730]();
 }
 
-- (id)_pointOfInterestWithIdentifier:(id)a3
+- (id)_pointOfInterestWithIdentifier:(id)identifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__7;
   v19 = __Block_byref_object_dispose__7;
   v20 = 0;
-  v5 = [(CPPointOfInterestTemplate *)self pointsOfInterest];
+  pointsOfInterest = [(CPPointOfInterestTemplate *)self pointsOfInterest];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __60__CPPointOfInterestTemplate__pointOfInterestWithIdentifier___block_invoke;
   v12[3] = &unk_278A117B8;
-  v6 = v4;
+  v6 = identifierCopy;
   v13 = v6;
   v14 = &v15;
-  [v5 enumerateObjectsUsingBlock:v12];
+  [pointsOfInterest enumerateObjectsUsingBlock:v12];
 
   v7 = v16[5];
   if (!v7)
@@ -270,16 +270,16 @@ void __60__CPPointOfInterestTemplate__pointOfInterestWithIdentifier___block_invo
   }
 }
 
-- (void)handleActionForControlIdentifier:(id)a3
+- (void)handleActionForControlIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __62__CPPointOfInterestTemplate_handleActionForControlIdentifier___block_invoke;
   v6[3] = &unk_278A10780;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = identifierCopy;
+  v5 = identifierCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 

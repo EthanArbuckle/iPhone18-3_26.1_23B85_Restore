@@ -1,30 +1,30 @@
 @interface LNStringSearchCriteria
-- (BOOL)isEqual:(id)a3;
-- (LNStringSearchCriteria)initWithCoder:(id)a3;
-- (LNStringSearchCriteria)initWithTerm:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (LNStringSearchCriteria)initWithCoder:(id)coder;
+- (LNStringSearchCriteria)initWithTerm:(id)term;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNStringSearchCriteria
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(LNStringSearchCriteria *)self term];
-      v8 = [(LNStringSearchCriteria *)v6 term];
-      v9 = v7;
-      v10 = v8;
+      term = [(LNStringSearchCriteria *)self term];
+      term2 = [(LNStringSearchCriteria *)v6 term];
+      v9 = term;
+      v10 = term2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -50,39 +50,39 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNStringSearchCriteria *)self term];
-  [v4 encodeObject:v5 forKey:@"term"];
+  coderCopy = coder;
+  term = [(LNStringSearchCriteria *)self term];
+  [coderCopy encodeObject:term forKey:@"term"];
 }
 
-- (LNStringSearchCriteria)initWithCoder:(id)a3
+- (LNStringSearchCriteria)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"term"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"term"];
 
   if (v5)
   {
     self = [(LNStringSearchCriteria *)self initWithTerm:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (LNStringSearchCriteria)initWithTerm:(id)a3
+- (LNStringSearchCriteria)initWithTerm:(id)term
 {
-  v5 = a3;
-  if (!v5)
+  termCopy = term;
+  if (!termCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"LNStringSearchCriteria.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"term"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNStringSearchCriteria.m" lineNumber:17 description:{@"Invalid parameter not satisfying: %@", @"term"}];
   }
 
   v12.receiver = self;
@@ -90,7 +90,7 @@
   v6 = [(LNStringSearchCriteria *)&v12 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [termCopy copy];
     term = v6->_term;
     v6->_term = v7;
 

@@ -1,35 +1,35 @@
 @interface SUScriptReview
-+ (id)webScriptNameForKeyName:(id)a3;
-+ (id)webScriptNameForSelector:(SEL)a3;
++ (id)webScriptNameForKeyName:(id)name;
++ (id)webScriptNameForSelector:(SEL)selector;
 + (void)initialize;
 - (NSNumber)rating;
 - (NSString)body;
 - (NSString)infoURL;
 - (NSString)nickname;
 - (NSString)title;
-- (SUScriptReview)initWithReview:(id)a3;
+- (SUScriptReview)initWithReview:(id)review;
 - (id)copyReview;
 - (id)scriptAttributeKeys;
 - (void)dealloc;
-- (void)setBody:(id)a3;
-- (void)setInfoURL:(id)a3;
-- (void)setNickname:(id)a3;
-- (void)setRating:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setBody:(id)body;
+- (void)setInfoURL:(id)l;
+- (void)setNickname:(id)nickname;
+- (void)setRating:(id)rating;
+- (void)setTitle:(id)title;
 @end
 
 @implementation SUScriptReview
 
-- (SUScriptReview)initWithReview:(id)a3
+- (SUScriptReview)initWithReview:(id)review
 {
   v8.receiver = self;
   v8.super_class = SUScriptReview;
   v4 = [(SUScriptObject *)&v8 init];
   if (v4)
   {
-    if (a3)
+    if (review)
     {
-      v5 = [a3 copy];
+      v5 = [review copy];
     }
 
     else
@@ -62,25 +62,25 @@
 - (NSString)body
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SUUIReviewMetadata *)self->_review body];
+  body = [(SUUIReviewMetadata *)self->_review body];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return body;
 }
 
 - (NSString)infoURL
 {
   [(SUScriptObject *)self lock];
-  v3 = [(NSURL *)self->_infoURL absoluteString];
+  absoluteString = [(NSURL *)self->_infoURL absoluteString];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return absoluteString;
 }
 
 - (NSString)nickname
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SUUIReviewMetadata *)self->_review nickname];
+  nickname = [(SUUIReviewMetadata *)self->_review nickname];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return nickname;
 }
 
 - (NSNumber)rating
@@ -93,7 +93,7 @@
   return v4;
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -105,7 +105,7 @@
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = a3, (objc_opt_isKindOfClass() & 1) != 0))
+  if (!body || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = body, (objc_opt_isKindOfClass() & 1) != 0))
   {
 LABEL_3:
     [(SUScriptObject *)self lock];
@@ -120,21 +120,21 @@ LABEL_3:
   [v7 throwException:@"Invalid argument"];
 }
 
-- (void)setInfoURL:(id)a3
+- (void)setInfoURL:(id)l
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = 0;
+    lCopy = 0;
     v6 = 1;
     goto LABEL_3;
   }
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
-  v5 = 0;
+  lCopy = 0;
   v6 = 1;
-  if (!a3 || (isKindOfClass & 1) != 0)
+  if (!l || (isKindOfClass & 1) != 0)
   {
 LABEL_3:
     [(SUScriptObject *)self lock];
@@ -146,7 +146,7 @@ LABEL_3:
 
     else
     {
-      v7 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v5];
+      v7 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:lCopy];
     }
 
     self->_infoURL = v7;
@@ -159,7 +159,7 @@ LABEL_3:
   if (objc_opt_isKindOfClass())
   {
     v6 = 0;
-    v5 = a3;
+    lCopy = l;
     goto LABEL_3;
   }
 
@@ -168,7 +168,7 @@ LABEL_3:
   [v9 throwException:@"Invalid argument"];
 }
 
-- (void)setNickname:(id)a3
+- (void)setNickname:(id)nickname
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -180,7 +180,7 @@ LABEL_3:
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = a3, (objc_opt_isKindOfClass() & 1) != 0))
+  if (!nickname || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = nickname, (objc_opt_isKindOfClass() & 1) != 0))
   {
 LABEL_3:
     [(SUScriptObject *)self lock];
@@ -195,13 +195,13 @@ LABEL_3:
   [v7 throwException:@"Invalid argument"];
 }
 
-- (void)setRating:(id)a3
+- (void)setRating:(id)rating
 {
   if (objc_opt_respondsToSelector())
   {
     [(SUScriptObject *)self lock];
     review = self->_review;
-    [a3 floatValue];
+    [rating floatValue];
     [(SUUIReviewMetadata *)review setRating:?];
 
     [(SUScriptObject *)self unlock];
@@ -215,7 +215,7 @@ LABEL_3:
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -227,7 +227,7 @@ LABEL_3:
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v5 = 0;
-  if (!a3 || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = a3, (objc_opt_isKindOfClass() & 1) != 0))
+  if (!title || (isKindOfClass & 1) != 0 || (objc_opt_class(), v5 = title, (objc_opt_isKindOfClass() & 1) != 0))
   {
 LABEL_3:
     [(SUScriptObject *)self lock];
@@ -245,32 +245,32 @@ LABEL_3:
 - (NSString)title
 {
   [(SUScriptObject *)self lock];
-  v3 = [(SUUIReviewMetadata *)self->_review title];
+  title = [(SUUIReviewMetadata *)self->_review title];
   [(SUScriptObject *)self unlock];
-  return v3;
+  return title;
 }
 
-+ (id)webScriptNameForKeyName:(id)a3
++ (id)webScriptNameForKeyName:(id)name
 {
   result = [__KeyMapping_41 objectForKey:?];
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptReview;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForKeyName_, name);
   }
 
   return result;
 }
 
-+ (id)webScriptNameForSelector:(SEL)a3
++ (id)webScriptNameForSelector:(SEL)selector
 {
-  result = SUWebScriptNameForSelector2(a3, &__SelectorMapping_33, 3);
+  result = SUWebScriptNameForSelector2(selector, &__SelectorMapping_33, 3);
   if (!result)
   {
-    v6.receiver = a1;
+    v6.receiver = self;
     v6.super_class = &OBJC_METACLASS___SUScriptReview;
-    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, a3);
+    return objc_msgSendSuper2(&v6, sel_webScriptNameForSelector_, selector);
   }
 
   return result;
@@ -280,14 +280,14 @@ LABEL_3:
 {
   v4.receiver = self;
   v4.super_class = SUScriptReview;
-  v2 = [(SUScriptObject *)&v4 scriptAttributeKeys];
-  -[NSMutableArray addObjectsFromArray:](v2, "addObjectsFromArray:", [__KeyMapping_41 allKeys]);
-  return v2;
+  scriptAttributeKeys = [(SUScriptObject *)&v4 scriptAttributeKeys];
+  -[NSMutableArray addObjectsFromArray:](scriptAttributeKeys, "addObjectsFromArray:", [__KeyMapping_41 allKeys]);
+  return scriptAttributeKeys;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     __SelectorMapping_33 = sel_removeDraft;
     unk_1EBF3B1A0 = @"removeDraft";

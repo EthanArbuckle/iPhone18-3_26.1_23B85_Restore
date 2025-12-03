@@ -1,17 +1,17 @@
 @interface TIPersistentQueue
-- (TIPersistentQueue)initWithURL:(id)a3;
-- (void)dequeueObjects:(id)a3;
-- (void)enqueueObjects:(id)a3;
-- (void)readObjects:(id)a3;
+- (TIPersistentQueue)initWithURL:(id)l;
+- (void)dequeueObjects:(id)objects;
+- (void)enqueueObjects:(id)objects;
+- (void)readObjects:(id)objects;
 @end
 
 @implementation TIPersistentQueue
 
-- (void)dequeueObjects:(id)a3
+- (void)dequeueObjects:(id)objects
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  objectsCopy = objects;
+  if (objectsCopy)
   {
     v5 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:0];
     presentedItemURL = self->_presentedItemURL;
@@ -20,7 +20,7 @@
     v11[1] = 3221225472;
     v11[2] = __36__TIPersistentQueue_dequeueObjects___block_invoke;
     v11[3] = &unk_278733118;
-    v12 = v4;
+    v12 = objectsCopy;
     [v5 coordinateWritingItemAtURL:presentedItemURL options:0 error:&v13 byAccessor:v11];
     v7 = v13;
     if (v7)
@@ -118,11 +118,11 @@ LABEL_17:
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enqueueObjects:(id)a3
+- (void)enqueueObjects:(id)objects
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  objectsCopy = objects;
+  if (objectsCopy)
   {
     v5 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:0];
     presentedItemURL = self->_presentedItemURL;
@@ -131,7 +131,7 @@ LABEL_17:
     v11[1] = 3221225472;
     v11[2] = __36__TIPersistentQueue_enqueueObjects___block_invoke;
     v11[3] = &unk_278733118;
-    v12 = v4;
+    v12 = objectsCopy;
     [v5 coordinateWritingItemAtURL:presentedItemURL options:0 error:&v13 byAccessor:v11];
     v7 = v13;
     if (v7)
@@ -180,11 +180,11 @@ void __36__TIPersistentQueue_enqueueObjects___block_invoke(uint64_t a1, void *a2
   }
 }
 
-- (void)readObjects:(id)a3
+- (void)readObjects:(id)objects
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  objectsCopy = objects;
+  if (objectsCopy)
   {
     v5 = [objc_alloc(MEMORY[0x277CCA9E8]) initWithFilePresenter:0];
     presentedItemURL = self->_presentedItemURL;
@@ -193,7 +193,7 @@ void __36__TIPersistentQueue_enqueueObjects___block_invoke(uint64_t a1, void *a2
     v11[1] = 3221225472;
     v11[2] = __33__TIPersistentQueue_readObjects___block_invoke;
     v11[3] = &unk_278733118;
-    v12 = v4;
+    v12 = objectsCopy;
     [v5 coordinateReadingItemAtURL:presentedItemURL options:0 error:&v13 byAccessor:v11];
     v7 = v13;
     if (v7)
@@ -223,16 +223,16 @@ void __33__TIPersistentQueue_readObjects___block_invoke(uint64_t a1, uint64_t a2
   (*(*(a1 + 32) + 16))();
 }
 
-- (TIPersistentQueue)initWithURL:(id)a3
+- (TIPersistentQueue)initWithURL:(id)l
 {
-  v5 = a3;
+  lCopy = l;
   v10.receiver = self;
   v10.super_class = TIPersistentQueue;
   v6 = [(TIPersistentQueue *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_presentedItemURL, a3);
+    objc_storeStrong(&v6->_presentedItemURL, l);
     v8 = v7;
   }
 

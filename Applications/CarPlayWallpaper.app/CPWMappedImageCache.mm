@@ -1,21 +1,21 @@
 @interface CPWMappedImageCache
 - (NSArray)allImageKeys;
 - (_TtC16CarPlayWallpaper19CPWMappedImageCache)init;
-- (_TtC16CarPlayWallpaper19CPWMappedImageCache)initWithCacheID:(id)a3 persistenceOptions:(unint64_t)a4;
-- (id)imageWith:(id)a3;
-- (void)removeAllImagesWithCompletion:(id)a3;
-- (void)saveWithImage:(id)a3 with:(id)a4 completion:(id)a5;
+- (_TtC16CarPlayWallpaper19CPWMappedImageCache)initWithCacheID:(id)d persistenceOptions:(unint64_t)options;
+- (id)imageWith:(id)with;
+- (void)removeAllImagesWithCompletion:(id)completion;
+- (void)saveWithImage:(id)image with:(id)with completion:(id)completion;
 @end
 
 @implementation CPWMappedImageCache
 
-- (_TtC16CarPlayWallpaper19CPWMappedImageCache)initWithCacheID:(id)a3 persistenceOptions:(unint64_t)a4
+- (_TtC16CarPlayWallpaper19CPWMappedImageCache)initWithCacheID:(id)d persistenceOptions:(unint64_t)options
 {
-  result = [objc_allocWithZone(BSUIMappedImageCache) initWithUniqueIdentifier:a3];
+  result = [objc_allocWithZone(BSUIMappedImageCache) initWithUniqueIdentifier:d];
   if (result)
   {
     *(&self->super.isa + OBJC_IVAR____TtC16CarPlayWallpaper19CPWMappedImageCache_cache) = result;
-    *(&self->super.isa + OBJC_IVAR____TtC16CarPlayWallpaper19CPWMappedImageCache_persistenceOptions) = a4;
+    *(&self->super.isa + OBJC_IVAR____TtC16CarPlayWallpaper19CPWMappedImageCache_persistenceOptions) = options;
     v7.receiver = self;
     v7.super_class = type metadata accessor for CPWMappedImageCache();
     return [(CPWMappedImageCache *)&v7 init];
@@ -29,16 +29,16 @@
   return result;
 }
 
-- (id)imageWith:(id)a3
+- (id)imageWith:(id)with
 {
-  v3 = [*(&self->super.isa + OBJC_IVAR____TtC16CarPlayWallpaper19CPWMappedImageCache_cache) imageForKey:a3];
+  v3 = [*(&self->super.isa + OBJC_IVAR____TtC16CarPlayWallpaper19CPWMappedImageCache_cache) imageForKey:with];
 
   return v3;
 }
 
-- (void)saveWithImage:(id)a3 with:(id)a4 completion:(id)a5
+- (void)saveWithImage:(id)image with:(id)with completion:(id)completion
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(completion);
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
   if (v7)
@@ -53,15 +53,15 @@
     v11 = 0;
   }
 
-  v12 = a3;
-  v13 = self;
-  CPWMappedImageCache.save(image:with:completion:)(v12, v8, v10, v7, v11);
+  imageCopy = image;
+  selfCopy = self;
+  CPWMappedImageCache.save(image:with:completion:)(imageCopy, v8, v10, v7, v11);
   sub_10000907C(v7);
 }
 
-- (void)removeAllImagesWithCompletion:(id)a3
+- (void)removeAllImagesWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = swift_allocObject();
@@ -85,7 +85,7 @@
   v10[2] = sub_1000093A4;
   v10[3] = &unk_1000149F0;
   v8 = _Block_copy(v10);
-  v9 = self;
+  selfCopy = self;
   sub_100006418(v4);
 
   [v6 removeAllImagesWithCompletion:v8];
@@ -96,7 +96,7 @@
 - (NSArray)allImageKeys
 {
   v2 = *(&self->super.isa + OBJC_IVAR____TtC16CarPlayWallpaper19CPWMappedImageCache_cache);
-  v3 = self;
+  selfCopy = self;
   result = [v2 allKeys];
   if (result)
   {

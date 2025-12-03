@@ -1,21 +1,21 @@
 @interface HPSCaseEngravingView
-+ (void)getEngravedCaseImage:(NSString *)a3 productID:(unsigned int)a4 completionHandler:(id)a5;
++ (void)getEngravedCaseImage:(NSString *)image productID:(unsigned int)d completionHandler:(id)handler;
 - (_TtC16HeadphoneConfigs20HPSCaseEngravingView)init;
 @end
 
 @implementation HPSCaseEngravingView
 
-+ (void)getEngravedCaseImage:(NSString *)a3 productID:(unsigned int)a4 completionHandler:(id)a5
++ (void)getEngravedCaseImage:(NSString *)image productID:(unsigned int)d completionHandler:(id)handler
 {
   v9 = (*(*(__swift_instantiateConcreteTypeFromMangledNameV2(&qword_27F4226D0, &qword_251217DE8) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   MEMORY[0x28223BE20]();
   v11 = &v18 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(handler);
   v13 = swift_allocObject();
-  *(v13 + 16) = a3;
-  *(v13 + 24) = a4;
+  *(v13 + 16) = image;
+  *(v13 + 24) = d;
   *(v13 + 32) = v12;
-  *(v13 + 40) = a1;
+  *(v13 + 40) = self;
   v14 = sub_2512118FC();
   (*(*(v14 - 8) + 56))(v11, 1, 1, v14);
   v15 = swift_allocObject();
@@ -28,7 +28,7 @@
   v16[3] = 0;
   v16[4] = &unk_251217E08;
   v16[5] = v15;
-  v17 = a3;
+  imageCopy = image;
   sub_2511C264C(0, 0, v11, &unk_251217E18, v16);
 }
 

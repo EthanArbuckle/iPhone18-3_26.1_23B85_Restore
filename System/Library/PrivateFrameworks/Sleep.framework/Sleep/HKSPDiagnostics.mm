@@ -1,27 +1,27 @@
 @interface HKSPDiagnostics
-- (HKSPDiagnostics)initWithLabel:(id)a3;
+- (HKSPDiagnostics)initWithLabel:(id)label;
 - (void)_registerStateHandler;
-- (void)addProvider:(id)a3;
-- (void)removeProvider:(id)a3;
+- (void)addProvider:(id)provider;
+- (void)removeProvider:(id)provider;
 @end
 
 @implementation HKSPDiagnostics
 
-- (HKSPDiagnostics)initWithLabel:(id)a3
+- (HKSPDiagnostics)initWithLabel:(id)label
 {
-  v4 = a3;
+  labelCopy = label;
   v14.receiver = self;
   v14.super_class = HKSPDiagnostics;
   v5 = [(HKSPDiagnostics *)&v14 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [labelCopy copy];
     label = v5->_label;
     v5->_label = v6;
 
     v8 = [HKSPObserverSet alloc];
-    v9 = [MEMORY[0x277D2C938] immediateScheduler];
-    v10 = [(HKSPObserverSet *)v8 initWithCallbackScheduler:v9];
+    immediateScheduler = [MEMORY[0x277D2C938] immediateScheduler];
+    v10 = [(HKSPObserverSet *)v8 initWithCallbackScheduler:immediateScheduler];
     providers = v5->_providers;
     v5->_providers = v10;
 
@@ -32,17 +32,17 @@
   return v5;
 }
 
-- (void)addProvider:(id)a3
+- (void)addProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
     [(HKSPObserverSet *)self->_providers addObserver:?];
   }
 }
 
-- (void)removeProvider:(id)a3
+- (void)removeProvider:(id)provider
 {
-  if (a3)
+  if (provider)
   {
     [(HKSPObserverSet *)self->_providers removeObserver:?];
   }

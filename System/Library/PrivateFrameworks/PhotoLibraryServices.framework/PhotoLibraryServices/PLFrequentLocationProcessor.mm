@@ -1,11 +1,11 @@
 @interface PLFrequentLocationProcessor
-+ (double)_computeWeekendFrequencyForMoments:(id)a3;
-+ (id)_clustersFromLocationsOfInterest:(id)a3 forItems:(id)a4 remainingItemsToCluster:(id *)a5 progressBlock:(id)a6;
-+ (id)_coarseClustersForItems:(id)a3 progressBlock:(id)a4;
-+ (id)_finalClustersFromCoarseClusters:(id)a3 progressBlock:(id)a4;
-+ (id)processFrequentLocationsWithItemSubset:(id)a3 locationsOfInterest:(id)a4 progressBlock:(id)a5;
-+ (id)processFrequentLocationsWithItems:(id)a3 locationsOfInterest:(id)a4 progressBlock:(id)a5;
-+ (id)processFrequentLocationsWithSortedMoments:(id)a3 locationsOfInterest:(id)a4 progressBlock:(id)a5;
++ (double)_computeWeekendFrequencyForMoments:(id)moments;
++ (id)_clustersFromLocationsOfInterest:(id)interest forItems:(id)items remainingItemsToCluster:(id *)cluster progressBlock:(id)block;
++ (id)_coarseClustersForItems:(id)items progressBlock:(id)block;
++ (id)_finalClustersFromCoarseClusters:(id)clusters progressBlock:(id)block;
++ (id)processFrequentLocationsWithItemSubset:(id)subset locationsOfInterest:(id)interest progressBlock:(id)block;
++ (id)processFrequentLocationsWithItems:(id)items locationsOfInterest:(id)interest progressBlock:(id)block;
++ (id)processFrequentLocationsWithSortedMoments:(id)moments locationsOfInterest:(id)interest progressBlock:(id)block;
 + (id)sortDescriptorsForLocationsOfInterest;
 @end
 
@@ -121,30 +121,30 @@ uint64_t __68__PLFrequentLocationProcessor_sortDescriptorsForLocationsOfInterest
   return 0;
 }
 
-+ (id)_coarseClustersForItems:(id)a3 progressBlock:(id)a4
++ (id)_coarseClustersForItems:(id)items progressBlock:(id)block
 {
   v76 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v45 = a4;
-  v6 = [MEMORY[0x1E695DF70] array];
-  v7 = [MEMORY[0x1E695DF90] dictionary];
-  v8 = [MEMORY[0x1E695DFA0] orderedSet];
+  itemsCopy = items;
+  blockCopy = block;
+  array = [MEMORY[0x1E695DF70] array];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  orderedSet = [MEMORY[0x1E695DFA0] orderedSet];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __69__PLFrequentLocationProcessor__coarseClustersForItems_progressBlock___block_invoke;
   aBlock[3] = &unk_1E7573D90;
-  v9 = v8;
+  v9 = orderedSet;
   v70 = v9;
-  v58 = v7;
+  v58 = dictionary;
   v71 = v58;
-  v44 = v6;
+  v44 = array;
   v72 = v44;
   v10 = _Block_copy(aBlock);
   v65 = 0u;
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
-  obj = v5;
+  obj = itemsCopy;
   v52 = [obj countByEnumeratingWithState:&v65 objects:v75 count:16];
   if (v52)
   {
@@ -162,10 +162,10 @@ uint64_t __68__PLFrequentLocationProcessor_sortDescriptorsForLocationsOfInterest
         }
 
         v13 = *(*(&v65 + 1) + 8 * i);
-        v14 = [v13 pl_startDate];
-        v15 = [v13 pl_endDate];
-        v55 = v14;
-        v16 = v14;
+        pl_startDate = [v13 pl_startDate];
+        pl_endDate = [v13 pl_endDate];
+        v55 = pl_startDate;
+        v16 = pl_startDate;
         v17 = v13;
         v54 = [v16 dateByAddingTimeInterval:-7776000.0];
         v10[2](v10);
@@ -190,7 +190,7 @@ uint64_t __68__PLFrequentLocationProcessor_sortDescriptorsForLocationsOfInterest
         {
 
 LABEL_25:
-          v37 = v15;
+          v37 = pl_endDate;
           v38 = [PLFrequentLocation alloc];
           v73 = v17;
           v39 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v73 count:1];
@@ -199,14 +199,14 @@ LABEL_25:
           [v58 setObject:v40 forKeyedSubscript:v37];
           [v9 addObject:v37];
 
-          v15 = v37;
+          pl_endDate = v37;
           goto LABEL_26;
         }
 
         v22 = v21;
         v57 = v20;
         v50 = v17;
-        v51 = v15;
+        v51 = pl_endDate;
         v23 = 0;
         v24 = 0;
         v25 = 0;
@@ -226,8 +226,8 @@ LABEL_25:
             [v29 coordinate];
             CLLocationCoordinate2DGetDistanceFrom();
             v31 = v30;
-            v32 = [v29 sortedMoments];
-            v33 = [v32 count];
+            sortedMoments = [v29 sortedMoments];
+            v33 = [sortedMoments count];
 
             if (v31 < 5000.0 && v33 > v23)
             {
@@ -251,7 +251,7 @@ LABEL_25:
           [v24 addMomentToSortedMoments:v50];
           [v58 removeObjectForKey:v25];
           v17 = v50;
-          v15 = v51;
+          pl_endDate = v51;
           [v58 setObject:v24 forKeyedSubscript:v51];
           [v57 removeObject:v25];
           [v57 addObject:v51];
@@ -270,7 +270,7 @@ LABEL_25:
           v11 = v46;
           i = v53;
           v17 = v50;
-          v15 = v51;
+          pl_endDate = v51;
         }
 
         if (v56)
@@ -287,8 +287,8 @@ LABEL_26:
     while (v52);
   }
 
-  v41 = [MEMORY[0x1E695DF00] distantFuture];
-  (v10[2])(v10, v41);
+  distantFuture = [MEMORY[0x1E695DF00] distantFuture];
+  (v10[2])(v10, distantFuture);
 
   v42 = v44;
   return v44;
@@ -357,12 +357,12 @@ LABEL_4:
   }
 }
 
-+ (id)_finalClustersFromCoarseClusters:(id)a3 progressBlock:(id)a4
++ (id)_finalClustersFromCoarseClusters:(id)clusters progressBlock:(id)block
 {
   v51 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E695DF70] array];
+  clustersCopy = clusters;
+  blockCopy = block;
+  array = [MEMORY[0x1E695DF70] array];
   v8 = [(PLDataClustering *)[PLDBSCANClustering alloc] initWithDistanceBlock:&__block_literal_global_20];
   [(PLDataDensityClustering *)v8 setMaximumDistance:250.0];
   [(PLDataDensityClustering *)v8 setMinimumNumberOfObjects:7];
@@ -370,13 +370,13 @@ LABEL_4:
   v48 = 0u;
   v45 = 0u;
   v46 = 0u;
-  obj = v5;
+  obj = clustersCopy;
   v33 = [obj countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v33)
   {
     v32 = *v46;
     v38 = v8;
-    v39 = v6;
+    v39 = blockCopy;
     do
     {
       v9 = 0;
@@ -390,17 +390,17 @@ LABEL_4:
         v36 = v9;
         v10 = *(*(&v45 + 1) + 8 * v9);
         context = objc_autoreleasePoolPush();
-        v11 = [v10 sortedMoments];
-        v40 = [v11 count];
-        v34 = v11;
+        sortedMoments = [v10 sortedMoments];
+        v40 = [sortedMoments count];
+        v34 = sortedMoments;
         if (v40 < 0x801)
         {
-          v20 = [(PLDBSCANClustering *)v8 performWithDataset:v11 progressBlock:v6];
+          v20 = [(PLDBSCANClustering *)v8 performWithDataset:sortedMoments progressBlock:blockCopy];
         }
 
         else
         {
-          v37 = [MEMORY[0x1E695DF70] array];
+          array2 = [MEMORY[0x1E695DF70] array];
           v12 = 0;
           v13 = vcvtpd_u64_f64(v40 / ceil(vcvtd_n_f64_u64(v40, 0xBuLL)));
           v14 = v40;
@@ -418,9 +418,9 @@ LABEL_4:
               v17 = v14;
             }
 
-            v18 = [v11 subarrayWithRange:{v12, v17}];
+            v18 = [sortedMoments subarrayWithRange:{v12, v17}];
             v19 = [(PLDBSCANClustering *)v8 performWithDataset:v18 progressBlock:v39];
-            [v37 addObjectsFromArray:v19];
+            [array2 addObjectsFromArray:v19];
 
             v8 = v38;
             objc_autoreleasePoolPop(v15);
@@ -429,7 +429,7 @@ LABEL_4:
           }
 
           while (v12 < v40);
-          v20 = v37;
+          v20 = array2;
         }
 
         v43 = 0u;
@@ -451,12 +451,12 @@ LABEL_4:
                 objc_enumerationMutation(v21);
               }
 
-              v26 = [*(*(&v41 + 1) + 8 * i) objects];
+              objects = [*(*(&v41 + 1) + 8 * i) objects];
               v27 = +[PLMediaMiningUtilities sortDescriptorsForSortingItemsByTime];
-              v28 = [v26 sortedArrayUsingDescriptors:v27];
+              v28 = [objects sortedArrayUsingDescriptors:v27];
 
               v29 = [[PLFrequentLocation alloc] initWithSortedMoments:v28];
-              [v7 addObject:v29];
+              [array addObject:v29];
             }
 
             v23 = [v21 countByEnumeratingWithState:&v41 objects:v49 count:16];
@@ -468,7 +468,7 @@ LABEL_4:
         objc_autoreleasePoolPop(context);
         v9 = v36 + 1;
         v8 = v38;
-        v6 = v39;
+        blockCopy = v39;
       }
 
       while (v36 + 1 != v33);
@@ -478,7 +478,7 @@ LABEL_4:
     while (v33);
   }
 
-  return v7;
+  return array;
 }
 
 uint64_t __78__PLFrequentLocationProcessor__finalClustersFromCoarseClusters_progressBlock___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -490,21 +490,21 @@ uint64_t __78__PLFrequentLocationProcessor__finalClustersFromCoarseClusters_prog
   return CLLocationCoordinate2DGetDistanceFrom();
 }
 
-+ (id)_clustersFromLocationsOfInterest:(id)a3 forItems:(id)a4 remainingItemsToCluster:(id *)a5 progressBlock:(id)a6
++ (id)_clustersFromLocationsOfInterest:(id)interest forItems:(id)items remainingItemsToCluster:(id *)cluster progressBlock:(id)block
 {
-  v44 = a5;
+  clusterCopy = cluster;
   v76 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v45 = a6;
-  v48 = _Block_copy(v45);
-  v46 = [MEMORY[0x1E695DF70] array];
-  v10 = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
+  interestCopy = interest;
+  itemsCopy = items;
+  blockCopy = block;
+  v48 = _Block_copy(blockCopy);
+  array = [MEMORY[0x1E695DF70] array];
+  strongToStrongObjectsMapTable = [MEMORY[0x1E696AD18] strongToStrongObjectsMapTable];
   v66 = 0u;
   v67 = 0u;
   v68 = 0u;
   v69 = 0u;
-  v11 = v8;
+  v11 = interestCopy;
   v12 = [v11 countByEnumeratingWithState:&v66 objects:v75 count:16];
   if (v12)
   {
@@ -520,8 +520,8 @@ uint64_t __78__PLFrequentLocationProcessor__finalClustersFromCoarseClusters_prog
         }
 
         v16 = *(*(&v66 + 1) + 8 * i);
-        v17 = [MEMORY[0x1E695DF70] array];
-        [v10 setObject:v17 forKey:v16];
+        array2 = [MEMORY[0x1E695DF70] array];
+        [strongToStrongObjectsMapTable setObject:array2 forKey:v16];
       }
 
       v13 = [v11 countByEnumeratingWithState:&v66 objects:v75 count:16];
@@ -530,12 +530,12 @@ uint64_t __78__PLFrequentLocationProcessor__finalClustersFromCoarseClusters_prog
     while (v13);
   }
 
-  v18 = [v9 count];
+  v18 = [itemsCopy count];
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  obj = v9;
+  obj = itemsCopy;
   v19 = v48;
   v50 = [obj countByEnumeratingWithState:&v62 objects:v74 count:16];
   if (v50)
@@ -570,13 +570,13 @@ uint64_t __78__PLFrequentLocationProcessor__finalClustersFromCoarseClusters_prog
             objc_autoreleasePoolPop(v24);
             v42 = obj;
 
-            v34 = MEMORY[0x1E695E0F0];
+            array3 = MEMORY[0x1E695E0F0];
             goto LABEL_44;
           }
         }
 
-        v25 = [v23 pl_location];
-        if (v25)
+        pl_location = [v23 pl_location];
+        if (pl_location)
         {
           v51 = v23;
           v52 = v24;
@@ -600,10 +600,10 @@ uint64_t __78__PLFrequentLocationProcessor__finalClustersFromCoarseClusters_prog
                 }
 
                 v31 = *(*(&v57 + 1) + 8 * k);
-                [v31 distanceFromLocation:v25];
+                [v31 distanceFromLocation:pl_location];
                 if (v32 <= 500.0)
                 {
-                  v33 = [v10 objectForKey:v31];
+                  v33 = [strongToStrongObjectsMapTable objectForKey:v31];
                   [v33 addObject:v51];
 
                   goto LABEL_26;
@@ -620,7 +620,7 @@ uint64_t __78__PLFrequentLocationProcessor__finalClustersFromCoarseClusters_prog
             }
           }
 
-          [v46 addObject:v51];
+          [array addObject:v51];
 LABEL_26:
           v19 = v48;
           v24 = v52;
@@ -641,7 +641,7 @@ LABEL_26:
     }
   }
 
-  v34 = [MEMORY[0x1E695DF70] array];
+  array3 = [MEMORY[0x1E695DF70] array];
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
@@ -661,11 +661,11 @@ LABEL_26:
           objc_enumerationMutation(v35);
         }
 
-        v40 = [v10 objectForKey:{*(*(&v53 + 1) + 8 * m), v44}];
+        v40 = [strongToStrongObjectsMapTable objectForKey:{*(*(&v53 + 1) + 8 * m), clusterCopy}];
         if ([v40 count])
         {
           v41 = [[PLFrequentLocation alloc] initWithSortedMoments:v40];
-          [v34 addObject:v41];
+          [array3 addObject:v41];
         }
       }
 
@@ -675,28 +675,28 @@ LABEL_26:
     while (v37);
   }
 
-  if (v44)
+  if (clusterCopy)
   {
-    *v44 = v46;
+    *clusterCopy = array;
   }
 
   v19 = v48;
   v42 = obj;
 LABEL_44:
 
-  return v34;
+  return array3;
 }
 
-+ (double)_computeWeekendFrequencyForMoments:(id)a3
++ (double)_computeWeekendFrequencyForMoments:(id)moments
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DEE8] currentCalendar];
+  momentsCopy = moments;
+  currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = v3;
+  v5 = momentsCopy;
   v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (!v6)
   {
@@ -717,15 +717,15 @@ LABEL_44:
       }
 
       v11 = *(*(&v18 + 1) + 8 * i);
-      v12 = [v11 pl_startDate];
-      if ([v4 isDateInWeekend:v12])
+      pl_startDate = [v11 pl_startDate];
+      if ([currentCalendar isDateInWeekend:pl_startDate])
       {
       }
 
       else
       {
-        v13 = [v11 pl_endDate];
-        v14 = [v4 isDateInWeekend:v13];
+        pl_endDate = [v11 pl_endDate];
+        v14 = [currentCalendar isDateInWeekend:pl_endDate];
 
         if (!v14)
         {
@@ -747,13 +747,13 @@ LABEL_14:
   return v15 / v16;
 }
 
-+ (id)processFrequentLocationsWithItemSubset:(id)a3 locationsOfInterest:(id)a4 progressBlock:(id)a5
++ (id)processFrequentLocationsWithItemSubset:(id)subset locationsOfInterest:(id)interest progressBlock:(id)block
 {
   v41 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = _Block_copy(v10);
+  subsetCopy = subset;
+  interestCopy = interest;
+  blockCopy = block;
+  v11 = _Block_copy(blockCopy);
   v35 = 0;
   v36 = &v35;
   v37 = 0x2020000000;
@@ -766,7 +766,7 @@ LABEL_14:
   v12 = v11;
   v32 = v12;
   v33 = &v35;
-  v13 = [a1 _clustersFromLocationsOfInterest:v9 forItems:v8 remainingItemsToCluster:&v34 progressBlock:v31];
+  v13 = [self _clustersFromLocationsOfInterest:interestCopy forItems:subsetCopy remainingItemsToCluster:&v34 progressBlock:v31];
   v14 = v34;
   if (*(v36 + 24) != 1)
   {
@@ -781,7 +781,7 @@ LABEL_14:
       v17 = v12;
       v29 = v17;
       v30 = &v35;
-      v23 = [a1 _coarseClustersForItems:v14 progressBlock:v28];
+      v23 = [self _coarseClustersForItems:v14 progressBlock:v28];
       if (*(v36 + 24) == 1)
       {
         if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))
@@ -801,7 +801,7 @@ LABEL_14:
       v25[3] = &unk_1E7573D48;
       v26 = v17;
       v27 = &v35;
-      [a1 _finalClustersFromCoarseClusters:v23 progressBlock:v25];
+      [self _finalClustersFromCoarseClusters:v23 progressBlock:v25];
       v18 = v16 = v22;
       v19 = *(v36 + 24);
       if (v19 == 1)
@@ -935,12 +935,12 @@ uint64_t __104__PLFrequentLocationProcessor_processFrequentLocationsWithItemSubs
   return v12;
 }
 
-+ (id)processFrequentLocationsWithSortedMoments:(id)a3 locationsOfInterest:(id)a4 progressBlock:(id)a5
++ (id)processFrequentLocationsWithSortedMoments:(id)moments locationsOfInterest:(id)interest progressBlock:(id)block
 {
   v140 = *MEMORY[0x1E69E9840];
-  v88 = a3;
-  v84 = a4;
-  aBlock = a5;
+  momentsCopy = moments;
+  interestCopy = interest;
+  aBlock = block;
   v7 = PLBackendGetLog();
   v8 = os_signpost_id_generate(v7);
   v9 = v7;
@@ -960,15 +960,15 @@ uint64_t __104__PLFrequentLocationProcessor_processFrequentLocationsWithItemSubs
   v123 = &v122;
   v124 = 0x2020000000;
   v125 = 0;
-  v86 = [MEMORY[0x1E695DF70] array];
-  v11 = [v88 count];
-  v77 = [v88 firstObject];
-  v76 = [v88 lastObject];
-  v80 = [v77 pl_startDate];
-  v79 = [v76 pl_endDate];
-  [v80 timeIntervalSinceReferenceDate];
+  array = [MEMORY[0x1E695DF70] array];
+  v11 = [momentsCopy count];
+  firstObject = [momentsCopy firstObject];
+  lastObject = [momentsCopy lastObject];
+  pl_startDate = [firstObject pl_startDate];
+  pl_endDate = [lastObject pl_endDate];
+  [pl_startDate timeIntervalSinceReferenceDate];
   v13 = v12;
-  v90 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   if (v11)
   {
     v14 = 0;
@@ -985,15 +985,15 @@ uint64_t __104__PLFrequentLocationProcessor_processFrequentLocationsWithItemSubs
     do
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = [v88 objectAtIndexedSubscript:v14];
-      v18 = [v17 pl_startDate];
-      [v18 timeIntervalSinceReferenceDate];
+      v17 = [momentsCopy objectAtIndexedSubscript:v14];
+      pl_startDate2 = [v17 pl_startDate];
+      [pl_startDate2 timeIntervalSinceReferenceDate];
       v20 = v19;
 
       if (v20 > v15)
       {
         v21 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v14];
-        [v90 addObject:v21];
+        [array2 addObject:v21];
 
         do
         {
@@ -1011,12 +1011,12 @@ uint64_t __104__PLFrequentLocationProcessor_processFrequentLocationsWithItemSubs
   }
 
   v22 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
-  [v90 addObject:v22];
+  [array2 addObject:v22];
 
-  if ([v90 count] <= 2)
+  if ([array2 count] <= 2)
   {
     v23 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
-    [v90 addObject:v23];
+    [array2 addObject:v23];
   }
 
   v24 = PLBackendGetLog();
@@ -1025,44 +1025,44 @@ uint64_t __104__PLFrequentLocationProcessor_processFrequentLocationsWithItemSubs
     buf = 134218498;
     v131 = v11;
     v132 = 2112;
-    v133 = v80;
+    v133 = pl_startDate;
     v134 = 2112;
-    v135 = v79;
+    v135 = pl_endDate;
     _os_log_impl(&dword_19BF1F000, v24, OS_LOG_TYPE_DEFAULT, "Processing Frequent Locations for %tu moments from %@ to %@", &buf, 0x20u);
   }
 
-  [v79 timeIntervalSinceDate:v80];
+  [pl_endDate timeIntervalSinceDate:pl_startDate];
   v92 = 0;
   v26 = 1.0 / ceil(v25 / 15724800.0);
   v27 = v26;
-  v28 = v86;
-  while (v92 < [v90 count] - 2)
+  v28 = array;
+  while (v92 < [array2 count] - 2)
   {
     v87 = objc_autoreleasePoolPush();
-    v29 = [v90 objectAtIndexedSubscript:v92];
-    v30 = [v29 unsignedIntegerValue];
+    v29 = [array2 objectAtIndexedSubscript:v92];
+    unsignedIntegerValue = [v29 unsignedIntegerValue];
 
-    v31 = [v90 objectAtIndexedSubscript:v92 + 2];
-    v32 = [v31 unsignedIntegerValue];
+    v31 = [array2 objectAtIndexedSubscript:v92 + 2];
+    unsignedIntegerValue2 = [v31 unsignedIntegerValue];
 
-    v91 = [v88 subarrayWithRange:{v30, v32 - v30}];
+    v91 = [momentsCopy subarrayWithRange:{unsignedIntegerValue, unsignedIntegerValue2 - unsignedIntegerValue}];
     v33 = PLBackendGetLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEBUG))
     {
-      v34 = [v91 firstObject];
-      v35 = [v34 pl_startDate];
-      v36 = [v91 lastObject];
-      v37 = [v36 pl_endDate];
+      firstObject2 = [v91 firstObject];
+      pl_startDate3 = [firstObject2 pl_startDate];
+      lastObject2 = [v91 lastObject];
+      pl_endDate2 = [lastObject2 pl_endDate];
       buf = 134219010;
       v131 = v92;
       v132 = 2048;
-      v133 = v30;
+      v133 = unsignedIntegerValue;
       v134 = 2048;
-      v135 = v32;
+      v135 = unsignedIntegerValue2;
       v136 = 2112;
-      v137 = v35;
+      v137 = pl_startDate3;
       v138 = 2112;
-      v139 = v37;
+      v139 = pl_endDate2;
       _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEBUG, "Frequent Locations: Processing Batch %tu: indices %tu to %tu (from %@ to %@)", &buf, 0x34u);
     }
 
@@ -1074,7 +1074,7 @@ uint64_t __104__PLFrequentLocationProcessor_processFrequentLocationsWithItemSubs
     v121 = v27;
     v119 = v38;
     v120 = &v122;
-    v39 = [a1 processFrequentLocationsWithItemSubset:v91 locationsOfInterest:v84 progressBlock:v118];
+    v39 = [self processFrequentLocationsWithItemSubset:v91 locationsOfInterest:interestCopy progressBlock:v118];
     if ([v39 count])
     {
       if (*(v123 + 24) == 1)
@@ -1091,17 +1091,17 @@ uint64_t __104__PLFrequentLocationProcessor_processFrequentLocationsWithItemSubs
 
       else
       {
-        v81 = [v39 firstObject];
+        firstObject3 = [v39 firstObject];
         v82 = v39;
-        v42 = [v81 momentsSet];
-        v97 = [v42 count];
+        momentsSet = [firstObject3 momentsSet];
+        v97 = [momentsSet count];
 
         v43 = objc_alloc_init(MEMORY[0x1E695DFA8]);
         v116 = 0u;
         v117 = 0u;
         v114 = 0u;
         v115 = 0u;
-        v44 = v86;
+        v44 = array;
         v45 = [v44 countByEnumeratingWithState:&v114 objects:v129 count:16];
         if (v45)
         {
@@ -1115,8 +1115,8 @@ uint64_t __104__PLFrequentLocationProcessor_processFrequentLocationsWithItemSubs
                 objc_enumerationMutation(v44);
               }
 
-              v48 = [*(*(&v114 + 1) + 8 * i) momentsSet];
-              [v43 unionSet:v48];
+              momentsSet2 = [*(*(&v114 + 1) + 8 * i) momentsSet];
+              [v43 unionSet:momentsSet2];
             }
 
             v45 = [v44 countByEnumeratingWithState:&v114 objects:v129 count:16];
@@ -1146,8 +1146,8 @@ LABEL_34:
 
             v50 = *(*(&v110 + 1) + 8 * v98);
             context = objc_autoreleasePoolPush();
-            v51 = [v50 momentsSet];
-            v99 = [v51 count];
+            momentsSet3 = [v50 momentsSet];
+            v99 = [momentsSet3 count];
             v52 = v97;
             if (v97 <= 7)
             {
@@ -1179,9 +1179,9 @@ LABEL_34:
                     }
 
                     v57 = *(*(&v106 + 1) + 8 * j);
-                    v58 = [v50 momentsSet];
-                    v59 = [v57 momentsSet];
-                    v60 = [v58 intersectsSet:v59];
+                    momentsSet4 = [v50 momentsSet];
+                    momentsSet5 = [v57 momentsSet];
+                    v60 = [momentsSet4 intersectsSet:momentsSet5];
 
                     if (v60)
                     {
@@ -1189,8 +1189,8 @@ LABEL_34:
                       v105 = 0u;
                       v102 = 0u;
                       v103 = 0u;
-                      v62 = [v50 sortedMoments];
-                      v63 = [v62 countByEnumeratingWithState:&v102 objects:v126 count:16];
+                      sortedMoments = [v50 sortedMoments];
+                      v63 = [sortedMoments countByEnumeratingWithState:&v102 objects:v126 count:16];
                       if (v63)
                       {
                         v64 = *v103;
@@ -1200,7 +1200,7 @@ LABEL_34:
                           {
                             if (*v103 != v64)
                             {
-                              objc_enumerationMutation(v62);
+                              objc_enumerationMutation(sortedMoments);
                             }
 
                             v66 = *(*(&v102 + 1) + 8 * k);
@@ -1211,7 +1211,7 @@ LABEL_34:
                             }
                           }
 
-                          v63 = [v62 countByEnumeratingWithState:&v102 objects:v126 count:16];
+                          v63 = [sortedMoments countByEnumeratingWithState:&v102 objects:v126 count:16];
                         }
 
                         while (v63);
@@ -1232,8 +1232,8 @@ LABEL_34:
               }
 
               [v100 addObject:v50];
-              v61 = [v50 momentsSet];
-              [v43 unionSet:v61];
+              momentsSet6 = [v50 momentsSet];
+              [v43 unionSet:momentsSet6];
 
 LABEL_59:
               v97 = vcvtd_n_f64_u64(v97, 1uLL);
@@ -1271,7 +1271,7 @@ LABEL_59:
     }
 
     objc_autoreleasePoolPop(v87);
-    v28 = v86;
+    v28 = array;
     if (v40 != 9 && v40)
     {
       v69 = MEMORY[0x1E695E0F0];
@@ -1305,7 +1305,7 @@ LABEL_59:
       _os_signpost_emit_with_name_impl(&dword_19BF1F000, v71, OS_SIGNPOST_INTERVAL_END, spid, "ProcessFrequentLocationsWithSortedMoments", "", &buf, 2u);
     }
 
-    v69 = v86;
+    v69 = array;
   }
 
 LABEL_78:
@@ -1373,23 +1373,23 @@ BOOL __107__PLFrequentLocationProcessor_processFrequentLocationsWithSortedMoment
   return v16;
 }
 
-+ (id)processFrequentLocationsWithItems:(id)a3 locationsOfInterest:(id)a4 progressBlock:(id)a5
++ (id)processFrequentLocationsWithItems:(id)items locationsOfInterest:(id)interest progressBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = _Block_copy(v10);
+  itemsCopy = items;
+  interestCopy = interest;
+  blockCopy = block;
+  v11 = _Block_copy(blockCopy);
   v12 = [MEMORY[0x1E695DFD8] set];
-  if ([v8 count])
+  if ([itemsCopy count])
   {
     v13 = +[PLMediaMiningUtilities sortDescriptorsForSortingItemsByTime];
-    v14 = [v8 sortedArrayUsingDescriptors:v13];
+    v14 = [itemsCopy sortedArrayUsingDescriptors:v13];
 
-    v15 = [a1 sortDescriptorsForLocationsOfInterest];
-    v16 = [v9 sortedArrayUsingDescriptors:v15];
+    sortDescriptorsForLocationsOfInterest = [self sortDescriptorsForLocationsOfInterest];
+    v16 = [interestCopy sortedArrayUsingDescriptors:sortDescriptorsForLocationsOfInterest];
 
-    v17 = [a1 processFrequentLocationsWithSortedMoments:v14 locationsOfInterest:v16 progressBlock:v10];
+    v17 = [self processFrequentLocationsWithSortedMoments:v14 locationsOfInterest:v16 progressBlock:blockCopy];
     if (v11 && (v21 = 0, v11[2](v11, &v21, 1.0), v21 == 1))
     {
       if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_INFO))

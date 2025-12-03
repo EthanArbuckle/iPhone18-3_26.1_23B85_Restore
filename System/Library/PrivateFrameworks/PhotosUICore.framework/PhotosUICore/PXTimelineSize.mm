@@ -1,7 +1,7 @@
 @interface PXTimelineSize
-+ (CGSize)widgetSizeForSizeClass:(unint64_t)a3;
++ (CGSize)widgetSizeForSizeClass:(unint64_t)class;
 + (id)allSupportedSizes;
-+ (id)sizeDescriptionForSizeClass:(unint64_t)a3;
++ (id)sizeDescriptionForSizeClass:(unint64_t)class;
 @end
 
 @implementation PXTimelineSize
@@ -17,9 +17,9 @@
   return v2;
 }
 
-+ (CGSize)widgetSizeForSizeClass:(unint64_t)a3
++ (CGSize)widgetSizeForSizeClass:(unint64_t)class
 {
-  if (a3 > 3)
+  if (class > 3)
   {
     v4 = 367.0;
     v3 = 382.0;
@@ -27,12 +27,12 @@
 
   else
   {
-    v3 = dbl_1A5381678[a3];
-    v4 = dbl_1A5381698[a3];
+    v3 = dbl_1A5381678[class];
+    v4 = dbl_1A5381698[class];
   }
 
-  v5 = [MEMORY[0x1E69DCEB0] px_mainScreen];
-  [v5 scale];
+  px_mainScreen = [MEMORY[0x1E69DCEB0] px_mainScreen];
+  [px_mainScreen scale];
   v7 = v6;
 
   v8 = v4 * v7;
@@ -42,16 +42,16 @@
   return result;
 }
 
-+ (id)sizeDescriptionForSizeClass:(unint64_t)a3
++ (id)sizeDescriptionForSizeClass:(unint64_t)class
 {
-  if (a3 - 1 > 2)
+  if (class - 1 > 2)
   {
     return @"Small";
   }
 
   else
   {
-    return off_1E772F890[a3 - 1];
+    return off_1E772F890[class - 1];
   }
 }
 

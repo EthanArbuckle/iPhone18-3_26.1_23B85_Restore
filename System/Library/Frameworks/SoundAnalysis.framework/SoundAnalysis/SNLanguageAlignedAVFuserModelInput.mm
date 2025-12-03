@@ -1,45 +1,45 @@
 @interface SNLanguageAlignedAVFuserModelInput
-- (SNLanguageAlignedAVFuserModelInput)initWithVision_embedding:(id)a3 audio_embedding:(id)a4;
-- (id)featureValueForName:(id)a3;
+- (SNLanguageAlignedAVFuserModelInput)initWithVision_embedding:(id)vision_embedding audio_embedding:(id)audio_embedding;
+- (id)featureValueForName:(id)name;
 @end
 
 @implementation SNLanguageAlignedAVFuserModelInput
 
-- (SNLanguageAlignedAVFuserModelInput)initWithVision_embedding:(id)a3 audio_embedding:(id)a4
+- (SNLanguageAlignedAVFuserModelInput)initWithVision_embedding:(id)vision_embedding audio_embedding:(id)audio_embedding
 {
-  v7 = a3;
-  v8 = a4;
+  vision_embeddingCopy = vision_embedding;
+  audio_embeddingCopy = audio_embedding;
   v12.receiver = self;
   v12.super_class = SNLanguageAlignedAVFuserModelInput;
   v9 = [(SNLanguageAlignedAVFuserModelInput *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_vision_embedding, a3);
-    objc_storeStrong(&v10->_audio_embedding, a4);
+    objc_storeStrong(&v9->_vision_embedding, vision_embedding);
+    objc_storeStrong(&v10->_audio_embedding, audio_embedding);
   }
 
   return v10;
 }
 
-- (id)featureValueForName:(id)a3
+- (id)featureValueForName:(id)name
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"vision_embedding"])
+  nameCopy = name;
+  if ([nameCopy isEqualToString:@"vision_embedding"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(SNLanguageAlignedAVFuserModelInput *)self vision_embedding];
+    vision_embedding = [(SNLanguageAlignedAVFuserModelInput *)self vision_embedding];
 LABEL_5:
-    v7 = v6;
-    v8 = [v5 featureValueWithMultiArray:v6];
+    v7 = vision_embedding;
+    v8 = [v5 featureValueWithMultiArray:vision_embedding];
 
     goto LABEL_7;
   }
 
-  if ([v4 isEqualToString:@"audio_embedding"])
+  if ([nameCopy isEqualToString:@"audio_embedding"])
   {
     v5 = MEMORY[0x1E695FE60];
-    v6 = [(SNLanguageAlignedAVFuserModelInput *)self audio_embedding];
+    vision_embedding = [(SNLanguageAlignedAVFuserModelInput *)self audio_embedding];
     goto LABEL_5;
   }
 

@@ -1,24 +1,24 @@
 @interface HDDeletedSampleSyncEntity
-+ (id)_basePruningPredicateForDate:(id)a3 profile:(id)a4;
-+ (id)_predicateForSyncSession:(id)a3;
++ (id)_basePruningPredicateForDate:(id)date profile:(id)profile;
++ (id)_predicateForSyncSession:(id)session;
 @end
 
 @implementation HDDeletedSampleSyncEntity
 
-+ (id)_predicateForSyncSession:(id)a3
++ (id)_predicateForSyncSession:(id)session
 {
   v75[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  sessionCopy = session;
   v5 = HDDataEntityPredicateForType(2);
-  v6 = [v4 syncPredicate];
-  v7 = [v6 dateInterval];
+  syncPredicate = [sessionCopy syncPredicate];
+  dateInterval = [syncPredicate dateInterval];
 
-  v67 = a1;
-  if (v7)
+  selfCopy = self;
+  if (dateInterval)
   {
-    v8 = [v7 startDate];
-    v9 = [v7 endDate];
-    v70 = [(HDDataSyncEntity *)a1 _predicateForDateIntervalStartDate:v8 endDate:v9];
+    startDate = [dateInterval startDate];
+    endDate = [dateInterval endDate];
+    v70 = [(HDDataSyncEntity *)self _predicateForDateIntervalStartDate:startDate endDate:endDate];
   }
 
   else
@@ -26,10 +26,10 @@
     v70 = 0;
   }
 
-  v10 = [v4 syncPredicate];
-  v11 = [v10 shouldIncludeDatelessObjects];
+  syncPredicate2 = [sessionCopy syncPredicate];
+  shouldIncludeDatelessObjects = [syncPredicate2 shouldIncludeDatelessObjects];
 
-  if (v11)
+  if (shouldIncludeDatelessObjects)
   {
     v12 = MEMORY[0x277D10B20];
     v13 = [MEMORY[0x277D10B60] isNullPredicateWithProperty:@"start_date"];
@@ -52,27 +52,27 @@
   v19 = [MEMORY[0x277D10B20] disjunctionWithPredicate:v70 otherPredicate:?];
   v20 = [v18 compoundPredicateWithPredicate:v5 otherPredicate:v19];
 
-  v21 = [v4 syncPredicate];
-  v22 = [v21 defaultMaximumTombstoneAge];
+  syncPredicate3 = [sessionCopy syncPredicate];
+  defaultMaximumTombstoneAge = [syncPredicate3 defaultMaximumTombstoneAge];
 
-  v68 = v22;
-  if (v22)
+  v68 = defaultMaximumTombstoneAge;
+  if (defaultMaximumTombstoneAge)
   {
     v23 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v24 = MEMORY[0x277CBEAA8];
-    [v22 doubleValue];
+    [defaultMaximumTombstoneAge doubleValue];
     v26 = [v24 dateWithTimeIntervalSinceNow:-v25];
     HDDeletedObjectPredicateForDeletionDate(6);
     v28 = v27 = v20;
     v65 = v23;
     [v23 addObject:v28];
 
-    v29 = [MEMORY[0x277CCD720] activityGoalScheduleType];
-    v74[0] = v29;
-    v30 = [MEMORY[0x277CCD720] pauseRingsScheduleType];
-    v74[1] = v30;
+    activityGoalScheduleType = [MEMORY[0x277CCD720] activityGoalScheduleType];
+    v74[0] = activityGoalScheduleType;
+    pauseRingsScheduleType = [MEMORY[0x277CCD720] pauseRingsScheduleType];
+    v74[1] = pauseRingsScheduleType;
     [MEMORY[0x277CBEA60] arrayWithObjects:v74 count:2];
-    v31 = v66 = v7;
+    v31 = v66 = dateInterval;
     v32 = HDSampleEntityPredicateForDataTypes(v31);
     [v23 addObject:v32];
 
@@ -81,12 +81,12 @@
     v35 = [MEMORY[0x277D10B60] isNullPredicateWithProperty:@"end_date"];
     [v34 addObject:v35];
 
-    v36 = [v4 syncPredicate];
-    v37 = [v36 maximumObjectAgeByType];
-    v38 = [v4 syncPredicate];
-    v39 = [v38 defaultMaximumObjectAge];
-    v40 = [v4 startDate];
-    v41 = [(HDSampleSyncEntity *)v67 _predicateForSampleAgeWithMaximumObjectAgeByType:v37 defaultMaxAge:v39 sessionStartDate:v40];
+    syncPredicate4 = [sessionCopy syncPredicate];
+    maximumObjectAgeByType = [syncPredicate4 maximumObjectAgeByType];
+    syncPredicate5 = [sessionCopy syncPredicate];
+    defaultMaximumObjectAge = [syncPredicate5 defaultMaximumObjectAge];
+    startDate2 = [sessionCopy startDate];
+    v41 = [(HDSampleSyncEntity *)selfCopy _predicateForSampleAgeWithMaximumObjectAgeByType:maximumObjectAgeByType defaultMaxAge:defaultMaximumObjectAge sessionStartDate:startDate2];
     [v34 hk_addNonNilObject:v41];
 
     v20 = v27;
@@ -96,12 +96,12 @@
     v45 = [v42 compoundPredicateWithPredicate:v43 otherPredicate:v44];
     [v34 addObject:v45];
 
-    v46 = [MEMORY[0x277CBEA80] currentCalendar];
-    v47 = [MEMORY[0x277CCD830] heartRateType];
-    v73 = v47;
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    heartRateType = [MEMORY[0x277CCD830] heartRateType];
+    v73 = heartRateType;
     v48 = [MEMORY[0x277CBEA60] arrayWithObjects:&v73 count:1];
-    v49 = [v4 startDate];
-    v50 = [v46 hd_predicateForSamplesWithTypes:v48 endingAfterDate:v49 minusDays:*MEMORY[0x277CCCED8]];
+    startDate3 = [sessionCopy startDate];
+    v50 = [currentCalendar hd_predicateForSamplesWithTypes:v48 endingAfterDate:startDate3 minusDays:*MEMORY[0x277CCCED8]];
     [v34 addObject:v50];
 
     v51 = [MEMORY[0x277D10B20] predicateMatchingAnyPredicates:v34];
@@ -112,7 +112,7 @@
     v53 = [MEMORY[0x277CBEA60] arrayWithObjects:v72 count:3];
     v54 = [v52 predicateMatchingAllPredicates:v53];
 
-    v7 = v66;
+    dateInterval = v66;
   }
 
   else
@@ -120,13 +120,13 @@
     v54 = v20;
   }
 
-  if (_isCompanionSyncToUSLegallyCompliantOxygenSaturationDeviceForSyncSession(v4))
+  if (_isCompanionSyncToUSLegallyCompliantOxygenSaturationDeviceForSyncSession(sessionCopy))
   {
     v55 = [MEMORY[0x277CCD720] categoryTypeForIdentifier:*MEMORY[0x277CCBAE0]];
     [MEMORY[0x277CCD830] quantityTypeForIdentifier:*MEMORY[0x277CCCBE8]];
     v57 = v56 = v20;
-    v58 = [MEMORY[0x277CCD720] unprocessedBloodOxygenDataType];
-    v71[0] = v58;
+    unprocessedBloodOxygenDataType = [MEMORY[0x277CCD720] unprocessedBloodOxygenDataType];
+    v71[0] = unprocessedBloodOxygenDataType;
     v71[1] = v57;
     v71[2] = v55;
     v59 = [MEMORY[0x277CBEA60] arrayWithObjects:v71 count:3];
@@ -144,12 +144,12 @@
   return v54;
 }
 
-+ (id)_basePruningPredicateForDate:(id)a3 profile:(id)a4
++ (id)_basePruningPredicateForDate:(id)date profile:(id)profile
 {
   v4 = MEMORY[0x277CBEA80];
-  v5 = a3;
-  v6 = [v4 currentCalendar];
-  v7 = [v6 hd_predicateForDeletedObjectsCreatedBeforeDate:v5 minusDays:*MEMORY[0x277CCBC20]];
+  dateCopy = date;
+  currentCalendar = [v4 currentCalendar];
+  v7 = [currentCalendar hd_predicateForDeletedObjectsCreatedBeforeDate:dateCopy minusDays:*MEMORY[0x277CCBC20]];
 
   return v7;
 }

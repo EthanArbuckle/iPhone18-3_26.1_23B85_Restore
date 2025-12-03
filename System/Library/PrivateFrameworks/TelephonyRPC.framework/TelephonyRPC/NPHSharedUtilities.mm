@@ -9,8 +9,8 @@
 + (BOOL)isActiveDeviceTinker
 {
   v11 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277D37B48] activeDevice];
-  v3 = [v2 isTinker];
+  activeDevice = [MEMORY[0x277D37B48] activeDevice];
+  isTinker = [activeDevice isTinker];
 
   v4 = nph_general_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -18,12 +18,12 @@
     v7 = 136315394;
     v8 = "+[NPHSharedUtilities isActiveDeviceTinker]";
     v9 = 1024;
-    v10 = v3;
+    v10 = isTinker;
     _os_log_impl(&dword_26D269000, v4, OS_LOG_TYPE_DEFAULT, "%s : %d", &v7, 0x12u);
   }
 
   v5 = *MEMORY[0x277D85DE8];
-  return v3;
+  return isTinker;
 }
 
 + (BOOL)pairedDeviceHasHomeButton
@@ -44,11 +44,11 @@ void __47__NPHSharedUtilities_pairedDeviceHasHomeButton__block_invoke()
 
 + (BOOL)isActiveWatchChinaRegionCellular
 {
-  v2 = [MEMORY[0x277D37B48] activeDevice];
-  v3 = [v2 valueForProperty:*MEMORY[0x277D37B98]];
-  v4 = [v3 BOOLValue];
+  activeDevice = [MEMORY[0x277D37B48] activeDevice];
+  v3 = [activeDevice valueForProperty:*MEMORY[0x277D37B98]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 @end

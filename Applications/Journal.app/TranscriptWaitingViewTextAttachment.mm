@@ -1,8 +1,8 @@
 @interface TranscriptWaitingViewTextAttachment
 - (_TtC7Journal35TranscriptWaitingViewTextAttachment)init;
-- (_TtC7Journal35TranscriptWaitingViewTextAttachment)initWithCoder:(id)a3;
-- (_TtC7Journal35TranscriptWaitingViewTextAttachment)initWithData:(id)a3 ofType:(id)a4;
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5;
+- (_TtC7Journal35TranscriptWaitingViewTextAttachment)initWithCoder:(id)coder;
+- (_TtC7Journal35TranscriptWaitingViewTextAttachment)initWithData:(id)data ofType:(id)type;
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container;
 @end
 
 @implementation TranscriptWaitingViewTextAttachment
@@ -25,7 +25,7 @@
   return v4;
 }
 
-- (_TtC7Journal35TranscriptWaitingViewTextAttachment)initWithCoder:(id)a3
+- (_TtC7Journal35TranscriptWaitingViewTextAttachment)initWithCoder:(id)coder
 {
   *(&self->super.super.isa + OBJC_IVAR____TtC7Journal35TranscriptWaitingViewTextAttachment_textAttachmentViewProvider) = 0;
   result = _assertionFailure(_:_:file:line:flags:)();
@@ -33,24 +33,24 @@
   return result;
 }
 
-- (id)viewProviderForParentView:(id)a3 location:(id)a4 textContainer:(id)a5
+- (id)viewProviderForParentView:(id)view location:(id)location textContainer:(id)container
 {
-  v9 = a3;
+  viewCopy = view;
   swift_unknownObjectRetain();
-  v10 = a5;
-  v11 = self;
-  v12 = sub_10031C7FC(a3, a4, a5);
+  containerCopy = container;
+  selfCopy = self;
+  v12 = sub_10031C7FC(view, location, container);
 
   swift_unknownObjectRelease();
 
   return v12;
 }
 
-- (_TtC7Journal35TranscriptWaitingViewTextAttachment)initWithData:(id)a3 ofType:(id)a4
+- (_TtC7Journal35TranscriptWaitingViewTextAttachment)initWithData:(id)data ofType:(id)type
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
+    dataCopy = data;
     v5 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
     sub_1000340DC(v5, v6);
   }

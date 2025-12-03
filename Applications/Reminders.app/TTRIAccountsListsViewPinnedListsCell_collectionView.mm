@@ -1,8 +1,8 @@
 @interface TTRIAccountsListsViewPinnedListsCell_collectionView
 + (Class)layerClass;
 - (NSArray)preferredFocusEnvironments;
-- (_TtC9Reminders51TTRIAccountsListsViewPinnedListsCell_collectionView)initWithCoder:(id)a3;
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3;
+- (_TtC9Reminders51TTRIAccountsListsViewPinnedListsCell_collectionView)initWithCoder:(id)coder;
+- (void)_bridgedUpdateConfigurationUsingState:(id)state;
 - (void)layoutMarginsDidChange;
 - (void)prepareForReuse;
 @end
@@ -25,7 +25,7 @@
   sub_100026468();
 }
 
-- (void)_bridgedUpdateConfigurationUsingState:(id)a3
+- (void)_bridgedUpdateConfigurationUsingState:(id)state
 {
   ObjectType = swift_getObjectType();
   v5 = type metadata accessor for UICellConfigurationState();
@@ -33,9 +33,9 @@
   __chkstk_darwin(v5);
   v8 = &v11 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   static UICellConfigurationState._unconditionallyBridgeFromObjectiveC(_:)();
-  v9 = self;
+  selfCopy = self;
   isa = UICellConfigurationState._bridgeToObjectiveC()().super.super.isa;
-  v11.receiver = v9;
+  v11.receiver = selfCopy;
   v11.super_class = ObjectType;
   [(TTRIAccountsListsViewPinnedListsCell_collectionView *)&v11 _bridgedUpdateConfigurationUsingState:isa];
 
@@ -43,7 +43,7 @@
   (*(v6 + 8))(v8, v5);
 }
 
-- (_TtC9Reminders51TTRIAccountsListsViewPinnedListsCell_collectionView)initWithCoder:(id)a3
+- (_TtC9Reminders51TTRIAccountsListsViewPinnedListsCell_collectionView)initWithCoder:(id)coder
 {
   *&self->super.viewModelObserver[OBJC_IVAR____TtC9Reminders51TTRIAccountsListsViewPinnedListsCell_collectionView_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -75,7 +75,7 @@
 
 - (NSArray)preferredFocusEnvironments
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001C54BC();
 
   sub_100058000(&qword_100780A40);

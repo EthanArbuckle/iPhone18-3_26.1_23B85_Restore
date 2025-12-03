@@ -1,8 +1,8 @@
 @interface MPAssistantLoadPredefinedQueue
 - (id)_radioStations;
 - (id)_validate;
-- (void)_performWithNowPlayingItem:(id)a3 audioRoutingInfo:(id)a4 completion:(id)a5;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4;
+- (void)_performWithNowPlayingItem:(id)item audioRoutingInfo:(id)info completion:(id)completion;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper;
 @end
 
 @implementation MPAssistantLoadPredefinedQueue
@@ -16,7 +16,7 @@
   v22 = sub_2334EE63C;
   v23 = 0;
   v2 = dispatch_semaphore_create(0);
-  v3 = [MEMORY[0x277CD6020] defaultRadioLibrary];
+  defaultRadioLibrary = [MEMORY[0x277CD6020] defaultRadioLibrary];
   v12 = MEMORY[0x277D85DD0];
   v13 = 3221225472;
   v14 = sub_2334EE644;
@@ -24,15 +24,15 @@
   v17 = &v18;
   v4 = v2;
   v16 = v4;
-  [v3 getRecentStationGroupsWithCompletionHandler:&v12];
+  [defaultRadioLibrary getRecentStationGroupsWithCompletionHandler:&v12];
 
   dispatch_semaphore_wait(v4, 0xFFFFFFFFFFFFFFFFLL);
   v5 = v19[5];
   if (!v5)
   {
-    v6 = [MEMORY[0x277CD6020] defaultRadioLibrary];
-    v7 = [v6 stations];
-    v8 = [v7 mutableCopy];
+    defaultRadioLibrary2 = [MEMORY[0x277CD6020] defaultRadioLibrary];
+    stations = [defaultRadioLibrary2 stations];
+    v8 = [stations mutableCopy];
     v9 = v19[5];
     v19[5] = v8;
 
@@ -48,8 +48,8 @@
 
 - (id)_validate
 {
-  v2 = [(MPAssistantLoadPredefinedQueue *)self mediaItemType];
-  if (v2 > 0xF || ((1 << v2) & 0xC008) == 0)
+  mediaItemType = [(MPAssistantLoadPredefinedQueue *)self mediaItemType];
+  if (mediaItemType > 0xF || ((1 << mediaItemType) & 0xC008) == 0)
   {
     v4 = [objc_alloc(MEMORY[0x277D47208]) initWithReason:@"Unsupported media item type"];
   }
@@ -62,11 +62,11 @@
   return v4;
 }
 
-- (void)_performWithNowPlayingItem:(id)a3 audioRoutingInfo:(id)a4 completion:(id)a5
+- (void)_performWithNowPlayingItem:(id)item audioRoutingInfo:(id)info completion:(id)completion
 {
   v102[1] = *MEMORY[0x277D85DE8];
-  v79 = a3;
-  v8 = a5;
+  itemCopy = item;
+  completionCopy = completion;
   v101 = *MEMORY[0x277D27DC0];
   v102[0] = @"com.apple.MediaAssistant.siri";
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v102 forKeys:&v101 count:1];
@@ -77,7 +77,7 @@
   v94[4] = self;
   v10 = v9;
   v95 = v10;
-  v11 = v8;
+  v11 = completionCopy;
   v96 = v11;
   v12 = MEMORY[0x2383A14D0](v94);
   v92[0] = MEMORY[0x277D85DD0];
@@ -88,9 +88,9 @@
   v13 = v12;
   v93 = v13;
   v14 = MEMORY[0x2383A14D0](v92);
-  v15 = [(MPAssistantLoadPredefinedQueue *)self mediaItemType];
-  v80 = [(MPAssistantLoadPredefinedQueue *)self refId];
-  if (v15 == 3)
+  mediaItemType = [(MPAssistantLoadPredefinedQueue *)self mediaItemType];
+  refId = [(MPAssistantLoadPredefinedQueue *)self refId];
+  if (mediaItemType == 3)
   {
     if ((MRMediaRemoteIsBooksAppInstalled() & 1) == 0)
     {
@@ -98,10 +98,10 @@
       (*(v11 + 2))(v11, v19);
     }
 
-    v18 = [MEMORY[0x277CD5E38] audiobooksQuery];
+    audiobooksQuery = [MEMORY[0x277CD5E38] audiobooksQuery];
 LABEL_9:
-    v20 = v18;
-    if (!v18)
+    v20 = audiobooksQuery;
+    if (!audiobooksQuery)
     {
       goto LABEL_18;
     }
@@ -109,7 +109,7 @@ LABEL_9:
     v21 = [MEMORY[0x277CD5E10] deviceMediaLibraryWithUserIdentity:self->_userIdentity];
     [v20 setMediaLibrary:v21];
 
-    v78 = a4;
+    infoCopy = info;
     v22 = [(MPCAssistantAvailability *)self->_availability assistantStreamingGetAvailability:?];
     v23 = 1;
     if (v22 <= 1)
@@ -118,8 +118,8 @@ LABEL_9:
       {
         if (![(NSString *)self->_requestAceHash length])
         {
-          v48 = [(MPAssistantLoadPredefinedQueue *)self aceId];
-          v49 = sub_233505670(@"Load Predefined Queue", v48);
+          aceId = [(MPAssistantLoadPredefinedQueue *)self aceId];
+          v49 = sub_233505670(@"Load Predefined Queue", aceId);
           requestAceHash = self->_requestAceHash;
           self->_requestAceHash = v49;
         }
@@ -144,8 +144,8 @@ LABEL_9:
 
       if (![(NSString *)self->_requestAceHash length])
       {
-        v34 = [(MPAssistantLoadPredefinedQueue *)self aceId];
-        v35 = sub_233505670(@"Load Predefined Queue", v34);
+        aceId2 = [(MPAssistantLoadPredefinedQueue *)self aceId];
+        v35 = sub_233505670(@"Load Predefined Queue", aceId2);
         v36 = self->_requestAceHash;
         self->_requestAceHash = v35;
       }
@@ -170,8 +170,8 @@ LABEL_42:
         {
           if (![(NSString *)self->_requestAceHash length])
           {
-            v44 = [(MPAssistantLoadPredefinedQueue *)self aceId];
-            v45 = sub_233505670(@"Load Predefined Queue", v44);
+            aceId3 = [(MPAssistantLoadPredefinedQueue *)self aceId];
+            v45 = sub_233505670(@"Load Predefined Queue", aceId3);
             v46 = self->_requestAceHash;
             self->_requestAceHash = v45;
           }
@@ -193,8 +193,8 @@ LABEL_42:
         {
           if (![(NSString *)self->_requestAceHash length])
           {
-            v24 = [(MPAssistantLoadPredefinedQueue *)self aceId];
-            v25 = sub_233505670(@"Load Predefined Queue", v24);
+            aceId4 = [(MPAssistantLoadPredefinedQueue *)self aceId];
+            v25 = sub_233505670(@"Load Predefined Queue", aceId4);
             v26 = self->_requestAceHash;
             self->_requestAceHash = v25;
           }
@@ -216,8 +216,8 @@ LABEL_45:
         {
           if (![(NSString *)self->_requestAceHash length])
           {
-            v52 = [(MPAssistantLoadPredefinedQueue *)self aceId];
-            v53 = sub_233505670(@"Load Predefined Queue", v52);
+            aceId5 = [(MPAssistantLoadPredefinedQueue *)self aceId];
+            v53 = sub_233505670(@"Load Predefined Queue", aceId5);
             v54 = self->_requestAceHash;
             self->_requestAceHash = v53;
           }
@@ -229,19 +229,19 @@ LABEL_45:
             *buf = 138543618;
             v98 = v56;
             v99 = 2048;
-            v100 = v15;
+            v100 = mediaItemType;
             _os_log_impl(&dword_2334D9000, v55, OS_LOG_TYPE_ERROR, "Load Predefined Queue (query) <%{public}@>: beginning playback (type %ld).", buf, 0x16u);
           }
 
-          v57 = [(MPAssistantLoadPredefinedQueue *)self shouldShuffle];
-          v58 = [MEMORY[0x277D27868] queryQueueWithContextID:v80 query:v20];
-          [v58 setShuffleType:v57];
-          v59 = [(MPAssistantLoadPredefinedQueue *)self startPlaying];
-          [v58 setShouldImmediatelyStartPlayback:{objc_msgSend(v59, "BOOLValue")}];
+          shouldShuffle = [(MPAssistantLoadPredefinedQueue *)self shouldShuffle];
+          v58 = [MEMORY[0x277D27868] queryQueueWithContextID:refId query:v20];
+          [v58 setShuffleType:shouldShuffle];
+          startPlaying = [(MPAssistantLoadPredefinedQueue *)self startPlaying];
+          [v58 setShouldImmediatelyStartPlayback:{objc_msgSend(startPlaying, "BOOLValue")}];
 
           [v58 setShouldOverrideManuallyCuratedQueue:1];
-          v60 = [MEMORY[0x277D27850] systemMediaApplicationDestination];
-          v61 = [(MPAssistantLoadPredefinedQueue *)self hashedRouteUIDs];
+          systemMediaApplicationDestination = [MEMORY[0x277D27850] systemMediaApplicationDestination];
+          hashedRouteUIDs = [(MPAssistantLoadPredefinedQueue *)self hashedRouteUIDs];
           v81[0] = MEMORY[0x277D85DD0];
           v81[1] = 3221225472;
           v81[2] = sub_2334EFCF4;
@@ -251,7 +251,7 @@ LABEL_45:
           v84 = v14;
           v82 = v58;
           v62 = v58;
-          [v60 resolveWithQueue:v62 hashedRouteIdentifiers:v61 localPlaybackPermitted:v23 audioRoutingInfo:v78 completion:v81];
+          [systemMediaApplicationDestination resolveWithQueue:v62 hashedRouteIdentifiers:hashedRouteUIDs localPlaybackPermitted:v23 audioRoutingInfo:infoCopy completion:v81];
         }
 
         else
@@ -262,8 +262,8 @@ LABEL_45:
           {
             if (!v64)
             {
-              v65 = [(MPAssistantLoadPredefinedQueue *)self aceId];
-              v66 = sub_233505670(@"Load Predefined Queue", v65);
+              aceId6 = [(MPAssistantLoadPredefinedQueue *)self aceId];
+              v66 = sub_233505670(@"Load Predefined Queue", aceId6);
               v67 = self->_requestAceHash;
               self->_requestAceHash = v66;
             }
@@ -275,7 +275,7 @@ LABEL_45:
               *buf = 138543618;
               v98 = v69;
               v99 = 2048;
-              v100 = v15;
+              v100 = mediaItemType;
               _os_log_impl(&dword_2334D9000, v68, OS_LOG_TYPE_ERROR, "Load Predefined Queue (query) <%{public}@>: still loading library (type %ld).", buf, 0x16u);
             }
 
@@ -287,8 +287,8 @@ LABEL_45:
           {
             if (!v64)
             {
-              v72 = [(MPAssistantLoadPredefinedQueue *)self aceId];
-              v73 = sub_233505670(@"Load Predefined Queue", v72);
+              aceId7 = [(MPAssistantLoadPredefinedQueue *)self aceId];
+              v73 = sub_233505670(@"Load Predefined Queue", aceId7);
               v74 = self->_requestAceHash;
               self->_requestAceHash = v73;
             }
@@ -300,7 +300,7 @@ LABEL_45:
               *buf = 138543618;
               v98 = v76;
               v99 = 2048;
-              v100 = v15;
+              v100 = mediaItemType;
               _os_log_impl(&dword_2334D9000, v75, OS_LOG_TYPE_ERROR, "Load Predefined Queue (query) <%{public}@>: empty library for (type %ld).", buf, 0x16u);
             }
 
@@ -308,8 +308,8 @@ LABEL_45:
             v71 = MEMORY[0x277D485F8];
           }
 
-          v60 = [v70 initWithErrorCode:*v71];
-          (*(v11 + 2))(v11, v60);
+          systemMediaApplicationDestination = [v70 initWithErrorCode:*v71];
+          (*(v11 + 2))(v11, systemMediaApplicationDestination);
         }
 
         goto LABEL_64;
@@ -317,8 +317,8 @@ LABEL_45:
 
       if (![(NSString *)self->_requestAceHash length])
       {
-        v40 = [(MPAssistantLoadPredefinedQueue *)self aceId];
-        v41 = sub_233505670(@"Load Predefined Queue", v40);
+        aceId8 = [(MPAssistantLoadPredefinedQueue *)self aceId];
+        v41 = sub_233505670(@"Load Predefined Queue", aceId8);
         v42 = self->_requestAceHash;
         self->_requestAceHash = v41;
       }
@@ -344,19 +344,19 @@ LABEL_44:
     goto LABEL_45;
   }
 
-  if (v15 == 15)
+  if (mediaItemType == 15)
   {
-    v18 = [MEMORY[0x277CD5E38] songsQuery];
+    audiobooksQuery = [MEMORY[0x277CD5E38] songsQuery];
     goto LABEL_9;
   }
 
-  if (v15 != 14)
+  if (mediaItemType != 14)
   {
 LABEL_18:
     if (![(NSString *)self->_requestAceHash length])
     {
-      v29 = [(MPAssistantLoadPredefinedQueue *)self aceId];
-      v30 = sub_233505670(@"Load Predefined Queue", v29);
+      aceId9 = [(MPAssistantLoadPredefinedQueue *)self aceId];
+      v30 = sub_233505670(@"Load Predefined Queue", aceId9);
       v31 = self->_requestAceHash;
       self->_requestAceHash = v30;
     }
@@ -368,7 +368,7 @@ LABEL_18:
       *buf = 138543618;
       v98 = v33;
       v99 = 2048;
-      v100 = v15;
+      v100 = mediaItemType;
       _os_log_impl(&dword_2334D9000, v32, OS_LOG_TYPE_ERROR, "Load Predefined Queue (query) <%{public}@>: unrecognized media (type %ld).", buf, 0x16u);
     }
 
@@ -376,7 +376,7 @@ LABEL_18:
     (*(v11 + 2))(v11, v20);
 LABEL_64:
 
-    v17 = v79;
+    v17 = itemCopy;
     goto LABEL_65;
   }
 
@@ -387,28 +387,28 @@ LABEL_64:
   v85[3] = &unk_2789DB468;
   v85[4] = self;
   v88 = v11;
-  v17 = v79;
-  v86 = v79;
-  v91 = a4;
+  v17 = itemCopy;
+  v86 = itemCopy;
+  infoCopy2 = info;
   v87 = v10;
   v89 = v14;
   v90 = 14;
-  [(MPCAssistantAvailability *)availability assistantRadioGetAvailability:*&a4 completion:v85];
+  [(MPCAssistantAvailability *)availability assistantRadioGetAvailability:*&info completion:v85];
 
 LABEL_65:
   v77 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  completionCopy = completion;
+  helperCopy = helper;
   v8 = objc_alloc_init(MEMORY[0x277D27820]);
   availability = self->_availability;
   self->_availability = v8;
 
-  objc_storeStrong(&self->_serviceHelper, a4);
+  objc_storeStrong(&self->_serviceHelper, helper);
   if (qword_27DE0E768 != -1)
   {
     dispatch_once(&qword_27DE0E768, &unk_2848D4400);
@@ -416,8 +416,8 @@ LABEL_65:
 
   if (![(NSString *)self->_requestAceHash length])
   {
-    v10 = [(MPAssistantLoadPredefinedQueue *)self aceId];
-    v11 = sub_233505670(@"Load Predefined Queue", v10);
+    aceId = [(MPAssistantLoadPredefinedQueue *)self aceId];
+    v11 = sub_233505670(@"Load Predefined Queue", aceId);
     requestAceHash = self->_requestAceHash;
     self->_requestAceHash = v11;
   }
@@ -428,12 +428,12 @@ LABEL_65:
     v14 = self->_requestAceHash;
     [(MPAssistantLoadPredefinedQueue *)self mediaItemType];
     v15 = stringForSAMPType();
-    v16 = [(MPAssistantLoadPredefinedQueue *)self dryRun];
+    dryRun = [(MPAssistantLoadPredefinedQueue *)self dryRun];
     v17 = &stru_2848D4AE0;
     *buf = 138543874;
     v33 = v14;
     v34 = 2114;
-    if (v16)
+    if (dryRun)
     {
       v17 = @" ⚠️ DRY RUN";
     }
@@ -445,16 +445,16 @@ LABEL_65:
   }
 
   v18 = self->_requestAceHash;
-  v19 = [(MPAssistantLoadPredefinedQueue *)self hashedRouteUIDs];
-  sub_2335057BC(@"Load Predefined Queue", v18, v19);
+  hashedRouteUIDs = [(MPAssistantLoadPredefinedQueue *)self hashedRouteUIDs];
+  sub_2335057BC(@"Load Predefined Queue", v18, hashedRouteUIDs);
 
-  v20 = [(MPAssistantLoadPredefinedQueue *)self _validate];
-  if (v20)
+  _validate = [(MPAssistantLoadPredefinedQueue *)self _validate];
+  if (_validate)
   {
     if (![(NSString *)self->_requestAceHash length])
     {
-      v21 = [(MPAssistantLoadPredefinedQueue *)self aceId];
-      v22 = sub_233505670(@"Load Predefined Queue", v21);
+      aceId2 = [(MPAssistantLoadPredefinedQueue *)self aceId];
+      v22 = sub_233505670(@"Load Predefined Queue", aceId2);
       v23 = self->_requestAceHash;
       self->_requestAceHash = v22;
     }
@@ -463,29 +463,29 @@ LABEL_65:
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
       v25 = self->_requestAceHash;
-      v26 = [v20 dictionary];
+      dictionary = [_validate dictionary];
       *buf = 138543618;
       v33 = v25;
       v34 = 2114;
-      v35 = v26;
+      v35 = dictionary;
       _os_log_impl(&dword_2334D9000, v24, OS_LOG_TYPE_DEFAULT, "Load Predefined Queue (completion) <%{public}@>: notifying assistant %{public}@", buf, 0x16u);
     }
 
-    v27 = [v20 dictionary];
-    v6[2](v6, v27);
+    dictionary2 = [_validate dictionary];
+    completionCopy[2](completionCopy, dictionary2);
   }
 
   else
   {
-    v27 = sub_23350699C();
+    dictionary2 = sub_23350699C();
     v28 = dispatch_queue_create("com.apple.mediaPlayer.assistant.loadPredefinedQueue", 0);
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = sub_2334F0A58;
     v30[3] = &unk_2789DB670;
     v30[4] = self;
-    v31 = v6;
-    dispatch_group_notify(v27, v28, v30);
+    v31 = completionCopy;
+    dispatch_group_notify(dictionary2, v28, v30);
   }
 
   v29 = *MEMORY[0x277D85DE8];

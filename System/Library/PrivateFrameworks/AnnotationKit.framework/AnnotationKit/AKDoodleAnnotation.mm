@@ -1,20 +1,20 @@
 @interface AKDoodleAnnotation
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3;
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key;
 + (id)keyPathsForValuesAffectingDrawingBounds;
 + (id)keyPathsForValuesAffectingHitTestBounds;
-- (AKDoodleAnnotation)initWithCoder:(id)a3;
+- (AKDoodleAnnotation)initWithCoder:(id)coder;
 - (CGRect)hitTestBounds;
 - (CGRect)rectangle;
 - (id)displayName;
 - (id)keysForValuesToObserveForAdornments;
 - (id)keysForValuesToObserveForRedrawing;
 - (id)keysForValuesToObserveForUndo;
-- (id)strokeColorForOptions:(id)a3;
+- (id)strokeColorForOptions:(id)options;
 - (void)adjustModelToCompensateForOriginalExif;
-- (void)encodeWithCoder:(id)a3;
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4;
-- (void)setStrokeColor:(id)a3;
-- (void)translateBy:(CGPoint)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size;
+- (void)setStrokeColor:(id)color;
+- (void)translateBy:(CGPoint)by;
 @end
 
 @implementation AKDoodleAnnotation
@@ -22,7 +22,7 @@
 + (id)keyPathsForValuesAffectingHitTestBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKDoodleAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingHitTestBounds);
   v4 = [v2 setWithSet:v3];
@@ -35,7 +35,7 @@
 + (id)keyPathsForValuesAffectingDrawingBounds
 {
   v2 = MEMORY[0x277CBEB58];
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___AKDoodleAnnotation;
   v3 = objc_msgSendSuper2(&v6, sel_keyPathsForValuesAffectingDrawingBounds);
   v4 = [v2 setWithSet:v3];
@@ -45,46 +45,46 @@
   return v4;
 }
 
-+ (id)displayNameForUndoablePropertyChangeWithKey:(id)a3
++ (id)displayNameForUndoablePropertyChangeWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"rectangle"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"rectangle"])
   {
     v5 = @"Bounds";
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"path"])
+  if ([keyCopy isEqualToString:@"path"])
   {
     v5 = @"Doodle Shape";
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"strokeWidth"])
+  if ([keyCopy isEqualToString:@"strokeWidth"])
   {
     v5 = @"Line Width";
     goto LABEL_15;
   }
 
-  if ([v4 containsString:@"strokeColor"])
+  if ([keyCopy containsString:@"strokeColor"])
   {
     v5 = @"Color";
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"dashed"])
+  if ([keyCopy isEqualToString:@"dashed"])
   {
     v5 = @"Dashed";
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"hasShadow"])
+  if ([keyCopy isEqualToString:@"hasShadow"])
   {
     v5 = @"Shadow";
     goto LABEL_15;
   }
 
-  if ([v4 isEqualToString:@"brushStyle"])
+  if ([keyCopy isEqualToString:@"brushStyle"])
   {
     v5 = @"Brush Style";
 LABEL_15:
@@ -97,9 +97,9 @@ LABEL_15:
     }
   }
 
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___AKDoodleAnnotation;
-  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, v4);
+  v7 = objc_msgSendSuper2(&v9, sel_displayNameForUndoablePropertyChangeWithKey_, keyCopy);
 LABEL_17:
 
   return v7;
@@ -118,8 +118,8 @@ LABEL_17:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKDoodleAnnotation;
-  v3 = [(AKAnnotation *)&v6 keysForValuesToObserveForUndo];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForUndo = [(AKAnnotation *)&v6 keysForValuesToObserveForUndo];
+  v4 = [v2 setWithSet:keysForValuesToObserveForUndo];
 
   [v4 addObjectsFromArray:&unk_2851BAEA8];
 
@@ -131,8 +131,8 @@ LABEL_17:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKDoodleAnnotation;
-  v3 = [(AKAnnotation *)&v6 keysForValuesToObserveForRedrawing];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForRedrawing = [(AKAnnotation *)&v6 keysForValuesToObserveForRedrawing];
+  v4 = [v2 setWithSet:keysForValuesToObserveForRedrawing];
 
   [v4 addObjectsFromArray:&unk_2851BAEC0];
 
@@ -144,8 +144,8 @@ LABEL_17:
   v2 = MEMORY[0x277CBEB58];
   v6.receiver = self;
   v6.super_class = AKDoodleAnnotation;
-  v3 = [(AKAnnotation *)&v6 keysForValuesToObserveForAdornments];
-  v4 = [v2 setWithSet:v3];
+  keysForValuesToObserveForAdornments = [(AKAnnotation *)&v6 keysForValuesToObserveForAdornments];
+  v4 = [v2 setWithSet:keysForValuesToObserveForAdornments];
 
   [v4 addObjectsFromArray:&unk_2851BAED8];
 
@@ -211,18 +211,18 @@ LABEL_17:
   [(AKDoodleAnnotation *)self setRectangle:?];
 }
 
-- (void)flattenModelExifOrientation:(int64_t)a3 withModelSize:(CGSize)a4
+- (void)flattenModelExifOrientation:(int64_t)orientation withModelSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:a3];
+  height = size.height;
+  width = size.width;
+  [AKGeometryHelper adjustOriginalExifOrientationOnAnnotation:self flatteningOriginalModelExif:orientation];
   [(AKDoodleAnnotation *)self rectangle];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
   memset(&v16[1], 0, sizeof(CGAffineTransform));
-  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:a3 withOriginalModelSize:width, height];
+  [AKGeometryHelper affineTransformFlatteningOriginalModelExif:orientation withOriginalModelSize:width, height];
   v16[0] = v16[1];
   v17.origin.x = v9;
   v17.origin.y = v11;
@@ -232,83 +232,83 @@ LABEL_17:
   [(AKDoodleAnnotation *)self setRectangle:v18.origin.x, v18.origin.y, v18.size.width, v18.size.height];
 }
 
-- (void)translateBy:(CGPoint)a3
+- (void)translateBy:(CGPoint)by
 {
-  y = a3.y;
-  x = a3.x;
-  if (a3.x != *MEMORY[0x277CBF348] || a3.y != *(MEMORY[0x277CBF348] + 8))
+  y = by.y;
+  x = by.x;
+  if (by.x != *MEMORY[0x277CBF348] || by.y != *(MEMORY[0x277CBF348] + 8))
   {
-    v7 = [(AKAnnotation *)self isTranslating];
+    isTranslating = [(AKAnnotation *)self isTranslating];
     [(AKAnnotation *)self setIsTranslating:1];
     [(AKDoodleAnnotation *)self rectangle];
     [(AKDoodleAnnotation *)self setRectangle:x + v8, y + v9];
 
-    [(AKAnnotation *)self setIsTranslating:v7];
+    [(AKAnnotation *)self setIsTranslating:isTranslating];
   }
 }
 
-- (void)setStrokeColor:(id)a3
+- (void)setStrokeColor:(id)color
 {
-  v5 = a3;
-  if (v5 && [v5 akIsEDR])
+  colorCopy = color;
+  if (colorCopy && [colorCopy akIsEDR])
   {
-    [(AKDoodleAnnotation *)self setStrokeColorHDR:v5];
-    v4 = [v5 akToSDR];
-    [(AKDoodleAnnotation *)self setStrokeColorSDR:v4];
+    [(AKDoodleAnnotation *)self setStrokeColorHDR:colorCopy];
+    akToSDR = [colorCopy akToSDR];
+    [(AKDoodleAnnotation *)self setStrokeColorSDR:akToSDR];
   }
 
   else
   {
     [(AKDoodleAnnotation *)self setStrokeColorHDR:0];
-    [(AKDoodleAnnotation *)self setStrokeColorSDR:v5];
+    [(AKDoodleAnnotation *)self setStrokeColorSDR:colorCopy];
   }
 }
 
-- (id)strokeColorForOptions:(id)a3
+- (id)strokeColorForOptions:(id)options
 {
-  v4 = a3;
-  if (!v4)
+  optionsCopy = options;
+  if (!optionsCopy)
   {
-    v4 = +[AKAnnotationRendererOptions defaultOptions];
+    optionsCopy = +[AKAnnotationRendererOptions defaultOptions];
   }
 
-  [v4 scaleFactor];
+  [optionsCopy scaleFactor];
   v6 = v5;
-  v7 = [(AKDoodleAnnotation *)self strokeColorHDR];
-  v8 = v7;
+  strokeColorHDR = [(AKDoodleAnnotation *)self strokeColorHDR];
+  v8 = strokeColorHDR;
   if (v6 == 0.0)
   {
-    if (v7 && ([v4 allowHDR] & 1) != 0)
+    if (strokeColorHDR && ([optionsCopy allowHDR] & 1) != 0)
     {
-      v13 = [(AKDoodleAnnotation *)self strokeColorHDR];
+      strokeColorHDR2 = [(AKDoodleAnnotation *)self strokeColorHDR];
     }
 
     else
     {
-      v13 = [(AKDoodleAnnotation *)self strokeColorSDR];
+      strokeColorHDR2 = [(AKDoodleAnnotation *)self strokeColorSDR];
     }
 
-    v12 = v13;
+    v12 = strokeColorHDR2;
   }
 
   else
   {
-    if (v7 && [v4 allowHDR])
+    if (strokeColorHDR && [optionsCopy allowHDR])
     {
-      v9 = [(AKDoodleAnnotation *)self strokeColorHDR];
+      strokeColorHDR3 = [(AKDoodleAnnotation *)self strokeColorHDR];
       v10 = 0;
       v11 = 1;
     }
 
     else
     {
-      v9 = [(AKDoodleAnnotation *)self strokeColorSDR];
+      strokeColorHDR3 = [(AKDoodleAnnotation *)self strokeColorSDR];
       v11 = 0;
       v10 = 1;
     }
 
-    [v4 scaleFactor];
-    v12 = [v9 akScale:?];
+    [optionsCopy scaleFactor];
+    v12 = [strokeColorHDR3 akScale:?];
     if (v10)
     {
     }
@@ -321,57 +321,57 @@ LABEL_17:
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = AKDoodleAnnotation;
-  [(AKAnnotation *)&v12 encodeWithCoder:v4];
+  [(AKAnnotation *)&v12 encodeWithCoder:coderCopy];
   [(AKDoodleAnnotation *)self rectangle];
   DictionaryRepresentation = CGRectCreateDictionaryRepresentation(v13);
-  [v4 encodeObject:DictionaryRepresentation forKey:@"rectangle"];
-  v6 = [(AKDoodleAnnotation *)self path];
-  v7 = [v6 newCGPathForPlatformBezierPath];
+  [coderCopy encodeObject:DictionaryRepresentation forKey:@"rectangle"];
+  path = [(AKDoodleAnnotation *)self path];
+  newCGPathForPlatformBezierPath = [path newCGPathForPlatformBezierPath];
 
-  v8 = [MEMORY[0x277CBEA90] encodeCGPath:v7];
-  [v4 encodeObject:v8 forKey:@"path"];
-  CGPathRelease(v7);
-  v9 = [(AKDoodleAnnotation *)self strokeColorSDR];
-  [v4 akEncodeColor:v9 forKey:@"strokeColorString"];
+  v8 = [MEMORY[0x277CBEA90] encodeCGPath:newCGPathForPlatformBezierPath];
+  [coderCopy encodeObject:v8 forKey:@"path"];
+  CGPathRelease(newCGPathForPlatformBezierPath);
+  strokeColorSDR = [(AKDoodleAnnotation *)self strokeColorSDR];
+  [coderCopy akEncodeColor:strokeColorSDR forKey:@"strokeColorString"];
 
-  v10 = [(AKDoodleAnnotation *)self strokeColorHDR];
+  strokeColorHDR = [(AKDoodleAnnotation *)self strokeColorHDR];
 
-  if (v10)
+  if (strokeColorHDR)
   {
-    v11 = [(AKDoodleAnnotation *)self strokeColorHDR];
-    [v4 akEncodeColor:v11 forKey:@"strokeColorHDRString"];
+    strokeColorHDR2 = [(AKDoodleAnnotation *)self strokeColorHDR];
+    [coderCopy akEncodeColor:strokeColorHDR2 forKey:@"strokeColorHDRString"];
   }
 
   [(AKDoodleAnnotation *)self strokeWidth];
-  [v4 encodeDouble:@"strokeWidth" forKey:?];
-  [v4 encodeBool:-[AKDoodleAnnotation isDashed](self forKey:{"isDashed"), @"dashed"}];
-  [v4 encodeBool:-[AKDoodleAnnotation hasShadow](self forKey:{"hasShadow"), @"hasShadow"}];
-  [v4 encodeInteger:-[AKDoodleAnnotation brushStyle](self forKey:{"brushStyle"), @"brushStyle"}];
-  [v4 encodeBool:-[AKDoodleAnnotation pathIsPrestroked](self forKey:{"pathIsPrestroked"), @"pathIsPrestroked"}];
-  [v4 encodeBool:-[AKDoodleAnnotation pathIsDot](self forKey:{"pathIsDot"), @"pathIsDot"}];
+  [coderCopy encodeDouble:@"strokeWidth" forKey:?];
+  [coderCopy encodeBool:-[AKDoodleAnnotation isDashed](self forKey:{"isDashed"), @"dashed"}];
+  [coderCopy encodeBool:-[AKDoodleAnnotation hasShadow](self forKey:{"hasShadow"), @"hasShadow"}];
+  [coderCopy encodeInteger:-[AKDoodleAnnotation brushStyle](self forKey:{"brushStyle"), @"brushStyle"}];
+  [coderCopy encodeBool:-[AKDoodleAnnotation pathIsPrestroked](self forKey:{"pathIsPrestroked"), @"pathIsPrestroked"}];
+  [coderCopy encodeBool:-[AKDoodleAnnotation pathIsDot](self forKey:{"pathIsDot"), @"pathIsDot"}];
 }
 
-- (AKDoodleAnnotation)initWithCoder:(id)a3
+- (AKDoodleAnnotation)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v21.receiver = self;
   v21.super_class = AKDoodleAnnotation;
-  v5 = [(AKAnnotation *)&v21 initWithCoder:v4];
+  v5 = [(AKAnnotation *)&v21 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MEMORY[0x277CBEB98];
     v7 = objc_opt_class();
     v8 = objc_opt_class();
     v9 = [v6 setWithObjects:{v7, v8, objc_opt_class(), 0}];
-    v10 = [v4 decodeObjectOfClasses:v9 forKey:@"rectangle"];
+    v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"rectangle"];
 
     CGRectMakeWithDictionaryRepresentation(v10, &v5->_rectangle);
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"path"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"path"];
     v12 = [MEMORY[0x277CBEA90] newCGPathDecodedFromData:v11];
     if (v12)
     {
@@ -382,9 +382,9 @@ LABEL_17:
       CGPathRelease(v13);
     }
 
-    if ([v4 containsValueForKey:@"pathIsPrestroked"])
+    if ([coderCopy containsValueForKey:@"pathIsPrestroked"])
     {
-      v15 = [v4 decodeBoolForKey:@"pathIsPrestroked"];
+      v15 = [coderCopy decodeBoolForKey:@"pathIsPrestroked"];
     }
 
     else
@@ -393,9 +393,9 @@ LABEL_17:
     }
 
     [(AKDoodleAnnotation *)v5 setPathIsPrestroked:v15];
-    if ([v4 containsValueForKey:@"pathIsDot"])
+    if ([coderCopy containsValueForKey:@"pathIsDot"])
     {
-      v16 = [v4 decodeBoolForKey:@"pathIsDot"];
+      v16 = [coderCopy decodeBoolForKey:@"pathIsDot"];
     }
 
     else
@@ -404,33 +404,33 @@ LABEL_17:
     }
 
     [(AKDoodleAnnotation *)v5 setPathIsDot:v16];
-    if ([v4 containsValueForKey:@"strokeColorHDRString"])
+    if ([coderCopy containsValueForKey:@"strokeColorHDRString"])
     {
-      v17 = [v4 akDecodeColorForKey:@"strokeColorHDRString"];
+      v17 = [coderCopy akDecodeColorForKey:@"strokeColorHDRString"];
       [(AKDoodleAnnotation *)v5 setStrokeColorHDR:v17];
     }
 
-    if ([v4 containsValueForKey:@"strokeColorString"])
+    if ([coderCopy containsValueForKey:@"strokeColorString"])
     {
-      v18 = [v4 akDecodeColorForKey:@"strokeColorString"];
+      v18 = [coderCopy akDecodeColorForKey:@"strokeColorString"];
       [(AKDoodleAnnotation *)v5 setStrokeColorSDR:v18];
     }
 
     else
     {
-      if (![v4 containsValueForKey:@"strokeColor"])
+      if (![coderCopy containsValueForKey:@"strokeColor"])
       {
 LABEL_18:
-        [v4 decodeDoubleForKey:@"strokeWidth"];
+        [coderCopy decodeDoubleForKey:@"strokeWidth"];
         [(AKDoodleAnnotation *)v5 setStrokeWidth:?];
-        -[AKDoodleAnnotation setDashed:](v5, "setDashed:", [v4 decodeBoolForKey:@"dashed"]);
-        -[AKDoodleAnnotation setHasShadow:](v5, "setHasShadow:", [v4 decodeBoolForKey:@"hasShadow"]);
-        -[AKDoodleAnnotation setBrushStyle:](v5, "setBrushStyle:", [v4 decodeIntegerForKey:@"brushStyle"]);
+        -[AKDoodleAnnotation setDashed:](v5, "setDashed:", [coderCopy decodeBoolForKey:@"dashed"]);
+        -[AKDoodleAnnotation setHasShadow:](v5, "setHasShadow:", [coderCopy decodeBoolForKey:@"hasShadow"]);
+        -[AKDoodleAnnotation setBrushStyle:](v5, "setBrushStyle:", [coderCopy decodeIntegerForKey:@"brushStyle"]);
 
         goto LABEL_19;
       }
 
-      v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"strokeColor"];
+      v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"strokeColor"];
       if (v18)
       {
         v19 = [MEMORY[0x277D75348] akColorWithCIColor:v18];

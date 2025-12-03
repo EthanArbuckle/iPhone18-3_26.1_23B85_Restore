@@ -1,17 +1,17 @@
 @interface RAPSubmissionStatusDownloader
-- (RAPSubmissionStatusDownloader)initWithQuerySource:(int)a3;
-- (void)_checkForStatusChangeNotificationsNeededForRapInfos:(id)a3;
-- (void)_fetchAndUpdateRAPStatusWithOffset:(int64_t)a3 batchSize:(unint64_t)a4 completion:(id)a5;
-- (void)_sendStatusChangeNotificationIfNeeded:(id)a3;
-- (void)_updateAllSubmissionStatusWithOffset:(int64_t)a3 batchSize:(unint64_t)a4 completion:(id)a5;
-- (void)_updateSubmissionStatusWithIdentifier:(id)a3 completion:(id)a4;
-- (void)setNotificationCenter:(id)a3;
-- (void)updateSubmissionStatusesWithCompletion:(id)a3;
+- (RAPSubmissionStatusDownloader)initWithQuerySource:(int)source;
+- (void)_checkForStatusChangeNotificationsNeededForRapInfos:(id)infos;
+- (void)_fetchAndUpdateRAPStatusWithOffset:(int64_t)offset batchSize:(unint64_t)size completion:(id)completion;
+- (void)_sendStatusChangeNotificationIfNeeded:(id)needed;
+- (void)_updateAllSubmissionStatusWithOffset:(int64_t)offset batchSize:(unint64_t)size completion:(id)completion;
+- (void)_updateSubmissionStatusWithIdentifier:(id)identifier completion:(id)completion;
+- (void)setNotificationCenter:(id)center;
+- (void)updateSubmissionStatusesWithCompletion:(id)completion;
 @end
 
 @implementation RAPSubmissionStatusDownloader
 
-- (RAPSubmissionStatusDownloader)initWithQuerySource:(int)a3
+- (RAPSubmissionStatusDownloader)initWithQuerySource:(int)source
 {
   v12.receiver = self;
   v12.super_class = RAPSubmissionStatusDownloader;
@@ -33,15 +33,15 @@
     syncHandler = v4->_syncHandler;
     v4->_syncHandler = v8;
 
-    v4->_querySource = a3;
+    v4->_querySource = source;
   }
 
   return v4;
 }
 
-- (void)setNotificationCenter:(id)a3
+- (void)setNotificationCenter:(id)center
 {
-  obj = a3;
+  obj = center;
   WeakRetained = objc_loadWeakRetained(&self->_notificationCenter);
 
   v5 = obj;
@@ -52,9 +52,9 @@
   }
 }
 
-- (void)updateSubmissionStatusesWithCompletion:(id)a3
+- (void)updateSubmissionStatusesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   self->_isExpired = 0;
   UInteger = GEOConfigGetUInteger();
   v6 = sub_10000B8FC();
@@ -69,28 +69,28 @@
   v8[1] = 3221225472;
   v8[2] = sub_10000BAE8;
   v8[3] = &unk_10003CD38;
-  v9 = v4;
-  v7 = v4;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [(RAPSubmissionStatusDownloader *)self _updateAllSubmissionStatusWithOffset:0 batchSize:UInteger completion:v8];
 }
 
-- (void)_updateAllSubmissionStatusWithOffset:(int64_t)a3 batchSize:(unint64_t)a4 completion:(id)a5
+- (void)_updateAllSubmissionStatusWithOffset:(int64_t)offset batchSize:(unint64_t)size completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   UInteger = GEOConfigGetUInteger();
   v10 = sub_10000B8FC();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
-    v15 = a3;
+    offsetCopy = offset;
     v16 = 2048;
     v17 = UInteger;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "Updating submission status with offset: %lu, totalLimit: %lu", buf, 0x16u);
   }
 
-  if (UInteger < a3 || self->_isExpired)
+  if (UInteger < offset || self->_isExpired)
   {
-    v8[2](v8, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   else
@@ -101,19 +101,19 @@
     v11[2] = sub_10000BDC8;
     v11[3] = &unk_10003CD60;
     objc_copyWeak(v13, buf);
-    v12 = v8;
-    v13[1] = a3;
-    v13[2] = a4;
-    [(RAPSubmissionStatusDownloader *)self _fetchAndUpdateRAPStatusWithOffset:a3 batchSize:a4 completion:v11];
+    v12 = completionCopy;
+    v13[1] = offset;
+    v13[2] = size;
+    [(RAPSubmissionStatusDownloader *)self _fetchAndUpdateRAPStatusWithOffset:offset batchSize:size completion:v11];
 
     objc_destroyWeak(v13);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)_fetchAndUpdateRAPStatusWithOffset:(int64_t)a3 batchSize:(unint64_t)a4 completion:(id)a5
+- (void)_fetchAndUpdateRAPStatusWithOffset:(int64_t)offset batchSize:(unint64_t)size completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = +[NSDate date];
   v10 = [v9 dateByAddingTimeInterval:-7776000.0];
 
@@ -124,18 +124,18 @@
   v13[2] = sub_10000BFBC;
   v13[3] = &unk_10003CDB0;
   objc_copyWeak(&v15, &location);
-  v12 = v8;
+  v12 = completionCopy;
   v14 = v12;
-  [(RAPSubmissionStatusSyncHandler *)syncHandler fetchUnresolvedRAPIdentifiersWithBatchSize:a4 offset:a3 oldestDate:v10 completion:v13];
+  [(RAPSubmissionStatusSyncHandler *)syncHandler fetchUnresolvedRAPIdentifiersWithBatchSize:size offset:offset oldestDate:v10 completion:v13];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&location);
 }
 
-- (void)_updateSubmissionStatusWithIdentifier:(id)a3 completion:(id)a4
+- (void)_updateSubmissionStatusWithIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   submissionStatusTicket = self->_submissionStatusTicket;
   querySource = self->_querySource;
@@ -144,22 +144,22 @@
   v11[2] = sub_10000C348;
   v11[3] = &unk_10003CE28;
   objc_copyWeak(&v13, &location);
-  v10 = v7;
+  v10 = completionCopy;
   v12 = v10;
-  [(RAPBatchSubmissionStatusTicket *)submissionStatusTicket fetchStatusesForIdentifiers:v6 querySource:querySource completion:v11];
+  [(RAPBatchSubmissionStatusTicket *)submissionStatusTicket fetchStatusesForIdentifiers:identifierCopy querySource:querySource completion:v11];
 
   objc_destroyWeak(&v13);
   objc_destroyWeak(&location);
 }
 
-- (void)_checkForStatusChangeNotificationsNeededForRapInfos:(id)a3
+- (void)_checkForStatusChangeNotificationsNeededForRapInfos:(id)infos
 {
-  v4 = a3;
+  infosCopy = infos;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [infosCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -170,7 +170,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(infosCopy);
         }
 
         v9 = *(*(&v10 + 1) + 8 * i);
@@ -180,39 +180,39 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [infosCopy countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_sendStatusChangeNotificationIfNeeded:(id)a3
+- (void)_sendStatusChangeNotificationIfNeeded:(id)needed
 {
-  v4 = a3;
-  v5 = [v4 rapResponse];
-  v6 = [v5 hasNotification];
+  neededCopy = needed;
+  rapResponse = [neededCopy rapResponse];
+  hasNotification = [rapResponse hasNotification];
 
-  if (v6)
+  if (hasNotification)
   {
     WeakRetained = objc_loadWeakRetained(&self->_notificationCenter);
 
     if (WeakRetained)
     {
       v8 = objc_loadWeakRetained(&self->_notificationCenter);
-      v9 = [v8 addRAPNotificationForProblemStatusChangeWithRapInfo:v4];
+      v9 = [v8 addRAPNotificationForProblemStatusChangeWithRapInfo:neededCopy];
 
       v10 = +[MapsPushManager defaultManager];
-      v11 = [v4 data];
-      [v10 propagateIDSMessageOfType:1 message:v11];
+      data = [neededCopy data];
+      [v10 propagateIDSMessageOfType:1 message:data];
 
-      v12 = [v4 rapResponse];
-      v13 = +[GEORPRapResponse RapStateIconAsString:](GEORPRapResponse, "RapStateIconAsString:", [v12 rapStateIcon]);
+      rapResponse2 = [neededCopy rapResponse];
+      v13 = +[GEORPRapResponse RapStateIconAsString:](GEORPRapResponse, "RapStateIconAsString:", [rapResponse2 rapStateIcon]);
 
-      v14 = [v4 rapId];
-      v15 = [v4 rapResponse];
-      v16 = [v15 responseId];
-      [RAPNotificationLogEvent reportNotificationWasShownWithRapId:v14 responseId:v16 notificationType:v13 completion:&stru_10003CE48];
+      rapId = [neededCopy rapId];
+      rapResponse3 = [neededCopy rapResponse];
+      responseId = [rapResponse3 responseId];
+      [RAPNotificationLogEvent reportNotificationWasShownWithRapId:rapId responseId:responseId notificationType:v13 completion:&stru_10003CE48];
     }
 
     else

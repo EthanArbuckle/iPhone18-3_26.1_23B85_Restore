@@ -1,12 +1,12 @@
 @interface CKVTaskManagerInfo
-- (BOOL)clear:(id *)a3;
+- (BOOL)clear:(id *)clear;
 - (BOOL)didCompleteMigrationMoreRecentlyThanMaintenance;
-- (BOOL)recordMaintenanceCompleted:(id *)a3;
-- (BOOL)recordMigrationCompletedWithSettings:(id)a3 error:(id *)a4;
+- (BOOL)recordMaintenanceCompleted:(id *)completed;
+- (BOOL)recordMigrationCompletedWithSettings:(id)settings error:(id *)error;
 - (BOOL)shouldRunMigration;
-- (BOOL)updateSchemaVersion:(id)a3 error:(id *)a4;
-- (BOOL)updateSiriLanguageCode:(id)a3 dictationLanguageCodes:(id)a4 error:(id *)a5;
-- (CKVTaskManagerInfo)initWithRootDirectoryURL:(id)a3 error:(id *)a4;
+- (BOOL)updateSchemaVersion:(id)version error:(id *)error;
+- (BOOL)updateSiriLanguageCode:(id)code dictationLanguageCodes:(id)codes error:(id *)error;
+- (CKVTaskManagerInfo)initWithRootDirectoryURL:(id)l error:(id *)error;
 - (id)dictationLanguageCodes;
 - (id)lastMaintenance;
 - (id)schemaVersion;
@@ -60,17 +60,17 @@ void __69__CKVTaskManagerInfo_didCompleteMigrationMoreRecentlyThanMaintenance__b
   }
 }
 
-- (BOOL)recordMigrationCompletedWithSettings:(id)a3 error:(id *)a4
+- (BOOL)recordMigrationCompletedWithSettings:(id)settings error:(id *)error
 {
   v38[6] = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  settingsCopy = settings;
   v6 = +[CKVTaskSettings buildVersion];
   v7 = +[CKVTaskSettings projectNameAndSourceVersion];
-  v8 = [v5 localization];
-  v9 = [v8 siriLanguageCode];
+  localization = [settingsCopy localization];
+  siriLanguageCode = [localization siriLanguageCode];
 
-  v10 = [v5 localization];
-  v11 = [v10 dictationLanguageCodes];
+  localization2 = [settingsCopy localization];
+  dictationLanguageCodes = [localization2 dictationLanguageCodes];
 
   if (v6)
   {
@@ -96,9 +96,9 @@ void __69__CKVTaskManagerInfo_didCompleteMigrationMoreRecentlyThanMaintenance__b
 
   v15 = v14;
 
-  if (v9)
+  if (siriLanguageCode)
   {
-    v16 = v9;
+    v16 = siriLanguageCode;
   }
 
   else
@@ -111,12 +111,12 @@ void __69__CKVTaskManagerInfo_didCompleteMigrationMoreRecentlyThanMaintenance__b
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v18 = [v11 allObjects];
+    allObjects = [dictationLanguageCodes allObjects];
   }
 
   else
   {
-    v18 = MEMORY[0x1E695E0F0];
+    allObjects = MEMORY[0x1E695E0F0];
   }
 
   v38[0] = v13;
@@ -125,7 +125,7 @@ void __69__CKVTaskManagerInfo_didCompleteMigrationMoreRecentlyThanMaintenance__b
   v38[2] = v19;
   v38[3] = &unk_1F48584B0;
   v38[4] = v17;
-  v38[5] = v18;
+  v38[5] = allObjects;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v38 count:6];
 
   v37[0] = @"migratedBuildVersion";
@@ -381,12 +381,12 @@ void __40__CKVTaskManagerInfo_shouldRunMigration__block_invoke_47(uint64_t a1)
   }
 }
 
-- (BOOL)updateSiriLanguageCode:(id)a3 dictationLanguageCodes:(id)a4 error:(id *)a5
+- (BOOL)updateSiriLanguageCode:(id)code dictationLanguageCodes:(id)codes error:(id *)error
 {
   v36[2] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  codeCopy = code;
+  codesCopy = codes;
+  if (!codeCopy)
   {
     v16 = CKLogContextVocabulary;
     if (os_log_type_enabled(CKLogContextVocabulary, OS_LOG_TYPE_ERROR))
@@ -422,9 +422,9 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v36[0] = v7;
-  v9 = [v8 allObjects];
-  v36[1] = v9;
+  v36[0] = codeCopy;
+  allObjects = [codesCopy allObjects];
+  v36[1] = allObjects;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:2];
 
   v35[0] = @"siriLanguageCode";
@@ -549,7 +549,7 @@ uint64_t __38__CKVTaskManagerInfo_siriLanguageCode__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)recordMaintenanceCompleted:(id *)a3
+- (BOOL)recordMaintenanceCompleted:(id *)completed
 {
   v7 = 0;
   v8 = &v7;
@@ -562,7 +562,7 @@ uint64_t __38__CKVTaskManagerInfo_siriLanguageCode__block_invoke(uint64_t a1)
   block[3] = &unk_1E831E600;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = completed;
   dispatch_sync(queue, block);
   v4 = *(v8 + 24);
   _Block_object_dispose(&v7, 8);
@@ -605,9 +605,9 @@ uint64_t __37__CKVTaskManagerInfo_lastMaintenance__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)updateSchemaVersion:(id)a3 error:(id *)a4
+- (BOOL)updateSchemaVersion:(id)version error:(id *)error
 {
-  v6 = a3;
+  versionCopy = version;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
@@ -618,10 +618,10 @@ uint64_t __37__CKVTaskManagerInfo_lastMaintenance__block_invoke(uint64_t a1)
   v10[2] = __48__CKVTaskManagerInfo_updateSchemaVersion_error___block_invoke;
   v10[3] = &unk_1E831E5D8;
   v10[4] = self;
-  v11 = v6;
+  v11 = versionCopy;
   v12 = &v14;
-  v13 = a4;
-  v8 = v6;
+  errorCopy = error;
+  v8 = versionCopy;
   dispatch_sync(queue, v10);
   LOBYTE(self) = *(v15 + 24);
 
@@ -665,7 +665,7 @@ uint64_t __35__CKVTaskManagerInfo_schemaVersion__block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (BOOL)clear:(id *)a3
+- (BOOL)clear:(id *)clear
 {
   v11[0] = 0;
   v11[1] = v11;
@@ -718,9 +718,9 @@ void __28__CKVTaskManagerInfo_clear___block_invoke(void *a1)
   *(*(a1[5] + 8) + 24) = v7;
 }
 
-- (CKVTaskManagerInfo)initWithRootDirectoryURL:(id)a3 error:(id *)a4
+- (CKVTaskManagerInfo)initWithRootDirectoryURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v19.receiver = self;
   v19.super_class = CKVTaskManagerInfo;
   v7 = [(CKVTaskManagerInfo *)&v19 init];
@@ -729,17 +729,17 @@ void __28__CKVTaskManagerInfo_clear___block_invoke(void *a1)
     goto LABEL_6;
   }
 
-  v8 = [objc_alloc(MEMORY[0x1E69ABCD0]) initWithFilename:@"Info" protectionClass:4 directory:v6 readOnly:0 create:1 error:a4];
+  v8 = [objc_alloc(MEMORY[0x1E69ABCD0]) initWithFilename:@"Info" protectionClass:4 directory:lCopy readOnly:0 create:1 error:error];
   log = v7->_log;
   v7->_log = v8;
 
-  if (!v7->_log || (v10 = [objc_alloc(MEMORY[0x1E6993A58]) initWithFilename:@"Registry" directory:v6 protectionClass:4 error:a4], changeRegistry = v7->_changeRegistry, v7->_changeRegistry = v10, changeRegistry, !v7->_changeRegistry))
+  if (!v7->_log || (v10 = [objc_alloc(MEMORY[0x1E6993A58]) initWithFilename:@"Registry" directory:lCopy protectionClass:4 error:error], changeRegistry = v7->_changeRegistry, v7->_changeRegistry = v10, changeRegistry, !v7->_changeRegistry))
   {
     v14 = 0;
     goto LABEL_8;
   }
 
-  v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"Donate" isDirectory:1 relativeToURL:v6];
+  v12 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"Donate" isDirectory:1 relativeToURL:lCopy];
   donateDirectory = v7->_donateDirectory;
   v7->_donateDirectory = v12;
 

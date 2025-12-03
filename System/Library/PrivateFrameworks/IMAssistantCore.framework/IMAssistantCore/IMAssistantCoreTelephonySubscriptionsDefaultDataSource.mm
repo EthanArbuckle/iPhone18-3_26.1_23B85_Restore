@@ -1,10 +1,10 @@
 @interface IMAssistantCoreTelephonySubscriptionsDefaultDataSource
 + (id)sharedInstance;
 - (BOOL)deviceHasMultipleSubscriptions;
-- (id)bestSenderIdentityForChatWithHandleIDs:(id)a3;
-- (id)handleIDForSenderIdentity:(id)a3;
-- (id)simIDForSenderIdentity:(id)a3;
-- (id)subscriptionContextForSenderIdentity:(id)a3;
+- (id)bestSenderIdentityForChatWithHandleIDs:(id)ds;
+- (id)handleIDForSenderIdentity:(id)identity;
+- (id)simIDForSenderIdentity:(id)identity;
+- (id)subscriptionContextForSenderIdentity:(id)identity;
 @end
 
 @implementation IMAssistantCoreTelephonySubscriptionsDefaultDataSource
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = sub_2547BB04C;
   block[3] = &unk_279786A78;
-  block[4] = a1;
+  block[4] = self;
   if (qword_27F610F70 != -1)
   {
     dispatch_once(&qword_27F610F70, block);
@@ -39,47 +39,47 @@
   return HasMultipleSubscriptions;
 }
 
-- (id)bestSenderIdentityForChatWithHandleIDs:(id)a3
+- (id)bestSenderIdentityForChatWithHandleIDs:(id)ds
 {
   v3 = MEMORY[0x277D1AB88];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  v6 = [v5 bestSenderIdentityForHandleIDs:v4];
+  dsCopy = ds;
+  sharedInstance = [v3 sharedInstance];
+  v6 = [sharedInstance bestSenderIdentityForHandleIDs:dsCopy];
 
   return v6;
 }
 
-- (id)handleIDForSenderIdentity:(id)a3
+- (id)handleIDForSenderIdentity:(id)identity
 {
-  v3 = [(IMAssistantCoreTelephonySubscriptionsDefaultDataSource *)self subscriptionContextForSenderIdentity:a3];
-  v4 = [v3 phoneNumber];
+  v3 = [(IMAssistantCoreTelephonySubscriptionsDefaultDataSource *)self subscriptionContextForSenderIdentity:identity];
+  phoneNumber = [v3 phoneNumber];
 
-  return v4;
+  return phoneNumber;
 }
 
-- (id)simIDForSenderIdentity:(id)a3
+- (id)simIDForSenderIdentity:(id)identity
 {
-  v3 = [(IMAssistantCoreTelephonySubscriptionsDefaultDataSource *)self subscriptionContextForSenderIdentity:a3];
-  v4 = [v3 labelID];
+  v3 = [(IMAssistantCoreTelephonySubscriptionsDefaultDataSource *)self subscriptionContextForSenderIdentity:identity];
+  labelID = [v3 labelID];
 
-  return v4;
+  return labelID;
 }
 
-- (id)subscriptionContextForSenderIdentity:(id)a3
+- (id)subscriptionContextForSenderIdentity:(id)identity
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = [a3 accountUUID];
-  v4 = [v3 UUIDString];
+  accountUUID = [identity accountUUID];
+  uUIDString = [accountUUID UUIDString];
 
-  v5 = [MEMORY[0x277D1A908] sharedInstance];
-  v6 = [v5 ctSubscriptionInfo];
-  v7 = [v6 subscriptions];
+  mEMORY[0x277D1A908] = [MEMORY[0x277D1A908] sharedInstance];
+  ctSubscriptionInfo = [mEMORY[0x277D1A908] ctSubscriptionInfo];
+  subscriptions = [ctSubscriptionInfo subscriptions];
 
   v19 = 0u;
   v20 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v8 = v7;
+  v8 = subscriptions;
   v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
@@ -94,8 +94,8 @@
         }
 
         v12 = *(*(&v17 + 1) + 8 * i);
-        v13 = [v12 labelID];
-        v14 = [v4 isEqualToString:v13];
+        labelID = [v12 labelID];
+        v14 = [uUIDString isEqualToString:labelID];
 
         if (v14)
         {

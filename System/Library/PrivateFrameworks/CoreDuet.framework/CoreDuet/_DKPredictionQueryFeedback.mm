@@ -1,21 +1,21 @@
 @interface _DKPredictionQueryFeedback
-- (void)logPredictionQueryFeedback:(id)a3 endHistogram:(id)a4 withStorage:(id)a5;
+- (void)logPredictionQueryFeedback:(id)feedback endHistogram:(id)histogram withStorage:(id)storage;
 @end
 
 @implementation _DKPredictionQueryFeedback
 
-- (void)logPredictionQueryFeedback:(id)a3 endHistogram:(id)a4 withStorage:(id)a5
+- (void)logPredictionQueryFeedback:(id)feedback endHistogram:(id)histogram withStorage:(id)storage
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x1E695DF00] date];
+  feedbackCopy = feedback;
+  histogramCopy = histogram;
+  storageCopy = storage;
+  date = [MEMORY[0x1E695DF00] date];
   v11 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
-  if (!v7)
+  if (!feedbackCopy)
   {
     v13 = &stru_1F05B9908;
-    if (!v8)
+    if (!histogramCopy)
     {
       goto LABEL_4;
     }
@@ -23,15 +23,15 @@
     goto LABEL_3;
   }
 
-  v12 = [v7 countDictionary];
-  [v11 setValue:v12 forKey:@"startCountDiction"];
+  countDictionary = [feedbackCopy countDictionary];
+  [v11 setValue:countDictionary forKey:@"startCountDiction"];
   v13 = [&stru_1F05B9908 stringByAppendingString:@"_startHistogramExists"];
 
-  if (v8)
+  if (histogramCopy)
   {
 LABEL_3:
-    v14 = [v8 countDictionary];
-    [v11 setValue:v14 forKey:@"endCountDictionary"];
+    countDictionary2 = [histogramCopy countDictionary];
+    [v11 setValue:countDictionary2 forKey:@"endCountDictionary"];
     v15 = [(__CFString *)v13 stringByAppendingString:@"_endHistogramExists"];
 
     v13 = v15;
@@ -56,14 +56,14 @@ LABEL_4:
   {
 LABEL_18:
     v18 = +[_DKSystemEventStreams deviceActivityLevelFeedbackStream];
-    v19 = [_DKEvent eventWithStream:v18 source:0 startDate:v10 endDate:v10 identifierStringValue:v13 metadata:v17];
+    v19 = [_DKEvent eventWithStream:v18 source:0 startDate:date endDate:date identifierStringValue:v13 metadata:v17];
 
     if (v19)
     {
       v25 = v19;
       v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
       v24 = 0;
-      [v9 saveObjects:v20 error:&v24];
+      [storageCopy saveObjects:v20 error:&v24];
       v21 = v24;
 
       if (v21)

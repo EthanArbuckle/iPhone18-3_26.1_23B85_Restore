@@ -1,71 +1,71 @@
 @interface PPM2LocationItemDonation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsAlgorithm:(id)a3;
-- (int)StringAsDonationSource:(id)a3;
+- (int)StringAsAlgorithm:(id)algorithm;
+- (int)StringAsDonationSource:(id)source;
 - (int)algorithm;
 - (int)donationSource;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAlgorithm:(BOOL)a3;
-- (void)setHasDonationSource:(BOOL)a3;
-- (void)setHasNewItem:(BOOL)a3;
-- (void)setHasUserCreated:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAlgorithm:(BOOL)algorithm;
+- (void)setHasDonationSource:(BOOL)source;
+- (void)setHasNewItem:(BOOL)item;
+- (void)setHasUserCreated:(BOOL)created;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PPM2LocationItemDonation
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if ((*(v4 + 44) & 4) != 0)
+  fromCopy = from;
+  if ((*(fromCopy + 44) & 4) != 0)
   {
-    self->_donationSource = *(v4 + 7);
+    self->_donationSource = *(fromCopy + 7);
     *&self->_has |= 4u;
   }
 
-  v7 = v4;
-  if (*(v4 + 4))
+  v7 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(PPM2LocationItemDonation *)self setGroupId:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v5 = *(v4 + 44);
+  v5 = *(fromCopy + 44);
   if ((v5 & 8) != 0)
   {
-    self->_newItem = *(v4 + 40);
+    self->_newItem = *(fromCopy + 40);
     *&self->_has |= 8u;
-    v5 = *(v4 + 44);
+    v5 = *(fromCopy + 44);
   }
 
   if ((v5 & 2) != 0)
   {
-    self->_algorithm = *(v4 + 6);
+    self->_algorithm = *(fromCopy + 6);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(PPM2LocationItemDonation *)self setActiveTreatments:?];
-    v4 = v7;
+    fromCopy = v7;
   }
 
-  v6 = *(v4 + 44);
+  v6 = *(fromCopy + 44);
   if ((v6 & 0x10) != 0)
   {
-    self->_userCreated = *(v4 + 41);
+    self->_userCreated = *(fromCopy + 41);
     *&self->_has |= 0x10u;
-    v6 = *(v4 + 44);
+    v6 = *(fromCopy + 44);
   }
 
   if (v6)
   {
-    self->_rank = *(v4 + 1);
+    self->_rank = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }
@@ -130,31 +130,31 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_33;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 44) & 4) == 0 || self->_donationSource != *(v4 + 7))
+    if ((*(equalCopy + 44) & 4) == 0 || self->_donationSource != *(equalCopy + 7))
     {
       goto LABEL_33;
     }
   }
 
-  else if ((*(v4 + 44) & 4) != 0)
+  else if ((*(equalCopy + 44) & 4) != 0)
   {
     goto LABEL_33;
   }
 
   groupId = self->_groupId;
-  if (groupId | *(v4 + 4))
+  if (groupId | *(equalCopy + 4))
   {
     if (![(NSString *)groupId isEqual:?])
     {
@@ -162,7 +162,7 @@ LABEL_11:
     }
 
     has = self->_has;
-    v6 = *(v4 + 44);
+    v6 = *(equalCopy + 44);
   }
 
   if ((has & 8) != 0)
@@ -172,16 +172,16 @@ LABEL_11:
       goto LABEL_33;
     }
 
-    v8 = *(v4 + 40);
+    v8 = *(equalCopy + 40);
     if (self->_newItem)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_33;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_33;
     }
@@ -194,7 +194,7 @@ LABEL_11:
 
   if ((has & 2) != 0)
   {
-    if ((v6 & 2) == 0 || self->_algorithm != *(v4 + 6))
+    if ((v6 & 2) == 0 || self->_algorithm != *(equalCopy + 6))
     {
       goto LABEL_33;
     }
@@ -206,7 +206,7 @@ LABEL_11:
   }
 
   activeTreatments = self->_activeTreatments;
-  if (activeTreatments | *(v4 + 2))
+  if (activeTreatments | *(equalCopy + 2))
   {
     if (![(NSString *)activeTreatments isEqual:?])
     {
@@ -214,7 +214,7 @@ LABEL_11:
     }
 
     has = self->_has;
-    v6 = *(v4 + 44);
+    v6 = *(equalCopy + 44);
   }
 
   if ((has & 0x10) == 0)
@@ -234,16 +234,16 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  v12 = *(v4 + 41);
+  v12 = *(equalCopy + 41);
   if (self->_userCreated)
   {
-    if ((*(v4 + 41) & 1) == 0)
+    if ((*(equalCopy + 41) & 1) == 0)
     {
       goto LABEL_33;
     }
   }
 
-  else if (*(v4 + 41))
+  else if (*(equalCopy + 41))
   {
     goto LABEL_33;
   }
@@ -252,7 +252,7 @@ LABEL_26:
   v10 = (v6 & 1) == 0;
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_rank != *(v4 + 1))
+    if ((v6 & 1) == 0 || self->_rank != *(equalCopy + 1))
     {
       goto LABEL_33;
     }
@@ -265,9 +265,9 @@ LABEL_34:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 4) != 0)
   {
@@ -275,7 +275,7 @@ LABEL_34:
     *(v5 + 44) |= 4u;
   }
 
-  v7 = [(NSString *)self->_groupId copyWithZone:a3];
+  v7 = [(NSString *)self->_groupId copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
@@ -293,7 +293,7 @@ LABEL_34:
     *(v6 + 44) |= 2u;
   }
 
-  v10 = [(NSString *)self->_activeTreatments copyWithZone:a3];
+  v10 = [(NSString *)self->_activeTreatments copyWithZone:zone];
   v11 = *(v6 + 16);
   *(v6 + 16) = v10;
 
@@ -314,60 +314,60 @@ LABEL_34:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
-    v4[7] = self->_donationSource;
-    *(v4 + 44) |= 4u;
+    toCopy[7] = self->_donationSource;
+    *(toCopy + 44) |= 4u;
   }
 
-  v7 = v4;
+  v7 = toCopy;
   if (self->_groupId)
   {
-    [v4 setGroupId:?];
-    v4 = v7;
+    [toCopy setGroupId:?];
+    toCopy = v7;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 40) = self->_newItem;
-    *(v4 + 44) |= 8u;
+    *(toCopy + 40) = self->_newItem;
+    *(toCopy + 44) |= 8u;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
-    v4[6] = self->_algorithm;
-    *(v4 + 44) |= 2u;
+    toCopy[6] = self->_algorithm;
+    *(toCopy + 44) |= 2u;
   }
 
   if (self->_activeTreatments)
   {
     [v7 setActiveTreatments:?];
-    v4 = v7;
+    toCopy = v7;
   }
 
   v6 = self->_has;
   if ((v6 & 0x10) != 0)
   {
-    *(v4 + 41) = self->_userCreated;
-    *(v4 + 44) |= 0x10u;
+    *(toCopy + 41) = self->_userCreated;
+    *(toCopy + 44) |= 0x10u;
     v6 = self->_has;
   }
 
   if (v6)
   {
-    *(v4 + 1) = self->_rank;
-    *(v4 + 44) |= 1u;
+    *(toCopy + 1) = self->_rank;
+    *(toCopy + 44) |= 1u;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v11 = a3;
+  toCopy = to;
   if ((*&self->_has & 4) != 0)
   {
     donationSource = self->_donationSource;
@@ -415,7 +415,7 @@ LABEL_34:
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 4) != 0)
   {
     donationSource = self->_donationSource;
@@ -429,20 +429,20 @@ LABEL_34:
       v5 = off_278971590[donationSource];
     }
 
-    [v3 setObject:v5 forKey:@"donationSource"];
+    [dictionary setObject:v5 forKey:@"donationSource"];
   }
 
   groupId = self->_groupId;
   if (groupId)
   {
-    [v3 setObject:groupId forKey:@"groupId"];
+    [dictionary setObject:groupId forKey:@"groupId"];
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
     v8 = [MEMORY[0x277CCABB0] numberWithBool:self->_newItem];
-    [v3 setObject:v8 forKey:@"newItem"];
+    [dictionary setObject:v8 forKey:@"newItem"];
 
     has = self->_has;
   }
@@ -460,20 +460,20 @@ LABEL_34:
       v10 = off_278971658[algorithm];
     }
 
-    [v3 setObject:v10 forKey:@"algorithm"];
+    [dictionary setObject:v10 forKey:@"algorithm"];
   }
 
   activeTreatments = self->_activeTreatments;
   if (activeTreatments)
   {
-    [v3 setObject:activeTreatments forKey:@"activeTreatments"];
+    [dictionary setObject:activeTreatments forKey:@"activeTreatments"];
   }
 
   v12 = self->_has;
   if ((v12 & 0x10) != 0)
   {
     v13 = [MEMORY[0x277CCABB0] numberWithBool:self->_userCreated];
-    [v3 setObject:v13 forKey:@"userCreated"];
+    [dictionary setObject:v13 forKey:@"userCreated"];
 
     v12 = self->_has;
   }
@@ -481,10 +481,10 @@ LABEL_34:
   if (v12)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithLongLong:self->_rank];
-    [v3 setObject:v14 forKey:@"rank"];
+    [dictionary setObject:v14 forKey:@"rank"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -493,15 +493,15 @@ LABEL_34:
   v8.receiver = self;
   v8.super_class = PPM2LocationItemDonation;
   v4 = [(PPM2LocationItemDonation *)&v8 description];
-  v5 = [(PPM2LocationItemDonation *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PPM2LocationItemDonation *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasUserCreated:(BOOL)a3
+- (void)setHasUserCreated:(BOOL)created
 {
-  if (a3)
+  if (created)
   {
     v3 = 16;
   }
@@ -514,115 +514,115 @@ LABEL_34:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (int)StringAsAlgorithm:(id)a3
+- (int)StringAsAlgorithm:(id)algorithm
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Unknown"])
+  algorithmCopy = algorithm;
+  if ([algorithmCopy isEqualToString:@"Unknown"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LookupHint"])
+  else if ([algorithmCopy isEqualToString:@"LookupHint"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CoreNLP"])
+  else if ([algorithmCopy isEqualToString:@"CoreNLP"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CoreRoutineImport"])
+  else if ([algorithmCopy isEqualToString:@"CoreRoutineImport"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"DataDetectors"])
+  else if ([algorithmCopy isEqualToString:@"DataDetectors"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"NSUALocation"])
+  else if ([algorithmCopy isEqualToString:@"NSUALocation"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"TrustedLocation"])
+  else if ([algorithmCopy isEqualToString:@"TrustedLocation"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"MapsInteraction"])
+  else if ([algorithmCopy isEqualToString:@"MapsInteraction"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CustomTagger"])
+  else if ([algorithmCopy isEqualToString:@"CustomTagger"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"EventKitImport"])
+  else if ([algorithmCopy isEqualToString:@"EventKitImport"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"PhotosKnowledgeGraph"])
+  else if ([algorithmCopy isEqualToString:@"PhotosKnowledgeGraph"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ContextKit"])
+  else if ([algorithmCopy isEqualToString:@"ContextKit"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"SiriDonation"])
+  else if ([algorithmCopy isEqualToString:@"SiriDonation"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"NE2T"])
+  else if ([algorithmCopy isEqualToString:@"NE2T"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"HighLevelTopicExtraction"])
+  else if ([algorithmCopy isEqualToString:@"HighLevelTopicExtraction"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"ParsecDonation"])
+  else if ([algorithmCopy isEqualToString:@"ParsecDonation"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"PodcastsInteraction"])
+  else if ([algorithmCopy isEqualToString:@"PodcastsInteraction"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"HealthKitImport"])
+  else if ([algorithmCopy isEqualToString:@"HealthKitImport"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"NowPlayingDonation"])
+  else if ([algorithmCopy isEqualToString:@"NowPlayingDonation"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"ContactsImport"])
+  else if ([algorithmCopy isEqualToString:@"ContactsImport"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"AugmentedGazetteer"])
+  else if ([algorithmCopy isEqualToString:@"AugmentedGazetteer"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"KnowledgeGraph"])
+  else if ([algorithmCopy isEqualToString:@"KnowledgeGraph"])
   {
     v4 = 21;
   }
@@ -635,9 +635,9 @@ LABEL_34:
   return v4;
 }
 
-- (void)setHasAlgorithm:(BOOL)a3
+- (void)setHasAlgorithm:(BOOL)algorithm
 {
-  if (a3)
+  if (algorithm)
   {
     v3 = 2;
   }
@@ -663,9 +663,9 @@ LABEL_34:
   }
 }
 
-- (void)setHasNewItem:(BOOL)a3
+- (void)setHasNewItem:(BOOL)item
 {
-  if (a3)
+  if (item)
   {
     v3 = 8;
   }
@@ -678,130 +678,130 @@ LABEL_34:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsDonationSource:(id)a3
+- (int)StringAsDonationSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Safari"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"Safari"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"News"])
+  else if ([sourceCopy isEqualToString:@"News"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Mail"])
+  else if ([sourceCopy isEqualToString:@"Mail"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Messages"])
+  else if ([sourceCopy isEqualToString:@"Messages"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CoreRoutine"])
+  else if ([sourceCopy isEqualToString:@"CoreRoutine"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Siri"])
+  else if ([sourceCopy isEqualToString:@"Siri"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Photos"])
+  else if ([sourceCopy isEqualToString:@"Photos"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"Health"])
+  else if ([sourceCopy isEqualToString:@"Health"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"Podcasts"])
+  else if ([sourceCopy isEqualToString:@"Podcasts"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"Calendar"])
+  else if ([sourceCopy isEqualToString:@"Calendar"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"Parsec"])
+  else if ([sourceCopy isEqualToString:@"Parsec"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"NowPlaying"])
+  else if ([sourceCopy isEqualToString:@"NowPlaying"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"Notes"])
+  else if ([sourceCopy isEqualToString:@"Notes"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"Maps"])
+  else if ([sourceCopy isEqualToString:@"Maps"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"ContactsSource"])
+  else if ([sourceCopy isEqualToString:@"ContactsSource"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"Reminders"])
+  else if ([sourceCopy isEqualToString:@"Reminders"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"UnknownFirstParty"])
+  else if ([sourceCopy isEqualToString:@"UnknownFirstParty"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"UnknownThirdParty"])
+  else if ([sourceCopy isEqualToString:@"UnknownThirdParty"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"UnknownSource"])
+  else if ([sourceCopy isEqualToString:@"UnknownSource"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"Music"])
+  else if ([sourceCopy isEqualToString:@"Music"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"Wallet"])
+  else if ([sourceCopy isEqualToString:@"Wallet"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"Facetime"])
+  else if ([sourceCopy isEqualToString:@"Facetime"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"Camera"])
+  else if ([sourceCopy isEqualToString:@"Camera"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"TVRemoteNotifications"])
+  else if ([sourceCopy isEqualToString:@"TVRemoteNotifications"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"TVApp"])
+  else if ([sourceCopy isEqualToString:@"TVApp"])
   {
     v4 = 24;
   }
@@ -814,9 +814,9 @@ LABEL_34:
   return v4;
 }
 
-- (void)setHasDonationSource:(BOOL)a3
+- (void)setHasDonationSource:(BOOL)source
 {
-  if (a3)
+  if (source)
   {
     v3 = 4;
   }

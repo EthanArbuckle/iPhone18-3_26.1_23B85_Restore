@@ -1,9 +1,9 @@
 @interface MetricsRecorderObjC
 - (NSDictionary)pageData;
-- (void)recordClick:(id)a3 locationData:(id)a4;
+- (void)recordClick:(id)click locationData:(id)data;
 - (void)recordImpressions;
-- (void)recordPage:(id)a3;
-- (void)setPageData:(id)a3;
+- (void)recordPage:(id)page;
+- (void)setPageData:(id)data;
 @end
 
 @implementation MetricsRecorderObjC
@@ -24,9 +24,9 @@
   return self;
 }
 
-- (void)setPageData:(id)a3
+- (void)setPageData:(id)data
 {
-  if (a3)
+  if (data)
   {
     v4 = OUTLINED_FUNCTION_14_168();
   }
@@ -36,34 +36,34 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   sub_1E3FF09E4(v4);
 }
 
-- (void)recordPage:(id)a3
+- (void)recordPage:(id)page
 {
   OUTLINED_FUNCTION_14_168();
-  v4 = self;
+  selfCopy = self;
   sub_1E3FF0BCC();
 }
 
-- (void)recordClick:(id)a3 locationData:(id)a4
+- (void)recordClick:(id)click locationData:(id)data
 {
   OUTLINED_FUNCTION_14_168();
-  if (a4)
+  if (data)
   {
     __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1ECF2C8C0);
-    a4 = sub_1E42062B4();
+    data = sub_1E42062B4();
   }
 
-  v6 = self;
+  selfCopy = self;
   v7 = OUTLINED_FUNCTION_50();
-  sub_1E3FF0D14(v7, a4);
+  sub_1E3FF0D14(v7, data);
 }
 
 - (void)recordImpressions
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3FF0F68();
 }
 

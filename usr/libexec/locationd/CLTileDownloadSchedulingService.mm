@@ -1,25 +1,25 @@
 @interface CLTileDownloadSchedulingService
 + (id)getSilo;
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4;
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index;
 - (CLTileDownloadSchedulingService)init;
 - (NSMutableArray)clients;
 - (void)beginService;
 - (void)dealloc;
 - (void)endService;
-- (void)requestForSchedulingTileDownload:(id)a3;
+- (void)requestForSchedulingTileDownload:(id)download;
 - (void)scheduleDownloadsWithCellularConnectivity;
 - (void)scheduleDownloadsWithWifiConnectivity;
-- (void)stopListeningForForScheduledTileDownload:(id)a3;
+- (void)stopListeningForForScheduledTileDownload:(id)download;
 @end
 
 @implementation CLTileDownloadSchedulingService
 
-+ (void)becameFatallyBlocked:(id)a3 index:(unint64_t)a4
++ (void)becameFatallyBlocked:(id)blocked index:(unint64_t)index
 {
-  v5 = a4 + 1;
-  if (a4 + 1 < [a3 count])
+  v5 = index + 1;
+  if (index + 1 < [blocked count])
   {
-    [objc_msgSend(a3 objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", a3, v5}];
+    [objc_msgSend(blocked objectAtIndexedSubscript:{v5), "becameFatallyBlocked:index:", blocked, v5}];
   }
 }
 
@@ -52,21 +52,21 @@
 
 - (void)beginService
 {
-  v2 = [(CLTileDownloadSchedulingService *)self universe];
+  universe = [(CLTileDownloadSchedulingService *)self universe];
 
-  [v2 silo];
+  [universe silo];
 }
 
 - (void)endService
 {
-  v2 = [(CLTileDownloadSchedulingService *)self universe];
+  universe = [(CLTileDownloadSchedulingService *)self universe];
 
-  [v2 silo];
+  [universe silo];
 }
 
-- (void)requestForSchedulingTileDownload:(id)a3
+- (void)requestForSchedulingTileDownload:(id)download
 {
-  if (([(NSMutableArray *)[(CLTileDownloadSchedulingService *)self clients] containsObject:a3]& 1) != 0)
+  if (([(NSMutableArray *)[(CLTileDownloadSchedulingService *)self clients] containsObject:download]& 1) != 0)
   {
     if (qword_1025D4600 != -1)
     {
@@ -88,7 +88,7 @@
 
   else
   {
-    [(NSMutableArray *)[(CLTileDownloadSchedulingService *)self clients] addObject:a3];
+    [(NSMutableArray *)[(CLTileDownloadSchedulingService *)self clients] addObject:download];
     if (qword_1025D4600 != -1)
     {
       sub_101953B6C();
@@ -119,9 +119,9 @@
   }
 }
 
-- (void)stopListeningForForScheduledTileDownload:(id)a3
+- (void)stopListeningForForScheduledTileDownload:(id)download
 {
-  [(NSMutableArray *)[(CLTileDownloadSchedulingService *)self clients] removeObject:a3];
+  [(NSMutableArray *)[(CLTileDownloadSchedulingService *)self clients] removeObject:download];
   if (qword_1025D4600 != -1)
   {
     sub_101953B6C();

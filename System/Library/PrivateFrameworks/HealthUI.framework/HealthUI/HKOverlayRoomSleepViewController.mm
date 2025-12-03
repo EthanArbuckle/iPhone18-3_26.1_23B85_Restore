@@ -1,77 +1,77 @@
 @interface HKOverlayRoomSleepViewController
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11;
-+ (int64_t)indexForOverlaySleepRoomSegment:(int64_t)a3;
-- (BOOL)_initialTrendSelectedForMode:(int64_t)a3 trendModel:(id)a4;
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1;
++ (int64_t)indexForOverlaySleepRoomSegment:(int64_t)segment;
+- (BOOL)_initialTrendSelectedForMode:(int64_t)mode trendModel:(id)model;
 - (BOOL)supportsShowAllFilters;
-- (HKOverlayRoomSleepViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 sleepDataSourceProvider:(id)a5 sleepChartFormatter:(id)a6 mode:(int64_t)a7 trendModel:(id)a8 factorDisplayTypes:(id)a9;
+- (HKOverlayRoomSleepViewController)initWithDisplayDate:(id)date applicationItems:(id)items sleepDataSourceProvider:(id)provider sleepChartFormatter:(id)formatter mode:(int64_t)mode trendModel:(id)model factorDisplayTypes:(id)types;
 - (HKSleepDataSourceProvider)sleepDataSourceProvider;
 - (id)_buildDurationAverageFormatter;
 - (id)_buildDurationAverageSeries;
-- (id)_buildSleepDisplayTypeWithApplicationItems:(id)a3 sleepSeriesType:(int64_t)a4 customSleepSeriesMapping:(id)a5 customSleepChartFormatter:(id)a6 isStackedChart:(BOOL)a7;
-- (id)_buildSleepTrendContext:(id)a3 overlayChartController:(id)a4;
-- (id)_consistencyContextForApplicationItems:(id)a3 overlayMode:(int64_t)a4 isPrimaryContext:(BOOL)a5;
-- (id)_durationAmountContextForApplicationItems:(id)a3 durationDisplayType:(id)a4;
-- (id)_durationAverageContextForApplicationItems:(id)a3 durationDisplayType:(id)a4 useInBedAverage:(BOOL)a5;
-- (id)_durationGoalContextForApplicationItems:(id)a3 durationDisplayType:(id)a4 overlayMode:(int64_t)a5 isPrimaryContext:(BOOL)a6;
-- (id)_fullContextsForApplicationItems:(id)a3 overlayChartController:(id)a4;
-- (id)_itemForSleepStageInfographicWithStage:(int64_t)a3;
-- (id)_itemForTitle:(id)a3 titleAccessoryColor:(id)a4 description:(id)a5;
-- (id)_primaryContextForApplicationItems:(id)a3 overlayChartController:(id)a4;
-- (id)_sleepColorForSelectedRangeData:(id)a3;
-- (id)_sleepStagePercentageContextForStage:(int64_t)a3 applicationItems:(id)a4 baseDisplayType:(id)a5;
-- (id)_stageDurationContextForApplicationItems:(id)a3 baseDisplayType:(id)a4 sleepCategoryValue:(int64_t)a5;
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)controllerTitleWithApplicationItems:(id)a3;
+- (id)_buildSleepDisplayTypeWithApplicationItems:(id)items sleepSeriesType:(int64_t)type customSleepSeriesMapping:(id)mapping customSleepChartFormatter:(id)formatter isStackedChart:(BOOL)chart;
+- (id)_buildSleepTrendContext:(id)context overlayChartController:(id)controller;
+- (id)_consistencyContextForApplicationItems:(id)items overlayMode:(int64_t)mode isPrimaryContext:(BOOL)context;
+- (id)_durationAmountContextForApplicationItems:(id)items durationDisplayType:(id)type;
+- (id)_durationAverageContextForApplicationItems:(id)items durationDisplayType:(id)type useInBedAverage:(BOOL)average;
+- (id)_durationGoalContextForApplicationItems:(id)items durationDisplayType:(id)type overlayMode:(int64_t)mode isPrimaryContext:(BOOL)context;
+- (id)_fullContextsForApplicationItems:(id)items overlayChartController:(id)controller;
+- (id)_itemForSleepStageInfographicWithStage:(int64_t)stage;
+- (id)_itemForTitle:(id)title titleAccessoryColor:(id)color description:(id)description;
+- (id)_primaryContextForApplicationItems:(id)items overlayChartController:(id)controller;
+- (id)_sleepColorForSelectedRangeData:(id)data;
+- (id)_sleepStagePercentageContextForStage:(int64_t)stage applicationItems:(id)items baseDisplayType:(id)type;
+- (id)_stageDurationContextForApplicationItems:(id)items baseDisplayType:(id)type sleepCategoryValue:(int64_t)value;
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)controllerTitleWithApplicationItems:(id)items;
 - (id)createChartOverlayViewController;
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5;
-- (id)dateRangeFromSelectionContext:(id)a3 timeScope:(int64_t)a4;
-- (id)infographicViewControllerForDisplayType:(id)a3 healthStore:(id)a4;
-- (id)initialSelectedContextForMode:(int64_t)a3 containerIndex:(int64_t)a4;
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3;
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items;
+- (id)dateRangeFromSelectionContext:(id)context timeScope:(int64_t)scope;
+- (id)infographicViewControllerForDisplayType:(id)type healthStore:(id)store;
+- (id)initialSelectedContextForMode:(int64_t)mode containerIndex:(int64_t)index;
+- (id)primaryDisplayTypeWithApplicationItems:(id)items;
 - (id)restorationStateDictionary;
-- (id)stringForValueRange:(id)a3 timeScope:(int64_t)a4;
-- (id)titleForSelectedRangeData:(id)a3 displayType:(id)a4;
-- (int64_t)initialSelectedContainerIndexForMode:(int64_t)a3;
+- (id)stringForValueRange:(id)range timeScope:(int64_t)scope;
+- (id)titleForSelectedRangeData:(id)data displayType:(id)type;
+- (int64_t)initialSelectedContainerIndexForMode:(int64_t)mode;
 - (int64_t)initialSleepSeriesType;
-- (void)_installUpdateObserversForGoalsAndSchedulesWithApplicationItems:(id)a3;
+- (void)_installUpdateObserversForGoalsAndSchedulesWithApplicationItems:(id)items;
 - (void)_setDefaultChartFormatterFonts;
-- (void)_updateHighlightedSleepStage:(int64_t)a3 onDisplayType:(id)a4;
+- (void)_updateHighlightedSleepStage:(int64_t)stage onDisplayType:(id)type;
 - (void)dealloc;
-- (void)didChangeFromContextItem:(id)a3 toContextItem:(id)a4;
-- (void)restoreUserActivityState:(id)a3;
+- (void)didChangeFromContextItem:(id)item toContextItem:(id)contextItem;
+- (void)restoreUserActivityState:(id)state;
 - (void)saveRestorationState;
 - (void)setBaseDisplayIsDuration;
 - (void)setBaseDisplayIsSchedule;
-- (void)setComparisonContextSelected:(BOOL)a3;
-- (void)setDurationContextSelected:(BOOL)a3;
-- (void)setScheduleContextSelected:(BOOL)a3;
+- (void)setComparisonContextSelected:(BOOL)selected;
+- (void)setDurationContextSelected:(BOOL)selected;
+- (void)setScheduleContextSelected:(BOOL)selected;
 - (void)setShouldHighlightBaseDisplayContext;
-- (void)setStagePercentageContextSelected:(BOOL)a3;
+- (void)setStagePercentageContextSelected:(BOOL)selected;
 - (void)viewDidLoad;
 @end
 
 @implementation HKOverlayRoomSleepViewController
 
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1
 {
-  v16 = a4;
-  v17 = a9;
-  v18 = a10;
-  v19 = a8;
-  v20 = a6;
-  v21 = a5;
-  v22 = [v16 sleepDataSourceProvider];
+  factoryCopy = factory;
+  modelCopy = model;
+  typesCopy = types;
+  activityCopy = activity;
+  dateCopy = date;
+  itemsCopy = items;
+  sleepDataSourceProvider = [factoryCopy sleepDataSourceProvider];
 
-  if (!v22)
+  if (!sleepDataSourceProvider)
   {
-    [HKOverlayRoomSleepViewController createInteractiveChartViewControllerForTypeIdentifier:a2 chartFactory:a1 applicationItems:? displayDate:? preferredOverlay:? restorationUserActivity:? trendModel:? factorDisplayTypes:? additionalChartOptions:?];
+    [HKOverlayRoomSleepViewController createInteractiveChartViewControllerForTypeIdentifier:a2 chartFactory:self applicationItems:? displayDate:? preferredOverlay:? restorationUserActivity:? trendModel:? factorDisplayTypes:? additionalChartOptions:?];
   }
 
-  v23 = [v16 sleepChartFormatter];
+  sleepChartFormatter = [factoryCopy sleepChartFormatter];
 
-  if (v23)
+  if (sleepChartFormatter)
   {
-    if (!v17)
+    if (!modelCopy)
     {
       goto LABEL_8;
     }
@@ -79,14 +79,14 @@
 
   else
   {
-    [HKOverlayRoomSleepViewController createInteractiveChartViewControllerForTypeIdentifier:a2 chartFactory:a1 applicationItems:? displayDate:? preferredOverlay:? restorationUserActivity:? trendModel:? factorDisplayTypes:? additionalChartOptions:?];
-    if (!v17)
+    [HKOverlayRoomSleepViewController createInteractiveChartViewControllerForTypeIdentifier:a2 chartFactory:self applicationItems:? displayDate:? preferredOverlay:? restorationUserActivity:? trendModel:? factorDisplayTypes:? additionalChartOptions:?];
+    if (!modelCopy)
     {
       goto LABEL_8;
     }
   }
 
-  if ([v17 selectTrendInitially])
+  if ([modelCopy selectTrendInitially])
   {
     v24 = 1;
     goto LABEL_9;
@@ -96,27 +96,27 @@ LABEL_8:
   v24 = 0;
 LABEL_9:
   v25 = [HKOverlayRoomSleepViewController alloc];
-  v26 = [v16 sleepDataSourceProvider];
-  v27 = [v16 sleepChartFormatter];
-  v28 = [(HKOverlayRoomSleepViewController *)v25 initWithDisplayDate:v20 applicationItems:v21 sleepDataSourceProvider:v26 sleepChartFormatter:v27 mode:v24 trendModel:v17 factorDisplayTypes:v18];
+  sleepDataSourceProvider2 = [factoryCopy sleepDataSourceProvider];
+  sleepChartFormatter2 = [factoryCopy sleepChartFormatter];
+  v28 = [(HKOverlayRoomSleepViewController *)v25 initWithDisplayDate:dateCopy applicationItems:itemsCopy sleepDataSourceProvider:sleepDataSourceProvider2 sleepChartFormatter:sleepChartFormatter2 mode:v24 trendModel:modelCopy factorDisplayTypes:typesCopy];
 
-  [(HKOverlayRoomViewController *)v28 setRestorationUserActivity:v19];
-  [(HKOverlayRoomViewController *)v28 setAdditionalChartOptions:a11];
+  [(HKOverlayRoomViewController *)v28 setRestorationUserActivity:activityCopy];
+  [(HKOverlayRoomViewController *)v28 setAdditionalChartOptions:options];
 
   return v28;
 }
 
-- (HKOverlayRoomSleepViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 sleepDataSourceProvider:(id)a5 sleepChartFormatter:(id)a6 mode:(int64_t)a7 trendModel:(id)a8 factorDisplayTypes:(id)a9
+- (HKOverlayRoomSleepViewController)initWithDisplayDate:(id)date applicationItems:(id)items sleepDataSourceProvider:(id)provider sleepChartFormatter:(id)formatter mode:(int64_t)mode trendModel:(id)model factorDisplayTypes:(id)types
 {
   v47 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  obj = a8;
-  v43 = a6;
-  v18 = a8;
-  v19 = a9;
-  v20 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:v18];
+  dateCopy = date;
+  itemsCopy = items;
+  providerCopy = provider;
+  obj = model;
+  formatterCopy = formatter;
+  modelCopy = model;
+  typesCopy = types;
+  v20 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:modelCopy];
   v21 = v20;
   if (v20)
   {
@@ -125,14 +125,14 @@ LABEL_9:
 
   else
   {
-    v22 = v15;
+    v22 = dateCopy;
   }
 
   v23 = v22;
 
   v44.receiver = self;
   v44.super_class = HKOverlayRoomSleepViewController;
-  v24 = [(HKOverlayRoomViewController *)&v44 initWithDisplayDate:v23 applicationItems:v16 factorDisplayTypes:v19 mode:a7];
+  v24 = [(HKOverlayRoomViewController *)&v44 initWithDisplayDate:v23 applicationItems:itemsCopy factorDisplayTypes:typesCopy mode:mode];
 
   if (v24)
   {
@@ -148,27 +148,27 @@ LABEL_9:
       _os_log_impl(&dword_1C3942000, v26, OS_LOG_TYPE_DEFAULT, "[%{public}@] init", buf, 0xCu);
     }
 
-    v29 = [(HKOverlayRoomSleepViewController *)v24 _initialTrendSelectedForMode:a7 trendModel:v18, obj, v43];
-    objc_storeWeak(&v24->_sleepDataSourceProvider, v17);
-    objc_storeStrong(&v24->_sleepChartFormatter, a6);
+    formatterCopy = [(HKOverlayRoomSleepViewController *)v24 _initialTrendSelectedForMode:mode trendModel:modelCopy, obj, formatterCopy];
+    objc_storeWeak(&v24->_sleepDataSourceProvider, providerCopy);
+    objc_storeStrong(&v24->_sleepChartFormatter, formatter);
     [(HKOverlayRoomSleepViewController *)v24 _setDefaultChartFormatterFonts];
-    v24->baseDisplayIsSchedule = v29 ^ 1;
+    v24->baseDisplayIsSchedule = formatterCopy ^ 1;
     v24->shouldHighlightBaseDisplayContext = 0;
-    v30 = [v16 displayTypeController];
-    v31 = [v30 displayTypeWithIdentifier:&unk_1F4384510];
+    displayTypeController = [itemsCopy displayTypeController];
+    v31 = [displayTypeController displayTypeWithIdentifier:&unk_1F4384510];
     sleepDisplayType = v24->_sleepDisplayType;
     v24->_sleepDisplayType = v31;
 
     v33 = v24->_sleepDisplayType;
-    v34 = [v16 chartDataCacheController];
-    v35 = [v16 healthStore];
-    v36 = [HKSleepUtilities buildSleepChartCachesWithDisplayType:v33 dataSourceProvider:v17 cacheController:v34 healthStore:v35];
+    chartDataCacheController = [itemsCopy chartDataCacheController];
+    healthStore = [itemsCopy healthStore];
+    v36 = [HKSleepUtilities buildSleepChartCachesWithDisplayType:v33 dataSourceProvider:providerCopy cacheController:chartDataCacheController healthStore:healthStore];
     sleepChartCaches = v24->_sleepChartCaches;
     v24->_sleepChartCaches = v36;
 
-    [(HKOverlayRoomSleepViewController *)v24 _installUpdateObserversForGoalsAndSchedulesWithApplicationItems:v16];
+    [(HKOverlayRoomSleepViewController *)v24 _installUpdateObserversForGoalsAndSchedulesWithApplicationItems:itemsCopy];
     objc_storeStrong(&v24->_trendModel, obja);
-    [(HKOverlayRoomViewController *)v24 setShouldSelectInitialOverlay:v29];
+    [(HKOverlayRoomViewController *)v24 setShouldSelectInitialOverlay:formatterCopy];
     trendContextLocation = v24->_trendContextLocation;
     v24->_trendContextLocation = 0;
 
@@ -198,32 +198,32 @@ LABEL_9:
   [(HKOverlayRoomViewController *)&v6 dealloc];
 }
 
-+ (int64_t)indexForOverlaySleepRoomSegment:(int64_t)a3
++ (int64_t)indexForOverlaySleepRoomSegment:(int64_t)segment
 {
-  if (a3 == 2)
+  if (segment == 2)
   {
     return 2;
   }
 
   else
   {
-    return a3 != 1;
+    return segment != 1;
   }
 }
 
-- (BOOL)_initialTrendSelectedForMode:(int64_t)a3 trendModel:(id)a4
+- (BOOL)_initialTrendSelectedForMode:(int64_t)mode trendModel:(id)model
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = v5;
-  if (a3 == 3)
+  modelCopy = model;
+  v6 = modelCopy;
+  if (mode == 3)
   {
-    v7 = 0;
+    selectTrendInitially = 0;
   }
 
   else
   {
-    v7 = [v5 selectTrendInitially];
+    selectTrendInitially = [modelCopy selectTrendInitially];
   }
 
   _HKInitializeLogging();
@@ -234,54 +234,54 @@ LABEL_9:
     v12 = 138543618;
     v13 = objc_opt_class();
     v14 = 1024;
-    v15 = v7;
+    v15 = selectTrendInitially;
     v10 = v13;
     _os_log_impl(&dword_1C3942000, v9, OS_LOG_TYPE_DEFAULT, "[%{public}@] Returning initial trend selected: %d", &v12, 0x12u);
   }
 
-  return v7;
+  return selectTrendInitially;
 }
 
-- (void)_installUpdateObserversForGoalsAndSchedulesWithApplicationItems:(id)a3
+- (void)_installUpdateObserversForGoalsAndSchedulesWithApplicationItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 displayTypeController];
-  v12 = [v5 displayTypeWithIdentifier:&unk_1F4384528];
+  itemsCopy = items;
+  displayTypeController = [itemsCopy displayTypeController];
+  v12 = [displayTypeController displayTypeWithIdentifier:&unk_1F4384528];
 
-  v6 = [v4 displayTypeController];
-  v7 = [v6 displayTypeWithIdentifier:&unk_1F4384540];
+  displayTypeController2 = [itemsCopy displayTypeController];
+  v7 = [displayTypeController2 displayTypeWithIdentifier:&unk_1F4384540];
 
-  v8 = [(HKOverlayRoomSleepViewController *)self sleepChartCaches];
-  v9 = [v8 objectForKeyedSubscript:@"HKSleepChartCacheIdentifierSleepConsistency"];
+  sleepChartCaches = [(HKOverlayRoomSleepViewController *)self sleepChartCaches];
+  v9 = [sleepChartCaches objectForKeyedSubscript:@"HKSleepChartCacheIdentifierSleepConsistency"];
 
-  v10 = [v4 chartDataCacheController];
-  [v10 addCustomChartCache:v9 forDisplayType:v12];
+  chartDataCacheController = [itemsCopy chartDataCacheController];
+  [chartDataCacheController addCustomChartCache:v9 forDisplayType:v12];
 
-  v11 = [v4 chartDataCacheController];
+  chartDataCacheController2 = [itemsCopy chartDataCacheController];
 
-  [v11 addCustomChartCache:v9 forDisplayType:v7];
+  [chartDataCacheController2 addCustomChartCache:v9 forDisplayType:v7];
 }
 
 - (void)_setDefaultChartFormatterFonts
 {
-  v3 = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
-  v4 = [v3 majorFont];
+  sleepChartFormatter = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
+  majorFont = [sleepChartFormatter majorFont];
 
-  if (!v4)
+  if (!majorFont)
   {
-    v5 = [MEMORY[0x1E69DB878] hk_chartCurrentValueValueFont];
-    v6 = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
-    [v6 setMajorFont:v5];
+    hk_chartCurrentValueValueFont = [MEMORY[0x1E69DB878] hk_chartCurrentValueValueFont];
+    sleepChartFormatter2 = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
+    [sleepChartFormatter2 setMajorFont:hk_chartCurrentValueValueFont];
   }
 
-  v7 = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
-  v8 = [v7 minorFont];
+  sleepChartFormatter3 = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
+  minorFont = [sleepChartFormatter3 minorFont];
 
-  if (!v8)
+  if (!minorFont)
   {
-    v10 = [MEMORY[0x1E69DB878] hk_chartCurrentValueUnitFont];
-    v9 = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
-    [v9 setMinorFont:v10];
+    hk_chartCurrentValueUnitFont = [MEMORY[0x1E69DB878] hk_chartCurrentValueUnitFont];
+    sleepChartFormatter4 = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
+    [sleepChartFormatter4 setMinorFont:hk_chartCurrentValueUnitFont];
   }
 }
 
@@ -304,28 +304,28 @@ LABEL_9:
   [(HKOverlayRoomViewController *)&v6 viewDidLoad];
 }
 
-- (void)setDurationContextSelected:(BOOL)a3
+- (void)setDurationContextSelected:(BOOL)selected
 {
-  self->durationContextSelected = a3;
-  if (a3)
+  self->durationContextSelected = selected;
+  if (selected)
   {
     [(HKOverlayRoomSleepViewController *)self setBaseDisplayIsDuration];
   }
 }
 
-- (void)setScheduleContextSelected:(BOOL)a3
+- (void)setScheduleContextSelected:(BOOL)selected
 {
-  self->scheduleContextSelected = a3;
-  if (a3)
+  self->scheduleContextSelected = selected;
+  if (selected)
   {
     [(HKOverlayRoomSleepViewController *)self setBaseDisplayIsSchedule];
   }
 }
 
-- (void)setComparisonContextSelected:(BOOL)a3
+- (void)setComparisonContextSelected:(BOOL)selected
 {
-  self->comparisonContextSelected = a3;
-  if (a3)
+  self->comparisonContextSelected = selected;
+  if (selected)
   {
     [(HKOverlayRoomSleepViewController *)self setBaseDisplayIsDuration];
   }
@@ -358,23 +358,23 @@ LABEL_9:
   }
 }
 
-- (void)setStagePercentageContextSelected:(BOOL)a3
+- (void)setStagePercentageContextSelected:(BOOL)selected
 {
   stagePercentageContextSelected = self->stagePercentageContextSelected;
-  if (stagePercentageContextSelected != a3 && stagePercentageContextSelected != self->stagePercentageContextWillBeSelected)
+  if (stagePercentageContextSelected != selected && stagePercentageContextSelected != self->stagePercentageContextWillBeSelected)
   {
-    v6 = [(HKOverlayRoomViewController *)self chartController];
-    [v6 updatePrimaryGraphViewController];
+    chartController = [(HKOverlayRoomViewController *)self chartController];
+    [chartController updatePrimaryGraphViewController];
 
-    self->stagePercentageContextSelected = a3;
+    self->stagePercentageContextSelected = selected;
   }
 }
 
-- (void)didChangeFromContextItem:(id)a3 toContextItem:(id)a4
+- (void)didChangeFromContextItem:(id)item toContextItem:(id)contextItem
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a4;
-  v7 = a3;
+  contextItemCopy = contextItem;
+  itemCopy = item;
   _HKInitializeLogging();
   v8 = *MEMORY[0x1E696B998];
   if (os_log_type_enabled(*MEMORY[0x1E696B998], OS_LOG_TYPE_DEFAULT))
@@ -388,7 +388,7 @@ LABEL_9:
 
   v11.receiver = self;
   v11.super_class = HKOverlayRoomSleepViewController;
-  [(HKOverlayRoomViewController *)&v11 didChangeFromContextItem:v7 toContextItem:v6];
+  [(HKOverlayRoomViewController *)&v11 didChangeFromContextItem:itemCopy toContextItem:contextItemCopy];
 }
 
 - (id)createChartOverlayViewController
@@ -399,30 +399,30 @@ LABEL_9:
     if (v3 != 8)
     {
       v4 = v3;
-      v5 = [(HKOverlayRoomViewController *)self applicationItems];
-      v6 = [v5 timeScopeController];
-      [v6 setSelectedTimeScope:v4];
+      applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+      timeScopeController = [applicationItems timeScopeController];
+      [timeScopeController setSelectedTimeScope:v4];
     }
   }
 
   v21 = [(HKOverlayRoomViewController *)self additionalChartOptions]| 0x12200;
   v20 = [HKInteractiveChartOverlaySleepViewController alloc];
-  v24 = [(HKOverlayRoomViewController *)self applicationItems];
-  v25 = [v24 healthStore];
-  v18 = [(HKOverlayRoomViewController *)self primaryDisplayType];
-  v23 = [(HKOverlayRoomViewController *)self applicationItems];
-  v7 = [v23 unitController];
-  v22 = [(HKOverlayRoomViewController *)self applicationItems];
-  v8 = [v22 dateCache];
-  v19 = [(HKOverlayRoomViewController *)self applicationItems];
-  v9 = [v19 chartDataCacheController];
-  v10 = [(HKOverlayRoomViewController *)self applicationItems];
-  v11 = [v10 timeScopeController];
-  v12 = [(HKOverlayRoomViewController *)self applicationItems];
-  v13 = [v12 sampleDateRangeController];
-  v14 = [(HKOverlayRoomViewController *)self displayDate];
-  v15 = v8;
-  v16 = [(HKInteractiveChartOverlayViewController *)v20 initWithHealthStore:v25 primaryDisplayType:v18 unitPreferenceController:v7 dateCache:v8 chartDataCacheController:v9 selectedTimeScopeController:v11 sampleTypeDateRangeController:v13 initialXValue:v14 currentCalendarOverride:0 options:v21];
+  applicationItems2 = [(HKOverlayRoomViewController *)self applicationItems];
+  healthStore = [applicationItems2 healthStore];
+  primaryDisplayType = [(HKOverlayRoomViewController *)self primaryDisplayType];
+  applicationItems3 = [(HKOverlayRoomViewController *)self applicationItems];
+  unitController = [applicationItems3 unitController];
+  applicationItems4 = [(HKOverlayRoomViewController *)self applicationItems];
+  dateCache = [applicationItems4 dateCache];
+  applicationItems5 = [(HKOverlayRoomViewController *)self applicationItems];
+  chartDataCacheController = [applicationItems5 chartDataCacheController];
+  applicationItems6 = [(HKOverlayRoomViewController *)self applicationItems];
+  timeScopeController2 = [applicationItems6 timeScopeController];
+  applicationItems7 = [(HKOverlayRoomViewController *)self applicationItems];
+  sampleDateRangeController = [applicationItems7 sampleDateRangeController];
+  displayDate = [(HKOverlayRoomViewController *)self displayDate];
+  v15 = dateCache;
+  v16 = [(HKInteractiveChartOverlayViewController *)v20 initWithHealthStore:healthStore primaryDisplayType:primaryDisplayType unitPreferenceController:unitController dateCache:dateCache chartDataCacheController:chartDataCacheController selectedTimeScopeController:timeScopeController2 sampleTypeDateRangeController:sampleDateRangeController initialXValue:displayDate currentCalendarOverride:0 options:v21];
 
   [(HKInteractiveChartViewController *)v16 setCurrentValueViewDataSourceDelegate:self];
   [(HKInteractiveChartViewController *)v16 setCurrentOverlayLocationProvider:self];
@@ -430,42 +430,42 @@ LABEL_9:
   return v16;
 }
 
-- (id)_buildSleepDisplayTypeWithApplicationItems:(id)a3 sleepSeriesType:(int64_t)a4 customSleepSeriesMapping:(id)a5 customSleepChartFormatter:(id)a6 isStackedChart:(BOOL)a7
+- (id)_buildSleepDisplayTypeWithApplicationItems:(id)items sleepSeriesType:(int64_t)type customSleepSeriesMapping:(id)mapping customSleepChartFormatter:(id)formatter isStackedChart:(BOOL)chart
 {
-  v11 = a3;
-  v27 = a5;
-  v12 = a6;
-  v25 = v12;
-  if (v12)
+  itemsCopy = items;
+  mappingCopy = mapping;
+  formatterCopy = formatter;
+  v25 = formatterCopy;
+  if (formatterCopy)
   {
-    v13 = v12;
+    sleepChartFormatter = formatterCopy;
   }
 
   else
   {
-    v13 = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
+    sleepChartFormatter = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
   }
 
-  v26 = v13;
-  v14 = [v11 healthStore];
-  v15 = [(HKOverlayRoomSleepViewController *)self sleepDisplayType];
-  v16 = [v11 unitController];
-  v17 = [v11 displayTypeController];
-  v18 = [v11 chartDataCacheController];
-  v19 = [(HKOverlayRoomSleepViewController *)self sleepChartCaches];
-  LOBYTE(v23) = a7;
-  v20 = [HKSleepUtilities sleepDisplayTypesWithHealthStore:v14 sleepDisplayType:v15 unitController:v16 displayTypeController:v17 chartCacheController:v18 sleepChartFormatter:v26 sleepSeriesType:a4 sleepChartCaches:v19 customSleepSeriesMapping:v27 isStackedChart:v23];
+  v26 = sleepChartFormatter;
+  healthStore = [itemsCopy healthStore];
+  sleepDisplayType = [(HKOverlayRoomSleepViewController *)self sleepDisplayType];
+  unitController = [itemsCopy unitController];
+  displayTypeController = [itemsCopy displayTypeController];
+  chartDataCacheController = [itemsCopy chartDataCacheController];
+  sleepChartCaches = [(HKOverlayRoomSleepViewController *)self sleepChartCaches];
+  LOBYTE(v23) = chart;
+  v20 = [HKSleepUtilities sleepDisplayTypesWithHealthStore:healthStore sleepDisplayType:sleepDisplayType unitController:unitController displayTypeController:displayTypeController chartCacheController:chartDataCacheController sleepChartFormatter:v26 sleepSeriesType:type sleepChartCaches:sleepChartCaches customSleepSeriesMapping:mappingCopy isStackedChart:v23];
 
-  v21 = [v20 firstObject];
+  firstObject = [v20 firstObject];
 
-  return v21;
+  return firstObject;
 }
 
 - (id)_buildDurationAverageSeries
 {
   v2 = objc_alloc_init(_HKSleepDurationAverageSeries);
-  v3 = [MEMORY[0x1E69DC888] hk_sleepAsleepColor];
-  v4 = [HKStrokeStyle strokeStyleWithColor:v3 lineWidth:2.0];
+  hk_sleepAsleepColor = [MEMORY[0x1E69DC888] hk_sleepAsleepColor];
+  v4 = [HKStrokeStyle strokeStyleWithColor:hk_sleepAsleepColor lineWidth:2.0];
 
   [v4 setDashStyle:0];
   [(HKSleepDurationSeries *)v2 setGoalLineStrokeStyle:v4];
@@ -479,13 +479,13 @@ LABEL_9:
 - (id)_buildDurationAverageFormatter
 {
   v3 = objc_alloc_init(_HKSleepDurationAverageFormatter);
-  v4 = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
-  v5 = [v4 majorFont];
-  [(HKInteractiveChartDataFormatter *)v3 setMajorFont:v5];
+  sleepChartFormatter = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
+  majorFont = [sleepChartFormatter majorFont];
+  [(HKInteractiveChartDataFormatter *)v3 setMajorFont:majorFont];
 
-  v6 = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
-  v7 = [v6 minorFont];
-  [(HKInteractiveChartDataFormatter *)v3 setMinorFont:v7];
+  sleepChartFormatter2 = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
+  minorFont = [sleepChartFormatter2 minorFont];
+  [(HKInteractiveChartDataFormatter *)v3 setMinorFont:minorFont];
 
   [(HKInteractiveChartDataFormatter *)v3 setUnitController:0];
   [(HKInteractiveChartDataFormatter *)v3 setDisplayType:0];
@@ -493,7 +493,7 @@ LABEL_9:
   return v3;
 }
 
-- (id)controllerTitleWithApplicationItems:(id)a3
+- (id)controllerTitleWithApplicationItems:(id)items
 {
   v3 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v4 = [v3 localizedStringForKey:@"SLEEP" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
@@ -501,40 +501,40 @@ LABEL_9:
   return v4;
 }
 
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3
+- (id)primaryDisplayTypeWithApplicationItems:(id)items
 {
-  v4 = a3;
-  v5 = [v4 healthStore];
-  v6 = [(HKOverlayRoomSleepViewController *)self sleepDisplayType];
-  v7 = [v4 unitController];
-  v8 = [v4 displayTypeController];
-  v9 = [v4 chartDataCacheController];
+  itemsCopy = items;
+  healthStore = [itemsCopy healthStore];
+  sleepDisplayType = [(HKOverlayRoomSleepViewController *)self sleepDisplayType];
+  unitController = [itemsCopy unitController];
+  displayTypeController = [itemsCopy displayTypeController];
+  chartDataCacheController = [itemsCopy chartDataCacheController];
 
-  v10 = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
-  v11 = [(HKOverlayRoomSleepViewController *)self initialSleepSeriesType];
-  v12 = [(HKOverlayRoomSleepViewController *)self sleepChartCaches];
+  sleepChartFormatter = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
+  initialSleepSeriesType = [(HKOverlayRoomSleepViewController *)self initialSleepSeriesType];
+  sleepChartCaches = [(HKOverlayRoomSleepViewController *)self sleepChartCaches];
   LOBYTE(v16) = 0;
-  v13 = [HKSleepUtilities sleepDisplayTypesWithHealthStore:v5 sleepDisplayType:v6 unitController:v7 displayTypeController:v8 chartCacheController:v9 sleepChartFormatter:v10 sleepSeriesType:v11 sleepChartCaches:v12 customSleepSeries:0 isStackedChart:v16];
+  v13 = [HKSleepUtilities sleepDisplayTypesWithHealthStore:healthStore sleepDisplayType:sleepDisplayType unitController:unitController displayTypeController:displayTypeController chartCacheController:chartDataCacheController sleepChartFormatter:sleepChartFormatter sleepSeriesType:initialSleepSeriesType sleepChartCaches:sleepChartCaches customSleepSeries:0 isStackedChart:v16];
 
-  v14 = [v13 firstObject];
+  firstObject = [v13 firstObject];
 
-  return v14;
+  return firstObject;
 }
 
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  if (a3 == 3)
+  itemsCopy = items;
+  controllerCopy = controller;
+  if (mode == 3)
   {
-    v13 = [(HKOverlayRoomSleepViewController *)self _fullContextsForApplicationItems:v8 overlayChartController:v9];
+    v13 = [(HKOverlayRoomSleepViewController *)self _fullContextsForApplicationItems:itemsCopy overlayChartController:controllerCopy];
   }
 
-  else if (a3 == 1)
+  else if (mode == 1)
   {
     v10 = [HKOverlayContextSectionContainer alloc];
-    v11 = [(HKOverlayRoomSleepViewController *)self _primaryContextForApplicationItems:v8 overlayChartController:v9];
+    v11 = [(HKOverlayRoomSleepViewController *)self _primaryContextForApplicationItems:itemsCopy overlayChartController:controllerCopy];
     v12 = [(HKOverlayContextSectionContainer *)v10 initWithContainerTitle:0 overlayContextSections:v11];
     v15[0] = v12;
     v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
@@ -562,12 +562,12 @@ LABEL_9:
 
 - (int64_t)initialSleepSeriesType
 {
-  v2 = self;
-  v3 = [(HKOverlayRoomViewController *)self controllerMode];
-  v4 = [(HKOverlayRoomSleepViewController *)v2 trendModel];
-  LODWORD(v2) = [(HKOverlayRoomSleepViewController *)v2 _initialTrendSelectedForMode:v3 trendModel:v4];
+  selfCopy = self;
+  controllerMode = [(HKOverlayRoomViewController *)self controllerMode];
+  trendModel = [(HKOverlayRoomSleepViewController *)selfCopy trendModel];
+  LODWORD(selfCopy) = [(HKOverlayRoomSleepViewController *)selfCopy _initialTrendSelectedForMode:controllerMode trendModel:trendModel];
 
-  if (v2)
+  if (selfCopy)
   {
     return 0;
   }
@@ -578,22 +578,22 @@ LABEL_9:
   }
 }
 
-- (id)_primaryContextForApplicationItems:(id)a3 overlayChartController:(id)a4
+- (id)_primaryContextForApplicationItems:(id)items overlayChartController:(id)controller
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKOverlayRoomSleepViewController *)self trendModel];
-  if (v8 && (v9 = v8, -[HKOverlayRoomSleepViewController trendModel](self, "trendModel"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 selectTrendInitially], v10, v9, v11))
+  itemsCopy = items;
+  controllerCopy = controller;
+  trendModel = [(HKOverlayRoomSleepViewController *)self trendModel];
+  if (trendModel && (v9 = trendModel, -[HKOverlayRoomSleepViewController trendModel](self, "trendModel"), v10 = objc_claimAutoreleasedReturnValue(), v11 = [v10 selectTrendInitially], v10, v9, v11))
   {
-    v12 = [(HKOverlayRoomSleepViewController *)self _buildSleepTrendContext:v6 overlayChartController:v7];
+    v12 = [(HKOverlayRoomSleepViewController *)self _buildSleepTrendContext:itemsCopy overlayChartController:controllerCopy];
     v13 = [[HKOverlayContextLocation alloc] initWithContainerIndex:0 sectionIndex:0 itemIndex:0];
     [(HKOverlayRoomSleepViewController *)self setTrendContextLocation:v13];
   }
 
   else
   {
-    v12 = [(HKOverlayRoomSleepViewController *)self _consistencyContextForApplicationItems:v6 overlayMode:1 isPrimaryContext:1];
+    v12 = [(HKOverlayRoomSleepViewController *)self _consistencyContextForApplicationItems:itemsCopy overlayMode:1 isPrimaryContext:1];
   }
 
   v19[0] = v12;
@@ -605,29 +605,29 @@ LABEL_9:
   return v16;
 }
 
-- (id)_buildSleepTrendContext:(id)a3 overlayChartController:(id)a4
+- (id)_buildSleepTrendContext:(id)context overlayChartController:(id)controller
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HKOverlayRoomSleepViewController *)self _buildDurationDisplayTypeWithApplicationItems:v7];
+  controllerCopy = controller;
+  contextCopy = context;
+  v8 = [(HKOverlayRoomSleepViewController *)self _buildDurationDisplayTypeWithApplicationItems:contextCopy];
   v9 = [_HKSleepTrendContext alloc];
-  v10 = [(HKOverlayRoomSleepViewController *)self trendModel];
-  v11 = [(_HKSleepTrendContext *)v9 initWithBaseDisplayType:v8 trendModel:v10 overlayChartController:v6 applicationItems:v7 overlayMode:[(HKOverlayRoomViewController *)self controllerMode] contextChangeDelegate:self];
+  trendModel = [(HKOverlayRoomSleepViewController *)self trendModel];
+  v11 = [(_HKSleepTrendContext *)v9 initWithBaseDisplayType:v8 trendModel:trendModel overlayChartController:controllerCopy applicationItems:contextCopy overlayMode:[(HKOverlayRoomViewController *)self controllerMode] contextChangeDelegate:self];
 
   return v11;
 }
 
-- (id)_fullContextsForApplicationItems:(id)a3 overlayChartController:(id)a4
+- (id)_fullContextsForApplicationItems:(id)items overlayChartController:(id)controller
 {
   v122[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HKOverlayRoomSleepViewController *)self _buildDurationDisplayTypeWithApplicationItems:v6];
-  v9 = [(HKOverlayRoomSleepViewController *)self _durationAmountContextForApplicationItems:v6 durationDisplayType:v8];
-  v10 = [(HKOverlayRoomSleepViewController *)self _durationGoalContextForApplicationItems:v6 durationDisplayType:v8 overlayMode:3 isPrimaryContext:0];
-  v11 = [(HKOverlayRoomSleepViewController *)self _durationAverageContextForApplicationItems:v6 durationDisplayType:v8 useInBedAverage:1];
+  itemsCopy = items;
+  controllerCopy = controller;
+  v8 = [(HKOverlayRoomSleepViewController *)self _buildDurationDisplayTypeWithApplicationItems:itemsCopy];
+  v9 = [(HKOverlayRoomSleepViewController *)self _durationAmountContextForApplicationItems:itemsCopy durationDisplayType:v8];
+  v10 = [(HKOverlayRoomSleepViewController *)self _durationGoalContextForApplicationItems:itemsCopy durationDisplayType:v8 overlayMode:3 isPrimaryContext:0];
+  v11 = [(HKOverlayRoomSleepViewController *)self _durationAverageContextForApplicationItems:itemsCopy durationDisplayType:v8 useInBedAverage:1];
   v103 = v8;
-  v12 = [(HKOverlayRoomSleepViewController *)self _durationAverageContextForApplicationItems:v6 durationDisplayType:v8 useInBedAverage:0];
+  v12 = [(HKOverlayRoomSleepViewController *)self _durationAverageContextForApplicationItems:itemsCopy durationDisplayType:v8 useInBedAverage:0];
   v13 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v101 = v10;
   v102 = v9;
@@ -640,11 +640,11 @@ LABEL_9:
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v122 count:4];
   [v13 addObjectsFromArray:v14];
 
-  v15 = [(HKOverlayRoomSleepViewController *)self trendModel];
+  trendModel = [(HKOverlayRoomSleepViewController *)self trendModel];
 
-  if (v15)
+  if (trendModel)
   {
-    v16 = [(HKOverlayRoomSleepViewController *)self _buildSleepTrendContext:v6 overlayChartController:v7];
+    v16 = [(HKOverlayRoomSleepViewController *)self _buildSleepTrendContext:itemsCopy overlayChartController:controllerCopy];
     [v13 addObject:v16];
     v17 = -[HKOverlayContextLocation initWithContainerIndex:sectionIndex:itemIndex:]([HKOverlayContextLocation alloc], "initWithContainerIndex:sectionIndex:itemIndex:", 1, 1, [v13 count] - 1);
     [(HKOverlayRoomSleepViewController *)self setTrendContextLocation:v17];
@@ -656,22 +656,22 @@ LABEL_9:
   v97 = v19;
   v98 = v13;
   v105 = [[HKOverlayContextSection alloc] initWithSectionTitle:v19 overlayContextItems:v13];
-  v20 = [(HKOverlayRoomSleepViewController *)self _consistencyContextForApplicationItems:v6 overlayMode:3 isPrimaryContext:1];
+  v20 = [(HKOverlayRoomSleepViewController *)self _consistencyContextForApplicationItems:itemsCopy overlayMode:3 isPrimaryContext:1];
   v21 = [HKOverlayContextSection alloc];
   v96 = v20;
   v121 = v20;
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v121 count:1];
   v104 = [(HKOverlayContextSection *)v21 initWithSectionTitle:0 overlayContextItems:v22];
 
-  v23 = [(HKOverlayRoomSleepViewController *)self _buildDurationDisplayTypeForStackedWithApplicationItems:v6];
+  v23 = [(HKOverlayRoomSleepViewController *)self _buildDurationDisplayTypeForStackedWithApplicationItems:itemsCopy];
   v24 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v25 = [_HKSleepComparisonContext alloc];
   v26 = [MEMORY[0x1E696C3D0] dataTypeWithCode:5];
-  v27 = [(_HKSleepComparisonContext *)v25 initWithStackedSampleType:v26 currentCalendarOverride:0 overlayChartController:v7 applicationItems:v6 contextChangeDelegate:self primarySleepDisplayType:v23];
+  v27 = [(_HKSleepComparisonContext *)v25 initWithStackedSampleType:v26 currentCalendarOverride:0 overlayChartController:controllerCopy applicationItems:itemsCopy contextChangeDelegate:self primarySleepDisplayType:v23];
 
   v28 = [_HKSleepComparisonContext alloc];
   v29 = [MEMORY[0x1E696C3D0] dataTypeWithCode:61];
-  v30 = [(_HKSleepComparisonContext *)v28 initWithStackedSampleType:v29 currentCalendarOverride:0 overlayChartController:v7 applicationItems:v6 contextChangeDelegate:self primarySleepDisplayType:v23];
+  v30 = [(_HKSleepComparisonContext *)v28 initWithStackedSampleType:v29 currentCalendarOverride:0 overlayChartController:controllerCopy applicationItems:itemsCopy contextChangeDelegate:self primarySleepDisplayType:v23];
 
   v94 = v30;
   v95 = v27;
@@ -683,11 +683,11 @@ LABEL_9:
   v32 = [_HKSleepComparisonContext alloc];
   v33 = [MEMORY[0x1E696C3D0] dataTypeWithCode:256];
   v108 = v23;
-  v109 = v7;
-  v34 = v6;
-  v35 = [(_HKSleepComparisonContext *)v32 initWithStackedSampleType:v33 currentCalendarOverride:0 overlayChartController:v7 applicationItems:v6 contextChangeDelegate:self primarySleepDisplayType:v23];
+  v109 = controllerCopy;
+  v34 = itemsCopy;
+  v35 = [(_HKSleepComparisonContext *)v32 initWithStackedSampleType:v33 currentCalendarOverride:0 overlayChartController:controllerCopy applicationItems:itemsCopy contextChangeDelegate:self primarySleepDisplayType:v23];
 
-  v36 = self;
+  selfCopy = self;
   v37 = v24;
   v93 = v35;
   [v24 addObject:v35];
@@ -695,8 +695,8 @@ LABEL_9:
   v113 = 0u;
   v110 = 0u;
   v111 = 0u;
-  v38 = v36;
-  obj = [(HKOverlayRoomViewController *)v36 factorDisplayTypes];
+  v38 = selfCopy;
+  obj = [(HKOverlayRoomViewController *)selfCopy factorDisplayTypes];
   v39 = [obj countByEnumeratingWithState:&v110 objects:v119 count:16];
   if (v39)
   {
@@ -713,8 +713,8 @@ LABEL_9:
 
         v43 = *(*(&v110 + 1) + 8 * i);
         v44 = [_HKSleepComparisonFactorContext alloc];
-        v45 = [(HKOverlayRoomSleepViewController *)v38 sleepChartFormatter];
-        v46 = [(_HKSleepComparisonFactorContext *)v44 initWithStackedFactorDisplayType:v43 currentCalendarOverride:0 overlayChartController:v109 applicationItems:v34 contextChangeDelegate:v38 primarySleepDisplayType:v108 sleepChartFormatter:v45];
+        sleepChartFormatter = [(HKOverlayRoomSleepViewController *)v38 sleepChartFormatter];
+        v46 = [(_HKSleepComparisonFactorContext *)v44 initWithStackedFactorDisplayType:v43 currentCalendarOverride:0 overlayChartController:v109 applicationItems:v34 contextChangeDelegate:v38 primarySleepDisplayType:v108 sleepChartFormatter:sleepChartFormatter];
 
         if ([(HKOverlayRoomViewController *)v38 factorDisplayTypeIsActive:v43])
         {
@@ -765,19 +765,19 @@ LABEL_9:
   v54 = [HKOverlayContextSection alloc];
   v79 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v55 = [v79 localizedStringForKey:@"SLEEP_STAGES_PERCENTAGE_SECTION_HEADER" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable-Acacia"];
-  v78 = [(HKOverlayRoomViewController *)v38 applicationItems];
+  applicationItems = [(HKOverlayRoomViewController *)v38 applicationItems];
   v56 = v52;
-  v77 = [(HKOverlayRoomSleepViewController *)v38 _sleepStagePercentageContextForStage:2 applicationItems:v78 baseDisplayType:v52];
+  v77 = [(HKOverlayRoomSleepViewController *)v38 _sleepStagePercentageContextForStage:2 applicationItems:applicationItems baseDisplayType:v52];
   v115[0] = v77;
-  v76 = [(HKOverlayRoomViewController *)v38 applicationItems];
+  applicationItems2 = [(HKOverlayRoomViewController *)v38 applicationItems];
   v86 = v52;
-  v75 = [(HKOverlayRoomSleepViewController *)v38 _sleepStagePercentageContextForStage:5 applicationItems:v76 baseDisplayType:v52];
+  v75 = [(HKOverlayRoomSleepViewController *)v38 _sleepStagePercentageContextForStage:5 applicationItems:applicationItems2 baseDisplayType:v52];
   v115[1] = v75;
-  v57 = [(HKOverlayRoomViewController *)v38 applicationItems];
-  v58 = [(HKOverlayRoomSleepViewController *)v47 _sleepStagePercentageContextForStage:3 applicationItems:v57 baseDisplayType:v52];
+  applicationItems3 = [(HKOverlayRoomViewController *)v38 applicationItems];
+  v58 = [(HKOverlayRoomSleepViewController *)v47 _sleepStagePercentageContextForStage:3 applicationItems:applicationItems3 baseDisplayType:v52];
   v115[2] = v58;
-  v59 = [(HKOverlayRoomViewController *)v47 applicationItems];
-  v60 = [(HKOverlayRoomSleepViewController *)v47 _sleepStagePercentageContextForStage:4 applicationItems:v59 baseDisplayType:v56];
+  applicationItems4 = [(HKOverlayRoomViewController *)v47 applicationItems];
+  v60 = [(HKOverlayRoomSleepViewController *)v47 _sleepStagePercentageContextForStage:4 applicationItems:applicationItems4 baseDisplayType:v56];
   v115[3] = v60;
   v61 = [MEMORY[0x1E695DEC8] arrayWithObjects:v115 count:4];
   v62 = [(HKOverlayContextSection *)v54 initWithSectionTitle:v55 overlayContextItems:v61];
@@ -804,47 +804,47 @@ LABEL_9:
   return v87;
 }
 
-- (id)_durationGoalContextForApplicationItems:(id)a3 durationDisplayType:(id)a4 overlayMode:(int64_t)a5 isPrimaryContext:(BOOL)a6
+- (id)_durationGoalContextForApplicationItems:(id)items durationDisplayType:(id)type overlayMode:(int64_t)mode isPrimaryContext:(BOOL)context
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = [(HKOverlayRoomSleepViewController *)self _buildDurationGoalDisplayTypeWithApplicationItems:a3];
+  contextCopy = context;
+  typeCopy = type;
+  v11 = [(HKOverlayRoomSleepViewController *)self _buildDurationGoalDisplayTypeWithApplicationItems:items];
   v12 = [_HKSleepDurationGoalContext alloc];
-  v13 = [(HKOverlayRoomViewController *)self chartController];
-  v14 = [(_HKSleepDurationGoalContext *)v12 initWithBaseDisplayType:v10 overlayDisplayType:v11 overlayChartController:v13 overlayMode:a5 isPrimaryContext:v6 contextChangeDelegate:self];
+  chartController = [(HKOverlayRoomViewController *)self chartController];
+  v14 = [(_HKSleepDurationGoalContext *)v12 initWithBaseDisplayType:typeCopy overlayDisplayType:v11 overlayChartController:chartController overlayMode:mode isPrimaryContext:contextCopy contextChangeDelegate:self];
 
   return v14;
 }
 
-- (id)_consistencyContextForApplicationItems:(id)a3 overlayMode:(int64_t)a4 isPrimaryContext:(BOOL)a5
+- (id)_consistencyContextForApplicationItems:(id)items overlayMode:(int64_t)mode isPrimaryContext:(BOOL)context
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = [(HKOverlayRoomSleepViewController *)self _buildConsistencyDisplayTypeWithApplicationItems:v8];
-  v10 = [(HKOverlayRoomSleepViewController *)self _buildScheduleDisplayTypeWithApplicationItems:v8];
+  contextCopy = context;
+  itemsCopy = items;
+  v9 = [(HKOverlayRoomSleepViewController *)self _buildConsistencyDisplayTypeWithApplicationItems:itemsCopy];
+  v10 = [(HKOverlayRoomSleepViewController *)self _buildScheduleDisplayTypeWithApplicationItems:itemsCopy];
 
   v11 = [_HKSleepScheduleContext alloc];
-  v12 = [(HKOverlayRoomViewController *)self chartController];
-  v13 = [(_HKSleepScheduleContext *)v11 initWithBaseDisplayType:v9 overlayDisplayType:v10 overlayChartController:v12 overlayMode:a4 isPrimaryContext:v5 contextChangeDelegate:self];
+  chartController = [(HKOverlayRoomViewController *)self chartController];
+  v13 = [(_HKSleepScheduleContext *)v11 initWithBaseDisplayType:v9 overlayDisplayType:v10 overlayChartController:chartController overlayMode:mode isPrimaryContext:contextCopy contextChangeDelegate:self];
 
   return v13;
 }
 
-- (id)_durationAverageContextForApplicationItems:(id)a3 durationDisplayType:(id)a4 useInBedAverage:(BOOL)a5
+- (id)_durationAverageContextForApplicationItems:(id)items durationDisplayType:(id)type useInBedAverage:(BOOL)average
 {
-  v5 = a5;
+  averageCopy = average;
   v24[4] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v22 = a4;
-  v9 = [(HKOverlayRoomSleepViewController *)self sleepDisplayType];
-  v10 = [v8 unitController];
-  v11 = [HKSleepUtilities buildSleepGraphSeriesForSleepSeriesType:0 sleepDisplayType:v9 unitController:v10 numericAxisConfigurationOverrides:0 timeScope:6];
+  itemsCopy = items;
+  typeCopy = type;
+  sleepDisplayType = [(HKOverlayRoomSleepViewController *)self sleepDisplayType];
+  unitController = [itemsCopy unitController];
+  v11 = [HKSleepUtilities buildSleepGraphSeriesForSleepSeriesType:0 sleepDisplayType:sleepDisplayType unitController:unitController numericAxisConfigurationOverrides:0 timeScope:6];
 
-  if (v5)
+  if (averageCopy)
   {
     [v11 setHighlightedSleepValue:&unk_1F4384558];
-    v12 = [(HKOverlayRoomSleepViewController *)self _buildDurationAverageSeries];
-    [v12 setAverageValueType:&unk_1F4384558];
+    _buildDurationAverageSeries = [(HKOverlayRoomSleepViewController *)self _buildDurationAverageSeries];
+    [_buildDurationAverageSeries setAverageValueType:&unk_1F4384558];
   }
 
   else
@@ -852,79 +852,79 @@ LABEL_9:
     v13 = [MEMORY[0x1E696AD98] numberWithInteger:_HKCategoryValueSleepAnalysisDefaultAsleepValue()];
     [v11 setHighlightedSleepValue:v13];
 
-    v12 = [(HKOverlayRoomSleepViewController *)self _buildDurationAverageSeries];
+    _buildDurationAverageSeries = [(HKOverlayRoomSleepViewController *)self _buildDurationAverageSeries];
     v14 = [MEMORY[0x1E696AD98] numberWithInteger:_HKCategoryValueSleepAnalysisDefaultAsleepValue()];
-    [v12 setAverageValueType:v14];
+    [_buildDurationAverageSeries setAverageValueType:v14];
   }
 
   v23[0] = &unk_1F4384570;
   v23[1] = &unk_1F4384588;
   v24[0] = v11;
-  v24[1] = v12;
+  v24[1] = _buildDurationAverageSeries;
   v23[2] = &unk_1F43845A0;
   v23[3] = &unk_1F43845B8;
-  v24[2] = v12;
-  v24[3] = v12;
+  v24[2] = _buildDurationAverageSeries;
+  v24[3] = _buildDurationAverageSeries;
   v15 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v24 forKeys:v23 count:4];
-  v16 = [(HKOverlayRoomSleepViewController *)self _buildDurationAverageFormatter];
-  v17 = [(HKOverlayRoomSleepViewController *)self _buildDurationAverageDisplayTypeWithApplicationItems:v8 customSleepSeriesMapping:v15 customSleepChartFormatter:v16];
+  _buildDurationAverageFormatter = [(HKOverlayRoomSleepViewController *)self _buildDurationAverageFormatter];
+  v17 = [(HKOverlayRoomSleepViewController *)self _buildDurationAverageDisplayTypeWithApplicationItems:itemsCopy customSleepSeriesMapping:v15 customSleepChartFormatter:_buildDurationAverageFormatter];
   v18 = [_HKSleepDurationAverageContext alloc];
-  v19 = [(HKOverlayRoomViewController *)self chartController];
-  v20 = [(_HKSleepDurationAverageContext *)v18 initWithBaseDisplayType:v22 overlayDisplayType:v17 overlayChartController:v19 useInBedAverage:v5 contextChangeDelegate:self overlayAverageSeries:v12 averageChartFormatter:v16];
+  chartController = [(HKOverlayRoomViewController *)self chartController];
+  v20 = [(_HKSleepDurationAverageContext *)v18 initWithBaseDisplayType:typeCopy overlayDisplayType:v17 overlayChartController:chartController useInBedAverage:averageCopy contextChangeDelegate:self overlayAverageSeries:_buildDurationAverageSeries averageChartFormatter:_buildDurationAverageFormatter];
 
   return v20;
 }
 
-- (id)_durationAmountContextForApplicationItems:(id)a3 durationDisplayType:(id)a4
+- (id)_durationAmountContextForApplicationItems:(id)items durationDisplayType:(id)type
 {
-  v5 = a4;
+  typeCopy = type;
   v6 = [_HKSleepDurationAmountContext alloc];
-  v7 = [(HKOverlayRoomViewController *)self chartController];
-  v8 = [(_HKSleepDurationAmountContext *)v6 initWithBaseDisplayType:v5 overlayChartController:v7 contextChangeDelegate:self];
+  chartController = [(HKOverlayRoomViewController *)self chartController];
+  v8 = [(_HKSleepDurationAmountContext *)v6 initWithBaseDisplayType:typeCopy overlayChartController:chartController contextChangeDelegate:self];
 
   return v8;
 }
 
-- (id)_sleepStagePercentageContextForStage:(int64_t)a3 applicationItems:(id)a4 baseDisplayType:(id)a5
+- (id)_sleepStagePercentageContextForStage:(int64_t)stage applicationItems:(id)items baseDisplayType:(id)type
 {
-  v8 = a5;
-  v9 = [(HKOverlayRoomSleepViewController *)self _buildStagesDurationDisplayTypeWithApplicationItems:a4];
-  [(HKOverlayRoomSleepViewController *)self _updateHighlightedSleepStage:a3 onDisplayType:v9];
+  typeCopy = type;
+  v9 = [(HKOverlayRoomSleepViewController *)self _buildStagesDurationDisplayTypeWithApplicationItems:items];
+  [(HKOverlayRoomSleepViewController *)self _updateHighlightedSleepStage:stage onDisplayType:v9];
   v10 = [HKSleepStagePercentageContext alloc];
-  v11 = [(HKOverlayRoomViewController *)self chartController];
-  v12 = [(HKSleepStagePercentageContext *)v10 initWithSleepStage:a3 baseDisplayType:v8 overlayDisplayType:v9 overlayChartController:v11 contextChangeDelegate:self];
+  chartController = [(HKOverlayRoomViewController *)self chartController];
+  v12 = [(HKSleepStagePercentageContext *)v10 initWithSleepStage:stage baseDisplayType:typeCopy overlayDisplayType:v9 overlayChartController:chartController contextChangeDelegate:self];
 
   return v12;
 }
 
-- (id)_stageDurationContextForApplicationItems:(id)a3 baseDisplayType:(id)a4 sleepCategoryValue:(int64_t)a5
+- (id)_stageDurationContextForApplicationItems:(id)items baseDisplayType:(id)type sleepCategoryValue:(int64_t)value
 {
-  v8 = a4;
-  v9 = [(HKOverlayRoomSleepViewController *)self _buildStagesDisplayTypeWithApplicationItems:a3];
-  [(HKOverlayRoomSleepViewController *)self _updateHighlightedSleepStage:a5 onDisplayType:v9];
+  typeCopy = type;
+  v9 = [(HKOverlayRoomSleepViewController *)self _buildStagesDisplayTypeWithApplicationItems:items];
+  [(HKOverlayRoomSleepViewController *)self _updateHighlightedSleepStage:value onDisplayType:v9];
   v10 = [HKSleepStageDurationContext alloc];
-  v11 = [(HKOverlayRoomViewController *)self chartController];
-  v12 = [(HKSleepStageDurationContext *)v10 initWithBaseDisplayType:v8 overlayDisplayType:v9 overlayChartController:v11 contextChangeDelegate:self sleepValue:a5];
+  chartController = [(HKOverlayRoomViewController *)self chartController];
+  v12 = [(HKSleepStageDurationContext *)v10 initWithBaseDisplayType:typeCopy overlayDisplayType:v9 overlayChartController:chartController contextChangeDelegate:self sleepValue:value];
 
   return v12;
 }
 
-- (void)_updateHighlightedSleepStage:(int64_t)a3 onDisplayType:(id)a4
+- (void)_updateHighlightedSleepStage:(int64_t)stage onDisplayType:(id)type
 {
-  v5 = a4;
+  typeCopy = type;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v6 = MEMORY[0x1E695DFD8];
-    v7 = [v5 seriesForTimeScopeMapping];
-    v8 = [v7 allValues];
-    v9 = [v6 setWithArray:v8];
+    seriesForTimeScopeMapping = [typeCopy seriesForTimeScopeMapping];
+    allValues = [seriesForTimeScopeMapping allValues];
+    v9 = [v6 setWithArray:allValues];
 
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __79__HKOverlayRoomSleepViewController__updateHighlightedSleepStage_onDisplayType___block_invoke;
     v10[3] = &__block_descriptor_40_e27_v24__0__HKGraphSeries_8_B16l;
-    v10[4] = a3;
+    v10[4] = stage;
     [v9 enumerateObjectsUsingBlock:v10];
   }
 }
@@ -939,14 +939,14 @@ void __79__HKOverlayRoomSleepViewController__updateHighlightedSleepStage_onDispl
   }
 }
 
-- (int64_t)initialSelectedContainerIndexForMode:(int64_t)a3
+- (int64_t)initialSelectedContainerIndexForMode:(int64_t)mode
 {
-  if (a3 == 3)
+  if (mode == 3)
   {
-    v5 = [(HKOverlayRoomSleepViewController *)self trendModel];
-    v6 = [v5 selectTrendInitially];
+    trendModel = [(HKOverlayRoomSleepViewController *)self trendModel];
+    selectTrendInitially = [trendModel selectTrendInitially];
 
-    if (v6)
+    if (selectTrendInitially)
     {
       return 1;
     }
@@ -954,10 +954,10 @@ void __79__HKOverlayRoomSleepViewController__updateHighlightedSleepStage_onDispl
 
   v8.receiver = self;
   v8.super_class = HKOverlayRoomSleepViewController;
-  return [(HKOverlayRoomViewController *)&v8 initialSelectedContainerIndexForMode:a3];
+  return [(HKOverlayRoomViewController *)&v8 initialSelectedContainerIndexForMode:mode];
 }
 
-- (id)initialSelectedContextForMode:(int64_t)a3 containerIndex:(int64_t)a4
+- (id)initialSelectedContextForMode:(int64_t)mode containerIndex:(int64_t)index
 {
   v20 = *MEMORY[0x1E69E9840];
   _HKInitializeLogging();
@@ -968,7 +968,7 @@ void __79__HKOverlayRoomSleepViewController__updateHighlightedSleepStage_onDispl
     *v19 = 138543618;
     *&v19[4] = objc_opt_class();
     *&v19[12] = 2048;
-    *&v19[14] = a4;
+    *&v19[14] = index;
     v8 = *&v19[4];
     _os_log_impl(&dword_1C3942000, v7, OS_LOG_TYPE_DEFAULT, "[%{public}@] Determining initial selected context for container index: %ld", v19, 0x16u);
   }
@@ -976,29 +976,29 @@ void __79__HKOverlayRoomSleepViewController__updateHighlightedSleepStage_onDispl
   v9 = [(HKOverlayRoomViewController *)self chartController:*v19];
   [v9 updatePrimaryGraphViewController];
 
-  v10 = [(HKOverlayRoomSleepViewController *)self comparisonContextLocation];
-  if (v10)
+  comparisonContextLocation = [(HKOverlayRoomSleepViewController *)self comparisonContextLocation];
+  if (comparisonContextLocation)
   {
-    v11 = v10;
-    v12 = [(HKOverlayRoomSleepViewController *)self comparisonContextLocation];
-    v13 = [v12 containerIndex];
+    v11 = comparisonContextLocation;
+    comparisonContextLocation2 = [(HKOverlayRoomSleepViewController *)self comparisonContextLocation];
+    containerIndex = [comparisonContextLocation2 containerIndex];
 
-    if (v13 == a4)
+    if (containerIndex == index)
     {
-      v14 = [(HKOverlayRoomSleepViewController *)self comparisonContextLocation];
+      comparisonContextLocation3 = [(HKOverlayRoomSleepViewController *)self comparisonContextLocation];
       goto LABEL_11;
     }
   }
 
-  v15 = [(HKOverlayRoomSleepViewController *)self trendModel];
-  if ([v15 selectTrendInitially])
+  trendModel = [(HKOverlayRoomSleepViewController *)self trendModel];
+  if ([trendModel selectTrendInitially])
   {
-    v16 = [(HKOverlayRoomSleepViewController *)self trendContextLocation];
-    v17 = [v16 containerIndex];
+    trendContextLocation = [(HKOverlayRoomSleepViewController *)self trendContextLocation];
+    containerIndex2 = [trendContextLocation containerIndex];
 
-    if (v17 == a4)
+    if (containerIndex2 == index)
     {
-      v14 = [(HKOverlayRoomSleepViewController *)self trendContextLocation];
+      comparisonContextLocation3 = [(HKOverlayRoomSleepViewController *)self trendContextLocation];
       goto LABEL_11;
     }
   }
@@ -1007,29 +1007,29 @@ void __79__HKOverlayRoomSleepViewController__updateHighlightedSleepStage_onDispl
   {
   }
 
-  v14 = 0;
+  comparisonContextLocation3 = 0;
 LABEL_11:
 
-  return v14;
+  return comparisonContextLocation3;
 }
 
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items
 {
-  v8 = a5;
-  v9 = a4;
+  itemsCopy = items;
+  dateCopy = date;
   v10 = [HKOverlayRoomSleepViewController alloc];
-  v11 = [(HKOverlayRoomSleepViewController *)self sleepDataSourceProvider];
-  v12 = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
-  v13 = [(HKOverlayRoomSleepViewController *)self trendModel];
-  v14 = [(HKOverlayRoomViewController *)self factorDisplayTypes];
-  v15 = [(HKOverlayRoomSleepViewController *)v10 initWithDisplayDate:v9 applicationItems:v8 sleepDataSourceProvider:v11 sleepChartFormatter:v12 mode:a3 trendModel:v13 factorDisplayTypes:v14];
+  sleepDataSourceProvider = [(HKOverlayRoomSleepViewController *)self sleepDataSourceProvider];
+  sleepChartFormatter = [(HKOverlayRoomSleepViewController *)self sleepChartFormatter];
+  trendModel = [(HKOverlayRoomSleepViewController *)self trendModel];
+  factorDisplayTypes = [(HKOverlayRoomViewController *)self factorDisplayTypes];
+  v15 = [(HKOverlayRoomSleepViewController *)v10 initWithDisplayDate:dateCopy applicationItems:itemsCopy sleepDataSourceProvider:sleepDataSourceProvider sleepChartFormatter:sleepChartFormatter mode:mode trendModel:trendModel factorDisplayTypes:factorDisplayTypes];
 
-  [(HKOverlayRoomViewController *)v15 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:a3]];
+  [(HKOverlayRoomViewController *)v15 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:mode]];
 
   return v15;
 }
 
-- (id)infographicViewControllerForDisplayType:(id)a3 healthStore:(id)a4
+- (id)infographicViewControllerForDisplayType:(id)type healthStore:(id)store
 {
   v19[5] = *MEMORY[0x1E69E9840];
   v5 = [HKInfographicViewController alloc];
@@ -1056,19 +1056,19 @@ LABEL_11:
   return v17;
 }
 
-- (id)_itemForTitle:(id)a3 titleAccessoryColor:(id)a4 description:(id)a5
+- (id)_itemForTitle:(id)title titleAccessoryColor:(id)color description:(id)description
 {
-  v7 = a3;
-  v8 = a4;
+  titleCopy = title;
+  colorCopy = color;
   v9 = MEMORY[0x1E696AD40];
-  v10 = a5;
+  descriptionCopy = description;
   v11 = objc_alloc_init(v9);
   v12 = 0x1E696A000;
-  if (v7)
+  if (titleCopy)
   {
     v13 = HKInteractiveChartInfographicTitleAttributes();
     v14 = [v13 objectForKeyedSubscript:*MEMORY[0x1E69DB648]];
-    if (v8)
+    if (colorCopy)
     {
       v24 = [MEMORY[0x1E69DCAD8] configurationWithFont:v14 scale:1];
       v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"circle.fill" withConfiguration:v24];
@@ -1080,77 +1080,77 @@ LABEL_11:
       v19 = [objc_alloc(MEMORY[0x1E696AAB0]) initWithString:@" "];
       [v11 appendAttributedString:v19];
 
-      [v11 addAttribute:*MEMORY[0x1E69DB650] value:v8 range:{0, objc_msgSend(v11, "length")}];
+      [v11 addAttribute:*MEMORY[0x1E69DB650] value:colorCopy range:{0, objc_msgSend(v11, "length")}];
       v12 = 0x1E696A000uLL;
     }
 
-    v20 = [objc_alloc(*(v12 + 2736)) initWithString:v7 attributes:v13];
+    v20 = [objc_alloc(*(v12 + 2736)) initWithString:titleCopy attributes:v13];
     [v11 appendAttributedString:v20];
   }
 
-  v21 = [objc_alloc(*(v12 + 2736)) initWithString:v10];
+  v21 = [objc_alloc(*(v12 + 2736)) initWithString:descriptionCopy];
 
   v22 = [[HKInfographicContentItem alloc] initWithTitle:v11 description:v21];
 
   return v22;
 }
 
-- (id)_itemForSleepStageInfographicWithStage:(int64_t)a3
+- (id)_itemForSleepStageInfographicWithStage:(int64_t)stage
 {
   v5 = [HKSleepUtilities localizedInfographicTitleForCategoryValue:?];
-  v6 = [HKSleepUtilities localizedInfographicDescriptionForCategoryValue:a3];
-  v7 = [MEMORY[0x1E69DC888] hk_sleepColorForSleepAnalysis:a3];
+  v6 = [HKSleepUtilities localizedInfographicDescriptionForCategoryValue:stage];
+  v7 = [MEMORY[0x1E69DC888] hk_sleepColorForSleepAnalysis:stage];
   v8 = [(HKOverlayRoomSleepViewController *)self _itemForTitle:v5 titleAccessoryColor:v7 description:v6];
 
   return v8;
 }
 
-- (id)dateRangeFromSelectionContext:(id)a3 timeScope:(int64_t)a4
+- (id)dateRangeFromSelectionContext:(id)context timeScope:(int64_t)scope
 {
-  v6 = a3;
-  v7 = [(HKOverlayRoomViewController *)self chartController];
-  v8 = [v7 dateRangeFromSelectionContext:v6 timeScope:a4];
+  contextCopy = context;
+  chartController = [(HKOverlayRoomViewController *)self chartController];
+  v8 = [chartController dateRangeFromSelectionContext:contextCopy timeScope:scope];
 
   return v8;
 }
 
-- (id)stringForValueRange:(id)a3 timeScope:(int64_t)a4
+- (id)stringForValueRange:(id)range timeScope:(int64_t)scope
 {
-  v6 = a3;
-  v7 = [(HKOverlayRoomViewController *)self chartController];
-  v8 = [v7 stringForValueRange:v6 timeScope:a4];
+  rangeCopy = range;
+  chartController = [(HKOverlayRoomViewController *)self chartController];
+  v8 = [chartController stringForValueRange:rangeCopy timeScope:scope];
 
   return v8;
 }
 
-- (id)titleForSelectedRangeData:(id)a3 displayType:(id)a4
+- (id)titleForSelectedRangeData:(id)data displayType:(id)type
 {
-  v5 = a3;
-  v6 = [(HKOverlayRoomSleepViewController *)self _sleepColorForSelectedRangeData:v5];
-  v7 = [MEMORY[0x1E69DB878] hk_chartLollipopKeyFont];
-  v8 = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
-  v9 = +[HKSelectedRangeLabel attributedStringForSelectedRangeData:font:foregroundColor:prefixColor:prefersImageAffixes:embedded:](HKSelectedRangeLabel, "attributedStringForSelectedRangeData:font:foregroundColor:prefixColor:prefersImageAffixes:embedded:", v5, v7, v8, v6, [v5 prefersImageAffixes], 0);
+  dataCopy = data;
+  v6 = [(HKOverlayRoomSleepViewController *)self _sleepColorForSelectedRangeData:dataCopy];
+  hk_chartLollipopKeyFont = [MEMORY[0x1E69DB878] hk_chartLollipopKeyFont];
+  hk_chartLollipopLabelColor = [MEMORY[0x1E69DC888] hk_chartLollipopLabelColor];
+  v9 = +[HKSelectedRangeLabel attributedStringForSelectedRangeData:font:foregroundColor:prefixColor:prefersImageAffixes:embedded:](HKSelectedRangeLabel, "attributedStringForSelectedRangeData:font:foregroundColor:prefixColor:prefersImageAffixes:embedded:", dataCopy, hk_chartLollipopKeyFont, hk_chartLollipopLabelColor, v6, [dataCopy prefersImageAffixes], 0);
 
   return v9;
 }
 
-- (id)_sleepColorForSelectedRangeData:(id)a3
+- (id)_sleepColorForSelectedRangeData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 prefixColor];
+  dataCopy = data;
+  prefixColor = [dataCopy prefixColor];
 
-  if (v5)
+  if (prefixColor)
   {
-    v6 = [v4 prefixColor];
+    prefixColor2 = [dataCopy prefixColor];
 LABEL_3:
-    v7 = v6;
+    v7 = prefixColor2;
     goto LABEL_4;
   }
 
-  v9 = [(HKOverlayRoomSleepViewController *)self durationContextSelected]|| [(HKOverlayRoomSleepViewController *)self scheduleContextSelected]|| [(HKOverlayRoomSleepViewController *)self stageDurationContextSelected]|| [(HKOverlayRoomSleepViewController *)self stagePercentageContextSelected];
-  if ([v4 dataType] == 9)
+  stagePercentageContextSelected = [(HKOverlayRoomSleepViewController *)self durationContextSelected]|| [(HKOverlayRoomSleepViewController *)self scheduleContextSelected]|| [(HKOverlayRoomSleepViewController *)self stageDurationContextSelected]|| [(HKOverlayRoomSleepViewController *)self stagePercentageContextSelected];
+  if ([dataCopy dataType] == 9)
   {
-    if (v9)
+    if (stagePercentageContextSelected)
     {
       [MEMORY[0x1E69DC888] hk_sleepInactiveInBedColor];
     }
@@ -1160,13 +1160,13 @@ LABEL_3:
       [MEMORY[0x1E69DC888] hk_sleepInBedColor];
     }
 
-    v6 = LABEL_14:;
+    prefixColor2 = LABEL_14:;
     goto LABEL_3;
   }
 
-  if ([v4 dataType] == 10)
+  if ([dataCopy dataType] == 10)
   {
-    if (v9)
+    if (stagePercentageContextSelected)
     {
       [MEMORY[0x1E69DC888] hk_sleepInactiveAsleepColor];
     }
@@ -1179,18 +1179,18 @@ LABEL_3:
     goto LABEL_14;
   }
 
-  v10 = [MEMORY[0x1E69DC888] labelColor];
-  v7 = [HKSelectedRangeLabel standardPrefixColorForSelectedRangeData:v4 defaultColor:v10];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  v7 = [HKSelectedRangeLabel standardPrefixColorForSelectedRangeData:dataCopy defaultColor:labelColor];
 
 LABEL_4:
 
   return v7;
 }
 
-- (void)restoreUserActivityState:(id)a3
+- (void)restoreUserActivityState:(id)state
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  stateCopy = state;
   _HKInitializeLogging();
   v5 = *MEMORY[0x1E696B998];
   if (os_log_type_enabled(*MEMORY[0x1E696B998], OS_LOG_TYPE_DEFAULT))
@@ -1198,17 +1198,17 @@ LABEL_4:
     v6 = v5;
     v7 = objc_opt_class();
     v8 = v7;
-    v9 = [v4 userInfo];
+    userInfo = [stateCopy userInfo];
     *buf = 138543618;
     v12 = v7;
     v13 = 2114;
-    v14 = v9;
+    v14 = userInfo;
     _os_log_impl(&dword_1C3942000, v6, OS_LOG_TYPE_DEFAULT, "[%{public}@] Restoring sleep chart with userInfo: %{public}@", buf, 0x16u);
   }
 
   v10.receiver = self;
   v10.super_class = HKOverlayRoomSleepViewController;
-  [(HKOverlayRoomViewController *)&v10 restoreUserActivityState:v4];
+  [(HKOverlayRoomViewController *)&v10 restoreUserActivityState:stateCopy];
 }
 
 - (id)restorationStateDictionary
@@ -1223,16 +1223,16 @@ LABEL_4:
 
   v8.receiver = self;
   v8.super_class = HKOverlayRoomSleepViewController;
-  v5 = [(HKOverlayRoomViewController *)&v8 restorationStateDictionary];
-  v6 = [HKInteractiveChartViewController mergeRestorationDictionary:v4 otherDictionary:v5];
+  restorationStateDictionary = [(HKOverlayRoomViewController *)&v8 restorationStateDictionary];
+  v6 = [HKInteractiveChartViewController mergeRestorationDictionary:v4 otherDictionary:restorationStateDictionary];
 
   return v6;
 }
 
 - (void)saveRestorationState
 {
-  v4 = [(HKOverlayRoomSleepViewController *)self restorationStateDictionary];
-  v3 = [HKInteractiveChartViewController baseRestorationUserActivity:v4 activityType:@"com.apple.health.plugin" title:@"Sleep"];
+  restorationStateDictionary = [(HKOverlayRoomSleepViewController *)self restorationStateDictionary];
+  v3 = [HKInteractiveChartViewController baseRestorationUserActivity:restorationStateDictionary activityType:@"com.apple.health.plugin" title:@"Sleep"];
   [HKInteractiveChartViewController saveRestorationUserActivity:v3 viewController:self];
 }
 

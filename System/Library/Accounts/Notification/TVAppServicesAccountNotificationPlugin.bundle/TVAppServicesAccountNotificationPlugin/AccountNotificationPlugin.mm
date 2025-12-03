@@ -1,18 +1,18 @@
 @interface AccountNotificationPlugin
 - (_TtC38TVAppServicesAccountNotificationPlugin25AccountNotificationPlugin)init;
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6;
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount;
 @end
 
 @implementation AccountNotificationPlugin
 
-- (void)account:(id)a3 didChangeWithType:(int)a4 inStore:(id)a5 oldAccount:(id)a6
+- (void)account:(id)account didChangeWithType:(int)type inStore:(id)store oldAccount:(id)oldAccount
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = self;
-  sub_13B0(a3, a6);
-  sub_13B4(a3, a6);
+  accountCopy = account;
+  storeCopy = store;
+  oldAccountCopy = oldAccount;
+  selfCopy = self;
+  sub_13B0(account, oldAccount);
+  sub_13B4(account, oldAccount);
 }
 
 - (_TtC38TVAppServicesAccountNotificationPlugin25AccountNotificationPlugin)init

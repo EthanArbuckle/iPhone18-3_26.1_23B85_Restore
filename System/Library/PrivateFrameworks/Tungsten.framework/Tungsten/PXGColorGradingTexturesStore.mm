@@ -1,8 +1,8 @@
 @interface PXGColorGradingTexturesStore
-+ (id)colorGradingTextureStoreForContext:(id)a3;
++ (id)colorGradingTextureStoreForContext:(id)context;
 - (PXGColorGradingTexturesStore)init;
-- (PXGColorGradingTexturesStore)initWithMetalContext:(id)a3;
-- (id)colorGradingTextureWithColorLookupCube:(id)a3;
+- (PXGColorGradingTexturesStore)initWithMetalContext:(id)context;
+- (id)colorGradingTextureWithColorLookupCube:(id)cube;
 - (void)_createPlaceholderCube;
 @end
 
@@ -22,8 +22,8 @@
 
   if (!self->_placeholderCube)
   {
-    v7 = [MEMORY[0x277CCA890] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXGColorGradingTexturesStore.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"_placeholderCube != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGColorGradingTexturesStore.m" lineNumber:104 description:{@"Invalid parameter not satisfying: %@", @"_placeholderCube != nil"}];
   }
 }
 
@@ -52,18 +52,18 @@ uint64_t __54__PXGColorGradingTexturesStore__createPlaceholderCube__block_invoke
   return result;
 }
 
-- (id)colorGradingTextureWithColorLookupCube:(id)a3
+- (id)colorGradingTextureWithColorLookupCube:(id)cube
 {
-  v5 = a3;
-  if (v5 || (v5 = self->_placeholderCube) != 0 || (dispatch_sync(self->_queue, &__block_literal_global_1122), (v5 = self->_placeholderCube) != 0))
+  cubeCopy = cube;
+  if (cubeCopy || (cubeCopy = self->_placeholderCube) != 0 || (dispatch_sync(self->_queue, &__block_literal_global_1122), (cubeCopy = self->_placeholderCube) != 0))
   {
-    v6 = v5;
+    v6 = cubeCopy;
   }
 
   else
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"PXGColorGradingTexturesStore.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"cube != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXGColorGradingTexturesStore.m" lineNumber:58 description:{@"Invalid parameter not satisfying: %@", @"cube != nil"}];
 
     v6 = 0;
   }
@@ -85,9 +85,9 @@ uint64_t __54__PXGColorGradingTexturesStore__createPlaceholderCube__block_invoke
   return v8;
 }
 
-- (PXGColorGradingTexturesStore)initWithMetalContext:(id)a3
+- (PXGColorGradingTexturesStore)initWithMetalContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = PXGColorGradingTexturesStore;
   v6 = [(PXGColorGradingTexturesStore *)&v17 init];
@@ -98,7 +98,7 @@ uint64_t __54__PXGColorGradingTexturesStore__createPlaceholderCube__block_invoke
     v6->_cachedTextures = v7;
 
     [(NSCache *)v6->_cachedTextures setCountLimit:12];
-    objc_storeStrong(&v6->_metalRenderContext, a3);
+    objc_storeStrong(&v6->_metalRenderContext, context);
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v10 = dispatch_queue_attr_make_with_qos_class(v9, QOS_CLASS_DEFAULT, 0);
     v11 = dispatch_queue_create("com.apple.photos.color-grading-textures-store", v10);
@@ -119,28 +119,28 @@ uint64_t __54__PXGColorGradingTexturesStore__createPlaceholderCube__block_invoke
 
 - (PXGColorGradingTexturesStore)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGColorGradingTexturesStore.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXGColorGradingTexturesStore init]"}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGColorGradingTexturesStore.m" lineNumber:35 description:{@"%s is not available as initializer", "-[PXGColorGradingTexturesStore init]"}];
 
   abort();
 }
 
-+ (id)colorGradingTextureStoreForContext:(id)a3
++ (id)colorGradingTextureStoreForContext:(id)context
 {
-  v4 = a3;
-  v5 = a1;
-  objc_sync_enter(v5);
-  v6 = [v4 device];
-  v7 = objc_getAssociatedObject(v6, sel_colorGradingTextureStoreForContext_);
+  contextCopy = context;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  device = [contextCopy device];
+  v7 = objc_getAssociatedObject(device, sel_colorGradingTextureStoreForContext_);
 
   if (!v7)
   {
-    v7 = [[PXGColorGradingTexturesStore alloc] initWithMetalContext:v4];
-    v8 = [v4 device];
-    objc_setAssociatedObject(v8, sel_colorGradingTextureStoreForContext_, v7, 0x301);
+    v7 = [[PXGColorGradingTexturesStore alloc] initWithMetalContext:contextCopy];
+    device2 = [contextCopy device];
+    objc_setAssociatedObject(device2, sel_colorGradingTextureStoreForContext_, v7, 0x301);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 
   return v7;
 }

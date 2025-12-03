@@ -1,28 +1,28 @@
 @interface DCIMImageWriter
-+ (BOOL)isLivePhotoFilteredVideoPath:(id)a3;
-+ (id)defaultFileExtensionForAssetType:(signed __int16)a3;
-+ (id)filteredVideoPathForRecordedLivePhotoVideoPath:(id)a3;
++ (BOOL)isLivePhotoFilteredVideoPath:(id)path;
++ (id)defaultFileExtensionForAssetType:(signed __int16)type;
++ (id)filteredVideoPathForRecordedLivePhotoVideoPath:(id)path;
 + (id)incomingDirectoryPath;
 + (id)incomingDirectoryPathForPhotoStream;
-+ (id)preferredFileExtensionForType:(id)a3;
-+ (id)recordedVideoPathForFilteredLivePhotoVideoPath:(id)a3;
++ (id)preferredFileExtensionForType:(id)type;
++ (id)recordedVideoPathForFilteredLivePhotoVideoPath:(id)path;
 + (id)sharedDCIMWriter;
-+ (id)uniqueIncomingPathForAssetWithUUID:(id)a3 andExtension:(id)a4 isPhotoStream:(BOOL)a5;
-+ (void)writeableDataForImage:(id)a3 previewImage:(id)a4 imageData:(id)a5 imageUTIType:(id)a6 imageSource:(CGImageSource *)a7 primaryImageProperties:(id)a8 imageOrientation:(int64_t)a9 thumbnailDataOut:(id *)a10 imageUTITypeOut:(id *)a11 primaryImagePropertiesOut:(id *)a12 isJPEGOut:(BOOL *)a13 imageDataOut:(id *)a14;
-- (BOOL)_writeJPEGToURL:(id)a3 withData:(id)a4 thumbnail:(id)a5 properties:(id)a6 duringBurst:(BOOL)a7;
-- (BOOL)saveImageJobToDisk:(id)a3;
-- (id)_cameraAssetExtensionForType:(signed __int16)a3;
++ (id)uniqueIncomingPathForAssetWithUUID:(id)d andExtension:(id)extension isPhotoStream:(BOOL)stream;
++ (void)writeableDataForImage:(id)image previewImage:(id)previewImage imageData:(id)data imageUTIType:(id)type imageSource:(CGImageSource *)source primaryImageProperties:(id)properties imageOrientation:(int64_t)orientation thumbnailDataOut:(id *)self0 imageUTITypeOut:(id *)self1 primaryImagePropertiesOut:(id *)self2 isJPEGOut:(BOOL *)self3 imageDataOut:(id *)self4;
+- (BOOL)_writeJPEGToURL:(id)l withData:(id)data thumbnail:(id)thumbnail properties:(id)properties duringBurst:(BOOL)burst;
+- (BOOL)saveImageJobToDisk:(id)disk;
+- (id)_cameraAssetExtensionForType:(signed __int16)type;
 @end
 
 @implementation DCIMImageWriter
 
-- (BOOL)_writeJPEGToURL:(id)a3 withData:(id)a4 thumbnail:(id)a5 properties:(id)a6 duringBurst:(BOOL)a7
+- (BOOL)_writeJPEGToURL:(id)l withData:(id)data thumbnail:(id)thumbnail properties:(id)properties duringBurst:(BOOL)burst
 {
-  v7 = a7;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = CFWriteStreamCreateWithFile(*MEMORY[0x1E695E480], a3);
+  burstCopy = burst;
+  dataCopy = data;
+  thumbnailCopy = thumbnail;
+  propertiesCopy = properties;
+  v14 = CFWriteStreamCreateWithFile(*MEMORY[0x1E695E480], l);
   if (v14)
   {
     v15 = v14;
@@ -38,7 +38,7 @@
         CFDataGetBytes(v16, v21, buffer);
         fcntl(*buffer, 48, 1);
         fcntl(*buffer, 62, 1);
-        if (v7)
+        if (burstCopy)
         {
           fcntl(*buffer, 82, 1);
         }
@@ -66,55 +66,55 @@
   return v18;
 }
 
-- (id)_cameraAssetExtensionForType:(signed __int16)a3
+- (id)_cameraAssetExtensionForType:(signed __int16)type
 {
-  if (a3 > 3)
+  if (type > 3)
   {
     return 0;
   }
 
   else
   {
-    return off_1E792F768[a3];
+    return off_1E792F768[type];
   }
 }
 
-- (BOOL)saveImageJobToDisk:(id)a3
+- (BOOL)saveImageJobToDisk:(id)disk
 {
   v99 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKey:@"AssetPathFromType"];
+  diskCopy = disk;
+  v5 = [diskCopy objectForKey:@"AssetPathFromType"];
 
   if (v5)
   {
-    v6 = [v4 objectForKey:@"AssetPathFromType"];
-    v7 = [v6 intValue];
+    v6 = [diskCopy objectForKey:@"AssetPathFromType"];
+    intValue = [v6 intValue];
 
-    v8 = [(DCIMImageWriter *)self _cameraAssetExtensionForType:v7];
+    pathExtension = [(DCIMImageWriter *)self _cameraAssetExtensionForType:intValue];
   }
 
   else
   {
-    v9 = [v4 objectForKey:@"PhotoDestinationPath"];
+    v9 = [diskCopy objectForKey:@"PhotoDestinationPath"];
     v10 = v9;
     if (v9)
     {
-      v8 = [v9 pathExtension];
+      pathExtension = [v9 pathExtension];
     }
 
     else
     {
-      v8 = 0;
+      pathExtension = 0;
     }
   }
 
-  v11 = [v4 objectForKey:@"DestinationAssetUUID"];
-  v12 = [DCIMImageWriter uniqueIncomingPathForAssetWithUUID:v11 andExtension:v8 isPhotoStream:0];
+  v11 = [diskCopy objectForKey:@"DestinationAssetUUID"];
+  v12 = [DCIMImageWriter uniqueIncomingPathForAssetWithUUID:v11 andExtension:pathExtension isPhotoStream:0];
 
   v13 = [MEMORY[0x1E695DFF8] fileURLWithPath:v12 isDirectory:0];
-  v14 = [v13 path];
+  path = [v13 path];
 
-  if (!v14)
+  if (!path)
   {
     v15 = PLBackendGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -135,7 +135,7 @@
     v17 = PLBackendGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
-      v18 = [v4 objectForKey:@"DestinationAssetUUID"];
+      v18 = [diskCopy objectForKey:@"DestinationAssetUUID"];
       *buf = 138412290;
       v98 = v18;
       _os_log_impl(&dword_1AA9BD000, v17, OS_LOG_TYPE_ERROR, "saveImageJobToDisk [job objectForKey:kPLImageWriterDestinationAssetUUID] %@", buf, 0xCu);
@@ -145,7 +145,7 @@
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v98 = v8;
+      v98 = pathExtension;
       _os_log_impl(&dword_1AA9BD000, v19, OS_LOG_TYPE_ERROR, "saveImageJobToDisk extension %@", buf, 0xCu);
     }
 
@@ -167,16 +167,16 @@
   }
 
   v22 = +[PLValidatedSavedAssetType maskForPhotoBoothAsset];
-  v23 = [v4 objectForKey:@"kPLImageWriterSavedAssetTypeKey"];
+  v23 = [diskCopy objectForKey:@"kPLImageWriterSavedAssetTypeKey"];
   v75 = PLValidatedSavedAssetTypeApplies(v22, [v23 integerValue]);
 
-  v24 = [v4 objectForKey:@"EXIFProperties"];
+  v24 = [diskCopy objectForKey:@"EXIFProperties"];
   v78 = *MEMORY[0x1E696DE30];
   v82 = [v24 objectForKeyedSubscript:?];
   v77 = *MEMORY[0x1E69867B0];
   v85 = [v82 objectForKey:?];
-  v25 = [v4 objectForKey:@"ImageData"];
-  v26 = [v4 objectForKey:@"ImageOrientation"];
+  v25 = [diskCopy objectForKey:@"ImageData"];
+  v26 = [diskCopy objectForKey:@"ImageOrientation"];
   if (!v26)
   {
     v27 = [v24 objectForKey:*MEMORY[0x1E696DE78]];
@@ -192,8 +192,8 @@
     }
   }
 
-  v86 = v8;
-  v28 = [v4 objectForKey:@"PreviewImageRef"];
+  v86 = pathExtension;
+  v28 = [diskCopy objectForKey:@"PreviewImageRef"];
   v29 = 0;
   if (v28 && v26)
   {
@@ -205,8 +205,8 @@
   if (v25 && v26)
   {
     v30 = v29;
-    v31 = self;
-    v32 = [v26 intValue];
+    selfCopy = self;
+    intValue2 = [v26 intValue];
     v33 = CGImageSourceCreateWithData(v25, 0);
     if (v33)
     {
@@ -231,16 +231,16 @@
       ImageAtIndex = 0;
     }
 
-    v89 = [NSClassFromString(@"UIImage") imageWithCGImage:ImageAtIndex scale:v32 orientation:1.0];
+    v89 = [NSClassFromString(@"UIImage") imageWithCGImage:ImageAtIndex scale:intValue2 orientation:1.0];
     CGImageRelease(ImageAtIndex);
     v25 = v35;
-    self = v31;
+    self = selfCopy;
     v29 = v30;
   }
 
   v90 = v24;
   buf[0] = 0;
-  v37 = [v4 objectForKeyedSubscript:@"Type"];
+  v37 = [diskCopy objectForKeyedSubscript:@"Type"];
   v38 = v37;
   v83 = v12;
   if (v37)
@@ -265,7 +265,7 @@
   +[DCIMImageWriter writeableDataForImage:previewImage:imageData:imageUTIType:imageSource:primaryImageProperties:imageOrientation:thumbnailDataOut:imageUTITypeOut:primaryImagePropertiesOut:isJPEGOut:imageDataOut:](DCIMImageWriter, "writeableDataForImage:previewImage:imageData:imageUTIType:imageSource:primaryImageProperties:imageOrientation:thumbnailDataOut:imageUTITypeOut:primaryImagePropertiesOut:isJPEGOut:imageDataOut:", v89, v29, v25, v38, v40, v24, [v87 intValue], &v94, &v93, &v92, buf, &v91);
   v84 = v94;
   v41 = v93;
-  v42 = v92;
+  dictionary = v92;
   v88 = v91;
   if (v40)
   {
@@ -280,50 +280,50 @@
       v43 = v13;
       if (v75)
       {
-        v76 = self;
-        v44 = v42;
+        selfCopy2 = self;
+        v44 = dictionary;
         v45 = objc_autoreleasePoolPush();
-        v42 = [v44 mutableCopy];
-        if (!v42)
+        dictionary = [v44 mutableCopy];
+        if (!dictionary)
         {
-          v42 = [MEMORY[0x1E695DF90] dictionary];
+          dictionary = [MEMORY[0x1E695DF90] dictionary];
         }
 
-        v46 = [v42 objectForKey:@"{IPTC}"];
-        v47 = [v46 mutableCopy];
+        v46 = [dictionary objectForKey:@"{IPTC}"];
+        dictionary2 = [v46 mutableCopy];
 
-        if (!v47)
+        if (!dictionary2)
         {
-          v47 = [MEMORY[0x1E695DF90] dictionary];
-          [v42 setObject:v47 forKey:@"{IPTC}"];
+          dictionary2 = [MEMORY[0x1E695DF90] dictionary];
+          [dictionary setObject:dictionary2 forKey:@"{IPTC}"];
         }
 
-        v48 = [v47 objectForKey:@"Keywords"];
-        v49 = [v48 mutableCopy];
+        v48 = [dictionary2 objectForKey:@"Keywords"];
+        array = [v48 mutableCopy];
 
-        if (!v49)
+        if (!array)
         {
-          v49 = [MEMORY[0x1E695DF70] array];
-          [v47 setObject:v49 forKey:@"Keywords"];
+          array = [MEMORY[0x1E695DF70] array];
+          [dictionary2 setObject:array forKey:@"Keywords"];
         }
 
         v43 = v13;
-        if (([v49 containsObject:@"Photo Booth"] & 1) == 0)
+        if (([array containsObject:@"Photo Booth"] & 1) == 0)
         {
-          [v49 addObject:@"Photo Booth"];
+          [array addObject:@"Photo Booth"];
         }
 
         objc_autoreleasePoolPop(v45);
         v24 = v90;
-        v50 = v76;
+        selfCopy3 = selfCopy2;
       }
 
       else
       {
-        v50 = self;
+        selfCopy3 = self;
       }
 
-      [(DCIMImageWriter *)v50 _writeJPEGToURL:v43 withData:v88 thumbnail:v84 properties:v42 duringBurst:v85 != 0];
+      [(DCIMImageWriter *)selfCopy3 _writeJPEGToURL:v43 withData:v88 thumbnail:v84 properties:dictionary duringBurst:v85 != 0];
     }
 
     else
@@ -331,13 +331,13 @@
       v57 = [DCIMImageWriter preferredFileExtensionForType:v41];
 
       v43 = v13;
-      v58 = [v13 pathExtension];
-      v59 = [v58 isEqualToString:v57];
+      pathExtension2 = [v13 pathExtension];
+      v59 = [pathExtension2 isEqualToString:v57];
 
       if ((v59 & 1) == 0)
       {
-        v60 = [v13 URLByDeletingPathExtension];
-        v61 = [v60 URLByAppendingPathExtension:v57];
+        uRLByDeletingPathExtension = [v13 URLByDeletingPathExtension];
+        v61 = [uRLByDeletingPathExtension URLByAppendingPathExtension:v57];
 
         v43 = v61;
       }
@@ -349,27 +349,27 @@
     v51 = [PLFileSystemPersistence filesystemPersistenceBatchItemForFileAtURL:v43];
     if (v51)
     {
-      v62 = [v4 objectForKey:@"AssetWriterID"];
+      v62 = [diskCopy objectForKey:@"AssetWriterID"];
 
       if (v62)
       {
-        v63 = [v4 objectForKey:@"AssetWriterID"];
+        v63 = [diskCopy objectForKey:@"AssetWriterID"];
         [v51 setString:v63 forKey:@"com.apple.assetsd.creatorBundleID"];
       }
 
-      v64 = [v4 objectForKey:@"AssetWriterDisplayName"];
+      v64 = [diskCopy objectForKey:@"AssetWriterDisplayName"];
 
       if (v64)
       {
-        v65 = [v4 objectForKey:@"AssetWriterDisplayName"];
+        v65 = [diskCopy objectForKey:@"AssetWriterDisplayName"];
         [v51 setString:v65 forKey:@"com.apple.assetsd.importedByDisplayName"];
       }
 
-      v66 = [v4 objectForKey:@"OriginalAssetUUID"];
+      v66 = [diskCopy objectForKey:@"OriginalAssetUUID"];
 
       if (v66)
       {
-        v67 = [v4 objectForKey:@"OriginalAssetUUID"];
+        v67 = [diskCopy objectForKey:@"OriginalAssetUUID"];
         [v51 setUUIDString:v67 forKey:@"com.apple.assetsd.originalAssetUUID"];
       }
 
@@ -381,7 +381,7 @@
         [v51 setUUIDString:v70 forKey:@"com.apple.assetsd.avalanche.UUID"];
       }
 
-      v71 = [v4 objectForKey:@"kPLImageWriterCameraAdjustmentData"];
+      v71 = [diskCopy objectForKey:@"kPLImageWriterCameraAdjustmentData"];
       if (v71)
       {
         [v51 setData:v71 forKey:@"com.apple.assetsd.inProgress.cameraAdjustmentsData"];
@@ -393,26 +393,26 @@
       v24 = v90;
     }
 
-    v55 = [v4 objectForKey:@"Date"];
+    v55 = [diskCopy objectForKey:@"Date"];
     if (v55)
     {
       [v43 setResourceValue:v55 forKey:*MEMORY[0x1E695DAA8] error:0];
     }
 
-    v72 = [v4 objectForKey:@"callStack"];
+    v72 = [diskCopy objectForKey:@"callStack"];
 
     if (v72)
     {
       NSLog(@"##### SAVE to %@, uti %@, extension %@", v43, v41, v86);
     }
 
-    v73 = [v43 path];
-    [v4 setObject:v73 forKey:@"PhotoSourcePath"];
+    path2 = [v43 path];
+    [diskCopy setObject:path2 forKey:@"PhotoSourcePath"];
 
-    [v4 setObject:v41 forKey:@"Type"];
-    if (v42)
+    [diskCopy setObject:v41 forKey:@"Type"];
+    if (dictionary)
     {
-      [v4 setObject:v42 forKey:@"EXIFProperties"];
+      [diskCopy setObject:dictionary forKey:@"EXIFProperties"];
     }
   }
 
@@ -420,7 +420,7 @@
   {
     v51 = PLServicesLocalizedFrameworkString(@"ENCODING_FAILED");
     v52 = MEMORY[0x1E695DF20];
-    v53 = v4;
+    v53 = diskCopy;
     v54 = [v52 alloc];
     v55 = [v54 initWithObjectsAndKeys:{v51, *MEMORY[0x1E696A578], 0}];
     v56 = [MEMORY[0x1E696ABC0] errorWithDomain:@"com.apple.photos" code:12 userInfo:v55];
@@ -432,79 +432,79 @@
   return 1;
 }
 
-+ (id)defaultFileExtensionForAssetType:(signed __int16)a3
++ (id)defaultFileExtensionForAssetType:(signed __int16)type
 {
-  if (a3 > 2)
+  if (type > 2)
   {
     return 0;
   }
 
   else
   {
-    return off_1E792F750[a3];
+    return off_1E792F750[type];
   }
 }
 
-+ (id)preferredFileExtensionForType:(id)a3
++ (id)preferredFileExtensionForType:(id)type
 {
-  v3 = [MEMORY[0x1E69C08F0] typeWithIdentifier:a3];
+  v3 = [MEMORY[0x1E69C08F0] typeWithIdentifier:type];
   if ([v3 isEqual:*MEMORY[0x1E6983008]])
   {
-    v4 = @"TIF";
+    uppercaseString = @"TIF";
   }
 
   else if ([v3 isEqual:*MEMORY[0x1E6982F28]])
   {
-    v4 = @"PNG";
+    uppercaseString = @"PNG";
   }
 
   else if ([v3 isEqual:*MEMORY[0x1E6982DE8]])
   {
-    v4 = @"GIF";
+    uppercaseString = @"GIF";
   }
 
   else if ([v3 isEqual:*MEMORY[0x1E6982E58]])
   {
-    v4 = @"JPG";
+    uppercaseString = @"JPG";
   }
 
   else
   {
-    v5 = [v3 preferredFilenameExtension];
-    v6 = v5;
-    if (v5)
+    preferredFilenameExtension = [v3 preferredFilenameExtension];
+    v6 = preferredFilenameExtension;
+    if (preferredFilenameExtension)
     {
-      v4 = [v5 uppercaseString];
+      uppercaseString = [preferredFilenameExtension uppercaseString];
     }
 
     else
     {
-      v4 = @"JPG";
+      uppercaseString = @"JPG";
     }
   }
 
-  return v4;
+  return uppercaseString;
 }
 
-+ (BOOL)isLivePhotoFilteredVideoPath:(id)a3
++ (BOOL)isLivePhotoFilteredVideoPath:(id)path
 {
-  v3 = [a3 stringByDeletingPathExtension];
-  v4 = [v3 pathExtension];
+  stringByDeletingPathExtension = [path stringByDeletingPathExtension];
+  pathExtension = [stringByDeletingPathExtension pathExtension];
 
-  LOBYTE(v3) = [v4 isEqualToString:@"FILTERED"];
-  return v3;
+  LOBYTE(stringByDeletingPathExtension) = [pathExtension isEqualToString:@"FILTERED"];
+  return stringByDeletingPathExtension;
 }
 
-+ (id)recordedVideoPathForFilteredLivePhotoVideoPath:(id)a3
++ (id)recordedVideoPathForFilteredLivePhotoVideoPath:(id)path
 {
-  v4 = a3;
-  if ([a1 isLivePhotoFilteredVideoPath:v4])
+  pathCopy = path;
+  if ([self isLivePhotoFilteredVideoPath:pathCopy])
   {
-    v5 = [v4 pathExtension];
-    v6 = [v4 stringByDeletingPathExtension];
-    v7 = [v6 stringByDeletingPathExtension];
+    pathExtension = [pathCopy pathExtension];
+    stringByDeletingPathExtension = [pathCopy stringByDeletingPathExtension];
+    v6StringByDeletingPathExtension = [stringByDeletingPathExtension stringByDeletingPathExtension];
 
-    v8 = [v7 stringByAppendingPathExtension:v5];
+    v8 = [v6StringByDeletingPathExtension stringByAppendingPathExtension:pathExtension];
   }
 
   else
@@ -515,30 +515,30 @@
   return v8;
 }
 
-+ (id)filteredVideoPathForRecordedLivePhotoVideoPath:(id)a3
++ (id)filteredVideoPathForRecordedLivePhotoVideoPath:(id)path
 {
-  v3 = a3;
-  v4 = [v3 stringByDeletingPathExtension];
-  v5 = [v3 pathExtension];
+  pathCopy = path;
+  stringByDeletingPathExtension = [pathCopy stringByDeletingPathExtension];
+  pathExtension = [pathCopy pathExtension];
 
-  v6 = [v4 stringByAppendingPathExtension:@"FILTERED"];
-  v7 = [v6 stringByAppendingPathExtension:v5];
+  v6 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"FILTERED"];
+  v7 = [v6 stringByAppendingPathExtension:pathExtension];
 
   return v7;
 }
 
-+ (id)uniqueIncomingPathForAssetWithUUID:(id)a3 andExtension:(id)a4 isPhotoStream:(BOOL)a5
++ (id)uniqueIncomingPathForAssetWithUUID:(id)d andExtension:(id)extension isPhotoStream:(BOOL)stream
 {
-  v7 = a3;
-  v8 = a4;
-  if (![v7 length])
+  dCopy = d;
+  extensionCopy = extension;
+  if (![dCopy length])
   {
     v9 = +[PLUUIDString string];
 
-    v7 = v9;
+    dCopy = v9;
   }
 
-  if (a5)
+  if (stream)
   {
     +[DCIMImageWriter incomingDirectoryPathForPhotoStream];
   }
@@ -548,12 +548,12 @@
     +[DCIMImageWriter incomingDirectoryPath];
   }
   v10 = ;
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.f%@%@", CFAbsoluteTimeGetCurrent() * 100.0, @"__", v7];
-  v12 = [v10 stringByAppendingPathComponent:v11];
+  dCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.f%@%@", CFAbsoluteTimeGetCurrent() * 100.0, @"__", dCopy];
+  v12 = [v10 stringByAppendingPathComponent:dCopy];
 
-  if (v8)
+  if (extensionCopy)
   {
-    v13 = [v12 stringByAppendingPathExtension:v8];
+    v13 = [v12 stringByAppendingPathExtension:extensionCopy];
 
     v12 = v13;
   }
@@ -564,8 +564,8 @@
 + (id)incomingDirectoryPathForPhotoStream
 {
   pl_dispatch_once(&incomingDirectoryPathForPhotoStream_onceToken, &__block_literal_global_31);
-  v2 = [MEMORY[0x1E696AC08] defaultManager];
-  [v2 createDirectoryAtPath:incomingDirectoryPathForPhotoStream_incomingDirectory withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  [defaultManager createDirectoryAtPath:incomingDirectoryPathForPhotoStream_incomingDirectory withIntermediateDirectories:1 attributes:0 error:0];
 
   v3 = incomingDirectoryPathForPhotoStream_incomingDirectory;
 
@@ -611,50 +611,50 @@ void __40__DCIMImageWriter_incomingDirectoryPath__block_invoke()
   }
 }
 
-+ (void)writeableDataForImage:(id)a3 previewImage:(id)a4 imageData:(id)a5 imageUTIType:(id)a6 imageSource:(CGImageSource *)a7 primaryImageProperties:(id)a8 imageOrientation:(int64_t)a9 thumbnailDataOut:(id *)a10 imageUTITypeOut:(id *)a11 primaryImagePropertiesOut:(id *)a12 isJPEGOut:(BOOL *)a13 imageDataOut:(id *)a14
++ (void)writeableDataForImage:(id)image previewImage:(id)previewImage imageData:(id)data imageUTIType:(id)type imageSource:(CGImageSource *)source primaryImageProperties:(id)properties imageOrientation:(int64_t)orientation thumbnailDataOut:(id *)self0 imageUTITypeOut:(id *)self1 primaryImagePropertiesOut:(id *)self2 isJPEGOut:(BOOL *)self3 imageDataOut:(id *)self4
 {
-  v19 = a3;
-  v20 = a4;
-  v21 = a5;
-  v22 = a6;
-  v23 = a8;
-  if (v20)
+  imageCopy = image;
+  previewImageCopy = previewImage;
+  dataCopy = data;
+  typeCopy = type;
+  propertiesCopy = properties;
+  if (previewImageCopy)
   {
-    v24 = v20;
+    v24 = previewImageCopy;
   }
 
   else
   {
-    v24 = v19;
+    v24 = imageCopy;
   }
 
   ImageAtIndex = [v24 CGImage];
   *valuePtr = 0;
-  if (v19)
+  if (imageCopy)
   {
     v26 = 1;
   }
 
   else
   {
-    v26 = v21 == 0;
+    v26 = dataCopy == 0;
   }
 
   v27 = !v26;
-  v92 = v19;
+  v92 = imageCopy;
   if (v26)
   {
-    if (!v19)
+    if (!imageCopy)
     {
       v28 = 1;
       goto LABEL_22;
     }
 
-    v30 = [v19 imageOrientation];
-    if ((v30 - 1) > 2)
+    imageOrientation = [imageCopy imageOrientation];
+    if ((imageOrientation - 1) > 2)
     {
       v28 = 3;
-      if (v22)
+      if (typeCopy)
       {
         goto LABEL_22;
       }
@@ -662,28 +662,28 @@ void __40__DCIMImageWriter_incomingDirectoryPath__block_invoke()
 
     else
     {
-      v28 = dword_1AAA8F234[v30 - 1];
-      if (v22)
+      v28 = dword_1AAA8F234[imageOrientation - 1];
+      if (typeCopy)
       {
         goto LABEL_22;
       }
     }
 
-    v29 = CGImageGetUTType([v19 CGImage]);
+    v29 = CGImageGetUTType([imageCopy CGImage]);
     goto LABEL_21;
   }
 
   v28 = 1;
-  if (!v22 && a7)
+  if (!typeCopy && source)
   {
-    v29 = CGImageSourceGetType(a7);
+    v29 = CGImageSourceGetType(source);
 LABEL_21:
-    v22 = v29;
+    typeCopy = v29;
   }
 
 LABEL_22:
-  v91 = v22;
-  v31 = [MEMORY[0x1E69C08F0] typeWithIdentifier:v22];
+  v91 = typeCopy;
+  v31 = [MEMORY[0x1E69C08F0] typeWithIdentifier:typeCopy];
   v32 = *MEMORY[0x1E6982E58];
   if (!v31)
   {
@@ -702,39 +702,39 @@ LABEL_22:
     v33 = v27;
   }
 
-  if (!a7 || !v33)
+  if (!source || !v33)
   {
-    v47 = a14;
+    dataOutCopy2 = dataOut;
     goto LABEL_62;
   }
 
   v34 = objc_alloc(MEMORY[0x1E695DF20]);
   v35 = [v34 initWithObjectsAndKeys:{*MEMORY[0x1E695E4D0], *MEMORY[0x1E696DFD8], 0}];
-  PrimaryImageIndex = CGImageSourceGetPrimaryImageIndex(a7);
-  v36 = CGImageSourceCopyPropertiesAtIndex(a7, PrimaryImageIndex, v35);
+  PrimaryImageIndex = CGImageSourceGetPrimaryImageIndex(source);
+  v36 = CGImageSourceCopyPropertiesAtIndex(source, PrimaryImageIndex, v35);
   v37 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v38 = v37;
   if (v36)
   {
-    v88 = v20;
+    v88 = previewImageCopy;
     v89 = v37;
     v86 = v28;
     v87 = v31;
     Value = CFDictionaryGetValue(v36, *MEMORY[0x1E696DED8]);
     v40 = CFDictionaryGetValue(v36, *MEMORY[0x1E696DEC8]);
-    if (!v23)
+    if (!propertiesCopy)
     {
-      v23 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v36];
+      propertiesCopy = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v36];
     }
 
     v85 = v35;
-    v41 = v23;
-    v42 = [v23 objectForKey:*MEMORY[0x1E696D9B0]];
+    v41 = propertiesCopy;
+    v42 = [propertiesCopy objectForKey:*MEMORY[0x1E696D9B0]];
     v43 = [v42 objectForKey:*MEMORY[0x1E696E060]];
-    v44 = [v43 intValue];
+    intValue = [v43 intValue];
 
     v45 = [v42 objectForKey:*MEMORY[0x1E696E068]];
-    v84 = [v45 intValue];
+    intValue2 = [v45 intValue];
 
     if (Value && v40)
     {
@@ -753,7 +753,7 @@ LABEL_22:
       v46 = 3039;
     }
 
-    v20 = v88;
+    previewImageCopy = v88;
     v49 = valuePtr[0];
     v48 = valuePtr[1];
     [PLAssetFormatsCore sizeForFormat:v46];
@@ -792,10 +792,10 @@ LABEL_22:
       [(__CFDictionary *)v89 setObject:v56 forKey:*MEMORY[0x1E696E0F8]];
     }
 
-    v23 = v41;
+    propertiesCopy = v41;
     v28 = v86;
     v38 = v89;
-    if (a14)
+    if (dataOut)
     {
       v31 = v87;
       v35 = v85;
@@ -805,12 +805,12 @@ LABEL_22:
     {
       v31 = v87;
       v35 = v85;
-      if (v44 >= 1 && v84 >= 1)
+      if (intValue >= 1 && intValue2 >= 1)
       {
         pl_dispatch_once(&PLPhysicalDeviceIsIPad___onceToken, &__block_literal_global);
         if ((PLPhysicalDeviceIsIPad___isIPad & 1) == 0)
         {
-          v57 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:objc_msgSend(v21 length:"bytes") + v44 freeWhenDone:{v84, 0}];
+          v57 = [MEMORY[0x1E695DEF0] dataWithBytesNoCopy:objc_msgSend(dataCopy length:"bytes") + intValue freeWhenDone:{intValue2, 0}];
           v58 = CGImageSourceCreateWithData(v57, 0);
           if (v58)
           {
@@ -827,41 +827,41 @@ LABEL_22:
                 ImageAtIndex = v61;
               }
 
-              v20 = v88;
-              v47 = 0;
+              previewImageCopy = v88;
+              dataOutCopy2 = 0;
 
               v38 = v89;
               goto LABEL_61;
             }
           }
 
-          v20 = v88;
+          previewImageCopy = v88;
           v38 = v89;
         }
       }
     }
   }
 
-  ImageAtIndex = CGImageSourceCreateImageAtIndex(a7, PrimaryImageIndex, v38);
-  v47 = a14;
+  ImageAtIndex = CGImageSourceCreateImageAtIndex(source, PrimaryImageIndex, v38);
+  dataOutCopy2 = dataOut;
 LABEL_61:
   v93 = ImageAtIndex != 0;
 
 LABEL_62:
-  if (v47)
+  if (dataOutCopy2)
   {
-    if (v21)
+    if (dataCopy)
     {
-      v62 = v21;
+      data = dataCopy;
     }
 
     else
     {
-      v63 = v23;
-      v64 = v20;
-      v62 = [MEMORY[0x1E695DF88] data];
-      v65 = [v31 identifier];
-      v66 = CGImageDestinationCreateWithData(v62, v65, 1uLL, 0);
+      v63 = propertiesCopy;
+      v64 = previewImageCopy;
+      data = [MEMORY[0x1E695DF88] data];
+      identifier = [v31 identifier];
+      v66 = CGImageDestinationCreateWithData(data, identifier, 1uLL, 0);
 
       if (v66)
       {
@@ -869,26 +869,26 @@ LABEL_62:
         if (!CGImageDestinationFinalize(v66))
         {
 
-          v62 = 0;
+          data = 0;
         }
 
-        v23 = v63;
+        propertiesCopy = v63;
         CFRelease(v66);
-        v20 = v64;
+        previewImageCopy = v64;
       }
 
       else
       {
-        v20 = v64;
-        v23 = v63;
+        previewImageCopy = v64;
+        propertiesCopy = v63;
       }
     }
 
-    v67 = v62;
-    *v47 = v62;
+    v67 = data;
+    *dataOutCopy2 = data;
   }
 
-  if (!v23)
+  if (!propertiesCopy)
   {
     v68 = objc_alloc(MEMORY[0x1E696AD98]);
     if (v28 - 2 > 2)
@@ -902,22 +902,22 @@ LABEL_62:
     }
 
     v70 = [v68 initWithInt:v69];
-    v71 = [MEMORY[0x1E695DF90] dictionary];
-    PLAddTIFFDPIPropertiesToDictionary(v71);
-    v72 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v70, *MEMORY[0x1E696DE78], v71, *MEMORY[0x1E696DF28], 0}];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    PLAddTIFFDPIPropertiesToDictionary(dictionary);
+    v72 = [MEMORY[0x1E695DF90] dictionaryWithObjectsAndKeys:{v70, *MEMORY[0x1E696DE78], dictionary, *MEMORY[0x1E696DF28], 0}];
 
-    v23 = v72;
+    propertiesCopy = v72;
   }
 
-  if (a10)
+  if (out)
   {
-    v73 = v23;
-    v74 = ImageAtIndex;
+    v73 = propertiesCopy;
+    cGImage = ImageAtIndex;
     if (!v93)
     {
-      if (v20)
+      if (previewImageCopy)
       {
-        v75 = v20;
+        v75 = previewImageCopy;
       }
 
       else
@@ -925,46 +925,46 @@ LABEL_62:
         v75 = v92;
       }
 
-      v74 = [v75 CGImage];
+      cGImage = [v75 CGImage];
     }
 
     v76 = v31;
-    v77 = v21;
-    v78 = v20;
-    if ((a9 - 1) > 6)
+    v77 = dataCopy;
+    v78 = previewImageCopy;
+    if ((orientation - 1) > 6)
     {
       v79 = 0;
     }
 
     else
     {
-      v79 = qword_1AAA8F358[a9 - 1];
+      v79 = qword_1AAA8F358[orientation - 1];
     }
 
-    v80 = [objc_alloc(NSClassFromString(@"UIImage")) initWithCGImage:v74 scale:v79 orientation:1.0];
+    v80 = [objc_alloc(NSClassFromString(@"UIImage")) initWithCGImage:cGImage scale:v79 orientation:1.0];
     v81 = PLCreateImageWithFormatFromImage(v80, 0, 3039, 0, 0);
-    *a10 = DCIM_newJPEGRepresentationWithPLImage(v81, 0.899999976);
+    *out = DCIM_newJPEGRepresentationWithPLImage(v81, 0.899999976);
 
-    v20 = v78;
-    v21 = v77;
-    v23 = v73;
+    previewImageCopy = v78;
+    dataCopy = v77;
+    propertiesCopy = v73;
     v31 = v76;
   }
 
-  if (a11)
+  if (typeOut)
   {
-    *a11 = [v31 identifier];
+    *typeOut = [v31 identifier];
   }
 
-  if (a12)
+  if (propertiesOut)
   {
-    v82 = v23;
-    *a12 = v23;
+    v82 = propertiesCopy;
+    *propertiesOut = propertiesCopy;
   }
 
-  if (a13)
+  if (gOut)
   {
-    *a13 = v90;
+    *gOut = v90;
   }
 
   v83 = v93;

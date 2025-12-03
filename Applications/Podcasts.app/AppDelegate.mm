@@ -1,16 +1,16 @@
 @interface AppDelegate
-+ (id)createWindowWithScene:(id)a3;
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5;
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5;
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5;
++ (id)createWindowWithScene:(id)scene;
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler;
+- (BOOL)application:(id)application openURL:(id)l options:(id)options;
+- (BOOL)application:(id)application runTest:(id)test options:(id)options;
 - (UIWindow)window;
 - (_TtC8Podcasts19LibraryDataProvider)libraryDataProvider;
-- (void)application:(id)a3 openStateRestorationActivity:(id)a4;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillTerminate:(id)a3;
-- (void)handleDebugActivationFrom:(id)a3;
-- (void)setCommandController:(id)a3;
+- (void)application:(id)application openStateRestorationActivity:(id)activity;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillTerminate:(id)terminate;
+- (void)handleDebugActivationFrom:(id)from;
+- (void)setCommandController:(id)controller;
 - (void)willConnectScene;
 @end
 
@@ -19,18 +19,18 @@
 - (_TtC8Podcasts19LibraryDataProvider)libraryDataProvider
 {
   type metadata accessor for LibraryDataProvider(0);
-  v3 = self;
+  selfCopy = self;
 
   BaseObjectGraph.inject<A>(_:)();
 
   return v5;
 }
 
-+ (id)createWindowWithScene:(id)a3
++ (id)createWindowWithScene:(id)scene
 {
   v4 = objc_allocWithZone(UIWindow);
-  v5 = a3;
-  v6 = [v4 initWithWindowScene:v5];
+  sceneCopy = scene;
+  v6 = [v4 initWithWindowScene:sceneCopy];
   v7 = objc_allocWithZone(UIColor);
   v8 = v6;
   v9 = [v7 initWithWhite:0.0 alpha:0.2];
@@ -46,25 +46,25 @@
 - (void)willConnectScene
 {
   v3 = objc_opt_self();
-  v8 = self;
-  v4 = [v3 sharedApplication];
-  v5 = [v4 delegate];
+  selfCopy = self;
+  sharedApplication = [v3 sharedApplication];
+  delegate = [sharedApplication delegate];
 
-  if (!v5)
+  if (!delegate)
   {
 LABEL_5:
 
     return;
   }
 
-  if ([v5 respondsToSelector:"window"])
+  if ([delegate respondsToSelector:"window"])
   {
-    v6 = [v5 window];
+    window = [delegate window];
     swift_unknownObjectRelease();
-    if (v6)
+    if (window)
     {
       v7 = sub_10001DB48();
-      [v6 setRootViewController:v7];
+      [window setRootViewController:v7];
     }
 
     goto LABEL_5;
@@ -76,18 +76,18 @@ LABEL_5:
 - (UIWindow)window
 {
   v3 = objc_opt_self();
-  v4 = self;
-  v5 = [v3 sharedApplication];
-  v6 = [v5 delegate];
+  selfCopy = self;
+  sharedApplication = [v3 sharedApplication];
+  delegate = [sharedApplication delegate];
 
-  if (v6)
+  if (delegate)
   {
-    if ([v6 respondsToSelector:"window"])
+    if ([delegate respondsToSelector:"window"])
     {
-      v7 = [v6 window];
+      window = [delegate window];
 
       swift_unknownObjectRelease();
-      v8 = v7;
+      v8 = window;
       goto LABEL_7;
     }
 
@@ -104,33 +104,33 @@ LABEL_7:
   return v8;
 }
 
-- (BOOL)application:(id)a3 continueUserActivity:(id)a4 restorationHandler:(id)a5
+- (BOOL)application:(id)application continueUserActivity:(id)activity restorationHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
-  v9 = a3;
-  v10 = a4;
-  v11 = self;
-  LOBYTE(self) = sub_10003BA44(v10);
+  v8 = _Block_copy(handler);
+  applicationCopy = application;
+  activityCopy = activity;
+  selfCopy = self;
+  LOBYTE(self) = sub_10003BA44(activityCopy);
   _Block_release(v8);
 
   return self & 1;
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
-  v4 = a3;
-  v5 = self;
-  sub_100046AEC(v4);
+  activeCopy = active;
+  selfCopy = self;
+  sub_100046AEC(activeCopy);
 }
 
-- (BOOL)application:(id)a3 runTest:(id)a4 options:(id)a5
+- (BOOL)application:(id)application runTest:(id)test options:(id)options
 {
-  v5 = a5;
-  if (!a4)
+  optionsCopy = options;
+  if (!test)
   {
     v8 = 0;
     v10 = 0;
-    if (!a5)
+    if (!options)
     {
       goto LABEL_4;
     }
@@ -140,51 +140,51 @@ LABEL_7:
 
   v8 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
-  if (v5)
+  if (optionsCopy)
   {
 LABEL_3:
-    v5 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
+    optionsCopy = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
 LABEL_4:
-  v11 = a3;
-  v12 = self;
-  sub_1002CF7E0(a3, v8, v10, v5);
+  applicationCopy = application;
+  selfCopy = self;
+  sub_1002CF7E0(application, v8, v10, optionsCopy);
   v14 = v13;
 
   return v14 & 1;
 }
 
-- (void)setCommandController:(id)a3
+- (void)setCommandController:(id)controller
 {
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8Podcasts11AppDelegate_commandController);
-  *(&self->super.super.isa + OBJC_IVAR____TtC8Podcasts11AppDelegate_commandController) = a3;
-  v3 = a3;
+  *(&self->super.super.isa + OBJC_IVAR____TtC8Podcasts11AppDelegate_commandController) = controller;
+  controllerCopy = controller;
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
-  v4 = a3;
-  v5 = self;
+  backgroundCopy = background;
+  selfCopy = self;
   sub_100303FC8();
 }
 
-- (void)applicationWillTerminate:(id)a3
+- (void)applicationWillTerminate:(id)terminate
 {
-  v4 = a3;
-  v5 = self;
+  terminateCopy = terminate;
+  selfCopy = self;
   sub_1003042A4();
 }
 
-- (void)application:(id)a3 openStateRestorationActivity:(id)a4
+- (void)application:(id)application openStateRestorationActivity:(id)activity
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  applicationCopy = application;
+  activityCopy = activity;
+  selfCopy = self;
   sub_100304634();
 }
 
-- (BOOL)application:(id)a3 openURL:(id)a4 options:(id)a5
+- (BOOL)application:(id)application openURL:(id)l options:(id)options
 {
   v7 = type metadata accessor for URL();
   v8 = *(v7 - 8);
@@ -194,19 +194,19 @@ LABEL_4:
   type metadata accessor for OpenURLOptionsKey(0);
   sub_10002C074(&qword_100573110, type metadata accessor for OpenURLOptionsKey);
   v11 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = self;
+  applicationCopy = application;
+  selfCopy = self;
   v14 = sub_1003048D8(v10, v11);
 
   (*(v8 + 8))(v10, v7);
   return v14 & 1;
 }
 
-- (void)handleDebugActivationFrom:(id)a3
+- (void)handleDebugActivationFrom:(id)from
 {
-  v4 = a3;
-  v5 = self;
-  sub_100303384(v4);
+  fromCopy = from;
+  selfCopy = self;
+  sub_100303384(fromCopy);
 }
 
 @end

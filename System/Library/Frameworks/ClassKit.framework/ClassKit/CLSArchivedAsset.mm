@@ -1,49 +1,49 @@
 @interface CLSArchivedAsset
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (id)initWithDatabaseRow:(id)a3;
-- (void)bindTo:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (id)initWithDatabaseRow:(id)row;
+- (void)bindTo:(id)to;
 @end
 
 @implementation CLSArchivedAsset
 
-- (id)initWithDatabaseRow:(id)a3
+- (id)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSArchivedAsset *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSArchivedAsset *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"parentObjectID");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"parentObjectID");
     [v6 setParentObjectID:v7];
 
-    v8 = sub_10016D778(v4, @"original");
+    v8 = sub_10016D778(rowCopy, @"original");
     [v6 setOriginal:{objc_msgSend(v8, "BOOLValue")}];
 
-    v9 = sub_10016D778(v4, @"ownerPersonID");
+    v9 = sub_10016D778(rowCopy, @"ownerPersonID");
     [v6 setOwnerPersonID:v9];
 
-    v10 = sub_10016D778(v4, @"ubiquitousContainerName");
+    v10 = sub_10016D778(rowCopy, @"ubiquitousContainerName");
     [v6 setUbiquitousContainerName:v10];
 
-    v11 = sub_10016D778(v4, @"relativePathWithinContainer");
+    v11 = sub_10016D778(rowCopy, @"relativePathWithinContainer");
     [v6 setRelativePathWithinContainer:v11];
 
-    v12 = sub_10016D778(v4, @"brItemID");
+    v12 = sub_10016D778(rowCopy, @"brItemID");
     [v6 setBrItemID:v12];
 
-    v13 = sub_10016D778(v4, @"brZoneName");
+    v13 = sub_10016D778(rowCopy, @"brZoneName");
     [v6 setBrZoneName:v13];
 
-    v14 = sub_10016D778(v4, @"brOwnerName");
+    v14 = sub_10016D778(rowCopy, @"brOwnerName");
     [v6 setBrOwnerName:v14];
 
-    v15 = sub_10016D778(v4, @"brShareName");
+    v15 = sub_10016D778(rowCopy, @"brShareName");
     [v6 setBrShareName:v15];
 
-    v16 = [v6 ubiquitousContainerName];
+    ubiquitousContainerName = [v6 ubiquitousContainerName];
 
-    if (v16)
+    if (ubiquitousContainerName)
     {
       if (![v6 type])
       {
@@ -56,7 +56,7 @@
       }
     }
 
-    v17 = sub_10016D778(v4, @"url");
+    v17 = sub_10016D778(rowCopy, @"url");
     if (v17)
     {
       v18 = [[NSURL alloc] initWithString:v17];
@@ -64,43 +64,43 @@
     }
 
     [v6 setAppIdentifier:0];
-    v19 = sub_10016D778(v4, @"type");
+    v19 = sub_10016D778(rowCopy, @"type");
     [v6 setType:{objc_msgSend(v19, "integerValue")}];
 
-    v20 = sub_10016D778(v4, @"parentEntityType");
+    v20 = sub_10016D778(rowCopy, @"parentEntityType");
     [v6 setParentEntityType:{objc_msgSend(v20, "integerValue")}];
 
-    v21 = sub_10016D778(v4, @"title");
+    v21 = sub_10016D778(rowCopy, @"title");
     [v6 setTitle:v21];
 
-    v22 = sub_10016D778(v4, @"fileSizeInBytes");
+    v22 = sub_10016D778(rowCopy, @"fileSizeInBytes");
     [v6 setFileSizeInBytes:{objc_msgSend(v22, "integerValue")}];
 
-    v23 = sub_10016D778(v4, @"displayOrder");
+    v23 = sub_10016D778(rowCopy, @"displayOrder");
     [v6 setDisplayOrder:{objc_msgSend(v23, "integerValue")}];
 
-    v24 = sub_10016D778(v4, @"durationInSeconds");
+    v24 = sub_10016D778(rowCopy, @"durationInSeconds");
     [v24 doubleValue];
     [v6 setDurationInSeconds:?];
 
-    v25 = sub_10016D778(v4, @"fileUTTypeIdentifier");
+    v25 = sub_10016D778(rowCopy, @"fileUTTypeIdentifier");
     if (v25)
     {
       v26 = [UTType typeWithIdentifier:v25];
       [v6 setFileUTType:v26];
     }
 
-    v27 = sub_10016D778(v4, @"originalFilename");
+    v27 = sub_10016D778(rowCopy, @"originalFilename");
     [v6 setOriginalFilename:v27];
 
-    v28 = sub_10016D778(v4, @"downloaded");
+    v28 = sub_10016D778(rowCopy, @"downloaded");
     [v6 setDownloaded:{objc_msgSend(v28, "BOOLValue")}];
 
-    v29 = sub_10016D778(v4, @"fractionDownloaded");
+    v29 = sub_10016D778(rowCopy, @"fractionDownloaded");
     [v29 doubleValue];
     [v6 setFractionDownloaded:?];
 
-    v30 = sub_10016D778(v4, @"thumbnailURL");
+    v30 = sub_10016D778(rowCopy, @"thumbnailURL");
 
     if (v30)
     {
@@ -112,90 +112,90 @@
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
   v30.receiver = self;
   v30.super_class = CLSArchivedAsset;
-  v4 = a3;
-  [(CLSArchivedAsset *)&v30 bindTo:v4];
+  toCopy = to;
+  [(CLSArchivedAsset *)&v30 bindTo:toCopy];
   v5 = [(CLSArchivedAsset *)self parentObjectID:v30.receiver];
-  sub_1000982FC(v4, v5, @"parentObjectID");
+  sub_1000982FC(toCopy, v5, @"parentObjectID");
 
-  v6 = [(CLSArchivedAsset *)self brItemID];
-  sub_1000982FC(v4, v6, @"brItemID");
+  brItemID = [(CLSArchivedAsset *)self brItemID];
+  sub_1000982FC(toCopy, brItemID, @"brItemID");
 
-  v7 = [(CLSArchivedAsset *)self brZoneName];
-  sub_1000982FC(v4, v7, @"brZoneName");
+  brZoneName = [(CLSArchivedAsset *)self brZoneName];
+  sub_1000982FC(toCopy, brZoneName, @"brZoneName");
 
-  v8 = [(CLSArchivedAsset *)self brOwnerName];
-  sub_1000982FC(v4, v8, @"brOwnerName");
+  brOwnerName = [(CLSArchivedAsset *)self brOwnerName];
+  sub_1000982FC(toCopy, brOwnerName, @"brOwnerName");
 
-  v9 = [(CLSArchivedAsset *)self brShareName];
-  sub_1000982FC(v4, v9, @"brShareName");
+  brShareName = [(CLSArchivedAsset *)self brShareName];
+  sub_1000982FC(toCopy, brShareName, @"brShareName");
 
-  v10 = [(CLSArchivedAsset *)self ownerPersonID];
-  sub_1000982FC(v4, v10, @"ownerPersonID");
+  ownerPersonID = [(CLSArchivedAsset *)self ownerPersonID];
+  sub_1000982FC(toCopy, ownerPersonID, @"ownerPersonID");
 
   v11 = [NSNumber numberWithBool:[(CLSArchivedAsset *)self isOriginal]];
-  sub_1000982FC(v4, v11, @"original");
+  sub_1000982FC(toCopy, v11, @"original");
 
   v12 = [(CLSArchivedAsset *)self URL];
-  v13 = [v12 absoluteString];
-  sub_1000982FC(v4, v13, @"url");
+  absoluteString = [v12 absoluteString];
+  sub_1000982FC(toCopy, absoluteString, @"url");
 
-  v14 = [(CLSArchivedAsset *)self ubiquitousContainerName];
-  sub_1000982FC(v4, v14, @"ubiquitousContainerName");
+  ubiquitousContainerName = [(CLSArchivedAsset *)self ubiquitousContainerName];
+  sub_1000982FC(toCopy, ubiquitousContainerName, @"ubiquitousContainerName");
 
-  v15 = [(CLSArchivedAsset *)self relativePathWithinContainer];
-  sub_1000982FC(v4, v15, @"relativePathWithinContainer");
+  relativePathWithinContainer = [(CLSArchivedAsset *)self relativePathWithinContainer];
+  sub_1000982FC(toCopy, relativePathWithinContainer, @"relativePathWithinContainer");
 
   v31 = @"appIdentifier";
   v16 = [NSArray arrayWithObjects:&v31 count:1];
-  sub_1000983A8(v4, v16);
+  sub_1000983A8(toCopy, v16);
 
   v17 = [NSNumber numberWithInteger:[(CLSArchivedAsset *)self type]];
-  sub_1000982FC(v4, v17, @"type");
+  sub_1000982FC(toCopy, v17, @"type");
 
   v18 = [NSNumber numberWithInteger:[(CLSArchivedAsset *)self parentEntityType]];
-  sub_1000982FC(v4, v18, @"parentEntityType");
+  sub_1000982FC(toCopy, v18, @"parentEntityType");
 
-  v19 = [(CLSArchivedAsset *)self title];
-  sub_1000982FC(v4, v19, @"title");
+  title = [(CLSArchivedAsset *)self title];
+  sub_1000982FC(toCopy, title, @"title");
 
   v20 = [NSNumber numberWithInteger:[(CLSArchivedAsset *)self fileSizeInBytes]];
-  sub_1000982FC(v4, v20, @"fileSizeInBytes");
+  sub_1000982FC(toCopy, v20, @"fileSizeInBytes");
 
   v21 = [NSNumber numberWithInteger:[(CLSArchivedAsset *)self displayOrder]];
-  sub_1000982FC(v4, v21, @"displayOrder");
+  sub_1000982FC(toCopy, v21, @"displayOrder");
 
   [(CLSArchivedAsset *)self durationInSeconds];
   v22 = [NSNumber numberWithDouble:?];
-  sub_1000982FC(v4, v22, @"durationInSeconds");
+  sub_1000982FC(toCopy, v22, @"durationInSeconds");
 
-  v23 = [(CLSArchivedAsset *)self fileUTType];
-  v24 = [v23 identifier];
-  sub_1000982FC(v4, v24, @"fileUTTypeIdentifier");
+  fileUTType = [(CLSArchivedAsset *)self fileUTType];
+  identifier = [fileUTType identifier];
+  sub_1000982FC(toCopy, identifier, @"fileUTTypeIdentifier");
 
-  v25 = [(CLSArchivedAsset *)self originalFilename];
-  sub_1000982FC(v4, v25, @"originalFilename");
+  originalFilename = [(CLSArchivedAsset *)self originalFilename];
+  sub_1000982FC(toCopy, originalFilename, @"originalFilename");
 
   v26 = [NSNumber numberWithBool:[(CLSArchivedAsset *)self isDownloaded]];
-  sub_1000982FC(v4, v26, @"downloaded");
+  sub_1000982FC(toCopy, v26, @"downloaded");
 
   [(CLSArchivedAsset *)self fractionDownloaded];
   v27 = [NSNumber numberWithDouble:?];
-  sub_1000982FC(v4, v27, @"fractionDownloaded");
+  sub_1000982FC(toCopy, v27, @"fractionDownloaded");
 
-  v28 = [(CLSArchivedAsset *)self thumbnailURL];
-  v29 = [v28 absoluteString];
-  sub_1000982FC(v4, v29, @"thumbnailURL");
+  thumbnailURL = [(CLSArchivedAsset *)self thumbnailURL];
+  absoluteString2 = [thumbnailURL absoluteString];
+  sub_1000982FC(toCopy, absoluteString2, @"thumbnailURL");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  switch(a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  switch(version)
   {
     case 2uLL:
       goto LABEL_13;
@@ -297,7 +297,7 @@ LABEL_31:
 LABEL_13:
       if (sub_1000B9298(v8, @"alter table CLSArchivedAsset add column durationInSeconds real", 0, 0, 0))
       {
-        a3 = 3;
+        version = 3;
         break;
       }
 
@@ -313,7 +313,7 @@ LABEL_13:
 
       goto LABEL_31;
     case 0uLL:
-      if (!sub_1000B9298(v7, @"create table CLSArchivedAsset(objectID         text not null, parentObjectID   text not null, dateCreated      real not null, dateLastModified real not null, appIdentifier    text not null, url              text, brItemID         text, brZoneName       text, brOwnerName      text, ownerPersonID    text, uploaded         integer, original         integer, ubiquitousContainerName     text, relativePathWithinContainer text, brShareName      text, foreign key (parentObjectID) references CLSArchivedHandoutAttachment(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSArchivedAsset_objectID on CLSArchivedAsset (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSArchivedAsset_parentObjectID on CLSArchivedAsset (parentObjectID)", 0, 0, 0))
+      if (!sub_1000B9298(databaseCopy, @"create table CLSArchivedAsset(objectID         text not null, parentObjectID   text not null, dateCreated      real not null, dateLastModified real not null, appIdentifier    text not null, url              text, brItemID         text, brZoneName       text, brOwnerName      text, ownerPersonID    text, uploaded         integer, original         integer, ubiquitousContainerName     text, relativePathWithinContainer text, brShareName      text, foreign key (parentObjectID) references CLSArchivedHandoutAttachment(objectID) on delete cascade on update cascade)", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index CLSArchivedAsset_objectID on CLSArchivedAsset (objectID)", 0, 0, 0) || !sub_1000B9298(v8, @"create index CLSArchivedAsset_parentObjectID on CLSArchivedAsset (parentObjectID)", 0, 0, 0))
       {
         goto LABEL_31;
       }
@@ -321,7 +321,7 @@ LABEL_13:
       goto LABEL_7;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_32:
 

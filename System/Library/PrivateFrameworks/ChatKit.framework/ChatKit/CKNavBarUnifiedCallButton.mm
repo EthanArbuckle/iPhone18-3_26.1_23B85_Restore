@@ -1,7 +1,7 @@
 @interface CKNavBarUnifiedCallButton
 - (BOOL)shouldUseJoinPillWithLabel;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CKNavBarUnifiedCallButton)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CKNavBarUnifiedCallButton)initWithFrame:(CGRect)frame;
 - (CKNavBarUnifiedCallButtonDelegate)delegate;
 - (UIAction)faceTimeAudioAction;
 - (UIAction)faceTimeInviteToShareTheirScreenAction;
@@ -33,28 +33,28 @@
 - (void)_configureActionsForCurrentState;
 - (void)_configureFrameForCurrentState;
 - (void)_configureInsetsForCurrentState;
-- (void)_configureParentBarButtonItemWithBackgroundColor:(id)a3;
+- (void)_configureParentBarButtonItemWithBackgroundColor:(id)color;
 - (void)_updateForCurrentState;
 - (void)layoutSubviews;
-- (void)setJoinPillShouldDisableLabel:(BOOL)a3;
-- (void)setOverrideAudioCallActions:(id)a3;
-- (void)setParentBarButtonItem:(id)a3;
-- (void)updateWithStyle:(int64_t)a3 availabilityForVideo:(BOOL)a4 audio:(BOOL)a5 telephony:(BOOL)a6 screenSharing:(BOOL)a7;
+- (void)setJoinPillShouldDisableLabel:(BOOL)label;
+- (void)setOverrideAudioCallActions:(id)actions;
+- (void)setParentBarButtonItem:(id)item;
+- (void)updateWithStyle:(int64_t)style availabilityForVideo:(BOOL)video audio:(BOOL)audio telephony:(BOOL)telephony screenSharing:(BOOL)sharing;
 @end
 
 @implementation CKNavBarUnifiedCallButton
 
-- (CKNavBarUnifiedCallButton)initWithFrame:(CGRect)a3
+- (CKNavBarUnifiedCallButton)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = CKNavBarUnifiedCallButton;
-  v3 = [(CKNavBarUnifiedCallButton *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CKNavBarUnifiedCallButton *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(CKNavBarUnifiedCallButton *)v3 setButtonStyle:0];
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v4 selector:sel__localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__localeDidChange_ name:*MEMORY[0x1E695D8F0] object:0];
 
     if (objc_opt_respondsToSelector())
     {
@@ -72,23 +72,23 @@
   [(CKNavBarUnifiedCallButton *)&v14 layoutSubviews];
   [(CKNavBarUnifiedCallButton *)self _cornerRadiusForCurrentStyle];
   v4 = v3;
-  v5 = [(CKNavBarUnifiedCallButton *)self layer];
-  [v5 setCornerRadius:v4];
+  layer = [(CKNavBarUnifiedCallButton *)self layer];
+  [layer setCornerRadius:v4];
 
   if ([(CKNavBarUnifiedCallButton *)self _isStyledForJoinableCall])
   {
-    v6 = [(CKNavBarUnifiedCallButton *)self titleLabel];
-    v7 = [v6 text];
-    if ([v7 length])
+    titleLabel = [(CKNavBarUnifiedCallButton *)self titleLabel];
+    text = [titleLabel text];
+    if ([text length])
     {
-      v8 = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
+      joinPillShouldDisableLabel = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
 
-      if (!v8)
+      if (!joinPillShouldDisableLabel)
       {
         [(CKNavBarUnifiedCallButton *)self _currentLabelPreferredWidth];
         v10 = v9;
-        v11 = [(CKNavBarUnifiedCallButton *)self titleLabel];
-        [v11 bounds];
+        titleLabel2 = [(CKNavBarUnifiedCallButton *)self titleLabel];
+        [titleLabel2 bounds];
         v13 = ceil(v12);
 
         if (v10 > v13)
@@ -104,12 +104,12 @@
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
+  height = fits.height;
   v7.receiver = self;
   v7.super_class = CKNavBarUnifiedCallButton;
-  [(CKNavBarUnifiedCallButton *)&v7 sizeThatFits:a3.width];
+  [(CKNavBarUnifiedCallButton *)&v7 sizeThatFits:fits.width];
   v5 = fmin(v4, 80.0);
   v6 = height;
   result.height = v6;
@@ -117,24 +117,24 @@
   return result;
 }
 
-- (void)updateWithStyle:(int64_t)a3 availabilityForVideo:(BOOL)a4 audio:(BOOL)a5 telephony:(BOOL)a6 screenSharing:(BOOL)a7
+- (void)updateWithStyle:(int64_t)style availabilityForVideo:(BOOL)video audio:(BOOL)audio telephony:(BOOL)telephony screenSharing:(BOOL)sharing
 {
-  v7 = a7;
-  v8 = a6;
-  v9 = a5;
-  v10 = a4;
+  sharingCopy = sharing;
+  telephonyCopy = telephony;
+  audioCopy = audio;
+  videoCopy = video;
   v29 = *MEMORY[0x1E69E9840];
-  v13 = self->_buttonStyle != a3 || self->_faceTimeVideoAvailable != a4 || self->_faceTimeAudioAvailable != a5 || self->_telephonyCallAvailable != a6 || self->_screenSharingAvailable != a7;
-  self->_buttonStyle = a3;
-  self->_faceTimeVideoAvailable = a4;
-  self->_faceTimeAudioAvailable = a5;
-  self->_telephonyCallAvailable = a6;
-  self->_screenSharingAvailable = a7;
+  v13 = self->_buttonStyle != style || self->_faceTimeVideoAvailable != video || self->_faceTimeAudioAvailable != audio || self->_telephonyCallAvailable != telephony || self->_screenSharingAvailable != sharing;
+  self->_buttonStyle = style;
+  self->_faceTimeVideoAvailable = video;
+  self->_faceTimeAudioAvailable = audio;
+  self->_telephonyCallAvailable = telephony;
+  self->_screenSharingAvailable = sharing;
   v14 = IMLogHandleForCategory();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
     v15 = @"NO";
-    if (v10)
+    if (videoCopy)
     {
       v16 = @"YES";
     }
@@ -145,8 +145,8 @@
     }
 
     v19 = 134219010;
-    v20 = a3;
-    if (v9)
+    styleCopy = style;
+    if (audioCopy)
     {
       v17 = @"YES";
     }
@@ -158,7 +158,7 @@
 
     v21 = 2112;
     v22 = v16;
-    if (v8)
+    if (telephonyCopy)
     {
       v18 = @"YES";
     }
@@ -170,7 +170,7 @@
 
     v23 = 2112;
     v24 = v17;
-    if (v7)
+    if (sharingCopy)
     {
       v15 = @"YES";
     }
@@ -188,12 +188,12 @@
   }
 }
 
-- (void)setOverrideAudioCallActions:(id)a3
+- (void)setOverrideAudioCallActions:(id)actions
 {
-  v5 = a3;
-  if (([v5 isEqualToArray:self->_overrideAudioCallActions] & 1) == 0)
+  actionsCopy = actions;
+  if (([actionsCopy isEqualToArray:self->_overrideAudioCallActions] & 1) == 0)
   {
-    objc_storeStrong(&self->_overrideAudioCallActions, a3);
+    objc_storeStrong(&self->_overrideAudioCallActions, actions);
     [(CKNavBarUnifiedCallButton *)self _configureActionsForCurrentState];
   }
 }
@@ -201,9 +201,9 @@
 - (double)_currentLabelPreferredWidth
 {
   v21[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CKNavBarUnifiedCallButton *)self titleLabel];
-  v4 = [v3 text];
-  v5 = [v4 length];
+  titleLabel = [(CKNavBarUnifiedCallButton *)self titleLabel];
+  text = [titleLabel text];
+  v5 = [text length];
 
   if (!v5)
   {
@@ -213,17 +213,17 @@
   v6 = CKFrameworkBundle();
   v7 = [v6 localizedStringForKey:@"JOIN" value:&stru_1F04268F8 table:@"ChatKit"];
 
-  v8 = [(CKNavBarUnifiedCallButton *)self titleLabel];
-  v9 = [v8 font];
+  titleLabel2 = [(CKNavBarUnifiedCallButton *)self titleLabel];
+  font = [titleLabel2 font];
 
-  [v9 pointSize];
+  [font pointSize];
   v11 = v10;
-  v12 = [(CKNavBarUnifiedCallButton *)self titleLabel];
-  [v12 _actualScaleFactor];
+  titleLabel3 = [(CKNavBarUnifiedCallButton *)self titleLabel];
+  [titleLabel3 _actualScaleFactor];
   v14 = round(v11 * v13 * 4.0) * 0.25;
 
   v20 = *MEMORY[0x1E69DB648];
-  v15 = [v9 fontWithSize:v14];
+  v15 = [font fontWithSize:v14];
   v21[0] = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
 
@@ -233,21 +233,21 @@
   return v18;
 }
 
-- (void)setJoinPillShouldDisableLabel:(BOOL)a3
+- (void)setJoinPillShouldDisableLabel:(BOOL)label
 {
-  if (self->_joinPillShouldDisableLabel != a3)
+  if (self->_joinPillShouldDisableLabel != label)
   {
-    self->_joinPillShouldDisableLabel = a3;
+    self->_joinPillShouldDisableLabel = label;
     [(CKNavBarUnifiedCallButton *)self _updateForCurrentState];
     [(CKNavBarUnifiedCallButton *)self layoutIfNeeded];
-    v5 = [(CKNavBarUnifiedCallButton *)self delegate];
-    [v5 buttonWidthDidChange:self];
+    delegate = [(CKNavBarUnifiedCallButton *)self delegate];
+    [delegate buttonWidthDidChange:self];
   }
 }
 
-- (void)setParentBarButtonItem:(id)a3
+- (void)setParentBarButtonItem:(id)item
 {
-  obj = a3;
+  obj = item;
   WeakRetained = objc_loadWeakRetained(&self->_parentBarButtonItem);
 
   v5 = obj;
@@ -257,8 +257,8 @@
     v5 = obj;
     if (obj)
     {
-      v6 = [(CKNavBarUnifiedCallButton *)self _backgroundColorForCurrentStyle];
-      [(CKNavBarUnifiedCallButton *)self _configureParentBarButtonItemWithBackgroundColor:v6];
+      _backgroundColorForCurrentStyle = [(CKNavBarUnifiedCallButton *)self _backgroundColorForCurrentStyle];
+      [(CKNavBarUnifiedCallButton *)self _configureParentBarButtonItemWithBackgroundColor:_backgroundColorForCurrentStyle];
 
       v5 = obj;
     }
@@ -330,48 +330,48 @@ void __51__CKNavBarUnifiedCallButton__updateForCurrentState__block_invoke(uint64
 
 - (BOOL)shouldUseJoinPillWithLabel
 {
-  v3 = [(CKNavBarUnifiedCallButton *)self _isStyledForJoinableCall];
-  if (v3)
+  _isStyledForJoinableCall = [(CKNavBarUnifiedCallButton *)self _isStyledForJoinableCall];
+  if (_isStyledForJoinableCall)
   {
-    LOBYTE(v3) = ![(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
+    LOBYTE(_isStyledForJoinableCall) = ![(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
   }
 
-  return v3;
+  return _isStyledForJoinableCall;
 }
 
 - (void)_configureActionsForCurrentState
 {
-  v13 = [(CKNavBarUnifiedCallButton *)self _actionsForCurrentStyle];
-  v3 = [(CKNavBarUnifiedCallButton *)self _subActionsForCurrentStyle];
+  _actionsForCurrentStyle = [(CKNavBarUnifiedCallButton *)self _actionsForCurrentStyle];
+  _subActionsForCurrentStyle = [(CKNavBarUnifiedCallButton *)self _subActionsForCurrentStyle];
   if ([(CKNavBarUnifiedCallButton *)self _isStyledForJoinableCall]|| [(CKNavBarUnifiedCallButton *)self _isStyledForJoinedCall])
   {
-    v4 = [(CKNavBarUnifiedCallButton *)self openJoinedCallAction];
-    [(CKNavBarUnifiedCallButton *)self addAction:v4 forControlEvents:64];
+    openJoinedCallAction = [(CKNavBarUnifiedCallButton *)self openJoinedCallAction];
+    [(CKNavBarUnifiedCallButton *)self addAction:openJoinedCallAction forControlEvents:64];
 
     [(CKNavBarUnifiedCallButton *)self setMenu:0];
     [(CKNavBarUnifiedCallButton *)self setShowsMenuAsPrimaryAction:0];
-    v5 = self;
+    selfCopy2 = self;
     v6 = 1;
 LABEL_4:
-    [(CKNavBarUnifiedCallButton *)v5 setUserInteractionEnabled:v6];
+    [(CKNavBarUnifiedCallButton *)selfCopy2 setUserInteractionEnabled:v6];
     goto LABEL_5;
   }
 
-  if (![v13 count])
+  if (![_actionsForCurrentStyle count])
   {
-    v8 = [(CKNavBarUnifiedCallButton *)self openJoinedCallAction];
-    [(CKNavBarUnifiedCallButton *)self removeAction:v8 forControlEvents:64];
+    openJoinedCallAction2 = [(CKNavBarUnifiedCallButton *)self openJoinedCallAction];
+    [(CKNavBarUnifiedCallButton *)self removeAction:openJoinedCallAction2 forControlEvents:64];
 
     [(CKNavBarUnifiedCallButton *)self setMenu:0];
     [(CKNavBarUnifiedCallButton *)self setShowsMenuAsPrimaryAction:0];
-    v5 = self;
+    selfCopy2 = self;
     v6 = 0;
     goto LABEL_4;
   }
 
-  if (v3)
+  if (_subActionsForCurrentStyle)
   {
-    v7 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:v3];
+    v7 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:_subActionsForCurrentStyle];
   }
 
   else
@@ -379,15 +379,15 @@ LABEL_4:
     v7 = 0;
   }
 
-  v9 = [MEMORY[0x1E695DF70] arrayWithArray:v13];
+  v9 = [MEMORY[0x1E695DF70] arrayWithArray:_actionsForCurrentStyle];
   v10 = v9;
   if (v7)
   {
     [v9 addObject:v7];
   }
 
-  v11 = [(CKNavBarUnifiedCallButton *)self openJoinedCallAction];
-  [(CKNavBarUnifiedCallButton *)self removeAction:v11 forControlEvents:64];
+  openJoinedCallAction3 = [(CKNavBarUnifiedCallButton *)self openJoinedCallAction];
+  [(CKNavBarUnifiedCallButton *)self removeAction:openJoinedCallAction3 forControlEvents:64];
 
   v12 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:v10];
   [(CKNavBarUnifiedCallButton *)self setMenu:v12];
@@ -400,8 +400,8 @@ LABEL_5:
 
 - (void)_configureInsetsForCurrentState
 {
-  v3 = [(CKNavBarUnifiedCallButton *)self traitCollection];
-  v4 = [v3 layoutDirection];
+  traitCollection = [(CKNavBarUnifiedCallButton *)self traitCollection];
+  layoutDirection = [traitCollection layoutDirection];
 
   [(CKNavBarUnifiedCallButton *)self _topMarginForCurrentState];
   v6 = v5;
@@ -414,7 +414,7 @@ LABEL_5:
   [(CKNavBarUnifiedCallButton *)self _imageToTextSpacingForCurrentState];
   v14 = v12 + v13;
   v15 = -v13;
-  if (v4 == 1)
+  if (layoutDirection == 1)
   {
     v16 = -v13;
   }
@@ -424,7 +424,7 @@ LABEL_5:
     v16 = v13;
   }
 
-  if (v4 == 1)
+  if (layoutDirection == 1)
   {
     v15 = v13;
     v17 = v12 + v13;
@@ -435,7 +435,7 @@ LABEL_5:
     v17 = v8;
   }
 
-  if (v4 != 1)
+  if (layoutDirection != 1)
   {
     v8 = v14;
   }
@@ -445,14 +445,14 @@ LABEL_5:
   [(CKNavBarUnifiedCallButton *)self setContentEdgeInsets:v6, v17, v10, v8];
 }
 
-- (void)_configureParentBarButtonItemWithBackgroundColor:(id)a3
+- (void)_configureParentBarButtonItemWithBackgroundColor:(id)color
 {
-  v4 = a3;
-  v5 = [(CKNavBarUnifiedCallButton *)self parentBarButtonItem];
-  [v5 setTintColor:v4];
+  colorCopy = color;
+  parentBarButtonItem = [(CKNavBarUnifiedCallButton *)self parentBarButtonItem];
+  [parentBarButtonItem setTintColor:colorCopy];
 
-  v6 = [(CKNavBarUnifiedCallButton *)self parentBarButtonItem];
-  [v6 setStyle:2 * (v4 != 0)];
+  parentBarButtonItem2 = [(CKNavBarUnifiedCallButton *)self parentBarButtonItem];
+  [parentBarButtonItem2 setStyle:2 * (colorCopy != 0)];
 }
 
 - (void)_configureFrameForCurrentState
@@ -464,15 +464,15 @@ LABEL_5:
 
 - (double)_cornerRadiusForCurrentStyle
 {
-  v3 = [(CKNavBarUnifiedCallButton *)self buttonStyle];
-  if (v3 > 5 || ((1 << v3) & 0x2A) == 0 || [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel])
+  buttonStyle = [(CKNavBarUnifiedCallButton *)self buttonStyle];
+  if (buttonStyle > 5 || ((1 << buttonStyle) & 0x2A) == 0 || [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel])
   {
     return 0.0;
   }
 
   [(CKNavBarUnifiedCallButton *)self frame];
-  v5 = [(CKNavBarUnifiedCallButton *)self traitCollection];
-  [v5 displayScale];
+  traitCollection = [(CKNavBarUnifiedCallButton *)self traitCollection];
+  [traitCollection displayScale];
   UIRoundToScale();
   v7 = v6;
 
@@ -481,13 +481,13 @@ LABEL_5:
 
 - (double)_leadingMarginForCurrentState
 {
-  v3 = [(CKNavBarUnifiedCallButton *)self buttonStyle];
+  buttonStyle = [(CKNavBarUnifiedCallButton *)self buttonStyle];
   result = 0.0;
-  if (v3 <= 5 && ((1 << v3) & 0x2A) != 0)
+  if (buttonStyle <= 5 && ((1 << buttonStyle) & 0x2A) != 0)
   {
-    v5 = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
+    joinPillShouldDisableLabel = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
     result = 10.0;
-    if (v5)
+    if (joinPillShouldDisableLabel)
     {
       return 0.0;
     }
@@ -498,13 +498,13 @@ LABEL_5:
 
 - (double)_trailingMarginForCurrentState
 {
-  v3 = [(CKNavBarUnifiedCallButton *)self buttonStyle];
+  buttonStyle = [(CKNavBarUnifiedCallButton *)self buttonStyle];
   result = 0.0;
-  if (v3 <= 5 && ((1 << v3) & 0x2A) != 0)
+  if (buttonStyle <= 5 && ((1 << buttonStyle) & 0x2A) != 0)
   {
-    v5 = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
+    joinPillShouldDisableLabel = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
     result = 10.0;
-    if (v5)
+    if (joinPillShouldDisableLabel)
     {
       return 0.0;
     }
@@ -515,13 +515,13 @@ LABEL_5:
 
 - (double)_imageToTextSpacingForCurrentState
 {
-  v3 = [(CKNavBarUnifiedCallButton *)self buttonStyle];
+  buttonStyle = [(CKNavBarUnifiedCallButton *)self buttonStyle];
   result = 0.0;
-  if (v3 <= 5 && ((1 << v3) & 0x2A) != 0)
+  if (buttonStyle <= 5 && ((1 << buttonStyle) & 0x2A) != 0)
   {
-    v5 = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
+    joinPillShouldDisableLabel = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
     result = 5.0;
-    if (v5)
+    if (joinPillShouldDisableLabel)
     {
       return 0.0;
     }
@@ -551,9 +551,9 @@ LABEL_5:
 
 - (id)_titleForCurrentStyle
 {
-  v3 = [(CKNavBarUnifiedCallButton *)self buttonStyle];
+  buttonStyle = [(CKNavBarUnifiedCallButton *)self buttonStyle];
   v4 = &stru_1F04268F8;
-  if (v3 <= 5 && ((1 << v3) & 0x2A) != 0)
+  if (buttonStyle <= 5 && ((1 << buttonStyle) & 0x2A) != 0)
   {
     if ([(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel])
     {
@@ -572,32 +572,32 @@ LABEL_5:
 
 - (id)_titleLabelFontForCurrentStyle
 {
-  v3 = [(CKNavBarUnifiedCallButton *)self buttonStyle];
-  v4 = 0;
-  if (v3 <= 5 && ((1 << v3) & 0x2A) != 0)
+  buttonStyle = [(CKNavBarUnifiedCallButton *)self buttonStyle];
+  navBarUnifiedCallButtonJoinTextFont = 0;
+  if (buttonStyle <= 5 && ((1 << buttonStyle) & 0x2A) != 0)
   {
     if ([(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel])
     {
-      v4 = 0;
+      navBarUnifiedCallButtonJoinTextFont = 0;
     }
 
     else
     {
       v5 = +[CKUIBehavior sharedBehaviors];
-      v4 = [v5 navBarUnifiedCallButtonJoinTextFont];
+      navBarUnifiedCallButtonJoinTextFont = [v5 navBarUnifiedCallButtonJoinTextFont];
     }
   }
 
-  return v4;
+  return navBarUnifiedCallButtonJoinTextFont;
 }
 
 - (double)_minimumFontScaleFactorForCurrentStyle
 {
-  v2 = [(CKNavBarUnifiedCallButton *)self buttonStyle];
+  buttonStyle = [(CKNavBarUnifiedCallButton *)self buttonStyle];
   result = 0.0;
-  if ((v2 - 1) <= 4)
+  if ((buttonStyle - 1) <= 4)
   {
-    return dbl_190DD0AF0[v2 - 1];
+    return dbl_190DD0AF0[buttonStyle - 1];
   }
 
   return result;
@@ -605,13 +605,13 @@ LABEL_5:
 
 - (id)_tintColorForCurrentStyle
 {
-  v3 = [(CKNavBarUnifiedCallButton *)self buttonStyle];
-  v4 = 0;
-  if (v3 <= 6)
+  buttonStyle = [(CKNavBarUnifiedCallButton *)self buttonStyle];
+  whiteColor = 0;
+  if (buttonStyle <= 6)
   {
-    if (((1 << v3) & 0x2A) == 0)
+    if (((1 << buttonStyle) & 0x2A) == 0)
     {
-      if (((1 << v3) & 0x54) == 0)
+      if (((1 << buttonStyle) & 0x54) == 0)
       {
         goto LABEL_8;
       }
@@ -620,48 +620,48 @@ LABEL_5:
       goto LABEL_6;
     }
 
-    v6 = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
+    joinPillShouldDisableLabel = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
     v5 = MEMORY[0x1E69DC888];
-    if (v6)
+    if (joinPillShouldDisableLabel)
     {
 LABEL_6:
-      v4 = [v5 ckColorNamed:@"CKSystemGreenColor"];
+      whiteColor = [v5 ckColorNamed:@"CKSystemGreenColor"];
       goto LABEL_8;
     }
 
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
 LABEL_8:
 
-  return v4;
+  return whiteColor;
 }
 
 - (id)_titleColorForCurrentStyle
 {
-  v3 = [(CKNavBarUnifiedCallButton *)self buttonStyle];
-  v4 = 0;
-  if (v3 <= 5 && ((1 << v3) & 0x2A) != 0)
+  buttonStyle = [(CKNavBarUnifiedCallButton *)self buttonStyle];
+  whiteColor = 0;
+  if (buttonStyle <= 5 && ((1 << buttonStyle) & 0x2A) != 0)
   {
     if ([(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel])
     {
-      v4 = 0;
+      whiteColor = 0;
     }
 
     else
     {
-      v4 = [MEMORY[0x1E69DC888] whiteColor];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
     }
   }
 
-  return v4;
+  return whiteColor;
 }
 
 - (id)_backgroundColorForCurrentStyle
 {
-  v3 = [(CKNavBarUnifiedCallButton *)self buttonStyle];
+  buttonStyle = [(CKNavBarUnifiedCallButton *)self buttonStyle];
   v4 = 0;
-  if (v3 <= 5 && ((1 << v3) & 0x2A) != 0)
+  if (buttonStyle <= 5 && ((1 << buttonStyle) & 0x2A) != 0)
   {
     if ([(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel])
     {
@@ -679,22 +679,22 @@ LABEL_8:
 
 - (id)_targetImageForCurrentFlags
 {
-  v3 = [(CKNavBarUnifiedCallButton *)self buttonStyle];
-  if (v3 > 3)
+  buttonStyle = [(CKNavBarUnifiedCallButton *)self buttonStyle];
+  if (buttonStyle > 3)
   {
-    switch(v3)
+    switch(buttonStyle)
     {
       case 4:
         v6 = +[CKUIBehavior sharedBehaviors];
-        v7 = [v6 navBarAudioFillImage];
+        navBarAudioFillImage = [v6 navBarAudioFillImage];
         goto LABEL_24;
       case 5:
-        v11 = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
+        joinPillShouldDisableLabel = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
         v8 = +[CKUIBehavior sharedBehaviors];
         v6 = v8;
-        if (!v11)
+        if (!joinPillShouldDisableLabel)
         {
-          v7 = [v8 navbarJoinPillSharePlayImage];
+          navBarAudioFillImage = [v8 navbarJoinPillSharePlayImage];
           goto LABEL_24;
         }
 
@@ -707,44 +707,44 @@ LABEL_8:
         goto LABEL_14;
     }
 
-    v7 = [v8 navBarSharePlayImage];
+    navBarAudioFillImage = [v8 navBarSharePlayImage];
     goto LABEL_24;
   }
 
-  switch(v3)
+  switch(buttonStyle)
   {
     case 1:
-      v9 = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
+      joinPillShouldDisableLabel2 = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
       v10 = +[CKUIBehavior sharedBehaviors];
       v6 = v10;
-      if (!v9)
+      if (!joinPillShouldDisableLabel2)
       {
-        v7 = [v10 navbarJoinPillVideoImage];
+        navBarAudioFillImage = [v10 navbarJoinPillVideoImage];
         goto LABEL_24;
       }
 
 LABEL_16:
-      v7 = [v10 navBarVideoImage];
+      navBarAudioFillImage = [v10 navBarVideoImage];
       goto LABEL_24;
     case 2:
       v6 = +[CKUIBehavior sharedBehaviors];
-      v7 = [v6 navBarVideoFillImage];
+      navBarAudioFillImage = [v6 navBarVideoFillImage];
       goto LABEL_24;
     case 3:
-      v4 = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
+      joinPillShouldDisableLabel3 = [(CKNavBarUnifiedCallButton *)self joinPillShouldDisableLabel];
       v5 = +[CKUIBehavior sharedBehaviors];
       v6 = v5;
-      if (!v4)
+      if (!joinPillShouldDisableLabel3)
       {
-        v7 = [v5 navbarJoinPillAudioImage];
+        navBarAudioFillImage = [v5 navbarJoinPillAudioImage];
 LABEL_24:
-        v12 = v7;
+        v12 = navBarAudioFillImage;
 
         goto LABEL_25;
       }
 
 LABEL_22:
-      v7 = [v5 navBarAudioImage];
+      navBarAudioFillImage = [v5 navBarAudioImage];
       goto LABEL_24;
   }
 
@@ -771,45 +771,45 @@ LABEL_25:
 
 - (id)_actionsForCurrentStyle
 {
-  v3 = [(CKNavBarUnifiedCallButton *)self buttonStyle];
-  if (v3 <= 5 && ((1 << v3) & 0x2A) != 0)
+  buttonStyle = [(CKNavBarUnifiedCallButton *)self buttonStyle];
+  if (buttonStyle <= 5 && ((1 << buttonStyle) & 0x2A) != 0)
   {
-    v4 = [(CKNavBarUnifiedCallButton *)self _joinCallActions];
+    _joinCallActions = [(CKNavBarUnifiedCallButton *)self _joinCallActions];
   }
 
   else
   {
-    v4 = [(CKNavBarUnifiedCallButton *)self _startCallActions];
+    _joinCallActions = [(CKNavBarUnifiedCallButton *)self _startCallActions];
   }
 
-  return v4;
+  return _joinCallActions;
 }
 
 - (id)_subActionsForCurrentStyle
 {
   if ([(CKNavBarUnifiedCallButton *)self buttonStyle])
   {
-    v3 = 0;
+    _startCallSubActions = 0;
   }
 
   else
   {
-    v3 = [(CKNavBarUnifiedCallButton *)self _startCallSubActions];
+    _startCallSubActions = [(CKNavBarUnifiedCallButton *)self _startCallSubActions];
   }
 
-  return v3;
+  return _startCallSubActions;
 }
 
 - (id)_startCallActions
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = [(CKNavBarUnifiedCallButton *)self overrideAudioCallActions];
-  v5 = [v4 count];
+  array = [MEMORY[0x1E695DF70] array];
+  overrideAudioCallActions = [(CKNavBarUnifiedCallButton *)self overrideAudioCallActions];
+  v5 = [overrideAudioCallActions count];
 
   if (v5)
   {
-    v6 = [(CKNavBarUnifiedCallButton *)self overrideAudioCallActions];
-    [v3 addObjectsFromArray:v6];
+    overrideAudioCallActions2 = [(CKNavBarUnifiedCallButton *)self overrideAudioCallActions];
+    [array addObjectsFromArray:overrideAudioCallActions2];
 LABEL_7:
 
     goto LABEL_8;
@@ -817,25 +817,25 @@ LABEL_7:
 
   if ([(CKNavBarUnifiedCallButton *)self isFaceTimeAudioAvailable])
   {
-    v7 = [(CKNavBarUnifiedCallButton *)self faceTimeAudioAction];
-    [v3 addObject:v7];
+    faceTimeAudioAction = [(CKNavBarUnifiedCallButton *)self faceTimeAudioAction];
+    [array addObject:faceTimeAudioAction];
   }
 
   if ([(CKNavBarUnifiedCallButton *)self isTelephonyAvailable])
   {
-    v6 = [(CKNavBarUnifiedCallButton *)self telephonyCallAction];
-    [v3 addObject:v6];
+    overrideAudioCallActions2 = [(CKNavBarUnifiedCallButton *)self telephonyCallAction];
+    [array addObject:overrideAudioCallActions2];
     goto LABEL_7;
   }
 
 LABEL_8:
   if ([(CKNavBarUnifiedCallButton *)self isFaceTimeVideoAvailable])
   {
-    v8 = [(CKNavBarUnifiedCallButton *)self faceTimeVideoAction];
-    [v3 addObject:v8];
+    faceTimeVideoAction = [(CKNavBarUnifiedCallButton *)self faceTimeVideoAction];
+    [array addObject:faceTimeVideoAction];
   }
 
-  v9 = [v3 copy];
+  v9 = [array copy];
 
   return v9;
 }
@@ -845,10 +845,10 @@ LABEL_8:
   v7[2] = *MEMORY[0x1E69E9840];
   if ([(CKNavBarUnifiedCallButton *)self isScreenSharingAvailable])
   {
-    v3 = [(CKNavBarUnifiedCallButton *)self faceTimeShareMyScreenAction];
-    v7[0] = v3;
-    v4 = [(CKNavBarUnifiedCallButton *)self faceTimeInviteToShareTheirScreenAction];
-    v7[1] = v4;
+    faceTimeShareMyScreenAction = [(CKNavBarUnifiedCallButton *)self faceTimeShareMyScreenAction];
+    v7[0] = faceTimeShareMyScreenAction;
+    faceTimeInviteToShareTheirScreenAction = [(CKNavBarUnifiedCallButton *)self faceTimeInviteToShareTheirScreenAction];
+    v7[1] = faceTimeInviteToShareTheirScreenAction;
     v5 = [MEMORY[0x1E695DEC8] arrayWithObjects:v7 count:2];
   }
 
@@ -870,13 +870,13 @@ LABEL_8:
     v5 = CKFrameworkBundle();
     v6 = [v5 localizedStringForKey:@"FACETIME_VIDEO" value:&stru_1F04268F8 table:@"ChatKit"];
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 navBarVideoImage];
+    navBarVideoImage = [v7 navBarVideoImage];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __48__CKNavBarUnifiedCallButton_faceTimeVideoAction__block_invoke;
     v13[3] = &unk_1E72EBCD8;
     objc_copyWeak(&v14, &location);
-    v9 = [v4 actionWithTitle:v6 image:v8 identifier:@"CKNavBarUnifiedButtonViewUIActionIdentifierFaceTimeVideo" handler:v13];
+    v9 = [v4 actionWithTitle:v6 image:navBarVideoImage identifier:@"CKNavBarUnifiedButtonViewUIActionIdentifierFaceTimeVideo" handler:v13];
     v10 = self->_faceTimeVideoAction;
     self->_faceTimeVideoAction = v9;
 
@@ -913,13 +913,13 @@ void __48__CKNavBarUnifiedCallButton_faceTimeVideoAction__block_invoke(uint64_t 
     v5 = CKFrameworkBundle();
     v6 = [v5 localizedStringForKey:@"FACETIME_VIDEO" value:&stru_1F04268F8 table:@"ChatKit"];
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 navBarVideoImage];
+    navBarVideoImage = [v7 navBarVideoImage];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __56__CKNavBarUnifiedCallButton_faceTimeJoinWithVideoAction__block_invoke;
     v13[3] = &unk_1E72EBCD8;
     objc_copyWeak(&v14, &location);
-    v9 = [v4 actionWithTitle:v6 image:v8 identifier:@"CKNavBarUnifiedButtonViewUIActionIdentifierFaceTimeJoinWithVideo" handler:v13];
+    v9 = [v4 actionWithTitle:v6 image:navBarVideoImage identifier:@"CKNavBarUnifiedButtonViewUIActionIdentifierFaceTimeJoinWithVideo" handler:v13];
     v10 = self->_faceTimeJoinWithVideoAction;
     self->_faceTimeJoinWithVideoAction = v9;
 
@@ -956,13 +956,13 @@ void __56__CKNavBarUnifiedCallButton_faceTimeJoinWithVideoAction__block_invoke(u
     v5 = CKFrameworkBundle();
     v6 = [v5 localizedStringForKey:@"FACETIME_AUDIO" value:&stru_1F04268F8 table:@"ChatKit"];
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 navBarAudioImage];
+    navBarAudioImage = [v7 navBarAudioImage];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __48__CKNavBarUnifiedCallButton_faceTimeAudioAction__block_invoke;
     v13[3] = &unk_1E72EBCD8;
     objc_copyWeak(&v14, &location);
-    v9 = [v4 actionWithTitle:v6 image:v8 identifier:@"CKNavBarUnifiedButtonViewUIActionIdentifierFaceTimeAudio" handler:v13];
+    v9 = [v4 actionWithTitle:v6 image:navBarAudioImage identifier:@"CKNavBarUnifiedButtonViewUIActionIdentifierFaceTimeAudio" handler:v13];
     v10 = self->_faceTimeAudioAction;
     self->_faceTimeAudioAction = v9;
 
@@ -999,13 +999,13 @@ void __48__CKNavBarUnifiedCallButton_faceTimeAudioAction__block_invoke(uint64_t 
     v5 = CKFrameworkBundle();
     v6 = [v5 localizedStringForKey:@"FACETIME_AUDIO" value:&stru_1F04268F8 table:@"ChatKit"];
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 navBarAudioImage];
+    navBarAudioImage = [v7 navBarAudioImage];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __56__CKNavBarUnifiedCallButton_faceTimeJoinWithAudioAction__block_invoke;
     v13[3] = &unk_1E72EBCD8;
     objc_copyWeak(&v14, &location);
-    v9 = [v4 actionWithTitle:v6 image:v8 identifier:@"CKNavBarUnifiedButtonViewUIActionIdentifierFaceTimeJoinWithAudio" handler:v13];
+    v9 = [v4 actionWithTitle:v6 image:navBarAudioImage identifier:@"CKNavBarUnifiedButtonViewUIActionIdentifierFaceTimeJoinWithAudio" handler:v13];
     v10 = self->_faceTimeJoinWithAudioAction;
     self->_faceTimeJoinWithAudioAction = v9;
 
@@ -1124,13 +1124,13 @@ void __67__CKNavBarUnifiedCallButton_faceTimeInviteToShareTheirScreenAction__blo
     v5 = CKFrameworkBundle();
     v6 = [v5 localizedStringForKey:@"CALL" value:&stru_1F04268F8 table:@"ChatKit"];
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 navBarAudioImage];
+    navBarAudioImage = [v7 navBarAudioImage];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __48__CKNavBarUnifiedCallButton_telephonyCallAction__block_invoke;
     v13[3] = &unk_1E72EBCD8;
     objc_copyWeak(&v14, &location);
-    v9 = [v4 actionWithTitle:v6 image:v8 identifier:@"CKNavBarUnifiedButtonViewUIActionIdentifierTelephonyCall" handler:v13];
+    v9 = [v4 actionWithTitle:v6 image:navBarAudioImage identifier:@"CKNavBarUnifiedButtonViewUIActionIdentifierTelephonyCall" handler:v13];
     v10 = self->_telephonyCallAction;
     self->_telephonyCallAction = v9;
 
@@ -1204,9 +1204,9 @@ void __49__CKNavBarUnifiedCallButton_openJoinedCallAction__block_invoke(uint64_t
   if (!leaveJoinedCallAction)
   {
     objc_initWeak(&location, self);
-    v4 = [(CKNavBarUnifiedCallButton *)self buttonStyle];
+    buttonStyle = [(CKNavBarUnifiedCallButton *)self buttonStyle];
     v5 = @"LEAVE_CONVERSATION_EXTRA_SHORT";
-    if (v4 == 4)
+    if (buttonStyle == 4)
     {
       v5 = @"END_CALL";
     }

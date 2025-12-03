@@ -1,16 +1,16 @@
 @interface _PASCFBurstTrie
-- (_PASCFBurstTrie)initWithPath:(id)a3;
-- (unsigned)payloadForString:(id)a3;
-- (unsigned)payloadForString:(id)a3 range:(_NSRange)a4;
-- (unsigned)payloadForUTF8String:(const char *)a3 length:(unint64_t)a4;
+- (_PASCFBurstTrie)initWithPath:(id)path;
+- (unsigned)payloadForString:(id)string;
+- (unsigned)payloadForString:(id)string range:(_NSRange)range;
+- (unsigned)payloadForUTF8String:(const char *)string length:(unint64_t)length;
 - (void)dealloc;
 @end
 
 @implementation _PASCFBurstTrie
 
-- (unsigned)payloadForUTF8String:(const char *)a3 length:(unint64_t)a4
+- (unsigned)payloadForUTF8String:(const char *)string length:(unint64_t)length
 {
-  if (!a3)
+  if (!string)
   {
     return 0;
   }
@@ -27,20 +27,20 @@
   }
 }
 
-- (unsigned)payloadForString:(id)a3 range:(_NSRange)a4
+- (unsigned)payloadForString:(id)string range:(_NSRange)range
 {
-  v5 = [a3 substringWithRange:{a4.location, a4.length}];
+  v5 = [string substringWithRange:{range.location, range.length}];
   LODWORD(self) = [(_PASCFBurstTrie *)self payloadForString:v5];
 
   return self;
 }
 
-- (unsigned)payloadForString:(id)a3
+- (unsigned)payloadForString:(id)string
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(__CFString *)v4 length];
-  if (CFStringGetCStringPtr(v4, 0x600u))
+  stringCopy = string;
+  v5 = [(__CFString *)stringCopy length];
+  if (CFStringGetCStringPtr(stringCopy, 0x600u))
   {
     trie = self->_trie;
 LABEL_3:
@@ -48,14 +48,14 @@ LABEL_3:
     goto LABEL_4;
   }
 
-  if (v5 <= 0xFF && [(__CFString *)v4 getCString:__s maxLength:385 encoding:4])
+  if (v5 <= 0xFF && [(__CFString *)stringCopy getCString:__s maxLength:385 encoding:4])
   {
     v9 = self->_trie;
     strlen(__s);
     goto LABEL_3;
   }
 
-  if (v4)
+  if (stringCopy)
   {
     v10 = self->_trie;
     CFBurstTrieContains();
@@ -79,14 +79,14 @@ LABEL_4:
   [(_PASCFBurstTrie *)&v3 dealloc];
 }
 
-- (_PASCFBurstTrie)initWithPath:(id)a3
+- (_PASCFBurstTrie)initWithPath:(id)path
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"_PASCFBurstTrie.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"path"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_PASCFBurstTrie.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"path"}];
   }
 
   v12.receiver = self;
@@ -97,7 +97,7 @@ LABEL_4:
     if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v14 = v5;
+      v14 = pathCopy;
       _os_log_error_impl(&dword_1A7F47000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "Could not open trie: %@", buf, 0xCu);
     }
 

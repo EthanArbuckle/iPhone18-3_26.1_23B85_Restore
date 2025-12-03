@@ -1,16 +1,16 @@
 @interface PGHostedWindow
-- (PGHostedWindow)initWithFrame:(CGRect)a3;
+- (PGHostedWindow)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 @end
 
 @implementation PGHostedWindow
 
-- (PGHostedWindow)initWithFrame:(CGRect)a3
+- (PGHostedWindow)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = PGLogCommon();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {

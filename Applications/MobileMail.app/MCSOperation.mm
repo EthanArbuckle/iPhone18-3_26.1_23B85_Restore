@@ -1,12 +1,12 @@
 @interface MCSOperation
-- (id)applyPendingChangeToObjects:(id)a3;
+- (id)applyPendingChangeToObjects:(id)objects;
 @end
 
 @implementation MCSOperation
 
-- (id)applyPendingChangeToObjects:(id)a3
+- (id)applyPendingChangeToObjects:(id)objects
 {
-  v5 = a3;
+  objectsCopy = objects;
   [(MCSOperation *)self doesNotRecognizeSelector:a2];
   __assert_rtn("[MCSOperation applyPendingChangeToObjects:]", "MCSOperation.m", 16, "0");
 }

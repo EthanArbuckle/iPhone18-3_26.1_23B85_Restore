@@ -1,10 +1,10 @@
 @interface SSSQLiteQuery
-- (void)enumerateSSVDirectUploadsUsingBlock:(id)a3;
+- (void)enumerateSSVDirectUploadsUsingBlock:(id)block;
 @end
 
 @implementation SSSQLiteQuery
 
-- (void)enumerateSSVDirectUploadsUsingBlock:(id)a3
+- (void)enumerateSSVDirectUploadsUsingBlock:(id)block
 {
   v8[0] = @"category_name";
   v8[1] = @"error_code";
@@ -21,8 +21,8 @@
   v6[1] = 3221225472;
   v6[2] = sub_100184A3C;
   v6[3] = &unk_10032A708;
-  v4 = a3;
-  v7 = v4;
+  blockCopy = block;
+  v7 = blockCopy;
   [(SSSQLiteQuery *)self enumeratePersistentIDsAndProperties:v8 count:11 usingBlock:v6];
 
   for (i = 10; i != -1; --i)

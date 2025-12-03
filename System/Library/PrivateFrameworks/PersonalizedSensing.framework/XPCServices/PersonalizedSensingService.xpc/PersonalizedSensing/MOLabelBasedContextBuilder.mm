@@ -1,19 +1,19 @@
 @interface MOLabelBasedContextBuilder
-- (id)generateContextStringFromBundleContent:(id)a3;
-- (id)generateContextStringsFromBundleContents:(id)a3;
+- (id)generateContextStringFromBundleContent:(id)content;
+- (id)generateContextStringsFromBundleContents:(id)contents;
 @end
 
 @implementation MOLabelBasedContextBuilder
 
-- (id)generateContextStringsFromBundleContents:(id)a3
+- (id)generateContextStringsFromBundleContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   v5 = +[NSMutableDictionary dictionary];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v6 = v4;
+  v6 = contentsCopy;
   v7 = [v6 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v7)
   {
@@ -35,8 +35,8 @@
           if (v12)
           {
             v13 = [NSArray arrayWithObject:v12];
-            v14 = [v11 bundleContentIdentifier];
-            [v5 setObject:v13 forKey:v14];
+            bundleContentIdentifier = [v11 bundleContentIdentifier];
+            [v5 setObject:v13 forKey:bundleContentIdentifier];
           }
         }
       }
@@ -50,73 +50,73 @@
   return v5;
 }
 
-- (id)generateContextStringFromBundleContent:(id)a3
+- (id)generateContextStringFromBundleContent:(id)content
 {
-  v3 = a3;
-  v4 = [v3 suggestionLabel];
+  contentCopy = content;
+  suggestionLabel = [contentCopy suggestionLabel];
 
-  if (v4)
+  if (suggestionLabel)
   {
     v5 = [MOContextString alloc];
     v6 = +[NSUUID UUID];
-    v7 = [v3 suggestionLabel];
-    v8 = [v7 copy];
-    v4 = [(MOContextString *)v5 initWithIdentifier:v6 string:v8];
+    suggestionLabel2 = [contentCopy suggestionLabel];
+    v8 = [suggestionLabel2 copy];
+    suggestionLabel = [(MOContextString *)v5 initWithIdentifier:v6 string:v8];
 
-    [(MOContextString *)v4 setSource:1];
-    [(MOContextString *)v4 setAccuracy:1.0];
-    [(MOContextString *)v4 setSatisfaction:1.0];
-    if ([v3 hasPersonName])
+    [(MOContextString *)suggestionLabel setSource:1];
+    [(MOContextString *)suggestionLabel setAccuracy:1.0];
+    [(MOContextString *)suggestionLabel setSatisfaction:1.0];
+    if ([contentCopy hasPersonName])
     {
-      [(MOContextString *)v4 setContentType:[(MOContextString *)v4 contentType]| 1];
+      [(MOContextString *)suggestionLabel setContentType:[(MOContextString *)suggestionLabel contentType]| 1];
     }
 
-    if ([v3 peopleClassification])
+    if ([contentCopy peopleClassification])
     {
-      [(MOContextString *)v4 setContentType:[(MOContextString *)v4 contentType]| 2];
-      if ([v3 peopleClassification] == 1)
+      [(MOContextString *)suggestionLabel setContentType:[(MOContextString *)suggestionLabel contentType]| 2];
+      if ([contentCopy peopleClassification] == 1)
       {
-        [(MOContextString *)v4 setContentType:[(MOContextString *)v4 contentType]| 0x200];
+        [(MOContextString *)suggestionLabel setContentType:[(MOContextString *)suggestionLabel contentType]| 0x200];
       }
 
-      if ([v3 peopleClassification] == 2)
+      if ([contentCopy peopleClassification] == 2)
       {
-        [(MOContextString *)v4 setContentType:[(MOContextString *)v4 contentType]| 0x400];
+        [(MOContextString *)suggestionLabel setContentType:[(MOContextString *)suggestionLabel contentType]| 0x400];
       }
 
-      if ([v3 peopleClassification] == 3)
+      if ([contentCopy peopleClassification] == 3)
       {
-        [(MOContextString *)v4 setContentType:[(MOContextString *)v4 contentType]| 0x800];
+        [(MOContextString *)suggestionLabel setContentType:[(MOContextString *)suggestionLabel contentType]| 0x800];
       }
 
-      if ([v3 peopleClassification] == 4)
+      if ([contentCopy peopleClassification] == 4)
       {
-        [(MOContextString *)v4 setContentType:[(MOContextString *)v4 contentType]| 0x1000];
+        [(MOContextString *)suggestionLabel setContentType:[(MOContextString *)suggestionLabel contentType]| 0x1000];
       }
 
-      if ([v3 peopleClassification] == 5)
+      if ([contentCopy peopleClassification] == 5)
       {
-        [(MOContextString *)v4 setContentType:[(MOContextString *)v4 contentType]| 0x2000];
+        [(MOContextString *)suggestionLabel setContentType:[(MOContextString *)suggestionLabel contentType]| 0x2000];
       }
     }
 
-    if ([v3 hasPlaceName])
+    if ([contentCopy hasPlaceName])
     {
-      [(MOContextString *)v4 setContentType:[(MOContextString *)v4 contentType]| 4];
+      [(MOContextString *)suggestionLabel setContentType:[(MOContextString *)suggestionLabel contentType]| 4];
     }
 
-    if ([v3 hasCityName])
+    if ([contentCopy hasCityName])
     {
-      [(MOContextString *)v4 setContentType:[(MOContextString *)v4 contentType]| 8];
+      [(MOContextString *)suggestionLabel setContentType:[(MOContextString *)suggestionLabel contentType]| 8];
     }
 
-    if ([v3 photoTrait])
+    if ([contentCopy photoTrait])
     {
-      [(MOContextString *)v4 setContentType:[(MOContextString *)v4 contentType]| 0x100];
+      [(MOContextString *)suggestionLabel setContentType:[(MOContextString *)suggestionLabel contentType]| 0x100];
     }
   }
 
-  return v4;
+  return suggestionLabel;
 }
 
 @end

@@ -1,10 +1,10 @@
 @interface TUIViewRegistry
-- (BOOL)useHostedViewFactoryForType:(id)a3;
+- (BOOL)useHostedViewFactoryForType:(id)type;
 - (TUIViewRegistry)init;
-- (id)hostedViewFactoryForType:(id)a3;
-- (id)newSubviewWithReuseIdentifier:(id)a3;
-- (void)registerClass:(Class)a3 forSubviewWithReuseIdentifier:(id)a4;
-- (void)registerHostedViewFactory:(id)a3 forType:(id)a4;
+- (id)hostedViewFactoryForType:(id)type;
+- (id)newSubviewWithReuseIdentifier:(id)identifier;
+- (void)registerClass:(Class)class forSubviewWithReuseIdentifier:(id)identifier;
+- (void)registerHostedViewFactory:(id)factory forType:(id)type;
 @end
 
 @implementation TUIViewRegistry
@@ -50,37 +50,37 @@
   return v2;
 }
 
-- (void)registerClass:(Class)a3 forSubviewWithReuseIdentifier:(id)a4
+- (void)registerClass:(Class)class forSubviewWithReuseIdentifier:(id)identifier
 {
-  v6 = a4;
-  v9 = v6;
+  identifierCopy = identifier;
+  v9 = identifierCopy;
   if (!self->_subviewClassDict)
   {
     v7 = objc_opt_new();
     subviewClassDict = self->_subviewClassDict;
     self->_subviewClassDict = v7;
 
-    v6 = v9;
+    identifierCopy = v9;
   }
 
-  if (v6)
+  if (identifierCopy)
   {
-    [(NSMutableDictionary *)self->_subviewClassDict setObject:a3 forKeyedSubscript:v9];
-    v6 = v9;
+    [(NSMutableDictionary *)self->_subviewClassDict setObject:class forKeyedSubscript:v9];
+    identifierCopy = v9;
   }
 }
 
-- (id)newSubviewWithReuseIdentifier:(id)a3
+- (id)newSubviewWithReuseIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(NSMutableDictionary *)self->_subviewClassDict objectForKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_subviewClassDict objectForKeyedSubscript:identifierCopy];
 
     if (v5)
     {
       v5 = [[v5 alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];
-      [v5 setReuseIdentifier:v4];
+      [v5 setReuseIdentifier:identifierCopy];
     }
   }
 
@@ -92,10 +92,10 @@
   return v5;
 }
 
-- (void)registerHostedViewFactory:(id)a3 forType:(id)a4
+- (void)registerHostedViewFactory:(id)factory forType:(id)type
 {
-  v6 = a3;
-  v7 = a4;
+  factoryCopy = factory;
+  typeCopy = type;
   if (!self->_hostedViewFactoryDict)
   {
     v8 = objc_opt_new();
@@ -103,11 +103,11 @@
     self->_hostedViewFactoryDict = v8;
   }
 
-  if (v7)
+  if (typeCopy)
   {
-    [(NSMutableDictionary *)self->_hostedViewFactoryDict setObject:v6 forKeyedSubscript:v7];
-    v10 = [(NSMutableDictionary *)self->_hostedViewFactoryDict allKeys];
-    v11 = [NSSet setWithArray:v10];
+    [(NSMutableDictionary *)self->_hostedViewFactoryDict setObject:factoryCopy forKeyedSubscript:typeCopy];
+    allKeys = [(NSMutableDictionary *)self->_hostedViewFactoryDict allKeys];
+    v11 = [NSSet setWithArray:allKeys];
     hostedViewFactoryTypes = self->_hostedViewFactoryTypes;
     self->_hostedViewFactoryTypes = v11;
 
@@ -126,9 +126,9 @@
   }
 }
 
-- (BOOL)useHostedViewFactoryForType:(id)a3
+- (BOOL)useHostedViewFactoryForType:(id)type
 {
-  if (a3)
+  if (type)
   {
     return [(NSSet *)self->_hostedViewFactoryTypes containsObject:?];
   }
@@ -139,9 +139,9 @@
   }
 }
 
-- (id)hostedViewFactoryForType:(id)a3
+- (id)hostedViewFactoryForType:(id)type
 {
-  if (a3)
+  if (type)
   {
     v4 = [(NSMutableDictionary *)self->_hostedViewFactoryDict objectForKeyedSubscript:?];
   }

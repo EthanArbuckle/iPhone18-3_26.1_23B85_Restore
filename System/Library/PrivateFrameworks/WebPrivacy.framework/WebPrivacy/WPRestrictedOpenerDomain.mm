@@ -1,21 +1,21 @@
 @interface WPRestrictedOpenerDomain
-- (WPRestrictedOpenerDomain)initWithDomain:(id)a3 openerType:(int64_t)a4;
+- (WPRestrictedOpenerDomain)initWithDomain:(id)domain openerType:(int64_t)type;
 - (id)description;
 @end
 
 @implementation WPRestrictedOpenerDomain
 
-- (WPRestrictedOpenerDomain)initWithDomain:(id)a3 openerType:(int64_t)a4
+- (WPRestrictedOpenerDomain)initWithDomain:(id)domain openerType:(int64_t)type
 {
-  v7 = a3;
+  domainCopy = domain;
   v11.receiver = self;
   v11.super_class = WPRestrictedOpenerDomain;
   v8 = [(WPRestrictedOpenerDomain *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_domain, a3);
-    v9->_openerType = a4;
+    objc_storeStrong(&v8->_domain, domain);
+    v9->_openerType = type;
   }
 
   return v9;

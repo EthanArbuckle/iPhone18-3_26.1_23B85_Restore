@@ -1,5 +1,5 @@
 @interface _UILatencyLightView
-- (_TtC5UIKit19_UILatencyLightView)initWithCoder:(id)a3;
+- (_TtC5UIKit19_UILatencyLightView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 - (void)updateMasking;
 @end
@@ -8,11 +8,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188DC8360();
 }
 
-- (_TtC5UIKit19_UILatencyLightView)initWithCoder:(id)a3
+- (_TtC5UIKit19_UILatencyLightView)initWithCoder:(id)coder
 {
   result = sub_18A4A8398();
   __break(1u);
@@ -21,7 +21,7 @@
 
 - (void)updateMasking
 {
-  v2 = self;
+  selfCopy = self;
   sub_188DBD280();
 }
 

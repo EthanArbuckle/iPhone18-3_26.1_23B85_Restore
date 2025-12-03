@@ -1,57 +1,57 @@
 @interface HFContainedObjectListDifference
-+ (id)containedObjectDifferenceWithKey:(id)a3 objectsA:(id)a4 objectsB:(id)a5 block:(id)a6;
++ (id)containedObjectDifferenceWithKey:(id)key objectsA:(id)a objectsB:(id)b block:(id)block;
 - (BOOL)isASubsetOfB;
 - (BOOL)isBSubsetOfA;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionBuilder;
-- (id)reevaluateWithBlock:(id)a3;
+- (id)reevaluateWithBlock:(id)block;
 @end
 
 @implementation HFContainedObjectListDifference
 
-+ (id)containedObjectDifferenceWithKey:(id)a3 objectsA:(id)a4 objectsB:(id)a5 block:(id)a6
++ (id)containedObjectDifferenceWithKey:(id)key objectsA:(id)a objectsB:(id)b block:(id)block
 {
-  v9 = a3;
-  v10 = a6;
+  keyCopy = key;
+  blockCopy = block;
   v11 = MEMORY[0x277CBEB38];
-  v12 = a5;
-  v13 = a4;
-  v14 = [v11 dictionary];
-  v15 = [v13 na_reduceWithInitialValue:v14 reducer:&__block_literal_global_127];
+  bCopy = b;
+  aCopy = a;
+  dictionary = [v11 dictionary];
+  v15 = [aCopy na_reduceWithInitialValue:dictionary reducer:&__block_literal_global_127];
 
-  v16 = [MEMORY[0x277CBEB38] dictionary];
-  v17 = [v12 na_reduceWithInitialValue:v16 reducer:&__block_literal_global_130];
+  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+  v17 = [bCopy na_reduceWithInitialValue:dictionary2 reducer:&__block_literal_global_130];
 
   v18 = MEMORY[0x277CBEB98];
-  v19 = [v15 allKeys];
-  v20 = [v18 setWithArray:v19];
+  allKeys = [v15 allKeys];
+  v20 = [v18 setWithArray:allKeys];
 
   v21 = MEMORY[0x277CBEB98];
-  v22 = [v17 allKeys];
-  v23 = [v21 setWithArray:v22];
+  allKeys2 = [v17 allKeys];
+  v23 = [v21 setWithArray:allKeys2];
 
   v24 = [v20 setByAddingObjectsFromSet:v23];
-  v25 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary3 = [MEMORY[0x277CBEB38] dictionary];
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __92__HFContainedObjectListDifference_containedObjectDifferenceWithKey_objectsA_objectsB_block___block_invoke_3;
   v35[3] = &unk_277DF4590;
-  v26 = v10;
+  v26 = blockCopy;
   v38 = v26;
   v27 = v15;
   v36 = v27;
   v28 = v17;
   v37 = v28;
-  v29 = [v24 na_reduceWithInitialValue:v25 reducer:v35];
+  v29 = [v24 na_reduceWithInitialValue:dictionary3 reducer:v35];
 
-  v30 = [v29 allValues];
-  v31 = [v30 na_any:&__block_literal_global_135];
+  allValues = [v29 allValues];
+  v31 = [allValues na_any:&__block_literal_global_135];
 
   if (v31)
   {
-    v32 = [(HFDifference *)[HFContainedObjectListDifference alloc] initWithKey:v9 priority:2];
-    v33 = [v29 allValues];
-    [(HFContainedObjectListDifference *)v32 setContainedObjectResults:v33];
+    v32 = [(HFDifference *)[HFContainedObjectListDifference alloc] initWithKey:keyCopy priority:2];
+    allValues2 = [v29 allValues];
+    [(HFContainedObjectListDifference *)v32 setContainedObjectResults:allValues2];
   }
 
   else
@@ -158,13 +158,13 @@ HFComparisonResult *__86__HFContainedObjectListDifference_containedObjectDiffere
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 1;
-    v4 = [(HFContainedObjectListDifference *)self containedObjectResults];
+    containedObjectResults = [(HFContainedObjectListDifference *)self containedObjectResults];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __47__HFContainedObjectListDifference_isASubsetOfB__block_invoke;
     v8[3] = &unk_277DF45F8;
     v8[4] = &v9;
-    [v4 na_each:v8];
+    [containedObjectResults na_each:v8];
 
     v5 = [MEMORY[0x277CCABB0] numberWithBool:*(v10 + 24)];
     v6 = self->_isASubsetOfBValue;
@@ -203,13 +203,13 @@ void __47__HFContainedObjectListDifference_isASubsetOfB__block_invoke(uint64_t a
     v10 = &v9;
     v11 = 0x2020000000;
     v12 = 1;
-    v4 = [(HFContainedObjectListDifference *)self containedObjectResults];
+    containedObjectResults = [(HFContainedObjectListDifference *)self containedObjectResults];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __47__HFContainedObjectListDifference_isBSubsetOfA__block_invoke;
     v8[3] = &unk_277DF45F8;
     v8[4] = &v9;
-    [v4 na_each:v8];
+    [containedObjectResults na_each:v8];
 
     v5 = [MEMORY[0x277CCABB0] numberWithBool:*(v10 + 24)];
     v6 = self->_isBSubsetOfAValue;
@@ -239,18 +239,18 @@ void __47__HFContainedObjectListDifference_isBSubsetOfA__block_invoke(uint64_t a
   }
 }
 
-- (id)reevaluateWithBlock:(id)a3
+- (id)reevaluateWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [(HFContainedObjectListDifference *)self copy];
-  v6 = [(HFContainedObjectListDifference *)self containedObjectResults];
+  containedObjectResults = [(HFContainedObjectListDifference *)self containedObjectResults];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__HFContainedObjectListDifference_reevaluateWithBlock___block_invoke;
   v10[3] = &unk_277DF4620;
-  v11 = v4;
-  v7 = v4;
-  v8 = [v6 na_map:v10];
+  v11 = blockCopy;
+  v7 = blockCopy;
+  v8 = [containedObjectResults na_map:v10];
 
   [v5 setContainedObjectResults:v8];
   [v5 setIsASubsetOfBValue:0];
@@ -270,11 +270,11 @@ id __55__HFContainedObjectListDifference_reevaluateWithBlock___block_invoke(uint
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v11.receiver = self;
   v11.super_class = HFContainedObjectListDifference;
-  v4 = [(HFDifference *)&v11 copyWithZone:a3];
+  v4 = [(HFDifference *)&v11 copyWithZone:zone];
   objc_opt_class();
   v5 = v4;
   if (objc_opt_isKindOfClass())
@@ -289,8 +289,8 @@ id __55__HFContainedObjectListDifference_reevaluateWithBlock___block_invoke(uint
 
   v7 = v6;
 
-  v8 = [(HFContainedObjectListDifference *)self containedObjectResults];
-  v9 = [v8 copy];
+  containedObjectResults = [(HFContainedObjectListDifference *)self containedObjectResults];
+  v9 = [containedObjectResults copy];
   [v7 setContainedObjectResults:v9];
 
   return v7;
@@ -300,12 +300,12 @@ id __55__HFContainedObjectListDifference_reevaluateWithBlock___block_invoke(uint
 {
   v8.receiver = self;
   v8.super_class = HFContainedObjectListDifference;
-  v3 = [(HFDifference *)&v8 descriptionBuilder];
-  v4 = [(HFContainedObjectListDifference *)self containedObjectResults];
-  v5 = [v4 na_filter:&__block_literal_global_189];
-  v6 = [v3 appendObject:v5 withName:@"contained results"];
+  descriptionBuilder = [(HFDifference *)&v8 descriptionBuilder];
+  containedObjectResults = [(HFContainedObjectListDifference *)self containedObjectResults];
+  v5 = [containedObjectResults na_filter:&__block_literal_global_189];
+  v6 = [descriptionBuilder appendObject:v5 withName:@"contained results"];
 
-  return v3;
+  return descriptionBuilder;
 }
 
 BOOL __53__HFContainedObjectListDifference_descriptionBuilder__block_invoke(uint64_t a1, void *a2)

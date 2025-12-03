@@ -1,10 +1,10 @@
 @interface SFAddToHomeScreenServiceViewController
 + (id)_exportedInterface;
-- (void)dataProvider:(id)a3 didFinishWithResult:(BOOL)a4;
-- (void)didCopyStagedCookiesToURL:(id)a3 sandboxExtensionToken:(id)a4;
-- (void)didFetchManifestData:(id)a3;
-- (void)didFetchWebClipMetadata:(id)a3;
-- (void)prepareForDisplayWithCompletionHandler:(id)a3;
+- (void)dataProvider:(id)provider didFinishWithResult:(BOOL)result;
+- (void)didCopyStagedCookiesToURL:(id)l sandboxExtensionToken:(id)token;
+- (void)didFetchManifestData:(id)data;
+- (void)didFetchWebClipMetadata:(id)metadata;
+- (void)prepareForDisplayWithCompletionHandler:(id)handler;
 - (void)viewDidLoad;
 @end
 
@@ -44,23 +44,23 @@
     provider = self->_provider;
   }
 
-  v6 = [(SFWebAppDataProvider *)provider activityViewController];
-  [(SFAddToHomeScreenServiceViewController *)self addChildViewController:v6];
-  v7 = [v6 view];
-  v8 = [(SFAddToHomeScreenServiceViewController *)self view];
-  [v8 addSubview:v7];
+  activityViewController = [(SFWebAppDataProvider *)provider activityViewController];
+  [(SFAddToHomeScreenServiceViewController *)self addChildViewController:activityViewController];
+  view = [activityViewController view];
+  view2 = [(SFAddToHomeScreenServiceViewController *)self view];
+  [view2 addSubview:view];
 
-  v9 = [(SFAddToHomeScreenServiceViewController *)self view];
-  [v9 bounds];
-  [v7 setFrame:?];
+  view3 = [(SFAddToHomeScreenServiceViewController *)self view];
+  [view3 bounds];
+  [view setFrame:?];
 
-  [v7 setAutoresizingMask:18];
-  [v6 didMoveToParentViewController:self];
+  [view setAutoresizingMask:18];
+  [activityViewController didMoveToParentViewController:self];
 }
 
-- (void)prepareForDisplayWithCompletionHandler:(id)a3
+- (void)prepareForDisplayWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   [(SFAddToHomeScreenServiceViewController *)self _hostAuditToken];
   if (WBSAuditTokenHasEntitlement())
   {
@@ -73,16 +73,16 @@
     [v5 serviceViewControllerDidFinishWithResult:0];
   }
 
-  v4[2](v4);
+  handlerCopy[2](handlerCopy);
 }
 
-- (void)didFetchManifestData:(id)a3
+- (void)didFetchManifestData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   [(SFAddToHomeScreenServiceViewController *)self _hostAuditToken];
   if (WBSAuditTokenHasEntitlement())
   {
-    [(SFWebAppDataProvider *)self->_provider prepareWithManifestData:v4, 0, 0, 0, 0];
+    [(SFWebAppDataProvider *)self->_provider prepareWithManifestData:dataCopy, 0, 0, 0, 0];
   }
 
   else
@@ -92,13 +92,13 @@
   }
 }
 
-- (void)didFetchWebClipMetadata:(id)a3
+- (void)didFetchWebClipMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   [(SFAddToHomeScreenServiceViewController *)self _hostAuditToken];
   if (WBSAuditTokenHasEntitlement())
   {
-    [(SFWebAppDataProvider *)self->_provider updateWithWebClipMetadata:v4, 0, 0, 0, 0];
+    [(SFWebAppDataProvider *)self->_provider updateWithWebClipMetadata:metadataCopy, 0, 0, 0, 0];
   }
 
   else
@@ -108,14 +108,14 @@
   }
 }
 
-- (void)didCopyStagedCookiesToURL:(id)a3 sandboxExtensionToken:(id)a4
+- (void)didCopyStagedCookiesToURL:(id)l sandboxExtensionToken:(id)token
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  tokenCopy = token;
   [(SFAddToHomeScreenServiceViewController *)self _hostAuditToken];
   if (WBSAuditTokenHasEntitlement())
   {
-    [(SFWebAppDataProvider *)self->_provider updateWithStagedCookiesDirectoryURL:v6 sandboxExtensionToken:v7, 0, 0, 0, 0];
+    [(SFWebAppDataProvider *)self->_provider updateWithStagedCookiesDirectoryURL:lCopy sandboxExtensionToken:tokenCopy, 0, 0, 0, 0];
   }
 
   else
@@ -123,17 +123,17 @@
     v8 = [(SFAddToHomeScreenServiceViewController *)self _remoteViewControllerProxy:0];
     [v8 serviceViewControllerDidFinishWithResult:0];
 
-    [v7 UTF8String];
+    [tokenCopy UTF8String];
     sandbox_extension_consume();
     sandbox_extension_release();
   }
 }
 
-- (void)dataProvider:(id)a3 didFinishWithResult:(BOOL)a4
+- (void)dataProvider:(id)provider didFinishWithResult:(BOOL)result
 {
-  v4 = a4;
-  v5 = [(SFAddToHomeScreenServiceViewController *)self _remoteViewControllerProxy];
-  [v5 serviceViewControllerDidFinishWithResult:v4];
+  resultCopy = result;
+  _remoteViewControllerProxy = [(SFAddToHomeScreenServiceViewController *)self _remoteViewControllerProxy];
+  [_remoteViewControllerProxy serviceViewControllerDidFinishWithResult:resultCopy];
 }
 
 @end

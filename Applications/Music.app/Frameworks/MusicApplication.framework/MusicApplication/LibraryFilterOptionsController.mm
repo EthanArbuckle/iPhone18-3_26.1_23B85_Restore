@@ -1,28 +1,28 @@
 @interface LibraryFilterOptionsController
-+ (BOOL)isFilteringToFavoritesWithStorageKey:(id)a3 legacyStorageKey:(id)a4;
-+ (void)updateFavoriteFilter:(BOOL)a3 storageKey:(id)a4;
++ (BOOL)isFilteringToFavoritesWithStorageKey:(id)key legacyStorageKey:(id)storageKey;
++ (void)updateFavoriteFilter:(BOOL)filter storageKey:(id)key;
 - (_TtC16MusicApplication30LibraryFilterOptionsController)init;
 @end
 
 @implementation LibraryFilterOptionsController
 
-+ (BOOL)isFilteringToFavoritesWithStorageKey:(id)a3 legacyStorageKey:(id)a4
++ (BOOL)isFilteringToFavoritesWithStorageKey:(id)key legacyStorageKey:(id)storageKey
 {
   sub_AB92A0();
   sub_AB92A0();
-  v6 = a3;
-  v7 = a4;
+  keyCopy = key;
+  storageKeyCopy = storageKey;
   v8 = sub_4F675C();
 
   return v8 & 1;
 }
 
-+ (void)updateFavoriteFilter:(BOOL)a3 storageKey:(id)a4
++ (void)updateFavoriteFilter:(BOOL)filter storageKey:(id)key
 {
   v6 = sub_AB92A0();
   v8 = v7;
-  v9 = a4;
-  sub_4F6A84(a3, v6, v8);
+  keyCopy = key;
+  sub_4F6A84(filter, v6, v8);
 }
 
 - (_TtC16MusicApplication30LibraryFilterOptionsController)init

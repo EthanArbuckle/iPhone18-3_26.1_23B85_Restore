@@ -1,58 +1,58 @@
 @interface SMKeyReleaseMessage
-- (SMKeyReleaseMessage)initWithCoder:(id)a3;
-- (SMKeyReleaseMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 triggerDate:(id)a6 locationOfTrigger:(id)a7 triggerType:(unint64_t)a8 safetyCacheKey:(id)a9 safetyCacheToken:(id)a10 sessionType:(unint64_t)a11 destinationType:(unint64_t)a12 isSOSTrigger:(BOOL)a13 lowPowerModeWarningState:(int64_t)a14;
-- (SMKeyReleaseMessage)initWithDictionary:(id)a3;
-- (SMKeyReleaseMessage)initWithSessionID:(id)a3 triggerDate:(id)a4 locationOfTrigger:(id)a5 triggerType:(unint64_t)a6 safetyCacheKey:(id)a7 safetyCacheToken:(id)a8 sessionType:(unint64_t)a9 destinationType:(unint64_t)a10 isSOSTrigger:(BOOL)a11 lowPowerModeWarningState:(int64_t)a12;
-- (SMKeyReleaseMessage)initWithSessionID:(id)a3 triggerDate:(id)a4 locationOfTrigger:(id)a5 triggerType:(unint64_t)a6 safetyCacheKey:(id)a7 safetyCacheToken:(id)a8 sessionType:(unint64_t)a9 destinationType:(unint64_t)a10 lowPowerModeWarningState:(int64_t)a11;
-- (SMKeyReleaseMessage)initWithURL:(id)a3;
+- (SMKeyReleaseMessage)initWithCoder:(id)coder;
+- (SMKeyReleaseMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD triggerDate:(id)triggerDate locationOfTrigger:(id)trigger triggerType:(unint64_t)type safetyCacheKey:(id)key safetyCacheToken:(id)self0 sessionType:(unint64_t)self1 destinationType:(unint64_t)self2 isSOSTrigger:(BOOL)self3 lowPowerModeWarningState:(int64_t)self4;
+- (SMKeyReleaseMessage)initWithDictionary:(id)dictionary;
+- (SMKeyReleaseMessage)initWithSessionID:(id)d triggerDate:(id)date locationOfTrigger:(id)trigger triggerType:(unint64_t)type safetyCacheKey:(id)key safetyCacheToken:(id)token sessionType:(unint64_t)sessionType destinationType:(unint64_t)self0 isSOSTrigger:(BOOL)self1 lowPowerModeWarningState:(int64_t)self2;
+- (SMKeyReleaseMessage)initWithSessionID:(id)d triggerDate:(id)date locationOfTrigger:(id)trigger triggerType:(unint64_t)type safetyCacheKey:(id)key safetyCacheToken:(id)token sessionType:(unint64_t)sessionType destinationType:(unint64_t)self0 lowPowerModeWarningState:(int64_t)self1;
+- (SMKeyReleaseMessage)initWithURL:(id)l;
 - (id)outputToDictionary;
 - (id)outputToURLComponents;
 - (id)summaryText;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMKeyReleaseMessage
 
-- (SMKeyReleaseMessage)initWithSessionID:(id)a3 triggerDate:(id)a4 locationOfTrigger:(id)a5 triggerType:(unint64_t)a6 safetyCacheKey:(id)a7 safetyCacheToken:(id)a8 sessionType:(unint64_t)a9 destinationType:(unint64_t)a10 lowPowerModeWarningState:(int64_t)a11
+- (SMKeyReleaseMessage)initWithSessionID:(id)d triggerDate:(id)date locationOfTrigger:(id)trigger triggerType:(unint64_t)type safetyCacheKey:(id)key safetyCacheToken:(id)token sessionType:(unint64_t)sessionType destinationType:(unint64_t)self0 lowPowerModeWarningState:(int64_t)self1
 {
-  v15 = a8;
-  v16 = a7;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  tokenCopy = token;
+  keyCopy = key;
+  triggerCopy = trigger;
+  dateCopy = date;
+  dCopy = d;
   v20 = objc_opt_new();
-  v21 = [MEMORY[0x277CCAD78] UUID];
+  uUID = [MEMORY[0x277CCAD78] UUID];
   LOBYTE(v24) = 0;
-  v22 = [(SMKeyReleaseMessage *)self initWithDate:v20 messageID:v21 sessionID:v19 triggerDate:v18 locationOfTrigger:v17 triggerType:a6 safetyCacheKey:v16 safetyCacheToken:v15 sessionType:a9 destinationType:a10 isSOSTrigger:v24 lowPowerModeWarningState:a11];
+  v22 = [(SMKeyReleaseMessage *)self initWithDate:v20 messageID:uUID sessionID:dCopy triggerDate:dateCopy locationOfTrigger:triggerCopy triggerType:type safetyCacheKey:keyCopy safetyCacheToken:tokenCopy sessionType:sessionType destinationType:destinationType isSOSTrigger:v24 lowPowerModeWarningState:state];
 
   return v22;
 }
 
-- (SMKeyReleaseMessage)initWithSessionID:(id)a3 triggerDate:(id)a4 locationOfTrigger:(id)a5 triggerType:(unint64_t)a6 safetyCacheKey:(id)a7 safetyCacheToken:(id)a8 sessionType:(unint64_t)a9 destinationType:(unint64_t)a10 isSOSTrigger:(BOOL)a11 lowPowerModeWarningState:(int64_t)a12
+- (SMKeyReleaseMessage)initWithSessionID:(id)d triggerDate:(id)date locationOfTrigger:(id)trigger triggerType:(unint64_t)type safetyCacheKey:(id)key safetyCacheToken:(id)token sessionType:(unint64_t)sessionType destinationType:(unint64_t)self0 isSOSTrigger:(BOOL)self1 lowPowerModeWarningState:(int64_t)self2
 {
-  v16 = a8;
-  v17 = a7;
-  v18 = a5;
-  v19 = a4;
-  v20 = a3;
+  tokenCopy = token;
+  keyCopy = key;
+  triggerCopy = trigger;
+  dateCopy = date;
+  dCopy = d;
   v21 = objc_opt_new();
-  v22 = [MEMORY[0x277CCAD78] UUID];
-  LOBYTE(v25) = a11;
-  v23 = [(SMKeyReleaseMessage *)self initWithDate:v21 messageID:v22 sessionID:v20 triggerDate:v19 locationOfTrigger:v18 triggerType:a6 safetyCacheKey:v17 safetyCacheToken:v16 sessionType:a9 destinationType:a10 isSOSTrigger:v25 lowPowerModeWarningState:a12];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  LOBYTE(v25) = sTrigger;
+  v23 = [(SMKeyReleaseMessage *)self initWithDate:v21 messageID:uUID sessionID:dCopy triggerDate:dateCopy locationOfTrigger:triggerCopy triggerType:type safetyCacheKey:keyCopy safetyCacheToken:tokenCopy sessionType:sessionType destinationType:destinationType isSOSTrigger:v25 lowPowerModeWarningState:state];
 
   return v23;
 }
 
-- (SMKeyReleaseMessage)initWithDate:(id)a3 messageID:(id)a4 sessionID:(id)a5 triggerDate:(id)a6 locationOfTrigger:(id)a7 triggerType:(unint64_t)a8 safetyCacheKey:(id)a9 safetyCacheToken:(id)a10 sessionType:(unint64_t)a11 destinationType:(unint64_t)a12 isSOSTrigger:(BOOL)a13 lowPowerModeWarningState:(int64_t)a14
+- (SMKeyReleaseMessage)initWithDate:(id)date messageID:(id)d sessionID:(id)iD triggerDate:(id)triggerDate locationOfTrigger:(id)trigger triggerType:(unint64_t)type safetyCacheKey:(id)key safetyCacheToken:(id)self0 sessionType:(unint64_t)self1 destinationType:(unint64_t)self2 isSOSTrigger:(BOOL)self3 lowPowerModeWarningState:(int64_t)self4
 {
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v32 = a6;
-  v31 = a7;
-  v23 = a9;
-  v30 = a10;
-  if (!v20)
+  dateCopy = date;
+  dCopy = d;
+  iDCopy = iD;
+  triggerDateCopy = triggerDate;
+  triggerCopy = trigger;
+  keyCopy = key;
+  tokenCopy = token;
+  if (!dateCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -67,7 +67,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (!v21)
+  if (!dCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -80,7 +80,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v22)
+  if (!iDCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -93,7 +93,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v32)
+  if (!triggerDateCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -106,7 +106,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (!v23)
+  if (!keyCopy)
   {
     v27 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -118,40 +118,40 @@ LABEL_19:
 
 LABEL_20:
 
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_21;
   }
 
   v33.receiver = self;
   v33.super_class = SMKeyReleaseMessage;
-  v24 = [(SMMessage *)&v33 initWithDate:v20 messageID:v21 sessionID:v22];
+  v24 = [(SMMessage *)&v33 initWithDate:dateCopy messageID:dCopy sessionID:iDCopy];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_triggerDate, a6);
-    objc_storeStrong(&v25->_locationOfTrigger, a7);
-    v25->_triggerType = a8;
-    objc_storeStrong(&v25->_safetyCacheKey, a9);
-    objc_storeStrong(&v25->_safetyCacheToken, a10);
-    v25->_sessionType = a11;
-    v25->_destinationType = a12;
-    v25->_isSOSTrigger = a13;
-    v25->_lowPowerModeWarningState = a14;
+    objc_storeStrong(&v24->_triggerDate, triggerDate);
+    objc_storeStrong(&v25->_locationOfTrigger, trigger);
+    v25->_triggerType = type;
+    objc_storeStrong(&v25->_safetyCacheKey, key);
+    objc_storeStrong(&v25->_safetyCacheToken, token);
+    v25->_sessionType = sessionType;
+    v25->_destinationType = destinationType;
+    v25->_isSOSTrigger = sTrigger;
+    v25->_lowPowerModeWarningState = state;
   }
 
   self = v25;
-  v26 = self;
+  selfCopy = self;
 LABEL_21:
 
-  return v26;
+  return selfCopy;
 }
 
-- (SMKeyReleaseMessage)initWithDictionary:(id)a3
+- (SMKeyReleaseMessage)initWithDictionary:(id)dictionary
 {
   v129 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  dictionaryCopy = dictionary;
+  v6 = dictionaryCopy;
+  if (!dictionaryCopy)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -163,16 +163,16 @@ LABEL_21:
     goto LABEL_27;
   }
 
-  v7 = [v5 valueForKey:@"messageType"];
-  v8 = [v7 intValue];
+  v7 = [dictionaryCopy valueForKey:@"messageType"];
+  intValue = [v7 intValue];
 
-  if ([objc_opt_class() messageType] != v8)
+  if ([objc_opt_class() messageType] != intValue)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
 LABEL_27:
-      v54 = 0;
+      selfCopy = 0;
       goto LABEL_28;
     }
 
@@ -184,9 +184,9 @@ LABEL_27:
     v123 = 2112;
     v124 = v50;
     v125 = 1024;
-    v126 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v127 = 1024;
-    v128 = v8;
+    v128 = intValue;
     v51 = "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d";
     v52 = v12;
     v53 = 34;
@@ -197,9 +197,9 @@ LABEL_42:
   }
 
   v9 = [v6 valueForKey:@"interfaceVersion"];
-  v10 = [v9 intValue];
+  intValue2 = [v9 intValue];
 
-  if (v10 != 1)
+  if (intValue2 != 1)
   {
     v12 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -215,7 +215,7 @@ LABEL_42:
     v123 = 2112;
     v124 = v50;
     v125 = 1024;
-    v126 = v10;
+    messageType = intValue2;
     v51 = "#SafetyCache,%@,%@,unrecognized interface version,%d";
     v52 = v12;
     v53 = 28;
@@ -278,9 +278,9 @@ LABEL_42:
             v37 = v36;
             [v118 doubleValue];
             v39 = v38;
-            v40 = [v116 intValue];
+            intValue3 = [v116 intValue];
             [v112 doubleValue];
-            v41 = v40;
+            v41 = intValue3;
             v22 = v110;
             v115 = [v29 initWithLatitude:v28 longitude:v41 horizontalUncertainty:v31 altitude:v33 verticalUncertainty:v35 date:v37 referenceFrame:v39 speed:v42];
           }
@@ -291,7 +291,7 @@ LABEL_42:
           if (v43)
           {
             v106 = v43;
-            v103 = [v43 intValue];
+            intValue4 = [v43 intValue];
             v45 = [v6 valueForKey:@"safetyCacheKey"];
             v46 = v111;
             log = v45;
@@ -317,21 +317,21 @@ LABEL_42:
                 v100 = v61;
                 if (v61)
                 {
-                  v62 = [v61 intValue];
+                  intValue5 = [v61 intValue];
                   v63 = [v6 valueForKey:@"sessionDestinationType"];
                   v101 = v63;
                   if (v63)
                   {
-                    v99 = v103;
-                    v64 = [v63 intValue];
+                    v99 = intValue4;
+                    intValue6 = [v63 intValue];
                     v65 = [v6 valueForKey:@"isSOSTrigger"];
-                    v98 = [v65 BOOLValue];
+                    bOOLValue = [v65 BOOLValue];
 
                     v66 = [v6 valueForKey:@"lowPowerModeWarningState"];
                     v104 = v66;
                     if (v66)
                     {
-                      v67 = [v66 intValue];
+                      intValue7 = [v66 intValue];
                     }
 
                     else
@@ -352,15 +352,15 @@ LABEL_42:
                         }
                       }
 
-                      v67 = 0;
+                      intValue7 = 0;
                     }
 
-                    LOBYTE(v96) = v98;
-                    v95 = v62;
+                    LOBYTE(v96) = bOOLValue;
+                    v95 = intValue5;
                     v22 = v110;
                     v46 = v111;
-                    self = [(SMKeyReleaseMessage *)self initWithDate:v14 messageID:v108 sessionID:v20 triggerDate:v111 locationOfTrigger:v115 triggerType:v99 safetyCacheKey:v107 safetyCacheToken:v102 sessionType:v95 destinationType:v64 isSOSTrigger:v96 lowPowerModeWarningState:v67];
-                    v54 = self;
+                    self = [(SMKeyReleaseMessage *)self initWithDate:v14 messageID:v108 sessionID:v20 triggerDate:v111 locationOfTrigger:v115 triggerType:v99 safetyCacheKey:v107 safetyCacheToken:v102 sessionType:v95 destinationType:intValue6 isSOSTrigger:v96 lowPowerModeWarningState:intValue7];
+                    selfCopy = self;
                     v44 = v106;
                   }
 
@@ -383,7 +383,7 @@ LABEL_42:
                       v22 = v110;
                     }
 
-                    v54 = 0;
+                    selfCopy = 0;
                     v46 = v111;
                   }
                 }
@@ -405,7 +405,7 @@ LABEL_42:
                     v22 = v110;
                   }
 
-                  v54 = 0;
+                  selfCopy = 0;
                   v44 = v106;
                 }
               }
@@ -425,7 +425,7 @@ LABEL_42:
                   _os_log_error_impl(&dword_26455D000, v105, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,failed to convert safetyCacheKey to NSData", buf, 0x16u);
                 }
 
-                v54 = 0;
+                selfCopy = 0;
                 v22 = v110;
                 v44 = v106;
               }
@@ -448,7 +448,7 @@ LABEL_42:
                 v22 = v110;
               }
 
-              v54 = 0;
+              selfCopy = 0;
               v44 = v106;
             }
           }
@@ -472,7 +472,7 @@ LABEL_42:
               v22 = v110;
             }
 
-            v54 = 0;
+            selfCopy = 0;
           }
         }
 
@@ -491,7 +491,7 @@ LABEL_42:
             _os_log_error_impl(&dword_26455D000, v46, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing triggerTime", buf, 0x16u);
           }
 
-          v54 = 0;
+          selfCopy = 0;
         }
       }
 
@@ -510,7 +510,7 @@ LABEL_42:
           _os_log_error_impl(&dword_26455D000, v22, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing sessionID", buf, 0x16u);
         }
 
-        v54 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -529,7 +529,7 @@ LABEL_42:
         _os_log_error_impl(&dword_26455D000, v20, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing messageID", buf, 0x16u);
       }
 
-      v54 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -548,114 +548,114 @@ LABEL_42:
       _os_log_error_impl(&dword_26455D000, v14, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing date", buf, 0x16u);
     }
 
-    v54 = 0;
+    selfCopy = 0;
   }
 
 LABEL_28:
   v55 = *MEMORY[0x277D85DE8];
-  return v54;
+  return selfCopy;
 }
 
 - (id)outputToDictionary
 {
   v44.receiver = self;
   v44.super_class = SMKeyReleaseMessage;
-  v3 = [(SMMessage *)&v44 outputToDictionary];
+  outputToDictionary = [(SMMessage *)&v44 outputToDictionary];
   v4 = MEMORY[0x277CCABB0];
-  v5 = [(SMKeyReleaseMessage *)self triggerDate];
-  [v5 timeIntervalSince1970];
+  triggerDate = [(SMKeyReleaseMessage *)self triggerDate];
+  [triggerDate timeIntervalSince1970];
   v6 = [v4 numberWithDouble:?];
-  [v3 setObject:v6 forKey:@"triggerTime"];
+  [outputToDictionary setObject:v6 forKey:@"triggerTime"];
 
-  v7 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+  locationOfTrigger = [(SMKeyReleaseMessage *)self locationOfTrigger];
 
-  if (v7)
+  if (locationOfTrigger)
   {
     v8 = MEMORY[0x277CCABB0];
-    v9 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v9 latitude];
+    locationOfTrigger2 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger2 latitude];
     v10 = [v8 numberWithDouble:?];
-    [v3 setObject:v10 forKey:@"latitude"];
+    [outputToDictionary setObject:v10 forKey:@"latitude"];
 
     v11 = MEMORY[0x277CCABB0];
-    v12 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v12 longitude];
+    locationOfTrigger3 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger3 longitude];
     v13 = [v11 numberWithDouble:?];
-    [v3 setObject:v13 forKey:@"longitude"];
+    [outputToDictionary setObject:v13 forKey:@"longitude"];
 
     v14 = MEMORY[0x277CCABB0];
-    v15 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v15 horizontalUncertainty];
+    locationOfTrigger4 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger4 horizontalUncertainty];
     v16 = [v14 numberWithDouble:?];
-    [v3 setObject:v16 forKey:@"hunc"];
+    [outputToDictionary setObject:v16 forKey:@"hunc"];
 
     v17 = MEMORY[0x277CCABB0];
-    v18 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v18 altitude];
+    locationOfTrigger5 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger5 altitude];
     v19 = [v17 numberWithDouble:?];
-    [v3 setObject:v19 forKey:@"altitude"];
+    [outputToDictionary setObject:v19 forKey:@"altitude"];
 
     v20 = MEMORY[0x277CCABB0];
-    v21 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v21 verticalUncertainty];
+    locationOfTrigger6 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger6 verticalUncertainty];
     v22 = [v20 numberWithDouble:?];
-    [v3 setObject:v22 forKey:@"vunc"];
+    [outputToDictionary setObject:v22 forKey:@"vunc"];
 
     v23 = MEMORY[0x277CCABB0];
-    v24 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    v25 = [v24 date];
-    [v25 timeIntervalSince1970];
+    locationOfTrigger7 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    date = [locationOfTrigger7 date];
+    [date timeIntervalSince1970];
     v26 = [v23 numberWithDouble:?];
-    [v3 setObject:v26 forKey:@"timeOfLocation"];
+    [outputToDictionary setObject:v26 forKey:@"timeOfLocation"];
 
     v27 = MEMORY[0x277CCABB0];
-    v28 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    v29 = [v27 numberWithUnsignedInt:{objc_msgSend(v28, "referenceFrame")}];
-    [v3 setObject:v29 forKey:@"referenceFrame"];
+    locationOfTrigger8 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    v29 = [v27 numberWithUnsignedInt:{objc_msgSend(locationOfTrigger8, "referenceFrame")}];
+    [outputToDictionary setObject:v29 forKey:@"referenceFrame"];
 
     v30 = MEMORY[0x277CCABB0];
-    v31 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v31 speed];
+    locationOfTrigger9 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger9 speed];
     v32 = [v30 numberWithDouble:?];
-    [v3 setObject:v32 forKey:@"speed"];
+    [outputToDictionary setObject:v32 forKey:@"speed"];
   }
 
   v33 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMKeyReleaseMessage triggerType](self, "triggerType")}];
-  [v3 setObject:v33 forKey:@"triggerType"];
+  [outputToDictionary setObject:v33 forKey:@"triggerType"];
 
-  v34 = [(SMKeyReleaseMessage *)self safetyCacheKey];
-  v35 = [v34 base64EncodedStringWithOptions:0];
-  [v3 setObject:v35 forKey:@"safetyCacheKey"];
+  safetyCacheKey = [(SMKeyReleaseMessage *)self safetyCacheKey];
+  v35 = [safetyCacheKey base64EncodedStringWithOptions:0];
+  [outputToDictionary setObject:v35 forKey:@"safetyCacheKey"];
 
-  v36 = [(SMKeyReleaseMessage *)self safetyCacheToken];
+  safetyCacheToken = [(SMKeyReleaseMessage *)self safetyCacheToken];
 
-  if (v36)
+  if (safetyCacheToken)
   {
-    v37 = [(SMKeyReleaseMessage *)self safetyCacheToken];
-    v38 = [v37 base64EncodedStringWithOptions:0];
-    [v3 setObject:v38 forKey:@"safetyCacheToken"];
+    safetyCacheToken2 = [(SMKeyReleaseMessage *)self safetyCacheToken];
+    v38 = [safetyCacheToken2 base64EncodedStringWithOptions:0];
+    [outputToDictionary setObject:v38 forKey:@"safetyCacheToken"];
   }
 
   v39 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMKeyReleaseMessage sessionType](self, "sessionType")}];
-  [v3 setObject:v39 forKey:@"sessionType"];
+  [outputToDictionary setObject:v39 forKey:@"sessionType"];
 
   v40 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMKeyReleaseMessage destinationType](self, "destinationType")}];
-  [v3 setObject:v40 forKey:@"sessionDestinationType"];
+  [outputToDictionary setObject:v40 forKey:@"sessionDestinationType"];
 
   v41 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMKeyReleaseMessage isSOSTrigger](self, "isSOSTrigger")}];
-  [v3 setObject:v41 forKey:@"isSOSTrigger"];
+  [outputToDictionary setObject:v41 forKey:@"isSOSTrigger"];
 
   v42 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SMKeyReleaseMessage lowPowerModeWarningState](self, "lowPowerModeWarningState")}];
-  [v3 setObject:v42 forKey:@"lowPowerModeWarningState"];
+  [outputToDictionary setObject:v42 forKey:@"lowPowerModeWarningState"];
 
-  return v3;
+  return outputToDictionary;
 }
 
-- (SMKeyReleaseMessage)initWithURL:(id)a3
+- (SMKeyReleaseMessage)initWithURL:(id)l
 {
   v178 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (!v3)
+  lCopy = l;
+  if (!lCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -668,7 +668,7 @@ LABEL_28:
     goto LABEL_96;
   }
 
-  v4 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:v3 resolvingAgainstBaseURL:0];
+  v4 = [objc_alloc(MEMORY[0x277CCACE0]) initWithURL:lCopy resolvingAgainstBaseURL:0];
   v5 = v4;
   if (!v4)
   {
@@ -689,9 +689,9 @@ LABEL_28:
     goto LABEL_95;
   }
 
-  v6 = [v4 queryItems];
-  v7 = v6;
-  if (!v6)
+  queryItems = [v4 queryItems];
+  v7 = queryItems;
+  if (!queryItems)
   {
     v89 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v89, OS_LOG_TYPE_ERROR))
@@ -714,10 +714,10 @@ LABEL_28:
   v168 = 0u;
   v165 = 0u;
   v166 = 0u;
-  v8 = [v6 countByEnumeratingWithState:&v165 objects:v177 count:16];
+  v8 = [queryItems countByEnumeratingWithState:&v165 objects:v177 count:16];
   if (!v8)
   {
-    v61 = [0 intValue];
+    intValue = [0 intValue];
     v160 = 0;
     v158 = 0;
     v10 = 0;
@@ -745,7 +745,7 @@ LABEL_28:
   v9 = v8;
   v163 = 0;
   obj = v7;
-  v137 = v3;
+  v137 = lCopy;
   v138 = v5;
   v139 = 0;
   v140 = 0;
@@ -778,231 +778,231 @@ LABEL_28:
       }
 
       v13 = *(*(&v165 + 1) + 8 * i);
-      v14 = [v13 value];
-      if (v14)
+      value = [v13 value];
+      if (value)
       {
-        v15 = [v13 name];
-        v16 = [v15 isEqualToString:@"sendDate"];
+        name = [v13 name];
+        v16 = [name isEqualToString:@"sendDate"];
 
         if (v16)
         {
           v17 = v10;
-          v10 = v14;
+          v10 = value;
         }
 
         else
         {
-          v21 = [v13 name];
-          v22 = [v21 isEqualToString:@"messageID"];
+          name2 = [v13 name];
+          v22 = [name2 isEqualToString:@"messageID"];
 
           if (v22)
           {
             v17 = v163;
-            v163 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v14];
+            v163 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:value];
           }
 
           else
           {
-            v23 = [v13 name];
-            v24 = [v23 isEqualToString:@"sessionID"];
+            name3 = [v13 name];
+            v24 = [name3 isEqualToString:@"sessionID"];
 
             if (v24)
             {
               v17 = v162;
-              v162 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v14];
+              v162 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:value];
             }
 
             else
             {
-              v25 = [v13 name];
-              v26 = [v25 isEqualToString:@"messageType"];
+              name4 = [v13 name];
+              v26 = [name4 isEqualToString:@"messageType"];
 
               if (v26)
               {
                 v17 = v160;
-                v160 = v14;
+                v160 = value;
               }
 
               else
               {
-                v27 = [v13 name];
-                v28 = [v27 isEqualToString:@"interfaceVersion"];
+                name5 = [v13 name];
+                v28 = [name5 isEqualToString:@"interfaceVersion"];
 
                 if (v28)
                 {
                   v17 = v158;
-                  v158 = v14;
+                  v158 = value;
                 }
 
                 else
                 {
-                  v29 = [v13 name];
-                  v30 = [v29 isEqualToString:@"triggerTime"];
+                  name6 = [v13 name];
+                  v30 = [name6 isEqualToString:@"triggerTime"];
 
                   if (v30)
                   {
                     v17 = v154;
-                    v154 = v14;
+                    v154 = value;
                   }
 
                   else
                   {
-                    v31 = [v13 name];
-                    v32 = [v31 isEqualToString:@"latitude"];
+                    name7 = [v13 name];
+                    v32 = [name7 isEqualToString:@"latitude"];
 
                     if (v32)
                     {
                       v17 = v153;
-                      v153 = v14;
+                      v153 = value;
                     }
 
                     else
                     {
-                      v33 = [v13 name];
-                      v34 = [v33 isEqualToString:@"longitude"];
+                      name8 = [v13 name];
+                      v34 = [name8 isEqualToString:@"longitude"];
 
                       if (v34)
                       {
                         v17 = v152;
-                        v152 = v14;
+                        v152 = value;
                       }
 
                       else
                       {
-                        v35 = [v13 name];
-                        v36 = [v35 isEqualToString:@"hunc"];
+                        name9 = [v13 name];
+                        v36 = [name9 isEqualToString:@"hunc"];
 
                         if (v36)
                         {
                           v17 = v151;
-                          v151 = v14;
+                          v151 = value;
                         }
 
                         else
                         {
-                          v37 = [v13 name];
-                          v38 = [v37 isEqualToString:@"altitude"];
+                          name10 = [v13 name];
+                          v38 = [name10 isEqualToString:@"altitude"];
 
                           if (v38)
                           {
                             v17 = v150;
-                            v150 = v14;
+                            v150 = value;
                           }
 
                           else
                           {
-                            v39 = [v13 name];
-                            v40 = [v39 isEqualToString:@"vunc"];
+                            name11 = [v13 name];
+                            v40 = [name11 isEqualToString:@"vunc"];
 
                             if (v40)
                             {
                               v17 = v149;
-                              v149 = v14;
+                              v149 = value;
                             }
 
                             else
                             {
-                              v41 = [v13 name];
-                              v42 = [v41 isEqualToString:@"timeOfLocation"];
+                              name12 = [v13 name];
+                              v42 = [name12 isEqualToString:@"timeOfLocation"];
 
                               if (v42)
                               {
                                 v17 = v148;
-                                v148 = v14;
+                                v148 = value;
                               }
 
                               else
                               {
-                                v43 = [v13 name];
-                                v44 = [v43 isEqualToString:@"referenceFrame"];
+                                name13 = [v13 name];
+                                v44 = [name13 isEqualToString:@"referenceFrame"];
 
                                 if (v44)
                                 {
                                   v17 = v147;
-                                  v147 = v14;
+                                  v147 = value;
                                 }
 
                                 else
                                 {
-                                  v45 = [v13 name];
-                                  v46 = [v45 isEqualToString:@"speed"];
+                                  name14 = [v13 name];
+                                  v46 = [name14 isEqualToString:@"speed"];
 
                                   if (v46)
                                   {
                                     v17 = v146;
-                                    v146 = v14;
+                                    v146 = value;
                                   }
 
                                   else
                                   {
-                                    v47 = [v13 name];
-                                    v48 = [v47 isEqualToString:@"triggerType"];
+                                    name15 = [v13 name];
+                                    v48 = [name15 isEqualToString:@"triggerType"];
 
                                     if (v48)
                                     {
                                       v17 = v145;
-                                      v145 = v14;
+                                      v145 = value;
                                     }
 
                                     else
                                     {
-                                      v49 = [v13 name];
-                                      v50 = [v49 isEqualToString:@"safetyCacheKey"];
+                                      name16 = [v13 name];
+                                      v50 = [name16 isEqualToString:@"safetyCacheKey"];
 
                                       if (v50)
                                       {
                                         v17 = v144;
-                                        v144 = v14;
+                                        v144 = value;
                                       }
 
                                       else
                                       {
-                                        v51 = [v13 name];
-                                        v52 = [v51 isEqualToString:@"safetyCacheToken"];
+                                        name17 = [v13 name];
+                                        v52 = [name17 isEqualToString:@"safetyCacheToken"];
 
                                         if (v52)
                                         {
                                           v17 = v143;
-                                          v143 = v14;
+                                          v143 = value;
                                         }
 
                                         else
                                         {
-                                          v53 = [v13 name];
-                                          v54 = [v53 isEqualToString:@"sessionType"];
+                                          name18 = [v13 name];
+                                          v54 = [name18 isEqualToString:@"sessionType"];
 
                                           if (v54)
                                           {
                                             v17 = v142;
-                                            v142 = v14;
+                                            v142 = value;
                                           }
 
                                           else
                                           {
-                                            v55 = [v13 name];
-                                            v56 = [v55 isEqualToString:@"sessionDestinationType"];
+                                            name19 = [v13 name];
+                                            v56 = [name19 isEqualToString:@"sessionDestinationType"];
 
                                             if (v56)
                                             {
                                               v17 = v141;
-                                              v141 = v14;
+                                              v141 = value;
                                             }
 
                                             else
                                             {
-                                              v57 = [v13 name];
-                                              v58 = [v57 isEqualToString:@"isSOSTrigger"];
+                                              name20 = [v13 name];
+                                              v58 = [name20 isEqualToString:@"isSOSTrigger"];
 
                                               if (v58)
                                               {
                                                 v17 = v140;
-                                                v140 = v14;
+                                                v140 = value;
                                               }
 
                                               else
                                               {
-                                                v59 = [v13 name];
-                                                v60 = [v59 isEqualToString:@"lowPowerModeWarningState"];
+                                                name21 = [v13 name];
+                                                v60 = [name21 isEqualToString:@"lowPowerModeWarningState"];
 
                                                 if (!v60)
                                                 {
@@ -1010,7 +1010,7 @@ LABEL_28:
                                                 }
 
                                                 v17 = v139;
-                                                v139 = v14;
+                                                v139 = value;
                                               }
                                             }
                                           }
@@ -1056,11 +1056,11 @@ LABEL_55:
   }
 
   while (v9);
-  v61 = [v160 intValue];
+  intValue = [v160 intValue];
   if (!v160)
   {
     v160 = 0;
-    v3 = v137;
+    lCopy = v137;
     v5 = v138;
     v7 = obj;
     goto LABEL_91;
@@ -1068,9 +1068,9 @@ LABEL_55:
 
   v5 = v138;
   v7 = obj;
-  if ([objc_opt_class() messageType] != v61)
+  if ([objc_opt_class() messageType] != intValue)
   {
-    v3 = v137;
+    lCopy = v137;
 LABEL_91:
     v65 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
@@ -1079,15 +1079,15 @@ LABEL_91:
       v93 = NSStringFromClass(v98);
       NSStringFromSelector(a2);
       v100 = v99 = v7;
-      v101 = [objc_opt_class() messageType];
+      messageType = [objc_opt_class() messageType];
       *buf = 138413058;
       v170 = v93;
       v171 = 2112;
       v172 = v100;
       v173 = 1024;
-      v174 = v101;
+      v174 = messageType;
       v175 = 1024;
-      v176 = v61;
+      v176 = intValue;
       _os_log_error_impl(&dword_26455D000, v65, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d", buf, 0x22u);
 
       v7 = v99;
@@ -1099,12 +1099,12 @@ LABEL_92:
     goto LABEL_93;
   }
 
-  v62 = [v158 intValue];
-  v63 = v62;
-  if (!v158 || v62 != 1)
+  intValue2 = [v158 intValue];
+  v63 = intValue2;
+  if (!v158 || intValue2 != 1)
   {
     v65 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    v3 = v137;
+    lCopy = v137;
     if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
     {
       v92 = objc_opt_class();
@@ -1144,7 +1144,7 @@ LABEL_100:
 
     v10 = 0;
     v88 = 0;
-    v3 = v137;
+    lCopy = v137;
     goto LABEL_93;
   }
 
@@ -1154,7 +1154,7 @@ LABEL_100:
   if (!v163)
   {
     v67 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    v3 = v137;
+    lCopy = v137;
     if (os_log_type_enabled(v67, OS_LOG_TYPE_ERROR))
     {
       v129 = objc_opt_class();
@@ -1180,7 +1180,7 @@ LABEL_100:
     {
 LABEL_110:
       v88 = 0;
-      v3 = v137;
+      lCopy = v137;
       goto LABEL_135;
     }
 
@@ -1238,9 +1238,9 @@ LABEL_137:
     v79 = v78;
     [v149 doubleValue];
     v81 = v80;
-    v82 = [v147 intValue];
+    intValue3 = [v147 intValue];
     [v146 doubleValue];
-    v68 = [v71 initWithLatitude:v70 longitude:v82 horizontalUncertainty:v73 altitude:v75 verticalUncertainty:v77 date:v79 referenceFrame:v81 speed:v83];
+    v68 = [v71 initWithLatitude:v70 longitude:intValue3 horizontalUncertainty:v73 altitude:v75 verticalUncertainty:v77 date:v79 referenceFrame:v81 speed:v83];
   }
 
   if (!v145)
@@ -1250,7 +1250,7 @@ LABEL_137:
     {
 LABEL_114:
       v88 = 0;
-      v3 = v137;
+      lCopy = v137;
       goto LABEL_134;
     }
 
@@ -1269,7 +1269,7 @@ LABEL_139:
     goto LABEL_114;
   }
 
-  v84 = [v145 intValue];
+  intValue4 = [v145 intValue];
   if (!v144)
   {
     v86 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1289,12 +1289,12 @@ LABEL_139:
     goto LABEL_139;
   }
 
-  v85 = v84;
+  v85 = intValue4;
   v86 = [objc_alloc(MEMORY[0x277CBEA90]) initWithBase64EncodedString:v144 options:0];
   if (!v86)
   {
     v87 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
-    v3 = v137;
+    lCopy = v137;
     if (os_log_type_enabled(v87, OS_LOG_TYPE_ERROR))
     {
       v113 = objc_opt_class();
@@ -1320,7 +1320,7 @@ LABEL_139:
     v87 = 0;
   }
 
-  v3 = v137;
+  lCopy = v137;
   if (!v142)
   {
     v124 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1347,7 +1347,7 @@ LABEL_141:
     goto LABEL_125;
   }
 
-  v119 = [v142 intValue];
+  intValue5 = [v142 intValue];
   if (!v141)
   {
     v124 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
@@ -1367,12 +1367,12 @@ LABEL_141:
     goto LABEL_141;
   }
 
-  v120 = v119;
-  v121 = [v141 intValue];
-  v122 = [v140 BOOLValue];
+  v120 = intValue5;
+  intValue6 = [v141 intValue];
+  bOOLValue = [v140 BOOLValue];
   if (v139)
   {
-    v123 = [v139 intValue];
+    intValue7 = [v139 intValue];
   }
 
   else
@@ -1393,13 +1393,13 @@ LABEL_141:
       }
     }
 
-    v123 = 0;
+    intValue7 = 0;
   }
 
-  LOBYTE(v136) = v122;
-  v88 = [(SMKeyReleaseMessage *)self initWithDate:v65 messageID:v163 sessionID:v162 triggerDate:v67 locationOfTrigger:v68 triggerType:v85 safetyCacheKey:v86 safetyCacheToken:v87 sessionType:v120 destinationType:v121 isSOSTrigger:v136 lowPowerModeWarningState:v123];
+  LOBYTE(v136) = bOOLValue;
+  v88 = [(SMKeyReleaseMessage *)self initWithDate:v65 messageID:v163 sessionID:v162 triggerDate:v67 locationOfTrigger:v68 triggerType:v85 safetyCacheKey:v86 safetyCacheToken:v87 sessionType:v120 destinationType:intValue6 isSOSTrigger:v136 lowPowerModeWarningState:intValue7];
   self = v88;
-  v3 = v137;
+  lCopy = v137;
 LABEL_133:
 
   v5 = v138;
@@ -1425,73 +1425,73 @@ LABEL_96:
   v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v94.receiver = self;
   v94.super_class = SMKeyReleaseMessage;
-  v5 = [(SMMessage *)&v94 outputToURLComponents];
-  v6 = [v5 queryItems];
-  [v4 addObjectsFromArray:v6];
+  outputToURLComponents = [(SMMessage *)&v94 outputToURLComponents];
+  queryItems = [outputToURLComponents queryItems];
+  [v4 addObjectsFromArray:queryItems];
 
   v7 = objc_alloc(MEMORY[0x277CCAD18]);
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(SMKeyReleaseMessage *)self triggerDate];
-  [v9 timeIntervalSince1970];
+  triggerDate = [(SMKeyReleaseMessage *)self triggerDate];
+  [triggerDate timeIntervalSince1970];
   v10 = [v8 numberWithDouble:?];
-  v11 = [v10 stringValue];
-  v12 = [v7 initWithName:@"triggerTime" value:v11];
+  stringValue = [v10 stringValue];
+  v12 = [v7 initWithName:@"triggerTime" value:stringValue];
   [v4 addObject:v12];
 
-  v13 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+  locationOfTrigger = [(SMKeyReleaseMessage *)self locationOfTrigger];
 
-  if (v13)
+  if (locationOfTrigger)
   {
     v14 = objc_alloc(MEMORY[0x277CCAD18]);
     v15 = MEMORY[0x277CCABB0];
-    v16 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v16 latitude];
+    locationOfTrigger2 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger2 latitude];
     v17 = [v15 numberWithDouble:?];
-    v18 = [v17 stringValue];
-    v19 = [v14 initWithName:@"latitude" value:v18];
+    stringValue2 = [v17 stringValue];
+    v19 = [v14 initWithName:@"latitude" value:stringValue2];
     [v4 addObject:v19];
 
     v20 = objc_alloc(MEMORY[0x277CCAD18]);
     v21 = MEMORY[0x277CCABB0];
-    v22 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v22 longitude];
+    locationOfTrigger3 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger3 longitude];
     v23 = [v21 numberWithDouble:?];
-    v24 = [v23 stringValue];
-    v25 = [v20 initWithName:@"longitude" value:v24];
+    stringValue3 = [v23 stringValue];
+    v25 = [v20 initWithName:@"longitude" value:stringValue3];
     [v4 addObject:v25];
 
     v26 = objc_alloc(MEMORY[0x277CCAD18]);
     v27 = MEMORY[0x277CCABB0];
-    v28 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v28 horizontalUncertainty];
+    locationOfTrigger4 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger4 horizontalUncertainty];
     v29 = [v27 numberWithDouble:?];
-    v30 = [v29 stringValue];
-    v31 = [v26 initWithName:@"hunc" value:v30];
+    stringValue4 = [v29 stringValue];
+    v31 = [v26 initWithName:@"hunc" value:stringValue4];
     [v4 addObject:v31];
 
     v32 = objc_alloc(MEMORY[0x277CCAD18]);
     v33 = MEMORY[0x277CCABB0];
-    v34 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v34 altitude];
+    locationOfTrigger5 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger5 altitude];
     v35 = [v33 numberWithDouble:?];
-    v36 = [v35 stringValue];
-    v37 = [v32 initWithName:@"altitude" value:v36];
+    stringValue5 = [v35 stringValue];
+    v37 = [v32 initWithName:@"altitude" value:stringValue5];
     [v4 addObject:v37];
 
     v38 = objc_alloc(MEMORY[0x277CCAD18]);
     v39 = MEMORY[0x277CCABB0];
-    v40 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v40 verticalUncertainty];
+    locationOfTrigger6 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger6 verticalUncertainty];
     v41 = [v39 numberWithDouble:?];
-    v42 = [v41 stringValue];
-    v43 = [v38 initWithName:@"vunc" value:v42];
+    stringValue6 = [v41 stringValue];
+    v43 = [v38 initWithName:@"vunc" value:stringValue6];
     [v4 addObject:v43];
 
     v44 = objc_alloc(MEMORY[0x277CCAD18]);
     v45 = MEMORY[0x277CCABB0];
-    v46 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    v47 = [v46 date];
-    [v47 timeIntervalSince1970];
+    locationOfTrigger7 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    date = [locationOfTrigger7 date];
+    [date timeIntervalSince1970];
     v48 = [v45 numberWithDouble:?];
     [v48 stringValue];
     v50 = v49 = v3;
@@ -1501,67 +1501,67 @@ LABEL_96:
     v3 = v49;
     v52 = objc_alloc(MEMORY[0x277CCAD18]);
     v53 = MEMORY[0x277CCABB0];
-    v54 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    v55 = [v53 numberWithUnsignedInt:{objc_msgSend(v54, "referenceFrame")}];
-    v56 = [v55 stringValue];
-    v57 = [v52 initWithName:@"referenceFrame" value:v56];
+    locationOfTrigger8 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    v55 = [v53 numberWithUnsignedInt:{objc_msgSend(locationOfTrigger8, "referenceFrame")}];
+    stringValue7 = [v55 stringValue];
+    v57 = [v52 initWithName:@"referenceFrame" value:stringValue7];
     [v4 addObject:v57];
 
     v58 = objc_alloc(MEMORY[0x277CCAD18]);
     v59 = MEMORY[0x277CCABB0];
-    v60 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v60 speed];
+    locationOfTrigger9 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger9 speed];
     v61 = [v59 numberWithDouble:?];
-    v62 = [v61 stringValue];
-    v63 = [v58 initWithName:@"speed" value:v62];
+    stringValue8 = [v61 stringValue];
+    v63 = [v58 initWithName:@"speed" value:stringValue8];
     [v4 addObject:v63];
   }
 
   v64 = objc_alloc(MEMORY[0x277CCAD18]);
   v65 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMKeyReleaseMessage triggerType](self, "triggerType")}];
-  v66 = [v65 stringValue];
-  v67 = [v64 initWithName:@"triggerType" value:v66];
+  stringValue9 = [v65 stringValue];
+  v67 = [v64 initWithName:@"triggerType" value:stringValue9];
   [v4 addObject:v67];
 
   v68 = objc_alloc(MEMORY[0x277CCAD18]);
-  v69 = [(SMKeyReleaseMessage *)self safetyCacheKey];
-  v70 = [v69 base64EncodedStringWithOptions:0];
+  safetyCacheKey = [(SMKeyReleaseMessage *)self safetyCacheKey];
+  v70 = [safetyCacheKey base64EncodedStringWithOptions:0];
   v71 = [v68 initWithName:@"safetyCacheKey" value:v70];
   [v4 addObject:v71];
 
-  v72 = [(SMKeyReleaseMessage *)self safetyCacheToken];
+  safetyCacheToken = [(SMKeyReleaseMessage *)self safetyCacheToken];
 
-  if (v72)
+  if (safetyCacheToken)
   {
     v73 = objc_alloc(MEMORY[0x277CCAD18]);
-    v74 = [(SMKeyReleaseMessage *)self safetyCacheToken];
-    v75 = [v74 base64EncodedStringWithOptions:0];
+    safetyCacheToken2 = [(SMKeyReleaseMessage *)self safetyCacheToken];
+    v75 = [safetyCacheToken2 base64EncodedStringWithOptions:0];
     v76 = [v73 initWithName:@"safetyCacheToken" value:v75];
     [v4 addObject:v76];
   }
 
   v77 = objc_alloc(MEMORY[0x277CCAD18]);
   v78 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMKeyReleaseMessage sessionType](self, "sessionType")}];
-  v79 = [v78 stringValue];
-  v80 = [v77 initWithName:@"sessionType" value:v79];
+  stringValue10 = [v78 stringValue];
+  v80 = [v77 initWithName:@"sessionType" value:stringValue10];
   [v4 addObject:v80];
 
   v81 = objc_alloc(MEMORY[0x277CCAD18]);
   v82 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMKeyReleaseMessage destinationType](self, "destinationType")}];
-  v83 = [v82 stringValue];
-  v84 = [v81 initWithName:@"sessionDestinationType" value:v83];
+  stringValue11 = [v82 stringValue];
+  v84 = [v81 initWithName:@"sessionDestinationType" value:stringValue11];
   [v4 addObject:v84];
 
   v85 = objc_alloc(MEMORY[0x277CCAD18]);
   v86 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMKeyReleaseMessage isSOSTrigger](self, "isSOSTrigger")}];
-  v87 = [v86 stringValue];
-  v88 = [v85 initWithName:@"isSOSTrigger" value:v87];
+  stringValue12 = [v86 stringValue];
+  v88 = [v85 initWithName:@"isSOSTrigger" value:stringValue12];
   [v4 addObject:v88];
 
   v89 = objc_alloc(MEMORY[0x277CCAD18]);
   v90 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SMKeyReleaseMessage lowPowerModeWarningState](self, "lowPowerModeWarningState")}];
-  v91 = [v90 stringValue];
-  v92 = [v89 initWithName:@"lowPowerModeWarningState" value:v91];
+  stringValue13 = [v90 stringValue];
+  v92 = [v89 initWithName:@"lowPowerModeWarningState" value:stringValue13];
   [v4 addObject:v92];
 
   [v3 setQueryItems:v4];
@@ -1571,10 +1571,10 @@ LABEL_96:
 
 - (id)summaryText
 {
-  v3 = [(SMKeyReleaseMessage *)self triggerType];
-  if (v3 > 12)
+  triggerType = [(SMKeyReleaseMessage *)self triggerType];
+  if (triggerType > 12)
   {
-    switch(v3)
+    switch(triggerType)
     {
       case 13:
         v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
@@ -1595,7 +1595,7 @@ LABEL_96:
 
   else
   {
-    switch(v3)
+    switch(triggerType)
     {
       case 10:
         goto LABEL_12;
@@ -1620,14 +1620,14 @@ LABEL_12:
     goto LABEL_12;
   }
 
-  v8 = [(SMKeyReleaseMessage *)self sessionType];
+  sessionType = [(SMKeyReleaseMessage *)self sessionType];
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
   v5 = v4;
-  if (v8 > 2)
+  if (sessionType > 2)
   {
-    if (v8 != 3)
+    if (sessionType != 3)
     {
-      if (v8 == 4)
+      if (sessionType == 4)
       {
         v6 = @"KEY_RELEASE_MESSAGE_WORKOUT_SUMMARY";
         v7 = @"Check In: Has not completed workout as expected, location shared";
@@ -1643,9 +1643,9 @@ LABEL_12:
 
   else
   {
-    if (v8 != 1)
+    if (sessionType != 1)
     {
-      if (v8 == 2)
+      if (sessionType == 2)
       {
         v6 = @"KEY_RELEASE_MESSAGE_DESTINATION_BOUND_SUMMARY";
         v7 = @"Check In: Has not arrived as expected, location shared";
@@ -1668,11 +1668,11 @@ LABEL_24:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v45 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  coderCopy = coder;
+  if (!coderCopy)
   {
     v5 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -1687,95 +1687,95 @@ LABEL_24:
 
   v40.receiver = self;
   v40.super_class = SMKeyReleaseMessage;
-  [(SMMessage *)&v40 encodeWithCoder:v4];
-  v6 = [(SMKeyReleaseMessage *)self triggerDate];
-  [v4 encodeObject:v6 forKey:@"triggerTime"];
+  [(SMMessage *)&v40 encodeWithCoder:coderCopy];
+  triggerDate = [(SMKeyReleaseMessage *)self triggerDate];
+  [coderCopy encodeObject:triggerDate forKey:@"triggerTime"];
 
-  v7 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+  locationOfTrigger = [(SMKeyReleaseMessage *)self locationOfTrigger];
 
-  if (v7)
+  if (locationOfTrigger)
   {
     v8 = MEMORY[0x277CCABB0];
-    v9 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v9 latitude];
+    locationOfTrigger2 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger2 latitude];
     v10 = [v8 numberWithDouble:?];
-    [v4 encodeObject:v10 forKey:@"latitude"];
+    [coderCopy encodeObject:v10 forKey:@"latitude"];
 
     v11 = MEMORY[0x277CCABB0];
-    v12 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v12 longitude];
+    locationOfTrigger3 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger3 longitude];
     v13 = [v11 numberWithDouble:?];
-    [v4 encodeObject:v13 forKey:@"longitude"];
+    [coderCopy encodeObject:v13 forKey:@"longitude"];
 
     v14 = MEMORY[0x277CCABB0];
-    v15 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v15 horizontalUncertainty];
+    locationOfTrigger4 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger4 horizontalUncertainty];
     v16 = [v14 numberWithDouble:?];
-    [v4 encodeObject:v16 forKey:@"hunc"];
+    [coderCopy encodeObject:v16 forKey:@"hunc"];
 
     v17 = MEMORY[0x277CCABB0];
-    v18 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v18 altitude];
+    locationOfTrigger5 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger5 altitude];
     v19 = [v17 numberWithDouble:?];
-    [v4 encodeObject:v19 forKey:@"altitude"];
+    [coderCopy encodeObject:v19 forKey:@"altitude"];
 
     v20 = MEMORY[0x277CCABB0];
-    v21 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v21 verticalUncertainty];
+    locationOfTrigger6 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger6 verticalUncertainty];
     v22 = [v20 numberWithDouble:?];
-    [v4 encodeObject:v22 forKey:@"vunc"];
+    [coderCopy encodeObject:v22 forKey:@"vunc"];
 
-    v23 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    v24 = [v23 date];
-    [v4 encodeObject:v24 forKey:@"timeOfLocation"];
+    locationOfTrigger7 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    date = [locationOfTrigger7 date];
+    [coderCopy encodeObject:date forKey:@"timeOfLocation"];
 
     v25 = MEMORY[0x277CCABB0];
-    v26 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    v27 = [v25 numberWithUnsignedInt:{objc_msgSend(v26, "referenceFrame")}];
-    [v4 encodeObject:v27 forKey:@"referenceFrame"];
+    locationOfTrigger8 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    v27 = [v25 numberWithUnsignedInt:{objc_msgSend(locationOfTrigger8, "referenceFrame")}];
+    [coderCopy encodeObject:v27 forKey:@"referenceFrame"];
 
     v28 = MEMORY[0x277CCABB0];
-    v29 = [(SMKeyReleaseMessage *)self locationOfTrigger];
-    [v29 speed];
+    locationOfTrigger9 = [(SMKeyReleaseMessage *)self locationOfTrigger];
+    [locationOfTrigger9 speed];
     v30 = [v28 numberWithDouble:?];
-    [v4 encodeObject:v30 forKey:@"speed"];
+    [coderCopy encodeObject:v30 forKey:@"speed"];
   }
 
   v31 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMKeyReleaseMessage triggerType](self, "triggerType")}];
-  [v4 encodeObject:v31 forKey:@"triggerType"];
+  [coderCopy encodeObject:v31 forKey:@"triggerType"];
 
-  v32 = [(SMKeyReleaseMessage *)self safetyCacheKey];
-  [v4 encodeObject:v32 forKey:@"safetyCacheKey"];
+  safetyCacheKey = [(SMKeyReleaseMessage *)self safetyCacheKey];
+  [coderCopy encodeObject:safetyCacheKey forKey:@"safetyCacheKey"];
 
-  v33 = [(SMKeyReleaseMessage *)self safetyCacheToken];
+  safetyCacheToken = [(SMKeyReleaseMessage *)self safetyCacheToken];
 
-  if (v33)
+  if (safetyCacheToken)
   {
-    v34 = [(SMKeyReleaseMessage *)self safetyCacheToken];
-    [v4 encodeObject:v34 forKey:@"safetyCacheToken"];
+    safetyCacheToken2 = [(SMKeyReleaseMessage *)self safetyCacheToken];
+    [coderCopy encodeObject:safetyCacheToken2 forKey:@"safetyCacheToken"];
   }
 
   v35 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMKeyReleaseMessage sessionType](self, "sessionType")}];
-  [v4 encodeObject:v35 forKey:@"sessionType"];
+  [coderCopy encodeObject:v35 forKey:@"sessionType"];
 
   v36 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[SMKeyReleaseMessage destinationType](self, "destinationType")}];
-  [v4 encodeObject:v36 forKey:@"sessionDestinationType"];
+  [coderCopy encodeObject:v36 forKey:@"sessionDestinationType"];
 
   v37 = [MEMORY[0x277CCABB0] numberWithBool:{-[SMKeyReleaseMessage isSOSTrigger](self, "isSOSTrigger")}];
-  [v4 encodeObject:v37 forKey:@"isSOSTrigger"];
+  [coderCopy encodeObject:v37 forKey:@"isSOSTrigger"];
 
   v38 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SMKeyReleaseMessage lowPowerModeWarningState](self, "lowPowerModeWarningState")}];
-  [v4 encodeObject:v38 forKey:@"lowPowerModeWarningState"];
+  [coderCopy encodeObject:v38 forKey:@"lowPowerModeWarningState"];
 
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (SMKeyReleaseMessage)initWithCoder:(id)a3
+- (SMKeyReleaseMessage)initWithCoder:(id)coder
 {
   v113 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  coderCopy = coder;
+  v6 = coderCopy;
+  if (!coderCopy)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
@@ -1787,14 +1787,14 @@ LABEL_24:
     goto LABEL_28;
   }
 
-  v7 = [v5 decodeIntegerForKey:@"messageType"];
+  v7 = [coderCopy decodeIntegerForKey:@"messageType"];
   if ([objc_opt_class() messageType] != v7)
   {
     v9 = _rt_log_facility_get_os_log(RTLogFacilitySafetyMonitor);
     if (!os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
 LABEL_28:
-      v51 = 0;
+      selfCopy = 0;
       goto LABEL_29;
     }
 
@@ -1806,7 +1806,7 @@ LABEL_28:
     v107 = 2112;
     v108 = v46;
     v109 = 1024;
-    v110 = [objc_opt_class() messageType];
+    messageType = [objc_opt_class() messageType];
     v111 = 1024;
     v112 = v7;
     v47 = "#SafetyCache,%@,%@,extracted non-matching message type,expected,%d,got,%d";
@@ -1836,7 +1836,7 @@ LABEL_43:
     v107 = 2112;
     v108 = v46;
     v109 = 1024;
-    v110 = v50;
+    messageType = v50;
     v47 = "#SafetyCache,%@,%@,unrecognized interface version,%d";
     v48 = v9;
     v49 = 28;
@@ -1882,11 +1882,11 @@ LABEL_43:
             [v101 doubleValue];
             v28 = v27;
             v29 = v12;
-            v30 = [v100 intValue];
+            intValue = [v100 intValue];
             [v98 doubleValue];
             v31 = v18;
             v14 = v17;
-            v32 = v30;
+            v32 = intValue;
             v12 = v29;
             v16 = [v31 initWithLatitude:v17 longitude:v32 horizontalUncertainty:v20 altitude:v22 verticalUncertainty:v24 date:v26 referenceFrame:v28 speed:v33];
           }
@@ -1898,7 +1898,7 @@ LABEL_43:
           {
             v92 = v12;
             v93 = v14;
-            v36 = [v35 intValue];
+            intValue2 = [v35 intValue];
             [v6 decodeObjectOfClass:objc_opt_class() forKey:@"safetyCacheKey"];
             v91 = v11 = v97;
             if (v91)
@@ -1908,22 +1908,22 @@ LABEL_43:
               v89 = v37;
               if (v37)
               {
-                v38 = [v37 intValue];
+                intValue3 = [v37 intValue];
                 v39 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"sessionDestinationType"];
                 v90 = v39;
                 if (v39)
                 {
-                  v86 = v38;
-                  v87 = v36;
-                  v40 = [v39 intValue];
+                  v86 = intValue3;
+                  v87 = intValue2;
+                  intValue4 = [v39 intValue];
                   v41 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"isSOSTrigger"];
-                  v85 = [v41 intValue];
+                  intValue5 = [v41 intValue];
 
                   v42 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"lowPowerModeWarningState"];
                   v88 = v42;
                   if (v42)
                   {
-                    v43 = [v42 intValue];
+                    intValue6 = [v42 intValue];
                     v14 = v93;
                   }
 
@@ -1948,13 +1948,13 @@ LABEL_43:
                       }
                     }
 
-                    v43 = 0;
+                    intValue6 = 0;
                   }
 
                   v55 = v91;
-                  LOBYTE(v84) = v85 != 0;
-                  self = [(SMKeyReleaseMessage *)self initWithDate:v9 messageID:v10 sessionID:v97 triggerDate:log locationOfTrigger:v34 triggerType:v87 safetyCacheKey:v91 safetyCacheToken:v95 sessionType:v86 destinationType:v40 isSOSTrigger:v84 lowPowerModeWarningState:v43];
-                  v51 = self;
+                  LOBYTE(v84) = intValue5 != 0;
+                  self = [(SMKeyReleaseMessage *)self initWithDate:v9 messageID:v10 sessionID:v97 triggerDate:log locationOfTrigger:v34 triggerType:v87 safetyCacheKey:v91 safetyCacheToken:v95 sessionType:v86 destinationType:intValue4 isSOSTrigger:v84 lowPowerModeWarningState:intValue6];
+                  selfCopy = self;
                   v12 = v92;
                 }
 
@@ -1978,7 +1978,7 @@ LABEL_43:
                     v14 = v93;
                   }
 
-                  v51 = 0;
+                  selfCopy = 0;
                 }
               }
 
@@ -1997,7 +1997,7 @@ LABEL_43:
                   _os_log_error_impl(&dword_26455D000, v90, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing sessionType", buf, 0x16u);
                 }
 
-                v51 = 0;
+                selfCopy = 0;
                 v12 = v92;
                 v14 = v93;
                 v55 = v91;
@@ -2022,7 +2022,7 @@ LABEL_43:
                 v14 = v93;
               }
 
-              v51 = 0;
+              selfCopy = 0;
               v55 = 0;
             }
           }
@@ -2046,7 +2046,7 @@ LABEL_43:
               v14 = v94;
             }
 
-            v51 = 0;
+            selfCopy = 0;
           }
         }
 
@@ -2065,7 +2065,7 @@ LABEL_43:
             _os_log_error_impl(&dword_26455D000, v12, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing triggerDate", buf, 0x16u);
           }
 
-          v51 = 0;
+          selfCopy = 0;
         }
       }
 
@@ -2084,7 +2084,7 @@ LABEL_43:
           _os_log_error_impl(&dword_26455D000, log, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing sessionID", buf, 0x16u);
         }
 
-        v51 = 0;
+        selfCopy = 0;
       }
     }
 
@@ -2103,7 +2103,7 @@ LABEL_43:
         _os_log_error_impl(&dword_26455D000, v11, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing messageID", buf, 0x16u);
       }
 
-      v51 = 0;
+      selfCopy = 0;
     }
   }
 
@@ -2122,12 +2122,12 @@ LABEL_43:
       _os_log_error_impl(&dword_26455D000, v10, OS_LOG_TYPE_ERROR, "#SafetyCache,%@,%@,missing date", buf, 0x16u);
     }
 
-    v51 = 0;
+    selfCopy = 0;
   }
 
 LABEL_29:
   v52 = *MEMORY[0x277D85DE8];
-  return v51;
+  return selfCopy;
 }
 
 @end

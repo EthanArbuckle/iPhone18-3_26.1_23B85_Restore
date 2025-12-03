@@ -1,12 +1,12 @@
 @interface _UIListMetrics
 + (_UIListMetrics)sharedMetrics;
 - (_UIListMetrics)init;
-- (_UIListMetricsAccessoryMetrics)metricsForAccessoryWithType:(int64_t)a3 cellStyle:(int64_t)a4 listStyle:(int64_t)a5 traitCollection:(id)a6 state:(id)a7;
-- (_UIListMetricsCellMetrics)metricsForCellWithStyle:(SEL)a3 listStyle:(int64_t)a4 prominence:(int64_t)a5 traitCollection:(int64_t)a6 state:(id)a7;
-- (_UIListMetricsListBehaviors)behaviorsForListWithStyle:(int64_t)a3 traitCollection:(id)a4;
-- (_UIListMetricsSectionMetrics)metricsForSectionWithPosition:(SEL)a3 hasHeader:(unint64_t)a4 hasFooter:(BOOL)a5 listGeometry:(BOOL)a6 listStyle:(_UIListGeometry *)a7 spacingStyle:(int64_t)a8 traitCollection:(int64_t)a9;
-- (_UIListMetricsSeparatorMetrics)metricsForSeparatorWithListStyle:(SEL)a3 traitCollection:(int64_t)a4;
-- (_UIListMetricsShadowMetrics)metricsForShadowWithType:(SEL)a3 listStyle:(int64_t)a4 traitCollection:(int64_t)a5;
+- (_UIListMetricsAccessoryMetrics)metricsForAccessoryWithType:(int64_t)type cellStyle:(int64_t)style listStyle:(int64_t)listStyle traitCollection:(id)collection state:(id)state;
+- (_UIListMetricsCellMetrics)metricsForCellWithStyle:(SEL)style listStyle:(int64_t)listStyle prominence:(int64_t)prominence traitCollection:(int64_t)collection state:(id)state;
+- (_UIListMetricsListBehaviors)behaviorsForListWithStyle:(int64_t)style traitCollection:(id)collection;
+- (_UIListMetricsSectionMetrics)metricsForSectionWithPosition:(SEL)position hasHeader:(unint64_t)header hasFooter:(BOOL)footer listGeometry:(BOOL)geometry listStyle:(_UIListGeometry *)style spacingStyle:(int64_t)spacingStyle traitCollection:(int64_t)collection;
+- (_UIListMetricsSeparatorMetrics)metricsForSeparatorWithListStyle:(SEL)style traitCollection:(int64_t)collection;
+- (_UIListMetricsShadowMetrics)metricsForShadowWithType:(SEL)type listStyle:(int64_t)style traitCollection:(int64_t)collection;
 @end
 
 @implementation _UIListMetrics
@@ -18,16 +18,16 @@
   return [(_UIListMetrics *)&v3 init];
 }
 
-- (_UIListMetricsListBehaviors)behaviorsForListWithStyle:(int64_t)a3 traitCollection:(id)a4
+- (_UIListMetricsListBehaviors)behaviorsForListWithStyle:(int64_t)style traitCollection:(id)collection
 {
   v5 = qword_1ED48CAA0;
-  v6 = a4;
+  collectionCopy = collection;
   if (v5 != -1)
   {
     swift_once();
   }
 
-  v7 = sub_188C2678C(a3, v6);
+  v7 = sub_188C2678C(style, collectionCopy);
   v9 = v8;
 
   v10 = v7;
@@ -37,7 +37,7 @@
   return result;
 }
 
-- (_UIListMetricsSeparatorMetrics)metricsForSeparatorWithListStyle:(SEL)a3 traitCollection:(int64_t)a4
+- (_UIListMetricsSeparatorMetrics)metricsForSeparatorWithListStyle:(SEL)style traitCollection:(int64_t)collection
 {
   v7 = qword_1ED48CAA0;
   v8 = a5;
@@ -46,7 +46,7 @@
     swift_once();
   }
 
-  v9 = sub_188C26F60(a4, v8);
+  v9 = sub_188C26F60(collection, v8);
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -70,29 +70,29 @@
   return v3;
 }
 
-- (_UIListMetricsSectionMetrics)metricsForSectionWithPosition:(SEL)a3 hasHeader:(unint64_t)a4 hasFooter:(BOOL)a5 listGeometry:(BOOL)a6 listStyle:(_UIListGeometry *)a7 spacingStyle:(int64_t)a8 traitCollection:(int64_t)a9
+- (_UIListMetricsSectionMetrics)metricsForSectionWithPosition:(SEL)position hasHeader:(unint64_t)header hasFooter:(BOOL)footer listGeometry:(BOOL)geometry listStyle:(_UIListGeometry *)style spacingStyle:(int64_t)spacingStyle traitCollection:(int64_t)collection
 {
-  v14 = a4;
-  v17 = *&a7->contentMargins.bottom;
-  v45[0] = *&a7->contentMargins.top;
-  v18 = *&a7->layoutMargins.top;
-  v19 = *&a7->layoutMargins.bottom;
+  headerCopy = header;
+  v17 = *&style->contentMargins.bottom;
+  v45[0] = *&style->contentMargins.top;
+  v18 = *&style->layoutMargins.top;
+  v19 = *&style->layoutMargins.bottom;
   v45[1] = v17;
   v45[2] = v18;
-  v20 = *&a7->safeAreaInsets.top;
-  v21 = *&a7->safeAreaInsets.bottom;
+  v20 = *&style->safeAreaInsets.top;
+  v21 = *&style->safeAreaInsets.bottom;
   v45[3] = v19;
   v45[4] = v20;
-  v22 = *&a7->scrollAccessoryInsets.top;
-  v23 = *&a7->scrollAccessoryInsets.bottom;
+  v22 = *&style->scrollAccessoryInsets.top;
+  v23 = *&style->scrollAccessoryInsets.bottom;
   v45[5] = v21;
   v45[6] = v22;
-  size = a7->size;
+  size = style->size;
   v45[7] = v23;
   v45[8] = size;
   v25 = a10;
-  v26 = self;
-  sub_188C29CAC(v14, a5, a6, v45, a8, a9, v25, v37);
+  selfCopy = self;
+  sub_188C29CAC(headerCopy, footer, geometry, v45, spacingStyle, collection, v25, v37);
   v27 = v37[0];
   v28 = v37[1];
   v29 = v44;
@@ -115,12 +115,12 @@
   return result;
 }
 
-- (_UIListMetricsCellMetrics)metricsForCellWithStyle:(SEL)a3 listStyle:(int64_t)a4 prominence:(int64_t)a5 traitCollection:(int64_t)a6 state:(id)a7
+- (_UIListMetricsCellMetrics)metricsForCellWithStyle:(SEL)style listStyle:(int64_t)listStyle prominence:(int64_t)prominence traitCollection:(int64_t)collection state:(id)state
 {
-  v13 = a7;
+  stateCopy = state;
   swift_unknownObjectRetain();
-  v14 = self;
-  sub_188FE1D14(a4, a5, a6, v13, &v26);
+  selfCopy = self;
+  sub_188FE1D14(listStyle, prominence, collection, stateCopy, &v26);
   v25 = v26;
   v15 = v27;
   v16 = v30;
@@ -146,12 +146,12 @@
   return result;
 }
 
-- (_UIListMetricsAccessoryMetrics)metricsForAccessoryWithType:(int64_t)a3 cellStyle:(int64_t)a4 listStyle:(int64_t)a5 traitCollection:(id)a6 state:(id)a7
+- (_UIListMetricsAccessoryMetrics)metricsForAccessoryWithType:(int64_t)type cellStyle:(int64_t)style listStyle:(int64_t)listStyle traitCollection:(id)collection state:(id)state
 {
-  v11 = a6;
+  collectionCopy = collection;
   swift_unknownObjectRetain();
-  v12 = self;
-  v13 = sub_188FE20E4(a3, a4, a5, v11);
+  selfCopy = self;
+  v13 = sub_188FE20E4(type, style, listStyle, collectionCopy);
   v15 = v14;
 
   swift_unknownObjectRelease();
@@ -162,7 +162,7 @@
   return result;
 }
 
-- (_UIListMetricsShadowMetrics)metricsForShadowWithType:(SEL)a3 listStyle:(int64_t)a4 traitCollection:(int64_t)a5
+- (_UIListMetricsShadowMetrics)metricsForShadowWithType:(SEL)type listStyle:(int64_t)style traitCollection:(int64_t)collection
 {
   v8 = qword_1ED48CAA0;
   v9 = a6;
@@ -171,7 +171,7 @@
     swift_once();
   }
 
-  sub_188FE1758(a4, a5, v9);
+  sub_188FE1758(style, collection, v9);
 
   return result;
 }

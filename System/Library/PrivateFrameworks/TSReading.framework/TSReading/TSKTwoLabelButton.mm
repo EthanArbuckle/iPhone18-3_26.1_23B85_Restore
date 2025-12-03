@@ -1,9 +1,9 @@
 @interface TSKTwoLabelButton
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (void)cancelTrackingWithEvent:(id)a3;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (void)cancelTrackingWithEvent:(id)event;
 - (void)dealloc;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
 - (void)layoutSubviews;
 - (void)p_syncButtonState;
 @end
@@ -19,15 +19,15 @@
 
 - (void)p_syncButtonState
 {
-  v3 = [(TSKTwoLabelButton *)self state];
-  v4 = [(TSKTwoLabelButton *)self titleColorForState:v3];
-  v5 = [(TSKTwoLabelButton *)self titleShadowColorForState:v3];
-  v6 = [(UILabel *)[(TSKTwoLabelButton *)self secondLabel] font];
+  state = [(TSKTwoLabelButton *)self state];
+  v4 = [(TSKTwoLabelButton *)self titleColorForState:state];
+  v5 = [(TSKTwoLabelButton *)self titleShadowColorForState:state];
+  font = [(UILabel *)[(TSKTwoLabelButton *)self secondLabel] font];
   [(UILabel *)self->mSecondLabel setShadowColor:v5];
   [-[TSKTwoLabelButton titleLabel](self "titleLabel")];
   [(UILabel *)self->mSecondLabel setShadowOffset:?];
-  [(UILabel *)self->mSecondLabel setFont:v6];
-  if (v3 == 1)
+  [(UILabel *)self->mSecondLabel setFont:font];
+  if (state == 1)
   {
     [(UILabel *)self->mSecondLabel setTextColor:v4];
     [(UILabel *)self->mSecondLabel setShadowOffset:0.0, -1.0];
@@ -50,7 +50,7 @@
   if (mImageView)
   {
     v8 = &OBJC_IVAR___TSKTwoLabelButton_mNormalStateImage;
-    if (v3 == 2)
+    if (state == 2)
     {
       v8 = &OBJC_IVAR___TSKTwoLabelButton_mDisabledStateImage;
     }
@@ -77,10 +77,10 @@ LABEL_9:
     v6 = v5;
     v8 = v7;
     v10 = v9;
-    v11 = [(TSKTwoLabelButton *)self currentTitle];
+    currentTitle = [(TSKTwoLabelButton *)self currentTitle];
     v40 = *MEMORY[0x277D740A8];
     v41[0] = [-[TSKTwoLabelButton titleLabel](self "titleLabel")];
-    [v11 sizeWithAttributes:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v41, &v40, 1)}];
+    [currentTitle sizeWithAttributes:{objc_msgSend(MEMORY[0x277CBEAC0], "dictionaryWithObjects:forKeys:count:", v41, &v40, 1)}];
     v13 = v12;
     v33 = v12;
     v15 = v14;
@@ -161,37 +161,37 @@ LABEL_9:
   [(TSKTwoLabelButton *)self p_syncButtonState];
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = TSKTwoLabelButton;
-  v5 = [(TSKTwoLabelButton *)&v7 beginTrackingWithTouch:a3 withEvent:a4];
+  v5 = [(TSKTwoLabelButton *)&v7 beginTrackingWithTouch:touch withEvent:event];
   [(TSKTwoLabelButton *)self p_syncButtonState];
   return v5;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = TSKTwoLabelButton;
-  v5 = [(TSKTwoLabelButton *)&v7 continueTrackingWithTouch:a3 withEvent:a4];
+  v5 = [(TSKTwoLabelButton *)&v7 continueTrackingWithTouch:touch withEvent:event];
   [(TSKTwoLabelButton *)self p_syncButtonState];
   return v5;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = TSKTwoLabelButton;
-  [(TSKTwoLabelButton *)&v5 endTrackingWithTouch:a3 withEvent:a4];
+  [(TSKTwoLabelButton *)&v5 endTrackingWithTouch:touch withEvent:event];
   [(TSKTwoLabelButton *)self p_syncButtonState];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
   v4.receiver = self;
   v4.super_class = TSKTwoLabelButton;
-  [(TSKTwoLabelButton *)&v4 cancelTrackingWithEvent:a3];
+  [(TSKTwoLabelButton *)&v4 cancelTrackingWithEvent:event];
   [(TSKTwoLabelButton *)self p_syncButtonState];
 }
 

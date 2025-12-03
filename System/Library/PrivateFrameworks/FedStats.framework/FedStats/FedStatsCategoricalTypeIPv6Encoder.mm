@@ -1,27 +1,27 @@
 @interface FedStatsCategoricalTypeIPv6Encoder
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4;
-- (FedStatsCategoricalTypeIPv6Encoder)initWithSignificantBitCount:(unint64_t)a3;
-- (id)preEncode:(id)a3;
++ (id)instanceWithParameters:(id)parameters error:(id *)error;
+- (FedStatsCategoricalTypeIPv6Encoder)initWithSignificantBitCount:(unint64_t)count;
+- (id)preEncode:(id)encode;
 @end
 
 @implementation FedStatsCategoricalTypeIPv6Encoder
 
-- (FedStatsCategoricalTypeIPv6Encoder)initWithSignificantBitCount:(unint64_t)a3
+- (FedStatsCategoricalTypeIPv6Encoder)initWithSignificantBitCount:(unint64_t)count
 {
   v5.receiver = self;
   v5.super_class = FedStatsCategoricalTypeIPv6Encoder;
   result = [(FedStatsCategoricalTypeIPv6Encoder *)&v5 init];
   if (result)
   {
-    result->_significantBitCount = a3;
+    result->_significantBitCount = count;
   }
 
   return result;
 }
 
-+ (id)instanceWithParameters:(id)a3 error:(id *)a4
++ (id)instanceWithParameters:(id)parameters error:(id *)error
 {
-  v6 = [a3 objectForKey:@"significantBitCount"];
+  v6 = [parameters objectForKey:@"significantBitCount"];
   if (!v6)
   {
     v7 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:56];
@@ -32,38 +32,38 @@
   if ([v6 integerValue] > 0)
   {
 LABEL_6:
-    a4 = [[a1 alloc] initWithSignificantBitCount:{objc_msgSend(v7, "unsignedIntegerValue")}];
+    error = [[self alloc] initWithSignificantBitCount:{objc_msgSend(v7, "unsignedIntegerValue")}];
     goto LABEL_7;
   }
 
-  if (a4)
+  if (error)
   {
     v8 = MEMORY[0x277CCACA8];
     v9 = objc_opt_class();
     v10 = NSStringFromClass(v9);
     v11 = [v8 stringWithFormat:@"Parameter '%@' must be positive in %@ constructor", @"significantBitCount", v10];
-    *a4 = [FedStatsError errorWithCode:101 description:v11];
+    *error = [FedStatsError errorWithCode:101 description:v11];
 
-    a4 = 0;
+    error = 0;
   }
 
 LABEL_7:
 
-  return a4;
+  return error;
 }
 
-- (id)preEncode:(id)a3
+- (id)preEncode:(id)encode
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [v4 count] == 6)
+  encodeCopy = encode;
+  if (encodeCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [encodeCopy count] == 6)
   {
-    v22 = self;
+    selfCopy = self;
     v26 = 0u;
     v27 = 0u;
     v24 = 0u;
     v25 = 0u;
-    v5 = v4;
+    v5 = encodeCopy;
     v6 = [v5 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v6)
     {
@@ -127,7 +127,7 @@ LABEL_7:
       v9 = &stru_285E0CF98;
     }
 
-    v20 = [(__CFString *)v9 substringToIndex:[(FedStatsCategoricalTypeIPv6Encoder *)v22 significantBitCount]];
+    v20 = [(__CFString *)v9 substringToIndex:[(FedStatsCategoricalTypeIPv6Encoder *)selfCopy significantBitCount]];
     v21 = [v20 stringByPaddingToLength:-[__CFString length](v9 withString:"length") startingAtIndex:{@"0", 0}];
 
     v11 = v21;

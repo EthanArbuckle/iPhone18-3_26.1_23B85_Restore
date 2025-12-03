@@ -1,14 +1,14 @@
 @interface GKFriendingViewControllers
-+ (id)inviteFriendsWithContainerViewController:(id)a3;
++ (id)inviteFriendsWithContainerViewController:(id)controller;
 @end
 
 @implementation GKFriendingViewControllers
 
-+ (id)inviteFriendsWithContainerViewController:(id)a3
++ (id)inviteFriendsWithContainerViewController:(id)controller
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = static FriendingViewControllers.inviteFriends(containedIn:)(v4);
+  controllerCopy = controller;
+  v5 = static FriendingViewControllers.inviteFriends(containedIn:)(controllerCopy);
 
   return v5;
 }

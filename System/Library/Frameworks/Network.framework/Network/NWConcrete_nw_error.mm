@@ -1,6 +1,6 @@
 @interface NWConcrete_nw_error
 - (NSString)description;
-- (_DWORD)initWithDomain:(int)a3 code:;
+- (_DWORD)initWithDomain:(int)domain code:;
 @end
 
 @implementation NWConcrete_nw_error
@@ -331,7 +331,7 @@ LABEL_67:
   return v3;
 }
 
-- (_DWORD)initWithDomain:(int)a3 code:
+- (_DWORD)initWithDomain:(int)domain code:
 {
   v20 = *MEMORY[0x1E69E9840];
   if (!result)
@@ -345,7 +345,7 @@ LABEL_67:
   if (result)
   {
     result[2] = a2;
-    result[3] = a3;
+    result[3] = domain;
     return result;
   }
 

@@ -1,14 +1,14 @@
 @interface FKAApplicationDelegate
 - (AXElementActionManager)elementActionManager;
 - (AXUIBannerPresenter)bannerPresenter;
-- (BOOL)_areActionsValidForElement:(id)a3;
-- (BOOL)_canEnableFocusRingCheckingSystemSleepingState:(BOOL)a3;
-- (BOOL)_dismissActionsControllerByForce:(BOOL)a3;
-- (BOOL)_sceneVendedByOneness:(id)a3;
-- (BOOL)actionManagerCanAvoidRepostingTextInput:(id)a3;
-- (BOOL)canMoveApplicationFocusForActionManager:(id)a3;
-- (BOOL)dismissHelpForActionManager:(id)a3;
-- (BOOL)eventManager:(id)a3 shouldRepostEvent:(id)a4;
+- (BOOL)_areActionsValidForElement:(id)element;
+- (BOOL)_canEnableFocusRingCheckingSystemSleepingState:(BOOL)state;
+- (BOOL)_dismissActionsControllerByForce:(BOOL)force;
+- (BOOL)_sceneVendedByOneness:(id)oneness;
+- (BOOL)actionManagerCanAvoidRepostingTextInput:(id)input;
+- (BOOL)canMoveApplicationFocusForActionManager:(id)manager;
+- (BOOL)dismissHelpForActionManager:(id)manager;
+- (BOOL)eventManager:(id)manager shouldRepostEvent:(id)event;
 - (FKAActionManager)actionManager;
 - (FKAApplicationDelegate)init;
 - (FKARootViewController)nonInteractiveRootViewController;
@@ -20,51 +20,51 @@
 - (id)_sceneDelegates;
 - (id)gestureViewController;
 - (void)_addTransientCommandsForGesturesMode;
-- (void)_announceCommandList:(id)a3;
-- (void)_didUpdateAvailableCommandsWithUpdatedMap:(id)a3;
+- (void)_announceCommandList:(id)list;
+- (void)_didUpdateAvailableCommandsWithUpdatedMap:(id)map;
 - (void)_didUpdateFocusRingTimeout;
 - (void)_didUpdateHardwareKeyboardAttachedStatus;
 - (void)_disableFocusRing;
 - (void)_disableFocusRingForTimeout;
 - (void)_dismissTextEditingModeInstructionsIfNeeded;
 - (void)_enableFocusRingWithTimeout;
-- (void)_handleNativeFocusItemChange:(id)a3;
+- (void)_handleNativeFocusItemChange:(id)change;
 - (void)_handleScreenChange;
 - (void)_hideTypeaheadSynchronously;
 - (void)_resetFocusRingTimeout;
 - (void)_setupUI;
-- (void)_showActionsForElement:(id)a3;
-- (void)_showDebugBannerText:(id)a3;
+- (void)_showActionsForElement:(id)element;
+- (void)_showDebugBannerText:(id)text;
 - (void)_showTypeaheadNames;
 - (void)_updateTypeaheadNamesViewControllerItems;
-- (void)_updateTypeaheadNamesViewControllerItemsForQueryString:(id)a3;
+- (void)_updateTypeaheadNamesViewControllerItemsForQueryString:(id)string;
 - (void)_wakeDeviceIfNeeded;
-- (void)actionManager:(id)a3 showActionsForElement:(id)a4;
+- (void)actionManager:(id)manager showActionsForElement:(id)element;
 - (void)dealloc;
 - (void)didFinishLaunching;
-- (void)didMoveToInnerElementForActionManager:(id)a3;
+- (void)didMoveToInnerElementForActionManager:(id)manager;
 - (void)didReleaseNativeFocus;
-- (void)didSuppressCommandForActionManager:(id)a3;
-- (void)didToggleNotificationCenterForActionManager:(id)a3;
-- (void)enumerateSceneDelegatesWithBlock:(id)a3;
-- (void)eventManager:(id)a3 repostEvent:(id)a4;
-- (void)eventTap:(id)a3 handleKeyboardEvent:(id)a4;
-- (void)observer:(id)a3 didObserveNotification:(int)a4 notificationData:(void *)a5;
-- (void)setGesturesModeEnabled:(BOOL)a3;
-- (void)setPassthroughModeEnabled:(BOOL)a3;
-- (void)setShouldIgnoreNextScreenChange:(BOOL)a3;
-- (void)showDebugDisplay:(id)a3;
-- (void)showDebugDisplayWithKeyChord:(id)a3;
-- (void)showHelpForActionManager:(id)a3;
-- (void)toggleGesturesModeForActionManager:(id)a3;
-- (void)togglePassthroughModeForActionManager:(id)a3;
-- (void)toggleTypeaheadForActionManager:(id)a3;
-- (void)typeaheadViewController:(id)a3 didChangeQueryString:(id)a4;
-- (void)typeaheadViewControllerDidTypeReturn:(id)a3;
-- (void)typeaheadViewControllerWillAppear:(id)a3;
-- (void)typeaheadViewControllerWillDismiss:(id)a3;
+- (void)didSuppressCommandForActionManager:(id)manager;
+- (void)didToggleNotificationCenterForActionManager:(id)manager;
+- (void)enumerateSceneDelegatesWithBlock:(id)block;
+- (void)eventManager:(id)manager repostEvent:(id)event;
+- (void)eventTap:(id)tap handleKeyboardEvent:(id)event;
+- (void)observer:(id)observer didObserveNotification:(int)notification notificationData:(void *)data;
+- (void)setGesturesModeEnabled:(BOOL)enabled;
+- (void)setPassthroughModeEnabled:(BOOL)enabled;
+- (void)setShouldIgnoreNextScreenChange:(BOOL)change;
+- (void)showDebugDisplay:(id)display;
+- (void)showDebugDisplayWithKeyChord:(id)chord;
+- (void)showHelpForActionManager:(id)manager;
+- (void)toggleGesturesModeForActionManager:(id)manager;
+- (void)togglePassthroughModeForActionManager:(id)manager;
+- (void)toggleTypeaheadForActionManager:(id)manager;
+- (void)typeaheadViewController:(id)controller didChangeQueryString:(id)string;
+- (void)typeaheadViewControllerDidTypeReturn:(id)return;
+- (void)typeaheadViewControllerWillAppear:(id)appear;
+- (void)typeaheadViewControllerWillDismiss:(id)dismiss;
 - (void)willAquireNativeFocus;
-- (void)willDismissFloatingViewForPresenter:(id)a3;
+- (void)willDismissFloatingViewForPresenter:(id)presenter;
 - (void)willTerminate;
 @end
 
@@ -88,9 +88,9 @@
     v4 = objc_opt_new();
     [v4 setDelegate:v2];
     v5 = +[FKAAvailableCommands sharedInstance];
-    v6 = [v5 commandMap];
+    commandMap = [v5 commandMap];
 
-    v7 = [[AXSSEventManager alloc] initWithActionManager:v4 commandMap:v6];
+    v7 = [[AXSSEventManager alloc] initWithActionManager:v4 commandMap:commandMap];
     eventManager = v2->_eventManager;
     v2->_eventManager = v7;
 
@@ -98,8 +98,8 @@
     [(AXSSEventManager *)v2->_eventManager setShouldSuppressCommands:_AXSFullKeyboardAccessFocusRingEnabled() == 0];
     [(FKAApplicationDelegate *)v2 setNativeFocusElementDisplayID:0xFFFFFFFFLL];
     v9 = [AXNotificationObserver alloc];
-    v10 = [(FKAApplicationDelegate *)v2 _notificationsToRegister];
-    v11 = [v9 initWithNotifications:v10];
+    _notificationsToRegister = [(FKAApplicationDelegate *)v2 _notificationsToRegister];
+    v11 = [v9 initWithNotifications:_notificationsToRegister];
 
     [v11 setDelegate:v2];
     [(FKAApplicationDelegate *)v2 setAxNotificationObserver:v11];
@@ -140,8 +140,8 @@
     v19 = objc_opt_new();
     [(FKAApplicationDelegate *)v2 setEventTap:v19];
 
-    v20 = [(FKAApplicationDelegate *)v2 eventTap];
-    [v20 setDelegate:v2];
+    eventTap = [(FKAApplicationDelegate *)v2 eventTap];
+    [eventTap setDelegate:v2];
 
     v21 = FKALogCommon();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
@@ -178,10 +178,10 @@
 
 - (FKAActionManager)actionManager
 {
-  v2 = [(FKAApplicationDelegate *)self eventManager];
-  v3 = [v2 actionManager];
+  eventManager = [(FKAApplicationDelegate *)self eventManager];
+  actionManager = [eventManager actionManager];
 
-  return v3;
+  return actionManager;
 }
 
 - (AXElementActionManager)elementActionManager
@@ -203,39 +203,39 @@
 
 - (AXUIBannerPresenter)bannerPresenter
 {
-  v3 = [(FKAApplicationDelegate *)self rootViewController];
-  v4 = [v3 bannerPresenter];
+  rootViewController = [(FKAApplicationDelegate *)self rootViewController];
+  bannerPresenter = [rootViewController bannerPresenter];
 
-  if (!v4)
+  if (!bannerPresenter)
   {
     v5 = [FKABannerPresenter alloc];
-    v6 = [(FKAApplicationDelegate *)self nonInteractiveWindow];
-    v7 = [(FKABannerPresenter *)v5 initWithContainingView:v6];
-    v8 = [(FKAApplicationDelegate *)self rootViewController];
-    [v8 setBannerPresenter:v7];
+    nonInteractiveWindow = [(FKAApplicationDelegate *)self nonInteractiveWindow];
+    v7 = [(FKABannerPresenter *)v5 initWithContainingView:nonInteractiveWindow];
+    rootViewController2 = [(FKAApplicationDelegate *)self rootViewController];
+    [rootViewController2 setBannerPresenter:v7];
 
-    v9 = [(FKAApplicationDelegate *)self rootViewController];
-    v10 = [v9 bannerPresenter];
-    [v10 setDelegate:self];
+    rootViewController3 = [(FKAApplicationDelegate *)self rootViewController];
+    bannerPresenter2 = [rootViewController3 bannerPresenter];
+    [bannerPresenter2 setDelegate:self];
   }
 
-  v11 = [(FKAApplicationDelegate *)self rootViewController];
-  v12 = [v11 bannerPresenter];
+  rootViewController4 = [(FKAApplicationDelegate *)self rootViewController];
+  bannerPresenter3 = [rootViewController4 bannerPresenter];
 
-  return v12;
+  return bannerPresenter3;
 }
 
-- (void)setShouldIgnoreNextScreenChange:(BOOL)a3
+- (void)setShouldIgnoreNextScreenChange:(BOOL)change
 {
-  if (self->_shouldIgnoreNextScreenChange != a3)
+  if (self->_shouldIgnoreNextScreenChange != change)
   {
     v12 = v3;
     v13 = v4;
-    v5 = a3;
-    self->_shouldIgnoreNextScreenChange = a3;
+    changeCopy = change;
+    self->_shouldIgnoreNextScreenChange = change;
     v6 = FKALogCommon();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-    if (v5)
+    if (changeCopy)
     {
       if (v7)
       {
@@ -281,25 +281,25 @@ LABEL_7:
   [(FKAApplicationDelegate *)self setWindow:v3];
 
   v4 = [[FKARootViewController alloc] initWithDelegate:self displayUUID:0];
-  v5 = [(FKAApplicationDelegate *)self window];
-  [v5 setRootViewController:v4];
+  window = [(FKAApplicationDelegate *)self window];
+  [window setRootViewController:v4];
 
-  v6 = [(FKAApplicationDelegate *)self window];
-  [v6 makeKeyAndVisible];
+  window2 = [(FKAApplicationDelegate *)self window];
+  [window2 makeKeyAndVisible];
 
   v7 = objc_opt_new();
   nonInteractiveWindow = self->_nonInteractiveWindow;
   self->_nonInteractiveWindow = v7;
 
   v9 = [(FKARootViewController *)[FKARootNonInteractiveViewController alloc] initWithDelegate:self displayUUID:0];
-  v10 = [(FKAApplicationDelegate *)self nonInteractiveWindow];
-  [v10 setRootViewController:v9];
+  nonInteractiveWindow = [(FKAApplicationDelegate *)self nonInteractiveWindow];
+  [nonInteractiveWindow setRootViewController:v9];
 
-  v11 = [(FKAApplicationDelegate *)self nonInteractiveWindow];
-  [v11 setWindowLevel:UIWindowLevelNormal + 1.0];
+  nonInteractiveWindow2 = [(FKAApplicationDelegate *)self nonInteractiveWindow];
+  [nonInteractiveWindow2 setWindowLevel:UIWindowLevelNormal + 1.0];
 
-  v12 = [(FKAApplicationDelegate *)self nonInteractiveWindow];
-  [v12 setHidden:0];
+  nonInteractiveWindow3 = [(FKAApplicationDelegate *)self nonInteractiveWindow];
+  [nonInteractiveWindow3 setHidden:0];
 }
 
 - (void)willTerminate
@@ -314,23 +314,23 @@ LABEL_7:
   [(FKAApplicationDelegate *)self _disableFocusRing];
 }
 
-- (void)eventTap:(id)a3 handleKeyboardEvent:(id)a4
+- (void)eventTap:(id)tap handleKeyboardEvent:(id)event
 {
-  v12 = a4;
-  if ([v12 isDownEvent] && !-[FKAApplicationDelegate isShowingTextEditingModeInstructions](self, "isShowingTextEditingModeInstructions"))
+  eventCopy = event;
+  if ([eventCopy isDownEvent] && !-[FKAApplicationDelegate isShowingTextEditingModeInstructions](self, "isShowingTextEditingModeInstructions"))
   {
-    v5 = [(FKAApplicationDelegate *)self bannerPresenter];
-    [v5 dismissFloatingView];
+    bannerPresenter = [(FKAApplicationDelegate *)self bannerPresenter];
+    [bannerPresenter dismissFloatingView];
   }
 
-  v6 = [(FKAApplicationDelegate *)self eventManager];
-  v7 = [v6 processKeyboardEvent:v12];
+  eventManager = [(FKAApplicationDelegate *)self eventManager];
+  v7 = [eventManager processKeyboardEvent:eventCopy];
 
   if (v7)
   {
     if (_AXSFullKeyboardAccessFocusRingEnabled())
     {
-      if ([v12 isDownEvent])
+      if ([eventCopy isDownEvent])
       {
         [(FKAApplicationDelegate *)self _cancelFocusRingTimeout];
       }
@@ -344,23 +344,23 @@ LABEL_7:
 
   else
   {
-    if ([v12 isDownEvent])
+    if ([eventCopy isDownEvent])
     {
-      v8 = [(FKAApplicationDelegate *)self eventTap];
-      [v8 repostDownAndUpForKeyboardEvent:v12];
+      eventTap = [(FKAApplicationDelegate *)self eventTap];
+      [eventTap repostDownAndUpForKeyboardEvent:eventCopy];
     }
 
-    if ([v12 isDownEvent])
+    if ([eventCopy isDownEvent])
     {
-      v9 = [v12 unicodeCharacter];
-      if ([v9 length])
+      unicodeCharacter = [eventCopy unicodeCharacter];
+      if ([unicodeCharacter length])
       {
-        v10 = [v12 modifierMask] & 0xFFFFFFFFFFFFFFF7;
+        v10 = [eventCopy modifierMask] & 0xFFFFFFFFFFFFFFF7;
 
         if (!v10)
         {
-          v11 = [(FKAApplicationDelegate *)self actionManager];
-          [v11 didPerformTextInput];
+          actionManager = [(FKAApplicationDelegate *)self actionManager];
+          [actionManager didPerformTextInput];
         }
       }
 
@@ -375,15 +375,15 @@ LABEL_7:
 
 - (id)gestureViewController
 {
-  v2 = [(FKAApplicationDelegate *)self rootViewController];
-  v3 = [v2 gestureViewController];
+  rootViewController = [(FKAApplicationDelegate *)self rootViewController];
+  gestureViewController = [rootViewController gestureViewController];
 
-  return v3;
+  return gestureViewController;
 }
 
-- (void)actionManager:(id)a3 showActionsForElement:(id)a4
+- (void)actionManager:(id)manager showActionsForElement:(id)element
 {
-  v5 = a4;
+  elementCopy = element;
   if ([(FKAApplicationDelegate *)self _dismissActionsControllerByForce:1])
   {
     v6 = FKALogCommon();
@@ -400,8 +400,8 @@ LABEL_4:
 
   else
   {
-    v10 = [(FKAApplicationDelegate *)self elementActionManager];
-    v11 = [v10 canShowActionsForElement:v5];
+    elementActionManager = [(FKAApplicationDelegate *)self elementActionManager];
+    v11 = [elementActionManager canShowActionsForElement:elementCopy];
 
     if (!v11)
     {
@@ -412,9 +412,9 @@ LABEL_4:
       goto LABEL_10;
     }
 
-    if ([(FKAApplicationDelegate *)self _areActionsValidForElement:v5])
+    if ([(FKAApplicationDelegate *)self _areActionsValidForElement:elementCopy])
     {
-      [(FKAApplicationDelegate *)self _showActionsForElement:v5];
+      [(FKAApplicationDelegate *)self _showActionsForElement:elementCopy];
       goto LABEL_10;
     }
 
@@ -422,7 +422,7 @@ LABEL_4:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v5;
+      v15 = elementCopy;
       v7 = "Tried to show actions for element that was not focusable: %@";
       v8 = v6;
       v9 = 12;
@@ -433,32 +433,32 @@ LABEL_4:
 LABEL_10:
 }
 
-- (void)toggleTypeaheadForActionManager:(id)a3
+- (void)toggleTypeaheadForActionManager:(id)manager
 {
-  v4 = [(FKAApplicationDelegate *)self typeaheadController];
+  typeaheadController = [(FKAApplicationDelegate *)self typeaheadController];
 
-  if (!v4)
+  if (!typeaheadController)
   {
     v5 = objc_opt_new();
     [(FKAApplicationDelegate *)self setTypeaheadController:v5];
 
-    v6 = [(FKAApplicationDelegate *)self typeaheadController];
-    [v6 setDelegate:self];
+    typeaheadController2 = [(FKAApplicationDelegate *)self typeaheadController];
+    [typeaheadController2 setDelegate:self];
 
-    v7 = [(FKAApplicationDelegate *)self rootViewController];
-    v8 = [(FKAApplicationDelegate *)self typeaheadController];
-    [v7 showChildViewController:v8 animated:0];
+    rootViewController = [(FKAApplicationDelegate *)self rootViewController];
+    typeaheadController3 = [(FKAApplicationDelegate *)self typeaheadController];
+    [rootViewController showChildViewController:typeaheadController3 animated:0];
   }
 
-  v9 = [(FKAApplicationDelegate *)self typeaheadController];
-  if ([v9 state])
+  typeaheadController4 = [(FKAApplicationDelegate *)self typeaheadController];
+  if ([typeaheadController4 state])
   {
   }
 
   else
   {
-    v10 = [(FKAApplicationDelegate *)self rootViewController];
-    v11 = [v10 presentedViewController];
+    rootViewController2 = [(FKAApplicationDelegate *)self rootViewController];
+    presentedViewController = [rootViewController2 presentedViewController];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -469,28 +469,28 @@ LABEL_10:
     }
   }
 
-  v13 = [(FKAApplicationDelegate *)self typeaheadController];
-  [v13 toggleTypeaheadState];
+  typeaheadController5 = [(FKAApplicationDelegate *)self typeaheadController];
+  [typeaheadController5 toggleTypeaheadState];
 }
 
 - (void)_hideTypeaheadSynchronously
 {
-  v3 = [(FKAApplicationDelegate *)self typeaheadController];
-  v4 = [v3 state];
+  typeaheadController = [(FKAApplicationDelegate *)self typeaheadController];
+  state = [typeaheadController state];
 
-  if (v4)
+  if (state)
   {
-    v5 = [(FKAApplicationDelegate *)self typeaheadController];
-    [v5 setState:0];
+    typeaheadController2 = [(FKAApplicationDelegate *)self typeaheadController];
+    [typeaheadController2 setState:0];
 
     for (i = 0.0; ; i = i + 0.05)
     {
-      v7 = [(FKAApplicationDelegate *)self actionManager];
-      v8 = [v7 currentApplication];
-      v9 = [v8 bundleId];
+      actionManager = [(FKAApplicationDelegate *)self actionManager];
+      currentApplication = [actionManager currentApplication];
+      bundleId = [currentApplication bundleId];
       v10 = +[NSBundle mainBundle];
-      v11 = [v10 bundleIdentifier];
-      v12 = [v9 isEqualToString:v11];
+      bundleIdentifier = [v10 bundleIdentifier];
+      v12 = [bundleId isEqualToString:bundleIdentifier];
 
       if (!v12 || i >= 1.0)
       {
@@ -504,89 +504,89 @@ LABEL_10:
   }
 }
 
-- (void)toggleGesturesModeForActionManager:(id)a3
+- (void)toggleGesturesModeForActionManager:(id)manager
 {
   v4 = [(FKAApplicationDelegate *)self isGesturesModeEnabled]^ 1;
 
   [(FKAApplicationDelegate *)self setGesturesModeEnabled:v4];
 }
 
-- (void)togglePassthroughModeForActionManager:(id)a3
+- (void)togglePassthroughModeForActionManager:(id)manager
 {
   v4 = [(FKAApplicationDelegate *)self isPassthroughModeEnabled]^ 1;
 
   [(FKAApplicationDelegate *)self setPassthroughModeEnabled:v4];
 }
 
-- (void)showHelpForActionManager:(id)a3
+- (void)showHelpForActionManager:(id)manager
 {
   v8 = objc_opt_new();
-  v4 = [(FKAApplicationDelegate *)self actionManager];
-  v5 = [v4 isInTextEditingMode];
+  actionManager = [(FKAApplicationDelegate *)self actionManager];
+  isInTextEditingMode = [actionManager isInTextEditingMode];
 
-  if (v5)
+  if (isInTextEditingMode)
   {
-    v6 = [(FKAApplicationDelegate *)self _keyChordForExitingTextMode];
-    [v8 setTextEditingModeExitKeyChord:v6];
+    _keyChordForExitingTextMode = [(FKAApplicationDelegate *)self _keyChordForExitingTextMode];
+    [v8 setTextEditingModeExitKeyChord:_keyChordForExitingTextMode];
   }
 
   [v8 setModalPresentationStyle:5];
   [(FKAApplicationDelegate *)self setShouldIgnoreNextScreenChange:1];
-  v7 = [(FKAApplicationDelegate *)self rootViewController];
-  [v7 presentViewController:v8 withTransition:6 completion:0];
+  rootViewController = [(FKAApplicationDelegate *)self rootViewController];
+  [rootViewController presentViewController:v8 withTransition:6 completion:0];
 
   [(FKAApplicationDelegate *)self setCommandsViewController:v8];
 }
 
-- (void)showDebugDisplay:(id)a3
+- (void)showDebugDisplay:(id)display
 {
-  v4 = a3;
-  v5 = [(FKAApplicationDelegate *)self eventManager];
-  v8 = [v5 commandMap];
+  displayCopy = display;
+  eventManager = [(FKAApplicationDelegate *)self eventManager];
+  commandMap = [eventManager commandMap];
 
-  v6 = [AXSSKeyboardCommand commandWithStandardCommandIdentifier:v4];
+  v6 = [AXSSKeyboardCommand commandWithStandardCommandIdentifier:displayCopy];
 
-  v7 = [v8 keyChordForCommand:v6];
+  v7 = [commandMap keyChordForCommand:v6];
   [(FKAApplicationDelegate *)self showDebugDisplayWithKeyChord:v7];
 }
 
-- (void)showDebugDisplayWithKeyChord:(id)a3
+- (void)showDebugDisplayWithKeyChord:(id)chord
 {
-  v7 = a3;
+  chordCopy = chord;
   if (AXIsInternalInstall())
   {
     v4 = +[AXSettings sharedInstance];
-    v5 = [v4 fullKeyboardAccessShouldShowDebugKeyCommandsView];
+    fullKeyboardAccessShouldShowDebugKeyCommandsView = [v4 fullKeyboardAccessShouldShowDebugKeyCommandsView];
 
-    if (v5)
+    if (fullKeyboardAccessShouldShowDebugKeyCommandsView)
     {
-      v6 = [v7 fkaSpeakableDisplayValue];
-      [(FKAApplicationDelegate *)self _showDebugBannerText:v6];
+      fkaSpeakableDisplayValue = [chordCopy fkaSpeakableDisplayValue];
+      [(FKAApplicationDelegate *)self _showDebugBannerText:fkaSpeakableDisplayValue];
     }
   }
 }
 
-- (BOOL)dismissHelpForActionManager:(id)a3
+- (BOOL)dismissHelpForActionManager:(id)manager
 {
-  v4 = [(FKAApplicationDelegate *)self commandsViewController];
+  commandsViewController = [(FKAApplicationDelegate *)self commandsViewController];
 
-  if (v4)
+  if (commandsViewController)
   {
     [(FKAApplicationDelegate *)self setShouldIgnoreNextScreenChange:1];
-    v5 = [(FKAApplicationDelegate *)self rootViewController];
-    [v5 dismissViewControllerWithTransition:6 completion:0];
+    rootViewController = [(FKAApplicationDelegate *)self rootViewController];
+    [rootViewController dismissViewControllerWithTransition:6 completion:0];
 
     [(FKAApplicationDelegate *)self setCommandsViewController:0];
   }
 
-  return v4 != 0;
+  return commandsViewController != 0;
 }
 
 - (void)_wakeDeviceIfNeeded
 {
   v9 = +[NSDate date];
-  v3 = [(FKAApplicationDelegate *)self lastWakeDeviceDate];
-  if (!v3 || (v4 = v3, -[FKAApplicationDelegate lastWakeDeviceDate](self, "lastWakeDeviceDate"), v5 = objc_claimAutoreleasedReturnValue(), [v9 timeIntervalSinceDate:v5], v7 = v6, v5, v4, v7 > 0.3))
+  lastWakeDeviceDate = [(FKAApplicationDelegate *)self lastWakeDeviceDate];
+  if (!lastWakeDeviceDate || (v4 = lastWakeDeviceDate, -[FKAApplicationDelegate lastWakeDeviceDate](self, "lastWakeDeviceDate"), v5 = objc_claimAutoreleasedReturnValue(), [v9 timeIntervalSinceDate:v5], v7 = v6, v5, v4, v7 > 0.3))
   {
     v8 = +[AXSystemAppServer server];
     [v8 wakeUpDeviceIfNecessary];
@@ -595,30 +595,30 @@ LABEL_10:
   }
 }
 
-- (BOOL)actionManagerCanAvoidRepostingTextInput:(id)a3
+- (BOOL)actionManagerCanAvoidRepostingTextInput:(id)input
 {
-  v3 = [(FKAApplicationDelegate *)self typeaheadController];
-  v4 = [v3 state] == 0;
+  typeaheadController = [(FKAApplicationDelegate *)self typeaheadController];
+  v4 = [typeaheadController state] == 0;
 
   return v4;
 }
 
-- (void)didSuppressCommandForActionManager:(id)a3
+- (void)didSuppressCommandForActionManager:(id)manager
 {
   [(FKAApplicationDelegate *)self _wakeDeviceIfNeeded];
 
   [(FKAApplicationDelegate *)self _enableFocusRingIfNecessaryCheckingSystemSleepingState:0];
 }
 
-- (BOOL)canMoveApplicationFocusForActionManager:(id)a3
+- (BOOL)canMoveApplicationFocusForActionManager:(id)manager
 {
-  v3 = [(FKAApplicationDelegate *)self rootViewController];
-  v4 = [v3 isOverridingNativeFocus];
+  rootViewController = [(FKAApplicationDelegate *)self rootViewController];
+  isOverridingNativeFocus = [rootViewController isOverridingNativeFocus];
 
-  return v4 ^ 1;
+  return isOverridingNativeFocus ^ 1;
 }
 
-- (void)didToggleNotificationCenterForActionManager:(id)a3
+- (void)didToggleNotificationCenterForActionManager:(id)manager
 {
   v4 = FKALogCommon();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -630,7 +630,7 @@ LABEL_10:
   [(FKAApplicationDelegate *)self _handleUpdatedElementsForScreenChange:1];
 }
 
-- (void)didMoveToInnerElementForActionManager:(id)a3
+- (void)didMoveToInnerElementForActionManager:(id)manager
 {
   if ([(FKAApplicationDelegate *)self isShowingTextEditingModeInstructions])
   {
@@ -646,16 +646,16 @@ LABEL_10:
   }
 }
 
-- (void)typeaheadViewController:(id)a3 didChangeQueryString:(id)a4
+- (void)typeaheadViewController:(id)controller didChangeQueryString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(FKAApplicationDelegate *)self typeaheadStartTimer];
+  controllerCopy = controller;
+  stringCopy = string;
+  typeaheadStartTimer = [(FKAApplicationDelegate *)self typeaheadStartTimer];
 
-  if (v8)
+  if (typeaheadStartTimer)
   {
-    v9 = [(FKAApplicationDelegate *)self typeaheadStartTimer];
-    [v9 invalidate];
+    typeaheadStartTimer2 = [(FKAApplicationDelegate *)self typeaheadStartTimer];
+    [typeaheadStartTimer2 invalidate];
 
     [(FKAApplicationDelegate *)self setTypeaheadStartTimer:0];
   }
@@ -666,7 +666,7 @@ LABEL_10:
   v12[2] = sub_100010A98;
   v12[3] = &unk_1000289C0;
   objc_copyWeak(&v14, &location);
-  v10 = v7;
+  v10 = stringCopy;
   v13 = v10;
   v11 = [NSTimer scheduledTimerWithTimeInterval:0 repeats:v12 block:0.15];
   [(FKAApplicationDelegate *)self setTypeaheadStartTimer:v11];
@@ -675,28 +675,28 @@ LABEL_10:
   objc_destroyWeak(&location);
 }
 
-- (void)typeaheadViewControllerWillAppear:(id)a3
+- (void)typeaheadViewControllerWillAppear:(id)appear
 {
   [(FKAApplicationDelegate *)self _showTypeaheadNames];
-  v4 = [(FKAApplicationDelegate *)self rootViewController];
-  [v4 updateRequiresNativeFocus];
+  rootViewController = [(FKAApplicationDelegate *)self rootViewController];
+  [rootViewController updateRequiresNativeFocus];
 }
 
-- (void)typeaheadViewControllerWillDismiss:(id)a3
+- (void)typeaheadViewControllerWillDismiss:(id)dismiss
 {
   [(FKAApplicationDelegate *)self _hideTypeaheadNames];
-  v4 = [(FKAApplicationDelegate *)self actionManager];
-  [v4 focusOnSceneForTypeahead];
+  actionManager = [(FKAApplicationDelegate *)self actionManager];
+  [actionManager focusOnSceneForTypeahead];
 
-  v5 = [(FKAApplicationDelegate *)self rootViewController];
-  [v5 updateRequiresNativeFocus];
+  rootViewController = [(FKAApplicationDelegate *)self rootViewController];
+  [rootViewController updateRequiresNativeFocus];
 }
 
-- (void)typeaheadViewControllerDidTypeReturn:(id)a3
+- (void)typeaheadViewControllerDidTypeReturn:(id)return
 {
   [(FKAApplicationDelegate *)self _hideTypeaheadSynchronously];
-  v4 = [(FKAApplicationDelegate *)self actionManager];
-  [v4 performDefaultAction];
+  actionManager = [(FKAApplicationDelegate *)self actionManager];
+  [actionManager performDefaultAction];
 }
 
 - (void)_showTypeaheadNames
@@ -708,32 +708,32 @@ LABEL_10:
 
 - (void)_updateTypeaheadNamesViewControllerItems
 {
-  v4 = [(FKAApplicationDelegate *)self typeaheadController];
-  v3 = [v4 queryString];
-  [(FKAApplicationDelegate *)self _updateTypeaheadNamesViewControllerItemsForQueryString:v3];
+  typeaheadController = [(FKAApplicationDelegate *)self typeaheadController];
+  queryString = [typeaheadController queryString];
+  [(FKAApplicationDelegate *)self _updateTypeaheadNamesViewControllerItemsForQueryString:queryString];
 }
 
-- (void)_updateTypeaheadNamesViewControllerItemsForQueryString:(id)a3
+- (void)_updateTypeaheadNamesViewControllerItemsForQueryString:(id)string
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100010EAC;
   v5[3] = &unk_100028A48;
-  v6 = a3;
-  v4 = v6;
+  stringCopy = string;
+  v4 = stringCopy;
   [(FKAApplicationDelegate *)self enumerateSceneDelegatesWithBlock:v5];
 }
 
-- (void)willDismissFloatingViewForPresenter:(id)a3
+- (void)willDismissFloatingViewForPresenter:(id)presenter
 {
-  v4 = a3;
-  v7 = [(FKAApplicationDelegate *)self bannerPresenter];
+  presenterCopy = presenter;
+  bannerPresenter = [(FKAApplicationDelegate *)self bannerPresenter];
 
-  if (v7 == v4)
+  if (bannerPresenter == presenterCopy)
   {
-    v5 = [(FKAApplicationDelegate *)self isShowingTextEditingModeInstructions];
+    isShowingTextEditingModeInstructions = [(FKAApplicationDelegate *)self isShowingTextEditingModeInstructions];
 
-    if (v5)
+    if (isShowingTextEditingModeInstructions)
     {
       v6 = FKALogCommon();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -751,35 +751,35 @@ LABEL_10:
   }
 }
 
-- (BOOL)eventManager:(id)a3 shouldRepostEvent:(id)a4
+- (BOOL)eventManager:(id)manager shouldRepostEvent:(id)event
 {
-  v5 = a4;
-  v6 = [(FKAApplicationDelegate *)self actionManager];
-  v7 = [v5 keyChord];
-  v8 = [v6 shouldRepostForKeyChord:v7];
+  eventCopy = event;
+  actionManager = [(FKAApplicationDelegate *)self actionManager];
+  keyChord = [eventCopy keyChord];
+  v8 = [actionManager shouldRepostForKeyChord:keyChord];
 
   if ([(FKAApplicationDelegate *)self isGesturesModeEnabled])
   {
     if (v8)
     {
-      v9 = [v5 keyChord];
-      if (([v9 isArrowKeyChord] & 1) == 0)
+      keyChord2 = [eventCopy keyChord];
+      if (([keyChord2 isArrowKeyChord] & 1) == 0)
       {
 
         goto LABEL_9;
       }
 
-      v10 = [v5 keyChord];
-      v11 = [v10 containsModifier];
+      keyChord3 = [eventCopy keyChord];
+      containsModifier = [keyChord3 containsModifier];
 
-      if (v11)
+      if (containsModifier)
       {
 LABEL_9:
-        v16 = [v5 keyChord];
-        if ([v16 isTextInputTabChord])
+        keyChord4 = [eventCopy keyChord];
+        if ([keyChord4 isTextInputTabChord])
         {
-          v17 = +[AXSettings sharedInstance];
-          if (([v17 fullKeyboardAccessShouldShowTextEditingModeInstructions] & 1) == 0)
+          fkaSpeakableDisplayValue = +[AXSettings sharedInstance];
+          if (([fkaSpeakableDisplayValue fullKeyboardAccessShouldShowTextEditingModeInstructions] & 1) == 0)
           {
 LABEL_17:
 
@@ -791,28 +791,28 @@ LABEL_17:
           if (!v18 || [(FKAApplicationDelegate *)self isShowingTextEditingModeInstructions])
           {
 LABEL_19:
-            v23 = [v5 keyChord];
-            if ([v23 isArrowKeyChord])
+            keyChord5 = [eventCopy keyChord];
+            if ([keyChord5 isArrowKeyChord])
             {
-              v24 = [v5 keyChord];
-              v25 = [v24 containsModifier];
+              keyChord6 = [eventCopy keyChord];
+              containsModifier2 = [keyChord6 containsModifier];
 
-              if (v25)
+              if (containsModifier2)
               {
 LABEL_23:
                 v15 = 1;
                 goto LABEL_24;
               }
 
-              v23 = [v5 keyChord];
-              [(FKAApplicationDelegate *)self showDebugDisplayWithKeyChord:v23];
+              keyChord5 = [eventCopy keyChord];
+              [(FKAApplicationDelegate *)self showDebugDisplayWithKeyChord:keyChord5];
             }
 
             goto LABEL_23;
           }
 
-          v16 = [(FKAApplicationDelegate *)self _keyChordForExitingTextMode];
-          if (v16)
+          keyChord4 = [(FKAApplicationDelegate *)self _keyChordForExitingTextMode];
+          if (keyChord4)
           {
             v19 = FKALogCommon();
             if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -821,10 +821,10 @@ LABEL_23:
               _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Showing instructions for text editing mode.", buf, 2u);
             }
 
-            v17 = [v16 fkaSpeakableDisplayValue];
+            fkaSpeakableDisplayValue = [keyChord4 fkaSpeakableDisplayValue];
             v20 = +[NSBundle mainBundle];
             v21 = [v20 localizedStringForKey:@"TEXT_EDITING_MODE_INSTRUCTIONS_MESSAGE" value:&stru_100028C78 table:0];
-            v22 = [NSString localizedStringWithFormat:v21, v17];
+            v22 = [NSString localizedStringWithFormat:v21, fkaSpeakableDisplayValue];
 
             [(FKAApplicationDelegate *)self _showBannerWithText:v22 secondaryText:0 isSticky:1 fromUserAction:0];
             [(FKAApplicationDelegate *)self setIsShowingTextEditingModeInstructions:1];
@@ -846,9 +846,9 @@ LABEL_18:
     goto LABEL_9;
   }
 
-  v12 = [v5 unicodeCharacter];
-  v13 = [v5 unicodeCharacter];
-  v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v5 modifierMask]);
+  unicodeCharacter = [eventCopy unicodeCharacter];
+  unicodeCharacter2 = [eventCopy unicodeCharacter];
+  v14 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [eventCopy modifierMask]);
   AXUIAutomationHandleKeyComplete();
 
   v15 = 0;
@@ -857,11 +857,11 @@ LABEL_24:
   return v15;
 }
 
-- (void)eventManager:(id)a3 repostEvent:(id)a4
+- (void)eventManager:(id)manager repostEvent:(id)event
 {
-  v5 = a4;
-  v6 = [(FKAApplicationDelegate *)self eventTap];
-  [v6 repostDownAndUpForKeyboardEvent:v5];
+  eventCopy = event;
+  eventTap = [(FKAApplicationDelegate *)self eventTap];
+  [eventTap repostDownAndUpForKeyboardEvent:eventCopy];
 }
 
 - (void)_didUpdateHardwareKeyboardAttachedStatus
@@ -880,16 +880,16 @@ LABEL_24:
 {
   if (+[FKAApplication usesScenes])
   {
-    v3 = [(FKAApplicationDelegate *)self _sceneDelegateForFocusedElement];
-    v4 = [v3 nonInteractiveWindow];
+    _sceneDelegateForFocusedElement = [(FKAApplicationDelegate *)self _sceneDelegateForFocusedElement];
+    nonInteractiveWindow = [_sceneDelegateForFocusedElement nonInteractiveWindow];
   }
 
   else
   {
-    v4 = self->_nonInteractiveWindow;
+    nonInteractiveWindow = self->_nonInteractiveWindow;
   }
 
-  return v4;
+  return nonInteractiveWindow;
 }
 
 - (id)_fkaDelegateScenes
@@ -900,9 +900,9 @@ LABEL_24:
   v16 = 0u;
   v17 = 0u;
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 connectedScenes];
+  connectedScenes = [v3 connectedScenes];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [connectedScenes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -913,14 +913,14 @@ LABEL_24:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v10 = [v9 delegate];
+          delegate = [v9 delegate];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -938,7 +938,7 @@ LABEL_24:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [connectedScenes countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -949,32 +949,32 @@ LABEL_24:
 
 - (id)_sceneDelegateForFocusedElement
 {
-  v3 = [(FKAApplicationDelegate *)self _fkaDelegateScenes];
-  if ([v3 count] == 1)
+  _fkaDelegateScenes = [(FKAApplicationDelegate *)self _fkaDelegateScenes];
+  if ([_fkaDelegateScenes count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [_fkaDelegateScenes firstObject];
   }
 
   else
   {
-    v5 = [(FKAApplicationDelegate *)self nativeFocusElementDisplayID];
-    if (v5 == -1)
+    nativeFocusElementDisplayID = [(FKAApplicationDelegate *)self nativeFocusElementDisplayID];
+    if (nativeFocusElementDisplayID == -1)
     {
-      v6 = [(FKAApplicationDelegate *)self actionManager];
-      v7 = [v6 currentElement];
-      v5 = [v7 windowDisplayId];
+      actionManager = [(FKAApplicationDelegate *)self actionManager];
+      currentElement = [actionManager currentElement];
+      nativeFocusElementDisplayID = [currentElement windowDisplayId];
     }
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    obj = v3;
+    obj = _fkaDelegateScenes;
     v8 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
     if (v8)
     {
       v9 = v8;
-      v27 = v3;
+      v27 = _fkaDelegateScenes;
       v10 = *v31;
       v11 = UIWindowSceneSessionRoleApplication;
       while (2)
@@ -989,18 +989,18 @@ LABEL_24:
           }
 
           v13 = *(*(&v30 + 1) + 8 * v12);
-          v14 = [v13 session];
-          v15 = [v14 role];
-          if ([v15 isEqualToString:v11])
+          session = [v13 session];
+          role = [session role];
+          if ([role isEqualToString:v11])
           {
             [v13 screen];
             v16 = v11;
             v17 = v10;
-            v19 = v18 = v5;
+            v19 = v18 = nativeFocusElementDisplayID;
             v20 = +[UIScreen mainScreen];
             v21 = [v19 isEqual:v20];
 
-            v5 = v18;
+            nativeFocusElementDisplayID = v18;
             v10 = v17;
             v11 = v16;
             v9 = v28;
@@ -1015,14 +1015,14 @@ LABEL_24:
           {
           }
 
-          v22 = [v13 screen];
-          v23 = [v22 displayIdentity];
-          v24 = [v23 displayID];
+          screen = [v13 screen];
+          displayIdentity = [screen displayIdentity];
+          displayID = [displayIdentity displayID];
 
-          if (v24 == v5)
+          if (displayID == nativeFocusElementDisplayID)
           {
 LABEL_18:
-            v4 = v13;
+            firstObject = v13;
             goto LABEL_19;
           }
 
@@ -1039,55 +1039,55 @@ LABEL_18:
         break;
       }
 
-      v4 = 0;
+      firstObject = 0;
 LABEL_19:
-      v3 = v27;
+      _fkaDelegateScenes = v27;
     }
 
     else
     {
-      v4 = 0;
+      firstObject = 0;
     }
   }
 
-  v25 = [v4 delegate];
+  delegate = [firstObject delegate];
 
-  return v25;
+  return delegate;
 }
 
 - (id)_sceneDelegates
 {
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 connectedScenes];
-  v5 = [v4 allObjects];
+  connectedScenes = [v3 connectedScenes];
+  allObjects = [connectedScenes allObjects];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100011954;
   v8[3] = &unk_100028A70;
   v8[4] = self;
-  v6 = [v5 ax_flatMappedArrayUsingBlock:v8];
+  v6 = [allObjects ax_flatMappedArrayUsingBlock:v8];
 
   return v6;
 }
 
-- (void)enumerateSceneDelegatesWithBlock:(id)a3
+- (void)enumerateSceneDelegatesWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(FKAApplicationDelegate *)self _sceneDelegates];
+  blockCopy = block;
+  _sceneDelegates = [(FKAApplicationDelegate *)self _sceneDelegates];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100011AC4;
   v7[3] = &unk_100028A98;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = blockCopy;
+  v6 = blockCopy;
+  [_sceneDelegates enumerateObjectsUsingBlock:v7];
 }
 
-- (BOOL)_sceneVendedByOneness:(id)a3
+- (BOOL)_sceneVendedByOneness:(id)oneness
 {
-  v3 = [a3 screen];
-  v4 = [v3 displayIdentity];
-  v5 = [v4 type] == 8;
+  screen = [oneness screen];
+  displayIdentity = [screen displayIdentity];
+  v5 = [displayIdentity type] == 8;
 
   return v5;
 }
@@ -1096,43 +1096,43 @@ LABEL_19:
 {
   if (+[FKAApplication usesScenes])
   {
-    v3 = [(FKAApplicationDelegate *)self _sceneDelegateForFocusedElement];
-    v4 = [v3 interactiveWindow];
-    v5 = [v4 rootViewController];
+    _sceneDelegateForFocusedElement = [(FKAApplicationDelegate *)self _sceneDelegateForFocusedElement];
+    interactiveWindow = [_sceneDelegateForFocusedElement interactiveWindow];
+    rootViewController = [interactiveWindow rootViewController];
   }
 
   else
   {
-    v3 = [(FKAApplicationDelegate *)self window];
-    v5 = [v3 rootViewController];
+    _sceneDelegateForFocusedElement = [(FKAApplicationDelegate *)self window];
+    rootViewController = [_sceneDelegateForFocusedElement rootViewController];
   }
 
-  return v5;
+  return rootViewController;
 }
 
 - (FKARootViewController)nonInteractiveRootViewController
 {
-  v2 = [(FKAApplicationDelegate *)self nonInteractiveWindow];
-  v3 = [v2 rootViewController];
+  nonInteractiveWindow = [(FKAApplicationDelegate *)self nonInteractiveWindow];
+  rootViewController = [nonInteractiveWindow rootViewController];
 
-  return v3;
+  return rootViewController;
 }
 
-- (void)_showDebugBannerText:(id)a3
+- (void)_showDebugBannerText:(id)text
 {
-  v4 = a3;
-  v5 = [(FKAApplicationDelegate *)self debugBannerPresenter];
+  textCopy = text;
+  debugBannerPresenter = [(FKAApplicationDelegate *)self debugBannerPresenter];
 
-  if (!v5)
+  if (!debugBannerPresenter)
   {
     v6 = [AXUIBannerPresenter alloc];
-    v7 = [(FKAApplicationDelegate *)self nonInteractiveWindow];
-    v8 = [v6 initWithContainingView:v7];
+    nonInteractiveWindow = [(FKAApplicationDelegate *)self nonInteractiveWindow];
+    v8 = [v6 initWithContainingView:nonInteractiveWindow];
     [(FKAApplicationDelegate *)self setDebugBannerPresenter:v8];
   }
 
-  v9 = [(FKAApplicationDelegate *)self debugBannerPresenter];
-  [v9 presentBannerViewWithText:v4 secondaryText:0 duration:1 fromUserAction:2.0];
+  debugBannerPresenter2 = [(FKAApplicationDelegate *)self debugBannerPresenter];
+  [debugBannerPresenter2 presentBannerViewWithText:textCopy secondaryText:0 duration:1 fromUserAction:2.0];
 }
 
 - (void)_addTransientCommandsForGesturesMode
@@ -1205,18 +1205,18 @@ LABEL_19:
     v11 = v12;
   }
 
-  v15 = [(FKAApplicationDelegate *)self eventManager];
-  v16 = [v15 commandMap];
-  v17 = [v16 addCommandsForTransientKeyChords:v11];
+  eventManager = [(FKAApplicationDelegate *)self eventManager];
+  commandMap = [eventManager commandMap];
+  v17 = [commandMap addCommandsForTransientKeyChords:v11];
   [(FKAApplicationDelegate *)self setGesturesModeKeyChordsIdentifier:v17];
 }
 
-- (void)setGesturesModeEnabled:(BOOL)a3
+- (void)setGesturesModeEnabled:(BOOL)enabled
 {
-  if (self->_gesturesModeEnabled != a3)
+  if (self->_gesturesModeEnabled != enabled)
   {
-    self->_gesturesModeEnabled = a3;
-    if (a3)
+    self->_gesturesModeEnabled = enabled;
+    if (enabled)
     {
       v46 = +[NSBundle mainBundle];
       v44 = [v46 localizedStringForKey:@"GESTURES_TAP" value:&stru_100028C78 table:0];
@@ -1284,14 +1284,14 @@ LABEL_19:
       v21 = [v20 localizedStringForKey:@"GESTURES_DISABLED" value:&stru_100028C78 table:0];
       [(FKAApplicationDelegate *)self _showBannerWithText:v21];
 
-      v22 = [(FKAApplicationDelegate *)self gesturesModeKeyChordsIdentifier];
+      gesturesModeKeyChordsIdentifier = [(FKAApplicationDelegate *)self gesturesModeKeyChordsIdentifier];
 
-      if (v22)
+      if (gesturesModeKeyChordsIdentifier)
       {
-        v23 = [(FKAApplicationDelegate *)self eventManager];
-        v24 = [v23 commandMap];
-        v25 = [(FKAApplicationDelegate *)self gesturesModeKeyChordsIdentifier];
-        [v24 removeTransientKeyChordsForIdentifier:v25];
+        eventManager = [(FKAApplicationDelegate *)self eventManager];
+        commandMap = [eventManager commandMap];
+        gesturesModeKeyChordsIdentifier2 = [(FKAApplicationDelegate *)self gesturesModeKeyChordsIdentifier];
+        [commandMap removeTransientKeyChordsForIdentifier:gesturesModeKeyChordsIdentifier2];
 
         [(FKAApplicationDelegate *)self setGesturesModeKeyChordsIdentifier:0];
       }
@@ -1308,17 +1308,17 @@ LABEL_19:
   }
 }
 
-- (void)setPassthroughModeEnabled:(BOOL)a3
+- (void)setPassthroughModeEnabled:(BOOL)enabled
 {
-  if (self->_passthroughModeEnabled != a3)
+  if (self->_passthroughModeEnabled != enabled)
   {
     v21 = v3;
     v22 = v4;
-    v5 = a3;
-    self->_passthroughModeEnabled = a3;
+    enabledCopy = enabled;
+    self->_passthroughModeEnabled = enabled;
     v7 = FKALogCommon();
     v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-    if (v5)
+    if (enabledCopy)
     {
       if (v8)
       {
@@ -1326,20 +1326,20 @@ LABEL_19:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Enabled passthrough mode", buf, 2u);
       }
 
-      v9 = [(FKAApplicationDelegate *)self eventManager];
-      [v9 setPassthroughModeEnabled:1];
+      eventManager = [(FKAApplicationDelegate *)self eventManager];
+      [eventManager setPassthroughModeEnabled:1];
 
       _AXSFullKeyboardAccessSetPassthroughModeEnabled();
       _AXSFullKeyboardAccessSetFocusRingEnabled();
-      v10 = [(FKAApplicationDelegate *)self eventManager];
-      v11 = [v10 commandMap];
+      eventManager2 = [(FKAApplicationDelegate *)self eventManager];
+      commandMap = [eventManager2 commandMap];
 
       v12 = [AXSSKeyboardCommand commandWithStandardCommandIdentifier:AXSSKeyboardCommandIdentifierTogglePassthroughMode];
-      v13 = [v11 keyChordForCommand:v12];
-      v14 = [v13 fkaSpeakableDisplayValue];
+      v13 = [commandMap keyChordForCommand:v12];
+      fkaSpeakableDisplayValue = [v13 fkaSpeakableDisplayValue];
       v15 = +[NSBundle mainBundle];
       v16 = [v15 localizedStringForKey:@"PASSTHROUGH_MODE" value:&stru_100028C78 table:0];
-      v17 = [NSString localizedStringWithFormat:v16, v14];
+      v17 = [NSString localizedStringWithFormat:v16, fkaSpeakableDisplayValue];
       [(FKAApplicationDelegate *)self _showBannerWithText:v17];
     }
 
@@ -1351,27 +1351,27 @@ LABEL_19:
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "Disabled passthrough mode", v19, 2u);
       }
 
-      v18 = [(FKAApplicationDelegate *)self eventManager];
-      [v18 setPassthroughModeEnabled:0];
+      eventManager3 = [(FKAApplicationDelegate *)self eventManager];
+      [eventManager3 setPassthroughModeEnabled:0];
 
       _AXSFullKeyboardAccessSetPassthroughModeEnabled();
       [(FKAApplicationDelegate *)self _enableFocusRingWithTimeout];
-      v11 = +[NSBundle mainBundle];
-      v12 = [v11 localizedStringForKey:@"PASSTHROUGH_MODE_DISABLED" value:&stru_100028C78 table:0];
+      commandMap = +[NSBundle mainBundle];
+      v12 = [commandMap localizedStringForKey:@"PASSTHROUGH_MODE_DISABLED" value:&stru_100028C78 table:0];
       [(FKAApplicationDelegate *)self _showBannerWithText:v12];
     }
   }
 }
 
-- (void)_showActionsForElement:(id)a3
+- (void)_showActionsForElement:(id)element
 {
-  v4 = a3;
-  v5 = self;
-  v6 = [(FKAApplicationDelegate *)self elementActionManager];
-  v7 = [v6 actionsForElement:v4];
+  elementCopy = element;
+  selfCopy = self;
+  elementActionManager = [(FKAApplicationDelegate *)self elementActionManager];
+  v7 = [elementActionManager actionsForElement:elementCopy];
 
   v8 = [FKAActionsController alertControllerWithTitle:0 message:0 preferredStyle:0];
-  [v8 setElement:v4];
+  [v8 setElement:elementCopy];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
@@ -1392,14 +1392,14 @@ LABEL_19:
         }
 
         v13 = *(*(&v24 + 1) + 8 * i);
-        v14 = [v13 name];
+        name = [v13 name];
         v23[0] = _NSConcreteStackBlock;
         v23[1] = 3221225472;
         v23[2] = sub_100012F20;
         v23[3] = &unk_100028AC0;
-        v23[4] = v5;
+        v23[4] = selfCopy;
         v23[5] = v13;
-        v15 = [UIAlertAction actionWithTitle:v14 style:0 handler:v23];
+        v15 = [UIAlertAction actionWithTitle:name style:0 handler:v23];
 
         [v8 addAction:v15];
       }
@@ -1416,39 +1416,39 @@ LABEL_19:
   v22[1] = 3221225472;
   v22[2] = sub_100013014;
   v22[3] = &unk_100028AE8;
-  v22[4] = v5;
+  v22[4] = selfCopy;
   v18 = [UIAlertAction actionWithTitle:v17 style:1 handler:v22];
   [v8 addAction:v18];
 
-  [(FKAApplicationDelegate *)v5 setShouldIgnoreNextScreenChange:1];
+  [(FKAApplicationDelegate *)selfCopy setShouldIgnoreNextScreenChange:1];
   LODWORD(v16) = AXDeviceIsPad();
-  v19 = [(FKAApplicationDelegate *)v5 rootViewController];
-  v20 = v19;
+  rootViewController = [(FKAApplicationDelegate *)selfCopy rootViewController];
+  v20 = rootViewController;
   if (v16)
   {
-    [v4 frame];
+    [elementCopy frame];
     [v20 presentViewController:v8 inPopoverFromRect:?];
   }
 
   else
   {
-    [v19 presentViewController:v8 animated:1 completion:0];
+    [rootViewController presentViewController:v8 animated:1 completion:0];
   }
 }
 
-- (BOOL)_areActionsValidForElement:(id)a3
+- (BOOL)_areActionsValidForElement:(id)element
 {
-  v3 = [a3 uiElement];
-  [v3 updateCache:2204];
-  v4 = [v3 BOOLWithAXAttribute:2204];
+  uiElement = [element uiElement];
+  [uiElement updateCache:2204];
+  v4 = [uiElement BOOLWithAXAttribute:2204];
 
   return v4;
 }
 
-- (BOOL)_dismissActionsControllerByForce:(BOOL)a3
+- (BOOL)_dismissActionsControllerByForce:(BOOL)force
 {
-  v5 = [(FKAApplicationDelegate *)self rootViewController];
-  v6 = [v5 presentedViewController];
+  rootViewController = [(FKAApplicationDelegate *)self rootViewController];
+  presentedViewController = [rootViewController presentedViewController];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1457,15 +1457,15 @@ LABEL_19:
     return 0;
   }
 
-  v8 = [(FKAApplicationDelegate *)self rootViewController];
-  v9 = [v8 presentedViewController];
+  rootViewController2 = [(FKAApplicationDelegate *)self rootViewController];
+  presentedViewController2 = [rootViewController2 presentedViewController];
 
-  if (a3 || ([v9 element], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[FKAApplicationDelegate _areActionsValidForElement:](self, "_areActionsValidForElement:", v10), v10, (v11 & 1) == 0))
+  if (force || ([presentedViewController2 element], v10 = objc_claimAutoreleasedReturnValue(), v11 = -[FKAApplicationDelegate _areActionsValidForElement:](self, "_areActionsValidForElement:", v10), v10, (v11 & 1) == 0))
   {
     v12 = 1;
     [(FKAApplicationDelegate *)self setShouldIgnoreNextScreenChange:1];
-    v13 = [(FKAApplicationDelegate *)self rootViewController];
-    [v13 dismissViewControllerAnimated:1 completion:0];
+    rootViewController3 = [(FKAApplicationDelegate *)self rootViewController];
+    [rootViewController3 dismissViewControllerAnimated:1 completion:0];
   }
 
   else
@@ -1491,20 +1491,20 @@ LABEL_19:
   }
 }
 
-- (void)_handleNativeFocusItemChange:(id)a3
+- (void)_handleNativeFocusItemChange:(id)change
 {
-  v4 = a3;
-  if (v4)
+  changeCopy = change;
+  if (changeCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [v4 objectForKey:@"element"];
+      v5 = [changeCopy objectForKey:@"element"];
       if (v5)
       {
         v6 = v5;
-        v7 = [(FKAApplicationDelegate *)self _fkaDelegateScenes];
-        if ([v7 count] >= 2)
+        _fkaDelegateScenes = [(FKAApplicationDelegate *)self _fkaDelegateScenes];
+        if ([_fkaDelegateScenes count] >= 2)
         {
           v8 = [AXElement elementWithAXUIElement:v6];
           -[FKAApplicationDelegate setNativeFocusElementDisplayID:](self, "setNativeFocusElementDisplayID:", [v8 windowDisplayId]);
@@ -1522,21 +1522,21 @@ LABEL_19:
   }
 }
 
-- (void)observer:(id)a3 didObserveNotification:(int)a4 notificationData:(void *)a5
+- (void)observer:(id)observer didObserveNotification:(int)notification notificationData:(void *)data
 {
-  v8 = a3;
-  if (a4 > 1017)
+  observerCopy = observer;
+  if (notification > 1017)
   {
-    if (a4 <= 1052)
+    if (notification <= 1052)
     {
-      if (a4 != 1018)
+      if (notification != 1018)
       {
-        if (a4 == 1039)
+        if (notification == 1039)
         {
           v9 = +[AXSettings sharedInstance];
-          v10 = [v9 fullKeyboardAccessFocusRingTimeoutEnabled];
+          fullKeyboardAccessFocusRingTimeoutEnabled = [v9 fullKeyboardAccessFocusRingTimeoutEnabled];
 
-          if (v10)
+          if (fullKeyboardAccessFocusRingTimeoutEnabled)
           {
             goto LABEL_22;
           }
@@ -1554,13 +1554,13 @@ LABEL_16:
       goto LABEL_22;
     }
 
-    if (a4 == 1053)
+    if (notification == 1053)
     {
-      [(FKAApplicationDelegate *)self _handleNativeFocusItemChange:a5];
+      [(FKAApplicationDelegate *)self _handleNativeFocusItemChange:data];
       goto LABEL_22;
     }
 
-    if (a4 == 1067)
+    if (notification == 1067)
     {
       goto LABEL_15;
     }
@@ -1569,25 +1569,25 @@ LABEL_18:
     v12 = FKALogCommon();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
     {
-      sub_100014524(a5, a4, v12);
+      sub_100014524(data, notification, v12);
     }
 
     goto LABEL_22;
   }
 
-  if (a4 == 1000)
+  if (notification == 1000)
   {
     [NSObject cancelPreviousPerformRequestsWithTarget:self selector:"_handleScreenChange" object:0];
     [(FKAApplicationDelegate *)self performSelector:"_handleScreenChange" withObject:0 afterDelay:0.3];
     goto LABEL_22;
   }
 
-  if (a4 == 1001)
+  if (notification == 1001)
   {
     goto LABEL_16;
   }
 
-  if (a4 != 1004)
+  if (notification != 1004)
   {
     goto LABEL_18;
   }
@@ -1609,8 +1609,8 @@ LABEL_22:
   if (!_AXSFullKeyboardAccessFocusRingEnabled())
   {
     _AXSFullKeyboardAccessSetFocusRingEnabled();
-    v3 = [(FKAApplicationDelegate *)self eventManager];
-    [v3 setShouldSuppressCommands:0];
+    eventManager = [(FKAApplicationDelegate *)self eventManager];
+    [eventManager setShouldSuppressCommands:0];
   }
 
   [(FKAApplicationDelegate *)self _resetFocusRingTimeout];
@@ -1620,8 +1620,8 @@ LABEL_22:
 {
   [(FKAApplicationDelegate *)self _cancelFocusRingTimeout];
   _AXSFullKeyboardAccessSetFocusRingEnabled();
-  v3 = [(FKAApplicationDelegate *)self eventManager];
-  [v3 setShouldSuppressCommands:1];
+  eventManager = [(FKAApplicationDelegate *)self eventManager];
+  [eventManager setShouldSuppressCommands:1];
 }
 
 - (void)_disableFocusRingForTimeout
@@ -1647,9 +1647,9 @@ LABEL_22:
   }
 }
 
-- (BOOL)_canEnableFocusRingCheckingSystemSleepingState:(BOOL)a3
+- (BOOL)_canEnableFocusRingCheckingSystemSleepingState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   if (!GSEventIsHardwareKeyboardAttached() && !_AXSFullKeyboardAccessUsesSimulatedKeyboardForAutomation())
   {
     v6 = FKALogCommon();
@@ -1666,14 +1666,14 @@ LABEL_15:
     goto LABEL_17;
   }
 
-  if (v3)
+  if (stateCopy)
   {
     v4 = +[AXSystemAppServer server];
-    v5 = [v4 isSystemSleeping];
+    isSystemSleeping = [v4 isSystemSleeping];
 
     v6 = FKALogCommon();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_INFO);
-    if (v5)
+    if (isSystemSleeping)
     {
       if (v7)
       {
@@ -1717,9 +1717,9 @@ LABEL_17:
   return v10;
 }
 
-- (void)_didUpdateAvailableCommandsWithUpdatedMap:(id)a3
+- (void)_didUpdateAvailableCommandsWithUpdatedMap:(id)map
 {
-  v4 = a3;
+  mapCopy = map;
   v5 = FKALogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1727,8 +1727,8 @@ LABEL_17:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Did update available commands.", v7, 2u);
   }
 
-  v6 = [(FKAApplicationDelegate *)self eventManager];
-  [v6 setCommandMap:v4];
+  eventManager = [(FKAApplicationDelegate *)self eventManager];
+  [eventManager setCommandMap:mapCopy];
 
   if ([(FKAApplicationDelegate *)self isGesturesModeEnabled])
   {
@@ -1751,11 +1751,11 @@ LABEL_17:
 
 - (id)_keyChordForExitingTextMode
 {
-  v2 = [(FKAApplicationDelegate *)self eventManager];
-  v3 = [v2 commandMap];
+  eventManager = [(FKAApplicationDelegate *)self eventManager];
+  commandMap = [eventManager commandMap];
 
   v4 = [AXSSKeyboardCommand commandWithStandardCommandIdentifier:AXSSKeyboardCommandIdentifierMoveInsideNext];
-  v5 = [v3 keyChordForCommand:v4];
+  v5 = [commandMap keyChordForCommand:v4];
   v6 = v5;
   if (v5 && ([v5 isTextInputTabChord] & 1) == 0)
   {
@@ -1782,23 +1782,23 @@ LABEL_17:
     }
 
     [(FKAApplicationDelegate *)self setIsShowingTextEditingModeInstructions:0];
-    v4 = [(FKAApplicationDelegate *)self bannerPresenter];
-    [v4 dismissFloatingView];
+    bannerPresenter = [(FKAApplicationDelegate *)self bannerPresenter];
+    [bannerPresenter dismissFloatingView];
   }
 }
 
-- (void)_announceCommandList:(id)a3
+- (void)_announceCommandList:(id)list
 {
-  v3 = a3;
+  listCopy = list;
   if (_AXFeatureSupportsNonSightedUsage())
   {
-    v4 = [v3 title];
+    title = [listCopy title];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v5 = [v3 items];
-    v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+    items = [listCopy items];
+    v6 = [items countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v6)
     {
       v7 = v6;
@@ -1806,33 +1806,33 @@ LABEL_17:
       do
       {
         v9 = 0;
-        v10 = v4;
+        v10 = title;
         do
         {
           if (*v19 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(items);
           }
 
           v11 = *(*(&v18 + 1) + 8 * v9);
-          v12 = [v11 name];
-          v16 = [v11 keyDescription];
+          name = [v11 name];
+          keyDescription = [v11 keyDescription];
           v17 = @"__AXStringForVariablesSentinel";
-          v14 = v12;
-          v4 = __UIAXStringForVariables();
+          v14 = name;
+          title = __UIAXStringForVariables();
 
           v9 = v9 + 1;
-          v10 = v4;
+          v10 = title;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:{16, v12, v16, @"__AXStringForVariablesSentinel"}];
+        v7 = [items countByEnumeratingWithState:&v18 objects:v22 count:{16, name, keyDescription, @"__AXStringForVariablesSentinel"}];
       }
 
       while (v7);
     }
 
-    v15 = [v3 footerText];
+    footerText = [listCopy footerText];
     v13 = __UIAXStringForVariables();
 
     UIAccessibilityPostNotification(UIAccessibilityAnnouncementNotification, v13);
@@ -1841,16 +1841,16 @@ LABEL_17:
 
 - (void)willAquireNativeFocus
 {
-  v3 = [(FKAApplicationDelegate *)self actionManager];
-  v2 = [v3 currentElement];
-  [v2 performAction:5501 withValue:0];
+  actionManager = [(FKAApplicationDelegate *)self actionManager];
+  currentElement = [actionManager currentElement];
+  [currentElement performAction:5501 withValue:0];
 }
 
 - (void)didReleaseNativeFocus
 {
-  v3 = [(FKAApplicationDelegate *)self actionManager];
-  v2 = [v3 currentElement];
-  [v2 performAction:5500 withValue:0];
+  actionManager = [(FKAApplicationDelegate *)self actionManager];
+  currentElement = [actionManager currentElement];
+  [currentElement performAction:5500 withValue:0];
 }
 
 @end

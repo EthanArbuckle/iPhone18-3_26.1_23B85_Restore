@@ -1,10 +1,10 @@
 @interface BookmarksTableViewCellLayoutManager
 + (id)sharedManager;
-- (CGRect)accessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)accessoryStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5;
-- (CGRect)textRectForCell:(id)a3 rowWidth:(double)a4 forSizing:(BOOL)a5;
+- (CGRect)accessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)accessoryStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation;
+- (CGRect)textRectForCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing;
 - (int64_t)_numberOfLinesForCurrentContentSize;
-- (void)layoutSubviewsOfCell:(id)a3;
+- (void)layoutSubviewsOfCell:(id)cell;
 @end
 
 @implementation BookmarksTableViewCellLayoutManager
@@ -14,7 +14,7 @@
   v3 = sharedManager_sharedManager;
   if (!sharedManager_sharedManager)
   {
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     v5 = sharedManager_sharedManager;
     sharedManager_sharedManager = v4;
 
@@ -24,20 +24,20 @@
   return v3;
 }
 
-- (CGRect)textRectForCell:(id)a3 rowWidth:(double)a4 forSizing:(BOOL)a5
+- (CGRect)textRectForCell:(id)cell rowWidth:(double)width forSizing:(BOOL)sizing
 {
-  v5 = a5;
-  v8 = a3;
+  sizingCopy = sizing;
+  cellCopy = cell;
   v22.receiver = self;
   v22.super_class = BookmarksTableViewCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v22 textRectForCell:v8 rowWidth:v5 forSizing:a4];
+  [(UITableViewCellLayoutManager *)&v22 textRectForCell:cellCopy rowWidth:sizingCopy forSizing:width];
   v10 = v9;
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  if (![(UITableViewCellLayoutManager *)self accessoryShouldAppearForCell:v8])
+  if (![(UITableViewCellLayoutManager *)self accessoryShouldAppearForCell:cellCopy])
   {
-    [v8 separatorInset];
+    [cellCopy separatorInset];
     v14 = v14 - v17;
   }
 
@@ -52,21 +52,21 @@
   return result;
 }
 
-- (CGRect)accessoryStartingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)accessoryStartingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  confirmationCopy = confirmation;
+  stateCopy = state;
+  cellCopy = cell;
   v18.receiver = self;
   v18.super_class = BookmarksTableViewCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v18 accessoryStartingRectForCell:v8 forNewEditingState:v6 showingDeleteConfirmation:v5];
+  [(UITableViewCellLayoutManager *)&v18 accessoryStartingRectForCell:cellCopy forNewEditingState:stateCopy showingDeleteConfirmation:confirmationCopy];
   x = v19.origin.x;
   y = v19.origin.y;
   width = v19.size.width;
   height = v19.size.height;
   if (!CGRectIsEmpty(v19))
   {
-    [v8 separatorInset];
+    [cellCopy separatorInset];
     x = x - v13;
   }
 
@@ -81,21 +81,21 @@
   return result;
 }
 
-- (CGRect)accessoryEndingRectForCell:(id)a3 forNewEditingState:(BOOL)a4 showingDeleteConfirmation:(BOOL)a5
+- (CGRect)accessoryEndingRectForCell:(id)cell forNewEditingState:(BOOL)state showingDeleteConfirmation:(BOOL)confirmation
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
+  confirmationCopy = confirmation;
+  stateCopy = state;
+  cellCopy = cell;
   v18.receiver = self;
   v18.super_class = BookmarksTableViewCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v18 accessoryEndingRectForCell:v8 forNewEditingState:v6 showingDeleteConfirmation:v5];
+  [(UITableViewCellLayoutManager *)&v18 accessoryEndingRectForCell:cellCopy forNewEditingState:stateCopy showingDeleteConfirmation:confirmationCopy];
   x = v19.origin.x;
   y = v19.origin.y;
   width = v19.size.width;
   height = v19.size.height;
   if (!CGRectIsEmpty(v19))
   {
-    [v8 separatorInset];
+    [cellCopy separatorInset];
     x = x - v13;
   }
 
@@ -112,8 +112,8 @@
 
 - (int64_t)_numberOfLinesForCurrentContentSize
 {
-  v2 = [(BookmarksTableViewCellLayoutManager *)self currentContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v2);
+  currentContentSizeCategory = [(BookmarksTableViewCellLayoutManager *)self currentContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(currentContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -126,32 +126,32 @@
   }
 }
 
-- (void)layoutSubviewsOfCell:(id)a3
+- (void)layoutSubviewsOfCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v32.receiver = self;
   v32.super_class = BookmarksTableViewCellLayoutManager;
-  [(UITableViewCellLayoutManager *)&v32 layoutSubviewsOfCell:v4];
-  v5 = [v4 _shouldReverseLayoutDirection];
-  [v4 separatorInset];
+  [(UITableViewCellLayoutManager *)&v32 layoutSubviewsOfCell:cellCopy];
+  _shouldReverseLayoutDirection = [cellCopy _shouldReverseLayoutDirection];
+  [cellCopy separatorInset];
   v7 = v6;
-  v8 = [(BookmarksTableViewCellLayoutManager *)self currentContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v8);
+  currentContentSizeCategory = [(BookmarksTableViewCellLayoutManager *)self currentContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(currentContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
     v7 = 20.0;
   }
 
-  v10 = [v4 imageView];
-  [v10 frame];
+  imageView = [cellCopy imageView];
+  [imageView frame];
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  if (v5)
+  if (_shouldReverseLayoutDirection)
   {
-    v17 = [v4 contentView];
-    [v17 bounds];
+    contentView = [cellCopy contentView];
+    [contentView bounds];
     MaxX = CGRectGetMaxX(v33);
 
     _SFRoundFloatToPixels();
@@ -164,33 +164,33 @@
     v20 = fmax(v7 - v21 - v14, 8.0);
   }
 
-  [v10 setFrame:{v20, v12, v14, v16}];
-  v22 = [v4 textLabel];
-  [v22 setNumberOfLines:{-[BookmarksTableViewCellLayoutManager _numberOfLinesForCurrentContentSize](self, "_numberOfLinesForCurrentContentSize")}];
-  [v22 frame];
+  [imageView setFrame:{v20, v12, v14, v16}];
+  textLabel = [cellCopy textLabel];
+  [textLabel setNumberOfLines:{-[BookmarksTableViewCellLayoutManager _numberOfLinesForCurrentContentSize](self, "_numberOfLinesForCurrentContentSize")}];
+  [textLabel frame];
   v24 = v23;
   v26 = v25;
   v28 = v27;
-  if (v5)
+  if (_shouldReverseLayoutDirection)
   {
-    v29 = [v4 contentView];
-    [v29 bounds];
+    contentView2 = [cellCopy contentView];
+    [contentView2 bounds];
     v30 = CGRectGetMaxX(v34) - v7 - v26;
 
-    [v4 frame];
-    [(BookmarksTableViewCellLayoutManager *)self textRectForCell:v4 rowWidth:0 forSizing:CGRectGetWidth(v35)];
+    [cellCopy frame];
+    [(BookmarksTableViewCellLayoutManager *)self textRectForCell:cellCopy rowWidth:0 forSizing:CGRectGetWidth(v35)];
     v31 = fmin(v26, CGRectGetMaxX(v36) - v30);
     v7 = v30 + v26 - v31;
   }
 
   else
   {
-    [v4 frame];
-    [(BookmarksTableViewCellLayoutManager *)self textRectForCell:v4 rowWidth:0 forSizing:CGRectGetWidth(v37)];
+    [cellCopy frame];
+    [(BookmarksTableViewCellLayoutManager *)self textRectForCell:cellCopy rowWidth:0 forSizing:CGRectGetWidth(v37)];
     v31 = fmin(v26, CGRectGetMaxX(v38) - v7);
   }
 
-  [v22 setFrame:{v7, v24, v31, v28}];
+  [textLabel setFrame:{v7, v24, v31, v28}];
 }
 
 @end

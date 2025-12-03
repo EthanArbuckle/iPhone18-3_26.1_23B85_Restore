@@ -52,12 +52,12 @@
   v10 = [NSNumber numberWithBool:[(UARemotePasteboardWasRequestedEvent *)self isAsyncTransfer]];
   v24[14] = v10;
   v23[15] = @"remoteDeviceType";
-  v11 = [(UARemotePasteboardWasRequestedEvent *)self remoteDeviceType];
-  v12 = v11;
+  remoteDeviceType = [(UARemotePasteboardWasRequestedEvent *)self remoteDeviceType];
+  v12 = remoteDeviceType;
   v13 = @"Unknown";
-  if (v11)
+  if (remoteDeviceType)
   {
-    v13 = v11;
+    v13 = remoteDeviceType;
   }
 
   v24[15] = v13;

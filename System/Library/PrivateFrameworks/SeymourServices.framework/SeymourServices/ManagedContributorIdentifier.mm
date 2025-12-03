@@ -1,14 +1,14 @@
 @interface ManagedContributorIdentifier
-- (ManagedContributorIdentifier)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (ManagedContributorIdentifier)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 @end
 
 @implementation ManagedContributorIdentifier
 
-- (ManagedContributorIdentifier)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (ManagedContributorIdentifier)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for ManagedContributorIdentifier();
-  return [(ManagedContributorIdentifier *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedContributorIdentifier *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface ATXCandidateRelevanceModelConfigApp
 - (ATXCandidateRelevanceModelConfigApp)init;
-- (BOOL)bundleIdIsEnabledForPrediction:(id)a3;
-- (BOOL)candidateIsStillValidToSuggest:(id)a3;
-- (id)appInstallAgesForAppsWithExcludedApps:(id)a3 appInfoManager:(id)a4;
+- (BOOL)bundleIdIsEnabledForPrediction:(id)prediction;
+- (BOOL)candidateIsStillValidToSuggest:(id)suggest;
+- (id)appInstallAgesForAppsWithExcludedApps:(id)apps appInfoManager:(id)manager;
 - (id)datasetGenerator;
-- (id)heuristicSuggestionsForContext:(id)a3 currentSuggestionExecutableIds:(id)a4;
-- (id)heuristicSuggestionsForContext:(id)a3 currentSuggestionExecutableIds:(id)a4 appInfoManager:(id)a5;
-- (id)proactiveSuggestionForBundleId:(id)a3 prediction:(float)a4;
-- (id)proactiveSuggestionForCandidate:(id)a3 prediction:(float)a4;
-- (id)recentlyInstalledAndNotLaunchedAppsFromAppInfoManager:(id)a3 currentSuggestionExecutableIds:(id)a4 launchedApps:(id)a5;
-- (id)recentlyLaunchedAppsFromAppLaunchAges:(id)a3;
+- (id)heuristicSuggestionsForContext:(id)context currentSuggestionExecutableIds:(id)ids;
+- (id)heuristicSuggestionsForContext:(id)context currentSuggestionExecutableIds:(id)ids appInfoManager:(id)manager;
+- (id)proactiveSuggestionForBundleId:(id)id prediction:(float)prediction;
+- (id)proactiveSuggestionForCandidate:(id)candidate prediction:(float)prediction;
+- (id)recentlyInstalledAndNotLaunchedAppsFromAppInfoManager:(id)manager currentSuggestionExecutableIds:(id)ids launchedApps:(id)apps;
+- (id)recentlyLaunchedAppsFromAppLaunchAges:(id)ages;
 @end
 
 @implementation ATXCandidateRelevanceModelConfigApp
@@ -22,8 +22,8 @@
   if (v2)
   {
     v3 = [ATXCandidateRelevanceLogisticRegressionModelTrainingPlan alloc];
-    v4 = [(ATXCandidateRelevanceModelConfig *)v2 modelTrainingPlanParameters];
-    v5 = [(ATXCandidateRelevanceLogisticRegressionModelTrainingPlan *)v3 initWithParameters:v4];
+    modelTrainingPlanParameters = [(ATXCandidateRelevanceModelConfig *)v2 modelTrainingPlanParameters];
+    v5 = [(ATXCandidateRelevanceLogisticRegressionModelTrainingPlan *)v3 initWithParameters:modelTrainingPlanParameters];
     [(ATXCandidateRelevanceModelConfig *)v2 setModelTrainingPlan:v5];
 
     v6 = objc_opt_new();
@@ -32,8 +32,8 @@
     v7 = objc_alloc(MEMORY[0x277D42070]);
     v8 = [MEMORY[0x277D42070] clientModelIdFromClientModelType:14];
     v9 = +[ATXClientModelSuggestionReceiver sharedInstance];
-    v10 = [v9 blendingLayerServer];
-    v11 = [v7 initWithClientModelId:v8 blendingLayerServer:v10];
+    blendingLayerServer = [v9 blendingLayerServer];
+    v11 = [v7 initWithClientModelId:v8 blendingLayerServer:blendingLayerServer];
     [(ATXCandidateRelevanceModelConfig *)v2 setClientModel:v11];
 
     v12 = +[ATXAppPredictionBlacklist sharedInstance];
@@ -58,46 +58,46 @@
   return v4;
 }
 
-- (id)proactiveSuggestionForCandidate:(id)a3 prediction:(float)a4
+- (id)proactiveSuggestionForCandidate:(id)candidate prediction:(float)prediction
 {
-  v6 = [a3 identifier];
-  *&v7 = a4;
-  v8 = [(ATXCandidateRelevanceModelConfigApp *)self proactiveSuggestionForBundleId:v6 prediction:v7];
+  identifier = [candidate identifier];
+  *&v7 = prediction;
+  v8 = [(ATXCandidateRelevanceModelConfigApp *)self proactiveSuggestionForBundleId:identifier prediction:v7];
 
   return v8;
 }
 
-- (id)proactiveSuggestionForBundleId:(id)a3 prediction:(float)a4
+- (id)proactiveSuggestionForBundleId:(id)id prediction:(float)prediction
 {
   v6 = MEMORY[0x277D42078];
-  v7 = a3;
+  idCopy = id;
   v8 = [v6 alloc];
-  v9 = [(ATXCandidateRelevanceModelConfig *)self clientModel];
-  v10 = [v9 clientModelId];
-  v11 = [v8 initWithClientModelId:v10 clientModelVersion:@"1.0" engagementResetPolicy:0];
+  clientModel = [(ATXCandidateRelevanceModelConfig *)self clientModel];
+  clientModelId = [clientModel clientModelId];
+  v11 = [v8 initWithClientModelId:clientModelId clientModelVersion:@"1.0" engagementResetPolicy:0];
 
-  v12 = [ATXProactiveSuggestionBuilder _executableSpecForAppWithBundleId:v7];
-  v13 = [objc_alloc(MEMORY[0x277D42090]) initWithRawScore:2 suggestedConfidenceCategory:a4];
+  v12 = [ATXProactiveSuggestionBuilder _executableSpecForAppWithBundleId:idCopy];
+  v13 = [objc_alloc(MEMORY[0x277D42090]) initWithRawScore:2 suggestedConfidenceCategory:prediction];
   v14 = [MEMORY[0x277D42088] layoutConfigurationsForLayoutOptions:2];
   LOWORD(v18) = 1;
-  v15 = [objc_alloc(MEMORY[0x277D420A0]) initWithTitle:v7 subtitle:0 predictionReason:0 preferredLayoutConfigs:v14 allowedOnLockscreen:0 allowedOnHomeScreen:1 allowedOnSpotlight:v18 shouldClearOnEngagement:?];
+  v15 = [objc_alloc(MEMORY[0x277D420A0]) initWithTitle:idCopy subtitle:0 predictionReason:0 preferredLayoutConfigs:v14 allowedOnLockscreen:0 allowedOnHomeScreen:1 allowedOnSpotlight:v18 shouldClearOnEngagement:?];
 
   v16 = [objc_alloc(MEMORY[0x277D42068]) initWithClientModelSpecification:v11 executableSpecification:v12 uiSpecification:v15 scoreSpecification:v13];
 
   return v16;
 }
 
-- (BOOL)candidateIsStillValidToSuggest:(id)a3
+- (BOOL)candidateIsStillValidToSuggest:(id)suggest
 {
-  v4 = a3;
-  v5 = [(ATXCandidateRelevanceModelConfig *)self installedAppsKnownToSpringBoard];
-  v6 = [v4 identifier];
-  v7 = [v5 containsObject:v6];
+  suggestCopy = suggest;
+  installedAppsKnownToSpringBoard = [(ATXCandidateRelevanceModelConfig *)self installedAppsKnownToSpringBoard];
+  identifier = [suggestCopy identifier];
+  v7 = [installedAppsKnownToSpringBoard containsObject:identifier];
 
   if (v7)
   {
-    v8 = [v4 identifier];
-    v9 = [(ATXCandidateRelevanceModelConfigApp *)self bundleIdIsEnabledForPrediction:v8];
+    identifier2 = [suggestCopy identifier];
+    v9 = [(ATXCandidateRelevanceModelConfigApp *)self bundleIdIsEnabledForPrediction:identifier2];
   }
 
   else
@@ -108,43 +108,43 @@
   return v9;
 }
 
-- (BOOL)bundleIdIsEnabledForPrediction:(id)a3
+- (BOOL)bundleIdIsEnabledForPrediction:(id)prediction
 {
-  v4 = a3;
-  v5 = [(ATXCandidateRelevanceModelConfigApp *)self appBlacklist];
-  v6 = [v5 disabledBundleIds];
-  v7 = [v6 containsObject:v4];
+  predictionCopy = prediction;
+  appBlacklist = [(ATXCandidateRelevanceModelConfigApp *)self appBlacklist];
+  disabledBundleIds = [appBlacklist disabledBundleIds];
+  v7 = [disabledBundleIds containsObject:predictionCopy];
 
-  v8 = [(ATXCandidateRelevanceModelConfigApp *)self appDigitalHealthBlacklist];
-  v9 = [v8 blacklistedBundleIds];
-  LODWORD(v6) = [v9 containsObject:v4];
+  appDigitalHealthBlacklist = [(ATXCandidateRelevanceModelConfigApp *)self appDigitalHealthBlacklist];
+  blacklistedBundleIds = [appDigitalHealthBlacklist blacklistedBundleIds];
+  LODWORD(disabledBundleIds) = [blacklistedBundleIds containsObject:predictionCopy];
 
-  return ((v7 | v6) & 1) == 0;
+  return ((v7 | disabledBundleIds) & 1) == 0;
 }
 
-- (id)heuristicSuggestionsForContext:(id)a3 currentSuggestionExecutableIds:(id)a4
+- (id)heuristicSuggestionsForContext:(id)context currentSuggestionExecutableIds:(id)ids
 {
-  v6 = a4;
-  v7 = a3;
+  idsCopy = ids;
+  contextCopy = context;
   v8 = +[_ATXAppInfoManager sharedInstance];
-  v9 = [(ATXCandidateRelevanceModelConfigApp *)self heuristicSuggestionsForContext:v7 currentSuggestionExecutableIds:v6 appInfoManager:v8];
+  v9 = [(ATXCandidateRelevanceModelConfigApp *)self heuristicSuggestionsForContext:contextCopy currentSuggestionExecutableIds:idsCopy appInfoManager:v8];
 
   return v9;
 }
 
-- (id)heuristicSuggestionsForContext:(id)a3 currentSuggestionExecutableIds:(id)a4 appInfoManager:(id)a5
+- (id)heuristicSuggestionsForContext:(id)context currentSuggestionExecutableIds:(id)ids appInfoManager:(id)manager
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  idsCopy = ids;
+  managerCopy = manager;
   v11 = MEMORY[0x277CBEB98];
-  v12 = [v8 candidateIdentifiersLaunchAge];
-  v13 = [v12 allKeys];
-  v14 = v13;
-  if (v13)
+  candidateIdentifiersLaunchAge = [contextCopy candidateIdentifiersLaunchAge];
+  allKeys = [candidateIdentifiersLaunchAge allKeys];
+  v14 = allKeys;
+  if (allKeys)
   {
-    v15 = v13;
+    v15 = allKeys;
   }
 
   else
@@ -153,15 +153,15 @@
   }
 
   v16 = [v11 setWithArray:v15];
-  v39 = v10;
-  v40 = v9;
-  v17 = [(ATXCandidateRelevanceModelConfigApp *)self recentlyInstalledAndNotLaunchedAppsFromAppInfoManager:v10 currentSuggestionExecutableIds:v9 launchedApps:v16];
+  v39 = managerCopy;
+  v40 = idsCopy;
+  v17 = [(ATXCandidateRelevanceModelConfigApp *)self recentlyInstalledAndNotLaunchedAppsFromAppInfoManager:managerCopy currentSuggestionExecutableIds:idsCopy launchedApps:v16];
 
   v18 = [v17 subarrayWithRange:{0, objc_msgSend(v17, "count") != 0}];
 
-  v41 = v8;
-  v19 = [v8 candidateIdentifiersLaunchAge];
-  v20 = [(ATXCandidateRelevanceModelConfigApp *)self recentlyLaunchedAppsFromAppLaunchAges:v19];
+  v41 = contextCopy;
+  candidateIdentifiersLaunchAge2 = [contextCopy candidateIdentifiersLaunchAge];
+  v20 = [(ATXCandidateRelevanceModelConfigApp *)self recentlyLaunchedAppsFromAppLaunchAges:candidateIdentifiersLaunchAge2];
 
   v37 = v20;
   v38 = v18;
@@ -181,29 +181,29 @@
       }
 
       v26 = [v21 objectAtIndexedSubscript:v25];
-      v27 = [v26 executableSpecification];
-      v28 = [v27 executableIdentifier];
+      executableSpecification = [v26 executableSpecification];
+      executableIdentifier = [executableSpecification executableIdentifier];
 
-      if (([v23 containsObject:v28] & 1) == 0 && -[ATXCandidateRelevanceModelConfigApp bundleIdIsEnabledForPrediction:](self, "bundleIdIsEnabledForPrediction:", v28))
+      if (([v23 containsObject:executableIdentifier] & 1) == 0 && -[ATXCandidateRelevanceModelConfigApp bundleIdIsEnabledForPrediction:](self, "bundleIdIsEnabledForPrediction:", executableIdentifier))
       {
         v29 = __atxlog_handle_relevance_model();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
           v30 = objc_opt_class();
           v31 = NSStringFromClass(v30);
-          v32 = [v26 scoreSpecification];
-          [v32 rawScore];
+          scoreSpecification = [v26 scoreSpecification];
+          [scoreSpecification rawScore];
           *buf = v36;
           v43 = v31;
           v44 = 2112;
-          v45 = v28;
+          v45 = executableIdentifier;
           v46 = 2048;
           v47 = v33;
           _os_log_impl(&dword_2263AA000, v29, OS_LOG_TYPE_DEFAULT, "%@ - Scored heuristic with identifier %@ and score: %f.", buf, 0x20u);
         }
 
         [v22 addObject:v26];
-        [v23 addObject:v28];
+        [v23 addObject:executableIdentifier];
       }
 
       ++v25;
@@ -217,20 +217,20 @@
   return v22;
 }
 
-- (id)recentlyInstalledAndNotLaunchedAppsFromAppInfoManager:(id)a3 currentSuggestionExecutableIds:(id)a4 launchedApps:(id)a5
+- (id)recentlyInstalledAndNotLaunchedAppsFromAppInfoManager:(id)manager currentSuggestionExecutableIds:(id)ids launchedApps:(id)apps
 {
   v48 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  idsCopy = ids;
+  appsCopy = apps;
   v11 = objc_opt_new();
-  v35 = v9;
-  v12 = [v9 mutableCopy];
-  v34 = v10;
-  [v12 unionSet:v10];
+  v35 = idsCopy;
+  v12 = [idsCopy mutableCopy];
+  v34 = appsCopy;
+  [v12 unionSet:appsCopy];
   v33 = v12;
-  v36 = v8;
-  v13 = [(ATXCandidateRelevanceModelConfigApp *)self appInstallAgesForAppsWithExcludedApps:v12 appInfoManager:v8];
+  v36 = managerCopy;
+  v13 = [(ATXCandidateRelevanceModelConfigApp *)self appInstallAgesForAppsWithExcludedApps:v12 appInfoManager:managerCopy];
   [v13 keysSortedByValueUsingComparator:&__block_literal_global_14];
   v37 = 0u;
   v38 = 0u;
@@ -314,19 +314,19 @@ LABEL_3:
   return v11;
 }
 
-- (id)appInstallAgesForAppsWithExcludedApps:(id)a3 appInfoManager:(id)a4
+- (id)appInstallAgesForAppsWithExcludedApps:(id)apps appInfoManager:(id)manager
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ATXCandidateRelevanceModelConfig *)self installedAppsKnownToSpringBoard];
-  v9 = [v8 mutableCopy];
+  appsCopy = apps;
+  managerCopy = manager;
+  installedAppsKnownToSpringBoard = [(ATXCandidateRelevanceModelConfig *)self installedAppsKnownToSpringBoard];
+  v9 = [installedAppsKnownToSpringBoard mutableCopy];
 
-  v10 = [(ATXCandidateRelevanceModelConfigApp *)self recentInstallCache];
-  v11 = [v10 allRecentlyInstalledApplications];
-  [v9 unionSet:v11];
+  recentInstallCache = [(ATXCandidateRelevanceModelConfigApp *)self recentInstallCache];
+  allRecentlyInstalledApplications = [recentInstallCache allRecentlyInstalledApplications];
+  [v9 unionSet:allRecentlyInstalledApplications];
 
-  [v9 minusSet:v6];
+  [v9 minusSet:appsCopy];
   v12 = objc_opt_new();
   v24 = 0u;
   v25 = 0u;
@@ -348,13 +348,13 @@ LABEL_3:
         }
 
         v18 = *(*(&v24 + 1) + 8 * i);
-        v19 = [v7 appInfoForBundleId:{v18, v24}];
-        v20 = [v19 installDate];
+        v19 = [managerCopy appInfoForBundleId:{v18, v24}];
+        installDate = [v19 installDate];
 
-        if (v20)
+        if (installDate)
         {
-          v21 = [v19 installDate];
-          [v12 setObject:v21 forKeyedSubscript:v18];
+          installDate2 = [v19 installDate];
+          [v12 setObject:installDate2 forKeyedSubscript:v18];
         }
       }
 
@@ -369,14 +369,14 @@ LABEL_3:
   return v12;
 }
 
-- (id)recentlyLaunchedAppsFromAppLaunchAges:(id)a3
+- (id)recentlyLaunchedAppsFromAppLaunchAges:(id)ages
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  agesCopy = ages;
+  if (agesCopy)
   {
     v5 = objc_opt_new();
-    [v4 keysSortedByValueUsingComparator:&__block_literal_global_152];
+    [agesCopy keysSortedByValueUsingComparator:&__block_literal_global_152];
     v27 = 0u;
     v28 = 0u;
     v29 = 0u;
@@ -396,7 +396,7 @@ LABEL_4:
         }
 
         v11 = *(*(&v27 + 1) + 8 * v10);
-        v12 = [v4 objectForKeyedSubscript:v11];
+        v12 = [agesCopy objectForKeyedSubscript:v11];
         [v12 timeIntervalSinceNow];
         v14 = v13;
 

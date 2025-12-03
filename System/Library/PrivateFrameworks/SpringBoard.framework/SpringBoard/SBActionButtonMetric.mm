@@ -1,19 +1,19 @@
 @interface SBActionButtonMetric
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4;
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context;
 @end
 
 @implementation SBActionButtonMetric
 
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context
 {
-  v5 = a4;
-  v6 = a3 - 61;
-  if (a3 - 61 <= 5)
+  contextCopy = context;
+  v6 = event - 61;
+  if (event - 61 <= 5)
   {
     v7 = NSStringFromAnalyticsEventType();
     v8 = [@"com.apple.springboard." stringByAppendingString:v7];
 
-    v10 = v5;
+    v10 = contextCopy;
     AnalyticsSendEventLazy();
   }
 

@@ -1,9 +1,9 @@
 @interface USKLayerOffset
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (SdfLayerOffset)sdfLayerOffset;
 - (USKLayerOffset)init;
-- (USKLayerOffset)initWithOffset:(double)a3 scale:(double)a4;
-- (USKLayerOffset)initWithSdfLayerOffset:(SdfLayerOffset)a3;
+- (USKLayerOffset)initWithOffset:(double)offset scale:(double)scale;
+- (USKLayerOffset)initWithSdfLayerOffset:(SdfLayerOffset)offset;
 @end
 
 @implementation USKLayerOffset
@@ -32,10 +32,10 @@
   return v2;
 }
 
-- (USKLayerOffset)initWithSdfLayerOffset:(SdfLayerOffset)a3
+- (USKLayerOffset)initWithSdfLayerOffset:(SdfLayerOffset)offset
 {
-  scale = a3._scale;
-  offset = a3._offset;
+  scale = offset._scale;
+  offset = offset._offset;
   v9.receiver = self;
   v9.super_class = USKLayerOffset;
   v5 = [(USKLayerOffset *)&v9 init];
@@ -50,14 +50,14 @@
   return v6;
 }
 
-- (USKLayerOffset)initWithOffset:(double)a3 scale:(double)a4
+- (USKLayerOffset)initWithOffset:(double)offset scale:(double)scale
 {
   v10.receiver = self;
   v10.super_class = USKLayerOffset;
   v6 = [(USKLayerOffset *)&v10 init];
   if (v6)
   {
-    pxrInternal__aapl__pxrReserved__::SdfLayerOffset::SdfLayerOffset(&v9, a3, a4);
+    pxrInternal__aapl__pxrReserved__::SdfLayerOffset::SdfLayerOffset(&v9, offset, scale);
     *(v6 + 8) = v9;
     v7 = v6;
   }
@@ -65,16 +65,16 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v9 = 1;
   }
 
-  else if (v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  else if (equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
     objc_msgSend_sdfLayerOffset(v5, v6, v7, v8);
     v9 = pxrInternal__aapl__pxrReserved__::SdfLayerOffset::operator==();

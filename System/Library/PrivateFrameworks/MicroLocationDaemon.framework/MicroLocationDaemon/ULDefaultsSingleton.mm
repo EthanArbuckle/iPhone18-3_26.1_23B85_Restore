@@ -3,8 +3,8 @@
 - (ULDefaultsSingleton)init;
 - (id)settingsString;
 - (void)_defaultsSync;
-- (void)resetTemporaryKey:(id)a3;
-- (void)updateTemporaryKey:(id)a3 withObject:(id)a4;
+- (void)resetTemporaryKey:(id)key;
+- (void)updateTemporaryKey:(id)key withObject:(id)object;
 @end
 
 @implementation ULDefaultsSingleton
@@ -15,7 +15,7 @@
   block[1] = 3221225472;
   block[2] = __29__ULDefaultsSingleton_shared__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (shared_ul_once_token_0 != -1)
   {
     dispatch_once(&shared_ul_once_token_0, block);
@@ -52,16 +52,16 @@ void __29__ULDefaultsSingleton_shared__block_invoke(uint64_t a1)
 - (id)settingsString
 {
   v3 = objc_opt_new();
-  v4 = [(ULDefaultsSingleton *)self defaultsDictionary];
-  v5 = [v4 allKeys];
+  defaultsDictionary = [(ULDefaultsSingleton *)self defaultsDictionary];
+  allKeys = [defaultsDictionary allKeys];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __37__ULDefaultsSingleton_settingsString__block_invoke;
   v10[3] = &unk_2798D5070;
   v11 = v3;
-  v12 = self;
+  selfCopy = self;
   v6 = v3;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [allKeys enumerateObjectsUsingBlock:v10];
 
   v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"ULSettingsOverrides:%@", v6];
   v8 = [v7 stringByReplacingOccurrencesOfString:@"\n" withString:&stru_286A60C80];
@@ -83,29 +83,29 @@ void __37__ULDefaultsSingleton_settingsString__block_invoke(uint64_t a1, void *a
   }
 }
 
-- (void)updateTemporaryKey:(id)a3 withObject:(id)a4
+- (void)updateTemporaryKey:(id)key withObject:(id)object
 {
   v6 = MEMORY[0x277CBEB38];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(ULDefaultsSingleton *)self defaultsDictionary];
-  v12 = [v6 dictionaryWithDictionary:v9];
+  objectCopy = object;
+  keyCopy = key;
+  defaultsDictionary = [(ULDefaultsSingleton *)self defaultsDictionary];
+  v12 = [v6 dictionaryWithDictionary:defaultsDictionary];
 
-  v10 = [@"UL" stringByAppendingString:v8];
+  v10 = [@"UL" stringByAppendingString:keyCopy];
 
-  [v12 setObject:v7 forKey:v10];
+  [v12 setObject:objectCopy forKey:v10];
   v11 = [v12 copy];
   [(ULDefaultsSingleton *)self setDefaultsDictionary:v11];
 }
 
-- (void)resetTemporaryKey:(id)a3
+- (void)resetTemporaryKey:(id)key
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
-  v6 = [(ULDefaultsSingleton *)self defaultsDictionary];
-  v9 = [v4 dictionaryWithDictionary:v6];
+  keyCopy = key;
+  defaultsDictionary = [(ULDefaultsSingleton *)self defaultsDictionary];
+  v9 = [v4 dictionaryWithDictionary:defaultsDictionary];
 
-  v7 = [@"UL" stringByAppendingString:v5];
+  v7 = [@"UL" stringByAppendingString:keyCopy];
 
   [v9 removeObjectForKey:v7];
   v8 = [v9 copy];
@@ -114,9 +114,9 @@ void __37__ULDefaultsSingleton_settingsString__block_invoke(uint64_t a1, void *a
 
 - (void)_defaultsSync
 {
-  v5 = [(ULDefaultsSingleton *)self defaults];
-  v3 = [v5 dictionaryRepresentation];
-  v4 = [v3 copy];
+  defaults = [(ULDefaultsSingleton *)self defaults];
+  dictionaryRepresentation = [defaults dictionaryRepresentation];
+  v4 = [dictionaryRepresentation copy];
   [(ULDefaultsSingleton *)self setDefaultsDictionary:v4];
 }
 

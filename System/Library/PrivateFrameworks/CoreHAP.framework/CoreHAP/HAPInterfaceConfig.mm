@@ -1,6 +1,6 @@
 @interface HAPInterfaceConfig
 + (NSString)activeWifiOrEthernetInterfaceName;
-+ (id)interfaceNamesWithFamily:(unsigned int)a3 flags:(unsigned int)a4 eflags:(unint64_t)a5 netTransportType:(unsigned int)a6;
++ (id)interfaceNamesWithFamily:(unsigned int)family flags:(unsigned int)flags eflags:(unint64_t)eflags netTransportType:(unsigned int)type;
 @end
 
 @implementation HAPInterfaceConfig
@@ -9,17 +9,17 @@
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = [HAPInterfaceConfig interfaceNamesWithFamily:30 flags:34915 eflags:2112 netTransportType:3];
-  v4 = [v3 anyObject];
-  v5 = v4;
-  if (v4)
+  anyObject = [v3 anyObject];
+  v5 = anyObject;
+  if (anyObject)
   {
-    v6 = v4;
+    v6 = anyObject;
   }
 
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = a1;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -37,7 +37,7 @@
   return v5;
 }
 
-+ (id)interfaceNamesWithFamily:(unsigned int)a3 flags:(unsigned int)a4 eflags:(unint64_t)a5 netTransportType:(unsigned int)a6
++ (id)interfaceNamesWithFamily:(unsigned int)family flags:(unsigned int)flags eflags:(unint64_t)eflags netTransportType:(unsigned int)type
 {
   v31 = *MEMORY[0x277D85DE8];
   v22 = 0;
@@ -46,7 +46,7 @@
   if (UsableInterfaceList)
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = a1;
+    selfCopy = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -54,7 +54,7 @@
       *buf = 138543618;
       v24 = v15;
       v25 = 1024;
-      v26 = UsableInterfaceList;
+      flagsCopy = UsableInterfaceList;
       _os_log_impl(&dword_22AADC000, v14, OS_LOG_TYPE_ERROR, "%{public}@Error getting interface list %d", buf, 0x12u);
     }
 
@@ -64,7 +64,7 @@
   else
   {
     v16 = objc_autoreleasePoolPush();
-    v17 = a1;
+    selfCopy2 = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
@@ -72,11 +72,11 @@
       *buf = 138544130;
       v24 = v19;
       v25 = 1024;
-      v26 = a4;
+      flagsCopy = flags;
       v27 = 2048;
-      v28 = a5;
+      eflagsCopy = eflags;
       v29 = 1024;
-      v30 = a6;
+      typeCopy = type;
       _os_log_impl(&dword_22AADC000, v18, OS_LOG_TYPE_INFO, "%{public}@Matching interfaces with flags 0x%x eflags 0x%llx netTransportType 0x%x", buf, 0x22u);
     }
 

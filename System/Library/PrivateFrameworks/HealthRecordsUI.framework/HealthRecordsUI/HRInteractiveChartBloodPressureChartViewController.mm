@@ -7,10 +7,10 @@
 - (id)makeStandardCurrentValueViewDataSource
 {
   v3 = [_TtC15HealthRecordsUI39BloodPressureCurrentValueViewDataSource alloc];
-  v4 = [(HKInteractiveChartViewController *)self dateCache];
-  v5 = [(HKInteractiveChartViewController *)self healthStore];
-  v6 = [(HKInteractiveChartViewController *)self selectedRangeFormatter];
-  v7 = [(BloodPressureCurrentValueViewDataSource *)v3 initWithDateCache:v4 healthStore:v5 selectedRangeFormatter:v6];
+  dateCache = [(HKInteractiveChartViewController *)self dateCache];
+  healthStore = [(HKInteractiveChartViewController *)self healthStore];
+  selectedRangeFormatter = [(HKInteractiveChartViewController *)self selectedRangeFormatter];
+  v7 = [(BloodPressureCurrentValueViewDataSource *)v3 initWithDateCache:dateCache healthStore:healthStore selectedRangeFormatter:selectedRangeFormatter];
 
   [(HKCurrentValueViewDataSource *)v7 setDelegate:self];
 

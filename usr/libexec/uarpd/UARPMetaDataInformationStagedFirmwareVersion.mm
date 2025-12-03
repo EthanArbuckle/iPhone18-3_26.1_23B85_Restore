@@ -1,7 +1,7 @@
 @interface UARPMetaDataInformationStagedFirmwareVersion
 - (UARPMetaDataInformationStagedFirmwareVersion)init;
-- (UARPMetaDataInformationStagedFirmwareVersion)initWithLength:(unint64_t)a3 value:(void *)a4;
-- (UARPMetaDataInformationStagedFirmwareVersion)initWithPropertyListValue:(id)a3 relativeURL:(id)a4;
+- (UARPMetaDataInformationStagedFirmwareVersion)initWithLength:(unint64_t)length value:(void *)value;
+- (UARPMetaDataInformationStagedFirmwareVersion)initWithPropertyListValue:(id)value relativeURL:(id)l;
 - (id)description;
 - (id)tlvValue;
 @end
@@ -25,16 +25,16 @@
   return v3;
 }
 
-- (UARPMetaDataInformationStagedFirmwareVersion)initWithPropertyListValue:(id)a3 relativeURL:(id)a4
+- (UARPMetaDataInformationStagedFirmwareVersion)initWithPropertyListValue:(id)value relativeURL:(id)l
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = [(UARPMetaDataInformationStagedFirmwareVersion *)self init];
   v7 = v6;
   if (v6)
   {
     v13.receiver = v6;
     v13.super_class = UARPMetaDataInformationStagedFirmwareVersion;
-    v8 = [(UARPMetaData *)&v13 stringFromPlistValue:v5];
+    v8 = [(UARPMetaData *)&v13 stringFromPlistValue:valueCopy];
     if (v8 && (v9 = [[UARPComponentVersion alloc] initWithVersionString:v8], firmwareVersion = v7->_firmwareVersion, v7->_firmwareVersion = v9, firmwareVersion, v7->_firmwareVersion))
     {
       v11 = v7;
@@ -54,11 +54,11 @@
   return v11;
 }
 
-- (UARPMetaDataInformationStagedFirmwareVersion)initWithLength:(unint64_t)a3 value:(void *)a4
+- (UARPMetaDataInformationStagedFirmwareVersion)initWithLength:(unint64_t)length value:(void *)value
 {
   v6 = [(UARPMetaDataInformationStagedFirmwareVersion *)self init];
   v7 = v6;
-  if (v6 && (v12.receiver = v6, v12.super_class = UARPMetaDataInformationStagedFirmwareVersion, [(UARPMetaData *)&v12 componentVersionWithLength:a3 value:a4], v8 = objc_claimAutoreleasedReturnValue(), firmwareVersion = v7->_firmwareVersion, v7->_firmwareVersion = v8, firmwareVersion, v7->_firmwareVersion))
+  if (v6 && (v12.receiver = v6, v12.super_class = UARPMetaDataInformationStagedFirmwareVersion, [(UARPMetaData *)&v12 componentVersionWithLength:length value:value], v8 = objc_claimAutoreleasedReturnValue(), firmwareVersion = v7->_firmwareVersion, v7->_firmwareVersion = v8, firmwareVersion, v7->_firmwareVersion))
   {
     v10 = v7;
   }
@@ -73,19 +73,19 @@
 
 - (id)tlvValue
 {
-  v3 = [(UARPMetaDataInformationStagedFirmwareVersion *)self firmwareVersion];
+  firmwareVersion = [(UARPMetaDataInformationStagedFirmwareVersion *)self firmwareVersion];
   v6.receiver = self;
   v6.super_class = UARPMetaDataInformationStagedFirmwareVersion;
-  v4 = [(UARPMetaData *)&v6 tlvValueWithComponentVersion:v3];
+  v4 = [(UARPMetaData *)&v6 tlvValueWithComponentVersion:firmwareVersion];
 
   return v4;
 }
 
 - (id)description
 {
-  v3 = [(UARPMetaData *)self tlvName];
-  v4 = [(UARPMetaDataInformationStagedFirmwareVersion *)self firmwareVersion];
-  v5 = [NSString stringWithFormat:@"<%@: %@>", v3, v4];
+  tlvName = [(UARPMetaData *)self tlvName];
+  firmwareVersion = [(UARPMetaDataInformationStagedFirmwareVersion *)self firmwareVersion];
+  v5 = [NSString stringWithFormat:@"<%@: %@>", tlvName, firmwareVersion];
 
   return v5;
 }

@@ -1,14 +1,14 @@
 @interface PGSpecBasedTitleGenerator
-- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)a3 features:(id)a4 meaningLabel:(id)a5 isAggregation:(BOOL)a6 titleGenerationContext:(id)a7;
-- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)a3 features:(id)a4 specCollection:(id)a5 titleGenerationContext:(id)a6;
-- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)a3 meaningLabel:(id)a4 titleGenerationContext:(id)a5;
-- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)a3 memoryCategory:(unint64_t)a4 subcategory:(unint64_t)a5 titleGenerationContext:(id)a6;
-- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)a3 personNodes:(id)a4 memoryCategory:(unint64_t)a5 subcategory:(unint64_t)a6 titleGenerationContext:(id)a7;
+- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)nodes features:(id)features meaningLabel:(id)label isAggregation:(BOOL)aggregation titleGenerationContext:(id)context;
+- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)nodes features:(id)features specCollection:(id)collection titleGenerationContext:(id)context;
+- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)nodes meaningLabel:(id)label titleGenerationContext:(id)context;
+- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)nodes memoryCategory:(unint64_t)category subcategory:(unint64_t)subcategory titleGenerationContext:(id)context;
+- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)nodes personNodes:(id)personNodes memoryCategory:(unint64_t)category subcategory:(unint64_t)subcategory titleGenerationContext:(id)context;
 - (PGSpecBasedTitleGeneratorDelegate)delegate;
 - (PGTitle)title;
 - (id)_title;
-- (id)_titleFromSpecs:(id)a3;
-- (id)titleSpec:(id)a3 inputForArgument:(id)a4;
+- (id)_titleFromSpecs:(id)specs;
+- (id)titleSpec:(id)spec inputForArgument:(id)argument;
 @end
 
 @implementation PGSpecBasedTitleGenerator
@@ -20,13 +20,13 @@
   return WeakRetained;
 }
 
-- (id)titleSpec:(id)a3 inputForArgument:(id)a4
+- (id)titleSpec:(id)spec inputForArgument:(id)argument
 {
-  v5 = a4;
+  argumentCopy = argument;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v7 = [WeakRetained titleGenerator:self inputForArgument:v5];
+    v7 = [WeakRetained titleGenerator:self inputForArgument:argumentCopy];
   }
 
   else
@@ -37,17 +37,17 @@
   return v7;
 }
 
-- (id)_titleFromSpecs:(id)a3
+- (id)_titleFromSpecs:(id)specs
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 mutableCopy];
+  specsCopy = specs;
+  v6 = [specsCopy mutableCopy];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v7 = [(PGSpecBasedTitleGenerator *)self momentNodes];
-  v8 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  momentNodes = [(PGSpecBasedTitleGenerator *)self momentNodes];
+  v8 = [momentNodes countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v8)
   {
     v9 = v8;
@@ -59,15 +59,15 @@
       {
         if (*v25 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(momentNodes);
         }
 
-        v13 = [*(*(&v24 + 1) + 8 * i) universalStartDate];
-        [v13 timeIntervalSince1970];
+        universalStartDate = [*(*(&v24 + 1) + 8 * i) universalStartDate];
+        [universalStartDate timeIntervalSince1970];
         v11 = fmin(v11, v14);
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v9 = [momentNodes countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v9);
@@ -75,9 +75,9 @@
   }
 
   v15 = [PGTitleSpecArgumentEvaluationContext alloc];
-  v16 = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
-  v17 = [(PGTitleGenerationContext *)self->_titleGenerationContext serviceManager];
-  v18 = [(PGTitleSpecArgumentEvaluationContext *)v15 initWithLocationHelper:v16 serviceManager:v17];
+  locationHelper = [(PGTitleGenerationContext *)self->_titleGenerationContext locationHelper];
+  serviceManager = [(PGTitleGenerationContext *)self->_titleGenerationContext serviceManager];
+  v18 = [(PGTitleSpecArgumentEvaluationContext *)v15 initWithLocationHelper:locationHelper serviceManager:serviceManager];
 
   while (1)
   {
@@ -88,19 +88,19 @@
       goto LABEL_18;
     }
 
-    v16 = [v6 objectAtIndexedSubscript:{v3 % objc_msgSend(v6, "count")}];
-    [v16 setInsertNonBreakableSpace:{(self->_lineBreakBehavior >> 1) & 1 & ~objc_msgSend(v16, "hasSpecArgumentHandlingLineBreakBehavior")}];
-    [v16 setDelegate:self];
+    locationHelper = [v6 objectAtIndexedSubscript:{v3 % objc_msgSend(v6, "count")}];
+    [locationHelper setInsertNonBreakableSpace:{(self->_lineBreakBehavior >> 1) & 1 & ~objc_msgSend(locationHelper, "hasSpecArgumentHandlingLineBreakBehavior")}];
+    [locationHelper setDelegate:self];
     momentNodes = self->_momentNodes;
     features = self->_features;
     if (features)
     {
-      [v16 titleWithMomentNodes:momentNodes features:features argumentEvaluationContext:v18];
+      [locationHelper titleWithMomentNodes:momentNodes features:features argumentEvaluationContext:v18];
     }
 
     else
     {
-      [v16 titleWithMomentNodes:momentNodes argumentEvaluationContext:v18];
+      [locationHelper titleWithMomentNodes:momentNodes argumentEvaluationContext:v18];
     }
     v21 = ;
     if (v21)
@@ -108,7 +108,7 @@
       break;
     }
 
-    [v6 removeObject:v16];
+    [v6 removeObject:locationHelper];
   }
 
 LABEL_18:
@@ -124,8 +124,8 @@ LABEL_18:
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(PGTitleSpecCollection *)self->_specCollection specPools];
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  specPools = [(PGTitleSpecCollection *)self->_specCollection specPools];
+  v4 = [specPools countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -137,7 +137,7 @@ LABEL_3:
     {
       if (*v13 != v7)
       {
-        objc_enumerationMutation(v3);
+        objc_enumerationMutation(specPools);
       }
 
       if (v6)
@@ -145,12 +145,12 @@ LABEL_3:
         break;
       }
 
-      v9 = [*(*(&v12 + 1) + 8 * v8) specs];
-      v6 = [(PGSpecBasedTitleGenerator *)self _titleFromSpecs:v9];
+      specs = [*(*(&v12 + 1) + 8 * v8) specs];
+      v6 = [(PGSpecBasedTitleGenerator *)self _titleFromSpecs:specs];
 
       if (v5 == ++v8)
       {
-        v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v5 = [specPools countByEnumeratingWithState:&v12 objects:v16 count:16];
         if (v5)
         {
           goto LABEL_3;
@@ -176,9 +176,9 @@ LABEL_3:
   title = self->_title;
   if (!title)
   {
-    v4 = [(PGSpecBasedTitleGenerator *)self _title];
+    _title = [(PGSpecBasedTitleGenerator *)self _title];
     v5 = self->_title;
-    self->_title = v4;
+    self->_title = _title;
 
     title = self->_title;
   }
@@ -186,28 +186,28 @@ LABEL_3:
   return title;
 }
 
-- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)a3 features:(id)a4 specCollection:(id)a5 titleGenerationContext:(id)a6
+- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)nodes features:(id)features specCollection:(id)collection titleGenerationContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  nodesCopy = nodes;
+  featuresCopy = features;
+  collectionCopy = collection;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = PGSpecBasedTitleGenerator;
   v15 = [(PGSpecBasedTitleGenerator *)&v18 init];
   if (v15)
   {
-    if (![v11 count])
+    if (![nodesCopy count])
     {
       v16 = 0;
       goto LABEL_6;
     }
 
-    objc_storeStrong(&v15->_momentNodes, a3);
-    objc_storeStrong(&v15->_features, a4);
-    objc_storeStrong(&v15->_specCollection, a5);
+    objc_storeStrong(&v15->_momentNodes, nodes);
+    objc_storeStrong(&v15->_features, features);
+    objc_storeStrong(&v15->_specCollection, collection);
     v15->_lineBreakBehavior = 1;
-    objc_storeStrong(&v15->_titleGenerationContext, a6);
+    objc_storeStrong(&v15->_titleGenerationContext, context);
   }
 
   v16 = v15;
@@ -216,26 +216,26 @@ LABEL_6:
   return v16;
 }
 
-- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)a3 features:(id)a4 meaningLabel:(id)a5 isAggregation:(BOOL)a6 titleGenerationContext:(id)a7
+- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)nodes features:(id)features meaningLabel:(id)label isAggregation:(BOOL)aggregation titleGenerationContext:(id)context
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
-  if (v8)
+  aggregationCopy = aggregation;
+  nodesCopy = nodes;
+  featuresCopy = features;
+  labelCopy = label;
+  contextCopy = context;
+  if (aggregationCopy)
   {
-    [PGAggregationsTitleSpecFactory specCollectionForMeaningLabel:v14 features:v13];
+    [PGAggregationsTitleSpecFactory specCollectionForMeaningLabel:labelCopy features:featuresCopy];
   }
 
   else
   {
-    [PGTitleSpecFactory specCollectionForMeaningLabel:v14];
+    [PGTitleSpecFactory specCollectionForMeaningLabel:labelCopy];
   }
   v16 = ;
   if (v16)
   {
-    v17 = [(PGSpecBasedTitleGenerator *)self initWithMomentNodes:v12 features:v13 specCollection:v16 titleGenerationContext:v15];
+    v17 = [(PGSpecBasedTitleGenerator *)self initWithMomentNodes:nodesCopy features:featuresCopy specCollection:v16 titleGenerationContext:contextCopy];
   }
 
   else
@@ -247,14 +247,14 @@ LABEL_6:
   return v17;
 }
 
-- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)a3 meaningLabel:(id)a4 titleGenerationContext:(id)a5
+- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)nodes meaningLabel:(id)label titleGenerationContext:(id)context
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [PGTitleSpecFactory specCollectionForMeaningLabel:a4];
+  nodesCopy = nodes;
+  contextCopy = context;
+  v10 = [PGTitleSpecFactory specCollectionForMeaningLabel:label];
   if (v10)
   {
-    v11 = [(PGSpecBasedTitleGenerator *)self initWithMomentNodes:v8 features:0 specCollection:v10 titleGenerationContext:v9];
+    v11 = [(PGSpecBasedTitleGenerator *)self initWithMomentNodes:nodesCopy features:0 specCollection:v10 titleGenerationContext:contextCopy];
   }
 
   else
@@ -266,14 +266,14 @@ LABEL_6:
   return v11;
 }
 
-- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)a3 personNodes:(id)a4 memoryCategory:(unint64_t)a5 subcategory:(unint64_t)a6 titleGenerationContext:(id)a7
+- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)nodes personNodes:(id)personNodes memoryCategory:(unint64_t)category subcategory:(unint64_t)subcategory titleGenerationContext:(id)context
 {
-  v12 = a3;
-  v13 = a7;
-  v14 = [PGTitleSpecFactory specCollectionForMemoryCategory:a5 subcategory:a6 personNodes:a4];
+  nodesCopy = nodes;
+  contextCopy = context;
+  v14 = [PGTitleSpecFactory specCollectionForMemoryCategory:category subcategory:subcategory personNodes:personNodes];
   if (v14)
   {
-    v15 = [(PGSpecBasedTitleGenerator *)self initWithMomentNodes:v12 features:0 specCollection:v14 titleGenerationContext:v13];
+    v15 = [(PGSpecBasedTitleGenerator *)self initWithMomentNodes:nodesCopy features:0 specCollection:v14 titleGenerationContext:contextCopy];
   }
 
   else
@@ -285,14 +285,14 @@ LABEL_6:
   return v15;
 }
 
-- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)a3 memoryCategory:(unint64_t)a4 subcategory:(unint64_t)a5 titleGenerationContext:(id)a6
+- (PGSpecBasedTitleGenerator)initWithMomentNodes:(id)nodes memoryCategory:(unint64_t)category subcategory:(unint64_t)subcategory titleGenerationContext:(id)context
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [PGTitleSpecFactory specCollectionForMemoryCategory:a4 subcategory:a5];
+  nodesCopy = nodes;
+  contextCopy = context;
+  v12 = [PGTitleSpecFactory specCollectionForMemoryCategory:category subcategory:subcategory];
   if (v12)
   {
-    v13 = [(PGSpecBasedTitleGenerator *)self initWithMomentNodes:v10 features:0 specCollection:v12 titleGenerationContext:v11];
+    v13 = [(PGSpecBasedTitleGenerator *)self initWithMomentNodes:nodesCopy features:0 specCollection:v12 titleGenerationContext:contextCopy];
   }
 
   else

@@ -1,8 +1,8 @@
 @interface ATServiceProxyConnection
 - (ATService)service;
-- (ATServiceProxyConnection)initWithService:(id)a3 connection:(id)a4;
-- (void)fetchMessageLinksWithCompletion:(id)a3;
-- (void)service:(id)a3 willOpenMessageLink:(id)a4;
+- (ATServiceProxyConnection)initWithService:(id)service connection:(id)connection;
+- (void)fetchMessageLinksWithCompletion:(id)completion;
+- (void)service:(id)service willOpenMessageLink:(id)link;
 @end
 
 @implementation ATServiceProxyConnection
@@ -14,21 +14,21 @@
   return WeakRetained;
 }
 
-- (void)fetchMessageLinksWithCompletion:(id)a3
+- (void)fetchMessageLinksWithCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(ATServiceProxyConnection *)self service];
+  completionCopy = completion;
+  service = [(ATServiceProxyConnection *)self service];
   if (objc_opt_respondsToSelector())
   {
-    v23 = v5;
-    v6 = [v5 allMessageLinkProxyListeners];
-    v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v6, "count")}];
+    v23 = service;
+    allMessageLinkProxyListeners = [service allMessageLinkProxyListeners];
+    v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(allMessageLinkProxyListeners, "count")}];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v6;
+    v8 = allMessageLinkProxyListeners;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v9)
     {
@@ -45,21 +45,21 @@
 
           v13 = *(*(&v24 + 1) + 8 * i);
           v14 = objc_alloc(MEMORY[0x277CEA450]);
-          v15 = [v13 endpoint];
-          v16 = [v14 initWithEndpoint:v15];
+          endpoint = [v13 endpoint];
+          v16 = [v14 initWithEndpoint:endpoint];
 
-          v17 = [v13 messageLink];
-          v18 = [v17 guid];
-          [v16 setIdentifier:v18];
+          messageLink = [v13 messageLink];
+          guid = [messageLink guid];
+          [v16 setIdentifier:guid];
 
-          v19 = [v13 messageLink];
-          [v16 setOpen:{objc_msgSend(v19, "isOpen")}];
+          messageLink2 = [v13 messageLink];
+          [v16 setOpen:{objc_msgSend(messageLink2, "isOpen")}];
 
-          v20 = [v13 messageLink];
-          [v16 setInitialized:{objc_msgSend(v20, "isInitialized")}];
+          messageLink3 = [v13 messageLink];
+          [v16 setInitialized:{objc_msgSend(messageLink3, "isInitialized")}];
 
-          v21 = [v13 messageLink];
-          [v16 setEndpointType:{objc_msgSend(v21, "endpointType")}];
+          messageLink4 = [v13 messageLink];
+          [v16 setEndpointType:{objc_msgSend(messageLink4, "endpointType")}];
 
           [v7 addObject:v16];
         }
@@ -70,33 +70,33 @@
       while (v10);
     }
 
-    v4[2](v4, v7, 0);
-    v5 = v23;
+    completionCopy[2](completionCopy, v7, 0);
+    service = v23;
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 willOpenMessageLink:(id)a4
+- (void)service:(id)service willOpenMessageLink:(id)link
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  linkCopy = link;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v6 proxyListenerForMessageLink:v7];
+    v8 = [serviceCopy proxyListenerForMessageLink:linkCopy];
     v9 = objc_alloc(MEMORY[0x277CEA450]);
-    v10 = [v8 endpoint];
-    v11 = [v9 initWithEndpoint:v10];
+    endpoint = [v8 endpoint];
+    v11 = [v9 initWithEndpoint:endpoint];
 
     v12 = dispatch_semaphore_create(0);
-    v13 = [(ATServiceProxyConnection *)self connection];
+    connection = [(ATServiceProxyConnection *)self connection];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __56__ATServiceProxyConnection_service_willOpenMessageLink___block_invoke;
     v19[3] = &unk_2784E9430;
     v14 = v12;
     v20 = v14;
-    v15 = [v13 remoteObjectProxyWithErrorHandler:v19];
+    v15 = [connection remoteObjectProxyWithErrorHandler:v19];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __56__ATServiceProxyConnection_service_willOpenMessageLink___block_invoke_2;
@@ -109,18 +109,18 @@
   }
 }
 
-- (ATServiceProxyConnection)initWithService:(id)a3 connection:(id)a4
+- (ATServiceProxyConnection)initWithService:(id)service connection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  connectionCopy = connection;
   v11.receiver = self;
   v11.super_class = ATServiceProxyConnection;
   v8 = [(ATServiceProxyConnection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_service, v6);
-    objc_storeStrong(&v9->_connection, a4);
+    objc_storeWeak(&v8->_service, serviceCopy);
+    objc_storeStrong(&v9->_connection, connection);
   }
 
   return v9;

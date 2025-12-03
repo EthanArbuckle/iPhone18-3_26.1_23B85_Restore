@@ -1,12 +1,12 @@
 @interface AudioDSPUplinkSpeechMixer_v2
-- (AudioDSPUplinkSpeechMixer_v2)initWithSettings:(AudioDSPUplinkSpeechMixerSettings *)a3;
+- (AudioDSPUplinkSpeechMixer_v2)initWithSettings:(AudioDSPUplinkSpeechMixerSettings *)settings;
 - (AudioStreamBasicDescription)sampleRate;
 - (id).cxx_construct;
 - (id)processBlock;
 - (void)connectRemoteProcessingBlock;
-- (void)connectRemoteProcessingBlockServer:(id)a3;
+- (void)connectRemoteProcessingBlockServer:(id)server;
 - (void)dealloc;
-- (void)diconnectRemoteProcessingBlockServer:(id)a3;
+- (void)diconnectRemoteProcessingBlockServer:(id)server;
 - (void)disconnectRemoteProcessingBlock;
 @end
 
@@ -40,10 +40,10 @@
   [(AudioDSPUplinkSpeechMixer_v2 *)&v3 dealloc];
 }
 
-- (AudioDSPUplinkSpeechMixer_v2)initWithSettings:(AudioDSPUplinkSpeechMixerSettings *)a3
+- (AudioDSPUplinkSpeechMixer_v2)initWithSettings:(AudioDSPUplinkSpeechMixerSettings *)settings
 {
   v74[2] = *MEMORY[0x1E69E9840];
-  if (a3->streamDescription.mSampleRate <= 0.0)
+  if (settings->streamDescription.mSampleRate <= 0.0)
   {
     if (!os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
@@ -58,27 +58,27 @@ LABEL_48:
     goto LABEL_9;
   }
 
-  if (a3->maximumFramesPerSlice)
+  if (settings->maximumFramesPerSlice)
   {
     v4 = objc_opt_new();
     v71 = 1;
-    v5 = *&a3->streamDescription.mBytesPerPacket;
-    *v68 = *&a3->streamDescription.mSampleRate;
+    v5 = *&settings->streamDescription.mBytesPerPacket;
+    *v68 = *&settings->streamDescription.mSampleRate;
     v69 = v5;
-    v70 = *&a3->streamDescription.mBitsPerChannel;
+    v70 = *&settings->streamDescription.mBitsPerChannel;
     v58 = [MEMORY[0x1E696AEC0] stringWithUTF8String:gResourcesBasePath];
     v57 = [v58 stringByAppendingPathComponent:@"uplink_speech_mixer.dspg"];
-    v6 = [MEMORY[0x1E696AC08] defaultManager];
-    v7 = [v6 fileExistsAtPath:v57];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    v7 = [defaultManager fileExistsAtPath:v57];
 
     if (v7)
     {
       v8 = objc_opt_new();
       v73[0] = @"IO_SAMPLE_RATE";
-      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", a3->streamDescription.mSampleRate];
+      v9 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", settings->streamDescription.mSampleRate];
       v73[1] = @"IO_CHANNEL_COUNT";
       v74[0] = v9;
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", a3->streamDescription.mChannelsPerFrame];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%u", settings->streamDescription.mChannelsPerFrame];
       v74[1] = v10;
       v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v74 forKeys:v73 count:2];
       [v8 setPreprocessorMacroDefinitions:v11];
@@ -133,45 +133,45 @@ LABEL_48:
       [v55 setDirection:1];
       [v4 addPort:v55];
       v20 = objc_opt_new();
-      v21 = [v8 name];
-      [v20 setBoxName:v21 ofEndpoint:0];
+      name = [v8 name];
+      [v20 setBoxName:name ofEndpoint:0];
 
       [v20 setPortIndex:0 ofEndpoint:0];
-      v22 = [v18 name];
-      [v20 setBoxName:v22 ofEndpoint:1];
+      name2 = [v18 name];
+      [v20 setBoxName:name2 ofEndpoint:1];
 
       [v20 setPortIndex:0 ofEndpoint:1];
       [v20 setAudioStreamConfiguration:v68];
       [v4 addWire:v20];
       v23 = objc_opt_new();
-      v24 = [v56 name];
-      [v23 setBoxName:v24 ofEndpoint:0];
+      name3 = [v56 name];
+      [v23 setBoxName:name3 ofEndpoint:0];
 
       [v23 setPortIndex:0 ofEndpoint:0];
-      v25 = [v18 name];
-      [v23 setBoxName:v25 ofEndpoint:1];
+      name4 = [v18 name];
+      [v23 setBoxName:name4 ofEndpoint:1];
 
       [v23 setPortIndex:1 ofEndpoint:1];
       [v23 setAudioStreamConfiguration:v68];
       [v4 addWire:v23];
       v26 = objc_opt_new();
-      v27 = [v18 name];
-      [v26 setBoxName:v27 ofEndpoint:0];
+      name5 = [v18 name];
+      [v26 setBoxName:name5 ofEndpoint:0];
 
       [v26 setPortIndex:0 ofEndpoint:0];
-      v28 = [v19 name];
-      [v26 setBoxName:v28 ofEndpoint:1];
+      name6 = [v19 name];
+      [v26 setBoxName:name6 ofEndpoint:1];
 
       [v26 setPortIndex:0 ofEndpoint:1];
       [v26 setAudioStreamConfiguration:v68];
       [v4 addWire:v26];
       v29 = objc_opt_new();
-      v30 = [v19 name];
-      [v29 setBoxName:v30 ofEndpoint:0];
+      name7 = [v19 name];
+      [v29 setBoxName:name7 ofEndpoint:0];
 
       [v29 setPortIndex:0 ofEndpoint:0];
-      v31 = [v55 name];
-      [v29 setBoxName:v31 ofEndpoint:1];
+      name8 = [v55 name];
+      [v29 setBoxName:name8 ofEndpoint:1];
 
       [v29 setPortIndex:0 ofEndpoint:1];
       [v29 setAudioStreamConfiguration:v68];
@@ -182,7 +182,7 @@ LABEL_48:
       v14 = 0;
     }
 
-    [v4 setSliceDuration:a3->maximumFramesPerSlice | (a3->streamDescription.mSampleRate << 32)];
+    [v4 setSliceDuration:settings->maximumFramesPerSlice | (settings->streamDescription.mSampleRate << 32)];
     [v4 setSliceDurationCanVary:1];
     v66 = v14;
     v8 = [objc_alloc(MEMORY[0x1E698D498]) initWithModel:v4 error:&v66];
@@ -191,8 +191,8 @@ LABEL_48:
     if (v8)
     {
       v33 = [v58 stringByAppendingPathComponent:@"uplink_speech_mixer.propstrip"];
-      v34 = [MEMORY[0x1E696AC08] defaultManager];
-      v35 = [v34 fileExistsAtPath:v33];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      v35 = [defaultManager2 fileExistsAtPath:v33];
 
       if (v35)
       {
@@ -222,8 +222,8 @@ LABEL_48:
       }
 
       PropertyList = [v58 stringByAppendingPathComponent:@"uplink_speech_mixer.austrip"];
-      v39 = [MEMORY[0x1E696AC08] defaultManager];
-      v40 = [v39 fileExistsAtPath:PropertyList];
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+      v40 = [defaultManager3 fileExistsAtPath:PropertyList];
 
       if (!v40)
       {
@@ -251,9 +251,9 @@ LABEL_22:
           v60 = v46;
           if (v46)
           {
-            v49 = *&a3->streamDescription.mSampleRate;
-            v50 = *&a3->streamDescription.mBytesPerPacket;
-            *(v46 + 40) = *&a3->streamDescription.mBitsPerChannel;
+            v49 = *&settings->streamDescription.mSampleRate;
+            v50 = *&settings->streamDescription.mBytesPerPacket;
+            *(v46 + 40) = *&settings->streamDescription.mBitsPerChannel;
             *(v46 + 24) = v50;
             *(v46 + 8) = v49;
             CFRetain(v8);
@@ -369,49 +369,49 @@ LABEL_46:
   return self;
 }
 
-- (void)diconnectRemoteProcessingBlockServer:(id)a3
+- (void)diconnectRemoteProcessingBlockServer:(id)server
 {
-  v7 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = v4->_graphRemoteProcessingBlockHost;
+  serverCopy = server;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = selfCopy->_graphRemoteProcessingBlockHost;
   if (v5)
   {
-    [v7 removeHost:v5];
-    graphRemoteProcessingBlockHost = v4->_graphRemoteProcessingBlockHost;
-    v4->_graphRemoteProcessingBlockHost = 0;
+    [serverCopy removeHost:v5];
+    graphRemoteProcessingBlockHost = selfCopy->_graphRemoteProcessingBlockHost;
+    selfCopy->_graphRemoteProcessingBlockHost = 0;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)disconnectRemoteProcessingBlock
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [MEMORY[0x1E69C6E00] sharedInstance];
-  [v2 removeListener:obj];
-  [(AudioDSPUplinkSpeechMixer_v2 *)obj diconnectRemoteProcessingBlockServer:v2];
+  mEMORY[0x1E69C6E00] = [MEMORY[0x1E69C6E00] sharedInstance];
+  [mEMORY[0x1E69C6E00] removeListener:obj];
+  [(AudioDSPUplinkSpeechMixer_v2 *)obj diconnectRemoteProcessingBlockServer:mEMORY[0x1E69C6E00]];
 
   objc_sync_exit(obj);
 }
 
-- (void)connectRemoteProcessingBlockServer:(id)a3
+- (void)connectRemoteProcessingBlockServer:(id)server
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([v4 isRunning])
+  serverCopy = server;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([serverCopy isRunning])
   {
-    v6 = v5->_graph.mRef.mRef;
+    v6 = selfCopy->_graph.mRef.mRef;
     v9 = 0;
     v7 = [(__CADSPGraph *)v6 createRemoteProcessingBlockHost:&v9];
     v8 = v9;
     if (v7)
     {
-      objc_storeStrong(&v5->_graphRemoteProcessingBlockHost, v7);
-      [v4 addHost:v7];
+      objc_storeStrong(&selfCopy->_graphRemoteProcessingBlockHost, v7);
+      [serverCopy addHost:v7];
     }
 
     else if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
@@ -422,16 +422,16 @@ LABEL_46:
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)connectRemoteProcessingBlock
 {
   obj = self;
   objc_sync_enter(obj);
-  v2 = [MEMORY[0x1E69C6E00] sharedInstance];
-  [v2 addListener:obj];
-  [(AudioDSPUplinkSpeechMixer_v2 *)obj connectRemoteProcessingBlockServer:v2];
+  mEMORY[0x1E69C6E00] = [MEMORY[0x1E69C6E00] sharedInstance];
+  [mEMORY[0x1E69C6E00] addListener:obj];
+  [(AudioDSPUplinkSpeechMixer_v2 *)obj connectRemoteProcessingBlockServer:mEMORY[0x1E69C6E00]];
 
   objc_sync_exit(obj);
 }

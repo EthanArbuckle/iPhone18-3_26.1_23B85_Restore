@@ -1,23 +1,23 @@
 @interface BCSCoalesceObjectShard
-- (BCSCoalesceObjectShard)initWithCompletionBlock:(id)a3 coalesceKey:(id)a4;
+- (BCSCoalesceObjectShard)initWithCompletionBlock:(id)block coalesceKey:(id)key;
 @end
 
 @implementation BCSCoalesceObjectShard
 
-- (BCSCoalesceObjectShard)initWithCompletionBlock:(id)a3 coalesceKey:(id)a4
+- (BCSCoalesceObjectShard)initWithCompletionBlock:(id)block coalesceKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  keyCopy = key;
   v14.receiver = self;
   v14.super_class = BCSCoalesceObjectShard;
   v8 = [(BCSCoalesceObjectShard *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [blockCopy copy];
     shardCompletionBlock = v8->_shardCompletionBlock;
     v8->_shardCompletionBlock = v9;
 
-    v11 = [v7 copy];
+    v11 = [keyCopy copy];
     coalesceKey = v8->_coalesceKey;
     v8->_coalesceKey = v11;
   }

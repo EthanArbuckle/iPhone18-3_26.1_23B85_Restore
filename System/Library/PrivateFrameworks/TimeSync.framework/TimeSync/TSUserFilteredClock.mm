@@ -1,14 +1,14 @@
 @interface TSUserFilteredClock
-+ (id)diagnosticDescriptionForInfo:(id)a3 withIndent:(id)a4;
++ (id)diagnosticDescriptionForInfo:(id)info withIndent:(id)indent;
 - (BOOL)waitTimeSyncTimeUpdate;
-- (TSUserFilteredClock)initWithImplDC:(id)a3;
+- (TSUserFilteredClock)initWithImplDC:(id)c;
 @end
 
 @implementation TSUserFilteredClock
 
-- (TSUserFilteredClock)initWithImplDC:(id)a3
+- (TSUserFilteredClock)initWithImplDC:(id)c
 {
-  v4 = a3;
+  cCopy = c;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -20,10 +20,10 @@
 
   v9.receiver = self;
   v9.super_class = TSUserFilteredClock;
-  v5 = [(TSKernelClock *)&v9 initWithImplDC:v4];
+  v5 = [(TSKernelClock *)&v9 initWithImplDC:cCopy];
   if (v5)
   {
-    v6 = v4;
+    v6 = cCopy;
     impl = v5->_impl;
     v5->_impl = v6;
 LABEL_4:
@@ -43,15 +43,15 @@ LABEL_4:
   return impl;
 }
 
-+ (id)diagnosticDescriptionForInfo:(id)a3 withIndent:(id)a4
++ (id)diagnosticDescriptionForInfo:(id)info withIndent:(id)indent
 {
-  v6 = a3;
-  v7 = a4;
-  v17.receiver = a1;
+  infoCopy = info;
+  indentCopy = indent;
+  v17.receiver = self;
   v17.super_class = &OBJC_METACLASS___TSUserFilteredClock;
-  v8 = objc_msgSendSuper2(&v17, sel_diagnosticDescriptionForInfo_withIndent_, v6, v7);
-  [v8 appendFormat:@"%@    Nominal Mach Interval: ", v7];
-  v9 = [v6 objectForKeyedSubscript:@"NominalMachInterval"];
+  v8 = objc_msgSendSuper2(&v17, sel_diagnosticDescriptionForInfo_withIndent_, infoCopy, indentCopy);
+  [v8 appendFormat:@"%@    Nominal Mach Interval: ", indentCopy];
+  v9 = [infoCopy objectForKeyedSubscript:@"NominalMachInterval"];
   v10 = v9;
   if (v9)
   {
@@ -63,8 +63,8 @@ LABEL_4:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Nominal Domain Interval: ", v7];
-  v11 = [v6 objectForKeyedSubscript:@"NominalDomainInterval"];
+  [v8 appendFormat:@"%@    Nominal Domain Interval: ", indentCopy];
+  v11 = [infoCopy objectForKeyedSubscript:@"NominalDomainInterval"];
 
   if (v11)
   {
@@ -76,8 +76,8 @@ LABEL_4:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Filter Shift: ", v7];
-  v12 = [v6 objectForKeyedSubscript:@"FilterShift"];
+  [v8 appendFormat:@"%@    Filter Shift: ", indentCopy];
+  v12 = [infoCopy objectForKeyedSubscript:@"FilterShift"];
 
   if (v12)
   {
@@ -89,14 +89,14 @@ LABEL_4:
     [v8 appendString:@"Could not read property\n"];
   }
 
-  [v8 appendFormat:@"%@    Adaptive: ", v7];
-  v13 = [v6 objectForKeyedSubscript:@"Adaptive"];
+  [v8 appendFormat:@"%@    Adaptive: ", indentCopy];
+  v13 = [infoCopy objectForKeyedSubscript:@"Adaptive"];
 
   if (v13)
   {
-    v14 = [v13 BOOLValue];
+    bOOLValue = [v13 BOOLValue];
     v15 = @"NO";
-    if (v14)
+    if (bOOLValue)
     {
       v15 = @"YES";
     }

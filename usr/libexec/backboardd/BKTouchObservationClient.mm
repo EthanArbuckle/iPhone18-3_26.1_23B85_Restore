@@ -1,8 +1,8 @@
 @interface BKTouchObservationClient
-- (BKTouchObservationClient)initWithConnection:(id)a3 pid:(int)a4;
+- (BKTouchObservationClient)initWithConnection:(id)connection pid:(int)pid;
 - (void)_didRespondToTouchDelivery;
 - (void)_lock_sendQueuedUpdatesToClient;
-- (void)sendTouchUpdate:(id)a3;
+- (void)sendTouchUpdate:(id)update;
 @end
 
 @implementation BKTouchObservationClient
@@ -22,7 +22,7 @@
   if ([(NSMutableArray *)self->_lock_pendingUpdates count])
   {
     WeakRetained = objc_loadWeakRetained(&self->_connection);
-    v4 = [WeakRetained remoteTarget];
+    remoteTarget = [WeakRetained remoteTarget];
 
     v5 = [(NSMutableArray *)self->_lock_pendingUpdates copy];
     [(NSMutableArray *)self->_lock_pendingUpdates removeAllObjects];
@@ -48,15 +48,15 @@
     v11[2] = sub_100009CF4;
     v11[3] = &unk_1000FA638;
     objc_copyWeak(&v12, location);
-    [v4 observeTouchEventDeliveryDidOccur:v5 response:v11];
+    [remoteTarget observeTouchEventDeliveryDidOccur:v5 response:v11];
     objc_destroyWeak(&v12);
     objc_destroyWeak(location);
   }
 }
 
-- (void)sendTouchUpdate:(id)a3
+- (void)sendTouchUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   os_unfair_lock_lock(&self->_lock);
   lock_pendingUpdates = self->_lock_pendingUpdates;
   if (self->_lock_waitingOnClient)
@@ -83,7 +83,7 @@
       [(NSMutableArray *)self->_lock_pendingUpdates removeAllObjects];
     }
 
-    [(NSMutableArray *)self->_lock_pendingUpdates addObject:v4];
+    [(NSMutableArray *)self->_lock_pendingUpdates addObject:updateCopy];
   }
 
   else
@@ -97,24 +97,24 @@
       lock_pendingUpdates = self->_lock_pendingUpdates;
     }
 
-    [(NSMutableArray *)lock_pendingUpdates addObject:v4];
+    [(NSMutableArray *)lock_pendingUpdates addObject:updateCopy];
     [(BKTouchObservationClient *)self _lock_sendQueuedUpdatesToClient];
   }
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BKTouchObservationClient)initWithConnection:(id)a3 pid:(int)a4
+- (BKTouchObservationClient)initWithConnection:(id)connection pid:(int)pid
 {
-  v6 = a3;
+  connectionCopy = connection;
   v10.receiver = self;
   v10.super_class = BKTouchObservationClient;
   v7 = [(BKTouchObservationClient *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_connection, v6);
-    v8->_pid = a4;
+    objc_storeWeak(&v7->_connection, connectionCopy);
+    v8->_pid = pid;
     v8->_lock._os_unfair_lock_opaque = 0;
   }
 

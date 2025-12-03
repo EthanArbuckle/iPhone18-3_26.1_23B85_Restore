@@ -1,85 +1,85 @@
 @interface CKFileOpenInfo
 - (CKAssetDownloadStagingManager)assetDownloadStagingManager;
-- (CKFileOpenInfo)initWithCoder:(id)a3;
-- (CKFileOpenInfo)initWithUUID:(id)a3 path:(id)a4 deviceID:(id)a5 fileID:(id)a6 generationID:(id)a7 shouldReadRawEncryptedData:(BOOL)a8 fileHandle:(id)a9 assetDownloadStagingInfo:(id)a10;
+- (CKFileOpenInfo)initWithCoder:(id)coder;
+- (CKFileOpenInfo)initWithUUID:(id)d path:(id)path deviceID:(id)iD fileID:(id)fileID generationID:(id)generationID shouldReadRawEncryptedData:(BOOL)data fileHandle:(id)handle assetDownloadStagingInfo:(id)self0;
 - (id)CKPropertiesDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKFileOpenInfo
 
-- (CKFileOpenInfo)initWithUUID:(id)a3 path:(id)a4 deviceID:(id)a5 fileID:(id)a6 generationID:(id)a7 shouldReadRawEncryptedData:(BOOL)a8 fileHandle:(id)a9 assetDownloadStagingInfo:(id)a10
+- (CKFileOpenInfo)initWithUUID:(id)d path:(id)path deviceID:(id)iD fileID:(id)fileID generationID:(id)generationID shouldReadRawEncryptedData:(BOOL)data fileHandle:(id)handle assetDownloadStagingInfo:(id)self0
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a9;
-  v21 = a10;
+  dCopy = d;
+  pathCopy = path;
+  iDCopy = iD;
+  fileIDCopy = fileID;
+  generationIDCopy = generationID;
+  handleCopy = handle;
+  infoCopy = info;
   v45.receiver = self;
   v45.super_class = CKFileOpenInfo;
   v24 = [(CKFileOpenInfo *)&v45 init];
   if (v24)
   {
-    v25 = objc_msgSend_copy(v15, v22, v23);
+    v25 = objc_msgSend_copy(dCopy, v22, v23);
     UUID = v24->_UUID;
     v24->_UUID = v25;
 
-    v29 = objc_msgSend_copy(v16, v27, v28);
+    v29 = objc_msgSend_copy(pathCopy, v27, v28);
     path = v24->_path;
     v24->_path = v29;
 
-    v33 = objc_msgSend_copy(v17, v31, v32);
+    v33 = objc_msgSend_copy(iDCopy, v31, v32);
     deviceID = v24->_deviceID;
     v24->_deviceID = v33;
 
-    v37 = objc_msgSend_copy(v18, v35, v36);
+    v37 = objc_msgSend_copy(fileIDCopy, v35, v36);
     fileID = v24->_fileID;
     v24->_fileID = v37;
 
-    v41 = objc_msgSend_copy(v19, v39, v40);
+    v41 = objc_msgSend_copy(generationIDCopy, v39, v40);
     generationID = v24->_generationID;
     v24->_generationID = v41;
 
-    v24->_shouldReadRawEncryptedData = a8;
-    objc_storeStrong(&v24->_fileHandle, a9);
-    objc_storeStrong(&v24->_assetDownloadStagingInfo, a10);
+    v24->_shouldReadRawEncryptedData = data;
+    objc_storeStrong(&v24->_fileHandle, handle);
+    objc_storeStrong(&v24->_assetDownloadStagingInfo, info);
   }
 
   return v24;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v33 = a3;
+  coderCopy = coder;
   v4 = objc_autoreleasePoolPush();
   v7 = objc_msgSend_UUID(self, v5, v6);
-  objc_msgSend_encodeObject_forKey_(v33, v8, v7, @"UUID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v8, v7, @"UUID");
 
   v11 = objc_msgSend_path(self, v9, v10);
-  objc_msgSend_encodeObject_forKey_(v33, v12, v11, @"path");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v12, v11, @"path");
 
   v15 = objc_msgSend_deviceID(self, v13, v14);
-  objc_msgSend_encodeObject_forKey_(v33, v16, v15, @"deviceID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v16, v15, @"deviceID");
 
   v19 = objc_msgSend_fileID(self, v17, v18);
-  objc_msgSend_encodeObject_forKey_(v33, v20, v19, @"fileID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v20, v19, @"fileID");
 
   v23 = objc_msgSend_generationID(self, v21, v22);
-  objc_msgSend_encodeObject_forKey_(v33, v24, v23, @"generationID");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v24, v23, @"generationID");
 
   RawEncryptedData = objc_msgSend_shouldReadRawEncryptedData(self, v25, v26);
-  objc_msgSend_encodeBool_forKey_(v33, v28, RawEncryptedData, @"shouldReadRawEncryptedData");
+  objc_msgSend_encodeBool_forKey_(coderCopy, v28, RawEncryptedData, @"shouldReadRawEncryptedData");
   v31 = objc_msgSend_assetDownloadStagingInfo(self, v29, v30);
-  objc_msgSend_encodeObject_forKey_(v33, v32, v31, @"AssetDownloadStagingInfo");
+  objc_msgSend_encodeObject_forKey_(coderCopy, v32, v31, @"AssetDownloadStagingInfo");
 
   objc_autoreleasePoolPop(v4);
 }
 
-- (CKFileOpenInfo)initWithCoder:(id)a3
+- (CKFileOpenInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v33.receiver = self;
   v33.super_class = CKFileOpenInfo;
   v5 = [(CKFileOpenInfo *)&v33 init];
@@ -87,33 +87,33 @@
   {
     v6 = objc_autoreleasePoolPush();
     v7 = objc_opt_class();
-    v9 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v8, v7, @"UUID");
+    v9 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v8, v7, @"UUID");
     UUID = v5->_UUID;
     v5->_UUID = v9;
 
     v11 = objc_opt_class();
-    v13 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v12, v11, @"path");
+    v13 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v12, v11, @"path");
     path = v5->_path;
     v5->_path = v13;
 
     v15 = objc_opt_class();
-    v17 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v16, v15, @"deviceID");
+    v17 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v16, v15, @"deviceID");
     deviceID = v5->_deviceID;
     v5->_deviceID = v17;
 
     v19 = objc_opt_class();
-    v21 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v20, v19, @"fileID");
+    v21 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v20, v19, @"fileID");
     fileID = v5->_fileID;
     v5->_fileID = v21;
 
     v23 = objc_opt_class();
-    v25 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v24, v23, @"generationID");
+    v25 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v24, v23, @"generationID");
     generationID = v5->_generationID;
     v5->_generationID = v25;
 
-    v5->_shouldReadRawEncryptedData = objc_msgSend_decodeBoolForKey_(v4, v27, @"shouldReadRawEncryptedData");
+    v5->_shouldReadRawEncryptedData = objc_msgSend_decodeBoolForKey_(coderCopy, v27, @"shouldReadRawEncryptedData");
     v28 = objc_opt_class();
-    v30 = objc_msgSend_decodeObjectOfClass_forKey_(v4, v29, v28, @"AssetDownloadStagingInfo");
+    v30 = objc_msgSend_decodeObjectOfClass_forKey_(coderCopy, v29, v28, @"AssetDownloadStagingInfo");
     assetDownloadStagingInfo = v5->_assetDownloadStagingInfo;
     v5->_assetDownloadStagingInfo = v30;
 

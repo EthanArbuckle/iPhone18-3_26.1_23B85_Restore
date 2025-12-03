@@ -1,8 +1,8 @@
 @interface LNExtensionMediator
 + (id)sharedQueue;
-+ (void)getConnectionHostInterfaceForBundleIdentifier:(id)a3 completionHandler:(id)a4;
-+ (void)getWidgetKitXPCListenerEndpointForBundleIdentifier:(id)a3 completionHandler:(id)a4;
-+ (void)getXPCListenerEndpointForBundleIdentifier:(id)a3 extensionMediatorBundleIdentifier:(id)a4 completionHandler:(id)a5;
++ (void)getConnectionHostInterfaceForBundleIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)getWidgetKitXPCListenerEndpointForBundleIdentifier:(id)identifier completionHandler:(id)handler;
++ (void)getXPCListenerEndpointForBundleIdentifier:(id)identifier extensionMediatorBundleIdentifier:(id)bundleIdentifier completionHandler:(id)handler;
 @end
 
 @implementation LNExtensionMediator
@@ -27,27 +27,27 @@ void __34__LNExtensionMediator_sharedQueue__block_invoke()
   sharedQueue_queue = v0;
 }
 
-+ (void)getXPCListenerEndpointForBundleIdentifier:(id)a3 extensionMediatorBundleIdentifier:(id)a4 completionHandler:(id)a5
++ (void)getXPCListenerEndpointForBundleIdentifier:(id)identifier extensionMediatorBundleIdentifier:(id)bundleIdentifier completionHandler:(id)handler
 {
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [a1 sharedQueue];
-  dispatch_assert_queue_V2(v11);
+  identifierCopy = identifier;
+  bundleIdentifierCopy = bundleIdentifier;
+  handlerCopy = handler;
+  sharedQueue = [self sharedQueue];
+  dispatch_assert_queue_V2(sharedQueue);
 
   v12 = getLNLogCategoryExtensionMediator();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v24 = v9;
+    v24 = bundleIdentifierCopy;
     v25 = 2112;
-    v26 = v8;
+    v26 = identifierCopy;
     _os_log_impl(&dword_19763D000, v12, OS_LOG_TYPE_INFO, "Fetching an XPC listener endpoint from an internal mediator (%@) for %@", buf, 0x16u);
   }
 
   v13 = [LNConnection alloc];
-  v14 = [objc_alloc(MEMORY[0x1E69AC7B0]) initWithType:1 bundleIdentifier:v9 url:0];
+  v14 = [objc_alloc(MEMORY[0x1E69AC7B0]) initWithType:1 bundleIdentifier:bundleIdentifierCopy url:0];
   v22 = 0;
   v15 = [(LNConnection *)v13 initWithEffectiveBundleIdentifier:v14 appBundleIdentifier:0 processInstanceIdentifier:0 appIntentsEnabledOnly:0 userIdentity:0 error:&v22];
   v16 = v22;
@@ -58,8 +58,8 @@ void __34__LNExtensionMediator_sharedQueue__block_invoke()
     v19[1] = 3221225472;
     v19[2] = __117__LNExtensionMediator_getXPCListenerEndpointForBundleIdentifier_extensionMediatorBundleIdentifier_completionHandler___block_invoke;
     v19[3] = &unk_1E74B1838;
-    v21 = v10;
-    v20 = v8;
+    v21 = handlerCopy;
+    v20 = identifierCopy;
     [(LNConnection *)v15 getListenerEndpointForBundleIdentifier:v20 action:0 completionHandler:v19];
   }
 
@@ -69,15 +69,15 @@ void __34__LNExtensionMediator_sharedQueue__block_invoke()
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v24 = v9;
+      v24 = bundleIdentifierCopy;
       v25 = 2112;
-      v26 = v8;
+      v26 = identifierCopy;
       v27 = 2112;
       v28 = v16;
       _os_log_impl(&dword_19763D000, v17, OS_LOG_TYPE_ERROR, "Error fetching XPC listener endpoint from an internal mediator (%@) for %@: %@", buf, 0x20u);
     }
 
-    (*(v10 + 2))(v10, 0, 0, v16);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, v16);
   }
 
   v18 = *MEMORY[0x1E69E9840];
@@ -99,16 +99,16 @@ void __117__LNExtensionMediator_getXPCListenerEndpointForBundleIdentifier_extens
   v4 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)getWidgetKitXPCListenerEndpointForBundleIdentifier:(id)a3 completionHandler:(id)a4
++ (void)getWidgetKitXPCListenerEndpointForBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v7 = getLNLogCategoryExtensionMediator();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 138543362;
-    *(&buf + 4) = v5;
+    *(&buf + 4) = identifierCopy;
     _os_log_impl(&dword_19763D000, v7, OS_LOG_TYPE_INFO, "Fetching an XPC listener endpoint from Chrono for %{public}@", &buf, 0xCu);
   }
 
@@ -130,17 +130,17 @@ void __117__LNExtensionMediator_getXPCListenerEndpointForBundleIdentifier_extens
 
   v9 = v8;
   _Block_object_dispose(&v19, 8);
-  v10 = [[v8 alloc] initWithBundleIdentifier:v5];
+  v10 = [[v8 alloc] initWithBundleIdentifier:identifierCopy];
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __92__LNExtensionMediator_getWidgetKitXPCListenerEndpointForBundleIdentifier_completionHandler___block_invoke;
   v15[3] = &unk_1E74B2230;
   v17 = v10;
-  v18 = v6;
-  v16 = v5;
+  v18 = handlerCopy;
+  v16 = identifierCopy;
   v11 = v10;
-  v12 = v6;
-  v13 = v5;
+  v12 = handlerCopy;
+  v13 = identifierCopy;
   [v11 getAppIntentsXPCListenerEndpointWithCompletion:v15];
 
   v14 = *MEMORY[0x1E69E9840];
@@ -182,21 +182,21 @@ void __92__LNExtensionMediator_getWidgetKitXPCListenerEndpointForBundleIdentifie
   v11 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)getConnectionHostInterfaceForBundleIdentifier:(id)a3 completionHandler:(id)a4
++ (void)getConnectionHostInterfaceForBundleIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 sharedQueue];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  sharedQueue = [self sharedQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __87__LNExtensionMediator_getConnectionHostInterfaceForBundleIdentifier_completionHandler___block_invoke;
   block[3] = &unk_1E74B1810;
-  v12 = v6;
-  v13 = v7;
-  v14 = a1;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = handlerCopy;
+  selfCopy = self;
+  v9 = handlerCopy;
+  v10 = identifierCopy;
+  dispatch_async(sharedQueue, block);
 }
 
 void __87__LNExtensionMediator_getConnectionHostInterfaceForBundleIdentifier_completionHandler___block_invoke(uint64_t a1)

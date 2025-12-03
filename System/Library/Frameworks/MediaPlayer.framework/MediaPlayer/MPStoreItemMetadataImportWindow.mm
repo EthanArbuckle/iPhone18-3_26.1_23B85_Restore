@@ -1,8 +1,8 @@
 @interface MPStoreItemMetadataImportWindow
 - (MPServerObjectDatabase)serverObjectDatabase;
-- (MPStoreItemMetadataImportWindow)initWithEventCadence:(double)a3 maximumLatency:(double)a4 serverObjectDatabase:(id)a5 queue:(id)a6;
+- (MPStoreItemMetadataImportWindow)initWithEventCadence:(double)cadence maximumLatency:(double)latency serverObjectDatabase:(id)database queue:(id)queue;
 - (void)_purge;
-- (void)addPayload:(id)a3 userIdentity:(id)a4;
+- (void)addPayload:(id)payload userIdentity:(id)identity;
 @end
 
 @implementation MPStoreItemMetadataImportWindow
@@ -20,7 +20,7 @@
   os_unfair_lock_lock(&self->_lock);
   v3 = [(NSMutableArray *)self->_accumulatedObjects copy];
   [(NSMutableArray *)self->_accumulatedObjects removeAllObjects];
-  v32 = self;
+  selfCopy = self;
   os_unfair_lock_unlock(&self->_lock);
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v40 = 0u;
@@ -43,32 +43,32 @@
         }
 
         v10 = *(*(&v40 + 1) + 8 * i);
-        v11 = [v10 userIdentity];
-        v12 = v11;
-        if (v11)
+        userIdentity = [v10 userIdentity];
+        v12 = userIdentity;
+        if (userIdentity)
         {
-          v13 = v11;
+          null = userIdentity;
         }
 
         else
         {
-          v13 = [MEMORY[0x1E695DFB0] null];
+          null = [MEMORY[0x1E695DFB0] null];
         }
 
-        v14 = v13;
+        v14 = null;
 
         v15 = [v4 objectForKeyedSubscript:v14];
         if (v15)
         {
-          v16 = [v10 platformDictionary];
-          [v15 addObject:v16];
+          platformDictionary = [v10 platformDictionary];
+          [v15 addObject:platformDictionary];
         }
 
         else
         {
           v17 = MEMORY[0x1E695DF70];
-          v16 = [v10 platformDictionary];
-          v18 = [v17 arrayWithObject:v16];
+          platformDictionary = [v10 platformDictionary];
+          v18 = [v17 arrayWithObject:platformDictionary];
           [v4 setObject:v18 forKeyedSubscript:v14];
         }
       }
@@ -81,7 +81,7 @@
 
   v31 = v5;
 
-  WeakRetained = objc_loadWeakRetained(&v32->_serverObjectDatabase);
+  WeakRetained = objc_loadWeakRetained(&selfCopy->_serverObjectDatabase);
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
@@ -104,14 +104,14 @@
         v25 = *(*(&v36 + 1) + 8 * j);
         v26 = [v20 objectForKeyedSubscript:{v25, v31}];
         v27 = [[MPServerObjectDatabaseStorePlatformImportRequest alloc] initWithPayload:v26];
-        v28 = [MEMORY[0x1E695DFB0] null];
+        null2 = [MEMORY[0x1E695DFB0] null];
 
-        if (v25 != v28)
+        if (v25 != null2)
         {
           [(MPServerObjectDatabaseImportRequest *)v27 setUserIdentity:v25];
         }
 
-        queue = v32->_queue;
+        queue = selfCopy->_queue;
         block[0] = MEMORY[0x1E69E9820];
         block[1] = 3221225472;
         block[2] = __41__MPStoreItemMetadataImportWindow__purge__block_invoke;
@@ -129,17 +129,17 @@
   }
 }
 
-- (void)addPayload:(id)a3 userIdentity:(id)a4
+- (void)addPayload:(id)payload userIdentity:(id)identity
 {
-  v6 = a4;
-  v7 = a3;
+  identityCopy = identity;
+  payloadCopy = payload;
   os_unfair_lock_lock(&self->_lock);
   if (![(NSMutableArray *)self->_accumulatedObjects count])
   {
     [(MPStoreItemMetadataImportWindow *)self performSelector:sel__purge withObject:0 afterDelay:self->_maximumLatency];
   }
 
-  v8 = [[MPStoreItemMetadataImportDescriptor alloc] initWithPayload:v7 userIdentity:v6];
+  v8 = [[MPStoreItemMetadataImportDescriptor alloc] initWithPayload:payloadCopy userIdentity:identityCopy];
 
   [(NSMutableArray *)self->_accumulatedObjects addObject:v8];
   os_unfair_lock_unlock(&self->_lock);
@@ -147,25 +147,25 @@
   [(MPStoreItemMetadataImportWindow *)self performSelector:sel__checkCadence withObject:0 afterDelay:self->_eventCadence];
 }
 
-- (MPStoreItemMetadataImportWindow)initWithEventCadence:(double)a3 maximumLatency:(double)a4 serverObjectDatabase:(id)a5 queue:(id)a6
+- (MPStoreItemMetadataImportWindow)initWithEventCadence:(double)cadence maximumLatency:(double)latency serverObjectDatabase:(id)database queue:(id)queue
 {
-  v10 = a5;
-  v11 = a6;
+  databaseCopy = database;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = MPStoreItemMetadataImportWindow;
   v12 = [(MPStoreItemMetadataImportWindow *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    v12->_eventCadence = a3;
-    v12->_maximumLatency = a4;
-    objc_storeWeak(&v12->_serverObjectDatabase, v10);
+    v12->_eventCadence = cadence;
+    v12->_maximumLatency = latency;
+    objc_storeWeak(&v12->_serverObjectDatabase, databaseCopy);
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     accumulatedObjects = v13->_accumulatedObjects;
     v13->_accumulatedObjects = v14;
 
     v13->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v13->_queue, a6);
+    objc_storeStrong(&v13->_queue, queue);
   }
 
   return v13;

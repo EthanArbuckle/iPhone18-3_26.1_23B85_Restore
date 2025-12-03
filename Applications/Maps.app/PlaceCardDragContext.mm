@@ -22,15 +22,15 @@
 
   if (v4)
   {
-    v5 = [v4 mapItem];
+    mapItem = [v4 mapItem];
   }
 
   else
   {
-    v5 = 0;
+    mapItem = 0;
   }
 
-  return v5;
+  return mapItem;
 }
 
 @end

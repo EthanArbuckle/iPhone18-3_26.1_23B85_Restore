@@ -1,44 +1,44 @@
 @interface RFSummaryItemAttribution
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (RFSummaryItemAttribution)initWithCoder:(id)a3;
-- (RFSummaryItemAttribution)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (RFSummaryItemAttribution)initWithCoder:(id)coder;
+- (RFSummaryItemAttribution)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RFSummaryItemAttribution
 
 - (unint64_t)hash
 {
-  v3 = [(RFSummaryItemAttribution *)self text];
-  v4 = [v3 hash];
-  v5 = [(RFSummaryItemAttribution *)self text_compact];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(RFSummaryItemAttribution *)self text_minimal];
-  v8 = [v7 hash];
+  text = [(RFSummaryItemAttribution *)self text];
+  v4 = [text hash];
+  text_compact = [(RFSummaryItemAttribution *)self text_compact];
+  v6 = [text_compact hash] ^ v4;
+  text_minimal = [(RFSummaryItemAttribution *)self text_minimal];
+  v8 = [text_minimal hash];
 
   return v6 ^ v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(RFSummaryItemAttribution *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(RFSummaryItemAttribution *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(RFSummaryItemAttribution *)self text];
-      v8 = [(RFSummaryItemAttribution *)v6 text];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      text = [(RFSummaryItemAttribution *)self text];
+      text2 = [(RFSummaryItemAttribution *)v6 text];
+      if ((text != 0) == (text2 == 0))
       {
         v11 = 0;
 LABEL_30:
@@ -46,63 +46,63 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v9 = [(RFSummaryItemAttribution *)self text];
-      if (v9)
+      text3 = [(RFSummaryItemAttribution *)self text];
+      if (text3)
       {
-        v3 = [(RFSummaryItemAttribution *)self text];
-        v10 = [(RFSummaryItemAttribution *)v6 text];
-        if (![v3 isEqual:v10])
+        text4 = [(RFSummaryItemAttribution *)self text];
+        text5 = [(RFSummaryItemAttribution *)v6 text];
+        if (![text4 isEqual:text5])
         {
           v11 = 0;
           goto LABEL_28;
         }
 
-        v31 = v10;
+        v31 = text5;
       }
 
-      v12 = [(RFSummaryItemAttribution *)self text_compact];
-      v13 = [(RFSummaryItemAttribution *)v6 text_compact];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      text_compact = [(RFSummaryItemAttribution *)self text_compact];
+      text_compact2 = [(RFSummaryItemAttribution *)v6 text_compact];
+      v14 = text_compact2;
+      if ((text_compact != 0) == (text_compact2 == 0))
       {
 
         v11 = 0;
         goto LABEL_27;
       }
 
-      v15 = [(RFSummaryItemAttribution *)self text_compact];
-      if (v15)
+      text_compact3 = [(RFSummaryItemAttribution *)self text_compact];
+      if (text_compact3)
       {
-        v25 = v12;
-        v16 = [(RFSummaryItemAttribution *)self text_compact];
-        v27 = [(RFSummaryItemAttribution *)v6 text_compact];
-        v28 = v16;
-        if (![v16 isEqual:?])
+        v25 = text_compact;
+        text_compact4 = [(RFSummaryItemAttribution *)self text_compact];
+        text_compact5 = [(RFSummaryItemAttribution *)v6 text_compact];
+        v28 = text_compact4;
+        if (![text_compact4 isEqual:?])
         {
           v11 = 0;
-          v12 = v25;
+          text_compact = v25;
           goto LABEL_25;
         }
 
-        v29 = v15;
-        v30 = v3;
-        v12 = v25;
+        v29 = text_compact3;
+        v30 = text4;
+        text_compact = v25;
       }
 
       else
       {
         v29 = 0;
-        v30 = v3;
+        v30 = text4;
       }
 
-      v17 = [(RFSummaryItemAttribution *)self text_minimal];
-      v18 = [(RFSummaryItemAttribution *)v6 text_minimal];
-      if ((v17 != 0) == (v18 == 0))
+      text_minimal = [(RFSummaryItemAttribution *)self text_minimal];
+      text_minimal2 = [(RFSummaryItemAttribution *)v6 text_minimal];
+      if ((text_minimal != 0) == (text_minimal2 == 0))
       {
 
         v11 = 0;
-        v15 = v29;
-        v3 = v30;
+        text_compact3 = v29;
+        text4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -111,16 +111,16 @@ LABEL_30:
 
       else
       {
-        v24 = v17;
-        v26 = v18;
-        v19 = [(RFSummaryItemAttribution *)self text_minimal];
-        v15 = v29;
-        if (v19)
+        v24 = text_minimal;
+        v26 = text_minimal2;
+        text_minimal3 = [(RFSummaryItemAttribution *)self text_minimal];
+        text_compact3 = v29;
+        if (text_minimal3)
         {
-          v23 = v19;
-          v22 = [(RFSummaryItemAttribution *)self text_minimal];
-          v20 = [(RFSummaryItemAttribution *)v6 text_minimal];
-          v11 = [v22 isEqual:?];
+          v23 = text_minimal3;
+          text_minimal4 = [(RFSummaryItemAttribution *)self text_minimal];
+          text_minimal5 = [(RFSummaryItemAttribution *)v6 text_minimal];
+          v11 = [text_minimal4 isEqual:?];
         }
 
         else
@@ -129,7 +129,7 @@ LABEL_30:
           v11 = 1;
         }
 
-        v3 = v30;
+        text4 = v30;
         if (!v29)
         {
           goto LABEL_26;
@@ -140,8 +140,8 @@ LABEL_25:
 
 LABEL_26:
 LABEL_27:
-      v10 = v31;
-      if (!v9)
+      text5 = v31;
+      if (!text3)
       {
 LABEL_29:
 
@@ -161,19 +161,19 @@ LABEL_31:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(RFSummaryItemAttribution *)self text];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  text = [(RFSummaryItemAttribution *)self text];
+  v6 = [text copy];
   [v4 setText:v6];
 
-  v7 = [(RFSummaryItemAttribution *)self text_compact];
-  v8 = [v7 copy];
+  text_compact = [(RFSummaryItemAttribution *)self text_compact];
+  v8 = [text_compact copy];
   [v4 setText_compact:v8];
 
-  v9 = [(RFSummaryItemAttribution *)self text_minimal];
-  v10 = [v9 copy];
+  text_minimal = [(RFSummaryItemAttribution *)self text_minimal];
+  v10 = [text_minimal copy];
   [v4 setText_minimal:v10];
 
   return v4;
@@ -182,31 +182,31 @@ LABEL_31:
 - (NSData)jsonData
 {
   v2 = [[_SFPBRFSummaryItemAttribution alloc] initWithFacade:self];
-  v3 = [(_SFPBRFSummaryItemAttribution *)v2 jsonData];
+  jsonData = [(_SFPBRFSummaryItemAttribution *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBRFSummaryItemAttribution alloc] initWithFacade:self];
-  v3 = [(_SFPBRFSummaryItemAttribution *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBRFSummaryItemAttribution *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBRFSummaryItemAttribution alloc] initWithFacade:self];
-  v5 = [(_SFPBRFSummaryItemAttribution *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBRFSummaryItemAttribution *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (RFSummaryItemAttribution)initWithCoder:(id)a3
+- (RFSummaryItemAttribution)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBRFSummaryItemAttribution alloc] initWithData:v5];
   v7 = [(RFSummaryItemAttribution *)self initWithProtobuf:v6];
@@ -214,41 +214,41 @@ LABEL_31:
   return v7;
 }
 
-- (RFSummaryItemAttribution)initWithProtobuf:(id)a3
+- (RFSummaryItemAttribution)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v20.receiver = self;
   v20.super_class = RFSummaryItemAttribution;
   v5 = [(RFSummaryItemAttribution *)&v20 init];
   if (v5)
   {
-    v6 = [v4 text];
+    text = [protobufCopy text];
 
-    if (v6)
+    if (text)
     {
       v7 = [RFTextProperty alloc];
-      v8 = [v4 text];
-      v9 = [(RFTextProperty *)v7 initWithProtobuf:v8];
+      text2 = [protobufCopy text];
+      v9 = [(RFTextProperty *)v7 initWithProtobuf:text2];
       [(RFSummaryItemAttribution *)v5 setText:v9];
     }
 
-    v10 = [v4 text_compact];
+    text_compact = [protobufCopy text_compact];
 
-    if (v10)
+    if (text_compact)
     {
       v11 = [RFTextProperty alloc];
-      v12 = [v4 text_compact];
-      v13 = [(RFTextProperty *)v11 initWithProtobuf:v12];
+      text_compact2 = [protobufCopy text_compact];
+      v13 = [(RFTextProperty *)v11 initWithProtobuf:text_compact2];
       [(RFSummaryItemAttribution *)v5 setText_compact:v13];
     }
 
-    v14 = [v4 text_minimal];
+    text_minimal = [protobufCopy text_minimal];
 
-    if (v14)
+    if (text_minimal)
     {
       v15 = [RFTextProperty alloc];
-      v16 = [v4 text_minimal];
-      v17 = [(RFTextProperty *)v15 initWithProtobuf:v16];
+      text_minimal2 = [protobufCopy text_minimal];
+      v17 = [(RFTextProperty *)v15 initWithProtobuf:text_minimal2];
       [(RFSummaryItemAttribution *)v5 setText_minimal:v17];
     }
 

@@ -1,43 +1,43 @@
 @interface SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary)initWithDictionary:(id)a3;
-- (SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary)initWithDictionary:(id)dictionary;
+- (SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addPageAttempts:(id)a3;
-- (void)setHasLastCompletedPage:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPageAttempts:(id)attempts;
+- (void)setHasLastCompletedPage:(BOOL)page;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary
 
-- (SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary)initWithDictionary:(id)a3
+- (SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary;
   v5 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"lastOpenedPageNumber"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"lastOpenedPageNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary setLastOpenedPageNumber:](v5, "setLastOpenedPageNumber:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"lastCompletedPage"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"lastCompletedPage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary setLastCompletedPage:](v5, "setLastCompletedPage:", [v7 unsignedIntValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"pageAttempts"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"pageAttempts"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -91,30 +91,30 @@
   return v5;
 }
 
-- (SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary)initWithJSON:(id)a3
+- (SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -128,12 +128,12 @@
 - (id)dictionaryRepresentation
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary lastCompletedPage](self, "lastCompletedPage")}];
-    [v3 setObject:v5 forKeyedSubscript:@"lastCompletedPage"];
+    [dictionary setObject:v5 forKeyedSubscript:@"lastCompletedPage"];
 
     has = self->_has;
   }
@@ -141,12 +141,12 @@
   if (has)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary lastOpenedPageNumber](self, "lastOpenedPageNumber")}];
-    [v3 setObject:v6 forKeyedSubscript:@"lastOpenedPageNumber"];
+    [dictionary setObject:v6 forKeyedSubscript:@"lastOpenedPageNumber"];
   }
 
   if ([(NSArray *)self->_pageAttempts count])
   {
-    v7 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -166,16 +166,16 @@
             objc_enumerationMutation(v8);
           }
 
-          v13 = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
-          if (v13)
+          dictionaryRepresentation = [*(*(&v16 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v7 addObject:v13];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v14 = [MEMORY[0x1E695DFB0] null];
-            [v7 addObject:v14];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -185,12 +185,12 @@
       while (v10);
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"pageAttempts"];
+    [dictionary setObject:array forKeyedSubscript:@"pageAttempts"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v16];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v16];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -219,16 +219,16 @@ LABEL_3:
   return v7 ^ v6 ^ [(NSArray *)self->_pageAttempts hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -237,27 +237,27 @@ LABEL_3:
   if (*&has)
   {
     lastOpenedPageNumber = self->_lastOpenedPageNumber;
-    if (lastOpenedPageNumber != [v4 lastOpenedPageNumber])
+    if (lastOpenedPageNumber != [equalCopy lastOpenedPageNumber])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (lastCompletedPage = self->_lastCompletedPage, lastCompletedPage == [v4 lastCompletedPage]))
+    if (!v8 || (lastCompletedPage = self->_lastCompletedPage, lastCompletedPage == [equalCopy lastCompletedPage]))
     {
-      v10 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary *)self pageAttempts];
-      v11 = [v4 pageAttempts];
-      v12 = v11;
-      if ((v10 != 0) != (v11 == 0))
+      pageAttempts = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary *)self pageAttempts];
+      pageAttempts2 = [equalCopy pageAttempts];
+      v12 = pageAttempts2;
+      if ((pageAttempts != 0) != (pageAttempts2 == 0))
       {
-        v13 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary *)self pageAttempts];
-        if (!v13)
+        pageAttempts3 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary *)self pageAttempts];
+        if (!pageAttempts3)
         {
 
 LABEL_17:
@@ -265,10 +265,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v14 = v13;
-        v15 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary *)self pageAttempts];
-        v16 = [v4 pageAttempts];
-        v17 = [v15 isEqual:v16];
+        v14 = pageAttempts3;
+        pageAttempts4 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary *)self pageAttempts];
+        pageAttempts5 = [equalCopy pageAttempts];
+        v17 = [pageAttempts4 isEqual:pageAttempts5];
 
         if (v17)
         {
@@ -289,10 +289,10 @@ LABEL_15:
   return v18;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -334,27 +334,27 @@ LABEL_15:
   }
 }
 
-- (void)addPageAttempts:(id)a3
+- (void)addPageAttempts:(id)attempts
 {
-  v4 = a3;
+  attemptsCopy = attempts;
   pageAttempts = self->_pageAttempts;
-  v8 = v4;
+  v8 = attemptsCopy;
   if (!pageAttempts)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pageAttempts;
-    self->_pageAttempts = v6;
+    self->_pageAttempts = array;
 
-    v4 = v8;
+    attemptsCopy = v8;
     pageAttempts = self->_pageAttempts;
   }
 
-  [(NSArray *)pageAttempts addObject:v4];
+  [(NSArray *)pageAttempts addObject:attemptsCopy];
 }
 
-- (void)setHasLastCompletedPage:(BOOL)a3
+- (void)setHasLastCompletedPage:(BOOL)page
 {
-  if (a3)
+  if (page)
   {
     v3 = 2;
   }
@@ -367,14 +367,14 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary *)self pageAttempts:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(SIRISETUPSchemaSIRISETUPPHSEnrollmentSessionSummary *)self setPageAttempts:v7];
 

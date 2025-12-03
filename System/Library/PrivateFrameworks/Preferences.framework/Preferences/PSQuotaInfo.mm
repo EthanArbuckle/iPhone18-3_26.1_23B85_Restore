@@ -1,7 +1,7 @@
 @interface PSQuotaInfo
 - (PSQuotaInfo)init;
-- (unint64_t)storageInUseForMediaKind:(int64_t)a3;
-- (void)setStorageInUse:(unint64_t)a3 forMediaKind:(int64_t)a4;
+- (unint64_t)storageInUseForMediaKind:(int64_t)kind;
+- (void)setStorageInUse:(unint64_t)use forMediaKind:(int64_t)kind;
 @end
 
 @implementation PSQuotaInfo
@@ -21,22 +21,22 @@
   return v2;
 }
 
-- (void)setStorageInUse:(unint64_t)a3 forMediaKind:(int64_t)a4
+- (void)setStorageInUse:(unint64_t)use forMediaKind:(int64_t)kind
 {
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:use];
   mediaKindDict = self->_mediaKindDict;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:kind];
   [(NSMutableDictionary *)mediaKindDict setObject:v8 forKeyedSubscript:v7];
 }
 
-- (unint64_t)storageInUseForMediaKind:(int64_t)a3
+- (unint64_t)storageInUseForMediaKind:(int64_t)kind
 {
   mediaKindDict = self->_mediaKindDict;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:kind];
   v5 = [(NSMutableDictionary *)mediaKindDict objectForKeyedSubscript:v4];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
 @end

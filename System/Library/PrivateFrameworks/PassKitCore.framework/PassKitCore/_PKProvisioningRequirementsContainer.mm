@@ -2,10 +2,10 @@
 - (BOOL)containsNotManagedAccount;
 - (NSString)provisioningSID;
 - (_PKProvisioningRequirementsContainer)init;
-- (id)containerMinus:(id)a3;
+- (id)containerMinus:(id)minus;
 - (id)displayableError;
-- (void)encodeWithCoder:(id)a3;
-- (void)setProvisioningSID:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setProvisioningSID:(id)d;
 @end
 
 @implementation _PKProvisioningRequirementsContainer
@@ -28,9 +28,9 @@
   return v3;
 }
 
-- (void)setProvisioningSID:(id)a3
+- (void)setProvisioningSID:(id)d
 {
-  if (a3)
+  if (d)
   {
     v4 = sub_1ADB063B0();
     v6 = v5;
@@ -48,18 +48,18 @@
   v7[1] = v6;
 }
 
-- (id)containerMinus:(id)a3
+- (id)containerMinus:(id)minus
 {
-  v4 = a3;
-  v5 = self;
-  v6 = sub_1AD4F2FA4(v4);
+  minusCopy = minus;
+  selfCopy = self;
+  v6 = sub_1AD4F2FA4(minusCopy);
 
   return v6;
 }
 
 - (BOOL)containsNotManagedAccount
 {
-  v2 = self;
+  selfCopy = self;
   sub_1AD4F31D4();
   v4 = v3;
 
@@ -68,17 +68,17 @@
 
 - (id)displayableError
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1AD4F3354();
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1AD4F3B88(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1AD4F3B88(coderCopy);
 }
 
 - (_PKProvisioningRequirementsContainer)init

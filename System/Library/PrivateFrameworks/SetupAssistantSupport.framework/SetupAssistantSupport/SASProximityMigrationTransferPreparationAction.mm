@@ -1,15 +1,15 @@
 @interface SASProximityMigrationTransferPreparationAction
-+ (id)actionFromDictionary:(id)a3;
++ (id)actionFromDictionary:(id)dictionary;
 - (id)requestPayload;
 @end
 
 @implementation SASProximityMigrationTransferPreparationAction
 
-+ (id)actionFromDictionary:(id)a3
++ (id)actionFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(SASProximityMigrationTransferPreparationAction);
-  v5 = [v3 objectForKeyedSubscript:@"deviceName"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"deviceName"];
 
   [(SASProximityMigrationTransferPreparationAction *)v4 setDeviceName:v5];
 
@@ -19,13 +19,13 @@
 - (id)requestPayload
 {
   v9[1] = *MEMORY[0x277D85DE8];
-  v3 = [(SASProximityMigrationTransferPreparationAction *)self deviceName];
+  deviceName = [(SASProximityMigrationTransferPreparationAction *)self deviceName];
 
-  if (v3)
+  if (deviceName)
   {
     v8 = @"deviceName";
-    v4 = [(SASProximityMigrationTransferPreparationAction *)self deviceName];
-    v9[0] = v4;
+    deviceName2 = [(SASProximityMigrationTransferPreparationAction *)self deviceName];
+    v9[0] = deviceName2;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   }
 

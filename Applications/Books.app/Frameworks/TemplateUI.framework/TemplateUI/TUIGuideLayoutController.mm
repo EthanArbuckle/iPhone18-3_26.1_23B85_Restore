@@ -1,15 +1,15 @@
 @interface TUIGuideLayoutController
 - (TUIGuideLayoutController)init;
 - (double)computeLength;
-- (double)offsetForGuide:(id)a3;
-- (id)_nodeFromGuide:(id)a3;
-- (id)guideForSpec:(id)a3;
-- (id)guideForSpec:(id)a3 withOffset:(double)a4;
-- (void)_enumerateSolution:(id)a3;
-- (void)addEdgeFrom:(id)a3 to:(id)a4 length:(id *)a5;
-- (void)addObserver:(id)a3;
+- (double)offsetForGuide:(id)guide;
+- (id)_nodeFromGuide:(id)guide;
+- (id)guideForSpec:(id)spec;
+- (id)guideForSpec:(id)spec withOffset:(double)offset;
+- (void)_enumerateSolution:(id)solution;
+- (void)addEdgeFrom:(id)from to:(id)to length:(id *)length;
+- (void)addObserver:(id)observer;
 - (void)reset;
-- (void)setLayoutPhase:(unint64_t)a3;
+- (void)setLayoutPhase:(unint64_t)phase;
 - (void)solve;
 @end
 
@@ -46,17 +46,17 @@
   [(TUIGuideLayoutController *)self setLayoutPhase:0];
 }
 
-- (void)setLayoutPhase:(unint64_t)a3
+- (void)setLayoutPhase:(unint64_t)phase
 {
-  if (self->_layoutPhase != a3)
+  if (self->_layoutPhase != phase)
   {
-    self->_layoutPhase = a3;
+    self->_layoutPhase = phase;
     v10 = 0u;
     v11 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(NSHashTable *)self->_observers allObjects];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allObjects = [(NSHashTable *)self->_observers allObjects];
+    v6 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -68,15 +68,15 @@
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allObjects);
           }
 
-          [*(*(&v10 + 1) + 8 * v9) guideLayoutController:self changedPhase:a3];
+          [*(*(&v10 + 1) + 8 * v9) guideLayoutController:self changedPhase:phase];
           v9 = v9 + 1;
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [allObjects countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -84,13 +84,13 @@
   }
 }
 
-- (id)guideForSpec:(id)a3
+- (id)guideForSpec:(id)spec
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  specCopy = spec;
+  v5 = specCopy;
+  if (specCopy)
   {
-    if ([v4 kind] == &dword_0 + 1)
+    if ([specCopy kind] == &dword_0 + 1)
     {
       v6 = [[_TUIGuideInstance alloc] initWithSpec:v5];
     }
@@ -114,52 +114,52 @@
   return v6;
 }
 
-- (id)guideForSpec:(id)a3 withOffset:(double)a4
+- (id)guideForSpec:(id)spec withOffset:(double)offset
 {
-  v5 = [(TUIGuideLayoutController *)self guideForSpec:a3];
-  [v5 setOffset:a4];
+  v5 = [(TUIGuideLayoutController *)self guideForSpec:spec];
+  [v5 setOffset:offset];
 
   return v5;
 }
 
-- (id)_nodeFromGuide:(id)a3
+- (id)_nodeFromGuide:(id)guide
 {
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_nodes objectForKey:v4];
+  guideCopy = guide;
+  v5 = [(NSMapTable *)self->_nodes objectForKey:guideCopy];
   if (!v5)
   {
     v5 = objc_opt_new();
-    [(NSMapTable *)self->_nodes setObject:v5 forKey:v4];
+    [(NSMapTable *)self->_nodes setObject:v5 forKey:guideCopy];
   }
 
   return v5;
 }
 
-- (void)addEdgeFrom:(id)a3 to:(id)a4 length:(id *)a5
+- (void)addEdgeFrom:(id)from to:(id)to length:(id *)length
 {
   if (!self->_layoutPhase)
   {
     v7 = v5;
-    v11 = a4;
-    v16 = [(TUIGuideLayoutController *)self _nodeFromGuide:a3];
-    v12 = [(TUIGuideLayoutController *)self _nodeFromGuide:v11];
+    toCopy = to;
+    v16 = [(TUIGuideLayoutController *)self _nodeFromGuide:from];
+    v12 = [(TUIGuideLayoutController *)self _nodeFromGuide:toCopy];
 
     v13 = objc_opt_new();
     [v13 setTo:v12];
-    [v13 setLength:{a5, v7}];
-    v14 = [v16 edges];
-    [v14 addObject:v13];
+    [v13 setLength:{length, v7}];
+    edges = [v16 edges];
+    [edges addObject:v13];
 
-    v15 = [v12 dependencies];
-    [v15 addObject:v16];
+    dependencies = [v12 dependencies];
+    [dependencies addObject:v16];
 
     [(NSMutableArray *)self->_edges addObject:v13];
   }
 }
 
-- (double)offsetForGuide:(id)a3
+- (double)offsetForGuide:(id)guide
 {
-  v3 = [(TUIGuideLayoutController *)self _nodeFromGuide:a3];
+  v3 = [(TUIGuideLayoutController *)self _nodeFromGuide:guide];
   v4 = v3;
   if (v3)
   {
@@ -182,9 +182,9 @@
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v26 = self;
-  v5 = [(NSMapTable *)self->_nodes objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v33 objects:v38 count:16];
+  selfCopy = self;
+  objectEnumerator = [(NSMapTable *)self->_nodes objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v33 objects:v38 count:16];
   if (v6)
   {
     v7 = v6;
@@ -195,12 +195,12 @@
       {
         if (*v34 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v10 = *(*(&v33 + 1) + 8 * i);
-        v11 = [v10 dependencies];
-        v12 = [v11 count];
+        dependencies = [v10 dependencies];
+        v12 = [dependencies count];
 
         if (!v12)
         {
@@ -210,7 +210,7 @@
         [v4 addObject:v10];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v33 objects:v38 count:16];
+      v7 = [objectEnumerator countByEnumeratingWithState:&v33 objects:v38 count:16];
     }
 
     while (v7);
@@ -223,15 +223,15 @@
     v28 = v3;
     do
     {
-      v13 = [v3 anyObject];
-      [v3 removeObject:v13];
-      [v27 removeObject:v13];
+      anyObject = [v3 anyObject];
+      [v3 removeObject:anyObject];
+      [v27 removeObject:anyObject];
       v31 = 0u;
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v14 = [v13 edges];
-      v15 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
+      edges = [anyObject edges];
+      v15 = [edges countByEnumeratingWithState:&v29 objects:v37 count:16];
       if (v15)
       {
         v16 = v15;
@@ -242,12 +242,12 @@
           {
             if (*v30 != v17)
             {
-              objc_enumerationMutation(v14);
+              objc_enumerationMutation(edges);
             }
 
             v19 = *(*(&v29 + 1) + 8 * j);
             v20 = [v19 to];
-            v21 = fmaxf(COERCE_FLOAT([v20 accumulatedLength]), COERCE_FLOAT(objc_msgSend(v13, "accumulatedLength")) + COERCE_FLOAT(objc_msgSend(v19, "length")));
+            v21 = fmaxf(COERCE_FLOAT([v20 accumulatedLength]), COERCE_FLOAT(objc_msgSend(anyObject, "accumulatedLength")) + COERCE_FLOAT(objc_msgSend(v19, "length")));
             v22 = 0x7FC00000FF7FFFFFLL;
             if (v21 > -3.4028e38)
             {
@@ -259,11 +259,11 @@
             }
 
             [v20 setAccumulatedLength:{v22, 2143289344}];
-            v23 = [v20 dependencies];
-            [v23 removeObject:v13];
+            dependencies2 = [v20 dependencies];
+            [dependencies2 removeObject:anyObject];
 
-            v24 = [v20 dependencies];
-            v25 = [v24 count];
+            dependencies3 = [v20 dependencies];
+            v25 = [dependencies3 count];
 
             if (!v25)
             {
@@ -271,7 +271,7 @@
             }
           }
 
-          v16 = [v14 countByEnumeratingWithState:&v29 objects:v37 count:16];
+          v16 = [edges countByEnumeratingWithState:&v29 objects:v37 count:16];
         }
 
         while (v16);
@@ -283,8 +283,8 @@
     while ([v28 count]);
   }
 
-  [(TUIGuideLayoutController *)v26 _enumerateSolution:&stru_25F220];
-  [(TUIGuideLayoutController *)v26 setLayoutPhase:1];
+  [(TUIGuideLayoutController *)selfCopy _enumerateSolution:&stru_25F220];
+  [(TUIGuideLayoutController *)selfCopy setLayoutPhase:1];
 }
 
 - (double)computeLength
@@ -293,8 +293,8 @@
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMapTable *)self->_nodes objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMapTable *)self->_nodes objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -306,13 +306,13 @@
       {
         if (*v10 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v6 = fmax(v6, COERCE_FLOAT([*(*(&v9 + 1) + 8 * i) accumulatedLength]));
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -326,17 +326,17 @@
   return v6;
 }
 
-- (void)_enumerateSolution:(id)a3
+- (void)_enumerateSolution:(id)solution
 {
-  v4 = a3;
-  if (v4)
+  solutionCopy = solution;
+  if (solutionCopy)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v5 = [(NSMapTable *)self->_nodes keyEnumerator];
-    v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    keyEnumerator = [(NSMapTable *)self->_nodes keyEnumerator];
+    v6 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
       v7 = v6;
@@ -347,15 +347,15 @@
         {
           if (*v13 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(keyEnumerator);
           }
 
           v10 = *(*(&v12 + 1) + 8 * i);
           v11 = [(NSMapTable *)self->_nodes objectForKey:v10];
-          v4[2](v4, v10, COERCE_FLOAT([v11 accumulatedLength]));
+          solutionCopy[2](solutionCopy, v10, COERCE_FLOAT([v11 accumulatedLength]));
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v7 = [keyEnumerator countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v7);
@@ -363,22 +363,22 @@
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   observers = self->_observers;
-  v8 = v4;
+  v8 = observerCopy;
   if (!observers)
   {
     v6 = [NSHashTable hashTableWithOptions:517];
     v7 = self->_observers;
     self->_observers = v6;
 
-    v4 = v8;
+    observerCopy = v8;
     observers = self->_observers;
   }
 
-  [(NSHashTable *)observers addObject:v4];
+  [(NSHashTable *)observers addObject:observerCopy];
 }
 
 @end

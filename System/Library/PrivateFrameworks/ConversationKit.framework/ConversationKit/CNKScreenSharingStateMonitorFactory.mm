@@ -1,23 +1,23 @@
 @interface CNKScreenSharingStateMonitorFactory
 - (CNKScreenSharingStateMonitorProtocol)sharedMonitor;
-- (id)makeScreenSharingStateMonitorWithCall:(id)a3;
+- (id)makeScreenSharingStateMonitorWithCall:(id)call;
 @end
 
 @implementation CNKScreenSharingStateMonitorFactory
 
 - (CNKScreenSharingStateMonitorProtocol)sharedMonitor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = static ScreenSharingStateMonitor.sharedMonitor.getter();
 
   return v3;
 }
 
-- (id)makeScreenSharingStateMonitorWithCall:(id)a3
+- (id)makeScreenSharingStateMonitorWithCall:(id)call
 {
-  v5 = a3;
-  v6 = self;
-  v7 = CNKScreenSharingStateMonitorFactory.makeScreenSharingStateMonitor(using:)(a3);
+  callCopy = call;
+  selfCopy = self;
+  v7 = CNKScreenSharingStateMonitorFactory.makeScreenSharingStateMonitor(using:)(call);
 
   return v7;
 }

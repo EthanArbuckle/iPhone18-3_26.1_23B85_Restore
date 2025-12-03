@@ -1,14 +1,14 @@
 @interface FormatDisplayLinkAnimation.Container
-- (void)updateWithDisplayLink:(id)a3;
+- (void)updateWithDisplayLink:(id)link;
 @end
 
 @implementation FormatDisplayLinkAnimation.Container
 
-- (void)updateWithDisplayLink:(id)a3
+- (void)updateWithDisplayLink:(id)link
 {
-  v3 = a3;
+  linkCopy = link;
 
-  sub_1D6E33C34(v3);
+  sub_1D6E33C34(linkCopy);
 }
 
 @end

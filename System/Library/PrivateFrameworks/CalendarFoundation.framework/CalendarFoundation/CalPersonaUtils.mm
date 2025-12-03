@@ -1,5 +1,5 @@
 @interface CalPersonaUtils
-+ (BOOL)performBlockAsPersonaWithIdentifier:(id)a3 block:(id)a4;
++ (BOOL)performBlockAsPersonaWithIdentifier:(id)identifier block:(id)block;
 + (id)personalPersonaIdentifier;
 @end
 
@@ -31,7 +31,7 @@
     {
       os_unfair_lock_unlock(&personalPersonaIdentifier_lock);
       v3 = dispatch_semaphore_create(0);
-      v4 = [MEMORY[0x1E69DF068] sharedManager];
+      mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
       v7[0] = MEMORY[0x1E69E9820];
       v7[1] = 3221225472;
       v7[2] = __44__CalPersonaUtils_personalPersonaIdentifier__block_invoke;
@@ -39,7 +39,7 @@
       v9 = &v10;
       v5 = v3;
       v8 = v5;
-      [v4 fetchPersonaWithType:0 CompletionHandler:v7];
+      [mEMORY[0x1E69DF068] fetchPersonaWithType:0 CompletionHandler:v7];
 
       dispatch_semaphore_wait(v5, 0xFFFFFFFFFFFFFFFFLL);
     }
@@ -91,23 +91,23 @@ void __44__CalPersonaUtils_personalPersonaIdentifier__block_invoke(uint64_t a1, 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)performBlockAsPersonaWithIdentifier:(id)a3 block:(id)a4
++ (BOOL)performBlockAsPersonaWithIdentifier:(id)identifier block:(id)block
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [MEMORY[0x1E69DF068] sharedManager];
-  v8 = [v7 currentPersona];
+  identifierCopy = identifier;
+  blockCopy = block;
+  mEMORY[0x1E69DF068] = [MEMORY[0x1E69DF068] sharedManager];
+  currentPersona = [mEMORY[0x1E69DF068] currentPersona];
 
   v36 = 0;
-  v9 = [v8 copyCurrentPersonaContextWithError:&v36];
+  v9 = [currentPersona copyCurrentPersonaContextWithError:&v36];
   v10 = v36;
   if (v9)
   {
-    v11 = [v8 generateAndRestorePersonaContextWithPersonaUniqueString:v5];
+    v11 = [currentPersona generateAndRestorePersonaContextWithPersonaUniqueString:identifierCopy];
 
-    v12 = [MEMORY[0x1E69DF068] sharedManager];
-    v13 = [v12 currentPersona];
+    mEMORY[0x1E69DF068]2 = [MEMORY[0x1E69DF068] sharedManager];
+    currentPersona2 = [mEMORY[0x1E69DF068]2 currentPersona];
 
     v14 = v11 == 0;
     v15 = +[CalFoundationLogSubsystem defaultCategory];
@@ -122,32 +122,32 @@ void __44__CalPersonaUtils_personalPersonaIdentifier__block_invoke(uint64_t a1, 
 
     else if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v17 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(v8, "isEnterprisePersona")}];
+      v17 = [MEMORY[0x1E696AD98] numberWithBool:{objc_msgSend(currentPersona, "isEnterprisePersona")}];
       *buf = 138543874;
-      v38 = v5;
+      v38 = identifierCopy;
       v39 = 2114;
       v40 = v17;
       v41 = 2112;
-      v42 = v13;
+      v42 = currentPersona2;
       _os_log_impl(&dword_1B990D000, v16, OS_LOG_TYPE_INFO, "Generated and restored persona context with persona identifier = %{public}@, is current persona enterprise persona = %{public}@, current persona = %@", buf, 0x20u);
     }
 
-    v18 = [v13 userPersonaUniqueString];
-    v19 = [v5 isEqualToString:v18];
+    userPersonaUniqueString = [currentPersona2 userPersonaUniqueString];
+    v19 = [identifierCopy isEqualToString:userPersonaUniqueString];
 
     if ((v19 & 1) == 0)
     {
       v20 = +[CalFoundationLogSubsystem defaultCategory];
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        [(CalPersonaUtils *)v13 performBlockAsPersonaWithIdentifier:v5 block:v20];
+        [(CalPersonaUtils *)currentPersona2 performBlockAsPersonaWithIdentifier:identifierCopy block:v20];
       }
 
       v14 = 0;
     }
 
-    v6[2](v6, v13);
-    v10 = [v8 restorePersonaWithSavedPersonaContext:v9];
+    blockCopy[2](blockCopy, currentPersona2);
+    v10 = [currentPersona restorePersonaWithSavedPersonaContext:v9];
 
     if (v10)
     {
@@ -155,19 +155,19 @@ void __44__CalPersonaUtils_personalPersonaIdentifier__block_invoke(uint64_t a1, 
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         v22 = MEMORY[0x1E696AD98];
-        v34 = [MEMORY[0x1E69DF068] sharedManager];
-        v32 = [v34 currentPersona];
-        v30 = [v22 numberWithBool:{objc_msgSend(v32, "isEnterprisePersona")}];
-        v23 = [MEMORY[0x1E69DF068] sharedManager];
-        v24 = [v23 currentPersona];
+        mEMORY[0x1E69DF068]3 = [MEMORY[0x1E69DF068] sharedManager];
+        currentPersona3 = [mEMORY[0x1E69DF068]3 currentPersona];
+        v30 = [v22 numberWithBool:{objc_msgSend(currentPersona3, "isEnterprisePersona")}];
+        mEMORY[0x1E69DF068]4 = [MEMORY[0x1E69DF068] sharedManager];
+        currentPersona4 = [mEMORY[0x1E69DF068]4 currentPersona];
         *buf = 138544130;
-        v38 = v5;
+        v38 = identifierCopy;
         v39 = 2112;
         v40 = v10;
         v41 = 2114;
         v42 = v30;
         v43 = 2112;
-        v44 = v24;
+        v44 = currentPersona4;
         _os_log_error_impl(&dword_1B990D000, v21, OS_LOG_TYPE_ERROR, "Error restoring saved persona context from persona identifier = %{public}@: %@. is current persona enterprise persona = %{public}@, current persona = %@", buf, 0x2Au);
       }
     }
@@ -178,17 +178,17 @@ void __44__CalPersonaUtils_personalPersonaIdentifier__block_invoke(uint64_t a1, 
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         v25 = MEMORY[0x1E696AD98];
-        v35 = [MEMORY[0x1E69DF068] sharedManager];
-        v33 = [v35 currentPersona];
-        v31 = [v25 numberWithBool:{objc_msgSend(v33, "isEnterprisePersona")}];
-        v26 = [MEMORY[0x1E69DF068] sharedManager];
-        v27 = [v26 currentPersona];
+        mEMORY[0x1E69DF068]5 = [MEMORY[0x1E69DF068] sharedManager];
+        currentPersona5 = [mEMORY[0x1E69DF068]5 currentPersona];
+        v31 = [v25 numberWithBool:{objc_msgSend(currentPersona5, "isEnterprisePersona")}];
+        mEMORY[0x1E69DF068]6 = [MEMORY[0x1E69DF068] sharedManager];
+        currentPersona6 = [mEMORY[0x1E69DF068]6 currentPersona];
         *buf = 138543874;
-        v38 = v5;
+        v38 = identifierCopy;
         v39 = 2114;
         v40 = v31;
         v41 = 2112;
-        v42 = v27;
+        v42 = currentPersona6;
         _os_log_impl(&dword_1B990D000, v21, OS_LOG_TYPE_INFO, "Restored persona context from persona identifier = %{public}@, is current persona enterprise persona = %{public}@, current persona = %@", buf, 0x20u);
       }
     }
@@ -196,8 +196,8 @@ void __44__CalPersonaUtils_personalPersonaIdentifier__block_invoke(uint64_t a1, 
 
   else
   {
-    v13 = +[CalFoundationLogSubsystem defaultCategory];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    currentPersona2 = +[CalFoundationLogSubsystem defaultCategory];
+    if (os_log_type_enabled(currentPersona2, OS_LOG_TYPE_ERROR))
     {
       +[CalPersonaUtils performBlockAsPersonaWithIdentifier:block:];
     }

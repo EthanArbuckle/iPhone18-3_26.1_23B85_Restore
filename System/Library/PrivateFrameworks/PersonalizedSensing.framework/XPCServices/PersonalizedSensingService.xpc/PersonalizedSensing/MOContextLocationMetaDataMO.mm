@@ -1,21 +1,21 @@
 @interface MOContextLocationMetaDataMO
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4;
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context;
 @end
 
 @implementation MOContextLocationMetaDataMO
 
-+ (id)managedObjectWithObject:(id)a3 inManagedObjectContext:(id)a4
++ (id)managedObjectWithObject:(id)object inManagedObjectContext:(id)context
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[MOContextLocationMetaDataMO alloc] initWithContext:v5];
+  contextCopy = context;
+  objectCopy = object;
+  v7 = [[MOContextLocationMetaDataMO alloc] initWithContext:contextCopy];
 
-  v8 = [v6 place];
-  [(MOContextLocationMetaDataMO *)v7 setPlace:v8];
+  place = [objectCopy place];
+  [(MOContextLocationMetaDataMO *)v7 setPlace:place];
 
-  v9 = [v6 city];
+  city = [objectCopy city];
 
-  [(MOContextLocationMetaDataMO *)v7 setCity:v9];
+  [(MOContextLocationMetaDataMO *)v7 setCity:city];
 
   return v7;
 }

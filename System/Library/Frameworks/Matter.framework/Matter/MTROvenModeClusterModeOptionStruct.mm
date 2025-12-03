@@ -1,6 +1,6 @@
 @interface MTROvenModeClusterModeOptionStruct
 - (MTROvenModeClusterModeOptionStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -20,25 +20,25 @@
     mode = v3->_mode;
     v3->_mode = &unk_284C3E588;
 
-    v6 = [MEMORY[0x277CBEA60] array];
+    array = [MEMORY[0x277CBEA60] array];
     modeTags = v3->_modeTags;
-    v3->_modeTags = v6;
+    v3->_modeTags = array;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROvenModeClusterModeOptionStruct);
-  v5 = [(MTROvenModeClusterModeOptionStruct *)self label];
-  [(MTROvenModeClusterModeOptionStruct *)v4 setLabel:v5];
+  label = [(MTROvenModeClusterModeOptionStruct *)self label];
+  [(MTROvenModeClusterModeOptionStruct *)v4 setLabel:label];
 
-  v6 = [(MTROvenModeClusterModeOptionStruct *)self mode];
-  [(MTROvenModeClusterModeOptionStruct *)v4 setMode:v6];
+  mode = [(MTROvenModeClusterModeOptionStruct *)self mode];
+  [(MTROvenModeClusterModeOptionStruct *)v4 setMode:mode];
 
-  v7 = [(MTROvenModeClusterModeOptionStruct *)self modeTags];
-  [(MTROvenModeClusterModeOptionStruct *)v4 setModeTags:v7];
+  modeTags = [(MTROvenModeClusterModeOptionStruct *)self modeTags];
+  [(MTROvenModeClusterModeOptionStruct *)v4 setModeTags:modeTags];
 
   return v4;
 }

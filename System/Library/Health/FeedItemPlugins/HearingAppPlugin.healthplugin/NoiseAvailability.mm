@@ -8,11 +8,11 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   v3 = CFNotificationCenterGetDarwinNotifyCenter();
-  CFNotificationCenterRemoveEveryObserver(v3, v2);
+  CFNotificationCenterRemoveEveryObserver(v3, selfCopy);
 
-  v4.receiver = v2;
+  v4.receiver = selfCopy;
   v4.super_class = type metadata accessor for NoiseAvailability();
   [(NoiseAvailability *)&v4 dealloc];
 }
@@ -25,12 +25,12 @@
   v8 = &v14 - ((v7 + 15) & 0xFFFFFFFFFFFFFFF0);
   MEMORY[0x2A1C7C4A8](v6, v9);
   v11 = &v14 - v10;
-  v12 = self;
+  selfCopy = self;
   sub_29D5E9DC8(v11);
   swift_getKeyPath();
   swift_getKeyPath();
   sub_29D5EA900(v11, v8);
-  v13 = v12;
+  v13 = selfCopy;
   sub_29D65F8E4();
   sub_29D5EA964(v11);
   sub_29D5E9FC0();

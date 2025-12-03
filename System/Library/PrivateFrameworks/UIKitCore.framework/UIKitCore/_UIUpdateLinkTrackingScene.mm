@@ -1,8 +1,8 @@
 @interface _UIUpdateLinkTrackingScene
-- (id)_initWithScene:(void *)a1;
+- (id)_initWithScene:(void *)scene;
 - (void)_sceneEnterForeground;
 - (void)_sceneExitForeground;
-- (void)_switchSceneFrom:(void *)a3 to:;
+- (void)_switchSceneFrom:(void *)from to:;
 @end
 
 @implementation _UIUpdateLinkTrackingScene
@@ -10,55 +10,55 @@
 - (void)_sceneEnterForeground
 {
   self->_sceneForeground = 1;
-  v3 = [(_UIUpdateLinkTrackingScene *)self _canEngage];
-  if (self->super.super._engaged != v3)
+  _canEngage = [(_UIUpdateLinkTrackingScene *)self _canEngage];
+  if (self->super.super._engaged != _canEngage)
   {
-    self->super.super._engaged = v3;
-    v4 = v3 && self->super.super._enabled;
+    self->super.super._engaged = _canEngage;
+    v4 = _canEngage && self->super.super._enabled;
 
     [(UIUpdateLink *)self _setActive:v4];
   }
 }
 
-- (id)_initWithScene:(void *)a1
+- (id)_initWithScene:(void *)scene
 {
-  if (!a1)
+  if (!scene)
   {
     return 0;
   }
 
-  v3 = [(UIUpdateLink *)a1 _init];
-  v4 = v3;
-  if (v3)
+  _init = [(UIUpdateLink *)scene _init];
+  v4 = _init;
+  if (_init)
   {
-    [(_UIUpdateLinkTrackingScene *)v3 _switchSceneFrom:a2 to:?];
+    [(_UIUpdateLinkTrackingScene *)_init _switchSceneFrom:a2 to:?];
   }
 
   return v4;
 }
 
-- (void)_switchSceneFrom:(void *)a3 to:
+- (void)_switchSceneFrom:(void *)from to:
 {
-  if (a1 && *(a1 + 64) != a3)
+  if (self && *(self + 64) != from)
   {
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    v8 = v6;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    v8 = defaultCenter;
     if (a2)
     {
-      [v6 removeObserver:a1 name:@"UISceneWillEnterForegroundNotification" object:a2];
-      [v8 removeObserver:a1 name:@"UISceneDidEnterBackgroundNotification" object:a2];
-      [v8 removeObserver:a1 name:@"UISceneDidDisconnectNotification" object:a2];
-      v6 = v8;
+      [defaultCenter removeObserver:self name:@"UISceneWillEnterForegroundNotification" object:a2];
+      [v8 removeObserver:self name:@"UISceneDidEnterBackgroundNotification" object:a2];
+      [v8 removeObserver:self name:@"UISceneDidDisconnectNotification" object:a2];
+      defaultCenter = v8;
     }
 
-    if (a3)
+    if (from)
     {
-      [v6 addObserver:a1 selector:sel__sceneEnterForeground name:@"UISceneWillEnterForegroundNotification" object:a3];
-      [v8 addObserver:a1 selector:sel__sceneExitForeground name:@"UISceneDidEnterBackgroundNotification" object:a3];
-      [v8 addObserver:a1 selector:sel__sceneExitForeground name:@"UISceneDidDisconnectNotification" object:a3];
-      if ([a3 activationState])
+      [defaultCenter addObserver:self selector:sel__sceneEnterForeground name:@"UISceneWillEnterForegroundNotification" object:from];
+      [v8 addObserver:self selector:sel__sceneExitForeground name:@"UISceneDidEnterBackgroundNotification" object:from];
+      [v8 addObserver:self selector:sel__sceneExitForeground name:@"UISceneDidDisconnectNotification" object:from];
+      if ([from activationState])
       {
-        v7 = [a3 activationState] == 1;
+        v7 = [from activationState] == 1;
       }
 
       else
@@ -66,7 +66,7 @@
         v7 = 1;
       }
 
-      v6 = v8;
+      defaultCenter = v8;
     }
 
     else
@@ -74,19 +74,19 @@
       v7 = 0;
     }
 
-    *(a1 + 56) = v7;
-    *(a1 + 64) = a3;
+    *(self + 56) = v7;
+    *(self + 64) = from;
   }
 }
 
 - (void)_sceneExitForeground
 {
   self->_sceneForeground = 0;
-  v3 = [(_UIUpdateLinkTrackingScene *)self _canEngage];
-  if (self->super.super._engaged != v3)
+  _canEngage = [(_UIUpdateLinkTrackingScene *)self _canEngage];
+  if (self->super.super._engaged != _canEngage)
   {
-    self->super.super._engaged = v3;
-    v4 = v3 && self->super.super._enabled;
+    self->super.super._engaged = _canEngage;
+    v4 = _canEngage && self->super.super._enabled;
 
     [(UIUpdateLink *)self _setActive:v4];
   }

@@ -26,12 +26,12 @@
 
 - (void)executionDidBegin
 {
-  v3 = [(VSFileWriteOperation *)self data];
-  v4 = [v3 forceUnwrapObject];
-  v5 = [(VSFileWriteOperation *)self destination];
-  v6 = [v5 forceUnwrapObject];
+  data = [(VSFileWriteOperation *)self data];
+  forceUnwrapObject = [data forceUnwrapObject];
+  destination = [(VSFileWriteOperation *)self destination];
+  forceUnwrapObject2 = [destination forceUnwrapObject];
   v9 = 0;
-  v7 = [v4 writeToURL:v6 options:1 error:&v9];
+  v7 = [forceUnwrapObject writeToURL:forceUnwrapObject2 options:1 error:&v9];
   v8 = v9;
 
   if ((v7 & 1) == 0)

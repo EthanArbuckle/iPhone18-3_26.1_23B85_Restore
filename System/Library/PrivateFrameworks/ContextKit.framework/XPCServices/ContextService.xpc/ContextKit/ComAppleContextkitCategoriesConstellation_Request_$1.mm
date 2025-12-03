@@ -1,15 +1,15 @@
 @interface ComAppleContextkitCategoriesConstellation_Request_$1
-- (ComAppleContextkitCategoriesConstellation_Request_$1)initWithComAppleContextkitCategoriesConstellation_Request:(id)a3 withInt:(int)a4 withJavaUtilSet:(id)a5;
+- (ComAppleContextkitCategoriesConstellation_Request_$1)initWithComAppleContextkitCategoriesConstellation_Request:(id)request withInt:(int)int withJavaUtilSet:(id)set;
 - (void)dealloc;
 @end
 
 @implementation ComAppleContextkitCategoriesConstellation_Request_$1
 
-- (ComAppleContextkitCategoriesConstellation_Request_$1)initWithComAppleContextkitCategoriesConstellation_Request:(id)a3 withInt:(int)a4 withJavaUtilSet:(id)a5
+- (ComAppleContextkitCategoriesConstellation_Request_$1)initWithComAppleContextkitCategoriesConstellation_Request:(id)request withInt:(int)int withJavaUtilSet:(id)set
 {
-  JreStrongAssign(&self->this$0_, a3);
-  self->val$weight_ = a4;
-  JreStrongAssign(&self->val$seen_, a5);
+  JreStrongAssign(&self->this$0_, request);
+  self->val$weight_ = int;
+  JreStrongAssign(&self->val$seen_, set);
   return self;
 }
 

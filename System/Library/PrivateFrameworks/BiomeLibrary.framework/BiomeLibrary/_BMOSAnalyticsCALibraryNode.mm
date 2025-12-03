@@ -2,25 +2,25 @@
 + (id)HighEngagementDevices;
 + (id)configurationForHighEngagementDevices;
 + (id)storeConfigurationForHighEngagementDevices;
-+ (id)streamWithName:(id)a3;
++ (id)streamWithName:(id)name;
 + (id)validKeyPaths;
 @end
 
 @implementation _BMOSAnalyticsCALibraryNode
 
-+ (id)streamWithName:(id)a3
++ (id)streamWithName:(id)name
 {
-  if ([a3 isEqualToString:@"HighEngagementDevices"])
+  if ([name isEqualToString:@"HighEngagementDevices"])
   {
-    v4 = [a1 HighEngagementDevices];
+    highEngagementDevices = [self HighEngagementDevices];
   }
 
   else
   {
-    v4 = 0;
+    highEngagementDevices = 0;
   }
 
-  return v4;
+  return highEngagementDevices;
 }
 
 + (id)validKeyPaths
@@ -36,13 +36,13 @@
 
 + (id)configurationForHighEngagementDevices
 {
-  v3 = [a1 storeConfigurationForHighEngagementDevices];
-  v4 = [a1 syncPolicyForHighEngagementDevices];
+  storeConfigurationForHighEngagementDevices = [self storeConfigurationForHighEngagementDevices];
+  syncPolicyForHighEngagementDevices = [self syncPolicyForHighEngagementDevices];
   v5 = MEMORY[0x1E698F338];
   v6 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"1B58D3EB-787D-4546-BAA7-34159B3499AC"];
   BYTE2(v9) = 1;
   LOWORD(v9) = 1;
-  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"OSAnalytics.CA.HighEngagementDevices" eventClass:objc_opt_class() storeConfig:v3 syncPolicy:v4 legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
+  v7 = [v5 _libraryStreamConfigurationWithUUID:v6 streamIdentifier:@"OSAnalytics.CA.HighEngagementDevices" eventClass:objc_opt_class() storeConfig:storeConfigurationForHighEngagementDevices syncPolicy:syncPolicyForHighEngagementDevices legacyNames:0 internalMetadata:0 enableSubscriptions:v9 enableSubscriptionSubstream:0 enableTombstoneSubstream:0 allowedClients:0 pruningTriggers:? spaceAttributionOwner:?];
 
   return v7;
 }
@@ -58,7 +58,7 @@
 + (id)HighEngagementDevices
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = [a1 configurationForHighEngagementDevices];
+  configurationForHighEngagementDevices = [self configurationForHighEngagementDevices];
   v3 = +[BMOSAnalyticsHighEngagementDevices columns];
   v4 = BMEventTimestampSQLColumn();
   v13 = v4;
@@ -70,7 +70,7 @@
   v8 = [v3 arrayByAddingObjectsFromArray:{v7, v13, v14}];
 
   v9 = [objc_alloc(MEMORY[0x1E698F2F0]) initWithTableName:@"OSAnalytics.CA.HighEngagementDevices" columns:v8];
-  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"OSAnalytics.CA.HighEngagementDevices" schema:v9 configuration:v2];
+  v10 = [objc_alloc(MEMORY[0x1E698F320]) initWithIdentifier:@"OSAnalytics.CA.HighEngagementDevices" schema:v9 configuration:configurationForHighEngagementDevices];
 
   v11 = *MEMORY[0x1E69E9840];
 

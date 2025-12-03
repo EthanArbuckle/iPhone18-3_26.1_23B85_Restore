@@ -1,46 +1,46 @@
 @interface PLAssetResourceDownloadManager
 + (id)defaultManager;
 - (PLAssetResourceDownloadManager)init;
-- (id)_requestWithID:(int)a3;
-- (int)requestCloudResourceType:(unint64_t)a3 assetObjectID:(id)a4 library:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7;
-- (void)_setRequest:(id)a3 forRequestID:(int)a4;
-- (void)cancelRequest:(int)a3;
+- (id)_requestWithID:(int)d;
+- (int)requestCloudResourceType:(unint64_t)type assetObjectID:(id)d library:(id)library progressHandler:(id)handler completionHandler:(id)completionHandler;
+- (void)_setRequest:(id)request forRequestID:(int)d;
+- (void)cancelRequest:(int)request;
 @end
 
 @implementation PLAssetResourceDownloadManager
 
-- (void)cancelRequest:(int)a3
+- (void)cancelRequest:(int)request
 {
-  v3 = [(PLAssetResourceDownloadManager *)self _requestWithID:*&a3];
+  v3 = [(PLAssetResourceDownloadManager *)self _requestWithID:*&request];
   [v3 cancel];
 }
 
-- (int)requestCloudResourceType:(unint64_t)a3 assetObjectID:(id)a4 library:(id)a5 progressHandler:(id)a6 completionHandler:(id)a7
+- (int)requestCloudResourceType:(unint64_t)type assetObjectID:(id)d library:(id)library progressHandler:(id)handler completionHandler:(id)completionHandler
 {
   v32 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  if (!v14)
+  dCopy = d;
+  libraryCopy = library;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  if (!libraryCopy)
   {
-    v23 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v23 handleFailureInMethod:a2 object:self file:@"PLAssetResourceDownloadManager.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"library"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetResourceDownloadManager.m" lineNumber:70 description:{@"Invalid parameter not satisfying: %@", @"library"}];
   }
 
   add = atomic_fetch_add(&self->_currentRequestId, 1u);
   v18 = PLBackendGetLog();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
   {
-    v19 = [MEMORY[0x1E6994B90] descriptionForResourceType:a3];
+    v19 = [MEMORY[0x1E6994B90] descriptionForResourceType:type];
     *buf = 138412546;
-    v29 = v13;
+    v29 = dCopy;
     v30 = 2112;
     v31 = v19;
     _os_log_impl(&dword_19BF1F000, v18, OS_LOG_TYPE_DEFAULT, "Creating asset resource request for object id: %@ cloudResourceType: %@", buf, 0x16u);
   }
 
-  v20 = [[PLAssetResourceDownloadRequest alloc] initWithRequestID:add + 1 library:v14 queue:self->_requestIsolationQueue cloudResourceType:a3 managedObjectID:v13 progressHandler:v15];
+  v20 = [[PLAssetResourceDownloadRequest alloc] initWithRequestID:add + 1 library:libraryCopy queue:self->_requestIsolationQueue cloudResourceType:type managedObjectID:dCopy progressHandler:handlerCopy];
   [(PLAssetResourceDownloadManager *)self _setRequest:v20 forRequestID:add + 1];
   objc_initWeak(buf, v20);
   v24[0] = MEMORY[0x1E69E9820];
@@ -49,7 +49,7 @@
   v24[3] = &unk_1E7568258;
   v24[4] = self;
   v27 = add + 1;
-  v21 = v16;
+  v21 = completionHandlerCopy;
   v25 = v21;
   objc_copyWeak(&v26, buf);
   [(PLAssetResourceDownloadRequest *)v20 setCompletionBlock:v24];
@@ -73,21 +73,21 @@ void __115__PLAssetResourceDownloadManager_requestCloudResourceType_assetObjectI
   }
 }
 
-- (void)_setRequest:(id)a3 forRequestID:(int)a4
+- (void)_setRequest:(id)request forRequestID:(int)d
 {
-  v4 = *&a4;
-  v6 = a3;
+  v4 = *&d;
+  requestCopy = request;
   os_unfair_lock_lock(&self->_lock);
   requestById = self->_requestById;
   v8 = [MEMORY[0x1E696AD98] numberWithInt:v4];
-  [(NSMutableDictionary *)requestById setObject:v6 forKeyedSubscript:v8];
+  [(NSMutableDictionary *)requestById setObject:requestCopy forKeyedSubscript:v8];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)_requestWithID:(int)a3
+- (id)_requestWithID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   os_unfair_lock_lock(&self->_lock);
   requestById = self->_requestById;
   v6 = [MEMORY[0x1E696AD98] numberWithInt:v3];

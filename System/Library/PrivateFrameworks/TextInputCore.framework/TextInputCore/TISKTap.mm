@@ -1,11 +1,11 @@
 @interface TISKTap
 - (BOOL)isDownUpTap;
-- (CGRect)getFrameForKey:(id)a3;
-- (double)distance:(id)a3 withTouch:(id)a4;
-- (double)downErrorDistance:(CGRect)a3;
+- (CGRect)getFrameForKey:(id)key;
+- (double)distance:(id)distance withTouch:(id)touch;
+- (double)downErrorDistance:(CGRect)distance;
 - (double)totalTapDistance;
-- (double)upErrorDistance:(CGRect)a3;
-- (id)init:(id)a3 layout:(id)a4;
+- (double)upErrorDistance:(CGRect)distance;
+- (id)init:(id)init layout:(id)layout;
 - (id)stringForIntendedKey;
 - (int64_t)_forcedKeyCode;
 @end
@@ -66,18 +66,18 @@
   return v8 + v14;
 }
 
-- (double)distance:(id)a3 withTouch:(id)a4
+- (double)distance:(id)distance withTouch:(id)touch
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 location];
+  touchCopy = touch;
+  distanceCopy = distance;
+  [distanceCopy location];
   v8 = v7;
-  [v5 location];
+  [touchCopy location];
   *&v8 = v8 - v9;
-  [v6 location];
+  [distanceCopy location];
   v11 = v10;
 
-  [v5 location];
+  [touchCopy location];
   v13 = v12;
 
   v14 = v11 - v13;
@@ -131,9 +131,9 @@ uint64_t __31__TISKTap_stringForIntendedKey__block_invoke(uint64_t result, uint6
 
 - (int64_t)_forcedKeyCode
 {
-  v3 = [(TIKeyboardTouchEvent *)self->_lastTouch forcedKeyCode];
+  forcedKeyCode = [(TIKeyboardTouchEvent *)self->_lastTouch forcedKeyCode];
   v4 = 16;
-  if (v3 == -1)
+  if (forcedKeyCode == -1)
   {
     v4 = 8;
   }
@@ -143,9 +143,9 @@ uint64_t __31__TISKTap_stringForIntendedKey__block_invoke(uint64_t result, uint6
   return [v5 forcedKeyCode];
 }
 
-- (CGRect)getFrameForKey:(id)a3
+- (CGRect)getFrameForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v19 = 0;
   v20 = &v19;
   v21 = 0x5012000000;
@@ -160,9 +160,9 @@ uint64_t __31__TISKTap_stringForIntendedKey__block_invoke(uint64_t result, uint6
   v16[1] = 3221225472;
   v16[2] = __26__TISKTap_getFrameForKey___block_invoke;
   v16[3] = &unk_278732FF0;
-  v17 = v4;
+  v17 = keyCopy;
   v18 = &v19;
-  v7 = v4;
+  v7 = keyCopy;
   [(TIKeyboardLayout *)layout enumerateKeysUsingBlock:v16];
   v8 = v20[6];
   v9 = v20[7];
@@ -198,12 +198,12 @@ void __26__TISKTap_getFrameForKey___block_invoke(uint64_t a1, uint64_t a2, doubl
   }
 }
 
-- (double)upErrorDistance:(CGRect)a3
+- (double)upErrorDistance:(CGRect)distance
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = distance.size.height;
+  width = distance.size.width;
+  y = distance.origin.y;
+  x = distance.origin.x;
   [(TIKeyboardTouchEvent *)self->_lastTouch location];
   v9 = v8;
   v15.origin.x = x;
@@ -221,12 +221,12 @@ void __26__TISKTap_getFrameForKey___block_invoke(uint64_t a1, uint64_t a2, doubl
   return sqrt((v12 - MidY) * (v12 - MidY) + v10 * v10);
 }
 
-- (double)downErrorDistance:(CGRect)a3
+- (double)downErrorDistance:(CGRect)distance
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = distance.size.height;
+  width = distance.size.width;
+  y = distance.origin.y;
+  x = distance.origin.x;
   [(TIKeyboardTouchEvent *)self->_firstTouch location];
   v9 = v8;
   v15.origin.x = x;
@@ -263,25 +263,25 @@ void __26__TISKTap_getFrameForKey___block_invoke(uint64_t a1, uint64_t a2, doubl
   return lastTouch;
 }
 
-- (id)init:(id)a3 layout:(id)a4
+- (id)init:(id)init layout:(id)layout
 {
-  v7 = a3;
-  v8 = a4;
+  initCopy = init;
+  layoutCopy = layout;
   v15.receiver = self;
   v15.super_class = TISKTap;
   v9 = [(TISKTap *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_firstTouch, a3);
+    objc_storeStrong(&v9->_firstTouch, init);
     lastTouch = v10->_lastTouch;
     v10->_lastTouch = 0;
 
     v10->_pathIndex = -1;
-    objc_storeStrong(&v10->_layout, a4);
-    v12 = [MEMORY[0x277CBEB18] array];
+    objc_storeStrong(&v10->_layout, layout);
+    array = [MEMORY[0x277CBEB18] array];
     dragTouches = v10->_dragTouches;
-    v10->_dragTouches = v12;
+    v10->_dragTouches = array;
   }
 
   return v10;

@@ -30,7 +30,7 @@
     v8 = 0;
   }
 
-  v9 = [a1 aa_errorWithCode:a3 userInfo:v8];
+  v9 = [self aa_errorWithCode:a3 userInfo:v8];
 
   v10 = *MEMORY[0x1E69E9840];
 
@@ -42,7 +42,7 @@
   v5 = a3;
   if (!v5)
   {
-    [(NSError(AppleAccount) *)a2 aa_errorWithServerResponse:a1];
+    [(NSError(AppleAccount) *)a2 aa_errorWithServerResponse:self];
   }
 
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -106,16 +106,16 @@
 
 - (id)_aa_userReadableError
 {
-  v1 = a1;
-  v2 = [v1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x1E695AD78]])
+  selfCopy = self;
+  domain = [selfCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E695AD78]])
   {
   }
 
   else
   {
-    v3 = [v1 domain];
-    v4 = [v3 isEqualToString:*MEMORY[0x1E696A978]];
+    domain2 = [selfCopy domain];
+    v4 = [domain2 isEqualToString:*MEMORY[0x1E696A978]];
 
     if (!v4)
     {
@@ -126,16 +126,16 @@
   v5 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
   v6 = [v5 localizedStringForKey:@"NETWORK_ERROR_GENERIC" value:0 table:@"Localizable"];
 
-  v7 = [v1 code];
-  if (v7 <= -1002)
+  code = [selfCopy code];
+  if (code <= -1002)
   {
-    if (v7 == -1012)
+    if (code == -1012)
     {
       v8 = @"INVALID_PASSWORD";
       goto LABEL_18;
     }
 
-    if (v7 != -1009 && v7 != -1005)
+    if (code != -1009 && code != -1005)
     {
       goto LABEL_19;
     }
@@ -143,10 +143,10 @@
 
   else
   {
-    if (v7 > 306)
+    if (code > 306)
     {
       v8 = @"NETWORK_ERROR_PROXY";
-      if (v7 != 307 && v7 != 310)
+      if (code != 307 && code != 310)
       {
         goto LABEL_19;
       }
@@ -154,13 +154,13 @@
       goto LABEL_18;
     }
 
-    if (v7 == -1001)
+    if (code == -1001)
     {
       v8 = @"NETWORK_ERROR_TIMEOUT";
       goto LABEL_18;
     }
 
-    if (v7 != 302)
+    if (code != 302)
     {
       goto LABEL_19;
     }
@@ -173,26 +173,26 @@ LABEL_18:
 
   v6 = v10;
 LABEL_19:
-  v11 = [v1 userInfo];
-  v12 = [v11 mutableCopy];
+  userInfo = [selfCopy userInfo];
+  v12 = [userInfo mutableCopy];
 
   [v12 setObject:v6 forKeyedSubscript:*MEMORY[0x1E696A578]];
   v13 = MEMORY[0x1E696ABC0];
-  v14 = [v1 domain];
-  v15 = [v13 errorWithDomain:v14 code:objc_msgSend(v1 userInfo:{"code"), v12}];
+  domain3 = [selfCopy domain];
+  v15 = [v13 errorWithDomain:domain3 code:objc_msgSend(selfCopy userInfo:{"code"), v12}];
 
-  v1 = v15;
+  selfCopy = v15;
 LABEL_20:
 
-  return v1;
+  return selfCopy;
 }
 
 - (BOOL)aa_isAAErrorWithCode:()AppleAccount
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:@"com.apple.AppleAccount.Error"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"com.apple.AppleAccount.Error"])
   {
-    v6 = [a1 code] == a3;
+    v6 = [self code] == a3;
   }
 
   else
@@ -205,10 +205,10 @@ LABEL_20:
 
 - (BOOL)aa_isAASignInErrorWithCode:()AppleAccount
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:@"AASignInErrors"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"AASignInErrors"])
   {
-    v6 = [a1 code] == a3;
+    v6 = [self code] == a3;
   }
 
   else
@@ -221,18 +221,18 @@ LABEL_20:
 
 - (uint64_t)aa_isAACustodianRecoveryError
 {
-  v1 = [a1 domain];
-  v2 = [v1 isEqualToString:@"AACustodianRecoveryErrors"];
+  domain = [self domain];
+  v2 = [domain isEqualToString:@"AACustodianRecoveryErrors"];
 
   return v2;
 }
 
 - (BOOL)aa_isAACustodianRecoveryErrorWithCode:()AppleAccount
 {
-  v5 = [a1 domain];
-  if ([v5 isEqualToString:@"AACustodianRecoveryErrors"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"AACustodianRecoveryErrors"])
   {
-    v6 = [a1 code] == a3;
+    v6 = [self code] == a3;
   }
 
   else
@@ -245,17 +245,17 @@ LABEL_20:
 
 - (uint64_t)aa_isAARecoverableError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x1E696A978]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A978]])
   {
-    if ([a1 code] == -997 || objc_msgSend(a1, "code") == -1005 || objc_msgSend(a1, "code") == -1001)
+    if ([self code] == -997 || objc_msgSend(self, "code") == -1005 || objc_msgSend(self, "code") == -1001)
     {
       goto LABEL_10;
     }
 
-    v3 = [a1 code];
+    code = [self code];
 
-    if (v3 == -1009)
+    if (code == -1009)
     {
       return 1;
     }
@@ -265,19 +265,19 @@ LABEL_20:
   {
   }
 
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:@"com.apple.appleaccount"])
+  domain = [self domain];
+  if ([domain isEqualToString:@"com.apple.appleaccount"])
   {
-    if ([a1 code] == 500)
+    if ([self code] == 500)
     {
 LABEL_10:
 
       return 1;
     }
 
-    v5 = [a1 code];
+    code2 = [self code];
 
-    if (v5 == 400)
+    if (code2 == 400)
     {
       return 1;
     }
@@ -292,12 +292,12 @@ LABEL_10:
 
 - (uint64_t)aa_isXPCError
 {
-  v2 = [a1 domain];
-  if ([v2 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [self domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v3 = [a1 code];
+    code = [self code];
 
-    if (v3 == 4097)
+    if (code == 4097)
     {
       return 1;
     }
@@ -312,11 +312,11 @@ LABEL_10:
 
 - (id)aa_partialErrorsByName
 {
-  if ([a1 aa_isAAErrorWithCode:-4408])
+  if ([self aa_isAAErrorWithCode:-4408])
   {
     objc_opt_class();
-    v2 = [a1 userInfo];
-    v3 = [v2 objectForKeyedSubscript:@"AAPartialErrorsByNameKey"];
+    userInfo = [self userInfo];
+    v3 = [userInfo objectForKeyedSubscript:@"AAPartialErrorsByNameKey"];
     if (objc_opt_isKindOfClass())
     {
       v4 = v3;

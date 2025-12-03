@@ -1,15 +1,15 @@
 @interface BKTOCWebViewCellContent
-+ (id)cellContentWithHeight:(double)a3 cacheKey:(id)a4;
++ (id)cellContentWithHeight:(double)height cacheKey:(id)key;
 @end
 
 @implementation BKTOCWebViewCellContent
 
-+ (id)cellContentWithHeight:(double)a3 cacheKey:(id)a4
++ (id)cellContentWithHeight:(double)height cacheKey:(id)key
 {
-  v5 = a4;
+  keyCopy = key;
   v6 = objc_opt_new();
-  [v6 setHeight:a3];
-  [v6 setCacheKey:v5];
+  [v6 setHeight:height];
+  [v6 setCacheKey:keyCopy];
 
   return v6;
 }

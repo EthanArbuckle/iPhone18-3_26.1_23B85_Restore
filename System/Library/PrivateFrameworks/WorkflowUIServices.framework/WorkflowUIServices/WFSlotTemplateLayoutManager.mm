@@ -1,31 +1,31 @@
 @interface WFSlotTemplateLayoutManager
-- (BOOL)layoutManager:(id)a3 shouldBreakLineByWordBeforeCharacterAtIndex:(unint64_t)a4;
-- (BOOL)layoutManager:(id)a3 shouldSetLineFragmentRect:(CGRect *)a4 lineFragmentUsedRect:(CGRect *)a5 baselineOffset:(double *)a6 inTextContainer:(id)a7 forGlyphRange:(_NSRange)a8;
-- (BOOL)shouldDrawTextAttachment:(id)a3 atCharacterIndex:(unint64_t)a4;
-- (CGRect)layoutManager:(id)a3 boundingBoxForControlGlyphAtIndex:(unint64_t)a4 forTextContainer:(id)a5 proposedLineFragment:(CGRect)a6 glyphPosition:(CGPoint)a7 characterIndex:(unint64_t)a8;
-- (UIEdgeInsets)slotBackgroundInsetsAtCharIndex:(unint64_t)a3;
-- (WFSlotTemplateLayoutManager)initWithUseCase:(unint64_t)a3;
-- (double)preferredHeightForDrawingTextAttachment:(id)a3 atCharacterIndex:(unint64_t)a4 withProposedHeight:(double)a5;
-- (int64_t)layoutManager:(id)a3 shouldUseAction:(int64_t)a4 forControlCharacterAtIndex:(unint64_t)a5;
+- (BOOL)layoutManager:(id)manager shouldBreakLineByWordBeforeCharacterAtIndex:(unint64_t)index;
+- (BOOL)layoutManager:(id)manager shouldSetLineFragmentRect:(CGRect *)rect lineFragmentUsedRect:(CGRect *)usedRect baselineOffset:(double *)offset inTextContainer:(id)container forGlyphRange:(_NSRange)range;
+- (BOOL)shouldDrawTextAttachment:(id)attachment atCharacterIndex:(unint64_t)index;
+- (CGRect)layoutManager:(id)manager boundingBoxForControlGlyphAtIndex:(unint64_t)index forTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)characterIndex;
+- (UIEdgeInsets)slotBackgroundInsetsAtCharIndex:(unint64_t)index;
+- (WFSlotTemplateLayoutManager)initWithUseCase:(unint64_t)case;
+- (double)preferredHeightForDrawingTextAttachment:(id)attachment atCharacterIndex:(unint64_t)index withProposedHeight:(double)height;
+- (int64_t)layoutManager:(id)manager shouldUseAction:(int64_t)action forControlCharacterAtIndex:(unint64_t)index;
 - (unint64_t)numberOfLaidLines;
-- (void)drawBackgroundForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4;
-- (void)drawGradientInEnclosingRect:(id)a3 enclosingRect:(CGRect *)a4 lineFragmentPadding:(double)a5 runsOffLeft:(BOOL)a6 runsOffRight:(BOOL)a7;
-- (void)enumerateEnclosingRectsForGlyphRange:(_NSRange)a3 insetForBackground:(BOOL)a4 standaloneTextAttachment:(BOOL)a5 usingBlock:(id)a6;
-- (void)enumerateEnclosingRectsForSlot:(id)a3 includeInsideSpacing:(BOOL)a4 insetForBackground:(BOOL)a5 usingBlock:(id)a6;
-- (void)getCalculatedLineHeight:(double *)a3 originalFontLineHeight:(double *)a4;
+- (void)drawBackgroundForGlyphRange:(_NSRange)range atPoint:(CGPoint)point;
+- (void)drawGradientInEnclosingRect:(id)rect enclosingRect:(CGRect *)enclosingRect lineFragmentPadding:(double)padding runsOffLeft:(BOOL)left runsOffRight:(BOOL)right;
+- (void)enumerateEnclosingRectsForGlyphRange:(_NSRange)range insetForBackground:(BOOL)background standaloneTextAttachment:(BOOL)attachment usingBlock:(id)block;
+- (void)enumerateEnclosingRectsForSlot:(id)slot includeInsideSpacing:(BOOL)spacing insetForBackground:(BOOL)background usingBlock:(id)block;
+- (void)getCalculatedLineHeight:(double *)height originalFontLineHeight:(double *)lineHeight;
 @end
 
 @implementation WFSlotTemplateLayoutManager
 
-- (CGRect)layoutManager:(id)a3 boundingBoxForControlGlyphAtIndex:(unint64_t)a4 forTextContainer:(id)a5 proposedLineFragment:(CGRect)a6 glyphPosition:(CGPoint)a7 characterIndex:(unint64_t)a8
+- (CGRect)layoutManager:(id)manager boundingBoxForControlGlyphAtIndex:(unint64_t)index forTextContainer:(id)container proposedLineFragment:(CGRect)fragment glyphPosition:(CGPoint)position characterIndex:(unint64_t)characterIndex
 {
-  x = a7.x;
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  v13 = a6.origin.x;
-  v15 = [(WFSlotTemplateLayoutManager *)self textStorage:a3];
-  v16 = [v15 slotSpacingOpportunityAtCharacterIndex:a8];
+  x = position.x;
+  height = fragment.size.height;
+  width = fragment.size.width;
+  y = fragment.origin.y;
+  v13 = fragment.origin.x;
+  v15 = [(WFSlotTemplateLayoutManager *)self textStorage:manager];
+  v16 = [v15 slotSpacingOpportunityAtCharacterIndex:characterIndex];
 
   if (v16 == 2)
   {
@@ -55,8 +55,8 @@ LABEL_7:
     goto LABEL_12;
   }
 
-  v17 = [(WFSlotTemplateLayoutManager *)self textStorage];
-  v18 = [v17 slotAtCharacterIndex:a8 effectiveRange:0 effectiveContentRange:0];
+  textStorage = [(WFSlotTemplateLayoutManager *)self textStorage];
+  v18 = [textStorage slotAtCharacterIndex:characterIndex effectiveRange:0 effectiveContentRange:0];
 
   if ([v18 standaloneTextAttachment])
   {
@@ -66,9 +66,9 @@ LABEL_7:
 
   else
   {
-    v21 = [(WFSlotTemplateLayoutManager *)self useCase];
+    useCase = [(WFSlotTemplateLayoutManager *)self useCase];
     v22 = 8.0;
-    if (!v21)
+    if (!useCase)
     {
       v22 = 6.5;
     }
@@ -92,10 +92,10 @@ LABEL_12:
   return result;
 }
 
-- (int64_t)layoutManager:(id)a3 shouldUseAction:(int64_t)a4 forControlCharacterAtIndex:(unint64_t)a5
+- (int64_t)layoutManager:(id)manager shouldUseAction:(int64_t)action forControlCharacterAtIndex:(unint64_t)index
 {
-  v7 = [(WFSlotTemplateLayoutManager *)self textStorage];
-  v8 = [v7 slotSpacingOpportunityAtCharacterIndex:a5];
+  textStorage = [(WFSlotTemplateLayoutManager *)self textStorage];
+  v8 = [textStorage slotSpacingOpportunityAtCharacterIndex:index];
 
   if (v8)
   {
@@ -104,42 +104,42 @@ LABEL_12:
 
   else
   {
-    return a4;
+    return action;
   }
 }
 
-- (BOOL)layoutManager:(id)a3 shouldSetLineFragmentRect:(CGRect *)a4 lineFragmentUsedRect:(CGRect *)a5 baselineOffset:(double *)a6 inTextContainer:(id)a7 forGlyphRange:(_NSRange)a8
+- (BOOL)layoutManager:(id)manager shouldSetLineFragmentRect:(CGRect *)rect lineFragmentUsedRect:(CGRect *)usedRect baselineOffset:(double *)offset inTextContainer:(id)container forGlyphRange:(_NSRange)range
 {
   v19 = 0.0;
   v20 = 0.0;
-  [(WFSlotTemplateLayoutManager *)self getCalculatedLineHeight:&v19 originalFontLineHeight:&v20, a5, a6, a7];
-  height = a4->size.height;
+  [(WFSlotTemplateLayoutManager *)self getCalculatedLineHeight:&v19 originalFontLineHeight:&v20, usedRect, offset, container];
+  height = rect->size.height;
   v13 = v19;
   if (height < v19)
   {
     height = v19;
   }
 
-  a4->size.height = height;
-  a5->size.height = height;
+  rect->size.height = height;
+  usedRect->size.height = height;
   v14 = (v13 - v20) * -0.5;
-  v15 = [(WFSlotTemplateLayoutManager *)self textStorage];
-  v16 = [v15 font];
-  [v16 descender];
-  *a6 = v13 + v17 + v14;
+  textStorage = [(WFSlotTemplateLayoutManager *)self textStorage];
+  font = [textStorage font];
+  [font descender];
+  *offset = v13 + v17 + v14;
 
   return 1;
 }
 
-- (BOOL)layoutManager:(id)a3 shouldBreakLineByWordBeforeCharacterAtIndex:(unint64_t)a4
+- (BOOL)layoutManager:(id)manager shouldBreakLineByWordBeforeCharacterAtIndex:(unint64_t)index
 {
   v10 = xmmword_1C841E450;
-  v5 = [(WFSlotTemplateLayoutManager *)self textStorage];
-  v6 = [v5 slotAtCharacterIndex:a4 effectiveRange:0 effectiveContentRange:&v10];
+  textStorage = [(WFSlotTemplateLayoutManager *)self textStorage];
+  v6 = [textStorage slotAtCharacterIndex:index effectiveRange:0 effectiveContentRange:&v10];
 
   if (v6)
   {
-    if (a4 < v10 || a4 - v10 >= *(&v10 + 1))
+    if (index < v10 || index - v10 >= *(&v10 + 1))
     {
       LOBYTE(v8) = 0;
     }
@@ -158,56 +158,56 @@ LABEL_12:
   return v8;
 }
 
-- (void)getCalculatedLineHeight:(double *)a3 originalFontLineHeight:(double *)a4
+- (void)getCalculatedLineHeight:(double *)height originalFontLineHeight:(double *)lineHeight
 {
-  v7 = [(WFSlotTemplateLayoutManager *)self textStorage];
-  v17 = [v7 font];
+  textStorage = [(WFSlotTemplateLayoutManager *)self textStorage];
+  font = [textStorage font];
 
-  v8 = [(WFSlotTemplateLayoutManager *)self textStorage];
-  v9 = [v8 paragraphStyle];
+  textStorage2 = [(WFSlotTemplateLayoutManager *)self textStorage];
+  paragraphStyle = [textStorage2 paragraphStyle];
 
-  [v17 lineHeight];
+  [font lineHeight];
   v11 = v10;
-  *a4 = v10;
-  [v9 lineHeightMultiple];
+  *lineHeight = v10;
+  [paragraphStyle lineHeightMultiple];
   if (v12 > 0.0)
   {
-    [v9 lineHeightMultiple];
+    [paragraphStyle lineHeightMultiple];
     v11 = v11 * v13;
   }
 
-  [v9 maximumLineHeight];
+  [paragraphStyle maximumLineHeight];
   if (v14 > 0.0)
   {
-    [v9 maximumLineHeight];
+    [paragraphStyle maximumLineHeight];
     if (v15 < v11)
     {
       v11 = v15;
     }
   }
 
-  [v9 minimumLineHeight];
+  [paragraphStyle minimumLineHeight];
   if (v16 < v11)
   {
     v16 = v11;
   }
 
-  *a3 = v16;
+  *height = v16;
 }
 
-- (double)preferredHeightForDrawingTextAttachment:(id)a3 atCharacterIndex:(unint64_t)a4 withProposedHeight:(double)a5
+- (double)preferredHeightForDrawingTextAttachment:(id)attachment atCharacterIndex:(unint64_t)index withProposedHeight:(double)height
 {
-  v6 = [(WFSlotTemplateLayoutManager *)self useCase:a3];
-  result = a5 + -5.0;
+  v6 = [(WFSlotTemplateLayoutManager *)self useCase:attachment];
+  result = height + -5.0;
   if (v6 != 1)
   {
-    return a5;
+    return height;
   }
 
   return result;
 }
 
-- (BOOL)shouldDrawTextAttachment:(id)a3 atCharacterIndex:(unint64_t)a4
+- (BOOL)shouldDrawTextAttachment:(id)attachment atCharacterIndex:(unint64_t)index
 {
   if ([(WFSlotTemplateLayoutManager *)self isLayoutManagerForTextView])
   {
@@ -216,116 +216,116 @@ LABEL_12:
 
   else
   {
-    v7 = [(WFSlotTemplateLayoutManager *)self textStorage];
-    v8 = [v7 attribute:@"WFSlot" atIndex:a4 effectiveRange:0];
+    textStorage = [(WFSlotTemplateLayoutManager *)self textStorage];
+    v8 = [textStorage attribute:@"WFSlot" atIndex:index effectiveRange:0];
 
-    v9 = [(WFSlotTemplateLayoutManager *)self textStorage];
-    v10 = [v9 typingSlots];
-    v6 = [v10 containsObject:v8] ^ 1;
+    textStorage2 = [(WFSlotTemplateLayoutManager *)self textStorage];
+    typingSlots = [textStorage2 typingSlots];
+    v6 = [typingSlots containsObject:v8] ^ 1;
   }
 
   return v6;
 }
 
-- (void)drawGradientInEnclosingRect:(id)a3 enclosingRect:(CGRect *)a4 lineFragmentPadding:(double)a5 runsOffLeft:(BOOL)a6 runsOffRight:(BOOL)a7
+- (void)drawGradientInEnclosingRect:(id)rect enclosingRect:(CGRect *)enclosingRect lineFragmentPadding:(double)padding runsOffLeft:(BOOL)left runsOffRight:(BOOL)right
 {
-  v7 = a7;
-  v8 = a6;
+  rightCopy = right;
+  leftCopy = left;
   v33 = *MEMORY[0x1E69E9840];
   v11 = MEMORY[0x1E695DEC8];
-  v12 = a3;
-  v13 = [v12 colorWithAlphaComponent:0.0];
-  v14 = [v13 CGColor];
-  v15 = [v12 CGColor];
+  rectCopy = rect;
+  v13 = [rectCopy colorWithAlphaComponent:0.0];
+  cGColor = [v13 CGColor];
+  cGColor2 = [rectCopy CGColor];
 
-  v16 = [v11 arrayWithObjects:{v14, v15, 0, 0, 0x3FF0000000000000}];
+  v16 = [v11 arrayWithObjects:{cGColor, cGColor2, 0, 0, 0x3FF0000000000000}];
   v17 = CGGradientCreateWithColors(0, v16, locations);
   v18 = [MEMORY[0x1E69E09C0] currentContextWithScale:0.0];
-  v19 = [v18 CGContext];
+  cGContext = [v18 CGContext];
 
-  if (v8)
+  if (leftCopy)
   {
-    CGContextSaveGState(v19);
-    v20 = CGRectGetMinX(*a4) - a5;
-    MinY = CGRectGetMinY(*a4);
-    Height = CGRectGetHeight(*a4);
+    CGContextSaveGState(cGContext);
+    v20 = CGRectGetMinX(*enclosingRect) - padding;
+    MinY = CGRectGetMinY(*enclosingRect);
+    Height = CGRectGetHeight(*enclosingRect);
     v38.origin.x = v20;
     v38.origin.y = MinY;
-    v38.size.width = a5;
+    v38.size.width = padding;
     v38.size.height = Height;
-    CGContextClipToRect(v19, v38);
+    CGContextClipToRect(cGContext, v38);
     v39.origin.x = v20;
     v39.origin.y = MinY;
-    v39.size.width = a5;
+    v39.size.width = padding;
     v39.size.height = Height;
     MinX = CGRectGetMinX(v39);
     v40.origin.x = v20;
     v40.origin.y = MinY;
-    v40.size.width = a5;
+    v40.size.width = padding;
     v40.size.height = Height;
     MidY = CGRectGetMidY(v40);
     v41.origin.x = v20;
     v41.origin.y = MinY;
-    v41.size.width = a5;
+    v41.size.width = padding;
     v41.size.height = Height;
     MaxX = CGRectGetMaxX(v41);
     v42.origin.x = v20;
     v42.origin.y = MinY;
-    v42.size.width = a5;
+    v42.size.width = padding;
     v42.size.height = Height;
     v36.y = CGRectGetMidY(v42);
     v34.x = MinX;
     v34.y = MidY;
     v36.x = MaxX;
-    CGContextDrawLinearGradient(v19, v17, v34, v36, 0);
-    CGContextRestoreGState(v19);
+    CGContextDrawLinearGradient(cGContext, v17, v34, v36, 0);
+    CGContextRestoreGState(cGContext);
   }
 
-  if (v7)
+  if (rightCopy)
   {
-    CGContextSaveGState(v19);
-    v26 = CGRectGetMaxX(*a4);
-    v27 = CGRectGetMinY(*a4);
-    v28 = CGRectGetHeight(*a4);
+    CGContextSaveGState(cGContext);
+    v26 = CGRectGetMaxX(*enclosingRect);
+    v27 = CGRectGetMinY(*enclosingRect);
+    v28 = CGRectGetHeight(*enclosingRect);
     v43.origin.x = v26;
     v43.origin.y = v27;
-    v43.size.width = a5;
+    v43.size.width = padding;
     v43.size.height = v28;
-    CGContextClipToRect(v19, v43);
+    CGContextClipToRect(cGContext, v43);
     v44.origin.x = v26;
     v44.origin.y = v27;
-    v44.size.width = a5;
+    v44.size.width = padding;
     v44.size.height = v28;
     v29 = CGRectGetMinX(v44);
     v45.origin.x = v26;
     v45.origin.y = v27;
-    v45.size.width = a5;
+    v45.size.width = padding;
     v45.size.height = v28;
     v30 = CGRectGetMidY(v45);
     v46.origin.x = v26;
     v46.origin.y = v27;
-    v46.size.width = a5;
+    v46.size.width = padding;
     v46.size.height = v28;
     v31 = CGRectGetMaxX(v46);
     v47.origin.x = v26;
     v47.origin.y = v27;
-    v47.size.width = a5;
+    v47.size.width = padding;
     v47.size.height = v28;
     v35.y = CGRectGetMidY(v47);
     v35.x = v31;
     v37.x = v29;
     v37.y = v30;
-    CGContextDrawLinearGradient(v19, v17, v35, v37, 0);
-    CGContextRestoreGState(v19);
+    CGContextDrawLinearGradient(cGContext, v17, v35, v37, 0);
+    CGContextRestoreGState(cGContext);
   }
 }
 
-- (void)drawBackgroundForGlyphRange:(_NSRange)a3 atPoint:(CGPoint)a4
+- (void)drawBackgroundForGlyphRange:(_NSRange)range atPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  length = a3.length;
-  location = a3.location;
+  y = point.y;
+  x = point.x;
+  length = range.length;
+  location = range.location;
   if ([(WFSlotTemplateLayoutManager *)self isLayoutManagerForTextView])
   {
     v14.receiver = self;
@@ -337,13 +337,13 @@ LABEL_12:
   {
     v9 = [(WFSlotTemplateLayoutManager *)self characterRangeForGlyphRange:location actualGlyphRange:length, 0];
     v11 = v10;
-    v12 = [(WFSlotTemplateLayoutManager *)self textStorage];
+    textStorage = [(WFSlotTemplateLayoutManager *)self textStorage];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __67__WFSlotTemplateLayoutManager_drawBackgroundForGlyphRange_atPoint___block_invoke;
     v13[3] = &unk_1E8308230;
     v13[4] = self;
-    [v12 enumerateAttribute:@"WFSlot" inRange:v9 options:v11 usingBlock:{0, v13}];
+    [textStorage enumerateAttribute:@"WFSlot" inRange:v9 options:v11 usingBlock:{0, v13}];
   }
 }
 
@@ -528,7 +528,7 @@ LABEL_19:
   }
 }
 
-- (UIEdgeInsets)slotBackgroundInsetsAtCharIndex:(unint64_t)a3
+- (UIEdgeInsets)slotBackgroundInsetsAtCharIndex:(unint64_t)index
 {
   v3 = 2.5;
   v4 = 0.0;
@@ -541,21 +541,21 @@ LABEL_19:
   return result;
 }
 
-- (void)enumerateEnclosingRectsForGlyphRange:(_NSRange)a3 insetForBackground:(BOOL)a4 standaloneTextAttachment:(BOOL)a5 usingBlock:(id)a6
+- (void)enumerateEnclosingRectsForGlyphRange:(_NSRange)range insetForBackground:(BOOL)background standaloneTextAttachment:(BOOL)attachment usingBlock:(id)block
 {
-  length = a3.length;
-  location = a3.location;
-  v10 = a6;
+  length = range.length;
+  location = range.location;
+  blockCopy = block;
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __123__WFSlotTemplateLayoutManager_enumerateEnclosingRectsForGlyphRange_insetForBackground_standaloneTextAttachment_usingBlock___block_invoke;
   v12[3] = &unk_1E83081B0;
   v14 = location;
   v15 = length;
-  v16 = a4;
+  backgroundCopy = background;
   v12[4] = self;
-  v13 = v10;
-  v11 = v10;
+  v13 = blockCopy;
+  v11 = blockCopy;
   [(WFSlotTemplateLayoutManager *)self enumerateLineFragmentsForGlyphRange:location usingBlock:length, v12];
 }
 
@@ -643,31 +643,31 @@ uint64_t __123__WFSlotTemplateLayoutManager_enumerateEnclosingRectsForGlyphRange
   return result;
 }
 
-- (void)enumerateEnclosingRectsForSlot:(id)a3 includeInsideSpacing:(BOOL)a4 insetForBackground:(BOOL)a5 usingBlock:(id)a6
+- (void)enumerateEnclosingRectsForSlot:(id)slot includeInsideSpacing:(BOOL)spacing insetForBackground:(BOOL)background usingBlock:(id)block
 {
-  v6 = a5;
-  v7 = a4;
-  v19 = a6;
-  v10 = a3;
-  v11 = [(WFSlotTemplateLayoutManager *)self textStorage];
-  v12 = [v11 characterRangeForSlot:v10 includingInsideSpacingOpportunities:v7];
+  backgroundCopy = background;
+  spacingCopy = spacing;
+  blockCopy = block;
+  slotCopy = slot;
+  textStorage = [(WFSlotTemplateLayoutManager *)self textStorage];
+  v12 = [textStorage characterRangeForSlot:slotCopy includingInsideSpacingOpportunities:spacingCopy];
   v14 = v13;
 
   v15 = [(WFSlotTemplateLayoutManager *)self glyphRangeForCharacterRange:v12 actualCharacterRange:v14, 0];
   v17 = v16;
-  v18 = [v10 standaloneTextAttachment];
+  standaloneTextAttachment = [slotCopy standaloneTextAttachment];
 
-  [(WFSlotTemplateLayoutManager *)self enumerateEnclosingRectsForGlyphRange:v15 insetForBackground:v17 standaloneTextAttachment:v6 usingBlock:v18, v19];
+  [(WFSlotTemplateLayoutManager *)self enumerateEnclosingRectsForGlyphRange:v15 insetForBackground:v17 standaloneTextAttachment:backgroundCopy usingBlock:standaloneTextAttachment, blockCopy];
 }
 
 - (unint64_t)numberOfLaidLines
 {
-  v3 = [(WFSlotTemplateLayoutManager *)self numberOfGlyphs];
+  numberOfGlyphs = [(WFSlotTemplateLayoutManager *)self numberOfGlyphs];
   v4 = 0;
   do
   {
     v5 = v4;
-    if (!v3)
+    if (!numberOfGlyphs)
     {
       break;
     }
@@ -681,7 +681,7 @@ uint64_t __123__WFSlotTemplateLayoutManager_enumerateEnclosingRectsForGlyphRange
   return v5;
 }
 
-- (WFSlotTemplateLayoutManager)initWithUseCase:(unint64_t)a3
+- (WFSlotTemplateLayoutManager)initWithUseCase:(unint64_t)case
 {
   v8.receiver = self;
   v8.super_class = WFSlotTemplateLayoutManager;
@@ -689,7 +689,7 @@ uint64_t __123__WFSlotTemplateLayoutManager_enumerateEnclosingRectsForGlyphRange
   v5 = v4;
   if (v4)
   {
-    v4->_useCase = a3;
+    v4->_useCase = case;
     [(WFSlotTemplateLayoutManager *)v4 setDelegate:v4];
     [(WFSlotTemplateLayoutManager *)v5 setShowsControlCharacters:0];
     [(WFSlotTemplateLayoutManager *)v5 setShowsInvisibleCharacters:0];

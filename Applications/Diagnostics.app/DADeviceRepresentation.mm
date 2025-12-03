@@ -1,36 +1,36 @@
 @interface DADeviceRepresentation
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (DADeviceDelegate)delegate;
-- (DADeviceRepresentation)initWithSerialNumber:(id)a3 isLocal:(BOOL)a4 attributes:(id)a5;
+- (DADeviceRepresentation)initWithSerialNumber:(id)number isLocal:(BOOL)local attributes:(id)attributes;
 - (NSString)description;
 - (unint64_t)hash;
 @end
 
 @implementation DADeviceRepresentation
 
-- (DADeviceRepresentation)initWithSerialNumber:(id)a3 isLocal:(BOOL)a4 attributes:(id)a5
+- (DADeviceRepresentation)initWithSerialNumber:(id)number isLocal:(BOOL)local attributes:(id)attributes
 {
-  v8 = a3;
-  v9 = a5;
+  numberCopy = number;
+  attributesCopy = attributes;
   v16.receiver = self;
   v16.super_class = DADeviceRepresentation;
   v10 = [(DADeviceRepresentation *)&v16 init];
   if (v10)
   {
     v11 = &__NSDictionary0__struct;
-    if (v9)
+    if (attributesCopy)
     {
-      v11 = v9;
+      v11 = attributesCopy;
     }
 
     v12 = v11;
 
-    v10->_local = a4;
-    v13 = [[DADeviceState alloc] initWithSerialNumber:v8 attributes:v12];
+    v10->_local = local;
+    v13 = [[DADeviceState alloc] initWithSerialNumber:numberCopy attributes:v12];
     state = v10->_state;
     v10->_state = v13;
 
-    v9 = v12;
+    attributesCopy = v12;
   }
 
   return v10;
@@ -38,23 +38,23 @@
 
 - (unint64_t)hash
 {
-  v2 = [(DADeviceRepresentation *)self state];
-  v3 = [v2 serialNumber];
-  v4 = [v3 hash];
+  state = [(DADeviceRepresentation *)self state];
+  serialNumber = [state serialNumber];
+  v4 = [serialNumber hash];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 conformsToProtocol:&OBJC_PROTOCOL___DADevice])
+  equalCopy = equal;
+  if ([equalCopy conformsToProtocol:&OBJC_PROTOCOL___DADevice])
   {
-    v5 = [(DADeviceRepresentation *)self state];
-    v6 = [v5 serialNumber];
-    v7 = [v4 state];
-    v8 = [v7 serialNumber];
-    v9 = [v6 isEqualToString:v8];
+    state = [(DADeviceRepresentation *)self state];
+    serialNumber = [state serialNumber];
+    state2 = [equalCopy state];
+    serialNumber2 = [state2 serialNumber];
+    v9 = [serialNumber isEqualToString:serialNumber2];
   }
 
   else
@@ -69,9 +69,9 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(DADeviceRepresentation *)self state];
-  v6 = [v5 serialNumber];
-  v7 = [NSString stringWithFormat:@"<%@ %p: %@>", v4, self, v6];;
+  state = [(DADeviceRepresentation *)self state];
+  serialNumber = [state serialNumber];
+  v7 = [NSString stringWithFormat:@"<%@ %p: %@>", v4, self, serialNumber];;
 
   return v7;
 }

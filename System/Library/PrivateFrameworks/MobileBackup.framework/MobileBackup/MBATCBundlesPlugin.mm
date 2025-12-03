@@ -1,28 +1,28 @@
 @interface MBATCBundlesPlugin
-- (BOOL)shouldBackgroundRestoreContentWithPolicy:(id)a3 fileInfo:(id)a4;
-- (BOOL)shouldRestoreContentWithPolicy:(id)a3 fileInfo:(id)a4;
-- (id)endingBackupWithEngine:(id)a3;
-- (id)startingBackupWithEngine:(id)a3;
-- (id)startingRestoreWithPolicy:(id)a3 engine:(id)a4;
-- (void)_populateAccountsAndAssetsForEngine:(id)a3 accountsTracker:(id)a4;
-- (void)_populateAccountsForEngine:(id)a3 dataClasses:(id)a4 accountsTracker:(id)a5;
-- (void)_populateBuddyStashForEngine:(id)a3;
-- (void)_populatePathsForEngine:(id)a3 domain:(id)a4 dataclass:(id)a5 allBackupPaths:(id)a6;
-- (void)_updatePathsForCameraRollDomainWithEngine:(id)a3;
+- (BOOL)shouldBackgroundRestoreContentWithPolicy:(id)policy fileInfo:(id)info;
+- (BOOL)shouldRestoreContentWithPolicy:(id)policy fileInfo:(id)info;
+- (id)endingBackupWithEngine:(id)engine;
+- (id)startingBackupWithEngine:(id)engine;
+- (id)startingRestoreWithPolicy:(id)policy engine:(id)engine;
+- (void)_populateAccountsAndAssetsForEngine:(id)engine accountsTracker:(id)tracker;
+- (void)_populateAccountsForEngine:(id)engine dataClasses:(id)classes accountsTracker:(id)tracker;
+- (void)_populateBuddyStashForEngine:(id)engine;
+- (void)_populatePathsForEngine:(id)engine domain:(id)domain dataclass:(id)dataclass allBackupPaths:(id)paths;
+- (void)_updatePathsForCameraRollDomainWithEngine:(id)engine;
 @end
 
 @implementation MBATCBundlesPlugin
 
-- (void)_populatePathsForEngine:(id)a3 domain:(id)a4 dataclass:(id)a5 allBackupPaths:(id)a6
+- (void)_populatePathsForEngine:(id)engine domain:(id)domain dataclass:(id)dataclass allBackupPaths:(id)paths
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  engineCopy = engine;
+  domainCopy = domain;
+  dataclassCopy = dataclass;
+  pathsCopy = paths;
   v13 = +[ATClientController sharedInstance];
-  v14 = [v13 clientForDataclass:v11];
-  v15 = [v9 domainManager];
-  v16 = [v15 domainForName:v10];
+  v14 = [v13 clientForDataclass:dataclassCopy];
+  domainManager = [engineCopy domainManager];
+  v16 = [domainManager domainForName:domainCopy];
 
   v17 = objc_alloc_init(NSMutableSet);
   v18 = objc_alloc_init(NSMutableSet);
@@ -30,19 +30,19 @@
   {
     context = objc_autoreleasePoolPush();
     v60 = v17;
-    if ([v9 isDeviceTransferEngine])
+    if ([engineCopy isDeviceTransferEngine])
     {
       v19 = 3;
     }
 
-    else if ([v9 isDriveEngine])
+    else if ([engineCopy isDriveEngine])
     {
       v19 = 2;
     }
 
     else
     {
-      if (([v9 isServiceEngine] & 1) == 0)
+      if (([engineCopy isServiceEngine] & 1) == 0)
       {
         __assert_rtn("[MBATCBundlesPlugin _populatePathsForEngine:domain:dataclass:allBackupPaths:]", "MBATCBundlesPlugin.m", 64, "restoreType != ATRestoreTypeNone");
       }
@@ -57,7 +57,7 @@
     v74 = v14;
     v79 = v19;
     v75 = v16;
-    v76 = v12;
+    v76 = pathsCopy;
     v77 = v17;
     v78 = v18;
     v46 = [v74 enumeratePathsForBackupType:v19 usingBlock:v73];
@@ -75,9 +75,9 @@
     v60 = v17;
     v62 = v18;
     v55 = v13;
-    v56 = v11;
-    v57 = v10;
-    v58 = v9;
+    v56 = dataclassCopy;
+    v57 = domainCopy;
+    v58 = engineCopy;
     context = objc_autoreleasePoolPush();
     v71 = 0;
     v72 = 0;
@@ -110,7 +110,7 @@
     v68 = 0u;
     v25 = v20;
     v26 = [v25 countByEnumeratingWithState:&v67 objects:v81 count:16];
-    v27 = v12;
+    v27 = pathsCopy;
     obj = v25;
     if (v26)
     {
@@ -219,11 +219,11 @@
       while (v38);
     }
 
-    v10 = v57;
-    v9 = v58;
-    v12 = v27;
+    domainCopy = v57;
+    engineCopy = v58;
+    pathsCopy = v27;
     v13 = v55;
-    v11 = v56;
+    dataclassCopy = v56;
     v18 = v62;
     v45 = obj;
   }
@@ -233,12 +233,12 @@
 LABEL_37:
   if ([v17 count])
   {
-    v47 = [v16 relativePathsToBackupAndRestore];
+    relativePathsToBackupAndRestore = [v16 relativePathsToBackupAndRestore];
 
-    if (v47)
+    if (relativePathsToBackupAndRestore)
     {
-      v48 = [v16 relativePathsToBackupAndRestore];
-      [v17 unionSet:v48];
+      relativePathsToBackupAndRestore2 = [v16 relativePathsToBackupAndRestore];
+      [v17 unionSet:relativePathsToBackupAndRestore2];
     }
 
     [v16 setRelativePathsToBackupAndRestore:v17];
@@ -246,46 +246,46 @@ LABEL_37:
 
   if ([v18 count])
   {
-    v49 = [v16 relativePathsNotToBackup];
+    relativePathsNotToBackup = [v16 relativePathsNotToBackup];
 
-    if (v49)
+    if (relativePathsNotToBackup)
     {
-      v50 = [v16 relativePathsNotToBackup];
-      [v18 unionSet:v50];
+      relativePathsNotToBackup2 = [v16 relativePathsNotToBackup];
+      [v18 unionSet:relativePathsNotToBackup2];
     }
 
     [v16 setRelativePathsNotToBackup:v18];
   }
 }
 
-- (void)_populateAccountsForEngine:(id)a3 dataClasses:(id)a4 accountsTracker:(id)a5
+- (void)_populateAccountsForEngine:(id)engine dataClasses:(id)classes accountsTracker:(id)tracker
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  engineCopy = engine;
+  classesCopy = classes;
+  trackerCopy = tracker;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBATCBundlesPlugin _populateAccountsForEngine:dataClasses:accountsTracker:]", "MBATCBundlesPlugin.m", 140, "accountsTracker");
   }
 
-  v10 = v9;
-  if ([v7 isDeviceTransferEngine])
+  v10 = trackerCopy;
+  if ([engineCopy isDeviceTransferEngine])
   {
-    [v7 preflightProperties];
+    [engineCopy preflightProperties];
   }
 
   else
   {
-    [v7 properties];
+    [engineCopy properties];
   }
   v60 = ;
-  v52 = v7;
+  v52 = engineCopy;
   v55 = +[ATClientController sharedInstance];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  obj = v8;
+  obj = classesCopy;
   v56 = [obj countByEnumeratingWithState:&v70 objects:v82 count:16];
   if (v56)
   {
@@ -309,7 +309,7 @@ LABEL_37:
         v57 = v14;
         if (objc_opt_respondsToSelector())
         {
-          v15 = [v14 accountsForAssets];
+          accountsForAssets = [v14 accountsForAssets];
           v16 = MBGetDefaultLog();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
@@ -318,10 +318,10 @@ LABEL_37:
             v78 = 2112;
             v79 = v61;
             v80 = 2112;
-            v81 = v15;
+            v81 = accountsForAssets;
             _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "=atc-bundles= %@: dataClass:%@, -accountsForAssets returned: %@", buf, 0x20u);
             v50 = v61;
-            v51 = v15;
+            v51 = accountsForAssets;
             v46 = v14;
             _MBLog();
           }
@@ -343,17 +343,17 @@ LABEL_17:
             _MBLog();
           }
 
-          v15 = 0;
+          accountsForAssets = 0;
           goto LABEL_17;
         }
 
-        v15 = 0;
+        accountsForAssets = 0;
 LABEL_18:
         v68 = 0u;
         v69 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v17 = v15;
+        v17 = accountsForAssets;
         v18 = [v17 countByEnumeratingWithState:&v66 objects:v75 count:16];
         if (v18)
         {
@@ -369,8 +369,8 @@ LABEL_18:
               }
 
               v22 = *(*(&v66 + 1) + 8 * i);
-              v23 = [v22 appleID];
-              if (!v23)
+              appleID = [v22 appleID];
+              if (!appleID)
               {
                 v24 = MBGetDefaultLog();
                 if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -383,8 +383,8 @@ LABEL_18:
                 }
               }
 
-              v25 = [v22 DSID];
-              if (!v25)
+              dSID = [v22 DSID];
+              if (!dSID)
               {
                 v26 = MBGetDefaultLog();
                 if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
@@ -397,8 +397,8 @@ LABEL_18:
                 }
               }
 
-              v27 = [v22 altDSID];
-              if (!v27)
+              altDSID = [v22 altDSID];
+              if (!altDSID)
               {
                 v28 = MBGetDefaultLog();
                 if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -411,24 +411,24 @@ LABEL_18:
                 }
               }
 
-              if ([v10 addAccountWithDSID:{v25, v49}])
+              if ([v10 addAccountWithDSID:{dSID, v49}])
               {
-                v29 = [v25 stringValue];
-                [v60 addAppleID:v23 DSID:v29 altDSID:v27 dataClass:v61];
+                stringValue = [dSID stringValue];
+                [v60 addAppleID:appleID DSID:stringValue altDSID:altDSID dataClass:v61];
               }
 
               else
               {
-                v29 = MBGetDefaultLog();
-                if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
+                stringValue = MBGetDefaultLog();
+                if (os_log_type_enabled(stringValue, OS_LOG_TYPE_INFO))
                 {
                   *buf = 138412546;
-                  v77 = v23;
+                  v77 = appleID;
                   v78 = 2112;
-                  v79 = v25;
-                  _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "=atc-bundles= Skipping account: %@/%@", buf, 0x16u);
-                  v46 = v23;
-                  v50 = v25;
+                  v79 = dSID;
+                  _os_log_impl(&_mh_execute_header, stringValue, OS_LOG_TYPE_INFO, "=atc-bundles= Skipping account: %@/%@", buf, 0x16u);
+                  v46 = appleID;
+                  v50 = dSID;
                   _MBLog();
                 }
               }
@@ -440,7 +440,7 @@ LABEL_18:
           while (v19);
         }
 
-        v30 = [v57 appleIDsForAssets];
+        appleIDsForAssets = [v57 appleIDsForAssets];
         v31 = MBGetDefaultLog();
         if (os_log_type_enabled(v31, OS_LOG_TYPE_INFO))
         {
@@ -449,20 +449,20 @@ LABEL_18:
           v78 = 2112;
           v79 = v61;
           v80 = 2112;
-          v81 = v30;
+          v81 = appleIDsForAssets;
           _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_INFO, "=atc-bundles= %@: dataClass:%@, -appleIDsForAssets returned: %@", buf, 0x20u);
           v50 = v61;
-          v51 = v30;
+          v51 = appleIDsForAssets;
           v46 = v57;
           _MBLog();
         }
 
-        v32 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(v30, "count")}];
+        v32 = [[NSMutableSet alloc] initWithCapacity:{objc_msgSend(appleIDsForAssets, "count")}];
         v62 = 0u;
         v63 = 0u;
         v64 = 0u;
         v65 = 0u;
-        v33 = v30;
+        v33 = appleIDsForAssets;
         v34 = [v33 countByEnumeratingWithState:&v62 objects:v74 count:16];
         if (v34)
         {
@@ -528,47 +528,47 @@ LABEL_18:
   }
 
   v42 = +[SSAccountStore defaultStore];
-  v43 = [v42 activeAccount];
+  activeAccount = [v42 activeAccount];
 
-  if (v43)
+  if (activeAccount)
   {
-    v44 = [v43 accountName];
-    if (([v10 isIgnoredAppleID:v44] & 1) == 0)
+    accountName = [activeAccount accountName];
+    if (([v10 isIgnoredAppleID:accountName] & 1) == 0)
     {
       v45 = MBGetDefaultLog();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v77 = v44;
+        v77 = accountName;
         _os_log_impl(&_mh_execute_header, v45, OS_LOG_TYPE_DEFAULT, "=atc-bundles= Found active store account: %@", buf, 0xCu);
         _MBLog();
       }
 
-      [v60 setActiveAppleID:v44];
+      [v60 setActiveAppleID:accountName];
     }
   }
 }
 
-- (void)_populateAccountsAndAssetsForEngine:(id)a3 accountsTracker:(id)a4
+- (void)_populateAccountsAndAssetsForEngine:(id)engine accountsTracker:(id)tracker
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  engineCopy = engine;
+  trackerCopy = tracker;
+  if (!trackerCopy)
   {
     __assert_rtn("[MBATCBundlesPlugin _populateAccountsAndAssetsForEngine:accountsTracker:]", "MBATCBundlesPlugin.m", 209, "accountsTracker");
   }
 
-  v7 = v6;
-  v8 = [v5 isDeviceTransferEngine];
-  v9 = v8;
-  if (v8)
+  v7 = trackerCopy;
+  isDeviceTransferEngine = [engineCopy isDeviceTransferEngine];
+  v9 = isDeviceTransferEngine;
+  if (isDeviceTransferEngine)
   {
-    [v5 preflightProperties];
+    [engineCopy preflightProperties];
   }
 
   else
   {
-    [v5 properties];
+    [engineCopy properties];
   }
   v10 = ;
   v11 = +[ACAccountStore defaultStore];
@@ -608,9 +608,9 @@ LABEL_18:
   }
 }
 
-- (void)_populateBuddyStashForEngine:(id)a3
+- (void)_populateBuddyStashForEngine:(id)engine
 {
-  v3 = [a3 properties];
+  properties = [engine properties];
   v4 = BYDataStashCreate();
   v5 = v4;
   if (v4)
@@ -628,14 +628,14 @@ LABEL_18:
       }
     }
 
-    [v3 setBuddyStashData:{v5, v7}];
+    [properties setBuddyStashData:{v5, v7}];
   }
 }
 
-- (id)startingBackupWithEngine:(id)a3
+- (id)startingBackupWithEngine:(id)engine
 {
-  v4 = a3;
-  if (![v4 backsUpPrimaryAccount])
+  engineCopy = engine;
+  if (![engineCopy backsUpPrimaryAccount])
   {
     goto LABEL_39;
   }
@@ -643,9 +643,9 @@ LABEL_18:
   if (MBIsInternalInstall())
   {
     v5 = +[MBBehaviorOptions sharedOptions];
-    v6 = [v5 domainsToBackUpRegex];
+    domainsToBackUpRegex = [v5 domainsToBackUpRegex];
 
-    if (v6)
+    if (domainsToBackUpRegex)
     {
       goto LABEL_39;
     }
@@ -656,9 +656,9 @@ LABEL_18:
   v45 = 0u;
   v46 = 0u;
   v7 = +[ATClientController sharedInstance];
-  v8 = [v7 allClients];
+  allClients = [v7 allClients];
 
-  v9 = [v8 countByEnumeratingWithState:&v45 objects:v54 count:16];
+  v9 = [allClients countByEnumeratingWithState:&v45 objects:v54 count:16];
   if (v9)
   {
     v10 = v9;
@@ -669,7 +669,7 @@ LABEL_18:
       {
         if (*v46 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(allClients);
         }
 
         v13 = *(*(&v45 + 1) + 8 * i);
@@ -679,24 +679,24 @@ LABEL_18:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v45 objects:v54 count:16];
+      v10 = [allClients countByEnumeratingWithState:&v45 objects:v54 count:16];
     }
 
     while (v10);
   }
 
-  if ([v4 backupPolicy] == 1)
+  if ([engineCopy backupPolicy] == 1)
   {
-    if (![v4 isCloudKitEngine])
+    if (![engineCopy isCloudKitEngine])
     {
       __assert_rtn("[MBATCBundlesPlugin startingBackupWithEngine:]", "MBATCBundlesPlugin.m", 307, "!isMegaBackupPolicy || engine.isCloudKitEngine");
     }
 
-    [v4 isDeviceTransferEngine];
+    [engineCopy isDeviceTransferEngine];
     goto LABEL_18;
   }
 
-  if ([v4 isDeviceTransferEngine])
+  if ([engineCopy isDeviceTransferEngine])
   {
 LABEL_18:
     v43 = 0u;
@@ -718,23 +718,23 @@ LABEL_18:
           }
 
           v19 = *(*(&v41 + 1) + 8 * j);
-          v20 = [v4 domainManager];
-          v21 = [v20 domainForName:v19];
+          domainManager = [engineCopy domainManager];
+          v21 = [domainManager domainForName:v19];
 
           if (!v21)
           {
             __assert_rtn("[MBATCBundlesPlugin startingBackupWithEngine:]", "MBATCBundlesPlugin.m", 313, "domain");
           }
 
-          v22 = v4;
+          v22 = engineCopy;
           v23 = [v21 standardizedRelativePathFor:@"Media/iTunes_Control/iTunes"];
-          v24 = [v21 relativePathsNotToBackupToDrive];
-          v25 = [v24 containsObject:v23];
+          relativePathsNotToBackupToDrive = [v21 relativePathsNotToBackupToDrive];
+          v25 = [relativePathsNotToBackupToDrive containsObject:v23];
 
           if (v25)
           {
-            v26 = [v21 relativePathsNotToBackupToDrive];
-            v27 = [v26 mutableCopy];
+            relativePathsNotToBackupToDrive2 = [v21 relativePathsNotToBackupToDrive];
+            v27 = [relativePathsNotToBackupToDrive2 mutableCopy];
 
             v28 = MBGetDefaultLog();
             if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -753,13 +753,13 @@ LABEL_18:
             [v21 setRelativePathsNotToBackupToDrive:v27];
           }
 
-          v29 = [v21 relativePathsNotToBackupToDrive];
-          v30 = [v29 containsObject:&stru_1003C3430];
+          relativePathsNotToBackupToDrive3 = [v21 relativePathsNotToBackupToDrive];
+          v30 = [relativePathsNotToBackupToDrive3 containsObject:&stru_1003C3430];
 
           if (v30)
           {
-            v31 = [v21 relativePathsNotToBackupToDrive];
-            v32 = [v31 mutableCopy];
+            relativePathsNotToBackupToDrive4 = [v21 relativePathsNotToBackupToDrive];
+            v32 = [relativePathsNotToBackupToDrive4 mutableCopy];
 
             v33 = MBGetDefaultLog();
             if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -778,7 +778,7 @@ LABEL_18:
             [v21 setRelativePathsNotToBackupToDrive:v32];
           }
 
-          v4 = v22;
+          engineCopy = v22;
         }
 
         v16 = [&off_1003E2468 countByEnumeratingWithState:&v41 objects:v53 count:16];
@@ -788,31 +788,31 @@ LABEL_18:
     }
   }
 
-  if ([v4 isDeviceTransferEngine])
+  if ([engineCopy isDeviceTransferEngine])
   {
-    [(MBATCBundlesPlugin *)self _populatePathsForEngine:v4 domain:@"BooksDomain" dataclass:@"Book" allBackupPaths:0];
+    [(MBATCBundlesPlugin *)self _populatePathsForEngine:engineCopy domain:@"BooksDomain" dataclass:@"Book" allBackupPaths:0];
     v34 = objc_alloc_init(NSMutableSet);
-    [(MBATCBundlesPlugin *)self _populatePathsForEngine:v4 domain:@"TonesDomain" dataclass:@"Ringtone" allBackupPaths:v34];
-    [(MBATCBundlesPlugin *)self _populatePathsForEngine:v4 domain:@"MediaDomain" dataclass:@"Media" allBackupPaths:v34];
-    [(MBATCBundlesPlugin *)self _updatePathsForCameraRollDomainWithEngine:v4];
+    [(MBATCBundlesPlugin *)self _populatePathsForEngine:engineCopy domain:@"TonesDomain" dataclass:@"Ringtone" allBackupPaths:v34];
+    [(MBATCBundlesPlugin *)self _populatePathsForEngine:engineCopy domain:@"MediaDomain" dataclass:@"Media" allBackupPaths:v34];
+    [(MBATCBundlesPlugin *)self _updatePathsForCameraRollDomainWithEngine:engineCopy];
     v35 = objc_alloc_init(MBIgnoredAccountsTracker);
-    [(MBATCBundlesPlugin *)self _populateAccountsForEngine:v4 dataClasses:&off_1003E2480 accountsTracker:v35];
-    [(MBATCBundlesPlugin *)self _populateAccountsAndAssetsForEngine:v4 accountsTracker:v35];
+    [(MBATCBundlesPlugin *)self _populateAccountsForEngine:engineCopy dataClasses:&off_1003E2480 accountsTracker:v35];
+    [(MBATCBundlesPlugin *)self _populateAccountsAndAssetsForEngine:engineCopy accountsTracker:v35];
 
 LABEL_38:
     goto LABEL_39;
   }
 
-  if ([v4 isCloudKitEngine])
+  if ([engineCopy isCloudKitEngine])
   {
-    [(MBATCBundlesPlugin *)self _populatePathsForEngine:v4 domain:@"CameraRollDomain" dataclass:@"Photo"];
-    [(MBATCBundlesPlugin *)self _populatePathsForEngine:v4 domain:@"BooksDomain" dataclass:@"Book"];
-    [(MBATCBundlesPlugin *)self _populatePathsForEngine:v4 domain:@"TonesDomain" dataclass:@"Ringtone"];
-    [(MBATCBundlesPlugin *)self _populatePathsForEngine:v4 domain:@"MediaDomain" dataclass:@"Media"];
+    [(MBATCBundlesPlugin *)self _populatePathsForEngine:engineCopy domain:@"CameraRollDomain" dataclass:@"Photo"];
+    [(MBATCBundlesPlugin *)self _populatePathsForEngine:engineCopy domain:@"BooksDomain" dataclass:@"Book"];
+    [(MBATCBundlesPlugin *)self _populatePathsForEngine:engineCopy domain:@"TonesDomain" dataclass:@"Ringtone"];
+    [(MBATCBundlesPlugin *)self _populatePathsForEngine:engineCopy domain:@"MediaDomain" dataclass:@"Media"];
     v34 = objc_alloc_init(MBIgnoredAccountsTracker);
-    [(MBATCBundlesPlugin *)self _populateAccountsForEngine:v4 dataClasses:&off_1003E2498 accountsTracker:v34];
-    [(MBATCBundlesPlugin *)self _populateAccountsAndAssetsForEngine:v4 accountsTracker:v34];
-    [(MBATCBundlesPlugin *)self _populateBuddyStashForEngine:v4];
+    [(MBATCBundlesPlugin *)self _populateAccountsForEngine:engineCopy dataClasses:&off_1003E2498 accountsTracker:v34];
+    [(MBATCBundlesPlugin *)self _populateAccountsAndAssetsForEngine:engineCopy accountsTracker:v34];
+    [(MBATCBundlesPlugin *)self _populateBuddyStashForEngine:engineCopy];
     goto LABEL_38;
   }
 
@@ -821,18 +821,18 @@ LABEL_39:
   return 0;
 }
 
-- (id)endingBackupWithEngine:(id)a3
+- (id)endingBackupWithEngine:(id)engine
 {
-  if ([a3 backsUpPrimaryAccount])
+  if ([engine backsUpPrimaryAccount])
   {
     v13 = 0u;
     v14 = 0u;
     v11 = 0u;
     v12 = 0u;
     v3 = +[ATClientController sharedInstance];
-    v4 = [v3 allClients];
+    allClients = [v3 allClients];
 
-    v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+    v5 = [allClients countByEnumeratingWithState:&v11 objects:v15 count:16];
     if (v5)
     {
       v6 = v5;
@@ -844,7 +844,7 @@ LABEL_39:
         {
           if (*v12 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(allClients);
           }
 
           v9 = *(*(&v11 + 1) + 8 * v8);
@@ -857,7 +857,7 @@ LABEL_39:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+        v6 = [allClients countByEnumeratingWithState:&v11 objects:v15 count:16];
       }
 
       while (v6);
@@ -867,18 +867,18 @@ LABEL_39:
   return 0;
 }
 
-- (BOOL)shouldRestoreContentWithPolicy:(id)a3 fileInfo:(id)a4
+- (BOOL)shouldRestoreContentWithPolicy:(id)policy fileInfo:(id)info
 {
-  v5 = a4;
-  if ([a3 isRestoringPrimaryAccount])
+  infoCopy = info;
+  if ([policy isRestoringPrimaryAccount])
   {
     v6 = +[ATClientController sharedInstance];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v7 = [v6 allClients];
-    v8 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+    allClients = [v6 allClients];
+    v8 = [allClients countByEnumeratingWithState:&v21 objects:v25 count:16];
     if (v8)
     {
       v9 = v8;
@@ -894,14 +894,14 @@ LABEL_39:
         {
           if (*v22 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(allClients);
           }
 
           v15 = *(*(&v21 + 1) + 8 * v12);
           if (objc_opt_respondsToSelector())
           {
             v16 = +[MBCKManager sharedInstance];
-            v17 = [v15 shouldRestoreFile:v5 backupManager:v16];
+            v17 = [v15 shouldRestoreFile:infoCopy backupManager:v16];
 
             if (!v17)
             {
@@ -914,7 +914,7 @@ LABEL_39:
         }
 
         while (v9 != v12);
-        v9 = [v7 countByEnumeratingWithState:&v21 objects:v25 count:16];
+        v9 = [allClients countByEnumeratingWithState:&v21 objects:v25 count:16];
         v11 = v13;
         if (v9)
         {
@@ -943,10 +943,10 @@ LABEL_14:
   return v18;
 }
 
-- (BOOL)shouldBackgroundRestoreContentWithPolicy:(id)a3 fileInfo:(id)a4
+- (BOOL)shouldBackgroundRestoreContentWithPolicy:(id)policy fileInfo:(id)info
 {
-  v5 = a4;
-  if (![a3 isRestoringPrimaryAccount])
+  infoCopy = info;
+  if (![policy isRestoringPrimaryAccount])
   {
     v19 = 0;
     goto LABEL_29;
@@ -957,8 +957,8 @@ LABEL_14:
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = [v6 allClients];
-  v8 = [v7 countByEnumeratingWithState:&v33 objects:v41 count:16];
+  allClients = [v6 allClients];
+  v8 = [allClients countByEnumeratingWithState:&v33 objects:v41 count:16];
   if (!v8)
   {
     v19 = 0;
@@ -981,15 +981,15 @@ LABEL_14:
     {
       if (*v34 != v10)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(allClients);
       }
 
       v18 = *(*(&v33 + 1) + 8 * v13);
       if (objc_opt_respondsToSelector())
       {
-        v20 = [v5 path];
+        path = [infoCopy path];
         v21 = +[MBCKManager sharedInstance];
-        v22 = [v18 shouldBackgroundRestorePath:v20 backupManager:v21];
+        v22 = [v18 shouldBackgroundRestorePath:path backupManager:v21];
 
         v23 = MBGetDefaultLog();
         v24 = os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG);
@@ -1008,11 +1008,11 @@ LABEL_14:
         if (v24)
         {
 LABEL_24:
-          v29 = [v5 path];
+          path2 = [infoCopy path];
           *buf = 138412546;
           v38 = v18;
           v39 = 2112;
-          v40 = v29;
+          v40 = path2;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "=atc-bundles= %@ requesting FG restore: %@", buf, 0x16u);
 
           v19 = 0;
@@ -1027,7 +1027,7 @@ LABEL_26:
       if (objc_opt_respondsToSelector())
       {
         v25 = +[MBCKManager sharedInstance];
-        v26 = [v18 shouldBackgroundRestoreFile:v5 backupManager:v25];
+        v26 = [v18 shouldBackgroundRestoreFile:infoCopy backupManager:v25];
 
         v23 = MBGetDefaultLog();
         v27 = os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG);
@@ -1037,16 +1037,16 @@ LABEL_26:
           if (v27)
           {
 LABEL_19:
-            v28 = [v5 path];
+            path3 = [infoCopy path];
             *buf = 138412546;
             v38 = v18;
             v39 = 2112;
-            v40 = v28;
+            v40 = path3;
             _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "=atc-bundles= %@ requesting BG restore: %@", buf, 0x16u);
 
             v19 = 1;
 LABEL_25:
-            v31 = [v5 path];
+            path4 = [infoCopy path];
             _MBLog();
 
             goto LABEL_27;
@@ -1072,7 +1072,7 @@ LABEL_27:
     }
 
     while (v9 != v13);
-    v9 = [v7 countByEnumeratingWithState:&v33 objects:v41 count:16];
+    v9 = [allClients countByEnumeratingWithState:&v33 objects:v41 count:16];
     v19 = 0;
     v6 = v32;
     v11 = v14;
@@ -1091,19 +1091,19 @@ LABEL_29:
   return v19;
 }
 
-- (id)startingRestoreWithPolicy:(id)a3 engine:(id)a4
+- (id)startingRestoreWithPolicy:(id)policy engine:(id)engine
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v7 restoresPrimaryAccount])
+  policyCopy = policy;
+  engineCopy = engine;
+  if (![engineCopy restoresPrimaryAccount])
   {
     goto LABEL_33;
   }
 
-  v38 = [v7 domainManager];
-  v35 = v7;
-  v36 = v6;
-  if ([v7 backupPolicy] == 1)
+  domainManager = [engineCopy domainManager];
+  v35 = engineCopy;
+  v36 = policyCopy;
+  if ([engineCopy backupPolicy] == 1)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1111,14 +1111,14 @@ LABEL_29:
       __assert_rtn("[MBATCBundlesPlugin startingRestoreWithPolicy:engine:]", "MBATCBundlesPlugin.m", 439, "[engine isKindOfClass:MBCKRestoreEngine.class]");
     }
 
-    [v7 isDeviceTransferEngine];
+    [engineCopy isDeviceTransferEngine];
     goto LABEL_6;
   }
 
-  if ([v7 isDeviceTransferEngine])
+  if ([engineCopy isDeviceTransferEngine])
   {
 LABEL_6:
-    if (!v38)
+    if (!domainManager)
     {
       __assert_rtn("[MBATCBundlesPlugin startingRestoreWithPolicy:engine:]", "MBATCBundlesPlugin.m", 443, "domainManager");
     }
@@ -1142,19 +1142,19 @@ LABEL_6:
           }
 
           v11 = *(*(&v39 + 1) + 8 * i);
-          v12 = [v38 domainForName:{v11, v31, v33}];
+          v12 = [domainManager domainForName:{v11, v31, v33}];
           if (!v12)
           {
             __assert_rtn("[MBATCBundlesPlugin startingRestoreWithPolicy:engine:]", "MBATCBundlesPlugin.m", 447, "domain");
           }
 
           v13 = v12;
-          v14 = [v12 relativePathsToBackupAndRestore];
+          relativePathsToBackupAndRestore = [v12 relativePathsToBackupAndRestore];
 
-          if (v14)
+          if (relativePathsToBackupAndRestore)
           {
-            v15 = [v13 relativePathsToBackupAndRestore];
-            v16 = [v15 mutableCopy];
+            relativePathsToBackupAndRestore2 = [v13 relativePathsToBackupAndRestore];
+            v16 = [relativePathsToBackupAndRestore2 mutableCopy];
           }
 
           else
@@ -1192,13 +1192,13 @@ LABEL_6:
           [v16 addObject:@"Media/iTunes_Control/iTunes"];
           [v13 setRelativePathsToBackupAndRestore:v16];
           v19 = [v13 standardizedRelativePathFor:@"Media/iTunes_Control/iTunes"];
-          v20 = [v13 relativePathsNotToBackupToDrive];
-          v21 = [v20 containsObject:v19];
+          relativePathsNotToBackupToDrive = [v13 relativePathsNotToBackupToDrive];
+          v21 = [relativePathsNotToBackupToDrive containsObject:v19];
 
           if (v21)
           {
-            v22 = [v13 relativePathsNotToBackupToDrive];
-            v23 = [v22 mutableCopy];
+            relativePathsNotToBackupToDrive2 = [v13 relativePathsNotToBackupToDrive];
+            v23 = [relativePathsNotToBackupToDrive2 mutableCopy];
 
             v24 = MBGetDefaultLog();
             if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
@@ -1217,13 +1217,13 @@ LABEL_6:
             [v13 setRelativePathsNotToBackupToDrive:v23];
           }
 
-          v25 = [v13 relativePathsNotToBackupToDrive];
-          v26 = [v25 containsObject:&stru_1003C3430];
+          relativePathsNotToBackupToDrive3 = [v13 relativePathsNotToBackupToDrive];
+          v26 = [relativePathsNotToBackupToDrive3 containsObject:&stru_1003C3430];
 
           if (v26)
           {
-            v27 = [v13 relativePathsNotToBackupToDrive];
-            v28 = [v27 mutableCopy];
+            relativePathsNotToBackupToDrive4 = [v13 relativePathsNotToBackupToDrive];
+            v28 = [relativePathsNotToBackupToDrive4 mutableCopy];
 
             v29 = MBGetDefaultLog();
             if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
@@ -1250,23 +1250,23 @@ LABEL_6:
     }
   }
 
-  v7 = v35;
+  engineCopy = v35;
   if ([v35 isDeviceTransferEngine])
   {
     [(MBATCBundlesPlugin *)self _updatePathsForCameraRollDomainWithEngine:v35];
   }
 
-  v6 = v36;
+  policyCopy = v36;
 LABEL_33:
 
   return 0;
 }
 
-- (void)_updatePathsForCameraRollDomainWithEngine:(id)a3
+- (void)_updatePathsForCameraRollDomainWithEngine:(id)engine
 {
-  v3 = a3;
-  v4 = [v3 domainManager];
-  v5 = [v4 domainForName:@"CameraRollDomain"];
+  engineCopy = engine;
+  domainManager = [engineCopy domainManager];
+  v5 = [domainManager domainForName:@"CameraRollDomain"];
 
   if (!v5)
   {
@@ -1274,13 +1274,13 @@ LABEL_33:
   }
 
   v6 = [v5 standardizedRelativePathFor:@"Media/PhotoData/Sync"];
-  v7 = [v5 relativePathsToRemoveOnRestore];
-  v8 = [v7 containsObject:v6];
+  relativePathsToRemoveOnRestore = [v5 relativePathsToRemoveOnRestore];
+  v8 = [relativePathsToRemoveOnRestore containsObject:v6];
 
   if (v8)
   {
-    v9 = [v5 relativePathsToRemoveOnRestore];
-    v10 = [v9 mutableCopy];
+    relativePathsToRemoveOnRestore2 = [v5 relativePathsToRemoveOnRestore];
+    v10 = [relativePathsToRemoveOnRestore2 mutableCopy];
 
     v11 = MBGetDefaultLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1299,13 +1299,13 @@ LABEL_33:
     [v5 setRelativePathsToRemoveOnRestore:v10];
   }
 
-  v12 = [v5 relativePathsNotToBackup];
-  v13 = [v12 containsObject:v6];
+  relativePathsNotToBackup = [v5 relativePathsNotToBackup];
+  v13 = [relativePathsNotToBackup containsObject:v6];
 
   if (v13)
   {
-    v14 = [v5 relativePathsNotToBackup];
-    v15 = [v14 mutableCopy];
+    relativePathsNotToBackup2 = [v5 relativePathsNotToBackup];
+    v15 = [relativePathsNotToBackup2 mutableCopy];
 
     v16 = MBGetDefaultLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -1325,13 +1325,13 @@ LABEL_33:
   }
 
   v17 = [v5 standardizedRelativePathFor:{@"Media/PhotoData/Metadata/PhotoData/Sync", v29, v32}];
-  v18 = [v5 relativePathsToRemoveOnRestore];
-  v19 = [v18 containsObject:v17];
+  relativePathsToRemoveOnRestore3 = [v5 relativePathsToRemoveOnRestore];
+  v19 = [relativePathsToRemoveOnRestore3 containsObject:v17];
 
   if (v19)
   {
-    v20 = [v5 relativePathsToRemoveOnRestore];
-    v21 = [v20 mutableCopy];
+    relativePathsToRemoveOnRestore4 = [v5 relativePathsToRemoveOnRestore];
+    v21 = [relativePathsToRemoveOnRestore4 mutableCopy];
 
     v22 = MBGetDefaultLog();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
@@ -1350,13 +1350,13 @@ LABEL_33:
     [v5 setRelativePathsToRemoveOnRestore:v21];
   }
 
-  v23 = [v5 relativePathsNotToBackup];
-  v24 = [v23 containsObject:v17];
+  relativePathsNotToBackup3 = [v5 relativePathsNotToBackup];
+  v24 = [relativePathsNotToBackup3 containsObject:v17];
 
   if (v24)
   {
-    v25 = [v5 relativePathsNotToBackup];
-    v26 = [v25 mutableCopy];
+    relativePathsNotToBackup4 = [v5 relativePathsNotToBackup];
+    v26 = [relativePathsNotToBackup4 mutableCopy];
 
     v27 = MBGetDefaultLog();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))

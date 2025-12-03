@@ -3,14 +3,14 @@
 + (void)load;
 - (CAFBooleanSettingNotificationEntry)BOOLeanSettingNotificationEntryValue;
 - (id)formattedValue;
-- (void)setBooleanSettingNotificationEntryValue:(id)a3;
+- (void)setBooleanSettingNotificationEntryValue:(id)value;
 @end
 
 @implementation CAFBooleanSettingNotificationEntryCharacteristic
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CAFBooleanSettingNotificationEntryCharacteristic;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -18,22 +18,22 @@
 - (CAFBooleanSettingNotificationEntry)BOOLeanSettingNotificationEntryValue
 {
   v3 = [CAFBooleanSettingNotificationEntry alloc];
-  v4 = [(CAFDictionaryCharacteristic *)self dictionaryValue];
-  v5 = [(CAFBooleanSettingNotificationEntry *)v3 initWithDictionary:v4];
+  dictionaryValue = [(CAFDictionaryCharacteristic *)self dictionaryValue];
+  v5 = [(CAFBooleanSettingNotificationEntry *)v3 initWithDictionary:dictionaryValue];
 
   return v5;
 }
 
-- (void)setBooleanSettingNotificationEntryValue:(id)a3
+- (void)setBooleanSettingNotificationEntryValue:(id)value
 {
-  v4 = [a3 dictionaryRepresentation];
-  [(CAFDictionaryCharacteristic *)self setDictionaryValue:v4];
+  dictionaryRepresentation = [value dictionaryRepresentation];
+  [(CAFDictionaryCharacteristic *)self setDictionaryValue:dictionaryRepresentation];
 }
 
 - (id)formattedValue
 {
-  v2 = [(CAFBooleanSettingNotificationEntryCharacteristic *)self BOOLeanSettingNotificationEntryValue];
-  v3 = [v2 description];
+  bOOLeanSettingNotificationEntryValue = [(CAFBooleanSettingNotificationEntryCharacteristic *)self BOOLeanSettingNotificationEntryValue];
+  v3 = [bOOLeanSettingNotificationEntryValue description];
 
   return v3;
 }

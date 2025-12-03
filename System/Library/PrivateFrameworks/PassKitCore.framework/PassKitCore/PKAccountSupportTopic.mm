@@ -1,38 +1,38 @@
 @interface PKAccountSupportTopic
-- (PKAccountSupportTopic)initWithBeneficiaryTopicForAccount:(id)a3;
-- (PKAccountSupportTopic)initWithDictionary:(id)a3;
-- (PKAccountSupportTopic)initWithOtherTopicForAccount:(id)a3;
-- (PKAccountSupportTopic)initWithUnavailableFundingSourceTopicForAccount:(id)a3;
+- (PKAccountSupportTopic)initWithBeneficiaryTopicForAccount:(id)account;
+- (PKAccountSupportTopic)initWithDictionary:(id)dictionary;
+- (PKAccountSupportTopic)initWithOtherTopicForAccount:(id)account;
+- (PKAccountSupportTopic)initWithUnavailableFundingSourceTopicForAccount:(id)account;
 @end
 
 @implementation PKAccountSupportTopic
 
-- (PKAccountSupportTopic)initWithDictionary:(id)a3
+- (PKAccountSupportTopic)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = PKAccountSupportTopic;
   v5 = [(PKAccountSupportTopic *)&v20 init];
   if (v5)
   {
-    v6 = [v4 PKStringForKey:@"title"];
+    v6 = [dictionaryCopy PKStringForKey:@"title"];
     title = v5->_title;
     v5->_title = v6;
 
-    v8 = [v4 PKStringForKey:@"bodyText"];
+    v8 = [dictionaryCopy PKStringForKey:@"bodyText"];
     bodyText = v5->_bodyText;
     v5->_bodyText = v8;
 
-    v10 = [v4 PKStringForKey:@"page"];
+    v10 = [dictionaryCopy PKStringForKey:@"page"];
     businessChatPage = v5->_businessChatPage;
     v5->_businessChatPage = v10;
 
-    v12 = [v4 PKStringForKey:@"targetDialogue"];
+    v12 = [dictionaryCopy PKStringForKey:@"targetDialogue"];
     businessChatTargetDialog = v5->_businessChatTargetDialog;
     v5->_businessChatTargetDialog = v12;
 
-    v14 = [v4 PKDictionaryForKey:@"explanation"];
-    v15 = [v4 PKStringForKey:@"issueType"];
+    v14 = [dictionaryCopy PKDictionaryForKey:@"explanation"];
+    v15 = [dictionaryCopy PKStringForKey:@"issueType"];
     if ([v15 isEqualToString:@"dispute"])
     {
       v16 = 2;
@@ -65,10 +65,10 @@
   return v5;
 }
 
-- (PKAccountSupportTopic)initWithOtherTopicForAccount:(id)a3
+- (PKAccountSupportTopic)initWithOtherTopicForAccount:(id)account
 {
-  v4 = [a3 type];
-  if (v4 == 1)
+  type = [account type];
+  if (type == 1)
   {
     v10.receiver = self;
     v10.super_class = PKAccountSupportTopic;
@@ -81,7 +81,7 @@
     }
   }
 
-  else if (v4 == 4)
+  else if (type == 4)
   {
     v11.receiver = self;
     v11.super_class = PKAccountSupportTopic;
@@ -102,9 +102,9 @@ LABEL_7:
   return self;
 }
 
-- (PKAccountSupportTopic)initWithUnavailableFundingSourceTopicForAccount:(id)a3
+- (PKAccountSupportTopic)initWithUnavailableFundingSourceTopicForAccount:(id)account
 {
-  if ([a3 type] == 4)
+  if ([account type] == 4)
   {
     v10.receiver = self;
     v10.super_class = PKAccountSupportTopic;
@@ -120,20 +120,20 @@ LABEL_7:
     }
 
     self = v5;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PKAccountSupportTopic)initWithBeneficiaryTopicForAccount:(id)a3
+- (PKAccountSupportTopic)initWithBeneficiaryTopicForAccount:(id)account
 {
-  if ([a3 type] == 4)
+  if ([account type] == 4)
   {
     v17.receiver = self;
     v17.super_class = PKAccountSupportTopic;
@@ -153,15 +153,15 @@ LABEL_7:
     }
 
     self = v5;
-    v15 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v15 = 0;
+    selfCopy = 0;
   }
 
-  return v15;
+  return selfCopy;
 }
 
 @end

@@ -1,21 +1,21 @@
 @interface RBSurface
 - ($C28CD4A45FD07A4F97CC9D5F91F25271)clearColor;
-- (CGImage)copyCGImageUsingDevice:(id)a3;
+- (CGImage)copyCGImageUsingDevice:(id)device;
 - (CGSize)size;
 - (RBSurface)init;
 - (id).cxx_construct;
-- (int32x2_t)invalidateInRect:(float32x2_t)a3;
-- (uint64_t)_updateWithDevice:(RB:(int)a4 :RenderFrame *)a3 frame:synchronized:;
+- (int32x2_t)invalidateInRect:(float32x2_t)rect;
+- (uint64_t)_updateWithDevice:(RB:(int)device :RenderFrame *)a3 frame:synchronized:;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setClearColor:(id)a3;
-- (void)setClearsBackground:(BOOL)a3;
-- (void)setColorMode:(int)a3;
-- (void)setDisplayList:(id)a3;
-- (void)setDisplayList:(id)a3 dirtyRect:(CGRect)a4;
-- (void)setScale:(double)a3;
-- (void)setSize:(CGSize)a3;
-- (void)updateUsingDevice:(id)a3;
+- (void)setClearColor:(id)color;
+- (void)setClearsBackground:(BOOL)background;
+- (void)setColorMode:(int)mode;
+- (void)setDisplayList:(id)list;
+- (void)setDisplayList:(id)list dirtyRect:(CGRect)rect;
+- (void)setScale:(double)scale;
+- (void)setSize:(CGSize)size;
+- (void)updateUsingDevice:(id)device;
 @end
 
 @implementation RBSurface
@@ -50,74 +50,74 @@
   [(RBSurface *)&v4 dealloc];
 }
 
-- (void)setSize:(CGSize)a3
+- (void)setSize:(CGSize)size
 {
-  if (self->_size.width != a3.width || self->_size.height != a3.height)
+  if (self->_size.width != size.width || self->_size.height != size.height)
   {
-    self->_size = a3;
+    self->_size = size;
     [(RBSurface *)self invalidate];
   }
 }
 
-- (void)setScale:(double)a3
+- (void)setScale:(double)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
+    self->_scale = scale;
     [(RBSurface *)self invalidate];
   }
 }
 
-- (void)setColorMode:(int)a3
+- (void)setColorMode:(int)mode
 {
-  if (self->_colorMode != a3)
+  if (self->_colorMode != mode)
   {
-    self->_colorMode = a3;
+    self->_colorMode = mode;
     [(RBSurface *)self invalidate];
   }
 }
 
-- (void)setClearsBackground:(BOOL)a3
+- (void)setClearsBackground:(BOOL)background
 {
-  if (self->_clearsBackground != a3)
+  if (self->_clearsBackground != background)
   {
-    self->_clearsBackground = a3;
+    self->_clearsBackground = background;
     [(RBSurface *)self invalidate];
   }
 }
 
-- (void)setClearColor:(id)a3
+- (void)setClearColor:(id)color
 {
-  if ((vminv_u16(vmovn_s32(vceqq_f32(self->_clearColor, a3))) & 1) == 0)
+  if ((vminv_u16(vmovn_s32(vceqq_f32(self->_clearColor, color))) & 1) == 0)
   {
-    self->_clearColor = a3;
+    self->_clearColor = color;
     [(RBSurface *)self invalidate];
   }
 }
 
-- (void)setDisplayList:(id)a3
+- (void)setDisplayList:(id)list
 {
   p = self->_displayList._p;
-  if (p != a3)
+  if (p != list)
   {
 
-    self->_displayList._p = a3;
+    self->_displayList._p = list;
 
     [(RBSurface *)self invalidate];
   }
 }
 
-- (void)setDisplayList:(id)a3 dirtyRect:(CGRect)a4
+- (void)setDisplayList:(id)list dirtyRect:(CGRect)rect
 {
   p = self->_displayList._p;
-  if (p != a3)
+  if (p != list)
   {
-    height = a4.size.height;
-    y = a4.origin.y;
-    width = a4.size.width;
-    x = a4.origin.x;
+    height = rect.size.height;
+    y = rect.origin.y;
+    width = rect.size.width;
+    x = rect.origin.x;
 
-    self->_displayList._p = a3;
+    self->_displayList._p = list;
     v7.f64[0] = x;
     v7.f64[1] = y;
     v8 = vcvt_f32_f64(v7);
@@ -129,21 +129,21 @@
   }
 }
 
-- (CGImage)copyCGImageUsingDevice:(id)a3
+- (CGImage)copyCGImageUsingDevice:(id)device
 {
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  v5 = [a3 queue];
+  queue = [device queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__RBSurface_copyCGImageUsingDevice___block_invoke;
   block[3] = &unk_1E744E1B8;
-  block[5] = a3;
+  block[5] = device;
   block[6] = &v26;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(queue, block);
   if ((v27[3] & 1) != 0 && ((RB::Drawable::finish(self->_drawable._p), HasExtendedRange = RBColorModeHasExtendedRange(self->_colorMode), v7 = HasExtendedRange, width = self->_size.width, height = self->_size.height, !HasExtendedRange) ? (v10 = 2) : (v10 = 3), v11 = ((width << v10) + 63) & 0xFFFFFFC0, (v12 = malloc_type_malloc(v11 * height, 0x100004077774924uLL)) != 0))
   {
     v13 = *(self->_texture._p + 2);
@@ -203,15 +203,15 @@ uint64_t __36__RBSurface_copyCGImageUsingDevice___block_invoke(void *a1)
   return result;
 }
 
-- (uint64_t)_updateWithDevice:(RB:(int)a4 :RenderFrame *)a3 frame:synchronized:
+- (uint64_t)_updateWithDevice:(RB:(int)device :RenderFrame *)a3 frame:synchronized:
 {
   v38 = a3;
-  v4 = a1;
+  selfCopy = self;
   v48 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v7 = *(a1 + 8);
-    RB::ColorMode::ColorMode(&v45, *(v4 + 68));
+    v7 = *(self + 8);
+    RB::ColorMode::ColorMode(&v45, *(selfCopy + 68));
     if (!v7)
     {
       v8 = objc_opt_new();
@@ -221,41 +221,41 @@ uint64_t __36__RBSurface_copyCGImageUsingDevice___block_invoke(void *a1)
       [v8 setDefaultColorSpace:rb_color_space(v46 | 0x100u)];
     }
 
-    if (!*(v4 + 16))
+    if (!*(selfCopy + 16))
     {
       operator new();
     }
 
-    if (*(v4 + 24) != *(a2 + 3))
+    if (*(selfCopy + 24) != *(a2 + 3))
     {
-      [v4 invalidate];
+      [selfCopy invalidate];
       v9 = *(a2 + 3);
-      v10 = *(v4 + 24);
+      v10 = *(selfCopy + 24);
       if (v10 != v9)
       {
 
-        *(v4 + 24) = v9;
+        *(selfCopy + 24) = v9;
       }
     }
 
-    v11 = *(v4 + 65);
+    v11 = *(selfCopy + 65);
     v44 = 0;
     v12 = RB::ColorMode::pixel_format(&v45, a2, v11 ^ 1u, &v44);
     v14 = v12;
-    v15 = *(v4 + 32);
+    v15 = *(selfCopy + 32);
     if (*&v15 && *(*&v15 + 56) == v12)
     {
-      v16 = *(v4 + 40) == 0;
+      v16 = *(selfCopy + 40) == 0;
     }
 
     else
     {
-      v17 = vcvtq_s64_f64(*(v4 + 80));
+      v17 = vcvtq_s64_f64(*(selfCopy + 80));
       v17.n128_u64[0] = vmovn_s64(v17);
       RB::Texture::alloc(a2, v12, 0, 1, 0, &v39, v17);
-      v18 = *(v4 + 32);
+      v18 = *(selfCopy + 32);
       v15 = v39;
-      *(v4 + 32) = v39;
+      *(selfCopy + 32) = v39;
       v39 = v18;
       if (v18)
       {
@@ -266,26 +266,26 @@ uint64_t __36__RBSurface_copyCGImageUsingDevice___block_invoke(void *a1)
           (*(*v18 + 8))(v18);
         }
 
-        v15 = *(v4 + 32);
+        v15 = *(selfCopy + 32);
       }
 
       if (!*&v15)
       {
-        v4 = 0;
+        selfCopy = 0;
 LABEL_35:
 
-        return v4;
+        return selfCopy;
       }
 
       if ((v44 & 4) != 0)
       {
         *(*&v15 + 77) |= 8u;
-        v15 = *(v4 + 32);
+        v15 = *(selfCopy + 32);
       }
 
-      *(v4 + 48) = vdup_n_s32(0xC0000001);
-      *(v4 + 56) = 0x8000000080000000;
-      *(v4 + 40) = 0;
+      *(selfCopy + 48) = vdup_n_s32(0xC0000001);
+      *(selfCopy + 56) = 0x8000000080000000;
+      *(selfCopy + 40) = 0;
       v16 = 1;
     }
 
@@ -300,7 +300,7 @@ LABEL_35:
     v21 = 1;
     if (v16)
     {
-      if (*(v4 + 64))
+      if (*(selfCopy + 64))
       {
         v21 = 2;
       }
@@ -310,43 +310,43 @@ LABEL_35:
         v21 = 1;
       }
 
-      RB::Bounds::intersect(&v41, *(v4 + 48), *(v4 + 56));
+      RB::Bounds::intersect(&v41, *(selfCopy + 48), *(selfCopy + 56));
     }
 
-    v13.i64[0] = *(v4 + 96);
-    v13.i32[2] = *(v4 + 104);
+    v13.i64[0] = *(selfCopy + 96);
+    v13.i32[2] = *(selfCopy + 104);
     v37 = v13;
-    v13.i32[0] = *(v4 + 108);
+    v13.i32[0] = *(selfCopy + 108);
     v36 = v13;
     v22 = v38;
     if (!v38)
     {
-      v23 = RB::Drawable::begin_frame(*(v4 + 16));
+      v23 = RB::Drawable::begin_frame(*(selfCopy + 16));
       MEMORY[0x1EEE9AC00](v23, v24);
       v22 = v34;
       v35 = 0;
       memset(v34, 0, sizeof(v34));
-      RB::RenderFrame::RenderFrame(v34, a2, *(v4 + 16), 3, 0, 0);
+      RB::RenderFrame::RenderFrame(v34, a2, *(selfCopy + 16), 3, 0, 0);
     }
 
     v25 = *(*&v15 + 64);
     v26 = v47;
     v27 = v46;
     v28 = v45;
-    HasExtendedRange = RBColorModeHasExtendedRange(*(v4 + 68));
+    HasExtendedRange = RBColorModeHasExtendedRange(*(selfCopy + 68));
     RB::RenderParams::RenderParams(&v39, v22, v14, v26, v27, v28, HasExtendedRange, v25);
     v40 = (2 * v44) & 8 | v40 & 0xF7;
-    v30 = [v7 _rb_contents];
-    v31 = v30;
-    if (v30)
+    _rb_contents = [v7 _rb_contents];
+    v31 = _rb_contents;
+    if (_rb_contents)
     {
       v32 = v37;
       v32.i32[3] = 1.0;
-      RB::DisplayList::render(v30, &v39, v43, v21, *(v4 + 40), v41, v42, 0.0, vmulq_n_f32(v32, v36.f32[0]));
-      *(v4 + 40) = *(v31 + 43);
+      RB::DisplayList::render(_rb_contents, &v39, v43, v21, *(selfCopy + 40), v41, v42, 0.0, vmulq_n_f32(v32, v36.f32[0]));
+      *(selfCopy + 40) = *(v31 + 43);
     }
 
-    if (a4)
+    if (device)
     {
       RBStrokeRef::clip(v22);
     }
@@ -356,26 +356,26 @@ LABEL_35:
       RB::RenderFrame::~RenderFrame(v22);
     }
 
-    *(v4 + 48) = 0;
-    *(v4 + 56) = 0;
-    RBXMLRecorderMarkFrame(v4, v7, v47, *(v4 + 80), *(v4 + 88));
-    v4 = 1;
+    *(selfCopy + 48) = 0;
+    *(selfCopy + 56) = 0;
+    RBXMLRecorderMarkFrame(selfCopy, v7, v47, *(selfCopy + 80), *(selfCopy + 88));
+    selfCopy = 1;
     goto LABEL_35;
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (void)updateUsingDevice:(id)a3
+- (void)updateUsingDevice:(id)device
 {
-  v5 = [a3 queue];
+  queue = [device queue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __31__RBSurface_updateUsingDevice___block_invoke;
   v6[3] = &unk_1E744E1E0;
   v6[4] = self;
-  v6[5] = a3;
-  dispatch_sync(v5, v6);
+  v6[5] = device;
+  dispatch_sync(queue, v6);
 }
 
 uint64_t __31__RBSurface_updateUsingDevice___block_invoke(uint64_t a1)
@@ -432,12 +432,12 @@ uint64_t __31__RBSurface_updateUsingDevice___block_invoke(uint64_t a1)
   return self;
 }
 
-- (int32x2_t)invalidateInRect:(float32x2_t)a3
+- (int32x2_t)invalidateInRect:(float32x2_t)rect
 {
   if (result)
   {
     v3 = result;
-    v4 = RB::Rect::from_bounds(vrndm_f32(a2), vrndp_f32(vadd_f32(a3, a2)));
+    v4 = RB::Rect::from_bounds(vrndm_f32(a2), vrndp_f32(vadd_f32(rect, a2)));
     RB::Bounds::Bounds(v8, *&v4, v5, v6, v7);
     result = RB::Bounds::Union(v3 + 6, v8[0], v8[1]);
     v3[5] = 0;

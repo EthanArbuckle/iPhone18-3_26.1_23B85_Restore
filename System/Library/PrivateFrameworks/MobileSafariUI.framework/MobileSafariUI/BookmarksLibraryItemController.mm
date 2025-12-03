@@ -1,43 +1,43 @@
 @interface BookmarksLibraryItemController
-+ (id)itemControllerForReadingListWithConfiguration:(id)a3;
-- (BookmarksLibraryItemController)initWithConfiguration:(id)a3;
++ (id)itemControllerForReadingListWithConfiguration:(id)configuration;
+- (BookmarksLibraryItemController)initWithConfiguration:(id)configuration;
 - (BookmarksNavigationControllerDelegate)bookmarkNavigationControllerDelegate;
 - (NSString)accessibilityIdentifier;
 - (UIViewController)viewController;
 - (_TtC12MobileSafari35SFBookmarksCollectionViewController)rootViewController;
 - (int64_t)sidebarSelectionAnalyticsAction;
-- (unint64_t)dropOperationForSession:(id)a3;
-- (void)performDropWithProposal:(id)a3 session:(id)a4 inViewController:(id)a5;
+- (unint64_t)dropOperationForSession:(id)session;
+- (void)performDropWithProposal:(id)proposal session:(id)session inViewController:(id)controller;
 - (void)reloadBookmarksControllers;
-- (void)setRootViewController:(id)a3;
+- (void)setRootViewController:(id)controller;
 - (void)updateAndScrollToCurrentSelectedItem;
-- (void)updateListContentConfiguration:(id)a3;
+- (void)updateListContentConfiguration:(id)configuration;
 @end
 
 @implementation BookmarksLibraryItemController
 
-+ (id)itemControllerForReadingListWithConfiguration:(id)a3
++ (id)itemControllerForReadingListWithConfiguration:(id)configuration
 {
   swift_getObjCClassMetadata();
-  v4 = a3;
-  v5 = sub_215836BEC(v4);
+  configurationCopy = configuration;
+  v5 = sub_215836BEC(configurationCopy);
 
   return v5;
 }
 
 - (_TtC12MobileSafari35SFBookmarksCollectionViewController)rootViewController
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2159FB594();
 
   return v3;
 }
 
-- (void)setRootViewController:(id)a3
+- (void)setRootViewController:(id)controller
 {
   v4 = *(self + OBJC_IVAR___BookmarksLibraryItemController____lazy_storage___rootViewController);
-  *(self + OBJC_IVAR___BookmarksLibraryItemController____lazy_storage___rootViewController) = a3;
-  v3 = a3;
+  *(self + OBJC_IVAR___BookmarksLibraryItemController____lazy_storage___rootViewController) = controller;
+  controllerCopy = controller;
 }
 
 - (BookmarksNavigationControllerDelegate)bookmarkNavigationControllerDelegate
@@ -49,18 +49,18 @@
 
 - (UIViewController)viewController
 {
-  v2 = [(BookmarksLibraryItemController *)self rootViewController];
+  rootViewController = [(BookmarksLibraryItemController *)self rootViewController];
 
-  return v2;
+  return rootViewController;
 }
 
 - (NSString)accessibilityIdentifier
 {
   sub_2159F7DA8(0, &unk_2811A2530);
-  v3 = self;
-  v4 = [(BookmarksLibraryItemController *)v3 rootFolder];
-  v5 = [(BookmarksLibraryItemController *)v3 bookmarkCollection];
-  v6 = [(WebBookmarkCollection *)v5 readingListFolder];
+  selfCopy = self;
+  rootFolder = [(BookmarksLibraryItemController *)selfCopy rootFolder];
+  bookmarkCollection = [(BookmarksLibraryItemController *)selfCopy bookmarkCollection];
+  readingListFolder = [(WebBookmarkCollection *)bookmarkCollection readingListFolder];
 
   sub_215A70A80();
   v7 = sub_215A70500();
@@ -71,10 +71,10 @@
 - (int64_t)sidebarSelectionAnalyticsAction
 {
   sub_2159F7DA8(0, &unk_2811A2530);
-  v3 = self;
-  v4 = [(BookmarksLibraryItemController *)v3 rootFolder];
-  v5 = [(BookmarksLibraryItemController *)v3 bookmarkCollection];
-  v6 = [(WebBookmarkCollection *)v5 readingListFolder];
+  selfCopy = self;
+  rootFolder = [(BookmarksLibraryItemController *)selfCopy rootFolder];
+  bookmarkCollection = [(BookmarksLibraryItemController *)selfCopy bookmarkCollection];
+  readingListFolder = [(WebBookmarkCollection *)bookmarkCollection readingListFolder];
 
   v7 = sub_215A70A80();
   if (v7)
@@ -88,47 +88,47 @@
   }
 }
 
-- (unint64_t)dropOperationForSession:(id)a3
+- (unint64_t)dropOperationForSession:(id)session
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  v6 = BookmarksLibraryItemController.dropOperation(for:)(a3);
+  selfCopy = self;
+  v6 = BookmarksLibraryItemController.dropOperation(for:)(session);
   swift_unknownObjectRelease();
 
   return v6;
 }
 
-- (void)performDropWithProposal:(id)a3 session:(id)a4 inViewController:(id)a5
+- (void)performDropWithProposal:(id)proposal session:(id)session inViewController:(id)controller
 {
-  v8 = a3;
+  proposalCopy = proposal;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  BookmarksLibraryItemController.performDrop(with:session:in:)(v8, a4, v9);
+  controllerCopy = controller;
+  selfCopy = self;
+  BookmarksLibraryItemController.performDrop(with:session:in:)(proposalCopy, session, controllerCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)updateListContentConfiguration:(id)a3
+- (void)updateListContentConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = self;
-  BookmarksLibraryItemController.updateListContentConfiguration(_:)(v4);
+  configurationCopy = configuration;
+  selfCopy = self;
+  BookmarksLibraryItemController.updateListContentConfiguration(_:)(configurationCopy);
 }
 
 - (void)reloadBookmarksControllers
 {
-  v2 = self;
+  selfCopy = self;
   sub_2159FCD5C();
 }
 
 - (void)updateAndScrollToCurrentSelectedItem
 {
-  v2 = self;
+  selfCopy = self;
   sub_2159FEF18();
 }
 
-- (BookmarksLibraryItemController)initWithConfiguration:(id)a3
+- (BookmarksLibraryItemController)initWithConfiguration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

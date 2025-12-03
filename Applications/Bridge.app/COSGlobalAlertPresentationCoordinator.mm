@@ -1,42 +1,42 @@
 @interface COSGlobalAlertPresentationCoordinator
 + (id)sharedInstance;
 - (COSGlobalAlertPresentationCoordinator)init;
-- (id)stringForAlertType:(unint64_t)a3;
-- (int)registerNotifyTokenWithName:(id)a3 withQueue:(id)a4 withBlock:(id)a5;
+- (id)stringForAlertType:(unint64_t)type;
+- (int)registerNotifyTokenWithName:(id)name withQueue:(id)queue withBlock:(id)block;
 - (int64_t)getHighestPriorityGlobalAlert;
-- (unint64_t)readNotifyToken:(int)a3;
-- (void)_dismissModalAlert:(unint64_t)a3;
-- (void)_enumerateAlertPresenterObservers:(id)a3 withCompletion:(id)a4;
+- (unint64_t)readNotifyToken:(int)token;
+- (void)_dismissModalAlert:(unint64_t)alert;
+- (void)_enumerateAlertPresenterObservers:(id)observers withCompletion:(id)completion;
 - (void)_initialSyncStateObserverClientCanRetryFailedRequests;
-- (void)_presentModalAlert:(unint64_t)a3;
+- (void)_presentModalAlert:(unint64_t)alert;
 - (void)_recordInitialSyncBeganMetricIfNecessary;
-- (void)addAlertPresenterObserver:(id)a3;
-- (void)applicationDidBecomeActive:(id)a3;
-- (void)applicationDidEnterBackground:(id)a3;
-- (void)applicationWillResignActive:(id)a3;
+- (void)addAlertPresenterObserver:(id)observer;
+- (void)applicationDidBecomeActive:(id)active;
+- (void)applicationDidEnterBackground:(id)background;
+- (void)applicationWillResignActive:(id)active;
 - (void)dealloc;
-- (void)initialSyncStateObserver:(id)a3 syncDidCompleteForPairingIdentifier:(id)a4;
-- (void)nanoRegistryStatusChanged:(id)a3;
+- (void)initialSyncStateObserver:(id)observer syncDidCompleteForPairingIdentifier:(id)identifier;
+- (void)nanoRegistryStatusChanged:(id)changed;
 - (void)reRegisterForNanoRegistryAndPairSyncNotifications;
 - (void)registerAppDelegateNotifications;
 - (void)registerNanoRegistryNotifications;
 - (void)registerPairedSyncNotifications;
-- (void)removeAlertPresenterObserver:(id)a3;
-- (void)setNanoRegistryStatus:(unint64_t)a3;
-- (void)setPairedSyncProgress:(double)a3;
-- (void)setPairedSyncSaysSyncActive:(BOOL)a3;
-- (void)setPairedSyncSaysSyncNeeded:(BOOL)a3;
+- (void)removeAlertPresenterObserver:(id)observer;
+- (void)setNanoRegistryStatus:(unint64_t)status;
+- (void)setPairedSyncProgress:(double)progress;
+- (void)setPairedSyncSaysSyncActive:(BOOL)active;
+- (void)setPairedSyncSaysSyncNeeded:(BOOL)needed;
 - (void)supportsMigrationSync;
-- (void)syncSessionObserver:(id)a3 didInvalidateSyncSession:(id)a4;
-- (void)syncSessionObserver:(id)a3 didReceiveUpdate:(id)a4;
-- (void)syncSessionObserver:(id)a3 receivedSyncSession:(id)a4;
+- (void)syncSessionObserver:(id)observer didInvalidateSyncSession:(id)session;
+- (void)syncSessionObserver:(id)observer didReceiveUpdate:(id)update;
+- (void)syncSessionObserver:(id)observer receivedSyncSession:(id)session;
 - (void)unregisterAppDelegateNotifications;
 - (void)unregisterNanoRegistryNotifications;
 - (void)unregisterPairedSyncNotifications;
 - (void)update;
 - (void)updateActiveDeviceChange;
 - (void)updateAlerts;
-- (void)updateSyncProgress:(BOOL)a3;
+- (void)updateSyncProgress:(BOOL)progress;
 @end
 
 @implementation COSGlobalAlertPresentationCoordinator
@@ -47,7 +47,7 @@
   block[1] = 3221225472;
   block[2] = sub_100005CB4;
   block[3] = &unk_100268108;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1002BD5C8 != -1)
   {
     dispatch_once(&qword_1002BD5C8, block);
@@ -207,10 +207,10 @@
 {
   [(COSGlobalAlertPresentationCoordinator *)self updateActiveDeviceChange];
   [(COSGlobalAlertPresentationCoordinator *)self updateAlerts];
-  v3 = [(COSGlobalAlertPresentationCoordinator *)self getHighestPriorityGlobalAlert];
-  v4 = v3;
+  getHighestPriorityGlobalAlert = [(COSGlobalAlertPresentationCoordinator *)self getHighestPriorityGlobalAlert];
+  v4 = getHighestPriorityGlobalAlert;
   alertType = self->_alertType;
-  if (v3 != -1 && alertType == v3)
+  if (getHighestPriorityGlobalAlert != -1 && alertType == getHighestPriorityGlobalAlert)
   {
     goto LABEL_10;
   }
@@ -285,24 +285,24 @@ LABEL_10:
   v3 = +[NRPairedDeviceRegistry sharedInstance];
   v4 = +[NRPairedDeviceRegistry activeDeviceSelectorBlock];
   v5 = [v3 getAllDevicesWithArchivedAltAccountDevicesMatching:v4];
-  v6 = [v5 firstObject];
+  firstObject = [v5 firstObject];
 
-  v7 = [v6 valueForProperty:NRDevicePropertyIsArchived];
+  v7 = [firstObject valueForProperty:NRDevicePropertyIsArchived];
   LODWORD(v5) = [v7 BOOLValue];
 
   if (v5)
   {
 
-    v6 = 0;
+    firstObject = 0;
   }
 
   if ([v3 compatibilityState] != 3 && objc_msgSend(v3, "compatibilityState") != 4 && objc_msgSend(v3, "compatibilityState") != 5)
   {
 
-    v6 = 0;
+    firstObject = 0;
   }
 
-  v8 = [v6 valueForProperty:NRDevicePropertyPairingID];
+  v8 = [firstObject valueForProperty:NRDevicePropertyPairingID];
   if (v8 != self->_activeDeviceID)
   {
     v9 = pbb_bridge_log();
@@ -421,7 +421,7 @@ LABEL_10:
   }
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -433,7 +433,7 @@ LABEL_10:
   [(COSGlobalAlertPresentationCoordinator *)self reRegisterForNanoRegistryAndPairSyncNotifications];
 }
 
-- (void)applicationWillResignActive:(id)a3
+- (void)applicationWillResignActive:(id)active
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -446,7 +446,7 @@ LABEL_10:
   [(COSGlobalAlertPresentationCoordinator *)self unregisterPairedSyncNotifications];
 }
 
-- (void)applicationDidEnterBackground:(id)a3
+- (void)applicationDidEnterBackground:(id)background
 {
   v4 = pbb_bridge_log();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -468,11 +468,11 @@ LABEL_10:
   objc_destroyWeak(buf);
 }
 
-- (void)initialSyncStateObserver:(id)a3 syncDidCompleteForPairingIdentifier:(id)a4
+- (void)initialSyncStateObserver:(id)observer syncDidCompleteForPairingIdentifier:(id)identifier
 {
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = +[NRPairedDeviceRegistry sharedInstance];
-  v8 = [v6 deviceForPairingID:v5];
+  v8 = [v6 deviceForPairingID:identifierCopy];
 
   v7 = [v8 valueForProperty:NRDevicePropertyIsActive];
   if ([v7 BOOLValue])
@@ -483,26 +483,26 @@ LABEL_10:
   [(COSGlobalAlertPresentationCoordinator *)self _initialSyncStateObserverClientCanRetryFailedRequests];
 }
 
-- (void)syncSessionObserver:(id)a3 didReceiveUpdate:(id)a4
+- (void)syncSessionObserver:(id)observer didReceiveUpdate:(id)update
 {
-  v5 = a4;
-  v6 = [v5 updatedSession];
-  v7 = [v6 syncSessionType];
+  updateCopy = update;
+  updatedSession = [updateCopy updatedSession];
+  syncSessionType = [updatedSession syncSessionType];
 
-  if (v7 != 1)
+  if (syncSessionType != 1)
   {
-    v8 = [v5 updatedSession];
-    [v8 sessionProgress];
+    updatedSession2 = [updateCopy updatedSession];
+    [updatedSession2 sessionProgress];
     [(COSGlobalAlertPresentationCoordinator *)self setPairedSyncProgress:?];
 
-    v9 = [v5 updatedSession];
-    if (v9)
+    updatedSession3 = [updateCopy updatedSession];
+    if (updatedSession3)
     {
-      v10 = [v5 updatedSession];
-      if ([v10 syncSessionState] == 1)
+      updatedSession4 = [updateCopy updatedSession];
+      if ([updatedSession4 syncSessionState] == 1)
       {
-        v11 = [v5 updatedSession];
-        if ([v11 syncSessionType])
+        updatedSession5 = [updateCopy updatedSession];
+        if ([updatedSession5 syncSessionType])
         {
           [(COSGlobalAlertPresentationCoordinator *)self setPairedSyncSaysSyncActive:0];
         }
@@ -525,21 +525,21 @@ LABEL_10:
       [(COSGlobalAlertPresentationCoordinator *)self setPairedSyncSaysSyncActive:0];
     }
 
-    v13 = [v5 updatedSession];
-    -[COSGlobalAlertPresentationCoordinator setSessionType:](self, "setSessionType:", [v13 syncSessionType]);
+    updatedSession6 = [updateCopy updatedSession];
+    -[COSGlobalAlertPresentationCoordinator setSessionType:](self, "setSessionType:", [updatedSession6 syncSessionType]);
 
     if ([(COSGlobalAlertPresentationCoordinator *)self pairedSyncSaysSyncActive])
     {
-      v14 = [v5 updatedSession];
-      if ([v14 syncSessionType])
+      updatedSession7 = [updateCopy updatedSession];
+      if ([updatedSession7 syncSessionType])
       {
       }
 
       else
       {
-        v15 = [(COSGlobalAlertPresentationCoordinator *)self recordedSyncBeganMetric];
+        recordedSyncBeganMetric = [(COSGlobalAlertPresentationCoordinator *)self recordedSyncBeganMetric];
 
-        if ((v15 & 1) == 0)
+        if ((recordedSyncBeganMetric & 1) == 0)
         {
           v16 = pbb_bridge_log();
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -556,10 +556,10 @@ LABEL_10:
   }
 }
 
-- (void)syncSessionObserver:(id)a3 receivedSyncSession:(id)a4
+- (void)syncSessionObserver:(id)observer receivedSyncSession:(id)session
 {
-  v5 = a4;
-  if ([v5 syncSessionType] != 1)
+  sessionCopy = session;
+  if ([sessionCopy syncSessionType] != 1)
   {
     v6 = pbb_bridge_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -569,9 +569,9 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "COSGlobalAlertPresentationCoordinator: (%s)", &v8, 0xCu);
     }
 
-    [v5 sessionProgress];
+    [sessionCopy sessionProgress];
     [(COSGlobalAlertPresentationCoordinator *)self setPairedSyncProgress:?];
-    if (v5 && [v5 syncSessionState] == 1 && objc_msgSend(v5, "syncSessionType") != 1)
+    if (sessionCopy && [sessionCopy syncSessionState] == 1 && objc_msgSend(sessionCopy, "syncSessionType") != 1)
     {
       v7 = +[NRPairedDeviceRegistry sharedInstance];
       -[COSGlobalAlertPresentationCoordinator setPairedSyncSaysSyncActive:](self, "setPairedSyncSaysSyncActive:", [v7 compatibilityState] == 4);
@@ -584,9 +584,9 @@ LABEL_10:
   }
 }
 
-- (void)syncSessionObserver:(id)a3 didInvalidateSyncSession:(id)a4
+- (void)syncSessionObserver:(id)observer didInvalidateSyncSession:(id)session
 {
-  if ([a4 syncSessionType] != 1)
+  if ([session syncSessionType] != 1)
   {
     v5 = pbb_bridge_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -611,25 +611,25 @@ LABEL_10:
   }
 }
 
-- (void)setPairedSyncProgress:(double)a3
+- (void)setPairedSyncProgress:(double)progress
 {
-  if (self->_pairedSyncProgress != a3)
+  if (self->_pairedSyncProgress != progress)
   {
-    self->_pairedSyncProgress = a3;
+    self->_pairedSyncProgress = progress;
     [(COSGlobalAlertPresentationCoordinator *)self updateSyncProgress:0];
   }
 }
 
-- (void)setPairedSyncSaysSyncActive:(BOOL)a3
+- (void)setPairedSyncSaysSyncActive:(BOOL)active
 {
-  if (self->_pairedSyncSaysSyncActive != a3)
+  if (self->_pairedSyncSaysSyncActive != active)
   {
-    v3 = a3;
+    activeCopy = active;
     v5 = pbb_bridge_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (activeCopy)
       {
         v6 = @"YES";
       }
@@ -639,22 +639,22 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "COSGlobalAlertPresentationCoordinator: setPairedSyncSaysSyncActive: %@", &v7, 0xCu);
     }
 
-    self->_pairedSyncSaysSyncActive = v3;
+    self->_pairedSyncSaysSyncActive = activeCopy;
     [(COSGlobalAlertPresentationCoordinator *)self update];
   }
 }
 
 - (void)_recordInitialSyncBeganMetricIfNecessary
 {
-  v3 = [UIApp setupController];
-  v4 = v3;
-  if (v3)
+  setupController = [UIApp setupController];
+  v4 = setupController;
+  if (setupController)
   {
-    v5 = [v3 pairingReportManager];
-    v6 = v5;
-    if (v5)
+    pairingReportManager = [setupController pairingReportManager];
+    v6 = pairingReportManager;
+    if (pairingReportManager)
     {
-      [v5 addPairingTimeEventToPairingReportPlist:69 withValue:&__kCFBooleanTrue withError:0];
+      [pairingReportManager addPairingTimeEventToPairingReportPlist:69 withValue:&__kCFBooleanTrue withError:0];
       [(COSGlobalAlertPresentationCoordinator *)self setRecordedSyncBeganMetric:1];
     }
   }
@@ -670,20 +670,20 @@ LABEL_10:
   }
 }
 
-- (int)registerNotifyTokenWithName:(id)a3 withQueue:(id)a4 withBlock:(id)a5
+- (int)registerNotifyTokenWithName:(id)name withQueue:(id)queue withBlock:(id)block
 {
-  v7 = a4;
-  v8 = a5;
+  queueCopy = queue;
+  blockCopy = block;
   out_token = -1;
-  v9 = [a3 UTF8String];
-  if (v8)
+  uTF8String = [name UTF8String];
+  if (blockCopy)
   {
-    notify_register_dispatch(v9, &out_token, v7, v8);
+    notify_register_dispatch(uTF8String, &out_token, queueCopy, blockCopy);
   }
 
   else
   {
-    notify_register_check(v9, &out_token);
+    notify_register_check(uTF8String, &out_token);
   }
 
   v10 = out_token;
@@ -691,15 +691,15 @@ LABEL_10:
   return v10;
 }
 
-- (unint64_t)readNotifyToken:(int)a3
+- (unint64_t)readNotifyToken:(int)token
 {
-  if (a3 == -1)
+  if (token == -1)
   {
     return 0;
   }
 
   state64 = 0;
-  if (notify_get_state(a3, &state64))
+  if (notify_get_state(token, &state64))
   {
     return 0;
   }
@@ -710,16 +710,16 @@ LABEL_10:
   }
 }
 
-- (void)setPairedSyncSaysSyncNeeded:(BOOL)a3
+- (void)setPairedSyncSaysSyncNeeded:(BOOL)needed
 {
-  if (self->_pairedSyncSaysSyncNeeded != a3)
+  if (self->_pairedSyncSaysSyncNeeded != needed)
   {
-    v3 = a3;
+    neededCopy = needed;
     v5 = pbb_bridge_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v3)
+      if (neededCopy)
       {
         v6 = @"YES";
       }
@@ -729,8 +729,8 @@ LABEL_10:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "COSGlobalAlertPresentationCoordinator: setPairedSyncSaysSyncNeeded: %@", &v7, 0xCu);
     }
 
-    self->_pairedSyncSaysSyncNeeded = v3;
-    if (!v3)
+    self->_pairedSyncSaysSyncNeeded = neededCopy;
+    if (!neededCopy)
     {
       if ([(COSGlobalAlertPresentationCoordinator *)self recordedSyncBeganMetric])
       {
@@ -742,35 +742,35 @@ LABEL_10:
   }
 }
 
-- (void)setNanoRegistryStatus:(unint64_t)a3
+- (void)setNanoRegistryStatus:(unint64_t)status
 {
-  if (self->_nanoRegistryStatus != a3)
+  if (self->_nanoRegistryStatus != status)
   {
     v5 = pbb_bridge_log();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 134217984;
-      v7 = a3;
+      statusCopy = status;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "COSGlobalAlertPresentationCoordinator: setNanoRegistryStatus: %ld", &v6, 0xCu);
     }
 
-    self->_nanoRegistryStatus = a3;
+    self->_nanoRegistryStatus = status;
     [(COSGlobalAlertPresentationCoordinator *)self update];
   }
 }
 
-- (void)nanoRegistryStatusChanged:(id)a3
+- (void)nanoRegistryStatusChanged:(id)changed
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:NRPairedDeviceRegistryStatusKey];
+  userInfo = [changed userInfo];
+  v5 = [userInfo objectForKeyedSubscript:NRPairedDeviceRegistryStatusKey];
 
   -[COSGlobalAlertPresentationCoordinator setNanoRegistryStatus:](self, "setNanoRegistryStatus:", [v5 integerValue]);
 }
 
-- (void)_presentModalAlert:(unint64_t)a3
+- (void)_presentModalAlert:(unint64_t)alert
 {
   activeGlobalAlerts = self->_activeGlobalAlerts;
-  v5 = 1 << a3;
+  v5 = 1 << alert;
   v6 = activeGlobalAlerts | v5;
   if (activeGlobalAlerts != (activeGlobalAlerts | v5))
   {
@@ -779,7 +779,7 @@ LABEL_10:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134218240;
-      v9 = a3;
+      alertCopy = alert;
       v10 = 1024;
       v11 = v6;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "COSGlobalAlertPresentationCoordinator: _presentModalAlert:%ld = %x", &v8, 0x12u);
@@ -787,10 +787,10 @@ LABEL_10:
   }
 }
 
-- (void)_dismissModalAlert:(unint64_t)a3
+- (void)_dismissModalAlert:(unint64_t)alert
 {
   activeGlobalAlerts = self->_activeGlobalAlerts;
-  v5 = activeGlobalAlerts & ~(1 << a3);
+  v5 = activeGlobalAlerts & ~(1 << alert);
   if (activeGlobalAlerts != v5)
   {
     self->_activeGlobalAlerts = v5;
@@ -799,7 +799,7 @@ LABEL_10:
     {
       v8 = self->_activeGlobalAlerts;
       v9 = 134218240;
-      v10 = a3;
+      alertCopy = alert;
       v11 = 1024;
       v12 = v8;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "COSGlobalAlertPresentationCoordinator: _dismissModalAlert:%ld = %x", &v9, 0x12u);
@@ -807,23 +807,23 @@ LABEL_10:
   }
 }
 
-- (void)addAlertPresenterObserver:(id)a3
+- (void)addAlertPresenterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = pbb_bridge_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = objc_opt_class();
     v7 = NSStringFromClass(v6);
     v16 = 134218242;
-    v17 = v4;
+    v17 = observerCopy;
     v18 = 2112;
     v19 = v7;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "COSGlobalAlertPresentationCoordinator: adding observer %p %@", &v16, 0x16u);
   }
 
   os_unfair_lock_lock(&self->_observersLock);
-  [(NSHashTable *)self->_observers addObject:v4];
+  [(NSHashTable *)self->_observers addObject:observerCopy];
   v8 = pbb_bridge_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -834,10 +834,10 @@ LABEL_10:
   }
 
   os_unfair_lock_unlock(&self->_observersLock);
-  v10 = [(COSGlobalAlertPresentationCoordinator *)self getHighestPriorityGlobalAlert];
-  if (v10 != -1)
+  getHighestPriorityGlobalAlert = [(COSGlobalAlertPresentationCoordinator *)self getHighestPriorityGlobalAlert];
+  if (getHighestPriorityGlobalAlert != -1)
   {
-    v11 = v10;
+    v11 = getHighestPriorityGlobalAlert;
     if (self->_isPresenting || self->_isPresented) && (objc_opt_respondsToSelector())
     {
       v12 = pbb_bridge_log();
@@ -849,47 +849,47 @@ LABEL_10:
         v16 = 138412802;
         v17 = v13;
         v18 = 2048;
-        v19 = v4;
+        v19 = observerCopy;
         v20 = 2112;
         v21 = v15;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "COSGlobalAlertPresentationCoordinator: New observer- requesting display of VC %@ to %p %@", &v16, 0x20u);
       }
 
-      [v4 globalAlertPresentationCoordinator:self presentAlert:v11 withCompletion:&stru_10026B4E0];
+      [observerCopy globalAlertPresentationCoordinator:self presentAlert:v11 withCompletion:&stru_10026B4E0];
     }
   }
 }
 
-- (void)removeAlertPresenterObserver:(id)a3
+- (void)removeAlertPresenterObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_observersLock);
-  [(NSHashTable *)self->_observers removeObject:v4];
+  [(NSHashTable *)self->_observers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_observersLock);
 }
 
-- (void)_enumerateAlertPresenterObservers:(id)a3 withCompletion:(id)a4
+- (void)_enumerateAlertPresenterObservers:(id)observers withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  observersCopy = observers;
+  completionCopy = completion;
   os_unfair_lock_lock(&self->_observersLock);
-  v8 = [(NSHashTable *)self->_observers allObjects];
+  allObjects = [(NSHashTable *)self->_observers allObjects];
   os_unfair_lock_unlock(&self->_observersLock);
   v21 = 0;
   v22 = &v21;
   v23 = 0x2020000000;
-  v24 = [v8 count];
+  v24 = [allObjects count];
   if (v22[3])
   {
-    if (v7)
+    if (completionCopy)
     {
       v18[0] = _NSConcreteStackBlock;
       v18[1] = 3221225472;
       v18[2] = sub_1000D0E24;
       v18[3] = &unk_10026B508;
       v20 = &v21;
-      v19 = v7;
+      v19 = completionCopy;
       v9 = objc_retainBlock(v18);
     }
 
@@ -902,7 +902,7 @@ LABEL_10:
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v10 = v8;
+    v10 = allObjects;
     v11 = [v10 countByEnumeratingWithState:&v14 objects:v25 count:16];
     if (v11)
     {
@@ -917,7 +917,7 @@ LABEL_10:
             objc_enumerationMutation(v10);
           }
 
-          (*(v6 + 2))(v6, *(*(&v14 + 1) + 8 * v13), v9);
+          (*(observersCopy + 2))(observersCopy, *(*(&v14 + 1) + 8 * v13), v9);
           v13 = v13 + 1;
         }
 
@@ -929,17 +929,17 @@ LABEL_10:
     }
   }
 
-  else if (v7)
+  else if (completionCopy)
   {
-    dispatch_async(&_dispatch_main_q, v7);
+    dispatch_async(&_dispatch_main_q, completionCopy);
   }
 
   _Block_object_dispose(&v21, 8);
 }
 
-- (id)stringForAlertType:(unint64_t)a3
+- (id)stringForAlertType:(unint64_t)type
 {
-  if (a3 == -1)
+  if (type == -1)
   {
     v5 = @"None";
   }
@@ -952,16 +952,16 @@ LABEL_10:
   return v5;
 }
 
-- (void)updateSyncProgress:(BOOL)a3
+- (void)updateSyncProgress:(BOOL)progress
 {
-  v3 = a3;
-  v5 = [(COSGlobalAlertPresentationCoordinator *)self getHighestPriorityGlobalAlert];
-  if (v3)
+  progressCopy = progress;
+  getHighestPriorityGlobalAlert = [(COSGlobalAlertPresentationCoordinator *)self getHighestPriorityGlobalAlert];
+  if (progressCopy)
   {
     self->_pendingSyncProgressForce = 1;
   }
 
-  if (!v5)
+  if (!getHighestPriorityGlobalAlert)
   {
     if (self->_pendingSyncProgressForce)
     {

@@ -1,12 +1,12 @@
 @interface SharedChannelPublishOffGridPayloadRequest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SharedChannelPublishOffGridPayloadRequest
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = SharedChannelPublishOffGridPayloadRequest;
   v4 = [(SharedChannelPublishOffGridPayloadRequest *)&v8 description];
-  v5 = [(SharedChannelPublishOffGridPayloadRequest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SharedChannelPublishOffGridPayloadRequest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   encryptionKey = self->_encryptionKey;
   if (encryptionKey)
   {
-    [v3 setObject:encryptionKey forKey:@"encryption_key"];
+    [dictionary setObject:encryptionKey forKey:@"encryption_key"];
   }
 
   if (*&self->_has)
@@ -42,45 +42,45 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_encryptionKey)
   {
     PBDataWriterWriteDataField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
     notificationDisplayEpochSeconds = self->_notificationDisplayEpochSeconds;
     PBDataWriterWriteUint64Field();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (self->_encryptionKey)
   {
-    v5 = v4;
-    [v4 setEncryptionKey:?];
-    v4 = v5;
+    v5 = toCopy;
+    [toCopy setEncryptionKey:?];
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = self->_notificationDisplayEpochSeconds;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 1) = self->_notificationDisplayEpochSeconds;
+    *(toCopy + 24) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_encryptionKey copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_encryptionKey copyWithZone:zone];
   v7 = *(v5 + 16);
   *(v5 + 16) = v6;
 
@@ -93,16 +93,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   encryptionKey = self->_encryptionKey;
-  if (encryptionKey | *(v4 + 2))
+  if (encryptionKey | *(equalCopy + 2))
   {
     if (![(NSData *)encryptionKey isEqual:?])
     {
@@ -110,10 +110,10 @@
     }
   }
 
-  v6 = (*(v4 + 24) & 1) == 0;
+  v6 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) != 0 && self->_notificationDisplayEpochSeconds == *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) != 0 && self->_notificationDisplayEpochSeconds == *(equalCopy + 1))
     {
       v6 = 1;
       goto LABEL_9;
@@ -144,19 +144,19 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (v4[2])
+  fromCopy = from;
+  if (fromCopy[2])
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(SharedChannelPublishOffGridPayloadRequest *)self setEncryptionKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[3])
+  if (fromCopy[3])
   {
-    self->_notificationDisplayEpochSeconds = v4[1];
+    self->_notificationDisplayEpochSeconds = fromCopy[1];
     *&self->_has |= 1u;
   }
 }

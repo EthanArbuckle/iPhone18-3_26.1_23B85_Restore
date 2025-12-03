@@ -2,47 +2,47 @@
 - (unsigned)maximumValue;
 - (unsigned)minimumValue;
 - (unsigned)stepValue;
-- (unsigned)valueRoundedToNearestStepValue:(unsigned __int8)a3;
+- (unsigned)valueRoundedToNearestStepValue:(unsigned __int8)value;
 @end
 
 @implementation CAFUInt8Range
 
 - (unsigned)minimumValue
 {
-  v2 = [(CAFRange *)self minimum];
-  v3 = [v2 unsignedCharValue];
+  minimum = [(CAFRange *)self minimum];
+  unsignedCharValue = [minimum unsignedCharValue];
 
-  return v3;
+  return unsignedCharValue;
 }
 
 - (unsigned)maximumValue
 {
-  v2 = [(CAFRange *)self maximum];
-  v3 = [v2 unsignedCharValue];
+  maximum = [(CAFRange *)self maximum];
+  unsignedCharValue = [maximum unsignedCharValue];
 
-  return v3;
+  return unsignedCharValue;
 }
 
 - (unsigned)stepValue
 {
-  v2 = [(CAFRange *)self step];
-  v3 = [v2 unsignedCharValue];
+  step = [(CAFRange *)self step];
+  unsignedCharValue = [step unsignedCharValue];
 
-  return v3;
+  return unsignedCharValue;
 }
 
-- (unsigned)valueRoundedToNearestStepValue:(unsigned __int8)a3
+- (unsigned)valueRoundedToNearestStepValue:(unsigned __int8)value
 {
-  v3 = a3;
+  valueCopy = value;
   if ([(CAFUInt8Range *)self stepValue])
   {
-    v3 -= [(CAFUInt8Range *)self minimumValue];
-    v5 = v3 / [(CAFUInt8Range *)self stepValue];
-    LOBYTE(v3) = [(CAFUInt8Range *)self minimumValue];
-    LOBYTE(v3) = v3 + [(CAFUInt8Range *)self stepValue]* v5;
+    valueCopy -= [(CAFUInt8Range *)self minimumValue];
+    v5 = valueCopy / [(CAFUInt8Range *)self stepValue];
+    LOBYTE(valueCopy) = [(CAFUInt8Range *)self minimumValue];
+    LOBYTE(valueCopy) = valueCopy + [(CAFUInt8Range *)self stepValue]* v5;
   }
 
-  return v3;
+  return valueCopy;
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface GCSProfilesCollection
 - (BOOL)storeVersionIsCompatible;
-- (GCSProfilesCollection)initWithSettingsStore:(id)a3 userDefaults:(id)a4;
+- (GCSProfilesCollection)initWithSettingsStore:(id)store userDefaults:(id)defaults;
 - (GCSSettingsStoreService)settingsStore;
-- (id)profileForIdentifier:(id)a3;
+- (id)profileForIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)updateProfiles:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)updateProfiles:(id)profiles;
 @end
 
 @implementation GCSProfilesCollection
 
-- (GCSProfilesCollection)initWithSettingsStore:(id)a3 userDefaults:(id)a4
+- (GCSProfilesCollection)initWithSettingsStore:(id)store userDefaults:(id)defaults
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  storeCopy = store;
+  defaultsCopy = defaults;
   v18.receiver = self;
   v18.super_class = GCSProfilesCollection;
   v8 = [(GCSProfilesCollection *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_settingsStore, v6);
-    objc_storeStrong(&v9->_userDefaults, a4);
+    objc_storeWeak(&v8->_settingsStore, storeCopy);
+    objc_storeStrong(&v9->_userDefaults, defaults);
     v10 = +[GCSProfile defaultProfile];
     v19[0] = v10;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
@@ -53,10 +53,10 @@
   return v3;
 }
 
-- (id)profileForIdentifier:(id)a3
+- (id)profileForIdentifier:(id)identifier
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
@@ -77,8 +77,8 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 uuid];
-        v12 = [v11 isEqual:v4];
+        uuid = [v10 uuid];
+        v12 = [uuid isEqual:identifierCopy];
 
         if (v12)
         {
@@ -106,14 +106,14 @@ LABEL_11:
   return v13;
 }
 
-- (void)updateProfiles:(id)a3
+- (void)updateProfiles:(id)profiles
 {
   v27[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  profilesCopy = profiles;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && [(GCSProfilesCollection *)self storeVersionIsCompatible])
   {
-    v5 = [v4 objectForKeyedSubscript:@"data"];
+    v5 = [profilesCopy objectForKeyedSubscript:@"data"];
     if (v5)
     {
       v6 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NSObject count](v5, "count")}];
@@ -156,9 +156,9 @@ LABEL_11:
       v14 = getGCSLogger();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
-        v15 = [(GCSProfilesCollection *)self values];
+        values = [(GCSProfilesCollection *)self values];
         *buf = 138412290;
-        v26 = v15;
+        v26 = values;
         _os_log_impl(&dword_24E4FA000, v14, OS_LOG_TYPE_INFO, "GCSProfilesCollection.values = %@", buf, 0xCu);
       }
     }
@@ -174,9 +174,9 @@ LABEL_11:
     v5 = getGCSLogger();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v18 = [(GCSProfilesCollection *)self values];
+      values2 = [(GCSProfilesCollection *)self values];
       *buf = 138412290;
-      v26 = v18;
+      v26 = values2;
       _os_log_impl(&dword_24E4FA000, v5, OS_LOG_TYPE_INFO, "GCSProfilesCollection.values = %@", buf, 0xCu);
     }
   }
@@ -184,23 +184,23 @@ LABEL_11:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"profiles"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"profiles"])
   {
-    v13 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v13 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
   }
 
   else
   {
-    if (![v10 isEqualToString:@"settingsVersion"])
+    if (![pathCopy isEqualToString:@"settingsVersion"])
     {
       v15.receiver = self;
       v15.super_class = GCSProfilesCollection;
-      [(GCSProfilesCollection *)&v15 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(GCSProfilesCollection *)&v15 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       goto LABEL_7;
     }
 

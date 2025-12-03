@@ -1,26 +1,26 @@
 @interface ToolbarItemConfiguration
-+ (id)attributedTitleForTabGroup:(id)a3 inProfile:(id)a4 primaryColor:(id)a5 secondaryColor:(id)a6;
-+ (id)configurationForProfile:(id)a3;
-+ (id)configurationForTabGroup:(id)a3;
-+ (id)configurationForTabGroup:(id)a3 inProfile:(id)a4;
++ (id)attributedTitleForTabGroup:(id)group inProfile:(id)profile primaryColor:(id)color secondaryColor:(id)secondaryColor;
++ (id)configurationForProfile:(id)profile;
++ (id)configurationForTabGroup:(id)group;
++ (id)configurationForTabGroup:(id)group inProfile:(id)profile;
 + (id)configurationForTabGroupPicker;
 - (NSAttributedString)attributedTitle;
 - (NSString)title;
 - (ToolbarItemConfiguration)init;
-- (id)buttonConfigurationWithStyle:(int64_t)a3;
-- (void)setAttributedTitle:(id)a3;
-- (void)setTitle:(id)a3;
+- (id)buttonConfigurationWithStyle:(int64_t)style;
+- (void)setAttributedTitle:(id)title;
+- (void)setTitle:(id)title;
 @end
 
 @implementation ToolbarItemConfiguration
 
-+ (id)configurationForTabGroup:(id)a3
++ (id)configurationForTabGroup:(id)group
 {
-  v3 = a3;
+  groupCopy = group;
   v4 = objc_alloc_init(ToolbarItemConfiguration);
-  v5 = [v3 displayTitle];
+  displayTitle = [groupCopy displayTitle];
 
-  [(ToolbarItemConfiguration *)v4 setTitle:v5];
+  [(ToolbarItemConfiguration *)v4 setTitle:displayTitle];
 
   return v4;
 }
@@ -36,55 +36,55 @@
   return v2;
 }
 
-+ (id)configurationForProfile:(id)a3
++ (id)configurationForProfile:(id)profile
 {
-  v3 = a3;
+  profileCopy = profile;
   v4 = objc_alloc_init(ToolbarItemConfiguration);
-  v5 = [v3 symbolImage];
-  [(ToolbarItemConfiguration *)v4 setImage:v5];
+  symbolImage = [profileCopy symbolImage];
+  [(ToolbarItemConfiguration *)v4 setImage:symbolImage];
 
-  v6 = [v3 title];
-  [(ToolbarItemConfiguration *)v4 setTitle:v6];
+  title = [profileCopy title];
+  [(ToolbarItemConfiguration *)v4 setTitle:title];
 
-  v7 = [v3 title];
+  title2 = [profileCopy title];
 
-  [(ToolbarItemConfiguration *)v4 setAccessibilityIdentifier:v7];
+  [(ToolbarItemConfiguration *)v4 setAccessibilityIdentifier:title2];
 
   return v4;
 }
 
-+ (id)configurationForTabGroup:(id)a3 inProfile:(id)a4
++ (id)configurationForTabGroup:(id)group inProfile:(id)profile
 {
-  v6 = a4;
-  v7 = a3;
+  profileCopy = profile;
+  groupCopy = group;
   v8 = objc_alloc_init(ToolbarItemConfiguration);
-  v9 = [v6 symbolImage];
-  [(ToolbarItemConfiguration *)v8 setImage:v9];
+  symbolImage = [profileCopy symbolImage];
+  [(ToolbarItemConfiguration *)v8 setImage:symbolImage];
 
-  v10 = [v6 title];
-  [(ToolbarItemConfiguration *)v8 setAccessibilityIdentifier:v10];
+  title = [profileCopy title];
+  [(ToolbarItemConfiguration *)v8 setAccessibilityIdentifier:title];
 
-  v11 = [MEMORY[0x277D75348] labelColor];
-  v12 = [MEMORY[0x277D75348] secondaryLabelColor];
-  v13 = [a1 attributedTitleForTabGroup:v7 inProfile:v6 primaryColor:v11 secondaryColor:v12];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+  v13 = [self attributedTitleForTabGroup:groupCopy inProfile:profileCopy primaryColor:labelColor secondaryColor:secondaryLabelColor];
 
   [(ToolbarItemConfiguration *)v8 setAttributedTitle:v13];
 
   return v8;
 }
 
-+ (id)attributedTitleForTabGroup:(id)a3 inProfile:(id)a4 primaryColor:(id)a5 secondaryColor:(id)a6
++ (id)attributedTitleForTabGroup:(id)group inProfile:(id)profile primaryColor:(id)color secondaryColor:(id)secondaryColor
 {
   v29[1] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  groupCopy = group;
+  profileCopy = profile;
+  colorCopy = color;
+  secondaryColorCopy = secondaryColor;
   v13 = MEMORY[0x277D740C0];
-  if (v11)
+  if (colorCopy)
   {
     v28 = *MEMORY[0x277D740C0];
-    v29[0] = v11;
+    v29[0] = colorCopy;
     v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:&v28 count:1];
   }
 
@@ -94,13 +94,13 @@
   }
 
   v15 = objc_alloc(MEMORY[0x277CCAB48]);
-  v16 = [v10 title];
-  v17 = [v15 initWithString:v16 attributes:v14];
+  title = [profileCopy title];
+  v17 = [v15 initWithString:title attributes:v14];
 
-  if (v12)
+  if (secondaryColorCopy)
   {
     v26 = *v13;
-    v27 = v12;
+    v27 = secondaryColorCopy;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
   }
 
@@ -111,8 +111,8 @@
 
   v19 = objc_alloc(MEMORY[0x277CCA898]);
   v20 = MEMORY[0x277CCACA8];
-  v21 = [v9 displayTitle];
-  v22 = [v20 stringWithFormat:@" — %@", v21];
+  displayTitle = [groupCopy displayTitle];
+  v22 = [v20 stringWithFormat:@" — %@", displayTitle];
   v23 = [v19 initWithString:v22 attributes:v18];
   [v17 appendAttributedString:v23];
 
@@ -146,9 +146,9 @@
   return title;
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 }
@@ -169,16 +169,16 @@
   return title;
 }
 
-- (void)setAttributedTitle:(id)a3
+- (void)setAttributedTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   title = self->_title;
   self->_title = v4;
 }
 
-- (id)buttonConfigurationWithStyle:(int64_t)a3
+- (id)buttonConfigurationWithStyle:(int64_t)style
 {
-  v5 = [MEMORY[0x277D75230] borderlessButtonConfiguration];
+  borderlessButtonConfiguration = [MEMORY[0x277D75230] borderlessButtonConfiguration];
   v6 = MEMORY[0x277D76988];
   if (!self->_emphasized)
   {
@@ -188,15 +188,15 @@
   v7 = *v6;
   if (self->_image)
   {
-    [v5 setImage:?];
+    [borderlessButtonConfiguration setImage:?];
     v8 = 4.0;
     if (self->_emphasized)
     {
       v8 = 2.0;
     }
 
-    [v5 setImagePadding:v8];
-    if (a3 == 1)
+    [borderlessButtonConfiguration setImagePadding:v8];
+    if (style == 1)
     {
       v9 = 3;
     }
@@ -212,47 +212,47 @@
     }
 
     v10 = [MEMORY[0x277D755D0] configurationWithTextStyle:v7 scale:v9];
-    [v5 setPreferredSymbolConfigurationForImage:v10];
+    [borderlessButtonConfiguration setPreferredSymbolConfigurationForImage:v10];
   }
 
-  if (a3 != 1 && self->_title)
+  if (style != 1 && self->_title)
   {
-    v11 = [(ToolbarItemConfiguration *)self title];
-    if (v11)
+    title = [(ToolbarItemConfiguration *)self title];
+    if (title)
     {
-      [v5 setTitle:v11];
+      [borderlessButtonConfiguration setTitle:title];
     }
 
-    v12 = [(ToolbarItemConfiguration *)self attributedTitle];
-    if (v12)
+    attributedTitle = [(ToolbarItemConfiguration *)self attributedTitle];
+    if (attributedTitle)
     {
-      [v5 setAttributedTitle:v12];
+      [borderlessButtonConfiguration setAttributedTitle:attributedTitle];
     }
 
-    [v5 setTitleLineBreakMode:4];
+    [borderlessButtonConfiguration setTitleLineBreakMode:4];
   }
 
   if (self->_emphasized)
   {
-    v13 = [MEMORY[0x277D75348] labelColor];
-    [v5 setBaseForegroundColor:v13];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [borderlessButtonConfiguration setBaseForegroundColor:labelColor];
 
-    [v5 setTitleTextAttributesTransformer:&__block_literal_global_2];
+    [borderlessButtonConfiguration setTitleTextAttributesTransformer:&__block_literal_global_2];
   }
 
   else
   {
-    v14 = [MEMORY[0x277D75348] tintColor];
-    [v5 setBaseForegroundColor:v14];
+    tintColor = [MEMORY[0x277D75348] tintColor];
+    [borderlessButtonConfiguration setBaseForegroundColor:tintColor];
   }
 
   if (self->_showsIndicator)
   {
-    [v5 setIndicator:3];
-    [v5 setIndicatorColorTransformer:&__block_literal_global_16];
+    [borderlessButtonConfiguration setIndicator:3];
+    [borderlessButtonConfiguration setIndicatorColorTransformer:&__block_literal_global_16];
   }
 
-  return v5;
+  return borderlessButtonConfiguration;
 }
 
 id __57__ToolbarItemConfiguration_buttonConfigurationWithStyle___block_invoke(uint64_t a1, void *a2)

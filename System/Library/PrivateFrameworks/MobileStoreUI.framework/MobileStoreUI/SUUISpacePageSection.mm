@@ -1,44 +1,44 @@
 @interface SUUISpacePageSection
-- (CGSize)cellSizeForIndexPath:(id)a3;
-- (SUUISpacePageSection)initWithPageComponent:(id)a3;
-- (id)cellForIndexPath:(id)a3;
-- (void)willAppearInContext:(id)a3;
+- (CGSize)cellSizeForIndexPath:(id)path;
+- (SUUISpacePageSection)initWithPageComponent:(id)component;
+- (id)cellForIndexPath:(id)path;
+- (void)willAppearInContext:(id)context;
 @end
 
 @implementation SUUISpacePageSection
 
-- (SUUISpacePageSection)initWithPageComponent:(id)a3
+- (SUUISpacePageSection)initWithPageComponent:(id)component
 {
   v4.receiver = self;
   v4.super_class = SUUISpacePageSection;
-  return [(SUUIStorePageSection *)&v4 initWithPageComponent:a3];
+  return [(SUUIStorePageSection *)&v4 initWithPageComponent:component];
 }
 
-- (void)willAppearInContext:(id)a3
+- (void)willAppearInContext:(id)context
 {
-  v3 = [a3 collectionView];
-  [v3 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SUUISpacePageSectionReuseIdentifier"];
+  collectionView = [context collectionView];
+  [collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"SUUISpacePageSectionReuseIdentifier"];
 }
 
-- (id)cellForIndexPath:(id)a3
+- (id)cellForIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(SUUIStorePageSection *)self context];
-  v6 = [v5 collectionView];
-  v7 = [v6 dequeueReusableCellWithReuseIdentifier:@"SUUISpacePageSectionReuseIdentifier" forIndexPath:v4];
+  pathCopy = path;
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  v7 = [collectionView dequeueReusableCellWithReuseIdentifier:@"SUUISpacePageSectionReuseIdentifier" forIndexPath:pathCopy];
 
   return v7;
 }
 
-- (CGSize)cellSizeForIndexPath:(id)a3
+- (CGSize)cellSizeForIndexPath:(id)path
 {
-  v4 = [(SUUIStorePageSection *)self context];
-  v5 = [v4 collectionView];
-  [v5 bounds];
+  context = [(SUUIStorePageSection *)self context];
+  collectionView = [context collectionView];
+  [collectionView bounds];
   v7 = v6;
 
-  v8 = [(SUUIStorePageSection *)self pageComponent];
-  [v8 height];
+  pageComponent = [(SUUIStorePageSection *)self pageComponent];
+  [pageComponent height];
   v10 = v9;
 
   v11 = v7;

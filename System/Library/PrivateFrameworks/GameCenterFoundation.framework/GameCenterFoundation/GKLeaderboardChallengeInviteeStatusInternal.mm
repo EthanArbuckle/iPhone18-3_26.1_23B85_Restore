@@ -1,6 +1,6 @@
 @interface GKLeaderboardChallengeInviteeStatusInternal
 + (id)secureCodedPropertyKeys;
-- (GKLeaderboardChallengeInviteeStatusInternal)initWithServerFragment:(id)a3;
+- (GKLeaderboardChallengeInviteeStatusInternal)initWithServerFragment:(id)fragment;
 @end
 
 @implementation GKLeaderboardChallengeInviteeStatusInternal
@@ -31,18 +31,18 @@ void __70__GKLeaderboardChallengeInviteeStatusInternal_secureCodedPropertyKeys__
   v2 = *MEMORY[0x277D85DE8];
 }
 
-- (GKLeaderboardChallengeInviteeStatusInternal)initWithServerFragment:(id)a3
+- (GKLeaderboardChallengeInviteeStatusInternal)initWithServerFragment:(id)fragment
 {
-  v4 = a3;
+  fragmentCopy = fragment;
   v9.receiver = self;
   v9.super_class = GKLeaderboardChallengeInviteeStatusInternal;
   v5 = [(GKLeaderboardChallengeInviteeStatusInternal *)&v9 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"status"];
+    v6 = [fragmentCopy objectForKeyedSubscript:@"status"];
     [(GKLeaderboardChallengeInviteeStatusInternal *)v5 setStatus:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"player-id"];
+    v7 = [fragmentCopy objectForKeyedSubscript:@"player-id"];
     [(GKLeaderboardChallengeInviteeStatusInternal *)v5 setPlayerID:v7];
   }
 

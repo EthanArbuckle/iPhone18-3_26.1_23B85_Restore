@@ -1,42 +1,42 @@
 @interface HKHRBloodPressureJournalNotificationAnalyticsEvent
-- (HKHRBloodPressureJournalNotificationAnalyticsEvent)initWithAction:(unint64_t)a3 latestActiveJournal:(id)a4 windowType:(id)a5;
+- (HKHRBloodPressureJournalNotificationAnalyticsEvent)initWithAction:(unint64_t)action latestActiveJournal:(id)journal windowType:(id)type;
 - (id)actionValue;
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4;
-- (id)windowValue:(unint64_t)a3;
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error;
+- (id)windowValue:(unint64_t)value;
 - (unint64_t)windowType;
 @end
 
 @implementation HKHRBloodPressureJournalNotificationAnalyticsEvent
 
-- (HKHRBloodPressureJournalNotificationAnalyticsEvent)initWithAction:(unint64_t)a3 latestActiveJournal:(id)a4 windowType:(id)a5
+- (HKHRBloodPressureJournalNotificationAnalyticsEvent)initWithAction:(unint64_t)action latestActiveJournal:(id)journal windowType:(id)type
 {
-  v9 = a4;
-  v10 = a5;
+  journalCopy = journal;
+  typeCopy = type;
   v16.receiver = self;
   v16.super_class = HKHRBloodPressureJournalNotificationAnalyticsEvent;
   v11 = [(HKHRBloodPressureJournalNotificationAnalyticsEvent *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_action = a3;
-    objc_storeStrong(&v11->_activeJournal, a4);
-    v13 = [[HKHRBloodPressureJournalAnalyticsUtilities alloc] initWithLatestActiveJournal:v9];
+    v11->_action = action;
+    objc_storeStrong(&v11->_activeJournal, journal);
+    v13 = [[HKHRBloodPressureJournalAnalyticsUtilities alloc] initWithLatestActiveJournal:journalCopy];
     commonUtilities = v12->_commonUtilities;
     v12->_commonUtilities = v13;
 
-    objc_storeStrong(&v12->_windowType, a5);
+    objc_storeStrong(&v12->_windowType, type);
   }
 
   return v12;
 }
 
-- (id)makeIHAGatedEventPayloadWithDataSource:(id)a3 error:(id *)a4
+- (id)makeIHAGatedEventPayloadWithDataSource:(id)source error:(id *)error
 {
-  v5 = a3;
+  sourceCopy = source;
   v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v7 = [v5 healthDataSource];
+  healthDataSource = [sourceCopy healthDataSource];
   v28 = 0;
-  v8 = [v7 biologicalSexWithError:&v28];
+  v8 = [healthDataSource biologicalSexWithError:&v28];
   v9 = v28;
 
   if (v9)
@@ -74,11 +74,11 @@ LABEL_7:
 
 LABEL_8:
 
-  v14 = [v5 healthDataSource];
-  v15 = [v5 environmentDataSource];
-  v16 = [v15 currentDate];
+  healthDataSource2 = [sourceCopy healthDataSource];
+  environmentDataSource = [sourceCopy environmentDataSource];
+  currentDate = [environmentDataSource currentDate];
   v27 = 0;
-  v17 = [v14 ageWithCurrentDate:v16 error:&v27];
+  v17 = [healthDataSource2 ageWithCurrentDate:currentDate error:&v27];
   v18 = v27;
 
   if (v18)
@@ -109,10 +109,10 @@ LABEL_8:
   v20 = v18;
 LABEL_14:
 
-  v22 = [(HKHRBloodPressureJournalNotificationAnalyticsEvent *)self actionValue];
-  [v6 setObject:v22 forKeyedSubscript:@"action"];
+  actionValue = [(HKHRBloodPressureJournalNotificationAnalyticsEvent *)self actionValue];
+  [v6 setObject:actionValue forKeyedSubscript:@"action"];
 
-  v23 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HKHRBloodPressureJournalAnalyticsUtilities fetchNumDaysSinceMostRecentBPJCycleStart:](self->_commonUtilities, "fetchNumDaysSinceMostRecentBPJCycleStart:", v5)}];
+  v23 = [MEMORY[0x277CCABB0] numberWithInteger:{-[HKHRBloodPressureJournalAnalyticsUtilities fetchNumDaysSinceMostRecentBPJCycleStart:](self->_commonUtilities, "fetchNumDaysSinceMostRecentBPJCycleStart:", sourceCopy)}];
   [v6 setObject:v23 forKeyedSubscript:@"numDaysSinceMostRecentBPJCycleStart"];
 
   v24 = [(HKHRBloodPressureJournalNotificationAnalyticsEvent *)self windowValue:[(HKHRBloodPressureJournalNotificationAnalyticsEvent *)self windowType]];
@@ -131,21 +131,21 @@ LABEL_14:
     return off_27860AB58[action];
   }
 
-  v6 = [MEMORY[0x277CCA890] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"HKHRBloodPressureJournalNotificationAnalyticsEvent.m" lineNumber:105 description:{@"Unexpected Notification Type %ld", self->_action}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKHRBloodPressureJournalNotificationAnalyticsEvent.m" lineNumber:105 description:{@"Unexpected Notification Type %ld", self->_action}];
 
   return 0;
 }
 
-- (id)windowValue:(unint64_t)a3
+- (id)windowValue:(unint64_t)value
 {
-  if (a3 < 3)
+  if (value < 3)
   {
-    return off_27860AB78[a3];
+    return off_27860AB78[value];
   }
 
-  v7 = [MEMORY[0x277CCA890] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"HKHRBloodPressureJournalNotificationAnalyticsEvent.m" lineNumber:119 description:{@"Unexpected Notification Type %ld", a3}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HKHRBloodPressureJournalNotificationAnalyticsEvent.m" lineNumber:119 description:{@"Unexpected Notification Type %ld", value}];
 
   return 0;
 }

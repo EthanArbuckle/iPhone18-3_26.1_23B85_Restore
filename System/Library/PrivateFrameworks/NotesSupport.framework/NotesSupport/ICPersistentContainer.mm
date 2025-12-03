@@ -1,6 +1,6 @@
 @interface ICPersistentContainer
-+ (BOOL)isDataProtectionError:(id)a3;
-+ (BOOL)isDatabaseMissingError:(id)a3;
++ (BOOL)isDataProtectionError:(id)error;
++ (BOOL)isDatabaseMissingError:(id)error;
 + (ICExclusiveLock)databaseOpenLock;
 + (id)managedObjectModel;
 + (id)oldManagedObjectModel;
@@ -9,18 +9,18 @@
 - (BOOL)allowsCoreDataMigration;
 - (BOOL)isReadOnly;
 - (BOOL)isTooLowOnDiskSpace;
-- (BOOL)loadPersistentStore:(id *)a3 storeCreatedHandler:(id)a4;
-- (BOOL)migrateFromOldDataModel:(id *)a3;
-- (ICPersistentContainer)initWithStoreURL:(id)a3 storeType:(id)a4 options:(id)a5 mergePolicy:(id)a6;
-- (ICPersistentContainer)initWithStoreURL:(id)a3 storeType:(id)a4 options:(id)a5 mergePolicy:(id)a6 managedObjectModel:(id)a7;
+- (BOOL)loadPersistentStore:(id *)store storeCreatedHandler:(id)handler;
+- (BOOL)migrateFromOldDataModel:(id *)model;
+- (ICPersistentContainer)initWithStoreURL:(id)l storeType:(id)type options:(id)options mergePolicy:(id)policy;
+- (ICPersistentContainer)initWithStoreURL:(id)l storeType:(id)type options:(id)options mergePolicy:(id)policy managedObjectModel:(id)model;
 - (NSURL)backupsDirectoryURL;
 - (id)newBackgroundContext;
-- (id)performBlockWithDatabaseOpenLock:(id)a3;
-- (void)backupPersistentStoreWithError:(id)a3;
+- (id)performBlockWithDatabaseOpenLock:(id)lock;
+- (void)backupPersistentStoreWithError:(id)error;
 - (void)isTooLowOnDiskSpace;
 - (void)setupPersistentStoreDescriptions;
 - (void)setupViewContext;
-- (void)vacuumStoreWithCompletionHandler:(id)a3;
+- (void)vacuumStoreWithCompletionHandler:(id)handler;
 @end
 
 @implementation ICPersistentContainer
@@ -34,20 +34,20 @@ void __43__ICPersistentContainer_managedObjectModel__block_invoke_cold_1()
 
 - (BOOL)allowsCoreDataMigration
 {
-  v2 = [(ICPersistentContainer *)self storeOptions];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695D380]];
+  storeOptions = [(ICPersistentContainer *)self storeOptions];
+  v3 = [storeOptions objectForKeyedSubscript:*MEMORY[0x1E695D380]];
 
   if (v3)
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 + (ICExclusiveLock)databaseOpenLock
@@ -64,14 +64,14 @@ void __43__ICPersistentContainer_managedObjectModel__block_invoke_cold_1()
 
 + (id)standardStoreOptions
 {
-  v2 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v3 = MEMORY[0x1E695E118];
-  [v2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E695D318]];
-  [v2 setObject:v3 forKeyedSubscript:*MEMORY[0x1E695D380]];
-  [v2 setObject:v3 forKeyedSubscript:*MEMORY[0x1E695D428]];
-  [v2 setObject:v3 forKeyedSubscript:*MEMORY[0x1E695D3C0]];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E695D318]];
+  [dictionary setObject:v3 forKeyedSubscript:*MEMORY[0x1E695D380]];
+  [dictionary setObject:v3 forKeyedSubscript:*MEMORY[0x1E695D428]];
+  [dictionary setObject:v3 forKeyedSubscript:*MEMORY[0x1E695D3C0]];
 
-  return v2;
+  return dictionary;
 }
 
 + (id)managedObjectModel
@@ -113,20 +113,20 @@ void __43__ICPersistentContainer_managedObjectModel__block_invoke()
 {
   v12[1] = *MEMORY[0x1E69E9840];
   v3 = objc_alloc(MEMORY[0x1E695D6C8]);
-  v4 = [(ICPersistentContainer *)self storeURL];
-  v5 = [v3 initWithURL:v4];
+  storeURL = [(ICPersistentContainer *)self storeURL];
+  v5 = [v3 initWithURL:storeURL];
 
-  v6 = [(ICPersistentContainer *)self storeType];
-  [v5 setType:v6];
+  storeType = [(ICPersistentContainer *)self storeType];
+  [v5 setType:storeType];
 
-  v7 = [(ICPersistentContainer *)self storeOptions];
+  storeOptions = [(ICPersistentContainer *)self storeOptions];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __57__ICPersistentContainer_setupPersistentStoreDescriptions__block_invoke;
   v10[3] = &unk_1E8485028;
   v8 = v5;
   v11 = v8;
-  [v7 enumerateKeysAndObjectsUsingBlock:v10];
+  [storeOptions enumerateKeysAndObjectsUsingBlock:v10];
 
   if (v8)
   {
@@ -148,70 +148,70 @@ void __41__ICPersistentContainer_databaseOpenLock__block_invoke()
 
 - (void)setupViewContext
 {
-  v3 = [(ICPersistentContainer *)self mergePolicy];
-  v4 = [(NSPersistentContainer *)self viewContext];
-  [v4 setMergePolicy:v3];
+  mergePolicy = [(ICPersistentContainer *)self mergePolicy];
+  viewContext = [(NSPersistentContainer *)self viewContext];
+  [viewContext setMergePolicy:mergePolicy];
 
-  v5 = [(NSPersistentContainer *)self viewContext];
-  [v5 setName:@"ViewContext"];
+  viewContext2 = [(NSPersistentContainer *)self viewContext];
+  [viewContext2 setName:@"ViewContext"];
 
   v6 = MEMORY[0x1E696AEC0];
-  v7 = [MEMORY[0x1E696AE30] processInfo];
-  v8 = [v6 stringWithFormat:@"%d", objc_msgSend(v7, "processIdentifier")];
-  v9 = [(NSPersistentContainer *)self viewContext];
-  [v9 setTransactionAuthor:v8];
+  processInfo = [MEMORY[0x1E696AE30] processInfo];
+  v8 = [v6 stringWithFormat:@"%d", objc_msgSend(processInfo, "processIdentifier")];
+  viewContext3 = [(NSPersistentContainer *)self viewContext];
+  [viewContext3 setTransactionAuthor:v8];
 
-  v10 = [(NSPersistentContainer *)self viewContext];
-  [v10 setAutomaticallyMergesChangesFromParent:1];
+  viewContext4 = [(NSPersistentContainer *)self viewContext];
+  [viewContext4 setAutomaticallyMergesChangesFromParent:1];
 
-  v11 = [(NSPersistentContainer *)self viewContext];
-  [v11 setShouldDeleteInaccessibleFaults:1];
+  viewContext5 = [(NSPersistentContainer *)self viewContext];
+  [viewContext5 setShouldDeleteInaccessibleFaults:1];
 }
 
 - (id)newBackgroundContext
 {
   v6.receiver = self;
   v6.super_class = ICPersistentContainer;
-  v3 = [(NSPersistentContainer *)&v6 newBackgroundContext];
-  v4 = [(ICPersistentContainer *)self mergePolicy];
-  [v3 setMergePolicy:v4];
+  newBackgroundContext = [(NSPersistentContainer *)&v6 newBackgroundContext];
+  mergePolicy = [(ICPersistentContainer *)self mergePolicy];
+  [newBackgroundContext setMergePolicy:mergePolicy];
 
-  return v3;
+  return newBackgroundContext;
 }
 
-- (ICPersistentContainer)initWithStoreURL:(id)a3 storeType:(id)a4 options:(id)a5 mergePolicy:(id)a6
+- (ICPersistentContainer)initWithStoreURL:(id)l storeType:(id)type options:(id)options mergePolicy:(id)policy
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [objc_opt_class() managedObjectModel];
-  v15 = [(ICPersistentContainer *)self initWithStoreURL:v13 storeType:v12 options:v11 mergePolicy:v10 managedObjectModel:v14];
+  policyCopy = policy;
+  optionsCopy = options;
+  typeCopy = type;
+  lCopy = l;
+  managedObjectModel = [objc_opt_class() managedObjectModel];
+  v15 = [(ICPersistentContainer *)self initWithStoreURL:lCopy storeType:typeCopy options:optionsCopy mergePolicy:policyCopy managedObjectModel:managedObjectModel];
 
   return v15;
 }
 
-- (ICPersistentContainer)initWithStoreURL:(id)a3 storeType:(id)a4 options:(id)a5 mergePolicy:(id)a6 managedObjectModel:(id)a7
+- (ICPersistentContainer)initWithStoreURL:(id)l storeType:(id)type options:(id)options mergePolicy:(id)policy managedObjectModel:(id)model
 {
-  v13 = a3;
-  v21 = a4;
-  v20 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [v13 lastPathComponent];
-  v17 = [v16 stringByDeletingPathExtension];
+  lCopy = l;
+  typeCopy = type;
+  optionsCopy = options;
+  policyCopy = policy;
+  modelCopy = model;
+  lastPathComponent = [lCopy lastPathComponent];
+  stringByDeletingPathExtension = [lastPathComponent stringByDeletingPathExtension];
 
   v22.receiver = self;
   v22.super_class = ICPersistentContainer;
-  v18 = [(NSPersistentContainer *)&v22 initWithName:v17 managedObjectModel:v15];
+  v18 = [(NSPersistentContainer *)&v22 initWithName:stringByDeletingPathExtension managedObjectModel:modelCopy];
 
   if (v18)
   {
-    objc_storeStrong(&v18->_storeURL, a3);
-    objc_storeStrong(&v18->_storeType, a4);
-    objc_storeStrong(&v18->_storeOptions, a5);
-    objc_storeStrong(&v18->_mergePolicy, a6);
-    [(ICPersistentContainer *)v18 setupPersistentStoreDescriptions:v20];
+    objc_storeStrong(&v18->_storeURL, l);
+    objc_storeStrong(&v18->_storeType, type);
+    objc_storeStrong(&v18->_storeOptions, options);
+    objc_storeStrong(&v18->_mergePolicy, policy);
+    [(ICPersistentContainer *)v18 setupPersistentStoreDescriptions:optionsCopy];
   }
 
   return v18;
@@ -245,7 +245,7 @@ void __41__ICPersistentContainer_databaseOpenLock__block_invoke()
   return v5;
 }
 
-- (BOOL)migrateFromOldDataModel:(id *)a3
+- (BOOL)migrateFromOldDataModel:(id *)model
 {
   v26[2] = *MEMORY[0x1E69E9840];
   v21 = 0;
@@ -270,10 +270,10 @@ void __41__ICPersistentContainer_databaseOpenLock__block_invoke()
   v26[0] = MEMORY[0x1E695E118];
   v26[1] = MEMORY[0x1E695E118];
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v26 forKeys:v25 count:2];
-  v8 = [objc_opt_class() oldManagedObjectModel];
+  oldManagedObjectModel = [objc_opt_class() oldManagedObjectModel];
   v9 = [ICPersistentContainer alloc];
-  v10 = [(ICPersistentContainer *)self storeURL];
-  v11 = [(ICPersistentContainer *)v9 initWithStoreURL:v10 storeType:*MEMORY[0x1E695D4A8] options:v7 mergePolicy:0 managedObjectModel:v8];
+  storeURL = [(ICPersistentContainer *)self storeURL];
+  v11 = [(ICPersistentContainer *)v9 initWithStoreURL:storeURL storeType:*MEMORY[0x1E695D4A8] options:v7 mergePolicy:0 managedObjectModel:oldManagedObjectModel];
 
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
@@ -282,9 +282,9 @@ void __41__ICPersistentContainer_databaseOpenLock__block_invoke()
   v14[4] = &v21;
   v14[5] = &v15;
   [(NSPersistentContainer *)v11 loadPersistentStoresWithCompletionHandler:v14];
-  if (a3)
+  if (model)
   {
-    *a3 = v16[5];
+    *model = v16[5];
   }
 
   v12 = *(v22 + 24);
@@ -321,29 +321,29 @@ void __49__ICPersistentContainer_migrateFromOldDataModel___block_invoke(uint64_t
   }
 }
 
-- (id)performBlockWithDatabaseOpenLock:(id)a3
+- (id)performBlockWithDatabaseOpenLock:(id)lock
 {
-  v4 = a3;
+  lockCopy = lock;
   v5 = objc_opt_class();
   objc_sync_enter(v5);
-  v6 = [(ICPersistentContainer *)self allowsCoreDataMigration];
-  if (v6)
+  allowsCoreDataMigration = [(ICPersistentContainer *)self allowsCoreDataMigration];
+  if (allowsCoreDataMigration)
   {
-    v7 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v7 postNotificationName:@"ICPersistentContainerWillLockDatabaseNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"ICPersistentContainerWillLockDatabaseNotification" object:self];
 
-    v8 = [objc_opt_class() databaseOpenLock];
-    [v8 lock];
+    databaseOpenLock = [objc_opt_class() databaseOpenLock];
+    [databaseOpenLock lock];
   }
 
-  v9 = v4[2](v4);
-  if (v6)
+  v9 = lockCopy[2](lockCopy);
+  if (allowsCoreDataMigration)
   {
-    v10 = [objc_opt_class() databaseOpenLock];
-    [v10 unlock];
+    databaseOpenLock2 = [objc_opt_class() databaseOpenLock];
+    [databaseOpenLock2 unlock];
 
-    v11 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v11 postNotificationName:@"ICPersistentContainerDidUnlockDatabaseNotification" object:self];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 postNotificationName:@"ICPersistentContainerDidUnlockDatabaseNotification" object:self];
   }
 
   objc_sync_exit(v5);
@@ -351,9 +351,9 @@ void __49__ICPersistentContainer_migrateFromOldDataModel___block_invoke(uint64_t
   return v9;
 }
 
-- (BOOL)loadPersistentStore:(id *)a3 storeCreatedHandler:(id)a4
+- (BOOL)loadPersistentStore:(id *)store storeCreatedHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
@@ -388,14 +388,14 @@ void __49__ICPersistentContainer_migrateFromOldDataModel___block_invoke(uint64_t
   v14 = 3221225472;
   v15 = __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block_invoke;
   v16 = &unk_1E8485078;
-  v17 = self;
+  selfCopy = self;
   v19 = &v29;
   v20 = v37;
   v21 = v35;
   v22 = v33;
   v23 = &v25;
   v24 = v39;
-  v8 = v6;
+  v8 = handlerCopy;
   v18 = v8;
   v9 = [(ICPersistentContainer *)self performBlockWithDatabaseOpenLock:&v13];
   if (*(v30 + 24) == 1)
@@ -414,10 +414,10 @@ void __49__ICPersistentContainer_migrateFromOldDataModel___block_invoke(uint64_t
     exit(0);
   }
 
-  if (a3)
+  if (store)
   {
     v10 = v9;
-    *a3 = v9;
+    *store = v9;
   }
 
   _Block_object_dispose(&v25, 8);
@@ -772,19 +772,19 @@ void __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block
 
 - (BOOL)isReadOnly
 {
-  v2 = [(ICPersistentContainer *)self storeOptions];
-  v3 = [v2 objectForKeyedSubscript:*MEMORY[0x1E695D458]];
-  v4 = [v3 BOOLValue];
+  storeOptions = [(ICPersistentContainer *)self storeOptions];
+  v3 = [storeOptions objectForKeyedSubscript:*MEMORY[0x1E695D458]];
+  bOOLValue = [v3 BOOLValue];
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isTooLowOnDiskSpace
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = [(ICPersistentContainer *)self storeURL];
-  v4 = [v3 URLByDeletingPathExtension];
-  v5 = [v4 URLByAppendingPathExtension:@"sqlite-wal"];
+  storeURL = [(ICPersistentContainer *)self storeURL];
+  uRLByDeletingPathExtension = [storeURL URLByDeletingPathExtension];
+  v5 = [uRLByDeletingPathExtension URLByAppendingPathExtension:@"sqlite-wal"];
 
   if ([(ICPersistentContainer *)self fakeFreeDiskSpace])
   {
@@ -794,17 +794,17 @@ void __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block
       [(ICPersistentContainer *)self isTooLowOnDiskSpace];
     }
 
-    v7 = [(ICPersistentContainer *)self fakeFreeDiskSpace];
+    fakeFreeDiskSpace = [(ICPersistentContainer *)self fakeFreeDiskSpace];
     v8 = 0;
   }
 
   else
   {
-    v9 = [MEMORY[0x1E696AC08] defaultManager];
-    v10 = [v3 URLByDeletingLastPathComponent];
-    v11 = [v10 path];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    uRLByDeletingLastPathComponent = [storeURL URLByDeletingLastPathComponent];
+    path = [uRLByDeletingLastPathComponent path];
     v31 = 0;
-    v12 = [v9 attributesOfFileSystemForPath:v11 error:&v31];
+    v12 = [defaultManager attributesOfFileSystemForPath:path error:&v31];
     v8 = v31;
 
     if (v8)
@@ -812,29 +812,29 @@ void __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block
       v13 = os_log_create("com.apple.notes", "CoreData");
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
       {
-        [(ICPersistentContainer *)v3 isTooLowOnDiskSpace];
+        [(ICPersistentContainer *)storeURL isTooLowOnDiskSpace];
       }
 
-      v7 = 0;
+      fakeFreeDiskSpace = 0;
     }
 
     else
     {
       v13 = [v12 objectForKeyedSubscript:*MEMORY[0x1E696A3C0]];
-      v7 = [v13 unsignedIntegerValue];
+      fakeFreeDiskSpace = [v13 unsignedIntegerValue];
     }
   }
 
   v30 = 0;
   v14 = *MEMORY[0x1E695DB50];
   v29 = 0;
-  v15 = [v3 getResourceValue:&v30 forKey:v14 error:&v29];
+  v15 = [storeURL getResourceValue:&v30 forKey:v14 error:&v29];
   v16 = v30;
   v17 = v29;
 
   if (v15)
   {
-    v18 = [v16 unsignedIntegerValue];
+    unsignedIntegerValue = [v16 unsignedIntegerValue];
   }
 
   else
@@ -845,7 +845,7 @@ void __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block
       [ICPersistentContainer isTooLowOnDiskSpace];
     }
 
-    v18 = 0;
+    unsignedIntegerValue = 0;
   }
 
   v27 = 0;
@@ -856,7 +856,7 @@ void __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block
   v22 = v27;
   if (v20)
   {
-    v18 += [v21 unsignedIntegerValue];
+    unsignedIntegerValue += [v21 unsignedIntegerValue];
   }
 
   else if ([v22 code] != 260)
@@ -868,47 +868,47 @@ void __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block
     }
   }
 
-  v24 = 3 * v18 + 0x100000;
+  v24 = 3 * unsignedIntegerValue + 0x100000;
   v25 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
     *buf = 134218240;
     v33 = v24;
     v34 = 2048;
-    v35 = v7;
+    v35 = fakeFreeDiskSpace;
     _os_log_impl(&dword_1D4576000, v25, OS_LOG_TYPE_INFO, "Minimum free space to open database: %lu, current free space: %lu", buf, 0x16u);
   }
 
-  return v7 < v24;
+  return fakeFreeDiskSpace < v24;
 }
 
-+ (BOOL)isDataProtectionError:(id)a3
++ (BOOL)isDataProtectionError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 code];
-  v5 = [v3 domain];
+  errorCopy = error;
+  code = [errorCopy code];
+  domain = [errorCopy domain];
   v6 = *MEMORY[0x1E695D488];
-  if ([v5 isEqualToString:*MEMORY[0x1E695D488]])
+  if ([domain isEqualToString:*MEMORY[0x1E695D488]])
   {
-    v7 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
+    v7 = [MEMORY[0x1E696AD98] numberWithInteger:code];
   }
 
   else
   {
-    v8 = [v3 userInfo];
-    v7 = [v8 objectForKeyedSubscript:v6];
+    userInfo = [errorCopy userInfo];
+    v7 = [userInfo objectForKeyedSubscript:v6];
   }
 
   v9 = *MEMORY[0x1E696A798];
-  if ([v5 isEqualToString:*MEMORY[0x1E696A798]])
+  if ([domain isEqualToString:*MEMORY[0x1E696A798]])
   {
-    v10 = [MEMORY[0x1E696AD98] numberWithInteger:v4];
+    v10 = [MEMORY[0x1E696AD98] numberWithInteger:code];
   }
 
   else
   {
-    v11 = [v3 userInfo];
-    v10 = [v11 objectForKeyedSubscript:v9];
+    userInfo2 = [errorCopy userInfo];
+    v10 = [userInfo2 objectForKeyedSubscript:v9];
   }
 
   v12 = [v7 intValue] == 23 || objc_msgSend(v10, "intValue") == 1;
@@ -916,21 +916,21 @@ void __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block
   return v12;
 }
 
-+ (BOOL)isDatabaseMissingError:(id)a3
++ (BOOL)isDatabaseMissingError:(id)error
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  if ([v4 isEqualToString:*MEMORY[0x1E696A798]] && objc_msgSend(v3, "code") == 2)
+  errorCopy = error;
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A798]] && objc_msgSend(errorCopy, "code") == 2)
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [v3 domain];
-    if ([v6 isEqualToString:*MEMORY[0x1E696A250]])
+    domain2 = [errorCopy domain];
+    if ([domain2 isEqualToString:*MEMORY[0x1E696A250]])
     {
-      v5 = [v3 code] == 260;
+      v5 = [errorCopy code] == 260;
     }
 
     else
@@ -944,55 +944,55 @@ void __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block
 
 - (NSURL)backupsDirectoryURL
 {
-  v2 = [(ICPersistentContainer *)self storeURL];
-  v3 = [v2 URLByDeletingLastPathComponent];
+  storeURL = [(ICPersistentContainer *)self storeURL];
+  uRLByDeletingLastPathComponent = [storeURL URLByDeletingLastPathComponent];
 
-  v4 = [v3 URLByAppendingPathComponent:@"Backups" isDirectory:1];
+  v4 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:@"Backups" isDirectory:1];
 
   return v4;
 }
 
-- (void)backupPersistentStoreWithError:(id)a3
+- (void)backupPersistentStoreWithError:(id)error
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [ICPersistentContainer backupPersistentStoreWithError:];
   }
 
-  v6 = [(ICPersistentContainer *)self storeURL];
+  storeURL = [(ICPersistentContainer *)self storeURL];
   v7 = objc_alloc_init(MEMORY[0x1E696AB78]);
   [v7 setDateFormat:@"yyyy-MM-dd_HH-mm-ss"];
-  v8 = [MEMORY[0x1E695DF00] date];
+  date = [MEMORY[0x1E695DF00] date];
   v58 = v7;
-  v9 = [v7 stringFromDate:v8];
+  v9 = [v7 stringFromDate:date];
 
   v10 = objc_opt_class();
-  v11 = [v4 userInfo];
-  v12 = [v11 objectForKey:*MEMORY[0x1E696AA08]];
+  userInfo = [errorCopy userInfo];
+  v12 = [userInfo objectForKey:*MEMORY[0x1E696AA08]];
   v13 = ICDynamicCast(v10, v12);
 
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [MEMORY[0x1E696AFB0] UUID];
-  v16 = [v15 UUIDString];
-  v17 = [v4 code];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  code = [errorCopy code];
 
   v56 = v13;
   v57 = v9;
-  v18 = [v14 stringWithFormat:@"Backup-%@-%@-%ld-%ld", v9, v16, v17, objc_msgSend(v13, "code")];
+  v18 = [v14 stringWithFormat:@"Backup-%@-%@-%ld-%ld", v9, uUIDString, code, objc_msgSend(v13, "code")];
 
-  v19 = [(ICPersistentContainer *)self backupsDirectoryURL];
+  backupsDirectoryURL = [(ICPersistentContainer *)self backupsDirectoryURL];
   v55 = v18;
-  v20 = [v19 URLByAppendingPathComponent:v18 isDirectory:1];
+  v20 = [backupsDirectoryURL URLByAppendingPathComponent:v18 isDirectory:1];
 
-  v21 = [v6 lastPathComponent];
-  v22 = [v20 URLByAppendingPathComponent:v21 isDirectory:0];
+  lastPathComponent = [storeURL lastPathComponent];
+  v22 = [v20 URLByAppendingPathComponent:lastPathComponent isDirectory:0];
 
-  v23 = [MEMORY[0x1E696AC08] defaultManager];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
   v63 = 0;
-  LOBYTE(v14) = [v23 createDirectoryAtURL:v20 withIntermediateDirectories:1 attributes:0 error:&v63];
+  LOBYTE(v14) = [defaultManager createDirectoryAtURL:v20 withIntermediateDirectories:1 attributes:0 error:&v63];
   v24 = v63;
 
   if ((v14 & 1) == 0)
@@ -1006,13 +1006,13 @@ void __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block
     v24 = 0;
   }
 
-  v26 = [(NSPersistentContainer *)self persistentStoreCoordinator];
-  v27 = [(ICPersistentContainer *)self storeOptions];
-  v28 = [(ICPersistentContainer *)self storeOptions];
+  persistentStoreCoordinator = [(NSPersistentContainer *)self persistentStoreCoordinator];
+  storeOptions = [(ICPersistentContainer *)self storeOptions];
+  storeOptions2 = [(ICPersistentContainer *)self storeOptions];
   v29 = *MEMORY[0x1E695D4A8];
   v62 = v24;
   v59 = v22;
-  v30 = [v26 replacePersistentStoreAtURL:v22 destinationOptions:v27 withPersistentStoreFromURL:v6 sourceOptions:v28 storeType:v29 error:&v62];
+  v30 = [persistentStoreCoordinator replacePersistentStoreAtURL:v22 destinationOptions:storeOptions withPersistentStoreFromURL:storeURL sourceOptions:storeOptions2 storeType:v29 error:&v62];
   v31 = v62;
 
   v32 = os_log_create("com.apple.notes", "CoreData");
@@ -1031,14 +1031,14 @@ void __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block
   if (os_log_type_enabled(v32, OS_LOG_TYPE_INFO))
   {
     *buf = 138412546;
-    v65 = v6;
+    v65 = storeURL;
     v66 = 2112;
     v67 = v59;
     _os_log_impl(&dword_1D4576000, v33, OS_LOG_TYPE_INFO, "Backed up old persistent store from %@ to %@", buf, 0x16u);
   }
 
   v61 = v31;
-  v35 = [v6 checkResourceIsReachableAndReturnError:&v61];
+  v35 = [storeURL checkResourceIsReachableAndReturnError:&v61];
   v36 = v61;
 
   v33 = os_log_create("com.apple.notes", "CoreData");
@@ -1050,10 +1050,10 @@ void __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block
       [ICPersistentContainer backupPersistentStoreWithError:];
     }
 
-    v38 = [(NSPersistentContainer *)self persistentStoreCoordinator];
-    v39 = [(ICPersistentContainer *)self storeOptions];
+    persistentStoreCoordinator2 = [(NSPersistentContainer *)self persistentStoreCoordinator];
+    storeOptions3 = [(ICPersistentContainer *)self storeOptions];
     v60 = v36;
-    v40 = [v38 destroyPersistentStoreAtURL:v6 withType:v29 options:v39 error:&v60];
+    v40 = [persistentStoreCoordinator2 destroyPersistentStoreAtURL:storeURL withType:v29 options:storeOptions3 error:&v60];
     v31 = v60;
 
     v41 = os_log_create("com.apple.notes", "CoreData");
@@ -1079,28 +1079,28 @@ void __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block
       [ICPersistentContainer backupPersistentStoreWithError:];
     }
 
-    v43 = [MEMORY[0x1E696AC08] defaultManager];
-    [v43 removeItemAtURL:v6 error:0];
+    defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager2 removeItemAtURL:storeURL error:0];
 
-    v44 = [v6 lastPathComponent];
-    v45 = [v44 stringByDeletingPathExtension];
-    v33 = [v45 stringByAppendingPathExtension:@"sqlite-wal"];
+    lastPathComponent2 = [storeURL lastPathComponent];
+    stringByDeletingPathExtension = [lastPathComponent2 stringByDeletingPathExtension];
+    v33 = [stringByDeletingPathExtension stringByAppendingPathExtension:@"sqlite-wal"];
 
-    v46 = [v6 URLByDeletingLastPathComponent];
-    v47 = [v46 URLByAppendingPathComponent:v33 isDirectory:0];
+    uRLByDeletingLastPathComponent = [storeURL URLByDeletingLastPathComponent];
+    v47 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v33 isDirectory:0];
 
-    v48 = [MEMORY[0x1E696AC08] defaultManager];
-    [v48 removeItemAtURL:v47 error:0];
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager3 removeItemAtURL:v47 error:0];
 
-    v49 = [v6 lastPathComponent];
-    v50 = [v49 stringByDeletingPathExtension];
-    v51 = [v50 stringByAppendingPathExtension:@"sqlite-shm"];
+    lastPathComponent3 = [storeURL lastPathComponent];
+    stringByDeletingPathExtension2 = [lastPathComponent3 stringByDeletingPathExtension];
+    v51 = [stringByDeletingPathExtension2 stringByAppendingPathExtension:@"sqlite-shm"];
 
-    v52 = [v6 URLByDeletingLastPathComponent];
-    v53 = [v52 URLByAppendingPathComponent:v51 isDirectory:0];
+    uRLByDeletingLastPathComponent2 = [storeURL URLByDeletingLastPathComponent];
+    v53 = [uRLByDeletingLastPathComponent2 URLByAppendingPathComponent:v51 isDirectory:0];
 
-    v54 = [MEMORY[0x1E696AC08] defaultManager];
-    [v54 removeItemAtURL:v53 error:0];
+    defaultManager4 = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager4 removeItemAtURL:v53 error:0];
 
 LABEL_26:
     v34 = v59;
@@ -1116,28 +1116,28 @@ LABEL_26:
 LABEL_27:
 }
 
-- (void)vacuumStoreWithCompletionHandler:(id)a3
+- (void)vacuumStoreWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(NSPersistentContainer *)self viewContext];
-  v6 = [(ICPersistentContainer *)self storeURL];
+  handlerCopy = handler;
+  viewContext = [(NSPersistentContainer *)self viewContext];
+  storeURL = [(ICPersistentContainer *)self storeURL];
   v7 = os_log_create("com.apple.notes", "CoreData");
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [ICPersistentContainer vacuumStoreWithCompletionHandler:];
   }
 
-  [v5 setShouldPerformSecureOperation:1];
+  [viewContext setShouldPerformSecureOperation:1];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__ICPersistentContainer_vacuumStoreWithCompletionHandler___block_invoke;
   v11[3] = &unk_1E84850A0;
-  v12 = v5;
-  v13 = v6;
-  v14 = v4;
-  v8 = v4;
-  v9 = v6;
-  v10 = v5;
+  v12 = viewContext;
+  v13 = storeURL;
+  v14 = handlerCopy;
+  v8 = handlerCopy;
+  v9 = storeURL;
+  v10 = viewContext;
   [v10 performBlock:v11];
 }
 
@@ -1268,7 +1268,7 @@ void __65__ICPersistentContainer_loadPersistentStore_storeCreatedHandler___block
 - (void)isTooLowOnDiskSpace
 {
   v9 = *MEMORY[0x1E69E9840];
-  v5 = [a1 path];
+  path = [self path];
   OUTLINED_FUNCTION_1();
   v7 = 2112;
   v8 = a2;

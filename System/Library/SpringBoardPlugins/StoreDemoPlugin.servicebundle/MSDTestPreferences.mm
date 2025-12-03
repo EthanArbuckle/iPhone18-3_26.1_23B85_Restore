@@ -16,7 +16,7 @@
 - (id)LSMeasurementsFilePath;
 - (id)contentSyncTimeoutInterval;
 - (id)demoUnitServerURL;
-- (id)getValueFromTestPreferencesForKey:(id)a3;
+- (id)getValueFromTestPreferencesForKey:(id)key;
 - (id)mockAccountSettingsFile;
 - (id)mockOSUpdateRequestFile;
 - (id)mockPeerProtocolVersion;
@@ -54,15 +54,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"FakeActivationDemoBit"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)demoUnitServerURL
@@ -86,15 +86,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"FMHRetryDelay"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (unsigned)rebootDelayForStaging
@@ -102,15 +102,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"RebootDelayForStaging"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)timeShowingFatalError
@@ -118,15 +118,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"TimeShowingFatalError"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (BOOL)disableParallelProcessing
@@ -134,15 +134,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"DisableParallelProcessing"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)pauseContentUpdateOnError
@@ -150,15 +150,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"PauseContentUpdateOnError"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)bailOnStashedStagingRestoreFailure
@@ -166,15 +166,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"BailOnStashedStagingRestoreFailure"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (int64_t)concurrentDownloadRequest
@@ -182,15 +182,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"ConcurrentDownloadRequest"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)concurrentDownloadOperation
@@ -198,15 +198,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"ConcurrentDownloadOperation"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (int64_t)concurrentSession
@@ -214,63 +214,63 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"ConcurrentSession"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = 0;
+    integerValue = 0;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (double)cachingHubRetryInterval
 {
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"CachingHubRetryInterval"];
-  v3 = 0.0;
+  integerValue = 0.0;
   if (v2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v2 integerValue];
+      integerValue = [v2 integerValue];
     }
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (double)caLogsUploadInterval
 {
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"CALogsUploadInterval"];
-  v3 = 0.0;
+  integerValue = 0.0;
   if (v2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v2 integerValue];
+      integerValue = [v2 integerValue];
     }
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (double)appUsagePollingInterval
 {
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"AppUsagePollingInterval"];
-  v3 = 0.0;
+  integerValue = 0.0;
   if (v2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v3 = [v2 integerValue];
+      integerValue = [v2 integerValue];
     }
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (unsigned)systemAppTimeoutInterval
@@ -278,15 +278,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"SystemAppTimeoutInterval"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (unsigned)systemAppPollingInterval
@@ -294,15 +294,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"SystemAppPollingInterval"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 unsignedIntValue];
+    unsignedIntValue = [v2 unsignedIntValue];
   }
 
   else
   {
-    v3 = 0;
+    unsignedIntValue = 0;
   }
 
-  return v3;
+  return unsignedIntValue;
 }
 
 - (int64_t)deviceActivationFlag
@@ -310,15 +310,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"DeviceActivationFlag"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = -1;
+    integerValue = -1;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)mockForBetterTogetherDemo
@@ -326,15 +326,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"MockForBetterTogetherDemo"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)mockAccountSettingsFile
@@ -406,15 +406,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"EnableAIModelAutoUpdate"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)contentSyncTimeoutInterval
@@ -438,15 +438,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"StorePickerUIMode"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 integerValue];
+    integerValue = [v2 integerValue];
   }
 
   else
   {
-    v3 = &dword_0 + 2;
+    integerValue = &dword_0 + 2;
   }
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)skipMarkAsNotDemo
@@ -454,15 +454,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"SkipMarkAsNotDemo"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)enablePeerDemoService
@@ -470,15 +470,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"EnablePeerDemoService"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)pressDemoXCTestProductsPath
@@ -534,15 +534,15 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"DisassociateWiFiBeforeCheckIn"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)skipVerifyHashBeforeStaging
@@ -550,20 +550,20 @@
   v2 = [(MSDTestPreferences *)self getValueFromTestPreferencesForKey:@"SkipVerifyHashBeforeStaging"];
   if (v2 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v3 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v3 = 0;
+    bOOLValue = 0;
   }
 
-  return v3;
+  return bOOLValue;
 }
 
-- (id)getValueFromTestPreferencesForKey:(id)a3
+- (id)getValueFromTestPreferencesForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   if (!CFPreferencesSynchronize(@"com.apple.MobileStoreDemo.test", kCFPreferencesAnyUser, kCFPreferencesCurrentHost))
   {
     v4 = defaultLogHandle();
@@ -573,7 +573,7 @@
     }
   }
 
-  v5 = CFPreferencesCopyValue(v3, @"com.apple.MobileStoreDemo.test", kCFPreferencesAnyUser, kCFPreferencesCurrentHost);
+  v5 = CFPreferencesCopyValue(keyCopy, @"com.apple.MobileStoreDemo.test", kCFPreferencesAnyUser, kCFPreferencesCurrentHost);
 
   return v5;
 }

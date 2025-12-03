@@ -1,33 +1,33 @@
 @interface BuddyMigrationBaseErrorController
-- (BuddyMigrationBaseErrorController)initWithError:(id)a3;
+- (BuddyMigrationBaseErrorController)initWithError:(id)error;
 - (id)initForInsufficientSpace;
 - (void)viewDidLoad;
 @end
 
 @implementation BuddyMigrationBaseErrorController
 
-- (BuddyMigrationBaseErrorController)initWithError:(id)a3
+- (BuddyMigrationBaseErrorController)initWithError:(id)error
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v9;
+  objc_storeStrong(location, error);
+  v3 = selfCopy;
   v4 = [UIImage imageNamed:@"Alert Icon"];
-  v9 = 0;
+  selfCopy = 0;
   v7.receiver = v3;
   v7.super_class = BuddyMigrationBaseErrorController;
-  v9 = [(BuddyMigrationBaseErrorController *)&v7 initWithTitle:&stru_10032F900 detailText:&stru_10032F900 icon:v4];
-  objc_storeStrong(&v9, v9);
+  selfCopy = [(BuddyMigrationBaseErrorController *)&v7 initWithTitle:&stru_10032F900 detailText:&stru_10032F900 icon:v4];
+  objc_storeStrong(&selfCopy, selfCopy);
 
-  if (v9)
+  if (selfCopy)
   {
-    objc_storeStrong(v9 + 2, location[0]);
+    objc_storeStrong(selfCopy + 2, location[0]);
   }
 
-  v5 = v9;
+  v5 = selfCopy;
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v9, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v5;
 }
 
@@ -46,20 +46,20 @@
 
 - (void)viewDidLoad
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
   v6.receiver = self;
   v6.super_class = BuddyMigrationBaseErrorController;
   [(BuddyMigrationBaseErrorController *)&v6 viewDidLoad];
-  v2 = [(BuddyMigrationBaseErrorController *)v8 headerView];
-  [v2 setIconInheritsTint:1];
+  headerView = [(BuddyMigrationBaseErrorController *)selfCopy headerView];
+  [headerView setIconInheritsTint:1];
 
   v3 = +[UIColor redColor];
-  v4 = [(BuddyMigrationBaseErrorController *)v8 headerView];
-  [v4 setTintColor:v3];
+  headerView2 = [(BuddyMigrationBaseErrorController *)selfCopy headerView];
+  [headerView2 setTintColor:v3];
 
-  v5 = [(BuddyMigrationBaseErrorController *)v8 navigationItem];
-  [v5 setHidesBackButton:1];
+  navigationItem = [(BuddyMigrationBaseErrorController *)selfCopy navigationItem];
+  [navigationItem setHidesBackButton:1];
 }
 
 @end

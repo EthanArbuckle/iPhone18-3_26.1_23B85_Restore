@@ -6,8 +6,8 @@
 
 - (NSDictionary)mediaLibraryDictionary
 {
-  v3 = [(MediaLibraryItem *)self hasVideo];
-  if ([v3 BOOLValue])
+  hasVideo = [(MediaLibraryItem *)self hasVideo];
+  if ([hasVideo BOOLValue])
   {
     v4 = 256;
   }
@@ -19,211 +19,211 @@
 
   v74 = objc_opt_new();
   v92[0] = &off_100501138;
-  v86 = [(MediaLibraryItem *)self dateAccessed];
-  v93[0] = v86;
+  dateAccessed = [(MediaLibraryItem *)self dateAccessed];
+  v93[0] = dateAccessed;
   v92[1] = &off_100501150;
-  v5 = [(MediaLibraryItem *)self album];
-  v85 = v5;
-  if (!v5)
+  album = [(MediaLibraryItem *)self album];
+  v85 = album;
+  if (!album)
   {
-    v5 = +[NSNull null];
+    album = +[NSNull null];
   }
 
-  v60 = v5;
-  v93[1] = v5;
+  v60 = album;
+  v93[1] = album;
   v92[2] = &off_100501168;
-  v6 = [(MediaLibraryItem *)self title];
-  v7 = v6;
-  if (!v6)
+  title = [(MediaLibraryItem *)self title];
+  v7 = title;
+  if (!title)
   {
-    v6 = +[NSNull null];
+    title = +[NSNull null];
   }
 
-  v59 = v6;
-  v93[2] = v6;
+  v59 = title;
+  v93[2] = title;
   v92[3] = &off_100501180;
-  v83 = [(MediaLibraryItem *)self fileSize];
-  v93[3] = v83;
+  fileSize = [(MediaLibraryItem *)self fileSize];
+  v93[3] = fileSize;
   v92[4] = &off_100501198;
-  v8 = [(MediaLibraryItem *)self externalGuid];
-  v9 = v8;
-  if (!v8)
+  externalGuid = [(MediaLibraryItem *)self externalGuid];
+  v9 = externalGuid;
+  if (!externalGuid)
   {
-    v8 = +[NSNull null];
+    externalGuid = +[NSNull null];
   }
 
-  v58 = v8;
-  v93[4] = v8;
+  v58 = externalGuid;
+  v93[4] = externalGuid;
   v92[5] = &off_1005011B0;
-  v81 = [(MediaLibraryItem *)self bookmarkTimeMillis];
-  v93[5] = v81;
+  bookmarkTimeMillis = [(MediaLibraryItem *)self bookmarkTimeMillis];
+  v93[5] = bookmarkTimeMillis;
   v92[6] = &off_1005011C8;
-  v10 = [(MediaLibraryItem *)self seriesName];
-  v11 = v10;
-  if (!v10)
+  seriesName = [(MediaLibraryItem *)self seriesName];
+  v11 = seriesName;
+  if (!seriesName)
   {
-    v10 = +[NSNull null];
+    seriesName = +[NSNull null];
   }
 
   v84 = v7;
-  v57 = v10;
-  v93[6] = v10;
+  v57 = seriesName;
+  v93[6] = seriesName;
   v92[7] = &off_1005011E0;
-  v79 = [(MediaLibraryItem *)self totalTimeMillis];
-  v93[7] = v79;
+  totalTimeMillis = [(MediaLibraryItem *)self totalTimeMillis];
+  v93[7] = totalTimeMillis;
   v92[8] = &off_1005011F8;
-  v12 = [(MediaLibraryItem *)self itemDescription];
-  v13 = v12;
-  if (!v12)
+  itemDescription = [(MediaLibraryItem *)self itemDescription];
+  v13 = itemDescription;
+  if (!itemDescription)
   {
-    v12 = +[NSNull null];
+    itemDescription = +[NSNull null];
   }
 
-  v56 = v12;
-  v93[8] = v12;
+  v56 = itemDescription;
+  v93[8] = itemDescription;
   v92[9] = &off_100501210;
   v77 = [NSNumber numberWithUnsignedInt:v4];
   v93[9] = v77;
   v92[10] = &off_100501228;
-  v76 = [(MediaLibraryItem *)self hasVideo];
-  v93[10] = v76;
+  hasVideo2 = [(MediaLibraryItem *)self hasVideo];
+  v93[10] = hasVideo2;
   v92[11] = &off_100501240;
-  v14 = [(MediaLibraryItem *)self feedUrl];
-  v15 = v14;
-  if (!v14)
+  feedUrl = [(MediaLibraryItem *)self feedUrl];
+  v15 = feedUrl;
+  if (!feedUrl)
   {
-    v14 = +[NSNull null];
+    feedUrl = +[NSNull null];
   }
 
-  v55 = v14;
-  v93[11] = v14;
+  v55 = feedUrl;
+  v93[11] = feedUrl;
   v92[12] = &off_100501258;
-  v16 = [(MediaLibraryItem *)self itemDescription];
-  v17 = v16;
-  if (!v16)
+  itemDescription2 = [(MediaLibraryItem *)self itemDescription];
+  v17 = itemDescription2;
+  if (!itemDescription2)
   {
-    v16 = +[NSNull null];
+    itemDescription2 = +[NSNull null];
   }
 
-  v54 = v16;
-  v93[12] = v16;
+  v54 = itemDescription2;
+  v93[12] = itemDescription2;
   v92[13] = &off_100501270;
-  v18 = [(MediaLibraryItem *)self playlistId];
-  v19 = v18;
-  if (!v18)
+  playlistId = [(MediaLibraryItem *)self playlistId];
+  v19 = playlistId;
+  if (!playlistId)
   {
-    v18 = +[NSNull null];
+    playlistId = +[NSNull null];
   }
 
-  v53 = v18;
-  v93[13] = v18;
+  v53 = playlistId;
+  v93[13] = playlistId;
   v92[14] = &off_100501288;
-  v20 = [(MediaLibraryItem *)self dateReleased];
-  v21 = v20;
-  if (!v20)
+  dateReleased = [(MediaLibraryItem *)self dateReleased];
+  v21 = dateReleased;
+  if (!dateReleased)
   {
-    v20 = +[NSNull null];
+    dateReleased = +[NSNull null];
   }
 
-  v52 = v20;
-  v93[14] = v20;
+  v52 = dateReleased;
+  v93[14] = dateReleased;
   v92[15] = &off_1005012A0;
-  v22 = [(MediaLibraryItem *)self artist];
-  v89 = v22;
-  if (!v22)
+  artist = [(MediaLibraryItem *)self artist];
+  v89 = artist;
+  if (!artist)
   {
-    v22 = +[NSNull null];
+    artist = +[NSNull null];
   }
 
-  v51 = v22;
-  v93[15] = v22;
+  v51 = artist;
+  v93[15] = artist;
   v92[16] = &off_1005012B8;
-  v70 = [(MediaLibraryItem *)self totalTimeMillis];
-  v93[16] = v70;
+  totalTimeMillis2 = [(MediaLibraryItem *)self totalTimeMillis];
+  v93[16] = totalTimeMillis2;
   v92[17] = &off_1005012D0;
   v69 = [NSNumber numberWithUnsignedInt:v4];
   v93[17] = v69;
   v92[18] = &off_1005012E8;
-  v23 = [(MediaLibraryItem *)self activeDsid];
-  v88 = v23;
-  if (!v23)
+  activeDsid = [(MediaLibraryItem *)self activeDsid];
+  v88 = activeDsid;
+  if (!activeDsid)
   {
-    v23 = +[NSNull null];
+    activeDsid = +[NSNull null];
   }
 
-  v50 = v23;
-  v93[18] = v23;
+  v50 = activeDsid;
+  v93[18] = activeDsid;
   v92[19] = &off_100501300;
-  v68 = [(MediaLibraryItem *)self playCount];
-  v93[19] = v68;
+  playCount = [(MediaLibraryItem *)self playCount];
+  v93[19] = playCount;
   v92[20] = &off_100501318;
-  v24 = [(MediaLibraryItem *)self serpentId];
-  v87 = v24;
-  if (!v24)
+  serpentId = [(MediaLibraryItem *)self serpentId];
+  v87 = serpentId;
+  if (!serpentId)
   {
-    v24 = +[NSNull null];
+    serpentId = +[NSNull null];
   }
 
   v72 = v19;
-  v49 = v24;
-  v93[20] = v24;
+  v49 = serpentId;
+  v93[20] = serpentId;
   v92[21] = &off_100501330;
-  v67 = [(MediaLibraryItem *)self hasBeenPlayed];
-  v93[21] = v67;
+  hasBeenPlayed = [(MediaLibraryItem *)self hasBeenPlayed];
+  v93[21] = hasBeenPlayed;
   v92[22] = &off_100501348;
-  v25 = [(MediaLibraryItem *)self activeDsid];
-  v66 = v25;
-  if (!v25)
+  activeDsid2 = [(MediaLibraryItem *)self activeDsid];
+  v66 = activeDsid2;
+  if (!activeDsid2)
   {
-    v25 = +[NSNull null];
+    activeDsid2 = +[NSNull null];
   }
 
   v75 = v15;
-  v48 = v25;
-  v93[22] = v25;
+  v48 = activeDsid2;
+  v93[22] = activeDsid2;
   v92[23] = &off_100501360;
-  v65 = [(MediaLibraryItem *)self playCount];
-  v93[23] = v65;
+  playCount2 = [(MediaLibraryItem *)self playCount];
+  v93[23] = playCount2;
   v92[24] = &off_100501378;
-  v26 = [(MediaLibraryItem *)self itemFilePath];
-  v27 = v26;
-  if (!v26)
+  itemFilePath = [(MediaLibraryItem *)self itemFilePath];
+  v27 = itemFilePath;
+  if (!itemFilePath)
   {
-    v26 = +[NSNull null];
+    itemFilePath = +[NSNull null];
   }
 
   v82 = v9;
-  v47 = v26;
-  v93[24] = v26;
+  v47 = itemFilePath;
+  v93[24] = itemFilePath;
   v92[25] = &off_100501390;
-  v64 = [(MediaLibraryItem *)self statsDownloadIdentifier];
-  v93[25] = v64;
+  statsDownloadIdentifier = [(MediaLibraryItem *)self statsDownloadIdentifier];
+  v93[25] = statsDownloadIdentifier;
   v92[26] = &off_1005013A8;
-  v28 = [(MediaLibraryItem *)self dateReleased];
-  v29 = v28;
-  if (!v28)
+  dateReleased2 = [(MediaLibraryItem *)self dateReleased];
+  v29 = dateReleased2;
+  if (!dateReleased2)
   {
-    v28 = +[NSNull null];
+    dateReleased2 = +[NSNull null];
   }
 
   v71 = v21;
   v73 = v17;
   v78 = v13;
   v80 = v11;
-  v46 = v28;
-  v93[26] = v28;
+  v46 = dateReleased2;
+  v93[26] = dateReleased2;
   v92[27] = &off_1005013C0;
-  v63 = [(MediaLibraryItem *)self artworkTokenId];
-  v30 = [v63 stringValue];
-  v31 = v30;
-  if (!v30)
+  artworkTokenId = [(MediaLibraryItem *)self artworkTokenId];
+  stringValue = [artworkTokenId stringValue];
+  v31 = stringValue;
+  if (!stringValue)
   {
     v44 = +[NSUUID UUID];
-    v30 = [v44 UUIDString];
+    stringValue = [v44 UUIDString];
   }
 
-  v45 = v30;
-  v93[27] = v30;
+  v45 = stringValue;
+  v93[27] = stringValue;
   v92[28] = &off_1005013D8;
   v62 = +[MediaLibraryItem remeberBookmark];
   v93[28] = v62;

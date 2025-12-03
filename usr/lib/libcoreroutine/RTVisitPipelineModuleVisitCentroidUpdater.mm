@@ -1,24 +1,24 @@
 @interface RTVisitPipelineModuleVisitCentroidUpdater
-- (RTVisitPipelineModuleVisitCentroidUpdater)initWithHyperParameter:(id)a3 locationManager:(id)a4 distanceCalculator:(id)a5;
-- (id)_updateHorizontalUncertainty:(id)a3;
-- (id)_updateVisitCentroidBasedOnFilteredLocations:(id)a3 maxHorizontalAccuracy:(double)a4;
-- (id)_updateVisitCentroidBasedOnMode:(id)a3;
-- (id)modeWithReferenceLocation:(id)a3;
-- (id)process:(id)a3;
+- (RTVisitPipelineModuleVisitCentroidUpdater)initWithHyperParameter:(id)parameter locationManager:(id)manager distanceCalculator:(id)calculator;
+- (id)_updateHorizontalUncertainty:(id)uncertainty;
+- (id)_updateVisitCentroidBasedOnFilteredLocations:(id)locations maxHorizontalAccuracy:(double)accuracy;
+- (id)_updateVisitCentroidBasedOnMode:(id)mode;
+- (id)modeWithReferenceLocation:(id)location;
+- (id)process:(id)process;
 - (unint64_t)modeBinIndex;
 - (void)dealloc;
-- (void)updateCountFromNorthing:(double)a3 easting:(double)a4;
+- (void)updateCountFromNorthing:(double)northing easting:(double)easting;
 @end
 
 @implementation RTVisitPipelineModuleVisitCentroidUpdater
 
-- (RTVisitPipelineModuleVisitCentroidUpdater)initWithHyperParameter:(id)a3 locationManager:(id)a4 distanceCalculator:(id)a5
+- (RTVisitPipelineModuleVisitCentroidUpdater)initWithHyperParameter:(id)parameter locationManager:(id)manager distanceCalculator:(id)calculator
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (!v9)
+  parameterCopy = parameter;
+  managerCopy = manager;
+  calculatorCopy = calculator;
+  v12 = calculatorCopy;
+  if (!parameterCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@ LABEL_16:
     goto LABEL_17;
   }
 
-  if (!v10)
+  if (!managerCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -46,7 +46,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  if (!v11)
+  if (!calculatorCopy)
   {
     v18 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -65,17 +65,17 @@ LABEL_16:
   self = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_hyperParameter, a3);
-    v14 = [v9 maxNumOfBins];
-    self->_binCountsSize = 4 * v14 * [v9 maxNumOfBins];
-    objc_storeStrong(&self->_distanceCalculator, a5);
+    objc_storeStrong(&v13->_hyperParameter, parameter);
+    maxNumOfBins = [parameterCopy maxNumOfBins];
+    self->_binCountsSize = 4 * maxNumOfBins * [parameterCopy maxNumOfBins];
+    objc_storeStrong(&self->_distanceCalculator, calculator);
     v15 = malloc_type_calloc(4 * self->_binCountsSize, 1uLL, 0x2CC1A462uLL);
     self->_binCounts = v15;
     if (v15)
     {
-      v16 = [(RTVisitHyperParameter *)self->_hyperParameter maxNumOfBins];
-      self->_invalidBinIndex = 4 * [(RTVisitHyperParameter *)self->_hyperParameter maxNumOfBins]* v16;
-      objc_storeStrong(&self->_locationManager, a4);
+      maxNumOfBins2 = [(RTVisitHyperParameter *)self->_hyperParameter maxNumOfBins];
+      self->_invalidBinIndex = 4 * [(RTVisitHyperParameter *)self->_hyperParameter maxNumOfBins]* maxNumOfBins2;
+      objc_storeStrong(&self->_locationManager, manager);
       goto LABEL_7;
     }
 
@@ -89,16 +89,16 @@ LABEL_16:
 
 LABEL_17:
 
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
 LABEL_7:
   self = self;
-  v17 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v17;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -114,7 +114,7 @@ LABEL_18:
   [(RTVisitPipelineModuleVisitCentroidUpdater *)&v4 dealloc];
 }
 
-- (void)updateCountFromNorthing:(double)a3 easting:(double)a4
+- (void)updateCountFromNorthing:(double)northing easting:(double)easting
 {
   v18 = *MEMORY[0x277D85DE8];
   if (!self->_binCounts)
@@ -129,19 +129,19 @@ LABEL_18:
     goto LABEL_12;
   }
 
-  v7 = [(RTVisitHyperParameter *)self->_hyperParameter maxNumOfBins];
-  v8 = (a3 / [(RTVisitHyperParameter *)self->_hyperParameter binSize]+ 0.5) + v7;
-  v9 = [(RTVisitHyperParameter *)self->_hyperParameter binSize];
+  maxNumOfBins = [(RTVisitHyperParameter *)self->_hyperParameter maxNumOfBins];
+  v8 = (northing / [(RTVisitHyperParameter *)self->_hyperParameter binSize]+ 0.5) + maxNumOfBins;
+  binSize = [(RTVisitHyperParameter *)self->_hyperParameter binSize];
   if ((v8 & 0x80000000) == 0)
   {
-    v10 = 2 * v7;
-    if (2 * v7 > v8)
+    v10 = 2 * maxNumOfBins;
+    if (2 * maxNumOfBins > v8)
     {
-      v11 = (a4 / v9 + 0.5) + v7;
+      v11 = (easting / binSize + 0.5) + maxNumOfBins;
       if ((v11 & 0x80000000) == 0 && v10 > v11)
       {
-        v12 = [(RTVisitHyperParameter *)self->_hyperParameter maxNumOfBins];
-        ++self->_binCounts[v11 + 2 * v8 * v12];
+        maxNumOfBins2 = [(RTVisitHyperParameter *)self->_hyperParameter maxNumOfBins];
+        ++self->_binCounts[v11 + 2 * v8 * maxNumOfBins2];
         return;
       }
     }
@@ -153,9 +153,9 @@ LABEL_18:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v14 = 134218240;
-      v15 = a3;
+      northingCopy = northing;
       v16 = 2048;
-      v17 = a4;
+      eastingCopy = easting;
       _os_log_debug_impl(&dword_2304B3000, v13, OS_LOG_TYPE_DEBUG, "out of range location detected, northing=%f, easting=%f", &v14, 0x16u);
     }
 
@@ -209,11 +209,11 @@ LABEL_12:
   return result;
 }
 
-- (id)modeWithReferenceLocation:(id)a3
+- (id)modeWithReferenceLocation:(id)location
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  locationCopy = location;
+  if (!locationCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (!os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -228,8 +228,8 @@ LABEL_24:
     goto LABEL_13;
   }
 
-  v6 = [(RTVisitPipelineModuleVisitCentroidUpdater *)self modeBinIndex];
-  if (v6 == self->_invalidBinIndex)
+  modeBinIndex = [(RTVisitPipelineModuleVisitCentroidUpdater *)self modeBinIndex];
+  if (modeBinIndex == self->_invalidBinIndex)
   {
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -252,7 +252,7 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v10 = v6;
+  v10 = modeBinIndex;
   [(RTVisitHyperParameter *)self->_hyperParameter maxNumOfBins];
   if (v10 >= self->_invalidBinIndex)
   {
@@ -273,12 +273,12 @@ LABEL_13:
   [(RTVisitHyperParameter *)self->_hyperParameter binSize];
   v26 = 0.0;
   *buf = 0;
-  [v5 latitude];
-  [v5 longitude];
+  [locationCopy latitude];
+  [locationCopy longitude];
   if ((RTCommonConvertLocalFrameToGeodetic() & 1) == 0)
   {
-    v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    date = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
 LABEL_21:
       v22 = 0;
@@ -288,15 +288,15 @@ LABEL_21:
     *v25 = 0;
     v24 = "Invalid parameter not satisfying: result";
 LABEL_26:
-    _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, v24, v25, 2u);
+    _os_log_error_impl(&dword_2304B3000, date, OS_LOG_TYPE_ERROR, v24, v25, 2u);
     goto LABEL_21;
   }
 
   RTCommonIsCoordinateValid();
   if (v11 == 0.0)
   {
-    v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
-    if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
+    date = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
+    if (!os_log_type_enabled(date, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_21;
     }
@@ -307,16 +307,16 @@ LABEL_26:
   }
 
   v12 = objc_alloc(MEMORY[0x277D01160]);
-  [v5 horizontalUncertainty];
+  [locationCopy horizontalUncertainty];
   v14 = v13;
-  [v5 altitude];
+  [locationCopy altitude];
   v16 = v15;
-  [v5 verticalUncertainty];
+  [locationCopy verticalUncertainty];
   v18 = v17;
-  v19 = [v5 date];
-  v20 = [v5 referenceFrame];
-  [v5 speed];
-  v22 = [v12 initWithLatitude:v19 longitude:v20 horizontalUncertainty:objc_msgSend(v5 altitude:"sourceAccuracy") verticalUncertainty:*buf date:v26 referenceFrame:v14 speed:v16 sourceAccuracy:{v18, v21}];
+  date = [locationCopy date];
+  referenceFrame = [locationCopy referenceFrame];
+  [locationCopy speed];
+  v22 = [v12 initWithLatitude:date longitude:referenceFrame horizontalUncertainty:objc_msgSend(locationCopy altitude:"sourceAccuracy") verticalUncertainty:*buf date:v26 referenceFrame:v14 speed:v16 sourceAccuracy:{v18, v21}];
 LABEL_22:
 
 LABEL_15:
@@ -324,29 +324,29 @@ LABEL_15:
   return v22;
 }
 
-- (id)_updateVisitCentroidBasedOnMode:(id)a3
+- (id)_updateVisitCentroidBasedOnMode:(id)mode
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 visit];
+  modeCopy = mode;
+  visit = [modeCopy visit];
 
-  if (!v6)
+  if (!visit)
   {
     v37 = 0;
     goto LABEL_24;
   }
 
-  v7 = [v5 visit];
-  v8 = [v7 location];
+  visit2 = [modeCopy visit];
+  location = [visit2 location];
 
   v51 = 0u;
   v52 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v9 = [v5 points];
-  v10 = [v9 locations];
+  points = [modeCopy points];
+  locations = [points locations];
 
-  v11 = [v10 countByEnumeratingWithState:&v49 objects:v58 count:16];
+  v11 = [locations countByEnumeratingWithState:&v49 objects:v58 count:16];
   if (v11)
   {
     v12 = v11;
@@ -357,13 +357,13 @@ LABEL_15:
       {
         if (*v50 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(locations);
         }
 
         v15 = *(*(&v49 + 1) + 8 * i);
         *buf = 0;
-        [v8 latitude];
-        [v8 longitude];
+        [location latitude];
+        [location longitude];
         [v15 latitude];
         [v15 longitude];
         if (RTCommonConvertGeodeticToLocalFrame())
@@ -372,35 +372,35 @@ LABEL_15:
         }
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v49 objects:v58 count:16];
+      v12 = [locations countByEnumeratingWithState:&v49 objects:v58 count:16];
     }
 
     while (v12);
   }
 
-  v16 = [(RTVisitPipelineModuleVisitCentroidUpdater *)self modeWithReferenceLocation:v8];
+  v16 = [(RTVisitPipelineModuleVisitCentroidUpdater *)self modeWithReferenceLocation:location];
   if (v16)
   {
     aSelector = a2;
     v17 = objc_alloc(MEMORY[0x277D01428]);
-    v46 = [v5 visit];
-    v42 = [v46 date];
-    v45 = [v5 visit];
-    v47 = [v45 type];
-    v44 = [v5 visit];
-    v41 = [v44 entry];
-    v43 = [v5 visit];
-    v18 = [v43 exit];
-    v19 = [v5 visit];
-    v20 = [v19 dataPointCount];
-    v21 = [v5 visit];
-    [v21 confidence];
+    visit3 = [modeCopy visit];
+    date = [visit3 date];
+    visit4 = [modeCopy visit];
+    type = [visit4 type];
+    visit5 = [modeCopy visit];
+    entry = [visit5 entry];
+    visit6 = [modeCopy visit];
+    exit = [visit6 exit];
+    visit7 = [modeCopy visit];
+    dataPointCount = [visit7 dataPointCount];
+    visit8 = [modeCopy visit];
+    [visit8 confidence];
     v23 = v22;
-    v24 = [v5 visit];
-    v25 = [v24 placeInference];
-    v26 = v47;
+    visit9 = [modeCopy visit];
+    placeInference = [visit9 placeInference];
+    v26 = type;
     v48 = v16;
-    v27 = [v17 initWithDate:v42 type:v26 location:v16 entry:v41 exit:v18 dataPointCount:v20 confidence:v23 placeInference:v25];
+    v27 = [v17 initWithDate:date type:v26 location:v16 entry:entry exit:exit dataPointCount:dataPointCount confidence:v23 placeInference:placeInference];
 
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
     {
@@ -408,12 +408,12 @@ LABEL_15:
       if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
       {
         v29 = NSStringFromSelector(aSelector);
-        v30 = [v5 visit];
-        v31 = [v30 location];
+        visit10 = [modeCopy visit];
+        location2 = [visit10 location];
         *buf = 138412803;
         *&buf[4] = v29;
         v54 = 2117;
-        v55 = v31;
+        v55 = location2;
         v56 = 2117;
         v57 = v48;
         _os_log_impl(&dword_2304B3000, v28, OS_LOG_TYPE_INFO, "%@, visit centroid, %{sensitive}@, updated visit centroid, %{sensitive}@", buf, 0x20u);
@@ -422,9 +422,9 @@ LABEL_15:
 
     v32 = [RTVisitCluster alloc];
     v33 = [RTVisitLocationPoints alloc];
-    v34 = [v5 points];
-    v35 = [v34 locations];
-    v36 = [(RTVisitLocationPoints *)v33 initWithLocations:v35];
+    points2 = [modeCopy points];
+    locations2 = [points2 locations];
+    v36 = [(RTVisitLocationPoints *)v33 initWithLocations:locations2];
     v37 = [(RTVisitCluster *)v32 initWithPoints:v36 visit:v27];
 
     v16 = v48;
@@ -456,13 +456,13 @@ LABEL_24:
   return v37;
 }
 
-- (id)_updateHorizontalUncertainty:(id)a3
+- (id)_updateHorizontalUncertainty:(id)uncertainty
 {
   v129 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 visit];
+  uncertaintyCopy = uncertainty;
+  visit = [uncertaintyCopy visit];
 
-  if (!v5)
+  if (!visit)
   {
     v14 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -474,19 +474,19 @@ LABEL_24:
     goto LABEL_14;
   }
 
-  v6 = [v4 visit];
-  v7 = [v6 entry];
-  if (!v7)
+  visit2 = [uncertaintyCopy visit];
+  entry = [visit2 entry];
+  if (!entry)
   {
 
     goto LABEL_11;
   }
 
-  v8 = v7;
-  v9 = [v4 visit];
-  v10 = [v9 exit];
+  v8 = entry;
+  visit3 = [uncertaintyCopy visit];
+  exit = [visit3 exit];
 
-  if (!v10)
+  if (!exit)
   {
 LABEL_11:
     if (!os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -499,11 +499,11 @@ LABEL_11:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       v22 = NSStringFromSelector(a2);
-      v23 = [v4 visit];
+      visit4 = [uncertaintyCopy visit];
       *buf = 138412547;
       v119 = v22;
       v120 = 2117;
-      v121 = v23;
+      v121 = visit4;
       _os_log_impl(&dword_2304B3000, v14, OS_LOG_TYPE_INFO, "%@, incomplete visit, %{sensitive}@", buf, 0x16u);
     }
 
@@ -513,14 +513,14 @@ LABEL_14:
   }
 
   v11 = MEMORY[0x277CBEAA8];
-  v12 = [v4 visit];
-  v13 = [v12 entry];
-  v14 = [v11 dateWithTimeInterval:v13 sinceDate:900.0];
+  visit5 = [uncertaintyCopy visit];
+  entry2 = [visit5 entry];
+  v14 = [v11 dateWithTimeInterval:entry2 sinceDate:900.0];
 
   v15 = MEMORY[0x277CBEAA8];
-  v16 = [v4 visit];
-  v17 = [v16 exit];
-  v18 = [v15 dateWithTimeInterval:v17 sinceDate:-900.0];
+  visit6 = [uncertaintyCopy visit];
+  exit2 = [visit6 exit];
+  v18 = [v15 dateWithTimeInterval:exit2 sinceDate:-900.0];
 
   v112 = v18;
   if ([v18 isBeforeDate:v14])
@@ -531,16 +531,16 @@ LABEL_14:
       goto LABEL_56;
     }
 
-    v19 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
-    if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
+    location = _rt_log_facility_get_os_log(RTLogFacilityVisit);
+    if (os_log_type_enabled(location, OS_LOG_TYPE_INFO))
     {
       v20 = NSStringFromSelector(a2);
-      v21 = [v4 visit];
+      visit7 = [uncertaintyCopy visit];
       *buf = 138412547;
       v119 = v20;
       v120 = 2117;
-      v121 = v21;
-      _os_log_impl(&dword_2304B3000, v19, OS_LOG_TYPE_INFO, "%@, skip horizontal uncertainty update for visit, %{sensitive}@, due to short duration", buf, 0x16u);
+      v121 = visit7;
+      _os_log_impl(&dword_2304B3000, location, OS_LOG_TYPE_INFO, "%@, skip horizontal uncertainty update for visit, %{sensitive}@, due to short duration", buf, 0x16u);
     }
 
 LABEL_48:
@@ -549,17 +549,17 @@ LABEL_48:
   }
 
   aSelector = a2;
-  v25 = [v4 visit];
-  v19 = [v25 location];
+  visit8 = [uncertaintyCopy visit];
+  location = [visit8 location];
 
   v116 = 0u;
   v117 = 0u;
   v114 = 0u;
   v115 = 0u;
-  v26 = [v4 points];
-  v27 = [v26 locations];
+  points = [uncertaintyCopy points];
+  locations = [points locations];
 
-  v28 = [v27 countByEnumeratingWithState:&v114 objects:v128 count:16];
+  v28 = [locations countByEnumeratingWithState:&v114 objects:v128 count:16];
   if (!v28)
   {
 
@@ -586,7 +586,7 @@ LABEL_44:
   }
 
   v29 = v28;
-  v102 = v4;
+  v102 = uncertaintyCopy;
   v106 = 0;
   v30 = *v115;
   v31 = 0.0;
@@ -600,28 +600,28 @@ LABEL_44:
     {
       if (*v115 != v30)
       {
-        objc_enumerationMutation(v27);
+        objc_enumerationMutation(locations);
       }
 
       v36 = *(*(&v114 + 1) + 8 * v35);
-      v37 = [v36 date];
-      if ([v37 isBeforeDate:v14])
+      date = [v36 date];
+      if ([date isBeforeDate:v14])
       {
         goto LABEL_22;
       }
 
-      v38 = [v36 date];
-      v39 = [v38 isAfterDate:v112];
+      date2 = [v36 date];
+      v39 = [date2 isAfterDate:v112];
 
       if ((v39 & 1) == 0)
       {
-        v40 = [(RTVisitPipelineModuleVisitCentroidUpdater *)self distanceCalculator];
+        distanceCalculator = [(RTVisitPipelineModuleVisitCentroidUpdater *)self distanceCalculator];
         v113 = 0;
-        [v40 distanceFromLocation:v19 toLocation:v36 error:&v113];
+        [distanceCalculator distanceFromLocation:location toLocation:v36 error:&v113];
         v42 = v41;
-        v37 = v113;
+        date = v113;
 
-        if (v37 || v42 > 250.0)
+        if (date || v42 > 250.0)
         {
           if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
           {
@@ -634,11 +634,11 @@ LABEL_44:
               v120 = 2117;
               v121 = v36;
               v122 = 2117;
-              v123 = v19;
+              v123 = location;
               v124 = 2048;
               v125 = v42;
               v126 = 2112;
-              v127 = v37;
+              v127 = date;
               _os_log_debug_impl(&dword_2304B3000, v43, OS_LOG_TYPE_DEBUG, "%@, outlier location, %{sensitive}@, reference location, %{sensitive}@, distance, %.2f meters, error, %@", buf, 0x34u);
             }
           }
@@ -646,8 +646,8 @@ LABEL_44:
 
         else
         {
-          [v19 latitude];
-          [v19 longitude];
+          [location latitude];
+          [location longitude];
           [v36 latitude];
           [v36 longitude];
           if (RTCommonConvertGeodeticToLocalFrame())
@@ -670,12 +670,12 @@ LABEL_44:
               v120 = 2117;
               v121 = v36;
               v122 = 2117;
-              v123 = v19;
+              v123 = location;
               _os_log_debug_impl(&dword_2304B3000, v44, OS_LOG_TYPE_DEBUG, "%@, cannot convert to local frame for location, %{sensitive}@, with reference location, %{sensitive}@", buf, 0x20u);
             }
           }
 
-          v37 = 0;
+          date = 0;
         }
 
 LABEL_22:
@@ -685,7 +685,7 @@ LABEL_22:
     }
 
     while (v29 != v35);
-    v47 = [v27 countByEnumeratingWithState:&v114 objects:v128 count:16];
+    v47 = [locations countByEnumeratingWithState:&v114 objects:v128 count:16];
     v29 = v47;
   }
 
@@ -694,7 +694,7 @@ LABEL_22:
   v48 = v106;
   if (v106 <= 0x3B)
   {
-    v4 = v102;
+    uncertaintyCopy = v102;
     goto LABEL_44;
   }
 
@@ -702,53 +702,53 @@ LABEL_22:
   v52 = sqrt(vabdd_f64(v31 / v106, v33 / v106 * (v33 / v106)));
   v53 = sqrt(v52 * v52 + v51 * v51);
   v110 = objc_alloc(MEMORY[0x277D01160]);
-  v107 = [v102 visit];
-  v103 = [v107 location];
-  [v103 latitude];
+  visit9 = [v102 visit];
+  location2 = [visit9 location];
+  [location2 latitude];
   v55 = v54;
-  v100 = [v102 visit];
-  v98 = [v100 location];
-  [v98 longitude];
+  visit10 = [v102 visit];
+  location3 = [visit10 location];
+  [location3 longitude];
   v57 = v56;
-  v96 = [v102 visit];
-  v94 = [v96 location];
-  [v94 altitude];
+  visit11 = [v102 visit];
+  location4 = [visit11 location];
+  [location4 altitude];
   v59 = v58;
-  v92 = [v102 visit];
-  v91 = [v92 location];
-  [v91 verticalUncertainty];
+  visit12 = [v102 visit];
+  location5 = [visit12 location];
+  [location5 verticalUncertainty];
   v61 = v60;
-  v90 = [v102 visit];
-  v89 = [v90 location];
-  v62 = [v89 date];
-  v88 = [v102 visit];
-  v63 = [v88 location];
-  v64 = [v63 referenceFrame];
-  v65 = [v102 visit];
-  v66 = [v65 location];
-  [v66 speed];
+  visit13 = [v102 visit];
+  location6 = [visit13 location];
+  date3 = [location6 date];
+  visit14 = [v102 visit];
+  location7 = [visit14 location];
+  referenceFrame = [location7 referenceFrame];
+  visit15 = [v102 visit];
+  location8 = [visit15 location];
+  [location8 speed];
   v68 = v67;
-  v69 = [v102 visit];
-  v70 = [v69 location];
-  v111 = [v110 initWithLatitude:v62 longitude:v64 horizontalUncertainty:objc_msgSend(v70 altitude:"sourceAccuracy") verticalUncertainty:v55 date:v57 referenceFrame:v53 speed:v59 sourceAccuracy:{v61, v68}];
+  visit16 = [v102 visit];
+  location9 = [visit16 location];
+  v111 = [v110 initWithLatitude:date3 longitude:referenceFrame horizontalUncertainty:objc_msgSend(location9 altitude:"sourceAccuracy") verticalUncertainty:v55 date:v57 referenceFrame:v53 speed:v59 sourceAccuracy:{v61, v68}];
 
   v99 = objc_alloc(MEMORY[0x277D01428]);
-  v108 = [v102 visit];
-  v95 = [v108 date];
-  v104 = [v102 visit];
-  v93 = [v104 type];
-  v101 = [v102 visit];
-  v71 = [v101 entry];
-  v97 = [v102 visit];
-  v72 = [v97 exit];
-  v73 = [v102 visit];
-  v74 = [v73 dataPointCount];
-  v75 = [v102 visit];
-  [v75 confidence];
+  visit17 = [v102 visit];
+  date4 = [visit17 date];
+  visit18 = [v102 visit];
+  type = [visit18 type];
+  visit19 = [v102 visit];
+  entry3 = [visit19 entry];
+  visit20 = [v102 visit];
+  exit3 = [visit20 exit];
+  visit21 = [v102 visit];
+  dataPointCount = [visit21 dataPointCount];
+  visit22 = [v102 visit];
+  [visit22 confidence];
   v77 = v76;
-  v78 = [v102 visit];
-  v79 = [v78 placeInference];
-  v80 = [v99 initWithDate:v95 type:v93 location:v111 entry:v71 exit:v72 dataPointCount:v74 confidence:v77 placeInference:v79];
+  visit23 = [v102 visit];
+  placeInference = [visit23 placeInference];
+  v80 = [v99 initWithDate:date4 type:type location:v111 entry:entry3 exit:exit3 dataPointCount:dataPointCount confidence:v77 placeInference:placeInference];
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -756,12 +756,12 @@ LABEL_22:
     if (os_log_type_enabled(v81, OS_LOG_TYPE_INFO))
     {
       v82 = NSStringFromSelector(aSelector);
-      v83 = [v102 visit];
-      v84 = [v83 location];
+      visit24 = [v102 visit];
+      location10 = [visit24 location];
       *buf = 138412803;
       v119 = v82;
       v120 = 2112;
-      v121 = v84;
+      v121 = location10;
       v122 = 2117;
       v123 = v111;
       _os_log_impl(&dword_2304B3000, v81, OS_LOG_TYPE_INFO, "%@, visit centroid, %@, updated visit centroid, %{sensitive}@", buf, 0x20u);
@@ -769,9 +769,9 @@ LABEL_22:
   }
 
   v85 = [RTVisitCluster alloc];
-  v4 = v102;
-  v86 = [v102 points];
-  v24 = [(RTVisitCluster *)v85 initWithPoints:v86 visit:v80];
+  uncertaintyCopy = v102;
+  points2 = [v102 points];
+  v24 = [(RTVisitCluster *)v85 initWithPoints:points2 visit:v80];
 
   v49 = v111;
 LABEL_54:
@@ -785,13 +785,13 @@ LABEL_58:
   return v24;
 }
 
-- (id)_updateVisitCentroidBasedOnFilteredLocations:(id)a3 maxHorizontalAccuracy:(double)a4
+- (id)_updateVisitCentroidBasedOnFilteredLocations:(id)locations maxHorizontalAccuracy:(double)accuracy
 {
   v180[1] = *MEMORY[0x277D85DE8];
-  v136 = a3;
-  v5 = [v136 visit];
+  locationsCopy = locations;
+  visit = [locationsCopy visit];
 
-  if (!v5)
+  if (!visit)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -805,24 +805,24 @@ LABEL_15:
     goto LABEL_93;
   }
 
-  v6 = [v136 visit];
-  v7 = [v6 entry];
-  if (v7)
+  visit2 = [locationsCopy visit];
+  entry = [visit2 entry];
+  if (entry)
   {
-    v8 = [v136 visit];
-    v9 = [v8 exit];
+    visit3 = [locationsCopy visit];
+    exit = [visit3 exit];
 
-    if (v9)
+    if (exit)
     {
       v10 = MEMORY[0x277CBEAA8];
-      v11 = [v136 visit];
-      v12 = [v11 entry];
-      v122 = [v10 dateWithTimeInterval:v12 sinceDate:900.0];
+      visit4 = [locationsCopy visit];
+      entry2 = [visit4 entry];
+      v122 = [v10 dateWithTimeInterval:entry2 sinceDate:900.0];
 
       v13 = MEMORY[0x277CBEAA8];
-      v14 = [v136 visit];
-      v15 = [v14 exit];
-      v121 = [v13 dateWithTimeInterval:v15 sinceDate:-900.0];
+      visit5 = [locationsCopy visit];
+      exit2 = [visit5 exit];
+      v121 = [v13 dateWithTimeInterval:exit2 sinceDate:-900.0];
 
       if ([v121 isBeforeDate:v122])
       {
@@ -832,11 +832,11 @@ LABEL_15:
           if (os_log_type_enabled(oslog, OS_LOG_TYPE_INFO))
           {
             v16 = NSStringFromSelector(a2);
-            v17 = [v136 visit];
+            visit6 = [locationsCopy visit];
             *buf = 138412547;
             *&buf[4] = v16;
             v171 = 2117;
-            v172 = v17;
+            v172 = visit6;
             _os_log_impl(&dword_2304B3000, oslog, OS_LOG_TYPE_INFO, "%@, skip centroid update for visit, %{sensitive}@, due to short duration", buf, 0x16u);
           }
 
@@ -852,8 +852,8 @@ LABEL_92:
       }
 
       oslog = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v122 endDate:v121];
-      v23 = [v136 visit];
-      v24 = [v23 location];
+      visit7 = [locationsCopy visit];
+      location = [visit7 location];
 
       v140 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:200];
       v25 = 0;
@@ -865,7 +865,7 @@ LABEL_92:
       while (1)
       {
         context = objc_autoreleasePoolPush();
-        v137 = [objc_alloc(MEMORY[0x277D01320]) initWithDateInterval:oslog horizontalAccuracy:200 batchSize:0 boundingBoxLocation:1 type:a4];
+        v137 = [objc_alloc(MEMORY[0x277D01320]) initWithDateInterval:oslog horizontalAccuracy:200 batchSize:0 boundingBoxLocation:1 type:accuracy];
         v164 = 0.0;
         v165 = &v164;
         v166 = 0x3032000000;
@@ -879,7 +879,7 @@ LABEL_92:
         v162 = __Block_byref_object_dispose_;
         v163 = 0;
         v29 = dispatch_semaphore_create(0);
-        v30 = [(RTVisitPipelineModuleVisitCentroidUpdater *)self locationManager];
+        locationManager = [(RTVisitPipelineModuleVisitCentroidUpdater *)self locationManager];
         v154[0] = MEMORY[0x277D85DD0];
         v154[1] = 3221225472;
         v154[2] = __112__RTVisitPipelineModuleVisitCentroidUpdater__updateVisitCentroidBasedOnFilteredLocations_maxHorizontalAccuracy___block_invoke;
@@ -888,7 +888,7 @@ LABEL_92:
         v157 = &v158;
         v31 = v29;
         v155 = v31;
-        [v30 fetchStoredLocationsWithOptions:v137 handler:v154];
+        [locationManager fetchStoredLocationsWithOptions:v137 handler:v154];
 
         dsema = v31;
         v32 = [MEMORY[0x277CBEAA8] now];
@@ -900,11 +900,11 @@ LABEL_92:
           v36 = v35;
           v37 = objc_opt_new();
           v38 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_130];
-          v39 = [MEMORY[0x277CCACC8] callStackSymbols];
-          v40 = [v39 filteredArrayUsingPredicate:v38];
-          v41 = [v40 firstObject];
+          callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+          v40 = [callStackSymbols filteredArrayUsingPredicate:v38];
+          firstObject = [v40 firstObject];
 
-          [v37 submitToCoreAnalytics:v41 type:1 duration:v36];
+          [v37 submitToCoreAnalytics:firstObject type:1 duration:v36];
           v42 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
           if (os_log_type_enabled(v42, OS_LOG_TYPE_FAULT))
           {
@@ -947,12 +947,12 @@ LABEL_25:
           if (os_log_type_enabled(v48, OS_LOG_TYPE_ERROR))
           {
             v49 = NSStringFromSelector(a2);
-            v50 = [v136 visit];
+            visit8 = [locationsCopy visit];
             v51 = v165[5];
             *buf = 138412803;
             *&buf[4] = v49;
             v171 = 2117;
-            v172 = v50;
+            v172 = visit8;
             v173 = 2112;
             v174 = v51;
             _os_log_error_impl(&dword_2304B3000, v48, OS_LOG_TYPE_ERROR, "%@, skip centroid update for visit, %{sensitive}@, due to error, %@", buf, 0x20u);
@@ -983,9 +983,9 @@ LABEL_25:
                   }
 
                   v58 = *(*(&v150 + 1) + 8 * v57);
-                  v59 = [(RTVisitPipelineModuleVisitCentroidUpdater *)self distanceCalculator];
+                  distanceCalculator = [(RTVisitPipelineModuleVisitCentroidUpdater *)self distanceCalculator];
                   v149 = 0;
-                  [v59 distanceFromLocation:v24 toLocation:v58 error:&v149];
+                  [distanceCalculator distanceFromLocation:location toLocation:v58 error:&v149];
                   v61 = v60;
                   v62 = v149;
 
@@ -1002,7 +1002,7 @@ LABEL_25:
                         v171 = 2117;
                         v172 = v58;
                         v173 = 2117;
-                        v174 = v24;
+                        v174 = location;
                         v175 = 2048;
                         v176 = v61;
                         v177 = 2112;
@@ -1017,8 +1017,8 @@ LABEL_25:
                     *buf = 0;
                     v180[0] = 0;
                     v148 = 0.0;
-                    [v24 latitude];
-                    [v24 longitude];
+                    [location latitude];
+                    [location longitude];
                     [v58 latitude];
                     [v58 longitude];
                     ++v25;
@@ -1069,17 +1069,17 @@ LABEL_25:
               }
             }
 
-            v68 = [*(v159 + 5) lastObject];
-            v69 = [v68 date];
-            v70 = [v69 dateByAddingTimeInterval:1.0];
+            lastObject = [*(v159 + 5) lastObject];
+            date = [lastObject date];
+            v70 = [date dateByAddingTimeInterval:1.0];
 
-            v71 = [oslog endDate];
+            endDate = [oslog endDate];
 
-            if ([*(v159 + 5) count] && !objc_msgSend(v71, "isBeforeDate:", v70))
+            if ([*(v159 + 5) count] && !objc_msgSend(endDate, "isBeforeDate:", v70))
             {
               v74 = objc_alloc(MEMORY[0x277CCA970]);
-              v48 = [v70 earlierDate:v71];
-              v75 = [v74 initWithStartDate:v48 endDate:v71];
+              v48 = [v70 earlierDate:endDate];
+              v75 = [v74 initWithStartDate:v48 endDate:endDate];
 
               v26 = 0;
               v72 = 0;
@@ -1092,7 +1092,7 @@ LABEL_25:
               {
                 v26 = 0;
                 v72 = 6;
-                v121 = v71;
+                v121 = endDate;
                 v122 = v70;
                 goto LABEL_66;
               }
@@ -1110,7 +1110,7 @@ LABEL_25:
               v72 = 6;
             }
 
-            v121 = v71;
+            v121 = endDate;
             v122 = v70;
             goto LABEL_65;
           }
@@ -1127,12 +1127,12 @@ LABEL_25:
           if (os_log_type_enabled(v48, OS_LOG_TYPE_INFO))
           {
             v52 = NSStringFromSelector(a2);
-            v53 = [v136 visit];
+            visit9 = [locationsCopy visit];
             v54 = [*(v159 + 5) count];
             *buf = 138412803;
             *&buf[4] = v52;
             v171 = 2117;
-            v172 = v53;
+            v172 = visit9;
             v173 = 2048;
             v174 = v54;
             _os_log_impl(&dword_2304B3000, v48, OS_LOG_TYPE_INFO, "%@, skip centroid update for visit, %{sensitive}@, due to small number of GPS locations, %lu", buf, 0x20u);
@@ -1158,8 +1158,8 @@ LABEL_66:
             {
               v164 = 0.0;
               v158 = 0.0;
-              [v24 latitude];
-              [v24 longitude];
+              [location latitude];
+              [location longitude];
               if (!RTCommonConvertLocalFrameToGeodetic() || (RTCommonIsCoordinateValid(), v77 == 0.0))
               {
                 v114 = _rt_log_facility_get_os_log(RTLogFacilityVisit);
@@ -1167,11 +1167,11 @@ LABEL_66:
                 if (os_log_type_enabled(v114, OS_LOG_TYPE_ERROR))
                 {
                   v119 = NSStringFromSelector(a2);
-                  v120 = [v136 visit];
+                  visit10 = [locationsCopy visit];
                   *buf = 138412547;
                   *&buf[4] = v119;
                   v171 = 2117;
-                  v172 = v120;
+                  v172 = visit10;
                   _os_log_error_impl(&dword_2304B3000, v114, OS_LOG_TYPE_ERROR, "%@, skip centroid update for visit, %{sensitive}@, due to invalid coordinates", buf, 0x16u);
 
                   v18 = 0;
@@ -1189,46 +1189,46 @@ LABEL_66:
                 v145 = objc_alloc(MEMORY[0x277D01160]);
                 v78 = v164;
                 v79 = v158;
-                dsemaa = [v136 visit];
-                v138 = [dsemaa location];
-                [v138 horizontalUncertainty];
+                dsemaa = [locationsCopy visit];
+                location2 = [dsemaa location];
+                [location2 horizontalUncertainty];
                 v81 = v80;
-                contexta = [v136 visit];
-                v130 = [contexta location];
-                [v130 altitude];
+                contexta = [locationsCopy visit];
+                location3 = [contexta location];
+                [location3 altitude];
                 v83 = v82;
-                v126 = [v136 visit];
-                v84 = [v126 location];
-                [v84 verticalUncertainty];
+                visit11 = [locationsCopy visit];
+                location4 = [visit11 location];
+                [location4 verticalUncertainty];
                 v86 = v85;
-                v87 = [v136 visit];
-                v88 = [v87 location];
-                v89 = [v88 date];
-                v90 = [v136 visit];
-                v91 = [v90 location];
-                v92 = [v91 referenceFrame];
-                v93 = [v136 visit];
-                v94 = [v93 location];
-                [v94 speed];
-                v146 = [v145 initWithLatitude:v89 longitude:v92 horizontalUncertainty:2 altitude:v78 verticalUncertainty:v79 date:v81 referenceFrame:v83 speed:v86 sourceAccuracy:v95];
+                visit12 = [locationsCopy visit];
+                location5 = [visit12 location];
+                date2 = [location5 date];
+                visit13 = [locationsCopy visit];
+                location6 = [visit13 location];
+                referenceFrame = [location6 referenceFrame];
+                visit14 = [locationsCopy visit];
+                location7 = [visit14 location];
+                [location7 speed];
+                v146 = [v145 initWithLatitude:date2 longitude:referenceFrame horizontalUncertainty:2 altitude:v78 verticalUncertainty:v79 date:v81 referenceFrame:v83 speed:v86 sourceAccuracy:v95];
 
                 v131 = objc_alloc(MEMORY[0x277D01428]);
-                dsemab = [v136 visit];
+                dsemab = [locationsCopy visit];
                 contextb = [dsemab date];
-                v139 = [v136 visit];
-                v127 = [v139 type];
-                v96 = [v136 visit];
-                v97 = [v96 entry];
-                v98 = [v136 visit];
-                v99 = [v98 exit];
-                v100 = [v136 visit];
-                v101 = [v100 dataPointCount];
-                v102 = [v136 visit];
-                [v102 confidence];
+                visit15 = [locationsCopy visit];
+                type = [visit15 type];
+                visit16 = [locationsCopy visit];
+                entry3 = [visit16 entry];
+                visit17 = [locationsCopy visit];
+                exit3 = [visit17 exit];
+                visit18 = [locationsCopy visit];
+                dataPointCount = [visit18 dataPointCount];
+                visit19 = [locationsCopy visit];
+                [visit19 confidence];
                 v104 = v103;
-                v105 = [v136 visit];
-                v106 = [v105 placeInference];
-                v132 = [v131 initWithDate:contextb type:v127 location:v146 entry:v97 exit:v99 dataPointCount:v101 confidence:v104 placeInference:v106];
+                visit20 = [locationsCopy visit];
+                placeInference = [visit20 placeInference];
+                v132 = [v131 initWithDate:contextb type:type location:v146 entry:entry3 exit:exit3 dataPointCount:dataPointCount confidence:v104 placeInference:placeInference];
 
                 if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
                 {
@@ -1236,12 +1236,12 @@ LABEL_66:
                   if (os_log_type_enabled(v107, OS_LOG_TYPE_INFO))
                   {
                     v108 = NSStringFromSelector(a2);
-                    v109 = [v136 visit];
-                    v110 = [v109 location];
+                    visit21 = [locationsCopy visit];
+                    location8 = [visit21 location];
                     *buf = 138412803;
                     *&buf[4] = v108;
                     v171 = 2112;
-                    v172 = v110;
+                    v172 = location8;
                     v173 = 2117;
                     v174 = v146;
                     _os_log_impl(&dword_2304B3000, v107, OS_LOG_TYPE_INFO, "%@, visit centroid, %@, updated visit centroid, %{sensitive}@", buf, 0x20u);
@@ -1267,11 +1267,11 @@ LABEL_91:
               if (os_log_type_enabled(v115, OS_LOG_TYPE_INFO))
               {
                 v116 = NSStringFromSelector(a2);
-                v117 = [v136 visit];
+                visit22 = [locationsCopy visit];
                 *buf = 138412547;
                 *&buf[4] = v116;
                 v171 = 2117;
-                v172 = v117;
+                v172 = visit22;
                 _os_log_impl(&dword_2304B3000, v115, OS_LOG_TYPE_INFO, "%@, skip centroid update for visit, %{sensitive}@, due to no GPS location", buf, 0x16u);
               }
             }
@@ -1302,11 +1302,11 @@ LABEL_91:
   }
 
   v21 = NSStringFromSelector(a2);
-  v22 = [v136 visit];
+  visit23 = [locationsCopy visit];
   *buf = 138412547;
   *&buf[4] = v21;
   v171 = 2117;
-  v172 = v22;
+  v172 = visit23;
   _os_log_impl(&dword_2304B3000, v20, OS_LOG_TYPE_INFO, "%@, incomplete visit, %{sensitive}@", buf, 0x16u);
 
   v18 = 0;
@@ -1342,11 +1342,11 @@ id __112__RTVisitPipelineModuleVisitCentroidUpdater__updateVisitCentroidBasedOnF
   return v4;
 }
 
-- (id)process:(id)a3
+- (id)process:(id)process
 {
   v68 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
+  processCopy = process;
+  v5 = processCopy;
   if (!self->_binCounts)
   {
     obj = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -1362,7 +1362,7 @@ LABEL_48:
     goto LABEL_43;
   }
 
-  if ([v4 count])
+  if ([processCopy count])
   {
     v46 = objc_opt_new();
     v49 = 0u;
@@ -1379,7 +1379,7 @@ LABEL_48:
     v40 = v5;
     v6 = MEMORY[0x277D86220];
     v45 = *v50;
-    v44 = self;
+    selfCopy = self;
     while (1)
     {
       for (i = 0; i != v47; ++i)
@@ -1432,13 +1432,13 @@ LABEL_48:
 
         if (v15)
         {
-          v16 = [(RTVisitPipelineModuleVisitCentroidUpdater *)self distanceCalculator];
-          v17 = [v8 visit];
-          v18 = [v17 location];
-          v19 = [v15 visit];
-          v20 = [v19 location];
+          distanceCalculator = [(RTVisitPipelineModuleVisitCentroidUpdater *)self distanceCalculator];
+          visit = [v8 visit];
+          location = [visit location];
+          visit2 = [v15 visit];
+          location2 = [visit2 location];
           v48 = 0;
-          [v16 distanceFromLocation:v18 toLocation:v20 error:&v48];
+          [distanceCalculator distanceFromLocation:location toLocation:location2 error:&v48];
           v22 = v21;
           v23 = v48;
 
@@ -1449,11 +1449,11 @@ LABEL_48:
             if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
             {
               v25 = NSStringFromSelector(a2);
-              v41 = [v8 visit];
-              v26 = [v41 location];
-              v27 = [v15 visit];
-              v28 = [v27 location];
-              v29 = v28;
+              visit3 = [v8 visit];
+              location3 = [visit3 location];
+              visit4 = [v15 visit];
+              location4 = [visit4 location];
+              v29 = location4;
               *buf = 138413827;
               v30 = @"NO";
               if (v13)
@@ -1463,9 +1463,9 @@ LABEL_48:
 
               v54 = v25;
               v55 = 2117;
-              v56 = v26;
+              v56 = location3;
               v57 = 2117;
-              v58 = v28;
+              v58 = location4;
               v59 = 2048;
               v60 = v22;
               v61 = 2112;
@@ -1480,7 +1480,7 @@ LABEL_48:
             }
           }
 
-          self = v44;
+          self = selfCopy;
           if (!v23 && v22 <= 1000.0)
           {
             v31 = v15;
@@ -1506,10 +1506,10 @@ LABEL_48:
         v31 = v8;
 LABEL_34:
         [v46 addObject:v31];
-        v34 = [v8 visit];
-        v35 = [v34 exit];
+        visit5 = [v8 visit];
+        exit = [visit5 exit];
 
-        if (v35)
+        if (exit)
         {
           binCounts = self->_binCounts;
           if (binCounts)

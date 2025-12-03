@@ -1,28 +1,28 @@
 @interface LNSymbolImage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (LNSymbolConfiguration)platformAgnosticSymbolConfiguration;
-- (LNSymbolImage)initWithCoder:(id)a3;
-- (LNSymbolImage)initWithSymbolSystemName:(id)a3;
-- (LNSymbolImage)initWithSymbolSystemName:(id)a3 colorization:(id)a4 configuration:(id)a5;
-- (LNSymbolImage)initWithSymbolSystemName:(id)a3 tintColorData:(id)a4 configurationData:(id)a5 platform:(id)a6;
-- (LNSymbolImage)initWithSymbolSystemName:(id)a3 tintColorData:(id)a4 platformAgnosticConfiguration:(id)a5 platform:(id)a6;
+- (LNSymbolImage)initWithCoder:(id)coder;
+- (LNSymbolImage)initWithSymbolSystemName:(id)name;
+- (LNSymbolImage)initWithSymbolSystemName:(id)name colorization:(id)colorization configuration:(id)configuration;
+- (LNSymbolImage)initWithSymbolSystemName:(id)name tintColorData:(id)data configurationData:(id)configurationData platform:(id)platform;
+- (LNSymbolImage)initWithSymbolSystemName:(id)name tintColorData:(id)data platformAgnosticConfiguration:(id)configuration platform:(id)platform;
 - (NSData)configurationData;
 - (NSData)tintColorData;
 - (NSString)platform;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNSymbolImage
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -31,10 +31,10 @@ LABEL_27:
       goto LABEL_28;
     }
 
-    v7 = [(LNSymbolImage *)self systemName];
-    v8 = [(LNSymbolImage *)v6 systemName];
-    v9 = v7;
-    v10 = v8;
+    systemName = [(LNSymbolImage *)self systemName];
+    systemName2 = [(LNSymbolImage *)v6 systemName];
+    v9 = systemName;
+    v10 = systemName2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -61,10 +61,10 @@ LABEL_26:
       }
     }
 
-    v16 = [(LNSymbolImage *)self colorization];
-    v17 = [(LNSymbolImage *)v6 colorization];
-    v14 = v16;
-    v18 = v17;
+    colorization = [(LNSymbolImage *)self colorization];
+    colorization2 = [(LNSymbolImage *)v6 colorization];
+    v14 = colorization;
+    v18 = colorization2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -91,10 +91,10 @@ LABEL_25:
       }
     }
 
-    v21 = [(LNSymbolImage *)self configurationSpecification];
-    v22 = [(LNSymbolImage *)v6 configurationSpecification];
-    v20 = v21;
-    v23 = v22;
+    configurationSpecification = [(LNSymbolImage *)self configurationSpecification];
+    configurationSpecification2 = [(LNSymbolImage *)v6 configurationSpecification];
+    v20 = configurationSpecification;
+    v23 = configurationSpecification2;
     v19 = v23;
     if (v20 == v23)
     {
@@ -121,12 +121,12 @@ LABEL_28:
 
 - (unint64_t)hash
 {
-  v3 = [(LNSymbolImage *)self systemName];
-  v4 = [v3 hash];
-  v5 = [(LNSymbolImage *)self colorization];
-  v6 = [v5 hash] ^ v4;
-  v7 = [(LNSymbolImage *)self configurationSpecification];
-  v8 = [v7 hash];
+  systemName = [(LNSymbolImage *)self systemName];
+  v4 = [systemName hash];
+  colorization = [(LNSymbolImage *)self colorization];
+  v6 = [colorization hash] ^ v4;
+  configurationSpecification = [(LNSymbolImage *)self configurationSpecification];
+  v8 = [configurationSpecification hash];
 
   return v6 ^ v8;
 }
@@ -136,103 +136,103 @@ LABEL_28:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNSymbolImage *)self systemName];
-  v7 = [(LNSymbolImage *)self colorization];
-  v8 = [(LNSymbolImage *)self configurationSpecification];
-  v9 = [v3 stringWithFormat:@"<%@: %p, systemName: %@, colorization: %@, configurationSpecification: %@>", v5, self, v6, v7, v8];
+  systemName = [(LNSymbolImage *)self systemName];
+  colorization = [(LNSymbolImage *)self colorization];
+  configurationSpecification = [(LNSymbolImage *)self configurationSpecification];
+  v9 = [v3 stringWithFormat:@"<%@: %p, systemName: %@, colorization: %@, configurationSpecification: %@>", v5, self, systemName, colorization, configurationSpecification];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = LNSymbolImage;
-  v4 = a3;
-  [(LNImage *)&v8 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(LNImage *)&v8 encodeWithCoder:coderCopy];
   v5 = [(LNSymbolImage *)self systemName:v8.receiver];
-  [v4 encodeObject:v5 forKey:@"systemName"];
+  [coderCopy encodeObject:v5 forKey:@"systemName"];
 
-  v6 = [(LNSymbolImage *)self colorization];
-  [v4 encodeObject:v6 forKey:@"colorization"];
+  colorization = [(LNSymbolImage *)self colorization];
+  [coderCopy encodeObject:colorization forKey:@"colorization"];
 
-  v7 = [(LNSymbolImage *)self configurationSpecification];
-  [v4 encodeObject:v7 forKey:@"configurationSpecification"];
+  configurationSpecification = [(LNSymbolImage *)self configurationSpecification];
+  [coderCopy encodeObject:configurationSpecification forKey:@"configurationSpecification"];
 }
 
-- (LNSymbolImage)initWithCoder:(id)a3
+- (LNSymbolImage)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"systemName"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"systemName"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"colorization"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"colorization"];
     if (!v6)
     {
       v6 = objc_opt_new();
     }
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"configurationSpecification"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"configurationSpecification"];
     self = [(LNSymbolImage *)self initWithSymbolSystemName:v5 colorization:v6 configuration:v7];
 
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (NSString)platform
 {
-  v3 = [(LNSymbolImage *)self colorization];
-  v4 = [v3 background];
-  if (v4)
+  colorization = [(LNSymbolImage *)self colorization];
+  background = [colorization background];
+  if (background)
   {
     goto LABEL_2;
   }
 
-  v4 = [(LNSymbolImage *)self colorization];
-  v12 = [v4 foreground];
-  v13 = [v12 platformSpecificData];
-  if (!v13)
+  background = [(LNSymbolImage *)self colorization];
+  foreground = [background foreground];
+  platformSpecificData = [foreground platformSpecificData];
+  if (!platformSpecificData)
   {
 
 LABEL_2:
     goto LABEL_3;
   }
 
-  v14 = v13;
-  v15 = [(LNSymbolImage *)self colorization];
-  v16 = [v15 foreground];
-  v17 = [v16 platform];
+  v14 = platformSpecificData;
+  colorization2 = [(LNSymbolImage *)self colorization];
+  foreground2 = [colorization2 foreground];
+  platform = [foreground2 platform];
 
-  if (v17)
+  if (platform)
   {
-    v10 = [(LNSymbolImage *)self colorization];
-    v18 = [v10 foreground];
-    v11 = [v18 platform];
+    colorization3 = [(LNSymbolImage *)self colorization];
+    foreground3 = [colorization3 foreground];
+    platform2 = [foreground3 platform];
 LABEL_15:
 
     goto LABEL_19;
   }
 
 LABEL_3:
-  v5 = [(LNSymbolImage *)self configurationSpecification];
-  v6 = [v5 platformSpecificData];
-  if (v6)
+  configurationSpecification = [(LNSymbolImage *)self configurationSpecification];
+  platformSpecificData2 = [configurationSpecification platformSpecificData];
+  if (platformSpecificData2)
   {
-    v7 = v6;
-    v8 = [(LNSymbolImage *)self configurationSpecification];
-    v9 = [v8 platform];
+    v7 = platformSpecificData2;
+    configurationSpecification2 = [(LNSymbolImage *)self configurationSpecification];
+    platform3 = [configurationSpecification2 platform];
 
-    if (v9)
+    if (platform3)
     {
-      v10 = [(LNSymbolImage *)self configurationSpecification];
-      v11 = [v10 platform];
+      colorization3 = [(LNSymbolImage *)self configurationSpecification];
+      platform2 = [colorization3 platform];
 LABEL_19:
 
       goto LABEL_20;
@@ -243,199 +243,199 @@ LABEL_19:
   {
   }
 
-  v10 = [(LNSymbolImage *)self colorization];
-  v19 = [v10 background];
-  if (v19)
+  colorization3 = [(LNSymbolImage *)self colorization];
+  background2 = [colorization3 background];
+  if (background2)
   {
 
 LABEL_18:
-    v11 = 0;
+    platform2 = 0;
     goto LABEL_19;
   }
 
-  v20 = [(LNSymbolImage *)self colorization];
-  v21 = [v20 foreground];
-  v22 = [v21 systemNamedColor];
+  colorization4 = [(LNSymbolImage *)self colorization];
+  foreground4 = [colorization4 foreground];
+  systemNamedColor = [foreground4 systemNamedColor];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_18;
   }
 
-  v23 = [(LNSymbolImage *)self colorization];
-  v24 = [v23 foreground];
-  v25 = [v24 systemNamedColor];
-  v26 = [v25 tintColorPlatform];
+  colorization5 = [(LNSymbolImage *)self colorization];
+  foreground5 = [colorization5 foreground];
+  systemNamedColor2 = [foreground5 systemNamedColor];
+  tintColorPlatform = [systemNamedColor2 tintColorPlatform];
 
-  if (v26)
+  if (tintColorPlatform)
   {
-    v10 = [(LNSymbolImage *)self colorization];
-    v18 = [v10 foreground];
-    v27 = [v18 systemNamedColor];
-    v11 = [v27 tintColorPlatform];
+    colorization3 = [(LNSymbolImage *)self colorization];
+    foreground3 = [colorization3 foreground];
+    systemNamedColor3 = [foreground3 systemNamedColor];
+    platform2 = [systemNamedColor3 tintColorPlatform];
 
     goto LABEL_15;
   }
 
-  v11 = 0;
+  platform2 = 0;
 LABEL_20:
 
-  return v11;
+  return platform2;
 }
 
 - (LNSymbolConfiguration)platformAgnosticSymbolConfiguration
 {
-  v2 = [(LNSymbolImage *)self configurationSpecification];
-  v3 = [v2 platformAgnosticConfiguration];
+  configurationSpecification = [(LNSymbolImage *)self configurationSpecification];
+  platformAgnosticConfiguration = [configurationSpecification platformAgnosticConfiguration];
 
-  return v3;
+  return platformAgnosticConfiguration;
 }
 
 - (NSData)configurationData
 {
-  v2 = [(LNSymbolImage *)self configurationSpecification];
-  v3 = [v2 platformSpecificData];
+  configurationSpecification = [(LNSymbolImage *)self configurationSpecification];
+  platformSpecificData = [configurationSpecification platformSpecificData];
 
-  return v3;
+  return platformSpecificData;
 }
 
 - (NSData)tintColorData
 {
-  v3 = [(LNSymbolImage *)self colorization];
-  v4 = [v3 background];
+  colorization = [(LNSymbolImage *)self colorization];
+  background = [colorization background];
 
-  if (v4)
+  if (background)
   {
-    v5 = 0;
+    tintColorData = 0;
     goto LABEL_14;
   }
 
-  v6 = [(LNSymbolImage *)self colorization];
-  v7 = [v6 foreground];
+  colorization2 = [(LNSymbolImage *)self colorization];
+  foreground = [colorization2 foreground];
 
-  v8 = [v7 platformSpecificData];
-  v9 = v8;
-  if (!v8)
+  platformSpecificData = [foreground platformSpecificData];
+  v9 = platformSpecificData;
+  if (!platformSpecificData)
   {
-    v10 = [v7 systemNamedColor];
-    if (v10 && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0)
+    systemNamedColor = [foreground systemNamedColor];
+    if (systemNamedColor && (objc_opt_respondsToSelector() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0)
     {
-      v5 = [v10 tintColorData];
-      if (!v5)
+      tintColorData = [systemNamedColor tintColorData];
+      if (!tintColorData)
       {
 LABEL_12:
 
         goto LABEL_13;
       }
 
-      v11 = [v10 tintColorPlatform];
+      tintColorPlatform = [systemNamedColor tintColorPlatform];
 
-      if (v11)
+      if (tintColorPlatform)
       {
-        v5 = [v10 tintColorData];
+        tintColorData = [systemNamedColor tintColorData];
         goto LABEL_12;
       }
     }
 
-    v5 = 0;
+    tintColorData = 0;
     goto LABEL_12;
   }
 
-  v5 = v8;
+  tintColorData = platformSpecificData;
 LABEL_13:
 
 LABEL_14:
 
-  return v5;
+  return tintColorData;
 }
 
-- (LNSymbolImage)initWithSymbolSystemName:(id)a3 tintColorData:(id)a4 platformAgnosticConfiguration:(id)a5 platform:(id)a6
+- (LNSymbolImage)initWithSymbolSystemName:(id)name tintColorData:(id)data platformAgnosticConfiguration:(id)configuration platform:(id)platform
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  nameCopy = name;
+  dataCopy = data;
+  configurationCopy = configuration;
+  platformCopy = platform;
+  v14 = platformCopy;
   v15 = 0;
-  if (v11 && v13)
+  if (dataCopy && platformCopy)
   {
-    v15 = [[LNSymbolImageColorSpecification alloc] initWithPlatformSpecificData:v11 platform:v13];
+    v15 = [[LNSymbolImageColorSpecification alloc] initWithPlatformSpecificData:dataCopy platform:platformCopy];
   }
 
   v16 = [[LNSymbolImageColorization alloc] initWithForeground:v15 background:0];
   v17 = 0;
-  if (v12 && v14)
+  if (configurationCopy && v14)
   {
-    v17 = [[LNSymbolImageConfigurationSpecification alloc] initWithPlatformAgnosticConfiguration:v12];
+    v17 = [[LNSymbolImageConfigurationSpecification alloc] initWithPlatformAgnosticConfiguration:configurationCopy];
   }
 
-  v18 = [(LNSymbolImage *)self initWithSymbolSystemName:v10 colorization:v16 configuration:v17];
+  v18 = [(LNSymbolImage *)self initWithSymbolSystemName:nameCopy colorization:v16 configuration:v17];
 
   return v18;
 }
 
-- (LNSymbolImage)initWithSymbolSystemName:(id)a3 tintColorData:(id)a4 configurationData:(id)a5 platform:(id)a6
+- (LNSymbolImage)initWithSymbolSystemName:(id)name tintColorData:(id)data configurationData:(id)configurationData platform:(id)platform
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = v13;
+  nameCopy = name;
+  dataCopy = data;
+  configurationDataCopy = configurationData;
+  platformCopy = platform;
+  v14 = platformCopy;
   v15 = 0;
-  if (v11 && v13)
+  if (dataCopy && platformCopy)
   {
-    v15 = [[LNSymbolImageColorSpecification alloc] initWithPlatformSpecificData:v11 platform:v13];
+    v15 = [[LNSymbolImageColorSpecification alloc] initWithPlatformSpecificData:dataCopy platform:platformCopy];
   }
 
   v16 = [[LNSymbolImageColorization alloc] initWithForeground:v15 background:0];
   v17 = 0;
-  if (v12 && v14)
+  if (configurationDataCopy && v14)
   {
-    v17 = [[LNSymbolImageConfigurationSpecification alloc] initWithPlatformSpecificationConfigurationData:v12 platform:v14];
+    v17 = [[LNSymbolImageConfigurationSpecification alloc] initWithPlatformSpecificationConfigurationData:configurationDataCopy platform:v14];
   }
 
-  v18 = [(LNSymbolImage *)self initWithSymbolSystemName:v10 colorization:v16 configuration:v17];
+  v18 = [(LNSymbolImage *)self initWithSymbolSystemName:nameCopy colorization:v16 configuration:v17];
 
   return v18;
 }
 
-- (LNSymbolImage)initWithSymbolSystemName:(id)a3 colorization:(id)a4 configuration:(id)a5
+- (LNSymbolImage)initWithSymbolSystemName:(id)name colorization:(id)colorization configuration:(id)configuration
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v8)
+  nameCopy = name;
+  colorizationCopy = colorization;
+  configurationCopy = configuration;
+  if (nameCopy)
   {
     v16.receiver = self;
     v16.super_class = LNSymbolImage;
-    v11 = [(LNImage *)&v16 initWithSystemImageNamed:v8];
+    v11 = [(LNImage *)&v16 initWithSystemImageNamed:nameCopy];
     if (v11)
     {
-      v12 = [v8 copy];
+      v12 = [nameCopy copy];
       systemName = v11->_systemName;
       v11->_systemName = v12;
 
-      objc_storeStrong(&v11->_colorization, a4);
-      objc_storeStrong(&v11->_configurationSpecification, a5);
+      objc_storeStrong(&v11->_colorization, colorization);
+      objc_storeStrong(&v11->_configurationSpecification, configuration);
     }
 
     self = v11;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (LNSymbolImage)initWithSymbolSystemName:(id)a3
+- (LNSymbolImage)initWithSymbolSystemName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v5 = objc_opt_new();
-  v6 = [(LNSymbolImage *)self initWithSymbolSystemName:v4 colorization:v5 configuration:0];
+  v6 = [(LNSymbolImage *)self initWithSymbolSystemName:nameCopy colorization:v5 configuration:0];
 
   return v6;
 }

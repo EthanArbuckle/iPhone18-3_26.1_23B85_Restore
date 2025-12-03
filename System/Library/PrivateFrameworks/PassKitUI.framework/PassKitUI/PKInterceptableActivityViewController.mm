@@ -1,35 +1,35 @@
 @interface PKInterceptableActivityViewController
-- (PKInterceptableActivityViewController)initWithItems:(id)a3 peopleSuggestionBundleIds:(id)a4 delegate:(id)a5;
+- (PKInterceptableActivityViewController)initWithItems:(id)items peopleSuggestionBundleIds:(id)ids delegate:(id)delegate;
 - (PKInterceptableActivityViewControllerDelegate)delegate;
-- (id)selectedRecipientWithOutContactIdentifier:(id *)a3;
-- (void)_performActivity:(id)a3;
-- (void)activityViewController:(id)a3 willStartAirdropTransferToRecipient:(id)a4 contactIdentifier:(id)a5;
-- (void)activityViewControllerDidFinishAirdropTransfer:(id)a3;
-- (void)activityViewControllerWillStartAirdropTransfer:(id)a3;
+- (id)selectedRecipientWithOutContactIdentifier:(id *)identifier;
+- (void)_performActivity:(id)activity;
+- (void)activityViewController:(id)controller willStartAirdropTransferToRecipient:(id)recipient contactIdentifier:(id)identifier;
+- (void)activityViewControllerDidFinishAirdropTransfer:(id)transfer;
+- (void)activityViewControllerWillStartAirdropTransfer:(id)transfer;
 - (void)handleInterceptedShareActivity;
 - (void)loadView;
-- (void)setExcludedActivityTypes:(id)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setExcludedActivityTypes:(id)types;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation PKInterceptableActivityViewController
 
-- (PKInterceptableActivityViewController)initWithItems:(id)a3 peopleSuggestionBundleIds:(id)a4 delegate:(id)a5
+- (PKInterceptableActivityViewController)initWithItems:(id)items peopleSuggestionBundleIds:(id)ids delegate:(id)delegate
 {
   v23[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  idsCopy = ids;
+  delegateCopy = delegate;
   v11 = objc_alloc_init(PKMessageExtensionActivityItem);
   v23[0] = v11;
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   v22.receiver = self;
   v22.super_class = PKInterceptableActivityViewController;
-  v13 = [(PKInterceptableActivityViewController *)&v22 initWithActivityItems:v8 applicationActivities:v12 peopleSuggestionBundleIds:v9];
+  v13 = [(PKInterceptableActivityViewController *)&v22 initWithActivityItems:itemsCopy applicationActivities:v12 peopleSuggestionBundleIds:idsCopy];
   v14 = v13;
   if (v13)
   {
-    objc_storeWeak(&v13->_delegate, v10);
+    objc_storeWeak(&v13->_delegate, delegateCopy);
     objc_initWeak(&location, v14);
     v16 = MEMORY[0x1E69E9820];
     v17 = 3221225472;
@@ -92,11 +92,11 @@ void __90__PKInterceptableActivityViewController_initWithItems_peopleSuggestionB
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = PKInterceptableActivityViewController;
-  [(PKInterceptableActivityViewController *)&v7 viewDidDisappear:a3];
+  [(PKInterceptableActivityViewController *)&v7 viewDidDisappear:disappear];
   if (self->_isSendingOverAirdrop)
   {
     v4 = PKLogFacilityTypeGetObject();
@@ -119,15 +119,15 @@ void __90__PKInterceptableActivityViewController_initWithItems_peopleSuggestionB
   [(PKInterceptableActivityViewController *)self setSharingStyle:1];
 }
 
-- (void)setExcludedActivityTypes:(id)a3
+- (void)setExcludedActivityTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = objc_alloc(MEMORY[0x1E695DF70]);
   v6 = [v5 initWithObjects:{*MEMORY[0x1E69CDA90], *MEMORY[0x1E69CDA80], *MEMORY[0x1E69CDA70], 0}];
   v7 = v6;
-  if (v4)
+  if (typesCopy)
   {
-    [v6 addObjectsFromArray:v4];
+    [v6 addObjectsFromArray:typesCopy];
   }
 
   v8.receiver = self;
@@ -135,7 +135,7 @@ void __90__PKInterceptableActivityViewController_initWithItems_peopleSuggestionB
   [(PKInterceptableActivityViewController *)&v8 setExcludedActivityTypes:v7];
 }
 
-- (id)selectedRecipientWithOutContactIdentifier:(id *)a3
+- (id)selectedRecipientWithOutContactIdentifier:(id *)identifier
 {
   v13 = *MEMORY[0x1E69E9840];
   airdropRecipientName = self->_airdropRecipientName;
@@ -155,7 +155,7 @@ void __90__PKInterceptableActivityViewController_initWithItems_peopleSuggestionB
     }
 
     v10 = self->_airdropRecipientName;
-    *a3 = self->_airdropRecipientContactIdentifier;
+    *identifier = self->_airdropRecipientContactIdentifier;
     v7 = self->_airdropRecipientName;
     self->_airdropRecipientName = 0;
 
@@ -197,14 +197,14 @@ void __90__PKInterceptableActivityViewController_initWithItems_peopleSuggestionB
   }
 }
 
-- (void)_performActivity:(id)a3
+- (void)_performActivity:(id)activity
 {
   v23 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  activityCopy = activity;
   self->_isSendingOverAirdrop = 0;
-  v6 = [v5 activityType];
-  v7 = [(PKInterceptableActivityViewController *)self excludedActivityTypes];
-  v8 = [v7 containsObject:v6];
+  activityType = [activityCopy activityType];
+  excludedActivityTypes = [(PKInterceptableActivityViewController *)self excludedActivityTypes];
+  v8 = [excludedActivityTypes containsObject:activityType];
 
   v9 = PKLogFacilityTypeGetObject();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -213,7 +213,7 @@ void __90__PKInterceptableActivityViewController_initWithItems_peopleSuggestionB
     if (v10)
     {
       *buf = 138412290;
-      v22 = v6;
+      v22 = activityType;
       _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "ShareInitiation: Share Sheet blocking share over %@", buf, 0xCu);
     }
 
@@ -235,37 +235,37 @@ void __90__PKInterceptableActivityViewController_initWithItems_peopleSuggestionB
     if (v10)
     {
       *buf = 138412290;
-      v22 = v6;
+      v22 = activityType;
       _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "ShareInitiation: Share Sheet intercepting share activity of type %@", buf, 0xCu);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v19 = [WeakRetained interceptableActivityViewController:self shouldInterceptActivitySelectionOfType:v6];
+    v19 = [WeakRetained interceptableActivityViewController:self shouldInterceptActivitySelectionOfType:activityType];
 
     if (!v19)
     {
       v20.receiver = self;
       v20.super_class = PKInterceptableActivityViewController;
-      [(PKInterceptableActivityViewController *)&v20 _performActivity:v5];
+      [(PKInterceptableActivityViewController *)&v20 _performActivity:activityCopy];
       goto LABEL_11;
     }
 
-    objc_storeStrong(&self->_defferedActivity, a3);
+    objc_storeStrong(&self->_defferedActivity, activity);
     v14 = objc_loadWeakRetained(&self->_delegate);
-    [v14 interceptableActivityViewController:self didInterceptActivitySelectionOfType:v6];
+    [v14 interceptableActivityViewController:self didInterceptActivitySelectionOfType:activityType];
   }
 
 LABEL_11:
 }
 
-- (void)activityViewControllerWillStartAirdropTransfer:(id)a3
+- (void)activityViewControllerWillStartAirdropTransfer:(id)transfer
 {
   self->_isSendingOverAirdrop = 1;
   airdropRecipientName = self->_airdropRecipientName;
   self->_airdropRecipientName = 0;
 }
 
-- (void)activityViewControllerDidFinishAirdropTransfer:(id)a3
+- (void)activityViewControllerDidFinishAirdropTransfer:(id)transfer
 {
   self->_isSendingOverAirdrop = 0;
   airdropRecipientName = self->_airdropRecipientName;
@@ -282,16 +282,16 @@ LABEL_11:
   [WeakRetained interceptableActivityViewController:self didFinishWithShare:1];
 }
 
-- (void)activityViewController:(id)a3 willStartAirdropTransferToRecipient:(id)a4 contactIdentifier:(id)a5
+- (void)activityViewController:(id)controller willStartAirdropTransferToRecipient:(id)recipient contactIdentifier:(id)identifier
 {
-  v7 = a4;
-  v8 = a5;
+  recipientCopy = recipient;
+  identifierCopy = identifier;
   airdropRecipientName = self->_airdropRecipientName;
-  self->_airdropRecipientName = v7;
-  v11 = v7;
+  self->_airdropRecipientName = recipientCopy;
+  v11 = recipientCopy;
 
   airdropRecipientContactIdentifier = self->_airdropRecipientContactIdentifier;
-  self->_airdropRecipientContactIdentifier = v8;
+  self->_airdropRecipientContactIdentifier = identifierCopy;
 }
 
 - (PKInterceptableActivityViewControllerDelegate)delegate

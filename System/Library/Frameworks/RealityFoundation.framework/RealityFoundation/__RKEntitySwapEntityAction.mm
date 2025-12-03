@@ -1,10 +1,10 @@
 @interface __RKEntitySwapEntityAction
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 @end
 
 @implementation __RKEntitySwapEntityAction
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
 
   __RKEntitySwapEntityAction.copy(with:)(v5);

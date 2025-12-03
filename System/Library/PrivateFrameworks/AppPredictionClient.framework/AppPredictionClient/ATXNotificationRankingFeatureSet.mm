@@ -1,27 +1,27 @@
 @interface ATXNotificationRankingFeatureSet
-- (ATXNotificationRankingFeatureSet)initWithCoder:(id)a3;
-- (ATXNotificationRankingFeatureSet)initWithFeatures:(id)a3 metadata:(id)a4;
+- (ATXNotificationRankingFeatureSet)initWithCoder:(id)coder;
+- (ATXNotificationRankingFeatureSet)initWithFeatures:(id)features metadata:(id)metadata;
 - (double)score;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXNotificationRankingFeatureSet
 
-- (ATXNotificationRankingFeatureSet)initWithFeatures:(id)a3 metadata:(id)a4
+- (ATXNotificationRankingFeatureSet)initWithFeatures:(id)features metadata:(id)metadata
 {
-  v6 = a3;
-  v7 = a4;
+  featuresCopy = features;
+  metadataCopy = metadata;
   v14.receiver = self;
   v14.super_class = ATXNotificationRankingFeatureSet;
   v8 = [(ATXNotificationRankingFeatureSet *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [featuresCopy copy];
     features = v8->_features;
     v8->_features = v9;
 
-    v11 = [v7 copy];
+    v11 = [metadataCopy copy];
     metadata = v8->_metadata;
     v8->_metadata = v11;
   }
@@ -36,8 +36,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NSDictionary *)self->_features allValues];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  allValues = [(NSDictionary *)self->_features allValues];
+  v3 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -49,14 +49,14 @@
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         [*(*(&v10 + 1) + 8 * i) score];
         v6 = v6 + v8;
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [allValues countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v4);
@@ -70,7 +70,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [ATXNotificationRankingFeatureSet alloc];
   features = self->_features;
@@ -79,31 +79,31 @@
   return [(ATXNotificationRankingFeatureSet *)v4 initWithFeatures:features metadata:metadata];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   features = self->_features;
-  v5 = a3;
-  [v5 encodeObject:features forKey:@"features"];
-  [v5 encodeObject:self->_metadata forKey:@"metadata"];
+  coderCopy = coder;
+  [coderCopy encodeObject:features forKey:@"features"];
+  [coderCopy encodeObject:self->_metadata forKey:@"metadata"];
 }
 
-- (ATXNotificationRankingFeatureSet)initWithCoder:(id)a3
+- (ATXNotificationRankingFeatureSet)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
-  v6 = [v4 decodeDictionaryWithKeysOfClass:v5 objectsOfClass:objc_opt_class() forKey:@"features"];
-  if (v6 && ([v4 error], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
+  v6 = [coderCopy decodeDictionaryWithKeysOfClass:v5 objectsOfClass:objc_opt_class() forKey:@"features"];
+  if (v6 && ([coderCopy error], v7 = objc_claimAutoreleasedReturnValue(), v7, !v7))
   {
     v18 = objc_opt_class();
-    v8 = [v4 decodeDictionaryWithKeysOfClass:v18 objectsOfClass:objc_opt_class() forKey:@"metadata"];
+    v8 = [coderCopy decodeDictionaryWithKeysOfClass:v18 objectsOfClass:objc_opt_class() forKey:@"metadata"];
     if (v8)
     {
-      v19 = [v4 error];
+      error = [coderCopy error];
 
-      if (!v19)
+      if (!error)
       {
         self = [(ATXNotificationRankingFeatureSet *)self initWithFeatures:v6 metadata:v8];
-        v16 = self;
+        selfCopy = self;
         goto LABEL_6;
       }
     }
@@ -124,10 +124,10 @@
     }
   }
 
-  v16 = 0;
+  selfCopy = 0;
 LABEL_6:
 
-  return v16;
+  return selfCopy;
 }
 
 @end

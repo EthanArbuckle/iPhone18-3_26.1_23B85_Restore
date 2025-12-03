@@ -1,29 +1,29 @@
 @interface PHFaceClusteringProperties
 + (id)propertiesToFetch;
-- (PHFaceClusteringProperties)initWithFetchDictionary:(id)a3 face:(id)a4 prefetched:(BOOL)a5;
+- (PHFaceClusteringProperties)initWithFetchDictionary:(id)dictionary face:(id)face prefetched:(BOOL)prefetched;
 @end
 
 @implementation PHFaceClusteringProperties
 
-- (PHFaceClusteringProperties)initWithFetchDictionary:(id)a3 face:(id)a4 prefetched:(BOOL)a5
+- (PHFaceClusteringProperties)initWithFetchDictionary:(id)dictionary face:(id)face prefetched:(BOOL)prefetched
 {
-  v7 = a3;
-  v8 = a4;
+  dictionaryCopy = dictionary;
+  faceCopy = face;
   v19.receiver = self;
   v19.super_class = PHFaceClusteringProperties;
   v9 = [(PHFaceClusteringProperties *)&v19 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeWeak(&v9->super._face, v8);
-    if (v7)
+    objc_storeWeak(&v9->super._face, faceCopy);
+    if (dictionaryCopy)
     {
-      v11 = [v7 objectForKeyedSubscript:@"groupingIdentifier"];
+      v11 = [dictionaryCopy objectForKeyedSubscript:@"groupingIdentifier"];
       groupingIdentifier = v10->_groupingIdentifier;
       v10->_groupingIdentifier = v11;
 
-      v13 = [v7 objectForKeyedSubscript:@"faceprint.data"];
-      v14 = [v7 objectForKeyedSubscript:@"faceprint.faceprintVersion"];
+      v13 = [dictionaryCopy objectForKeyedSubscript:@"faceprint.data"];
+      v14 = [dictionaryCopy objectForKeyedSubscript:@"faceprint.faceprintVersion"];
       v15 = v14;
       if (v13 && v14)
       {

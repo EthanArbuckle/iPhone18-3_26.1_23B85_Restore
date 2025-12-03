@@ -3,44 +3,44 @@
 + (BOOL)isAnalyticsStoreAllowed;
 + (BOOL)isAnyWiFiAppInstalled;
 + (BOOL)isKeyBagUnlocked;
-+ (BOOL)isMacAddress:(id)a3;
++ (BOOL)isMacAddress:(id)address;
 + (BOOL)isPreinstalledWiFiAppVisible;
 + (BOOL)isWiFiAppInstalled;
 + (BOOL)isWiFiFragmentSamplingEnabled;
-+ (BOOL)isWildcardMacAddress:(id)a3;
-+ (BOOL)setFutureApfsPurgeableDeadline:(unint64_t)a3 forURL:(id)a4;
++ (BOOL)isWildcardMacAddress:(id)address;
++ (BOOL)setFutureApfsPurgeableDeadline:(unint64_t)deadline forURL:(id)l;
 + (BOOL)shouldProcessAnalyticsImmediately;
-+ (BOOL)storeToken:(id)a3 withIdentifier:(id)a4;
++ (BOOL)storeToken:(id)token withIdentifier:(id)identifier;
 + (NSURL)wifianalyticsTmpDirectory;
-+ (id)_generateInvocationForMethod:(void *)a3;
-+ (id)_getBaseTokenStorageKeychainQueryWithIdentifer:(id)a3;
++ (id)_generateInvocationForMethod:(void *)method;
++ (id)_getBaseTokenStorageKeychainQueryWithIdentifer:(id)identifer;
 + (id)customMigrationOnProcess;
 + (id)customProcessInChargeOfDataProcessingForPolicies;
 + (id)customXPCStoreOnProcess;
 + (id)deviceName;
-+ (id)filterArray:(id)a3 usingPredicate:(id)a4;
-+ (id)filterSet:(id)a3 usingPredicate:(id)a4;
-+ (id)getCopyOfMessage:(id)a3 withNumericalValuesSubstractedByValuesInMessage:(id)a4;
-+ (id)getMessageInstanceForKey:(id)a3 andGroupType:(int64_t)a4;
-+ (id)getNumberPreference:(id)a3 domain:(id)a4;
-+ (id)getTokenForIdentifier:(id)a3;
-+ (id)getValueForEntitlementForCurrentProcess:(id)a3;
-+ (id)groupTypeToString:(int64_t)a3;
-+ (id)rotateUUIDsForMessage:(id)a3;
-+ (id)trimTokenForLogging:(id)a3;
-+ (int64_t)countTotalKeysIn:(id)a3;
-+ (int64_t)countTotalKeysInNSObject:(id)a3;
++ (id)filterArray:(id)array usingPredicate:(id)predicate;
++ (id)filterSet:(id)set usingPredicate:(id)predicate;
++ (id)getCopyOfMessage:(id)message withNumericalValuesSubstractedByValuesInMessage:(id)inMessage;
++ (id)getMessageInstanceForKey:(id)key andGroupType:(int64_t)type;
++ (id)getNumberPreference:(id)preference domain:(id)domain;
++ (id)getTokenForIdentifier:(id)identifier;
++ (id)getValueForEntitlementForCurrentProcess:(id)process;
++ (id)groupTypeToString:(int64_t)string;
++ (id)rotateUUIDsForMessage:(id)message;
++ (id)trimTokenForLogging:(id)logging;
++ (int64_t)countTotalKeysIn:(id)in;
++ (int64_t)countTotalKeysInNSObject:(id)object;
 + (unint64_t)getAWDTimestamp;
-+ (void)addDeltaNSNumberForTelemetryKey:(id)a3 dictKey:(id)a4 dictModule:(id)a5 telDict:(id)a6 recentDict:(id)a7 oldDict:(id)a8;
-+ (void)addFieldsForAuthFlagsLikeKey:(id)a3 inDict:(id)a4;
-+ (void)addFieldsForChannelFlagLikeKey:(id)a3 inDict:(id)a4;
-+ (void)getLazyNSNumberPreference:(id)a3 domain:(id)a4 exists:(id)a5;
-+ (void)getLazyNSStringPreference:(id)a3 domain:(id)a4 exists:(id)a5;
-+ (void)incrementValueForKey:(id)a3 inMutableDict:(id)a4 onQueue:(id)a5;
++ (void)addDeltaNSNumberForTelemetryKey:(id)key dictKey:(id)dictKey dictModule:(id)module telDict:(id)dict recentDict:(id)recentDict oldDict:(id)oldDict;
++ (void)addFieldsForAuthFlagsLikeKey:(id)key inDict:(id)dict;
++ (void)addFieldsForChannelFlagLikeKey:(id)key inDict:(id)dict;
++ (void)getLazyNSNumberPreference:(id)preference domain:(id)domain exists:(id)exists;
++ (void)getLazyNSStringPreference:(id)preference domain:(id)domain exists:(id)exists;
++ (void)incrementValueForKey:(id)key inMutableDict:(id)dict onQueue:(id)queue;
 + (void)initialize;
-+ (void)logNestedDictionary:(id)a3 indent:(int)a4 prefix:(id)a5;
-+ (void)setPreference:(id)a3 domain:(id)a4 value:(id)a5;
-+ (void)sumNSNumberForKey:(id)a3 dstDict:(id)a4 otherDict:(id)a5;
++ (void)logNestedDictionary:(id)dictionary indent:(int)indent prefix:(id)prefix;
++ (void)setPreference:(id)preference domain:(id)domain value:(id)value;
++ (void)sumNSNumberForKey:(id)key dstDict:(id)dict otherDict:(id)otherDict;
 @end
 
 @implementation WAUtil
@@ -262,17 +262,17 @@ void __35__WAUtil_wifianalyticsTmpDirectory__block_invoke()
 
 + (id)deviceName
 {
-  v2 = [MEMORY[0x1E696AC78] currentHost];
-  v3 = [v2 name];
+  currentHost = [MEMORY[0x1E696AC78] currentHost];
+  name = [currentHost name];
 
-  return v3;
+  return name;
 }
 
-+ (BOOL)storeToken:(id)a3 withIdentifier:(id)a4
++ (BOOL)storeToken:(id)token withIdentifier:(id)identifier
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [WAUtil _getBaseTokenStorageKeychainQueryWithIdentifer:a4];
+  tokenCopy = token;
+  v6 = [WAUtil _getBaseTokenStorageKeychainQueryWithIdentifer:identifier];
   v7 = v6;
   v8 = v6 == 0;
   if (!v6)
@@ -298,7 +298,7 @@ LABEL_10:
   }
 
   SecItemDelete(v6);
-  v9 = [v5 dataUsingEncoding:4];
+  v9 = [tokenCopy dataUsingEncoding:4];
   [(__CFDictionary *)v7 setObject:v9 forKeyedSubscript:*MEMORY[0x1E697B3C0]];
 
   [(__CFDictionary *)v7 setObject:*MEMORY[0x1E697ABF0] forKeyedSubscript:*MEMORY[0x1E697ABD8]];
@@ -332,11 +332,11 @@ LABEL_4:
   return v8;
 }
 
-+ (id)getTokenForIdentifier:(id)a3
++ (id)getTokenForIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x1E69E9840];
   result = 0;
-  v3 = [WAUtil _getBaseTokenStorageKeychainQueryWithIdentifer:a3];
+  v3 = [WAUtil _getBaseTokenStorageKeychainQueryWithIdentifer:identifier];
   [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:*MEMORY[0x1E697B318]];
   if (v3)
   {
@@ -413,10 +413,10 @@ LABEL_5:
   return v7;
 }
 
-+ (id)_getBaseTokenStorageKeychainQueryWithIdentifer:(id)a3
++ (id)_getBaseTokenStorageKeychainQueryWithIdentifer:(id)identifer
 {
   v12[4] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.wifi.analytics.tokenStore.%@", a3, *MEMORY[0x1E697AC30]];
+  v3 = [MEMORY[0x1E696AEC0] stringWithFormat:@"com.apple.wifi.analytics.tokenStore.%@", identifer, *MEMORY[0x1E697AC30]];
   v4 = *MEMORY[0x1E697AE88];
   v12[0] = v3;
   v12[1] = @"WiFiAnalytics";
@@ -435,13 +435,13 @@ LABEL_5:
   return v8;
 }
 
-+ (id)getMessageInstanceForKey:(id)a3 andGroupType:(int64_t)a4
++ (id)getMessageInstanceForKey:(id)key andGroupType:(int64_t)type
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [a1 resourcePath];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"/%ld/", a4];
-  v9 = [v7 stringByAppendingPathComponent:v8];
+  keyCopy = key;
+  resourcePath = [self resourcePath];
+  type = [MEMORY[0x1E696AEC0] stringWithFormat:@"/%ld/", type];
+  v9 = [resourcePath stringByAppendingPathComponent:type];
 
   if (!v9)
   {
@@ -469,8 +469,8 @@ LABEL_16:
   }
 
   v10 = objc_alloc(MEMORY[0x1E695DEF0]);
-  v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@.wam", v9, v6];
-  v12 = [v10 initWithContentsOfFile:v11 options:8 error:0];
+  keyCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@/%@.wam", v9, keyCopy];
+  v12 = [v10 initWithContentsOfFile:keyCopy options:8 error:0];
 
   if (!v12)
   {
@@ -482,7 +482,7 @@ LABEL_16:
       v44 = 1024;
       v45 = 155;
       v46 = 2112;
-      v47 = v6;
+      v47 = keyCopy;
       v32 = "%{public}s::%d:Couldn't find obscured data for key: %@";
       v33 = v31;
       v34 = 28;
@@ -499,7 +499,7 @@ LABEL_16:
   context = v13;
   v14 = MEMORY[0x1E695DFD8];
   v15 = objc_opt_class();
-  v16 = v6;
+  v16 = keyCopy;
   v17 = objc_opt_class();
   v18 = objc_opt_class();
   v19 = objc_opt_class();
@@ -509,7 +509,7 @@ LABEL_16:
   v36 = objc_opt_class();
   v23 = v37;
   v35 = v17;
-  v6 = v16;
+  keyCopy = v16;
   v24 = [v14 setWithObjects:{v15, v35, v18, v19, v20, v21, v22, v36, objc_opt_class(), 0}];
   v41 = 0;
   v25 = [v38 unarchivedObjectOfClasses:v24 fromData:v37 error:&v41];
@@ -525,7 +525,7 @@ LABEL_16:
       v44 = 1024;
       v45 = 161;
       v46 = 2112;
-      v47 = v6;
+      v47 = keyCopy;
       v48 = 2112;
       v49 = v26;
       _os_log_impl(&dword_1C8460000, v27, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to unarchive a WAMessageAWD instance with key of %@. Error: %@", buf, 0x26u);
@@ -557,41 +557,41 @@ LABEL_9:
   return v25;
 }
 
-+ (id)rotateUUIDsForMessage:(id)a3
++ (id)rotateUUIDsForMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 mutableFields];
-  v6 = [v5 allValues];
-  v7 = [v6 count];
+  messageCopy = message;
+  mutableFields = [messageCopy mutableFields];
+  allValues = [mutableFields allValues];
+  v7 = [allValues count];
 
   if (v7)
   {
     v8 = 0;
     do
     {
-      v9 = [v4 mutableFields];
-      v10 = [v9 allValues];
-      v11 = [v10 objectAtIndexedSubscript:v8];
+      mutableFields2 = [messageCopy mutableFields];
+      allValues2 = [mutableFields2 allValues];
+      v11 = [allValues2 objectAtIndexedSubscript:v8];
 
       if ([v11 type] == 10)
       {
         if ([v11 isRepeatable])
         {
-          v12 = [v11 repeatableValues];
-          v13 = [v12 count];
+          repeatableValues = [v11 repeatableValues];
+          v13 = [repeatableValues count];
 
           if (v13)
           {
             v14 = 0;
             do
             {
-              v15 = [v11 repeatableValues];
-              v16 = [v15 objectAtIndexedSubscript:v14];
+              repeatableValues2 = [v11 repeatableValues];
+              v16 = [repeatableValues2 objectAtIndexedSubscript:v14];
 
-              v17 = [a1 rotateUUIDsForMessage:v16];
+              v17 = [self rotateUUIDsForMessage:v16];
               ++v14;
-              v18 = [v11 repeatableValues];
-              v19 = [v18 count];
+              repeatableValues3 = [v11 repeatableValues];
+              v19 = [repeatableValues3 count];
             }
 
             while (v14 < v19);
@@ -600,33 +600,33 @@ LABEL_9:
 
         else
         {
-          v20 = [v11 subMessageValue];
-          v21 = [a1 rotateUUIDsForMessage:v20];
+          subMessageValue = [v11 subMessageValue];
+          v21 = [self rotateUUIDsForMessage:subMessageValue];
         }
       }
 
       ++v8;
-      v22 = [v4 mutableFields];
-      v23 = [v22 allValues];
-      v24 = [v23 count];
+      mutableFields3 = [messageCopy mutableFields];
+      allValues3 = [mutableFields3 allValues];
+      v24 = [allValues3 count];
     }
 
     while (v8 < v24);
   }
 
-  v25 = [MEMORY[0x1E696AFB0] UUID];
-  v26 = [v25 UUIDString];
-  [v4 setUuid:v26];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [messageCopy setUuid:uUIDString];
 
-  return v4;
+  return messageCopy;
 }
 
-+ (int64_t)countTotalKeysIn:(id)a3
++ (int64_t)countTotalKeysIn:(id)in
 {
-  v4 = a3;
-  v5 = [v4 mutableFields];
-  v6 = [v5 allValues];
-  v7 = [v6 count];
+  inCopy = in;
+  mutableFields = [inCopy mutableFields];
+  allValues = [mutableFields allValues];
+  v7 = [allValues count];
 
   v8 = 0;
   if (v7)
@@ -634,16 +634,16 @@ LABEL_9:
     v9 = 0;
     do
     {
-      v10 = [v4 mutableFields];
-      v11 = [v10 allValues];
-      v12 = [v11 objectAtIndexedSubscript:v9];
+      mutableFields2 = [inCopy mutableFields];
+      allValues2 = [mutableFields2 allValues];
+      v12 = [allValues2 objectAtIndexedSubscript:v9];
 
       if ([v12 type] == 10)
       {
         if ([v12 isRepeatable])
         {
-          v13 = [v12 repeatableValues];
-          v14 = [v13 count];
+          repeatableValues = [v12 repeatableValues];
+          v14 = [repeatableValues count];
 
           if (v14)
           {
@@ -651,14 +651,14 @@ LABEL_9:
             do
             {
               v16 = objc_autoreleasePoolPush();
-              v17 = [v12 repeatableValues];
-              v18 = [v17 objectAtIndexedSubscript:v15];
+              repeatableValues2 = [v12 repeatableValues];
+              v18 = [repeatableValues2 objectAtIndexedSubscript:v15];
 
-              v8 += [a1 countTotalKeysIn:v18];
+              v8 += [self countTotalKeysIn:v18];
               objc_autoreleasePoolPop(v16);
               ++v15;
-              v19 = [v12 repeatableValues];
-              v20 = [v19 count];
+              repeatableValues3 = [v12 repeatableValues];
+              v20 = [repeatableValues3 count];
             }
 
             while (v15 < v20);
@@ -668,8 +668,8 @@ LABEL_9:
         else
         {
           v21 = objc_autoreleasePoolPush();
-          v22 = [v12 subMessageValue];
-          v8 += [a1 countTotalKeysIn:v22];
+          subMessageValue = [v12 subMessageValue];
+          v8 += [self countTotalKeysIn:subMessageValue];
 
           objc_autoreleasePoolPop(v21);
         }
@@ -681,9 +681,9 @@ LABEL_9:
       }
 
       ++v9;
-      v23 = [v4 mutableFields];
-      v24 = [v23 allValues];
-      v25 = [v24 count];
+      mutableFields3 = [inCopy mutableFields];
+      allValues3 = [mutableFields3 allValues];
+      v25 = [allValues3 count];
     }
 
     while (v9 < v25);
@@ -692,17 +692,17 @@ LABEL_9:
   return v8;
 }
 
-+ (int64_t)countTotalKeysInNSObject:(id)a3
++ (int64_t)countTotalKeysInNSObject:(id)object
 {
   v33 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
+      v4 = objectCopy;
       v5 = [v4 count];
       v27 = 0u;
       v28 = 0u;
@@ -749,7 +749,7 @@ LABEL_26:
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v6 = v3;
+      v6 = objectCopy;
       v14 = [v6 countByEnumeratingWithState:&v23 objects:v31 count:16];
       if (v14)
       {
@@ -788,7 +788,7 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v3;
+      v6 = objectCopy;
       v20 = objc_autoreleasePoolPush();
       v5 = [WAUtil countTotalKeysIn:v6];
       objc_autoreleasePoolPop(v20);
@@ -805,10 +805,10 @@ LABEL_28:
   return v5;
 }
 
-+ (id)groupTypeToString:(int64_t)a3
++ (id)groupTypeToString:(int64_t)string
 {
   v13 = *MEMORY[0x1E69E9840];
-  if ((a3 - 3) >= 3)
+  if ((string - 3) >= 3)
   {
     v5 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -818,7 +818,7 @@ LABEL_28:
       v9 = 1024;
       v10 = 274;
       v11 = 2048;
-      v12 = a3;
+      stringCopy = string;
       _os_log_impl(&dword_1C8460000, v5, OS_LOG_TYPE_ERROR, "%{public}s::%d:Unhandled group type: %lu", &v7, 0x1Cu);
     }
 
@@ -827,36 +827,36 @@ LABEL_28:
 
   else
   {
-    result = off_1E830EB60[a3 - 3];
+    result = off_1E830EB60[string - 3];
   }
 
   v6 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-+ (id)getCopyOfMessage:(id)a3 withNumericalValuesSubstractedByValuesInMessage:(id)a4
++ (id)getCopyOfMessage:(id)message withNumericalValuesSubstractedByValuesInMessage:(id)inMessage
 {
   v162 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 key];
-  v8 = [v6 key];
+  messageCopy = message;
+  inMessageCopy = inMessage;
+  v7 = [messageCopy key];
+  v8 = [inMessageCopy key];
   v9 = [v7 isEqualToString:v8];
 
-  v142 = v5;
+  v142 = messageCopy;
   if (v9)
   {
-    v10 = [v5 copy];
-    v11 = v5;
+    v10 = [messageCopy copy];
+    v11 = messageCopy;
     v12 = v10;
     v149 = 0u;
     v150 = 0u;
     v151 = 0u;
     v152 = 0u;
-    v13 = [v11 mutableFields];
-    v14 = [v13 allValues];
+    mutableFields = [v11 mutableFields];
+    allValues = [mutableFields allValues];
 
-    v15 = [v14 countByEnumeratingWithState:&v149 objects:v153 count:16];
+    v15 = [allValues countByEnumeratingWithState:&v149 objects:v153 count:16];
     if (!v15)
     {
       goto LABEL_84;
@@ -865,9 +865,9 @@ LABEL_28:
     v16 = v15;
     v17 = *v150;
     v18 = 0x1E830D000uLL;
-    v143 = v6;
+    v143 = inMessageCopy;
     v145 = *v150;
-    v146 = v14;
+    v146 = allValues;
     while (1)
     {
       v19 = 0;
@@ -876,25 +876,25 @@ LABEL_28:
       {
         if (*v150 != v17)
         {
-          objc_enumerationMutation(v14);
+          objc_enumerationMutation(allValues);
         }
 
         v20 = *(*(&v149 + 1) + 8 * v19);
         if (([v20 isNumerical] & 1) != 0 || objc_msgSend(v20, "type") == 10)
         {
           v21 = [v20 key];
-          v22 = [v6 fieldForKey:v21];
+          v22 = [inMessageCopy fieldForKey:v21];
 
-          v23 = [v20 type];
-          if (v23 <= 3)
+          type = [v20 type];
+          if (type <= 3)
           {
-            switch(v23)
+            switch(type)
             {
               case 1:
                 if ([v20 isRepeatable])
                 {
-                  v62 = [v20 repeatableValues];
-                  v63 = [v62 count];
+                  repeatableValues = [v20 repeatableValues];
+                  v63 = [repeatableValues count];
 
                   if (v63)
                   {
@@ -902,18 +902,18 @@ LABEL_28:
                     v65 = 0;
                     do
                     {
-                      v66 = [v20 repeatableValues];
-                      v67 = [v66 objectAtIndex:v65];
+                      repeatableValues2 = [v20 repeatableValues];
+                      v67 = [repeatableValues2 objectAtIndex:v65];
 
-                      v68 = [v22 repeatableValues];
-                      v69 = [v68 objectAtIndex:v65];
+                      repeatableValues3 = [v22 repeatableValues];
+                      v69 = [repeatableValues3 objectAtIndex:v65];
 
                       v70 = [v20 key];
                       v71 = [v12 fieldForKey:v70];
-                      v72 = [v69 BOOLValue];
+                      bOOLValue = [v69 BOOLValue];
                       [v67 doubleValue];
                       v74 = v73;
-                      if (v72)
+                      if (bOOLValue)
                       {
                         [v69 doubleValue];
                         v74 = v74 - v75;
@@ -922,8 +922,8 @@ LABEL_28:
                       [v71 addRepeatableDoubleValue:v74];
 
                       ++v65;
-                      v76 = [v20 repeatableValues];
-                      v77 = [v76 count];
+                      repeatableValues4 = [v20 repeatableValues];
+                      v77 = [repeatableValues4 count];
                     }
 
                     while (v65 < v77);
@@ -944,8 +944,8 @@ LABEL_28:
               case 2:
                 if ([v20 isRepeatable])
                 {
-                  v104 = [v20 repeatableValues];
-                  v105 = [v104 count];
+                  repeatableValues5 = [v20 repeatableValues];
+                  v105 = [repeatableValues5 count];
 
                   if (v105)
                   {
@@ -953,18 +953,18 @@ LABEL_28:
                     v106 = 0;
                     do
                     {
-                      v107 = [v20 repeatableValues];
-                      v108 = [v107 objectAtIndex:v106];
+                      repeatableValues6 = [v20 repeatableValues];
+                      v108 = [repeatableValues6 objectAtIndex:v106];
 
-                      v109 = [v22 repeatableValues];
-                      v110 = [v109 objectAtIndex:v106];
+                      repeatableValues7 = [v22 repeatableValues];
+                      v110 = [repeatableValues7 objectAtIndex:v106];
 
                       v111 = [v20 key];
                       v112 = [v12 fieldForKey:v111];
-                      v113 = [v110 BOOLValue];
+                      bOOLValue2 = [v110 BOOLValue];
                       [v108 floatValue];
                       v115 = *&v114;
-                      if (v113)
+                      if (bOOLValue2)
                       {
                         [v110 floatValue];
                         v115 = v115 - *&v114;
@@ -974,17 +974,17 @@ LABEL_28:
                       [v112 addRepeatableFloatValue:v114];
 
                       ++v106;
-                      v116 = [v20 repeatableValues];
-                      v117 = [v116 count];
+                      repeatableValues8 = [v20 repeatableValues];
+                      v117 = [repeatableValues8 count];
                     }
 
                     while (v106 < v117);
 LABEL_63:
                     v17 = v145;
-                    v14 = v146;
+                    allValues = v146;
                     v18 = 0x1E830D000;
                     v19 = v64;
-                    v6 = v143;
+                    inMessageCopy = v143;
                     v16 = v144;
                     goto LABEL_80;
                   }
@@ -1004,8 +1004,8 @@ LABEL_63:
               case 3:
                 if ([v20 isRepeatable])
                 {
-                  v37 = [v20 repeatableValues];
-                  v38 = [v37 count];
+                  repeatableValues9 = [v20 repeatableValues];
+                  v38 = [repeatableValues9 count];
 
                   if (v38)
                   {
@@ -1013,26 +1013,26 @@ LABEL_63:
                     v39 = 0;
                     do
                     {
-                      v40 = [v20 repeatableValues];
-                      v41 = [v40 objectAtIndex:v39];
+                      repeatableValues10 = [v20 repeatableValues];
+                      v41 = [repeatableValues10 objectAtIndex:v39];
 
-                      v42 = [v22 repeatableValues];
-                      v43 = [v42 objectAtIndex:v39];
+                      repeatableValues11 = [v22 repeatableValues];
+                      v43 = [repeatableValues11 objectAtIndex:v39];
 
                       v44 = [v20 key];
                       v45 = [v12 fieldForKey:v44];
-                      v46 = [v43 BOOLValue];
-                      v47 = [v41 intValue];
-                      if (v46)
+                      bOOLValue3 = [v43 BOOLValue];
+                      intValue = [v41 intValue];
+                      if (bOOLValue3)
                       {
-                        v47 = v47 - [v43 intValue];
+                        intValue = intValue - [v43 intValue];
                       }
 
-                      [v45 addRepeatableInt32Value:v47];
+                      [v45 addRepeatableInt32Value:intValue];
 
                       ++v39;
-                      v48 = [v20 repeatableValues];
-                      v49 = [v48 count];
+                      repeatableValues12 = [v20 repeatableValues];
+                      v49 = [repeatableValues12 count];
                     }
 
                     while (v39 < v49);
@@ -1056,14 +1056,14 @@ LABEL_64:
 
           else
           {
-            if (v23 <= 5)
+            if (type <= 5)
             {
-              if (v23 == 4)
+              if (type == 4)
               {
                 if ([v20 isRepeatable])
                 {
-                  v78 = [v20 repeatableValues];
-                  v79 = [v78 count];
+                  repeatableValues13 = [v20 repeatableValues];
+                  v79 = [repeatableValues13 count];
 
                   if (v79)
                   {
@@ -1071,26 +1071,26 @@ LABEL_64:
                     v80 = 0;
                     do
                     {
-                      v81 = [v20 repeatableValues];
-                      v82 = [v81 objectAtIndex:v80];
+                      repeatableValues14 = [v20 repeatableValues];
+                      v82 = [repeatableValues14 objectAtIndex:v80];
 
-                      v83 = [v22 repeatableValues];
-                      v84 = [v83 objectAtIndex:v80];
+                      repeatableValues15 = [v22 repeatableValues];
+                      v84 = [repeatableValues15 objectAtIndex:v80];
 
                       v85 = [v20 key];
                       v86 = [v12 fieldForKey:v85];
-                      v87 = [v84 BOOLValue];
-                      v88 = [v82 longLongValue];
-                      if (v87)
+                      bOOLValue4 = [v84 BOOLValue];
+                      longLongValue = [v82 longLongValue];
+                      if (bOOLValue4)
                       {
-                        v88 -= [v84 longLongValue];
+                        longLongValue -= [v84 longLongValue];
                       }
 
-                      [v86 addRepeatableInt64Value:v88];
+                      [v86 addRepeatableInt64Value:longLongValue];
 
                       ++v80;
-                      v89 = [v20 repeatableValues];
-                      v90 = [v89 count];
+                      repeatableValues16 = [v20 repeatableValues];
+                      v90 = [repeatableValues16 count];
                     }
 
                     while (v80 < v90);
@@ -1110,8 +1110,8 @@ LABEL_64:
               {
                 if ([v20 isRepeatable])
                 {
-                  v24 = [v20 repeatableValues];
-                  v25 = [v24 count];
+                  repeatableValues17 = [v20 repeatableValues];
+                  v25 = [repeatableValues17 count];
 
                   if (v25)
                   {
@@ -1119,34 +1119,34 @@ LABEL_64:
                     v26 = 0;
                     do
                     {
-                      v27 = [v20 repeatableValues];
-                      v28 = [v27 objectAtIndex:v26];
+                      repeatableValues18 = [v20 repeatableValues];
+                      v28 = [repeatableValues18 objectAtIndex:v26];
 
-                      v29 = [v22 repeatableValues];
-                      v30 = [v29 objectAtIndex:v26];
+                      repeatableValues19 = [v22 repeatableValues];
+                      v30 = [repeatableValues19 objectAtIndex:v26];
 
                       v31 = [v20 key];
                       v32 = [v12 fieldForKey:v31];
-                      v33 = [v30 BOOLValue];
-                      v34 = [v28 unsignedIntValue];
-                      if (v33)
+                      bOOLValue5 = [v30 BOOLValue];
+                      unsignedIntValue = [v28 unsignedIntValue];
+                      if (bOOLValue5)
                       {
-                        v34 = v34 - [v30 unsignedIntValue];
+                        unsignedIntValue = unsignedIntValue - [v30 unsignedIntValue];
                       }
 
-                      [v32 addRepeatableUInt32Value:v34];
+                      [v32 addRepeatableUInt32Value:unsignedIntValue];
 
                       ++v26;
-                      v35 = [v20 repeatableValues];
-                      v36 = [v35 count];
+                      repeatableValues20 = [v20 repeatableValues];
+                      v36 = [repeatableValues20 count];
                     }
 
                     while (v26 < v36);
 LABEL_56:
-                    v6 = v143;
+                    inMessageCopy = v143;
                     v16 = v144;
                     v17 = v145;
-                    v14 = v146;
+                    allValues = v146;
                     v18 = 0x1E830D000;
                     v19 = v147;
                     goto LABEL_80;
@@ -1158,11 +1158,11 @@ LABEL_56:
                 v148 = v19;
                 v118 = [v20 key];
                 v119 = [v12 fieldForKey:v118];
-                v125 = [v22 uint32Value];
-                if (v125 <= [v20 uint32Value])
+                uint32Value = [v22 uint32Value];
+                if (uint32Value <= [v20 uint32Value])
                 {
-                  v136 = [v20 uint32Value];
-                  v126 = v136 - [v22 uint32Value];
+                  uint32Value2 = [v20 uint32Value];
+                  v126 = uint32Value2 - [v22 uint32Value];
                 }
 
                 else
@@ -1176,9 +1176,9 @@ LABEL_56:
               goto LABEL_78;
             }
 
-            if (v23 != 6)
+            if (type != 6)
             {
-              if (v23 != 10)
+              if (type != 10)
               {
                 goto LABEL_80;
               }
@@ -1189,9 +1189,9 @@ LABEL_56:
                 v118 = [v20 key];
                 v119 = [v12 fieldForKey:v118];
                 v127 = *(v18 + 664);
-                v128 = [v20 subMessageValue];
-                v129 = [v22 subMessageValue];
-                v130 = [v127 getCopyOfMessage:v128 withNumericalValuesSubstractedByValuesInMessage:v129];
+                subMessageValue = [v20 subMessageValue];
+                subMessageValue2 = [v22 subMessageValue];
+                v130 = [v127 getCopyOfMessage:subMessageValue withNumericalValuesSubstractedByValuesInMessage:subMessageValue2];
                 [v119 setSubMessageValue:v130];
 
                 v17 = v145;
@@ -1199,8 +1199,8 @@ LABEL_56:
                 goto LABEL_78;
               }
 
-              v50 = [v20 repeatableValues];
-              v51 = [v50 count];
+              repeatableValues21 = [v20 repeatableValues];
+              v51 = [repeatableValues21 count];
 
               if (!v51)
               {
@@ -1211,11 +1211,11 @@ LABEL_56:
               v52 = 0;
               do
               {
-                v53 = [v20 repeatableValues];
-                v54 = [v53 objectAtIndex:v52];
+                repeatableValues22 = [v20 repeatableValues];
+                v54 = [repeatableValues22 objectAtIndex:v52];
 
-                v55 = [v22 repeatableValues];
-                v56 = [v55 objectAtIndex:v52];
+                repeatableValues23 = [v22 repeatableValues];
+                v56 = [repeatableValues23 objectAtIndex:v52];
 
                 v57 = [v20 key];
                 v58 = [v12 fieldForKey:v57];
@@ -1223,25 +1223,25 @@ LABEL_56:
                 [v58 addRepeatableSubMessageValue:v59];
 
                 ++v52;
-                v60 = [v20 repeatableValues];
-                v61 = [v60 count];
+                repeatableValues24 = [v20 repeatableValues];
+                v61 = [repeatableValues24 count];
               }
 
               while (v52 < v61);
               v17 = v145;
               v18 = 0x1E830D000uLL;
-              v6 = v143;
+              inMessageCopy = v143;
               v16 = v144;
 LABEL_79:
-              v14 = v146;
+              allValues = v146;
               v19 = v148;
               goto LABEL_80;
             }
 
             if ([v20 isRepeatable])
             {
-              v91 = [v20 repeatableValues];
-              v92 = [v91 count];
+              repeatableValues25 = [v20 repeatableValues];
+              v92 = [repeatableValues25 count];
 
               if (v92)
               {
@@ -1249,26 +1249,26 @@ LABEL_79:
                 v93 = 0;
                 do
                 {
-                  v94 = [v20 repeatableValues];
-                  v95 = [v94 objectAtIndex:v93];
+                  repeatableValues26 = [v20 repeatableValues];
+                  v95 = [repeatableValues26 objectAtIndex:v93];
 
-                  v96 = [v22 repeatableValues];
-                  v97 = [v96 objectAtIndex:v93];
+                  repeatableValues27 = [v22 repeatableValues];
+                  v97 = [repeatableValues27 objectAtIndex:v93];
 
                   v98 = [v20 key];
                   v99 = [v12 fieldForKey:v98];
-                  v100 = [v97 BOOLValue];
-                  v101 = [v95 unsignedLongLongValue];
-                  if (v100)
+                  bOOLValue6 = [v97 BOOLValue];
+                  unsignedLongLongValue = [v95 unsignedLongLongValue];
+                  if (bOOLValue6)
                   {
-                    v101 -= [v97 unsignedLongLongValue];
+                    unsignedLongLongValue -= [v97 unsignedLongLongValue];
                   }
 
-                  [v99 addRepeatableUInt64Value:v101];
+                  [v99 addRepeatableUInt64Value:unsignedLongLongValue];
 
                   ++v93;
-                  v102 = [v20 repeatableValues];
-                  v103 = [v102 count];
+                  repeatableValues28 = [v20 repeatableValues];
+                  v103 = [repeatableValues28 count];
                 }
 
                 while (v93 < v103);
@@ -1281,11 +1281,11 @@ LABEL_79:
             v148 = v19;
             v118 = [v20 key];
             v119 = [v12 fieldForKey:v118];
-            v123 = [v22 uint64Value];
-            if (v123 <= [v20 uint64Value])
+            uint64Value = [v22 uint64Value];
+            if (uint64Value <= [v20 uint64Value])
             {
-              v135 = [v20 uint64Value];
-              v124 = v135 - [v22 uint64Value];
+              uint64Value2 = [v20 uint64Value];
+              v124 = uint64Value2 - [v22 uint64Value];
             }
 
             else
@@ -1308,7 +1308,7 @@ LABEL_80:
       }
 
       while (v19 != v16);
-      v137 = [v14 countByEnumeratingWithState:&v149 objects:v153 count:16];
+      v137 = [allValues countByEnumeratingWithState:&v149 objects:v153 count:16];
       v16 = v137;
       if (!v137)
       {
@@ -1317,11 +1317,11 @@ LABEL_80:
     }
   }
 
-  v14 = WALogCategoryDefaultHandle();
-  if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
+  allValues = WALogCategoryDefaultHandle();
+  if (os_log_type_enabled(allValues, OS_LOG_TYPE_ERROR))
   {
-    v140 = [v5 key];
-    v141 = [v6 key];
+    v140 = [messageCopy key];
+    v141 = [inMessageCopy key];
     *buf = 136446978;
     v155 = "+[WAUtil getCopyOfMessage:withNumericalValuesSubstractedByValuesInMessage:]";
     v156 = 1024;
@@ -1330,7 +1330,7 @@ LABEL_80:
     v159 = v140;
     v160 = 2112;
     v161 = v141;
-    _os_log_impl(&dword_1C8460000, v14, OS_LOG_TYPE_ERROR, "%{public}s::%d:[WAUtil getCopyOfMessage:withNumericalValuesSubstractedByValuesInMessage: given two different messages(message 1 key: %@ vs message 2 key: %@), won't attempt to delta. Returning nil!", buf, 0x26u);
+    _os_log_impl(&dword_1C8460000, allValues, OS_LOG_TYPE_ERROR, "%{public}s::%d:[WAUtil getCopyOfMessage:withNumericalValuesSubstractedByValuesInMessage: given two different messages(message 1 key: %@ vs message 2 key: %@), won't attempt to delta. Returning nil!", buf, 0x26u);
   }
 
   v12 = 0;
@@ -1341,11 +1341,11 @@ LABEL_84:
   return v12;
 }
 
-+ (id)trimTokenForLogging:(id)a3
++ (id)trimTokenForLogging:(id)logging
 {
-  v3 = a3;
-  v4 = [v3 length];
-  v5 = [v3 length];
+  loggingCopy = logging;
+  v4 = [loggingCopy length];
+  v5 = [loggingCopy length];
   if (v4 > 9)
   {
     v6 = v5 - 5;
@@ -1356,7 +1356,7 @@ LABEL_84:
   {
     v6 = 1;
 LABEL_5:
-    v7 = [v3 substringFromIndex:v6];
+    v7 = [loggingCopy substringFromIndex:v6];
     goto LABEL_6;
   }
 
@@ -1366,14 +1366,14 @@ LABEL_6:
   return v7;
 }
 
-+ (id)getValueForEntitlementForCurrentProcess:(id)a3
++ (id)getValueForEntitlementForCurrentProcess:(id)process
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  processCopy = process;
   if (getpid() < 0)
   {
-    v9 = WALogCategoryDefaultHandle();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    array = WALogCategoryDefaultHandle();
+    if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446466;
       v20 = "+[WAUtil getValueForEntitlementForCurrentProcess:]";
@@ -1381,7 +1381,7 @@ LABEL_6:
       v22 = 404;
       v17 = "%{public}s::%d:Failed to get PID";
 LABEL_24:
-      _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, v17, buf, 0x12u);
+      _os_log_impl(&dword_1C8460000, array, OS_LOG_TYPE_ERROR, v17, buf, 0x12u);
     }
 
 LABEL_25:
@@ -1393,12 +1393,12 @@ LABEL_26:
 
   getpid();
   xpc_generate_audit_token();
-  [v3 UTF8String];
+  [processCopy UTF8String];
   v4 = xpc_copy_entitlement_for_token();
   if (!v4)
   {
-    v9 = WALogCategoryDefaultHandle();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    array = WALogCategoryDefaultHandle();
+    if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446466;
       v20 = "+[WAUtil getValueForEntitlementForCurrentProcess:]";
@@ -1415,14 +1415,14 @@ LABEL_26:
   v6 = MEMORY[0x1CCA78500]();
   if (!v6)
   {
-    v9 = WALogCategoryDefaultHandle();
-    if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
+    array = WALogCategoryDefaultHandle();
+    if (os_log_type_enabled(array, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446466;
       v20 = "+[WAUtil getValueForEntitlementForCurrentProcess:]";
       v21 = 1024;
       v22 = 415;
-      _os_log_impl(&dword_1C8460000, v9, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to determine type of XPC entitlement object", buf, 0x12u);
+      _os_log_impl(&dword_1C8460000, array, OS_LOG_TYPE_ERROR, "%{public}s::%d:Failed to determine type of XPC entitlement object", buf, 0x12u);
     }
 
     goto LABEL_26;
@@ -1444,7 +1444,7 @@ LABEL_26:
     goto LABEL_17;
   }
 
-  v9 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v10 = xpc_array_get_value(v5, 0);
   if (MEMORY[0x1CCA78500]() == MEMORY[0x1E69E9F10])
   {
@@ -1455,7 +1455,7 @@ LABEL_26:
       {
         v12 = xpc_array_get_value(v5, v11);
         v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:xpc_string_get_string_ptr(v12)];
-        [v9 addObject:v13];
+        [array addObject:v13];
 
         ++v11;
       }
@@ -1477,9 +1477,9 @@ LABEL_26:
     }
   }
 
-  if ([v9 count])
+  if ([array count])
   {
-    v14 = [MEMORY[0x1E695DEC8] arrayWithArray:v9];
+    v14 = [MEMORY[0x1E695DEC8] arrayWithArray:array];
   }
 
   else
@@ -1496,10 +1496,10 @@ LABEL_17:
   return v8;
 }
 
-+ (id)_generateInvocationForMethod:(void *)a3
++ (id)_generateInvocationForMethod:(void *)method
 {
   v23 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!method)
   {
     v14 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1520,9 +1520,9 @@ LABEL_15:
     goto LABEL_7;
   }
 
-  v4 = a3;
-  v5 = [v4 target];
-  v6 = [v5 methodSignatureForSelector:{objc_msgSend(v4, "selector")}];
+  methodCopy = method;
+  target = [methodCopy target];
+  v6 = [target methodSignatureForSelector:{objc_msgSend(methodCopy, "selector")}];
 
   if (!v6)
   {
@@ -1544,10 +1544,10 @@ LABEL_15:
   if (v7)
   {
     v8 = v7;
-    v9 = [v4 target];
-    [v8 setTarget:v9];
+    target2 = [methodCopy target];
+    [v8 setTarget:target2];
 
-    [v8 setSelector:{objc_msgSend(v4, "selector")}];
+    [v8 setSelector:{objc_msgSend(methodCopy, "selector")}];
     v18 = &v26;
     v17 = v25;
     v10 = 2;
@@ -1592,19 +1592,19 @@ LABEL_7:
   return 1000 * v3.tv_sec + v3.tv_usec / 1000;
 }
 
-+ (void)incrementValueForKey:(id)a3 inMutableDict:(id)a4 onQueue:(id)a5
++ (void)incrementValueForKey:(id)key inMutableDict:(id)dict onQueue:(id)queue
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9)
+  keyCopy = key;
+  dictCopy = dict;
+  queueCopy = queue;
+  v10 = queueCopy;
+  if (queueCopy)
   {
-    dispatch_assert_queue_V2(v9);
+    dispatch_assert_queue_V2(queueCopy);
   }
 
-  if (!v8)
+  if (!dictCopy)
   {
     v14 = WALogCategoryDefaultHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1617,7 +1617,7 @@ LABEL_7:
     v21 = 1024;
     v22 = 494;
     v23 = 2112;
-    v24 = v7;
+    v24 = keyCopy;
     v15 = "%{public}s::%d:Attempting to adjust nil dictionary with key %@";
     v16 = v14;
     v17 = 28;
@@ -1626,7 +1626,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v7)
+  if (!keyCopy)
   {
     v14 = WALogCategoryDefaultHandle();
     if (!os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -1644,34 +1644,34 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v11 = [v8 objectForKeyedSubscript:v7];
+  v11 = [dictCopy objectForKeyedSubscript:keyCopy];
 
   if (!v11)
   {
-    [v8 setObject:&unk_1F483E188 forKey:v7];
+    [dictCopy setObject:&unk_1F483E188 forKey:keyCopy];
     goto LABEL_13;
   }
 
   v12 = MEMORY[0x1E696AD98];
-  v13 = [v8 objectForKeyedSubscript:v7];
+  v13 = [dictCopy objectForKeyedSubscript:keyCopy];
   v14 = [v12 numberWithUnsignedLong:{objc_msgSend(v13, "unsignedIntegerValue") + 1}];
 
-  [v8 removeObjectForKey:v7];
-  [v8 setObject:v14 forKey:v7];
+  [dictCopy removeObjectForKey:keyCopy];
+  [dictCopy setObject:v14 forKey:keyCopy];
 LABEL_12:
 
 LABEL_13:
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)sumNSNumberForKey:(id)a3 dstDict:(id)a4 otherDict:(id)a5
++ (void)sumNSNumberForKey:(id)key dstDict:(id)dict otherDict:(id)otherDict
 {
   v25 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (!v8)
+  keyCopy = key;
+  dictCopy = dict;
+  otherDictCopy = otherDict;
+  v10 = otherDictCopy;
+  if (!dictCopy)
   {
     v17 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1681,52 +1681,52 @@ LABEL_13:
       v21 = 1024;
       v22 = 515;
       v23 = 2112;
-      v24 = v7;
+      v24 = keyCopy;
       _os_log_impl(&dword_1C8460000, v17, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempting to adjust nil dictionary with key %@", &v19, 0x1Cu);
     }
 
     goto LABEL_9;
   }
 
-  v11 = [v9 objectForKeyedSubscript:v7];
+  v11 = [otherDictCopy objectForKeyedSubscript:keyCopy];
 
   if (v11)
   {
-    v12 = [v8 objectForKeyedSubscript:v7];
+    v12 = [dictCopy objectForKeyedSubscript:keyCopy];
 
     if (v12)
     {
       v13 = MEMORY[0x1E696AD98];
-      v14 = [v8 objectForKeyedSubscript:v7];
-      v15 = [v14 unsignedIntegerValue];
-      v16 = [v10 objectForKeyedSubscript:v7];
-      v17 = [v13 numberWithUnsignedLong:{objc_msgSend(v16, "unsignedIntegerValue") + v15}];
+      v14 = [dictCopy objectForKeyedSubscript:keyCopy];
+      unsignedIntegerValue = [v14 unsignedIntegerValue];
+      v16 = [v10 objectForKeyedSubscript:keyCopy];
+      v17 = [v13 numberWithUnsignedLong:{objc_msgSend(v16, "unsignedIntegerValue") + unsignedIntegerValue}];
 
-      [v8 removeObjectForKey:v7];
+      [dictCopy removeObjectForKey:keyCopy];
     }
 
     else
     {
-      v17 = [v10 objectForKeyedSubscript:v7];
+      v17 = [v10 objectForKeyedSubscript:keyCopy];
     }
 
-    [v8 setObject:v17 forKey:v7];
+    [dictCopy setObject:v17 forKey:keyCopy];
 LABEL_9:
   }
 
   v18 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)addDeltaNSNumberForTelemetryKey:(id)a3 dictKey:(id)a4 dictModule:(id)a5 telDict:(id)a6 recentDict:(id)a7 oldDict:(id)a8
++ (void)addDeltaNSNumberForTelemetryKey:(id)key dictKey:(id)dictKey dictModule:(id)module telDict:(id)dict recentDict:(id)recentDict oldDict:(id)oldDict
 {
   v45 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
-  v18 = a8;
-  if (!v16)
+  keyCopy = key;
+  dictKeyCopy = dictKey;
+  moduleCopy = module;
+  dictCopy = dict;
+  recentDictCopy = recentDict;
+  oldDictCopy = oldDict;
+  if (!dictCopy)
   {
     v32 = WALogCategoryDefaultHandle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_ERROR))
@@ -1736,82 +1736,82 @@ LABEL_9:
       v41 = 1024;
       v42 = 535;
       v43 = 2112;
-      v44 = v14;
+      v44 = dictKeyCopy;
       _os_log_impl(&dword_1C8460000, v32, OS_LOG_TYPE_ERROR, "%{public}s::%d:Attempting to adjust nil telDict with key %@", buf, 0x1Cu);
     }
 
     goto LABEL_12;
   }
 
-  v19 = [v17 objectForKeyedSubscript:v15];
+  v19 = [recentDictCopy objectForKeyedSubscript:moduleCopy];
   if (!v19)
   {
     goto LABEL_7;
   }
 
   v20 = v19;
-  v21 = [v17 objectForKeyedSubscript:v15];
-  v22 = [v21 objectForKeyedSubscript:v14];
+  v21 = [recentDictCopy objectForKeyedSubscript:moduleCopy];
+  v22 = [v21 objectForKeyedSubscript:dictKeyCopy];
 
   if (!v22)
   {
 LABEL_7:
     v32 = [MEMORY[0x1E696AD98] numberWithUnsignedLong:0];
 LABEL_11:
-    [v16 removeObjectForKey:v13];
-    [v16 setObject:v32 forKey:v13];
+    [dictCopy removeObjectForKey:keyCopy];
+    [dictCopy setObject:v32 forKey:keyCopy];
 LABEL_12:
 
     goto LABEL_13;
   }
 
-  v23 = [v18 objectForKeyedSubscript:v15];
+  v23 = [oldDictCopy objectForKeyedSubscript:moduleCopy];
   if (!v23)
   {
     goto LABEL_10;
   }
 
   v24 = v23;
-  v25 = [v18 objectForKeyedSubscript:v15];
-  v26 = [v25 objectForKeyedSubscript:v14];
+  v25 = [oldDictCopy objectForKeyedSubscript:moduleCopy];
+  v26 = [v25 objectForKeyedSubscript:dictKeyCopy];
 
   if (!v26)
   {
 LABEL_10:
     v33 = MEMORY[0x1E696AD98];
-    v34 = [v17 objectForKeyedSubscript:v15];
-    v35 = [v34 objectForKeyedSubscript:v14];
+    v34 = [recentDictCopy objectForKeyedSubscript:moduleCopy];
+    v35 = [v34 objectForKeyedSubscript:dictKeyCopy];
     v32 = [v33 numberWithUnsignedLong:{objc_msgSend(v35, "unsignedLongValue")}];
 
     goto LABEL_11;
   }
 
   v37 = MEMORY[0x1E696AD98];
-  v38 = [v17 objectForKeyedSubscript:v15];
-  v27 = [v38 objectForKeyedSubscript:v14];
-  v28 = [v27 unsignedLongValue];
-  v29 = [v18 objectForKeyedSubscript:v15];
-  v30 = [v29 objectForKeyedSubscript:v14];
-  v31 = [v37 numberWithUnsignedLong:{v28 - objc_msgSend(v30, "unsignedLongValue")}];
+  v38 = [recentDictCopy objectForKeyedSubscript:moduleCopy];
+  v27 = [v38 objectForKeyedSubscript:dictKeyCopy];
+  unsignedLongValue = [v27 unsignedLongValue];
+  v29 = [oldDictCopy objectForKeyedSubscript:moduleCopy];
+  v30 = [v29 objectForKeyedSubscript:dictKeyCopy];
+  v31 = [v37 numberWithUnsignedLong:{unsignedLongValue - objc_msgSend(v30, "unsignedLongValue")}];
 
-  [v16 removeObjectForKey:v13];
-  [v16 setObject:v31 forKey:v13];
+  [dictCopy removeObjectForKey:keyCopy];
+  [dictCopy setObject:v31 forKey:keyCopy];
 
 LABEL_13:
   v36 = *MEMORY[0x1E69E9840];
 }
 
-+ (void)logNestedDictionary:(id)a3 indent:(int)a4 prefix:(id)a5
++ (void)logNestedDictionary:(id)dictionary indent:(int)indent prefix:(id)prefix
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
+  dictionaryCopy = dictionary;
+  prefixCopy = prefix;
   v9 = [objc_alloc(MEMORY[0x1E696AEB0]) initWithKey:0 ascending:1];
-  v10 = [v7 allKeys];
+  allKeys = [dictionaryCopy allKeys];
   v32 = v9;
   v50[0] = v9;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
-  v12 = [v10 sortedArrayUsingDescriptors:v11];
+  v12 = [allKeys sortedArrayUsingDescriptors:v11];
 
   v37 = 0u;
   v38 = 0u;
@@ -1834,20 +1834,20 @@ LABEL_13:
         }
 
         v17 = *(*(&v35 + 1) + 8 * v16);
-        v18 = [v7 objectForKeyedSubscript:v17];
+        v18 = [dictionaryCopy objectForKeyedSubscript:v17];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
 
 LABEL_9:
-          v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", v8, v17];
-          v22 = [v7 objectForKeyedSubscript:v17];
-          [a1 logNestedDictionary:v22 indent:(a4 + 4) prefix:v21];
+          v21 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@ %@", prefixCopy, v17];
+          v22 = [dictionaryCopy objectForKeyedSubscript:v17];
+          [self logNestedDictionary:v22 indent:(indent + 4) prefix:v21];
 
           goto LABEL_10;
         }
 
-        v19 = [v7 objectForKeyedSubscript:v17];
+        v19 = [dictionaryCopy objectForKeyedSubscript:v17];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -1856,29 +1856,29 @@ LABEL_9:
           goto LABEL_9;
         }
 
-        v23 = [v7 objectForKeyedSubscript:v17];
+        v23 = [dictionaryCopy objectForKeyedSubscript:v17];
         objc_opt_class();
         v24 = objc_opt_isKindOfClass();
 
-        v25 = [v7 objectForKeyedSubscript:v17];
+        v25 = [dictionaryCopy objectForKeyedSubscript:v17];
         v26 = v25;
         if (v24)
         {
-          v27 = [v25 unsignedIntegerValue];
+          unsignedIntegerValue = [v25 unsignedIntegerValue];
 
-          if (v27)
+          if (unsignedIntegerValue)
           {
             v21 = WALogCategoryDefaultHandle();
             if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
             {
 LABEL_19:
-              v29 = [v7 objectForKeyedSubscript:v17];
+              v29 = [dictionaryCopy objectForKeyedSubscript:v17];
               *buf = 67110146;
-              v40 = a4;
+              indentCopy = indent;
               v41 = 2080;
               v42 = "";
               v43 = 2112;
-              v44 = v8;
+              v44 = prefixCopy;
               v45 = 2112;
               v46 = v17;
               v47 = 2112;
@@ -1921,28 +1921,28 @@ LABEL_10:
   v31 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)isMacAddress:(id)a3
++ (BOOL)isMacAddress:(id)address
 {
-  v3 = a3;
-  v4 = v3;
-  v5 = v3 && [v3 UTF8String] && ether_aton(objc_msgSend(v4, "UTF8String")) != 0;
+  addressCopy = address;
+  v4 = addressCopy;
+  v5 = addressCopy && [addressCopy UTF8String] && ether_aton(objc_msgSend(v4, "UTF8String")) != 0;
 
   return v5;
 }
 
-+ (BOOL)isWildcardMacAddress:(id)a3
++ (BOOL)isWildcardMacAddress:(id)address
 {
-  v4 = a3;
-  if ([a1 isMacAddress:v4])
+  addressCopy = address;
+  if ([self isMacAddress:addressCopy])
   {
-    if ([v4 isEqualToString:@"00:00:00:00:00:00"])
+    if ([addressCopy isEqualToString:@"00:00:00:00:00:00"])
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = [v4 isEqualToString:@"0:0:0:0:0:0"];
+      v5 = [addressCopy isEqualToString:@"0:0:0:0:0:0"];
     }
   }
 
@@ -1954,12 +1954,12 @@ LABEL_10:
   return v5;
 }
 
-+ (void)addFieldsForChannelFlagLikeKey:(id)a3 inDict:(id)a4
++ (void)addFieldsForChannelFlagLikeKey:(id)key inDict:(id)dict
 {
-  v14 = a4;
-  v5 = a3;
-  v6 = [v14 objectForKeyedSubscript:v5];
-  v7 = [v5 stringByReplacingOccurrencesOfString:@"Flags" withString:&stru_1F481C4A0];
+  dictCopy = dict;
+  keyCopy = key;
+  v6 = [dictCopy objectForKeyedSubscript:keyCopy];
+  v7 = [keyCopy stringByReplacingOccurrencesOfString:@"Flags" withString:&stru_1F481C4A0];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -1967,26 +1967,26 @@ LABEL_10:
     goto LABEL_18;
   }
 
-  v8 = [v6 unsignedIntValue];
-  v9 = v8;
-  if ((v8 & 8) != 0)
+  unsignedIntValue = [v6 unsignedIntValue];
+  v9 = unsignedIntValue;
+  if ((unsignedIntValue & 8) != 0)
   {
     v10 = @"2";
     goto LABEL_8;
   }
 
-  if ((v8 & 0x10) != 0)
+  if ((unsignedIntValue & 0x10) != 0)
   {
     v10 = @"5";
     goto LABEL_8;
   }
 
-  if ((v8 & 0x2000) != 0)
+  if ((unsignedIntValue & 0x2000) != 0)
   {
     v10 = @"6";
 LABEL_8:
     v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v7, @"Band"];
-    [v14 setValue:v10 forKey:v11];
+    [dictCopy setValue:v10 forKey:v11];
   }
 
   if ((v9 & 0x800) != 0)
@@ -2015,18 +2015,18 @@ LABEL_8:
   }
 
   v13 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v7, @"BW"];
-  [v14 setValue:v12 forKey:v13];
+  [dictCopy setValue:v12 forKey:v13];
 
 LABEL_18:
 }
 
-+ (void)addFieldsForAuthFlagsLikeKey:(id)a3 inDict:(id)a4
++ (void)addFieldsForAuthFlagsLikeKey:(id)key inDict:(id)dict
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  v7 = [v5 objectForKeyedSubscript:v6];
-  v8 = [v6 stringByReplacingOccurrencesOfString:@"Flags" withString:&stru_1F481C4A0];
+  dictCopy = dict;
+  keyCopy = key;
+  v7 = [dictCopy objectForKeyedSubscript:keyCopy];
+  v8 = [keyCopy stringByReplacingOccurrencesOfString:@"Flags" withString:&stru_1F481C4A0];
 
   v9 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
@@ -2053,7 +2053,7 @@ LABEL_18:
       _os_log_impl(&dword_1C8460000, v10, OS_LOG_TYPE_DEBUG, "%{public}s::%d:value is a NSNumber", buf, 0x12u);
     }
 
-    v11 = [v7 shortValue];
+    shortValue = [v7 shortValue];
     v12 = WALogCategoryDeviceStoreHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
@@ -2062,34 +2062,34 @@ LABEL_18:
       v27 = 1024;
       v28 = 637;
       v29 = 1024;
-      LODWORD(v30) = v11;
+      LODWORD(v30) = shortValue;
       _os_log_impl(&dword_1C8460000, v12, OS_LOG_TYPE_DEBUG, "%{public}s::%d:authFlags:%u", buf, 0x18u);
     }
 
     else
     {
-      v11 = v11;
+      shortValue = shortValue;
     }
 
-    v13 = [MEMORY[0x1E696AD98] numberWithBool:v11 & 1];
+    v13 = [MEMORY[0x1E696AD98] numberWithBool:shortValue & 1];
     v14 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v8, @"_isWEP"];
-    [v5 setValue:v13 forKey:v14];
+    [dictCopy setValue:v13 forKey:v14];
 
-    v15 = [MEMORY[0x1E696AD98] numberWithBool:(v11 >> 1) & 1];
+    v15 = [MEMORY[0x1E696AD98] numberWithBool:(shortValue >> 1) & 1];
     v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v8, @"_isWPA"];
-    [v5 setValue:v15 forKey:v16];
+    [dictCopy setValue:v15 forKey:v16];
 
-    v17 = [MEMORY[0x1E696AD98] numberWithBool:(v11 >> 2) & 1];
+    v17 = [MEMORY[0x1E696AD98] numberWithBool:(shortValue >> 2) & 1];
     v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v8, @"_isSAE"];
-    [v5 setValue:v17 forKey:v18];
+    [dictCopy setValue:v17 forKey:v18];
 
-    v19 = [MEMORY[0x1E696AD98] numberWithBool:(v11 >> 3) & 1];
+    v19 = [MEMORY[0x1E696AD98] numberWithBool:(shortValue >> 3) & 1];
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v8, @"_isEAP"];
-    [v5 setValue:v19 forKey:v20];
+    [dictCopy setValue:v19 forKey:v20];
 
-    v21 = [MEMORY[0x1E696AD98] numberWithBool:(v11 >> 4) & 1];
+    v21 = [MEMORY[0x1E696AD98] numberWithBool:(shortValue >> 4) & 1];
     v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@%@", v8, @"_isSAEPK"];
-    [v5 setValue:v21 forKey:v22];
+    [dictCopy setValue:v21 forKey:v22];
   }
 
   v23 = WALogCategoryDeviceStoreHandle();
@@ -2100,7 +2100,7 @@ LABEL_18:
     v27 = 1024;
     v28 = 646;
     v29 = 2112;
-    v30 = v5;
+    v30 = dictCopy;
     _os_log_impl(&dword_1C8460000, v23, OS_LOG_TYPE_DEBUG, "%{public}s::%d:done. dict:%@", buf, 0x1Cu);
   }
 
@@ -2121,7 +2121,7 @@ LABEL_18:
 {
   v13 = *MEMORY[0x1E69E9840];
   v2 = CFPreferencesCopyValue(@"SBIconVisibility", @"com.apple.wifi.app", @"mobile", *MEMORY[0x1E695E8B0]);
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
   v4 = WALogCategoryDefaultHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -2131,12 +2131,12 @@ LABEL_18:
     v9 = 1024;
     v10 = 722;
     v11 = 1024;
-    v12 = v3;
+    v12 = bOOLValue;
     _os_log_impl(&dword_1C8460000, v4, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:SBIconVisibility for com.apple.wifi.app=%d", &v7, 0x18u);
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v3;
+  return bOOLValue;
 }
 
 + (BOOL)isWiFiAppInstalled
@@ -2145,8 +2145,8 @@ LABEL_18:
   v2 = objc_opt_class();
   if (v2)
   {
-    v3 = [MEMORY[0x1E6963608] defaultWorkspace];
-    v4 = [v3 applicationIsInstalled:@"com.apple.wifi.app-shack"];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    v4 = [defaultWorkspace applicationIsInstalled:@"com.apple.wifi.app-shack"];
 
     if (v4)
     {
@@ -2402,17 +2402,17 @@ void __58__WAUtil_customProcessInChargeOfDataProcessingForPolicies__block_invoke
   v7 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)setFutureApfsPurgeableDeadline:(unint64_t)a3 forURL:(id)a4
++ (BOOL)setFutureApfsPurgeableDeadline:(unint64_t)deadline forURL:(id)l
 {
   v45 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = clock_gettime_nsec_np(_CLOCK_REALTIME) + 1000000000 * a3;
+  lCopy = l;
+  v6 = clock_gettime_nsec_np(_CLOCK_REALTIME) + 1000000000 * deadline;
   v25 = xmmword_1C85A1250;
   v26 = xmmword_1C85A1260;
   v27 = v6;
   v28 = 0;
-  v7 = [v5 path];
-  v8 = fsctl([v7 cStringUsingEncoding:4], 0xC0304A6FuLL, &v25, 0);
+  path = [lCopy path];
+  v8 = fsctl([path cStringUsingEncoding:4], 0xC0304A6FuLL, &v25, 0);
 
   v9 = WALogCategoryDeviceStoreHandle();
   v10 = v9;
@@ -2420,8 +2420,8 @@ void __58__WAUtil_customProcessInChargeOfDataProcessingForPolicies__block_invoke
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      v11 = [v5 path];
-      v12 = [v11 cStringUsingEncoding:4];
+      path2 = [lCopy path];
+      v12 = [path2 cStringUsingEncoding:4];
       v13 = v25;
       v14 = v26;
       v15 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:(v6 / 0x3B9ACA00)];
@@ -2449,8 +2449,8 @@ void __58__WAUtil_customProcessInChargeOfDataProcessingForPolicies__block_invoke
 
   else if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v18 = [v5 path];
-    v19 = [v18 cStringUsingEncoding:4];
+    path3 = [lCopy path];
+    v19 = [path3 cStringUsingEncoding:4];
     v20 = v25;
     v21 = v26;
     v22 = [MEMORY[0x1E695DF00] dateWithTimeIntervalSince1970:(v6 / 0x3B9ACA00)];
@@ -2473,83 +2473,83 @@ void __58__WAUtil_customProcessInChargeOfDataProcessingForPolicies__block_invoke
   return v8 == 0;
 }
 
-+ (void)getLazyNSNumberPreference:(id)a3 domain:(id)a4 exists:(id)a5
++ (void)getLazyNSNumberPreference:(id)preference domain:(id)domain exists:(id)exists
 {
-  v12 = a3;
-  v7 = a4;
-  v8 = a5;
-  if ((_MergedGlobals_4 & 1) != 0 || [v12 isEqualToString:@"WiFiFragmentSampling"])
+  preferenceCopy = preference;
+  domainCopy = domain;
+  existsCopy = exists;
+  if ((_MergedGlobals_4 & 1) != 0 || [preferenceCopy isEqualToString:@"WiFiFragmentSampling"])
   {
-    v9 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v10 = [v9 persistentDomainForName:v7];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v10 = [standardUserDefaults persistentDomainForName:domainCopy];
 
-    v11 = [v10 objectForKey:v12];
+    v11 = [v10 objectForKey:preferenceCopy];
     if (v11)
     {
-      v8[2](v8, v11);
+      existsCopy[2](existsCopy, v11);
     }
   }
 }
 
-+ (void)getLazyNSStringPreference:(id)a3 domain:(id)a4 exists:(id)a5
++ (void)getLazyNSStringPreference:(id)preference domain:(id)domain exists:(id)exists
 {
-  v7 = a5;
+  existsCopy = exists;
   if (_MergedGlobals_4 == 1)
   {
-    v14 = v7;
+    v14 = existsCopy;
     v8 = MEMORY[0x1E695E000];
-    v9 = a4;
-    v10 = a3;
-    v11 = [v8 standardUserDefaults];
-    v12 = [v11 persistentDomainForName:v9];
+    domainCopy = domain;
+    preferenceCopy = preference;
+    standardUserDefaults = [v8 standardUserDefaults];
+    v12 = [standardUserDefaults persistentDomainForName:domainCopy];
 
-    v13 = [v12 objectForKey:v10];
+    v13 = [v12 objectForKey:preferenceCopy];
 
     if (v13)
     {
       v14[2](v14, v13);
     }
 
-    v7 = v14;
+    existsCopy = v14;
   }
 }
 
-+ (void)setPreference:(id)a3 domain:(id)a4 value:(id)a5
++ (void)setPreference:(id)preference domain:(id)domain value:(id)value
 {
-  v11 = a3;
-  v7 = a5;
+  preferenceCopy = preference;
+  valueCopy = value;
   if (_MergedGlobals_4 == 1)
   {
     v8 = MEMORY[0x1E695E000];
-    v9 = a4;
-    v10 = [[v8 alloc] initWithSuiteName:v9];
+    domainCopy = domain;
+    v10 = [[v8 alloc] initWithSuiteName:domainCopy];
 
-    if (v7)
+    if (valueCopy)
     {
-      [v10 setValue:v7 forKey:v11];
+      [v10 setValue:valueCopy forKey:preferenceCopy];
     }
 
     else
     {
-      [v10 removeObjectForKey:v11];
+      [v10 removeObjectForKey:preferenceCopy];
     }
   }
 }
 
-+ (id)getNumberPreference:(id)a3 domain:(id)a4
++ (id)getNumberPreference:(id)preference domain:(id)domain
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  preferenceCopy = preference;
+  domainCopy = domain;
   if (_MergedGlobals_4 != 1)
   {
     goto LABEL_10;
   }
 
-  v7 = [MEMORY[0x1E695E000] standardUserDefaults];
-  v8 = [v7 persistentDomainForName:v6];
+  standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+  v8 = [standardUserDefaults persistentDomainForName:domainCopy];
 
-  v9 = [v8 objectForKey:v5];
+  v9 = [v8 objectForKey:preferenceCopy];
   if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
 
@@ -2561,21 +2561,21 @@ LABEL_10:
   v10 = WALogCategoryDeviceStoreHandle();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v9 BOOLValue];
+    bOOLValue = [v9 BOOLValue];
     v15 = 136447234;
     v16 = "+[WAUtil getNumberPreference:domain:]";
     v12 = @"NO";
     v17 = 1024;
     v18 = 907;
     v19 = 2112;
-    if (v11)
+    if (bOOLValue)
     {
       v12 = @"YES";
     }
 
-    v20 = v6;
+    v20 = domainCopy;
     v21 = 2112;
-    v22 = v5;
+    v22 = preferenceCopy;
     v23 = 2112;
     v24 = v12;
     _os_log_impl(&dword_1C8460000, v10, OS_LOG_TYPE_DEFAULT, "%{public}s::%d:Using %@.%@ as: %@", &v15, 0x30u);
@@ -2593,35 +2593,35 @@ LABEL_11:
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-+ (id)filterArray:(id)a3 usingPredicate:(id)a4
++ (id)filterArray:(id)array usingPredicate:(id)predicate
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 filteredArrayUsingPredicate:v6];
+  arrayCopy = array;
+  predicateCopy = predicate;
+  v7 = [arrayCopy filteredArrayUsingPredicate:predicateCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 
   return v7;
 }
 
-+ (id)filterSet:(id)a3 usingPredicate:(id)a4
++ (id)filterSet:(id)set usingPredicate:(id)predicate
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 filteredSetUsingPredicate:v6];
+  setCopy = set;
+  predicateCopy = predicate;
+  v7 = [setCopy filteredSetUsingPredicate:predicateCopy];
 
   v8 = *MEMORY[0x1E69E9840];
 

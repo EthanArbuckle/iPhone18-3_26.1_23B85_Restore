@@ -1,20 +1,20 @@
 @interface FairPlayDecryptSession
-- (FairPlayDecryptSession)initWithDPInfo:(id)a3;
-- (id)decryptBytes:(id)a3 error:(id *)a4;
+- (FairPlayDecryptSession)initWithDPInfo:(id)info;
+- (id)decryptBytes:(id)bytes error:(id *)error;
 - (id)identifier;
 - (void)dealloc;
 @end
 
 @implementation FairPlayDecryptSession
 
-- (FairPlayDecryptSession)initWithDPInfo:(id)a3
+- (FairPlayDecryptSession)initWithDPInfo:(id)info
 {
   v4 = [(FairPlayDecryptSession *)self init];
   if (v4)
   {
-    if ([a3 length])
+    if ([info length])
     {
-      v4->_dpInfo = a3;
+      v4->_dpInfo = info;
       v4->_identifier = [[NSString alloc] initWithFormat:@"com.apple.itunesstored.fairplay.decryptfile.%@", -[NSUUID UUIDString](+[NSUUID UUID](NSUUID, "UUID"), "UUIDString")];
     }
 
@@ -26,15 +26,15 @@
         v5 = +[SSLogConfig sharedConfig];
       }
 
-      v6 = [v5 shouldLog];
+      shouldLog = [v5 shouldLog];
       if ([v5 shouldLogToDisk])
       {
-        v7 = v6 | 2;
+        v7 = shouldLog | 2;
       }
 
       else
       {
-        v7 = v6;
+        v7 = shouldLog;
       }
 
       if (!os_log_type_enabled([v5 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -78,7 +78,7 @@
   [(FairPlayDecryptSession *)&v4 dealloc];
 }
 
-- (id)decryptBytes:(id)a3 error:(id *)a4
+- (id)decryptBytes:(id)bytes error:(id *)error
 {
   v24 = 0;
   p_decryptSession = &self->_decryptSession;
@@ -96,15 +96,15 @@
       v9 = +[SSLogConfig sharedConfig];
     }
 
-    v10 = [v9 shouldLog];
+    shouldLog = [v9 shouldLog];
     if ([v9 shouldLogToDisk])
     {
-      v11 = v10 | 2;
+      v11 = shouldLog | 2;
     }
 
     else
     {
-      v11 = v10;
+      v11 = shouldLog;
     }
 
     if (!os_log_type_enabled([v9 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -129,9 +129,9 @@
       }
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = ISError();
+      *error = ISError();
     }
   }
 
@@ -140,7 +140,7 @@
   if (decryptSession)
   {
 LABEL_16:
-    if ((sub_1000B282C(decryptSession, a3, &v24) & 1) == 0)
+    if ((sub_1000B282C(decryptSession, bytes, &v24) & 1) == 0)
     {
       v15 = +[SSLogConfig sharedDaemonConfig];
       if (!v15)
@@ -148,15 +148,15 @@ LABEL_16:
         v15 = +[SSLogConfig sharedConfig];
       }
 
-      v16 = [v15 shouldLog];
+      shouldLog2 = [v15 shouldLog];
       if ([v15 shouldLogToDisk])
       {
-        v17 = v16 | 2;
+        v17 = shouldLog2 | 2;
       }
 
       else
       {
-        v17 = v16;
+        v17 = shouldLog2;
       }
 
       if (!os_log_type_enabled([v15 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -180,9 +180,9 @@ LABEL_16:
         }
       }
 
-      if (a4)
+      if (error)
       {
-        *a4 = ISError();
+        *error = ISError();
       }
     }
   }

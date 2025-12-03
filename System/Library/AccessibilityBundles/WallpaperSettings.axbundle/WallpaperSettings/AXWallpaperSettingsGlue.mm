@@ -8,8 +8,8 @@
 {
   if (!_Failover)
   {
-    v2 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v2 performValidations:&__block_literal_global_811 withPreValidationHandler:&__block_literal_global_813 postValidationHandler:&__block_literal_global_822 safeCategoryInstallationHandler:&__block_literal_global_825];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global_811 withPreValidationHandler:&__block_literal_global_813 postValidationHandler:&__block_literal_global_822 safeCategoryInstallationHandler:&__block_literal_global_825];
 
     _Failover = [objc_allocWithZone(AXWallpaperSettingsGlue) init];
 

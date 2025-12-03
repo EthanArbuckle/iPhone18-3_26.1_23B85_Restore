@@ -1,14 +1,14 @@
 @interface MFColorPickerView.Coordinator
 - (_TtCV16MagnifierSupportP33_128412983A29D0B4093EE0414FDFF2BF17MFColorPickerView11Coordinator)init;
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5;
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously;
 @end
 
 @implementation MFColorPickerView.Coordinator
 
-- (void)colorPickerViewController:(id)a3 didSelectColor:(id)a4 continuously:(BOOL)a5
+- (void)colorPickerViewController:(id)controller didSelectColor:(id)color continuously:(BOOL)continuously
 {
-  v6 = a4;
-  v7 = self;
+  colorCopy = color;
+  selfCopy = self;
   sub_257ECED30();
   sub_257ECC3F0();
   sub_257ECC3F0();

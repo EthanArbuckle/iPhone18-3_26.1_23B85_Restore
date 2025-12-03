@@ -1,7 +1,7 @@
 @interface IMIDSServiceController
 + (id)sharedInstance;
 - (IMIDSServiceController)init;
-- (void)logIfDebuggingService:(id)a3 method:(const char *)a4;
+- (void)logIfDebuggingService:(id)service method:(const char *)method;
 @end
 
 @implementation IMIDSServiceController
@@ -34,25 +34,25 @@
   return v2;
 }
 
-- (void)logIfDebuggingService:(id)a3 method:(const char *)a4
+- (void)logIfDebuggingService:(id)service method:(const char *)method
 {
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(IMIDSServiceController *)self debuggingService];
-  v8 = [v6 isEqualToString:v7];
+  serviceCopy = service;
+  debuggingService = [(IMIDSServiceController *)self debuggingService];
+  v8 = [serviceCopy isEqualToString:debuggingService];
 
   if (v8)
   {
     v9 = IMLogHandleForCategory("IMIDSServiceController");
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      v10 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [MEMORY[0x1E696AF00] callStackSymbols];
       v11 = 138412802;
-      v12 = v6;
+      v12 = serviceCopy;
       v13 = 2080;
-      v14 = a4;
+      methodCopy = method;
       v15 = 2112;
-      v16 = v10;
+      v16 = callStackSymbols;
       _os_log_impl(&dword_1A85E5000, v9, OS_LOG_TYPE_INFO, "Call IDS service [%@], method: [%s], callstack: [%@]", &v11, 0x20u);
     }
   }

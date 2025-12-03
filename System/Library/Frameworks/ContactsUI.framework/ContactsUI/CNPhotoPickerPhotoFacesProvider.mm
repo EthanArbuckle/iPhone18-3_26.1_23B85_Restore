@@ -1,44 +1,44 @@
 @interface CNPhotoPickerPhotoFacesProvider
 + (id)log;
-- (CGRect)cropRectForAsset:(id)a3 face:(id)a4;
-- (CNPhotoPickerPhotoFacesProvider)initWithVisualIdentity:(id)a3;
-- (id)getItemsFromPhotoLibraryWithItemDelegate:(id)a3;
-- (id)loadItemsForSize:(CGSize)a3 scale:(double)a4 RTL:(BOOL)a5 renderingQueue:(id)a6 callbackQueue:(id)a7 itemDelegate:(id)a8;
+- (CGRect)cropRectForAsset:(id)asset face:(id)face;
+- (CNPhotoPickerPhotoFacesProvider)initWithVisualIdentity:(id)identity;
+- (id)getItemsFromPhotoLibraryWithItemDelegate:(id)delegate;
+- (id)loadItemsForSize:(CGSize)size scale:(double)scale RTL:(BOOL)l renderingQueue:(id)queue callbackQueue:(id)callbackQueue itemDelegate:(id)delegate;
 @end
 
 @implementation CNPhotoPickerPhotoFacesProvider
 
-- (CGRect)cropRectForAsset:(id)a3 face:(id)a4
+- (CGRect)cropRectForAsset:(id)asset face:(id)face
 {
   v46 = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = a3;
-  [v5 size];
+  faceCopy = face;
+  assetCopy = asset;
+  [faceCopy size];
   v8 = v7;
-  [v5 centerX];
+  [faceCopy centerX];
   v10 = v9;
-  [v5 centerY];
+  [faceCopy centerY];
   v12 = v11;
 
-  v13 = [v6 pixelWidth];
-  v14 = [v6 pixelHeight];
+  pixelWidth = [assetCopy pixelWidth];
+  pixelHeight = [assetCopy pixelHeight];
 
-  v15 = v14;
-  if (v13 >= v14)
+  v15 = pixelHeight;
+  if (pixelWidth >= pixelHeight)
   {
-    v16 = v14;
+    v16 = pixelHeight;
   }
 
   else
   {
-    v16 = v13;
+    v16 = pixelWidth;
   }
 
   v17 = v8 * v16;
   v18 = v8 * v16 * -0.5;
-  v19 = v18 + v10 * v13;
+  v19 = v18 + v10 * pixelWidth;
   v20 = v18 + (1.0 - v12) * v15;
-  v21 = v8 * v16 + v19 - v13;
+  v21 = v8 * v16 + v19 - pixelWidth;
   if (v21 < v8 * v16 + v20 - v15)
   {
     v21 = v8 * v16 + v20 - v15;
@@ -83,9 +83,9 @@
     v40 = 2048;
     v41 = height;
     v42 = 2048;
-    v43 = v13;
+    v43 = pixelWidth;
     v44 = 2048;
-    v45 = v14;
+    v45 = pixelHeight;
     _os_log_debug_impl(&dword_199A75000, v29, OS_LOG_TYPE_DEBUG, "cropRect {%.2f, %.2f, %.2f, %.2f} for face asset of size (%.2f x %.2f)", &v34, 0x3Eu);
   }
 
@@ -100,11 +100,11 @@
   return result;
 }
 
-- (id)getItemsFromPhotoLibraryWithItemDelegate:(id)a3
+- (id)getItemsFromPhotoLibraryWithItemDelegate:(id)delegate
 {
   v53 = *MEMORY[0x1E69E9840];
-  v37 = a3;
-  v38 = [MEMORY[0x1E695DF70] array];
+  delegateCopy = delegate;
+  array = [MEMORY[0x1E695DF70] array];
   v48 = 0;
   v4 = [CNPhotoLibraryProvider photoLibraryWithError:&v48];
   v5 = v48;
@@ -112,37 +112,37 @@
   {
     v6 = objc_alloc_init(getPHFetchOptionsClass());
     [v6 setPhotoLibrary:v4];
-    v7 = [(CNPhotoPickerPhotoFacesProvider *)self visualIdentity];
-    v8 = [v7 identifier];
+    visualIdentity = [(CNPhotoPickerPhotoFacesProvider *)self visualIdentity];
+    identifier = [visualIdentity identifier];
 
     if ((*(*MEMORY[0x1E6996570] + 16))())
     {
       PHPersonClass = getPHPersonClass();
-      v50 = v8;
+      v50 = identifier;
       v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v50 count:1];
       v11 = [(objc_class *)PHPersonClass fetchPersonsForContactIdentifiers:v10 options:v6];
 
-      v12 = [v11 firstObject];
-      if (v12)
+      firstObject = [v11 firstObject];
+      if (firstObject)
       {
         v31 = v11;
-        v32 = v8;
-        v36 = self;
+        v32 = identifier;
+        selfCopy = self;
         v33 = v5;
         v13 = objc_alloc_init(getPHFetchOptionsClass());
         v34 = v4;
         [v13 setPhotoLibrary:v4];
         [v13 setFetchLimit:4];
         v29 = v13;
-        v30 = v12;
-        v28 = [(objc_class *)getPHFaceClass() fetchSuggestedFacesForPerson:v12 options:v13];
-        v14 = [v28 fetchedObjects];
-        v15 = [(objc_class *)getPHAssetClass() fetchAssetsGroupedByFaceUUIDForFaces:v14];
+        v30 = firstObject;
+        v28 = [(objc_class *)getPHFaceClass() fetchSuggestedFacesForPerson:firstObject options:v13];
+        fetchedObjects = [v28 fetchedObjects];
+        v15 = [(objc_class *)getPHAssetClass() fetchAssetsGroupedByFaceUUIDForFaces:fetchedObjects];
         v44 = 0u;
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
-        obj = v14;
+        obj = fetchedObjects;
         v16 = [obj countByEnumeratingWithState:&v44 objects:v49 count:16];
         if (v16)
         {
@@ -158,8 +158,8 @@
               }
 
               v20 = *(*(&v44 + 1) + 8 * i);
-              v21 = [v20 uuid];
-              v22 = [v15 objectForKeyedSubscript:v21];
+              uuid = [v20 uuid];
+              v22 = [v15 objectForKeyedSubscript:uuid];
 
               if (v22)
               {
@@ -168,18 +168,18 @@
                 [v23 setSynchronous:1];
                 [v23 setNetworkAccessAllowed:1];
                 [v23 setResizeMode:1];
-                v24 = [(objc_class *)getPHImageManagerClass() defaultManager];
+                defaultManager = [(objc_class *)getPHImageManagerClass() defaultManager];
                 v39[0] = MEMORY[0x1E69E9820];
                 v39[1] = 3221225472;
                 v39[2] = __76__CNPhotoPickerPhotoFacesProvider_getItemsFromPhotoLibraryWithItemDelegate___block_invoke;
                 v39[3] = &unk_1E74E5340;
-                v39[4] = v36;
+                v39[4] = selfCopy;
                 v25 = v22;
                 v40 = v25;
                 v41 = v20;
-                v42 = v37;
-                v43 = v38;
-                [v24 requestImageDataAndOrientationForAsset:v25 options:v23 resultHandler:v39];
+                v42 = delegateCopy;
+                v43 = array;
+                [defaultManager requestImageDataAndOrientationForAsset:v25 options:v23 resultHandler:v39];
               }
             }
 
@@ -191,12 +191,12 @@
 
         v5 = v33;
         v4 = v34;
-        v8 = v32;
-        v12 = v30;
+        identifier = v32;
+        firstObject = v30;
         v11 = v31;
       }
 
-      v26 = v38;
+      v26 = array;
     }
 
     else
@@ -237,11 +237,11 @@ void __76__CNPhotoPickerPhotoFacesProvider_getItemsFromPhotoLibraryWithItemDeleg
   [*(a1 + 64) addObject:v12];
 }
 
-- (id)loadItemsForSize:(CGSize)a3 scale:(double)a4 RTL:(BOOL)a5 renderingQueue:(id)a6 callbackQueue:(id)a7 itemDelegate:(id)a8
+- (id)loadItemsForSize:(CGSize)size scale:(double)scale RTL:(BOOL)l renderingQueue:(id)queue callbackQueue:(id)callbackQueue itemDelegate:(id)delegate
 {
-  v11 = a6;
-  v12 = a7;
-  v13 = a8;
+  queueCopy = queue;
+  callbackQueueCopy = callbackQueue;
+  delegateCopy = delegate;
   if (+[CNPhotoPickerCapabilities allowsPhotoLibraryAccess]&& [(objc_class *)getPHPhotoLibraryClass_47934() authorizationStatus]!= 2)
   {
     v22 = 0;
@@ -252,7 +252,7 @@ void __76__CNPhotoPickerPhotoFacesProvider_getItemsFromPhotoLibraryWithItemDeleg
     v27 = 0;
     if ([(objc_class *)getPHPhotoLibraryClass_47934() authorizationStatus])
     {
-      v15 = [(CNPhotoPickerPhotoFacesProvider *)self getItemsFromPhotoLibraryWithItemDelegate:v13];
+      v15 = [(CNPhotoPickerPhotoFacesProvider *)self getItemsFromPhotoLibraryWithItemDelegate:delegateCopy];
       v16 = v23[5];
       v23[5] = v15;
     }
@@ -266,7 +266,7 @@ void __76__CNPhotoPickerPhotoFacesProvider_getItemsFromPhotoLibraryWithItemDeleg
       v19[3] = &unk_1E74E5318;
       v21 = &v22;
       v19[4] = self;
-      v20 = v13;
+      v20 = delegateCopy;
       [(objc_class *)PHPhotoLibraryClass_47934 requestAuthorization:v19];
     }
 
@@ -301,20 +301,20 @@ uint64_t __104__CNPhotoPickerPhotoFacesProvider_loadItemsForSize_scale_RTL_rende
   return MEMORY[0x1EEE66BB8](v3, v5);
 }
 
-- (CNPhotoPickerPhotoFacesProvider)initWithVisualIdentity:(id)a3
+- (CNPhotoPickerPhotoFacesProvider)initWithVisualIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v13.receiver = self;
   v13.super_class = CNPhotoPickerPhotoFacesProvider;
   v6 = [(CNPhotoPickerPhotoFacesProvider *)&v13 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_visualIdentity, a3);
-    v8 = [MEMORY[0x1E696AFB0] UUID];
-    v9 = [v8 UUIDString];
+    objc_storeStrong(&v6->_visualIdentity, identity);
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
     identifier = v7->_identifier;
-    v7->_identifier = v9;
+    v7->_identifier = uUIDString;
 
     v11 = v7;
   }

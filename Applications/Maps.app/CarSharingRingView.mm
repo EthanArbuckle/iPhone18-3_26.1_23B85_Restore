@@ -1,11 +1,11 @@
 @interface CarSharingRingView
 - (CAAnimationDelegate)animationDelegate;
 - (CGColor)color;
-- (CarSharingRingView)initWithFrame:(CGRect)a3;
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4;
+- (CarSharingRingView)initWithFrame:(CGRect)frame;
+- (void)animationDidStop:(id)stop finished:(BOOL)finished;
 - (void)layoutSubviews;
-- (void)setColor:(CGColor *)a3;
-- (void)setFilled:(BOOL)a3 animated:(BOOL)a4;
+- (void)setColor:(CGColor *)color;
+- (void)setFilled:(BOOL)filled animated:(BOOL)animated;
 @end
 
 @implementation CarSharingRingView
@@ -17,35 +17,35 @@
   return WeakRetained;
 }
 
-- (void)animationDidStop:(id)a3 finished:(BOOL)a4
+- (void)animationDidStop:(id)stop finished:(BOOL)finished
 {
-  v4 = a4;
-  v6 = a3;
+  finishedCopy = finished;
+  stopCopy = stop;
   [(CarSharingRingView *)self setFilled:[(CarSharingRingView *)self isFilled]];
-  v7 = [(CarSharingRingView *)self animationDelegate];
-  [v7 animationDidStop:v6 finished:v4];
+  animationDelegate = [(CarSharingRingView *)self animationDelegate];
+  [animationDelegate animationDidStop:stopCopy finished:finishedCopy];
 }
 
-- (void)setFilled:(BOOL)a3 animated:(BOOL)a4
+- (void)setFilled:(BOOL)filled animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
-  self->_filled = a3;
+  animatedCopy = animated;
+  filledCopy = filled;
+  self->_filled = filled;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v7 = [(CarSharingRingView *)self shapeLayer];
-  [v7 removeAnimationForKey:@"drawCircleAnimation"];
+  shapeLayer = [(CarSharingRingView *)self shapeLayer];
+  [shapeLayer removeAnimationForKey:@"drawCircleAnimation"];
 
-  if (v4)
+  if (animatedCopy)
   {
-    v8 = [(CarSharingRingView *)self shapeLayer];
-    [v8 setStrokeEnd:(v5 ^ 1)];
+    shapeLayer2 = [(CarSharingRingView *)self shapeLayer];
+    [shapeLayer2 setStrokeEnd:(filledCopy ^ 1)];
 
     [(CarSharingRingView *)self setAlpha:1.0];
     +[CATransaction commit];
     v14 = [CABasicAnimation animationWithKeyPath:@"strokeEnd"];
     [v14 setDuration:1.5];
-    v9 = [NSNumber numberWithInt:v5];
+    v9 = [NSNumber numberWithInt:filledCopy];
     [v14 setToValue:v9];
 
     v10 = [CAMediaTimingFunction functionWithName:kCAMediaTimingFunctionEaseInEaseOut];
@@ -54,15 +54,15 @@
     [v14 setDelegate:self];
     [v14 setFillMode:kCAFillModeBoth];
     [v14 setRemovedOnCompletion:0];
-    v11 = [(CarSharingRingView *)self shapeLayer];
-    [v11 addAnimation:v14 forKey:@"drawCircleAnimation"];
+    shapeLayer3 = [(CarSharingRingView *)self shapeLayer];
+    [shapeLayer3 addAnimation:v14 forKey:@"drawCircleAnimation"];
   }
 
   else
   {
-    v12 = v5;
-    v13 = [(CarSharingRingView *)self shapeLayer];
-    [v13 setStrokeEnd:v12];
+    v12 = filledCopy;
+    shapeLayer4 = [(CarSharingRingView *)self shapeLayer];
+    [shapeLayer4 setStrokeEnd:v12];
 
     [(CarSharingRingView *)self setAlpha:v12];
 
@@ -70,22 +70,22 @@
   }
 }
 
-- (void)setColor:(CGColor *)a3
+- (void)setColor:(CGColor *)color
 {
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
-  v5 = [(CarSharingRingView *)self shapeLayer];
-  [v5 setStrokeColor:a3];
+  shapeLayer = [(CarSharingRingView *)self shapeLayer];
+  [shapeLayer setStrokeColor:color];
 
   +[CATransaction commit];
 }
 
 - (CGColor)color
 {
-  v2 = [(CarSharingRingView *)self shapeLayer];
-  v3 = [v2 strokeColor];
+  shapeLayer = [(CarSharingRingView *)self shapeLayer];
+  strokeColor = [shapeLayer strokeColor];
 
-  return v3;
+  return strokeColor;
 }
 
 - (void)layoutSubviews
@@ -99,36 +99,36 @@
     self->_lastSize.width = v3;
     self->_lastSize.height = v4;
     v6 = [UIBezierPath bezierPathWithOvalInRect:0.0, 0.0];
-    v7 = [v6 CGPath];
-    v8 = [(CarSharingRingView *)self shapeLayer];
-    [v8 setPath:v7];
+    cGPath = [v6 CGPath];
+    shapeLayer = [(CarSharingRingView *)self shapeLayer];
+    [shapeLayer setPath:cGPath];
   }
 }
 
-- (CarSharingRingView)initWithFrame:(CGRect)a3
+- (CarSharingRingView)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = CarSharingRingView;
-  v3 = [(CarSharingRingView *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CarSharingRingView *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(CarSharingRingView *)v3 setUserInteractionEnabled:0];
     v5 = +[UIColor clearColor];
-    v6 = [v5 CGColor];
-    v7 = [(CarSharingRingView *)v4 shapeLayer];
-    [v7 setFillColor:v6];
+    cGColor = [v5 CGColor];
+    shapeLayer = [(CarSharingRingView *)v4 shapeLayer];
+    [shapeLayer setFillColor:cGColor];
 
-    v8 = [(CarSharingRingView *)v4 shapeLayer];
-    [v8 setLineWidth:2.0];
+    shapeLayer2 = [(CarSharingRingView *)v4 shapeLayer];
+    [shapeLayer2 setLineWidth:2.0];
 
-    v9 = [(CarSharingRingView *)v4 shapeLayer];
-    [v9 setStrokeEnd:0.0];
+    shapeLayer3 = [(CarSharingRingView *)v4 shapeLayer];
+    [shapeLayer3 setStrokeEnd:0.0];
 
     CGAffineTransformMakeRotation(&v13, -1.57079633);
-    v10 = [(CarSharingRingView *)v4 shapeLayer];
+    shapeLayer4 = [(CarSharingRingView *)v4 shapeLayer];
     v12 = v13;
-    [v10 setAffineTransform:&v12];
+    [shapeLayer4 setAffineTransform:&v12];
   }
 
   return v4;

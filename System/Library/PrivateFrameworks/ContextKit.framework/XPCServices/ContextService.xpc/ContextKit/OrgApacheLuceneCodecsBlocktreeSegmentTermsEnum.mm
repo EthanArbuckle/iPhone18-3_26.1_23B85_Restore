@@ -1,17 +1,17 @@
 @interface OrgApacheLuceneCodecsBlocktreeSegmentTermsEnum
 + (void)initialize;
-- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (id)computeBlockStats;
 - (id)next;
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3;
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref;
 - (id)term;
 - (id)termState;
 - (int)docFreq;
 - (int64_t)totalTermFreq;
 - (void)dealloc;
 - (void)initIndexInput;
-- (void)printSeekStateWithJavaIoPrintStream:(id)a3;
-- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3 withOrgApacheLuceneIndexTermState:(id)a4;
+- (void)printSeekStateWithJavaIoPrintStream:(id)stream;
+- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref withOrgApacheLuceneIndexTermState:(id)state;
 @end
 
 @implementation OrgApacheLuceneCodecsBlocktreeSegmentTermsEnum
@@ -26,9 +26,9 @@
       JreThrowNullPointerException();
     }
 
-    v6 = [v5 clone];
+    clone = [v5 clone];
 
-    JreStrongAssign(&self->in_, v6);
+    JreStrongAssign(&self->in_, clone);
   }
 }
 
@@ -103,9 +103,9 @@
 LABEL_22:
     while (1)
     {
-      v25 = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)currentFrame next];
+      next = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)currentFrame next];
       v26 = *(&self->super.super.isa + v14[1018]);
-      if (!v25)
+      if (!next)
       {
         break;
       }
@@ -217,7 +217,7 @@ LABEL_37:
   return v6;
 }
 
-- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (BOOL)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   fr = self->fr_;
   if (!fr)
@@ -237,12 +237,12 @@ LABEL_37:
     goto LABEL_95;
   }
 
-  if (!a3)
+  if (!ref)
   {
     goto LABEL_95;
   }
 
-  [(OrgApacheLuceneUtilBytesRefBuilder *)term growWithInt:(*(a3 + 5) + 1)];
+  [(OrgApacheLuceneUtilBytesRefBuilder *)term growWithInt:(*(ref + 5) + 1)];
   currentFrame = self->currentFrame_;
   if (!currentFrame)
   {
@@ -317,12 +317,12 @@ LABEL_37:
     }
 
     v68 = stack->elementType_;
-    v14 = JavaLangMath_minWithInt_withInt_(*(a3 + 5), self->validIndexPrefix_);
+    v14 = JavaLangMath_minWithInt_withInt_(*(ref + 5), self->validIndexPrefix_);
     if (v14 < 1)
     {
       v15 = 0;
 LABEL_43:
-      v43 = JavaLangMath_minWithInt_withInt_(*(a3 + 5), [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ length]);
+      v43 = JavaLangMath_minWithInt_withInt_(*(ref + 5), [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ length]);
       if (v15 < v43)
       {
         v44 = v43;
@@ -330,7 +330,7 @@ LABEL_43:
         do
         {
           v46 = [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ byteAtWithInt:v45];
-          v47 = *(a3 + 1);
+          v47 = *(ref + 1);
           if (!v47)
           {
             goto LABEL_95;
@@ -338,7 +338,7 @@ LABEL_43:
 
           v48 = v46;
           v49 = *(v47 + 8);
-          v50 = v45 + *(a3 + 4);
+          v50 = v45 + *(ref + 4);
           if (v50 < 0 || v50 >= v49)
           {
             IOSArray_throwOutOfBoundsWithMsg(v49, v50);
@@ -357,7 +357,7 @@ LABEL_43:
         while (v44 != v45);
       }
 
-      v30 = [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ length]- *(a3 + 5);
+      v30 = [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ length]- *(ref + 5);
 LABEL_53:
       if ((v30 & 0x80000000) != 0)
       {
@@ -373,18 +373,18 @@ LABEL_53:
       while (1)
       {
         v18 = [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ byteAtWithInt:v16];
-        v25 = *(a3 + 1);
+        v25 = *(ref + 1);
         if (!v25)
         {
           goto LABEL_95;
         }
 
         v26 = v18;
-        v27 = v16 + *(a3 + 4);
+        v27 = v16 + *(ref + 4);
         v28 = *(v25 + 8);
         if (v27 < 0 || v27 >= v28)
         {
-          IOSArray_throwOutOfBoundsWithMsg(v28, v16 + *(a3 + 4));
+          IOSArray_throwOutOfBoundsWithMsg(v28, v16 + *(ref + 4));
         }
 
         v29 = *(v25 + 12 + v27);
@@ -479,18 +479,18 @@ LABEL_58:
   }
 
 LABEL_61:
-  if (v15 < *(a3 + 5))
+  if (v15 < *(ref + 5))
   {
     while (1)
     {
-      v53 = *(a3 + 1);
+      v53 = *(ref + 1);
       if (!v53)
       {
         goto LABEL_95;
       }
 
       v54 = *(v53 + 8);
-      v55 = v15 + *(a3 + 4);
+      v55 = v15 + *(ref + 4);
       if (v55 < 0 || v55 >= v54)
       {
         IOSArray_throwOutOfBoundsWithMsg(v54, v55);
@@ -549,7 +549,7 @@ LABEL_61:
       }
 
       v15 = v58;
-      if (v58 >= *(a3 + 5))
+      if (v58 >= *(ref + 5))
       {
         goto LABEL_83;
       }
@@ -559,12 +559,12 @@ LABEL_61:
     if (v65)
     {
       self->validIndexPrefix_ = v65->prefix_;
-      [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToFloorFrameWithOrgApacheLuceneUtilBytesRef:a3];
+      [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToFloorFrameWithOrgApacheLuceneUtilBytesRef:ref];
       v66 = self->currentFrame_;
       if (v66->hasTerms_)
       {
         [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)v66 loadBlock];
-        v63 = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToTermWithOrgApacheLuceneUtilBytesRef:a3 withBoolean:1];
+        v63 = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToTermWithOrgApacheLuceneUtilBytesRef:ref withBoolean:1];
         if ((atomic_load_explicit(OrgApacheLuceneIndexTermsEnum_SeekStatusEnum__initialized, memory_order_acquire) & 1) == 0)
         {
 LABEL_91:
@@ -593,12 +593,12 @@ LABEL_83:
   }
 
   self->validIndexPrefix_ = v61->prefix_;
-  [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToFloorFrameWithOrgApacheLuceneUtilBytesRef:a3];
+  [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToFloorFrameWithOrgApacheLuceneUtilBytesRef:ref];
   v62 = self->currentFrame_;
   if (v62->hasTerms_)
   {
     [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)v62 loadBlock];
-    v63 = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToTermWithOrgApacheLuceneUtilBytesRef:a3 withBoolean:1];
+    v63 = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToTermWithOrgApacheLuceneUtilBytesRef:ref withBoolean:1];
     if ((atomic_load_explicit(OrgApacheLuceneIndexTermsEnum_SeekStatusEnum__initialized, memory_order_acquire) & 1) == 0)
     {
       goto LABEL_91;
@@ -614,7 +614,7 @@ LABEL_94:
   return 0;
 }
 
-- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)a3
+- (id)seekCeilWithOrgApacheLuceneUtilBytesRef:(id)ref
 {
   fr = self->fr_;
   if (!fr)
@@ -634,12 +634,12 @@ LABEL_94:
     goto LABEL_96;
   }
 
-  if (!a3)
+  if (!ref)
   {
     goto LABEL_96;
   }
 
-  [(OrgApacheLuceneUtilBytesRefBuilder *)term growWithInt:(*(a3 + 5) + 1)];
+  [(OrgApacheLuceneUtilBytesRefBuilder *)term growWithInt:(*(ref + 5) + 1)];
   currentFrame = self->currentFrame_;
   if (!currentFrame)
   {
@@ -714,12 +714,12 @@ LABEL_94:
     }
 
     v69 = stack->elementType_;
-    v14 = JavaLangMath_minWithInt_withInt_(*(a3 + 5), self->validIndexPrefix_);
+    v14 = JavaLangMath_minWithInt_withInt_(*(ref + 5), self->validIndexPrefix_);
     if (v14 < 1)
     {
       v15 = 0;
 LABEL_43:
-      v43 = JavaLangMath_minWithInt_withInt_(*(a3 + 5), [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ length]);
+      v43 = JavaLangMath_minWithInt_withInt_(*(ref + 5), [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ length]);
       if (v15 < v43)
       {
         v44 = v43;
@@ -727,7 +727,7 @@ LABEL_43:
         do
         {
           v46 = [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ byteAtWithInt:v45];
-          v47 = *(a3 + 1);
+          v47 = *(ref + 1);
           if (!v47)
           {
             goto LABEL_96;
@@ -735,7 +735,7 @@ LABEL_43:
 
           v48 = v46;
           v49 = *(v47 + 8);
-          v50 = v45 + *(a3 + 4);
+          v50 = v45 + *(ref + 4);
           if (v50 < 0 || v50 >= v49)
           {
             IOSArray_throwOutOfBoundsWithMsg(v49, v50);
@@ -754,7 +754,7 @@ LABEL_43:
         while (v44 != v45);
       }
 
-      v30 = [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ length]- *(a3 + 5);
+      v30 = [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ length]- *(ref + 5);
 LABEL_53:
       if ((v30 & 0x80000000) != 0)
       {
@@ -770,18 +770,18 @@ LABEL_53:
       while (1)
       {
         v18 = [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ byteAtWithInt:v16];
-        v25 = *(a3 + 1);
+        v25 = *(ref + 1);
         if (!v25)
         {
           goto LABEL_96;
         }
 
         v26 = v18;
-        v27 = v16 + *(a3 + 4);
+        v27 = v16 + *(ref + 4);
         v28 = *(v25 + 8);
         if (v27 < 0 || v27 >= v28)
         {
-          IOSArray_throwOutOfBoundsWithMsg(v28, v16 + *(a3 + 4));
+          IOSArray_throwOutOfBoundsWithMsg(v28, v16 + *(ref + 4));
         }
 
         v29 = *(v25 + 12 + v27);
@@ -885,18 +885,18 @@ LABEL_61:
   }
 
 LABEL_62:
-  if (v15 < *(a3 + 5))
+  if (v15 < *(ref + 5))
   {
     while (1)
     {
-      v54 = *(a3 + 1);
+      v54 = *(ref + 1);
       if (!v54)
       {
         goto LABEL_96;
       }
 
       v55 = *(v54 + 8);
-      v56 = v15 + *(a3 + 4);
+      v56 = v15 + *(ref + 4);
       if (v56 < 0 || v56 >= v55)
       {
         IOSArray_throwOutOfBoundsWithMsg(v55, v56);
@@ -955,7 +955,7 @@ LABEL_62:
       }
 
       v15 = v59;
-      if (v59 >= *(a3 + 5))
+      if (v59 >= *(ref + 5))
       {
         goto LABEL_83;
       }
@@ -965,9 +965,9 @@ LABEL_62:
     if (v64)
     {
       self->validIndexPrefix_ = v64->prefix_;
-      [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToFloorFrameWithOrgApacheLuceneUtilBytesRef:a3];
+      [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToFloorFrameWithOrgApacheLuceneUtilBytesRef:ref];
       [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ loadBlock];
-      v63 = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToTermWithOrgApacheLuceneUtilBytesRef:a3 withBoolean:0];
+      v63 = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToTermWithOrgApacheLuceneUtilBytesRef:ref withBoolean:0];
       if (atomic_load_explicit(OrgApacheLuceneIndexTermsEnum_SeekStatusEnum__initialized, memory_order_acquire))
       {
         goto LABEL_89;
@@ -988,9 +988,9 @@ LABEL_83:
   }
 
   self->validIndexPrefix_ = v62->prefix_;
-  [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToFloorFrameWithOrgApacheLuceneUtilBytesRef:a3];
+  [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToFloorFrameWithOrgApacheLuceneUtilBytesRef:ref];
   [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ loadBlock];
-  v63 = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToTermWithOrgApacheLuceneUtilBytesRef:a3 withBoolean:0];
+  v63 = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ scanToTermWithOrgApacheLuceneUtilBytesRef:ref withBoolean:0];
   if (atomic_load_explicit(OrgApacheLuceneIndexTermsEnum_SeekStatusEnum__initialized, memory_order_acquire))
   {
     goto LABEL_89;
@@ -1001,11 +1001,11 @@ LABEL_88:
 LABEL_89:
   if (v63 == OrgApacheLuceneIndexTermsEnum_SeekStatusEnum_values_)
   {
-    [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ copyBytesWithOrgApacheLuceneUtilBytesRef:a3];
+    [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ copyBytesWithOrgApacheLuceneUtilBytesRef:ref];
     self->termExists_ = 0;
-    v65 = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnum *)self next];
+    next = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnum *)self next];
     explicit = atomic_load_explicit(OrgApacheLuceneIndexTermsEnum_SeekStatusEnum__initialized, memory_order_acquire);
-    if (v65)
+    if (next)
     {
       v53 = &qword_100557A50;
     }
@@ -1026,22 +1026,22 @@ LABEL_89:
   return v63;
 }
 
-- (void)printSeekStateWithJavaIoPrintStream:(id)a3
+- (void)printSeekStateWithJavaIoPrintStream:(id)stream
 {
   if (self->currentFrame_ != self->staticFrame_)
   {
-    if (a3)
+    if (stream)
     {
-      v4 = self;
-      [a3 printlnWithNSString:@"  prior seek state:"];
-      v11 = sub_1000DD034(v4, 0, v5, v6, v7, v8, v9, v10);
-      v12 = *(v4 + 48);
+      selfCopy = self;
+      [stream printlnWithNSString:@"  prior seek state:"];
+      v11 = sub_1000DD034(selfCopy, 0, v5, v6, v7, v8, v9, v10);
+      v12 = *(selfCopy + 48);
       if (v12)
       {
         v13 = 1;
-        v84 = v4;
-        v85 = a3;
-        LODWORD(v4) = 0;
+        v84 = selfCopy;
+        streamCopy = stream;
+        LODWORD(selfCopy) = 0;
         while (1)
         {
           v14 = [v12 get];
@@ -1087,7 +1087,7 @@ LABEL_89:
           v33 = v92;
           v41 = JreStrcat("$$$I$J$$I$@$$Z$Z$J$Z$I$I", v46, v47, v48, v49, v50, v51, v52, @"    frame ");
 LABEL_23:
-          [v85 printlnWithNSString:v41];
+          [streamCopy printlnWithNSString:v41];
           v59 = *(v84 + 40);
           if (!v59)
           {
@@ -1106,7 +1106,7 @@ LABEL_23:
                 goto LABEL_37;
               }
 
-              v63 = v4;
+              v63 = selfCopy;
               v64 = *(v62 + 8);
               if (v64 != [*(v84 + 48) byteAtWithInt:(v61 - 1)])
               {
@@ -1117,7 +1117,7 @@ LABEL_23:
               }
 
               v60 = *(*(v84 + 40) + 104);
-              LODWORD(v4) = v63;
+              LODWORD(selfCopy) = v63;
             }
 
             v65 = OrgApacheLuceneUtilFstUtil_getWithOrgApacheLuceneUtilFstFST_withOrgApacheLuceneUtilBytesRef_(v60, v33);
@@ -1142,7 +1142,7 @@ LABEL_23:
 LABEL_46:
                 v69 = v78;
 LABEL_47:
-                [v85 printlnWithNSString:v69];
+                [streamCopy printlnWithNSString:v69];
                 v79 = new_JavaLangRuntimeException_initWithNSString_(@"seek state is broken");
                 objc_exception_throw(v79);
               }
@@ -1155,8 +1155,8 @@ LABEL_47:
           }
 
           v13 &= *(v11 + 104) != *(v84 + 88);
-          v4 = (v4 + 1);
-          v11 = sub_1000DD034(v84, v4, v53, v54, v55, v56, v57, v58);
+          selfCopy = (selfCopy + 1);
+          v11 = sub_1000DD034(v84, selfCopy, v53, v54, v55, v56, v57, v58);
           v12 = *(v84 + 48);
           if (!v12)
           {
@@ -1164,7 +1164,7 @@ LABEL_47:
           }
         }
 
-        v90 = v4;
+        v90 = selfCopy;
         if (*(v11 + 14))
         {
           v80 = *(v11 + 40);
@@ -1192,11 +1192,11 @@ LABEL_16:
 
         v30 = v29 | (4 * *(v11 + 32)) | *(v11 + 14);
         v31 = *(v11 + 120);
-        v4 = *(v11 + 116);
+        selfCopy = *(v11 + 116);
         v32 = *(v11 + 136);
         [v11 getTermBlockOrd];
         v33 = v92;
-        LODWORD(v4) = v90;
+        LODWORD(selfCopy) = v90;
         v41 = JreStrcat("$$$I$J$$I$@$I$$Z$Z$J$J$Z$I$I", v34, v35, v36, v37, v38, v39, v40, @"    frame ");
         goto LABEL_23;
       }
@@ -1206,12 +1206,12 @@ LABEL_37:
     JreThrowNullPointerException();
   }
 
-  if (!a3)
+  if (!stream)
   {
     goto LABEL_37;
   }
 
-  [a3 printlnWithNSString:@"  no prior seek"];
+  [stream printlnWithNSString:@"  no prior seek"];
 }
 
 - (id)next
@@ -1351,9 +1351,9 @@ LABEL_41:
 LABEL_33:
   while (1)
   {
-    v21 = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)v10 next];
+    next = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)v10 next];
     v22 = self->term_;
-    if (!v21)
+    if (!next)
     {
       break;
     }
@@ -1418,9 +1418,9 @@ LABEL_32:
   return state->totalTermFreq_;
 }
 
-- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)a3 withOrgApacheLuceneIndexTermState:(id)a4
+- (void)seekExactWithOrgApacheLuceneUtilBytesRef:(id)ref withOrgApacheLuceneIndexTermState:(id)state
 {
-  if (!a3)
+  if (!ref)
   {
     goto LABEL_9;
   }
@@ -1431,7 +1431,7 @@ LABEL_32:
     goto LABEL_9;
   }
 
-  if ([a3 compareToWithId:{-[OrgApacheLuceneUtilBytesRefBuilder get](term, "get")}] || !self->termExists_)
+  if ([ref compareToWithId:{-[OrgApacheLuceneUtilBytesRefBuilder get](term, "get")}] || !self->termExists_)
   {
     JreStrongAssign(&self->currentFrame_, self->staticFrame_);
     currentFrame = self->currentFrame_;
@@ -1440,8 +1440,8 @@ LABEL_32:
       state = currentFrame->state_;
       if (state)
       {
-        [(OrgApacheLuceneCodecsBlockTermState *)state copyFromWithOrgApacheLuceneIndexTermState:a4];
-        [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ copyBytesWithOrgApacheLuceneUtilBytesRef:a3];
+        [(OrgApacheLuceneCodecsBlockTermState *)state copyFromWithOrgApacheLuceneIndexTermState:state];
+        [(OrgApacheLuceneUtilBytesRefBuilder *)self->term_ copyBytesWithOrgApacheLuceneUtilBytesRef:ref];
         self->currentFrame_->metaDataUpto_ = [(OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame *)self->currentFrame_ getTermBlockOrd];
         self->validIndexPrefix_ = 0;
         return;
@@ -1473,7 +1473,7 @@ LABEL_9:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = [IOSObjectArray newArrayWithLength:0 type:OrgApacheLuceneCodecsBlocktreeSegmentTermsEnumFrame_class_()];
     JreStrongAssignAndConsume(&qword_100554540, v2);

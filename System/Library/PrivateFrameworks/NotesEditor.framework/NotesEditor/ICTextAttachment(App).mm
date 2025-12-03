@@ -15,11 +15,11 @@
   v9 = a4;
   v10 = a3;
   objc_opt_class();
-  v11 = [v8 textLayoutManager];
+  textLayoutManager = [v8 textLayoutManager];
 
   v12 = ICDynamicCast();
 
-  v13 = [v12 viewProviderForTextAttachment:a1 parentView:v10 location:v9];
+  v13 = [v12 viewProviderForTextAttachment:self parentView:v10 location:v9];
 
   return v13;
 }
@@ -31,14 +31,14 @@
   objc_opt_class();
   v10 = ICDynamicCast();
 
-  v11 = [v10 viewProviderForTextAttachment:a1 parentView:v9 characterIndex:a4];
+  v11 = [v10 viewProviderForTextAttachment:self parentView:v9 characterIndex:a4];
 
   return v11;
 }
 
 - (id)viewForLayoutManager:()App
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &off_28280BA08;
   v1 = objc_msgSendSuper2(&v3, sel_viewForLayoutManager_);
 
@@ -52,9 +52,9 @@
   v20 = a7;
   objc_opt_class();
   v21 = ICDynamicCast();
-  v22 = [v20 superview];
+  superview = [v20 superview];
 
-  [a1 attachmentBoundsMargins];
+  [self attachmentBoundsMargins];
   v24 = v23;
   v26 = v25;
   v29 = a5 - (v27 + v28);
@@ -72,14 +72,14 @@
   }
 
   v34 = a2 + v33;
-  [v21 willPlaceView:v20 forTextAttachment:a1];
-  v35.receiver = a1;
+  [v21 willPlaceView:v20 forTextAttachment:self];
+  v35.receiver = self;
   v35.super_class = &off_28280BA08;
   objc_msgSendSuper2(&v35, sel_placeView_withFrame_inParentView_characterIndex_layoutManager_, v20, v19, a9, v18, v34, v30, v31, v29);
 
-  if (v22 != v19)
+  if (superview != v19)
   {
-    [v21 didAddViewForTextAttachment:a1];
+    [v21 didAddViewForTextAttachment:self];
   }
 }
 
@@ -106,14 +106,14 @@
     }
   }
 
-  if ([a1 supportsMultiplePresentationSizes])
+  if ([self supportsMultiplePresentationSizes])
   {
-    v15 = [a1 attachment];
-    v16 = [v15 preferredViewSize];
+    attachment = [self attachment];
+    preferredViewSize = [attachment preferredViewSize];
 
-    if (v16 == 1 && a3 > 0.0)
+    if (preferredViewSize == 1 && a3 > 0.0)
     {
-      [a1 attachmentThumbnailViewHeight];
+      [self attachmentThumbnailViewHeight];
       if (a3 >= v17)
       {
         v18 = v17;

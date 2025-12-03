@@ -1,33 +1,33 @@
 @interface AECAssessmentSessionWrapper
 - (AECAssessmentConfigurationWrapper)configurationWrapper;
-- (AECAssessmentSessionWrapper)initWithConfigurationWrapper:(id)a3 queue:(id)a4;
+- (AECAssessmentSessionWrapper)initWithConfigurationWrapper:(id)wrapper queue:(id)queue;
 - (AECAssessmentSessionWrapperDelegate)delegate;
 - (BOOL)isActive;
-- (void)assessmentSession:(id)a3 failedToBeginWithError:(id)a4;
-- (void)assessmentSession:(id)a3 wasInterruptedWithError:(id)a4;
-- (void)assessmentSessionDidBegin:(id)a3;
-- (void)assessmentSessionDidEnd:(id)a3;
-- (void)assessmentSessionDidUpdate:(id)a3;
-- (void)assessmentSesson:(id)a3 failedToUpdateToConfiguration:(id)a4 error:(id)a5;
+- (void)assessmentSession:(id)session failedToBeginWithError:(id)error;
+- (void)assessmentSession:(id)session wasInterruptedWithError:(id)error;
+- (void)assessmentSessionDidBegin:(id)begin;
+- (void)assessmentSessionDidEnd:(id)end;
+- (void)assessmentSessionDidUpdate:(id)update;
+- (void)assessmentSesson:(id)sesson failedToUpdateToConfiguration:(id)configuration error:(id)error;
 - (void)begin;
 - (void)end;
-- (void)updateToConfigurationWrapper:(id)a3;
+- (void)updateToConfigurationWrapper:(id)wrapper;
 @end
 
 @implementation AECAssessmentSessionWrapper
 
-- (AECAssessmentSessionWrapper)initWithConfigurationWrapper:(id)a3 queue:(id)a4
+- (AECAssessmentSessionWrapper)initWithConfigurationWrapper:(id)wrapper queue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  wrapperCopy = wrapper;
+  queueCopy = queue;
   v14.receiver = self;
   v14.super_class = AECAssessmentSessionWrapper;
   v8 = [(AECAssessmentSessionWrapper *)&v14 init];
   if (v8)
   {
     v9 = [_TtC9AACClient20AECAssessmentSession alloc];
-    v10 = [v6 makeConfiguration];
-    v11 = [(AECAssessmentSession *)v9 initWithConfiguration:v10 queue:v7];
+    makeConfiguration = [wrapperCopy makeConfiguration];
+    v11 = [(AECAssessmentSession *)v9 initWithConfiguration:makeConfiguration queue:queueCopy];
     session = v8->_session;
     v8->_session = v11;
 
@@ -39,80 +39,80 @@
 
 - (BOOL)isActive
 {
-  v2 = [(AECAssessmentSessionWrapper *)self session];
-  v3 = [v2 isActive];
+  session = [(AECAssessmentSessionWrapper *)self session];
+  isActive = [session isActive];
 
-  return v3;
+  return isActive;
 }
 
 - (AECAssessmentConfigurationWrapper)configurationWrapper
 {
-  v2 = [(AECAssessmentSessionWrapper *)self session];
-  v3 = [v2 configuration];
-  v4 = [AECAssessmentConfigurationWrapper wrapperFromConfiguration:v3];
+  session = [(AECAssessmentSessionWrapper *)self session];
+  configuration = [session configuration];
+  v4 = [AECAssessmentConfigurationWrapper wrapperFromConfiguration:configuration];
 
   return v4;
 }
 
 - (void)begin
 {
-  v2 = [(AECAssessmentSessionWrapper *)self session];
-  [v2 begin];
+  session = [(AECAssessmentSessionWrapper *)self session];
+  [session begin];
 }
 
-- (void)updateToConfigurationWrapper:(id)a3
+- (void)updateToConfigurationWrapper:(id)wrapper
 {
-  v4 = a3;
-  v6 = [(AECAssessmentSessionWrapper *)self session];
-  v5 = [v4 makeConfiguration];
+  wrapperCopy = wrapper;
+  session = [(AECAssessmentSessionWrapper *)self session];
+  makeConfiguration = [wrapperCopy makeConfiguration];
 
-  [v6 updateWithConfiguration:v5];
+  [session updateWithConfiguration:makeConfiguration];
 }
 
 - (void)end
 {
-  v2 = [(AECAssessmentSessionWrapper *)self session];
-  [v2 end];
+  session = [(AECAssessmentSessionWrapper *)self session];
+  [session end];
 }
 
-- (void)assessmentSessionDidBegin:(id)a3
+- (void)assessmentSessionDidBegin:(id)begin
 {
-  v4 = [(AECAssessmentSessionWrapper *)self delegate];
-  [v4 assessmentSessionWrapperDidBegin:self];
+  delegate = [(AECAssessmentSessionWrapper *)self delegate];
+  [delegate assessmentSessionWrapperDidBegin:self];
 }
 
-- (void)assessmentSessionDidEnd:(id)a3
+- (void)assessmentSessionDidEnd:(id)end
 {
-  v4 = [(AECAssessmentSessionWrapper *)self delegate];
-  [v4 assessmentSessionWrapperDidEnd:self];
+  delegate = [(AECAssessmentSessionWrapper *)self delegate];
+  [delegate assessmentSessionWrapperDidEnd:self];
 }
 
-- (void)assessmentSession:(id)a3 failedToBeginWithError:(id)a4
+- (void)assessmentSession:(id)session failedToBeginWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(AECAssessmentSessionWrapper *)self delegate];
-  [v6 assessmentSessionWrapper:self failedToBeginWithError:v5];
+  errorCopy = error;
+  delegate = [(AECAssessmentSessionWrapper *)self delegate];
+  [delegate assessmentSessionWrapper:self failedToBeginWithError:errorCopy];
 }
 
-- (void)assessmentSession:(id)a3 wasInterruptedWithError:(id)a4
+- (void)assessmentSession:(id)session wasInterruptedWithError:(id)error
 {
-  v5 = a4;
-  v6 = [(AECAssessmentSessionWrapper *)self delegate];
-  [v6 assessmentSessionWrapper:self wasInterruptedWithError:v5];
+  errorCopy = error;
+  delegate = [(AECAssessmentSessionWrapper *)self delegate];
+  [delegate assessmentSessionWrapper:self wasInterruptedWithError:errorCopy];
 }
 
-- (void)assessmentSessionDidUpdate:(id)a3
+- (void)assessmentSessionDidUpdate:(id)update
 {
-  v4 = [(AECAssessmentSessionWrapper *)self delegate];
-  [v4 assessmentSessionWrapperDidUpdate:self];
+  delegate = [(AECAssessmentSessionWrapper *)self delegate];
+  [delegate assessmentSessionWrapperDidUpdate:self];
 }
 
-- (void)assessmentSesson:(id)a3 failedToUpdateToConfiguration:(id)a4 error:(id)a5
+- (void)assessmentSesson:(id)sesson failedToUpdateToConfiguration:(id)configuration error:(id)error
 {
-  v7 = a5;
-  v9 = [AECAssessmentConfigurationWrapper wrapperFromConfiguration:a4];
-  v8 = [(AECAssessmentSessionWrapper *)self delegate];
-  [v8 assessmentSessionWrapper:self failedToUpdateToConfigurationWrapper:v9 error:v7];
+  errorCopy = error;
+  v9 = [AECAssessmentConfigurationWrapper wrapperFromConfiguration:configuration];
+  delegate = [(AECAssessmentSessionWrapper *)self delegate];
+  [delegate assessmentSessionWrapper:self failedToUpdateToConfigurationWrapper:v9 error:errorCopy];
 }
 
 - (AECAssessmentSessionWrapperDelegate)delegate

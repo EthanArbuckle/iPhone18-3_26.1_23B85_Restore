@@ -1,29 +1,29 @@
 @interface SBSpotlightTransientOverlayInteractiveGestureTransaction
-- (BOOL)canInterruptForTransitionRequest:(id)a3;
-- (SBSpotlightTransientOverlayInteractiveGestureTransaction)initWithTransitionRequest:(id)a3 spotlightTransientOverlayViewController:(id)a4;
+- (BOOL)canInterruptForTransitionRequest:(id)request;
+- (SBSpotlightTransientOverlayInteractiveGestureTransaction)initWithTransitionRequest:(id)request spotlightTransientOverlayViewController:(id)controller;
 - (id)_homeScreenAnimator;
 - (void)_begin;
 - (void)_didComplete;
 - (void)_dismissSpotlightTransientOverlayViewController;
-- (void)_logForInterruptAttemptReason:(id)a3;
-- (void)_presentTransientOverlayViewController:(id)a3;
-- (void)endPresentation:(BOOL)a3;
-- (void)transactionDidComplete:(id)a3;
-- (void)updatePresentationWithProgress:(double)a3 translation:(double)a4;
+- (void)_logForInterruptAttemptReason:(id)reason;
+- (void)_presentTransientOverlayViewController:(id)controller;
+- (void)endPresentation:(BOOL)presentation;
+- (void)transactionDidComplete:(id)complete;
+- (void)updatePresentationWithProgress:(double)progress translation:(double)translation;
 @end
 
 @implementation SBSpotlightTransientOverlayInteractiveGestureTransaction
 
-- (SBSpotlightTransientOverlayInteractiveGestureTransaction)initWithTransitionRequest:(id)a3 spotlightTransientOverlayViewController:(id)a4
+- (SBSpotlightTransientOverlayInteractiveGestureTransaction)initWithTransitionRequest:(id)request spotlightTransientOverlayViewController:(id)controller
 {
-  v7 = a4;
+  controllerCopy = controller;
   v13.receiver = self;
   v13.super_class = SBSpotlightTransientOverlayInteractiveGestureTransaction;
-  v8 = [(SBMainWorkspaceTransaction *)&v13 initWithTransitionRequest:a3];
+  v8 = [(SBMainWorkspaceTransaction *)&v13 initWithTransitionRequest:request];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_spotlightTransientOverlayViewController, a4);
+    objc_storeStrong(&v8->_spotlightTransientOverlayViewController, controller);
     v10 = +[SBSpotlightDomain rootSettings];
     settings = v9->_settings;
     v9->_settings = v10;
@@ -38,9 +38,9 @@
   {
     [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)self addMilestone:@"trackingGesture"];
     v3 = +[SBKeyboardSuppressionManager sharedInstance];
-    v4 = [(SBWorkspaceTransaction *)self transitionRequest];
-    v5 = [v4 displayIdentity];
-    [v3 startSuppressingKeyboardWithReason:@"SBSpotlightInteractiveGestureKeyboardSuppressionReason" predicate:0 displayIdentity:v5];
+    transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+    displayIdentity = [transitionRequest displayIdentity];
+    [v3 startSuppressingKeyboardWithReason:@"SBSpotlightInteractiveGestureKeyboardSuppressionReason" predicate:0 displayIdentity:displayIdentity];
   }
 
   v9.receiver = self;
@@ -50,9 +50,9 @@
   {
     [(SBSpotlightTransientOverlayViewController *)self->_spotlightTransientOverlayViewController beginInteractivePresentation];
     spotlightTransientOverlayViewController = self->_spotlightTransientOverlayViewController;
-    v7 = [(SBWorkspaceTransaction *)self transitionRequest];
-    v8 = [v7 displayConfiguration];
-    [(SBSpotlightTransientOverlayViewController *)spotlightTransientOverlayViewController setTargetDisplayConfiguration:v8];
+    transitionRequest2 = [(SBWorkspaceTransaction *)self transitionRequest];
+    displayConfiguration = [transitionRequest2 displayConfiguration];
+    [(SBSpotlightTransientOverlayViewController *)spotlightTransientOverlayViewController setTargetDisplayConfiguration:displayConfiguration];
 
     [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)self _presentTransientOverlayViewController:self->_spotlightTransientOverlayViewController];
   }
@@ -68,17 +68,17 @@
   [(SBMainWorkspaceTransaction *)&v4 _didComplete];
 }
 
-- (BOOL)canInterruptForTransitionRequest:(id)a3
+- (BOOL)canInterruptForTransitionRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = objc_opt_class();
-  v6 = SBSafeCast(v5, v4);
+  v6 = SBSafeCast(v5, requestCopy);
 
-  v7 = [v6 copyMainWorkspaceTransitionRequest];
-  if ([v7 source] == 11)
+  copyMainWorkspaceTransitionRequest = [v6 copyMainWorkspaceTransitionRequest];
+  if ([copyMainWorkspaceTransitionRequest source] == 11)
   {
-    v8 = [v7 workspace];
-    v9 = [v8 transactionForTransitionRequest:v7];
+    workspace = [copyMainWorkspaceTransitionRequest workspace];
+    v9 = [workspace transactionForTransitionRequest:copyMainWorkspaceTransitionRequest];
 
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -98,16 +98,16 @@
   return isKindOfClass & 1;
 }
 
-- (void)_logForInterruptAttemptReason:(id)a3
+- (void)_logForInterruptAttemptReason:(id)reason
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = SBLogCommon();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_INFO);
 
   if (v6)
   {
-    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:v4 arguments:&v12];
+    v7 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:reasonCopy arguments:&v12];
     if ([(SBSpotlightTransientOverlayInteractiveGestureTransaction *)self isAuditHistoryEnabled])
     {
       [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)self _addAuditHistoryItem:@"%@", v7];
@@ -123,7 +123,7 @@
   }
 }
 
-- (void)updatePresentationWithProgress:(double)a3 translation:(double)a4
+- (void)updatePresentationWithProgress:(double)progress translation:(double)translation
 {
   if (!SBReduceMotion())
   {
@@ -135,44 +135,44 @@
     BSUIConstrainValueToIntervalWithRubberBand();
     v11 = v10;
     v12 = +[SBLockScreenManager sharedInstance];
-    v13 = [v12 isLockScreenVisible];
+    isLockScreenVisible = [v12 isLockScreenVisible];
 
-    if (v13)
+    if (isLockScreenVisible)
     {
-      v14 = +[SBUIController sharedInstance];
-      [v14 setLockScreenScale:5 withDuration:0 behaviorMode:v11 completion:0.0];
+      _homeScreenAnimator = +[SBUIController sharedInstance];
+      [_homeScreenAnimator setLockScreenScale:5 withDuration:0 behaviorMode:v11 completion:0.0];
     }
 
     else
     {
-      v14 = [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)self _homeScreenAnimator];
-      [v14 setHomeScreenScale:5 behaviorMode:0 completion:v11];
+      _homeScreenAnimator = [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)self _homeScreenAnimator];
+      [_homeScreenAnimator setHomeScreenScale:5 behaviorMode:0 completion:v11];
     }
   }
 
-  [(SBSpotlightTransientOverlayViewController *)self->_spotlightTransientOverlayViewController updateInteractivePresentationWithProgress:a3 translation:a4];
+  [(SBSpotlightTransientOverlayViewController *)self->_spotlightTransientOverlayViewController updateInteractivePresentationWithProgress:progress translation:translation];
 }
 
-- (void)endPresentation:(BOOL)a3
+- (void)endPresentation:(BOOL)presentation
 {
-  v3 = a3;
+  presentationCopy = presentation;
   v5 = +[SBLockScreenManager sharedInstance];
-  v6 = [v5 isLockScreenVisible];
+  isLockScreenVisible = [v5 isLockScreenVisible];
 
-  if (v6)
+  if (isLockScreenVisible)
   {
-    v7 = +[SBUIController sharedInstance];
-    [v7 setLockScreenScale:3 withDuration:0 behaviorMode:1.0 completion:0.3];
+    _homeScreenAnimator = +[SBUIController sharedInstance];
+    [_homeScreenAnimator setLockScreenScale:3 withDuration:0 behaviorMode:1.0 completion:0.3];
   }
 
   else
   {
-    v7 = [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)self _homeScreenAnimator];
-    [v7 setHomeScreenScale:3 behaviorMode:0 completion:1.0];
+    _homeScreenAnimator = [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)self _homeScreenAnimator];
+    [_homeScreenAnimator setHomeScreenScale:3 behaviorMode:0 completion:1.0];
   }
 
-  [(SBSpotlightTransientOverlayViewController *)self->_spotlightTransientOverlayViewController endInteractivePresentation:v3];
-  if (!v3)
+  [(SBSpotlightTransientOverlayViewController *)self->_spotlightTransientOverlayViewController endInteractivePresentation:presentationCopy];
+  if (!presentationCopy)
   {
     [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)self _dismissSpotlightTransientOverlayViewController];
   }
@@ -180,20 +180,20 @@
   [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)self removeMilestone:@"trackingGesture"];
 }
 
-- (void)_presentTransientOverlayViewController:(id)a3
+- (void)_presentTransientOverlayViewController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   if (self->_presentTransientOverlayTransaction)
   {
     [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)a2 _presentTransientOverlayViewController:?];
   }
 
-  v6 = v5;
-  v7 = [[SBWorkspaceTransientOverlay alloc] initWithViewController:v5];
-  v8 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v9 = [v8 workspace];
+  v6 = controllerCopy;
+  v7 = [[SBWorkspaceTransientOverlay alloc] initWithViewController:controllerCopy];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  workspace = [transitionRequest workspace];
 
-  v10 = [v9 createRequestWithOptions:0];
+  v10 = [workspace createRequestWithOptions:0];
   v11 = objc_opt_class();
   v12 = NSStringFromClass(v11);
   [v10 setEventLabelWithFormat:@"PresentTransientOverlay = %@", v12];
@@ -206,7 +206,7 @@
   v13 = v7;
   [v10 modifyTransientOverlayContext:v16];
   [v10 modifyApplicationContext:&__block_literal_global_45];
-  v14 = [v9 transactionForTransitionRequest:v10];
+  v14 = [workspace transactionForTransitionRequest:v10];
   presentTransientOverlayTransaction = self->_presentTransientOverlayTransaction;
   self->_presentTransientOverlayTransaction = v14;
 
@@ -225,10 +225,10 @@ void __99__SBSpotlightTransientOverlayInteractiveGestureTransaction__presentTran
 - (void)_dismissSpotlightTransientOverlayViewController
 {
   v3 = [[SBWorkspaceTransientOverlay alloc] initWithViewController:self->_spotlightTransientOverlayViewController];
-  v4 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v5 = [v4 workspace];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  workspace = [transitionRequest workspace];
 
-  v6 = [v5 createRequestWithOptions:0];
+  v6 = [workspace createRequestWithOptions:0];
   v7 = objc_opt_class();
   v8 = NSStringFromClass(v7);
   [v6 setEventLabelWithFormat:@"DismissSearchOverlay", v8];
@@ -247,7 +247,7 @@ void __99__SBSpotlightTransientOverlayInteractiveGestureTransaction__presentTran
     [(SBWorkspaceTransaction *)self->_presentTransientOverlayTransaction interruptForTransitionRequest:v6];
   }
 
-  v11 = [v5 transactionForTransitionRequest:v6];
+  v11 = [workspace transactionForTransitionRequest:v6];
   [(SBSpotlightTransientOverlayInteractiveGestureTransaction *)self addChildTransaction:v11 withSchedulingPolicy:1];
 }
 
@@ -261,16 +261,16 @@ void __107__SBSpotlightTransientOverlayInteractiveGestureTransaction__dismissSpo
 
 - (id)_homeScreenAnimator
 {
-  v2 = [(SBTransientOverlayViewController *)self->_spotlightTransientOverlayViewController _sbWindowScene];
-  v3 = [v2 homeScreenController];
+  _sbWindowScene = [(SBTransientOverlayViewController *)self->_spotlightTransientOverlayViewController _sbWindowScene];
+  homeScreenController = [_sbWindowScene homeScreenController];
 
-  return v3;
+  return homeScreenController;
 }
 
-- (void)transactionDidComplete:(id)a3
+- (void)transactionDidComplete:(id)complete
 {
   presentTransientOverlayTransaction = self->_presentTransientOverlayTransaction;
-  if (presentTransientOverlayTransaction == a3)
+  if (presentTransientOverlayTransaction == complete)
   {
     self->_presentTransientOverlayTransaction = 0;
   }

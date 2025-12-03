@@ -1,19 +1,19 @@
 @interface TRTransferServer
 - (TRTransferServer)init;
 - (TRTransferServerDelegate)delegate;
-- (id)_onQueue_didReceiveEncryptedData:(id)a3;
-- (id)transferDidReceiveData:(id)a3;
-- (int)_runSetupStepWithInput:(const void *)a3 inputLength:(unint64_t)a4 outputData:(id *)a5;
-- (int)_runVerifyStepWithInput:(const void *)a3 inputLength:(unint64_t)a4 outputData:(id *)a5;
+- (id)_onQueue_didReceiveEncryptedData:(id)data;
+- (id)transferDidReceiveData:(id)data;
+- (int)_runSetupStepWithInput:(const void *)input inputLength:(unint64_t)length outputData:(id *)data;
+- (int)_runVerifyStepWithInput:(const void *)input inputLength:(unint64_t)length outputData:(id *)data;
 - (void)_beginAdvertisingIfPowered;
 - (void)_onQueue_didFinishPairing;
 - (void)dealloc;
 - (void)start;
 - (void)stop;
 - (void)transferComplete;
-- (void)transferDidFailToStartAdvertising:(id)a3;
-- (void)transferDidFailWithError:(id)a3;
-- (void)transferDidUpdateAdvertiserState:(id)a3;
+- (void)transferDidFailToStartAdvertising:(id)advertising;
+- (void)transferDidFailWithError:(id)error;
+- (void)transferDidUpdateAdvertiserState:(id)state;
 @end
 
 @implementation TRTransferServer
@@ -70,16 +70,16 @@
   [(TRTransferServer *)&v4 dealloc];
 }
 
-- (void)transferDidUpdateAdvertiserState:(id)a3
+- (void)transferDidUpdateAdvertiserState:(id)state
 {
-  v4 = [a3 advertiserState];
+  advertiserState = [state advertiserState];
   queue = self->_queue;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __53__TRTransferServer_transferDidUpdateAdvertiserState___block_invoke;
   v6[3] = &unk_279DCEB80;
   v6[4] = self;
-  v6[5] = v4;
+  v6[5] = advertiserState;
   dispatch_async(queue, v6);
 }
 
@@ -109,17 +109,17 @@ _BYTE *__53__TRTransferServer_transferDidUpdateAdvertiserState___block_invoke(ui
   return result;
 }
 
-- (void)transferDidFailToStartAdvertising:(id)a3
+- (void)transferDidFailToStartAdvertising:(id)advertising
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  advertisingCopy = advertising;
   if (_TRLogEnabled == 1)
   {
     v4 = TRLogHandle();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v6 = 138412290;
-      v7 = v3;
+      v7 = advertisingCopy;
       _os_log_impl(&dword_26F2A2000, v4, OS_LOG_TYPE_DEFAULT, "[TRTransferServer] Did fail to start advertising: %@", &v6, 0xCu);
     }
   }
@@ -127,9 +127,9 @@ _BYTE *__53__TRTransferServer_transferDidUpdateAdvertiserState___block_invoke(ui
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (id)transferDidReceiveData:(id)a3
+- (id)transferDidReceiveData:(id)data
 {
-  v4 = [a3 copy];
+  v4 = [data copy];
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
@@ -142,7 +142,7 @@ _BYTE *__53__TRTransferServer_transferDidUpdateAdvertiserState___block_invoke(ui
   block[2] = __43__TRTransferServer_transferDidReceiveData___block_invoke;
   block[3] = &unk_279DCEBD0;
   v10 = v4;
-  v11 = self;
+  selfCopy = self;
   v12 = &v13;
   v6 = v4;
   dispatch_sync(queue, block);
@@ -354,17 +354,17 @@ LABEL_48:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transferDidFailWithError:(id)a3
+- (void)transferDidFailWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __45__TRTransferServer_transferDidFailWithError___block_invoke;
   v7[3] = &unk_279DCEC20;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = errorCopy;
+  selfCopy = self;
+  v6 = errorCopy;
   dispatch_async(queue, v7);
 }
 
@@ -656,7 +656,7 @@ LABEL_16:
     v16[2] = __45__TRTransferServer__onQueue_didFinishPairing__block_invoke;
     v16[3] = &unk_279DCEC20;
     v17 = WeakRetained;
-    v18 = self;
+    selfCopy = self;
     v14 = WeakRetained;
     dispatch_sync(MEMORY[0x277D85CD0], v16);
   }
@@ -679,21 +679,21 @@ uint64_t __45__TRTransferServer__onQueue_didFinishPairing__block_invoke(uint64_t
   return result;
 }
 
-- (id)_onQueue_didReceiveEncryptedData:(id)a3
+- (id)_onQueue_didReceiveEncryptedData:(id)data
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![v4 length])
+  dataCopy = data;
+  if (![dataCopy length])
   {
     v6 = 0;
     goto LABEL_16;
   }
 
-  v5 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{objc_msgSend(v4, "length")}];
+  v5 = [objc_alloc(MEMORY[0x277CBEB28]) initWithLength:{objc_msgSend(dataCopy, "length")}];
   if (self->_aesContext)
   {
-    [v4 bytes];
-    [v4 length];
+    [dataCopy bytes];
+    [dataCopy length];
     [v5 mutableBytes];
     if (!AES_CTR_Update())
     {
@@ -716,7 +716,7 @@ uint64_t __45__TRTransferServer__onQueue_didFinishPairing__block_invoke(uint64_t
       v8 = WeakRetained;
       v18 = &v20;
       v15 = v8;
-      v16 = self;
+      selfCopy = self;
       v17 = v5;
       v19 = &v24;
       dispatch_sync(MEMORY[0x277D85CD0], block);
@@ -819,7 +819,7 @@ void __53__TRTransferServer__onQueue_didReceiveEncryptedData___block_invoke_2(ui
   dispatch_semaphore_signal(*(*(a1 + 32) + 48));
 }
 
-- (int)_runSetupStepWithInput:(const void *)a3 inputLength:(unint64_t)a4 outputData:(id *)a5
+- (int)_runSetupStepWithInput:(const void *)input inputLength:(unint64_t)length outputData:(id *)data
 {
   v19 = *MEMORY[0x277D85DE8];
   memset(v18, 0, sizeof(v18));
@@ -829,7 +829,7 @@ void __53__TRTransferServer__onQueue_didReceiveEncryptedData___block_invoke_2(ui
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v17 = a4;
+      lengthCopy = length;
       _os_log_impl(&dword_26F2A2000, v8, OS_LOG_TYPE_DEFAULT, "[TRTransferServer] Setup input data length: %ld", buf, 0xCu);
     }
   }
@@ -846,7 +846,7 @@ void __53__TRTransferServer__onQueue_didReceiveEncryptedData___block_invoke_2(ui
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 134217984;
-          v17 = v10;
+          lengthCopy = v10;
           _os_log_impl(&dword_26F2A2000, v11, OS_LOG_TYPE_DEFAULT, "[TRTransferServer] Unable to do session pairing setup exhange (%li)", buf, 0xCu);
         }
       }
@@ -854,9 +854,9 @@ void __53__TRTransferServer__onQueue_didReceiveEncryptedData___block_invoke_2(ui
 
     else
     {
-      if (a5)
+      if (data)
       {
-        *a5 = [MEMORY[0x277CBEA90] dataWithBytes:v18 length:0];
+        *data = [MEMORY[0x277CBEA90] dataWithBytes:v18 length:0];
       }
 
       v10 = 0;
@@ -873,7 +873,7 @@ void __53__TRTransferServer__onQueue_didReceiveEncryptedData___block_invoke_2(ui
       {
         pairingState = self->_pairingState;
         *buf = 134217984;
-        v17 = pairingState;
+        lengthCopy = pairingState;
         _os_log_impl(&dword_26F2A2000, v12, OS_LOG_TYPE_DEFAULT, "[TRTransferServer] No session for pairing setup exhange (state: %ld)", buf, 0xCu);
       }
     }
@@ -885,7 +885,7 @@ void __53__TRTransferServer__onQueue_didReceiveEncryptedData___block_invoke_2(ui
   return v10;
 }
 
-- (int)_runVerifyStepWithInput:(const void *)a3 inputLength:(unint64_t)a4 outputData:(id *)a5
+- (int)_runVerifyStepWithInput:(const void *)input inputLength:(unint64_t)length outputData:(id *)data
 {
   v17 = *MEMORY[0x277D85DE8];
   memset(v16, 0, sizeof(v16));
@@ -909,9 +909,9 @@ void __53__TRTransferServer__onQueue_didReceiveEncryptedData___block_invoke_2(ui
 
     else
     {
-      if (a5)
+      if (data)
       {
-        *a5 = [MEMORY[0x277CBEA90] dataWithBytes:v16 length:0];
+        *data = [MEMORY[0x277CBEA90] dataWithBytes:v16 length:0];
       }
 
       v8 = 0;

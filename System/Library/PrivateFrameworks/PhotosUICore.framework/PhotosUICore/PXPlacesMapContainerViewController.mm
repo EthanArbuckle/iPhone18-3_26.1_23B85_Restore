@@ -1,24 +1,24 @@
 @interface PXPlacesMapContainerViewController
 - (PXPlacesMapContainerViewController)init;
-- (PXPlacesMapContainerViewController)initWithCoder:(id)a3;
-- (PXPlacesMapContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PXPlacesMapContainerViewController)initWithPhotoLibrary:(id)a3 configuration:(id)a4;
+- (PXPlacesMapContainerViewController)initWithCoder:(id)coder;
+- (PXPlacesMapContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PXPlacesMapContainerViewController)initWithPhotoLibrary:(id)library configuration:(id)configuration;
 - (id)px_navigationDestination;
-- (unint64_t)routingOptionsForDestination:(id)a3;
+- (unint64_t)routingOptionsForDestination:(id)destination;
 - (void)_resetNavigationItem;
 - (void)_switchToLegacyGridController;
 - (void)_switchToMapController;
 - (void)_updateNavigationItemTitleWithConfigurationIfPossible;
 - (void)_updateShouldOptOutFromChromelessBars;
-- (void)legacyStrategyForHandleViewController:(id)a3 didUpdateBarsAnimated:(BOOL)a4 isSelecting:(BOOL)a5;
+- (void)legacyStrategyForHandleViewController:(id)controller didUpdateBarsAnimated:(BOOL)animated isSelecting:(BOOL)selecting;
 - (void)loadView;
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5;
-- (void)setNavigationBarButtons:(id)a3;
-- (void)subviewControlChanged:(id)a3;
-- (void)viewControllerDidUpdateNavigationItemAppearance:(id)a3;
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler;
+- (void)setNavigationBarButtons:(id)buttons;
+- (void)subviewControlChanged:(id)changed;
+- (void)viewControllerDidUpdateNavigationItemAppearance:(id)appearance;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation PXPlacesMapContainerViewController
@@ -28,8 +28,8 @@
   px_navigationDestination = self->_px_navigationDestination;
   if (!px_navigationDestination)
   {
-    v4 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-    v5 = [v4 px_assetCollectionForSmartAlbumWithSubtype:1000000203];
+    px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+    v5 = [px_deprecated_appPhotoLibrary px_assetCollectionForSmartAlbumWithSubtype:1000000203];
     v6 = [[PXProgrammaticNavigationDestination alloc] initWithObject:v5 revealMode:0];
     v7 = self->_px_navigationDestination;
     self->_px_navigationDestination = v6;
@@ -40,22 +40,22 @@
   return px_navigationDestination;
 }
 
-- (void)navigateToDestination:(id)a3 options:(unint64_t)a4 completionHandler:(id)a5
+- (void)navigateToDestination:(id)destination options:(unint64_t)options completionHandler:(id)handler
 {
-  v15 = a5;
-  v7 = a3;
-  v8 = [(PXPlacesMapContainerViewController *)self routingOptionsForDestination:v7];
-  v9 = [v7 sidebarBackNavigationRootDestination];
+  handlerCopy = handler;
+  destinationCopy = destination;
+  v8 = [(PXPlacesMapContainerViewController *)self routingOptionsForDestination:destinationCopy];
+  sidebarBackNavigationRootDestination = [destinationCopy sidebarBackNavigationRootDestination];
 
-  v10 = [v9 collection];
-  v11 = [v10 px_isPlacesSmartAlbum];
+  collection = [sidebarBackNavigationRootDestination collection];
+  px_isPlacesSmartAlbum = [collection px_isPlacesSmartAlbum];
 
-  if (v11)
+  if (px_isPlacesSmartAlbum)
   {
-    v12 = [(PXPlacesMapContainerViewController *)self navigationItem];
-    [v12 px_setHidesBackButtonInRegularWidth:1];
-    v13 = [(PXPlacesMapContainerViewController *)self traitCollection];
-    [v12 px_updateBackButtonVisibilityForTraitCollection:v13];
+    navigationItem = [(PXPlacesMapContainerViewController *)self navigationItem];
+    [navigationItem px_setHidesBackButtonInRegularWidth:1];
+    traitCollection = [(PXPlacesMapContainerViewController *)self traitCollection];
+    [navigationItem px_updateBackButtonVisibilityForTraitCollection:traitCollection];
   }
 
   if (v8 == 1)
@@ -68,192 +68,192 @@
     v14 = 2;
   }
 
-  v15[2](v15, v14, 0);
+  handlerCopy[2](handlerCopy, v14, 0);
 }
 
-- (unint64_t)routingOptionsForDestination:(id)a3
+- (unint64_t)routingOptionsForDestination:(id)destination
 {
-  v3 = a3;
-  if ([v3 type] == 8)
+  destinationCopy = destination;
+  if ([destinationCopy type] == 8)
   {
-    v4 = [v3 collection];
-    v5 = [v4 px_isPlacesSmartAlbum];
+    collection = [destinationCopy collection];
+    px_isPlacesSmartAlbum = [collection px_isPlacesSmartAlbum];
   }
 
   else
   {
-    v5 = 0;
+    px_isPlacesSmartAlbum = 0;
   }
 
-  return v5;
+  return px_isPlacesSmartAlbum;
 }
 
-- (void)setNavigationBarButtons:(id)a3
+- (void)setNavigationBarButtons:(id)buttons
 {
-  v4 = a3;
-  v5 = [(PXPlacesMapContainerViewController *)self navigationItem];
-  [v5 setRightBarButtonItems:v4];
+  buttonsCopy = buttons;
+  navigationItem = [(PXPlacesMapContainerViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItems:buttonsCopy];
 }
 
 - (void)_updateNavigationItemTitleWithConfigurationIfPossible
 {
-  v6 = [(PXPlacesMapContainerViewController *)self configuration];
-  v3 = [v6 localizedNavigationItemTitle];
-  v4 = v3;
-  if (!v3)
+  configuration = [(PXPlacesMapContainerViewController *)self configuration];
+  localizedNavigationItemTitle = [configuration localizedNavigationItemTitle];
+  v4 = localizedNavigationItemTitle;
+  if (!localizedNavigationItemTitle)
   {
     v4 = PXLocalizedStringFromTable(@"PXPlacesFullSizeViewTitle", @"PhotosUICore");
   }
 
-  v5 = [(PXPlacesMapContainerViewController *)self navigationItem];
-  [v5 setTitle:v4];
+  navigationItem = [(PXPlacesMapContainerViewController *)self navigationItem];
+  [navigationItem setTitle:v4];
 
-  if (!v3)
+  if (!localizedNavigationItemTitle)
   {
   }
 }
 
 - (void)_resetNavigationItem
 {
-  v5 = [(PXPlacesMapContainerViewController *)self navigationItem];
-  v3 = [(PXPlacesMapContainerViewController *)self initialLeftBarButtonItems];
-  [v5 setLeftBarButtonItems:v3];
+  navigationItem = [(PXPlacesMapContainerViewController *)self navigationItem];
+  initialLeftBarButtonItems = [(PXPlacesMapContainerViewController *)self initialLeftBarButtonItems];
+  [navigationItem setLeftBarButtonItems:initialLeftBarButtonItems];
 
-  [v5 setRightBarButtonItems:0];
-  v4 = [(PXPlacesMapContainerViewController *)self subviewControl];
-  [v5 setTitleView:v4];
+  [navigationItem setRightBarButtonItems:0];
+  subviewControl = [(PXPlacesMapContainerViewController *)self subviewControl];
+  [navigationItem setTitleView:subviewControl];
 
-  [v5 setStandardAppearance:0];
-  [v5 setCompactAppearance:0];
-  [v5 setScrollEdgeAppearance:0];
+  [navigationItem setStandardAppearance:0];
+  [navigationItem setCompactAppearance:0];
+  [navigationItem setScrollEdgeAppearance:0];
 }
 
-- (void)viewControllerDidUpdateNavigationItemAppearance:(id)a3
+- (void)viewControllerDidUpdateNavigationItemAppearance:(id)appearance
 {
-  v4 = a3;
-  v9 = [(PXPlacesMapContainerViewController *)self navigationItem];
-  v5 = [v4 navigationItem];
+  appearanceCopy = appearance;
+  navigationItem = [(PXPlacesMapContainerViewController *)self navigationItem];
+  navigationItem2 = [appearanceCopy navigationItem];
 
-  v6 = [v5 standardAppearance];
-  [v9 setStandardAppearance:v6];
+  standardAppearance = [navigationItem2 standardAppearance];
+  [navigationItem setStandardAppearance:standardAppearance];
 
-  v7 = [v5 compactAppearance];
-  [v9 setCompactAppearance:v7];
+  compactAppearance = [navigationItem2 compactAppearance];
+  [navigationItem setCompactAppearance:compactAppearance];
 
-  v8 = [v5 scrollEdgeAppearance];
-  [v9 setScrollEdgeAppearance:v8];
+  scrollEdgeAppearance = [navigationItem2 scrollEdgeAppearance];
+  [navigationItem setScrollEdgeAppearance:scrollEdgeAppearance];
 }
 
-- (void)legacyStrategyForHandleViewController:(id)a3 didUpdateBarsAnimated:(BOOL)a4 isSelecting:(BOOL)a5
+- (void)legacyStrategyForHandleViewController:(id)controller didUpdateBarsAnimated:(BOOL)animated isSelecting:(BOOL)selecting
 {
-  v5 = a5;
-  v6 = a4;
-  v18 = a3;
-  v8 = [(PXPlacesMapContainerViewController *)self navigationItem];
-  v9 = [v18 navigationItem];
+  selectingCopy = selecting;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  navigationItem = [(PXPlacesMapContainerViewController *)self navigationItem];
+  navigationItem2 = [controllerCopy navigationItem];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = [(PXPlacesMapContainerViewController *)self gridControllerEditing];
-    [(PXPlacesMapContainerViewController *)self setGridControllerEditing:v5];
-    if (v5)
+    gridControllerEditing = [(PXPlacesMapContainerViewController *)self gridControllerEditing];
+    [(PXPlacesMapContainerViewController *)self setGridControllerEditing:selectingCopy];
+    if (selectingCopy)
     {
-      [v8 setTitleView:0];
-      v11 = [v9 title];
-      [v8 setTitle:v11];
+      [navigationItem setTitleView:0];
+      title = [navigationItem2 title];
+      [navigationItem setTitle:title];
 
-      v12 = [v9 leftBarButtonItems];
-      [v8 setLeftBarButtonItems:v12 animated:v6];
+      leftBarButtonItems = [navigationItem2 leftBarButtonItems];
+      [navigationItem setLeftBarButtonItems:leftBarButtonItems animated:animatedCopy];
     }
 
-    else if (v10)
+    else if (gridControllerEditing)
     {
-      v15 = [(PXPlacesMapContainerViewController *)self subviewControl];
-      [v8 setTitleView:v15];
+      subviewControl = [(PXPlacesMapContainerViewController *)self subviewControl];
+      [navigationItem setTitleView:subviewControl];
 
-      [v8 setLeftBarButtonItems:MEMORY[0x1E695E0F0] animated:v6];
+      [navigationItem setLeftBarButtonItems:MEMORY[0x1E695E0F0] animated:animatedCopy];
     }
 
-    v16 = [v9 rightBarButtonItems];
-    [v8 setRightBarButtonItems:v16 animated:v6];
+    rightBarButtonItems = [navigationItem2 rightBarButtonItems];
+    [navigationItem setRightBarButtonItems:rightBarButtonItems animated:animatedCopy];
 
-    v14 = [v18 toolbarItems];
-    [(PXPlacesMapContainerViewController *)self setToolbarItems:v14 animated:v6];
+    toolbarItems = [controllerCopy toolbarItems];
+    [(PXPlacesMapContainerViewController *)self setToolbarItems:toolbarItems animated:animatedCopy];
   }
 
-  else if (v5)
+  else if (selectingCopy)
   {
     [(PXPlacesMapContainerViewController *)self setGridControllerEditing:1];
-    [v8 setTitleView:0];
-    v13 = [v9 title];
-    [v8 setTitle:v13];
+    [navigationItem setTitleView:0];
+    title2 = [navigationItem2 title];
+    [navigationItem setTitle:title2];
 
-    v14 = [v9 leftBarButtonItems];
-    [v8 setLeftBarButtonItems:v14 animated:v6];
+    toolbarItems = [navigationItem2 leftBarButtonItems];
+    [navigationItem setLeftBarButtonItems:toolbarItems animated:animatedCopy];
   }
 
   else
   {
     if ([(PXPlacesMapContainerViewController *)self gridControllerEditing])
     {
-      v17 = [(PXPlacesMapContainerViewController *)self subviewControl];
-      [v8 setTitleView:v17];
+      subviewControl2 = [(PXPlacesMapContainerViewController *)self subviewControl];
+      [navigationItem setTitleView:subviewControl2];
     }
 
-    v14 = [v9 rightBarButtonItems];
-    [v8 setRightBarButtonItems:v14 animated:v6];
+    toolbarItems = [navigationItem2 rightBarButtonItems];
+    [navigationItem setRightBarButtonItems:toolbarItems animated:animatedCopy];
   }
 }
 
 - (void)_updateShouldOptOutFromChromelessBars
 {
-  v2 = self;
-  v3 = [(PXPlacesMapContainerViewController *)self pu_shouldOptOutFromChromelessBars];
-  v4 = [v2 navigationController];
-  v9 = v4;
-  if (v3)
+  selfCopy = self;
+  pu_shouldOptOutFromChromelessBars = [(PXPlacesMapContainerViewController *)self pu_shouldOptOutFromChromelessBars];
+  navigationController = [selfCopy navigationController];
+  v9 = navigationController;
+  if (pu_shouldOptOutFromChromelessBars)
   {
-    v2 = [v4 navigationBar];
-    v5 = [v2 standardAppearance];
-    v4 = v9;
+    selfCopy = [navigationController navigationBar];
+    standardAppearance = [selfCopy standardAppearance];
+    navigationController = v9;
   }
 
   else
   {
-    v5 = 0;
+    standardAppearance = 0;
   }
 
-  v6 = [v4 navigationBar];
-  [v6 setScrollEdgeAppearance:v5];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setScrollEdgeAppearance:standardAppearance];
 
-  if (v3)
+  if (pu_shouldOptOutFromChromelessBars)
   {
 
-    v2 = [v9 toolbar];
-    v7 = [v2 standardAppearance];
+    selfCopy = [v9 toolbar];
+    standardAppearance2 = [selfCopy standardAppearance];
   }
 
   else
   {
-    v7 = 0;
+    standardAppearance2 = 0;
   }
 
-  v8 = [v9 toolbar];
-  [v8 setScrollEdgeAppearance:v7];
+  toolbar = [v9 toolbar];
+  [toolbar setScrollEdgeAppearance:standardAppearance2];
 
-  if (v3)
+  if (pu_shouldOptOutFromChromelessBars)
   {
   }
 }
 
 - (void)_switchToLegacyGridController
 {
-  v3 = [(PXPlacesMapContainerViewController *)self fetchResultViewController];
-  v4 = [v3 mapFetchResultsController];
-  v9 = [v4 visibleGeotaggables];
+  fetchResultViewController = [(PXPlacesMapContainerViewController *)self fetchResultViewController];
+  mapFetchResultsController = [fetchResultViewController mapFetchResultsController];
+  visibleGeotaggables = [mapFetchResultsController visibleGeotaggables];
 
-  v5 = [(PXPlacesMapContainerViewController *)self photoLibrary];
-  v6 = PXPhotosViewConfigurationForPlacesMomentsWithAllowedAssets(v9, v5);
+  photoLibrary = [(PXPlacesMapContainerViewController *)self photoLibrary];
+  v6 = PXPhotosViewConfigurationForPlacesMomentsWithAllowedAssets(visibleGeotaggables, photoLibrary);
 
   v7 = PXLocalizedStringFromTable(@"PXPlacesFullSizeViewTitle", @"PhotosUICore");
   [v6 setTitle:v7];
@@ -269,29 +269,29 @@
 
 - (void)_switchToMapController
 {
-  v3 = [(PXPlacesMapContainerViewController *)self fetchResultViewController];
+  fetchResultViewController = [(PXPlacesMapContainerViewController *)self fetchResultViewController];
   [(PXPlacesMapContainerViewController *)self _resetNavigationItem];
-  [(PXPlacesMapContainerViewController *)self px_addOrReplaceChildViewController:v3 activateConstraints:1];
-  [v3 reloadStyle];
+  [(PXPlacesMapContainerViewController *)self px_addOrReplaceChildViewController:fetchResultViewController activateConstraints:1];
+  [fetchResultViewController reloadStyle];
   [(PXPlacesMapContainerViewController *)self _updateShouldOptOutFromChromelessBars];
 }
 
-- (void)subviewControlChanged:(id)a3
+- (void)subviewControlChanged:(id)changed
 {
-  v5 = a3;
+  changedCopy = changed;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v5 selectedSegmentIndex];
-    if (v4 != [(PXPlacesMapContainerViewController *)self previousNavigationBarSegmentedControlSelectedIndex])
+    selectedSegmentIndex = [changedCopy selectedSegmentIndex];
+    if (selectedSegmentIndex != [(PXPlacesMapContainerViewController *)self previousNavigationBarSegmentedControlSelectedIndex])
     {
-      [(PXPlacesMapContainerViewController *)self setPreviousNavigationBarSegmentedControlSelectedIndex:v4];
-      if (v4 == 1)
+      [(PXPlacesMapContainerViewController *)self setPreviousNavigationBarSegmentedControlSelectedIndex:selectedSegmentIndex];
+      if (selectedSegmentIndex == 1)
       {
         [(PXPlacesMapContainerViewController *)self _switchToLegacyGridController];
       }
 
-      else if (!v4)
+      else if (!selectedSegmentIndex)
       {
         [(PXPlacesMapContainerViewController *)self _switchToMapController];
       }
@@ -299,44 +299,44 @@
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
-  v5 = [(PXPlacesMapContainerViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  disappearCopy = disappear;
+  traitCollection = [(PXPlacesMapContainerViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
     initialNavigationBarStyle = self->_initialNavigationBarStyle;
-    v8 = [(PXPlacesMapContainerViewController *)self navigationController];
-    v9 = [v8 navigationItem];
-    [v9 setStyle:initialNavigationBarStyle];
+    navigationController = [(PXPlacesMapContainerViewController *)self navigationController];
+    navigationItem = [navigationController navigationItem];
+    [navigationItem setStyle:initialNavigationBarStyle];
   }
 
   v10.receiver = self;
   v10.super_class = PXPlacesMapContainerViewController;
-  [(PXPlacesMapContainerViewController *)&v10 viewWillDisappear:v3];
+  [(PXPlacesMapContainerViewController *)&v10 viewWillDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  v5 = [(PXPlacesMapContainerViewController *)self traitCollection];
-  v6 = [v5 userInterfaceIdiom];
+  appearCopy = appear;
+  traitCollection = [(PXPlacesMapContainerViewController *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v6 == 1)
+  if (userInterfaceIdiom == 1)
   {
-    v7 = [(PXPlacesMapContainerViewController *)self navigationItem];
-    self->_initialNavigationBarStyle = [v7 style];
+    navigationItem = [(PXPlacesMapContainerViewController *)self navigationItem];
+    self->_initialNavigationBarStyle = [navigationItem style];
 
-    v8 = [(PXPlacesMapContainerViewController *)self navigationController];
-    v9 = [v8 navigationItem];
-    [v9 setStyle:0];
+    navigationController = [(PXPlacesMapContainerViewController *)self navigationController];
+    navigationItem2 = [navigationController navigationItem];
+    [navigationItem2 setStyle:0];
   }
 
   v10.receiver = self;
   v10.super_class = PXPlacesMapContainerViewController;
-  [(PXPlacesMapContainerViewController *)&v10 viewWillAppear:v3];
+  [(PXPlacesMapContainerViewController *)&v10 viewWillAppear:appearCopy];
 }
 
 - (void)viewDidLoad
@@ -345,10 +345,10 @@
   v15.receiver = self;
   v15.super_class = PXPlacesMapContainerViewController;
   [(PXPlacesMapContainerViewController *)&v15 viewDidLoad];
-  v3 = [(PXPlacesMapContainerViewController *)self configuration];
-  v4 = [v3 gridViewEnabled];
+  configuration = [(PXPlacesMapContainerViewController *)self configuration];
+  gridViewEnabled = [configuration gridViewEnabled];
 
-  if (v4)
+  if (gridViewEnabled)
   {
     v5 = objc_alloc(MEMORY[0x1E69DCF38]);
     v6 = PXLocalizedStringFromTable(@"PXPlacesMapContainerSubviewMapTitle", @"PhotosUICore");
@@ -362,8 +362,8 @@
     [v9 px_setMinimumSegmentWidth:?];
     [v9 setSelectedSegmentIndex:0];
     [v9 addTarget:self action:sel_subviewControlChanged_ forControlEvents:4096];
-    v10 = [(PXPlacesMapContainerViewController *)self navigationItem];
-    [v10 setTitleView:v9];
+    navigationItem = [(PXPlacesMapContainerViewController *)self navigationItem];
+    [navigationItem setTitleView:v9];
 
     [(PXPlacesMapContainerViewController *)self setSubviewControl:v9];
     [(PXPlacesMapContainerViewController *)self _resetNavigationItem];
@@ -371,25 +371,25 @@
 
   else
   {
-    v11 = [(PXPlacesMapContainerViewController *)self navigationItem];
-    v12 = [v11 leftBarButtonItems];
-    [(PXPlacesMapContainerViewController *)self setInitialLeftBarButtonItems:v12];
+    navigationItem2 = [(PXPlacesMapContainerViewController *)self navigationItem];
+    leftBarButtonItems = [navigationItem2 leftBarButtonItems];
+    [(PXPlacesMapContainerViewController *)self setInitialLeftBarButtonItems:leftBarButtonItems];
 
     [(PXPlacesMapContainerViewController *)self _updateNavigationItemTitleWithConfigurationIfPossible];
   }
 
-  v13 = [(PXPlacesMapContainerViewController *)self navigationItem];
-  [v13 setLargeTitleDisplayMode:2];
+  navigationItem3 = [(PXPlacesMapContainerViewController *)self navigationItem];
+  [navigationItem3 setLargeTitleDisplayMode:2];
 
-  v14 = [(PXPlacesMapContainerViewController *)self fetchResultViewController];
-  [(PXPlacesMapContainerViewController *)self px_addOrReplaceChildViewController:v14 activateConstraints:1];
+  fetchResultViewController = [(PXPlacesMapContainerViewController *)self fetchResultViewController];
+  [(PXPlacesMapContainerViewController *)self px_addOrReplaceChildViewController:fetchResultViewController activateConstraints:1];
 }
 
 - (void)loadView
 {
-  v3 = [(PXPlacesMapContainerViewController *)self nibName];
+  nibName = [(PXPlacesMapContainerViewController *)self nibName];
 
-  if (v3)
+  if (nibName)
   {
     v6.receiver = self;
     v6.super_class = PXPlacesMapContainerViewController;
@@ -399,58 +399,58 @@
   else
   {
     v5 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{0.0, 0.0, 200.0, 200.0}];
-    v4 = [MEMORY[0x1E69DC888] whiteColor];
-    [v5 setBackgroundColor:v4];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [v5 setBackgroundColor:whiteColor];
 
     [(PXPlacesMapContainerViewController *)self setView:v5];
   }
 }
 
-- (PXPlacesMapContainerViewController)initWithCoder:(id)a3
+- (PXPlacesMapContainerViewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PXPlacesMapContainerViewController.m" lineNumber:111 description:{@"%s is not available as initializer", "-[PXPlacesMapContainerViewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapContainerViewController.m" lineNumber:111 description:{@"%s is not available as initializer", "-[PXPlacesMapContainerViewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PXPlacesMapContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PXPlacesMapContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PXPlacesMapContainerViewController.m" lineNumber:107 description:{@"%s is not available as initializer", "-[PXPlacesMapContainerViewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapContainerViewController.m" lineNumber:107 description:{@"%s is not available as initializer", "-[PXPlacesMapContainerViewController initWithNibName:bundle:]"}];
 
   abort();
 }
 
 - (PXPlacesMapContainerViewController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXPlacesMapContainerViewController.m" lineNumber:103 description:{@"%s is not available as initializer", "-[PXPlacesMapContainerViewController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXPlacesMapContainerViewController.m" lineNumber:103 description:{@"%s is not available as initializer", "-[PXPlacesMapContainerViewController init]"}];
 
   abort();
 }
 
-- (PXPlacesMapContainerViewController)initWithPhotoLibrary:(id)a3 configuration:(id)a4
+- (PXPlacesMapContainerViewController)initWithPhotoLibrary:(id)library configuration:(id)configuration
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  configurationCopy = configuration;
   v25.receiver = self;
   v25.super_class = PXPlacesMapContainerViewController;
   v9 = [(PXPlacesMapContainerViewController *)&v25 initWithNibName:0 bundle:0];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibrary, a3);
-    objc_storeStrong(&v10->_configuration, a4);
-    v11 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:v7];
+    objc_storeStrong(&v9->_photoLibrary, library);
+    objc_storeStrong(&v10->_configuration, configuration);
+    v11 = [PXSharedLibraryStatusProvider sharedLibraryStatusProviderWithPhotoLibrary:libraryCopy];
     v12 = [[PXLibraryFilterState alloc] initWithSharedLibraryStatusProvider:v11];
-    v13 = [[PXPlacesMapFetchResultController alloc] initWithLibraryFilterState:v12 photoLibrary:v7];
+    v13 = [[PXPlacesMapFetchResultController alloc] initWithLibraryFilterState:v12 photoLibrary:libraryCopy];
     v14 = [PXPlacesMapFetchResultViewController alloc];
-    [v8 initialCoordinateRegion];
-    v19 = -[PXPlacesMapFetchResultViewController initWithInitialCoordinateRegion:enableNearbyAssetsAffordance:wantsMapOptionsView:photoLibrary:mapFetchResultController:](v14, "initWithInitialCoordinateRegion:enableNearbyAssetsAffordance:wantsMapOptionsView:photoLibrary:mapFetchResultController:", [v8 enableNearbyAssetsAffordance], 1, v7, v13, v15, v16, v17, v18);
+    [configurationCopy initialCoordinateRegion];
+    v19 = -[PXPlacesMapFetchResultViewController initWithInitialCoordinateRegion:enableNearbyAssetsAffordance:wantsMapOptionsView:photoLibrary:mapFetchResultController:](v14, "initWithInitialCoordinateRegion:enableNearbyAssetsAffordance:wantsMapOptionsView:photoLibrary:mapFetchResultController:", [configurationCopy enableNearbyAssetsAffordance], 1, libraryCopy, v13, v15, v16, v17, v18);
     fetchResultViewController = v10->_fetchResultViewController;
     v10->_fetchResultViewController = v19;
 
@@ -460,13 +460,13 @@
     LOBYTE(v14) = [(PXPlacesMapFetchResultViewController *)v10->_fetchResultViewController prefersToolbarVisible];
     [(UIViewController *)v10 px_enableBarAppearance];
     [(UIViewController *)v10 px_enablePrefersViewIsAppearingForAppearanceUpdates];
-    v21 = [(UIViewController *)v10 px_barAppearance];
+    px_barAppearance = [(UIViewController *)v10 px_barAppearance];
     v23[0] = MEMORY[0x1E69E9820];
     v23[1] = 3221225472;
     v23[2] = __73__PXPlacesMapContainerViewController_initWithPhotoLibrary_configuration___block_invoke;
     v23[3] = &__block_descriptor_33_e34_v16__0___PXMutableBarAppearance__8l;
     v24 = v14;
-    [v21 performChangesWithAnimationOptions:0 changes:v23];
+    [px_barAppearance performChangesWithAnimationOptions:0 changes:v23];
   }
 
   return v10;

@@ -1,27 +1,27 @@
 @interface UIStatusBarActivityItemView
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
 - (double)shadowPadding;
 - (double)updateContentsAndWidth;
 - (id)accessibilityHUDRepresentation;
 - (int64_t)_activityIndicatorStyle;
 - (void)_startAnimating;
 - (void)_stopAnimating;
-- (void)setVisible:(BOOL)a3;
+- (void)setVisible:(BOOL)visible;
 @end
 
 @implementation UIStatusBarActivityItemView
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v5 = [a3 rawData];
+  rawData = [data rawData];
   slowActivity = self->_slowActivity;
-  v7 = *(v5 + 2272);
+  v7 = *(rawData + 2272);
   v8 = (v7 >> 1) & 1;
   result = slowActivity != v8;
   if (slowActivity != v8)
   {
     self->_slowActivity = (v7 & 2) != 0;
-    v7 = *(v5 + 2272);
+    v7 = *(rawData + 2272);
   }
 
   v10 = (v7 >> 2) & 1;
@@ -36,8 +36,8 @@
 
 - (int64_t)_activityIndicatorStyle
 {
-  v3 = [(UIStatusBarItemView *)self foregroundStyle];
-  v4 = [v3 activityIndicatorStyleWithSyncActivity:self->_syncActivity];
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  v4 = [foregroundStyle activityIndicatorStyleWithSyncActivity:self->_syncActivity];
 
   return v4;
 }
@@ -64,14 +64,14 @@
   }
 }
 
-- (void)setVisible:(BOOL)a3
+- (void)setVisible:(BOOL)visible
 {
-  v3 = a3;
+  visibleCopy = visible;
   v5.receiver = self;
   v5.super_class = UIStatusBarActivityItemView;
   [(UIStatusBarItemView *)&v5 setVisible:?];
   [MEMORY[0x1E69E58C0] cancelPreviousPerformRequestsWithTarget:self selector:sel__stopAnimating object:0];
-  if (v3)
+  if (visibleCopy)
   {
     [(UIStatusBarActivityItemView *)self _startAnimating];
   }
@@ -85,12 +85,12 @@
 
 - (double)updateContentsAndWidth
 {
-  v3 = [(UIStatusBarActivityItemView *)self _activityIndicatorStyle];
+  _activityIndicatorStyle = [(UIStatusBarActivityItemView *)self _activityIndicatorStyle];
   activityIndicator = self->_activityIndicator;
   if (activityIndicator)
   {
     v5 = 0.0;
-    if ([(UIActivityIndicatorView *)activityIndicator activityIndicatorViewStyle]== v3)
+    if ([(UIActivityIndicatorView *)activityIndicator activityIndicatorViewStyle]== _activityIndicatorStyle)
     {
       goto LABEL_7;
     }
@@ -99,7 +99,7 @@
   }
 
   [(UIView *)activityIndicator removeFromSuperview];
-  v6 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:v3];
+  v6 = [[UIActivityIndicatorView alloc] initWithActivityIndicatorStyle:_activityIndicatorStyle];
   v7 = self->_activityIndicator;
   self->_activityIndicator = v6;
 
@@ -109,8 +109,8 @@
   [(UIView *)self bounds];
   [(UIActivityIndicatorView *)self->_activityIndicator setFrame:0.0, floor((v12 - v11) * 0.5), v9, v11];
   [(UIView *)self addSubview:self->_activityIndicator];
-  v13 = [(UIStatusBarItemView *)self foregroundStyle];
-  if ([v13 usesVerticalLayout])
+  foregroundStyle = [(UIStatusBarItemView *)self foregroundStyle];
+  if ([foregroundStyle usesVerticalLayout])
   {
     v9 = v11;
   }
@@ -118,10 +118,10 @@
   [(UIStatusBarItemView *)self adjustFrameToNewSize:v9];
   v5 = v14;
 LABEL_7:
-  v15 = [(UIStatusBarItemView *)self foregroundStyle];
-  v16 = [v15 tintColor];
+  foregroundStyle2 = [(UIStatusBarItemView *)self foregroundStyle];
+  tintColor = [foregroundStyle2 tintColor];
 
-  [(UIActivityIndicatorView *)self->_activityIndicator setColor:v16];
+  [(UIActivityIndicatorView *)self->_activityIndicator setColor:tintColor];
   v17 = 1.2;
   if (self->_slowActivity)
   {

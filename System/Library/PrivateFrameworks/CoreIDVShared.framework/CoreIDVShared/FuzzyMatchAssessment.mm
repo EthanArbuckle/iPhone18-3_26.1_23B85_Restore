@@ -1,24 +1,24 @@
 @interface FuzzyMatchAssessment
 - (_TtC13CoreIDVShared20FuzzyMatchAssessment)init;
-- (_TtC13CoreIDVShared20FuzzyMatchAssessment)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_TtC13CoreIDVShared20FuzzyMatchAssessment)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FuzzyMatchAssessment
 
-- (_TtC13CoreIDVShared20FuzzyMatchAssessment)initWithCoder:(id)a3
+- (_TtC13CoreIDVShared20FuzzyMatchAssessment)initWithCoder:(id)coder
 {
-  v3 = a3;
+  coderCopy = coder;
   v4 = sub_225BC971C();
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  FuzzyMatchAssessment.encode(with:)(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  FuzzyMatchAssessment.encode(with:)(coderCopy);
 }
 
 - (_TtC13CoreIDVShared20FuzzyMatchAssessment)init

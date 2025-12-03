@@ -1,27 +1,27 @@
 @interface BSUIProductFeedViewController
-- (_TtC11BookStoreUI29BSUIProductFeedViewController)initWithOptions:(id)a3;
-- (id)resumeAndRebuildForReason:(id)a3;
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3;
-- (void)_handleEngagementMessageRequest:(id)a3 forIdentifier:(id)a4;
-- (void)cardPresentationTransitionDidComplete:(BOOL)a3;
-- (void)didSetCurrentCardState:(id)a3;
-- (void)feedController:(id)a3 didLoadCardResource:(id)a4;
-- (void)feedViewControllerInitialContentReady:(id)a3;
-- (void)handleTrigger:(id)a3 didChangeState:(unint64_t)a4 updateEvent:(unint64_t)a5;
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4;
-- (void)messageViewController:(id)a3 didSelectActionWithURL:(id)a4;
-- (void)messageViewControllerDidSelectCancel:(id)a3;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)suspendAndTeardownForReason:(id)a3;
-- (void)updateTopScrollEdgeEffectVisibilityWithViewController:(id)a3 previousTraitCollection:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC11BookStoreUI29BSUIProductFeedViewController)initWithOptions:(id)options;
+- (id)resumeAndRebuildForReason:(id)reason;
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller;
+- (void)_handleEngagementMessageRequest:(id)request forIdentifier:(id)identifier;
+- (void)cardPresentationTransitionDidComplete:(BOOL)complete;
+- (void)didSetCurrentCardState:(id)state;
+- (void)feedController:(id)controller didLoadCardResource:(id)resource;
+- (void)feedViewControllerInitialContentReady:(id)ready;
+- (void)handleTrigger:(id)trigger didChangeState:(unint64_t)state updateEvent:(unint64_t)event;
+- (void)messageViewController:(id)controller didFailWithError:(id)error;
+- (void)messageViewController:(id)controller didSelectActionWithURL:(id)l;
+- (void)messageViewControllerDidSelectCancel:(id)cancel;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)suspendAndTeardownForReason:(id)reason;
+- (void)updateTopScrollEdgeEffectVisibilityWithViewController:(id)controller previousTraitCollection:(id)collection;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation BSUIProductFeedViewController
 
-- (_TtC11BookStoreUI29BSUIProductFeedViewController)initWithOptions:(id)a3
+- (_TtC11BookStoreUI29BSUIProductFeedViewController)initWithOptions:(id)options
 {
-  if (a3)
+  if (options)
   {
     v3 = sub_2C57E8();
   }
@@ -35,15 +35,15 @@
   return result;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_D9AD4(a3);
+  selfCopy = self;
+  sub_D9AD4(appear);
 }
 
-- (void)suspendAndTeardownForReason:(id)a3
+- (void)suspendAndTeardownForReason:(id)reason
 {
-  if (a3)
+  if (reason)
   {
     sub_2C58C8();
     v5 = v4;
@@ -54,13 +54,13 @@
     v5 = 0;
   }
 
-  v6 = self;
-  v7 = [(BSUIProductFeedViewController *)v6 triggerStateManager];
-  if (v7)
+  selfCopy = self;
+  triggerStateManager = [(BSUIProductFeedViewController *)selfCopy triggerStateManager];
+  if (triggerStateManager)
   {
-    v8 = v7;
+    v8 = triggerStateManager;
     v9 = sub_2C5888();
-    [v8 removeObserver:v6 forTrigger:v9];
+    [v8 removeObserver:selfCopy forTrigger:v9];
   }
 
   if (v5)
@@ -73,23 +73,23 @@
     v10 = 0;
   }
 
-  v11.receiver = v6;
+  v11.receiver = selfCopy;
   v11.super_class = type metadata accessor for BSUIProductFeedViewController();
   [(BSUIFeedViewController *)&v11 suspendAndTeardownForReason:v10];
 }
 
-- (id)resumeAndRebuildForReason:(id)a3
+- (id)resumeAndRebuildForReason:(id)reason
 {
-  if (a3)
+  if (reason)
   {
     sub_2C58C8();
-    v4 = self;
+    selfCopy = self;
     v5 = sub_2C5888();
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
     v5 = 0;
   }
 
@@ -97,10 +97,10 @@
   v12.super_class = type metadata accessor for BSUIProductFeedViewController();
   v7 = [(BSUIFeedViewController *)&v12 resumeAndRebuildForReason:v5];
 
-  v8 = [(BSUIProductFeedViewController *)self triggerStateManager];
-  if (v8)
+  triggerStateManager = [(BSUIProductFeedViewController *)self triggerStateManager];
+  if (triggerStateManager)
   {
-    v9 = v8;
+    v9 = triggerStateManager;
     v10 = sub_2C5888();
     [v9 addObserver:self forTrigger:v10];
   }
@@ -112,31 +112,31 @@
   return v7;
 }
 
-- (void)didSetCurrentCardState:(id)a3
+- (void)didSetCurrentCardState:(id)state
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for BSUIProductFeedViewController();
-  v4 = a3;
+  stateCopy = state;
   v5 = v6.receiver;
-  [(BSUIFeedViewController *)&v6 didSetCurrentCardState:v4];
+  [(BSUIFeedViewController *)&v6 didSetCurrentCardState:stateCopy];
   sub_DA388();
 }
 
-- (void)feedController:(id)a3 didLoadCardResource:(id)a4
+- (void)feedController:(id)controller didLoadCardResource:(id)resource
 {
   sub_2C57E8();
-  v6 = a3;
-  v7 = self;
+  controllerCopy = controller;
+  selfCopy = self;
   sub_DCA24();
 }
 
-- (void)feedViewControllerInitialContentReady:(id)a3
+- (void)feedViewControllerInitialContentReady:(id)ready
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for BSUIProductFeedViewController();
-  v4 = a3;
+  readyCopy = ready;
   v5 = v7.receiver;
-  [(BSUIFeedViewController *)&v7 feedViewControllerInitialContentReady:v4];
+  [(BSUIFeedViewController *)&v7 feedViewControllerInitialContentReady:readyCopy];
   v6 = v5[OBJC_IVAR____TtC11BookStoreUI29BSUIProductFeedViewController_isInitialContentReady];
   v5[OBJC_IVAR____TtC11BookStoreUI29BSUIProductFeedViewController_isInitialContentReady] = 1;
   if ((v6 & 1) == 0)
@@ -145,34 +145,34 @@
   }
 }
 
-- (void)_handleEngagementMessageRequest:(id)a3 forIdentifier:(id)a4
+- (void)_handleEngagementMessageRequest:(id)request forIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_D9FDC(a3, a4);
+  requestCopy = request;
+  identifierCopy = identifier;
+  selfCopy = self;
+  sub_D9FDC(request, identifier);
 }
 
-- (void)cardPresentationTransitionDidComplete:(BOOL)a3
+- (void)cardPresentationTransitionDidComplete:(BOOL)complete
 {
-  v3 = self;
+  selfCopy = self;
   sub_DCD58();
 }
 
-- (void)updateTopScrollEdgeEffectVisibilityWithViewController:(id)a3 previousTraitCollection:(id)a4
+- (void)updateTopScrollEdgeEffectVisibilityWithViewController:(id)controller previousTraitCollection:(id)collection
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_DCF1C(v6);
+  controllerCopy = controller;
+  collectionCopy = collection;
+  selfCopy = self;
+  sub_DCF1C(controllerCopy);
 }
 
-- (void)handleTrigger:(id)a3 didChangeState:(unint64_t)a4 updateEvent:(unint64_t)a5
+- (void)handleTrigger:(id)trigger didChangeState:(unint64_t)state updateEvent:(unint64_t)event
 {
   v8 = sub_2C58C8();
   v10 = v9;
-  v11 = a3;
-  v15 = self;
+  triggerCopy = trigger;
+  selfCopy = self;
   v12._rawValue = &off_389F88;
   v17._countAndFlagsBits = v8;
   v17._object = v10;
@@ -180,46 +180,46 @@
 
   if (!v13)
   {
-    *&v15->super.TUIFeedViewController_opaque[OBJC_IVAR____TtC11BookStoreUI29BSUIProductFeedViewController_scrolledPastLockupState] = a4;
-    v14 = [(BSUIProductFeedViewController *)v15 traitCollection];
-    [(BSUIProductFeedViewController *)v15 updateTopScrollEdgeEffectVisibilityWithViewController:v15 previousTraitCollection:v14];
+    *&selfCopy->super.TUIFeedViewController_opaque[OBJC_IVAR____TtC11BookStoreUI29BSUIProductFeedViewController_scrolledPastLockupState] = state;
+    traitCollection = [(BSUIProductFeedViewController *)selfCopy traitCollection];
+    [(BSUIProductFeedViewController *)selfCopy updateTopScrollEdgeEffectVisibilityWithViewController:selfCopy previousTraitCollection:traitCollection];
 
     sub_DB8BC(1);
   }
 }
 
-- (void)messageViewController:(id)a3 didSelectActionWithURL:(id)a4
+- (void)messageViewController:(id)controller didSelectActionWithURL:(id)l
 {
   v6 = sub_2BE3B8();
   v7 = *(v6 - 8);
   __chkstk_darwin(v6);
   v9 = &v12 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_2BE398();
-  v10 = a3;
-  v11 = self;
-  BSUIProductFeedViewController.messageViewController(_:didSelectActionWith:)(v10);
+  controllerCopy = controller;
+  selfCopy = self;
+  BSUIProductFeedViewController.messageViewController(_:didSelectActionWith:)(controllerCopy);
 
   (*(v7 + 8))(v9, v6);
 }
 
-- (void)messageViewControllerDidSelectCancel:(id)a3
+- (void)messageViewControllerDidSelectCancel:(id)cancel
 {
-  v4 = a3;
-  v5 = self;
-  BSUIProductFeedViewController.messageViewControllerDidSelectCancel(_:)(v4);
+  cancelCopy = cancel;
+  selfCopy = self;
+  BSUIProductFeedViewController.messageViewControllerDidSelectCancel(_:)(cancelCopy);
 }
 
-- (void)messageViewController:(id)a3 didFailWithError:(id)a4
+- (void)messageViewController:(id)controller didFailWithError:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
-  sub_DD048(a4);
+  controllerCopy = controller;
+  selfCopy = self;
+  errorCopy = error;
+  sub_DD048(error);
 }
 
-- (int64_t)adaptivePresentationStyleForPresentationController:(id)a3
+- (int64_t)adaptivePresentationStyleForPresentationController:(id)controller
 {
-  v3 = [a3 presentedViewController];
+  presentedViewController = [controller presentedViewController];
   objc_opt_self();
   v4 = swift_dynamicCastObjCClass();
 
@@ -234,11 +234,11 @@
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
-  v4 = a3;
-  v5 = self;
-  BSUIProductFeedViewController.presentationControllerDidDismiss(_:)(v4);
+  dismissCopy = dismiss;
+  selfCopy = self;
+  BSUIProductFeedViewController.presentationControllerDidDismiss(_:)(dismissCopy);
 }
 
 @end

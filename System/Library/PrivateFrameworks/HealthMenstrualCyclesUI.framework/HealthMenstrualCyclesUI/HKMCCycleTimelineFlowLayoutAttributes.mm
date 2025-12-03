@@ -1,19 +1,19 @@
 @interface HKMCCycleTimelineFlowLayoutAttributes
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CGRect)pillFrame;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation HKMCCycleTimelineFlowLayoutAttributes
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (v13.receiver = self, v13.super_class = HKMCCycleTimelineFlowLayoutAttributes, -[UICollectionViewLayoutAttributes isEqual:](&v13, sel_isEqual_, v4)) && (shrinkFactor = self->_shrinkFactor, [v4 shrinkFactor], vabdd_f64(shrinkFactor, v6) < 2.22044605e-16))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (v13.receiver = self, v13.super_class = HKMCCycleTimelineFlowLayoutAttributes, -[UICollectionViewLayoutAttributes isEqual:](&v13, sel_isEqual_, equalCopy)) && (shrinkFactor = self->_shrinkFactor, [equalCopy shrinkFactor], vabdd_f64(shrinkFactor, v6) < 2.22044605e-16))
   {
-    [v4 pillFrame];
+    [equalCopy pillFrame];
     v14.origin.x = v7;
     v14.origin.y = v8;
     v14.size.width = v9;
@@ -42,11 +42,11 @@
   return v5 ^ v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = HKMCCycleTimelineFlowLayoutAttributes;
-  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:a3];
+  v4 = [(UICollectionViewLayoutAttributes *)&v6 copyWithZone:zone];
   [(HKMCCycleTimelineFlowLayoutAttributes *)self shrinkFactor];
   [v4 setShrinkFactor:?];
   [(HKMCCycleTimelineFlowLayoutAttributes *)self pillFrame];

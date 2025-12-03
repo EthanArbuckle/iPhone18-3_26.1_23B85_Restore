@@ -1,33 +1,33 @@
 @interface ODMSiriSchemaODMSiriAggregationInterval
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (ODMSiriSchemaODMSiriAggregationInterval)initWithDictionary:(id)a3;
-- (ODMSiriSchemaODMSiriAggregationInterval)initWithJSON:(id)a3;
+- (ODMSiriSchemaODMSiriAggregationInterval)initWithDictionary:(id)dictionary;
+- (ODMSiriSchemaODMSiriAggregationInterval)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasAggregationIntervalStartTimestampInSecondsSince2001:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAggregationIntervalStartTimestampInSecondsSince2001:(BOOL)since2001;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ODMSiriSchemaODMSiriAggregationInterval
 
-- (ODMSiriSchemaODMSiriAggregationInterval)initWithDictionary:(id)a3
+- (ODMSiriSchemaODMSiriAggregationInterval)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = ODMSiriSchemaODMSiriAggregationInterval;
   v5 = [(ODMSiriSchemaODMSiriAggregationInterval *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"aggregationIntervalInDays"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"aggregationIntervalInDays"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[ODMSiriSchemaODMSiriAggregationInterval setAggregationIntervalInDays:](v5, "setAggregationIntervalInDays:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"aggregationIntervalStartTimestampInSecondsSince2001"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"aggregationIntervalStartTimestampInSecondsSince2001"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -41,30 +41,30 @@
   return v5;
 }
 
-- (ODMSiriSchemaODMSiriAggregationInterval)initWithJSON:(id)a3
+- (ODMSiriSchemaODMSiriAggregationInterval)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(ODMSiriSchemaODMSiriAggregationInterval *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(ODMSiriSchemaODMSiriAggregationInterval *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(ODMSiriSchemaODMSiriAggregationInterval *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -77,12 +77,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if (has)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[ODMSiriSchemaODMSiriAggregationInterval aggregationIntervalInDays](self, "aggregationIntervalInDays")}];
-    [v3 setObject:v5 forKeyedSubscript:@"aggregationIntervalInDays"];
+    [dictionary setObject:v5 forKeyedSubscript:@"aggregationIntervalInDays"];
 
     has = self->_has;
   }
@@ -92,12 +92,12 @@
     v6 = MEMORY[0x1E696AD98];
     [(ODMSiriSchemaODMSiriAggregationInterval *)self aggregationIntervalStartTimestampInSecondsSince2001];
     v7 = [v6 numberWithDouble:?];
-    [v3 setObject:v7 forKeyedSubscript:@"aggregationIntervalStartTimestampInSecondsSince2001"];
+    [dictionary setObject:v7 forKeyedSubscript:@"aggregationIntervalStartTimestampInSecondsSince2001"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -150,16 +150,16 @@ LABEL_3:
   return v8 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   has = self->_has;
-  v6 = v4[24];
+  v6 = equalCopy[24];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_9;
@@ -168,19 +168,19 @@ LABEL_3:
   if (*&has)
   {
     aggregationIntervalInDays = self->_aggregationIntervalInDays;
-    if (aggregationIntervalInDays != [v4 aggregationIntervalInDays])
+    if (aggregationIntervalInDays != [equalCopy aggregationIntervalInDays])
     {
       goto LABEL_9;
     }
 
     has = self->_has;
-    v6 = v4[24];
+    v6 = equalCopy[24];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (aggregationIntervalStartTimestampInSecondsSince2001 = self->_aggregationIntervalStartTimestampInSecondsSince2001, [v4 aggregationIntervalStartTimestampInSecondsSince2001], aggregationIntervalStartTimestampInSecondsSince2001 == v10))
+    if (!v8 || (aggregationIntervalStartTimestampInSecondsSince2001 = self->_aggregationIntervalStartTimestampInSecondsSince2001, [equalCopy aggregationIntervalStartTimestampInSecondsSince2001], aggregationIntervalStartTimestampInSecondsSince2001 == v10))
     {
       v11 = 1;
       goto LABEL_10;
@@ -194,28 +194,28 @@ LABEL_10:
   return v11;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v6 = v4;
+  v6 = toCopy;
   if (has)
   {
     PBDataWriterWriteUint32Field();
-    v4 = v6;
+    toCopy = v6;
     has = self->_has;
   }
 
   if ((has & 2) != 0)
   {
     PBDataWriterWriteDoubleField();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)setHasAggregationIntervalStartTimestampInSecondsSince2001:(BOOL)a3
+- (void)setHasAggregationIntervalStartTimestampInSecondsSince2001:(BOOL)since2001
 {
-  if (a3)
+  if (since2001)
   {
     v3 = 2;
   }

@@ -17,47 +17,47 @@
 
 + (id)_defaultCrossfadeSettings
 {
-  v2 = [objc_alloc(MEMORY[0x1E69D3F98]) initWithDefaultValues];
-  [v2 setAnimationType:0];
-  [v2 setDuration:0.2];
-  [v2 setCurve:0x10000];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x1E69D3F98]) initWithDefaultValues];
+  [initWithDefaultValues setAnimationType:0];
+  [initWithDefaultValues setDuration:0.2];
+  [initWithDefaultValues setCurve:0x10000];
 
-  return v2;
+  return initWithDefaultValues;
 }
 
 + (id)_defaultInnerFolderZoomAnimationSettings
 {
-  v2 = [objc_alloc(MEMORY[0x1E69D3F98]) initWithDefaultValues];
-  [v2 setAnimationType:1];
-  [v2 setMass:1.0];
-  [v2 setStiffness:246.74];
-  [v2 setDamping:31.42];
-  [v2 setCurve:196608];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x1E69D3F98]) initWithDefaultValues];
+  [initWithDefaultValues setAnimationType:1];
+  [initWithDefaultValues setMass:1.0];
+  [initWithDefaultValues setStiffness:246.74];
+  [initWithDefaultValues setDamping:31.42];
+  [initWithDefaultValues setCurve:196608];
   v5 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v2 setFrameRateRange:1114123 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
+  [initWithDefaultValues setFrameRateRange:1114123 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
 
-  return v2;
+  return initWithDefaultValues;
 }
 
 + (id)_defaultCentralAnimationSettings
 {
-  v2 = [objc_alloc(MEMORY[0x1E69D3F98]) initWithDefaultValues];
-  [v2 setAnimationType:1];
-  [v2 setMass:1.0];
-  [v2 setStiffness:157.91];
-  [v2 setDamping:25.13];
-  [v2 setCurve:196608];
+  initWithDefaultValues = [objc_alloc(MEMORY[0x1E69D3F98]) initWithDefaultValues];
+  [initWithDefaultValues setAnimationType:1];
+  [initWithDefaultValues setMass:1.0];
+  [initWithDefaultValues setStiffness:157.91];
+  [initWithDefaultValues setDamping:25.13];
+  [initWithDefaultValues setCurve:196608];
   v5 = CAFrameRateRangeMake(80.0, 120.0, 120.0);
-  [v2 setFrameRateRange:1114123 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
+  [initWithDefaultValues setFrameRateRange:1114123 highFrameRateReason:{*&v5.minimum, *&v5.maximum, *&v5.preferred}];
 
-  return v2;
+  return initWithDefaultValues;
 }
 
 + (id)settingsControllerModule
 {
   v16[3] = *MEMORY[0x1E69E9840];
   v2 = MEMORY[0x1E69C6638];
-  v15.receiver = a1;
+  v15.receiver = self;
   v15.super_class = &OBJC_METACLASS___SBHLibraryPodZoomSettings;
   v3 = objc_msgSendSuper2(&v15, sel_settingsControllerModule);
   v4 = [v2 submoduleWithModule:v3 childSettingsKeyPath:0];

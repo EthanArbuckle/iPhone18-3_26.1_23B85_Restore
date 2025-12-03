@@ -1,6 +1,6 @@
 @interface ICSetParentalControlRequestOperation
-- (ICSetParentalControlRequestOperation)initWithRequestContext:(id)a3 allowsExplicitContent:(BOOL)a4 isAutomatic:(BOOL)a5;
-- (void)_buildAndSendRequestForURL:(id)a3;
+- (ICSetParentalControlRequestOperation)initWithRequestContext:(id)context allowsExplicitContent:(BOOL)content isAutomatic:(BOOL)automatic;
+- (void)_buildAndSendRequestForURL:(id)l;
 - (void)_getURLFromBagAndSendRequest;
 - (void)cancel;
 - (void)execute;
@@ -66,10 +66,10 @@ void __68__ICSetParentalControlRequestOperation__getURLFromBagAndSendRequest__bl
   }
 }
 
-- (void)_buildAndSendRequestForURL:(id)a3
+- (void)_buildAndSendRequestForURL:(id)l
 {
   v22[2] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E695AC18] requestWithURL:a3];
+  v4 = [MEMORY[0x1E695AC18] requestWithURL:l];
   [v4 setHTTPMethod:@"POST"];
   v5 = objc_alloc(MEMORY[0x1E696AF60]);
   if (self->_allowsExplicitContent)
@@ -101,17 +101,17 @@ void __68__ICSetParentalControlRequestOperation__getURLFromBagAndSendRequest__bl
   v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:2];
   [v11 setQueryItems:v12];
 
-  v13 = [v11 query];
-  v14 = [v13 dataUsingEncoding:4];
+  query = [v11 query];
+  v14 = [query dataUsingEncoding:4];
 
   [v4 setHTTPBody:v14];
   v15 = [[ICStoreURLRequest alloc] initWithURLRequest:v4 requestContext:self->_requestContext];
   storeURLRequest = self->_storeURLRequest;
   self->_storeURLRequest = v15;
 
-  v17 = [(ICRequestOperation *)self progress];
-  v18 = [(ICURLRequest *)self->_storeURLRequest progress];
-  [v17 addChild:v18 withPendingUnitCount:100];
+  progress = [(ICRequestOperation *)self progress];
+  progress2 = [(ICURLRequest *)self->_storeURLRequest progress];
+  [progress addChild:progress2 withPendingUnitCount:100];
 
   v19 = +[ICURLSessionManager defaultSession];
   v20 = self->_storeURLRequest;
@@ -175,18 +175,18 @@ void __67__ICSetParentalControlRequestOperation__buildAndSendRequestForURL___blo
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1B4491000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ Performing setParentalControl request", buf, 0xCu);
   }
 
-  v4 = [(ICStoreRequestContext *)self->_requestContext identityStore];
-  v5 = [(ICStoreRequestContext *)self->_requestContext identity];
+  identityStore = [(ICStoreRequestContext *)self->_requestContext identityStore];
+  identity = [(ICStoreRequestContext *)self->_requestContext identity];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __47__ICSetParentalControlRequestOperation_execute__block_invoke;
   v6[3] = &unk_1E7BF7B20;
   v6[4] = self;
-  [v4 getPropertiesForUserIdentity:v5 completionHandler:v6];
+  [identityStore getPropertiesForUserIdentity:identity completionHandler:v6];
 }
 
 void __47__ICSetParentalControlRequestOperation_execute__block_invoke(uint64_t a1, void *a2)
@@ -257,16 +257,16 @@ void __47__ICSetParentalControlRequestOperation_execute__block_invoke(uint64_t a
   }
 }
 
-- (ICSetParentalControlRequestOperation)initWithRequestContext:(id)a3 allowsExplicitContent:(BOOL)a4 isAutomatic:(BOOL)a5
+- (ICSetParentalControlRequestOperation)initWithRequestContext:(id)context allowsExplicitContent:(BOOL)content isAutomatic:(BOOL)automatic
 {
-  v9 = a3;
+  contextCopy = context;
   v10 = [(ICRequestOperation *)self init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_requestContext, a3);
-    v11->_allowsExplicitContent = a4;
-    v11->_automatic = a5;
+    objc_storeStrong(&v10->_requestContext, context);
+    v11->_allowsExplicitContent = content;
+    v11->_automatic = automatic;
   }
 
   return v11;

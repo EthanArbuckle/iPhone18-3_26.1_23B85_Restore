@@ -1,20 +1,20 @@
 @interface SetupUserDispositionProvider
 - (_TtC5Setup28SetupUserDispositionProvider)init;
-- (void)isNewUserWithDataTransferMethod:(unint64_t)a3 deviceClass:(NSString *)a4 serialNumber:(NSString *)a5 completionHandler:(id)a6;
+- (void)isNewUserWithDataTransferMethod:(unint64_t)method deviceClass:(NSString *)class serialNumber:(NSString *)number completionHandler:(id)handler;
 @end
 
 @implementation SetupUserDispositionProvider
 
-- (void)isNewUserWithDataTransferMethod:(unint64_t)a3 deviceClass:(NSString *)a4 serialNumber:(NSString *)a5 completionHandler:(id)a6
+- (void)isNewUserWithDataTransferMethod:(unint64_t)method deviceClass:(NSString *)class serialNumber:(NSString *)number completionHandler:(id)handler
 {
   v11 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v11 - 8);
   v13 = &v22 - v12;
-  v14 = _Block_copy(a6);
+  v14 = _Block_copy(handler);
   v15 = swift_allocObject();
-  v15[2] = a3;
-  v15[3] = a4;
-  v15[4] = a5;
+  v15[2] = method;
+  v15[3] = class;
+  v15[4] = number;
   v15[5] = v14;
   v15[6] = self;
   v16 = type metadata accessor for TaskPriority();
@@ -29,9 +29,9 @@
   v18[3] = 0;
   v18[4] = &unk_100297310;
   v18[5] = v17;
-  v19 = a4;
-  v20 = a5;
-  v21 = self;
+  classCopy = class;
+  numberCopy = number;
+  selfCopy = self;
   sub_100063A28(0, 0, v13, &unk_1002979A0, v18);
 }
 

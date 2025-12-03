@@ -1,24 +1,24 @@
 @interface PHVideoRequestContext
-- (PHVideoRequestContext)initWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 displaySpec:(id)a6 options:(id)a7 intent:(int64_t)a8 resultHandler:(id)a9;
+- (PHVideoRequestContext)initWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset displaySpec:(id)spec options:(id)options intent:(int64_t)intent resultHandler:(id)handler;
 - (id)_lazyProgress;
 - (id)initialRequests;
 - (id)progresses;
-- (void)processMediaResult:(id)a3 forRequest:(id)a4;
+- (void)processMediaResult:(id)result forRequest:(id)request;
 @end
 
 @implementation PHVideoRequestContext
 
-- (void)processMediaResult:(id)a3 forRequest:(id)a4
+- (void)processMediaResult:(id)result forRequest:(id)request
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  resultCopy = result;
+  requestCopy = request;
   v8 = PLImageManagerGetLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
   {
-    v9 = [v7 identifierString];
-    v10 = [v6 videoURL];
-    if ([v6 isCancelled])
+    identifierString = [requestCopy identifierString];
+    videoURL = [resultCopy videoURL];
+    if ([resultCopy isCancelled])
     {
       v11 = @"Y";
     }
@@ -28,24 +28,24 @@
       v11 = @"N";
     }
 
-    v12 = [v6 info];
+    info = [resultCopy info];
     *buf = 138413058;
-    v20 = v9;
+    v20 = identifierString;
     v21 = 2112;
-    v22 = v10;
+    v22 = videoURL;
     v23 = 2112;
     v24 = v11;
     v25 = 2112;
-    v26 = v12;
+    v26 = info;
     _os_log_impl(&dword_19C86F000, v8, OS_LOG_TYPE_DEBUG, "[RM]: %@ finished with video URL: %@, cancelled: %@, info: %@", buf, 0x2Au);
   }
 
   if (PHImageManagerRecordEnabled())
   {
-    v14 = [v7 requestID];
-    v15 = [v7 identifierString];
-    v16 = [v6 videoURL];
-    if ([v6 isCancelled])
+    requestID = [requestCopy requestID];
+    identifierString2 = [requestCopy identifierString];
+    videoURL2 = [resultCopy videoURL];
+    if ([resultCopy isCancelled])
     {
       v17 = @"Y";
     }
@@ -55,14 +55,14 @@
       v17 = @"N";
     }
 
-    v18 = [v6 info];
-    [PHImageManagerRequestTracer traceMessageForRequestID:v14 message:@"[RM]: %@ finished with video URL: %@, cancelled: %@, info: %@", v15, v16, v17, v18];
+    info2 = [resultCopy info];
+    [PHImageManagerRequestTracer traceMessageForRequestID:requestID message:@"[RM]: %@ finished with video URL: %@, cancelled: %@, info: %@", identifierString2, videoURL2, v17, info2];
   }
 
   resultHandler = self->super._resultHandler;
   if (resultHandler)
   {
-    resultHandler[2](resultHandler, v6, v7, self);
+    resultHandler[2](resultHandler, resultCopy, requestCopy, self);
   }
 }
 
@@ -71,8 +71,8 @@
   v6[1] = *MEMORY[0x1E69E9840];
   if ([(PHMediaRequestContext *)self shouldReportProgress])
   {
-    v3 = [(PHVideoRequestContext *)self _lazyProgress];
-    v6[0] = v3;
+    _lazyProgress = [(PHVideoRequestContext *)self _lazyProgress];
+    v6[0] = _lazyProgress;
     v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:1];
   }
 
@@ -113,17 +113,17 @@
 
   [(PHVideoRequestBehaviorSpec *)v3 setTimeRange:v17];
   v5 = [PHVideoRequest alloc];
-  v6 = [(PHMediaRequestContext *)self requestID];
-  v7 = [(PHMediaRequestContext *)self nextRequestIndex];
-  v8 = [(PHVideoRequestContext *)self type];
-  v9 = [(PHMediaRequestContext *)self managerID];
-  v10 = [(PHMediaRequestContext *)self asset];
-  v11 = [(PHMediaRequestContext *)self displaySpec];
-  v12 = [(PHVideoRequest *)v5 initWithRequestID:v6 requestIndex:v7 contextType:v8 managerID:v9 asset:v10 displaySpec:v11 behaviorSpec:v3 delegate:self];
+  requestID = [(PHMediaRequestContext *)self requestID];
+  nextRequestIndex = [(PHMediaRequestContext *)self nextRequestIndex];
+  type = [(PHVideoRequestContext *)self type];
+  managerID = [(PHMediaRequestContext *)self managerID];
+  asset = [(PHMediaRequestContext *)self asset];
+  displaySpec = [(PHMediaRequestContext *)self displaySpec];
+  v12 = [(PHVideoRequest *)v5 initWithRequestID:requestID requestIndex:nextRequestIndex contextType:type managerID:managerID asset:asset displaySpec:displaySpec behaviorSpec:v3 delegate:self];
 
-  v13 = [(PHVideoRequestContext *)self _lazyProgress];
-  v14 = [(PHMediaRequest *)v12 identifierString];
-  [(PHMediaRequestContext *)self setProgress:v13 forRequestIdentifier:v14];
+  _lazyProgress = [(PHVideoRequestContext *)self _lazyProgress];
+  identifierString = [(PHMediaRequest *)v12 identifierString];
+  [(PHMediaRequestContext *)self setProgress:_lazyProgress forRequestIdentifier:identifierString];
 
   v18[0] = v12;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
@@ -146,19 +146,19 @@
   return progress;
 }
 
-- (PHVideoRequestContext)initWithRequestID:(int)a3 managerID:(unint64_t)a4 asset:(id)a5 displaySpec:(id)a6 options:(id)a7 intent:(int64_t)a8 resultHandler:(id)a9
+- (PHVideoRequestContext)initWithRequestID:(int)d managerID:(unint64_t)iD asset:(id)asset displaySpec:(id)spec options:(id)options intent:(int64_t)intent resultHandler:(id)handler
 {
-  v14 = *&a3;
+  v14 = *&d;
   v28 = *MEMORY[0x1E69E9840];
-  v16 = a7;
+  optionsCopy = options;
   v25.receiver = self;
   v25.super_class = PHVideoRequestContext;
-  v17 = [(PHMediaRequestContext *)&v25 initWithRequestID:v14 managerID:a4 asset:a5 displaySpec:a6 resultHandler:a9];
+  v17 = [(PHMediaRequestContext *)&v25 initWithRequestID:v14 managerID:iD asset:asset displaySpec:spec resultHandler:handler];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_videoOptions, a7);
-    v18->_intent = a8;
+    objc_storeStrong(&v17->_videoOptions, options);
+    v18->_intent = intent;
     if ([(PHVideoRequestOptions *)v18->_videoOptions version]&& [(PHVideoRequestOptions *)v18->_videoOptions deliveryMode])
     {
       v19 = PLImageManagerGetLog();
@@ -170,7 +170,7 @@
     }
 
     v24 = 0;
-    v20 = [v16 isValidConfigurationWithError:&v24];
+    v20 = [optionsCopy isValidConfigurationWithError:&v24];
     v21 = v24;
     if ((v20 & 1) == 0)
     {

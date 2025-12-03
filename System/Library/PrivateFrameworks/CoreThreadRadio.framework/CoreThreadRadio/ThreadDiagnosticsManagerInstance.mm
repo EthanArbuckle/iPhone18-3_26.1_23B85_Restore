@@ -5,15 +5,15 @@
 - (basic_string<char,)getMLAddress;
 - (basic_string<char,)getMLPrefix;
 - (basic_string<char,)getNwName;
-- (dict)threadDiagnosticsManagerInstance_MsgHandler:()basic_string<char message:()std:(std::allocator<char>> *)a3 :char_traits<char>;
-- (id)init:(id)a3;
+- (dict)threadDiagnosticsManagerInstance_MsgHandler:()basic_string<char message:()std:(std::allocator<char>> *)std :char_traits<char>;
+- (id)init:(id)init;
 - (int)getNCPState;
 - (unint64_t)getXPanId;
 - (unsigned)getChannel;
 - (unsigned)getLeaderRouterID;
 - (unsigned)getPanId;
 - (unsigned)getPartitionId;
-- (void)createDriverInterface:(id)a3;
+- (void)createDriverInterface:(id)interface;
 - (void)handlePeriodicTimer;
 - (void)send_nwdiagnostics_get_req;
 - (void)setupCleanupTimer;
@@ -40,17 +40,17 @@
   return 1;
 }
 
-- (id)init:(id)a3
+- (id)init:(id)init
 {
-  v5 = a3;
+  initCopy = init;
   v9.receiver = self;
   v9.super_class = ThreadDiagnosticsManagerInstance;
   v6 = [(ThreadDiagnosticsManagerInstance *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_fQueue, a3);
-    [(ThreadDiagnosticsManagerInstance *)v7 createDriverInterface:v5];
+    objc_storeStrong(&v6->_fQueue, init);
+    [(ThreadDiagnosticsManagerInstance *)v7 createDriverInterface:initCopy];
   }
 
   return v7;
@@ -230,17 +230,17 @@ LABEL_18:
   return v13;
 }
 
-- (dict)threadDiagnosticsManagerInstance_MsgHandler:()basic_string<char message:()std:(std::allocator<char>> *)a3 :char_traits<char>
+- (dict)threadDiagnosticsManagerInstance_MsgHandler:()basic_string<char message:()std:(std::allocator<char>> *)std :char_traits<char>
 {
   v5 = v3;
   v8 = v4;
   v9 = log_get_logging_obg("com.apple.wpantund.tdm", "default");
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    var0 = a3;
-    if (*(&a3->var0.var1 + 23) < 0)
+    var0 = std;
+    if (*(&std->var0.var1 + 23) < 0)
     {
-      var0 = a3->var0.var1.var0;
+      var0 = std->var0.var1.var0;
     }
 
     *buf = 136315138;
@@ -538,7 +538,7 @@ LABEL_52:
   v22 = log_get_logging_obg("com.apple.wpantund.tdm", "default");
   if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
   {
-    [(ThreadDiagnosticsManagerInstance *)&a3->var0.var1 threadDiagnosticsManagerInstance_MsgHandler:v22 message:?];
+    [(ThreadDiagnosticsManagerInstance *)&std->var0.var1 threadDiagnosticsManagerInstance_MsgHandler:v22 message:?];
   }
 
   v23 = 1;
@@ -587,9 +587,9 @@ LABEL_32:
   return v99;
 }
 
-- (void)createDriverInterface:(id)a3
+- (void)createDriverInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   objc_initWeak(&location, self);
   v5 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
   v6 = dispatch_queue_create("wpantund.TDM.SendQueue", v5);
@@ -1514,11 +1514,11 @@ LABEL_14:
           v21 = *v13;
           v22 = v14;
           v23 = *(v13 + 8);
-          v15 = [v8 CtrInternalClientPtr];
+          ctrInternalClientPtr = [v8 CtrInternalClientPtr];
           v19[0] = v21;
           v19[1] = v22;
           v20 = v23;
-          [v15 send_diagnostics_req:v19];
+          [ctrInternalClientPtr send_diagnostics_req:v19];
           if (v17 < 0)
           {
             operator delete(__p);
@@ -1604,13 +1604,13 @@ LABEL_14:
       }
 
       v27->__r_.__value_.__s.__data_[v26] = 0;
-      v28 = [(ThreadDiagnosticsManagerInstance *)self getPanId];
+      getPanId = [(ThreadDiagnosticsManagerInstance *)self getPanId];
       [(ThreadDiagnosticsManagerInstance *)self getNwName];
-      v29 = [(ThreadDiagnosticsManagerInstance *)self getPartitionId];
-      v30 = [(ThreadDiagnosticsManagerInstance *)self getChannel];
-      v31 = [(ThreadDiagnosticsManagerInstance *)self getLeaderRouterID];
-      v32 = [(ThreadDiagnosticsManagerInstance *)self getXPanId];
-      Instance = NetworkDiagnosticsManager::getInstance(v32);
+      getPartitionId = [(ThreadDiagnosticsManagerInstance *)self getPartitionId];
+      getChannel = [(ThreadDiagnosticsManagerInstance *)self getChannel];
+      getLeaderRouterID = [(ThreadDiagnosticsManagerInstance *)self getLeaderRouterID];
+      getXPanId = [(ThreadDiagnosticsManagerInstance *)self getXPanId];
+      Instance = NetworkDiagnosticsManager::getInstance(getXPanId);
       if (SHIBYTE(v40.__r_.__value_.__r.__words[2]) < 0)
       {
         std::string::__init_copy_ctor_external(&v37, v40.__r_.__value_.__l.__data_, v40.__r_.__value_.__l.__size_);
@@ -1641,7 +1641,7 @@ LABEL_14:
         v35 = __p;
       }
 
-      NetworkDiagnosticsManager::updateNCPProperties(Instance, &v37, &v36, &v35, v28, v32, v30, v31, v29);
+      NetworkDiagnosticsManager::updateNCPProperties(Instance, &v37, &v36, &v35, getPanId, getXPanId, getChannel, getLeaderRouterID, getPartitionId);
       if (SHIBYTE(v35.__r_.__value_.__r.__words[2]) < 0)
       {
         operator delete(v35.__r_.__value_.__l.__data_);
@@ -1766,8 +1766,8 @@ LABEL_13:
     return;
   }
 
-  v3 = [(ThreadDiagnosticsManagerInstance *)self shouldRunDiagnostics];
-  if ((v3 & 1) == 0)
+  shouldRunDiagnostics = [(ThreadDiagnosticsManagerInstance *)self shouldRunDiagnostics];
+  if ((shouldRunDiagnostics & 1) == 0)
   {
     v17 = log_get_logging_obg("com.apple.wpantund.tdm", "default");
     if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
@@ -1781,7 +1781,7 @@ LABEL_13:
     goto LABEL_13;
   }
 
-  Instance = NetworkDiagnosticsManager::getInstance(v3);
+  Instance = NetworkDiagnosticsManager::getInstance(shouldRunDiagnostics);
   v5 = NetworkDiagnosticsManager::cleanup(Instance, 0, 1);
   v6 = NetworkDiagnosticsManager::getInstance(v5);
   NetworkDiagnosticsManager::initialize(v6);

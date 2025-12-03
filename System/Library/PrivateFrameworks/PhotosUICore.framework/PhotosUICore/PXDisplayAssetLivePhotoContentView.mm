@@ -2,7 +2,7 @@
 - (BOOL)isDisplayingFullQualityContent;
 - (double)loadingProgress;
 - (id)contentView;
-- (void)_handlePlayerItemResult:(id)a3 info:(id)a4 requestID:(int64_t)a5;
+- (void)_handlePlayerItemResult:(id)result info:(id)info requestID:(int64_t)d;
 - (void)_updateLivePhotoContentMode;
 - (void)_updateLivePhotoPlayerItem;
 - (void)contentModeDidChange;
@@ -10,47 +10,47 @@
 - (void)effectivePreferredImageDynamicRangeDidChange;
 - (void)imageDidChange;
 - (void)imageProgressDidChange;
-- (void)imageRequesterDidChange:(unint64_t)a3;
+- (void)imageRequesterDidChange:(unint64_t)change;
 - (void)placeholderImageFiltersDidChange;
-- (void)setPlayerItemLoadingProgress:(double)a3;
-- (void)setVideoPlayerItem:(id)a3;
+- (void)setPlayerItemLoadingProgress:(double)progress;
+- (void)setVideoPlayerItem:(id)item;
 - (void)updateContent;
-- (void)viewModelDidChange:(unint64_t)a3;
+- (void)viewModelDidChange:(unint64_t)change;
 @end
 
 @implementation PXDisplayAssetLivePhotoContentView
 
-- (void)viewModelDidChange:(unint64_t)a3
+- (void)viewModelDidChange:(unint64_t)change
 {
-  v3 = a3;
+  changeCopy = change;
   v8.receiver = self;
   v8.super_class = PXDisplayAssetLivePhotoContentView;
   [(PXDisplayAssetContentView *)&v8 viewModelDidChange:?];
-  if ((v3 & 0x10) != 0)
+  if ((changeCopy & 0x10) != 0)
   {
-    v5 = [(ISLivePhotoUIView *)self->_livePhotoView player];
-    v6 = [(PXDisplayAssetContentView *)self viewModel];
-    v7 = [v6 wantsLivePhotoPlayback];
+    player = [(ISLivePhotoUIView *)self->_livePhotoView player];
+    viewModel = [(PXDisplayAssetContentView *)self viewModel];
+    wantsLivePhotoPlayback = [viewModel wantsLivePhotoPlayback];
 
-    if (v7)
+    if (wantsLivePhotoPlayback)
     {
-      [v5 startPlaybackWithStyle:1 settleAutomatically:1];
+      [player startPlaybackWithStyle:1 settleAutomatically:1];
     }
 
     else
     {
-      [v5 stopPlayback];
+      [player stopPlayback];
     }
   }
 }
 
-- (void)imageRequesterDidChange:(unint64_t)a3
+- (void)imageRequesterDidChange:(unint64_t)change
 {
-  v3 = a3;
+  changeCopy = change;
   v5.receiver = self;
   v5.super_class = PXDisplayAssetLivePhotoContentView;
   [(PXDisplayAssetContentView *)&v5 imageRequesterDidChange:?];
-  if ((v3 & 8) != 0)
+  if ((changeCopy & 8) != 0)
   {
     [(PXDisplayAssetContentView *)self isDisplayingFullQualityContentDidChange];
   }
@@ -58,15 +58,15 @@
 
 - (void)_updateLivePhotoPlayerItem
 {
-  v3 = [(PXDisplayAssetContentView *)self image];
-  if (v3)
+  image = [(PXDisplayAssetContentView *)self image];
+  if (image)
   {
-    v4 = [(AVPlayerItem *)self->_videoPlayerItem asset];
-    [v3 imageOrientation];
+    asset = [(AVPlayerItem *)self->_videoPlayerItem asset];
+    [image imageOrientation];
     v5 = PLExifOrientationFromImageOrientation();
-    if (v4)
+    if (asset)
     {
-      [v4 duration];
+      [asset duration];
       v6 = vcvts_n_f32_s64(v14, 1uLL);
     }
 
@@ -75,25 +75,25 @@
       v6 = 0.0;
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E69C1AE8]) initWithVideoAsset:v4 UIImage:v3 photoTime:v5 photoEXIFOrientation:0 options:v6];
+    v7 = [objc_alloc(MEMORY[0x1E69C1AE8]) initWithVideoAsset:asset UIImage:image photoTime:v5 photoEXIFOrientation:0 options:v6];
     v8 = MEMORY[0x1E69C1B00];
     [(PXDisplayAssetContentView *)self targetSize];
     v9 = [v8 playerItemWithAsset:v7 targetSize:?];
-    v10 = [(AVPlayerItem *)self->_videoPlayerItem videoComposition];
-    [v9 setVideoComposition:v10];
+    videoComposition = [(AVPlayerItem *)self->_videoPlayerItem videoComposition];
+    [v9 setVideoComposition:videoComposition];
 
-    v11 = [(ISLivePhotoUIView *)self->_livePhotoView player];
-    v12 = v11;
+    player = [(ISLivePhotoUIView *)self->_livePhotoView player];
+    v12 = player;
     if (v9)
     {
-      if (!v11)
+      if (!player)
       {
         v12 = objc_alloc_init(MEMORY[0x1E69C1AF0]);
         [v12 setAudioEnabled:0];
         [(ISLivePhotoUIView *)self->_livePhotoView setPlayer:v12];
       }
 
-      v11 = v12;
+      player = v12;
       v13 = v9;
     }
 
@@ -102,23 +102,23 @@
       v13 = 0;
     }
 
-    [v11 setPlayerItem:v13];
+    [player setPlayerItem:v13];
   }
 
   else
   {
-    v4 = [(ISLivePhotoUIView *)self->_livePhotoView player];
-    [v4 setPlayerItem:0];
+    asset = [(ISLivePhotoUIView *)self->_livePhotoView player];
+    [asset setPlayerItem:0];
   }
 }
 
 - (BOOL)isDisplayingFullQualityContent
 {
-  v3 = [(PXDisplayAssetContentView *)self imageRequester];
-  if ([v3 hasFullQuality])
+  imageRequester = [(PXDisplayAssetContentView *)self imageRequester];
+  if ([imageRequester hasFullQuality])
   {
-    v4 = [(PXDisplayAssetLivePhotoContentView *)self videoPlayerItem];
-    v5 = v4 != 0;
+    videoPlayerItem = [(PXDisplayAssetLivePhotoContentView *)self videoPlayerItem];
+    v5 = videoPlayerItem != 0;
   }
 
   else
@@ -129,16 +129,16 @@
   return v5;
 }
 
-- (void)setVideoPlayerItem:(id)a3
+- (void)setVideoPlayerItem:(id)item
 {
-  v5 = a3;
-  if (self->_videoPlayerItem != v5)
+  itemCopy = item;
+  if (self->_videoPlayerItem != itemCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_videoPlayerItem, a3);
+    v6 = itemCopy;
+    objc_storeStrong(&self->_videoPlayerItem, item);
     [(PXDisplayAssetLivePhotoContentView *)self _updateLivePhotoPlayerItem];
     [(PXDisplayAssetContentView *)self isDisplayingFullQualityContentDidChange];
-    v5 = v6;
+    itemCopy = v6;
   }
 }
 
@@ -172,19 +172,19 @@
   [(PXDisplayAssetLivePhotoContentView *)self _updateLivePhotoPlayerItem];
 }
 
-- (void)_handlePlayerItemResult:(id)a3 info:(id)a4 requestID:(int64_t)a5
+- (void)_handlePlayerItemResult:(id)result info:(id)info requestID:(int64_t)d
 {
-  v12 = a3;
-  v8 = a4;
-  v9 = [v8 objectForKeyedSubscript:*off_1E7722068];
-  v10 = [v9 BOOLValue];
+  resultCopy = result;
+  infoCopy = info;
+  v9 = [infoCopy objectForKeyedSubscript:*off_1E7722068];
+  bOOLValue = [v9 BOOLValue];
 
-  if ([(PXDisplayAssetContentView *)self requestID]== a5 && (v10 & 1) == 0)
+  if ([(PXDisplayAssetContentView *)self requestID]== d && (bOOLValue & 1) == 0)
   {
-    [(PXDisplayAssetLivePhotoContentView *)self setVideoPlayerItem:v12];
-    if (!v12)
+    [(PXDisplayAssetLivePhotoContentView *)self setVideoPlayerItem:resultCopy];
+    if (!resultCopy)
     {
-      v11 = [v8 objectForKeyedSubscript:*off_1E7722070];
+      v11 = [infoCopy objectForKeyedSubscript:*off_1E7722070];
       [(PXDisplayAssetContentView *)self handleError:v11];
     }
   }
@@ -215,11 +215,11 @@
   [(PXDisplayAssetContentView *)self invalidateLoadingProgress];
 }
 
-- (void)setPlayerItemLoadingProgress:(double)a3
+- (void)setPlayerItemLoadingProgress:(double)progress
 {
-  if (self->_playerItemLoadingProgress != a3)
+  if (self->_playerItemLoadingProgress != progress)
   {
-    self->_playerItemLoadingProgress = a3;
+    self->_playerItemLoadingProgress = progress;
     [(PXDisplayAssetContentView *)self invalidateLoadingProgress];
   }
 }
@@ -229,14 +229,14 @@
   v22.receiver = self;
   v22.super_class = PXDisplayAssetLivePhotoContentView;
   [(PXDisplayAssetContentView *)&v22 updateContent];
-  v3 = [(PXDisplayAssetContentView *)self asset];
-  v4 = [(PXDisplayAssetContentView *)self mediaProvider];
+  asset = [(PXDisplayAssetContentView *)self asset];
+  mediaProvider = [(PXDisplayAssetContentView *)self mediaProvider];
   [(PXDisplayAssetContentView *)self targetSize];
   v18 = 0;
   v19 = &v18;
   v20 = 0x2020000000;
   v21 = 0;
-  if (v4 && v3 && v5 > 0.0 && v6 > 0.0)
+  if (mediaProvider && asset && v5 > 0.0 && v6 > 0.0)
   {
     v7 = objc_alloc_init(PXVideoRequestOptions);
     [(PXVideoRequestOptions *)v7 setNetworkAccessAllowed:1];
@@ -253,7 +253,7 @@
     v12 = &unk_1E7735DD0;
     objc_copyWeak(&v14, &location);
     v13 = &v18;
-    v8 = [v4 requestPlayerItemForVideo:v3 options:v7 resultHandler:&v9];
+    v8 = [mediaProvider requestPlayerItemForVideo:asset options:v7 resultHandler:&v9];
     v19[3] = v8;
     objc_destroyWeak(&v14);
     objc_destroyWeak(&v16);
@@ -303,10 +303,10 @@ void __51__PXDisplayAssetLivePhotoContentView_updateContent__block_invoke_2(uint
 
 - (void)_updateLivePhotoContentMode
 {
-  v3 = [(PXDisplayAssetLivePhotoContentView *)self contentMode];
+  contentMode = [(PXDisplayAssetLivePhotoContentView *)self contentMode];
   livePhotoView = self->_livePhotoView;
 
-  [(ISLivePhotoUIView *)livePhotoView setContentMode:v3];
+  [(ISLivePhotoUIView *)livePhotoView setContentMode:contentMode];
 }
 
 - (void)contentModeDidChange
@@ -327,8 +327,8 @@ void __51__PXDisplayAssetLivePhotoContentView_updateContent__block_invoke_2(uint
     self->_livePhotoView = v4;
 
     [(PXDisplayAssetLivePhotoContentView *)self _updateLivePhotoContentMode];
-    v6 = [(ISLivePhotoUIView *)self->_livePhotoView layer];
-    [v6 setMasksToBounds:1];
+    layer = [(ISLivePhotoUIView *)self->_livePhotoView layer];
+    [layer setMasksToBounds:1];
 
     livePhotoView = self->_livePhotoView;
   }

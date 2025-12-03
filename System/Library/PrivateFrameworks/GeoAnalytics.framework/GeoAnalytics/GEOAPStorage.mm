@@ -1,13 +1,13 @@
 @interface GEOAPStorage
 - (GEOAPStorage)init;
 - (id)_copyAndEmptyBatchQueue;
-- (id)_setLocIntSequenceNumberForBatch:(unint64_t)a3 inLogMsg:(id)a4;
-- (void)_fastTrackElement:(id)a3 withBatchID:(unint64_t)a4 completionQueue:(id)a5 completionBlock:(id)a6;
+- (id)_setLocIntSequenceNumberForBatch:(unint64_t)batch inLogMsg:(id)msg;
+- (void)_fastTrackElement:(id)element withBatchID:(unint64_t)d completionQueue:(id)queue completionBlock:(id)block;
 - (void)_flushBatchQueueToDB;
 - (void)_flushRemainderToDB;
 - (void)_setUploadTimer;
-- (void)_spoolElementsToDBFromQueue:(id)a3;
-- (void)_storeQueueElem:(id)a3 completionQueue:(id)a4 completionBlock:(id)a5;
+- (void)_spoolElementsToDBFromQueue:(id)queue;
+- (void)_storeQueueElem:(id)elem completionQueue:(id)queue completionBlock:(id)block;
 @end
 
 @implementation GEOAPStorage
@@ -30,7 +30,7 @@
   v12 = sub_100019F90;
   v13 = 0;
   batchQueueLock = self->_batchQueueLock;
-  v7 = self;
+  selfCopy = self;
   geo_isolate_sync();
   if (v9[5])
   {
@@ -59,57 +59,57 @@
   return v4;
 }
 
-- (void)_spoolElementsToDBFromQueue:(id)a3
+- (void)_spoolElementsToDBFromQueue:(id)queue
 {
-  v4 = a3;
-  if ([v4 count])
+  queueCopy = queue;
+  if ([queueCopy count])
   {
     storageQueue = self->_storageQueue;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100019644;
     block[3] = &unk_10003D5B8;
-    v7 = v4;
+    v7 = queueCopy;
     dispatch_async(storageQueue, block);
   }
 }
 
-- (void)_fastTrackElement:(id)a3 withBatchID:(unint64_t)a4 completionQueue:(id)a5 completionBlock:(id)a6
+- (void)_fastTrackElement:(id)element withBatchID:(unint64_t)d completionQueue:(id)queue completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  elementCopy = element;
+  queueCopy = queue;
+  blockCopy = block;
   storageQueue = self->_storageQueue;
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100019850;
   v15[3] = &unk_10003D658;
-  v17 = a4;
-  v14 = v10;
+  dCopy = d;
+  v14 = elementCopy;
   v16 = v14;
   dispatch_async(storageQueue, v15);
-  if (v12)
+  if (blockCopy)
   {
-    if (!v11)
+    if (!queueCopy)
     {
-      v11 = dispatch_get_global_queue(21, 0);
+      queueCopy = dispatch_get_global_queue(21, 0);
     }
 
-    dispatch_async(v11, v12);
+    dispatch_async(queueCopy, blockCopy);
   }
 }
 
-- (void)_storeQueueElem:(id)a3 completionQueue:(id)a4 completionBlock:(id)a5
+- (void)_storeQueueElem:(id)elem completionQueue:(id)queue completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  elemCopy = elem;
+  queueCopy = queue;
+  blockCopy = block;
   v11 = +[GEOAPDB sharedInstance];
-  v12 = [v11 evalModeEnabled];
+  evalModeEnabled = [v11 evalModeEnabled];
 
-  if (v12)
+  if (evalModeEnabled)
   {
-    v21 = v8;
+    v21 = elemCopy;
     v13 = [NSArray arrayWithObjects:&v21 count:1];
     [(GEOAPStorage *)self _spoolElementsToDBFromQueue:v13];
   }
@@ -121,43 +121,43 @@
     v16 = 3221225472;
     v17 = sub_100019B40;
     v18 = &unk_10003D5E0;
-    v19 = self;
-    v20 = v8;
+    selfCopy = self;
+    v20 = elemCopy;
     geo_isolate_sync();
   }
 
   [(GEOAPStorage *)self _setUploadTimer:v15];
-  if (v10)
+  if (blockCopy)
   {
-    if (!v9)
+    if (!queueCopy)
     {
-      v9 = dispatch_get_global_queue(21, 0);
+      queueCopy = dispatch_get_global_queue(21, 0);
     }
 
-    dispatch_async(v9, v10);
+    dispatch_async(queueCopy, blockCopy);
   }
 }
 
-- (id)_setLocIntSequenceNumberForBatch:(unint64_t)a3 inLogMsg:(id)a4
+- (id)_setLocIntSequenceNumberForBatch:(unint64_t)batch inLogMsg:(id)msg
 {
-  v6 = a4;
+  msgCopy = msg;
   v7 = objc_autoreleasePoolPush();
-  v8 = [[GEOLogMessage alloc] initWithData:v6];
+  v8 = [[GEOLogMessage alloc] initWithData:msgCopy];
   if ([v8 logMessageType] == 8)
   {
     context = v7;
-    v29 = v6;
+    v29 = msgCopy;
     v27 = v8;
-    v9 = [v8 logMsgEvents];
-    v10 = [v9 firstObject];
+    logMsgEvents = [v8 logMsgEvents];
+    firstObject = [logMsgEvents firstObject];
 
     v33 = 0u;
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v26 = v10;
-    v11 = [v10 logMsgStates];
-    v12 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
+    v26 = firstObject;
+    logMsgStates = [firstObject logMsgStates];
+    v12 = [logMsgStates countByEnumeratingWithState:&v31 objects:v35 count:16];
     if (v12)
     {
       v13 = v12;
@@ -170,45 +170,45 @@
         {
           if (*v32 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(logMsgStates);
           }
 
           v17 = *(*(&v31 + 1) + 8 * i);
           if ([v17 stateType] == 601)
           {
-            v18 = [v17 userSession];
+            userSession = [v17 userSession];
 
-            if (!v18)
+            if (!userSession)
             {
-              v6 = v29;
+              msgCopy = v29;
               v23 = v29;
 
               v25 = context;
               goto LABEL_20;
             }
 
-            if (self->_activeLocIntelBatchID == a3)
+            if (self->_activeLocIntelBatchID == batch)
             {
               v19 = self->_currentLocIntelSeqNo + 1;
             }
 
             else
             {
-              self->_activeLocIntelBatchID = a3;
+              self->_activeLocIntelBatchID = batch;
               GEOConfigSetUint64();
               v19 = 1;
             }
 
             self->_currentLocIntelSeqNo = v19;
-            v20 = [v17 userSession];
-            [v20 setSequenceNumber:v19];
+            userSession2 = [v17 userSession];
+            [userSession2 setSequenceNumber:v19];
 
             currentLocIntelSeqNo = self->_currentLocIntelSeqNo;
             GEOConfigSetUInteger();
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v31 objects:v35 count:16];
+        v13 = [logMsgStates countByEnumeratingWithState:&v31 objects:v35 count:16];
         if (v13)
         {
           continue;
@@ -218,16 +218,16 @@
       }
     }
 
-    v22 = [v27 data];
-    v6 = v29;
+    data = [v27 data];
+    msgCopy = v29;
 
     objc_autoreleasePoolPop(context);
-    v23 = v22;
+    v23 = data;
   }
 
   else
   {
-    v23 = v6;
+    v23 = msgCopy;
 
     v25 = v7;
 LABEL_20:

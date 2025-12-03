@@ -1,5 +1,5 @@
 @interface HIDElement
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
@@ -13,9 +13,9 @@
   [(HIDElement *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
@@ -27,7 +27,7 @@
   }
 
   Cookie = IOHIDElementGetCookie(self);
-  return Cookie == IOHIDElementGetCookie(a3);
+  return Cookie == IOHIDElementGetCookie(equal);
 }
 
 @end

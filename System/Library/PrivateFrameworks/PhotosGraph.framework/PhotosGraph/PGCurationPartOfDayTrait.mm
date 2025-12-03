@@ -1,5 +1,5 @@
 @interface PGCurationPartOfDayTrait
-- (PGCurationPartOfDayTrait)initWithPartOfDay:(unint64_t)a3;
+- (PGCurationPartOfDayTrait)initWithPartOfDay:(unint64_t)day;
 - (id)debugDescription;
 @end
 
@@ -17,14 +17,14 @@
   return v6;
 }
 
-- (PGCurationPartOfDayTrait)initWithPartOfDay:(unint64_t)a3
+- (PGCurationPartOfDayTrait)initWithPartOfDay:(unint64_t)day
 {
   v5.receiver = self;
   v5.super_class = PGCurationPartOfDayTrait;
   result = [(PGCurationTrait *)&v5 init];
   if (result)
   {
-    result->_value = a3;
+    result->_value = day;
   }
 
   return result;

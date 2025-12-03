@@ -1,37 +1,37 @@
 @interface HMDLogEventUserActivityAnalyzer
 + (id)logCategory;
 + (id)managedEventCounterRequestGroups;
-- (HMDLogEventUserActivityAnalyzer)initWithEventCountersManager:(id)a3 flagsManager:(id)a4 dateProvider:(id)a5;
-- (void)_handleAccessoryPairingLogEvent:(id)a3;
-- (void)_handleActionSetRunLogEvent:(id)a3;
-- (void)_handleAddActionSetLogEvent:(id)a3;
-- (void)_handleAddTriggerLogEvent:(id)a3;
-- (void)_handleCameraClipRequestLogEvent:(id)a3;
-- (void)_handleCameraStreamLogEvent:(id)a3;
-- (void)_handleReadWriteLogEvent:(id)a3;
-- (void)coalesceLogEvent:(id)a3 fromSourceEvent:(id)a4;
-- (void)contributeLogEvent:(id)a3 toCoreAnalyticsEvent:(id)a4;
-- (void)contributeLogEvent:(id)a3 toSerializedMetric:(id)a4;
-- (void)deserializeLogEvent:(id)a3 fromSerializedMetric:(id)a4;
-- (void)finishCoalescingLogEvent:(id)a3;
-- (void)markActiveForEventName:(id)a3 logEvent:(id)a4;
-- (void)observeEvent:(id)a3;
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4;
-- (void)populateLogEvent:(id)a3 forHomeWithUUID:(id)a4 associatedToDate:(id)a5;
+- (HMDLogEventUserActivityAnalyzer)initWithEventCountersManager:(id)manager flagsManager:(id)flagsManager dateProvider:(id)provider;
+- (void)_handleAccessoryPairingLogEvent:(id)event;
+- (void)_handleActionSetRunLogEvent:(id)event;
+- (void)_handleAddActionSetLogEvent:(id)event;
+- (void)_handleAddTriggerLogEvent:(id)event;
+- (void)_handleCameraClipRequestLogEvent:(id)event;
+- (void)_handleCameraStreamLogEvent:(id)event;
+- (void)_handleReadWriteLogEvent:(id)event;
+- (void)coalesceLogEvent:(id)event fromSourceEvent:(id)sourceEvent;
+- (void)contributeLogEvent:(id)event toCoreAnalyticsEvent:(id)analyticsEvent;
+- (void)contributeLogEvent:(id)event toSerializedMetric:(id)metric;
+- (void)deserializeLogEvent:(id)event fromSerializedMetric:(id)metric;
+- (void)finishCoalescingLogEvent:(id)event;
+- (void)markActiveForEventName:(id)name logEvent:(id)event;
+- (void)observeEvent:(id)event;
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date;
+- (void)populateLogEvent:(id)event forHomeWithUUID:(id)d associatedToDate:(id)date;
 - (void)resetAggregationAnalysisContext;
-- (void)updateLinkTypeActivityCountsForReadWriteLogEvent:(id)a3;
+- (void)updateLinkTypeActivityCountsForReadWriteLogEvent:(id)event;
 @end
 
 @implementation HMDLogEventUserActivityAnalyzer
 
-- (void)finishCoalescingLogEvent:(id)a3
+- (void)finishCoalescingLogEvent:(id)event
 {
-  v6 = a3;
-  v3 = [v6 activeDaysBitField];
-  [v6 setActiveDay:v3.i8[0] & 1];
-  if (v3)
+  eventCopy = event;
+  activeDaysBitField = [eventCopy activeDaysBitField];
+  [eventCopy setActiveDay:activeDaysBitField.i8[0] & 1];
+  if (activeDaysBitField)
   {
-    v4 = log2((*&v3 & -*&v3));
+    v4 = log2((*&activeDaysBitField & -*&activeDaysBitField));
   }
 
   else
@@ -39,123 +39,123 @@
     v4 = -1;
   }
 
-  [v6 setCountOfDaysSinceLastActive:v4];
-  v5 = vcnt_s8(v3);
+  [eventCopy setCountOfDaysSinceLastActive:v4];
+  v5 = vcnt_s8(activeDaysBitField);
   v5.i16[0] = vaddlv_u8(v5);
-  [v6 setActiveDaysPerMonthCount:v5.u32[0]];
+  [eventCopy setActiveDaysPerMonthCount:v5.u32[0]];
 }
 
-- (void)coalesceLogEvent:(id)a3 fromSourceEvent:(id)a4
+- (void)coalesceLogEvent:(id)event fromSourceEvent:(id)sourceEvent
 {
-  v5 = a4;
-  v7 = a3;
-  [v7 setNumReadSiri:{objc_msgSend(v7, "numReadSiri") + objc_msgSend(v5, "numReadSiri")}];
-  [v7 setNumWriteSiri:{objc_msgSend(v7, "numWriteSiri") + objc_msgSend(v5, "numWriteSiri")}];
-  [v7 setNumReadFirstPartyApp:{objc_msgSend(v7, "numReadFirstPartyApp") + objc_msgSend(v5, "numReadFirstPartyApp")}];
-  [v7 setNumWriteFirstPartyApp:{objc_msgSend(v7, "numWriteFirstPartyApp") + objc_msgSend(v5, "numWriteFirstPartyApp")}];
-  [v7 setNumReadThirdPartyApp:{objc_msgSend(v7, "numReadThirdPartyApp") + objc_msgSend(v5, "numReadThirdPartyApp")}];
-  [v7 setNumWriteThirdPartyApp:{objc_msgSend(v7, "numWriteThirdPartyApp") + objc_msgSend(v5, "numWriteThirdPartyApp")}];
-  [v7 setNumAccessoriesAdded:{objc_msgSend(v7, "numAccessoriesAdded") + objc_msgSend(v5, "numAccessoriesAdded")}];
-  [v7 setNumScenesAdded:{objc_msgSend(v7, "numScenesAdded") + objc_msgSend(v5, "numScenesAdded")}];
-  [v7 setNumTriggersAdded:{objc_msgSend(v7, "numTriggersAdded") + objc_msgSend(v5, "numTriggersAdded")}];
-  [v7 setNumShortcutsAdded:{objc_msgSend(v7, "numShortcutsAdded") + objc_msgSend(v5, "numShortcutsAdded")}];
-  [v7 setNumScenesUserRun:{objc_msgSend(v7, "numScenesUserRun") + objc_msgSend(v5, "numScenesUserRun")}];
-  [v7 setNumShortcutsRun:{objc_msgSend(v7, "numShortcutsRun") + objc_msgSend(v5, "numShortcutsRun")}];
-  [v7 setNumTriggersFired:{objc_msgSend(v7, "numTriggersFired") + objc_msgSend(v5, "numTriggersFired")}];
-  [v7 setCameraStreamStartSuccessCount:{objc_msgSend(v7, "cameraStreamStartSuccessCount") + objc_msgSend(v5, "cameraStreamStartSuccessCount")}];
-  [v7 setCameraStreamStartFailureCount:{objc_msgSend(v7, "cameraStreamStartFailureCount") + objc_msgSend(v5, "cameraStreamStartFailureCount")}];
-  [v7 setFetchCameraClipVideoSegmentAssetCount:{objc_msgSend(v7, "fetchCameraClipVideoSegmentAssetCount") + objc_msgSend(v5, "fetchCameraClipVideoSegmentAssetCount")}];
-  v6 = [v5 activeDaysBitField];
+  sourceEventCopy = sourceEvent;
+  eventCopy = event;
+  [eventCopy setNumReadSiri:{objc_msgSend(eventCopy, "numReadSiri") + objc_msgSend(sourceEventCopy, "numReadSiri")}];
+  [eventCopy setNumWriteSiri:{objc_msgSend(eventCopy, "numWriteSiri") + objc_msgSend(sourceEventCopy, "numWriteSiri")}];
+  [eventCopy setNumReadFirstPartyApp:{objc_msgSend(eventCopy, "numReadFirstPartyApp") + objc_msgSend(sourceEventCopy, "numReadFirstPartyApp")}];
+  [eventCopy setNumWriteFirstPartyApp:{objc_msgSend(eventCopy, "numWriteFirstPartyApp") + objc_msgSend(sourceEventCopy, "numWriteFirstPartyApp")}];
+  [eventCopy setNumReadThirdPartyApp:{objc_msgSend(eventCopy, "numReadThirdPartyApp") + objc_msgSend(sourceEventCopy, "numReadThirdPartyApp")}];
+  [eventCopy setNumWriteThirdPartyApp:{objc_msgSend(eventCopy, "numWriteThirdPartyApp") + objc_msgSend(sourceEventCopy, "numWriteThirdPartyApp")}];
+  [eventCopy setNumAccessoriesAdded:{objc_msgSend(eventCopy, "numAccessoriesAdded") + objc_msgSend(sourceEventCopy, "numAccessoriesAdded")}];
+  [eventCopy setNumScenesAdded:{objc_msgSend(eventCopy, "numScenesAdded") + objc_msgSend(sourceEventCopy, "numScenesAdded")}];
+  [eventCopy setNumTriggersAdded:{objc_msgSend(eventCopy, "numTriggersAdded") + objc_msgSend(sourceEventCopy, "numTriggersAdded")}];
+  [eventCopy setNumShortcutsAdded:{objc_msgSend(eventCopy, "numShortcutsAdded") + objc_msgSend(sourceEventCopy, "numShortcutsAdded")}];
+  [eventCopy setNumScenesUserRun:{objc_msgSend(eventCopy, "numScenesUserRun") + objc_msgSend(sourceEventCopy, "numScenesUserRun")}];
+  [eventCopy setNumShortcutsRun:{objc_msgSend(eventCopy, "numShortcutsRun") + objc_msgSend(sourceEventCopy, "numShortcutsRun")}];
+  [eventCopy setNumTriggersFired:{objc_msgSend(eventCopy, "numTriggersFired") + objc_msgSend(sourceEventCopy, "numTriggersFired")}];
+  [eventCopy setCameraStreamStartSuccessCount:{objc_msgSend(eventCopy, "cameraStreamStartSuccessCount") + objc_msgSend(sourceEventCopy, "cameraStreamStartSuccessCount")}];
+  [eventCopy setCameraStreamStartFailureCount:{objc_msgSend(eventCopy, "cameraStreamStartFailureCount") + objc_msgSend(sourceEventCopy, "cameraStreamStartFailureCount")}];
+  [eventCopy setFetchCameraClipVideoSegmentAssetCount:{objc_msgSend(eventCopy, "fetchCameraClipVideoSegmentAssetCount") + objc_msgSend(sourceEventCopy, "fetchCameraClipVideoSegmentAssetCount")}];
+  activeDaysBitField = [sourceEventCopy activeDaysBitField];
 
-  [v7 setActiveDaysBitField:{objc_msgSend(v7, "activeDaysBitField") | v6}];
+  [eventCopy setActiveDaysBitField:{objc_msgSend(eventCopy, "activeDaysBitField") | activeDaysBitField}];
 }
 
-- (void)contributeLogEvent:(id)a3 toCoreAnalyticsEvent:(id)a4
+- (void)contributeLogEvent:(id)event toCoreAnalyticsEvent:(id)analyticsEvent
 {
-  v5 = a4;
-  v6 = a3;
+  analyticsEventCopy = analyticsEvent;
+  eventCopy = event;
   v7 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v8 = [v7 intervalIndexForValue:{objc_msgSend(v6, "numReadSiri")}];
-  [v5 setObject:v8 forKeyedSubscript:@"siriReadCount"];
+  v8 = [v7 intervalIndexForValue:{objc_msgSend(eventCopy, "numReadSiri")}];
+  [analyticsEventCopy setObject:v8 forKeyedSubscript:@"siriReadCount"];
 
   v9 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v10 = [v9 intervalIndexForValue:{objc_msgSend(v6, "numWriteSiri")}];
-  [v5 setObject:v10 forKeyedSubscript:@"siriWriteCount"];
+  v10 = [v9 intervalIndexForValue:{objc_msgSend(eventCopy, "numWriteSiri")}];
+  [analyticsEventCopy setObject:v10 forKeyedSubscript:@"siriWriteCount"];
 
   v11 = +[HMDLogEventHistograms highVolumeHistogram];
-  v12 = [v11 intervalIndexForValue:{objc_msgSend(v6, "numReadFirstPartyApp")}];
-  [v5 setObject:v12 forKeyedSubscript:@"firstPartyReadCount"];
+  v12 = [v11 intervalIndexForValue:{objc_msgSend(eventCopy, "numReadFirstPartyApp")}];
+  [analyticsEventCopy setObject:v12 forKeyedSubscript:@"firstPartyReadCount"];
 
   v13 = +[HMDLogEventHistograms highVolumeHistogram];
-  v14 = [v13 intervalIndexForValue:{objc_msgSend(v6, "numWriteFirstPartyApp")}];
-  [v5 setObject:v14 forKeyedSubscript:@"firstPartyWriteCount"];
+  v14 = [v13 intervalIndexForValue:{objc_msgSend(eventCopy, "numWriteFirstPartyApp")}];
+  [analyticsEventCopy setObject:v14 forKeyedSubscript:@"firstPartyWriteCount"];
 
   v15 = +[HMDLogEventHistograms highVolumeHistogram];
-  v16 = [v15 intervalIndexForValue:{objc_msgSend(v6, "numReadThirdPartyApp")}];
-  [v5 setObject:v16 forKeyedSubscript:@"thirdPartyReadCount"];
+  v16 = [v15 intervalIndexForValue:{objc_msgSend(eventCopy, "numReadThirdPartyApp")}];
+  [analyticsEventCopy setObject:v16 forKeyedSubscript:@"thirdPartyReadCount"];
 
   v17 = +[HMDLogEventHistograms highVolumeHistogram];
-  v18 = [v17 intervalIndexForValue:{objc_msgSend(v6, "numWriteThirdPartyApp")}];
-  [v5 setObject:v18 forKeyedSubscript:@"thirdPartyWriteCount"];
+  v18 = [v17 intervalIndexForValue:{objc_msgSend(eventCopy, "numWriteThirdPartyApp")}];
+  [analyticsEventCopy setObject:v18 forKeyedSubscript:@"thirdPartyWriteCount"];
 
   v19 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v20 = [v19 intervalIndexForValue:{objc_msgSend(v6, "numAccessoriesAdded")}];
-  [v5 setObject:v20 forKeyedSubscript:@"accessoriesAddedCount"];
+  v20 = [v19 intervalIndexForValue:{objc_msgSend(eventCopy, "numAccessoriesAdded")}];
+  [analyticsEventCopy setObject:v20 forKeyedSubscript:@"accessoriesAddedCount"];
 
   v21 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v22 = [v21 intervalIndexForValue:{objc_msgSend(v6, "numScenesAdded")}];
-  [v5 setObject:v22 forKeyedSubscript:@"scenesAddedCount"];
+  v22 = [v21 intervalIndexForValue:{objc_msgSend(eventCopy, "numScenesAdded")}];
+  [analyticsEventCopy setObject:v22 forKeyedSubscript:@"scenesAddedCount"];
 
   v23 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v24 = [v23 intervalIndexForValue:{objc_msgSend(v6, "numTriggersAdded")}];
-  [v5 setObject:v24 forKeyedSubscript:@"triggersAddedCount"];
+  v24 = [v23 intervalIndexForValue:{objc_msgSend(eventCopy, "numTriggersAdded")}];
+  [analyticsEventCopy setObject:v24 forKeyedSubscript:@"triggersAddedCount"];
 
   v25 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v26 = [v25 intervalIndexForValue:{objc_msgSend(v6, "numShortcutsAdded")}];
-  [v5 setObject:v26 forKeyedSubscript:@"shortcutsAddedCount"];
+  v26 = [v25 intervalIndexForValue:{objc_msgSend(eventCopy, "numShortcutsAdded")}];
+  [analyticsEventCopy setObject:v26 forKeyedSubscript:@"shortcutsAddedCount"];
 
   v27 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v28 = [v27 intervalIndexForValue:{objc_msgSend(v6, "numScenesUserRun")}];
-  [v5 setObject:v28 forKeyedSubscript:@"scenesRunCount"];
+  v28 = [v27 intervalIndexForValue:{objc_msgSend(eventCopy, "numScenesUserRun")}];
+  [analyticsEventCopy setObject:v28 forKeyedSubscript:@"scenesRunCount"];
 
   v29 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v30 = [v29 intervalIndexForValue:{objc_msgSend(v6, "numTriggersFired")}];
-  [v5 setObject:v30 forKeyedSubscript:@"triggersRunCount"];
+  v30 = [v29 intervalIndexForValue:{objc_msgSend(eventCopy, "numTriggersFired")}];
+  [analyticsEventCopy setObject:v30 forKeyedSubscript:@"triggersRunCount"];
 
   v31 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v32 = [v31 intervalIndexForValue:{objc_msgSend(v6, "numShortcutsRun")}];
-  [v5 setObject:v32 forKeyedSubscript:@"shortcutsRunCount"];
+  v32 = [v31 intervalIndexForValue:{objc_msgSend(eventCopy, "numShortcutsRun")}];
+  [analyticsEventCopy setObject:v32 forKeyedSubscript:@"shortcutsRunCount"];
 
   v33 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v34 = [v33 intervalIndexForValue:{objc_msgSend(v6, "cameraStreamStartSuccessCount")}];
-  [v5 setObject:v34 forKeyedSubscript:@"cameraStreamStartSuccessCount"];
+  v34 = [v33 intervalIndexForValue:{objc_msgSend(eventCopy, "cameraStreamStartSuccessCount")}];
+  [analyticsEventCopy setObject:v34 forKeyedSubscript:@"cameraStreamStartSuccessCount"];
 
   v35 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v36 = [v35 intervalIndexForValue:{objc_msgSend(v6, "cameraStreamStartFailureCount")}];
-  [v5 setObject:v36 forKeyedSubscript:@"cameraStreamStartFailureCount"];
+  v36 = [v35 intervalIndexForValue:{objc_msgSend(eventCopy, "cameraStreamStartFailureCount")}];
+  [analyticsEventCopy setObject:v36 forKeyedSubscript:@"cameraStreamStartFailureCount"];
 
   v37 = +[HMDLogEventHistograms lowVolumeHistogram];
-  v38 = [v37 intervalIndexForValue:{objc_msgSend(v6, "fetchCameraClipVideoSegmentAssetCount")}];
-  [v5 setObject:v38 forKeyedSubscript:@"fetchVideoSegmentsAssetCount"];
+  v38 = [v37 intervalIndexForValue:{objc_msgSend(eventCopy, "fetchCameraClipVideoSegmentAssetCount")}];
+  [analyticsEventCopy setObject:v38 forKeyedSubscript:@"fetchVideoSegmentsAssetCount"];
 
-  v39 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v6, "isActiveDay")}];
-  [v5 setObject:v39 forKeyedSubscript:@"activeDay"];
+  v39 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(eventCopy, "isActiveDay")}];
+  [analyticsEventCopy setObject:v39 forKeyedSubscript:@"activeDay"];
 
-  v40 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "countOfDaysSinceLastActive")}];
-  [v5 setObject:v40 forKeyedSubscript:@"daysSinceLastActiveCount"];
+  v40 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(eventCopy, "countOfDaysSinceLastActive")}];
+  [analyticsEventCopy setObject:v40 forKeyedSubscript:@"daysSinceLastActiveCount"];
 
   v41 = MEMORY[0x277CCABB0];
-  v42 = [v6 activeDaysPerMonthCount];
+  activeDaysPerMonthCount = [eventCopy activeDaysPerMonthCount];
 
-  v43 = [v41 numberWithInteger:v42];
-  [v5 setObject:v43 forKeyedSubscript:@"activeDaysPerMonthCount"];
+  v43 = [v41 numberWithInteger:activeDaysPerMonthCount];
+  [analyticsEventCopy setObject:v43 forKeyedSubscript:@"activeDaysPerMonthCount"];
 }
 
-- (void)deserializeLogEvent:(id)a3 fromSerializedMetric:(id)a4
+- (void)deserializeLogEvent:(id)event fromSerializedMetric:(id)metric
 {
-  v6 = a4;
-  v75 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"siriReadCount"];
+  metricCopy = metric;
+  eventCopy = event;
+  v7 = [metricCopy objectForKeyedSubscript:@"siriReadCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -169,9 +169,9 @@
 
   v9 = v8;
 
-  v10 = [v9 unsignedIntegerValue];
-  [v75 setNumReadSiri:v10];
-  v11 = [v6 objectForKeyedSubscript:@"siriWriteCount"];
+  unsignedIntegerValue = [v9 unsignedIntegerValue];
+  [eventCopy setNumReadSiri:unsignedIntegerValue];
+  v11 = [metricCopy objectForKeyedSubscript:@"siriWriteCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -185,9 +185,9 @@
 
   v13 = v12;
 
-  v14 = [v13 unsignedIntegerValue];
-  [v75 setNumWriteSiri:v14];
-  v15 = [v6 objectForKeyedSubscript:@"firstPartyReadCount"];
+  unsignedIntegerValue2 = [v13 unsignedIntegerValue];
+  [eventCopy setNumWriteSiri:unsignedIntegerValue2];
+  v15 = [metricCopy objectForKeyedSubscript:@"firstPartyReadCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -201,9 +201,9 @@
 
   v17 = v16;
 
-  v18 = [v17 unsignedIntegerValue];
-  [v75 setNumReadFirstPartyApp:v18];
-  v19 = [v6 objectForKeyedSubscript:@"firstPartyWriteCount"];
+  unsignedIntegerValue3 = [v17 unsignedIntegerValue];
+  [eventCopy setNumReadFirstPartyApp:unsignedIntegerValue3];
+  v19 = [metricCopy objectForKeyedSubscript:@"firstPartyWriteCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -217,9 +217,9 @@
 
   v21 = v20;
 
-  v22 = [v21 unsignedIntegerValue];
-  [v75 setNumWriteFirstPartyApp:v22];
-  v23 = [v6 objectForKeyedSubscript:@"thirdPartyReadCount"];
+  unsignedIntegerValue4 = [v21 unsignedIntegerValue];
+  [eventCopy setNumWriteFirstPartyApp:unsignedIntegerValue4];
+  v23 = [metricCopy objectForKeyedSubscript:@"thirdPartyReadCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -233,9 +233,9 @@
 
   v25 = v24;
 
-  v26 = [v25 unsignedIntegerValue];
-  [v75 setNumReadThirdPartyApp:v26];
-  v27 = [v6 objectForKeyedSubscript:@"thirdPartyWriteCount"];
+  unsignedIntegerValue5 = [v25 unsignedIntegerValue];
+  [eventCopy setNumReadThirdPartyApp:unsignedIntegerValue5];
+  v27 = [metricCopy objectForKeyedSubscript:@"thirdPartyWriteCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -249,9 +249,9 @@
 
   v29 = v28;
 
-  v30 = [v29 unsignedIntegerValue];
-  [v75 setNumWriteThirdPartyApp:v30];
-  v31 = [v6 objectForKeyedSubscript:@"accessoriesAddedCount"];
+  unsignedIntegerValue6 = [v29 unsignedIntegerValue];
+  [eventCopy setNumWriteThirdPartyApp:unsignedIntegerValue6];
+  v31 = [metricCopy objectForKeyedSubscript:@"accessoriesAddedCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -265,9 +265,9 @@
 
   v33 = v32;
 
-  v34 = [v33 unsignedIntegerValue];
-  [v75 setNumAccessoriesAdded:v34];
-  v35 = [v6 objectForKeyedSubscript:@"scenesAddedCount"];
+  unsignedIntegerValue7 = [v33 unsignedIntegerValue];
+  [eventCopy setNumAccessoriesAdded:unsignedIntegerValue7];
+  v35 = [metricCopy objectForKeyedSubscript:@"scenesAddedCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -281,9 +281,9 @@
 
   v37 = v36;
 
-  v38 = [v37 unsignedIntegerValue];
-  [v75 setNumScenesAdded:v38];
-  v39 = [v6 objectForKeyedSubscript:@"triggersAddedCount"];
+  unsignedIntegerValue8 = [v37 unsignedIntegerValue];
+  [eventCopy setNumScenesAdded:unsignedIntegerValue8];
+  v39 = [metricCopy objectForKeyedSubscript:@"triggersAddedCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -297,9 +297,9 @@
 
   v41 = v40;
 
-  v42 = [v41 unsignedIntegerValue];
-  [v75 setNumTriggersAdded:v42];
-  v43 = [v6 objectForKeyedSubscript:@"shortcutsAddedCount"];
+  unsignedIntegerValue9 = [v41 unsignedIntegerValue];
+  [eventCopy setNumTriggersAdded:unsignedIntegerValue9];
+  v43 = [metricCopy objectForKeyedSubscript:@"shortcutsAddedCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -313,9 +313,9 @@
 
   v45 = v44;
 
-  v46 = [v45 unsignedIntegerValue];
-  [v75 setNumShortcutsAdded:v46];
-  v47 = [v6 objectForKeyedSubscript:@"scenesRunCount"];
+  unsignedIntegerValue10 = [v45 unsignedIntegerValue];
+  [eventCopy setNumShortcutsAdded:unsignedIntegerValue10];
+  v47 = [metricCopy objectForKeyedSubscript:@"scenesRunCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -329,9 +329,9 @@
 
   v49 = v48;
 
-  v50 = [v49 unsignedIntegerValue];
-  [v75 setNumScenesUserRun:v50];
-  v51 = [v6 objectForKeyedSubscript:@"shortcutsRunCount"];
+  unsignedIntegerValue11 = [v49 unsignedIntegerValue];
+  [eventCopy setNumScenesUserRun:unsignedIntegerValue11];
+  v51 = [metricCopy objectForKeyedSubscript:@"shortcutsRunCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -345,9 +345,9 @@
 
   v53 = v52;
 
-  v54 = [v53 unsignedIntegerValue];
-  [v75 setNumShortcutsRun:v54];
-  v55 = [v6 objectForKeyedSubscript:@"triggersRunCount"];
+  unsignedIntegerValue12 = [v53 unsignedIntegerValue];
+  [eventCopy setNumShortcutsRun:unsignedIntegerValue12];
+  v55 = [metricCopy objectForKeyedSubscript:@"triggersRunCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -361,9 +361,9 @@
 
   v57 = v56;
 
-  v58 = [v57 unsignedIntegerValue];
-  [v75 setNumTriggersFired:v58];
-  v59 = [v6 objectForKeyedSubscript:@"cameraStreamStartSuccessCount"];
+  unsignedIntegerValue13 = [v57 unsignedIntegerValue];
+  [eventCopy setNumTriggersFired:unsignedIntegerValue13];
+  v59 = [metricCopy objectForKeyedSubscript:@"cameraStreamStartSuccessCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -377,9 +377,9 @@
 
   v61 = v60;
 
-  v62 = [v61 unsignedIntegerValue];
-  [v75 setCameraStreamStartSuccessCount:v62];
-  v63 = [v6 objectForKeyedSubscript:@"cameraStreamStartFailureCount"];
+  unsignedIntegerValue14 = [v61 unsignedIntegerValue];
+  [eventCopy setCameraStreamStartSuccessCount:unsignedIntegerValue14];
+  v63 = [metricCopy objectForKeyedSubscript:@"cameraStreamStartFailureCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -393,9 +393,9 @@
 
   v65 = v64;
 
-  v66 = [v65 unsignedIntegerValue];
-  [v75 setCameraStreamStartFailureCount:v66];
-  v67 = [v6 objectForKeyedSubscript:@"fetchVideoSegmentsAssetCount"];
+  unsignedIntegerValue15 = [v65 unsignedIntegerValue];
+  [eventCopy setCameraStreamStartFailureCount:unsignedIntegerValue15];
+  v67 = [metricCopy objectForKeyedSubscript:@"fetchVideoSegmentsAssetCount"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -409,9 +409,9 @@
 
   v69 = v68;
 
-  v70 = [v69 unsignedIntegerValue];
-  [v75 setFetchCameraClipVideoSegmentAssetCount:v70];
-  v71 = [v6 objectForKeyedSubscript:@"activeDay"];
+  unsignedIntegerValue16 = [v69 unsignedIntegerValue];
+  [eventCopy setFetchCameraClipVideoSegmentAssetCount:unsignedIntegerValue16];
+  v71 = [metricCopy objectForKeyedSubscript:@"activeDay"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -426,218 +426,218 @@
 
   v73 = v72;
 
-  v74 = [v73 unsignedLongLongValue];
-  [v75 setActiveDaysBitField:v74];
-  [(HMDLogEventUserActivityAnalyzer *)self finishCoalescingLogEvent:v75];
+  unsignedLongLongValue = [v73 unsignedLongLongValue];
+  [eventCopy setActiveDaysBitField:unsignedLongLongValue];
+  [(HMDLogEventUserActivityAnalyzer *)self finishCoalescingLogEvent:eventCopy];
 }
 
-- (void)contributeLogEvent:(id)a3 toSerializedMetric:(id)a4
+- (void)contributeLogEvent:(id)event toSerializedMetric:(id)metric
 {
   v5 = MEMORY[0x277CCABB0];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 numberWithUnsignedInteger:{objc_msgSend(v7, "numReadSiri")}];
-  [v6 setObject:v8 forKeyedSubscript:@"siriReadCount"];
+  metricCopy = metric;
+  eventCopy = event;
+  v8 = [v5 numberWithUnsignedInteger:{objc_msgSend(eventCopy, "numReadSiri")}];
+  [metricCopy setObject:v8 forKeyedSubscript:@"siriReadCount"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "numWriteSiri")}];
-  [v6 setObject:v9 forKeyedSubscript:@"siriWriteCount"];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "numWriteSiri")}];
+  [metricCopy setObject:v9 forKeyedSubscript:@"siriWriteCount"];
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "numReadFirstPartyApp")}];
-  [v6 setObject:v10 forKeyedSubscript:@"firstPartyReadCount"];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "numReadFirstPartyApp")}];
+  [metricCopy setObject:v10 forKeyedSubscript:@"firstPartyReadCount"];
 
-  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "numWriteFirstPartyApp")}];
-  [v6 setObject:v11 forKeyedSubscript:@"firstPartyWriteCount"];
+  v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "numWriteFirstPartyApp")}];
+  [metricCopy setObject:v11 forKeyedSubscript:@"firstPartyWriteCount"];
 
-  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "numReadThirdPartyApp")}];
-  [v6 setObject:v12 forKeyedSubscript:@"thirdPartyReadCount"];
+  v12 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "numReadThirdPartyApp")}];
+  [metricCopy setObject:v12 forKeyedSubscript:@"thirdPartyReadCount"];
 
-  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "numWriteThirdPartyApp")}];
-  [v6 setObject:v13 forKeyedSubscript:@"thirdPartyWriteCount"];
+  v13 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "numWriteThirdPartyApp")}];
+  [metricCopy setObject:v13 forKeyedSubscript:@"thirdPartyWriteCount"];
 
-  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "numAccessoriesAdded")}];
-  [v6 setObject:v14 forKeyedSubscript:@"accessoriesAddedCount"];
+  v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "numAccessoriesAdded")}];
+  [metricCopy setObject:v14 forKeyedSubscript:@"accessoriesAddedCount"];
 
-  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "numScenesAdded")}];
-  [v6 setObject:v15 forKeyedSubscript:@"scenesAddedCount"];
+  v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "numScenesAdded")}];
+  [metricCopy setObject:v15 forKeyedSubscript:@"scenesAddedCount"];
 
-  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "numTriggersAdded")}];
-  [v6 setObject:v16 forKeyedSubscript:@"triggersAddedCount"];
+  v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "numTriggersAdded")}];
+  [metricCopy setObject:v16 forKeyedSubscript:@"triggersAddedCount"];
 
-  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "numShortcutsAdded")}];
-  [v6 setObject:v17 forKeyedSubscript:@"shortcutsAddedCount"];
+  v17 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "numShortcutsAdded")}];
+  [metricCopy setObject:v17 forKeyedSubscript:@"shortcutsAddedCount"];
 
-  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "numScenesUserRun")}];
-  [v6 setObject:v18 forKeyedSubscript:@"scenesRunCount"];
+  v18 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "numScenesUserRun")}];
+  [metricCopy setObject:v18 forKeyedSubscript:@"scenesRunCount"];
 
-  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "numShortcutsRun")}];
-  [v6 setObject:v19 forKeyedSubscript:@"shortcutsRunCount"];
+  v19 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "numShortcutsRun")}];
+  [metricCopy setObject:v19 forKeyedSubscript:@"shortcutsRunCount"];
 
-  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "numTriggersFired")}];
-  [v6 setObject:v20 forKeyedSubscript:@"triggersRunCount"];
+  v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "numTriggersFired")}];
+  [metricCopy setObject:v20 forKeyedSubscript:@"triggersRunCount"];
 
-  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "cameraStreamStartSuccessCount")}];
-  [v6 setObject:v21 forKeyedSubscript:@"cameraStreamStartSuccessCount"];
+  v21 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "cameraStreamStartSuccessCount")}];
+  [metricCopy setObject:v21 forKeyedSubscript:@"cameraStreamStartSuccessCount"];
 
-  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "cameraStreamStartFailureCount")}];
-  [v6 setObject:v22 forKeyedSubscript:@"cameraStreamStartFailureCount"];
+  v22 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "cameraStreamStartFailureCount")}];
+  [metricCopy setObject:v22 forKeyedSubscript:@"cameraStreamStartFailureCount"];
 
-  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v7, "fetchCameraClipVideoSegmentAssetCount")}];
-  [v6 setObject:v23 forKeyedSubscript:@"fetchVideoSegmentsAssetCount"];
+  v23 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(eventCopy, "fetchCameraClipVideoSegmentAssetCount")}];
+  [metricCopy setObject:v23 forKeyedSubscript:@"fetchVideoSegmentsAssetCount"];
 
   v24 = MEMORY[0x277CCABB0];
-  v25 = [v7 activeDaysBitField];
+  activeDaysBitField = [eventCopy activeDaysBitField];
 
-  v26 = [v24 numberWithUnsignedLongLong:v25];
-  [v6 setObject:v26 forKeyedSubscript:@"activeDay"];
+  v26 = [v24 numberWithUnsignedLongLong:activeDaysBitField];
+  [metricCopy setObject:v26 forKeyedSubscript:@"activeDay"];
 }
 
-- (void)populateLogEvent:(id)a3 forHomeWithUUID:(id)a4 associatedToDate:(id)a5
+- (void)populateLogEvent:(id)event forHomeWithUUID:(id)d associatedToDate:(id)date
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v14 = [(HMDHouseholdActivityLogEventContributor *)self householdGroupForHomeWithUUID:v9 associatedWithDate:v8];
-  [v10 setNumReadSiri:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerSiriReadEventCounter"}];
-  [v10 setNumWriteSiri:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerSiriWriteEventCounter"}];
-  [v10 setNumReadFirstPartyApp:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerFirstPartyReadEventCounter"}];
-  [v10 setNumWriteFirstPartyApp:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerFirstPartyWriteEventCounter"}];
-  [v10 setNumReadThirdPartyApp:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerThirdPartyReadEventCounter"}];
-  [v10 setNumWriteThirdPartyApp:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerThirdPartyWriteEventCounter"}];
-  [v10 setNumAccessoriesAdded:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerAddAccessoryEventCounter"}];
-  [v10 setNumScenesAdded:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerAddSceneEventCounter"}];
-  [v10 setNumTriggersAdded:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerAddTriggerEventCounter"}];
-  [v10 setNumShortcutsAdded:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerAddShortcutEventCounter"}];
-  [v10 setNumScenesUserRun:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerRunSceneEventCounter"}];
-  [v10 setNumShortcutsRun:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerRunShortcutEventCounter"}];
-  [v10 setNumTriggersFired:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerTriggerFiredEventCounter"}];
-  [v10 setCameraStreamStartSuccessCount:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerCameraStreamStartSuccessEventCounter"}];
-  [v10 setCameraStreamStartFailureCount:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerCameraStreamStartFailureEventCounter"}];
-  [v10 setFetchCameraClipVideoSegmentAssetCount:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerFetchCameraClipVideoSegmentsAssetEventCounter"}];
-  v11 = [(HMDLogEventUserActivityAnalyzer *)self flagsManager];
-  v12 = [v11 flagForName:@"HMDLogEventUserActivityAnalyzerIsActiveFlag" homeUUID:v9 periodicity:1];
+  dateCopy = date;
+  dCopy = d;
+  eventCopy = event;
+  v14 = [(HMDHouseholdActivityLogEventContributor *)self householdGroupForHomeWithUUID:dCopy associatedWithDate:dateCopy];
+  [eventCopy setNumReadSiri:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerSiriReadEventCounter"}];
+  [eventCopy setNumWriteSiri:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerSiriWriteEventCounter"}];
+  [eventCopy setNumReadFirstPartyApp:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerFirstPartyReadEventCounter"}];
+  [eventCopy setNumWriteFirstPartyApp:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerFirstPartyWriteEventCounter"}];
+  [eventCopy setNumReadThirdPartyApp:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerThirdPartyReadEventCounter"}];
+  [eventCopy setNumWriteThirdPartyApp:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerThirdPartyWriteEventCounter"}];
+  [eventCopy setNumAccessoriesAdded:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerAddAccessoryEventCounter"}];
+  [eventCopy setNumScenesAdded:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerAddSceneEventCounter"}];
+  [eventCopy setNumTriggersAdded:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerAddTriggerEventCounter"}];
+  [eventCopy setNumShortcutsAdded:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerAddShortcutEventCounter"}];
+  [eventCopy setNumScenesUserRun:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerRunSceneEventCounter"}];
+  [eventCopy setNumShortcutsRun:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerRunShortcutEventCounter"}];
+  [eventCopy setNumTriggersFired:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerTriggerFiredEventCounter"}];
+  [eventCopy setCameraStreamStartSuccessCount:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerCameraStreamStartSuccessEventCounter"}];
+  [eventCopy setCameraStreamStartFailureCount:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerCameraStreamStartFailureEventCounter"}];
+  [eventCopy setFetchCameraClipVideoSegmentAssetCount:{objc_msgSend(v14, "fetchEventCounterForEventName:", @"HMDLogEventUserActivityAnalyzerFetchCameraClipVideoSegmentsAssetEventCounter"}];
+  flagsManager = [(HMDLogEventUserActivityAnalyzer *)self flagsManager];
+  v12 = [flagsManager flagForName:@"HMDLogEventUserActivityAnalyzerIsActiveFlag" homeUUID:dCopy periodicity:1];
 
-  v13 = [v12 bitsForDate:v8 bitCount:30 outValidBitCount:0];
-  [v10 setActiveDaysBitField:v13];
-  [(HMDLogEventUserActivityAnalyzer *)self finishCoalescingLogEvent:v10];
+  v13 = [v12 bitsForDate:dateCopy bitCount:30 outValidBitCount:0];
+  [eventCopy setActiveDaysBitField:v13];
+  [(HMDLogEventUserActivityAnalyzer *)self finishCoalescingLogEvent:eventCopy];
 }
 
 - (void)resetAggregationAnalysisContext
 {
-  v2 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v2 resetEventCounters];
+  counterGroup = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [counterGroup resetEventCounters];
 }
 
-- (void)populateAggregationAnalysisLogEvent:(id)a3 forDate:(id)a4
+- (void)populateAggregationAnalysisLogEvent:(id)event forDate:(id)date
 {
-  v44 = a3;
-  v6 = a4;
-  v7 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumReadSiri:{objc_msgSend(v7, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerSiriReadEventCounter", v6)}];
+  eventCopy = event;
+  dateCopy = date;
+  counterGroup = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumReadSiri:{objc_msgSend(counterGroup, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerSiriReadEventCounter", dateCopy)}];
 
-  v8 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumWriteSiri:{objc_msgSend(v8, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerSiriWriteEventCounter", v6)}];
+  counterGroup2 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumWriteSiri:{objc_msgSend(counterGroup2, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerSiriWriteEventCounter", dateCopy)}];
 
-  v9 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumReadFirstPartyApp:{objc_msgSend(v9, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerFirstPartyReadEventCounter", v6)}];
+  counterGroup3 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumReadFirstPartyApp:{objc_msgSend(counterGroup3, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerFirstPartyReadEventCounter", dateCopy)}];
 
-  v10 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumWriteFirstPartyApp:{objc_msgSend(v10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerFirstPartyWriteEventCounter", v6)}];
+  counterGroup4 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumWriteFirstPartyApp:{objc_msgSend(counterGroup4, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerFirstPartyWriteEventCounter", dateCopy)}];
 
-  v11 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumReadThirdPartyApp:{objc_msgSend(v11, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerThirdPartyReadEventCounter", v6)}];
+  counterGroup5 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumReadThirdPartyApp:{objc_msgSend(counterGroup5, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerThirdPartyReadEventCounter", dateCopy)}];
 
-  v12 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumWriteThirdPartyApp:{objc_msgSend(v12, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerThirdPartyWriteEventCounter", v6)}];
+  counterGroup6 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumWriteThirdPartyApp:{objc_msgSend(counterGroup6, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerThirdPartyWriteEventCounter", dateCopy)}];
 
-  v13 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumReadInternalRequested:{objc_msgSend(v13, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerInternalRequestedReadEventCounter", v6)}];
+  counterGroup7 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumReadInternalRequested:{objc_msgSend(counterGroup7, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerInternalRequestedReadEventCounter", dateCopy)}];
 
-  v14 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumWriteInternalRequested:{objc_msgSend(v14, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerInternalRequestedWriteEventCounter", v6)}];
+  counterGroup8 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumWriteInternalRequested:{objc_msgSend(counterGroup8, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerInternalRequestedWriteEventCounter", dateCopy)}];
 
-  v15 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumReadUnknownSource:{objc_msgSend(v15, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerUnknownSourceReadEventCounter", v6)}];
+  counterGroup9 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumReadUnknownSource:{objc_msgSend(counterGroup9, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerUnknownSourceReadEventCounter", dateCopy)}];
 
-  v16 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumWriteUnknownSource:{objc_msgSend(v16, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerUnknownSourceWriteEventCounter", v6)}];
+  counterGroup10 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumWriteUnknownSource:{objc_msgSend(counterGroup10, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerUnknownSourceWriteEventCounter", dateCopy)}];
 
-  v17 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumReadWriteSuccessIP:{objc_msgSend(v17, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerReadWriteIPSuccessEventCounter", v6)}];
+  counterGroup11 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumReadWriteSuccessIP:{objc_msgSend(counterGroup11, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerReadWriteIPSuccessEventCounter", dateCopy)}];
 
-  v18 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumReadWriteFailureIP:{objc_msgSend(v18, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerReadWriteIPFailureEventCounter", v6)}];
+  counterGroup12 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumReadWriteFailureIP:{objc_msgSend(counterGroup12, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerReadWriteIPFailureEventCounter", dateCopy)}];
 
-  if ([v44 numReadWriteSuccessIP] || objc_msgSend(v44, "numReadWriteFailureIP"))
+  if ([eventCopy numReadWriteSuccessIP] || objc_msgSend(eventCopy, "numReadWriteFailureIP"))
   {
-    v19 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-    v20 = [v19 fetchEventCounterForEventName:@"HMDLogEventUserActivityAnalyzerIPDurationAggregate" forDate:v6];
+    counterGroup13 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+    v20 = [counterGroup13 fetchEventCounterForEventName:@"HMDLogEventUserActivityAnalyzerIPDurationAggregate" forDate:dateCopy];
 
-    [v44 setAverageLatencyIP:{v20 / (objc_msgSend(v44, "numReadWriteFailureIP") + objc_msgSend(v44, "numReadWriteSuccessIP"))}];
+    [eventCopy setAverageLatencyIP:{v20 / (objc_msgSend(eventCopy, "numReadWriteFailureIP") + objc_msgSend(eventCopy, "numReadWriteSuccessIP"))}];
   }
 
-  v21 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumReadWriteSuccessBT:{objc_msgSend(v21, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerReadWriteBTSuccessEventCounter", v6)}];
+  counterGroup14 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumReadWriteSuccessBT:{objc_msgSend(counterGroup14, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerReadWriteBTSuccessEventCounter", dateCopy)}];
 
-  v22 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumReadWriteFailureBT:{objc_msgSend(v22, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerReadWriteBTFailureEventCounter", v6)}];
+  counterGroup15 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumReadWriteFailureBT:{objc_msgSend(counterGroup15, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerReadWriteBTFailureEventCounter", dateCopy)}];
 
-  if ([v44 numReadWriteSuccessBT] || objc_msgSend(v44, "numReadWriteFailureBT"))
+  if ([eventCopy numReadWriteSuccessBT] || objc_msgSend(eventCopy, "numReadWriteFailureBT"))
   {
-    v23 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-    v24 = [v23 fetchEventCounterForEventName:@"HMDLogEventUserActivityAnalyzerBTDurationAggregate" forDate:v6];
+    counterGroup16 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+    v24 = [counterGroup16 fetchEventCounterForEventName:@"HMDLogEventUserActivityAnalyzerBTDurationAggregate" forDate:dateCopy];
 
-    [v44 setAverageLatencyBT:{v24 / (objc_msgSend(v44, "numReadWriteFailureBT") + objc_msgSend(v44, "numReadWriteSuccessBT"))}];
+    [eventCopy setAverageLatencyBT:{v24 / (objc_msgSend(eventCopy, "numReadWriteFailureBT") + objc_msgSend(eventCopy, "numReadWriteSuccessBT"))}];
   }
 
-  v25 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumReadWriteSuccessIDS:{objc_msgSend(v25, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerReadWriteIDSSuccessEventCounter", v6)}];
+  counterGroup17 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumReadWriteSuccessIDS:{objc_msgSend(counterGroup17, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerReadWriteIDSSuccessEventCounter", dateCopy)}];
 
-  v26 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumReadWriteFailureIDS:{objc_msgSend(v26, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerReadWriteIDSFailureEventCounter", v6)}];
+  counterGroup18 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumReadWriteFailureIDS:{objc_msgSend(counterGroup18, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerReadWriteIDSFailureEventCounter", dateCopy)}];
 
-  if ([v44 numReadWriteSuccessIDS] || objc_msgSend(v44, "numReadWriteFailureIDS"))
+  if ([eventCopy numReadWriteSuccessIDS] || objc_msgSend(eventCopy, "numReadWriteFailureIDS"))
   {
-    v27 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-    v28 = [v27 fetchEventCounterForEventName:@"HMDLogEventUserActivityAnalyzerIDSDurationAggregate" forDate:v6];
+    counterGroup19 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+    v28 = [counterGroup19 fetchEventCounterForEventName:@"HMDLogEventUserActivityAnalyzerIDSDurationAggregate" forDate:dateCopy];
 
-    [v44 setAverageLatencyIDS:{v28 / (objc_msgSend(v44, "numReadWriteFailureIDS") + objc_msgSend(v44, "numReadWriteSuccessIDS"))}];
+    [eventCopy setAverageLatencyIDS:{v28 / (objc_msgSend(eventCopy, "numReadWriteFailureIDS") + objc_msgSend(eventCopy, "numReadWriteSuccessIDS"))}];
   }
 
-  v29 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumAccessoriesAdded:{objc_msgSend(v29, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerAddAccessoryEventCounter", v6)}];
+  counterGroup20 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumAccessoriesAdded:{objc_msgSend(counterGroup20, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerAddAccessoryEventCounter", dateCopy)}];
 
-  v30 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumScenesAdded:{objc_msgSend(v30, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerAddSceneEventCounter", v6)}];
+  counterGroup21 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumScenesAdded:{objc_msgSend(counterGroup21, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerAddSceneEventCounter", dateCopy)}];
 
-  v31 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumTriggersAdded:{objc_msgSend(v31, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerAddTriggerEventCounter", v6)}];
+  counterGroup22 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumTriggersAdded:{objc_msgSend(counterGroup22, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerAddTriggerEventCounter", dateCopy)}];
 
-  v32 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumShortcutsAdded:{objc_msgSend(v32, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerAddShortcutEventCounter", v6)}];
+  counterGroup23 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumShortcutsAdded:{objc_msgSend(counterGroup23, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerAddShortcutEventCounter", dateCopy)}];
 
-  v33 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumScenesUserRun:{objc_msgSend(v33, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerRunSceneEventCounter", v6)}];
+  counterGroup24 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumScenesUserRun:{objc_msgSend(counterGroup24, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerRunSceneEventCounter", dateCopy)}];
 
-  v34 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumShortcutsRun:{objc_msgSend(v34, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerRunShortcutEventCounter", v6)}];
+  counterGroup25 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumShortcutsRun:{objc_msgSend(counterGroup25, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerRunShortcutEventCounter", dateCopy)}];
 
-  v35 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setNumTriggersFired:{objc_msgSend(v35, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerTriggerFiredEventCounter", v6)}];
+  counterGroup26 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setNumTriggersFired:{objc_msgSend(counterGroup26, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerTriggerFiredEventCounter", dateCopy)}];
 
-  v36 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setCameraStreamStartSuccessCount:{objc_msgSend(v36, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerCameraStreamStartSuccessEventCounter", v6)}];
+  counterGroup27 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setCameraStreamStartSuccessCount:{objc_msgSend(counterGroup27, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerCameraStreamStartSuccessEventCounter", dateCopy)}];
 
-  v37 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setCameraStreamStartFailureCount:{objc_msgSend(v37, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerCameraStreamStartFailureEventCounter", v6)}];
+  counterGroup28 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setCameraStreamStartFailureCount:{objc_msgSend(counterGroup28, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerCameraStreamStartFailureEventCounter", dateCopy)}];
 
-  v38 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v44 setFetchCameraClipVideoSegmentAssetCount:{objc_msgSend(v38, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerFetchCameraClipVideoSegmentsAssetEventCounter", v6)}];
+  counterGroup29 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [eventCopy setFetchCameraClipVideoSegmentAssetCount:{objc_msgSend(counterGroup29, "fetchEventCounterForEventName:forDate:", @"HMDLogEventUserActivityAnalyzerFetchCameraClipVideoSegmentsAssetEventCounter", dateCopy)}];
 
-  v39 = [(HMDLogEventUserActivityAnalyzer *)self flagsManager];
-  v40 = [v39 flagForName:@"HMDLogEventUserActivityAnalyzerIsActiveFlag" periodicity:1];
+  flagsManager = [(HMDLogEventUserActivityAnalyzer *)self flagsManager];
+  v40 = [flagsManager flagForName:@"HMDLogEventUserActivityAnalyzerIsActiveFlag" periodicity:1];
 
-  v41 = [v40 bitsForDate:v6 bitCount:30 outValidBitCount:0];
-  [v44 setActiveDay:v41.i8[0] & 1];
+  v41 = [v40 bitsForDate:dateCopy bitCount:30 outValidBitCount:0];
+  [eventCopy setActiveDay:v41.i8[0] & 1];
   if (v41)
   {
     v42 = log2((*&v41 & -*&v41));
@@ -648,94 +648,94 @@
     v42 = -1;
   }
 
-  [v44 setCountOfDaysSinceLastActive:v42];
+  [eventCopy setCountOfDaysSinceLastActive:v42];
   v43 = vcnt_s8(v41);
   v43.i16[0] = vaddlv_u8(v43);
-  [v44 setActiveDaysPerMonthCount:v43.u32[0]];
+  [eventCopy setActiveDaysPerMonthCount:v43.u32[0]];
 }
 
-- (void)markActiveForEventName:(id)a3 logEvent:(id)a4
+- (void)markActiveForEventName:(id)name logEvent:(id)event
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-  [v7 incrementEventCounterForEventName:v15];
+  nameCopy = name;
+  eventCopy = event;
+  counterGroup = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+  [counterGroup incrementEventCounterForEventName:nameCopy];
 
   v8 = HMMSafeHomeUUIDFromLogEvent();
   if (v8)
   {
-    v9 = [(HMDLogEventUserActivityAnalyzer *)self flagsManager];
-    v10 = [v9 flagForName:@"HMDLogEventUserActivityAnalyzerIsActiveFlag" homeUUID:v8 periodicity:1];
+    flagsManager = [(HMDLogEventUserActivityAnalyzer *)self flagsManager];
+    v10 = [flagsManager flagForName:@"HMDLogEventUserActivityAnalyzerIsActiveFlag" homeUUID:v8 periodicity:1];
 
     [v10 setCurrentBit];
   }
 
-  v11 = [(HMDLogEventUserActivityAnalyzer *)self flagsManager];
-  v12 = [v11 flagForName:@"HMDLogEventUserActivityAnalyzerIsActiveFlag" periodicity:1];
+  flagsManager2 = [(HMDLogEventUserActivityAnalyzer *)self flagsManager];
+  v12 = [flagsManager2 flagForName:@"HMDLogEventUserActivityAnalyzerIsActiveFlag" periodicity:1];
 
   [v12 setCurrentBit];
-  v13 = [(HMDHouseholdActivityLogEventContributor *)self householdGroupForLogEvent:v6];
+  v13 = [(HMDHouseholdActivityLogEventContributor *)self householdGroupForLogEvent:eventCopy];
   v14 = v13;
   if (v13)
   {
-    [v13 incrementEventCounterForEventName:v15];
+    [v13 incrementEventCounterForEventName:nameCopy];
   }
 }
 
-- (void)_handleCameraClipRequestLogEvent:(id)a3
+- (void)_handleCameraClipRequestLogEvent:(id)event
 {
-  v6 = a3;
-  v4 = [v6 requestName];
-  v5 = [v4 isEqualToString:@"HMDCameraClipManagerRequestLogEventFetchVideoSegmentsAssetRequestName"];
+  eventCopy = event;
+  requestName = [eventCopy requestName];
+  v5 = [requestName isEqualToString:@"HMDCameraClipManagerRequestLogEventFetchVideoSegmentsAssetRequestName"];
 
   if (v5)
   {
-    [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:@"HMDLogEventUserActivityAnalyzerFetchCameraClipVideoSegmentsAssetEventCounter" logEvent:v6];
+    [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:@"HMDLogEventUserActivityAnalyzerFetchCameraClipVideoSegmentsAssetEventCounter" logEvent:eventCopy];
   }
 }
 
-- (void)_handleCameraStreamLogEvent:(id)a3
+- (void)_handleCameraStreamLogEvent:(id)event
 {
-  v8 = a3;
-  v4 = [v8 error];
-  v5 = [v4 code];
+  eventCopy = event;
+  error = [eventCopy error];
+  code = [error code];
   v6 = @"HMDLogEventUserActivityAnalyzerCameraStreamStartFailureEventCounter";
-  if (!v5)
+  if (!code)
   {
     v6 = @"HMDLogEventUserActivityAnalyzerCameraStreamStartSuccessEventCounter";
   }
 
   v7 = v6;
 
-  [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:v7 logEvent:v8];
+  [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:v7 logEvent:eventCopy];
 }
 
-- (void)_handleActionSetRunLogEvent:(id)a3
+- (void)_handleActionSetRunLogEvent:(id)event
 {
-  v8 = a3;
-  v4 = [v8 actionSetType];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CCF190]];
+  eventCopy = event;
+  actionSetType = [eventCopy actionSetType];
+  v5 = [actionSetType isEqualToString:*MEMORY[0x277CCF190]];
 
   if (v5)
   {
-    v6 = v8;
+    v6 = eventCopy;
     v7 = @"HMDLogEventUserActivityAnalyzerRunShortcutEventCounter";
   }
 
-  else if (-[HMDLogEventUserActivityAnalyzer _isUserSource:](self, "_isUserSource:", [v8 triggerSource]))
+  else if (-[HMDLogEventUserActivityAnalyzer _isUserSource:](self, "_isUserSource:", [eventCopy triggerSource]))
   {
-    v6 = v8;
+    v6 = eventCopy;
     v7 = @"HMDLogEventUserActivityAnalyzerRunSceneEventCounter";
   }
 
   else
   {
-    if (!-[HMDLogEventUserActivityAnalyzer _isTriggerSource:](self, "_isTriggerSource:", [v8 triggerSource]))
+    if (!-[HMDLogEventUserActivityAnalyzer _isTriggerSource:](self, "_isTriggerSource:", [eventCopy triggerSource]))
     {
       goto LABEL_8;
     }
 
-    v6 = v8;
+    v6 = eventCopy;
     v7 = @"HMDLogEventUserActivityAnalyzerTriggerFiredEventCounter";
   }
 
@@ -743,54 +743,54 @@
 LABEL_8:
 }
 
-- (void)_handleAddTriggerLogEvent:(id)a3
+- (void)_handleAddTriggerLogEvent:(id)event
 {
-  v4 = a3;
-  [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:@"HMDLogEventUserActivityAnalyzerAddSceneEventCounter" logEvent:v4];
-  [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:@"HMDLogEventUserActivityAnalyzerAddTriggerEventCounter" logEvent:v4];
+  eventCopy = event;
+  [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:@"HMDLogEventUserActivityAnalyzerAddSceneEventCounter" logEvent:eventCopy];
+  [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:@"HMDLogEventUserActivityAnalyzerAddTriggerEventCounter" logEvent:eventCopy];
 }
 
-- (void)_handleAddActionSetLogEvent:(id)a3
+- (void)_handleAddActionSetLogEvent:(id)event
 {
-  v6 = a3;
-  [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:@"HMDLogEventUserActivityAnalyzerAddSceneEventCounter" logEvent:v6];
-  v4 = [v6 actionSetType];
-  v5 = [v4 isEqualToString:*MEMORY[0x277CCF190]];
+  eventCopy = event;
+  [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:@"HMDLogEventUserActivityAnalyzerAddSceneEventCounter" logEvent:eventCopy];
+  actionSetType = [eventCopy actionSetType];
+  v5 = [actionSetType isEqualToString:*MEMORY[0x277CCF190]];
 
   if (v5)
   {
-    [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:@"HMDLogEventUserActivityAnalyzerAddShortcutEventCounter" logEvent:v6];
+    [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:@"HMDLogEventUserActivityAnalyzerAddShortcutEventCounter" logEvent:eventCopy];
   }
 }
 
-- (void)_handleAccessoryPairingLogEvent:(id)a3
+- (void)_handleAccessoryPairingLogEvent:(id)event
 {
-  v6 = a3;
-  if ([v6 isAddOperation])
+  eventCopy = event;
+  if ([eventCopy isAddOperation])
   {
-    v4 = [v6 error];
-    v5 = [v4 code];
+    error = [eventCopy error];
+    code = [error code];
 
-    if (!v5)
+    if (!code)
     {
-      [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:@"HMDLogEventUserActivityAnalyzerAddAccessoryEventCounter" logEvent:v6];
+      [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:@"HMDLogEventUserActivityAnalyzerAddAccessoryEventCounter" logEvent:eventCopy];
     }
   }
 }
 
-- (void)updateLinkTypeActivityCountsForReadWriteLogEvent:(id)a3
+- (void)updateLinkTypeActivityCountsForReadWriteLogEvent:(id)event
 {
-  v15 = a3;
-  if ([v15 linkType] == 1 && objc_msgSend(v15, "isLocal"))
+  eventCopy = event;
+  if ([eventCopy linkType] == 1 && objc_msgSend(eventCopy, "isLocal"))
   {
-    v4 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-    [v4 incrementEventCounterForEventName:@"HMDLogEventUserActivityAnalyzerIPDurationAggregate" withValue:{objc_msgSend(v15, "durationMilliseconds")}];
+    counterGroup = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+    [counterGroup incrementEventCounterForEventName:@"HMDLogEventUserActivityAnalyzerIPDurationAggregate" withValue:{objc_msgSend(eventCopy, "durationMilliseconds")}];
 
-    v5 = [v15 error];
-    v6 = [v5 code];
+    error = [eventCopy error];
+    code = [error code];
 
-    v7 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-    if (v6)
+    counterGroup2 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+    if (code)
     {
       v8 = @"HMDLogEventUserActivityAnalyzerReadWriteIPFailureEventCounter";
     }
@@ -801,16 +801,16 @@ LABEL_8:
     }
   }
 
-  else if ([v15 linkType] == 2 && objc_msgSend(v15, "isLocal"))
+  else if ([eventCopy linkType] == 2 && objc_msgSend(eventCopy, "isLocal"))
   {
-    v9 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-    [v9 incrementEventCounterForEventName:@"HMDLogEventUserActivityAnalyzerBTDurationAggregate" withValue:{objc_msgSend(v15, "durationMilliseconds")}];
+    counterGroup3 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+    [counterGroup3 incrementEventCounterForEventName:@"HMDLogEventUserActivityAnalyzerBTDurationAggregate" withValue:{objc_msgSend(eventCopy, "durationMilliseconds")}];
 
-    v10 = [v15 error];
-    v11 = [v10 code];
+    error2 = [eventCopy error];
+    code2 = [error2 code];
 
-    v7 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-    if (v11)
+    counterGroup2 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+    if (code2)
     {
       v8 = @"HMDLogEventUserActivityAnalyzerReadWriteBTFailureEventCounter";
     }
@@ -823,19 +823,19 @@ LABEL_8:
 
   else
   {
-    if ([v15 isLocal])
+    if ([eventCopy isLocal])
     {
       goto LABEL_16;
     }
 
-    v12 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-    [v12 incrementEventCounterForEventName:@"HMDLogEventUserActivityAnalyzerIDSDurationAggregate" withValue:{objc_msgSend(v15, "durationMilliseconds")}];
+    counterGroup4 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+    [counterGroup4 incrementEventCounterForEventName:@"HMDLogEventUserActivityAnalyzerIDSDurationAggregate" withValue:{objc_msgSend(eventCopy, "durationMilliseconds")}];
 
-    v13 = [v15 error];
-    v14 = [v13 code];
+    error3 = [eventCopy error];
+    code3 = [error3 code];
 
-    v7 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-    if (v14)
+    counterGroup2 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+    if (code3)
     {
       v8 = @"HMDLogEventUserActivityAnalyzerReadWriteIDSFailureEventCounter";
     }
@@ -846,100 +846,100 @@ LABEL_8:
     }
   }
 
-  [v7 incrementEventCounterForEventName:v8];
+  [counterGroup2 incrementEventCounterForEventName:v8];
 
 LABEL_16:
 }
 
-- (void)_handleReadWriteLogEvent:(id)a3
+- (void)_handleReadWriteLogEvent:(id)event
 {
-  v20 = a3;
-  v4 = [v20 triggerSource];
-  if (v4 <= 1139)
+  eventCopy = event;
+  triggerSource = [eventCopy triggerSource];
+  if (triggerSource <= 1139)
   {
-    v5 = (v4 - 1000) > 0x3C || ((1 << (v4 + 24)) & 0x1004010040100401) == 0;
-    if (v5 && ((v4 - 1070) > 0x3C || ((1 << (v4 - 46)) & 0x1004010040100401) == 0) && v4 != 7)
+    v5 = (triggerSource - 1000) > 0x3C || ((1 << (triggerSource + 24)) & 0x1004010040100401) == 0;
+    if (v5 && ((triggerSource - 1070) > 0x3C || ((1 << (triggerSource - 46)) & 0x1004010040100401) == 0) && triggerSource != 7)
     {
       goto LABEL_26;
     }
 
 LABEL_15:
-    v7 = [v20 isWriteOperation];
+    isWriteOperation = [eventCopy isWriteOperation];
     v8 = @"HMDLogEventUserActivityAnalyzerInternalRequestedReadEventCounter";
     v9 = @"HMDLogEventUserActivityAnalyzerInternalRequestedWriteEventCounter";
 LABEL_16:
-    if (v7)
+    if (isWriteOperation)
     {
       v8 = v9;
     }
 
-    v10 = v8;
-    v11 = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
-    [v11 incrementEventCounterForEventName:v10];
+    bundleId = v8;
+    counterGroup = [(HMDLogEventUserActivityAnalyzer *)self counterGroup];
+    [counterGroup incrementEventCounterForEventName:bundleId];
     goto LABEL_19;
   }
 
-  v6 = (v4 - 1140) > 0x3C || ((1 << (v4 - 116)) & 0x1004010040100401) == 0;
-  if (!v6 || v4 == 1220 || v4 == 1210)
+  v6 = (triggerSource - 1140) > 0x3C || ((1 << (triggerSource - 116)) & 0x1004010040100401) == 0;
+  if (!v6 || triggerSource == 1220 || triggerSource == 1210)
   {
     goto LABEL_15;
   }
 
 LABEL_26:
-  v13 = [v20 triggerSource];
-  if (v13 <= 4)
+  triggerSource2 = [eventCopy triggerSource];
+  if (triggerSource2 <= 4)
   {
-    if (v13)
+    if (triggerSource2)
     {
-      v12 = v20;
-      if (v13 == 1)
+      v12 = eventCopy;
+      if (triggerSource2 == 1)
       {
-        v14 = [v20 isWriteOperation];
+        isWriteOperation2 = [eventCopy isWriteOperation];
         v15 = @"HMDLogEventUserActivityAnalyzerSiriReadEventCounter";
         v16 = @"HMDLogEventUserActivityAnalyzerSiriWriteEventCounter";
 LABEL_33:
-        if (v14)
+        if (isWriteOperation2)
         {
           v15 = v16;
         }
 
-        v10 = v15;
+        bundleId = v15;
         goto LABEL_36;
       }
 
       goto LABEL_21;
     }
 
-    v7 = [v20 isWriteOperation];
+    isWriteOperation = [eventCopy isWriteOperation];
     v8 = @"HMDLogEventUserActivityAnalyzerUnknownSourceReadEventCounter";
     v9 = @"HMDLogEventUserActivityAnalyzerUnknownSourceWriteEventCounter";
     goto LABEL_16;
   }
 
-  if (v13 == 5)
+  if (triggerSource2 == 5)
   {
-    if ([v20 isWriteOperation])
+    if ([eventCopy isWriteOperation])
     {
-      v10 = @"HMDLogEventUserActivityAnalyzerFirstPartyWriteEventCounter";
+      bundleId = @"HMDLogEventUserActivityAnalyzerFirstPartyWriteEventCounter";
 LABEL_36:
-      v12 = v20;
+      v12 = eventCopy;
 LABEL_37:
-      [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:v10 logEvent:v12];
+      [(HMDLogEventUserActivityAnalyzer *)self markActiveForEventName:bundleId logEvent:v12];
       goto LABEL_20;
     }
 
-    v10 = [v20 bundleId];
-    v11 = [(__CFString *)v10 lowercaseString];
-    if (![v11 isEqualToString:@"com.apple.springboard"])
+    bundleId = [eventCopy bundleId];
+    counterGroup = [(__CFString *)bundleId lowercaseString];
+    if (![counterGroup isEqualToString:@"com.apple.springboard"])
     {
-      v17 = [v20 bundleId];
-      v18 = [v17 lowercaseString];
-      v19 = [v18 isEqualToString:@"com.apple.home.homewidget"];
+      bundleId2 = [eventCopy bundleId];
+      lowercaseString = [bundleId2 lowercaseString];
+      v19 = [lowercaseString isEqualToString:@"com.apple.home.homewidget"];
 
-      v12 = v20;
+      v12 = eventCopy;
       if ((v19 & 1) == 0)
       {
-        v10 = @"HMDLogEventUserActivityAnalyzerFirstPartyReadEventCounter";
+        bundleId = @"HMDLogEventUserActivityAnalyzerFirstPartyReadEventCounter";
         goto LABEL_37;
       }
 
@@ -949,14 +949,14 @@ LABEL_37:
 LABEL_19:
 
 LABEL_20:
-    v12 = v20;
+    v12 = eventCopy;
     goto LABEL_21;
   }
 
-  v12 = v20;
-  if (v13 == 6)
+  v12 = eventCopy;
+  if (triggerSource2 == 6)
   {
-    v14 = [v20 isWriteOperation];
+    isWriteOperation2 = [eventCopy isWriteOperation];
     v15 = @"HMDLogEventUserActivityAnalyzerThirdPartyReadEventCounter";
     v16 = @"HMDLogEventUserActivityAnalyzerThirdPartyWriteEventCounter";
     goto LABEL_33;
@@ -966,13 +966,13 @@ LABEL_21:
   [(HMDLogEventUserActivityAnalyzer *)self updateLinkTypeActivityCountsForReadWriteLogEvent:v12];
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v24 = a3;
+  eventCopy = event;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v24;
+    v4 = eventCopy;
   }
 
   else
@@ -988,7 +988,7 @@ LABEL_21:
 
   else
   {
-    v6 = v24;
+    v6 = eventCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -1119,20 +1119,20 @@ LABEL_21:
   }
 }
 
-- (HMDLogEventUserActivityAnalyzer)initWithEventCountersManager:(id)a3 flagsManager:(id)a4 dateProvider:(id)a5
+- (HMDLogEventUserActivityAnalyzer)initWithEventCountersManager:(id)manager flagsManager:(id)flagsManager dateProvider:(id)provider
 {
-  v8 = a3;
-  v9 = a4;
+  managerCopy = manager;
+  flagsManagerCopy = flagsManager;
   v14.receiver = self;
   v14.super_class = HMDLogEventUserActivityAnalyzer;
-  v10 = [(HMDHouseholdActivityLogEventContributor *)&v14 initWithHouseholdGroupName:@"HMDLogEventUserActivityAnalyzerRequestGroup" countersManager:v8 dateProvider:a5];
+  v10 = [(HMDHouseholdActivityLogEventContributor *)&v14 initWithHouseholdGroupName:@"HMDLogEventUserActivityAnalyzerRequestGroup" countersManager:managerCopy dateProvider:provider];
   if (v10)
   {
-    v11 = [v8 counterGroupForName:@"HMDLogEventUserActivityAnalyzerRequestGroup"];
+    v11 = [managerCopy counterGroupForName:@"HMDLogEventUserActivityAnalyzerRequestGroup"];
     counterGroup = v10->_counterGroup;
     v10->_counterGroup = v11;
 
-    objc_storeStrong(&v10->_flagsManager, a4);
+    objc_storeStrong(&v10->_flagsManager, flagsManager);
   }
 
   return v10;

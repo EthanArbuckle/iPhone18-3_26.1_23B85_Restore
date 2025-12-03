@@ -2,17 +2,17 @@
 - (BOOL)_isReRoute;
 - (BOOL)hasRouteEta;
 - (BOOL)hasRouteLegEtas;
-- (VKRouteInfo)initWithAnchorPoint:(id)a3;
-- (VKRouteInfo)initWithComposedRoute:(id)a3 etaDescription:(id)a4;
-- (VKRouteInfo)initWithComposedRoute:(id)a3 etaText:(id)a4;
-- (id)waypointForWaypoint:(id)a3;
-- (id)waypointInfoForWaypoint:(id)a3;
+- (VKRouteInfo)initWithAnchorPoint:(id)point;
+- (VKRouteInfo)initWithComposedRoute:(id)route etaDescription:(id)description;
+- (VKRouteInfo)initWithComposedRoute:(id)route etaText:(id)text;
+- (id)waypointForWaypoint:(id)waypoint;
+- (id)waypointInfoForWaypoint:(id)waypoint;
 - (void)_assignIndexPositions;
-- (void)_decodeVisualInfos:(id)a3 withRouteEtaType:(int64_t)a4 into:(id)a5 needsDescription:(BOOL)a6;
-- (void)_processAnchorpoints:(id)a3;
-- (void)_processWaypoints:(id)a3;
-- (void)setEtaDescription:(id)a3;
-- (void)visitAnnotations:(id)a3;
+- (void)_decodeVisualInfos:(id)infos withRouteEtaType:(int64_t)type into:(id)into needsDescription:(BOOL)description;
+- (void)_processAnchorpoints:(id)anchorpoints;
+- (void)_processWaypoints:(id)waypoints;
+- (void)setEtaDescription:(id)description;
+- (void)visitAnnotations:(id)annotations;
 @end
 
 @implementation VKRouteInfo
@@ -51,21 +51,21 @@ uint64_t __36__VKRouteInfo__assignIndexPositions__block_invoke(uint64_t a1, void
   return v7;
 }
 
-- (void)_processAnchorpoints:(id)a3
+- (void)_processAnchorpoints:(id)anchorpoints
 {
-  v22 = a3;
+  anchorpointsCopy = anchorpoints;
   for (i = 0; ; ++i)
   {
-    v5 = [(GEOComposedRoute *)self->_route anchorPoints];
-    v6 = [v5 count];
+    anchorPoints = [(GEOComposedRoute *)self->_route anchorPoints];
+    v6 = [anchorPoints count];
 
     if (i >= v6)
     {
       break;
     }
 
-    v7 = [(GEOComposedRoute *)self->_route anchorPoints];
-    v8 = [v7 objectAtIndexedSubscript:i];
+    anchorPoints2 = [(GEOComposedRoute *)self->_route anchorPoints];
+    v8 = [anchorPoints2 objectAtIndexedSubscript:i];
 
     if (v8 && [v8 anchorPointType] != 1 && objc_msgSend(v8, "anchorPointType") != 2)
     {
@@ -89,25 +89,25 @@ uint64_t __36__VKRouteInfo__assignIndexPositions__block_invoke(uint64_t a1, void
       }
 
       v21 = +[VKRouteWaypointInfo newRouteWaypointForAnchorpoint:legIndex:routeCoordinate:adjacentRouteCoordinate:polylineCoordinate:](VKRouteWaypointInfo, "newRouteWaypointForAnchorpoint:legIndex:routeCoordinate:adjacentRouteCoordinate:polylineCoordinate:", v8, 0, [v8 routeCoordinate], v10, v12, v14, v16, v18, v20);
-      [v22 addObject:v21];
+      [anchorpointsCopy addObject:v21];
     }
   }
 }
 
-- (void)_processWaypoints:(id)a3
+- (void)_processWaypoints:(id)waypoints
 {
-  v47 = a3;
-  v4 = [(GEOComposedRoute *)self->_route legs];
-  v5 = [v4 count];
+  waypointsCopy = waypoints;
+  legs = [(GEOComposedRoute *)self->_route legs];
+  v5 = [legs count];
 
   if (v5)
   {
-    v6 = [(GEOComposedRoute *)self->_route legs];
-    v7 = [v6 objectAtIndexedSubscript:0];
+    legs2 = [(GEOComposedRoute *)self->_route legs];
+    v7 = [legs2 objectAtIndexedSubscript:0];
 
-    v8 = [v7 origin];
-    v9 = v8;
-    if (v8 && (![v8 isCurrentLocation] || -[VKRouteInfo _isHikingRoute](self, "_isHikingRoute") && !-[VKRouteInfo _isReRoute](self, "_isReRoute")))
+    origin = [v7 origin];
+    v9 = origin;
+    if (origin && (![origin isCurrentLocation] || -[VKRouteInfo _isHikingRoute](self, "_isHikingRoute") && !-[VKRouteInfo _isReRoute](self, "_isReRoute")))
     {
       -[GEOComposedRoute pointWithAltitudeCorrectionAtRouteCoordinate:](self->_route, "pointWithAltitudeCorrectionAtRouteCoordinate:", [v7 startRouteCoordinate]);
       v11 = v10;
@@ -131,26 +131,26 @@ uint64_t __36__VKRouteInfo__assignIndexPositions__block_invoke(uint64_t a1, void
       v22 = [(GEOComposedRoute *)self->_route waypointDisplayInfoForWaypoint:v9];
       v23 = +[VKRouteWaypointInfo newRouteWaypointForWaypoint:displayInfo:legIndex:routeCoordinate:adjacentRouteCoordinate:polylineCoordinate:](VKRouteWaypointInfo, "newRouteWaypointForWaypoint:displayInfo:legIndex:routeCoordinate:adjacentRouteCoordinate:polylineCoordinate:", v9, v22, 0, [v7 startRouteCoordinate], v11, v13, v15, v17, v19, v21);
       [v23 setIsAtStart:1];
-      [v47 addObject:v23];
+      [waypointsCopy addObject:v23];
     }
   }
 
   for (i = 0; ; ++i)
   {
-    v25 = [(GEOComposedRoute *)self->_route legs];
-    v26 = [v25 count];
+    legs3 = [(GEOComposedRoute *)self->_route legs];
+    v26 = [legs3 count];
 
     if (i >= v26)
     {
       break;
     }
 
-    v27 = [(GEOComposedRoute *)self->_route legs];
-    v28 = [v27 objectAtIndexedSubscript:i];
+    legs4 = [(GEOComposedRoute *)self->_route legs];
+    v28 = [legs4 objectAtIndexedSubscript:i];
 
-    v29 = [v28 destination];
-    v30 = v29;
-    if (v29 && (![v29 isCurrentLocation] || -[VKRouteInfo _isHikingRoute](self, "_isHikingRoute")))
+    destination = [v28 destination];
+    v30 = destination;
+    if (destination && (![destination isCurrentLocation] || -[VKRouteInfo _isHikingRoute](self, "_isHikingRoute")))
     {
       -[GEOComposedRoute pointWithAltitudeCorrectionAtRouteCoordinate:](self->_route, "pointWithAltitudeCorrectionAtRouteCoordinate:", [v28 endRouteCoordinate]);
       v32 = v31;
@@ -173,24 +173,24 @@ uint64_t __36__VKRouteInfo__assignIndexPositions__block_invoke(uint64_t a1, void
 
       v43 = [(GEOComposedRoute *)self->_route waypointDisplayInfoForWaypoint:v30];
       v44 = +[VKRouteWaypointInfo newRouteWaypointForWaypoint:displayInfo:legIndex:routeCoordinate:adjacentRouteCoordinate:polylineCoordinate:](VKRouteWaypointInfo, "newRouteWaypointForWaypoint:displayInfo:legIndex:routeCoordinate:adjacentRouteCoordinate:polylineCoordinate:", v30, v43, i, [v28 endRouteCoordinate], v32, v34, v36, v38, v40, v42);
-      v45 = [(GEOComposedRoute *)self->_route legs];
-      v46 = [v45 count] - 1;
+      legs5 = [(GEOComposedRoute *)self->_route legs];
+      v46 = [legs5 count] - 1;
 
       if (i == v46)
       {
         [v44 setIsAtEnd:1];
       }
 
-      [v47 addObject:v44];
+      [waypointsCopy addObject:v44];
     }
   }
 }
 
-- (id)waypointInfoForWaypoint:(id)a3
+- (id)waypointInfoForWaypoint:(id)waypoint
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  waypointCopy = waypoint;
+  if (waypointCopy)
   {
     v15 = 0u;
     v16 = 0u;
@@ -211,8 +211,8 @@ uint64_t __36__VKRouteInfo__assignIndexPositions__block_invoke(uint64_t a1, void
           }
 
           v9 = *(*(&v13 + 1) + 8 * i);
-          v10 = [v9 waypoint];
-          v11 = [v10 isEqual:v4];
+          waypoint = [v9 waypoint];
+          v11 = [waypoint isEqual:waypointCopy];
 
           if (v11)
           {
@@ -242,10 +242,10 @@ LABEL_12:
   return v6;
 }
 
-- (id)waypointForWaypoint:(id)a3
+- (id)waypointForWaypoint:(id)waypoint
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  waypointCopy = waypoint;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
@@ -265,14 +265,14 @@ LABEL_12:
         }
 
         v9 = *(*(&v24 + 1) + 8 * i);
-        v10 = [v9 waypoint];
-        v11 = [v10 isEqual:v4];
+        waypoint = [v9 waypoint];
+        v11 = [waypoint isEqual:waypointCopy];
 
         if (v11)
         {
-          v18 = [v9 waypoint];
+          waypoint2 = [v9 waypoint];
 LABEL_20:
-          v12 = v18;
+          v12 = waypoint2;
           goto LABEL_21;
         }
       }
@@ -306,12 +306,12 @@ LABEL_20:
         }
 
         v15 = *(*(&v20 + 1) + 8 * j);
-        v16 = [v15 waypoint];
-        v17 = [v16 isEqual:v4];
+        waypoint3 = [v15 waypoint];
+        v17 = [waypoint3 isEqual:waypointCopy];
 
         if (v17)
         {
-          v18 = [v15 waypoint];
+          waypoint2 = [v15 waypoint];
           goto LABEL_20;
         }
       }
@@ -331,14 +331,14 @@ LABEL_21:
   return v12;
 }
 
-- (void)visitAnnotations:(id)a3
+- (void)visitAnnotations:(id)annotations
 {
-  v4 = a3;
+  annotationsCopy = annotations;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__VKRouteInfo_visitAnnotations___block_invoke;
   v7[3] = &unk_1E7B382F0;
-  v5 = v4;
+  v5 = annotationsCopy;
   v8 = v5;
   v6 = MEMORY[0x1B8C62DA0](v7);
   if (self->_routeEtaAnnotation)
@@ -372,11 +372,11 @@ LABEL_21:
     return 0;
   }
 
-  v4 = [(VKRouteEtaDescription *)etaDescription etaText];
-  if (v4)
+  etaText = [(VKRouteEtaDescription *)etaDescription etaText];
+  if (etaText)
   {
-    v5 = [(VKRouteEtaDescription *)self->_etaDescription etaText];
-    v6 = [v5 length] != 0;
+    etaText2 = [(VKRouteEtaDescription *)self->_etaDescription etaText];
+    v6 = [etaText2 length] != 0;
   }
 
   else
@@ -387,13 +387,13 @@ LABEL_21:
   return v6;
 }
 
-- (void)setEtaDescription:(id)a3
+- (void)setEtaDescription:(id)description
 {
-  v5 = a3;
-  if (self->_etaDescription != v5)
+  descriptionCopy = description;
+  if (self->_etaDescription != descriptionCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_etaDescription, a3);
+    v8 = descriptionCopy;
+    objc_storeStrong(&self->_etaDescription, description);
     if (self->_etaDescription && self->_route)
     {
       v6 = [[VKRouteRangeAnnotationInfo alloc] initWithEtaDescription:self->_etaDescription start:0 end:[(GEOComposedRoute *)self->_route endRouteCoordinate]];
@@ -407,21 +407,21 @@ LABEL_21:
     routeEtaAnnotation = self->_routeEtaAnnotation;
     self->_routeEtaAnnotation = v6;
 
-    v5 = v8;
+    descriptionCopy = v8;
   }
 }
 
-- (VKRouteInfo)initWithAnchorPoint:(id)a3
+- (VKRouteInfo)initWithAnchorPoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v14.receiver = self;
   v14.super_class = VKRouteInfo;
   v5 = [(VKRouteInfo *)&v14 init];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    [v4 locationCoordinate];
-    v10 = +[VKRouteWaypointInfo newRouteWaypointForAnchorpoint:legIndex:routeCoordinate:adjacentRouteCoordinate:polylineCoordinate:](VKRouteWaypointInfo, "newRouteWaypointForAnchorpoint:legIndex:routeCoordinate:adjacentRouteCoordinate:polylineCoordinate:", v4, 0, [v4 routeCoordinate], v7, v8, v9, -180.0, -180.0, 1.79769313e308);
+    [pointCopy locationCoordinate];
+    v10 = +[VKRouteWaypointInfo newRouteWaypointForAnchorpoint:legIndex:routeCoordinate:adjacentRouteCoordinate:polylineCoordinate:](VKRouteWaypointInfo, "newRouteWaypointForAnchorpoint:legIndex:routeCoordinate:adjacentRouteCoordinate:polylineCoordinate:", pointCopy, 0, [pointCopy routeCoordinate], v7, v8, v9, -180.0, -180.0, 1.79769313e308);
     [v10 setIsAtStart:1];
     [(NSArray *)v6 addObject:v10];
     waypoints = v5->_waypoints;
@@ -433,19 +433,19 @@ LABEL_21:
   return v5;
 }
 
-- (VKRouteInfo)initWithComposedRoute:(id)a3 etaDescription:(id)a4
+- (VKRouteInfo)initWithComposedRoute:(id)route etaDescription:(id)description
 {
   v41 = *MEMORY[0x1E69E9840];
-  v34 = a3;
-  v33 = a4;
+  routeCopy = route;
+  descriptionCopy = description;
   v39.receiver = self;
   v39.super_class = VKRouteInfo;
   v7 = [(VKRouteInfo *)&v39 init];
   v8 = v7;
   if (v7)
   {
-    [(VKRouteInfo *)v7 setEtaDescription:v33];
-    objc_storeStrong(&v8->_route, a3);
+    [(VKRouteInfo *)v7 setEtaDescription:descriptionCopy];
+    objc_storeStrong(&v8->_route, route);
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     [(VKRouteInfo *)v8 _processWaypoints:v9];
     obj = v9;
@@ -458,8 +458,8 @@ LABEL_21:
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v13 = [v34 visualInfos];
-    v14 = [v13 countByEnumeratingWithState:&v35 objects:v40 count:16];
+    visualInfos = [routeCopy visualInfos];
+    v14 = [visualInfos countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v14)
     {
       v15 = *v36;
@@ -469,17 +469,17 @@ LABEL_21:
         {
           if (*v36 != v15)
           {
-            objc_enumerationMutation(v13);
+            objc_enumerationMutation(visualInfos);
           }
 
           v17 = *(*(&v35 + 1) + 8 * i);
-          v18 = [v17 type];
+          type = [v17 type];
           v19 = v11;
-          if (v18 != 131073)
+          if (type != 131073)
           {
-            v20 = [v17 type];
+            type2 = [v17 type];
             v19 = v12;
-            if (v20 != 191)
+            if (type2 != 191)
             {
               continue;
             }
@@ -488,7 +488,7 @@ LABEL_21:
           [v19 addObject:v17];
         }
 
-        v14 = [v13 countByEnumeratingWithState:&v35 objects:v40 count:16];
+        v14 = [visualInfos countByEnumeratingWithState:&v35 objects:v40 count:16];
       }
 
       while (v14);
@@ -501,23 +501,23 @@ LABEL_21:
     [(VKRouteInfo *)v8 _decodeVisualInfos:v12 withRouteEtaType:5 into:v22 needsDescription:0];
     objc_storeStrong(&v8->_travelDirectionAnnotations, v22);
     v23 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v24 = [v34 mutableData];
-    if (v24)
+    mutableData = [routeCopy mutableData];
+    if (mutableData)
     {
-      v25 = [v34 mutableData];
-      v26 = [v25 trafficDelayInfos];
+      mutableData2 = [routeCopy mutableData];
+      trafficDelayInfos = [mutableData2 trafficDelayInfos];
     }
 
     else
     {
-      v26 = 0;
+      trafficDelayInfos = 0;
     }
 
-    [(VKRouteInfo *)v8 _decodeVisualInfos:v26 withRouteEtaType:2 into:v23 needsDescription:1];
+    [(VKRouteInfo *)v8 _decodeVisualInfos:trafficDelayInfos withRouteEtaType:2 into:v23 needsDescription:1];
     objc_storeStrong(&v8->_trafficAnnotations, v23);
     v27 = objc_alloc_init(MEMORY[0x1E695DF70]);
-    v28 = [v34 visualInfosForRouteNameLabels];
-    [(VKRouteInfo *)v8 _decodeVisualInfos:v28 withRouteEtaType:4 into:v27 needsDescription:1];
+    visualInfosForRouteNameLabels = [routeCopy visualInfosForRouteNameLabels];
+    [(VKRouteInfo *)v8 _decodeVisualInfos:visualInfosForRouteNameLabels withRouteEtaType:4 into:v27 needsDescription:1];
     objc_storeStrong(&v8->_routeNameAnnotations, v27);
     objc_storeStrong(&v8->_waypoints, obj);
     objc_storeStrong(&v8->_anchorpoints, v32);
@@ -528,13 +528,13 @@ LABEL_21:
   return v8;
 }
 
-- (VKRouteInfo)initWithComposedRoute:(id)a3 etaText:(id)a4
+- (VKRouteInfo)initWithComposedRoute:(id)route etaText:(id)text
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  routeCopy = route;
+  textCopy = text;
+  if (textCopy)
   {
-    v8 = [[VKRouteEtaDescription alloc] initWithEtaText:v7];
+    v8 = [[VKRouteEtaDescription alloc] initWithEtaText:textCopy];
   }
 
   else
@@ -542,38 +542,38 @@ LABEL_21:
     v8 = 0;
   }
 
-  v9 = [(VKRouteInfo *)self initWithComposedRoute:v6 etaDescription:v8];
+  v9 = [(VKRouteInfo *)self initWithComposedRoute:routeCopy etaDescription:v8];
 
   return v9;
 }
 
 - (BOOL)_isReRoute
 {
-  v2 = [(GEOComposedRoute *)self->_route anchorPoints];
-  v3 = [v2 firstObject];
-  v4 = [v3 routeCoordinate];
-  v5 = (*MEMORY[0x1E69A1928] != v4) | (vabds_f32(*(&v4 + 1), *(MEMORY[0x1E69A1928] + 4)) >= 0.00000011921);
+  anchorPoints = [(GEOComposedRoute *)self->_route anchorPoints];
+  firstObject = [anchorPoints firstObject];
+  routeCoordinate = [firstObject routeCoordinate];
+  v5 = (*MEMORY[0x1E69A1928] != routeCoordinate) | (vabds_f32(*(&routeCoordinate + 1), *(MEMORY[0x1E69A1928] + 4)) >= 0.00000011921);
 
   return v5 & 1;
 }
 
-- (void)_decodeVisualInfos:(id)a3 withRouteEtaType:(int64_t)a4 into:(id)a5 needsDescription:(BOOL)a6
+- (void)_decodeVisualInfos:(id)infos withRouteEtaType:(int64_t)type into:(id)into needsDescription:(BOOL)description
 {
-  v8 = a6;
+  descriptionCopy = description;
   v91 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v62 = a5;
+  infosCopy = infos;
+  intoCopy = into;
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  obj = v11;
+  obj = infosCopy;
   v65 = [obj countByEnumeratingWithState:&v76 objects:v90 count:16];
   if (v65)
   {
     v63 = *v77;
-    v59 = v8;
-    v58 = a4;
+    v59 = descriptionCopy;
+    typeCopy = type;
     do
     {
       for (i = 0; i != v65; ++i)
@@ -584,34 +584,34 @@ LABEL_21:
         }
 
         v12 = *(*(&v76 + 1) + 8 * i);
-        v70 = [MEMORY[0x1E696AD60] string];
+        string = [MEMORY[0x1E696AD60] string];
         v71 = v12;
-        v13 = [v12 titleString];
-        v14 = [v13 stringWithDefaultOptions];
+        titleString = [v12 titleString];
+        stringWithDefaultOptions = [titleString stringWithDefaultOptions];
 
-        if (v14)
+        if (stringWithDefaultOptions)
         {
-          [v70 appendFormat:@"%@", v14];
+          [string appendFormat:@"%@", stringWithDefaultOptions];
         }
 
-        v15 = [v71 detail];
-        v69 = [v15 stringWithDefaultValues];
+        detail = [v71 detail];
+        stringWithDefaultValues = [detail stringWithDefaultValues];
 
-        if (v69)
+        if (stringWithDefaultValues)
         {
-          [v70 appendFormat:@"\n%@", v69];
+          [string appendFormat:@"\n%@", stringWithDefaultValues];
         }
 
-        if (!v8 || [v70 length])
+        if (!descriptionCopy || [string length])
         {
           v16 = [VKRouteEtaDescription alloc];
-          v17 = [v71 icon];
-          if (v17)
+          icon = [v71 icon];
+          if (icon)
           {
-            v7 = [v71 icon];
-            v6 = [v7 iconDataSource];
-            v64 = [v6 styleAttributes];
-            v18 = v64;
+            icon2 = [v71 icon];
+            iconDataSource = [icon2 iconDataSource];
+            styleAttributes = [iconDataSource styleAttributes];
+            v18 = styleAttributes;
           }
 
           else
@@ -619,17 +619,17 @@ LABEL_21:
             v18 = 0;
           }
 
-          v19 = [v71 shieldText];
-          v67 = -[VKRouteEtaDescription initWithEtaText:etaAdvisoryStyleAttributes:routeEtaType:shieldText:shieldType:](v16, "initWithEtaText:etaAdvisoryStyleAttributes:routeEtaType:shieldText:shieldType:", v70, v18, a4, v19, [v71 shieldType]);
+          shieldText = [v71 shieldText];
+          v67 = -[VKRouteEtaDescription initWithEtaText:etaAdvisoryStyleAttributes:routeEtaType:shieldText:shieldType:](v16, "initWithEtaText:etaAdvisoryStyleAttributes:routeEtaType:shieldText:shieldType:", string, v18, type, shieldText, [v71 shieldType]);
 
-          if (v17)
+          if (icon)
           {
           }
 
-          if (a4 == 5 || a4 == 2)
+          if (type == 5 || type == 2)
           {
-            v66 = [v71 styleAttributes];
-            v20 = v66 != 0;
+            styleAttributes2 = [v71 styleAttributes];
+            v20 = styleAttributes2 != 0;
           }
 
           else
@@ -637,25 +637,25 @@ LABEL_21:
             v20 = 0;
           }
 
-          if (a4 == 5 || a4 == 2)
+          if (type == 5 || type == 2)
           {
           }
 
           if (v20)
           {
-            v21 = [v71 styleAttributes];
-            v22 = [v21 attributesCount];
+            styleAttributes3 = [v71 styleAttributes];
+            attributesCount = [styleAttributes3 attributesCount];
 
             v86 = 0;
             v87 = 0;
             v88 = 0;
-            v24 = v6;
-            if (v22)
+            v24 = iconDataSource;
+            if (attributesCount)
             {
               v84 = &v89;
               v25 = mdm::zone_mallocator::instance(v23);
-              v26 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v25, v22);
-              v27 = &v26[8 * v22];
+              v26 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v25, attributesCount);
+              v27 = &v26[8 * attributesCount];
               v28 = &v26[-(v87 - v86)];
               memcpy(v28, v86, v87 - v86);
               v29 = v86;
@@ -663,7 +663,7 @@ LABEL_21:
               v86 = v28;
               v87 = v26;
               v88 = v27;
-              v6 = v24;
+              iconDataSource = v24;
               v82 = v29;
               v83 = v30;
               v80 = v29;
@@ -675,11 +675,11 @@ LABEL_21:
             v75 = 0u;
             v72 = 0u;
             v73 = 0u;
-            v31 = [v71 styleAttributes];
-            v32 = [v31 attributes];
+            styleAttributes4 = [v71 styleAttributes];
+            attributes = [styleAttributes4 attributes];
 
-            v33 = [v32 countByEnumeratingWithState:&v72 objects:v85 count:16];
-            v61 = v7;
+            v33 = [attributes countByEnumeratingWithState:&v72 objects:v85 count:16];
+            v61 = icon2;
             if (v33)
             {
               v34 = *v73;
@@ -689,14 +689,14 @@ LABEL_21:
                 {
                   if (*v73 != v34)
                   {
-                    objc_enumerationMutation(v32);
+                    objc_enumerationMutation(attributes);
                   }
 
-                  v36 = v14;
+                  v36 = stringWithDefaultOptions;
                   v37 = *(*(&v72 + 1) + 8 * j);
                   v38 = [v37 key];
-                  v39 = [v37 value];
-                  v40 = v39;
+                  value = [v37 value];
+                  v40 = value;
                   v41 = v87;
                   if (v87 >= v88)
                   {
@@ -725,7 +725,7 @@ LABEL_21:
                     v84 = &v89;
                     if (v45)
                     {
-                      v46 = mdm::zone_mallocator::instance(v39);
+                      v46 = mdm::zone_mallocator::instance(value);
                       v47 = geo::tracked_allocator<geo::zone_mallocator,geo::allocation_counter>::allocate<GeoCodecsFeatureStylePair>(v46, v45);
                     }
 
@@ -754,35 +754,35 @@ LABEL_21:
 
                   else
                   {
-                    *v87 = v38 | (v39 << 32);
+                    *v87 = v38 | (value << 32);
                     v42 = v41 + 8;
                   }
 
                   v87 = v42;
-                  v14 = v36;
+                  stringWithDefaultOptions = v36;
                 }
 
-                v6 = v24;
-                v33 = [v32 countByEnumeratingWithState:&v72 objects:v85 count:16];
+                iconDataSource = v24;
+                v33 = [attributes countByEnumeratingWithState:&v72 objects:v85 count:16];
               }
 
               while (v33);
             }
 
-            v8 = v59;
-            a4 = v58;
-            v7 = v61;
-            v53 = [(VKRouteEtaDescription *)v67 styleAttributes];
-            [v53 replaceAttributes:? count:?];
+            descriptionCopy = v59;
+            type = typeCopy;
+            icon2 = v61;
+            styleAttributes5 = [(VKRouteEtaDescription *)v67 styleAttributes];
+            [styleAttributes5 replaceAttributes:? count:?];
 
             std::vector<GeoCodecsFeatureStylePair,geo::allocator_adapter<GeoCodecsFeatureStylePair,mdm::zone_mallocator>>::__destroy_vector::operator()[abi:nn200100](&v86);
           }
 
           v54 = [VKRouteRangeAnnotationInfo alloc];
-          v55 = [v71 routeCoordinateRange];
+          routeCoordinateRange = [v71 routeCoordinateRange];
           [v71 routeCoordinateRange];
-          v57 = [(VKRouteRangeAnnotationInfo *)v54 initWithEtaDescription:v67 start:v55 end:v56];
-          [v62 addObject:v57];
+          v57 = [(VKRouteRangeAnnotationInfo *)v54 initWithEtaDescription:v67 start:routeCoordinateRange end:v56];
+          [intoCopy addObject:v57];
         }
       }
 

@@ -1,36 +1,36 @@
 @interface SBReturnToLockscreenWorkspaceTransaction
-- (SBReturnToLockscreenWorkspaceTransaction)initWithTransitionRequest:(id)a3 toLockScreenEnvironment:(id)a4;
+- (SBReturnToLockscreenWorkspaceTransaction)initWithTransitionRequest:(id)request toLockScreenEnvironment:(id)environment;
 - (id)_setupAnimation;
 - (id)debugDescription;
 - (void)_animationDidFinish;
-- (void)_animationWillBegin:(BOOL)a3;
+- (void)_animationWillBegin:(BOOL)begin;
 - (void)_didComplete;
 @end
 
 @implementation SBReturnToLockscreenWorkspaceTransaction
 
-- (SBReturnToLockscreenWorkspaceTransaction)initWithTransitionRequest:(id)a3 toLockScreenEnvironment:(id)a4
+- (SBReturnToLockscreenWorkspaceTransaction)initWithTransitionRequest:(id)request toLockScreenEnvironment:(id)environment
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  environmentCopy = environment;
   v15.receiver = self;
   v15.super_class = SBReturnToLockscreenWorkspaceTransaction;
-  v8 = [(SBActivateAppUnderLockScreenWorkspaceTransaction *)&v15 initWithTransitionRequest:v6 lockScreenEnvironment:v7];
+  v8 = [(SBActivateAppUnderLockScreenWorkspaceTransaction *)&v15 initWithTransitionRequest:requestCopy lockScreenEnvironment:environmentCopy];
   if (v8)
   {
-    v9 = [v6 applicationContext];
-    v10 = [v9 previousApplicationSceneEntityForLayoutRole:1];
+    applicationContext = [requestCopy applicationContext];
+    v10 = [applicationContext previousApplicationSceneEntityForLayoutRole:1];
     fromAppSceneEntity = v8->_fromAppSceneEntity;
     v8->_fromAppSceneEntity = v10;
 
     v12 = +[SBLockScreenManager sharedInstance];
     if (([v12 isUILocked] & 1) == 0)
     {
-      v13 = [v12 lockScreenEnvironment];
+      lockScreenEnvironment = [v12 lockScreenEnvironment];
 
-      if (v13 == v7)
+      if (lockScreenEnvironment == environmentCopy)
       {
-        [v9 setAnimationDisabled:0];
+        [applicationContext setAnimationDisabled:0];
       }
     }
   }
@@ -50,9 +50,9 @@
     fromAppSceneEntity = @"SpringBoard";
   }
 
-  v6 = [v3 stringByAppendingFormat:@"\n\tfromApp = %@", fromAppSceneEntity];
+  fromAppSceneEntity = [v3 stringByAppendingFormat:@"\n\tfromApp = %@", fromAppSceneEntity];
 
-  v7 = [v6 stringByAppendingFormat:@"\n\ttoLockScreen = %@", self->super._lockScreenEnvironment];
+  v7 = [fromAppSceneEntity stringByAppendingFormat:@"\n\ttoLockScreen = %@", self->super._lockScreenEnvironment];
 
   return v7;
 }
@@ -70,15 +70,15 @@
 - (id)_setupAnimation
 {
   v3 = [[SBUIMainScreenAnimationController alloc] initWithTransitionContextProvider:self->super.super.super.super._transitionRequest];
-  v4 = [(SBWorkspaceTransaction *)self transitionRequest];
-  v5 = [(SBUIAnimationController *)v3 transitionCoordinator];
+  transitionRequest = [(SBWorkspaceTransaction *)self transitionRequest];
+  transitionCoordinator = [(SBUIAnimationController *)v3 transitionCoordinator];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __59__SBReturnToLockscreenWorkspaceTransaction__setupAnimation__block_invoke;
   v8[3] = &unk_2783BE428;
-  v9 = v4;
-  v6 = v4;
-  [v5 animateAlongsideTransition:v8 completion:0];
+  v9 = transitionRequest;
+  v6 = transitionRequest;
+  [transitionCoordinator animateAlongsideTransition:v8 completion:0];
 
   return v3;
 }
@@ -90,12 +90,12 @@ void __59__SBReturnToLockscreenWorkspaceTransaction__setupAnimation__block_invok
   [v4 updateWhitePointAdaptationStrengthWithWorkspaceTransitionRequest:*(a1 + 32) animationTransitionContext:v3];
 }
 
-- (void)_animationWillBegin:(BOOL)a3
+- (void)_animationWillBegin:(BOOL)begin
 {
-  if (a3)
+  if (begin)
   {
-    v4 = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
-    v5 = [v4 count];
+    toApplicationSceneEntities = [(SBToAppsWorkspaceTransaction *)self toApplicationSceneEntities];
+    v5 = [toApplicationSceneEntities count];
 
     if (v5)
     {

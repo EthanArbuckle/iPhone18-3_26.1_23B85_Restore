@@ -1,11 +1,11 @@
 @interface SLInteractionHandler
-- (SLInteractionHandler)initWithAppIdentifier:(id)a3;
+- (SLInteractionHandler)initWithAppIdentifier:(id)identifier;
 - (id)applicationIdentifier;
-- (id)fetchAttributionForAttributionIdentifier:(id)a3;
-- (id)fetchInteractionsWithLimit:(unint64_t)a3 reason:(id)a4 variant:(id)a5 error:(id *)a6;
+- (id)fetchAttributionForAttributionIdentifier:(id)identifier;
+- (id)fetchInteractionsWithLimit:(unint64_t)limit reason:(id)reason variant:(id)variant error:(id *)error;
 - (void)applicationIdentifier;
 - (void)dealloc;
-- (void)feedbackForHighlightIdentifier:(id)a3 withType:(unint64_t)a4 variant:(id)a5 completionBlock:(id)a6;
+- (void)feedbackForHighlightIdentifier:(id)identifier withType:(unint64_t)type variant:(id)variant completionBlock:(id)block;
 @end
 
 @implementation SLInteractionHandler
@@ -45,20 +45,20 @@
   return v5;
 }
 
-- (SLInteractionHandler)initWithAppIdentifier:(id)a3
+- (SLInteractionHandler)initWithAppIdentifier:(id)identifier
 {
-  v5 = a3;
+  identifierCopy = identifier;
   v12.receiver = self;
   v12.super_class = SLInteractionHandler;
   v6 = [(SLInteractionHandler *)&v12 init];
   if (v6)
   {
-    if ([v5 length])
+    if ([identifierCopy length])
     {
-      objc_storeStrong(&v6->_appIdentifier, a3);
+      objc_storeStrong(&v6->_appIdentifier, identifier);
     }
 
-    if ((SLIsRunningInDaemon() & 1) != 0 || (SLIsRunningInSLTester() & 1) != 0 || (SLIsRunningInGelatoTester() & 1) != 0 || [v5 length])
+    if ((SLIsRunningInDaemon() & 1) != 0 || (SLIsRunningInSLTester() & 1) != 0 || (SLIsRunningInGelatoTester() & 1) != 0 || [identifierCopy length])
     {
       v7 = SLDaemonLogHandle();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -69,11 +69,11 @@
 
     else
     {
-      v9 = [(SLInteractionHandler *)v6 applicationIdentifier];
-      v7 = v9;
-      if (v9)
+      applicationIdentifier = [(SLInteractionHandler *)v6 applicationIdentifier];
+      v7 = applicationIdentifier;
+      if (applicationIdentifier)
       {
-        v10 = v9;
+        v10 = applicationIdentifier;
         appIdentifier = v6->_appIdentifier;
         v6->_appIdentifier = v10;
       }
@@ -99,17 +99,17 @@
   [(SLInteractionHandler *)&v2 dealloc];
 }
 
-- (id)fetchInteractionsWithLimit:(unint64_t)a3 reason:(id)a4 variant:(id)a5 error:(id *)a6
+- (id)fetchInteractionsWithLimit:(unint64_t)limit reason:(id)reason variant:(id)variant error:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  v10 = a5;
-  v11 = a4;
+  variantCopy = variant;
+  reasonCopy = reason;
   v12 = SLFrameworkLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     appIdentifier = self->_appIdentifier;
     *buf = 134218242;
-    v26 = a3;
+    limitCopy = limit;
     v27 = 2112;
     v28 = appIdentifier;
     _os_log_impl(&dword_231772000, v12, OS_LOG_TYPE_INFO, "Fetching %lu interactions for application Identifier: %@", buf, 0x16u);
@@ -133,14 +133,14 @@
   v23[3] = &unk_278927448;
   v17 = v14;
   v24 = v17;
-  [v15 iterRankedHighlightsWithLimit:a3 client:v16 variant:v10 reason:v11 error:a6 block:v23];
+  [v15 iterRankedHighlightsWithLimit:limit client:v16 variant:variantCopy reason:reasonCopy error:error block:v23];
 
   v18 = SLFrameworkLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = [v17 count];
     *buf = 134217984;
-    v26 = v19;
+    limitCopy = v19;
     _os_log_impl(&dword_231772000, v18, OS_LOG_TYPE_INFO, "Obtained %lu results from PersonalizationPortrait", buf, 0xCu);
   }
 
@@ -149,7 +149,7 @@
     v20 = SLFrameworkLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      [SLInteractionHandler fetchInteractionsWithLimit:a6 reason:? variant:? error:?];
+      [SLInteractionHandler fetchInteractionsWithLimit:error reason:? variant:? error:?];
     }
   }
 
@@ -202,21 +202,21 @@ LABEL_9:
 LABEL_10:
 }
 
-- (id)fetchAttributionForAttributionIdentifier:(id)a3
+- (id)fetchAttributionForAttributionIdentifier:(id)identifier
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identifierCopy = identifier;
   v4 = SLFrameworkLogHandle();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v16 = v3;
+    v16 = identifierCopy;
     _os_log_impl(&dword_231772000, v4, OS_LOG_TYPE_INFO, "Fetching Attribution info for Attribution with Identifier %@ ", buf, 0xCu);
   }
 
   v5 = objc_opt_new();
   v14 = 0;
-  v6 = [v5 attributionForIdentifier:v3 error:&v14];
+  v6 = [v5 attributionForIdentifier:identifierCopy error:&v14];
   v7 = v14;
   if (v6)
   {
@@ -256,39 +256,39 @@ LABEL_11:
   return v8;
 }
 
-- (void)feedbackForHighlightIdentifier:(id)a3 withType:(unint64_t)a4 variant:(id)a5 completionBlock:(id)a6
+- (void)feedbackForHighlightIdentifier:(id)identifier withType:(unint64_t)type variant:(id)variant completionBlock:(id)block
 {
   v26 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  identifierCopy = identifier;
+  variantCopy = variant;
+  blockCopy = block;
   v13 = SLFrameworkLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     appIdentifier = self->_appIdentifier;
     v18 = 138413058;
-    v19 = v10;
+    v19 = identifierCopy;
     v20 = 2048;
-    v21 = a4;
+    typeCopy = type;
     v22 = 2112;
     v23 = appIdentifier;
     v24 = 2112;
-    v25 = v11;
+    v25 = variantCopy;
     _os_log_impl(&dword_231772000, v13, OS_LOG_TYPE_INFO, "Feedback for highlight with identifier %@ of type %lu for application identifier: %@ variant: %@", &v18, 0x2Au);
   }
 
-  if (a4 - 1 > 5)
+  if (type - 1 > 5)
   {
     v15 = 0;
   }
 
   else
   {
-    v15 = qword_23183D060[a4 - 1];
+    v15 = qword_23183D060[type - 1];
   }
 
   v16 = objc_opt_new();
-  [v16 feedbackForHighlightIdentifier:v10 type:v15 client:self->_appIdentifier variant:v11 completion:v12];
+  [v16 feedbackForHighlightIdentifier:identifierCopy type:v15 client:self->_appIdentifier variant:variantCopy completion:blockCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -306,7 +306,7 @@ LABEL_11:
 - (void)applicationIdentifier
 {
   v6 = *MEMORY[0x277D85DE8];
-  v2 = *a1;
+  v2 = *self;
   v4 = 138412290;
   v5 = v2;
   _os_log_error_impl(&dword_231772000, a2, OS_LOG_TYPE_ERROR, "SLInteractionHandler failed to generate an application identifier. Error: %@", &v4, 0xCu);

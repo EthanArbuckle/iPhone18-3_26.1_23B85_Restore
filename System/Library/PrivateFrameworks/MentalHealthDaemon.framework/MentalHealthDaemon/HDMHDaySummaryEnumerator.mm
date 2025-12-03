@@ -1,35 +1,35 @@
 @interface HDMHDaySummaryEnumerator
-- (BOOL)_finishCurrentSummaryBuilder:(id)a3 pendingDailyStateOfMind:(id)a4 pendingDailyStateOfMindDayIndex:(int64_t)a5 clientRequestedStop:(BOOL *)a6 handler:(id)a7;
-- (BOOL)enumerateWithError:(id *)a3 handler:(id)a4;
-- (HDMHDaySummaryEnumerator)initWithProfile:(id)a3 dayIndexRange:(id)a4 gregorianCalendar:(id)a5 predicate:(id)a6 pendingDailyStateOfMind:(id)a7 ascending:(BOOL)a8;
+- (BOOL)_finishCurrentSummaryBuilder:(id)builder pendingDailyStateOfMind:(id)mind pendingDailyStateOfMindDayIndex:(int64_t)index clientRequestedStop:(BOOL *)stop handler:(id)handler;
+- (BOOL)enumerateWithError:(id *)error handler:(id)handler;
+- (HDMHDaySummaryEnumerator)initWithProfile:(id)profile dayIndexRange:(id)range gregorianCalendar:(id)calendar predicate:(id)predicate pendingDailyStateOfMind:(id)mind ascending:(BOOL)ascending;
 - (id)_makeStateOfMindSampleEnumerator;
 - (id)_queryPredicate;
-- (int64_t)_compareDayIndex:(int64_t)a3 withDayIndex:(int64_t)a4;
+- (int64_t)_compareDayIndex:(int64_t)index withDayIndex:(int64_t)dayIndex;
 @end
 
 @implementation HDMHDaySummaryEnumerator
 
-- (HDMHDaySummaryEnumerator)initWithProfile:(id)a3 dayIndexRange:(id)a4 gregorianCalendar:(id)a5 predicate:(id)a6 pendingDailyStateOfMind:(id)a7 ascending:(BOOL)a8
+- (HDMHDaySummaryEnumerator)initWithProfile:(id)profile dayIndexRange:(id)range gregorianCalendar:(id)calendar predicate:(id)predicate pendingDailyStateOfMind:(id)mind ascending:(BOOL)ascending
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
-  v14 = a3;
-  v15 = a5;
-  v16 = a6;
-  v17 = a7;
+  var1 = range.var1;
+  var0 = range.var0;
+  profileCopy = profile;
+  calendarCopy = calendar;
+  predicateCopy = predicate;
+  mindCopy = mind;
   v24.receiver = self;
   v24.super_class = HDMHDaySummaryEnumerator;
   v18 = [(HDMHDaySummaryEnumerator *)&v24 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeWeak(&v18->_profile, v14);
+    objc_storeWeak(&v18->_profile, profileCopy);
     v19->_dayIndexRange.start = var0;
     v19->_dayIndexRange.duration = var1;
-    objc_storeStrong(&v19->_predicate, a6);
-    objc_storeStrong(&v19->_gregorianCalendar, a5);
-    objc_storeStrong(&v19->_pendingDailyStateOfMind, a7);
-    v19->_ascending = a8;
+    objc_storeStrong(&v19->_predicate, predicate);
+    objc_storeStrong(&v19->_gregorianCalendar, calendar);
+    objc_storeStrong(&v19->_pendingDailyStateOfMind, mind);
+    v19->_ascending = ascending;
     pendingDailyStateOfMind = v19->_pendingDailyStateOfMind;
     if (pendingDailyStateOfMind)
     {
@@ -51,17 +51,17 @@
   return v19;
 }
 
-- (BOOL)enumerateWithError:(id *)a3 handler:(id)a4
+- (BOOL)enumerateWithError:(id *)error handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v44 = 0;
   v45 = &v44;
   v46 = 0x3032000000;
   v47 = __Block_byref_object_copy__2;
   v48 = __Block_byref_object_dispose__2;
   v49 = self->_pendingDailyStateOfMind;
-  v7 = [v45[5] startDate];
-  v8 = [v7 hk_dayIndexWithCalendar:self->_gregorianCalendar];
+  startDate = [v45[5] startDate];
+  v8 = [startDate hk_dayIndexWithCalendar:self->_gregorianCalendar];
 
   v9 = v45[5];
   if (v9)
@@ -75,7 +75,7 @@
     }
   }
 
-  v14 = [(HDMHDaySummaryEnumerator *)self _makeStateOfMindSampleEnumerator];
+  _makeStateOfMindSampleEnumerator = [(HDMHDaySummaryEnumerator *)self _makeStateOfMindSampleEnumerator];
   v38 = 0;
   v39 = &v38;
   v40 = 0x3032000000;
@@ -90,21 +90,21 @@
   v25 = 3221225472;
   v26 = __55__HDMHDaySummaryEnumerator_enumerateWithError_handler___block_invoke;
   v27 = &unk_2798AADE8;
-  v28 = self;
+  selfCopy = self;
   v30 = &v38;
   v32 = &v34;
   v33 = v8;
   v31 = &v44;
-  v15 = v6;
+  v15 = handlerCopy;
   v29 = v15;
-  v16 = [v14 enumerateWithError:a3 handler:&v24];
+  v16 = [_makeStateOfMindSampleEnumerator enumerateWithError:error handler:&v24];
   v17 = v35[3] & v16;
   if ((v35[3] & 1) == 0 && ((v16 ^ 1) & 1) == 0)
   {
     v18 = v39[5];
     if (v18)
     {
-      v19 = [(HDMHDaySummaryEnumerator *)self _finishCurrentSummaryBuilder:v18 pendingDailyStateOfMind:v45[5] pendingDailyStateOfMindDayIndex:v8 clientRequestedStop:v35 + 3 handler:v15, v24, v25, v26, v27, v28];
+      selfCopy = [(HDMHDaySummaryEnumerator *)self _finishCurrentSummaryBuilder:v18 pendingDailyStateOfMind:v45[5] pendingDailyStateOfMindDayIndex:v8 clientRequestedStop:v35 + 3 handler:v15, v24, v25, v26, v27, selfCopy];
       if (v35[3])
       {
 LABEL_15:
@@ -112,7 +112,7 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      if (v19)
+      if (selfCopy)
       {
         v20 = v45[5];
         v45[5] = 0;
@@ -123,8 +123,8 @@ LABEL_15:
     {
       v21 = [[HDMHDaySummaryBuilder alloc] initWithDayIndex:v8 gregorianCalendar:self->_gregorianCalendar];
       [(HDMHDaySummaryBuilder *)v21 addStateOfMind:v45[5]];
-      v22 = [(HDMHDaySummaryBuilder *)v21 daySummary];
-      (*(v15 + 2))(v15, v22, v35 + 3);
+      daySummary = [(HDMHDaySummaryBuilder *)v21 daySummary];
+      (*(v15 + 2))(v15, daySummary, v35 + 3);
     }
 
     goto LABEL_15;
@@ -184,26 +184,26 @@ LABEL_9:
   return v8;
 }
 
-- (BOOL)_finishCurrentSummaryBuilder:(id)a3 pendingDailyStateOfMind:(id)a4 pendingDailyStateOfMindDayIndex:(int64_t)a5 clientRequestedStop:(BOOL *)a6 handler:(id)a7
+- (BOOL)_finishCurrentSummaryBuilder:(id)builder pendingDailyStateOfMind:(id)mind pendingDailyStateOfMindDayIndex:(int64_t)index clientRequestedStop:(BOOL *)stop handler:(id)handler
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  if (v12 && v13)
+  builderCopy = builder;
+  mindCopy = mind;
+  handlerCopy = handler;
+  if (builderCopy && mindCopy)
   {
-    v15 = -[HDMHDaySummaryEnumerator _compareDayIndex:withDayIndex:](self, "_compareDayIndex:withDayIndex:", a5, [v12 dayIndex]);
+    v15 = -[HDMHDaySummaryEnumerator _compareDayIndex:withDayIndex:](self, "_compareDayIndex:withDayIndex:", index, [builderCopy dayIndex]);
     if (v15)
     {
       if (v15 == -1)
       {
-        v16 = [[HDMHDaySummaryBuilder alloc] initWithDayIndex:a5 gregorianCalendar:self->_gregorianCalendar];
-        [(HDMHDaySummaryBuilder *)v16 addStateOfMind:v13];
-        v17 = [(HDMHDaySummaryBuilder *)v16 daySummary];
-        v14[2](v14, v17, a6);
+        v16 = [[HDMHDaySummaryBuilder alloc] initWithDayIndex:index gregorianCalendar:self->_gregorianCalendar];
+        [(HDMHDaySummaryBuilder *)v16 addStateOfMind:mindCopy];
+        daySummary = [(HDMHDaySummaryBuilder *)v16 daySummary];
+        handlerCopy[2](handlerCopy, daySummary, stop);
 
-        LOBYTE(v17) = *a6;
+        LOBYTE(daySummary) = *stop;
         v18 = 1;
-        if (v17)
+        if (daySummary)
         {
           goto LABEL_12;
         }
@@ -217,42 +217,42 @@ LABEL_9:
 
     else
     {
-      [v12 addStateOfMind:v13];
+      [builderCopy addStateOfMind:mindCopy];
       v18 = 1;
     }
   }
 
   else
   {
-    v18 = v13 == 0;
-    if (!v12)
+    v18 = mindCopy == 0;
+    if (!builderCopy)
     {
       goto LABEL_12;
     }
   }
 
-  v19 = [v12 daySummary];
-  v14[2](v14, v19, a6);
+  daySummary2 = [builderCopy daySummary];
+  handlerCopy[2](handlerCopy, daySummary2, stop);
 
 LABEL_12:
   return v18;
 }
 
-- (int64_t)_compareDayIndex:(int64_t)a3 withDayIndex:(int64_t)a4
+- (int64_t)_compareDayIndex:(int64_t)index withDayIndex:(int64_t)dayIndex
 {
-  if (a3 == a4)
+  if (index == dayIndex)
   {
     return 0;
   }
 
   v5 = 1;
-  if (a3 >= a4)
+  if (index >= dayIndex)
   {
     v5 = -1;
   }
 
   v6 = -1;
-  if (a3 >= a4)
+  if (index >= dayIndex)
   {
     v6 = 1;
   }
@@ -271,13 +271,13 @@ LABEL_12:
 - (id)_makeStateOfMindSampleEnumerator
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCD8D8] stateOfMindType];
+  stateOfMindType = [MEMORY[0x277CCD8D8] stateOfMindType];
   v4 = MEMORY[0x277D10848];
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v6 = [v4 entityEnumeratorWithType:v3 profile:WeakRetained];
+  v6 = [v4 entityEnumeratorWithType:stateOfMindType profile:WeakRetained];
 
-  v7 = [(HDMHDaySummaryEnumerator *)self _queryPredicate];
-  [v6 setPredicate:v7];
+  _queryPredicate = [(HDMHDaySummaryEnumerator *)self _queryPredicate];
+  [v6 setPredicate:_queryPredicate];
 
   v8 = [MEMORY[0x277D10B68] orderingTermWithProperty:*MEMORY[0x277D104B0] entityClass:objc_opt_class() ascending:self->_ascending];
   v12[0] = v8;

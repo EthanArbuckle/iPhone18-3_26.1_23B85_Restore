@@ -4,40 +4,40 @@
 - (id)deviceListSpecifiers;
 - (id)deviceSpecifiers;
 - (id)getHapticsValue;
-- (id)screenshotSettingStatus:(id)a3;
+- (id)screenshotSettingStatus:(id)status;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)videoRecordingSettingStatus:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)videoRecordingSettingStatus:(id)status;
 - (void)dealloc;
-- (void)didDisconnectToGameController:(id)a3;
+- (void)didDisconnectToGameController:(id)controller;
 - (void)findController;
 - (void)initSettings;
 - (void)loadDevices;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setHapticsValue:(id)a3;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setHapticsValue:(id)value;
 - (void)viewDidLoad;
 @end
 
 @implementation GCSettingsLegacyRootController
 
-- (void)didDisconnectToGameController:(id)a3
+- (void)didDisconnectToGameController:(id)controller
 {
-  v4 = [a3 object];
-  v15 = v4;
-  if (self->_isDeviceSpecificController && ((device = self->_device) != 0 ? (v6 = device == v4) : (v6 = 0), v6))
+  object = [controller object];
+  v15 = object;
+  if (self->_isDeviceSpecificController && ((device = self->_device) != 0 ? (v6 = device == object) : (v6 = 0), v6))
   {
-    v7 = [(GCSettingsLegacyRootController *)self navigationController];
-    v8 = [v7 viewControllers];
-    v9 = [v8 indexOfObject:self];
+    navigationController = [(GCSettingsLegacyRootController *)self navigationController];
+    viewControllers = [navigationController viewControllers];
+    v9 = [viewControllers indexOfObject:self];
 
     if (v9 && v9 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v10 = [(GCSettingsLegacyRootController *)self navigationController];
-      v11 = [v10 viewControllers];
-      v12 = [v11 objectAtIndex:v9 - 1];
+      navigationController2 = [(GCSettingsLegacyRootController *)self navigationController];
+      viewControllers2 = [navigationController2 viewControllers];
+      v12 = [viewControllers2 objectAtIndex:v9 - 1];
 
-      v13 = [(GCSettingsLegacyRootController *)self navigationController];
-      v14 = [v13 popToViewController:v12 animated:1];
+      navigationController3 = [(GCSettingsLegacyRootController *)self navigationController];
+      v14 = [navigationController3 popToViewController:v12 animated:1];
     }
   }
 
@@ -87,16 +87,16 @@
   v4 = [*&self->PSListController_opaque[OBJC_IVAR___PSViewController__specifier] propertyForKey:@"DeviceSpecificController"];
   self->_isDeviceSpecificController = [v4 BOOLValue];
 
-  v5 = [(GCSettingsLegacyRootController *)self customizableControllers];
+  customizableControllers = [(GCSettingsLegacyRootController *)self customizableControllers];
   devices = self->_devices;
-  self->_devices = v5;
+  self->_devices = customizableControllers;
 
   if (![(NSArray *)self->_devices count])
   {
 LABEL_4:
-    v11 = [(GCSettingsLegacyRootController *)self navigationController];
-    v9 = [(GCController *)v11 popToRootViewControllerAnimated:1];
-    v10 = v11;
+    navigationController = [(GCSettingsLegacyRootController *)self navigationController];
+    firstObject = [(GCController *)navigationController popToRootViewControllerAnimated:1];
+    v10 = navigationController;
     goto LABEL_8;
   }
 
@@ -115,12 +115,12 @@ LABEL_4:
     goto LABEL_4;
   }
 
-  v9 = [(NSArray *)self->_devices count];
-  if (v9 == (&dword_0 + 1))
+  firstObject = [(NSArray *)self->_devices count];
+  if (firstObject == (&dword_0 + 1))
   {
-    v9 = [(NSArray *)self->_devices firstObject];
+    firstObject = [(NSArray *)self->_devices firstObject];
     v10 = self->_device;
-    self->_device = v9;
+    self->_device = firstObject;
   }
 
   else
@@ -131,7 +131,7 @@ LABEL_4:
 
 LABEL_8:
 
-  _objc_release_x1(v9, v10);
+  _objc_release_x1(firstObject, v10);
 }
 
 - (id)specifiers
@@ -193,8 +193,8 @@ LABEL_8:
         }
 
         v8 = *(*(&v13 + 1) + 8 * i);
-        v9 = [v8 vendorName];
-        v10 = [PSSpecifier preferenceSpecifierNamed:v9 target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
+        vendorName = [v8 vendorName];
+        v10 = [PSSpecifier preferenceSpecifierNamed:vendorName target:self set:0 get:0 detail:objc_opt_class() cell:1 edit:0];
 
         [v10 setProperty:&__kCFBooleanTrue forKey:@"DeviceSpecificController"];
         [v10 setProperty:v8 forKey:@"Controller"];
@@ -210,17 +210,17 @@ LABEL_8:
   return v3;
 }
 
-- (void)setHapticsValue:(id)a3
+- (void)setHapticsValue:(id)value
 {
-  v4 = [a3 BOOLValue];
-  v5 = [(GCSettingsLegacyRootController *)self settings];
-  [v5 setHapticsEnabled:v4];
+  bOOLValue = [value BOOLValue];
+  settings = [(GCSettingsLegacyRootController *)self settings];
+  [settings setHapticsEnabled:bOOLValue];
 }
 
 - (id)getHapticsValue
 {
-  v2 = [(GCSettingsLegacyRootController *)self settings];
-  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v2 hapticsEnabled]);
+  settings = [(GCSettingsLegacyRootController *)self settings];
+  v3 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [settings hapticsEnabled]);
 
   return v3;
 }
@@ -230,16 +230,16 @@ LABEL_8:
   device = self->_device;
   if (device)
   {
-    v4 = [(GCController *)device haptics];
+    haptics = [(GCController *)device haptics];
 
-    if (v4)
+    if (haptics)
     {
       v5 = +[GCAnalytics instance];
-      v6 = [(GCController *)self->_device productCategory];
-      [v5 sendSettingsIdentifyControllerEventForProductCategory:v6];
+      productCategory = [(GCController *)self->_device productCategory];
+      [v5 sendSettingsIdentifyControllerEventForProductCategory:productCategory];
 
-      v7 = [(GCController *)self->_device haptics];
-      v8 = [v7 createEngineWithLocality:GCHapticsLocalityDefault];
+      haptics2 = [(GCController *)self->_device haptics];
+      v8 = [haptics2 createEngineWithLocality:GCHapticsLocalityDefault];
       engine = self->_engine;
       self->_engine = v8;
 
@@ -323,13 +323,13 @@ LABEL_8:
   [(GCControllerSettings *)v5 addObserver:self forKeyPath:@"videoRecordingEnabled" options:1 context:v6];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = v10;
-  if (off_115D28 == a6)
+  pathCopy = path;
+  v11 = pathCopy;
+  if (off_115D28 == context)
   {
-    if ([v10 isEqualToString:@"screenShotEnabled"])
+    if ([pathCopy isEqualToString:@"screenShotEnabled"])
     {
       v12 = @"ScreenshotCustomization";
     }
@@ -352,11 +352,11 @@ LABEL_8:
 
   v14.receiver = self;
   v14.super_class = GCSettingsLegacyRootController;
-  [(GCSettingsLegacyRootController *)&v14 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+  [(GCSettingsLegacyRootController *)&v14 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
 LABEL_8:
 }
 
-- (id)screenshotSettingStatus:(id)a3
+- (id)screenshotSettingStatus:(id)status
 {
   if ([(GCControllerSettings *)self->_settings screenShotEnabled])
   {
@@ -373,7 +373,7 @@ LABEL_8:
   return v4;
 }
 
-- (id)videoRecordingSettingStatus:(id)a3
+- (id)videoRecordingSettingStatus:(id)status
 {
   if ([(GCControllerSettings *)self->_settings videoRecordingEnabled])
   {
@@ -400,10 +400,10 @@ LABEL_8:
     v5 = [PSSpecifier preferenceSpecifierNamed:v4 target:self->_device set:0 get:"vendorName" detail:0 cell:4 edit:0];
 
     [v3 addObject:v5];
-    v6 = [(GCSettingsLegacyRootController *)self device];
-    v7 = [v6 haptics];
+    device = [(GCSettingsLegacyRootController *)self device];
+    haptics = [device haptics];
 
-    if (v7)
+    if (haptics)
     {
       v8 = sub_9E38(@"HAPTICS_TITLE");
       v9 = [PSSpecifier preferenceSpecifierNamed:v8 target:self set:"setHapticsValue:" get:"getHapticsValue" detail:0 cell:6 edit:0];
@@ -418,10 +418,10 @@ LABEL_8:
     [v11 setProperty:self->_device forKey:@"Controller"];
     [v11 setProperty:0 forKey:@"bundleIdentifier"];
     [v3 addObject:v11];
-    v12 = [(GCSettingsLegacyRootController *)self device];
-    v13 = [v12 haptics];
+    device2 = [(GCSettingsLegacyRootController *)self device];
+    haptics2 = [device2 haptics];
 
-    if (v13)
+    if (haptics2)
     {
       v14 = [PSSpecifier groupSpecifierWithName:&stru_10B508];
 
@@ -440,45 +440,45 @@ LABEL_8:
   return v3;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  if ([v6 item] == self->_homeButtonGameIntentItemIndex)
+  pathCopy = path;
+  viewCopy = view;
+  if ([pathCopy item] == self->_homeButtonGameIntentItemIndex)
   {
-    v8 = [v7 dequeueReusableCellWithIdentifier:@"RemappableElementCell" forIndexPath:v6];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"RemappableElementCell" forIndexPath:pathCopy];
 
     [v8 setAccessoryType:1];
-    v9 = [(GCSettingsLegacyRootController *)self device];
-    v10 = [v9 physicalInputProfile];
-    v7 = [v10 objectForKeyedSubscript:GCInputButtonHome];
+    device = [(GCSettingsLegacyRootController *)self device];
+    physicalInputProfile = [device physicalInputProfile];
+    viewCopy = [physicalInputProfile objectForKeyedSubscript:GCInputButtonHome];
 
-    v11 = [v7 unmappedSfSymbolsName];
-    sub_A26C(v8, v11);
+    unmappedSfSymbolsName = [viewCopy unmappedSfSymbolsName];
+    sub_A26C(v8, unmappedSfSymbolsName);
 
-    v12 = [v8 titleLabel];
-    v13 = [v7 unmappedLocalizedName];
-    [v12 setText:v13];
+    titleLabel = [v8 titleLabel];
+    unmappedLocalizedName = [viewCopy unmappedLocalizedName];
+    [titleLabel setText:unmappedLocalizedName];
 
-    v14 = [(GCControllerSettings *)self->_settings mappingForElement:v7];
-    if ([v7 isEqual:v14])
+    v14 = [(GCControllerSettings *)self->_settings mappingForElement:viewCopy];
+    if ([viewCopy isEqual:v14])
     {
-      v15 = 0;
+      unmappedSfSymbolsName2 = 0;
     }
 
     else
     {
-      v15 = [v14 unmappedSfSymbolsName];
+      unmappedSfSymbolsName2 = [v14 unmappedSfSymbolsName];
     }
 
-    sub_A394(v8, v15);
+    sub_A394(v8, unmappedSfSymbolsName2);
   }
 
   else
   {
     v17.receiver = self;
     v17.super_class = GCSettingsLegacyRootController;
-    v8 = [(GCSettingsLegacyRootController *)&v17 tableView:v7 cellForRowAtIndexPath:v6];
+    v8 = [(GCSettingsLegacyRootController *)&v17 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   }
 
   return v8;

@@ -1,37 +1,37 @@
 @interface MCContainerSerializer
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3;
++ (id)keyPathsForValuesAffectingValueForKey:(id)key;
 - (MCContainerSerializer)init;
-- (MCContainerSerializer)initWithImprint:(id)a3 andMontage:(id)a4;
+- (MCContainerSerializer)initWithImprint:(id)imprint andMontage:(id)montage;
 - (NSArray)orderedPlugs;
 - (NSSet)plugs;
 - (double)duration;
-- (double)timeInForPlug:(id)a3;
-- (id)addPlugForContainer:(id)a3;
-- (id)addPlugsForContainers:(id)a3;
+- (double)timeInForPlug:(id)plug;
+- (id)addPlugForContainer:(id)container;
+- (id)addPlugsForContainers:(id)containers;
 - (id)imprint;
-- (id)insertPlugForContainer:(id)a3 atIndex:(unint64_t)a4;
-- (id)insertPlugsForContainers:(id)a3 atIndex:(unint64_t)a4;
-- (id)plugAtIndex:(unint64_t)a3;
+- (id)insertPlugForContainer:(id)container atIndex:(unint64_t)index;
+- (id)insertPlugsForContainers:(id)containers atIndex:(unint64_t)index;
+- (id)plugAtIndex:(unint64_t)index;
 - (unint64_t)countOfPlugs;
 - (void)demolish;
-- (void)movePlugsAtIndices:(id)a3 toIndex:(unint64_t)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)movePlugsAtIndices:(id)indices toIndex:(unint64_t)index;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)removeAllPlugs;
-- (void)removePlugsAtIndices:(id)a3;
+- (void)removePlugsAtIndices:(id)indices;
 @end
 
 @implementation MCContainerSerializer
 
-+ (id)keyPathsForValuesAffectingValueForKey:(id)a3
++ (id)keyPathsForValuesAffectingValueForKey:(id)key
 {
-  if ([a3 isEqualToString:@"orderedPlugs"])
+  if ([key isEqualToString:@"orderedPlugs"])
   {
     return [NSSet setWithObjects:@"plugs", 0];
   }
 
-  v6.receiver = a1;
+  v6.receiver = self;
   v6.super_class = &OBJC_METACLASS___MCContainerSerializer;
-  return objc_msgSendSuper2(&v6, "keyPathsForValuesAffectingValueForKey:", a3);
+  return objc_msgSendSuper2(&v6, "keyPathsForValuesAffectingValueForKey:", key);
 }
 
 - (MCContainerSerializer)init
@@ -48,14 +48,14 @@
   return v2;
 }
 
-- (MCContainerSerializer)initWithImprint:(id)a3 andMontage:(id)a4
+- (MCContainerSerializer)initWithImprint:(id)imprint andMontage:(id)montage
 {
   v19.receiver = self;
   v19.super_class = MCContainerSerializer;
   v6 = [MCContainer initWithImprint:"initWithImprint:andMontage:" andMontage:?];
   if (v6)
   {
-    v7 = [a3 objectForKey:@"plugs"];
+    v7 = [imprint objectForKey:@"plugs"];
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -74,7 +74,7 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [MCObject objectWithImprint:*(*(&v15 + 1) + 8 * i) andMontage:a4];
+          v12 = [MCObject objectWithImprint:*(*(&v15 + 1) + 8 * i) andMontage:montage];
           [(NSMutableSet *)v6->mPlugs addObject:v12];
           [(MCObject *)v12 setSupercontainer:v6];
           if (![(MCObject *)v6 isSnapshot])
@@ -90,10 +90,10 @@
       while (v9);
     }
 
-    v6->_initialTransitionID = [a3 objectForKey:@"initialTransitionID"];
-    [objc_msgSend(a3 objectForKey:{@"initialTransitionDuration", "doubleValue"}];
+    v6->_initialTransitionID = [imprint objectForKey:@"initialTransitionID"];
+    [objc_msgSend(imprint objectForKey:{@"initialTransitionDuration", "doubleValue"}];
     v6->_initialTransitionDuration = v13;
-    v6->_initialTransitionAttributes = [a3 objectForKey:@"initialTransitionAttributes"];
+    v6->_initialTransitionAttributes = [imprint objectForKey:@"initialTransitionAttributes"];
   }
 
   return v6;
@@ -149,15 +149,15 @@
 {
   v18.receiver = self;
   v18.super_class = MCContainerSerializer;
-  v3 = [(MCContainer *)&v18 imprint];
+  imprint = [(MCContainer *)&v18 imprint];
   v4 = objc_autoreleasePoolPush();
   v5 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(MCContainerSerializer *)self plugs];
-  v7 = [(NSSet *)v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+  plugs = [(MCContainerSerializer *)self plugs];
+  v7 = [(NSSet *)plugs countByEnumeratingWithState:&v14 objects:v19 count:16];
   if (v7)
   {
     v8 = v7;
@@ -168,43 +168,43 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(plugs);
         }
 
         [v5 addObject:{objc_msgSend(*(*(&v14 + 1) + 8 * i), "imprint")}];
       }
 
-      v8 = [(NSSet *)v6 countByEnumeratingWithState:&v14 objects:v19 count:16];
+      v8 = [(NSSet *)plugs countByEnumeratingWithState:&v14 objects:v19 count:16];
     }
 
     while (v8);
   }
 
-  [v3 setObject:v5 forKey:@"plugs"];
+  [imprint setObject:v5 forKey:@"plugs"];
   initialTransitionID = self->_initialTransitionID;
   if (initialTransitionID)
   {
-    [v3 setObject:initialTransitionID forKey:@"initialTransitionID"];
+    [imprint setObject:initialTransitionID forKey:@"initialTransitionID"];
   }
 
   if (self->_initialTransitionDuration > 0.0)
   {
-    [v3 setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"initialTransitionDuration"}];
+    [imprint setObject:+[NSNumber numberWithDouble:](NSNumber forKey:{"numberWithDouble:"), @"initialTransitionDuration"}];
   }
 
   initialTransitionAttributes = self->_initialTransitionAttributes;
   if (initialTransitionAttributes)
   {
-    [v3 setObject:initialTransitionAttributes forKey:@"initialTransitionAttributes"];
+    [imprint setObject:initialTransitionAttributes forKey:@"initialTransitionAttributes"];
   }
 
   objc_autoreleasePoolPop(v4);
-  return v3;
+  return imprint;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  if (([a3 isEqualToString:{@"fullDuration", a4, a5, a6}] & 1) != 0 || objc_msgSend(a3, "isEqualToString:", @"transitionDuration"))
+  if (([path isEqualToString:{@"fullDuration", object, change, context}] & 1) != 0 || objc_msgSend(path, "isEqualToString:", @"transitionDuration"))
   {
     [(MCContainerSerializer *)self willChangeValueForKey:@"duration"];
     objc_sync_enter(self);
@@ -246,9 +246,9 @@
           v11 = *(*(&v17 + 1) + 8 * i);
           [v11 fullDuration];
           v13 = v12;
-          v14 = [v11 index];
+          index = [v11 index];
           v15 = 0.0;
-          if (v14 < v8)
+          if (index < v8)
           {
             [v11 transitionDuration];
           }
@@ -302,14 +302,14 @@
   return v4;
 }
 
-- (id)plugAtIndex:(unint64_t)a3
+- (id)plugAtIndex:(unint64_t)index
 {
   mPlugs = self->mPlugs;
   objc_sync_enter(mPlugs);
   mCachedOrderedPlugs = self->mCachedOrderedPlugs;
   if (mCachedOrderedPlugs)
   {
-    v7 = [(NSArray *)mCachedOrderedPlugs objectAtIndex:a3];
+    v7 = [(NSArray *)mCachedOrderedPlugs objectAtIndex:index];
 LABEL_13:
     v13 = v7;
   }
@@ -335,7 +335,7 @@ LABEL_13:
           }
 
           v12 = *(*(&v15 + 1) + 8 * i);
-          if ([v12 index] == a3)
+          if ([v12 index] == index)
           {
             v7 = v12;
             goto LABEL_13;
@@ -363,37 +363,37 @@ LABEL_13:
   return v13;
 }
 
-- (id)addPlugForContainer:(id)a3
+- (id)addPlugForContainer:(id)container
 {
-  v4 = [[NSArray alloc] initWithObjects:{a3, 0}];
+  v4 = [[NSArray alloc] initWithObjects:{container, 0}];
   v5 = [(MCContainerSerializer *)self insertPlugsForContainers:v4 atIndex:[(MCContainerSerializer *)self countOfPlugs]];
 
   return [v5 objectAtIndex:0];
 }
 
-- (id)addPlugsForContainers:(id)a3
+- (id)addPlugsForContainers:(id)containers
 {
-  v5 = [(MCContainerSerializer *)self countOfPlugs];
+  countOfPlugs = [(MCContainerSerializer *)self countOfPlugs];
 
-  return [(MCContainerSerializer *)self insertPlugsForContainers:a3 atIndex:v5];
+  return [(MCContainerSerializer *)self insertPlugsForContainers:containers atIndex:countOfPlugs];
 }
 
-- (id)insertPlugForContainer:(id)a3 atIndex:(unint64_t)a4
+- (id)insertPlugForContainer:(id)container atIndex:(unint64_t)index
 {
-  v6 = [[NSArray alloc] initWithObjects:{a3, 0}];
-  v7 = [(MCContainerSerializer *)self insertPlugsForContainers:v6 atIndex:a4];
+  v6 = [[NSArray alloc] initWithObjects:{container, 0}];
+  v7 = [(MCContainerSerializer *)self insertPlugsForContainers:v6 atIndex:index];
 
   return [v7 objectAtIndex:0];
 }
 
-- (id)insertPlugsForContainers:(id)a3 atIndex:(unint64_t)a4
+- (id)insertPlugsForContainers:(id)containers atIndex:(unint64_t)index
 {
   v22 = +[NSMutableArray array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v6 = [a3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+  v6 = [containers countByEnumeratingWithState:&v27 objects:v32 count:16];
   if (v6)
   {
     v7 = 0;
@@ -404,14 +404,14 @@ LABEL_13:
       {
         if (*v28 != v8)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(containers);
         }
 
         v10 = *(*(&v27 + 1) + 8 * i);
         v11 = [(MCObject *)[MCPlugSerial alloc] initFromScratchWithMontage:self->super.super.mMontage];
         [v11 setSupercontainer:self];
         [v11 setContainer:v10];
-        [v11 setIndex:a4 + v7];
+        [v11 setIndex:index + v7];
         [v22 addObject:v11];
         [v11 addObserver:self forKeyPath:@"fullDuration" options:0 context:0];
         [v11 addObserver:self forKeyPath:@"transitionDuration" options:0 context:0];
@@ -419,7 +419,7 @@ LABEL_13:
         ++v7;
       }
 
-      v6 = [a3 countByEnumeratingWithState:&v27 objects:v32 count:16];
+      v6 = [containers countByEnumeratingWithState:&v27 objects:v32 count:16];
     }
 
     while (v6);
@@ -433,7 +433,7 @@ LABEL_13:
     objc_sync_enter(mPlugs);
 
     self->mCachedOrderedPlugs = 0;
-    v13 = [a3 count];
+    v13 = [containers count];
     v25 = 0u;
     v26 = 0u;
     v23 = 0u;
@@ -453,7 +453,7 @@ LABEL_13:
           }
 
           v18 = *(*(&v23 + 1) + 8 * j);
-          if ([v18 index] >= a4)
+          if ([v18 index] >= index)
           {
             [v18 setIndex:{&v13[objc_msgSend(v18, "index")]}];
           }
@@ -473,7 +473,7 @@ LABEL_13:
   return v22;
 }
 
-- (void)removePlugsAtIndices:(id)a3
+- (void)removePlugsAtIndices:(id)indices
 {
   v5 = objc_alloc_init(NSMutableSet);
   obj = self->mPlugs;
@@ -497,7 +497,7 @@ LABEL_13:
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        if ([a3 containsIndex:{objc_msgSend(v10, "index")}])
+        if ([indices containsIndex:{objc_msgSend(v10, "index")}])
         {
           [v5 addObject:v10];
           [v10 removeObserver:self forKeyPath:@"fullDuration"];
@@ -506,7 +506,7 @@ LABEL_13:
 
         else
         {
-          [v10 setIndex:{objc_msgSend(v10, "index") - objc_msgSend(a3, "countOfIndexesInRange:", 0, objc_msgSend(v10, "index"))}];
+          [v10 setIndex:{objc_msgSend(v10, "index") - objc_msgSend(indices, "countOfIndexesInRange:", 0, objc_msgSend(v10, "index"))}];
         }
       }
 
@@ -551,7 +551,7 @@ LABEL_13:
   }
 }
 
-- (void)movePlugsAtIndices:(id)a3 toIndex:(unint64_t)a4
+- (void)movePlugsAtIndices:(id)indices toIndex:(unint64_t)index
 {
   [(MCContainerSerializer *)self willChangeValueForKey:@"orderedPlugs"];
   mPlugs = self->mPlugs;
@@ -577,18 +577,18 @@ LABEL_13:
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
-        if ([a3 containsIndex:{objc_msgSend(v12, "index")}])
+        if ([indices containsIndex:{objc_msgSend(v12, "index")}])
         {
-          [v12 setIndex:{objc_msgSend(a3, "countOfIndexesInRange:", 0, objc_msgSend(v12, "index")) + a4}];
+          [v12 setIndex:{objc_msgSend(indices, "countOfIndexesInRange:", 0, objc_msgSend(v12, "index")) + index}];
         }
 
         else
         {
-          v13 = [v12 index];
-          v14 = v13 - [a3 countOfIndexesInRange:{0, objc_msgSend(v12, "index")}];
-          if (v14 >= a4)
+          index = [v12 index];
+          v14 = index - [indices countOfIndexesInRange:{0, objc_msgSend(v12, "index")}];
+          if (v14 >= index)
           {
-            v14 += [a3 count];
+            v14 += [indices count];
           }
 
           [v12 setIndex:v14];
@@ -632,7 +632,7 @@ LABEL_13:
   return v7;
 }
 
-- (double)timeInForPlug:(id)a3
+- (double)timeInForPlug:(id)plug
 {
   mPlugs = self->mPlugs;
   objc_sync_enter(mPlugs);
@@ -643,7 +643,7 @@ LABEL_13:
     self->mCachedOrderedPlugs = [-[NSMutableSet allObjects](self->mPlugs "allObjects")];
   }
 
-  v8 = [a3 index];
+  index = [plug index];
   v21 = 0u;
   v22 = 0u;
   v19 = 0u;
@@ -664,7 +664,7 @@ LABEL_5:
       }
 
       v14 = *(*(&v19 + 1) + 8 * v13);
-      if ([v14 index] >= v8)
+      if ([v14 index] >= index)
       {
         break;
       }

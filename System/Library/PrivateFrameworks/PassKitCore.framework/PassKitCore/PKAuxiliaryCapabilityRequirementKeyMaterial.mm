@@ -1,26 +1,26 @@
 @interface PKAuxiliaryCapabilityRequirementKeyMaterial
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAuxiliaryCapabilityRequirementKey:(id)a3;
-- (PKAuxiliaryCapabilityRequirementKeyMaterial)initWithCoder:(id)a3;
-- (PKAuxiliaryCapabilityRequirementKeyMaterial)initWithKeyMaterialContents:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAuxiliaryCapabilityRequirementKey:(id)key;
+- (PKAuxiliaryCapabilityRequirementKeyMaterial)initWithCoder:(id)coder;
+- (PKAuxiliaryCapabilityRequirementKeyMaterial)initWithKeyMaterialContents:(id)contents;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKAuxiliaryCapabilityRequirementKeyMaterial
 
-- (PKAuxiliaryCapabilityRequirementKeyMaterial)initWithKeyMaterialContents:(id)a3
+- (PKAuxiliaryCapabilityRequirementKeyMaterial)initWithKeyMaterialContents:(id)contents
 {
-  v4 = a3;
+  contentsCopy = contents;
   v8.receiver = self;
   v8.super_class = PKAuxiliaryCapabilityRequirementKeyMaterial;
   v5 = [(PKAuxiliaryCapabilityRequirementKeyMaterial *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(PKAuxiliaryCapabilityRequirementKeyMaterial *)v5 setContents:v4];
+    [(PKAuxiliaryCapabilityRequirementKeyMaterial *)v5 setContents:contentsCopy];
   }
 
   return v6;
@@ -71,33 +71,33 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAuxiliaryCapabilityRequirementKeyMaterial *)self isEqualToAuxiliaryCapabilityRequirementKey:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKAuxiliaryCapabilityRequirementKeyMaterial *)self isEqualToAuxiliaryCapabilityRequirementKey:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToAuxiliaryCapabilityRequirementKey:(id)a3
+- (BOOL)isEqualToAuxiliaryCapabilityRequirementKey:(id)key
 {
-  v4 = a3;
-  if (!v4)
+  keyCopy = key;
+  if (!keyCopy)
   {
     goto LABEL_22;
   }
 
   rootAttestation = self->_rootAttestation;
-  v6 = v4[3];
+  v6 = keyCopy[3];
   if (rootAttestation)
   {
     v7 = v6 == 0;
@@ -122,7 +122,7 @@
   }
 
   version = self->_version;
-  v9 = v4[4];
+  v9 = keyCopy[4];
   if (version && v9)
   {
     if (([(NSString *)version isEqual:?]& 1) == 0)
@@ -137,7 +137,7 @@
   }
 
   contents = self->_contents;
-  v11 = v4[1];
+  v11 = keyCopy[1];
   if (!contents || !v11)
   {
     if (contents == v11)
@@ -157,7 +157,7 @@ LABEL_22:
 
 LABEL_18:
   encryptedContents = self->_encryptedContents;
-  v13 = v4[2];
+  v13 = keyCopy[2];
   if (encryptedContents && v13)
   {
     v14 = [(NSArray *)encryptedContents isEqual:?];
@@ -191,26 +191,26 @@ LABEL_23:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   contents = self->_contents;
-  v5 = a3;
-  [v5 encodeObject:contents forKey:@"contents"];
-  [v5 encodeObject:self->_encryptedContents forKey:@"encryptedContents"];
-  [v5 encodeObject:self->_rootAttestation forKey:@"rootAttestation"];
-  [v5 encodeObject:self->_version forKey:@"version"];
+  coderCopy = coder;
+  [coderCopy encodeObject:contents forKey:@"contents"];
+  [coderCopy encodeObject:self->_encryptedContents forKey:@"encryptedContents"];
+  [coderCopy encodeObject:self->_rootAttestation forKey:@"rootAttestation"];
+  [coderCopy encodeObject:self->_version forKey:@"version"];
 }
 
-- (PKAuxiliaryCapabilityRequirementKeyMaterial)initWithCoder:(id)a3
+- (PKAuxiliaryCapabilityRequirementKeyMaterial)initWithCoder:(id)coder
 {
   v25[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_alloc(MEMORY[0x1E695DFD8]);
   v25[0] = objc_opt_class();
   v25[1] = objc_opt_class();
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v25 count:2];
   v7 = [v5 initWithArray:v6];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"contents"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"contents"];
 
   v9 = [(PKAuxiliaryCapabilityRequirementKeyMaterial *)self initWithKeyMaterialContents:v8];
   if (v9)
@@ -220,7 +220,7 @@ LABEL_23:
     v24[1] = objc_opt_class();
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v24 count:2];
     v12 = [v10 initWithArray:v11];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"encryptedContents"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"encryptedContents"];
     encryptedContents = v9->_encryptedContents;
     v9->_encryptedContents = v13;
 
@@ -229,11 +229,11 @@ LABEL_23:
     v23[1] = objc_opt_class();
     v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:2];
     v17 = [v15 setWithArray:v16];
-    v18 = [v4 decodeObjectOfClasses:v17 forKey:@"rootAttestation"];
+    v18 = [coderCopy decodeObjectOfClasses:v17 forKey:@"rootAttestation"];
     rootAttestation = v9->_rootAttestation;
     v9->_rootAttestation = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     version = v9->_version;
     v9->_version = v20;
   }

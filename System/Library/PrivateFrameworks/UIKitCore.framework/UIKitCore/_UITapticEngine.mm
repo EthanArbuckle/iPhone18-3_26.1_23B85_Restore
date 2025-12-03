@@ -1,9 +1,9 @@
 @interface _UITapticEngine
 - (_UITapticEngine)init;
-- (id)_stateForFeedback:(int64_t)a3;
-- (void)actuateFeedback:(int64_t)a3;
-- (void)endUsingFeedback:(int64_t)a3;
-- (void)prepareUsingFeedback:(int64_t)a3;
+- (id)_stateForFeedback:(int64_t)feedback;
+- (void)actuateFeedback:(int64_t)feedback;
+- (void)endUsingFeedback:(int64_t)feedback;
+- (void)prepareUsingFeedback:(int64_t)feedback;
 @end
 
 @implementation _UITapticEngine
@@ -19,7 +19,7 @@
   return v2;
 }
 
-- (void)prepareUsingFeedback:(int64_t)a3
+- (void)prepareUsingFeedback:(int64_t)feedback
 {
   if (pthread_main_np() == 1)
   {
@@ -37,12 +37,12 @@
     v5[2] = __40___UITapticEngine_prepareUsingFeedback___block_invoke;
     v5[3] = &unk_1E70F32F0;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = feedback;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
 
-- (void)endUsingFeedback:(int64_t)a3
+- (void)endUsingFeedback:(int64_t)feedback
 {
   if (pthread_main_np() == 1)
   {
@@ -60,16 +60,16 @@
     v5[2] = __36___UITapticEngine_endUsingFeedback___block_invoke;
     v5[3] = &unk_1E70F32F0;
     v5[4] = self;
-    v5[5] = a3;
+    v5[5] = feedback;
     dispatch_async(MEMORY[0x1E69E96A0], v5);
   }
 }
 
-- (void)actuateFeedback:(int64_t)a3
+- (void)actuateFeedback:(int64_t)feedback
 {
   if (pthread_main_np() == 1)
   {
-    v5 = [(_UITapticEngine *)self _stateForFeedback:a3];
+    v5 = [(_UITapticEngine *)self _stateForFeedback:feedback];
     feedbackGenerator = self->_feedbackGenerator;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
@@ -88,23 +88,23 @@
     block[2] = __35___UITapticEngine_actuateFeedback___block_invoke;
     block[3] = &unk_1E70F32F0;
     block[4] = self;
-    block[5] = a3;
+    block[5] = feedback;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }
 
-- (id)_stateForFeedback:(int64_t)a3
+- (id)_stateForFeedback:(int64_t)feedback
 {
   v4 = 0;
   v5 = _UIStatesFeedbackGeneratorForcePresentationStatePreview;
-  if (a3 <= 1)
+  if (feedback <= 1)
   {
-    if (!a3)
+    if (!feedback)
     {
       goto LABEL_12;
     }
 
-    if (a3 != 1)
+    if (feedback != 1)
     {
 LABEL_5:
 
@@ -114,14 +114,14 @@ LABEL_5:
     goto LABEL_10;
   }
 
-  if (a3 != 2)
+  if (feedback != 2)
   {
-    if (a3 == 1001)
+    if (feedback == 1001)
     {
       goto LABEL_12;
     }
 
-    if (a3 != 1002)
+    if (feedback != 1002)
     {
       goto LABEL_5;
     }

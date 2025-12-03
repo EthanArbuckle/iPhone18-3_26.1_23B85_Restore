@@ -1,11 +1,11 @@
 @interface GKCacheableEntity
-+ (id)createWithBagKey:(id)a3 entityID:(id)a4 entity:(id)a5;
-+ (id)createWithEntityID:(id)a3 entity:(id)a4;
++ (id)createWithBagKey:(id)key entityID:(id)d entity:(id)entity;
++ (id)createWithEntityID:(id)d entity:(id)entity;
 @end
 
 @implementation GKCacheableEntity
 
-+ (id)createWithEntityID:(id)a3 entity:(id)a4
++ (id)createWithEntityID:(id)d entity:(id)entity
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   swift_getObjCClassMetadata();
@@ -16,7 +16,7 @@
   return v4;
 }
 
-+ (id)createWithBagKey:(id)a3 entityID:(id)a4 entity:(id)a5
++ (id)createWithBagKey:(id)key entityID:(id)d entity:(id)entity
 {
   static String._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();

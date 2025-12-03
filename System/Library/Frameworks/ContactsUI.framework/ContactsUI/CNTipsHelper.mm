@@ -1,9 +1,9 @@
 @interface CNTipsHelper
 + (_TtC10ContactsUI12CNTipsHelper)shared;
 - (UIView)currentTipView;
-- (void)setCurrentTipView:(id)a3;
-- (void)tipKitSetSiriTipContext:(id)a3;
-- (void)tipKitStartObservation:(id)a3;
+- (void)setCurrentTipView:(id)view;
+- (void)tipKitSetSiriTipContext:(id)context;
+- (void)tipKitStartObservation:(id)observation;
 - (void)tipKitStopObservation;
 @end
 
@@ -28,33 +28,33 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)tipKitSetSiriTipContext:(id)a3
+- (void)tipKitSetSiriTipContext:(id)context
 {
   qword_1EAF71BB0 = sub_199DF9F8C();
   qword_1EAF71BB8 = v3;
 }
 
-- (void)tipKitStartObservation:(id)a3
+- (void)tipKitStartObservation:(id)observation
 {
   swift_unknownObjectRetain();
-  v5 = self;
-  sub_199A86434(a3);
+  selfCopy = self;
+  sub_199A86434(observation);
   swift_unknownObjectRelease();
 }
 
 - (void)tipKitStopObservation
 {
-  v3 = self;
-  sub_199A90270(v3, v2);
+  selfCopy = self;
+  sub_199A90270(selfCopy, v2);
 }
 
-- (void)setCurrentTipView:(id)a3
+- (void)setCurrentTipView:(id)view
 {
   v5 = OBJC_IVAR____TtC10ContactsUI12CNTipsHelper_currentTipView;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = view;
+  viewCopy = view;
 }
 
 @end

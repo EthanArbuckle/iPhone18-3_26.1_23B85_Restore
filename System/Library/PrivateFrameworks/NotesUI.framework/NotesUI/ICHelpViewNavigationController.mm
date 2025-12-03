@@ -6,10 +6,10 @@
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if (!v4)
+  if (!userInterfaceIdiom)
   {
     return 2;
   }

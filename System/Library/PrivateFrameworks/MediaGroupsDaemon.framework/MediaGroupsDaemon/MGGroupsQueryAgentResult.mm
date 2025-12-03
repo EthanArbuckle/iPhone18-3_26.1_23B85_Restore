@@ -1,21 +1,21 @@
 @interface MGGroupsQueryAgentResult
 - (MGGroupsMediator)mediator;
-- (MGGroupsQueryAgentResult)initWithGroup:(id)a3 mediator:(id)a4;
+- (MGGroupsQueryAgentResult)initWithGroup:(id)group mediator:(id)mediator;
 @end
 
 @implementation MGGroupsQueryAgentResult
 
-- (MGGroupsQueryAgentResult)initWithGroup:(id)a3 mediator:(id)a4
+- (MGGroupsQueryAgentResult)initWithGroup:(id)group mediator:(id)mediator
 {
-  v7 = a3;
-  objc_initWeak(&location, a4);
+  groupCopy = group;
+  objc_initWeak(&location, mediator);
   v12.receiver = self;
   v12.super_class = MGGroupsQueryAgentResult;
   v8 = [(MGGroupsQueryAgentResult *)&v12 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_group, a3);
+    objc_storeStrong(&v8->_group, group);
     v10 = objc_loadWeakRetained(&location);
     objc_storeWeak(&v9->_mediator, v10);
   }

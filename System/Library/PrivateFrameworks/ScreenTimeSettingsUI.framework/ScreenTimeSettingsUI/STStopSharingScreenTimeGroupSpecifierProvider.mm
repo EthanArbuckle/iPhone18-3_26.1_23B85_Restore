@@ -1,26 +1,26 @@
 @interface STStopSharingScreenTimeGroupSpecifierProvider
-+ (id)providerWithCoordinator:(id)a3 isRootView:(BOOL)a4;
++ (id)providerWithCoordinator:(id)coordinator isRootView:(BOOL)view;
 - (STStopSharingScreenTimeGroupSpecifierProvider)init;
 - (id)stopSharingScreenTimeButtonName;
 - (id)stopSharingScreenTimeConfirmationPrompt;
 - (id)stopSharingScreenTimeFooterText;
 - (void)_updateHiddenState;
-- (void)confirmStopSharingScreenTime:(id)a3;
+- (void)confirmStopSharingScreenTime:(id)time;
 - (void)dealloc;
-- (void)disableManagement:(id)a3;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)setCoordinator:(id)a3;
+- (void)disableManagement:(id)management;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)setCoordinator:(id)coordinator;
 - (void)updateStopSharingScreenTimeSpecifier;
 @end
 
 @implementation STStopSharingScreenTimeGroupSpecifierProvider
 
-+ (id)providerWithCoordinator:(id)a3 isRootView:(BOOL)a4
++ (id)providerWithCoordinator:(id)coordinator isRootView:(BOOL)view
 {
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___STStopSharingScreenTimeGroupSpecifierProvider;
-  v5 = objc_msgSendSuper2(&v7, sel_providerWithCoordinator_, a3);
-  v5[48] = a4;
+  v5 = objc_msgSendSuper2(&v7, sel_providerWithCoordinator_, coordinator);
+  v5[48] = view;
   [v5 _updateHiddenState];
 
   return v5;
@@ -49,10 +49,10 @@
     [v6 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287675A28];
     [v6 setObject:&unk_28769D5B0 forKeyedSubscript:*MEMORY[0x277D3FD78]];
     [(STStopSharingScreenTimeGroupSpecifierProvider *)v3 setStopSharingScreenTimeSpecifier:v6];
-    v9 = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
-    [v9 addObject:v6];
-    v10 = [MEMORY[0x277D262A0] sharedConnection];
-    [v10 registerObserver:v3];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v3 mutableSpecifiers];
+    [mutableSpecifiers addObject:v6];
+    mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+    [mEMORY[0x277D262A0] registerObserver:v3];
   }
 
   return v3;
@@ -63,35 +63,35 @@
   v5.receiver = self;
   v5.super_class = STStopSharingScreenTimeGroupSpecifierProvider;
   [(STRootGroupSpecifierProvider *)&v5 invalidate];
-  v3 = [MEMORY[0x277D262A0] sharedConnection];
-  [v3 unregisterObserver:self];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  [mEMORY[0x277D262A0] unregisterObserver:self];
 
   v4.receiver = self;
   v4.super_class = STStopSharingScreenTimeGroupSpecifierProvider;
   [(STGroupSpecifierProvider *)&v4 dealloc];
 }
 
-- (void)setCoordinator:(id)a3
+- (void)setCoordinator:(id)coordinator
 {
-  v4 = a3;
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
-  [v5 removeObserver:self forKeyPath:@"viewModel.canStopSharingScreenTime" context:@"STStopSharingScreenTimeGroupSpecifierProviderObservationContext"];
-  [v5 removeObserver:self forKeyPath:@"viewModel.me.isRemoteUser" context:@"STStopSharingScreenTimeGroupSpecifierProviderObservationContext"];
+  coordinatorCopy = coordinator;
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.canStopSharingScreenTime" context:@"STStopSharingScreenTimeGroupSpecifierProviderObservationContext"];
+  [coordinator removeObserver:self forKeyPath:@"viewModel.me.isRemoteUser" context:@"STStopSharingScreenTimeGroupSpecifierProviderObservationContext"];
   v6.receiver = self;
   v6.super_class = STStopSharingScreenTimeGroupSpecifierProvider;
-  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:v4];
-  [v4 addObserver:self forKeyPath:@"viewModel.canStopSharingScreenTime" options:4 context:@"STStopSharingScreenTimeGroupSpecifierProviderObservationContext"];
-  [v4 addObserver:self forKeyPath:@"viewModel.me.isRemoteUser" options:4 context:@"STStopSharingScreenTimeGroupSpecifierProviderObservationContext"];
+  [(STRootGroupSpecifierProvider *)&v6 setCoordinator:coordinatorCopy];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.canStopSharingScreenTime" options:4 context:@"STStopSharingScreenTimeGroupSpecifierProviderObservationContext"];
+  [coordinatorCopy addObserver:self forKeyPath:@"viewModel.me.isRemoteUser" options:4 context:@"STStopSharingScreenTimeGroupSpecifierProviderObservationContext"];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  if (a6 == @"STStopSharingScreenTimeGroupSpecifierProviderObservationContext")
+  pathCopy = path;
+  if (context == @"STStopSharingScreenTimeGroupSpecifierProviderObservationContext")
   {
     [(STRootGroupSpecifierProvider *)self coordinator];
 
-    if ([v10 isEqualToString:@"viewModel.canStopSharingScreenTime"])
+    if ([pathCopy isEqualToString:@"viewModel.canStopSharingScreenTime"])
     {
       [(STStopSharingScreenTimeGroupSpecifierProvider *)self _updateHiddenState];
     }
@@ -100,7 +100,7 @@
     {
       [(STRootGroupSpecifierProvider *)self coordinator];
 
-      if ([v10 isEqualToString:@"viewModel.me.isRemoteUser"])
+      if ([pathCopy isEqualToString:@"viewModel.me.isRemoteUser"])
       {
         [(STStopSharingScreenTimeGroupSpecifierProvider *)self updateStopSharingScreenTimeSpecifier];
       }
@@ -111,20 +111,20 @@
   {
     v11.receiver = self;
     v11.super_class = STStopSharingScreenTimeGroupSpecifierProvider;
-    [(STStopSharingScreenTimeGroupSpecifierProvider *)&v11 observeValueForKeyPath:v10 ofObject:a4 change:a5 context:a6];
+    [(STStopSharingScreenTimeGroupSpecifierProvider *)&v11 observeValueForKeyPath:pathCopy ofObject:object change:change context:context];
   }
 }
 
 - (void)_updateHiddenState
 {
-  v3 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v10 = [v3 viewModel];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
 
-  v4 = [v10 canStopSharingScreenTime];
-  v5 = [MEMORY[0x277D262A0] sharedConnection];
-  v6 = [v5 effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
+  canStopSharingScreenTime = [viewModel canStopSharingScreenTime];
+  mEMORY[0x277D262A0] = [MEMORY[0x277D262A0] sharedConnection];
+  v6 = [mEMORY[0x277D262A0] effectiveBoolValueForSetting:*MEMORY[0x277D25E68]];
 
-  if (_os_feature_enabled_impl() && ([v10 me], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isRemoteUser"), v7, v8) && -[STStopSharingScreenTimeGroupSpecifierProvider isRootView](self, "isRootView"))
+  if (_os_feature_enabled_impl() && ([viewModel me], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "isRemoteUser"), v7, v8) && -[STStopSharingScreenTimeGroupSpecifierProvider isRootView](self, "isRootView"))
   {
     v9 = 1;
   }
@@ -136,26 +136,26 @@
 
   else
   {
-    v9 = v4 ^ 1u;
+    v9 = canStopSharingScreenTime ^ 1u;
   }
 
   [(STGroupSpecifierProvider *)self setIsHidden:v9];
 }
 
-- (void)confirmStopSharingScreenTime:(id)a3
+- (void)confirmStopSharingScreenTime:(id)time
 {
   v12[4] = *MEMORY[0x277D85DE8];
   v4 = objc_opt_new();
   v5 = +[STScreenTimeSettingsUIBundle bundle];
   v11[0] = *MEMORY[0x277D3FE98];
-  v6 = [(STStopSharingScreenTimeGroupSpecifierProvider *)self stopSharingScreenTimeButtonName];
-  v12[0] = v6;
+  stopSharingScreenTimeButtonName = [(STStopSharingScreenTimeGroupSpecifierProvider *)self stopSharingScreenTimeButtonName];
+  v12[0] = stopSharingScreenTimeButtonName;
   v11[1] = *MEMORY[0x277D3FE90];
-  v7 = [(STStopSharingScreenTimeGroupSpecifierProvider *)self stopSharingScreenTimeConfirmationPrompt];
-  v12[1] = v7;
+  stopSharingScreenTimeConfirmationPrompt = [(STStopSharingScreenTimeGroupSpecifierProvider *)self stopSharingScreenTimeConfirmationPrompt];
+  v12[1] = stopSharingScreenTimeConfirmationPrompt;
   v11[2] = *MEMORY[0x277D3FE88];
-  v8 = [(STStopSharingScreenTimeGroupSpecifierProvider *)self stopSharingScreenTimeButtonName];
-  v12[2] = v8;
+  stopSharingScreenTimeButtonName2 = [(STStopSharingScreenTimeGroupSpecifierProvider *)self stopSharingScreenTimeButtonName];
+  v12[2] = stopSharingScreenTimeButtonName2;
   v11[3] = *MEMORY[0x277D3FE78];
   v9 = [v5 localizedStringForKey:@"ConfirmationButtonCancel" value:&stru_28766E5A8 table:0];
   v12[3] = v9;
@@ -170,27 +170,27 @@
 
 - (id)stopSharingScreenTimeConfirmationPrompt
 {
-  v2 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v3 = [v2 viewModel];
-  v4 = [v3 me];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v4 = [viewModel me];
 
   v5 = +[STScreenTimeSettingsUIBundle bundle];
   if ([v4 isRemoteUser])
   {
-    v6 = [v4 name];
+    name = [v4 name];
 
-    if (v6)
+    if (name)
     {
       v7 = objc_opt_new();
-      v8 = [v4 name];
-      v9 = [v7 personNameComponentsFromString:v8];
+      name2 = [v4 name];
+      v9 = [v7 personNameComponentsFromString:name2];
 
-      v10 = [v9 givenName];
-      if ([v10 length])
+      givenName = [v9 givenName];
+      if ([givenName length])
       {
         v11 = MEMORY[0x277CCACA8];
         v12 = [v5 localizedStringForKey:@"StopSharingScreenTimeRemoteFooterText" value:&stru_28766E5A8 table:0];
-        v13 = [v11 localizedStringWithFormat:v12, v10];
+        v13 = [v11 localizedStringWithFormat:v12, givenName];
 
         goto LABEL_9;
       }
@@ -212,71 +212,71 @@ LABEL_9:
 
 - (void)updateStopSharingScreenTimeSpecifier
 {
-  v15 = [(STStopSharingScreenTimeGroupSpecifierProvider *)self stopSharingScreenTimeSpecifier];
-  v3 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v4 = [v3 viewModel];
-  v5 = [v4 me];
-  v6 = [v5 isRemoteUser];
+  stopSharingScreenTimeSpecifier = [(STStopSharingScreenTimeGroupSpecifierProvider *)self stopSharingScreenTimeSpecifier];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v5 = [viewModel me];
+  isRemoteUser = [v5 isRemoteUser];
 
-  if (v6)
+  if (isRemoteUser)
   {
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    [v15 setObject:v8 forKeyedSubscript:*MEMORY[0x277D400B8]];
+    [stopSharingScreenTimeSpecifier setObject:v8 forKeyedSubscript:*MEMORY[0x277D400B8]];
 
-    [v15 setObject:&unk_28769D598 forKeyedSubscript:*MEMORY[0x277D401C0]];
-    [v15 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287675A28];
+    [stopSharingScreenTimeSpecifier setObject:&unk_28769D598 forKeyedSubscript:*MEMORY[0x277D401C0]];
+    [stopSharingScreenTimeSpecifier setObject:MEMORY[0x277CBEC38] forKeyedSubscript:0x287675A28];
   }
 
   else
   {
-    [v15 removePropertyForKey:*MEMORY[0x277D400B8]];
-    [v15 removePropertyForKey:*MEMORY[0x277D401C0]];
-    [v15 removePropertyForKey:0x287675A28];
+    [stopSharingScreenTimeSpecifier removePropertyForKey:*MEMORY[0x277D400B8]];
+    [stopSharingScreenTimeSpecifier removePropertyForKey:*MEMORY[0x277D401C0]];
+    [stopSharingScreenTimeSpecifier removePropertyForKey:0x287675A28];
   }
 
-  v9 = [(STStopSharingScreenTimeGroupSpecifierProvider *)self stopSharingScreenTimeButtonName];
-  v10 = [v15 name];
-  if (([v10 isEqualToString:v9] & 1) == 0)
+  stopSharingScreenTimeButtonName = [(STStopSharingScreenTimeGroupSpecifierProvider *)self stopSharingScreenTimeButtonName];
+  name = [stopSharingScreenTimeSpecifier name];
+  if (([name isEqualToString:stopSharingScreenTimeButtonName] & 1) == 0)
   {
-    [v15 setName:v9];
+    [stopSharingScreenTimeSpecifier setName:stopSharingScreenTimeButtonName];
   }
 
-  v11 = [(STStopSharingScreenTimeGroupSpecifierProvider *)self stopSharingScreenTimeFooterText];
-  v12 = [(STGroupSpecifierProvider *)self groupSpecifier];
+  stopSharingScreenTimeFooterText = [(STStopSharingScreenTimeGroupSpecifierProvider *)self stopSharingScreenTimeFooterText];
+  groupSpecifier = [(STGroupSpecifierProvider *)self groupSpecifier];
   v13 = *MEMORY[0x277D3FF88];
-  v14 = [v12 objectForKeyedSubscript:*MEMORY[0x277D3FF88]];
-  if (([v14 isEqualToString:v11] & 1) == 0)
+  v14 = [groupSpecifier objectForKeyedSubscript:*MEMORY[0x277D3FF88]];
+  if (([v14 isEqualToString:stopSharingScreenTimeFooterText] & 1) == 0)
   {
-    [v12 setObject:v11 forKeyedSubscript:v13];
-    [(STGroupSpecifierProvider *)self reloadSpecifier:v12 animated:1];
+    [groupSpecifier setObject:stopSharingScreenTimeFooterText forKeyedSubscript:v13];
+    [(STGroupSpecifierProvider *)self reloadSpecifier:groupSpecifier animated:1];
   }
 }
 
 - (id)stopSharingScreenTimeButtonName
 {
-  v2 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v3 = [v2 viewModel];
-  v4 = [v3 me];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v4 = [viewModel me];
 
-  LOBYTE(v3) = [v4 isRemoteUser];
+  LOBYTE(viewModel) = [v4 isRemoteUser];
   v5 = +[STScreenTimeSettingsUIBundle bundle];
-  if (v3)
+  if (viewModel)
   {
-    v6 = [v4 name];
+    name = [v4 name];
 
-    if (v6)
+    if (name)
     {
       v7 = objc_opt_new();
-      v8 = [v4 name];
-      v9 = [v7 personNameComponentsFromString:v8];
+      name2 = [v4 name];
+      v9 = [v7 personNameComponentsFromString:name2];
 
-      v10 = [v9 givenName];
-      if ([v10 length])
+      givenName = [v9 givenName];
+      if ([givenName length])
       {
         v11 = MEMORY[0x277CCACA8];
         v12 = [v5 localizedStringForKey:@"StopSharingScreenTimeRemoteButtonName" value:&stru_28766E5A8 table:0];
-        v13 = [v11 localizedStringWithFormat:v12, v10];
+        v13 = [v11 localizedStringWithFormat:v12, givenName];
 
         goto LABEL_9;
       }
@@ -298,28 +298,28 @@ LABEL_9:
 
 - (id)stopSharingScreenTimeFooterText
 {
-  v2 = [(STRootGroupSpecifierProvider *)self coordinator];
-  v3 = [v2 viewModel];
-  v4 = [v3 me];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
+  viewModel = [coordinator viewModel];
+  v4 = [viewModel me];
 
-  LOBYTE(v3) = [v4 isRemoteUser];
+  LOBYTE(viewModel) = [v4 isRemoteUser];
   v5 = +[STScreenTimeSettingsUIBundle bundle];
-  if (v3)
+  if (viewModel)
   {
-    v6 = [v4 name];
+    name = [v4 name];
 
-    if (v6)
+    if (name)
     {
       v7 = objc_opt_new();
-      v8 = [v4 name];
-      v9 = [v7 personNameComponentsFromString:v8];
+      name2 = [v4 name];
+      v9 = [v7 personNameComponentsFromString:name2];
 
-      v10 = [v9 givenName];
-      if ([v10 length])
+      givenName = [v9 givenName];
+      if ([givenName length])
       {
         v11 = MEMORY[0x277CCACA8];
         v12 = [v5 localizedStringForKey:@"StopSharingScreenTimeRemoteFooterText" value:&stru_28766E5A8 table:0];
-        v13 = [v11 localizedStringWithFormat:v12, v10];
+        v13 = [v11 localizedStringWithFormat:v12, givenName];
 
         goto LABEL_9;
       }
@@ -339,17 +339,17 @@ LABEL_9:
   return v13;
 }
 
-- (void)disableManagement:(id)a3
+- (void)disableManagement:(id)management
 {
-  v4 = a3;
+  managementCopy = management;
   objc_initWeak(&location, self);
-  v5 = [(STRootGroupSpecifierProvider *)self coordinator];
+  coordinator = [(STRootGroupSpecifierProvider *)self coordinator];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __67__STStopSharingScreenTimeGroupSpecifierProvider_disableManagement___block_invoke;
   v6[3] = &unk_279B7DE80;
   objc_copyWeak(&v7, &location);
-  [v5 setManagementEnabled:0 completionHandler:v6];
+  [coordinator setManagementEnabled:0 completionHandler:v6];
 
   objc_destroyWeak(&v7);
   objc_destroyWeak(&location);

@@ -1,24 +1,24 @@
 @interface MXIScene
-+ (id)getThumbnailData:(id)a3;
++ (id)getThumbnailData:(id)data;
 - ($94F468A8D4C62B317260615823C2B210)depthRange;
-- (BOOL)doWrite:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)writeHEIC:(const void *)a3 texture:(id)a4 key:(unsigned int)a5 quality:(float)a6 error:(id *)a7;
-- (BOOL)writeHEICs:(const void *)a3 textures:(id)a4 key:(unsigned int)a5 quality:(float)a6 error:(id *)a7;
-- (BOOL)writeToFile:(id)a3 options:(id)a4 error:(id *)a5;
-- (BOOL)writeToURL:(id)a3 withOptions:(id)a4 error:(id *)a5;
-- (BOOL)writeWithWriter:(const void *)a3 options:(id)a4 error:(id *)a5;
-- (MXIScene)initWithNSData:(id)a3 forDevice:(id)a4 error:(id *)a5;
-- (MXIScene)initWithPosition:(const void *)a3 uvs:(const void *)a4 triangles:(const void *)a5 slices:(const void *)a6 colorTextures:(id)a7 colorTexture:(id)a8 colorTextureSlices:(unsigned int)a9 normalTexture:(id)a10 pbrTextures:(id)a11 pbrMaterialDescriptor:(id)a12 iblFileName:(id)a13;
-- (MXIScene)initWithReader:(void *)a3 device:(id)a4 error:(id *)a5;
-- (MXIScene)initWithURL:(id)a3 error:(id *)a4;
-- (MXIScene)initWithURL:(id)a3 forDevice:(id)a4 error:(id *)a5;
+- (BOOL)doWrite:(id)write options:(id)options error:(id *)error;
+- (BOOL)writeHEIC:(const void *)c texture:(id)texture key:(unsigned int)key quality:(float)quality error:(id *)error;
+- (BOOL)writeHEICs:(const void *)cs textures:(id)textures key:(unsigned int)key quality:(float)quality error:(id *)error;
+- (BOOL)writeToFile:(id)file options:(id)options error:(id *)error;
+- (BOOL)writeToURL:(id)l withOptions:(id)options error:(id *)error;
+- (BOOL)writeWithWriter:(const void *)writer options:(id)options error:(id *)error;
+- (MXIScene)initWithNSData:(id)data forDevice:(id)device error:(id *)error;
+- (MXIScene)initWithPosition:(const void *)position uvs:(const void *)uvs triangles:(const void *)triangles slices:(const void *)slices colorTextures:(id)textures colorTexture:(id)texture colorTextureSlices:(unsigned int)textureSlices normalTexture:(id)self0 pbrTextures:(id)self1 pbrMaterialDescriptor:(id)self2 iblFileName:(id)self3;
+- (MXIScene)initWithReader:(void *)reader device:(id)device error:(id *)error;
+- (MXIScene)initWithURL:(id)l error:(id *)error;
+- (MXIScene)initWithURL:(id)l forDevice:(id)device error:(id *)error;
 - (__CFString)cgColorSpaceName;
-- (__n128)setModelToWorldTransform:(__n128)a3;
-- (id)attribute:(id)a3;
-- (id)createThumbnailWithError:(id *)a3;
-- (id)readHEIC:(const void *)a3 key:(unsigned int)a4 device:(id)a5 error:(id *)a6;
-- (id)readHEICs:(const void *)a3 key:(unsigned int)a4 device:(id)a5 error:(id *)a6;
-- (id)serializeWithOptions:(id)a3 error:(id *)a4;
+- (__n128)setModelToWorldTransform:(__n128)transform;
+- (id)attribute:(id)attribute;
+- (id)createThumbnailWithError:(id *)error;
+- (id)readHEIC:(const void *)c key:(unsigned int)key device:(id)device error:(id *)error;
+- (id)readHEICs:(const void *)cs key:(unsigned int)key device:(id)device error:(id *)error;
+- (id)serializeWithOptions:(id)options error:(id *)error;
 - (id)trimmedColorTexture;
 - (int64_t)textureCompressionType;
 @end
@@ -40,29 +40,29 @@
   return 0;
 }
 
-- (MXIScene)initWithURL:(id)a3 error:(id *)a4
+- (MXIScene)initWithURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v7 = MTLCreateSystemDefaultDevice();
-  v9 = objc_msgSend_initWithURL_forDevice_error_(self, v8, v6, v7, a4);
+  v9 = objc_msgSend_initWithURL_forDevice_error_(self, v8, lCopy, v7, error);
 
   return v9;
 }
 
-- (MXIScene)initWithURL:(id)a3 forDevice:(id)a4 error:(id *)a5
+- (MXIScene)initWithURL:(id)l forDevice:(id)device error:(id *)error
 {
   __p[4] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v14 = v9;
-  if (a5)
+  lCopy = l;
+  deviceCopy = device;
+  v14 = deviceCopy;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
-  if (v9)
+  if (deviceCopy)
   {
-    v15 = objc_msgSend_pathExtension(v8, v10, v11, v12, v13);
+    v15 = objc_msgSend_pathExtension(lCopy, v10, v11, v12, v13);
     isEqualToString = objc_msgSend_isEqualToString_(v15, v16, @"mxi", v17, v18);
 
     if (isEqualToString)
@@ -87,14 +87,14 @@
         _os_signpost_emit_with_name_impl(&dword_22F9C3000, v24, OS_SIGNPOST_INTERVAL_BEGIN, v21, "MXI_SCENE_INITIALIZATION", "process-unwired-current  %llu MB process-unwired-peak %llu MB system-wired-current %llu system-unwired-current %llu", buf, 0x2Au);
       }
 
-      v29 = objc_msgSend_path(v8, v25, v26, v27, v28);
+      v29 = objc_msgSend_path(lCopy, v25, v26, v27, v28);
       v30 = v29;
       v35 = objc_msgSend_UTF8String(v29, v31, v32, v33, v34);
-      core::Reader::Create(v14, v35, a5, &v260);
+      core::Reader::Create(v14, v35, error, &v260);
 
       if (v260)
       {
-        self = objc_msgSend_initWithReader_device_error_(self, v36, &v260, v14, a5);
+        self = objc_msgSend_initWithReader_device_error_(self, v36, &v260, v14, error);
         v40 = _MXISignpostLogSystem();
         memset(v265, 0, sizeof(v265));
         core::get_info(v265);
@@ -113,14 +113,14 @@
           _os_signpost_emit_with_name_impl(&dword_22F9C3000, v42, OS_SIGNPOST_INTERVAL_END, v21, "MXI_SCENE_INITIALIZATION", "process-unwired-current  %llu MB process-unwired-peak %llu MB system-wired-current %llu system-unwired-current %llu", buf, 0x2Au);
         }
 
-        v43 = self;
+        selfCopy2 = self;
       }
 
       else
       {
-        v42 = objc_msgSend_path(v8, v36, v37, v38, v39);
-        objc_msgSend_fillError_withFormattedDescription_(MXIUserError, v84, a5, @"Unable to read from: %@", v85, v42);
-        v43 = 0;
+        v42 = objc_msgSend_path(lCopy, v36, v37, v38, v39);
+        objc_msgSend_fillError_withFormattedDescription_(MXIUserError, v84, error, @"Unable to read from: %@", v85, v42);
+        selfCopy2 = 0;
       }
 
       v86 = v260;
@@ -154,22 +154,22 @@
     }
 
     v52 = [MXISceneUSDZReader alloc];
-    v56 = objc_msgSend_initWithUSDZFileURL_(v52, v53, v8, v54, v55);
+    v56 = objc_msgSend_initWithUSDZFileURL_(v52, v53, lCopy, v54, v55);
     v60 = v56;
     if (!v56)
     {
       v72 = _mxi_log();
       if (os_log_type_enabled(v72, OS_LOG_TYPE_ERROR))
       {
-        v77 = objc_msgSend_path(v8, v73, v74, v75, v76);
+        v77 = objc_msgSend_path(lCopy, v73, v74, v75, v76);
         *buf = 138412290;
         *&buf[4] = v77;
         _os_log_impl(&dword_22F9C3000, v72, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:191] Unable to open usdz reader for file: %@", buf, 0xCu);
       }
 
-      v64 = objc_msgSend_path(v8, v78, v79, v80, v81);
-      objc_msgSend_fillError_withFormattedDescription_(MXIUserError, v82, a5, @"Unable to open usdz reader for file: %@", v83, v64);
-      v43 = 0;
+      v64 = objc_msgSend_path(lCopy, v78, v79, v80, v81);
+      objc_msgSend_fillError_withFormattedDescription_(MXIUserError, v82, error, @"Unable to open usdz reader for file: %@", v83, v64);
+      selfCopy2 = 0;
       goto LABEL_86;
     }
 
@@ -188,16 +188,16 @@
         _os_log_impl(&dword_22F9C3000, v65, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:197] %@", v265, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v71 = v64;
-        v43 = 0;
-        *a5 = v64;
+        selfCopy2 = 0;
+        *error = v64;
       }
 
       else
       {
-        v43 = 0;
+        selfCopy2 = 0;
       }
 
       goto LABEL_78;
@@ -225,16 +225,16 @@
           _os_log_impl(&dword_22F9C3000, v88, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:205] %@", v265, 0xCu);
         }
 
-        if (a5)
+        if (error)
         {
           v94 = v64;
-          v43 = 0;
-          *a5 = v64;
+          selfCopy2 = 0;
+          *error = v64;
         }
 
         else
         {
-          v43 = 0;
+          selfCopy2 = 0;
         }
 
 LABEL_77:
@@ -282,7 +282,7 @@ LABEL_86:
     {
       v113 = objc_alloc(MEMORY[0x277CBEA90]);
       v116 = objc_msgSend_initWithBase64EncodedString_options_(v113, v114, v257, 0, v115);
-      v258 = sub_22F9C8CF0(v116, a5);
+      v258 = sub_22F9C8CF0(v116, error);
     }
 
     else
@@ -446,7 +446,7 @@ LABEL_86:
     }
 
     v64 = 0;
-    v43 = self;
+    selfCopy2 = self;
     goto LABEL_77;
   }
 
@@ -457,21 +457,21 @@ LABEL_86:
     _os_log_impl(&dword_22F9C3000, v44, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:173] Invalid MTLDevice", buf, 2u);
   }
 
-  objc_msgSend_fillError_withDescription_(MXIUserError, v45, a5, @"Invalid MTLDevice", v46);
-  v43 = 0;
+  objc_msgSend_fillError_withDescription_(MXIUserError, v45, error, @"Invalid MTLDevice", v46);
+  selfCopy2 = 0;
 LABEL_87:
 
-  return v43;
+  return selfCopy2;
 }
 
-- (MXIScene)initWithNSData:(id)a3 forDevice:(id)a4 error:(id *)a5
+- (MXIScene)initWithNSData:(id)data forDevice:(id)device error:(id *)error
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (a5)
+  dataCopy = data;
+  deviceCopy = device;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v10 = _MXISignpostLogSystem();
@@ -495,13 +495,13 @@ LABEL_87:
     _os_signpost_emit_with_name_impl(&dword_22F9C3000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v11, "MXI_SCENE_INITIALIZATION", "process-unwired-current  %llu MB process-unwired-peak %llu MB system-wired-current %llu system-unwired-current %llu", buf, 0x2Au);
   }
 
-  v15 = v8;
-  v20 = objc_msgSend_bytes(v8, v16, v17, v18, v19);
-  v25 = objc_msgSend_length(v8, v21, v22, v23, v24);
-  core::Reader::Create(&v34, v9, v20, v25, a5);
+  v15 = dataCopy;
+  v20 = objc_msgSend_bytes(dataCopy, v16, v17, v18, v19);
+  v25 = objc_msgSend_length(dataCopy, v21, v22, v23, v24);
+  core::Reader::Create(&v34, deviceCopy, v20, v25, error);
   if (v34)
   {
-    self = objc_msgSend_initWithReader_device_error_(self, v26, &v34, v9, a5);
+    self = objc_msgSend_initWithReader_device_error_(self, v26, &v34, deviceCopy, error);
     v28 = _MXISignpostLogSystem();
     v35 = 0u;
     v36 = 0u;
@@ -521,13 +521,13 @@ LABEL_87:
       _os_signpost_emit_with_name_impl(&dword_22F9C3000, v30, OS_SIGNPOST_INTERVAL_END, v11, "MXI_SCENE_INITIALIZATION", "process-unwired-current  %llu MB process-unwired-peak %llu MB system-wired-current %llu system-unwired-current %llu", buf, 0x2Au);
     }
 
-    v31 = self;
+    selfCopy = self;
   }
 
   else
   {
-    objc_msgSend_fillError_withFormattedDescription_(MXIUserError, v26, a5, @"Unable to read from data buffer: %p", v27, v8);
-    v31 = 0;
+    objc_msgSend_fillError_withFormattedDescription_(MXIUserError, v26, error, @"Unable to read from data buffer: %p", v27, dataCopy);
+    selfCopy = 0;
   }
 
   v32 = v34;
@@ -537,10 +537,10 @@ LABEL_87:
     (*(*v32 + 8))(v32);
   }
 
-  return v31;
+  return selfCopy;
 }
 
-- (id)createThumbnailWithError:(id *)a3
+- (id)createThumbnailWithError:(id *)error
 {
   v5 = _MXISignpostLogSystem();
   v6 = _MXISignpostCreate(v5);
@@ -695,10 +695,10 @@ LABEL_87:
                 _os_log_impl(&dword_22F9C3000, v200, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:418] MTLCommandBuffer failed", buf, 2u);
               }
 
-              if (a3)
+              if (error)
               {
                 objc_msgSend_error(v211, v201, v202, v203, v204);
-                *a3 = v184 = 0;
+                *error = v184 = 0;
               }
 
               else
@@ -721,7 +721,7 @@ LABEL_87:
               _os_log_impl(&dword_22F9C3000, v197, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:363] Failed creating MTLTexture", buf, 2u);
             }
 
-            objc_msgSend_fillError_withDescription_(MXIInternalError, v198, a3, @"Failed creating MTLTexture", v199);
+            objc_msgSend_fillError_withDescription_(MXIInternalError, v198, error, @"Failed creating MTLTexture", v199);
             v184 = 0;
           }
         }
@@ -735,7 +735,7 @@ LABEL_87:
             _os_log_impl(&dword_22F9C3000, v194, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:354] Failed creating MTLTexture", buf, 2u);
           }
 
-          objc_msgSend_fillError_withDescription_(MXIInternalError, v195, a3, @"Failed creating MTLTexture", v196);
+          objc_msgSend_fillError_withDescription_(MXIInternalError, v195, error, @"Failed creating MTLTexture", v196);
           v184 = 0;
         }
       }
@@ -749,7 +749,7 @@ LABEL_87:
           _os_log_impl(&dword_22F9C3000, v191, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:336] Failed creating MTLCommandBufferSPI", buf, 2u);
         }
 
-        objc_msgSend_fillError_withDescription_(MXIInternalError, v192, a3, @"Failed creating MTLCommandBufferSPI", v193);
+        objc_msgSend_fillError_withDescription_(MXIInternalError, v192, error, @"Failed creating MTLCommandBufferSPI", v193);
         v184 = 0;
       }
     }
@@ -763,7 +763,7 @@ LABEL_87:
         _os_log_impl(&dword_22F9C3000, v188, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:330] Failed creating MTLCommandQueue", buf, 2u);
       }
 
-      objc_msgSend_fillError_withDescription_(MXIInternalError, v189, a3, @"Failed creating MTLCommandQueue", v190);
+      objc_msgSend_fillError_withDescription_(MXIInternalError, v189, error, @"Failed creating MTLCommandQueue", v190);
       v184 = 0;
     }
   }
@@ -777,7 +777,7 @@ LABEL_87:
       _os_log_impl(&dword_22F9C3000, v185, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:324] Invalid device", buf, 2u);
     }
 
-    objc_msgSend_fillError_withDescription_(MXIInternalError, v186, a3, @"Invalid device", v187);
+    objc_msgSend_fillError_withDescription_(MXIInternalError, v186, error, @"Invalid device", v187);
     v184 = 0;
   }
 
@@ -801,9 +801,9 @@ LABEL_87:
   return v3;
 }
 
-- (MXIScene)initWithReader:(void *)a3 device:(id)a4 error:(id *)a5
+- (MXIScene)initWithReader:(void *)reader device:(id)device error:(id *)error
 {
-  v8 = a4;
+  deviceCopy = device;
   v122.receiver = self;
   v122.super_class = MXIScene;
   v9 = [(MXIScene *)&v122 init];
@@ -812,7 +812,7 @@ LABEL_87:
     goto LABEL_42;
   }
 
-  v10 = (*(**a3 + 32))(*a3, 560822377, a5);
+  v10 = (*(**reader + 32))(*reader, 560822377, error);
   v11 = v10;
   if (v10)
   {
@@ -863,9 +863,9 @@ LABEL_14:
                 v30 = v121;
                 *&v9[1]._vertexUVs = v120;
                 *&v9[1]._triangleIndices = v30;
-                if ((*(**a3 + 16))(*a3, 1970496628, 0, a5))
+                if ((*(**reader + 16))(*reader, 1970496628, 0, error))
                 {
-                  v31 = (*(**a3 + 32))(*a3, 1970496628, a5);
+                  v31 = (*(**reader + 32))(*reader, 1970496628, error);
                   v32 = v31;
                   if (!v31)
                   {
@@ -880,7 +880,7 @@ LABEL_14:
                   v9->_userdata = v43;
                 }
 
-                if (((*(**a3 + 40))(*a3, 1835365224, v108, 8, a5) & 1) == 0)
+                if (((*(**reader + 40))(*reader, 1835365224, v108, 8, error) & 1) == 0)
                 {
                   goto LABEL_43;
                 }
@@ -891,11 +891,11 @@ LABEL_14:
                 v9->_numTriangles = numTriangles;
                 if (v50)
                 {
-                  v51 = objc_msgSend_newBufferWithLength_options_(v8, v45, 16 * v50, 0, v48);
+                  v51 = objc_msgSend_newBufferWithLength_options_(deviceCopy, v45, 16 * v50, 0, v48);
                   vertexPositions = v9->_vertexPositions;
                   v9->_vertexPositions = v51;
 
-                  v55 = objc_msgSend_newBufferWithLength_options_(v8, v53, 8 * v9->_numVertices, 0, v54);
+                  v55 = objc_msgSend_newBufferWithLength_options_(deviceCopy, v53, 8 * v9->_numVertices, 0, v54);
                   vertexUVs = v9->_vertexUVs;
                   v9->_vertexUVs = v55;
 
@@ -904,45 +904,45 @@ LABEL_14:
 
                 if (numTriangles)
                 {
-                  v57 = objc_msgSend_newBufferWithLength_options_(v8, v45, 12 * numTriangles, 0, v48);
+                  v57 = objc_msgSend_newBufferWithLength_options_(deviceCopy, v45, 12 * numTriangles, 0, v48);
                   triangleIndices = v9->_triangleIndices;
                   v9->_triangleIndices = v57;
 
-                  v61 = objc_msgSend_newBufferWithLength_options_(v8, v59, 4 * v9->_numTriangles, 0, v60);
+                  v61 = objc_msgSend_newBufferWithLength_options_(deviceCopy, v59, 4 * v9->_numTriangles, 0, v60);
                   triangleSliceIndices = v9->_triangleSliceIndices;
                   v9->_triangleSliceIndices = v61;
                 }
 
-                v63 = *a3;
+                v63 = *reader;
                 v64 = objc_msgSend_contents(v9->_vertexPositions, v45, v46, v47, v48);
-                if (!(*(*v63 + 40))(v63, 1987080051, v64, 16 * v9->_numVertices, a5))
+                if (!(*(*v63 + 40))(v63, 1987080051, v64, 16 * v9->_numVertices, error))
                 {
                   goto LABEL_43;
                 }
 
-                v69 = *a3;
+                v69 = *reader;
                 v70 = objc_msgSend_contents(v9->_vertexUVs, v65, v66, v67, v68);
-                if (!(*(*v69 + 40))(v69, 1987409523, v70, 8 * v9->_numVertices, a5))
+                if (!(*(*v69 + 40))(v69, 1987409523, v70, 8 * v9->_numVertices, error))
                 {
                   goto LABEL_43;
                 }
 
-                v75 = *a3;
+                v75 = *reader;
                 v76 = objc_msgSend_contents(v9->_triangleIndices, v71, v72, v73, v74);
-                if (!(*(*v75 + 40))(v75, 1953064056, v76, 12 * v9->_numTriangles, a5))
+                if (!(*(*v75 + 40))(v75, 1953064056, v76, 12 * v9->_numTriangles, error))
                 {
                   goto LABEL_43;
                 }
 
-                v81 = *a3;
+                v81 = *reader;
                 v82 = objc_msgSend_contents(v9->_triangleSliceIndices, v77, v78, v79, v80);
-                if (!(*(*v81 + 40))(v81, 1953721443, v82, 4 * v9->_numTriangles, a5))
+                if (!(*(*v81 + 40))(v81, 1953721443, v82, 4 * v9->_numTriangles, error))
                 {
                   goto LABEL_43;
                 }
 
-                v83 = (*(**a3 + 24))(*a3, 1668246642, a5);
-                v84 = **a3;
+                v83 = (*(**reader + 24))(*reader, 1668246642, error);
+                v84 = **reader;
                 if (v83)
                 {
                   v85 = (*(v84 + 56))();
@@ -964,16 +964,16 @@ LABEL_36:
                     }
 
                     v9->_colorTextureSlices = colorTexture;
-                    if (!(*(**a3 + 16))(*a3, 1635021938, 0, a5))
+                    if (!(*(**reader + 16))(*reader, 1635021938, 0, error))
                     {
                       goto LABEL_41;
                     }
 
-                    v103 = (*(**a3 + 32))(*a3, 1635021938, a5);
+                    v103 = (*(**reader + 32))(*reader, 1635021938, error);
                     v104 = v103;
                     if (v103)
                     {
-                      v105 = sub_22F9C8CF0(v103, a5);
+                      v105 = sub_22F9C8CF0(v103, error);
                       attributes = v9->_attributes;
                       v9->_attributes = v105;
 
@@ -989,7 +989,7 @@ LABEL_43:
                     goto LABEL_44;
                   }
 
-                  v96 = objc_msgSend_readHEICs_key_device_error_(v9, v92, a3, 1667786089, v8, a5);
+                  v96 = objc_msgSend_readHEICs_key_device_error_(v9, v92, reader, 1667786089, deviceCopy, error);
                   v97 = v9->_colorTextures;
                   v9->_colorTextures = v96;
 
@@ -1045,13 +1045,13 @@ LABEL_44:
   return v11;
 }
 
-- (BOOL)writeWithWriter:(const void *)a3 options:(id)a4 error:(id *)a5
+- (BOOL)writeWithWriter:(const void *)writer options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v12 = objc_msgSend_valueForKey_(v8, v9, @"serielize_option_image_codec", v10, v11);
+  optionsCopy = options;
+  v12 = objc_msgSend_valueForKey_(optionsCopy, v9, @"serielize_option_image_codec", v10, v11);
   v15 = objc_msgSend_parseString_defaultValue_(MXIUtilities, v13, v12, @"serielize_compression_codec_raw", v14);
 
-  v19 = objc_msgSend_valueForKey_(v8, v16, @"serielize_option_image_quality", v17, v18);
+  v19 = objc_msgSend_valueForKey_(optionsCopy, v16, @"serielize_option_image_quality", v17, v18);
   LODWORD(v20) = 1.0;
   objc_msgSend_parseFloat_defaultValue_(MXIUtilities, v21, v19, v22, v23, v20);
   v25 = v24;
@@ -1100,13 +1100,13 @@ LABEL_13:
   if (v201 != 80)
   {
 LABEL_62:
-    objc_msgSend_fillError_withDescription_(MXIUserError, v29, a5, @"HEIC compression can be used only with 32bit non compressed textures.", v32, v201);
+    objc_msgSend_fillError_withDescription_(MXIUserError, v29, error, @"HEIC compression can be used only with 32bit non compressed textures.", v32, v201);
     LOBYTE(v132) = 0;
     goto LABEL_60;
   }
 
 LABEL_14:
-  v58 = objc_msgSend_valueForKey_(v8, v29, @"serielize_option_compression_algorithm", v31, v32, v201);
+  v58 = objc_msgSend_valueForKey_(optionsCopy, v29, @"serielize_option_compression_algorithm", v31, v32, v201);
   v61 = objc_msgSend_parseString_defaultValue_(MXIUtilities, v59, v58, @"serielize_compression_algorithm_lzfse", v60);
 
   if (objc_msgSend_isEqualToString_(v61, v62, @"serielize_compression_algorithm_none", v63, v64))
@@ -1166,20 +1166,20 @@ LABEL_14:
   v207 = v130;
   v208 = v131;
   v202 = *&self->_numVertices;
-  v132 = (*(**a3 + 24))(*a3, 560822377, v203, 128, 4, a5);
-  v136 = objc_msgSend_valueForKey_(v8, v133, @"serielize_option_generate_thumbnail", v134, v135);
+  v132 = (*(**writer + 24))(*writer, 560822377, v203, 128, 4, error);
+  v136 = objc_msgSend_valueForKey_(optionsCopy, v133, @"serielize_option_generate_thumbnail", v134, v135);
   v139 = objc_msgSend_parseBool_defaultValue_(MXIUtilities, v137, v136, 1, v138);
 
   if (v139)
   {
-    v148 = objc_msgSend_createThumbnailWithError_(self, v140, a5, v142, v143);
+    v148 = objc_msgSend_createThumbnailWithError_(self, v140, error, v142, v143);
     if (v148)
     {
       v149 = objc_msgSend_cgColorSpaceName(self, v144, v145, v146, v147);
       v150 = image::toPNG(v148, v149);
       if (v132)
       {
-        v132 = (*(**a3 + 16))(*a3, 1953000802, v150, 4, a5);
+        v132 = (*(**writer + 16))(*writer, 1953000802, v150, 4, error);
       }
     }
   }
@@ -1198,16 +1198,16 @@ LABEL_14:
     }
 
     v163 = strlen(v162);
-    v132 = (*(**a3 + 24))(*a3, 1970496628, v162, (v163 + 1), 4, a5);
+    v132 = (*(**writer + 24))(*writer, 1970496628, v162, (v163 + 1), 4, error);
   }
 
   if (v132)
   {
-    if ((*(**a3 + 24))(*a3, 1835365224, &v202, 8, 4, a5) && (v164 = *a3, v165 = objc_msgSend_contents(self->_vertexPositions, v152, v153, v154, v155), (*(*v164 + 24))(v164, 1987080051, v165, 16 * self->_numVertices, v69, a5)) && (v166 = *a3, v167 = objc_msgSend_contents(self->_vertexUVs, v152, v153, v154, v155), (*(*v166 + 24))(v166, 1987409523, v167, 8 * self->_numVertices, v69, a5)) && (v168 = *a3, v169 = objc_msgSend_contents(self->_triangleIndices, v152, v153, v154, v155), (*(*v168 + 24))(v168, 1953064056, v169, 12 * self->_numTriangles, v69, a5)))
+    if ((*(**writer + 24))(*writer, 1835365224, &v202, 8, 4, error) && (v164 = *writer, v165 = objc_msgSend_contents(self->_vertexPositions, v152, v153, v154, v155), (*(*v164 + 24))(v164, 1987080051, v165, 16 * self->_numVertices, v69, error)) && (v166 = *writer, v167 = objc_msgSend_contents(self->_vertexUVs, v152, v153, v154, v155), (*(*v166 + 24))(v166, 1987409523, v167, 8 * self->_numVertices, v69, error)) && (v168 = *writer, v169 = objc_msgSend_contents(self->_triangleIndices, v152, v153, v154, v155), (*(*v168 + 24))(v168, 1953064056, v169, 12 * self->_numTriangles, v69, error)))
     {
-      v170 = *a3;
+      v170 = *writer;
       v171 = objc_msgSend_contents(self->_triangleSliceIndices, v152, v153, v154, v155);
-      v132 = (*(*v170 + 24))(v170, 1953721443, v171, 4 * self->_numTriangles, v69, a5);
+      v132 = (*(*v170 + 24))(v170, 1953721443, v171, 4 * self->_numTriangles, v69, error);
     }
 
     else
@@ -1225,7 +1225,7 @@ LABEL_41:
       {
         v176 = objc_msgSend_trimmedColorTexture(self, v172, v173, v174, v175);
         LODWORD(v177) = v25;
-        v179 = objc_msgSend_writeHEIC_texture_key_quality_error_(self, v178, a3, v176, 1667786089, a5, v177);
+        v179 = objc_msgSend_writeHEIC_texture_key_quality_error_(self, v178, writer, v176, 1667786089, error, v177);
 LABEL_51:
         v132 = v179;
       }
@@ -1233,9 +1233,9 @@ LABEL_51:
 
     else if (v132)
     {
-      v182 = *a3;
+      v182 = *writer;
       v176 = objc_msgSend_trimmedColorTexture(self, v172, v173, v174, v175);
-      v179 = (*(*v182 + 32))(v182, 1668246642, v176, v69, a5);
+      v179 = (*(*v182 + 32))(v182, 1668246642, v176, v69, error);
       goto LABEL_51;
     }
   }
@@ -1250,7 +1250,7 @@ LABEL_51:
       }
 
       LODWORD(v180) = v25;
-      v181 = objc_msgSend_writeHEICs_textures_key_quality_error_(self, v172, a3, self->_colorTextures, 1667786089, a5, v180);
+      v181 = objc_msgSend_writeHEICs_textures_key_quality_error_(self, v172, writer, self->_colorTextures, 1667786089, error, v180);
     }
 
     else
@@ -1260,7 +1260,7 @@ LABEL_51:
         goto LABEL_55;
       }
 
-      v181 = (*(**a3 + 40))(*a3, 1668246642, self->_colorTextures, v69, a5);
+      v181 = (*(**writer + 40))(*writer, 1668246642, self->_colorTextures, v69, error);
     }
 
     v132 = v181;
@@ -1273,11 +1273,11 @@ LABEL_55:
   if (v188)
   {
     v193 = objc_msgSend_attributes(self, v189, v190, v191, v192);
-    v194 = sub_22F9CAB90(v193, a5);
+    v194 = sub_22F9CAB90(v193, error);
 
     if (v132)
     {
-      LOBYTE(v132) = (*(**a3 + 16))(*a3, 1635021938, v194, 4, a5);
+      LOBYTE(v132) = (*(**writer + 16))(*writer, 1635021938, v194, 4, error);
     }
   }
 
@@ -1285,21 +1285,21 @@ LABEL_60:
   return v132;
 }
 
-- (id)serializeWithOptions:(id)a3 error:(id *)a4
+- (id)serializeWithOptions:(id)options error:(id *)error
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  optionsCopy = options;
   v7 = _mxi_log();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    *&buf[4] = v6;
+    *&buf[4] = optionsCopy;
     _os_log_impl(&dword_22F9C3000, v7, OS_LOG_TYPE_DEBUG, "[MXI.framework] [MXIScene] serialize with options %@", buf, 0xCu);
   }
 
   v16 = 0;
   *buf = 0;
-  core::Writer::Create(buf, &v16, a4, &v15);
+  core::Writer::Create(buf, &v16, error, &v15);
   if (!v15)
   {
     v12 = *buf;
@@ -1314,13 +1314,13 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  if (objc_msgSend_writeWithWriter_options_error_(self, v8, &v15, v6, a4))
+  if (objc_msgSend_writeWithWriter_options_error_(self, v8, &v15, optionsCopy, error))
   {
     v11 = objc_msgSend_dataWithBytesNoCopy_length_freeWhenDone_(MEMORY[0x277CBEA90], v9, *buf, v16, 1);
     goto LABEL_11;
   }
 
-  objc_msgSend_fillError_withDescription_(MXIInternalError, v9, a4, @"Failed serializing scene.", v10);
+  objc_msgSend_fillError_withDescription_(MXIInternalError, v9, error, @"Failed serializing scene.", v10);
   v12 = *buf;
   if (*buf)
   {
@@ -1342,21 +1342,21 @@ LABEL_13:
   return v11;
 }
 
-- (BOOL)writeToFile:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)writeToFile:(id)file options:(id)options error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
+  fileCopy = file;
+  optionsCopy = options;
+  v10 = fileCopy;
   v15 = objc_msgSend_UTF8String(v10, v11, v12, v13, v14);
-  core::Writer::Create(v15, a5, &v21);
+  core::Writer::Create(v15, error, &v21);
   if (v21)
   {
-    v18 = objc_msgSend_writeWithWriter_options_error_(self, v16, &v21, v9, a5);
+    v18 = objc_msgSend_writeWithWriter_options_error_(self, v16, &v21, optionsCopy, error);
   }
 
   else
   {
-    objc_msgSend_fillError_withDescription_(MXIInternalError, v16, a5, @"Failed writing scene to file.", v17);
+    objc_msgSend_fillError_withDescription_(MXIInternalError, v16, error, @"Failed writing scene to file.", v17);
     v18 = 0;
   }
 
@@ -1370,23 +1370,23 @@ LABEL_13:
   return v18;
 }
 
-- (BOOL)writeHEIC:(const void *)a3 texture:(id)a4 key:(unsigned int)a5 quality:(float)a6 error:(id *)a7
+- (BOOL)writeHEIC:(const void *)c texture:(id)texture key:(unsigned int)key quality:(float)quality error:(id *)error
 {
-  v9 = *&a5;
-  v11 = a4;
-  v40[0] = objc_msgSend_pixelFormat(v11, v12, v13, v14, v15);
-  v40[1] = objc_msgSend_width(v11, v16, v17, v18, v19);
-  v40[2] = objc_msgSend_height(v11, v20, v21, v22, v23);
-  v40[3] = objc_msgSend_arrayLength(v11, v24, v25, v26, v27);
-  v40[4] = objc_msgSend_mipmapLevelCount(v11, v28, v29, v30, v31);
-  v36 = (*(**a3 + 24))(*a3, v9, v40, 20, 4, a7);
-  for (i = 0; objc_msgSend_arrayLength(v11, v32, v33, v34, v35) > i; ++i)
+  v9 = *&key;
+  textureCopy = texture;
+  v40[0] = objc_msgSend_pixelFormat(textureCopy, v12, v13, v14, v15);
+  v40[1] = objc_msgSend_width(textureCopy, v16, v17, v18, v19);
+  v40[2] = objc_msgSend_height(textureCopy, v20, v21, v22, v23);
+  v40[3] = objc_msgSend_arrayLength(textureCopy, v24, v25, v26, v27);
+  v40[4] = objc_msgSend_mipmapLevelCount(textureCopy, v28, v29, v30, v31);
+  v36 = (*(**c + 24))(*c, v9, v40, 20, 4, error);
+  for (i = 0; objc_msgSend_arrayLength(textureCopy, v32, v33, v34, v35) > i; ++i)
   {
-    v38 = image::toHEIC(v11, i, 0, a6);
+    v38 = image::toHEIC(textureCopy, i, 0, quality);
     v9 = v9 & 0xFFFFFF00 | i;
     if (v36)
     {
-      v36 = (*(**a3 + 16))(*a3, v9, v38, 4, a7);
+      v36 = (*(**c + 16))(*c, v9, v38, 4, error);
     }
 
     else
@@ -1398,30 +1398,30 @@ LABEL_13:
   return v36 & 1;
 }
 
-- (BOOL)writeHEICs:(const void *)a3 textures:(id)a4 key:(unsigned int)a5 quality:(float)a6 error:(id *)a7
+- (BOOL)writeHEICs:(const void *)cs textures:(id)textures key:(unsigned int)key quality:(float)quality error:(id *)error
 {
-  v9 = *&a5;
-  v11 = a4;
-  v15 = objc_msgSend_objectAtIndexedSubscript_(v11, v12, 0, v13, v14);
+  v9 = *&key;
+  texturesCopy = textures;
+  v15 = objc_msgSend_objectAtIndexedSubscript_(texturesCopy, v12, 0, v13, v14);
   v60[0] = objc_msgSend_pixelFormat(v15, v16, v17, v18, v19);
-  v23 = objc_msgSend_objectAtIndexedSubscript_(v11, v20, 0, v21, v22);
+  v23 = objc_msgSend_objectAtIndexedSubscript_(texturesCopy, v20, 0, v21, v22);
   v60[1] = objc_msgSend_width(v23, v24, v25, v26, v27);
-  v31 = objc_msgSend_objectAtIndexedSubscript_(v11, v28, 0, v29, v30);
+  v31 = objc_msgSend_objectAtIndexedSubscript_(texturesCopy, v28, 0, v29, v30);
   v60[2] = objc_msgSend_height(v31, v32, v33, v34, v35);
-  v60[3] = objc_msgSend_count(v11, v36, v37, v38, v39);
-  v43 = objc_msgSend_objectAtIndexedSubscript_(v11, v40, 0, v41, v42);
+  v60[3] = objc_msgSend_count(texturesCopy, v36, v37, v38, v39);
+  v43 = objc_msgSend_objectAtIndexedSubscript_(texturesCopy, v40, 0, v41, v42);
   v60[4] = objc_msgSend_mipmapLevelCount(v43, v44, v45, v46, v47);
 
-  v52 = (*(**a3 + 24))(*a3, v9, v60, 20, 4, a7);
-  for (i = 0; objc_msgSend_count(v11, v48, v49, v50, v51) > i; ++i)
+  v52 = (*(**cs + 24))(*cs, v9, v60, 20, 4, error);
+  for (i = 0; objc_msgSend_count(texturesCopy, v48, v49, v50, v51) > i; ++i)
   {
-    v57 = objc_msgSend_objectAtIndexedSubscript_(v11, v54, i, v55, v56);
-    v58 = image::toHEIC(v57, 0, 0, a6);
+    v57 = objc_msgSend_objectAtIndexedSubscript_(texturesCopy, v54, i, v55, v56);
+    v58 = image::toHEIC(v57, 0, 0, quality);
 
     v9 = v9 & 0xFFFFFF00 | i;
     if (v52)
     {
-      v52 = (*(**a3 + 16))(*a3, v9, v58, 4, a7);
+      v52 = (*(**cs + 16))(*cs, v9, v58, 4, error);
     }
 
     else
@@ -1433,11 +1433,11 @@ LABEL_13:
   return v52 & 1;
 }
 
-- (id)readHEIC:(const void *)a3 key:(unsigned int)a4 device:(id)a5 error:(id *)a6
+- (id)readHEIC:(const void *)c key:(unsigned int)key device:(id)device error:(id *)error
 {
-  v7 = *&a4;
-  v9 = a5;
-  (*(**a3 + 40))(*a3, v7, v83, 20, a6);
+  v7 = *&key;
+  deviceCopy = device;
+  (*(**c + 40))(*c, v7, v83, 20, error);
   v10 = objc_opt_new();
   objc_msgSend_setTextureType_(v10, v11, 3, v12, v13);
   objc_msgSend_setPixelFormat_(v10, v14, v83[0], v15, v16);
@@ -1446,18 +1446,18 @@ LABEL_13:
   objc_msgSend_setArrayLength_(v10, v23, v84, v24, v25);
   objc_msgSend_setMipmapLevelCount_(v10, v26, v85, v27, v28);
   objc_msgSend_setStorageMode_(v10, v29, 2, v30, v31);
-  v39 = objc_msgSend_newSharedTextureWithDescriptor_(v9, v32, v10, v33, v34);
+  v39 = objc_msgSend_newSharedTextureWithDescriptor_(deviceCopy, v32, v10, v33, v34);
   if (v84)
   {
     for (i = 0; i < v84; ++i)
     {
       v7 = v7 & 0xFFFFFF00 | i;
-      v41 = (*(**a3 + 32))(*a3, v7, a6);
+      v41 = (*(**c + 32))(*c, v7, error);
       image::fromHEIC(v39, i, 0, v41);
     }
   }
 
-  v42 = objc_msgSend_newCommandQueue(v9, v35, v36, v37, v38);
+  v42 = objc_msgSend_newCommandQueue(deviceCopy, v35, v36, v37, v38);
   v47 = objc_msgSend_commandBuffer(v42, v43, v44, v45, v46);
   v52 = objc_msgSend_blitCommandEncoder(v47, v48, v49, v50, v51);
   objc_msgSend_setLabel_(v52, v53, @"MXI: MipMapping", v54, v55);
@@ -1479,10 +1479,10 @@ LABEL_13:
       _os_log_impl(&dword_22F9C3000, v76, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:798] Failed generating mipmaps", v82, 2u);
     }
 
-    if (a6)
+    if (error)
     {
       objc_msgSend_error(v47, v77, v78, v79, v80);
-      *a6 = v75 = 0;
+      *error = v75 = 0;
     }
 
     else
@@ -1494,11 +1494,11 @@ LABEL_13:
   return v75;
 }
 
-- (id)readHEICs:(const void *)a3 key:(unsigned int)a4 device:(id)a5 error:(id *)a6
+- (id)readHEICs:(const void *)cs key:(unsigned int)key device:(id)device error:(id *)error
 {
-  v7 = *&a4;
-  v9 = a5;
-  (*(**a3 + 40))(*a3, v7, v87, 20, a6);
+  v7 = *&key;
+  deviceCopy = device;
+  (*(**cs + 40))(*cs, v7, v87, 20, error);
   v10 = objc_opt_new();
   objc_msgSend_setTextureType_(v10, v11, 2, v12, v13);
   objc_msgSend_setPixelFormat_(v10, v14, v87[0], v15, v16);
@@ -1511,15 +1511,15 @@ LABEL_13:
   {
     for (i = 0; i < v88; ++i)
     {
-      v35 = objc_msgSend_newSharedTextureWithDescriptor_(v9, v29, v10, v31, v32);
+      v35 = objc_msgSend_newSharedTextureWithDescriptor_(deviceCopy, v29, v10, v31, v32);
       objc_msgSend_addObject_(v33, v36, v35, v37, v38);
       v7 = v7 & 0xFFFFFF00 | i;
-      v39 = (*(**a3 + 32))(*a3, v7, a6);
+      v39 = (*(**cs + 32))(*cs, v7, error);
       image::fromHEIC(v35, 0, 0, v39);
     }
   }
 
-  v40 = objc_msgSend_newCommandQueue(v9, v29, v30, v31, v32);
+  v40 = objc_msgSend_newCommandQueue(deviceCopy, v29, v30, v31, v32);
   v45 = v40;
   if (v40)
   {
@@ -1571,7 +1571,7 @@ LABEL_21:
       v82 = @"Failed creating MTLBlitCommandEncoder";
     }
 
-    objc_msgSend_fillError_withDescription_(MXIInternalError, v83, a6, v82, v84);
+    objc_msgSend_fillError_withDescription_(MXIInternalError, v83, error, v82, v84);
     v77 = MEMORY[0x277CBEBF8];
     goto LABEL_21;
   }
@@ -1583,28 +1583,28 @@ LABEL_21:
     _os_log_impl(&dword_22F9C3000, v78, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:839] Failed creating MTLCommandQueue", v86, 2u);
   }
 
-  objc_msgSend_fillError_withDescription_(MXIInternalError, v79, a6, @"Failed creating MTLCommandQueue", v80);
+  objc_msgSend_fillError_withDescription_(MXIInternalError, v79, error, @"Failed creating MTLCommandQueue", v80);
   v77 = MEMORY[0x277CBEBF8];
 LABEL_22:
 
   return v77;
 }
 
-- (BOOL)doWrite:(id)a3 options:(id)a4 error:(id *)a5
+- (BOOL)doWrite:(id)write options:(id)options error:(id *)error
 {
   v294 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v11 = a4;
-  if (a5)
+  writeCopy = write;
+  optionsCopy = options;
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   iblFileName = self->_iblFileName;
   if (iblFileName)
   {
     v285 = 0;
-    objc_msgSend_addImageBasedLightingWithFileName_error_(v8, v9, iblFileName, &v285, v10);
+    objc_msgSend_addImageBasedLightingWithFileName_error_(writeCopy, v9, iblFileName, &v285, v10);
     v13 = v285;
     if (v13)
     {
@@ -1618,11 +1618,11 @@ LABEL_22:
         _os_log_impl(&dword_22F9C3000, v15, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:880] %@", buf, 0xCu);
       }
 
-      if (a5)
+      if (error)
       {
         v21 = v14;
         v22 = 0;
-        *a5 = v14;
+        *error = v14;
       }
 
       else
@@ -1669,7 +1669,7 @@ LABEL_22:
   memcpy(v59, v70, 4 * self->_numTriangles);
 
   v284 = 0;
-  objc_msgSend_addMeshWithMXIGeometry_error_(v8, v71, buf, &v284, v72);
+  objc_msgSend_addMeshWithMXIGeometry_error_(writeCopy, v71, buf, &v284, v72);
   v73 = v284;
   if (!v73)
   {
@@ -1680,7 +1680,7 @@ LABEL_22:
       pbrTextures = self->_pbrTextures;
       materialDescriptor = self->_materialDescriptor;
       v283 = 0;
-      objc_msgSend_addMaterialsWithColorTextures_normalTexture_pbrTextures_pbrMaterialDescriptor_depthTesselated_error_(v8, v89, v85, normalTexture, pbrTextures, materialDescriptor, 0, &v283);
+      objc_msgSend_addMaterialsWithColorTextures_normalTexture_pbrTextures_pbrMaterialDescriptor_depthTesselated_error_(writeCopy, v89, v85, normalTexture, pbrTextures, materialDescriptor, 0, &v283);
       v14 = v283;
 
       if (!v14)
@@ -1702,7 +1702,7 @@ LABEL_22:
         }
 
 LABEL_28:
-        v102 = objc_msgSend_valueForKey_(v11, v90, @"serielize_option_generate_thumbnail", v91, v92);
+        v102 = objc_msgSend_valueForKey_(optionsCopy, v90, @"serielize_option_generate_thumbnail", v91, v92);
         v105 = objc_msgSend_parseBool_defaultValue_(MXIUtilities, v103, v102, 1, v104);
 
         if (v105)
@@ -1722,13 +1722,13 @@ LABEL_28:
               _os_log_impl(&dword_22F9C3000, v115, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:936] Failed generating thumbnail: %@", v286, 0xCu);
             }
 
-            v121 = a5 == 0;
+            v121 = error == 0;
 
 LABEL_33:
             if (!v121)
             {
               v122 = v14;
-              *a5 = v14;
+              *error = v14;
             }
 
             goto LABEL_36;
@@ -1750,7 +1750,7 @@ LABEL_33:
               }
 
               v280 = 0;
-              objc_msgSend_addThumbnailData_error_(v8, v271, 0, &v280, v272);
+              objc_msgSend_addThumbnailData_error_(writeCopy, v271, 0, &v280, v272);
               v273 = v280;
               if (v273)
               {
@@ -1764,7 +1764,7 @@ LABEL_33:
                   _os_log_impl(&dword_22F9C3000, v274, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:944] Failed writing thumbnail data: %@", v286, 0xCu);
                 }
 
-                v121 = a5 == 0;
+                v121 = error == 0;
 
                 goto LABEL_33;
               }
@@ -1772,46 +1772,46 @@ LABEL_33:
           }
         }
 
-        objc_msgSend_addStringValue_forKey_(v8, v106, @"Root", @"defaultPrim", v108);
-        objc_msgSend_addStringValue_forKey_(v8, v125, @"Y", @"upAxis", v126);
-        objc_msgSend_addDoubleValue_forKey_(v8, v127, @"metersPerUnit", v128, v129, 1.0);
-        objc_msgSend_addIntValue_forKey_(v8, v130, 10, @"version", v131);
+        objc_msgSend_addStringValue_forKey_(writeCopy, v106, @"Root", @"defaultPrim", v108);
+        objc_msgSend_addStringValue_forKey_(writeCopy, v125, @"Y", @"upAxis", v126);
+        objc_msgSend_addDoubleValue_forKey_(writeCopy, v127, @"metersPerUnit", v128, v129, 1.0);
+        objc_msgSend_addIntValue_forKey_(writeCopy, v130, 10, @"version", v131);
         v136 = objc_msgSend_type(self, v132, v133, v134, v135);
-        objc_msgSend_addIntValue_forKey_(v8, v137, v136, @"mxi_type", v138);
+        objc_msgSend_addIntValue_forKey_(writeCopy, v137, v136, @"mxi_type", v138);
         objc_msgSend_verticalFOV(self, v139, v140, v141, v142);
-        objc_msgSend_addFloatValue_forKey_(v8, v143, @"vertical_fov", v144, v145);
+        objc_msgSend_addFloatValue_forKey_(writeCopy, v143, @"vertical_fov", v144, v145);
         objc_msgSend_effectiveVerticalFOV(self, v146, v147, v148, v149);
-        objc_msgSend_addFloatValue_forKey_(v8, v150, @"effective_vertical_fov", v151, v152);
+        objc_msgSend_addFloatValue_forKey_(writeCopy, v150, @"effective_vertical_fov", v151, v152);
         objc_msgSend_aspectRatio(self, v153, v154, v155, v156);
-        objc_msgSend_addFloatValue_forKey_(v8, v157, @"aspect_ratio", v158, v159);
+        objc_msgSend_addFloatValue_forKey_(writeCopy, v157, @"aspect_ratio", v158, v159);
         objc_msgSend_effectiveAspectRatio(self, v160, v161, v162, v163);
-        objc_msgSend_addFloatValue_forKey_(v8, v164, @"effective_aspect_ratio", v165, v166);
+        objc_msgSend_addFloatValue_forKey_(writeCopy, v164, @"effective_aspect_ratio", v165, v166);
         objc_msgSend_depthRange(self, v167, v168, v169, v170);
-        objc_msgSend_addFloatValue_forKey_(v8, v171, @"min_depth", v172, v173);
+        objc_msgSend_addFloatValue_forKey_(writeCopy, v171, @"min_depth", v172, v173);
         objc_msgSend_depthRange(self, v174, v175, v176, v177);
         LODWORD(v179) = v178;
-        objc_msgSend_addFloatValue_forKey_(v8, v180, @"max_depth", v181, v182, v179);
+        objc_msgSend_addFloatValue_forKey_(writeCopy, v180, @"max_depth", v181, v182, v179);
         v187 = objc_msgSend_resolutionWidth(self, v183, v184, v185, v186);
-        objc_msgSend_addIntValue_forKey_(v8, v188, v187, @"resolution_width", v189);
+        objc_msgSend_addIntValue_forKey_(writeCopy, v188, v187, @"resolution_width", v189);
         v194 = objc_msgSend_resolutionHeight(self, v190, v191, v192, v193);
-        objc_msgSend_addIntValue_forKey_(v8, v195, v194, @"resolution_height", v196);
+        objc_msgSend_addIntValue_forKey_(writeCopy, v195, v194, @"resolution_height", v196);
         v201 = objc_msgSend_numLayers(self, v197, v198, v199, v200);
-        objc_msgSend_addIntValue_forKey_(v8, v202, v201, @"num_layers", v203);
+        objc_msgSend_addIntValue_forKey_(writeCopy, v202, v201, @"num_layers", v203);
         v208 = objc_msgSend_colorPrimaries(self, v204, v205, v206, v207);
-        objc_msgSend_addIntValue_forKey_(v8, v209, v208, @"color_primaries", v210);
+        objc_msgSend_addIntValue_forKey_(writeCopy, v209, v208, @"color_primaries", v210);
         isPremultipliedAlpha = objc_msgSend_isPremultipliedAlpha(self, v211, v212, v213, v214);
-        objc_msgSend_addIntValue_forKey_(v8, v216, isPremultipliedAlpha, @"premultiplied_alpha", v217);
+        objc_msgSend_addIntValue_forKey_(writeCopy, v216, isPremultipliedAlpha, @"premultiplied_alpha", v217);
         v222 = objc_msgSend_numOpaqueTriangles(self, v218, v219, v220, v221);
-        objc_msgSend_addIntValue_forKey_(v8, v223, v222, @"num_opaque_triangles", v224);
+        objc_msgSend_addIntValue_forKey_(writeCopy, v223, v222, @"num_opaque_triangles", v224);
         objc_msgSend_modelToWorldTransform(self, v225, v226, v227, v228);
-        objc_msgSend_addModelToWorldTransform_(v8, v229, v230, v231, v232);
+        objc_msgSend_addModelToWorldTransform_(writeCopy, v229, v230, v231, v232);
         v237 = objc_msgSend_userdata(self, v233, v234, v235, v236);
         v238 = v237 == 0;
 
         if (!v238)
         {
           v243 = objc_msgSend_userdata(self, v239, v240, v241, v242);
-          objc_msgSend_addStringValue_forKey_(v8, v244, v243, @"userdata", v245);
+          objc_msgSend_addStringValue_forKey_(writeCopy, v244, v243, @"userdata", v245);
         }
 
         v246 = objc_msgSend_attributes(self, v239, v240, v241, v242);
@@ -1820,20 +1820,20 @@ LABEL_33:
         if (!v251)
         {
           v256 = objc_msgSend_attributes(self, v252, v253, v254, v255);
-          v257 = sub_22F9CAB90(v256, a5);
+          v257 = sub_22F9CAB90(v256, error);
 
           v261 = objc_msgSend_base64EncodedStringWithOptions_(v257, v258, 0, v259, v260);
-          objc_msgSend_addStringValue_forKey_(v8, v262, v261, @"attributes", v263);
+          objc_msgSend_addStringValue_forKey_(writeCopy, v262, v261, @"attributes", v263);
         }
 
-        objc_msgSend_package(v8, v252, v253, v254, v255);
+        objc_msgSend_package(writeCopy, v252, v253, v254, v255);
         v14 = 0;
         v22 = 1;
         goto LABEL_46;
       }
 
       v282 = 0;
-      objc_msgSend_addMaterialsWithColorTextures_depthTesselated_error_(v8, v74, colorTextures, 0, &v282);
+      objc_msgSend_addMaterialsWithColorTextures_depthTesselated_error_(writeCopy, v74, colorTextures, 0, &v282);
       v14 = v282;
       if (!v14)
       {
@@ -1850,7 +1850,7 @@ LABEL_33:
       _os_log_impl(&dword_22F9C3000, v94, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:927] %@", v286, 0xCu);
     }
 
-    if (a5)
+    if (error)
     {
       v100 = v14;
       goto LABEL_24;
@@ -1871,7 +1871,7 @@ LABEL_36:
     _os_log_impl(&dword_22F9C3000, v78, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:907] %@", v286, 0xCu);
   }
 
-  if (!a5)
+  if (!error)
   {
     goto LABEL_36;
   }
@@ -1879,7 +1879,7 @@ LABEL_36:
   v84 = v14;
 LABEL_24:
   v22 = 0;
-  *a5 = v14;
+  *error = v14;
 LABEL_46:
   if (__p[1])
   {
@@ -1910,11 +1910,11 @@ LABEL_54:
   return v22;
 }
 
-- (BOOL)writeToURL:(id)a3 withOptions:(id)a4 error:(id *)a5
+- (BOOL)writeToURL:(id)l withOptions:(id)options error:(id *)error
 {
   v97 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  optionsCopy = options;
   v10 = _MXISignpostLogSystem();
   spid = _MXISignpostCreate(v10);
   v11 = _MXISignpostLogSystem();
@@ -1936,19 +1936,19 @@ LABEL_54:
     _os_signpost_emit_with_name_impl(&dword_22F9C3000, v13, OS_SIGNPOST_INTERVAL_BEGIN, spid, "MXI_WRITE_TO_URL", "process-unwired-current  %llu MB process-unwired-peak %llu MB system-wired-current %llu system-unwired-current %llu", buf, 0x2Au);
   }
 
-  if (a5)
+  if (error)
   {
-    *a5 = 0;
+    *error = 0;
   }
 
   v14 = objc_autoreleasePoolPush();
   v19 = CFPreferencesCopyMultiple(0, @"com.apple.mxi", *MEMORY[0x277CBF040], *MEMORY[0x277CBF010]);
   if (v19)
   {
-    if (v9)
+    if (optionsCopy)
     {
 LABEL_8:
-      v20 = objc_msgSend_mutableCopy(v9, v15, v16, v17, v18);
+      v20 = objc_msgSend_mutableCopy(optionsCopy, v15, v16, v17, v18);
       objc_msgSend_addEntriesFromDictionary_(v20, v21, v19, v22, v23);
 
       goto LABEL_11;
@@ -1958,7 +1958,7 @@ LABEL_8:
   else
   {
     v19 = objc_alloc_init(MEMORY[0x277CBEAC0]);
-    if (v9)
+    if (optionsCopy)
     {
       goto LABEL_8;
     }
@@ -1966,10 +1966,10 @@ LABEL_8:
 
   v20 = v19;
 LABEL_11:
-  v28 = objc_msgSend_pathExtension(v8, v24, v25, v26, v27);
+  v28 = objc_msgSend_pathExtension(lCopy, v24, v25, v26, v27);
   if (objc_msgSend_isEqualToString_(v28, v29, @"mxi", v30, v31))
   {
-    v36 = objc_msgSend_path(v8, v32, v33, v34, v35);
+    v36 = objc_msgSend_path(lCopy, v32, v33, v34, v35);
     v86 = 0;
     v38 = objc_msgSend_writeToFile_options_error_(self, v37, v36, v20, &v86);
     v39 = v86;
@@ -2003,7 +2003,7 @@ LABEL_11:
     if (objc_msgSend_isEqualToString_(v28, v49, @"usdz", v50, v51))
     {
       v61 = [MXISceneUSDZWriter alloc];
-      v66 = objc_msgSend_initWithUSDZFileURL_options_(v61, v62, v8, v39, v63);
+      v66 = objc_msgSend_initWithUSDZFileURL_options_(v61, v62, lCopy, v39, v63);
       if (v66)
       {
         v82 = 0;
@@ -2031,7 +2031,7 @@ LABEL_27:
   }
 
   v52 = [MXISceneUSDZWriter alloc];
-  v57 = objc_msgSend_initWithUSDBundleFileURL_options_(v52, v53, v8, v39, v54);
+  v57 = objc_msgSend_initWithUSDBundleFileURL_options_(v52, v53, lCopy, v39, v54);
   if (!v57)
   {
     v83 = 0;
@@ -2050,7 +2050,7 @@ LABEL_29:
   if (os_log_type_enabled(v67, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412546;
-    v90 = v8;
+    v90 = lCopy;
     v91 = 2112;
     v92 = v20;
     _os_log_impl(&dword_22F9C3000, v67, OS_LOG_TYPE_DEBUG, "[MXI.framework] [MXIScene] wrote to URL %@ with options %@", buf, 0x16u);
@@ -2068,10 +2068,10 @@ LABEL_29:
       _os_log_impl(&dword_22F9C3000, v68, OS_LOG_TYPE_ERROR, "[MXI.framework/MXIScene.mm:1056] %@", buf, 0xCu);
     }
 
-    if (a5 && !*a5)
+    if (error && !*error)
     {
       v74 = v42;
-      *a5 = v42;
+      *error = v42;
     }
   }
 
@@ -2100,24 +2100,24 @@ LABEL_29:
   return v42 == 0;
 }
 
-- (id)attribute:(id)a3
+- (id)attribute:(id)attribute
 {
-  v4 = a3;
+  attributeCopy = attribute;
   v9 = objc_msgSend_attributes(self, v5, v6, v7, v8);
-  v13 = objc_msgSend_objectForKey_(v9, v10, v4, v11, v12);
+  v13 = objc_msgSend_objectForKey_(v9, v10, attributeCopy, v11, v12);
 
   return v13;
 }
 
-+ (id)getThumbnailData:(id)a3
++ (id)getThumbnailData:(id)data
 {
-  v3 = a3;
-  v8 = objc_msgSend_pathExtension(v3, v4, v5, v6, v7);
+  dataCopy = data;
+  v8 = objc_msgSend_pathExtension(dataCopy, v4, v5, v6, v7);
   isEqualToString = objc_msgSend_isEqualToString_(v8, v9, @"mxibundle", v10, v11);
 
   if (isEqualToString)
   {
-    v17 = objc_msgSend_URLByAppendingPathComponent_(v3, v13, @"thumbnail.png", v15, v16);
+    v17 = objc_msgSend_URLByAppendingPathComponent_(dataCopy, v13, @"thumbnail.png", v15, v16);
     v22 = objc_msgSend_defaultManager(MEMORY[0x277CCAA00], v18, v19, v20, v21);
     v27 = objc_msgSend_path(v17, v23, v24, v25, v26);
     isReadableFileAtPath = objc_msgSend_isReadableFileAtPath_(v22, v28, v27, v29, v30);
@@ -2133,13 +2133,13 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v36 = objc_msgSend_pathExtension(v3, v13, v14, v15, v16);
+  v36 = objc_msgSend_pathExtension(dataCopy, v13, v14, v15, v16);
   v40 = objc_msgSend_isEqualToString_(v36, v37, @"mxi", v38, v39);
 
   if (!v40)
   {
     v56 = [MXISceneUSDZReader alloc];
-    v60 = objc_msgSend_initWithUSDZFileURL_(v56, v57, v3, v58, v59);
+    v60 = objc_msgSend_initWithUSDZFileURL_(v56, v57, dataCopy, v58, v59);
     v17 = v60;
     if (v60)
     {
@@ -2157,7 +2157,7 @@ LABEL_10:
     goto LABEL_14;
   }
 
-  v45 = objc_msgSend_path(v3, v41, v42, v43, v44);
+  v45 = objc_msgSend_path(dataCopy, v41, v42, v43, v44);
   v46 = v45;
   v51 = objc_msgSend_UTF8String(v46, v47, v48, v49, v50);
   v69 = 0;
@@ -2241,69 +2241,69 @@ LABEL_19:
   return result;
 }
 
-- (__n128)setModelToWorldTransform:(__n128)a3
+- (__n128)setModelToWorldTransform:(__n128)transform
 {
   result[11] = a2;
-  result[12] = a3;
+  result[12] = transform;
   result[13] = a4;
   result[14] = a5;
   return result;
 }
 
-- (MXIScene)initWithPosition:(const void *)a3 uvs:(const void *)a4 triangles:(const void *)a5 slices:(const void *)a6 colorTextures:(id)a7 colorTexture:(id)a8 colorTextureSlices:(unsigned int)a9 normalTexture:(id)a10 pbrTextures:(id)a11 pbrMaterialDescriptor:(id)a12 iblFileName:(id)a13
+- (MXIScene)initWithPosition:(const void *)position uvs:(const void *)uvs triangles:(const void *)triangles slices:(const void *)slices colorTextures:(id)textures colorTexture:(id)texture colorTextureSlices:(unsigned int)textureSlices normalTexture:(id)self0 pbrTextures:(id)self1 pbrMaterialDescriptor:(id)self2 iblFileName:(id)self3
 {
-  v18 = a7;
-  v84 = a8;
-  v83 = a10;
-  v82 = a11;
-  v19 = v18;
-  v81 = a12;
-  v80 = a13;
+  texturesCopy = textures;
+  textureCopy = texture;
+  normalTextureCopy = normalTexture;
+  pbrTexturesCopy = pbrTextures;
+  v19 = texturesCopy;
+  descriptorCopy = descriptor;
+  nameCopy = name;
   v85.receiver = self;
   v85.super_class = MXIScene;
   v24 = [(MXIScene *)&v85 init];
   if (v24)
   {
-    if (v84)
+    if (textureCopy)
     {
-      v27 = objc_msgSend_device(v84, v20, v21, v22, v23);
-      v28 = a6;
+      v27 = objc_msgSend_device(textureCopy, v20, v21, v22, v23);
+      slicesCopy = slices;
 LABEL_6:
-      v37 = *(a3 + 1) - *a3;
-      v38 = -1431655765 * ((*(a5 + 1) - *a5) >> 2);
+      v37 = *(position + 1) - *position;
+      v38 = -1431655765 * ((*(triangles + 1) - *triangles) >> 2);
       *(v24 + 2) = v37 >> 4;
       *(v24 + 12) = v38;
       v39 = objc_msgSend_newBufferWithLength_options_(v27, v25, v37, 0, v26);
       v40 = *(v24 + 3);
       *(v24 + 3) = v39;
 
-      v43 = objc_msgSend_newBufferWithLength_options_(v27, v41, *(a4 + 1) - *a4, 0, v42);
+      v43 = objc_msgSend_newBufferWithLength_options_(v27, v41, *(uvs + 1) - *uvs, 0, v42);
       v44 = *(v24 + 4);
       *(v24 + 4) = v43;
 
-      v47 = objc_msgSend_newBufferWithLength_options_(v27, v45, *(a5 + 1) - *a5, 0, v46);
+      v47 = objc_msgSend_newBufferWithLength_options_(v27, v45, *(triangles + 1) - *triangles, 0, v46);
       v48 = *(v24 + 6);
       *(v24 + 6) = v47;
 
-      v51 = objc_msgSend_newBufferWithLength_options_(v27, v49, v28[1] - *v28, 0, v50);
+      v51 = objc_msgSend_newBufferWithLength_options_(v27, v49, slicesCopy[1] - *slicesCopy, 0, v50);
       v52 = *(v24 + 5);
       *(v24 + 5) = v51;
 
       v57 = objc_msgSend_contents(*(v24 + 3), v53, v54, v55, v56);
-      memcpy(v57, *a3, *(a3 + 1) - *a3);
+      memcpy(v57, *position, *(position + 1) - *position);
       v62 = objc_msgSend_contents(*(v24 + 4), v58, v59, v60, v61);
-      memcpy(v62, *a4, *(a4 + 1) - *a4);
+      memcpy(v62, *uvs, *(uvs + 1) - *uvs);
       v67 = objc_msgSend_contents(*(v24 + 6), v63, v64, v65, v66);
-      memcpy(v67, *a5, *(a5 + 1) - *a5);
+      memcpy(v67, *triangles, *(triangles + 1) - *triangles);
       v72 = objc_msgSend_contents(*(v24 + 5), v68, v69, v70, v71);
-      memcpy(v72, *v28, v28[1] - *v28);
-      objc_storeStrong(v24 + 7, a8);
-      objc_storeStrong(v24 + 8, a7);
-      objc_storeStrong(v24 + 9, a10);
-      objc_storeStrong(v24 + 10, a11);
-      objc_storeStrong(v24 + 11, a12);
-      objc_storeStrong(v24 + 12, a13);
-      *(v24 + 26) = a9;
+      memcpy(v72, *slicesCopy, slicesCopy[1] - *slicesCopy);
+      objc_storeStrong(v24 + 7, texture);
+      objc_storeStrong(v24 + 8, textures);
+      objc_storeStrong(v24 + 9, normalTexture);
+      objc_storeStrong(v24 + 10, pbrTextures);
+      objc_storeStrong(v24 + 11, descriptor);
+      objc_storeStrong(v24 + 12, name);
+      *(v24 + 26) = textureSlices;
       v73 = MEMORY[0x277D860B8];
       v74 = *(MEMORY[0x277D860B8] + 16);
       *(v24 + 11) = *MEMORY[0x277D860B8];
@@ -2315,12 +2315,12 @@ LABEL_6:
       goto LABEL_7;
     }
 
-    if (objc_msgSend_count(v18, v20, v21, v22, v23))
+    if (objc_msgSend_count(texturesCopy, v20, v21, v22, v23))
     {
-      v77 = v18;
-      v32 = objc_msgSend_objectAtIndexedSubscript_(v18, v29, 0, v30, v31);
+      v77 = texturesCopy;
+      v32 = objc_msgSend_objectAtIndexedSubscript_(texturesCopy, v29, 0, v30, v31);
       objc_msgSend_device(v32, v33, v34, v35, v36);
-      v27 = v28 = a6;
+      v27 = slicesCopy = slices;
 
       v19 = v77;
       goto LABEL_6;

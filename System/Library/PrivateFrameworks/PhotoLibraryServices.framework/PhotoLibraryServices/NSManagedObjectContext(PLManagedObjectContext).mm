@@ -18,11 +18,11 @@
   v62 = *MEMORY[0x1E69E9840];
   v7 = a3;
   v8 = MEMORY[0x1E695D5E0];
-  v9 = [v7 entityName];
-  v10 = [v8 fetchRequestWithEntityName:v9];
+  entityName = [v7 entityName];
+  v10 = [v8 fetchRequestWithEntityName:entityName];
 
-  v11 = [v7 predicate];
-  [v10 setPredicate:v11];
+  predicate = [v7 predicate];
+  [v10 setPredicate:predicate];
 
   v48 = v7;
   [v10 setIncludesSubentities:{objc_msgSend(v7, "includesSubentities")}];
@@ -30,8 +30,8 @@
   [v10 setIncludesPendingChanges:0];
   [v10 setResultType:1];
   v51 = 0;
-  v46 = a1;
-  v12 = [a1 executeFetchRequest:v10 error:&v51];
+  selfCopy = self;
+  v12 = [self executeFetchRequest:v10 error:&v51];
   v13 = v51;
   v14 = v13;
   if (v12)
@@ -44,15 +44,15 @@
     v17 = PLBackendGetLog();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG))
     {
-      v18 = [v48 propertiesToUpdate];
+      propertiesToUpdate = [v48 propertiesToUpdate];
       v19 = [v12 count];
-      v20 = [v48 predicate];
+      predicate2 = [v48 predicate];
       *buf = 138412802;
-      v53 = v18;
+      v53 = propertiesToUpdate;
       v54 = 2048;
       v55 = v19;
       v56 = 2112;
-      v57 = v20;
+      v57 = predicate2;
       _os_log_impl(&dword_19BF1F000, v17, OS_LOG_TYPE_DEBUG, "Performing batch update of %@ on %ld records matching %@", buf, 0x20u);
     }
 
@@ -87,7 +87,7 @@
       [v30 setPredicate:v29];
       [v30 setResultType:0];
       v50 = v22;
-      v31 = [v46 executeRequest:v48 error:&v50];
+      v31 = [selfCopy executeRequest:v48 error:&v50];
       v32 = v50;
 
       v12 = v28;
@@ -124,16 +124,16 @@ LABEL_17:
     v37 = PLBackendGetLog();
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEBUG))
     {
-      v38 = [v48 propertiesToUpdate];
+      propertiesToUpdate2 = [v48 propertiesToUpdate];
       v39 = [v12 count];
-      v40 = [v48 predicate];
+      predicate3 = [v48 predicate];
       v41 = [v12 count];
       *buf = 138413314;
-      v53 = v38;
+      v53 = propertiesToUpdate2;
       v54 = 2048;
       v55 = v39;
       v56 = 2112;
-      v57 = v40;
+      v57 = predicate3;
       v58 = 2048;
       v59 = v41 / a4;
       v60 = 2048;
@@ -175,7 +175,7 @@ LABEL_17:
   v15 = &v16;
   v7 = v6;
   v14 = v7;
-  [a1 performBlockAndWait:&v10];
+  [self performBlockAndWait:&v10];
   v8 = [v17[5] resultWithError:{a3, v10, v11, v12, v13}];
 
   _Block_object_dispose(&v16, 8);
@@ -189,8 +189,8 @@ LABEL_17:
   v5[1] = 3221225472;
   v5[2] = __83__NSManagedObjectContext_PLManagedObjectContext__deleteObjectsWithIncrementalSave___block_invoke;
   v5[3] = &unk_1E7577F08;
-  v5[4] = a1;
-  v3 = [a1 enumerateWithIncrementalSaveUsingObjects:a3 withBlock:v5];
+  v5[4] = self;
+  v3 = [self enumerateWithIncrementalSaveUsingObjects:a3 withBlock:v5];
 
   return v3;
 }
@@ -211,7 +211,7 @@ LABEL_17:
   aBlock[1] = 3221225472;
   aBlock[2] = __124__NSManagedObjectContext_PLManagedObjectContext__enumerateWithIncrementalSaveUsingObjects_shouldRefreshAfterSave_withBlock___block_invoke;
   aBlock[3] = &unk_1E7578910;
-  aBlock[4] = a1;
+  aBlock[4] = self;
   aBlock[5] = &v31;
   v23 = _Block_copy(aBlock);
   v28 = 0u;
@@ -243,9 +243,9 @@ LABEL_17:
           v15 = PLBackendGetLog();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
-            v16 = [v13 objectID];
+            objectID = [v13 objectID];
             buf = 138412290;
-            v38 = v16;
+            v38 = objectID;
             _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEBUG, "Skipping deleted object on incremental save: %@", &buf, 0xCu);
           }
         }
@@ -265,7 +265,7 @@ LABEL_17:
           v23[2]();
           if (a4)
           {
-            [a1 refreshAllObjects];
+            [self refreshAllObjects];
           }
 
           v10 = 0;
@@ -304,7 +304,7 @@ LABEL_21:
   v10 = objc_autoreleasePoolPush();
   [v8 setFetchBatchSize:a4];
   v38 = 0;
-  v11 = [a1 executeFetchRequest:v8 error:&v38];
+  v11 = [self executeFetchRequest:v8 error:&v38];
   v12 = v38;
   v13 = [v11 count];
   if (v12)
@@ -361,9 +361,9 @@ LABEL_21:
             v27 = PLBackendGetLog();
             if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
             {
-              v28 = [v23 objectID];
+              objectID = [v23 objectID];
               *buf = 138412290;
-              v40 = v28;
+              v40 = objectID;
               _os_log_impl(&dword_19BF1F000, v27, OS_LOG_TYPE_DEBUG, "Skipping deleted object on enum: %@", buf, 0xCu);
             }
 
@@ -413,7 +413,7 @@ LABEL_19:
   v17 = &v18;
   v12 = v11;
   v16 = v12;
-  v13 = [a1 enumerateObjectsFromFetchRequest:v10 batchSize:a5 usingBlock:v15];
+  v13 = [self enumerateObjectsFromFetchRequest:v10 batchSize:a5 usingBlock:v15];
   if (a4)
   {
     *a4 = v19[3];
@@ -436,9 +436,9 @@ LABEL_19:
   v3[1] = 3221225472;
   v3[2] = __63__NSManagedObjectContext_PLManagedObjectContext__pl_graphCache__block_invoke;
   v3[3] = &unk_1E7578910;
-  v3[4] = a1;
+  v3[4] = self;
   v3[5] = &v4;
-  [a1 pl_performBlockAndWait:v3];
+  [self pl_performBlockAndWait:v3];
   v1 = v5[5];
   _Block_object_dispose(&v4, 8);
 
@@ -457,14 +457,14 @@ LABEL_19:
   v8[1] = 3221225472;
   v8[2] = __61__NSManagedObjectContext_PLManagedObjectContext__pathManager__block_invoke;
   v8[3] = &unk_1E7578910;
-  v8[4] = a1;
+  v8[4] = self;
   v8[5] = &v9;
-  [a1 pl_performBlockAndWait:v8];
+  [self pl_performBlockAndWait:v8];
   v4 = v10[5];
   if (!v4)
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"PLManagedObjectContext.m" lineNumber:1908 description:{@"Invalid parameter not satisfying: %@", @"manager"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLManagedObjectContext.m" lineNumber:1908 description:{@"Invalid parameter not satisfying: %@", @"manager"}];
 
     v4 = v10[5];
   }
@@ -478,15 +478,15 @@ LABEL_19:
 - (void)pl_performBlockAndWait:()PLManagedObjectContext
 {
   v5 = a3;
-  v4 = [a1 concurrencyType];
-  if (!v4 || *MEMORY[0x1E695D708] == v4)
+  concurrencyType = [self concurrencyType];
+  if (!concurrencyType || *MEMORY[0x1E695D708] == concurrencyType)
   {
     v5[2]();
   }
 
   else
   {
-    [a1 performBlockAndWait:v5];
+    [self performBlockAndWait:v5];
   }
 }
 
@@ -497,8 +497,8 @@ LABEL_19:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [a1 registeredObjects];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  registeredObjects = [self registeredObjects];
+  v3 = [registeredObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -509,17 +509,17 @@ LABEL_19:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(registeredObjects);
         }
 
         v7 = *(*(&v8 + 1) + 8 * i);
         if (([v7 isDeleted] & 1) == 0)
         {
-          [a1 refreshObject:v7 mergeChanges:{objc_msgSend(v7, "hasChanges")}];
+          [self refreshObject:v7 mergeChanges:{objc_msgSend(v7, "hasChanges")}];
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [registeredObjects countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v4);

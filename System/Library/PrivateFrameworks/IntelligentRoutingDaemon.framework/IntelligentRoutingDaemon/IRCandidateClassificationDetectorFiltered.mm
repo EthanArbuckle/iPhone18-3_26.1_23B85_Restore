@@ -1,24 +1,24 @@
 @interface IRCandidateClassificationDetectorFiltered
-- (BOOL)_isAggressiveFilteredCandidate:(id)a3 withSystemState:(id)a4 Candidates:(id)a5 andDate:(id)a6;
-- (BOOL)_isCandidateIndirectlyUsed:(id)a3 withCandidates:(id)a4 andDate:(id)a5;
-- (BOOL)_isConservativeFilteredCandidate:(id)a3 withSystemState:(id)a4;
-- (void)adjustFilteredParametersForCandidates:(id)a3 withSystemState:(id)a4 andDate:(id)a5;
+- (BOOL)_isAggressiveFilteredCandidate:(id)candidate withSystemState:(id)state Candidates:(id)candidates andDate:(id)date;
+- (BOOL)_isCandidateIndirectlyUsed:(id)used withCandidates:(id)candidates andDate:(id)date;
+- (BOOL)_isConservativeFilteredCandidate:(id)candidate withSystemState:(id)state;
+- (void)adjustFilteredParametersForCandidates:(id)candidates withSystemState:(id)state andDate:(id)date;
 @end
 
 @implementation IRCandidateClassificationDetectorFiltered
 
-- (void)adjustFilteredParametersForCandidates:(id)a3 withSystemState:(id)a4 andDate:(id)a5
+- (void)adjustFilteredParametersForCandidates:(id)candidates withSystemState:(id)state andDate:(id)date
 {
   v45 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v28 = a5;
-  obj = v8;
+  candidatesCopy = candidates;
+  stateCopy = state;
+  dateCopy = date;
+  obj = candidatesCopy;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v10 = [v8 countByEnumeratingWithState:&v30 objects:v44 count:16];
+  v10 = [candidatesCopy countByEnumeratingWithState:&v30 objects:v44 count:16];
   if (v10)
   {
     v11 = v10;
@@ -35,21 +35,21 @@
         }
 
         v16 = *(*(&v30 + 1) + 8 * i);
-        [v16 setIsConservativeFiltered:{-[IRCandidateClassificationDetectorFiltered _isConservativeFilteredCandidate:withSystemState:](self, "_isConservativeFilteredCandidate:withSystemState:", v16, v9)}];
+        [v16 setIsConservativeFiltered:{-[IRCandidateClassificationDetectorFiltered _isConservativeFilteredCandidate:withSystemState:](self, "_isConservativeFilteredCandidate:withSystemState:", v16, stateCopy)}];
         v17 = +[IRFeatureFlags sharedFeatureFlags];
-        v18 = [v17 isAggressiveFilteringEnabled];
+        isAggressiveFilteringEnabled = [v17 isAggressiveFilteringEnabled];
 
-        if (v18)
+        if (isAggressiveFilteringEnabled)
         {
-          v19 = [(IRCandidateClassificationDetectorFiltered *)self _isAggressiveFilteredCandidate:v16 withSystemState:v9 Candidates:obj andDate:v28];
+          isConservativeFiltered = [(IRCandidateClassificationDetectorFiltered *)self _isAggressiveFilteredCandidate:v16 withSystemState:stateCopy Candidates:obj andDate:dateCopy];
         }
 
         else
         {
-          v19 = [v16 isConservativeFiltered];
+          isConservativeFiltered = [v16 isConservativeFiltered];
         }
 
-        [v16 setIsFiltered:v19];
+        [v16 setIsFiltered:isConservativeFiltered];
         v13 += [v16 isFiltered];
         v12 += [v16 isConservativeFiltered];
       }
@@ -91,22 +91,22 @@
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isConservativeFilteredCandidate:(id)a3 withSystemState:(id)a4
+- (BOOL)_isConservativeFilteredCandidate:(id)candidate withSystemState:(id)state
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 candidate];
-  v8 = [v7 isSameICloudWithSystemState:v6];
+  candidateCopy = candidate;
+  stateCopy = state;
+  candidate = [candidateCopy candidate];
+  v8 = [candidate isSameICloudWithSystemState:stateCopy];
 
-  if ((v8 & 1) != 0 || ([v5 candidate], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "lastUsedDate"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
+  if ((v8 & 1) != 0 || ([candidateCopy candidate], v9 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v9, "lastUsedDate"), v10 = objc_claimAutoreleasedReturnValue(), v10, v9, v10))
   {
     v11 = 0;
   }
 
   else
   {
-    v13 = [v5 candidate];
-    if ([v13 isMac])
+    candidate2 = [candidateCopy candidate];
+    if ([candidate2 isMac])
     {
 
       v11 = 1;
@@ -114,34 +114,34 @@
 
     else
     {
-      v14 = [v5 candidate];
-      v15 = [v14 isSameWiFi];
+      candidate3 = [candidateCopy candidate];
+      isSameWiFi = [candidate3 isSameWiFi];
 
-      v11 = v15 ^ 1;
+      v11 = isSameWiFi ^ 1;
     }
   }
 
   return v11 & 1;
 }
 
-- (BOOL)_isAggressiveFilteredCandidate:(id)a3 withSystemState:(id)a4 Candidates:(id)a5 andDate:(id)a6
+- (BOOL)_isAggressiveFilteredCandidate:(id)candidate withSystemState:(id)state Candidates:(id)candidates andDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v43 = a5;
-  v11 = a6;
-  v12 = [v9 candidate];
-  v13 = [v12 lastUsedDate];
-  if (v13)
+  candidateCopy = candidate;
+  stateCopy = state;
+  candidatesCopy = candidates;
+  dateCopy = date;
+  candidate = [candidateCopy candidate];
+  lastUsedDate = [candidate lastUsedDate];
+  if (lastUsedDate)
   {
-    v14 = v13;
-    v15 = [v9 candidate];
-    v16 = [v15 lastUsedDate];
-    [v11 timeIntervalSinceDate:v16];
+    v14 = lastUsedDate;
+    candidate2 = [candidateCopy candidate];
+    lastUsedDate2 = [candidate2 lastUsedDate];
+    [dateCopy timeIntervalSinceDate:lastUsedDate2];
     v18 = v17;
     v19 = +[IRPreferences shared];
-    v20 = [v19 timeInSecondsWithoutUsageToAggressiveFiltering];
-    [v20 doubleValue];
+    timeInSecondsWithoutUsageToAggressiveFiltering = [v19 timeInSecondsWithoutUsageToAggressiveFiltering];
+    [timeInSecondsWithoutUsageToAggressiveFiltering doubleValue];
     v22 = v21;
 
     if (v18 < v22)
@@ -154,17 +154,17 @@
   {
   }
 
-  v23 = [v9 candidate];
-  v24 = [v23 firstSeenDate];
-  if (v24)
+  candidate3 = [candidateCopy candidate];
+  firstSeenDate = [candidate3 firstSeenDate];
+  if (firstSeenDate)
   {
-    v25 = [v9 candidate];
-    v26 = [v25 firstSeenDate];
-    [v11 timeIntervalSinceDate:v26];
+    candidate4 = [candidateCopy candidate];
+    firstSeenDate2 = [candidate4 firstSeenDate];
+    [dateCopy timeIntervalSinceDate:firstSeenDate2];
     v28 = v27;
     v29 = +[IRPreferences shared];
-    v30 = [v29 timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering];
-    [v30 doubleValue];
+    timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering = [v29 timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering];
+    [timeInSecondsToBeClassifiedAsNewCandidateForAggressiveFiltering doubleValue];
     v32 = v28 >= v31;
   }
 
@@ -173,40 +173,40 @@
     v32 = 1;
   }
 
-  v33 = [v9 candidate];
-  v34 = [v33 isSameWiFi];
+  candidate5 = [candidateCopy candidate];
+  isSameWiFi = [candidate5 isSameWiFi];
 
-  v35 = [v10 locationSemanticUserSpecificPlaceType];
-  if (v32 || !v34 || v35 != 1)
+  locationSemanticUserSpecificPlaceType = [stateCopy locationSemanticUserSpecificPlaceType];
+  if (v32 || !isSameWiFi || locationSemanticUserSpecificPlaceType != 1)
   {
-    v36 = [v9 candidate];
-    v37 = [v36 containsUnknownAVODTarget];
+    candidate6 = [candidateCopy candidate];
+    containsUnknownAVODTarget = [candidate6 containsUnknownAVODTarget];
 
-    if ((v37 & 1) == 0)
+    if ((containsUnknownAVODTarget & 1) == 0)
     {
-      v39 = v43;
-      v38 = [v42 _isCandidateIndirectlyUsed:v9 withCandidates:v43 andDate:v11] ^ 1;
+      v39 = candidatesCopy;
+      v38 = [v42 _isCandidateIndirectlyUsed:candidateCopy withCandidates:candidatesCopy andDate:dateCopy] ^ 1;
       goto LABEL_13;
     }
   }
 
 LABEL_12:
   LOBYTE(v38) = 0;
-  v39 = v43;
+  v39 = candidatesCopy;
 LABEL_13:
 
   return v38;
 }
 
-- (BOOL)_isCandidateIndirectlyUsed:(id)a3 withCandidates:(id)a4 andDate:(id)a5
+- (BOOL)_isCandidateIndirectlyUsed:(id)used withCandidates:(id)candidates andDate:(id)date
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 candidate];
-  v11 = [v10 nodes];
-  v12 = [v11 count];
+  usedCopy = used;
+  candidatesCopy = candidates;
+  dateCopy = date;
+  candidate = [usedCopy candidate];
+  nodes = [candidate nodes];
+  v12 = [nodes count];
 
   if (v12 >= 2)
   {
@@ -214,10 +214,10 @@ LABEL_13:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v14 = [v7 candidate];
-    v15 = [v14 nodes];
+    candidate2 = [usedCopy candidate];
+    nodes2 = [candidate2 nodes];
 
-    v13 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v13 = [nodes2 countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v13)
     {
       v16 = *v26;
@@ -227,21 +227,21 @@ LABEL_13:
         {
           if (*v26 != v16)
           {
-            objc_enumerationMutation(v15);
+            objc_enumerationMutation(nodes2);
           }
 
           v18 = *(*(&v25 + 1) + 8 * i);
-          v19 = [v18 avOutpuDeviceIdentifier];
+          avOutpuDeviceIdentifier = [v18 avOutpuDeviceIdentifier];
 
-          if (v19)
+          if (avOutpuDeviceIdentifier)
           {
             v23[0] = MEMORY[0x277D85DD0];
             v23[1] = 3221225472;
             v23[2] = __95__IRCandidateClassificationDetectorFiltered__isCandidateIndirectlyUsed_withCandidates_andDate___block_invoke;
             v23[3] = &unk_2797E1A78;
             v23[4] = v18;
-            v24 = v9;
-            v20 = [v8 containsObjectPassingTest:v23];
+            v24 = dateCopy;
+            v20 = [candidatesCopy containsObjectPassingTest:v23];
 
             if (v20)
             {
@@ -251,7 +251,7 @@ LABEL_13:
           }
         }
 
-        v13 = [v15 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v13 = [nodes2 countByEnumeratingWithState:&v25 objects:v29 count:16];
         if (v13)
         {
           continue;

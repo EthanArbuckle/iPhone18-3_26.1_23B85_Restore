@@ -1,34 +1,34 @@
 @interface HDInsertWorkoutZonesAssociationOperation
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5;
-- (HDInsertWorkoutZonesAssociationOperation)initWithCodableWorkoutZoneAssociations:(id)a3 syncProvenance:(int64_t)a4;
-- (HDInsertWorkoutZonesAssociationOperation)initWithCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error;
+- (HDInsertWorkoutZonesAssociationOperation)initWithCodableWorkoutZoneAssociations:(id)associations syncProvenance:(int64_t)provenance;
+- (HDInsertWorkoutZonesAssociationOperation)initWithCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HDInsertWorkoutZonesAssociationOperation
 
-- (HDInsertWorkoutZonesAssociationOperation)initWithCodableWorkoutZoneAssociations:(id)a3 syncProvenance:(int64_t)a4
+- (HDInsertWorkoutZonesAssociationOperation)initWithCodableWorkoutZoneAssociations:(id)associations syncProvenance:(int64_t)provenance
 {
-  v6 = a3;
+  associationsCopy = associations;
   v11.receiver = self;
   v11.super_class = HDInsertWorkoutZonesAssociationOperation;
   v7 = [(HDInsertWorkoutZonesAssociationOperation *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [associationsCopy copy];
     workoutZoneAssociations = v7->_workoutZoneAssociations;
     v7->_workoutZoneAssociations = v8;
 
-    v7->_syncProvenance = a4;
+    v7->_syncProvenance = provenance;
   }
 
   return v7;
 }
 
-- (BOOL)performWithProfile:(id)a3 transaction:(id)a4 error:(id *)a5
+- (BOOL)performWithProfile:(id)profile transaction:(id)transaction error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v30 = a4;
+  transactionCopy = transaction;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
@@ -52,23 +52,23 @@
 
         v10 = *(*(&v32 + 1) + 8 * i);
         v11 = MEMORY[0x277CCAD78];
-        v12 = [v10 workoutUUID];
-        v13 = [v11 hk_UUIDWithData:v12];
+        workoutUUID = [v10 workoutUUID];
+        v13 = [v11 hk_UUIDWithData:workoutUUID];
 
         v14 = MEMORY[0x277CCAD78];
-        v15 = [v10 zonesSampleUUID];
-        v16 = [v14 hk_UUIDWithData:v15];
+        zonesSampleUUID = [v10 zonesSampleUUID];
+        v16 = [v14 hk_UUIDWithData:zonesSampleUUID];
 
-        v17 = [v10 syncIdentity];
+        syncIdentity = [v10 syncIdentity];
         v31 = 0;
-        v18 = [HDSyncIdentity syncIdentityWithCodable:v17 error:&v31];
+        v18 = [HDSyncIdentity syncIdentityWithCodable:syncIdentity error:&v31];
         v19 = v31;
 
         if (v18)
         {
           v36 = v16;
           v20 = [MEMORY[0x277CBEA60] arrayWithObjects:&v36 count:1];
-          v21 = [HDWorkoutZonesAssociationEntity associateSyncedZonesSamplesWithUUIDs:v20 withWorkoutUUID:v13 syncIdentity:v18 syncProvenance:self->_syncProvenance transaction:v30 error:a5];
+          v21 = [HDWorkoutZonesAssociationEntity associateSyncedZonesSamplesWithUUIDs:v20 withWorkoutUUID:v13 syncIdentity:v18 syncProvenance:self->_syncProvenance transaction:transactionCopy error:error];
 
           if (!v21)
           {
@@ -85,7 +85,7 @@
           if (os_log_type_enabled(*MEMORY[0x277CCC330], OS_LOG_TYPE_FAULT))
           {
             *buf = v26;
-            v38 = self;
+            selfCopy = self;
             v39 = 2114;
             v40 = v19;
             _os_log_fault_impl(&dword_228986000, v22, OS_LOG_TYPE_FAULT, "[database] %{public}@: ConcreteSyncIdentity from received codable is nil %{public}@", buf, 0x16u);
@@ -106,22 +106,22 @@ LABEL_14:
   return v23;
 }
 
-- (HDInsertWorkoutZonesAssociationOperation)initWithCoder:(id)a3
+- (HDInsertWorkoutZonesAssociationOperation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"associations"];
-  v6 = [v4 decodeInt64ForKey:@"syncProvenance"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeArrayOfObjectsOfClass:objc_opt_class() forKey:@"associations"];
+  v6 = [coderCopy decodeInt64ForKey:@"syncProvenance"];
 
   v7 = [(HDInsertWorkoutZonesAssociationOperation *)self initWithCodableWorkoutZoneAssociations:v5 syncProvenance:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   workoutZoneAssociations = self->_workoutZoneAssociations;
-  v5 = a3;
-  [v5 encodeObject:workoutZoneAssociations forKey:@"associations"];
-  [v5 encodeInt64:self->_syncProvenance forKey:@"syncProvenance"];
+  coderCopy = coder;
+  [coderCopy encodeObject:workoutZoneAssociations forKey:@"associations"];
+  [coderCopy encodeInt64:self->_syncProvenance forKey:@"syncProvenance"];
 }
 
 @end

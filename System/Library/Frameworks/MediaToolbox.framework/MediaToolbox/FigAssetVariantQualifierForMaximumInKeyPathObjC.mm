@@ -1,21 +1,21 @@
 @interface FigAssetVariantQualifierForMaximumInKeyPathObjC
-- (FigAssetVariantQualifierForMaximumInKeyPathObjC)initWithCoder:(id)a3;
-- (FigAssetVariantQualifierForMaximumInKeyPathObjC)initWithKeyPath:(id)a3;
+- (FigAssetVariantQualifierForMaximumInKeyPathObjC)initWithCoder:(id)coder;
+- (FigAssetVariantQualifierForMaximumInKeyPathObjC)initWithKeyPath:(id)path;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FigAssetVariantQualifierForMaximumInKeyPathObjC
 
-- (FigAssetVariantQualifierForMaximumInKeyPathObjC)initWithKeyPath:(id)a3
+- (FigAssetVariantQualifierForMaximumInKeyPathObjC)initWithKeyPath:(id)path
 {
   v6.receiver = self;
   v6.super_class = FigAssetVariantQualifierForMaximumInKeyPathObjC;
   v4 = [(FigAssetVariantQualifierForMaximumInKeyPathObjC *)&v6 init];
   if (v4)
   {
-    v4->_keyPath = a3;
+    v4->_keyPath = path;
   }
 
   return v4;
@@ -35,22 +35,22 @@
   [(FigAssetVariantQualifierForMaximumInKeyPathObjC *)&v3 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = FigAssetVariantQualifierForMaximumInKeyPathObjC;
   [(FigAssetVariantQualifierObjC *)&v5 encodeWithCoder:?];
-  [a3 encodeObject:self->_keyPath forKey:@"keyPath"];
+  [coder encodeObject:self->_keyPath forKey:@"keyPath"];
 }
 
-- (FigAssetVariantQualifierForMaximumInKeyPathObjC)initWithCoder:(id)a3
+- (FigAssetVariantQualifierForMaximumInKeyPathObjC)initWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = FigAssetVariantQualifierForMaximumInKeyPathObjC;
   v4 = [(FigAssetVariantQualifierObjC *)&v6 initWithCoder:?];
   if (v4)
   {
-    v4->_keyPath = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"keyPath"];
+    v4->_keyPath = [coder decodeObjectOfClass:objc_opt_class() forKey:@"keyPath"];
   }
 
   return v4;

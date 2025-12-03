@@ -3,7 +3,7 @@
 - (float)srcHeadroom;
 - (float)targetHeadroom;
 - (id)outputImage;
-- (id)outputValue:(id)a3;
+- (id)outputValue:(id)value;
 @end
 
 @implementation CIToneMapInternal
@@ -151,7 +151,7 @@
   return result;
 }
 
-- (id)outputValue:(id)a3
+- (id)outputValue:(id)value
 {
   [(CIToneMapInternal *)self srcHeadroom];
   v6 = v5;
@@ -172,18 +172,18 @@
   calcUniforms(v6, v8, 0.0, v10, v12, v14, v16, v17, self->inputPreferredDynamicRange, &v32);
   if (!v32)
   {
-    return a3;
+    return value;
   }
 
   if (v32 == 1)
   {
-    [a3 floatValue];
+    [value floatValue];
     *&v18 = fminf(*&v18, *(&v32 + 2));
   }
 
   else
   {
-    [a3 floatValue];
+    [value floatValue];
     v20.i32[0] = DWORD2(v32);
     v22.f32[0] = v21 * v34[6];
     v31 = v22;
@@ -222,7 +222,7 @@
   v61[2] = *MEMORY[0x1E69E9840];
   v3 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_headroomToneMap];
   v4 = [(CIKernel *)CIColorKernel kernelWithInternalRepresentation:&CI::_headroomClamp];
-  v5 = [(CIToneMapInternal *)self inputImage];
+  inputImage = [(CIToneMapInternal *)self inputImage];
   [(CIToneMapInternal *)self srcHeadroom];
   v7 = v6;
   [(CIToneMapInternal *)self targetHeadroom];
@@ -245,27 +245,27 @@
   v21 = v53;
   if (!v53)
   {
-    return v5;
+    return inputImage;
   }
 
-  v22 = [(CIImage *)self->inputImage colorSpace];
+  colorSpace = [(CIImage *)self->inputImage colorSpace];
   if (!CGColorSpaceContainsFlexGTCInfo())
   {
     v27 = CGColorSpaceCreateWithName(*MEMORY[0x1E695F100]);
     if (v27)
     {
-      v5 = [(CIImage *)v5 imageByColorMatchingWorkingSpaceToColorSpace:v27];
+      inputImage = [(CIImage *)inputImage imageByColorMatchingWorkingSpaceToColorSpace:v27];
     }
 
-    v28 = [(CIImage *)v5 imageByUnpremultiplyingAlpha];
-    [(CIImage *)v28 extent];
+    imageByUnpremultiplyingAlpha = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+    [(CIImage *)imageByUnpremultiplyingAlpha extent];
     v30 = v29;
     v32 = v31;
     v34 = v33;
     v36 = v35;
     if (v21 == 1)
     {
-      v61[0] = v28;
+      v61[0] = imageByUnpremultiplyingAlpha;
       v37 = DWORD2(v53);
       LODWORD(v29) = DWORD2(v53);
       v61[1] = [MEMORY[0x1E696AD98] numberWithFloat:v29];
@@ -284,7 +284,7 @@
 
     else
     {
-      v58[0] = v28;
+      v58[0] = imageByUnpremultiplyingAlpha;
       LODWORD(v29) = DWORD1(v53);
       v58[1] = [MEMORY[0x1E696AD98] numberWithFloat:v29];
       LODWORD(v47) = DWORD2(v53);
@@ -310,21 +310,21 @@
     }
 
     v52 = [-[CIColorKernel applyWithExtent:arguments:options:](v41 applyWithExtent:v46 arguments:v40 options:{v42, v43, v44, v45), "imageByPremultiplyingAlpha"}];
-    v5 = v52;
+    inputImage = v52;
     if (v27)
     {
-      v5 = [(CIImage *)v52 imageByColorMatchingColorSpaceToWorkingSpace:v27];
+      inputImage = [(CIImage *)v52 imageByColorMatchingColorSpaceToWorkingSpace:v27];
     }
 
     CGColorSpaceRelease(v27);
-    return v5;
+    return inputImage;
   }
 
   v23 = [(NSString *)self->inputPreferredDynamicRange isEqual:@"kCIDynamicRangeConstrainedHigh"];
-  v24 = [(CIImage *)v5 imageByColorMatchingWorkingSpaceToColorSpace:v22];
+  v24 = [(CIImage *)inputImage imageByColorMatchingWorkingSpaceToColorSpace:colorSpace];
   *&v25 = v9;
 
-  return [(CIImage *)v24 _imageByToneMappingColorSpaceToWorkingSpace:v22 targetHeadroom:v23 constrainedHigh:v25];
+  return [(CIImage *)v24 _imageByToneMappingColorSpaceToWorkingSpace:colorSpace targetHeadroom:v23 constrainedHigh:v25];
 }
 
 @end

@@ -1,37 +1,37 @@
 @interface CKContextExtractionItem
-- (BOOL)isEqual:(id)a3;
-- (CKContextExtractionItem)initWithCoder:(id)a3;
-- (CKContextExtractionItem)initWithTitle:(id)a3 type:(unint64_t)a4 bundleIdentifier:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CKContextExtractionItem)initWithCoder:(id)coder;
+- (CKContextExtractionItem)initWithTitle:(id)title type:(unint64_t)type bundleIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)toJSONSerializableDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CKContextExtractionItem
 
-- (CKContextExtractionItem)initWithTitle:(id)a3 type:(unint64_t)a4 bundleIdentifier:(id)a5
+- (CKContextExtractionItem)initWithTitle:(id)title type:(unint64_t)type bundleIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a5;
+  titleCopy = title;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = CKContextExtractionItem;
   v11 = [(CKContextExtractionItem *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_title, a3);
-    v12->_type = a4;
-    objc_storeStrong(&v12->_bundleIdentifier, a5);
+    objc_storeStrong(&v11->_title, title);
+    v12->_type = type;
+    objc_storeStrong(&v12->_bundleIdentifier, identifier);
   }
 
   return v12;
 }
 
-- (CKContextExtractionItem)initWithCoder:(id)a3
+- (CKContextExtractionItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v20.receiver = self;
   v20.super_class = CKContextExtractionItem;
   v5 = [(CKContextExtractionItem *)&v20 init];
@@ -40,8 +40,8 @@
     goto LABEL_8;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIdentifier"];
   v8 = v7;
   if (v6)
   {
@@ -63,16 +63,16 @@
     v5->_bundleIdentifier = v8;
     v14 = v8;
 
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v15;
 
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"extractionSourceClassName"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"extractionSourceClassName"];
     extractionSourceClassName = v5->_extractionSourceClassName;
     v5->_extractionSourceClassName = v17;
 
-    v5->_onScreen = [v4 decodeBoolForKey:@"onScreen"];
+    v5->_onScreen = [coderCopy decodeBoolForKey:@"onScreen"];
 LABEL_8:
     v10 = v5;
     goto LABEL_9;
@@ -84,21 +84,21 @@ LABEL_9:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   title = self->_title;
-  v5 = a3;
-  [v5 encodeObject:title forKey:@"title"];
-  [v5 encodeInteger:self->_type forKey:@"type"];
-  [v5 encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_extractionSourceClassName forKey:@"extractionSourceClassName"];
-  [v5 encodeBool:self->_onScreen forKey:@"onScreen"];
+  coderCopy = coder;
+  [coderCopy encodeObject:title forKey:@"title"];
+  [coderCopy encodeInteger:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_bundleIdentifier forKey:@"bundleIdentifier"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_extractionSourceClassName forKey:@"extractionSourceClassName"];
+  [coderCopy encodeBool:self->_onScreen forKey:@"onScreen"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_title copy];
   [v4 setTitle:v5];
 
@@ -116,10 +116,10 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
@@ -130,7 +130,7 @@ LABEL_9:
     if (objc_opt_isKindOfClass())
     {
       v5 = [(CKContextExtractionItem *)self hash];
-      v6 = v5 == [(CKContextExtractionItem *)v4 hash];
+      v6 = v5 == [(CKContextExtractionItem *)equalCopy hash];
     }
 
     else

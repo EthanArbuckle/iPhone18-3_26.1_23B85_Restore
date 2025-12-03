@@ -1,18 +1,18 @@
 @interface _ANEModelToken
-+ (id)codeSigningIDFor:(id *)a3 processIdentifier:(int)a4;
-+ (id)teamIDFor:(id *)a3 processIdentifier:(int)a4;
-- (_ANEModelToken)initWithCsIdentity:(id)a3 teamIdentity:(id)a4 modelIdentifier:(id)a5 processIdentifier:(int)a6;
++ (id)codeSigningIDFor:(id *)for processIdentifier:(int)identifier;
++ (id)teamIDFor:(id *)for processIdentifier:(int)identifier;
+- (_ANEModelToken)initWithCsIdentity:(id)identity teamIdentity:(id)teamIdentity modelIdentifier:(id)identifier processIdentifier:(int)processIdentifier;
 - (id)description;
 @end
 
 @implementation _ANEModelToken
 
-+ (id)codeSigningIDFor:(id *)a3 processIdentifier:(int)a4
++ (id)codeSigningIDFor:(id *)for processIdentifier:(int)identifier
 {
   v19 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E695E480];
-  v6 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v6 = *&for->var0[4];
+  *token.val = *for->var0;
   *&token.val[4] = v6;
   v7 = SecTaskCreateWithAuditToken(v5, &token);
   if (v7)
@@ -65,12 +65,12 @@
   return v9;
 }
 
-+ (id)teamIDFor:(id *)a3 processIdentifier:(int)a4
++ (id)teamIDFor:(id *)for processIdentifier:(int)identifier
 {
   v18 = *MEMORY[0x1E69E9840];
   v5 = *MEMORY[0x1E695E480];
-  v6 = *&a3->var0[4];
-  *token.val = *a3->var0;
+  v6 = *&for->var0[4];
+  *token.val = *for->var0;
   *&token.val[4] = v6;
   v7 = SecTaskCreateWithAuditToken(v5, &token);
   if (v7)
@@ -117,21 +117,21 @@
   return v10;
 }
 
-- (_ANEModelToken)initWithCsIdentity:(id)a3 teamIdentity:(id)a4 modelIdentifier:(id)a5 processIdentifier:(int)a6
+- (_ANEModelToken)initWithCsIdentity:(id)identity teamIdentity:(id)teamIdentity modelIdentifier:(id)identifier processIdentifier:(int)processIdentifier
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  identityCopy = identity;
+  teamIdentityCopy = teamIdentity;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = _ANEModelToken;
   v14 = [(_ANEModelToken *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_csIdentity, a3);
-    objc_storeStrong(&v15->_teamIdentity, a4);
-    objc_storeStrong(&v15->_modelIdentifier, a5);
-    v15->_processIdentifier = a6;
+    objc_storeStrong(&v14->_csIdentity, identity);
+    objc_storeStrong(&v15->_teamIdentity, teamIdentity);
+    objc_storeStrong(&v15->_modelIdentifier, identifier);
+    v15->_processIdentifier = processIdentifier;
   }
 
   return v15;

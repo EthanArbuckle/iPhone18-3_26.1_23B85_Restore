@@ -1,6 +1,6 @@
 @interface MTRDataTypeCurrencyStruct
 - (MTRDataTypeCurrencyStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRDataTypeCurrencyStruct);
-  v5 = [(MTRDataTypeCurrencyStruct *)self currency];
-  [(MTRDataTypeCurrencyStruct *)v4 setCurrency:v5];
+  currency = [(MTRDataTypeCurrencyStruct *)self currency];
+  [(MTRDataTypeCurrencyStruct *)v4 setCurrency:currency];
 
-  v6 = [(MTRDataTypeCurrencyStruct *)self decimalPoints];
-  [(MTRDataTypeCurrencyStruct *)v4 setDecimalPoints:v6];
+  decimalPoints = [(MTRDataTypeCurrencyStruct *)self decimalPoints];
+  [(MTRDataTypeCurrencyStruct *)v4 setDecimalPoints:decimalPoints];
 
   return v4;
 }

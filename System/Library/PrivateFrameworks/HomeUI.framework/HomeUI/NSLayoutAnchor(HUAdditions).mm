@@ -8,9 +8,9 @@
 {
   v13[2] = *MEMORY[0x277D85DE8];
   v6 = a4;
-  v7 = [a1 constraintLessThanOrEqualToAnchor:v6];
+  v7 = [self constraintLessThanOrEqualToAnchor:v6];
   v13[0] = v7;
-  v8 = [a1 constraintEqualToAnchor:v6];
+  v8 = [self constraintEqualToAnchor:v6];
 
   *&v9 = a2;
   v10 = [v8 hu_constraintWithPriority:v9];

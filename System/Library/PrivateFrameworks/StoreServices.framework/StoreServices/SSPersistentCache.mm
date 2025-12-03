@@ -1,39 +1,39 @@
 @interface SSPersistentCache
-+ (id)safeKeyForKey:(id)a3;
-- (BOOL)_isFileNotFound:(id)a3;
++ (id)safeKeyForKey:(id)key;
+- (BOOL)_isFileNotFound:(id)found;
 - (BOOL)clear;
-- (BOOL)removeDataForKey:(id)a3;
-- (BOOL)setData:(id)a3 forKey:(id)a4;
-- (SSPersistentCache)initWithIdentifier:(id)a3 cacheName:(id)a4;
-- (id)_pathForKey:(id)a3;
-- (id)dataForKey:(id)a3;
+- (BOOL)removeDataForKey:(id)key;
+- (BOOL)setData:(id)data forKey:(id)key;
+- (SSPersistentCache)initWithIdentifier:(id)identifier cacheName:(id)name;
+- (id)_pathForKey:(id)key;
+- (id)dataForKey:(id)key;
 - (void)dealloc;
 @end
 
 @implementation SSPersistentCache
 
-- (SSPersistentCache)initWithIdentifier:(id)a3 cacheName:(id)a4
+- (SSPersistentCache)initWithIdentifier:(id)identifier cacheName:(id)name
 {
   v39[2] = *MEMORY[0x1E69E9840];
   v6 = [(SSPersistentCache *)self init];
   if (v6)
   {
-    if (![a3 length] || !objc_msgSend(a4, "length"))
+    if (![identifier length] || !objc_msgSend(name, "length"))
     {
 LABEL_15:
 
       return 0;
     }
 
-    v6->_identifier = [a3 copy];
-    v6->_cacheName = [a4 copy];
-    v7 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{CPSharedResourcesDirectory(), @"Library", @"Caches", a3, a4, 0}];
+    v6->_identifier = [identifier copy];
+    v6->_cacheName = [name copy];
+    v7 = [objc_alloc(MEMORY[0x1E695DEC8]) initWithObjects:{CPSharedResourcesDirectory(), @"Library", @"Caches", identifier, name, 0}];
     v6->_path = [MEMORY[0x1E696AEC0] pathWithComponents:v7];
 
     v6->_fm = objc_alloc_init(MEMORY[0x1E696AC08]);
     v8 = objc_alloc(MEMORY[0x1E695DEC8]);
     v9 = objc_opt_class();
-    v10 = [v8 initWithObjects:{NSStringFromClass(v9), a3, a4, 0}];
+    v10 = [v8 initWithObjects:{NSStringFromClass(v9), identifier, name, 0}];
     v11 = [v10 componentsJoinedByString:@"."];
 
     v12 = dispatch_queue_create([v11 UTF8String], 0);
@@ -54,15 +54,15 @@ LABEL_15:
         v15 = +[SSLogConfig sharedConfig];
       }
 
-      v16 = [v15 shouldLog];
+      shouldLog = [v15 shouldLog];
       if ([v15 shouldLogToDisk])
       {
-        v17 = v16 | 2;
+        v17 = shouldLog | 2;
       }
 
       else
       {
-        v17 = v16;
+        v17 = shouldLog;
       }
 
       if (!os_log_type_enabled([v15 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -111,63 +111,63 @@ LABEL_15:
   [(SSPersistentCache *)&v4 dealloc];
 }
 
-- (id)_pathForKey:(id)a3
+- (id)_pathForKey:(id)key
 {
   path = self->_path;
   if (!self->_safeKeys)
   {
-    a3 = [SSPersistentCache safeKeyForKey:a3];
+    key = [SSPersistentCache safeKeyForKey:key];
   }
 
-  return [(NSString *)path stringByAppendingPathComponent:a3];
+  return [(NSString *)path stringByAppendingPathComponent:key];
 }
 
-- (BOOL)_isFileNotFound:(id)a3
+- (BOOL)_isFileNotFound:(id)found
 {
-  if ([a3 code] != 4)
+  if ([found code] != 4)
   {
     return 0;
   }
 
-  v4 = [a3 domain];
+  domain = [found domain];
   v5 = *MEMORY[0x1E696A250];
 
-  return [v4 isEqualToString:v5];
+  return [domain isEqualToString:v5];
 }
 
-+ (id)safeKeyForKey:(id)a3
++ (id)safeKeyForKey:(id)key
 {
   v7 = *MEMORY[0x1E69E9840];
-  if (!CC_MD5([a3 UTF8String], objc_msgSend(a3, "length"), md))
+  if (!CC_MD5([key UTF8String], objc_msgSend(key, "length"), md))
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   for (i = 0; i != 16; ++i)
   {
-    [v3 appendFormat:@"%02x", md[i]];
+    [string appendFormat:@"%02x", md[i]];
   }
 
-  return v3;
+  return string;
 }
 
-- (BOOL)setData:(id)a3 forKey:(id)a4
+- (BOOL)setData:(id)data forKey:(id)key
 {
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  if ([a4 length] && objc_msgSend(a3, "length"))
+  if ([key length] && objc_msgSend(data, "length"))
   {
-    v7 = [(SSPersistentCache *)self _pathForKey:a4];
+    v7 = [(SSPersistentCache *)self _pathForKey:key];
     serialQueue = self->_serialQueue;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __36__SSPersistentCache_setData_forKey___block_invoke;
     v11[3] = &unk_1E84AC588;
     v11[4] = self;
-    v11[5] = a3;
+    v11[5] = data;
     v11[6] = v7;
     v11[7] = &v12;
     dispatch_sync(serialQueue, v11);
@@ -231,15 +231,15 @@ uint64_t __36__SSPersistentCache_setData_forKey___block_invoke(uint64_t a1)
   return result;
 }
 
-- (BOOL)removeDataForKey:(id)a3
+- (BOOL)removeDataForKey:(id)key
 {
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
   v13 = 0;
-  if ([a3 length])
+  if ([key length])
   {
-    v5 = [(SSPersistentCache *)self _pathForKey:a3];
+    v5 = [(SSPersistentCache *)self _pathForKey:key];
     serialQueue = self->_serialQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -365,7 +365,7 @@ uint64_t __26__SSPersistentCache_clear__block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)dataForKey:(id)a3
+- (id)dataForKey:(id)key
 {
   v10 = 0;
   v11 = &v10;
@@ -373,9 +373,9 @@ uint64_t __26__SSPersistentCache_clear__block_invoke(uint64_t a1)
   v13 = __Block_byref_object_copy__73;
   v14 = __Block_byref_object_dispose__73;
   v15 = 0;
-  if ([a3 length])
+  if ([key length])
   {
-    v5 = [(SSPersistentCache *)self _pathForKey:a3];
+    v5 = [(SSPersistentCache *)self _pathForKey:key];
     serialQueue = self->_serialQueue;
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;

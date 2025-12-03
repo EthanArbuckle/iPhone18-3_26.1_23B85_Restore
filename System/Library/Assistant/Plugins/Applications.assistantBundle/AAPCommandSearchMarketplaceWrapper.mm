@@ -1,18 +1,18 @@
 @interface AAPCommandSearchMarketplaceWrapper
 - (_TtC12Applications34AAPCommandSearchMarketplaceWrapper)init;
-- (_TtC12Applications34AAPCommandSearchMarketplaceWrapper)initWithMarketplace:(id)a3 keyword:(id)a4;
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4 executionInfo:(id)a5;
+- (_TtC12Applications34AAPCommandSearchMarketplaceWrapper)initWithMarketplace:(id)marketplace keyword:(id)keyword;
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper executionInfo:(id)info;
 @end
 
 @implementation AAPCommandSearchMarketplaceWrapper
 
-- (_TtC12Applications34AAPCommandSearchMarketplaceWrapper)initWithMarketplace:(id)a3 keyword:(id)a4
+- (_TtC12Applications34AAPCommandSearchMarketplaceWrapper)initWithMarketplace:(id)marketplace keyword:(id)keyword
 {
-  if (!a3)
+  if (!marketplace)
   {
     v6 = 0;
     v8 = 0;
-    if (a4)
+    if (keyword)
     {
       goto LABEL_3;
     }
@@ -25,7 +25,7 @@ LABEL_5:
 
   v6 = sub_1249C();
   v8 = v7;
-  if (!a4)
+  if (!keyword)
   {
     goto LABEL_5;
   }
@@ -44,9 +44,9 @@ LABEL_6:
   return [(AAPCommandSearchMarketplaceWrapper *)&v14 init];
 }
 
-- (void)performWithCompletion:(id)a3 serviceHelper:(id)a4 executionInfo:(id)a5
+- (void)performWithCompletion:(id)completion serviceHelper:(id)helper executionInfo:(id)info
 {
-  v7 = _Block_copy(a3);
+  v7 = _Block_copy(completion);
   if (v7)
   {
     v8 = swift_allocObject();
@@ -60,8 +60,8 @@ LABEL_6:
   }
 
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
+  infoCopy = info;
+  selfCopy = self;
   _s12Applications34AAPCommandSearchMarketplaceWrapperC7perform10completion13serviceHelper13executionInfoyySDys11AnyHashableVypGSgcSg_So09AFServiceI0_pSgSo018AFCommandExecutionK0CSgtF_0(v7, v8);
   sub_EE20(v7);
   swift_unknownObjectRelease();

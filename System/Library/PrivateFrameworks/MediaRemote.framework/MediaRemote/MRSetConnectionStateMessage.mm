@@ -6,8 +6,8 @@
 
 - (unsigned)state
 {
-  v2 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v3 = MRConnectionStateFromProtobuf([v2 state]);
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  v3 = MRConnectionStateFromProtobuf([underlyingCodableMessage state]);
 
   return v3;
 }

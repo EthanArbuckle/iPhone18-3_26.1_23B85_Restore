@@ -1,19 +1,19 @@
 @interface CRLPairNonRetainedSecond
-- (void)p_SetSecond:(id)a3;
+- (void)p_SetSecond:(id)second;
 @end
 
 @implementation CRLPairNonRetainedSecond
 
-- (void)p_SetSecond:(id)a3
+- (void)p_SetSecond:(id)second
 {
-  v5 = a3;
+  secondCopy = second;
   mSecond = self->super.mSecond;
   p_mSecond = &self->super.mSecond;
-  if (mSecond != v5)
+  if (mSecond != secondCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mSecond, a3);
-    v5 = v8;
+    v8 = secondCopy;
+    objc_storeStrong(p_mSecond, second);
+    secondCopy = v8;
   }
 }
 

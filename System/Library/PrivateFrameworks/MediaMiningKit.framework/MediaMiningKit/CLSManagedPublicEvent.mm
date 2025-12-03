@@ -1,14 +1,14 @@
 @interface CLSManagedPublicEvent
 - (NSTimeZone)timeZone;
 - (int64_t)expectedAttendance;
-- (void)setExpectedAttendance:(int64_t)a3;
+- (void)setExpectedAttendance:(int64_t)attendance;
 @end
 
 @implementation CLSManagedPublicEvent
 
-- (void)setExpectedAttendance:(int64_t)a3
+- (void)setExpectedAttendance:(int64_t)attendance
 {
-  if (a3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (attendance == 0x7FFFFFFFFFFFFFFFLL)
   {
 
     [(CLSManagedPublicEvent *)self setExpectedAttendanceAsNumber:0];
@@ -23,27 +23,27 @@
 
 - (int64_t)expectedAttendance
 {
-  v2 = [(CLSManagedPublicEvent *)self expectedAttendanceAsNumber];
-  v3 = v2;
-  if (v2)
+  expectedAttendanceAsNumber = [(CLSManagedPublicEvent *)self expectedAttendanceAsNumber];
+  v3 = expectedAttendanceAsNumber;
+  if (expectedAttendanceAsNumber)
   {
-    v4 = [v2 integerValue];
+    integerValue = [expectedAttendanceAsNumber integerValue];
   }
 
   else
   {
-    v4 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v4;
+  return integerValue;
 }
 
 - (NSTimeZone)timeZone
 {
   v2 = MEMORY[0x277CBEBB0];
-  v3 = [(CLSManagedPublicEvent *)self timeZoneOffset];
+  timeZoneOffset = [(CLSManagedPublicEvent *)self timeZoneOffset];
 
-  return [v2 timeZoneForSecondsFromGMT:v3];
+  return [v2 timeZoneForSecondsFromGMT:timeZoneOffset];
 }
 
 @end

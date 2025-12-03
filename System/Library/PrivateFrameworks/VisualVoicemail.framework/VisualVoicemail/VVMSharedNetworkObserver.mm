@@ -2,9 +2,9 @@
 + (VVMSharedNetworkObserver)sharedInstance;
 - (BOOL)isNetworkReachable;
 - (VVMSharedNetworkObserver)init;
-- (void)addDelegate:(id)a3 queue:(id)a4;
-- (void)networkReachabilityChanged:(id)a3;
-- (void)removeDelegate:(id)a3;
+- (void)addDelegate:(id)delegate queue:(id)queue;
+- (void)networkReachabilityChanged:(id)changed;
+- (void)removeDelegate:(id)delegate;
 - (void)startObservingNetworkSync;
 - (void)stopObservingNetworkSync;
 @end
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_1000841FC;
   block[3] = &unk_1000EF380;
-  block[4] = a1;
+  block[4] = self;
   if (qword_10010D9A0 != -1)
   {
     dispatch_once(&qword_10010D9A0, block);
@@ -51,21 +51,21 @@
   return v3;
 }
 
-- (void)addDelegate:(id)a3 queue:(id)a4
+- (void)addDelegate:(id)delegate queue:(id)queue
 {
-  v7 = a3;
-  v6 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   os_unfair_lock_lock(&self->fLock);
-  [(NSMapTable *)self->fDelegates setObject:v6 forKey:v7];
+  [(NSMapTable *)self->fDelegates setObject:queueCopy forKey:delegateCopy];
   [(VVMSharedNetworkObserver *)self startObservingNetworkSync];
   os_unfair_lock_unlock(&self->fLock);
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock(&self->fLock);
-  [(NSMapTable *)self->fDelegates removeObjectForKey:v4];
+  [(NSMapTable *)self->fDelegates removeObjectForKey:delegateCopy];
   if (![(NSMapTable *)self->fDelegates count])
   {
     [(VVMSharedNetworkObserver *)self stopObservingNetworkSync];
@@ -109,23 +109,23 @@
   }
 }
 
-- (void)networkReachabilityChanged:(id)a3
+- (void)networkReachabilityChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 name];
-  v6 = [v5 isEqualToString:CPNetworkObserverNetworkReachableNotification];
+  changedCopy = changed;
+  name = [changedCopy name];
+  v6 = [name isEqualToString:CPNetworkObserverNetworkReachableNotification];
 
   if (v6)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:CPNetworkObserverReachable];
+    userInfo = [changedCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:CPNetworkObserverReachable];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [v8 BOOLValue];
+      bOOLValue = [v8 BOOLValue];
       os_unfair_lock_lock(&self->fLock);
-      self->fIsNetworkReachable = v9;
+      self->fIsNetworkReachable = bOOLValue;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
@@ -151,7 +151,7 @@
             block[2] = sub_1000848E0;
             block[3] = &unk_1000ED8D8;
             block[4] = v13;
-            v17 = v9;
+            v17 = bOOLValue;
             dispatch_async(v14, block);
           }
 

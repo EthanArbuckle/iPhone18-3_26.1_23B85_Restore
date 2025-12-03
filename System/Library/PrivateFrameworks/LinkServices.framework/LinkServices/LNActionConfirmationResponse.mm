@@ -1,63 +1,63 @@
 @interface LNActionConfirmationResponse
-- (LNActionConfirmationResponse)initWithCoder:(id)a3;
-- (LNActionConfirmationResponse)initWithIdentifier:(id)a3 context:(id)a4 value:(id)a5 updates:(id)a6;
-- (void)encodeWithCoder:(id)a3;
+- (LNActionConfirmationResponse)initWithCoder:(id)coder;
+- (LNActionConfirmationResponse)initWithIdentifier:(id)identifier context:(id)context value:(id)value updates:(id)updates;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNActionConfirmationResponse
 
-- (LNActionConfirmationResponse)initWithCoder:(id)a3
+- (LNActionConfirmationResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"value"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"value"];
     v7 = MEMORY[0x1E695DFD8];
     v8 = objc_opt_class();
     v9 = objc_opt_class();
     v10 = [v7 setWithObjects:{v8, v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"updates"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"updates"];
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"context"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"context"];
     self = [(LNActionConfirmationResponse *)self initWithIdentifier:v5 context:v12 value:v6 updates:v11];
 
-    v13 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v13 = 0;
+    selfCopy = 0;
   }
 
-  return v13;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = LNActionConfirmationResponse;
-  v4 = a3;
-  [(LNResponse *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(LNResponse *)&v7 encodeWithCoder:coderCopy];
   v5 = [(LNActionConfirmationResponse *)self value:v7.receiver];
-  [v4 encodeObject:v5 forKey:@"value"];
+  [coderCopy encodeObject:v5 forKey:@"value"];
 
-  v6 = [(LNActionConfirmationResponse *)self updates];
-  [v4 encodeObject:v6 forKey:@"updates"];
+  updates = [(LNActionConfirmationResponse *)self updates];
+  [coderCopy encodeObject:updates forKey:@"updates"];
 }
 
-- (LNActionConfirmationResponse)initWithIdentifier:(id)a3 context:(id)a4 value:(id)a5 updates:(id)a6
+- (LNActionConfirmationResponse)initWithIdentifier:(id)identifier context:(id)context value:(id)value updates:(id)updates
 {
-  v11 = a5;
-  v12 = a6;
+  valueCopy = value;
+  updatesCopy = updates;
   v17.receiver = self;
   v17.super_class = LNActionConfirmationResponse;
-  v13 = [(LNResponse *)&v17 initWithIdentifier:a3 context:a4];
+  v13 = [(LNResponse *)&v17 initWithIdentifier:identifier context:context];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_value, a5);
-    objc_storeStrong(&v14->_updates, a6);
+    objc_storeStrong(&v13->_value, value);
+    objc_storeStrong(&v14->_updates, updates);
     v15 = v14;
   }
 

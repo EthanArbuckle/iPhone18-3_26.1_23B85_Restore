@@ -1,10 +1,10 @@
 @interface SBHFileStackIconImageProviderDataSource_Testing
 - (SBHFileStackIconImageProviderDataSourceDelegate)delegate;
 - (SBHFileStackIconImageProviderDataSource_Testing)init;
-- (SBHFileStackIconImageProviderDataSource_Testing)initWithUniqueIdentifier:(id)a3;
-- (id)fileStackIconImageProvider:(id)a3 iconImageWithInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6 forFileStackIcon:(id)a7;
+- (SBHFileStackIconImageProviderDataSource_Testing)initWithUniqueIdentifier:(id)identifier;
+- (id)fileStackIconImageProvider:(id)provider iconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options forFileStackIcon:(id)icon;
 - (void)dealloc;
-- (void)handleSBHFileStackIconImageProviderDataSourceTestingNotification:(id)a3;
+- (void)handleSBHFileStackIconImageProviderDataSourceTestingNotification:(id)notification;
 - (void)postNotificationFileStackIconDataSourceChanged;
 - (void)startObservingNotification;
 - (void)startSimulatePeriodicImageUpdate;
@@ -16,22 +16,22 @@
 
 - (SBHFileStackIconImageProviderDataSource_Testing)init
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v5 = [(SBHFileStackIconImageProviderDataSource_Testing *)self initWithUniqueIdentifier:v4];
+  v5 = [(SBHFileStackIconImageProviderDataSource_Testing *)self initWithUniqueIdentifier:uUIDString];
   return v5;
 }
 
-- (SBHFileStackIconImageProviderDataSource_Testing)initWithUniqueIdentifier:(id)a3
+- (SBHFileStackIconImageProviderDataSource_Testing)initWithUniqueIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = SBHFileStackIconImageProviderDataSource_Testing;
   v5 = [(SBHFileStackIconImageProviderDataSource_Testing *)&v19 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     uniqueIdentifier = v5->_uniqueIdentifier;
     v5->_uniqueIdentifier = v6;
 
@@ -44,12 +44,12 @@
     v5->_imageNames = v8;
 
     v10 = objc_alloc(MEMORY[0x1E695DEC8]);
-    v11 = [MEMORY[0x1E69DC888] systemOrangeColor];
-    v12 = [MEMORY[0x1E69DC888] systemYellowColor];
-    v13 = [MEMORY[0x1E69DC888] systemGreenColor];
-    v14 = [MEMORY[0x1E69DC888] systemRedColor];
-    v15 = [MEMORY[0x1E69DC888] systemBlueColor];
-    v16 = [v10 initWithObjects:{v11, v12, v13, v14, v15, 0}];
+    systemOrangeColor = [MEMORY[0x1E69DC888] systemOrangeColor];
+    systemYellowColor = [MEMORY[0x1E69DC888] systemYellowColor];
+    systemGreenColor = [MEMORY[0x1E69DC888] systemGreenColor];
+    systemRedColor = [MEMORY[0x1E69DC888] systemRedColor];
+    systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+    v16 = [v10 initWithObjects:{systemOrangeColor, systemYellowColor, systemGreenColor, systemRedColor, systemBlueColor, 0}];
     imageColors = v5->_imageColors;
     v5->_imageColors = v16;
   }
@@ -66,18 +66,18 @@
   [(SBHFileStackIconImageProviderDataSource_Testing *)&v3 dealloc];
 }
 
-- (id)fileStackIconImageProvider:(id)a3 iconImageWithInfo:(SBIconImageInfo *)a4 traitCollection:(id)a5 options:(unint64_t)a6 forFileStackIcon:(id)a7
+- (id)fileStackIconImageProvider:(id)provider iconImageWithInfo:(SBIconImageInfo *)info traitCollection:(id)collection options:(unint64_t)options forFileStackIcon:(id)icon
 {
   imageNames = self->_imageNames;
   indexImage = self->_indexImage;
-  v10 = a4;
+  infoCopy = info;
   v11 = [(NSArray *)imageNames objectAtIndex:indexImage];
   v12 = [(NSArray *)self->_imageColors objectAtIndex:self->_indexColor];
   v13 = self->_indexImage + 1;
   self->_indexImage = v13 % [(NSArray *)self->_imageNames count];
   v14 = self->_indexColor + 1;
   self->_indexColor = v14 % [(NSArray *)self->_imageColors count];
-  v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:v11 compatibleWithTraitCollection:v10];
+  v15 = [MEMORY[0x1E69DCAB8] systemImageNamed:v11 compatibleWithTraitCollection:infoCopy];
 
   v16 = [v15 imageWithRenderingMode:1];
 
@@ -99,8 +99,8 @@
   timer = self->_timer;
   self->_timer = v4;
 
-  v6 = [MEMORY[0x1E695DFD0] mainRunLoop];
-  [v6 addTimer:self->_timer forMode:*MEMORY[0x1E695DA28]];
+  mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+  [mainRunLoop addTimer:self->_timer forMode:*MEMORY[0x1E695DA28]];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -117,42 +117,42 @@
 {
   v9[2] = *MEMORY[0x1E69E9840];
   v8[0] = @"SBHFileStackIconImageProviderDataSourceTesting_UniqueIdentifier";
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
   v8[1] = @"SBHFileStackIconImageProviderDataSourceTesting_URL";
-  v9[0] = v4;
+  v9[0] = uUIDString;
   v5 = [MEMORY[0x1E695DFF8] URLWithString:@"/SBHFileStackIconImageProviderDataSource_Testing/TestingURL"];
   v9[1] = v5;
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:v8 count:2];
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"SBHFileStackIconImageProviderDataSourceTesting_Notification" object:self userInfo:v6];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SBHFileStackIconImageProviderDataSourceTesting_Notification" object:self userInfo:v6];
 }
 
 - (void)startObservingNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_handleSBHFileStackIconImageProviderDataSourceTestingNotification_ name:@"SBHFileStackIconImageProviderDataSourceTesting_Notification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_handleSBHFileStackIconImageProviderDataSourceTestingNotification_ name:@"SBHFileStackIconImageProviderDataSourceTesting_Notification" object:0];
 }
 
 - (void)stopObservingNotification
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 }
 
-- (void)handleSBHFileStackIconImageProviderDataSourceTestingNotification:(id)a3
+- (void)handleSBHFileStackIconImageProviderDataSourceTestingNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v9 = [v5 objectForKey:@"SBHFileStackIconImageProviderDataSourceTesting_UniqueIdentifier"];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v9 = [userInfo objectForKey:@"SBHFileStackIconImageProviderDataSourceTesting_UniqueIdentifier"];
 
-  v6 = [v4 userInfo];
+  userInfo2 = [notificationCopy userInfo];
 
-  v7 = [v6 objectForKey:@"SBHFileStackIconImageProviderDataSourceTesting_URL"];
+  v7 = [userInfo2 objectForKey:@"SBHFileStackIconImageProviderDataSourceTesting_URL"];
 
-  v8 = [(SBHFileStackIconImageProviderDataSource_Testing *)self delegate];
-  [v8 fileStackIconImageProviderDataSourceChanged:self uniqueIdentifier:v9 url:v7];
+  delegate = [(SBHFileStackIconImageProviderDataSource_Testing *)self delegate];
+  [delegate fileStackIconImageProviderDataSourceChanged:self uniqueIdentifier:v9 url:v7];
 }
 
 - (SBHFileStackIconImageProviderDataSourceDelegate)delegate

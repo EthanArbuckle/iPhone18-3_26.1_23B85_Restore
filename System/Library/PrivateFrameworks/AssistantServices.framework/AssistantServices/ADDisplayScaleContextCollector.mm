@@ -1,8 +1,8 @@
 @interface ADDisplayScaleContextCollector
-- (ADDisplayScaleContextCollector)initWithDelegate:(id)a3;
+- (ADDisplayScaleContextCollector)initWithDelegate:(id)delegate;
 - (ADDisplayScaleContextCollectorDelegate)delegate;
 - (void)dealloc;
-- (void)setDelegate:(id)a3;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation ADDisplayScaleContextCollector
@@ -14,9 +14,9 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -34,16 +34,16 @@
   [(ADDisplayScaleContextCollector *)&v2 dealloc];
 }
 
-- (ADDisplayScaleContextCollector)initWithDelegate:(id)a3
+- (ADDisplayScaleContextCollector)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v8.receiver = self;
   v8.super_class = ADDisplayScaleContextCollector;
   v5 = [(ADDisplayScaleContextCollector *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(ADDisplayScaleContextCollector *)v5 setDelegate:v4];
+    [(ADDisplayScaleContextCollector *)v5 setDelegate:delegateCopy];
   }
 
   return v6;

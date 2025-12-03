@@ -1,15 +1,15 @@
 @interface TUIContainerBox
-- (void)appendLayoutChildrenToArray:(id)a3;
-- (void)updateModelChildren:(id)a3;
+- (void)appendLayoutChildrenToArray:(id)array;
+- (void)updateModelChildren:(id)children;
 @end
 
 @implementation TUIContainerBox
 
-- (void)updateModelChildren:(id)a3
+- (void)updateModelChildren:(id)children
 {
-  v4 = a3;
+  childrenCopy = children;
   [(NSArray *)self->_children enumerateObjectsUsingBlock:&stru_263A90];
-  v5 = [v4 copy];
+  v5 = [childrenCopy copy];
   children = self->_children;
   self->_children = v5;
 
@@ -23,16 +23,16 @@
   [(TUIContainerBox *)self onContainedModelsChanged];
 }
 
-- (void)appendLayoutChildrenToArray:(id)a3
+- (void)appendLayoutChildrenToArray:(id)array
 {
-  v4 = a3;
+  arrayCopy = array;
   children = self->_children;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_189E2C;
   v7[3] = &unk_2615C0;
-  v8 = v4;
-  v6 = v4;
+  v8 = arrayCopy;
+  v6 = arrayCopy;
   [(NSArray *)children enumerateObjectsUsingBlock:v7];
 }
 

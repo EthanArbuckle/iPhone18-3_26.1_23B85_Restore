@@ -1,28 +1,28 @@
 @interface FPCTLTermDumper
 - (id)dateFormatter;
-- (id)providerNameForProviderIdentifier:(id)a3;
+- (id)providerNameForProviderIdentifier:(id)identifier;
 - (id)thumbnailQueue;
-- (void)dumpItem:(id)a3 verbose:(int)a4 hasItemsFromMultipleProviders:(BOOL)a5 showThumbnails:(BOOL)a6;
-- (void)dumpProgress:(id)a3 prefix:(id)a4 error:(id)a5;
+- (void)dumpItem:(id)item verbose:(int)verbose hasItemsFromMultipleProviders:(BOOL)providers showThumbnails:(BOOL)thumbnails;
+- (void)dumpProgress:(id)progress prefix:(id)prefix error:(id)error;
 @end
 
 @implementation FPCTLTermDumper
 
-- (void)dumpProgress:(id)a3 prefix:(id)a4 error:(id)a5
+- (void)dumpProgress:(id)progress prefix:(id)prefix error:(id)error
 {
-  v17 = a3;
-  v8 = a5;
-  [(FPCTLTermDumper *)self write:@"%@ ", a4];
-  if (v17)
+  progressCopy = progress;
+  errorCopy = error;
+  [(FPCTLTermDumper *)self write:@"%@ ", prefix];
+  if (progressCopy)
   {
-    if ([v17 isIndeterminate])
+    if ([progressCopy isIndeterminate])
     {
       v9 = @"(indeterminate) ";
     }
 
     else
     {
-      [v17 fractionCompleted];
+      [progressCopy fractionCompleted];
       v16 = v10 * 100.0;
       v9 = @"%.01f%% ";
     }
@@ -30,25 +30,25 @@
     [(FPCTLTermDumper *)self write:v9, *&v16];
   }
 
-  if (v8)
+  if (errorCopy)
   {
-    v11 = [v8 domain];
-    v12 = [v11 isEqualToString:NSFileProviderErrorDomain];
+    domain = [errorCopy domain];
+    v12 = [domain isEqualToString:NSFileProviderErrorDomain];
 
     if (v12)
     {
-      v13 = [v8 code];
-      if (v13 == -1000)
+      code = [errorCopy code];
+      if (code == -1000)
       {
         v14 = @"(not authenticated) ";
       }
 
-      else if (v13 == -1003)
+      else if (code == -1003)
       {
         v14 = @"(insufficient quota) ";
       }
 
-      else if (v13 == -1004)
+      else if (code == -1004)
       {
         v14 = @"(offline) ";
       }
@@ -63,15 +63,15 @@
 
     else
     {
-      v15 = [v8 domain];
-      -[FPCTLTermDumper write:](self, "write:", @"(%@:%d) ", v15, [v8 code]);
+      domain2 = [errorCopy domain];
+      -[FPCTLTermDumper write:](self, "write:", @"(%@:%d) ", domain2, [errorCopy code]);
     }
   }
 }
 
-- (id)providerNameForProviderIdentifier:(id)a3
+- (id)providerNameForProviderIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_getAssociatedObject(self, &unk_100021470);
   if (!v5)
   {
@@ -86,7 +86,7 @@
     [v5 setObject:@"📠 " forKeyedSubscript:@"com.apple.SMBClientProvider.FileProvider"];
   }
 
-  v6 = [v5 objectForKeyedSubscript:v4];
+  v6 = [v5 objectForKeyedSubscript:identifierCopy];
   if (!v6)
   {
     v7 = qword_100021490;
@@ -104,7 +104,7 @@
     }
     v6 = ;
 
-    [v5 setObject:v6 forKeyedSubscript:v4];
+    [v5 setObject:v6 forKeyedSubscript:identifierCopy];
     ++qword_100021490;
   }
 
@@ -140,16 +140,16 @@
   return v3;
 }
 
-- (void)dumpItem:(id)a3 verbose:(int)a4 hasItemsFromMultipleProviders:(BOOL)a5 showThumbnails:(BOOL)a6
+- (void)dumpItem:(id)item verbose:(int)verbose hasItemsFromMultipleProviders:(BOOL)providers showThumbnails:(BOOL)thumbnails
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  v11 = v10;
-  if (v7)
+  thumbnailsCopy = thumbnails;
+  providersCopy = providers;
+  itemCopy = item;
+  v11 = itemCopy;
+  if (providersCopy)
   {
-    v12 = [v10 providerID];
-    v13 = [(FPCTLTermDumper *)self providerNameForProviderIdentifier:v12];
+    providerID = [itemCopy providerID];
+    v13 = [(FPCTLTermDumper *)self providerNameForProviderIdentifier:providerID];
     [(FPCTLTermDumper *)self write:@"%@", v13];
   }
 
@@ -165,8 +165,8 @@
 
   else
   {
-    v15 = [v11 contentType];
-    v16 = [v15 conformsToType:UTTypeSymbolicLink];
+    contentType = [v11 contentType];
+    v16 = [contentType conformsToType:UTTypeSymbolicLink];
 
     if (v16)
     {
@@ -180,7 +180,7 @@
   }
 
   [(FPCTLTermDumper *)self write:v14];
-  if (v6)
+  if (thumbnailsCopy)
   {
     v17 = +[FPItemManager defaultManager];
     v51 = v11;
@@ -193,15 +193,15 @@
     v50[3] = &unk_10001D010;
     v50[4] = self;
     [v19 setPerThumbnailCompletionBlock:v50];
-    v20 = [(FPCTLTermDumper *)self thumbnailQueue];
-    [v20 addOperation:v19];
+    thumbnailQueue = [(FPCTLTermDumper *)self thumbnailQueue];
+    [thumbnailQueue addOperation:v19];
 
     [v19 waitUntilFinished];
   }
 
-  if (a4)
+  if (verbose)
   {
-    if (a4 >= 2)
+    if (verbose >= 2)
     {
       [(FPCTLTermDumper *)self write:@" %p", v11];
     }
@@ -218,8 +218,8 @@
   }
 
   -[FPCTLTermDumper startAttributes:](self, "startAttributes:", ~([v11 fileSystemFlags] >> 2) & 2);
-  v22 = [v11 displayName];
-  v23 = [v22 description];
+  displayName = [v11 displayName];
+  v23 = [displayName description];
   [(FPCTLTermDumper *)self write:@"%@ ", v23];
 
   [(FPCTLTermDumper *)self reset];
@@ -229,18 +229,18 @@
   }
 
   [(FPCTLTermDumper *)self startAttributes:0];
-  v24 = [v11 itemIdentifier];
-  v25 = [v24 description];
+  itemIdentifier = [v11 itemIdentifier];
+  v25 = [itemIdentifier description];
   [(FPCTLTermDumper *)self write:@"id:%@ ", v25];
 
   [(FPCTLTermDumper *)self reset];
-  v26 = [v11 documentSize];
+  documentSize = [v11 documentSize];
 
-  if (v26)
+  if (documentSize)
   {
     [(FPCTLTermDumper *)self startAttributes:0];
-    v27 = [v11 documentSize];
-    -[FPCTLTermDumper write:](self, "write:", @"size:%lu ", [v27 integerValue]);
+    documentSize2 = [v11 documentSize];
+    -[FPCTLTermDumper write:](self, "write:", @"size:%lu ", [documentSize2 integerValue]);
 
     [(FPCTLTermDumper *)self reset];
   }
@@ -249,16 +249,16 @@
   {
     if ([v11 isDownloading])
     {
-      v28 = [v11 downloadingProgress];
-      v29 = [v11 downloadingError];
-      [(FPCTLTermDumper *)self dumpProgress:v28 prefix:@"⬇ " error:v29];
+      downloadingProgress = [v11 downloadingProgress];
+      downloadingError = [v11 downloadingError];
+      [(FPCTLTermDumper *)self dumpProgress:downloadingProgress prefix:@"⬇ " error:downloadingError];
     }
 
     if ([v11 isUploading])
     {
-      v30 = [v11 uploadingProgress];
-      v31 = [v11 uploadingError];
-      [(FPCTLTermDumper *)self dumpProgress:v30 prefix:@"⬆ " error:v31];
+      uploadingProgress = [v11 uploadingProgress];
+      uploadingError = [v11 uploadingError];
+      [(FPCTLTermDumper *)self dumpProgress:uploadingProgress prefix:@"⬆ " error:uploadingError];
     }
   }
 
@@ -301,21 +301,21 @@ LABEL_33:
     [(FPCTLTermDumper *)self write:@"☁️ "];
   }
 
-  v33 = [v11 fileURL];
+  fileURL = [v11 fileURL];
 
-  if (!v33)
+  if (!fileURL)
   {
     [(FPCTLTermDumper *)self write:@"(no url) "];
   }
 
-  v34 = [v11 lastUsedDate];
+  lastUsedDate = [v11 lastUsedDate];
 
-  if (v34)
+  if (lastUsedDate)
   {
     [(FPCTLTermDumper *)self startAttributes:0];
-    v35 = [(FPCTLTermDumper *)self dateFormatter];
-    v36 = [v11 lastUsedDate];
-    v37 = [v35 stringFromDate:v36];
+    dateFormatter = [(FPCTLTermDumper *)self dateFormatter];
+    lastUsedDate2 = [v11 lastUsedDate];
+    v37 = [dateFormatter stringFromDate:lastUsedDate2];
     [(FPCTLTermDumper *)self write:@" %@ (used)", v37];
 LABEL_51:
 
@@ -323,14 +323,14 @@ LABEL_51:
     goto LABEL_52;
   }
 
-  v38 = [v11 contentModificationDate];
+  contentModificationDate = [v11 contentModificationDate];
 
-  if (v38)
+  if (contentModificationDate)
   {
     [(FPCTLTermDumper *)self startAttributes:0];
-    v35 = [(FPCTLTermDumper *)self dateFormatter];
-    v36 = [v11 contentModificationDate];
-    v37 = [v35 stringFromDate:v36];
+    dateFormatter = [(FPCTLTermDumper *)self dateFormatter];
+    lastUsedDate2 = [v11 contentModificationDate];
+    v37 = [dateFormatter stringFromDate:lastUsedDate2];
     [(FPCTLTermDumper *)self write:@" %@", v37];
     goto LABEL_51;
   }
@@ -347,8 +347,8 @@ LABEL_52:
   }
 
 LABEL_56:
-  v39 = [v11 tags];
-  v40 = sub_10000680C(v39);
+  tags = [v11 tags];
+  v40 = sub_10000680C(tags);
 
   if ([v40 length])
   {
@@ -359,18 +359,18 @@ LABEL_56:
     [(FPCTLTermDumper *)self reset];
   }
 
-  v42 = [v11 itemDecorations];
-  v43 = v42;
-  if (v42)
+  itemDecorations = [v11 itemDecorations];
+  v43 = itemDecorations;
+  if (itemDecorations)
   {
     v45[0] = _NSConcreteStackBlock;
     v45[1] = 3221225472;
     v45[2] = sub_1000075F8;
     v45[3] = &unk_10001D038;
-    v46 = v42;
-    v47 = self;
+    v46 = itemDecorations;
+    selfCopy = self;
     v48 = v11;
-    v49 = a4;
+    verboseCopy = verbose;
     v44 = objc_retainBlock(v45);
     (v44[2])(v44, FPItemDecorationTypeSharing, 7, 0);
     (v44[2])(v44, FPItemDecorationTypeBadge, 4, 1);

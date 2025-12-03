@@ -1,13 +1,13 @@
 @interface ChildItemCatalystButton
-+ (CGColor)extraShadowLayerBackgroundColorWithDarkMode:(BOOL)a3 isbuttonEnabled:(BOOL)a4;
++ (CGColor)extraShadowLayerBackgroundColorWithDarkMode:(BOOL)mode isbuttonEnabled:(BOOL)enabled;
 + (UIEdgeInsets)contentEdgeInsets;
 + (UIFont)buttonTitleFont;
 + (id)childItemCatalystButton;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (ChildItemButtonDelegate)delegate;
-- (void)setChildItem:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setTitle:(id)a3 tapHandler:(id)a4;
+- (void)setChildItem:(id)item;
+- (void)setDelegate:(id)delegate;
+- (void)setTitle:(id)title tapHandler:(id)handler;
 @end
 
 @implementation ChildItemCatalystButton
@@ -19,9 +19,9 @@
   return WeakRetained;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   v5 = obj;
@@ -32,18 +32,18 @@
   }
 }
 
-- (void)setTitle:(id)a3 tapHandler:(id)a4
+- (void)setTitle:(id)title tapHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
+  handlerCopy = handler;
+  titleCopy = title;
   v8 = [_MKPlaceActionButtonController alloc];
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_100A2BA58;
   v12[3] = &unk_101632210;
-  v13 = v6;
-  v9 = v6;
-  v10 = [v8 initWithTitle:v7 subTitle:0 selectedBlock:v12];
+  v13 = handlerCopy;
+  v9 = handlerCopy;
+  v10 = [v8 initWithTitle:titleCopy subTitle:0 selectedBlock:v12];
 
   buttonController = self->_buttonController;
   self->_buttonController = v10;
@@ -51,13 +51,13 @@
   [(ChildItemCatalystButton *)self setButtonController:self->_buttonController];
 }
 
-- (void)setChildItem:(id)a3
+- (void)setChildItem:(id)item
 {
-  v5 = a3;
+  itemCopy = item;
   childItem = self->_childItem;
-  if (childItem != v5)
+  if (childItem != itemCopy)
   {
-    objc_storeStrong(&self->_childItem, a3);
+    objc_storeStrong(&self->_childItem, item);
     childItem = self->_childItem;
   }
 
@@ -73,29 +73,29 @@
   objc_destroyWeak(&location);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   v6.receiver = self;
   v6.super_class = ChildItemCatalystButton;
-  [(ChildItemCatalystButton *)&v6 sizeThatFits:a3.width, a3.height];
+  [(ChildItemCatalystButton *)&v6 sizeThatFits:fits.width, fits.height];
   v5 = width;
   result.height = v4;
   result.width = v5;
   return result;
 }
 
-+ (CGColor)extraShadowLayerBackgroundColorWithDarkMode:(BOOL)a3 isbuttonEnabled:(BOOL)a4
++ (CGColor)extraShadowLayerBackgroundColorWithDarkMode:(BOOL)mode isbuttonEnabled:(BOOL)enabled
 {
-  v4 = [UIColor clearColor:a3];
-  v5 = [v4 CGColor];
+  v4 = [UIColor clearColor:mode];
+  cGColor = [v4 CGColor];
 
-  return v5;
+  return cGColor;
 }
 
 + (UIFont)buttonTitleFont
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___ChildItemCatalystButton;
   v2 = [objc_msgSendSuper2(&v4 "class")];
 
@@ -120,8 +120,8 @@
   v2 = [ChildItemCatalystButton buttonWithType:1];
   [objc_opt_class() contentEdgeInsets];
   [v2 setContentEdgeInsets:?];
-  v3 = [v2 titleLabel];
-  [v3 setLineBreakMode:0];
+  titleLabel = [v2 titleLabel];
+  [titleLabel setLineBreakMode:0];
 
   return v2;
 }

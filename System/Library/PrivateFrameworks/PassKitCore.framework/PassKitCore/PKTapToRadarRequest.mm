@@ -1,32 +1,32 @@
 @interface PKTapToRadarRequest
-- (PKTapToRadarRequest)initWithCoder:(id)a3;
+- (PKTapToRadarRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTapToRadarRequest
 
-- (PKTapToRadarRequest)initWithCoder:(id)a3
+- (PKTapToRadarRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = PKTapToRadarRequest;
   v5 = [(PKTapToRadarRequest *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"reason"];
     reason = v5->_reason;
     v5->_reason = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relatedRadar"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relatedRadar"];
     relatedRadar = v5->_relatedRadar;
     v5->_relatedRadar = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertHeader"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertHeader"];
     alertHeader = v5->_alertHeader;
     v5->_alertHeader = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertMessage"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertMessage"];
     alertMessage = v5->_alertMessage;
     v5->_alertMessage = v12;
   }
@@ -34,14 +34,14 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   reason = self->_reason;
-  v5 = a3;
-  [v5 encodeObject:reason forKey:@"reason"];
-  [v5 encodeObject:self->_relatedRadar forKey:@"relatedRadar"];
-  [v5 encodeObject:self->_alertHeader forKey:@"alertHeader"];
-  [v5 encodeObject:self->_alertMessage forKey:@"alertMessage"];
+  coderCopy = coder;
+  [coderCopy encodeObject:reason forKey:@"reason"];
+  [coderCopy encodeObject:self->_relatedRadar forKey:@"relatedRadar"];
+  [coderCopy encodeObject:self->_alertHeader forKey:@"alertHeader"];
+  [coderCopy encodeObject:self->_alertMessage forKey:@"alertMessage"];
 }
 
 - (id)description

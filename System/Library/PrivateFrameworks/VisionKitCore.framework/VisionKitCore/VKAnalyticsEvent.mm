@@ -3,21 +3,21 @@
 - (VKAnalyticsAnalyzerEvent)analyzerEvent;
 - (VKAnalyticsDDEvent)ddEvent;
 - (VKAnalyticsDataScannerEvent)dataScannerEvent;
-- (VKAnalyticsEvent)initWithCustomIdentifier:(id)a3;
+- (VKAnalyticsEvent)initWithCustomIdentifier:(id)identifier;
 - (VKAnalyticsInteractionEvent)interactionEvent;
 - (VKAnalyticsMRCEvent)mrcEvent;
 - (VKAnalyticsQuickActionEvent)quickActionEvent;
 - (VKAnalyticsSubjectEvent)subjectEvent;
 - (VKAnalyticsTextEvent)textEvent;
 - (VKAnalyticsVisualSearchEvent)visualSearchEvent;
-- (id)bundleIdentifierCleansingIfNecessaryWithCustomIdentifier:(id)a3;
+- (id)bundleIdentifierCleansingIfNecessaryWithCustomIdentifier:(id)identifier;
 @end
 
 @implementation VKAnalyticsEvent
 
-- (VKAnalyticsEvent)initWithCustomIdentifier:(id)a3
+- (VKAnalyticsEvent)initWithCustomIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = VKAnalyticsEvent;
   v5 = [(VKAnalyticsEvent *)&v11 init];
@@ -27,7 +27,7 @@
     date = v5->_date;
     v5->_date = v6;
 
-    v8 = [(VKAnalyticsEvent *)v5 bundleIdentifierCleansingIfNecessaryWithCustomIdentifier:v4];
+    v8 = [(VKAnalyticsEvent *)v5 bundleIdentifierCleansingIfNecessaryWithCustomIdentifier:identifierCopy];
     bundleIdentifier = v5->_bundleIdentifier;
     v5->_bundleIdentifier = v8;
 
@@ -37,20 +37,20 @@
   return v5;
 }
 
-- (id)bundleIdentifierCleansingIfNecessaryWithCustomIdentifier:(id)a3
+- (id)bundleIdentifierCleansingIfNecessaryWithCustomIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  identifierCopy = identifier;
+  v5 = identifierCopy;
+  if (!identifierCopy)
   {
-    v6 = [MEMORY[0x1E696AAE8] mainBundle];
-    v7 = [v6 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
     if ([(VKAnalyticsEvent *)self cleansesBundleID])
     {
-      if ([v7 hasPrefix:@"com.apple."])
+      if ([bundleIdentifier hasPrefix:@"com.apple."])
       {
-        v5 = v7;
+        v5 = bundleIdentifier;
       }
 
       else

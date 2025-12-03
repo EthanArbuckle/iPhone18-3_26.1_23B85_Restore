@@ -1,10 +1,10 @@
 @interface PCEventVisit
 - (PCEventVisit)init;
-- (PCEventVisit)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PCEventVisit)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)sensitiveDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PCEventVisit
@@ -16,47 +16,47 @@
   return [(PCEventVisit *)&v3 init];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   placeName = self->_placeName;
-  v5 = a3;
-  [v5 encodeObject:placeName forKey:@"placeName"];
-  [v5 encodeObject:self->_location forKey:@"location"];
-  [v5 encodeInteger:self->_mapItemPlaceType forKey:@"placeType"];
-  [v5 encodeInteger:self->_placeUserType forKey:@"placeUserType"];
-  [v5 encodeObject:self->_poiCategory forKey:@"poiCategory"];
-  [v5 encodeInteger:self->_placeSource forKey:@"placeSource"];
+  coderCopy = coder;
+  [coderCopy encodeObject:placeName forKey:@"placeName"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
+  [coderCopy encodeInteger:self->_mapItemPlaceType forKey:@"placeType"];
+  [coderCopy encodeInteger:self->_placeUserType forKey:@"placeUserType"];
+  [coderCopy encodeObject:self->_poiCategory forKey:@"poiCategory"];
+  [coderCopy encodeInteger:self->_placeSource forKey:@"placeSource"];
 }
 
-- (PCEventVisit)initWithCoder:(id)a3
+- (PCEventVisit)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PCEventVisit;
   v5 = [(PCEventVisit *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placeName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placeName"];
     placeName = v5->_placeName;
     v5->_placeName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     location = v5->_location;
     v5->_location = v8;
 
-    v5->_mapItemPlaceType = [v4 decodeIntegerForKey:@"placeType"];
-    v5->_placeUserType = [v4 decodeIntegerForKey:@"placeUserType"];
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"poiCategory"];
+    v5->_mapItemPlaceType = [coderCopy decodeIntegerForKey:@"placeType"];
+    v5->_placeUserType = [coderCopy decodeIntegerForKey:@"placeUserType"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"poiCategory"];
     poiCategory = v5->_poiCategory;
     v5->_poiCategory = v10;
 
-    v5->_placeSource = [v4 decodeIntegerForKey:@"placeSource"];
+    v5->_placeSource = [coderCopy decodeIntegerForKey:@"placeSource"];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(PCEventVisit);
   objc_storeStrong(&v4->_location, self->_location);

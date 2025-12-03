@@ -1,22 +1,22 @@
 @interface VKCTextPointerTrackingView
-- (VKCTextPointerTrackingView)initWithQuad:(id)a3;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (VKCTextPointerTrackingView)initWithQuad:(id)quad;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 @end
 
 @implementation VKCTextPointerTrackingView
 
-- (VKCTextPointerTrackingView)initWithQuad:(id)a3
+- (VKCTextPointerTrackingView)initWithQuad:(id)quad
 {
-  v5 = a3;
-  v6 = v5;
+  quadCopy = quad;
+  v6 = quadCopy;
   v20 = 0u;
   v21 = 0u;
   v18 = 0u;
   v19 = 0u;
   v17 = 0u;
-  if (v5)
+  if (quadCopy)
   {
-    [v5 rotationTransformAndBoundingBox:&v20];
+    [quadCopy rotationTransformAndBoundingBox:&v20];
     v8 = *(&v20 + 1);
     v7 = *&v20;
     v10 = *(&v21 + 1);
@@ -37,7 +37,7 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_quad, a3);
+    objc_storeStrong(&v11->_quad, quad);
     v15[0] = v17;
     v15[1] = v18;
     v15[2] = v19;
@@ -49,17 +49,17 @@
   return v12;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v5 = a4;
-  v6 = [(VKCTextPointerTrackingView *)self superview];
-  [v5 rect];
+  regionCopy = region;
+  superview = [(VKCTextPointerTrackingView *)self superview];
+  [regionCopy rect];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  [v6 convertRect:0 toView:{v8, v10, v12, v14}];
+  [superview convertRect:0 toView:{v8, v10, v12, v14}];
   v16 = v15;
 
   v17 = [MEMORY[0x1E69DC728] bezierPathWithRoundedRect:0.0 cornerRadius:{v16 * 0.9 * -0.5, 3.0, v16 * 0.9, 1.5}];

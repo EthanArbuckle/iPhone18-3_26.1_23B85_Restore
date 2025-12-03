@@ -1,7 +1,7 @@
 @interface CloudGeniusUtilities
 - (CloudGeniusUtilities)init;
-- (id)geniusValueForML3ContainerProperty:(id)a3 value:(id)a4;
-- (id)geniusValueForML3TrackProperty:(id)a3 value:(id)a4;
+- (id)geniusValueForML3ContainerProperty:(id)property value:(id)value;
+- (id)geniusValueForML3TrackProperty:(id)property value:(id)value;
 - (void)_initializeMappings;
 @end
 
@@ -212,34 +212,34 @@
   self->_allGeniusPlaylistPropertiesWithML3ContainerProperties = v68;
 }
 
-- (id)geniusValueForML3ContainerProperty:(id)a3 value:(id)a4
+- (id)geniusValueForML3ContainerProperty:(id)property value:(id)value
 {
-  v6 = a4;
-  v7 = [(NSDictionary *)self->_ml3ContainerPropertyTransformMap objectForKey:a3];
+  valueCopy = value;
+  v7 = [(NSDictionary *)self->_ml3ContainerPropertyTransformMap objectForKey:property];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 geniusValueForMLValue:v6];
+    v9 = [v7 geniusValueForMLValue:valueCopy];
 
-    v6 = v9;
+    valueCopy = v9;
   }
 
-  return v6;
+  return valueCopy;
 }
 
-- (id)geniusValueForML3TrackProperty:(id)a3 value:(id)a4
+- (id)geniusValueForML3TrackProperty:(id)property value:(id)value
 {
-  v6 = a4;
-  v7 = [(NSDictionary *)self->_ml3TrackPropertyTransformMap objectForKey:a3];
+  valueCopy = value;
+  v7 = [(NSDictionary *)self->_ml3TrackPropertyTransformMap objectForKey:property];
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 geniusValueForMLValue:v6];
+    v9 = [v7 geniusValueForMLValue:valueCopy];
 
-    v6 = v9;
+    valueCopy = v9;
   }
 
-  return v6;
+  return valueCopy;
 }
 
 - (CloudGeniusUtilities)init

@@ -1,29 +1,29 @@
 @interface TRIRemoteAssetStoreOperator
-- (BOOL)addSymlinkFromAssetWithIdentifier:(id)a3 toPath:(id)a4 flockWitness:(TRIFlockWitness_ *)a5;
+- (BOOL)addSymlinkFromAssetWithIdentifier:(id)identifier toPath:(id)path flockWitness:(TRIFlockWitness_ *)witness;
 - (BOOL)fixFileProtectionForAssetStoreFiles;
 - (BOOL)migrateToGlobalAssetStoreIfNeeded;
-- (BOOL)overwriteGlobalActiveFactorProvidersWithNamespaceMap:(id)a3 factorPackMap:(id)a4 rolloutDeploymentMap:(id)a5;
-- (BOOL)removeAssetWithIdentifier:(id)a3;
-- (BOOL)removeUnreferencedGlobalFactorPacksWithRemovedCount:(unsigned int *)a3;
-- (BOOL)saveAssetWithIdentifier:(id)a3 sourcePath:(id)a4 flockWitness:(TRIFlockWitness_ *)a5 removeSourceOnFailure:(BOOL)a6;
-- (BOOL)saveFactorPackToGlobalPath:(id)a3 fromTemporaryPath:(id)a4 factors:(id)a5;
-- (BOOL)updateFactorPackAtGlobalPath:(id)a3 deletingFactors:(id)a4;
-- (BOOL)updateFactorPackAtGlobalPath:(id)a3 withFactors:(id)a4;
-- (TRIRemoteAssetStoreOperator)initWithPaths:(id)a3;
+- (BOOL)overwriteGlobalActiveFactorProvidersWithNamespaceMap:(id)map factorPackMap:(id)packMap rolloutDeploymentMap:(id)deploymentMap;
+- (BOOL)removeAssetWithIdentifier:(id)identifier;
+- (BOOL)removeUnreferencedGlobalFactorPacksWithRemovedCount:(unsigned int *)count;
+- (BOOL)saveAssetWithIdentifier:(id)identifier sourcePath:(id)path flockWitness:(TRIFlockWitness_ *)witness removeSourceOnFailure:(BOOL)failure;
+- (BOOL)saveFactorPackToGlobalPath:(id)path fromTemporaryPath:(id)temporaryPath factors:(id)factors;
+- (BOOL)updateFactorPackAtGlobalPath:(id)path deletingFactors:(id)factors;
+- (BOOL)updateFactorPackAtGlobalPath:(id)path withFactors:(id)factors;
+- (TRIRemoteAssetStoreOperator)initWithPaths:(id)paths;
 @end
 
 @implementation TRIRemoteAssetStoreOperator
 
-- (TRIRemoteAssetStoreOperator)initWithPaths:(id)a3
+- (TRIRemoteAssetStoreOperator)initWithPaths:(id)paths
 {
-  v55 = a3;
+  pathsCopy = paths;
   v56.receiver = self;
   v56.super_class = TRIRemoteAssetStoreOperator;
   v5 = [(TRIRemoteAssetStoreOperator *)&v56 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_paths, a3);
+    objc_storeStrong(&v5->_paths, paths);
     v7 = objc_opt_new();
     storageManagement = v6->_storageManagement;
     v6->_storageManagement = v7;
@@ -103,23 +103,23 @@
   return v6;
 }
 
-- (BOOL)saveAssetWithIdentifier:(id)a3 sourcePath:(id)a4 flockWitness:(TRIFlockWitness_ *)a5 removeSourceOnFailure:(BOOL)a6
+- (BOOL)saveAssetWithIdentifier:(id)identifier sourcePath:(id)path flockWitness:(TRIFlockWitness_ *)witness removeSourceOnFailure:(BOOL)failure
 {
-  v29 = a6;
+  failureCopy = failure;
   v41 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   v12 = NSTemporaryDirectory();
   v13 = objc_opt_new();
-  v14 = [v13 UUIDString];
-  v15 = [v12 stringByAppendingPathComponent:v14];
+  uUIDString = [v13 UUIDString];
+  v15 = [v12 stringByAppendingPathComponent:uUIDString];
 
-  v16 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v36 = 0;
-  LOBYTE(v14) = [v16 createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v36];
+  LOBYTE(uUIDString) = [defaultManager createDirectoryAtPath:v15 withIntermediateDirectories:1 attributes:0 error:&v36];
   v17 = v36;
 
-  if ((v14 & 1) == 0)
+  if ((uUIDString & 1) == 0)
   {
     v18 = TRILogCategory_Server();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
@@ -132,12 +132,12 @@
     }
   }
 
-  [MEMORY[0x277CCAA00] triForceRenameWithSourcePath:v11 destPath:v15];
+  [MEMORY[0x277CCAA00] triForceRenameWithSourcePath:pathCopy destPath:v15];
   v19 = v15;
   if (!v19)
   {
-    v28 = [MEMORY[0x277CCA890] currentHandler];
-    [v28 handleFailureInMethod:a2 object:self file:@"TRIRemoteAssetStoreOperator.m" lineNumber:104 description:{@"Expression was unexpectedly nil/false: %@", @"globalSourcePath"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRemoteAssetStoreOperator.m" lineNumber:104 description:{@"Expression was unexpectedly nil/false: %@", @"globalSourcePath"}];
   }
 
   v20 = [TRISandboxExtensionFactory extensionTokenForPath:v19 extensionClass:1];
@@ -174,7 +174,7 @@
     v30[2] = __101__TRIRemoteAssetStoreOperator_saveAssetWithIdentifier_sourcePath_flockWitness_removeSourceOnFailure___block_invoke_2;
     v30[3] = &unk_279DE0A70;
     v30[4] = &v31;
-    [v24 saveAssetWithIdentifier:v10 sourcePath:v19 flockWitness:a5 removeSourceOnFailure:v29 sourceExtension:v20 completion:v30];
+    [v24 saveAssetWithIdentifier:identifierCopy sourcePath:v19 flockWitness:witness removeSourceOnFailure:failureCopy sourceExtension:v20 completion:v30];
     if (*(*&buf[8] + 40))
     {
       v25 = 0;
@@ -205,9 +205,9 @@
   return v25 & 1;
 }
 
-- (BOOL)removeAssetWithIdentifier:(id)a3
+- (BOOL)removeAssetWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
@@ -230,7 +230,7 @@
   v9[2] = __57__TRIRemoteAssetStoreOperator_removeAssetWithIdentifier___block_invoke_2;
   v9[3] = &unk_279DE0A70;
   v9[4] = &v10;
-  [v6 removeAssetWithIdentifier:v4 completion:v9];
+  [v6 removeAssetWithIdentifier:identifierCopy completion:v9];
   if (v16[5])
   {
     v7 = 0;
@@ -247,15 +247,15 @@
   return v7 & 1;
 }
 
-- (BOOL)addSymlinkFromAssetWithIdentifier:(id)a3 toPath:(id)a4 flockWitness:(TRIFlockWitness_ *)a5
+- (BOOL)addSymlinkFromAssetWithIdentifier:(id)identifier toPath:(id)path flockWitness:(TRIFlockWitness_ *)witness
 {
-  v8 = a3;
-  v9 = a4;
+  identifierCopy = identifier;
+  pathCopy = path;
   if ([MEMORY[0x277D737A8] hostingProcessIsTrialdSystem])
   {
     v10 = [[TRIAssetStore alloc] initWithPaths:self->_paths];
     v11 = [[TRIAssetStoreOperator alloc] initWithPaths:self->_paths storageManagement:self->_storageManagement assetStore:v10];
-    v12 = [(TRIAssetStoreOperator *)v11 addSymlinkFromAssetWithIdentifier:v8 toPath:v9 flockWitness:a5];
+    v12 = [(TRIAssetStoreOperator *)v11 addSymlinkFromAssetWithIdentifier:identifierCopy toPath:pathCopy flockWitness:witness];
   }
 
   else
@@ -282,7 +282,7 @@
     v16[2] = __85__TRIRemoteAssetStoreOperator_addSymlinkFromAssetWithIdentifier_toPath_flockWitness___block_invoke_2;
     v16[3] = &unk_279DE0A70;
     v16[4] = &v17;
-    [v14 addSymlinkFromAssetWithIdentifier:v8 toPath:v9 flockWitness:a5 completion:v16];
+    [v14 addSymlinkFromAssetWithIdentifier:identifierCopy toPath:pathCopy flockWitness:witness completion:v16];
     if (v23[5])
     {
       v12 = 0;
@@ -342,11 +342,11 @@
   return v5 & 1;
 }
 
-- (BOOL)saveFactorPackToGlobalPath:(id)a3 fromTemporaryPath:(id)a4 factors:(id)a5
+- (BOOL)saveFactorPackToGlobalPath:(id)path fromTemporaryPath:(id)temporaryPath factors:(id)factors
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  pathCopy = path;
+  temporaryPathCopy = temporaryPath;
+  factorsCopy = factors;
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
@@ -359,11 +359,11 @@
   v25[3] = &unk_279DE09F8;
   v25[4] = &v26;
   v12 = MEMORY[0x2743948D0](v25);
-  v13 = v10;
+  v13 = temporaryPathCopy;
   if (!v13)
   {
-    v19 = [MEMORY[0x277CCA890] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"TRIRemoteAssetStoreOperator.m" lineNumber:299 description:{@"Expression was unexpectedly nil/false: %@", @"temporaryPath"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRemoteAssetStoreOperator.m" lineNumber:299 description:{@"Expression was unexpectedly nil/false: %@", @"temporaryPath"}];
   }
 
   v14 = [TRISandboxExtensionFactory extensionTokenForPath:v13 extensionClass:1];
@@ -381,7 +381,7 @@
     v20[2] = __84__TRIRemoteAssetStoreOperator_saveFactorPackToGlobalPath_fromTemporaryPath_factors___block_invoke_394;
     v20[3] = &unk_279DE0A70;
     v20[4] = buf;
-    [v15 saveFactorPackForUserId:v16 toGlobalPath:v9 fromTemporaryPath:v13 factors:v11 sourceExtension:v14 completion:v20];
+    [v15 saveFactorPackForUserId:v16 toGlobalPath:pathCopy fromTemporaryPath:v13 factors:factorsCopy sourceExtension:v14 completion:v20];
 
     if (v27[5])
     {
@@ -412,10 +412,10 @@
   return v17 & 1;
 }
 
-- (BOOL)updateFactorPackAtGlobalPath:(id)a3 withFactors:(id)a4
+- (BOOL)updateFactorPackAtGlobalPath:(id)path withFactors:(id)factors
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  factorsCopy = factors;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -439,7 +439,7 @@
   v13[2] = __72__TRIRemoteAssetStoreOperator_updateFactorPackAtGlobalPath_withFactors___block_invoke_2;
   v13[3] = &unk_279DE0A70;
   v13[4] = &v14;
-  [v9 updateFactorPackForUserId:v10 atGlobalPath:v6 populatingFactors:v7 completion:v13];
+  [v9 updateFactorPackForUserId:v10 atGlobalPath:pathCopy populatingFactors:factorsCopy completion:v13];
 
   if (v20[5])
   {
@@ -457,10 +457,10 @@
   return v11 & 1;
 }
 
-- (BOOL)updateFactorPackAtGlobalPath:(id)a3 deletingFactors:(id)a4
+- (BOOL)updateFactorPackAtGlobalPath:(id)path deletingFactors:(id)factors
 {
-  v6 = a3;
-  v7 = a4;
+  pathCopy = path;
+  factorsCopy = factors;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -484,7 +484,7 @@
   v13[2] = __76__TRIRemoteAssetStoreOperator_updateFactorPackAtGlobalPath_deletingFactors___block_invoke_2;
   v13[3] = &unk_279DE0A70;
   v13[4] = &v14;
-  [v9 updateFactorPackForUserId:v10 atGlobalPath:v6 deletingFactors:v7 completion:v13];
+  [v9 updateFactorPackForUserId:v10 atGlobalPath:pathCopy deletingFactors:factorsCopy completion:v13];
 
   if (v20[5])
   {
@@ -502,7 +502,7 @@
   return v11 & 1;
 }
 
-- (BOOL)removeUnreferencedGlobalFactorPacksWithRemovedCount:(unsigned int *)a3
+- (BOOL)removeUnreferencedGlobalFactorPacksWithRemovedCount:(unsigned int *)count
 {
   v15 = 0;
   v16 = &v15;
@@ -526,7 +526,7 @@
   v9[2] = __83__TRIRemoteAssetStoreOperator_removeUnreferencedGlobalFactorPacksWithRemovedCount___block_invoke_2;
   v9[3] = &unk_279DE33D8;
   v9[4] = &v10;
-  v9[5] = a3;
+  v9[5] = count;
   [v6 removeUnreferencedGlobalFactorPacksWithCompletion:v9];
   if (v16[5])
   {
@@ -556,11 +556,11 @@ uint64_t __83__TRIRemoteAssetStoreOperator_removeUnreferencedGlobalFactorPacksWi
   return result;
 }
 
-- (BOOL)overwriteGlobalActiveFactorProvidersWithNamespaceMap:(id)a3 factorPackMap:(id)a4 rolloutDeploymentMap:(id)a5
+- (BOOL)overwriteGlobalActiveFactorProvidersWithNamespaceMap:(id)map factorPackMap:(id)packMap rolloutDeploymentMap:(id)deploymentMap
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  mapCopy = map;
+  packMapCopy = packMap;
+  deploymentMapCopy = deploymentMap;
   v21 = 0;
   v22 = &v21;
   v23 = 0x3032000000;
@@ -583,7 +583,7 @@ uint64_t __83__TRIRemoteAssetStoreOperator_removeUnreferencedGlobalFactorPacksWi
   v15[2] = __119__TRIRemoteAssetStoreOperator_overwriteGlobalActiveFactorProvidersWithNamespaceMap_factorPackMap_rolloutDeploymentMap___block_invoke_2;
   v15[3] = &unk_279DE0A70;
   v15[4] = &v16;
-  [v12 overwriteGlobalActiveFactorProvidersWithNamespaceMap:v8 factorPackMap:v9 rolloutDeploymentMap:v10 completion:v15];
+  [v12 overwriteGlobalActiveFactorProvidersWithNamespaceMap:mapCopy factorPackMap:packMapCopy rolloutDeploymentMap:deploymentMapCopy completion:v15];
   if (v22[5])
   {
     v13 = 0;
@@ -611,16 +611,16 @@ uint64_t __83__TRIRemoteAssetStoreOperator_removeUnreferencedGlobalFactorPacksWi
   }
 
   v5 = [(TRIPaths *)self->_paths assetStoreUsingGlobal:0];
-  v6 = [MEMORY[0x277CCAA00] defaultManager];
-  v7 = [v6 fileExistsAtPath:v5];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  v7 = [defaultManager fileExistsAtPath:v5];
 
   if (v7)
   {
     v8 = [(TRIPaths *)self->_paths trialRootDirUsingGlobal:0];
     if (!v8)
     {
-      v21 = [MEMORY[0x277CCA890] currentHandler];
-      [v21 handleFailureInMethod:a2 object:self file:@"TRIRemoteAssetStoreOperator.m" lineNumber:422 description:{@"Expression was unexpectedly nil/false: %@", @"extensionPath"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"TRIRemoteAssetStoreOperator.m" lineNumber:422 description:{@"Expression was unexpectedly nil/false: %@", @"extensionPath"}];
     }
 
     v9 = [TRISandboxExtensionFactory extensionTokenForPath:v8 extensionClass:1];
@@ -664,9 +664,9 @@ uint64_t __83__TRIRemoteAssetStoreOperator_removeUnreferencedGlobalFactorPacksWi
           _os_log_impl(&dword_26F567000, v12, OS_LOG_TYPE_DEFAULT, "Removing local asset store following successful migration to global.", v29, 2u);
         }
 
-        v13 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
         v22 = 0;
-        v14 = [v13 triForceRemoveItemAtPath:v5 error:&v22];
+        v14 = [defaultManager2 triForceRemoveItemAtPath:v5 error:&v22];
         v15 = v22;
 
         if ((v14 & 1) == 0)

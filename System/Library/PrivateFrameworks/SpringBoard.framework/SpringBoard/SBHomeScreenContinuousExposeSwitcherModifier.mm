@@ -1,10 +1,10 @@
 @interface SBHomeScreenContinuousExposeSwitcherModifier
-- (CGRect)frameForIndex:(unint64_t)a3;
+- (CGRect)frameForIndex:(unint64_t)index;
 - (SBHomeScreenContinuousExposeSwitcherModifier)init;
-- (id)handleEvent:(id)a3;
-- (id)handleSwitcherShortcutActionEvent:(id)a3;
-- (id)handleTapSlideOverTongueEvent:(id)a3;
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5;
+- (id)handleEvent:(id)event;
+- (id)handleSwitcherShortcutActionEvent:(id)event;
+- (id)handleTapSlideOverTongueEvent:(id)event;
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event;
 @end
 
 @implementation SBHomeScreenContinuousExposeSwitcherModifier
@@ -26,12 +26,12 @@
   return v2;
 }
 
-- (id)handleEvent:(id)a3
+- (id)handleEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self prefersStripHiddenAndDisabled];
+  eventCopy = event;
+  prefersStripHiddenAndDisabled = [(SBHomeScreenContinuousExposeSwitcherModifier *)self prefersStripHiddenAndDisabled];
   stripModifier = self->_stripModifier;
-  if (v5)
+  if (prefersStripHiddenAndDisabled)
   {
     if (stripModifier)
     {
@@ -52,29 +52,29 @@
 
   v12.receiver = self;
   v12.super_class = SBHomeScreenContinuousExposeSwitcherModifier;
-  v10 = [(SBChainableModifier *)&v12 handleEvent:v4];
+  v10 = [(SBChainableModifier *)&v12 handleEvent:eventCopy];
 
   return v10;
 }
 
-- (id)handleTapSlideOverTongueEvent:(id)a3
+- (id)handleTapSlideOverTongueEvent:(id)event
 {
   v23[1] = *MEMORY[0x277D85DE8];
   v20.receiver = self;
   v20.super_class = SBHomeScreenContinuousExposeSwitcherModifier;
-  v4 = [(SBSwitcherModifier *)&v20 handleTapSlideOverTongueEvent:a3];
-  v5 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self displayItemInSlideOver];
-  if (v5)
+  v4 = [(SBSwitcherModifier *)&v20 handleTapSlideOverTongueEvent:event];
+  displayItemInSlideOver = [(SBHomeScreenContinuousExposeSwitcherModifier *)self displayItemInSlideOver];
+  if (displayItemInSlideOver)
   {
     v6 = [SBAppLayout alloc];
-    v23[0] = v5;
+    v23[0] = displayItemInSlideOver;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
     LOBYTE(v17) = 0;
     v8 = [(SBAppLayout *)v6 initWithItems:v7 centerItem:0 floatingItem:0 configuration:1 centerConfiguration:0 environment:1 hidden:v17 preferredDisplayOrdinal:[(SBHomeScreenContinuousExposeSwitcherModifier *)self displayOrdinal]];
 
-    v9 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self appLayoutByBringingItemToFront:v5 inAppLayout:v8];
+    v9 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self appLayoutByBringingItemToFront:displayItemInSlideOver inAppLayout:v8];
 
-    v10 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self layoutAttributesForDisplayItem:v5 inAppLayout:v9];
+    v10 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self layoutAttributesForDisplayItem:displayItemInSlideOver inAppLayout:v9];
     v11 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForActivatingAppLayout:v9];
     v19 = 0;
     memset(v18, 0, sizeof(v18));
@@ -82,7 +82,7 @@
     BYTE1(v19) = 0;
     v12 = [SBDisplayItemLayoutAttributes attributesByModifyingSlideOverConfiguration:v10];
 
-    v21 = v5;
+    v21 = displayItemInSlideOver;
     v22 = v12;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
     [v11 setDisplayItemLayoutAttributesMap:v13];
@@ -97,35 +97,35 @@
   return v4;
 }
 
-- (id)handleSwitcherShortcutActionEvent:(id)a3
+- (id)handleSwitcherShortcutActionEvent:(id)event
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v21.receiver = self;
   v21.super_class = SBHomeScreenContinuousExposeSwitcherModifier;
-  v5 = [(SBSwitcherModifier *)&v21 handleSwitcherShortcutActionEvent:v4];
-  if (([v4 isHandled] & 1) == 0)
+  v5 = [(SBSwitcherModifier *)&v21 handleSwitcherShortcutActionEvent:eventCopy];
+  if (([eventCopy isHandled] & 1) == 0)
   {
-    v6 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
-    if ([v6 isFlexibleWindowingEnabled])
+    windowManagementContext = [(SBHomeScreenContinuousExposeSwitcherModifier *)self windowManagementContext];
+    if ([windowManagementContext isFlexibleWindowingEnabled])
     {
-      v7 = [v4 shortcutActionType];
+      shortcutActionType = [eventCopy shortcutActionType];
 
-      if (v7 != 30)
+      if (shortcutActionType != 30)
       {
         goto LABEL_7;
       }
 
-      v6 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self displayItemInSlideOver];
-      if (v6)
+      windowManagementContext = [(SBHomeScreenContinuousExposeSwitcherModifier *)self displayItemInSlideOver];
+      if (windowManagementContext)
       {
         v8 = [SBAppLayout alloc];
-        v24[0] = v6;
+        v24[0] = windowManagementContext;
         v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
         LOBYTE(v18) = 0;
         v10 = [(SBAppLayout *)v8 initWithItems:v9 centerItem:0 floatingItem:0 configuration:1 centerConfiguration:0 environment:1 hidden:v18 preferredDisplayOrdinal:[(SBHomeScreenContinuousExposeSwitcherModifier *)self displayOrdinal]];
 
-        v11 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self layoutAttributesForDisplayItem:v6 inAppLayout:v10];
+        v11 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self layoutAttributesForDisplayItem:windowManagementContext inAppLayout:v10];
         v12 = [(SBSwitcherTransitionRequest *)SBMutableSwitcherTransitionRequest requestForActivatingAppLayout:v10];
         v20 = 0;
         memset(v19, 0, sizeof(v19));
@@ -133,7 +133,7 @@
         BYTE1(v20) = 0;
         v13 = [SBDisplayItemLayoutAttributes attributesByModifyingSlideOverConfiguration:v11];
 
-        v22 = v6;
+        v22 = windowManagementContext;
         v23 = v13;
         v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
         [v12 setDisplayItemLayoutAttributesMap:v14];
@@ -151,35 +151,35 @@ LABEL_7:
   return v5;
 }
 
-- (id)responseForProposedChildResponse:(id)a3 childModifier:(id)a4 event:(id)a5
+- (id)responseForProposedChildResponse:(id)response childModifier:(id)modifier event:(id)event
 {
-  v8 = a5;
+  eventCopy = event;
   v24.receiver = self;
   v24.super_class = SBHomeScreenContinuousExposeSwitcherModifier;
-  v9 = [(SBChainableModifier *)&v24 responseForProposedChildResponse:a3 childModifier:a4 event:v8];
-  if ([v8 type] == 1)
+  v9 = [(SBChainableModifier *)&v24 responseForProposedChildResponse:response childModifier:modifier event:eventCopy];
+  if ([eventCopy type] == 1)
   {
-    v10 = v8;
-    v11 = [v10 fromAppLayout];
-    v12 = [v10 toAppLayout];
-    v13 = [v10 fromPeekConfiguration];
-    v14 = [v10 toPeekConfiguration];
-    if (v11)
+    v10 = eventCopy;
+    fromAppLayout = [v10 fromAppLayout];
+    toAppLayout = [v10 toAppLayout];
+    fromPeekConfiguration = [v10 fromPeekConfiguration];
+    toPeekConfiguration = [v10 toPeekConfiguration];
+    if (fromAppLayout)
     {
-      if (v12)
+      if (toAppLayout)
       {
-        v15 = v14;
-        if (SBPeekConfigurationIsValid(v13) && !SBPeekConfigurationIsValid(v15))
+        v15 = toPeekConfiguration;
+        if (SBPeekConfigurationIsValid(fromPeekConfiguration) && !SBPeekConfigurationIsValid(v15))
         {
           v18[0] = MEMORY[0x277D85DD0];
           v18[1] = 3221225472;
           v18[2] = __101__SBHomeScreenContinuousExposeSwitcherModifier_responseForProposedChildResponse_childModifier_event___block_invoke;
           v18[3] = &unk_2783BEA90;
-          v19 = v12;
-          v20 = v11;
+          v19 = toAppLayout;
+          v20 = fromAppLayout;
           v21 = v10;
-          v22 = self;
-          v23 = v13;
+          selfCopy = self;
+          v23 = fromPeekConfiguration;
           v16 = [v9 responseByTransformingResponseWithTransformer:v18];
 
           v9 = v16;
@@ -307,14 +307,14 @@ LABEL_19:
   return a1;
 }
 
-- (CGRect)frameForIndex:(unint64_t)a3
+- (CGRect)frameForIndex:(unint64_t)index
 {
-  v5 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self appLayouts];
-  v6 = [v5 objectAtIndex:a3];
+  appLayouts = [(SBHomeScreenContinuousExposeSwitcherModifier *)self appLayouts];
+  v6 = [appLayouts objectAtIndex:index];
 
-  v7 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self displayItemLayoutAttributesCalculator];
+  displayItemLayoutAttributesCalculator = [(SBHomeScreenContinuousExposeSwitcherModifier *)self displayItemLayoutAttributesCalculator];
   v8 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self appLayoutContainingAppLayout:v6];
-  v9 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self switcherInterfaceOrientation];
+  switcherInterfaceOrientation = [(SBHomeScreenContinuousExposeSwitcherModifier *)self switcherInterfaceOrientation];
   [(SBHomeScreenContinuousExposeSwitcherModifier *)self floatingDockHeight];
   v49 = v10;
   [(SBHomeScreenContinuousExposeSwitcherModifier *)self screenScale];
@@ -324,23 +324,23 @@ LABEL_19:
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self isDisplayEmbedded];
-  v21 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self prefersStripHidden];
-  v22 = [(SBHomeScreenContinuousExposeSwitcherModifier *)self prefersDockHidden];
+  isDisplayEmbedded = [(SBHomeScreenContinuousExposeSwitcherModifier *)self isDisplayEmbedded];
+  prefersStripHidden = [(SBHomeScreenContinuousExposeSwitcherModifier *)self prefersStripHidden];
+  prefersDockHidden = [(SBHomeScreenContinuousExposeSwitcherModifier *)self prefersDockHidden];
   [(SBHomeScreenContinuousExposeSwitcherModifier *)self leftStatusBarPartIntersectionRegion];
   v24 = v23;
   v26 = v25;
   v28 = v27;
   v30 = v29;
   [(SBHomeScreenContinuousExposeSwitcherModifier *)self rightStatusBarPartIntersectionRegion];
-  v35 = [v7 flexibleWindowingAutoLayoutSpaceForAppLayout:v8 containerOrientation:v9 floatingDockHeight:v20 screenScale:v21 bounds:v22 isEmbeddedDisplay:v49 prefersStripHidden:v48 prefersDockHidden:v13 leftStatusBarPartIntersectionRegion:v15 rightStatusBarPartIntersectionRegion:{v17, v19, v24, v26, v28, v30, v31, v32, v33, v34}];
+  v35 = [displayItemLayoutAttributesCalculator flexibleWindowingAutoLayoutSpaceForAppLayout:v8 containerOrientation:switcherInterfaceOrientation floatingDockHeight:isDisplayEmbedded screenScale:prefersStripHidden bounds:prefersDockHidden isEmbeddedDisplay:v49 prefersStripHidden:v48 prefersDockHidden:v13 leftStatusBarPartIntersectionRegion:v15 rightStatusBarPartIntersectionRegion:{v17, v19, v24, v26, v28, v30, v31, v32, v33, v34}];
 
   [v35 boundingBox];
   v37 = v36;
   v39 = v38;
   v50.receiver = self;
   v50.super_class = SBHomeScreenContinuousExposeSwitcherModifier;
-  [(SBHomeScreenContinuousExposeSwitcherModifier *)&v50 frameForIndex:a3];
+  [(SBHomeScreenContinuousExposeSwitcherModifier *)&v50 frameForIndex:index];
   UIRectGetCenter();
   v41 = v40 - v37 * 0.5;
   v43 = v42 - v39 * 0.5;

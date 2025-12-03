@@ -1,14 +1,14 @@
 @interface MusicLyricsLoader
-+ (BOOL)supportsLyricsFor:(id)a3;
++ (BOOL)supportsLyricsFor:(id)for;
 - (MusicLyricsLoader)init;
 @end
 
 @implementation MusicLyricsLoader
 
-+ (BOOL)supportsLyricsFor:(id)a3
++ (BOOL)supportsLyricsFor:(id)for
 {
-  v3 = a3;
-  v4 = specialized static LyricsLoader.supportsLyrics(for:)(v3);
+  forCopy = for;
+  v4 = specialized static LyricsLoader.supportsLyrics(for:)(forCopy);
 
   return v4 & 1;
 }

@@ -1,23 +1,23 @@
 @interface JSFollowUp
-- (id)clearFollowUpWithBackingIdentifier:(id)a3;
-- (id)pendingFollowUps:(id)a3;
+- (id)clearFollowUpWithBackingIdentifier:(id)identifier;
+- (id)pendingFollowUps:(id)ups;
 @end
 
 @implementation JSFollowUp
 
-- (id)clearFollowUpWithBackingIdentifier:(id)a3
+- (id)clearFollowUpWithBackingIdentifier:(id)identifier
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   v8 = sub_10011AED0(v4, v6);
 
   return v8;
 }
 
-- (id)pendingFollowUps:(id)a3
+- (id)pendingFollowUps:(id)ups
 {
-  if (a3)
+  if (ups)
   {
     v4 = static Dictionary._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -27,7 +27,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v6 = sub_10011CAB0(v4);
 
   return v6;

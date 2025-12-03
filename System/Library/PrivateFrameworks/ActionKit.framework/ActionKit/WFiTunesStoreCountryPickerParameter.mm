@@ -10,8 +10,8 @@
   possibleStates = self->_possibleStates;
   if (!possibleStates)
   {
-    v4 = [MEMORY[0x277CBEAF8] ISOCountryCodes];
-    v5 = [v4 if_compactMap:&__block_literal_global_3775];
+    iSOCountryCodes = [MEMORY[0x277CBEAF8] ISOCountryCodes];
+    v5 = [iSOCountryCodes if_compactMap:&__block_literal_global_3775];
     v6 = self->_possibleStates;
     self->_possibleStates = v5;
 
@@ -57,10 +57,10 @@ WFiTunesStoreCountrySubstitutableState *__53__WFiTunesStoreCountryPickerParamete
 
 - (id)defaultSerializedRepresentation
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
   v3 = *MEMORY[0x277CBE690];
-  v4 = [v2 objectForKey:*MEMORY[0x277CBE690]];
-  v5 = [v2 displayNameForKey:v3 value:v4];
+  v4 = [currentLocale objectForKey:*MEMORY[0x277CBE690]];
+  v5 = [currentLocale displayNameForKey:v3 value:v4];
 
   if ([v5 length])
   {

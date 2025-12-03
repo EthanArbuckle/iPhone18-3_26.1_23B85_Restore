@@ -1,53 +1,53 @@
 @interface CKMessageEntryView
 + (CKMessageEntryView)currentEntryView;
-+ (UIEdgeInsets)contentViewInsetsForMarginInsets:(UIEdgeInsets)a3 shouldShowPluginButtons:(BOOL)a4 shouldShowCharacterCount:(BOOL)a5 shouldCoverSendButton:(BOOL)a6 isStewieMode:(BOOL)a7;
-+ (UIEdgeInsets)coverViewInsetsForMarginInsets:(UIEdgeInsets)a3 shouldShowPluginButtons:(BOOL)a4 shouldShowCharacterCount:(BOOL)a5 shouldCenterCharacterCount:(BOOL *)a6 isStewieMode:(BOOL)a7;
++ (UIEdgeInsets)contentViewInsetsForMarginInsets:(UIEdgeInsets)insets shouldShowPluginButtons:(BOOL)buttons shouldShowCharacterCount:(BOOL)count shouldCoverSendButton:(BOOL)button isStewieMode:(BOOL)mode;
++ (UIEdgeInsets)coverViewInsetsForMarginInsets:(UIEdgeInsets)insets shouldShowPluginButtons:(BOOL)buttons shouldShowCharacterCount:(BOOL)count shouldCenterCharacterCount:(BOOL *)characterCount isStewieMode:(BOOL)mode;
 - (BOOL)_canSend;
 - (BOOL)_isApplePayCashInShelf;
 - (BOOL)_isDictationEnabled;
-- (BOOL)_isExceedingByteLimitForService:(id)a3;
+- (BOOL)_isExceedingByteLimitForService:(id)service;
 - (BOOL)_isPresentingInPopover;
 - (BOOL)_shouldEnablePlusButton;
 - (BOOL)_shouldMarkForLayoutAfterPropertyUpdate;
 - (BOOL)_shouldShrinkEntryViewForSendMenuPresentation;
 - (BOOL)_shouldUseConcentricPadding;
-- (BOOL)_shouldUseDarkAppearanceFromTraitCollection:(id)a3;
+- (BOOL)_shouldUseDarkAppearanceFromTraitCollection:(id)collection;
 - (BOOL)_shouldUseKeyboardVisibleBottomInsetsForTextEffectsPicker;
 - (BOOL)audioRecordingIsInEntryView;
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
 - (BOOL)hasRecording;
 - (BOOL)isInPencilMode;
 - (BOOL)isRecording;
 - (BOOL)isSendButtonEnabled;
 - (BOOL)isShowingAudioRecordingView;
-- (BOOL)messageEntryContentView:(id)a3 canPerformDictationAction:(id)a4;
-- (BOOL)messageEntryContentView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5;
-- (BOOL)messageEntryContentView:(id)a3 shouldInsertMediaObjects:(id)a4;
-- (BOOL)messageEntryContentViewShouldAllowLinkCustomization:(id)a3;
-- (BOOL)messageEntryContentViewShouldBeDisabled:(id)a3;
-- (BOOL)messageEntryContentViewShouldBeginEditing:(id)a3;
-- (BOOL)messageEntryContentViewShouldResignFirstResponder:(id)a3;
+- (BOOL)messageEntryContentView:(id)view canPerformDictationAction:(id)action;
+- (BOOL)messageEntryContentView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text;
+- (BOOL)messageEntryContentView:(id)view shouldInsertMediaObjects:(id)objects;
+- (BOOL)messageEntryContentViewShouldAllowLinkCustomization:(id)customization;
+- (BOOL)messageEntryContentViewShouldBeDisabled:(id)disabled;
+- (BOOL)messageEntryContentViewShouldBeginEditing:(id)editing;
+- (BOOL)messageEntryContentViewShouldResignFirstResponder:(id)responder;
 - (BOOL)pluginButtonsEnabled;
 - (BOOL)sendButtonEnabled;
 - (BOOL)shouldAllowSendWhenSendButtonDisabled;
 - (BOOL)shouldHideBackgroundView;
-- (BOOL)shouldRecordForService:(id)a3;
+- (BOOL)shouldRecordForService:(id)service;
 - (BOOL)shouldReloadBackgroundView;
 - (BOOL)shouldShowAudioButton;
-- (CGRect)_computedFinalCoverFrameRectForContentSize:(CGSize)a3;
+- (CGRect)_computedFinalCoverFrameRectForContentSize:(CGSize)size;
 - (CGRect)activeKeyboardHeight;
 - (CGRect)anchorRect;
 - (CGRect)audioRecordingPillViewFrameInThrowViewCoordinates;
-- (CGRect)coverFrameThatFitsInSize:(CGSize)a3;
+- (CGRect)coverFrameThatFitsInSize:(CGSize)size;
 - (CGRect)sendButtonFrameInScreenCoordinates;
 - (CGSize)characterCountSize;
 - (CGSize)inputButtonSize;
-- (CGSize)messageEntryContentViewMaxShelfPluginViewSize:(id)a3;
+- (CGSize)messageEntryContentViewMaxShelfPluginViewSize:(id)size;
 - (CGSize)sendButtonSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (CKComposition)composition;
 - (CKEntryViewButton)keyboardButton;
-- (CKMessageEntryView)initWithFrame:(CGRect)a3 marginInsets:(UIEdgeInsets)a4 shouldAllowImpact:(BOOL)a5 shouldShowSendButton:(BOOL)a6 shouldShowSubject:(BOOL)a7 shouldShowPluginButtons:(BOOL)a8 shouldShowCharacterCount:(BOOL)a9 traitCollection:(id)a10 shouldDisableAttachments:(BOOL)a11 shouldUseNonEmojiKeyboard:(BOOL)a12 shouldUseNonHandwritingKeyboard:(BOOL)a13 shouldDisableKeyboardStickers:(BOOL)a14 shouldAllowPollSuggestions:(BOOL)a15 translationLanguage:(id)a16;
+- (CKMessageEntryView)initWithFrame:(CGRect)frame marginInsets:(UIEdgeInsets)insets shouldAllowImpact:(BOOL)impact shouldShowSendButton:(BOOL)button shouldShowSubject:(BOOL)subject shouldShowPluginButtons:(BOOL)buttons shouldShowCharacterCount:(BOOL)count traitCollection:(id)self0 shouldDisableAttachments:(BOOL)self1 shouldUseNonEmojiKeyboard:(BOOL)self2 shouldUseNonHandwritingKeyboard:(BOOL)self3 shouldDisableKeyboardStickers:(BOOL)self4 shouldAllowPollSuggestions:(BOOL)self5 translationLanguage:(id)self6;
 - (CKMessageEntryViewAudioMessageAppDelegate)audioMessageAppDelegate;
 - (CKMessageEntryViewDelegate)delegate;
 - (CKMessageEntryViewInputDelegate)inputDelegate;
@@ -65,163 +65,163 @@
 - (double)_concentricPadding;
 - (double)_leftInsets;
 - (double)_rightInsets;
-- (double)balloonMaxWidthForMessageEntryRichTextView:(id)a3;
+- (double)balloonMaxWidthForMessageEntryRichTextView:(id)view;
 - (double)bottomInsetForAppCard;
-- (double)calculateOneLinePlaceHolderCenterY:(double)a3;
+- (double)calculateOneLinePlaceHolderCenterY:(double)y;
 - (double)coverViewWidth;
 - (double)placeholderHeight;
-- (double)powerLevelForAudioMessageRecordingView:(id)a3;
+- (double)powerLevelForAudioMessageRecordingView:(id)view;
 - (id)_currentInputDelegate;
-- (id)_placeholderTextForConversation:(id)a3;
-- (id)_serviceForEntryViewForConversation:(id)a3;
+- (id)_placeholderTextForConversation:(id)conversation;
+- (id)_serviceForEntryViewForConversation:(id)conversation;
 - (id)audioRecordingPillViewSnapshot;
 - (id)createDictationButton;
-- (id)gradientReferenceViewForMessageEntryContentView:(id)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)gradientReferenceViewForMessageEntryContentView:(id)view;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)inputAccessoryViewBackdropColor;
 - (id)inputAccessoryViewBackdropEffects;
-- (id)pasteBoardTextFromComposition:(id)a3;
-- (id)suggestionView:(id)a3 entityAtIndex:(unint64_t)a4;
-- (id)suggestionView:(id)a3 indexPathOfEntityWithIdentifier:(id)a4;
-- (unint64_t)numberOfSuggestionsInSuggestionView:(id)a3 forSection:(unint64_t)a4;
+- (id)pasteBoardTextFromComposition:(id)composition;
+- (id)suggestionView:(id)view entityAtIndex:(unint64_t)index;
+- (id)suggestionView:(id)view indexPathOfEntityWithIdentifier:(id)identifier;
+- (unint64_t)numberOfSuggestionsInSuggestionView:(id)view forSection:(unint64_t)section;
 - (void)_animateMessageEditingBlurOverlayViewIn;
 - (void)_animateMessageEditingBlurOverlayViewOut;
 - (void)_configureForDisplayModeRecorded;
 - (void)_configureForDisplayModeRecording;
 - (void)_configureForDisplayModeSending;
 - (void)_configureForDisplayModeText;
-- (void)_contactLimitsChanged:(id)a3;
+- (void)_contactLimitsChanged:(id)changed;
 - (void)_deleteTemporaryAudioFile;
 - (void)_dictationAvailabilityDidChange;
 - (void)_dynamicUserInterfaceTraitDidChange;
-- (void)_handlePlusButtonTouchInside:(id)a3;
+- (void)_handlePlusButtonTouchInside:(id)inside;
 - (void)_handleSendAudioMessage;
 - (void)_isDictationEnabled;
-- (void)_layoutAudioButtonWithCoverFrame:(CGRect)a3 oneLinePlaceHolderCenterY:(double)a4;
+- (void)_layoutAudioButtonWithCoverFrame:(CGRect)frame oneLinePlaceHolderCenterY:(double)y;
 - (void)_layoutBackgroundView;
-- (void)_layoutContentViewAndAudioRecordingViewWithCoverFrame:(CGRect)a3;
-- (void)_layoutDictationButtonWithCoverFrame:(CGRect)a3 oneLinePlaceHolderCenterY:(double)a4;
-- (void)_layoutHintViewWithCoverFrame:(CGRect)a3;
-- (void)_layoutSendButtonAndCharacterCountWithCoverFrame:(CGRect)a3 oneLinePlaceHolderCenterY:(double)a4;
-- (void)_overrideUserInterfaceStyleForEntryViewStyleIfNeeded:(int64_t)a3;
+- (void)_layoutContentViewAndAudioRecordingViewWithCoverFrame:(CGRect)frame;
+- (void)_layoutDictationButtonWithCoverFrame:(CGRect)frame oneLinePlaceHolderCenterY:(double)y;
+- (void)_layoutHintViewWithCoverFrame:(CGRect)frame;
+- (void)_layoutSendButtonAndCharacterCountWithCoverFrame:(CGRect)frame oneLinePlaceHolderCenterY:(double)y;
+- (void)_overrideUserInterfaceStyleForEntryViewStyleIfNeeded:(int64_t)needed;
 - (void)_setupAudioMessageRecordingView;
 - (void)_showVisionAppsMenu;
-- (void)_swipeDownGestureRecognized:(id)a3;
+- (void)_swipeDownGestureRecognized:(id)recognized;
 - (void)_trackAudioMessageRecordingStarted;
-- (void)_trackAudioMessageSentWithComposition:(id)a3;
-- (void)_updateSendMenuPresentationState:(int64_t)a3;
-- (void)_updateSendMenuPresentationStatePopoverSendMenu:(int64_t)a3;
-- (void)_updateSendMenuPresentationStateVariableSendMenu:(int64_t)a3;
+- (void)_trackAudioMessageSentWithComposition:(id)composition;
+- (void)_updateSendMenuPresentationState:(int64_t)state;
+- (void)_updateSendMenuPresentationStatePopoverSendMenu:(int64_t)menu;
+- (void)_updateSendMenuPresentationStateVariableSendMenu:(int64_t)menu;
 - (void)adjustContentClipViewForSendLater;
-- (void)appSelectionInterfaceSelectedItem:(id)a3;
+- (void)appSelectionInterfaceSelectedItem:(id)item;
 - (void)applicationWillResignActive;
 - (void)applyDefaultGlass;
 - (void)applySendAnimationGlass;
-- (void)audioButtonLongPressed:(id)a3;
-- (void)audioController:(id)a3 layoutViewsForScrubbingTime:(double)a4 mediaObject:(id)a5;
-- (void)audioController:(id)a3 mediaObjectDidFinishPlaying:(id)a4;
-- (void)audioController:(id)a3 mediaObjectProgressDidChange:(id)a4 currentTime:(double)a5 duration:(double)a6;
-- (void)audioControllerDidStop:(id)a3;
-- (void)audioMessageRecordingViewDidCancel:(id)a3;
-- (void)audioMessageRecordingViewDidPause:(id)a3;
-- (void)audioMessageRecordingViewDidPlay:(id)a3;
-- (void)audioMessageRecordingViewDidResume:(id)a3;
-- (void)audioMessageRecordingViewDidSend:(id)a3;
-- (void)audioMessageRecordingViewDidStartScrubbing:(id)a3;
-- (void)audioMessageRecordingViewDidStopScrubbing:(id)a3 atTime:(double)a4;
-- (void)audioMessageRecordingViewDidUpdateScrubbing:(id)a3 atTime:(double)a4;
-- (void)audioRecorderDidStartRecording:(id)a3;
-- (void)audioRecorderDidUpdateAveragePower:(float)a3;
-- (void)audioRecorderRecordingDidChange:(id)a3;
-- (void)audioRecorderRecordingDidFail:(id)a3;
+- (void)audioButtonLongPressed:(id)pressed;
+- (void)audioController:(id)controller layoutViewsForScrubbingTime:(double)time mediaObject:(id)object;
+- (void)audioController:(id)controller mediaObjectDidFinishPlaying:(id)playing;
+- (void)audioController:(id)controller mediaObjectProgressDidChange:(id)change currentTime:(double)time duration:(double)duration;
+- (void)audioControllerDidStop:(id)stop;
+- (void)audioMessageRecordingViewDidCancel:(id)cancel;
+- (void)audioMessageRecordingViewDidPause:(id)pause;
+- (void)audioMessageRecordingViewDidPlay:(id)play;
+- (void)audioMessageRecordingViewDidResume:(id)resume;
+- (void)audioMessageRecordingViewDidSend:(id)send;
+- (void)audioMessageRecordingViewDidStartScrubbing:(id)scrubbing;
+- (void)audioMessageRecordingViewDidStopScrubbing:(id)scrubbing atTime:(double)time;
+- (void)audioMessageRecordingViewDidUpdateScrubbing:(id)scrubbing atTime:(double)time;
+- (void)audioRecorderDidStartRecording:(id)recording;
+- (void)audioRecorderDidUpdateAveragePower:(float)power;
+- (void)audioRecorderRecordingDidChange:(id)change;
+- (void)audioRecorderRecordingDidFail:(id)fail;
 - (void)cancelAudioMessage;
 - (void)clearAudioRecordingUI;
-- (void)compositionWithAcceptedAutocorrection:(id)a3;
-- (void)configureForDisplayMode:(unint64_t)a3;
-- (void)configurePlusButtonFrameWithOneLinePlaceHolderCenterY:(double)a3;
-- (void)configurePocketInteractionForScrollView:(id)a3;
+- (void)compositionWithAcceptedAutocorrection:(id)autocorrection;
+- (void)configureForDisplayMode:(unint64_t)mode;
+- (void)configurePlusButtonFrameWithOneLinePlaceHolderCenterY:(double)y;
+- (void)configurePocketInteractionForScrollView:(id)view;
 - (void)configureTextViewWithInputContextHistoryFromTranscript;
-- (void)conversationPreferredServiceChanged:(id)a3;
+- (void)conversationPreferredServiceChanged:(id)changed;
 - (void)dealloc;
 - (void)deferredSetup;
-- (void)dictationButtonTapped:(id)a3;
+- (void)dictationButtonTapped:(id)tapped;
 - (void)didMoveToWindow;
-- (void)didSelectPlusButton:(id)a3;
+- (void)didSelectPlusButton:(id)button;
 - (void)disableRotationWhileRecordingAudioMessage;
-- (void)handleContentViewChangeWithCompletion:(id)a3;
-- (void)handleLongPress:(id)a3;
-- (void)invalidateCompositionForReason:(int64_t)a3;
-- (void)keyCommandSend:(id)a3;
+- (void)handleContentViewChangeWithCompletion:(id)completion;
+- (void)handleLongPress:(id)press;
+- (void)invalidateCompositionForReason:(int64_t)reason;
+- (void)keyCommandSend:(id)send;
 - (void)layoutSubviews;
-- (void)messageEntryContentView:(id)a3 didAddPluginEntryViewControllerToViewHierarchy:(id)a4;
-- (void)messageEntryContentView:(id)a3 didReceiveInputSuggestion:(id)a4;
-- (void)messageEntryContentView:(id)a3 didRequestGenerativeContentForImageURL:(id)a4;
-- (void)messageEntryContentView:(id)a3 didStagePluginPayload:(id)a4;
-- (void)messageEntryContentView:(id)a3 didTapMediaObject:(id)a4;
-- (void)messageEntryContentView:(id)a3 updatePluginSendEnablementTo:(BOOL)a4;
-- (void)messageEntryContentView:(id)a3 willAddPluginEntryViewControllerToViewHierarchy:(id)a4;
-- (void)messageEntryContentViewCancelWasTapped:(id)a3 shelfPluginPayload:(id)a4;
-- (void)messageEntryContentViewDidBeginEditing:(id)a3 wasAlreadyActive:(BOOL)a4;
-- (void)messageEntryContentViewDidChange:(id)a3 isTextChange:(BOOL)a4 isShelfChange:(BOOL)a5;
-- (void)messageEntryContentViewDidChangePencilMode:(id)a3;
-- (void)messageEntryContentViewDidDismissCustomizationPicker:(id)a3;
-- (void)messageEntryContentViewDidEndEditing:(id)a3;
-- (void)messageEntryContentViewDidPresentCustomizationPicker:(id)a3;
-- (void)messageEntryContentViewDidTapHandwritingKey:(id)a3;
-- (void)messageEntryContentViewSendLaterContentsUpdated:(id)a3;
-- (void)messageEntryContentViewSendLaterPluginInfoUpdated:(id)a3;
-- (void)messageEntryContentViewShelfDidChange:(id)a3;
-- (void)messageEntryContentViewTextFormattingAnimationsOptionsPresentationInProgress:(BOOL)a3;
-- (void)messageEntryContentViewTranslationDidChange:(id)a3;
-- (void)messageEntryContentViewWantsSendLaterPickerPresented:(id)a3;
-- (void)messageEntryContentViewWasTapped:(id)a3 isLongPress:(BOOL)a4;
-- (void)messageEntryContentViewWillDismissCustomizationPicker:(id)a3;
-- (void)messageEntryContentViewWillPresentCustomizationPicker:(id)a3;
+- (void)messageEntryContentView:(id)view didAddPluginEntryViewControllerToViewHierarchy:(id)hierarchy;
+- (void)messageEntryContentView:(id)view didReceiveInputSuggestion:(id)suggestion;
+- (void)messageEntryContentView:(id)view didRequestGenerativeContentForImageURL:(id)l;
+- (void)messageEntryContentView:(id)view didStagePluginPayload:(id)payload;
+- (void)messageEntryContentView:(id)view didTapMediaObject:(id)object;
+- (void)messageEntryContentView:(id)view updatePluginSendEnablementTo:(BOOL)to;
+- (void)messageEntryContentView:(id)view willAddPluginEntryViewControllerToViewHierarchy:(id)hierarchy;
+- (void)messageEntryContentViewCancelWasTapped:(id)tapped shelfPluginPayload:(id)payload;
+- (void)messageEntryContentViewDidBeginEditing:(id)editing wasAlreadyActive:(BOOL)active;
+- (void)messageEntryContentViewDidChange:(id)change isTextChange:(BOOL)textChange isShelfChange:(BOOL)shelfChange;
+- (void)messageEntryContentViewDidChangePencilMode:(id)mode;
+- (void)messageEntryContentViewDidDismissCustomizationPicker:(id)picker;
+- (void)messageEntryContentViewDidEndEditing:(id)editing;
+- (void)messageEntryContentViewDidPresentCustomizationPicker:(id)picker;
+- (void)messageEntryContentViewDidTapHandwritingKey:(id)key;
+- (void)messageEntryContentViewSendLaterContentsUpdated:(id)updated;
+- (void)messageEntryContentViewSendLaterPluginInfoUpdated:(id)updated;
+- (void)messageEntryContentViewShelfDidChange:(id)change;
+- (void)messageEntryContentViewTextFormattingAnimationsOptionsPresentationInProgress:(BOOL)progress;
+- (void)messageEntryContentViewTranslationDidChange:(id)change;
+- (void)messageEntryContentViewWantsSendLaterPickerPresented:(id)presented;
+- (void)messageEntryContentViewWasTapped:(id)tapped isLongPress:(BOOL)press;
+- (void)messageEntryContentViewWillDismissCustomizationPicker:(id)picker;
+- (void)messageEntryContentViewWillPresentCustomizationPicker:(id)picker;
 - (void)moveFloatingCursorsToOrigin;
-- (void)optionDownArrowClicked:(id)a3;
-- (void)optionUpArrowClicked:(id)a3;
-- (void)plusButtonLongPressed:(id)a3;
-- (void)plusButtonTouchCancel:(id)a3;
-- (void)plusButtonTouchDown:(id)a3;
-- (void)plusButtonTouchDragEnter:(id)a3;
-- (void)plusButtonTouchDragExit:(id)a3;
-- (void)plusButtonTouchUpOutside:(id)a3;
+- (void)optionDownArrowClicked:(id)clicked;
+- (void)optionUpArrowClicked:(id)clicked;
+- (void)plusButtonLongPressed:(id)pressed;
+- (void)plusButtonTouchCancel:(id)cancel;
+- (void)plusButtonTouchDown:(id)down;
+- (void)plusButtonTouchDragEnter:(id)enter;
+- (void)plusButtonTouchDragExit:(id)exit;
+- (void)plusButtonTouchUpOutside:(id)outside;
 - (void)popoverSendMenuFrameChanged;
 - (void)prepareForResizeAnimationIfNeeded;
 - (void)safeAreaInsetsDidChange;
 - (void)sendAudioMessage;
 - (void)sendCurrentLocationMessage;
 - (void)sendEnableRotationAfterRecordingToDelegate;
-- (void)sendMenuPopoverMetricsDidChange:(id)a3;
-- (void)setAudioComposition:(id)a3;
-- (void)setBackdropGroupName:(id)a3;
-- (void)setCharacterCountHidden:(BOOL)a3;
+- (void)sendMenuPopoverMetricsDidChange:(id)change;
+- (void)setAudioComposition:(id)composition;
+- (void)setBackdropGroupName:(id)name;
+- (void)setCharacterCountHidden:(BOOL)hidden;
 - (void)setCharacterCountString;
-- (void)setComposingRecipient:(BOOL)a3;
-- (void)setComposition:(id)a3 forceUpdateText:(BOOL)a4;
-- (void)setConversation:(id)a3;
+- (void)setComposingRecipient:(BOOL)recipient;
+- (void)setComposition:(id)composition forceUpdateText:(BOOL)text;
+- (void)setConversation:(id)conversation;
 - (void)setEntryViewSmoothnessForMorphingAppearance;
-- (void)setEntryViewTraitCollection:(id)a3 resetStyle:(BOOL)a4;
-- (void)setFailedRecipients:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setKeyboardVisible:(BOOL)a3;
-- (void)setMarginInsets:(UIEdgeInsets)a3;
-- (void)setSendLaterPluginInfo:(id)a3 animated:(BOOL)a4;
-- (void)setShouldBlurForMessageEditing:(BOOL)a3;
-- (void)setShouldHideBackgroundView:(BOOL)a3;
-- (void)setStyle:(int64_t)a3;
-- (void)setTextEffectCoordinatorPaused:(BOOL)a3 reason:(id)a4;
-- (void)setUnreachableEmergencyRecipient:(BOOL)a3;
+- (void)setEntryViewTraitCollection:(id)collection resetStyle:(BOOL)style;
+- (void)setFailedRecipients:(BOOL)recipients;
+- (void)setFrame:(CGRect)frame;
+- (void)setKeyboardVisible:(BOOL)visible;
+- (void)setMarginInsets:(UIEdgeInsets)insets;
+- (void)setSendLaterPluginInfo:(id)info animated:(BOOL)animated;
+- (void)setShouldBlurForMessageEditing:(BOOL)editing;
+- (void)setShouldHideBackgroundView:(BOOL)view;
+- (void)setStyle:(int64_t)style;
+- (void)setTextEffectCoordinatorPaused:(BOOL)paused reason:(id)reason;
+- (void)setUnreachableEmergencyRecipient:(BOOL)recipient;
 - (void)setupAudioMessageQuickSendViewAndStopRecording;
 - (void)showEffectPicker;
-- (void)showHintWithReason:(int64_t)a3;
+- (void)showHintWithReason:(int64_t)reason;
 - (void)startRecording;
 - (void)startRecordingForAudioButtonInEntryView;
 - (void)startRecordingForRaiseGesture;
 - (void)stopRecording;
-- (void)stopRecordingForRaiseGestureWithFailure:(BOOL)a3;
-- (void)textEffectsWindowOffsetDidChange:(id)a3;
-- (void)touchUpInsideSendButton:(id)a3;
+- (void)stopRecordingForRaiseGestureWithFailure:(BOOL)failure;
+- (void)textEffectsWindowOffsetDidChange:(id)change;
+- (void)touchUpInsideSendButton:(id)button;
 - (void)updateAllowPollSuggestions;
 - (void)updateAudioMessageRecordingAvailability;
 - (void)updateBackgroundView;
@@ -243,10 +243,10 @@
   v10 = v3;
   if (v6 > 0.0 || v3 > 0.0)
   {
-    v11 = [(CKMessageEntryView *)self window];
-    v12 = [v11 windowScene];
+    window = [(CKMessageEntryView *)self window];
+    windowScene = [window windowScene];
 
-    if (v12 && ([v12 interfaceOrientation] - 3) <= 1)
+    if (windowScene && ([windowScene interfaceOrientation] - 3) <= 1)
     {
       v13 = +[CKUIBehavior sharedBehaviors];
       [v13 landscapeKeyboardInsets];
@@ -292,24 +292,24 @@
 
 - (UIEdgeInsets)adjustedCoverInsets
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
     v5 = MEMORY[0x1E69DDCE0];
     v6 = *(MEMORY[0x1E69DDCE0] + 8);
     v7 = *(MEMORY[0x1E69DDCE0] + 24);
     [(CKMessageEntryView *)self _leftInsets];
     v9 = v6 + v8;
-    v10 = [(CKMessageEntryView *)self plusButton];
+    plusButton = [(CKMessageEntryView *)self plusButton];
 
-    if (v10)
+    if (plusButton)
     {
-      v11 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v12 = [v11 isEntryViewRefreshEnabled];
+      mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isEntryViewRefreshEnabled2 = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-      if (v12)
+      if (isEntryViewRefreshEnabled2)
       {
         +[CKGlassSendMenuButton buttonSize];
       }
@@ -329,16 +329,16 @@
     v37 = v5[2];
     [(CKMessageEntryView *)self _rightInsets];
     v32 = v7 + v38;
-    v39 = [(CKMessageEntryView *)self emojiButton];
+    emojiButton = [(CKMessageEntryView *)self emojiButton];
 
-    if (v39)
+    if (emojiButton)
     {
-      v40 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v41 = [v40 isEntryViewRefreshEnabled];
+      mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isEntryViewRefreshEnabled3 = [mEMORY[0x1E69A8070]3 isEntryViewRefreshEnabled];
 
-      v42 = [(CKMessageEntryView *)self emojiButton];
-      [v42 bounds];
-      if (v41)
+      emojiButton2 = [(CKMessageEntryView *)self emojiButton];
+      [emojiButton2 bounds];
+      if (isEntryViewRefreshEnabled3)
       {
         v44 = v43;
       }
@@ -369,15 +369,15 @@
     v21 = v20;
     if (CKIsRunningInMacCatalyst())
     {
-      v22 = [(CKMessageEntryView *)self emojiButton];
-      [v22 bounds];
+      emojiButton3 = [(CKMessageEntryView *)self emojiButton];
+      [emojiButton3 bounds];
       v24 = v23 + -3.0;
 
-      v25 = [(CKMessageEntryView *)self plusButton];
-      if (v25)
+      plusButton2 = [(CKMessageEntryView *)self plusButton];
+      if (plusButton2)
       {
-        v26 = [(CKMessageEntryView *)self plusButton];
-        [v26 frame];
+        plusButton3 = [(CKMessageEntryView *)self plusButton];
+        [plusButton3 frame];
         v28 = v27;
       }
 
@@ -400,8 +400,8 @@
       [v58 entryViewCoverHorizontalMargin];
       v9 = v57 + v59;
 
-      v60 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      LODWORD(v58) = [v60 isModernSplitViewControllerEnabled];
+      mEMORY[0x1E69A8070]4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      LODWORD(v58) = [mEMORY[0x1E69A8070]4 isModernSplitViewControllerEnabled];
 
       if (v58)
       {
@@ -469,28 +469,28 @@
 - (BOOL)_shouldUseConcentricPadding
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 entryViewAlwaysUsesConcentricPadding];
+  entryViewAlwaysUsesConcentricPadding = [v3 entryViewAlwaysUsesConcentricPadding];
 
-  if (v4)
+  if (entryViewAlwaysUsesConcentricPadding)
   {
     return 1;
   }
 
-  v6 = [(CKMessageEntryView *)self inputDelegate];
-  v7 = [v6 isPresentingAppCardForMessageEntryView:self];
+  inputDelegate = [(CKMessageEntryView *)self inputDelegate];
+  v7 = [inputDelegate isPresentingAppCardForMessageEntryView:self];
 
-  v8 = [(CKMessageEntryView *)self inputDelegate];
-  v9 = v8;
+  inputDelegate2 = [(CKMessageEntryView *)self inputDelegate];
+  v9 = inputDelegate2;
   if (v7)
   {
-    v10 = [v8 isPresentingBarelyVisibleAppCardForMessageEntryView:self];
+    v10 = [inputDelegate2 isPresentingBarelyVisibleAppCardForMessageEntryView:self];
 
     return v10;
   }
 
   else
   {
-    v11 = [v8 messageEntryViewShouldVerticallyInsetForPresentedAppCard:self];
+    v11 = [inputDelegate2 messageEntryViewShouldVerticallyInsetForPresentedAppCard:self];
 
     result = 0;
     if (!self->_keyboardVisible && (v11 & 1) == 0)
@@ -540,18 +540,18 @@
 
 - (BOOL)_shouldUseKeyboardVisibleBottomInsetsForTextEffectsPicker
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isExpressiveTextEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isExpressiveTextEnabled = [mEMORY[0x1E69A8070] isExpressiveTextEnabled];
 
-  if (!v4)
+  if (!isExpressiveTextEnabled)
   {
     return 0;
   }
 
-  v5 = [(CKMessageEntryView *)self contentView];
-  v6 = [v5 textView];
+  contentView = [(CKMessageEntryView *)self contentView];
+  textView = [contentView textView];
 
-  if (![v6 allowsTextAnimations] || -[UITraitCollection userInterfaceIdiom](self->_entryViewTraitCollection, "userInterfaceIdiom") || (IMIsRunningInMessagesExtension() & 1) != 0)
+  if (![textView allowsTextAnimations] || -[UITraitCollection userInterfaceIdiom](self->_entryViewTraitCollection, "userInterfaceIdiom") || (IMIsRunningInMessagesExtension() & 1) != 0)
   {
 
     return 0;
@@ -561,7 +561,7 @@
   block[1] = 3221225472;
   block[2] = __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEffectsPicker__block_invoke;
   block[3] = &unk_1E72EBA18;
-  v9 = v6;
+  v9 = textView;
   v11 = v9;
   if (_shouldUseKeyboardVisibleBottomInsetsForTextEffectsPicker_onceToken != -1)
   {
@@ -606,24 +606,24 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(CKMessageEntryView *)self messageEditingBlurOverlayView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  messageEditingBlurOverlayView = [(CKMessageEntryView *)self messageEditingBlurOverlayView];
+  [messageEditingBlurOverlayView setFrame:{v4, v6, v8, v10}];
 
-  v12 = [(CKMessageEntryView *)self inputButtonContainerView];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  inputButtonContainerView = [(CKMessageEntryView *)self inputButtonContainerView];
+  [inputButtonContainerView setFrame:{v4, v6, v8, v10}];
 
-  v13 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v14 = [v13 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v14)
+  if (isEntryViewRefreshEnabled)
   {
     [(CKMessageEntryView *)self coverFrameThatFitsInSize:v8, v10];
     v16 = v15;
     v18 = v17;
     v20 = v19;
     v22 = v21;
-    v23 = [(CKMessageEntryView *)self contentView];
-    [v23 setMaxContentWidthWhenExpanded:v20];
+    contentView = [(CKMessageEntryView *)self contentView];
+    [contentView setMaxContentWidthWhenExpanded:v20];
   }
 
   else
@@ -639,48 +639,48 @@
   [(CKMessageEntryView *)self calculateOneLinePlaceHolderCenterY:v10];
   v30 = v29;
   [(CKMessageEntryView *)self configurePlusButtonFrameWithOneLinePlaceHolderCenterY:?];
-  v31 = [(CKMessageEntryView *)self contentClipView];
-  [v31 anchorPoint];
+  contentClipView = [(CKMessageEntryView *)self contentClipView];
+  [contentClipView anchorPoint];
   v33 = v16 + v20 * v32;
   v35 = v18 + v22 * v34;
-  [v31 setBounds:{0.0, 0.0, v20, v22}];
-  [v31 setCenter:{v33, v35}];
-  v36 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v37 = [v36 isEntryViewRefreshEnabled];
+  [contentClipView setBounds:{0.0, 0.0, v20, v22}];
+  [contentClipView setCenter:{v33, v35}];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled2 = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-  if ((v37 & 1) == 0)
+  if ((isEntryViewRefreshEnabled2 & 1) == 0)
   {
-    v38 = [(CKMessageEntryView *)self knockoutView];
-    [v38 setFrame:{0.0, 0.0, v20, v22}];
+    knockoutView = [(CKMessageEntryView *)self knockoutView];
+    [knockoutView setFrame:{0.0, 0.0, v20, v22}];
 
-    v39 = [v31 layer];
+    layer = [contentClipView layer];
     v40 = +[CKUIBehavior sharedBehaviors];
-    v41 = [v40 theme];
-    v42 = [v41 entryFieldBorderColor];
-    [v39 setBorderColor:{objc_msgSend(v42, "CGColor")}];
+    theme = [v40 theme];
+    entryFieldBorderColor = [theme entryFieldBorderColor];
+    [layer setBorderColor:{objc_msgSend(entryFieldBorderColor, "CGColor")}];
 
     v43 = +[CKUIBehavior sharedBehaviors];
-    v44 = [v43 theme];
-    v45 = [v44 dashedEntryFieldBorderColor];
-    v46 = [v45 CGColor];
-    v47 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
-    [v47 setStrokeColor:v46];
+    theme2 = [v43 theme];
+    dashedEntryFieldBorderColor = [theme2 dashedEntryFieldBorderColor];
+    cGColor = [dashedEntryFieldBorderColor CGColor];
+    dashedContentClipViewLayer = [(CKMessageEntryView *)self dashedContentClipViewLayer];
+    [dashedContentClipViewLayer setStrokeColor:cGColor];
   }
 
-  v48 = [(CKMessageEntryView *)self contentView];
-  [v48 setFrame:{0.0, 0.0, v20, v22}];
-  v49 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v50 = [v49 isEntryViewRefreshEnabled];
+  contentView2 = [(CKMessageEntryView *)self contentView];
+  [contentView2 setFrame:{0.0, 0.0, v20, v22}];
+  mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled3 = [mEMORY[0x1E69A8070]3 isEntryViewRefreshEnabled];
 
   v51 = +[CKUIBehavior sharedBehaviors];
-  if (v50)
+  if (isEntryViewRefreshEnabled3)
   {
     [v51 entryContentViewTextLeftOffset];
     v53 = v20 - v52;
-    [v48 sendButtonTextInsetWidth];
+    [contentView2 sendButtonTextInsetWidth];
     v55 = v53 - v54;
-    v56 = +[CKUIBehavior sharedBehaviors];
-    [v56 bubbleLeftInsetForQuicktationInEntryView];
+    sendButton = +[CKUIBehavior sharedBehaviors];
+    [sendButton bubbleLeftInsetForQuicktationInEntryView];
     v58 = v55 - v57;
   }
 
@@ -688,45 +688,45 @@
   {
     [v51 bubbleLeftInsetForQuicktationInEntryView];
     v60 = v20 + -8.0 - v59;
-    v56 = [(CKMessageEntryView *)self sendButton];
-    [v56 frame];
+    sendButton = [(CKMessageEntryView *)self sendButton];
+    [sendButton frame];
     v62 = v60 - v61;
     v63 = +[CKUIBehavior sharedBehaviors];
     [v63 entryViewSendButtonCoverSpace];
     v58 = v62 - v64 + -3.0;
   }
 
-  [v48 setPlaceHolderWidth:v58];
-  [v48 setMaxPluginShelfViewWidth:v20];
-  [v48 setMaxPreviewContentWidthWhenExpanded:v20];
+  [contentView2 setPlaceHolderWidth:v58];
+  [contentView2 setMaxPluginShelfViewWidth:v20];
+  [contentView2 setMaxPreviewContentWidthWhenExpanded:v20];
   v65 = v20;
   if (CKIsRunningInMacCatalyst())
   {
-    v66 = [(CKMessageEntryView *)self composition];
-    v67 = [v66 hasContent];
+    composition = [(CKMessageEntryView *)self composition];
+    hasContent = [composition hasContent];
 
     v65 = v20;
-    if ((v67 & 1) == 0)
+    if ((hasContent & 1) == 0)
     {
-      v68 = [(CKMessageEntryView *)self audioButton];
-      [v68 frame];
+      audioButton = [(CKMessageEntryView *)self audioButton];
+      [audioButton frame];
       v65 = v20 - v69;
     }
   }
 
-  [v48 setMaxContentWidthWhenExpanded:v65];
+  [contentView2 setMaxContentWidthWhenExpanded:v65];
   [(CKMessageEntryView *)self updateShouldHideCaretForTextViews];
   if (+[CKMessageEntryContentView _platformNeedsConservativeLayoutUpdates])
   {
-    v70 = [v48 textView];
-    [v70 setNeedsLayout];
+    textView = [contentView2 textView];
+    [textView setNeedsLayout];
 
     v71 = MEMORY[0x1E69DD250];
     v72[0] = MEMORY[0x1E69E9820];
     v72[1] = 3221225472;
     v72[2] = __36__CKMessageEntryView_layoutSubviews__block_invoke;
     v72[3] = &unk_1E72EBA18;
-    v73 = v48;
+    v73 = contentView2;
     [v71 performWithoutAnimation:v72];
   }
 
@@ -744,50 +744,50 @@
 
 - (void)_layoutBackgroundView
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isEntryViewRefreshEnabled & 1) == 0)
   {
     [(CKMessageEntryView *)self bounds];
     v6 = v5;
     [(CKMessageEntryView *)self bounds];
     v8 = v7;
-    v9 = [(CKMessageEntryView *)self backgroundView];
-    [v9 setFrame:{0.0, 0.0, v6, v8}];
+    backgroundView = [(CKMessageEntryView *)self backgroundView];
+    [backgroundView setFrame:{0.0, 0.0, v6, v8}];
   }
 }
 
 - (void)adjustContentClipViewForSendLater
 {
   v57[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isEntryViewRefreshEnabled & 1) == 0)
   {
-    v5 = [(CKMessageEntryView *)self sendLaterPluginInfo];
+    sendLaterPluginInfo = [(CKMessageEntryView *)self sendLaterPluginInfo];
 
     v6 = +[CKUIBehavior sharedBehaviors];
     [v6 entryFieldCoverLineWidth];
     v8 = v7;
-    if (v5)
+    if (sendLaterPluginInfo)
     {
-      v9 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
-      [v9 setLineWidth:v8];
+      dashedContentClipViewLayer = [(CKMessageEntryView *)self dashedContentClipViewLayer];
+      [dashedContentClipViewLayer setLineWidth:v8];
 
-      v10 = [(CKMessageEntryView *)self contentClipView];
-      v11 = [v10 layer];
-      [v11 bounds];
+      contentClipView = [(CKMessageEntryView *)self contentClipView];
+      layer = [contentClipView layer];
+      [layer bounds];
       v13 = v12;
       v15 = v14;
       v17 = v16;
       v19 = v18;
-      v20 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
-      [v20 lineWidth];
+      dashedContentClipViewLayer2 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
+      [dashedContentClipViewLayer2 lineWidth];
       v22 = v21;
-      v23 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
-      [v23 lineWidth];
+      dashedContentClipViewLayer3 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
+      [dashedContentClipViewLayer3 lineWidth];
       v25 = v24;
       v59.origin.x = v13;
       v59.origin.y = v15;
@@ -800,82 +800,82 @@
       height = v60.size.height;
 
       v30 = MEMORY[0x1E69DC728];
-      v31 = [(CKMessageEntryView *)self contentClipView];
-      v32 = [v31 layer];
-      [v32 cornerRadius];
+      contentClipView2 = [(CKMessageEntryView *)self contentClipView];
+      layer2 = [contentClipView2 layer];
+      [layer2 cornerRadius];
       v34 = [v30 bezierPathWithRoundedRect:x cornerRadius:{y, width, height, v33}];
-      v35 = [v34 CGPath];
-      v36 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
-      [v36 setPath:v35];
+      cGPath = [v34 CGPath];
+      dashedContentClipViewLayer4 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
+      [dashedContentClipViewLayer4 setPath:cGPath];
 
-      v37 = [(CKMessageEntryView *)self contentClipView];
-      v38 = [v37 layer];
-      [v38 setBorderWidth:0.0];
+      contentClipView3 = [(CKMessageEntryView *)self contentClipView];
+      layer3 = [contentClipView3 layer];
+      [layer3 setBorderWidth:0.0];
 
-      v39 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
-      v40 = [v39 lineDashPattern];
-      v41 = [v40 objectAtIndexedSubscript:0];
+      dashedContentClipViewLayer5 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
+      lineDashPattern = [dashedContentClipViewLayer5 lineDashPattern];
+      v41 = [lineDashPattern objectAtIndexedSubscript:0];
       [v41 doubleValue];
       v43 = v42;
-      v44 = [(CKMessageEntryView *)self contentClipView];
-      v45 = [v44 layer];
-      [v45 cornerRadius];
+      contentClipView4 = [(CKMessageEntryView *)self contentClipView];
+      layer4 = [contentClipView4 layer];
+      [layer4 cornerRadius];
       v47 = CKDashSpacingForCGRect(x, y, width, height, v43, v46);
 
-      v48 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
-      v49 = [v48 lineDashPattern];
-      v50 = [v49 objectAtIndexedSubscript:0];
+      dashedContentClipViewLayer6 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
+      lineDashPattern2 = [dashedContentClipViewLayer6 lineDashPattern];
+      v50 = [lineDashPattern2 objectAtIndexedSubscript:0];
       v57[0] = v50;
       v51 = [MEMORY[0x1E696AD98] numberWithDouble:v47];
       v57[1] = v51;
       v52 = [MEMORY[0x1E695DEC8] arrayWithObjects:v57 count:2];
-      v53 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
-      [v53 setLineDashPattern:v52];
+      dashedContentClipViewLayer7 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
+      [dashedContentClipViewLayer7 setLineDashPattern:v52];
     }
 
     else
     {
-      v54 = [(CKMessageEntryView *)self contentClipView];
-      v55 = [v54 layer];
-      [v55 setBorderWidth:v8];
+      contentClipView5 = [(CKMessageEntryView *)self contentClipView];
+      layer5 = [contentClipView5 layer];
+      [layer5 setBorderWidth:v8];
 
-      v56 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
-      [v56 setLineWidth:0.0];
+      dashedContentClipViewLayer8 = [(CKMessageEntryView *)self dashedContentClipViewLayer];
+      [dashedContentClipViewLayer8 setLineWidth:0.0];
     }
   }
 }
 
 - (void)updateShouldHideCaretForTextViews
 {
-  v3 = [(CKMessageEntryView *)self inputDelegate];
-  v4 = [v3 messageEntryShouldHideCaret:self];
+  inputDelegate = [(CKMessageEntryView *)self inputDelegate];
+  v4 = [inputDelegate messageEntryShouldHideCaret:self];
 
-  v7 = [(CKMessageEntryView *)self contentView];
-  v5 = [v7 textView];
-  [v5 setHideCaret:v4];
+  contentView = [(CKMessageEntryView *)self contentView];
+  textView = [contentView textView];
+  [textView setHideCaret:v4];
 
-  v6 = [v7 subjectView];
-  [v6 setHideCaret:v4];
+  subjectView = [contentView subjectView];
+  [subjectView setHideCaret:v4];
 }
 
 - (double)placeholderHeight
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 entryViewlayoutMetrics];
+  entryViewlayoutMetrics = [v3 entryViewlayoutMetrics];
   if ([(CKMessageEntryView *)self shouldShowSubject])
   {
-    [v4 defaultSubjectEntryViewHeight];
+    [entryViewlayoutMetrics defaultSubjectEntryViewHeight];
   }
 
   else
   {
-    [v4 defaultEntryViewHeight];
+    [entryViewlayoutMetrics defaultEntryViewHeight];
   }
 
   v6 = v5;
-  v7 = [(CKMessageEntryView *)self sendLaterPluginInfo];
+  sendLaterPluginInfo = [(CKMessageEntryView *)self sendLaterPluginInfo];
 
-  if (v7)
+  if (sendLaterPluginInfo)
   {
     v8 = +[CKUIBehavior sharedBehaviors];
     [v8 messageEntryContentViewSendLaterInsets];
@@ -893,10 +893,10 @@
   [v3 entryViewVerticalCoverInsets];
   v20 = v18 - v19;
   v22 = v16 - v21;
-  v23 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v24 = [v23 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v24)
+  if (isEntryViewRefreshEnabled)
   {
     v25 = v20 + v6 + v22;
   }
@@ -914,10 +914,10 @@
 
 - (CKSendLaterPluginInfo)sendLaterPluginInfo
 {
-  v2 = [(CKMessageEntryView *)self contentView];
-  v3 = [v2 sendLaterPluginInfo];
+  contentView = [(CKMessageEntryView *)self contentView];
+  sendLaterPluginInfo = [contentView sendLaterPluginInfo];
 
-  return v3;
+  return sendLaterPluginInfo;
 }
 
 - (CKMessageEntryViewDelegate)delegate
@@ -929,8 +929,8 @@
 
 - (BOOL)isShowingAudioRecordingView
 {
-  v2 = [(CKMessageEntryView *)self audioRecordingView];
-  v3 = v2 != 0;
+  audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
+  v3 = audioRecordingView != 0;
 
   return v3;
 }
@@ -950,8 +950,8 @@
 
 - (double)bottomInsetForAppCard
 {
-  v3 = [(CKMessageEntryView *)self inputDelegate];
-  v4 = [v3 messageEntryViewShouldVerticallyInsetForPresentedAppCard:self];
+  inputDelegate = [(CKMessageEntryView *)self inputDelegate];
+  v4 = [inputDelegate messageEntryViewShouldVerticallyInsetForPresentedAppCard:self];
 
   if (self->_keyboardVisible || (v4 & 1) != 0 || [(CKMessageEntryView *)self _shouldUseKeyboardVisibleBottomInsetsForTextEffectsPicker])
   {
@@ -972,77 +972,77 @@
 
 - (CKComposition)composition
 {
-  v3 = [(CKMessageEntryView *)self audioComposition];
-  if (!v3)
+  audioComposition = [(CKMessageEntryView *)self audioComposition];
+  if (!audioComposition)
   {
-    v4 = [(CKMessageEntryView *)self contentView];
-    v3 = [v4 composition];
+    contentView = [(CKMessageEntryView *)self contentView];
+    audioComposition = [contentView composition];
   }
 
-  return v3;
+  return audioComposition;
 }
 
 - (void)updateEntryView
 {
   v157 = *MEMORY[0x1E69E9840];
-  v144 = [(CKMessageEntryView *)self conversation];
-  v143 = [v144 sendingService];
+  conversation = [(CKMessageEntryView *)self conversation];
+  sendingService = [conversation sendingService];
   v3 = +[CKUIBehavior sharedBehaviors];
   if ([v3 isSendButtonEnabledOnPlatform])
   {
-    v142 = [(CKMessageEntryView *)self sendButtonEnabled];
+    sendButtonEnabled = [(CKMessageEntryView *)self sendButtonEnabled];
   }
 
   else
   {
     v4 = +[CKUIBehavior sharedBehaviors];
-    v142 = [v4 isSendButtonEnabledOnPlatform];
+    sendButtonEnabled = [v4 isSendButtonEnabledOnPlatform];
   }
 
-  v141 = [(CKMessageEntryView *)self shouldRecordForService:v143];
+  v141 = [(CKMessageEntryView *)self shouldRecordForService:sendingService];
   [(CKMessageEntryView *)self shouldShowAudioButton];
   [(CKMessageEntryView *)self updateAudioMessageRecordingAvailability];
-  v5 = [v144 isBlockedByCommunicationLimits];
-  [(CKMessageEntryView *)self setUserInteractionEnabled:((v5 | [(CKMessageEntryView *)self shouldBlurForMessageEditing]) & 1) == 0];
-  v6 = [(CKMessageEntryView *)self conversation];
-  v7 = [v6 chat];
+  isBlockedByCommunicationLimits = [conversation isBlockedByCommunicationLimits];
+  [(CKMessageEntryView *)self setUserInteractionEnabled:((isBlockedByCommunicationLimits | [(CKMessageEntryView *)self shouldBlurForMessageEditing]) & 1) == 0];
+  conversation2 = [(CKMessageEntryView *)self conversation];
+  chat = [conversation2 chat];
 
-  if (v7)
+  if (chat)
   {
-    v8 = [(CKMessageEntryView *)self conversation];
-    v9 = [v8 chat];
-    v10 = [v9 supportsCapabilities:0x100000];
+    conversation3 = [(CKMessageEntryView *)self conversation];
+    chat2 = [conversation3 chat];
+    v10 = [chat2 supportsCapabilities:0x100000];
   }
 
   else
   {
-    v10 = [v143 supportsCapability:*MEMORY[0x1E69A7A58]];
+    v10 = [sendingService supportsCapability:*MEMORY[0x1E69A7A58]];
   }
 
-  v11 = [(CKMessageEntryView *)self contentView];
-  v12 = [v11 textView];
-  [v12 setExpressiveTextEnabled:v10];
+  contentView = [(CKMessageEntryView *)self contentView];
+  textView = [contentView textView];
+  [textView setExpressiveTextEnabled:v10];
 
-  v13 = [v11 translationView];
-  [v13 setExpressiveTextEnabled:v10];
+  translationView = [contentView translationView];
+  [translationView setExpressiveTextEnabled:v10];
 
   if (v10)
   {
-    v14 = [(CKMessageEntryView *)self contentView];
-    [v14 unpauseTextEffectsCoordinator];
+    contentView2 = [(CKMessageEntryView *)self contentView];
+    [contentView2 unpauseTextEffectsCoordinator];
   }
 
-  if (v5)
+  if (isBlockedByCommunicationLimits)
   {
     if (IMOSLoggingEnabled())
     {
       v15 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
       {
-        v16 = [v144 chat];
-        v17 = [v16 chatIdentifier];
+        chat3 = [conversation chat];
+        chatIdentifier = [chat3 chatIdentifier];
         *buf = 138412290;
-        v154 = v17;
+        v154 = chatIdentifier;
         _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_INFO, "Disabling sendButton due to conversation being blocked by downtime with chatIdentifier: %@", buf, 0xCu);
       }
     }
@@ -1050,31 +1050,31 @@
     goto LABEL_139;
   }
 
-  v140 = [(CKMessageEntryView *)self _placeholderTextForConversation:v144];
-  v138 = [(CKMessageEntryView *)self _sendButtonColor];
-  [v11 setPlaceholderText:v140];
-  [v11 setBalloonColor:{-[CKMessageEntryView _balloonColor](self, "_balloonColor")}];
-  [v11 setConversation:v144];
-  if ([v144 isStewieConversation])
+  v140 = [(CKMessageEntryView *)self _placeholderTextForConversation:conversation];
+  _sendButtonColor = [(CKMessageEntryView *)self _sendButtonColor];
+  [contentView setPlaceholderText:v140];
+  [contentView setBalloonColor:{-[CKMessageEntryView _balloonColor](self, "_balloonColor")}];
+  [contentView setConversation:conversation];
+  if ([conversation isStewieConversation])
   {
     v18 = 0;
   }
 
   else
   {
-    v18 = [v144 isEmergencyTranscriptSharingConversation] ^ 1;
+    v18 = [conversation isEmergencyTranscriptSharingConversation] ^ 1;
   }
 
-  v19 = [v144 recipients];
-  v20 = [v19 count];
+  recipients = [conversation recipients];
+  v20 = [recipients count];
 
-  v21 = [MEMORY[0x1E69A5B00] sharedInstance];
-  v22 = [v21 isMessagingActiveOverSatellite];
+  mEMORY[0x1E69A5B00] = [MEMORY[0x1E69A5B00] sharedInstance];
+  isMessagingActiveOverSatellite = [mEMORY[0x1E69A5B00] isMessagingActiveOverSatellite];
 
-  v23 = [v144 handles];
-  if ([v23 count])
+  handles = [conversation handles];
+  if ([handles count])
   {
-    v24 = [v144 isSatelliteSendingService] ^ 1;
+    v24 = [conversation isSatelliteSendingService] ^ 1;
   }
 
   else
@@ -1084,28 +1084,28 @@
 
   v25 = v20 > 1;
 
-  v26 = [v11 textView];
-  v27 = v22 & (v25 | v24) & v18 ^ 1u;
-  [v26 setEditable:v27];
+  textView2 = [contentView textView];
+  v27 = isMessagingActiveOverSatellite & (v25 | v24) & v18 ^ 1u;
+  [textView2 setEditable:v27];
 
-  v28 = [v11 textView];
-  [v28 setUserInteractionEnabled:v27];
+  textView3 = [contentView textView];
+  [textView3 setUserInteractionEnabled:v27];
 
-  if ([v144 isStewieConversation])
+  if ([conversation isStewieConversation])
   {
-    [v11 setShouldStripEmojis:1];
+    [contentView setShouldStripEmojis:1];
   }
 
-  v139 = [v144 recipient];
-  v29 = [v11 textView];
-  v30 = [v139 IDSCanonicalAddress];
-  [v29 setAutocorrectionContext:v30];
+  recipient = [conversation recipient];
+  textView4 = [contentView textView];
+  iDSCanonicalAddress = [recipient IDSCanonicalAddress];
+  [textView4 setAutocorrectionContext:iDSCanonicalAddress];
 
-  v31 = [v144 chat];
-  v32 = [v31 valueForChatProperty:*MEMORY[0x1E69A5D50]];
-  v33 = [v32 BOOLValue];
+  chat4 = [conversation chat];
+  v32 = [chat4 valueForChatProperty:*MEMORY[0x1E69A5D50]];
+  bOOLValue = [v32 BOOLValue];
 
-  v34 = [v143 supportsCapability:*MEMORY[0x1E69A79F0]] & (v33 ^ 1);
+  v34 = [sendingService supportsCapability:*MEMORY[0x1E69A79F0]] & (bOOLValue ^ 1);
   if (v34)
   {
     v35 = 1;
@@ -1113,32 +1113,32 @@
 
   else
   {
-    v35 = [v143 supportsCapability:*MEMORY[0x1E69A7928]];
+    v35 = [sendingService supportsCapability:*MEMORY[0x1E69A7928]];
   }
 
-  v36 = [v11 textView];
-  [v36 setAcceptsPayloads:v34];
+  textView5 = [contentView textView];
+  [textView5 setAcceptsPayloads:v34];
 
-  v37 = [v11 textView];
-  [v37 setSendCurrentLocationFromKeyboardEnabled:v35];
+  textView6 = [contentView textView];
+  [textView6 setSendCurrentLocationFromKeyboardEnabled:v35];
 
-  v38 = [v143 __ck_isSMS];
-  v39 = [v11 textView];
-  [v39 setSmartDashesType:v38];
+  __ck_isSMS = [sendingService __ck_isSMS];
+  textView7 = [contentView textView];
+  [textView7 setSmartDashesType:__ck_isSMS];
 
-  v40 = [v11 textView];
-  [v40 setSmartQuotesType:v38];
+  textView8 = [contentView textView];
+  [textView8 setSmartQuotesType:__ck_isSMS];
 
-  v41 = [v11 subjectView];
-  [v41 setSmartDashesType:v38];
+  subjectView = [contentView subjectView];
+  [subjectView setSmartDashesType:__ck_isSMS];
 
-  v42 = [v11 subjectView];
-  [v42 setSmartQuotesType:v38];
+  subjectView2 = [contentView subjectView];
+  [subjectView2 setSmartQuotesType:__ck_isSMS];
 
-  v43 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  LODWORD(v42) = [v43 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  LODWORD(subjectView2) = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v42)
+  if (subjectView2)
   {
     [(CKMessageEntryView *)self glassSendButton];
   }
@@ -1148,12 +1148,12 @@
     [(CKMessageEntryView *)self sendButton];
   }
   v44 = ;
-  v45 = [v44 isEnabled];
+  isEnabled = [v44 isEnabled];
 
-  if (v142 != v45)
+  if (sendButtonEnabled != isEnabled)
   {
     v46 = @"disable";
-    if (v142)
+    if (sendButtonEnabled)
     {
       v46 = @"enable";
     }
@@ -1167,7 +1167,7 @@
         *buf = 138412546;
         v154 = v47;
         v155 = 2112;
-        v156 = v144;
+        v156 = conversation;
         _os_log_impl(&dword_19020E000, v48, OS_LOG_TYPE_INFO, "Will %@ Send Button... for conversation: %@", buf, 0x16u);
       }
     }
@@ -1177,10 +1177,10 @@
       v49 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
       {
-        v50 = [(CKMessageEntryView *)self conversation];
-        v51 = [v50 sendingService];
+        conversation4 = [(CKMessageEntryView *)self conversation];
+        sendingService2 = [conversation4 sendingService];
         *buf = 138412290;
-        v154 = v51;
+        v154 = sendingService2;
         _os_log_impl(&dword_19020E000, v49, OS_LOG_TYPE_INFO, "Conversation Sending Service: %@", buf, 0xCu);
       }
     }
@@ -1190,10 +1190,10 @@
       v52 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v52, OS_LOG_TYPE_INFO))
       {
-        v53 = [(CKMessageEntryView *)self conversation];
-        v54 = [v53 eligibleToSendWithMadrid];
+        conversation5 = [(CKMessageEntryView *)self conversation];
+        eligibleToSendWithMadrid = [conversation5 eligibleToSendWithMadrid];
         *buf = 67109120;
-        LODWORD(v154) = v54;
+        LODWORD(v154) = eligibleToSendWithMadrid;
         _os_log_impl(&dword_19020E000, v52, OS_LOG_TYPE_INFO, "iMessage enabled: %{BOOL}d", buf, 8u);
       }
     }
@@ -1203,9 +1203,9 @@
       v55 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v55, OS_LOG_TYPE_INFO))
       {
-        v56 = [MEMORY[0x1E69A5CA0] smsEnabled];
+        smsEnabled = [MEMORY[0x1E69A5CA0] smsEnabled];
         v57 = @"NO";
-        if (v56)
+        if (smsEnabled)
         {
           v57 = @"YES";
         }
@@ -1221,12 +1221,12 @@
       v58 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
       {
-        v59 = [(CKMessageEntryView *)self composition];
-        v60 = [v59 text];
-        v61 = [(CKMessageEntryView *)self contentView];
-        v62 = [v61 textView];
-        v63 = [v62 compositionText];
-        v64 = [v60 isEqualToAttributedString:v63];
+        composition = [(CKMessageEntryView *)self composition];
+        text = [composition text];
+        contentView3 = [(CKMessageEntryView *)self contentView];
+        textView9 = [contentView3 textView];
+        compositionText = [textView9 compositionText];
+        v64 = [text isEqualToAttributedString:compositionText];
         v65 = @"NO";
         if (v64)
         {
@@ -1244,9 +1244,9 @@
       v66 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v66, OS_LOG_TYPE_INFO))
       {
-        v67 = [(CKMessageEntryView *)self composition];
-        v68 = [v67 text];
-        v69 = [v68 length];
+        composition2 = [(CKMessageEntryView *)self composition];
+        text2 = [composition2 text];
+        v69 = [text2 length];
         v70 = @"YES";
         if (!v69)
         {
@@ -1264,10 +1264,10 @@
       v71 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
       {
-        v72 = [(CKMessageEntryView *)self composition];
-        v73 = [v72 hasContent];
+        composition3 = [(CKMessageEntryView *)self composition];
+        hasContent = [composition3 hasContent];
         v74 = @"NO";
-        if (v73)
+        if (hasContent)
         {
           v74 = @"YES";
         }
@@ -1283,9 +1283,9 @@
       v75 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v75, OS_LOG_TYPE_INFO))
       {
-        v76 = [(CKMessageEntryView *)self conversation];
-        v77 = [v76 sendingService];
-        v78 = [(CKMessageEntryView *)self shouldRecordForService:v77];
+        conversation6 = [(CKMessageEntryView *)self conversation];
+        sendingService3 = [conversation6 sendingService];
+        v78 = [(CKMessageEntryView *)self shouldRecordForService:sendingService3];
         v79 = @"NO";
         if (v78)
         {
@@ -1303,10 +1303,10 @@
       v80 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v80, OS_LOG_TYPE_INFO))
       {
-        v81 = [(CKMessageEntryView *)self contentView];
-        v82 = [v81 isShowingDictationPlaceholder];
+        contentView4 = [(CKMessageEntryView *)self contentView];
+        isShowingDictationPlaceholder = [contentView4 isShowingDictationPlaceholder];
         v83 = @"NO";
-        if (v82)
+        if (isShowingDictationPlaceholder)
         {
           v83 = @"YES";
         }
@@ -1322,9 +1322,9 @@
       v84 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v84, OS_LOG_TYPE_INFO))
       {
-        v85 = [(CKMessageEntryView *)self conversation];
-        v86 = [v85 pendingHandles];
-        v87 = [v86 count];
+        conversation7 = [(CKMessageEntryView *)self conversation];
+        pendingHandles = [conversation7 pendingHandles];
+        v87 = [pendingHandles count];
         *buf = 134217984;
         v154 = v87;
         _os_log_impl(&dword_19020E000, v84, OS_LOG_TYPE_INFO, "Conversation pendingHandles count: %lu", buf, 0xCu);
@@ -1336,10 +1336,10 @@
       v88 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v88, OS_LOG_TYPE_INFO))
       {
-        v89 = [(CKMessageEntryView *)self conversation];
-        v90 = [v89 chat];
-        v91 = [v90 participants];
-        v92 = [v91 count];
+        conversation8 = [(CKMessageEntryView *)self conversation];
+        chat5 = [conversation8 chat];
+        participants = [chat5 participants];
+        v92 = [participants count];
         *buf = 134217984;
         v154 = v92;
         _os_log_impl(&dword_19020E000, v88, OS_LOG_TYPE_INFO, "Conversation chat participant count: %lu", buf, 0xCu);
@@ -1351,10 +1351,10 @@
       v93 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v93, OS_LOG_TYPE_INFO))
       {
-        v94 = [(CKMessageEntryView *)self conversation];
-        v95 = [v94 recipientCount];
+        conversation9 = [(CKMessageEntryView *)self conversation];
+        recipientCount = [conversation9 recipientCount];
         v96 = @"YES";
-        if (!v95)
+        if (!recipientCount)
         {
           v96 = @"NO";
         }
@@ -1370,9 +1370,9 @@
       v97 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v97, OS_LOG_TYPE_INFO))
       {
-        v98 = [(CKMessageEntryView *)self isComposingRecipient];
+        isComposingRecipient = [(CKMessageEntryView *)self isComposingRecipient];
         v99 = @"NO";
-        if (v98)
+        if (isComposingRecipient)
         {
           v99 = @"YES";
         }
@@ -1388,9 +1388,9 @@
       v100 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v100, OS_LOG_TYPE_INFO))
       {
-        v101 = [(CKMessageEntryView *)self hasFailedRecipients];
+        hasFailedRecipients = [(CKMessageEntryView *)self hasFailedRecipients];
         v102 = @"NO";
-        if (v101)
+        if (hasFailedRecipients)
         {
           v102 = @"YES";
         }
@@ -1406,9 +1406,9 @@
       v103 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v103, OS_LOG_TYPE_INFO))
       {
-        v104 = [(CKMessageEntryView *)self hasUnreachableEmergencyRecipient];
+        hasUnreachableEmergencyRecipient = [(CKMessageEntryView *)self hasUnreachableEmergencyRecipient];
         v105 = @"NO";
-        if (v104)
+        if (hasUnreachableEmergencyRecipient)
         {
           v105 = @"YES";
         }
@@ -1421,14 +1421,14 @@
   }
 
   [(CKMessageEntryView *)self updateAllowPollSuggestions];
-  v106 = [(CKMessageEntryView *)self _isDictationEnabled];
+  _isDictationEnabled = [(CKMessageEntryView *)self _isDictationEnabled];
   if (!v141)
   {
     v107 = 0;
     goto LABEL_116;
   }
 
-  v107 = v106;
+  v107 = _isDictationEnabled;
   if ([(CKMessageEntryView *)self displayMode]!= 1)
   {
 LABEL_116:
@@ -1438,22 +1438,22 @@ LABEL_116:
 
   v108 = v27 & [MEMORY[0x1E69DCBF0] dictationInputModeIsFunctional];
 LABEL_117:
-  v109 = [(CKMessageEntryView *)self shouldShowAudioButton];
+  shouldShowAudioButton = [(CKMessageEntryView *)self shouldShowAudioButton];
   v110 = [(CKMessageEntryView *)self displayMode]!= 1;
-  v111 = [(CKMessageEntryView *)self delegate];
-  v112 = [v111 messageEntryViewIsSendingMessage:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  v112 = [delegate messageEntryViewIsSendingMessage:self];
 
-  v113 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  LODWORD(v111) = [v113 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  LODWORD(delegate) = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-  v114 = !v109;
-  v115 = v109 || !v107;
+  v114 = !shouldShowAudioButton;
+  v115 = shouldShowAudioButton || !v107;
   v116 = v110 || v141;
-  if (v111)
+  if (delegate)
   {
-    v117 = [(CKMessageEntryView *)self audioRecordingView];
+    audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
 
-    if (v117)
+    if (audioRecordingView)
     {
       v115 = 1;
       v114 = 1;
@@ -1470,12 +1470,12 @@ LABEL_117:
   v147 = v108;
   v148 = v114;
   v149 = v112 ^ 1;
-  v150 = v138;
-  v151 = v142;
+  v150 = _sendButtonColor;
+  v151 = sendButtonEnabled;
   v152 = v116 & 1;
   [MEMORY[0x1E69DD250] performWithoutAnimation:v145];
-  v118 = [(CKMessageEntryView *)self sendButtonClickInteraction];
-  v119 = v118 == 0;
+  sendButtonClickInteraction = [(CKMessageEntryView *)self sendButtonClickInteraction];
+  v119 = sendButtonClickInteraction == 0;
 
   if (v119)
   {
@@ -1483,70 +1483,70 @@ LABEL_117:
     [(CKMessageEntryView *)self setSendButtonClickInteraction:v120];
   }
 
-  v121 = [(CKMessageEntryView *)self clickInteractionDelegate];
+  clickInteractionDelegate = [(CKMessageEntryView *)self clickInteractionDelegate];
 
-  if (v121)
+  if (clickInteractionDelegate)
   {
-    v122 = [(CKMessageEntryView *)self clickInteractionDelegate];
-    v123 = [(CKMessageEntryView *)self sendButtonClickInteraction];
-    [v123 setDelegate:v122];
+    clickInteractionDelegate2 = [(CKMessageEntryView *)self clickInteractionDelegate];
+    sendButtonClickInteraction2 = [(CKMessageEntryView *)self sendButtonClickInteraction];
+    [sendButtonClickInteraction2 setDelegate:clickInteractionDelegate2];
   }
 
-  v124 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v125 = [v124 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070]3 isEntryViewRefreshEnabled];
 
-  if (v125)
+  if (isEntryViewRefreshEnabled)
   {
-    v126 = [(CKMessageEntryView *)self glassSendButton];
-    v127 = [v126 interactions];
-    v128 = [(CKMessageEntryView *)self sendButtonClickInteraction];
-    v129 = [v127 containsObject:v128];
+    glassSendButton = [(CKMessageEntryView *)self glassSendButton];
+    interactions = [glassSendButton interactions];
+    sendButtonClickInteraction3 = [(CKMessageEntryView *)self sendButtonClickInteraction];
+    v129 = [interactions containsObject:sendButtonClickInteraction3];
 
     if (!(v129 & 1 | ![(CKMessageEntryView *)self shouldAllowImpactSend]))
     {
-      v130 = [(CKMessageEntryView *)self glassSendButton];
-      v131 = [(CKMessageEntryView *)self sendButtonClickInteraction];
-      [v130 addInteraction:v131];
+      glassSendButton2 = [(CKMessageEntryView *)self glassSendButton];
+      sendButtonClickInteraction4 = [(CKMessageEntryView *)self sendButtonClickInteraction];
+      [glassSendButton2 addInteraction:sendButtonClickInteraction4];
       goto LABEL_133;
     }
 
     if (![(CKMessageEntryView *)self shouldAllowImpactSend]&& (v129 & 1) != 0)
     {
-      v130 = [(CKMessageEntryView *)self glassSendButton];
-      v131 = [(CKMessageEntryView *)self sendButtonClickInteraction];
-      [v130 removeInteraction:v131];
+      glassSendButton2 = [(CKMessageEntryView *)self glassSendButton];
+      sendButtonClickInteraction4 = [(CKMessageEntryView *)self sendButtonClickInteraction];
+      [glassSendButton2 removeInteraction:sendButtonClickInteraction4];
 LABEL_133:
     }
   }
 
   else
   {
-    v132 = [(CKMessageEntryView *)self sendButton];
-    v133 = [v132 interactions];
-    v134 = [(CKMessageEntryView *)self sendButtonClickInteraction];
-    v135 = [v133 containsObject:v134];
+    sendButton = [(CKMessageEntryView *)self sendButton];
+    interactions2 = [sendButton interactions];
+    sendButtonClickInteraction5 = [(CKMessageEntryView *)self sendButtonClickInteraction];
+    v135 = [interactions2 containsObject:sendButtonClickInteraction5];
 
     if (!(v135 & 1 | ![(CKMessageEntryView *)self shouldAllowImpactSend]))
     {
-      v130 = [(CKMessageEntryView *)self sendButton];
-      v131 = [(CKMessageEntryView *)self sendButtonClickInteraction];
-      [v130 addInteraction:v131];
+      glassSendButton2 = [(CKMessageEntryView *)self sendButton];
+      sendButtonClickInteraction4 = [(CKMessageEntryView *)self sendButtonClickInteraction];
+      [glassSendButton2 addInteraction:sendButtonClickInteraction4];
       goto LABEL_133;
     }
 
     if (![(CKMessageEntryView *)self shouldAllowImpactSend]&& (v135 & 1) != 0)
     {
-      v130 = [(CKMessageEntryView *)self sendButton];
-      v131 = [(CKMessageEntryView *)self sendButtonClickInteraction];
-      [v130 removeInteraction:v131];
+      glassSendButton2 = [(CKMessageEntryView *)self sendButton];
+      sendButtonClickInteraction4 = [(CKMessageEntryView *)self sendButtonClickInteraction];
+      [glassSendButton2 removeInteraction:sendButtonClickInteraction4];
       goto LABEL_133;
     }
   }
 
-  v136 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v137 = [v136 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled2 = [mEMORY[0x1E69A8070]4 isEntryViewRefreshEnabled];
 
-  if ((v137 & 1) == 0)
+  if ((isEntryViewRefreshEnabled2 & 1) == 0)
   {
     [(CKMessageEntryView *)self updateKnockoutView];
     [(CKMessageEntryView *)self updateBackgroundView];
@@ -1563,17 +1563,17 @@ LABEL_139:
 - (BOOL)sendButtonEnabled
 {
   v66 = *MEMORY[0x1E69E9840];
-  v3 = [(CKMessageEntryView *)self composition];
-  v4 = [v3 hasContent];
+  composition = [(CKMessageEntryView *)self composition];
+  hasContent = [composition hasContent];
 
-  v5 = [(CKMessageEntryView *)self conversation];
-  v6 = [v5 sendingService];
+  conversation = [(CKMessageEntryView *)self conversation];
+  sendingService = [conversation sendingService];
 
-  if ((v4 & 1) == 0 && !-[CKMessageEntryView shouldRecordForService:](self, "shouldRecordForService:", v6) || (-[CKMessageEntryView contentView](self, "contentView"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isShowingDictationPlaceholder], v7, v8))
+  if ((hasContent & 1) == 0 && !-[CKMessageEntryView shouldRecordForService:](self, "shouldRecordForService:", sendingService) || (-[CKMessageEntryView contentView](self, "contentView"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 isShowingDictationPlaceholder], v7, v8))
   {
-    v9 = [(CKMessageEntryView *)self shouldRecordForService:v6];
-    v10 = [(CKMessageEntryView *)self contentView];
-    v11 = [v10 isShowingDictationPlaceholder];
+    v9 = [(CKMessageEntryView *)self shouldRecordForService:sendingService];
+    contentView = [(CKMessageEntryView *)self contentView];
+    isShowingDictationPlaceholder = [contentView isShowingDictationPlaceholder];
 
     if (IMOSLoggingEnabled())
     {
@@ -1581,9 +1581,9 @@ LABEL_139:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         v60 = 67109632;
-        v61 = v4;
+        v61 = hasContent;
         v62 = 1024;
-        v63 = v11;
+        v63 = isShowingDictationPlaceholder;
         v64 = 1024;
         v65 = v9;
         _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "Send Button: Disabled > hasContent: %{BOOL}d, isShowingDictationPlaceholder: %{BOOL}d, isAudioMessagingAvailable: %{BOOL}d", &v60, 0x14u);
@@ -1593,20 +1593,20 @@ LABEL_7:
     }
 
 LABEL_50:
-    v48 = 0;
+    isComposingRecipient2 = 0;
     goto LABEL_51;
   }
 
-  v13 = [(CKMessageEntryView *)self conversation];
-  v14 = [v13 isStewieConversation];
+  conversation2 = [(CKMessageEntryView *)self conversation];
+  isStewieConversation = [conversation2 isStewieConversation];
 
-  if (v14)
+  if (isStewieConversation)
   {
-    v15 = [(CKMessageEntryView *)self composition];
-    v16 = [v15 text];
-    v17 = [v16 string];
-    v18 = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
-    v19 = [v17 stringByTrimmingCharactersInSet:v18];
+    composition2 = [(CKMessageEntryView *)self composition];
+    text = [composition2 text];
+    string = [text string];
+    whitespaceAndNewlineCharacterSet = [MEMORY[0x1E696AB08] whitespaceAndNewlineCharacterSet];
+    v19 = [string stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
     if (![v19 length])
     {
@@ -1625,10 +1625,10 @@ LABEL_50:
       goto LABEL_49;
     }
 
-    v20 = [MEMORY[0x1E69A5B00] sharedInstance];
-    v21 = [v20 isStewieActive];
+    mEMORY[0x1E69A5B00] = [MEMORY[0x1E69A5B00] sharedInstance];
+    isStewieActive = [mEMORY[0x1E69A5B00] isStewieActive];
 
-    if ((v21 & 1) == 0)
+    if ((isStewieActive & 1) == 0)
     {
       if (IMOSLoggingEnabled())
       {
@@ -1647,14 +1647,14 @@ LABEL_49:
       goto LABEL_50;
     }
 
-    v22 = [(CKMessageEntryView *)self conversation];
-    v23 = [v22 chat];
-    if ([v23 isStewieEmergencyChat])
+    conversation3 = [(CKMessageEntryView *)self conversation];
+    chat = [conversation3 chat];
+    if ([chat isStewieEmergencyChat])
     {
-      v24 = [MEMORY[0x1E69A5B00] sharedInstance];
-      v25 = [v24 isStewieEmergencyActive];
+      mEMORY[0x1E69A5B00]2 = [MEMORY[0x1E69A5B00] sharedInstance];
+      isStewieEmergencyActive = [mEMORY[0x1E69A5B00]2 isStewieEmergencyActive];
 
-      if ((v25 & 1) == 0)
+      if ((isStewieEmergencyActive & 1) == 0)
       {
         if (IMOSLoggingEnabled())
         {
@@ -1678,19 +1678,19 @@ LABEL_24:
     {
     }
 
-    v27 = [(CKMessageEntryView *)self conversation];
-    v28 = [v27 chat];
-    v29 = [v28 isStewieRoadsideChat];
+    conversation4 = [(CKMessageEntryView *)self conversation];
+    chat2 = [conversation4 chat];
+    isStewieRoadsideChat = [chat2 isStewieRoadsideChat];
 
-    if (v29)
+    if (isStewieRoadsideChat)
     {
-      v30 = [MEMORY[0x1E69A5B00] sharedInstance];
-      v31 = [v30 isStewieRoadsideActive];
+      mEMORY[0x1E69A5B00]3 = [MEMORY[0x1E69A5B00] sharedInstance];
+      isStewieRoadsideActive = [mEMORY[0x1E69A5B00]3 isStewieRoadsideActive];
 
-      v32 = [MEMORY[0x1E69A5B00] sharedInstance];
-      v33 = [v32 mostRecentlyUsedRoadsideChatIdentifier];
+      mEMORY[0x1E69A5B00]4 = [MEMORY[0x1E69A5B00] sharedInstance];
+      mostRecentlyUsedRoadsideChatIdentifier = [mEMORY[0x1E69A5B00]4 mostRecentlyUsedRoadsideChatIdentifier];
 
-      if (!v31 || (-[CKMessageEntryView conversation](self, "conversation"), v34 = objc_claimAutoreleasedReturnValue(), [v34 chat], v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "chatIdentifier"), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "isEqualToString:", v33), v36, v35, v34, (v37 & 1) == 0))
+      if (!isStewieRoadsideActive || (-[CKMessageEntryView conversation](self, "conversation"), v34 = objc_claimAutoreleasedReturnValue(), [v34 chat], v35 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v35, "chatIdentifier"), v36 = objc_claimAutoreleasedReturnValue(), v37 = objc_msgSend(v36, "isEqualToString:", mostRecentlyUsedRoadsideChatIdentifier), v36, v35, v34, (v37 & 1) == 0))
       {
         if (IMOSLoggingEnabled())
         {
@@ -1709,24 +1709,24 @@ LABEL_24:
 
   if (![(CKMessageEntryView *)self pluginSendingEnabled])
   {
-    v38 = [(CKMessageEntryView *)self composition];
-    v39 = [v38 shelfPluginPayload];
+    composition3 = [(CKMessageEntryView *)self composition];
+    shelfPluginPayload = [composition3 shelfPluginPayload];
 
-    if (v39)
+    if (shelfPluginPayload)
     {
       goto LABEL_50;
     }
   }
 
-  if ([(CKMessageEntryView *)self _isExceedingByteLimitForService:v6])
+  if ([(CKMessageEntryView *)self _isExceedingByteLimitForService:sendingService])
   {
     goto LABEL_50;
   }
 
   if ([(CKMessageEntryView *)self hasFailedRecipients]|| [(CKMessageEntryView *)self hasUnreachableEmergencyRecipient])
   {
-    v40 = [(CKMessageEntryView *)self hasFailedRecipients];
-    v41 = [(CKMessageEntryView *)self hasUnreachableEmergencyRecipient];
+    hasFailedRecipients = [(CKMessageEntryView *)self hasFailedRecipients];
+    hasUnreachableEmergencyRecipient = [(CKMessageEntryView *)self hasUnreachableEmergencyRecipient];
     if (!IMOSLoggingEnabled())
     {
       goto LABEL_50;
@@ -1736,55 +1736,55 @@ LABEL_24:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
       v60 = 67109376;
-      v61 = v40;
+      v61 = hasFailedRecipients;
       v62 = 1024;
-      v63 = v41;
+      v63 = hasUnreachableEmergencyRecipient;
       _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "Send Button: Disabled > hasFailedRecipients: %{BOOL}d, hasUnreachableEmergencyRecipient: %{BOOL}d", &v60, 0xEu);
     }
 
     goto LABEL_7;
   }
 
-  v42 = [(CKMessageEntryView *)self conversation];
-  if (![v42 isPending])
+  conversation5 = [(CKMessageEntryView *)self conversation];
+  if (![conversation5 isPending])
   {
     goto LABEL_53;
   }
 
-  v43 = [(CKMessageEntryView *)self conversation];
-  v44 = [v43 recipients];
-  if ([v44 count] <= 1)
+  conversation6 = [(CKMessageEntryView *)self conversation];
+  recipients = [conversation6 recipients];
+  if ([recipients count] <= 1)
   {
 
 LABEL_53:
     goto LABEL_54;
   }
 
-  v45 = [MEMORY[0x1E69A5B00] sharedInstance];
-  v46 = [v45 isMessagingActiveOverSatellite];
+  mEMORY[0x1E69A5B00]5 = [MEMORY[0x1E69A5B00] sharedInstance];
+  isMessagingActiveOverSatellite = [mEMORY[0x1E69A5B00]5 isMessagingActiveOverSatellite];
 
-  if (v46)
+  if (isMessagingActiveOverSatellite)
   {
     goto LABEL_50;
   }
 
 LABEL_54:
-  v50 = [(CKMessageEntryView *)self conversation];
-  if ([v50 isStewieConversation])
+  conversation7 = [(CKMessageEntryView *)self conversation];
+  if ([conversation7 isStewieConversation])
   {
   }
 
   else
   {
-    v51 = [MEMORY[0x1E69A5B00] sharedInstance];
-    v52 = [v51 isMessagingActiveOverSatellite];
+    mEMORY[0x1E69A5B00]6 = [MEMORY[0x1E69A5B00] sharedInstance];
+    isMessagingActiveOverSatellite2 = [mEMORY[0x1E69A5B00]6 isMessagingActiveOverSatellite];
 
-    if (v52)
+    if (isMessagingActiveOverSatellite2)
     {
-      v53 = [(CKMessageEntryView *)self conversation];
-      v54 = [v53 isSatelliteSendingService];
+      conversation8 = [(CKMessageEntryView *)self conversation];
+      isSatelliteSendingService = [conversation8 isSatelliteSendingService];
 
-      if (!v54)
+      if (!isSatelliteSendingService)
       {
         goto LABEL_50;
       }
@@ -1796,52 +1796,52 @@ LABEL_54:
     goto LABEL_50;
   }
 
-  v55 = [(CKMessageEntryView *)self conversation];
-  v56 = [v55 recipientCount];
+  conversation9 = [(CKMessageEntryView *)self conversation];
+  recipientCount = [conversation9 recipientCount];
 
-  v57 = [(CKMessageEntryView *)self isComposingRecipient];
+  isComposingRecipient = [(CKMessageEntryView *)self isComposingRecipient];
   if (IMOSLoggingEnabled())
   {
     v58 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v58, OS_LOG_TYPE_INFO))
     {
       v60 = 67109376;
-      v61 = v56 != 0;
+      v61 = recipientCount != 0;
       v62 = 1024;
-      v63 = v57;
+      v63 = isComposingRecipient;
       _os_log_impl(&dword_19020E000, v58, OS_LOG_TYPE_INFO, "Send Button: > hasRecipients: %{BOOL}d, isComposingRecipient: %{BOOL}d", &v60, 0xEu);
     }
   }
 
-  v59 = [(CKMessageEntryView *)self conversation];
-  if ([v59 recipientCount])
+  conversation10 = [(CKMessageEntryView *)self conversation];
+  if ([conversation10 recipientCount])
   {
-    v48 = 1;
+    isComposingRecipient2 = 1;
   }
 
   else
   {
-    v48 = [(CKMessageEntryView *)self isComposingRecipient];
+    isComposingRecipient2 = [(CKMessageEntryView *)self isComposingRecipient];
   }
 
 LABEL_51:
-  return v48;
+  return isComposingRecipient2;
 }
 
 - (BOOL)shouldShowAudioButton
 {
-  v3 = [(CKMessageEntryView *)self audioButton];
-  v4 = [v3 isHidden];
+  audioButton = [(CKMessageEntryView *)self audioButton];
+  isHidden = [audioButton isHidden];
 
-  v5 = [(CKMessageEntryView *)self conversation];
-  v6 = [v5 sendingService];
-  v7 = [(CKMessageEntryView *)self shouldRecordForService:v6];
+  conversation = [(CKMessageEntryView *)self conversation];
+  sendingService = [conversation sendingService];
+  v7 = [(CKMessageEntryView *)self shouldRecordForService:sendingService];
 
   if (v7)
   {
     if ([(CKMessageEntryView *)self displayMode]!= 1)
     {
-      if ((v4 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
         v8 = IMOSLoggingEnabled();
         if (v8)
@@ -1865,7 +1865,7 @@ LABEL_51:
 
     if ([(CKMessageEntryView *)self _isRunningInMVS])
     {
-      if ((v4 & 1) == 0)
+      if ((isHidden & 1) == 0)
       {
         v8 = IMOSLoggingEnabled();
         if (v8)
@@ -1893,7 +1893,7 @@ LABEL_18:
 
     if ([(CKMessageEntryView *)self isRunningInNotificationExtension])
     {
-      if (v4)
+      if (isHidden)
       {
         goto LABEL_18;
       }
@@ -1915,12 +1915,12 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v11 = [(CKMessageEntryView *)self conversation];
-    v12 = [v11 isStewieConversation];
+    conversation2 = [(CKMessageEntryView *)self conversation];
+    isStewieConversation = [conversation2 isStewieConversation];
 
-    if (v12)
+    if (isStewieConversation)
     {
-      if (v4)
+      if (isHidden)
       {
         goto LABEL_18;
       }
@@ -1942,14 +1942,14 @@ LABEL_18:
       goto LABEL_16;
     }
 
-    v13 = [(CKMessageEntryView *)self conversation];
-    v14 = [v13 chat];
-    if (v14)
+    conversation3 = [(CKMessageEntryView *)self conversation];
+    chat = [conversation3 chat];
+    if (chat)
     {
-      v15 = v14;
-      v16 = [(CKMessageEntryView *)self conversation];
-      v17 = [v16 chat];
-      v18 = [v17 supportsCapabilities:0x10000];
+      v15 = chat;
+      conversation4 = [(CKMessageEntryView *)self conversation];
+      chat2 = [conversation4 chat];
+      v18 = [chat2 supportsCapabilities:0x10000];
 
       if ((v18 & 1) == 0)
       {
@@ -1977,19 +1977,19 @@ LABEL_18:
 
     if (CKIsRunningInMacCatalyst())
     {
-      v19 = [(CKMessageEntryView *)self contentView];
-      v20 = [v19 textView];
-      v21 = [v20 text];
-      v22 = [v21 length];
+      contentView = [(CKMessageEntryView *)self contentView];
+      textView = [contentView textView];
+      text = [textView text];
+      v22 = [text length];
 
       if (v22)
       {
         goto LABEL_18;
       }
 
-      v23 = [(CKMessageEntryView *)self sendLaterPluginInfo];
+      sendLaterPluginInfo = [(CKMessageEntryView *)self sendLaterPluginInfo];
 
-      if (v23)
+      if (sendLaterPluginInfo)
       {
         v8 = IMOSLoggingEnabled();
         if (!v8)
@@ -2008,7 +2008,7 @@ LABEL_18:
         goto LABEL_16;
       }
 
-      if (!v4 || !IMOSLoggingEnabled())
+      if (!isHidden || !IMOSLoggingEnabled())
       {
         goto LABEL_62;
       }
@@ -2025,13 +2025,13 @@ LABEL_18:
 
     else if ([(CKMessageEntryView *)self _isDictationEnabled])
     {
-      v24 = [(CKMessageEntryView *)self conversation];
-      v25 = [v24 chat];
-      v26 = [v25 shouldShowAudioButtonInEntryView];
+      conversation5 = [(CKMessageEntryView *)self conversation];
+      chat3 = [conversation5 chat];
+      shouldShowAudioButtonInEntryView = [chat3 shouldShowAudioButtonInEntryView];
 
-      if (!v26)
+      if (!shouldShowAudioButtonInEntryView)
       {
-        if (v4)
+        if (isHidden)
         {
           goto LABEL_18;
         }
@@ -2053,7 +2053,7 @@ LABEL_18:
         goto LABEL_16;
       }
 
-      if (!v4 || !IMOSLoggingEnabled())
+      if (!isHidden || !IMOSLoggingEnabled())
       {
         goto LABEL_62;
       }
@@ -2070,7 +2070,7 @@ LABEL_18:
 
     else
     {
-      if (!v4 || !IMOSLoggingEnabled())
+      if (!isHidden || !IMOSLoggingEnabled())
       {
         goto LABEL_62;
       }
@@ -2093,7 +2093,7 @@ LABEL_62:
     goto LABEL_61;
   }
 
-  if (v4)
+  if (isHidden)
   {
     goto LABEL_18;
   }
@@ -2137,18 +2137,18 @@ LABEL_17:
 
   v4 = v3;
   _Block_object_dispose(&v19, 8);
-  v5 = [v3 sharedPreferences];
-  if ([v5 dictationIsEnabled])
+  sharedPreferences = [v3 sharedPreferences];
+  if ([sharedPreferences dictationIsEnabled])
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [v5 suppressDictationOptIn] ^ 1;
+    v6 = [sharedPreferences suppressDictationOptIn] ^ 1;
   }
 
-  v7 = [(CKMessageEntryView *)self dictationEnabledForLanguage];
+  dictationEnabledForLanguage = [(CKMessageEntryView *)self dictationEnabledForLanguage];
   v19 = 0;
   v20 = &v19;
   v21 = 0x2020000000;
@@ -2174,7 +2174,7 @@ LABEL_17:
     [CKMessageEntryView _isDictationEnabled];
   }
 
-  v11 = v7 & (v8() ^ 1);
+  v11 = dictationEnabledForLanguage & (v8() ^ 1);
   if (v6)
   {
     v12 = v11;
@@ -2190,44 +2190,44 @@ LABEL_17:
 
 - (void)updateAudioMessageRecordingAvailability
 {
-  v9 = [(CKMessageEntryView *)self conversation];
-  v3 = [(CKMessageEntryView *)self conversation];
-  v4 = [v3 chat];
-  v5 = [v4 supportsCapabilities:64];
+  conversation = [(CKMessageEntryView *)self conversation];
+  conversation2 = [(CKMessageEntryView *)self conversation];
+  chat = [conversation2 chat];
+  v5 = [chat supportsCapabilities:64];
 
-  v6 = v9;
+  v6 = conversation;
   if (v5)
   {
-    v7 = [v9 sendingService];
-    if ([(CKMessageEntryView *)self shouldRecordForService:v7])
+    sendingService = [conversation sendingService];
+    if ([(CKMessageEntryView *)self shouldRecordForService:sendingService])
     {
-      v8 = [(CKMessageEntryView *)self composition];
-      [v8 hasContent];
+      composition = [(CKMessageEntryView *)self composition];
+      [composition hasContent];
     }
 
-    v6 = v9;
+    v6 = conversation;
   }
 }
 
 - (BOOL)pluginButtonsEnabled
 {
-  v3 = [(CKMessageEntryView *)self conversation];
-  v4 = [v3 recipientCount];
+  conversation = [(CKMessageEntryView *)self conversation];
+  recipientCount = [conversation recipientCount];
 
-  if (v4)
+  if (recipientCount)
   {
-    v5 = [(CKMessageEntryView *)self composition];
-    v6 = [v5 mediaObjects];
+    composition = [(CKMessageEntryView *)self composition];
+    mediaObjects = [composition mediaObjects];
 
-    v7 = [(CKMessageEntryView *)self conversation];
-    if ([v7 canAcceptMediaObjectType:2 givenMediaObjects:v6])
+    conversation2 = [(CKMessageEntryView *)self conversation];
+    if ([conversation2 canAcceptMediaObjectType:2 givenMediaObjects:mediaObjects])
     {
     }
 
     else
     {
-      v8 = [(CKMessageEntryView *)self conversation];
-      v9 = [v8 canAcceptMediaObjectType:3 givenMediaObjects:v6];
+      conversation3 = [(CKMessageEntryView *)self conversation];
+      v9 = [conversation3 canAcceptMediaObjectType:3 givenMediaObjects:mediaObjects];
 
       if (!v9)
       {
@@ -2236,24 +2236,24 @@ LABEL_17:
     }
   }
 
-  v10 = [(CKMessageEntryView *)self conversation];
-  v11 = [v10 sendingService];
-  v12 = [v11 __ck_isSatelliteSMS];
+  conversation4 = [(CKMessageEntryView *)self conversation];
+  sendingService = [conversation4 sendingService];
+  __ck_isSatelliteSMS = [sendingService __ck_isSatelliteSMS];
 
-  if (v12)
+  if (__ck_isSatelliteSMS)
   {
     return 0;
   }
 
-  v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v15 = [v14 stewieEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  stewieEnabled = [mEMORY[0x1E69A8070] stewieEnabled];
 
-  if (v15)
+  if (stewieEnabled)
   {
-    v16 = [(CKMessageEntryView *)self conversation];
-    v17 = [v16 isStewieConversation];
+    conversation5 = [(CKMessageEntryView *)self conversation];
+    isStewieConversation = [conversation5 isStewieConversation];
 
-    if (v17)
+    if (isStewieConversation)
     {
       return 0;
     }
@@ -2264,58 +2264,58 @@ LABEL_17:
 
 - (char)_sendButtonColor
 {
-  v2 = self;
-  v3 = [(CKMessageEntryView *)self conversation];
-  v4 = v3;
-  if (v3 && ([v3 recipients], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
+  selfCopy = self;
+  conversation = [(CKMessageEntryView *)self conversation];
+  v4 = conversation;
+  if (conversation && ([conversation recipients], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
   {
-    if ([(CKMessageEntryView *)v2 _isApplePayCashInShelf])
+    if ([(CKMessageEntryView *)selfCopy _isApplePayCashInShelf])
     {
       v7 = +[CKUIBehavior sharedBehaviors];
-      v8 = [v7 theme];
-      LOBYTE(v2) = [v8 applyPayCashSendButtonColorForEntryViewStyle:{-[CKMessageEntryView style](v2, "style")}];
+      theme = [v7 theme];
+      LOBYTE(selfCopy) = [theme applyPayCashSendButtonColorForEntryViewStyle:{-[CKMessageEntryView style](selfCopy, "style")}];
     }
 
     else
     {
-      v10 = [(CKMessageEntryView *)v2 sendLaterPluginInfo];
+      sendLaterPluginInfo = [(CKMessageEntryView *)selfCopy sendLaterPluginInfo];
 
-      if (v10)
+      if (sendLaterPluginInfo)
       {
-        LOBYTE(v2) = 15;
+        LOBYTE(selfCopy) = 15;
       }
 
       else
       {
-        v2 = [v4 sendButtonColor];
+        selfCopy = [v4 sendButtonColor];
       }
     }
   }
 
   else
   {
-    LOBYTE(v2) = -1;
+    LOBYTE(selfCopy) = -1;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (BOOL)_isApplePayCashInShelf
 {
-  v3 = [(CKMessageEntryView *)self composition];
-  v4 = [v3 shelfPluginPayload];
-  v5 = [v4 pluginBundleID];
-  if ([v5 containsString:*MEMORY[0x1E69A6A38]])
+  composition = [(CKMessageEntryView *)self composition];
+  shelfPluginPayload = [composition shelfPluginPayload];
+  pluginBundleID = [shelfPluginPayload pluginBundleID];
+  if ([pluginBundleID containsString:*MEMORY[0x1E69A6A38]])
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [(CKMessageEntryView *)self composition];
-    v8 = [v7 shelfPluginPayload];
-    v9 = [v8 pluginBundleID];
-    v6 = [v9 containsString:*MEMORY[0x1E69A6A40]];
+    composition2 = [(CKMessageEntryView *)self composition];
+    shelfPluginPayload2 = [composition2 shelfPluginPayload];
+    pluginBundleID2 = [shelfPluginPayload2 pluginBundleID];
+    v6 = [pluginBundleID2 containsString:*MEMORY[0x1E69A6A40]];
   }
 
   return v6;
@@ -2323,26 +2323,26 @@ LABEL_17:
 
 - (char)_balloonColor
 {
-  v3 = [(CKMessageEntryView *)self conversation];
-  v4 = v3;
-  if (v3 && ([v3 recipients], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
+  conversation = [(CKMessageEntryView *)self conversation];
+  v4 = conversation;
+  if (conversation && ([conversation recipients], v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "count"), v5, v6))
   {
     v7 = +[CKUIBehavior sharedBehaviors];
-    v8 = [v7 theme];
-    v9 = [v8 applyPayCashSendButtonColorForEntryViewStyle:{-[CKMessageEntryView style](self, "style")}];
+    theme = [v7 theme];
+    sendButtonColor = [theme applyPayCashSendButtonColorForEntryViewStyle:{-[CKMessageEntryView style](self, "style")}];
 
     if (![(CKMessageEntryView *)self _isApplePayCashInShelf])
     {
-      v9 = [v4 sendButtonColor];
+      sendButtonColor = [v4 sendButtonColor];
     }
   }
 
   else
   {
-    v9 = -1;
+    sendButtonColor = -1;
   }
 
-  return v9;
+  return sendButtonColor;
 }
 
 void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
@@ -2391,19 +2391,19 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
 
 - (BOOL)_shouldEnablePlusButton
 {
-  v3 = [(CKMessageEntryView *)self conversation];
-  v4 = [v3 chat];
+  conversation = [(CKMessageEntryView *)self conversation];
+  chat = [conversation chat];
 
-  if (v4)
+  if (chat)
   {
-    v5 = [v4 supportsCapabilities:2048];
+    v5 = [chat supportsCapabilities:2048];
   }
 
   else
   {
-    v6 = [(CKMessageEntryView *)self conversation];
-    v7 = [v6 sendingService];
-    v8 = [v7 supportsCapability:*MEMORY[0x1E69A78F0]];
+    conversation2 = [(CKMessageEntryView *)self conversation];
+    sendingService = [conversation2 sendingService];
+    v8 = [sendingService supportsCapability:*MEMORY[0x1E69A78F0]];
 
     if (v8 && ([MEMORY[0x1E69A5B00] sharedInstance], v9 = objc_claimAutoreleasedReturnValue(), v10 = objc_msgSend(v9, "isSatelliteConnectionActive"), v9, (IMIsRunningInMessagesViewService() & 1) == 0))
     {
@@ -2442,20 +2442,20 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
 
   [(CKAudioMessageRecordingView *)self->_audioRecordingView setDelegate:0];
   [(CKAudioMessageRecordingView *)self->_audioRecordingView invalidateDisplayLink];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(CKMessageEntryContentView *)self->_contentView setDelegate:0];
   [(CKAudioRecorder *)self->_recorder setDelegate:0];
   [(CKAudioRecorder *)self->_recorder resetState];
-  v4 = [(CKMessageEntryView *)self sendButtonClickInteraction];
+  sendButtonClickInteraction = [(CKMessageEntryView *)self sendButtonClickInteraction];
 
-  if (v4)
+  if (sendButtonClickInteraction)
   {
-    v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v6 = [v5 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-    if (v6)
+    if (isEntryViewRefreshEnabled)
     {
       [(CKMessageEntryView *)self glassSendButton];
     }
@@ -2465,8 +2465,8 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
       [(CKMessageEntryView *)self sendButton];
     }
     v7 = ;
-    v8 = [(CKMessageEntryView *)self sendButtonClickInteraction];
-    [v7 removeInteraction:v8];
+    sendButtonClickInteraction2 = [(CKMessageEntryView *)self sendButtonClickInteraction];
+    [v7 removeInteraction:sendButtonClickInteraction2];
 
     [(CKMessageEntryView *)self setSendButtonClickInteraction:0];
   }
@@ -2481,28 +2481,28 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
   v5.receiver = self;
   v5.super_class = CKMessageEntryView;
   [(CKMessageEntryView *)&v5 didMoveToWindow];
-  v3 = [(CKMessageEntryView *)self window];
+  window = [(CKMessageEntryView *)self window];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained messageEntryView:self didMoveToWindow:v3];
+  [WeakRetained messageEntryView:self didMoveToWindow:window];
 }
 
-- (void)configurePlusButtonFrameWithOneLinePlaceHolderCenterY:(double)a3
+- (void)configurePlusButtonFrameWithOneLinePlaceHolderCenterY:(double)y
 {
-  v29 = [(CKMessageEntryView *)self plusButton];
-  v5 = [(CKMessageEntryView *)self shouldShowPluginButtons];
-  v6 = v29;
-  if (v5)
+  plusButton = [(CKMessageEntryView *)self plusButton];
+  shouldShowPluginButtons = [(CKMessageEntryView *)self shouldShowPluginButtons];
+  v6 = plusButton;
+  if (shouldShowPluginButtons)
   {
-    if (v29)
+    if (plusButton)
     {
-      v7 = [v29 isHidden];
-      v6 = v29;
-      if ((v7 & 1) == 0)
+      isHidden = [plusButton isHidden];
+      v6 = plusButton;
+      if ((isHidden & 1) == 0)
       {
-        v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-        v9 = [v8 isEntryViewRefreshEnabled];
+        mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+        isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-        if (v9)
+        if (isEntryViewRefreshEnabled)
         {
           +[CKGlassSendMenuButton buttonSize];
         }
@@ -2514,10 +2514,10 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
 
         v12 = v10;
         v13 = v11;
-        v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-        v15 = [v14 isEntryViewRefreshEnabled];
+        mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+        isEntryViewRefreshEnabled2 = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-        if (v15)
+        if (isEntryViewRefreshEnabled2)
         {
           [(CKMessageEntryView *)self _leftInsets];
         }
@@ -2534,23 +2534,23 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
         }
 
         v22 = v12 * 0.5 + v16;
-        v23 = [(CKMessageEntryView *)self traitCollection];
-        [v23 displayScale];
+        traitCollection = [(CKMessageEntryView *)self traitCollection];
+        [traitCollection displayScale];
         v25 = round(v22 * v24) / v24;
 
-        [v29 setCenter:{v25, a3}];
-        [v29 setBounds:{0.0, 0.0, v12, v13}];
-        v26 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-        v27 = [v26 isEntryViewRefreshEnabled];
+        [plusButton setCenter:{v25, y}];
+        [plusButton setBounds:{0.0, 0.0, v12, v13}];
+        mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+        isEntryViewRefreshEnabled3 = [mEMORY[0x1E69A8070]3 isEntryViewRefreshEnabled];
 
-        v6 = v29;
-        if (v27)
+        v6 = plusButton;
+        if (isEntryViewRefreshEnabled3)
         {
-          v28 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
-          [v29 frame];
-          [v28 setFrame:?];
+          cancelAudioRecordingButton = [(CKMessageEntryView *)self cancelAudioRecordingButton];
+          [plusButton frame];
+          [cancelAudioRecordingButton setFrame:?];
 
-          v6 = v29;
+          v6 = plusButton;
         }
       }
     }
@@ -2560,25 +2560,25 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
 - (void)setCharacterCountString
 {
   v98 = *MEMORY[0x1E69E9840];
-  v3 = [(CKMessageEntryView *)self characterCountLabel];
+  characterCountLabel = [(CKMessageEntryView *)self characterCountLabel];
   if (![(CKMessageEntryView *)self isCharacterCountHidden])
   {
-    v4 = [(CKMessageEntryView *)self contentView];
-    v5 = [v4 isSingleLine];
+    contentView = [(CKMessageEntryView *)self contentView];
+    isSingleLine = [contentView isSingleLine];
 
-    if ((v5 & 1) == 0)
+    if ((isSingleLine & 1) == 0)
     {
       v91 = 0;
-      v7 = [(CKMessageEntryView *)self composition];
-      v8 = [v7 text];
-      v89 = [v8 string];
+      composition = [(CKMessageEntryView *)self composition];
+      text = [composition text];
+      string = [text string];
 
-      v9 = [(CKMessageEntryView *)self conversation];
-      LODWORD(v7) = [v9 isStewieConversation];
+      conversation = [(CKMessageEntryView *)self conversation];
+      LODWORD(composition) = [conversation isStewieConversation];
 
-      if (v7)
+      if (composition)
       {
-        v10 = [v89 lengthOfBytesUsingEncoding:4];
+        v10 = [string lengthOfBytesUsingEncoding:4];
         v91 = v10;
         v11 = MEMORY[0x1E696AEC0];
         v12 = CKFrameworkBundle();
@@ -2588,10 +2588,10 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
         v16 = CKLocalizedStringForNumber(&unk_1F04E7ED8);
         v17 = [v11 stringWithFormat:v13, v15, v16];
 
-        v18 = [MEMORY[0x1E69DC668] sharedApplication];
-        v19 = [v18 userInterfaceLayoutDirection];
+        mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+        userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-        if (v19 == 1)
+        if (userInterfaceLayoutDirection == 1)
         {
           v20 = @"\u200F";
         }
@@ -2616,47 +2616,47 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
             [MEMORY[0x1E69DC888] systemOrangeColor];
           }
           v83 = ;
-          [v3 setTextColor:v83];
+          [characterCountLabel setTextColor:v83];
         }
 
-        v84 = [(CKMessageEntryView *)self characterCountLabel];
-        [v84 setText:v21];
+        characterCountLabel2 = [(CKMessageEntryView *)self characterCountLabel];
+        [characterCountLabel2 setText:v21];
 
         goto LABEL_35;
       }
 
       v90 = 0;
-      v22 = [MEMORY[0x1E69A7F68] sharedInstance];
-      v23 = [v22 ctSubscriptionInfo];
-      v88 = [v23 preferredOrDefaultSubscriptionContext];
+      mEMORY[0x1E69A7F68] = [MEMORY[0x1E69A7F68] sharedInstance];
+      ctSubscriptionInfo = [mEMORY[0x1E69A7F68] ctSubscriptionInfo];
+      preferredOrDefaultSubscriptionContext = [ctSubscriptionInfo preferredOrDefaultSubscriptionContext];
 
-      v24 = [(CKMessageEntryView *)self conversation];
-      v25 = [v24 sendingService];
-      if ([v25 __ck_isiMessageLite])
+      conversation2 = [(CKMessageEntryView *)self conversation];
+      sendingService = [conversation2 sendingService];
+      if ([sendingService __ck_isiMessageLite])
       {
-        v26 = 1;
+        shouldDisplayOffGridModeStatus = 1;
       }
 
       else
       {
-        v27 = [(CKMessageEntryView *)self conversation];
-        v28 = [v27 chat];
-        v26 = [v28 shouldDisplayOffGridModeStatus];
+        conversation3 = [(CKMessageEntryView *)self conversation];
+        chat = [conversation3 chat];
+        shouldDisplayOffGridModeStatus = [chat shouldDisplayOffGridModeStatus];
       }
 
-      v29 = [(CKMessageEntryView *)self conversation];
-      v30 = [v29 sendingService];
-      v31 = [v30 __ck_isSatelliteSMS];
+      conversation4 = [(CKMessageEntryView *)self conversation];
+      sendingService2 = [conversation4 sendingService];
+      __ck_isSatelliteSMS = [sendingService2 __ck_isSatelliteSMS];
 
-      if (v26)
+      if (shouldDisplayOffGridModeStatus)
       {
-        v32 = [MEMORY[0x1E69A5C90] iMessageLiteService];
-        v91 = [v89 lengthOfBytesUsingEncoding:4];
-        v33 = [v32 serviceProperties];
-        v34 = [v33 valueForKey:*MEMORY[0x1E69A7B30]];
-        v35 = [v34 intValue];
-        v36 = v35;
-        v90 = v35;
+        iMessageLiteService = [MEMORY[0x1E69A5C90] iMessageLiteService];
+        v91 = [string lengthOfBytesUsingEncoding:4];
+        serviceProperties = [iMessageLiteService serviceProperties];
+        v34 = [serviceProperties valueForKey:*MEMORY[0x1E69A7B30]];
+        intValue = [v34 intValue];
+        v36 = intValue;
+        v90 = intValue;
 
         v37 = MEMORY[0x1E696AEC0];
         v38 = CKFrameworkBundle();
@@ -2667,10 +2667,10 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
         v43 = CKLocalizedStringForNumber(v42);
         v44 = [v37 stringWithFormat:v39, v41, v43];
 
-        v45 = [MEMORY[0x1E69DC668] sharedApplication];
-        v46 = [v45 userInterfaceLayoutDirection];
+        mEMORY[0x1E69DC668]2 = [MEMORY[0x1E69DC668] sharedApplication];
+        userInterfaceLayoutDirection2 = [mEMORY[0x1E69DC668]2 userInterfaceLayoutDirection];
 
-        if (v46 == 1)
+        if (userInterfaceLayoutDirection2 == 1)
         {
           v47 = @"\u200F";
         }
@@ -2682,20 +2682,20 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
 
         v48 = [(__CFString *)v47 stringByAppendingString:v44];
 
-        v49 = [(CKMessageEntryView *)self characterCountLabel];
-        [v49 setText:v48];
+        characterCountLabel3 = [(CKMessageEntryView *)self characterCountLabel];
+        [characterCountLabel3 setText:v48];
       }
 
-      else if (v31)
+      else if (__ck_isSatelliteSMS)
       {
-        v91 = [v89 lengthOfBytesUsingEncoding:4];
-        v50 = [(CKMessageEntryView *)self conversation];
-        v51 = [v50 sendingService];
-        v52 = [v51 serviceProperties];
-        v53 = [v52 valueForKey:*MEMORY[0x1E69A7B30]];
-        v54 = [v53 intValue];
-        v55 = v54;
-        v90 = v54;
+        v91 = [string lengthOfBytesUsingEncoding:4];
+        conversation5 = [(CKMessageEntryView *)self conversation];
+        sendingService3 = [conversation5 sendingService];
+        serviceProperties2 = [sendingService3 serviceProperties];
+        v53 = [serviceProperties2 valueForKey:*MEMORY[0x1E69A7B30]];
+        intValue2 = [v53 intValue];
+        v55 = intValue2;
+        v90 = intValue2;
 
         v56 = MEMORY[0x1E696AEC0];
         v57 = CKFrameworkBundle();
@@ -2706,10 +2706,10 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
         v62 = CKLocalizedStringForNumber(v61);
         v63 = [v56 stringWithFormat:v58, v60, v62];
 
-        v64 = [MEMORY[0x1E69DC668] sharedApplication];
-        v65 = [v64 userInterfaceLayoutDirection];
+        mEMORY[0x1E69DC668]3 = [MEMORY[0x1E69DC668] sharedApplication];
+        userInterfaceLayoutDirection3 = [mEMORY[0x1E69DC668]3 userInterfaceLayoutDirection];
 
-        if (v65 == 1)
+        if (userInterfaceLayoutDirection3 == 1)
         {
           v66 = @"\u200F";
         }
@@ -2721,13 +2721,13 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
 
         v67 = [(__CFString *)v66 stringByAppendingString:v63];
 
-        v68 = [(CKMessageEntryView *)self characterCountLabel];
-        [v68 setText:v67];
+        characterCountLabel4 = [(CKMessageEntryView *)self characterCountLabel];
+        [characterCountLabel4 setText:v67];
       }
 
       else
       {
-        if (!v88 || ([CTMessageCenterClass() sharedMessageCenter], v69 = objc_claimAutoreleasedReturnValue(), v70 = objc_msgSend(v69, "getCharacterCountForSub:count:andMessageSplitThreshold:forSmsText:", v88, &v91, &v90, v89), v69, !v70))
+        if (!preferredOrDefaultSubscriptionContext || ([CTMessageCenterClass() sharedMessageCenter], v69 = objc_claimAutoreleasedReturnValue(), v70 = objc_msgSend(v69, "getCharacterCountForSub:count:andMessageSplitThreshold:forSmsText:", preferredOrDefaultSubscriptionContext, &v91, &v90, string), v69, !v70))
         {
           if (IMOSLoggingEnabled())
           {
@@ -2741,7 +2741,7 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
               v94 = 2112;
               v95 = v87;
               v96 = 2112;
-              v97 = v88;
+              v97 = preferredOrDefaultSubscriptionContext;
               _os_log_impl(&dword_19020E000, v85, OS_LOG_TYPE_INFO, "Not showing character count: %@/%@ - subscription: %@", buf, 0x20u);
             }
           }
@@ -2759,8 +2759,8 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
         v77 = CKLocalizedStringForNumber(v76);
         v78 = [v71 stringWithFormat:v73, v75, v77];
 
-        v79 = [MEMORY[0x1E69DC668] sharedApplication];
-        LODWORD(v76) = [v79 userInterfaceLayoutDirection] == 1;
+        mEMORY[0x1E69DC668]4 = [MEMORY[0x1E69DC668] sharedApplication];
+        LODWORD(v76) = [mEMORY[0x1E69DC668]4 userInterfaceLayoutDirection] == 1;
 
         if (v76)
         {
@@ -2774,8 +2774,8 @@ void __37__CKMessageEntryView_updateEntryView__block_invoke(uint64_t a1)
 
         v81 = [(__CFString *)v80 stringByAppendingString:v78];
 
-        v82 = [(CKMessageEntryView *)self characterCountLabel];
-        [v82 setText:v81];
+        characterCountLabel5 = [(CKMessageEntryView *)self characterCountLabel];
+        [characterCountLabel5 setText:v81];
       }
 
       v6 = 0;
@@ -2788,19 +2788,19 @@ LABEL_35:
 
   v6 = 1;
 LABEL_36:
-  [v3 setHidden:v6];
+  [characterCountLabel setHidden:v6];
 }
 
-- (void)_layoutSendButtonAndCharacterCountWithCoverFrame:(CGRect)a3 oneLinePlaceHolderCenterY:(double)a4
+- (void)_layoutSendButtonAndCharacterCountWithCoverFrame:(CGRect)frame oneLinePlaceHolderCenterY:(double)y
 {
-  width = a3.size.width;
-  height = a3.size.height;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v8 = [v7 isEntryViewRefreshEnabled];
+  width = frame.size.width;
+  height = frame.size.height;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v8)
+  if (isEntryViewRefreshEnabled)
   {
     [(CKMessageEntryView *)self glassSendButton];
   }
@@ -2810,7 +2810,7 @@ LABEL_36:
     [(CKMessageEntryView *)self sendButton];
   }
   v59 = ;
-  v58 = y;
+  yCopy = y;
   v10 = *MEMORY[0x1E695F058];
   v9 = *(MEMORY[0x1E695F058] + 8);
   v11 = *(MEMORY[0x1E695F058] + 16);
@@ -2820,16 +2820,16 @@ LABEL_36:
     v13 = +[CKUIBehavior sharedBehaviors];
     [v13 entryViewSendButtonCoverSpace];
     v15 = v14;
-    v16 = [(CKMessageEntryView *)self contentView];
-    [v16 setSendButtonTextInsetWidth:v15];
+    contentView = [(CKMessageEntryView *)self contentView];
+    [contentView setSendButtonTextInsetWidth:v15];
   }
 
   else if ([(CKMessageEntryView *)self shouldShowSendButton])
   {
-    v17 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v18 = [v17 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled2 = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-    if (v18)
+    if (isEntryViewRefreshEnabled2)
     {
       +[CKGlassSendButton buttonSize];
     }
@@ -2848,31 +2848,31 @@ LABEL_36:
     v61.origin.x = x;
     v61.size.width = width;
     v61.size.height = height;
-    v61.origin.y = v58;
+    v61.origin.y = yCopy;
     v24 = CGRectGetMaxX(v61) - v23;
-    v25 = [(CKMessageEntryView *)self traitCollection];
-    [v25 displayScale];
+    traitCollection = [(CKMessageEntryView *)self traitCollection];
+    [traitCollection displayScale];
     v10 = round(v24 * v26) / v26;
 
-    v27 = [(CKMessageEntryView *)self conversation];
-    v28 = [v27 isStewieConversation];
+    conversation = [(CKMessageEntryView *)self conversation];
+    isStewieConversation = [conversation isStewieConversation];
 
     v29 = 0.0;
-    if (v28)
+    if (isStewieConversation)
     {
       v29 = 10.0;
     }
 
     v30 = v23 + v29;
-    v31 = [(CKMessageEntryView *)self contentView];
-    [v31 setSendButtonTextInsetWidth:v30];
+    contentView2 = [(CKMessageEntryView *)self contentView];
+    [contentView2 setSendButtonTextInsetWidth:v30];
 
-    v32 = [(CKMessageEntryView *)self traitCollection];
-    [v32 displayScale];
-    v9 = round((a4 + v12 * -0.5) * v33) / v33;
+    traitCollection2 = [(CKMessageEntryView *)self traitCollection];
+    [traitCollection2 displayScale];
+    v9 = round((y + v12 * -0.5) * v33) / v33;
 
-    v34 = [(CKMessageEntryView *)self contentClipView];
-    [(CKMessageEntryView *)self convertRect:v34 toView:v10, v9, v11, v12];
+    contentClipView = [(CKMessageEntryView *)self contentClipView];
+    [(CKMessageEntryView *)self convertRect:contentClipView toView:v10, v9, v11, v12];
     v36 = v35;
     v38 = v37;
     v40 = v39;
@@ -2891,8 +2891,8 @@ LABEL_36:
       v62.origin.x = x;
       v62.size.width = width;
       v62.size.height = height;
-      v46 = v58;
-      v62.origin.y = v58;
+      v46 = yCopy;
+      v62.origin.y = yCopy;
       v47 = CGRectGetMaxX(v62) + 3.5;
     }
 
@@ -2903,10 +2903,10 @@ LABEL_36:
       v63.size.width = v11;
       v63.size.height = v12;
       v47 = CGRectGetMaxX(v63) - v44;
-      v46 = v58;
+      v46 = yCopy;
     }
 
-    v48 = [(CKMessageEntryView *)self characterCountLabel];
+    characterCountLabel = [(CKMessageEntryView *)self characterCountLabel];
     v64.origin.x = v10;
     v64.origin.y = v9;
     v64.size.width = v11;
@@ -2921,17 +2921,17 @@ LABEL_36:
     [v51 entryViewSendButtonCoverSpace];
     v53 = v50 - v52;
 
-    [v48 setFrame:{v47, v53, v44, v54}];
+    [characterCountLabel setFrame:{v47, v53, v44, v54}];
     [(CKMessageEntryView *)self setCharacterCountString];
   }
 }
 
-- (void)_layoutAudioButtonWithCoverFrame:(CGRect)a3 oneLinePlaceHolderCenterY:(double)a4
+- (void)_layoutAudioButtonWithCoverFrame:(CGRect)frame oneLinePlaceHolderCenterY:(double)y
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(CKMessageEntryView *)self shouldShowSendButton]&& !CKIsRunningInMacCatalyst())
   {
     v76.origin.x = x;
@@ -2947,7 +2947,7 @@ LABEL_36:
     v50 = v47 - v49;
     v51 = +[CKUIBehavior sharedBehaviors];
     [v51 audioButtonSize];
-    v53 = a4 + v52 * -0.5;
+    v53 = y + v52 * -0.5;
     v54 = +[CKUIBehavior sharedBehaviors];
     [v54 audioButtonSize];
     v56 = v55;
@@ -2955,18 +2955,18 @@ LABEL_36:
     [v57 audioButtonSize];
     v59 = v58;
 
-    v60 = [(CKMessageEntryView *)self contentClipView];
-    [(CKMessageEntryView *)self convertRect:v60 toView:v50, v53, v56, v59];
+    contentClipView = [(CKMessageEntryView *)self contentClipView];
+    [(CKMessageEntryView *)self convertRect:contentClipView toView:v50, v53, v56, v59];
     v62 = v61;
     v64 = v63;
     v66 = v65;
     v68 = v67;
 
-    v69 = [(CKMessageEntryView *)self audioButton];
-    [v69 setFrame:{v62, v64, v66, v68}];
+    audioButton = [(CKMessageEntryView *)self audioButton];
+    [audioButton setFrame:{v62, v64, v66, v68}];
 
-    v39 = [(CKMessageEntryView *)self sendButtonSpinner];
-    v70 = v39;
+    sendButtonSpinner = [(CKMessageEntryView *)self sendButtonSpinner];
+    v70 = sendButtonSpinner;
     v42 = v50;
     v43 = v53;
     v40 = v56;
@@ -2994,51 +2994,51 @@ LABEL_36:
     v73.size.height = height;
     v14 = CGRectGetMidY(v73) + -10.0;
 
-    v15 = [(CKMessageEntryView *)self traitCollection];
-    [v15 displayScale];
+    traitCollection = [(CKMessageEntryView *)self traitCollection];
+    [traitCollection displayScale];
     v17 = round(v13 * v16) / v16;
     v18 = round(v14 * v16) / v16;
     v19 = round(v16 * 29.0) / v16;
     v20 = round(v16 * 20.0) / v16;
 
-    v21 = [(CKMessageEntryView *)self contentClipView];
-    [(CKMessageEntryView *)self convertRect:v21 toView:v17, v18, v19, v20];
+    contentClipView2 = [(CKMessageEntryView *)self contentClipView];
+    [(CKMessageEntryView *)self convertRect:contentClipView2 toView:v17, v18, v19, v20];
     v23 = v22;
     v25 = v24;
     v27 = v26;
     v29 = v28;
 
-    v30 = [(CKMessageEntryView *)self audioButton];
-    [v30 setFrame:{v23, v25, v27, v29}];
+    audioButton2 = [(CKMessageEntryView *)self audioButton];
+    [audioButton2 setFrame:{v23, v25, v27, v29}];
 
-    v31 = [(CKMessageEntryView *)self contentView];
-    [v31 frame];
+    contentView = [(CKMessageEntryView *)self contentView];
+    [contentView frame];
     v32 = CGRectGetMaxX(v74) + -29.0;
     v33 = +[CKUIBehavior sharedBehaviors];
     [v33 entryViewSendButtonCoverSpace];
     v35 = v32 - v34;
-    v36 = [(CKMessageEntryView *)self contentView];
-    v37 = [v36 textView];
-    [v37 frame];
+    contentView2 = [(CKMessageEntryView *)self contentView];
+    textView = [contentView2 textView];
+    [textView frame];
     v38 = CGRectGetMidY(v75) + -10.0;
 
-    v39 = [(CKMessageEntryView *)self sendButtonSpinner];
+    sendButtonSpinner = [(CKMessageEntryView *)self sendButtonSpinner];
     v40 = 29.0;
     v41 = 20.0;
-    v70 = v39;
+    v70 = sendButtonSpinner;
     v42 = v35;
     v43 = v38;
   }
 
-  [v39 setFrame:{v42, v43, v40, v41}];
+  [sendButtonSpinner setFrame:{v42, v43, v40, v41}];
 }
 
-- (void)_layoutDictationButtonWithCoverFrame:(CGRect)a3 oneLinePlaceHolderCenterY:(double)a4
+- (void)_layoutDictationButtonWithCoverFrame:(CGRect)frame oneLinePlaceHolderCenterY:(double)y
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   if ([(CKMessageEntryView *)self shouldShowDictationButton])
   {
     v10 = +[CKUIBehavior sharedBehaviors];
@@ -3054,29 +3054,29 @@ LABEL_36:
     v16 = +[CKUIBehavior sharedBehaviors];
     [v16 entryViewDictationButtonCoverSpace];
     v18 = v15 - v17;
-    v19 = a4 + v14 * -0.5;
+    v19 = y + v14 * -0.5;
 
-    v20 = [(CKMessageEntryView *)self contentClipView];
-    [(CKMessageEntryView *)self convertRect:v20 toView:v18, v19, v12, v14];
+    contentClipView = [(CKMessageEntryView *)self contentClipView];
+    [(CKMessageEntryView *)self convertRect:contentClipView toView:v18, v19, v12, v14];
     v22 = v21;
     v24 = v23;
     v26 = v25;
     v28 = v27;
 
-    v29 = [(CKMessageEntryView *)self dictationButton];
-    [v29 setFrame:{v22, v24, v26, v28}];
+    dictationButton = [(CKMessageEntryView *)self dictationButton];
+    [dictationButton setFrame:{v22, v24, v26, v28}];
 
-    v30 = [(CKMessageEntryView *)self sendButtonSpinner];
-    [v30 setFrame:{v18, v19, v12, v14}];
+    sendButtonSpinner = [(CKMessageEntryView *)self sendButtonSpinner];
+    [sendButtonSpinner setFrame:{v18, v19, v12, v14}];
   }
 }
 
-- (void)_layoutHintViewWithCoverFrame:(CGRect)a3
+- (void)_layoutHintViewWithCoverFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = +[CKUIBehavior sharedBehaviors];
   [v8 audioHintViewPadding];
   v10 = v9;
@@ -3091,8 +3091,8 @@ LABEL_36:
   [v17 entryViewAudioButtonCoverSpace];
   v19 = v16 - v18 + v10 * -2.0;
 
-  v20 = [(CKMessageEntryView *)self hintLabel];
-  [v20 sizeThatFits:{v19, 1.79769313e308}];
+  hintLabel = [(CKMessageEntryView *)self hintLabel];
+  [hintLabel sizeThatFits:{v19, 1.79769313e308}];
   v22 = v21;
   v24 = v23;
 
@@ -3110,36 +3110,36 @@ LABEL_36:
     v31 = v28;
   }
 
-  v32 = [(CKMessageEntryView *)self hintLabel];
-  [v32 setFrame:{v27, 0.0, v22, v31}];
+  hintLabel2 = [(CKMessageEntryView *)self hintLabel];
+  [hintLabel2 setFrame:{v27, 0.0, v22, v31}];
 
   if ([(CKMessageEntryView *)self shouldShowHintLabel])
   {
-    v33 = [(CKMessageEntryView *)self contentClipView];
-    [v33 anchorPoint];
+    contentClipView = [(CKMessageEntryView *)self contentClipView];
+    [contentClipView anchorPoint];
     v35 = x + width * v34;
     v37 = y - (v31 - height) + v31 * v36;
 
-    v38 = [(CKMessageEntryView *)self contentClipView];
-    [v38 setBounds:{0.0, 0.0, width, v31}];
+    contentClipView2 = [(CKMessageEntryView *)self contentClipView];
+    [contentClipView2 setBounds:{0.0, 0.0, width, v31}];
 
-    v39 = [(CKMessageEntryView *)self contentClipView];
-    [v39 setCenter:{v35, v37}];
+    contentClipView3 = [(CKMessageEntryView *)self contentClipView];
+    [contentClipView3 setCenter:{v35, v37}];
   }
 }
 
-- (void)_layoutContentViewAndAudioRecordingViewWithCoverFrame:(CGRect)a3
+- (void)_layoutContentViewAndAudioRecordingViewWithCoverFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  x = a3.origin.x;
-  v7 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v8 = [v7 isEntryViewRefreshEnabled];
+  height = frame.size.height;
+  width = frame.size.width;
+  x = frame.origin.x;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (!v8)
+  if (!isEntryViewRefreshEnabled)
   {
-    v36 = [(CKMessageEntryView *)self contentView];
-    [v36 setAlpha:1.0];
+    contentView = [(CKMessageEntryView *)self contentView];
+    [contentView setAlpha:1.0];
 
     [(CKMessageEntryView *)self bounds];
     v38 = v37;
@@ -3157,8 +3157,8 @@ LABEL_36:
     [(CKMessageEntryView *)self safeAreaInsets];
     v50 = v48 - v49;
 
-    v51 = [(CKMessageEntryView *)self audioRecordingView];
-    [v51 sizeThatFits:{v50, 1.79769313e308}];
+    audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
+    [audioRecordingView sizeThatFits:{v50, 1.79769313e308}];
     v53 = v52;
     v55 = v54;
 
@@ -3175,40 +3175,40 @@ LABEL_36:
     v61 = (v59 - v60 - v55) * 0.5;
     if ([(CKMessageEntryView *)self shouldUseLinearResizeForAudioMessage])
     {
-      v62 = [(CKMessageEntryView *)self audioRecordingView];
-      [v62 setFrame:{x, v61, width, v55}];
+      audioRecordingView2 = [(CKMessageEntryView *)self audioRecordingView];
+      [audioRecordingView2 setFrame:{x, v61, width, v55}];
 
-      v63 = [(CKMessageEntryView *)self contentClipView];
-      [v63 setFrame:{x, v61, width, v55}];
+      contentClipView = [(CKMessageEntryView *)self contentClipView];
+      [contentClipView setFrame:{x, v61, width, v55}];
 
-      v64 = [(CKMessageEntryView *)self contentClipView];
-      v65 = [(CKMessageEntryView *)self contentClipView];
-      [v65 frame];
-      [v64 _setContinuousCornerRadius:v66 * 0.5];
+      contentClipView2 = [(CKMessageEntryView *)self contentClipView];
+      contentClipView3 = [(CKMessageEntryView *)self contentClipView];
+      [contentClipView3 frame];
+      [contentClipView2 _setContinuousCornerRadius:v66 * 0.5];
 
-      v67 = [(CKMessageEntryView *)self contentClipView];
-      [v67 setAlpha:0.0];
+      contentClipView4 = [(CKMessageEntryView *)self contentClipView];
+      [contentClipView4 setAlpha:0.0];
     }
 
     else
     {
-      v68 = [(CKMessageEntryView *)self audioRecordingView];
-      [v68 setFrame:{v41 + v43, v61, v53, v55}];
+      audioRecordingView3 = [(CKMessageEntryView *)self audioRecordingView];
+      [audioRecordingView3 setFrame:{v41 + v43, v61, v53, v55}];
 
       v69 = +[CKUIBehavior sharedBehaviors];
       [v69 entryViewCoverMinHeight];
       v71 = v70;
 
-      v67 = [(CKMessageEntryView *)self contentClipView];
-      [v67 _setContinuousCornerRadius:v71 * 0.5];
+      contentClipView4 = [(CKMessageEntryView *)self contentClipView];
+      [contentClipView4 _setContinuousCornerRadius:v71 * 0.5];
     }
 
-    v72 = [(CKMessageEntryView *)self audioRecordingView];
-    [v72 setCornerRadius:v55 * 0.5];
+    audioRecordingView4 = [(CKMessageEntryView *)self audioRecordingView];
+    [audioRecordingView4 setCornerRadius:v55 * 0.5];
 
-    v73 = [(CKMessageEntryView *)self audioRecordingView];
+    audioRecordingView5 = [(CKMessageEntryView *)self audioRecordingView];
 
-    if (v73)
+    if (audioRecordingView5)
     {
       [(CKMessageEntryView *)self audioRecordingView];
     }
@@ -3222,8 +3222,8 @@ LABEL_36:
     goto LABEL_34;
   }
 
-  v9 = [(CKMessageEntryView *)self audioRecordingView];
-  [v9 sizeThatFits:{width, 1.79769313e308}];
+  audioRecordingView6 = [(CKMessageEntryView *)self audioRecordingView];
+  [audioRecordingView6 sizeThatFits:{width, 1.79769313e308}];
   v11 = v10;
   v13 = v12;
 
@@ -3234,22 +3234,22 @@ LABEL_36:
 
   if (![(CKMessageEntryView *)self shouldUseLinearResizeForAudioMessage]&& [(CKMessageEntryView *)self displayMode]!= 2 && [(CKMessageEntryView *)self displayMode]!= 3)
   {
-    v98 = [(CKMessageEntryView *)self contentClipView];
-    [v98 frame];
+    contentClipView5 = [(CKMessageEntryView *)self contentClipView];
+    [contentClipView5 frame];
     v100 = v99 * 0.5;
-    v101 = [(CKMessageEntryView *)self contentClipView];
-    [v101 frame];
+    contentClipView6 = [(CKMessageEntryView *)self contentClipView];
+    [contentClipView6 frame];
     v103 = v102 * 0.5;
 
-    v104 = [(CKMessageEntryView *)self audioRecordingView];
-    [v104 setCenter:{v100, v103}];
+    audioRecordingView7 = [(CKMessageEntryView *)self audioRecordingView];
+    [audioRecordingView7 setCenter:{v100, v103}];
 
     v105 = +[CKUIBehavior sharedBehaviors];
     [v105 entryViewCoverMinHeight];
     v107 = v106;
 
-    v81 = [(CKMessageEntryView *)self contentClipView];
-    [v81 _setContinuousCornerRadius:v107 * 0.5];
+    contentClipView7 = [(CKMessageEntryView *)self contentClipView];
+    [contentClipView7 _setContinuousCornerRadius:v107 * 0.5];
     goto LABEL_22;
   }
 
@@ -3270,102 +3270,102 @@ LABEL_36:
     [v23 minTranscriptMarginInsets];
     v11 = v22 - v24;
 
-    v25 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
-    [v25 sizeThatFits:{100.0, 100.0}];
+    cancelAudioRecordingButton = [(CKMessageEntryView *)self cancelAudioRecordingButton];
+    [cancelAudioRecordingButton sizeThatFits:{100.0, 100.0}];
     v27 = v26;
     v29 = v28;
 
-    v30 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
+    cancelAudioRecordingButton2 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
     v31 = +[CKUIBehavior sharedBehaviors];
     [v31 minTranscriptMarginInsets];
-    [v30 setFrame:{v32, v15 + (v13 - v29) * 0.5, v27, v29}];
+    [cancelAudioRecordingButton2 setFrame:{v32, v15 + (v13 - v29) * 0.5, v27, v29}];
 
-    v33 = [(CKMessageEntryView *)self plusButton];
-    v34 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
-    [v34 frame];
-    [v33 setFrame:?];
+    plusButton = [(CKMessageEntryView *)self plusButton];
+    cancelAudioRecordingButton3 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
+    [cancelAudioRecordingButton3 frame];
+    [plusButton setFrame:?];
 
-    v35 = [(CKMessageEntryView *)self audioRecordingView];
-    if ([v35 state] == 2)
+    audioRecordingView8 = [(CKMessageEntryView *)self audioRecordingView];
+    if ([audioRecordingView8 state] == 2)
     {
 
 LABEL_20:
-      v76 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
-      [v76 frame];
+      cancelAudioRecordingButton4 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
+      [cancelAudioRecordingButton4 frame];
       x = CGRectGetMaxX(v120) + 16.0;
 
-      v77 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
-      [v77 frame];
+      cancelAudioRecordingButton5 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
+      [cancelAudioRecordingButton5 frame];
       v11 = v11 - (v78 + 16.0);
 
       goto LABEL_21;
     }
 
-    v74 = [(CKMessageEntryView *)self audioRecordingView];
-    v75 = [v74 state];
+    audioRecordingView9 = [(CKMessageEntryView *)self audioRecordingView];
+    state = [audioRecordingView9 state];
 
-    if (v75 == 3)
+    if (state == 3)
     {
       goto LABEL_20;
     }
   }
 
 LABEL_21:
-  v79 = [(CKMessageEntryView *)self audioRecordingView];
-  [v79 setFrame:{0.0, 0.0, v11, v13}];
+  audioRecordingView10 = [(CKMessageEntryView *)self audioRecordingView];
+  [audioRecordingView10 setFrame:{0.0, 0.0, v11, v13}];
 
-  v80 = [(CKMessageEntryView *)self contentClipView];
-  [v80 setFrame:{x, v15, v11, v13}];
+  contentClipView8 = [(CKMessageEntryView *)self contentClipView];
+  [contentClipView8 setFrame:{x, v15, v11, v13}];
 
-  v81 = [(CKMessageEntryView *)self contentClipView];
-  v82 = [(CKMessageEntryView *)self contentClipView];
-  [v82 frame];
-  [v81 _setContinuousCornerRadius:v83 * 0.5];
+  contentClipView7 = [(CKMessageEntryView *)self contentClipView];
+  contentClipView9 = [(CKMessageEntryView *)self contentClipView];
+  [contentClipView9 frame];
+  [contentClipView7 _setContinuousCornerRadius:v83 * 0.5];
 
 LABEL_22:
   if ([(CKMessageEntryView *)self shouldUseLinearResizeForAudioMessage]|| [(CKMessageEntryView *)self displayMode]== 2 || [(CKMessageEntryView *)self displayMode]== 3)
   {
-    v84 = [(CKMessageEntryView *)self audioRecordingView];
-    [v84 setAlpha:1.0];
+    audioRecordingView11 = [(CKMessageEntryView *)self audioRecordingView];
+    [audioRecordingView11 setAlpha:1.0];
 
-    v85 = [(CKMessageEntryView *)self contentView];
-    [v85 setAlpha:0.0];
+    contentView2 = [(CKMessageEntryView *)self contentView];
+    [contentView2 setAlpha:0.0];
 
-    v86 = [(CKMessageEntryView *)self audioButton];
-    [v86 setAlpha:0.0];
+    audioButton = [(CKMessageEntryView *)self audioButton];
+    [audioButton setAlpha:0.0];
 
-    v87 = [(CKMessageEntryView *)self dictationButton];
-    [v87 setAlpha:0.0];
+    dictationButton = [(CKMessageEntryView *)self dictationButton];
+    [dictationButton setAlpha:0.0];
 
     if (![(CKMessageEntryView *)self shouldUseLinearResizeForAudioMessage])
     {
-      v88 = [(CKMessageEntryView *)self plusButton];
+      plusButton2 = [(CKMessageEntryView *)self plusButton];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
       if (isKindOfClass)
       {
-        v90 = [(CKMessageEntryView *)self plusButton];
-        [v90 animateBlurTo:10.0];
+        plusButton3 = [(CKMessageEntryView *)self plusButton];
+        [plusButton3 animateBlurTo:10.0];
       }
 
-      v91 = [(CKMessageEntryView *)self emojiButton];
+      emojiButton = [(CKMessageEntryView *)self emojiButton];
       objc_opt_class();
       v92 = objc_opt_isKindOfClass();
 
       if (v92)
       {
-        v93 = [(CKMessageEntryView *)self emojiButton];
-        [v93 animateBlurTo:10.0];
+        emojiButton2 = [(CKMessageEntryView *)self emojiButton];
+        [emojiButton2 animateBlurTo:10.0];
       }
     }
 
-    v94 = [(CKMessageEntryView *)self audioRecordingView];
-    v95 = [v94 state];
+    audioRecordingView12 = [(CKMessageEntryView *)self audioRecordingView];
+    state2 = [audioRecordingView12 state];
 
-    v96 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
-    v118 = v96;
-    if (v95 == 1)
+    cancelAudioRecordingButton6 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
+    v118 = cancelAudioRecordingButton6;
+    if (state2 == 1)
     {
       v97 = 10.0;
     }
@@ -3378,56 +3378,56 @@ LABEL_22:
     goto LABEL_33;
   }
 
-  v108 = [(CKMessageEntryView *)self audioRecordingView];
-  [v108 setAlpha:0.0];
+  audioRecordingView13 = [(CKMessageEntryView *)self audioRecordingView];
+  [audioRecordingView13 setAlpha:0.0];
 
-  v109 = [(CKMessageEntryView *)self contentView];
-  [v109 setAlpha:1.0];
+  contentView3 = [(CKMessageEntryView *)self contentView];
+  [contentView3 setAlpha:1.0];
 
-  v110 = [(CKMessageEntryView *)self audioButton];
-  [v110 setAlpha:1.0];
+  audioButton2 = [(CKMessageEntryView *)self audioButton];
+  [audioButton2 setAlpha:1.0];
 
-  v111 = [(CKMessageEntryView *)self dictationButton];
-  [v111 setAlpha:1.0];
+  dictationButton2 = [(CKMessageEntryView *)self dictationButton];
+  [dictationButton2 setAlpha:1.0];
 
-  v112 = [(CKMessageEntryView *)self plusButton];
+  plusButton4 = [(CKMessageEntryView *)self plusButton];
   objc_opt_class();
   v113 = objc_opt_isKindOfClass();
 
   if (v113)
   {
-    v114 = [(CKMessageEntryView *)self plusButton];
-    [v114 animateBlurTo:0.0];
+    plusButton5 = [(CKMessageEntryView *)self plusButton];
+    [plusButton5 animateBlurTo:0.0];
 
-    v115 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
-    [v115 animateBlurTo:10.0];
+    cancelAudioRecordingButton7 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
+    [cancelAudioRecordingButton7 animateBlurTo:10.0];
   }
 
-  v116 = [(CKMessageEntryView *)self emojiButton];
+  emojiButton3 = [(CKMessageEntryView *)self emojiButton];
   objc_opt_class();
   v117 = objc_opt_isKindOfClass();
 
   if (v117)
   {
-    v96 = [(CKMessageEntryView *)self emojiButton];
+    cancelAudioRecordingButton6 = [(CKMessageEntryView *)self emojiButton];
     v97 = 0.0;
-    v118 = v96;
+    v118 = cancelAudioRecordingButton6;
 LABEL_33:
-    [v96 animateBlurTo:v97];
+    [cancelAudioRecordingButton6 animateBlurTo:v97];
 LABEL_34:
   }
 }
 
-- (double)calculateOneLinePlaceHolderCenterY:(double)a3
+- (double)calculateOneLinePlaceHolderCenterY:(double)y
 {
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v6)
+  if (isEntryViewRefreshEnabled)
   {
-    v7 = [(CKMessageEntryView *)self contentView];
-    v8 = [v7 textView];
-    [v8 textContainerInset];
+    contentView = [(CKMessageEntryView *)self contentView];
+    textView = [contentView textView];
+    [textView textContainerInset];
     v10 = v9;
 
     v11 = +[CKUIBehavior sharedBehaviors];
@@ -3435,7 +3435,7 @@ LABEL_34:
     v13 = v12 * -0.5;
 
     [(CKMessageEntryView *)self adjustedCoverInsets];
-    v15 = a3 - v10 + v13;
+    v15 = y - v10 + v13;
   }
 
   else
@@ -3446,9 +3446,9 @@ LABEL_34:
     [v18 entryViewVerticalCoverInsets];
     v20 = v19;
 
-    v21 = [(CKMessageEntryView *)self contentView];
-    v22 = [v21 textView];
-    [v22 textContainerInset];
+    contentView2 = [(CKMessageEntryView *)self contentView];
+    textView2 = [contentView2 textView];
+    [textView2 textContainerInset];
     v24 = v23;
 
     v25 = +[CKUIBehavior sharedBehaviors];
@@ -3456,7 +3456,7 @@ LABEL_34:
     v27 = v26 * -0.5;
 
     [(CKMessageEntryView *)self safeAreaInsets];
-    v15 = a3 - v17 - v20 - v24 + v27;
+    v15 = y - v17 - v20 - v24 + v27;
   }
 
   v28 = v15 - v14;
@@ -3497,64 +3497,64 @@ LABEL_34:
 
 - (void)setEntryViewSmoothnessForMorphingAppearance
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
-    v5 = [(CKMessageEntryView *)self contentClipView];
-    [v5 ck_applyGlassBackgroundWithSmoothness:20.0];
+    contentClipView = [(CKMessageEntryView *)self contentClipView];
+    [contentClipView ck_applyGlassBackgroundWithSmoothness:20.0];
 
-    v6 = [(CKMessageEntryView *)self plusButton];
-    [v6 ck_applyGlassBackgroundWithSmoothness:20.0];
+    plusButton = [(CKMessageEntryView *)self plusButton];
+    [plusButton ck_applyGlassBackgroundWithSmoothness:20.0];
 
-    v7 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
-    [v7 ck_applyGlassBackgroundWithSmoothness:20.0];
+    cancelAudioRecordingButton = [(CKMessageEntryView *)self cancelAudioRecordingButton];
+    [cancelAudioRecordingButton ck_applyGlassBackgroundWithSmoothness:20.0];
 
-    v8 = [(CKMessageEntryView *)self emojiButton];
-    [v8 ck_applyGlassBackgroundWithSmoothness:20.0];
+    emojiButton = [(CKMessageEntryView *)self emojiButton];
+    [emojiButton ck_applyGlassBackgroundWithSmoothness:20.0];
   }
 }
 
 - (void)applyDefaultGlass
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
     [v5 entryViewPlusButtonToTextFieldPadding];
     v7 = v6;
 
-    v8 = [(CKMessageEntryView *)self contentClipView];
-    [v8 ck_applyGlassBackgroundWithSmoothness:v7];
+    contentClipView = [(CKMessageEntryView *)self contentClipView];
+    [contentClipView ck_applyGlassBackgroundWithSmoothness:v7];
 
-    v9 = [(CKMessageEntryView *)self plusButton];
-    [v9 ck_applyGlassBackgroundWithSmoothness:v7];
+    plusButton = [(CKMessageEntryView *)self plusButton];
+    [plusButton ck_applyGlassBackgroundWithSmoothness:v7];
 
-    v10 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
-    [v10 ck_applyGlassBackgroundWithSmoothness:v7];
+    cancelAudioRecordingButton = [(CKMessageEntryView *)self cancelAudioRecordingButton];
+    [cancelAudioRecordingButton ck_applyGlassBackgroundWithSmoothness:v7];
 
-    v11 = [(CKMessageEntryView *)self emojiButton];
-    [v11 ck_applyGlassBackgroundWithSmoothness:v7];
+    emojiButton = [(CKMessageEntryView *)self emojiButton];
+    [emojiButton ck_applyGlassBackgroundWithSmoothness:v7];
   }
 }
 
-- (void)configurePocketInteractionForScrollView:(id)a3
+- (void)configurePocketInteractionForScrollView:(id)view
 {
-  if (a3)
+  if (view)
   {
-    v4 = a3;
-    v5 = [(CKMessageEntryView *)self scrollPocketInteraction];
+    viewCopy = view;
+    scrollPocketInteraction = [(CKMessageEntryView *)self scrollPocketInteraction];
 
-    if (v5)
+    if (scrollPocketInteraction)
     {
-      v6 = [(CKMessageEntryView *)self scrollPocketInteraction];
-      [(CKMessageEntryView *)self removeInteraction:v6];
+      scrollPocketInteraction2 = [(CKMessageEntryView *)self scrollPocketInteraction];
+      [(CKMessageEntryView *)self removeInteraction:scrollPocketInteraction2];
     }
 
-    v7 = [objc_alloc(MEMORY[0x1E69DD6C0]) initWithScrollView:v4 edge:4];
+    v7 = [objc_alloc(MEMORY[0x1E69DD6C0]) initWithScrollView:viewCopy edge:4];
 
     [(CKMessageEntryView *)self setScrollPocketInteraction:v7];
     [(CKMessageEntryView *)self addInteraction:v7];
@@ -3563,14 +3563,14 @@ LABEL_34:
 
 - (void)applySendAnimationGlass
 {
-  v2 = [(CKMessageEntryView *)self contentClipView];
-  [v2 ck_applySendAnimationEntryViewGlass];
+  contentClipView = [(CKMessageEntryView *)self contentClipView];
+  [contentClipView ck_applySendAnimationEntryViewGlass];
 }
 
 - (BOOL)_isPresentingInPopover
 {
-  v3 = [(CKMessageEntryView *)self delegate];
-  v4 = [v3 messageEntryViewActiveSendMenuPresentation:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  v4 = [delegate messageEntryViewActiveSendMenuPresentation:self];
 
   if (v4)
   {
@@ -3587,76 +3587,76 @@ LABEL_34:
 
 - (BOOL)_shouldShrinkEntryViewForSendMenuPresentation
 {
-  v3 = [MEMORY[0x1E69DC938] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  if ((v4 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return 0;
   }
 
-  v5 = [(CKMessageEntryView *)self traitCollection];
-  v6 = [v5 horizontalSizeClass];
+  traitCollection = [(CKMessageEntryView *)self traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  return v6 == 2;
+  return horizontalSizeClass == 2;
 }
 
-- (void)_updateSendMenuPresentationStatePopoverSendMenu:(int64_t)a3
+- (void)_updateSendMenuPresentationStatePopoverSendMenu:(int64_t)menu
 {
   sendMenuPresentationState = self->_sendMenuPresentationState;
-  if (sendMenuPresentationState == a3)
+  if (sendMenuPresentationState == menu)
   {
     return;
   }
 
-  self->_sendMenuPresentationState = a3;
+  self->_sendMenuPresentationState = menu;
   v6 = +[CKUIBehavior sharedBehaviors];
-  v7 = [(CKMessageEntryView *)self _shouldShrinkEntryViewForSendMenuPresentation];
-  v8 = [v6 entryViewSendMenuContentViewWidthAnimator];
-  v9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v10 = [v9 isPopoverSendMenuEnabled];
+  _shouldShrinkEntryViewForSendMenuPresentation = [(CKMessageEntryView *)self _shouldShrinkEntryViewForSendMenuPresentation];
+  entryViewSendMenuContentViewWidthAnimator = [v6 entryViewSendMenuContentViewWidthAnimator];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v10)
+  if (isPopoverSendMenuEnabled)
   {
-    if (a3 != 3)
+    if (menu != 3)
     {
-      if (a3 || sendMenuPresentationState != 3)
+      if (menu || sendMenuPresentationState != 3)
       {
-        v7 = 0;
+        _shouldShrinkEntryViewForSendMenuPresentation = 0;
       }
 
       else
       {
-        v11 = [v6 entryViewSendMenuContentViewWidthDismissAnimator];
+        entryViewSendMenuContentViewWidthDismissAnimator = [v6 entryViewSendMenuContentViewWidthDismissAnimator];
 
-        v7 = 0;
-        v8 = v11;
+        _shouldShrinkEntryViewForSendMenuPresentation = 0;
+        entryViewSendMenuContentViewWidthAnimator = entryViewSendMenuContentViewWidthDismissAnimator;
       }
     }
 
     goto LABEL_22;
   }
 
-  v12 = [v6 entryViewSendMenuPresentationStateAnimator];
-  v13 = [v6 entryViewSendMenuContentViewWidthAnimator];
+  entryViewSendMenuPresentationStateAnimator = [v6 entryViewSendMenuPresentationStateAnimator];
+  entryViewSendMenuContentViewWidthAnimator2 = [v6 entryViewSendMenuContentViewWidthAnimator];
   v14 = 1.0;
-  if (a3 > 1)
+  if (menu > 1)
   {
-    if (a3 == 2)
+    if (menu == 2)
     {
-      v21 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v22 = [v21 isPopoverSendMenuEnabled];
+      mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isPopoverSendMenuEnabled2 = [mEMORY[0x1E69A8070]2 isPopoverSendMenuEnabled];
 
-      v7 &= v22 ^ 1;
+      _shouldShrinkEntryViewForSendMenuPresentation &= isPopoverSendMenuEnabled2 ^ 1;
       goto LABEL_19;
     }
 
-    if (a3 == 3)
+    if (menu == 3)
     {
-      v17 = [v6 entryViewSendMenuPlusButtonAppearanceAnimator];
+      entryViewSendMenuPlusButtonAppearanceAnimator = [v6 entryViewSendMenuPlusButtonAppearanceAnimator];
 
       v16 = 1.0;
-      v12 = v17;
+      entryViewSendMenuPresentationStateAnimator = entryViewSendMenuPlusButtonAppearanceAnimator;
 LABEL_20:
       v15 = 1.0;
       goto LABEL_21;
@@ -3665,78 +3665,78 @@ LABEL_20:
     goto LABEL_17;
   }
 
-  if (!a3)
+  if (!menu)
   {
     if (sendMenuPresentationState == 3)
     {
-      v18 = [v6 entryViewSendMenuPlusButtonDismissScaleAnimator];
+      entryViewSendMenuPlusButtonDismissScaleAnimator = [v6 entryViewSendMenuPlusButtonDismissScaleAnimator];
 
-      v19 = [v6 entryViewSendMenuContentViewWidthDismissAnimator];
+      entryViewSendMenuContentViewWidthDismissAnimator2 = [v6 entryViewSendMenuContentViewWidthDismissAnimator];
 
-      v20 = [v6 entryViewSendMenuContentViewWidthDismissAnimator];
+      entryViewSendMenuContentViewWidthDismissAnimator3 = [v6 entryViewSendMenuContentViewWidthDismissAnimator];
 
-      v7 = 0;
+      _shouldShrinkEntryViewForSendMenuPresentation = 0;
       v16 = 1.0;
-      v12 = v18;
-      v13 = v19;
+      entryViewSendMenuPresentationStateAnimator = entryViewSendMenuPlusButtonDismissScaleAnimator;
+      entryViewSendMenuContentViewWidthAnimator2 = entryViewSendMenuContentViewWidthDismissAnimator2;
       v15 = 1.0;
-      v8 = v20;
+      entryViewSendMenuContentViewWidthAnimator = entryViewSendMenuContentViewWidthDismissAnimator3;
       goto LABEL_21;
     }
 
     goto LABEL_17;
   }
 
-  if (a3 != 1)
+  if (menu != 1)
   {
 LABEL_17:
-    v7 = 0;
+    _shouldShrinkEntryViewForSendMenuPresentation = 0;
 LABEL_19:
     v16 = 1.0;
     goto LABEL_20;
   }
 
-  v7 = 0;
+  _shouldShrinkEntryViewForSendMenuPresentation = 0;
   v15 = 0.8;
   v16 = 0.94;
   v14 = 1.02;
 LABEL_21:
-  v23 = [(CKMessageEntryView *)self plusButton];
-  v24 = [v23 button];
+  plusButton = [(CKMessageEntryView *)self plusButton];
+  button = [plusButton button];
 
-  v25 = [(CKMessageEntryView *)self contentClipView];
+  contentClipView = [(CKMessageEntryView *)self contentClipView];
   v37[0] = MEMORY[0x1E69E9820];
   v37[1] = 3221225472;
   v37[2] = __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMenu___block_invoke;
   v37[3] = &unk_1E72ED810;
-  v38 = v24;
+  v38 = button;
   v39 = v15;
-  v26 = v24;
-  [v12 addAnimations:v37];
-  [v12 startAnimation];
+  v26 = button;
+  [entryViewSendMenuPresentationStateAnimator addAnimations:v37];
+  [entryViewSendMenuPresentationStateAnimator startAnimation];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMenu___block_invoke_2;
   v33[3] = &unk_1E72F1058;
-  v34 = v25;
+  v34 = contentClipView;
   v35 = v14;
   v36 = v16;
-  v27 = v25;
-  [v13 addAnimations:v33];
-  [v13 startAnimation];
+  v27 = contentClipView;
+  [entryViewSendMenuContentViewWidthAnimator2 addAnimations:v33];
+  [entryViewSendMenuContentViewWidthAnimator2 startAnimation];
 
 LABEL_22:
-  if (self->_shouldCoverViewBeShrunkenForSendMenu != v7)
+  if (self->_shouldCoverViewBeShrunkenForSendMenu != _shouldShrinkEntryViewForSendMenuPresentation)
   {
-    v28 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v29 = [v28 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070]3 isEntryViewRefreshEnabled];
 
-    if ((v29 & 1) == 0)
+    if ((isEntryViewRefreshEnabled & 1) == 0)
     {
-      if (v7)
+      if (_shouldShrinkEntryViewForSendMenuPresentation)
       {
-        v30 = [(CKMessageEntryView *)self inputButtonContainerView];
-        [(CKMessageEntryView *)self bringSubviewToFront:v30];
+        inputButtonContainerView = [(CKMessageEntryView *)self inputButtonContainerView];
+        [(CKMessageEntryView *)self bringSubviewToFront:inputButtonContainerView];
       }
     }
 
@@ -3746,9 +3746,9 @@ LABEL_22:
     v31[2] = __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMenu___block_invoke_3;
     v31[3] = &unk_1E72ED8D8;
     v31[4] = self;
-    v32 = v7;
-    [v8 addAnimations:v31];
-    [v8 startAnimation];
+    v32 = _shouldShrinkEntryViewForSendMenuPresentation;
+    [entryViewSendMenuContentViewWidthAnimator addAnimations:v31];
+    [entryViewSendMenuContentViewWidthAnimator startAnimation];
   }
 }
 
@@ -3777,33 +3777,33 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
   return [v2 layoutIfNeeded];
 }
 
-- (void)_updateSendMenuPresentationStateVariableSendMenu:(int64_t)a3
+- (void)_updateSendMenuPresentationStateVariableSendMenu:(int64_t)menu
 {
   sendMenuPresentationState = self->_sendMenuPresentationState;
-  if (sendMenuPresentationState != a3)
+  if (sendMenuPresentationState != menu)
   {
-    self->_sendMenuPresentationState = a3;
+    self->_sendMenuPresentationState = menu;
     v6 = +[CKUIBehavior sharedBehaviors];
-    v7 = [(CKMessageEntryView *)self _isPresentingInPopover];
-    v8 = [v6 entryViewSendMenuPresentationStateAnimator];
-    v54 = [v6 entryViewSendMenuPresentationStateAnimator];
-    v9 = [v6 entryViewSendMenuPresentationStateAnimator];
-    v50 = [v6 entryViewSendMenuContentViewWidthAnimator];
-    v10 = [v6 entryViewSendMenuContentViewWidthAnimator];
+    _isPresentingInPopover = [(CKMessageEntryView *)self _isPresentingInPopover];
+    entryViewSendMenuPresentationStateAnimator = [v6 entryViewSendMenuPresentationStateAnimator];
+    entryViewSendMenuPresentationStateAnimator2 = [v6 entryViewSendMenuPresentationStateAnimator];
+    entryViewSendMenuPresentationStateAnimator3 = [v6 entryViewSendMenuPresentationStateAnimator];
+    entryViewSendMenuContentViewWidthAnimator = [v6 entryViewSendMenuContentViewWidthAnimator];
+    entryViewSendMenuContentViewWidthAnimator2 = [v6 entryViewSendMenuContentViewWidthAnimator];
     v11 = 0;
     v12 = 0.0;
     v13 = 1.0;
-    v52 = v10;
-    if (a3 > 1)
+    v52 = entryViewSendMenuContentViewWidthAnimator2;
+    if (menu > 1)
     {
-      if (a3 == 2)
+      if (menu == 2)
       {
-        v53 = v9;
-        v15 = [v6 entryViewPlusButtonDefaultBackgroundColor];
+        v53 = entryViewSendMenuPresentationStateAnimator3;
+        entryViewPlusButtonDefaultBackgroundColor = [v6 entryViewPlusButtonDefaultBackgroundColor];
         v11 = 0;
-        v16 = v7;
+        v16 = _isPresentingInPopover;
         v20 = 1.0;
-        if (v7)
+        if (_isPresentingInPopover)
         {
           v13 = 0.0;
         }
@@ -3813,7 +3813,7 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
           v13 = 1.0;
         }
 
-        if (v7)
+        if (_isPresentingInPopover)
         {
           v17 = 1.0;
         }
@@ -3823,7 +3823,7 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
           v17 = 0.8;
         }
 
-        if (v7)
+        if (_isPresentingInPopover)
         {
           v18 = 1.0;
         }
@@ -3833,7 +3833,7 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
           v18 = 1.02;
         }
 
-        if (v7)
+        if (_isPresentingInPopover)
         {
           v19 = 1.0;
         }
@@ -3844,10 +3844,10 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
         }
       }
 
-      else if (a3 == 3)
+      else if (menu == 3)
       {
         v13 = 0.0;
-        if (v7)
+        if (_isPresentingInPopover)
         {
           v12 = 0.0;
         }
@@ -3858,7 +3858,7 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
         }
 
         v19 = 1.0;
-        if (v7)
+        if (_isPresentingInPopover)
         {
           v20 = 1.0;
         }
@@ -3868,52 +3868,52 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
           v20 = 0.25;
         }
 
-        v15 = [v6 entryViewPlusButtonSendMenuOpenBackgroundColor];
-        v47 = [v6 entryViewSendMenuPlusButtonSymbolDisappearanceOpacityAnimator];
+        entryViewPlusButtonDefaultBackgroundColor = [v6 entryViewPlusButtonSendMenuOpenBackgroundColor];
+        entryViewSendMenuPlusButtonSymbolDisappearanceOpacityAnimator = [v6 entryViewSendMenuPlusButtonSymbolDisappearanceOpacityAnimator];
 
-        v21 = [v6 entryViewSendMenuPlusButtonAppearanceAnimator];
+        entryViewSendMenuPlusButtonAppearanceAnimator = [v6 entryViewSendMenuPlusButtonAppearanceAnimator];
 
-        v22 = [v6 entryViewSendMenuPlusButtonAppearanceAnimator];
+        entryViewSendMenuPlusButtonAppearanceAnimator2 = [v6 entryViewSendMenuPlusButtonAppearanceAnimator];
 
         v17 = 1.0;
-        if (!v7)
+        if (!_isPresentingInPopover)
         {
           [(CKMessageEntryView *)self bounds];
           v24 = v23 * 1.1;
-          v25 = [(CKMessageEntryView *)self plusButton];
-          [v25 bounds];
+          plusButton = [(CKMessageEntryView *)self plusButton];
+          [plusButton bounds];
           v17 = v24 / v26;
         }
 
         v11 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979CF8]];
         v16 = 1;
-        v8 = v21;
-        v53 = v22;
-        v54 = v47;
+        entryViewSendMenuPresentationStateAnimator = entryViewSendMenuPlusButtonAppearanceAnimator;
+        v53 = entryViewSendMenuPlusButtonAppearanceAnimator2;
+        entryViewSendMenuPresentationStateAnimator2 = entryViewSendMenuPlusButtonSymbolDisappearanceOpacityAnimator;
         v18 = 1.0;
       }
 
       else
       {
-        v53 = v9;
+        v53 = entryViewSendMenuPresentationStateAnimator3;
         v16 = 0;
         v19 = 1.0;
         v18 = 1.0;
         v17 = 1.0;
-        v15 = 0;
+        entryViewPlusButtonDefaultBackgroundColor = 0;
         v20 = 1.0;
       }
 
-      v14 = v50;
+      v14 = entryViewSendMenuContentViewWidthAnimator;
     }
 
-    else if (a3)
+    else if (menu)
     {
-      v14 = v50;
-      v53 = v9;
-      if (a3 == 1)
+      v14 = entryViewSendMenuContentViewWidthAnimator;
+      v53 = entryViewSendMenuPresentationStateAnimator3;
+      if (menu == 1)
       {
-        v15 = [v6 entryViewPlusButtonDefaultBackgroundColor];
+        entryViewPlusButtonDefaultBackgroundColor = [v6 entryViewPlusButtonDefaultBackgroundColor];
         v16 = 0;
         v11 = 0;
         v17 = 0.8;
@@ -3927,7 +3927,7 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
         v19 = 1.0;
         v18 = 1.0;
         v17 = 1.0;
-        v15 = 0;
+        entryViewPlusButtonDefaultBackgroundColor = 0;
       }
 
       v20 = 1.0;
@@ -3935,36 +3935,36 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
 
     else
     {
-      v27 = v10;
-      v48 = [v6 entryViewPlusButtonDefaultBackgroundColor];
-      v14 = v50;
+      v27 = entryViewSendMenuContentViewWidthAnimator2;
+      entryViewPlusButtonDefaultBackgroundColor2 = [v6 entryViewPlusButtonDefaultBackgroundColor];
+      v14 = entryViewSendMenuContentViewWidthAnimator;
       if (sendMenuPresentationState == 3)
       {
-        v46 = [v6 entryViewSendMenuPlusButtonDismissBlurAnimator];
+        entryViewSendMenuPlusButtonDismissBlurAnimator = [v6 entryViewSendMenuPlusButtonDismissBlurAnimator];
 
-        v45 = [v6 entryViewSendMenuPlusButtonDismissBlurAnimator];
+        entryViewSendMenuPlusButtonDismissBlurAnimator2 = [v6 entryViewSendMenuPlusButtonDismissBlurAnimator];
 
-        v44 = [v6 entryViewSendMenuPlusButtonDismissScaleAnimator];
+        entryViewSendMenuPlusButtonDismissScaleAnimator = [v6 entryViewSendMenuPlusButtonDismissScaleAnimator];
 
-        v28 = [v6 entryViewSendMenuContentViewWidthDismissAnimator];
+        entryViewSendMenuContentViewWidthDismissAnimator = [v6 entryViewSendMenuContentViewWidthDismissAnimator];
 
-        v29 = [v6 entryViewSendMenuContentViewWidthDismissAnimator];
+        entryViewSendMenuContentViewWidthDismissAnimator2 = [v6 entryViewSendMenuContentViewWidthDismissAnimator];
 
         v16 = 0;
         v11 = 0;
-        v8 = v46;
+        entryViewSendMenuPresentationStateAnimator = entryViewSendMenuPlusButtonDismissBlurAnimator;
         v19 = 1.0;
         v18 = 1.0;
-        v53 = v44;
-        v54 = v45;
-        v14 = v28;
+        v53 = entryViewSendMenuPlusButtonDismissScaleAnimator;
+        entryViewSendMenuPresentationStateAnimator2 = entryViewSendMenuPlusButtonDismissBlurAnimator2;
+        v14 = entryViewSendMenuContentViewWidthDismissAnimator;
         v17 = 1.0;
-        v52 = v29;
+        v52 = entryViewSendMenuContentViewWidthDismissAnimator2;
       }
 
       else
       {
-        v53 = v9;
+        v53 = entryViewSendMenuPresentationStateAnimator3;
         v16 = 0;
         v11 = 0;
         v19 = 1.0;
@@ -3973,27 +3973,27 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
       }
 
       v20 = 1.0;
-      v15 = v48;
+      entryViewPlusButtonDefaultBackgroundColor = entryViewPlusButtonDefaultBackgroundColor2;
     }
 
-    v30 = [(CKMessageEntryView *)self plusButton];
-    v31 = [(CKMessageEntryView *)self contentClipView];
+    plusButton2 = [(CKMessageEntryView *)self plusButton];
+    contentClipView = [(CKMessageEntryView *)self contentClipView];
     v67[0] = MEMORY[0x1E69E9820];
     v67[1] = 3221225472;
     v67[2] = __71__CKMessageEntryView__updateSendMenuPresentationStateVariableSendMenu___block_invoke;
     v67[3] = &unk_1E72F4798;
-    v32 = v30;
+    v32 = plusButton2;
     v68 = v32;
     v72 = v12;
     v73 = v12;
     v74 = v20;
-    v51 = v15;
+    v51 = entryViewPlusButtonDefaultBackgroundColor;
     v69 = v51;
     v70 = 0;
     v33 = v11;
     v71 = v33;
-    [v8 addAnimations:v67];
-    [v8 startAnimation];
+    [entryViewSendMenuPresentationStateAnimator addAnimations:v67];
+    [entryViewSendMenuPresentationStateAnimator startAnimation];
     v64[0] = MEMORY[0x1E69E9820];
     v64[1] = 3221225472;
     v64[2] = __71__CKMessageEntryView__updateSendMenuPresentationStateVariableSendMenu___block_invoke_2;
@@ -4001,8 +4001,8 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
     v34 = v32;
     v65 = v34;
     v66 = v13;
-    [v54 addAnimations:v64];
-    [v54 startAnimation];
+    [entryViewSendMenuPresentationStateAnimator2 addAnimations:v64];
+    [entryViewSendMenuPresentationStateAnimator2 startAnimation];
     v61[0] = MEMORY[0x1E69E9820];
     v61[1] = 3221225472;
     v61[2] = __71__CKMessageEntryView__updateSendMenuPresentationStateVariableSendMenu___block_invoke_3;
@@ -4017,7 +4017,7 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
     v57[1] = 3221225472;
     v57[2] = __71__CKMessageEntryView__updateSendMenuPresentationStateVariableSendMenu___block_invoke_4;
     v57[3] = &unk_1E72F1058;
-    v37 = v31;
+    v37 = contentClipView;
     v58 = v37;
     v59 = v18;
     v60 = v19;
@@ -4027,17 +4027,17 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
     {
       v38 = v14;
       v39 = v16;
-      v49 = v8;
+      v49 = entryViewSendMenuPresentationStateAnimator;
       v40 = v38;
-      v41 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-      v42 = [v41 isEntryViewRefreshEnabled];
+      mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+      isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-      if ((v42 & 1) == 0)
+      if ((isEntryViewRefreshEnabled & 1) == 0)
       {
         if (v39)
         {
-          v43 = [(CKMessageEntryView *)self inputButtonContainerView];
-          [(CKMessageEntryView *)self bringSubviewToFront:v43];
+          inputButtonContainerView = [(CKMessageEntryView *)self inputButtonContainerView];
+          [(CKMessageEntryView *)self bringSubviewToFront:inputButtonContainerView];
         }
       }
 
@@ -4051,7 +4051,7 @@ uint64_t __70__CKMessageEntryView__updateSendMenuPresentationStatePopoverSendMen
       [v52 addAnimations:v55];
       [v52 startAnimation];
       v14 = v40;
-      v8 = v49;
+      entryViewSendMenuPresentationStateAnimator = v49;
       v36 = v53;
     }
   }
@@ -4095,58 +4095,58 @@ uint64_t __71__CKMessageEntryView__updateSendMenuPresentationStateVariableSendMe
   return [v2 layoutIfNeeded];
 }
 
-- (void)_updateSendMenuPresentationState:(int64_t)a3
+- (void)_updateSendMenuPresentationState:(int64_t)state
 {
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070] isPopoverSendMenuEnabled];
 
-  if (v6)
+  if (isPopoverSendMenuEnabled)
   {
 
-    [(CKMessageEntryView *)self _updateSendMenuPresentationStatePopoverSendMenu:a3];
+    [(CKMessageEntryView *)self _updateSendMenuPresentationStatePopoverSendMenu:state];
   }
 
   else
   {
 
-    [(CKMessageEntryView *)self _updateSendMenuPresentationStateVariableSendMenu:a3];
+    [(CKMessageEntryView *)self _updateSendMenuPresentationStateVariableSendMenu:state];
   }
 }
 
 - (id)inputAccessoryViewBackdropColor
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
-    v5 = 0;
+    inputAccessoryViewBackdropColor = 0;
   }
 
   else
   {
-    v5 = [(CKMessageEntryBackgroundViewProtocol *)self->_backgroundView inputAccessoryViewBackdropColor];
+    inputAccessoryViewBackdropColor = [(CKMessageEntryBackgroundViewProtocol *)self->_backgroundView inputAccessoryViewBackdropColor];
   }
 
-  return v5;
+  return inputAccessoryViewBackdropColor;
 }
 
 - (id)inputAccessoryViewBackdropEffects
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
-    v5 = 0;
+    inputAccessoryViewBackdropEffects = 0;
   }
 
   else
   {
-    v5 = [(CKMessageEntryBackgroundViewProtocol *)self->_backgroundView inputAccessoryViewBackdropEffects];
+    inputAccessoryViewBackdropEffects = [(CKMessageEntryBackgroundViewProtocol *)self->_backgroundView inputAccessoryViewBackdropEffects];
   }
 
-  return v5;
+  return inputAccessoryViewBackdropEffects;
 }
 
 uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEffectsPicker__block_invoke()
@@ -4156,75 +4156,75 @@ uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEf
   return result;
 }
 
-- (void)setKeyboardVisible:(BOOL)a3
+- (void)setKeyboardVisible:(BOOL)visible
 {
-  if (self->_keyboardVisible != a3)
+  if (self->_keyboardVisible != visible)
   {
-    self->_keyboardVisible = a3;
+    self->_keyboardVisible = visible;
     [(CKMessageEntryView *)self setNeedsLayout];
-    v5 = [(CKMessageEntryView *)self delegate];
-    [v5 messageEntryViewDidChange:self isTextChange:0 isShelfChange:0 isTranslationChange:0];
+    delegate = [(CKMessageEntryView *)self delegate];
+    [delegate messageEntryViewDidChange:self isTextChange:0 isShelfChange:0 isTranslationChange:0];
   }
 }
 
-- (BOOL)_shouldUseDarkAppearanceFromTraitCollection:(id)a3
+- (BOOL)_shouldUseDarkAppearanceFromTraitCollection:(id)collection
 {
-  v4 = [a3 userInterfaceStyle];
-  v5 = v4 == 2;
-  v6 = [MEMORY[0x1E69DD2E8] keyWindow];
-  v7 = [v6 windowScene];
-  v8 = [v7 _enhancedWindowingEnabled];
+  userInterfaceStyle = [collection userInterfaceStyle];
+  v5 = userInterfaceStyle == 2;
+  keyWindow = [MEMORY[0x1E69DD2E8] keyWindow];
+  windowScene = [keyWindow windowScene];
+  _enhancedWindowingEnabled = [windowScene _enhancedWindowingEnabled];
 
-  if ((v8 & 1) == 0)
+  if ((_enhancedWindowingEnabled & 1) == 0)
   {
-    v9 = [(CKMessageEntryView *)self isRunningInNotificationExtension];
-    return v4 == 2 || v9;
+    isRunningInNotificationExtension = [(CKMessageEntryView *)self isRunningInNotificationExtension];
+    return userInterfaceStyle == 2 || isRunningInNotificationExtension;
   }
 
   return v5;
 }
 
-- (void)setEntryViewTraitCollection:(id)a3 resetStyle:(BOOL)a4
+- (void)setEntryViewTraitCollection:(id)collection resetStyle:(BOOL)style
 {
-  v4 = a4;
+  styleCopy = style;
   v44[2] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(CKMessageEntryView *)self _shouldUseDarkAppearanceFromTraitCollection:v6];
+  collectionCopy = collection;
+  v7 = [(CKMessageEntryView *)self _shouldUseDarkAppearanceFromTraitCollection:collectionCopy];
   if (v7)
   {
     v8 = [MEMORY[0x1E69DD1B8] traitCollectionWithUserInterfaceStyle:2];
     v9 = MEMORY[0x1E69DD1B8];
-    v44[0] = v6;
+    v44[0] = collectionCopy;
     v44[1] = v8;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v44 count:2];
     v11 = [v9 traitCollectionWithTraitsFromCollections:v10];
 
-    v6 = v11;
+    collectionCopy = v11;
   }
 
-  if (v4 || (style = self->_style) == 0 || v7 != CKMessageEntryViewStyleIsForDarkAppearance([(CKMessageEntryView *)self style]) && (style = CKMessageEntryViewStyleInvert([(CKMessageEntryView *)self style])) == 0)
+  if (styleCopy || (style = self->_style) == 0 || v7 != CKMessageEntryViewStyleIsForDarkAppearance([(CKMessageEntryView *)self style]) && (style = CKMessageEntryViewStyleInvert([(CKMessageEntryView *)self style])) == 0)
   {
     v13 = +[CKUIBehavior sharedBehaviors];
-    v14 = [v13 theme];
-    v15 = v14;
+    theme = [v13 theme];
+    v15 = theme;
     if (v7)
     {
-      v16 = [v14 entryViewDarkStyle];
+      entryViewDarkStyle = [theme entryViewDarkStyle];
     }
 
     else
     {
-      v16 = [v14 entryViewStyle];
+      entryViewDarkStyle = [theme entryViewStyle];
     }
 
-    style = v16;
+    style = entryViewDarkStyle;
   }
 
   entryViewTraitCollection = self->_entryViewTraitCollection;
-  if (entryViewTraitCollection && (-[UITraitCollection displayScale](entryViewTraitCollection, "displayScale"), v19 = v18, [v6 displayScale], v19 == v20) && (v21 = -[UITraitCollection horizontalSizeClass](self->_entryViewTraitCollection, "horizontalSizeClass"), v21 == objc_msgSend(v6, "horizontalSizeClass")) && (v22 = -[UITraitCollection verticalSizeClass](self->_entryViewTraitCollection, "verticalSizeClass"), v22 == objc_msgSend(v6, "verticalSizeClass")) && (v23 = -[UITraitCollection userInterfaceStyle](self->_entryViewTraitCollection, "userInterfaceStyle"), v23 == objc_msgSend(v6, "userInterfaceStyle")) && (-[UITraitCollection preferredContentSizeCategory](self->_entryViewTraitCollection, "preferredContentSizeCategory"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "preferredContentSizeCategory"), v25 = objc_claimAutoreleasedReturnValue(), v26 = UIContentSizeCategoryCompareToCategory(v24, v25) == NSOrderedSame, v25, v24, v26) && (v27 = -[UITraitCollection activeAppearance](self->_entryViewTraitCollection, "activeAppearance"), v27 == objc_msgSend(v6, "activeAppearance")) && (v28 = -[UITraitCollection userInterfaceLevel](self->_entryViewTraitCollection, "userInterfaceLevel"), v28 == objc_msgSend(v6, "userInterfaceLevel")))
+  if (entryViewTraitCollection && (-[UITraitCollection displayScale](entryViewTraitCollection, "displayScale"), v19 = v18, [collectionCopy displayScale], v19 == v20) && (v21 = -[UITraitCollection horizontalSizeClass](self->_entryViewTraitCollection, "horizontalSizeClass"), v21 == objc_msgSend(collectionCopy, "horizontalSizeClass")) && (v22 = -[UITraitCollection verticalSizeClass](self->_entryViewTraitCollection, "verticalSizeClass"), v22 == objc_msgSend(collectionCopy, "verticalSizeClass")) && (v23 = -[UITraitCollection userInterfaceStyle](self->_entryViewTraitCollection, "userInterfaceStyle"), v23 == objc_msgSend(collectionCopy, "userInterfaceStyle")) && (-[UITraitCollection preferredContentSizeCategory](self->_entryViewTraitCollection, "preferredContentSizeCategory"), v24 = objc_claimAutoreleasedReturnValue(), objc_msgSend(collectionCopy, "preferredContentSizeCategory"), v25 = objc_claimAutoreleasedReturnValue(), v26 = UIContentSizeCategoryCompareToCategory(v24, v25) == NSOrderedSame, v25, v24, v26) && (v27 = -[UITraitCollection activeAppearance](self->_entryViewTraitCollection, "activeAppearance"), v27 == objc_msgSend(collectionCopy, "activeAppearance")) && (v28 = -[UITraitCollection userInterfaceLevel](self->_entryViewTraitCollection, "userInterfaceLevel"), v28 == objc_msgSend(collectionCopy, "userInterfaceLevel")))
   {
-    v29 = [(UITraitCollection *)self->_entryViewTraitCollection isTranscriptBackgroundActive];
-    v30 = v29 ^ [v6 isTranscriptBackgroundActive];
+    isTranscriptBackgroundActive = [(UITraitCollection *)self->_entryViewTraitCollection isTranscriptBackgroundActive];
+    v30 = isTranscriptBackgroundActive ^ [collectionCopy isTranscriptBackgroundActive];
   }
 
   else
@@ -4232,9 +4232,9 @@ uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEf
     v30 = 1;
   }
 
-  v31 = [(CKMessageEntryView *)self style];
-  v32 = v31;
-  if (((v4 | v30) & 1) != 0 || v31 != style)
+  style = [(CKMessageEntryView *)self style];
+  v32 = style;
+  if (((styleCopy | v30) & 1) != 0 || style != style)
   {
     if (IMOSLoggingEnabled())
     {
@@ -4242,7 +4242,7 @@ uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEf
       if (os_log_type_enabled(v33, OS_LOG_TYPE_INFO))
       {
         v40 = 67109632;
-        *v41 = v4;
+        *v41 = styleCopy;
         *&v41[4] = 1024;
         *&v41[6] = v30;
         v42 = 1024;
@@ -4251,7 +4251,7 @@ uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEf
       }
     }
 
-    objc_storeStrong(&self->_entryViewTraitCollection, v6);
+    objc_storeStrong(&self->_entryViewTraitCollection, collectionCopy);
     if (IMOSLoggingEnabled())
     {
       v34 = OSLogHandleForIMFoundationCategory();
@@ -4269,9 +4269,9 @@ uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEf
       v36 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
       {
-        v37 = [(CKMessageEntryView *)self isRunningInNotificationExtension];
+        isRunningInNotificationExtension = [(CKMessageEntryView *)self isRunningInNotificationExtension];
         v38 = @"NO";
-        if (v37)
+        if (isRunningInNotificationExtension)
         {
           v38 = @"YES";
         }
@@ -4309,18 +4309,18 @@ uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEf
 
 - (void)prepareForResizeAnimationIfNeeded
 {
-  v24 = [(CKMessageEntryView *)self contentView];
-  v2 = [v24 pluginView];
-  if (v2 && [v24 shouldShowPlugin])
+  contentView = [(CKMessageEntryView *)self contentView];
+  pluginView = [contentView pluginView];
+  if (pluginView && [contentView shouldShowPlugin])
   {
-    [v24 computedPluginViewFrame];
+    [contentView computedPluginViewFrame];
     width = v26.size.width;
     v26.size.height = 0.0;
     MinX = CGRectGetMinX(v26);
-    v5 = [v24 pluginView];
-    [v5 setFrame:{MinX, 0.0, width, 0.0}];
+    pluginView2 = [contentView pluginView];
+    [pluginView2 setFrame:{MinX, 0.0, width, 0.0}];
 
-    [v24 computedClearPluginButtonFrame];
+    [contentView computedClearPluginButtonFrame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
@@ -4345,13 +4345,13 @@ uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEf
     v30.size.width = v11;
     v30.size.height = v13;
     v17 = MidY - CGRectGetHeight(v30) * 0.5;
-    v18 = [v24 clearPluginButton];
-    [v18 setAlpha:0.0];
+    clearPluginButton = [contentView clearPluginButton];
+    [clearPluginButton setAlpha:0.0];
 
-    v19 = [v24 clearPluginButton];
-    [v19 setFrame:{v15, v17, v11, v13}];
+    clearPluginButton2 = [contentView clearPluginButton];
+    [clearPluginButton2 setFrame:{v15, v17, v11, v13}];
 
-    [v24 bounds];
+    [contentView bounds];
     v21 = v20;
     if (CKPixelWidth_once_8 != -1)
     {
@@ -4359,29 +4359,29 @@ uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEf
     }
 
     v22 = *&CKPixelWidth_sPixel_8;
-    v23 = [v24 pluginDividerLine];
-    [v23 setFrame:{0.0, 0.0, v21, v22}];
+    pluginDividerLine = [contentView pluginDividerLine];
+    [pluginDividerLine setFrame:{0.0, 0.0, v21, v22}];
   }
 }
 
 - (void)_configureForDisplayModeSending
 {
-  v3 = [(CKMessageEntryView *)self sendButtonSpinner];
-  [v3 startAnimating];
+  sendButtonSpinner = [(CKMessageEntryView *)self sendButtonSpinner];
+  [sendButtonSpinner startAnimating];
 
-  v4 = [(CKMessageEntryView *)self audioButton];
-  [v4 setHidden:1];
+  audioButton = [(CKMessageEntryView *)self audioButton];
+  [audioButton setHidden:1];
 
-  v5 = [(CKMessageEntryView *)self plusButton];
-  [v5 setHidden:0];
+  plusButton = [(CKMessageEntryView *)self plusButton];
+  [plusButton setHidden:0];
 
-  v6 = [(CKMessageEntryView *)self emojiButton];
-  [v6 setHidden:0];
+  emojiButton = [(CKMessageEntryView *)self emojiButton];
+  [emojiButton setHidden:0];
 
-  v7 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v8 = [v7 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v8)
+  if (isEntryViewRefreshEnabled)
   {
     [(CKMessageEntryView *)self glassSendButton];
   }
@@ -4393,73 +4393,73 @@ uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEf
   v9 = ;
   [v9 setHidden:1];
 
-  v10 = [(CKMessageEntryView *)self dictationButton];
-  [v10 setHidden:1];
+  dictationButton = [(CKMessageEntryView *)self dictationButton];
+  [dictationButton setHidden:1];
 
-  v11 = [(CKMessageEntryView *)self contentClipView];
-  [v11 setHidden:0];
+  contentClipView = [(CKMessageEntryView *)self contentClipView];
+  [contentClipView setHidden:0];
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v13 = [v12 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled2 = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-  if (v13)
+  if (isEntryViewRefreshEnabled2)
   {
-    v14 = [(CKMessageEntryView *)self contentView];
-    [v14 setHidden:0];
+    contentView = [(CKMessageEntryView *)self contentView];
+    [contentView setHidden:0];
   }
 }
 
 - (void)_configureForDisplayModeText
 {
-  v3 = [(CKMessageEntryView *)self sendButtonSpinner];
-  [v3 stopAnimating];
+  sendButtonSpinner = [(CKMessageEntryView *)self sendButtonSpinner];
+  [sendButtonSpinner stopAnimating];
 
-  v4 = [(CKMessageEntryView *)self shouldShowAudioButton];
-  v5 = [(CKMessageEntryView *)self audioButton];
-  [v5 setHidden:v4 ^ 1];
+  shouldShowAudioButton = [(CKMessageEntryView *)self shouldShowAudioButton];
+  audioButton = [(CKMessageEntryView *)self audioButton];
+  [audioButton setHidden:shouldShowAudioButton ^ 1];
 
-  v6 = [(CKMessageEntryView *)self dictationButton];
-  [v6 setHidden:v4];
+  dictationButton = [(CKMessageEntryView *)self dictationButton];
+  [dictationButton setHidden:shouldShowAudioButton];
 
-  v7 = [(CKMessageEntryView *)self dictationButton];
-  [v7 setEnabled:{objc_msgSend(MEMORY[0x1E69DCBF0], "dictationInputModeIsFunctional")}];
+  dictationButton2 = [(CKMessageEntryView *)self dictationButton];
+  [dictationButton2 setEnabled:{objc_msgSend(MEMORY[0x1E69DCBF0], "dictationInputModeIsFunctional")}];
 
-  v8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  LODWORD(v6) = [v8 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  LODWORD(dictationButton) = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v6)
+  if (dictationButton)
   {
-    v9 = [(CKMessageEntryView *)self glassSendButton];
-    [v9 setHidden:1];
+    glassSendButton = [(CKMessageEntryView *)self glassSendButton];
+    [glassSendButton setHidden:1];
   }
 
   else
   {
-    v10 = [(CKMessageEntryView *)self sendButton];
-    [v10 setHidden:1];
+    sendButton = [(CKMessageEntryView *)self sendButton];
+    [sendButton setHidden:1];
 
-    v9 = [(CKMessageEntryView *)self inputButtonContainerView];
-    [v9 setAlpha:1.0];
+    glassSendButton = [(CKMessageEntryView *)self inputButtonContainerView];
+    [glassSendButton setAlpha:1.0];
   }
 
-  v11 = [(CKMessageEntryView *)self hintLabel];
-  [v11 setHidden:1];
+  hintLabel = [(CKMessageEntryView *)self hintLabel];
+  [hintLabel setHidden:1];
 
-  v12 = [(CKMessageEntryView *)self contentClipView];
-  [v12 setHidden:0];
+  contentClipView = [(CKMessageEntryView *)self contentClipView];
+  [contentClipView setHidden:0];
 
-  v13 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v14 = [v13 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-  if (v14)
+  if (isEntryViewRefreshEnabled)
   {
     [(CKMessageEntryView *)self contentView];
   }
 
   else
   {
-    v15 = [(CKMessageEntryView *)self plusButton];
-    [v15 setHidden:0];
+    plusButton = [(CKMessageEntryView *)self plusButton];
+    [plusButton setHidden:0];
 
     [(CKMessageEntryView *)self emojiButton];
   }
@@ -4469,22 +4469,22 @@ uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEf
 
 - (void)_configureForDisplayModeRecording
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isEntryViewRefreshEnabled & 1) == 0)
   {
-    v5 = [(CKMessageEntryView *)self audioButton];
-    [v5 setHidden:1];
+    audioButton = [(CKMessageEntryView *)self audioButton];
+    [audioButton setHidden:1];
 
-    v6 = [(CKMessageEntryView *)self plusButton];
-    [v6 setHidden:1];
+    plusButton = [(CKMessageEntryView *)self plusButton];
+    [plusButton setHidden:1];
 
-    v7 = [(CKMessageEntryView *)self emojiButton];
-    [v7 setHidden:1];
+    emojiButton = [(CKMessageEntryView *)self emojiButton];
+    [emojiButton setHidden:1];
 
-    v8 = [(CKMessageEntryView *)self contentClipView];
-    [v8 setHidden:1];
+    contentClipView = [(CKMessageEntryView *)self contentClipView];
+    [contentClipView setHidden:1];
   }
 
   [(CKMessageEntryView *)self _setupAudioMessageRecordingView];
@@ -4492,43 +4492,43 @@ uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEf
 
 - (void)_configureForDisplayModeRecorded
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isEntryViewRefreshEnabled & 1) == 0)
   {
-    v5 = [(CKMessageEntryView *)self audioButton];
-    [v5 setHidden:1];
+    audioButton = [(CKMessageEntryView *)self audioButton];
+    [audioButton setHidden:1];
 
-    v6 = [(CKMessageEntryView *)self plusButton];
-    [v6 setHidden:1];
+    plusButton = [(CKMessageEntryView *)self plusButton];
+    [plusButton setHidden:1];
 
-    v7 = [(CKMessageEntryView *)self emojiButton];
-    [v7 setHidden:1];
+    emojiButton = [(CKMessageEntryView *)self emojiButton];
+    [emojiButton setHidden:1];
 
-    v8 = [(CKMessageEntryView *)self contentClipView];
-    [v8 setHidden:1];
+    contentClipView = [(CKMessageEntryView *)self contentClipView];
+    [contentClipView setHidden:1];
   }
 
   [(CKMessageEntryView *)self _setupAudioMessageRecordingView];
-  v9 = [(CKMessageEntryView *)self audioRecordingView];
-  [v9 setState:2];
+  audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
+  [audioRecordingView setState:2];
 }
 
-- (void)configureForDisplayMode:(unint64_t)a3
+- (void)configureForDisplayMode:(unint64_t)mode
 {
-  if ([(CKMessageEntryView *)self displayMode]!= a3)
+  if ([(CKMessageEntryView *)self displayMode]!= mode)
   {
-    [(CKMessageEntryView *)self setDisplayMode:a3];
-    if (a3 > 2)
+    [(CKMessageEntryView *)self setDisplayMode:mode];
+    if (mode > 2)
     {
-      if (a3 == 3)
+      if (mode == 3)
       {
         [(CKMessageEntryView *)self _configureForDisplayModeRecorded];
         goto LABEL_16;
       }
 
-      if (a3 == 4)
+      if (mode == 4)
       {
         [(CKMessageEntryView *)self _configureForDisplayModeSending];
         goto LABEL_16;
@@ -4537,13 +4537,13 @@ uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEf
 
     else
     {
-      if (a3 == 1)
+      if (mode == 1)
       {
         [(CKMessageEntryView *)self _configureForDisplayModeText];
-        v6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-        v7 = [v6 isEntryViewRefreshEnabled];
+        mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+        isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-        if ((v7 & 1) == 0)
+        if ((isEntryViewRefreshEnabled & 1) == 0)
         {
           [(CKMessageEntryView *)self clearAudioRecordingUI];
         }
@@ -4551,7 +4551,7 @@ uint64_t __79__CKMessageEntryView__shouldUseKeyboardVisibleBottomInsetsForTextEf
         goto LABEL_16;
       }
 
-      if (a3 == 2)
+      if (mode == 2)
       {
         [(CKMessageEntryView *)self _configureForDisplayModeRecording];
 LABEL_16:
@@ -4574,26 +4574,26 @@ LABEL_16:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  [(CKMessageEntryView *)self adjustedCoverInsets:a3.width];
+  width = fits.width;
+  [(CKMessageEntryView *)self adjustedCoverInsets:fits.width];
   v6 = v5;
   v8 = v7;
   v11 = width - (v9 + v10);
-  v12 = [(CKMessageEntryView *)self contentView];
-  [v12 sizeThatFits:{v11, 1.79769313e308}];
+  contentView = [(CKMessageEntryView *)self contentView];
+  [contentView sizeThatFits:{v11, 1.79769313e308}];
   v14 = v13;
-  v15 = [(CKMessageEntryView *)self audioRecordingView];
+  audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
 
-  if (v15)
+  if (audioRecordingView)
   {
-    v16 = [(CKMessageEntryView *)self audioRecordingView];
+    audioRecordingView2 = [(CKMessageEntryView *)self audioRecordingView];
     [(CKMessageEntryView *)self bounds];
     v18 = v17;
     v19 = +[CKUIBehavior sharedBehaviors];
     [v19 audioRecordingViewButtonSpacing];
-    [v16 sizeThatFits:{v18 + v20 * -2.0, 1.79769313e308}];
+    [audioRecordingView2 sizeThatFits:{v18 + v20 * -2.0, 1.79769313e308}];
     v22 = v21;
 
     if ([(CKMessageEntryView *)self shouldUseLinearResizeForAudioMessage])
@@ -4604,8 +4604,8 @@ LABEL_16:
 
   else if ([(CKMessageEntryView *)self shouldShowHintLabel])
   {
-    v23 = [(CKMessageEntryView *)self hintLabel];
-    [v23 frame];
+    hintLabel = [(CKMessageEntryView *)self hintLabel];
+    [hintLabel frame];
     v22 = v24;
   }
 
@@ -4615,10 +4615,10 @@ LABEL_16:
   }
 
   v25 = v8 + v6 + v22;
-  v26 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v27 = [v26 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if ((v27 & 1) == 0)
+  if ((isEntryViewRefreshEnabled & 1) == 0)
   {
     [(CKMessageEntryView *)self safeAreaInsets];
     v25 = v25 + v28;
@@ -4631,10 +4631,10 @@ LABEL_16:
   return result;
 }
 
-- (CGRect)coverFrameThatFitsInSize:(CGSize)a3
+- (CGRect)coverFrameThatFitsInSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CKMessageEntryView *)self adjustedCoverInsets];
   v8 = width - (v6 + v7);
   v11 = height - (v9 + v10);
@@ -4647,8 +4647,8 @@ LABEL_16:
     v14 = v11;
   }
 
-  v15 = [(CKMessageEntryView *)self contentView];
-  [v15 sizeThatFits:{v8, v14}];
+  contentView = [(CKMessageEntryView *)self contentView];
+  [contentView sizeThatFits:{v8, v14}];
   [(CKMessageEntryView *)self _computedFinalCoverFrameRectForContentSize:?];
   v17 = v16;
   v19 = v18;
@@ -4673,17 +4673,17 @@ LABEL_16:
   [(CKMessageEntryView *)self layoutIfNeeded];
 }
 
-- (CGRect)_computedFinalCoverFrameRectForContentSize:(CGSize)a3
+- (CGRect)_computedFinalCoverFrameRectForContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   [(CKMessageEntryView *)self adjustedCoverInsets];
   v7 = v6;
   v9 = v8;
-  v10 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v11 = [v10 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v11)
+  if (isEntryViewRefreshEnabled)
   {
     [(CKMessageEntryView *)self bounds];
     v13 = v12;
@@ -4704,19 +4704,19 @@ LABEL_16:
   v20 = v13 - width - v9;
   if (self->_shouldCoverViewBeShrunkenForSendMenu)
   {
-    v21 = [(CKMessageEntryView *)self delegate];
-    v22 = [v21 messageEntryViewActiveSendMenuPresentation:self];
+    delegate = [(CKMessageEntryView *)self delegate];
+    v22 = [delegate messageEntryViewActiveSendMenuPresentation:self];
 
     if (v22)
     {
-      v23 = [v22 newPopoverLayoutMetrics];
-      if (v23)
+      newPopoverLayoutMetrics = [v22 newPopoverLayoutMetrics];
+      if (newPopoverLayoutMetrics)
       {
         v56 = v15;
-        v24 = [(CKMessageEntryView *)self window];
-        v25 = [v23 coordinateSpace];
-        [v23 frame];
-        [v25 convertRect:v24 toCoordinateSpace:?];
+        window = [(CKMessageEntryView *)self window];
+        coordinateSpace = [newPopoverLayoutMetrics coordinateSpace];
+        [newPopoverLayoutMetrics frame];
+        [coordinateSpace convertRect:window toCoordinateSpace:?];
         v27 = v26;
         v29 = v28;
         v31 = v30;
@@ -4780,20 +4780,20 @@ LABEL_16:
   return result;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = test.y;
+  x = test.x;
   v73 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  eventCopy = event;
   v70.receiver = self;
   v70.super_class = CKMessageEntryView;
-  v8 = [(CKMessageEntryView *)&v70 hitTest:v7 withEvent:x, y];
-  v9 = [(CKMessageEntryView *)self audioRecordingView];
-  if (v9)
+  v8 = [(CKMessageEntryView *)&v70 hitTest:eventCopy withEvent:x, y];
+  audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
+  if (audioRecordingView)
   {
-    v10 = [(CKMessageEntryView *)self audioRecordingView];
-    v11 = [(CKEntryViewButton *)v8 isDescendantOfView:v10];
+    audioRecordingView2 = [(CKMessageEntryView *)self audioRecordingView];
+    v11 = [(CKEntryViewButton *)v8 isDescendantOfView:audioRecordingView2];
 
     if (v11)
     {
@@ -4802,33 +4802,33 @@ LABEL_16:
     }
   }
 
-  v13 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v14 = [v13 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v14)
+  if (isEntryViewRefreshEnabled)
   {
-    v15 = [(CKMessageEntryView *)self glassSendButton];
+    glassSendButton = [(CKMessageEntryView *)self glassSendButton];
   }
 
   else
   {
-    v16 = [(CKMessageEntryView *)self sendButton];
-    v15 = [v16 button];
+    sendButton = [(CKMessageEntryView *)self sendButton];
+    glassSendButton = [sendButton button];
   }
 
-  [(CKEntryViewButton *)v15 frame];
+  [(CKEntryViewButton *)glassSendButton frame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
   v24 = v23;
-  v25 = [(CKEntryViewButton *)v15 superview];
-  [(CKMessageEntryView *)self convertRect:v25 fromView:v18, v20, v22, v24];
+  superview = [(CKEntryViewButton *)glassSendButton superview];
+  [(CKMessageEntryView *)self convertRect:superview fromView:v18, v20, v22, v24];
   v27 = v26;
   v29 = v28;
   v31 = v30;
 
   [(CKMessageEntryView *)self frame];
-  if (v8 == v15)
+  if (v8 == glassSendButton)
   {
     goto LABEL_24;
   }
@@ -4849,16 +4849,16 @@ LABEL_16:
     goto LABEL_24;
   }
 
-  v33 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v34 = [v33 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled2 = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-  if (v34)
+  if (isEntryViewRefreshEnabled2)
   {
-    v35 = [(CKMessageEntryView *)self glassSendButton];
-    if ([v35 isEnabled])
+    glassSendButton2 = [(CKMessageEntryView *)self glassSendButton];
+    if ([glassSendButton2 isEnabled])
     {
-      v36 = [(CKMessageEntryView *)self glassSendButton];
-      v37 = [v36 isHidden];
+      glassSendButton3 = [(CKMessageEntryView *)self glassSendButton];
+      isHidden = [glassSendButton3 isHidden];
 
       goto LABEL_15;
     }
@@ -4868,58 +4868,58 @@ LABEL_17:
     goto LABEL_18;
   }
 
-  v35 = [(CKMessageEntryView *)self sendButton];
-  if (![v35 isEnabled])
+  glassSendButton2 = [(CKMessageEntryView *)self sendButton];
+  if (![glassSendButton2 isEnabled])
   {
     goto LABEL_17;
   }
 
-  v38 = [(CKMessageEntryView *)self sendButton];
-  v37 = [v38 isHidden];
+  sendButton2 = [(CKMessageEntryView *)self sendButton];
+  isHidden = [sendButton2 isHidden];
 
 LABEL_15:
-  if ((v37 & 1) == 0)
+  if ((isHidden & 1) == 0)
   {
-    v39 = v15;
+    button = glassSendButton;
 LABEL_22:
-    v40 = v8;
-    v8 = v39;
+    delegate = v8;
+    v8 = button;
     goto LABEL_23;
   }
 
 LABEL_18:
   if ([(CKEntryViewButton *)self->_audioButton isEnabled]&& ([(CKEntryViewButton *)self->_audioButton isHidden]& 1) == 0)
   {
-    v39 = [(CKEntryViewButton *)self->_audioButton button];
+    button = [(CKEntryViewButton *)self->_audioButton button];
     goto LABEL_22;
   }
 
-  v40 = [(CKMessageEntryView *)self delegate];
-  [v40 messageEntryViewSendButtonHitWhileDisabled:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryViewSendButtonHitWhileDisabled:self];
 LABEL_23:
 
 LABEL_24:
-  v41 = [(CKSendMenuButtonProtocol *)self->_plusButton button];
+  button2 = [(CKSendMenuButtonProtocol *)self->_plusButton button];
   if ([(CKMessageEntryView *)self isUserInteractionEnabled])
   {
-    WeakRetained = [(CKEntryViewButton *)v41 window];
-    if (!WeakRetained || ![(CKEntryViewButton *)v41 isEnabled]|| ([(CKEntryViewButton *)v41 isHidden]& 1) != 0)
+    WeakRetained = [(CKEntryViewButton *)button2 window];
+    if (!WeakRetained || ![(CKEntryViewButton *)button2 isEnabled]|| ([(CKEntryViewButton *)button2 isHidden]& 1) != 0)
     {
       goto LABEL_33;
     }
 
-    v43 = [(CKMessageEntryView *)self audioRecordingView];
-    v44 = v43 == 0;
+    audioRecordingView3 = [(CKMessageEntryView *)self audioRecordingView];
+    v44 = audioRecordingView3 == 0;
 
     if (v44)
     {
-      [(CKEntryViewButton *)v41 frame];
+      [(CKEntryViewButton *)button2 frame];
       v46 = v45;
       v48 = v47;
       v50 = v49;
       v52 = v51;
-      v53 = [(CKEntryViewButton *)v41 superview];
-      [(CKMessageEntryView *)self convertRect:v53 fromView:v46, v48, v50, v52];
+      superview2 = [(CKEntryViewButton *)button2 superview];
+      [(CKMessageEntryView *)self convertRect:superview2 fromView:v46, v48, v50, v52];
       v55 = v54;
       v57 = v56;
       v59 = v58;
@@ -4930,7 +4930,7 @@ LABEL_24:
       v78.size.width = v59;
       v78.size.height = v61;
       MaxX = CGRectGetMaxX(v78);
-      if (v8 == v41)
+      if (v8 == button2)
       {
 LABEL_32:
         WeakRetained = objc_loadWeakRetained(&self->_delegate);
@@ -4948,7 +4948,7 @@ LABEL_33:
       v76.y = y;
       if (CGRectContainsPoint(v79, v76))
       {
-        v63 = v41;
+        v63 = button2;
 
         v8 = v63;
         goto LABEL_32;
@@ -4968,10 +4968,10 @@ LABEL_34:
     }
   }
 
-  if (v8 == v15)
+  if (v8 == glassSendButton)
   {
-    v65 = [(CKMessageEntryView *)self delegate];
-    v66 = [v65 messageEntryViewIsSendingMessage:self];
+    delegate2 = [(CKMessageEntryView *)self delegate];
+    v66 = [delegate2 messageEntryViewIsSendingMessage:self];
 
     if (IMOSLoggingEnabled())
     {
@@ -4998,24 +4998,24 @@ LABEL_46:
   return v12;
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 entryViewFollowsKeyboardLayoutGuide];
+  entryViewFollowsKeyboardLayoutGuide = [v8 entryViewFollowsKeyboardLayoutGuide];
 
-  if (v9)
+  if (entryViewFollowsKeyboardLayoutGuide)
   {
     goto LABEL_13;
   }
 
   v10 = +[CKUIBehavior sharedBehaviors];
-  v11 = [v10 isEntryViewInputAccessory];
+  isEntryViewInputAccessory = [v10 isEntryViewInputAccessory];
 
-  if (v11)
+  if (isEntryViewInputAccessory)
   {
     v22 = 0.0;
     v23 = 0.0;
@@ -5039,15 +5039,15 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v15 = [(CKMessageEntryView *)self superview];
+  superview = [(CKMessageEntryView *)self superview];
 
-  if (!v15)
+  if (!superview)
   {
     goto LABEL_13;
   }
 
-  v16 = [(CKMessageEntryView *)self superview];
-  [v16 bounds];
+  superview2 = [(CKMessageEntryView *)self superview];
+  [superview2 bounds];
   v18 = v17;
 
   y = v18 - height;
@@ -5072,29 +5072,29 @@ LABEL_13:
   [(CKMessageEntryView *)&v21 setFrame:x, y, width, height];
 }
 
-+ (UIEdgeInsets)coverViewInsetsForMarginInsets:(UIEdgeInsets)a3 shouldShowPluginButtons:(BOOL)a4 shouldShowCharacterCount:(BOOL)a5 shouldCenterCharacterCount:(BOOL *)a6 isStewieMode:(BOOL)a7
++ (UIEdgeInsets)coverViewInsetsForMarginInsets:(UIEdgeInsets)insets shouldShowPluginButtons:(BOOL)buttons shouldShowCharacterCount:(BOOL)count shouldCenterCharacterCount:(BOOL *)characterCount isStewieMode:(BOOL)mode
 {
-  v7 = a7;
-  v9 = a5;
-  v10 = a4;
-  right = a3.right;
-  left = a3.left;
+  modeCopy = mode;
+  countCopy = count;
+  buttonsCopy = buttons;
+  right = insets.right;
+  left = insets.left;
   v49[1] = *MEMORY[0x1E69E9840];
-  v13 = [CKUIBehavior sharedBehaviors:a3.top];
+  v13 = [CKUIBehavior sharedBehaviors:insets.top];
   [v13 entryViewVerticalCoverInsets];
   v15 = v14;
   v17 = v16;
 
   v18 = 0.0;
-  if (v9)
+  if (countCopy)
   {
-    if (v7)
+    if (modeCopy)
     {
       v19 = sMaximumCharacterCountString(1);
       v48 = *MEMORY[0x1E69DB648];
       v20 = +[CKUIBehavior sharedBehaviors];
-      v21 = [v20 characterCountSatelliteFont];
-      v49[0] = v21;
+      characterCountSatelliteFont = [v20 characterCountSatelliteFont];
+      v49[0] = characterCountSatelliteFont;
       v22 = MEMORY[0x1E695DF20];
       v23 = v49;
       v24 = &v48;
@@ -5105,8 +5105,8 @@ LABEL_13:
       v19 = sMaximumCharacterCountString(0);
       v46 = *MEMORY[0x1E69DB648];
       v20 = +[CKUIBehavior sharedBehaviors];
-      v21 = [v20 characterCountFont];
-      v47 = v21;
+      characterCountSatelliteFont = [v20 characterCountFont];
+      v47 = characterCountSatelliteFont;
       v22 = MEMORY[0x1E695DF20];
       v23 = &v47;
       v24 = &v46;
@@ -5128,7 +5128,7 @@ LABEL_13:
     right = v30;
   }
 
-  if (!v10)
+  if (!buttonsCopy)
   {
     v39 = +[CKUIBehavior sharedBehaviors];
     [v39 entryViewHorizontalCoverInsets];
@@ -5136,17 +5136,17 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v31 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v32 = [v31 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (!v32)
+  if (!isEntryViewRefreshEnabled)
   {
     v39 = +[CKUIBehavior sharedBehaviors];
     [v39 entryViewNonCollapsableLeftPadding];
     v38 = v41;
 LABEL_14:
 
-    if (!a6)
+    if (!characterCount)
     {
       goto LABEL_16;
     }
@@ -5161,10 +5161,10 @@ LABEL_14:
   v37 = v36;
 
   v38 = left + v34 + v37;
-  if (a6)
+  if (characterCount)
   {
 LABEL_15:
-    *a6 = right >= v18;
+    *characterCount = right >= v18;
   }
 
 LABEL_16:
@@ -5188,21 +5188,21 @@ LABEL_16:
   return result;
 }
 
-+ (UIEdgeInsets)contentViewInsetsForMarginInsets:(UIEdgeInsets)a3 shouldShowPluginButtons:(BOOL)a4 shouldShowCharacterCount:(BOOL)a5 shouldCoverSendButton:(BOOL)a6 isStewieMode:(BOOL)a7
++ (UIEdgeInsets)contentViewInsetsForMarginInsets:(UIEdgeInsets)insets shouldShowPluginButtons:(BOOL)buttons shouldShowCharacterCount:(BOOL)count shouldCoverSendButton:(BOOL)button isStewieMode:(BOOL)mode
 {
-  v7 = a7;
-  v9 = a5;
-  v10 = a4;
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v16 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v17 = [v16 isEntryViewRefreshEnabled];
+  modeCopy = mode;
+  countCopy = count;
+  buttonsCopy = buttons;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v17)
+  if (isEntryViewRefreshEnabled)
   {
-    [a1 coverViewInsetsForMarginInsets:v10 shouldShowPluginButtons:v9 shouldShowCharacterCount:0 shouldCenterCharacterCount:v7 isStewieMode:{top, left, bottom, right}];
+    [self coverViewInsetsForMarginInsets:buttonsCopy shouldShowPluginButtons:countCopy shouldShowCharacterCount:0 shouldCenterCharacterCount:modeCopy isStewieMode:{top, left, bottom, right}];
     top = v18;
     left = v19;
     bottom = v20;
@@ -5212,13 +5212,13 @@ LABEL_16:
   v22 = 0.0;
   if (!CKIsRunningInMacCatalyst())
   {
-    v23 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v24 = [v23 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled2 = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-    if (v24)
+    if (isEntryViewRefreshEnabled2)
     {
       +[CKGlassSendButton buttonSize];
-      if (a6)
+      if (button)
       {
         goto LABEL_10;
       }
@@ -5231,7 +5231,7 @@ LABEL_16:
 
     else
     {
-      if (a6)
+      if (button)
       {
         goto LABEL_10;
       }
@@ -5246,10 +5246,10 @@ LABEL_16:
   }
 
 LABEL_10:
-  v33 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v34 = [v33 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled3 = [mEMORY[0x1E69A8070]3 isEntryViewRefreshEnabled];
 
-  if (v34)
+  if (isEntryViewRefreshEnabled3)
   {
     v35 = +[CKUIBehavior sharedBehaviors];
     [v35 balloonLineFragmentPadding];
@@ -5265,7 +5265,7 @@ LABEL_10:
 
   else
   {
-    [a1 coverViewInsetsForMarginInsets:v10 shouldShowPluginButtons:v9 shouldShowCharacterCount:0 shouldCenterCharacterCount:v7 isStewieMode:{top, left, bottom, right}];
+    [self coverViewInsetsForMarginInsets:buttonsCopy shouldShowPluginButtons:countCopy shouldShowCharacterCount:0 shouldCenterCharacterCount:modeCopy isStewieMode:{top, left, bottom, right}];
     top = v43;
     v45 = v44;
     bottom = v46;
@@ -5287,12 +5287,12 @@ LABEL_10:
   return result;
 }
 
-- (void)setMarginInsets:(UIEdgeInsets)a3
+- (void)setMarginInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
   [(CKMessageEntryView *)self marginInsets];
   if (v11 != left || v8 != top || v10 != right || v9 != bottom)
   {
@@ -5300,51 +5300,51 @@ LABEL_10:
     self->_marginInsets.left = left;
     self->_marginInsets.bottom = bottom;
     self->_marginInsets.right = right;
-    v15 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v16 = [v15 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-    if (!v16)
+    if (!isEntryViewRefreshEnabled)
     {
       v39 = 0;
       v17 = 0;
       if ([(CKMessageEntryView *)self shouldShowPluginButtons])
       {
-        v18 = [(CKMessageEntryView *)self plusButton];
-        v17 = v18 != 0;
+        plusButton = [(CKMessageEntryView *)self plusButton];
+        v17 = plusButton != 0;
       }
 
       if ([(CKConversation *)self->_conversation isStewieConversation])
       {
-        v19 = 1;
+        shouldDisplayOffGridModeStatus = 1;
       }
 
       else
       {
-        v20 = [(CKConversation *)self->_conversation sendingService];
-        if ([v20 __ck_isiMessageLite])
+        sendingService = [(CKConversation *)self->_conversation sendingService];
+        if ([sendingService __ck_isiMessageLite])
         {
-          v19 = 1;
+          shouldDisplayOffGridModeStatus = 1;
         }
 
         else
         {
-          v21 = [(CKMessageEntryView *)self conversation];
-          v22 = [v21 sendingService];
-          if ([v22 __ck_isSatelliteSMS])
+          conversation = [(CKMessageEntryView *)self conversation];
+          sendingService2 = [conversation sendingService];
+          if ([sendingService2 __ck_isSatelliteSMS])
           {
-            v19 = 1;
+            shouldDisplayOffGridModeStatus = 1;
           }
 
           else
           {
-            v23 = [(CKMessageEntryView *)self conversation];
-            v24 = [v23 chat];
-            v19 = [v24 shouldDisplayOffGridModeStatus];
+            conversation2 = [(CKMessageEntryView *)self conversation];
+            chat = [conversation2 chat];
+            shouldDisplayOffGridModeStatus = [chat shouldDisplayOffGridModeStatus];
           }
         }
       }
 
-      [CKMessageEntryView coverViewInsetsForMarginInsets:v17 shouldShowPluginButtons:[(CKMessageEntryView *)self shouldShowCharacterCount] shouldShowCharacterCount:&v39 shouldCenterCharacterCount:v19 isStewieMode:top, left, bottom, right];
+      [CKMessageEntryView coverViewInsetsForMarginInsets:v17 shouldShowPluginButtons:[(CKMessageEntryView *)self shouldShowCharacterCount] shouldShowCharacterCount:&v39 shouldCenterCharacterCount:shouldDisplayOffGridModeStatus isStewieMode:top, left, bottom, right];
       v26 = v25;
       v28 = v27;
       v30 = v29;
@@ -5352,9 +5352,9 @@ LABEL_10:
       [(CKMessageEntryView *)self coverInsets];
       if (v36 == v28 && v33 == v26 && v35 == v32 && v34 == v30)
       {
-        v37 = [(CKMessageEntryView *)self shouldCenterCharacterCount];
+        shouldCenterCharacterCount = [(CKMessageEntryView *)self shouldCenterCharacterCount];
         v38 = v39;
-        if (v39 == v37)
+        if (v39 == shouldCenterCharacterCount)
         {
           return;
         }
@@ -5375,22 +5375,22 @@ LABEL_10:
   }
 }
 
-- (void)setBackdropGroupName:(id)a3
+- (void)setBackdropGroupName:(id)name
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isEntryViewRefreshEnabled];
+  nameCopy = name;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
   backdropGroupName = self->_backdropGroupName;
-  if (v6)
+  if (isEntryViewRefreshEnabled)
   {
     self->_backdropGroupName = 0;
   }
 
-  else if (![(NSString *)backdropGroupName isEqualToString:v4])
+  else if (![(NSString *)backdropGroupName isEqualToString:nameCopy])
   {
-    v8 = [v4 copy];
+    v8 = [nameCopy copy];
     v9 = self->_backdropGroupName;
     self->_backdropGroupName = v8;
 
@@ -5400,7 +5400,7 @@ LABEL_10:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
         v11 = 138412290;
-        v12 = v4;
+        v12 = nameCopy;
         _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Setting backdrop group name %@", &v11, 0xCu);
       }
     }
@@ -5411,8 +5411,8 @@ LABEL_10:
 
 - (double)coverViewWidth
 {
-  v2 = [(CKMessageEntryView *)self contentClipView];
-  [v2 bounds];
+  contentClipView = [(CKMessageEntryView *)self contentClipView];
+  [contentClipView bounds];
   Width = CGRectGetWidth(v5);
 
   return Width;
@@ -5420,10 +5420,10 @@ LABEL_10:
 
 - (CGRect)sendButtonFrameInScreenCoordinates
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
     [(CKMessageEntryView *)self glassSendButton];
   }
@@ -5436,20 +5436,20 @@ LABEL_10:
   v6 = v5;
   if (v5)
   {
-    v7 = v5;
-    v6 = v7;
+    audioButton = v5;
+    v6 = audioButton;
   }
 
   else
   {
-    v7 = [(CKMessageEntryView *)self audioButton];
+    audioButton = [(CKMessageEntryView *)self audioButton];
   }
 
-  v8 = v7;
+  v8 = audioButton;
 
-  v9 = [v8 superview];
+  superview = [v8 superview];
   [v8 frame];
-  [v9 convertRect:0 toView:?];
+  [superview convertRect:0 toView:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
@@ -5468,8 +5468,8 @@ LABEL_10:
 
 - (CGRect)activeKeyboardHeight
 {
-  v2 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-  [v2 frame];
+  activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+  [activeKeyboard frame];
   v4 = v3;
   v6 = v5;
   v8 = v7;
@@ -5486,183 +5486,183 @@ LABEL_10:
   return result;
 }
 
-- (CKMessageEntryView)initWithFrame:(CGRect)a3 marginInsets:(UIEdgeInsets)a4 shouldAllowImpact:(BOOL)a5 shouldShowSendButton:(BOOL)a6 shouldShowSubject:(BOOL)a7 shouldShowPluginButtons:(BOOL)a8 shouldShowCharacterCount:(BOOL)a9 traitCollection:(id)a10 shouldDisableAttachments:(BOOL)a11 shouldUseNonEmojiKeyboard:(BOOL)a12 shouldUseNonHandwritingKeyboard:(BOOL)a13 shouldDisableKeyboardStickers:(BOOL)a14 shouldAllowPollSuggestions:(BOOL)a15 translationLanguage:(id)a16
+- (CKMessageEntryView)initWithFrame:(CGRect)frame marginInsets:(UIEdgeInsets)insets shouldAllowImpact:(BOOL)impact shouldShowSendButton:(BOOL)button shouldShowSubject:(BOOL)subject shouldShowPluginButtons:(BOOL)buttons shouldShowCharacterCount:(BOOL)count traitCollection:(id)self0 shouldDisableAttachments:(BOOL)self1 shouldUseNonEmojiKeyboard:(BOOL)self2 shouldUseNonHandwritingKeyboard:(BOOL)self3 shouldDisableKeyboardStickers:(BOOL)self4 shouldAllowPollSuggestions:(BOOL)self5 translationLanguage:(id)self6
 {
-  v17 = a8;
-  v18 = a7;
-  v19 = a6;
-  v20 = a5;
-  right = a4.right;
-  bottom = a4.bottom;
-  left = a4.left;
-  top = a4.top;
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  buttonsCopy = buttons;
+  subjectCopy = subject;
+  buttonCopy = button;
+  impactCopy = impact;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v240[5] = *MEMORY[0x1E69E9840];
-  v30 = a10;
-  v31 = a16;
+  collectionCopy = collection;
+  languageCopy = language;
   v239.receiver = self;
   v239.super_class = CKMessageEntryView;
-  v32 = [(CKMessageEntryView *)&v239 initWithFrame:x, y, width, height];
-  if (!v32)
+  height = [(CKMessageEntryView *)&v239 initWithFrame:x, y, width, height];
+  if (!height)
   {
     goto LABEL_78;
   }
 
-  v233 = a9;
-  v235 = v31;
-  [CKMessageEntryView setCurrentEntryView:v32];
-  [(CKMessageEntryView *)v32 setPluginSendingEnabled:1];
-  v33 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v34 = [v33 isEntryViewRefreshEnabled];
+  countCopy = count;
+  v235 = languageCopy;
+  [CKMessageEntryView setCurrentEntryView:height];
+  [(CKMessageEntryView *)height setPluginSendingEnabled:1];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v34)
+  if (isEntryViewRefreshEnabled)
   {
-    [(UIView *)v32 ck_applyGlassGroup];
+    [(UIView *)height ck_applyGlassGroup];
   }
 
-  v35 = a11;
-  v36 = [(CKMessageEntryView *)v32 conversation];
-  v37 = [v36 sendingService];
-  v230 = v30;
-  v231 = v18;
-  v236 = v19;
-  if ([v37 __ck_isiMessageLite])
+  attachmentsCopy2 = attachments;
+  conversation = [(CKMessageEntryView *)height conversation];
+  sendingService = [conversation sendingService];
+  v230 = collectionCopy;
+  v231 = subjectCopy;
+  v236 = buttonCopy;
+  if ([sendingService __ck_isiMessageLite])
   {
-    v38 = v17;
-    v39 = 1;
+    v38 = buttonsCopy;
+    shouldDisplayOffGridModeStatus = 1;
   }
 
   else
   {
-    v228 = v20;
-    v40 = [(CKMessageEntryView *)v32 conversation];
-    v41 = [v40 sendingService];
-    v38 = v17;
-    if ([v41 __ck_isSatelliteSMS])
+    v228 = impactCopy;
+    conversation2 = [(CKMessageEntryView *)height conversation];
+    sendingService2 = [conversation2 sendingService];
+    v38 = buttonsCopy;
+    if ([sendingService2 __ck_isSatelliteSMS])
     {
-      v39 = 1;
+      shouldDisplayOffGridModeStatus = 1;
     }
 
     else
     {
-      v42 = [(CKMessageEntryView *)v32 conversation];
-      v43 = [v42 chat];
-      v39 = [v43 shouldDisplayOffGridModeStatus];
+      conversation3 = [(CKMessageEntryView *)height conversation];
+      chat = [conversation3 chat];
+      shouldDisplayOffGridModeStatus = [chat shouldDisplayOffGridModeStatus];
 
-      v35 = a11;
+      attachmentsCopy2 = attachments;
     }
 
-    v18 = v231;
-    v20 = v228;
+    subjectCopy = v231;
+    impactCopy = v228;
   }
 
-  v44 = [(CKMessageEntryView *)v32 conversation];
-  v45 = [v44 isStewieConversation] | v39;
+  conversation4 = [(CKMessageEntryView *)height conversation];
+  v45 = [conversation4 isStewieConversation] | shouldDisplayOffGridModeStatus;
 
   v223 = v45;
-  v46 = v45 | v233;
+  v46 = v45 | countCopy;
   v238 = 0;
-  [(CKMessageEntryView *)v32 setMarginInsets:top, left, bottom, right];
-  v47 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  LOBYTE(v44) = [v47 isEntryViewRefreshEnabled];
+  [(CKMessageEntryView *)height setMarginInsets:top, left, bottom, right];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  LOBYTE(conversation4) = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-  if ((v44 & 1) == 0)
+  if ((conversation4 & 1) == 0)
   {
     [CKMessageEntryView coverViewInsetsForMarginInsets:v38 shouldShowPluginButtons:v46 & 1 shouldShowCharacterCount:&v238 shouldCenterCharacterCount:v223 & 1 isStewieMode:top, left, bottom, right];
-    [(CKMessageEntryView *)v32 setCoverInsets:?];
+    [(CKMessageEntryView *)height setCoverInsets:?];
   }
 
-  [(CKMessageEntryView *)v32 setShouldShowSendButton:v236];
-  [(CKMessageEntryView *)v32 setShouldShowSubject:v18];
-  [(CKMessageEntryView *)v32 setShouldShowPluginButtons:v38];
-  [(CKMessageEntryView *)v32 setShouldShowCharacterCount:v46 & 1];
-  [(CKMessageEntryView *)v32 setShouldCenterCharacterCount:v238];
-  [(CKMessageEntryView *)v32 setShouldDisableAttachments:v35];
-  [(CKMessageEntryView *)v32 setShouldAllowImpactSend:v20];
-  v48 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v49 = [v48 enabledDictationLanguages];
-  -[CKMessageEntryView setDictationEnabledForLanguage:](v32, "setDictationEnabledForLanguage:", [v49 count] != 0);
+  [(CKMessageEntryView *)height setShouldShowSendButton:v236];
+  [(CKMessageEntryView *)height setShouldShowSubject:subjectCopy];
+  [(CKMessageEntryView *)height setShouldShowPluginButtons:v38];
+  [(CKMessageEntryView *)height setShouldShowCharacterCount:v46 & 1];
+  [(CKMessageEntryView *)height setShouldCenterCharacterCount:v238];
+  [(CKMessageEntryView *)height setShouldDisableAttachments:attachmentsCopy2];
+  [(CKMessageEntryView *)height setShouldAllowImpactSend:impactCopy];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  enabledDictationLanguages = [mEMORY[0x1E69DCBF0] enabledDictationLanguages];
+  -[CKMessageEntryView setDictationEnabledForLanguage:](height, "setDictationEnabledForLanguage:", [enabledDictationLanguages count] != 0);
 
-  [(CKMessageEntryView *)v32 setShouldShowDictationButton:1];
-  [(CKMessageEntryView *)v32 setAccessibilityIdentifier:@"entryView"];
-  v50 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v50 addObserver:v32 selector:sel_textEffectsWindowOffsetDidChange_ name:*MEMORY[0x1E69DE5A8] object:0];
+  [(CKMessageEntryView *)height setShouldShowDictationButton:1];
+  [(CKMessageEntryView *)height setAccessibilityIdentifier:@"entryView"];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:height selector:sel_textEffectsWindowOffsetDidChange_ name:*MEMORY[0x1E69DE5A8] object:0];
 
-  v51 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v51 addObserver:v32 selector:sel__keyboardsSettingsChanged_ name:@"AppleKeyboardsSettingsChangedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter2 addObserver:height selector:sel__keyboardsSettingsChanged_ name:@"AppleKeyboardsSettingsChangedNotification" object:0];
 
-  v52 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v52 addObserver:v32 selector:sel__dictationAvailabilityDidChange name:*MEMORY[0x1E69DDF60] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:height selector:sel__dictationAvailabilityDidChange name:*MEMORY[0x1E69DDF60] object:0];
 
-  v53 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v53 addObserver:v32 selector:sel_applicationWillResignActive name:*MEMORY[0x1E69DDBC8] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:height selector:sel_applicationWillResignActive name:*MEMORY[0x1E69DDBC8] object:0];
 
   v54 = +[CKUIBehavior sharedBehaviors];
-  LODWORD(v49) = [v54 entryViewFollowsKeyboardLayoutGuide];
+  LODWORD(enabledDictationLanguages) = [v54 entryViewFollowsKeyboardLayoutGuide];
 
-  if (v49)
+  if (enabledDictationLanguages)
   {
-    [(CKMessageEntryView *)v32 setTranslatesAutoresizingMaskIntoConstraints:0];
+    [(CKMessageEntryView *)height setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
   else
   {
-    v55 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v56 = [v55 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070]3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled2 = [mEMORY[0x1E69A8070]3 isEntryViewRefreshEnabled];
 
-    if ((v56 & 1) == 0)
+    if ((isEntryViewRefreshEnabled2 & 1) == 0)
     {
-      v57 = [(CKMessageEntryView *)v32 layer];
-      [v57 setAnchorPoint:{1.0, 1.0}];
+      layer = [(CKMessageEntryView *)height layer];
+      [layer setAnchorPoint:{1.0, 1.0}];
     }
   }
 
-  v225 = v35;
-  [(CKMessageEntryView *)v32 setOpaque:0];
-  v58 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v59 = [v58 isEntryViewRefreshEnabled];
+  v225 = attachmentsCopy2;
+  [(CKMessageEntryView *)height setOpaque:0];
+  mEMORY[0x1E69A8070]4 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled3 = [mEMORY[0x1E69A8070]4 isEntryViewRefreshEnabled];
 
-  if ((v59 & 1) == 0)
+  if ((isEntryViewRefreshEnabled3 & 1) == 0)
   {
-    [(CKMessageEntryView *)v32 updateBackgroundView];
+    [(CKMessageEntryView *)height updateBackgroundView];
   }
 
-  v60 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v61 = [v60 isSendMenuEnabled];
+  mEMORY[0x1E69A8070]5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isSendMenuEnabled = [mEMORY[0x1E69A8070]5 isSendMenuEnabled];
 
   v62 = +[CKUIBehavior sharedBehaviors];
-  v63 = [v62 entryViewSupportsPlusButton];
+  entryViewSupportsPlusButton = [v62 entryViewSupportsPlusButton];
 
-  v64 = [[CKMessageEntryViewButtonContainerView alloc] initWithFrame:x, y, width, height];
-  [(CKMessageEntryViewButtonContainerView *)v64 setClipsToBounds:v61 ^ 1u];
-  v65 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  LOBYTE(v62) = [v65 isEntryViewRefreshEnabled];
+  height2 = [[CKMessageEntryViewButtonContainerView alloc] initWithFrame:x, y, width, height];
+  [(CKMessageEntryViewButtonContainerView *)height2 setClipsToBounds:isSendMenuEnabled ^ 1u];
+  mEMORY[0x1E69A8070]6 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  LOBYTE(v62) = [mEMORY[0x1E69A8070]6 isEntryViewRefreshEnabled];
 
   if ((v62 & 1) == 0)
   {
-    v66 = [(CKMessageEntryViewButtonContainerView *)v64 layer];
-    [v66 setAnchorPoint:{0.0, 0.0}];
+    layer2 = [(CKMessageEntryViewButtonContainerView *)height2 layer];
+    [layer2 setAnchorPoint:{0.0, 0.0}];
   }
 
-  [(CKMessageEntryView *)v32 addSubview:v64];
-  [(CKMessageEntryView *)v32 setInputButtonContainerView:v64];
-  v67 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v68 = [v67 isEntryViewRefreshEnabled];
+  [(CKMessageEntryView *)height addSubview:height2];
+  [(CKMessageEntryView *)height setInputButtonContainerView:height2];
+  mEMORY[0x1E69A8070]7 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled4 = [mEMORY[0x1E69A8070]7 isEntryViewRefreshEnabled];
 
-  if ((v68 & 1) == 0)
+  if ((isEntryViewRefreshEnabled4 & 1) == 0)
   {
     v69 = [objc_alloc(MEMORY[0x1E69DD298]) initWithFrame:{x, y, width, height}];
-    [(CKMessageEntryView *)v32 setMessageEditingBlurOverlayView:v69];
-    [(CKMessageEntryView *)v32 addSubview:v69];
+    [(CKMessageEntryView *)height setMessageEditingBlurOverlayView:v69];
+    [(CKMessageEntryView *)height addSubview:v69];
     [v69 setHidden:1];
   }
 
   v70 = +[CKUIBehavior sharedBehaviors];
   v71 = v70;
-  if (v63)
+  if (entryViewSupportsPlusButton)
   {
     [v70 entryViewPlusButtonSize];
   }
@@ -5674,90 +5674,90 @@ LABEL_10:
 
   v73 = v72;
 
-  [(CKMessageEntryView *)v32 setInputButtonSize:v73, v73];
+  [(CKMessageEntryView *)height setInputButtonSize:v73, v73];
   v74 = +[CKUIBehavior sharedBehaviors];
-  v75 = [v74 entryViewPlusButtonClass];
+  entryViewPlusButtonClass = [v74 entryViewPlusButtonClass];
 
-  v76 = objc_alloc_init(v75);
+  v76 = objc_alloc_init(entryViewPlusButtonClass);
   v77 = +[CKUIBehavior sharedBehaviors];
-  LODWORD(v75) = [v77 browserButtonShouldUseMenu];
+  LODWORD(entryViewPlusButtonClass) = [v77 browserButtonShouldUseMenu];
 
-  v78 = [v76 button];
-  v79 = v78;
-  if (v75)
+  button = [v76 button];
+  v79 = button;
+  if (entryViewPlusButtonClass)
   {
-    [v78 setContextMenuIsPrimary:1];
+    [button setContextMenuIsPrimary:1];
 
-    v80 = [v76 button];
-    [v80 setContextMenuEnabled:1];
+    button2 = [v76 button];
+    [button2 setContextMenuEnabled:1];
 LABEL_29:
 
     goto LABEL_30;
   }
 
-  [v78 addTarget:v32 action:sel_plusButtonTouchDown_ forEvents:1];
+  [button addTarget:height action:sel_plusButtonTouchDown_ forEvents:1];
 
-  v81 = [v76 button];
-  [v81 addTarget:v32 action:sel_plusButtonTouchUpOutside_ forEvents:128];
+  button3 = [v76 button];
+  [button3 addTarget:height action:sel_plusButtonTouchUpOutside_ forEvents:128];
 
-  v82 = [v76 button];
-  [v82 addTarget:v32 action:sel_plusButtonTouchCancel_ forEvents:256];
+  button4 = [v76 button];
+  [button4 addTarget:height action:sel_plusButtonTouchCancel_ forEvents:256];
 
-  v83 = [v76 button];
-  [v83 addTarget:v32 action:sel_plusButtonTouchDragExit_ forEvents:32];
+  button5 = [v76 button];
+  [button5 addTarget:height action:sel_plusButtonTouchDragExit_ forEvents:32];
 
-  v84 = [v76 button];
-  [v84 addTarget:v32 action:sel_plusButtonTouchDragEnter_ forEvents:16];
+  button6 = [v76 button];
+  [button6 addTarget:height action:sel_plusButtonTouchDragEnter_ forEvents:16];
 
-  v85 = [v76 button];
-  [v85 addTarget:v32 action:sel_didSelectPlusButton_ forEvents:64];
+  button7 = [v76 button];
+  [button7 addTarget:height action:sel_didSelectPlusButton_ forEvents:64];
 
   v86 = +[CKUIBehavior sharedBehaviors];
-  v87 = [v86 supportsEntryViewPlusButtonLongPress];
+  supportsEntryViewPlusButtonLongPress = [v86 supportsEntryViewPlusButtonLongPress];
 
-  if (v87)
+  if (supportsEntryViewPlusButtonLongPress)
   {
-    v80 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v32 action:sel_plusButtonLongPressed_];
+    button2 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:height action:sel_plusButtonLongPressed_];
     v88 = +[CKUIBehavior sharedBehaviors];
     [v88 entryViewPlusButtonLongPressDuration];
     v90 = v89;
 
-    [v80 setMinimumPressDuration:v90];
-    v91 = [v76 button];
-    [v91 addGestureRecognizer:v80];
+    [button2 setMinimumPressDuration:v90];
+    button8 = [v76 button];
+    [button8 addGestureRecognizer:button2];
 
-    v92 = [MEMORY[0x1E69DD6E8] defaultConfiguration];
-    v93 = [objc_alloc(MEMORY[0x1E69DCF40]) initWithConfiguration:v92 view:v76];
-    plusButtonFeedbackGenerator = v32->_plusButtonFeedbackGenerator;
-    v32->_plusButtonFeedbackGenerator = v93;
+    defaultConfiguration = [MEMORY[0x1E69DD6E8] defaultConfiguration];
+    v93 = [objc_alloc(MEMORY[0x1E69DCF40]) initWithConfiguration:defaultConfiguration view:v76];
+    plusButtonFeedbackGenerator = height->_plusButtonFeedbackGenerator;
+    height->_plusButtonFeedbackGenerator = v93;
 
     goto LABEL_29;
   }
 
 LABEL_30:
-  v95 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v96 = [v95 isPopoverSendMenuEnabled];
+  mEMORY[0x1E69A8070]8 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isPopoverSendMenuEnabled = [mEMORY[0x1E69A8070]8 isPopoverSendMenuEnabled];
 
-  if ((v96 & 1) == 0)
+  if ((isPopoverSendMenuEnabled & 1) == 0)
   {
     v97 = +[CKUIBehavior sharedBehaviors];
-    v98 = [v97 entryViewPlusButtonDefaultBackgroundColor];
-    [v76 setPlusButtonBackgroundColor:v98];
+    entryViewPlusButtonDefaultBackgroundColor = [v97 entryViewPlusButtonDefaultBackgroundColor];
+    [v76 setPlusButtonBackgroundColor:entryViewPlusButtonDefaultBackgroundColor];
   }
 
   [v76 accessibilitySetIdentification:@"Apps Button"];
   [v76 setExclusiveTouch:0];
   [v76 setBounds:{*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v73, v73}];
-  if ([(CKMessageEntryView *)v32 shouldShowPluginButtons])
+  if ([(CKMessageEntryView *)height shouldShowPluginButtons])
   {
-    [(CKMessageEntryView *)v32 setPlusButton:v76];
-    [(CKMessageEntryViewButtonContainerView *)v64 addSubview:v76];
+    [(CKMessageEntryView *)height setPlusButton:v76];
+    [(CKMessageEntryViewButtonContainerView *)height2 addSubview:v76];
   }
 
   if (CKIsRunningInMacCatalyst())
   {
-    v99 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v99 addObserver:v32 selector:sel_visiblePluginsChanged_ name:@"CKBrowserSelectionControllerVisibleSwitcherPluginsChangedNotification" object:0];
+    defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter5 addObserver:height selector:sel_visiblePluginsChanged_ name:@"CKBrowserSelectionControllerVisibleSwitcherPluginsChangedNotification" object:0];
   }
 
   v100 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -5766,10 +5766,10 @@ LABEL_30:
   v103 = *(MEMORY[0x1E695F058] + 16);
   v104 = *(MEMORY[0x1E695F058] + 24);
   v105 = [v100 initWithFrame:{*MEMORY[0x1E695F058], v102, v103, v104}];
-  v106 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v107 = [v106 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]9 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled5 = [mEMORY[0x1E69A8070]9 isEntryViewRefreshEnabled];
 
-  if ((v107 & 1) == 0)
+  if ((isEntryViewRefreshEnabled5 & 1) == 0)
   {
     [v105 setOpaque:0];
   }
@@ -5780,92 +5780,92 @@ LABEL_30:
   [v234 entryViewCoverMinHeight];
   v109 = v108 * 0.5;
   [v105 _setContinuousCornerRadius:v108 * 0.5];
-  v110 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v111 = [v110 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]10 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled6 = [mEMORY[0x1E69A8070]10 isEntryViewRefreshEnabled];
 
-  if ((v111 & 1) == 0)
+  if ((isEntryViewRefreshEnabled6 & 1) == 0)
   {
     [v234 entryFieldCoverLineWidth];
     v113 = v112;
-    v114 = [v105 layer];
-    [v114 setBorderWidth:v113];
+    layer3 = [v105 layer];
+    [layer3 setBorderWidth:v113];
   }
 
-  v229 = v64;
-  v115 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v116 = [v115 isEntryViewRefreshEnabled];
+  v229 = height2;
+  mEMORY[0x1E69A8070]11 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled7 = [mEMORY[0x1E69A8070]11 isEntryViewRefreshEnabled];
 
-  if ((v116 & 1) == 0)
+  if ((isEntryViewRefreshEnabled7 & 1) == 0)
   {
-    v117 = [MEMORY[0x1E69794A0] layer];
+    layer4 = [MEMORY[0x1E69794A0] layer];
     v118 = +[CKUIBehavior sharedBehaviors];
-    v119 = [v118 theme];
-    v120 = [v119 entryFieldBorderColor];
-    [v117 setStrokeColor:{objc_msgSend(v120, "CGColor")}];
+    theme = [v118 theme];
+    entryFieldBorderColor = [theme entryFieldBorderColor];
+    [layer4 setStrokeColor:{objc_msgSend(entryFieldBorderColor, "CGColor")}];
 
-    [v117 setFillColor:0];
-    [v117 setLineJoin:*MEMORY[0x1E6979E98]];
-    [v117 setLineCap:*MEMORY[0x1E6979E78]];
-    v121 = [v234 entryViewDashedLinePattern];
-    [v117 setLineDashPattern:v121];
+    [layer4 setFillColor:0];
+    [layer4 setLineJoin:*MEMORY[0x1E6979E98]];
+    [layer4 setLineCap:*MEMORY[0x1E6979E78]];
+    entryViewDashedLinePattern = [v234 entryViewDashedLinePattern];
+    [layer4 setLineDashPattern:entryViewDashedLinePattern];
 
-    [v117 setLineWidth:0.0];
-    [v117 setCornerRadius:v109];
-    [v117 setCornerCurve:*MEMORY[0x1E69796E8]];
-    [v117 setAllowsEdgeAntialiasing:1];
-    v122 = [v105 layer];
-    [v122 addSublayer:v117];
+    [layer4 setLineWidth:0.0];
+    [layer4 setCornerRadius:v109];
+    [layer4 setCornerCurve:*MEMORY[0x1E69796E8]];
+    [layer4 setAllowsEdgeAntialiasing:1];
+    layer5 = [v105 layer];
+    [layer5 addSublayer:layer4];
 
-    [(CKMessageEntryView *)v32 setDashedContentClipViewLayer:v117];
+    [(CKMessageEntryView *)height setDashedContentClipViewLayer:layer4];
   }
 
   v237 = v105;
-  v123 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v124 = [v123 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled8 = [mEMORY[0x1E69A8070]12 isEntryViewRefreshEnabled];
 
-  if ((v124 & 1) == 0)
+  if ((isEntryViewRefreshEnabled8 & 1) == 0)
   {
-    v125 = [v105 layer];
-    [v125 setAnchorPoint:{1.0, 0.5}];
+    layer6 = [v105 layer];
+    [layer6 setAnchorPoint:{1.0, 0.5}];
 
     v126 = +[CKUIBehavior sharedBehaviors];
-    v127 = [v126 theme];
-    v128 = [v127 entryViewContentBackgroundColor];
-    [v105 setBackgroundColor:v128];
+    theme2 = [v126 theme];
+    entryViewContentBackgroundColor = [theme2 entryViewContentBackgroundColor];
+    [v105 setBackgroundColor:entryViewContentBackgroundColor];
   }
 
-  [(CKMessageEntryView *)v32 setContentClipView:v105];
-  [(CKMessageEntryView *)v32 addSubview:v105];
-  v129 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v130 = [v129 isEntryViewRefreshEnabled];
+  [(CKMessageEntryView *)height setContentClipView:v105];
+  [(CKMessageEntryView *)height addSubview:v105];
+  mEMORY[0x1E69A8070]13 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled9 = [mEMORY[0x1E69A8070]13 isEntryViewRefreshEnabled];
 
-  if (v130)
+  if (isEntryViewRefreshEnabled9)
   {
-    [(CKMessageEntryView *)v32 _updateEntryViewMaterials];
+    [(CKMessageEntryView *)height _updateEntryViewMaterials];
   }
 
   else
   {
-    [(CKMessageEntryView *)v32 updateKnockoutView];
+    [(CKMessageEntryView *)height updateKnockoutView];
   }
 
-  [(CKMessageEntryView *)v32 setTranslationLanguage:v235];
-  v131 = [[CKMessageEntryContentView alloc] initWithFrame:v231 shouldShowSubject:v225 shouldDisableAttachments:a12 shouldUseNonEmojiKeyboard:a13 shouldUseNonHandwritingKeyboard:a14 shouldDisableKeyboardStickers:a15 shouldAllowPollSuggestions:v101 translationLanguage:v102, v103, v104, v235];
+  [(CKMessageEntryView *)height setTranslationLanguage:v235];
+  v235 = [[CKMessageEntryContentView alloc] initWithFrame:v231 shouldShowSubject:v225 shouldDisableAttachments:keyboard shouldUseNonEmojiKeyboard:handwritingKeyboard shouldUseNonHandwritingKeyboard:stickers shouldDisableKeyboardStickers:suggestions shouldAllowPollSuggestions:v101 translationLanguage:v102, v103, v104, v235];
   v132 = +[CKUIBehavior sharedBehaviors];
   [v132 entryFieldCoverLineWidth];
   v134 = v133;
 
-  [(CKMessageEntryContentView *)v131 setContainerViewLineWidth:v134];
-  v135 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v136 = [v135 isEntryViewRefreshEnabled];
+  [(CKMessageEntryContentView *)v235 setContainerViewLineWidth:v134];
+  mEMORY[0x1E69A8070]14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled10 = [mEMORY[0x1E69A8070]14 isEntryViewRefreshEnabled];
 
-  if (v136)
+  if (isEntryViewRefreshEnabled10)
   {
     +[CKGlassSendButton buttonSize];
     v138 = v137;
     v139 = +[CKUIBehavior sharedBehaviors];
     [v139 entryViewSendButtonCoverSpace];
-    [(CKMessageEntryContentView *)v131 setSendButtonTextInsetWidth:v138 + v140];
+    [(CKMessageEntryContentView *)v235 setSendButtonTextInsetWidth:v138 + v140];
   }
 
   else
@@ -5875,34 +5875,34 @@ LABEL_30:
     v142 = v141;
     v143 = +[CKUIBehavior sharedBehaviors];
     [v143 entryViewSendButtonCoverSpace];
-    [(CKMessageEntryContentView *)v131 setSendButtonTextInsetWidth:v142 + v144];
+    [(CKMessageEntryContentView *)v235 setSendButtonTextInsetWidth:v142 + v144];
   }
 
-  [(CKMessageEntryContentView *)v131 setOpaque:0];
-  [(CKMessageEntryContentView *)v131 setDelegate:v32];
-  [(CKMessageEntryView *)v32 setContentView:v131];
-  [v105 addSubview:v131];
-  v145 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v146 = [v145 isEntryViewRefreshEnabled];
+  [(CKMessageEntryContentView *)v235 setOpaque:0];
+  [(CKMessageEntryContentView *)v235 setDelegate:height];
+  [(CKMessageEntryView *)height setContentView:v235];
+  [v105 addSubview:v235];
+  mEMORY[0x1E69A8070]15 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled11 = [mEMORY[0x1E69A8070]15 isEntryViewRefreshEnabled];
 
-  if ((v146 & 1) == 0)
+  if ((isEntryViewRefreshEnabled11 & 1) == 0)
   {
-    [(CKMessageEntryView *)v32 coverFrameThatFitsInSize:width, height];
-    [(CKMessageEntryContentView *)v131 setMaxContentWidthWhenExpanded:v147];
+    [(CKMessageEntryView *)height coverFrameThatFitsInSize:width, height];
+    [(CKMessageEntryContentView *)v235 setMaxContentWidthWhenExpanded:v147];
   }
 
-  v232 = v131;
-  v148 = [(CKMessageEntryView *)v32 recorder];
+  v232 = v235;
+  recorder = [(CKMessageEntryView *)height recorder];
 
-  if (!v148)
+  if (!recorder)
   {
     v149 = objc_alloc_init(CKAudioRecorder);
-    [(CKAudioRecorder *)v149 setDelegate:v32];
-    [(CKMessageEntryView *)v32 setRecorder:v149];
+    [(CKAudioRecorder *)v149 setDelegate:height];
+    [(CKMessageEntryView *)height setRecorder:v149];
   }
 
-  [(CKMessageEntryView *)v32 configureForDisplayMode:1];
-  if ([(CKMessageEntryView *)v32 shouldShowCharacterCount])
+  [(CKMessageEntryView *)height configureForDisplayMode:1];
+  if ([(CKMessageEntryView *)height shouldShowCharacterCount])
   {
     v150 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v101, v102, v103, v104}];
     v151 = v150;
@@ -5917,12 +5917,12 @@ LABEL_30:
     }
 
     [v150 setTextAlignment:v152];
-    v153 = [(CKMessageEntryView *)v32 conversation];
-    v154 = [v153 isStewieConversation];
+    conversation5 = [(CKMessageEntryView *)height conversation];
+    isStewieConversation = [conversation5 isStewieConversation];
 
     v155 = +[CKUIBehavior sharedBehaviors];
     v156 = v155;
-    if (v154)
+    if (isStewieConversation)
     {
       [v155 characterCountSatelliteFont];
     }
@@ -5935,40 +5935,40 @@ LABEL_30:
 
     [v151 setFont:v157];
     v158 = +[CKUIBehavior sharedBehaviors];
-    v159 = [v158 theme];
-    v160 = [v159 entryFieldPlaceholderColor];
-    [v151 setTextColor:v160];
+    theme3 = [v158 theme];
+    entryFieldPlaceholderColor = [theme3 entryFieldPlaceholderColor];
+    [v151 setTextColor:entryFieldPlaceholderColor];
 
     [v151 setBackgroundColor:0];
     [v151 setOpaque:0];
     [v151 setHidden:1];
-    [(CKMessageEntryView *)v32 setCharacterCountLabel:v151];
-    [(CKMessageEntryView *)v32 addSubview:v151];
+    [(CKMessageEntryView *)height setCharacterCountLabel:v151];
+    [(CKMessageEntryView *)height addSubview:v151];
     v161 = sMaximumCharacterCountString(v223 & 1);
     [v151 setText:v161];
 
     [v151 sizeThatFits:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
-    [(CKMessageEntryView *)v32 setCharacterCountSize:?];
+    [(CKMessageEntryView *)height setCharacterCountSize:?];
     [v151 setText:0];
-    [(CKMessageEntryView *)v32 setCharacterCountHidden:1];
+    [(CKMessageEntryView *)height setCharacterCountHidden:1];
   }
 
-  if ([(CKMessageEntryView *)v32 shouldShowSendButton]&& !CKIsRunningInMacCatalyst())
+  if ([(CKMessageEntryView *)height shouldShowSendButton]&& !CKIsRunningInMacCatalyst())
   {
-    v162 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v163 = [v162 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070]16 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled12 = [mEMORY[0x1E69A8070]16 isEntryViewRefreshEnabled];
 
-    if (v163)
+    if (isEntryViewRefreshEnabled12)
     {
       v164 = objc_alloc_init(CKGlassSendButton);
       [(CKGlassSendButton *)v164 setOpaque:0];
       [(CKGlassSendButton *)v164 setEnabled:0];
-      [(CKGlassSendButton *)v164 addTarget:v32 action:sel_touchUpInsideSendButton_ forControlEvents:64];
+      [(CKGlassSendButton *)v164 addTarget:height action:sel_touchUpInsideSendButton_ forControlEvents:64];
       [(CKGlassSendButton *)v164 setDisabledDimsImage:1];
       [(CKGlassSendButton *)v164 accessibilitySetIdentification:@"sendButton"];
       [(CKGlassSendButton *)v164 setExclusiveTouch:1];
       [(CKGlassSendButton *)v164 setAccessibilityLabel:@"Send Button"];
-      [(CKMessageEntryView *)v32 setGlassSendButton:v164];
+      [(CKMessageEntryView *)height setGlassSendButton:v164];
     }
 
     else
@@ -5976,41 +5976,41 @@ LABEL_30:
       v164 = [CKEntryViewButton entryViewButtonOfType:0 wantsVibrancy:0];
       [(CKGlassSendButton *)v164 setOpaque:0];
       [(CKGlassSendButton *)v164 setEnabled:0];
-      v165 = [(CKGlassSendButton *)v164 button];
-      [v165 addTarget:v32 action:sel_touchUpInsideSendButton_ forControlEvents:64];
+      button9 = [(CKGlassSendButton *)v164 button];
+      [button9 addTarget:height action:sel_touchUpInsideSendButton_ forControlEvents:64];
 
-      v166 = [(CKGlassSendButton *)v164 button];
-      [v166 setDisabledDimsImage:1];
+      button10 = [(CKGlassSendButton *)v164 button];
+      [button10 setDisabledDimsImage:1];
 
       [(CKGlassSendButton *)v164 accessibilitySetIdentification:@"sendButton"];
       [(CKGlassSendButton *)v164 setExclusiveTouch:1];
-      v167 = [(CKGlassSendButton *)v164 layer];
-      [v167 setAnchorPoint:{1.0, 1.0}];
+      layer7 = [(CKGlassSendButton *)v164 layer];
+      [layer7 setAnchorPoint:{1.0, 1.0}];
 
       [(CKGlassSendButton *)v164 setAccessibilityLabel:@"Send Button"];
-      [(CKMessageEntryView *)v32 setSendButton:v164];
+      [(CKMessageEntryView *)height setSendButton:v164];
     }
 
-    v168 = [(CKMessageEntryView *)v32 contentClipView];
-    [v168 addSubview:v164];
+    contentClipView = [(CKMessageEntryView *)height contentClipView];
+    [contentClipView addSubview:v164];
 
     v169 = [CKEntryViewButton entryViewButtonOfType:1 wantsVibrancy:0];
     [v169 setOpaque:0];
     [v169 accessibilitySetIdentification:@"audioButton"];
     [v169 setExclusiveTouch:1];
-    v170 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:v32 action:sel_audioButtonLongPressed_];
+    v170 = [objc_alloc(MEMORY[0x1E69DCC48]) initWithTarget:height action:sel_audioButtonLongPressed_];
     [v170 setMinimumPressDuration:0.0];
-    v171 = [v169 button];
-    [v171 addGestureRecognizer:v170];
+    button11 = [v169 button];
+    [button11 addGestureRecognizer:v170];
 
-    [(CKMessageEntryView *)v32 setAudioButton:v169];
-    v172 = [(CKMessageEntryView *)v32 contentClipView];
-    [v172 addSubview:v169];
+    [(CKMessageEntryView *)height setAudioButton:v169];
+    contentClipView2 = [(CKMessageEntryView *)height contentClipView];
+    [contentClipView2 addSubview:v169];
 
-    v173 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v174 = [v173 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070]17 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled13 = [mEMORY[0x1E69A8070]17 isEntryViewRefreshEnabled];
 
-    if (v174)
+    if (isEntryViewRefreshEnabled13)
     {
       +[CKGlassSendButton buttonSize];
       v176 = v175;
@@ -6027,7 +6027,7 @@ LABEL_30:
       v178 = v182;
     }
 
-    [(CKMessageEntryView *)v32 setSendButtonSize:v176, v178];
+    [(CKMessageEntryView *)height setSendButtonSize:v176, v178];
   }
 
   v183 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v101, v102, v103, v104}];
@@ -6039,90 +6039,90 @@ LABEL_30:
   [v183 setHidden:1];
   [v183 setTextAlignment:1];
   v186 = +[CKUIBehavior sharedBehaviors];
-  v187 = [v186 audioHintFont];
-  [v183 setFont:v187];
+  audioHintFont = [v186 audioHintFont];
+  [v183 setFont:audioHintFont];
 
   [v183 setAdjustsFontSizeToFitWidth:1];
   v188 = +[CKUIBehavior sharedBehaviors];
-  v189 = [v188 theme];
-  v190 = [v189 transcriptTextColor];
-  [v183 setTextColor:v190];
+  theme4 = [v188 theme];
+  transcriptTextColor = [theme4 transcriptTextColor];
+  [v183 setTextColor:transcriptTextColor];
 
   [v183 setOpaque:0];
-  [(CKMessageEntryView *)v32 setHintLabel:v183];
-  v191 = [(CKMessageEntryView *)v32 contentClipView];
+  [(CKMessageEntryView *)height setHintLabel:v183];
+  contentClipView3 = [(CKMessageEntryView *)height contentClipView];
   v226 = v183;
-  [v191 addSubview:v183];
+  [contentClipView3 addSubview:v183];
 
-  v192 = [(CKMessageEntryView *)v32 createDictationButton];
-  [(CKMessageEntryView *)v32 setDictationButton:v192];
-  v193 = [(CKMessageEntryView *)v32 contentClipView];
-  v224 = v192;
-  [v193 addSubview:v192];
+  createDictationButton = [(CKMessageEntryView *)height createDictationButton];
+  [(CKMessageEntryView *)height setDictationButton:createDictationButton];
+  contentClipView4 = [(CKMessageEntryView *)height contentClipView];
+  v224 = createDictationButton;
+  [contentClipView4 addSubview:createDictationButton];
 
   v194 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
-  [(CKMessageEntryView *)v32 setSendButtonSpinner:v194];
+  [(CKMessageEntryView *)height setSendButtonSpinner:v194];
 
-  v195 = [(CKMessageEntryView *)v32 sendButtonSpinner];
-  [v195 setUserInteractionEnabled:1];
+  sendButtonSpinner = [(CKMessageEntryView *)height sendButtonSpinner];
+  [sendButtonSpinner setUserInteractionEnabled:1];
 
-  v196 = [(CKMessageEntryView *)v32 sendButtonSpinner];
-  [v196 setOpaque:0];
+  sendButtonSpinner2 = [(CKMessageEntryView *)height sendButtonSpinner];
+  [sendButtonSpinner2 setOpaque:0];
 
   if (CKIsRunningInMacCatalyst())
   {
-    v197 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v198 = [v197 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070]18 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled14 = [mEMORY[0x1E69A8070]18 isEntryViewRefreshEnabled];
 
-    if (v198)
+    if (isEntryViewRefreshEnabled14)
     {
-      v199 = objc_alloc_init(CKGlassEmojiButton);
+      sendButtonSpinner4 = objc_alloc_init(CKGlassEmojiButton);
     }
 
     else
     {
-      v199 = [MEMORY[0x1E69DC738] buttonWithType:0];
+      sendButtonSpinner4 = [MEMORY[0x1E69DC738] buttonWithType:0];
       v200 = +[CKUIBehavior sharedBehaviors];
-      v201 = [v200 entryViewMacEmojiButtonImage];
-      [(CKGlassEmojiButton *)v199 setImage:v201 forState:0];
+      entryViewMacEmojiButtonImage = [v200 entryViewMacEmojiButtonImage];
+      [(CKGlassEmojiButton *)sendButtonSpinner4 setImage:entryViewMacEmojiButtonImage forState:0];
 
       v202 = [MEMORY[0x1E69DCAD8] configurationWithPointSize:3 weight:3 scale:16.0];
-      [(CKGlassEmojiButton *)v199 setPreferredSymbolConfiguration:v202 forImageInState:0];
+      [(CKGlassEmojiButton *)sendButtonSpinner4 setPreferredSymbolConfiguration:v202 forImageInState:0];
 
       v203 = +[CKUIBehavior sharedBehaviors];
-      v204 = [v203 theme];
-      v205 = [v204 entryFieldButtonColor];
-      [(CKGlassEmojiButton *)v199 setTintColor:v205];
+      theme5 = [v203 theme];
+      entryFieldButtonColor = [theme5 entryFieldButtonColor];
+      [(CKGlassEmojiButton *)sendButtonSpinner4 setTintColor:entryFieldButtonColor];
 
-      [(CKGlassEmojiButton *)v199 setAdjustsImageWhenHighlighted:1];
+      [(CKGlassEmojiButton *)sendButtonSpinner4 setAdjustsImageWhenHighlighted:1];
     }
 
-    [(CKGlassEmojiButton *)v199 addTarget:v32 action:sel_showEmojiPicker forControlEvents:64];
-    [(CKMessageEntryView *)v32 setEmojiButton:v199];
-    v206 = [(CKMessageEntryView *)v32 contentClipView];
-    [(CKMessageEntryView *)v32 insertSubview:v199 belowSubview:v206];
+    [(CKGlassEmojiButton *)sendButtonSpinner4 addTarget:height action:sel_showEmojiPicker forControlEvents:64];
+    [(CKMessageEntryView *)height setEmojiButton:sendButtonSpinner4];
+    contentClipView5 = [(CKMessageEntryView *)height contentClipView];
+    [(CKMessageEntryView *)height insertSubview:sendButtonSpinner4 belowSubview:contentClipView5];
 
     v207 = [CKEntryViewButton entryViewButtonOfType:1 wantsVibrancy:0];
     [v207 setOpaque:0];
     [v207 accessibilitySetIdentification:@"audioButton"];
     [v207 setExclusiveTouch:1];
-    v208 = [v207 button];
-    [v208 addTarget:v32 action:sel_audioButtonTappedInEntryView_ forControlEvents:64];
+    button12 = [v207 button];
+    [button12 addTarget:height action:sel_audioButtonTappedInEntryView_ forControlEvents:64];
 
     [v207 setCkTintColor:0xFFFFFFFFLL];
-    [(CKMessageEntryView *)v32 setAudioButton:v207];
-    v209 = [(CKMessageEntryView *)v32 contentClipView];
-    [v209 addSubview:v207];
+    [(CKMessageEntryView *)height setAudioButton:v207];
+    contentClipView6 = [(CKMessageEntryView *)height contentClipView];
+    [contentClipView6 addSubview:v207];
 
-    v210 = [(CKMessageEntryView *)v32 contentView];
-    v211 = [(CKMessageEntryView *)v32 sendButtonSpinner];
-    [v210 addSubview:v211];
+    contentView = [(CKMessageEntryView *)height contentView];
+    sendButtonSpinner3 = [(CKMessageEntryView *)height sendButtonSpinner];
+    [contentView addSubview:sendButtonSpinner3];
   }
 
   else
   {
-    v199 = [(CKMessageEntryView *)v32 sendButtonSpinner];
-    [(CKMessageEntryView *)v32 addSubview:v199];
+    sendButtonSpinner4 = [(CKMessageEntryView *)height sendButtonSpinner];
+    [(CKMessageEntryView *)height addSubview:sendButtonSpinner4];
   }
 
   v212 = MEMORY[0x1E69DCBA0];
@@ -6144,22 +6144,22 @@ LABEL_30:
   v240[3] = v217;
   v240[4] = v218;
   v219 = [MEMORY[0x1E695DEC8] arrayWithObjects:v240 count:5];
-  [(CKMessageEntryView *)v32 setKeyCommands:v219];
-  v30 = v230;
-  [(CKMessageEntryView *)v32 setEntryViewTraitCollection:v230];
-  v220 = [objc_alloc(MEMORY[0x1E69DCFC8]) initWithTarget:v32 action:sel__swipeDownGestureRecognized_];
-  [v220 setDelegate:v32];
+  [(CKMessageEntryView *)height setKeyCommands:v219];
+  collectionCopy = v230;
+  [(CKMessageEntryView *)height setEntryViewTraitCollection:v230];
+  v220 = [objc_alloc(MEMORY[0x1E69DCFC8]) initWithTarget:height action:sel__swipeDownGestureRecognized_];
+  [v220 setDelegate:height];
   [v220 setDirection:8];
-  [(CKMessageEntryView *)v32 addGestureRecognizer:v220];
-  [(CKMessageEntryView *)v32 setSwipeGestureRecognizer:v220];
-  [(CKMessageEntryView *)v32 applyDefaultGlass];
-  v221 = [(CKMessageEntryView *)v32 layer];
-  [v221 setHitTestsAsOpaque:1];
+  [(CKMessageEntryView *)height addGestureRecognizer:v220];
+  [(CKMessageEntryView *)height setSwipeGestureRecognizer:v220];
+  [(CKMessageEntryView *)height applyDefaultGlass];
+  layer8 = [(CKMessageEntryView *)height layer];
+  [layer8 setHitTestsAsOpaque:1];
 
-  v31 = v235;
+  languageCopy = v235;
 LABEL_78:
 
-  return v32;
+  return height;
 }
 
 - (id)createDictationButton
@@ -6169,19 +6169,19 @@ LABEL_78:
   [v3 setEnabled:1];
   [v3 setOpaque:0];
   [v3 accessibilitySetIdentification:@"dictationButton"];
-  v4 = [v3 button];
-  [v4 addTarget:self action:sel_dictationButtonTapped_ forControlEvents:64];
+  button = [v3 button];
+  [button addTarget:self action:sel_dictationButtonTapped_ forControlEvents:64];
 
-  v5 = [v3 button];
-  [v5 setDisabledDimsImage:1];
+  button2 = [v3 button];
+  [button2 setDisabledDimsImage:1];
 
-  v6 = [v3 button];
-  LOBYTE(v4) = objc_opt_respondsToSelector();
+  button3 = [v3 button];
+  LOBYTE(button) = objc_opt_respondsToSelector();
 
-  if (v4)
+  if (button)
   {
-    v7 = [v3 button];
-    [v7 _setIsMicButton:1];
+    button4 = [v3 button];
+    [button4 _setIsMicButton:1];
   }
 
   return v3;
@@ -6197,11 +6197,11 @@ LABEL_78:
     [(CKEntryViewButton *)v4 setEnabled:1];
     [(CKEntryViewButton *)v4 setOpaque:0];
     [(CKEntryViewButton *)v4 accessibilitySetIdentification:@"keyboardButton"];
-    v5 = [(CKEntryViewButton *)v4 button];
-    [v5 addTarget:self action:sel_keyboardButtonTapped_ forControlEvents:64];
+    button = [(CKEntryViewButton *)v4 button];
+    [button addTarget:self action:sel_keyboardButtonTapped_ forControlEvents:64];
 
-    v6 = [(CKEntryViewButton *)v4 button];
-    [v6 setDisabledDimsImage:1];
+    button2 = [(CKEntryViewButton *)v4 button];
+    [button2 setDisabledDimsImage:1];
 
     v7 = self->_keyboardButton;
     self->_keyboardButton = v4;
@@ -6212,45 +6212,45 @@ LABEL_78:
   return keyboardButton;
 }
 
-- (void)optionUpArrowClicked:(id)a3
+- (void)optionUpArrowClicked:(id)clicked
 {
-  v4 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKMessageEntryView *)self delegate];
-    [v6 messageEntryViewPopulatePreviousSentMessage:self];
+    delegate2 = [(CKMessageEntryView *)self delegate];
+    [delegate2 messageEntryViewPopulatePreviousSentMessage:self];
   }
 }
 
-- (void)optionDownArrowClicked:(id)a3
+- (void)optionDownArrowClicked:(id)clicked
 {
-  v4 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKMessageEntryView *)self delegate];
-    [v6 messageEntryViewPopulateNextSentMessage:self];
+    delegate2 = [(CKMessageEntryView *)self delegate];
+    [delegate2 messageEntryViewPopulateNextSentMessage:self];
   }
 }
 
 - (void)showEffectPicker
 {
-  v3 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CKMessageEntryView *)self delegate];
-    [v5 messageEntryViewWantsEffectPicker:self];
+    delegate2 = [(CKMessageEntryView *)self delegate];
+    [delegate2 messageEntryViewWantsEffectPicker:self];
   }
 }
 
-- (void)handleLongPress:(id)a3
+- (void)handleLongPress:(id)press
 {
-  if ([a3 state] == 1 && !-[CKMessageEntryView hasRecording](self, "hasRecording"))
+  if ([press state] == 1 && !-[CKMessageEntryView hasRecording](self, "hasRecording"))
   {
 
     [(CKMessageEntryView *)self showEffectPicker];
@@ -6261,37 +6261,37 @@ LABEL_78:
 {
   [MEMORY[0x1E69DCBB8] setPredictionViewPrewarmsPredictiveCandidates:1];
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 browserButtonShouldUseMenu];
+  browserButtonShouldUseMenu = [v3 browserButtonShouldUseMenu];
 
-  if (v4)
+  if (browserButtonShouldUseMenu)
   {
-    v9 = [(CKMessageEntryView *)self plusButton];
-    v5 = [v9 button];
-    v6 = [(CKMessageEntryView *)self entryViewTraitCollection];
-    v7 = [(CKMessageEntryView *)self conversation];
-    v8 = [CKAppMenuDataSource appMenuWithTarget:self traitCollection:v6 conversation:v7];
-    [v5 setMenu:v8];
+    plusButton = [(CKMessageEntryView *)self plusButton];
+    button = [plusButton button];
+    entryViewTraitCollection = [(CKMessageEntryView *)self entryViewTraitCollection];
+    conversation = [(CKMessageEntryView *)self conversation];
+    v8 = [CKAppMenuDataSource appMenuWithTarget:self traitCollection:entryViewTraitCollection conversation:conversation];
+    [button setMenu:v8];
   }
 }
 
 - (void)updateKnockoutView
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
     return;
   }
 
   v5 = +[CKUIBehavior sharedBehaviors];
-  v6 = [v5 entryViewUsesTransparentBackground];
+  entryViewUsesTransparentBackground = [v5 entryViewUsesTransparentBackground];
 
-  v7 = [(CKMessageEntryView *)self knockoutView];
+  knockoutView = [(CKMessageEntryView *)self knockoutView];
 
-  if (!v7)
+  if (!knockoutView)
   {
-    if (v6)
+    if (entryViewUsesTransparentBackground)
     {
       v15 = objc_alloc(MEMORY[0x1E69DD298]);
       [(CKMessageEntryView *)self bounds];
@@ -6308,11 +6308,11 @@ LABEL_78:
     }
 
     v19 = v18;
-    v20 = [(CKMessageEntryView *)self contentClipView];
-    [v20 insertSubview:v19 atIndex:0];
+    contentClipView = [(CKMessageEntryView *)self contentClipView];
+    [contentClipView insertSubview:v19 atIndex:0];
 
     [(CKMessageEntryView *)self setKnockoutView:v19];
-    if (v6)
+    if (entryViewUsesTransparentBackground)
     {
       goto LABEL_4;
     }
@@ -6320,8 +6320,8 @@ LABEL_78:
 LABEL_9:
     if (UIAccessibilityIsReduceTransparencyEnabled() || (+[CKUIBehavior sharedBehaviors](CKUIBehavior, "sharedBehaviors"), v21 = objc_claimAutoreleasedReturnValue(), v22 = [v21 knockoutViewShouldUseBackgroundColor], v21, (v22 & 1) == 0))
     {
-      v27 = [(CKMessageEntryView *)self knockoutView];
-      [v27 setBackgroundColor:0];
+      knockoutView2 = [(CKMessageEntryView *)self knockoutView];
+      [knockoutView2 setBackgroundColor:0];
     }
 
     else
@@ -6336,124 +6336,124 @@ LABEL_9:
         [MEMORY[0x1E69DC888] systemBackgroundColor];
       }
       v23 = ;
-      v24 = [(CKMessageEntryView *)self entryViewTraitCollection];
-      v25 = [v23 resolvedColorForTraitCollection:v24];
+      entryViewTraitCollection = [(CKMessageEntryView *)self entryViewTraitCollection];
+      v25 = [v23 resolvedColorForTraitCollection:entryViewTraitCollection];
 
-      v27 = [v25 colorWithAlphaComponent:0.300000012];
+      knockoutView2 = [v25 colorWithAlphaComponent:0.300000012];
 
-      v26 = [(CKMessageEntryView *)self knockoutView];
-      [v26 setBackgroundColor:v27];
+      knockoutView3 = [(CKMessageEntryView *)self knockoutView];
+      [knockoutView3 setBackgroundColor:knockoutView2];
     }
 
     goto LABEL_16;
   }
 
-  if (!v6)
+  if (!entryViewUsesTransparentBackground)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 theme];
-  v27 = [v9 messageEntryViewTextFieldBackgroundColor];
+  theme = [v8 theme];
+  knockoutView2 = [theme messageEntryViewTextFieldBackgroundColor];
 
-  v10 = [(CKMessageEntryView *)self entryViewTraitCollection];
-  v11 = [v27 resolvedColorForTraitCollection:v10];
+  entryViewTraitCollection2 = [(CKMessageEntryView *)self entryViewTraitCollection];
+  v11 = [knockoutView2 resolvedColorForTraitCollection:entryViewTraitCollection2];
 
   [(UIVisualEffectView *)self->_knockoutVisualEffectView setBackgroundColor:v11];
   v12 = +[CKUIBehavior sharedBehaviors];
-  v13 = [v12 theme];
-  v14 = [v13 messageEntryViewTextFieldBackgroundEffects];
-  [(UIVisualEffectView *)self->_knockoutVisualEffectView setBackgroundEffects:v14];
+  theme2 = [v12 theme];
+  messageEntryViewTextFieldBackgroundEffects = [theme2 messageEntryViewTextFieldBackgroundEffects];
+  [(UIVisualEffectView *)self->_knockoutVisualEffectView setBackgroundEffects:messageEntryViewTextFieldBackgroundEffects];
 
 LABEL_16:
 }
 
 - (void)updateBackgroundView
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isEntryViewRefreshEnabled & 1) == 0)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 entryFieldShouldUseBackdropView];
+    entryFieldShouldUseBackdropView = [v5 entryFieldShouldUseBackdropView];
 
-    if (v6)
+    if (entryFieldShouldUseBackdropView)
     {
       if (!self->_backgroundView)
       {
         v7 = +[CKUIBehavior sharedBehaviors];
-        v8 = [v7 entryViewBackgroundClass];
+        entryViewBackgroundClass = [v7 entryViewBackgroundClass];
 
-        v9 = objc_alloc_init(v8);
+        v9 = objc_alloc_init(entryViewBackgroundClass);
         backgroundView = self->_backgroundView;
         self->_backgroundView = v9;
 
         [(CKMessageEntryView *)self addSubview:self->_backgroundView];
       }
 
-      v11 = [(CKMessageEntryView *)self entryViewTraitCollection];
-      [(CKMessageEntryBackgroundViewProtocol *)self->_backgroundView setEntryViewTraitCollection:v11];
+      entryViewTraitCollection = [(CKMessageEntryView *)self entryViewTraitCollection];
+      [(CKMessageEntryBackgroundViewProtocol *)self->_backgroundView setEntryViewTraitCollection:entryViewTraitCollection];
 
-      v12 = [(CKMessageEntryView *)self style];
+      style = [(CKMessageEntryView *)self style];
       v13 = self->_backgroundView;
 
-      [(CKMessageEntryBackgroundViewProtocol *)v13 setStyle:v12];
+      [(CKMessageEntryBackgroundViewProtocol *)v13 setStyle:style];
     }
   }
 }
 
 - (BOOL)shouldReloadBackgroundView
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
     return 0;
   }
 
-  v6 = [(CKMessageEntryView *)self backgroundView];
+  backgroundView = [(CKMessageEntryView *)self backgroundView];
   v7 = objc_opt_class();
 
   v8 = +[CKUIBehavior sharedBehaviors];
-  v9 = [v8 entryViewBackgroundClass];
+  entryViewBackgroundClass = [v8 entryViewBackgroundClass];
 
-  return v7 != v9;
+  return v7 != entryViewBackgroundClass;
 }
 
-- (void)setShouldHideBackgroundView:(BOOL)a3
+- (void)setShouldHideBackgroundView:(BOOL)view
 {
-  v3 = a3;
-  v5 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v6 = [v5 isEntryViewRefreshEnabled];
+  viewCopy = view;
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if ((v6 & 1) == 0)
+  if ((isEntryViewRefreshEnabled & 1) == 0)
   {
-    v7 = [(CKMessageEntryView *)self backgroundView];
-    [v7 setHidden:v3];
+    backgroundView = [(CKMessageEntryView *)self backgroundView];
+    [backgroundView setHidden:viewCopy];
   }
 }
 
 - (BOOL)shouldHideBackgroundView
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
     return 1;
   }
 
-  v6 = [(CKMessageEntryView *)self backgroundView];
-  v7 = [v6 isHidden];
+  backgroundView = [(CKMessageEntryView *)self backgroundView];
+  isHidden = [backgroundView isHidden];
 
-  return v7;
+  return isHidden;
 }
 
-- (void)setStyle:(int64_t)a3
+- (void)setStyle:(int64_t)style
 {
   v15 = *MEMORY[0x1E69E9840];
   if (self->_style == 6 && IMOSLoggingEnabled())
@@ -6466,10 +6466,10 @@ LABEL_16:
     }
   }
 
-  self->_style = a3;
-  [(CKMessageEntryView *)self _overrideUserInterfaceStyleForEntryViewStyleIfNeeded:a3];
-  v6 = [(CKMessageEntryView *)self contentView];
-  [v6 setStyle:self->_style];
+  self->_style = style;
+  [(CKMessageEntryView *)self _overrideUserInterfaceStyleForEntryViewStyleIfNeeded:style];
+  contentView = [(CKMessageEntryView *)self contentView];
+  [contentView setStyle:self->_style];
 
   if (IMOSLoggingEnabled())
   {
@@ -6477,33 +6477,33 @@ LABEL_16:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v14[0] = 67109120;
-      v14[1] = a3;
+      v14[1] = style;
       _os_log_impl(&dword_19020E000, v7, OS_LOG_TYPE_INFO, "Returned from [CKMessageEntryContentView setStyle:]. style={%d}", v14, 8u);
     }
   }
 
   v8 = CKMessageEntryViewStyleIsForDarkFullscreenMoment([(CKMessageEntryView *)self style]);
-  v9 = [(CKMessageEntryView *)self inputButtonContainerView];
+  inputButtonContainerView = [(CKMessageEntryView *)self inputButtonContainerView];
   v10 = +[CKUIBehavior sharedBehaviors];
-  v11 = [v10 theme];
-  v12 = v11;
+  theme = [v10 theme];
+  v12 = theme;
   if (v8)
   {
-    [v11 entryFieldDarkEffectButtonColor];
+    [theme entryFieldDarkEffectButtonColor];
   }
 
   else
   {
-    [v11 entryFieldButtonColor];
+    [theme entryFieldButtonColor];
   }
   v13 = ;
-  [v9 setTintColor:v13];
+  [inputButtonContainerView setTintColor:v13];
 
   [(CKMessageEntryView *)self configureTextViewWithInputContextHistoryFromTranscript];
   [(CKMessageEntryView *)self updateEntryView];
 }
 
-- (void)_overrideUserInterfaceStyleForEntryViewStyleIfNeeded:(int64_t)a3
+- (void)_overrideUserInterfaceStyleForEntryViewStyleIfNeeded:(int64_t)needed
 {
   v12 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
@@ -6511,65 +6511,65 @@ LABEL_16:
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
-      v6 = [(CKMessageEntryView *)self entryViewTraitCollection];
-      v7 = [v6 description];
+      entryViewTraitCollection = [(CKMessageEntryView *)self entryViewTraitCollection];
+      v7 = [entryViewTraitCollection description];
       v10 = 138412290;
       v11 = v7;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "Call to _overrideUserInterfaceStyleForEntryViewStyleIfNeeded. entryViewTraitCollection: {%@}", &v10, 0xCu);
     }
   }
 
-  v8 = [(CKMessageEntryView *)self entryViewTraitCollection];
-  v9 = [v8 userInterfaceStyle];
-  if (a3 <= 6 && ((1 << a3) & 0x4E) != 0)
+  entryViewTraitCollection2 = [(CKMessageEntryView *)self entryViewTraitCollection];
+  userInterfaceStyle = [entryViewTraitCollection2 userInterfaceStyle];
+  if (needed <= 6 && ((1 << needed) & 0x4E) != 0)
   {
-    if ([v8 isTranscriptBackgroundActive] && (objc_msgSend(v8, "isDiffusedSystemGlassSettingEnabled") & 1) != 0)
+    if ([entryViewTraitCollection2 isTranscriptBackgroundActive] && (objc_msgSend(entryViewTraitCollection2, "isDiffusedSystemGlassSettingEnabled") & 1) != 0)
     {
-      v9 = 1;
+      userInterfaceStyle = 1;
     }
 
     else
     {
-      v9 = 2;
+      userInterfaceStyle = 2;
     }
   }
 
-  [(CKMessageEntryView *)self _setOverrideUserInterfaceStyle:v9];
+  [(CKMessageEntryView *)self _setOverrideUserInterfaceStyle:userInterfaceStyle];
   [(CKMessageEntryView *)self setNeedsLayout];
 }
 
-- (void)setConversation:(id)a3
+- (void)setConversation:(id)conversation
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->_conversation != v5)
+  conversationCopy = conversation;
+  if (self->_conversation != conversationCopy)
   {
-    objc_storeStrong(&self->_conversation, a3);
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 removeObserver:self name:@"CKConversationPreferredServiceChangedNotification" object:0];
-    [v6 removeObserver:self name:*MEMORY[0x1E69A5828] object:0];
+    objc_storeStrong(&self->_conversation, conversation);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self name:@"CKConversationPreferredServiceChangedNotification" object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69A5828] object:0];
     v7 = *MEMORY[0x1E69A56E8];
-    [v6 removeObserver:self name:*MEMORY[0x1E69A56E8] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69A56E8] object:0];
     v8 = *MEMORY[0x1E69A5938];
-    [v6 removeObserver:self name:*MEMORY[0x1E69A5938] object:0];
-    [v6 removeObserver:self name:*MEMORY[0x1E69DE6B8] object:0];
-    if (v5)
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69A5938] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x1E69DE6B8] object:0];
+    if (conversationCopy)
     {
-      [v6 addObserver:self selector:sel_conversationPreferredServiceChanged_ name:@"CKConversationPreferredServiceChangedNotification" object:v5];
-      v9 = [(CKConversation *)v5 chat];
-      [v6 addObserver:self selector:sel__contactLimitsChanged_ name:v7 object:v9];
+      [defaultCenter addObserver:self selector:sel_conversationPreferredServiceChanged_ name:@"CKConversationPreferredServiceChangedNotification" object:conversationCopy];
+      chat = [(CKConversation *)conversationCopy chat];
+      [defaultCenter addObserver:self selector:sel__contactLimitsChanged_ name:v7 object:chat];
 
-      [v6 addObserver:self selector:sel_updateEntryView name:v8 object:0];
-      [v6 addObserver:self selector:sel_updateEntryView name:*MEMORY[0x1E69A7C38] object:0];
-      [v6 addObserver:self selector:sel_interruptAudioRecorder_ name:*MEMORY[0x1E69580D8] object:0];
-      [v6 addObserver:self selector:sel_updateEntryView name:*MEMORY[0x1E69A5908] object:0];
+      [defaultCenter addObserver:self selector:sel_updateEntryView name:v8 object:0];
+      [defaultCenter addObserver:self selector:sel_updateEntryView name:*MEMORY[0x1E69A7C38] object:0];
+      [defaultCenter addObserver:self selector:sel_interruptAudioRecorder_ name:*MEMORY[0x1E69580D8] object:0];
+      [defaultCenter addObserver:self selector:sel_updateEntryView name:*MEMORY[0x1E69A5908] object:0];
       if (IMOSLoggingEnabled())
       {
         v10 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
           v13 = 138412290;
-          v14 = v5;
+          v14 = conversationCopy;
           _os_log_impl(&dword_19020E000, v10, OS_LOG_TYPE_INFO, "Conversation was provided: %@. Added core observers.", &v13, 0xCu);
         }
 
@@ -6591,15 +6591,15 @@ LABEL_10:
 
     [(CKMessageEntryView *)self updateEntryView];
     [(CKMessageEntryView *)self updateAppsMenu];
-    v11 = [(CKMessageEntryView *)self audioRecordingView];
-    v12 = [v11 sendButton];
-    [v12 setEnabled:{-[CKMessageEntryView sendButtonEnabled](self, "sendButtonEnabled")}];
+    audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
+    sendButton = [audioRecordingView sendButton];
+    [sendButton setEnabled:{-[CKMessageEntryView sendButtonEnabled](self, "sendButtonEnabled")}];
 
     [(CKMessageEntryView *)self configureTextViewWithInputContextHistoryFromTranscript];
   }
 }
 
-- (void)invalidateCompositionForReason:(int64_t)a3
+- (void)invalidateCompositionForReason:(int64_t)reason
 {
   v18 = *MEMORY[0x1E69E9840];
   if (IMOSLoggingEnabled())
@@ -6608,34 +6608,34 @@ LABEL_10:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v16 = 134217984;
-      v17 = a3;
+      reasonCopy = reason;
       _os_log_impl(&dword_19020E000, v5, OS_LOG_TYPE_INFO, "invalidating composition for reason: %ld", &v16, 0xCu);
     }
   }
 
-  switch(a3)
+  switch(reason)
   {
     case 2:
-      v10 = [(CKMessageEntryView *)self composition];
+      composition = [(CKMessageEntryView *)self composition];
       v11 = [CKComposition alloc];
-      v12 = [v10 text];
-      v13 = [v10 subject];
-      v14 = [(CKComposition *)v11 initWithText:v12 subject:v13 shelfPluginPayload:0];
+      text = [composition text];
+      subject = [composition subject];
+      v14 = [(CKComposition *)v11 initWithText:text subject:subject shelfPluginPayload:0];
 
-      v15 = [v10 sendLaterPluginInfo];
-      [(CKComposition *)v14 setSendLaterPluginInfo:v15];
+      sendLaterPluginInfo = [composition sendLaterPluginInfo];
+      [(CKComposition *)v14 setSendLaterPluginInfo:sendLaterPluginInfo];
 
       [(CKMessageEntryView *)self setComposition:v14];
       break;
     case 1:
-      v6 = [(CKMessageEntryView *)self composition];
+      composition2 = [(CKMessageEntryView *)self composition];
       v7 = [[CKComposition alloc] initWithText:0 subject:0];
-      v8 = [v6 sendLaterPluginInfo];
-      [(CKComposition *)v7 setSendLaterPluginInfo:v8];
+      sendLaterPluginInfo2 = [composition2 sendLaterPluginInfo];
+      [(CKComposition *)v7 setSendLaterPluginInfo:sendLaterPluginInfo2];
 
       [(CKMessageEntryView *)self setComposition:v7];
-      v9 = [(CKMessageEntryView *)self contentView];
-      [v9 hideTextEffectsPickerIfNeededAndResetTypingAttributes];
+      contentView = [(CKMessageEntryView *)self contentView];
+      [contentView hideTextEffectsPickerIfNeededAndResetTypingAttributes];
 
       break;
     case 0:
@@ -6644,50 +6644,50 @@ LABEL_10:
   }
 }
 
-- (void)setComposition:(id)a3 forceUpdateText:(BOOL)a4
+- (void)setComposition:(id)composition forceUpdateText:(BOOL)text
 {
-  v4 = a4;
-  v7 = a3;
-  if ([v7 isAudioComposition])
+  textCopy = text;
+  compositionCopy = composition;
+  if ([compositionCopy isAudioComposition])
   {
-    [(CKMessageEntryView *)self setAudioComposition:v7];
+    [(CKMessageEntryView *)self setAudioComposition:compositionCopy];
   }
 
   else
   {
     [(CKMessageEntryView *)self setAudioComposition:0];
-    v6 = [(CKMessageEntryView *)self contentView];
-    [v6 setComposition:v7 forceUpdateText:v4];
+    contentView = [(CKMessageEntryView *)self contentView];
+    [contentView setComposition:compositionCopy forceUpdateText:textCopy];
   }
 }
 
-- (void)compositionWithAcceptedAutocorrection:(id)a3
+- (void)compositionWithAcceptedAutocorrection:(id)autocorrection
 {
-  v4 = a3;
-  v5 = [(CKMessageEntryView *)self composition];
-  v6 = [v5 isAudioComposition];
+  autocorrectionCopy = autocorrection;
+  composition = [(CKMessageEntryView *)self composition];
+  isAudioComposition = [composition isAudioComposition];
 
-  if (v6)
+  if (isAudioComposition)
   {
-    if (v4)
+    if (autocorrectionCopy)
     {
-      v7 = [(CKMessageEntryView *)self composition];
-      v4[2](v4, v7);
+      composition2 = [(CKMessageEntryView *)self composition];
+      autocorrectionCopy[2](autocorrectionCopy, composition2);
     }
   }
 
   else
   {
-    v8 = [(CKMessageEntryView *)self contentView];
-    v9 = [(CKMessageEntryView *)self conversation];
-    v10 = [v9 chat];
+    contentView = [(CKMessageEntryView *)self contentView];
+    conversation = [(CKMessageEntryView *)self conversation];
+    chat = [conversation chat];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __60__CKMessageEntryView_compositionWithAcceptedAutocorrection___block_invoke;
     v11[3] = &unk_1E72ED638;
     v11[4] = self;
-    v12 = v4;
-    [v8 acceptAutocorrectionForChat:v10 completionHandler:v11];
+    v12 = autocorrectionCopy;
+    [contentView acceptAutocorrectionForChat:chat completionHandler:v11];
   }
 }
 
@@ -6707,40 +6707,40 @@ void __60__CKMessageEntryView_compositionWithAcceptedAutocorrection___block_invo
   }
 }
 
-- (void)setSendLaterPluginInfo:(id)a3 animated:(BOOL)a4
+- (void)setSendLaterPluginInfo:(id)info animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CKMessageEntryView *)self contentView];
+  animatedCopy = animated;
+  infoCopy = info;
+  contentView = [(CKMessageEntryView *)self contentView];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __54__CKMessageEntryView_setSendLaterPluginInfo_animated___block_invoke;
   v8[3] = &unk_1E72EBA18;
   v8[4] = self;
-  [v7 setSendLaterPluginInfo:v6 animated:v4 completionHandler:v8];
+  [contentView setSendLaterPluginInfo:infoCopy animated:animatedCopy completionHandler:v8];
 }
 
 - (void)updateAllowPollSuggestions
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [(CKMessageEntryView *)self contentView];
-  v4 = [v3 textView];
+  contentView = [(CKMessageEntryView *)self contentView];
+  textView = [contentView textView];
 
-  v5 = [(CKMessageEntryView *)self composition];
-  v6 = [v5 shelfPluginPayload];
+  composition = [(CKMessageEntryView *)self composition];
+  shelfPluginPayload = [composition shelfPluginPayload];
 
-  v7 = [v6 pluginBundleID];
+  pluginBundleID = [shelfPluginPayload pluginBundleID];
   v8 = IMBalloonExtensionIDWithSuffix();
-  v9 = [v7 isEqualToString:v8];
+  v9 = [pluginBundleID isEqualToString:v8];
 
-  v10 = [(CKMessageEntryView *)self conversation];
-  v11 = [v10 supportsPolls] & (v9 ^ 1);
+  conversation = [(CKMessageEntryView *)self conversation];
+  v11 = [conversation supportsPolls] & (v9 ^ 1);
 
-  if (v11 != [v4 allowPollSuggestions])
+  if (v11 != [textView allowPollSuggestions])
   {
-    v12 = [(CKMessageEntryView *)self conversation];
-    v13 = [(CKMessageEntryView *)self _serviceForEntryViewForConversation:v12];
-    v14 = [v13 __ck_entryViewDisplayName];
+    conversation2 = [(CKMessageEntryView *)self conversation];
+    v13 = [(CKMessageEntryView *)self _serviceForEntryViewForConversation:conversation2];
+    __ck_entryViewDisplayName = [v13 __ck_entryViewDisplayName];
 
     if (IMOSLoggingEnabled())
     {
@@ -6770,20 +6770,20 @@ void __60__CKMessageEntryView_compositionWithAcceptedAutocorrection___block_invo
         v19 = 2112;
         v20 = v17;
         v21 = 2112;
-        v22 = v14;
+        v22 = __ck_entryViewDisplayName;
         _os_log_impl(&dword_19020E000, v15, OS_LOG_TYPE_INFO, "[Polls] Changing Allow Poll Suggestions to %@ (Existing Polls Payload? %@ Conversation supports Polls? %@ Service name: %@)", v18, 0x2Au);
       }
     }
 
-    [v4 setAllowPollSuggestions:{v11, *v18}];
+    [textView setAllowPollSuggestions:{v11, *v18}];
   }
 }
 
-- (void)setCharacterCountHidden:(BOOL)a3
+- (void)setCharacterCountHidden:(BOOL)hidden
 {
-  if (self->_characterCountHidden != a3)
+  if (self->_characterCountHidden != hidden)
   {
-    self->_characterCountHidden = a3;
+    self->_characterCountHidden = hidden;
     if ([(CKMessageEntryView *)self shouldShowCharacterCount])
     {
 
@@ -6794,61 +6794,61 @@ void __60__CKMessageEntryView_compositionWithAcceptedAutocorrection___block_invo
 
 - (BOOL)isInPencilMode
 {
-  v2 = [(CKMessageEntryView *)self contentView];
-  v3 = [v2 textView];
-  if ([v3 isInPencilMode])
+  contentView = [(CKMessageEntryView *)self contentView];
+  textView = [contentView textView];
+  if ([textView isInPencilMode])
   {
-    v4 = 1;
+    isInPencilMode = 1;
   }
 
   else
   {
-    v5 = [v2 subjectView];
-    v4 = [v5 isInPencilMode];
+    subjectView = [contentView subjectView];
+    isInPencilMode = [subjectView isInPencilMode];
   }
 
-  return v4;
+  return isInPencilMode;
 }
 
 - (BOOL)isRecording
 {
-  v2 = [(CKMessageEntryView *)self recorder];
-  v3 = [v2 isRecording];
+  recorder = [(CKMessageEntryView *)self recorder];
+  isRecording = [recorder isRecording];
 
-  return v3;
+  return isRecording;
 }
 
 - (BOOL)hasRecording
 {
-  v2 = [(CKMessageEntryView *)self audioComposition];
-  v3 = v2 != 0;
+  audioComposition = [(CKMessageEntryView *)self audioComposition];
+  v3 = audioComposition != 0;
 
   return v3;
 }
 
 - (id)_currentInputDelegate
 {
-  v3 = [(CKMessageEntryView *)self contentView];
-  v4 = [v3 activeView];
+  contentView = [(CKMessageEntryView *)self contentView];
+  activeView = [contentView activeView];
 
-  v5 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [v5 textViewOnscreenWithEntryView];
-    if ([v6 isFirstResponder])
+    textViewOnscreenWithEntryView = [delegate textViewOnscreenWithEntryView];
+    if ([textViewOnscreenWithEntryView isFirstResponder])
     {
-      v7 = v6;
+      v7 = textViewOnscreenWithEntryView;
 
-      v4 = v7;
+      activeView = v7;
     }
   }
 
-  return v4;
+  return activeView;
 }
 
-- (void)setShouldBlurForMessageEditing:(BOOL)a3
+- (void)setShouldBlurForMessageEditing:(BOOL)editing
 {
-  if (self->_shouldBlurForMessageEditing == a3)
+  if (self->_shouldBlurForMessageEditing == editing)
   {
     return;
   }
@@ -6856,59 +6856,59 @@ void __60__CKMessageEntryView_compositionWithAcceptedAutocorrection___block_invo
   v22 = v5;
   v23 = v4;
   v24 = v3;
-  self->_shouldBlurForMessageEditing = a3;
-  if (!a3)
+  self->_shouldBlurForMessageEditing = editing;
+  if (!editing)
   {
     [(CKMessageEntryView *)self _animateMessageEditingBlurOverlayViewOut];
     [(CKMessageEntryView *)self setUserInteractionEnabled:1];
-    v16 = [(CKMessageEntryView *)self audioButton];
-    v17 = [v16 button];
-    [v17 setUserInteractionEnabled:1];
+    audioButton = [(CKMessageEntryView *)self audioButton];
+    button = [audioButton button];
+    [button setUserInteractionEnabled:1];
 
-    v18 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LODWORD(v17) = [v18 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LODWORD(button) = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-    if (v17)
+    if (button)
     {
-      v13 = [(CKMessageEntryView *)self glassSendButton];
-      v14 = v13;
+      glassSendButton = [(CKMessageEntryView *)self glassSendButton];
+      sendButton = glassSendButton;
       v15 = 1;
       goto LABEL_7;
     }
 
-    v14 = [(CKMessageEntryView *)self sendButton];
-    v19 = [v14 button];
-    v20 = v19;
+    sendButton = [(CKMessageEntryView *)self sendButton];
+    button2 = [sendButton button];
+    v20 = button2;
     v21 = 1;
 LABEL_10:
-    [v19 setUserInteractionEnabled:{v21, v6, v22, v23, v24, v7}];
+    [button2 setUserInteractionEnabled:{v21, v6, v22, v23, v24, v7}];
 
     goto LABEL_11;
   }
 
   [(CKMessageEntryView *)self _animateMessageEditingBlurOverlayViewIn];
   [(CKMessageEntryView *)self setUserInteractionEnabled:0];
-  v10 = [(CKMessageEntryView *)self audioButton];
-  v11 = [v10 button];
-  [v11 setUserInteractionEnabled:0];
+  audioButton2 = [(CKMessageEntryView *)self audioButton];
+  button3 = [audioButton2 button];
+  [button3 setUserInteractionEnabled:0];
 
-  v12 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  LODWORD(v11) = [v12 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070]2 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  LODWORD(button3) = [mEMORY[0x1E69A8070]2 isEntryViewRefreshEnabled];
 
-  if (!v11)
+  if (!button3)
   {
-    v14 = [(CKMessageEntryView *)self sendButton];
-    v19 = [v14 button];
-    v20 = v19;
+    sendButton = [(CKMessageEntryView *)self sendButton];
+    button2 = [sendButton button];
+    v20 = button2;
     v21 = 0;
     goto LABEL_10;
   }
 
-  v13 = [(CKMessageEntryView *)self glassSendButton];
-  v14 = v13;
+  glassSendButton = [(CKMessageEntryView *)self glassSendButton];
+  sendButton = glassSendButton;
   v15 = 0;
 LABEL_7:
-  [v13 setUserInteractionEnabled:{v15, v6, v22, v23, v24, v7}];
+  [glassSendButton setUserInteractionEnabled:{v15, v6, v22, v23, v24, v7}];
 LABEL_11:
 
   [(CKMessageEntryView *)self updateEntryView];
@@ -6916,8 +6916,8 @@ LABEL_11:
 
 - (void)_animateMessageEditingBlurOverlayViewIn
 {
-  v3 = [(CKMessageEntryView *)self messageEditingBlurOverlayView];
-  [v3 setHidden:0];
+  messageEditingBlurOverlayView = [(CKMessageEntryView *)self messageEditingBlurOverlayView];
+  [messageEditingBlurOverlayView setHidden:0];
 
   v4 = +[CKUIBehavior sharedBehaviors];
   [v4 messageEditingAnimateInDuration];
@@ -7019,25 +7019,25 @@ void __62__CKMessageEntryView__animateMessageEditingBlurOverlayViewOut__block_in
 
 - (CGRect)anchorRect
 {
-  v3 = [(CKMessageEntryView *)self contentView];
-  v4 = [v3 textView];
+  contentView = [(CKMessageEntryView *)self contentView];
+  textView = [contentView textView];
 
-  [v4 textContainerInset];
+  [textView textContainerInset];
   v6 = v5;
   v8 = v7;
   [(CKMessageEntryView *)self rangeOfTappedMention];
   if (v9)
   {
-    v10 = [v4 textLayoutManager];
-    v11 = [v10 documentRange];
-    v12 = [v11 location];
-    v13 = [v10 locationFromLocation:v12 withOffset:{-[CKMessageEntryView rangeOfTappedMention](self, "rangeOfTappedMention")}];
+    textLayoutManager = [textView textLayoutManager];
+    documentRange = [textLayoutManager documentRange];
+    location = [documentRange location];
+    v13 = [textLayoutManager locationFromLocation:location withOffset:{-[CKMessageEntryView rangeOfTappedMention](self, "rangeOfTappedMention")}];
 
     [(CKMessageEntryView *)self rangeOfTappedMention];
-    v15 = [v10 locationFromLocation:v13 withOffset:v14];
+    v15 = [textLayoutManager locationFromLocation:v13 withOffset:v14];
     v16 = [objc_alloc(MEMORY[0x1E69DB848]) initWithLocation:v13 endLocation:v15];
-    v17 = [v10 documentRange];
-    [v10 ensureLayoutForRange:v17];
+    documentRange2 = [textLayoutManager documentRange];
+    [textLayoutManager ensureLayoutForRange:documentRange2];
 
     v31 = 0;
     v32 = &v31;
@@ -7050,8 +7050,8 @@ void __62__CKMessageEntryView__animateMessageEditingBlurOverlayViewOut__block_in
     v30[2] = __32__CKMessageEntryView_anchorRect__block_invoke;
     v30[3] = &unk_1E72F1468;
     v30[4] = &v31;
-    [v10 enumerateTextSegmentsInRange:v16 type:0 options:0 usingBlock:v30];
-    [v4 convertRect:self toView:{v8 + v32[4], v6 + v32[5], v32[6], v32[7]}];
+    [textLayoutManager enumerateTextSegmentsInRange:v16 type:0 options:0 usingBlock:v30];
+    [textView convertRect:self toView:{v8 + v32[4], v6 + v32[5], v32[6], v32[7]}];
     v19 = v18;
     v21 = v20;
     v23 = v22;
@@ -7088,109 +7088,109 @@ uint64_t __32__CKMessageEntryView_anchorRect__block_invoke(uint64_t a1, double a
   return 0;
 }
 
-- (id)pasteBoardTextFromComposition:(id)a3
+- (id)pasteBoardTextFromComposition:(id)composition
 {
-  v4 = a3;
-  v5 = [(CKMessageEntryView *)self contentView];
-  v6 = [v5 textView];
+  compositionCopy = composition;
+  contentView = [(CKMessageEntryView *)self contentView];
+  textView = [contentView textView];
 
-  v7 = [v4 text];
+  text = [compositionCopy text];
 
-  v8 = [v6 attributedTextForCompositionText:v7];
+  v8 = [textView attributedTextForCompositionText:text];
 
   return v8;
 }
 
-- (void)setComposingRecipient:(BOOL)a3
+- (void)setComposingRecipient:(BOOL)recipient
 {
-  if (self->_composingRecipient != a3)
+  if (self->_composingRecipient != recipient)
   {
-    self->_composingRecipient = a3;
+    self->_composingRecipient = recipient;
     [(CKMessageEntryView *)self updateEntryView];
   }
 }
 
-- (void)setFailedRecipients:(BOOL)a3
+- (void)setFailedRecipients:(BOOL)recipients
 {
-  if (self->_failedRecipients != a3)
+  if (self->_failedRecipients != recipients)
   {
-    self->_failedRecipients = a3;
+    self->_failedRecipients = recipients;
     [(CKMessageEntryView *)self updateEntryView];
   }
 }
 
-- (void)setUnreachableEmergencyRecipient:(BOOL)a3
+- (void)setUnreachableEmergencyRecipient:(BOOL)recipient
 {
-  if (self->_unreachableEmergencyRecipient != a3)
+  if (self->_unreachableEmergencyRecipient != recipient)
   {
-    self->_unreachableEmergencyRecipient = a3;
+    self->_unreachableEmergencyRecipient = recipient;
     [(CKMessageEntryView *)self updateEntryView];
   }
 }
 
-- (void)setAudioComposition:(id)a3
+- (void)setAudioComposition:(id)composition
 {
   v30[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(CKMessageEntryView *)self audioController];
-  v7 = [v6 isPlaying];
+  compositionCopy = composition;
+  audioController = [(CKMessageEntryView *)self audioController];
+  isPlaying = [audioController isPlaying];
 
-  if ((v7 & 1) == 0)
+  if ((isPlaying & 1) == 0)
   {
-    if (self->_audioComposition != v5)
+    if (self->_audioComposition != compositionCopy)
     {
-      objc_storeStrong(&self->_audioComposition, a3);
+      objc_storeStrong(&self->_audioComposition, composition);
     }
 
-    if ([(CKComposition *)v5 isAudioComposition])
+    if ([(CKComposition *)compositionCopy isAudioComposition])
     {
-      v8 = [(CKComposition *)v5 mediaObjects];
-      v9 = [v8 firstObject];
+      mediaObjects = [(CKComposition *)compositionCopy mediaObjects];
+      firstObject = [mediaObjects firstObject];
 
-      if (v9)
+      if (firstObject)
       {
         [(CKMessageEntryView *)self setAudioController:0];
         v10 = [CKAudioController alloc];
-        v30[0] = v9;
+        v30[0] = firstObject;
         v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v30 count:1];
-        v12 = [(CKMessageEntryView *)self conversation];
-        v13 = [(CKAudioController *)v10 initWithMediaObjects:v11 conversation:v12];
+        conversation = [(CKMessageEntryView *)self conversation];
+        v13 = [(CKAudioController *)v10 initWithMediaObjects:v11 conversation:conversation];
 
         [(CKAudioController *)v13 setDelegate:self];
         [(CKMessageEntryView *)self setAudioController:v13];
-        v14 = [(CKMessageEntryView *)self audioRecordingView];
-        LODWORD(v11) = v14 == 0;
+        audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
+        LODWORD(v11) = audioRecordingView == 0;
 
         if (v11)
         {
           [(CKMessageEntryView *)self configureForDisplayMode:3];
-          v15 = [(CKMessageEntryView *)self audioRecordingView];
-          [v15 setState:2];
+          audioRecordingView2 = [(CKMessageEntryView *)self audioRecordingView];
+          [audioRecordingView2 setState:2];
 
-          v16 = [(CKMessageEntryView *)self audioRecordingView];
-          [v16 setPlaybackCurrentTime:NAN];
+          audioRecordingView3 = [(CKMessageEntryView *)self audioRecordingView];
+          [audioRecordingView3 setPlaybackCurrentTime:NAN];
 
-          [v9 duration];
+          [firstObject duration];
           v18 = v17;
-          v19 = [(CKMessageEntryView *)self audioRecordingView];
-          [v19 setPlaybackDuration:v18];
+          audioRecordingView4 = [(CKMessageEntryView *)self audioRecordingView];
+          [audioRecordingView4 setPlaybackDuration:v18];
 
-          v20 = [(CKMessageEntryView *)self audioRecordingView];
-          v21 = [v9 powerLevels];
-          [v20 setWithIntensities:v21];
+          audioRecordingView5 = [(CKMessageEntryView *)self audioRecordingView];
+          powerLevels = [firstObject powerLevels];
+          [audioRecordingView5 setWithIntensities:powerLevels];
 
-          v22 = [(CKMessageEntryView *)self recorder];
-          [v22 resetState];
+          recorder = [(CKMessageEntryView *)self recorder];
+          [recorder resetState];
 
-          v23 = [(CKMessageEntryView *)self recorder];
-          [v23 setPaused:1];
+          recorder2 = [(CKMessageEntryView *)self recorder];
+          [recorder2 setPaused:1];
 
-          v24 = [(CKMessageEntryView *)self recorder];
-          [v24 setTotalPacketsCount:{objc_msgSend(v9, "totalPacketsCount")}];
+          recorder3 = [(CKMessageEntryView *)self recorder];
+          [recorder3 setTotalPacketsCount:{objc_msgSend(firstObject, "totalPacketsCount")}];
 
-          v25 = [(CKMessageEntryView *)self recorder];
-          v26 = [v9 temporaryFileURL];
-          [v25 setFileURL:v26];
+          recorder4 = [(CKMessageEntryView *)self recorder];
+          temporaryFileURL = [firstObject temporaryFileURL];
+          [recorder4 setFileURL:temporaryFileURL];
         }
       }
 
@@ -7205,23 +7205,23 @@ uint64_t __32__CKMessageEntryView_anchorRect__block_invoke(uint64_t a1, double a
       }
 
       [(CKMessageEntryView *)self updateEntryView];
-      v28 = [(CKMessageEntryView *)self delegate];
-      [v28 messageEntryViewDidChange:self isTextChange:0 isShelfChange:0 isTranslationChange:0];
+      delegate = [(CKMessageEntryView *)self delegate];
+      [delegate messageEntryViewDidChange:self isTextChange:0 isShelfChange:0 isTranslationChange:0];
     }
   }
 }
 
-- (BOOL)messageEntryContentView:(id)a3 shouldChangeTextInRange:(_NSRange)a4 replacementText:(id)a5
+- (BOOL)messageEntryContentView:(id)view shouldChangeTextInRange:(_NSRange)range replacementText:(id)text
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v20[1] = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a5;
+  viewCopy = view;
+  textCopy = text;
   if (![(CKMessageEntryView *)self audioRecordingIsInEntryView])
   {
-    v12 = [(CKMessageEntryView *)self delegate];
-    if (!v12 || (-[CKMessageEntryView delegate](self, "delegate"), v13 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x1E696B098] valueWithRange:{location, length}], v14 = objc_claimAutoreleasedReturnValue(), v20[0] = v14, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v20, 1), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v13, "messageEntryView:shouldChangeTextInRanges:replacementText:", self, v15, v10), v15, v14, v13, v12, (v16 & 1) != 0))
+    delegate = [(CKMessageEntryView *)self delegate];
+    if (!delegate || (-[CKMessageEntryView delegate](self, "delegate"), v13 = objc_claimAutoreleasedReturnValue(), [MEMORY[0x1E696B098] valueWithRange:{location, length}], v14 = objc_claimAutoreleasedReturnValue(), v20[0] = v14, objc_msgSend(MEMORY[0x1E695DEC8], "arrayWithObjects:count:", v20, 1), v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v13, "messageEntryView:shouldChangeTextInRanges:replacementText:", self, v15, textCopy), v15, v14, v13, delegate, (v16 & 1) != 0))
     {
       v11 = 1;
       goto LABEL_6;
@@ -7244,9 +7244,9 @@ LABEL_6:
   return v11;
 }
 
-- (BOOL)messageEntryContentViewShouldResignFirstResponder:(id)a3
+- (BOOL)messageEntryContentViewShouldResignFirstResponder:(id)responder
 {
-  v4 = [(CKMessageEntryView *)self inputDelegate];
+  inputDelegate = [(CKMessageEntryView *)self inputDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -7254,15 +7254,15 @@ LABEL_6:
     return 1;
   }
 
-  v6 = [(CKMessageEntryView *)self inputDelegate];
-  v7 = [v6 messageEntryViewShouldResignFirstResponder:self];
+  inputDelegate2 = [(CKMessageEntryView *)self inputDelegate];
+  v7 = [inputDelegate2 messageEntryViewShouldResignFirstResponder:self];
 
   return v7;
 }
 
-- (BOOL)messageEntryContentView:(id)a3 canPerformDictationAction:(id)a4
+- (BOOL)messageEntryContentView:(id)view canPerformDictationAction:(id)action
 {
-  v5 = [a4 isEqualToString:@"UITextInputDictationActionTypeSend"];
+  v5 = [action isEqualToString:@"UITextInputDictationActionTypeSend"];
   if (v5)
   {
 
@@ -7272,28 +7272,28 @@ LABEL_6:
   return v5;
 }
 
-- (unint64_t)numberOfSuggestionsInSuggestionView:(id)a3 forSection:(unint64_t)a4
+- (unint64_t)numberOfSuggestionsInSuggestionView:(id)view forSection:(unint64_t)section
 {
-  v5 = a3;
-  v6 = [(CKMessageEntryView *)self mentionSuggestionView];
+  viewCopy = view;
+  mentionSuggestionView = [(CKMessageEntryView *)self mentionSuggestionView];
 
-  if (v6 != v5)
+  if (mentionSuggestionView != viewCopy)
   {
     return 0;
   }
 
-  v8 = [(CKMessageEntryView *)self currentMentionSuggestions];
-  v9 = [v8 count];
+  currentMentionSuggestions = [(CKMessageEntryView *)self currentMentionSuggestions];
+  v9 = [currentMentionSuggestions count];
 
   return v9;
 }
 
-- (id)suggestionView:(id)a3 entityAtIndex:(unint64_t)a4
+- (id)suggestionView:(id)view entityAtIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(CKMessageEntryView *)self mentionSuggestionView];
+  viewCopy = view;
+  mentionSuggestionView = [(CKMessageEntryView *)self mentionSuggestionView];
 
-  if (v7 != v6)
+  if (mentionSuggestionView != viewCopy)
   {
     v8 = 0;
 LABEL_5:
@@ -7301,13 +7301,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v9 = [(CKMessageEntryView *)self currentMentionSuggestions];
-  v10 = [v9 count];
+  currentMentionSuggestions = [(CKMessageEntryView *)self currentMentionSuggestions];
+  v10 = [currentMentionSuggestions count];
 
-  if (v10 > a4)
+  if (v10 > index)
   {
-    v7 = [(CKMessageEntryView *)self currentMentionSuggestions];
-    v8 = [v7 objectAtIndex:a4];
+    mentionSuggestionView = [(CKMessageEntryView *)self currentMentionSuggestions];
+    v8 = [mentionSuggestionView objectAtIndex:index];
     goto LABEL_5;
   }
 
@@ -7317,28 +7317,28 @@ LABEL_6:
   return v8;
 }
 
-- (id)suggestionView:(id)a3 indexPathOfEntityWithIdentifier:(id)a4
+- (id)suggestionView:(id)view indexPathOfEntityWithIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  identifierCopy = identifier;
   v15 = 0;
   v16 = &v15;
   v17 = 0x3032000000;
   v18 = __Block_byref_object_copy__43;
   v19 = __Block_byref_object_dispose__43;
   v20 = 0;
-  v8 = [(CKMessageEntryView *)self mentionSuggestionView];
+  mentionSuggestionView = [(CKMessageEntryView *)self mentionSuggestionView];
 
-  if (v8 == v6)
+  if (mentionSuggestionView == viewCopy)
   {
-    v9 = [(CKMessageEntryView *)self currentMentionSuggestions];
+    currentMentionSuggestions = [(CKMessageEntryView *)self currentMentionSuggestions];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __69__CKMessageEntryView_suggestionView_indexPathOfEntityWithIdentifier___block_invoke;
     v12[3] = &unk_1E72F1440;
-    v13 = v7;
+    v13 = identifierCopy;
     v14 = &v15;
-    [v9 enumerateObjectsUsingBlock:v12];
+    [currentMentionSuggestions enumerateObjectsUsingBlock:v12];
   }
 
   v10 = v16[5];
@@ -7364,27 +7364,27 @@ void __69__CKMessageEntryView_suggestionView_indexPathOfEntityWithIdentifier___b
   }
 }
 
-- (void)messageEntryContentView:(id)a3 willAddPluginEntryViewControllerToViewHierarchy:(id)a4
+- (void)messageEntryContentView:(id)view willAddPluginEntryViewControllerToViewHierarchy:(id)hierarchy
 {
-  v5 = a4;
-  v6 = [(CKMessageEntryView *)self delegate];
-  v7 = [v6 parentViewControllerForPluginViewControllerInMessageEntryView:self];
+  hierarchyCopy = hierarchy;
+  delegate = [(CKMessageEntryView *)self delegate];
+  v7 = [delegate parentViewControllerForPluginViewControllerInMessageEntryView:self];
 
-  [v7 addChildViewController:v5];
+  [v7 addChildViewController:hierarchyCopy];
 }
 
-- (void)messageEntryContentView:(id)a3 didAddPluginEntryViewControllerToViewHierarchy:(id)a4
+- (void)messageEntryContentView:(id)view didAddPluginEntryViewControllerToViewHierarchy:(id)hierarchy
 {
-  v5 = a4;
-  v6 = [(CKMessageEntryView *)self delegate];
-  v7 = [v6 parentViewControllerForPluginViewControllerInMessageEntryView:self];
+  hierarchyCopy = hierarchy;
+  delegate = [(CKMessageEntryView *)self delegate];
+  v7 = [delegate parentViewControllerForPluginViewControllerInMessageEntryView:self];
 
-  [v5 didMoveToParentViewController:v7];
+  [hierarchyCopy didMoveToParentViewController:v7];
 }
 
-- (double)balloonMaxWidthForMessageEntryRichTextView:(id)a3
+- (double)balloonMaxWidthForMessageEntryRichTextView:(id)view
 {
-  v4 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if ((v5 & 1) == 0)
@@ -7392,156 +7392,156 @@ void __69__CKMessageEntryView_suggestionView_indexPathOfEntityWithIdentifier___b
     return 0.0;
   }
 
-  v6 = [(CKMessageEntryView *)self delegate];
-  [v6 balloonMaxWidthForMessageEntryView:self];
+  delegate2 = [(CKMessageEntryView *)self delegate];
+  [delegate2 balloonMaxWidthForMessageEntryView:self];
   v8 = v7;
 
   return v8;
 }
 
-- (BOOL)messageEntryContentViewShouldAllowLinkCustomization:(id)a3
+- (BOOL)messageEntryContentViewShouldAllowLinkCustomization:(id)customization
 {
-  v3 = [(CKMessageEntryView *)self conversation];
-  v4 = [v3 sendingService];
-  v5 = [v4 supportsCapability:*MEMORY[0x1E69A79F0]];
+  conversation = [(CKMessageEntryView *)self conversation];
+  sendingService = [conversation sendingService];
+  v5 = [sendingService supportsCapability:*MEMORY[0x1E69A79F0]];
 
   return v5;
 }
 
-- (void)messageEntryContentViewWillPresentCustomizationPicker:(id)a3
+- (void)messageEntryContentViewWillPresentCustomizationPicker:(id)picker
 {
-  v4 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKMessageEntryView *)self delegate];
-    [v6 messageEntryViewWillPresentCustomizationPicker:self];
+    delegate2 = [(CKMessageEntryView *)self delegate];
+    [delegate2 messageEntryViewWillPresentCustomizationPicker:self];
   }
 }
 
-- (void)messageEntryContentViewDidPresentCustomizationPicker:(id)a3
+- (void)messageEntryContentViewDidPresentCustomizationPicker:(id)picker
 {
-  v4 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKMessageEntryView *)self delegate];
-    [v6 messageEntryViewDidPresentCustomizationPicker:self];
+    delegate2 = [(CKMessageEntryView *)self delegate];
+    [delegate2 messageEntryViewDidPresentCustomizationPicker:self];
   }
 }
 
-- (void)messageEntryContentViewWillDismissCustomizationPicker:(id)a3
+- (void)messageEntryContentViewWillDismissCustomizationPicker:(id)picker
 {
-  v4 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKMessageEntryView *)self delegate];
-    [v6 messageEntryViewWillDismissCustomizationPicker:self];
+    delegate2 = [(CKMessageEntryView *)self delegate];
+    [delegate2 messageEntryViewWillDismissCustomizationPicker:self];
   }
 }
 
-- (void)messageEntryContentViewDidDismissCustomizationPicker:(id)a3
+- (void)messageEntryContentViewDidDismissCustomizationPicker:(id)picker
 {
-  v4 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKMessageEntryView *)self delegate];
-    [v6 messageEntryViewDidDismissCustomizationPicker:self];
+    delegate2 = [(CKMessageEntryView *)self delegate];
+    [delegate2 messageEntryViewDidDismissCustomizationPicker:self];
   }
 }
 
-- (id)gradientReferenceViewForMessageEntryContentView:(id)a3
+- (id)gradientReferenceViewForMessageEntryContentView:(id)view
 {
-  v4 = [(CKMessageEntryView *)self delegate];
-  v5 = [v4 gradientReferenceViewForMessageEntryView:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  v5 = [delegate gradientReferenceViewForMessageEntryView:self];
 
   return v5;
 }
 
-- (void)messageEntryContentView:(id)a3 updatePluginSendEnablementTo:(BOOL)a4
+- (void)messageEntryContentView:(id)view updatePluginSendEnablementTo:(BOOL)to
 {
-  v4 = a4;
-  if ([(CKMessageEntryView *)self pluginSendingEnabled]!= a4)
+  toCopy = to;
+  if ([(CKMessageEntryView *)self pluginSendingEnabled]!= to)
   {
-    [(CKMessageEntryView *)self setPluginSendingEnabled:v4];
+    [(CKMessageEntryView *)self setPluginSendingEnabled:toCopy];
 
     [(CKMessageEntryView *)self updateEntryView];
   }
 }
 
-- (void)messageEntryContentViewCancelWasTapped:(id)a3 shelfPluginPayload:(id)a4
+- (void)messageEntryContentViewCancelWasTapped:(id)tapped shelfPluginPayload:(id)payload
 {
-  v22 = a4;
-  v5 = [v22 pluginBundleID];
-  if ([v5 length])
+  payloadCopy = payload;
+  pluginBundleID = [payloadCopy pluginBundleID];
+  if ([pluginBundleID length])
   {
-    v6 = [v22 pluginBundleID];
-    v7 = [v6 rangeOfString:*MEMORY[0x1E69A69F0]];
+    pluginBundleID2 = [payloadCopy pluginBundleID];
+    v7 = [pluginBundleID2 rangeOfString:*MEMORY[0x1E69A69F0]];
 
-    v8 = v22;
+    v8 = payloadCopy;
     if (v7 == 0x7FFFFFFFFFFFFFFFLL)
     {
       goto LABEL_13;
     }
 
     v9 = +[CKBalloonPluginManager sharedInstance];
-    v10 = [v22 pluginBundleID];
-    v5 = [v9 viewControllerForPluginIdentifier:v10];
+    pluginBundleID3 = [payloadCopy pluginBundleID];
+    pluginBundleID = [v9 viewControllerForPluginIdentifier:pluginBundleID3];
 
-    [v22 setLiveEditableInEntryView:0];
+    [payloadCopy setLiveEditableInEntryView:0];
     if (objc_opt_respondsToSelector())
     {
-      v11 = [(CKMessageEntryView *)self conversation];
-      v12 = [v11 senderIdentifier];
-      [v5 setSender:v12];
+      conversation = [(CKMessageEntryView *)self conversation];
+      senderIdentifier = [conversation senderIdentifier];
+      [pluginBundleID setSender:senderIdentifier];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(CKMessageEntryView *)self conversation];
-      v14 = [v13 recipientStrings];
+      conversation2 = [(CKMessageEntryView *)self conversation];
+      recipientStrings = [conversation2 recipientStrings];
 
-      [v5 setRecipients:v14];
+      [pluginBundleID setRecipients:recipientStrings];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v5 didCancelSendingPluginPayload:v22];
+      [pluginBundleID didCancelSendingPluginPayload:payloadCopy];
     }
 
-    v15 = [MEMORY[0x1E69A5AD0] sharedInstance];
-    v16 = [v22 associatedMessageGUID];
-    v17 = [v22 pluginBundleID];
-    v18 = [v15 existingDataSourceForMessageGUID:v16 bundleID:v17];
+    mEMORY[0x1E69A5AD0] = [MEMORY[0x1E69A5AD0] sharedInstance];
+    associatedMessageGUID = [payloadCopy associatedMessageGUID];
+    pluginBundleID4 = [payloadCopy pluginBundleID];
+    v18 = [mEMORY[0x1E69A5AD0] existingDataSourceForMessageGUID:associatedMessageGUID bundleID:pluginBundleID4];
 
-    v19 = [v18 pluginPayload];
-    [v19 setLiveEditableInEntryView:0];
+    pluginPayload = [v18 pluginPayload];
+    [pluginPayload setLiveEditableInEntryView:0];
 
     [v18 endShowingLastConsumedBreadcrumb];
     if ([(CKMessageEntryView *)self isKeyboardVisible])
     {
-      v20 = [(CKMessageEntryView *)self contentView];
-      v21 = [v20 textView];
-      [v21 becomeFirstResponder];
+      contentView = [(CKMessageEntryView *)self contentView];
+      textView = [contentView textView];
+      [textView becomeFirstResponder];
     }
   }
 
-  v8 = v22;
+  v8 = payloadCopy;
 LABEL_13:
 }
 
-- (void)messageEntryContentView:(id)a3 didRequestGenerativeContentForImageURL:(id)a4
+- (void)messageEntryContentView:(id)view didRequestGenerativeContentForImageURL:(id)l
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  lCopy = l;
   objc_initWeak(&location, self);
-  if (v7)
+  if (lCopy)
   {
     v8 = IMBalloonExtensionIDWithSuffix();
     v9 = +[CKBalloonPluginManager sharedInstance];
@@ -7554,7 +7554,7 @@ LABEL_13:
       v11[2] = __85__CKMessageEntryView_messageEntryContentView_didRequestGenerativeContentForImageURL___block_invoke;
       v11[3] = &unk_1E72EC128;
       v12 = v10;
-      v13 = v7;
+      v13 = lCopy;
       objc_copyWeak(&v14, &location);
       dispatch_async(MEMORY[0x1E69E96A0], v11);
       objc_destroyWeak(&v14);
@@ -7597,78 +7597,78 @@ void __85__CKMessageEntryView_messageEntryContentView_didRequestGenerativeConten
   [v2 messageEntryViewWantsGenerativePlaygroundPluginPresented:v3 presentationStyle:*(a1 + 40)];
 }
 
-- (void)messageEntryContentView:(id)a3 didStagePluginPayload:(id)a4
+- (void)messageEntryContentView:(id)view didStagePluginPayload:(id)payload
 {
-  v5 = a4;
-  v6 = [(CKMessageEntryView *)self delegate];
-  [v6 messageEntryView:self didInsertPluginPayload:v5];
+  payloadCopy = payload;
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryView:self didInsertPluginPayload:payloadCopy];
 }
 
-- (void)messageEntryContentViewDidChange:(id)a3 isTextChange:(BOOL)a4 isShelfChange:(BOOL)a5
+- (void)messageEntryContentViewDidChange:(id)change isTextChange:(BOOL)textChange isShelfChange:(BOOL)shelfChange
 {
-  v5 = a5;
-  v6 = a4;
+  shelfChangeCopy = shelfChange;
+  textChangeCopy = textChange;
   [(CKMessageEntryView *)self handleContentViewChangeWithCompletion:0];
-  v8 = [(CKMessageEntryView *)self delegate];
-  [v8 messageEntryViewDidChange:self isTextChange:v6 isShelfChange:v5 isTranslationChange:0];
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryViewDidChange:self isTextChange:textChangeCopy isShelfChange:shelfChangeCopy isTranslationChange:0];
 }
 
-- (void)messageEntryContentViewTranslationDidChange:(id)a3
+- (void)messageEntryContentViewTranslationDidChange:(id)change
 {
   [(CKMessageEntryView *)self handleContentViewChangeWithCompletion:0];
-  v4 = [(CKMessageEntryView *)self delegate];
-  [v4 messageEntryViewDidChange:self isTextChange:0 isShelfChange:0 isTranslationChange:1];
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryViewDidChange:self isTextChange:0 isShelfChange:0 isTranslationChange:1];
 }
 
-- (void)messageEntryContentViewShelfDidChange:(id)a3
+- (void)messageEntryContentViewShelfDidChange:(id)change
 {
   [(CKMessageEntryView *)self handleContentViewChangeWithCompletion:0];
-  v4 = [(CKMessageEntryView *)self delegate];
-  v5 = [v4 messageEntryViewIsSendingMessage:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  v5 = [delegate messageEntryViewIsSendingMessage:self];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(CKMessageEntryView *)self delegate];
-    [v6 messageEntryViewDidChange:self isTextChange:0 isShelfChange:1 isTranslationChange:0];
+    delegate2 = [(CKMessageEntryView *)self delegate];
+    [delegate2 messageEntryViewDidChange:self isTextChange:0 isShelfChange:1 isTranslationChange:0];
   }
 }
 
-- (void)messageEntryContentViewWantsSendLaterPickerPresented:(id)a3
+- (void)messageEntryContentViewWantsSendLaterPickerPresented:(id)presented
 {
-  v4 = [(CKMessageEntryView *)self delegate];
-  [v4 messageEntryViewWantsSendLaterPickerPresented:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryViewWantsSendLaterPickerPresented:self];
 }
 
-- (void)messageEntryContentViewSendLaterPluginInfoUpdated:(id)a3
+- (void)messageEntryContentViewSendLaterPluginInfoUpdated:(id)updated
 {
-  v4 = [(CKMessageEntryView *)self delegate];
-  [v4 messageEntryViewSendLaterPluginInfoUpdated:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryViewSendLaterPluginInfoUpdated:self];
 
   [(CKMessageEntryView *)self updateEntryView];
 }
 
-- (void)messageEntryContentViewSendLaterContentsUpdated:(id)a3
+- (void)messageEntryContentViewSendLaterContentsUpdated:(id)updated
 {
-  v4 = [(CKMessageEntryView *)self delegate];
-  [v4 messageEntryViewSendLaterContentsUpdated:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryViewSendLaterContentsUpdated:self];
 }
 
-- (void)handleContentViewChangeWithCompletion:(id)a3
+- (void)handleContentViewChangeWithCompletion:(id)completion
 {
-  v4 = a3;
-  v11 = v4;
-  if (v4)
+  completionCopy = completion;
+  v11 = completionCopy;
+  if (completionCopy)
   {
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
   [(CKMessageEntryView *)self setAudioComposition:0];
   [(CKMessageEntryView *)self configureForDisplayMode:1];
-  v5 = [(CKMessageEntryView *)self conversation];
-  v6 = [(CKMessageEntryView *)self composition];
+  conversation = [(CKMessageEntryView *)self conversation];
+  composition = [(CKMessageEntryView *)self composition];
   if ([(CKMessageEntryView *)self shouldShowCharacterCount])
   {
-    if (![v5 shouldShowCharacterCount] || !objc_msgSend(v6, "isTextOnly") || (objc_msgSend(v6, "subject"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v8))
+    if (![conversation shouldShowCharacterCount] || !objc_msgSend(composition, "isTextOnly") || (objc_msgSend(composition, "subject"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "length"), v7, v8))
     {
       [(CKMessageEntryView *)self setCharacterCountHidden:1];
 LABEL_8:
@@ -7676,9 +7676,9 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    v9 = [v6 hasContent];
-    v10 = v9;
-    [(CKMessageEntryView *)self setCharacterCountHidden:v9 ^ 1u];
+    hasContent = [composition hasContent];
+    v10 = hasContent;
+    [(CKMessageEntryView *)self setCharacterCountHidden:hasContent ^ 1u];
     if ((v10 & 1) == 0)
     {
       goto LABEL_8;
@@ -7696,29 +7696,29 @@ LABEL_9:
     return 1;
   }
 
-  v4 = [(CKMessageEntryView *)self audioComposition];
-  v3 = v4 != 0;
+  audioComposition = [(CKMessageEntryView *)self audioComposition];
+  v3 = audioComposition != 0;
 
   return v3;
 }
 
-- (BOOL)messageEntryContentViewShouldBeginEditing:(id)a3
+- (BOOL)messageEntryContentViewShouldBeginEditing:(id)editing
 {
   if ([(CKMessageEntryView *)self audioRecordingIsInEntryView])
   {
     return 0;
   }
 
-  v5 = [(CKMessageEntryView *)self delegate];
-  v6 = [v5 messageEntryViewShouldBeginEditing:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  v6 = [delegate messageEntryViewShouldBeginEditing:self];
 
   return v6;
 }
 
-- (CGSize)messageEntryContentViewMaxShelfPluginViewSize:(id)a3
+- (CGSize)messageEntryContentViewMaxShelfPluginViewSize:(id)size
 {
-  v4 = [(CKMessageEntryView *)self delegate];
-  [v4 messageEntryViewMaxShelfPluginViewSize:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryViewMaxShelfPluginViewSize:self];
   v6 = v5;
   v8 = v7;
 
@@ -7729,96 +7729,96 @@ LABEL_9:
   return result;
 }
 
-- (void)messageEntryContentViewDidBeginEditing:(id)a3 wasAlreadyActive:(BOOL)a4
+- (void)messageEntryContentViewDidBeginEditing:(id)editing wasAlreadyActive:(BOOL)active
 {
-  v6 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v8 = [(CKMessageEntryView *)self delegate];
-    [v8 messageEntryViewDidBeginEditing:self];
+    delegate2 = [(CKMessageEntryView *)self delegate];
+    [delegate2 messageEntryViewDidBeginEditing:self];
   }
 
-  if (!a4)
+  if (!active)
   {
-    v9 = [(CKMessageEntryView *)self delegate];
-    [v9 messageEntryViewDidBeginEditingNotAlreadyActive:self];
+    delegate3 = [(CKMessageEntryView *)self delegate];
+    [delegate3 messageEntryViewDidBeginEditingNotAlreadyActive:self];
 
     [(CKMessageEntryView *)self updateEntryView];
   }
 }
 
-- (void)messageEntryContentViewDidEndEditing:(id)a3
+- (void)messageEntryContentViewDidEndEditing:(id)editing
 {
-  v4 = [(CKMessageEntryView *)self delegate];
-  [v4 messageEntryViewDidEndEditing:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryViewDidEndEditing:self];
 }
 
-- (void)messageEntryContentViewDidChangePencilMode:(id)a3
+- (void)messageEntryContentViewDidChangePencilMode:(id)mode
 {
-  v4 = [(CKMessageEntryView *)self delegate];
-  [v4 messageEntryViewDidChangePencilMode:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryViewDidChangePencilMode:self];
 }
 
-- (BOOL)messageEntryContentView:(id)a3 shouldInsertMediaObjects:(id)a4
+- (BOOL)messageEntryContentView:(id)view shouldInsertMediaObjects:(id)objects
 {
-  v5 = a4;
-  v6 = [(CKMessageEntryView *)self delegate];
-  LOBYTE(self) = [v6 messageEntryView:self shouldInsertMediaObjects:v5];
+  objectsCopy = objects;
+  delegate = [(CKMessageEntryView *)self delegate];
+  LOBYTE(self) = [delegate messageEntryView:self shouldInsertMediaObjects:objectsCopy];
 
   return self;
 }
 
-- (void)messageEntryContentView:(id)a3 didTapMediaObject:(id)a4
+- (void)messageEntryContentView:(id)view didTapMediaObject:(id)object
 {
-  v5 = a4;
-  v6 = [(CKMessageEntryView *)self delegate];
-  [v6 messageEntryView:self didTapMediaObject:v5];
+  objectCopy = object;
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryView:self didTapMediaObject:objectCopy];
 }
 
-- (void)messageEntryContentViewWasTapped:(id)a3 isLongPress:(BOOL)a4
+- (void)messageEntryContentViewWasTapped:(id)tapped isLongPress:(BOOL)press
 {
-  v5 = [(CKMessageEntryView *)self inputDelegate:a3];
+  v5 = [(CKMessageEntryView *)self inputDelegate:tapped];
   [v5 messageEntryViewInputDidTakeFocus:self];
 }
 
-- (void)messageEntryContentViewDidTapHandwritingKey:(id)a3
+- (void)messageEntryContentViewDidTapHandwritingKey:(id)key
 {
-  v4 = [(CKMessageEntryView *)self inputDelegate];
-  [v4 messageEntryViewHandwritingButtonHit:self];
+  inputDelegate = [(CKMessageEntryView *)self inputDelegate];
+  [inputDelegate messageEntryViewHandwritingButtonHit:self];
 }
 
-- (void)messageEntryContentViewTextFormattingAnimationsOptionsPresentationInProgress:(BOOL)a3
+- (void)messageEntryContentViewTextFormattingAnimationsOptionsPresentationInProgress:(BOOL)progress
 {
-  v3 = a3;
-  v4 = [(CKMessageEntryView *)self delegate];
-  [v4 messageEntryViewTextFormattingAnimationsOptionsPresentationInProgress:v3];
+  progressCopy = progress;
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryViewTextFormattingAnimationsOptionsPresentationInProgress:progressCopy];
 }
 
-- (void)messageEntryContentView:(id)a3 didReceiveInputSuggestion:(id)a4
+- (void)messageEntryContentView:(id)view didReceiveInputSuggestion:(id)suggestion
 {
-  v5 = a4;
-  v6 = [(CKMessageEntryView *)self inputDelegate];
-  [v6 messageEntryView:self didReceiveInputSuggestion:v5];
+  suggestionCopy = suggestion;
+  inputDelegate = [(CKMessageEntryView *)self inputDelegate];
+  [inputDelegate messageEntryView:self didReceiveInputSuggestion:suggestionCopy];
 }
 
-- (BOOL)messageEntryContentViewShouldBeDisabled:(id)a3
+- (BOOL)messageEntryContentViewShouldBeDisabled:(id)disabled
 {
-  v3 = self;
-  v4 = [(CKMessageEntryView *)self delegate];
-  LOBYTE(v3) = [v4 messageEntryViewShouldBeDisabled:v3];
+  selfCopy = self;
+  delegate = [(CKMessageEntryView *)self delegate];
+  LOBYTE(selfCopy) = [delegate messageEntryViewShouldBeDisabled:selfCopy];
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKMessageEntryView *)self swipeGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  swipeGestureRecognizer = [(CKMessageEntryView *)self swipeGestureRecognizer];
 
-  if (v8 == v7)
+  if (swipeGestureRecognizer == recognizerCopy)
   {
     v10 = objc_opt_class();
     v11 = NSStringFromClass(v10);
@@ -7835,12 +7835,12 @@ LABEL_9:
   return v9;
 }
 
-- (void)_handlePlusButtonTouchInside:(id)a3
+- (void)_handlePlusButtonTouchInside:(id)inside
 {
-  v4 = [(CKMessageEntryView *)self composition];
-  v5 = [v4 hasContent];
+  composition = [(CKMessageEntryView *)self composition];
+  hasContent = [composition hasContent];
 
-  if (v5)
+  if (hasContent)
   {
     v6 = 2;
   }
@@ -7853,23 +7853,23 @@ LABEL_9:
   [(CKMessageEntryView *)self _updateSendMenuPresentationState:v6];
 }
 
-- (void)plusButtonTouchDown:(id)a3
+- (void)plusButtonTouchDown:(id)down
 {
-  v4 = a3;
+  downCopy = down;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [CKMessageEntryView plusButtonTouchDown:];
   }
 
-  [(CKMessageEntryView *)self _handlePlusButtonTouchInside:v4];
+  [(CKMessageEntryView *)self _handlePlusButtonTouchInside:downCopy];
   WeakRetained = objc_loadWeakRetained(&self->_inputDelegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_inputDelegate);
-    [v8 messageEntryView:self touchDownInsidePlusButton:v4];
+    [v8 messageEntryView:self touchDownInsidePlusButton:downCopy];
   }
 
   if (!self->_plusButtonFeedbackGeneratorIsActive)
@@ -7879,9 +7879,9 @@ LABEL_9:
   }
 }
 
-- (void)plusButtonTouchUpOutside:(id)a3
+- (void)plusButtonTouchUpOutside:(id)outside
 {
-  v4 = a3;
+  outsideCopy = outside;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -7895,7 +7895,7 @@ LABEL_9:
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_inputDelegate);
-    [v8 messageEntryView:self touchUpOutsidePlusButton:v4];
+    [v8 messageEntryView:self touchUpOutsidePlusButton:outsideCopy];
   }
 
   if (self->_plusButtonFeedbackGeneratorIsActive)
@@ -7905,9 +7905,9 @@ LABEL_9:
   }
 }
 
-- (void)plusButtonTouchCancel:(id)a3
+- (void)plusButtonTouchCancel:(id)cancel
 {
-  v4 = a3;
+  cancelCopy = cancel;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -7921,7 +7921,7 @@ LABEL_9:
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_inputDelegate);
-    [v8 messageEntryView:self touchCancelForPlusButton:v4];
+    [v8 messageEntryView:self touchCancelForPlusButton:cancelCopy];
   }
 
   if (self->_plusButtonFeedbackGeneratorIsActive)
@@ -7931,23 +7931,23 @@ LABEL_9:
   }
 }
 
-- (void)plusButtonTouchDragEnter:(id)a3
+- (void)plusButtonTouchDragEnter:(id)enter
 {
-  v4 = a3;
+  enterCopy = enter;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [CKMessageEntryView plusButtonTouchDragEnter:];
   }
 
-  [(CKMessageEntryView *)self _handlePlusButtonTouchInside:v4];
+  [(CKMessageEntryView *)self _handlePlusButtonTouchInside:enterCopy];
   WeakRetained = objc_loadWeakRetained(&self->_inputDelegate);
   v7 = objc_opt_respondsToSelector();
 
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_inputDelegate);
-    [v8 messageEntryView:self touchDragEnterForPlusButton:v4];
+    [v8 messageEntryView:self touchDragEnterForPlusButton:enterCopy];
   }
 
   if (!self->_plusButtonFeedbackGeneratorIsActive)
@@ -7957,9 +7957,9 @@ LABEL_9:
   }
 }
 
-- (void)plusButtonTouchDragExit:(id)a3
+- (void)plusButtonTouchDragExit:(id)exit
 {
-  v4 = a3;
+  exitCopy = exit;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -7973,7 +7973,7 @@ LABEL_9:
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_inputDelegate);
-    [v8 messageEntryView:self touchDragExitForPlusButton:v4];
+    [v8 messageEntryView:self touchDragExitForPlusButton:exitCopy];
   }
 
   if (self->_plusButtonFeedbackGeneratorIsActive)
@@ -7983,9 +7983,9 @@ LABEL_9:
   }
 }
 
-- (void)didSelectPlusButton:(id)a3
+- (void)didSelectPlusButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -7998,7 +7998,7 @@ LABEL_9:
   if (v7)
   {
     v8 = objc_loadWeakRetained(&self->_inputDelegate);
-    [v8 messageEntryView:self didSelectPlusButton:v4];
+    [v8 messageEntryView:self didSelectPlusButton:buttonCopy];
   }
 
   if (self->_plusButtonFeedbackGeneratorIsActive)
@@ -8008,25 +8008,25 @@ LABEL_9:
   }
 }
 
-- (void)plusButtonLongPressed:(id)a3
+- (void)plusButtonLongPressed:(id)pressed
 {
-  v4 = a3;
+  pressedCopy = pressed;
   v5 = IMLogHandleForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [CKMessageEntryView plusButtonLongPressed:];
   }
 
-  v6 = [v4 state];
-  if (v6 == 1)
+  state = [pressedCopy state];
+  if (state == 1)
   {
     WeakRetained = objc_loadWeakRetained(&self->_inputDelegate);
     v8 = objc_opt_respondsToSelector();
 
     if ((v8 & 1) != 0 && (v9 = objc_loadWeakRetained(&self->_inputDelegate), v10 = [v9 shouldLaunchPhotosAppForPlusButtonLongPressInMessageEntryView:self], v9, !v10))
     {
-      v11 = IMLogHandleForCategory();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+      view = IMLogHandleForCategory();
+      if (os_log_type_enabled(view, OS_LOG_TYPE_DEBUG))
       {
         [CKMessageEntryView plusButtonLongPressed:];
       }
@@ -8034,14 +8034,14 @@ LABEL_9:
 
     else
     {
-      v11 = [v4 view];
+      view = [pressedCopy view];
       v12 = objc_loadWeakRetained(&self->_inputDelegate);
       v13 = objc_opt_respondsToSelector();
 
       if (v13)
       {
         v14 = objc_loadWeakRetained(&self->_inputDelegate);
-        [v14 messageEntryView:self didLongPressPlusButton:v11];
+        [v14 messageEntryView:self didLongPressPlusButton:view];
       }
 
       if (self->_plusButtonFeedbackGeneratorIsActive)
@@ -8055,39 +8055,39 @@ LABEL_9:
 
   else
   {
-    v15 = v6;
-    v11 = IMLogHandleForCategory();
-    if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
+    v15 = state;
+    view = IMLogHandleForCategory();
+    if (os_log_type_enabled(view, OS_LOG_TYPE_DEBUG))
     {
-      [(CKMessageEntryView *)v15 plusButtonLongPressed:v11];
+      [(CKMessageEntryView *)v15 plusButtonLongPressed:view];
     }
   }
 }
 
-- (void)dictationButtonTapped:(id)a3
+- (void)dictationButtonTapped:(id)tapped
 {
   v7 = objc_alloc_init(MEMORY[0x1E69DC950]);
   [v7 setInvocationSource:@"UIDictationInputModeInvocationSourceMicButtonInMessagesTextField"];
-  v4 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v5 = [(CKMessageEntryView *)self contentView];
-  v6 = [v5 textView];
-  [v4 toggleDictationForResponder:v6 WithOptions:v7];
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  contentView = [(CKMessageEntryView *)self contentView];
+  textView = [contentView textView];
+  [mEMORY[0x1E69DCBF0] toggleDictationForResponder:textView WithOptions:v7];
 }
 
-- (void)sendMenuPopoverMetricsDidChange:(id)a3
+- (void)sendMenuPopoverMetricsDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(CKMessageEntryView *)self delegate];
-  v6 = [v5 messageEntryViewActiveSendMenuPresentation:self];
+  changeCopy = change;
+  delegate = [(CKMessageEntryView *)self delegate];
+  v6 = [delegate messageEntryViewActiveSendMenuPresentation:self];
 
   if (v6)
   {
-    v7 = [v6 newPopoverLayoutMetrics];
-    v8 = v7;
-    if (v7)
+    newPopoverLayoutMetrics = [v6 newPopoverLayoutMetrics];
+    v8 = newPopoverLayoutMetrics;
+    if (newPopoverLayoutMetrics)
     {
-      v9 = [v7 state];
-      if (v4 && [v4 state] == v9 || (v9 - 1) >= 2)
+      state = [newPopoverLayoutMetrics state];
+      if (changeCopy && [changeCopy state] == state || (state - 1) >= 2)
       {
         [(CKMessageEntryView *)self setNeedsLayout];
       }
@@ -8096,14 +8096,14 @@ LABEL_9:
       {
         [(CKMessageEntryView *)self layoutIfNeeded];
         v10 = +[CKUIBehavior sharedBehaviors];
-        v11 = [v10 entryViewSendMenuContentViewWidthAnimator];
+        entryViewSendMenuContentViewWidthAnimator = [v10 entryViewSendMenuContentViewWidthAnimator];
         v12[0] = MEMORY[0x1E69E9820];
         v12[1] = 3221225472;
         v12[2] = __54__CKMessageEntryView_sendMenuPopoverMetricsDidChange___block_invoke;
         v12[3] = &unk_1E72EBA18;
         v12[4] = self;
-        [v11 addAnimations:v12];
-        [v11 startAnimation];
+        [entryViewSendMenuContentViewWidthAnimator addAnimations:v12];
+        [entryViewSendMenuContentViewWidthAnimator startAnimation];
       }
     }
   }
@@ -8117,18 +8117,18 @@ uint64_t __54__CKMessageEntryView_sendMenuPopoverMetricsDidChange___block_invoke
   return [v2 layoutIfNeeded];
 }
 
-- (void)keyCommandSend:(id)a3
+- (void)keyCommandSend:(id)send
 {
-  v4 = a3;
+  sendCopy = send;
   if ([(CKMessageEntryView *)self sendButtonEnabled]&& [(CKMessageEntryView *)self shouldAllowSendWhenSendButtonDisabled])
   {
-    [(CKMessageEntryView *)self touchUpInsideSendButton:v4];
+    [(CKMessageEntryView *)self touchUpInsideSendButton:sendCopy];
   }
 }
 
-- (void)touchUpInsideSendButton:(id)a3
+- (void)touchUpInsideSendButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   v5 = _os_activity_create(&dword_19020E000, "com.apple.messages.SendButtonTapped", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
   state.opaque[0] = 0;
   state.opaque[1] = 0;
@@ -8143,24 +8143,24 @@ uint64_t __54__CKMessageEntryView_sendMenuPopoverMetricsDidChange___block_invoke
     }
   }
 
-  v7 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v7 postNotificationName:@"CKMessageEntryViewSendButtonPressedNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"CKMessageEntryViewSendButtonPressedNotification" object:0];
 
-  v8 = [(CKMessageEntryView *)self contentView];
-  [v8 collapseTextFieldsIfInPencilMode];
+  contentView = [(CKMessageEntryView *)self contentView];
+  [contentView collapseTextFieldsIfInPencilMode];
 
-  v9 = [(CKMessageEntryView *)self delegate];
-  [v9 messageEntryViewSendButtonHit:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryViewSendButtonHit:self];
 
-  v10 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-  [v10 updateLayout];
+  activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+  [activeKeyboard updateLayout];
 
   if ([(CKMessageEntryView *)self _isRunningInMVS])
   {
-    v11 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v12 = [v11 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-    if (v12)
+    if (isEntryViewRefreshEnabled)
     {
       [(CKMessageEntryView *)self glassSendButton];
     }
@@ -8178,49 +8178,49 @@ uint64_t __54__CKMessageEntryView_sendMenuPopoverMetricsDidChange___block_invoke
 
 - (BOOL)_canSend
 {
-  v3 = [(CKMessageEntryView *)self conversation];
-  v4 = [v3 sendingService];
+  conversation = [(CKMessageEntryView *)self conversation];
+  sendingService = [conversation sendingService];
   v5 = +[CKUIBehavior sharedBehaviors];
   if ([v5 isSendButtonEnabledOnPlatform])
   {
-    v6 = [(CKMessageEntryView *)self sendButtonEnabled];
+    sendButtonEnabled = [(CKMessageEntryView *)self sendButtonEnabled];
   }
 
   else
   {
     v7 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v7 isSendButtonEnabledOnPlatform];
+    sendButtonEnabled = [v7 isSendButtonEnabledOnPlatform];
   }
 
-  v8 = ![(CKMessageEntryView *)self shouldRecordForService:v4];
-  return v6 & v8;
+  v8 = ![(CKMessageEntryView *)self shouldRecordForService:sendingService];
+  return sendButtonEnabled & v8;
 }
 
-- (void)conversationPreferredServiceChanged:(id)a3
+- (void)conversationPreferredServiceChanged:(id)changed
 {
   [(CKMessageEntryView *)self updateEntryView];
   [(CKMessageEntryView *)self updateAppsMenu];
-  v6 = [(CKMessageEntryView *)self conversation];
-  v4 = [v6 sendingService];
-  v5 = [(CKMessageEntryView *)self audioRecordingView];
-  [v5 setService:v4];
+  conversation = [(CKMessageEntryView *)self conversation];
+  sendingService = [conversation sendingService];
+  audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
+  [audioRecordingView setService:sendingService];
 }
 
-- (BOOL)shouldRecordForService:(id)a3
+- (BOOL)shouldRecordForService:(id)service
 {
-  v4 = [(CKMessageEntryView *)self contentView];
-  v5 = [v4 pluginView];
+  contentView = [(CKMessageEntryView *)self contentView];
+  pluginView = [contentView pluginView];
 
-  if (v5)
+  if (pluginView)
   {
     return 0;
   }
 
-  v7 = [(CKMessageEntryView *)self contentView];
-  v8 = [v7 composition];
-  v9 = [v8 hasContent];
+  contentView2 = [(CKMessageEntryView *)self contentView];
+  composition = [contentView2 composition];
+  hasContent = [composition hasContent];
 
-  return v9 ^ 1;
+  return hasContent ^ 1;
 }
 
 - (BOOL)_shouldMarkForLayoutAfterPropertyUpdate
@@ -8230,34 +8230,34 @@ uint64_t __54__CKMessageEntryView_sendMenuPopoverMetricsDidChange___block_invoke
     return 1;
   }
 
-  v4 = [(CKMessageEntryView *)self contentView];
-  if (([v4 shouldShowSubject] & 1) != 0 || (objc_msgSend(v4, "shouldShowPlugin") & 1) != 0 || -[CKMessageEntryView displayMode](self, "displayMode") != 1 || -[CKMessageEntryView isRecording](self, "isRecording") || -[CKMessageEntryView hasRecording](self, "hasRecording") || -[CKMessageEntryView isInPencilMode](self, "isInPencilMode"))
+  contentView = [(CKMessageEntryView *)self contentView];
+  if (([contentView shouldShowSubject] & 1) != 0 || (objc_msgSend(contentView, "shouldShowPlugin") & 1) != 0 || -[CKMessageEntryView displayMode](self, "displayMode") != 1 || -[CKMessageEntryView isRecording](self, "isRecording") || -[CKMessageEntryView hasRecording](self, "hasRecording") || -[CKMessageEntryView isInPencilMode](self, "isInPencilMode"))
   {
     v3 = 1;
   }
 
   else
   {
-    v6 = [(CKMessageEntryView *)self sendLaterPluginInfo];
-    v3 = v6 != 0;
+    sendLaterPluginInfo = [(CKMessageEntryView *)self sendLaterPluginInfo];
+    v3 = sendLaterPluginInfo != 0;
   }
 
   return v3;
 }
 
-- (id)_serviceForEntryViewForConversation:(id)a3
+- (id)_serviceForEntryViewForConversation:(id)conversation
 {
-  v3 = a3;
-  v4 = [v3 sendingService];
-  v5 = [v3 chat];
-  v6 = [v5 isInterworking];
+  conversationCopy = conversation;
+  sendingService = [conversationCopy sendingService];
+  chat = [conversationCopy chat];
+  isInterworking = [chat isInterworking];
 
-  if (v6)
+  if (isInterworking)
   {
     v7 = MEMORY[0x1E69A5C90];
-    v8 = [v3 chat];
-    v9 = [v8 interworkingService];
-    v10 = [v7 serviceWithName:v9];
+    chat2 = [conversationCopy chat];
+    interworkingService = [chat2 interworkingService];
+    v10 = [v7 serviceWithName:interworkingService];
     v11 = v10;
     if (v10)
     {
@@ -8266,87 +8266,87 @@ uint64_t __54__CKMessageEntryView_sendMenuPopoverMetricsDidChange___block_invoke
 
     else
     {
-      v12 = v4;
+      v12 = sendingService;
     }
 
     v13 = v12;
 
-    v4 = v13;
+    sendingService = v13;
   }
 
-  return v4;
+  return sendingService;
 }
 
-- (id)_placeholderTextForConversation:(id)a3
+- (id)_placeholderTextForConversation:(id)conversation
 {
-  v4 = a3;
-  if (![v4 recipientCount])
+  conversationCopy = conversation;
+  if (![conversationCopy recipientCount])
   {
-    v11 = &stru_1F04268F8;
+    __ck_entryViewDisplayName = &stru_1F04268F8;
     goto LABEL_10;
   }
 
-  v5 = [v4 chat];
-  v6 = [v5 isStewieEmergencyChat];
+  chat = [conversationCopy chat];
+  isStewieEmergencyChat = [chat isStewieEmergencyChat];
 
-  if (v6)
+  if (isStewieEmergencyChat)
   {
     v7 = CKFrameworkBundle();
-    v8 = v7;
+    mEMORY[0x1E69A60F0] = v7;
     v9 = @"STEWIE_EMERGENCY_TEXT_ENTRY_PLACEHOLDER";
     v10 = @"ChatKit-SYDROB_FEATURES";
 LABEL_7:
     v14 = [v7 localizedStringForKey:v9 value:&stru_1F04268F8 table:v10];
 LABEL_8:
-    v11 = v14;
+    __ck_entryViewDisplayName = v14;
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v12 = [v4 chat];
-  v13 = [v12 shouldDisplayOffGridModeStatus];
+  chat2 = [conversationCopy chat];
+  shouldDisplayOffGridModeStatus = [chat2 shouldDisplayOffGridModeStatus];
 
-  if (v13)
+  if (shouldDisplayOffGridModeStatus)
   {
     v7 = CKFrameworkBundle();
-    v8 = v7;
+    mEMORY[0x1E69A60F0] = v7;
     v9 = @"PLACEHOLDER_TEXT_VIEW_SATELLITE_MESSAGE";
     v10 = @"ChatKit-CarrierPigeon";
     goto LABEL_7;
   }
 
-  v16 = [v4 chat];
-  v17 = [v16 isStewieRoadsideChat];
+  chat3 = [conversationCopy chat];
+  isStewieRoadsideChat = [chat3 isStewieRoadsideChat];
 
-  if (v17)
+  if (isStewieRoadsideChat)
   {
-    v18 = [MEMORY[0x1E69A5B00] sharedInstance];
-    v19 = [v4 chat];
-    v20 = [v19 chatIdentifier];
-    v8 = [v18 roadsideProviderNameForChatIdentifier:v20];
+    mEMORY[0x1E69A5B00] = [MEMORY[0x1E69A5B00] sharedInstance];
+    chat4 = [conversationCopy chat];
+    chatIdentifier = [chat4 chatIdentifier];
+    mEMORY[0x1E69A60F0] = [mEMORY[0x1E69A5B00] roadsideProviderNameForChatIdentifier:chatIdentifier];
 
     v21 = MEMORY[0x1E696AEC0];
     v22 = CKFrameworkBundle();
     v23 = [v22 localizedStringForKey:@"STEWIE_ROADSIDE_TEXT_ENTRY_PLACEHOLDER" value:&stru_1F04268F8 table:@"ChatKit-Avocet"];
-    v11 = [v21 localizedStringWithFormat:v23, v8];
+    __ck_entryViewDisplayName = [v21 localizedStringWithFormat:v23, mEMORY[0x1E69A60F0]];
 
     goto LABEL_9;
   }
 
-  if ([v4 isMapKitBusinessConversation])
+  if ([conversationCopy isMapKitBusinessConversation])
   {
     v24 = MEMORY[0x1E696AEC0];
     v25 = CKFrameworkBundle();
     v26 = [v25 localizedStringForKey:@"BUSINESS_CHAT_TO" value:&stru_1F04268F8 table:@"ChatKit"];
-    v27 = [v4 recipient];
-    v28 = [v27 name];
-    v8 = [v24 stringWithFormat:v26, v28];
+    recipient = [conversationCopy recipient];
+    name = [recipient name];
+    mEMORY[0x1E69A60F0] = [v24 stringWithFormat:v26, name];
 
-    v29 = [MEMORY[0x1E69DC668] sharedApplication];
-    v30 = [v29 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
-    if (v30 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
       v31 = @"\u200F";
     }
@@ -8356,56 +8356,56 @@ LABEL_9:
       v31 = @"\u200E";
     }
 
-    v14 = [(__CFString *)v31 stringByAppendingString:v8];
+    v14 = [(__CFString *)v31 stringByAppendingString:mEMORY[0x1E69A60F0]];
     goto LABEL_8;
   }
 
   if (CKMessageEntryViewStyleIsForReply([(CKMessageEntryView *)self style]))
   {
     v7 = CKFrameworkBundle();
-    v8 = v7;
+    mEMORY[0x1E69A60F0] = v7;
     v9 = @"INLINE_REPLY_TEXT_ENTRY_PLACEHOLDER";
 LABEL_24:
     v10 = @"ChatKit";
     goto LABEL_7;
   }
 
-  v32 = [(CKMessageEntryView *)self sendLaterPluginInfo];
+  sendLaterPluginInfo = [(CKMessageEntryView *)self sendLaterPluginInfo];
 
-  if (v32)
+  if (sendLaterPluginInfo)
   {
     v7 = CKFrameworkBundle();
-    v8 = v7;
+    mEMORY[0x1E69A60F0] = v7;
     v9 = @"SEND_LATER_TEXT_ENTRY_PLACEHOLDER";
     goto LABEL_24;
   }
 
-  v33 = [(CKMessageEntryView *)self _serviceForEntryViewForConversation:v4];
-  v11 = [v33 __ck_entryViewDisplayName];
+  v33 = [(CKMessageEntryView *)self _serviceForEntryViewForConversation:conversationCopy];
+  __ck_entryViewDisplayName = [v33 __ck_entryViewDisplayName];
 
-  v8 = [MEMORY[0x1E69A60F0] sharedInstance];
-  if (![v8 isInternalInstall])
+  mEMORY[0x1E69A60F0] = [MEMORY[0x1E69A60F0] sharedInstance];
+  if (![mEMORY[0x1E69A60F0] isInternalInstall])
   {
     goto LABEL_9;
   }
 
   v34 = IMGetCachedDomainBoolForKey();
 
-  if (v34 && [v4 supportsEncryption])
+  if (v34 && [conversationCopy supportsEncryption])
   {
-    v14 = [(__CFString *)v11 stringByAppendingString:@" Encrypted"];
-    v8 = v11;
+    v14 = [(__CFString *)__ck_entryViewDisplayName stringByAppendingString:@" Encrypted"];
+    mEMORY[0x1E69A60F0] = __ck_entryViewDisplayName;
     goto LABEL_8;
   }
 
 LABEL_10:
 
-  return v11;
+  return __ck_entryViewDisplayName;
 }
 
-- (void)_contactLimitsChanged:(id)a3
+- (void)_contactLimitsChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -8421,26 +8421,26 @@ LABEL_10:
 
 - (void)configureTextViewWithInputContextHistoryFromTranscript
 {
-  v8 = [(CKMessageEntryView *)self delegate];
-  v3 = [v8 inputContextHistoryForMessageEntryView:self];
-  v4 = [(CKMessageEntryView *)self contentView];
-  v5 = [v4 textView];
+  delegate = [(CKMessageEntryView *)self delegate];
+  v3 = [delegate inputContextHistoryForMessageEntryView:self];
+  contentView = [(CKMessageEntryView *)self contentView];
+  textView = [contentView textView];
 
-  v6 = [v5 inputContextHistory];
-  if (v3 != v6)
+  inputContextHistory = [textView inputContextHistory];
+  if (v3 != inputContextHistory)
   {
-    [v5 setInputContextHistory:v3];
-    v7 = [MEMORY[0x1E69DCBB8] activeKeyboard];
-    [v7 responseContextDidChange];
+    [textView setInputContextHistory:v3];
+    activeKeyboard = [MEMORY[0x1E69DCBB8] activeKeyboard];
+    [activeKeyboard responseContextDidChange];
   }
 }
 
 - (char)sendButtonColor
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
     [(CKMessageEntryView *)self glassSendButton];
   }
@@ -8450,17 +8450,17 @@ LABEL_10:
     [(CKMessageEntryView *)self sendButton];
   }
   v5 = ;
-  v6 = [v5 ckTintColor];
+  ckTintColor = [v5 ckTintColor];
 
-  return v6;
+  return ckTintColor;
 }
 
 - (BOOL)isSendButtonEnabled
 {
-  v3 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-  v4 = [v3 isEntryViewRefreshEnabled];
+  mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+  isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-  if (v4)
+  if (isEntryViewRefreshEnabled)
   {
 
     return [(CKMessageEntryView *)self sendButtonEnabled];
@@ -8468,43 +8468,43 @@ LABEL_10:
 
   else
   {
-    v6 = [(CKMessageEntryView *)self sendButton];
-    v7 = [v6 isEnabled];
+    sendButton = [(CKMessageEntryView *)self sendButton];
+    isEnabled = [sendButton isEnabled];
 
-    return v7;
+    return isEnabled;
   }
 }
 
-- (BOOL)_isExceedingByteLimitForService:(id)a3
+- (BOOL)_isExceedingByteLimitForService:(id)service
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKMessageEntryView *)self conversation];
-  v6 = [v5 chat];
-  v7 = [v6 shouldDisplayOffGridModeStatus];
+  serviceCopy = service;
+  conversation = [(CKMessageEntryView *)self conversation];
+  chat = [conversation chat];
+  shouldDisplayOffGridModeStatus = [chat shouldDisplayOffGridModeStatus];
 
-  if (v7)
+  if (shouldDisplayOffGridModeStatus)
   {
-    v8 = [MEMORY[0x1E69A5C90] iMessageLiteService];
+    iMessageLiteService = [MEMORY[0x1E69A5C90] iMessageLiteService];
 
-    v4 = v8;
+    serviceCopy = iMessageLiteService;
   }
 
-  v9 = [v4 serviceProperties];
-  v10 = [v9 valueForKey:*MEMORY[0x1E69A7B30]];
-  v11 = [v10 intValue];
+  serviceProperties = [serviceCopy serviceProperties];
+  v10 = [serviceProperties valueForKey:*MEMORY[0x1E69A7B30]];
+  intValue = [v10 intValue];
 
-  if (v11 < 1)
+  if (intValue < 1)
   {
     goto LABEL_11;
   }
 
-  v12 = [(CKMessageEntryView *)self composition];
-  v13 = [v12 text];
-  v14 = [v13 string];
-  v15 = v11;
+  composition = [(CKMessageEntryView *)self composition];
+  text = [composition text];
+  string = [text string];
+  v15 = intValue;
 
-  if ([v14 lengthOfBytesUsingEncoding:4] <= v11)
+  if ([string lengthOfBytesUsingEncoding:4] <= intValue)
   {
 
 LABEL_11:
@@ -8518,11 +8518,11 @@ LABEL_11:
     if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
     {
       v17 = [MEMORY[0x1E696AD98] numberWithInteger:v15];
-      v18 = [v4 name];
+      name = [serviceCopy name];
       v21 = 138412546;
       v22 = v17;
       v23 = 2112;
-      v24 = v18;
+      v24 = name;
       _os_log_impl(&dword_19020E000, v16, OS_LOG_TYPE_INFO, "Send Button: Disabled, exceeding maximum byte limit: %@ for service: %@", &v21, 0x16u);
     }
   }
@@ -8536,16 +8536,16 @@ LABEL_12:
 - (BOOL)shouldAllowSendWhenSendButtonDisabled
 {
   v3 = +[CKUIBehavior sharedBehaviors];
-  v4 = [v3 isSendButtonEnabledOnPlatform];
+  isSendButtonEnabledOnPlatform = [v3 isSendButtonEnabledOnPlatform];
 
   result = 1;
-  if ((v4 & 1) == 0)
+  if ((isSendButtonEnabledOnPlatform & 1) == 0)
   {
-    v5 = [(CKMessageEntryView *)self conversation];
-    v6 = [v5 chat];
-    v7 = [v6 lastFinishedMessage];
+    conversation = [(CKMessageEntryView *)self conversation];
+    chat = [conversation chat];
+    lastFinishedMessage = [chat lastFinishedMessage];
 
-    if (!v7 && ([(CKMessageEntryView *)self hasFailedRecipients]|| [(CKMessageEntryView *)self hasUnreachableEmergencyRecipient]))
+    if (!lastFinishedMessage && ([(CKMessageEntryView *)self hasFailedRecipients]|| [(CKMessageEntryView *)self hasUnreachableEmergencyRecipient]))
     {
       return 0;
     }
@@ -8554,19 +8554,19 @@ LABEL_12:
   return result;
 }
 
-- (void)_swipeDownGestureRecognized:(id)a3
+- (void)_swipeDownGestureRecognized:(id)recognized
 {
-  v4 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKMessageEntryView *)self delegate];
-    [v6 messageEntryViewSwipeDownGestureRecognized:self];
+    delegate2 = [(CKMessageEntryView *)self delegate];
+    [delegate2 messageEntryViewSwipeDownGestureRecognized:self];
   }
 }
 
-- (void)textEffectsWindowOffsetDidChange:(id)a3
+- (void)textEffectsWindowOffsetDidChange:(id)change
 {
   [(CKMessageEntryView *)self frame];
 
@@ -8575,87 +8575,87 @@ LABEL_12:
 
 - (void)sendCurrentLocationMessage
 {
-  v3 = [(CKMessageEntryView *)self delegate];
-  [v3 sendCurrentLocationMessage:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate sendCurrentLocationMessage:self];
 }
 
 - (void)_dictationAvailabilityDidChange
 {
-  v3 = [MEMORY[0x1E69DCBF0] sharedInputModeController];
-  v4 = [v3 enabledDictationLanguages];
-  -[CKMessageEntryView setDictationEnabledForLanguage:](self, "setDictationEnabledForLanguage:", [v4 count] != 0);
+  mEMORY[0x1E69DCBF0] = [MEMORY[0x1E69DCBF0] sharedInputModeController];
+  enabledDictationLanguages = [mEMORY[0x1E69DCBF0] enabledDictationLanguages];
+  -[CKMessageEntryView setDictationEnabledForLanguage:](self, "setDictationEnabledForLanguage:", [enabledDictationLanguages count] != 0);
 
   [(CKMessageEntryView *)self updateEntryView];
 }
 
-- (void)appSelectionInterfaceSelectedItem:(id)a3
+- (void)appSelectionInterfaceSelectedItem:(id)item
 {
-  v7 = a3;
-  v4 = [(CKMessageEntryView *)self inputDelegate];
+  itemCopy = item;
+  inputDelegate = [(CKMessageEntryView *)self inputDelegate];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CKMessageEntryView *)self inputDelegate];
-    [v6 messageEntryViewSelectedAppMenuItem:v7];
+    inputDelegate2 = [(CKMessageEntryView *)self inputDelegate];
+    [inputDelegate2 messageEntryViewSelectedAppMenuItem:itemCopy];
   }
 }
 
 - (void)_showVisionAppsMenu
 {
-  v3 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v7 = [(CKMessageEntryView *)self delegate];
-    v5 = [(CKMessageEntryView *)self plusButton];
-    v6 = [v5 button];
-    [v7 messageEntryViewRequestsVisionAppMenu:self fromButton:v6];
+    delegate2 = [(CKMessageEntryView *)self delegate];
+    plusButton = [(CKMessageEntryView *)self plusButton];
+    button = [plusButton button];
+    [delegate2 messageEntryViewRequestsVisionAppMenu:self fromButton:button];
   }
 }
 
 - (void)_trackAudioMessageRecordingStarted
 {
-  v2 = [MEMORY[0x1E69A8168] sharedInstance];
-  [v2 trackEvent:*MEMORY[0x1E69A7318]];
+  mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
+  [mEMORY[0x1E69A8168] trackEvent:*MEMORY[0x1E69A7318]];
 }
 
-- (void)_trackAudioMessageSentWithComposition:(id)a3
+- (void)_trackAudioMessageSentWithComposition:(id)composition
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  if (a3)
+  if (composition)
   {
     v3 = MEMORY[0x1E69A8168];
-    v4 = a3;
-    v5 = [v3 sharedInstance];
-    [v5 trackEvent:*MEMORY[0x1E69A7320]];
+    compositionCopy = composition;
+    sharedInstance = [v3 sharedInstance];
+    [sharedInstance trackEvent:*MEMORY[0x1E69A7320]];
 
-    v6 = [v4 mediaObjects];
+    mediaObjects = [compositionCopy mediaObjects];
 
-    v7 = [v6 firstObject];
+    firstObject = [mediaObjects firstObject];
 
-    if (v7)
+    if (firstObject)
     {
-      [v7 duration];
+      [firstObject duration];
       v9 = v8;
-      v10 = [MEMORY[0x1E69A8168] sharedInstance];
+      mEMORY[0x1E69A8168] = [MEMORY[0x1E69A8168] sharedInstance];
       v11 = *MEMORY[0x1E69A7328];
       v14 = @"AudioMessageDuration";
       v12 = [MEMORY[0x1E696AD98] numberWithDouble:v9];
       v15[0] = v12;
       v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-      [v10 trackEvent:v11 withDictionary:v13];
+      [mEMORY[0x1E69A8168] trackEvent:v11 withDictionary:v13];
     }
   }
 }
 
 - (void)startRecordingForRaiseGesture
 {
-  v3 = [(CKMessageEntryView *)self recorder];
-  v4 = [(CKMessageEntryView *)self audioComposition];
+  recorder = [(CKMessageEntryView *)self recorder];
+  audioComposition = [(CKMessageEntryView *)self audioComposition];
 
-  if (v4)
+  if (audioComposition)
   {
     if (IMOSLoggingEnabled())
     {
@@ -8670,16 +8670,16 @@ LABEL_12:
 
   else
   {
-    v6 = [(CKMessageEntryView *)self conversation];
-    v7 = [v6 sendingService];
-    if ([(CKMessageEntryView *)self shouldRecordForService:v7])
+    conversation = [(CKMessageEntryView *)self conversation];
+    sendingService = [conversation sendingService];
+    if ([(CKMessageEntryView *)self shouldRecordForService:sendingService])
     {
-      v8 = [v3 isRecording];
+      isRecording = [recorder isRecording];
 
-      if ((v8 & 1) == 0)
+      if ((isRecording & 1) == 0)
       {
         [(CKMessageEntryView *)self setRecordingStartedFromRaiseGesture:1];
-        [v3 startRecordingForRaiseGesture:1 shouldPlaySound:0];
+        [recorder startRecordingForRaiseGesture:1 shouldPlaySound:0];
       }
     }
 
@@ -8689,9 +8689,9 @@ LABEL_12:
   }
 }
 
-- (void)stopRecordingForRaiseGestureWithFailure:(BOOL)a3
+- (void)stopRecordingForRaiseGestureWithFailure:(BOOL)failure
 {
-  v5 = [(CKMessageEntryView *)self recorder];
+  recorder = [(CKMessageEntryView *)self recorder];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
@@ -8703,15 +8703,15 @@ LABEL_12:
   }
 
   [(CKMessageEntryView *)self setRecordingStartedFromRaiseGesture:0];
-  if (v5)
+  if (recorder)
   {
-    v7 = [(CKMessageEntryView *)self audioRecordingView];
+    audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
 
-    if (v7)
+    if (audioRecordingView)
     {
-      v8 = [(CKMessageEntryView *)self audioComposition];
+      audioComposition = [(CKMessageEntryView *)self audioComposition];
 
-      if (v8)
+      if (audioComposition)
       {
         if (IMOSLoggingEnabled())
         {
@@ -8731,8 +8731,8 @@ LABEL_17:
 
       else
       {
-        v11 = [(CKMessageEntryView *)self recorder];
-        [v11 setPaused:1];
+        recorder2 = [(CKMessageEntryView *)self recorder];
+        [recorder2 setPaused:1];
 
         if (IMOSLoggingEnabled())
         {
@@ -8749,8 +8749,8 @@ LABEL_17:
         v13[2] = __62__CKMessageEntryView_stopRecordingForRaiseGestureWithFailure___block_invoke;
         v13[3] = &unk_1E72F4810;
         v13[4] = self;
-        v14 = a3;
-        [v5 stopRecordingAndPlaySound:1 completion:v13];
+        failureCopy = failure;
+        [recorder stopRecordingAndPlaySound:1 completion:v13];
       }
     }
 
@@ -8871,13 +8871,13 @@ void __62__CKMessageEntryView_stopRecordingForRaiseGestureWithFailure___block_in
 {
   [(CKMessageEntryView *)self sendEnableRotationAfterRecordingToDelegate];
   [(CKMessageEntryView *)self setAudioComposition:0];
-  v3 = [(CKMessageEntryView *)self recorder];
-  v4 = [v3 isRecording];
+  recorder = [(CKMessageEntryView *)self recorder];
+  isRecording = [recorder isRecording];
 
-  if (v4)
+  if (isRecording)
   {
-    v5 = [(CKMessageEntryView *)self recorder];
-    [v5 cancelRecording];
+    recorder2 = [(CKMessageEntryView *)self recorder];
+    [recorder2 cancelRecording];
   }
 
   v6[0] = MEMORY[0x1E69E9820];
@@ -8898,17 +8898,17 @@ uint64_t __40__CKMessageEntryView_cancelAudioMessage__block_invoke(uint64_t a1)
 
 - (void)disableRotationWhileRecordingAudioMessage
 {
-  v3 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CKMessageEntryView *)self delegate];
-    [v5 disableRotationWhileRecordingAudioMessage];
+    delegate2 = [(CKMessageEntryView *)self delegate];
+    [delegate2 disableRotationWhileRecordingAudioMessage];
   }
 }
 
-- (void)audioRecorderDidStartRecording:(id)a3
+- (void)audioRecorderDidStartRecording:(id)recording
 {
   [(CKMessageEntryView *)self disableRotationWhileRecordingAudioMessage];
   [(CKMessageEntryView *)self _trackAudioMessageRecordingStarted];
@@ -8918,13 +8918,13 @@ uint64_t __40__CKMessageEntryView_cancelAudioMessage__block_invoke(uint64_t a1)
   v8[3] = &unk_1E72EBA18;
   v8[4] = self;
   [MEMORY[0x1E69DD250] animateWithDuration:0x20000 delay:v8 options:0 animations:0.3 completion:0.0];
-  v4 = [(CKMessageEntryView *)self audioRecordingView];
-  [v4 setState:1];
+  audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
+  [audioRecordingView setState:1];
 
-  v5 = [(CKMessageEntryView *)self audioComposition];
-  if (!v5)
+  audioComposition = [(CKMessageEntryView *)self audioComposition];
+  if (!audioComposition)
   {
-    v6 = [(CKMessageEntryView *)self inputDelegate];
+    inputDelegate = [(CKMessageEntryView *)self inputDelegate];
     v7 = objc_opt_respondsToSelector();
 
     if ((v7 & 1) == 0)
@@ -8932,8 +8932,8 @@ uint64_t __40__CKMessageEntryView_cancelAudioMessage__block_invoke(uint64_t a1)
       return;
     }
 
-    v5 = [(CKMessageEntryView *)self inputDelegate];
-    [v5 messageEntryViewDidStageAudioRecordingUI:self];
+    audioComposition = [(CKMessageEntryView *)self inputDelegate];
+    [audioComposition messageEntryViewDidStageAudioRecordingUI:self];
   }
 }
 
@@ -8946,20 +8946,20 @@ uint64_t __53__CKMessageEntryView_audioRecorderDidStartRecording___block_invoke(
   return [v2 layoutIfNeeded];
 }
 
-- (void)audioRecorderRecordingDidChange:(id)a3
+- (void)audioRecorderRecordingDidChange:(id)change
 {
-  v4 = [(CKMessageEntryView *)self delegate];
-  [v4 messageEntryViewRecordingDidChange:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryViewRecordingDidChange:self];
 }
 
-- (void)audioRecorderRecordingDidFail:(id)a3
+- (void)audioRecorderRecordingDidFail:(id)fail
 {
   [(CKMessageEntryView *)self configureForDisplayMode:1];
 
   [(CKMessageEntryView *)self showHintWithReason:2];
 }
 
-- (void)audioRecorderDidUpdateAveragePower:(float)a3
+- (void)audioRecorderDidUpdateAveragePower:(float)power
 {
   if ([(CKMessageEntryView *)self recordingStartedFromRaiseGesture])
   {
@@ -8971,69 +8971,69 @@ uint64_t __53__CKMessageEntryView_audioRecorderDidStartRecording___block_invoke(
     [v8 audioRecordingViewMaximumDBLevel];
     v10 = v9;
 
-    v11 = [(CKMessageEntryView *)self audioRecordingView];
-    [v11 addToWaveformWithIntensity:(a3 - v7) / (v10 - v7)];
+    audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
+    [audioRecordingView addToWaveformWithIntensity:(power - v7) / (v10 - v7)];
   }
 }
 
 - (void)_setupAudioMessageRecordingView
 {
-  v3 = [(CKMessageEntryView *)self audioRecordingView];
+  audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
 
-  if (!v3)
+  if (!audioRecordingView)
   {
     v4 = [CKAudioMessageRecordingView alloc];
-    v5 = [(CKMessageEntryView *)self contentClipView];
-    [v5 frame];
+    contentClipView = [(CKMessageEntryView *)self contentClipView];
+    [contentClipView frame];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
-    v14 = [(CKMessageEntryView *)self conversation];
-    v15 = [v14 sendingService];
-    v16 = [(CKAudioMessageRecordingView *)v4 initWithFrame:v15 service:v7, v9, v11, v13];
+    conversation = [(CKMessageEntryView *)self conversation];
+    sendingService = [conversation sendingService];
+    v16 = [(CKAudioMessageRecordingView *)v4 initWithFrame:sendingService service:v7, v9, v11, v13];
     [(CKMessageEntryView *)self setAudioRecordingView:v16];
 
-    v17 = [(CKMessageEntryView *)self audioRecordingView];
-    [v17 setAlpha:0.0];
+    audioRecordingView2 = [(CKMessageEntryView *)self audioRecordingView];
+    [audioRecordingView2 setAlpha:0.0];
 
-    v18 = [(CKMessageEntryView *)self audioRecordingView];
-    [v18 setDelegate:self];
+    audioRecordingView3 = [(CKMessageEntryView *)self audioRecordingView];
+    [audioRecordingView3 setDelegate:self];
 
-    v19 = [(CKMessageEntryView *)self audioRecordingView];
-    [v19 setupDisplayLink];
+    audioRecordingView4 = [(CKMessageEntryView *)self audioRecordingView];
+    [audioRecordingView4 setupDisplayLink];
 
-    v20 = [(CKMessageEntryView *)self audioRecordingView];
-    v21 = [v20 sendButton];
-    [v21 setEnabled:{-[CKMessageEntryView sendButtonEnabled](self, "sendButtonEnabled")}];
+    audioRecordingView5 = [(CKMessageEntryView *)self audioRecordingView];
+    sendButton = [audioRecordingView5 sendButton];
+    [sendButton setEnabled:{-[CKMessageEntryView sendButtonEnabled](self, "sendButtonEnabled")}];
 
-    v22 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LODWORD(v21) = [v22 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LODWORD(sendButton) = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-    if (v21)
+    if (sendButton)
     {
-      v23 = [(CKMessageEntryView *)self contentClipView];
-      v24 = [(CKMessageEntryView *)self audioRecordingView];
-      [v23 addSubview:v24];
+      contentClipView2 = [(CKMessageEntryView *)self contentClipView];
+      audioRecordingView6 = [(CKMessageEntryView *)self audioRecordingView];
+      [contentClipView2 addSubview:audioRecordingView6];
 
       v25 = [CKGlassCancelAudioRecordingButton alloc];
-      v26 = [(CKMessageEntryView *)self plusButton];
-      [v26 frame];
+      plusButton = [(CKMessageEntryView *)self plusButton];
+      [plusButton frame];
       v27 = [(CKGlassCancelAudioRecordingButton *)v25 initWithFrame:?];
       [(CKMessageEntryView *)self setCancelAudioRecordingButton:v27];
 
-      v28 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
-      [v28 addTarget:self action:sel_audioMessageRecordingViewDidCancel_ forControlEvents:64];
+      cancelAudioRecordingButton = [(CKMessageEntryView *)self cancelAudioRecordingButton];
+      [cancelAudioRecordingButton addTarget:self action:sel_audioMessageRecordingViewDidCancel_ forControlEvents:64];
 
-      v29 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
-      v30 = [(CKMessageEntryView *)self contentClipView];
-      [(CKMessageEntryView *)self insertSubview:v29 belowSubview:v30];
+      cancelAudioRecordingButton2 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
+      contentClipView3 = [(CKMessageEntryView *)self contentClipView];
+      [(CKMessageEntryView *)self insertSubview:cancelAudioRecordingButton2 belowSubview:contentClipView3];
     }
 
     else
     {
-      v29 = [(CKMessageEntryView *)self audioRecordingView];
-      [(CKMessageEntryView *)self addSubview:v29];
+      cancelAudioRecordingButton2 = [(CKMessageEntryView *)self audioRecordingView];
+      [(CKMessageEntryView *)self addSubview:cancelAudioRecordingButton2];
     }
 
     v32[0] = MEMORY[0x1E69E9820];
@@ -9042,8 +9042,8 @@ uint64_t __53__CKMessageEntryView_audioRecorderDidStartRecording___block_invoke(
     v32[3] = &unk_1E72EBA18;
     v32[4] = self;
     [MEMORY[0x1E69DD250] performWithoutAnimation:v32];
-    v31 = [(CKMessageEntryView *)self delegate];
-    [v31 messageEntryViewDidChange:self isTextChange:0 isShelfChange:0 isTranslationChange:0];
+    delegate = [(CKMessageEntryView *)self delegate];
+    [delegate messageEntryViewDidChange:self isTextChange:0 isShelfChange:0 isTranslationChange:0];
   }
 }
 
@@ -9067,14 +9067,14 @@ void __53__CKMessageEntryView__setupAudioMessageRecordingView__block_invoke(uint
 
 - (void)startRecordingForAudioButtonInEntryView
 {
-  v3 = [(CKMessageEntryView *)self composition];
-  if ([v3 hasContent])
+  composition = [(CKMessageEntryView *)self composition];
+  if ([composition hasContent])
   {
     goto LABEL_4;
   }
 
-  v4 = [(CKMessageEntryView *)self audioComposition];
-  if (v4)
+  audioComposition = [(CKMessageEntryView *)self audioComposition];
+  if (audioComposition)
   {
 
 LABEL_4:
@@ -9084,9 +9084,9 @@ LABEL_5:
     return;
   }
 
-  v5 = [(CKMessageEntryView *)self sendLaterPluginInfo];
+  sendLaterPluginInfo = [(CKMessageEntryView *)self sendLaterPluginInfo];
 
-  if (v5)
+  if (sendLaterPluginInfo)
   {
     goto LABEL_5;
   }
@@ -9094,19 +9094,19 @@ LABEL_5:
   [(CKMessageEntryView *)self startRecording];
 }
 
-- (void)audioButtonLongPressed:(id)a3
+- (void)audioButtonLongPressed:(id)pressed
 {
-  v4 = a3;
-  v5 = [v4 state];
-  if ((v5 - 3) < 2)
+  pressedCopy = pressed;
+  state = [pressedCopy state];
+  if ((state - 3) < 2)
   {
-    v10 = [(CKMessageEntryView *)self audioMessageButtonTimer];
+    audioMessageButtonTimer = [(CKMessageEntryView *)self audioMessageButtonTimer];
 
-    if (v10)
+    if (audioMessageButtonTimer)
     {
       [(CKMessageEntryView *)self setShouldUseLinearResizeForAudioMessage:0];
-      v11 = [(CKMessageEntryView *)self audioMessageButtonTimer];
-      [v11 invalidate];
+      audioMessageButtonTimer2 = [(CKMessageEntryView *)self audioMessageButtonTimer];
+      [audioMessageButtonTimer2 invalidate];
 
       [(CKMessageEntryView *)self setAudioMessageButtonTimer:0];
       [(CKMessageEntryView *)self cancelAudioMessage];
@@ -9114,45 +9114,45 @@ LABEL_5:
       goto LABEL_11;
     }
 
-    v23 = [(CKMessageEntryView *)self audioRecordingView];
-    v24 = [v23 isStopButtonHighlighted];
+    audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
+    isStopButtonHighlighted = [audioRecordingView isStopButtonHighlighted];
 
-    if (!v24)
+    if (!isStopButtonHighlighted)
     {
       goto LABEL_11;
     }
 
     [(CKMessageEntryView *)self setupAudioMessageQuickSendViewAndStopRecording];
-    v20 = [(CKMessageEntryView *)self audioRecordingView];
-    v21 = v20;
+    audioRecordingView2 = [(CKMessageEntryView *)self audioRecordingView];
+    v21 = audioRecordingView2;
     v22 = 0;
 LABEL_10:
-    [v20 setIsStopButtonHighlighted:v22];
+    [audioRecordingView2 setIsStopButtonHighlighted:v22];
 
     goto LABEL_11;
   }
 
-  if (v5 == 2)
+  if (state == 2)
   {
-    v12 = [(CKMessageEntryView *)self audioRecordingView];
-    [v4 locationInView:v12];
+    audioRecordingView3 = [(CKMessageEntryView *)self audioRecordingView];
+    [pressedCopy locationInView:audioRecordingView3];
     v14 = v13;
     v16 = v15;
 
-    v17 = [(CKMessageEntryView *)self audioRecordingView];
-    v18 = [v17 stopButton];
-    [v18 frame];
+    audioRecordingView4 = [(CKMessageEntryView *)self audioRecordingView];
+    stopButton = [audioRecordingView4 stopButton];
+    [stopButton frame];
     v33.x = v14;
     v33.y = v16;
     v19 = CGRectContainsPoint(v34, v33);
 
-    v20 = [(CKMessageEntryView *)self audioRecordingView];
-    v21 = v20;
+    audioRecordingView2 = [(CKMessageEntryView *)self audioRecordingView];
+    v21 = audioRecordingView2;
     v22 = v19;
     goto LABEL_10;
   }
 
-  if (v5 == 1)
+  if (state == 1)
   {
     [(CKMessageEntryView *)self setShouldUseLinearResizeForAudioMessage:1];
     [(CKMessageEntryView *)self _setupAudioMessageRecordingView];
@@ -9165,11 +9165,11 @@ LABEL_10:
     v27 = __45__CKMessageEntryView_audioButtonLongPressed___block_invoke;
     v28 = &unk_1E72F4838;
     objc_copyWeak(&v31, &location);
-    v29 = self;
+    selfCopy = self;
     v8 = v6;
     v30 = v8;
     v9 = [v7 scheduledTimerWithTimeInterval:0 repeats:&v25 block:0.5];
-    [(CKMessageEntryView *)self setAudioMessageButtonTimer:v9, v25, v26, v27, v28, v29];
+    [(CKMessageEntryView *)self setAudioMessageButtonTimer:v9, v25, v26, v27, v28, selfCopy];
 
     objc_destroyWeak(&v31);
     objc_destroyWeak(&location);
@@ -9216,34 +9216,34 @@ void __45__CKMessageEntryView_audioButtonLongPressed___block_invoke(id *a1)
   [v8 messageEntryViewDidChange:a1[4] isTextChange:0 isShelfChange:0 isTranslationChange:0];
 }
 
-- (void)showHintWithReason:(int64_t)a3
+- (void)showHintWithReason:(int64_t)reason
 {
-  v5 = [(CKMessageEntryView *)self hintLabel];
-  v6 = [v5 isHidden];
+  hintLabel = [(CKMessageEntryView *)self hintLabel];
+  isHidden = [hintLabel isHidden];
 
-  if (v6)
+  if (isHidden)
   {
-    if (a3 <= 3)
+    if (reason <= 3)
     {
-      v7 = off_1E72F4870[a3];
-      v8 = [(CKMessageEntryView *)self hintLabel];
+      v7 = off_1E72F4870[reason];
+      hintLabel2 = [(CKMessageEntryView *)self hintLabel];
       v9 = CKFrameworkBundle();
       v10 = [v9 localizedStringForKey:v7 value:&stru_1F04268F8 table:@"ChatKit"];
-      [v8 setText:v10];
+      [hintLabel2 setText:v10];
     }
 
     [(CKMessageEntryView *)self applyDefaultGlass];
-    v11 = [(CKMessageEntryView *)self audioButton];
-    [v11 setEnabled:0];
+    audioButton = [(CKMessageEntryView *)self audioButton];
+    [audioButton setEnabled:0];
 
-    v12 = [(CKMessageEntryView *)self plusButton];
-    v13 = [v12 button];
-    [v13 setEnabled:0];
+    plusButton = [(CKMessageEntryView *)self plusButton];
+    button = [plusButton button];
+    [button setEnabled:0];
 
-    v14 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    LODWORD(v13) = [v14 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    LODWORD(button) = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-    if (v13)
+    if (button)
     {
       [(CKMessageEntryView *)self glassSendButton];
     }
@@ -9255,14 +9255,14 @@ void __45__CKMessageEntryView_audioButtonLongPressed___block_invoke(id *a1)
     v15 = ;
     [v15 setEnabled:0];
 
-    v16 = [(CKMessageEntryView *)self emojiButton];
-    [v16 setEnabled:0];
+    emojiButton = [(CKMessageEntryView *)self emojiButton];
+    [emojiButton setEnabled:0];
 
-    v17 = [(CKMessageEntryView *)self hintLabel];
-    [v17 setAlpha:0.0];
+    hintLabel3 = [(CKMessageEntryView *)self hintLabel];
+    [hintLabel3 setAlpha:0.0];
 
-    v18 = [(CKMessageEntryView *)self hintLabel];
-    [v18 setHidden:0];
+    hintLabel4 = [(CKMessageEntryView *)self hintLabel];
+    [hintLabel4 setHidden:0];
 
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
@@ -9363,38 +9363,38 @@ void __41__CKMessageEntryView_showHintWithReason___block_invoke_5(uint64_t a1)
 - (void)startRecording
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(CKMessageEntryView *)self recorder];
+  recorder = [(CKMessageEntryView *)self recorder];
   if (IMOSLoggingEnabled())
   {
     v4 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
     {
-      v5 = [(CKMessageEntryView *)self recorder];
-      v6 = [(CKMessageEntryView *)self recorder];
-      v7 = [v6 isRecording];
+      recorder2 = [(CKMessageEntryView *)self recorder];
+      recorder3 = [(CKMessageEntryView *)self recorder];
+      isRecording = [recorder3 isRecording];
       v8 = @"NO";
-      if (v7)
+      if (isRecording)
       {
         v8 = @"YES";
       }
 
       v12 = 138412546;
-      v13 = v5;
+      v13 = recorder2;
       v14 = 2112;
       v15 = v8;
       _os_log_impl(&dword_19020E000, v4, OS_LOG_TYPE_INFO, "Start recording with recorder: %@ isRecordingAlready: %@", &v12, 0x16u);
     }
   }
 
-  v9 = [(CKMessageEntryView *)self conversation];
-  v10 = [v9 sendingService];
-  if ([(CKMessageEntryView *)self shouldRecordForService:v10])
+  conversation = [(CKMessageEntryView *)self conversation];
+  sendingService = [conversation sendingService];
+  if ([(CKMessageEntryView *)self shouldRecordForService:sendingService])
   {
-    v11 = [v3 isRecording];
+    isRecording2 = [recorder isRecording];
 
-    if ((v11 & 1) == 0)
+    if ((isRecording2 & 1) == 0)
     {
-      [v3 startRecordingForRaiseGesture:0 shouldPlaySound:0];
+      [recorder startRecordingForRaiseGesture:0 shouldPlaySound:0];
     }
   }
 
@@ -9403,13 +9403,13 @@ void __41__CKMessageEntryView_showHintWithReason___block_invoke_5(uint64_t a1)
   }
 }
 
-- (double)powerLevelForAudioMessageRecordingView:(id)a3
+- (double)powerLevelForAudioMessageRecordingView:(id)view
 {
-  v4 = [(CKMessageEntryView *)self recorder];
-  if (v4 && (v5 = v4, -[CKMessageEntryView recorder](self, "recorder"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isRecording], v6, v5, (v7 & 1) != 0))
+  recorder = [(CKMessageEntryView *)self recorder];
+  if (recorder && (v5 = recorder, -[CKMessageEntryView recorder](self, "recorder"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isRecording], v6, v5, (v7 & 1) != 0))
   {
-    v8 = [(CKMessageEntryView *)self recorder];
-    [v8 averagePower];
+    recorder2 = [(CKMessageEntryView *)self recorder];
+    [recorder2 averagePower];
     v10 = v9;
   }
 
@@ -9423,9 +9423,9 @@ void __41__CKMessageEntryView_showHintWithReason___block_invoke_5(uint64_t a1)
 
 - (void)setupAudioMessageQuickSendViewAndStopRecording
 {
-  v3 = [(CKMessageEntryView *)self recorder];
+  recorder = [(CKMessageEntryView *)self recorder];
 
-  if (!v3)
+  if (!recorder)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -9448,9 +9448,9 @@ LABEL_13:
     return;
   }
 
-  v4 = [(CKMessageEntryView *)self audioRecordingView];
+  audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
 
-  if (!v4)
+  if (!audioRecordingView)
   {
     if (!IMOSLoggingEnabled())
     {
@@ -9469,12 +9469,12 @@ LABEL_13:
     goto LABEL_12;
   }
 
-  v5 = [(CKMessageEntryView *)self recorder];
-  [v5 setPaused:1];
+  recorder2 = [(CKMessageEntryView *)self recorder];
+  [recorder2 setPaused:1];
 
   [(CKMessageEntryView *)self stopRecording];
-  v9 = [(CKMessageEntryView *)self audioRecordingView];
-  [v9 setPlaybackCurrentTime:NAN];
+  audioRecordingView2 = [(CKMessageEntryView *)self audioRecordingView];
+  [audioRecordingView2 setPlaybackCurrentTime:NAN];
 }
 
 - (void)stopRecording
@@ -9485,34 +9485,34 @@ LABEL_13:
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(CKMessageEntryView *)self recorder];
-      v5 = [(CKMessageEntryView *)self recorder];
-      v6 = [v5 isRecording];
+      recorder = [(CKMessageEntryView *)self recorder];
+      recorder2 = [(CKMessageEntryView *)self recorder];
+      isRecording = [recorder2 isRecording];
       v7 = @"NO";
-      if (v6)
+      if (isRecording)
       {
         v7 = @"YES";
       }
 
       *buf = 138412546;
-      v12 = v4;
+      v12 = recorder;
       v13 = 2112;
       v14 = v7;
       _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "Stop recording with recorder: %@ isRecordingAlready: %@", buf, 0x16u);
     }
   }
 
-  v8 = [(CKMessageEntryView *)self recorder];
-  if ([v8 isRecording])
+  recorder3 = [(CKMessageEntryView *)self recorder];
+  if ([recorder3 isRecording])
   {
     [(CKMessageEntryView *)self sendEnableRotationAfterRecordingToDelegate];
-    v9 = [(CKMessageEntryView *)self recorder];
+    recorder4 = [(CKMessageEntryView *)self recorder];
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __35__CKMessageEntryView_stopRecording__block_invoke;
     v10[3] = &unk_1E72ED6D8;
     v10[4] = self;
-    [v9 stopRecording:v10];
+    [recorder4 stopRecording:v10];
   }
 }
 
@@ -9583,81 +9583,81 @@ uint64_t __35__CKMessageEntryView_stopRecording__block_invoke_3(uint64_t a1)
   return [v2 showHintWithReason:2];
 }
 
-- (void)audioMessageRecordingViewDidResume:(id)a3
+- (void)audioMessageRecordingViewDidResume:(id)resume
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(CKMessageEntryView *)self recorder];
+  resumeCopy = resume;
+  recorder = [(CKMessageEntryView *)self recorder];
 
-  if (v5)
+  if (recorder)
   {
     if (IMOSLoggingEnabled())
     {
       v6 = OSLogHandleForIMFoundationCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
       {
-        v7 = [(CKMessageEntryView *)self recorder];
-        v8 = [(CKMessageEntryView *)self recorder];
-        v9 = [v8 isRecording];
+        recorder2 = [(CKMessageEntryView *)self recorder];
+        recorder3 = [(CKMessageEntryView *)self recorder];
+        isRecording = [recorder3 isRecording];
         v10 = @"NO";
-        if (v9)
+        if (isRecording)
         {
           v10 = @"YES";
         }
 
         v25 = 138412546;
-        v26 = v7;
+        v26 = recorder2;
         v27 = 2112;
         v28 = v10;
         _os_log_impl(&dword_19020E000, v6, OS_LOG_TYPE_INFO, "Resume recording with recorder: %@ isRecordingAlready: %@", &v25, 0x16u);
       }
     }
 
-    v11 = [(CKMessageEntryView *)self audioComposition];
+    audioComposition = [(CKMessageEntryView *)self audioComposition];
 
-    if (v11)
+    if (audioComposition)
     {
-      v12 = [(CKMessageEntryView *)self audioComposition];
-      v13 = [v12 mediaObjects];
-      v14 = [v13 firstObject];
+      audioComposition2 = [(CKMessageEntryView *)self audioComposition];
+      mediaObjects = [audioComposition2 mediaObjects];
+      firstObject = [mediaObjects firstObject];
 
-      [v14 duration];
+      [firstObject duration];
       v16 = v15;
-      v17 = [(CKMessageEntryView *)self audioRecordingView];
-      [v17 setPlaybackDuration:v16];
+      audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
+      [audioRecordingView setPlaybackDuration:v16];
 
-      v18 = [(CKMessageEntryView *)self audioRecordingView];
-      v19 = [v14 powerLevels];
-      [v18 setWithIntensities:v19];
+      audioRecordingView2 = [(CKMessageEntryView *)self audioRecordingView];
+      powerLevels = [firstObject powerLevels];
+      [audioRecordingView2 setWithIntensities:powerLevels];
 
-      v20 = [(CKMessageEntryView *)self recorder];
-      [v20 setPaused:1];
+      recorder4 = [(CKMessageEntryView *)self recorder];
+      [recorder4 setPaused:1];
 
-      v21 = [(CKMessageEntryView *)self recorder];
-      [v21 setTotalPacketsCount:{objc_msgSend(v14, "totalPacketsCount")}];
+      recorder5 = [(CKMessageEntryView *)self recorder];
+      [recorder5 setTotalPacketsCount:{objc_msgSend(firstObject, "totalPacketsCount")}];
 
-      v22 = [(CKMessageEntryView *)self recorder];
-      v23 = [v14 temporaryFileURL];
-      [v22 setFileURL:v23];
+      recorder6 = [(CKMessageEntryView *)self recorder];
+      temporaryFileURL = [firstObject temporaryFileURL];
+      [recorder6 setFileURL:temporaryFileURL];
     }
 
     [(CKMessageEntryView *)self startRecording];
-    v24 = [(CKMessageEntryView *)self recorder];
-    [v24 setPaused:0];
+    recorder7 = [(CKMessageEntryView *)self recorder];
+    [recorder7 setPaused:0];
   }
 }
 
-- (void)audioMessageRecordingViewDidSend:(id)a3
+- (void)audioMessageRecordingViewDidSend:(id)send
 {
-  v4 = [(CKMessageEntryView *)self recorder];
+  recorder = [(CKMessageEntryView *)self recorder];
 
-  if (v4)
+  if (recorder)
   {
-    v5 = [(CKMessageEntryView *)self recorder];
-    [v5 setPaused:0];
+    recorder2 = [(CKMessageEntryView *)self recorder];
+    [recorder2 setPaused:0];
 
-    v6 = [(CKMessageEntryView *)self audioController];
-    [v6 stop];
+    audioController = [(CKMessageEntryView *)self audioController];
+    [audioController stop];
 
     [(CKMessageEntryView *)self sendAudioMessage];
   }
@@ -9665,20 +9665,20 @@ uint64_t __35__CKMessageEntryView_stopRecording__block_invoke_3(uint64_t a1)
 
 - (void)sendAudioMessage
 {
-  v3 = [(CKMessageEntryView *)self recorder];
-  v4 = [v3 isRecording];
+  recorder = [(CKMessageEntryView *)self recorder];
+  isRecording = [recorder isRecording];
 
-  if (v4)
+  if (isRecording)
   {
     [(CKMessageEntryView *)self sendEnableRotationAfterRecordingToDelegate];
     objc_initWeak(&location, self);
-    v5 = [(CKMessageEntryView *)self recorder];
+    recorder2 = [(CKMessageEntryView *)self recorder];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __38__CKMessageEntryView_sendAudioMessage__block_invoke;
     v6[3] = &unk_1E72F0968;
     objc_copyWeak(&v7, &location);
-    [v5 stopRecording:v6];
+    [recorder2 stopRecording:v6];
 
     objc_destroyWeak(&v7);
     objc_destroyWeak(&location);
@@ -9712,58 +9712,58 @@ void __38__CKMessageEntryView_sendAudioMessage__block_invoke(uint64_t a1, void *
     v3 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
-      v4 = [(CKMessageEntryView *)self audioComposition];
+      audioComposition = [(CKMessageEntryView *)self audioComposition];
       v9 = 138412290;
-      v10 = v4;
+      v10 = audioComposition;
       _os_log_impl(&dword_19020E000, v3, OS_LOG_TYPE_INFO, "Sending audio message with audio composition: %@", &v9, 0xCu);
     }
   }
 
-  v5 = [(CKMessageEntryView *)self recorder];
+  recorder = [(CKMessageEntryView *)self recorder];
 
-  if (v5)
+  if (recorder)
   {
-    v6 = [(CKMessageEntryView *)self recorder];
-    [v6 resetState];
+    recorder2 = [(CKMessageEntryView *)self recorder];
+    [recorder2 resetState];
   }
 
   [(CKMessageEntryView *)self _deleteTemporaryAudioFile];
-  v7 = [(CKMessageEntryView *)self audioComposition];
-  [(CKMessageEntryView *)self _trackAudioMessageSentWithComposition:v7];
+  audioComposition2 = [(CKMessageEntryView *)self audioComposition];
+  [(CKMessageEntryView *)self _trackAudioMessageSentWithComposition:audioComposition2];
 
-  v8 = [(CKMessageEntryView *)self delegate];
-  [v8 messageEntryViewSendButtonHit:self];
+  delegate = [(CKMessageEntryView *)self delegate];
+  [delegate messageEntryViewSendButtonHit:self];
 }
 
-- (void)audioMessageRecordingViewDidCancel:(id)a3
+- (void)audioMessageRecordingViewDidCancel:(id)cancel
 {
-  v4 = [(CKMessageEntryView *)self audioController];
+  audioController = [(CKMessageEntryView *)self audioController];
 
-  if (v4)
+  if (audioController)
   {
-    v5 = [(CKMessageEntryView *)self audioController];
-    [v5 stop];
+    audioController2 = [(CKMessageEntryView *)self audioController];
+    [audioController2 stop];
 
     [(CKMessageEntryView *)self setAudioController:0];
   }
 
-  v6 = [(CKMessageEntryView *)self recorder];
+  recorder = [(CKMessageEntryView *)self recorder];
 
-  if (v6)
+  if (recorder)
   {
-    v7 = [(CKMessageEntryView *)self recorder];
-    [v7 setPaused:0];
+    recorder2 = [(CKMessageEntryView *)self recorder];
+    [recorder2 setPaused:0];
 
-    v8 = [(CKMessageEntryView *)self recorder];
-    [v8 cancelRecording];
+    recorder3 = [(CKMessageEntryView *)self recorder];
+    [recorder3 cancelRecording];
 
-    v9 = [(CKMessageEntryView *)self recorder];
-    [v9 resetState];
+    recorder4 = [(CKMessageEntryView *)self recorder];
+    [recorder4 resetState];
 
-    v10 = [MEMORY[0x1E69A8070] sharedFeatureFlags];
-    v11 = [v10 isEntryViewRefreshEnabled];
+    mEMORY[0x1E69A8070] = [MEMORY[0x1E69A8070] sharedFeatureFlags];
+    isEntryViewRefreshEnabled = [mEMORY[0x1E69A8070] isEntryViewRefreshEnabled];
 
-    if (v11)
+    if (isEntryViewRefreshEnabled)
     {
       [(CKMessageEntryView *)self applyDefaultGlass];
       v13[0] = MEMORY[0x1E69E9820];
@@ -9800,34 +9800,34 @@ uint64_t __57__CKMessageEntryView_audioMessageRecordingViewDidCancel___block_inv
 - (void)_deleteTemporaryAudioFile
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(CKMessageEntryView *)self audioComposition];
+  audioComposition = [(CKMessageEntryView *)self audioComposition];
 
-  if (v3)
+  if (audioComposition)
   {
-    v4 = [(CKMessageEntryView *)self audioComposition];
-    v5 = [v4 mediaObjects];
-    v6 = [v5 firstObject];
+    audioComposition2 = [(CKMessageEntryView *)self audioComposition];
+    mediaObjects = [audioComposition2 mediaObjects];
+    firstObject = [mediaObjects firstObject];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = v6;
+      v7 = firstObject;
       if (IMOSLoggingEnabled())
       {
         v8 = OSLogHandleForIMFoundationCategory();
         if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
         {
-          v9 = [v7 temporaryFileURL];
+          temporaryFileURL = [v7 temporaryFileURL];
           *buf = 138412290;
-          v16 = v9;
+          v16 = temporaryFileURL;
           _os_log_impl(&dword_19020E000, v8, OS_LOG_TYPE_INFO, "Deleting temporary audio file at url: %@", buf, 0xCu);
         }
       }
 
-      v10 = [MEMORY[0x1E696AC08] defaultManager];
-      v11 = [v7 temporaryFileURL];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      temporaryFileURL2 = [v7 temporaryFileURL];
       v14 = 0;
-      [v10 removeItemAtURL:v11 error:&v14];
+      [defaultManager removeItemAtURL:temporaryFileURL2 error:&v14];
       v12 = v14;
 
       if (v12 && IMOSLoggingEnabled())
@@ -9844,47 +9844,47 @@ uint64_t __57__CKMessageEntryView_audioMessageRecordingViewDidCancel___block_inv
   }
 }
 
-- (void)audioMessageRecordingViewDidPlay:(id)a3
+- (void)audioMessageRecordingViewDidPlay:(id)play
 {
-  v3 = [(CKMessageEntryView *)self audioController];
-  [v3 play];
+  audioController = [(CKMessageEntryView *)self audioController];
+  [audioController play];
 }
 
-- (void)audioMessageRecordingViewDidPause:(id)a3
+- (void)audioMessageRecordingViewDidPause:(id)pause
 {
-  v3 = [(CKMessageEntryView *)self audioController];
-  [v3 pause];
+  audioController = [(CKMessageEntryView *)self audioController];
+  [audioController pause];
 }
 
-- (void)audioMessageRecordingViewDidStartScrubbing:(id)a3
+- (void)audioMessageRecordingViewDidStartScrubbing:(id)scrubbing
 {
-  v4 = [(CKMessageEntryView *)self audioController];
-  v5 = [v4 isPlaying];
+  audioController = [(CKMessageEntryView *)self audioController];
+  isPlaying = [audioController isPlaying];
 
-  if (v5)
+  if (isPlaying)
   {
-    v6 = [(CKMessageEntryView *)self audioController];
-    [v6 pause];
+    audioController2 = [(CKMessageEntryView *)self audioController];
+    [audioController2 pause];
 
     [(CKMessageEntryView *)self setAudioControllerWasPlayingBeforeScrubbing:1];
   }
 }
 
-- (void)audioMessageRecordingViewDidUpdateScrubbing:(id)a3 atTime:(double)a4
+- (void)audioMessageRecordingViewDidUpdateScrubbing:(id)scrubbing atTime:(double)time
 {
-  v5 = [(CKMessageEntryView *)self audioController];
-  [v5 layoutViewsForScrubbingTime:a4];
+  audioController = [(CKMessageEntryView *)self audioController];
+  [audioController layoutViewsForScrubbingTime:time];
 }
 
-- (void)audioMessageRecordingViewDidStopScrubbing:(id)a3 atTime:(double)a4
+- (void)audioMessageRecordingViewDidStopScrubbing:(id)scrubbing atTime:(double)time
 {
-  v6 = [(CKMessageEntryView *)self audioController];
-  [v6 setCurrentTime:a4];
+  audioController = [(CKMessageEntryView *)self audioController];
+  [audioController setCurrentTime:time];
 
   if ([(CKMessageEntryView *)self audioControllerWasPlayingBeforeScrubbing])
   {
-    v7 = [(CKMessageEntryView *)self audioController];
-    [v7 play];
+    audioController2 = [(CKMessageEntryView *)self audioController];
+    [audioController2 play];
 
     [(CKMessageEntryView *)self setAudioControllerWasPlayingBeforeScrubbing:0];
   }
@@ -9892,59 +9892,59 @@ uint64_t __57__CKMessageEntryView_audioMessageRecordingViewDidCancel___block_inv
 
 - (void)clearAudioRecordingUI
 {
-  v3 = [(CKMessageEntryView *)self audioRecordingView];
+  audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
 
-  if (v3)
+  if (audioRecordingView)
   {
-    v4 = [(CKMessageEntryView *)self audioRecordingView];
-    [v4 invalidateDisplayLink];
+    audioRecordingView2 = [(CKMessageEntryView *)self audioRecordingView];
+    [audioRecordingView2 invalidateDisplayLink];
 
-    v5 = [(CKMessageEntryView *)self audioRecordingView];
-    [v5 removeFromSuperview];
+    audioRecordingView3 = [(CKMessageEntryView *)self audioRecordingView];
+    [audioRecordingView3 removeFromSuperview];
 
     [(CKMessageEntryView *)self setAudioRecordingView:0];
-    v6 = [(CKMessageEntryView *)self cancelAudioRecordingButton];
-    [v6 removeFromSuperview];
+    cancelAudioRecordingButton = [(CKMessageEntryView *)self cancelAudioRecordingButton];
+    [cancelAudioRecordingButton removeFromSuperview];
 
     [(CKMessageEntryView *)self setCancelAudioRecordingButton:0];
     [(CKMessageEntryView *)self setAudioComposition:0];
-    v7 = [(CKMessageEntryView *)self conversation];
-    [v7 setUnsentComposition:0];
+    conversation = [(CKMessageEntryView *)self conversation];
+    [conversation setUnsentComposition:0];
 
     [(CKMessageEntryView *)self setComposition:0];
     [(CKMessageEntryView *)self configureForDisplayMode:1];
-    v8 = [(CKMessageEntryView *)self delegate];
-    [v8 messageEntryViewDidChange:self isTextChange:0 isShelfChange:0 isTranslationChange:0];
+    delegate = [(CKMessageEntryView *)self delegate];
+    [delegate messageEntryViewDidChange:self isTextChange:0 isShelfChange:0 isTranslationChange:0];
 
-    v9 = [(CKMessageEntryView *)self inputDelegate];
+    inputDelegate = [(CKMessageEntryView *)self inputDelegate];
     v10 = objc_opt_respondsToSelector();
 
     if (v10)
     {
-      v11 = [(CKMessageEntryView *)self inputDelegate];
-      [v11 messageEntryViewDidClearAudioRecordingUI:self];
+      inputDelegate2 = [(CKMessageEntryView *)self inputDelegate];
+      [inputDelegate2 messageEntryViewDidClearAudioRecordingUI:self];
     }
 
-    v12 = [(CKMessageEntryView *)self recorder];
-    [v12 resetState];
+    recorder = [(CKMessageEntryView *)self recorder];
+    [recorder resetState];
   }
 }
 
 - (CGRect)audioRecordingPillViewFrameInThrowViewCoordinates
 {
-  v3 = [(CKMessageEntryView *)self audioRecordingView];
+  audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
 
-  if (v3)
+  if (audioRecordingView)
   {
-    v4 = [(CKMessageEntryView *)self delegate];
+    delegate = [(CKMessageEntryView *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(CKMessageEntryView *)self delegate];
-      v7 = [(CKMessageEntryView *)self audioRecordingView];
-      v8 = [v7 backgroundView];
-      [v6 messageEntryView:self frameInThrowViewCoordinatesForView:v8];
+      delegate2 = [(CKMessageEntryView *)self delegate];
+      audioRecordingView2 = [(CKMessageEntryView *)self audioRecordingView];
+      backgroundView = [audioRecordingView2 backgroundView];
+      [delegate2 messageEntryView:self frameInThrowViewCoordinatesForView:backgroundView];
       v10 = v9;
       v12 = v11;
       v14 = v13;
@@ -9953,12 +9953,12 @@ uint64_t __57__CKMessageEntryView_audioMessageRecordingViewDidCancel___block_inv
 
     else
     {
-      v6 = [(CKMessageEntryView *)self audioRecordingView];
-      v7 = [v6 backgroundView];
-      v17 = [(CKMessageEntryView *)self audioRecordingView];
-      v18 = [v17 backgroundView];
-      [v18 bounds];
-      [v7 convertRect:0 toView:?];
+      delegate2 = [(CKMessageEntryView *)self audioRecordingView];
+      audioRecordingView2 = [delegate2 backgroundView];
+      audioRecordingView3 = [(CKMessageEntryView *)self audioRecordingView];
+      backgroundView2 = [audioRecordingView3 backgroundView];
+      [backgroundView2 bounds];
+      [audioRecordingView2 convertRect:0 toView:?];
       v10 = v19;
       v12 = v20;
       v14 = v21;
@@ -9987,18 +9987,18 @@ uint64_t __57__CKMessageEntryView_audioMessageRecordingViewDidCancel___block_inv
 
 - (id)audioRecordingPillViewSnapshot
 {
-  v3 = [(CKMessageEntryView *)self audioRecordingView];
+  audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
 
-  if (v3)
+  if (audioRecordingView)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCA78]);
-    v5 = [(CKMessageEntryView *)self audioRecordingView];
-    v6 = [v5 backgroundView];
-    [v6 frame];
+    audioRecordingView2 = [(CKMessageEntryView *)self audioRecordingView];
+    backgroundView = [audioRecordingView2 backgroundView];
+    [backgroundView frame];
     v8 = v7;
-    v9 = [(CKMessageEntryView *)self audioRecordingView];
-    v10 = [v9 backgroundView];
-    [v10 frame];
+    audioRecordingView3 = [(CKMessageEntryView *)self audioRecordingView];
+    backgroundView2 = [audioRecordingView3 backgroundView];
+    [backgroundView2 frame];
     v12 = [v4 initWithSize:{v8, v11}];
 
     v16[0] = MEMORY[0x1E69E9820];
@@ -10036,93 +10036,93 @@ void __52__CKMessageEntryView_audioRecordingPillViewSnapshot__block_invoke(uint6
 
 - (void)applicationWillResignActive
 {
-  v3 = [(CKMessageEntryView *)self recorder];
+  recorder = [(CKMessageEntryView *)self recorder];
 
-  if (v3)
+  if (recorder)
   {
-    v4 = [(CKMessageEntryView *)self recorder];
-    v5 = [v4 isRecording];
+    recorder2 = [(CKMessageEntryView *)self recorder];
+    isRecording = [recorder2 isRecording];
 
-    if (v5)
+    if (isRecording)
     {
-      v6 = [(CKMessageEntryView *)self audioRecordingView];
-      v7 = [v6 state];
+      audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
+      state = [audioRecordingView state];
 
-      if (v7 != 2)
+      if (state != 2)
       {
-        v8 = [(CKMessageEntryView *)self recorder];
-        [v8 setPaused:1];
+        recorder3 = [(CKMessageEntryView *)self recorder];
+        [recorder3 setPaused:1];
 
         [(CKMessageEntryView *)self stopRecording];
-        v9 = [(CKMessageEntryView *)self audioComposition];
-        v10 = [v9 mediaObjects];
-        v16 = [v10 firstObject];
+        audioComposition = [(CKMessageEntryView *)self audioComposition];
+        mediaObjects = [audioComposition mediaObjects];
+        firstObject = [mediaObjects firstObject];
 
-        if (v16)
+        if (firstObject)
         {
-          [v16 duration];
+          [firstObject duration];
           v12 = v11;
-          v13 = [(CKMessageEntryView *)self audioRecordingView];
-          [v13 setPlaybackDuration:v12];
+          audioRecordingView2 = [(CKMessageEntryView *)self audioRecordingView];
+          [audioRecordingView2 setPlaybackDuration:v12];
         }
 
-        v14 = [(CKMessageEntryView *)self audioRecordingView];
-        [v14 setState:2];
+        audioRecordingView3 = [(CKMessageEntryView *)self audioRecordingView];
+        [audioRecordingView3 setState:2];
 
-        v15 = [(CKMessageEntryView *)self audioRecordingView];
-        [v15 setPlaybackCurrentTime:NAN];
+        audioRecordingView4 = [(CKMessageEntryView *)self audioRecordingView];
+        [audioRecordingView4 setPlaybackCurrentTime:NAN];
       }
     }
   }
 }
 
-- (void)audioController:(id)a3 mediaObjectDidFinishPlaying:(id)a4
+- (void)audioController:(id)controller mediaObjectDidFinishPlaying:(id)playing
 {
-  v4 = [(CKMessageEntryView *)self audioRecordingView:a3];
+  v4 = [(CKMessageEntryView *)self audioRecordingView:controller];
   [v4 setPlaybackCurrentTime:NAN];
 }
 
-- (void)audioController:(id)a3 mediaObjectProgressDidChange:(id)a4 currentTime:(double)a5 duration:(double)a6
+- (void)audioController:(id)controller mediaObjectProgressDidChange:(id)change currentTime:(double)time duration:(double)duration
 {
-  v7 = [(CKMessageEntryView *)self audioRecordingView:a3];
-  [v7 setPlaybackCurrentTime:a5];
+  v7 = [(CKMessageEntryView *)self audioRecordingView:controller];
+  [v7 setPlaybackCurrentTime:time];
 }
 
-- (void)audioController:(id)a3 layoutViewsForScrubbingTime:(double)a4 mediaObject:(id)a5
+- (void)audioController:(id)controller layoutViewsForScrubbingTime:(double)time mediaObject:(id)object
 {
-  v6 = [(CKMessageEntryView *)self audioRecordingView:a3];
-  [v6 setPlaybackCurrentTime:a4];
+  v6 = [(CKMessageEntryView *)self audioRecordingView:controller];
+  [v6 setPlaybackCurrentTime:time];
 }
 
-- (void)audioControllerDidStop:(id)a3
+- (void)audioControllerDidStop:(id)stop
 {
-  v3 = [(CKMessageEntryView *)self audioRecordingView];
-  [v3 setState:2];
+  audioRecordingView = [(CKMessageEntryView *)self audioRecordingView];
+  [audioRecordingView setState:2];
 }
 
 - (void)sendEnableRotationAfterRecordingToDelegate
 {
-  v3 = [(CKMessageEntryView *)self delegate];
+  delegate = [(CKMessageEntryView *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(CKMessageEntryView *)self delegate];
+    delegate2 = [(CKMessageEntryView *)self delegate];
     v5 = objc_opt_respondsToSelector();
 
     if (v5)
     {
-      v6 = [(CKMessageEntryView *)self delegate];
-      [v6 enableRotationAfterRecording];
+      delegate3 = [(CKMessageEntryView *)self delegate];
+      [delegate3 enableRotationAfterRecording];
     }
   }
 }
 
-- (void)setTextEffectCoordinatorPaused:(BOOL)a3 reason:(id)a4
+- (void)setTextEffectCoordinatorPaused:(BOOL)paused reason:(id)reason
 {
-  v4 = a3;
-  v6 = a4;
-  v7 = [(CKMessageEntryView *)self contentView];
-  [v7 setTextEffectCoordinatorPaused:v4 reason:v6];
+  pausedCopy = paused;
+  reasonCopy = reason;
+  contentView = [(CKMessageEntryView *)self contentView];
+  [contentView setTextEffectCoordinatorPaused:pausedCopy reason:reasonCopy];
 }
 
 - (CGSize)inputButtonSize
@@ -10171,11 +10171,11 @@ void __52__CKMessageEntryView_audioRecordingPillViewSnapshot__block_invoke(uint6
 
 - (void)moveFloatingCursorsToOrigin
 {
-  v4 = self;
-  v2 = [(CKMessageEntryView *)v4 contentView];
-  if (v2)
+  selfCopy = self;
+  contentView = [(CKMessageEntryView *)selfCopy contentView];
+  if (contentView)
   {
-    v3 = v2;
+    v3 = contentView;
     sub_190863B08();
   }
 
@@ -10195,9 +10195,9 @@ void __52__CKMessageEntryView_audioRecordingPillViewSnapshot__block_invoke(uint6
 
 - (void)_isDictationEnabled
 {
-  v0 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v1 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"BOOL _AFDictationRestricted(void)"];
-  [v0 handleFailureInFunction:v1 file:@"CKMessageEntryView.m" lineNumber:142 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"CKMessageEntryView.m" lineNumber:142 description:{@"%s", dlerror()}];
 
   __break(1u);
 }

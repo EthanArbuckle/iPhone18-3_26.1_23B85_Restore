@@ -6,8 +6,8 @@
 
 - (uint64_t)initWithEnvironment:()Daemon
 {
-  v4 = [a3 defaultCallbackScheduler];
-  v5 = [a1 initWithCallbackScheduler:v4];
+  defaultCallbackScheduler = [a3 defaultCallbackScheduler];
+  v5 = [self initWithCallbackScheduler:defaultCallbackScheduler];
 
   return v5;
 }

@@ -20,10 +20,10 @@
     title = v3->_title;
     v3->_title = v6;
 
-    v8 = [MEMORY[0x1E698DC80] sharedInstance];
-    v9 = [MEMORY[0x1E698DC80] sharedInstance];
-    v10 = [v9 primaryAuthKitAccount];
-    v11 = [v8 ageOfMajorityForAccount:v10];
+    mEMORY[0x1E698DC80] = [MEMORY[0x1E698DC80] sharedInstance];
+    mEMORY[0x1E698DC80]2 = [MEMORY[0x1E698DC80] sharedInstance];
+    primaryAuthKitAccount = [mEMORY[0x1E698DC80]2 primaryAuthKitAccount];
+    v11 = [mEMORY[0x1E698DC80] ageOfMajorityForAccount:primaryAuthKitAccount];
 
     if (v11)
     {

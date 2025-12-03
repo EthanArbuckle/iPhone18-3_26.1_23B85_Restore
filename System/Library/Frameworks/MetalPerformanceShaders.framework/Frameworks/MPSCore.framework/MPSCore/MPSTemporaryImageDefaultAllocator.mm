@@ -1,18 +1,18 @@
 @interface MPSTemporaryImageDefaultAllocator
-- (MPSTemporaryImageDefaultAllocator)initWithCoder:(id)a3;
-- (id)imageForCommandBuffer:(id)a3 imageDescriptor:(id)a4 kernel:(id)a5;
+- (MPSTemporaryImageDefaultAllocator)initWithCoder:(id)coder;
+- (id)imageForCommandBuffer:(id)buffer imageDescriptor:(id)descriptor kernel:(id)kernel;
 @end
 
 @implementation MPSTemporaryImageDefaultAllocator
 
-- (id)imageForCommandBuffer:(id)a3 imageDescriptor:(id)a4 kernel:(id)a5
+- (id)imageForCommandBuffer:(id)buffer imageDescriptor:(id)descriptor kernel:(id)kernel
 {
-  objc_msgSend_setStorageMode_(a4, a2, 2, a4, a5);
+  objc_msgSend_setStorageMode_(descriptor, a2, 2, descriptor, kernel);
 
-  return MEMORY[0x2821F9670](MPSTemporaryImage, sel_temporaryImageWithCommandBuffer_imageDescriptor_, a3, a4, v7);
+  return MEMORY[0x2821F9670](MPSTemporaryImage, sel_temporaryImageWithCommandBuffer_imageDescriptor_, buffer, descriptor, v7);
 }
 
-- (MPSTemporaryImageDefaultAllocator)initWithCoder:(id)a3
+- (MPSTemporaryImageDefaultAllocator)initWithCoder:(id)coder
 {
   v13.receiver = self;
   v13.super_class = MPSTemporaryImageDefaultAllocator;

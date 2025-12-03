@@ -1,9 +1,9 @@
 @interface HDMCAccountDevicesInfo
 - (BOOL)hasHealthAppDevicesWithHigherAlgorithmVersions;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)localDeviceIsOnlyDeviceWithNotifications;
 - (BOOL)shouldFireNotifications;
-- (HDMCAccountDevicesInfo)initWithHealthAppDevicesInfo:(id)a3 localDeviceInfo:(id)a4;
+- (HDMCAccountDevicesInfo)initWithHealthAppDevicesInfo:(id)info localDeviceInfo:(id)deviceInfo;
 @end
 
 @implementation HDMCAccountDevicesInfo
@@ -46,20 +46,20 @@
   }
 }
 
-- (HDMCAccountDevicesInfo)initWithHealthAppDevicesInfo:(id)a3 localDeviceInfo:(id)a4
+- (HDMCAccountDevicesInfo)initWithHealthAppDevicesInfo:(id)info localDeviceInfo:(id)deviceInfo
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  deviceInfoCopy = deviceInfo;
   v14.receiver = self;
   v14.super_class = HDMCAccountDevicesInfo;
   v8 = [(HDMCAccountDevicesInfo *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [infoCopy copy];
     healthAppDevicesInfo = v8->_healthAppDevicesInfo;
     v8->_healthAppDevicesInfo = v9;
 
-    v11 = [v7 copy];
+    v11 = [deviceInfoCopy copy];
     localDeviceInfo = v8->_localDeviceInfo;
     v8->_localDeviceInfo = v11;
   }
@@ -67,10 +67,10 @@
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -80,7 +80,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       localDeviceInfo = self->_localDeviceInfo;
       v7 = v5->_localDeviceInfo;
       if (localDeviceInfo != v7 && (!v7 || ![(HDMCDeviceInfo *)localDeviceInfo isEqual:?]))

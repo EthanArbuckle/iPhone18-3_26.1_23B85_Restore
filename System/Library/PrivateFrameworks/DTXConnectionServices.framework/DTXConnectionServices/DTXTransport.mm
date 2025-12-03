@@ -1,26 +1,26 @@
 @interface DTXTransport
-+ (BOOL)recognizesURL:(id)a3;
++ (BOOL)recognizesURL:(id)l;
 - (DTXTransport)init;
-- (DTXTransport)initWithRemoteAddress:(id)a3;
-- (DTXTransport)initWithXPCRepresentation:(id)a3;
+- (DTXTransport)initWithRemoteAddress:(id)address;
+- (DTXTransport)initWithXPCRepresentation:(id)representation;
 - (id)dataReceivedHandler;
 - (void)dealloc;
 - (void)disconnect;
-- (void)received:(const char *)a3 ofLength:(unint64_t)a4 destructor:(id)a5;
-- (void)serializedDisconnect:(id)a3;
-- (void)setDataReceivedHandler:(id)a3;
+- (void)received:(const char *)received ofLength:(unint64_t)length destructor:(id)destructor;
+- (void)serializedDisconnect:(id)disconnect;
+- (void)setDataReceivedHandler:(id)handler;
 @end
 
 @implementation DTXTransport
 
-+ (BOOL)recognizesURL:(id)a3
++ (BOOL)recognizesURL:(id)l
 {
-  v4 = a3;
-  v7 = objc_msgSend_schemes(a1, v5, v6);
-  v10 = objc_msgSend_scheme(v4, v8, v9);
+  lCopy = l;
+  v7 = objc_msgSend_schemes(self, v5, v6);
+  v10 = objc_msgSend_scheme(lCopy, v8, v9);
 
-  LOBYTE(v4) = objc_msgSend_containsObject_(v7, v11, v10);
-  return v4;
+  LOBYTE(lCopy) = objc_msgSend_containsObject_(v7, v11, v10);
+  return lCopy;
 }
 
 - (DTXTransport)init
@@ -37,9 +37,9 @@
   return v3;
 }
 
-- (DTXTransport)initWithXPCRepresentation:(id)a3
+- (DTXTransport)initWithXPCRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v18.receiver = self;
   v18.super_class = DTXTransport;
   v5 = [(DTXTransport *)&v18 init];
@@ -47,14 +47,14 @@
   if (v5)
   {
     sub_247F42BE0(v5);
-    if (!v4)
+    if (!representationCopy)
     {
       v11 = 0;
       goto LABEL_8;
     }
 
     length = 0;
-    data = xpc_dictionary_get_data(v4, "__DTXTransport_preflightdata", &length);
+    data = xpc_dictionary_get_data(representationCopy, "__DTXTransport_preflightdata", &length);
     if (data)
     {
       v8 = data;
@@ -93,9 +93,9 @@ LABEL_8:
   [(DTXTransport *)&v3 dealloc];
 }
 
-- (DTXTransport)initWithRemoteAddress:(id)a3
+- (DTXTransport)initWithRemoteAddress:(id)address
 {
-  v5 = a3;
+  addressCopy = address;
   v14.receiver = self;
   v14.super_class = DTXTransport;
   v6 = [(DTXTransport *)&v14 init];
@@ -104,12 +104,12 @@ LABEL_8:
   {
     sub_247F42BE0(v6);
     v8 = objc_opt_class();
-    if ((objc_msgSend_recognizesURL_(v8, v9, v5) & 1) == 0)
+    if ((objc_msgSend_recognizesURL_(v8, v9, addressCopy) & 1) == 0)
     {
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       v12 = NSStringFromSelector(a2);
-      NSLog(&cfstr_UnrecognizedUr.isa, v11, v12, v5);
+      NSLog(&cfstr_UnrecognizedUr.isa, v11, v12, addressCopy);
 
       v7 = 0;
     }
@@ -118,12 +118,12 @@ LABEL_8:
   return v7;
 }
 
-- (void)received:(const char *)a3 ofLength:(unint64_t)a4 destructor:(id)a5
+- (void)received:(const char *)received ofLength:(unint64_t)length destructor:(id)destructor
 {
-  v9 = a5;
-  if (a4)
+  destructorCopy = destructor;
+  if (length)
   {
-    objc_msgSend_acquireSize_(self->_tracker, v8, a4);
+    objc_msgSend_acquireSize_(self->_tracker, v8, length);
   }
 
   serializer = self->_serializer;
@@ -131,11 +131,11 @@ LABEL_8:
   v12[1] = 3221225472;
   v12[2] = sub_247F43068;
   v12[3] = &unk_278EEE868;
-  v14 = a3;
-  v15 = a4;
+  receivedCopy = received;
+  lengthCopy = length;
   v12[4] = self;
-  v13 = v9;
-  v11 = v9;
+  v13 = destructorCopy;
+  v11 = destructorCopy;
   dispatch_async(serializer, v12);
 }
 
@@ -152,10 +152,10 @@ LABEL_8:
   objc_msgSend_setStatus_(self, v5, 3);
 }
 
-- (void)serializedDisconnect:(id)a3
+- (void)serializedDisconnect:(id)disconnect
 {
-  v6 = a3;
-  if (!v6)
+  disconnectCopy = disconnect;
+  if (!disconnectCopy)
   {
     sub_247F59B08(a2, self, v5);
   }
@@ -168,7 +168,7 @@ LABEL_8:
   v16[1] = 3221225472;
   v16[2] = sub_247F432C0;
   v16[3] = &unk_278EEE890;
-  v14 = v6;
+  v14 = disconnectCopy;
   v17 = v10;
   v18 = v14;
   v15 = v10;
@@ -177,17 +177,17 @@ LABEL_8:
   objc_autoreleasePoolPop(v7);
 }
 
-- (void)setDataReceivedHandler:(id)a3
+- (void)setDataReceivedHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   handlerGuard = self->_handlerGuard;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_247F4336C;
   v7[3] = &unk_278EEE5F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_sync(handlerGuard, v7);
 }
 

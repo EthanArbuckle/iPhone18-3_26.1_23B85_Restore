@@ -1,5 +1,5 @@
 @interface AVTTransition
-- (AVTTransition)initWithModel:(id)a3 animated:(BOOL)a4 setupHandler:(id)a5 completionHandler:(id)a6 logger:(id)a7;
+- (AVTTransition)initWithModel:(id)model animated:(BOOL)animated setupHandler:(id)handler completionHandler:(id)completionHandler logger:(id)logger;
 - (NSString)description;
 - (void)cancel;
 - (void)start;
@@ -7,35 +7,35 @@
 
 @implementation AVTTransition
 
-- (AVTTransition)initWithModel:(id)a3 animated:(BOOL)a4 setupHandler:(id)a5 completionHandler:(id)a6 logger:(id)a7
+- (AVTTransition)initWithModel:(id)model animated:(BOOL)animated setupHandler:(id)handler completionHandler:(id)completionHandler logger:(id)logger
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  modelCopy = model;
+  handlerCopy = handler;
+  completionHandlerCopy = completionHandler;
+  loggerCopy = logger;
   v24.receiver = self;
   v24.super_class = AVTTransition;
   v17 = [(AVTTransition *)&v24 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_model, a3);
-    v18->_animated = a4;
-    if (v14)
+    objc_storeStrong(&v17->_model, model);
+    v18->_animated = animated;
+    if (handlerCopy)
     {
-      v19 = [v14 copy];
+      v19 = [handlerCopy copy];
       setupHandler = v18->_setupHandler;
       v18->_setupHandler = v19;
     }
 
-    if (v15)
+    if (completionHandlerCopy)
     {
-      v21 = [v15 copy];
+      v21 = [completionHandlerCopy copy];
       completionHandler = v18->_completionHandler;
       v18->_completionHandler = v21;
     }
 
-    objc_storeStrong(&v18->_logger, a7);
+    objc_storeStrong(&v18->_logger, logger);
   }
 
   return v18;
@@ -43,14 +43,14 @@
 
 - (void)start
 {
-  v3 = [(AVTTransition *)self logger];
+  logger = [(AVTTransition *)self logger];
   v4 = [(AVTTransition *)self description];
-  [v3 logStartTransition:v4 state:{-[AVTTransition state](self, "state")}];
+  [logger logStartTransition:v4 state:{-[AVTTransition state](self, "state")}];
 
   if ([(AVTTransition *)self state]== 2)
   {
-    v7 = [(AVTTransition *)self completionHandler];
-    v7[2](v7, 0);
+    completionHandler = [(AVTTransition *)self completionHandler];
+    completionHandler[2](completionHandler, 0);
   }
 
   else
@@ -61,17 +61,17 @@
     }
 
     [(AVTTransition *)self setState:1];
-    v5 = [(AVTTransition *)self setupHandler];
+    setupHandler = [(AVTTransition *)self setupHandler];
 
-    if (v5)
+    if (setupHandler)
     {
-      v6 = [(AVTTransition *)self setupHandler];
+      setupHandler2 = [(AVTTransition *)self setupHandler];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __22__AVTTransition_start__block_invoke;
       v8[3] = &unk_1E7F3AA80;
       v8[4] = self;
-      (v6)[2](v6, v8);
+      (setupHandler2)[2](setupHandler2, v8);
     }
 
     else
@@ -107,17 +107,17 @@ void __22__AVTTransition_start__block_invoke(uint64_t a1, uint64_t a2)
 
 - (void)cancel
 {
-  v3 = [(AVTTransition *)self logger];
+  logger = [(AVTTransition *)self logger];
   v4 = [(AVTTransition *)self description];
-  [v3 logCancelTransition:v4];
+  [logger logCancelTransition:v4];
 
-  v5 = [(AVTTransition *)self state];
+  state = [(AVTTransition *)self state];
   [(AVTTransition *)self setState:2];
   [(AVTTransition *)self performCancellation];
-  if (v5 == 1)
+  if (state == 1)
   {
-    v6 = [(AVTTransition *)self completionHandler];
-    v6[2](v6, 0);
+    completionHandler = [(AVTTransition *)self completionHandler];
+    completionHandler[2](completionHandler, 0);
   }
 }
 
@@ -128,12 +128,12 @@ void __22__AVTTransition_start__block_invoke(uint64_t a1, uint64_t a2)
   v3 = [(AVTTransition *)&v10 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(AVTTransition *)self model];
-  [v4 appendFormat:@" model: %p", v5];
+  model = [(AVTTransition *)self model];
+  [v4 appendFormat:@" model: %p", model];
 
-  v6 = [(AVTTransition *)self animated];
+  animated = [(AVTTransition *)self animated];
   v7 = @"NO";
-  if (v6)
+  if (animated)
   {
     v7 = @"YES";
   }

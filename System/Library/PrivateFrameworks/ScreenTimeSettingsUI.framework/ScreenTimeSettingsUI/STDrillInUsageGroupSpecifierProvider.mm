@@ -1,38 +1,38 @@
 @interface STDrillInUsageGroupSpecifierProvider
-- (STDrillInUsageGroupSpecifierProvider)initWithUsageItem:(id)a3 coordinator:(id)a4;
-- (id)dailyAverage:(id)a3;
-- (id)notifications:(id)a3;
-- (id)selectedUsageReport:(id)a3;
-- (id)weeklyPickupTotal:(id)a3;
+- (STDrillInUsageGroupSpecifierProvider)initWithUsageItem:(id)item coordinator:(id)coordinator;
+- (id)dailyAverage:(id)average;
+- (id)notifications:(id)notifications;
+- (id)selectedUsageReport:(id)report;
+- (id)weeklyPickupTotal:(id)total;
 @end
 
 @implementation STDrillInUsageGroupSpecifierProvider
 
-- (STDrillInUsageGroupSpecifierProvider)initWithUsageItem:(id)a3 coordinator:(id)a4
+- (STDrillInUsageGroupSpecifierProvider)initWithUsageItem:(id)item coordinator:(id)coordinator
 {
-  v7 = a3;
-  v8 = a4;
+  itemCopy = item;
+  coordinatorCopy = coordinator;
   v48.receiver = self;
   v48.super_class = STDrillInUsageGroupSpecifierProvider;
   v9 = [(STGroupSpecifierProvider *)&v48 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_usageItem, a3);
-    objc_storeStrong(&v10->_coordinator, a4);
-    v46 = v8;
-    v11 = [v8 usageDetailsCoordinator];
-    v12 = [v11 viewModel];
-    v13 = [v12 selectedUsageReport];
+    objc_storeStrong(&v9->_usageItem, item);
+    objc_storeStrong(&v10->_coordinator, coordinator);
+    v46 = coordinatorCopy;
+    usageDetailsCoordinator = [coordinatorCopy usageDetailsCoordinator];
+    viewModel = [usageDetailsCoordinator viewModel];
+    selectedUsageReport = [viewModel selectedUsageReport];
 
-    v14 = [v13 notificationsByTrustIdentifier];
-    v15 = [v7 trustIdentifier];
-    v16 = [v14 objectForKeyedSubscript:v15];
-    v17 = [v16 totalUsage];
-    v10->_numberOfNotifications = [v17 unsignedIntegerValue];
+    notificationsByTrustIdentifier = [selectedUsageReport notificationsByTrustIdentifier];
+    trustIdentifier = [itemCopy trustIdentifier];
+    v16 = [notificationsByTrustIdentifier objectForKeyedSubscript:trustIdentifier];
+    totalUsage = [v16 totalUsage];
+    v10->_numberOfNotifications = [totalUsage unsignedIntegerValue];
 
     v18 = +[STScreenTimeSettingsUIBundle bundle];
-    if ([v7 itemType] == 6)
+    if ([itemCopy itemType] == 6)
     {
       v19 = @"DrillInPickupGroupSpecifierName";
     }
@@ -49,22 +49,22 @@
     v22 = NSStringFromClass(v21);
     [v20 setObject:v22 forKeyedSubscript:*MEMORY[0x277D3FFA0]];
 
-    v47 = v13;
-    v23 = [v13 lastUpdatedDate];
-    if (v23)
+    v47 = selectedUsageReport;
+    lastUpdatedDate = [selectedUsageReport lastUpdatedDate];
+    if (lastUpdatedDate)
     {
       v24 = objc_opt_new();
       [v24 setTimeStyle:1];
       [v24 setDateStyle:2];
       [v24 setDoesRelativeDateFormatting:1];
       [v24 setFormattingContext:5];
-      v25 = [v24 stringFromDate:v23];
+      v25 = [v24 stringFromDate:lastUpdatedDate];
       v26 = +[STScreenTimeSettingsUIBundle bundle];
       v27 = [v26 localizedStringForKey:@"LastUpdatedDateFormat" value:&stru_28766E5A8 table:0];
 
       v28 = objc_alloc(MEMORY[0x277CCACA8]);
-      v29 = [MEMORY[0x277CBEAF8] currentLocale];
-      v30 = [v28 initWithFormat:v27 locale:v29, v25];
+      currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+      v30 = [v28 initWithFormat:v27 locale:currentLocale, v25];
     }
 
     else
@@ -76,13 +76,13 @@
     [v20 setObject:v30 forKeyedSubscript:*MEMORY[0x277D3FF88]];
     v43 = v20;
     [(STGroupSpecifierProvider *)v10 setGroupSpecifier:v20];
-    v31 = [(STGroupSpecifierProvider *)v10 mutableSpecifiers];
+    mutableSpecifiers = [(STGroupSpecifierProvider *)v10 mutableSpecifiers];
     v32 = [MEMORY[0x277D3FAD8] preferenceSpecifierNamed:@"Usage Summary" target:v10 set:0 get:sel_selectedUsageReport_ detail:0 cell:-1 edit:0];
     [v32 setObject:objc_opt_class() forKeyedSubscript:*MEMORY[0x277D3FE58]];
     [v32 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D3FF38]];
-    [v32 setObject:v7 forKeyedSubscript:0x287673AA8];
-    [v31 addObject:v32];
-    if ([v7 itemType] == 6 && !objc_msgSend(v47, "type"))
+    [v32 setObject:itemCopy forKeyedSubscript:0x287673AA8];
+    [mutableSpecifiers addObject:v32];
+    if ([itemCopy itemType] == 6 && !objc_msgSend(v47, "type"))
     {
       v33 = v30;
       v34 = &selRef_weeklyPickupTotal_;
@@ -100,66 +100,66 @@
     v37 = [v44 localizedStringForKey:v35 value:&stru_28766E5A8 table:0];
     v38 = [v36 preferenceSpecifierNamed:v37 target:v10 set:0 get:*v34 detail:0 cell:4 edit:0];
 
-    [v31 addObject:v38];
+    [mutableSpecifiers addObject:v38];
     if (v10->_numberOfNotifications)
     {
       v39 = MEMORY[0x277D3FAD8];
       v40 = [v44 localizedStringForKey:@"MostUsedNotificationsSpecifierName" value:&stru_28766E5A8 table:0];
       v41 = [v39 preferenceSpecifierNamed:v40 target:v10 set:0 get:sel_notifications_ detail:0 cell:4 edit:0];
 
-      [v31 addObject:v41];
+      [mutableSpecifiers addObject:v41];
     }
 
-    v8 = v46;
+    coordinatorCopy = v46;
   }
 
   return v10;
 }
 
-- (id)selectedUsageReport:(id)a3
+- (id)selectedUsageReport:(id)report
 {
-  v4 = a3;
-  v5 = [(STDrillInUsageGroupSpecifierProvider *)self usageItem];
-  [v4 setUserInfo:v5];
+  reportCopy = report;
+  usageItem = [(STDrillInUsageGroupSpecifierProvider *)self usageItem];
+  [reportCopy setUserInfo:usageItem];
 
-  v6 = [(STDrillInUsageGroupSpecifierProvider *)self coordinator];
-  v7 = [v6 usageDetailsCoordinator];
-  v8 = [v7 viewModel];
-  v9 = [v8 selectedUsageReport];
+  coordinator = [(STDrillInUsageGroupSpecifierProvider *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
+  viewModel = [usageDetailsCoordinator viewModel];
+  selectedUsageReport = [viewModel selectedUsageReport];
 
-  return v9;
+  return selectedUsageReport;
 }
 
-- (id)weeklyPickupTotal:(id)a3
+- (id)weeklyPickupTotal:(id)total
 {
-  v4 = [(STDrillInUsageGroupSpecifierProvider *)self coordinator];
-  v5 = [v4 usageDetailsCoordinator];
-  v6 = [v5 viewModel];
-  v7 = [v6 selectedWeekUsageReport];
-  v8 = [v7 pickupsByTrustIdentifier];
-  v9 = [(STDrillInUsageGroupSpecifierProvider *)self usageItem];
-  v10 = [v9 trustIdentifier];
-  v11 = [v8 objectForKeyedSubscript:v10];
-  v12 = [v11 totalUsage];
-  v13 = [v12 unsignedIntegerValue];
+  coordinator = [(STDrillInUsageGroupSpecifierProvider *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
+  viewModel = [usageDetailsCoordinator viewModel];
+  selectedWeekUsageReport = [viewModel selectedWeekUsageReport];
+  pickupsByTrustIdentifier = [selectedWeekUsageReport pickupsByTrustIdentifier];
+  usageItem = [(STDrillInUsageGroupSpecifierProvider *)self usageItem];
+  trustIdentifier = [usageItem trustIdentifier];
+  v11 = [pickupsByTrustIdentifier objectForKeyedSubscript:trustIdentifier];
+  totalUsage = [v11 totalUsage];
+  unsignedIntegerValue = [totalUsage unsignedIntegerValue];
 
   v14 = MEMORY[0x277CCACA8];
   v15 = +[STScreenTimeSettingsUIBundle bundle];
   v16 = [v15 localizedStringForKey:@"PickupsCount" value:&stru_28766E5A8 table:0];
-  v17 = [v14 localizedStringWithFormat:v16, v13];
+  v17 = [v14 localizedStringWithFormat:v16, unsignedIntegerValue];
 
   return v17;
 }
 
-- (id)dailyAverage:(id)a3
+- (id)dailyAverage:(id)average
 {
-  v4 = [(STDrillInUsageGroupSpecifierProvider *)self coordinator];
-  v5 = [v4 usageDetailsCoordinator];
-  v6 = [v5 viewModel];
-  v7 = [v6 selectedWeekUsageReport];
+  coordinator = [(STDrillInUsageGroupSpecifierProvider *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
+  viewModel = [usageDetailsCoordinator viewModel];
+  selectedWeekUsageReport = [viewModel selectedWeekUsageReport];
 
-  v8 = [(STDrillInUsageGroupSpecifierProvider *)self usageItem];
-  [v7 activePickupDateIntervals];
+  usageItem = [(STDrillInUsageGroupSpecifierProvider *)self usageItem];
+  [selectedWeekUsageReport activePickupDateIntervals];
   if (v9 == 0.0)
   {
     v11 = 1.0;
@@ -167,50 +167,50 @@
 
   else
   {
-    [v7 activePickupDateIntervals];
+    [selectedWeekUsageReport activePickupDateIntervals];
     v11 = v10;
   }
 
-  v12 = [v8 itemType];
+  itemType = [usageItem itemType];
   v13 = &stru_28766E5A8;
-  if (v12 <= 2)
+  if (itemType <= 2)
   {
-    if (v12 == 1)
+    if (itemType == 1)
     {
-      [v7 totalScreenTime];
+      [selectedWeekUsageReport totalScreenTime];
       v30 = v31 / v11;
       goto LABEL_16;
     }
 
-    if (v12 != 2)
+    if (itemType != 2)
     {
       goto LABEL_21;
     }
 
-    v23 = [v7 applicationUsageByTrustIdentifier];
+    applicationUsageByTrustIdentifier = [selectedWeekUsageReport applicationUsageByTrustIdentifier];
   }
 
   else
   {
-    switch(v12)
+    switch(itemType)
     {
       case 3:
-        v23 = [v7 categoryUsageByTrustIdentifier];
+        applicationUsageByTrustIdentifier = [selectedWeekUsageReport categoryUsageByTrustIdentifier];
         break;
       case 4:
-        v23 = [v7 webUsageByTrustIdentifier];
+        applicationUsageByTrustIdentifier = [selectedWeekUsageReport webUsageByTrustIdentifier];
         break;
       case 6:
-        v14 = [v7 pickupsByTrustIdentifier];
-        v15 = [v8 trustIdentifier];
-        v16 = [v14 objectForKeyedSubscript:v15];
-        v17 = [v16 totalUsage];
-        [v17 doubleValue];
+        pickupsByTrustIdentifier = [selectedWeekUsageReport pickupsByTrustIdentifier];
+        trustIdentifier = [usageItem trustIdentifier];
+        v16 = [pickupsByTrustIdentifier objectForKeyedSubscript:trustIdentifier];
+        totalUsage = [v16 totalUsage];
+        [totalUsage doubleValue];
         v19 = v18 / v11;
 
         v20 = MEMORY[0x277CCACA8];
-        v21 = +[STScreenTimeSettingsUIBundle bundle];
-        v22 = [v21 localizedStringForKey:@"PickupsCount" value:&stru_28766E5A8 table:0];
+        st_sharedAbbreviatedSecondsDateFormatter = +[STScreenTimeSettingsUIBundle bundle];
+        v22 = [st_sharedAbbreviatedSecondsDateFormatter localizedStringForKey:@"PickupsCount" value:&stru_28766E5A8 table:0];
         v13 = [v20 localizedStringWithFormat:v22, fmin(fmax(round(v19), 0.0), 1.79769313e308)];
 
         goto LABEL_20;
@@ -219,28 +219,28 @@
     }
   }
 
-  v24 = v23;
-  v25 = [v8 trustIdentifier];
-  v26 = [v24 objectForKeyedSubscript:v25];
-  v27 = [v26 totalUsage];
-  [v27 doubleValue];
+  v24 = applicationUsageByTrustIdentifier;
+  trustIdentifier2 = [usageItem trustIdentifier];
+  v26 = [v24 objectForKeyedSubscript:trustIdentifier2];
+  totalUsage2 = [v26 totalUsage];
+  [totalUsage2 doubleValue];
   v29 = v28;
 
   v30 = v29 / v11;
 LABEL_16:
   if (v30 >= 60.0)
   {
-    v21 = objc_opt_new();
-    [v21 setAllowedUnits:96];
-    [v21 setUnitsStyle:1];
+    st_sharedAbbreviatedSecondsDateFormatter = objc_opt_new();
+    [st_sharedAbbreviatedSecondsDateFormatter setAllowedUnits:96];
+    [st_sharedAbbreviatedSecondsDateFormatter setUnitsStyle:1];
   }
 
   else
   {
-    v21 = [MEMORY[0x277CCA958] st_sharedAbbreviatedSecondsDateFormatter];
+    st_sharedAbbreviatedSecondsDateFormatter = [MEMORY[0x277CCA958] st_sharedAbbreviatedSecondsDateFormatter];
   }
 
-  v13 = [v21 stringFromTimeInterval:v30];
+  v13 = [st_sharedAbbreviatedSecondsDateFormatter stringFromTimeInterval:v30];
 LABEL_20:
 
 LABEL_21:
@@ -248,24 +248,24 @@ LABEL_21:
   return v13;
 }
 
-- (id)notifications:(id)a3
+- (id)notifications:(id)notifications
 {
-  v4 = [(STDrillInUsageGroupSpecifierProvider *)self coordinator];
-  v5 = [v4 usageDetailsCoordinator];
-  v6 = [v5 viewModel];
-  v7 = [v6 selectedUsageReport];
+  coordinator = [(STDrillInUsageGroupSpecifierProvider *)self coordinator];
+  usageDetailsCoordinator = [coordinator usageDetailsCoordinator];
+  viewModel = [usageDetailsCoordinator viewModel];
+  selectedUsageReport = [viewModel selectedUsageReport];
 
-  v8 = [v7 notificationsByTrustIdentifier];
-  v9 = [(STDrillInUsageGroupSpecifierProvider *)self usageItem];
-  v10 = [v9 trustIdentifier];
-  v11 = [v8 objectForKeyedSubscript:v10];
-  v12 = [v11 totalUsage];
-  v13 = [v12 unsignedIntegerValue];
+  notificationsByTrustIdentifier = [selectedUsageReport notificationsByTrustIdentifier];
+  usageItem = [(STDrillInUsageGroupSpecifierProvider *)self usageItem];
+  trustIdentifier = [usageItem trustIdentifier];
+  v11 = [notificationsByTrustIdentifier objectForKeyedSubscript:trustIdentifier];
+  totalUsage = [v11 totalUsage];
+  unsignedIntegerValue = [totalUsage unsignedIntegerValue];
 
   v14 = MEMORY[0x277CCACA8];
   v15 = +[STScreenTimeSettingsUIBundle bundle];
   v16 = [v15 localizedStringForKey:@"NotificationsCount" value:&stru_28766E5A8 table:0];
-  v17 = [v14 localizedStringWithFormat:v16, v13];
+  v17 = [v14 localizedStringWithFormat:v16, unsignedIntegerValue];
 
   return v17;
 }

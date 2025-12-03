@@ -1,26 +1,26 @@
 @interface GKCDIDSInfoList
-+ (id)_gkPrimaryListWithContext:(id)a3;
++ (id)_gkPrimaryListWithContext:(id)context;
 - (void)_gkReset;
 @end
 
 @implementation GKCDIDSInfoList
 
-+ (id)_gkPrimaryListWithContext:(id)a3
++ (id)_gkPrimaryListWithContext:(id)context
 {
-  v4 = a3;
-  v5 = [GKCDIDSInfoList _gkObjectsMatchingPredicate:0 withContext:v4];
-  v6 = [v5 firstObject];
+  contextCopy = context;
+  v5 = [GKCDIDSInfoList _gkObjectsMatchingPredicate:0 withContext:contextCopy];
+  firstObject = [v5 firstObject];
 
-  if (v6)
+  if (firstObject)
   {
-    v7 = v6;
+    v7 = firstObject;
   }
 
   else
   {
     v8 = [GKCDIDSInfoList alloc];
-    v9 = [a1 entity];
-    v7 = [(GKCDIDSInfoList *)v8 initWithEntity:v9 insertIntoManagedObjectContext:v4];
+    entity = [self entity];
+    v7 = [(GKCDIDSInfoList *)v8 initWithEntity:entity insertIntoManagedObjectContext:contextCopy];
   }
 
   return v7;

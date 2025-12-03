@@ -1,12 +1,12 @@
 @interface TIInputContextEntry
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (TIInputContextEntry)init;
-- (TIInputContextEntry)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TIInputContextEntry)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (int64_t)compare:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)enforceMaxContextLength:(unint64_t)a3;
+- (int64_t)compare:(id)compare;
+- (void)encodeWithCoder:(id)coder;
+- (void)enforceMaxContextLength:(unint64_t)length;
 @end
 
 @implementation TIInputContextEntry
@@ -16,20 +16,20 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(TIInputContextEntry *)self text];
-  v7 = [v6 length] != 0;
-  v8 = [(TIInputContextEntry *)self senderIdentifier];
-  v9 = [v8 length] != 0;
-  v10 = [(TIInputContextEntry *)self senderName];
+  text = [(TIInputContextEntry *)self text];
+  v7 = [text length] != 0;
+  senderIdentifier = [(TIInputContextEntry *)self senderIdentifier];
+  v9 = [senderIdentifier length] != 0;
+  senderName = [(TIInputContextEntry *)self senderName];
   v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[TIInputContextEntry isFromMe](self, "isFromMe")}];
-  v12 = [v3 stringWithFormat:@"<%@: %p: hasText: %d, hasSenderID: %d, hasName: %d>, isFromMe: %@", v5, self, v7, v9, v10 != 0, v11];
+  v12 = [v3 stringWithFormat:@"<%@: %p: hasText: %d, hasSenderID: %d, hasName: %d>, isFromMe: %@", v5, self, v7, v9, senderName != 0, v11];
 
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_text copy];
   v6 = *(v4 + 16);
   *(v4 + 16) = v5;
@@ -71,12 +71,12 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = [(TIInputContextEntry *)self compare:v4]== 0;
+    v5 = [(TIInputContextEntry *)self compare:equalCopy]== 0;
   }
 
   else
@@ -87,15 +87,15 @@
   return v5;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = a3;
+  compareCopy = compare;
   timestamp = self->_timestamp;
-  v6 = [v4 timestamp];
-  v7 = v6;
+  timestamp = [compareCopy timestamp];
+  v7 = timestamp;
   if (timestamp)
   {
-    v8 = v6 == 0;
+    v8 = timestamp == 0;
   }
 
   else
@@ -105,7 +105,7 @@
 
   if (v8)
   {
-    if (v6)
+    if (timestamp)
     {
       v9 = -1;
     }
@@ -123,22 +123,22 @@
 
   else
   {
-    v9 = [(NSDate *)timestamp compare:v6];
+    v9 = [(NSDate *)timestamp compare:timestamp];
   }
 
   if (!v9)
   {
     senderIdentifier = self->_senderIdentifier;
-    v11 = [v4 senderIdentifier];
-    v7 = v11;
-    if (senderIdentifier && v11)
+    senderIdentifier = [compareCopy senderIdentifier];
+    v7 = senderIdentifier;
+    if (senderIdentifier && senderIdentifier)
     {
-      v9 = [(NSString *)senderIdentifier compare:v11];
+      v9 = [(NSString *)senderIdentifier compare:senderIdentifier];
     }
 
     else
     {
-      if (v11)
+      if (senderIdentifier)
       {
         v9 = -1;
       }
@@ -157,16 +157,16 @@
     if (!v9)
     {
       threadIdentifier = self->_threadIdentifier;
-      v13 = [v4 threadIdentifier];
-      v7 = v13;
-      if (threadIdentifier && v13)
+      threadIdentifier = [compareCopy threadIdentifier];
+      v7 = threadIdentifier;
+      if (threadIdentifier && threadIdentifier)
       {
-        v9 = [(NSString *)threadIdentifier compare:v13];
+        v9 = [(NSString *)threadIdentifier compare:threadIdentifier];
       }
 
       else
       {
-        if (v13)
+        if (threadIdentifier)
         {
           v9 = -1;
         }
@@ -185,11 +185,11 @@
       if (!v9)
       {
         spotlightCacheKey = self->_spotlightCacheKey;
-        v15 = [v4 spotlightCacheKey];
-        v7 = v15;
-        if (spotlightCacheKey && v15)
+        spotlightCacheKey = [compareCopy spotlightCacheKey];
+        v7 = spotlightCacheKey;
+        if (spotlightCacheKey && spotlightCacheKey)
         {
-          v9 = [(NSString *)spotlightCacheKey compare:v15];
+          v9 = [(NSString *)spotlightCacheKey compare:spotlightCacheKey];
 LABEL_37:
 
           if (v9)
@@ -198,23 +198,23 @@ LABEL_37:
           }
 
           isFromMe = self->_isFromMe;
-          if (isFromMe != [v4 isFromMe])
+          if (isFromMe != [compareCopy isFromMe])
           {
             v9 = -1;
             goto LABEL_36;
           }
 
           text = self->_text;
-          v19 = [v4 text];
-          v7 = v19;
-          if (text && v19)
+          text = [compareCopy text];
+          v7 = text;
+          if (text && text)
           {
-            v9 = [(NSString *)text compare:v19];
+            v9 = [(NSString *)text compare:text];
           }
 
           else
           {
-            if (v19)
+            if (text)
             {
               v20 = -1;
             }
@@ -238,7 +238,7 @@ LABEL_37:
           goto LABEL_35;
         }
 
-        if (v15)
+        if (spotlightCacheKey)
         {
           v9 = -1;
         }
@@ -265,27 +265,27 @@ LABEL_36:
   return v9;
 }
 
-- (void)enforceMaxContextLength:(unint64_t)a3
+- (void)enforceMaxContextLength:(unint64_t)length
 {
-  if (+[TIInputContextHistory isMail]&& [(NSString *)self->_text length]> a3)
+  if (+[TIInputContextHistory isMail]&& [(NSString *)self->_text length]> length)
   {
     self->_text = 0;
   }
 
   else
   {
-    self->_text = [(NSString *)self->_text _stringWithLongestWhitespaceDelimitedSuffixOfMaxLength:a3];
+    self->_text = [(NSString *)self->_text _stringWithLongestWhitespaceDelimitedSuffixOfMaxLength:length];
   }
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v21 = *MEMORY[0x1E69E9840];
   text = self->_text;
-  v5 = a3;
-  [v5 encodeObject:text forKey:@"text"];
+  coderCopy = coder;
+  [coderCopy encodeObject:text forKey:@"text"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -301,24 +301,24 @@ LABEL_36:
     _os_log_error_impl(&dword_1863F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%s  Sender identifier is NOT of NSString class: %{public}@, timestamp: %{public}@", &v15, 0x20u);
   }
 
-  [v5 encodeObject:self->_senderIdentifier forKey:@"senderIdentifier"];
-  [v5 encodeObject:self->_timestamp forKey:@"timestamp"];
-  [v5 encodeObject:self->_senderName forKey:@"senderName"];
-  [v5 encodeObject:self->_entryIdentifier forKey:@"entryIdentifier"];
+  [coderCopy encodeObject:self->_senderIdentifier forKey:@"senderIdentifier"];
+  [coderCopy encodeObject:self->_timestamp forKey:@"timestamp"];
+  [coderCopy encodeObject:self->_senderName forKey:@"senderName"];
+  [coderCopy encodeObject:self->_entryIdentifier forKey:@"entryIdentifier"];
   primaryRecipientIdentifiers = self->_primaryRecipientIdentifiers;
   v7 = objc_opt_class();
   v8 = TI_filteredSetWithClass(primaryRecipientIdentifiers, v7);
-  [v5 encodeObject:v8 forKey:@"primaryRecipientIdentifiers"];
+  [coderCopy encodeObject:v8 forKey:@"primaryRecipientIdentifiers"];
 
   secondaryRecipientIdentifiers = self->_secondaryRecipientIdentifiers;
   v10 = objc_opt_class();
   v11 = TI_filteredSetWithClass(secondaryRecipientIdentifiers, v10);
-  [v5 encodeObject:v11 forKey:@"secondaryRecipientIdentifiers"];
+  [coderCopy encodeObject:v11 forKey:@"secondaryRecipientIdentifiers"];
 
-  [v5 encodeInteger:self->_entryType forKey:@"entryType"];
-  [v5 encodeObject:self->_threadIdentifier forKey:@"threadIdentifier"];
-  [v5 encodeObject:self->_spotlightCacheKey forKey:@"spotlightCacheKey"];
-  [v5 encodeBool:self->_isFromMe forKey:@"isFromMe"];
+  [coderCopy encodeInteger:self->_entryType forKey:@"entryType"];
+  [coderCopy encodeObject:self->_threadIdentifier forKey:@"threadIdentifier"];
+  [coderCopy encodeObject:self->_spotlightCacheKey forKey:@"spotlightCacheKey"];
+  [coderCopy encodeBool:self->_isFromMe forKey:@"isFromMe"];
 }
 
 - (TIInputContextEntry)init
@@ -328,28 +328,28 @@ LABEL_36:
   return [(TIInputContextEntry *)&v3 init];
 }
 
-- (TIInputContextEntry)initWithCoder:(id)a3
+- (TIInputContextEntry)initWithCoder:(id)coder
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = TIInputContextEntry;
   v5 = [(TIInputContextEntry *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"text"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"text"];
     text = v5->_text;
     v5->_text = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timestamp"];
     timestamp = v5->_timestamp;
     v5->_timestamp = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderIdentifier"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderIdentifier"];
     senderIdentifier = v5->_senderIdentifier;
     v5->_senderIdentifier = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"senderName"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"senderName"];
     senderName = v5->_senderName;
     v5->_senderName = v12;
 
@@ -363,31 +363,31 @@ LABEL_36:
       _os_log_error_impl(&dword_1863F7000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "%s  Sender identifier is Nil, timestamp: %{public}@", buf, 0x16u);
     }
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entryIdentifier"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entryIdentifier"];
     entryIdentifier = v5->_entryIdentifier;
     v5->_entryIdentifier = v14;
 
     v16 = MEMORY[0x1E695DFD8];
     v17 = objc_opt_class();
     v18 = [v16 setWithObjects:{v17, objc_opt_class(), 0}];
-    v19 = [v4 decodeObjectOfClasses:v18 forKey:@"primaryRecipientIdentifiers"];
+    v19 = [coderCopy decodeObjectOfClasses:v18 forKey:@"primaryRecipientIdentifiers"];
     primaryRecipientIdentifiers = v5->_primaryRecipientIdentifiers;
     v5->_primaryRecipientIdentifiers = v19;
 
-    v21 = [v4 decodeObjectOfClasses:v18 forKey:@"secondaryRecipientIdentifiers"];
+    v21 = [coderCopy decodeObjectOfClasses:v18 forKey:@"secondaryRecipientIdentifiers"];
     secondaryRecipientIdentifiers = v5->_secondaryRecipientIdentifiers;
     v5->_secondaryRecipientIdentifiers = v21;
 
-    v5->_entryType = [v4 decodeIntegerForKey:@"entryType"];
-    v23 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"threadIdentifier"];
+    v5->_entryType = [coderCopy decodeIntegerForKey:@"entryType"];
+    v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"threadIdentifier"];
     threadIdentifier = v5->_threadIdentifier;
     v5->_threadIdentifier = v23;
 
-    v25 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"spotlightCacheKey"];
+    v25 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"spotlightCacheKey"];
     spotlightCacheKey = v5->_spotlightCacheKey;
     v5->_spotlightCacheKey = v25;
 
-    v5->_isFromMe = [v4 decodeBoolForKey:@"isFromMe"];
+    v5->_isFromMe = [coderCopy decodeBoolForKey:@"isFromMe"];
   }
 
   return v5;

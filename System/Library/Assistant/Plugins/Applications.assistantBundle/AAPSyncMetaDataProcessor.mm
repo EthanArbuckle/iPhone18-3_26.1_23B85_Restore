@@ -1,14 +1,14 @@
 @interface AAPSyncMetaDataProcessor
-- (AAPSyncMetaDataProcessor)initWithSource:(id)a3;
-- (void)_queue_processNextChange:(id)a3 afterAnchor:(id)a4 withInitialAnchor:(id)a5;
+- (AAPSyncMetaDataProcessor)initWithSource:(id)source;
+- (void)_queue_processNextChange:(id)change afterAnchor:(id)anchor withInitialAnchor:(id)initialAnchor;
 - (void)_queue_updateCache;
 - (void)dealloc;
-- (void)processNextChange:(id)a3 afterAnchor:(id)a4;
+- (void)processNextChange:(id)change afterAnchor:(id)anchor;
 @end
 
 @implementation AAPSyncMetaDataProcessor
 
-- (AAPSyncMetaDataProcessor)initWithSource:(id)a3
+- (AAPSyncMetaDataProcessor)initWithSource:(id)source
 {
   v8.receiver = self;
   v8.super_class = AAPSyncMetaDataProcessor;
@@ -22,7 +22,7 @@
     v7[1] = 3221225472;
     v7[2] = sub_47FC;
     v7[3] = &unk_208B8;
-    v7[4] = a3;
+    v7[4] = source;
     v7[5] = v4;
     dispatch_async(queue, v7);
   }
@@ -39,7 +39,7 @@
   [(AAPSyncMetaDataProcessor *)&v3 dealloc];
 }
 
-- (void)processNextChange:(id)a3 afterAnchor:(id)a4
+- (void)processNextChange:(id)change afterAnchor:(id)anchor
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -47,12 +47,12 @@
   block[2] = sub_4954;
   block[3] = &unk_208E0;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = change;
+  block[6] = anchor;
   dispatch_sync(queue, block);
 }
 
-- (void)_queue_processNextChange:(id)a3 afterAnchor:(id)a4 withInitialAnchor:(id)a5
+- (void)_queue_processNextChange:(id)change afterAnchor:(id)anchor withInitialAnchor:(id)initialAnchor
 {
   v9 = objc_alloc_init(NSAutoreleasePool);
   v10 = [(NSArray *)self->_metaData count];
@@ -76,7 +76,7 @@
     goto LABEL_20;
   }
 
-  if (![objc_msgSend(-[NSArray objectAtIndex:](self->_metaData "objectAtIndex:{"anchor"), "isEqualToAnchor:", a4}")])
+  if (![objc_msgSend(-[NSArray objectAtIndex:](self->_metaData "objectAtIndex:{"anchor"), "isEqualToAnchor:", anchor}")])
   {
     if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG))
     {
@@ -111,9 +111,9 @@ LABEL_20:
 LABEL_5:
   if (v14)
   {
-    v15 = [v14 appId];
+    appId = [v14 appId];
     [(NSCondition *)self->_appInfoCacheCheck lock];
-    v16 = [(NSMutableDictionary *)self->_appInfoCache objectForKey:v15];
+    v16 = [(NSMutableDictionary *)self->_appInfoCache objectForKey:appId];
     v17 = +[NSNull null];
     if (v16 == v17)
     {
@@ -125,16 +125,16 @@ LABEL_5:
       do
       {
         [(NSCondition *)self->_appInfoCacheCheck wait];
-        v18 = [(NSMutableDictionary *)self->_appInfoCache objectForKey:v15];
+        v18 = [(NSMutableDictionary *)self->_appInfoCache objectForKey:appId];
       }
 
       while (v18 == +[NSNull null]);
     }
 
-    v19 = [(NSMutableDictionary *)self->_appInfoCache objectForKey:v15];
+    v19 = [(NSMutableDictionary *)self->_appInfoCache objectForKey:appId];
     if (v19)
     {
-      v20 = v19;
+      scrapeAppInfo = v19;
       if (v16 != v17 && os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG))
       {
         sub_103D8();
@@ -148,26 +148,26 @@ LABEL_5:
         sub_10458();
       }
 
-      v20 = [v14 scrapeAppInfo];
+      scrapeAppInfo = [v14 scrapeAppInfo];
     }
 
     [(NSCondition *)self->_appInfoCacheCheck unlock];
     self->_lastChangeOffset = v13;
     [(AAPSyncMetaDataProcessor *)self _queue_updateCache];
-    if (AAPSyncInfoIsValidForItem(v20, v14))
+    if (AAPSyncInfoIsValidForItem(scrapeAppInfo, v14))
     {
       if (os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG))
       {
         sub_1056C();
       }
 
-      [a3 setObject:v20];
+      [change setObject:scrapeAppInfo];
       if ([v14 isMetaDataItemDelete])
       {
-        [a3 setIsDelete:1];
+        [change setIsDelete:1];
       }
 
-      [a3 setPostAnchor:{objc_msgSend(objc_msgSend(v14, "anchor"), "stringRepresentation")}];
+      [change setPostAnchor:{objc_msgSend(objc_msgSend(v14, "anchor"), "stringRepresentation")}];
     }
 
     else
@@ -177,7 +177,7 @@ LABEL_5:
         sub_104D8();
       }
 
-      -[AAPSyncMetaDataProcessor _queue_processNextChange:afterAnchor:withInitialAnchor:](self, "_queue_processNextChange:afterAnchor:withInitialAnchor:", a3, [v14 anchor], a5);
+      -[AAPSyncMetaDataProcessor _queue_processNextChange:afterAnchor:withInitialAnchor:](self, "_queue_processNextChange:afterAnchor:withInitialAnchor:", change, [v14 anchor], initialAnchor);
     }
 
     goto LABEL_42;
@@ -185,7 +185,7 @@ LABEL_5:
 
 LABEL_23:
   v21 = os_log_type_enabled(AFSiriLogContextPlugin, OS_LOG_TYPE_DEBUG);
-  if (a4 == a5)
+  if (anchor == initialAnchor)
   {
     if (v21)
     {
@@ -198,8 +198,8 @@ LABEL_23:
     sub_105F0();
   }
 
-  [a3 setObject:0];
-  [a3 setPostAnchor:{objc_msgSend(a4, "stringRepresentation")}];
+  [change setObject:0];
+  [change setPostAnchor:{objc_msgSend(anchor, "stringRepresentation")}];
 LABEL_42:
   [v9 drain];
 }
@@ -230,16 +230,16 @@ LABEL_42:
   for (self->_appInfoCacheEnd = v7; v6 < self->_appInfoCacheEnd; ++v6)
   {
     v8 = [(NSArray *)self->_metaData objectAtIndex:v6];
-    v9 = [v8 appId];
-    v10 = [(NSMutableDictionary *)self->_appInfoCache objectForKey:v9];
+    appId = [v8 appId];
+    v10 = [(NSMutableDictionary *)self->_appInfoCache objectForKey:appId];
     if (v10)
     {
-      [(NSMutableDictionary *)v4 setObject:v10 forKey:v9];
+      [(NSMutableDictionary *)v4 setObject:v10 forKey:appId];
     }
 
     else
     {
-      [(NSMutableDictionary *)v4 setObject:+[NSNull forKey:"null"], v9];
+      [(NSMutableDictionary *)v4 setObject:+[NSNull forKey:"null"], appId];
       global_queue = dispatch_get_global_queue(0, 0);
       v12[0] = _NSConcreteStackBlock;
       v12[1] = 3221225472;
@@ -247,7 +247,7 @@ LABEL_42:
       v12[3] = &unk_20908;
       v12[4] = v8;
       v12[5] = self;
-      v12[6] = v9;
+      v12[6] = appId;
       v12[7] = v6;
       dispatch_async(global_queue, v12);
     }

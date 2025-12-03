@@ -40,8 +40,8 @@
 - (void)cancelAllOperations
 {
   [(SHLOperationQueue *)self setTailOperation:0];
-  v3 = [(SHLOperationQueue *)self operationQueue];
-  [v3 cancelAllOperations];
+  operationQueue = [(SHLOperationQueue *)self operationQueue];
+  [operationQueue cancelAllOperations];
 }
 
 - (NSOperation)tailOperation

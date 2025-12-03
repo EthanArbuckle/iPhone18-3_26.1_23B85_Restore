@@ -1,16 +1,16 @@
 @interface MFApplicationShortcutProvider
 + (OS_os_log)log;
-- (MFApplicationShortcutProvider)initWithAccountsProvider:(id)a3 favoritesPersistence:(id)a4 messagePersistence:(id)a5 hookRegistry:(id)a6;
-- (id)_applicationShortcutForFavoriteItem:(id)a3 badgeCountString:(id)a4;
-- (id)_applicationShortcutIconForFavoriteItem:(id)a3;
-- (id)_iconImageWithBackgroundColor:(id)a3;
+- (MFApplicationShortcutProvider)initWithAccountsProvider:(id)provider favoritesPersistence:(id)persistence messagePersistence:(id)messagePersistence hookRegistry:(id)registry;
+- (id)_applicationShortcutForFavoriteItem:(id)item badgeCountString:(id)string;
+- (id)_applicationShortcutIconForFavoriteItem:(id)item;
+- (id)_iconImageWithBackgroundColor:(id)color;
 - (id)fixedShortcutItems;
-- (id)startCountQueryForMailboxFavoriteItem:(id)a3;
-- (void)_favoritesDidChange:(id)a3;
-- (void)_unreadCountDidChange:(id)a3;
+- (id)startCountQueryForMailboxFavoriteItem:(id)item;
+- (void)_favoritesDidChange:(id)change;
+- (void)_unreadCountDidChange:(id)change;
 - (void)_updateApplicationShortcuts;
 - (void)dealloc;
-- (void)setShortcutItems:(id)a3;
+- (void)setShortcutItems:(id)items;
 - (void)updateApplicationShortcutsForNoDisplayedAccounts;
 @end
 
@@ -22,7 +22,7 @@
   block[1] = 3221225472;
   block[2] = sub_1001A2C18;
   block[3] = &unk_10064C4F8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1006DD3C8 != -1)
   {
     dispatch_once(&qword_1006DD3C8, block);
@@ -33,22 +33,22 @@
   return v2;
 }
 
-- (MFApplicationShortcutProvider)initWithAccountsProvider:(id)a3 favoritesPersistence:(id)a4 messagePersistence:(id)a5 hookRegistry:(id)a6
+- (MFApplicationShortcutProvider)initWithAccountsProvider:(id)provider favoritesPersistence:(id)persistence messagePersistence:(id)messagePersistence hookRegistry:(id)registry
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  providerCopy = provider;
+  persistenceCopy = persistence;
+  messagePersistenceCopy = messagePersistence;
+  registryCopy = registry;
   v19.receiver = self;
   v19.super_class = MFApplicationShortcutProvider;
   v15 = [(MFApplicationShortcutProvider *)&v19 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_accountsProvider, a3);
-    objc_storeStrong(&v16->_favoritesPersistence, a4);
-    objc_storeStrong(&v16->_messagePersistence, a5);
-    objc_storeStrong(&v16->_hookRegistry, a6);
+    objc_storeStrong(&v15->_accountsProvider, provider);
+    objc_storeStrong(&v16->_favoritesPersistence, persistence);
+    objc_storeStrong(&v16->_messagePersistence, messagePersistence);
+    objc_storeStrong(&v16->_hookRegistry, registry);
     [(MFApplicationShortcutProvider *)v16 _updateApplicationShortcuts];
     v17 = +[NSNotificationCenter defaultCenter];
     [v17 addObserver:v16 selector:"_favoritesDidChange:" name:@"MailApplicationFavoritesDidChange" object:0];
@@ -62,18 +62,18 @@
   v3 = +[NSNotificationCenter defaultCenter];
   [v3 removeObserver:self];
 
-  v4 = [(MFApplicationShortcutProvider *)self specialMailboxCountObserver];
-  [v4 cancel];
+  specialMailboxCountObserver = [(MFApplicationShortcutProvider *)self specialMailboxCountObserver];
+  [specialMailboxCountObserver cancel];
 
-  v5 = [(MFApplicationShortcutProvider *)self mailboxCountObserver];
-  [v5 cancel];
+  mailboxCountObserver = [(MFApplicationShortcutProvider *)self mailboxCountObserver];
+  [mailboxCountObserver cancel];
 
   v6.receiver = self;
   v6.super_class = MFApplicationShortcutProvider;
   [(MFApplicationShortcutProvider *)&v6 dealloc];
 }
 
-- (void)_favoritesDidChange:(id)a3
+- (void)_favoritesDidChange:(id)change
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -84,7 +84,7 @@
   [v3 performBlock:v4];
 }
 
-- (void)_unreadCountDidChange:(id)a3
+- (void)_unreadCountDidChange:(id)change
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
@@ -97,21 +97,21 @@
 
 - (void)_updateApplicationShortcuts
 {
-  v3 = [(MFApplicationShortcutProvider *)self accountsProvider];
-  v4 = [v3 displayedAccounts];
-  v5 = [v4 count];
+  accountsProvider = [(MFApplicationShortcutProvider *)self accountsProvider];
+  displayedAccounts = [accountsProvider displayedAccounts];
+  v5 = [displayedAccounts count];
 
   if (v5)
   {
-    v6 = [(MFApplicationShortcutProvider *)self favoritesPersistence];
-    v7 = [v6 mailboxesCollection];
-    v8 = [v7 selectedItems];
+    favoritesPersistence = [(MFApplicationShortcutProvider *)self favoritesPersistence];
+    mailboxesCollection = [favoritesPersistence mailboxesCollection];
+    selectedItems = [mailboxesCollection selectedItems];
 
     v39 = 0u;
     v40 = 0u;
     v37 = 0u;
     v38 = 0u;
-    v9 = v8;
+    v9 = selectedItems;
     v10 = 0;
     v11 = 0;
     v12 = [v9 countByEnumeratingWithState:&v37 objects:v43 count:16];
@@ -204,15 +204,15 @@ LABEL_23:
           }
 
 LABEL_31:
-          v20 = [(MFApplicationShortcutProvider *)self specialMailboxCountObserver];
-          v21 = [v20 favoriteItem];
-          v22 = [v21 isEqual:v10];
+          specialMailboxCountObserver = [(MFApplicationShortcutProvider *)self specialMailboxCountObserver];
+          favoriteItem = [specialMailboxCountObserver favoriteItem];
+          v22 = [favoriteItem isEqual:v10];
 
           if ((v22 & 1) == 0)
           {
             [(MFApplicationShortcutProvider *)self setSpecialMailboxFavoriteItem:v10];
-            v23 = [(MFApplicationShortcutProvider *)self specialMailboxCountObserver];
-            [v23 cancel];
+            specialMailboxCountObserver2 = [(MFApplicationShortcutProvider *)self specialMailboxCountObserver];
+            [specialMailboxCountObserver2 cancel];
 
             v24 = [(MFApplicationShortcutProvider *)self startCountQueryForMailboxFavoriteItem:v10];
             [(MFApplicationShortcutProvider *)self setSpecialMailboxCountObserver:v24];
@@ -221,15 +221,15 @@ LABEL_31:
 LABEL_33:
           if (v11)
           {
-            v25 = [(MFApplicationShortcutProvider *)self mailboxCountObserver];
-            v26 = [v25 favoriteItem];
-            v27 = [v26 isEqual:v11];
+            mailboxCountObserver = [(MFApplicationShortcutProvider *)self mailboxCountObserver];
+            favoriteItem2 = [mailboxCountObserver favoriteItem];
+            v27 = [favoriteItem2 isEqual:v11];
 
             if ((v27 & 1) == 0)
             {
               [(MFApplicationShortcutProvider *)self setMailboxFavoriteItem:v11];
-              v28 = [(MFApplicationShortcutProvider *)self mailboxCountObserver];
-              [v28 cancel];
+              mailboxCountObserver2 = [(MFApplicationShortcutProvider *)self mailboxCountObserver];
+              [mailboxCountObserver2 cancel];
 
               v29 = [(MFApplicationShortcutProvider *)self startCountQueryForMailboxFavoriteItem:v11];
               [(MFApplicationShortcutProvider *)self setMailboxCountObserver:v29];
@@ -259,12 +259,12 @@ LABEL_41:
 
   else
   {
-    v30 = [(MFApplicationShortcutProvider *)self specialMailboxCountObserver];
-    [v30 cancel];
+    specialMailboxCountObserver3 = [(MFApplicationShortcutProvider *)self specialMailboxCountObserver];
+    [specialMailboxCountObserver3 cancel];
 
     [(MFApplicationShortcutProvider *)self setSpecialMailboxCountObserver:0];
-    v31 = [(MFApplicationShortcutProvider *)self mailboxCountObserver];
-    [v31 cancel];
+    mailboxCountObserver3 = [(MFApplicationShortcutProvider *)self mailboxCountObserver];
+    [mailboxCountObserver3 cancel];
 
     [(MFApplicationShortcutProvider *)self setMailboxCountObserver:0];
 
@@ -272,19 +272,19 @@ LABEL_41:
   }
 }
 
-- (id)startCountQueryForMailboxFavoriteItem:(id)a3
+- (id)startCountQueryForMailboxFavoriteItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = [_ShortcutCountObserverWrapper alloc];
-  v6 = [(MFApplicationShortcutProvider *)self messagePersistence];
-  v7 = [(MFApplicationShortcutProvider *)self hookRegistry];
+  messagePersistence = [(MFApplicationShortcutProvider *)self messagePersistence];
+  hookRegistry = [(MFApplicationShortcutProvider *)self hookRegistry];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1001A3A38;
   v10[3] = &unk_1006502E8;
   objc_copyWeak(&v11, &location);
-  v8 = [(_ShortcutCountObserverWrapper *)v5 initWithFavoriteItem:v4 messagePersistence:v6 hookRegistry:v7 countDidChange:v10];
+  v8 = [(_ShortcutCountObserverWrapper *)v5 initWithFavoriteItem:itemCopy messagePersistence:messagePersistence hookRegistry:hookRegistry countDidChange:v10];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -300,8 +300,8 @@ LABEL_41:
     [v10 handleFailureInMethod:a2 object:self file:@"MFApplicationShortcutProvider.m" lineNumber:193 description:@"Current thread must be main"];
   }
 
-  v4 = [(MFApplicationShortcutProvider *)self fixedShortcutItems];
-  v9 = [NSMutableArray arrayWithArray:v4];
+  fixedShortcutItems = [(MFApplicationShortcutProvider *)self fixedShortcutItems];
+  v9 = [NSMutableArray arrayWithArray:fixedShortcutItems];
 
   v5 = [SBSApplicationShortcutSystemIcon alloc];
   v6 = [v5 initWithSystemImageName:MFImageGlpyhsAppShortcutAddAccount];
@@ -348,21 +348,21 @@ LABEL_41:
   return v2;
 }
 
-- (id)_applicationShortcutForFavoriteItem:(id)a3 badgeCountString:(id)a4
+- (id)_applicationShortcutForFavoriteItem:(id)item badgeCountString:(id)string
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 displayName];
-  v9 = v7;
-  v10 = [(MFApplicationShortcutProvider *)self _applicationShortcutIconForFavoriteItem:v6];
+  itemCopy = item;
+  stringCopy = string;
+  displayName = [itemCopy displayName];
+  v9 = stringCopy;
+  v10 = [(MFApplicationShortcutProvider *)self _applicationShortcutIconForFavoriteItem:itemCopy];
   if (!v10)
   {
     v11 = [SBSApplicationShortcutSystemIcon alloc];
     v10 = [v11 initWithSystemImageName:MFImageGlyphGenericMailbox];
   }
 
-  v12 = [(MFApplicationShortcutProvider *)self favoritesPersistence];
-  v13 = [v12 indexPathForItem:v6];
+  favoritesPersistence = [(MFApplicationShortcutProvider *)self favoritesPersistence];
+  v13 = [favoritesPersistence indexPathForItem:itemCopy];
   v14 = [v13 row];
 
   v19 = @"MFMailFavoriteItemAppShortcutFavoriteItem";
@@ -372,7 +372,7 @@ LABEL_41:
 
   v17 = objc_alloc_init(SBSApplicationShortcutItem);
   [v17 setType:@"com.apple.mobilemail.FavoriteItemApplicationShortcut"];
-  [v17 setLocalizedTitle:v8];
+  [v17 setLocalizedTitle:displayName];
   [v17 setLocalizedSubtitle:v9];
   [v17 setIcon:v10];
   [v17 setUserInfo:v16];
@@ -380,20 +380,20 @@ LABEL_41:
   return v17;
 }
 
-- (id)_applicationShortcutIconForFavoriteItem:(id)a3
+- (id)_applicationShortcutIconForFavoriteItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v5 = 0;
   v6 = &MFImageGlyphGenericMailbox;
-  switch([v4 sourceType])
+  switch([itemCopy sourceType])
   {
     case 0uLL:
-      if ([v4 type] == 3)
+      if ([itemCopy type] == 3)
       {
         v6 = &MFImageGlyphInboxMailbox;
       }
 
-      else if ([v4 type] == 4)
+      else if ([itemCopy type] == 4)
       {
         v6 = &MFImageGlyphFavoriteInboxUnifiedMailbox;
       }
@@ -459,24 +459,24 @@ LABEL_5:
   return v7;
 }
 
-- (id)_iconImageWithBackgroundColor:(id)a3
+- (id)_iconImageWithBackgroundColor:(id)color
 {
-  v3 = a3;
+  colorCopy = color;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 preferredContentSizeCategory];
+  preferredContentSizeCategory = [v4 preferredContentSizeCategory];
 
-  v6 = sub_10014A0BC(2, v5, 36.0);
-  v7 = sub_10014A0BC(3, v5, 36.0);
+  v6 = sub_10014A0BC(2, preferredContentSizeCategory, 36.0);
+  v7 = sub_10014A0BC(3, preferredContentSizeCategory, 36.0);
   if (v6 < v7)
   {
     v6 = v7;
   }
 
   v8 = +[NSBundle mainBundle];
-  v9 = sub_100149B0C(2, v5, v8, v3, 0, v6);
+  v9 = sub_100149B0C(2, preferredContentSizeCategory, v8, colorCopy, 0, v6);
 
   v10 = +[NSBundle mainBundle];
-  v11 = sub_100149B0C(3, v5, v10, v3, 0, v6);
+  v11 = sub_100149B0C(3, preferredContentSizeCategory, v10, colorCopy, 0, v6);
 
   [v9 size];
   v13 = v12;
@@ -497,10 +497,10 @@ LABEL_5:
   return v21;
 }
 
-- (void)setShortcutItems:(id)a3
+- (void)setShortcutItems:(id)items
 {
-  v3 = a3;
-  v4 = [v3 ef_map:&stru_100653250];
+  itemsCopy = items;
+  v4 = [itemsCopy ef_map:&stru_100653250];
   v5 = +[MFApplicationShortcutProvider log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -510,7 +510,7 @@ LABEL_5:
   }
 
   v6 = objc_alloc_init(SBSApplicationShortcutService);
-  [v6 updateDynamicApplicationShortcutItems:v3 forBundleIdentifier:kMFMobileMailBundleIdentifier];
+  [v6 updateDynamicApplicationShortcutItems:itemsCopy forBundleIdentifier:kMFMobileMailBundleIdentifier];
 }
 
 @end

@@ -1,38 +1,38 @@
 @interface WallpaperSettingsRootViewController
-- (WallpaperSettingsRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)handleURL:(id)a3 withCompletion:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (WallpaperSettingsRootViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)handleURL:(id)l withCompletion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation WallpaperSettingsRootViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   WallpaperSettingsRootViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  WallpaperSettingsRootViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  WallpaperSettingsRootViewController.viewDidAppear(_:)(appear);
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  WallpaperSettingsRootViewController.viewWillTransition(to:with:)(a4, width, height);
+  selfCopy = self;
+  WallpaperSettingsRootViewController.viewWillTransition(to:with:)(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
-- (WallpaperSettingsRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WallpaperSettingsRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_2A454();
     v7 = v6;
@@ -44,16 +44,16 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return WallpaperSettingsRootViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return WallpaperSettingsRootViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
-- (void)handleURL:(id)a3 withCompletion:(id)a4
+- (void)handleURL:(id)l withCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
-  if (a3)
+  v6 = _Block_copy(completion);
+  if (l)
   {
-    a3 = sub_2A3F4();
+    l = sub_2A3F4();
   }
 
   if (v6)
@@ -69,8 +69,8 @@
     v7 = 0;
   }
 
-  v9 = self;
-  WallpaperSettingsRootViewController.handleURL(_:withCompletion:)(a3, v8, v7);
+  selfCopy = self;
+  WallpaperSettingsRootViewController.handleURL(_:withCompletion:)(l, v8, v7);
   sub_3754(v8);
 }
 

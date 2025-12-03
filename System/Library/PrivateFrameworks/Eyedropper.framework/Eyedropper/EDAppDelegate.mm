@@ -1,27 +1,27 @@
 @interface EDAppDelegate
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (CGPoint)_lastDisplayLocationForLensView:(id)a3;
-- (CGPoint)_startingPointForWindow:(id)a3;
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (CGPoint)_lastDisplayLocationForLensView:(id)view;
+- (CGPoint)_startingPointForWindow:(id)window;
 - (EDAppDelegate)init;
 - (EDLensView)activeLensView;
 - (id)mainScreenLensView;
 - (id)mainScreenWindow;
-- (void)_enumerateRemoteClientsUsingBlock:(id)a3;
-- (void)_sceneDidDisconnect:(id)a3;
-- (void)_sceneWillConnect:(id)a3;
+- (void)_enumerateRemoteClientsUsingBlock:(id)block;
+- (void)_sceneDidDisconnect:(id)disconnect;
+- (void)_sceneWillConnect:(id)connect;
 - (void)_updateDynamicRangeSamplingModesFromClientSettings;
-- (void)_updateLastDisplayLocation:(CGPoint)a3 forLensView:(id)a4;
-- (void)beginShowingEyeDropper:(id)a3 settings:(id)a4;
+- (void)_updateLastDisplayLocation:(CGPoint)location forLensView:(id)view;
+- (void)beginShowingEyeDropper:(id)dropper settings:(id)settings;
 - (void)cancelShowingEyeDropper;
 - (void)dismissEyedropper;
 - (void)floatEyeDropper;
-- (void)hideSystemPointer:(BOOL)a3;
-- (void)lensView:(id)a3 didSelectColorsBySamplingMode:(id)a4;
-- (void)lensViewDidActivate:(id)a3;
+- (void)hideSystemPointer:(BOOL)pointer;
+- (void)lensView:(id)view didSelectColorsBySamplingMode:(id)mode;
+- (void)lensViewDidActivate:(id)activate;
 - (void)lockStateChanged;
-- (void)performOnAllWindows:(id)a3;
-- (void)scene:(id)a3 didUpdateWithDiff:(id)a4 transitionContext:(id)a5 completion:(id)a6;
+- (void)performOnAllWindows:(id)windows;
+- (void)scene:(id)scene didUpdateWithDiff:(id)diff transitionContext:(id)context completion:(id)completion;
 @end
 
 @implementation EDAppDelegate
@@ -33,60 +33,60 @@
   v2 = [(EDAppDelegate *)&v8 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel__sceneWillConnect_ name:*MEMORY[0x277D76E70] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__sceneWillConnect_ name:*MEMORY[0x277D76E70] object:0];
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:v2 selector:sel__sceneDidDisconnect_ name:*MEMORY[0x277D76E50] object:0];
+    defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter2 addObserver:v2 selector:sel__sceneDidDisconnect_ name:*MEMORY[0x277D76E50] object:0];
 
-    v5 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     mousePointerServiceAssertionByDisplayIdentifier = v2->_mousePointerServiceAssertionByDisplayIdentifier;
-    v2->_mousePointerServiceAssertionByDisplayIdentifier = v5;
+    v2->_mousePointerServiceAssertionByDisplayIdentifier = dictionary;
   }
 
   return v2;
 }
 
-- (void)_sceneWillConnect:(id)a3
+- (void)_sceneWillConnect:(id)connect
 {
-  v9 = [a3 object];
-  v4 = [v9 delegate];
-  v5 = EDDisplayIdentifierForWindowScene(v9);
+  object = [connect object];
+  delegate = [object delegate];
+  v5 = EDDisplayIdentifierForWindowScene(object);
   sceneDelegateByDisplayIdentifier = self->_sceneDelegateByDisplayIdentifier;
   if (!sceneDelegateByDisplayIdentifier)
   {
-    v7 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v8 = self->_sceneDelegateByDisplayIdentifier;
-    self->_sceneDelegateByDisplayIdentifier = v7;
+    self->_sceneDelegateByDisplayIdentifier = dictionary;
 
     sceneDelegateByDisplayIdentifier = self->_sceneDelegateByDisplayIdentifier;
   }
 
-  [(NSMutableDictionary *)sceneDelegateByDisplayIdentifier setObject:v4 forKey:v5];
+  [(NSMutableDictionary *)sceneDelegateByDisplayIdentifier setObject:delegate forKey:v5];
 }
 
-- (void)_sceneDidDisconnect:(id)a3
+- (void)_sceneDidDisconnect:(id)disconnect
 {
-  v5 = [a3 object];
-  v4 = EDDisplayIdentifierForWindowScene(v5);
+  object = [disconnect object];
+  v4 = EDDisplayIdentifierForWindowScene(object);
   [(NSMutableDictionary *)self->_sceneDelegateByDisplayIdentifier removeObjectForKey:v4];
 }
 
 - (id)mainScreenWindow
 {
   v2 = [(NSMutableDictionary *)self->_sceneDelegateByDisplayIdentifier objectForKey:EDEmbeddedDisplayIdentifier];
-  v3 = [v2 window];
+  window = [v2 window];
 
-  return v3;
+  return window;
 }
 
 - (id)mainScreenLensView
 {
-  v2 = [(EDAppDelegate *)self mainScreenWindow];
-  v3 = [v2 rootViewController];
-  v4 = [v3 lensView];
+  mainScreenWindow = [(EDAppDelegate *)self mainScreenWindow];
+  rootViewController = [mainScreenWindow rootViewController];
+  lensView = [rootViewController lensView];
 
-  return v4;
+  return lensView;
 }
 
 - (EDLensView)activeLensView
@@ -94,35 +94,35 @@
   activeLensView = self->_activeLensView;
   if (activeLensView)
   {
-    v3 = activeLensView;
+    mainScreenLensView = activeLensView;
   }
 
   else
   {
-    v3 = [(EDAppDelegate *)self mainScreenLensView];
+    mainScreenLensView = [(EDAppDelegate *)self mainScreenLensView];
   }
 
-  return v3;
+  return mainScreenLensView;
 }
 
-- (BOOL)application:(id)a3 didFinishLaunchingWithOptions:(id)a4
+- (BOOL)application:(id)application didFinishLaunchingWithOptions:(id)options
 {
   v5 = [objc_alloc(MEMORY[0x277CCAE98]) initWithMachServiceName:@"com.apple.uikit.eyedropperd.service"];
   serviceListener = self->_serviceListener;
   self->_serviceListener = v5;
 
   [(NSXPCListener *)self->_serviceListener setDelegate:self];
-  v7 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   liveConnections = self->_liveConnections;
-  self->_liveConnections = v7;
+  self->_liveConnections = array;
 
-  v9 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+  weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
   settingsByConnection = self->_settingsByConnection;
-  self->_settingsByConnection = v9;
+  self->_settingsByConnection = weakToStrongObjectsMapTable;
 
-  v11 = [MEMORY[0x277CCAA78] indexSet];
+  indexSet = [MEMORY[0x277CCAA78] indexSet];
   activeDynamicRangeSamplingModes = self->_activeDynamicRangeSamplingModes;
-  self->_activeDynamicRangeSamplingModes = v11;
+  self->_activeDynamicRangeSamplingModes = indexSet;
 
   v13 = objc_opt_new();
   pointerClientController = self->_pointerClientController;
@@ -163,28 +163,28 @@
   }
 }
 
-- (void)performOnAllWindows:(id)a3
+- (void)performOnAllWindows:(id)windows
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  windowsCopy = windows;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = [(NSMutableDictionary *)self->_sceneDelegateByDisplayIdentifier allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [(NSMutableDictionary *)self->_sceneDelegateByDisplayIdentifier allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
     v7 = v6;
     v8 = *v17;
-    v15 = (v4 + 2);
+    v15 = (windowsCopy + 2);
     do
     {
       for (i = 0; i != v7; ++i)
       {
         if (*v17 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
@@ -193,31 +193,31 @@
         {
           v12 = [(NSMutableDictionary *)self->_sceneDelegateByDisplayIdentifier objectForKey:v10];
           v13 = v12;
-          if (v4)
+          if (windowsCopy)
           {
-            v14 = [v12 window];
-            v4[2](v4, v14);
+            window = [v12 window];
+            windowsCopy[2](windowsCopy, window);
           }
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v7);
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285D871D8];
-  [v7 setExportedInterface:v8];
+  [connectionCopy setExportedInterface:v8];
 
-  [v7 setExportedObject:self];
+  [connectionCopy setExportedObject:self];
   v9 = [MEMORY[0x277CCAE90] interfaceWithProtocol:&unk_285D87270];
-  [v7 setRemoteObjectInterface:v9];
+  [connectionCopy setRemoteObjectInterface:v9];
 
   objc_initWeak(&location, self);
   block[0] = MEMORY[0x277D85DD0];
@@ -225,7 +225,7 @@
   block[2] = __52__EDAppDelegate_listener_shouldAcceptNewConnection___block_invoke;
   block[3] = &unk_278FD84B8;
   objc_copyWeak(&v24, &location);
-  v10 = v7;
+  v10 = connectionCopy;
   v23 = v10;
   dispatch_async(MEMORY[0x277D85CD0], block);
   objc_initWeak(&from, v10);
@@ -241,7 +241,7 @@
   v15 = &unk_278FD8508;
   objc_copyWeak(&v17, &location);
   objc_copyWeak(&v18, &from);
-  v16 = self;
+  selfCopy = self;
   [v10 setInvalidationHandler:&v12];
   [v10 resume];
   objc_destroyWeak(&v18);
@@ -298,10 +298,10 @@ void __52__EDAppDelegate_listener_shouldAcceptNewConnection___block_invoke_4(id 
   }
 }
 
-- (void)_enumerateRemoteClientsUsingBlock:(id)a3
+- (void)_enumerateRemoteClientsUsingBlock:(id)block
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -322,11 +322,11 @@ void __52__EDAppDelegate_listener_shouldAcceptNewConnection___block_invoke_4(id 
         }
 
         v10 = *(*(&v13 + 1) + 8 * i);
-        v11 = [v10 remoteObjectProxy];
-        if (v11)
+        remoteObjectProxy = [v10 remoteObjectProxy];
+        if (remoteObjectProxy)
         {
           v12 = [(NSMapTable *)self->_settingsByConnection objectForKey:v10];
-          v4[2](v4, v11, v12);
+          blockCopy[2](blockCopy, remoteObjectProxy, v12);
         }
       }
 
@@ -337,19 +337,19 @@ void __52__EDAppDelegate_listener_shouldAcceptNewConnection___block_invoke_4(id 
   }
 }
 
-- (void)scene:(id)a3 didUpdateWithDiff:(id)a4 transitionContext:(id)a5 completion:(id)a6
+- (void)scene:(id)scene didUpdateWithDiff:(id)diff transitionContext:(id)context completion:(id)completion
 {
-  v7 = a6;
-  v8 = v7;
-  if (v7)
+  completionCopy = completion;
+  v8 = completionCopy;
+  if (completionCopy)
   {
     v9 = *MEMORY[0x277D76620];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __70__EDAppDelegate_scene_didUpdateWithDiff_transitionContext_completion___block_invoke;
     v10[3] = &unk_278FD8530;
-    v11 = v7;
-    [v9 _scheduleSceneEventResponseForScene:a3 withResponseBlock:v10];
+    v11 = completionCopy;
+    [v9 _scheduleSceneEventResponseForScene:scene withResponseBlock:v10];
   }
 }
 
@@ -359,10 +359,10 @@ void __70__EDAppDelegate_scene_didUpdateWithDiff_transitionContext_completion___
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)hideSystemPointer:(BOOL)a3
+- (void)hideSystemPointer:(BOOL)pointer
 {
   hidePointerAssertion = self->_hidePointerAssertion;
-  if (a3)
+  if (pointer)
   {
     if (hidePointerAssertion)
     {
@@ -383,9 +383,9 @@ void __70__EDAppDelegate_scene_didUpdateWithDiff_transitionContext_completion___
   MEMORY[0x2821F96F8]();
 }
 
-- (CGPoint)_startingPointForWindow:(id)a3
+- (CGPoint)_startingPointForWindow:(id)window
 {
-  [a3 bounds];
+  [window bounds];
   x = v11.origin.x;
   y = v11.origin.y;
   width = v11.size.width;
@@ -405,13 +405,13 @@ void __70__EDAppDelegate_scene_didUpdateWithDiff_transitionContext_completion___
 - (void)_updateDynamicRangeSamplingModesFromClientSettings
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB58] indexSet];
+  indexSet = [MEMORY[0x277CCAB58] indexSet];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMapTable *)self->_settingsByConnection objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_settingsByConnection objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -423,47 +423,47 @@ void __70__EDAppDelegate_scene_didUpdateWithDiff_transitionContext_completion___
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [v3 addIndex:{objc_msgSend(*(*(&v11 + 1) + 8 * v8++), "headroomMode")}];
+        [indexSet addIndex:{objc_msgSend(*(*(&v11 + 1) + 8 * v8++), "headroomMode")}];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
   }
 
-  v9 = [v3 copy];
+  v9 = [indexSet copy];
   activeDynamicRangeSamplingModes = self->_activeDynamicRangeSamplingModes;
   self->_activeDynamicRangeSamplingModes = v9;
 }
 
-- (void)beginShowingEyeDropper:(id)a3 settings:(id)a4
+- (void)beginShowingEyeDropper:(id)dropper settings:(id)settings
 {
-  v6 = a3;
-  v7 = a4;
+  dropperCopy = dropper;
+  settingsCopy = settings;
   objc_initWeak(&location, self);
-  if (!v6)
+  if (!dropperCopy)
   {
-    v6 = EDEmbeddedDisplayIdentifier;
+    dropperCopy = EDEmbeddedDisplayIdentifier;
   }
 
-  v8 = [MEMORY[0x277CCAE80] currentConnection];
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __49__EDAppDelegate_beginShowingEyeDropper_settings___block_invoke;
   v12[3] = &unk_278FD8558;
   objc_copyWeak(&v17, &location);
-  v13 = v8;
-  v14 = v7;
-  v15 = self;
-  v16 = v6;
-  v9 = v6;
-  v10 = v7;
-  v11 = v8;
+  v13 = currentConnection;
+  v14 = settingsCopy;
+  selfCopy = self;
+  v16 = dropperCopy;
+  v9 = dropperCopy;
+  v10 = settingsCopy;
+  v11 = currentConnection;
   dispatch_async(MEMORY[0x277D85CD0], v12);
 
   objc_destroyWeak(&v17);
@@ -629,24 +629,24 @@ void __40__EDAppDelegate_cancelShowingEyeDropper__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_updateLastDisplayLocation:(CGPoint)a3 forLensView:(id)a4
+- (void)_updateLastDisplayLocation:(CGPoint)location forLensView:(id)view
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
-  v15 = v7;
+  y = location.y;
+  x = location.x;
+  viewCopy = view;
+  v15 = viewCopy;
   if (!self->_lastDisplayLocationByDisplayIdentifier)
   {
-    v8 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     lastDisplayLocationByDisplayIdentifier = self->_lastDisplayLocationByDisplayIdentifier;
-    self->_lastDisplayLocationByDisplayIdentifier = v8;
+    self->_lastDisplayLocationByDisplayIdentifier = dictionary;
 
-    v7 = v15;
+    viewCopy = v15;
   }
 
-  v10 = [v7 window];
-  v11 = [v10 windowScene];
-  v12 = EDDisplayIdentifierForWindowScene(v11);
+  window = [viewCopy window];
+  windowScene = [window windowScene];
+  v12 = EDDisplayIdentifierForWindowScene(windowScene);
 
   if (v12)
   {
@@ -656,11 +656,11 @@ void __40__EDAppDelegate_cancelShowingEyeDropper__block_invoke(uint64_t a1)
   }
 }
 
-- (CGPoint)_lastDisplayLocationForLensView:(id)a3
+- (CGPoint)_lastDisplayLocationForLensView:(id)view
 {
-  v4 = [a3 window];
-  v5 = [v4 windowScene];
-  v6 = EDDisplayIdentifierForWindowScene(v5);
+  window = [view window];
+  windowScene = [window windowScene];
+  v6 = EDDisplayIdentifierForWindowScene(windowScene);
 
   if (v6)
   {
@@ -792,20 +792,20 @@ void __32__EDAppDelegate_floatEyeDropper__block_invoke(uint64_t a1)
   }
 }
 
-- (void)lensView:(id)a3 didSelectColorsBySamplingMode:(id)a4
+- (void)lensView:(id)view didSelectColorsBySamplingMode:(id)mode
 {
-  v6 = a4;
+  modeCopy = mode;
   self->_selectedColor = 1;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __56__EDAppDelegate_lensView_didSelectColorsBySamplingMode___block_invoke;
   v9[3] = &unk_278FD8580;
-  v10 = v6;
-  v7 = v6;
-  v8 = a3;
+  v10 = modeCopy;
+  v7 = modeCopy;
+  viewCopy = view;
   [(EDAppDelegate *)self _enumerateRemoteClientsUsingBlock:v9];
-  [v8 lastPosition];
-  [(EDAppDelegate *)self _updateLastDisplayLocation:v8 forLensView:?];
+  [viewCopy lastPosition];
+  [(EDAppDelegate *)self _updateLastDisplayLocation:viewCopy forLensView:?];
 }
 
 void __56__EDAppDelegate_lensView_didSelectColorsBySamplingMode___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -824,13 +824,13 @@ void __56__EDAppDelegate_lensView_didSelectColorsBySamplingMode___block_invoke(u
   [v7 eyedropperDidSelectColor:v12];
 }
 
-- (void)lensViewDidActivate:(id)a3
+- (void)lensViewDidActivate:(id)activate
 {
-  v5 = a3;
+  activateCopy = activate;
   activeLensView = self->_activeLensView;
-  if (activeLensView != v5)
+  if (activeLensView != activateCopy)
   {
-    v14 = v5;
+    v14 = activateCopy;
     v7 = *MEMORY[0x277CBF348];
     v8 = *(MEMORY[0x277CBF348] + 8);
     v9 = v8;
@@ -843,17 +843,17 @@ void __56__EDAppDelegate_lensView_didSelectColorsBySamplingMode___block_invoke(u
       [(EDLensView *)self->_activeLensView setActive:0];
     }
 
-    objc_storeStrong(&self->_activeLensView, a3);
+    objc_storeStrong(&self->_activeLensView, activate);
     v13 = v10 == v7 && v9 == v8;
-    v5 = v14;
+    activateCopy = v14;
     if (!v13)
     {
       activeLensView = [(EDLensView *)self->_activeLensView setCenterOffsetAtTouchDown:v10, v9];
-      v5 = v14;
+      activateCopy = v14;
     }
   }
 
-  MEMORY[0x2821F96F8](activeLensView, v5);
+  MEMORY[0x2821F96F8](activeLensView, activateCopy);
 }
 
 - (void)dismissEyedropper
@@ -864,8 +864,8 @@ void __56__EDAppDelegate_lensView_didSelectColorsBySamplingMode___block_invoke(u
     [(EDAppDelegate *)self _enumerateRemoteClientsUsingBlock:&__block_literal_global_87];
   }
 
-  v3 = [(EDAppDelegate *)self activeLensView];
-  [v3 setActive:0];
+  activeLensView = [(EDAppDelegate *)self activeLensView];
+  [activeLensView setActive:0];
 
   [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
   self->_lastDismissedTime = v4;
@@ -875,8 +875,8 @@ void __56__EDAppDelegate_lensView_didSelectColorsBySamplingMode___block_invoke(u
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v5 = [(NSMutableDictionary *)self->_sceneDelegateByDisplayIdentifier allValues];
-    v6 = [v5 countByEnumeratingWithState:&v35 objects:v41 count:16];
+    allValues = [(NSMutableDictionary *)self->_sceneDelegateByDisplayIdentifier allValues];
+    v6 = [allValues countByEnumeratingWithState:&v35 objects:v41 count:16];
     if (v6)
     {
       v7 = v6;
@@ -887,15 +887,15 @@ void __56__EDAppDelegate_lensView_didSelectColorsBySamplingMode___block_invoke(u
         {
           if (*v36 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allValues);
           }
 
-          v10 = [*(*(&v35 + 1) + 8 * i) window];
-          v11 = [v10 layer];
-          [v11 setHitTestsAsOpaque:0];
+          window = [*(*(&v35 + 1) + 8 * i) window];
+          layer = [window layer];
+          [layer setHitTestsAsOpaque:0];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v35 objects:v41 count:16];
+        v7 = [allValues countByEnumeratingWithState:&v35 objects:v41 count:16];
       }
 
       while (v7);
@@ -943,8 +943,8 @@ void __56__EDAppDelegate_lensView_didSelectColorsBySamplingMode___block_invoke(u
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v19 = [(NSMutableDictionary *)self->_sceneDelegateByDisplayIdentifier allKeys];
-  v20 = [v19 countByEnumeratingWithState:&v27 objects:v39 count:16];
+  allKeys = [(NSMutableDictionary *)self->_sceneDelegateByDisplayIdentifier allKeys];
+  v20 = [allKeys countByEnumeratingWithState:&v27 objects:v39 count:16];
   if (v20)
   {
     v21 = v20;
@@ -955,7 +955,7 @@ void __56__EDAppDelegate_lensView_didSelectColorsBySamplingMode___block_invoke(u
       {
         if (*v28 != v22)
         {
-          objc_enumerationMutation(v19);
+          objc_enumerationMutation(allKeys);
         }
 
         v24 = *(*(&v27 + 1) + 8 * k);
@@ -968,7 +968,7 @@ void __56__EDAppDelegate_lensView_didSelectColorsBySamplingMode___block_invoke(u
         }
       }
 
-      v21 = [v19 countByEnumeratingWithState:&v27 objects:v39 count:16];
+      v21 = [allKeys countByEnumeratingWithState:&v27 objects:v39 count:16];
     }
 
     while (v21);

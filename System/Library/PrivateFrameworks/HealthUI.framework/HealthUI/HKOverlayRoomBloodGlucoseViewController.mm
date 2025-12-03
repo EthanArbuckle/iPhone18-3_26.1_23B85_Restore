@@ -1,47 +1,47 @@
 @interface HKOverlayRoomBloodGlucoseViewController
-+ (id)_buildPercentInRangeChartCacheWithApplicationItems:(id)a3;
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11;
-- (BOOL)_isEnhancedChartingEnabledWithHealthStore:(id)a3;
-- (HKOverlayRoomBloodGlucoseViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 preferredOverlay:(int64_t)a6 trendModel:(id)a7 factorDisplayTypes:(id)a8;
-- (id)_buildBloodGlucoseAverageDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5;
-- (id)_buildEuglycemicRangeStringWithApplicationItems:(id)a3;
++ (id)_buildPercentInRangeChartCacheWithApplicationItems:(id)items;
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1;
+- (BOOL)_isEnhancedChartingEnabledWithHealthStore:(id)store;
+- (HKOverlayRoomBloodGlucoseViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode preferredOverlay:(int64_t)overlay trendModel:(id)model factorDisplayTypes:(id)types;
+- (id)_buildBloodGlucoseAverageDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store;
+- (id)_buildEuglycemicRangeStringWithApplicationItems:(id)items;
 - (id)_buildGranularAverageDataSourceTitleFromTimeScope;
-- (id)_buildPercentInRangeDisplayTypeWithApplicationItems:(id)a3 classification:(int64_t)a4;
-- (id)_buildPercentInRangeOverlayContextSectionWithApplicationItems:(id)a3 overlayChartController:(id)a4;
-- (id)_buildPercentInRangeStackedBarSeriesForClassification:(int64_t)a3;
+- (id)_buildPercentInRangeDisplayTypeWithApplicationItems:(id)items classification:(int64_t)classification;
+- (id)_buildPercentInRangeOverlayContextSectionWithApplicationItems:(id)items overlayChartController:(id)controller;
+- (id)_buildPercentInRangeStackedBarSeriesForClassification:(int64_t)classification;
 - (id)chartOverlayVersion;
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5;
-- (id)controllerTitleWithApplicationItems:(id)a3;
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller;
+- (id)controllerTitleWithApplicationItems:(id)items;
 - (id)createChartOverlayViewController;
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5;
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3;
-- (int64_t)_initialPillForPreference:(int64_t)a3;
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items;
+- (id)primaryDisplayTypeWithApplicationItems:(id)items;
+- (int64_t)_initialPillForPreference:(int64_t)preference;
 @end
 
 @implementation HKOverlayRoomBloodGlucoseViewController
 
-+ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)a3 chartFactory:(id)a4 applicationItems:(id)a5 displayDate:(id)a6 preferredOverlay:(int64_t)a7 restorationUserActivity:(id)a8 trendModel:(id)a9 factorDisplayTypes:(id)a10 additionalChartOptions:(unint64_t)a11
++ (id)createInteractiveChartViewControllerForTypeIdentifier:(id)identifier chartFactory:(id)factory applicationItems:(id)items displayDate:(id)date preferredOverlay:(int64_t)overlay restorationUserActivity:(id)activity trendModel:(id)model factorDisplayTypes:(id)self0 additionalChartOptions:(unint64_t)self1
 {
-  v16 = a10;
-  v17 = a9;
-  v18 = a8;
-  v19 = a6;
-  v20 = a5;
-  v21 = [[a1 alloc] initWithDisplayDate:v19 applicationItems:v20 mode:1 preferredOverlay:a7 trendModel:v17 factorDisplayTypes:v16];
+  typesCopy = types;
+  modelCopy = model;
+  activityCopy = activity;
+  dateCopy = date;
+  itemsCopy = items;
+  v21 = [[self alloc] initWithDisplayDate:dateCopy applicationItems:itemsCopy mode:1 preferredOverlay:overlay trendModel:modelCopy factorDisplayTypes:typesCopy];
 
-  [v21 setRestorationUserActivity:v18];
-  [v21 setAdditionalChartOptions:a11];
+  [v21 setRestorationUserActivity:activityCopy];
+  [v21 setAdditionalChartOptions:options];
 
   return v21;
 }
 
-- (HKOverlayRoomBloodGlucoseViewController)initWithDisplayDate:(id)a3 applicationItems:(id)a4 mode:(int64_t)a5 preferredOverlay:(int64_t)a6 trendModel:(id)a7 factorDisplayTypes:(id)a8
+- (HKOverlayRoomBloodGlucoseViewController)initWithDisplayDate:(id)date applicationItems:(id)items mode:(int64_t)mode preferredOverlay:(int64_t)overlay trendModel:(id)model factorDisplayTypes:(id)types
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a7;
-  v17 = a8;
-  v18 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:v16];
+  dateCopy = date;
+  itemsCopy = items;
+  modelCopy = model;
+  typesCopy = types;
+  v18 = [HKOverlayRoomTrendContext findInitialDateFromTrendModel:modelCopy];
   v19 = v18;
   if (v18)
   {
@@ -50,18 +50,18 @@
 
   else
   {
-    v20 = v14;
+    v20 = dateCopy;
   }
 
   v21 = v20;
 
   v33.receiver = self;
   v33.super_class = HKOverlayRoomBloodGlucoseViewController;
-  v22 = [(HKOverlayRoomViewController *)&v33 initWithDisplayDate:v21 applicationItems:v15 factorDisplayTypes:v17 mode:a5];
+  v22 = [(HKOverlayRoomViewController *)&v33 initWithDisplayDate:v21 applicationItems:itemsCopy factorDisplayTypes:typesCopy mode:mode];
 
   if (v22)
   {
-    v22->_preferredOverlay = a6;
+    v22->_preferredOverlay = overlay;
     preferredOverlayIndex = v22->_preferredOverlayIndex;
     v22->_preferredOverlayIndex = 0;
 
@@ -69,22 +69,22 @@
     contextDelegates = v22->_contextDelegates;
     v22->_contextDelegates = v24;
 
-    v26 = [HKOverlayRoomBloodGlucoseViewController _buildPercentInRangeChartCacheWithApplicationItems:v15];
+    v26 = [HKOverlayRoomBloodGlucoseViewController _buildPercentInRangeChartCacheWithApplicationItems:itemsCopy];
     percentInRangeChartCache = v22->_percentInRangeChartCache;
     v22->_percentInRangeChartCache = v26;
 
-    objc_storeStrong(&v22->_trendModel, a7);
-    if (a5 == 3)
+    objc_storeStrong(&v22->_trendModel, model);
+    if (mode == 3)
     {
       v28 = 0;
     }
 
     else
     {
-      v29 = [v16 selectTrendInitially];
-      if (a5)
+      selectTrendInitially = [modelCopy selectTrendInitially];
+      if (mode)
       {
-        v30 = a6 == 0;
+        v30 = overlay == 0;
       }
 
       else
@@ -93,7 +93,7 @@
       }
 
       v31 = !v30;
-      v28 = v31 | v29;
+      v28 = v31 | selectTrendInitially;
     }
 
     [(HKOverlayRoomViewController *)v22 setShouldSelectInitialOverlay:v28 & 1];
@@ -102,7 +102,7 @@
   return v22;
 }
 
-- (id)controllerTitleWithApplicationItems:(id)a3
+- (id)controllerTitleWithApplicationItems:(id)items
 {
   v3 = HKHealthKitFrameworkBundle();
   v4 = [v3 localizedStringForKey:@"BLOOD_GLUCOSE" value:&stru_1F42FFBE0 table:*MEMORY[0x1E696B910]];
@@ -110,34 +110,34 @@
   return v4;
 }
 
-- (id)primaryDisplayTypeWithApplicationItems:(id)a3
+- (id)primaryDisplayTypeWithApplicationItems:(id)items
 {
   v3 = MEMORY[0x1E696C2E0];
   v4 = *MEMORY[0x1E696BC80];
-  v5 = a3;
+  itemsCopy = items;
   v6 = [v3 quantityTypeForIdentifier:v4];
-  v7 = [v5 displayTypeController];
+  displayTypeController = [itemsCopy displayTypeController];
 
-  v8 = [v7 displayTypeForObjectType:v6];
+  v8 = [displayTypeController displayTypeForObjectType:v6];
 
   return v8;
 }
 
-- (id)contextSectionContainersForMode:(int64_t)a3 applicationItems:(id)a4 overlayChartController:(id)a5
+- (id)contextSectionContainersForMode:(int64_t)mode applicationItems:(id)items overlayChartController:(id)controller
 {
   v83[3] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(HKOverlayRoomBloodGlucoseViewController *)self primaryDisplayTypeWithApplicationItems:v8];
+  itemsCopy = items;
+  controllerCopy = controller;
+  v10 = [(HKOverlayRoomBloodGlucoseViewController *)self primaryDisplayTypeWithApplicationItems:itemsCopy];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMode_applicationItems_overlayChartController___block_invoke_2;
   aBlock[3] = &unk_1E81B6178;
-  v11 = v9;
+  v11 = controllerCopy;
   v72 = v11;
-  v12 = v8;
+  v12 = itemsCopy;
   v73 = v12;
-  v74 = a3;
+  modeCopy = mode;
   v13 = _Block_copy(aBlock);
   v67[0] = MEMORY[0x1E69E9820];
   v67[1] = 3221225472;
@@ -147,7 +147,7 @@
   v68 = v14;
   v15 = v12;
   v69 = v15;
-  v70 = a3;
+  modeCopy2 = mode;
   v16 = _Block_copy(v67);
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
@@ -160,8 +160,8 @@
   v64 = v60;
   v58 = v14;
   v65 = v58;
-  v66 = a3;
-  v57 = a3;
+  modeCopy3 = mode;
+  modeCopy4 = mode;
   v18 = _Block_copy(v62);
   v19 = v16[2](v16);
   v83[0] = v19;
@@ -173,8 +173,8 @@
   v22 = [MEMORY[0x1E695DEC8] arrayWithObjects:v83 count:3];
 
   v61 = v17;
-  v23 = [v17 healthStore];
-  LODWORD(v17) = [(HKOverlayRoomBloodGlucoseViewController *)self _isEnhancedChartingEnabledWithHealthStore:v23];
+  healthStore = [v17 healthStore];
+  LODWORD(v17) = [(HKOverlayRoomBloodGlucoseViewController *)self _isEnhancedChartingEnabledWithHealthStore:healthStore];
 
   v56 = v17;
   if (v17)
@@ -218,9 +218,9 @@
 LABEL_10:
   if (self->_trendModel)
   {
-    v34 = [[HKOverlayRoomTrendContext alloc] initWithBaseDisplayType:v60 trendModel:self->_trendModel overlayChartController:v58 applicationItems:v61 overlayMode:v57];
-    v35 = [(HKOverlayRoomViewController *)self chartController];
-    [v35 setTrendAccessibilityDelegate:v34];
+    v34 = [[HKOverlayRoomTrendContext alloc] initWithBaseDisplayType:v60 trendModel:self->_trendModel overlayChartController:v58 applicationItems:v61 overlayMode:modeCopy4];
+    chartController = [(HKOverlayRoomViewController *)self chartController];
+    [chartController setTrendAccessibilityDelegate:v34];
 
     v36 = [v29 arrayByAddingObject:v34];
     v37 = v29;
@@ -235,7 +235,7 @@ LABEL_10:
     }
   }
 
-  if ((v57 - 1) < 2)
+  if ((modeCopy4 - 1) < 2)
   {
     v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:0];
     preferredOverlayIndex = self->_preferredOverlayIndex;
@@ -254,7 +254,7 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  if (v57 == 3)
+  if (modeCopy4 == 3)
   {
     v49 = v29;
     v50 = [v29 indexOfObject:v33];
@@ -343,25 +343,25 @@ id __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMod
   return v8;
 }
 
-- (BOOL)_isEnhancedChartingEnabledWithHealthStore:(id)a3
+- (BOOL)_isEnhancedChartingEnabledWithHealthStore:(id)store
 {
-  v4 = a3;
-  v5 = [v4 profileIdentifier];
-  v6 = [v5 type];
+  storeCopy = store;
+  profileIdentifier = [storeCopy profileIdentifier];
+  type = [profileIdentifier type];
 
-  if (v6 == 1)
+  if (type == 1)
   {
     v7 = objc_alloc(MEMORY[0x1E696C160]);
-    v8 = [v7 initWithFeatureIdentifier:*MEMORY[0x1E696B890] healthStore:v4];
+    v8 = [v7 initWithFeatureIdentifier:*MEMORY[0x1E696B890] healthStore:storeCopy];
     v15 = 0;
     v9 = [v8 onboardedCountryCodeSupportedStateWithError:&v15];
     v10 = v15;
     if (v9)
     {
-      v11 = [v9 integerValue];
-      if (v11 <= 5)
+      integerValue = [v9 integerValue];
+      if (integerValue <= 5)
       {
-        v12 = 5u >> v11;
+        v12 = 5u >> integerValue;
       }
 
       else
@@ -391,17 +391,17 @@ id __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMod
   return v12 & 1;
 }
 
-- (int64_t)_initialPillForPreference:(int64_t)a3
+- (int64_t)_initialPillForPreference:(int64_t)preference
 {
   result = 0;
-  if (a3 > 9)
+  if (preference > 9)
   {
-    if (a3 == 11)
+    if (preference == 11)
     {
       return result;
     }
 
-    if (a3 == 10)
+    if (preference == 10)
     {
       return 2;
     }
@@ -409,12 +409,12 @@ id __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMod
 
   else
   {
-    if (!a3)
+    if (!preference)
     {
       return result;
     }
 
-    if (a3 == 9)
+    if (preference == 9)
     {
       return 1;
     }
@@ -424,23 +424,23 @@ id __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMod
   v5 = *MEMORY[0x1E696B940];
   if (os_log_type_enabled(*MEMORY[0x1E696B940], OS_LOG_TYPE_ERROR))
   {
-    [(HKOverlayRoomBloodGlucoseViewController *)a3 _initialPillForPreference:v5];
+    [(HKOverlayRoomBloodGlucoseViewController *)preference _initialPillForPreference:v5];
   }
 
   return 0;
 }
 
-- (id)createViewControllerForMode:(int64_t)a3 displayDate:(id)a4 applicationItems:(id)a5
+- (id)createViewControllerForMode:(int64_t)mode displayDate:(id)date applicationItems:(id)items
 {
-  v8 = a5;
-  v9 = a4;
+  itemsCopy = items;
+  dateCopy = date;
   v10 = [HKOverlayRoomBloodGlucoseViewController alloc];
-  v11 = [(HKOverlayRoomBloodGlucoseViewController *)self preferredOverlay];
+  preferredOverlay = [(HKOverlayRoomBloodGlucoseViewController *)self preferredOverlay];
   trendModel = self->_trendModel;
-  v13 = [(HKOverlayRoomViewController *)self factorDisplayTypes];
-  v14 = [(HKOverlayRoomBloodGlucoseViewController *)v10 initWithDisplayDate:v9 applicationItems:v8 mode:a3 preferredOverlay:v11 trendModel:trendModel factorDisplayTypes:v13];
+  factorDisplayTypes = [(HKOverlayRoomViewController *)self factorDisplayTypes];
+  v14 = [(HKOverlayRoomBloodGlucoseViewController *)v10 initWithDisplayDate:dateCopy applicationItems:itemsCopy mode:mode preferredOverlay:preferredOverlay trendModel:trendModel factorDisplayTypes:factorDisplayTypes];
 
-  [(HKOverlayRoomViewController *)v14 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:a3]];
+  [(HKOverlayRoomViewController *)v14 setAdditionalChartOptions:[(HKOverlayRoomViewController *)self filteredInteractiveChartOptionsForMode:mode]];
 
   return v14;
 }
@@ -453,29 +453,29 @@ id __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMod
     if (v3 != 8)
     {
       v4 = v3;
-      v5 = [(HKOverlayRoomViewController *)self applicationItems];
-      v6 = [v5 timeScopeController];
-      [v6 setSelectedTimeScope:v4];
+      applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+      timeScopeController = [applicationItems timeScopeController];
+      [timeScopeController setSelectedTimeScope:v4];
     }
   }
 
   v9.receiver = self;
   v9.super_class = HKOverlayRoomBloodGlucoseViewController;
-  v7 = [(HKOverlayRoomViewController *)&v9 createChartOverlayViewController];
+  createChartOverlayViewController = [(HKOverlayRoomViewController *)&v9 createChartOverlayViewController];
 
-  return v7;
+  return createChartOverlayViewController;
 }
 
-- (id)_buildPercentInRangeOverlayContextSectionWithApplicationItems:(id)a3 overlayChartController:(id)a4
+- (id)_buildPercentInRangeOverlayContextSectionWithApplicationItems:(id)items overlayChartController:(id)controller
 {
   v33[4] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  controllerCopy = controller;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __128__HKOverlayRoomBloodGlucoseViewController__buildPercentInRangeOverlayContextSectionWithApplicationItems_overlayChartController___block_invoke;
   aBlock[3] = &unk_1E81B6218;
-  v25 = self;
+  selfCopy = self;
   aBlock[4] = self;
   v27 = _Block_copy(aBlock);
   v29[0] = MEMORY[0x1E69E9820];
@@ -483,10 +483,10 @@ id __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMod
   v29[2] = __128__HKOverlayRoomBloodGlucoseViewController__buildPercentInRangeOverlayContextSectionWithApplicationItems_overlayChartController___block_invoke_3;
   v29[3] = &unk_1E81B6240;
   v29[4] = self;
-  v30 = v6;
-  v31 = v7;
-  v28 = v7;
-  v26 = v6;
+  v30 = itemsCopy;
+  v31 = controllerCopy;
+  v28 = controllerCopy;
+  v26 = itemsCopy;
   v8 = _Block_copy(v29);
   v9 = v8[2](v8, 3);
   v33[0] = v9;
@@ -501,7 +501,7 @@ id __115__HKOverlayRoomBloodGlucoseViewController_contextSectionContainersForMod
   v13 = MEMORY[0x1E696AEC0];
   v14 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
   v15 = [v14 localizedStringForKey:@"GLUCOSE_OVERLAY_PERCENT_IN_RANGE_DESCRIPTION" value:&stru_1F42FFBE0 table:@"HealthUI-Localizable"];
-  v16 = [(HKOverlayRoomBloodGlucoseViewController *)v25 _buildEuglycemicRangeStringWithApplicationItems:v26];
+  v16 = [(HKOverlayRoomBloodGlucoseViewController *)selfCopy _buildEuglycemicRangeStringWithApplicationItems:v26];
   v17 = [v13 stringWithFormat:v15, v16];
 
   v18 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -592,33 +592,33 @@ _HKBloodGlucosePercentInRangeContext *__128__HKOverlayRoomBloodGlucoseViewContro
   return v9;
 }
 
-- (id)_buildEuglycemicRangeStringWithApplicationItems:(id)a3
+- (id)_buildEuglycemicRangeStringWithApplicationItems:(id)items
 {
-  v4 = a3;
-  v5 = [(HKOverlayRoomBloodGlucoseViewController *)self primaryDisplayTypeWithApplicationItems:v4];
-  v6 = [v4 unitController];
-  v7 = [v6 unitForDisplayType:v5];
+  itemsCopy = items;
+  v5 = [(HKOverlayRoomBloodGlucoseViewController *)self primaryDisplayTypeWithApplicationItems:itemsCopy];
+  unitController = [itemsCopy unitController];
+  v7 = [unitController unitForDisplayType:v5];
 
-  v8 = [v4 unitController];
-  v9 = [v8 localizedDisplayNameForDisplayType:v5];
+  unitController2 = [itemsCopy unitController];
+  v9 = [unitController2 localizedDisplayNameForDisplayType:v5];
 
   v10 = [MEMORY[0x1E696C350] ATTDEuglycemicRangeWithUnit:v7];
-  v11 = [v10 minimum];
-  [v11 doubleValueForUnit:v7];
+  minimum = [v10 minimum];
+  [minimum doubleValueForUnit:v7];
   v13 = v12;
 
   v14 = [MEMORY[0x1E696AD98] numberWithDouble:v13];
-  v15 = [v4 unitController];
-  v16 = HKFormattedStringFromValue(v14, v5, v15, 0, 0);
+  unitController3 = [itemsCopy unitController];
+  v16 = HKFormattedStringFromValue(v14, v5, unitController3, 0, 0);
 
-  v17 = [v10 maximum];
-  [v17 doubleValueForUnit:v7];
+  maximum = [v10 maximum];
+  [maximum doubleValueForUnit:v7];
   v19 = v18;
 
   v20 = [MEMORY[0x1E696AD98] numberWithDouble:v19];
-  v21 = [v4 unitController];
+  unitController4 = [itemsCopy unitController];
 
-  v22 = HKFormattedStringFromValue(v20, v5, v21, 0, 0);
+  v22 = HKFormattedStringFromValue(v20, v5, unitController4, 0, 0);
 
   v23 = MEMORY[0x1E696AEC0];
   v24 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.HealthUI"];
@@ -630,25 +630,25 @@ _HKBloodGlucosePercentInRangeContext *__128__HKOverlayRoomBloodGlucoseViewContro
   return v27;
 }
 
-- (id)_buildPercentInRangeDisplayTypeWithApplicationItems:(id)a3 classification:(int64_t)a4
+- (id)_buildPercentInRangeDisplayTypeWithApplicationItems:(id)items classification:(int64_t)classification
 {
   v6 = MEMORY[0x1E696C2E0];
   v7 = *MEMORY[0x1E696BC80];
-  v8 = a3;
+  itemsCopy = items;
   v9 = [v6 quantityTypeForIdentifier:v7];
-  v10 = [v8 displayTypeController];
+  displayTypeController = [itemsCopy displayTypeController];
 
-  v11 = [v10 displayTypeForObjectType:v9];
+  v11 = [displayTypeController displayTypeForObjectType:v9];
 
-  v12 = [(HKOverlayRoomBloodGlucoseViewController *)self _buildPercentInRangeStackedBarSeriesForClassification:a4];
+  v12 = [(HKOverlayRoomBloodGlucoseViewController *)self _buildPercentInRangeStackedBarSeriesForClassification:classification];
   v13 = objc_alloc_init(HKInteractiveChartBloodGlucosePercentInRangeFormatter);
-  [(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)v13 setHighlightedClassification:a4];
+  [(HKInteractiveChartBloodGlucosePercentInRangeFormatter *)v13 setHighlightedClassification:classification];
   v14 = [[HKInteractiveChartDisplayType alloc] initWithGraphSeries:v12 baseDisplayType:v11 valueFormatter:v13 dataTypeCode:15];
 
   return v14;
 }
 
-- (id)_buildPercentInRangeStackedBarSeriesForClassification:(int64_t)a3
+- (id)_buildPercentInRangeStackedBarSeriesForClassification:(int64_t)classification
 {
   v23[4] = *MEMORY[0x1E69E9840];
   v5 = objc_alloc_init(HKStackedBarSeries);
@@ -659,19 +659,19 @@ _HKBloodGlucosePercentInRangeContext *__128__HKOverlayRoomBloodGlucoseViewContro
   [(HKStrokeStyle *)v6 setLineWidth:3.0];
   [(HKStrokeStyle *)v6 setBlendMode:22];
   [(HKBarSeries *)v5 setUnselectedStrokeStyle:v6];
-  v8 = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
-  v9 = [HKStrokeStyle strokeStyleWithColor:v8 lineWidth:3.0];
+  hk_chartBackgroundColor = [MEMORY[0x1E69DC888] hk_chartBackgroundColor];
+  v9 = [HKStrokeStyle strokeStyleWithColor:hk_chartBackgroundColor lineWidth:3.0];
   [(HKBarSeries *)v5 setTiledStrokeStyle:v9];
 
   [(HKBarSeries *)v5 setCornerRadii:1.5, 1.5];
   [(HKStackedBarSeries *)v5 setShouldRoundBottomCorners:1];
   v10 = objc_alloc_init(HKSolidFillStyle);
-  v11 = [MEMORY[0x1E69DC888] hk_stackedBarSeriesUnselectedColor];
-  [(HKSolidFillStyle *)v10 setColor:v11];
+  hk_stackedBarSeriesUnselectedColor = [MEMORY[0x1E69DC888] hk_stackedBarSeriesUnselectedColor];
+  [(HKSolidFillStyle *)v10 setColor:hk_stackedBarSeriesUnselectedColor];
 
   v12 = objc_alloc_init(HKSolidFillStyle);
-  v13 = [MEMORY[0x1E69DC888] hk_vitalsKeyColor];
-  [(HKSolidFillStyle *)v12 setColor:v13];
+  hk_vitalsKeyColor = [MEMORY[0x1E69DC888] hk_vitalsKeyColor];
+  [(HKSolidFillStyle *)v12 setColor:hk_vitalsKeyColor];
 
   v14 = MEMORY[0x1E695DF70];
   v23[0] = v10;
@@ -681,9 +681,9 @@ _HKBloodGlucosePercentInRangeContext *__128__HKOverlayRoomBloodGlucoseViewContro
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:4];
   v16 = [v14 arrayWithArray:v15];
 
-  [v16 setObject:v12 atIndexedSubscript:a3];
-  v17 = [MEMORY[0x1E696AD50] indexSetWithIndex:a3];
-  if (a3 == 1)
+  [v16 setObject:v12 atIndexedSubscript:classification];
+  v17 = [MEMORY[0x1E696AD50] indexSetWithIndex:classification];
+  if (classification == 1)
   {
     [v16 setObject:v12 atIndexedSubscript:0];
     [v17 addIndex:0];
@@ -705,31 +705,31 @@ _HKBloodGlucosePercentInRangeContext *__128__HKOverlayRoomBloodGlucoseViewContro
   return v5;
 }
 
-+ (id)_buildPercentInRangeChartCacheWithApplicationItems:(id)a3
++ (id)_buildPercentInRangeChartCacheWithApplicationItems:(id)items
 {
-  v3 = a3;
+  itemsCopy = items;
   v4 = [MEMORY[0x1E696C2E0] quantityTypeForIdentifier:*MEMORY[0x1E696BC80]];
-  v5 = [v3 displayTypeController];
-  v6 = [v5 displayTypeForObjectType:v4];
+  displayTypeController = [itemsCopy displayTypeController];
+  v6 = [displayTypeController displayTypeForObjectType:v4];
 
-  v7 = [v3 chartDataCacheController];
-  v8 = [v7 findCustomCachesForDisplayType:v6];
+  chartDataCacheController = [itemsCopy chartDataCacheController];
+  v8 = [chartDataCacheController findCustomCachesForDisplayType:v6];
 
   v9 = [v8 hk_firstObjectPassingTest:&__block_literal_global_359];
   if (!v9)
   {
     v9 = objc_alloc_init(HKChartCache);
     v10 = [HKBloodGlucosePercentInRangeDataSource alloc];
-    v11 = [v3 healthStore];
-    v12 = [v3 unitController];
-    v13 = [(HKBloodGlucosePercentInRangeDataSource *)v10 initWithHealthStore:v11 unitController:v12];
+    healthStore = [itemsCopy healthStore];
+    unitController = [itemsCopy unitController];
+    v13 = [(HKBloodGlucosePercentInRangeDataSource *)v10 initWithHealthStore:healthStore unitController:unitController];
 
     [(HKChartCache *)v9 setDataSource:v13];
     v14 = +[HKOutstandingFetchOperationManager sharedOperationManager];
     [(HKChartCache *)v9 setOperationManager:v14];
 
-    v15 = [v3 chartDataCacheController];
-    [v15 addCustomChartCache:v9 forDisplayType:v6];
+    chartDataCacheController2 = [itemsCopy chartDataCacheController];
+    [chartDataCacheController2 addCustomChartCache:v9 forDisplayType:v6];
   }
 
   return v9;
@@ -744,21 +744,21 @@ uint64_t __94__HKOverlayRoomBloodGlucoseViewController__buildPercentInRangeChart
   return isKindOfClass & 1;
 }
 
-- (id)_buildBloodGlucoseAverageDataSourceWithUnitController:(id)a3 displayType:(id)a4 healthStore:(id)a5
+- (id)_buildBloodGlucoseAverageDataSourceWithUnitController:(id)controller displayType:(id)type healthStore:(id)store
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HKQuantityTypeDataSource *)[HKSingleDailyValueQuantityTypeDataSource alloc] initWithUnitController:v8 options:2 displayType:v9 healthStore:v10];
+  controllerCopy = controller;
+  typeCopy = type;
+  storeCopy = store;
+  v11 = [(HKQuantityTypeDataSource *)[HKSingleDailyValueQuantityTypeDataSource alloc] initWithUnitController:controllerCopy options:2 displayType:typeCopy healthStore:storeCopy];
 
   v17 = MEMORY[0x1E69E9820];
   v18 = 3221225472;
   v19 = __121__HKOverlayRoomBloodGlucoseViewController__buildBloodGlucoseAverageDataSourceWithUnitController_displayType_healthStore___block_invoke;
   v20 = &unk_1E81B6288;
-  v21 = v8;
-  v22 = v9;
-  v12 = v9;
-  v13 = v8;
+  v21 = controllerCopy;
+  v22 = typeCopy;
+  v12 = typeCopy;
+  v13 = controllerCopy;
   [(HKQuantityTypeDataSource *)v11 setUserInfoCreationBlock:&v17];
   v14 = [(HKOverlayRoomBloodGlucoseViewController *)self _buildGranularAverageDataSourceTitleFromTimeScope:v17];
   v15 = [[HKInteractiveChartOverlayNamedDataSource alloc] initWithDataSource:v11 named:@"HKOverlayRoomNamedChartCacheDataSource_BloodGlucose" withContextTitleForTimeScope:v14];
@@ -859,13 +859,13 @@ LABEL_13:
 
 - (id)chartOverlayVersion
 {
-  v2 = self;
-  v3 = [(HKOverlayRoomViewController *)self applicationItems];
-  v4 = [v3 healthStore];
-  LODWORD(v2) = [(HKOverlayRoomBloodGlucoseViewController *)v2 _isEnhancedChartingEnabledWithHealthStore:v4];
+  selfCopy = self;
+  applicationItems = [(HKOverlayRoomViewController *)self applicationItems];
+  healthStore = [applicationItems healthStore];
+  LODWORD(selfCopy) = [(HKOverlayRoomBloodGlucoseViewController *)selfCopy _isEnhancedChartingEnabledWithHealthStore:healthStore];
 
   v5 = &HKChartOverlayVersionEnhancedOverlays;
-  if (!v2)
+  if (!selfCopy)
   {
     v5 = HKChartOverlayVersionOverlays;
   }

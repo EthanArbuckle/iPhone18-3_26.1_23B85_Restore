@@ -1,30 +1,30 @@
 @interface HMDCameraIDSDeviceConnection
 + (id)logCategory;
-- (HMDCameraIDSDeviceConnection)initWithSessionID:(id)a3 workQueue:(id)a4 idsProxyStreamService:(id)a5;
+- (HMDCameraIDSDeviceConnection)initWithSessionID:(id)d workQueue:(id)queue idsProxyStreamService:(id)service;
 - (id)logIdentifier;
 - (uint64_t)_startKeepAliveTimeoutTimer;
-- (void)_callSessionEndedWithError:(id)a3;
-- (void)_createStreamSocketWithDevice:(id)a3;
-- (void)_socketOpenedWithError:(id)a3;
-- (void)callSessionEnded:(void *)a1;
+- (void)_callSessionEndedWithError:(id)error;
+- (void)_createStreamSocketWithDevice:(id)device;
+- (void)_socketOpenedWithError:(id)error;
+- (void)callSessionEnded:(void *)ended;
 - (void)dealloc;
 - (void)startKeepAlive;
-- (void)timerDidFire:(id)a3;
+- (void)timerDidFire:(id)fire;
 @end
 
 @implementation HMDCameraIDSDeviceConnection
 
 - (id)logIdentifier
 {
-  v2 = [(HMDCameraIDSDeviceConnection *)self sessionID];
-  v3 = [v2 description];
+  sessionID = [(HMDCameraIDSDeviceConnection *)self sessionID];
+  v3 = [sessionID description];
 
   return v3;
 }
 
-- (void)_callSessionEndedWithError:(id)a3
+- (void)_callSessionEndedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -36,9 +36,9 @@
   objc_exception_throw(v10);
 }
 
-- (void)_socketOpenedWithError:(id)a3
+- (void)_socketOpenedWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -50,10 +50,10 @@
   objc_exception_throw(v10);
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v30 = *MEMORY[0x277D85DE8];
-  _cmd = a3;
+  _cmd = fire;
   if (!self)
   {
     dispatch_assert_queue_V2(0);
@@ -65,13 +65,13 @@
   if (objc_getProperty(self, v6, 80, 1) == _cmd)
   {
     v23 = ++self->_keepAliveCounter;
-    v10 = [(HMDCameraIDSDeviceConnection *)self keepAliveConnection];
-    v11 = send([v10 socket], &v23, 1uLL, 0);
+    keepAliveConnection = [(HMDCameraIDSDeviceConnection *)self keepAliveConnection];
+    v11 = send([keepAliveConnection socket], &v23, 1uLL, 0);
 
     if (v11 == -1)
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
@@ -85,11 +85,11 @@
 
       objc_autoreleasePoolPop(v12);
       v16 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:1025];
-      [(HMDCameraIDSDeviceConnection *)v13 callSessionEnded:v16];
+      [(HMDCameraIDSDeviceConnection *)selfCopy callSessionEnded:v16];
     }
 
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy2 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
@@ -121,23 +121,23 @@ LABEL_13:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)callSessionEnded:(void *)a1
+- (void)callSessionEnded:(void *)ended
 {
   v3 = a2;
-  v4 = [a1 workQueue];
+  workQueue = [ended workQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__HMDCameraIDSDeviceConnection_callSessionEnded___block_invoke;
   v6[3] = &unk_2797359B0;
-  v6[4] = a1;
+  v6[4] = ended;
   v5 = v3;
   v7 = v5;
-  dispatch_async(v4, v6);
+  dispatch_async(workQueue, v6);
 }
 
 - (void)startKeepAlive
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 64, 1);
@@ -147,7 +147,7 @@ LABEL_13:
   block[1] = 3221225472;
   block[2] = __46__HMDCameraIDSDeviceConnection_startKeepAlive__block_invoke;
   block[3] = &unk_279735D00;
-  block[4] = v2;
+  block[4] = selfCopy;
   dispatch_async(&self->super.super, block);
 }
 
@@ -295,12 +295,12 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_createStreamSocketWithDevice:(id)a3
+- (void)_createStreamSocketWithDevice:(id)device
 {
   v147 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  deviceCopy = device;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -308,23 +308,23 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
     *buf = 138543618;
     *&buf[4] = v8;
     *&buf[12] = 2112;
-    *&buf[14] = v4;
+    *&buf[14] = deviceCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Creating stream sockets with device: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDCameraIDSDeviceConnection *)v6 idsProxyStreamService];
-  v10 = [v9 devices];
+  idsProxyStreamService = [(HMDCameraIDSDeviceConnection *)selfCopy idsProxyStreamService];
+  devices = [idsProxyStreamService devices];
   v130[0] = MEMORY[0x277D85DD0];
   v130[1] = 3221225472;
   v130[2] = __62__HMDCameraIDSDeviceConnection__createStreamSocketWithDevice___block_invoke;
   v130[3] = &unk_2797260B0;
-  v100 = v4;
+  v100 = deviceCopy;
   v131 = v100;
-  v101 = [v10 hmf_objectPassingTest:v130];
+  v101 = [devices hmf_objectPassingTest:v130];
 
   v11 = objc_autoreleasePoolPush();
-  v12 = v6;
+  v12 = selfCopy;
   v13 = HMFGetOSLogHandle();
   v14 = v13;
   if (v101)
@@ -340,40 +340,40 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
     }
 
     objc_autoreleasePoolPop(v11);
-    v16 = [v100 version];
+    version = [v100 version];
     v17 = +[HMDHomeKitVersion version8];
-    v18 = [v16 isAtLeastVersion:v17];
+    v18 = [version isAtLeastVersion:v17];
 
     v19 = MEMORY[0x277CCACA8];
-    v20 = [(HMDCameraIDSDeviceConnection *)v12 sessionID];
-    v21 = v20;
+    sessionID = [(HMDCameraIDSDeviceConnection *)v12 sessionID];
+    v21 = sessionID;
     if (v18)
     {
-      v22 = [v20 sessionID];
-      v23 = [v19 stringWithFormat:@"%@-%@", @"kIDSStreamVideoSocketName", v22];
+      v20SessionID = [sessionID sessionID];
+      v23 = [v19 stringWithFormat:@"%@-%@", @"kIDSStreamVideoSocketName", v20SessionID];
 
       v24 = MEMORY[0x277CCACA8];
-      v25 = [(HMDCameraIDSDeviceConnection *)v12 sessionID];
-      v26 = [v25 sessionID];
-      v98 = [v24 stringWithFormat:@"%@-%@", @"kIDSStreamAudioSocketName", v26];
+      sessionID2 = [(HMDCameraIDSDeviceConnection *)v12 sessionID];
+      v25SessionID = [sessionID2 sessionID];
+      v98 = [v24 stringWithFormat:@"%@-%@", @"kIDSStreamAudioSocketName", v25SessionID];
 
       v27 = MEMORY[0x277CCACA8];
-      v28 = [(HMDCameraIDSDeviceConnection *)v12 sessionID];
-      v29 = [v28 sessionID];
-      v96 = [v27 stringWithFormat:@"%@-%@", @"kIDSStreamKeepAliveSocketName", v29];
+      sessionID3 = [(HMDCameraIDSDeviceConnection *)v12 sessionID];
+      v28SessionID = [sessionID3 sessionID];
+      v96 = [v27 stringWithFormat:@"%@-%@", @"kIDSStreamKeepAliveSocketName", v28SessionID];
     }
 
     else
     {
-      v23 = [v19 stringWithFormat:@"%@-%@", @"kIDSStreamVideoSocketName", v20];
+      v23 = [v19 stringWithFormat:@"%@-%@", @"kIDSStreamVideoSocketName", sessionID];
 
       v35 = MEMORY[0x277CCACA8];
-      v36 = [(HMDCameraIDSDeviceConnection *)v12 sessionID];
-      v98 = [v35 stringWithFormat:@"%@-%@", @"kIDSStreamAudioSocketName", v36];
+      sessionID4 = [(HMDCameraIDSDeviceConnection *)v12 sessionID];
+      v98 = [v35 stringWithFormat:@"%@-%@", @"kIDSStreamAudioSocketName", sessionID4];
 
       v37 = MEMORY[0x277CCACA8];
-      v28 = [(HMDCameraIDSDeviceConnection *)v12 sessionID];
-      v96 = [v37 stringWithFormat:@"%@-%@", @"kIDSStreamKeepAliveSocketName", v28];
+      sessionID3 = [(HMDCameraIDSDeviceConnection *)v12 sessionID];
+      v96 = [v37 stringWithFormat:@"%@-%@", @"kIDSStreamKeepAliveSocketName", sessionID3];
     }
 
     objc_initWeak(&location, v12);
@@ -402,11 +402,11 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
     v144[2] = v23;
     v40 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v144 forKeys:v143 count:3];
     dispatch_group_enter(v38);
-    v41 = [(HMDCameraIDSDeviceConnection *)v12 sessionID];
+    sessionID5 = [(HMDCameraIDSDeviceConnection *)v12 sessionID];
     v142[0] = @"IDSSetupVideoConnection";
     v142[1] = @"IDSSetupConnectionRequested";
     v42 = [MEMORY[0x277CBEA60] arrayWithObjects:v142 count:2];
-    [v41 markMilestoneForPath:v42];
+    [sessionID5 markMilestoneForPath:v42];
 
     v43 = objc_autoreleasePoolPush();
     v44 = v12;
@@ -422,7 +422,7 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
     }
 
     objc_autoreleasePoolPop(v43);
-    v47 = [(HMDCameraIDSDeviceConnection *)v44 idsDeviceConnectionFactory];
+    idsDeviceConnectionFactory = [(HMDCameraIDSDeviceConnection *)v44 idsDeviceConnectionFactory];
     v120[0] = MEMORY[0x277D85DD0];
     v120[1] = 3221225472;
     v120[2] = __62__HMDCameraIDSDeviceConnection__createStreamSocketWithDevice___block_invoke_35;
@@ -433,8 +433,8 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
     v123 = buf;
     group = v38;
     v122 = group;
-    v48 = [(HMDCameraIDSDeviceConnection *)v44 workQueue];
-    v99 = (v47)[2](v47, v101, v40, v120, v48);
+    workQueue = [(HMDCameraIDSDeviceConnection *)v44 workQueue];
+    v99 = (idsDeviceConnectionFactory)[2](idsDeviceConnectionFactory, v101, v40, v120, workQueue);
 
     if (v99)
     {
@@ -472,11 +472,11 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
     v137[2] = v98;
     v89 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v137 forKeys:v136 count:3];
     dispatch_group_enter(group);
-    v53 = [(HMDCameraIDSDeviceConnection *)v44 sessionID];
+    sessionID6 = [(HMDCameraIDSDeviceConnection *)v44 sessionID];
     v135[0] = @"IDSSetupAudioConnection";
     v135[1] = @"IDSSetupConnectionRequested";
     v54 = [MEMORY[0x277CBEA60] arrayWithObjects:v135 count:2];
-    [v53 markMilestoneForPath:v54];
+    [sessionID6 markMilestoneForPath:v54];
 
     v55 = objc_autoreleasePoolPush();
     v56 = v44;
@@ -492,7 +492,7 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
     }
 
     objc_autoreleasePoolPop(v55);
-    v59 = [(HMDCameraIDSDeviceConnection *)v56 idsDeviceConnectionFactory];
+    idsDeviceConnectionFactory2 = [(HMDCameraIDSDeviceConnection *)v56 idsDeviceConnectionFactory];
     v115[0] = MEMORY[0x277D85DD0];
     v115[1] = 3221225472;
     v115[2] = __62__HMDCameraIDSDeviceConnection__createStreamSocketWithDevice___block_invoke_39;
@@ -502,8 +502,8 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
     v118 = v127;
     v60 = group;
     v117 = v60;
-    v61 = [(HMDCameraIDSDeviceConnection *)v56 workQueue];
-    v62 = (v59)[2](v59, v101, v89, v115, v61);
+    workQueue2 = [(HMDCameraIDSDeviceConnection *)v56 workQueue];
+    v62 = (idsDeviceConnectionFactory2)[2](idsDeviceConnectionFactory2, v101, v89, v115, workQueue2);
 
     if (!v62)
     {
@@ -535,11 +535,11 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
       v134[2] = v96;
       v95 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v134 forKeys:v133 count:3];
       dispatch_group_enter(v60);
-      v68 = [(HMDCameraIDSDeviceConnection *)v56 sessionID];
+      sessionID7 = [(HMDCameraIDSDeviceConnection *)v56 sessionID];
       v132[0] = @"IDSSetupKeepAlive";
       v132[1] = @"IDSSetupConnectionRequested";
       v69 = [MEMORY[0x277CBEA60] arrayWithObjects:v132 count:2];
-      [v68 markMilestoneForPath:v69];
+      [sessionID7 markMilestoneForPath:v69];
 
       v70 = objc_autoreleasePoolPush();
       v71 = v56;
@@ -555,7 +555,7 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
       }
 
       objc_autoreleasePoolPop(v70);
-      v74 = [(HMDCameraIDSDeviceConnection *)v71 idsDeviceConnectionFactory];
+      idsDeviceConnectionFactory3 = [(HMDCameraIDSDeviceConnection *)v71 idsDeviceConnectionFactory];
       v110[0] = MEMORY[0x277D85DD0];
       v110[1] = 3221225472;
       v110[2] = __62__HMDCameraIDSDeviceConnection__createStreamSocketWithDevice___block_invoke_42;
@@ -565,8 +565,8 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
       v113 = v125;
       v75 = v60;
       v112 = v75;
-      v76 = [(HMDCameraIDSDeviceConnection *)v71 workQueue];
-      v77 = (v74)[2](v74, v101, v95, v110, v76);
+      workQueue3 = [(HMDCameraIDSDeviceConnection *)v71 workQueue];
+      v77 = (idsDeviceConnectionFactory3)[2](idsDeviceConnectionFactory3, v101, v95, v110, workQueue3);
 
       if (!v77)
       {
@@ -590,7 +590,7 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
       objc_destroyWeak(&v114);
       if (v77)
       {
-        v82 = [(HMDCameraIDSDeviceConnection *)v71 workQueue];
+        workQueue4 = [(HMDCameraIDSDeviceConnection *)v71 workQueue];
         block[0] = MEMORY[0x277D85DD0];
         block[1] = 3221225472;
         block[2] = __62__HMDCameraIDSDeviceConnection__createStreamSocketWithDevice___block_invoke_43;
@@ -604,7 +604,7 @@ void __54__HMDCameraIDSDeviceConnection__setReceiveByteHandler__block_invoke(uin
         v104 = v62;
         v105 = v77;
         v83 = v77;
-        dispatch_group_notify(v75, v82, block);
+        dispatch_group_notify(v75, workQueue4, block);
 
         objc_destroyWeak(&v109);
       }
@@ -646,15 +646,15 @@ LABEL_35:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
       v30 = HMFGetLogIdentifier();
-      v31 = [v100 idsIdentifier];
-      v32 = [(HMDCameraIDSDeviceConnection *)v12 idsProxyStreamService];
-      v33 = [v32 devices];
+      idsIdentifier = [v100 idsIdentifier];
+      idsProxyStreamService2 = [(HMDCameraIDSDeviceConnection *)v12 idsProxyStreamService];
+      devices2 = [idsProxyStreamService2 devices];
       *buf = 138543874;
       *&buf[4] = v30;
       *&buf[12] = 2112;
-      *&buf[14] = v31;
+      *&buf[14] = idsIdentifier;
       *&buf[22] = 2112;
-      v146 = v33;
+      v146 = devices2;
       _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_ERROR, "%{public}@Could not find IDSDevice matching IDS identifier %@. All devices: %@", buf, 0x20u);
     }
 
@@ -959,42 +959,42 @@ LABEL_21:
   [(HMDCameraIDSDeviceConnection *)&v4 dealloc];
 }
 
-- (HMDCameraIDSDeviceConnection)initWithSessionID:(id)a3 workQueue:(id)a4 idsProxyStreamService:(id)a5
+- (HMDCameraIDSDeviceConnection)initWithSessionID:(id)d workQueue:(id)queue idsProxyStreamService:(id)service
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (!v9)
+  dCopy = d;
+  queueCopy = queue;
+  serviceCopy = service;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  if (!v10)
+  if (!queueCopy)
   {
 LABEL_7:
     v24 = _HMFPreconditionFailure();
     return __82__HMDCameraIDSDeviceConnection_initWithSessionID_workQueue_idsProxyStreamService___block_invoke(v24);
   }
 
-  v12 = v11;
+  v12 = serviceCopy;
   v25.receiver = self;
   v25.super_class = HMDCameraIDSDeviceConnection;
   v13 = [(HMDCameraIDSDeviceConnection *)&v25 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_workQueue, a4);
-    objc_storeStrong(&v14->_sessionID, a3);
+    objc_storeStrong(&v13->_workQueue, queue);
+    objc_storeStrong(&v14->_sessionID, d);
     v15 = HMDispatchQueueNameString();
-    v16 = [v15 UTF8String];
+    uTF8String = [v15 UTF8String];
     v17 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v18 = dispatch_queue_attr_make_with_qos_class(v17, QOS_CLASS_USER_INITIATED, 0);
-    v19 = dispatch_queue_create(v16, v18);
+    v19 = dispatch_queue_create(uTF8String, v18);
     highPriorityQueue = v14->_highPriorityQueue;
     v14->_highPriorityQueue = v19;
 
-    objc_storeStrong(&v14->_idsProxyStreamService, a5);
+    objc_storeStrong(&v14->_idsProxyStreamService, service);
     [(HMDIDSService *)v14->_idsProxyStreamService addDelegate:v14 queue:v14->_workQueue];
     idsDeviceConnectionFactory = v14->_idsDeviceConnectionFactory;
     v14->_idsDeviceConnectionFactory = &__block_literal_global_44235;

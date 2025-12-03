@@ -1,7 +1,7 @@
 @interface CMCaptureFrameSenderEndpointsServerSideSingleton
-+ (BOOL)addEndpoint:(id)a3 endpointUniqueID:(id)a4 endpointType:(id)a5 endpointPID:(int)a6 endpointProxyPID:(int)a7 endpointAuditToken:(id)a8 endpointProxyAuditToken:(id)a9 endpointCameraUniqueID:(id)a10;
-+ (BOOL)removeAllEndpointsWithPID:(int)a3;
-+ (BOOL)removeEndpointWithUniqueID:(id)a3;
++ (BOOL)addEndpoint:(id)endpoint endpointUniqueID:(id)d endpointType:(id)type endpointPID:(int)iD endpointProxyPID:(int)pID endpointAuditToken:(id)token endpointProxyAuditToken:(id)auditToken endpointCameraUniqueID:(id)self0;
++ (BOOL)removeAllEndpointsWithPID:(int)d;
++ (BOOL)removeEndpointWithUniqueID:(id)d;
 + (NSDictionary)endpointsByPID;
 + (id)createXPCArrayOfFrameSenderEndpoints;
 @end
@@ -16,35 +16,35 @@
     +[CMCaptureFrameSenderEndpointsServerSideSingleton endpointsByPID];
   }
 
-  v2 = [sServerSideEndpoints endpointsByPID];
+  endpointsByPID = [sServerSideEndpoints endpointsByPID];
   os_unfair_lock_unlock(&sServerSideEndpointsLock);
-  return v2;
+  return endpointsByPID;
 }
 
-+ (BOOL)addEndpoint:(id)a3 endpointUniqueID:(id)a4 endpointType:(id)a5 endpointPID:(int)a6 endpointProxyPID:(int)a7 endpointAuditToken:(id)a8 endpointProxyAuditToken:(id)a9 endpointCameraUniqueID:(id)a10
++ (BOOL)addEndpoint:(id)endpoint endpointUniqueID:(id)d endpointType:(id)type endpointPID:(int)iD endpointProxyPID:(int)pID endpointAuditToken:(id)token endpointProxyAuditToken:(id)auditToken endpointCameraUniqueID:(id)self0
 {
-  v11 = *&a7;
-  v12 = *&a6;
+  v11 = *&pID;
+  v12 = *&iD;
   os_unfair_lock_lock(&sServerSideEndpointsLock);
   if (cfs_serverSideEndpoints_initServerSiderEndpoints != -1)
   {
     +[CMCaptureFrameSenderEndpointsServerSideSingleton endpointsByPID];
   }
 
-  v16 = @"unknown";
-  if (a10)
+  uniqueIDCopy = @"unknown";
+  if (uniqueID)
   {
-    v16 = a10;
+    uniqueIDCopy = uniqueID;
   }
 
-  v17 = [sServerSideEndpoints addEndpoint:a3 endpointUniqueID:a4 endpointType:a5 endpointPID:v12 endpointProxyPID:v11 endpointAuditToken:a8 endpointProxyAuditToken:a9 endpointCameraUniqueID:v16];
+  v17 = [sServerSideEndpoints addEndpoint:endpoint endpointUniqueID:d endpointType:type endpointPID:v12 endpointProxyPID:v11 endpointAuditToken:token endpointProxyAuditToken:auditToken endpointCameraUniqueID:uniqueIDCopy];
   os_unfair_lock_unlock(&sServerSideEndpointsLock);
   return v17;
 }
 
-+ (BOOL)removeAllEndpointsWithPID:(int)a3
++ (BOOL)removeAllEndpointsWithPID:(int)d
 {
-  v3 = *&a3;
+  v3 = *&d;
   os_unfair_lock_lock(&sServerSideEndpointsLock);
   if (cfs_serverSideEndpoints_initServerSiderEndpoints != -1)
   {
@@ -56,7 +56,7 @@
   return v4;
 }
 
-+ (BOOL)removeEndpointWithUniqueID:(id)a3
++ (BOOL)removeEndpointWithUniqueID:(id)d
 {
   os_unfair_lock_lock(&sServerSideEndpointsLock);
   if (cfs_serverSideEndpoints_initServerSiderEndpoints != -1)
@@ -64,7 +64,7 @@
     +[CMCaptureFrameSenderEndpointsServerSideSingleton endpointsByPID];
   }
 
-  v4 = [sServerSideEndpoints removeEndpointWithUniqueID:a3];
+  v4 = [sServerSideEndpoints removeEndpointWithUniqueID:d];
   os_unfair_lock_unlock(&sServerSideEndpointsLock);
   return v4;
 }
@@ -77,9 +77,9 @@
     +[CMCaptureFrameSenderEndpointsServerSideSingleton endpointsByPID];
   }
 
-  v2 = [sServerSideEndpoints createXPCArrayOfFrameSenderEndpoints];
+  createXPCArrayOfFrameSenderEndpoints = [sServerSideEndpoints createXPCArrayOfFrameSenderEndpoints];
   os_unfair_lock_unlock(&sServerSideEndpointsLock);
-  return v2;
+  return createXPCArrayOfFrameSenderEndpoints;
 }
 
 @end

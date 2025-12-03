@@ -1,28 +1,28 @@
 @interface StarRatingControl
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSArray)accessibilityCustomActions;
 - (NSString)accessibilityHint;
 - (NSString)accessibilityLabel;
 - (NSString)accessibilityValue;
-- (_TtC23ShelfKitCollectionViews17StarRatingControl)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews17StarRatingControl)initWithFrame:(CGRect)a3;
+- (_TtC23ShelfKitCollectionViews17StarRatingControl)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews17StarRatingControl)initWithFrame:(CGRect)frame;
 - (void)accessibilitySetStarRatingFive;
 - (void)accessibilitySetStarRatingFour;
 - (void)accessibilitySetStarRatingOne;
 - (void)accessibilitySetStarRatingThree;
 - (void)accessibilitySetStarRatingTwo;
 - (void)accessibilitySetStarRatingZero;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (void)setAccessibilityCustomActions:(id)a3;
-- (void)setIsAccessibilityElement:(BOOL)a3;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)drawRect:(CGRect)rect;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
+- (void)setAccessibilityCustomActions:(id)actions;
+- (void)setIsAccessibilityElement:(BOOL)element;
 @end
 
 @implementation StarRatingControl
 
-- (_TtC23ShelfKitCollectionViews17StarRatingControl)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews17StarRatingControl)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews17StarRatingControl_starCount) = (&dword_4 + 1);
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC23ShelfKitCollectionViews17StarRatingControl_hasRTLTransformSet) = 0;
@@ -33,9 +33,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v4 = sub_2D5CB4();
   v6 = v5;
 
@@ -54,48 +54,48 @@
   return result;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = self;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  selfCopy = self;
   sub_2D4540(x, y, width, height);
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  sub_2D5DB8(a3);
+  touchCopy = touch;
+  eventCopy = event;
+  selfCopy = self;
+  sub_2D5DB8(touch);
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
+  eventCopy = event;
+  selfCopy = self;
   sub_2D5E5C();
 }
 
-- (void)setIsAccessibilityElement:(BOOL)a3
+- (void)setIsAccessibilityElement:(BOOL)element
 {
-  v3 = a3;
+  elementCopy = element;
   v4.receiver = self;
   v4.super_class = type metadata accessor for StarRatingControl();
-  [(StarRatingControl *)&v4 setIsAccessibilityElement:v3];
+  [(StarRatingControl *)&v4 setIsAccessibilityElement:elementCopy];
 }
 
 - (NSString)accessibilityLabel
 {
-  v2 = [objc_opt_self() mainBundle];
+  mainBundle = [objc_opt_self() mainBundle];
   v6._countAndFlagsBits = 0xE000000000000000;
   v8._object = 0x8000000000345A00;
   v8._countAndFlagsBits = 0xD00000000000001FLL;
   v9.value._countAndFlagsBits = 0;
   v9.value._object = 0;
-  v3.super.isa = v2;
+  v3.super.isa = mainBundle;
   v10._countAndFlagsBits = 0;
   v10._object = 0xE000000000000000;
   sub_301AB8(v8, v9, v3, v10, v6);
@@ -107,13 +107,13 @@
 
 - (NSString)accessibilityHint
 {
-  v2 = [objc_opt_self() mainBundle];
+  mainBundle = [objc_opt_self() mainBundle];
   v6._countAndFlagsBits = 0xE000000000000000;
   v8._object = 0x80000000003459E0;
   v8._countAndFlagsBits = 0xD00000000000001ELL;
   v9.value._countAndFlagsBits = 0;
   v9.value._object = 0;
-  v3.super.isa = v2;
+  v3.super.isa = mainBundle;
   v10._countAndFlagsBits = 0;
   v10._object = 0xE000000000000000;
   sub_301AB8(v8, v9, v3, v10, v6);
@@ -141,7 +141,7 @@
 
 - (NSArray)accessibilityCustomActions
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_2D5054();
 
   if (v3)
@@ -158,20 +158,20 @@
   return v4.super.isa;
 }
 
-- (void)setAccessibilityCustomActions:(id)a3
+- (void)setAccessibilityCustomActions:(id)actions
 {
-  isa = a3;
-  if (a3)
+  isa = actions;
+  if (actions)
   {
     sub_124C4(0, &qword_3FEA78);
     sub_30C368();
-    v5 = self;
+    selfCopy = self;
     isa = sub_30C358().super.isa;
   }
 
   else
   {
-    v6 = self;
+    selfCopy2 = self;
   }
 
   v7.receiver = self;
@@ -181,41 +181,41 @@
 
 - (void)accessibilitySetStarRatingZero
 {
-  v2 = self;
+  selfCopy = self;
   sub_2D5484(0);
 }
 
 - (void)accessibilitySetStarRatingOne
 {
-  v2 = self;
+  selfCopy = self;
   sub_2D5484(1);
 }
 
 - (void)accessibilitySetStarRatingTwo
 {
-  v2 = self;
+  selfCopy = self;
   sub_2D5484(2);
 }
 
 - (void)accessibilitySetStarRatingThree
 {
-  v2 = self;
+  selfCopy = self;
   sub_2D5484(3);
 }
 
 - (void)accessibilitySetStarRatingFour
 {
-  v2 = self;
+  selfCopy = self;
   sub_2D5484(4);
 }
 
 - (void)accessibilitySetStarRatingFive
 {
-  v2 = self;
+  selfCopy = self;
   sub_2D5484(5);
 }
 
-- (_TtC23ShelfKitCollectionViews17StarRatingControl)initWithFrame:(CGRect)a3
+- (_TtC23ShelfKitCollectionViews17StarRatingControl)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

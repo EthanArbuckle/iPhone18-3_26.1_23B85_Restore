@@ -1,45 +1,45 @@
 @interface HKHRAFibBurdenSevenDayAnalysisModeDeterminer
-- (HKHRAFibBurdenSevenDayAnalysisModeDeterminer)initWithProfile:(id)a3 calendarCache:(id)a4;
-- (id)_mostRecentSampleEndDateDayIndexWithError:(id *)a3;
-- (id)_onboardingDateDayIndexWithFeatureStatus:(id)a3 error:(id *)a4;
-- (id)determineModeForAnalysisWeekRange:(id)a3 featureStatus:(id)a4 error:(id *)a5;
+- (HKHRAFibBurdenSevenDayAnalysisModeDeterminer)initWithProfile:(id)profile calendarCache:(id)cache;
+- (id)_mostRecentSampleEndDateDayIndexWithError:(id *)error;
+- (id)_onboardingDateDayIndexWithFeatureStatus:(id)status error:(id *)error;
+- (id)determineModeForAnalysisWeekRange:(id)range featureStatus:(id)status error:(id *)error;
 @end
 
 @implementation HKHRAFibBurdenSevenDayAnalysisModeDeterminer
 
-- (HKHRAFibBurdenSevenDayAnalysisModeDeterminer)initWithProfile:(id)a3 calendarCache:(id)a4
+- (HKHRAFibBurdenSevenDayAnalysisModeDeterminer)initWithProfile:(id)profile calendarCache:(id)cache
 {
-  v6 = a3;
-  v7 = a4;
+  profileCopy = profile;
+  cacheCopy = cache;
   v11.receiver = self;
   v11.super_class = HKHRAFibBurdenSevenDayAnalysisModeDeterminer;
   v8 = [(HKHRAFibBurdenSevenDayAnalysisModeDeterminer *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_profile, v6);
-    objc_storeStrong(&v9->_calendarCache, a4);
+    objc_storeWeak(&v8->_profile, profileCopy);
+    objc_storeStrong(&v9->_calendarCache, cache);
   }
 
   return v9;
 }
 
-- (id)determineModeForAnalysisWeekRange:(id)a3 featureStatus:(id)a4 error:(id *)a5
+- (id)determineModeForAnalysisWeekRange:(id)range featureStatus:(id)status error:(id *)error
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = range.var1;
+  var0 = range.var0;
   v26 = *MEMORY[0x277D85DE8];
   v23 = 0;
-  v9 = [(HKHRAFibBurdenSevenDayAnalysisModeDeterminer *)self _onboardingDateDayIndexWithFeatureStatus:a4 error:&v23];
+  v9 = [(HKHRAFibBurdenSevenDayAnalysisModeDeterminer *)self _onboardingDateDayIndexWithFeatureStatus:status error:&v23];
   v10 = v23;
   if (v10)
   {
     v11 = v10;
-    if (a5)
+    if (error)
     {
       v12 = v10;
       v13 = 0;
-      *a5 = v11;
+      *error = v11;
     }
 
     else
@@ -55,8 +55,8 @@ LABEL_26:
 
   if (v9)
   {
-    v14 = [v9 integerValue];
-    if (v14 >= var0 + var1)
+    integerValue = [v9 integerValue];
+    if (integerValue >= var0 + var1)
     {
       _HKInitializeLogging();
       v11 = HKHRAFibBurdenLogForCategory();
@@ -70,17 +70,17 @@ LABEL_26:
 
     else
     {
-      v15 = v14;
+      v15 = integerValue;
       v22 = 0;
       v16 = [(HKHRAFibBurdenSevenDayAnalysisModeDeterminer *)self _mostRecentSampleEndDateDayIndexWithError:&v22];
       v11 = v22;
       if (v11)
       {
-        if (a5)
+        if (error)
         {
           v17 = v11;
           v13 = 0;
-          *a5 = v11;
+          *error = v11;
         }
 
         else
@@ -97,7 +97,7 @@ LABEL_26:
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138543362;
-          v25 = self;
+          selfCopy2 = self;
           _os_log_impl(&dword_229486000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}@] Most recent sample end date after analysis week range start, implying part of this week or future. Skipping analysis", buf, 0xCu);
         }
 
@@ -114,7 +114,7 @@ LABEL_26:
           if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v25 = self;
+            selfCopy2 = self;
             _os_log_impl(&dword_229486000, v18, OS_LOG_TYPE_DEFAULT, "[%{public}@] Onboarding date within analysis week range, allowing analysis to proceed but will not notify on no data.", buf, 0xCu);
           }
 
@@ -133,21 +133,21 @@ LABEL_27:
   return v13;
 }
 
-- (id)_onboardingDateDayIndexWithFeatureStatus:(id)a3 error:(id *)a4
+- (id)_onboardingDateDayIndexWithFeatureStatus:(id)status error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if ([v5 isOnboardingRecordPresent] && (objc_msgSend(v5, "onboardingRecord"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "allOnboardingCompletionsRegardlessOfSupportedState"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8))
+  statusCopy = status;
+  if ([statusCopy isOnboardingRecordPresent] && (objc_msgSend(statusCopy, "onboardingRecord"), v6 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v6, "allOnboardingCompletionsRegardlessOfSupportedState"), v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v7, "count"), v7, v6, v8))
   {
-    v9 = [MEMORY[0x277CBEAA8] distantPast];
+    distantPast = [MEMORY[0x277CBEAA8] distantPast];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
     v28 = 0u;
-    v10 = [v5 onboardingRecord];
-    v11 = [v10 allOnboardingCompletionsRegardlessOfSupportedState];
+    onboardingRecord = [statusCopy onboardingRecord];
+    allOnboardingCompletionsRegardlessOfSupportedState = [onboardingRecord allOnboardingCompletionsRegardlessOfSupportedState];
 
-    v12 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+    v12 = [allOnboardingCompletionsRegardlessOfSupportedState countByEnumeratingWithState:&v25 objects:v29 count:16];
     if (v12)
     {
       v13 = v12;
@@ -158,30 +158,30 @@ LABEL_27:
         {
           if (*v26 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(allOnboardingCompletionsRegardlessOfSupportedState);
           }
 
           v16 = *(*(&v25 + 1) + 8 * i);
-          v17 = [v16 completionDate];
-          v18 = [v9 hk_isBeforeDate:v17];
+          completionDate = [v16 completionDate];
+          v18 = [distantPast hk_isBeforeDate:completionDate];
 
           if (v18)
           {
-            v19 = [v16 completionDate];
+            completionDate2 = [v16 completionDate];
 
-            v9 = v19;
+            distantPast = completionDate2;
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v25 objects:v29 count:16];
+        v13 = [allOnboardingCompletionsRegardlessOfSupportedState countByEnumeratingWithState:&v25 objects:v29 count:16];
       }
 
       while (v13);
     }
 
     v20 = MEMORY[0x277CCABB0];
-    v21 = [(HKCalendarCache *)self->_calendarCache currentCalendar];
-    v22 = [v20 numberWithInteger:{objc_msgSend(v9, "hk_dayIndexWithCalendar:", v21)}];
+    currentCalendar = [(HKCalendarCache *)self->_calendarCache currentCalendar];
+    v22 = [v20 numberWithInteger:{objc_msgSend(distantPast, "hk_dayIndexWithCalendar:", currentCalendar)}];
   }
 
   else
@@ -194,7 +194,7 @@ LABEL_27:
   return v22;
 }
 
-- (id)_mostRecentSampleEndDateDayIndexWithError:(id *)a3
+- (id)_mostRecentSampleEndDateDayIndexWithError:(id *)error
 {
   v27 = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277D10848];
@@ -206,12 +206,12 @@ LABEL_27:
 
   if (v8)
   {
-    v10 = [v8 endDate];
-    v11 = [v10 dateByAddingTimeInterval:-1.0];
+    endDate = [v8 endDate];
+    v11 = [endDate dateByAddingTimeInterval:-1.0];
 
     calendarCache = self->_calendarCache;
-    v13 = [v8 _timeZone];
-    v14 = [(HKCalendarCache *)calendarCache calendarForTimeZone:v13];
+    _timeZone = [v8 _timeZone];
+    v14 = [(HKCalendarCache *)calendarCache calendarForTimeZone:_timeZone];
     v15 = [v11 hk_dayIndexWithCalendar:v14];
 
     v16 = [MEMORY[0x277CCABB0] numberWithInteger:v15];
@@ -229,11 +229,11 @@ LABEL_27:
       [(HKHRAFibBurdenSevenDayAnalysisModeDeterminer *)self _mostRecentSampleEndDateDayIndexWithError:v9, v18];
     }
 
-    if (a3)
+    if (error)
     {
       v19 = v9;
       v16 = 0;
-      *a3 = v9;
+      *error = v9;
       goto LABEL_14;
     }
 
@@ -250,7 +250,7 @@ LABEL_27:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
         *buf = 138543362;
-        v26 = self;
+        selfCopy = self;
         _os_log_impl(&dword_229486000, v21, OS_LOG_TYPE_INFO, "[%{public}@] No sample found", buf, 0xCu);
       }
     }

@@ -1,11 +1,11 @@
 @interface SKMutablePayment
 - (void)setApplicationUsername:(NSString *)applicationUsername;
-- (void)setPartnerIdentifier:(id)a3;
-- (void)setPartnerTransactionIdentifier:(id)a3;
+- (void)setPartnerIdentifier:(id)identifier;
+- (void)setPartnerTransactionIdentifier:(id)identifier;
 - (void)setPaymentDiscount:(SKPaymentDiscount *)paymentDiscount;
 - (void)setProductIdentifier:(NSString *)productIdentifier;
 - (void)setRequestData:(NSData *)requestData;
-- (void)setRequestParameters:(id)a3;
+- (void)setRequestParameters:(id)parameters;
 @end
 
 @implementation SKMutablePayment
@@ -61,37 +61,37 @@
   v4 = paymentDiscount;
 }
 
-- (void)setPartnerIdentifier:(id)a3
+- (void)setPartnerIdentifier:(id)identifier
 {
   internal = self->super._internal;
-  if (internal[2] != a3)
+  if (internal[2] != identifier)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     v6 = internal[2];
     internal[2] = v5;
   }
 }
 
-- (void)setPartnerTransactionIdentifier:(id)a3
+- (void)setPartnerTransactionIdentifier:(id)identifier
 {
   internal = self->super._internal;
-  if (internal[3] != a3)
+  if (internal[3] != identifier)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [identifier copy];
     v6 = internal[3];
     internal[3] = v5;
   }
 }
 
-- (void)setRequestParameters:(id)a3
+- (void)setRequestParameters:(id)parameters
 {
   internal = self->super._internal;
-  if (internal[7] != a3)
+  if (internal[7] != parameters)
   {
     v7 = internal;
-    v5 = [a3 copy];
+    v5 = [parameters copy];
     v6 = internal[7];
     internal[7] = v5;
   }

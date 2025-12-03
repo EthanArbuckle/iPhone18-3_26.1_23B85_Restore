@@ -1,5 +1,5 @@
 @interface InterAppAudioApp
-- (id)init:(const InterAppAudioAppInfo *)a3 iconSize:(float)a4;
+- (id)init:(const InterAppAudioAppInfo *)init iconSize:(float)size;
 - (void)dealloc;
 @end
 
@@ -24,7 +24,7 @@ intptr_t __47__InterAppAudioApp_processRunningOnForeground___block_invoke(uint64
   [(InterAppAudioApp *)&v3 dealloc];
 }
 
-- (id)init:(const InterAppAudioAppInfo *)a3 iconSize:(float)a4
+- (id)init:(const InterAppAudioAppInfo *)init iconSize:(float)size
 {
   v14.receiver = self;
   v14.super_class = InterAppAudioApp;
@@ -32,20 +32,20 @@ intptr_t __47__InterAppAudioApp_processRunningOnForeground___block_invoke(uint64
   v6 = v5;
   if (v5)
   {
-    v5->_isHost = a3->var0;
-    var1 = a3->var1;
+    v5->_isHost = init->var0;
+    var1 = init->var1;
     v5->_isCurrentApp = var1 == getpid();
-    v6->_key = a3->var1;
+    v6->_key = init->var1;
     v6->_isForeground = [(InterAppAudioApp *)v6 processRunningOnForeground:?];
-    var2 = a3->var2;
+    var2 = init->var2;
     if (!var2)
     {
-      var2 = IPCAUIcons::GetIconFromBundle(a3->var4, v8);
+      var2 = IPCAUIcons::GetIconFromBundle(init->var4, v8);
     }
 
     v6->_icon = var2;
-    v6->_url = a3->var5;
-    v6->_name = &a3->var3->isa;
+    v6->_url = init->var5;
+    v6->_name = &init->var3->isa;
     v10 = var2;
     v11 = v6->_url;
     v12 = v6->_name;

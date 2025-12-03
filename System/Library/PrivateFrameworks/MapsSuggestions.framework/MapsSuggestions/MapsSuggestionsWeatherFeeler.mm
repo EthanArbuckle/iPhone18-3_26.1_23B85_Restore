@@ -1,46 +1,46 @@
 @interface MapsSuggestionsWeatherFeeler
 - (BOOL)startUpdatingSignals;
 - (_TtC12destinationd28MapsSuggestionsWeatherFeeler)init;
-- (_TtC12destinationd28MapsSuggestionsWeatherFeeler)initWithDelegate:(id)a3 locationUpdater:(id)a4;
-- (_TtC12destinationd28MapsSuggestionsWeatherFeeler)initWithDelegate:(id)a3 name:(id)a4;
+- (_TtC12destinationd28MapsSuggestionsWeatherFeeler)initWithDelegate:(id)delegate locationUpdater:(id)updater;
+- (_TtC12destinationd28MapsSuggestionsWeatherFeeler)initWithDelegate:(id)delegate name:(id)name;
 - (void)didLoseLocationPermission;
-- (void)didUpdateLocation:(id)a3;
-- (void)triggerFired:(id)a3;
+- (void)didUpdateLocation:(id)location;
+- (void)triggerFired:(id)fired;
 @end
 
 @implementation MapsSuggestionsWeatherFeeler
 
-- (void)didUpdateLocation:(id)a3
+- (void)didUpdateLocation:(id)location
 {
-  v5 = a3;
+  locationCopy = location;
   v8.value._internal = self;
   internal = v8.value._internal;
-  v8.value.super.isa = a3;
+  v8.value.super.isa = location;
   MapsSuggestionsWeatherFeeler.didUpdate(_:)(v8);
 }
 
 - (BOOL)startUpdatingSignals
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MapsSuggestionsWeatherFeeler.startUpdatingSignals()();
 
   return v3;
 }
 
-- (_TtC12destinationd28MapsSuggestionsWeatherFeeler)initWithDelegate:(id)a3 locationUpdater:(id)a4
+- (_TtC12destinationd28MapsSuggestionsWeatherFeeler)initWithDelegate:(id)delegate locationUpdater:(id)updater
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  return MapsSuggestionsWeatherFeeler.init(delegate:locationUpdater:)(a3, a4);
+  return MapsSuggestionsWeatherFeeler.init(delegate:locationUpdater:)(delegate, updater);
 }
 
 - (void)didLoseLocationPermission
 {
-  v2 = self;
+  selfCopy = self;
   MapsSuggestionsWeatherFeeler.didLoseLocationPermission()();
 }
 
-- (void)triggerFired:(id)a3
+- (void)triggerFired:(id)fired
 {
   v4 = *(&self->super.super.super.isa + OBJC_IVAR____TtC12destinationd28MapsSuggestionsWeatherFeeler__queue);
   v5 = swift_allocObject();
@@ -53,14 +53,14 @@
   v8[3] = &unk_100076BD8;
   v6 = _Block_copy(v8);
   swift_unknownObjectRetain();
-  v7 = self;
+  selfCopy = self;
 
   [v4 asyncBlock:v6];
   _Block_release(v6);
   swift_unknownObjectRelease();
 }
 
-- (_TtC12destinationd28MapsSuggestionsWeatherFeeler)initWithDelegate:(id)a3 name:(id)a4
+- (_TtC12destinationd28MapsSuggestionsWeatherFeeler)initWithDelegate:(id)delegate name:(id)name
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

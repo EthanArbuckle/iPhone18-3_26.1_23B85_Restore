@@ -1,23 +1,23 @@
 @interface CoreDAVContainerQueryTask
-+ (id)_copySearchTermsFromSearchString:(id)a3;
-- (CoreDAVContainerQueryTask)initWithSearchString:(id)a3 searchLimit:(unint64_t)a4 atURL:(id)a5 appSpecificDataItemClass:(Class)a6;
-- (id)_initWithSearchTerms:(id)a3 searchLimit:(unint64_t)a4 atURL:(id)a5 appSpecificDataItemClass:(Class)a6;
-- (id)copyDefaultParserForContentType:(id)a3;
++ (id)_copySearchTermsFromSearchString:(id)string;
+- (CoreDAVContainerQueryTask)initWithSearchString:(id)string searchLimit:(unint64_t)limit atURL:(id)l appSpecificDataItemClass:(Class)class;
+- (id)_initWithSearchTerms:(id)terms searchLimit:(unint64_t)limit atURL:(id)l appSpecificDataItemClass:(Class)class;
+- (id)copyDefaultParserForContentType:(id)type;
 - (id)requestBody;
-- (void)addFiltersToXMLData:(id)a3;
-- (void)finishCoreDAVTaskWithError:(id)a3;
+- (void)addFiltersToXMLData:(id)data;
+- (void)finishCoreDAVTaskWithError:(id)error;
 @end
 
 @implementation CoreDAVContainerQueryTask
 
-+ (id)_copySearchTermsFromSearchString:(id)a3
++ (id)_copySearchTermsFromSearchString:(id)string
 {
-  v3 = a3;
-  v4 = [(__CFString *)v3 length];
+  stringCopy = string;
+  v4 = [(__CFString *)stringCopy length];
   v5 = CFLocaleCopyCurrent();
   v29.location = 0;
   v29.length = v4;
-  v6 = CFStringTokenizerCreate(*MEMORY[0x277CBECE8], v3, v29, 0, v5);
+  v6 = CFStringTokenizerCreate(*MEMORY[0x277CBECE8], stringCopy, v29, 0, v5);
   v28 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
   while (CFStringTokenizerAdvanceToNextToken(v6))
@@ -42,27 +42,27 @@
     do
     {
       v13 = [v7 objectAtIndex:v12];
-      v14 = [v13 rangeValue];
+      rangeValue = [v13 rangeValue];
       v16 = v15;
 
-      v17 = [(__CFString *)v3 length];
+      rangeValue2 = [(__CFString *)stringCopy length];
       if (v12 >= [v7 count] - 1)
       {
         v20 = 0;
-        if (v14)
+        if (rangeValue)
         {
 LABEL_11:
-          v27 = v14 + v16;
+          v27 = rangeValue + v16;
           while (1)
           {
-            v21 = v14 - 1;
-            if (![_copySearchTermsFromSearchString____friendlyPunctuationCharacterSet characterIsMember:{-[__CFString characterAtIndex:](v3, "characterAtIndex:", v14 - 1, v27)}])
+            v21 = rangeValue - 1;
+            if (![_copySearchTermsFromSearchString____friendlyPunctuationCharacterSet characterIsMember:{-[__CFString characterAtIndex:](stringCopy, "characterAtIndex:", rangeValue - 1, v27)}])
             {
               break;
             }
 
             ++v16;
-            --v14;
+            --rangeValue;
             if (!v21)
             {
               v16 = v27;
@@ -75,35 +75,35 @@ LABEL_11:
       else
       {
         v18 = [v7 objectAtIndex:v12 + 1];
-        v17 = [v18 rangeValue];
+        rangeValue2 = [v18 rangeValue];
         v20 = v19;
 
-        if (v14)
+        if (rangeValue)
         {
           goto LABEL_11;
         }
       }
 
-      v22 = v16 + v14;
+      v22 = v16 + rangeValue;
       ++v12;
-      while (v22 < v17 && [_copySearchTermsFromSearchString____friendlyPunctuationCharacterSet characterIsMember:{-[__CFString characterAtIndex:](v3, "characterAtIndex:")}])
+      while (v22 < rangeValue2 && [_copySearchTermsFromSearchString____friendlyPunctuationCharacterSet characterIsMember:{-[__CFString characterAtIndex:](stringCopy, "characterAtIndex:")}])
       {
-        if (++v16 + v14 == v17 && v20)
+        if (++v16 + rangeValue == rangeValue2 && v20)
         {
           v16 += v20;
           [v7 removeObjectAtIndex:v12];
           if (v12 < [v7 count])
           {
             v23 = [v7 objectAtIndex:v12];
-            v17 = [v23 rangeValue];
+            rangeValue2 = [v23 rangeValue];
             v20 = v24;
           }
         }
 
-        v22 = v16 + v14;
+        v22 = v16 + rangeValue;
       }
 
-      v25 = [(__CFString *)v3 substringWithRange:v14, v16];
+      v25 = [(__CFString *)stringCopy substringWithRange:rangeValue, v16];
       [v28 addObject:v25];
     }
 
@@ -113,39 +113,39 @@ LABEL_11:
   return v28;
 }
 
-- (CoreDAVContainerQueryTask)initWithSearchString:(id)a3 searchLimit:(unint64_t)a4 atURL:(id)a5 appSpecificDataItemClass:(Class)a6
+- (CoreDAVContainerQueryTask)initWithSearchString:(id)string searchLimit:(unint64_t)limit atURL:(id)l appSpecificDataItemClass:(Class)class
 {
-  v10 = a5;
-  v11 = [CoreDAVContainerQueryTask _copySearchTermsFromSearchString:a3];
-  v12 = [(CoreDAVContainerQueryTask *)self initWithSearchTerms:v11 searchLimit:a4 atURL:v10 appSpecificDataItemClass:a6];
+  lCopy = l;
+  v11 = [CoreDAVContainerQueryTask _copySearchTermsFromSearchString:string];
+  v12 = [(CoreDAVContainerQueryTask *)self initWithSearchTerms:v11 searchLimit:limit atURL:lCopy appSpecificDataItemClass:class];
 
   return v12;
 }
 
-- (id)_initWithSearchTerms:(id)a3 searchLimit:(unint64_t)a4 atURL:(id)a5 appSpecificDataItemClass:(Class)a6
+- (id)_initWithSearchTerms:(id)terms searchLimit:(unint64_t)limit atURL:(id)l appSpecificDataItemClass:(Class)class
 {
-  v11 = a3;
+  termsCopy = terms;
   v15.receiver = self;
   v15.super_class = CoreDAVContainerQueryTask;
-  v12 = [(CoreDAVTask *)&v15 initWithURL:a5];
+  v12 = [(CoreDAVTask *)&v15 initWithURL:l];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_searchTerms, a3);
-    v13->_searchLimit = a4;
-    if (!a6)
+    objc_storeStrong(&v12->_searchTerms, terms);
+    v13->_searchLimit = limit;
+    if (!class)
     {
-      a6 = objc_opt_class();
+      class = objc_opt_class();
     }
 
-    v13->_appSpecificDataItemClass = a6;
+    v13->_appSpecificDataItemClass = class;
     v13->super._depth = 3;
   }
 
   return v13;
 }
 
-- (void)addFiltersToXMLData:(id)a3
+- (void)addFiltersToXMLData:(id)data
 {
   v12 = *MEMORY[0x277D85DE8];
   v4 = +[CoreDAVLogging sharedLogging];
@@ -177,12 +177,12 @@ LABEL_11:
   [(CoreDAVXMLData *)v3 endElement:@"prop" inNamespace:@"DAV:"];
   [(CoreDAVContainerQueryTask *)self addFiltersToXMLData:v3];
   [(CoreDAVXMLData *)v3 endElement:self->_appSpecificQueryCommand inNamespace:self->_appSpecificNamespace];
-  v4 = [(CoreDAVXMLData *)v3 data];
+  data = [(CoreDAVXMLData *)v3 data];
 
-  return v4;
+  return data;
 }
 
-- (id)copyDefaultParserForContentType:(id)a3
+- (id)copyDefaultParserForContentType:(id)type
 {
   v4 = [CoreDAVXMLParser alloc];
   v5 = objc_opt_class();
@@ -199,19 +199,19 @@ LABEL_11:
   return v7;
 }
 
-- (void)finishCoreDAVTaskWithError:(id)a3
+- (void)finishCoreDAVTaskWithError:(id)error
 {
   v66 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
-    v6 = [(__CFString *)v4 code];
+    code = [(__CFString *)errorCopy code];
     v7 = +[CoreDAVLogging sharedLogging];
     WeakRetained = objc_loadWeakRetained(&self->super._accountInfoProvider);
     v9 = [v7 logHandleForAccountInfoProvider:WeakRetained];
 
-    if (v6 == 1)
+    if (code == 1)
     {
       if (v9)
       {
@@ -262,20 +262,20 @@ LABEL_30:
   }
 
   v16 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v50 = [(CoreDAVTask *)self responseBodyParser];
-  [v50 rootElement];
+  responseBodyParser = [(CoreDAVTask *)self responseBodyParser];
+  [responseBodyParser rootElement];
   v57 = 0u;
   v58 = 0u;
   v59 = 0u;
   v49 = v60 = 0u;
-  v17 = [v49 responses];
-  v55 = [v17 countByEnumeratingWithState:&v57 objects:v61 count:16];
+  responses = [v49 responses];
+  v55 = [responses countByEnumeratingWithState:&v57 objects:v61 count:16];
   v18 = 0;
   if (v55)
   {
     v19 = *v58;
     v52 = *v58;
-    v51 = v17;
+    v51 = responses;
     do
     {
       v20 = 0;
@@ -283,26 +283,26 @@ LABEL_30:
       {
         if (*v58 != v19)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(responses);
         }
 
         v21 = *(*(&v57 + 1) + 8 * v20);
-        v22 = [(__CFString *)v21 errorItem];
-        v23 = [v22 numberOfMatchesWithinLimits];
+        errorItem = [(__CFString *)v21 errorItem];
+        numberOfMatchesWithinLimits = [errorItem numberOfMatchesWithinLimits];
 
-        if (v23)
+        if (numberOfMatchesWithinLimits)
         {
           v24 = +[CoreDAVLogging sharedLogging];
           v25 = objc_loadWeakRetained(&self->super._accountInfoProvider);
-          v26 = [v24 logHandleForAccountInfoProvider:v25];
+          payloadAsString = [v24 logHandleForAccountInfoProvider:v25];
 
-          if (v26 && os_log_type_enabled(v26, OS_LOG_TYPE_DEBUG))
+          if (payloadAsString && os_log_type_enabled(payloadAsString, OS_LOG_TYPE_DEBUG))
           {
             *buf = 138412546;
             v63 = @"number-of-matches-within-limits";
             v64 = 2112;
             v65 = v21;
-            _os_log_impl(&dword_2452FB000, v26, OS_LOG_TYPE_DEBUG, "Received %@ response %@", buf, 0x16u);
+            _os_log_impl(&dword_2452FB000, payloadAsString, OS_LOG_TYPE_DEBUG, "Received %@ response %@", buf, 0x16u);
           }
 
           v18 = 1;
@@ -310,18 +310,18 @@ LABEL_30:
 
         else
         {
-          v27 = [(__CFString *)v21 successfulPropertiesToValues];
-          v24 = v27;
-          if (v27)
+          successfulPropertiesToValues = [(__CFString *)v21 successfulPropertiesToValues];
+          v24 = successfulPropertiesToValues;
+          if (successfulPropertiesToValues)
           {
-            v28 = [v27 CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"getetag"];
-            v26 = [v28 payloadAsString];
+            v28 = [successfulPropertiesToValues CDVObjectForKeyWithNameSpace:@"DAV:" andName:@"getetag"];
+            payloadAsString = [v28 payloadAsString];
 
             v29 = [v24 CDVObjectForKeyWithNameSpace:self->_appSpecificNamespace andName:self->_appSpecificDataProp];
-            v54 = [v29 payload];
+            payload = [v29 payload];
 
-            v30 = [(__CFString *)v21 firstHref];
-            v53 = [v30 payloadAsFullURL];
+            firstHref = [(__CFString *)v21 firstHref];
+            payloadAsFullURL = [firstHref payloadAsFullURL];
 
             v31 = objc_alloc(self->_appSpecificDataItemClass);
             [(CoreDAVTask *)self url];
@@ -329,22 +329,22 @@ LABEL_30:
             [(CoreDAVTask *)self accountInfoProvider];
             v34 = v18;
             v36 = v35 = self;
-            v37 = v54;
-            v38 = [v31 initWithURL:v53 eTag:v26 dataPayload:v54 inContainerWithURL:v33 withAccountInfoProvider:v36];
+            v37 = payload;
+            v38 = [v31 initWithURL:payloadAsFullURL eTag:payloadAsString dataPayload:payload inContainerWithURL:v33 withAccountInfoProvider:v36];
 
             self = v35;
             v18 = v34;
 
             v16 = v32;
-            v17 = v51;
+            responses = v51;
             [v16 addObject:v38];
           }
 
           else
           {
-            v26 = +[CoreDAVLogging sharedLogging];
+            payloadAsString = +[CoreDAVLogging sharedLogging];
             v39 = objc_loadWeakRetained(&self->super._accountInfoProvider);
-            v37 = [v26 logHandleForAccountInfoProvider:v39];
+            v37 = [payloadAsString logHandleForAccountInfoProvider:v39];
 
             if (v37 && os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
             {
@@ -361,7 +361,7 @@ LABEL_30:
       }
 
       while (v55 != v20);
-      v40 = [v17 countByEnumeratingWithState:&v57 objects:v61 count:16];
+      v40 = [responses countByEnumeratingWithState:&v57 objects:v61 count:16];
       v55 = v40;
     }
 
@@ -372,14 +372,14 @@ LABEL_30:
   v5 = 0;
 LABEL_32:
   self->super._numDownloadedElements = [v16 count];
-  v43 = [(CoreDAVTask *)self delegate];
+  delegate = [(CoreDAVTask *)self delegate];
   v44 = objc_opt_respondsToSelector();
 
-  v45 = [(CoreDAVTask *)self delegate];
-  v46 = v45;
+  delegate2 = [(CoreDAVTask *)self delegate];
+  delegate3 = delegate2;
   if (v44)
   {
-    [v45 containerQueryTask:self completedWithFoundItems:v16 limitReached:v18 & 1 error:v41];
+    [delegate2 containerQueryTask:self completedWithFoundItems:v16 limitReached:v18 & 1 error:v41];
 LABEL_36:
 
     [(CoreDAVTask *)self setDelegate:0];
@@ -390,8 +390,8 @@ LABEL_36:
 
   if (v47)
   {
-    v46 = [(CoreDAVTask *)self delegate];
-    [v46 containerQueryTask:self completedWithFoundItems:v16 error:v41];
+    delegate3 = [(CoreDAVTask *)self delegate];
+    [delegate3 containerQueryTask:self completedWithFoundItems:v16 error:v41];
     goto LABEL_36;
   }
 

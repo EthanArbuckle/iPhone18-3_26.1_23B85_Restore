@@ -1,14 +1,14 @@
 @interface CTCellularPlanProvisioningOnDeviceActivationRequest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CTCellularPlanProvisioningOnDeviceActivationRequest)init;
-- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithCoder:(id)a3;
-- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithDetails:(id)a3 installIccid:(id)a4 sourceIccid:(id)a5 unusableIccid:(id)a6 phoneNumber:(id)a7 mcc:(id)a8 mnc:(id)a9 gid1:(id)a10 gid2:(id)a11 smdp:(id)a12 useDS:(BOOL)a13 esim:(BOOL)a14;
-- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithDetails:(id)a3 installIccid:(id)a4 sourceIccid:(id)a5 unusableIccid:(id)a6 phoneNumber:(id)a7 mcc:(id)a8 mnc:(id)a9 gid1:(id)a10 gid2:(id)a11 smdp:(id)a12 useDS:(BOOL)a13 esim:(BOOL)a14 flowType:(id)a15;
-- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithDetails:(id)a3 installIccid:(id)a4 sourceIccid:(id)a5 unusableIccid:(id)a6 phoneNumber:(id)a7 mcc:(id)a8 mnc:(id)a9 gid1:(id)a10 gid2:(id)a11 smdp:(id)a12 useDS:(BOOL)a13 esim:(BOOL)a14 flowType:(id)a15 portIn:(BOOL)a16;
-- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithEid:(id)a3 installIccid:(id)a4 sourceIccid:(id)a5 phoneNumber:(id)a6 mcc:(id)a7 mnc:(id)a8 gid1:(id)a9 gid2:(id)a10 smdp:(id)a11 useDS:(BOOL)a12 esim:(BOOL)a13;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithCoder:(id)coder;
+- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithDetails:(id)details installIccid:(id)iccid sourceIccid:(id)sourceIccid unusableIccid:(id)unusableIccid phoneNumber:(id)number mcc:(id)mcc mnc:(id)mnc gid1:(id)self0 gid2:(id)self1 smdp:(id)self2 useDS:(BOOL)self3 esim:(BOOL)self4;
+- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithDetails:(id)details installIccid:(id)iccid sourceIccid:(id)sourceIccid unusableIccid:(id)unusableIccid phoneNumber:(id)number mcc:(id)mcc mnc:(id)mnc gid1:(id)self0 gid2:(id)self1 smdp:(id)self2 useDS:(BOOL)self3 esim:(BOOL)self4 flowType:(id)self5;
+- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithDetails:(id)details installIccid:(id)iccid sourceIccid:(id)sourceIccid unusableIccid:(id)unusableIccid phoneNumber:(id)number mcc:(id)mcc mnc:(id)mnc gid1:(id)self0 gid2:(id)self1 smdp:(id)self2 useDS:(BOOL)self3 esim:(BOOL)self4 flowType:(id)self5 portIn:(BOOL)self6;
+- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithEid:(id)eid installIccid:(id)iccid sourceIccid:(id)sourceIccid phoneNumber:(id)number mcc:(id)mcc mnc:(id)mnc gid1:(id)gid1 gid2:(id)self0 smdp:(id)self1 useDS:(BOOL)self2 esim:(BOOL)self3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CTCellularPlanProvisioningOnDeviceActivationRequest
@@ -19,17 +19,17 @@
   v4 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self eid];
   [v3 appendFormat:@"\n\t EID          = %@", v4];
 
-  v5 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self iccid];
-  [v3 appendFormat:@"\n\t ICCID        = %@", v5];
+  iccid = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self iccid];
+  [v3 appendFormat:@"\n\t ICCID        = %@", iccid];
 
-  v6 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self sourceIccid];
-  [v3 appendFormat:@"\n\t Source ICCID = %@", v6];
+  sourceIccid = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self sourceIccid];
+  [v3 appendFormat:@"\n\t Source ICCID = %@", sourceIccid];
 
-  v7 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self unusableIccid];
-  [v3 appendFormat:@"\n\t Unusable ICCID = %@", v7];
+  unusableIccid = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self unusableIccid];
+  [v3 appendFormat:@"\n\t Unusable ICCID = %@", unusableIccid];
 
-  v8 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self phoneNumber];
-  [v3 appendFormat:@"\n\t Phone Number = %@", v8];
+  phoneNumber = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self phoneNumber];
+  [v3 appendFormat:@"\n\t Phone Number = %@", phoneNumber];
 
   v9 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self mcc];
   [v3 appendFormat:@"\n\t MCC          = %@", v9];
@@ -37,14 +37,14 @@
   v10 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self mnc];
   [v3 appendFormat:@"\n\t MNC          = %@", v10];
 
-  v11 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self gid1];
-  [v3 appendFormat:@"\n\t GID1         = %@", v11];
+  gid1 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self gid1];
+  [v3 appendFormat:@"\n\t GID1         = %@", gid1];
 
-  v12 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self gid2];
-  [v3 appendFormat:@"\n\t GID2         = %@", v12];
+  gid2 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self gid2];
+  [v3 appendFormat:@"\n\t GID2         = %@", gid2];
 
-  v13 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self smdpAddress];
-  [v3 appendFormat:@"\n\t SMDP Address = %@", v13];
+  smdpAddress = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self smdpAddress];
+  [v3 appendFormat:@"\n\t SMDP Address = %@", smdpAddress];
 
   if ([(CTCellularPlanProvisioningOnDeviceActivationRequest *)self useDS])
   {
@@ -68,8 +68,8 @@
   }
 
   [v3 appendFormat:@"\n\t ESIM         = %@", v15];
-  v16 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self flowType];
-  [v3 appendFormat:@"\n\t Flow Type    = %@", v16];
+  flowType = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self flowType];
+  [v3 appendFormat:@"\n\t Flow Type    = %@", flowType];
 
   if ([(CTCellularPlanProvisioningOnDeviceActivationRequest *)self portIn])
   {
@@ -100,156 +100,156 @@
   return result;
 }
 
-- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithEid:(id)a3 installIccid:(id)a4 sourceIccid:(id)a5 phoneNumber:(id)a6 mcc:(id)a7 mnc:(id)a8 gid1:(id)a9 gid2:(id)a10 smdp:(id)a11 useDS:(BOOL)a12 esim:(BOOL)a13
+- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithEid:(id)eid installIccid:(id)iccid sourceIccid:(id)sourceIccid phoneNumber:(id)number mcc:(id)mcc mnc:(id)mnc gid1:(id)gid1 gid2:(id)self0 smdp:(id)self1 useDS:(BOOL)self2 esim:(BOOL)self3
 {
   LOBYTE(v15) = 0;
-  LOWORD(v14) = __PAIR16__(a13, a12);
-  return [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self initWithDetails:a3 installIccid:a4 sourceIccid:a5 unusableIccid:0 phoneNumber:a6 mcc:a7 mnc:a8 gid1:a9 gid2:a10 smdp:a11 useDS:v14 esim:0 flowType:v15 portIn:?];
+  LOWORD(v14) = __PAIR16__(esim, s);
+  return [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self initWithDetails:eid installIccid:iccid sourceIccid:sourceIccid unusableIccid:0 phoneNumber:number mcc:mcc mnc:mnc gid1:gid1 gid2:gid2 smdp:smdp useDS:v14 esim:0 flowType:v15 portIn:?];
 }
 
-- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithDetails:(id)a3 installIccid:(id)a4 sourceIccid:(id)a5 unusableIccid:(id)a6 phoneNumber:(id)a7 mcc:(id)a8 mnc:(id)a9 gid1:(id)a10 gid2:(id)a11 smdp:(id)a12 useDS:(BOOL)a13 esim:(BOOL)a14
+- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithDetails:(id)details installIccid:(id)iccid sourceIccid:(id)sourceIccid unusableIccid:(id)unusableIccid phoneNumber:(id)number mcc:(id)mcc mnc:(id)mnc gid1:(id)self0 gid2:(id)self1 smdp:(id)self2 useDS:(BOOL)self3 esim:(BOOL)self4
 {
   LOBYTE(v16) = 0;
-  LOWORD(v15) = __PAIR16__(a14, a13);
-  return [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self initWithDetails:a3 installIccid:a4 sourceIccid:a5 unusableIccid:a6 phoneNumber:a7 mcc:a8 mnc:a9 gid1:a10 gid2:a11 smdp:a12 useDS:v15 esim:0 flowType:v16 portIn:?];
+  LOWORD(v15) = __PAIR16__(esim, s);
+  return [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self initWithDetails:details installIccid:iccid sourceIccid:sourceIccid unusableIccid:unusableIccid phoneNumber:number mcc:mcc mnc:mnc gid1:gid1 gid2:gid2 smdp:smdp useDS:v15 esim:0 flowType:v16 portIn:?];
 }
 
-- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithDetails:(id)a3 installIccid:(id)a4 sourceIccid:(id)a5 unusableIccid:(id)a6 phoneNumber:(id)a7 mcc:(id)a8 mnc:(id)a9 gid1:(id)a10 gid2:(id)a11 smdp:(id)a12 useDS:(BOOL)a13 esim:(BOOL)a14 flowType:(id)a15
+- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithDetails:(id)details installIccid:(id)iccid sourceIccid:(id)sourceIccid unusableIccid:(id)unusableIccid phoneNumber:(id)number mcc:(id)mcc mnc:(id)mnc gid1:(id)self0 gid2:(id)self1 smdp:(id)self2 useDS:(BOOL)self3 esim:(BOOL)self4 flowType:(id)self5
 {
-  v20 = a3;
-  v21 = a4;
-  v53 = a5;
-  v52 = a6;
-  v22 = a7;
-  v23 = a8;
-  v24 = a9;
-  v25 = a10;
-  v26 = a11;
-  v27 = a12;
-  v28 = a15;
+  detailsCopy = details;
+  iccidCopy = iccid;
+  sourceIccidCopy = sourceIccid;
+  unusableIccidCopy = unusableIccid;
+  numberCopy = number;
+  mccCopy = mcc;
+  mncCopy = mnc;
+  gid1Copy = gid1;
+  gid2Copy = gid2;
+  smdpCopy = smdp;
+  typeCopy = type;
   v54.receiver = self;
   v54.super_class = CTCellularPlanProvisioningOnDeviceActivationRequest;
   v29 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)&v54 init];
   if (v29)
   {
-    v30 = [v21 copy];
+    v30 = [iccidCopy copy];
     iccid = v29->_iccid;
     v29->_iccid = v30;
 
-    v32 = [v20 copy];
+    v32 = [detailsCopy copy];
     eid = v29->_eid;
     v29->_eid = v32;
 
-    v34 = [v22 copy];
+    v34 = [numberCopy copy];
     phoneNumber = v29->_phoneNumber;
     v29->_phoneNumber = v34;
 
-    v36 = [v53 copy];
+    v36 = [sourceIccidCopy copy];
     sourceIccid = v29->_sourceIccid;
     v29->_sourceIccid = v36;
 
-    v38 = [v52 copy];
+    v38 = [unusableIccidCopy copy];
     unusableIccid = v29->_unusableIccid;
     v29->_unusableIccid = v38;
 
-    v40 = [v23 copy];
+    v40 = [mccCopy copy];
     mcc = v29->_mcc;
     v29->_mcc = v40;
 
-    v42 = [v24 copy];
+    v42 = [mncCopy copy];
     mnc = v29->_mnc;
     v29->_mnc = v42;
 
-    v44 = [v25 copy];
+    v44 = [gid1Copy copy];
     gid1 = v29->_gid1;
     v29->_gid1 = v44;
 
-    v46 = [v26 copy];
+    v46 = [gid2Copy copy];
     gid2 = v29->_gid2;
     v29->_gid2 = v46;
 
-    v48 = [v27 copy];
+    v48 = [smdpCopy copy];
     smdpAddress = v29->_smdpAddress;
     v29->_smdpAddress = v48;
 
-    v29->_useDS = a13;
-    v29->_isESim = a14;
-    objc_storeStrong(&v29->_flowType, a15);
+    v29->_useDS = s;
+    v29->_isESim = esim;
+    objc_storeStrong(&v29->_flowType, type);
   }
 
   return v29;
 }
 
-- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithDetails:(id)a3 installIccid:(id)a4 sourceIccid:(id)a5 unusableIccid:(id)a6 phoneNumber:(id)a7 mcc:(id)a8 mnc:(id)a9 gid1:(id)a10 gid2:(id)a11 smdp:(id)a12 useDS:(BOOL)a13 esim:(BOOL)a14 flowType:(id)a15 portIn:(BOOL)a16
+- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithDetails:(id)details installIccid:(id)iccid sourceIccid:(id)sourceIccid unusableIccid:(id)unusableIccid phoneNumber:(id)number mcc:(id)mcc mnc:(id)mnc gid1:(id)self0 gid2:(id)self1 smdp:(id)self2 useDS:(BOOL)self3 esim:(BOOL)self4 flowType:(id)self5 portIn:(BOOL)self6
 {
-  v21 = a3;
-  v22 = a4;
-  v54 = a5;
-  v53 = a6;
-  v23 = a7;
-  v24 = a8;
-  v25 = a9;
-  v26 = a10;
-  v27 = a11;
-  v28 = a12;
-  v29 = a15;
+  detailsCopy = details;
+  iccidCopy = iccid;
+  sourceIccidCopy = sourceIccid;
+  unusableIccidCopy = unusableIccid;
+  numberCopy = number;
+  mccCopy = mcc;
+  mncCopy = mnc;
+  gid1Copy = gid1;
+  gid2Copy = gid2;
+  smdpCopy = smdp;
+  typeCopy = type;
   v55.receiver = self;
   v55.super_class = CTCellularPlanProvisioningOnDeviceActivationRequest;
   v30 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)&v55 init];
   if (v30)
   {
-    v31 = [v22 copy];
+    v31 = [iccidCopy copy];
     iccid = v30->_iccid;
     v30->_iccid = v31;
 
-    v33 = [v21 copy];
+    v33 = [detailsCopy copy];
     eid = v30->_eid;
     v30->_eid = v33;
 
-    v35 = [v23 copy];
+    v35 = [numberCopy copy];
     phoneNumber = v30->_phoneNumber;
     v30->_phoneNumber = v35;
 
-    v37 = [v54 copy];
+    v37 = [sourceIccidCopy copy];
     sourceIccid = v30->_sourceIccid;
     v30->_sourceIccid = v37;
 
-    v39 = [v53 copy];
+    v39 = [unusableIccidCopy copy];
     unusableIccid = v30->_unusableIccid;
     v30->_unusableIccid = v39;
 
-    v41 = [v24 copy];
+    v41 = [mccCopy copy];
     mcc = v30->_mcc;
     v30->_mcc = v41;
 
-    v43 = [v25 copy];
+    v43 = [mncCopy copy];
     mnc = v30->_mnc;
     v30->_mnc = v43;
 
-    v45 = [v26 copy];
+    v45 = [gid1Copy copy];
     gid1 = v30->_gid1;
     v30->_gid1 = v45;
 
-    v47 = [v27 copy];
+    v47 = [gid2Copy copy];
     gid2 = v30->_gid2;
     v30->_gid2 = v47;
 
-    v49 = [v28 copy];
+    v49 = [smdpCopy copy];
     smdpAddress = v30->_smdpAddress;
     v30->_smdpAddress = v49;
 
-    v30->_useDS = a13;
-    v30->_isESim = a14;
-    objc_storeStrong(&v30->_flowType, a15);
-    v30->_portIn = a16;
+    v30->_useDS = s;
+    v30->_isESim = esim;
+    objc_storeStrong(&v30->_flowType, type);
+    v30->_portIn = in;
   }
 
   return v30;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v18 = [objc_opt_class() allocWithZone:a3];
+  v18 = [objc_opt_class() allocWithZone:zone];
   v4 = [(NSString *)self->_eid copy];
   v20 = [(NSString *)self->_iccid copy];
   v17 = [(NSString *)self->_sourceIccid copy];
@@ -269,10 +269,10 @@
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     LOBYTE(v24) = 1;
   }
@@ -283,53 +283,53 @@
     if (objc_opt_isKindOfClass())
     {
       eid = self->_eid;
-      v6 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 eid];
+      v6 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy eid];
       if ([(NSString *)eid isEqualToString:v6])
       {
         iccid = self->_iccid;
-        v8 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 iccid];
-        if ([(NSString *)iccid isEqualToString:v8])
+        iccid = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy iccid];
+        if ([(NSString *)iccid isEqualToString:iccid])
         {
           sourceIccid = self->_sourceIccid;
-          v10 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 sourceIccid];
-          if ([(NSString *)sourceIccid isEqualToString:v10])
+          sourceIccid = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy sourceIccid];
+          if ([(NSString *)sourceIccid isEqualToString:sourceIccid])
           {
             unusableIccid = self->_unusableIccid;
-            v12 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 unusableIccid];
-            if ([(NSString *)unusableIccid isEqualToString:v12])
+            unusableIccid = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy unusableIccid];
+            if ([(NSString *)unusableIccid isEqualToString:unusableIccid])
             {
               phoneNumber = self->_phoneNumber;
-              v14 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 phoneNumber];
-              if ([(NSString *)phoneNumber isEqualToString:v14])
+              phoneNumber = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy phoneNumber];
+              if ([(NSString *)phoneNumber isEqualToString:phoneNumber])
               {
                 mcc = self->_mcc;
-                v16 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 mcc];
+                v16 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy mcc];
                 if ([(NSString *)mcc isEqualToString:v16])
                 {
                   mnc = self->_mnc;
-                  v18 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 mnc];
+                  v18 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy mnc];
                   if ([(NSString *)mnc isEqualToString:v18])
                   {
                     gid1 = self->_gid1;
-                    v33 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 gid1];
+                    gid1 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy gid1];
                     if ([(NSString *)gid1 isEqualToString:?])
                     {
                       gid2 = self->_gid2;
-                      v32 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 gid2];
+                      gid2 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy gid2];
                       if ([(NSString *)gid2 isEqualToString:?])
                       {
                         smdpAddress = self->_smdpAddress;
-                        v31 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 smdpAddress];
-                        if ([(NSString *)smdpAddress isEqualToString:?]&& (v22 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self useDS], v22 == [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 useDS]) && (v23 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self isESim], v23 == [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 isESim]))
+                        smdpAddress = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy smdpAddress];
+                        if ([(NSString *)smdpAddress isEqualToString:?]&& (v22 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self useDS], v22 == [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy useDS]) && (v23 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self isESim], v23 == [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy isESim]))
                         {
                           flowType = self->_flowType;
-                          v27 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 flowType];
+                          flowType = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy flowType];
                           v28 = flowType;
-                          v29 = v27;
+                          v29 = flowType;
                           if ([(NSString *)v28 isEqualToString:?])
                           {
-                            v30 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self portIn];
-                            v24 = v30 ^ [(CTCellularPlanProvisioningOnDeviceActivationRequest *)v4 portIn]^ 1;
+                            portIn = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)self portIn];
+                            v24 = portIn ^ [(CTCellularPlanProvisioningOnDeviceActivationRequest *)equalCopy portIn]^ 1;
                           }
 
                           else
@@ -407,81 +407,81 @@
   return v24;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   eid = self->_eid;
-  v5 = a3;
-  [v5 encodeObject:eid forKey:@"eid"];
-  [v5 encodeObject:self->_iccid forKey:@"iccid"];
-  [v5 encodeObject:self->_sourceIccid forKey:@"sourceIccid"];
-  [v5 encodeObject:self->_unusableIccid forKey:@"unusableIccid"];
-  [v5 encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
-  [v5 encodeObject:self->_mcc forKey:@"mcc"];
-  [v5 encodeObject:self->_mnc forKey:@"mnc"];
-  [v5 encodeObject:self->_gid1 forKey:@"gid1"];
-  [v5 encodeObject:self->_gid2 forKey:@"gid2"];
-  [v5 encodeObject:self->_smdpAddress forKey:@"smdpAddress"];
-  [v5 encodeBool:self->_useDS forKey:@"useDS"];
-  [v5 encodeBool:self->_isESim forKey:@"isESim"];
-  [v5 encodeObject:self->_flowType forKey:@"flowType"];
-  [v5 encodeBool:self->_portIn forKey:@"portIn"];
+  coderCopy = coder;
+  [coderCopy encodeObject:eid forKey:@"eid"];
+  [coderCopy encodeObject:self->_iccid forKey:@"iccid"];
+  [coderCopy encodeObject:self->_sourceIccid forKey:@"sourceIccid"];
+  [coderCopy encodeObject:self->_unusableIccid forKey:@"unusableIccid"];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
+  [coderCopy encodeObject:self->_mcc forKey:@"mcc"];
+  [coderCopy encodeObject:self->_mnc forKey:@"mnc"];
+  [coderCopy encodeObject:self->_gid1 forKey:@"gid1"];
+  [coderCopy encodeObject:self->_gid2 forKey:@"gid2"];
+  [coderCopy encodeObject:self->_smdpAddress forKey:@"smdpAddress"];
+  [coderCopy encodeBool:self->_useDS forKey:@"useDS"];
+  [coderCopy encodeBool:self->_isESim forKey:@"isESim"];
+  [coderCopy encodeObject:self->_flowType forKey:@"flowType"];
+  [coderCopy encodeBool:self->_portIn forKey:@"portIn"];
 }
 
-- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithCoder:(id)a3
+- (CTCellularPlanProvisioningOnDeviceActivationRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = CTCellularPlanProvisioningOnDeviceActivationRequest;
   v5 = [(CTCellularPlanProvisioningOnDeviceActivationRequest *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"eid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"eid"];
     eid = v5->_eid;
     v5->_eid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"iccid"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"iccid"];
     iccid = v5->_iccid;
     v5->_iccid = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceIccid"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceIccid"];
     sourceIccid = v5->_sourceIccid;
     v5->_sourceIccid = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"unusableIccid"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"unusableIccid"];
     unusableIccid = v5->_unusableIccid;
     v5->_unusableIccid = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mcc"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mcc"];
     mcc = v5->_mcc;
     v5->_mcc = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"mnc"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"mnc"];
     mnc = v5->_mnc;
     v5->_mnc = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gid1"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gid1"];
     gid1 = v5->_gid1;
     v5->_gid1 = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"gid2"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"gid2"];
     gid2 = v5->_gid2;
     v5->_gid2 = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"smdpAddress"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"smdpAddress"];
     smdpAddress = v5->_smdpAddress;
     v5->_smdpAddress = v24;
 
-    v5->_useDS = [v4 decodeBoolForKey:@"useDS"];
-    v5->_isESim = [v4 decodeBoolForKey:@"isESim"];
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"flowType"];
+    v5->_useDS = [coderCopy decodeBoolForKey:@"useDS"];
+    v5->_isESim = [coderCopy decodeBoolForKey:@"isESim"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"flowType"];
     flowType = v5->_flowType;
     v5->_flowType = v26;
 
-    v5->_portIn = [v4 decodeBoolForKey:@"portIn"];
+    v5->_portIn = [coderCopy decodeBoolForKey:@"portIn"];
   }
 
   return v5;

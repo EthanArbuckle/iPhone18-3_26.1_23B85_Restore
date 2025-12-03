@@ -1,31 +1,31 @@
 @interface AMSSyncRestrictedRegionTask
-+ (BOOL)hasCachedRestrictedRegionsValueFromAccount:(id)a3 cachedTimestamp:(double *)a4;
-+ (BOOL)storefrontContainsRestrictedRegionsValueFromBag:(id)a3;
++ (BOOL)hasCachedRestrictedRegionsValueFromAccount:(id)account cachedTimestamp:(double *)timestamp;
++ (BOOL)storefrontContainsRestrictedRegionsValueFromBag:(id)bag;
 + (NSString)bagSubProfile;
 + (NSString)bagSubProfileVersion;
-+ (double)checkRestrictedRegionDurationValueFromBag:(id)a3;
-+ (double)durationOfSyncRestrictedRegionValueFromBag:(id)a3;
++ (double)checkRestrictedRegionDurationValueFromBag:(id)bag;
++ (double)durationOfSyncRestrictedRegionValueFromBag:(id)bag;
 + (id)createBagForSubProfile;
-+ (id)createSyncAccountFlagsTaskForAccount:(id)a3 bag:(id)a4;
-- (AMSSyncRestrictedRegionTask)initWithAccount:(id)a3 bag:(id)a4;
++ (id)createSyncAccountFlagsTaskForAccount:(id)account bag:(id)bag;
+- (AMSSyncRestrictedRegionTask)initWithAccount:(id)account bag:(id)bag;
 - (id)performSync;
-- (void)cacheRestrictedRegionSyncTimestamp:(double)a3;
+- (void)cacheRestrictedRegionSyncTimestamp:(double)timestamp;
 @end
 
 @implementation AMSSyncRestrictedRegionTask
 
-- (AMSSyncRestrictedRegionTask)initWithAccount:(id)a3 bag:(id)a4
+- (AMSSyncRestrictedRegionTask)initWithAccount:(id)account bag:(id)bag
 {
-  v7 = a3;
-  v8 = a4;
+  accountCopy = account;
+  bagCopy = bag;
   v12.receiver = self;
   v12.super_class = AMSSyncRestrictedRegionTask;
   v9 = [(AMSTask *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_account, a3);
-    objc_storeStrong(&v10->_bag, a4);
+    objc_storeStrong(&v9->_account, account);
+    objc_storeStrong(&v10->_bag, bag);
   }
 
   return v10;
@@ -69,9 +69,9 @@ void __51__AMSSyncRestrictedRegionTask_bagSubProfileVersion__block_invoke()
 
 + (id)createBagForSubProfile
 {
-  v2 = [objc_opt_class() bagSubProfile];
-  v3 = [objc_opt_class() bagSubProfileVersion];
-  v4 = [AMSBag bagForProfile:v2 profileVersion:v3];
+  bagSubProfile = [objc_opt_class() bagSubProfile];
+  bagSubProfileVersion = [objc_opt_class() bagSubProfileVersion];
+  v4 = [AMSBag bagForProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   return v4;
 }
@@ -383,18 +383,18 @@ void __42__AMSSyncRestrictedRegionTask_performSync__block_invoke_29(uint64_t a1,
   }
 }
 
-- (void)cacheRestrictedRegionSyncTimestamp:(double)a3
+- (void)cacheRestrictedRegionSyncTimestamp:(double)timestamp
 {
-  v5 = [(AMSSyncRestrictedRegionTask *)self account];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 ams_setLastRestrictedRegionSyncTimestamp:v4];
+  account = [(AMSSyncRestrictedRegionTask *)self account];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:timestamp];
+  [account ams_setLastRestrictedRegionSyncTimestamp:v4];
 }
 
-+ (BOOL)hasCachedRestrictedRegionsValueFromAccount:(id)a3 cachedTimestamp:(double *)a4
++ (BOOL)hasCachedRestrictedRegionsValueFromAccount:(id)account cachedTimestamp:(double *)timestamp
 {
-  v5 = [a3 ams_lastRestrictedRegionSyncTimestamp];
-  v6 = v5;
-  if (a4 && v5)
+  ams_lastRestrictedRegionSyncTimestamp = [account ams_lastRestrictedRegionSyncTimestamp];
+  v6 = ams_lastRestrictedRegionSyncTimestamp;
+  if (timestamp && ams_lastRestrictedRegionSyncTimestamp)
   {
     v7 = objc_opt_respondsToSelector();
     v8 = 0;
@@ -403,19 +403,19 @@ void __42__AMSSyncRestrictedRegionTask_performSync__block_invoke_29(uint64_t a1,
       [v6 doubleValue];
     }
 
-    *a4 = v8;
+    *timestamp = v8;
   }
 
   return v6 != 0;
 }
 
-+ (double)durationOfSyncRestrictedRegionValueFromBag:(id)a3
++ (double)durationOfSyncRestrictedRegionValueFromBag:(id)bag
 {
-  v3 = a3;
+  bagCopy = bag;
   v4 = -1.0;
-  if ([objc_opt_class() storefrontContainsRestrictedRegionsValueFromBag:v3])
+  if ([objc_opt_class() storefrontContainsRestrictedRegionsValueFromBag:bagCopy])
   {
-    [objc_opt_class() checkRestrictedRegionDurationValueFromBag:v3];
+    [objc_opt_class() checkRestrictedRegionDurationValueFromBag:bagCopy];
     if (v5 >= 1.0)
     {
       v4 = v5;
@@ -430,28 +430,28 @@ void __42__AMSSyncRestrictedRegionTask_performSync__block_invoke_29(uint64_t a1,
   return v4;
 }
 
-+ (BOOL)storefrontContainsRestrictedRegionsValueFromBag:(id)a3
++ (BOOL)storefrontContainsRestrictedRegionsValueFromBag:(id)bag
 {
   v27 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 BOOLForKey:@"storefrontContainsRestrictedRegion"];
+  bagCopy = bag;
+  v4 = [bagCopy BOOLForKey:@"storefrontContainsRestrictedRegion"];
   v18 = 0;
   v5 = [v4 valueWithError:&v18];
   v6 = v18;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v3 BOOLForKey:@"storefrontContainsRestrictedRegion"];
+    v7 = [bagCopy BOOLForKey:@"storefrontContainsRestrictedRegion"];
     v17 = v6;
     v8 = [v7 valueWithError:&v17];
     v9 = v17;
 
-    v10 = [v8 BOOLValue];
+    bOOLValue = [v8 BOOLValue];
     v6 = v9;
   }
 
   else
   {
-    v10 = 0;
+    bOOLValue = 0;
   }
 
   if (v6)
@@ -462,8 +462,8 @@ void __42__AMSSyncRestrictedRegionTask_performSync__block_invoke_29(uint64_t a1,
       v11 = +[AMSLogConfig sharedConfig];
     }
 
-    v12 = [v11 OSLogObject];
-    if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v11 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v13 = objc_opt_class();
       v14 = AMSLogKey();
@@ -476,27 +476,27 @@ void __42__AMSSyncRestrictedRegionTask_performSync__block_invoke_29(uint64_t a1,
       v24 = v15;
       v25 = 2114;
       v26 = v6;
-      _os_log_impl(&dword_192869000, v12, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No entry found for key: %{public}@, error: %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No entry found for key: %{public}@, error: %{public}@", buf, 0x2Au);
     }
 
-    v10 = 0;
+    bOOLValue = 0;
   }
 
-  return v10;
+  return bOOLValue;
 }
 
-+ (double)checkRestrictedRegionDurationValueFromBag:(id)a3
++ (double)checkRestrictedRegionDurationValueFromBag:(id)bag
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 doubleForKey:@"checkRestrictedRegionDuration"];
+  bagCopy = bag;
+  v4 = [bagCopy doubleForKey:@"checkRestrictedRegionDuration"];
   v19 = 0;
   v5 = [v4 valueWithError:&v19];
   v6 = v19;
   v7 = 0.0;
   if (objc_opt_respondsToSelector())
   {
-    v8 = [v3 doubleForKey:@"checkRestrictedRegionDuration"];
+    v8 = [bagCopy doubleForKey:@"checkRestrictedRegionDuration"];
     v18 = v6;
     v9 = [v8 valueWithError:&v18];
     v10 = v18;
@@ -515,8 +515,8 @@ void __42__AMSSyncRestrictedRegionTask_performSync__block_invoke_29(uint64_t a1,
       v12 = +[AMSLogConfig sharedConfig];
     }
 
-    v13 = [v12 OSLogObject];
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+    oSLogObject = [v12 OSLogObject];
+    if (os_log_type_enabled(oSLogObject, OS_LOG_TYPE_ERROR))
     {
       v14 = objc_opt_class();
       v15 = AMSLogKey();
@@ -529,7 +529,7 @@ void __42__AMSSyncRestrictedRegionTask_performSync__block_invoke_29(uint64_t a1,
       v25 = v16;
       v26 = 2114;
       v27 = v6;
-      _os_log_impl(&dword_192869000, v13, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No entry found for key: %{public}@, error: %{public}@", buf, 0x2Au);
+      _os_log_impl(&dword_192869000, oSLogObject, OS_LOG_TYPE_ERROR, "%{public}@: [%{public}@] No entry found for key: %{public}@, error: %{public}@", buf, 0x2Au);
     }
 
     v7 = 0.0;
@@ -538,11 +538,11 @@ void __42__AMSSyncRestrictedRegionTask_performSync__block_invoke_29(uint64_t a1,
   return v7;
 }
 
-+ (id)createSyncAccountFlagsTaskForAccount:(id)a3 bag:(id)a4
++ (id)createSyncAccountFlagsTaskForAccount:(id)account bag:(id)bag
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[AMSSyncAccountFlagsTask alloc] initWithAccount:v6 bag:v5];
+  bagCopy = bag;
+  accountCopy = account;
+  v7 = [[AMSSyncAccountFlagsTask alloc] initWithAccount:accountCopy bag:bagCopy];
 
   [(AMSTask *)v7 setRunMode:1];
 

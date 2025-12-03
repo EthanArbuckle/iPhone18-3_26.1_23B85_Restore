@@ -1,64 +1,64 @@
 @interface GradientPosterController
-- (double)editor:(id)a3 luminanceForLook:(id)a4 inRect:(CGRect)a5;
-- (id)gradientHomeScreenColorPickerConfigurationForEditor:(void *)a3;
-- (id)initialLookIdentifierForEditor:(id)a3;
-- (id)looksForEditor:(id)a3;
-- (id)trailingMenuElementsForEditor:(id)a3;
-- (void)editor:(id)a3 didFinishTransitionToLook:(id)a4;
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4;
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5;
-- (void)editorDidFinishInitialLayout:(id)a3;
-- (void)editorDidInvalidate:(id)a3;
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4;
-- (void)rendererDidInvalidate:(id)a3;
+- (double)editor:(id)editor luminanceForLook:(id)look inRect:(CGRect)rect;
+- (id)gradientHomeScreenColorPickerConfigurationForEditor:(void *)editor;
+- (id)initialLookIdentifierForEditor:(id)editor;
+- (id)looksForEditor:(id)editor;
+- (id)trailingMenuElementsForEditor:(id)editor;
+- (void)editor:(id)editor didFinishTransitionToLook:(id)look;
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment;
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion;
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look;
+- (void)editorDidFinishInitialLayout:(id)layout;
+- (void)editorDidInvalidate:(id)invalidate;
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment;
+- (void)rendererDidInvalidate:(id)invalidate;
 @end
 
 @implementation GradientPosterController
 
-- (void)renderer:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)renderer:(id)renderer didInitializeWithEnvironment:(id)environment
 {
-  v6 = a3;
+  rendererCopy = renderer;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_100006974(v6, a4);
+  selfCopy = self;
+  sub_100006974(rendererCopy, environment);
 
   swift_unknownObjectRelease();
 }
 
-- (void)rendererDidInvalidate:(id)a3
+- (void)rendererDidInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_10000B29C();
 }
 
-- (void)editor:(id)a3 didInitializeWithEnvironment:(id)a4
+- (void)editor:(id)editor didInitializeWithEnvironment:(id)environment
 {
   v5 = *(&self->super.isa + OBJC_IVAR____TtC23GradientPosterExtension24GradientPosterController_editor);
-  *(&self->super.isa + OBJC_IVAR____TtC23GradientPosterExtension24GradientPosterController_editor) = a3;
-  v6 = a3;
+  *(&self->super.isa + OBJC_IVAR____TtC23GradientPosterExtension24GradientPosterController_editor) = editor;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
 
   swift_getObjectType();
   v7 = sub_10000AED4();
 
   swift_unknownObjectRelease();
-  *(&v8->super.isa + OBJC_IVAR____TtC23GradientPosterExtension24GradientPosterController_rotationAngle) = v7;
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC23GradientPosterExtension24GradientPosterController_rotationAngle) = v7;
 }
 
-- (void)editorDidFinishInitialLayout:(id)a3
+- (void)editorDidFinishInitialLayout:(id)layout
 {
-  v4 = a3;
-  v5 = self;
-  sub_100006DD8(v4);
+  layoutCopy = layout;
+  selfCopy = self;
+  sub_100006DD8(layoutCopy);
 }
 
-- (id)looksForEditor:(id)a3
+- (id)looksForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
+  editorCopy = editor;
+  selfCopy = self;
   sub_10000B3C8();
 
   sub_1000041F0(0, &qword_100019208, PREditingLook_ptr);
@@ -67,10 +67,10 @@
   return v6.super.isa;
 }
 
-- (id)trailingMenuElementsForEditor:(id)a3
+- (id)trailingMenuElementsForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
+  editorCopy = editor;
+  selfCopy = self;
   v6 = sub_10000B8A0();
 
   if (v6)
@@ -87,70 +87,70 @@
   return v7.super.isa;
 }
 
-- (id)initialLookIdentifierForEditor:(id)a3
+- (id)initialLookIdentifierForEditor:(id)editor
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000074A0(v4);
+  editorCopy = editor;
+  selfCopy = self;
+  sub_1000074A0(editorCopy);
 
   v6 = sub_10000CF00();
 
   return v6;
 }
 
-- (double)editor:(id)a3 luminanceForLook:(id)a4 inRect:(CGRect)a5
+- (double)editor:(id)editor luminanceForLook:(id)look inRect:(CGRect)rect
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = self;
-  v10 = sub_10000BC8C(v8);
+  editorCopy = editor;
+  lookCopy = look;
+  selfCopy = self;
+  v10 = sub_10000BC8C(lookCopy);
 
   return v10;
 }
 
-- (void)editor:(id)a3 populateViews:(id)a4 forLook:(id)a5
+- (void)editor:(id)editor populateViews:(id)views forLook:(id)look
 {
-  v8 = a3;
+  editorCopy = editor;
   swift_unknownObjectRetain();
-  v9 = a5;
-  v10 = self;
-  sub_100007980(v8, a4, v9);
+  lookCopy = look;
+  selfCopy = self;
+  sub_100007980(editorCopy, views, lookCopy);
 
   swift_unknownObjectRelease();
 }
 
-- (void)editor:(id)a3 finalizeWithCompletion:(id)a4
+- (void)editor:(id)editor finalizeWithCompletion:(id)completion
 {
-  v6 = _Block_copy(a4);
+  v6 = _Block_copy(completion);
   _Block_copy(v6);
-  v7 = a3;
-  v8 = self;
-  sub_10000C1E0(v7, v8, v6);
+  editorCopy = editor;
+  selfCopy = self;
+  sub_10000C1E0(editorCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)editorDidInvalidate:(id)a3
+- (void)editorDidInvalidate:(id)invalidate
 {
-  v3 = self;
+  selfCopy = self;
   sub_1000064E8();
-  v4 = *(&v3->super.isa + OBJC_IVAR____TtC23GradientPosterExtension24GradientPosterController_editor);
-  *(&v3->super.isa + OBJC_IVAR____TtC23GradientPosterExtension24GradientPosterController_editor) = 0;
+  v4 = *(&selfCopy->super.isa + OBJC_IVAR____TtC23GradientPosterExtension24GradientPosterController_editor);
+  *(&selfCopy->super.isa + OBJC_IVAR____TtC23GradientPosterExtension24GradientPosterController_editor) = 0;
 }
 
-- (void)editor:(id)a3 didFinishTransitionToLook:(id)a4
+- (void)editor:(id)editor didFinishTransitionToLook:(id)look
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  sub_10000C85C(v7);
+  editorCopy = editor;
+  lookCopy = look;
+  selfCopy = self;
+  sub_10000C85C(lookCopy);
 }
 
-- (id)gradientHomeScreenColorPickerConfigurationForEditor:(void *)a3
+- (id)gradientHomeScreenColorPickerConfigurationForEditor:(void *)editor
 {
-  v4 = a3;
-  v5 = a1;
-  v6 = sub_100008374(v4);
+  editorCopy = editor;
+  selfCopy = self;
+  v6 = sub_100008374(editorCopy);
 
   return v6;
 }

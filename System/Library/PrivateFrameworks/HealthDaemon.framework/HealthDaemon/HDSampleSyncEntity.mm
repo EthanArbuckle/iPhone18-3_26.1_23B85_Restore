@@ -1,23 +1,23 @@
 @interface HDSampleSyncEntity
-+ (id)_basePruningPredicateForDate:(id)a3 profile:(id)a4;
-+ (id)_predicateForSampleAgeInSyncSession:(id)a3 sampleTypeClass:(Class)a4;
-+ (id)_predicateForSampleAgeWithMaximumObjectAgeByType:(void *)a3 defaultMaxAge:(void *)a4 sessionStartDate:;
-+ (id)_predicateForSyncSession:(id)a3;
++ (id)_basePruningPredicateForDate:(id)date profile:(id)profile;
++ (id)_predicateForSampleAgeInSyncSession:(id)session sampleTypeClass:(Class)class;
++ (id)_predicateForSampleAgeWithMaximumObjectAgeByType:(void *)type defaultMaxAge:(void *)age sessionStartDate:;
++ (id)_predicateForSyncSession:(id)session;
 @end
 
 @implementation HDSampleSyncEntity
 
-+ (id)_basePruningPredicateForDate:(id)a3 profile:(id)a4
++ (id)_basePruningPredicateForDate:(id)date profile:(id)profile
 {
-  v5 = a3;
-  v6 = [a4 daemon];
-  v7 = [v6 behavior];
-  v8 = [v7 supportsSampleExpiration];
+  dateCopy = date;
+  daemon = [profile daemon];
+  behavior = [daemon behavior];
+  supportsSampleExpiration = [behavior supportsSampleExpiration];
 
-  if (v8)
+  if (supportsSampleExpiration)
   {
-    v9 = [MEMORY[0x277CBEA80] currentCalendar];
-    v10 = [v9 hd_predicateForSamplesWithTypes:0 endingBeforeDate:v5 minusDays:*MEMORY[0x277CCCEE8]];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
+    v10 = [currentCalendar hd_predicateForSamplesWithTypes:0 endingBeforeDate:dateCopy minusDays:*MEMORY[0x277CCCEE8]];
   }
 
   else
@@ -28,23 +28,23 @@
   return v10;
 }
 
-+ (id)_predicateForSyncSession:(id)a3
++ (id)_predicateForSyncSession:(id)session
 {
-  v5 = a3;
-  v21.receiver = a1;
+  sessionCopy = session;
+  v21.receiver = self;
   v21.super_class = &OBJC_METACLASS___HDSampleSyncEntity;
-  v6 = objc_msgSendSuper2(&v21, sel__predicateForSyncSession_, v5);
-  v7 = v5;
+  v6 = objc_msgSendSuper2(&v21, sel__predicateForSyncSession_, sessionCopy);
+  v7 = sessionCopy;
   v8 = objc_opt_self();
-  v9 = [v7 syncPredicate];
+  syncPredicate = [v7 syncPredicate];
 
-  v10 = [v9 dateInterval];
+  dateInterval = [syncPredicate dateInterval];
 
-  if (v10)
+  if (dateInterval)
   {
-    v11 = [v10 startDate];
-    v12 = [v10 endDate];
-    v13 = [(HDDataSyncEntity *)v8 _predicateForDateIntervalStartDate:v11 endDate:v12];
+    startDate = [dateInterval startDate];
+    endDate = [dateInterval endDate];
+    v13 = [(HDDataSyncEntity *)v8 _predicateForDateIntervalStartDate:startDate endDate:endDate];
   }
 
   else
@@ -53,17 +53,17 @@
   }
 
   v14 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v6 otherPredicate:v13];
-  v15 = [a1 _syncedSampleTypeClass];
-  if (v15)
+  _syncedSampleTypeClass = [self _syncedSampleTypeClass];
+  if (_syncedSampleTypeClass)
   {
-    v16 = v15;
-    if (([v15 isSubclassOfClass:objc_opt_class()] & 1) == 0)
+    v16 = _syncedSampleTypeClass;
+    if (([_syncedSampleTypeClass isSubclassOfClass:objc_opt_class()] & 1) == 0)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
-      [v20 handleFailureInMethod:a2 object:a1 file:@"HDDataSyncEntity.m" lineNumber:488 description:{@"%@ isn't an object type class", v16}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HDDataSyncEntity.m" lineNumber:488 description:{@"%@ isn't an object type class", v16}];
     }
 
-    v17 = [a1 _predicateForSampleAgeInSyncSession:v7 sampleTypeClass:v16];
+    v17 = [self _predicateForSampleAgeInSyncSession:v7 sampleTypeClass:v16];
     v18 = [MEMORY[0x277D10B70] compoundPredicateWithPredicate:v14 otherPredicate:v17];
   }
 
@@ -75,35 +75,35 @@
   return v18;
 }
 
-+ (id)_predicateForSampleAgeInSyncSession:(id)a3 sampleTypeClass:(Class)a4
++ (id)_predicateForSampleAgeInSyncSession:(id)session sampleTypeClass:(Class)class
 {
-  v6 = a3;
-  v7 = [v6 syncPredicate];
-  v8 = [v7 maximumObjectAgeByType];
+  sessionCopy = session;
+  syncPredicate = [sessionCopy syncPredicate];
+  maximumObjectAgeByType = [syncPredicate maximumObjectAgeByType];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__HDSampleSyncEntity__predicateForSampleAgeInSyncSession_sampleTypeClass___block_invoke;
   v15[3] = &__block_descriptor_40_e35_B24__0__HKObjectType_8__NSNumber_16lu32l8;
-  v15[4] = a4;
-  v9 = [v8 hk_filter:v15];
+  v15[4] = class;
+  v9 = [maximumObjectAgeByType hk_filter:v15];
 
-  v10 = [v6 syncPredicate];
-  v11 = [v10 defaultMaximumObjectAge];
-  v12 = [v6 startDate];
+  syncPredicate2 = [sessionCopy syncPredicate];
+  defaultMaximumObjectAge = [syncPredicate2 defaultMaximumObjectAge];
+  startDate = [sessionCopy startDate];
 
-  v13 = [(HDSampleSyncEntity *)a1 _predicateForSampleAgeWithMaximumObjectAgeByType:v9 defaultMaxAge:v11 sessionStartDate:v12];
+  v13 = [(HDSampleSyncEntity *)self _predicateForSampleAgeWithMaximumObjectAgeByType:v9 defaultMaxAge:defaultMaximumObjectAge sessionStartDate:startDate];
 
   return v13;
 }
 
-+ (id)_predicateForSampleAgeWithMaximumObjectAgeByType:(void *)a3 defaultMaxAge:(void *)a4 sessionStartDate:
++ (id)_predicateForSampleAgeWithMaximumObjectAgeByType:(void *)type defaultMaxAge:(void *)age sessionStartDate:
 {
   v6 = a2;
-  v7 = a3;
-  v8 = a4;
+  typeCopy = type;
+  ageCopy = age;
   objc_opt_self();
   v9 = [v6 count];
-  if (v7 || v9)
+  if (typeCopy || v9)
   {
     v11 = objc_alloc_init(MEMORY[0x277CBEB38]);
     v27[0] = MEMORY[0x277D85DD0];
@@ -118,18 +118,18 @@
     v24[1] = 3221225472;
     v24[2] = __102__HDSampleSyncEntity__predicateForSampleAgeWithMaximumObjectAgeByType_defaultMaxAge_sessionStartDate___block_invoke_2;
     v24[3] = &unk_27862F0C8;
-    v14 = v8;
+    v14 = ageCopy;
     v25 = v14;
     v15 = v13;
     v26 = v15;
     [v12 enumerateKeysAndObjectsUsingBlock:v24];
-    if (v7)
+    if (typeCopy)
     {
-      v16 = [v6 allKeys];
-      v17 = HDSampleEntityPredicateForDataTypes(v16);
+      allKeys = [v6 allKeys];
+      v17 = HDSampleEntityPredicateForDataTypes(allKeys);
 
       v18 = [MEMORY[0x277D10B20] negatedPredicate:v17];
-      [v7 doubleValue];
+      [typeCopy doubleValue];
       v20 = [v14 dateByAddingTimeInterval:-v19];
       v21 = HDSampleEntityPredicateForEndDate(5);
 

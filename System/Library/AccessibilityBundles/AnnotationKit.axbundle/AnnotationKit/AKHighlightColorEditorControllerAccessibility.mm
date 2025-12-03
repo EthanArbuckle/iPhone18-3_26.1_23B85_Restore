@@ -1,28 +1,28 @@
 @interface AKHighlightColorEditorControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)didHide;
-- (void)presentFromRect:(CGRect)a3 view:(id)a4;
+- (void)presentFromRect:(CGRect)rect view:(id)view;
 @end
 
 @implementation AKHighlightColorEditorControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"AKHighlightAnnotation"];
-  [v3 validateClass:@"AKAnnotationTheme"];
-  [v3 validateClass:@"AKHighlightColorEditorController" isKindOfClass:@"AKAnnotationPopoverViewController"];
-  [v3 validateClass:@"AKAnnotationPopoverViewController" hasInstanceMethod:@"annotation" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKAnnotationPopoverViewController" hasInstanceMethod:@"annotationTheme" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKHighlightAnnotation" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"AKHighlightAnnotation" hasInstanceMethod:@"style" withFullSignature:{"Q", 0}];
-  [v3 validateClass:@"AKAnnotationTheme" hasInstanceMethod:@"pageTheme" withFullSignature:{"i", 0}];
-  [v3 validateClass:@"AKHighlightColorEditorController" hasInstanceMethod:@"presentFromRect: view:" withFullSignature:{"v", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
-  [v3 validateClass:@"AKHighlightColorEditorController" hasInstanceMethod:@"p_setStyle: forAnnotation:" withFullSignature:{"v", "q", "@", 0}];
-  [v3 validateClass:@"AKHighlightColorEditorController" hasInstanceMethod:@"p_updateAppearance" withFullSignature:{"v", 0}];
-  [v3 validateClass:@"AKHighlightColorEditorController" hasInstanceMethod:@"p_colorForTag: pageTheme:" withFullSignature:{"@", "q", "i", 0}];
-  [v3 validateClass:@"AKAnnotationPopoverViewController" hasInstanceMethod:@"didHide" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"AKHighlightAnnotation"];
+  [validationsCopy validateClass:@"AKAnnotationTheme"];
+  [validationsCopy validateClass:@"AKHighlightColorEditorController" isKindOfClass:@"AKAnnotationPopoverViewController"];
+  [validationsCopy validateClass:@"AKAnnotationPopoverViewController" hasInstanceMethod:@"annotation" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKAnnotationPopoverViewController" hasInstanceMethod:@"annotationTheme" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKHighlightAnnotation" hasInstanceMethod:@"color" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"AKHighlightAnnotation" hasInstanceMethod:@"style" withFullSignature:{"Q", 0}];
+  [validationsCopy validateClass:@"AKAnnotationTheme" hasInstanceMethod:@"pageTheme" withFullSignature:{"i", 0}];
+  [validationsCopy validateClass:@"AKHighlightColorEditorController" hasInstanceMethod:@"presentFromRect: view:" withFullSignature:{"v", "{CGRect={CGPoint=dd}{CGSize=dd}}", "@", 0}];
+  [validationsCopy validateClass:@"AKHighlightColorEditorController" hasInstanceMethod:@"p_setStyle: forAnnotation:" withFullSignature:{"v", "q", "@", 0}];
+  [validationsCopy validateClass:@"AKHighlightColorEditorController" hasInstanceMethod:@"p_updateAppearance" withFullSignature:{"v", 0}];
+  [validationsCopy validateClass:@"AKHighlightColorEditorController" hasInstanceMethod:@"p_colorForTag: pageTheme:" withFullSignature:{"@", "q", "i", 0}];
+  [validationsCopy validateClass:@"AKAnnotationPopoverViewController" hasInstanceMethod:@"didHide" withFullSignature:{"v", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -68,11 +68,11 @@ uint64_t __91__AKHighlightColorEditorControllerAccessibility__accessibilityLoadA
   return [v2 p_updateAppearance];
 }
 
-- (void)presentFromRect:(CGRect)a3 view:(id)a4
+- (void)presentFromRect:(CGRect)rect view:(id)view
 {
   v5.receiver = self;
   v5.super_class = AKHighlightColorEditorControllerAccessibility;
-  [(AKHighlightColorEditorControllerAccessibility *)&v5 presentFromRect:a4 view:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(AKHighlightColorEditorControllerAccessibility *)&v5 presentFromRect:view view:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   [(AKHighlightColorEditorControllerAccessibility *)self _accessibilityLoadAccessibilityInformation];
 }
 

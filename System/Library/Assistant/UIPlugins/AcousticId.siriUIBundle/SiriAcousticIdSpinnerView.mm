@@ -1,16 +1,16 @@
 @interface SiriAcousticIdSpinnerView
 - (CGSize)sizeThatFits:(CGSize)result;
-- (SiriAcousticIdSpinnerView)initWithFrame:(CGRect)a3;
+- (SiriAcousticIdSpinnerView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation SiriAcousticIdSpinnerView
 
-- (SiriAcousticIdSpinnerView)initWithFrame:(CGRect)a3
+- (SiriAcousticIdSpinnerView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = SiriAcousticIdSpinnerView;
-  v3 = [(SiriAcousticIdSpinnerView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SiriAcousticIdSpinnerView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = [[SiriUIAcousticIDSpinner alloc] initWithFrame:{CGRectZero.origin.x, CGRectZero.origin.y, CGRectZero.size.width, CGRectZero.size.height}];

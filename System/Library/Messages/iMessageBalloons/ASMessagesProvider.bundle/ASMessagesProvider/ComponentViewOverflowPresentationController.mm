@@ -1,31 +1,31 @@
 @interface ComponentViewOverflowPresentationController
 - (CGRect)frameOfPresentedViewInContainerView;
-- (_TtC18ASMessagesProvider43ComponentViewOverflowPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (_TtC18ASMessagesProvider43ComponentViewOverflowPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 - (void)containerViewWillLayoutSubviews;
-- (void)dismissTapDidChange:(id)a3;
-- (void)dismissalTransitionDidEnd:(BOOL)a3;
+- (void)dismissTapDidChange:(id)change;
+- (void)dismissalTransitionDidEnd:(BOOL)end;
 - (void)dismissalTransitionWillBegin;
-- (void)presentationTransitionDidEnd:(BOOL)a3;
+- (void)presentationTransitionDidEnd:(BOOL)end;
 - (void)presentationTransitionWillBegin;
-- (void)scrollPanDidChange:(id)a3;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4;
+- (void)scrollPanDidChange:(id)change;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation ComponentViewOverflowPresentationController
 
-- (_TtC18ASMessagesProvider43ComponentViewOverflowPresentationController)initWithPresentedViewController:(id)a3 presentingViewController:(id)a4
+- (_TtC18ASMessagesProvider43ComponentViewOverflowPresentationController)initWithPresentedViewController:(id)controller presentingViewController:(id)viewController
 {
-  v5 = a3;
-  v6 = a4;
-  sub_48B054(v5, a4);
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  sub_48B054(controllerCopy, viewController);
   return result;
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
 {
-  v2 = self;
+  selfCopy = self;
   sub_48B500();
   v4 = v3;
   v6 = v5;
@@ -43,87 +43,87 @@
   return result;
 }
 
-- (void)willTransitionToTraitCollection:(id)a3 withTransitionCoordinator:(id)a4
+- (void)willTransitionToTraitCollection:(id)collection withTransitionCoordinator:(id)coordinator
 {
-  v6 = a3;
+  collectionCopy = collection;
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_48BBB4(v6, a4);
+  selfCopy = self;
+  sub_48BBB4(collectionCopy, coordinator);
 
   swift_unknownObjectRelease();
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   swift_unknownObjectRetain();
-  v8 = self;
-  sub_48BEB0(a4, width, height);
+  selfCopy = self;
+  sub_48BEB0(coordinator, width, height);
   swift_unknownObjectRelease();
 }
 
 - (void)containerViewWillLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_48C064();
 }
 
 - (void)presentationTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_48C318();
 }
 
-- (void)presentationTransitionDidEnd:(BOOL)a3
+- (void)presentationTransitionDidEnd:(BOOL)end
 {
-  v4 = self;
-  sub_48C7E8(a3);
+  selfCopy = self;
+  sub_48C7E8(end);
 }
 
 - (void)dismissalTransitionWillBegin
 {
-  v2 = self;
+  selfCopy = self;
   sub_48C938();
 }
 
-- (void)dismissalTransitionDidEnd:(BOOL)a3
+- (void)dismissalTransitionDidEnd:(BOOL)end
 {
-  if (a3)
+  if (end)
   {
     [*(&self->super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider43ComponentViewOverflowPresentationController_overlayView) removeFromSuperview];
   }
 }
 
-- (void)dismissTapDidChange:(id)a3
+- (void)dismissTapDidChange:(id)change
 {
-  v4 = a3;
-  v6 = self;
-  if ([v4 state] == &dword_0 + 3)
+  changeCopy = change;
+  selfCopy = self;
+  if ([changeCopy state] == &dword_0 + 3)
   {
-    v5 = [(ComponentViewOverflowPresentationController *)v6 presentedViewController];
-    [v5 dismissViewControllerAnimated:1 completion:0];
+    presentedViewController = [(ComponentViewOverflowPresentationController *)selfCopy presentedViewController];
+    [presentedViewController dismissViewControllerAnimated:1 completion:0];
   }
 }
 
-- (void)scrollPanDidChange:(id)a3
+- (void)scrollPanDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_48CCDC(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_48CCDC(changeCopy);
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
   if (*(&self->super.super.isa + OBJC_IVAR____TtC18ASMessagesProvider43ComponentViewOverflowPresentationController_isScrollDismissActive) == 1)
   {
-    if (a3)
+    if (scroll)
     {
-      v5 = a3;
-      v6 = self;
-      [v5 adjustedContentInset];
-      [v5 contentOffset];
-      [v5 setContentOffset:?];
+      scrollCopy = scroll;
+      selfCopy = self;
+      [scrollCopy adjustedContentInset];
+      [scrollCopy contentOffset];
+      [scrollCopy setContentOffset:?];
     }
 
     else

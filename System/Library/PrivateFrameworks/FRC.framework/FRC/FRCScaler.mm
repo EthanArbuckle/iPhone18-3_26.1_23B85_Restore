@@ -1,7 +1,7 @@
 @interface FRCScaler
 - (FRCScaler)init;
 - (void)dealloc;
-- (void)scaleFrameSource:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 cropRectangles:(id *)a5 upscale:(BOOL)a6 rotate:(int64_t)a7 waitForCompletion:(BOOL)a8;
+- (void)scaleFrameSource:(__CVBuffer *)source destination:(__CVBuffer *)destination cropRectangles:(id *)rectangles upscale:(BOOL)upscale rotate:(int64_t)rotate waitForCompletion:(BOOL)completion;
 @end
 
 @implementation FRCScaler
@@ -25,17 +25,17 @@
   return v4;
 }
 
-- (void)scaleFrameSource:(__CVBuffer *)a3 destination:(__CVBuffer *)a4 cropRectangles:(id *)a5 upscale:(BOOL)a6 rotate:(int64_t)a7 waitForCompletion:(BOOL)a8
+- (void)scaleFrameSource:(__CVBuffer *)source destination:(__CVBuffer *)destination cropRectangles:(id *)rectangles upscale:(BOOL)upscale rotate:(int64_t)rotate waitForCompletion:(BOOL)completion
 {
-  v8 = a8;
-  v10 = a6;
+  completionCopy = completion;
+  upscaleCopy = upscale;
   v14 = *MEMORY[0x277CBECE8];
   Mutable = CFDictionaryCreateMutable(*MEMORY[0x277CBECE8], 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
   v16 = Mutable;
   v17 = MEMORY[0x277CBED28];
-  if (v8)
+  if (completionCopy)
   {
-    if (v10)
+    if (upscaleCopy)
     {
       goto LABEL_3;
     }
@@ -44,19 +44,19 @@
   else
   {
     CFDictionarySetValue(Mutable, *MEMORY[0x277D1AE90], *MEMORY[0x277CBED28]);
-    if (v10)
+    if (upscaleCopy)
     {
 LABEL_3:
       v18 = *v17;
       CFDictionarySetValue(v16, *MEMORY[0x277D1AE38], *v17);
       CFDictionarySetValue(v16, *MEMORY[0x277D1AE88], v18);
-      if (!a7)
+      if (!rotate)
       {
         goto LABEL_4;
       }
 
 LABEL_8:
-      switch(a7)
+      switch(rotate)
       {
         case 3:
           v20 = 3;
@@ -73,7 +73,7 @@ LABEL_16:
           v21 = CFNumberCreate(v14, kCFNumberIntType, &valuePtr);
           CFDictionarySetValue(v16, *MEMORY[0x277D1AEA0], v21);
           CFRelease(v21);
-          if (v8)
+          if (completionCopy)
           {
             goto LABEL_5;
           }
@@ -86,18 +86,18 @@ LABEL_16:
     }
   }
 
-  if (a7)
+  if (rotate)
   {
     goto LABEL_8;
   }
 
 LABEL_4:
-  if (v8)
+  if (completionCopy)
   {
 LABEL_5:
     scaler = self->_scaler;
-    CVPixelBufferGetIOSurface(a3);
-    CVPixelBufferGetIOSurface(a4);
+    CVPixelBufferGetIOSurface(source);
+    CVPixelBufferGetIOSurface(destination);
     goto LABEL_18;
   }
 
@@ -105,17 +105,17 @@ LABEL_17:
   valuePtr = xmmword_285DE3538;
   v30 = qword_285DE3548;
   v22 = self->_scaler;
-  CVPixelBufferGetIOSurface(a3);
-  CVPixelBufferGetIOSurface(a4);
+  CVPixelBufferGetIOSurface(source);
+  CVPixelBufferGetIOSurface(destination);
 LABEL_18:
   if (IOSurfaceAcceleratorTransformSurface())
   {
-    Width = CVPixelBufferGetWidth(a3);
-    Height = CVPixelBufferGetHeight(a3);
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a3);
-    v26 = CVPixelBufferGetWidth(a4);
-    v27 = CVPixelBufferGetHeight(a4);
-    v28 = CVPixelBufferGetPixelFormatType(a4);
+    Width = CVPixelBufferGetWidth(source);
+    Height = CVPixelBufferGetHeight(source);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(source);
+    v26 = CVPixelBufferGetWidth(destination);
+    v27 = CVPixelBufferGetHeight(destination);
+    v28 = CVPixelBufferGetPixelFormatType(destination);
     NSLog(&cfstr_ScalerErrorFai.isa, Width, Height, PixelFormatType, v26, v27, v28);
   }
 

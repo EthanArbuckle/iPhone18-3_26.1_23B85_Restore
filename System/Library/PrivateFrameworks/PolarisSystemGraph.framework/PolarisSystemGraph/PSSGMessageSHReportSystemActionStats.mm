@@ -1,14 +1,14 @@
 @interface PSSGMessageSHReportSystemActionStats
-+ (id)messageWithData:(id)a3 sender:(id)a4;
++ (id)messageWithData:(id)data sender:(id)sender;
 @end
 
 @implementation PSSGMessageSHReportSystemActionStats
 
-+ (id)messageWithData:(id)a3 sender:(id)a4
++ (id)messageWithData:(id)data sender:(id)sender
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(PSSGMessageBase *)[PSSGMessageSHReportSystemActionStats alloc] initWithType:35 string1:v5 data:v6];
+  senderCopy = sender;
+  dataCopy = data;
+  v7 = [(PSSGMessageBase *)[PSSGMessageSHReportSystemActionStats alloc] initWithType:35 string1:senderCopy data:dataCopy];
 
   return v7;
 }

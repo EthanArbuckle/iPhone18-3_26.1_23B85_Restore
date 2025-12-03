@@ -2,12 +2,12 @@
 + (BOOL)_maps_isAnyApplicationOrCarPlayApplicationSceneConnected;
 + (BOOL)_maps_isAnyApplicationOrCarPlayApplicationSceneForeground;
 + (BOOL)_maps_isAnyCarPlayApplicationSceneForeground;
-+ (BOOL)_maps_isAnySceneConnectedForRole:(id)a3;
++ (BOOL)_maps_isAnySceneConnectedForRole:(id)role;
 + (BOOL)_maps_isAnySceneForeground;
-+ (BOOL)_maps_isAnySceneForegroundForRole:(id)a3;
-+ (BOOL)_maps_isCarPlayApplicationScene:(id)a3;
-+ (BOOL)_maps_isCarPlayWidgetScene:(id)a3;
-+ (BOOL)_maps_shouldIgnoreActivationStateForScene:(id)a3;
++ (BOOL)_maps_isAnySceneForegroundForRole:(id)role;
++ (BOOL)_maps_isCarPlayApplicationScene:(id)scene;
++ (BOOL)_maps_isCarPlayWidgetScene:(id)scene;
++ (BOOL)_maps_shouldIgnoreActivationStateForScene:(id)scene;
 + (id)_maps_applicationScenes;
 + (id)_maps_carPlayApplicationSceneDelegate;
 + (id)_maps_carPlayScenes;
@@ -15,29 +15,29 @@
 + (id)_maps_keyMapsWindow;
 + (id)_maps_keyMapsWindowScene;
 + (id)_maps_lockScreenSceneDelegate;
-+ (id)_maps_sceneDelegateForIdentifierString:(id)a3;
-+ (id)_maps_sceneForIdentifierString:(id)a3;
++ (id)_maps_sceneDelegateForIdentifierString:(id)string;
++ (id)_maps_sceneForIdentifierString:(id)string;
 + (id)sharedMapsDelegate;
 + (unint64_t)_maps_numberOfApplicationScenes;
-+ (void)_mapsCarPlay_connectApplicationSceneIfNeededForSession:(id)a3 completion:(id)a4;
-+ (void)_maps_openApplicationSceneSuspendedWithCompletion:(id)a3;
-+ (void)_maps_unlockApplicationWithCompletion:(id)a3;
++ (void)_mapsCarPlay_connectApplicationSceneIfNeededForSession:(id)session completion:(id)completion;
++ (void)_maps_openApplicationSceneSuspendedWithCompletion:(id)completion;
++ (void)_maps_unlockApplicationWithCompletion:(id)completion;
 - (BOOL)screenIsLocked;
-- (void)__mapsEventRecorder_sendEvent:(id)a3;
-- (void)_maps_openAppStoreForAdamId:(id)a3 completion:(id)a4;
-- (void)_maps_openURL:(id)a3 options:(id)a4 completionHandler:(id)a5;
-- (void)callPhoneNumber:(id)a3 completion:(id)a4;
-- (void)getCanCallPhoneNumber:(id)a3 completion:(id)a4;
+- (void)__mapsEventRecorder_sendEvent:(id)event;
+- (void)_maps_openAppStoreForAdamId:(id)id completion:(id)completion;
+- (void)_maps_openURL:(id)l options:(id)options completionHandler:(id)handler;
+- (void)callPhoneNumber:(id)number completion:(id)completion;
+- (void)getCanCallPhoneNumber:(id)number completion:(id)completion;
 @end
 
 @implementation UIApplication
 
 + (id)sharedMapsDelegate
 {
-  v2 = [a1 sharedApplication];
-  v3 = [v2 delegate];
+  sharedApplication = [self sharedApplication];
+  delegate = [sharedApplication delegate];
 
-  return v3;
+  return delegate;
 }
 
 + (BOOL)_maps_isAnyApplicationOrCarPlayApplicationSceneForeground
@@ -47,9 +47,9 @@
   v17 = 0u;
   v18 = 0u;
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 connectedScenes];
+  connectedScenes = [v3 connectedScenes];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [connectedScenes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -60,17 +60,17 @@
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
         if ([v9 activationState] <= 1)
         {
-          v10 = [v9 session];
-          v11 = [v10 role];
-          v12 = [v11 isEqualToString:UIWindowSceneSessionRoleApplication];
+          session = [v9 session];
+          role = [session role];
+          v12 = [role isEqualToString:UIWindowSceneSessionRoleApplication];
 
-          if (v12 & 1) != 0 || [v9 isCarScene] && (objc_msgSend(a1, "_maps_isCarPlayApplicationScene:", v9))
+          if (v12 & 1) != 0 || [v9 isCarScene] && (objc_msgSend(self, "_maps_isCarPlayApplicationScene:", v9))
           {
             v13 = 1;
             goto LABEL_14;
@@ -78,7 +78,7 @@
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [connectedScenes countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -101,9 +101,9 @@ LABEL_14:
   v14 = 0u;
   v15 = 0u;
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 connectedScenes];
+  connectedScenes = [v3 connectedScenes];
 
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v5 = [connectedScenes countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -114,18 +114,18 @@ LABEL_14:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
-        if ([v9 activationState] <= 1 && objc_msgSend(v9, "isCarScene") && (objc_msgSend(a1, "_maps_isCarPlayApplicationScene:", v9) & 1) != 0)
+        if ([v9 activationState] <= 1 && objc_msgSend(v9, "isCarScene") && (objc_msgSend(self, "_maps_isCarPlayApplicationScene:", v9) & 1) != 0)
         {
           v10 = 1;
           goto LABEL_13;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [connectedScenes countByEnumeratingWithState:&v12 objects:v16 count:16];
       if (v6)
       {
         continue;
@@ -144,9 +144,9 @@ LABEL_13:
 + (id)_maps_keyMapsSceneDelegate
 {
   v2 = +[UIApplication _maps_keyMapsWindowScene];
-  v3 = [v2 delegate];
+  delegate = [v2 delegate];
 
-  return v3;
+  return delegate;
 }
 
 + (id)_maps_keyMapsWindowScene
@@ -156,9 +156,9 @@ LABEL_13:
   v17 = 0u;
   v18 = 0u;
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 connectedScenes];
+  connectedScenes = [v2 connectedScenes];
 
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [connectedScenes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -170,7 +170,7 @@ LABEL_13:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -180,7 +180,7 @@ LABEL_13:
           v10 = v9;
           if ([v10 _isKeyWindowScene])
           {
-            v11 = [v10 delegate];
+            delegate = [v10 delegate];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
@@ -194,7 +194,7 @@ LABEL_13:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [connectedScenes countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -216,9 +216,9 @@ LABEL_13:
   v15 = 0u;
   v16 = 0u;
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 connectedScenes];
+  connectedScenes = [v3 connectedScenes];
 
-  v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v5 = [connectedScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v5)
   {
     v6 = v5;
@@ -229,7 +229,7 @@ LABEL_13:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
@@ -238,7 +238,7 @@ LABEL_13:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 = [v9 delegate];
+            delegate = [v9 delegate];
             objc_opt_class();
             isKindOfClass = objc_opt_isKindOfClass();
 
@@ -250,7 +250,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [connectedScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
     }
 
     while (v6);
@@ -261,8 +261,8 @@ LABEL_13:
 
 + (unint64_t)_maps_numberOfApplicationScenes
 {
-  v2 = [a1 _maps_applicationScenes];
-  v3 = [v2 count];
+  _maps_applicationScenes = [self _maps_applicationScenes];
+  v3 = [_maps_applicationScenes count];
 
   return v3;
 }
@@ -275,9 +275,9 @@ LABEL_13:
   v16 = 0u;
   v17 = 0u;
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 connectedScenes];
+  connectedScenes = [v3 connectedScenes];
 
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [connectedScenes countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -288,13 +288,13 @@ LABEL_13:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v9 = *(*(&v14 + 1) + 8 * i);
-        v10 = [v9 session];
-        v11 = [v10 role];
-        v12 = [v11 isEqualToString:UIWindowSceneSessionRoleApplication];
+        session = [v9 session];
+        role = [session role];
+        v12 = [role isEqualToString:UIWindowSceneSessionRoleApplication];
 
         if (v12)
         {
@@ -302,7 +302,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [connectedScenes countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -318,9 +318,9 @@ LABEL_13:
   v10 = 0u;
   v11 = 0u;
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 connectedScenes];
+  connectedScenes = [v2 connectedScenes];
 
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  v4 = [connectedScenes countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = *v9;
@@ -330,7 +330,7 @@ LABEL_13:
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectedScenes);
         }
 
         if ([*(*(&v8 + 1) + 8 * i) activationState] < 2)
@@ -340,7 +340,7 @@ LABEL_13:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v4 = [connectedScenes countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v4)
       {
         continue;
@@ -355,51 +355,51 @@ LABEL_11:
   return v4;
 }
 
-- (void)_maps_openAppStoreForAdamId:(id)a3 completion:(id)a4
+- (void)_maps_openAppStoreForAdamId:(id)id completion:(id)completion
 {
-  v9 = a3;
-  v6 = a4;
-  if ([v9 length])
+  idCopy = id;
+  completionCopy = completion;
+  if ([idCopy length])
   {
-    v7 = [NSString stringWithFormat:@"%@%@", @"itms-appss://apps.apple.com/app/id", v9];
-    v8 = [NSURL URLWithString:v7];
-    [(UIApplication *)self _maps_openURL:v8 options:0 completionHandler:v6];
+    idCopy = [NSString stringWithFormat:@"%@%@", @"itms-appss://apps.apple.com/app/id", idCopy];
+    v8 = [NSURL URLWithString:idCopy];
+    [(UIApplication *)self _maps_openURL:v8 options:0 completionHandler:completionCopy];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
-- (void)_maps_openURL:(id)a3 options:(id)a4 completionHandler:(id)a5
+- (void)_maps_openURL:(id)l options:(id)options completionHandler:(id)handler
 {
-  v7 = a5;
-  if (a3)
+  handlerCopy = handler;
+  if (l)
   {
-    v8 = a4;
-    v9 = a3;
+    optionsCopy = options;
+    lCopy = l;
     v10 = +[LSApplicationWorkspace defaultWorkspace];
     v12 = 0;
-    v11 = [v10 openSensitiveURL:v9 withOptions:v8 error:&v12];
+    v11 = [v10 openSensitiveURL:lCopy withOptions:optionsCopy error:&v12];
 
-    if (v7)
+    if (handlerCopy)
     {
-      v7[2](v7, v11);
+      handlerCopy[2](handlerCopy, v11);
     }
   }
 }
 
-- (void)callPhoneNumber:(id)a3 completion:(id)a4
+- (void)callPhoneNumber:(id)number completion:(id)completion
 {
-  v5 = a4;
-  v6 = a3;
+  completionCopy = completion;
+  numberCopy = number;
   v7 = objc_alloc_init(TUCallProviderManager);
   v8 = [TUDialRequest alloc];
-  v9 = [v7 defaultProvider];
-  v10 = [v8 initWithProvider:v9];
+  defaultProvider = [v7 defaultProvider];
+  v10 = [v8 initWithProvider:defaultProvider];
 
-  v11 = [[TUHandle alloc] initWithType:2 value:v6];
+  v11 = [[TUHandle alloc] initWithType:2 value:numberCopy];
   [v10 setHandle:v11];
   [v10 setShowUIPrompt:0];
   v12 = [[TUCallCenter alloc] initWithQueue:0];
@@ -407,31 +407,31 @@ LABEL_11:
   v14[1] = 3221225472;
   v14[2] = sub_100881754;
   v14[3] = &unk_1016610B8;
-  v15 = v5;
-  v13 = v5;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [v12 launchAppForDialRequest:v10 completion:v14];
 }
 
-- (void)getCanCallPhoneNumber:(id)a3 completion:(id)a4
+- (void)getCanCallPhoneNumber:(id)number completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  numberCopy = number;
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (numberCopy)
   {
     v8 = dispatch_get_global_queue(25, 0);
     v9[0] = _NSConcreteStackBlock;
     v9[1] = 3221225472;
     v9[2] = sub_100881864;
     v9[3] = &unk_101661090;
-    v10 = v5;
+    v10 = numberCopy;
     v11 = v7;
     dispatch_async(v8, v9);
   }
 
   else
   {
-    (*(v6 + 2))(v6, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 }
 
@@ -446,45 +446,45 @@ LABEL_11:
   return 0;
 }
 
-- (void)__mapsEventRecorder_sendEvent:(id)a3
+- (void)__mapsEventRecorder_sendEvent:(id)event
 {
-  v4 = a3;
-  [(UIApplication *)self __mapsEventRecorder_sendEvent:v4];
+  eventCopy = event;
+  [(UIApplication *)self __mapsEventRecorder_sendEvent:eventCopy];
   v5 = +[MapsEventRecorder defaultRecorder];
-  [v5 recordEvent:v4];
+  [v5 recordEvent:eventCopy];
 }
 
-+ (id)_maps_sceneDelegateForIdentifierString:(id)a3
++ (id)_maps_sceneDelegateForIdentifierString:(id)string
 {
-  v3 = [a1 _maps_sceneForIdentifierString:a3];
-  v4 = [v3 delegate];
+  v3 = [self _maps_sceneForIdentifierString:string];
+  delegate = [v3 delegate];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [v3 delegate];
+    delegate2 = [v3 delegate];
   }
 
   else
   {
-    v6 = 0;
+    delegate2 = 0;
   }
 
-  return v6;
+  return delegate2;
 }
 
-+ (id)_maps_sceneForIdentifierString:(id)a3
++ (id)_maps_sceneForIdentifierString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 connectedScenes];
+  connectedScenes = [v4 connectedScenes];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [connectedScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -494,12 +494,12 @@ LABEL_11:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v9 = *(*(&v13 + 1) + 8 * i);
-        v10 = [v9 _sceneIdentifier];
-        v11 = [v10 isEqualToString:v3];
+        _sceneIdentifier = [v9 _sceneIdentifier];
+        v11 = [_sceneIdentifier isEqualToString:stringCopy];
 
         if (v11)
         {
@@ -508,7 +508,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [connectedScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -523,9 +523,9 @@ LABEL_11:
   return v6;
 }
 
-+ (void)_maps_unlockApplicationWithCompletion:(id)a3
++ (void)_maps_unlockApplicationWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
   v13 = FBSOpenApplicationOptionKeyPromptUnlockDevice;
   v14 = &__kCFBooleanTrue;
@@ -544,14 +544,14 @@ LABEL_11:
   v9[1] = 3221225472;
   v9[2] = sub_100B310F0;
   v9[3] = &unk_10163C108;
-  v10 = v3;
-  v8 = v3;
+  v10 = completionCopy;
+  v8 = completionCopy;
   [v4 openApplication:@"com.apple.Maps" withOptions:v6 completion:v9];
 }
 
-+ (void)_maps_openApplicationSceneSuspendedWithCompletion:(id)a3
++ (void)_maps_openApplicationSceneSuspendedWithCompletion:(id)completion
 {
-  v3 = a3;
+  completionCopy = completion;
   v4 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
   v10 = FBSOpenApplicationOptionKeyActivateSuspended;
   v11 = &__kCFBooleanTrue;
@@ -562,16 +562,16 @@ LABEL_11:
   v8[1] = 3221225472;
   v8[2] = sub_100B31354;
   v8[3] = &unk_10163C108;
-  v9 = v3;
-  v7 = v3;
+  v9 = completionCopy;
+  v7 = completionCopy;
   [v4 openApplication:@"com.apple.Maps" withOptions:v6 completion:v8];
 }
 
-+ (void)_mapsCarPlay_connectApplicationSceneIfNeededForSession:(id)a3 completion:(id)a4
++ (void)_mapsCarPlay_connectApplicationSceneIfNeededForSession:(id)session completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 role];
-  if ([v7 isEqualToString:_UIWindowSceneSessionRoleCarPlay])
+  completionCopy = completion;
+  role = [session role];
+  if ([role isEqualToString:_UIWindowSceneSessionRoleCarPlay])
   {
     v8 = [UIApplication _maps_isAnySceneConnectedForRole:UIWindowSceneSessionRoleApplication];
 
@@ -588,8 +588,8 @@ LABEL_11:
       v10[1] = 3221225472;
       v10[2] = sub_100B314B8;
       v10[3] = &unk_1016610B8;
-      v11 = v6;
-      [a1 _maps_openApplicationSceneSuspendedWithCompletion:v10];
+      v11 = completionCopy;
+      [self _maps_openApplicationSceneSuspendedWithCompletion:v10];
 
       goto LABEL_9;
     }
@@ -599,9 +599,9 @@ LABEL_11:
   {
   }
 
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 
 LABEL_9:
@@ -613,8 +613,8 @@ LABEL_9:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a1 _maps_carPlayScenes];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  _maps_carPlayScenes = [self _maps_carPlayScenes];
+  v4 = [_maps_carPlayScenes countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -625,18 +625,18 @@ LABEL_9:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(_maps_carPlayScenes);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
-        if ([a1 _maps_isCarPlayApplicationScene:v8])
+        if ([self _maps_isCarPlayApplicationScene:v8])
         {
-          v9 = [v8 delegate];
+          delegate = [v8 delegate];
           goto LABEL_11;
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [_maps_carPlayScenes countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v5)
       {
         continue;
@@ -646,10 +646,10 @@ LABEL_9:
     }
   }
 
-  v9 = 0;
+  delegate = 0;
 LABEL_11:
 
-  return v9;
+  return delegate;
 }
 
 + (BOOL)_maps_isAnyApplicationOrCarPlayApplicationSceneConnected
@@ -659,9 +659,9 @@ LABEL_11:
   v17 = 0u;
   v18 = 0u;
   v3 = +[UIApplication sharedApplication];
-  v4 = [v3 connectedScenes];
+  connectedScenes = [v3 connectedScenes];
 
-  v5 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v5 = [connectedScenes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v5)
   {
     v6 = v5;
@@ -672,22 +672,22 @@ LABEL_11:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 session];
-        v11 = [v10 role];
-        v12 = [v11 isEqualToString:UIWindowSceneSessionRoleApplication];
+        session = [v9 session];
+        role = [session role];
+        v12 = [role isEqualToString:UIWindowSceneSessionRoleApplication];
 
-        if (v12 & 1) != 0 || [v9 isCarScene] && (objc_msgSend(a1, "_maps_isCarPlayApplicationScene:", v9))
+        if (v12 & 1) != 0 || [v9 isCarScene] && (objc_msgSend(self, "_maps_isCarPlayApplicationScene:", v9))
         {
           v13 = 1;
           goto LABEL_13;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v6 = [connectedScenes countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (v6)
       {
         continue;
@@ -703,15 +703,15 @@ LABEL_13:
   return v13;
 }
 
-+ (BOOL)_maps_isCarPlayWidgetScene:(id)a3
++ (BOOL)_maps_isCarPlayWidgetScene:(id)scene
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 delegate], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
+  sceneCopy = scene;
+  v4 = sceneCopy;
+  if (sceneCopy && ([sceneCopy delegate], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
   {
-    v7 = [v4 delegate];
-    v8 = [v7 sceneType];
-    v9 = (v8 < 7) & (0x7Du >> v8);
+    delegate = [v4 delegate];
+    sceneType = [delegate sceneType];
+    v9 = (sceneType < 7) & (0x7Du >> sceneType);
   }
 
   else
@@ -722,14 +722,14 @@ LABEL_13:
   return v9;
 }
 
-+ (BOOL)_maps_isCarPlayApplicationScene:(id)a3
++ (BOOL)_maps_isCarPlayApplicationScene:(id)scene
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 delegate], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
+  sceneCopy = scene;
+  v4 = sceneCopy;
+  if (sceneCopy && ([sceneCopy delegate], v5 = objc_claimAutoreleasedReturnValue(), objc_opt_class(), isKindOfClass = objc_opt_isKindOfClass(), v5, (isKindOfClass & 1) != 0))
   {
-    v7 = [v4 delegate];
-    v8 = [v7 sceneType] == 1;
+    delegate = [v4 delegate];
+    v8 = [delegate sceneType] == 1;
   }
 
   else
@@ -740,47 +740,47 @@ LABEL_13:
   return v8;
 }
 
-+ (BOOL)_maps_shouldIgnoreActivationStateForScene:(id)a3
++ (BOOL)_maps_shouldIgnoreActivationStateForScene:(id)scene
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && ([v3 session], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "role"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", BNWindowSceneSessionRoleBannerSource), v6, v5, (v7 & 1) == 0))
+  sceneCopy = scene;
+  v4 = sceneCopy;
+  if (sceneCopy && ([sceneCopy session], v5 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v5, "role"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isEqualToString:", BNWindowSceneSessionRoleBannerSource), v6, v5, (v7 & 1) == 0))
   {
-    v10 = [v4 delegate];
+    delegate = [v4 delegate];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
     if (isKindOfClass)
     {
-      v12 = [v4 delegate];
-      v8 = [v12 shouldIgnoreActivationStateForBanner];
+      delegate2 = [v4 delegate];
+      shouldIgnoreActivationStateForBanner = [delegate2 shouldIgnoreActivationStateForBanner];
     }
 
     else
     {
-      v8 = 0;
+      shouldIgnoreActivationStateForBanner = 0;
     }
   }
 
   else
   {
-    v8 = 1;
+    shouldIgnoreActivationStateForBanner = 1;
   }
 
-  return v8;
+  return shouldIgnoreActivationStateForBanner;
 }
 
-+ (BOOL)_maps_isAnySceneForegroundForRole:(id)a3
++ (BOOL)_maps_isAnySceneForegroundForRole:(id)role
 {
-  v4 = a3;
+  roleCopy = role;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v5 = +[UIApplication sharedApplication];
-  v6 = [v5 connectedScenes];
+  connectedScenes = [v5 connectedScenes];
 
-  v7 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  v7 = [connectedScenes countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v7)
   {
     v8 = v7;
@@ -791,15 +791,15 @@ LABEL_13:
       {
         if (*v18 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v11 = *(*(&v17 + 1) + 8 * i);
-        if (([a1 _maps_shouldIgnoreActivationStateForScene:v11] & 1) == 0)
+        if (([self _maps_shouldIgnoreActivationStateForScene:v11] & 1) == 0)
         {
-          v12 = [v11 session];
-          v13 = [v12 role];
-          v14 = [v13 isEqualToString:v4];
+          session = [v11 session];
+          role = [session role];
+          v14 = [role isEqualToString:roleCopy];
 
           if (v14)
           {
@@ -812,7 +812,7 @@ LABEL_13:
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v8 = [connectedScenes countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         continue;
@@ -828,17 +828,17 @@ LABEL_13:
   return v15;
 }
 
-+ (BOOL)_maps_isAnySceneConnectedForRole:(id)a3
++ (BOOL)_maps_isAnySceneConnectedForRole:(id)role
 {
-  v3 = a3;
+  roleCopy = role;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v4 = +[UIApplication sharedApplication];
-  v5 = [v4 connectedScenes];
+  connectedScenes = [v4 connectedScenes];
 
-  v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+  v6 = [connectedScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v6)
   {
     v7 = *v14;
@@ -848,12 +848,12 @@ LABEL_13:
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectedScenes);
         }
 
-        v9 = [*(*(&v13 + 1) + 8 * i) session];
-        v10 = [v9 role];
-        v11 = [v10 isEqualToString:v3];
+        session = [*(*(&v13 + 1) + 8 * i) session];
+        role = [session role];
+        v11 = [role isEqualToString:roleCopy];
 
         if (v11)
         {
@@ -862,7 +862,7 @@ LABEL_13:
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+      v6 = [connectedScenes countByEnumeratingWithState:&v13 objects:v17 count:16];
       if (v6)
       {
         continue;
@@ -884,9 +884,9 @@ LABEL_11:
   v17 = 0u;
   v18 = 0u;
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 connectedScenes];
+  connectedScenes = [v2 connectedScenes];
 
-  v4 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v4 = [connectedScenes countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v4)
   {
     v5 = v4;
@@ -898,7 +898,7 @@ LABEL_11:
       {
         if (*v16 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(connectedScenes);
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
@@ -906,20 +906,20 @@ LABEL_11:
         if (objc_opt_isKindOfClass())
         {
           v10 = v9;
-          v11 = [v10 delegate];
+          delegate = [v10 delegate];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v13 = [v10 delegate];
+            delegate2 = [v10 delegate];
 
-            v6 = v13;
+            v6 = delegate2;
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v5 = [connectedScenes countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v5);
@@ -940,9 +940,9 @@ LABEL_11:
   v14 = 0u;
   v15 = 0u;
   v2 = +[UIApplication _maps_keyMapsWindowScene];
-  v3 = [v2 windows];
+  windows = [v2 windows];
 
-  v4 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  v4 = [windows countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -954,7 +954,7 @@ LABEL_11:
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(windows);
         }
 
         v9 = *(*(&v12 + 1) + 8 * i);
@@ -966,7 +966,7 @@ LABEL_11:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v5 = [windows countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v5);

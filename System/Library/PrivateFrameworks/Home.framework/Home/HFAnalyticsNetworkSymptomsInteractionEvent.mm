@@ -1,15 +1,15 @@
 @interface HFAnalyticsNetworkSymptomsInteractionEvent
-- (HFAnalyticsNetworkSymptomsInteractionEvent)initWithData:(id)a3;
+- (HFAnalyticsNetworkSymptomsInteractionEvent)initWithData:(id)data;
 - (id)payload;
 @end
 
 @implementation HFAnalyticsNetworkSymptomsInteractionEvent
 
-- (HFAnalyticsNetworkSymptomsInteractionEvent)initWithData:(id)a3
+- (HFAnalyticsNetworkSymptomsInteractionEvent)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   objc_opt_class();
-  v5 = [v4 objectForKeyedSubscript:@"accessoryType"];
+  v5 = [dataCopy objectForKeyedSubscript:@"accessoryType"];
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -28,7 +28,7 @@
   }
 
   objc_opt_class();
-  v8 = [v4 objectForKeyedSubscript:@"symptom"];
+  v8 = [dataCopy objectForKeyedSubscript:@"symptom"];
   if (objc_opt_isKindOfClass())
   {
     v9 = v8;
@@ -47,7 +47,7 @@
   }
 
   objc_opt_class();
-  v11 = [v4 objectForKeyedSubscript:@"interactionTypeTileTap"];
+  v11 = [dataCopy objectForKeyedSubscript:@"interactionTypeTileTap"];
   if (objc_opt_isKindOfClass())
   {
     v12 = v11;
@@ -66,7 +66,7 @@
   }
 
   objc_opt_class();
-  v14 = [v4 objectForKeyedSubscript:@"interactionTypeLearnMoreButton"];
+  v14 = [dataCopy objectForKeyedSubscript:@"interactionTypeLearnMoreButton"];
   if (objc_opt_isKindOfClass())
   {
     v15 = v14;
@@ -85,7 +85,7 @@
   }
 
   objc_opt_class();
-  v17 = [v4 objectForKeyedSubscript:@"interactionTypeWifiPicker"];
+  v17 = [dataCopy objectForKeyedSubscript:@"interactionTypeWifiPicker"];
   if (objc_opt_isKindOfClass())
   {
     v18 = v17;
@@ -122,8 +122,8 @@
 {
   v11.receiver = self;
   v11.super_class = HFAnalyticsNetworkSymptomsInteractionEvent;
-  v3 = [(HFAnalyticsEvent *)&v11 payload];
-  v4 = [v3 mutableCopy];
+  payload = [(HFAnalyticsEvent *)&v11 payload];
+  v4 = [payload mutableCopy];
 
   v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{-[HFAnalyticsNetworkSymptomsInteractionEvent accessoryType](self, "accessoryType")}];
   [v4 setObject:v5 forKeyedSubscript:@"accessoryType"];

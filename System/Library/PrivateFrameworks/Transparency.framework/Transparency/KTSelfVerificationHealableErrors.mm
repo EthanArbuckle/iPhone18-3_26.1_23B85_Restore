@@ -1,46 +1,46 @@
 @interface KTSelfVerificationHealableErrors
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (KTSelfVerificationHealableErrors)init;
-- (KTSelfVerificationHealableErrors)initWithCoder:(id)a3;
+- (KTSelfVerificationHealableErrors)initWithCoder:(id)coder;
 - (NSArray)accountHealableErrors;
 - (NSDictionary)deviceIdToHealableErrors;
 - (id)description;
-- (void)addAccountHealableError:(unint64_t)a3;
-- (void)addDeviceHealableError:(unint64_t)a3 deviceId:(id)a4;
-- (void)addHealableState:(unint64_t)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)removeHealableState:(unint64_t)a3;
+- (void)addAccountHealableError:(unint64_t)error;
+- (void)addDeviceHealableError:(unint64_t)error deviceId:(id)id;
+- (void)addHealableState:(unint64_t)state;
+- (void)encodeWithCoder:(id)coder;
+- (void)removeHealableState:(unint64_t)state;
 @end
 
 @implementation KTSelfVerificationHealableErrors
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(KTSelfVerificationHealableErrors *)self accountHealableErrors];
-  [v6 encodeObject:v4 forKey:@"accountHealableErrors"];
+  coderCopy = coder;
+  accountHealableErrors = [(KTSelfVerificationHealableErrors *)self accountHealableErrors];
+  [coderCopy encodeObject:accountHealableErrors forKey:@"accountHealableErrors"];
 
-  v5 = [(KTSelfVerificationHealableErrors *)self deviceIdToHealableErrors];
-  [v6 encodeObject:v5 forKey:@"deviceIdToHealableErrors"];
+  deviceIdToHealableErrors = [(KTSelfVerificationHealableErrors *)self deviceIdToHealableErrors];
+  [coderCopy encodeObject:deviceIdToHealableErrors forKey:@"deviceIdToHealableErrors"];
 
-  [v6 encodeInt64:-[KTSelfVerificationHealableErrors healableState](self forKey:{"healableState"), @"healableState"}];
+  [coderCopy encodeInt64:-[KTSelfVerificationHealableErrors healableState](self forKey:{"healableState"), @"healableState"}];
 }
 
-- (KTSelfVerificationHealableErrors)initWithCoder:(id)a3
+- (KTSelfVerificationHealableErrors)initWithCoder:(id)coder
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = MEMORY[0x1E695DFD8];
   v6 = objc_opt_class();
   v7 = [v5 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"accountHealableErrors"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"accountHealableErrors"];
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v9 setWithObjects:{v10, v11, v12, objc_opt_class(), 0}];
-  v14 = [v4 decodeObjectOfClasses:v13 forKey:@"deviceIdToHealableErrors"];
-  v15 = [v4 decodeInt64ForKey:@"healableState"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"deviceIdToHealableErrors"];
+  v15 = [coderCopy decodeInt64ForKey:@"healableState"];
   v40.receiver = self;
   v40.super_class = KTSelfVerificationHealableErrors;
   v16 = [(KTSelfVerificationHealableErrors *)&v40 init];
@@ -58,8 +58,8 @@
     v17 = ;
     [(KTSelfVerificationHealableErrors *)v16 set_accountHealableErrors:v17];
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
-    [(KTSelfVerificationHealableErrors *)v16 set_deviceIdToHealableErrors:v18];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(KTSelfVerificationHealableErrors *)v16 set_deviceIdToHealableErrors:dictionary];
 
     if ([v14 count])
     {
@@ -92,8 +92,8 @@
             v26 = [v19 objectForKey:v24];
             v27 = [v25 arrayWithArray:v26];
 
-            v28 = [(KTSelfVerificationHealableErrors *)v16 _deviceIdToHealableErrors];
-            [v28 setObject:v27 forKey:v24];
+            _deviceIdToHealableErrors = [(KTSelfVerificationHealableErrors *)v16 _deviceIdToHealableErrors];
+            [_deviceIdToHealableErrors setObject:v27 forKey:v24];
           }
 
           v21 = [v19 countByEnumeratingWithState:&v36 objects:v41 count:16];
@@ -116,10 +116,10 @@
   return v16;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -129,22 +129,22 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(KTSelfVerificationHealableErrors *)self healableState];
-      if (v6 == [(KTSelfVerificationHealableErrors *)v5 healableState])
+      v5 = equalCopy;
+      healableState = [(KTSelfVerificationHealableErrors *)self healableState];
+      if (healableState == [(KTSelfVerificationHealableErrors *)v5 healableState])
       {
-        v7 = [(KTSelfVerificationHealableErrors *)self accountHealableErrors];
-        v8 = [(KTSelfVerificationHealableErrors *)v5 accountHealableErrors];
-        v9 = v8;
-        if (v7 == v8)
+        accountHealableErrors = [(KTSelfVerificationHealableErrors *)self accountHealableErrors];
+        accountHealableErrors2 = [(KTSelfVerificationHealableErrors *)v5 accountHealableErrors];
+        v9 = accountHealableErrors2;
+        if (accountHealableErrors == accountHealableErrors2)
         {
         }
 
         else
         {
-          v10 = [(KTSelfVerificationHealableErrors *)self accountHealableErrors];
-          v11 = [(KTSelfVerificationHealableErrors *)v5 accountHealableErrors];
-          v12 = [v10 isEqual:v11];
+          accountHealableErrors3 = [(KTSelfVerificationHealableErrors *)self accountHealableErrors];
+          accountHealableErrors4 = [(KTSelfVerificationHealableErrors *)v5 accountHealableErrors];
+          v12 = [accountHealableErrors3 isEqual:accountHealableErrors4];
 
           if (!v12)
           {
@@ -152,18 +152,18 @@
           }
         }
 
-        v14 = [(KTSelfVerificationHealableErrors *)self deviceIdToHealableErrors];
-        v15 = [(KTSelfVerificationHealableErrors *)v5 deviceIdToHealableErrors];
-        v16 = v15;
-        if (v14 == v15)
+        deviceIdToHealableErrors = [(KTSelfVerificationHealableErrors *)self deviceIdToHealableErrors];
+        deviceIdToHealableErrors2 = [(KTSelfVerificationHealableErrors *)v5 deviceIdToHealableErrors];
+        v16 = deviceIdToHealableErrors2;
+        if (deviceIdToHealableErrors == deviceIdToHealableErrors2)
         {
         }
 
         else
         {
-          v17 = [(KTSelfVerificationHealableErrors *)self deviceIdToHealableErrors];
-          v18 = [(KTSelfVerificationHealableErrors *)v5 deviceIdToHealableErrors];
-          v19 = [v17 isEqual:v18];
+          deviceIdToHealableErrors3 = [(KTSelfVerificationHealableErrors *)self deviceIdToHealableErrors];
+          deviceIdToHealableErrors4 = [(KTSelfVerificationHealableErrors *)v5 deviceIdToHealableErrors];
+          v19 = [deviceIdToHealableErrors3 isEqual:deviceIdToHealableErrors4];
 
           if ((v19 & 1) == 0)
           {
@@ -194,15 +194,15 @@ LABEL_16:
 {
   v41 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E696AD60] stringWithFormat:@"KTHealableErrors: <%p>\n", self];
-  v4 = [(KTSelfVerificationHealableErrors *)self accountHealableErrors];
-  if (v4)
+  accountHealableErrors = [(KTSelfVerificationHealableErrors *)self accountHealableErrors];
+  if (accountHealableErrors)
   {
     [v3 appendString:@"account="];
     v36 = 0u;
     v37 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v5 = v4;
+    v5 = accountHealableErrors;
     v6 = [v5 countByEnumeratingWithState:&v34 objects:v40 count:16];
     if (v6)
     {
@@ -229,16 +229,16 @@ LABEL_16:
     [v3 appendString:@"\n"];
   }
 
-  v10 = [(KTSelfVerificationHealableErrors *)self deviceIdToHealableErrors];
-  if (v10)
+  deviceIdToHealableErrors = [(KTSelfVerificationHealableErrors *)self deviceIdToHealableErrors];
+  if (deviceIdToHealableErrors)
   {
     [v3 appendString:@"devices = {\n"];
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v25 = v10;
-    v11 = v10;
+    v25 = deviceIdToHealableErrors;
+    v11 = deviceIdToHealableErrors;
     v12 = [v11 countByEnumeratingWithState:&v30 objects:v39 count:16];
     if (v12)
     {
@@ -254,8 +254,8 @@ LABEL_16:
           }
 
           v16 = *(*(&v30 + 1) + 8 * j);
-          v17 = [v16 kt_hexString];
-          [v3 appendFormat:@"%@ : ", v17];
+          kt_hexString = [v16 kt_hexString];
+          [v3 appendFormat:@"%@ : ", kt_hexString];
 
           v28 = 0u;
           v29 = 0u;
@@ -295,7 +295,7 @@ LABEL_16:
     }
 
     [v3 appendString:@"}\n"];
-    v10 = v25;
+    deviceIdToHealableErrors = v25;
   }
 
   v23 = *MEMORY[0x1E69E9840];
@@ -310,11 +310,11 @@ LABEL_16:
   v2 = [(KTSelfVerificationHealableErrors *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
-    [(KTSelfVerificationHealableErrors *)v2 set_accountHealableErrors:v3];
+    array = [MEMORY[0x1E695DF70] array];
+    [(KTSelfVerificationHealableErrors *)v2 set_accountHealableErrors:array];
 
-    v4 = [MEMORY[0x1E695DF90] dictionary];
-    [(KTSelfVerificationHealableErrors *)v2 set_deviceIdToHealableErrors:v4];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [(KTSelfVerificationHealableErrors *)v2 set_deviceIdToHealableErrors:dictionary];
   }
 
   return v2;
@@ -322,16 +322,16 @@ LABEL_16:
 
 - (NSArray)accountHealableErrors
 {
-  v3 = [(KTSelfVerificationHealableErrors *)self _accountHealableErrors];
-  objc_sync_enter(v3);
-  v4 = [(KTSelfVerificationHealableErrors *)self _accountHealableErrors];
-  v5 = [v4 count];
+  _accountHealableErrors = [(KTSelfVerificationHealableErrors *)self _accountHealableErrors];
+  objc_sync_enter(_accountHealableErrors);
+  _accountHealableErrors2 = [(KTSelfVerificationHealableErrors *)self _accountHealableErrors];
+  v5 = [_accountHealableErrors2 count];
 
   if (v5)
   {
     v6 = MEMORY[0x1E695DEC8];
-    v7 = [(KTSelfVerificationHealableErrors *)self _accountHealableErrors];
-    v8 = [v6 arrayWithArray:v7];
+    _accountHealableErrors3 = [(KTSelfVerificationHealableErrors *)self _accountHealableErrors];
+    v8 = [v6 arrayWithArray:_accountHealableErrors3];
   }
 
   else
@@ -339,7 +339,7 @@ LABEL_16:
     v8 = 0;
   }
 
-  objc_sync_exit(v3);
+  objc_sync_exit(_accountHealableErrors);
 
   return v8;
 }
@@ -349,18 +349,18 @@ LABEL_16:
   v24 = *MEMORY[0x1E69E9840];
   obj = [(KTSelfVerificationHealableErrors *)self _deviceIdToHealableErrors];
   objc_sync_enter(obj);
-  v3 = [(KTSelfVerificationHealableErrors *)self _deviceIdToHealableErrors];
-  v4 = [v3 count];
+  _deviceIdToHealableErrors = [(KTSelfVerificationHealableErrors *)self _deviceIdToHealableErrors];
+  v4 = [_deviceIdToHealableErrors count];
 
   if (v4)
   {
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v6 = [(KTSelfVerificationHealableErrors *)self _deviceIdToHealableErrors];
-    v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    _deviceIdToHealableErrors2 = [(KTSelfVerificationHealableErrors *)self _deviceIdToHealableErrors];
+    v7 = [_deviceIdToHealableErrors2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v7)
     {
       v8 = *v20;
@@ -370,25 +370,25 @@ LABEL_16:
         {
           if (*v20 != v8)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(_deviceIdToHealableErrors2);
           }
 
           v10 = *(*(&v19 + 1) + 8 * i);
           v11 = MEMORY[0x1E695DEC8];
-          v12 = [(KTSelfVerificationHealableErrors *)self _deviceIdToHealableErrors];
-          v13 = [v12 objectForKey:v10];
+          _deviceIdToHealableErrors3 = [(KTSelfVerificationHealableErrors *)self _deviceIdToHealableErrors];
+          v13 = [_deviceIdToHealableErrors3 objectForKey:v10];
           v14 = [v11 arrayWithArray:v13];
 
-          [v5 setObject:v14 forKey:v10];
+          [dictionary setObject:v14 forKey:v10];
         }
 
-        v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v7 = [_deviceIdToHealableErrors2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v7);
     }
 
-    v15 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:v5];
+    v15 = [MEMORY[0x1E695DF20] dictionaryWithDictionary:dictionary];
   }
 
   else
@@ -403,48 +403,48 @@ LABEL_16:
   return v15;
 }
 
-- (void)addAccountHealableError:(unint64_t)a3
+- (void)addAccountHealableError:(unint64_t)error
 {
   obj = [(KTSelfVerificationHealableErrors *)self _accountHealableErrors];
   objc_sync_enter(obj);
-  v5 = [(KTSelfVerificationHealableErrors *)self _accountHealableErrors];
-  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 addObject:v6];
+  _accountHealableErrors = [(KTSelfVerificationHealableErrors *)self _accountHealableErrors];
+  v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:error];
+  [_accountHealableErrors addObject:v6];
 
   objc_sync_exit(obj);
 }
 
-- (void)addDeviceHealableError:(unint64_t)a3 deviceId:(id)a4
+- (void)addDeviceHealableError:(unint64_t)error deviceId:(id)id
 {
-  v11 = a4;
-  v6 = [(KTSelfVerificationHealableErrors *)self _deviceIdToHealableErrors];
-  objc_sync_enter(v6);
-  v7 = [(KTSelfVerificationHealableErrors *)self _deviceIdToHealableErrors];
-  v8 = [v7 objectForKey:v11];
+  idCopy = id;
+  _deviceIdToHealableErrors = [(KTSelfVerificationHealableErrors *)self _deviceIdToHealableErrors];
+  objc_sync_enter(_deviceIdToHealableErrors);
+  _deviceIdToHealableErrors2 = [(KTSelfVerificationHealableErrors *)self _deviceIdToHealableErrors];
+  array = [_deviceIdToHealableErrors2 objectForKey:idCopy];
 
-  if (!v8)
+  if (!array)
   {
-    v8 = [MEMORY[0x1E695DF70] array];
-    v9 = [(KTSelfVerificationHealableErrors *)self _deviceIdToHealableErrors];
-    [v9 setObject:v8 forKey:v11];
+    array = [MEMORY[0x1E695DF70] array];
+    _deviceIdToHealableErrors3 = [(KTSelfVerificationHealableErrors *)self _deviceIdToHealableErrors];
+    [_deviceIdToHealableErrors3 setObject:array forKey:idCopy];
   }
 
-  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v8 addObject:v10];
+  v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:error];
+  [array addObject:v10];
 
-  objc_sync_exit(v6);
+  objc_sync_exit(_deviceIdToHealableErrors);
 }
 
-- (void)addHealableState:(unint64_t)a3
+- (void)addHealableState:(unint64_t)state
 {
-  v4 = [(KTSelfVerificationHealableErrors *)self healableState]| a3;
+  v4 = [(KTSelfVerificationHealableErrors *)self healableState]| state;
 
   [(KTSelfVerificationHealableErrors *)self setHealableState:v4];
 }
 
-- (void)removeHealableState:(unint64_t)a3
+- (void)removeHealableState:(unint64_t)state
 {
-  v4 = [(KTSelfVerificationHealableErrors *)self healableState]& ~a3;
+  v4 = [(KTSelfVerificationHealableErrors *)self healableState]& ~state;
 
   [(KTSelfVerificationHealableErrors *)self setHealableState:v4];
 }

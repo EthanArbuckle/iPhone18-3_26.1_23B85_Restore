@@ -1,27 +1,27 @@
 @interface SISchemaPunchOut
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaPunchOut)initWithDictionary:(id)a3;
-- (SISchemaPunchOut)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaPunchOut)initWithDictionary:(id)dictionary;
+- (SISchemaPunchOut)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasIsPunchoutToHomeScreen:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasIsPunchoutToHomeScreen:(BOOL)screen;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaPunchOut
 
-- (SISchemaPunchOut)initWithDictionary:(id)a3
+- (SISchemaPunchOut)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v20.receiver = self;
   v20.super_class = SISchemaPunchOut;
   v5 = [(SISchemaPunchOut *)&v20 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"appID"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"appID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -29,7 +29,7 @@
       [(SISchemaPunchOut *)v5 setAppID:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"urlScheme"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"urlScheme"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -37,7 +37,7 @@
       [(SISchemaPunchOut *)v5 setUrlScheme:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"viewContainer"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"viewContainer"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -45,7 +45,7 @@
       [(SISchemaPunchOut *)v5 setViewContainer:v11];
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"viewElementID"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"viewElementID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -53,21 +53,21 @@
       [(SISchemaPunchOut *)v5 setViewElementID:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"punchOutUI"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"punchOutUI"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaPunchOut setPunchOutUI:](v5, "setPunchOutUI:", [v14 intValue]);
     }
 
-    v15 = [v4 objectForKeyedSubscript:@"isPunchoutToHomeScreen"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"isPunchoutToHomeScreen"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaPunchOut setIsPunchoutToHomeScreen:](v5, "setIsPunchoutToHomeScreen:", [v15 BOOLValue]);
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"aceID"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"aceID"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -81,30 +81,30 @@
   return v5;
 }
 
-- (SISchemaPunchOut)initWithJSON:(id)a3
+- (SISchemaPunchOut)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaPunchOut *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaPunchOut *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaPunchOut *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -117,26 +117,26 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_aceID)
   {
-    v4 = [(SISchemaPunchOut *)self aceID];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"aceID"];
+    aceID = [(SISchemaPunchOut *)self aceID];
+    v5 = [aceID copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"aceID"];
   }
 
   if (self->_appID)
   {
-    v6 = [(SISchemaPunchOut *)self appID];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"appID"];
+    appID = [(SISchemaPunchOut *)self appID];
+    v7 = [appID copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"appID"];
   }
 
   has = self->_has;
   if ((has & 2) != 0)
   {
     v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[SISchemaPunchOut isPunchoutToHomeScreen](self, "isPunchoutToHomeScreen")}];
-    [v3 setObject:v9 forKeyedSubscript:@"isPunchoutToHomeScreen"];
+    [dictionary setObject:v9 forKeyedSubscript:@"isPunchoutToHomeScreen"];
 
     has = self->_has;
   }
@@ -154,51 +154,51 @@
       v11 = off_1E78E61D8[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"punchOutUI"];
+    [dictionary setObject:v11 forKeyedSubscript:@"punchOutUI"];
   }
 
   if (self->_urlScheme)
   {
-    v12 = [(SISchemaPunchOut *)self urlScheme];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"urlScheme"];
+    urlScheme = [(SISchemaPunchOut *)self urlScheme];
+    v13 = [urlScheme copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"urlScheme"];
   }
 
   if (self->_viewContainer)
   {
-    v14 = [(SISchemaPunchOut *)self viewContainer];
-    v15 = [v14 dictionaryRepresentation];
-    if (v15)
+    viewContainer = [(SISchemaPunchOut *)self viewContainer];
+    dictionaryRepresentation = [viewContainer dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v15 forKeyedSubscript:@"viewContainer"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"viewContainer"];
     }
 
     else
     {
-      v16 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v16 forKeyedSubscript:@"viewContainer"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"viewContainer"];
     }
   }
 
   if (self->_viewElementID)
   {
-    v17 = [(SISchemaPunchOut *)self viewElementID];
-    v18 = [v17 base64EncodedStringWithOptions:0];
+    viewElementID = [(SISchemaPunchOut *)self viewElementID];
+    v18 = [viewElementID base64EncodedStringWithOptions:0];
     if (v18)
     {
-      [v3 setObject:v18 forKeyedSubscript:@"viewElementID"];
+      [dictionary setObject:v18 forKeyedSubscript:@"viewElementID"];
     }
 
     else
     {
-      v19 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v19 forKeyedSubscript:@"viewElementID"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"viewElementID"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -231,28 +231,28 @@ LABEL_3:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ [(NSString *)self->_aceID hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_34;
   }
 
-  v5 = [(SISchemaPunchOut *)self appID];
-  v6 = [v4 appID];
-  if ((v5 != 0) == (v6 == 0))
+  appID = [(SISchemaPunchOut *)self appID];
+  appID2 = [equalCopy appID];
+  if ((appID != 0) == (appID2 == 0))
   {
     goto LABEL_33;
   }
 
-  v7 = [(SISchemaPunchOut *)self appID];
-  if (v7)
+  appID3 = [(SISchemaPunchOut *)self appID];
+  if (appID3)
   {
-    v8 = v7;
-    v9 = [(SISchemaPunchOut *)self appID];
-    v10 = [v4 appID];
-    v11 = [v9 isEqual:v10];
+    v8 = appID3;
+    appID4 = [(SISchemaPunchOut *)self appID];
+    appID5 = [equalCopy appID];
+    v11 = [appID4 isEqual:appID5];
 
     if (!v11)
     {
@@ -264,20 +264,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(SISchemaPunchOut *)self urlScheme];
-  v6 = [v4 urlScheme];
-  if ((v5 != 0) == (v6 == 0))
+  appID = [(SISchemaPunchOut *)self urlScheme];
+  appID2 = [equalCopy urlScheme];
+  if ((appID != 0) == (appID2 == 0))
   {
     goto LABEL_33;
   }
 
-  v12 = [(SISchemaPunchOut *)self urlScheme];
-  if (v12)
+  urlScheme = [(SISchemaPunchOut *)self urlScheme];
+  if (urlScheme)
   {
-    v13 = v12;
-    v14 = [(SISchemaPunchOut *)self urlScheme];
-    v15 = [v4 urlScheme];
-    v16 = [v14 isEqual:v15];
+    v13 = urlScheme;
+    urlScheme2 = [(SISchemaPunchOut *)self urlScheme];
+    urlScheme3 = [equalCopy urlScheme];
+    v16 = [urlScheme2 isEqual:urlScheme3];
 
     if (!v16)
     {
@@ -289,20 +289,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(SISchemaPunchOut *)self viewContainer];
-  v6 = [v4 viewContainer];
-  if ((v5 != 0) == (v6 == 0))
+  appID = [(SISchemaPunchOut *)self viewContainer];
+  appID2 = [equalCopy viewContainer];
+  if ((appID != 0) == (appID2 == 0))
   {
     goto LABEL_33;
   }
 
-  v17 = [(SISchemaPunchOut *)self viewContainer];
-  if (v17)
+  viewContainer = [(SISchemaPunchOut *)self viewContainer];
+  if (viewContainer)
   {
-    v18 = v17;
-    v19 = [(SISchemaPunchOut *)self viewContainer];
-    v20 = [v4 viewContainer];
-    v21 = [v19 isEqual:v20];
+    v18 = viewContainer;
+    viewContainer2 = [(SISchemaPunchOut *)self viewContainer];
+    viewContainer3 = [equalCopy viewContainer];
+    v21 = [viewContainer2 isEqual:viewContainer3];
 
     if (!v21)
     {
@@ -314,20 +314,20 @@ LABEL_3:
   {
   }
 
-  v5 = [(SISchemaPunchOut *)self viewElementID];
-  v6 = [v4 viewElementID];
-  if ((v5 != 0) == (v6 == 0))
+  appID = [(SISchemaPunchOut *)self viewElementID];
+  appID2 = [equalCopy viewElementID];
+  if ((appID != 0) == (appID2 == 0))
   {
     goto LABEL_33;
   }
 
-  v22 = [(SISchemaPunchOut *)self viewElementID];
-  if (v22)
+  viewElementID = [(SISchemaPunchOut *)self viewElementID];
+  if (viewElementID)
   {
-    v23 = v22;
-    v24 = [(SISchemaPunchOut *)self viewElementID];
-    v25 = [v4 viewElementID];
-    v26 = [v24 isEqual:v25];
+    v23 = viewElementID;
+    viewElementID2 = [(SISchemaPunchOut *)self viewElementID];
+    viewElementID3 = [equalCopy viewElementID];
+    v26 = [viewElementID2 isEqual:viewElementID3];
 
     if (!v26)
     {
@@ -340,7 +340,7 @@ LABEL_3:
   }
 
   has = self->_has;
-  v28 = v4[56];
+  v28 = equalCopy[56];
   if ((*&has & 1) != (v28 & 1))
   {
     goto LABEL_34;
@@ -349,13 +349,13 @@ LABEL_3:
   if (*&has)
   {
     punchOutUI = self->_punchOutUI;
-    if (punchOutUI != [v4 punchOutUI])
+    if (punchOutUI != [equalCopy punchOutUI])
     {
       goto LABEL_34;
     }
 
     has = self->_has;
-    v28 = v4[56];
+    v28 = equalCopy[56];
   }
 
   v30 = (*&has >> 1) & 1;
@@ -367,23 +367,23 @@ LABEL_3:
   if (v30)
   {
     isPunchoutToHomeScreen = self->_isPunchoutToHomeScreen;
-    if (isPunchoutToHomeScreen != [v4 isPunchoutToHomeScreen])
+    if (isPunchoutToHomeScreen != [equalCopy isPunchoutToHomeScreen])
     {
       goto LABEL_34;
     }
   }
 
-  v5 = [(SISchemaPunchOut *)self aceID];
-  v6 = [v4 aceID];
-  if ((v5 != 0) == (v6 == 0))
+  appID = [(SISchemaPunchOut *)self aceID];
+  appID2 = [equalCopy aceID];
+  if ((appID != 0) == (appID2 == 0))
   {
 LABEL_33:
 
     goto LABEL_34;
   }
 
-  v32 = [(SISchemaPunchOut *)self aceID];
-  if (!v32)
+  aceID = [(SISchemaPunchOut *)self aceID];
+  if (!aceID)
   {
 
 LABEL_37:
@@ -391,10 +391,10 @@ LABEL_37:
     goto LABEL_35;
   }
 
-  v33 = v32;
-  v34 = [(SISchemaPunchOut *)self aceID];
-  v35 = [v4 aceID];
-  v36 = [v34 isEqual:v35];
+  v33 = aceID;
+  aceID2 = [(SISchemaPunchOut *)self aceID];
+  aceID3 = [equalCopy aceID];
+  v36 = [aceID2 isEqual:aceID3];
 
   if (v36)
   {
@@ -408,34 +408,34 @@ LABEL_35:
   return v37;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v12 = a3;
-  v4 = [(SISchemaPunchOut *)self appID];
+  toCopy = to;
+  appID = [(SISchemaPunchOut *)self appID];
 
-  if (v4)
+  if (appID)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(SISchemaPunchOut *)self urlScheme];
+  urlScheme = [(SISchemaPunchOut *)self urlScheme];
 
-  if (v5)
+  if (urlScheme)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(SISchemaPunchOut *)self viewContainer];
+  viewContainer = [(SISchemaPunchOut *)self viewContainer];
 
-  if (v6)
+  if (viewContainer)
   {
-    v7 = [(SISchemaPunchOut *)self viewContainer];
+    viewContainer2 = [(SISchemaPunchOut *)self viewContainer];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(SISchemaPunchOut *)self viewElementID];
+  viewElementID = [(SISchemaPunchOut *)self viewElementID];
 
-  if (v8)
+  if (viewElementID)
   {
     PBDataWriterWriteDataField();
   }
@@ -452,19 +452,19 @@ LABEL_35:
     PBDataWriterWriteBOOLField();
   }
 
-  v10 = [(SISchemaPunchOut *)self aceID];
+  aceID = [(SISchemaPunchOut *)self aceID];
 
-  v11 = v12;
-  if (v10)
+  v11 = toCopy;
+  if (aceID)
   {
     PBDataWriterWriteStringField();
-    v11 = v12;
+    v11 = toCopy;
   }
 }
 
-- (void)setHasIsPunchoutToHomeScreen:(BOOL)a3
+- (void)setHasIsPunchoutToHomeScreen:(BOOL)screen
 {
-  if (a3)
+  if (screen)
   {
     v3 = 2;
   }
@@ -477,17 +477,17 @@ LABEL_35:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaPunchOut;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaPunchOut *)self viewContainer:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(SISchemaPunchOut *)self deleteViewContainer];
   }

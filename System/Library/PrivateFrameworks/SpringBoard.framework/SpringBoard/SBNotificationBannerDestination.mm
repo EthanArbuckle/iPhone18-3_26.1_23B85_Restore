@@ -1,13 +1,13 @@
 @interface SBNotificationBannerDestination
 + (id)_test_notificationRequestForBannerWithIcon;
 - (BNPresentable)presentablePendingSnapshot;
-- (BOOL)_canReceiveNotificationRequestIfAmbientPresented:(id)a3;
-- (BOOL)_canReceiveNotificationRequestIfLocked:(id)a3;
+- (BOOL)_canReceiveNotificationRequestIfAmbientPresented:(id)presented;
+- (BOOL)_canReceiveNotificationRequestIfLocked:(id)locked;
 - (BOOL)_isAmbientNotificationsPreviewOnTapOnly;
 - (BOOL)_isAmbientPresented;
-- (BOOL)_isBundleIdentifierBlockedForCommunicationPolicy:(id)a3;
-- (BOOL)_isBundleIdentifierBlockedForScreenTimeExpiration:(id)a3;
-- (BOOL)_isContentSuppressedForNotificationRequest:(id)a3;
+- (BOOL)_isBundleIdentifierBlockedForCommunicationPolicy:(id)policy;
+- (BOOL)_isBundleIdentifierBlockedForScreenTimeExpiration:(id)expiration;
+- (BOOL)_isContentSuppressedForNotificationRequest:(id)request;
 - (BOOL)_isDeviceAuthenticated;
 - (BOOL)_isDismissingLongLookForBanner;
 - (BOOL)_isInSetupMode;
@@ -20,20 +20,20 @@
 - (BOOL)_isPresentingStickyBanner;
 - (BOOL)_isShowingShortLookAtRest;
 - (BOOL)_isUILocked;
-- (BOOL)_presentedBannerMatchesNotificationRequest:(id)a3;
-- (BOOL)_revokeAllPresentablesWithRequesterIdentifier:(id)a3 reason:(id)a4 options:(unint64_t)a5;
+- (BOOL)_presentedBannerMatchesNotificationRequest:(id)request;
+- (BOOL)_revokeAllPresentablesWithRequesterIdentifier:(id)identifier reason:(id)reason options:(unint64_t)options;
 - (BOOL)_shouldAllowDragInteraction;
-- (BOOL)_shouldDismissPresentedBannerPerformingPreludeForcingIfSticky:(BOOL)a3 outReason:(id *)a4;
-- (BOOL)_shouldForceDismisssIfStickyForReason:(id)a3;
+- (BOOL)_shouldDismissPresentedBannerPerformingPreludeForcingIfSticky:(BOOL)sticky outReason:(id *)reason;
+- (BOOL)_shouldForceDismisssIfStickyForReason:(id)reason;
 - (BOOL)_shouldHideStatusBar;
-- (BOOL)_shouldScreenTimeSuppressNotificationRequest:(id)a3;
-- (BOOL)_shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)a3;
-- (BOOL)canReceiveNotificationRequest:(id)a3;
+- (BOOL)_shouldScreenTimeSuppressNotificationRequest:(id)request;
+- (BOOL)_shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)identifier;
+- (BOOL)canReceiveNotificationRequest:(id)request;
 - (BOOL)handleHomeButtonPress;
-- (BOOL)isNotificationContentExtensionVisible:(id)a3;
+- (BOOL)isNotificationContentExtensionVisible:(id)visible;
 - (BOOL)isPresentingEmergencyNotification;
-- (BOOL)notificationViewControllerShouldAllowExpandedPlatterInteraction:(id)a3;
-- (BOOL)shouldDismissForReason:(id)a3 outReason:(id *)a4;
+- (BOOL)notificationViewControllerShouldAllowExpandedPlatterInteraction:(id)interaction;
+- (BOOL)shouldDismissForReason:(id)reason outReason:(id *)outReason;
 - (CGRect)presentedBannerScreenFrame;
 - (NCNotificationAlertDestinationDelegate)delegate;
 - (NCNotificationRequest)_presentedNotificationRequest;
@@ -43,115 +43,115 @@
 - (SBNotificationPresentableViewController)_presentedNotificationPresentableVC;
 - (id)_ambientPresentationController;
 - (id)_dashBoardLegibilitySettings;
-- (id)_notificationSectionSettingsForSectionIdentifier:(id)a3;
+- (id)_notificationSectionSettingsForSectionIdentifier:(id)identifier;
 - (id)_notificationSystemSettings;
-- (id)_notificationViewControllerForRequest:(id)a3;
-- (id)_notificationViewControllerFromPresentable:(id)a3;
-- (id)_presentableForRequest:(id)a3 modal:(BOOL)a4;
+- (id)_notificationViewControllerForRequest:(id)request;
+- (id)_notificationViewControllerFromPresentable:(id)presentable;
+- (id)_presentableForRequest:(id)request modal:(BOOL)modal;
 - (id)_presentedNotificationRequestPresenter;
-- (id)_requestFromPresentable:(id)a3;
-- (id)_startTimerWithDelay:(unint64_t)a3 eventHandler:(id)a4;
-- (id)_staticContentProviderForViewController:(id)a3 class:(Class)a4 notificationRequest:(id)a5 test:(id)a6;
-- (id)notificationRequestPresenter:(id)a3 staticContentProviderForNotificationRequest:(id)a4;
-- (id)notificationRequestPresenterNotificationUsageTrackingState:(id)a3;
-- (id)notificationViewController:(id)a3 auxiliaryOptionsContentProviderForNotificationRequest:(id)a4 withLongLook:(BOOL)a5;
-- (id)notificationViewControllerContainerViewProviderForExpandedContent:(id)a3;
+- (id)_requestFromPresentable:(id)presentable;
+- (id)_startTimerWithDelay:(unint64_t)delay eventHandler:(id)handler;
+- (id)_staticContentProviderForViewController:(id)controller class:(Class)class notificationRequest:(id)request test:(id)test;
+- (id)notificationRequestPresenter:(id)presenter staticContentProviderForNotificationRequest:(id)request;
+- (id)notificationRequestPresenterNotificationUsageTrackingState:(id)state;
+- (id)notificationViewController:(id)controller auxiliaryOptionsContentProviderForNotificationRequest:(id)request withLongLook:(BOOL)look;
+- (id)notificationViewControllerContainerViewProviderForExpandedContent:(id)content;
 - (int64_t)participantState;
-- (unint64_t)importantAdornmentEligibleOptionsForNotificationViewController:(id)a3;
+- (unint64_t)importantAdornmentEligibleOptionsForNotificationViewController:(id)controller;
 - (void)_cancelDismissTimer;
 - (void)_cancelReplaceAndDismissTimers;
 - (void)_cancelReplaceTimer;
-- (void)_dismissPresentableCompleted:(id)a3;
-- (void)_dismissPresentedBannerOnly:(BOOL)a3 reason:(id)a4 animated:(BOOL)a5;
-- (void)_dismissPresentedBannerOnly:(BOOL)a3 reason:(id)a4 animated:(BOOL)a5 forceIfSticky:(BOOL)a6;
-- (void)_handleExpansionRequestForViewController:(id)a3 notificationRequest:(id)a4 forTrigger:(int64_t)a5 test:(id)a6 completionBlock:(id)a7;
+- (void)_dismissPresentableCompleted:(id)completed;
+- (void)_dismissPresentedBannerOnly:(BOOL)only reason:(id)reason animated:(BOOL)animated;
+- (void)_dismissPresentedBannerOnly:(BOOL)only reason:(id)reason animated:(BOOL)animated forceIfSticky:(BOOL)sticky;
+- (void)_handleExpansionRequestForViewController:(id)controller notificationRequest:(id)request forTrigger:(int64_t)trigger test:(id)test completionBlock:(id)block;
 - (void)_invalidateBiometricAuthIfNecessary;
 - (void)_lockStateChanged;
 - (void)_performCancelAction;
 - (void)_performSilenceAction;
-- (void)_postNotificationRequest:(id)a3 modal:(BOOL)a4 completion:(id)a5;
-- (void)_postPresentableForRequest:(id)a3 modal:(BOOL)a4 completion:(id)a5;
-- (void)_publishDidPresentBannerForNotificationRequest:(id)a3;
-- (void)_requestBiometricAuthIfAmbientPresentedForNotificationRequest:(id)a3;
-- (void)_requestUnlockForExpansionForViewController:(id)a3 notificationRequest:(id)a4 completionBlock:(id)a5;
+- (void)_postNotificationRequest:(id)request modal:(BOOL)modal completion:(id)completion;
+- (void)_postPresentableForRequest:(id)request modal:(BOOL)modal completion:(id)completion;
+- (void)_publishDidPresentBannerForNotificationRequest:(id)request;
+- (void)_requestBiometricAuthIfAmbientPresentedForNotificationRequest:(id)request;
+- (void)_requestUnlockForExpansionForViewController:(id)controller notificationRequest:(id)request completionBlock:(id)block;
 - (void)_resetPresentTimer;
 - (void)_setReadyForNotificationRequests;
-- (void)_setReadyForNotificationRequestsCoalescingWith:(id)a3;
-- (void)_setStatusBarsHidden:(BOOL)a3 withDuration:(double)a4;
+- (void)_setReadyForNotificationRequestsCoalescingWith:(id)with;
+- (void)_setStatusBarsHidden:(BOOL)hidden withDuration:(double)duration;
 - (void)_setupModeChanged;
 - (void)_setupSystemStateChangeNotifications;
 - (void)_setupTimers;
 - (void)_startDismissTimer;
-- (void)_startReplaceAndDismissTimersForRequest:(id)a3;
+- (void)_startReplaceAndDismissTimersForRequest:(id)request;
 - (void)_startReplaceTimer;
 - (void)_updateMotionGestureObservation;
-- (void)_userInteractionDidEndForRequestPresenter:(id)a3;
-- (void)_userInteractionWillBeginForRequestPresenter:(id)a3;
-- (void)backlightController:(id)a3 didAnimateBacklightToFactor:(float)a4 source:(int64_t)a5;
-- (void)coronaAnimationController:(id)a3 willAnimateCoronaTransitionWithAnimator:(id)a4;
+- (void)_userInteractionDidEndForRequestPresenter:(id)presenter;
+- (void)_userInteractionWillBeginForRequestPresenter:(id)presenter;
+- (void)backlightController:(id)controller didAnimateBacklightToFactor:(float)factor source:(int64_t)source;
+- (void)coronaAnimationController:(id)controller willAnimateCoronaTransitionWithAnimator:(id)animator;
 - (void)dealloc;
 - (void)didReceiveRaiseGesture;
-- (void)fullScreenPresentableViewController:(id)a3 requestsDismissalWithReason:(id)a4;
-- (void)longLookDidDismissForNotificationViewController:(id)a3;
-- (void)longLookDidPresentForNotificationViewController:(id)a3;
-- (void)longLookWillDismissForNotificationViewController:(id)a3;
-- (void)longLookWillPresentForNotificationViewController:(id)a3;
-- (void)modifyNotificationRequest:(id)a3;
-- (void)notificationManagementContentProvider:(id)a3 requestsPresentingNotificationManagementViewType:(unint64_t)a4 forNotificationRequest:(id)a5 withPresentingView:(id)a6;
-- (void)notificationManagementViewPresenter:(id)a3 setAllowsCriticalAlerts:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6;
-- (void)notificationManagementViewPresenter:(id)a3 setAllowsNotifications:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6;
-- (void)notificationManagementViewPresenter:(id)a3 setAllowsTimeSensitive:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6;
-- (void)notificationManagementViewPresenter:(id)a3 setDeliverQuietly:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6;
-- (void)notificationManagementViewPresenter:(id)a3 setMuted:(BOOL)a4 untilDate:(id)a5 forSectionIdentifier:(id)a6 threadIdentifier:(id)a7;
-- (void)notificationManagementViewPresenterDidDismissManagementView:(id)a3;
-- (void)notificationManagementViewPresenterWillPresentManagementView:(id)a3;
-- (void)notificationPresentableViewController:(id)a3 presentationSize:(CGSize *)a4 containerSize:(CGSize *)a5;
-- (void)notificationRequestPresenter:(id)a3 didVendTransitionBlockingAssertion:(id)a4;
-- (void)notificationRequestPresenter:(id)a3 executeAction:(id)a4 withParameters:(id)a5 completion:(id)a6;
-- (void)notificationRequestPresenter:(id)a3 shouldTransitionToStage:(id)a4 forTrigger:(int64_t)a5 completionBlock:(id)a6;
-- (void)notificationViewController:(id)a3 dragInteraction:(id)a4 session:(id)a5 didEndWithOperation:(unint64_t)a6;
-- (void)notificationViewController:(id)a3 dragInteraction:(id)a4 session:(id)a5 willEndWithOperation:(unint64_t)a6;
-- (void)notificationViewController:(id)a3 requestPermissionToExecuteAction:(id)a4 withParameters:(id)a5 completion:(id)a6;
-- (void)prepareDestinationToReceiveCriticalNotificationRequest:(id)a3;
-- (void)presentModalBannerAndExpandForNotificationRequest:(id)a3;
-- (void)presentableDidAppearAsBanner:(id)a3;
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4;
-- (void)registerNotificationBannerDestinationObserver:(id)a3;
-- (void)setAssistantController:(id)a3;
-- (void)setLockScreenManager:(id)a3;
-- (void)setSystemStatusBarAssertion:(id)a3;
-- (void)unregisterNotificationBannerDestinationObserver:(id)a3;
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3;
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3;
-- (void)withdrawNotificationRequest:(id)a3;
+- (void)fullScreenPresentableViewController:(id)controller requestsDismissalWithReason:(id)reason;
+- (void)longLookDidDismissForNotificationViewController:(id)controller;
+- (void)longLookDidPresentForNotificationViewController:(id)controller;
+- (void)longLookWillDismissForNotificationViewController:(id)controller;
+- (void)longLookWillPresentForNotificationViewController:(id)controller;
+- (void)modifyNotificationRequest:(id)request;
+- (void)notificationManagementContentProvider:(id)provider requestsPresentingNotificationManagementViewType:(unint64_t)type forNotificationRequest:(id)request withPresentingView:(id)view;
+- (void)notificationManagementViewPresenter:(id)presenter setAllowsCriticalAlerts:(BOOL)alerts forNotificationRequest:(id)request withSectionIdentifier:(id)identifier;
+- (void)notificationManagementViewPresenter:(id)presenter setAllowsNotifications:(BOOL)notifications forNotificationRequest:(id)request withSectionIdentifier:(id)identifier;
+- (void)notificationManagementViewPresenter:(id)presenter setAllowsTimeSensitive:(BOOL)sensitive forNotificationRequest:(id)request withSectionIdentifier:(id)identifier;
+- (void)notificationManagementViewPresenter:(id)presenter setDeliverQuietly:(BOOL)quietly forNotificationRequest:(id)request withSectionIdentifier:(id)identifier;
+- (void)notificationManagementViewPresenter:(id)presenter setMuted:(BOOL)muted untilDate:(id)date forSectionIdentifier:(id)identifier threadIdentifier:(id)threadIdentifier;
+- (void)notificationManagementViewPresenterDidDismissManagementView:(id)view;
+- (void)notificationManagementViewPresenterWillPresentManagementView:(id)view;
+- (void)notificationPresentableViewController:(id)controller presentationSize:(CGSize *)size containerSize:(CGSize *)containerSize;
+- (void)notificationRequestPresenter:(id)presenter didVendTransitionBlockingAssertion:(id)assertion;
+- (void)notificationRequestPresenter:(id)presenter executeAction:(id)action withParameters:(id)parameters completion:(id)completion;
+- (void)notificationRequestPresenter:(id)presenter shouldTransitionToStage:(id)stage forTrigger:(int64_t)trigger completionBlock:(id)block;
+- (void)notificationViewController:(id)controller dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation;
+- (void)notificationViewController:(id)controller dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation;
+- (void)notificationViewController:(id)controller requestPermissionToExecuteAction:(id)action withParameters:(id)parameters completion:(id)completion;
+- (void)prepareDestinationToReceiveCriticalNotificationRequest:(id)request;
+- (void)presentModalBannerAndExpandForNotificationRequest:(id)request;
+- (void)presentableDidAppearAsBanner:(id)banner;
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason;
+- (void)registerNotificationBannerDestinationObserver:(id)observer;
+- (void)setAssistantController:(id)controller;
+- (void)setLockScreenManager:(id)manager;
+- (void)setSystemStatusBarAssertion:(id)assertion;
+- (void)unregisterNotificationBannerDestinationObserver:(id)observer;
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable;
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable;
+- (void)withdrawNotificationRequest:(id)request;
 @end
 
 @implementation SBNotificationBannerDestination
 
 - (BOOL)_isPresentingBanner
 {
-  v2 = [(SBNotificationBannerDestination *)self presentedPresentable];
-  v3 = v2 != 0;
+  presentedPresentable = [(SBNotificationBannerDestination *)self presentedPresentable];
+  v3 = presentedPresentable != 0;
 
   return v3;
 }
 
 - (BOOL)_isPresentingBannerInLongLook
 {
-  v3 = [(SBNotificationBannerDestination *)self _isPresentingBanner];
-  if (v3)
+  _isPresentingBanner = [(SBNotificationBannerDestination *)self _isPresentingBanner];
+  if (_isPresentingBanner)
   {
-    v4 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-    v5 = [v4 notificationViewController];
-    v6 = [v5 hasCommittedToPresentingCustomContentProvidingViewController];
+    _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+    notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
+    hasCommittedToPresentingCustomContentProvidingViewController = [notificationViewController hasCommittedToPresentingCustomContentProvidingViewController];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(_isPresentingBanner) = hasCommittedToPresentingCustomContentProvidingViewController;
   }
 
-  return v3;
+  return _isPresentingBanner;
 }
 
 - (BOOL)_shouldHideStatusBar
@@ -166,8 +166,8 @@
     return SBFEffectiveDeviceClass() != 2;
   }
 
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v2 = [v3 userInterfaceIdiom] != 1;
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  v2 = [currentDevice userInterfaceIdiom] != 1;
 
   return v2;
 }
@@ -238,31 +238,31 @@
 
 - (void)_lockStateChanged
 {
-  v3 = [(SBNotificationBannerDestination *)self lockScreenManager];
-  v4 = [v3 isUILocked];
+  lockScreenManager = [(SBNotificationBannerDestination *)self lockScreenManager];
+  isUILocked = [lockScreenManager isUILocked];
 
-  if ((v4 & 1) == 0)
+  if ((isUILocked & 1) == 0)
   {
     [(SBNotificationBannerDestination *)self _resetPresentTimer];
   }
 
   if ([(SBNotificationBannerDestination *)self _isPresentingBannerWithHiddenPreview])
   {
-    v5 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-    v6 = [v5 notificationViewController];
+    _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+    notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
 
-    [v6 invalidateContentProviders];
+    [notificationViewController invalidateContentProviders];
   }
 }
 
 - (BOOL)_isPresentingBannerWithHiddenPreview
 {
-  v3 = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
-  v4 = [v3 options];
-  v5 = [v4 contentPreviewSetting];
+  _presentedNotificationRequest = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
+  options = [_presentedNotificationRequest options];
+  contentPreviewSetting = [options contentPreviewSetting];
 
   result = [(SBNotificationBannerDestination *)self _isPresentingBanner];
-  if (!v5)
+  if (!contentPreviewSetting)
   {
     return 0;
   }
@@ -272,20 +272,20 @@
 
 - (NCNotificationRequest)_presentedNotificationRequest
 {
-  v3 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-  v4 = [v3 notificationViewController];
-  v5 = [v4 notificationRequest];
-  if (v5 || (objc_opt_respondsToSelector() & 1) == 0)
+  _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+  notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
+  notificationRequest = [notificationViewController notificationRequest];
+  if (notificationRequest || (objc_opt_respondsToSelector() & 1) == 0)
   {
-    v6 = v5;
+    notificationRequest2 = notificationRequest;
   }
 
   else
   {
-    v6 = [(BNPresentable *)self->_presentedPresentable notificationRequest];
+    notificationRequest2 = [(BNPresentable *)self->_presentedPresentable notificationRequest];
   }
 
-  v7 = v6;
+  v7 = notificationRequest2;
 
   return v7;
 }
@@ -304,35 +304,35 @@
 
 - (BOOL)_isShowingShortLookAtRest
 {
-  v3 = [(SBNotificationBannerDestination *)self _isPresentingBanner];
-  if (v3)
+  _isPresentingBanner = [(SBNotificationBannerDestination *)self _isPresentingBanner];
+  if (_isPresentingBanner)
   {
     if ([(SBNotificationBannerDestination *)self _isPresentedBannerBeingDragged])
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(_isPresentingBanner) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = ![(SBNotificationBannerDestination *)self _isPresentingBannerInLongLook];
+      LOBYTE(_isPresentingBanner) = ![(SBNotificationBannerDestination *)self _isPresentingBannerInLongLook];
     }
   }
 
-  return v3;
+  return _isPresentingBanner;
 }
 
 - (BOOL)_isPresentedBannerBeingDragged
 {
-  v3 = [(SBNotificationBannerDestination *)self _isPresentingBanner];
-  if (v3)
+  _isPresentingBanner = [(SBNotificationBannerDestination *)self _isPresentingBanner];
+  if (_isPresentingBanner)
   {
-    v4 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-    v5 = [v4 isDragging];
+    _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+    isDragging = [_presentedNotificationPresentableVC isDragging];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(_isPresentingBanner) = isDragging;
   }
 
-  return v3;
+  return _isPresentingBanner;
 }
 
 void __47__SBNotificationBannerDestination__setupTimers__block_invoke(uint64_t a1)
@@ -364,24 +364,24 @@ void __47__SBNotificationBannerDestination__setupTimers__block_invoke(uint64_t a
     _os_log_impl(&dword_21ED4E000, v4, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ is now ready to receive notifications", &v8, 0xCu);
   }
 
-  v7 = [(SBNotificationBannerDestination *)self delegate];
+  delegate = [(SBNotificationBannerDestination *)self delegate];
   if ([(SBNotificationBannerDestination *)self _isUILocked])
   {
-    [v7 destination:self didBecomeReadyToReceiveNotificationsPassingTest:&__block_literal_global_200];
+    [delegate destination:self didBecomeReadyToReceiveNotificationsPassingTest:&__block_literal_global_200];
   }
 
   else
   {
-    [v7 destinationDidBecomeReadyToReceiveNotifications:self];
+    [delegate destinationDidBecomeReadyToReceiveNotifications:self];
   }
 }
 
 - (BOOL)_isUILocked
 {
-  v2 = [(SBNotificationBannerDestination *)self lockScreenManager];
-  v3 = [v2 isUILocked];
+  lockScreenManager = [(SBNotificationBannerDestination *)self lockScreenManager];
+  isUILocked = [lockScreenManager isUILocked];
 
-  return v3;
+  return isUILocked;
 }
 
 + (id)_test_notificationRequestForBannerWithIcon
@@ -391,17 +391,17 @@ void __47__SBNotificationBannerDestination__setupTimers__block_invoke(uint64_t a
   v3 = [v2 mutableCopy];
 
   v4 = MEMORY[0x277D755B8];
-  v5 = [v3 sectionIdentifier];
-  v6 = [MEMORY[0x277D759A0] mainScreen];
-  [v6 scale];
-  v20 = [v4 _applicationIconImageForBundleIdentifier:v5 format:5 scale:?];
+  sectionIdentifier = [v3 sectionIdentifier];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
+  v20 = [v4 _applicationIconImageForBundleIdentifier:sectionIdentifier format:5 scale:?];
 
-  v7 = [v3 content];
-  v8 = [v7 mutableCopy];
+  content = [v3 content];
+  v8 = [content mutableCopy];
 
   v23[0] = v20;
-  v9 = [MEMORY[0x277CBEB68] null];
-  v23[1] = v9;
+  null = [MEMORY[0x277CBEB68] null];
+  v23[1] = null;
   v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:2];
   [v8 setIcons:v10];
 
@@ -449,14 +449,14 @@ void __47__SBNotificationBannerDestination__setupTimers__block_invoke(uint64_t a
 
     [(SBNotificationBannerDestination *)v2 _setupSystemStateChangeNotifications];
     [(SBNotificationBannerDestination *)v2 _setupTimers];
-    v5 = [SBApp bannerManager];
+    bannerManager = [SBApp bannerManager];
     v6 = objc_alloc_init(MEMORY[0x277D78058]);
-    v7 = [MEMORY[0x277D78058] requesterIdentifier];
-    [v5 registerAuthority:v6 forRequesterIdentifier:v7];
+    requesterIdentifier = [MEMORY[0x277D78058] requesterIdentifier];
+    [bannerManager registerAuthority:v6 forRequesterIdentifier:requesterIdentifier];
 
     v8 = +[SBSceneManagerCoordinator sharedInstance];
-    v9 = [v8 sceneDeactivationManager];
-    v10 = [v9 newAssertionWithReason:6];
+    sceneDeactivationManager = [v8 sceneDeactivationManager];
+    v10 = [sceneDeactivationManager newAssertionWithReason:6];
     resignActiveAssertion = v2->_resignActiveAssertion;
     v2->_resignActiveAssertion = v10;
 
@@ -476,35 +476,35 @@ void __47__SBNotificationBannerDestination__setupTimers__block_invoke(uint64_t a
   return v2;
 }
 
-- (void)setAssistantController:(id)a3
+- (void)setAssistantController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   assistantController = self->_assistantController;
-  if (assistantController != v5)
+  if (assistantController != controllerCopy)
   {
-    v7 = v5;
+    v7 = controllerCopy;
     [(SBAssistantController *)assistantController removeObserver:self];
-    objc_storeStrong(&self->_assistantController, a3);
+    objc_storeStrong(&self->_assistantController, controller);
     [(SBAssistantController *)self->_assistantController addObserver:self];
-    v5 = v7;
+    controllerCopy = v7;
   }
 }
 
-- (void)setLockScreenManager:(id)a3
+- (void)setLockScreenManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   lockScreenManager = self->_lockScreenManager;
-  if (lockScreenManager != v5)
+  if (lockScreenManager != managerCopy)
   {
-    v9 = v5;
-    v7 = [(SBLockScreenManager *)lockScreenManager coverSheetViewController];
-    [v7 unregisterExternalBehaviorProvider:self];
+    v9 = managerCopy;
+    coverSheetViewController = [(SBLockScreenManager *)lockScreenManager coverSheetViewController];
+    [coverSheetViewController unregisterExternalBehaviorProvider:self];
 
-    objc_storeStrong(&self->_lockScreenManager, a3);
-    v8 = [(SBLockScreenManager *)self->_lockScreenManager coverSheetViewController];
-    [v8 registerExternalBehaviorProvider:self];
+    objc_storeStrong(&self->_lockScreenManager, manager);
+    coverSheetViewController2 = [(SBLockScreenManager *)self->_lockScreenManager coverSheetViewController];
+    [coverSheetViewController2 registerExternalBehaviorProvider:self];
 
-    v5 = v9;
+    managerCopy = v9;
   }
 }
 
@@ -518,34 +518,34 @@ void __47__SBNotificationBannerDestination__setupTimers__block_invoke(uint64_t a
   [(SBNotificationBannerDestination *)&v3 dealloc];
 }
 
-- (BOOL)_shouldForceDismisssIfStickyForReason:(id)a3
+- (BOOL)_shouldForceDismisssIfStickyForReason:(id)reason
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"dismissOverlays"] & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"SBBannerManagerDismissalReasonLock") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"performSleep") & 1) != 0 || (objc_msgSend(v3, "isEqualToString:", @"mainScreenAnimationController"))
+  reasonCopy = reason;
+  if ([reasonCopy isEqualToString:@"dismissOverlays"] & 1) != 0 || (objc_msgSend(reasonCopy, "isEqualToString:", @"SBBannerManagerDismissalReasonLock") & 1) != 0 || (objc_msgSend(reasonCopy, "isEqualToString:", @"performSleep") & 1) != 0 || (objc_msgSend(reasonCopy, "isEqualToString:", @"mainScreenAnimationController"))
   {
     v4 = 1;
   }
 
   else
   {
-    v4 = [v3 isEqualToString:@"assistantWillAppear"];
+    v4 = [reasonCopy isEqualToString:@"assistantWillAppear"];
   }
 
   return v4;
 }
 
-- (BOOL)shouldDismissForReason:(id)a3 outReason:(id *)a4
+- (BOOL)shouldDismissForReason:(id)reason outReason:(id *)outReason
 {
-  v6 = [(SBNotificationBannerDestination *)self _shouldForceDismisssIfStickyForReason:a3];
+  v6 = [(SBNotificationBannerDestination *)self _shouldForceDismisssIfStickyForReason:reason];
 
-  return [(SBNotificationBannerDestination *)self _shouldDismissPresentedBannerPerformingPreludeForcingIfSticky:v6 outReason:a4];
+  return [(SBNotificationBannerDestination *)self _shouldDismissPresentedBannerPerformingPreludeForcingIfSticky:v6 outReason:outReason];
 }
 
 - (BOOL)isPresentingEmergencyNotification
 {
-  v3 = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
-  v4 = [v3 options];
-  if ([v4 revealsAdditionalContentOnPresentation] && -[SBNotificationBannerDestination _isPresentingBannerInLongLook](self, "_isPresentingBannerInLongLook"))
+  _presentedNotificationRequest = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
+  options = [_presentedNotificationRequest options];
+  if ([options revealsAdditionalContentOnPresentation] && -[SBNotificationBannerDestination _isPresentingBannerInLongLook](self, "_isPresentingBannerInLongLook"))
   {
     v5 = ![(SBNotificationBannerDestination *)self _isDismissingLongLookForBanner];
   }
@@ -566,18 +566,18 @@ void __47__SBNotificationBannerDestination__setupTimers__block_invoke(uint64_t a
   v6 = *(MEMORY[0x277CBF398] + 24);
   if ([(SBNotificationBannerDestination *)self _isPresentingBanner])
   {
-    v7 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-    v8 = v7;
-    if (v7)
+    _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+    v8 = _presentedNotificationPresentableVC;
+    if (_presentedNotificationPresentableVC)
     {
-      v9 = [v7 notificationViewController];
-      [v9 _lookView];
+      notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
+      [notificationViewController _lookView];
     }
 
     else
     {
-      v9 = UIViewControllerFromPresentable();
-      [v9 viewIfLoaded];
+      notificationViewController = UIViewControllerFromPresentable();
+      [notificationViewController viewIfLoaded];
     }
     v10 = ;
 
@@ -588,10 +588,10 @@ void __47__SBNotificationBannerDestination__setupTimers__block_invoke(uint64_t a
       v14 = v13;
       v16 = v15;
       v18 = v17;
-      v19 = [v10 window];
-      v20 = [v19 screen];
-      v21 = [v20 fixedCoordinateSpace];
-      [v10 convertRect:v21 toCoordinateSpace:{v12, v14, v16, v18}];
+      window = [v10 window];
+      screen = [window screen];
+      fixedCoordinateSpace = [screen fixedCoordinateSpace];
+      [v10 convertRect:fixedCoordinateSpace toCoordinateSpace:{v12, v14, v16, v18}];
       v3 = v22;
       v4 = v23;
       v5 = v24;
@@ -610,18 +610,18 @@ void __47__SBNotificationBannerDestination__setupTimers__block_invoke(uint64_t a
   return result;
 }
 
-- (void)presentModalBannerAndExpandForNotificationRequest:(id)a3
+- (void)presentModalBannerAndExpandForNotificationRequest:(id)request
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [v4 notificationIdentifier];
-    v8 = [v7 un_logDigest];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138543362;
-    v11 = v8;
+    v11 = un_logDigest;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Presenting and expanding modal banner for notification %{public}@", buf, 0xCu);
   }
 
@@ -630,7 +630,7 @@ void __47__SBNotificationBannerDestination__setupTimers__block_invoke(uint64_t a
   v9[2] = __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotificationRequest___block_invoke;
   v9[3] = &unk_2783A8C18;
   v9[4] = self;
-  [(SBNotificationBannerDestination *)self _postNotificationRequest:v4 modal:0 completion:v9];
+  [(SBNotificationBannerDestination *)self _postNotificationRequest:requestCopy modal:0 completion:v9];
 }
 
 void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotificationRequest___block_invoke(uint64_t a1)
@@ -640,24 +640,24 @@ void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotific
   [v1 expandAndPlayMedia];
 }
 
-- (void)registerNotificationBannerDestinationObserver:(id)a3
+- (void)registerNotificationBannerDestinationObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SBNotificationBannerDestination *)self destinationObservers];
-  [v5 addObject:v4];
+  observerCopy = observer;
+  destinationObservers = [(SBNotificationBannerDestination *)self destinationObservers];
+  [destinationObservers addObject:observerCopy];
 }
 
-- (void)unregisterNotificationBannerDestinationObserver:(id)a3
+- (void)unregisterNotificationBannerDestinationObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(SBNotificationBannerDestination *)self destinationObservers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  destinationObservers = [(SBNotificationBannerDestination *)self destinationObservers];
+  [destinationObservers removeObject:observerCopy];
 }
 
-- (BOOL)canReceiveNotificationRequest:(id)a3
+- (BOOL)canReceiveNotificationRequest:(id)request
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   if ([(SBNotificationBannerDestination *)self _isPresentingStickyBanner]|| [(SBNotificationBannerDestination *)self isUserInteractionInProgress])
   {
     LOBYTE(v5) = 0;
@@ -668,29 +668,29 @@ void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotific
     v5 = ![(SBNotificationBannerDestination *)self _isInSetupMode];
   }
 
-  v6 = [(SBNotificationBannerDestination *)self _canReceiveNotificationRequestIfLocked:v4];
-  v7 = [(SBNotificationBannerDestination *)self _canReceiveNotificationRequestIfAmbientPresented:v4];
+  v6 = [(SBNotificationBannerDestination *)self _canReceiveNotificationRequestIfLocked:requestCopy];
+  v7 = [(SBNotificationBannerDestination *)self _canReceiveNotificationRequestIfAmbientPresented:requestCopy];
   v8 = v5 & v6;
   v9 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     log = v9;
-    v10 = [(SBNotificationBannerDestination *)self identifier];
-    v14 = [v4 notificationIdentifier];
-    v11 = [v14 un_logDigest];
+    identifier = [(SBNotificationBannerDestination *)self identifier];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v12 = NSStringFromBOOL();
     *buf = 138545154;
-    v17 = v10;
+    v17 = identifier;
     v18 = 2114;
-    v19 = v11;
+    v19 = un_logDigest;
     v20 = 2114;
     v21 = v12;
     v22 = 1024;
-    v23 = [(SBNotificationBannerDestination *)self _isPresentingStickyBanner];
+    _isPresentingStickyBanner = [(SBNotificationBannerDestination *)self _isPresentingStickyBanner];
     v24 = 1024;
-    v25 = [(SBNotificationBannerDestination *)self isUserInteractionInProgress];
+    isUserInteractionInProgress = [(SBNotificationBannerDestination *)self isUserInteractionInProgress];
     v26 = 1024;
-    v27 = [(SBNotificationBannerDestination *)self _isInSetupMode];
+    _isInSetupMode = [(SBNotificationBannerDestination *)self _isInSetupMode];
     v28 = 1024;
     v29 = v6;
     v30 = 1024;
@@ -701,10 +701,10 @@ void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotific
   return v8 & v7;
 }
 
-- (void)modifyNotificationRequest:(id)a3
+- (void)modifyNotificationRequest:(id)request
 {
-  v4 = a3;
-  if ([(SBNotificationBannerDestination *)self _presentedBannerMatchesNotificationRequest:v4])
+  requestCopy = request;
+  if ([(SBNotificationBannerDestination *)self _presentedBannerMatchesNotificationRequest:requestCopy])
   {
     v5 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEBUG))
@@ -712,25 +712,25 @@ void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotific
       [SBNotificationBannerDestination modifyNotificationRequest:v5];
     }
 
-    v6 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-    v7 = [v6 notificationViewController];
+    _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+    notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
 
-    [v7 setNotificationRequest:v4];
+    [notificationViewController setNotificationRequest:requestCopy];
     v8 = MEMORY[0x277D75D18];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __61__SBNotificationBannerDestination_modifyNotificationRequest___block_invoke;
     v10[3] = &unk_2783A8C18;
-    v11 = v7;
-    v9 = v7;
+    v11 = notificationViewController;
+    v9 = notificationViewController;
     [v8 animateWithDuration:v10 animations:0.25];
   }
 }
 
-- (void)withdrawNotificationRequest:(id)a3
+- (void)withdrawNotificationRequest:(id)request
 {
-  v4 = a3;
-  if (![(SBNotificationBannerDestination *)self _isPresentingBannerInLongLook]&& [(SBNotificationBannerDestination *)self _isPresentingStickyBanner]&& [(SBNotificationBannerDestination *)self _presentedBannerMatchesNotificationRequest:v4])
+  requestCopy = request;
+  if (![(SBNotificationBannerDestination *)self _isPresentingBannerInLongLook]&& [(SBNotificationBannerDestination *)self _isPresentingStickyBanner]&& [(SBNotificationBannerDestination *)self _presentedBannerMatchesNotificationRequest:requestCopy])
   {
     v5 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEBUG))
@@ -755,15 +755,15 @@ void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotific
   return v3;
 }
 
-- (void)prepareDestinationToReceiveCriticalNotificationRequest:(id)a3
+- (void)prepareDestinationToReceiveCriticalNotificationRequest:(id)request
 {
   if ([(SBNotificationBannerDestination *)self _isPresentingBannerInLongLook]|| [(SBNotificationBannerDestination *)self _isPresentingStickyBanner])
   {
-    v4 = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
-    v5 = [v4 options];
-    v6 = [v5 revealsAdditionalContentOnPresentation];
+    _presentedNotificationRequest = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
+    options = [_presentedNotificationRequest options];
+    revealsAdditionalContentOnPresentation = [options revealsAdditionalContentOnPresentation];
 
-    if ((v6 & 1) == 0)
+    if ((revealsAdditionalContentOnPresentation & 1) == 0)
     {
       [(SBNotificationBannerDestination *)self _performCancelAction];
 
@@ -772,107 +772,107 @@ void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotific
   }
 }
 
-- (BOOL)isNotificationContentExtensionVisible:(id)a3
+- (BOOL)isNotificationContentExtensionVisible:(id)visible
 {
-  v4 = a3;
-  v5 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-  v6 = [v5 notificationViewController];
-  v7 = [v6 isContentExtensionVisible:v4];
+  visibleCopy = visible;
+  _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+  notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
+  v7 = [notificationViewController isContentExtensionVisible:visibleCopy];
 
   return v7;
 }
 
-- (void)presentableWillNotAppearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillNotAppearAsBanner:(id)banner withReason:(id)reason
 {
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v8 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(SBNotificationBannerDestination *)self identifier];
+    identifier = [(SBNotificationBannerDestination *)self identifier];
     v12 = 138543874;
-    v13 = v10;
+    v13 = identifier;
     v14 = 2114;
-    v15 = v6;
+    v15 = bannerCopy;
     v16 = 2114;
-    v17 = v7;
+    v17 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ presentable %{public}@ will NOT appear as banner with reason '%{public}@'", &v12, 0x20u);
   }
 
   [(SBNotificationBannerDestination *)self _cancelReplaceAndDismissTimers];
-  [(SBNotificationBannerDestination *)self _dismissPresentableCompleted:v6];
-  v11 = objc_getAssociatedObject(v6, &_SBNotificationBannerDestinationBannerRequestCompletion);
-  objc_setAssociatedObject(v6, &_SBNotificationBannerDestinationBannerRequestCompletion, 0, 1);
+  [(SBNotificationBannerDestination *)self _dismissPresentableCompleted:bannerCopy];
+  v11 = objc_getAssociatedObject(bannerCopy, &_SBNotificationBannerDestinationBannerRequestCompletion);
+  objc_setAssociatedObject(bannerCopy, &_SBNotificationBannerDestinationBannerRequestCompletion, 0, 1);
   if (v11)
   {
     v11[2](v11);
   }
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bannerCopy = banner;
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(SBNotificationBannerDestination *)self identifier];
+    identifier = [(SBNotificationBannerDestination *)self identifier];
     v14 = 138543618;
-    v15 = v7;
+    v15 = identifier;
     v16 = 2114;
-    v17 = v4;
+    v17 = bannerCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ presentable will appear as banner: %{public}@", &v14, 0x16u);
   }
 
   [(SBNotificationBannerDestination *)self _cancelReplaceAndDismissTimers];
-  v8 = [(SBNotificationBannerDestination *)self _requestFromPresentable:v4];
+  v8 = [(SBNotificationBannerDestination *)self _requestFromPresentable:bannerCopy];
   if (!v8)
   {
     [SBNotificationBannerDestination presentableWillAppearAsBanner:];
   }
 
-  v9 = [SBApp bannerManager];
-  v10 = [v9 windowSceneForPresentable:self->_presentedPresentable];
-  v11 = [v9 bannerWindowInWindowScene:v10];
-  v12 = [v11 sb_coronaAnimationController];
-  [v12 addParticipant:self];
+  bannerManager = [SBApp bannerManager];
+  v10 = [bannerManager windowSceneForPresentable:self->_presentedPresentable];
+  v11 = [bannerManager bannerWindowInWindowScene:v10];
+  sb_coronaAnimationController = [v11 sb_coronaAnimationController];
+  [sb_coronaAnimationController addParticipant:self];
 
-  v13 = [(SBNotificationBannerDestination *)self delegate];
-  [v13 destination:self willPresentNotificationRequest:v8 suppressAlerts:0];
+  delegate = [(SBNotificationBannerDestination *)self delegate];
+  [delegate destination:self willPresentNotificationRequest:v8 suppressAlerts:0];
 
   [(SBNotificationBannerDestination *)self _requestBiometricAuthIfAmbientPresentedForNotificationRequest:v8];
 }
 
-- (void)presentableDidAppearAsBanner:(id)a3
+- (void)presentableDidAppearAsBanner:(id)banner
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  bannerCopy = banner;
   v5 = MEMORY[0x277D77DB0];
   v6 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(SBNotificationBannerDestination *)self identifier];
+    identifier = [(SBNotificationBannerDestination *)self identifier];
     v24 = 138543618;
-    v25 = v8;
+    v25 = identifier;
     v26 = 2114;
-    v27 = v4;
+    v27 = bannerCopy;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ presentable did appear as banner: %{public}@", &v24, 0x16u);
   }
 
-  v9 = [(SBNotificationBannerDestination *)self _requestFromPresentable:v4];
+  v9 = [(SBNotificationBannerDestination *)self _requestFromPresentable:bannerCopy];
   if (!v9)
   {
     [SBNotificationBannerDestination presentableDidAppearAsBanner:];
   }
 
-  v10 = [v9 options];
-  v11 = [v10 dismissAutomatically];
+  options = [v9 options];
+  dismissAutomatically = [options dismissAutomatically];
 
-  if (v11)
+  if (dismissAutomatically)
   {
     [(SBNotificationBannerDestination *)self _startReplaceAndDismissTimersForRequest:v9];
   }
@@ -887,8 +887,8 @@ void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotific
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained destination:self didPresentNotificationRequest:v9];
-  v16 = objc_getAssociatedObject(v4, &_SBNotificationBannerDestinationBannerRequestCompletion);
-  objc_setAssociatedObject(v4, &_SBNotificationBannerDestinationBannerRequestCompletion, 0, 1);
+  v16 = objc_getAssociatedObject(bannerCopy, &_SBNotificationBannerDestinationBannerRequestCompletion);
+  objc_setAssociatedObject(bannerCopy, &_SBNotificationBannerDestinationBannerRequestCompletion, 0, 1);
   if (v16)
   {
     v16[2](v16);
@@ -897,25 +897,25 @@ void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotific
   if (UIAccessibilityIsReduceTransparencyEnabled())
   {
     v17 = +[SBBacklightController sharedInstanceIfExists];
-    v18 = [v17 backlightState];
+    backlightState = [v17 backlightState];
 
-    if (v18 == 1)
+    if (backlightState == 1)
     {
-      v19 = [(SBNotificationBannerDestination *)self _notificationViewControllerFromPresentable:v4];
+      v19 = [(SBNotificationBannerDestination *)self _notificationViewControllerFromPresentable:bannerCopy];
       [v19 setContentReplacedWithSnapshot:1];
     }
 
     else
     {
-      objc_storeWeak(&self->_presentablePendingSnapshot, v4);
+      objc_storeWeak(&self->_presentablePendingSnapshot, bannerCopy);
       v20 = *v5;
       if (os_log_type_enabled(*v5, OS_LOG_TYPE_DEFAULT))
       {
         v21 = v20;
-        v22 = [(SBNotificationBannerDestination *)self identifier];
-        v23 = SBBacklightStateDescription(v18);
+        identifier2 = [(SBNotificationBannerDestination *)self identifier];
+        v23 = SBBacklightStateDescription(backlightState);
         v24 = 138543618;
-        v25 = v22;
+        v25 = identifier2;
         v26 = 2114;
         v27 = v23;
         _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ reduce transparency enabled, but backlight factor is %{public}@ – deferring", &v24, 0x16u);
@@ -924,71 +924,71 @@ void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotific
   }
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v8 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(SBNotificationBannerDestination *)self identifier];
+    identifier = [(SBNotificationBannerDestination *)self identifier];
     v13 = 138543874;
-    v14 = v10;
+    v14 = identifier;
     v15 = 2114;
-    v16 = v6;
+    v16 = bannerCopy;
     v17 = 2114;
-    v18 = v7;
+    v18 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ presentable %{public}@ will disappear as banner with reason '%{public}@'", &v13, 0x20u);
   }
 
-  if (self->_presentedPresentable == v6)
+  if (self->_presentedPresentable == bannerCopy)
   {
     [(BSInvalidatable *)self->_bannerGestureRecognizerPriorityAssertion invalidate];
     bannerGestureRecognizerPriorityAssertion = self->_bannerGestureRecognizerPriorityAssertion;
     self->_bannerGestureRecognizerPriorityAssertion = 0;
 
-    v12 = [(SBNotificationBannerDestination *)self _requestFromPresentable:v6];
+    v12 = [(SBNotificationBannerDestination *)self _requestFromPresentable:bannerCopy];
     if (!v12)
     {
       [SBNotificationBannerDestination presentableWillDisappearAsBanner:withReason:];
     }
 
-    if (([v7 isEqualToString:@"SBBannerManagerDismissalReasonLock"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"performSleep") & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CF0A50]) & 1) != 0 || objc_msgSend(v7, "isEqualToString:", *MEMORY[0x277CF0A58]))
+    if (([reasonCopy isEqualToString:@"SBBannerManagerDismissalReasonLock"] & 1) != 0 || (objc_msgSend(reasonCopy, "isEqualToString:", @"performSleep") & 1) != 0 || (objc_msgSend(reasonCopy, "isEqualToString:", *MEMORY[0x277CF0A50]) & 1) != 0 || objc_msgSend(reasonCopy, "isEqualToString:", *MEMORY[0x277CF0A58]))
     {
       [(SBNotificationBannerDestination *)self _performSilenceAction];
     }
 
-    else if (([v7 isEqualToString:@"assistantWillAppear"] & 1) != 0 || (objc_msgSend(v7, "isEqualToString:", @"dismissOverlays") & 1) != 0 || objc_msgSend(v7, "isEqualToString:", @"SBBannerRevocationReasonBannerDestinationDisabled"))
+    else if (([reasonCopy isEqualToString:@"assistantWillAppear"] & 1) != 0 || (objc_msgSend(reasonCopy, "isEqualToString:", @"dismissOverlays") & 1) != 0 || objc_msgSend(reasonCopy, "isEqualToString:", @"SBBannerRevocationReasonBannerDestinationDisabled"))
     {
       [(SBNotificationBannerDestination *)self _performCancelAction];
     }
   }
 }
 
-- (void)presentableDidDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableDidDisappearAsBanner:(id)banner withReason:(id)reason
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  bannerCopy = banner;
+  reasonCopy = reason;
   v8 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(SBNotificationBannerDestination *)self identifier];
+    identifier = [(SBNotificationBannerDestination *)self identifier];
     v17 = 138543874;
-    v18 = v10;
+    v18 = identifier;
     v19 = 2114;
-    v20 = v6;
+    v20 = bannerCopy;
     v21 = 2114;
-    v22 = v7;
+    v22 = reasonCopy;
     _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ presentable %{public}@ did disappear as banner with reason '%{public}@'", &v17, 0x20u);
   }
 
-  if (self->_presentedPresentable == v6)
+  if (self->_presentedPresentable == bannerCopy)
   {
-    v11 = [(SBNotificationBannerDestination *)self _requestFromPresentable:v6];
+    v11 = [(SBNotificationBannerDestination *)self _requestFromPresentable:bannerCopy];
     if (!v11)
     {
       [SBNotificationBannerDestination presentableDidDisappearAsBanner:withReason:];
@@ -999,9 +999,9 @@ void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotific
       [(SBNotificationBannerDestination *)self _cancelReplaceAndDismissTimers];
     }
 
-    [(SBNotificationBannerDestination *)self _dismissPresentableCompleted:v6];
-    v12 = [(SBNotificationBannerDestination *)self delegate];
-    [v12 destination:self didDismissNotificationRequest:v11];
+    [(SBNotificationBannerDestination *)self _dismissPresentableCompleted:bannerCopy];
+    delegate = [(SBNotificationBannerDestination *)self delegate];
+    [delegate destination:self didDismissNotificationRequest:v11];
 
     [(SBNotificationBannerDestination *)self _updateMotionGestureObservation];
     idleTimerDisableAssertion = self->_idleTimerDisableAssertion;
@@ -1024,100 +1024,100 @@ void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotific
   }
 }
 
-- (void)userInteractionWillBeginForBannerForPresentable:(id)a3
+- (void)userInteractionWillBeginForBannerForPresentable:(id)presentable
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presentableCopy = presentable;
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(SBNotificationBannerDestination *)self identifier];
+    identifier = [(SBNotificationBannerDestination *)self identifier];
     v8 = 138543618;
-    v9 = v7;
+    v9 = identifier;
     v10 = 2114;
-    v11 = v4;
+    v11 = presentableCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ presentable will begin user interaction: %{public}@", &v8, 0x16u);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(SBNotificationBannerDestination *)self _userInteractionWillBeginForRequestPresenter:v4];
+    [(SBNotificationBannerDestination *)self _userInteractionWillBeginForRequestPresenter:presentableCopy];
   }
 }
 
-- (void)userInteractionDidEndForBannerForPresentable:(id)a3
+- (void)userInteractionDidEndForBannerForPresentable:(id)presentable
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presentableCopy = presentable;
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(SBNotificationBannerDestination *)self identifier];
+    identifier = [(SBNotificationBannerDestination *)self identifier];
     v8 = 138543618;
-    v9 = v7;
+    v9 = identifier;
     v10 = 2114;
-    v11 = v4;
+    v11 = presentableCopy;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ presentable did end user interaction: %{public}@", &v8, 0x16u);
   }
 
   if (objc_opt_respondsToSelector())
   {
-    [(SBNotificationBannerDestination *)self _userInteractionDidEndForRequestPresenter:v4];
+    [(SBNotificationBannerDestination *)self _userInteractionDidEndForRequestPresenter:presentableCopy];
   }
 }
 
-- (void)notificationPresentableViewController:(id)a3 presentationSize:(CGSize *)a4 containerSize:(CGSize *)a5
+- (void)notificationPresentableViewController:(id)controller presentationSize:(CGSize *)size containerSize:(CGSize *)containerSize
 {
-  if (a5)
+  if (containerSize)
   {
     v7 = SBApp;
-    v8 = a3;
-    v34 = [v7 bannerManager];
-    v9 = [v34 windowSceneForPresentable:v8];
+    controllerCopy = controller;
+    bannerManager = [v7 bannerManager];
+    v9 = [bannerManager windowSceneForPresentable:controllerCopy];
 
     if (v9)
     {
-      v10 = v9;
+      activeDisplayWindowScene = v9;
     }
 
     else
     {
-      v11 = [SBApp windowSceneManager];
-      v10 = [v11 activeDisplayWindowScene];
+      windowSceneManager = [SBApp windowSceneManager];
+      activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
     }
 
-    v12 = [v34 bannerWindowInWindowScene:v10];
+    v12 = [bannerManager bannerWindowInWindowScene:activeDisplayWindowScene];
     [v12 bounds];
     v14 = v13;
     v16 = v15;
     v18 = v17;
     v20 = v19;
 
-    a5->width = v18;
-    a5->height = v20;
-    if (a4)
+    containerSize->width = v18;
+    containerSize->height = v20;
+    if (size)
     {
-      v21 = [v34 layoutManagerInWindowScene:v10];
-      v22 = [v10 screen];
-      [v21 useableContainerFrameInContainerBounds:v22 onScreen:{v14, v16, v18, v20}];
+      v21 = [bannerManager layoutManagerInWindowScene:activeDisplayWindowScene];
+      screen = [activeDisplayWindowScene screen];
+      [v21 useableContainerFrameInContainerBounds:screen onScreen:{v14, v16, v18, v20}];
       v24 = v23;
       v26 = v25;
       v28 = v27;
       v30 = v29;
-      [v22 scale];
+      [screen scale];
       [v21 presentedFrameForContentWithPreferredSize:v28 inUseableContainerFrame:v30 containerBounds:v24 scale:{v26, v28, v30, *&v14, *&v16, *&v18, *&v20, v31}];
-      a4->width = v32;
-      a4->height = v33;
+      size->width = v32;
+      size->height = v33;
     }
   }
 }
 
-- (id)notificationRequestPresenter:(id)a3 staticContentProviderForNotificationRequest:(id)a4
+- (id)notificationRequestPresenter:(id)presenter staticContentProviderForNotificationRequest:(id)request
 {
-  v8 = a3;
-  v9 = a4;
+  presenterCopy = presenter;
+  requestCopy = request;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   if (isKindOfClass)
@@ -1128,11 +1128,11 @@ void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotific
     v16[2] = __108__SBNotificationBannerDestination_notificationRequestPresenter_staticContentProviderForNotificationRequest___block_invoke;
     v16[3] = &unk_2783B2078;
     v4 = v17;
-    v17[0] = v8;
+    v17[0] = presenterCopy;
     v17[1] = self;
     v5 = &v18;
     v12 = 0;
-    v18 = v9;
+    v18 = requestCopy;
   }
 
   else
@@ -1142,7 +1142,7 @@ void __85__SBNotificationBannerDestination_presentModalBannerAndExpandForNotific
   }
 
   v13 = MEMORY[0x223D6F7F0](v11);
-  v14 = [(SBNotificationBannerDestination *)self _staticContentProviderForViewController:v8 class:v12 notificationRequest:v9 test:v13];
+  v14 = [(SBNotificationBannerDestination *)self _staticContentProviderForViewController:presenterCopy class:v12 notificationRequest:requestCopy test:v13];
 
   if (isKindOfClass)
   {
@@ -1167,24 +1167,24 @@ uint64_t __108__SBNotificationBannerDestination_notificationRequestPresenter_sta
   return v3;
 }
 
-- (void)notificationRequestPresenter:(id)a3 shouldTransitionToStage:(id)a4 forTrigger:(int64_t)a5 completionBlock:(id)a6
+- (void)notificationRequestPresenter:(id)presenter shouldTransitionToStage:(id)stage forTrigger:(int64_t)trigger completionBlock:(id)block
 {
   v42 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v26 = a6;
+  presenterCopy = presenter;
+  stageCopy = stage;
+  blockCopy = block;
   v13 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v14 = v13;
-    v15 = [(SBNotificationBannerDestination *)self identifier];
+    identifier = [(SBNotificationBannerDestination *)self identifier];
     v16 = NCStringFromStageChangeTrigger();
     *buf = 138544130;
-    v35 = v15;
+    v35 = identifier;
     v36 = 2114;
-    v37 = v11;
+    v37 = presenterCopy;
     v38 = 2114;
-    v39 = v12;
+    v39 = stageCopy;
     v40 = 2114;
     v41 = v16;
     _os_log_impl(&dword_21ED4E000, v14, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ request presenter '%{public}@' requesting transition to stage '%{public}@' for triger '%{public}@'", buf, 0x2Au);
@@ -1194,16 +1194,16 @@ uint64_t __108__SBNotificationBannerDestination_notificationRequestPresenter_sta
   isKindOfClass = objc_opt_isKindOfClass();
   if (objc_opt_respondsToSelector())
   {
-    v18 = [v11 notificationRequest];
+    notificationRequest = [presenterCopy notificationRequest];
   }
 
   else
   {
-    v18 = 0;
+    notificationRequest = 0;
   }
 
-  v19 = a5;
-  v25 = v12;
+  triggerCopy = trigger;
+  v25 = stageCopy;
   if (isKindOfClass)
   {
     v32[0] = MEMORY[0x277D85DD0];
@@ -1211,10 +1211,10 @@ uint64_t __108__SBNotificationBannerDestination_notificationRequestPresenter_sta
     v32[2] = __115__SBNotificationBannerDestination_notificationRequestPresenter_shouldTransitionToStage_forTrigger_completionBlock___block_invoke;
     v32[3] = &unk_2783A94B0;
     v20 = v33;
-    v33[0] = v11;
+    v33[0] = presenterCopy;
     v33[1] = self;
     v21 = MEMORY[0x223D6F7F0](v32);
-    v22 = v26;
+    v22 = blockCopy;
   }
 
   else
@@ -1224,7 +1224,7 @@ uint64_t __108__SBNotificationBannerDestination_notificationRequestPresenter_sta
     v30[2] = __115__SBNotificationBannerDestination_notificationRequestPresenter_shouldTransitionToStage_forTrigger_completionBlock___block_invoke_62;
     v30[3] = &unk_2783A94B0;
     v20 = v31;
-    v23 = v11;
+    v23 = presenterCopy;
     v31[0] = v23;
     v31[1] = self;
     v21 = MEMORY[0x223D6F7F0](v30);
@@ -1233,14 +1233,14 @@ uint64_t __108__SBNotificationBannerDestination_notificationRequestPresenter_sta
     v27[1] = 3221225472;
     v27[2] = __115__SBNotificationBannerDestination_notificationRequestPresenter_shouldTransitionToStage_forTrigger_completionBlock___block_invoke_65;
     v27[3] = &unk_2783A9C98;
-    v12 = &v28;
+    stageCopy = &v28;
     v28 = v23;
     v6 = &v29;
-    v29 = v26;
+    v29 = blockCopy;
   }
 
   v24 = MEMORY[0x223D6F7F0](v22);
-  [(SBNotificationBannerDestination *)self _handleExpansionRequestForViewController:v11 notificationRequest:v18 forTrigger:v19 test:v21 completionBlock:v24];
+  [(SBNotificationBannerDestination *)self _handleExpansionRequestForViewController:presenterCopy notificationRequest:notificationRequest forTrigger:triggerCopy test:v21 completionBlock:v24];
 
   if ((isKindOfClass & 1) == 0)
   {
@@ -1319,30 +1319,30 @@ uint64_t __115__SBNotificationBannerDestination_notificationRequestPresenter_sho
   return v3();
 }
 
-- (void)notificationRequestPresenter:(id)a3 executeAction:(id)a4 withParameters:(id)a5 completion:(id)a6
+- (void)notificationRequestPresenter:(id)presenter executeAction:(id)action withParameters:(id)parameters completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  presenterCopy = presenter;
+  actionCopy = action;
+  parametersCopy = parameters;
+  completionCopy = completion;
   v14 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [(SBNotificationBannerDestination *)self identifier];
-    v17 = [v11 identifier];
-    v18 = [(__CFString *)v12 count];
+    identifier = [(SBNotificationBannerDestination *)self identifier];
+    identifier2 = [actionCopy identifier];
+    v18 = [(__CFString *)parametersCopy count];
     v19 = @"{}";
     *buf = 138543875;
-    v30 = v16;
+    v30 = identifier;
     if (v18)
     {
-      v19 = v12;
+      v19 = parametersCopy;
     }
 
     v31 = 2114;
-    v32 = v17;
+    v32 = identifier2;
     v33 = 2113;
     v34 = v19;
     _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ executing action %{public}@ with parameters %{private}@", buf, 0x20u);
@@ -1350,27 +1350,27 @@ uint64_t __115__SBNotificationBannerDestination_notificationRequestPresenter_sho
 
   if (objc_opt_respondsToSelector())
   {
-    v20 = [v10 notificationRequest];
+    notificationRequest = [presenterCopy notificationRequest];
   }
 
   else
   {
-    v20 = 0;
+    notificationRequest = 0;
   }
 
-  v21 = [(SBNotificationBannerDestination *)self delegate];
+  delegate = [(SBNotificationBannerDestination *)self delegate];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __104__SBNotificationBannerDestination_notificationRequestPresenter_executeAction_withParameters_completion___block_invoke;
   v25[3] = &unk_2783A8E88;
   v25[4] = self;
-  v26 = v20;
-  v27 = v11;
-  v28 = v13;
-  v22 = v13;
-  v23 = v11;
-  v24 = v20;
-  [v21 destination:self executeAction:v23 forNotificationRequest:v24 requestAuthentication:1 withParameters:v12 completion:v25];
+  v26 = notificationRequest;
+  v27 = actionCopy;
+  v28 = completionCopy;
+  v22 = completionCopy;
+  v23 = actionCopy;
+  v24 = notificationRequest;
+  [delegate destination:self executeAction:v23 forNotificationRequest:v24 requestAuthentication:1 withParameters:parametersCopy completion:v25];
 }
 
 uint64_t __104__SBNotificationBannerDestination_notificationRequestPresenter_executeAction_withParameters_completion___block_invoke(uint64_t a1, int a2)
@@ -1426,24 +1426,24 @@ LABEL_12:
   return result;
 }
 
-- (id)notificationRequestPresenterNotificationUsageTrackingState:(id)a3
+- (id)notificationRequestPresenterNotificationUsageTrackingState:(id)state
 {
   v7[1] = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277D78018];
-  v3 = [(SBNotificationBannerDestination *)self identifier];
-  v7[0] = v3;
+  identifier = [(SBNotificationBannerDestination *)self identifier];
+  v7[0] = identifier;
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v7 forKeys:&v6 count:1];
 
   return v4;
 }
 
-- (void)notificationRequestPresenter:(id)a3 didVendTransitionBlockingAssertion:(id)a4
+- (void)notificationRequestPresenter:(id)presenter didVendTransitionBlockingAssertion:(id)assertion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBNotificationBannerDestination *)self _presentedNotificationRequestPresenter];
+  presenterCopy = presenter;
+  assertionCopy = assertion;
+  _presentedNotificationRequestPresenter = [(SBNotificationBannerDestination *)self _presentedNotificationRequestPresenter];
 
-  if (v8 == v6)
+  if (_presentedNotificationRequestPresenter == presenterCopy)
   {
     [(SBNotificationBannerDestination *)self _cancelReplaceAndDismissTimers];
     objc_initWeak(&location, self);
@@ -1452,9 +1452,9 @@ LABEL_12:
     v9[2] = __99__SBNotificationBannerDestination_notificationRequestPresenter_didVendTransitionBlockingAssertion___block_invoke;
     v9[3] = &unk_2783B8418;
     objc_copyWeak(&v12, &location);
-    v10 = v6;
-    v11 = self;
-    [v7 addInvalidationBlock:v9];
+    v10 = presenterCopy;
+    selfCopy = self;
+    [assertionCopy addInvalidationBlock:v9];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -1476,75 +1476,75 @@ void __99__SBNotificationBannerDestination_notificationRequestPresenter_didVendT
   }
 }
 
-- (void)notificationViewController:(id)a3 requestPermissionToExecuteAction:(id)a4 withParameters:(id)a5 completion:(id)a6
+- (void)notificationViewController:(id)controller requestPermissionToExecuteAction:(id)action withParameters:(id)parameters completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  controllerCopy = controller;
+  actionCopy = action;
+  parametersCopy = parameters;
+  completionCopy = completion;
   v14 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v15 = v14;
-    v16 = [(SBNotificationBannerDestination *)self identifier];
-    v17 = [v11 identifier];
-    v18 = [(__CFString *)v12 count];
+    identifier = [(SBNotificationBannerDestination *)self identifier];
+    identifier2 = [actionCopy identifier];
+    v18 = [(__CFString *)parametersCopy count];
     v19 = @"{}";
     *v22 = 138543875;
-    *&v22[4] = v16;
+    *&v22[4] = identifier;
     if (v18)
     {
-      v19 = v12;
+      v19 = parametersCopy;
     }
 
     *&v22[12] = 2114;
-    *&v22[14] = v17;
+    *&v22[14] = identifier2;
     v23 = 2113;
     v24 = v19;
     _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ requesting permission to execute action %{public}@ with parameters %{private}@", v22, 0x20u);
   }
 
-  v20 = [v10 notificationRequest];
-  v21 = [(SBNotificationBannerDestination *)self delegate];
-  [v21 destination:self requestPermissionToExecuteAction:v11 forNotificationRequest:v20 withParameters:v12 completion:v13];
+  notificationRequest = [controllerCopy notificationRequest];
+  delegate = [(SBNotificationBannerDestination *)self delegate];
+  [delegate destination:self requestPermissionToExecuteAction:actionCopy forNotificationRequest:notificationRequest withParameters:parametersCopy completion:completionCopy];
 }
 
-- (void)notificationViewController:(id)a3 dragInteraction:(id)a4 session:(id)a5 willEndWithOperation:(unint64_t)a6
+- (void)notificationViewController:(id)controller dragInteraction:(id)interaction session:(id)session willEndWithOperation:(unint64_t)operation
 {
-  if ((a6 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((operation & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     [(SBNotificationBannerDestination *)self _dismissPresentedBannerAnimated:0 reason:@"SBBannerRevocationReasonBannerDestinationDragAndDrop" forceIfSticky:1];
   }
 }
 
-- (void)notificationViewController:(id)a3 dragInteraction:(id)a4 session:(id)a5 didEndWithOperation:(unint64_t)a6
+- (void)notificationViewController:(id)controller dragInteraction:(id)interaction session:(id)session didEndWithOperation:(unint64_t)operation
 {
   notificationViewControllerForActiveDragSession = self->_notificationViewControllerForActiveDragSession;
-  if (notificationViewControllerForActiveDragSession == a3)
+  if (notificationViewControllerForActiveDragSession == controller)
   {
     self->_notificationViewControllerForActiveDragSession = 0;
   }
 }
 
-- (BOOL)notificationViewControllerShouldAllowExpandedPlatterInteraction:(id)a3
+- (BOOL)notificationViewControllerShouldAllowExpandedPlatterInteraction:(id)interaction
 {
-  v4 = a3;
-  v5 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-  v6 = [v5 notificationViewController];
+  interactionCopy = interaction;
+  _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+  notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
 
-  if (v6 != v4)
+  if (notificationViewController != interactionCopy)
   {
     goto LABEL_2;
   }
 
-  if (![v5 bs_isAppearingOrAppeared])
+  if (![_presentedNotificationPresentableVC bs_isAppearingOrAppeared])
   {
     v7 = 0;
     goto LABEL_7;
   }
 
-  if ([v5 bannerAppearState] == 1)
+  if ([_presentedNotificationPresentableVC bannerAppearState] == 1)
   {
 LABEL_2:
     v7 = 1;
@@ -1552,7 +1552,7 @@ LABEL_2:
 
   else
   {
-    v7 = [v5 bannerAppearState] == 2;
+    v7 = [_presentedNotificationPresentableVC bannerAppearState] == 2;
   }
 
 LABEL_7:
@@ -1560,17 +1560,17 @@ LABEL_7:
   return v7;
 }
 
-- (id)notificationViewControllerContainerViewProviderForExpandedContent:(id)a3
+- (id)notificationViewControllerContainerViewProviderForExpandedContent:(id)content
 {
-  v4 = a3;
-  v5 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-  v6 = [v5 notificationViewController];
+  contentCopy = content;
+  _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+  notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
 
-  if (v6 == v4)
+  if (notificationViewController == contentCopy)
   {
     v8 = objc_alloc(MEMORY[0x277D679B0]);
-    v9 = [v5 view];
-    v7 = [v8 initWithRequester:v4 containerView:v9 reason:@"Container view requested for notification banner" invalidationBlock:0];
+    view = [_presentedNotificationPresentableVC view];
+    v7 = [v8 initWithRequester:contentCopy containerView:view reason:@"Container view requested for notification banner" invalidationBlock:0];
   }
 
   else
@@ -1581,24 +1581,24 @@ LABEL_7:
   return v7;
 }
 
-- (id)notificationViewController:(id)a3 auxiliaryOptionsContentProviderForNotificationRequest:(id)a4 withLongLook:(BOOL)a5
+- (id)notificationViewController:(id)controller auxiliaryOptionsContentProviderForNotificationRequest:(id)request withLongLook:(BOOL)look
 {
-  v5 = a5;
-  v7 = a4;
-  v8 = [v7 sectionIdentifier];
-  v9 = [(SBNotificationBannerDestination *)self _notificationSectionSettingsForSectionIdentifier:v8];
-  v10 = [v9 isUserConfigurable];
+  lookCopy = look;
+  requestCopy = request;
+  sectionIdentifier = [requestCopy sectionIdentifier];
+  v9 = [(SBNotificationBannerDestination *)self _notificationSectionSettingsForSectionIdentifier:sectionIdentifier];
+  isUserConfigurable = [v9 isUserConfigurable];
 
   v11 = 0;
-  if (v10 && v5)
+  if (isUserConfigurable && lookCopy)
   {
-    v11 = [objc_alloc(MEMORY[0x277D78070]) initWithNotificationRequest:v7 managementDelegate:self];
+    v11 = [objc_alloc(MEMORY[0x277D78070]) initWithNotificationRequest:requestCopy managementDelegate:self];
   }
 
   return v11;
 }
 
-- (unint64_t)importantAdornmentEligibleOptionsForNotificationViewController:(id)a3
+- (unint64_t)importantAdornmentEligibleOptionsForNotificationViewController:(id)controller
 {
   if ([(SBNotificationBannerDestination *)self _isPresentingBanner])
   {
@@ -1611,27 +1611,27 @@ LABEL_7:
   }
 }
 
-- (void)longLookWillPresentForNotificationViewController:(id)a3
+- (void)longLookWillPresentForNotificationViewController:(id)controller
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   if ([(SBNotificationBannerDestination *)self _shouldHideStatusBar])
   {
     [MEMORY[0x277D75D18] _currentAnimationDuration];
     [(SBNotificationBannerDestination *)self _setStatusBarsHidden:1 withDuration:?];
   }
 
-  v5 = [(SBNotificationBannerDestination *)self resignActiveAssertion];
-  v6 = [v4 _fbsDisplayIdentity];
-  [v5 sb_acquireForDisplayIdentity:v6];
+  resignActiveAssertion = [(SBNotificationBannerDestination *)self resignActiveAssertion];
+  _fbsDisplayIdentity = [controllerCopy _fbsDisplayIdentity];
+  [resignActiveAssertion sb_acquireForDisplayIdentity:_fbsDisplayIdentity];
 
   [(SBNotificationBannerDestination *)self _cancelReplaceAndDismissTimers];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v7 = [(SBNotificationBannerDestination *)self destinationObservers];
-  v8 = [v7 copy];
+  destinationObservers = [(SBNotificationBannerDestination *)self destinationObservers];
+  v8 = [destinationObservers copy];
 
   v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
@@ -1665,54 +1665,54 @@ LABEL_7:
   }
 }
 
-- (void)longLookDidPresentForNotificationViewController:(id)a3
+- (void)longLookDidPresentForNotificationViewController:(id)controller
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 notificationRequest];
+  controllerCopy = controller;
+  notificationRequest = [controllerCopy notificationRequest];
   v6 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v5 notificationIdentifier];
-    v9 = [v8 un_logDigest];
+    notificationIdentifier = [notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138543362;
-    v30 = v9;
+    v30 = un_logDigest;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Long look presented for notification %{public}@", buf, 0xCu);
   }
 
-  v10 = [v5 options];
-  v11 = [v10 revealsAdditionalContentOnPresentation];
+  options = [notificationRequest options];
+  revealsAdditionalContentOnPresentation = [options revealsAdditionalContentOnPresentation];
 
-  if (v11)
+  if (revealsAdditionalContentOnPresentation)
   {
-    if ([(SBNotificationBannerDestination *)self _isContentSuppressedForNotificationRequest:v5])
+    if ([(SBNotificationBannerDestination *)self _isContentSuppressedForNotificationRequest:notificationRequest])
     {
-      [v4 invalidateContentProviders];
+      [controllerCopy invalidateContentProviders];
     }
   }
 
   else
   {
-    [(SBNotificationBannerDestination *)self _setReadyForNotificationRequestsCoalescingWith:v5];
+    [(SBNotificationBannerDestination *)self _setReadyForNotificationRequestsCoalescingWith:notificationRequest];
   }
 
   v12 = +[SBKeyboardFocusCoordinator sharedInstance];
-  v13 = [v4 _sbWindowScene];
+  _sbWindowScene = [controllerCopy _sbWindowScene];
   v14 = +[SBKeyboardFocusArbitrationReason longLookDidPresentForNotificationViewController];
-  [v12 requestArbitrationForSBWindowScene:v13 forReason:v14];
+  [v12 requestArbitrationForSBWindowScene:_sbWindowScene forReason:v14];
 
-  v15 = [(SBNotificationBannerDestination *)self lockScreenManager];
-  v16 = [v15 coverSheetViewController];
-  [v16 externalBehaviorProviderBehaviorChanged:self];
+  lockScreenManager = [(SBNotificationBannerDestination *)self lockScreenManager];
+  coverSheetViewController = [lockScreenManager coverSheetViewController];
+  [coverSheetViewController externalBehaviorProviderBehaviorChanged:self];
 
   [(SBNotificationBannerDestination *)self _updateMotionGestureObservation];
   v26 = 0u;
   v27 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v17 = [(SBNotificationBannerDestination *)self destinationObservers];
-  v18 = [v17 copy];
+  destinationObservers = [(SBNotificationBannerDestination *)self destinationObservers];
+  v18 = [destinationObservers copy];
 
   v19 = [v18 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v19)
@@ -1742,32 +1742,32 @@ LABEL_7:
   }
 }
 
-- (void)longLookWillDismissForNotificationViewController:(id)a3
+- (void)longLookWillDismissForNotificationViewController:(id)controller
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   if ([(SBNotificationBannerDestination *)self _shouldHideStatusBar])
   {
     [MEMORY[0x277D75D18] _currentAnimationDuration];
     [(SBNotificationBannerDestination *)self _setStatusBarsHidden:0 withDuration:?];
   }
 
-  v5 = [v4 notificationRequest];
-  v6 = [v5 options];
-  v7 = [v6 revealsAdditionalContentOnPresentation];
+  notificationRequest = [controllerCopy notificationRequest];
+  options = [notificationRequest options];
+  revealsAdditionalContentOnPresentation = [options revealsAdditionalContentOnPresentation];
 
-  if ((v7 & 1) == 0)
+  if ((revealsAdditionalContentOnPresentation & 1) == 0)
   {
-    v8 = [v4 _lookView];
-    [v8 setHidden:1];
+    _lookView = [controllerCopy _lookView];
+    [_lookView setHidden:1];
   }
 
   v18 = 0u;
   v19 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v9 = [(SBNotificationBannerDestination *)self destinationObservers];
-  v10 = [v9 copy];
+  destinationObservers = [(SBNotificationBannerDestination *)self destinationObservers];
+  v10 = [destinationObservers copy];
 
   v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v11)
@@ -1801,43 +1801,43 @@ LABEL_7:
   }
 }
 
-- (void)longLookDidDismissForNotificationViewController:(id)a3
+- (void)longLookDidDismissForNotificationViewController:(id)controller
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 notificationRequest];
+  controllerCopy = controller;
+  notificationRequest = [controllerCopy notificationRequest];
   v6 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [v5 notificationIdentifier];
-    v9 = [v8 un_logDigest];
+    notificationIdentifier = [notificationRequest notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138543362;
-    v33 = v9;
+    v33 = un_logDigest;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Long look dismissed for notification %{public}@", buf, 0xCu);
   }
 
-  v10 = [(SBNotificationBannerDestination *)self delegate];
-  [v10 destination:self didDismissNotificationRequest:v5];
+  delegate = [(SBNotificationBannerDestination *)self delegate];
+  [delegate destination:self didDismissNotificationRequest:notificationRequest];
 
-  v11 = [(SBNotificationBannerDestination *)self resignActiveAssertion];
-  [v11 relinquish];
+  resignActiveAssertion = [(SBNotificationBannerDestination *)self resignActiveAssertion];
+  [resignActiveAssertion relinquish];
 
   v12 = +[SBKeyboardFocusCoordinator sharedInstance];
-  v13 = [v4 _sbWindowScene];
+  _sbWindowScene = [controllerCopy _sbWindowScene];
   v14 = +[SBKeyboardFocusArbitrationReason longLookDidDismissForNotificationViewController];
-  [v12 requestArbitrationForSBWindowScene:v13 forReason:v14];
+  [v12 requestArbitrationForSBWindowScene:_sbWindowScene forReason:v14];
 
-  v15 = [(SBNotificationBannerDestination *)self lockScreenManager];
-  v16 = [v15 coverSheetViewController];
-  [v16 externalBehaviorProviderBehaviorChanged:self];
+  lockScreenManager = [(SBNotificationBannerDestination *)self lockScreenManager];
+  coverSheetViewController = [lockScreenManager coverSheetViewController];
+  [coverSheetViewController externalBehaviorProviderBehaviorChanged:self];
 
   v29 = 0u;
   v30 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v17 = [(SBNotificationBannerDestination *)self destinationObservers];
-  v18 = [v17 copy];
+  destinationObservers = [(SBNotificationBannerDestination *)self destinationObservers];
+  v18 = [destinationObservers copy];
 
   v19 = [v18 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (v19)
@@ -1870,25 +1870,25 @@ LABEL_7:
     while (v20);
   }
 
-  v24 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-  v25 = [v24 notificationViewController];
+  _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+  notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
 
-  if (v25 == v4)
+  if (notificationViewController == controllerCopy)
   {
-    v26 = [(BNPresentable *)self->_presentedPresentable requesterIdentifier];
-    [(SBNotificationBannerDestination *)self _revokeAllPresentablesWithRequesterIdentifier:v26 reason:@"SBBannerRevocationReasonLongLookDismissal" options:1];
+    requesterIdentifier = [(BNPresentable *)self->_presentedPresentable requesterIdentifier];
+    [(SBNotificationBannerDestination *)self _revokeAllPresentablesWithRequesterIdentifier:requesterIdentifier reason:@"SBBannerRevocationReasonLongLookDismissal" options:1];
   }
 }
 
-- (void)fullScreenPresentableViewController:(id)a3 requestsDismissalWithReason:(id)a4
+- (void)fullScreenPresentableViewController:(id)controller requestsDismissalWithReason:(id)reason
 {
-  v5 = a3;
+  controllerCopy = controller;
   v6 = SBApp;
-  v7 = a4;
-  v8 = [v6 bannerManager];
-  v9 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:v5];
+  reasonCopy = reason;
+  bannerManager = [v6 bannerManager];
+  v9 = [MEMORY[0x277CF0AC0] uniqueIdentificationForPresentable:controllerCopy];
   v13 = 0;
-  v10 = [v8 revokePresentablesWithIdentification:v9 reason:v7 options:0 userInfo:0 error:&v13];
+  v10 = [bannerManager revokePresentablesWithIdentification:v9 reason:reasonCopy options:0 userInfo:0 error:&v13];
 
   v11 = v13;
   if (!v10)
@@ -1896,14 +1896,14 @@ LABEL_7:
     v12 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_ERROR))
     {
-      [(SBNotificationBannerDestination *)v12 fullScreenPresentableViewController:v5 requestsDismissalWithReason:v11];
+      [(SBNotificationBannerDestination *)v12 fullScreenPresentableViewController:controllerCopy requestsDismissalWithReason:v11];
     }
   }
 }
 
 - (void)didReceiveRaiseGesture
 {
-  v2 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_5_6();
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
@@ -1913,7 +1913,7 @@ LABEL_7:
 
 - (void)_updateMotionGestureObservation
 {
-  v2 = a1;
+  selfCopy = self;
   OUTLINED_FUNCTION_5_6();
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
@@ -1921,10 +1921,10 @@ LABEL_7:
   OUTLINED_FUNCTION_0_34(&dword_21ED4E000, v5, v6, "Destination %{public}@ is listening to raise gesture", v7, v8, v9, v10, v11);
 }
 
-- (void)coronaAnimationController:(id)a3 willAnimateCoronaTransitionWithAnimator:(id)a4
+- (void)coronaAnimationController:(id)controller willAnimateCoronaTransitionWithAnimator:(id)animator
 {
-  v6 = a3;
-  v7 = a4;
+  controllerCopy = controller;
+  animatorCopy = animator;
   v10[0] = 0;
   v10[1] = v10;
   v10[2] = 0x3032000000;
@@ -1937,14 +1937,14 @@ LABEL_7:
   v9[3] = &unk_2783A9300;
   v9[4] = self;
   v9[5] = v10;
-  [v7 addAnimations:v9];
+  [animatorCopy addAnimations:v9];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __101__SBNotificationBannerDestination_coronaAnimationController_willAnimateCoronaTransitionWithAnimator___block_invoke_3;
   v8[3] = &unk_2783B8440;
   v8[4] = self;
   v8[5] = v10;
-  [v7 addCompletion:v8];
+  [animatorCopy addCompletion:v8];
   _Block_object_dispose(v10, 8);
 }
 
@@ -1999,10 +1999,10 @@ void __101__SBNotificationBannerDestination_coronaAnimationController_willAnimat
   [v3 setMaterialGroupNameBase:*(*(*(a1 + 40) + 8) + 40)];
 }
 
-- (void)backlightController:(id)a3 didAnimateBacklightToFactor:(float)a4 source:(int64_t)a5
+- (void)backlightController:(id)controller didAnimateBacklightToFactor:(float)factor source:(int64_t)source
 {
   v18 = *MEMORY[0x277D85DE8];
-  if (fabsf(a4 + -1.0) < 2.2204e-16)
+  if (fabsf(factor + -1.0) < 2.2204e-16)
   {
     WeakRetained = objc_loadWeakRetained(&self->_presentablePendingSnapshot);
     if (WeakRetained && (objc_opt_respondsToSelector() & 1) != 0)
@@ -2011,16 +2011,16 @@ void __101__SBNotificationBannerDestination_coronaAnimationController_willAnimat
       if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
       {
         v8 = v7;
-        v9 = [(SBNotificationBannerDestination *)self identifier];
+        identifier = [(SBNotificationBannerDestination *)self identifier];
         v14 = 138543618;
-        v15 = v9;
+        v15 = identifier;
         v16 = 2114;
         v17 = WeakRetained;
         _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ backlight is on, snapshotting presentable %{public}@", &v14, 0x16u);
       }
 
-      v10 = [WeakRetained notificationViewController];
-      [v10 setContentReplacedWithSnapshot:1];
+      notificationViewController = [WeakRetained notificationViewController];
+      [notificationViewController setContentReplacedWithSnapshot:1];
 
       objc_storeWeak(&self->_presentablePendingSnapshot, 0);
     }
@@ -2031,79 +2031,79 @@ void __101__SBNotificationBannerDestination_coronaAnimationController_willAnimat
       if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
       {
         v12 = v11;
-        v13 = [(SBNotificationBannerDestination *)self identifier];
+        identifier2 = [(SBNotificationBannerDestination *)self identifier];
         v14 = 138543362;
-        v15 = v13;
+        v15 = identifier2;
         _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ backlight is on, but no presentable pending snapshot", &v14, 0xCu);
       }
     }
   }
 }
 
-- (id)_notificationViewControllerFromPresentable:(id)a3
+- (id)_notificationViewControllerFromPresentable:(id)presentable
 {
-  v3 = a3;
+  presentableCopy = presentable;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 notificationViewController];
+    notificationViewController = [presentableCopy notificationViewController];
   }
 
   else
   {
-    v4 = 0;
+    notificationViewController = 0;
   }
 
-  return v4;
+  return notificationViewController;
 }
 
-- (id)_requestFromPresentable:(id)a3
+- (id)_requestFromPresentable:(id)presentable
 {
-  v4 = a3;
-  v5 = [(SBNotificationBannerDestination *)self _notificationViewControllerFromPresentable:v4];
-  v6 = [v5 notificationRequest];
+  presentableCopy = presentable;
+  v5 = [(SBNotificationBannerDestination *)self _notificationViewControllerFromPresentable:presentableCopy];
+  notificationRequest = [v5 notificationRequest];
 
-  if (!v6)
+  if (!notificationRequest)
   {
     if (objc_opt_respondsToSelector())
     {
-      v6 = [v4 notificationRequest];
+      notificationRequest = [presentableCopy notificationRequest];
     }
 
     else
     {
-      v6 = 0;
+      notificationRequest = 0;
     }
   }
 
-  return v6;
+  return notificationRequest;
 }
 
 - (id)_presentedNotificationRequestPresenter
 {
-  v3 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-  v4 = [v3 notificationViewController];
-  v5 = v4;
-  if (v4)
+  _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+  notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
+  v5 = notificationViewController;
+  if (notificationViewController)
   {
-    v6 = v4;
+    presentedPresentable = notificationViewController;
   }
 
   else
   {
-    v6 = [(SBNotificationBannerDestination *)self presentedPresentable];
+    presentedPresentable = [(SBNotificationBannerDestination *)self presentedPresentable];
   }
 
-  v7 = v6;
+  v7 = presentedPresentable;
 
   return v7;
 }
 
 - (BOOL)_isDeviceAuthenticated
 {
-  v2 = [SBApp authenticationController];
-  v3 = [v2 isAuthenticated];
+  authenticationController = [SBApp authenticationController];
+  isAuthenticated = [authenticationController isAuthenticated];
 
-  return v3;
+  return isAuthenticated;
 }
 
 - (void)_setupModeChanged
@@ -2123,35 +2123,35 @@ uint64_t __67__SBNotificationBannerDestination__setReadyForNotificationRequests_
   return v3;
 }
 
-- (void)_setReadyForNotificationRequestsCoalescingWith:(id)a3
+- (void)_setReadyForNotificationRequestsCoalescingWith:(id)with
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  withCopy = with;
   v5 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
     v7 = objc_opt_class();
     v8 = NSStringFromClass(v7);
-    v9 = [v4 notificationIdentifier];
-    v10 = [v9 un_logDigest];
+    notificationIdentifier = [withCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     v12 = 138543618;
     v13 = v8;
     v14 = 2114;
-    v15 = v10;
+    v15 = un_logDigest;
     _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "Destination %{public}@ is now ready to receive notifications coalescing with %{public}@", &v12, 0x16u);
   }
 
-  v11 = [(SBNotificationBannerDestination *)self delegate];
-  [v11 destination:self didBecomeReadyToReceiveNotificationsCoalescedWith:v4];
+  delegate = [(SBNotificationBannerDestination *)self delegate];
+  [delegate destination:self didBecomeReadyToReceiveNotificationsCoalescedWith:withCopy];
 }
 
-- (void)_postNotificationRequest:(id)a3 modal:(BOOL)a4 completion:(id)a5
+- (void)_postNotificationRequest:(id)request modal:(BOOL)modal completion:(id)completion
 {
-  v6 = a4;
+  modalCopy = modal;
   v39 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  requestCopy = request;
+  completionCopy = completion;
   state.opaque[0] = 0;
   state.opaque[1] = 0;
   v10 = _os_activity_create(&dword_21ED4E000, "post-banner", MEMORY[0x277D86210], OS_ACTIVITY_FLAG_DEFAULT);
@@ -2161,48 +2161,48 @@ uint64_t __67__SBNotificationBannerDestination__setReadyForNotificationRequests_
   v12 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    v26 = [(SBNotificationBannerDestination *)self identifier];
-    v27 = [v8 notificationIdentifier];
-    v28 = [v27 un_logDigest];
+    identifier = [(SBNotificationBannerDestination *)self identifier];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138543618;
-    v32 = v26;
+    v32 = identifier;
     v33 = 2114;
-    *v34 = v28;
+    *v34 = un_logDigest;
     _os_log_debug_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEBUG, "Destination %{public}@ received notification %{public}@", buf, 0x16u);
   }
 
-  v13 = [v8 alertOptions];
-  v14 = [v13 shouldSuppress];
+  alertOptions = [requestCopy alertOptions];
+  shouldSuppress = [alertOptions shouldSuppress];
 
-  v15 = [v8 sb_shouldSuppressAlert];
-  v16 = [(SBNotificationBannerDestination *)self _shouldScreenTimeSuppressNotificationRequest:v8];
-  if (((v14 | (v15 | v16)) & 1) == 0 || v6)
+  sb_shouldSuppressAlert = [requestCopy sb_shouldSuppressAlert];
+  v16 = [(SBNotificationBannerDestination *)self _shouldScreenTimeSuppressNotificationRequest:requestCopy];
+  if (((shouldSuppress | (sb_shouldSuppressAlert | v16)) & 1) == 0 || modalCopy)
   {
     if ([(SBNotificationBannerDestination *)self _isPresentingBannerInLongLook])
     {
       v20 = *v11;
       if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
       {
-        v21 = [v8 notificationIdentifier];
-        v22 = [v21 un_logDigest];
-        v23 = [(SBNotificationBannerDestination *)self identifier];
+        notificationIdentifier2 = [requestCopy notificationIdentifier];
+        un_logDigest2 = [notificationIdentifier2 un_logDigest];
+        identifier2 = [(SBNotificationBannerDestination *)self identifier];
         *buf = 138543618;
-        v32 = v22;
+        v32 = un_logDigest2;
         v33 = 2114;
-        *v34 = v23;
+        *v34 = identifier2;
         _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_DEFAULT, "Forwarding notification %{public}@ to long look banner %{public}@", buf, 0x16u);
       }
 
-      v24 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-      v25 = [v24 notificationViewController];
-      [v25 didForwardNotificationRequestToCustomContent:v8];
+      _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+      notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
+      [notificationViewController didForwardNotificationRequestToCustomContent:requestCopy];
     }
 
     else
     {
-      [(SBNotificationBannerDestination *)self _postPresentableForRequest:v8 modal:v6 completion:v9];
-      [(SBNotificationBannerDestination *)self _publishDidPresentBannerForNotificationRequest:v8];
-      if (!v6)
+      [(SBNotificationBannerDestination *)self _postPresentableForRequest:requestCopy modal:modalCopy completion:completionCopy];
+      [(SBNotificationBannerDestination *)self _publishDidPresentBannerForNotificationRequest:requestCopy];
+      if (!modalCopy)
       {
         [(SBNotificationBannerDestination *)self _updateMotionGestureObservation];
       }
@@ -2214,16 +2214,16 @@ uint64_t __67__SBNotificationBannerDestination__setReadyForNotificationRequests_
     v17 = *v11;
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [v8 notificationIdentifier];
-      v19 = [v18 un_logDigest];
+      notificationIdentifier3 = [requestCopy notificationIdentifier];
+      un_logDigest3 = [notificationIdentifier3 un_logDigest];
       *buf = 138544386;
-      v32 = v19;
+      v32 = un_logDigest3;
       v33 = 1024;
-      *v34 = (v14 | (v15 | v16)) & 1;
+      *v34 = (shouldSuppress | (sb_shouldSuppressAlert | v16)) & 1;
       *&v34[4] = 1024;
-      *&v34[6] = v15;
+      *&v34[6] = sb_shouldSuppressAlert;
       v35 = 1024;
-      v36 = v14;
+      v36 = shouldSuppress;
       v37 = 1024;
       v38 = v16;
       _os_log_impl(&dword_21ED4E000, v17, OS_LOG_TYPE_DEFAULT, "Banner for notification %{public}@ was dropped. suppressed: %d application: %d, do not disturb: %d screen time: %d", buf, 0x24u);
@@ -2240,17 +2240,17 @@ uint64_t __67__SBNotificationBannerDestination__setReadyForNotificationRequests_
   os_activity_scope_leave(&state);
 }
 
-- (BOOL)_presentedBannerMatchesNotificationRequest:(id)a3
+- (BOOL)_presentedBannerMatchesNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
-  v6 = [v5 notificationIdentifier];
-  v7 = [v4 notificationIdentifier];
-  if ([v6 isEqualToString:v7])
+  requestCopy = request;
+  _presentedNotificationRequest = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
+  notificationIdentifier = [_presentedNotificationRequest notificationIdentifier];
+  notificationIdentifier2 = [requestCopy notificationIdentifier];
+  if ([notificationIdentifier isEqualToString:notificationIdentifier2])
   {
-    v8 = [v5 sectionIdentifier];
-    v9 = [v4 sectionIdentifier];
-    v10 = [v8 isEqualToString:v9];
+    sectionIdentifier = [_presentedNotificationRequest sectionIdentifier];
+    sectionIdentifier2 = [requestCopy sectionIdentifier];
+    v10 = [sectionIdentifier isEqualToString:sectionIdentifier2];
   }
 
   else
@@ -2261,9 +2261,9 @@ uint64_t __67__SBNotificationBannerDestination__setReadyForNotificationRequests_
   return v10;
 }
 
-- (void)_setStatusBarsHidden:(BOOL)a3 withDuration:(double)a4
+- (void)_setStatusBarsHidden:(BOOL)hidden withDuration:(double)duration
 {
-  v4 = a3;
+  hiddenCopy = hidden;
   v27 = *MEMORY[0x277D85DE8];
   v6 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
@@ -2273,7 +2273,7 @@ uint64_t __67__SBNotificationBannerDestination__setReadyForNotificationRequests_
     v9 = NSStringFromClass(v8);
     v10 = v9;
     v11 = @"NO";
-    if (v4)
+    if (hiddenCopy)
     {
       v11 = @"YES";
     }
@@ -2285,14 +2285,14 @@ uint64_t __67__SBNotificationBannerDestination__setReadyForNotificationRequests_
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%@ is setting status bar hidden = %@", &v23, 0x16u);
   }
 
-  v12 = [(SBNotificationBannerDestination *)self appsStatusBarAssertion];
-  v13 = [SBApp bannerManager];
-  v14 = [v13 windowSceneForPresentable:self->_presentedPresentable];
+  appsStatusBarAssertion = [(SBNotificationBannerDestination *)self appsStatusBarAssertion];
+  bannerManager = [SBApp bannerManager];
+  v14 = [bannerManager windowSceneForPresentable:self->_presentedPresentable];
 
-  v15 = !v4;
-  if (!v4 || v12)
+  v15 = !hiddenCopy;
+  if (!hiddenCopy || appsStatusBarAssertion)
   {
-    if (!v12)
+    if (!appsStatusBarAssertion)
     {
       v15 = 0;
     }
@@ -2300,25 +2300,25 @@ uint64_t __67__SBNotificationBannerDestination__setReadyForNotificationRequests_
     if (v15 == 1)
     {
       [(SBNotificationBannerDestination *)self setAppsStatusBarAssertion:0];
-      [v12 invalidate];
+      [appsStatusBarAssertion invalidate];
     }
   }
 
   else
   {
-    v16 = [v14 switcherController];
-    v17 = [v16 requestInAppStatusBarHiddenAssertionForReason:@"SBNotificationBannerDestination" animated:0];
+    switcherController = [v14 switcherController];
+    v17 = [switcherController requestInAppStatusBarHiddenAssertionForReason:@"SBNotificationBannerDestination" animated:0];
     [(SBNotificationBannerDestination *)self setAppsStatusBarAssertion:v17];
   }
 
-  v18 = [v14 statusBarManager];
-  v19 = [v18 assertionManager];
+  statusBarManager = [v14 statusBarManager];
+  assertionManager = [statusBarManager assertionManager];
 
-  if (v4)
+  if (hiddenCopy)
   {
     v20 = objc_opt_class();
     v21 = NSStringFromClass(v20);
-    v22 = [v19 newSettingsAssertionWithStatusBarHidden:1 atLevel:13 reason:v21];
+    v22 = [assertionManager newSettingsAssertionWithStatusBarHidden:1 atLevel:13 reason:v21];
     [(SBNotificationBannerDestination *)self setSystemStatusBarAssertion:v22];
   }
 
@@ -2328,13 +2328,13 @@ uint64_t __67__SBNotificationBannerDestination__setReadyForNotificationRequests_
   }
 }
 
-- (void)setSystemStatusBarAssertion:(id)a3
+- (void)setSystemStatusBarAssertion:(id)assertion
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  assertionCopy = assertion;
+  v5 = assertionCopy;
+  if (assertionCopy)
   {
-    [(SBWindowSceneStatusBarSettingsAssertion *)v4 acquire];
+    [(SBWindowSceneStatusBarSettingsAssertion *)assertionCopy acquire];
   }
 
   [(SBWindowSceneStatusBarSettingsAssertion *)self->_systemStatusBarAssertion invalidate];
@@ -2342,13 +2342,13 @@ uint64_t __67__SBNotificationBannerDestination__setReadyForNotificationRequests_
   self->_systemStatusBarAssertion = v5;
 }
 
-- (BOOL)_canReceiveNotificationRequestIfLocked:(id)a3
+- (BOOL)_canReceiveNotificationRequestIfLocked:(id)locked
 {
-  v4 = a3;
+  lockedCopy = locked;
   if ([(SBNotificationBannerDestination *)self _isUILocked])
   {
-    v5 = [v4 requestDestinations];
-    v6 = [v5 containsObject:*MEMORY[0x277D77FE0]];
+    requestDestinations = [lockedCopy requestDestinations];
+    v6 = [requestDestinations containsObject:*MEMORY[0x277D77FE0]];
   }
 
   else
@@ -2359,37 +2359,37 @@ uint64_t __67__SBNotificationBannerDestination__setReadyForNotificationRequests_
   return v6;
 }
 
-- (BOOL)_isContentSuppressedForNotificationRequest:(id)a3
+- (BOOL)_isContentSuppressedForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SBNotificationBannerDestination *)self _isDeviceAuthenticated];
-  v6 = [v4 options];
+  requestCopy = request;
+  _isDeviceAuthenticated = [(SBNotificationBannerDestination *)self _isDeviceAuthenticated];
+  options = [requestCopy options];
 
-  v7 = [v6 contentPreviewSetting];
-  if (v5 && v7 == 2)
+  contentPreviewSetting = [options contentPreviewSetting];
+  if (_isDeviceAuthenticated && contentPreviewSetting == 2)
   {
     return 1;
   }
 
   else
   {
-    return (v7 != 0) & ~v5;
+    return (contentPreviewSetting != 0) & ~_isDeviceAuthenticated;
   }
 }
 
-- (id)_notificationSectionSettingsForSectionIdentifier:(id)a3
+- (id)_notificationSectionSettingsForSectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBNotificationBannerDestination *)self delegate];
-  v6 = [v5 notificationSectionSettingsForDestination:self forSectionIdentifier:v4];
+  identifierCopy = identifier;
+  delegate = [(SBNotificationBannerDestination *)self delegate];
+  v6 = [delegate notificationSectionSettingsForDestination:self forSectionIdentifier:identifierCopy];
 
   return v6;
 }
 
 - (id)_notificationSystemSettings
 {
-  v3 = [(SBNotificationBannerDestination *)self delegate];
-  v4 = [v3 notificationSystemSettingsForDestination:self];
+  delegate = [(SBNotificationBannerDestination *)self delegate];
+  v4 = [delegate notificationSystemSettingsForDestination:self];
 
   return v4;
 }
@@ -2410,13 +2410,13 @@ uint64_t __67__SBNotificationBannerDestination__setReadyForNotificationRequests_
   return v4;
 }
 
-- (id)_staticContentProviderForViewController:(id)a3 class:(Class)a4 notificationRequest:(id)a5 test:(id)a6
+- (id)_staticContentProviderForViewController:(id)controller class:(Class)class notificationRequest:(id)request test:(id)test
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v12 && !(*(v12 + 2))(v12))
+  controllerCopy = controller;
+  requestCopy = request;
+  testCopy = test;
+  v13 = testCopy;
+  if (testCopy && !(*(testCopy + 2))(testCopy))
   {
     v15 = 0;
   }
@@ -2425,70 +2425,70 @@ uint64_t __67__SBNotificationBannerDestination__setReadyForNotificationRequests_
   {
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v10 staticContentProvider];
+      staticContentProvider = [controllerCopy staticContentProvider];
     }
 
     else
     {
-      v14 = 0;
+      staticContentProvider = 0;
     }
 
-    if ((objc_opt_isKindOfClass() & 1) == 0 || (v15 = [v14 copy]) == 0)
+    if ((objc_opt_isKindOfClass() & 1) == 0 || (v15 = [staticContentProvider copy]) == 0)
     {
-      if (a4)
+      if (class)
       {
-        v16 = a4;
+        classCopy = class;
       }
 
       else
       {
-        v16 = MEMORY[0x277D78088];
+        classCopy = MEMORY[0x277D78088];
       }
 
-      v15 = [[v16 alloc] initWithNotificationRequest:v11];
-      v17 = [v11 sectionIdentifier];
-      v18 = [(SBNotificationBannerDestination *)self _notificationSectionSettingsForSectionIdentifier:v17];
+      v15 = [[classCopy alloc] initWithNotificationRequest:requestCopy];
+      sectionIdentifier = [requestCopy sectionIdentifier];
+      v18 = [(SBNotificationBannerDestination *)self _notificationSectionSettingsForSectionIdentifier:sectionIdentifier];
 
       [v15 setSummarizationEnabled:{objc_msgSend(v18, "isSummarizationEnabled")}];
     }
 
     [v15 setDeviceAuthenticated:{-[SBNotificationBannerDestination _isDeviceAuthenticated](self, "_isDeviceAuthenticated")}];
-    [v15 setDelegate:v10];
+    [v15 setDelegate:controllerCopy];
   }
 
   return v15;
 }
 
-- (void)_handleExpansionRequestForViewController:(id)a3 notificationRequest:(id)a4 forTrigger:(int64_t)a5 test:(id)a6 completionBlock:(id)a7
+- (void)_handleExpansionRequestForViewController:(id)controller notificationRequest:(id)request forTrigger:(int64_t)trigger test:(id)test completionBlock:(id)block
 {
   v45 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a6;
-  v15 = a7;
-  if (v14 && !v14[2](v14))
+  controllerCopy = controller;
+  requestCopy = request;
+  testCopy = test;
+  blockCopy = block;
+  if (testCopy && !testCopy[2](testCopy))
   {
 LABEL_13:
-    v15[2](v15, 0);
+    blockCopy[2](blockCopy, 0);
     goto LABEL_25;
   }
 
-  v16 = [(SBNotificationBannerDestination *)self _isAmbientPresented];
-  v17 = [(SBNotificationBannerDestination *)self _isContentSuppressedForNotificationRequest:v13];
+  _isAmbientPresented = [(SBNotificationBannerDestination *)self _isAmbientPresented];
+  v17 = [(SBNotificationBannerDestination *)self _isContentSuppressedForNotificationRequest:requestCopy];
   v18 = v17;
-  if (!v16)
+  if (!_isAmbientPresented)
   {
     if (v17)
     {
 LABEL_9:
-      [(SBNotificationBannerDestination *)self _requestUnlockForExpansionForViewController:v12 notificationRequest:v13 completionBlock:v15];
+      [(SBNotificationBannerDestination *)self _requestUnlockForExpansionForViewController:controllerCopy notificationRequest:requestCopy completionBlock:blockCopy];
       goto LABEL_25;
     }
 
     goto LABEL_24;
   }
 
-  if (a5 == 4)
+  if (trigger == 4)
   {
     v19 = *MEMORY[0x277D77DB0];
     v20 = os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT);
@@ -2497,11 +2497,11 @@ LABEL_9:
       if (v20)
       {
         v21 = v19;
-        v22 = [v13 notificationIdentifier];
-        v23 = [v22 un_logDigest];
+        notificationIdentifier = [requestCopy notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
         v24 = NCStringFromStageChangeTrigger();
         v41 = 138543618;
-        v42 = v23;
+        v42 = un_logDigest;
         v43 = 2114;
         v44 = v24;
         _os_log_impl(&dword_21ED4E000, v21, OS_LOG_TYPE_DEFAULT, "Requesting unlock for expansion of request %{public}@ for trigger %{public}@ in Ambient", &v41, 0x16u);
@@ -2513,11 +2513,11 @@ LABEL_9:
     if (v20)
     {
       v30 = v19;
-      v31 = [v13 notificationIdentifier];
-      v32 = [v31 un_logDigest];
+      notificationIdentifier2 = [requestCopy notificationIdentifier];
+      un_logDigest2 = [notificationIdentifier2 un_logDigest];
       v33 = NCStringFromStageChangeTrigger();
       v41 = 138543618;
-      v42 = v32;
+      v42 = un_logDigest2;
       v43 = 2114;
       v44 = v33;
       _os_log_impl(&dword_21ED4E000, v30, OS_LOG_TYPE_DEFAULT, "Expanding request %{public}@ for trigger %{public}@ in Ambient", &v41, 0x16u);
@@ -2535,11 +2535,11 @@ LABEL_23:
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
     {
       v26 = v25;
-      v27 = [v13 notificationIdentifier];
-      v28 = [v27 un_logDigest];
+      notificationIdentifier3 = [requestCopy notificationIdentifier];
+      un_logDigest3 = [notificationIdentifier3 un_logDigest];
       v29 = NCStringFromStageChangeTrigger();
       v41 = 138543618;
-      v42 = v28;
+      v42 = un_logDigest3;
       v43 = 2114;
       v44 = v29;
       _os_log_impl(&dword_21ED4E000, v26, OS_LOG_TYPE_DEFAULT, "Not expanding notification for request %{public}@ on trigger %{public}@ because previews are set to be shown on tap only in Ambient", &v41, 0x16u);
@@ -2554,36 +2554,36 @@ LABEL_23:
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
     {
       v30 = v39;
-      v40 = [v13 notificationIdentifier];
-      v32 = [v40 un_logDigest];
+      notificationIdentifier4 = [requestCopy notificationIdentifier];
+      un_logDigest2 = [notificationIdentifier4 un_logDigest];
       v41 = 138543362;
-      v42 = v32;
+      v42 = un_logDigest2;
       _os_log_impl(&dword_21ED4E000, v30, OS_LOG_TYPE_DEFAULT, "Expanding notification for request %{public}@ because content is not suppressed in Ambient", &v41, 0xCu);
 
       goto LABEL_23;
     }
 
 LABEL_24:
-    v15[2](v15, 1);
+    blockCopy[2](blockCopy, 1);
     goto LABEL_25;
   }
 
-  v34 = [(SBNotificationBannerDestination *)self _isDeviceAuthenticated];
+  _isDeviceAuthenticated = [(SBNotificationBannerDestination *)self _isDeviceAuthenticated];
   v35 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v36 = v35;
-    v37 = [v13 notificationIdentifier];
-    v38 = [v37 un_logDigest];
+    notificationIdentifier5 = [requestCopy notificationIdentifier];
+    un_logDigest4 = [notificationIdentifier5 un_logDigest];
     v41 = 138543618;
-    v42 = v38;
+    v42 = un_logDigest4;
     v43 = 1024;
-    LODWORD(v44) = v34;
+    LODWORD(v44) = _isDeviceAuthenticated;
     _os_log_impl(&dword_21ED4E000, v36, OS_LOG_TYPE_DEFAULT, "Checking expanding notification for request %{public}@ in Ambient [ isAuthenticated = %{BOOL}d ]", &v41, 0x12u);
   }
 
-  v15[2](v15, v34);
-  if (v34)
+  blockCopy[2](blockCopy, _isDeviceAuthenticated);
+  if (_isDeviceAuthenticated)
   {
     [(SBNotificationBannerDestination *)self _invalidateBiometricAuthIfNecessary];
   }
@@ -2591,20 +2591,20 @@ LABEL_24:
 LABEL_25:
 }
 
-- (void)_requestUnlockForExpansionForViewController:(id)a3 notificationRequest:(id)a4 completionBlock:(id)a5
+- (void)_requestUnlockForExpansionForViewController:(id)controller notificationRequest:(id)request completionBlock:(id)block
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  requestCopy = request;
+  blockCopy = block;
   v11 = *MEMORY[0x277D77DB0];
   if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [v9 notificationIdentifier];
-    v14 = [v13 un_logDigest];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138543362;
-    v26 = v14;
+    v26 = un_logDigest;
     _os_log_impl(&dword_21ED4E000, v12, OS_LOG_TYPE_DEFAULT, "Requesting unlock for expansion of request %{public}@", buf, 0xCu);
   }
 
@@ -2618,17 +2618,17 @@ LABEL_25:
   [(SBLockScreenUnlockRequest *)v15 setWantsBiometricPresentation:1];
   [(SBNotificationBannerDestination *)self _cancelReplaceAndDismissTimers];
   objc_initWeak(buf, self);
-  v18 = [(SBNotificationBannerDestination *)self lockScreenManager];
+  lockScreenManager = [(SBNotificationBannerDestination *)self lockScreenManager];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __115__SBNotificationBannerDestination__requestUnlockForExpansionForViewController_notificationRequest_completionBlock___block_invoke;
   v21[3] = &unk_2783B8488;
-  v19 = v9;
+  v19 = requestCopy;
   v22 = v19;
   objc_copyWeak(&v24, buf);
-  v20 = v10;
+  v20 = blockCopy;
   v23 = v20;
-  [v18 unlockWithRequest:v15 completion:v21];
+  [lockScreenManager unlockWithRequest:v15 completion:v21];
 
   objc_destroyWeak(&v24);
   objc_destroyWeak(buf);
@@ -2663,135 +2663,135 @@ uint64_t __115__SBNotificationBannerDestination__requestUnlockForExpansionForVie
   return result;
 }
 
-- (void)_userInteractionWillBeginForRequestPresenter:(id)a3
+- (void)_userInteractionWillBeginForRequestPresenter:(id)presenter
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (![(SBNotificationBannerDestination *)v5 isUserInteractionInProgress])
+  presenterCopy = presenter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (![(SBNotificationBannerDestination *)selfCopy isUserInteractionInProgress])
   {
-    [(SBNotificationBannerDestination *)v5 setUserInteractionInProgress:1];
+    [(SBNotificationBannerDestination *)selfCopy setUserInteractionInProgress:1];
     v6 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 notificationRequest];
-      v8 = [v7 notificationIdentifier];
-      v9 = [v8 un_logDigest];
+      notificationRequest = [presenterCopy notificationRequest];
+      notificationIdentifier = [notificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v10 = 138543362;
-      v11 = v9;
+      v11 = un_logDigest;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "User interaction started for banner for request %{public}@", &v10, 0xCu);
     }
 
-    if (![(SBNotificationBannerDestination *)v5 _isPresentingBannerInLongLook])
+    if (![(SBNotificationBannerDestination *)selfCopy _isPresentingBannerInLongLook])
     {
-      [(SBNotificationBannerDestination *)v5 _cancelReplaceAndDismissTimers];
+      [(SBNotificationBannerDestination *)selfCopy _cancelReplaceAndDismissTimers];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_userInteractionDidEndForRequestPresenter:(id)a3
+- (void)_userInteractionDidEndForRequestPresenter:(id)presenter
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  if ([(SBNotificationBannerDestination *)v5 isUserInteractionInProgress])
+  presenterCopy = presenter;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(SBNotificationBannerDestination *)selfCopy isUserInteractionInProgress])
   {
-    [(SBNotificationBannerDestination *)v5 setUserInteractionInProgress:0];
+    [(SBNotificationBannerDestination *)selfCopy setUserInteractionInProgress:0];
     v6 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 notificationRequest];
-      v8 = [v7 notificationIdentifier];
-      v9 = [v8 un_logDigest];
+      notificationRequest = [presenterCopy notificationRequest];
+      notificationIdentifier = [notificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v11 = 138543362;
-      v12 = v9;
+      v12 = un_logDigest;
       _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "User interaction ended for presenter for request %{public}@", &v11, 0xCu);
     }
 
-    if (![(SBNotificationBannerDestination *)v5 _isPresentingBannerInLongLook])
+    if (![(SBNotificationBannerDestination *)selfCopy _isPresentingBannerInLongLook])
     {
-      v10 = [v4 notificationRequest];
-      [(SBNotificationBannerDestination *)v5 _startReplaceAndDismissTimersForRequest:v10];
+      notificationRequest2 = [presenterCopy notificationRequest];
+      [(SBNotificationBannerDestination *)selfCopy _startReplaceAndDismissTimersForRequest:notificationRequest2];
     }
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (id)_ambientPresentationController
 {
-  v2 = [SBApp windowSceneManager];
-  v3 = [v2 activeDisplayWindowScene];
-  v4 = [v3 ambientPresentationController];
+  windowSceneManager = [SBApp windowSceneManager];
+  activeDisplayWindowScene = [windowSceneManager activeDisplayWindowScene];
+  ambientPresentationController = [activeDisplayWindowScene ambientPresentationController];
 
-  return v4;
+  return ambientPresentationController;
 }
 
 - (BOOL)_isAmbientPresented
 {
-  v2 = [(SBNotificationBannerDestination *)self _ambientPresentationController];
-  v3 = [v2 isPresented];
+  _ambientPresentationController = [(SBNotificationBannerDestination *)self _ambientPresentationController];
+  isPresented = [_ambientPresentationController isPresented];
 
-  return v3;
+  return isPresented;
 }
 
 - (BOOL)_isAmbientNotificationsPreviewOnTapOnly
 {
-  v2 = [(SBNotificationBannerDestination *)self _ambientPresentationController];
-  v3 = [v2 notificationsPreviewOnTapOnly];
+  _ambientPresentationController = [(SBNotificationBannerDestination *)self _ambientPresentationController];
+  notificationsPreviewOnTapOnly = [_ambientPresentationController notificationsPreviewOnTapOnly];
 
-  return v3;
+  return notificationsPreviewOnTapOnly;
 }
 
-- (BOOL)_canReceiveNotificationRequestIfAmbientPresented:(id)a3
+- (BOOL)_canReceiveNotificationRequestIfAmbientPresented:(id)presented
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  presentedCopy = presented;
   if ([(SBNotificationBannerDestination *)self _isAmbientPresented])
   {
-    v5 = [v4 options];
-    v6 = [v5 suppressPresentationInAmbient];
+    options = [presentedCopy options];
+    suppressPresentationInAmbient = [options suppressPresentationInAmbient];
 
-    v7 = [(SBNotificationBannerDestination *)self _ambientPresentationController];
-    v8 = [v7 suppressNotificationPresentation];
+    _ambientPresentationController = [(SBNotificationBannerDestination *)self _ambientPresentationController];
+    suppressNotificationPresentation = [_ambientPresentationController suppressNotificationPresentation];
 
-    v9 = [v4 interruptionLevel];
-    v10 = [v4 options];
-    v11 = [v10 revealsAdditionalContentOnPresentation];
+    interruptionLevel = [presentedCopy interruptionLevel];
+    options2 = [presentedCopy options];
+    revealsAdditionalContentOnPresentation = [options2 revealsAdditionalContentOnPresentation];
 
-    if (v6 & 1 | ((v8 & 1) == 0))
+    if (suppressPresentationInAmbient & 1 | ((suppressNotificationPresentation & 1) == 0))
     {
-      v12 = v6 ^ 1;
+      v12 = suppressPresentationInAmbient ^ 1;
     }
 
     else
     {
-      v12 = (v9 == 3) | v11;
+      v12 = (interruptionLevel == 3) | revealsAdditionalContentOnPresentation;
     }
 
     v13 = *MEMORY[0x277D77DB0];
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
     {
-      v14 = v9 == 3;
+      v14 = interruptionLevel == 3;
       v15 = v13;
-      v16 = [v4 notificationIdentifier];
-      v17 = [v16 un_logDigest];
+      notificationIdentifier = [presentedCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v19 = 138544642;
-      v20 = v17;
+      v20 = un_logDigest;
       v21 = 1024;
       v22 = v12 & 1;
       v23 = 1024;
-      v24 = v6;
+      v24 = suppressPresentationInAmbient;
       v25 = 1024;
-      v26 = v8 & 1;
+      v26 = suppressNotificationPresentation & 1;
       v27 = 1024;
       v28 = v14;
       v29 = 1024;
-      v30 = v11 & 1;
+      v30 = revealsAdditionalContentOnPresentation & 1;
       _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "Can receive request %{public}@ in ambient : %{BOOL}d [ requestSuppress:%{BOOL}d ; ambientSuppress:%{BOOL}d ; critical:%{BOOL}d ; emergency:%{BOOL}d ]", &v19, 0x2Au);
     }
   }
@@ -2804,18 +2804,18 @@ uint64_t __115__SBNotificationBannerDestination__requestUnlockForExpansionForVie
   return v12 & 1;
 }
 
-- (void)_requestBiometricAuthIfAmbientPresentedForNotificationRequest:(id)a3
+- (void)_requestBiometricAuthIfAmbientPresentedForNotificationRequest:(id)request
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([(SBNotificationBannerDestination *)self _isAmbientPresented]&& [(SBNotificationBannerDestination *)self _isContentSuppressedForNotificationRequest:v4])
+  requestCopy = request;
+  if ([(SBNotificationBannerDestination *)self _isAmbientPresented]&& [(SBNotificationBannerDestination *)self _isContentSuppressedForNotificationRequest:requestCopy])
   {
-    v5 = [MEMORY[0x277D67C98] sharedInstance];
-    v6 = v5;
+    mEMORY[0x277D67C98] = [MEMORY[0x277D67C98] sharedInstance];
+    v6 = mEMORY[0x277D67C98];
     biometricMatchingAssertion = self->_biometricMatchingAssertion;
     if (biometricMatchingAssertion)
     {
-      [v5 resumeMatchingForAssertion:biometricMatchingAssertion advisory:1];
+      [mEMORY[0x277D67C98] resumeMatchingForAssertion:biometricMatchingAssertion advisory:1];
     }
 
     else
@@ -2824,10 +2824,10 @@ uint64_t __115__SBNotificationBannerDestination__requestUnlockForExpansionForVie
       if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
       {
         v9 = v8;
-        v10 = [v4 notificationIdentifier];
-        v11 = [v10 un_logDigest];
+        notificationIdentifier = [requestCopy notificationIdentifier];
+        un_logDigest = [notificationIdentifier un_logDigest];
         v14 = 138543362;
-        v15 = v11;
+        v15 = un_logDigest;
         _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "Acquiring biometric matching assertion for notification presentation in Ambient for request %{public}@", &v14, 0xCu);
       }
 
@@ -2855,18 +2855,18 @@ uint64_t __115__SBNotificationBannerDestination__requestUnlockForExpansionForVie
   }
 }
 
-- (void)_publishDidPresentBannerForNotificationRequest:(id)a3
+- (void)_publishDidPresentBannerForNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [(SBNotificationBannerDestination *)self destinationObservers];
+  requestCopy = request;
+  destinationObservers = [(SBNotificationBannerDestination *)self destinationObservers];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __82__SBNotificationBannerDestination__publishDidPresentBannerForNotificationRequest___block_invoke;
   v7[3] = &unk_2783B84B0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  [v5 enumerateObjectsUsingBlock:v7];
+  v8 = requestCopy;
+  v6 = requestCopy;
+  [destinationObservers enumerateObjectsUsingBlock:v7];
 }
 
 void __82__SBNotificationBannerDestination__publishDidPresentBannerForNotificationRequest___block_invoke(uint64_t a1, void *a2)
@@ -2880,11 +2880,11 @@ void __82__SBNotificationBannerDestination__publishDidPresentBannerForNotificati
 
 - (BOOL)_isPresentingStickyBanner
 {
-  v3 = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
+  _presentedNotificationRequest = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
   if ([(SBNotificationBannerDestination *)self _isPresentingBanner])
   {
-    v4 = [v3 options];
-    v5 = [v4 dismissAutomatically] ^ 1;
+    options = [_presentedNotificationRequest options];
+    v5 = [options dismissAutomatically] ^ 1;
   }
 
   else
@@ -2902,97 +2902,97 @@ void __82__SBNotificationBannerDestination__publishDidPresentBannerForNotificati
     return 1;
   }
 
-  v3 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-  v4 = [v3 notificationViewController];
-  v5 = [v4 isNotPresentingOrHasCommittedToDismissingCustomContentProvidingViewController];
+  _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+  notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
+  isNotPresentingOrHasCommittedToDismissingCustomContentProvidingViewController = [notificationViewController isNotPresentingOrHasCommittedToDismissingCustomContentProvidingViewController];
 
-  return v5;
+  return isNotPresentingOrHasCommittedToDismissingCustomContentProvidingViewController;
 }
 
 - (BOOL)_isPresentingBannerRequestingRaiseGesture
 {
-  v3 = [(SBNotificationBannerDestination *)self _isPresentingBanner];
-  if (v3)
+  _isPresentingBanner = [(SBNotificationBannerDestination *)self _isPresentingBanner];
+  if (_isPresentingBanner)
   {
-    v4 = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
-    v5 = [v4 options];
-    v6 = [v5 playMediaWhenRaised];
+    _presentedNotificationRequest = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
+    options = [_presentedNotificationRequest options];
+    playMediaWhenRaised = [options playMediaWhenRaised];
 
-    LOBYTE(v3) = v6;
+    LOBYTE(_isPresentingBanner) = playMediaWhenRaised;
   }
 
-  return v3;
+  return _isPresentingBanner;
 }
 
 - (BOOL)_isPresentingBannerPreventingAutomaticLock
 {
-  v2 = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
-  v3 = [v2 options];
-  v4 = [v3 preventsAutomaticLock];
+  _presentedNotificationRequest = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
+  options = [_presentedNotificationRequest options];
+  preventsAutomaticLock = [options preventsAutomaticLock];
 
-  return v4;
+  return preventsAutomaticLock;
 }
 
 - (BOOL)_isInSetupMode
 {
-  v2 = [(SBNotificationBannerDestination *)self setupManager];
-  v3 = [v2 isInSetupMode];
+  setupManager = [(SBNotificationBannerDestination *)self setupManager];
+  isInSetupMode = [setupManager isInSetupMode];
 
-  return v3;
+  return isInSetupMode;
 }
 
-- (BOOL)_shouldScreenTimeSuppressNotificationRequest:(id)a3
+- (BOOL)_shouldScreenTimeSuppressNotificationRequest:(id)request
 {
-  v4 = a3;
-  v5 = [v4 options];
-  if ([v5 overridesDowntime])
+  requestCopy = request;
+  options = [requestCopy options];
+  if ([options overridesDowntime])
   {
     v6 = 0;
   }
 
   else
   {
-    v7 = [v4 sectionIdentifier];
-    v6 = [(SBNotificationBannerDestination *)self _shouldScreenTimeSuppressNotificationsForBundleIdentifier:v7];
+    sectionIdentifier = [requestCopy sectionIdentifier];
+    v6 = [(SBNotificationBannerDestination *)self _shouldScreenTimeSuppressNotificationsForBundleIdentifier:sectionIdentifier];
   }
 
   return v6;
 }
 
-- (BOOL)_shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)a3
+- (BOOL)_shouldScreenTimeSuppressNotificationsForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SBNotificationBannerDestination *)self _isBundleIdentifierBlockedForScreenTimeExpiration:v4]|| [(SBNotificationBannerDestination *)self _isBundleIdentifierBlockedForCommunicationPolicy:v4];
+  identifierCopy = identifier;
+  v5 = [(SBNotificationBannerDestination *)self _isBundleIdentifierBlockedForScreenTimeExpiration:identifierCopy]|| [(SBNotificationBannerDestination *)self _isBundleIdentifierBlockedForCommunicationPolicy:identifierCopy];
 
   return v5;
 }
 
-- (BOOL)_isBundleIdentifierBlockedForScreenTimeExpiration:(id)a3
+- (BOOL)_isBundleIdentifierBlockedForScreenTimeExpiration:(id)expiration
 {
-  v3 = a3;
+  expirationCopy = expiration;
   v4 = +[SBApplicationController sharedInstance];
-  v5 = [v4 applicationWithBundleIdentifier:v3];
+  v5 = [v4 applicationWithBundleIdentifier:expirationCopy];
 
-  v6 = [v5 info];
-  LOBYTE(v3) = [v6 isBlockedForScreenTimeExpiration];
+  info = [v5 info];
+  LOBYTE(expirationCopy) = [info isBlockedForScreenTimeExpiration];
 
-  return v3;
+  return expirationCopy;
 }
 
-- (BOOL)_isBundleIdentifierBlockedForCommunicationPolicy:(id)a3
+- (BOOL)_isBundleIdentifierBlockedForCommunicationPolicy:(id)policy
 {
-  v3 = a3;
+  policyCopy = policy;
   v4 = +[SBCommunicationPolicyManager sharedInstance];
-  v5 = [v4 shouldScreenTimeSuppressNotificationsForBundleIdentifier:v3];
+  v5 = [v4 shouldScreenTimeSuppressNotificationsForBundleIdentifier:policyCopy];
 
   return v5;
 }
 
-- (id)_notificationViewControllerForRequest:(id)a3
+- (id)_notificationViewControllerForRequest:(id)request
 {
   v4 = MEMORY[0x277D78098];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithNotificationRequest:v5 revealingAdditionalContentOnPresentation:0];
+  requestCopy = request;
+  v6 = [[v4 alloc] initWithNotificationRequest:requestCopy revealingAdditionalContentOnPresentation:0];
 
   [v6 setDelegate:self];
   [v6 addObserver:self];
@@ -3026,21 +3026,21 @@ void __82__SBNotificationBannerDestination__publishDidPresentBannerForNotificati
   return [(SBDashBoardLegibilityProvider *)dashBoardLegibilityProvider currentLegibilitySettings];
 }
 
-- (id)_presentableForRequest:(id)a3 modal:(BOOL)a4
+- (id)_presentableForRequest:(id)request modal:(BOOL)modal
 {
-  v4 = a4;
-  v6 = a3;
+  modalCopy = modal;
+  requestCopy = request;
   if ([(SBNotificationBannerDestination *)self _isAmbientPresented])
   {
-    v7 = [objc_alloc(MEMORY[0x277D78050]) initWithNotificationRequest:v6];
+    v7 = [objc_alloc(MEMORY[0x277D78050]) initWithNotificationRequest:requestCopy];
     [(NCNotificationPresentableViewController *)v7 setDelegate:self];
     [(SBNotificationPresentableViewController *)v7 addPresentableObserver:self];
   }
 
   else
   {
-    v8 = [(SBNotificationBannerDestination *)self _notificationViewControllerForRequest:v6];
-    [v8 setRevealAdditionalContentOnPresentation:v4];
+    v8 = [(SBNotificationBannerDestination *)self _notificationViewControllerForRequest:requestCopy];
+    [v8 setRevealAdditionalContentOnPresentation:modalCopy];
     v7 = [(NCNotificationPresentableViewController *)[SBNotificationPresentableViewController alloc] initWithNotificationViewController:v8];
     [(NCNotificationPresentableViewController *)v7 setDelegate:self];
   }
@@ -3048,22 +3048,22 @@ void __82__SBNotificationBannerDestination__publishDidPresentBannerForNotificati
   return v7;
 }
 
-- (void)_postPresentableForRequest:(id)a3 modal:(BOOL)a4 completion:(id)a5
+- (void)_postPresentableForRequest:(id)request modal:(BOOL)modal completion:(id)completion
 {
-  v6 = a4;
+  modalCopy = modal;
   v44 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [(SBNotificationBannerDestination *)self delegate];
+  requestCopy = request;
+  completionCopy = completion;
+  delegate = [(SBNotificationBannerDestination *)self delegate];
   v11 = MEMORY[0x277D77DB0];
   if (self->_presentedPresentable)
   {
-    v12 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-    v13 = [v12 notificationViewController];
+    _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+    notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
 
-    [v13 setInteractionEnabled:0];
-    v14 = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
-    if (v14)
+    [notificationViewController setInteractionEnabled:0];
+    _presentedNotificationRequest = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
+    if (_presentedNotificationRequest)
     {
       v15 = *v11;
       if (os_log_type_enabled(*v11, OS_LOG_TYPE_DEBUG))
@@ -3071,15 +3071,15 @@ void __82__SBNotificationBannerDestination__publishDidPresentBannerForNotificati
         [SBNotificationBannerDestination _postPresentableForRequest:v15 modal:? completion:?];
       }
 
-      [v10 destination:self willDismissNotificationRequest:v14];
+      [delegate destination:self willDismissNotificationRequest:_presentedNotificationRequest];
     }
   }
 
-  v16 = [(SBNotificationBannerDestination *)self _presentableForRequest:v8 modal:v6];
+  v16 = [(SBNotificationBannerDestination *)self _presentableForRequest:requestCopy modal:modalCopy];
   presentedPresentable = self->_presentedPresentable;
   self->_presentedPresentable = v16;
 
-  v18 = MEMORY[0x223D6F7F0](v9);
+  v18 = MEMORY[0x223D6F7F0](completionCopy);
   if (v18)
   {
     v19 = self->_presentedPresentable;
@@ -3087,23 +3087,23 @@ void __82__SBNotificationBannerDestination__publishDidPresentBannerForNotificati
     objc_setAssociatedObject(v19, &_SBNotificationBannerDestinationBannerRequestCompletion, v20, 3);
   }
 
-  v21 = [v8 options];
-  v22 = [v21 dismissAutomatically];
+  options = [requestCopy options];
+  dismissAutomatically = [options dismissAutomatically];
 
   v23 = *v11;
   v24 = os_log_type_enabled(*v11, OS_LOG_TYPE_DEFAULT);
-  if (!v22 || v6)
+  if (!dismissAutomatically || modalCopy)
   {
     if (v24)
     {
       v30 = self->_presentedPresentable;
       v26 = v23;
-      v27 = [v8 notificationIdentifier];
-      v28 = [v27 un_logDigest];
+      notificationIdentifier = [requestCopy notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       *buf = 138543618;
       v41 = v30;
       v42 = 2114;
-      v43 = v28;
+      v43 = un_logDigest;
       v29 = "Posting sticky banner %{public}@ for notification %{public}@";
       goto LABEL_15;
     }
@@ -3113,23 +3113,23 @@ void __82__SBNotificationBannerDestination__publishDidPresentBannerForNotificati
   {
     v25 = self->_presentedPresentable;
     v26 = v23;
-    v27 = [v8 notificationIdentifier];
-    v28 = [v27 un_logDigest];
+    notificationIdentifier = [requestCopy notificationIdentifier];
+    un_logDigest = [notificationIdentifier un_logDigest];
     *buf = 138543618;
     v41 = v25;
     v42 = 2114;
-    v43 = v28;
+    v43 = un_logDigest;
     v29 = "Posting banner %{public}@ for notification %{public}@";
 LABEL_15:
     _os_log_impl(&dword_21ED4E000, v26, OS_LOG_TYPE_DEFAULT, v29, buf, 0x16u);
   }
 
-  v31 = [SBApp bannerManager];
-  v32 = [v31 acquireGestureRecognizerPriorityAssertionForPresentable:self->_presentedPresentable priority:1 reason:@"user notification banner destination presenting banner"];
+  bannerManager = [SBApp bannerManager];
+  v32 = [bannerManager acquireGestureRecognizerPriorityAssertionForPresentable:self->_presentedPresentable priority:1 reason:@"user notification banner destination presenting banner"];
   bannerGestureRecognizerPriorityAssertion = self->_bannerGestureRecognizerPriorityAssertion;
   self->_bannerGestureRecognizerPriorityAssertion = v32;
 
-  v34 = [SBApp bannerManager];
+  bannerManager2 = [SBApp bannerManager];
   v35 = self->_presentedPresentable;
   v36 = *MEMORY[0x277D68078];
   v38[0] = *MEMORY[0x277D68070];
@@ -3137,17 +3137,17 @@ LABEL_15:
   v39[0] = &unk_283371168;
   v39[1] = MEMORY[0x277CBEC38];
   v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:2];
-  [v34 postPresentable:v35 withOptions:1 userInfo:v37 error:0];
+  [bannerManager2 postPresentable:v35 withOptions:1 userInfo:v37 error:0];
 
-  [MEMORY[0x277D78060] presentedNotificationRequestAsBanner:v8];
+  [MEMORY[0x277D78060] presentedNotificationRequestAsBanner:requestCopy];
 }
 
-- (id)_startTimerWithDelay:(unint64_t)a3 eventHandler:(id)a4
+- (id)_startTimerWithDelay:(unint64_t)delay eventHandler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   v7 = dispatch_get_global_queue(33, 0);
   v8 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v7);
-  v9 = dispatch_time(0, 1000000000 * a3);
+  v9 = dispatch_time(0, 1000000000 * delay);
   dispatch_source_set_timer(v8, v9, 0xFFFFFFFFFFFFFFFFLL, 0);
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
@@ -3155,9 +3155,9 @@ LABEL_15:
   handler[3] = &unk_2783AA1E8;
   v10 = v8;
   v16 = v10;
-  v17 = self;
-  v18 = v6;
-  v11 = v6;
+  selfCopy = self;
+  v18 = handlerCopy;
+  v11 = handlerCopy;
   dispatch_source_set_event_handler(v10, handler);
   dispatch_activate(v10);
   v12 = v18;
@@ -3216,14 +3216,14 @@ void __69__SBNotificationBannerDestination__startTimerWithDelay_eventHandler___b
   OUTLINED_FUNCTION_0_2(&dword_21ED4E000, v0, v1, "started dismiss timer %@", v2, v3, v4, v5, v6);
 }
 
-- (void)_startReplaceAndDismissTimersForRequest:(id)a3
+- (void)_startReplaceAndDismissTimersForRequest:(id)request
 {
-  v7 = [a3 options];
-  if ([v7 dismissAutomatically] && !-[SBNotificationBannerDestination isUserInteractionInProgress](self, "isUserInteractionInProgress"))
+  options = [request options];
+  if ([options dismissAutomatically] && !-[SBNotificationBannerDestination isUserInteractionInProgress](self, "isUserInteractionInProgress"))
   {
-    v4 = [(SBNotificationBannerDestination *)self _presentedNotificationRequestPresenter];
-    v5 = [v4 activeTransitionBlockingAssertions];
-    v6 = [v5 count];
+    _presentedNotificationRequestPresenter = [(SBNotificationBannerDestination *)self _presentedNotificationRequestPresenter];
+    activeTransitionBlockingAssertions = [_presentedNotificationRequestPresenter activeTransitionBlockingAssertions];
+    v6 = [activeTransitionBlockingAssertions count];
 
     if (!v6)
     {
@@ -3257,59 +3257,59 @@ void __69__SBNotificationBannerDestination__startTimerWithDelay_eventHandler___b
 
 - (void)_setupSystemStateChangeNotifications
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__lockStateChanged name:@"SBAggregateLockStateDidChangeNotification" object:0];
-  [v3 addObserver:self selector:sel__setupModeChanged name:@"SBInBuddyModeDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__lockStateChanged name:@"SBAggregateLockStateDidChangeNotification" object:0];
+  [defaultCenter addObserver:self selector:sel__setupModeChanged name:@"SBInBuddyModeDidChangeNotification" object:0];
 }
 
 - (void)_performSilenceAction
 {
-  v5 = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
-  v3 = [(SBNotificationBannerDestination *)self delegate];
-  v4 = [v5 silenceAction];
-  [v3 destination:self executeAction:v4 forNotificationRequest:v5 requestAuthentication:0 withParameters:MEMORY[0x277CBEC10] completion:0];
+  _presentedNotificationRequest = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
+  delegate = [(SBNotificationBannerDestination *)self delegate];
+  silenceAction = [_presentedNotificationRequest silenceAction];
+  [delegate destination:self executeAction:silenceAction forNotificationRequest:_presentedNotificationRequest requestAuthentication:0 withParameters:MEMORY[0x277CBEC10] completion:0];
 }
 
 - (void)_performCancelAction
 {
-  v5 = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
-  v3 = [(SBNotificationBannerDestination *)self delegate];
-  v4 = [v5 cancelAction];
-  [v3 destination:self executeAction:v4 forNotificationRequest:v5 requestAuthentication:0 withParameters:MEMORY[0x277CBEC10] completion:0];
+  _presentedNotificationRequest = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
+  delegate = [(SBNotificationBannerDestination *)self delegate];
+  cancelAction = [_presentedNotificationRequest cancelAction];
+  [delegate destination:self executeAction:cancelAction forNotificationRequest:_presentedNotificationRequest requestAuthentication:0 withParameters:MEMORY[0x277CBEC10] completion:0];
 }
 
-- (void)_dismissPresentedBannerOnly:(BOOL)a3 reason:(id)a4 animated:(BOOL)a5 forceIfSticky:(BOOL)a6
+- (void)_dismissPresentedBannerOnly:(BOOL)only reason:(id)reason animated:(BOOL)animated forceIfSticky:(BOOL)sticky
 {
-  v6 = a6;
-  v7 = a5;
-  v8 = a3;
-  v10 = a4;
-  if ([(SBNotificationBannerDestination *)self _shouldDismissPresentedBannerPerformingPreludeForcingIfSticky:v6 outReason:0])
+  stickyCopy = sticky;
+  animatedCopy = animated;
+  onlyCopy = only;
+  reasonCopy = reason;
+  if ([(SBNotificationBannerDestination *)self _shouldDismissPresentedBannerPerformingPreludeForcingIfSticky:stickyCopy outReason:0])
   {
-    [(SBNotificationBannerDestination *)self _dismissPresentedBannerOnly:v8 reason:v10 animated:v7];
+    [(SBNotificationBannerDestination *)self _dismissPresentedBannerOnly:onlyCopy reason:reasonCopy animated:animatedCopy];
   }
 }
 
-- (BOOL)_shouldDismissPresentedBannerPerformingPreludeForcingIfSticky:(BOOL)a3 outReason:(id *)a4
+- (BOOL)_shouldDismissPresentedBannerPerformingPreludeForcingIfSticky:(BOOL)sticky outReason:(id *)reason
 {
   if ([(SBNotificationBannerDestination *)self isPresentingBanner])
   {
-    if (a3 || ![(SBNotificationBannerDestination *)self _isPresentingStickyBanner])
+    if (sticky || ![(SBNotificationBannerDestination *)self _isPresentingStickyBanner])
     {
       return 1;
     }
 
-    if (a4)
+    if (reason)
     {
       v7 = @"presentingStickyBanner";
 LABEL_8:
       result = 0;
-      *a4 = v7;
+      *reason = v7;
       return result;
     }
   }
 
-  else if (a4)
+  else if (reason)
   {
     v7 = @"noBanner";
     goto LABEL_8;
@@ -3318,28 +3318,28 @@ LABEL_8:
   return 0;
 }
 
-- (BOOL)_revokeAllPresentablesWithRequesterIdentifier:(id)a3 reason:(id)a4 options:(unint64_t)a5
+- (BOOL)_revokeAllPresentablesWithRequesterIdentifier:(id)identifier reason:(id)reason options:(unint64_t)options
 {
   v20 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  identifierCopy = identifier;
   v8 = SBApp;
-  v9 = a4;
-  v10 = [v8 bannerManager];
-  v11 = [MEMORY[0x277CF0AC0] identificationWithRequesterIdentifier:v7];
+  reasonCopy = reason;
+  bannerManager = [v8 bannerManager];
+  v11 = [MEMORY[0x277CF0AC0] identificationWithRequesterIdentifier:identifierCopy];
   v17 = 0;
-  v12 = [v10 revokePresentablesWithIdentification:v11 reason:v9 options:a5 userInfo:0 error:&v17];
+  v12 = [bannerManager revokePresentablesWithIdentification:v11 reason:reasonCopy options:options userInfo:0 error:&v17];
 
   v13 = v17;
   if (!v12)
   {
-    v14 = [v13 code];
+    code = [v13 code];
     v15 = *MEMORY[0x277D77DB0];
-    if (v14 == 3)
+    if (code == 3)
     {
       if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138543362;
-        v19 = v7;
+        v19 = identifierCopy;
         _os_log_impl(&dword_21ED4E000, v15, OS_LOG_TYPE_DEFAULT, "No presentables to revoke with requester identifier %{public}@", buf, 0xCu);
       }
     }
@@ -3353,35 +3353,35 @@ LABEL_8:
   return v12 != 0;
 }
 
-- (void)_dismissPresentedBannerOnly:(BOOL)a3 reason:(id)a4 animated:(BOOL)a5
+- (void)_dismissPresentedBannerOnly:(BOOL)only reason:(id)reason animated:(BOOL)animated
 {
-  v5 = a3;
+  onlyCopy = only;
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
+  reasonCopy = reason;
+  _presentedNotificationRequest = [(SBNotificationBannerDestination *)self _presentedNotificationRequest];
   v9 = MEMORY[0x277D77DB0];
   v10 = *MEMORY[0x277D77DB0];
-  if (v8)
+  if (_presentedNotificationRequest)
   {
     if (os_log_type_enabled(*MEMORY[0x277D77DB0], OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [v8 notificationIdentifier];
-      v13 = [v12 un_logDigest];
+      notificationIdentifier = [_presentedNotificationRequest notificationIdentifier];
+      un_logDigest = [notificationIdentifier un_logDigest];
       v20 = 138543362;
-      v21 = v13;
+      v21 = un_logDigest;
       _os_log_impl(&dword_21ED4E000, v11, OS_LOG_TYPE_DEFAULT, "Revoking banner for notification %{public}@", &v20, 0xCu);
     }
 
-    v14 = [SBApp bannerManager];
-    v15 = [v14 windowSceneForPresentable:self->_presentedPresentable];
-    v16 = [v14 isDisplayingBannerInWindowScene:v15];
+    bannerManager = [SBApp bannerManager];
+    v15 = [bannerManager windowSceneForPresentable:self->_presentedPresentable];
+    v16 = [bannerManager isDisplayingBannerInWindowScene:v15];
 
-    v17 = [(SBNotificationBannerDestination *)self delegate];
-    [v17 destination:self willDismissNotificationRequest:v8];
+    delegate = [(SBNotificationBannerDestination *)self delegate];
+    [delegate destination:self willDismissNotificationRequest:_presentedNotificationRequest];
 
-    v18 = [(BNPresentable *)self->_presentedPresentable requesterIdentifier];
-    [(SBNotificationBannerDestination *)self _revokeAllPresentablesWithRequesterIdentifier:v18 reason:v7 options:v5];
+    requesterIdentifier = [(BNPresentable *)self->_presentedPresentable requesterIdentifier];
+    [(SBNotificationBannerDestination *)self _revokeAllPresentablesWithRequesterIdentifier:requesterIdentifier reason:reasonCopy options:onlyCopy];
 
     if ((v16 & 1) == 0)
     {
@@ -3407,7 +3407,7 @@ LABEL_8:
   }
 }
 
-- (void)_dismissPresentableCompleted:(id)a3
+- (void)_dismissPresentableCompleted:(id)completed
 {
   presentedPresentable = self->_presentedPresentable;
   self->_presentedPresentable = 0;
@@ -3422,80 +3422,80 @@ LABEL_8:
   return NSStringFromClass(v2);
 }
 
-- (void)notificationManagementContentProvider:(id)a3 requestsPresentingNotificationManagementViewType:(unint64_t)a4 forNotificationRequest:(id)a5 withPresentingView:(id)a6
+- (void)notificationManagementContentProvider:(id)provider requestsPresentingNotificationManagementViewType:(unint64_t)type forNotificationRequest:(id)request withPresentingView:(id)view
 {
   notificationManagementPresenter = self->_notificationManagementPresenter;
-  v10 = a6;
-  v11 = a5;
-  v14 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-  v12 = [v14 notificationViewController];
-  v13 = [v12 bs_topPresentedViewController];
-  [(NCNotificationManagementViewPresenter *)notificationManagementPresenter presentNotificationManagementViewType:a4 forNotificationRequest:v11 withPresentingViewController:v13 withPresentingView:v10];
+  viewCopy = view;
+  requestCopy = request;
+  _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+  notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
+  bs_topPresentedViewController = [notificationViewController bs_topPresentedViewController];
+  [(NCNotificationManagementViewPresenter *)notificationManagementPresenter presentNotificationManagementViewType:type forNotificationRequest:requestCopy withPresentingViewController:bs_topPresentedViewController withPresentingView:viewCopy];
 }
 
-- (void)notificationManagementViewPresenter:(id)a3 setAllowsNotifications:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6
+- (void)notificationManagementViewPresenter:(id)presenter setAllowsNotifications:(BOOL)notifications forNotificationRequest:(id)request withSectionIdentifier:(id)identifier
 {
-  v6 = a4;
-  v8 = a6;
-  v9 = [(SBNotificationBannerDestination *)self delegate];
-  [v9 destination:self setAllowsNotifications:v6 forSectionIdentifier:v8];
+  notificationsCopy = notifications;
+  identifierCopy = identifier;
+  delegate = [(SBNotificationBannerDestination *)self delegate];
+  [delegate destination:self setAllowsNotifications:notificationsCopy forSectionIdentifier:identifierCopy];
 }
 
-- (void)notificationManagementViewPresenter:(id)a3 setDeliverQuietly:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6
+- (void)notificationManagementViewPresenter:(id)presenter setDeliverQuietly:(BOOL)quietly forNotificationRequest:(id)request withSectionIdentifier:(id)identifier
 {
-  v6 = a4;
-  v8 = a6;
-  v9 = [(SBNotificationBannerDestination *)self delegate];
-  [v9 destination:self setDeliverQuietly:v6 forSectionIdentifier:v8];
+  quietlyCopy = quietly;
+  identifierCopy = identifier;
+  delegate = [(SBNotificationBannerDestination *)self delegate];
+  [delegate destination:self setDeliverQuietly:quietlyCopy forSectionIdentifier:identifierCopy];
 }
 
-- (void)notificationManagementViewPresenter:(id)a3 setAllowsCriticalAlerts:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6
+- (void)notificationManagementViewPresenter:(id)presenter setAllowsCriticalAlerts:(BOOL)alerts forNotificationRequest:(id)request withSectionIdentifier:(id)identifier
 {
-  v6 = a4;
-  v8 = a6;
-  v9 = [(SBNotificationBannerDestination *)self delegate];
-  [v9 destination:self setAllowsCriticalAlerts:v6 forSectionIdentifier:v8];
+  alertsCopy = alerts;
+  identifierCopy = identifier;
+  delegate = [(SBNotificationBannerDestination *)self delegate];
+  [delegate destination:self setAllowsCriticalAlerts:alertsCopy forSectionIdentifier:identifierCopy];
 }
 
-- (void)notificationManagementViewPresenter:(id)a3 setMuted:(BOOL)a4 untilDate:(id)a5 forSectionIdentifier:(id)a6 threadIdentifier:(id)a7
+- (void)notificationManagementViewPresenter:(id)presenter setMuted:(BOOL)muted untilDate:(id)date forSectionIdentifier:(id)identifier threadIdentifier:(id)threadIdentifier
 {
-  v9 = a4;
-  v11 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = [(SBNotificationBannerDestination *)self delegate];
-  [v14 destination:self setMuted:v9 untilDate:v13 forSectionIdentifier:v12 threadIdentifier:v11];
+  mutedCopy = muted;
+  threadIdentifierCopy = threadIdentifier;
+  identifierCopy = identifier;
+  dateCopy = date;
+  delegate = [(SBNotificationBannerDestination *)self delegate];
+  [delegate destination:self setMuted:mutedCopy untilDate:dateCopy forSectionIdentifier:identifierCopy threadIdentifier:threadIdentifierCopy];
 }
 
-- (void)notificationManagementViewPresenter:(id)a3 setAllowsTimeSensitive:(BOOL)a4 forNotificationRequest:(id)a5 withSectionIdentifier:(id)a6
+- (void)notificationManagementViewPresenter:(id)presenter setAllowsTimeSensitive:(BOOL)sensitive forNotificationRequest:(id)request withSectionIdentifier:(id)identifier
 {
-  v6 = a4;
-  v8 = a6;
-  v9 = [(SBNotificationBannerDestination *)self delegate];
-  [v9 destination:self setAllowsTimeSensitive:v6 forSectionIdentifier:v8];
+  sensitiveCopy = sensitive;
+  identifierCopy = identifier;
+  delegate = [(SBNotificationBannerDestination *)self delegate];
+  [delegate destination:self setAllowsTimeSensitive:sensitiveCopy forSectionIdentifier:identifierCopy];
 }
 
-- (void)notificationManagementViewPresenterWillPresentManagementView:(id)a3
+- (void)notificationManagementViewPresenterWillPresentManagementView:(id)view
 {
-  v3 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-  v4 = [v3 notificationViewController];
-  v5 = [v4 bs_topPresentedViewController];
+  _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+  notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
+  bs_topPresentedViewController = [notificationViewController bs_topPresentedViewController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 preserveInputViews];
+    [bs_topPresentedViewController preserveInputViews];
   }
 }
 
-- (void)notificationManagementViewPresenterDidDismissManagementView:(id)a3
+- (void)notificationManagementViewPresenterDidDismissManagementView:(id)view
 {
-  v3 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-  v4 = [v3 notificationViewController];
-  v5 = [v4 bs_topPresentedViewController];
+  _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+  notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
+  bs_topPresentedViewController = [notificationViewController bs_topPresentedViewController];
 
   if (objc_opt_respondsToSelector())
   {
-    [v5 restoreInputViews];
+    [bs_topPresentedViewController restoreInputViews];
   }
 }
 
@@ -3508,10 +3508,10 @@ LABEL_8:
 
 - (NCNotificationViewController)presentedBanner
 {
-  v2 = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
-  v3 = [v2 notificationViewController];
+  _presentedNotificationPresentableVC = [(SBNotificationBannerDestination *)self _presentedNotificationPresentableVC];
+  notificationViewController = [_presentedNotificationPresentableVC notificationViewController];
 
-  return v3;
+  return notificationViewController;
 }
 
 - (void)modifyNotificationRequest:(void *)a1 .cold.1(void *a1)

@@ -1,15 +1,15 @@
 @interface FolderComposerParticipantJoinCell
-- (_TtC11MobileNotes33FolderComposerParticipantJoinCell)initWithFrame:(CGRect)a3;
+- (_TtC11MobileNotes33FolderComposerParticipantJoinCell)initWithFrame:(CGRect)frame;
 @end
 
 @implementation FolderComposerParticipantJoinCell
 
-- (_TtC11MobileNotes33FolderComposerParticipantJoinCell)initWithFrame:(CGRect)a3
+- (_TtC11MobileNotes33FolderComposerParticipantJoinCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = (&self->super.super.super.super.super.super.super.isa + OBJC_IVAR____TtC11MobileNotes33FolderComposerParticipantJoinCell_joinOperatorChanged);
   *v9 = 0;

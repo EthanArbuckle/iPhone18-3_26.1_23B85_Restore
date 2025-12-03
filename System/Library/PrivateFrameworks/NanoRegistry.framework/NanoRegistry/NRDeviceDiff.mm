@@ -1,25 +1,25 @@
 @interface NRDeviceDiff
-- (BOOL)isEqual:(id)a3;
-- (NRDeviceDiff)initWithCoder:(id)a3;
-- (NRDeviceDiff)initWithDiffPropertyDiffs:(id)a3;
-- (NRDeviceDiff)initWithProtobuf:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NRDeviceDiff)initWithCoder:(id)coder;
+- (NRDeviceDiff)initWithDiffPropertyDiffs:(id)diffs;
+- (NRDeviceDiff)initWithProtobuf:(id)protobuf;
 - (NRPBDeviceDiff)protobuf;
 - (id)description;
 - (unint64_t)hash;
 - (void)_createIndex;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NRDeviceDiff
 
-- (NRDeviceDiff)initWithDiffPropertyDiffs:(id)a3
+- (NRDeviceDiff)initWithDiffPropertyDiffs:(id)diffs
 {
-  v5 = a3;
+  diffsCopy = diffs;
   v10.receiver = self;
   v10.super_class = NRDeviceDiff;
   v6 = [(NRDeviceDiff *)&v10 init];
   v7 = v6;
-  if (v6 && (objc_storeStrong(&v6->_diffPropertyDiffs, a3), ![v5 count]))
+  if (v6 && (objc_storeStrong(&v6->_diffPropertyDiffs, diffs), ![diffsCopy count]))
   {
     v8 = 0;
   }
@@ -35,12 +35,12 @@
 - (void)_createIndex
 {
   v17 = *MEMORY[0x1E69E9840];
-  [NRUnarchivedObjectVerifier unarchivingVerifyObjectIsNotNil:*(a1 + 8) name:@"device property diff type" owner:a1];
+  [NRUnarchivedObjectVerifier unarchivingVerifyObjectIsNotNil:*(self + 8) name:@"device property diff type" owner:self];
   v14 = 0u;
   v15 = 0u;
   v12 = 0u;
   v13 = 0u;
-  obj = *(a1 + 8);
+  obj = *(self + 8);
   v2 = [obj countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v2)
   {
@@ -58,11 +58,11 @@
 
         v6 = *(*(&v12 + 1) + 8 * v5);
         v7 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-        [NRUnarchivedObjectVerifier unarchivingVerifyObjectClasses:v6 name:@"device property diff type key" classes:v7 owner:a1];
+        [NRUnarchivedObjectVerifier unarchivingVerifyObjectClasses:v6 name:@"device property diff type key" classes:v7 owner:self];
 
-        v8 = [*(a1 + 8) objectForKeyedSubscript:v6];
+        v8 = [*(self + 8) objectForKeyedSubscript:v6];
         v9 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
-        [NRUnarchivedObjectVerifier unarchivingVerifyObjectClasses:v8 name:@"device property diff type property" classes:v9 owner:a1];
+        [NRUnarchivedObjectVerifier unarchivingVerifyObjectClasses:v8 name:@"device property diff type property" classes:v9 owner:self];
 
         ++v5;
       }
@@ -77,17 +77,17 @@
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (NRDeviceDiff)initWithCoder:(id)a3
+- (NRDeviceDiff)initWithCoder:(id)coder
 {
   v20 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(NRDeviceDiff *)self init];
   if (!v5)
   {
     goto LABEL_5;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   if (!v6)
   {
     v10 = MEMORY[0x1E695DFD8];
@@ -96,7 +96,7 @@
     v19 = objc_opt_class();
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v17 count:3];
     v12 = [v10 setWithArray:{v11, v17, v18}];
-    v13 = [v4 decodeObjectOfClasses:v12 forKey:@"properties"];
+    v13 = [coderCopy decodeObjectOfClasses:v12 forKey:@"properties"];
     diffPropertyDiffs = v5->_diffPropertyDiffs;
     v5->_diffPropertyDiffs = v13;
 
@@ -116,31 +116,31 @@ LABEL_6:
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(NRDeviceDiff *)self protobuf];
-  v5 = [v6 data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  protobuf = [(NRDeviceDiff *)self protobuf];
+  data = [protobuf data];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
-- (NRDeviceDiff)initWithProtobuf:(id)a3
+- (NRDeviceDiff)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
+  protobufCopy = protobuf;
   v21.receiver = self;
   v21.super_class = NRDeviceDiff;
   v5 = [(NRDeviceDiff *)&v21 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v7 = 0;
-    if (!v4)
+    if (!protobufCopy)
     {
       goto LABEL_10;
     }
 
 LABEL_3:
-    for (i = v4[2]; ; i = 0)
+    for (i = protobufCopy[2]; ; i = 0)
     {
       v9 = i;
       v10 = [v9 count];
@@ -150,9 +150,9 @@ LABEL_3:
         break;
       }
 
-      if (v4)
+      if (protobufCopy)
       {
-        v11 = v4[2];
+        v11 = protobufCopy[2];
       }
 
       else
@@ -163,9 +163,9 @@ LABEL_3:
       v12 = v11;
       v13 = [v12 objectAtIndexedSubscript:v7];
 
-      if (v4)
+      if (protobufCopy)
       {
-        v14 = v4[1];
+        v14 = protobufCopy[1];
       }
 
       else
@@ -177,10 +177,10 @@ LABEL_3:
       v16 = [v15 objectAtIndexedSubscript:v7];
 
       v17 = [[NRDevicePropertyDiffType alloc] initWithProtobuf:v16];
-      [v6 setObject:v17 forKeyedSubscript:v13];
+      [dictionary setObject:v17 forKeyedSubscript:v13];
 
       ++v7;
-      if (v4)
+      if (protobufCopy)
       {
         goto LABEL_3;
       }
@@ -189,7 +189,7 @@ LABEL_10:
       ;
     }
 
-    v18 = [v6 copy];
+    v18 = [dictionary copy];
     diffPropertyDiffs = v5->_diffPropertyDiffs;
     v5->_diffPropertyDiffs = v18;
 
@@ -203,11 +203,11 @@ LABEL_10:
 {
   v40 = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x1E695DF70] array];
-  [(NRPBDeviceDiff *)v3 setNames:v4];
+  array = [MEMORY[0x1E695DF70] array];
+  [(NRPBDeviceDiff *)v3 setNames:array];
 
-  v5 = [MEMORY[0x1E695DF70] array];
-  [(NRPBDeviceDiff *)v3 setDiffs:v5];
+  array2 = [MEMORY[0x1E695DF70] array];
+  [(NRPBDeviceDiff *)v3 setDiffs:array2];
 
   v37 = 0u;
   v38 = 0u;
@@ -239,25 +239,25 @@ LABEL_10:
         if ([v12 isEqual:v10])
         {
           v14 = v6;
-          v15 = self;
-          v16 = [v13 diff];
-          v17 = [v16 value];
+          selfCopy = self;
+          diff = [v13 diff];
+          value = [diff value];
           objc_opt_class();
           isKindOfClass = objc_opt_isKindOfClass();
 
           if (isKindOfClass)
           {
-            v19 = [v13 diff];
-            v20 = [v19 value];
+            diff2 = [v13 diff];
+            value2 = [diff2 value];
 
-            v21 = [[NRMiniUUIDSet alloc] initWithUUIDSet:v20];
+            v21 = [[NRMiniUUIDSet alloc] initWithUUIDSet:value2];
             v22 = [[NRDevicePropertyDiff alloc] initWithValue:v21];
             v23 = -[NRDevicePropertyDiffType initWithDiff:andChangeType:]([NRDevicePropertyDiffType alloc], "initWithDiff:andChangeType:", v22, [v13 changeType]);
 
             v13 = v23;
           }
 
-          self = v15;
+          self = selfCopy;
           v6 = v14;
           v9 = v32;
           v8 = v33;
@@ -279,8 +279,8 @@ LABEL_10:
         }
 
         v26 = v25;
-        v27 = [v13 protobuf];
-        [v26 addObject:v27];
+        protobuf = [v13 protobuf];
+        [v26 addObject:protobuf];
 
         ++v11;
       }
@@ -342,15 +342,15 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v8.receiver = self;
   v8.super_class = NRDeviceDiff;
-  if ([(NRDiffBase *)&v8 isEqual:v4])
+  if ([(NRDiffBase *)&v8 isEqual:equalCopy])
   {
     diffPropertyDiffs = self->_diffPropertyDiffs;
-    if (diffPropertyDiffs == v4[1])
+    if (diffPropertyDiffs == equalCopy[1])
     {
       v6 = 1;
     }
@@ -372,8 +372,8 @@ LABEL_10:
 - (id)description
 {
   v24 = *MEMORY[0x1E69E9840];
-  v2 = [(NSDictionary *)self->_diffPropertyDiffs allKeys];
-  v3 = [v2 sortedArrayUsingComparator:&__block_literal_global_20];
+  allKeys = [(NSDictionary *)self->_diffPropertyDiffs allKeys];
+  v3 = [allKeys sortedArrayUsingComparator:&__block_literal_global_20];
 
   v21 = 0u;
   v22 = 0u;

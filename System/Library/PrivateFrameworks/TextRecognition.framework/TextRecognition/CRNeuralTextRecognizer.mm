@@ -2,13 +2,13 @@
 - (BOOL)unloadResourcesWhenNotInUse;
 - (CRNeuralRecognizerConfiguration)configuration;
 - (CRNeuralTextRecognizer)init;
-- (CRNeuralTextRecognizer)initWithConfiguration:(id)a3 owner:(id)a4;
-- (id)thresholdsForTextRegion:(id)a3 withLocale:(id)a4;
+- (CRNeuralTextRecognizer)initWithConfiguration:(id)configuration owner:(id)owner;
+- (id)thresholdsForTextRegion:(id)region withLocale:(id)locale;
 - (void)_releaseIntermediateResources;
 - (void)_unloadResources;
-- (void)setConfiguration:(id)a3;
-- (void)setOwner:(id)a3;
-- (void)setUnloadResourcesWhenNotInUse:(BOOL)a3;
+- (void)setConfiguration:(id)configuration;
+- (void)setOwner:(id)owner;
+- (void)setUnloadResourcesWhenNotInUse:(BOOL)use;
 @end
 
 @implementation CRNeuralTextRecognizer
@@ -20,11 +20,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setUnloadResourcesWhenNotInUse:(BOOL)a3
+- (void)setUnloadResourcesWhenNotInUse:(BOOL)use
 {
   v5 = OBJC_IVAR___CRNeuralTextRecognizer_unloadResourcesWhenNotInUse;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = use;
 }
 
 - (CRNeuralRecognizerConfiguration)configuration
@@ -34,28 +34,28 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setConfiguration:(id)a3
+- (void)setConfiguration:(id)configuration
 {
   v5 = OBJC_IVAR___CRNeuralTextRecognizer_configuration;
   swift_beginAccess();
   v6 = *(&self->super.isa + v5);
-  *(&self->super.isa + v5) = a3;
-  v7 = a3;
+  *(&self->super.isa + v5) = configuration;
+  configurationCopy = configuration;
 }
 
-- (void)setOwner:(id)a3
+- (void)setOwner:(id)owner
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CRNeuralTextRecognizer_owner);
-  *(&self->super.isa + OBJC_IVAR___CRNeuralTextRecognizer_owner) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CRNeuralTextRecognizer_owner) = owner;
+  ownerCopy = owner;
 }
 
-- (CRNeuralTextRecognizer)initWithConfiguration:(id)a3 owner:(id)a4
+- (CRNeuralTextRecognizer)initWithConfiguration:(id)configuration owner:(id)owner
 {
   v6 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_1EB884870);
   MEMORY[0x1EEE9AC00](v6 - 8, v7);
   v9 = &v15 - v8;
-  if (a4)
+  if (owner)
   {
     sub_1B429F6B8();
     v10 = sub_1B429F6D8();
@@ -68,15 +68,15 @@
     (*(*(v11 - 8) + 56))(v9, 1, 1, v11);
   }
 
-  v12 = a3;
-  v13 = sub_1B416BC54(v12, v9);
+  configurationCopy = configuration;
+  v13 = sub_1B416BC54(configurationCopy, v9);
 
   return v13;
 }
 
-- (id)thresholdsForTextRegion:(id)a3 withLocale:(id)a4
+- (id)thresholdsForTextRegion:(id)region withLocale:(id)locale
 {
-  if (a4)
+  if (locale)
   {
     v5 = sub_1B429FB98();
     v7 = v6;
@@ -89,7 +89,7 @@
   }
 
   swift_unknownObjectRetain();
-  v8 = self;
+  selfCopy = self;
   v9 = sub_1B416C5C0(v5, v7);
   swift_unknownObjectRelease();
 
@@ -98,13 +98,13 @@
 
 - (void)_unloadResources
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B416B3E8();
 }
 
 - (void)_releaseIntermediateResources
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B416B4F0();
 }
 

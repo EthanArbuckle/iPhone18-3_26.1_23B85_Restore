@@ -1,10 +1,10 @@
 @interface PPScoredLocation
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToScoredLocation:(id)a3;
-- (PPScoredLocation)initWithCoder:(id)a3;
-- (PPScoredLocation)initWithLocation:(id)a3 score:(double)a4 sentimentScore:(double)a5;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToScoredLocation:(id)location;
+- (PPScoredLocation)initWithCoder:(id)coder;
+- (PPScoredLocation)initWithLocation:(id)location score:(double)score sentimentScore:(double)sentimentScore;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PPScoredLocation
@@ -21,70 +21,70 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPScoredLocation *)self isEqualToScoredLocation:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PPScoredLocation *)self isEqualToScoredLocation:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToScoredLocation:(id)a3
+- (BOOL)isEqualToScoredLocation:(id)location
 {
-  v4 = a3;
-  v5 = v4 && [(PPLocation *)self->_location isEqualToLocation:*(v4 + 1)]&& self->_score == v4[2] && self->_sentimentScore == v4[3];
+  locationCopy = location;
+  v5 = locationCopy && [(PPLocation *)self->_location isEqualToLocation:*(locationCopy + 1)]&& self->_score == locationCopy[2] && self->_sentimentScore == locationCopy[3];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   location = self->_location;
-  v5 = a3;
-  [v5 encodeObject:location forKey:@"loc"];
-  [v5 encodeDouble:@"scr" forKey:self->_score];
-  [v5 encodeDouble:@"sent" forKey:self->_sentimentScore];
+  coderCopy = coder;
+  [coderCopy encodeObject:location forKey:@"loc"];
+  [coderCopy encodeDouble:@"scr" forKey:self->_score];
+  [coderCopy encodeDouble:@"sent" forKey:self->_sentimentScore];
 }
 
-- (PPScoredLocation)initWithCoder:(id)a3
+- (PPScoredLocation)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loc"];
-  [v4 decodeDoubleForKey:@"scr"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loc"];
+  [coderCopy decodeDoubleForKey:@"scr"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"sent"];
+  [coderCopy decodeDoubleForKey:@"sent"];
   v9 = v8;
 
   if (v5)
   {
     self = [(PPScoredLocation *)self initWithLocation:v5 score:v7 sentimentScore:v9];
-    v10 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v10 = 0;
+    selfCopy = 0;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (PPScoredLocation)initWithLocation:(id)a3 score:(double)a4 sentimentScore:(double)a5
+- (PPScoredLocation)initWithLocation:(id)location score:(double)score sentimentScore:(double)sentimentScore
 {
-  v10 = a3;
-  if (!v10)
+  locationCopy = location;
+  if (!locationCopy)
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PPScoredLocation.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"location"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PPScoredLocation.m" lineNumber:25 description:{@"Invalid parameter not satisfying: %@", @"location"}];
   }
 
   v15.receiver = self;
@@ -93,9 +93,9 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_location, a3);
-    v12->_score = a4;
-    v12->_sentimentScore = a5;
+    objc_storeStrong(&v11->_location, location);
+    v12->_score = score;
+    v12->_sentimentScore = sentimentScore;
   }
 
   return v12;

@@ -1,18 +1,18 @@
 @interface REMNSPersistentHistoryToken
-- (BOOL)isEqual:(id)a3;
-- (REMNSPersistentHistoryToken)initWithCoder:(id)a3;
-- (REMNSPersistentHistoryToken)initWithPersistentHistoryToken:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMNSPersistentHistoryToken)initWithCoder:(id)coder;
+- (REMNSPersistentHistoryToken)initWithPersistentHistoryToken:(id)token;
 - (id)description;
-- (int64_t)compareToken:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compareToken:(id)token error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMNSPersistentHistoryToken
 
-- (REMNSPersistentHistoryToken)initWithPersistentHistoryToken:(id)a3
+- (REMNSPersistentHistoryToken)initWithPersistentHistoryToken:(id)token
 {
-  v5 = a3;
-  if (v5)
+  tokenCopy = token;
+  if (tokenCopy)
   {
     v10.receiver = self;
     v10.super_class = REMNSPersistentHistoryToken;
@@ -20,45 +20,45 @@
     v7 = v6;
     if (v6)
     {
-      objc_storeStrong(&v6->_token, a3);
+      objc_storeStrong(&v6->_token, token);
     }
 
     self = v7;
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = 0;
+    selfCopy = 0;
   }
 
-  return v8;
+  return selfCopy;
 }
 
 - (id)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(REMNSPersistentHistoryToken *)self token];
-  v4 = [v2 stringWithFormat:@"REM_WRAP(%@)", v3];
+  token = [(REMNSPersistentHistoryToken *)self token];
+  v4 = [v2 stringWithFormat:@"REM_WRAP(%@)", token];
 
   return v4;
 }
 
-- (int64_t)compareToken:(id)a3 error:(id *)a4
+- (int64_t)compareToken:(id)token error:(id *)error
 {
-  v6 = a3;
+  tokenCopy = token;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(REMNSPersistentHistoryToken *)self token];
-    v8 = [v6 token];
-    v9 = [v7 compareToken:v8 error:a4];
+    token = [(REMNSPersistentHistoryToken *)self token];
+    token2 = [tokenCopy token];
+    v9 = [token compareToken:token2 error:error];
   }
 
-  else if (a4)
+  else if (error)
   {
     [MEMORY[0x1E696ABC0] errorWithREMChangeErrorCode:0];
-    *a4 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -69,10 +69,10 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -82,9 +82,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(REMNSPersistentHistoryToken *)self token];
-      v6 = [(REMNSPersistentHistoryToken *)v4 token];
-      v7 = [v5 isEqual:v6];
+      token = [(REMNSPersistentHistoryToken *)self token];
+      token2 = [(REMNSPersistentHistoryToken *)equalCopy token];
+      v7 = [token isEqual:token2];
     }
 
     else
@@ -96,20 +96,20 @@
   return v7;
 }
 
-- (REMNSPersistentHistoryToken)initWithCoder:(id)a3
+- (REMNSPersistentHistoryToken)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"token"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"token"];
 
   v6 = [(REMNSPersistentHistoryToken *)self initWithPersistentHistoryToken:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMNSPersistentHistoryToken *)self token];
-  [v4 encodeObject:v5 forKey:@"token"];
+  coderCopy = coder;
+  token = [(REMNSPersistentHistoryToken *)self token];
+  [coderCopy encodeObject:token forKey:@"token"];
 }
 
 @end

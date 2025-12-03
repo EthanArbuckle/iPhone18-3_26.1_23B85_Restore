@@ -1,17 +1,17 @@
 @interface APOdmlPredictor
-- (APOdmlPredictor)initWithResponses:(id)a3 assetManager:(id)a4 model:(id)a5;
+- (APOdmlPredictor)initWithResponses:(id)responses assetManager:(id)manager model:(id)model;
 - (id)predictTapThroughRate;
-- (void)localOutputLog:(id)a3 adamID:(id)a4;
-- (void)validateOutput:(id)a3 adamID:(id)a4;
+- (void)localOutputLog:(id)log adamID:(id)d;
+- (void)validateOutput:(id)output adamID:(id)d;
 @end
 
 @implementation APOdmlPredictor
 
-- (APOdmlPredictor)initWithResponses:(id)a3 assetManager:(id)a4 model:(id)a5
+- (APOdmlPredictor)initWithResponses:(id)responses assetManager:(id)manager model:(id)model
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  responsesCopy = responses;
+  managerCopy = manager;
+  modelCopy = model;
   v31.receiver = self;
   v31.super_class = APOdmlPredictor;
   v12 = [(APOdmlPredictor *)&v31 init];
@@ -20,15 +20,15 @@
     goto LABEL_3;
   }
 
-  v13 = objc_msgSend_valueForKey_(v8, v11, @"adamID");
+  v13 = objc_msgSend_valueForKey_(responsesCopy, v11, @"adamID");
   adamIDs = v12->_adamIDs;
   v12->_adamIDs = v13;
 
-  objc_storeStrong(&v12->_assetManager, a4);
-  objc_storeStrong(&v12->_predictionModel, a5);
+  objc_storeStrong(&v12->_assetManager, manager);
+  objc_storeStrong(&v12->_predictionModel, model);
   v17 = objc_msgSend_date(MEMORY[0x277CBEAA8], v15, v16);
   v18 = [APOdmlFeatureHandler alloc];
-  v20 = objc_msgSend_initWithResponses_assetManager_model_(v18, v19, v8, v9, v10);
+  v20 = objc_msgSend_initWithResponses_assetManager_model_(v18, v19, responsesCopy, managerCopy, modelCopy);
   featureHandler = v12->_featureHandler;
   v12->_featureHandler = v20;
 
@@ -181,20 +181,20 @@ LABEL_3:
   return v74;
 }
 
-- (void)validateOutput:(id)a3 adamID:(id)a4
+- (void)validateOutput:(id)output adamID:(id)d
 {
   v102 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  outputCopy = output;
+  dCopy = d;
   v10 = objc_msgSend_dictionary(MEMORY[0x277CBEB38], v8, v9);
   objc_msgSend_setValue_forKey_(v10, v11, @"modelOutput", @"featureName");
-  if (v6)
+  if (outputCopy)
   {
-    v14 = objc_msgSend_stringValue(v6, v12, v13);
+    v14 = objc_msgSend_stringValue(outputCopy, v12, v13);
     objc_msgSend_setValue_forKey_(v10, v15, v14, @"featureValue");
 
     v18 = objc_msgSend_copy(v10, v16, v17);
-    objc_msgSend_localOutputLog_adamID_(self, v19, v18, v7);
+    objc_msgSend_localOutputLog_adamID_(self, v19, v18, dCopy);
 
     v22 = objc_msgSend_assetManager(self, v20, v21);
     v24 = objc_msgSend_stringValueForFactor_(v22, v23, @"ModelOutputConfig");
@@ -211,7 +211,7 @@ LABEL_3:
         v33 = objc_msgSend_objectForKeyedSubscript_(v28, v29, @"min");
         if (v33)
         {
-          objc_msgSend_floatValue(v6, v31, v32);
+          objc_msgSend_floatValue(outputCopy, v31, v32);
           v35 = v34;
           objc_msgSend_floatValue(v33, v36, v37);
           if (v35 < v38)
@@ -224,11 +224,11 @@ LABEL_3:
 
         v91 = v33;
         v94 = v24;
-        v95 = v7;
+        v95 = dCopy;
         v46 = objc_msgSend_objectForKeyedSubscript_(v28, v31, @"max");
         if (v46)
         {
-          objc_msgSend_floatValue(v6, v44, v45);
+          objc_msgSend_floatValue(outputCopy, v44, v45);
           v48 = v47;
           objc_msgSend_floatValue(v46, v49, v50);
           if (v48 > v51)
@@ -240,7 +240,7 @@ LABEL_3:
         }
 
         v90 = v46;
-        v57 = v6;
+        v57 = outputCopy;
         v92 = v28;
         v58 = objc_msgSend_objectForKeyedSubscript_(v28, v44, @"sentinelValueSet");
         v96 = 0u;
@@ -288,9 +288,9 @@ LABEL_3:
           while (v63);
         }
 
-        v6 = v57;
+        outputCopy = v57;
         v24 = v94;
-        v7 = v95;
+        dCopy = v95;
         v28 = v92;
         v26 = v93;
         v30 = 0;
@@ -305,18 +305,18 @@ LABEL_3:
     objc_msgSend_sendEvent_additionalDetails_(APOdmlAnalyticsPrediction, v84, v80, v83);
 
     v87 = objc_msgSend_copy(v10, v85, v86);
-    objc_msgSend_localOutputLog_adamID_(self, v88, v87, v7);
+    objc_msgSend_localOutputLog_adamID_(self, v88, v87, dCopy);
   }
 
   v89 = *MEMORY[0x277D85DE8];
 }
 
-- (void)localOutputLog:(id)a3 adamID:(id)a4
+- (void)localOutputLog:(id)log adamID:(id)d
 {
   v5 = MEMORY[0x277CBEB38];
-  v6 = a4;
-  v10 = objc_msgSend_dictionaryWithDictionary_(v5, v7, a3);
-  objc_msgSend_setValue_forKey_(v10, v8, v6, @"adamID");
+  dCopy = d;
+  v10 = objc_msgSend_dictionaryWithDictionary_(v5, v7, log);
+  objc_msgSend_setValue_forKey_(v10, v8, dCopy, @"adamID");
 
   objc_msgSend_logWithLoggerKey_message_category_(APOdmlLogUtility, v9, @"InferenceModelOutput", v10, 5);
 }

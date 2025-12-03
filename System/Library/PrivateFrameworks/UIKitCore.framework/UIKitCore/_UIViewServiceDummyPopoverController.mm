@@ -1,49 +1,49 @@
 @interface _UIViewServiceDummyPopoverController
 - (_UIViewServiceDummyPopoverControllerDelegate)dummyPopoverControllerDelegate;
-- (void)_popoverView:(id)a3 didSetUseToolbarShine:(BOOL)a4;
-- (void)_super_setPopoverContentSize:(CGSize)a3;
-- (void)setPopoverContentSize:(CGSize)a3 animated:(BOOL)a4;
+- (void)_popoverView:(id)view didSetUseToolbarShine:(BOOL)shine;
+- (void)_super_setPopoverContentSize:(CGSize)size;
+- (void)setPopoverContentSize:(CGSize)size animated:(BOOL)animated;
 @end
 
 @implementation _UIViewServiceDummyPopoverController
 
-- (void)_popoverView:(id)a3 didSetUseToolbarShine:(BOOL)a4
+- (void)_popoverView:(id)view didSetUseToolbarShine:(BOOL)shine
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(UIPopoverController *)self popoverView];
+  shineCopy = shine;
+  viewCopy = view;
+  popoverView = [(UIPopoverController *)self popoverView];
 
-  if (v7 == v6)
+  if (popoverView == viewCopy)
   {
-    v8 = [(_UIViewServiceDummyPopoverController *)self dummyPopoverControllerDelegate];
+    dummyPopoverControllerDelegate = [(_UIViewServiceDummyPopoverController *)self dummyPopoverControllerDelegate];
     if (objc_opt_respondsToSelector())
     {
-      [v8 dummyPopoverController:self popoverViewDidSetUseToolbarShine:v4];
+      [dummyPopoverControllerDelegate dummyPopoverController:self popoverViewDidSetUseToolbarShine:shineCopy];
     }
   }
 }
 
-- (void)setPopoverContentSize:(CGSize)a3 animated:(BOOL)a4
+- (void)setPopoverContentSize:(CGSize)size animated:(BOOL)animated
 {
-  v4 = a4;
-  height = a3.height;
-  width = a3.width;
-  v8 = [(_UIViewServiceDummyPopoverController *)self dummyPopoverControllerDelegate];
+  animatedCopy = animated;
+  height = size.height;
+  width = size.width;
+  dummyPopoverControllerDelegate = [(_UIViewServiceDummyPopoverController *)self dummyPopoverControllerDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v8 dummyPopoverController:self didChangeContentSize:v4 animated:{width, height}];
+    [dummyPopoverControllerDelegate dummyPopoverController:self didChangeContentSize:animatedCopy animated:{width, height}];
   }
 
   v9.receiver = self;
   v9.super_class = _UIViewServiceDummyPopoverController;
-  [(UIPopoverController *)&v9 setPopoverContentSize:v4 animated:width, height];
+  [(UIPopoverController *)&v9 setPopoverContentSize:animatedCopy animated:width, height];
 }
 
-- (void)_super_setPopoverContentSize:(CGSize)a3
+- (void)_super_setPopoverContentSize:(CGSize)size
 {
   v3.receiver = self;
   v3.super_class = _UIViewServiceDummyPopoverController;
-  [(UIPopoverController *)&v3 setPopoverContentSize:0 animated:a3.width, a3.height];
+  [(UIPopoverController *)&v3 setPopoverContentSize:0 animated:size.width, size.height];
 }
 
 - (_UIViewServiceDummyPopoverControllerDelegate)dummyPopoverControllerDelegate

@@ -1,29 +1,29 @@
 @interface TNPageInfoContainer
 - (TNPageController)pageController;
-- (TNPageInfoContainer)initWithPageIndex:(unint64_t)a3 pageController:(id)a4;
-- (void)setGeometry:(id)a3;
-- (void)setParentInfo:(id)a3;
+- (TNPageInfoContainer)initWithPageIndex:(unint64_t)index pageController:(id)controller;
+- (void)setGeometry:(id)geometry;
+- (void)setParentInfo:(id)info;
 @end
 
 @implementation TNPageInfoContainer
 
-- (TNPageInfoContainer)initWithPageIndex:(unint64_t)a3 pageController:(id)a4
+- (TNPageInfoContainer)initWithPageIndex:(unint64_t)index pageController:(id)controller
 {
-  v6 = a4;
+  controllerCopy = controller;
   v10.receiver = self;
   v10.super_class = TNPageInfoContainer;
   v7 = [(TNPageInfoContainer *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_pageController, v6);
-    v8->_pageIndex = a3;
+    objc_storeWeak(&v7->_pageController, controllerCopy);
+    v8->_pageIndex = index;
   }
 
   return v8;
 }
 
-- (void)setParentInfo:(id)a3
+- (void)setParentInfo:(id)info
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TNPageInfoContainer setParentInfo:]");
@@ -35,7 +35,7 @@
   objc_msgSend_logBacktraceThrottled(v10, v8, v9);
 }
 
-- (void)setGeometry:(id)a3
+- (void)setGeometry:(id)geometry
 {
   v3 = MEMORY[0x277D81150];
   v4 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], a2, "[TNPageInfoContainer setGeometry:]");

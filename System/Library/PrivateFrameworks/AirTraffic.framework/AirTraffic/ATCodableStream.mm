@@ -1,24 +1,24 @@
 @interface ATCodableStream
 - (ATCodableStream)init;
-- (ATCodableStream)initWithCoder:(id)a3;
-- (ATCodableStream)initWithInputStream:(id)a3;
+- (ATCodableStream)initWithCoder:(id)coder;
+- (ATCodableStream)initWithInputStream:(id)stream;
 - (void)dealloc;
 @end
 
 @implementation ATCodableStream
 
-- (ATCodableStream)initWithCoder:(id)a3
+- (ATCodableStream)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(ATCodableStream *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"fileHandleForReading"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"fileHandleForReading"];
     v7 = [objc_alloc(MEMORY[0x277D27F28]) initWithQueue:0];
     [v7 start];
-    v8 = [v7 inputStream];
+    inputStream = [v7 inputStream];
     inputStream = v5->_inputStream;
-    v5->_inputStream = v8;
+    v5->_inputStream = inputStream;
 
     objc_storeStrong(&v5->_writer, v7);
     v10 = dup([v6 fileDescriptor]);
@@ -75,36 +75,36 @@ void __33__ATCodableStream_initWithCoder___block_invoke(uint64_t a1)
   [(ATCodableStream *)&v3 dealloc];
 }
 
-- (ATCodableStream)initWithInputStream:(id)a3
+- (ATCodableStream)initWithInputStream:(id)stream
 {
-  v6 = a3;
+  streamCopy = stream;
   v7 = [(ATCodableStream *)self init];
   if (v7)
   {
-    if (!v6)
+    if (!streamCopy)
     {
-      v20 = [MEMORY[0x277CCA890] currentHandler];
-      [v20 handleFailureInMethod:a2 object:v7 file:@"ATCodableStream.m" lineNumber:37 description:@"inputStream cannot be nil"];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:v7 file:@"ATCodableStream.m" lineNumber:37 description:@"inputStream cannot be nil"];
     }
 
-    v8 = [objc_alloc(MEMORY[0x277D27F20]) initWithInputStream:v6 queue:0];
+    v8 = [objc_alloc(MEMORY[0x277D27F20]) initWithInputStream:streamCopy queue:0];
     [v8 setMaximumBufferSize:NSPageSize()];
     reader = v7->_reader;
     v7->_reader = v8;
     v10 = v8;
 
-    objc_storeStrong(&v7->_inputStream, a3);
-    v11 = [MEMORY[0x277CCAC10] pipe];
-    v12 = [v11 fileHandleForWriting];
-    v13 = [v11 fileHandleForReading];
+    objc_storeStrong(&v7->_inputStream, stream);
+    pipe = [MEMORY[0x277CCAC10] pipe];
+    fileHandleForWriting = [pipe fileHandleForWriting];
+    fileHandleForReading = [pipe fileHandleForReading];
     fileHandleForReading = v7->_fileHandleForReading;
-    v7->_fileHandleForReading = v13;
+    v7->_fileHandleForReading = fileHandleForReading;
 
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __39__ATCodableStream_initWithInputStream___block_invoke;
     v27[3] = &unk_278C6D878;
-    v15 = v12;
+    v15 = fileHandleForWriting;
     v28 = v15;
     [v10 setDidReadDataBlock:v27];
     v24[0] = MEMORY[0x277D85DD0];

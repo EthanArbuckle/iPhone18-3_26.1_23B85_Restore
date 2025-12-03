@@ -9,19 +9,19 @@
 
 - (BOOL)crlaxIsAudioOnly
 {
-  v2 = [(CRLMovieItemAccessibility *)self crlaxTarget];
-  v3 = [v2 isAudioOnly];
+  crlaxTarget = [(CRLMovieItemAccessibility *)self crlaxTarget];
+  isAudioOnly = [crlaxTarget isAudioOnly];
 
-  return v3;
+  return isAudioOnly;
 }
 
 - (double)crlaxDuration
 {
-  v3 = [(CRLMovieItemAccessibility *)self crlaxTarget];
-  [v3 endTime];
+  crlaxTarget = [(CRLMovieItemAccessibility *)self crlaxTarget];
+  [crlaxTarget endTime];
   v5 = v4;
-  v6 = [(CRLMovieItemAccessibility *)self crlaxTarget];
-  [v6 startTime];
+  crlaxTarget2 = [(CRLMovieItemAccessibility *)self crlaxTarget];
+  [crlaxTarget2 startTime];
   v8 = v5 - v7;
 
   return v8;
@@ -36,10 +36,10 @@
 
 - (id)crlaxTypeDescription
 {
-  v2 = [(CRLMovieItemAccessibility *)self crlaxIsAudioOnly];
+  crlaxIsAudioOnly = [(CRLMovieItemAccessibility *)self crlaxIsAudioOnly];
   v3 = +[NSBundle mainBundle];
   v4 = v3;
-  if (v2)
+  if (crlaxIsAudioOnly)
   {
     v5 = @"Audio";
   }

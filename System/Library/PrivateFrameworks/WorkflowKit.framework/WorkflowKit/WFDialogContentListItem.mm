@@ -1,47 +1,47 @@
 @interface WFDialogContentListItem
-- (BOOL)loadAltTextWithCompletion:(id)a3;
-- (BOOL)loadImageWithSize:(CGSize)a3 completion:(id)a4;
-- (BOOL)loadSubtitleWithCompletion:(id)a3;
-- (WFDialogContentListItem)initWithCoder:(id)a3;
-- (WFDialogContentListItem)initWithContentItem:(id)a3 encodedTypedValue:(id)a4 selected:(BOOL)a5 serializedPossibleState:(id)a6;
-- (void)_loadContentItemWithCompletion:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)prepareForDisplayWithCompletionHandler:(id)a3;
+- (BOOL)loadAltTextWithCompletion:(id)completion;
+- (BOOL)loadImageWithSize:(CGSize)size completion:(id)completion;
+- (BOOL)loadSubtitleWithCompletion:(id)completion;
+- (WFDialogContentListItem)initWithCoder:(id)coder;
+- (WFDialogContentListItem)initWithContentItem:(id)item encodedTypedValue:(id)value selected:(BOOL)selected serializedPossibleState:(id)state;
+- (void)_loadContentItemWithCompletion:(id)completion;
+- (void)encodeWithCoder:(id)coder;
+- (void)prepareForDisplayWithCompletionHandler:(id)handler;
 @end
 
 @implementation WFDialogContentListItem
 
-- (BOOL)loadImageWithSize:(CGSize)a3 completion:(id)a4
+- (BOOL)loadImageWithSize:(CGSize)size completion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v21[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  if (!v8)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v17 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"WFDialogContentListItem.m" lineNumber:208 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDialogContentListItem.m" lineNumber:208 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   if ([(WFDialogListItem *)self showingStaticContent])
   {
-    v9 = [(WFDialogContentListItem *)self image];
-    v10 = [v9 resizedImageWithSizeInPoints:{width, height}];
+    image = [(WFDialogContentListItem *)self image];
+    v10 = [image resizedImageWithSizeInPoints:{width, height}];
 
     v20 = *MEMORY[0x1E69E0FE8];
     v21[0] = &unk_1F4A9AC60;
     v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v21 forKeys:&v20 count:1];
-    v8[2](v8, v10, v11);
+    completionCopy[2](completionCopy, v10, v11);
     v12 = v10 != 0;
   }
 
   else
   {
-    v13 = [(WFDialogContentListItem *)self contentItem];
-    if (v13)
+    contentItem = [(WFDialogContentListItem *)self contentItem];
+    if (contentItem)
     {
-      v10 = v13;
-      v12 = [v13 getListThumbnail:v8 forSize:{width, height}];
+      v10 = contentItem;
+      v12 = [contentItem getListThumbnail:completionCopy forSize:{width, height}];
     }
 
     else
@@ -63,14 +63,14 @@
   return v12;
 }
 
-- (BOOL)loadAltTextWithCompletion:(id)a3
+- (BOOL)loadAltTextWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"WFDialogContentListItem.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDialogContentListItem.m" lineNumber:185 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   if ([(WFDialogListItem *)self showingStaticContent])
@@ -80,15 +80,15 @@
 
   else
   {
-    v7 = [(WFDialogContentListItem *)self contentItem];
-    if (v7)
+    contentItem = [(WFDialogContentListItem *)self contentItem];
+    if (contentItem)
     {
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __53__WFDialogContentListItem_loadAltTextWithCompletion___block_invoke;
       v12[3] = &unk_1E837B0F0;
-      v13 = v5;
-      v6 = [v7 getListAltText:v12];
+      v13 = completionCopy;
+      v6 = [contentItem getListAltText:v12];
       v8 = v13;
     }
 
@@ -110,23 +110,23 @@
   return v6;
 }
 
-- (BOOL)loadSubtitleWithCompletion:(id)a3
+- (BOOL)loadSubtitleWithCompletion:(id)completion
 {
   v18 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v12 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"WFDialogContentListItem.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFDialogContentListItem.m" lineNumber:154 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
   }
 
   if ([(WFDialogListItem *)self showingStaticContent])
   {
-    v6 = [(WFDialogContentListItem *)self subtitle];
-    v5[2](v5, v6);
+    subtitle = [(WFDialogContentListItem *)self subtitle];
+    completionCopy[2](completionCopy, subtitle);
 
-    v7 = [(WFDialogContentListItem *)self subtitle];
-    v8 = [v7 length] != 0;
+    subtitle2 = [(WFDialogContentListItem *)self subtitle];
+    v8 = [subtitle2 length] != 0;
 LABEL_13:
 
     goto LABEL_14;
@@ -134,15 +134,15 @@ LABEL_13:
 
   if (![(WFDialogContentListItem *)self hideSubtitle])
   {
-    v7 = [(WFDialogContentListItem *)self contentItem];
-    if (v7)
+    subtitle2 = [(WFDialogContentListItem *)self contentItem];
+    if (subtitle2)
     {
       v13[0] = MEMORY[0x1E69E9820];
       v13[1] = 3221225472;
       v13[2] = __54__WFDialogContentListItem_loadSubtitleWithCompletion___block_invoke;
       v13[3] = &unk_1E837B0C8;
-      v15 = v5;
-      v14 = v7;
+      v15 = completionCopy;
+      v14 = subtitle2;
       v8 = [v14 getListSubtitle:v13];
 
       v9 = v15;
@@ -190,27 +190,27 @@ void __54__WFDialogContentListItem_loadSubtitleWithCompletion___block_invoke(uin
   }
 }
 
-- (void)_loadContentItemWithCompletion:(id)a3
+- (void)_loadContentItemWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(WFDialogContentListItem *)self archivedContentItem];
+  completionCopy = completion;
+  archivedContentItem = [(WFDialogContentListItem *)self archivedContentItem];
 
-  if (!v5)
+  if (!archivedContentItem)
   {
-    v4[2](v4, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v6 = MEMORY[0x1E696ACD0];
-  v7 = [(WFDialogContentListItem *)self archivedContentItem];
+  archivedContentItem2 = [(WFDialogContentListItem *)self archivedContentItem];
   v8 = [MEMORY[0x1E695DFD8] setWithObject:objc_opt_class()];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __58__WFDialogContentListItem__loadContentItemWithCompletion___block_invoke;
   v11[3] = &unk_1E837B0A0;
   v11[4] = self;
-  v12 = v4;
-  v9 = v4;
-  v10 = [v6 wf_securelyUnarchiveObjectWithData:v7 allowedClasses:v8 completionHandler:v11];
+  v12 = completionCopy;
+  v9 = completionCopy;
+  v10 = [v6 wf_securelyUnarchiveObjectWithData:archivedContentItem2 allowedClasses:v8 completionHandler:v11];
 }
 
 void __58__WFDialogContentListItem__loadContentItemWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -221,12 +221,12 @@ void __58__WFDialogContentListItem__loadContentItemWithCompletion___block_invoke
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)prepareForDisplayWithCompletionHandler:(id)a3
+- (void)prepareForDisplayWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(WFDialogListItem *)self showingStaticContent]|| ([(WFDialogContentListItem *)self contentItem], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
-    v4[2](v4, self);
+    handlerCopy[2](handlerCopy, self);
   }
 
   else
@@ -236,57 +236,57 @@ void __58__WFDialogContentListItem__loadContentItemWithCompletion___block_invoke
     v6[2] = __66__WFDialogContentListItem_prepareForDisplayWithCompletionHandler___block_invoke;
     v6[3] = &unk_1E837B078;
     v6[4] = self;
-    v7 = v4;
+    v7 = handlerCopy;
     [(WFDialogContentListItem *)self _loadContentItemWithCompletion:v6];
   }
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFDialogContentListItem *)self contentItem];
+  coderCopy = coder;
+  contentItem = [(WFDialogContentListItem *)self contentItem];
 
-  if (v5)
+  if (contentItem)
   {
     v6 = MEMORY[0x1E696ACC8];
-    v7 = [(WFDialogContentListItem *)self contentItem];
-    v8 = [v6 wf_securelyArchivedDataWithRootObject:v7 deletionResponsibility:0];
+    contentItem2 = [(WFDialogContentListItem *)self contentItem];
+    v8 = [v6 wf_securelyArchivedDataWithRootObject:contentItem2 deletionResponsibility:0];
 
     [(WFDialogContentListItem *)self setArchivedContentItem:v8];
   }
 
-  v9 = [(WFDialogListItem *)self identifier];
-  [v4 encodeObject:v9 forKey:@"identifier"];
+  identifier = [(WFDialogListItem *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v10 = [(WFDialogListItem *)self title];
-  [v4 encodeObject:v10 forKey:@"title"];
+  title = [(WFDialogListItem *)self title];
+  [coderCopy encodeObject:title forKey:@"title"];
 
-  v11 = [(WFDialogContentListItem *)self subtitle];
-  [v4 encodeObject:v11 forKey:@"subtitle"];
+  subtitle = [(WFDialogContentListItem *)self subtitle];
+  [coderCopy encodeObject:subtitle forKey:@"subtitle"];
 
-  v12 = [(WFDialogContentListItem *)self image];
-  [v4 encodeObject:v12 forKey:@"image"];
+  image = [(WFDialogContentListItem *)self image];
+  [coderCopy encodeObject:image forKey:@"image"];
 
-  [v4 encodeBool:-[WFDialogListItem selected](self forKey:{"selected"), @"selected"}];
-  v13 = [(WFDialogContentListItem *)self archivedContentItem];
-  [v4 encodeObject:v13 forKey:@"archivedContentItem"];
+  [coderCopy encodeBool:-[WFDialogListItem selected](self forKey:{"selected"), @"selected"}];
+  archivedContentItem = [(WFDialogContentListItem *)self archivedContentItem];
+  [coderCopy encodeObject:archivedContentItem forKey:@"archivedContentItem"];
 
-  [v4 encodeBool:-[WFDialogContentListItem hideSubtitle](self forKey:{"hideSubtitle"), @"hideSubtitle"}];
-  v14 = [(WFDialogListItem *)self serializedPossibleState];
-  [v4 encodeObject:v14 forKey:@"serializedPossibleState"];
+  [coderCopy encodeBool:-[WFDialogContentListItem hideSubtitle](self forKey:{"hideSubtitle"), @"hideSubtitle"}];
+  serializedPossibleState = [(WFDialogListItem *)self serializedPossibleState];
+  [coderCopy encodeObject:serializedPossibleState forKey:@"serializedPossibleState"];
 }
 
-- (WFDialogContentListItem)initWithCoder:(id)a3
+- (WFDialogContentListItem)initWithCoder:(id)coder
 {
-  v3 = a3;
-  v23 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v21 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"title"];
-  v22 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
-  v4 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"image"];
-  v20 = [v3 decodeBoolForKey:@"selected"];
-  v5 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"archivedContentItem"];
-  v19 = [v3 decodeBoolForKey:@"hideSubtitle"];
-  v6 = [v3 decodeObjectOfClass:objc_opt_class() forKey:@"encodedTypedValue"];
+  coderCopy = coder;
+  v23 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v21 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"title"];
+  v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"subtitle"];
+  v4 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"image"];
+  v20 = [coderCopy decodeBoolForKey:@"selected"];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"archivedContentItem"];
+  v19 = [coderCopy decodeBoolForKey:@"hideSubtitle"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"encodedTypedValue"];
   v7 = MEMORY[0x1E695DFD8];
   v8 = objc_opt_class();
   v9 = objc_opt_class();
@@ -294,7 +294,7 @@ void __58__WFDialogContentListItem__loadContentItemWithCompletion___block_invoke
   v11 = objc_opt_class();
   v12 = objc_opt_class();
   v13 = [v7 setWithObjects:{v8, v9, v10, v11, v12, objc_opt_class(), 0}];
-  v14 = [v3 decodeObjectOfClasses:v13 forKey:@"serializedPossibleState"];
+  v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"serializedPossibleState"];
 
   v15 = [(WFDialogListItem *)self initWithTitle:v21 subtitle:v22 identifier:v23 image:v4 selected:v20 hideSubtitle:v19 encodedTypedValue:v6 serializedPossibleState:v14];
   v16 = v15;
@@ -307,20 +307,20 @@ void __58__WFDialogContentListItem__loadContentItemWithCompletion___block_invoke
   return v16;
 }
 
-- (WFDialogContentListItem)initWithContentItem:(id)a3 encodedTypedValue:(id)a4 selected:(BOOL)a5 serializedPossibleState:(id)a6
+- (WFDialogContentListItem)initWithContentItem:(id)item encodedTypedValue:(id)value selected:(BOOL)selected serializedPossibleState:(id)state
 {
-  v21 = a5;
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [v11 listItem];
-  v13 = [v12 title];
-  v14 = [v11 listItem];
-  v15 = [v14 subtitle];
-  v16 = [v11 listItem];
-  v17 = [v16 image];
+  selectedCopy = selected;
+  stateCopy = state;
+  valueCopy = value;
+  itemCopy = item;
+  listItem = [itemCopy listItem];
+  title = [listItem title];
+  listItem2 = [itemCopy listItem];
+  subtitle = [listItem2 subtitle];
+  listItem3 = [itemCopy listItem];
+  image = [listItem3 image];
   LOBYTE(v20) = 0;
-  v18 = [(WFDialogContentListItem *)self initWithTitle:v13 subtitle:v15 image:v17 selected:v21 contentItem:v11 encodedTypedValue:v10 hideSubtitle:v20 serializedPossibleState:v9];
+  v18 = [(WFDialogContentListItem *)self initWithTitle:title subtitle:subtitle image:image selected:selectedCopy contentItem:itemCopy encodedTypedValue:valueCopy hideSubtitle:v20 serializedPossibleState:stateCopy];
 
   return v18;
 }

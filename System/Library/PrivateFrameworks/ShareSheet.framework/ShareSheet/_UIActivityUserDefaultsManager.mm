@@ -1,13 +1,13 @@
 @interface _UIActivityUserDefaultsManager
-+ (void)requestFavoritesForActivityCategory:(int64_t)a3 completionHandler:(id)a4;
++ (void)requestFavoritesForActivityCategory:(int64_t)category completionHandler:(id)handler;
 @end
 
 @implementation _UIActivityUserDefaultsManager
 
-+ (void)requestFavoritesForActivityCategory:(int64_t)a3 completionHandler:(id)a4
++ (void)requestFavoritesForActivityCategory:(int64_t)category completionHandler:(id)handler
 {
-  v5 = a4;
-  if (v5)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v6 = _os_activity_create(&dword_18B359000, "Sharing/_UIActivityUserDefaultsManager/requestFavoritesForActivityCategory", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
@@ -28,13 +28,13 @@
     v12[1] = 3221225472;
     v12[2] = __88___UIActivityUserDefaultsManager_requestFavoritesForActivityCategory_completionHandler___block_invoke_2;
     v12[3] = &unk_1E71FAE50;
-    v9 = v5;
+    v9 = handlerCopy;
     v13 = v9;
     v10 = [v7 synchronousRemoteObjectProxyWithErrorHandler:v12];
     v11 = v10;
     if (v10)
     {
-      [v10 requestFavoritesForActivityCategory:a3 completionHandler:v9];
+      [v10 requestFavoritesForActivityCategory:category completionHandler:v9];
     }
 
     else

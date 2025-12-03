@@ -1,10 +1,10 @@
 @interface PhotoCollectionViewCell
-- (_TtC9MomentsUI23PhotoCollectionViewCell)initWithCoder:(id)a3;
+- (_TtC9MomentsUI23PhotoCollectionViewCell)initWithCoder:(id)coder;
 @end
 
 @implementation PhotoCollectionViewCell
 
-- (_TtC9MomentsUI23PhotoCollectionViewCell)initWithCoder:(id)a3
+- (_TtC9MomentsUI23PhotoCollectionViewCell)initWithCoder:(id)coder
 {
   if (one-time initialization token for empty != -1)
   {
@@ -43,8 +43,8 @@
   v16();
   AssetView.setFallBackView()();
   [(PhotoCollectionViewCell *)v17 setIsAccessibilityElement:1];
-  v18 = [(PhotoCollectionViewCell *)v17 accessibilityTraits];
-  if ((v8 & ~v18) != 0)
+  accessibilityTraits = [(PhotoCollectionViewCell *)v17 accessibilityTraits];
+  if ((v8 & ~accessibilityTraits) != 0)
   {
     v19 = v8;
   }
@@ -55,7 +55,7 @@
   }
 
   v20 = OBJC_IVAR____TtC9MomentsUI23PhotoCollectionViewCell_photoView;
-  [(PhotoCollectionViewCell *)v17 setAccessibilityTraits:v19 | v18];
+  [(PhotoCollectionViewCell *)v17 setAccessibilityTraits:v19 | accessibilityTraits];
   v21 = MEMORY[0x21CE91FC0](v9, *(&v9 + 1));
   [(PhotoCollectionViewCell *)v17 setAccessibilityLabel:v21];
 
@@ -84,7 +84,7 @@
 
   v29 = *&v28[OBJC_IVAR____TtC9MomentsUI9AssetView_fallbackImageView];
   v30 = MEMORY[0x21CE91FC0](0x6F746F6870, 0xE500000000000000);
-  v31 = [objc_opt_self() systemImageNamed_];
+  systemImageNamed_ = [objc_opt_self() systemImageNamed_];
 
   [v29 setImage_];
   *(&self->super.super.super.super.super.super.isa + v20) = v15;

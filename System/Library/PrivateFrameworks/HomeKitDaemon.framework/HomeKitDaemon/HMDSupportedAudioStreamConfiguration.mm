@@ -1,28 +1,28 @@
 @interface HMDSupportedAudioStreamConfiguration
 - (BOOL)_parseFromTLVData;
-- (HMDSupportedAudioStreamConfiguration)initWithCoder:(id)a3;
-- (HMDSupportedAudioStreamConfiguration)initWithComfortNoise:(id)a3 CodecConfigurations:(id)a4;
+- (HMDSupportedAudioStreamConfiguration)initWithCoder:(id)coder;
+- (HMDSupportedAudioStreamConfiguration)initWithComfortNoise:(id)noise CodecConfigurations:(id)configurations;
 - (NSData)tlvData;
-- (void)description:(id)a3 indent:(id)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)description:(id)description indent:(id)indent;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HMDSupportedAudioStreamConfiguration
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(HMDSupportedAudioStreamConfiguration *)self codecConfigurations];
-  [v4 encodeObject:v5 forKey:@"kSupportedAudioStreamConfiguration_AudioCodecConfigurations"];
+  coderCopy = coder;
+  codecConfigurations = [(HMDSupportedAudioStreamConfiguration *)self codecConfigurations];
+  [coderCopy encodeObject:codecConfigurations forKey:@"kSupportedAudioStreamConfiguration_AudioCodecConfigurations"];
 
-  v6 = [(HMDSupportedAudioStreamConfiguration *)self supportsComfortNoise];
-  [v4 encodeObject:v6 forKey:@"kSupportedAudioStreamConfiguration_ComfortNoise"];
+  supportsComfortNoise = [(HMDSupportedAudioStreamConfiguration *)self supportsComfortNoise];
+  [coderCopy encodeObject:supportsComfortNoise forKey:@"kSupportedAudioStreamConfiguration_ComfortNoise"];
 }
 
-- (HMDSupportedAudioStreamConfiguration)initWithCoder:(id)a3
+- (HMDSupportedAudioStreamConfiguration)initWithCoder:(id)coder
 {
   v20[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = HMDSupportedAudioStreamConfiguration;
   v5 = [(HMDSupportedAudioStreamConfiguration *)&v18 init];
@@ -33,7 +33,7 @@
     v20[1] = objc_opt_class();
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:2];
     v8 = [v6 setWithArray:v7];
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"kSupportedAudioStreamConfiguration_AudioCodecConfigurations"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"kSupportedAudioStreamConfiguration_AudioCodecConfigurations"];
     codecConfigurations = v5->_codecConfigurations;
     v5->_codecConfigurations = v9;
 
@@ -41,7 +41,7 @@
     v19 = objc_opt_class();
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:&v19 count:1];
     v13 = [v11 setWithArray:v12];
-    v14 = [v4 decodeObjectOfClasses:v13 forKey:@"kSupportedAudioStreamConfiguration_ComfortNoise"];
+    v14 = [coderCopy decodeObjectOfClasses:v13 forKey:@"kSupportedAudioStreamConfiguration_ComfortNoise"];
     supportsComfortNoise = v5->_supportsComfortNoise;
     v5->_supportsComfortNoise = v14;
   }
@@ -50,34 +50,34 @@
   return v5;
 }
 
-- (void)description:(id)a3 indent:(id)a4
+- (void)description:(id)description indent:(id)indent
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HAPTLVBase *)self tlvDatablob];
-  [v7 appendFormat:@"\n %@ tlvDatablob = %@ ", v6, v8];
+  indentCopy = indent;
+  descriptionCopy = description;
+  tlvDatablob = [(HAPTLVBase *)self tlvDatablob];
+  [descriptionCopy appendFormat:@"\n %@ tlvDatablob = %@ ", indentCopy, tlvDatablob];
 
-  v9 = [(HMDSupportedAudioStreamConfiguration *)self codecConfigurations];
-  v10 = [v9 allValues];
-  v11 = arrayToString(v10, v6);
-  [v7 appendFormat:@"\n %@ configurations = %@ ", v6, v11];
+  codecConfigurations = [(HMDSupportedAudioStreamConfiguration *)self codecConfigurations];
+  allValues = [codecConfigurations allValues];
+  v11 = arrayToString(allValues, indentCopy);
+  [descriptionCopy appendFormat:@"\n %@ configurations = %@ ", indentCopy, v11];
 
-  v12 = [(HAPTLVBase *)self tlvDatablob];
-  [v7 appendFormat:@"\n %@ comfortNoise = %@ ", v6, v12];
+  tlvDatablob2 = [(HAPTLVBase *)self tlvDatablob];
+  [descriptionCopy appendFormat:@"\n %@ comfortNoise = %@ ", indentCopy, tlvDatablob2];
 }
 
 - (NSData)tlvData
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CFEC80] creator];
+  creator = [MEMORY[0x277CFEC80] creator];
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v4 = [(HMDSupportedAudioStreamConfiguration *)self codecConfigurations];
-  v5 = [v4 allValues];
+  codecConfigurations = [(HMDSupportedAudioStreamConfiguration *)self codecConfigurations];
+  allValues = [codecConfigurations allValues];
 
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  v6 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -88,27 +88,27 @@
       {
         if (*v16 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allValues);
         }
 
-        v10 = [*(*(&v15 + 1) + 8 * i) tlvData];
-        [v3 addTLV:1 data:v10];
+        tlvData = [*(*(&v15 + 1) + 8 * i) tlvData];
+        [creator addTLV:1 data:tlvData];
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allValues countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
   }
 
-  v11 = [(HMDSupportedAudioStreamConfiguration *)self supportsComfortNoise];
-  [v3 addTLV:2 number:v11];
+  supportsComfortNoise = [(HMDSupportedAudioStreamConfiguration *)self supportsComfortNoise];
+  [creator addTLV:2 number:supportsComfortNoise];
 
-  v12 = [v3 serialize];
+  serialize = [creator serialize];
 
   v13 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return serialize;
 }
 
 - (BOOL)_parseFromTLVData
@@ -126,15 +126,15 @@
     v24 = v5;
     v25 = v6;
     v8 = MEMORY[0x277CBEB38];
-    v9 = [v3 field];
-    v10 = [v8 dictionaryWithCapacity:{objc_msgSend(v9, "count")}];
+    field = [v3 field];
+    v10 = [v8 dictionaryWithCapacity:{objc_msgSend(field, "count")}];
 
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v11 = [v3 field];
-    v12 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+    field2 = [v3 field];
+    v12 = [field2 countByEnumeratingWithState:&v26 objects:v30 count:16];
     if (v12)
     {
       v13 = v12;
@@ -145,15 +145,15 @@
         {
           if (*v27 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(field2);
           }
 
           v16 = *(*(&v26 + 1) + 8 * i);
-          v17 = [v16 codecGroup];
-          [v10 setObject:v16 forKeyedSubscript:v17];
+          codecGroup = [v16 codecGroup];
+          [v10 setObject:v16 forKeyedSubscript:codecGroup];
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v26 objects:v30 count:16];
+        v13 = [field2 countByEnumeratingWithState:&v26 objects:v30 count:16];
       }
 
       while (v13);
@@ -163,9 +163,9 @@
     codecConfigurations = self->_codecConfigurations;
     self->_codecConfigurations = v18;
 
-    v20 = [v4 field];
+    field3 = [v4 field];
     supportsComfortNoise = self->_supportsComfortNoise;
-    self->_supportsComfortNoise = v20;
+    self->_supportsComfortNoise = field3;
 
     v7 = v25;
     v5 = v24;
@@ -183,18 +183,18 @@ HMDAudioCodecConfiguration *__57__HMDSupportedAudioStreamConfiguration__parseFro
   return v3;
 }
 
-- (HMDSupportedAudioStreamConfiguration)initWithComfortNoise:(id)a3 CodecConfigurations:(id)a4
+- (HMDSupportedAudioStreamConfiguration)initWithComfortNoise:(id)noise CodecConfigurations:(id)configurations
 {
-  v7 = a3;
-  v8 = a4;
+  noiseCopy = noise;
+  configurationsCopy = configurations;
   v14.receiver = self;
   v14.super_class = HMDSupportedAudioStreamConfiguration;
   v9 = [(HMDSupportedAudioStreamConfiguration *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_supportsComfortNoise, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_supportsComfortNoise, noise);
+    v11 = [configurationsCopy copy];
     codecConfigurations = v10->_codecConfigurations;
     v10->_codecConfigurations = v11;
   }

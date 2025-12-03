@@ -14,7 +14,7 @@
   v9 = v6;
   v10 = a3;
   v7 = v6;
-  [a1 enumerateObjectsUsingBlock:v8];
+  [self enumerateObjectsUsingBlock:v8];
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface GetSuggestionsIntent
 - (GetSuggestionsIntent)init;
-- (GetSuggestionsIntent)initWithCoder:(id)a3;
+- (GetSuggestionsIntent)initWithCoder:(id)coder;
 @end
 
 @implementation GetSuggestionsIntent
@@ -12,12 +12,12 @@
   return [(GetSuggestionsIntent *)&v3 init];
 }
 
-- (GetSuggestionsIntent)initWithCoder:(id)a3
+- (GetSuggestionsIntent)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = type metadata accessor for GetSuggestionsIntent();
-  v4 = a3;
-  v5 = [(GetSuggestionsIntent *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(GetSuggestionsIntent *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

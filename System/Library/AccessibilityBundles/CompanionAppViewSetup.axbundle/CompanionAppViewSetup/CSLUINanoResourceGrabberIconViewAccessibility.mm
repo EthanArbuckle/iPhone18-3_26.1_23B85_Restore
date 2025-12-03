@@ -8,13 +8,13 @@
 {
   v11.receiver = self;
   v11.super_class = CSLUINanoResourceGrabberIconViewAccessibility;
-  v3 = [(CSLUINanoResourceGrabberIconViewAccessibility *)&v11 accessibilityLabel];
+  accessibilityLabel = [(CSLUINanoResourceGrabberIconViewAccessibility *)&v11 accessibilityLabel];
 
-  if (v3)
+  if (accessibilityLabel)
   {
     v10.receiver = self;
     v10.super_class = CSLUINanoResourceGrabberIconViewAccessibility;
-    v4 = [(CSLUINanoResourceGrabberIconViewAccessibility *)&v10 accessibilityLabel];
+    accessibilityLabel2 = [(CSLUINanoResourceGrabberIconViewAccessibility *)&v10 accessibilityLabel];
     goto LABEL_9;
   }
 
@@ -30,7 +30,7 @@
   {
     if (!AXIsInternalInstall())
     {
-      v4 = 0;
+      accessibilityLabel2 = 0;
       goto LABEL_8;
     }
 
@@ -38,12 +38,12 @@
     v8 = [MEMORY[0x29EDBA0F8] stringWithFormat:@"Internal only, missing app name: %@", v5];
   }
 
-  v4 = v8;
+  accessibilityLabel2 = v8;
 LABEL_8:
 
 LABEL_9:
 
-  return v4;
+  return accessibilityLabel2;
 }
 
 @end

@@ -1,24 +1,24 @@
 @interface BPSCheckMarkView
-- (BPSCheckMarkView)initWithFrame:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (BPSCheckMarkView)initWithFrame:(CGRect)frame;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (id)checkedImage;
 - (id)uncheckedImage;
 - (void)layoutSubviews;
-- (void)setIsChecked:(BOOL)a3;
+- (void)setIsChecked:(BOOL)checked;
 @end
 
 @implementation BPSCheckMarkView
 
-- (BPSCheckMarkView)initWithFrame:(CGRect)a3
+- (BPSCheckMarkView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = BPSCheckMarkView;
-  v3 = [(BPSCheckMarkView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(BPSCheckMarkView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x277D755E8]);
-    v5 = [(BPSCheckMarkView *)v3 uncheckedImage];
-    v6 = [v4 initWithImage:v5];
+    uncheckedImage = [(BPSCheckMarkView *)v3 uncheckedImage];
+    v6 = [v4 initWithImage:uncheckedImage];
     imageView = v3->_imageView;
     v3->_imageView = v6;
 
@@ -36,7 +36,7 @@
   [(UIImageView *)imageView setFrame:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   v3 = 23.0;
   v4 = 23.0;
@@ -45,11 +45,11 @@
   return result;
 }
 
-- (void)setIsChecked:(BOOL)a3
+- (void)setIsChecked:(BOOL)checked
 {
-  self->_isChecked = a3;
+  self->_isChecked = checked;
   imageView = self->_imageView;
-  if (a3)
+  if (checked)
   {
     [(BPSCheckMarkView *)self checkedImage];
   }
@@ -69,16 +69,16 @@
   height = v12.height;
   UIGraphicsBeginImageContextWithOptions(v12, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v6 = [(BPSCheckMarkView *)self tintColor];
-  [v6 setFill];
+  tintColor = [(BPSCheckMarkView *)self tintColor];
+  [tintColor setFill];
 
   v13.origin.x = 0.0;
   v13.origin.y = 0.0;
   v13.size.width = width;
   v13.size.height = height;
   CGContextFillEllipseInRect(CurrentContext, v13);
-  v7 = [MEMORY[0x277D75348] whiteColor];
-  [v7 setStroke];
+  whiteColor = [MEMORY[0x277D75348] whiteColor];
+  [whiteColor setStroke];
 
   Mutable = CGPathCreateMutable();
   CGPathMoveToPoint(Mutable, 0, 6.5, 12.0);
@@ -105,8 +105,8 @@
   [(BPSCheckMarkView *)self sizeThatFits:v3, v4];
   UIGraphicsBeginImageContextWithOptions(v14, 0, 0.0);
   CurrentContext = UIGraphicsGetCurrentContext();
-  v10 = [(BPSCheckMarkView *)self tintColor];
-  [v10 setStroke];
+  tintColor = [(BPSCheckMarkView *)self tintColor];
+  [tintColor setStroke];
 
   v15.size.width = v6 + -2.0;
   v15.size.height = v8 + -2.0;

@@ -1,16 +1,16 @@
 @interface CLKUIColoringView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
-- (CLKUIColoringView)initWithFrame:(CGRect)a3;
-- (void)setBackgroundColor:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
+- (CLKUIColoringView)initWithFrame:(CGRect)frame;
+- (void)setBackgroundColor:(id)color;
 @end
 
 @implementation CLKUIColoringView
 
-- (CLKUIColoringView)initWithFrame:(CGRect)a3
+- (CLKUIColoringView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = CLKUIColoringView;
-  v3 = [(CLKUIColoringView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CLKUIColoringView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -20,27 +20,27 @@
     v4->_colorManager = v5;
 
     v7 = v4->_colorManager;
-    v8 = [(CLKUIColoringView *)v4 layer];
-    [(_CLKUIColorManager *)v7 setLayer:v8];
+    layer = [(CLKUIColoringView *)v4 layer];
+    [(_CLKUIColorManager *)v7 setLayer:layer];
   }
 
   return v4;
 }
 
-- (void)setBackgroundColor:(id)a3
+- (void)setBackgroundColor:(id)color
 {
-  v4 = [MEMORY[0x1E69DC888] clearColor];
+  clearColor = [MEMORY[0x1E69DC888] clearColor];
   v5.receiver = self;
   v5.super_class = CLKUIColoringView;
-  [(CLKUIColoringView *)&v5 setBackgroundColor:v4];
+  [(CLKUIColoringView *)&v5 setBackgroundColor:clearColor];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = CLKUIColoringView;
-  v5 = [(CLKUIColoringView *)&v7 _shouldAnimatePropertyWithKey:v4]|| [(_CLKUIColorManager *)self->_colorManager shouldAnimatePropertyWithKey:v4];
+  v5 = [(CLKUIColoringView *)&v7 _shouldAnimatePropertyWithKey:keyCopy]|| [(_CLKUIColorManager *)self->_colorManager shouldAnimatePropertyWithKey:keyCopy];
 
   return v5;
 }

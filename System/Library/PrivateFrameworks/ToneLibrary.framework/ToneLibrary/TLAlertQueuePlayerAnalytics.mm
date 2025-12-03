@@ -1,21 +1,21 @@
 @interface TLAlertQueuePlayerAnalytics
-- (TLAlertQueuePlayerAnalytics)initWithAlert:(id)a3;
+- (TLAlertQueuePlayerAnalytics)initWithAlert:(id)alert;
 - (id)description;
-- (void)_initializeToneIdentifierAndToneKindFromAlert:(id)a3;
+- (void)_initializeToneIdentifierAndToneKindFromAlert:(id)alert;
 @end
 
 @implementation TLAlertQueuePlayerAnalytics
 
-- (TLAlertQueuePlayerAnalytics)initWithAlert:(id)a3
+- (TLAlertQueuePlayerAnalytics)initWithAlert:(id)alert
 {
-  v4 = a3;
+  alertCopy = alert;
   v7.receiver = self;
   v7.super_class = TLAlertQueuePlayerAnalytics;
   v5 = [(TLAlertQueuePlayerAnalytics *)&v7 init];
   if (v5)
   {
-    v5->_alertType = [v4 type];
-    [(TLAlertQueuePlayerAnalytics *)v5 _initializeToneIdentifierAndToneKindFromAlert:v4];
+    v5->_alertType = [alertCopy type];
+    [(TLAlertQueuePlayerAnalytics *)v5 _initializeToneIdentifierAndToneKindFromAlert:alertCopy];
   }
 
   return v5;
@@ -87,10 +87,10 @@
   return v6;
 }
 
-- (void)_initializeToneIdentifierAndToneKindFromAlert:(id)a3
+- (void)_initializeToneIdentifierAndToneKindFromAlert:(id)alert
 {
-  v4 = [a3 toneIdentifier];
-  if ([v4 isEqualToString:@"<default>"])
+  toneIdentifier = [alert toneIdentifier];
+  if ([toneIdentifier isEqualToString:@"<default>"])
   {
     v5 = @"default";
     v6 = @"system";
@@ -98,16 +98,16 @@
   }
 
   v7 = @"system:";
-  if ([v4 hasPrefix:@"system:"])
+  if ([toneIdentifier hasPrefix:@"system:"])
   {
     v6 = @"system";
 LABEL_7:
-    v5 = [v4 substringFromIndex:{-[__CFString length](v7, "length")}];
+    v5 = [toneIdentifier substringFromIndex:{-[__CFString length](v7, "length")}];
     goto LABEL_9;
   }
 
   v7 = @"alarmWakeUp:";
-  if ([v4 hasPrefix:@"alarmWakeUp:"])
+  if ([toneIdentifier hasPrefix:@"alarmWakeUp:"])
   {
     v6 = @"alarmWakeUp";
     goto LABEL_7;

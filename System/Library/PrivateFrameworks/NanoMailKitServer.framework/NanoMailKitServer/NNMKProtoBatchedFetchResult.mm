@@ -1,78 +1,78 @@
 @interface NNMKProtoBatchedFetchResult
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMessageAddition:(id)a3;
-- (void)addMessageDeletion:(id)a3;
-- (void)addMessageUpdate:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasMailboxSyncVersion:(BOOL)a3;
-- (void)setHasShouldTrimDatabase:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addMessageAddition:(id)addition;
+- (void)addMessageDeletion:(id)deletion;
+- (void)addMessageUpdate:(id)update;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasMailboxSyncVersion:(BOOL)version;
+- (void)setHasShouldTrimDatabase:(BOOL)database;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NNMKProtoBatchedFetchResult
 
-- (void)addMessageAddition:(id)a3
+- (void)addMessageAddition:(id)addition
 {
-  v4 = a3;
+  additionCopy = addition;
   messageAdditions = self->_messageAdditions;
-  v8 = v4;
+  v8 = additionCopy;
   if (!messageAdditions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_messageAdditions;
     self->_messageAdditions = v6;
 
-    v4 = v8;
+    additionCopy = v8;
     messageAdditions = self->_messageAdditions;
   }
 
-  [(NSMutableArray *)messageAdditions addObject:v4];
+  [(NSMutableArray *)messageAdditions addObject:additionCopy];
 }
 
-- (void)addMessageUpdate:(id)a3
+- (void)addMessageUpdate:(id)update
 {
-  v4 = a3;
+  updateCopy = update;
   messageUpdates = self->_messageUpdates;
-  v8 = v4;
+  v8 = updateCopy;
   if (!messageUpdates)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_messageUpdates;
     self->_messageUpdates = v6;
 
-    v4 = v8;
+    updateCopy = v8;
     messageUpdates = self->_messageUpdates;
   }
 
-  [(NSMutableArray *)messageUpdates addObject:v4];
+  [(NSMutableArray *)messageUpdates addObject:updateCopy];
 }
 
-- (void)addMessageDeletion:(id)a3
+- (void)addMessageDeletion:(id)deletion
 {
-  v4 = a3;
+  deletionCopy = deletion;
   messageDeletions = self->_messageDeletions;
-  v8 = v4;
+  v8 = deletionCopy;
   if (!messageDeletions)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v7 = self->_messageDeletions;
     self->_messageDeletions = v6;
 
-    v4 = v8;
+    deletionCopy = v8;
     messageDeletions = self->_messageDeletions;
   }
 
-  [(NSMutableArray *)messageDeletions addObject:v4];
+  [(NSMutableArray *)messageDeletions addObject:deletionCopy];
 }
 
-- (void)setHasShouldTrimDatabase:(BOOL)a3
+- (void)setHasShouldTrimDatabase:(BOOL)database
 {
-  if (a3)
+  if (database)
   {
     v3 = 4;
   }
@@ -85,9 +85,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasMailboxSyncVersion:(BOOL)a3
+- (void)setHasMailboxSyncVersion:(BOOL)version
 {
-  if (a3)
+  if (version)
   {
     v3 = 2;
   }
@@ -106,8 +106,8 @@
   v8.receiver = self;
   v8.super_class = NNMKProtoBatchedFetchResult;
   v4 = [(NNMKProtoBatchedFetchResult *)&v8 description];
-  v5 = [(NNMKProtoBatchedFetchResult *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NNMKProtoBatchedFetchResult *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -115,17 +115,17 @@
 - (id)dictionaryRepresentation
 {
   v48 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if (*&self->_has)
   {
     v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_fullSyncVersion];
-    [v3 setObject:v4 forKey:@"fullSyncVersion"];
+    [dictionary setObject:v4 forKey:@"fullSyncVersion"];
   }
 
   dateSynced = self->_dateSynced;
   if (dateSynced)
   {
-    [v3 setObject:dateSynced forKey:@"dateSynced"];
+    [dictionary setObject:dateSynced forKey:@"dateSynced"];
   }
 
   if ([(NSMutableArray *)self->_messageAdditions count])
@@ -150,8 +150,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v41 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v41 objects:v47 count:16];
@@ -160,7 +160,7 @@
       while (v9);
     }
 
-    [v3 setObject:v6 forKey:@"messageAddition"];
+    [dictionary setObject:v6 forKey:@"messageAddition"];
   }
 
   if ([(NSMutableArray *)self->_messageUpdates count])
@@ -185,8 +185,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v37 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v37 objects:v46 count:16];
@@ -195,7 +195,7 @@
       while (v16);
     }
 
-    [v3 setObject:v13 forKey:@"messageUpdate"];
+    [dictionary setObject:v13 forKey:@"messageUpdate"];
   }
 
   if ([(NSMutableArray *)self->_messageDeletions count])
@@ -220,8 +220,8 @@
             objc_enumerationMutation(v21);
           }
 
-          v26 = [*(*(&v33 + 1) + 8 * k) dictionaryRepresentation];
-          [v20 addObject:v26];
+          dictionaryRepresentation3 = [*(*(&v33 + 1) + 8 * k) dictionaryRepresentation];
+          [v20 addObject:dictionaryRepresentation3];
         }
 
         v23 = [(NSMutableArray *)v21 countByEnumeratingWithState:&v33 objects:v45 count:16];
@@ -230,42 +230,42 @@
       while (v23);
     }
 
-    [v3 setObject:v20 forKey:@"messageDeletion"];
+    [dictionary setObject:v20 forKey:@"messageDeletion"];
   }
 
   dateForRequestingMoreMessages = self->_dateForRequestingMoreMessages;
   if (dateForRequestingMoreMessages)
   {
-    [v3 setObject:dateForRequestingMoreMessages forKey:@"dateForRequestingMoreMessages"];
+    [dictionary setObject:dateForRequestingMoreMessages forKey:@"dateForRequestingMoreMessages"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v28 = [MEMORY[0x277CCABB0] numberWithBool:self->_shouldTrimDatabase];
-    [v3 setObject:v28 forKey:@"shouldTrimDatabase"];
+    [dictionary setObject:v28 forKey:@"shouldTrimDatabase"];
   }
 
   mailboxId = self->_mailboxId;
   if (mailboxId)
   {
-    [v3 setObject:mailboxId forKey:@"mailboxId"];
+    [dictionary setObject:mailboxId forKey:@"mailboxId"];
   }
 
   if ((*&self->_has & 2) != 0)
   {
     v30 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:self->_mailboxSyncVersion];
-    [v3 setObject:v30 forKey:@"mailboxSyncVersion"];
+    [dictionary setObject:v30 forKey:@"mailboxSyncVersion"];
   }
 
   v31 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     fullSyncVersion = self->_fullSyncVersion;
@@ -398,28 +398,28 @@
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[6] = self->_fullSyncVersion;
-    *(v4 + 76) |= 1u;
+    toCopy[6] = self->_fullSyncVersion;
+    *(toCopy + 76) |= 1u;
   }
 
-  v18 = v4;
+  v18 = toCopy;
   if (self->_dateSynced)
   {
-    [v4 setDateSynced:?];
+    [toCopy setDateSynced:?];
   }
 
   if ([(NNMKProtoBatchedFetchResult *)self messageAdditionsCount])
   {
     [v18 clearMessageAdditions];
-    v5 = [(NNMKProtoBatchedFetchResult *)self messageAdditionsCount];
-    if (v5)
+    messageAdditionsCount = [(NNMKProtoBatchedFetchResult *)self messageAdditionsCount];
+    if (messageAdditionsCount)
     {
-      v6 = v5;
+      v6 = messageAdditionsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(NNMKProtoBatchedFetchResult *)self messageAdditionAtIndex:i];
@@ -431,10 +431,10 @@
   if ([(NNMKProtoBatchedFetchResult *)self messageUpdatesCount])
   {
     [v18 clearMessageUpdates];
-    v9 = [(NNMKProtoBatchedFetchResult *)self messageUpdatesCount];
-    if (v9)
+    messageUpdatesCount = [(NNMKProtoBatchedFetchResult *)self messageUpdatesCount];
+    if (messageUpdatesCount)
     {
-      v10 = v9;
+      v10 = messageUpdatesCount;
       for (j = 0; j != v10; ++j)
       {
         v12 = [(NNMKProtoBatchedFetchResult *)self messageUpdateAtIndex:j];
@@ -446,10 +446,10 @@
   if ([(NNMKProtoBatchedFetchResult *)self messageDeletionsCount])
   {
     [v18 clearMessageDeletions];
-    v13 = [(NNMKProtoBatchedFetchResult *)self messageDeletionsCount];
-    if (v13)
+    messageDeletionsCount = [(NNMKProtoBatchedFetchResult *)self messageDeletionsCount];
+    if (messageDeletionsCount)
     {
-      v14 = v13;
+      v14 = messageDeletionsCount;
       for (k = 0; k != v14; ++k)
       {
         v16 = [(NNMKProtoBatchedFetchResult *)self messageDeletionAtIndex:k];
@@ -483,10 +483,10 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v48 = *MEMORY[0x277D85DE8];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -494,7 +494,7 @@
     *(v5 + 76) |= 1u;
   }
 
-  v7 = [(NSData *)self->_dateSynced copyWithZone:a3];
+  v7 = [(NSData *)self->_dateSynced copyWithZone:zone];
   v8 = *(v6 + 16);
   *(v6 + 16) = v7;
 
@@ -518,7 +518,7 @@
           objc_enumerationMutation(v9);
         }
 
-        v14 = [*(*(&v41 + 1) + 8 * v13) copyWithZone:a3];
+        v14 = [*(*(&v41 + 1) + 8 * v13) copyWithZone:zone];
         [v6 addMessageAddition:v14];
 
         ++v13;
@@ -551,7 +551,7 @@
           objc_enumerationMutation(v15);
         }
 
-        v20 = [*(*(&v37 + 1) + 8 * v19) copyWithZone:a3];
+        v20 = [*(*(&v37 + 1) + 8 * v19) copyWithZone:zone];
         [v6 addMessageUpdate:v20];
 
         ++v19;
@@ -584,7 +584,7 @@
           objc_enumerationMutation(v21);
         }
 
-        v26 = [*(*(&v33 + 1) + 8 * v25) copyWithZone:{a3, v33}];
+        v26 = [*(*(&v33 + 1) + 8 * v25) copyWithZone:{zone, v33}];
         [v6 addMessageDeletion:v26];
 
         ++v25;
@@ -597,7 +597,7 @@
     while (v23);
   }
 
-  v27 = [(NSData *)self->_dateForRequestingMoreMessages copyWithZone:a3];
+  v27 = [(NSData *)self->_dateForRequestingMoreMessages copyWithZone:zone];
   v28 = *(v6 + 8);
   *(v6 + 8) = v27;
 
@@ -607,7 +607,7 @@
     *(v6 + 76) |= 4u;
   }
 
-  v29 = [(NSString *)self->_mailboxId copyWithZone:a3, v33];
+  v29 = [(NSString *)self->_mailboxId copyWithZone:zone, v33];
   v30 = *(v6 + 32);
   *(v6 + 32) = v29;
 
@@ -621,36 +621,36 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_27;
   }
 
-  v5 = *(v4 + 76);
+  v5 = *(equalCopy + 76);
   if (*&self->_has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_fullSyncVersion != *(v4 + 6))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_fullSyncVersion != *(equalCopy + 6))
     {
       goto LABEL_27;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_27;
   }
 
   dateSynced = self->_dateSynced;
-  if (dateSynced | *(v4 + 2) && ![(NSData *)dateSynced isEqual:?])
+  if (dateSynced | *(equalCopy + 2) && ![(NSData *)dateSynced isEqual:?])
   {
     goto LABEL_27;
   }
 
   messageAdditions = self->_messageAdditions;
-  if (messageAdditions | *(v4 + 6))
+  if (messageAdditions | *(equalCopy + 6))
   {
     if (![(NSMutableArray *)messageAdditions isEqual:?])
     {
@@ -659,7 +659,7 @@
   }
 
   messageUpdates = self->_messageUpdates;
-  if (messageUpdates | *(v4 + 8))
+  if (messageUpdates | *(equalCopy + 8))
   {
     if (![(NSMutableArray *)messageUpdates isEqual:?])
     {
@@ -668,7 +668,7 @@
   }
 
   messageDeletions = self->_messageDeletions;
-  if (messageDeletions | *(v4 + 7))
+  if (messageDeletions | *(equalCopy + 7))
   {
     if (![(NSMutableArray *)messageDeletions isEqual:?])
     {
@@ -677,7 +677,7 @@
   }
 
   dateForRequestingMoreMessages = self->_dateForRequestingMoreMessages;
-  if (dateForRequestingMoreMessages | *(v4 + 1))
+  if (dateForRequestingMoreMessages | *(equalCopy + 1))
   {
     if (![(NSData *)dateForRequestingMoreMessages isEqual:?])
     {
@@ -686,36 +686,36 @@
   }
 
   has = self->_has;
-  v12 = *(v4 + 76);
+  v12 = *(equalCopy + 76);
   if ((has & 4) != 0)
   {
-    if ((*(v4 + 76) & 4) == 0)
+    if ((*(equalCopy + 76) & 4) == 0)
     {
       goto LABEL_27;
     }
 
-    v16 = *(v4 + 72);
+    v16 = *(equalCopy + 72);
     if (self->_shouldTrimDatabase)
     {
-      if ((*(v4 + 72) & 1) == 0)
+      if ((*(equalCopy + 72) & 1) == 0)
       {
         goto LABEL_27;
       }
     }
 
-    else if (*(v4 + 72))
+    else if (*(equalCopy + 72))
     {
       goto LABEL_27;
     }
   }
 
-  else if ((*(v4 + 76) & 4) != 0)
+  else if ((*(equalCopy + 76) & 4) != 0)
   {
     goto LABEL_27;
   }
 
   mailboxId = self->_mailboxId;
-  if (!(mailboxId | *(v4 + 4)))
+  if (!(mailboxId | *(equalCopy + 4)))
   {
     goto LABEL_22;
   }
@@ -729,10 +729,10 @@ LABEL_27:
 
   has = self->_has;
 LABEL_22:
-  v14 = (*(v4 + 76) & 2) == 0;
+  v14 = (*(equalCopy + 76) & 2) == 0;
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 76) & 2) == 0 || self->_mailboxSyncVersion != *(v4 + 10))
+    if ((*(equalCopy + 76) & 2) == 0 || self->_mailboxSyncVersion != *(equalCopy + 10))
     {
       goto LABEL_27;
     }
@@ -786,18 +786,18 @@ LABEL_28:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4[19])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[19])
   {
-    self->_fullSyncVersion = v4[6];
+    self->_fullSyncVersion = fromCopy[6];
     *&self->_has |= 1u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(NNMKProtoBatchedFetchResult *)self setDateSynced:?];
   }

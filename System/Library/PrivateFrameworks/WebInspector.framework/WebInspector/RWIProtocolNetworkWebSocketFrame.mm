@@ -3,18 +3,18 @@
 - (NSString)payloadData;
 - (double)opcode;
 - (double)payloadLength;
-- (void)setOpcode:(double)a3;
-- (void)setPayloadData:(id)a3;
-- (void)setPayloadLength:(double)a3;
+- (void)setOpcode:(double)opcode;
+- (void)setPayloadData:(id)data;
+- (void)setPayloadLength:(double)length;
 @end
 
 @implementation RWIProtocolNetworkWebSocketFrame
 
-- (void)setOpcode:(double)a3
+- (void)setOpcode:(double)opcode
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkWebSocketFrame;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"opcode" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"opcode" forKey:opcode];
 }
 
 - (double)opcode
@@ -32,11 +32,11 @@
   return [(RWIProtocolJSONObject *)&v3 BOOLForKey:@"mask"];
 }
 
-- (void)setPayloadData:(id)a3
+- (void)setPayloadData:(id)data
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkWebSocketFrame;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"payloadData"];
+  [(RWIProtocolJSONObject *)&v3 setString:data forKey:@"payloadData"];
 }
 
 - (NSString)payloadData
@@ -48,11 +48,11 @@
   return v2;
 }
 
-- (void)setPayloadLength:(double)a3
+- (void)setPayloadLength:(double)length
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolNetworkWebSocketFrame;
-  [(RWIProtocolJSONObject *)&v3 setDouble:@"payloadLength" forKey:a3];
+  [(RWIProtocolJSONObject *)&v3 setDouble:@"payloadLength" forKey:length];
 }
 
 - (double)payloadLength

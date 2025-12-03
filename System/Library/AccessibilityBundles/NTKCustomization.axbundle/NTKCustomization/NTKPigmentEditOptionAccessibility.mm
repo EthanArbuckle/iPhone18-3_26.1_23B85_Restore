@@ -1,15 +1,15 @@
 @interface NTKPigmentEditOptionAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilityEditOptionDescription;
 @end
 
 @implementation NTKPigmentEditOptionAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NTKPigmentEditOption" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NTKPigmentEditOption" hasInstanceVariable:@"_fullname" withType:"NSString"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NTKPigmentEditOption" hasInstanceMethod:@"localizedName" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NTKPigmentEditOption" hasInstanceVariable:@"_fullname" withType:"NSString"];
 }
 
 - (id)_accessibilityEditOptionDescription

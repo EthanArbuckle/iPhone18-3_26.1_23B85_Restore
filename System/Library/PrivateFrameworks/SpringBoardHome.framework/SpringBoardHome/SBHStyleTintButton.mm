@@ -1,24 +1,24 @@
 @interface SBHStyleTintButton
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (SBHStyleTintButton)initWithFrame:(CGRect)a3;
-- (SBHStyleTintButton)initWithImage:(id)a3;
-- (id)_symbolConfigurationForTraitCollection:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (SBHStyleTintButton)initWithFrame:(CGRect)frame;
+- (SBHStyleTintButton)initWithImage:(id)image;
+- (id)_symbolConfigurationForTraitCollection:(id)collection;
 - (void)_updateFilters;
 - (void)layoutSubviews;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setImage:(id)a3;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setImage:(id)image;
 - (void)sizeToFit;
 @end
 
 @implementation SBHStyleTintButton
 
-- (SBHStyleTintButton)initWithFrame:(CGRect)a3
+- (SBHStyleTintButton)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SBHStyleTintButton;
-  v3 = [(SBHStyleTintButton *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SBHStyleTintButton *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -28,10 +28,10 @@
   return v4;
 }
 
-- (SBHStyleTintButton)initWithImage:(id)a3
+- (SBHStyleTintButton)initWithImage:(id)image
 {
-  v4 = a3;
-  [v4 size];
+  imageCopy = image;
+  [imageCopy size];
   BSRectWithSize();
   v8.receiver = self;
   v8.super_class = SBHStyleTintButton;
@@ -40,7 +40,7 @@
   if (v5)
   {
     SBHStyleTintButtonSharedInit(v5);
-    [(UIImageView *)v6->_tintButtonImageView setImage:v4];
+    [(UIImageView *)v6->_tintButtonImageView setImage:imageCopy];
   }
 
   return v6;
@@ -56,26 +56,26 @@
   [(UIImageView *)tintButtonImageView setFrame:?];
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  [(UIImageView *)self->_tintButtonImageView setImage:a3];
+  [(UIImageView *)self->_tintButtonImageView setImage:image];
   [(SBHStyleTintButton *)self invalidateIntrinsicContentSize];
 
   [(SBHStyleTintButton *)self setNeedsLayout];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v5.receiver = self;
   v5.super_class = SBHStyleTintButton;
   [(SBHStyleTintButton *)&v5 setHighlighted:?];
-  SBHUIViewAnimateHighlight(self->_tintButtonImageView, v3);
+  SBHUIViewAnimateHighlight(self->_tintButtonImageView, highlightedCopy);
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UIImageView *)self->_tintButtonImageView sizeThatFits:a3.width, a3.height];
+  [(UIImageView *)self->_tintButtonImageView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -96,9 +96,9 @@
   return result;
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  [(UIImageView *)self->_tintButtonImageView systemLayoutSizeFittingSize:a3.width withHorizontalFittingPriority:a3.height verticalFittingPriority:?];
+  [(UIImageView *)self->_tintButtonImageView systemLayoutSizeFittingSize:size.width withHorizontalFittingPriority:size.height verticalFittingPriority:?];
   result.height = v6;
   result.width = v5;
   return result;
@@ -106,16 +106,16 @@
 
 - (void)_updateFilters
 {
-  v9 = [(SBHStyleTintButton *)self traitCollection];
+  traitCollection = [(SBHStyleTintButton *)self traitCollection];
   tintButtonImageView = self->_tintButtonImageView;
-  v4 = [(SBHStyleTintButton *)self _symbolConfigurationForTraitCollection:v9];
+  v4 = [(SBHStyleTintButton *)self _symbolConfigurationForTraitCollection:traitCollection];
   [(UIImageView *)tintButtonImageView setSymbolConfiguration:v4];
 
-  if (v9)
+  if (traitCollection)
   {
-    v5 = [v9 userInterfaceStyle];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
     v6 = MEMORY[0x1E6979CE8];
-    if (v5 != 1)
+    if (userInterfaceStyle != 1)
     {
       v6 = MEMORY[0x1E6979CF8];
     }
@@ -127,27 +127,27 @@
   }
 
   v7 = [MEMORY[0x1E6979378] filterWithType:*v6];
-  v8 = [(UIImageView *)self->_tintButtonImageView layer];
-  [v8 setCompositingFilter:v7];
+  layer = [(UIImageView *)self->_tintButtonImageView layer];
+  [layer setCompositingFilter:v7];
 }
 
-- (id)_symbolConfigurationForTraitCollection:(id)a3
+- (id)_symbolConfigurationForTraitCollection:(id)collection
 {
   v14[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 userInterfaceStyle] != 1)
+  collectionCopy = collection;
+  v4 = collectionCopy;
+  if (collectionCopy && [collectionCopy userInterfaceStyle] != 1)
   {
-    v5 = [MEMORY[0x1E69DC888] whiteColor];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69DC888] blackColor];
+    whiteColor = [MEMORY[0x1E69DC888] blackColor];
   }
 
-  v6 = v5;
-  v7 = [v5 colorWithAlphaComponent:0.54];
+  v6 = whiteColor;
+  v7 = [whiteColor colorWithAlphaComponent:0.54];
 
   v8 = MEMORY[0x1E69DCAD8];
   v14[0] = v7;

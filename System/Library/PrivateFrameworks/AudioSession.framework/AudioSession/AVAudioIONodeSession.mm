@@ -1,34 +1,34 @@
 @interface AVAudioIONodeSession
 - (AVAudioIONodePlayState)playState;
-- (AVAudioIONodeSession)initWithDescription:(id)a3;
-- (AVAudioIONodeSession)initWithDescription:(id)a3 server:(id)a4;
-- (BOOL)_setMXProperties:(void *)a3 properties:(id)a4 error:(id *)a5;
-- (BOOL)privateCreateIONodeSession:(id)a3 server:(id)a4;
-- (BOOL)reconfigure:(id)a3 error:(id *)a4;
-- (BOOL)setMXProperties:(id)a3 error:(id *)a4;
-- (BOOL)setMXSessionProperty:(id)a3 value:(id)a4 error:(id *)a5;
+- (AVAudioIONodeSession)initWithDescription:(id)description;
+- (AVAudioIONodeSession)initWithDescription:(id)description server:(id)server;
+- (BOOL)_setMXProperties:(void *)properties properties:(id)a4 error:(id *)error;
+- (BOOL)privateCreateIONodeSession:(id)session server:(id)server;
+- (BOOL)reconfigure:(id)reconfigure error:(id *)error;
+- (BOOL)setMXProperties:(id)properties error:(id *)error;
+- (BOOL)setMXSessionProperty:(id)property value:(id)value error:(id *)error;
 - (NSUUID)nodeSessionUUID;
 - (id).cxx_construct;
-- (id)getMXProperties:(id)a3 propertyErrors:(id *)a4;
-- (id)getMXSessionProperty:(id)a3 error:(id *)a4;
+- (id)getMXProperties:(id)properties propertyErrors:(id *)errors;
+- (id)getMXSessionProperty:(id)property error:(id *)error;
 - (int)sessionOwnerPID;
 - (unsigned)nodeSessionID;
 - (unsigned)playerType;
 - (unsigned)sourceSessionID;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setInputMuted:(BOOL)a3;
-- (void)setOutputMuted:(BOOL)a3;
-- (void)setPlayState:(id)a3;
+- (void)setInputMuted:(BOOL)muted;
+- (void)setOutputMuted:(BOOL)muted;
+- (void)setPlayState:(id)state;
 @end
 
 @implementation AVAudioIONodeSession
 
-- (AVAudioIONodeSession)initWithDescription:(id)a3 server:(id)a4
+- (AVAudioIONodeSession)initWithDescription:(id)description server:(id)server
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  descriptionCopy = description;
+  serverCopy = server;
   v14.receiver = self;
   v14.super_class = AVAudioIONodeSession;
   v8 = [(AVAudioIONodeSession *)&v14 init];
@@ -36,7 +36,7 @@
   if (v8)
   {
     atomic_store(0, &v8->_invalidated);
-    v10 = [(AVAudioIONodeSession *)v8 privateCreateIONodeSession:v6 server:v7];
+    v10 = [(AVAudioIONodeSession *)v8 privateCreateIONodeSession:descriptionCopy server:serverCopy];
     if ((v10 & 1) == 0)
     {
       v11 = *avas::client::gSessionClientLog(v10);
@@ -57,25 +57,25 @@
   return v9;
 }
 
-- (AVAudioIONodeSession)initWithDescription:(id)a3
+- (AVAudioIONodeSession)initWithDescription:(id)description
 {
-  v4 = a3;
-  v5 = avac::CreateInProcessIONodeSessionServer(v4);
+  descriptionCopy = description;
+  v5 = avac::CreateInProcessIONodeSessionServer(descriptionCopy);
   if (!v5)
   {
     v5 = objc_alloc_init(AVAudioIONodeSessionRemoteServer);
   }
 
-  v6 = [(AVAudioIONodeSession *)self initWithDescription:v4 server:v5];
+  v6 = [(AVAudioIONodeSession *)self initWithDescription:descriptionCopy server:v5];
 
   return v6;
 }
 
-- (BOOL)privateCreateIONodeSession:(id)a3 server:(id)a4
+- (BOOL)privateCreateIONodeSession:(id)session server:(id)server
 {
   v8 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  sessionCopy = session;
+  serverCopy = server;
   operator new();
 }
 
@@ -125,26 +125,26 @@
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)reconfigure:(id)a3 error:(id *)a4
+- (BOOL)reconfigure:(id)reconfigure error:(id *)error
 {
-  v6 = a3;
+  reconfigureCopy = reconfigure;
   ptr = self->_impl.__ptr_;
   os_unfair_lock_lock(ptr);
-  if ([(AVAudioIONodeDescription *)v6 isEqual:*(ptr + 2)])
+  if ([(AVAudioIONodeDescription *)reconfigureCopy isEqual:*(ptr + 2)])
   {
     goto LABEL_4;
   }
 
   v8 = *(ptr + 1);
   v9 = ptr[6];
-  v10 = [(AVAudioIONodeDescription *)v6 sourceSession];
-  v11 = [(AVAudioIONodeDescription *)v6 sessionOwnerPID];
-  v12 = [v8 reconfigureIONode:v9 withSourceSession:v10 sessionOwnerPID:v11 playerType:-[AVAudioIONodeDescription playerType](v6 error:{"playerType"), a4}];
+  sourceSession = [(AVAudioIONodeDescription *)reconfigureCopy sourceSession];
+  sessionOwnerPID = [(AVAudioIONodeDescription *)reconfigureCopy sessionOwnerPID];
+  v12 = [v8 reconfigureIONode:v9 withSourceSession:sourceSession sessionOwnerPID:sessionOwnerPID playerType:-[AVAudioIONodeDescription playerType](reconfigureCopy error:{"playerType"), error}];
 
   if (v12)
   {
     avas::client::AVAudioIONodeSessionImpl::SetNodeID((ptr + 2), v12);
-    avas::client::AVAudioIONodeSessionImpl::SetDescription((ptr + 2), v6);
+    avas::client::AVAudioIONodeSessionImpl::SetDescription((ptr + 2), reconfigureCopy);
 LABEL_4:
     LOBYTE(v12) = 1;
   }
@@ -177,32 +177,32 @@ LABEL_4:
 {
   ptr = self->_impl.__ptr_;
   os_unfair_lock_lock(ptr);
-  v3 = [*(ptr + 2) sourceSession];
+  sourceSession = [*(ptr + 2) sourceSession];
   os_unfair_lock_unlock(ptr);
-  return v3;
+  return sourceSession;
 }
 
 - (int)sessionOwnerPID
 {
   ptr = self->_impl.__ptr_;
   os_unfair_lock_lock(ptr);
-  v3 = [*(ptr + 2) sessionOwnerPID];
-  v4 = [v3 intValue];
+  sessionOwnerPID = [*(ptr + 2) sessionOwnerPID];
+  intValue = [sessionOwnerPID intValue];
 
   os_unfair_lock_unlock(ptr);
-  return v4;
+  return intValue;
 }
 
 - (unsigned)playerType
 {
   ptr = self->_impl.__ptr_;
   os_unfair_lock_lock(ptr);
-  v3 = [*(ptr + 2) playerType];
+  playerType = [*(ptr + 2) playerType];
   os_unfair_lock_unlock(ptr);
-  return v3;
+  return playerType;
 }
 
-- (void)setInputMuted:(BOOL)a3
+- (void)setInputMuted:(BOOL)muted
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = *avas::client::gSessionClientLog(self);
@@ -218,7 +218,7 @@ LABEL_4:
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setOutputMuted:(BOOL)a3
+- (void)setOutputMuted:(BOOL)muted
 {
   v9 = *MEMORY[0x1E69E9840];
   v3 = *avas::client::gSessionClientLog(self);
@@ -241,23 +241,23 @@ LABEL_4:
   return v2;
 }
 
-- (void)setPlayState:(id)a3
+- (void)setPlayState:(id)state
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (![(AVAudioIONodePlayState *)self->_playState isEqual:v4])
+  stateCopy = state;
+  if (![(AVAudioIONodePlayState *)self->_playState isEqual:stateCopy])
   {
     ptr = self->_impl.__ptr_;
     os_unfair_lock_lock(ptr);
     v6 = *(ptr + 1);
     v7 = ptr[6];
     v16 = 0;
-    v8 = [v6 setIONode:v7 playState:objc_msgSend(v4 modes:"playState") error:{objc_msgSend(v4, "ioMode"), &v16}];
+    v8 = [v6 setIONode:v7 playState:objc_msgSend(stateCopy modes:"playState") error:{objc_msgSend(stateCopy, "ioMode"), &v16}];
     v9 = v16;
 
     if (v8)
     {
-      v11 = [v4 copy];
+      v11 = [stateCopy copy];
       playState = self->_playState;
       self->_playState = v11;
     }
@@ -286,38 +286,38 @@ LABEL_4:
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)getMXSessionProperty:(id)a3 error:(id *)a4
+- (id)getMXSessionProperty:(id)property error:(id *)error
 {
   v12[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v12[0] = v6;
+  propertyCopy = property;
+  v12[0] = propertyCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v12 count:1];
-  v8 = [(AVAudioIONodeSession *)self getMXProperties:v7 propertyErrors:a4];
+  v8 = [(AVAudioIONodeSession *)self getMXProperties:v7 propertyErrors:error];
 
-  v9 = [v8 objectForKeyedSubscript:v6];
+  v9 = [v8 objectForKeyedSubscript:propertyCopy];
 
   v10 = *MEMORY[0x1E69E9840];
 
   return v9;
 }
 
-- (BOOL)setMXSessionProperty:(id)a3 value:(id)a4 error:(id *)a5
+- (BOOL)setMXSessionProperty:(id)property value:(id)value error:(id *)error
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v15 = v8;
-  v10 = v9;
-  if (!v9)
+  propertyCopy = property;
+  valueCopy = value;
+  v15 = propertyCopy;
+  null = valueCopy;
+  if (!valueCopy)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16[0] = v10;
+  v16[0] = null;
   v11 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
-  v12 = [(AVAudioIONodeSession *)self setMXProperties:v11 error:a5];
+  v12 = [(AVAudioIONodeSession *)self setMXProperties:v11 error:error];
 
-  if (!v9)
+  if (!valueCopy)
   {
   }
 
@@ -325,14 +325,14 @@ LABEL_4:
   return v12;
 }
 
-- (BOOL)setMXProperties:(id)a3 error:(id *)a4
+- (BOOL)setMXProperties:(id)properties error:(id *)error
 {
   ptr = self->_impl.__ptr_;
-  v7 = a3;
+  propertiesCopy = properties;
   os_unfair_lock_lock(ptr);
   lock[0] = ptr;
   lock[1] = ptr + 2;
-  v8 = [(AVAudioIONodeSession *)self _setMXProperties:lock properties:v7 error:a4];
+  v8 = [(AVAudioIONodeSession *)self _setMXProperties:lock properties:propertiesCopy error:error];
 
   if (lock[0])
   {
@@ -342,11 +342,11 @@ LABEL_4:
   return v8;
 }
 
-- (BOOL)_setMXProperties:(void *)a3 properties:(id)a4 error:(id *)a5
+- (BOOL)_setMXProperties:(void *)properties properties:(id)a4 error:(id *)error
 {
   v46 = *MEMORY[0x1E69E9840];
-  v7 = **(a3 + 1);
-  v8 = *(*(a3 + 1) + 16);
+  v7 = **(properties + 1);
+  v8 = *(*(properties + 1) + 16);
   v43 = 0;
   v31 = [v7 setPropertiesIONode:v8 values:a4 error:&v43];
   v32 = v43;
@@ -356,8 +356,8 @@ LABEL_4:
   {
     v25 = 0;
     v24 = 0;
-    v26 = a5;
-    if (!a5)
+    errorCopy2 = error;
+    if (!error)
     {
       goto LABEL_26;
     }
@@ -368,8 +368,8 @@ LABEL_4:
   if ([v31 count])
   {
     v10 = MEMORY[0x1E695DF90];
-    v11 = [v32 userInfo];
-    v12 = [v10 dictionaryWithDictionary:v11];
+    userInfo = [v32 userInfo];
+    v12 = [v10 dictionaryWithDictionary:userInfo];
 
     v41 = 0u;
     v42 = 0u;
@@ -430,8 +430,8 @@ LABEL_4:
     }
 
     v22 = MEMORY[0x1E696ABC0];
-    v23 = [v32 domain];
-    v24 = [v22 errorWithDomain:v23 code:objc_msgSend(v32 userInfo:{"code"), v12}];
+    domain = [v32 domain];
+    v24 = [v22 errorWithDomain:domain code:objc_msgSend(v32 userInfo:{"code"), v12}];
 
     v9 = v32;
   }
@@ -441,14 +441,14 @@ LABEL_4:
     v24 = v32;
   }
 
-  if (a5)
+  if (error)
   {
     v27 = v24;
     v25 = v24;
     v9 = v32;
-    v26 = a5;
+    errorCopy2 = error;
 LABEL_25:
-    *v26 = v25;
+    *errorCopy2 = v25;
     v24 = v25;
   }
 
@@ -458,26 +458,26 @@ LABEL_26:
   return v9 == 0;
 }
 
-- (id)getMXProperties:(id)a3 propertyErrors:(id *)a4
+- (id)getMXProperties:(id)properties propertyErrors:(id *)errors
 {
   v40 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  propertiesCopy = properties;
   ptr = self->_impl.__ptr_;
   os_unfair_lock_lock(ptr);
   v7 = *(ptr + 1);
   v8 = ptr[6];
   v37 = 0;
   v38 = 0;
-  v29 = v5;
-  v30 = [v7 getPropertiesIONode:v8 properties:v5 status:&v38 error:&v37];
+  v29 = propertiesCopy;
+  v30 = [v7 getPropertiesIONode:v8 properties:propertiesCopy status:&v38 error:&v37];
   v32 = v38;
   v9 = v37;
 
   if (!v9)
   {
     v25 = 0;
-    v26 = a4;
-    if (!a4)
+    errorsCopy4 = errors;
+    if (!errors)
     {
       goto LABEL_17;
     }
@@ -486,12 +486,12 @@ LABEL_26:
   }
 
   v10 = [v32 count];
-  v11 = a4;
+  errorsCopy3 = errors;
   if (v10)
   {
     v12 = MEMORY[0x1E695DF90];
-    v13 = [v9 userInfo];
-    v14 = [v12 dictionaryWithDictionary:v13];
+    userInfo = [v9 userInfo];
+    v14 = [v12 dictionaryWithDictionary:userInfo];
 
     v35 = 0u;
     v36 = 0u;
@@ -526,20 +526,20 @@ LABEL_26:
     }
 
     v21 = MEMORY[0x1E696ABC0];
-    v22 = [v9 domain];
-    v23 = [v21 errorWithDomain:v22 code:objc_msgSend(v9 userInfo:{"code"), v14}];
+    domain = [v9 domain];
+    v23 = [v21 errorWithDomain:domain code:objc_msgSend(v9 userInfo:{"code"), v14}];
 
     v9 = v23;
-    v11 = a4;
+    errorsCopy3 = errors;
   }
 
-  if (v11)
+  if (errorsCopy3)
   {
     v24 = v9;
     v25 = v9;
-    v26 = a4;
+    errorsCopy4 = errors;
 LABEL_16:
-    *v26 = v25;
+    *errorsCopy4 = v25;
     v9 = v25;
   }
 

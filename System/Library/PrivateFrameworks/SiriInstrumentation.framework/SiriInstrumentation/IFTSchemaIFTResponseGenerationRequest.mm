@@ -1,28 +1,28 @@
 @interface IFTSchemaIFTResponseGenerationRequest
-- (BOOL)isEqual:(id)a3;
-- (IFTSchemaIFTResponseGenerationRequest)initWithDictionary:(id)a3;
-- (IFTSchemaIFTResponseGenerationRequest)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (IFTSchemaIFTResponseGenerationRequest)initWithDictionary:(id)dictionary;
+- (IFTSchemaIFTResponseGenerationRequest)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (void)addActionStepResultEventIds:(id)a3;
-- (void)addStatementResults:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addActionStepResultEventIds:(id)ids;
+- (void)addStatementResults:(id)results;
+- (void)writeTo:(id)to;
 @end
 
 @implementation IFTSchemaIFTResponseGenerationRequest
 
-- (IFTSchemaIFTResponseGenerationRequest)initWithDictionary:(id)a3
+- (IFTSchemaIFTResponseGenerationRequest)initWithDictionary:(id)dictionary
 {
   v36 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v33.receiver = self;
   v33.super_class = IFTSchemaIFTResponseGenerationRequest;
   v5 = [(IFTSchemaIFTResponseGenerationRequest *)&v33 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"actionStepResultEventIds"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"actionStepResultEventIds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,7 +65,7 @@
       }
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"statementResults"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"statementResults"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -117,30 +117,30 @@
   return v5;
 }
 
-- (IFTSchemaIFTResponseGenerationRequest)initWithJSON:(id)a3
+- (IFTSchemaIFTResponseGenerationRequest)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(IFTSchemaIFTResponseGenerationRequest *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(IFTSchemaIFTResponseGenerationRequest *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(IFTSchemaIFTResponseGenerationRequest *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -154,10 +154,10 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_actionStepResultEventIds count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -177,16 +177,16 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          if (v10)
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v4 addObject:v10];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v11 = [MEMORY[0x1E695DFB0] null];
-            [v4 addObject:v11];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -196,12 +196,12 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"actionStepResultEventIds"];
+    [dictionary setObject:array forKeyedSubscript:@"actionStepResultEventIds"];
   }
 
   if ([(NSArray *)self->_statementResults count])
   {
-    v12 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
@@ -221,16 +221,16 @@
             objc_enumerationMutation(v13);
           }
 
-          v18 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
-          if (v18)
+          dictionaryRepresentation2 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v12 addObject:v18];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v19 = [MEMORY[0x1E695DFB0] null];
-            [v12 addObject:v19];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -240,36 +240,36 @@
       while (v15);
     }
 
-    [v3 setObject:v12 forKeyedSubscript:@"statementResults"];
+    [dictionary setObject:array2 forKeyedSubscript:@"statementResults"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v21];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v21];
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(IFTSchemaIFTResponseGenerationRequest *)self actionStepResultEventIds];
-  v6 = [v4 actionStepResultEventIds];
-  if ((v5 != 0) == (v6 == 0))
+  actionStepResultEventIds = [(IFTSchemaIFTResponseGenerationRequest *)self actionStepResultEventIds];
+  actionStepResultEventIds2 = [equalCopy actionStepResultEventIds];
+  if ((actionStepResultEventIds != 0) == (actionStepResultEventIds2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(IFTSchemaIFTResponseGenerationRequest *)self actionStepResultEventIds];
-  if (v7)
+  actionStepResultEventIds3 = [(IFTSchemaIFTResponseGenerationRequest *)self actionStepResultEventIds];
+  if (actionStepResultEventIds3)
   {
-    v8 = v7;
-    v9 = [(IFTSchemaIFTResponseGenerationRequest *)self actionStepResultEventIds];
-    v10 = [v4 actionStepResultEventIds];
-    v11 = [v9 isEqual:v10];
+    v8 = actionStepResultEventIds3;
+    actionStepResultEventIds4 = [(IFTSchemaIFTResponseGenerationRequest *)self actionStepResultEventIds];
+    actionStepResultEventIds5 = [equalCopy actionStepResultEventIds];
+    v11 = [actionStepResultEventIds4 isEqual:actionStepResultEventIds5];
 
     if (!v11)
     {
@@ -281,12 +281,12 @@
   {
   }
 
-  v5 = [(IFTSchemaIFTResponseGenerationRequest *)self statementResults];
-  v6 = [v4 statementResults];
-  if ((v5 != 0) != (v6 == 0))
+  actionStepResultEventIds = [(IFTSchemaIFTResponseGenerationRequest *)self statementResults];
+  actionStepResultEventIds2 = [equalCopy statementResults];
+  if ((actionStepResultEventIds != 0) != (actionStepResultEventIds2 == 0))
   {
-    v12 = [(IFTSchemaIFTResponseGenerationRequest *)self statementResults];
-    if (!v12)
+    statementResults = [(IFTSchemaIFTResponseGenerationRequest *)self statementResults];
+    if (!statementResults)
     {
 
 LABEL_15:
@@ -294,10 +294,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(IFTSchemaIFTResponseGenerationRequest *)self statementResults];
-    v15 = [v4 statementResults];
-    v16 = [v14 isEqual:v15];
+    v13 = statementResults;
+    statementResults2 = [(IFTSchemaIFTResponseGenerationRequest *)self statementResults];
+    statementResults3 = [equalCopy statementResults];
+    v16 = [statementResults2 isEqual:statementResults3];
 
     if (v16)
     {
@@ -317,10 +317,10 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
@@ -384,54 +384,54 @@ LABEL_13:
   }
 }
 
-- (void)addStatementResults:(id)a3
+- (void)addStatementResults:(id)results
 {
-  v4 = a3;
+  resultsCopy = results;
   statementResults = self->_statementResults;
-  v8 = v4;
+  v8 = resultsCopy;
   if (!statementResults)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_statementResults;
-    self->_statementResults = v6;
+    self->_statementResults = array;
 
-    v4 = v8;
+    resultsCopy = v8;
     statementResults = self->_statementResults;
   }
 
-  [(NSArray *)statementResults addObject:v4];
+  [(NSArray *)statementResults addObject:resultsCopy];
 }
 
-- (void)addActionStepResultEventIds:(id)a3
+- (void)addActionStepResultEventIds:(id)ids
 {
-  v4 = a3;
+  idsCopy = ids;
   actionStepResultEventIds = self->_actionStepResultEventIds;
-  v8 = v4;
+  v8 = idsCopy;
   if (!actionStepResultEventIds)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_actionStepResultEventIds;
-    self->_actionStepResultEventIds = v6;
+    self->_actionStepResultEventIds = array;
 
-    v4 = v8;
+    idsCopy = v8;
     actionStepResultEventIds = self->_actionStepResultEventIds;
   }
 
-  [(NSArray *)actionStepResultEventIds addObject:v4];
+  [(NSArray *)actionStepResultEventIds addObject:idsCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = IFTSchemaIFTResponseGenerationRequest;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(IFTSchemaIFTResponseGenerationRequest *)self actionStepResultEventIds:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(IFTSchemaIFTResponseGenerationRequest *)self setActionStepResultEventIds:v7];
 
-  v8 = [(IFTSchemaIFTResponseGenerationRequest *)self statementResults];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  statementResults = [(IFTSchemaIFTResponseGenerationRequest *)self statementResults];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:statementResults underConditions:policyCopy];
 
   [(IFTSchemaIFTResponseGenerationRequest *)self setStatementResults:v9];
 

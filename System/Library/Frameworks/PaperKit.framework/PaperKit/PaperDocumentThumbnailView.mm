@@ -1,11 +1,11 @@
 @interface PaperDocumentThumbnailView
-- (_TtC8PaperKit26PaperDocumentThumbnailView)initWithCoder:(id)a3;
+- (_TtC8PaperKit26PaperDocumentThumbnailView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation PaperDocumentThumbnailView
 
-- (_TtC8PaperKit26PaperDocumentThumbnailView)initWithCoder:(id)a3
+- (_TtC8PaperKit26PaperDocumentThumbnailView)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC8PaperKit26PaperDocumentThumbnailView_thumbnailLayout) = 1;

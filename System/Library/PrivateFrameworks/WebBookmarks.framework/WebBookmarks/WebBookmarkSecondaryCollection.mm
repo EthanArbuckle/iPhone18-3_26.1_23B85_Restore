@@ -1,19 +1,19 @@
 @interface WebBookmarkSecondaryCollection
-- (id)initSecondarySafariBookmarkCollectionWithName:(id)a3;
+- (id)initSecondarySafariBookmarkCollectionWithName:(id)name;
 @end
 
 @implementation WebBookmarkSecondaryCollection
 
-- (id)initSecondarySafariBookmarkCollectionWithName:(id)a3
+- (id)initSecondarySafariBookmarkCollectionWithName:(id)name
 {
-  v4 = a3;
-  v5 = [objc_opt_class() safariDirectoryPath];
-  v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.db", v4];
+  nameCopy = name;
+  safariDirectoryPath = [objc_opt_class() safariDirectoryPath];
+  nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@.db", nameCopy];
 
-  v7 = [v5 stringByAppendingPathComponent:v6];
-  v8 = [v7 stringByResolvingSymlinksInPath];
+  v7 = [safariDirectoryPath stringByAppendingPathComponent:nameCopy];
+  stringByResolvingSymlinksInPath = [v7 stringByResolvingSymlinksInPath];
 
-  v9 = [[WBCollectionConfiguration alloc] initWithCollectionType:0 databasePath:v8 readonly:0];
+  v9 = [[WBCollectionConfiguration alloc] initWithCollectionType:0 databasePath:stringByResolvingSymlinksInPath readonly:0];
   v12.receiver = self;
   v12.super_class = WebBookmarkSecondaryCollection;
   v10 = [(WebBookmarkCollection *)&v12 initWithConfiguration:v9];

@@ -1,77 +1,77 @@
 @interface TIMarkedTextBuffer_ja_Romaji
-- (TIMarkedTextBuffer_ja_Romaji)initWithInternalString:(id)a3;
+- (TIMarkedTextBuffer_ja_Romaji)initWithInternalString:(id)string;
 - (int64_t)internalIndex;
 - (void)clear;
-- (void)deleteFromInput:(int64_t *)a3 newInput:(id *)a4 inputIndex:(int64_t *)a5;
-- (void)setExternalInputIndex:(int64_t)a3;
-- (void)setInternalString:(id)a3 withInputIndex:(int64_t)a4;
-- (void)updateStateWithInputIndex:(int64_t)a3;
+- (void)deleteFromInput:(int64_t *)input newInput:(id *)newInput inputIndex:(int64_t *)index;
+- (void)setExternalInputIndex:(int64_t)index;
+- (void)setInternalString:(id)string withInputIndex:(int64_t)index;
+- (void)updateStateWithInputIndex:(int64_t)index;
 @end
 
 @implementation TIMarkedTextBuffer_ja_Romaji
 
-- (TIMarkedTextBuffer_ja_Romaji)initWithInternalString:(id)a3
+- (TIMarkedTextBuffer_ja_Romaji)initWithInternalString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v9.receiver = self;
   v9.super_class = TIMarkedTextBuffer_ja_Romaji;
   v5 = [(TIMarkedTextBuffer_ja_Romaji *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     externalIndexToInternalIndexMappingArray = v5->_externalIndexToInternalIndexMappingArray;
-    v5->_externalIndexToInternalIndexMappingArray = v6;
+    v5->_externalIndexToInternalIndexMappingArray = array;
 
-    -[TIMarkedTextBuffer_ja_Romaji setInternalString:withInputIndex:](v5, "setInternalString:withInputIndex:", v4, [v4 length]);
+    -[TIMarkedTextBuffer_ja_Romaji setInternalString:withInputIndex:](v5, "setInternalString:withInputIndex:", stringCopy, [stringCopy length]);
   }
 
   return v5;
 }
 
-- (void)setInternalString:(id)a3 withInputIndex:(int64_t)a4
+- (void)setInternalString:(id)string withInputIndex:(int64_t)index
 {
-  objc_storeStrong(&self->_internalString, a3);
+  objc_storeStrong(&self->_internalString, string);
 
-  [(TIMarkedTextBuffer_ja_Romaji *)self updateStateWithInputIndex:a4];
+  [(TIMarkedTextBuffer_ja_Romaji *)self updateStateWithInputIndex:index];
 }
 
-- (void)updateStateWithInputIndex:(int64_t)a3
+- (void)updateStateWithInputIndex:(int64_t)index
 {
   v37 = *MEMORY[0x29EDCA608];
-  v5 = [(TIMarkedTextBuffer_ja_Romaji *)self internalString];
+  internalString = [(TIMarkedTextBuffer_ja_Romaji *)self internalString];
   externalString = self->_externalString;
   self->_externalString = 0;
 
-  v7 = [(TIMarkedTextBuffer_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
-  [v7 removeAllObjects];
+  externalIndexToInternalIndexMappingArray = [(TIMarkedTextBuffer_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
+  [externalIndexToInternalIndexMappingArray removeAllObjects];
 
   [(TIMarkedTextBuffer_ja_Romaji *)self setExternalInputIndex:0];
-  if (v5 && [v5 length])
+  if (internalString && [internalString length])
   {
     v8 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:10];
-    if (a3 < 1)
+    if (index < 1)
     {
       v11 = &stru_2A2525CC0;
     }
 
     else
     {
-      v9 = [v5 substringToIndex:a3];
-      v10 = [v9 lowercaseString];
-      v11 = [Romakana hiraganaString:v10 mappingArray:v8];
+      v9 = [internalString substringToIndex:index];
+      lowercaseString = [v9 lowercaseString];
+      v11 = [Romakana hiraganaString:lowercaseString mappingArray:v8];
     }
 
-    v31 = v5;
-    if ([v5 length] <= a3)
+    v31 = internalString;
+    if ([internalString length] <= index)
     {
       v14 = &stru_2A2525CC0;
     }
 
     else
     {
-      v12 = [v5 substringFromIndex:a3];
-      v13 = [v12 lowercaseString];
-      v14 = [Romakana hiraganaString:v13 mappingArray:v8];
+      v12 = [internalString substringFromIndex:index];
+      lowercaseString2 = [v12 lowercaseString];
+      v14 = [Romakana hiraganaString:lowercaseString2 mappingArray:v8];
     }
 
     v29 = v14;
@@ -85,7 +85,7 @@
     v18 = [MEMORY[0x29EDBA070] numberWithUnsignedInt:0];
     [(NSMutableArray *)externalIndexToInternalIndexMappingArray addObject:v18];
 
-    if (!a3)
+    if (!index)
     {
       self->_externalIndex = 0;
     }
@@ -118,7 +118,7 @@
           [(NSMutableArray *)v26 addObject:v27];
 
           ++v23;
-          if (v22 == a3)
+          if (v22 == index)
           {
             self->_externalIndex = v23;
           }
@@ -133,27 +133,27 @@
       while (v21);
     }
 
-    v5 = v31;
+    internalString = v31;
   }
 
   v28 = *MEMORY[0x29EDCA608];
 }
 
-- (void)deleteFromInput:(int64_t *)a3 newInput:(id *)a4 inputIndex:(int64_t *)a5
+- (void)deleteFromInput:(int64_t *)input newInput:(id *)newInput inputIndex:(int64_t *)index
 {
-  v9 = [(TIMarkedTextBuffer_ja_Romaji *)self externalIndex];
-  v10 = [(TIMarkedTextBuffer_ja_Romaji *)self externalString];
-  v46 = [v10 copy];
+  externalIndex = [(TIMarkedTextBuffer_ja_Romaji *)self externalIndex];
+  externalString = [(TIMarkedTextBuffer_ja_Romaji *)self externalString];
+  v46 = [externalString copy];
 
-  v11 = [(TIMarkedTextBuffer_ja_Romaji *)self internalIndex];
-  if (!v9)
+  internalIndex = [(TIMarkedTextBuffer_ja_Romaji *)self internalIndex];
+  if (!externalIndex)
   {
     goto LABEL_37;
   }
 
-  v12 = v11;
-  v44 = v9 - 2;
-  if (v9 < 2)
+  v12 = internalIndex;
+  v44 = externalIndex - 2;
+  if (externalIndex < 2)
   {
     v13 = 0;
   }
@@ -163,22 +163,22 @@
     v13 = [v46 substringWithRange:?];
   }
 
-  v43 = v9 - 1;
+  v43 = externalIndex - 1;
   v14 = [(NSMutableArray *)self->_externalIndexToInternalIndexMappingArray objectAtIndex:?];
-  v15 = [v14 unsignedIntValue];
+  unsignedIntValue = [v14 unsignedIntValue];
 
-  v45 = v12 != v15;
-  if (v12 == v15)
+  v45 = v12 != unsignedIntValue;
+  if (v12 == unsignedIntValue)
   {
     v18 = v13;
     v20 = [Romakana romajiString:v13];
     v19 = [(NSMutableArray *)self->_externalIndexToInternalIndexMappingArray objectAtIndex:v44];
-    v22 = [v19 unsignedIntValue];
+    unsignedIntValue2 = [v19 unsignedIntValue];
   }
 
   else
   {
-    if (-[NSMutableArray count](self->_externalIndexToInternalIndexMappingArray, "count") <= (v9 + 1) || (-[NSMutableArray objectAtIndex:](self->_externalIndexToInternalIndexMappingArray, "objectAtIndex:"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 unsignedIntValue], v16, v12 != v17))
+    if (-[NSMutableArray count](self->_externalIndexToInternalIndexMappingArray, "count") <= (externalIndex + 1) || (-[NSMutableArray objectAtIndex:](self->_externalIndexToInternalIndexMappingArray, "objectAtIndex:"), v16 = objc_claimAutoreleasedReturnValue(), v17 = [v16 unsignedIntValue], v16, v12 != v17))
     {
       v20 = 0;
       v45 = 0;
@@ -186,14 +186,14 @@
     }
 
     v18 = v13;
-    v19 = [v46 substringWithRange:{v9, 1}];
+    v19 = [v46 substringWithRange:{externalIndex, 1}];
     v20 = [Romakana romajiString:v19];
     v21 = [(NSMutableArray *)self->_externalIndexToInternalIndexMappingArray objectAtIndex:v43];
-    v22 = [v21 unsignedIntValue];
+    unsignedIntValue2 = [v21 unsignedIntValue];
   }
 
-  v23 = v12 - v22;
-  if (v12 != v22)
+  v23 = v12 - unsignedIntValue2;
+  if (v12 != unsignedIntValue2)
   {
     v13 = v18;
     if (v23)
@@ -212,9 +212,9 @@ LABEL_15:
 
     v25 = [(NSMutableArray *)self->_externalIndexToInternalIndexMappingArray objectAtIndex:v44];
     v26 = v13;
-    v27 = [v25 unsignedIntValue];
+    unsignedIntValue3 = [v25 unsignedIntValue];
 
-    v23 = v12 - v27;
+    v23 = v12 - unsignedIntValue3;
     v13 = v26;
     v20 = v24;
     if (v23)
@@ -227,10 +227,10 @@ LABEL_17:
   if ([v13 isEqualToString:@"っ"])
   {
     v40 = v13;
-    v41 = a4;
-    v42 = a3;
-    v28 = [(TIMarkedTextBuffer_ja_Romaji *)self externalString];
-    v29 = [v28 substringToIndex:v43];
+    newInputCopy = newInput;
+    inputCopy = input;
+    externalString2 = [(TIMarkedTextBuffer_ja_Romaji *)self externalString];
+    v29 = [externalString2 substringToIndex:v43];
 
     v30 = [v29 length];
     v31 = [MEMORY[0x29EDBA050] stringWithCapacity:3 * v30];
@@ -253,8 +253,8 @@ LABEL_17:
 
     v20 = v35;
     v23 = v12;
-    a4 = v41;
-    a3 = v42;
+    newInput = newInputCopy;
+    input = inputCopy;
     v13 = v40;
 LABEL_24:
     if (v20)
@@ -264,10 +264,10 @@ LABEL_24:
 
 LABEL_41:
     v38 = [(NSMutableArray *)self->_externalIndexToInternalIndexMappingArray objectAtIndex:v43];
-    v39 = [v38 unsignedIntValue];
+    unsignedIntValue4 = [v38 unsignedIntValue];
 
-    v23 = v12 - v39;
-    if (!a3)
+    v23 = v12 - unsignedIntValue4;
+    if (!input)
     {
       goto LABEL_27;
     }
@@ -282,35 +282,35 @@ LABEL_41:
   }
 
 LABEL_25:
-  if (a3)
+  if (input)
   {
 LABEL_26:
-    *a3 = v23;
+    *input = v23;
   }
 
 LABEL_27:
-  if (a5)
+  if (index)
   {
-    *a5 = 0x7FFFFFFFFFFFFFFFLL;
+    *index = 0x7FFFFFFFFFFFFFFFLL;
   }
 
   if (v20)
   {
-    if (a4)
+    if (newInput)
     {
       v36 = v20;
-      *a4 = v20;
+      *newInput = v20;
     }
 
     v37 = !v45;
-    if (!a5)
+    if (!index)
     {
       v37 = 1;
     }
 
     if ((v37 & 1) == 0)
     {
-      *a5 = v12 - [v20 length];
+      *index = v12 - [v20 length];
     }
   }
 
@@ -319,31 +319,31 @@ LABEL_37:
 
 - (int64_t)internalIndex
 {
-  v3 = [(TIMarkedTextBuffer_ja_Romaji *)self externalIndex];
-  v4 = [(TIMarkedTextBuffer_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
-  v5 = [v4 count];
+  externalIndex = [(TIMarkedTextBuffer_ja_Romaji *)self externalIndex];
+  externalIndexToInternalIndexMappingArray = [(TIMarkedTextBuffer_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
+  v5 = [externalIndexToInternalIndexMappingArray count];
 
-  if (v3 >= v5)
+  if (externalIndex >= v5)
   {
-    v6 = [(TIMarkedTextBuffer_ja_Romaji *)self internalString];
-    v8 = [v6 length];
+    internalString = [(TIMarkedTextBuffer_ja_Romaji *)self internalString];
+    unsignedIntValue = [internalString length];
   }
 
   else
   {
-    v6 = [(TIMarkedTextBuffer_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
-    v7 = [v6 objectAtIndexedSubscript:{-[TIMarkedTextBuffer_ja_Romaji externalIndex](self, "externalIndex")}];
-    v8 = [v7 unsignedIntValue];
+    internalString = [(TIMarkedTextBuffer_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
+    v7 = [internalString objectAtIndexedSubscript:{-[TIMarkedTextBuffer_ja_Romaji externalIndex](self, "externalIndex")}];
+    unsignedIntValue = [v7 unsignedIntValue];
   }
 
-  return v8;
+  return unsignedIntValue;
 }
 
-- (void)setExternalInputIndex:(int64_t)a3
+- (void)setExternalInputIndex:(int64_t)index
 {
-  v4 = a3 & ~(a3 >> 63);
-  v5 = [(TIMarkedTextBuffer_ja_Romaji *)self externalString];
-  v6 = [v5 length];
+  v4 = index & ~(index >> 63);
+  externalString = [(TIMarkedTextBuffer_ja_Romaji *)self externalString];
+  v6 = [externalString length];
 
   if (v4 >= v6)
   {
@@ -360,8 +360,8 @@ LABEL_37:
 
 - (void)clear
 {
-  v3 = [(TIMarkedTextBuffer_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
-  [v3 removeAllObjects];
+  externalIndexToInternalIndexMappingArray = [(TIMarkedTextBuffer_ja_Romaji *)self externalIndexToInternalIndexMappingArray];
+  [externalIndexToInternalIndexMappingArray removeAllObjects];
 
   internalString = self->_internalString;
   self->_internalString = &stru_2A2525CC0;

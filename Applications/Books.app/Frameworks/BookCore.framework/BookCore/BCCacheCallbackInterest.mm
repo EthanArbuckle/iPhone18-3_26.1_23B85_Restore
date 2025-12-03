@@ -1,23 +1,23 @@
 @interface BCCacheCallbackInterest
 - (id)description;
-- (void)setDescribedImage:(id)a3;
+- (void)setDescribedImage:(id)image;
 @end
 
 @implementation BCCacheCallbackInterest
 
-- (void)setDescribedImage:(id)a3
+- (void)setDescribedImage:(id)image
 {
-  v4 = a3;
-  [(BCCacheCallbackInterest *)self setDescribedImageShown:v4];
-  v5 = [(BCCacheCallbackInterest *)self handler];
-  v5[2](v5, v4, 0);
+  imageCopy = image;
+  [(BCCacheCallbackInterest *)self setDescribedImageShown:imageCopy];
+  handler = [(BCCacheCallbackInterest *)self handler];
+  handler[2](handler, imageCopy, 0);
 }
 
 - (id)description
 {
-  v3 = [(BCCacheCallbackInterest *)self describedImageShown];
-  v4 = [(BCCacheCallbackInterest *)self describedImageRequested];
-  v5 = [NSString stringWithFormat:@"shown: %@, requested: %@", v3, v4];
+  describedImageShown = [(BCCacheCallbackInterest *)self describedImageShown];
+  describedImageRequested = [(BCCacheCallbackInterest *)self describedImageRequested];
+  v5 = [NSString stringWithFormat:@"shown: %@, requested: %@", describedImageShown, describedImageRequested];
 
   return v5;
 }

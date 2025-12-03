@@ -1,19 +1,19 @@
 @interface TRIActivationEventDatabase
-- ($61A80719B04F7407D3E47539F1B23CAA)addRecordWithParentId:(id)a3 factorPackSetId:(id)a4 deploymentId:(int)a5 osBuild:(id)a6 languageCode:(id)a7 regionCode:(id)a8 carrierBundleId:(id)a9 carrierCountryCode:(id)a10 diagnosticsUsageEnabled:(BOOL)a11 hasAne:(BOOL)a12 aneVersion:(id)a13 transaction:(id)a14;
-- ($61A80719B04F7407D3E47539F1B23CAA)deleteRecordWithParentId:(id)a3 factorPackSetId:(id)a4 deploymentId:(int)a5;
-- (TRIActivationEventDatabase)initWithDatabase:(id)a3;
-- (id)activationEventRecordWithParentId:(id)a3 factorPackSetId:(id)a4 deploymentId:(int)a5;
+- ($61A80719B04F7407D3E47539F1B23CAA)addRecordWithParentId:(id)id factorPackSetId:(id)setId deploymentId:(int)deploymentId osBuild:(id)build languageCode:(id)code regionCode:(id)regionCode carrierBundleId:(id)bundleId carrierCountryCode:(id)self0 diagnosticsUsageEnabled:(BOOL)self1 hasAne:(BOOL)self2 aneVersion:(id)self3 transaction:(id)self4;
+- ($61A80719B04F7407D3E47539F1B23CAA)deleteRecordWithParentId:(id)id factorPackSetId:(id)setId deploymentId:(int)deploymentId;
+- (TRIActivationEventDatabase)initWithDatabase:(id)database;
+- (id)activationEventRecordWithParentId:(id)id factorPackSetId:(id)setId deploymentId:(int)deploymentId;
 @end
 
 @implementation TRIActivationEventDatabase
 
-- (TRIActivationEventDatabase)initWithDatabase:(id)a3
+- (TRIActivationEventDatabase)initWithDatabase:(id)database
 {
-  v6 = a3;
-  if (!v6)
+  databaseCopy = database;
+  if (!databaseCopy)
   {
-    v10 = [MEMORY[0x277CCA890] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"database"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:23 description:{@"Invalid parameter not satisfying: %@", @"database"}];
   }
 
   v11.receiver = self;
@@ -22,27 +22,27 @@
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_db, a3);
+    objc_storeStrong(&v7->_db, database);
   }
 
   return v8;
 }
 
-- ($61A80719B04F7407D3E47539F1B23CAA)addRecordWithParentId:(id)a3 factorPackSetId:(id)a4 deploymentId:(int)a5 osBuild:(id)a6 languageCode:(id)a7 regionCode:(id)a8 carrierBundleId:(id)a9 carrierCountryCode:(id)a10 diagnosticsUsageEnabled:(BOOL)a11 hasAne:(BOOL)a12 aneVersion:(id)a13 transaction:(id)a14
+- ($61A80719B04F7407D3E47539F1B23CAA)addRecordWithParentId:(id)id factorPackSetId:(id)setId deploymentId:(int)deploymentId osBuild:(id)build languageCode:(id)code regionCode:(id)regionCode carrierBundleId:(id)bundleId carrierCountryCode:(id)self0 diagnosticsUsageEnabled:(BOOL)self1 hasAne:(BOOL)self2 aneVersion:(id)self3 transaction:(id)self4
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
-  v25 = a13;
-  v26 = a14;
-  v27 = v18;
-  if (v18)
+  idCopy = id;
+  setIdCopy = setId;
+  buildCopy = build;
+  codeCopy = code;
+  regionCodeCopy = regionCode;
+  bundleIdCopy = bundleId;
+  countryCodeCopy = countryCode;
+  versionCopy = version;
+  transactionCopy = transaction;
+  v27 = idCopy;
+  if (idCopy)
   {
-    if (v19)
+    if (setIdCopy)
     {
       goto LABEL_3;
     }
@@ -50,26 +50,26 @@
 
   else
   {
-    v43 = [MEMORY[0x277CCA890] currentHandler];
-    [v43 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"parentId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:50 description:{@"Invalid parameter not satisfying: %@", @"parentId"}];
 
     v27 = 0;
-    if (v19)
+    if (setIdCopy)
     {
       goto LABEL_3;
     }
   }
 
   v44 = v27;
-  v45 = [MEMORY[0x277CCA890] currentHandler];
-  [v45 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
 
   v27 = v44;
 LABEL_3:
-  v28 = v20;
-  if (v20)
+  v28 = buildCopy;
+  if (buildCopy)
   {
-    if (v21)
+    if (codeCopy)
     {
       goto LABEL_5;
     }
@@ -78,59 +78,59 @@ LABEL_3:
   else
   {
     v46 = v27;
-    v47 = [MEMORY[0x277CCA890] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"osBuild"}];
+    currentHandler3 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:52 description:{@"Invalid parameter not satisfying: %@", @"osBuild"}];
 
     v27 = v46;
-    if (v21)
+    if (codeCopy)
     {
       goto LABEL_5;
     }
   }
 
   v48 = v27;
-  v49 = [MEMORY[0x277CCA890] currentHandler];
-  [v49 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"languageCode"}];
+  currentHandler4 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler4 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:53 description:{@"Invalid parameter not satisfying: %@", @"languageCode"}];
 
   v27 = v48;
 LABEL_5:
-  v29 = v21;
-  if (!v22)
+  v29 = codeCopy;
+  if (!regionCodeCopy)
   {
     v50 = v27;
-    v51 = [MEMORY[0x277CCA890] currentHandler];
-    [v51 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"regionCode"}];
+    currentHandler5 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler5 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:54 description:{@"Invalid parameter not satisfying: %@", @"regionCode"}];
 
     v27 = v50;
   }
 
-  v30 = v22;
-  if (!v23)
+  v30 = regionCodeCopy;
+  if (!bundleIdCopy)
   {
     v52 = v27;
-    v53 = [MEMORY[0x277CCA890] currentHandler];
-    [v53 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"carrierBundleId"}];
+    currentHandler6 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler6 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:55 description:{@"Invalid parameter not satisfying: %@", @"carrierBundleId"}];
 
     v27 = v52;
   }
 
-  v31 = v23;
-  v62 = v26;
-  if (!v24)
+  v31 = bundleIdCopy;
+  v62 = transactionCopy;
+  if (!countryCodeCopy)
   {
     v54 = v27;
-    v55 = [MEMORY[0x277CCA890] currentHandler];
-    [v55 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"carrierCountryCode"}];
+    currentHandler7 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler7 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"carrierCountryCode"}];
 
     v27 = v54;
   }
 
-  v32 = v24;
-  if (!v25)
+  v32 = countryCodeCopy;
+  if (!versionCopy)
   {
     v58 = v27;
-    v56 = [MEMORY[0x277CCA890] currentHandler];
-    [v56 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"aneVersion"}];
+    currentHandler8 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler8 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"aneVersion"}];
 
     v27 = v58;
   }
@@ -146,9 +146,9 @@ LABEL_5:
   v64[3] = &unk_279DE1470;
   v60 = v27;
   v65 = v60;
-  v57 = v19;
+  v57 = setIdCopy;
   v66 = v57;
-  v75 = a5;
+  deploymentIdCopy = deploymentId;
   v33 = v28;
   v67 = v33;
   v34 = v29;
@@ -159,11 +159,11 @@ LABEL_5:
   v70 = v36;
   v37 = v32;
   v71 = v37;
-  v76 = a11;
-  v77 = a12;
-  v38 = v25;
+  enabledCopy = enabled;
+  aneCopy = ane;
+  v38 = versionCopy;
   v72 = v38;
-  v73 = self;
+  selfCopy = self;
   v74 = &v78;
   v39 = MEMORY[0x2743948D0](v64);
   v40 = v39;
@@ -264,14 +264,14 @@ void __202__TRIActivationEventDatabase_addRecordWithParentId_factorPackSetId_dep
   [v4 bindNamedParam:":ane_version" toNSString:*(a1 + 88)];
 }
 
-- (id)activationEventRecordWithParentId:(id)a3 factorPackSetId:(id)a4 deploymentId:(int)a5
+- (id)activationEventRecordWithParentId:(id)id factorPackSetId:(id)setId deploymentId:(int)deploymentId
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (v9)
+  idCopy = id;
+  setIdCopy = setId;
+  v11 = setIdCopy;
+  if (idCopy)
   {
-    if (v10)
+    if (setIdCopy)
     {
       goto LABEL_3;
     }
@@ -279,8 +279,8 @@ void __202__TRIActivationEventDatabase_addRecordWithParentId_factorPackSetId_dep
 
   else
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"parentId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:130 description:{@"Invalid parameter not satisfying: %@", @"parentId"}];
 
     if (v11)
     {
@@ -288,8 +288,8 @@ void __202__TRIActivationEventDatabase_addRecordWithParentId_factorPackSetId_dep
     }
   }
 
-  v17 = [MEMORY[0x277CCA890] currentHandler];
-  [v17 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:131 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
 
 LABEL_3:
   v25 = 0;
@@ -302,12 +302,12 @@ LABEL_3:
   v18[1] = 3221225472;
   v18[2] = __93__TRIActivationEventDatabase_activationEventRecordWithParentId_factorPackSetId_deploymentId___block_invoke;
   v18[3] = &unk_279DE14E8;
-  v12 = v9;
+  v12 = idCopy;
   v19 = v12;
   v13 = v11;
-  v24 = a5;
+  deploymentIdCopy = deploymentId;
   v20 = v13;
-  v21 = self;
+  selfCopy = self;
   v22 = &v25;
   v23 = a2;
   [(TRIActivationEventDatabase *)self readTransactionWithFailableBlock:v18];
@@ -414,15 +414,15 @@ uint64_t __93__TRIActivationEventDatabase_activationEventRecordWithParentId_fact
   return *v15;
 }
 
-- ($61A80719B04F7407D3E47539F1B23CAA)deleteRecordWithParentId:(id)a3 factorPackSetId:(id)a4 deploymentId:(int)a5
+- ($61A80719B04F7407D3E47539F1B23CAA)deleteRecordWithParentId:(id)id factorPackSetId:(id)setId deploymentId:(int)deploymentId
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = v10;
-  if (!v9)
+  idCopy = id;
+  setIdCopy = setId;
+  v11 = setIdCopy;
+  if (!idCopy)
   {
-    v16 = [MEMORY[0x277CCA890] currentHandler];
-    [v16 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"parentId"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:192 description:{@"Invalid parameter not satisfying: %@", @"parentId"}];
 
     if (v11)
     {
@@ -430,13 +430,13 @@ uint64_t __93__TRIActivationEventDatabase_activationEventRecordWithParentId_fact
     }
 
 LABEL_5:
-    v17 = [MEMORY[0x277CCA890] currentHandler];
-    [v17 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
+    currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"TRIActivationEventDatabase.m" lineNumber:193 description:{@"Invalid parameter not satisfying: %@", @"factorPackSetId"}];
 
     goto LABEL_3;
   }
 
-  if (!v10)
+  if (!setIdCopy)
   {
     goto LABEL_5;
   }
@@ -451,12 +451,12 @@ LABEL_3:
   v18[1] = 3221225472;
   v18[2] = __84__TRIActivationEventDatabase_deleteRecordWithParentId_factorPackSetId_deploymentId___block_invoke;
   v18[3] = &unk_279DE1510;
-  v12 = v9;
+  v12 = idCopy;
   v19 = v12;
   v13 = v11;
-  v23 = a5;
+  deploymentIdCopy = deploymentId;
   v20 = v13;
-  v21 = self;
+  selfCopy = self;
   v22 = &v24;
   [(TRIActivationEventDatabase *)self writeTransactionWithFailableBlock:v18];
   v14.var0 = v25[4];

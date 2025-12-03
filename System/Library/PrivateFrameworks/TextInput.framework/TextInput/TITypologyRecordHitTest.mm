@@ -1,72 +1,72 @@
 @interface TITypologyRecordHitTest
-- (TITypologyRecordHitTest)initWithCoder:(id)a3;
+- (TITypologyRecordHitTest)initWithCoder:(id)coder;
 - (id)shortDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)removeContextFromKeyboardState;
-- (void)replaceDocumentState:(id)a3;
+- (void)replaceDocumentState:(id)state;
 @end
 
 @implementation TITypologyRecordHitTest
 
-- (void)replaceDocumentState:(id)a3
+- (void)replaceDocumentState:(id)state
 {
-  v4 = a3;
-  v5 = [(TITypologyRecordHitTest *)self keyboardState];
-  [v5 setDocumentState:v4];
+  stateCopy = state;
+  keyboardState = [(TITypologyRecordHitTest *)self keyboardState];
+  [keyboardState setDocumentState:stateCopy];
 }
 
 - (id)shortDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(TITypologyRecordHitTest *)self touchEvent];
-  v5 = [v4 shortDescription];
-  v6 = [v3 stringWithFormat:@"HIT TEST at %@ keyCode=%ld", v5, -[TITypologyRecordHitTest keyCode](self, "keyCode")];
+  touchEvent = [(TITypologyRecordHitTest *)self touchEvent];
+  shortDescription = [touchEvent shortDescription];
+  v6 = [v3 stringWithFormat:@"HIT TEST at %@ keyCode=%ld", shortDescription, -[TITypologyRecordHitTest keyCode](self, "keyCode")];
 
   return v6;
 }
 
 - (void)removeContextFromKeyboardState
 {
-  v3 = [(TITypologyRecordHitTest *)self keyboardState];
-  v4 = [v3 copy];
+  keyboardState = [(TITypologyRecordHitTest *)self keyboardState];
+  v4 = [keyboardState copy];
 
   [v4 setInputContextHistory:0];
   [(TITypologyRecordHitTest *)self setKeyboardState:v4];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = TITypologyRecordHitTest;
-  v4 = a3;
-  [(TITypologyRecord *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_touchEvent forKey:{@"touchEvent", v5.receiver, v5.super_class}];
-  [v4 encodeObject:self->_keyboardState forKey:@"keyboardState"];
-  [v4 encodeObject:self->_keyLayout forKey:@"keyLayout"];
-  [v4 encodeInteger:self->_keyCode forKey:@"keyCode"];
+  coderCopy = coder;
+  [(TITypologyRecord *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_touchEvent forKey:{@"touchEvent", v5.receiver, v5.super_class}];
+  [coderCopy encodeObject:self->_keyboardState forKey:@"keyboardState"];
+  [coderCopy encodeObject:self->_keyLayout forKey:@"keyLayout"];
+  [coderCopy encodeInteger:self->_keyCode forKey:@"keyCode"];
 }
 
-- (TITypologyRecordHitTest)initWithCoder:(id)a3
+- (TITypologyRecordHitTest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = TITypologyRecordHitTest;
-  v5 = [(TITypologyRecord *)&v13 initWithCoder:v4];
+  v5 = [(TITypologyRecord *)&v13 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"touchEvent"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"touchEvent"];
     touchEvent = v5->_touchEvent;
     v5->_touchEvent = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyboardState"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyboardState"];
     keyboardState = v5->_keyboardState;
     v5->_keyboardState = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"keyLayout"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"keyLayout"];
     keyLayout = v5->_keyLayout;
     v5->_keyLayout = v10;
 
-    v5->_keyCode = [v4 decodeIntegerForKey:@"keyCode"];
+    v5->_keyCode = [coderCopy decodeIntegerForKey:@"keyCode"];
   }
 
   return v5;

@@ -8,13 +8,13 @@
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_1006F2104();
 }
 
 - (void)end
 {
-  v2 = self;
+  selfCopy = self;
 
   SessionManager.endSync()();
 }

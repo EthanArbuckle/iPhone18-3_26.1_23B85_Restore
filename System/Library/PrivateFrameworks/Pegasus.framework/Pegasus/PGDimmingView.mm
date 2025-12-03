@@ -1,20 +1,20 @@
 @interface PGDimmingView
-- (PGDimmingView)initWithFrame:(CGRect)a3 wantsGlassBackground:(BOOL)a4;
+- (PGDimmingView)initWithFrame:(CGRect)frame wantsGlassBackground:(BOOL)background;
 @end
 
 @implementation PGDimmingView
 
-- (PGDimmingView)initWithFrame:(CGRect)a3 wantsGlassBackground:(BOOL)a4
+- (PGDimmingView)initWithFrame:(CGRect)frame wantsGlassBackground:(BOOL)background
 {
-  v4 = a4;
+  backgroundCopy = background;
   v10.receiver = self;
   v10.super_class = PGDimmingView;
-  v5 = [(PGDimmingView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(PGDimmingView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_wantsGlassBackground = v4;
-    if (v4)
+    v5->_wantsGlassBackground = backgroundCopy;
+    if (backgroundCopy)
     {
       v7 = 0.4;
     }

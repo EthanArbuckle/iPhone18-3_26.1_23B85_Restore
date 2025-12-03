@@ -1,11 +1,11 @@
 @interface CPSAppInfoFetcher
-+ (id)_cachedIconFileURLForItemID:(id)a3;
++ (id)_cachedIconFileURLForItemID:(id)d;
 + (id)_sharedAMSBag;
 - (CPSAppInfoFetcher)init;
-- (void)_downloadIconIfNeeded:(id)a3 completionHandler:(id)a4;
-- (void)_lookUpClipDemoAMSMetadataWithBundleID:(id)a3 completion:(id)a4;
-- (void)evictCachedMetadataForClipBundleID:(id)a3;
-- (void)lookUpClipMetadataByBundleID:(id)a3 sourceBundleID:(id)a4 URL:(id)a5 downloadIconIfNeeded:(BOOL)a6 skipCaching:(BOOL)a7 completionHandler:(id)a8;
+- (void)_downloadIconIfNeeded:(id)needed completionHandler:(id)handler;
+- (void)_lookUpClipDemoAMSMetadataWithBundleID:(id)d completion:(id)completion;
+- (void)evictCachedMetadataForClipBundleID:(id)d;
+- (void)lookUpClipMetadataByBundleID:(id)d sourceBundleID:(id)iD URL:(id)l downloadIconIfNeeded:(BOOL)needed skipCaching:(BOOL)caching completionHandler:(id)handler;
 @end
 
 @implementation CPSAppInfoFetcher
@@ -28,36 +28,36 @@
   return v2;
 }
 
-- (void)lookUpClipMetadataByBundleID:(id)a3 sourceBundleID:(id)a4 URL:(id)a5 downloadIconIfNeeded:(BOOL)a6 skipCaching:(BOOL)a7 completionHandler:(id)a8
+- (void)lookUpClipMetadataByBundleID:(id)d sourceBundleID:(id)iD URL:(id)l downloadIconIfNeeded:(BOOL)needed skipCaching:(BOOL)caching completionHandler:(id)handler
 {
-  v9 = a7;
-  v10 = a6;
+  cachingCopy = caching;
+  neededCopy = needed;
   v42 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  if (v14)
+  dCopy = d;
+  iDCopy = iD;
+  lCopy = l;
+  handlerCopy = handler;
+  if (dCopy)
   {
-    if ([v14 cps_looksLikeUUIDOrWebClipIdentifier])
+    if ([dCopy cps_looksLikeUUIDOrWebClipIdentifier])
     {
       v18 = CPS_LOG_CHANNEL_PREFIXClipServices();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        [CPSAppInfoFetcher lookUpClipMetadataByBundleID:v15 sourceBundleID:v14 URL:v18 downloadIconIfNeeded:? skipCaching:? completionHandler:?];
+        [CPSAppInfoFetcher lookUpClipMetadataByBundleID:iDCopy sourceBundleID:dCopy URL:v18 downloadIconIfNeeded:? skipCaching:? completionHandler:?];
       }
     }
 
-    v19 = [(NSCache *)self->_appMetadataByBundleID objectForKey:v14];
-    if ([v14 cps_isAMSPlaceholderBundleIdentifier])
+    v19 = [(NSCache *)self->_appMetadataByBundleID objectForKey:dCopy];
+    if ([dCopy cps_isAMSPlaceholderBundleIdentifier])
     {
       v20 = CPS_LOG_CHANNEL_PREFIXClipServices();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
       {
         *buf = 138478083;
-        v39 = v14;
+        v39 = dCopy;
         v40 = 2113;
-        v41 = v16;
+        v41 = lCopy;
         _os_log_impl(&dword_2436ED000, v20, OS_LOG_TYPE_INFO, "Look up metadata for AMS placeholder bundleID: %{private}@, URL: %{private}@", buf, 0x16u);
       }
 
@@ -66,25 +66,25 @@
 
     else if (v19)
     {
-      v22 = [v19 amsDictionary];
-      if (v22)
+      amsDictionary = [v19 amsDictionary];
+      if (amsDictionary)
       {
-        v23 = [v19 isExpired];
+        isExpired = [v19 isExpired];
 
-        if (((v23 | v9) & 1) == 0)
+        if (((isExpired | cachingCopy) & 1) == 0)
         {
-          v31 = [v19 amsDictionary];
-          v32 = [CPSClipInvocationPolicy invocationPolicyWithAMSDict:v31];
+          amsDictionary2 = [v19 amsDictionary];
+          v32 = [CPSClipInvocationPolicy invocationPolicyWithAMSDict:amsDictionary2];
           [v19 setInvocationPolicy:v32];
 
-          if (v10)
+          if (neededCopy)
           {
-            [(CPSAppInfoFetcher *)self _downloadIconIfNeeded:v19 completionHandler:v17];
+            [(CPSAppInfoFetcher *)self _downloadIconIfNeeded:v19 completionHandler:handlerCopy];
           }
 
           else
           {
-            v17[2](v17, v19, 0);
+            handlerCopy[2](handlerCopy, v19, 0);
           }
 
 LABEL_20:
@@ -96,7 +96,7 @@ LABEL_20:
 
     if (+[CPSClipURL usesDemoMetadata])
     {
-      [(CPSAppInfoFetcher *)self _lookUpClipDemoAMSMetadataWithBundleID:v14 completion:v17];
+      [(CPSAppInfoFetcher *)self _lookUpClipDemoAMSMetadataWithBundleID:dCopy completion:handlerCopy];
     }
 
     else
@@ -110,25 +110,25 @@ LABEL_20:
 
       v25 = objc_alloc(MEMORY[0x277CEE458]);
       v26 = +[CPSAppInfoFetcher _sharedAMSBag];
-      v27 = [v25 initWithClientID:@"com.apple.ClipServices.clipserviced" bundleID:v14 URL:v16 bag:v26];
+      v27 = [v25 initWithClientID:@"com.apple.ClipServices.clipserviced" bundleID:dCopy URL:lCopy bag:v26];
 
-      if ([v15 length])
+      if ([iDCopy length])
       {
-        v28 = [objc_alloc(MEMORY[0x277CEE620]) initWithBundleIdentifier:v15];
+        v28 = [objc_alloc(MEMORY[0x277CEE620]) initWithBundleIdentifier:iDCopy];
         [v27 setClientInfo:v28];
       }
 
-      v29 = [v27 perform];
+      perform = [v27 perform];
       objc_initWeak(buf, self);
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __120__CPSAppInfoFetcher_lookUpClipMetadataByBundleID_sourceBundleID_URL_downloadIconIfNeeded_skipCaching_completionHandler___block_invoke;
       v33[3] = &unk_278DCF288;
-      v35 = v17;
+      v35 = handlerCopy;
       objc_copyWeak(&v36, buf);
-      v34 = v14;
-      v37 = v10;
-      [v29 addFinishBlock:v33];
+      v34 = dCopy;
+      v37 = neededCopy;
+      [perform addFinishBlock:v33];
 
       objc_destroyWeak(&v36);
       objc_destroyWeak(buf);
@@ -138,7 +138,7 @@ LABEL_20:
   }
 
   v21 = [MEMORY[0x277CCA9B8] cps_errorWithCode:1];
-  (v17)[2](v17, 0, v21);
+  (handlerCopy)[2](handlerCopy, 0, v21);
 
 LABEL_21:
   v30 = *MEMORY[0x277D85DE8];
@@ -253,9 +253,9 @@ LABEL_24:
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (void)evictCachedMetadataForClipBundleID:(id)a3
+- (void)evictCachedMetadataForClipBundleID:(id)d
 {
-  if (a3)
+  if (d)
   {
     [(NSCache *)self->_appMetadataByBundleID removeObjectForKey:?];
   }
@@ -284,12 +284,12 @@ uint64_t __34__CPSAppInfoFetcher__sharedAMSBag__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)_cachedIconFileURLForItemID:(id)a3
++ (id)_cachedIconFileURLForItemID:(id)d
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  dCopy = d;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v15 = 0;
-  v5 = [v4 URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v15];
+  v5 = [defaultManager URLForDirectory:13 inDomain:1 appropriateForURL:0 create:1 error:&v15];
   v6 = v15;
 
   if (v6)
@@ -305,9 +305,9 @@ uint64_t __34__CPSAppInfoFetcher__sharedAMSBag__block_invoke()
   else
   {
     v8 = [v5 URLByAppendingPathComponent:@"com.apple.ClipServices/Icons" isDirectory:1];
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v14 = 0;
-    [v9 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v14];
+    [defaultManager2 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v14];
     v6 = v14;
 
     if (v6)
@@ -323,8 +323,8 @@ uint64_t __34__CPSAppInfoFetcher__sharedAMSBag__block_invoke()
     else
     {
       v10 = MEMORY[0x277CCACA8];
-      v11 = [v3 stringValue];
-      v12 = [v10 stringWithFormat:@"%@.png", v11];
+      stringValue = [dCopy stringValue];
+      v12 = [v10 stringWithFormat:@"%@.png", stringValue];
 
       v7 = [v8 URLByAppendingPathComponent:v12 isDirectory:0];
     }
@@ -333,42 +333,42 @@ uint64_t __34__CPSAppInfoFetcher__sharedAMSBag__block_invoke()
   return v7;
 }
 
-- (void)_downloadIconIfNeeded:(id)a3 completionHandler:(id)a4
+- (void)_downloadIconIfNeeded:(id)needed completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 fullAppIconURL];
-  if (v7)
+  neededCopy = needed;
+  handlerCopy = handler;
+  fullAppIconURL = [neededCopy fullAppIconURL];
+  if (fullAppIconURL)
   {
-    v8 = [v5 fullAppCachedIconFilePath];
-    if (![v8 length] || (objc_msgSend(MEMORY[0x277CBEBC0], "fileURLWithPath:", v8), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+    fullAppCachedIconFilePath = [neededCopy fullAppCachedIconFilePath];
+    if (![fullAppCachedIconFilePath length] || (objc_msgSend(MEMORY[0x277CBEBC0], "fileURLWithPath:", fullAppCachedIconFilePath), (v9 = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v10 = [v5 itemID];
-      v9 = [objc_opt_class() _cachedIconFileURLForItemID:v10];
+      itemID = [neededCopy itemID];
+      v9 = [objc_opt_class() _cachedIconFileURLForItemID:itemID];
     }
 
-    v11 = [v9 path];
+    path = [v9 path];
 
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v12 fileExistsAtPath:v11];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v13 = [defaultManager fileExistsAtPath:path];
 
     if (v13)
     {
-      [v5 setFullAppCachedIconFilePath:v11];
-      v6[2](v6, v5, 0);
+      [neededCopy setFullAppCachedIconFilePath:path];
+      handlerCopy[2](handlerCopy, neededCopy, 0);
     }
 
     else
     {
-      v15 = [MEMORY[0x277CCAD30] sharedSession];
+      mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
       v17[0] = MEMORY[0x277D85DD0];
       v17[1] = 3221225472;
       v17[2] = __61__CPSAppInfoFetcher__downloadIconIfNeeded_completionHandler___block_invoke;
       v17[3] = &unk_278DCF2B0;
-      v20 = v6;
-      v18 = v5;
-      v19 = v11;
-      v16 = [v15 dataTaskWithURL:v7 completionHandler:v17];
+      v20 = handlerCopy;
+      v18 = neededCopy;
+      v19 = path;
+      v16 = [mEMORY[0x277CCAD30] dataTaskWithURL:fullAppIconURL completionHandler:v17];
 
       [v16 resume];
     }
@@ -382,8 +382,8 @@ uint64_t __34__CPSAppInfoFetcher__sharedAMSBag__block_invoke()
       [CPSAppInfoFetcher _downloadIconIfNeeded:completionHandler:];
     }
 
-    v11 = [MEMORY[0x277CCA9B8] cps_errorWithCode:7];
-    (v6)[2](v6, v5, v11);
+    path = [MEMORY[0x277CCA9B8] cps_errorWithCode:7];
+    (handlerCopy)[2](handlerCopy, neededCopy, path);
   }
 }
 
@@ -438,27 +438,27 @@ LABEL_12:
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_lookUpClipDemoAMSMetadataWithBundleID:(id)a3 completion:(id)a4
+- (void)_lookUpClipDemoAMSMetadataWithBundleID:(id)d completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  completionCopy = completion;
   if (+[CPSClipURL usesDemoMetadata])
   {
     v7 = MEMORY[0x277CBEBC0];
-    v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"https://test-safari.apple.com/amp/%@/", v5];
-    v9 = [v7 URLWithString:v8];
+    dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"https://test-safari.apple.com/amp/%@/", dCopy];
+    v9 = [v7 URLWithString:dCopy];
 
     v10 = [v9 URLByAppendingPathComponent:@"/Info.json"];
     v11 = [objc_alloc(MEMORY[0x277CCAD20]) initWithURL:v10 cachePolicy:1 timeoutInterval:5.0];
-    v12 = [MEMORY[0x277CCAD30] sharedSession];
+    mEMORY[0x277CCAD30] = [MEMORY[0x277CCAD30] sharedSession];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __71__CPSAppInfoFetcher__lookUpClipDemoAMSMetadataWithBundleID_completion___block_invoke;
     v16[3] = &unk_278DCF2D8;
     v17 = v10;
-    v18 = v6;
+    v18 = completionCopy;
     v13 = v10;
-    v14 = [v12 dataTaskWithRequest:v11 completionHandler:v16];
+    v14 = [mEMORY[0x277CCAD30] dataTaskWithRequest:v11 completionHandler:v16];
 
     [v14 resume];
   }
@@ -472,7 +472,7 @@ LABEL_12:
     }
 
     v9 = [MEMORY[0x277CCA9B8] cps_errorWithCode:10];
-    (*(v6 + 2))(v6, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
   }
 }
 

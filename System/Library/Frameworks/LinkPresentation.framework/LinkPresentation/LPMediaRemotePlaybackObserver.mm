@@ -1,11 +1,11 @@
 @interface LPMediaRemotePlaybackObserver
 + (id)shared;
-- (BOOL)playbackInformationMatchesPlayingItem:(id)a3;
-- (double)elapsedFractionForPlaybackInformation:(id)a3;
+- (BOOL)playbackInformationMatchesPlayingItem:(id)item;
+- (double)elapsedFractionForPlaybackInformation:(id)information;
 - (double)minimumUpdateInterval;
-- (void)addClient:(id)a3;
+- (void)addClient:(id)client;
 - (void)dispatchPlayingItemDidChangeToAllClients;
-- (void)removeClient:(id)a3;
+- (void)removeClient:(id)client;
 - (void)updatePlaybackState;
 @end
 
@@ -30,22 +30,22 @@ void __39__LPMediaRemotePlaybackObserver_shared__block_invoke()
   shared_observer_0 = v0;
 }
 
-- (void)addClient:(id)a3
+- (void)addClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   clients = self->_clients;
-  v14 = v4;
+  v14 = clientCopy;
   if (!clients)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     v7 = self->_clients;
-    self->_clients = v6;
+    self->_clients = weakObjectsHashTable;
 
     clients = self->_clients;
-    v4 = v14;
+    clientCopy = v14;
   }
 
-  [(NSHashTable *)clients addObject:v4];
+  [(NSHashTable *)clients addObject:clientCopy];
   [(LPMediaRemotePlaybackObserver *)self minimumUpdateInterval];
   v9 = v8;
   timer = self->_timer;
@@ -68,9 +68,9 @@ void __39__LPMediaRemotePlaybackObserver_shared__block_invoke()
 LABEL_7:
 }
 
-- (void)removeClient:(id)a3
+- (void)removeClient:(id)client
 {
-  v5 = a3;
+  clientCopy = client;
   [(NSHashTable *)self->_clients removeObject:?];
   if (![(NSHashTable *)self->_clients count])
   {
@@ -203,9 +203,9 @@ LABEL_7:
   _Block_object_dispose(&v65, 8);
   if (!v5)
   {
-    v43 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v44 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPModelRelationshipGenericSong(void)"];
-    [v43 handleFailureInFunction:v44 file:@"LPMediaRemotePlaybackObserver.m" lineNumber:30 description:{@"%s", dlerror()}];
+    [currentHandler handleFailureInFunction:v44 file:@"LPMediaRemotePlaybackObserver.m" lineNumber:30 description:{@"%s", dlerror()}];
 
     goto LABEL_28;
   }
@@ -235,9 +235,9 @@ LABEL_7:
   _Block_object_dispose(&v65, 8);
   if (!v9)
   {
-    v45 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
     v46 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPModelRelationshipSongAlbum(void)"];
-    [v45 handleFailureInFunction:v46 file:@"LPMediaRemotePlaybackObserver.m" lineNumber:33 description:{@"%s", dlerror()}];
+    [currentHandler2 handleFailureInFunction:v46 file:@"LPMediaRemotePlaybackObserver.m" lineNumber:33 description:{@"%s", dlerror()}];
 
     goto LABEL_28;
   }
@@ -271,9 +271,9 @@ LABEL_7:
   _Block_object_dispose(&v65, 8);
   if (!v15)
   {
-    v47 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
     v48 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPModelRelationshipGenericPodcastEpisode(void)"];
-    [v47 handleFailureInFunction:v48 file:@"LPMediaRemotePlaybackObserver.m" lineNumber:28 description:{@"%s", dlerror()}];
+    [currentHandler3 handleFailureInFunction:v48 file:@"LPMediaRemotePlaybackObserver.m" lineNumber:28 description:{@"%s", dlerror()}];
 
     goto LABEL_28;
   }
@@ -303,9 +303,9 @@ LABEL_7:
   _Block_object_dispose(&v65, 8);
   if (!v20)
   {
-    v49 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
     v50 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPModelRelationshipPodcastEpisodePodcast(void)"];
-    [v49 handleFailureInFunction:v50 file:@"LPMediaRemotePlaybackObserver.m" lineNumber:32 description:{@"%s", dlerror()}];
+    [currentHandler4 handleFailureInFunction:v50 file:@"LPMediaRemotePlaybackObserver.m" lineNumber:32 description:{@"%s", dlerror()}];
 
     goto LABEL_28;
   }
@@ -344,9 +344,9 @@ LABEL_7:
   _Block_object_dispose(&v65, 8);
   if (!v30)
   {
-    v51 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
     v52 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPModelRelationshipGenericPlaylist(void)"];
-    [v51 handleFailureInFunction:v52 file:@"LPMediaRemotePlaybackObserver.m" lineNumber:27 description:{@"%s", dlerror()}];
+    [currentHandler5 handleFailureInFunction:v52 file:@"LPMediaRemotePlaybackObserver.m" lineNumber:27 description:{@"%s", dlerror()}];
 
     goto LABEL_28;
   }
@@ -377,9 +377,9 @@ LABEL_7:
   _Block_object_dispose(&v65, 8);
   if (!v35)
   {
-    v53 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
     v54 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getMPModelRelationshipGenericRadioStation(void)"];
-    [v53 handleFailureInFunction:v54 file:@"LPMediaRemotePlaybackObserver.m" lineNumber:29 description:{@"%s", dlerror()}];
+    [currentHandler6 handleFailureInFunction:v54 file:@"LPMediaRemotePlaybackObserver.m" lineNumber:29 description:{@"%s", dlerror()}];
 
 LABEL_28:
     __break(1u);
@@ -516,24 +516,24 @@ uint64_t __52__LPMediaRemotePlaybackObserver_updatePlaybackState__block_invoke_4
   return [v2 dispatchPlayingItemDidChangeToAllClients];
 }
 
-- (double)elapsedFractionForPlaybackInformation:(id)a3
+- (double)elapsedFractionForPlaybackInformation:(id)information
 {
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   v6 = 1.0;
   if (!self->_enqueuedItemIsLive)
   {
-    v7 = [v4 lyricExcerpt];
+    lyricExcerpt = [informationCopy lyricExcerpt];
 
-    if (v7)
+    if (lyricExcerpt)
     {
-      v8 = [v5 lyricExcerpt];
-      v9 = [v8 startTime];
-      [v9 doubleValue];
+      lyricExcerpt2 = [v5 lyricExcerpt];
+      startTime = [lyricExcerpt2 startTime];
+      [startTime doubleValue];
       v11 = v10;
 
-      v12 = [v8 endTime];
-      [v12 doubleValue];
+      endTime = [lyricExcerpt2 endTime];
+      [endTime doubleValue];
       v13 = v11 + -1.0;
       v6 = 1.0;
       v15 = v14 + 1.0;
@@ -553,22 +553,22 @@ uint64_t __52__LPMediaRemotePlaybackObserver_updatePlaybackState__block_invoke_4
   return v6;
 }
 
-- (BOOL)playbackInformationMatchesPlayingItem:(id)a3
+- (BOOL)playbackInformationMatchesPlayingItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
+  itemCopy = item;
+  v5 = itemCopy;
   if (!self->_enqueuedItem)
   {
     goto LABEL_45;
   }
 
-  v6 = [v4 type];
+  type = [itemCopy type];
   v7 = 0;
-  if (v6 <= 2)
+  if (type <= 2)
   {
-    if (v6)
+    if (type)
     {
-      if (v6 == 1)
+      if (type == 1)
       {
         if ([(MPModelGenericObject *)self->_enqueuedItem type]!= 1)
         {
@@ -576,18 +576,18 @@ uint64_t __52__LPMediaRemotePlaybackObserver_updatePlaybackState__block_invoke_4
         }
 
         v48 = MEMORY[0x1E696AD98];
-        v49 = [(MPModelGenericObject *)self->_enqueuedItem song];
-        v50 = [v49 album];
-        v51 = [v50 identifiers];
-        v52 = [v51 universalStore];
-        v53 = [v48 numberWithLongLong:{objc_msgSend(v52, "adamID")}];
-        v45 = [v53 stringValue];
+        song = [(MPModelGenericObject *)self->_enqueuedItem song];
+        album = [song album];
+        identifiers = [album identifiers];
+        universalStore = [identifiers universalStore];
+        v53 = [v48 numberWithLongLong:{objc_msgSend(universalStore, "adamID")}];
+        stringValue = [v53 stringValue];
 
-        if (v45)
+        if (stringValue)
         {
 LABEL_36:
-          v54 = [v5 storeIdentifier];
-          v7 = [v54 isEqualToString:v45];
+          storeIdentifier = [v5 storeIdentifier];
+          v7 = [storeIdentifier isEqualToString:stringValue];
 
 LABEL_40:
           goto LABEL_46;
@@ -598,16 +598,16 @@ LABEL_39:
         goto LABEL_40;
       }
 
-      if (v6 != 2)
+      if (type != 2)
       {
         goto LABEL_46;
       }
 
-      v17 = [(MPModelGenericObject *)self->_enqueuedItemContext identifiers];
-      v18 = [v17 radio];
-      v19 = [v18 stationStringID];
+      identifiers2 = [(MPModelGenericObject *)self->_enqueuedItemContext identifiers];
+      radio = [identifiers2 radio];
+      stationStringID = [radio stationStringID];
 
-      if (!v19)
+      if (!stationStringID)
       {
         goto LABEL_37;
       }
@@ -621,27 +621,27 @@ LABEL_39:
       }
 
       v25 = MEMORY[0x1E696AD98];
-      v26 = [(MPModelGenericObject *)self->_enqueuedItem identifiers];
-      v27 = [v26 universalStore];
-      v28 = [v25 numberWithLongLong:{objc_msgSend(v27, "adamID")}];
-      v19 = [v28 stringValue];
+      identifiers3 = [(MPModelGenericObject *)self->_enqueuedItem identifiers];
+      universalStore2 = [identifiers3 universalStore];
+      v28 = [v25 numberWithLongLong:{objc_msgSend(universalStore2, "adamID")}];
+      stationStringID = [v28 stringValue];
 
-      if (!v19)
+      if (!stationStringID)
       {
         goto LABEL_37;
       }
 
-      v29 = [v5 lyricExcerpt];
+      lyricExcerpt = [v5 lyricExcerpt];
 
-      if (v29)
+      if (lyricExcerpt)
       {
-        v30 = [v5 lyricExcerpt];
-        v31 = [v30 startTime];
-        [v31 doubleValue];
+        lyricExcerpt2 = [v5 lyricExcerpt];
+        startTime = [lyricExcerpt2 startTime];
+        [startTime doubleValue];
         v33 = v32;
 
-        v34 = [v30 endTime];
-        [v34 doubleValue];
+        endTime = [lyricExcerpt2 endTime];
+        [endTime doubleValue];
         v36 = v35;
         v37 = v33 + -1.0;
 
@@ -657,11 +657,11 @@ LABEL_39:
     goto LABEL_32;
   }
 
-  if (v6 > 4)
+  if (type > 4)
   {
-    if (v6 != 5)
+    if (type != 5)
     {
-      if (v6 != 6)
+      if (type != 6)
       {
         goto LABEL_46;
       }
@@ -673,16 +673,16 @@ LABEL_45:
         goto LABEL_46;
       }
 
-      v20 = [(MPModelGenericObject *)self->_enqueuedItem song];
-      v21 = [v20 identifiers];
-      v19 = [v21 contentItemID];
+      song2 = [(MPModelGenericObject *)self->_enqueuedItem song];
+      identifiers4 = [song2 identifiers];
+      stationStringID = [identifiers4 contentItemID];
 
-      if (v19)
+      if (stationStringID)
       {
         v22 = MEMORY[0x1E696AEC0];
-        v23 = [v5 persistentIdentifier];
-        v24 = [v22 stringWithFormat:@"id=%@_", v23];
-        v7 = [v19 containsString:v24];
+        persistentIdentifier = [v5 persistentIdentifier];
+        v24 = [v22 stringWithFormat:@"id=%@_", persistentIdentifier];
+        v7 = [stationStringID containsString:v24];
 
 LABEL_33:
 LABEL_38:
@@ -700,22 +700,22 @@ LABEL_37:
       goto LABEL_45;
     }
 
-    v46 = [(MPModelGenericObject *)self->_enqueuedItemContext identifiers];
-    v47 = [v46 universalStore];
-    v19 = [v47 globalPlaylistID];
+    identifiers5 = [(MPModelGenericObject *)self->_enqueuedItemContext identifiers];
+    universalStore3 = [identifiers5 universalStore];
+    stationStringID = [universalStore3 globalPlaylistID];
 
-    if (!v19)
+    if (!stationStringID)
     {
       goto LABEL_37;
     }
 
 LABEL_32:
-    v23 = [v5 storeIdentifier];
-    v7 = [v23 isEqualToString:v19];
+    persistentIdentifier = [v5 storeIdentifier];
+    v7 = [persistentIdentifier isEqualToString:stationStringID];
     goto LABEL_33;
   }
 
-  if (v6 == 3)
+  if (type == 3)
   {
     if ([(MPModelGenericObject *)self->_enqueuedItem type]!= 12)
     {
@@ -723,14 +723,14 @@ LABEL_32:
     }
 
     v39 = MEMORY[0x1E696AD98];
-    v40 = [(MPModelGenericObject *)self->_enqueuedItem podcastEpisode];
-    v41 = [v40 podcast];
-    v42 = [v41 identifiers];
-    v43 = [v42 universalStore];
-    v44 = [v39 numberWithLongLong:{objc_msgSend(v43, "adamID")}];
-    v45 = [v44 stringValue];
+    podcastEpisode = [(MPModelGenericObject *)self->_enqueuedItem podcastEpisode];
+    podcast = [podcastEpisode podcast];
+    identifiers6 = [podcast identifiers];
+    universalStore4 = [identifiers6 universalStore];
+    v44 = [v39 numberWithLongLong:{objc_msgSend(universalStore4, "adamID")}];
+    stringValue = [v44 stringValue];
 
-    if (v45)
+    if (stringValue)
     {
       goto LABEL_36;
     }
@@ -744,14 +744,14 @@ LABEL_32:
   }
 
   v8 = MEMORY[0x1E696AD98];
-  v9 = [(MPModelGenericObject *)self->_enqueuedItem identifiers];
-  v10 = [v9 universalStore];
-  v11 = [v8 numberWithLongLong:{objc_msgSend(v10, "adamID")}];
-  v12 = [v11 stringValue];
+  identifiers7 = [(MPModelGenericObject *)self->_enqueuedItem identifiers];
+  universalStore5 = [identifiers7 universalStore];
+  v11 = [v8 numberWithLongLong:{objc_msgSend(universalStore5, "adamID")}];
+  stringValue2 = [v11 stringValue];
 
-  if (v12)
+  if (stringValue2)
   {
-    v13 = v12;
+    v13 = stringValue2;
     v14 = v13;
     if (([v13 hasPrefix:@"1000"] & 1) == 0)
     {
@@ -760,16 +760,16 @@ LABEL_32:
       v14 = v15;
     }
 
-    v16 = [v5 storeIdentifier];
-    if ([v16 isEqualToString:v13])
+    storeIdentifier2 = [v5 storeIdentifier];
+    if ([storeIdentifier2 isEqualToString:v13])
     {
       v7 = 1;
     }
 
     else
     {
-      v55 = [v5 storeIdentifier];
-      v7 = [v55 isEqualToString:v14];
+      storeIdentifier3 = [v5 storeIdentifier];
+      v7 = [storeIdentifier3 isEqualToString:v14];
     }
   }
 

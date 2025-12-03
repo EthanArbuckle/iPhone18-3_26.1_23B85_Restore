@@ -1,6 +1,6 @@
 @interface MTRPushAVStreamTransportClusterSupportedFormatStruct
 - (MTRPushAVStreamTransportClusterSupportedFormatStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRPushAVStreamTransportClusterSupportedFormatStruct);
-  v5 = [(MTRPushAVStreamTransportClusterSupportedFormatStruct *)self containerFormat];
-  [(MTRPushAVStreamTransportClusterSupportedFormatStruct *)v4 setContainerFormat:v5];
+  containerFormat = [(MTRPushAVStreamTransportClusterSupportedFormatStruct *)self containerFormat];
+  [(MTRPushAVStreamTransportClusterSupportedFormatStruct *)v4 setContainerFormat:containerFormat];
 
-  v6 = [(MTRPushAVStreamTransportClusterSupportedFormatStruct *)self ingestMethod];
-  [(MTRPushAVStreamTransportClusterSupportedFormatStruct *)v4 setIngestMethod:v6];
+  ingestMethod = [(MTRPushAVStreamTransportClusterSupportedFormatStruct *)self ingestMethod];
+  [(MTRPushAVStreamTransportClusterSupportedFormatStruct *)v4 setIngestMethod:ingestMethod];
 
   return v4;
 }

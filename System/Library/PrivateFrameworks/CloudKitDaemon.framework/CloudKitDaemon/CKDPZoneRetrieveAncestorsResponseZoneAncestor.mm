@@ -1,11 +1,11 @@
 @interface CKDPZoneRetrieveAncestorsResponseZoneAncestor
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPZoneRetrieveAncestorsResponseZoneAncestor
@@ -42,66 +42,66 @@
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_zoneSummary)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_shareRecord)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   zoneSummary = self->_zoneSummary;
-  v8 = v4;
+  v8 = toCopy;
   if (zoneSummary)
   {
-    objc_msgSend_setZoneSummary_(v4, v5, zoneSummary);
-    v4 = v8;
+    objc_msgSend_setZoneSummary_(toCopy, v5, zoneSummary);
+    toCopy = v8;
   }
 
   shareRecord = self->_shareRecord;
   if (shareRecord)
   {
     objc_msgSend_setShareRecord_(v8, v5, shareRecord);
-    v4 = v8;
+    toCopy = v8;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_zoneSummary, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_zoneSummary, v11, zone);
   v13 = v10[2];
   v10[2] = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_shareRecord, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_shareRecord, v14, zone);
   v16 = v10[1];
   v10[1] = v15;
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(v4, v6, v5) && ((zoneSummary = self->_zoneSummary, v9 = v4[2], !(zoneSummary | v9)) || objc_msgSend_isEqual_(zoneSummary, v7, v9)))
+  if (objc_msgSend_isMemberOfClass_(equalCopy, v6, v5) && ((zoneSummary = self->_zoneSummary, v9 = equalCopy[2], !(zoneSummary | v9)) || objc_msgSend_isEqual_(zoneSummary, v7, v9)))
   {
     shareRecord = self->_shareRecord;
-    v11 = v4[1];
+    v11 = equalCopy[1];
     if (shareRecord | v11)
     {
       isEqual = objc_msgSend_isEqual_(shareRecord, v7, v11);
@@ -121,12 +121,12 @@
   return isEqual;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   zoneSummary = self->_zoneSummary;
-  v6 = v4[2];
-  v9 = v4;
+  v6 = fromCopy[2];
+  v9 = fromCopy;
   if (zoneSummary)
   {
     if (!v6)
@@ -134,7 +134,7 @@
       goto LABEL_7;
     }
 
-    objc_msgSend_mergeFrom_(zoneSummary, v4, v6);
+    objc_msgSend_mergeFrom_(zoneSummary, fromCopy, v6);
   }
 
   else
@@ -144,24 +144,24 @@
       goto LABEL_7;
     }
 
-    objc_msgSend_setZoneSummary_(self, v4, v6);
+    objc_msgSend_setZoneSummary_(self, fromCopy, v6);
   }
 
-  v4 = v9;
+  fromCopy = v9;
 LABEL_7:
   shareRecord = self->_shareRecord;
-  v8 = v4[1];
+  v8 = fromCopy[1];
   if (shareRecord)
   {
     if (v8)
     {
-      objc_msgSend_mergeFrom_(shareRecord, v4, v8);
+      objc_msgSend_mergeFrom_(shareRecord, fromCopy, v8);
     }
   }
 
   else if (v8)
   {
-    objc_msgSend_setShareRecord_(self, v4, v8);
+    objc_msgSend_setShareRecord_(self, fromCopy, v8);
   }
 
   MEMORY[0x2821F96F8]();

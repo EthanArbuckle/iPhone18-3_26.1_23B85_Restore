@@ -1,9 +1,9 @@
 @interface THImageRep
-- (BOOL)canHandleGesture:(id)a3;
-- (BOOL)containsPoint:(CGPoint)a3;
+- (BOOL)canHandleGesture:(id)gesture;
+- (BOOL)containsPoint:(CGPoint)point;
 - (BOOL)expandedAspectFillOnPresentIfClose;
-- (BOOL)expandedHasContentForPanel:(int)a3;
-- (BOOL)handleGesture:(id)a3;
+- (BOOL)expandedHasContentForPanel:(int)panel;
+- (BOOL)handleGesture:(id)gesture;
 - (BOOL)isExpanded;
 - (BOOL)isFreeTransformInProgress;
 - (BOOL)p_imageIsMostlyBlack;
@@ -11,43 +11,43 @@
 - (BOOL)p_shouldHitTest;
 - (CALayer)pressableAnimationLayer;
 - (CGAffineTransform)freeTransform;
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
 - (CGRect)ftcTargetFrame;
 - (CGRect)rectForCompletion;
 - (THAnimationController)animationController;
-- (THImageRep)initWithLayout:(id)a3 canvas:(id)a4;
+- (THImageRep)initWithLayout:(id)layout canvas:(id)canvas;
 - (THWPressableRepGestureTargetHandler)pressableHandler;
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize;
 - (id)animationLayer;
-- (id)expandedChildInfosForPanel:(int)a3;
+- (id)expandedChildInfosForPanel:(int)panel;
 - (id)expandedContentDrawableToPresent;
-- (id)expandedPanel:(int)a3 primaryTargetForGesture:(id)a4;
-- (id)hitRep:(CGPoint)a3;
+- (id)expandedPanel:(int)panel primaryTargetForGesture:(id)gesture;
+- (id)hitRep:(CGPoint)rep;
 - (id)p_hyperlink;
 - (id)p_setupContainerLayer;
 - (id)shadowAnimationLayer;
 - (id)targetLayer;
 - (int)pressableAction;
-- (unsigned)expandedMaxLineCountForTextLayout:(id)a3 inPanel:(int)a4 withDefault:(unsigned int)a5;
+- (unsigned)expandedMaxLineCountForTextLayout:(id)layout inPanel:(int)panel withDefault:(unsigned int)default;
 - (void)dealloc;
 - (void)didPresentExpanded;
-- (void)didUpdateLayer:(id)a3;
-- (void)expandedDidRotateTransitionToSize:(CGSize)a3;
-- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)a3 toFrame:(CGRect)a4;
-- (void)expandedWillRotateTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4;
-- (void)expandedWillTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4;
+- (void)didUpdateLayer:(id)layer;
+- (void)expandedDidRotateTransitionToSize:(CGSize)size;
+- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame;
+- (void)expandedWillRotateTransitionFromSize:(CGSize)size toSize:(CGSize)toSize;
+- (void)expandedWillTransitionFromSize:(CGSize)size toSize:(CGSize)toSize;
 - (void)freeTransformWillBegin;
 - (void)p_togglePanelDescriptionExpanded;
-- (void)willBeginHandlingGesture:(id)a3;
+- (void)willBeginHandlingGesture:(id)gesture;
 @end
 
 @implementation THImageRep
 
-- (THImageRep)initWithLayout:(id)a3 canvas:(id)a4
+- (THImageRep)initWithLayout:(id)layout canvas:(id)canvas
 {
   v6.receiver = self;
   v6.super_class = THImageRep;
-  v4 = [(THImageRep *)&v6 initWithLayout:a3 canvas:a4];
+  v4 = [(THImageRep *)&v6 initWithLayout:layout canvas:canvas];
   if (v4)
   {
     v4->_freeTransformableHandler = -[THWFreeTransformableRepGestureTargetHandler initWithFreeTransformableRep:handler:]([THWFreeTransformableRepGestureTargetHandler alloc], "initWithFreeTransformableRep:handler:", v4, [objc_msgSend(-[THImageRep hostICC](v4 "hostICC")]);
@@ -67,7 +67,7 @@
   [(THImageRep *)&v3 dealloc];
 }
 
-- (void)didUpdateLayer:(id)a3
+- (void)didUpdateLayer:(id)layer
 {
   v6.receiver = self;
   v6.super_class = THImageRep;
@@ -82,10 +82,10 @@
     v5 = 0;
   }
 
-  [a3 setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
+  [layer setBackgroundColor:{objc_msgSend(v5, "CGColor")}];
   if (!UIAccessibilityIsInvertColorsEnabled())
   {
-    [a3 th_accessibilityUndoInvertColorsIfNecessary];
+    [layer th_accessibilityUndoInvertColorsIfNecessary];
   }
 }
 
@@ -98,10 +98,10 @@
     {
       objc_opt_class();
       [(THImageRep *)self interactiveCanvasController];
-      v3 = [TSUDynamicCast() pressHandlerForPressableReps];
-      if (v3)
+      pressHandlerForPressableReps = [TSUDynamicCast() pressHandlerForPressableReps];
+      if (pressHandlerForPressableReps)
       {
-        self->_pressableHandler = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:self pressHandler:v3];
+        self->_pressableHandler = [[THWPressableRepGestureTargetHandler alloc] initWithPressableRep:self pressHandler:pressHandlerForPressableReps];
       }
     }
   }
@@ -109,21 +109,21 @@
   return self->_pressableHandler;
 }
 
-- (BOOL)containsPoint:(CGPoint)a3
+- (BOOL)containsPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(THImageRep *)self p_shouldHitTest];
-  if (v6)
+  y = point.y;
+  x = point.x;
+  p_shouldHitTest = [(THImageRep *)self p_shouldHitTest];
+  if (p_shouldHitTest)
   {
     [(THImageRep *)self naturalBounds];
     v11 = x;
     v12 = y;
 
-    LOBYTE(v6) = CGRectContainsPoint(*&v7, *&v11);
+    LOBYTE(p_shouldHitTest) = CGRectContainsPoint(*&v7, *&v11);
   }
 
-  return v6;
+  return p_shouldHitTest;
 }
 
 - (id)p_setupContainerLayer
@@ -151,9 +151,9 @@
 {
   if ([-[THImageRep layout](self "layout")] && objc_msgSend(-[THImageRep layout](self, "layout"), "isReflowablePresentation"))
   {
-    v3 = [(THImageRep *)self interactiveCanvasController];
+    interactiveCanvasController = [(THImageRep *)self interactiveCanvasController];
 
-    return [v3 layerForRep:self];
+    return [interactiveCanvasController layerForRep:self];
   }
 
   else
@@ -221,10 +221,10 @@
   return result;
 }
 
-- (id)hitRep:(CGPoint)a3
+- (id)hitRep:(CGPoint)rep
 {
-  y = a3.y;
-  x = a3.x;
+  y = rep.y;
+  x = rep.x;
   v7.receiver = self;
   v7.super_class = THImageRep;
   result = [(THImageRep *)&v7 hitRep:?];
@@ -255,9 +255,9 @@
   return result;
 }
 
-- (BOOL)canHandleGesture:(id)a3
+- (BOOL)canHandleGesture:(id)gesture
 {
-  if ([(THWPressableRepGestureTargetHandler *)[(THImageRep *)self pressableHandler] canHandleGesture:a3])
+  if ([(THWPressableRepGestureTargetHandler *)[(THImageRep *)self pressableHandler] canHandleGesture:gesture])
   {
     LOBYTE(v5) = 1;
   }
@@ -279,17 +279,17 @@
       }
     }
 
-    v6 = [(THImageRep *)self freeTransformableHandler];
+    freeTransformableHandler = [(THImageRep *)self freeTransformableHandler];
 
-    LOBYTE(v5) = [(THWFreeTransformableRepGestureTargetHandler *)v6 canHandleGesture:a3];
+    LOBYTE(v5) = [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler canHandleGesture:gesture];
   }
 
   return v5;
 }
 
-- (BOOL)handleGesture:(id)a3
+- (BOOL)handleGesture:(id)gesture
 {
-  if ([(THWPressableRepGestureTargetHandler *)[(THImageRep *)self pressableHandler] handleGesture:a3])
+  if ([(THWPressableRepGestureTargetHandler *)[(THImageRep *)self pressableHandler] handleGesture:gesture])
   {
     LOBYTE(v5) = 1;
   }
@@ -311,22 +311,22 @@
       }
     }
 
-    v6 = [(THImageRep *)self freeTransformableHandler];
+    freeTransformableHandler = [(THImageRep *)self freeTransformableHandler];
 
-    LOBYTE(v5) = [(THWFreeTransformableRepGestureTargetHandler *)v6 handleGesture:a3];
+    LOBYTE(v5) = [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler handleGesture:gesture];
   }
 
   return v5;
 }
 
-- (void)willBeginHandlingGesture:(id)a3
+- (void)willBeginHandlingGesture:(id)gesture
 {
-  v5 = [a3 gestureKind];
-  if (v5 == TSDFreeTransform)
+  gestureKind = [gesture gestureKind];
+  if (gestureKind == TSDFreeTransform)
   {
-    v6 = [(THImageRep *)self freeTransformableHandler];
+    freeTransformableHandler = [(THImageRep *)self freeTransformableHandler];
 
-    [(THWFreeTransformableRepGestureTargetHandler *)v6 willBeginHandlingGesture:a3];
+    [(THWFreeTransformableRepGestureTargetHandler *)freeTransformableHandler willBeginHandlingGesture:gesture];
   }
 }
 
@@ -351,9 +351,9 @@
     return 0;
   }
 
-  v7 = [(THImageRep *)self layout];
+  layout = [(THImageRep *)self layout];
 
-  return [v7 isReflowablePresentation];
+  return [layout isReflowablePresentation];
 }
 
 - (id)p_hyperlink
@@ -367,9 +367,9 @@
 
 - (BOOL)isExpanded
 {
-  v2 = [(THImageRep *)self layout];
+  layout = [(THImageRep *)self layout];
 
-  return [v2 isExpanded];
+  return [layout isExpanded];
 }
 
 - (BOOL)isFreeTransformInProgress
@@ -381,16 +381,16 @@
 
 - (void)freeTransformWillBegin
 {
-  v2 = [(THImageRep *)self pressableAnimationLayer];
+  pressableAnimationLayer = [(THImageRep *)self pressableAnimationLayer];
 
-  [(CALayer *)v2 removeAllAnimations];
+  [(CALayer *)pressableAnimationLayer removeAllAnimations];
 }
 
 - (CGRect)rectForCompletion
 {
-  v2 = [(THImageRep *)self layout];
+  layout = [(THImageRep *)self layout];
 
-  [v2 frameInParent];
+  [layout frameInParent];
   result.size.height = v6;
   result.size.width = v5;
   result.origin.y = v4;
@@ -433,9 +433,9 @@
   [(THWExpandedRepController *)expandedRepController expandedRepControllerInvalidateChildrenInPanel:1 invalidateWPAuto:1];
 }
 
-- (id)expandedPanel:(int)a3 primaryTargetForGesture:(id)a4
+- (id)expandedPanel:(int)panel primaryTargetForGesture:(id)gesture
 {
-  if (a3 != 1)
+  if (panel != 1)
   {
     return 0;
   }
@@ -450,39 +450,39 @@
   return [[THWTapGestureAction alloc] initWithAction:v7];
 }
 
-- (unsigned)expandedMaxLineCountForTextLayout:(id)a3 inPanel:(int)a4 withDefault:(unsigned int)a5
+- (unsigned)expandedMaxLineCountForTextLayout:(id)layout inPanel:(int)panel withDefault:(unsigned int)default
 {
-  if (a4 == 1 && !self->_panelDescriptionExpanded)
+  if (panel == 1 && !self->_panelDescriptionExpanded)
   {
-    v6 = [-[THImageRep layout](self layout];
-    if ([v6 isCompactHeight])
+    layout = [-[THImageRep layout](self layout];
+    if ([layout isCompactHeight])
     {
       return 2;
     }
 
-    else if ([v6 isCompactWidth])
+    else if ([layout isCompactWidth])
     {
       return 5;
     }
   }
 
-  return a5;
+  return default;
 }
 
-- (double)scaleForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (double)scaleForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = a3.height;
-  v7 = a3.width;
-  v9 = [(THImageRep *)self layout];
+  height = toSize.height;
+  width = toSize.width;
+  v6 = size.height;
+  v7 = size.width;
+  layout = [(THImageRep *)self layout];
   [-[THImageRep interactiveCanvasController](self "interactiveCanvasController")];
 
-  [v9 scaleForCenteredAutoRotateFromSize:v7 toSize:v6 scale:{width, height, v10}];
+  [layout scaleForCenteredAutoRotateFromSize:v7 toSize:v6 scale:{width, height, v10}];
   return result;
 }
 
-- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (CGPoint)translateForCenteredAutoRotateFromSize:(CGSize)size toSize:(CGSize)toSize
 {
   x = CGPointZero.x;
   y = CGPointZero.y;
@@ -491,42 +491,42 @@
   return result;
 }
 
-- (void)expandedWillRotateTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (void)expandedWillRotateTransitionFromSize:(CGSize)size toSize:(CGSize)toSize
 {
-  v4 = [(THImageRep *)self interactiveCanvasController:a3.width];
+  v4 = [(THImageRep *)self interactiveCanvasController:size.width];
 
   [v4 setViewScale:1.0];
 }
 
-- (void)expandedDidRotateTransitionToSize:(CGSize)a3
+- (void)expandedDidRotateTransitionToSize:(CGSize)size
 {
-  if (![(THImageRep *)self isFreeTransformInProgress:a3.width])
+  if (![(THImageRep *)self isFreeTransformInProgress:size.width])
   {
     [-[THImageRep layout](self "layout")];
-    v4 = [(THImageRep *)self layout];
+    layout = [(THImageRep *)self layout];
 
-    [v4 invalidateChildren];
+    [layout invalidateChildren];
   }
 }
 
-- (void)expandedWillTransitionFromSize:(CGSize)a3 toSize:(CGSize)a4
+- (void)expandedWillTransitionFromSize:(CGSize)size toSize:(CGSize)toSize
 {
-  v4 = [(THImageRep *)self interactiveCanvasController:a3.width];
+  v4 = [(THImageRep *)self interactiveCanvasController:size.width];
 
   [v4 setViewScale:1.0];
 }
 
-- (BOOL)expandedHasContentForPanel:(int)a3
+- (BOOL)expandedHasContentForPanel:(int)panel
 {
-  v3 = *&a3;
+  v3 = *&panel;
   v4 = [-[THImageRep info](self "info")];
 
   return [v4 panelContentProviderHasContentForPanel:v3];
 }
 
-- (id)expandedChildInfosForPanel:(int)a3
+- (id)expandedChildInfosForPanel:(int)panel
 {
-  v3 = *&a3;
+  v3 = *&panel;
   v4 = [-[THImageRep info](self "info")];
 
   return [v4 panelContentProviderChildInfosForPanel:v3];
@@ -534,22 +534,22 @@
 
 - (BOOL)expandedAspectFillOnPresentIfClose
 {
-  v2 = [(THImageRep *)self layout];
+  layout = [(THImageRep *)self layout];
 
-  return [v2 isIntroMedia];
+  return [layout isIntroMedia];
 }
 
-- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)a3 toFrame:(CGRect)a4
+- (void)expandedWidgetLayoutFrameDidChangeFromFrame:(CGRect)frame toFrame:(CGRect)toFrame
 {
-  v4 = [(THImageRep *)self layout:a3.origin.x];
+  v4 = [(THImageRep *)self layout:frame.origin.x];
 
   [v4 invalidateFrame];
 }
 
 - (BOOL)p_imageIsMostlyBlack
 {
-  v2 = [(THImageRep *)self imageRef];
-  AlphaInfo = CGImageGetAlphaInfo(v2);
+  imageRef = [(THImageRep *)self imageRef];
+  AlphaInfo = CGImageGetAlphaInfo(imageRef);
   if (AlphaInfo)
   {
     v12.width = 1.0;
@@ -574,9 +574,9 @@
 
 - (void)didPresentExpanded
 {
-  v2 = [(THImageRep *)self layout];
+  layout = [(THImageRep *)self layout];
 
-  [v2 invalidate];
+  [layout invalidate];
 }
 
 - (id)animationLayer

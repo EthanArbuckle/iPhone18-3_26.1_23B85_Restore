@@ -1,13 +1,13 @@
 @interface CADObjectID
-- (BOOL)isEqual:(id)a3;
-- (CADObjectID)initWithCoder:(id)a3;
-- (CADObjectID)initWithDictionaryRepresentation:(id)a3;
-- (CADObjectID)initWithEntityType:(int)a3 entityID:(int)a4 databaseID:(int)a5;
+- (BOOL)isEqual:(id)equal;
+- (CADObjectID)initWithCoder:(id)coder;
+- (CADObjectID)initWithDictionaryRepresentation:(id)representation;
+- (CADObjectID)initWithEntityType:(int)type entityID:(int)d databaseID:(int)iD;
 - (id)URIRepresentation;
 - (id)dictionaryRepresentation;
 - (id)stringRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CADObjectID
@@ -28,31 +28,31 @@
   return ((self->_temporary << 31) | ((self->_entityType & 0x7F) << 24) | v3 & 0xFFFFFF) ^ (1327217884 * self->_databaseID);
 }
 
-- (CADObjectID)initWithEntityType:(int)a3 entityID:(int)a4 databaseID:(int)a5
+- (CADObjectID)initWithEntityType:(int)type entityID:(int)d databaseID:(int)iD
 {
   v10.receiver = self;
   v10.super_class = CADObjectID;
   v8 = [(CADObjectID *)&v10 init];
   if (v8)
   {
-    if (!isValidEntityType(a3))
+    if (!isValidEntityType(type))
     {
-      [CADObjectID initWithEntityType:a3 entityID:? databaseID:?];
+      [CADObjectID initWithEntityType:type entityID:? databaseID:?];
     }
 
-    v8->_entityType = a3;
-    v8->_entityID = a4;
-    v8->_databaseID = a5;
-    v8->_temporary = a4 < 0;
+    v8->_entityType = type;
+    v8->_entityID = d;
+    v8->_databaseID = iD;
+    v8->_temporary = d < 0;
   }
 
   return v8;
 }
 
-- (CADObjectID)initWithCoder:(id)a3
+- (CADObjectID)initWithCoder:(id)coder
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = CADObjectID;
   v5 = [(CADObjectID *)&v12 init];
@@ -61,13 +61,13 @@
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeIntForKey:@"entityType"];
+  v6 = [coderCopy decodeIntForKey:@"entityType"];
   v5->_entityType = v6;
   if (isValidEntityType(v6))
   {
-    v5->_entityID = [v4 decodeIntForKey:@"rowID"];
-    v5->_databaseID = [v4 decodeIntForKey:@"dbID"];
-    v5->_temporary = [v4 decodeBoolForKey:@"temporary"];
+    v5->_entityID = [coderCopy decodeIntForKey:@"rowID"];
+    v5->_databaseID = [coderCopy decodeIntForKey:@"dbID"];
+    v5->_temporary = [coderCopy decodeBoolForKey:@"temporary"];
 LABEL_4:
     v7 = v5;
     goto LABEL_8;
@@ -89,38 +89,38 @@ LABEL_8:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInt:self->_entityType forKey:@"entityType"];
-  [v5 encodeInt:self->_entityID forKey:@"rowID"];
+  coderCopy = coder;
+  [coderCopy encodeInt:self->_entityType forKey:@"entityType"];
+  [coderCopy encodeInt:self->_entityID forKey:@"rowID"];
   databaseID = self->_databaseID;
   if (databaseID)
   {
-    [v5 encodeInt:databaseID forKey:@"dbID"];
+    [coderCopy encodeInt:databaseID forKey:@"dbID"];
   }
 
-  [v5 encodeBool:self->_temporary forKey:@"temporary"];
+  [coderCopy encodeBool:self->_temporary forKey:@"temporary"];
 }
 
-- (CADObjectID)initWithDictionaryRepresentation:(id)a3
+- (CADObjectID)initWithDictionaryRepresentation:(id)representation
 {
-  v4 = a3;
+  representationCopy = representation;
   v11.receiver = self;
   v11.super_class = CADObjectID;
   v5 = [(CADObjectID *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"entityType"];
+    v6 = [representationCopy objectForKeyedSubscript:@"entityType"];
     v5->_entityType = [v6 intValue];
 
-    v7 = [v4 objectForKeyedSubscript:@"rowID"];
+    v7 = [representationCopy objectForKeyedSubscript:@"rowID"];
     v5->_entityID = [v7 intValue];
 
-    v8 = [v4 objectForKeyedSubscript:@"dbID"];
+    v8 = [representationCopy objectForKeyedSubscript:@"dbID"];
     v5->_databaseID = [v8 intValue];
 
-    v9 = [v4 objectForKeyedSubscript:@"temporary"];
+    v9 = [representationCopy objectForKeyedSubscript:@"temporary"];
     v5->_temporary = [v9 BOOLValue];
   }
 
@@ -153,8 +153,8 @@ LABEL_8:
 {
   databaseID = self->_databaseID;
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(CADObjectID *)self entityName];
-  v6 = v5;
+  entityName = [(CADObjectID *)self entityName];
+  v6 = entityName;
   v7 = @"p";
   if (self->_temporary)
   {
@@ -164,12 +164,12 @@ LABEL_8:
   entityID = self->_entityID;
   if (databaseID)
   {
-    [v4 stringWithFormat:@"%@://%d/%@/%@%d", @"x-apple-eventkit", databaseID, v5, v7, entityID];
+    [v4 stringWithFormat:@"%@://%d/%@/%@%d", @"x-apple-eventkit", databaseID, entityName, v7, entityID];
   }
 
   else
   {
-    [v4 stringWithFormat:@"%@:///%@/%@%d", @"x-apple-eventkit", v5, v7, entityID, v11];
+    [v4 stringWithFormat:@"%@:///%@/%@%d", @"x-apple-eventkit", entityName, v7, entityID, v11];
   }
   v9 = ;
 
@@ -179,22 +179,22 @@ LABEL_8:
 - (id)URIRepresentation
 {
   v2 = MEMORY[0x1E695DFF8];
-  v3 = [(CADObjectID *)self stringRepresentation];
-  v4 = [v2 URLWithString:v3];
+  stringRepresentation = [(CADObjectID *)self stringRepresentation];
+  v4 = [v2 URLWithString:stringRepresentation];
 
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
 
-  else if (v4)
+  else if (equalCopy)
   {
     Class = object_getClass(self);
     if (Class == object_getClass(v5))

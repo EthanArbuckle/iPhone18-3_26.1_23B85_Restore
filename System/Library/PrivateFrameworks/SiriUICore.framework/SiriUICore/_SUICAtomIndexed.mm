@@ -1,24 +1,24 @@
 @interface _SUICAtomIndexed
-+ (id)atomWithEditOperation:(int64_t)a3 indexToEdit:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6;
-- (_SUICAtomIndexed)initWithEditOperation:(int64_t)a3 indexToEdit:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6;
++ (id)atomWithEditOperation:(int64_t)operation indexToEdit:(unint64_t)edit newText:(id)text indexInArrayB:(unint64_t)b;
+- (_SUICAtomIndexed)initWithEditOperation:(int64_t)operation indexToEdit:(unint64_t)edit newText:(id)text indexInArrayB:(unint64_t)b;
 - (id)description;
 @end
 
 @implementation _SUICAtomIndexed
 
-- (_SUICAtomIndexed)initWithEditOperation:(int64_t)a3 indexToEdit:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6
+- (_SUICAtomIndexed)initWithEditOperation:(int64_t)operation indexToEdit:(unint64_t)edit newText:(id)text indexInArrayB:(unint64_t)b
 {
-  v10 = a5;
+  textCopy = text;
   v14.receiver = self;
   v14.super_class = _SUICAtomIndexed;
   v11 = [(_SUICAtomIndexed *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    [(_SUICAtomIndexed *)v11 setEditOperation:a3];
-    [(_SUICAtomIndexed *)v12 setIndexToEdit:a4];
-    [(_SUICAtomIndexed *)v12 setIndexInArrayB:a6];
-    [(_SUICAtomIndexed *)v12 setReplacementText:v10];
+    [(_SUICAtomIndexed *)v11 setEditOperation:operation];
+    [(_SUICAtomIndexed *)v12 setIndexToEdit:edit];
+    [(_SUICAtomIndexed *)v12 setIndexInArrayB:b];
+    [(_SUICAtomIndexed *)v12 setReplacementText:textCopy];
   }
 
   return v12;
@@ -68,10 +68,10 @@ LABEL_6:
   return v9;
 }
 
-+ (id)atomWithEditOperation:(int64_t)a3 indexToEdit:(unint64_t)a4 newText:(id)a5 indexInArrayB:(unint64_t)a6
++ (id)atomWithEditOperation:(int64_t)operation indexToEdit:(unint64_t)edit newText:(id)text indexInArrayB:(unint64_t)b
 {
-  v9 = a5;
-  v10 = [[_SUICAtomIndexed alloc] initWithEditOperation:a3 indexToEdit:a4 newText:v9 indexInArrayB:a6];
+  textCopy = text;
+  v10 = [[_SUICAtomIndexed alloc] initWithEditOperation:operation indexToEdit:edit newText:textCopy indexInArrayB:b];
 
   return v10;
 }

@@ -1,15 +1,15 @@
 @interface IconCacheService
-- (BOOL)_isRequestValidForToken:(id *)a3 clientPID:(int)a4 icon:(id)a5;
-- (BOOL)_skipCacheForIcon:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
-- (IconCacheService)initWithServiceName:(id)a3;
-- (id)generateStoreUnitWithRequest:(id)a3 validationToken:(id *)a4;
-- (void)clearAllCachedItemsWithReply:(id)a3;
+- (BOOL)_isRequestValidForToken:(id *)token clientPID:(int)d icon:(id)icon;
+- (BOOL)_skipCacheForIcon:(id)icon;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
+- (IconCacheService)initWithServiceName:(id)name;
+- (id)generateStoreUnitWithRequest:(id)request validationToken:(id *)token;
+- (void)clearAllCachedItemsWithReply:(id)reply;
 - (void)clearCache;
-- (void)clearCachedItemsForBundeID:(id)a3 reply:(id)a4;
-- (void)fetchCacheConfigurationWithReply:(id)a3;
-- (void)generateImageWithRequest:(id)a3 reply:(id)a4;
-- (void)scheduleCacheOperation:(unint64_t)a3;
+- (void)clearCachedItemsForBundeID:(id)d reply:(id)reply;
+- (void)fetchCacheConfigurationWithReply:(id)reply;
+- (void)generateImageWithRequest:(id)request reply:(id)reply;
+- (void)scheduleCacheOperation:(unint64_t)operation;
 - (void)start;
 @end
 
@@ -23,13 +23,13 @@
   CUISetThemeCleanupQueue();
   if (!obj->_listener)
   {
-    v3 = [(IconCacheService *)obj serviceName];
+    serviceName = [(IconCacheService *)obj serviceName];
 
-    if (v3)
+    if (serviceName)
     {
       v4 = [NSXPCListener alloc];
-      v5 = [(IconCacheService *)obj serviceName];
-      v6 = [v4 initWithMachServiceName:v5];
+      serviceName2 = [(IconCacheService *)obj serviceName];
+      v6 = [v4 initWithMachServiceName:serviceName2];
       listener = obj->_listener;
       obj->_listener = v6;
     }
@@ -37,7 +37,7 @@
     else
     {
       v8 = +[NSXPCListener anonymousListener];
-      v5 = obj->_listener;
+      serviceName2 = obj->_listener;
       obj->_listener = v8;
     }
 
@@ -48,15 +48,15 @@
   objc_sync_exit(obj);
 }
 
-- (IconCacheService)initWithServiceName:(id)a3
+- (IconCacheService)initWithServiceName:(id)name
 {
-  v4 = a3;
+  nameCopy = name;
   v32.receiver = self;
   v32.super_class = IconCacheService;
   v5 = [(IconCacheService *)&v32 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [nameCopy copy];
     serviceName = v5->_serviceName;
     v5->_serviceName = v6;
 
@@ -74,13 +74,13 @@
     v5->_gpuIdleTimer = v13;
 
     v15 = +[ISDefaults sharedInstance];
-    v16 = [v15 cacheURL];
+    cacheURL = [v15 cacheURL];
 
     v17 = +[ISDefaults sharedInstance];
-    v18 = [v17 metalCacheURL];
+    metalCacheURL = [v17 metalCacheURL];
 
-    v19 = [v18 absoluteURL];
-    v20 = [v19 path];
+    absoluteURL = [metalCacheURL absoluteURL];
+    path = [absoluteURL path];
     MTLSetShaderCachePath();
 
     objc_initWeak(&location, v5);
@@ -99,7 +99,7 @@
 
     v5->_clearOperationLock._os_unfair_lock_opaque = 0;
     v28 = 0;
-    v23 = [[ISMutableIconCache alloc] initWithURL:v16 needsGarbageCollection:&v28];
+    v23 = [[ISMutableIconCache alloc] initWithURL:cacheURL needsGarbageCollection:&v28];
     iconCache = v5->_iconCache;
     v5->_iconCache = v23;
 
@@ -123,9 +123,9 @@
   return v5;
 }
 
-- (void)scheduleCacheOperation:(unint64_t)a3
+- (void)scheduleCacheOperation:(unint64_t)operation
 {
-  v4 = [[ClearCacheOperation alloc] initWithCache:self->_iconCache operationType:a3];
+  v4 = [[ClearCacheOperation alloc] initWithCache:self->_iconCache operationType:operation];
   v5 = _ISDefaultLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -163,9 +163,9 @@
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = _ISDefaultLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -173,20 +173,20 @@
   }
 
   v7 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___ISIconCacheServiceProtocol];
-  [v5 setExportedInterface:v7];
-  [v5 setExportedObject:self];
-  [v5 setInterruptionHandler:&stru_10000C540];
-  [v5 setInvalidationHandler:&stru_10000C560];
-  [v5 resume];
+  [connectionCopy setExportedInterface:v7];
+  [connectionCopy setExportedObject:self];
+  [connectionCopy setInterruptionHandler:&stru_10000C540];
+  [connectionCopy setInvalidationHandler:&stru_10000C560];
+  [connectionCopy resume];
 
   return 1;
 }
 
-- (void)fetchCacheConfigurationWithReply:(id)a3
+- (void)fetchCacheConfigurationWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = +[NSXPCConnection currentConnection];
-  v6 = [v5 processIdentifier];
+  processIdentifier = [v5 processIdentifier];
 
   v20 = 0u;
   v21 = 0u;
@@ -205,31 +205,31 @@
 
   *buf = v20;
   v25 = v21;
-  if (![(IconCacheService *)self _isRequestValidForToken:buf clientPID:v6 icon:0])
+  if (![(IconCacheService *)self _isRequestValidForToken:buf clientPID:processIdentifier icon:0])
   {
     v9 = _ISDefaultLog();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      *&buf[4] = v6;
+      *&buf[4] = processIdentifier;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "Rejecting cache configuration request from %d. Disallowed!", buf, 8u);
     }
 
-    v4[2](v4, 0);
+    replyCopy[2](replyCopy, 0);
   }
 
   v10 = [(IconCacheService *)self iconCache:v20];
-  v11 = [v10 cacheURL];
-  v12 = [v11 path];
+  cacheURL = [v10 cacheURL];
+  path = [cacheURL path];
 
-  v13 = [v12 UTF8String];
-  if (!realpath_DARWIN_EXTSN(v13, buf))
+  uTF8String = [path UTF8String];
+  if (!realpath_DARWIN_EXTSN(uTF8String, buf))
   {
     v14 = _ISDefaultLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
       *v22 = 136315138;
-      v23 = v13;
+      v23 = uTF8String;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Failed to get the real path for: %s", v22, 0xCu);
     }
   }
@@ -248,19 +248,19 @@
   }
 
   v18 = objc_alloc_init(ISIconCacheConfiguration);
-  v19 = [NSURL fileURLWithPath:v12];
+  v19 = [NSURL fileURLWithPath:path];
   [v18 setUrl:v19];
 
   [v18 setSandboxExtension:v17];
-  (v4)[2](v4, v18);
+  (replyCopy)[2](replyCopy, v18);
 }
 
-- (BOOL)_isRequestValidForToken:(id *)a3 clientPID:(int)a4 icon:(id)a5
+- (BOOL)_isRequestValidForToken:(id *)token clientPID:(int)d icon:(id)icon
 {
-  v7 = a5;
+  iconCopy = icon;
   v8 = +[LSApplicationWorkspace defaultWorkspace];
-  v9 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v9 = *&token->var0[4];
+  *buf = *token->var0;
   *&buf[16] = v9;
   v10 = [v8 mayProcessWithAuditTokenMapDatabase:buf];
 
@@ -286,8 +286,8 @@ LABEL_9:
 
         if (v14 && ![v14 compare:@"ISTypeIcon"])
         {
-          v17 = +[UTTypeRecord typeRecordWithIdentifier:](UTTypeRecord, "typeRecordWithIdentifier:", [v7 performSelector:"type"]);
-          if ((-[NSObject isCoreType](v17, "isCoreType") & 1) != 0 || (-[NSObject declaringBundleRecord](v17, "declaringBundleRecord"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 developerType], v18, v19 == 1))
+          bundleIdentifier = +[UTTypeRecord typeRecordWithIdentifier:](UTTypeRecord, "typeRecordWithIdentifier:", [iconCopy performSelector:"type"]);
+          if ((-[NSObject isCoreType](bundleIdentifier, "isCoreType") & 1) != 0 || (-[NSObject declaringBundleRecord](bundleIdentifier, "declaringBundleRecord"), v18 = objc_claimAutoreleasedReturnValue(), v19 = [v18 developerType], v18, v19 == 1))
           {
             v20 = _ISDefaultLog();
             if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -308,11 +308,11 @@ LABEL_9:
         v14 = v15;
       }
 
-      v17 = _ISDefaultLog();
-      if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
+      bundleIdentifier = _ISDefaultLog();
+      if (os_log_type_enabled(bundleIdentifier, OS_LOG_TYPE_INFO))
       {
         *buf = 0;
-        _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Client is not properly entitled or asking for an non-allowable icon", buf, 2u);
+        _os_log_impl(&_mh_execute_header, bundleIdentifier, OS_LOG_TYPE_INFO, "Client is not properly entitled or asking for an non-allowable icon", buf, 2u);
       }
 
 LABEL_21:
@@ -322,10 +322,10 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v17 = [v7 bundleIdentifier];
+    bundleIdentifier = [iconCopy bundleIdentifier];
     v31 = 0;
-    v22 = *&a3->var0[4];
-    *buf = *a3->var0;
+    v22 = *&token->var0[4];
+    *buf = *token->var0;
     *&buf[16] = v22;
     v23 = [LSBundleRecord bundleRecordForAuditToken:buf error:&v31];
     v24 = v31;
@@ -335,7 +335,7 @@ LABEL_22:
       if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
       {
         *buf = 67109378;
-        *&buf[4] = a4;
+        *&buf[4] = d;
         *&buf[8] = 2112;
         *&buf[10] = v24;
         _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_INFO, "Failed to get record from token for client %d. Error: %@", buf, 0x12u);
@@ -345,8 +345,8 @@ LABEL_22:
       goto LABEL_41;
     }
 
-    v25 = [v23 bundleIdentifier];
-    v26 = [v25 isEqual:v17];
+    bundleIdentifier2 = [v23 bundleIdentifier];
+    v26 = [bundleIdentifier2 isEqual:bundleIdentifier];
 
     if (v26)
     {
@@ -361,7 +361,7 @@ LABEL_22:
     }
 
     v30 = 0;
-    v28 = [LSBundleRecord bundleRecordWithBundleIdentifier:v17 allowPlaceholder:1 error:&v30];
+    v28 = [LSBundleRecord bundleRecordWithBundleIdentifier:bundleIdentifier allowPlaceholder:1 error:&v30];
     v27 = v30;
     v11 = v28 != 0;
     if (v28)
@@ -385,7 +385,7 @@ LABEL_22:
       if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        *&buf[4] = v17;
+        *&buf[4] = bundleIdentifier;
         *&buf[12] = 2112;
         *&buf[14] = v27;
         _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_INFO, "Failed to get record for %@. Error: %@", buf, 0x16u);
@@ -404,13 +404,13 @@ LABEL_23:
   return v11;
 }
 
-- (void)generateImageWithRequest:(id)a3 reply:(id)a4
+- (void)generateImageWithRequest:(id)request reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  replyCopy = reply;
   v8 = os_transaction_create();
   v9 = +[NSXPCConnection currentConnection];
-  v10 = [v9 processIdentifier];
+  processIdentifier = [v9 processIdentifier];
 
   v30 = 0u;
   v29 = 0u;
@@ -431,18 +431,18 @@ LABEL_23:
   block[1] = 3221225472;
   block[2] = sub_100003FB0;
   block[3] = &unk_10000C588;
-  v26 = v10;
-  v22 = v6;
-  v23 = self;
+  v26 = processIdentifier;
+  v22 = requestCopy;
+  selfCopy = self;
   v27 = v29;
   v28 = v30;
   v24 = v8;
-  v25 = v7;
+  v25 = replyCopy;
   v13 = v8;
-  v14 = v7;
-  v15 = v6;
+  v14 = replyCopy;
+  v15 = requestCopy;
   v16 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, block);
-  v17 = [(IconCacheService *)self workLoop];
+  workLoop = [(IconCacheService *)self workLoop];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_100004588;
@@ -450,13 +450,13 @@ LABEL_23:
   v19[4] = self;
   v20 = v16;
   v18 = v16;
-  [NSXPCConnection _handoffCurrentReplyToQueue:v17 block:v19];
+  [NSXPCConnection _handoffCurrentReplyToQueue:workLoop block:v19];
 }
 
-- (void)clearCachedItemsForBundeID:(id)a3 reply:(id)a4
+- (void)clearCachedItemsForBundeID:(id)d reply:(id)reply
 {
-  v7 = a4;
-  if (a3)
+  replyCopy = reply;
+  if (d)
   {
     v6 = 1;
   }
@@ -467,19 +467,19 @@ LABEL_23:
   }
 
   [(IconCacheService *)self scheduleCacheOperation:v6];
-  v7[2](v7, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
 }
 
-- (void)clearAllCachedItemsWithReply:(id)a3
+- (void)clearAllCachedItemsWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   [(IconCacheService *)self scheduleCacheOperation:2];
-  v4[2](v4, 1, 0);
+  replyCopy[2](replyCopy, 1, 0);
 }
 
-- (BOOL)_skipCacheForIcon:(id)a3
+- (BOOL)_skipCacheForIcon:(id)icon
 {
-  v3 = a3;
+  iconCopy = icon;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) != 0 && (objc_opt_respondsToSelector() & 1) != 0 && (v4 = objc_opt_class(), NSStringFromClass(v4), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
@@ -495,60 +495,60 @@ LABEL_23:
   return v7;
 }
 
-- (id)generateStoreUnitWithRequest:(id)a3 validationToken:(id *)a4
+- (id)generateStoreUnitWithRequest:(id)request validationToken:(id *)token
 {
-  v6 = a3;
-  v7 = [v6 icon];
-  v8 = [v6 imageDescriptor];
-  v9 = [v8 digest];
+  requestCopy = request;
+  icon = [requestCopy icon];
+  imageDescriptor = [requestCopy imageDescriptor];
+  digest = [imageDescriptor digest];
   v40 = 0;
-  v10 = [v6 generateImageReturningRecordIdentifiers:&v40];
+  v10 = [requestCopy generateImageReturningRecordIdentifiers:&v40];
 
   v11 = v40;
-  v12 = [v10 bitmapData];
-  v13 = [v7 digest];
-  v14 = [v10 validationToken];
-  v39 = a4;
-  *a4 = v14;
-  v15 = [v14 bytes];
+  bitmapData = [v10 bitmapData];
+  digest2 = [icon digest];
+  validationToken = [v10 validationToken];
+  tokenCopy = token;
+  *token = validationToken;
+  bytes = [validationToken bytes];
   v16 = _ISDefaultLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEBUG))
   {
-    if (v15)
+    if (bytes)
     {
-      sub_100005CEC(v15, buf, v7, v16);
+      sub_100005CEC(bytes, buf, icon, v16);
     }
 
     else
     {
-      sub_100005D94(buf, v7, v16);
+      sub_100005D94(buf, icon, v16);
     }
   }
 
-  if ([(IconCacheService *)self _skipCacheForIcon:v7])
+  if ([(IconCacheService *)self _skipCacheForIcon:icon])
   {
-    v17 = [ISStoreUnit storeUnitWithData:v12];
+    v17 = [ISStoreUnit storeUnitWithData:bitmapData];
   }
 
   else
   {
-    v18 = [(IconCacheService *)self iconCache];
-    [v18 store];
-    v37 = v8;
-    v19 = v13;
+    iconCache = [(IconCacheService *)self iconCache];
+    [iconCache store];
+    v37 = imageDescriptor;
+    v19 = digest2;
     v20 = v11;
-    v22 = v21 = v9;
-    v17 = [v22 addUnitWithData:v12];
+    v22 = v21 = digest;
+    v17 = [v22 addUnitWithData:bitmapData];
 
-    v9 = v21;
+    digest = v21;
     v11 = v20;
-    v13 = v19;
-    v8 = v37;
+    digest2 = v19;
+    imageDescriptor = v37;
   }
 
-  if ([v17 isValid] && !-[IconCacheService _skipCacheForIcon:](self, "_skipCacheForIcon:", v7))
+  if ([v17 isValid] && !-[IconCacheService _skipCacheForIcon:](self, "_skipCacheForIcon:", icon))
   {
-    [v8 scale];
+    [imageDescriptor scale];
     v24 = v23;
     [v10 iconSize];
     v26 = v25;
@@ -556,9 +556,9 @@ LABEL_23:
     v28 = v27;
     [v10 iconSize];
     v30 = v29;
-    v31 = [v10 largest];
+    largest = [v10 largest];
     v58 = 0;
-    if (v31)
+    if (largest)
     {
       v30 = 1.79769313e308;
     }
@@ -571,19 +571,19 @@ LABEL_23:
     *buf = 0u;
     *&v53 = v26;
     *(&v53 + 1) = v24;
-    [v9 getUUIDBytes:{&v53 + 12, v13}];
+    [digest getUUIDBytes:{&v53 + 12, digest2}];
     *&v52 = v28;
     *(&v52 + 1) = v30;
     [v38 getUUIDBytes:buf];
-    v32 = [v17 UUID];
-    [v32 getUUIDBytes:&v54 + 12];
+    uUID = [v17 UUID];
+    [uUID getUUIDBytes:&v54 + 12];
 
-    [*v39 getBytes:&v55 + 12 length:40];
-    v33 = [(IconCacheService *)self iconCache];
-    [v33 registerRecordIdentifiers:v11 asSourceForUnit:v17];
+    [*tokenCopy getBytes:&v55 + 12 length:40];
+    iconCache2 = [(IconCacheService *)self iconCache];
+    [iconCache2 registerRecordIdentifiers:v11 asSourceForUnit:v17];
 
-    v34 = [(IconCacheService *)self iconCache];
-    v35 = [v34 mutableStoreIndex];
+    iconCache3 = [(IconCacheService *)self iconCache];
+    mutableStoreIndex = [iconCache3 mutableStoreIndex];
     v41[0] = _NSConcreteStackBlock;
     v41[1] = 3221225472;
     v41[2] = sub_100004B38;
@@ -598,9 +598,9 @@ LABEL_23:
     v45 = v53;
     v46 = v54;
     v42 = v38;
-    [v35 performBlock:v41];
+    [mutableStoreIndex performBlock:v41];
 
-    v13 = v38;
+    digest2 = v38;
   }
 
   return v17;

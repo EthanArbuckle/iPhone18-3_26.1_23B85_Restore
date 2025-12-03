@@ -1,15 +1,15 @@
 @interface FitnessUITransitionViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityViewIsModal;
 @end
 
 @implementation FitnessUITransitionViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"WorkoutUI.WorkoutSessionViewController"];
-  [v3 validateClass:@"FitnessApp.MirrorViewController"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"WorkoutUI.WorkoutSessionViewController"];
+  [validationsCopy validateClass:@"FitnessApp.MirrorViewController"];
 }
 
 - (BOOL)accessibilityViewIsModal
@@ -20,17 +20,17 @@
   v4 = [v3 _accessibilityFindSubviewDescendant:&__block_literal_global];
   if (v4)
   {
-    v5 = 0;
+    accessibilityViewIsModal = 0;
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = FitnessUITransitionViewAccessibility;
-    v5 = [(FitnessUITransitionViewAccessibility *)&v7 accessibilityViewIsModal];
+    accessibilityViewIsModal = [(FitnessUITransitionViewAccessibility *)&v7 accessibilityViewIsModal];
   }
 
-  return v5;
+  return accessibilityViewIsModal;
 }
 
 BOOL __64__FitnessUITransitionViewAccessibility_accessibilityViewIsModal__block_invoke(id a1, UIView *a2)

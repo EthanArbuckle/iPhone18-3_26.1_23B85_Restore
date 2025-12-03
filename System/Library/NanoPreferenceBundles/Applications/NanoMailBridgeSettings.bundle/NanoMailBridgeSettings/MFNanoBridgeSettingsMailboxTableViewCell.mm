@@ -1,19 +1,19 @@
 @interface MFNanoBridgeSettingsMailboxTableViewCell
-- (MFNanoBridgeSettingsMailboxTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (MFNanoBridgeSettingsMailboxTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)_subtitleFont;
 - (id)_titleFont;
 - (void)layoutSubviews;
-- (void)setIcon:(id)a3;
+- (void)setIcon:(id)icon;
 @end
 
 @implementation MFNanoBridgeSettingsMailboxTableViewCell
 
-- (MFNanoBridgeSettingsMailboxTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (MFNanoBridgeSettingsMailboxTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  v6 = a4;
+  identifierCopy = identifier;
   v29.receiver = self;
   v29.super_class = MFNanoBridgeSettingsMailboxTableViewCell;
-  v7 = [(MFNanoBridgeSettingsMailboxTableViewCell *)&v29 initWithStyle:a3 reuseIdentifier:v6];
+  v7 = [(MFNanoBridgeSettingsMailboxTableViewCell *)&v29 initWithStyle:style reuseIdentifier:identifierCopy];
   if (v7)
   {
     v8 = objc_alloc_init(UILabel);
@@ -25,13 +25,13 @@
     [(UILabel *)v10 setTextColor:v11];
 
     v12 = v7->_titleLabel;
-    v13 = [(MFNanoBridgeSettingsMailboxTableViewCell *)v7 _titleFont];
-    [(UILabel *)v12 setFont:v13];
+    _titleFont = [(MFNanoBridgeSettingsMailboxTableViewCell *)v7 _titleFont];
+    [(UILabel *)v12 setFont:_titleFont];
 
     [(UILabel *)v7->_titleLabel setOpaque:0];
     [(UILabel *)v7->_titleLabel setBackgroundColor:0];
-    v14 = [(MFNanoBridgeSettingsMailboxTableViewCell *)v7 contentView];
-    [v14 addSubview:v7->_titleLabel];
+    contentView = [(MFNanoBridgeSettingsMailboxTableViewCell *)v7 contentView];
+    [contentView addSubview:v7->_titleLabel];
 
     v15 = objc_alloc_init(UILabel);
     subtitleLabel = v7->_subtitleLabel;
@@ -43,13 +43,13 @@
 
     [(UILabel *)v7->_subtitleLabel setTextAlignment:2];
     v19 = v7->_subtitleLabel;
-    v20 = [(MFNanoBridgeSettingsMailboxTableViewCell *)v7 _subtitleFont];
-    [(UILabel *)v19 setFont:v20];
+    _subtitleFont = [(MFNanoBridgeSettingsMailboxTableViewCell *)v7 _subtitleFont];
+    [(UILabel *)v19 setFont:_subtitleFont];
 
     [(UILabel *)v7->_subtitleLabel setOpaque:0];
     [(UILabel *)v7->_subtitleLabel setBackgroundColor:0];
-    v21 = [(MFNanoBridgeSettingsMailboxTableViewCell *)v7 contentView];
-    [v21 addSubview:v7->_subtitleLabel];
+    contentView2 = [(MFNanoBridgeSettingsMailboxTableViewCell *)v7 contentView];
+    [contentView2 addSubview:v7->_subtitleLabel];
 
     v22 = [[UIImageView alloc] initWithImage:0];
     iconImageView = v7->_iconImageView;
@@ -59,8 +59,8 @@
     v25 = BPSBridgeTintColor();
     [(UIImageView *)v24 setTintColor:v25];
 
-    v26 = [(MFNanoBridgeSettingsMailboxTableViewCell *)v7 contentView];
-    [v26 addSubview:v7->_iconImageView];
+    contentView3 = [(MFNanoBridgeSettingsMailboxTableViewCell *)v7 contentView];
+    [contentView3 addSubview:v7->_iconImageView];
 
     v27 = BPSCellHightlightColor();
     [(MFNanoBridgeSettingsMailboxTableViewCell *)v7 setSelectionTintColor:v27];
@@ -69,9 +69,9 @@
   return v7;
 }
 
-- (void)setIcon:(id)a3
+- (void)setIcon:(id)icon
 {
-  v4 = a3;
+  iconCopy = icon;
   [(UIImageView *)self->_iconImageView setImage:?];
   [(UIImageView *)self->_iconImageView sizeToFit];
 }
@@ -81,8 +81,8 @@
   v55.receiver = self;
   v55.super_class = MFNanoBridgeSettingsMailboxTableViewCell;
   [(MFNanoBridgeSettingsMailboxTableViewCell *)&v55 layoutSubviews];
-  v3 = [(MFNanoBridgeSettingsMailboxTableViewCell *)self contentView];
-  [v3 bounds];
+  contentView = [(MFNanoBridgeSettingsMailboxTableViewCell *)self contentView];
+  [contentView bounds];
   v54 = v4;
 
   [(MFNanoBridgeSettingsMailboxTableViewCell *)self frame];
@@ -90,14 +90,14 @@
   v8 = v7;
   rect = v9;
   v11 = v10;
-  v12 = [(MFNanoBridgeSettingsMailboxTableViewCell *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(MFNanoBridgeSettingsMailboxTableViewCell *)self _shouldReverseLayoutDirection];
   [(UIImageView *)self->_iconImageView frame];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
   MailTableCellImageCenterForLevel(self->_level);
-  if (v12)
+  if (_shouldReverseLayoutDirection)
   {
     v56.origin.x = v14;
     v56.origin.y = v16;
@@ -138,7 +138,7 @@
   v32 = v8;
   v33 = rect;
   v34 = v11;
-  if (v12)
+  if (_shouldReverseLayoutDirection)
   {
     CGRectGetMinX(*&v31);
   }
@@ -148,8 +148,8 @@
     CGRectGetMaxX(*&v31);
   }
 
-  v35 = [(MFNanoBridgeSettingsMailboxTableViewCell *)self contentView];
-  [v35 frame];
+  contentView2 = [(MFNanoBridgeSettingsMailboxTableViewCell *)self contentView];
+  [contentView2 frame];
   UIRoundToViewScale();
   v37 = v36;
 
@@ -163,7 +163,7 @@
   [(UILabel *)self->_titleLabel sizeToFit];
   [(UILabel *)self->_titleLabel frame];
   v41 = v40;
-  if (v12)
+  if (_shouldReverseLayoutDirection)
   {
     v42 = v22 + -16.0;
     v43 = v54 - v42;
@@ -178,8 +178,8 @@
     v43 = v18 + v22 + 16.0;
     UIRoundToViewScale();
     v45 = v48;
-    v49 = [(MFNanoBridgeSettingsMailboxTableViewCell *)self contentView];
-    [v49 frame];
+    contentView3 = [(MFNanoBridgeSettingsMailboxTableViewCell *)self contentView];
+    [contentView3 frame];
     v46 = v37 - v45 + -5.0 - v50;
 
     if (v47 < v46)

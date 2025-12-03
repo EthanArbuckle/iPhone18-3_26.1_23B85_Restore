@@ -5,39 +5,39 @@
 - (NSString)filePath;
 - (NSString)uniqueKey;
 - (NSURL)fileURL;
-- (id)_downloadIfNeededWithPriority:(uint64_t)a3 flags:(void *)a4 completionQueue:(void *)a5 completion:;
-- (id)downloadIfNeededWithCompletion:(id)a3;
-- (id)downloadIfNeededWithCompletionQueue:(id)a3 completion:(id)a4;
-- (id)downloadIfNeededWithGroup:(id)a3;
-- (id)downloadIfNeededWithPriority:(int64_t)a3 completion:(id)a4;
-- (id)fetchDataProviderWithCompletion:(id)a3;
-- (id)fetchDataProviderWithPriority:(int64_t)a3 flags:(int64_t)a4 completion:(id)a5;
+- (id)_downloadIfNeededWithPriority:(uint64_t)priority flags:(void *)flags completionQueue:(void *)queue completion:;
+- (id)downloadIfNeededWithCompletion:(id)completion;
+- (id)downloadIfNeededWithCompletionQueue:(id)queue completion:(id)completion;
+- (id)downloadIfNeededWithGroup:(id)group;
+- (id)downloadIfNeededWithPriority:(int64_t)priority completion:(id)completion;
+- (id)fetchDataProviderWithCompletion:(id)completion;
+- (id)fetchDataProviderWithPriority:(int64_t)priority flags:(int64_t)flags completion:(id)completion;
 - (uint64_t)_canRetryDownload;
 - (uint64_t)_revisitDownloadRequestPriorities;
 - (void)dealloc;
-- (void)initWithDataProvider:(void *)a1;
-- (void)setFetchGroup:(uint64_t)a1;
-- (void)setFetchOperation:(uint64_t)a1;
-- (void)setHoldToken:(uint64_t)a1;
-- (void)setRemoteURL:(uint64_t)a1;
+- (void)initWithDataProvider:(void *)provider;
+- (void)setFetchGroup:(uint64_t)group;
+- (void)setFetchOperation:(uint64_t)operation;
+- (void)setHoldToken:(uint64_t)token;
+- (void)setRemoteURL:(uint64_t)l;
 @end
 
 @implementation FCAssetHandle
 
 - (NSString)filePath
 {
-  v2 = [(FCAssetHandle *)self dataProvider];
-  v3 = [v2 filePath];
+  dataProvider = [(FCAssetHandle *)self dataProvider];
+  filePath = [dataProvider filePath];
 
-  return v3;
+  return filePath;
 }
 
 - (NSURL)fileURL
 {
-  v2 = [(FCAssetHandle *)self filePath];
-  if (v2)
+  filePath = [(FCAssetHandle *)self filePath];
+  if (filePath)
   {
-    v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:v2 isDirectory:0];
+    v3 = [MEMORY[0x1E695DFF8] fileURLWithPath:filePath isDirectory:0];
   }
 
   else
@@ -50,51 +50,51 @@
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = self->_fetchOperation;
   }
 
   [(FCAssetHandle *)self cancel];
-  [(FCAssetHandle *)v2 setFetchOperation:?];
-  v3.receiver = v2;
+  [(FCAssetHandle *)selfCopy setFetchOperation:?];
+  v3.receiver = selfCopy;
   v3.super_class = FCAssetHandle;
   [(FCAssetHandle *)&v3 dealloc];
 }
 
-- (void)initWithDataProvider:(void *)a1
+- (void)initWithDataProvider:(void *)provider
 {
   v4 = a2;
-  if (a1)
+  if (provider)
   {
-    v9.receiver = a1;
+    v9.receiver = provider;
     v9.super_class = FCAssetHandle;
     v5 = objc_msgSendSuper2(&v9, sel_init);
-    a1 = v5;
+    provider = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
       v6 = objc_alloc_init(MEMORY[0x1E69B6920]);
-      v7 = a1[9];
-      a1[9] = v6;
+      v7 = provider[9];
+      provider[9] = v6;
     }
   }
 
-  return a1;
+  return provider;
 }
 
-- (void)setFetchOperation:(uint64_t)a1
+- (void)setFetchOperation:(uint64_t)operation
 {
-  if (a1)
+  if (operation)
   {
-    objc_storeStrong((a1 + 32), a2);
+    objc_storeStrong((operation + 32), a2);
   }
 }
 
-- (id)downloadIfNeededWithCompletion:(id)a3
+- (id)downloadIfNeededWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = FCCurrentQoSOrUtilityIfMain();
   if (v5 == 9)
   {
@@ -107,16 +107,16 @@
   }
 
   v7 = FCDispatchQueueForQualityOfService(v5);
-  v8 = [(FCAssetHandle *)&self->super.isa _downloadIfNeededWithPriority:v6 flags:0 completionQueue:v7 completion:v4];
+  v8 = [(FCAssetHandle *)&self->super.isa _downloadIfNeededWithPriority:v6 flags:0 completionQueue:v7 completion:completionCopy];
 
   return v8;
 }
 
-- (id)_downloadIfNeededWithPriority:(uint64_t)a3 flags:(void *)a4 completionQueue:(void *)a5 completion:
+- (id)_downloadIfNeededWithPriority:(uint64_t)priority flags:(void *)flags completionQueue:(void *)queue completion:
 {
-  v9 = a4;
-  v10 = a5;
-  if (a1)
+  flagsCopy = flags;
+  queueCopy = queue;
+  if (self)
   {
     v28 = 0;
     v29 = &v28;
@@ -124,12 +124,12 @@
     v31 = __Block_byref_object_copy__16;
     v32 = __Block_byref_object_dispose__16;
     v33 = 0;
-    v11 = [a1 dataProvider];
-    if (v11)
+    dataProvider = [self dataProvider];
+    if (dataProvider)
     {
     }
 
-    else if ([(FCAssetHandle *)a1 _canRetryDownload])
+    else if ([(FCAssetHandle *)self _canRetryDownload])
     {
       v22 = 0;
       v23 = &v22;
@@ -137,18 +137,18 @@
       v25 = __Block_byref_object_copy__16;
       v26 = __Block_byref_object_dispose__16;
       v27 = 0;
-      v12 = a1[9];
+      v12 = self[9];
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __80__FCAssetHandle__downloadIfNeededWithPriority_flags_completionQueue_completion___block_invoke;
       v15[3] = &unk_1E7C3A328;
-      v15[4] = a1;
-      v20 = a3;
+      v15[4] = self;
+      priorityCopy = priority;
       v21 = a2;
       v18 = &v22;
       v19 = &v28;
-      v17 = v10;
-      v16 = v9;
+      v17 = queueCopy;
+      v16 = flagsCopy;
       [v12 performWithLockSync:v15];
 
       [v23[5] start];
@@ -161,9 +161,9 @@ LABEL_8:
       goto LABEL_9;
     }
 
-    if (v10)
+    if (queueCopy)
     {
-      dispatch_async(v9, v10);
+      dispatch_async(flagsCopy, queueCopy);
     }
 
     goto LABEL_8;
@@ -175,16 +175,16 @@ LABEL_9:
   return v13;
 }
 
-- (id)downloadIfNeededWithPriority:(int64_t)a3 completion:(id)a4
+- (id)downloadIfNeededWithPriority:(int64_t)priority completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = 25;
-  if (!a3)
+  if (!priority)
   {
     v7 = 17;
   }
 
-  if (a3 == -1)
+  if (priority == -1)
   {
     v8 = 9;
   }
@@ -195,15 +195,15 @@ LABEL_9:
   }
 
   v9 = FCDispatchQueueForQualityOfService(v8);
-  v10 = [(FCAssetHandle *)&self->super.isa _downloadIfNeededWithPriority:a3 flags:0 completionQueue:v9 completion:v6];
+  v10 = [(FCAssetHandle *)&self->super.isa _downloadIfNeededWithPriority:priority flags:0 completionQueue:v9 completion:completionCopy];
 
   return v10;
 }
 
-- (id)downloadIfNeededWithCompletionQueue:(id)a3 completion:(id)a4
+- (id)downloadIfNeededWithCompletionQueue:(id)queue completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  queueCopy = queue;
   v8 = FCCurrentQoSOrUtilityIfMain();
   if (v8 == 9)
   {
@@ -215,35 +215,35 @@ LABEL_9:
     v9 = v8 == 33 || v8 == 25;
   }
 
-  v10 = [(FCAssetHandle *)&self->super.isa _downloadIfNeededWithPriority:v9 flags:0 completionQueue:v7 completion:v6];
+  v10 = [(FCAssetHandle *)&self->super.isa _downloadIfNeededWithPriority:v9 flags:0 completionQueue:queueCopy completion:completionCopy];
 
   return v10;
 }
 
 - (uint64_t)_canRetryDownload
 {
-  v1 = a1;
+  selfCopy = self;
   v20 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
-    v2 = [a1 downloadError];
-    v3 = v2;
-    if (v2)
+    downloadError = [self downloadError];
+    v3 = downloadError;
+    if (downloadError)
     {
-      if (([v2 fc_isOfflineError] & 1) != 0 || objc_msgSend(v3, "fc_isRecoverableNetworkError"))
+      if (([downloadError fc_isOfflineError] & 1) != 0 || objc_msgSend(v3, "fc_isRecoverableNetworkError"))
       {
         v4 = +[FCNetworkReachability sharedNetworkReachability];
-        v1 = [v4 isNetworkReachable];
+        selfCopy = [v4 isNetworkReachable];
       }
 
       else if ([v3 fc_isHTTPNotFoundError])
       {
-        v1 = 0;
+        selfCopy = 0;
       }
 
       else
       {
-        if (!*(v1 + 56) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+        if (!*(selfCopy + 56) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
         {
           v11 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"shouldn't reach this point without at least one penalized download attempt"];
           v12 = 136315906;
@@ -257,22 +257,22 @@ LABEL_9:
           _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", &v12, 0x26u);
         }
 
-        v7 = [MEMORY[0x1E695DF00] date];
-        [v7 timeIntervalSinceDate:{objc_getProperty(v1, v8, 64, 1)}];
+        date = [MEMORY[0x1E695DF00] date];
+        [date timeIntervalSinceDate:{objc_getProperty(selfCopy, v8, 64, 1)}];
         v10 = v9;
 
-        v1 = v10 >= fmin(exp2((*(v1 + 56) - 1)) * 5.0, 60.0);
+        selfCopy = v10 >= fmin(exp2((*(selfCopy + 56) - 1)) * 5.0, 60.0);
       }
     }
 
     else
     {
-      v1 = 1;
+      selfCopy = 1;
     }
   }
 
   v5 = *MEMORY[0x1E69E9840];
-  return v1;
+  return selfCopy;
 }
 
 void __80__FCAssetHandle__downloadIfNeededWithPriority_flags_completionQueue_completion___block_invoke(uint64_t a1)
@@ -487,11 +487,11 @@ LABEL_38:
   dispatch_async(v28, v27);
 }
 
-- (void)setFetchGroup:(uint64_t)a1
+- (void)setFetchGroup:(uint64_t)group
 {
-  if (a1)
+  if (group)
   {
-    objc_storeStrong((a1 + 48), a2);
+    objc_storeStrong((group + 48), a2);
   }
 }
 
@@ -624,10 +624,10 @@ uint64_t __80__FCAssetHandle__downloadIfNeededWithPriority_flags_completionQueue
             objc_enumerationMutation(v2);
           }
 
-          v8 = [*(*(&v11 + 1) + 8 * i) relativePriority];
-          if (v6 <= v8)
+          relativePriority = [*(*(&v11 + 1) + 8 * i) relativePriority];
+          if (v6 <= relativePriority)
           {
-            v6 = v8;
+            v6 = relativePriority;
           }
         }
 
@@ -687,24 +687,24 @@ void __80__FCAssetHandle__downloadIfNeededWithPriority_flags_completionQueue_com
   [v2 performWithLockSync:v4];
 }
 
-- (id)downloadIfNeededWithGroup:(id)a3
+- (id)downloadIfNeededWithGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(FCAssetHandle *)self dataProvider];
+  groupCopy = group;
+  dataProvider = [(FCAssetHandle *)self dataProvider];
 
-  if (v5)
+  if (dataProvider)
   {
     v6 = 0;
   }
 
   else
   {
-    dispatch_group_enter(v4);
+    dispatch_group_enter(groupCopy);
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __43__FCAssetHandle_downloadIfNeededWithGroup___block_invoke;
     v8[3] = &unk_1E7C36EA0;
-    v9 = v4;
+    v9 = groupCopy;
     v6 = [(FCAssetHandle *)self downloadIfNeededWithCompletion:v8];
   }
 
@@ -723,11 +723,11 @@ void __80__FCAssetHandle__downloadIfNeededWithPriority_flags_completionQueue_com
 
 - (BOOL)isDownloadFailureRecoverable
 {
-  v3 = [(FCAssetHandle *)self downloadError];
-  if (v3)
+  downloadError = [(FCAssetHandle *)self downloadError];
+  if (downloadError)
   {
-    v4 = [(FCAssetHandle *)self downloadError];
-    v5 = [v4 fc_isHTTPNotFoundError] ^ 1;
+    downloadError2 = [(FCAssetHandle *)self downloadError];
+    v5 = [downloadError2 fc_isHTTPNotFoundError] ^ 1;
   }
 
   else
@@ -738,9 +738,9 @@ void __80__FCAssetHandle__downloadIfNeededWithPriority_flags_completionQueue_com
   return v5;
 }
 
-- (id)fetchDataProviderWithCompletion:(id)a3
+- (id)fetchDataProviderWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = FCCurrentQoSOrUtilityIfMain();
   if (v5 == 9)
   {
@@ -758,8 +758,8 @@ void __80__FCAssetHandle__downloadIfNeededWithPriority_flags_completionQueue_com
   v11[2] = __49__FCAssetHandle_fetchDataProviderWithCompletion___block_invoke;
   v11[3] = &unk_1E7C37778;
   v11[4] = self;
-  v12 = v4;
-  v8 = v4;
+  v12 = completionCopy;
+  v8 = completionCopy;
   v9 = [(FCAssetHandle *)&self->super.isa _downloadIfNeededWithPriority:v6 flags:0 completionQueue:v7 completion:v11];
 
   return v9;
@@ -776,16 +776,16 @@ void __49__FCAssetHandle_fetchDataProviderWithCompletion___block_invoke(uint64_t
   }
 }
 
-- (id)fetchDataProviderWithPriority:(int64_t)a3 flags:(int64_t)a4 completion:(id)a5
+- (id)fetchDataProviderWithPriority:(int64_t)priority flags:(int64_t)flags completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = 25;
-  if (!a3)
+  if (!priority)
   {
     v9 = 17;
   }
 
-  if (a3 == -1)
+  if (priority == -1)
   {
     v10 = 9;
   }
@@ -801,9 +801,9 @@ void __49__FCAssetHandle_fetchDataProviderWithCompletion___block_invoke(uint64_t
   v15[2] = __64__FCAssetHandle_fetchDataProviderWithPriority_flags_completion___block_invoke;
   v15[3] = &unk_1E7C37778;
   v15[4] = self;
-  v16 = v8;
-  v12 = v8;
-  v13 = [(FCAssetHandle *)&self->super.isa _downloadIfNeededWithPriority:a3 flags:a4 completionQueue:v11 completion:v15];
+  v16 = completionCopy;
+  v12 = completionCopy;
+  v13 = [(FCAssetHandle *)&self->super.isa _downloadIfNeededWithPriority:priority flags:flags completionQueue:v11 completion:v15];
 
   return v13;
 }
@@ -837,8 +837,8 @@ void __64__FCAssetHandle_fetchDataProviderWithPriority_flags_completion___block_
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v3 = [FCContentManifest alloc];
-  v4 = [(FCAssetHandle *)self remoteURL];
-  v17[0] = v4;
+  remoteURL = [(FCAssetHandle *)self remoteURL];
+  v17[0] = remoteURL;
   v6 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   if (self)
   {
@@ -850,8 +850,8 @@ void __64__FCAssetHandle_fetchDataProviderWithPriority_flags_completion___block_
     Property = 0;
   }
 
-  v9 = [Property wrappingKeyID];
-  if (v9)
+  wrappingKeyID = [Property wrappingKeyID];
+  if (wrappingKeyID)
   {
     if (self)
     {
@@ -863,8 +863,8 @@ void __64__FCAssetHandle_fetchDataProviderWithPriority_flags_completion___block_
       v10 = 0;
     }
 
-    v11 = [v10 wrappingKeyID];
-    v16 = v11;
+    wrappingKeyID2 = [v10 wrappingKeyID];
+    v16 = wrappingKeyID2;
     v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v16 count:1];
     v13 = [(FCContentManifest *)v3 initWithAssetURLs:v6 assetWrappingKeyIDs:v12];
   }
@@ -965,19 +965,19 @@ LABEL_12:
   }
 }
 
-- (void)setRemoteURL:(uint64_t)a1
+- (void)setRemoteURL:(uint64_t)l
 {
-  if (a1)
+  if (l)
   {
-    objc_storeStrong((a1 + 24), a2);
+    objc_storeStrong((l + 24), a2);
   }
 }
 
-- (void)setHoldToken:(uint64_t)a1
+- (void)setHoldToken:(uint64_t)token
 {
-  if (a1)
+  if (token)
   {
-    objc_storeStrong((a1 + 88), a2);
+    objc_storeStrong((token + 88), a2);
   }
 }
 

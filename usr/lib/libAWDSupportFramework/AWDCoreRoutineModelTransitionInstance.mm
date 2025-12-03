@@ -1,14 +1,14 @@
 @interface AWDCoreRoutineModelTransitionInstance
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDuration:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)setHasDuration:(BOOL)duration;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDCoreRoutineModelTransitionInstance
@@ -21,9 +21,9 @@
   [(AWDCoreRoutineModelTransitionInstance *)&v3 dealloc];
 }
 
-- (void)setHasDuration:(BOOL)a3
+- (void)setHasDuration:(BOOL)duration
 {
-  if (a3)
+  if (duration)
   {
     v3 = 2;
   }
@@ -45,29 +45,29 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x29EDB8E00] dictionary];
+  dictionary = [MEMORY[0x29EDB8E00] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_duration), @"duration"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_duration), @"duration"}];
     has = self->_has;
   }
 
   if (has)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_distance), @"distance"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x29EDBA070] forKey:{"numberWithUnsignedInt:", self->_distance), @"distance"}];
   }
 
   transitionHistogram = self->_transitionHistogram;
   if (transitionHistogram)
   {
-    [v3 setObject:-[AWDCoreRoutineTransitionMotionType dictionaryRepresentation](transitionHistogram forKey:{"dictionaryRepresentation"), @"transitionHistogram"}];
+    [dictionary setObject:-[AWDCoreRoutineTransitionMotionType dictionaryRepresentation](transitionHistogram forKey:{"dictionaryRepresentation"), @"transitionHistogram"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
@@ -90,32 +90,32 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 2) != 0)
   {
-    *(a3 + 3) = self->_duration;
-    *(a3 + 24) |= 2u;
+    *(to + 3) = self->_duration;
+    *(to + 24) |= 2u;
     has = self->_has;
   }
 
   if (has)
   {
-    *(a3 + 2) = self->_distance;
-    *(a3 + 24) |= 1u;
+    *(to + 2) = self->_distance;
+    *(to + 24) |= 1u;
   }
 
   transitionHistogram = self->_transitionHistogram;
   if (transitionHistogram)
   {
-    [a3 setTransitionHistogram:transitionHistogram];
+    [to setTransitionHistogram:transitionHistogram];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -131,25 +131,25 @@
     *(v5 + 24) |= 1u;
   }
 
-  v6[2] = [(AWDCoreRoutineTransitionMotionType *)self->_transitionHistogram copyWithZone:a3];
+  v6[2] = [(AWDCoreRoutineTransitionMotionType *)self->_transitionHistogram copyWithZone:zone];
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    v6 = *(a3 + 24);
+    v6 = *(equal + 24);
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 24) & 2) == 0 || self->_duration != *(a3 + 3))
+      if ((*(equal + 24) & 2) == 0 || self->_duration != *(equal + 3))
       {
         goto LABEL_14;
       }
     }
 
-    else if ((*(a3 + 24) & 2) != 0)
+    else if ((*(equal + 24) & 2) != 0)
     {
 LABEL_14:
       LOBYTE(v5) = 0;
@@ -158,19 +158,19 @@ LABEL_14:
 
     if (*&self->_has)
     {
-      if ((*(a3 + 24) & 1) == 0 || self->_distance != *(a3 + 2))
+      if ((*(equal + 24) & 1) == 0 || self->_distance != *(equal + 2))
       {
         goto LABEL_14;
       }
     }
 
-    else if (*(a3 + 24))
+    else if (*(equal + 24))
     {
       goto LABEL_14;
     }
 
     transitionHistogram = self->_transitionHistogram;
-    if (transitionHistogram | *(a3 + 2))
+    if (transitionHistogram | *(equal + 2))
     {
 
       LOBYTE(v5) = [(AWDCoreRoutineTransitionMotionType *)transitionHistogram isEqual:?];
@@ -211,23 +211,23 @@ LABEL_3:
   return v7 ^ v6 ^ [(AWDCoreRoutineTransitionMotionType *)self->_transitionHistogram hash:v3];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v3 = *(a3 + 24);
+  v3 = *(from + 24);
   if ((v3 & 2) != 0)
   {
-    self->_duration = *(a3 + 3);
+    self->_duration = *(from + 3);
     *&self->_has |= 2u;
-    v3 = *(a3 + 24);
+    v3 = *(from + 24);
   }
 
   if (v3)
   {
-    self->_distance = *(a3 + 2);
+    self->_distance = *(from + 2);
     *&self->_has |= 1u;
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(from + 2);
   if (self->_transitionHistogram)
   {
     if (v4)

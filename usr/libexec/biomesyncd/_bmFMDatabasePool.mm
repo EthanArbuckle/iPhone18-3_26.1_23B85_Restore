@@ -1,51 +1,51 @@
 @interface _bmFMDatabasePool
-+ (id)databasePoolWithPath:(id)a3;
-+ (id)databasePoolWithURL:(id)a3;
-- (_bmFMDatabasePool)initWithPath:(id)a3 flags:(int)a4 vfs:(id)a5;
-- (_bmFMDatabasePool)initWithURL:(id)a3;
++ (id)databasePoolWithPath:(id)path;
++ (id)databasePoolWithURL:(id)l;
+- (_bmFMDatabasePool)initWithPath:(id)path flags:(int)flags vfs:(id)vfs;
+- (_bmFMDatabasePool)initWithURL:(id)l;
 - (id)db;
-- (id)inSavePoint:(id)a3;
+- (id)inSavePoint:(id)point;
 - (unint64_t)countOfCheckedInDatabases;
 - (unint64_t)countOfCheckedOutDatabases;
 - (unint64_t)countOfOpenDatabases;
-- (void)beginTransaction:(int64_t)a3 withBlock:(id)a4;
+- (void)beginTransaction:(int64_t)transaction withBlock:(id)block;
 - (void)dealloc;
-- (void)inDatabase:(id)a3;
-- (void)pushDatabaseBackInPool:(id)a3;
+- (void)inDatabase:(id)database;
+- (void)pushDatabaseBackInPool:(id)pool;
 - (void)releaseAllDatabases;
 @end
 
 @implementation _bmFMDatabasePool
 
-+ (id)databasePoolWithPath:(id)a3
++ (id)databasePoolWithPath:(id)path
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithPath:v4];
+  pathCopy = path;
+  v5 = [[self alloc] initWithPath:pathCopy];
 
   return v5;
 }
 
-+ (id)databasePoolWithURL:(id)a3
++ (id)databasePoolWithURL:(id)l
 {
-  v4 = a3;
-  v5 = [a1 alloc];
-  v6 = [v4 path];
+  lCopy = l;
+  v5 = [self alloc];
+  path = [lCopy path];
 
-  v7 = [v5 initWithPath:v6];
+  v7 = [v5 initWithPath:path];
 
   return v7;
 }
 
-- (_bmFMDatabasePool)initWithPath:(id)a3 flags:(int)a4 vfs:(id)a5
+- (_bmFMDatabasePool)initWithPath:(id)path flags:(int)flags vfs:(id)vfs
 {
-  v8 = a3;
-  v9 = a5;
+  pathCopy = path;
+  vfsCopy = vfs;
   v23.receiver = self;
   v23.super_class = _bmFMDatabasePool;
   v10 = [(_bmFMDatabasePool *)&v23 init];
   if (v10)
   {
-    v11 = [v8 copy];
+    v11 = [pathCopy copy];
     path = v10->_path;
     v10->_path = v11;
 
@@ -62,8 +62,8 @@
     databaseOutPool = v10->_databaseOutPool;
     v10->_databaseOutPool = v18;
 
-    v10->_openFlags = a4;
-    v20 = [v9 copy];
+    v10->_openFlags = flags;
+    v20 = [vfsCopy copy];
     vfsName = v10->_vfsName;
     v10->_vfsName = v20;
   }
@@ -71,10 +71,10 @@
   return v10;
 }
 
-- (_bmFMDatabasePool)initWithURL:(id)a3
+- (_bmFMDatabasePool)initWithURL:(id)l
 {
-  v4 = [a3 path];
-  v5 = [(_bmFMDatabasePool *)self initWithPath:v4];
+  path = [l path];
+  v5 = [(_bmFMDatabasePool *)self initWithPath:path];
 
   return v5;
 }
@@ -93,18 +93,18 @@
   [(_bmFMDatabasePool *)&v4 dealloc];
 }
 
-- (void)pushDatabaseBackInPool:(id)a3
+- (void)pushDatabaseBackInPool:(id)pool
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  poolCopy = pool;
+  v5 = poolCopy;
+  if (poolCopy)
   {
     v6[0] = _NSConcreteStackBlock;
     v6[1] = 3221225472;
     v6[2] = sub_100045AD8;
     v6[3] = &unk_100078E68;
     v6[4] = self;
-    v7 = v4;
+    v7 = poolCopy;
     [(_bmFMDatabasePool *)self executeLocked:v6];
   }
 }
@@ -194,22 +194,22 @@
   [(_bmFMDatabasePool *)self executeLocked:v2];
 }
 
-- (void)inDatabase:(id)a3
+- (void)inDatabase:(id)database
 {
-  v4 = a3;
+  databaseCopy = database;
   v5 = [(_bmFMDatabasePool *)self db];
-  v4[2](v4, v5);
+  databaseCopy[2](databaseCopy, v5);
 
   [(_bmFMDatabasePool *)self pushDatabaseBackInPool:v5];
 }
 
-- (void)beginTransaction:(int64_t)a3 withBlock:(id)a4
+- (void)beginTransaction:(int64_t)transaction withBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v9 = 0;
   v7 = [(_bmFMDatabasePool *)self db];
   v8 = v7;
-  switch(a3)
+  switch(transaction)
   {
     case 2:
       [v7 beginImmediateTransaction];
@@ -222,7 +222,7 @@
       break;
   }
 
-  v6[2](v6, v8, &v9);
+  blockCopy[2](blockCopy, v8, &v9);
   if (v9 == 1)
   {
     [v8 rollback];
@@ -236,9 +236,9 @@
   [(_bmFMDatabasePool *)self pushDatabaseBackInPool:v8];
 }
 
-- (id)inSavePoint:(id)a3
+- (id)inSavePoint:(id)point
 {
-  v4 = a3;
+  pointCopy = point;
   v5 = [NSString alloc];
   v6 = qword_10008BDA8++;
   v7 = [v5 initWithFormat:@"savePoint%ld", v6];
@@ -249,7 +249,7 @@
   v10 = v17;
   if (v9)
   {
-    v4[2](v4, v8, &v18);
+    pointCopy[2](pointCopy, v8, &v18);
     if (v18 == 1)
     {
       v16 = v10;

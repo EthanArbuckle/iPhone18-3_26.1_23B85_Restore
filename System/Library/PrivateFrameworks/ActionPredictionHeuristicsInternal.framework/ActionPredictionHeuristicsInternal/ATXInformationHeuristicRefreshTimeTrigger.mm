@@ -1,25 +1,25 @@
 @interface ATXInformationHeuristicRefreshTimeTrigger
-- (ATXInformationHeuristicRefreshTimeTrigger)initWithCoder:(id)a3;
-- (ATXInformationHeuristicRefreshTimeTrigger)initWithFireDate:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ATXInformationHeuristicRefreshTimeTrigger)initWithCoder:(id)coder;
+- (ATXInformationHeuristicRefreshTimeTrigger)initWithFireDate:(id)date;
+- (BOOL)isEqual:(id)equal;
 - (id)description;
 - (void)_start;
 - (void)_stop;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXInformationHeuristicRefreshTimeTrigger
 
-- (ATXInformationHeuristicRefreshTimeTrigger)initWithFireDate:(id)a3
+- (ATXInformationHeuristicRefreshTimeTrigger)initWithFireDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   v10.receiver = self;
   v10.super_class = ATXInformationHeuristicRefreshTimeTrigger;
   v5 = [(ATXInformationHeuristicRefreshTrigger *)&v10 init];
   if (v5)
   {
     v6 = objc_alloc(MEMORY[0x277CBEAA8]);
-    [v4 timeIntervalSinceReferenceDate];
+    [dateCopy timeIntervalSinceReferenceDate];
     v7 = [v6 initWithTimeIntervalSinceReferenceDate:?];
     fireDate = v5->_fireDate;
     v5->_fireDate = v7;
@@ -42,13 +42,13 @@
       if (v6)
       {
         fireDate = self->_fireDate;
-        v16 = [(ATXInformationHeuristicRefreshTrigger *)self registeredHeuristics];
+        registeredHeuristics = [(ATXInformationHeuristicRefreshTrigger *)self registeredHeuristics];
         *buf = 134218498;
-        v21 = self;
+        selfCopy2 = self;
         v22 = 2112;
         v23 = fireDate;
         v24 = 2112;
-        v25 = v16;
+        v25 = registeredHeuristics;
         _os_log_impl(&dword_23E3EA000, v5, OS_LOG_TYPE_DEFAULT, "ATXInformationHeuristicRefreshTimeTrigger (%p): Past [%@]. Will not start. %@", buf, 0x20u);
       }
     }
@@ -58,13 +58,13 @@
       if (v6)
       {
         v7 = self->_fireDate;
-        v8 = [(ATXInformationHeuristicRefreshTrigger *)self registeredHeuristics];
+        registeredHeuristics2 = [(ATXInformationHeuristicRefreshTrigger *)self registeredHeuristics];
         *buf = 134218498;
-        v21 = self;
+        selfCopy2 = self;
         v22 = 2112;
         v23 = v7;
         v24 = 2112;
-        v25 = v8;
+        v25 = registeredHeuristics2;
         _os_log_impl(&dword_23E3EA000, v5, OS_LOG_TYPE_DEFAULT, "ATXInformationHeuristicRefreshTimeTrigger (%p): Start [%@]. %@", buf, 0x20u);
       }
 
@@ -135,13 +135,13 @@ void __51__ATXInformationHeuristicRefreshTimeTrigger__start__block_invoke(uint64
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       fireDate = self->_fireDate;
-      v5 = [(ATXInformationHeuristicRefreshTrigger *)self registeredHeuristics];
+      registeredHeuristics = [(ATXInformationHeuristicRefreshTrigger *)self registeredHeuristics];
       v8 = 134218498;
-      v9 = self;
+      selfCopy = self;
       v10 = 2112;
       v11 = fireDate;
       v12 = 2112;
-      v13 = v5;
+      v13 = registeredHeuristics;
       _os_log_impl(&dword_23E3EA000, v3, OS_LOG_TYPE_DEFAULT, "ATXInformationHeuristicRefreshTimeTrigger (%p): Stopped [%@]. %@.", &v8, 0x20u);
     }
 
@@ -153,10 +153,10 @@ void __51__ATXInformationHeuristicRefreshTimeTrigger__start__block_invoke(uint64
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     goto LABEL_5;
   }
@@ -169,7 +169,7 @@ void __51__ATXInformationHeuristicRefreshTimeTrigger__start__block_invoke(uint64
   }
 
   fireDate = self->_fireDate;
-  if (fireDate == v4->_fireDate)
+  if (fireDate == equalCopy->_fireDate)
   {
 LABEL_5:
     v6 = 1;
@@ -192,38 +192,38 @@ LABEL_7:
   return v2;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = ATXInformationHeuristicRefreshTimeTrigger;
-  v4 = a3;
-  [(ATXInformationHeuristicRefreshTrigger *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_fireDate forKey:{@"fireDate", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(ATXInformationHeuristicRefreshTrigger *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_fireDate forKey:{@"fireDate", v5.receiver, v5.super_class}];
 }
 
-- (ATXInformationHeuristicRefreshTimeTrigger)initWithCoder:(id)a3
+- (ATXInformationHeuristicRefreshTimeTrigger)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = ATXInformationHeuristicRefreshTimeTrigger;
-  v5 = [(ATXInformationHeuristicRefreshTrigger *)&v12 initWithCoder:v4];
+  v5 = [(ATXInformationHeuristicRefreshTrigger *)&v12 initWithCoder:coderCopy];
   if (!v5)
   {
     goto LABEL_3;
   }
 
-  v6 = [v4 error];
+  error = [coderCopy error];
 
-  if (v6)
+  if (error)
   {
     goto LABEL_3;
   }
 
-  v9 = [(ATXInformationHeuristicRefreshTrigger *)v5 _safeDecodeObjectOfClass:objc_opt_class() forKey:@"fireDate" withCoder:v4 nonNull:1];
+  v9 = [(ATXInformationHeuristicRefreshTrigger *)v5 _safeDecodeObjectOfClass:objc_opt_class() forKey:@"fireDate" withCoder:coderCopy nonNull:1];
   fireDate = v5->_fireDate;
   v5->_fireDate = v9;
 
-  if (!v5->_fireDate || ([v4 error], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
+  if (!v5->_fireDate || ([coderCopy error], v11 = objc_claimAutoreleasedReturnValue(), v11, v11))
   {
 LABEL_3:
     v7 = 0;

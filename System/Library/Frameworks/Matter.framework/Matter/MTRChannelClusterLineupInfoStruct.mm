@@ -1,6 +1,6 @@
 @interface MTRChannelClusterLineupInfoStruct
 - (MTRChannelClusterLineupInfoStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -30,20 +30,20 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRChannelClusterLineupInfoStruct);
-  v5 = [(MTRChannelClusterLineupInfoStruct *)self operatorName];
-  [(MTRChannelClusterLineupInfoStruct *)v4 setOperatorName:v5];
+  operatorName = [(MTRChannelClusterLineupInfoStruct *)self operatorName];
+  [(MTRChannelClusterLineupInfoStruct *)v4 setOperatorName:operatorName];
 
-  v6 = [(MTRChannelClusterLineupInfoStruct *)self lineupName];
-  [(MTRChannelClusterLineupInfoStruct *)v4 setLineupName:v6];
+  lineupName = [(MTRChannelClusterLineupInfoStruct *)self lineupName];
+  [(MTRChannelClusterLineupInfoStruct *)v4 setLineupName:lineupName];
 
-  v7 = [(MTRChannelClusterLineupInfoStruct *)self postalCode];
-  [(MTRChannelClusterLineupInfoStruct *)v4 setPostalCode:v7];
+  postalCode = [(MTRChannelClusterLineupInfoStruct *)self postalCode];
+  [(MTRChannelClusterLineupInfoStruct *)v4 setPostalCode:postalCode];
 
-  v8 = [(MTRChannelClusterLineupInfoStruct *)self lineupInfoType];
-  [(MTRChannelClusterLineupInfoStruct *)v4 setLineupInfoType:v8];
+  lineupInfoType = [(MTRChannelClusterLineupInfoStruct *)self lineupInfoType];
+  [(MTRChannelClusterLineupInfoStruct *)v4 setLineupInfoType:lineupInfoType];
 
   return v4;
 }

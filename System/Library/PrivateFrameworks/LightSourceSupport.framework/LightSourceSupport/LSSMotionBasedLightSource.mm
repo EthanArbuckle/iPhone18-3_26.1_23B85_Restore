@@ -2,7 +2,7 @@
 - (BOOL)settled;
 - (LSSMotionBasedLightSource)init;
 - (double)intensity;
-- (float64x2_t)updateTargetDirectionWithOrientation:(int)a3 goToRest:(float64x2_t)result timestamp:;
+- (float64x2_t)updateTargetDirectionWithOrientation:(int)orientation goToRest:(float64x2_t)result timestamp:;
 - (uint64_t)direction;
 @end
 
@@ -41,9 +41,9 @@
 
 - (double)intensity
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 120);
+    return *(self + 120);
   }
 
   else
@@ -95,53 +95,53 @@
   return result;
 }
 
-- (float64x2_t)updateTargetDirectionWithOrientation:(int)a3 goToRest:(float64x2_t)result timestamp:
+- (float64x2_t)updateTargetDirectionWithOrientation:(int)orientation goToRest:(float64x2_t)result timestamp:
 {
-  if (!a1)
+  if (!self)
   {
     return result;
   }
 
-  v7 = fmin(result.f64[0] - *(a1 + 80), 1.0);
-  *(a1 + 80) = result.f64[0];
+  v7 = fmin(result.f64[0] - *(self + 80), 1.0);
+  *(self + 80) = result.f64[0];
   if (v7 >= 1.0)
   {
     v8 = a2[1];
-    *(a1 + 48) = *a2;
-    *(a1 + 64) = v8;
+    *(self + 48) = *a2;
+    *(self + 64) = v8;
   }
 
   v91 = *a2;
   v92 = a2[1];
-  v9 = (a1 + 48);
-  v94 = *(a1 + 48);
-  v95 = *(a1 + 64);
-  if (([(LSSSettings *)*(a1 + 112) dynamic]& 1) != 0 || (v10 = *(a1 + 96), (*&v10 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL))
+  v9 = (self + 48);
+  v94 = *(self + 48);
+  v95 = *(self + 64);
+  if (([(LSSSettings *)*(self + 112) dynamic]& 1) != 0 || (v10 = *(self + 96), (*&v10 & 0x7FFFFFFFFFFFFFFFuLL) > 0x7FEFFFFFFFFFFFFFLL))
   {
-    v11 = [(LSSSettings *)*(a1 + 112) doubleForKey:?];
-    *(a1 + 96) = cos(v11 * 3.14159265 / 180.0);
-    v12 = [(LSSSettings *)*(a1 + 112) doubleForKey:?];
+    v11 = [(LSSSettings *)*(self + 112) doubleForKey:?];
+    *(self + 96) = cos(v11 * 3.14159265 / 180.0);
+    v12 = [(LSSSettings *)*(self + 112) doubleForKey:?];
     v13 = cos(v12 * 3.14159265 / 180.0);
-    *(a1 + 104) = v13;
-    v10 = *(a1 + 96);
+    *(self + 104) = v13;
+    v10 = *(self + 96);
   }
 
   else
   {
-    v13 = *(a1 + 104);
+    v13 = *(self + 104);
   }
 
   __asm { FMOV            V2.2D, #-1.0 }
 
   v96 = _Q2;
-  switch(*(a1 + 8))
+  switch(*(self + 8))
   {
     case 0:
-      if (a3)
+      if (orientation)
       {
-        *(a1 + 88) = 0;
+        *(self + 88) = 0;
         v32 = vdupq_n_s64(0x3F1A36E2EB1C432DuLL);
-        v33 = vandq_s8(vcgtq_f64(v32, vabdq_f64(*(a1 + 48), *a2)), vcgtq_f64(v32, vabdq_f64(*(a1 + 64), a2[1])));
+        v33 = vandq_s8(vcgtq_f64(v32, vabdq_f64(*(self + 48), *a2)), vcgtq_f64(v32, vabdq_f64(*(self + 64), a2[1])));
         if ((vandq_s8(v33, vdupq_laneq_s64(v33, 1)).u64[0] & 0x8000000000000000) != 0)
         {
           v30 = 4;
@@ -174,21 +174,21 @@
       v51 = 0.0;
       if (!v50)
       {
-        v51 = v7 + *(a1 + 88);
+        v51 = v7 + *(self + 88);
       }
 
       v52 = LSSSettingsMotionLightSourceResetTimeoutLargeKey;
-      *(a1 + 88) = v51;
+      *(self + 88) = v51;
       if (v10 <= v49)
       {
         v52 = LSSSettingsMotionLightSourceResetTimeoutSmallKey;
       }
 
       v53 = *v52;
-      if (*(a1 + 88) >= [(LSSSettings *)*(a1 + 112) doubleForKey:v53])
+      if (*(self + 88) >= [(LSSSettings *)*(self + 112) doubleForKey:v53])
       {
-        *(a1 + 88) = 0;
-        *(a1 + 8) = 1;
+        *(self + 88) = 0;
+        *(self + 8) = 1;
         if (qword_280D2F510 != -1)
         {
           dispatch_once(&qword_280D2F510, &__block_literal_global_4);
@@ -209,24 +209,24 @@
     case 3:
       v34 = a2[1];
       *v9 = *a2;
-      *(a1 + 64) = v34;
-      if ((a3 & 1) == 0)
+      *(self + 64) = v34;
+      if ((orientation & 1) == 0)
       {
-        *(a1 + 8) = 2;
+        *(self + 8) = 2;
       }
 
 LABEL_9:
-      *(a1 + 88) = v7 + *(a1 + 88);
-      v18 = *(a1 + 88) / [(LSSSettings *)*(a1 + 112) doubleForKey:?];
+      *(self + 88) = v7 + *(self + 88);
+      v18 = *(self + 88) / [(LSSSettings *)*(self + 112) doubleForKey:?];
       if (v18 >= 1.0)
       {
-        *(a1 + 120) = 0x3FF0000000000000;
-        v24 = *(a1 + 8);
+        *(self + 120) = 0x3FF0000000000000;
+        v24 = *(self + 8);
         if (v18 <= 0.5 || v24 != 1)
         {
           if (v24 == 3)
           {
-            *(a1 + 8) = 4;
+            *(self + 8) = 4;
             if (qword_280D2F510 != -1)
             {
               dispatch_once(&qword_280D2F510, &__block_literal_global_4);
@@ -245,7 +245,7 @@ LABEL_9:
 
           else
           {
-            *(a1 + 8) = 0;
+            *(self + 8) = 0;
             if (qword_280D2F510 != -1)
             {
               dispatch_once(&qword_280D2F510, &__block_literal_global_4);
@@ -269,15 +269,15 @@ LABEL_9:
 LABEL_27:
         v29 = a2[1];
         *v9 = *a2;
-        *(a1 + 64) = v29;
+        *(self + 64) = v29;
         v30 = 2;
-        if (a3)
+        if (orientation)
         {
           v30 = 3;
         }
 
 LABEL_29:
-        *(a1 + 8) = v30;
+        *(self + 8) = v30;
         goto LABEL_51;
       }
 
@@ -290,14 +290,14 @@ LABEL_29:
         v19 = v22;
       }
 
-      *(a1 + 120) = v19;
-      if (v18 > 0.5 && *(a1 + 8) == 1)
+      *(self + 120) = v19;
+      if (v18 > 0.5 && *(self + 8) == 1)
       {
         goto LABEL_27;
       }
 
 LABEL_51:
-      if (([(LSSSettings *)*(a1 + 112) dynamic]& 1) != 0)
+      if (([(LSSSettings *)*(self + 112) dynamic]& 1) != 0)
       {
         objc_opt_self();
         v55 = +[LSSSettings currentSettings];
@@ -319,14 +319,14 @@ LABEL_51:
         v67 = vmlsq_lane_f64(vmulq_n_f64(v62, v59.__cosval), v65, v59.__sinval, 0);
         v68 = vaddq_f64(vmlsq_lane_f64(vmulq_n_f64(v63, v59.__cosval), vextq_s8(v64, v63, 8uLL), v59.__sinval, 0), v66);
         v69 = vaddq_f64(v67, vmlaq_n_f64(vmulq_laneq_f64(v64, v93, 1), vextq_s8(v63, v64, 8uLL), v93.f64[0]));
-        *(a1 + 16) = v68;
-        *(a1 + 32) = v69;
+        *(self + 16) = v68;
+        *(self + 32) = v69;
       }
 
       else
       {
-        v68 = *(a1 + 16);
-        v69 = *(a1 + 32);
+        v68 = *(self + 16);
+        v69 = *(self + 32);
       }
 
       v70 = vmulq_f64(v69, xmmword_255E9CA30);
@@ -340,8 +340,8 @@ LABEL_51:
       v78 = vmlaq_n_f64(vmulq_laneq_f64(v74, v69, 1), vextq_s8(v75, v74, 8uLL), v69.f64[0]);
       *&v79 = *&vaddq_f64(vmlaq_n_f64(vmulq_laneq_f64(v73, v69, 1), v76, v69.f64[0]), v77);
       v80 = vaddq_f64(v78, vmlaq_n_f64(vmulq_laneq_f64(v73, v68, 1), v76, v68.f64[0]));
-      v81 = *(a1 + 48);
-      v82 = *(a1 + 64);
+      v81 = *(self + 48);
+      v82 = *(self + 64);
       v83 = vmulq_f64(v82, xmmword_255E9CA30);
       v84 = vnegq_f64(v81);
       v85 = vextq_s8(v83, vnegq_f64(v83), 8uLL);
@@ -351,21 +351,21 @@ LABEL_51:
       v89 = vextq_s8(v86, vnegq_f64(v86), 8uLL);
       v90 = vmlaq_n_f64(vmulq_laneq_f64(v88, v81, 1), vextq_s8(v87, v88, 8uLL), v81.f64[0]);
       result = vaddq_f64(vmlaq_n_f64(vmulq_laneq_f64(v87, v82, 1), vextq_s8(v88, v87, 8uLL), v82.f64[0]), vmlaq_n_f64(vmulq_laneq_f64(v86, v81, 1), v89, v81.f64[0]));
-      *(a1 + 128) = result;
-      *(a1 + 144) = vaddq_f64(vmlaq_n_f64(vmulq_laneq_f64(v86, v82, 1), v89, v82.f64[0]), v90);
+      *(self + 128) = result;
+      *(self + 144) = vaddq_f64(vmlaq_n_f64(vmulq_laneq_f64(v86, v82, 1), v89, v82.f64[0]), v90);
       return result;
     case 4:
-      if (a3)
+      if (orientation)
       {
         v31 = a2[1];
         *v9 = *a2;
-        *(a1 + 64) = v31;
+        *(self + 64) = v31;
       }
 
       else
       {
-        *(a1 + 8) = 0;
-        *(a1 + 88) = 0;
+        *(self + 8) = 0;
+        *(self + 88) = 0;
       }
 
       goto LABEL_51;

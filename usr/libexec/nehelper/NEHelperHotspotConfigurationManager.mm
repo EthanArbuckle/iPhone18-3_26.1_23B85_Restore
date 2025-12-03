@@ -1,14 +1,14 @@
 @interface NEHelperHotspotConfigurationManager
-- (NEHelperHotspotConfigurationManager)initWithFirstMessage:(id)a3;
-- (void)handleMessage:(id)a3;
+- (NEHelperHotspotConfigurationManager)initWithFirstMessage:(id)message;
+- (void)handleMessage:(id)message;
 @end
 
 @implementation NEHelperHotspotConfigurationManager
 
-- (void)handleMessage:(id)a3
+- (void)handleMessage:(id)message
 {
-  v4 = a3;
-  if (!sub_10000555C(self, v4))
+  messageCopy = message;
+  if (!sub_10000555C(self, messageCopy))
   {
     v5 = ne_log_obj();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
@@ -19,17 +19,17 @@
       _os_log_debug_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "%@ failed to process request.", &v7, 0xCu);
     }
 
-    if (xpc_dictionary_get_BOOL(v4, "IsResponseExpected"))
+    if (xpc_dictionary_get_BOOL(messageCopy, "IsResponseExpected"))
     {
-      sub_10000BA0C(NEHelperServer, v4, 107, 0);
+      sub_10000BA0C(NEHelperServer, messageCopy, 107, 0);
     }
   }
 }
 
-- (NEHelperHotspotConfigurationManager)initWithFirstMessage:(id)a3
+- (NEHelperHotspotConfigurationManager)initWithFirstMessage:(id)message
 {
-  v4 = a3;
-  v5 = xpc_dictionary_get_remote_connection(v4);
+  messageCopy = message;
+  v5 = xpc_dictionary_get_remote_connection(messageCopy);
   objc_opt_self();
   v6 = xpc_connection_copy_entitlement_value();
   v7 = v6;
@@ -71,7 +71,7 @@ LABEL_18:
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, v19, v24, v21);
     }
 
-    v13 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
@@ -101,10 +101,10 @@ LABEL_18:
   }
 
   self = v8;
-  v13 = self;
+  selfCopy = self;
 LABEL_16:
 
-  return v13;
+  return selfCopy;
 }
 
 @end

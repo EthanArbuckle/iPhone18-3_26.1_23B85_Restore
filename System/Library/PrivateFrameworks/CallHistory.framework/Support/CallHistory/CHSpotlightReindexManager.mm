@@ -1,6 +1,6 @@
 @interface CHSpotlightReindexManager
 - (CHSpotlightReindexManager)init;
-- (CHSpotlightReindexManager)initWithSpotlightIndexManager:(id)a3;
+- (CHSpotlightReindexManager)initWithSpotlightIndexManager:(id)manager;
 - (void)handleCallDirectoryIdentitiesChanged;
 - (void)handleFaceTimeStatusChanged;
 - (void)handleLocaleChanges;
@@ -8,9 +8,9 @@
 
 @implementation CHSpotlightReindexManager
 
-- (CHSpotlightReindexManager)initWithSpotlightIndexManager:(id)a3
+- (CHSpotlightReindexManager)initWithSpotlightIndexManager:(id)manager
 {
-  v3 = a3;
+  managerCopy = manager;
   v4 = sub_10002C350();
 
   return v4;
@@ -18,19 +18,19 @@
 
 - (void)handleLocaleChanges
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000295D8();
 }
 
 - (void)handleFaceTimeStatusChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000299B8();
 }
 
 - (void)handleCallDirectoryIdentitiesChanged
 {
-  v2 = self;
+  selfCopy = self;
   sub_100029428();
 }
 

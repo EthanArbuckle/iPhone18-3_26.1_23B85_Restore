@@ -1,13 +1,13 @@
 @interface NSCollectionLayoutDecorationItem
 + (NSCollectionLayoutDecorationItem)backgroundDecorationItemWithElementKind:(NSString *)elementKind;
-+ (NSCollectionLayoutDecorationItem)decorationItemWithSize:(id)a3 elementKind:(id)a4 containerAnchor:(id)a5;
-+ (NSCollectionLayoutDecorationItem)itemWithLayoutSize:(id)a3;
-+ (NSCollectionLayoutDecorationItem)itemWithLayoutSize:(id)a3 supplementaryItems:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (NSCollectionLayoutDecorationItem)decorationItemWithSize:(id)size elementKind:(id)kind containerAnchor:(id)anchor;
++ (NSCollectionLayoutDecorationItem)itemWithLayoutSize:(id)size;
++ (NSCollectionLayoutDecorationItem)itemWithLayoutSize:(id)size supplementaryItems:(id)items;
+- (BOOL)isEqual:(id)equal;
 - (CVCDirectionalEdgeInsets)_effectiveContentInsets;
-- (NSCollectionLayoutDecorationItem)initWithElementKind:(id)a3 size:(id)a4 contentInsets:(CVCDirectionalEdgeInsets)a5 containerAnchor:(id)a6 itemAnchor:(id)a7 zIndex:(int64_t)a8 registrationViewClass:(Class)a9 isBackgroundDecoration:(BOOL)a10;
+- (NSCollectionLayoutDecorationItem)initWithElementKind:(id)kind size:(id)size contentInsets:(CVCDirectionalEdgeInsets)insets containerAnchor:(id)anchor itemAnchor:(id)itemAnchor zIndex:(int64_t)index registrationViewClass:(Class)class isBackgroundDecoration:(BOOL)self0;
 - (id)_externalDescription;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation NSCollectionLayoutDecorationItem
@@ -24,48 +24,48 @@
   return result;
 }
 
-- (NSCollectionLayoutDecorationItem)initWithElementKind:(id)a3 size:(id)a4 contentInsets:(CVCDirectionalEdgeInsets)a5 containerAnchor:(id)a6 itemAnchor:(id)a7 zIndex:(int64_t)a8 registrationViewClass:(Class)a9 isBackgroundDecoration:(BOOL)a10
+- (NSCollectionLayoutDecorationItem)initWithElementKind:(id)kind size:(id)size contentInsets:(CVCDirectionalEdgeInsets)insets containerAnchor:(id)anchor itemAnchor:(id)itemAnchor zIndex:(int64_t)index registrationViewClass:(Class)class isBackgroundDecoration:(BOOL)self0
 {
-  trailing = a5.trailing;
-  bottom = a5.bottom;
-  leading = a5.leading;
-  top = a5.top;
-  v20 = a3;
-  v21 = a6;
-  v22 = a7;
+  trailing = insets.trailing;
+  bottom = insets.bottom;
+  leading = insets.leading;
+  top = insets.top;
+  kindCopy = kind;
+  anchorCopy = anchor;
+  itemAnchorCopy = itemAnchor;
   v23 = MEMORY[0x277CCAD78];
-  v24 = a4;
-  v25 = [v23 UUID];
+  sizeCopy = size;
+  uUID = [v23 UUID];
   v34.receiver = self;
   v34.super_class = NSCollectionLayoutDecorationItem;
-  v26 = [(NSCollectionLayoutItem *)&v34 initWithSize:v24 contentInsets:0 edgeSpacing:MEMORY[0x277CBEBF8] supplementaryItems:MEMORY[0x277CBEBF8] decorationItems:0 name:v25 identifier:top, leading, bottom, trailing];
+  trailing = [(NSCollectionLayoutItem *)&v34 initWithSize:sizeCopy contentInsets:0 edgeSpacing:MEMORY[0x277CBEBF8] supplementaryItems:MEMORY[0x277CBEBF8] decorationItems:0 name:uUID identifier:top, leading, bottom, trailing];
 
-  if (v26)
+  if (trailing)
   {
-    v27 = [v20 copy];
-    elementKind = v26->_elementKind;
-    v26->_elementKind = v27;
+    v27 = [kindCopy copy];
+    elementKind = trailing->_elementKind;
+    trailing->_elementKind = v27;
 
-    v29 = [v21 copy];
-    containerAnchor = v26->_containerAnchor;
-    v26->_containerAnchor = v29;
+    v29 = [anchorCopy copy];
+    containerAnchor = trailing->_containerAnchor;
+    trailing->_containerAnchor = v29;
 
-    v31 = [v22 copy];
-    itemAnchor = v26->_itemAnchor;
-    v26->_itemAnchor = v31;
+    v31 = [itemAnchorCopy copy];
+    itemAnchor = trailing->_itemAnchor;
+    trailing->_itemAnchor = v31;
 
-    v26->_zIndex = a8;
-    v26->_isBackgroundDecoration = a10;
-    objc_storeStrong(&v26->__registrationViewClass, a9);
+    trailing->_zIndex = index;
+    trailing->_isBackgroundDecoration = decoration;
+    objc_storeStrong(&trailing->__registrationViewClass, class);
   }
 
-  return v26;
+  return trailing;
 }
 
 + (NSCollectionLayoutDecorationItem)backgroundDecorationItemWithElementKind:(NSString *)elementKind
 {
   v4 = elementKind;
-  v5 = [a1 alloc];
+  v5 = [self alloc];
   v6 = +[NSCollectionLayoutSize sizeWithContainerSize];
   LOBYTE(v9) = 1;
   v7 = [v5 initWithElementKind:v4 size:v6 contentInsets:0 containerAnchor:0 itemAnchor:0 zIndex:0 registrationViewClass:0.0 isBackgroundDecoration:{0.0, 0.0, 0.0, v9}];
@@ -73,56 +73,56 @@
   return v7;
 }
 
-+ (NSCollectionLayoutDecorationItem)decorationItemWithSize:(id)a3 elementKind:(id)a4 containerAnchor:(id)a5
++ (NSCollectionLayoutDecorationItem)decorationItemWithSize:(id)size elementKind:(id)kind containerAnchor:(id)anchor
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  anchorCopy = anchor;
+  kindCopy = kind;
+  sizeCopy = size;
   LOBYTE(v13) = 0;
-  v11 = [[a1 alloc] initWithElementKind:v9 size:v10 contentInsets:v8 containerAnchor:0 itemAnchor:1 zIndex:0 registrationViewClass:0.0 isBackgroundDecoration:{0.0, 0.0, 0.0, v13}];
+  v11 = [[self alloc] initWithElementKind:kindCopy size:sizeCopy contentInsets:anchorCopy containerAnchor:0 itemAnchor:1 zIndex:0 registrationViewClass:0.0 isBackgroundDecoration:{0.0, 0.0, 0.0, v13}];
 
   return v11;
 }
 
-+ (NSCollectionLayoutDecorationItem)itemWithLayoutSize:(id)a3
++ (NSCollectionLayoutDecorationItem)itemWithLayoutSize:(id)size
 {
-  v3 = a3;
+  sizeCopy = size;
   v4 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"NSCollectionLayoutDecorationItem must be initialized with the .background(elementKind:)/+backgroundDecorationItemWithElementKind: initializer" userInfo:0];
   objc_exception_throw(v4);
 }
 
-+ (NSCollectionLayoutDecorationItem)itemWithLayoutSize:(id)a3 supplementaryItems:(id)a4
++ (NSCollectionLayoutDecorationItem)itemWithLayoutSize:(id)size supplementaryItems:(id)items
 {
-  v5 = a3;
-  v6 = a4;
+  sizeCopy = size;
+  itemsCopy = items;
   v7 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"NSCollectionLayoutDecorationItem must be initialized with the .background(elementKind:)/+backgroundDecorationItemWithElementKind: initializer" userInfo:0];
   objc_exception_throw(v7);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
-  v5 = [(NSCollectionLayoutDecorationItem *)self elementKind];
+  v4 = [objc_opt_class() allocWithZone:zone];
+  elementKind = [(NSCollectionLayoutDecorationItem *)self elementKind];
   v6 = [(NSCollectionLayoutItem *)self size];
   [(NSCollectionLayoutItem *)self contentInsets];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(NSCollectionLayoutDecorationItem *)self containerAnchor];
-  v16 = [(NSCollectionLayoutDecorationItem *)self itemAnchor];
-  v17 = [(NSCollectionLayoutDecorationItem *)self zIndex];
-  v18 = [(NSCollectionLayoutDecorationItem *)self _registrationViewClass];
+  containerAnchor = [(NSCollectionLayoutDecorationItem *)self containerAnchor];
+  itemAnchor = [(NSCollectionLayoutDecorationItem *)self itemAnchor];
+  zIndex = [(NSCollectionLayoutDecorationItem *)self zIndex];
+  _registrationViewClass = [(NSCollectionLayoutDecorationItem *)self _registrationViewClass];
   LOBYTE(v21) = [(NSCollectionLayoutDecorationItem *)self isBackgroundDecoration];
-  v19 = [v4 initWithElementKind:v5 size:v6 contentInsets:v15 containerAnchor:v16 itemAnchor:v17 zIndex:v18 registrationViewClass:v8 isBackgroundDecoration:{v10, v12, v14, v21}];
+  v19 = [v4 initWithElementKind:elementKind size:v6 contentInsets:containerAnchor containerAnchor:itemAnchor itemAnchor:zIndex zIndex:_registrationViewClass registrationViewClass:v8 isBackgroundDecoration:{v10, v12, v14, v21}];
 
   return v19;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v20 = 1;
     goto LABEL_15;
@@ -135,14 +135,14 @@
   }
 
   zIndex = self->_zIndex;
-  if (zIndex != [(NSCollectionLayoutDecorationItem *)v4 zIndex])
+  if (zIndex != [(NSCollectionLayoutDecorationItem *)equalCopy zIndex])
   {
     goto LABEL_13;
   }
 
-  v6 = [(NSCollectionLayoutDecorationItem *)self elementKind];
-  v7 = [(NSCollectionLayoutDecorationItem *)v4 elementKind];
-  v8 = [v6 isEqualToString:v7];
+  elementKind = [(NSCollectionLayoutDecorationItem *)self elementKind];
+  elementKind2 = [(NSCollectionLayoutDecorationItem *)equalCopy elementKind];
+  v8 = [elementKind isEqualToString:elementKind2];
 
   if (!v8)
   {
@@ -154,28 +154,28 @@
   v12 = v11;
   v14 = v13;
   v16 = v15;
-  [(NSCollectionLayoutItem *)v4 contentInsets];
+  [(NSCollectionLayoutItem *)equalCopy contentInsets];
   v20 = 0;
   if (v12 == v21 && v10 == v17 && v16 == v19 && v14 == v18)
   {
-    v22 = [(NSCollectionLayoutDecorationItem *)self isBackgroundDecoration];
-    if (v22 == [(NSCollectionLayoutDecorationItem *)v4 isBackgroundDecoration])
+    isBackgroundDecoration = [(NSCollectionLayoutDecorationItem *)self isBackgroundDecoration];
+    if (isBackgroundDecoration == [(NSCollectionLayoutDecorationItem *)equalCopy isBackgroundDecoration])
     {
-      v23 = [(NSCollectionLayoutDecorationItem *)self containerAnchor];
-      v24 = [(NSCollectionLayoutDecorationItem *)v4 containerAnchor];
-      v25 = __objectEqual(v23, v24);
+      containerAnchor = [(NSCollectionLayoutDecorationItem *)self containerAnchor];
+      containerAnchor2 = [(NSCollectionLayoutDecorationItem *)equalCopy containerAnchor];
+      v25 = __objectEqual(containerAnchor, containerAnchor2);
 
       if (v25)
       {
-        v26 = [(NSCollectionLayoutDecorationItem *)self itemAnchor];
-        v27 = [(NSCollectionLayoutDecorationItem *)v4 itemAnchor];
-        v28 = __objectEqual(v26, v27);
+        itemAnchor = [(NSCollectionLayoutDecorationItem *)self itemAnchor];
+        itemAnchor2 = [(NSCollectionLayoutDecorationItem *)equalCopy itemAnchor];
+        v28 = __objectEqual(itemAnchor, itemAnchor2);
 
         if (v28)
         {
           v30.receiver = self;
           v30.super_class = NSCollectionLayoutDecorationItem;
-          v20 = [(NSCollectionLayoutItem *)&v30 isEqual:v4];
+          v20 = [(NSCollectionLayoutItem *)&v30 isEqual:equalCopy];
           goto LABEL_15;
         }
       }
@@ -194,9 +194,9 @@ LABEL_15:
 {
   v3 = MEMORY[0x277CCAB68];
   v4 = objc_opt_class();
-  v5 = [(NSCollectionLayoutItem *)self layoutSize];
-  v6 = [(NSCollectionLayoutDecorationItem *)self elementKind];
-  v7 = [v3 stringWithFormat:@"<%@ %p size: %@ elementKind: %@;", v4, self, v5, v6];;
+  layoutSize = [(NSCollectionLayoutItem *)self layoutSize];
+  elementKind = [(NSCollectionLayoutDecorationItem *)self elementKind];
+  v7 = [v3 stringWithFormat:@"<%@ %p size: %@ elementKind: %@;", v4, self, layoutSize, elementKind];;
 
   [(NSCollectionLayoutItem *)self contentInsets];
   if (v11 != 0.0 || v8 != 0.0 || v10 != 0.0 || v9 != 0.0)
@@ -206,20 +206,20 @@ LABEL_15:
     [v7 appendFormat:@"\n\tcontentInsets=%@", v16];
   }
 
-  v17 = [(NSCollectionLayoutDecorationItem *)self containerAnchor];
+  containerAnchor = [(NSCollectionLayoutDecorationItem *)self containerAnchor];
 
-  if (v17)
+  if (containerAnchor)
   {
-    v18 = [(NSCollectionLayoutDecorationItem *)self containerAnchor];
-    [v7 appendFormat:@"\n\tcontainerAnchor=%@", v18];
+    containerAnchor2 = [(NSCollectionLayoutDecorationItem *)self containerAnchor];
+    [v7 appendFormat:@"\n\tcontainerAnchor=%@", containerAnchor2];
   }
 
-  v19 = [(NSCollectionLayoutDecorationItem *)self itemAnchor];
+  itemAnchor = [(NSCollectionLayoutDecorationItem *)self itemAnchor];
 
-  if (v19)
+  if (itemAnchor)
   {
-    v20 = [(NSCollectionLayoutDecorationItem *)self itemAnchor];
-    [v7 appendFormat:@"\n\titemAnchor=%@", v20];
+    itemAnchor2 = [(NSCollectionLayoutDecorationItem *)self itemAnchor];
+    [v7 appendFormat:@"\n\titemAnchor=%@", itemAnchor2];
   }
 
   [v7 appendString:@">"];

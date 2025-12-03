@@ -1,5 +1,5 @@
 @interface ManagedOrderType
-- (_TtC10FinanceKit16ManagedOrderType)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4;
+- (_TtC10FinanceKit16ManagedOrderType)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context;
 - (void)willSave;
 @end
 
@@ -7,15 +7,15 @@
 
 - (void)willSave
 {
-  v2 = self;
+  selfCopy = self;
   ManagedOrderType.willSave()();
 }
 
-- (_TtC10FinanceKit16ManagedOrderType)initWithEntity:(id)a3 insertIntoManagedObjectContext:(id)a4
+- (_TtC10FinanceKit16ManagedOrderType)initWithEntity:(id)entity insertIntoManagedObjectContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = swift_getObjectType();
-  return [(ManagedOrderType *)&v7 initWithEntity:a3 insertIntoManagedObjectContext:a4];
+  return [(ManagedOrderType *)&v7 initWithEntity:entity insertIntoManagedObjectContext:context];
 }
 
 @end

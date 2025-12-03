@@ -1,24 +1,24 @@
 @interface SKUIButtonBorderStyle
-- (BOOL)_usesBackgroundWithAlpha:(id)a3;
+- (BOOL)_usesBackgroundWithAlpha:(id)alpha;
 - (IKCornerRadii)cornerRadii;
-- (SKUIButtonBorderStyle)initWithElementStyle:(id)a3;
+- (SKUIButtonBorderStyle)initWithElementStyle:(id)style;
 - (UIEdgeInsets)contentInset;
-- (id)bezierPathWithBounds:(CGRect)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)bezierPathWithBounds:(CGRect)bounds;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation SKUIButtonBorderStyle
 
-- (SKUIButtonBorderStyle)initWithElementStyle:(id)a3
+- (SKUIButtonBorderStyle)initWithElementStyle:(id)style
 {
-  v4 = a3;
+  styleCopy = style;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_DEBUG))
   {
     [SKUIButtonBorderStyle initWithElementStyle:];
   }
 
-  v5 = [v4 ikBorderColor];
-  if (!v5)
+  ikBorderColor = [styleCopy ikBorderColor];
+  if (!ikBorderColor)
   {
     v6 = 0;
 LABEL_26:
@@ -31,31 +31,31 @@ LABEL_26:
   v6 = [(SKUIButtonBorderStyle *)&v37 init];
   if (v6)
   {
-    v7 = [v5 copy];
+    v7 = [ikBorderColor copy];
     v8 = *(v6 + 1);
     *(v6 + 1) = v7;
 
-    v9 = [v4 ikBackgroundColor];
-    v10 = [v9 color];
-    v11 = [v6 _usesBackgroundWithAlpha:v10];
+    ikBackgroundColor = [styleCopy ikBackgroundColor];
+    color = [ikBackgroundColor color];
+    v11 = [v6 _usesBackgroundWithAlpha:color];
 
     if (v11)
     {
       v12 = objc_alloc(MEMORY[0x277D1B070]);
-      v13 = [MEMORY[0x277D75348] clearColor];
-      v14 = [v12 initWithColor:v13];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      v14 = [v12 initWithColor:clearColor];
     }
 
     else
     {
-      v13 = [v4 ikBackgroundColor];
-      v14 = [v13 copy];
+      clearColor = [styleCopy ikBackgroundColor];
+      v14 = [clearColor copy];
     }
 
     v15 = *(v6 + 11);
     *(v6 + 11) = v14;
 
-    v16 = [v4 valueForStyle:*MEMORY[0x277D1AFB8]];
+    v16 = [styleCopy valueForStyle:*MEMORY[0x277D1AFB8]];
     self = v16;
     if (v16)
     {
@@ -66,12 +66,12 @@ LABEL_26:
 
     else
     {
-      v17 = [MEMORY[0x277D759A0] mainScreen];
-      [v17 scale];
+      mainScreen = [MEMORY[0x277D759A0] mainScreen];
+      [mainScreen scale];
       *(v6 + 2) = 1.0 / v18;
     }
 
-    v19 = [v4 valueForStyle:*MEMORY[0x277D1AFF0]];
+    v19 = [styleCopy valueForStyle:*MEMORY[0x277D1AFF0]];
     v20 = v19;
     if (v19)
     {
@@ -84,15 +84,15 @@ LABEL_26:
       *(v6 + 40) = xmmword_215F3F120;
     }
 
-    v21 = [v4 borderRadius];
-    v22 = v21;
-    if (v21)
+    borderRadius = [styleCopy borderRadius];
+    v22 = borderRadius;
+    if (borderRadius)
     {
-      v23 = [v21 namedStyle];
-      v24 = v23;
-      if (v23)
+      namedStyle = [borderRadius namedStyle];
+      v24 = namedStyle;
+      if (namedStyle)
       {
-        if ([v23 isEqualToString:@"square"])
+        if ([namedStyle isEqualToString:@"square"])
         {
           *(v6 + 72) = 0u;
           *(v6 + 56) = 0u;
@@ -134,13 +134,13 @@ LABEL_27:
   return v6;
 }
 
-- (id)bezierPathWithBounds:(CGRect)a3
+- (id)bezierPathWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [MEMORY[0x277D75208] bezierPath];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  bezierPath = [MEMORY[0x277D75208] bezierPath];
   bottomRight = self->_cornerRadii.bottomRight;
   bottomLeft = self->_cornerRadii.bottomLeft;
   topLeft = self->_cornerRadii.topLeft;
@@ -163,7 +163,7 @@ LABEL_27:
   v26.origin.y = y;
   v26.size.width = width;
   v26.size.height = height;
-  [v8 moveToPoint:{v13, CGRectGetMinY(v26)}];
+  [bezierPath moveToPoint:{v13, CGRectGetMinY(v26)}];
   v27.origin.x = x;
   v27.origin.y = y;
   v27.size.width = width;
@@ -173,7 +173,7 @@ LABEL_27:
   v28.origin.y = y;
   v28.size.width = width;
   v28.size.height = height;
-  [v8 addLineToPoint:{v14, CGRectGetMinY(v28)}];
+  [bezierPath addLineToPoint:{v14, CGRectGetMinY(v28)}];
   if (topRight > 0.00000011920929)
   {
     v29.origin.x = x;
@@ -185,7 +185,7 @@ LABEL_27:
     v30.origin.y = y;
     v30.size.width = width;
     v30.size.height = height;
-    [v8 addArcWithCenter:1 radius:v15 startAngle:topRight + CGRectGetMinY(v30) endAngle:topRight clockwise:{4.71238898, 6.28318531}];
+    [bezierPath addArcWithCenter:1 radius:v15 startAngle:topRight + CGRectGetMinY(v30) endAngle:topRight clockwise:{4.71238898, 6.28318531}];
   }
 
   v31.origin.x = x;
@@ -197,7 +197,7 @@ LABEL_27:
   v32.origin.y = y;
   v32.size.width = width;
   v32.size.height = height;
-  [v8 addLineToPoint:{MaxX, CGRectGetMaxY(v32) - bottomRight}];
+  [bezierPath addLineToPoint:{MaxX, CGRectGetMaxY(v32) - bottomRight}];
   if (bottomRight > 0.00000011920929)
   {
     v33.origin.x = x;
@@ -209,7 +209,7 @@ LABEL_27:
     v34.origin.y = y;
     v34.size.width = width;
     v34.size.height = height;
-    [v8 addArcWithCenter:1 radius:v17 startAngle:CGRectGetMaxY(v34) - bottomRight endAngle:bottomRight clockwise:{0.0, 1.57079633}];
+    [bezierPath addArcWithCenter:1 radius:v17 startAngle:CGRectGetMaxY(v34) - bottomRight endAngle:bottomRight clockwise:{0.0, 1.57079633}];
   }
 
   v35.origin.x = x;
@@ -221,7 +221,7 @@ LABEL_27:
   v36.origin.y = y;
   v36.size.width = width;
   v36.size.height = height;
-  [v8 addLineToPoint:{v18, CGRectGetMaxY(v36)}];
+  [bezierPath addLineToPoint:{v18, CGRectGetMaxY(v36)}];
   if (bottomLeft > 0.00000011920929)
   {
     v37.origin.x = x;
@@ -233,7 +233,7 @@ LABEL_27:
     v38.origin.y = y;
     v38.size.width = width;
     v38.size.height = height;
-    [v8 addArcWithCenter:1 radius:v19 startAngle:CGRectGetMaxY(v38) - bottomLeft endAngle:bottomLeft clockwise:{1.57079633, 3.14159265}];
+    [bezierPath addArcWithCenter:1 radius:v19 startAngle:CGRectGetMaxY(v38) - bottomLeft endAngle:bottomLeft clockwise:{1.57079633, 3.14159265}];
   }
 
   v39.origin.x = x;
@@ -245,7 +245,7 @@ LABEL_27:
   v40.origin.y = y;
   v40.size.width = width;
   v40.size.height = height;
-  [v8 addLineToPoint:{MinX, topLeft + CGRectGetMinY(v40)}];
+  [bezierPath addLineToPoint:{MinX, topLeft + CGRectGetMinY(v40)}];
   if (topLeft != 0.0)
   {
     v41.origin.x = x;
@@ -257,16 +257,16 @@ LABEL_27:
     v42.origin.y = y;
     v42.size.width = width;
     v42.size.height = height;
-    [v8 addArcWithCenter:1 radius:v21 startAngle:topLeft + CGRectGetMinY(v42) endAngle:topLeft clockwise:{3.14159265, 4.71238898}];
+    [bezierPath addArcWithCenter:1 radius:v21 startAngle:topLeft + CGRectGetMinY(v42) endAngle:topLeft clockwise:{3.14159265, 4.71238898}];
   }
 
-  return v8;
+  return bezierPath;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(IKColor *)self->_borderColor copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(IKColor *)self->_borderColor copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -277,24 +277,24 @@ LABEL_27:
   v9 = *&self->_cornerRadii.bottomLeft;
   *(v5 + 72) = *&self->_cornerRadii.topLeft;
   *(v5 + 56) = v9;
-  v10 = [(IKColor *)self->_fillColor copyWithZone:a3];
+  v10 = [(IKColor *)self->_fillColor copyWithZone:zone];
   v11 = *(v5 + 88);
   *(v5 + 88) = v10;
 
-  v12 = [(NSString *)self->_namedCornerStyle copyWithZone:a3];
+  v12 = [(NSString *)self->_namedCornerStyle copyWithZone:zone];
   v13 = *(v5 + 96);
   *(v5 + 96) = v12;
 
   return v5;
 }
 
-- (BOOL)_usesBackgroundWithAlpha:(id)a3
+- (BOOL)_usesBackgroundWithAlpha:(id)alpha
 {
   v7 = 0;
   v5 = 0;
   v6 = 0;
   v4 = 0.0;
-  return [a3 getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4] && v4 < 1.0 && v4 != 0.0;
+  return [alpha getHue:&v7 saturation:&v6 brightness:&v5 alpha:&v4] && v4 < 1.0 && v4 != 0.0;
 }
 
 - (UIEdgeInsets)contentInset

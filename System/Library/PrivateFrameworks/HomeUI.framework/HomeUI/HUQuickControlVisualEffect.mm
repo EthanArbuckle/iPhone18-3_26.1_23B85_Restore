@@ -1,20 +1,20 @@
 @interface HUQuickControlVisualEffect
-+ (id)effectWithType:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)effectWithType:(unint64_t)type;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)effectConfig;
 @end
 
 @implementation HUQuickControlVisualEffect
 
-+ (id)effectWithType:(unint64_t)a3
++ (id)effectWithType:(unint64_t)type
 {
   v4 = objc_alloc_init(HUQuickControlVisualEffect);
-  v4->_effectType = a3;
+  v4->_effectType = type;
 
   return v4;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   v4[1] = [(HUQuickControlVisualEffect *)self effectType];
@@ -23,8 +23,8 @@
 
 - (id)effectConfig
 {
-  v2 = [(HUQuickControlVisualEffect *)self effectType];
-  if (v2 == 2)
+  effectType = [(HUQuickControlVisualEffect *)self effectType];
+  if (effectType == 2)
   {
     v8 = [MEMORY[0x277D75348] colorWithWhite:0.4 alpha:1.0];
     v9 = [MEMORY[0x277D75348] colorWithWhite:0.0 alpha:0.35];
@@ -34,7 +34,7 @@
     goto LABEL_10;
   }
 
-  if (v2 == 1)
+  if (effectType == 1)
   {
     v3 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.4];
     v4 = MEMORY[0x277D763D8];
@@ -44,7 +44,7 @@
 
   else
   {
-    if (v2)
+    if (effectType)
     {
       v7 = 0;
       goto LABEL_9;

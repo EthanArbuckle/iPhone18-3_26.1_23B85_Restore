@@ -1,7 +1,7 @@
 @interface LPKPerfResultEntry
 - (LPKPerfResultEntry)init;
 - (void)_reCalculateValuesIfNeeded;
-- (void)addEntryValue:(double)a3;
+- (void)addEntryValue:(double)value;
 @end
 
 @implementation LPKPerfResultEntry
@@ -23,10 +23,10 @@
   return v2;
 }
 
-- (void)addEntryValue:(double)a3
+- (void)addEntryValue:(double)value
 {
   entryValues = self->_entryValues;
-  v5 = [MEMORY[0x277CCABB0] numberWithDouble:a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithDouble:value];
   [(NSMutableArray *)entryValues addObject:v5];
 
   [(LPKPerfResultEntry *)self setNeedsReCalculation:1];

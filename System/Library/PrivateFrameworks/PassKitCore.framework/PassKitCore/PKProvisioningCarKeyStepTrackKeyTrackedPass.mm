@@ -1,15 +1,15 @@
 @interface PKProvisioningCarKeyStepTrackKeyTrackedPass
 - (PKProvisioningCarKeyStepTrackKeyTrackedPass)init;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKProvisioningCarKeyStepTrackKeyTrackedPass
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = self;
-  sub_1AD4DC5FC(v4);
+  coderCopy = coder;
+  selfCopy = self;
+  sub_1AD4DC5FC(coderCopy);
 }
 
 - (PKProvisioningCarKeyStepTrackKeyTrackedPass)init

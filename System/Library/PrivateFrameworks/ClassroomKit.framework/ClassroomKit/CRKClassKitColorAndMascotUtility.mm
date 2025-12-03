@@ -1,62 +1,62 @@
 @interface CRKClassKitColorAndMascotUtility
-+ (BOOL)setColor:(unint64_t)a3 forClass:(id)a4 error:(id *)a5;
-+ (BOOL)setMascot:(unint64_t)a3 forClass:(id)a4 error:(id *)a5;
++ (BOOL)setColor:(unint64_t)color forClass:(id)class error:(id *)error;
++ (BOOL)setMascot:(unint64_t)mascot forClass:(id)class error:(id *)error;
 + (id)classThemeColors;
-+ (id)colorIdentifierForColorType:(unint64_t)a3;
++ (id)colorIdentifierForColorType:(unint64_t)type;
 + (id)colorTypesByColorIdentifier;
-+ (id)mascotIdentifierForMascotType:(unint64_t)a3;
++ (id)mascotIdentifierForMascotType:(unint64_t)type;
 + (id)mascotTypesByMascotIdentifier;
-+ (unint64_t)classColorFromClassName:(id)a3;
-+ (unint64_t)colorForClass:(id)a3;
-+ (unint64_t)colorTypeForColorIdentifier:(id)a3;
-+ (unint64_t)mascotForClass:(id)a3;
-+ (unint64_t)mascotTypeForMascotIdentifier:(id)a3;
++ (unint64_t)classColorFromClassName:(id)name;
++ (unint64_t)colorForClass:(id)class;
++ (unint64_t)colorTypeForColorIdentifier:(id)identifier;
++ (unint64_t)mascotForClass:(id)class;
++ (unint64_t)mascotTypeForMascotIdentifier:(id)identifier;
 @end
 
 @implementation CRKClassKitColorAndMascotUtility
 
-+ (unint64_t)mascotForClass:(id)a3
++ (unint64_t)mascotForClass:(id)class
 {
-  v4 = a3;
-  v5 = [[CRKClassKitIconID alloc] initWithClass:v4];
+  classCopy = class;
+  v5 = [[CRKClassKitIconID alloc] initWithClass:classCopy];
 
-  v6 = [(CRKClassKitIconID *)v5 mascotIdentifier];
+  mascotIdentifier = [(CRKClassKitIconID *)v5 mascotIdentifier];
 
-  v7 = [a1 mascotTypeForMascotIdentifier:v6];
+  v7 = [self mascotTypeForMascotIdentifier:mascotIdentifier];
   return v7;
 }
 
-+ (BOOL)setMascot:(unint64_t)a3 forClass:(id)a4 error:(id *)a5
++ (BOOL)setMascot:(unint64_t)mascot forClass:(id)class error:(id *)error
 {
-  v8 = a4;
-  v9 = [a1 mascotIdentifierForMascotType:a3];
+  classCopy = class;
+  v9 = [self mascotIdentifierForMascotType:mascot];
   if (v9)
   {
-    v10 = [[CRKClassKitIconID alloc] initWithClass:v8];
+    v10 = [[CRKClassKitIconID alloc] initWithClass:classCopy];
     [(CRKClassKitIconID *)v10 setMascotIdentifier:v9];
-    v11 = [(CRKClassKitIconID *)v10 stringValue];
-    [v8 setIconID:v11];
+    stringValue = [(CRKClassKitIconID *)v10 stringValue];
+    [classCopy setIconID:stringValue];
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = CRKErrorWithCodeAndUserInfo(2, &unk_2856723D8);
+    *error = CRKErrorWithCodeAndUserInfo(2, &unk_2856723D8);
   }
 
   return v9 != 0;
 }
 
-+ (unint64_t)mascotTypeForMascotIdentifier:(id)a3
++ (unint64_t)mascotTypeForMascotIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [a1 mascotTypesByMascotIdentifier];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    mascotTypesByMascotIdentifier = [self mascotTypesByMascotIdentifier];
+    v6 = [mascotTypesByMascotIdentifier objectForKeyedSubscript:identifierCopy];
 
     if (v6)
     {
-      v7 = [v6 integerValue];
+      integerValue = [v6 integerValue];
     }
 
     else
@@ -64,32 +64,32 @@
       v9 = _CRKLogASM_10();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(CRKClassKitColorAndMascotUtility *)v4 mascotTypeForMascotIdentifier:v9];
+        [(CRKClassKitColorAndMascotUtility *)identifierCopy mascotTypeForMascotIdentifier:v9];
       }
 
-      v7 = [a1 defaultMascot];
+      integerValue = [self defaultMascot];
     }
 
-    v8 = v7;
+    defaultMascot = integerValue;
   }
 
   else
   {
-    v8 = [a1 defaultMascot];
+    defaultMascot = [self defaultMascot];
   }
 
-  return v8;
+  return defaultMascot;
 }
 
-+ (id)mascotIdentifierForMascotType:(unint64_t)a3
++ (id)mascotIdentifierForMascotType:(unint64_t)type
 {
-  v4 = [a1 mascotTypesByMascotIdentifier];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v6 = [v4 allKeysForObject:v5];
+  mascotTypesByMascotIdentifier = [self mascotTypesByMascotIdentifier];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  v6 = [mascotTypesByMascotIdentifier allKeysForObject:v5];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 + (id)mascotTypesByMascotIdentifier
@@ -99,7 +99,7 @@
   v4[2] = __65__CRKClassKitColorAndMascotUtility_mascotTypesByMascotIdentifier__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   if (mascotTypesByMascotIdentifier_onceToken != -1)
   {
     dispatch_once(&mascotTypesByMascotIdentifier_onceToken, v4);
@@ -130,55 +130,55 @@ void __65__CRKClassKitColorAndMascotUtility_mascotTypesByMascotIdentifier__block
   }
 }
 
-+ (unint64_t)colorForClass:(id)a3
++ (unint64_t)colorForClass:(id)class
 {
-  v4 = a3;
-  v5 = [[CRKClassKitIconID alloc] initWithClass:v4];
-  v6 = [(CRKClassKitIconID *)v5 colorIdentifier];
+  classCopy = class;
+  v5 = [[CRKClassKitIconID alloc] initWithClass:classCopy];
+  colorIdentifier = [(CRKClassKitIconID *)v5 colorIdentifier];
 
-  if (v6)
+  if (colorIdentifier)
   {
-    v7 = [a1 colorTypeForColorIdentifier:v6];
+    v7 = [self colorTypeForColorIdentifier:colorIdentifier];
   }
 
   else
   {
-    v8 = [v4 className];
-    v7 = [a1 classColorFromClassName:v8];
+    className = [classCopy className];
+    v7 = [self classColorFromClassName:className];
   }
 
   return v7;
 }
 
-+ (BOOL)setColor:(unint64_t)a3 forClass:(id)a4 error:(id *)a5
++ (BOOL)setColor:(unint64_t)color forClass:(id)class error:(id *)error
 {
-  v8 = a4;
-  v9 = [a1 colorIdentifierForColorType:a3];
+  classCopy = class;
+  v9 = [self colorIdentifierForColorType:color];
   if (v9)
   {
-    v10 = [[CRKClassKitIconID alloc] initWithClass:v8];
+    v10 = [[CRKClassKitIconID alloc] initWithClass:classCopy];
     [(CRKClassKitIconID *)v10 setColorIdentifier:v9];
-    v11 = [(CRKClassKitIconID *)v10 stringValue];
-    [v8 setIconID:v11];
+    stringValue = [(CRKClassKitIconID *)v10 stringValue];
+    [classCopy setIconID:stringValue];
   }
 
-  else if (a5)
+  else if (error)
   {
-    *a5 = CRKErrorWithCodeAndUserInfo(2, &unk_285672428);
+    *error = CRKErrorWithCodeAndUserInfo(2, &unk_285672428);
   }
 
   return v9 != 0;
 }
 
-+ (unint64_t)colorTypeForColorIdentifier:(id)a3
++ (unint64_t)colorTypeForColorIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [a1 colorTypesByColorIdentifier];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  colorTypesByColorIdentifier = [self colorTypesByColorIdentifier];
+  v6 = [colorTypesByColorIdentifier objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
-    v7 = [v6 integerValue];
+    integerValue = [v6 integerValue];
   }
 
   else
@@ -186,24 +186,24 @@ void __65__CRKClassKitColorAndMascotUtility_mascotTypesByMascotIdentifier__block
     v8 = _CRKLogASM_10();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
-      [(CRKClassKitColorAndMascotUtility *)v4 colorTypeForColorIdentifier:v8];
+      [(CRKClassKitColorAndMascotUtility *)identifierCopy colorTypeForColorIdentifier:v8];
     }
 
-    v7 = 4;
+    integerValue = 4;
   }
 
-  return v7;
+  return integerValue;
 }
 
-+ (id)colorIdentifierForColorType:(unint64_t)a3
++ (id)colorIdentifierForColorType:(unint64_t)type
 {
-  v4 = [a1 colorTypesByColorIdentifier];
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v6 = [v4 allKeysForObject:v5];
+  colorTypesByColorIdentifier = [self colorTypesByColorIdentifier];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:type];
+  v6 = [colorTypesByColorIdentifier allKeysForObject:v5];
 
-  v7 = [v6 firstObject];
+  firstObject = [v6 firstObject];
 
-  return v7;
+  return firstObject;
 }
 
 + (id)colorTypesByColorIdentifier
@@ -213,7 +213,7 @@ void __65__CRKClassKitColorAndMascotUtility_mascotTypesByMascotIdentifier__block
   v4[2] = __63__CRKClassKitColorAndMascotUtility_colorTypesByColorIdentifier__block_invoke;
   v4[3] = &__block_descriptor_48_e5_v8__0l;
   v4[4] = a2;
-  v4[5] = a1;
+  v4[5] = self;
   if (colorTypesByColorIdentifier_onceToken != -1)
   {
     dispatch_once(&colorTypesByColorIdentifier_onceToken, v4);
@@ -244,15 +244,15 @@ void __63__CRKClassKitColorAndMascotUtility_colorTypesByColorIdentifier__block_i
   }
 }
 
-+ (unint64_t)classColorFromClassName:(id)a3
++ (unint64_t)classColorFromClassName:(id)name
 {
-  v4 = a3;
-  v5 = [a1 classThemeColors];
-  v6 = v5;
-  if (v4)
+  nameCopy = name;
+  classThemeColors = [self classThemeColors];
+  v6 = classThemeColors;
+  if (nameCopy)
   {
-    v7 = [v5 objectAtIndexedSubscript:{+[CRKASMHasher asmHashForString:maximumExclusive:](CRKASMHasher, "asmHashForString:maximumExclusive:", v4, objc_msgSend(v5, "count"))}];
-    v8 = [v7 integerValue];
+    v7 = [classThemeColors objectAtIndexedSubscript:{+[CRKASMHasher asmHashForString:maximumExclusive:](CRKASMHasher, "asmHashForString:maximumExclusive:", nameCopy, objc_msgSend(classThemeColors, "count"))}];
+    integerValue = [v7 integerValue];
   }
 
   else
@@ -263,10 +263,10 @@ void __63__CRKClassKitColorAndMascotUtility_colorTypesByColorIdentifier__block_i
       [CRKClassKitColorAndMascotUtility classColorFromClassName:v9];
     }
 
-    v8 = 8;
+    integerValue = 8;
   }
 
-  return v8;
+  return integerValue;
 }
 
 + (id)classThemeColors

@@ -1,100 +1,100 @@
 @interface HMDCameraRecordingManagerDependencyFactory
 - (HMDFeaturesDataSource)featuresDataSource;
-- (id)createBulkSendSessionInitiatorWithWorkQueue:(id)a3 accessory:(id)a4;
-- (id)createBulkSendSessionReaderWithWorkQueue:(id)a3 session:(id)a4 readTimeout:(double)a5 logIdentifier:(id)a6;
-- (id)createLoadBalancingAttemptWithLocalResponseTimeout:(double)a3 logIdentifier:(id)a4;
-- (id)createRecordingSessionRetryContextWithWorkQueue:(id)a3 homePresenceByPairingIdentity:(id)a4;
-- (id)createRecordingSessionWithWorkQueue:(id)a3 camera:(id)a4 hapAccessory:(id)a5 home:(id)a6 localZone:(id)a7 configuredFragmentDuration:(double)a8 timelineManager:(id)a9 homePresenceByPairingIdentity:(id)a10;
-- (id)createSessionNotificationTrigger:(id)a3 workQueue:(id)a4;
-- (id)createSettingsControl:(id)a3 accessory:(id)a4 managementService:(id)a5;
-- (id)createTimelineManagerWithWorkQueue:(id)a3 fragmentDuration:(double)a4 fragmentCreationReferenceDate:(id)a5 logIdentifier:(id)a6;
-- (id)createTimerWithTimeInterval:(double)a3;
+- (id)createBulkSendSessionInitiatorWithWorkQueue:(id)queue accessory:(id)accessory;
+- (id)createBulkSendSessionReaderWithWorkQueue:(id)queue session:(id)session readTimeout:(double)timeout logIdentifier:(id)identifier;
+- (id)createLoadBalancingAttemptWithLocalResponseTimeout:(double)timeout logIdentifier:(id)identifier;
+- (id)createRecordingSessionRetryContextWithWorkQueue:(id)queue homePresenceByPairingIdentity:(id)identity;
+- (id)createRecordingSessionWithWorkQueue:(id)queue camera:(id)camera hapAccessory:(id)accessory home:(id)home localZone:(id)zone configuredFragmentDuration:(double)duration timelineManager:(id)manager homePresenceByPairingIdentity:(id)self0;
+- (id)createSessionNotificationTrigger:(id)trigger workQueue:(id)queue;
+- (id)createSettingsControl:(id)control accessory:(id)accessory managementService:(id)service;
+- (id)createTimelineManagerWithWorkQueue:(id)queue fragmentDuration:(double)duration fragmentCreationReferenceDate:(id)date logIdentifier:(id)identifier;
+- (id)createTimerWithTimeInterval:(double)interval;
 @end
 
 @implementation HMDCameraRecordingManagerDependencyFactory
 
-- (id)createRecordingSessionRetryContextWithWorkQueue:(id)a3 homePresenceByPairingIdentity:(id)a4
+- (id)createRecordingSessionRetryContextWithWorkQueue:(id)queue homePresenceByPairingIdentity:(id)identity
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HMDCameraRecordingSessionRetryContext alloc] initWithWorkQueue:v6 homePresenceByPairingIdentity:v5];
+  identityCopy = identity;
+  queueCopy = queue;
+  v7 = [[HMDCameraRecordingSessionRetryContext alloc] initWithWorkQueue:queueCopy homePresenceByPairingIdentity:identityCopy];
 
   return v7;
 }
 
-- (id)createTimerWithTimeInterval:(double)a3
+- (id)createTimerWithTimeInterval:(double)interval
 {
-  v3 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:a3];
+  v3 = [objc_alloc(MEMORY[0x277D0F920]) initWithTimeInterval:0 options:interval];
 
   return v3;
 }
 
-- (id)createBulkSendSessionReaderWithWorkQueue:(id)a3 session:(id)a4 readTimeout:(double)a5 logIdentifier:(id)a6
+- (id)createBulkSendSessionReaderWithWorkQueue:(id)queue session:(id)session readTimeout:(double)timeout logIdentifier:(id)identifier
 {
-  v9 = a6;
-  v10 = a4;
-  v11 = a3;
-  v12 = [[HMDCameraRecordingBulkSendSessionReader alloc] initWithWorkQueue:v11 session:v10 readTimeout:v9 logIdentifier:a5];
+  identifierCopy = identifier;
+  sessionCopy = session;
+  queueCopy = queue;
+  v12 = [[HMDCameraRecordingBulkSendSessionReader alloc] initWithWorkQueue:queueCopy session:sessionCopy readTimeout:identifierCopy logIdentifier:timeout];
 
   return v12;
 }
 
-- (id)createBulkSendSessionInitiatorWithWorkQueue:(id)a3 accessory:(id)a4
+- (id)createBulkSendSessionInitiatorWithWorkQueue:(id)queue accessory:(id)accessory
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HMDCameraRecordingBulkSendSessionInitiator alloc] initWithWorkQueue:v6 accessory:v5];
+  accessoryCopy = accessory;
+  queueCopy = queue;
+  v7 = [[HMDCameraRecordingBulkSendSessionInitiator alloc] initWithWorkQueue:queueCopy accessory:accessoryCopy];
 
   return v7;
 }
 
-- (id)createSessionNotificationTrigger:(id)a3 workQueue:(id)a4
+- (id)createSessionNotificationTrigger:(id)trigger workQueue:(id)queue
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[HMDCameraRecordingSessionNotificationTrigger alloc] initWithCamera:v6 workQueue:v5];
+  queueCopy = queue;
+  triggerCopy = trigger;
+  v7 = [[HMDCameraRecordingSessionNotificationTrigger alloc] initWithCamera:triggerCopy workQueue:queueCopy];
 
   return v7;
 }
 
-- (id)createRecordingSessionWithWorkQueue:(id)a3 camera:(id)a4 hapAccessory:(id)a5 home:(id)a6 localZone:(id)a7 configuredFragmentDuration:(double)a8 timelineManager:(id)a9 homePresenceByPairingIdentity:(id)a10
+- (id)createRecordingSessionWithWorkQueue:(id)queue camera:(id)camera hapAccessory:(id)accessory home:(id)home localZone:(id)zone configuredFragmentDuration:(double)duration timelineManager:(id)manager homePresenceByPairingIdentity:(id)self0
 {
-  v17 = a10;
-  v18 = a9;
-  v19 = a7;
-  v20 = a6;
-  v21 = a5;
-  v22 = a4;
-  v23 = a3;
-  v24 = [[HMDCameraRecordingSession alloc] initWithWorkQueue:v23 camera:v22 hapAccessory:v21 home:v20 localZone:v19 configuredFragmentDuration:v18 timelineManager:a8 homePresenceByPairingIdentity:v17];
+  identityCopy = identity;
+  managerCopy = manager;
+  zoneCopy = zone;
+  homeCopy = home;
+  accessoryCopy = accessory;
+  cameraCopy = camera;
+  queueCopy = queue;
+  v24 = [[HMDCameraRecordingSession alloc] initWithWorkQueue:queueCopy camera:cameraCopy hapAccessory:accessoryCopy home:homeCopy localZone:zoneCopy configuredFragmentDuration:managerCopy timelineManager:duration homePresenceByPairingIdentity:identityCopy];
 
   return v24;
 }
 
-- (id)createLoadBalancingAttemptWithLocalResponseTimeout:(double)a3 logIdentifier:(id)a4
+- (id)createLoadBalancingAttemptWithLocalResponseTimeout:(double)timeout logIdentifier:(id)identifier
 {
-  v5 = a4;
-  v6 = [[HMDCameraRecordingLoadBalancingAttempt alloc] initWithLocalResponseTimeout:v5 logIdentifier:a3];
+  identifierCopy = identifier;
+  v6 = [[HMDCameraRecordingLoadBalancingAttempt alloc] initWithLocalResponseTimeout:identifierCopy logIdentifier:timeout];
 
   return v6;
 }
 
-- (id)createTimelineManagerWithWorkQueue:(id)a3 fragmentDuration:(double)a4 fragmentCreationReferenceDate:(id)a5 logIdentifier:(id)a6
+- (id)createTimelineManagerWithWorkQueue:(id)queue fragmentDuration:(double)duration fragmentCreationReferenceDate:(id)date logIdentifier:(id)identifier
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a3;
-  v12 = [[HMDCameraRecordingSessionTimelineManager alloc] initWithWorkQueue:v11 fragmentDuration:v10 fragmentCreationReferenceDate:v9 logIdentifier:a4];
+  identifierCopy = identifier;
+  dateCopy = date;
+  queueCopy = queue;
+  v12 = [[HMDCameraRecordingSessionTimelineManager alloc] initWithWorkQueue:queueCopy fragmentDuration:dateCopy fragmentCreationReferenceDate:identifierCopy logIdentifier:duration];
 
   return v12;
 }
 
-- (id)createSettingsControl:(id)a3 accessory:(id)a4 managementService:(id)a5
+- (id)createSettingsControl:(id)control accessory:(id)accessory managementService:(id)service
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[HMDCameraRecordingSettingsControl alloc] initWithWorkQueue:v9 accessory:v8 recordingManagementService:v7];
+  serviceCopy = service;
+  accessoryCopy = accessory;
+  controlCopy = control;
+  v10 = [[HMDCameraRecordingSettingsControl alloc] initWithWorkQueue:controlCopy accessory:accessoryCopy recordingManagementService:serviceCopy];
 
   return v10;
 }

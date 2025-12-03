@@ -1,99 +1,99 @@
 @interface PDDatabase
-+ (Class)entityNamed:(id)a3;
++ (Class)entityNamed:(id)named;
 + (NSArray)recordTypesOfEntitiesTrackingUserActivity;
 + (NSArray)registeredEntities;
-+ (id)nameOfEntity:(Class)a3;
-+ (id)whereSQLForArray:(id)a3 prefix:(id)a4;
++ (id)nameOfEntity:(Class)entity;
++ (id)whereSQLForArray:(id)array prefix:(id)prefix;
 + (void)registerEntities;
-+ (void)registerEntity:(Class)a3;
-- (BOOL)_deleteAll:(Class)a3 where:(id)a4 bindings:(id)a5 trackDeletes:(BOOL)a6;
-- (BOOL)_insertObject:(id)a3;
-- (BOOL)_markObject:(id)a3 as:(int64_t)a4;
-- (BOOL)_postDidInsertNotificationWithEntity:(id)a3;
-- (BOOL)_postWillChangeNotificationWithEntity:(id)a3;
-- (BOOL)_pruneAuthTreeAtNodeWithAssignedItemStatusID:(id)a3;
-- (BOOL)_pruneAuthTreeAtNodeWithContextStatusID:(id)a3;
-- (BOOL)_setCurrentUser:(id)a3 withRoleLocations:(id)a4 orRole:(unint64_t)a5;
-- (BOOL)_statusID:(id *)a3 deniedCount:(int64_t *)a4 authCount:(int64_t *)a5 forContextPath:(id)a6;
-- (BOOL)_statusID:(id *)a3 deniedCount:(int64_t *)a4 authCount:(int64_t *)a5 forHandoutAssignedItem:(id)a6;
++ (void)registerEntity:(Class)entity;
+- (BOOL)_deleteAll:(Class)all where:(id)where bindings:(id)bindings trackDeletes:(BOOL)deletes;
+- (BOOL)_insertObject:(id)object;
+- (BOOL)_markObject:(id)object as:(int64_t)as;
+- (BOOL)_postDidInsertNotificationWithEntity:(id)entity;
+- (BOOL)_postWillChangeNotificationWithEntity:(id)entity;
+- (BOOL)_pruneAuthTreeAtNodeWithAssignedItemStatusID:(id)d;
+- (BOOL)_pruneAuthTreeAtNodeWithContextStatusID:(id)d;
+- (BOOL)_setCurrentUser:(id)user withRoleLocations:(id)locations orRole:(unint64_t)role;
+- (BOOL)_statusID:(id *)d deniedCount:(int64_t *)count authCount:(int64_t *)authCount forContextPath:(id)path;
+- (BOOL)_statusID:(id *)d deniedCount:(int64_t *)count authCount:(int64_t *)authCount forHandoutAssignedItem:(id)item;
 - (BOOL)_updateFileProtectionAttribs;
-- (BOOL)_updateObject:(id)a3;
-- (BOOL)childEntitiesExistForClass:(Class)a3 parentIdentity:(id)a4;
-- (BOOL)deleteObject:(id)a3;
-- (BOOL)entityClass:(Class)a3 containsColumnNamed:(id)a4;
-- (BOOL)entityExistsByClass:(Class)a3 identity:(id)a4;
-- (BOOL)insertObject:(id)a3;
-- (BOOL)insertObjects:(id)a3;
-- (BOOL)insertOrUpdateObject:(id)a3;
-- (BOOL)insertOrUpdateObjects:(id)a3;
+- (BOOL)_updateObject:(id)object;
+- (BOOL)childEntitiesExistForClass:(Class)class parentIdentity:(id)identity;
+- (BOOL)deleteObject:(id)object;
+- (BOOL)entityClass:(Class)class containsColumnNamed:(id)named;
+- (BOOL)entityExistsByClass:(Class)class identity:(id)identity;
+- (BOOL)insertObject:(id)object;
+- (BOOL)insertObjects:(id)objects;
+- (BOOL)insertOrUpdateObject:(id)object;
+- (BOOL)insertOrUpdateObjects:(id)objects;
 - (BOOL)isInSyncBlock;
-- (BOOL)isIncompleteHandout:(id)a3;
+- (BOOL)isIncompleteHandout:(id)handout;
 - (BOOL)isSyncableDataWritten;
-- (BOOL)markAll:(Class)a3 where:(id)a4 bindings:(id)a5 as:(int64_t)a6;
-- (BOOL)markObject:(id)a3 as:(int64_t)a4;
+- (BOOL)markAll:(Class)all where:(id)where bindings:(id)bindings as:(int64_t)as;
+- (BOOL)markObject:(id)object as:(int64_t)as;
 - (BOOL)migrate;
-- (BOOL)migrateEntity:(Class)a3;
+- (BOOL)migrateEntity:(Class)entity;
 - (BOOL)performFrameworkMigrationIfNeeded;
-- (BOOL)performTransaction:(id)a3 forWriting:(BOOL)a4;
-- (BOOL)saveAndSyncObjects:(id)a3;
-- (BOOL)searchFor:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5 limit:(int64_t)a6 offset:(unint64_t)a7 block:(id)a8;
-- (BOOL)selectAll:(Class)a3 where:(id)a4 orderBy:(id)a5 bindings:(id)a6 block:(id)a7;
-- (BOOL)selectAll:(Class)a3 where:(id)a4 orderBy:(id)a5 limit:(int64_t)a6 offset:(unint64_t)a7 bindings:(id)a8 block:(id)a9;
-- (BOOL)selectColumns:(id)a3 of:(Class)a4 where:(id)a5 orderBy:(id)a6 limit:(int64_t)a7 offset:(unint64_t)a8 bindings:(id)a9 block:(id)a10;
-- (BOOL)syncableDatabaseEntityExistsByObjectID:(id)a3;
-- (BOOL)updateAll:(Class)a3 set:(id)a4 where:(id)a5 bindings:(id)a6;
-- (BOOL)updateObject:(id)a3;
-- (BOOL)updateObjects:(id)a3;
-- (BOOL)withSyncEnabled:(id)a3;
+- (BOOL)performTransaction:(id)transaction forWriting:(BOOL)writing;
+- (BOOL)saveAndSyncObjects:(id)objects;
+- (BOOL)searchFor:(Class)for predicate:(id)predicate sortDescriptors:(id)descriptors limit:(int64_t)limit offset:(unint64_t)offset block:(id)block;
+- (BOOL)selectAll:(Class)all where:(id)where orderBy:(id)by bindings:(id)bindings block:(id)block;
+- (BOOL)selectAll:(Class)all where:(id)where orderBy:(id)by limit:(int64_t)limit offset:(unint64_t)offset bindings:(id)bindings block:(id)block;
+- (BOOL)selectColumns:(id)columns of:(Class)of where:(id)where orderBy:(id)by limit:(int64_t)limit offset:(unint64_t)offset bindings:(id)bindings block:(id)self0;
+- (BOOL)syncableDatabaseEntityExistsByObjectID:(id)d;
+- (BOOL)updateAll:(Class)all set:(id)set where:(id)where bindings:(id)bindings;
+- (BOOL)updateObject:(id)object;
+- (BOOL)updateObjects:(id)objects;
+- (BOOL)withSyncEnabled:(id)enabled;
 - (PDDatabase)init;
 - (PDSQLiteDatabase)currentDB;
 - (id)_databaseFileURLs;
-- (id)_progressEventsForContext:(id)a3 eventType:(int64_t)a4 activityID:(id)a5 activityItemID:(id)a6;
-- (id)_progressEventsWithAssignedItem:(id)a3 eventType:(int64_t)a4 activityID:(id)a5 activityItemID:(id)a6;
-- (id)groupExpansionPredicate:(id)a3;
-- (id)groupSearchPredicate:(id)a3;
-- (id)locationIDsMatchingConstraintsForSearchSpecification:(id)a3;
-- (id)locationIDsWithoutPrivilege:(id)a3 onPersonIDs:(id)a4;
-- (id)locationSearchPredicateForSearchSpec:(id)a3;
-- (id)normalizedValue:(id)a3 forKeyPath:(id)a4;
-- (id)objectIDsForSQL:(id)a3 resultColumnName:(id)a4 bindings:(id)a5;
-- (id)organizationSearchPredicateForSearchSpec:(id)a3;
-- (id)personIDsAnyRoleAtLocationIDs:(id)a3;
-- (id)personIDsForClassMembersMatchingConstraintsForSearchSpecification:(id)a3;
-- (id)personIDsForGroupMembersMatchingConstraintsForSearchSpecification:(id)a3;
-- (id)personIDsMatchingConstraintsForSearchSpecification:(id)a3;
-- (id)personIDsToPerson:(id)a3;
-- (id)personIDsWithRoleID:(id)a3 atLocationIDs:(id)a4;
-- (id)personSearchPredicate:(id)a3;
-- (id)poolItemForPool:(id)a3;
-- (id)prlConstraintSQLOnColumn:(id)a3 andValues:(id)a4;
-- (id)prlSelectColumn:(id)a3 havingPrivilege:(id)a4 whereConstraintColumn:(id)a5 hasValues:(id)a6;
-- (id)prlSelectColumn:(id)a3 havingRoleType:(int64_t)a4 whereConstraintColumn:(id)a5 hasValues:(id)a6;
-- (id)select:(Class)a3 identity:(id)a4;
-- (id)select:(Class)a3 where:(id)a4 bindings:(id)a5;
-- (id)selectColumns:(id)a3 of:(Class)a4 where:(id)a5 bindings:(id)a6;
-- (id)trackDeletedObject:(id)a3;
-- (unint64_t)count:(Class)a3 where:(id)a4 bindings:(id)a5;
+- (id)_progressEventsForContext:(id)context eventType:(int64_t)type activityID:(id)d activityItemID:(id)iD;
+- (id)_progressEventsWithAssignedItem:(id)item eventType:(int64_t)type activityID:(id)d activityItemID:(id)iD;
+- (id)groupExpansionPredicate:(id)predicate;
+- (id)groupSearchPredicate:(id)predicate;
+- (id)locationIDsMatchingConstraintsForSearchSpecification:(id)specification;
+- (id)locationIDsWithoutPrivilege:(id)privilege onPersonIDs:(id)ds;
+- (id)locationSearchPredicateForSearchSpec:(id)spec;
+- (id)normalizedValue:(id)value forKeyPath:(id)path;
+- (id)objectIDsForSQL:(id)l resultColumnName:(id)name bindings:(id)bindings;
+- (id)organizationSearchPredicateForSearchSpec:(id)spec;
+- (id)personIDsAnyRoleAtLocationIDs:(id)ds;
+- (id)personIDsForClassMembersMatchingConstraintsForSearchSpecification:(id)specification;
+- (id)personIDsForGroupMembersMatchingConstraintsForSearchSpecification:(id)specification;
+- (id)personIDsMatchingConstraintsForSearchSpecification:(id)specification;
+- (id)personIDsToPerson:(id)person;
+- (id)personIDsWithRoleID:(id)d atLocationIDs:(id)ds;
+- (id)personSearchPredicate:(id)predicate;
+- (id)poolItemForPool:(id)pool;
+- (id)prlConstraintSQLOnColumn:(id)column andValues:(id)values;
+- (id)prlSelectColumn:(id)column havingPrivilege:(id)privilege whereConstraintColumn:(id)constraintColumn hasValues:(id)values;
+- (id)prlSelectColumn:(id)column havingRoleType:(int64_t)type whereConstraintColumn:(id)constraintColumn hasValues:(id)values;
+- (id)select:(Class)select identity:(id)identity;
+- (id)select:(Class)select where:(id)where bindings:(id)bindings;
+- (id)selectColumns:(id)columns of:(Class)of where:(id)where bindings:(id)bindings;
+- (id)trackDeletedObject:(id)object;
+- (unint64_t)count:(Class)count where:(id)where bindings:(id)bindings;
 - (void)_delete;
-- (void)_notifyOfDataChange:(id)a3 changeTime:(id)a4 changedRowCount:(int64_t)a5;
-- (void)_saveInsightEventsFor:(id)a3;
+- (void)_notifyOfDataChange:(id)change changeTime:(id)time changedRowCount:(int64_t)count;
+- (void)_saveInsightEventsFor:(id)for;
 - (void)cleanupAssociatedObjects;
 - (void)dealloc;
-- (void)generateInsightEventsForClass:(Class)a3 where:(id)a4 bindings:(id)a5;
-- (void)generateInsightEventsForObject:(id)a3;
-- (void)populateSearchField:(id)a3 bindings:(id)a4;
-- (void)setCurrentDB:(id)a3;
+- (void)generateInsightEventsForClass:(Class)class where:(id)where bindings:(id)bindings;
+- (void)generateInsightEventsForObject:(id)object;
+- (void)populateSearchField:(id)field bindings:(id)bindings;
+- (void)setCurrentDB:(id)b;
 - (void)setupDevDB;
 - (void)tearDownDevDB;
 @end
 
 @implementation PDDatabase
 
-- (BOOL)searchFor:(Class)a3 predicate:(id)a4 sortDescriptors:(id)a5 limit:(int64_t)a6 offset:(unint64_t)a7 block:(id)a8
+- (BOOL)searchFor:(Class)for predicate:(id)predicate sortDescriptors:(id)descriptors limit:(int64_t)limit offset:(unint64_t)offset block:(id)block
 {
-  if (a4)
+  if (predicate)
   {
-    return sub_1000429A0(self, a3, a4, a5, a6, a7, a8);
+    return sub_1000429A0(self, for, predicate, descriptors, limit, offset, block);
   }
 
   else
@@ -102,23 +102,23 @@
   }
 }
 
-- (id)objectIDsForSQL:(id)a3 resultColumnName:(id)a4 bindings:(id)a5
+- (id)objectIDsForSQL:(id)l resultColumnName:(id)name bindings:(id)bindings
 {
-  v8 = a3;
-  v9 = a4;
+  lCopy = l;
+  nameCopy = name;
   v17[0] = _NSConcreteStackBlock;
   v17[1] = 3221225472;
   v17[2] = sub_100013A38;
   v17[3] = &unk_100202028;
   v17[4] = self;
-  v18 = v8;
-  v19 = a5;
-  v20 = v9;
+  v18 = lCopy;
+  bindingsCopy = bindings;
+  v20 = nameCopy;
   v10 = objc_opt_new();
   v21 = v10;
-  v11 = v9;
-  v12 = v19;
-  v13 = v8;
+  v11 = nameCopy;
+  v12 = bindingsCopy;
+  v13 = lCopy;
   sub_10010BE68(self, v17);
   v14 = v21;
   v15 = v10;
@@ -126,15 +126,15 @@
   return v10;
 }
 
-- (id)prlConstraintSQLOnColumn:(id)a3 andValues:(id)a4
+- (id)prlConstraintSQLOnColumn:(id)column andValues:(id)values
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5 && [v6 count])
+  columnCopy = column;
+  valuesCopy = values;
+  v7 = valuesCopy;
+  if (columnCopy && [valuesCopy count])
   {
-    v8 = [NSString stringWithFormat:@"and PRL.%@ in ", v5];
-    v9 = [PDDatabase whereSQLForArray:v7 prefix:v8];
+    columnCopy = [NSString stringWithFormat:@"and PRL.%@ in ", columnCopy];
+    v9 = [PDDatabase whereSQLForArray:v7 prefix:columnCopy];
   }
 
   else
@@ -145,97 +145,97 @@
   return v9;
 }
 
-- (id)prlSelectColumn:(id)a3 havingRoleType:(int64_t)a4 whereConstraintColumn:(id)a5 hasValues:(id)a6
+- (id)prlSelectColumn:(id)column havingRoleType:(int64_t)type whereConstraintColumn:(id)constraintColumn hasValues:(id)values
 {
-  v10 = a6;
-  v11 = a3;
-  v12 = [(PDDatabase *)self prlConstraintSQLOnColumn:a5 andValues:v10];
-  v13 = [NSString stringWithFormat:@"select distinct %@ from PDPersonRoleLocation as PRL where PRL.roleType =? %@", v11, v12];;
+  valuesCopy = values;
+  columnCopy = column;
+  v12 = [(PDDatabase *)self prlConstraintSQLOnColumn:constraintColumn andValues:valuesCopy];
+  v13 = [NSString stringWithFormat:@"select distinct %@ from PDPersonRoleLocation as PRL where PRL.roleType =? %@", columnCopy, v12];;
   v14 = [NSMutableArray alloc];
-  v15 = [NSNumber numberWithInteger:a4];
+  v15 = [NSNumber numberWithInteger:type];
   v16 = [v14 initWithObjects:{v15, 0}];
 
-  [v16 addObjectsFromArray:v10];
-  v17 = [(PDDatabase *)self objectIDsForSQL:v13 resultColumnName:v11 bindings:v16];
+  [v16 addObjectsFromArray:valuesCopy];
+  v17 = [(PDDatabase *)self objectIDsForSQL:v13 resultColumnName:columnCopy bindings:v16];
 
   return v17;
 }
 
-- (id)prlSelectColumn:(id)a3 havingPrivilege:(id)a4 whereConstraintColumn:(id)a5 hasValues:(id)a6
+- (id)prlSelectColumn:(id)column havingPrivilege:(id)privilege whereConstraintColumn:(id)constraintColumn hasValues:(id)values
 {
-  v10 = a4;
-  if (!v10)
+  privilegeCopy = privilege;
+  if (!privilegeCopy)
   {
-    v10 = @"❌✋🔒";
+    privilegeCopy = @"❌✋🔒";
   }
 
-  v11 = a6;
-  v12 = a3;
-  v13 = [(PDDatabase *)self prlConstraintSQLOnColumn:a5 andValues:v11];
-  v14 = [NSString stringWithFormat:@"select distinct %@ from PDPersonRoleLocation as PRL join PDRolePrivilege as P on PRL.roleID = P.roleID and P.privilegeName =? %@", v12, v13];;
-  v15 = [[NSMutableArray alloc] initWithObjects:{v10, 0}];
-  [v15 addObjectsFromArray:v11];
+  valuesCopy = values;
+  columnCopy = column;
+  v13 = [(PDDatabase *)self prlConstraintSQLOnColumn:constraintColumn andValues:valuesCopy];
+  v14 = [NSString stringWithFormat:@"select distinct %@ from PDPersonRoleLocation as PRL join PDRolePrivilege as P on PRL.roleID = P.roleID and P.privilegeName =? %@", columnCopy, v13];;
+  v15 = [[NSMutableArray alloc] initWithObjects:{privilegeCopy, 0}];
+  [v15 addObjectsFromArray:valuesCopy];
 
-  v16 = [(PDDatabase *)self objectIDsForSQL:v14 resultColumnName:v12 bindings:v15];
+  v16 = [(PDDatabase *)self objectIDsForSQL:v14 resultColumnName:columnCopy bindings:v15];
 
   return v16;
 }
 
-- (id)personIDsMatchingConstraintsForSearchSpecification:(id)a3
+- (id)personIDsMatchingConstraintsForSearchSpecification:(id)specification
 {
-  v4 = a3;
-  if (![v4 hasPersonConstraints])
+  specificationCopy = specification;
+  if (![specificationCopy hasPersonConstraints])
   {
-    v11 = 0;
+    allObjects = 0;
     goto LABEL_34;
   }
 
-  v5 = [v4 personLocationIDs];
+  personLocationIDs = [specificationCopy personLocationIDs];
 
-  if (v5)
+  if (personLocationIDs)
   {
-    v6 = [v4 personLocationIDs];
-    v5 = [(PDDatabase *)self personIDsAnyRoleAtLocationIDs:v6];
+    personLocationIDs2 = [specificationCopy personLocationIDs];
+    personLocationIDs = [(PDDatabase *)self personIDsAnyRoleAtLocationIDs:personLocationIDs2];
   }
 
-  v7 = [v4 requiredRoleID];
+  requiredRoleID = [specificationCopy requiredRoleID];
 
-  if (v7)
+  if (requiredRoleID)
   {
-    v8 = [v4 requiredRoleID];
-    v9 = [v4 personLocationIDs];
-    v10 = [(PDDatabase *)self personIDsWithRoleID:v8 atLocationIDs:v9];
+    requiredRoleID2 = [specificationCopy requiredRoleID];
+    personLocationIDs3 = [specificationCopy personLocationIDs];
+    v10 = [(PDDatabase *)self personIDsWithRoleID:requiredRoleID2 atLocationIDs:personLocationIDs3];
 
 LABEL_9:
     goto LABEL_10;
   }
 
-  if ([v4 requiredRoleType])
+  if ([specificationCopy requiredRoleType])
   {
-    v12 = [v4 requiredRoleType];
-    v8 = [v4 personLocationIDs];
-    v10 = [(PDDatabase *)self personIDsWithRoleType:v12 atLocationIDs:v8];
+    requiredRoleType = [specificationCopy requiredRoleType];
+    requiredRoleID2 = [specificationCopy personLocationIDs];
+    v10 = [(PDDatabase *)self personIDsWithRoleType:requiredRoleType atLocationIDs:requiredRoleID2];
     goto LABEL_9;
   }
 
   v10 = 0;
 LABEL_10:
-  v13 = [v4 requiredPrivilege];
+  requiredPrivilege = [specificationCopy requiredPrivilege];
 
-  if (v13)
+  if (requiredPrivilege)
   {
-    v14 = [v4 requiredPrivilege];
-    v15 = [v4 requiredPrivilegeLocationIDs];
-    v13 = sub_100014180(self, v14, v15);
+    requiredPrivilege2 = [specificationCopy requiredPrivilege];
+    requiredPrivilegeLocationIDs = [specificationCopy requiredPrivilegeLocationIDs];
+    requiredPrivilege = sub_100014180(self, requiredPrivilege2, requiredPrivilegeLocationIDs);
   }
 
-  v16 = [v4 prohibitedPrivilege];
+  prohibitedPrivilege = [specificationCopy prohibitedPrivilege];
 
-  if (v16)
+  if (prohibitedPrivilege)
   {
-    v17 = [v4 prohibitedPrivilege];
-    v18 = [v4 prohibitedPrivilegeLocationIDs];
-    v19 = sub_1000141C8(self, v17, v18);
+    prohibitedPrivilege2 = [specificationCopy prohibitedPrivilege];
+    prohibitedPrivilegeLocationIDs = [specificationCopy prohibitedPrivilegeLocationIDs];
+    v19 = sub_1000141C8(self, prohibitedPrivilege2, prohibitedPrivilegeLocationIDs);
   }
 
   else
@@ -243,11 +243,11 @@ LABEL_10:
     v19 = 0;
   }
 
-  if (!v5)
+  if (!personLocationIDs)
   {
     if (!v10)
     {
-      if (!v13)
+      if (!requiredPrivilege)
       {
         if (!v19)
         {
@@ -264,7 +264,7 @@ LABEL_10:
     goto LABEL_20;
   }
 
-  v20 = [NSMutableSet setWithArray:v5];
+  v20 = [NSMutableSet setWithArray:personLocationIDs];
   v21 = v20;
   if (v10)
   {
@@ -281,14 +281,14 @@ LABEL_20:
   }
 
 LABEL_21:
-  if (!v13)
+  if (!requiredPrivilege)
   {
     goto LABEL_24;
   }
 
   if (v21)
   {
-    v23 = [NSSet setWithArray:v13];
+    v23 = [NSSet setWithArray:requiredPrivilege];
     [v21 intersectSet:v23];
 
 LABEL_24:
@@ -312,27 +312,27 @@ LABEL_32:
   }
 
 LABEL_28:
-  v21 = [NSMutableSet setWithArray:v13];
+  v21 = [NSMutableSet setWithArray:requiredPrivilege];
   if (v19)
   {
     goto LABEL_29;
   }
 
 LABEL_33:
-  v11 = [v21 allObjects];
+  allObjects = [v21 allObjects];
 
 LABEL_34:
 
-  return v11;
+  return allObjects;
 }
 
-- (id)personIDsAnyRoleAtLocationIDs:(id)a3
+- (id)personIDsAnyRoleAtLocationIDs:(id)ds
 {
-  v4 = a3;
-  if ([v4 count])
+  dsCopy = ds;
+  if ([dsCopy count])
   {
-    v5 = [PDDatabase whereSQLForArray:v4 prefix:@"select distinct personID from PDPersonRoleLocation where locationID in "];
-    v6 = [(PDDatabase *)self objectIDsForSQL:v5 resultColumnName:@"personID" bindings:v4];
+    v5 = [PDDatabase whereSQLForArray:dsCopy prefix:@"select distinct personID from PDPersonRoleLocation where locationID in "];
+    v6 = [(PDDatabase *)self objectIDsForSQL:v5 resultColumnName:@"personID" bindings:dsCopy];
   }
 
   else
@@ -343,64 +343,64 @@ LABEL_34:
   return v6;
 }
 
-- (id)personIDsWithRoleID:(id)a3 atLocationIDs:(id)a4
+- (id)personIDsWithRoleID:(id)d atLocationIDs:(id)ds
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PDDatabase *)self prlConstraintSQLOnColumn:@"locationID" andValues:v6];
+  dsCopy = ds;
+  dCopy = d;
+  v8 = [(PDDatabase *)self prlConstraintSQLOnColumn:@"locationID" andValues:dsCopy];
   v9 = [NSString stringWithFormat:@"select distinct personID from PDPersonRoleLocation as PRL where PRL.roleID =? %@", v8];;
-  v10 = [[NSMutableArray alloc] initWithObjects:{v7, 0}];
+  v10 = [[NSMutableArray alloc] initWithObjects:{dCopy, 0}];
 
-  [v10 addObjectsFromArray:v6];
+  [v10 addObjectsFromArray:dsCopy];
   v11 = [(PDDatabase *)self objectIDsForSQL:v9 resultColumnName:@"personID" bindings:v10];
 
   return v11;
 }
 
-- (id)locationSearchPredicateForSearchSpec:(id)a3
+- (id)locationSearchPredicateForSearchSpec:(id)spec
 {
-  v4 = a3;
-  v5 = [(PDDatabase *)self locationIDsMatchingConstraintsForSearchSpecification:v4];
+  specCopy = spec;
+  v5 = [(PDDatabase *)self locationIDsMatchingConstraintsForSearchSpecification:specCopy];
   if (v5)
   {
-    v6 = [v4 searchString];
+    searchString = [specCopy searchString];
 
-    if (v6)
+    if (searchString)
     {
-      v7 = [v4 classLocationIDs];
-      v8 = [v4 predicateWithLocationIDs:v7];
+      classLocationIDs = [specCopy classLocationIDs];
+      v8 = [specCopy predicateWithLocationIDs:classLocationIDs];
 
       goto LABEL_7;
     }
 
-    v9 = [CLSDataObserver predicateForObjectsWithObjectIDs:v5];
+    predicate = [CLSDataObserver predicateForObjectsWithObjectIDs:v5];
   }
 
   else
   {
-    v9 = [v4 predicate];
+    predicate = [specCopy predicate];
   }
 
-  v8 = v9;
+  v8 = predicate;
 LABEL_7:
 
   return v8;
 }
 
-- (id)locationIDsMatchingConstraintsForSearchSpecification:(id)a3
+- (id)locationIDsMatchingConstraintsForSearchSpecification:(id)specification
 {
-  v4 = a3;
-  if (![v4 hasLocationConstraints])
+  specificationCopy = specification;
+  if (![specificationCopy hasLocationConstraints])
   {
-    v8 = 0;
+    allObjects = 0;
     goto LABEL_23;
   }
 
-  if ([v4 requiredLocationRoleType])
+  if ([specificationCopy requiredLocationRoleType])
   {
-    v5 = [v4 requiredLocationRoleType];
-    v6 = [v4 locationPersonIDs];
-    v7 = [(PDDatabase *)self locationIDsWithRoleType:v5 onPersonIDs:v6];
+    requiredLocationRoleType = [specificationCopy requiredLocationRoleType];
+    locationPersonIDs = [specificationCopy locationPersonIDs];
+    v7 = [(PDDatabase *)self locationIDsWithRoleType:requiredLocationRoleType onPersonIDs:locationPersonIDs];
   }
 
   else
@@ -408,22 +408,22 @@ LABEL_7:
     v7 = 0;
   }
 
-  v9 = [v4 requiredLocationPrivilege];
+  requiredLocationPrivilege = [specificationCopy requiredLocationPrivilege];
 
-  if (v9)
+  if (requiredLocationPrivilege)
   {
-    v10 = [v4 requiredLocationPrivilege];
-    v11 = [v4 requiredLocationPersonIDs];
-    v9 = [(PDDatabase *)self locationIDsWithPrivilege:v10 onPersonIDs:v11];
+    requiredLocationPrivilege2 = [specificationCopy requiredLocationPrivilege];
+    requiredLocationPersonIDs = [specificationCopy requiredLocationPersonIDs];
+    requiredLocationPrivilege = [(PDDatabase *)self locationIDsWithPrivilege:requiredLocationPrivilege2 onPersonIDs:requiredLocationPersonIDs];
   }
 
-  v12 = [v4 prohibitedLocationPrivilege];
+  prohibitedLocationPrivilege = [specificationCopy prohibitedLocationPrivilege];
 
-  if (v12)
+  if (prohibitedLocationPrivilege)
   {
-    v13 = [v4 prohibitedLocationPrivilege];
-    v14 = [v4 requiredLocationPersonIDs];
-    v15 = [(PDDatabase *)self locationIDsWithoutPrivilege:v13 onPersonIDs:v14];
+    prohibitedLocationPrivilege2 = [specificationCopy prohibitedLocationPrivilege];
+    requiredLocationPersonIDs2 = [specificationCopy requiredLocationPersonIDs];
+    v15 = [(PDDatabase *)self locationIDsWithoutPrivilege:prohibitedLocationPrivilege2 onPersonIDs:requiredLocationPersonIDs2];
   }
 
   else
@@ -435,21 +435,21 @@ LABEL_7:
   {
     v16 = [NSMutableSet setWithArray:v7];
     v17 = v16;
-    if (!v9)
+    if (!requiredLocationPrivilege)
     {
       goto LABEL_17;
     }
 
     if (v16)
     {
-      v18 = [NSSet setWithArray:v9];
+      v18 = [NSSet setWithArray:requiredLocationPrivilege];
       [v17 intersectSet:v18];
 
       goto LABEL_17;
     }
   }
 
-  else if (!v9)
+  else if (!requiredLocationPrivilege)
   {
     if (!v15)
     {
@@ -460,7 +460,7 @@ LABEL_7:
     goto LABEL_21;
   }
 
-  v17 = [NSMutableSet setWithArray:v9];
+  v17 = [NSMutableSet setWithArray:requiredLocationPrivilege];
 LABEL_17:
   if (v15)
   {
@@ -477,128 +477,128 @@ LABEL_21:
   }
 
 LABEL_22:
-  v8 = [v17 allObjects];
+  allObjects = [v17 allObjects];
 
 LABEL_23:
 
-  return v8;
+  return allObjects;
 }
 
-- (id)locationIDsWithoutPrivilege:(id)a3 onPersonIDs:(id)a4
+- (id)locationIDsWithoutPrivilege:(id)privilege onPersonIDs:(id)ds
 {
-  v6 = a3;
-  if (!v6)
+  privilegeCopy = privilege;
+  if (!privilegeCopy)
   {
-    v6 = @"❌✋🔒";
+    privilegeCopy = @"❌✋🔒";
   }
 
-  v7 = a4;
-  v8 = [(PDDatabase *)self prlConstraintSQLOnColumn:@"personID" andValues:v7];
+  dsCopy = ds;
+  v8 = [(PDDatabase *)self prlConstraintSQLOnColumn:@"personID" andValues:dsCopy];
   v9 = [NSString stringWithFormat:@"select objectID from CLSLocation where CLSLocation.objectid NOT IN( select distinct %@ from PDPersonRoleLocation as PRL  join PDRolePrivilege as P  on PRL.roleID = P.roleID and P.privilegeName =?  %@)", @"locationID", v8];;
-  v10 = [[NSMutableArray alloc] initWithObjects:{v6, 0}];
-  [v10 addObjectsFromArray:v7];
+  v10 = [[NSMutableArray alloc] initWithObjects:{privilegeCopy, 0}];
+  [v10 addObjectsFromArray:dsCopy];
 
   v11 = [(PDDatabase *)self objectIDsForSQL:v9 resultColumnName:@"objectID" bindings:v10];
 
   return v11;
 }
 
-- (id)organizationSearchPredicateForSearchSpec:(id)a3
+- (id)organizationSearchPredicateForSearchSpec:(id)spec
 {
-  v3 = a3;
-  v4 = [v3 requiredOrganizationEmailDomain];
+  specCopy = spec;
+  requiredOrganizationEmailDomain = [specCopy requiredOrganizationEmailDomain];
 
-  if (v4)
+  if (requiredOrganizationEmailDomain)
   {
-    v5 = [v3 requiredOrganizationEmailDomain];
-    [v3 setSearchString:v5];
+    requiredOrganizationEmailDomain2 = [specCopy requiredOrganizationEmailDomain];
+    [specCopy setSearchString:requiredOrganizationEmailDomain2];
   }
 
-  v6 = [v3 predicate];
+  predicate = [specCopy predicate];
 
-  return v6;
+  return predicate;
 }
 
-- (id)personIDsForClassMembersMatchingConstraintsForSearchSpecification:(id)a3
+- (id)personIDsForClassMembersMatchingConstraintsForSearchSpecification:(id)specification
 {
-  v4 = a3;
-  v5 = [v4 requiredClassMemberClassIDs];
-  v6 = [v5 count];
+  specificationCopy = specification;
+  requiredClassMemberClassIDs = [specificationCopy requiredClassMemberClassIDs];
+  v6 = [requiredClassMemberClassIDs count];
 
   if (v6)
   {
-    v7 = [v4 requiredClassMemberClassIDs];
+    requiredClassMemberClassIDs2 = [specificationCopy requiredClassMemberClassIDs];
     v8 = [NSString stringWithFormat:@"where %@ in ", @"parentObjectID"];
-    v9 = [PDDatabase whereSQLForArray:v7 prefix:v8];
+    v9 = [PDDatabase whereSQLForArray:requiredClassMemberClassIDs2 prefix:v8];
 
     v10 = [NSString stringWithFormat:@"select distinct personID from CLSClassMember %@ AND (roles & ? > 0)", v9];;
     v11 = objc_opt_new();
-    if ([v4 requiredClassMemberRole])
+    if ([specificationCopy requiredClassMemberRole])
     {
       v12 = [NSMutableArray alloc];
-      v13 = [v4 requiredClassMemberClassIDs];
-      v14 = [v12 initWithArray:v13];
+      requiredClassMemberClassIDs3 = [specificationCopy requiredClassMemberClassIDs];
+      v14 = [v12 initWithArray:requiredClassMemberClassIDs3];
 
       [v14 addObject:&off_10021B4E0];
       v15 = [(PDDatabase *)self objectIDsForSQL:v10 resultColumnName:@"personID" bindings:v14];
       [v11 addObjectsFromArray:v15];
     }
 
-    if (([v4 requiredClassMemberRole] & 2) != 0)
+    if (([specificationCopy requiredClassMemberRole] & 2) != 0)
     {
       v16 = [NSMutableArray alloc];
-      v17 = [v4 requiredClassMemberClassIDs];
-      v18 = [v16 initWithArray:v17];
+      requiredClassMemberClassIDs4 = [specificationCopy requiredClassMemberClassIDs];
+      v18 = [v16 initWithArray:requiredClassMemberClassIDs4];
 
       [v18 addObject:&off_10021B4F8];
       v19 = [(PDDatabase *)self objectIDsForSQL:v10 resultColumnName:@"personID" bindings:v18];
       [v11 addObjectsFromArray:v19];
     }
 
-    v20 = [v11 allObjects];
+    allObjects = [v11 allObjects];
   }
 
   else
   {
-    v20 = &__NSArray0__struct;
+    allObjects = &__NSArray0__struct;
   }
 
-  return v20;
+  return allObjects;
 }
 
-- (id)personIDsForGroupMembersMatchingConstraintsForSearchSpecification:(id)a3
+- (id)personIDsForGroupMembersMatchingConstraintsForSearchSpecification:(id)specification
 {
-  v4 = a3;
-  v5 = [v4 requiredGroupMemberGroupIDs];
-  v6 = [v5 count];
+  specificationCopy = specification;
+  requiredGroupMemberGroupIDs = [specificationCopy requiredGroupMemberGroupIDs];
+  v6 = [requiredGroupMemberGroupIDs count];
 
   if (v6)
   {
-    v7 = [v4 requiredGroupMemberGroupIDs];
+    requiredGroupMemberGroupIDs2 = [specificationCopy requiredGroupMemberGroupIDs];
     v8 = [NSString stringWithFormat:@"where %@ in ", @"parentObjectID"];
-    v9 = [PDDatabase whereSQLForArray:v7 prefix:v8];
+    v9 = [PDDatabase whereSQLForArray:requiredGroupMemberGroupIDs2 prefix:v8];
 
     v10 = [NSString stringWithFormat:@"select distinct personID from CLSGroupMember %@", v9];
     v11 = objc_opt_new();
-    v12 = [v4 requiredGroupMemberGroupIDs];
-    v13 = [(PDDatabase *)self objectIDsForSQL:v10 resultColumnName:@"personID" bindings:v12];
+    requiredGroupMemberGroupIDs3 = [specificationCopy requiredGroupMemberGroupIDs];
+    v13 = [(PDDatabase *)self objectIDsForSQL:v10 resultColumnName:@"personID" bindings:requiredGroupMemberGroupIDs3];
     [v11 addObjectsFromArray:v13];
 
-    v14 = [v11 allObjects];
+    allObjects = [v11 allObjects];
   }
 
   else
   {
-    v14 = &__NSArray0__struct;
+    allObjects = &__NSArray0__struct;
   }
 
-  return v14;
+  return allObjects;
 }
 
-- (BOOL)_statusID:(id *)a3 deniedCount:(int64_t *)a4 authCount:(int64_t *)a5 forHandoutAssignedItem:(id)a6
+- (BOOL)_statusID:(id *)d deniedCount:(int64_t *)count authCount:(int64_t *)authCount forHandoutAssignedItem:(id)item
 {
-  v10 = a6;
-  if (![v10 length])
+  itemCopy = item;
+  if (![itemCopy length])
   {
     __assert_rtn("[PDDatabase(CLSHandoutAssignedItem) _statusID:deniedCount:authCount:forHandoutAssignedItem:]", "CLSHandoutAssignedItem+PDDatabaseEntity.m", 231, "objectID.length > 0");
   }
@@ -628,9 +628,9 @@ LABEL_23:
   v20[2] = sub_100015CD4;
   v20[3] = &unk_1002020C8;
   v23 = &v37;
-  v11 = v10;
+  v11 = itemCopy;
   v21 = v11;
-  v22 = self;
+  selfCopy = self;
   v24 = v35;
   v25 = &v31;
   v26 = &v27;
@@ -648,7 +648,7 @@ LABEL_23:
     v18 = v35;
     v19 = &v37;
     v16 = v11;
-    v17 = self;
+    selfCopy2 = self;
     if (self)
     {
       v12 = [(PDDatabase *)self performTransaction:v15 forWriting:1];
@@ -669,19 +669,19 @@ LABEL_15:
   }
 
 LABEL_6:
-  if (a3)
+  if (d)
   {
-    *a3 = v38[5];
+    *d = v38[5];
   }
 
-  if (a5)
+  if (authCount)
   {
-    *a5 = v28[3];
+    *authCount = v28[3];
   }
 
-  if (a4)
+  if (count)
   {
-    *a4 = v32[3];
+    *count = v32[3];
   }
 
   v13 = 1;
@@ -695,14 +695,14 @@ LABEL_16:
   return v13;
 }
 
-- (BOOL)_pruneAuthTreeAtNodeWithAssignedItemStatusID:(id)a3
+- (BOOL)_pruneAuthTreeAtNodeWithAssignedItemStatusID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v28 = v4;
+  v28 = dCopy;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -769,19 +769,19 @@ LABEL_13:
   return v6;
 }
 
-- (id)normalizedValue:(id)a3 forKeyPath:(id)a4
+- (id)normalizedValue:(id)value forKeyPath:(id)path
 {
-  v5 = a3;
+  valueCopy = value;
   v6 = +[CLSCurrentUser magicValue];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && (!(v5 | v6) || v5 && v6 && [v5 isEqualToString:v6]))
+  if ((objc_opt_isKindOfClass() & 1) != 0 && (!(valueCopy | v6) || valueCopy && v6 && [valueCopy isEqualToString:v6]))
   {
     v7 = sub_1000712CC(self);
   }
 
   else
   {
-    v7 = v5;
+    v7 = valueCopy;
   }
 
   v8 = v7;
@@ -789,20 +789,20 @@ LABEL_13:
   return v8;
 }
 
-- (id)_progressEventsWithAssignedItem:(id)a3 eventType:(int64_t)a4 activityID:(id)a5 activityItemID:(id)a6
+- (id)_progressEventsWithAssignedItem:(id)item eventType:(int64_t)type activityID:(id)d activityItemID:(id)iD
 {
-  v9 = a3;
-  v10 = a5;
+  itemCopy = item;
+  dCopy = d;
   v11 = objc_opt_class();
-  v12 = [v9 parentObjectID];
-  v13 = [(PDDatabase *)self select:v11 identity:v12];
+  parentObjectID = [itemCopy parentObjectID];
+  v13 = [(PDDatabase *)self select:v11 identity:parentObjectID];
 
-  if (v13 && (sub_100017EA4(self, v13, a4), (v14 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (v13 && (sub_100017EA4(self, v13, type), (v14 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v15 = v14;
-    [v14 setActivityID:v10];
-    v16 = [v9 objectID];
-    [v15 setHandoutAuthorizedObjectID:v16];
+    [v14 setActivityID:dCopy];
+    objectID = [itemCopy objectID];
+    [v15 setHandoutAuthorizedObjectID:objectID];
 
     v21 = v15;
     v17 = [NSArray arrayWithObjects:&v21 count:1];
@@ -824,20 +824,20 @@ LABEL_13:
   return v17;
 }
 
-- (id)_progressEventsForContext:(id)a3 eventType:(int64_t)a4 activityID:(id)a5 activityItemID:(id)a6
+- (id)_progressEventsForContext:(id)context eventType:(int64_t)type activityID:(id)d activityItemID:(id)iD
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  contextCopy = context;
+  dCopy = d;
+  iDCopy = iD;
   v13 = objc_opt_new();
   v14 = objc_autoreleasePoolPush();
-  v15 = [v10 identifierPath];
-  v16 = [CLSContext objectIDPathFromIdentifierPath:v15];
+  identifierPath = [contextCopy identifierPath];
+  v16 = [CLSContext objectIDPathFromIdentifierPath:identifierPath];
 
-  [v16 addObject:v11];
-  if (v12)
+  [v16 addObject:dCopy];
+  if (iDCopy)
   {
-    [v16 addObject:v12];
+    [v16 addObject:iDCopy];
   }
 
   v17 = [v16 componentsJoinedByString:@"/"];
@@ -845,23 +845,23 @@ LABEL_13:
   objc_autoreleasePoolPop(v14);
   v18 = objc_opt_class();
   v35[0] = &off_10021B5D0;
-  v19 = [v10 appIdentifier];
-  v35[1] = v19;
+  appIdentifier = [contextCopy appIdentifier];
+  v35[1] = appIdentifier;
   v20 = [NSArray arrayWithObjects:v35 count:2];
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
   v28[2] = sub_10004C3D4;
   v28[3] = &unk_1002030E8;
-  v29 = v10;
-  v30 = self;
-  v34 = a4;
-  v31 = v11;
+  v29 = contextCopy;
+  selfCopy = self;
+  typeCopy = type;
+  v31 = dCopy;
   v32 = v17;
   v21 = v13;
   v33 = v21;
   v22 = v17;
-  v23 = v11;
-  v24 = v10;
+  v23 = dCopy;
+  v24 = contextCopy;
   [(PDDatabase *)self selectAll:v18 where:@"type = ? AND bundleIdentifier = ?" bindings:v20 block:v28];
 
   v25 = v33;
@@ -870,22 +870,22 @@ LABEL_13:
   return v21;
 }
 
-- (BOOL)_setCurrentUser:(id)a3 withRoleLocations:(id)a4 orRole:(unint64_t)a5
+- (BOOL)_setCurrentUser:(id)user withRoleLocations:(id)locations orRole:(unint64_t)role
 {
-  v8 = a3;
-  v9 = a4;
+  userCopy = user;
+  locationsCopy = locations;
   [(PDDatabase *)self lock];
-  if ((sub_10011E700(self, v8, v9) & 1) == 0)
+  if ((sub_10011E700(self, userCopy, locationsCopy) & 1) == 0)
   {
-    [v9 count];
+    [locationsCopy count];
     v12 = 0;
     goto LABEL_5;
   }
 
-  v10 = [v8 objectID];
-  if (sub_10016A3F0(self, v10, @"currentUserPersonID"))
+  objectID = [userCopy objectID];
+  if (sub_10016A3F0(self, objectID, @"currentUserPersonID"))
   {
-    v11 = sub_10016A0C8(self, a5, @"currentUserRole");
+    v11 = sub_10016A0C8(self, role, @"currentUserRole");
   }
 
   else
@@ -893,17 +893,17 @@ LABEL_13:
     v11 = 0;
   }
 
-  v17 = [v9 count];
+  v17 = [locationsCopy count];
   if (v11 && v17)
   {
-    v32 = a5;
-    v33 = self;
+    roleCopy = role;
+    selfCopy = self;
     v12 = [NSMutableDictionary dictionaryWithCapacity:v17];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v18 = v9;
+    v18 = locationsCopy;
     v19 = [v18 countByEnumeratingWithState:&v34 objects:v38 count:16];
     if (v19)
     {
@@ -931,13 +931,13 @@ LABEL_13:
           }
 
           v25 = [NSNumber numberWithInteger:v24];
-          v26 = [v25 stringValue];
+          stringValue = [v25 stringValue];
 
-          v27 = [v12 objectForKeyedSubscript:v26];
+          v27 = [v12 objectForKeyedSubscript:stringValue];
           if (!v27)
           {
             v27 = objc_opt_new();
-            [v12 setObject:v27 forKeyedSubscript:v26];
+            [v12 setObject:v27 forKeyedSubscript:stringValue];
           }
 
           if (v23)
@@ -964,9 +964,9 @@ LABEL_13:
       while (v30);
     }
 
-    self = v33;
-    a5 = v32;
-    if (sub_10016A76C(v33, v12, @"currentUserLocationIDsByRoleType"))
+    self = selfCopy;
+    role = roleCopy;
+    if (sub_10016A76C(selfCopy, v12, @"currentUserLocationIDsByRoleType"))
     {
       goto LABEL_31;
     }
@@ -987,8 +987,8 @@ LABEL_5:
   }
 
 LABEL_31:
-  objc_setAssociatedObject(self, off_100203C38, v8, 1);
-  v31 = [NSNumber numberWithUnsignedInteger:a5];
+  objc_setAssociatedObject(self, off_100203C38, userCopy, 1);
+  v31 = [NSNumber numberWithUnsignedInteger:role];
   objc_setAssociatedObject(self, off_100203C40, v31, 1);
 
   v13 = 1;
@@ -1005,9 +1005,9 @@ LABEL_31:
 LABEL_6:
   [(PDDatabase *)self unlock];
   v14 = +[PDUserDefaults sharedDefaults];
-  v15 = [v14 enableVerboseLogging];
+  enableVerboseLogging = [v14 enableVerboseLogging];
 
-  if (v15)
+  if (enableVerboseLogging)
   {
     CLSLogDebugCurrentPersona();
   }
@@ -1041,46 +1041,46 @@ LABEL_6:
   return v3;
 }
 
-+ (id)nameOfEntity:(Class)a3
++ (id)nameOfEntity:(Class)entity
 {
   v4 = sub_1000F5CC0();
-  v5 = [v4 objectForKey:a3];
+  v5 = [v4 objectForKey:entity];
 
   return v5;
 }
 
-+ (Class)entityNamed:(id)a3
++ (Class)entityNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   v4 = sub_1000F5E4C();
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:namedCopy];
 
   return v5;
 }
 
-+ (void)registerEntity:(Class)a3
++ (void)registerEntity:(Class)entity
 {
   v4 = sub_1000F5E4C();
-  v5 = [(objc_class *)a3 entityName];
-  [v4 setObject:a3 forKey:v5];
+  entityName = [(objc_class *)entity entityName];
+  [v4 setObject:entity forKey:entityName];
 
   v7 = sub_1000F5CC0();
-  v6 = [(objc_class *)a3 entityName];
-  [v7 setObject:v6 forKey:a3];
+  entityName2 = [(objc_class *)entity entityName];
+  [v7 setObject:entityName2 forKey:entity];
 }
 
-+ (id)whereSQLForArray:(id)a3 prefix:(id)a4
++ (id)whereSQLForArray:(id)array prefix:(id)prefix
 {
-  v5 = a3;
-  v6 = a4;
-  if (![v5 count])
+  arrayCopy = array;
+  prefixCopy = prefix;
+  if (![arrayCopy count])
   {
     __assert_rtn("+[PDDatabase(Entities) whereSQLForArray:prefix:]", "PDDatabase+Entities.m", 111, "array.count > 0");
   }
 
-  v7 = [[NSMutableString alloc] initWithString:v6];
+  v7 = [[NSMutableString alloc] initWithString:prefixCopy];
   objc_msgSend(v7, "appendString:", @"(");
-  v8 = [v5 count];
+  v8 = [arrayCopy count];
   if (v8 >= 2)
   {
     v9 = v8 - 1;
@@ -1098,18 +1098,18 @@ LABEL_6:
   return v7;
 }
 
-- (void)populateSearchField:(id)a3 bindings:(id)a4
+- (void)populateSearchField:(id)field bindings:(id)bindings
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 tokenizableColumnNames];
+  fieldCopy = field;
+  bindingsCopy = bindings;
+  tokenizableColumnNames = [fieldCopy tokenizableColumnNames];
   v35 = objc_opt_new();
   v38 = 0u;
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v37 = v5;
-  obj = [v5 searchableColumnNames];
+  v37 = fieldCopy;
+  obj = [fieldCopy searchableColumnNames];
   v8 = [obj countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v8)
   {
@@ -1126,9 +1126,9 @@ LABEL_6:
         }
 
         v12 = *(*(&v38 + 1) + 8 * v11);
-        if (v6)
+        if (bindingsCopy)
         {
-          v13 = *(v6 + 2);
+          v13 = *(bindingsCopy + 2);
         }
 
         else
@@ -1139,13 +1139,13 @@ LABEL_6:
         v14 = v13;
         v15 = [v14 indexOfObject:v12];
 
-        v16 = [v7 containsObject:v12];
+        v16 = [tokenizableColumnNames containsObject:v12];
         if (v15 != 0x7FFFFFFFFFFFFFFFLL)
         {
           v17 = v16;
-          if (v6)
+          if (bindingsCopy)
           {
-            v18 = *(v6 + 3);
+            v18 = *(bindingsCopy + 3);
           }
 
           else
@@ -1161,8 +1161,8 @@ LABEL_6:
           {
             if (v17)
             {
-              v21 = [v20 _cls_searchableTokens];
-              [v35 addObjectsFromArray:v21];
+              _cls_searchableTokens = [v20 _cls_searchableTokens];
+              [v35 addObjectsFromArray:_cls_searchableTokens];
             }
 
             else
@@ -1192,14 +1192,14 @@ LABEL_6:
     while (v23);
   }
 
-  v24 = [objc_opt_class() searchColumnName];
-  v25 = [v35 allObjects];
-  v26 = [v25 componentsJoinedByString:@"\n"];
-  v27 = [v26 lowercaseString];
+  searchColumnName = [objc_opt_class() searchColumnName];
+  allObjects = [v35 allObjects];
+  v26 = [allObjects componentsJoinedByString:@"\n"];
+  lowercaseString = [v26 lowercaseString];
 
-  if (v6)
+  if (bindingsCopy)
   {
-    v28 = *(v6 + 2);
+    v28 = *(bindingsCopy + 2);
   }
 
   else
@@ -1208,33 +1208,33 @@ LABEL_6:
   }
 
   v29 = v28;
-  v30 = [v29 indexOfObject:v24];
+  v30 = [v29 indexOfObject:searchColumnName];
 
   if (v30 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    if (v6)
+    if (bindingsCopy)
     {
-      v31 = *(v6 + 2);
-      [v31 addObject:v24];
+      v31 = *(bindingsCopy + 2);
+      [v31 addObject:searchColumnName];
 
-      v32 = *(v6 + 3);
+      v32 = *(bindingsCopy + 3);
     }
 
     else
     {
-      [0 addObject:v24];
+      [0 addObject:searchColumnName];
       v32 = 0;
     }
 
     v33 = v32;
-    [v33 addObject:v27];
+    [v33 addObject:lowercaseString];
   }
 
   else
   {
-    if (v6)
+    if (bindingsCopy)
     {
-      v34 = *(v6 + 3);
+      v34 = *(bindingsCopy + 3);
     }
 
     else
@@ -1243,46 +1243,46 @@ LABEL_6:
     }
 
     v33 = v34;
-    [v33 setObject:v27 atIndexedSubscript:v30];
+    [v33 setObject:lowercaseString atIndexedSubscript:v30];
   }
 }
 
-- (BOOL)_insertObject:(id)a3
+- (BOOL)_insertObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v5 = [objc_opt_class() entityName];
-    v6 = [v4 identityValue];
-    v14 = v6;
+    entityName = [objc_opt_class() entityName];
+    identityValue = [objectCopy identityValue];
+    v14 = identityValue;
     v7 = [NSArray arrayWithObjects:&v14 count:1];
-    sub_1000B9714(self, v5, @"entityIdentity = ?", v7);
+    sub_1000B9714(self, entityName, @"entityIdentity = ?", v7);
   }
 
   v8 = objc_alloc_init(NSMutableArray);
   v9 = objc_alloc_init(NSMutableArray);
   v10 = sub_100098260([PDDatabaseBindings alloc], v8, v9);
-  [v4 bindTo:v10];
-  if ([v4 conformsToProtocol:&OBJC_PROTOCOL___PDSearchableDatabaseEntity])
+  [objectCopy bindTo:v10];
+  if ([objectCopy conformsToProtocol:&OBJC_PROTOCOL___PDSearchableDatabaseEntity])
   {
-    [(PDDatabase *)self populateSearchField:v4 bindings:v10];
+    [(PDDatabase *)self populateSearchField:objectCopy bindings:v10];
   }
 
-  v11 = [objc_opt_class() entityName];
-  if (!sub_1000B90F8(self, v11, v9, v8))
+  entityName2 = [objc_opt_class() entityName];
+  if (!sub_1000B90F8(self, entityName2, v9, v8))
   {
     goto LABEL_10;
   }
 
-  if (sub_10010C5DC(self, v11))
+  if (sub_10010C5DC(self, entityName2))
   {
-    sub_1000F568C(self, v4, 1);
+    sub_1000F568C(self, objectCopy, 1);
   }
 
-  if ([(PDDatabase *)self markObject:v4 as:1])
+  if ([(PDDatabase *)self markObject:objectCopy as:1])
   {
-    [(PDDatabase *)self generateInsightEventsForObject:v4];
+    [(PDDatabase *)self generateInsightEventsForObject:objectCopy];
     v12 = 1;
   }
 
@@ -1295,42 +1295,42 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)insertObject:(id)a3
+- (BOOL)insertObject:(id)object
 {
-  v3 = self;
+  selfCopy = self;
   v6 = _NSConcreteStackBlock;
   v7 = 3221225472;
   v8 = sub_1000F6634;
   v9 = &unk_100202140;
-  v10 = self;
-  v4 = a3;
-  v11 = v4;
-  if (v10)
+  selfCopy2 = self;
+  objectCopy = object;
+  v11 = objectCopy;
+  if (selfCopy2)
   {
-    if ([(PDDatabase *)v3 performTransaction:&v6 forWriting:1])
+    if ([(PDDatabase *)selfCopy performTransaction:&v6 forWriting:1])
     {
-      [(PDDatabase *)v3 _postDidInsertNotificationWithEntity:v4, v6, v7, v8, v9, v10, v11];
-      LOBYTE(v3) = 1;
+      [(PDDatabase *)selfCopy _postDidInsertNotificationWithEntity:objectCopy, v6, v7, v8, v9, selfCopy2, v11];
+      LOBYTE(selfCopy) = 1;
     }
 
     else
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(selfCopy) = 0;
     }
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)insertObjects:(id)a3
+- (BOOL)insertObjects:(id)objects
 {
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_1000F67C0;
   v15[3] = &unk_100202140;
-  v4 = a3;
-  v16 = v4;
-  v17 = self;
+  objectsCopy = objects;
+  v16 = objectsCopy;
+  selfCopy = self;
   if (self)
   {
     if ([(PDDatabase *)self performTransaction:v15 forWriting:1])
@@ -1339,7 +1339,7 @@ LABEL_10:
       v14 = 0u;
       v11 = 0u;
       v12 = 0u;
-      v5 = v4;
+      v5 = objectsCopy;
       v6 = [v5 countByEnumeratingWithState:&v11 objects:v18 count:16];
       if (v6)
       {
@@ -1375,14 +1375,14 @@ LABEL_10:
   return self;
 }
 
-- (BOOL)_postDidInsertNotificationWithEntity:(id)a3
+- (BOOL)_postDidInsertNotificationWithEntity:(id)entity
 {
-  v4 = a3;
-  if (v4 && (v5 = objc_opt_class(), (objc_opt_respondsToSelector() & 1) != 0) && ([v5 entityDidInsertNotificationName], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  entityCopy = entity;
+  if (entityCopy && (v5 = objc_opt_class(), (objc_opt_respondsToSelector() & 1) != 0) && ([v5 entityDidInsertNotificationName], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     v12 = @"currentEntity";
-    v13 = v4;
+    v13 = entityCopy;
     v8 = 1;
     v9 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v10 = +[NSNotificationCenter defaultCenter];
@@ -1397,56 +1397,56 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)_updateObject:(id)a3
+- (BOOL)_updateObject:(id)object
 {
-  v4 = a3;
-  v5 = [objc_opt_class() identityColumnName];
-  if (v5)
+  objectCopy = object;
+  identityColumnName = [objc_opt_class() identityColumnName];
+  if (identityColumnName)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = objc_alloc_init(NSMutableArray);
     v19 = v6;
     v8 = sub_100098260([PDDatabaseBindings alloc], v6, v7);
-    [v4 bindTo:v8];
-    if ([v4 conformsToProtocol:&OBJC_PROTOCOL___PDSearchableDatabaseEntity])
+    [objectCopy bindTo:v8];
+    if ([objectCopy conformsToProtocol:&OBJC_PROTOCOL___PDSearchableDatabaseEntity])
     {
-      [(PDDatabase *)self populateSearchField:v4 bindings:v8];
+      [(PDDatabase *)self populateSearchField:objectCopy bindings:v8];
     }
 
-    if ([v4 conformsToProtocol:&OBJC_PROTOCOL___PDDatabaseEntityWithImmutability])
+    if ([objectCopy conformsToProtocol:&OBJC_PROTOCOL___PDDatabaseEntityWithImmutability])
     {
-      v9 = v4;
+      v9 = objectCopy;
       if ([v9 isImmutabilityEnforced])
       {
-        v10 = [v9 immutableColumnNames];
-        sub_1000983A8(v8, v10);
+        immutableColumnNames = [v9 immutableColumnNames];
+        sub_1000983A8(v8, immutableColumnNames);
       }
     }
 
     v11 = objc_alloc_init(NSMutableString);
-    v12 = [objc_opt_class() identityColumnName];
-    [v11 appendString:v12];
+    identityColumnName2 = [objc_opt_class() identityColumnName];
+    [v11 appendString:identityColumnName2];
 
     [v11 appendString:@" = ?"];
-    v13 = [objc_opt_class() entityName];
-    v14 = [v4 identityValue];
-    v20 = v14;
+    entityName = [objc_opt_class() entityName];
+    identityValue = [objectCopy identityValue];
+    v20 = identityValue;
     v15 = [NSArray arrayWithObjects:&v20 count:1];
-    v16 = sub_1000B9548(self, v13, v19, v7, v11, v15);
+    v16 = sub_1000B9548(self, entityName, v19, v7, v11, v15);
 
     if (!v16)
     {
       goto LABEL_13;
     }
 
-    if (sub_10010C5DC(self, v13))
+    if (sub_10010C5DC(self, entityName))
     {
-      sub_1000F568C(self, v4, 2);
+      sub_1000F568C(self, objectCopy, 2);
     }
 
-    if ([(PDDatabase *)self markObject:v4 as:2])
+    if ([(PDDatabase *)self markObject:objectCopy as:2])
     {
-      [(PDDatabase *)self generateInsightEventsForObject:v4];
+      [(PDDatabase *)self generateInsightEventsForObject:objectCopy];
       v17 = 1;
     }
 
@@ -1465,17 +1465,17 @@ LABEL_13:
   return v17;
 }
 
-- (BOOL)updateObject:(id)a3
+- (BOOL)updateObject:(id)object
 {
-  v4 = a3;
-  [(PDDatabase *)self _postWillChangeNotificationWithEntity:v4];
+  objectCopy = object;
+  [(PDDatabase *)self _postWillChangeNotificationWithEntity:objectCopy];
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = sub_1000F6D24;
   v9[3] = &unk_100202140;
   v9[4] = self;
-  v10 = v4;
-  v5 = v4;
+  v10 = objectCopy;
+  v5 = objectCopy;
   v6 = v5;
   if (self)
   {
@@ -1491,14 +1491,14 @@ LABEL_13:
   return self;
 }
 
-- (BOOL)updateObjects:(id)a3
+- (BOOL)updateObjects:(id)objects
 {
-  v4 = a3;
+  objectsCopy = objects;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v5 = [objectsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1510,7 +1510,7 @@ LABEL_13:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectsCopy);
         }
 
         [(PDDatabase *)self _postWillChangeNotificationWithEntity:*(*(&v14 + 1) + 8 * v8)];
@@ -1518,7 +1518,7 @@ LABEL_13:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [objectsCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v6);
@@ -1528,9 +1528,9 @@ LABEL_13:
   v11[1] = 3221225472;
   v11[2] = sub_1000F6E94;
   v11[3] = &unk_100202140;
-  v12 = v4;
-  v13 = self;
-  v9 = v4;
+  v12 = objectsCopy;
+  selfCopy = self;
+  v9 = objectsCopy;
   if (self)
   {
     LOBYTE(self) = [(PDDatabase *)self performTransaction:v11 forWriting:1];
@@ -1539,14 +1539,14 @@ LABEL_13:
   return self;
 }
 
-- (BOOL)_postWillChangeNotificationWithEntity:(id)a3
+- (BOOL)_postWillChangeNotificationWithEntity:(id)entity
 {
-  v4 = a3;
-  if (v4 && (v5 = objc_opt_class(), (objc_opt_respondsToSelector() & 1) != 0) && ([v5 entityWillChangeNotificationName], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
+  entityCopy = entity;
+  if (entityCopy && (v5 = objc_opt_class(), (objc_opt_respondsToSelector() & 1) != 0) && ([v5 entityWillChangeNotificationName], (v6 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v7 = v6;
     v12 = @"newEntity";
-    v13 = v4;
+    v13 = entityCopy;
     v8 = 1;
     v9 = [NSDictionary dictionaryWithObjects:&v13 forKeys:&v12 count:1];
     v10 = +[NSNotificationCenter defaultCenter];
@@ -1561,23 +1561,23 @@ LABEL_13:
   return v8;
 }
 
-- (BOOL)insertOrUpdateObject:(id)a3
+- (BOOL)insertOrUpdateObject:(id)object
 {
-  v5 = a3;
-  v6 = self;
-  if (v6)
+  objectCopy = object;
+  selfCopy = self;
+  if (selfCopy)
   {
     v7 = objc_autoreleasePoolPush();
     v8 = objc_opt_class();
-    v9 = [v8 identityColumnName];
-    if (v9)
+    identityColumnName = [v8 identityColumnName];
+    if (identityColumnName)
     {
-      v10 = [v5 identityValue];
-      v11 = [(PDDatabase *)v6 entityExistsByClass:v8 identity:v10];
+      identityValue = [objectCopy identityValue];
+      v11 = [(PDDatabase *)selfCopy entityExistsByClass:v8 identity:identityValue];
 
       if (v11)
       {
-        if (![(PDDatabase *)v6 updateObject:v5])
+        if (![(PDDatabase *)selfCopy updateObject:objectCopy])
         {
 LABEL_5:
           v12 = 0;
@@ -1588,55 +1588,55 @@ LABEL_27:
         }
       }
 
-      else if (![(PDDatabase *)v6 insertObject:v5])
+      else if (![(PDDatabase *)selfCopy insertObject:objectCopy])
       {
         goto LABEL_5;
       }
     }
 
-    else if (![(PDDatabase *)v6 insertObject:v5])
+    else if (![(PDDatabase *)selfCopy insertObject:objectCopy])
     {
       goto LABEL_5;
     }
 
-    if (![v5 isMemberOfClass:objc_opt_class()])
+    if (![objectCopy isMemberOfClass:objc_opt_class()])
     {
 LABEL_26:
       v12 = 1;
       goto LABEL_27;
     }
 
-    v13 = v5;
-    v14 = sub_1000711FC(v6);
+    v13 = objectCopy;
+    v14 = sub_1000711FC(selfCopy);
     if ([v13 roles] != 1)
     {
       goto LABEL_25;
     }
 
-    v15 = [v13 personID];
-    if (!v15)
+    personID = [v13 personID];
+    if (!personID)
     {
-      v3 = [v14 objectID];
-      if (!v3)
+      objectID = [v14 objectID];
+      if (!objectID)
       {
         goto LABEL_24;
       }
     }
 
-    v16 = [v13 personID];
-    if (v16)
+    personID2 = [v13 personID];
+    if (personID2)
     {
-      v17 = v16;
-      v18 = [v14 objectID];
-      if (v18)
+      v17 = personID2;
+      objectID2 = [v14 objectID];
+      if (objectID2)
       {
-        v22 = v3;
-        v23 = v18;
-        v19 = [v13 personID];
-        v20 = [v14 objectID];
-        v24 = [v19 isEqualToString:v20];
+        v22 = objectID;
+        v23 = objectID2;
+        personID3 = [v13 personID];
+        objectID3 = [v14 objectID];
+        v24 = [personID3 isEqualToString:objectID3];
 
-        if (v15)
+        if (personID)
         {
 
           if (!v24)
@@ -1659,7 +1659,7 @@ LABEL_25:
       }
     }
 
-    if (v15)
+    if (personID)
     {
     }
 
@@ -1676,17 +1676,17 @@ LABEL_28:
   return v12;
 }
 
-- (BOOL)insertOrUpdateObjects:(id)a3
+- (BOOL)insertOrUpdateObjects:(id)objects
 {
-  v4 = a3;
-  v5 = self;
+  objectsCopy = objects;
+  selfCopy = self;
   v6 = objc_autoreleasePoolPush();
   v7 = objc_opt_new();
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v8 = v4;
+  v8 = objectsCopy;
   v9 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
   if (v9)
   {
@@ -1701,7 +1701,7 @@ LABEL_28:
           objc_enumerationMutation(v8);
         }
 
-        [(PDDatabase *)v5 _postWillChangeNotificationWithEntity:*(*(&v30 + 1) + 8 * i)];
+        [(PDDatabase *)selfCopy _postWillChangeNotificationWithEntity:*(*(&v30 + 1) + 8 * i)];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v30 objects:v35 count:16];
@@ -1716,10 +1716,10 @@ LABEL_28:
   v26[3] = &unk_1002038B0;
   v13 = v8;
   v27 = v13;
-  v28 = v5;
+  v28 = selfCopy;
   v14 = v7;
   v29 = v14;
-  if (v5 && [(PDDatabase *)v5 performTransaction:v26 forWriting:1])
+  if (selfCopy && [(PDDatabase *)selfCopy performTransaction:v26 forWriting:1])
   {
     v24 = 0u;
     v25 = 0u;
@@ -1740,7 +1740,7 @@ LABEL_28:
             objc_enumerationMutation(v15);
           }
 
-          [(PDDatabase *)v5 _postDidInsertNotificationWithEntity:*(*(&v22 + 1) + 8 * j), v22];
+          [(PDDatabase *)selfCopy _postDidInsertNotificationWithEntity:*(*(&v22 + 1) + 8 * j), v22];
         }
 
         v17 = [v15 countByEnumeratingWithState:&v22 objects:v34 count:16];
@@ -1761,41 +1761,41 @@ LABEL_28:
   return v20;
 }
 
-- (id)trackDeletedObject:(id)a3
+- (id)trackDeletedObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = objectCopy;
     v6 = [PDDeletedEntityID alloc];
-    v7 = [v5 identityValue];
+    identityValue = [v5 identityValue];
     v8 = objc_opt_class();
-    v9 = [v5 surveyID];
+    surveyID = [v5 surveyID];
 
-    v10 = sub_100173C88(&v6->super.isa, v7, v8, v9);
+    v10 = sub_100173C88(&v6->super.isa, identityValue, v8, surveyID);
     goto LABEL_10;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v4 parentObjectID];
+    parentObjectID = [objectCopy parentObjectID];
 
-    if (v11)
+    if (parentObjectID)
     {
-      v7 = v4;
-      if ([v7 parentEntityType] == 4)
+      identityValue = objectCopy;
+      if ([identityValue parentEntityType] == 4)
       {
-        v12 = [v7 parentObjectID];
-        v13 = sub_1001740C4(self, v12);
+        parentObjectID2 = [identityValue parentObjectID];
+        v13 = sub_1001740C4(self, parentObjectID2);
 
         if (v13)
         {
           v14 = [PDDeletedEntityID alloc];
-          v15 = [v7 identityValue];
+          v7IdentityValue = [identityValue identityValue];
           v16 = objc_opt_class();
-          v10 = sub_100173C88(&v14->super.isa, v15, v16, v13);
+          v10 = sub_100173C88(&v14->super.isa, v7IdentityValue, v16, v13);
 
           goto LABEL_10;
         }
@@ -1804,27 +1804,27 @@ LABEL_28:
   }
 
   v17 = [PDDeletedEntityID alloc];
-  v7 = [v4 identityValue];
+  identityValue = [objectCopy identityValue];
   v18 = objc_opt_class();
-  v10 = sub_100173C88(&v17->super.isa, v7, v18, 0);
+  v10 = sub_100173C88(&v17->super.isa, identityValue, v18, 0);
 LABEL_10:
 
   return v10;
 }
 
-- (BOOL)deleteObject:(id)a3
+- (BOOL)deleteObject:(id)object
 {
-  v4 = a3;
-  v5 = [objc_opt_class() identityColumnName];
-  if (v5)
+  objectCopy = object;
+  identityColumnName = [objc_opt_class() identityColumnName];
+  if (identityColumnName)
   {
     v8[0] = _NSConcreteStackBlock;
     v8[1] = 3221225472;
     v8[2] = sub_1000F79F0;
     v8[3] = &unk_1002038B0;
-    v9 = v4;
-    v10 = self;
-    v6 = v5;
+    v9 = objectCopy;
+    selfCopy = self;
+    v6 = identityColumnName;
     v11 = v6;
     if (self)
     {
@@ -1841,22 +1841,22 @@ LABEL_10:
   return self;
 }
 
-- (id)select:(Class)a3 identity:(id)a4
+- (id)select:(Class)select identity:(id)identity
 {
-  v6 = a4;
-  if (v6)
+  identityCopy = identity;
+  if (identityCopy)
   {
-    v7 = self;
-    if (v7)
+    selfCopy = self;
+    if (selfCopy)
     {
-      v8 = [(objc_class *)a3 identityColumnName];
-      v9 = v8;
-      if (v8)
+      identityColumnName = [(objc_class *)select identityColumnName];
+      v9 = identityColumnName;
+      if (identityColumnName)
       {
-        v10 = [v8 stringByAppendingString:@" = ?"];
-        v14 = v6;
+        v10 = [identityColumnName stringByAppendingString:@" = ?"];
+        v14 = identityCopy;
         v11 = [NSArray arrayWithObjects:&v14 count:1];
-        v12 = [(PDDatabase *)v7 select:a3 where:v10 bindings:v11];
+        v12 = [(PDDatabase *)selfCopy select:select where:v10 bindings:v11];
       }
 
       else
@@ -1879,13 +1879,13 @@ LABEL_10:
   return v12;
 }
 
-- (id)select:(Class)a3 where:(id)a4 bindings:(id)a5
+- (id)select:(Class)select where:(id)where bindings:(id)bindings
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  v11 = v10;
-  if (v10)
+  whereCopy = where;
+  bindingsCopy = bindings;
+  selfCopy = self;
+  v11 = selfCopy;
+  if (selfCopy)
   {
     v15 = 0;
     v16 = &v15;
@@ -1898,7 +1898,7 @@ LABEL_10:
     v14[2] = sub_1000F7E2C;
     v14[3] = &unk_100205010;
     v14[4] = &v15;
-    if ([(PDDatabase *)v10 selectAll:a3 where:v8 orderBy:0 limit:1 offset:0 bindings:v9 block:v14])
+    if ([(PDDatabase *)selfCopy selectAll:select where:whereCopy orderBy:0 limit:1 offset:0 bindings:bindingsCopy block:v14])
     {
       v12 = v16[5];
     }
@@ -1919,58 +1919,58 @@ LABEL_10:
   return v12;
 }
 
-- (BOOL)selectAll:(Class)a3 where:(id)a4 orderBy:(id)a5 bindings:(id)a6 block:(id)a7
+- (BOOL)selectAll:(Class)all where:(id)where orderBy:(id)by bindings:(id)bindings block:(id)block
 {
   if (self)
   {
-    LOBYTE(self) = [(PDDatabase *)self selectAll:a3 where:a4 orderBy:a5 limit:0 offset:0 bindings:a6 block:a7];
+    LOBYTE(self) = [(PDDatabase *)self selectAll:all where:where orderBy:by limit:0 offset:0 bindings:bindings block:block];
   }
 
   return self;
 }
 
-- (BOOL)selectAll:(Class)a3 where:(id)a4 orderBy:(id)a5 limit:(int64_t)a6 offset:(unint64_t)a7 bindings:(id)a8 block:(id)a9
+- (BOOL)selectAll:(Class)all where:(id)where orderBy:(id)by limit:(int64_t)limit offset:(unint64_t)offset bindings:(id)bindings block:(id)block
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v18 = a9;
+  whereCopy = where;
+  byCopy = by;
+  bindingsCopy = bindings;
+  blockCopy = block;
   if (self)
   {
     v21[0] = _NSConcreteStackBlock;
     v21[1] = 3221225472;
     v21[2] = sub_1000F8018;
     v21[3] = &unk_100205060;
-    v26 = a3;
+    allCopy = all;
     v21[4] = self;
-    v22 = v15;
-    v23 = v16;
-    v27 = a6;
-    v28 = a7;
-    v24 = v17;
-    v25 = v18;
-    v19 = self;
-    LOBYTE(self) = sub_10010BE68(v19, v21);
+    v22 = whereCopy;
+    v23 = byCopy;
+    limitCopy = limit;
+    offsetCopy = offset;
+    v24 = bindingsCopy;
+    v25 = blockCopy;
+    selfCopy = self;
+    LOBYTE(self) = sub_10010BE68(selfCopy, v21);
   }
 
   return self;
 }
 
-- (BOOL)updateAll:(Class)a3 set:(id)a4 where:(id)a5 bindings:(id)a6
+- (BOOL)updateAll:(Class)all set:(id)set where:(id)where bindings:(id)bindings
 {
-  v10 = a4;
+  setCopy = set;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1000F82A0;
   v16[3] = &unk_1002050B0;
-  v17 = a5;
-  v18 = self;
-  v20 = v10;
-  v21 = a3;
-  v19 = a6;
-  v11 = v10;
-  v12 = v19;
-  v13 = v17;
+  whereCopy = where;
+  selfCopy = self;
+  v20 = setCopy;
+  allCopy = all;
+  bindingsCopy = bindings;
+  v11 = setCopy;
+  v12 = bindingsCopy;
+  v13 = whereCopy;
   if (self)
   {
     LOBYTE(self) = [(PDDatabase *)self performTransaction:v16 forWriting:1];
@@ -1985,24 +1985,24 @@ LABEL_10:
   return self;
 }
 
-- (BOOL)_deleteAll:(Class)a3 where:(id)a4 bindings:(id)a5 trackDeletes:(BOOL)a6
+- (BOOL)_deleteAll:(Class)all where:(id)where bindings:(id)bindings trackDeletes:(BOOL)deletes
 {
-  v9 = self;
+  selfCopy = self;
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_1000F8928;
   v14[3] = &unk_100205100;
-  v15 = self;
-  v16 = a4;
-  v17 = a5;
-  v18 = a3;
-  v19 = a6;
-  v10 = v17;
-  v11 = v16;
-  if (v15)
+  selfCopy2 = self;
+  whereCopy = where;
+  bindingsCopy = bindings;
+  allCopy = all;
+  deletesCopy = deletes;
+  v10 = bindingsCopy;
+  v11 = whereCopy;
+  if (selfCopy2)
   {
-    LOBYTE(v9) = [(PDDatabase *)v9 performTransaction:v14 forWriting:1];
-    v12 = v17;
+    LOBYTE(selfCopy) = [(PDDatabase *)selfCopy performTransaction:v14 forWriting:1];
+    v12 = bindingsCopy;
   }
 
   else
@@ -2010,13 +2010,13 @@ LABEL_10:
     v12 = v10;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (unint64_t)count:(Class)a3 where:(id)a4 bindings:(id)a5
+- (unint64_t)count:(Class)count where:(id)where bindings:(id)bindings
 {
-  v8 = a4;
-  v9 = a5;
+  whereCopy = where;
+  bindingsCopy = bindings;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -2025,11 +2025,11 @@ LABEL_10:
   v14[1] = 3221225472;
   v14[2] = sub_1000F8E2C;
   v14[3] = &unk_100205128;
-  v19 = a3;
-  v10 = v8;
+  countCopy = count;
+  v10 = whereCopy;
   v15 = v10;
-  v16 = self;
-  v11 = v9;
+  selfCopy = self;
+  v11 = bindingsCopy;
   v17 = v11;
   v18 = &v20;
   sub_10010BE68(self, v14);
@@ -2039,11 +2039,11 @@ LABEL_10:
   return v12;
 }
 
-- (id)selectColumns:(id)a3 of:(Class)a4 where:(id)a5 bindings:(id)a6
+- (id)selectColumns:(id)columns of:(Class)of where:(id)where bindings:(id)bindings
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  columnsCopy = columns;
+  whereCopy = where;
+  bindingsCopy = bindings;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
@@ -2055,7 +2055,7 @@ LABEL_10:
   v15[2] = sub_1000F90F4;
   v15[3] = &unk_100205150;
   v15[4] = &v16;
-  if ([(PDDatabase *)self selectColumns:v10 of:a4 where:v11 orderBy:0 limit:1 offset:0 bindings:v12 block:v15])
+  if ([(PDDatabase *)self selectColumns:columnsCopy of:of where:whereCopy orderBy:0 limit:1 offset:0 bindings:bindingsCopy block:v15])
   {
     v13 = v17[5];
   }
@@ -2070,39 +2070,39 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)selectColumns:(id)a3 of:(Class)a4 where:(id)a5 orderBy:(id)a6 limit:(int64_t)a7 offset:(unint64_t)a8 bindings:(id)a9 block:(id)a10
+- (BOOL)selectColumns:(id)columns of:(Class)of where:(id)where orderBy:(id)by limit:(int64_t)limit offset:(unint64_t)offset bindings:(id)bindings block:(id)self0
 {
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = sub_1000F9288;
   v22[3] = &unk_1002051A0;
-  v23 = a3;
-  v24 = self;
-  v25 = a5;
-  v26 = a6;
-  v29 = a4;
-  v30 = a7;
-  v31 = a8;
-  v27 = a9;
-  v28 = a10;
-  v16 = v28;
-  v17 = v27;
-  v18 = v26;
-  v19 = v25;
-  v20 = v23;
+  columnsCopy = columns;
+  selfCopy = self;
+  whereCopy = where;
+  byCopy = by;
+  ofCopy = of;
+  limitCopy = limit;
+  offsetCopy = offset;
+  bindingsCopy = bindings;
+  blockCopy = block;
+  v16 = blockCopy;
+  v17 = bindingsCopy;
+  v18 = byCopy;
+  v19 = whereCopy;
+  v20 = columnsCopy;
   LOBYTE(self) = sub_10010BE68(self, v22);
 
   return self;
 }
 
-- (BOOL)entityClass:(Class)a3 containsColumnNamed:(id)a4
+- (BOOL)entityClass:(Class)class containsColumnNamed:(id)named
 {
-  v6 = a4;
+  namedCopy = named;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  [(objc_class *)a3 entityName];
+  [(objc_class *)class entityName];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_1000F9640;
@@ -2110,7 +2110,7 @@ LABEL_10:
   v13 = &v14;
   v7 = v10[4] = self;
   v11 = v7;
-  v8 = v6;
+  v8 = namedCopy;
   v12 = v8;
   sub_10010BE68(self, v10);
   LOBYTE(self) = *(v15 + 24);
@@ -2119,19 +2119,19 @@ LABEL_10:
   return self;
 }
 
-- (BOOL)entityExistsByClass:(Class)a3 identity:(id)a4
+- (BOOL)entityExistsByClass:(Class)class identity:(id)identity
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 length])
+  identityCopy = identity;
+  v7 = identityCopy;
+  if (identityCopy && [identityCopy length])
   {
     v8 = [NSString alloc];
-    v9 = [(objc_class *)a3 identityColumnName];
-    v10 = [v8 initWithFormat:@"%@ = ?", v9];
+    identityColumnName = [(objc_class *)class identityColumnName];
+    v10 = [v8 initWithFormat:@"%@ = ?", identityColumnName];
 
     v15 = v7;
     v11 = [NSArray arrayWithObjects:&v15 count:1];
-    v12 = [(PDDatabase *)self count:a3 where:v10 bindings:v11];
+    v12 = [(PDDatabase *)self count:class where:v10 bindings:v11];
 
     v13 = v12 != 0;
   }
@@ -2144,15 +2144,15 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)childEntitiesExistForClass:(Class)a3 parentIdentity:(id)a4
+- (BOOL)childEntitiesExistForClass:(Class)class parentIdentity:(id)identity
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6 && [v6 length])
+  identityCopy = identity;
+  v7 = identityCopy;
+  if (identityCopy && [identityCopy length])
   {
     v12 = v7;
     v8 = [NSArray arrayWithObjects:&v12 count:1];
-    v9 = [(PDDatabase *)self count:a3 where:@"parentObjectID = ?" bindings:v8];
+    v9 = [(PDDatabase *)self count:class where:@"parentObjectID = ?" bindings:v8];
 
     v10 = v9 != 0;
   }
@@ -2165,9 +2165,9 @@ LABEL_10:
   return v10;
 }
 
-- (BOOL)syncableDatabaseEntityExistsByObjectID:(id)a3
+- (BOOL)syncableDatabaseEntityExistsByObjectID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(NSMutableArray);
   if (qword_10024DAC0 != -1)
   {
@@ -2179,7 +2179,7 @@ LABEL_10:
     v6 = 0;
     do
     {
-      [v5 addObject:v4];
+      [v5 addObject:dCopy];
       ++v6;
     }
 
@@ -2205,28 +2205,28 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)saveAndSyncObjects:(id)a3
+- (BOOL)saveAndSyncObjects:(id)objects
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000F9D78;
   v6[3] = &unk_100202140;
-  v7 = self;
-  v8 = a3;
-  v3 = v8;
-  v4 = [(PDDatabase *)v7 withSyncEnabled:v6];
+  selfCopy = self;
+  objectsCopy = objects;
+  v3 = objectsCopy;
+  v4 = [(PDDatabase *)selfCopy withSyncEnabled:v6];
 
   return v4;
 }
 
-- (BOOL)withSyncEnabled:(id)a3
+- (BOOL)withSyncEnabled:(id)enabled
 {
-  v4 = a3;
+  enabledCopy = enabled;
   if ([(PDDatabase *)self isInSyncBlock])
   {
     if (self)
     {
-      v5 = [(PDDatabase *)self performTransaction:v4 forWriting:1];
+      v5 = [(PDDatabase *)self performTransaction:enabledCopy forWriting:1];
     }
 
     else
@@ -2241,7 +2241,7 @@ LABEL_10:
     [(PDDatabase *)self setSyncableDataWritten:0];
     if (self)
     {
-      v5 = [(PDDatabase *)self performTransaction:v4 forWriting:1];
+      v5 = [(PDDatabase *)self performTransaction:enabledCopy forWriting:1];
     }
 
     else
@@ -2269,8 +2269,8 @@ LABEL_10:
 - (BOOL)isSyncableDataWritten
 {
   v2 = +[NSThread currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"syncDataWritten"];
+  threadDictionary = [v2 threadDictionary];
+  v4 = [threadDictionary objectForKeyedSubscript:@"syncDataWritten"];
 
   LOBYTE(v2) = [v4 BOOLValue];
   return v2;
@@ -2279,16 +2279,16 @@ LABEL_10:
 - (BOOL)isInSyncBlock
 {
   v2 = +[NSThread currentThread];
-  v3 = [v2 threadDictionary];
-  v4 = [v3 objectForKeyedSubscript:@"isInSync"];
+  threadDictionary = [v2 threadDictionary];
+  v4 = [threadDictionary objectForKeyedSubscript:@"isInSync"];
 
   LOBYTE(v2) = [v4 BOOLValue];
   return v2;
 }
 
-- (BOOL)markObject:(id)a3 as:(int64_t)a4
+- (BOOL)markObject:(id)object as:(int64_t)as
 {
-  v6 = a3;
+  objectCopy = object;
   if (![(PDDatabase *)self isInSyncBlock])
   {
     goto LABEL_10;
@@ -2300,7 +2300,7 @@ LABEL_10:
   }
 
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 state] == 2)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [objectCopy state] == 2)
   {
     goto LABEL_10;
   }
@@ -2309,11 +2309,11 @@ LABEL_10:
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
 LABEL_14:
-    v11 = [(PDDatabase *)self _markObject:v6 as:a4];
+    v11 = [(PDDatabase *)self _markObject:objectCopy as:as];
     goto LABEL_11;
   }
 
-  v7 = v6;
+  v7 = objectCopy;
   if ([v7 parentEntityType] != 4)
   {
 LABEL_13:
@@ -2322,8 +2322,8 @@ LABEL_13:
   }
 
   v8 = objc_opt_class();
-  v9 = [v7 parentObjectID];
-  v10 = [(PDDatabase *)self select:v8 identity:v9];
+  parentObjectID = [v7 parentObjectID];
+  v10 = [(PDDatabase *)self select:v8 identity:parentObjectID];
 
   if (v10 && [v10 state] != 2)
   {
@@ -2338,19 +2338,19 @@ LABEL_11:
   return v11;
 }
 
-- (BOOL)markAll:(Class)a3 where:(id)a4 bindings:(id)a5 as:(int64_t)a6
+- (BOOL)markAll:(Class)all where:(id)where bindings:(id)bindings as:(int64_t)as
 {
-  v10 = a4;
-  v11 = a5;
-  if ([(PDDatabase *)self isInSyncBlock]&& [(objc_class *)a3 conformsToProtocol:&OBJC_PROTOCOL___PDSyncableItem])
+  whereCopy = where;
+  bindingsCopy = bindings;
+  if ([(PDDatabase *)self isInSyncBlock]&& [(objc_class *)all conformsToProtocol:&OBJC_PROTOCOL___PDSyncableItem])
   {
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_1000FB658;
     v14[3] = &unk_100205278;
     v14[4] = self;
-    v14[5] = a6;
-    v12 = [(PDDatabase *)self selectAll:a3 where:v10 orderBy:0 bindings:v11 block:v14];
+    v14[5] = as;
+    v12 = [(PDDatabase *)self selectAll:all where:whereCopy orderBy:0 bindings:bindingsCopy block:v14];
   }
 
   else
@@ -2361,45 +2361,45 @@ LABEL_11:
   return v12;
 }
 
-- (void)generateInsightEventsForObject:(id)a3
+- (void)generateInsightEventsForObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   if (-[PDDatabase isInSyncBlock](self, "isInSyncBlock") && [objc_opt_class() conformsToProtocol:&OBJC_PROTOCOL___PDInsightEventGenerating] && +[PDEndpointRequestOperation isEndpointAvailable:inDatabase:](PDEndpointRequestOperation, "isEndpointAvailable:inDatabase:", @"uploadEvents", self))
   {
-    [(PDDatabase *)self _saveInsightEventsFor:v4];
+    [(PDDatabase *)self _saveInsightEventsFor:objectCopy];
   }
 }
 
-- (void)generateInsightEventsForClass:(Class)a3 where:(id)a4 bindings:(id)a5
+- (void)generateInsightEventsForClass:(Class)class where:(id)where bindings:(id)bindings
 {
-  v8 = a4;
-  v9 = a5;
-  if ([(PDDatabase *)self isInSyncBlock]&& [(objc_class *)a3 conformsToProtocol:&OBJC_PROTOCOL___PDInsightEventGenerating]&& [PDEndpointRequestOperation isEndpointAvailable:@"uploadEvents" inDatabase:self])
+  whereCopy = where;
+  bindingsCopy = bindings;
+  if ([(PDDatabase *)self isInSyncBlock]&& [(objc_class *)class conformsToProtocol:&OBJC_PROTOCOL___PDInsightEventGenerating]&& [PDEndpointRequestOperation isEndpointAvailable:@"uploadEvents" inDatabase:self])
   {
     v10[0] = _NSConcreteStackBlock;
     v10[1] = 3221225472;
     v10[2] = sub_1000FB7E8;
     v10[3] = &unk_1002052A0;
     v10[4] = self;
-    [(PDDatabase *)self selectAll:a3 where:v8 orderBy:0 bindings:v9 block:v10];
+    [(PDDatabase *)self selectAll:class where:whereCopy orderBy:0 bindings:bindingsCopy block:v10];
   }
 }
 
-- (BOOL)_markObject:(id)a3 as:(int64_t)a4
+- (BOOL)_markObject:(id)object as:(int64_t)as
 {
-  v6 = a3;
+  objectCopy = object;
   v7 = objc_autoreleasePoolPush();
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = v6;
+    v8 = objectCopy;
     if ([v8 type] == 3)
     {
-      v9 = [v8 parentObjectID];
+      parentObjectID = [v8 parentObjectID];
 
-      if (!v9)
+      if (!parentObjectID)
       {
-        if (a4 == 3)
+        if (as == 3)
         {
           sub_10012DB64(PDFileSyncManager, v8, self, &stru_1002052E0);
         }
@@ -2411,7 +2411,7 @@ LABEL_11:
     }
   }
 
-  v10 = [v6 syncBackend:self];
+  v10 = [objectCopy syncBackend:self];
   if (v10 != -1)
   {
     if (v10)
@@ -2430,7 +2430,7 @@ LABEL_11:
       v11 = off_100200D40;
     }
 
-    v12 = [objc_alloc(*v11) initWithObject:v6 state:a4];
+    v12 = [objc_alloc(*v11) initWithObject:objectCopy state:as];
 LABEL_13:
     v14 = objc_opt_class();
     v16[0] = _NSConcreteStackBlock;
@@ -2458,9 +2458,9 @@ LABEL_17:
   return v13;
 }
 
-- (void)_saveInsightEventsFor:(id)a3
+- (void)_saveInsightEventsFor:(id)for
 {
-  v4 = [a3 generateInsightEventsWithDatabase:self];
+  v4 = [for generateInsightEventsWithDatabase:self];
   if ([v4 count])
   {
     [(PDDatabase *)self insertOrUpdateObjects:v4];
@@ -2578,19 +2578,19 @@ LABEL_17:
   [(PDDatabase *)&v2 dealloc];
 }
 
-- (void)setCurrentDB:(id)a3
+- (void)setCurrentDB:(id)b
 {
-  v4 = a3;
+  bCopy = b;
   v6 = +[NSThread currentThread];
-  v5 = [v6 threadDictionary];
-  [v5 setObject:v4 forKeyedSubscript:self->_threadDBKey];
+  threadDictionary = [v6 threadDictionary];
+  [threadDictionary setObject:bCopy forKeyedSubscript:self->_threadDBKey];
 }
 
 - (PDSQLiteDatabase)currentDB
 {
   v3 = +[NSThread currentThread];
-  v4 = [v3 threadDictionary];
-  v5 = [v4 objectForKeyedSubscript:self->_threadDBKey];
+  threadDictionary = [v3 threadDictionary];
+  v5 = [threadDictionary objectForKeyedSubscript:self->_threadDBKey];
 
   return v5;
 }
@@ -2605,9 +2605,9 @@ LABEL_17:
 
 - (BOOL)performFrameworkMigrationIfNeeded
 {
-  v2 = self;
-  v3 = v2;
-  if (!v2)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (!selfCopy)
   {
     CLSInitLog();
     v10 = CLSLogDatabase;
@@ -2620,7 +2620,7 @@ LABEL_17:
     goto LABEL_13;
   }
 
-  v4 = sub_10016A160(v2, @"PDClassKitVersion");
+  v4 = sub_10016A160(selfCopy, @"PDClassKitVersion");
   if (v4 <= 2)
   {
     v5 = v4;
@@ -2669,11 +2669,11 @@ LABEL_14:
 
 - (void)setupDevDB
 {
-  v2 = self;
-  v3 = v2;
-  if (v2)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy)
   {
-    [(PDDatabase *)v2 lock];
+    [(PDDatabase *)selfCopy lock];
     v4 = sub_1000731E4(v3[4]);
     [v3 setCurrentDB:v4];
     [v3 unlock];
@@ -2693,13 +2693,13 @@ LABEL_14:
 
 - (void)tearDownDevDB
 {
-  v2 = self;
-  v3 = v2;
-  if (v2)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy)
   {
-    [(PDDatabase *)v2 lock];
-    v4 = [v3 currentDB];
-    sub_100073330(v3[4], v4);
+    [(PDDatabase *)selfCopy lock];
+    currentDB = [v3 currentDB];
+    sub_100073330(v3[4], currentDB);
     [v3 setCurrentDB:0];
     [v3 unlock];
   }
@@ -2716,15 +2716,15 @@ LABEL_14:
   }
 }
 
-- (BOOL)performTransaction:(id)a3 forWriting:(BOOL)a4
+- (BOOL)performTransaction:(id)transaction forWriting:(BOOL)writing
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  v8 = v7;
-  if (v7)
+  writingCopy = writing;
+  transactionCopy = transaction;
+  selfCopy = self;
+  v8 = selfCopy;
+  if (selfCopy)
   {
-    [(PDDatabase *)v7 lock];
+    [(PDDatabase *)selfCopy lock];
     v9 = v8;
     [(PDDatabase *)v9 lock];
     invalidated = v9->_invalidated;
@@ -2738,12 +2738,12 @@ LABEL_6:
       goto LABEL_28;
     }
 
-    v13 = [(PDDatabase *)v9 currentDB];
-    v14 = v13;
-    if (v13)
+    currentDB = [(PDDatabase *)v9 currentDB];
+    v14 = currentDB;
+    if (currentDB)
     {
-      v15 = 0;
-      v16 = v13;
+      totalChangesCount = 0;
+      v16 = currentDB;
     }
 
     else
@@ -2764,7 +2764,7 @@ LABEL_6:
       }
 
       [(PDDatabase *)v9 setCurrentDB:v16];
-      v15 = [v16 totalChangesCount];
+      totalChangesCount = [v16 totalChangesCount];
     }
 
     v40 = 0;
@@ -2794,15 +2794,15 @@ LABEL_6:
     v30[1] = 3221225472;
     v30[2] = sub_10010C4F0;
     v30[3] = &unk_100205690;
-    v31 = v6;
+    v31 = transactionCopy;
     v12 = [v16 performTransactionWithType:0 error:&v32 usingBlock:v30];
     v17 = v32;
     v18 = v17;
     if (v12)
     {
-      if (v4)
+      if (writingCopy)
       {
-        v28 = v15;
+        v28 = totalChangesCount;
         v29 = v17;
         v19 = [v16 incrementalVacuumDatabaseIfNeeded:0 error:&v29];
         v20 = v29;
@@ -2820,7 +2820,7 @@ LABEL_6:
         }
 
         v18 = v20;
-        v15 = v28;
+        totalChangesCount = v28;
       }
     }
 
@@ -2843,7 +2843,7 @@ LABEL_6:
       [v16 onRowUpdate:0];
       if (!v23)
       {
-        v23 = [v16 totalChangesCount] - v15;
+        v23 = [v16 totalChangesCount] - totalChangesCount;
       }
 
       sub_100073330(v9->_dbPool, v16);
@@ -2879,19 +2879,19 @@ LABEL_28:
   return v12;
 }
 
-- (void)_notifyOfDataChange:(id)a3 changeTime:(id)a4 changedRowCount:(int64_t)a5
+- (void)_notifyOfDataChange:(id)change changeTime:(id)time changedRowCount:(int64_t)count
 {
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  changeCopy = change;
+  timeCopy = time;
+  if ([changeCopy count])
   {
-    v19[0] = v9;
+    v19[0] = timeCopy;
     v18[0] = @"PDDataWrittenTime";
     v18[1] = @"PDDataWrittenRowsChangedCount";
-    v10 = [NSNumber numberWithInteger:a5];
+    v10 = [NSNumber numberWithInteger:count];
     v19[1] = v10;
     v18[2] = @"PDDataWrittenTablesChanged";
-    v11 = [v8 copy];
+    v11 = [changeCopy copy];
     v19[2] = v11;
     v12 = [NSDictionary dictionaryWithObjects:v19 forKeys:v18 count:3];
   }
@@ -2900,8 +2900,8 @@ LABEL_28:
   {
     v16[0] = @"PDDataWrittenTime";
     v16[1] = @"PDDataWrittenRowsChangedCount";
-    v17[0] = v9;
-    v10 = [NSNumber numberWithInteger:a5];
+    v17[0] = timeCopy;
+    v10 = [NSNumber numberWithInteger:count];
     v17[1] = v10;
     v12 = [NSDictionary dictionaryWithObjects:v17 forKeys:v16 count:2];
   }
@@ -2918,12 +2918,12 @@ LABEL_28:
 
 - (id)_databaseFileURLs
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
-    v3 = [NSMutableArray arrayWithObject:v2->_databaseURL];
-    v4 = [(NSURL *)v2->_databaseURL lastPathComponent];
-    v5 = [(NSURL *)v2->_databaseURL URLByDeletingLastPathComponent];
+    v3 = [NSMutableArray arrayWithObject:selfCopy->_databaseURL];
+    lastPathComponent = [(NSURL *)selfCopy->_databaseURL lastPathComponent];
+    uRLByDeletingLastPathComponent = [(NSURL *)selfCopy->_databaseURL URLByDeletingLastPathComponent];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -2942,8 +2942,8 @@ LABEL_28:
             objc_enumerationMutation(&off_10021BA60);
           }
 
-          v10 = [v4 stringByAppendingString:*(*(&v14 + 1) + 8 * i)];
-          v11 = [v5 URLByAppendingPathComponent:v10 isDirectory:0];
+          v10 = [lastPathComponent stringByAppendingString:*(*(&v14 + 1) + 8 * i)];
+          v11 = [uRLByDeletingLastPathComponent URLByAppendingPathComponent:v10 isDirectory:0];
           [v3 addObject:v11];
         }
 
@@ -2972,17 +2972,17 @@ LABEL_28:
 
 - (void)_delete
 {
-  v2 = self;
-  if (v2)
+  selfCopy = self;
+  if (selfCopy)
   {
     v3 = +[NSFileManager defaultManager];
-    [(PDDatabase *)v2 lock];
+    [(PDDatabase *)selfCopy lock];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v4 = [(PDDatabase *)v2 _databaseFileURLs];
-    v5 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+    _databaseFileURLs = [(PDDatabase *)selfCopy _databaseFileURLs];
+    v5 = [_databaseFileURLs countByEnumeratingWithState:&v15 objects:v23 count:16];
     if (v5)
     {
       v6 = v5;
@@ -2994,7 +2994,7 @@ LABEL_28:
         {
           if (*v16 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(_databaseFileURLs);
           }
 
           v9 = *(*(&v15 + 1) + 8 * v8);
@@ -3019,13 +3019,13 @@ LABEL_28:
         }
 
         while (v6 != v8);
-        v6 = [v4 countByEnumeratingWithState:&v15 objects:v23 count:16];
+        v6 = [_databaseFileURLs countByEnumeratingWithState:&v15 objects:v23 count:16];
       }
 
       while (v6);
     }
 
-    [(PDDatabase *)v2 unlock];
+    [(PDDatabase *)selfCopy unlock];
   }
 
   else
@@ -3042,8 +3042,8 @@ LABEL_28:
 
 - (BOOL)_updateFileProtectionAttribs
 {
-  v2 = self;
-  if (!v2)
+  selfCopy = self;
+  if (!selfCopy)
   {
     CLSInitLog();
     v24 = CLSLogDatabase;
@@ -3063,7 +3063,7 @@ LABEL_28:
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = [(PDDatabase *)v2 _databaseFileURLs];
+  obj = [(PDDatabase *)selfCopy _databaseFileURLs];
   v3 = [obj countByEnumeratingWithState:&v35 objects:v43 count:16];
   if (!v3)
   {
@@ -3072,7 +3072,7 @@ LABEL_28:
   }
 
   v4 = v3;
-  v28 = v2;
+  v28 = selfCopy;
   v5 = *v36;
   v6 = NSFileProtectionKey;
   v29 = *v36;
@@ -3088,22 +3088,22 @@ LABEL_28:
       v8 = *(*(&v35 + 1) + 8 * i);
       if ([v8 cls_fileExists])
       {
-        v9 = [v8 absoluteURL];
-        v10 = [v9 path];
+        absoluteURL = [v8 absoluteURL];
+        path = [absoluteURL path];
 
         v34 = 0;
-        v11 = [v31 attributesOfItemAtPath:v10 error:&v34];
+        v11 = [v31 attributesOfItemAtPath:path error:&v34];
         v12 = v34;
         v13 = [v11 mutableCopy];
 
         if (v13)
         {
-          v32 = v10;
+          v32 = path;
           v14 = [v13 objectForKeyedSubscript:v6];
           if (!(v14 | NSFileProtectionCompleteUntilFirstUserAuthentication))
           {
 LABEL_18:
-            v10 = v32;
+            path = v32;
 LABEL_21:
 
             continue;
@@ -3143,7 +3143,7 @@ LABEL_21:
           v6 = NSFileProtectionKey;
           [v13 setObject:NSFileProtectionCompleteUntilFirstUserAuthentication forKeyedSubscript:NSFileProtectionKey];
           v33 = v12;
-          v10 = v32;
+          path = v32;
           [v31 setAttributes:v13 ofItemAtPath:v32 error:&v33];
           v22 = v33;
 
@@ -3181,7 +3181,7 @@ LABEL_21:
           }
         }
 
-        v2 = v28;
+        selfCopy = v28;
 
         v23 = 0;
         goto LABEL_34;
@@ -3198,7 +3198,7 @@ LABEL_21:
   }
 
   v23 = 1;
-  v2 = v28;
+  selfCopy = v28;
 LABEL_34:
 
 LABEL_35:
@@ -3207,19 +3207,19 @@ LABEL_35:
 
 - (BOOL)migrate
 {
-  v2 = self;
-  v3 = v2;
-  if (v2)
+  selfCopy = self;
+  v3 = selfCopy;
+  if (selfCopy)
   {
-    v4 = [(PDDatabase *)v2 currentDB];
+    currentDB = [(PDDatabase *)selfCopy currentDB];
     v33 = 0;
-    v5 = [v4 executeUncachedSQL:@"                   create table if not exists migrations(     tableName text not null error:{version integer not null            )                                        ", &v33}];
+    v5 = [currentDB executeUncachedSQL:@"                   create table if not exists migrations(     tableName text not null error:{version integer not null            )                                        ", &v33}];
     v6 = v33;
     v7 = v6;
     if (v5)
     {
       v32 = v6;
-      v8 = [v4 executeUncachedSQL:@"create unique index if not exists migrations_tableName on migrations (tableName)" error:&v32];
+      v8 = [currentDB executeUncachedSQL:@"create unique index if not exists migrations_tableName on migrations (tableName)" error:&v32];
       v9 = v32;
 
       if ((v8 & 1) == 0)
@@ -3244,8 +3244,8 @@ LABEL_25:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v10 = [objc_opt_class() registeredEntities];
-      v11 = [v10 countByEnumeratingWithState:&v28 objects:v34 count:16];
+      registeredEntities = [objc_opt_class() registeredEntities];
+      v11 = [registeredEntities countByEnumeratingWithState:&v28 objects:v34 count:16];
       if (v11)
       {
         v12 = v11;
@@ -3256,7 +3256,7 @@ LABEL_25:
           {
             if (*v29 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(registeredEntities);
             }
 
             v15 = *(*(&v28 + 1) + 8 * i);
@@ -3270,7 +3270,7 @@ LABEL_25:
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v28 objects:v34 count:16];
+          v12 = [registeredEntities countByEnumeratingWithState:&v28 objects:v34 count:16];
           if (v12)
           {
             continue;
@@ -3281,13 +3281,13 @@ LABEL_25:
       }
 
       v27 = v9;
-      v17 = [v4 executeUncachedSQL:@"drop table if exists PDBlacklistedApp" error:&v27];
+      v17 = [currentDB executeUncachedSQL:@"drop table if exists PDBlacklistedApp" error:&v27];
       v7 = v27;
 
       if (v17)
       {
         v26 = v7;
-        v18 = [v4 executeUncachedSQL:@"drop table if exists PDWhitelistedHost" error:&v26];
+        v18 = [currentDB executeUncachedSQL:@"drop table if exists PDWhitelistedHost" error:&v26];
         v9 = v26;
 
         if (v18)
@@ -3357,36 +3357,36 @@ LABEL_28:
   return v19;
 }
 
-- (BOOL)migrateEntity:(Class)a3
+- (BOOL)migrateEntity:(Class)entity
 {
-  v4 = self;
-  if (v4)
+  selfCopy = self;
+  if (selfCopy)
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = [(objc_class *)a3 entityName];
+    entityName = [(objc_class *)entity entityName];
     *buf = 0;
     v33 = buf;
     v34 = 0x2020000000;
     v35 = 0;
-    v7 = [(PDDatabase *)v4 currentDB];
+    currentDB = [(PDDatabase *)selfCopy currentDB];
     v31 = 0;
     v29[0] = _NSConcreteStackBlock;
     v29[1] = 3221225472;
     v29[2] = sub_10010D89C;
     v29[3] = &unk_100204570;
-    v8 = v6;
+    v8 = entityName;
     v30 = v8;
     v28[0] = _NSConcreteStackBlock;
     v28[1] = 3221225472;
     v28[2] = sub_10010D8AC;
     v28[3] = &unk_1002056B8;
     v28[4] = buf;
-    v9 = [v7 executeUncachedSQL:@"select version from migrations where tableName = ?" error:&v31 bindingHandler:v29 enumerationHandler:v28];
+    v9 = [currentDB executeUncachedSQL:@"select version from migrations where tableName = ?" error:&v31 bindingHandler:v29 enumerationHandler:v28];
     v10 = v31;
     if (v9)
     {
       v27 = *(v33 + 3);
-      if (([objc_class migrateFromVersion:a3 finalVersion:"migrateFromVersion:finalVersion:inDatabase:" inDatabase:?]& 1) != 0)
+      if (([objc_class migrateFromVersion:entity finalVersion:"migrateFromVersion:finalVersion:inDatabase:" inDatabase:?]& 1) != 0)
       {
         if (*(v33 + 3) == v27)
         {
@@ -3396,7 +3396,7 @@ LABEL_28:
         else
         {
           v26 = v10;
-          v18 = [v7 validateForeignKeysForTable:v8 databaseName:0 error:&v26];
+          v18 = [currentDB validateForeignKeysForTable:v8 databaseName:0 error:&v26];
           v19 = v26;
 
           if ((v18 & 1) == 0)
@@ -3406,7 +3406,7 @@ LABEL_28:
             if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_INFO))
             {
               *v36 = 138412290;
-              v37 = a3;
+              entityCopy3 = entity;
               _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Failed to validate foreign key for %@", v36, 0xCu);
             }
           }
@@ -3418,7 +3418,7 @@ LABEL_28:
           v24 = v27;
           v25 = v19;
           v23 = v8;
-          v11 = [v7 executeUncachedSQL:@"insert or replace into migrations (version error:tableName) values (? bindingHandler:?)" enumerationHandler:{&v25, v22, 0}];
+          v11 = [currentDB executeUncachedSQL:@"insert or replace into migrations (version error:tableName) values (? bindingHandler:?)" enumerationHandler:{&v25, v22, 0}];
           v10 = v25;
 
           if ((v11 & 1) == 0)
@@ -3428,7 +3428,7 @@ LABEL_28:
             if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_INFO))
             {
               *v36 = 138412290;
-              v37 = a3;
+              entityCopy3 = entity;
               _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Failed to set new migration version for %@", v36, 0xCu);
             }
           }
@@ -3442,7 +3442,7 @@ LABEL_28:
       if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_INFO))
       {
         *v36 = 138412290;
-        v37 = a3;
+        entityCopy3 = entity;
         v14 = "Failed to execute migrations for %@";
         v15 = v16;
         goto LABEL_12;
@@ -3456,7 +3456,7 @@ LABEL_28:
       if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_INFO))
       {
         *v36 = 138543362;
-        v37 = v10;
+        entityCopy3 = v10;
         v14 = "Failed to turn ON foreign_keys support; %{public}@";
         v15 = v13;
 LABEL_12:
@@ -3487,14 +3487,14 @@ LABEL_15:
   return v11;
 }
 
-- (id)poolItemForPool:(id)a3
+- (id)poolItemForPool:(id)pool
 {
-  v4 = a3;
-  v5 = self;
-  v6 = v5;
-  if (v5)
+  poolCopy = pool;
+  selfCopy = self;
+  v6 = selfCopy;
+  if (selfCopy)
   {
-    v7 = v5->_databaseURL;
+    v7 = selfCopy->_databaseURL;
     if (v6->_invalidated)
     {
       CLSInitLog();
@@ -3502,9 +3502,9 @@ LABEL_15:
       if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_ERROR))
       {
         v21 = v8;
-        v22 = [(NSURL *)v7 path];
+        path = [(NSURL *)v7 path];
         *buf = 138543362;
-        *v27 = v22;
+        *v27 = path;
         _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "Cannot create new connection, database invalidated: %{public}@", buf, 0xCu);
       }
 
@@ -3526,16 +3526,16 @@ LABEL_15:
         if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_ERROR))
         {
           v23 = v14;
-          v24 = [(NSURL *)v7 path];
+          path2 = [(NSURL *)v7 path];
           *buf = 67109378;
           *v27 = v12;
           *&v27[4] = 2114;
-          *&v27[6] = v24;
+          *&v27[6] = path2;
           _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "Database corruption detected: [%d, %{public}@]; nuking db; and retrying;", buf, 0x12u);
         }
 
         [(PDDatabase *)v6 _delete];
-        v15 = [(PDDatabase *)v6 poolItemForPool:v4];
+        v15 = [(PDDatabase *)v6 poolItemForPool:poolCopy];
         goto LABEL_17;
       }
 
@@ -3544,11 +3544,11 @@ LABEL_15:
       if (os_log_type_enabled(CLSLogDatabase, OS_LOG_TYPE_ERROR))
       {
         v17 = v16;
-        v18 = [(NSURL *)v7 path];
+        path3 = [(NSURL *)v7 path];
         *buf = 67109634;
         *v27 = v12;
         *&v27[4] = 2114;
-        *&v27[6] = v18;
+        *&v27[6] = path3;
         v28 = 2114;
         v29 = v13;
         _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Unable to open database: [%d, %{public}@]; %{public}@", buf, 0x1Cu);
@@ -3596,15 +3596,15 @@ LABEL_25:
   return v9;
 }
 
-- (id)personIDsToPerson:(id)a3
+- (id)personIDsToPerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   v5 = objc_opt_new();
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v6 = v4;
+  v6 = personCopy;
   v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
   if (v7)
   {
@@ -3635,10 +3635,10 @@ LABEL_25:
   return v5;
 }
 
-- (BOOL)_statusID:(id *)a3 deniedCount:(int64_t *)a4 authCount:(int64_t *)a5 forContextPath:(id)a6
+- (BOOL)_statusID:(id *)d deniedCount:(int64_t *)count authCount:(int64_t *)authCount forContextPath:(id)path
 {
-  v10 = a6;
-  v11 = [v10 count];
+  pathCopy = path;
+  v11 = [pathCopy count];
   if (!v11)
   {
     __assert_rtn("[PDDatabase(CLSContext) _statusID:deniedCount:authCount:forContextPath:]", "CLSContext+PDDatabaseEntity.m", 508, "pathLength > 0");
@@ -3673,11 +3673,11 @@ LABEL_25:
   v26[1] = 3221225472;
   v26[2] = sub_10014AF58;
   v26[3] = &unk_100206140;
-  v13 = v10;
+  v13 = pathCopy;
   v29 = &v48;
   v30 = v46;
   v27 = v13;
-  v28 = self;
+  selfCopy = self;
   v31 = &v42;
   v32 = &v38;
   v33 = &v34;
@@ -3710,7 +3710,7 @@ LABEL_25:
     v24 = v46;
     v25 = &v48;
     v22 = v17;
-    v23 = self;
+    selfCopy2 = self;
     if (self)
     {
       v18 = [(PDDatabase *)self performTransaction:v21 forWriting:1];
@@ -3731,19 +3731,19 @@ LABEL_18:
   }
 
 LABEL_9:
-  if (a3)
+  if (d)
   {
-    *a3 = v49[5];
+    *d = v49[5];
   }
 
-  if (a5)
+  if (authCount)
   {
-    *a5 = v39[3];
+    *authCount = v39[3];
   }
 
-  if (a4)
+  if (count)
   {
-    *a4 = v43[3];
+    *count = v43[3];
   }
 
   v19 = 1;
@@ -3758,14 +3758,14 @@ LABEL_19:
   return v19;
 }
 
-- (BOOL)_pruneAuthTreeAtNodeWithContextStatusID:(id)a3
+- (BOOL)_pruneAuthTreeAtNodeWithContextStatusID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  v28 = v4;
+  v28 = dCopy;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -3832,12 +3832,12 @@ LABEL_13:
   return v6;
 }
 
-- (BOOL)isIncompleteHandout:(id)a3
+- (BOOL)isIncompleteHandout:(id)handout
 {
-  v4 = a3;
+  handoutCopy = handout;
   v5 = objc_opt_class();
-  v6 = [v4 objectID];
-  v15 = v6;
+  objectID = [handoutCopy objectID];
+  v15 = objectID;
   v7 = [NSArray arrayWithObjects:&v15 count:1];
   v8 = [(PDDatabase *)self select:v5 where:@"parentObjectID = ?" bindings:v7];
 
@@ -3854,9 +3854,9 @@ LABEL_13:
     if (os_log_type_enabled(CLSLogDefault, OS_LOG_TYPE_DEFAULT))
     {
       v9 = v10;
-      v11 = [v4 objectID];
+      objectID2 = [handoutCopy objectID];
       v13 = 138543362;
-      v14 = v11;
+      v14 = objectID2;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "PDUserNotificationTrigger: collaboration state for handout with id: %{public}@ not available.", &v13, 0xCu);
 
       LOBYTE(v9) = 0;
@@ -3866,61 +3866,61 @@ LABEL_13:
   return v9;
 }
 
-- (id)personSearchPredicate:(id)a3
+- (id)personSearchPredicate:(id)predicate
 {
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = objc_opt_new();
   [v4 appendString:@"(%K BEGINSWITH %@ || %K LIKE %@)"];
   [v4 appendString:@" && isSearchable == 1"];
-  v5 = [v3 keyword];
-  v6 = [v3 keyword];
+  keyword = [predicateCopy keyword];
+  keyword2 = [predicateCopy keyword];
 
-  v7 = [@"\n" stringByAppendingString:v6];
-  v8 = [NSPredicate predicateWithFormat:v4, @"searchText", v5, @"searchText", v7];
+  v7 = [@"\n" stringByAppendingString:keyword2];
+  v8 = [NSPredicate predicateWithFormat:v4, @"searchText", keyword, @"searchText", v7];
 
   return v8;
 }
 
-- (id)groupSearchPredicate:(id)a3
+- (id)groupSearchPredicate:(id)predicate
 {
-  v3 = a3;
+  predicateCopy = predicate;
   v4 = objc_opt_new();
   [v4 appendString:@"(%K LIKE %@)"];
-  v5 = [v3 keyword];
+  keyword = [predicateCopy keyword];
 
-  v6 = [NSPredicate predicateWithFormat:v4, @"searchText", v5];
+  v6 = [NSPredicate predicateWithFormat:v4, @"searchText", keyword];
 
   return v6;
 }
 
-- (id)groupExpansionPredicate:(id)a3
+- (id)groupExpansionPredicate:(id)predicate
 {
-  v4 = a3;
+  predicateCopy = predicate;
   v5 = objc_opt_new();
-  if (([v4 rosterSearchOptions] & 2) != 0)
+  if (([predicateCopy rosterSearchOptions] & 2) != 0)
   {
     v6 = @"select personID from CLSClassMember where parentObjectID=?";
   }
 
   else
   {
-    v6 = (@"select personID from CLSGroupMember where parentObjectID=?" & (([v4 rosterSearchOptions] << 61) >> 63));
+    v6 = (@"select personID from CLSGroupMember where parentObjectID=?" & (([predicateCopy rosterSearchOptions] << 61) >> 63));
   }
 
   v11 = _NSConcreteStackBlock;
   v12 = 3221225472;
   v13 = sub_10017C4E8;
   v14 = &unk_1002028D0;
-  v15 = self;
+  selfCopy = self;
   v16 = v6;
-  v7 = v4;
+  v7 = predicateCopy;
   v17 = v7;
   v8 = v5;
   v18 = v8;
   sub_10010BE68(self, &v11);
   if ([v8 count])
   {
-    v9 = [NSPredicate predicateWithFormat:@"%K IN %@", CLSPredicateKeyPathObjectID, v8, v11, v12, v13, v14, v15, v16, v17];
+    v9 = [NSPredicate predicateWithFormat:@"%K IN %@", CLSPredicateKeyPathObjectID, v8, v11, v12, v13, v14, selfCopy, v16, v17];
   }
 
   else

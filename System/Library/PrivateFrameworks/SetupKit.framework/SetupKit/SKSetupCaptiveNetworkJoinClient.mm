@@ -4,30 +4,30 @@
 - (void)_captiveProbeRequest;
 - (void)_invalidate;
 - (void)_networkRelayEnsureStopped;
-- (void)_postEvent:(id)a3;
+- (void)_postEvent:(id)event;
 - (void)_run;
-- (void)_runAWDLFoundDevice:(id)a3;
+- (void)_runAWDLFoundDevice:(id)device;
 - (void)_runAWDLFoundTimerStart;
 - (void)_runAWDLStart;
-- (void)_runCaptiveNetworkLoginResponse:(id)a3;
+- (void)_runCaptiveNetworkLoginResponse:(id)response;
 - (void)_runCaptiveNetworkLoginStart;
 - (void)_runNetworkRelaySelfStart;
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4;
-- (void)deviceLinkTypeDidChange:(id)a3 linkType:(unsigned __int8)a4 linkSubtype:(unsigned __int8)a5;
-- (void)deviceProxyServiceInterfaceNameDidChange:(id)a3 interfaceName:(id)a4;
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected;
+- (void)deviceLinkTypeDidChange:(id)change linkType:(unsigned __int8)type linkSubtype:(unsigned __int8)subtype;
+- (void)deviceProxyServiceInterfaceNameDidChange:(id)change interfaceName:(id)name;
 @end
 
 @implementation SKSetupCaptiveNetworkJoinClient
 
-- (void)deviceProxyServiceInterfaceNameDidChange:(id)a3 interfaceName:(id)a4
+- (void)deviceProxyServiceInterfaceNameDidChange:(id)change interfaceName:(id)name
 {
-  v18 = a3;
-  v6 = a4;
+  changeCopy = change;
+  nameCopy = name;
   dispatch_assert_queue_V2(self->super._dispatchQueue);
   var0 = self->super._ucat->var0;
   if (var0 <= 30)
   {
-    v8 = v18;
+    v8 = changeCopy;
     if (var0 == -1)
     {
       ucat = self->super._ucat;
@@ -37,7 +37,7 @@
       }
 
       v13 = self->super._ucat;
-      v8 = v18;
+      v8 = changeCopy;
     }
 
     if ([v8 isConnected])
@@ -50,11 +50,11 @@
       v9 = "no";
     }
 
-    [v18 linkType];
+    [changeCopy linkType];
     StringFromNRLinkType = createStringFromNRLinkType();
-    [v18 linkSubtype];
+    [changeCopy linkSubtype];
     StringFromNRLinkSubtype = createStringFromNRLinkSubtype();
-    [v18 proxyServiceInterfaceName];
+    [changeCopy proxyServiceInterfaceName];
     v17 = v16 = StringFromNRLinkSubtype;
     v14 = v9;
     v15 = StringFromNRLinkType;
@@ -62,14 +62,14 @@
   }
 
 LABEL_8:
-  if ([v18 isConnected] && !self->_networkRelayProxyInterface && objc_msgSend(v6, "length"))
+  if ([changeCopy isConnected] && !self->_networkRelayProxyInterface && objc_msgSend(nameCopy, "length"))
   {
-    objc_storeStrong(&self->_networkRelayProxyInterface, a4);
+    objc_storeStrong(&self->_networkRelayProxyInterface, name);
     [(SKSetupCaptiveNetworkJoinClient *)self _run];
   }
 }
 
-- (void)deviceLinkTypeDidChange:(id)a3 linkType:(unsigned __int8)a4 linkSubtype:(unsigned __int8)a5
+- (void)deviceLinkTypeDidChange:(id)change linkType:(unsigned __int8)type linkSubtype:(unsigned __int8)subtype
 {
   dispatch_assert_queue_V2(self->super._dispatchQueue);
   var0 = self->super._ucat->var0;
@@ -92,12 +92,12 @@ LABEL_8:
   }
 }
 
-- (void)deviceIsConnectedDidChange:(id)a3 isConnected:(BOOL)a4
+- (void)deviceIsConnectedDidChange:(id)change isConnected:(BOOL)connected
 {
-  v4 = a4;
-  v12 = a3;
+  connectedCopy = connected;
+  changeCopy = change;
   dispatch_assert_queue_V2(self->super._dispatchQueue);
-  v6 = [v12 proxyServiceInterfaceName];
+  proxyServiceInterfaceName = [changeCopy proxyServiceInterfaceName];
   var0 = self->super._ucat->var0;
   if (var0 <= 30)
   {
@@ -112,24 +112,24 @@ LABEL_8:
       v10 = self->super._ucat;
     }
 
-    [v12 linkType];
+    [changeCopy linkType];
     StringFromNRLinkType = createStringFromNRLinkType();
-    [v12 linkSubtype];
+    [changeCopy linkSubtype];
     StringFromNRLinkSubtype = createStringFromNRLinkSubtype();
     LogPrintF();
   }
 
 LABEL_5:
-  if (v4 && !self->_networkRelayProxyInterface && [v6 length])
+  if (connectedCopy && !self->_networkRelayProxyInterface && [proxyServiceInterfaceName length])
   {
-    objc_storeStrong(&self->_networkRelayProxyInterface, v6);
+    objc_storeStrong(&self->_networkRelayProxyInterface, proxyServiceInterfaceName);
     [(SKSetupCaptiveNetworkJoinClient *)self _run];
   }
 }
 
-- (void)_runCaptiveNetworkLoginResponse:(id)a3
+- (void)_runCaptiveNetworkLoginResponse:(id)response
 {
-  v13 = a3;
+  responseCopy = response;
   CFStringGetTypeID();
   v4 = CFDictionaryGetTypedValue();
   if (v4)
@@ -307,20 +307,20 @@ LABEL_16:
   v50[4] = self;
   v50[5] = &v51;
   v3 = MEMORY[0x26676A4C0](v50, a2);
-  v4 = self->_nrDeviceManager;
-  if (!v4)
+  copySharedDeviceManager = self->_nrDeviceManager;
+  if (!copySharedDeviceManager)
   {
-    v4 = [MEMORY[0x277D2C9E0] copySharedDeviceManager];
-    if (!v4)
+    copySharedDeviceManager = [MEMORY[0x277D2C9E0] copySharedDeviceManager];
+    if (!copySharedDeviceManager)
     {
       v36 = *MEMORY[0x277CCA590];
       v37 = NSErrorF_safe();
-      v4 = v52[5];
+      copySharedDeviceManager = v52[5];
       v52[5] = v37;
       goto LABEL_27;
     }
 
-    objc_storeStrong(&self->_nrDeviceManager, v4);
+    objc_storeStrong(&self->_nrDeviceManager, copySharedDeviceManager);
   }
 
   v5 = self->_nrDeviceIdentifier;
@@ -340,18 +340,18 @@ LABEL_16:
         v41 = self->super._ucat;
       }
 
-      v42 = [(NRDeviceIdentifier *)v5 nrDeviceIdentifier];
+      nrDeviceIdentifier = [(NRDeviceIdentifier *)v5 nrDeviceIdentifier];
       LogPrintF();
     }
 
 LABEL_9:
-    [(NRDeviceManager *)v4 unregisterDevice:v5, v42];
+    [(NRDeviceManager *)copySharedDeviceManager unregisterDevice:v5, nrDeviceIdentifier];
     nrDeviceIdentifier = self->_nrDeviceIdentifier;
     self->_nrDeviceIdentifier = 0;
   }
 
-  v9 = [MEMORY[0x277D2C9D0] newEphemeralDeviceIdentifier];
-  if (!v9)
+  newEphemeralDeviceIdentifier = [MEMORY[0x277D2C9D0] newEphemeralDeviceIdentifier];
+  if (!newEphemeralDeviceIdentifier)
   {
     v23 = *MEMORY[0x277CCA590];
     v24 = NSErrorF_safe();
@@ -360,10 +360,10 @@ LABEL_9:
     goto LABEL_26;
   }
 
-  objc_storeStrong(&self->_nrDeviceIdentifier, v9);
+  objc_storeStrong(&self->_nrDeviceIdentifier, newEphemeralDeviceIdentifier);
   v10 = objc_alloc_init(MEMORY[0x277D2CA20]);
-  v11 = [(NSString *)self->_networkRelayPeerIPStr UTF8String];
-  if (!v11)
+  uTF8String = [(NSString *)self->_networkRelayPeerIPStr UTF8String];
+  if (!uTF8String)
   {
     v25 = *MEMORY[0x277CCA590];
     v26 = NSErrorF_safe();
@@ -458,8 +458,8 @@ LABEL_9:
       v40 = self->super._ucat;
     }
 
-    v42 = v9;
-    v43 = v11;
+    nrDeviceIdentifier = newEphemeralDeviceIdentifier;
+    v43 = uTF8String;
     LogPrintF();
   }
 
@@ -470,7 +470,7 @@ LABEL_22:
   v45[2] = __60__SKSetupCaptiveNetworkJoinClient__runNetworkRelaySelfStart__block_invoke_87;
   v45[3] = &unk_279BB8370;
   v45[4] = self;
-  [(NRDeviceManager *)v4 registerDevice:v9 properties:v10 operationalproperties:v17 queue:dispatchQueue completionBlock:v45, v42, v43];
+  [(NRDeviceManager *)copySharedDeviceManager registerDevice:newEphemeralDeviceIdentifier properties:v10 operationalproperties:v17 queue:dispatchQueue completionBlock:v45, nrDeviceIdentifier, v43];
   v21 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, self->super._dispatchQueue);
   objc_storeStrong(&self->_networkRelayTimer, v21);
   handler[0] = MEMORY[0x277D85DD0];
@@ -781,12 +781,12 @@ LABEL_11:
 LABEL_17:
 }
 
-- (void)_runAWDLFoundDevice:(id)a3
+- (void)_runAWDLFoundDevice:(id)device
 {
-  v15 = a3;
-  v5 = [v15 name];
+  deviceCopy = device;
+  name = [deviceCopy name];
   awdlName = self->_awdlName;
-  v7 = v5;
+  v7 = name;
   v8 = awdlName;
   v9 = v8;
   if (v7 == v8)
@@ -823,7 +823,7 @@ LABEL_6:
     }
 
 LABEL_10:
-    objc_storeStrong(&self->_awdlPeerDevice, a3);
+    objc_storeStrong(&self->_awdlPeerDevice, device);
     [(SKSetupCaptiveNetworkJoinClient *)self _run];
     goto LABEL_11;
   }
@@ -1097,9 +1097,9 @@ LABEL_15:
               [(SKSetupBase *)self _connectionStartWithSKConnection:0 clientMode:1 completeOnFailure:1 completion:&__block_literal_global_642];
               goto LABEL_28;
             case 12:
-              v5 = [(SKConnection *)self->super._skCnx state];
+              state = [(SKConnection *)self->super._skCnx state];
               v4 = self->super._runState;
-              if (v5 != 1)
+              if (state != 1)
               {
                 break;
               }
@@ -1137,9 +1137,9 @@ LABEL_15:
               v4 = 17;
               goto LABEL_30;
             case 17:
-              v8 = [(SKSetupCaptiveNetworkJoinClient *)self _runNetworkRelayPeerStart];
+              _runNetworkRelayPeerStart = [(SKSetupCaptiveNetworkJoinClient *)self _runNetworkRelayPeerStart];
               v4 = self->super._runState;
-              if (!v8)
+              if (!_runNetworkRelayPeerStart)
               {
                 break;
               }
@@ -1258,14 +1258,14 @@ LABEL_34:
   }
 }
 
-- (void)_postEvent:(id)a3
+- (void)_postEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 eventType] != 201)
+  eventCopy = event;
+  if ([eventCopy eventType] != 201)
   {
     v8.receiver = self;
     v8.super_class = SKSetupCaptiveNetworkJoinClient;
-    [(SKSetupBase *)&v8 _postEvent:v4];
+    [(SKSetupBase *)&v8 _postEvent:eventCopy];
     goto LABEL_8;
   }
 
@@ -1338,10 +1338,10 @@ LABEL_8:
       if (var0 != -1)
       {
 LABEL_11:
-        v19 = [(NRDeviceIdentifier *)v10 nrDeviceIdentifier];
+        nrDeviceIdentifier = [(NRDeviceIdentifier *)v10 nrDeviceIdentifier];
         LogPrintF();
 
-        [(NRDeviceManager *)v20 unregisterDevice:v10, v19];
+        [(NRDeviceManager *)v20 unregisterDevice:v10, nrDeviceIdentifier];
         goto LABEL_14;
       }
 

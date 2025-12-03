@@ -1,27 +1,27 @@
 @interface DOCRemoteContext
-- (id)serviceProxyWithErrorHandler:(id)a3;
-- (void)updateAppearance:(id)a3 shouldFlushCA:(BOOL)a4 completionBlock:(id)a5;
-- (void)updateEditingTo:(BOOL)a3 animated:(BOOL)a4;
+- (id)serviceProxyWithErrorHandler:(id)handler;
+- (void)updateAppearance:(id)appearance shouldFlushCA:(BOOL)a completionBlock:(id)block;
+- (void)updateEditingTo:(BOOL)to animated:(BOOL)animated;
 @end
 
 @implementation DOCRemoteContext
 
-- (id)serviceProxyWithErrorHandler:(id)a3
+- (id)serviceProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(DOCRemoteContext *)self _auxiliaryConnection];
-  v6 = [v5 remoteObjectProxyWithErrorHandler:v4];
+  handlerCopy = handler;
+  _auxiliaryConnection = [(DOCRemoteContext *)self _auxiliaryConnection];
+  v6 = [_auxiliaryConnection remoteObjectProxyWithErrorHandler:handlerCopy];
 
   return v6;
 }
 
-- (void)updateAppearance:(id)a3 shouldFlushCA:(BOOL)a4 completionBlock:(id)a5
+- (void)updateAppearance:(id)appearance shouldFlushCA:(BOOL)a completionBlock:(id)block
 {
-  v5 = a4;
-  v8 = a5;
-  v9 = a3;
+  aCopy = a;
+  blockCopy = block;
+  appearanceCopy = appearance;
   v10 = [(DOCRemoteContext *)self serviceProxyWithErrorHandler:&__block_literal_global_2];
-  [v10 updateAppearance:v9 shouldFlushCA:v5 completionBlock:v8];
+  [v10 updateAppearance:appearanceCopy shouldFlushCA:aCopy completionBlock:blockCopy];
 }
 
 void __67__DOCRemoteContext_updateAppearance_shouldFlushCA_completionBlock___block_invoke(uint64_t a1, void *a2)
@@ -41,12 +41,12 @@ void __67__DOCRemoteContext_updateAppearance_shouldFlushCA_completionBlock___blo
   }
 }
 
-- (void)updateEditingTo:(BOOL)a3 animated:(BOOL)a4
+- (void)updateEditingTo:(BOOL)to animated:(BOOL)animated
 {
-  v4 = a4;
-  v5 = a3;
+  animatedCopy = animated;
+  toCopy = to;
   v6 = [(DOCRemoteContext *)self serviceProxyWithErrorHandler:&__block_literal_global_20];
-  [v6 updateEditingTo:v5 animated:v4];
+  [v6 updateEditingTo:toCopy animated:animatedCopy];
 }
 
 void __45__DOCRemoteContext_updateEditingTo_animated___block_invoke(uint64_t a1, void *a2)

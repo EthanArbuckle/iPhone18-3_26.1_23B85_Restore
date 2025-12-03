@@ -1,6 +1,6 @@
 @interface SSSQLiteQueryDescriptor
-- (id)_newSelectSQLWithProperties:(const void *)a3 count:(unint64_t)a4 columns:(id)a5;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)_newSelectSQLWithProperties:(const void *)properties count:(unint64_t)count columns:(id)columns;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
 @end
 
@@ -13,21 +13,21 @@
   [(SSSQLiteQueryDescriptor *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_entityClass;
   *(v5 + 16) = self->_limitCount;
   *(v5 + 24) = self->_memoryEntityClass;
-  *(v5 + 32) = [(NSString *)self->_orderingClause copyWithZone:a3];
-  *(v5 + 40) = [(NSArray *)self->_orderingDirections copyWithZone:a3];
-  *(v5 + 48) = [(NSArray *)self->_orderingProperties copyWithZone:a3];
-  *(v5 + 56) = [(SSSQLitePredicate *)self->_predicate copyWithZone:a3];
+  *(v5 + 32) = [(NSString *)self->_orderingClause copyWithZone:zone];
+  *(v5 + 40) = [(NSArray *)self->_orderingDirections copyWithZone:zone];
+  *(v5 + 48) = [(NSArray *)self->_orderingProperties copyWithZone:zone];
+  *(v5 + 56) = [(SSSQLitePredicate *)self->_predicate copyWithZone:zone];
   *(v5 + 64) = self->_returnsDistinctEntities;
   return v5;
 }
 
-- (id)_newSelectSQLWithProperties:(const void *)a3 count:(unint64_t)a4 columns:(id)a5
+- (id)_newSelectSQLWithProperties:(const void *)properties count:(unint64_t)count columns:(id)columns
 {
   v34 = *MEMORY[0x1E69E9840];
   v9 = [objc_alloc(MEMORY[0x1E696AD60]) initWithString:@"SELECT "];
@@ -37,7 +37,7 @@
     [v9 appendString:@"DISTINCT "];
   }
 
-  [v10 appendString:{objc_msgSend(a5, "componentsJoinedByString:", @", ")}];
+  [v10 appendString:{objc_msgSend(columns, "componentsJoinedByString:", @", ")}];
   [v10 appendFormat:@" FROM %@", -[objc_class databaseTable](self->_entityClass, "databaseTable")];
   v11 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v12 = [(SSSQLitePredicate *)self->_predicate SQLJoinClausesForEntityClass:self->_entityClass];
@@ -46,15 +46,15 @@
     [v11 unionSet:v12];
   }
 
-  for (; a4; --a4)
+  for (; count; --count)
   {
-    v13 = [(objc_class *)self->_entityClass joinClauseForProperty:*a3];
+    v13 = [(objc_class *)self->_entityClass joinClauseForProperty:*properties];
     if (v13)
     {
       [v11 addObject:v13];
     }
 
-    ++a3;
+    ++properties;
   }
 
   v31 = 0u;

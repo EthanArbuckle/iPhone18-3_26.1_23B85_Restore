@@ -1,35 +1,35 @@
 @interface LAUIRenderLoop
-- (BOOL)attachToScreen:(id)a3;
+- (BOOL)attachToScreen:(id)screen;
 - (CAFrameRateRange)preferredFrameRateRange;
 - (LAUIRenderLoop)init;
 - (LAUIRenderLoopDelegate)delegate;
 - (UIScreen)screen;
-- (void)_applicationDidBecomeActive:(id)a3;
-- (void)_applicationDidEnterBackground:(id)a3;
-- (void)_applicationWillEnterForeground:(id)a3;
-- (void)_drawAtTime:(uint64_t)a1;
-- (void)_drawWithDisplayLink:(uint64_t)a1;
+- (void)_applicationDidBecomeActive:(id)active;
+- (void)_applicationDidEnterBackground:(id)background;
+- (void)_applicationWillEnterForeground:(id)foreground;
+- (void)_drawAtTime:(uint64_t)time;
+- (void)_drawWithDisplayLink:(uint64_t)link;
 - (void)_setNeedsForcingPauseUpdate;
 - (void)_updateApplicationState;
 - (void)_updateEffectivePausedState;
 - (void)dealloc;
 - (void)invalidate;
-- (void)setDelegate:(id)a3;
-- (void)setHighFrameRateReason:(unsigned int)a3;
-- (void)setInApplicationContext:(BOOL)a3;
-- (void)setPaused:(BOOL)a3;
-- (void)setPreferredFrameRateRange:(CAFrameRateRange)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setHighFrameRateReason:(unsigned int)reason;
+- (void)setInApplicationContext:(BOOL)context;
+- (void)setPaused:(BOOL)paused;
+- (void)setPreferredFrameRateRange:(CAFrameRateRange)range;
 @end
 
 @implementation LAUIRenderLoop
 
-- (void)_drawWithDisplayLink:(uint64_t)a1
+- (void)_drawWithDisplayLink:(uint64_t)link
 {
   v4 = a2;
-  if (a1 && v4 && *(a1 + 24) == v4)
+  if (link && v4 && *(link + 24) == v4)
   {
     [v4 targetTimestamp];
-    [(LAUIRenderLoop *)a1 _drawAtTime:v3];
+    [(LAUIRenderLoop *)link _drawAtTime:v3];
   }
 }
 
@@ -54,35 +54,35 @@
 
 - (void)_updateApplicationState
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x277CCAB98] defaultCenter];
-    v4 = v2;
-    if (*(a1 + 36) == 1)
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    v4 = defaultCenter;
+    if (*(self + 36) == 1)
     {
-      v3 = [MEMORY[0x277D75128] sharedApplication];
-      *(a1 + 33) = [v3 applicationState] == 2;
+      mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+      *(self + 33) = [mEMORY[0x277D75128] applicationState] == 2;
 
-      [v4 addObserver:a1 selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
-      [v4 addObserver:a1 selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
-      [v4 addObserver:a1 selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
+      [v4 addObserver:self selector:sel__applicationDidEnterBackground_ name:*MEMORY[0x277D76660] object:0];
+      [v4 addObserver:self selector:sel__applicationWillEnterForeground_ name:*MEMORY[0x277D76758] object:0];
+      [v4 addObserver:self selector:sel__applicationDidBecomeActive_ name:*MEMORY[0x277D76648] object:0];
     }
 
     else
     {
-      [v2 removeObserver:a1 name:*MEMORY[0x277D76660] object:0];
-      [v4 removeObserver:a1 name:*MEMORY[0x277D76758] object:0];
-      [v4 removeObserver:a1 name:*MEMORY[0x277D76648] object:0];
+      [defaultCenter removeObserver:self name:*MEMORY[0x277D76660] object:0];
+      [v4 removeObserver:self name:*MEMORY[0x277D76758] object:0];
+      [v4 removeObserver:self name:*MEMORY[0x277D76648] object:0];
     }
 
-    [(LAUIRenderLoop *)a1 _updateEffectivePausedState];
+    [(LAUIRenderLoop *)self _updateEffectivePausedState];
   }
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   [(LAUIRenderLoop *)self invalidate];
   v4.receiver = self;
@@ -90,17 +90,17 @@
   [(LAUIRenderLoop *)&v4 dealloc];
 }
 
-- (BOOL)attachToScreen:(id)a3
+- (BOOL)attachToScreen:(id)screen
 {
-  v4 = a3;
+  screenCopy = screen;
   if (!self->_invalidated)
   {
     WeakRetained = objc_loadWeakRetained(&self->_screen);
-    if (WeakRetained == v4)
+    if (WeakRetained == screenCopy)
     {
       p_display_link = &self->_display_link;
       display_link = self->_display_link;
-      if (v4)
+      if (screenCopy)
       {
         if (display_link)
         {
@@ -108,7 +108,7 @@
           goto LABEL_11;
         }
 
-        objc_storeWeak(&self->_screen, v4);
+        objc_storeWeak(&self->_screen, screenCopy);
         goto LABEL_7;
       }
 
@@ -134,8 +134,8 @@
     *p_display_link = 0;
 
 LABEL_6:
-    objc_storeWeak(&self->_screen, v4);
-    if (!v4)
+    objc_storeWeak(&self->_screen, screenCopy);
+    if (!screenCopy)
     {
 LABEL_10:
       [(LAUIRenderLoop *)self _updateEffectivePausedState];
@@ -147,7 +147,7 @@ LABEL_11:
 
 LABEL_7:
     v10 = [[LAUIDisplayLinkTargetProxy alloc] initWithTarget:?];
-    v11 = [v4 displayLinkWithTarget:v10 selector:sel_drawWithDisplayLink_];
+    v11 = [screenCopy displayLinkWithTarget:v10 selector:sel_drawWithDisplayLink_];
     v12 = self->_display_link;
     self->_display_link = v11;
 
@@ -162,8 +162,8 @@ LABEL_7:
     }
 
     v16 = *p_display_link;
-    v17 = [MEMORY[0x277CBEB88] currentRunLoop];
-    [(CADisplayLink *)v16 addToRunLoop:v17 forMode:*MEMORY[0x277CBE738]];
+    currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+    [(CADisplayLink *)v16 addToRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 
     goto LABEL_10;
   }
@@ -176,56 +176,56 @@ LABEL_12:
 
 - (void)_updateEffectivePausedState
 {
-  if (a1)
+  if (self)
   {
-    if (*(a1 + 17) & 1) != 0 || !*(a1 + 24) || !CAFrameRateRangeIsEqualToRange(*(a1 + 56), *MEMORY[0x277CD9DD0]) && *(a1 + 60) <= 0.0 || *(a1 + 36) == 1 && (*(a1 + 33))
+    if (*(self + 17) & 1) != 0 || !*(self + 24) || !CAFrameRateRangeIsEqualToRange(*(self + 56), *MEMORY[0x277CD9DD0]) && *(self + 60) <= 0.0 || *(self + 36) == 1 && (*(self + 33))
     {
-      v2 = 1;
+      _isForcingPause = 1;
     }
 
     else
     {
-      v2 = [a1 _isForcingPause];
+      _isForcingPause = [self _isForcingPause];
     }
 
-    v3 = v2 ^ 1;
-    v4 = *(a1 + 39);
-    if (v4 != (v2 ^ 1))
+    v3 = _isForcingPause ^ 1;
+    v4 = *(self + 39);
+    if (v4 != (_isForcingPause ^ 1))
     {
-      *(a1 + 39) = v3;
+      *(self + 39) = v3;
     }
 
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    if (v2)
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    if (_isForcingPause)
     {
       v5 = 1;
     }
 
     else
     {
-      v5 = *(a1 + 38);
+      v5 = *(self + 38);
     }
 
-    if (*(a1 + 37) == (v5 & 1))
+    if (*(self + 37) == (v5 & 1))
     {
-      if (v4 != v3 && *(a1 + 35) == 1)
+      if (v4 != v3 && *(self + 35) == 1)
       {
-        [WeakRetained renderLoop:a1 didChangeRunnable:*(a1 + 39)];
+        [WeakRetained renderLoop:self didChangeRunnable:*(self + 39)];
       }
     }
 
     else
     {
-      *(a1 + 37) = v5 & 1;
-      [*(a1 + 24) setPaused:?];
-      if (v4 != v3 && *(a1 + 35) == 1)
+      *(self + 37) = v5 & 1;
+      [*(self + 24) setPaused:?];
+      if (v4 != v3 && *(self + 35) == 1)
       {
-        [WeakRetained renderLoop:a1 didChangeRunnable:*(a1 + 39)];
+        [WeakRetained renderLoop:self didChangeRunnable:*(self + 39)];
       }
 
-      if (*(a1 + 34) == 1)
+      if (*(self + 34) == 1)
       {
-        [WeakRetained renderLoop:a1 didChangeEffectivePaused:*(a1 + 37)];
+        [WeakRetained renderLoop:self didChangeEffectivePaused:*(self + 37)];
       }
     }
   }
@@ -250,40 +250,40 @@ LABEL_12:
   }
 }
 
-- (void)_drawAtTime:(uint64_t)a1
+- (void)_drawAtTime:(uint64_t)time
 {
-  if (a1 && (*(a1 + 37) & 1) == 0)
+  if (time && (*(time + 37) & 1) == 0)
   {
     v4 = objc_autoreleasePoolPush();
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
+    WeakRetained = objc_loadWeakRetained((time + 8));
     if (WeakRetained)
     {
-      *(a1 + 16) = 1;
-      [a1 _willDraw];
-      [WeakRetained renderLoop:a1 drawAtTime:a2];
-      *(a1 + 16) = 0;
-      [a1 _didDraw];
+      *(time + 16) = 1;
+      [time _willDraw];
+      [WeakRetained renderLoop:time drawAtTime:a2];
+      *(time + 16) = 0;
+      [time _didDraw];
     }
 
     objc_autoreleasePoolPop(v4);
   }
 }
 
-- (void)setInApplicationContext:(BOOL)a3
+- (void)setInApplicationContext:(BOOL)context
 {
-  if (self->_in_application_context != a3)
+  if (self->_in_application_context != context)
   {
-    self->_in_application_context = a3;
+    self->_in_application_context = context;
     [(LAUIRenderLoop *)self _updateApplicationState];
   }
 }
 
-- (void)setPreferredFrameRateRange:(CAFrameRateRange)a3
+- (void)setPreferredFrameRateRange:(CAFrameRateRange)range
 {
-  preferred = a3.preferred;
-  maximum = a3.maximum;
-  minimum = a3.minimum;
-  if (!CAFrameRateRangeIsEqualToRange(self->_preferred_fps_range, a3))
+  preferred = range.preferred;
+  maximum = range.maximum;
+  minimum = range.minimum;
+  if (!CAFrameRateRangeIsEqualToRange(self->_preferred_fps_range, range))
   {
     self->_preferred_fps_range.minimum = minimum;
     self->_preferred_fps_range.maximum = maximum;
@@ -297,27 +297,27 @@ LABEL_12:
   }
 }
 
-- (void)setHighFrameRateReason:(unsigned int)a3
+- (void)setHighFrameRateReason:(unsigned int)reason
 {
   self->_has_high_fps_reason = 1;
-  self->_high_fps_reason = a3;
+  self->_high_fps_reason = reason;
   [(CADisplayLink *)self->_display_link setHighFrameRateReason:?];
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
+    self->_paused = paused;
     [(LAUIRenderLoop *)self _updateEffectivePausedState];
   }
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v5 = a3;
-  objc_storeWeak(&self->_delegate, v5);
-  if (v5)
+  delegateCopy = delegate;
+  objc_storeWeak(&self->_delegate, delegateCopy);
+  if (delegateCopy)
   {
     self->_delegate_observes_effective_paused = objc_opt_respondsToSelector() & 1;
     v4 = objc_opt_respondsToSelector();
@@ -334,11 +334,11 @@ LABEL_12:
   MEMORY[0x2821F9730]();
 }
 
-- (void)_applicationDidEnterBackground:(id)a3
+- (void)_applicationDidEnterBackground:(id)background
 {
-  v5 = a3;
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  if ([v4 applicationState] != 2)
+  backgroundCopy = background;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  if ([mEMORY[0x277D75128] applicationState] != 2)
   {
     __assert_rtn("[LAUIRenderLoop _applicationDidEnterBackground:]", "LAUIRenderLoop.mm", 447, "[[UIApplication sharedApplication] applicationState] == UIApplicationStateBackground");
   }
@@ -350,7 +350,7 @@ LABEL_12:
   }
 }
 
-- (void)_applicationWillEnterForeground:(id)a3
+- (void)_applicationWillEnterForeground:(id)foreground
 {
   if (self->_background)
   {
@@ -359,11 +359,11 @@ LABEL_12:
   }
 }
 
-- (void)_applicationDidBecomeActive:(id)a3
+- (void)_applicationDidBecomeActive:(id)active
 {
-  v5 = a3;
-  v4 = [MEMORY[0x277D75128] sharedApplication];
-  if ([v4 applicationState] == 2)
+  activeCopy = active;
+  mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+  if ([mEMORY[0x277D75128] applicationState] == 2)
   {
     __assert_rtn("[LAUIRenderLoop _applicationDidBecomeActive:]", "LAUIRenderLoop.mm", 466, "[[UIApplication sharedApplication] applicationState] != UIApplicationStateBackground");
   }
@@ -402,9 +402,9 @@ LABEL_12:
 
 - (void)_setNeedsForcingPauseUpdate
 {
-  if (a1)
+  if (self)
   {
-    [(LAUIRenderLoop *)a1 _updateEffectivePausedState];
+    [(LAUIRenderLoop *)self _updateEffectivePausedState];
   }
 }
 

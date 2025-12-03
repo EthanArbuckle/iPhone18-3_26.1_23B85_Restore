@@ -1,47 +1,47 @@
 @interface PPSBasebandDecoder
-+ (BOOL)isDecodableMetric:(id)a3;
-+ (id)decodeValue:(id)a3 withMetric:(id)a4;
-+ (id)flattenResult:(id)a3 withParentKey:(id)a4;
-+ (id)hexStringToRawData:(id)a3;
-+ (id)transformPayload:(id)a3;
++ (BOOL)isDecodableMetric:(id)metric;
++ (id)decodeValue:(id)value withMetric:(id)metric;
++ (id)flattenResult:(id)result withParentKey:(id)key;
++ (id)hexStringToRawData:(id)data;
++ (id)transformPayload:(id)payload;
 @end
 
 @implementation PPSBasebandDecoder
 
-+ (BOOL)isDecodableMetric:(id)a3
++ (BOOL)isDecodableMetric:(id)metric
 {
-  if (!a3)
+  if (!metric)
   {
     return 0;
   }
 
-  v3 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(a3, "deviceCapability")}];
+  v3 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(metric, "deviceCapability")}];
   v4 = [&unk_287018090 containsObject:v3];
 
   return v4;
 }
 
-+ (id)decodeValue:(id)a3 withMetric:(id)a4
++ (id)decodeValue:(id)value withMetric:(id)metric
 {
-  v5 = a3;
-  v6 = a4;
-  if (v5 && [PPSBasebandDecoder isDecodableMetric:v6])
+  valueCopy = value;
+  metricCopy = metric;
+  if (valueCopy && [PPSBasebandDecoder isDecodableMetric:metricCopy])
   {
-    v7 = [v6 deviceCapability] - 18;
+    v7 = [metricCopy deviceCapability] - 18;
     if (v7 > 2)
     {
-      v11 = 0;
+      dictionaryRepresentation = 0;
     }
 
     else
     {
       v8 = off_279A11388[v7];
-      v9 = [PPSBasebandDecoder hexStringToRawData:v5];
+      v9 = [PPSBasebandDecoder hexStringToRawData:valueCopy];
       v10 = [objc_alloc(*v8) initWithData:v9];
-      v11 = [v10 dictionaryRepresentation];
+      dictionaryRepresentation = [v10 dictionaryRepresentation];
     }
 
-    v13 = [PPSBasebandDecoder transformPayload:v11];
+    v13 = [PPSBasebandDecoder transformPayload:dictionaryRepresentation];
     v12 = [PPSBasebandDecoder flattenResult:v13 withParentKey:0];
   }
 
@@ -53,19 +53,19 @@
   return v12;
 }
 
-+ (id)hexStringToRawData:(id)a3
++ (id)hexStringToRawData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   __str[2] = 0;
-  v4 = [v3 length];
+  v4 = [dataCopy length];
   v5 = [MEMORY[0x277CBEB28] dataWithCapacity:(v4 + (v4 >> 31)) >> 1];
   if (v4 >= 1)
   {
     v6 = 0;
     do
     {
-      __str[0] = *([v3 UTF8String] + v6);
-      __str[1] = *([v3 UTF8String] + v6 + 1);
+      __str[0] = *([dataCopy UTF8String] + v6);
+      __str[1] = *([dataCopy UTF8String] + v6 + 1);
       v8 = strtoul(__str, 0, 16);
       [v5 appendBytes:&v8 length:1];
       v6 += 2;
@@ -77,21 +77,21 @@
   return v5;
 }
 
-+ (id)transformPayload:(id)a3
++ (id)transformPayload:(id)payload
 {
-  v3 = a3;
+  payloadCopy = payload;
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy__0;
   v11 = __Block_byref_object_dispose__0;
-  v12 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __39__PPSBasebandDecoder_transformPayload___block_invoke;
   v6[3] = &unk_279A11340;
   v6[4] = &v7;
-  [v3 enumerateKeysAndObjectsUsingBlock:v6];
+  [payloadCopy enumerateKeysAndObjectsUsingBlock:v6];
   v4 = [v8[5] copy];
   _Block_object_dispose(&v7, 8);
 
@@ -165,24 +165,24 @@ void __39__PPSBasebandDecoder_transformPayload___block_invoke(uint64_t a1, void 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)flattenResult:(id)a3 withParentKey:(id)a4
++ (id)flattenResult:(id)result withParentKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
+  resultCopy = result;
+  keyCopy = key;
   v16 = 0;
   v17 = &v16;
   v18 = 0x3032000000;
   v19 = __Block_byref_object_copy__0;
   v20 = __Block_byref_object_dispose__0;
-  v21 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __50__PPSBasebandDecoder_flattenResult_withParentKey___block_invoke;
   v13 = &unk_279A11368;
-  v7 = v6;
+  v7 = keyCopy;
   v14 = v7;
   v15 = &v16;
-  [v5 enumerateKeysAndObjectsUsingBlock:&v10];
+  [resultCopy enumerateKeysAndObjectsUsingBlock:&v10];
   if ([v17[5] count])
   {
     v8 = [v17[5] copy];

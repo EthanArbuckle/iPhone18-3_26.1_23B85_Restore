@@ -1,39 +1,39 @@
 @interface WLKAppSettings
-+ (BOOL)isExternalID:(id)a3 equalToExternalID:(id)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAppSettings:(id)a3;
-- (WLKAppSettings)initWithChannelID:(id)a3 accessStatus:(unint64_t)a4 displayName:(id)a5 externalID:(id)a6;
-- (WLKAppSettings)initWithCoder:(id)a3;
++ (BOOL)isExternalID:(id)d equalToExternalID:(id)iD;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAppSettings:(id)settings;
+- (WLKAppSettings)initWithChannelID:(id)d accessStatus:(unint64_t)status displayName:(id)name externalID:(id)iD;
+- (WLKAppSettings)initWithCoder:(id)coder;
 - (id)JSONDictionary;
 - (id)_statusStrings;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WLKAppSettings
 
-- (WLKAppSettings)initWithChannelID:(id)a3 accessStatus:(unint64_t)a4 displayName:(id)a5 externalID:(id)a6
+- (WLKAppSettings)initWithChannelID:(id)d accessStatus:(unint64_t)status displayName:(id)name externalID:(id)iD
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  dCopy = d;
+  nameCopy = name;
+  iDCopy = iD;
   v21.receiver = self;
   v21.super_class = WLKAppSettings;
   v13 = [(WLKAppSettings *)&v21 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [dCopy copy];
     channelID = v13->_channelID;
     v13->_channelID = v14;
 
-    v13->_accessStatus = a4;
-    v16 = [v11 copy];
+    v13->_accessStatus = status;
+    v16 = [nameCopy copy];
     displayName = v13->_displayName;
     v13->_displayName = v16;
 
-    v18 = [v12 copy];
+    v18 = [iDCopy copy];
     externalID = v13->_externalID;
     v13->_externalID = v18;
   }
@@ -41,10 +41,10 @@
   return v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -52,24 +52,24 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WLKAppSettings *)self isEqualToAppSettings:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(WLKAppSettings *)self isEqualToAppSettings:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToAppSettings:(id)a3
+- (BOOL)isEqualToAppSettings:(id)settings
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  settingsCopy = settings;
+  v5 = settingsCopy;
+  if (settingsCopy)
   {
     accessStatus = self->_accessStatus;
-    if (accessStatus == [v4 accessStatus])
+    if (accessStatus == [settingsCopy accessStatus])
     {
       channelID = self->_channelID;
-      v8 = [v5 channelID];
-      if (![(NSString *)channelID isEqualToString:v8])
+      channelID = [v5 channelID];
+      if (![(NSString *)channelID isEqualToString:channelID])
       {
         v12 = 0;
 LABEL_17:
@@ -78,11 +78,11 @@ LABEL_17:
       }
 
       externalID = self->_externalID;
-      v10 = [v5 externalID];
-      v11 = v10;
-      if (externalID && v10)
+      externalID = [v5 externalID];
+      v11 = externalID;
+      if (externalID && externalID)
       {
-        if (([(NSString *)externalID isEqual:v10]& 1) == 0)
+        if (([(NSString *)externalID isEqual:externalID]& 1) == 0)
         {
 LABEL_7:
           v12 = 0;
@@ -92,22 +92,22 @@ LABEL_16:
         }
       }
 
-      else if (externalID | v10)
+      else if (externalID | externalID)
       {
         goto LABEL_7;
       }
 
       displayName = self->_displayName;
-      v14 = [v5 displayName];
-      v15 = v14;
-      if (displayName && v14)
+      displayName = [v5 displayName];
+      v15 = displayName;
+      if (displayName && displayName)
       {
-        v12 = [(NSString *)displayName isEqual:v14];
+        v12 = [(NSString *)displayName isEqual:displayName];
       }
 
       else
       {
-        v12 = (displayName | v14) == 0;
+        v12 = (displayName | displayName) == 0;
       }
 
       goto LABEL_16;
@@ -120,16 +120,16 @@ LABEL_18:
   return v12;
 }
 
-+ (BOOL)isExternalID:(id)a3 equalToExternalID:(id)a4
++ (BOOL)isExternalID:(id)d equalToExternalID:(id)iD
 {
-  if (a3 && a4)
+  if (d && iD)
   {
-    return [a3 isEqual:a4];
+    return [d isEqual:iD];
   }
 
   else
   {
-    return (a3 | a4) == 0;
+    return (d | iD) == 0;
   }
 }
 
@@ -148,8 +148,8 @@ LABEL_18:
   v4 = [(WLKAppSettings *)&v11 description];
   v10 = *&self->_channelID;
   externalID = self->_externalID;
-  v6 = [(WLKAppSettings *)self _statusStrings];
-  v7 = [v6 objectAtIndex:self->_accessStatus];
+  _statusStrings = [(WLKAppSettings *)self _statusStrings];
+  v7 = [_statusStrings objectAtIndex:self->_accessStatus];
   v8 = [v3 stringWithFormat:@"%@ channelID:%@ displayName:%@; externalID:%@; accessStatus:%@", v4, v10, externalID, v7];;
 
   return v8;
@@ -157,21 +157,21 @@ LABEL_18:
 
 - (id)JSONDictionary
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  [v3 setObject:self->_channelID forKeyedSubscript:@"channelID"];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:self->_channelID forKeyedSubscript:@"channelID"];
   v4 = [MEMORY[0x277CCABB0] numberWithInteger:self->_accessStatus];
-  [v3 setObject:v4 forKeyedSubscript:@"accessStatus"];
+  [dictionary setObject:v4 forKeyedSubscript:@"accessStatus"];
 
-  v5 = [(WLKAppSettings *)self _statusStrings];
-  v6 = [v5 objectAtIndex:self->_accessStatus];
-  [v3 setObject:v6 forKeyedSubscript:@"accessStatusString"];
+  _statusStrings = [(WLKAppSettings *)self _statusStrings];
+  v6 = [_statusStrings objectAtIndex:self->_accessStatus];
+  [dictionary setObject:v6 forKeyedSubscript:@"accessStatusString"];
 
   if ([(NSString *)self->_externalID length])
   {
-    [v3 setObject:self->_externalID forKeyedSubscript:@"externalID"];
+    [dictionary setObject:self->_externalID forKeyedSubscript:@"externalID"];
   }
 
-  v7 = [v3 copy];
+  v7 = [dictionary copy];
 
   return v7;
 }
@@ -194,61 +194,61 @@ void __32__WLKAppSettings__statusStrings__block_invoke()
   _statusStrings___statusStrings = &unk_288222F78;
 }
 
-- (WLKAppSettings)initWithCoder:(id)a3
+- (WLKAppSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
-  if ([v4 allowsKeyedCoding])
+  coderCopy = coder;
+  if ([coderCopy allowsKeyedCoding])
   {
     v5 = [(WLKAppSettings *)self init];
     if (v5)
     {
-      v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKAppSettings.channelID"];
+      v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKAppSettings.channelID"];
       channelID = v5->_channelID;
       v5->_channelID = v6;
 
-      v5->_accessStatus = [v4 decodeIntegerForKey:@"WLKAppSettings.accessStatus"];
-      v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKAppSettings.displayName"];
+      v5->_accessStatus = [coderCopy decodeIntegerForKey:@"WLKAppSettings.accessStatus"];
+      v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKAppSettings.displayName"];
       displayName = v5->_displayName;
       v5->_displayName = v8;
 
-      v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WLKAppSettings.externalID"];
+      v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WLKAppSettings.externalID"];
       externalID = v5->_externalID;
       v5->_externalID = v10;
 
-      v5->_obsolete = [v4 decodeBoolForKey:@"WLKAppSettings.obsolete"];
+      v5->_obsolete = [coderCopy decodeBoolForKey:@"WLKAppSettings.obsolete"];
     }
 
     self = v5;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The coder must allow keyed coding."];
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  if (([v4 allowsKeyedCoding] & 1) == 0)
+  coderCopy = coder;
+  if (([coderCopy allowsKeyedCoding] & 1) == 0)
   {
     [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:@"The coder must allow keyed coding."];
   }
 
-  [v4 encodeObject:self->_channelID forKey:@"WLKAppSettings.channelID"];
-  [v4 encodeInteger:self->_accessStatus forKey:@"WLKAppSettings.accessStatus"];
-  [v4 encodeObject:self->_displayName forKey:@"WLKAppSettings.displayName"];
-  [v4 encodeObject:self->_externalID forKey:@"WLKAppSettings.externalID"];
-  [v4 encodeBool:self->_obsolete forKey:@"WLKAppSettings.obsolete"];
+  [coderCopy encodeObject:self->_channelID forKey:@"WLKAppSettings.channelID"];
+  [coderCopy encodeInteger:self->_accessStatus forKey:@"WLKAppSettings.accessStatus"];
+  [coderCopy encodeObject:self->_displayName forKey:@"WLKAppSettings.displayName"];
+  [coderCopy encodeObject:self->_externalID forKey:@"WLKAppSettings.externalID"];
+  [coderCopy encodeBool:self->_obsolete forKey:@"WLKAppSettings.obsolete"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_channelID copy];
   v6 = *(v4 + 16);
   *(v4 + 16) = v5;

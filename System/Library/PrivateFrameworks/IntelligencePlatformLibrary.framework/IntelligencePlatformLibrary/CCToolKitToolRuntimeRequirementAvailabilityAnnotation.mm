@@ -1,38 +1,38 @@
 @interface CCToolKitToolRuntimeRequirementAvailabilityAnnotation
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
 - (CCToolKitToolRuntimePlatformVersion)deprecatingVersion;
 - (CCToolKitToolRuntimePlatformVersion)introducingVersion;
 - (CCToolKitToolRuntimePlatformVersion)obsoletingVersion;
-- (CCToolKitToolRuntimeRequirementAvailabilityAnnotation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCToolKitToolRuntimeRequirementAvailabilityAnnotation)initWithPlatform:(unsigned int)a3 introducingVersion:(id)a4 deprecatingVersion:(id)a5 obsoletingVersion:(id)a6 error:(id *)a7;
+- (CCToolKitToolRuntimeRequirementAvailabilityAnnotation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCToolKitToolRuntimeRequirementAvailabilityAnnotation)initWithPlatform:(unsigned int)platform introducingVersion:(id)version deprecatingVersion:(id)deprecatingVersion obsoletingVersion:(id)obsoletingVersion error:(id *)error;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCToolKitToolRuntimeRequirementAvailabilityAnnotation
 
-- (CCToolKitToolRuntimeRequirementAvailabilityAnnotation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCToolKitToolRuntimeRequirementAvailabilityAnnotation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   v26[1] = 0;
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"platform"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"platform"];
     v10 = v9;
     if (v9)
     {
-      v23 = [v9 unsignedIntegerValue];
+      unsignedIntegerValue = [v9 unsignedIntegerValue];
     }
 
     else
     {
-      v23 = 0;
+      unsignedIntegerValue = 0;
     }
 
-    v12 = [v6 objectForKeyedSubscript:@"introducingVersion"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"introducingVersion"];
     if (v12)
     {
       v26[0] = 0;
@@ -48,7 +48,7 @@
       v12 = v13;
     }
 
-    v15 = [v6 objectForKeyedSubscript:@"deprecatingVersion"];
+    v15 = [dictionaryCopy objectForKeyedSubscript:@"deprecatingVersion"];
     if (v15)
     {
       v25 = 0;
@@ -65,7 +65,7 @@
       v15 = v16;
     }
 
-    v18 = [v6 objectForKeyedSubscript:@"obsoletingVersion"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"obsoletingVersion"];
     if (!v18)
     {
       v19 = 0;
@@ -81,7 +81,7 @@
     {
 
 LABEL_21:
-      v11 = [[CCToolKitToolRuntimeRequirementAvailabilityAnnotation alloc] initWithPlatform:v23 introducingVersion:v12 deprecatingVersion:v15 obsoletingVersion:v19 error:a4];
+      v11 = [[CCToolKitToolRuntimeRequirementAvailabilityAnnotation alloc] initWithPlatform:unsignedIntegerValue introducingVersion:v12 deprecatingVersion:v15 obsoletingVersion:v19 error:error];
       v13 = v19;
 LABEL_24:
 
@@ -110,23 +110,23 @@ LABEL_25:
 
   if (self->_introducingVersion)
   {
-    v5 = [(CCToolKitToolRuntimeRequirementAvailabilityAnnotation *)self introducingVersion];
-    v6 = [v5 jsonDictionary];
-    [v3 setObject:v6 forKeyedSubscript:@"introducingVersion"];
+    introducingVersion = [(CCToolKitToolRuntimeRequirementAvailabilityAnnotation *)self introducingVersion];
+    jsonDictionary = [introducingVersion jsonDictionary];
+    [v3 setObject:jsonDictionary forKeyedSubscript:@"introducingVersion"];
   }
 
   if (self->_deprecatingVersion)
   {
-    v7 = [(CCToolKitToolRuntimeRequirementAvailabilityAnnotation *)self deprecatingVersion];
-    v8 = [v7 jsonDictionary];
-    [v3 setObject:v8 forKeyedSubscript:@"deprecatingVersion"];
+    deprecatingVersion = [(CCToolKitToolRuntimeRequirementAvailabilityAnnotation *)self deprecatingVersion];
+    jsonDictionary2 = [deprecatingVersion jsonDictionary];
+    [v3 setObject:jsonDictionary2 forKeyedSubscript:@"deprecatingVersion"];
   }
 
   if (self->_obsoletingVersion)
   {
-    v9 = [(CCToolKitToolRuntimeRequirementAvailabilityAnnotation *)self obsoletingVersion];
-    v10 = [v9 jsonDictionary];
-    [v3 setObject:v10 forKeyedSubscript:@"obsoletingVersion"];
+    obsoletingVersion = [(CCToolKitToolRuntimeRequirementAvailabilityAnnotation *)self obsoletingVersion];
+    jsonDictionary3 = [obsoletingVersion jsonDictionary];
+    [v3 setObject:jsonDictionary3 forKeyedSubscript:@"obsoletingVersion"];
   }
 
   v11 = [v3 copy];
@@ -134,33 +134,33 @@ LABEL_25:
   return v11;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v12 = a3;
+  blockCopy = block;
   v5 = objc_alloc(MEMORY[0x1E69939F0]);
   v6 = *MEMORY[0x1E69939A8];
   v7 = [v5 initWithFieldType:v6 enumValue:self->_platform];
-  v12[2](v12, v7);
+  blockCopy[2](blockCopy, v7);
 
   if (self->_introducingVersion)
   {
     v8 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_introducingVersion];
-    v12[2](v12, v8);
+    blockCopy[2](blockCopy, v8);
   }
 
   if (self->_deprecatingVersion)
   {
     v9 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_deprecatingVersion];
-    v12[2](v12, v9);
+    blockCopy[2](blockCopy, v9);
   }
 
-  v10 = v12;
+  v10 = blockCopy;
   if (self->_obsoletingVersion)
   {
     v11 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:v6 subMessageValue:self->_obsoletingVersion];
-    v12[2](v12, v11);
+    blockCopy[2](blockCopy, v11);
 
-    v10 = v12;
+    v10 = blockCopy;
   }
 }
 
@@ -185,10 +185,10 @@ LABEL_25:
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v5];
+  dataCopy = data;
+  v6 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v7 = MEMORY[0x1E6993AB8];
   v8 = MEMORY[0x1E6993AB0];
   v9 = MEMORY[0x1E6993AA8];
@@ -408,13 +408,13 @@ LABEL_53:
   return v44;
 }
 
-- (CCToolKitToolRuntimeRequirementAvailabilityAnnotation)initWithPlatform:(unsigned int)a3 introducingVersion:(id)a4 deprecatingVersion:(id)a5 obsoletingVersion:(id)a6 error:(id *)a7
+- (CCToolKitToolRuntimeRequirementAvailabilityAnnotation)initWithPlatform:(unsigned int)platform introducingVersion:(id)version deprecatingVersion:(id)deprecatingVersion obsoletingVersion:(id)obsoletingVersion error:(id *)error
 {
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  versionCopy = version;
+  deprecatingVersionCopy = deprecatingVersion;
+  obsoletingVersionCopy = obsoletingVersion;
   v15 = objc_opt_new();
-  if (a3)
+  if (platform)
   {
     v16 = CCValidateEnumField();
     v17 = 0;
@@ -431,7 +431,7 @@ LABEL_53:
     v17 = 0;
   }
 
-  if (v12)
+  if (versionCopy)
   {
     objc_opt_class();
     IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
@@ -442,10 +442,10 @@ LABEL_53:
       goto LABEL_17;
     }
 
-    v20 = [v12 data];
+    data = [versionCopy data];
     CCPBDataWriterWriteDataField();
 
-    if (!v13)
+    if (!deprecatingVersionCopy)
     {
       goto LABEL_8;
     }
@@ -454,11 +454,11 @@ LABEL_53:
   else
   {
     v19 = v17;
-    if (!v13)
+    if (!deprecatingVersionCopy)
     {
 LABEL_8:
       v17 = v19;
-      if (!v14)
+      if (!obsoletingVersionCopy)
       {
         goto LABEL_15;
       }
@@ -471,7 +471,7 @@ LABEL_13:
 
       if (v23)
       {
-        v24 = [v14 data];
+        data2 = [obsoletingVersionCopy data];
         CCPBDataWriterWriteDataField();
 
         v17 = v19;
@@ -480,7 +480,7 @@ LABEL_13:
 
 LABEL_17:
       CCSetError();
-      v26 = 0;
+      selfCopy = 0;
       v17 = v19;
       goto LABEL_18;
     }
@@ -494,26 +494,26 @@ LABEL_17:
   {
 LABEL_16:
     CCSetError();
-    v26 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
-  v22 = [v13 data];
+  data3 = [deprecatingVersionCopy data];
   CCPBDataWriterWriteDataField();
 
-  if (v14)
+  if (obsoletingVersionCopy)
   {
     goto LABEL_13;
   }
 
 LABEL_15:
-  v25 = [v15 immutableData];
-  self = [(CCItemMessage *)self initWithData:v25 error:a7];
+  immutableData = [v15 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v26 = self;
+  selfCopy = self;
 LABEL_18:
 
-  return v26;
+  return selfCopy;
 }
 
 @end

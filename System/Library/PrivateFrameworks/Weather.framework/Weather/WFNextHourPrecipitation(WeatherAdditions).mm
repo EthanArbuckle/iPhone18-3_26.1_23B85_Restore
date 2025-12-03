@@ -10,11 +10,11 @@
   v58 = *MEMORY[0x277D85DE8];
   v3 = a3;
   v4 = [v3 objectForKey:0x28822C328];
-  v5 = [v4 unsignedIntegerValue];
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
 
-  if (v5)
+  if (unsignedIntegerValue)
   {
-    [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v5];
+    [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:unsignedIntegerValue];
   }
 
   else
@@ -23,11 +23,11 @@
   }
   v40 = ;
   v6 = [v3 objectForKey:0x28822C348];
-  v7 = [v6 unsignedIntegerValue];
+  unsignedIntegerValue2 = [v6 unsignedIntegerValue];
 
-  if (v7)
+  if (unsignedIntegerValue2)
   {
-    [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v7];
+    [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:unsignedIntegerValue2];
   }
 
   else
@@ -36,11 +36,11 @@
   }
   v39 = ;
   v8 = [v3 objectForKey:0x28822C368];
-  v9 = [v8 unsignedIntegerValue];
+  unsignedIntegerValue3 = [v8 unsignedIntegerValue];
 
-  if (v9)
+  if (unsignedIntegerValue3)
   {
-    [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v9];
+    [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:unsignedIntegerValue3];
   }
 
   else
@@ -144,7 +144,7 @@
     while (v30);
   }
 
-  v34 = [a1 initWithReadDate:v40 startDate:v39 expirationDate:v38 minutes:v11 conditions:v27 descriptions:v19];
+  v34 = [self initWithReadDate:v40 startDate:v39 expirationDate:v38 minutes:v11 conditions:v27 descriptions:v19];
   v35 = *MEMORY[0x277D85DE8];
   return v34;
 }
@@ -153,18 +153,18 @@
 {
   v52 = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCABB0];
-  v3 = [a1 readDate];
-  [v3 timeIntervalSince1970];
+  readDate = [self readDate];
+  [readDate timeIntervalSince1970];
   v34 = [v2 numberWithDouble:?];
 
   v4 = MEMORY[0x277CCABB0];
-  v5 = [a1 startDate];
-  [v5 timeIntervalSince1970];
+  startDate = [self startDate];
+  [startDate timeIntervalSince1970];
   v33 = [v4 numberWithDouble:?];
 
   v6 = MEMORY[0x277CCABB0];
-  v7 = [a1 expirationDate];
-  [v7 timeIntervalSince1970];
+  expirationDate = [self expirationDate];
+  [expirationDate timeIntervalSince1970];
   v8 = [v6 numberWithDouble:?];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -172,8 +172,8 @@
   v44 = 0u;
   v45 = 0u;
   v46 = 0u;
-  v10 = [a1 minutes];
-  v11 = [v10 countByEnumeratingWithState:&v43 objects:v51 count:16];
+  minutes = [self minutes];
+  v11 = [minutes countByEnumeratingWithState:&v43 objects:v51 count:16];
   if (v11)
   {
     v12 = v11;
@@ -184,14 +184,14 @@
       {
         if (*v44 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(minutes);
         }
 
-        v15 = [*(*(&v43 + 1) + 8 * i) dictionaryRepresentation];
-        [v9 addObject:v15];
+        dictionaryRepresentation = [*(*(&v43 + 1) + 8 * i) dictionaryRepresentation];
+        [v9 addObject:dictionaryRepresentation];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v43 objects:v51 count:16];
+      v12 = [minutes countByEnumeratingWithState:&v43 objects:v51 count:16];
     }
 
     while (v12);
@@ -202,8 +202,8 @@
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
-  v17 = [a1 precipitationDescriptions];
-  v18 = [v17 countByEnumeratingWithState:&v39 objects:v50 count:16];
+  precipitationDescriptions = [self precipitationDescriptions];
+  v18 = [precipitationDescriptions countByEnumeratingWithState:&v39 objects:v50 count:16];
   if (v18)
   {
     v19 = v18;
@@ -214,14 +214,14 @@
       {
         if (*v40 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(precipitationDescriptions);
         }
 
-        v22 = [*(*(&v39 + 1) + 8 * j) dictionaryRepresentation];
-        [v16 addObject:v22];
+        dictionaryRepresentation2 = [*(*(&v39 + 1) + 8 * j) dictionaryRepresentation];
+        [v16 addObject:dictionaryRepresentation2];
       }
 
-      v19 = [v17 countByEnumeratingWithState:&v39 objects:v50 count:16];
+      v19 = [precipitationDescriptions countByEnumeratingWithState:&v39 objects:v50 count:16];
     }
 
     while (v19);
@@ -232,8 +232,8 @@
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v24 = [a1 conditions];
-  v25 = [v24 countByEnumeratingWithState:&v35 objects:v49 count:16];
+  conditions = [self conditions];
+  v25 = [conditions countByEnumeratingWithState:&v35 objects:v49 count:16];
   if (v25)
   {
     v26 = v25;
@@ -244,14 +244,14 @@
       {
         if (*v36 != v27)
         {
-          objc_enumerationMutation(v24);
+          objc_enumerationMutation(conditions);
         }
 
-        v29 = [*(*(&v35 + 1) + 8 * k) dictionaryRepresentation];
-        [v23 addObject:v29];
+        dictionaryRepresentation3 = [*(*(&v35 + 1) + 8 * k) dictionaryRepresentation];
+        [v23 addObject:dictionaryRepresentation3];
       }
 
-      v26 = [v24 countByEnumeratingWithState:&v35 objects:v49 count:16];
+      v26 = [conditions countByEnumeratingWithState:&v35 objects:v49 count:16];
     }
 
     while (v26);

@@ -1,29 +1,29 @@
 @interface AXUIServiceContext
-- (AXUIServiceContext)initWithService:(id)a3 serviceIdentifier:(id)a4;
+- (AXUIServiceContext)initWithService:(id)service serviceIdentifier:(id)identifier;
 - (NSArray)clientMessengerList;
-- (id)clientMessengerWithIdentifier:(id)a3;
-- (int)pidForClientWithIdentifier:(id)a3;
-- (unint64_t)_indexOfClientWithIdentifier:(id)a3;
+- (id)clientMessengerWithIdentifier:(id)identifier;
+- (int)pidForClientWithIdentifier:(id)identifier;
+- (unint64_t)_indexOfClientWithIdentifier:(id)identifier;
 - (unint64_t)clientsCount;
-- (void)addClientWithIdentifier:(id)a3 connection:(id)a4;
-- (void)enumerateClientsUsingBlock:(id)a3;
-- (void)removeClientWithIdentifier:(id)a3;
+- (void)addClientWithIdentifier:(id)identifier connection:(id)connection;
+- (void)enumerateClientsUsingBlock:(id)block;
+- (void)removeClientWithIdentifier:(id)identifier;
 @end
 
 @implementation AXUIServiceContext
 
-- (AXUIServiceContext)initWithService:(id)a3 serviceIdentifier:(id)a4
+- (AXUIServiceContext)initWithService:(id)service serviceIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = AXUIServiceContext;
   v8 = [(AXUIServiceContext *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    [(AXUIServiceContext *)v8 setService:v6];
-    [(AXUIServiceContext *)v9 setServiceIdentifier:v7];
+    [(AXUIServiceContext *)v8 setService:serviceCopy];
+    [(AXUIServiceContext *)v9 setServiceIdentifier:identifierCopy];
   }
 
   return v9;
@@ -31,48 +31,48 @@
 
 - (unint64_t)clientsCount
 {
-  v2 = [(AXUIServiceContext *)self clientMessengers];
-  v3 = [v2 count];
+  clientMessengers = [(AXUIServiceContext *)self clientMessengers];
+  v3 = [clientMessengers count];
 
   return v3;
 }
 
 - (NSArray)clientMessengerList
 {
-  v2 = [(AXUIServiceContext *)self clientMessengers];
-  v3 = [v2 copy];
+  clientMessengers = [(AXUIServiceContext *)self clientMessengers];
+  v3 = [clientMessengers copy];
 
   return v3;
 }
 
-- (void)addClientWithIdentifier:(id)a3 connection:(id)a4
+- (void)addClientWithIdentifier:(id)identifier connection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v9 = [(AXUIServiceContext *)self clientMessengers];
-  if (!v9)
+  connectionCopy = connection;
+  identifierCopy = identifier;
+  clientMessengers = [(AXUIServiceContext *)self clientMessengers];
+  if (!clientMessengers)
   {
-    v9 = objc_opt_new();
+    clientMessengers = objc_opt_new();
     [(AXUIServiceContext *)self setClientMessengers:?];
   }
 
-  v8 = [[AXUIClientMessenger alloc] initWithClientIdentifier:v7 connection:v6];
+  v8 = [[AXUIClientMessenger alloc] initWithClientIdentifier:identifierCopy connection:connectionCopy];
 
-  [v9 addObject:v8];
+  [clientMessengers addObject:v8];
 }
 
-- (unint64_t)_indexOfClientWithIdentifier:(id)a3
+- (unint64_t)_indexOfClientWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(AXUIServiceContext *)self clientMessengers];
+    clientMessengers = [(AXUIServiceContext *)self clientMessengers];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __51__AXUIServiceContext__indexOfClientWithIdentifier___block_invoke;
     v8[3] = &unk_278BF32D0;
-    v9 = v4;
-    v6 = [v5 indexOfObjectPassingTest:v8];
+    v9 = identifierCopy;
+    v6 = [clientMessengers indexOfObjectPassingTest:v8];
   }
 
   else
@@ -91,26 +91,26 @@ uint64_t __51__AXUIServiceContext__indexOfClientWithIdentifier___block_invoke(ui
   return v4;
 }
 
-- (void)removeClientWithIdentifier:(id)a3
+- (void)removeClientWithIdentifier:(id)identifier
 {
-  v4 = [(AXUIServiceContext *)self _indexOfClientWithIdentifier:a3];
+  v4 = [(AXUIServiceContext *)self _indexOfClientWithIdentifier:identifier];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;
-    v7 = [(AXUIServiceContext *)self clientMessengers];
-    v6 = [v7 objectAtIndex:v5];
+    clientMessengers = [(AXUIServiceContext *)self clientMessengers];
+    v6 = [clientMessengers objectAtIndex:v5];
     [v6 setConnection:0];
-    [v7 removeObjectAtIndex:v5];
-    if (![v7 count])
+    [clientMessengers removeObjectAtIndex:v5];
+    if (![clientMessengers count])
     {
       [(AXUIServiceContext *)self setClientMessengers:0];
     }
   }
 }
 
-- (id)clientMessengerWithIdentifier:(id)a3
+- (id)clientMessengerWithIdentifier:(id)identifier
 {
-  v4 = [(AXUIServiceContext *)self _indexOfClientWithIdentifier:a3];
+  v4 = [(AXUIServiceContext *)self _indexOfClientWithIdentifier:identifier];
   if (v4 == 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = 0;
@@ -119,17 +119,17 @@ uint64_t __51__AXUIServiceContext__indexOfClientWithIdentifier___block_invoke(ui
   else
   {
     v6 = v4;
-    v7 = [(AXUIServiceContext *)self clientMessengers];
-    v5 = [v7 objectAtIndex:v6];
+    clientMessengers = [(AXUIServiceContext *)self clientMessengers];
+    v5 = [clientMessengers objectAtIndex:v6];
   }
 
   return v5;
 }
 
-- (void)enumerateClientsUsingBlock:(id)a3
+- (void)enumerateClientsUsingBlock:(id)block
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   [(AXUIServiceContext *)self clientMessengers];
   v18 = 0;
   v14 = 0u;
@@ -151,9 +151,9 @@ LABEL_3:
       }
 
       v10 = *(*(&v14 + 1) + 8 * v9);
-      v11 = [v10 clientIdentifier];
-      v12 = [v10 connection];
-      v4[2](v4, v11, v12, &v18);
+      clientIdentifier = [v10 clientIdentifier];
+      connection = [v10 connection];
+      blockCopy[2](blockCopy, clientIdentifier, connection, &v18);
 
       if (v18)
       {
@@ -176,9 +176,9 @@ LABEL_3:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (int)pidForClientWithIdentifier:(id)a3
+- (int)pidForClientWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10 = 0;
   v11 = &v10;
   v12 = 0x2020000000;
@@ -187,7 +187,7 @@ LABEL_3:
   v7[1] = 3221225472;
   v7[2] = __49__AXUIServiceContext_pidForClientWithIdentifier___block_invoke;
   v7[3] = &unk_278BF31E0;
-  v5 = v4;
+  v5 = identifierCopy;
   v8 = v5;
   v9 = &v10;
   [(AXUIServiceContext *)self enumerateClientsUsingBlock:v7];

@@ -1,8 +1,8 @@
 @interface BWScalingSession
 - (BWScalingSession)init;
-- (id)_newIntermediatePoolWithDimensions:(id)a3 pixelFormat:(unsigned int)a4;
-- (int)scalePixelBuffer:(__CVBuffer *)a3 rect:(CGRect)a4 exifOrientation:(int)a5 intoPixelBuffer:(__CVBuffer *)a6 rect:(CGRect)a7;
-- (int)scalePixelBuffer:(__CVBuffer *)a3 rect:(CGRect)a4 intoPixelBuffer:(__CVBuffer *)a5 rect:(CGRect)a6;
+- (id)_newIntermediatePoolWithDimensions:(id)dimensions pixelFormat:(unsigned int)format;
+- (int)scalePixelBuffer:(__CVBuffer *)buffer rect:(CGRect)rect exifOrientation:(int)orientation intoPixelBuffer:(__CVBuffer *)pixelBuffer rect:(CGRect)a7;
+- (int)scalePixelBuffer:(__CVBuffer *)buffer rect:(CGRect)rect intoPixelBuffer:(__CVBuffer *)pixelBuffer rect:(CGRect)a6;
 - (void)_ensurePixelTransferSession;
 - (void)dealloc;
 - (void)init;
@@ -77,15 +77,15 @@
   [(BWScalingSession *)&v7 dealloc];
 }
 
-- (int)scalePixelBuffer:(__CVBuffer *)a3 rect:(CGRect)a4 intoPixelBuffer:(__CVBuffer *)a5 rect:(CGRect)a6
+- (int)scalePixelBuffer:(__CVBuffer *)buffer rect:(CGRect)rect intoPixelBuffer:(__CVBuffer *)pixelBuffer rect:(CGRect)a6
 {
-  if (!a3)
+  if (!buffer)
   {
     [BWScalingSession scalePixelBuffer:rect:intoPixelBuffer:rect:];
     return 0;
   }
 
-  if (!a5)
+  if (!pixelBuffer)
   {
     [BWScalingSession scalePixelBuffer:rect:intoPixelBuffer:rect:];
     return 0;
@@ -95,13 +95,13 @@
   width = a6.size.width;
   y = a6.origin.y;
   x = a6.origin.x;
-  v11 = a4.size.height;
-  v12 = a4.size.width;
-  v13 = a4.origin.y;
-  v14 = a4.origin.x;
-  if (CGRectIsNull(a4))
+  v11 = rect.size.height;
+  v12 = rect.size.width;
+  v13 = rect.origin.y;
+  v14 = rect.origin.x;
+  if (CGRectIsNull(rect))
   {
-    v14 = psn_pixelBufferRect(a3);
+    v14 = psn_pixelBufferRect(buffer);
     v13 = v17;
     v12 = v18;
     v11 = v19;
@@ -113,17 +113,17 @@
   v49.size.height = height;
   if (CGRectIsNull(v49))
   {
-    x = psn_pixelBufferRect(a5);
+    x = psn_pixelBufferRect(pixelBuffer);
     y = v20;
     width = v21;
     height = v22;
   }
 
-  v23 = ss_conformRectForMSR420vfPixelBuffer(a3, 0, v14, v13, v12, v11);
+  v23 = ss_conformRectForMSR420vfPixelBuffer(buffer, 0, v14, v13, v12, v11);
   v25 = v24;
   v27 = v26;
   v29 = v28;
-  v30 = ss_conformRectForMSR420vfPixelBuffer(a5, 1, x, y, width, height);
+  v30 = ss_conformRectForMSR420vfPixelBuffer(pixelBuffer, 1, x, y, width, height);
   v32 = v31;
   v34 = v33;
   v36 = v35;
@@ -161,7 +161,7 @@
 
     else
     {
-      v47 = VTPixelTransferSessionTransferImage(self->_transferSession, a3, a5);
+      v47 = VTPixelTransferSessionTransferImage(self->_transferSession, buffer, pixelBuffer);
       if (v47)
       {
         [BWScalingSession scalePixelBuffer:rect:intoPixelBuffer:rect:];
@@ -172,21 +172,21 @@
   return v47;
 }
 
-- (int)scalePixelBuffer:(__CVBuffer *)a3 rect:(CGRect)a4 exifOrientation:(int)a5 intoPixelBuffer:(__CVBuffer *)a6 rect:(CGRect)a7
+- (int)scalePixelBuffer:(__CVBuffer *)buffer rect:(CGRect)rect exifOrientation:(int)orientation intoPixelBuffer:(__CVBuffer *)pixelBuffer rect:(CGRect)a7
 {
-  if (!a3)
+  if (!buffer)
   {
     [BWScalingSession scalePixelBuffer:rect:exifOrientation:intoPixelBuffer:rect:];
     return 0;
   }
 
-  if (!a6)
+  if (!pixelBuffer)
   {
     [BWScalingSession scalePixelBuffer:rect:exifOrientation:intoPixelBuffer:rect:];
     return 0;
   }
 
-  if ((a5 - 9) <= 0xFFFFFFF7)
+  if ((orientation - 9) <= 0xFFFFFFF7)
   {
     [BWScalingSession scalePixelBuffer:rect:exifOrientation:intoPixelBuffer:rect:];
     return 0;
@@ -196,13 +196,13 @@
   width = a7.size.width;
   y = a7.origin.y;
   x = a7.origin.x;
-  v13 = a4.size.height;
-  v14 = a4.size.width;
-  v15 = a4.origin.y;
-  v16 = a4.origin.x;
-  if (CGRectIsNull(a4))
+  v13 = rect.size.height;
+  v14 = rect.size.width;
+  v15 = rect.origin.y;
+  v16 = rect.origin.x;
+  if (CGRectIsNull(rect))
   {
-    v16 = psn_pixelBufferRect(a3);
+    v16 = psn_pixelBufferRect(buffer);
     v15 = v19;
     v14 = v20;
     v13 = v21;
@@ -216,12 +216,12 @@
   v44 = v15;
   if (CGRectIsNull(v45))
   {
-    psn_pixelBufferRect(a6);
+    psn_pixelBufferRect(pixelBuffer);
     width = v22;
     height = v23;
   }
 
-  v24 = FigCaptureRotationDegreesAndMirroringFromExifOrientation(a5, 0);
+  v24 = FigCaptureRotationDegreesAndMirroringFromExifOrientation(orientation, 0);
   v25 = v24;
   if (v24 == 270 || (v26 = width, v27 = height, v24 == 90))
   {
@@ -255,7 +255,7 @@
   {
 LABEL_20:
 
-    intermediateBufferPool = [(BWScalingSession *)self _newIntermediatePoolWithDimensions:v34 pixelFormat:CVPixelBufferGetPixelFormatType(a3)];
+    intermediateBufferPool = [(BWScalingSession *)self _newIntermediatePoolWithDimensions:v34 pixelFormat:CVPixelBufferGetPixelFormatType(buffer)];
     self->_intermediateBufferPool = intermediateBufferPool;
     self->_intermediateBufferPoolDimensions.width = v31;
     self->_intermediateBufferPoolDimensions.height = v32;
@@ -270,7 +270,7 @@ LABEL_20:
 
 LABEL_21:
   v30 = [(BWPixelBufferPool *)intermediateBufferPool newPixelBuffer:v29];
-  v35 = [(BWScalingSession *)self scalePixelBuffer:a3 rect:v30 intoPixelBuffer:v43 rect:v44, v14, v13, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), v26, v27];
+  v35 = [(BWScalingSession *)self scalePixelBuffer:buffer rect:v30 intoPixelBuffer:v43 rect:v44, v14, v13, *MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), v26, v27];
   if (v35)
   {
     v41 = v35;
@@ -353,14 +353,14 @@ LABEL_37:
   return v41;
 }
 
-- (id)_newIntermediatePoolWithDimensions:(id)a3 pixelFormat:(unsigned int)a4
+- (id)_newIntermediatePoolWithDimensions:(id)dimensions pixelFormat:(unsigned int)format
 {
-  v4 = *&a4;
+  v4 = *&format;
   v6 = objc_alloc_init(BWVideoFormatRequirements);
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v4];
   -[BWVideoFormatRequirements setSupportedPixelFormats:](v6, "setSupportedPixelFormats:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v9 count:1]);
-  [(BWVideoFormatRequirements *)v6 setWidth:a3.var0];
-  [(BWVideoFormatRequirements *)v6 setHeight:*&a3 >> 32];
+  [(BWVideoFormatRequirements *)v6 setWidth:dimensions.var0];
+  [(BWVideoFormatRequirements *)v6 setHeight:*&dimensions >> 32];
   v8 = v6;
   return -[BWPixelBufferPool initWithVideoFormat:capacity:name:memoryPool:]([BWPixelBufferPool alloc], "initWithVideoFormat:capacity:name:memoryPool:", +[BWVideoFormat formatByResolvingRequirements:](BWVideoFormat, "formatByResolvingRequirements:", [MEMORY[0x1E695DEC8] arrayWithObjects:&v8 count:1]), 1, @"BWVideoPIPOverlayNode Intermediate Pool", +[BWMemoryPool sharedMemoryPool](BWMemoryPool, "sharedMemoryPool"));
 }

@@ -1,8 +1,8 @@
 @interface DMDFetchAppsOperation
 + (id)whitelistedClassesForRequest;
-+ (void)_fetchAppsForBundleIdentifier:(id)a3 type:(unint64_t)a4 completion:(id)a5;
-+ (void)fetchAppsForRequest:(id)a3 completion:(id)a4;
-- (void)runWithRequest:(id)a3;
++ (void)_fetchAppsForBundleIdentifier:(id)identifier type:(unint64_t)type completion:(id)completion;
++ (void)fetchAppsForRequest:(id)request completion:(id)completion;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -22,25 +22,25 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100044CDC;
   v5[3] = &unk_1000CF1A8;
   v5[4] = self;
-  [objc_opt_class() fetchAppsForRequest:v4 completion:v5];
+  [objc_opt_class() fetchAppsForRequest:requestCopy completion:v5];
 }
 
-+ (void)fetchAppsForRequest:(id)a3 completion:(id)a4
++ (void)fetchAppsForRequest:(id)request completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  requestCopy = request;
+  completionCopy = completion;
+  v9 = completionCopy;
+  if (requestCopy)
   {
-    if (v8)
+    if (completionCopy)
     {
       goto LABEL_3;
     }
@@ -48,27 +48,27 @@
 
   else
   {
-    sub_100084310(a2, a1);
+    sub_100084310(a2, self);
     if (v9)
     {
       goto LABEL_3;
     }
   }
 
-  sub_10008438C(a2, a1);
+  sub_10008438C(a2, self);
 LABEL_3:
   v10 = +[DMDAppController sharedController];
-  v11 = [v7 manifestURL];
+  manifestURL = [requestCopy manifestURL];
   v12 = DMFAppLog();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
-  if (v11)
+  if (manifestURL)
   {
     if (v13)
     {
-      v14 = [v7 manifestURL];
-      v15 = [v14 host];
+      manifestURL2 = [requestCopy manifestURL];
+      host = [manifestURL2 host];
       *buf = 138543362;
-      v33 = v15;
+      v33 = host;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Fetch app with manifest url from: %{public}@", buf, 0xCu);
     }
 
@@ -78,24 +78,24 @@ LABEL_3:
     v29[3] = &unk_1000CF1D0;
     v16 = v31;
     v31[0] = v9;
-    v31[1] = a1;
+    v31[1] = self;
     v17 = &v30;
-    v30 = v7;
-    v18 = v7;
+    v30 = requestCopy;
+    v18 = requestCopy;
     v19 = v9;
-    [v10 getBundleIdentifierForManifestURL:v11 completion:v29];
+    [v10 getBundleIdentifierForManifestURL:manifestURL completion:v29];
   }
 
   else
   {
     if (v13)
     {
-      v20 = [v7 bundleIdentifiers];
-      v21 = [v7 storeItemIdentifier];
+      bundleIdentifiers = [requestCopy bundleIdentifiers];
+      storeItemIdentifier = [requestCopy storeItemIdentifier];
       *buf = 138543618;
-      v33 = v20;
+      v33 = bundleIdentifiers;
       v34 = 2114;
-      v35 = v21;
+      v35 = storeItemIdentifier;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "Fetch apps with bundle ids: %{public}@, store item id: %{public}@", buf, 0x16u);
     }
 
@@ -106,26 +106,26 @@ LABEL_3:
     v16 = &v28;
     v17 = &v26;
     v28 = v9;
-    v26 = v7;
+    v26 = requestCopy;
     v22 = v10;
     v27 = v22;
-    v23 = v7;
+    v23 = requestCopy;
     v24 = v9;
     [v22 handleFetchRequest:v23 completion:v25];
   }
 }
 
-+ (void)_fetchAppsForBundleIdentifier:(id)a3 type:(unint64_t)a4 completion:(id)a5
++ (void)_fetchAppsForBundleIdentifier:(id)identifier type:(unint64_t)type completion:(id)completion
 {
-  v8 = a5;
-  v9 = a3;
+  completionCopy = completion;
+  identifierCopy = identifier;
   v10 = objc_opt_new();
-  v12 = v9;
+  v12 = identifierCopy;
   v11 = [NSArray arrayWithObjects:&v12 count:1];
 
   [v10 setBundleIdentifiers:v11];
-  [v10 setType:a4];
-  [a1 fetchAppsForRequest:v10 completion:v8];
+  [v10 setType:type];
+  [self fetchAppsForRequest:v10 completion:completionCopy];
 }
 
 @end

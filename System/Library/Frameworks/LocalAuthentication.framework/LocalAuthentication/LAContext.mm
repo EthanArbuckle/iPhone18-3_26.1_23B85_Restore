@@ -1,68 +1,68 @@
 @interface LAContext
-+ (id)_optionsForEvent:(int64_t)a3;
-+ (void)notifyEvent:(int64_t)a3 completionHandler:(id)a4;
++ (id)_optionsForEvent:(int64_t)event;
++ (void)notifyEvent:(int64_t)event completionHandler:(id)handler;
 - (BOOL)canEvaluatePolicy:(LAPolicy)policy error:(NSError *)error;
-- (BOOL)checkContextValidWithError:(id *)a3;
-- (BOOL)evaluateBoolOption:(int64_t)a3 options:(id)a4 property:(id)a5;
+- (BOOL)checkContextValidWithError:(id *)error;
+- (BOOL)evaluateBoolOption:(int64_t)option options:(id)options property:(id)property;
 - (BOOL)interactionNotAllowed;
 - (BOOL)isCredentialSet:(LACredentialType)type;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setCredential:(id)a3 type:(int64_t)a4 options:(id)a5 error:(id *)a6;
-- (BOOL)verifyFileVaultUser:(id)a3 volumeUuid:(id)a4 options:(unint64_t)a5 error:(id *)a6;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setCredential:(id)credential type:(int64_t)type options:(id)options error:(id *)error;
+- (BOOL)verifyFileVaultUser:(id)user volumeUuid:(id)uuid options:(unint64_t)options error:(id *)error;
 - (LABiometryType)biometryType;
 - (LACContextCredentialCoder)credentialCoder;
 - (LACEntitlementsChecker)entitlementsChecker;
-- (LAContext)initWithCoder:(id)a3;
-- (LAContext)initWithExternalizedContext:(id)a3 uiDelegate:(id)a4;
-- (LAContext)initWithExternalizedContext:(id)a3 userSession:(const unsigned int *)a4 flags:(int64_t)a5;
+- (LAContext)initWithCoder:(id)coder;
+- (LAContext)initWithExternalizedContext:(id)context uiDelegate:(id)delegate;
+- (LAContext)initWithExternalizedContext:(id)context userSession:(const unsigned int *)session flags:(int64_t)flags;
 - (NSData)externalizedContext;
 - (NSTimeInterval)touchIDAuthenticationAllowableReuseDuration;
-- (id)_evaluationMechanismsFromReturnedError:(id)a3 error:(id *)a4;
-- (id)_fetchDomainStateWithOptions:(id)a3 error:(id *)a4;
-- (id)_hashWithBundleIdentifier:(id)a3;
+- (id)_evaluationMechanismsFromReturnedError:(id)error error:(id *)a4;
+- (id)_fetchDomainStateWithOptions:(id)options error:(id *)error;
+- (id)_hashWithBundleIdentifier:(id)identifier;
 - (id)_nullCharacterData;
-- (id)_publicErrorFromInternalError:(id)a3 options:(id)a4;
-- (id)_serverPropertyValueForOption:(int64_t)a3 log:(int64_t)a4;
-- (id)credentialOfType:(int64_t)a3 error:(id *)a4;
+- (id)_publicErrorFromInternalError:(id)error options:(id)options;
+- (id)_serverPropertyValueForOption:(int64_t)option log:(int64_t)log;
+- (id)credentialOfType:(int64_t)type error:(id *)error;
 - (id)description;
-- (id)domainStateWithOptions:(id)a3;
-- (id)evaluateAccessControl:(__SecAccessControl *)a3 aksOperation:(void *)a4 options:(id)a5 error:(id *)a6;
-- (id)evaluateAccessControl:(__SecAccessControl *)a3 operation:(int64_t)a4 options:(id)a5 error:(id *)a6;
-- (id)evaluatePolicy:(int64_t)a3 options:(id)a4 error:(id *)a5;
-- (id)evaluationMechanismsForAccessControl:(__SecAccessControl *)a3 operation:(int64_t)a4 error:(id *)a5;
-- (id)evaluationMechanismsForPolicy:(int64_t)a3 error:(id *)a4;
-- (id)initNonDisposableWithError:(id *)a3;
+- (id)domainStateWithOptions:(id)options;
+- (id)evaluateAccessControl:(__SecAccessControl *)control aksOperation:(void *)operation options:(id)options error:(id *)error;
+- (id)evaluateAccessControl:(__SecAccessControl *)control operation:(int64_t)operation options:(id)options error:(id *)error;
+- (id)evaluatePolicy:(int64_t)policy options:(id)options error:(id *)error;
+- (id)evaluationMechanismsForAccessControl:(__SecAccessControl *)control operation:(int64_t)operation error:(id *)error;
+- (id)evaluationMechanismsForPolicy:(int64_t)policy error:(id *)error;
+- (id)initNonDisposableWithError:(id *)error;
 - (unint64_t)hash;
-- (void)_decodeCredential:(id)a3 type:(int64_t)a4 reply:(id)a5;
-- (void)_encodeCredential:(id)a3 type:(int64_t)a4 reply:(id)a5;
-- (void)_evaluateAccessControl:(__SecAccessControl *)a3 operation:(id)a4 options:(id)a5 log:(int64_t)a6 cid:(unsigned int)a7 synchronous:(BOOL)a8 reply:(id)a9;
+- (void)_decodeCredential:(id)credential type:(int64_t)type reply:(id)reply;
+- (void)_encodeCredential:(id)credential type:(int64_t)type reply:(id)reply;
+- (void)_evaluateAccessControl:(__SecAccessControl *)control operation:(id)operation options:(id)options log:(int64_t)log cid:(unsigned int)cid synchronous:(BOOL)synchronous reply:(id)reply;
 - (void)_notifyObserversAfterInvalidation;
-- (void)_setCredential:(id)a3 type:(int64_t)a4 options:(id)a5 log:(int64_t)a6 cid:(unsigned int)a7 reply:(id)a8;
-- (void)_setServerPropertyForOption:(int64_t)a3 value:(id)a4 log:(int64_t)a5;
-- (void)addContextObserver:(id)a3;
-- (void)authMethodWithReply:(id)a3;
-- (void)authorizeOperation:(int64_t)a3 protectedBy:(__SecAccessControl *)a4 options:(id)a5 reply:(id)a6;
-- (void)checkCanEvaluateRight:(id)a3 reply:(id)a4;
-- (void)credentialOfType:(int64_t)a3 reply:(id)a4;
+- (void)_setCredential:(id)credential type:(int64_t)type options:(id)options log:(int64_t)log cid:(unsigned int)cid reply:(id)reply;
+- (void)_setServerPropertyForOption:(int64_t)option value:(id)value log:(int64_t)log;
+- (void)addContextObserver:(id)observer;
+- (void)authMethodWithReply:(id)reply;
+- (void)authorizeOperation:(int64_t)operation protectedBy:(__SecAccessControl *)by options:(id)options reply:(id)reply;
+- (void)checkCanEvaluateRight:(id)right reply:(id)reply;
+- (void)credentialOfType:(int64_t)type reply:(id)reply;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)evaluateAccessControl:(SecAccessControlRef)accessControl operation:(LAAccessControlOperation)operation localizedReason:(NSString *)localizedReason reply:(void *)reply;
-- (void)evaluateAccessControl:(__SecAccessControl *)a3 aksOperation:(void *)a4 options:(id)a5 reply:(id)a6;
-- (void)evaluateAccessControl:(__SecAccessControl *)a3 operation:(int64_t)a4 options:(id)a5 reply:(id)a6;
+- (void)evaluateAccessControl:(__SecAccessControl *)control aksOperation:(void *)operation options:(id)options reply:(id)reply;
+- (void)evaluateAccessControl:(__SecAccessControl *)control operation:(int64_t)operation options:(id)options reply:(id)reply;
 - (void)evaluatePolicy:(LAPolicy)policy localizedReason:(NSString *)localizedReason reply:(void *)reply;
-- (void)evaluatePolicy:(int64_t)a3 options:(id)a4 reply:(id)a5;
-- (void)evaluateRight:(id)a3 localizedReason:(id)a4 reply:(id)a5;
-- (void)failProcessedEvent:(int64_t)a3 failureError:(id)a4 reply:(id)a5;
+- (void)evaluatePolicy:(int64_t)policy options:(id)options reply:(id)reply;
+- (void)evaluateRight:(id)right localizedReason:(id)reason reply:(id)reply;
+- (void)failProcessedEvent:(int64_t)event failureError:(id)error reply:(id)reply;
 - (void)invalidate;
-- (void)optionsForInternalOperation:(int64_t)a3 reply:(id)a4;
-- (void)prearmTouchIDWithReply:(id)a3;
-- (void)removeContextObserver:(id)a3;
-- (void)resetProcessedEvent:(int64_t)a3 reply:(id)a4;
-- (void)resetWithReply:(id)a3;
-- (void)retryProcessedEvent:(int64_t)a3 reply:(id)a4;
-- (void)setCredential:(id)a3 forProcessedEvent:(int64_t)a4 credentialType:(int64_t)a5 reply:(id)a6;
-- (void)setCredential:(id)a3 type:(int64_t)a4 options:(id)a5 reply:(id)a6;
-- (void)setOptions:(id)a3 forInternalOperation:(int64_t)a4 reply:(id)a5;
+- (void)optionsForInternalOperation:(int64_t)operation reply:(id)reply;
+- (void)prearmTouchIDWithReply:(id)reply;
+- (void)removeContextObserver:(id)observer;
+- (void)resetProcessedEvent:(int64_t)event reply:(id)reply;
+- (void)resetWithReply:(id)reply;
+- (void)retryProcessedEvent:(int64_t)event reply:(id)reply;
+- (void)setCredential:(id)credential forProcessedEvent:(int64_t)event credentialType:(int64_t)type reply:(id)reply;
+- (void)setCredential:(id)credential type:(int64_t)type options:(id)options reply:(id)reply;
+- (void)setOptions:(id)options forInternalOperation:(int64_t)operation reply:(id)reply;
 - (void)setTouchIDAuthenticationAllowableReuseDuration:(NSTimeInterval)touchIDAuthenticationAllowableReuseDuration;
 @end
 
@@ -83,12 +83,12 @@
     _os_log_impl(&dword_1A784E000, v3, OS_LOG_TYPE_INFO, "externalizedContext on %{public}@ cid:%u", &v12, 0x12u);
   }
 
-  v6 = [(LAClient *)self->_client externalizedContext];
+  externalizedContext = [(LAClient *)self->_client externalizedContext];
   v7 = v3;
-  v8 = 16 * (v6 == 0);
+  v8 = 16 * (externalizedContext == 0);
   if (os_log_type_enabled(v7, v8))
   {
-    v9 = [v6 hash];
+    v9 = [externalizedContext hash];
     v12 = 138543874;
     v13 = v5;
     v14 = 1024;
@@ -100,15 +100,15 @@
 
   v10 = *MEMORY[0x1E69E9840];
 
-  return v6;
+  return externalizedContext;
 }
 
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(LAContext *)self instanceId];
-  v5 = [(LAClient *)self->_client proxyId];
-  v6 = [v3 stringWithFormat:@"LAContext[%u:%@", v4, v5];
+  instanceId = [(LAContext *)self instanceId];
+  proxyId = [(LAClient *)self->_client proxyId];
+  v6 = [v3 stringWithFormat:@"LAContext[%u:%@", instanceId, proxyId];
 
   if (self->_flags)
   {
@@ -117,12 +117,12 @@
     v6 = v7;
   }
 
-  v8 = [(LAContext *)self uiDelegate];
+  uiDelegate = [(LAContext *)self uiDelegate];
 
-  if (v8)
+  if (uiDelegate)
   {
-    v9 = [(LAContext *)self uiDelegate];
-    v10 = [v6 stringByAppendingFormat:@" uiDelegate:%@", v9];
+    uiDelegate2 = [(LAContext *)self uiDelegate];
+    v10 = [v6 stringByAppendingFormat:@" uiDelegate:%@", uiDelegate2];
 
     v6 = v10;
   }
@@ -139,7 +139,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A784E000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ deallocated", buf, 0xCu);
   }
 
@@ -150,12 +150,12 @@
   v4 = *MEMORY[0x1E69E9840];
 }
 
-- (void)authorizeOperation:(int64_t)a3 protectedBy:(__SecAccessControl *)a4 options:(id)a5 reply:(id)a6
+- (void)authorizeOperation:(int64_t)operation protectedBy:(__SecAccessControl *)by options:(id)options reply:(id)reply
 {
-  v10 = a5;
-  v11 = a6;
-  v12 = [v10 objectForKeyedSubscript:&unk_1F1A6FC08];
-  v13 = [v10 mutableCopy];
+  optionsCopy = options;
+  replyCopy = reply;
+  v12 = [optionsCopy objectForKeyedSubscript:&unk_1F1A6FC08];
+  v13 = [optionsCopy mutableCopy];
   [v13 setObject:0 forKeyedSubscript:&unk_1F1A6FC08];
   v24 = 0;
   v25 = &v24;
@@ -182,9 +182,9 @@
     v21[2] = __73__LAContext_Authorization__authorizeOperation_protectedBy_options_reply___block_invoke;
     v21[3] = &unk_1E77CB0F8;
     v16 = &v22;
-    v22 = v11;
-    v17 = v11;
-    [v14 evaluateAccessControl:a4 context:self operation:a3 options:v13 presentationContext:v12 reply:v21];
+    v22 = replyCopy;
+    v17 = replyCopy;
+    [v14 evaluateAccessControl:by context:self operation:operation options:v13 presentationContext:v12 reply:v21];
   }
 
   else
@@ -194,33 +194,33 @@
     v19[2] = __73__LAContext_Authorization__authorizeOperation_protectedBy_options_reply___block_invoke_2;
     v19[3] = &unk_1E77CB0F8;
     v16 = &v20;
-    v20 = v11;
-    v18 = v11;
-    [(LAContext *)self evaluateAccessControl:a4 operation:a3 options:v13 reply:v19];
+    v20 = replyCopy;
+    v18 = replyCopy;
+    [(LAContext *)self evaluateAccessControl:by operation:operation options:v13 reply:v19];
   }
 }
 
-- (void)evaluateRight:(id)a3 localizedReason:(id)a4 reply:(id)a5
+- (void)evaluateRight:(id)right localizedReason:(id)reason reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  [v10 setContext:self];
-  [v10 authorizeWithLocalizedReason:v9 completion:v8];
+  replyCopy = reply;
+  reasonCopy = reason;
+  rightCopy = right;
+  [rightCopy setContext:self];
+  [rightCopy authorizeWithLocalizedReason:reasonCopy completion:replyCopy];
 }
 
-- (void)checkCanEvaluateRight:(id)a3 reply:(id)a4
+- (void)checkCanEvaluateRight:(id)right reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  [v7 setContext:self];
-  [v7 checkCanAuthorizeWithCompletion:v6];
+  replyCopy = reply;
+  rightCopy = right;
+  [rightCopy setContext:self];
+  [rightCopy checkCanAuthorizeWithCompletion:replyCopy];
 }
 
-+ (void)notifyEvent:(int64_t)a3 completionHandler:(id)a4
++ (void)notifyEvent:(int64_t)event completionHandler:(id)handler
 {
   v25 = *MEMORY[0x1E69E9840];
-  v5 = a4;
+  handlerCopy = handler;
   if (notifyEvent_completionHandler__onceToken[0] != -1)
   {
     +[LAContext notifyEvent:completionHandler:];
@@ -231,7 +231,7 @@
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 67109376;
-    *&buf[4] = a3;
+    *&buf[4] = event;
     LOWORD(v20) = 1024;
     *(&v20 + 2) = v7;
     _os_log_impl(&dword_1A784E000, v6, OS_LOG_TYPE_DEFAULT, "notifyEvent:%d cid:%u", buf, 0xEu);
@@ -244,7 +244,7 @@
   v23 = __Block_byref_object_dispose__5;
   v24 = objc_opt_new();
   v8 = *(v20 + 5);
-  v9 = [LAContext _optionsForEvent:a3];
+  v9 = [LAContext _optionsForEvent:event];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __43__LAContext_notifyEvent_completionHandler___block_invoke_6;
@@ -253,10 +253,10 @@
   v18 = v7;
   v14 = v10;
   v16 = buf;
-  v17 = a3;
-  v11 = v5;
+  eventCopy = event;
+  v11 = handlerCopy;
   v15 = v11;
-  [v8 notifyEvent:a3 options:v9 reply:v13];
+  [v8 notifyEvent:event options:v9 reply:v13];
 
   _Block_object_dispose(buf, 8);
   v12 = *MEMORY[0x1E69E9840];
@@ -300,14 +300,14 @@ void __43__LAContext_notifyEvent_completionHandler___block_invoke_6(uint64_t a1,
   v13 = *MEMORY[0x1E69E9840];
 }
 
-+ (id)_optionsForEvent:(int64_t)a3
++ (id)_optionsForEvent:(int64_t)event
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  if ((a3 | 2) == 2)
+  if ((event | 2) == 2)
   {
     v7 = &unk_1F1A6FCB0;
-    v3 = [MEMORY[0x1E695DF00] date];
-    v8[0] = v3;
+    date = [MEMORY[0x1E695DF00] date];
+    v8[0] = date;
     v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v8 forKeys:&v7 count:1];
   }
 
@@ -321,11 +321,11 @@ void __43__LAContext_notifyEvent_completionHandler___block_invoke_6(uint64_t a1,
   return v4;
 }
 
-- (id)initNonDisposableWithError:(id *)a3
+- (id)initNonDisposableWithError:(id *)error
 {
   v4 = [(LAContext *)self initWithExternalizedContext:0 userSession:0 flags:1];
   v5 = v4;
-  if (v4 && ![(LAContext *)v4 checkContextValidWithError:a3])
+  if (v4 && ![(LAContext *)v4 checkContextValidWithError:error])
   {
     v6 = 0;
   }
@@ -338,10 +338,10 @@ void __43__LAContext_notifyEvent_completionHandler___block_invoke_6(uint64_t a1,
   return v6;
 }
 
-- (LAContext)initWithExternalizedContext:(id)a3 userSession:(const unsigned int *)a4 flags:(int64_t)a5
+- (LAContext)initWithExternalizedContext:(id)context userSession:(const unsigned int *)session flags:(int64_t)flags
 {
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a3;
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = LAContext;
   v9 = [(LAContext *)&v18 init];
@@ -356,26 +356,26 @@ void __43__LAContext_notifyEvent_completionHandler___block_invoke_6(uint64_t a1,
   }
 
   v10 = LALogForCategory();
-  if (v8)
+  if (contextCopy)
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"with externalized context %x", objc_msgSend(v8, "hash")];
-    if (!a4)
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"with externalized context %x", objc_msgSend(contextCopy, "hash")];
+    if (!session)
     {
       goto LABEL_10;
     }
 
 LABEL_8:
-    v12 = *a4;
+    v12 = *session;
     if (v12 != geteuid())
     {
-      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid uid: %u", *a4}];
+      [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"Invalid uid: %u", *session}];
     }
 
     goto LABEL_10;
   }
 
   v11 = @"new";
-  if (a4)
+  if (session)
   {
     goto LABEL_8;
   }
@@ -392,8 +392,8 @@ LABEL_10:
   }
 
   v9->_instanceId = +[LAContext newInstanceId];
-  v9->_flags = a5;
-  v14 = [[LAClient alloc] initWithExternalizedContext:v8 userSession:a4 flags:a5 context:v9];
+  v9->_flags = flags;
+  v14 = [[LAClient alloc] initWithExternalizedContext:contextCopy userSession:session flags:flags context:v9];
   client = v9->_client;
   v9->_client = v14;
 
@@ -413,19 +413,19 @@ LABEL_15:
   return v9;
 }
 
-- (LAContext)initWithExternalizedContext:(id)a3 uiDelegate:(id)a4
+- (LAContext)initWithExternalizedContext:(id)context uiDelegate:(id)delegate
 {
-  v6 = a4;
-  v7 = [(LAContext *)self initWithExternalizedContext:a3];
-  [(LAContext *)v7 setUiDelegate:v6];
+  delegateCopy = delegate;
+  v7 = [(LAContext *)self initWithExternalizedContext:context];
+  [(LAContext *)v7 setUiDelegate:delegateCopy];
 
   return v7;
 }
 
-- (LAContext)initWithCoder:(id)a3
+- (LAContext)initWithCoder:(id)coder
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v19.receiver = self;
   v19.super_class = LAContext;
   v5 = [(LAContext *)&v19 init];
@@ -436,13 +436,13 @@ LABEL_15:
       [LAContext initWithCoder:];
     }
 
-    v6 = [v4 connection];
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Token"];
+    connection = [coderCopy connection];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"UUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Token"];
     v9 = objc_alloc(MEMORY[0x1E69AD220]);
-    if (v6)
+    if (connection)
     {
-      [v6 auditToken];
+      [connection auditToken];
     }
 
     else
@@ -451,10 +451,10 @@ LABEL_15:
     }
 
     v10 = [v9 initWithRawValue:buf];
-    v11 = [v10 data];
+    data = [v10 data];
 
     v5->_instanceId = +[LAContext newInstanceId];
-    v12 = [[LAClient alloc] initWithUUID:v7 token:v8 senderAuditTokenData:v11 context:v5];
+    v12 = [[LAClient alloc] initWithUUID:v7 token:v8 senderAuditTokenData:data context:v5];
     client = v5->_client;
     v5->_client = v12;
 
@@ -477,12 +477,12 @@ LABEL_15:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = LAContext;
-  if ([(LAContext *)&v9 isEqual:v4])
+  if ([(LAContext *)&v9 isEqual:equalCopy])
   {
     v5 = 1;
   }
@@ -492,9 +492,9 @@ LABEL_15:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(LAClient *)self->_client uuid];
-      v7 = [v4[10] uuid];
-      v5 = [v6 isEqual:v7];
+      uuid = [(LAClient *)self->_client uuid];
+      uuid2 = [equalCopy[10] uuid];
+      v5 = [uuid isEqual:uuid2];
     }
 
     else
@@ -508,41 +508,41 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v2 = [(LAClient *)self->_client uuid];
-  v3 = [v2 hash];
+  uuid = [(LAClient *)self->_client uuid];
+  v3 = [uuid hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v30 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v5 = LALogForCategory();
   v6 = +[LAContext newCommandId];
   v7 = [(LAContext *)self description];
-  v8 = [v4 connection];
-  v9 = [(LAClient *)self->_client uuid];
-  [v4 encodeObject:v9 forKey:@"UUID"];
+  connection = [coderCopy connection];
+  uuid = [(LAClient *)self->_client uuid];
+  [coderCopy encodeObject:uuid forKey:@"UUID"];
 
-  v10 = [v8 processIdentifier];
+  processIdentifier = [connection processIdentifier];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     *&buf[4] = v7;
     *&buf[12] = 1024;
-    *&buf[14] = v10;
+    *&buf[14] = processIdentifier;
     *&buf[18] = 1024;
     *&buf[20] = v6;
     _os_log_impl(&dword_1A784E000, v5, OS_LOG_TYPE_DEFAULT, "Encoding %{public}@ for transfer to pid:%d cid:%u", buf, 0x18u);
   }
 
-  if (v10)
+  if (processIdentifier)
   {
     v11 = objc_alloc(MEMORY[0x1E69AD220]);
-    if (v8)
+    if (connection)
     {
-      [v8 auditToken];
+      [connection auditToken];
     }
 
     else
@@ -551,7 +551,7 @@ LABEL_15:
     }
 
     v16 = [v11 initWithRawValue:buf];
-    v14 = [v16 data];
+    data = [v16 data];
 
     client = self->_client;
     v19[0] = MEMORY[0x1E69E9820];
@@ -560,11 +560,11 @@ LABEL_15:
     v19[3] = &unk_1E77CC558;
     v20 = v5;
     v21 = v7;
-    v22 = v10;
+    v22 = processIdentifier;
     v23 = v6;
     v15 = v7;
     v13 = v5;
-    [(LAClient *)client allowTransferToProcess:v10 receiverAuditTokenData:v14 reply:v19];
+    [(LAClient *)client allowTransferToProcess:processIdentifier receiverAuditTokenData:data reply:v19];
   }
 
   else
@@ -574,12 +574,12 @@ LABEL_15:
     v24[1] = 3221225472;
     v24[2] = __29__LAContext_encodeWithCoder___block_invoke;
     v24[3] = &unk_1E77CC530;
-    v25 = v4;
+    v25 = coderCopy;
     v26 = v5;
     v27 = v7;
     v28 = v6;
     v13 = v7;
-    v14 = v5;
+    data = v5;
     [(LAClient *)v12 tokenForTransferToUnknownProcess:v24];
 
     v15 = v25;
@@ -665,7 +665,7 @@ void __29__LAContext_encodeWithCoder___block_invoke_55(uint64_t a1, int a2, void
   v14 = v4;
   v7 = v5;
   v8 = v3;
-  v9 = self;
+  selfCopy = self;
   [(LAClient *)client invalidateWithReply:v11];
 
   v10 = *MEMORY[0x1E69E9840];
@@ -713,11 +713,11 @@ void __23__LAContext_invalidate__block_invoke(uint64_t a1, int a2, void *a3)
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)evaluatePolicy:(int64_t)a3 options:(id)a4 reply:(id)a5
+- (void)evaluatePolicy:(int64_t)policy options:(id)options reply:(id)reply
 {
-  v8 = a5;
-  v9 = a4;
-  [(LAContext *)self _evaluatePolicy:a3 options:v9 log:LALogCategoryForPolicy() cid:+[LAContext synchronous:"newCommandId"]reply:0, v8];
+  replyCopy = reply;
+  optionsCopy = options;
+  [(LAContext *)self _evaluatePolicy:policy options:optionsCopy log:LALogCategoryForPolicy() cid:+[LAContext synchronous:"newCommandId"]reply:0, replyCopy];
 }
 
 void __63__LAContext__evaluatePolicy_options_log_cid_synchronous_reply___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -814,16 +814,16 @@ void __55__LAContext__evaluatePolicy_options_synchronous_reply___block_invoke(ui
   (*(v4 + 16))(v4, v6, v7);
 }
 
-- (id)_hashWithBundleIdentifier:(id)a3
+- (id)_hashWithBundleIdentifier:(id)identifier
 {
-  if (a3)
+  if (identifier)
   {
     v3 = MEMORY[0x1E69AD258];
     v4 = MEMORY[0x1E696AAE8];
-    v5 = a3;
-    v6 = [v4 mainBundle];
-    v7 = [v6 bundleIdentifier];
-    v8 = [v3 saltHash:v5 withBundleID:v7];
+    identifierCopy = identifier;
+    mainBundle = [v4 mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v8 = [v3 saltHash:identifierCopy withBundleID:bundleIdentifier];
   }
 
   else
@@ -834,12 +834,12 @@ void __55__LAContext__evaluatePolicy_options_synchronous_reply___block_invoke(ui
   return v8;
 }
 
-- (id)evaluatePolicy:(int64_t)a3 options:(id)a4 error:(id *)a5
+- (id)evaluatePolicy:(int64_t)policy options:(id)options error:(id *)error
 {
-  v8 = a4;
-  v9 = [(LAContext *)self _evaluatePolicy:a3 options:v8 log:LALogCategoryForPolicy() cid:+[LAContext error:"newCommandId"], a5];
+  optionsCopy = options;
+  error = [(LAContext *)self _evaluatePolicy:policy options:optionsCopy log:LALogCategoryForPolicy() cid:+[LAContext error:"newCommandId"], error];
 
-  return v9;
+  return error;
 }
 
 void __51__LAContext__evaluatePolicy_options_log_cid_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -856,45 +856,45 @@ void __51__LAContext__evaluatePolicy_options_log_cid_error___block_invoke(uint64
   *(v9 + 40) = v6;
 }
 
-- (id)_publicErrorFromInternalError:(id)a3 options:(id)a4
+- (id)_publicErrorFromInternalError:(id)error options:(id)options
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v5;
-  v8 = [v7 domain];
-  v9 = [v8 isEqualToString:@"com.apple.LocalAuthentication"];
+  errorCopy = error;
+  optionsCopy = options;
+  v7 = errorCopy;
+  domain = [v7 domain];
+  v9 = [domain isEqualToString:@"com.apple.LocalAuthentication"];
 
   v10 = v7;
   if (v9)
   {
-    v11 = [v7 code];
-    v12 = [v7 code];
-    if (v12 == -4)
+    code = [v7 code];
+    code2 = [v7 code];
+    if (code2 == -4)
     {
-      v13 = [v7 userInfo];
-      v14 = [v13 objectForKeyedSubscript:@"Subcode"];
+      userInfo = [v7 userInfo];
+      v14 = [userInfo objectForKeyedSubscript:@"Subcode"];
 
       if (v14 && ([v14 integerValue] - 12) <= 2)
       {
-        v15 = [v6 objectForKeyedSubscript:&unk_1F1A6FCE0];
+        v15 = [optionsCopy objectForKeyedSubscript:&unk_1F1A6FCE0];
         v16 = v15;
-        v11 = -3;
+        code = -3;
         if (v15 && ![v15 length])
         {
-          v11 = -2;
+          code = -2;
         }
       }
     }
 
-    else if (v12 == -1018)
+    else if (code2 == -1018)
     {
-      v11 = -6;
+      code = -6;
     }
 
     v17 = MEMORY[0x1E696EE88];
-    v18 = [v7 userInfo];
-    v19 = [v18 objectForKey:*MEMORY[0x1E696A278]];
-    v10 = [v17 errorWithCode:v11 message:v19];
+    userInfo2 = [v7 userInfo];
+    v19 = [userInfo2 objectForKey:*MEMORY[0x1E696A278]];
+    v10 = [v17 errorWithCode:code message:v19];
   }
 
   return v10;
@@ -928,15 +928,15 @@ void __51__LAContext__evaluatePolicy_options_log_cid_error___block_invoke(uint64
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_evaluationMechanismsFromReturnedError:(id)a3 error:(id *)a4
+- (id)_evaluationMechanismsFromReturnedError:(id)error error:(id *)a4
 {
-  v5 = a3;
-  v6 = v5;
-  if (v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (errorCopy)
   {
     v7 = MEMORY[0x1E695DFD8];
-    v8 = [v5 userInfo];
-    v9 = [v8 objectForKey:@"AvailableMechanisms"];
+    userInfo = [errorCopy userInfo];
+    v9 = [userInfo objectForKey:@"AvailableMechanisms"];
     v10 = [v7 setWithArray:v9];
 
     v11 = 0;
@@ -962,7 +962,7 @@ LABEL_4:
   return v10;
 }
 
-- (id)evaluationMechanismsForPolicy:(int64_t)a3 error:(id *)a4
+- (id)evaluationMechanismsForPolicy:(int64_t)policy error:(id *)error
 {
   v27[1] = *MEMORY[0x1E69E9840];
   v7 = +[LAContext newCommandId];
@@ -970,9 +970,9 @@ LABEL_4:
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 67109634;
-    v19 = a3;
+    policyCopy2 = policy;
     v20 = 2114;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 1024;
     v23 = v7;
     _os_log_impl(&dword_1A784E000, v8, OS_LOG_TYPE_INFO, "evaluationMechanismsForPolicy:%d on %{public}@ cid:%u", buf, 0x18u);
@@ -982,10 +982,10 @@ LABEL_4:
   v27[0] = MEMORY[0x1E695E118];
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v27 forKeys:&v26 count:1];
   v17 = 0;
-  v10 = [(LAContext *)self _evaluatePolicy:a3 options:v9 log:0 cid:v7 error:&v17];
+  v10 = [(LAContext *)self _evaluatePolicy:policy options:v9 log:0 cid:v7 error:&v17];
   v11 = v17;
 
-  v12 = [(LAContext *)self _evaluationMechanismsFromReturnedError:v11 error:a4];
+  v12 = [(LAContext *)self _evaluationMechanismsFromReturnedError:v11 error:error];
   v13 = 16 * (v12 == 0);
   if (os_log_type_enabled(v8, v13))
   {
@@ -1000,9 +1000,9 @@ LABEL_4:
     }
 
     *buf = 67109890;
-    v19 = a3;
+    policyCopy2 = policy;
     v20 = 2114;
-    v21 = self;
+    selfCopy2 = self;
     v22 = 1024;
     v23 = v7;
     v24 = 2114;
@@ -1015,7 +1015,7 @@ LABEL_4:
   return v12;
 }
 
-- (id)evaluationMechanismsForAccessControl:(__SecAccessControl *)a3 operation:(int64_t)a4 error:(id *)a5
+- (id)evaluationMechanismsForAccessControl:(__SecAccessControl *)control operation:(int64_t)operation error:(id *)error
 {
   v30[1] = *MEMORY[0x1E69E9840];
   v9 = LALogForCategory();
@@ -1024,7 +1024,7 @@ LABEL_4:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412802;
-    v22 = a3;
+    controlCopy2 = control;
     v23 = 2114;
     v24 = v11;
     v25 = 1024;
@@ -1036,10 +1036,10 @@ LABEL_4:
   v30[0] = MEMORY[0x1E695E118];
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v30 forKeys:&v29 count:1];
   v20 = 0;
-  v13 = [(LAContext *)self evaluateAccessControl:a3 operation:a4 options:v12 error:&v20];
+  v13 = [(LAContext *)self evaluateAccessControl:control operation:operation options:v12 error:&v20];
   v14 = v20;
 
-  v15 = [(LAContext *)self _evaluationMechanismsFromReturnedError:v14 error:a5];
+  v15 = [(LAContext *)self _evaluationMechanismsFromReturnedError:v14 error:error];
   v16 = 16 * (v15 == 0);
   if (os_log_type_enabled(v9, v16))
   {
@@ -1054,7 +1054,7 @@ LABEL_4:
     }
 
     *buf = 138413058;
-    v22 = a3;
+    controlCopy2 = control;
     v23 = 2114;
     v24 = v11;
     v25 = 1024;
@@ -1084,7 +1084,7 @@ LABEL_4:
     *buf = 67109634;
     v22 = policy;
     v23 = 2114;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 1024;
     v26 = v8;
     _os_log_impl(&dword_1A784E000, v9, OS_LOG_TYPE_INFO, "canEvaluatePolicy:%d on %{public}@ cid:%u", buf, 0x18u);
@@ -1130,8 +1130,8 @@ LABEL_5:
 
   else
   {
-    v16 = [(__CFString *)v11 domain];
-    if ([v16 isEqualToString:@"com.apple.LocalAuthentication"])
+    domain = [(__CFString *)v11 domain];
+    if ([domain isEqualToString:@"com.apple.LocalAuthentication"])
     {
       v15 = OS_LOG_TYPE_DEFAULT;
     }
@@ -1153,7 +1153,7 @@ LABEL_5:
 
     v22 = policy;
     v23 = 2114;
-    v24 = self;
+    selfCopy2 = self;
     v25 = 1024;
     v26 = v8;
     v27 = 2114;
@@ -1165,20 +1165,20 @@ LABEL_5:
   return v12;
 }
 
-- (void)failProcessedEvent:(int64_t)a3 failureError:(id)a4 reply:(id)a5
+- (void)failProcessedEvent:(int64_t)event failureError:(id)error reply:(id)reply
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
+  errorCopy = error;
+  replyCopy = reply;
   v10 = LALogForCategory();
   v11 = +[LAContext newCommandId];
   v12 = [(LAContext *)self description];
   if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
   {
     *buf = 67109890;
-    v27 = a3;
+    eventCopy = event;
     v28 = 2114;
-    v29 = v8;
+    v29 = errorCopy;
     v30 = 2114;
     v31 = v12;
     v32 = 1024;
@@ -1191,17 +1191,17 @@ LABEL_5:
   v19[1] = 3221225472;
   v19[2] = __51__LAContext_failProcessedEvent_failureError_reply___block_invoke;
   v19[3] = &unk_1E77CC5F8;
-  v23 = v9;
-  v24 = a3;
+  v23 = replyCopy;
+  eventCopy2 = event;
   v20 = v10;
-  v21 = v8;
+  v21 = errorCopy;
   v25 = v11;
   v22 = v12;
-  v14 = v9;
+  v14 = replyCopy;
   v15 = v12;
-  v16 = v8;
+  v16 = errorCopy;
   v17 = v10;
-  [(LAClient *)client failProcessedEvent:a3 failureError:v16 reply:v19];
+  [(LAClient *)client failProcessedEvent:event failureError:v16 reply:v19];
 
   v18 = *MEMORY[0x1E69E9840];
 }
@@ -1255,17 +1255,17 @@ void __51__LAContext_failProcessedEvent_failureError_reply___block_invoke(uint64
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)retryProcessedEvent:(int64_t)a3 reply:(id)a4
+- (void)retryProcessedEvent:(int64_t)event reply:(id)reply
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   v7 = LALogForCategory();
   v8 = +[LAContext newCommandId];
   v9 = [(LAContext *)self description];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 67109634;
-    v22 = a3;
+    eventCopy = event;
     v23 = 2114;
     v24 = v9;
     v25 = 1024;
@@ -1281,12 +1281,12 @@ void __51__LAContext_failProcessedEvent_failureError_reply___block_invoke(uint64
   v16 = v7;
   v17 = v9;
   v20 = v8;
-  v18 = v6;
-  v19 = a3;
-  v11 = v6;
+  v18 = replyCopy;
+  eventCopy2 = event;
+  v11 = replyCopy;
   v12 = v9;
   v13 = v7;
-  [(LAClient *)client retryProcessedEvent:a3 reply:v15];
+  [(LAClient *)client retryProcessedEvent:event reply:v15];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -1337,17 +1337,17 @@ void __39__LAContext_retryProcessedEvent_reply___block_invoke(uint64_t a1, uint6
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetProcessedEvent:(int64_t)a3 reply:(id)a4
+- (void)resetProcessedEvent:(int64_t)event reply:(id)reply
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   v7 = LALogForCategory();
   v8 = +[LAContext newCommandId];
   v9 = [(LAContext *)self description];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 67109634;
-    v22 = a3;
+    eventCopy = event;
     v23 = 2114;
     v24 = v9;
     v25 = 1024;
@@ -1363,12 +1363,12 @@ void __39__LAContext_retryProcessedEvent_reply___block_invoke(uint64_t a1, uint6
   v16 = v7;
   v17 = v9;
   v20 = v8;
-  v18 = v6;
-  v19 = a3;
-  v11 = v6;
+  v18 = replyCopy;
+  eventCopy2 = event;
+  v11 = replyCopy;
   v12 = v9;
   v13 = v7;
-  [(LAClient *)client resetProcessedEvent:a3 reply:v15];
+  [(LAClient *)client resetProcessedEvent:event reply:v15];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -1465,20 +1465,20 @@ void __45__LAContext_pauseProcessedEvent_pause_reply___block_invoke(uint64_t a1,
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setCredential:(id)a3 forProcessedEvent:(int64_t)a4 credentialType:(int64_t)a5 reply:(id)a6
+- (void)setCredential:(id)credential forProcessedEvent:(int64_t)event credentialType:(int64_t)type reply:(id)reply
 {
   v32 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a6;
+  credentialCopy = credential;
+  replyCopy = reply;
   v12 = LALogForCategory();
   v13 = +[LAContext newCommandId];
   v14 = [(LAContext *)self description];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 67109890;
-    HIDWORD(buf) = a4;
+    HIDWORD(buf) = event;
     v26 = 1024;
-    v27 = a5;
+    typeCopy = type;
     v28 = 2114;
     v29 = v14;
     v30 = 1024;
@@ -1494,14 +1494,14 @@ void __45__LAContext_pauseProcessedEvent_pause_reply___block_invoke(uint64_t a1,
   objc_copyWeak(v23, &buf);
   v15 = v12;
   v20 = v15;
-  v23[1] = a4;
-  v23[2] = a5;
+  v23[1] = event;
+  v23[2] = type;
   v16 = v14;
   v21 = v16;
   v24 = v13;
-  v17 = v11;
+  v17 = replyCopy;
   v22 = v17;
-  [(LAContext *)self _encodeCredential:v10 type:a5 reply:v19];
+  [(LAContext *)self _encodeCredential:credentialCopy type:type reply:v19];
 
   objc_destroyWeak(v23);
   objc_destroyWeak(&buf);
@@ -1599,31 +1599,31 @@ void __66__LAContext_setCredential_forProcessedEvent_credentialType_reply___bloc
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)evaluateAccessControl:(__SecAccessControl *)a3 operation:(int64_t)a4 options:(id)a5 reply:(id)a6
+- (void)evaluateAccessControl:(__SecAccessControl *)control operation:(int64_t)operation options:(id)options reply:(id)reply
 {
   v10 = MEMORY[0x1E696AD98];
-  v11 = a6;
-  v12 = a5;
-  v13 = [v10 numberWithInteger:a4];
-  [(LAContext *)self _evaluateAccessControl:a3 operation:v13 options:v12 log:LALogCategoryForOptions() cid:+[LAContext synchronous:"newCommandId"]reply:0, v11];
+  replyCopy = reply;
+  optionsCopy = options;
+  v13 = [v10 numberWithInteger:operation];
+  [(LAContext *)self _evaluateAccessControl:control operation:v13 options:optionsCopy log:LALogCategoryForOptions() cid:+[LAContext synchronous:"newCommandId"]reply:0, replyCopy];
 }
 
-- (void)evaluateAccessControl:(__SecAccessControl *)a3 aksOperation:(void *)a4 options:(id)a5 reply:(id)a6
+- (void)evaluateAccessControl:(__SecAccessControl *)control aksOperation:(void *)operation options:(id)options reply:(id)reply
 {
-  v10 = a6;
-  v11 = a5;
-  [(LAContext *)self _evaluateAccessControl:a3 operation:a4 options:v11 log:LALogCategoryForOptions() cid:+[LAContext synchronous:"newCommandId"]reply:0, v10];
+  replyCopy = reply;
+  optionsCopy = options;
+  [(LAContext *)self _evaluateAccessControl:control operation:operation options:optionsCopy log:LALogCategoryForOptions() cid:+[LAContext synchronous:"newCommandId"]reply:0, replyCopy];
 }
 
-- (void)_evaluateAccessControl:(__SecAccessControl *)a3 operation:(id)a4 options:(id)a5 log:(int64_t)a6 cid:(unsigned int)a7 synchronous:(BOOL)a8 reply:(id)a9
+- (void)_evaluateAccessControl:(__SecAccessControl *)control operation:(id)operation options:(id)options log:(int64_t)log cid:(unsigned int)cid synchronous:(BOOL)synchronous reply:(id)reply
 {
-  LODWORD(v26) = a7;
-  HIDWORD(v26) = a8;
+  LODWORD(v26) = cid;
+  HIDWORD(v26) = synchronous;
   v48 = *MEMORY[0x1E69E9840];
-  v13 = a4;
-  v14 = a5;
-  v15 = a9;
-  if (a6)
+  operationCopy = operation;
+  optionsCopy = options;
+  replyCopy = reply;
+  if (log)
   {
     v16 = [(LAContext *)self description];
     v17 = LALogForCategory();
@@ -1631,16 +1631,16 @@ void __66__LAContext_setCredential_forProcessedEvent_credentialType_reply___bloc
     {
       v18 = "async";
       *buf = 138544642;
-      v37 = a3;
+      controlCopy = control;
       v38 = 2114;
       if (HIDWORD(v26))
       {
         v18 = "sync";
       }
 
-      v39 = v13;
+      v39 = operationCopy;
       v40 = 2114;
-      v41 = v14;
+      v41 = optionsCopy;
       v42 = 2114;
       v43 = v16;
       v44 = 2082;
@@ -1650,7 +1650,7 @@ void __66__LAContext_setCredential_forProcessedEvent_credentialType_reply___bloc
       _os_log_impl(&dword_1A784E000, v17, OS_LOG_TYPE_DEFAULT, "evaluateAccessControl:%{public}@ operation:%{public}@ options:%{public}@ on %{public}@ (%{public}s) cid:%u", buf, 0x3Au);
     }
 
-    if (a3)
+    if (control)
     {
       goto LABEL_7;
     }
@@ -1661,7 +1661,7 @@ LABEL_9:
   }
 
   v16 = 0;
-  if (!a3)
+  if (!control)
   {
     goto LABEL_9;
   }
@@ -1670,22 +1670,22 @@ LABEL_7:
   v19 = SecAccessControlCopyData();
 LABEL_10:
   client = self->_client;
-  v21 = [(LAContext *)self uiDelegate];
+  uiDelegate = [(LAContext *)self uiDelegate];
   v29[0] = MEMORY[0x1E69E9820];
   v29[1] = 3221225472;
   v29[2] = __80__LAContext__evaluateAccessControl_operation_options_log_cid_synchronous_reply___block_invoke;
   v29[3] = &unk_1E77CC698;
   v29[4] = self;
-  v30 = v14;
-  v33 = a3;
-  v34 = a6;
+  v30 = optionsCopy;
+  controlCopy2 = control;
+  logCopy = log;
   v35 = v27;
   v31 = v16;
-  v32 = v15;
-  v22 = v15;
+  v32 = replyCopy;
+  v22 = replyCopy;
   v23 = v16;
-  v24 = v14;
-  [(LAClient *)client evaluateACL:v19 operation:v13 options:v24 uiDelegate:v21 synchronous:v28 reply:v29];
+  v24 = optionsCopy;
+  [(LAClient *)client evaluateACL:v19 operation:operationCopy options:v24 uiDelegate:uiDelegate synchronous:v28 reply:v29];
 
   v25 = *MEMORY[0x1E69E9840];
 }
@@ -1798,9 +1798,9 @@ uint64_t __67__LAContext_evaluateAccessControl_operation_localizedReason_reply__
   return result;
 }
 
-- (id)evaluateAccessControl:(__SecAccessControl *)a3 operation:(int64_t)a4 options:(id)a5 error:(id *)a6
+- (id)evaluateAccessControl:(__SecAccessControl *)control operation:(int64_t)operation options:(id)options error:(id *)error
 {
-  v10 = a5;
+  optionsCopy = options;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -1813,7 +1813,7 @@ uint64_t __67__LAContext_evaluateAccessControl_operation_localizedReason_reply__
   v20 = __Block_byref_object_copy__5;
   v21 = __Block_byref_object_dispose__5;
   v22 = 0;
-  v11 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithInteger:operation];
   v12 = LALogCategoryForOptions();
   v13 = +[LAContext newCommandId];
   v16[0] = MEMORY[0x1E69E9820];
@@ -1822,11 +1822,11 @@ uint64_t __67__LAContext_evaluateAccessControl_operation_localizedReason_reply__
   v16[3] = &unk_1E77CC268;
   v16[4] = &v23;
   v16[5] = &v17;
-  [(LAContext *)self _evaluateAccessControl:a3 operation:v11 options:v10 log:v12 cid:v13 synchronous:1 reply:v16];
+  [(LAContext *)self _evaluateAccessControl:control operation:v11 options:optionsCopy log:v12 cid:v13 synchronous:1 reply:v16];
 
-  if (a6)
+  if (error)
   {
-    *a6 = v18[5];
+    *error = v18[5];
   }
 
   v14 = v24[5];
@@ -1851,9 +1851,9 @@ void __59__LAContext_evaluateAccessControl_operation_options_error___block_invok
   *(v9 + 40) = v6;
 }
 
-- (id)evaluateAccessControl:(__SecAccessControl *)a3 aksOperation:(void *)a4 options:(id)a5 error:(id *)a6
+- (id)evaluateAccessControl:(__SecAccessControl *)control aksOperation:(void *)operation options:(id)options error:(id *)error
 {
-  v10 = a5;
+  optionsCopy = options;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -1874,10 +1874,10 @@ void __59__LAContext_evaluateAccessControl_operation_options_error___block_invok
   v15[3] = &unk_1E77CC268;
   v15[4] = &v22;
   v15[5] = &v16;
-  [(LAContext *)self _evaluateAccessControl:a3 operation:a4 options:v10 log:v11 cid:v12 synchronous:1 reply:v15];
-  if (a6)
+  [(LAContext *)self _evaluateAccessControl:control operation:operation options:optionsCopy log:v11 cid:v12 synchronous:1 reply:v15];
+  if (error)
   {
-    *a6 = v17[5];
+    *error = v17[5];
   }
 
   v13 = v23[5];
@@ -1907,31 +1907,31 @@ void __62__LAContext_evaluateAccessControl_aksOperation_options_error___block_in
   v9 = *MEMORY[0x1E69E9840];
   if (_cachedBiometryType)
   {
-    v2 = [_cachedBiometryType integerValue];
+    integerValue = [_cachedBiometryType integerValue];
   }
 
   else
   {
-    v3 = [(LAContext *)self domainState];
-    v4 = [v3 biometry];
-    v2 = [v4 biometryType];
+    domainState = [(LAContext *)self domainState];
+    biometry = [domainState biometry];
+    integerValue = [biometry biometryType];
   }
 
   v5 = LALogForCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8[0] = 67109120;
-    v8[1] = v2;
+    v8[1] = integerValue;
     _os_log_impl(&dword_1A784E000, v5, OS_LOG_TYPE_DEFAULT, "returned biometryType: %d", v8, 8u);
   }
 
   v6 = *MEMORY[0x1E69E9840];
-  return v2;
+  return integerValue;
 }
 
-- (id)domainStateWithOptions:(id)a3
+- (id)domainStateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   domainStateCache = self->_domainStateCache;
   if (!domainStateCache)
   {
@@ -1951,7 +1951,7 @@ void __62__LAContext_evaluateAccessControl_aksOperation_options_error___block_in
     domainStateCache = self->_domainStateCache;
   }
 
-  v9 = [(LACCacheSync *)domainStateCache valueWithParameter:v4 error:0, v15, v16, v17, v18];
+  v9 = [(LACCacheSync *)domainStateCache valueWithParameter:optionsCopy error:0, v15, v16, v17, v18];
   v10 = v9;
   if (v9)
   {
@@ -1987,10 +1987,10 @@ id __36__LAContext_domainStateWithOptions___block_invoke(uint64_t a1, void *a2, 
   return v8;
 }
 
-- (id)_fetchDomainStateWithOptions:(id)a3 error:(id *)a4
+- (id)_fetchDomainStateWithOptions:(id)options error:(id *)error
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  optionsCopy = options;
   v7 = LALogCategoryForOptions();
   if (v7)
   {
@@ -2031,18 +2031,18 @@ id __36__LAContext_domainStateWithOptions___block_invoke(uint64_t a1, void *a2, 
   v24 = v11;
   p_buf = &buf;
   v26 = &v28;
-  [(LAClient *)client getDomainStateWithOptions:v6 synchronous:1 reply:&v20];
+  [(LAClient *)client getDomainStateWithOptions:optionsCopy synchronous:1 reply:&v20];
   v12 = [LADomainState alloc];
   v13 = [(LADomainState *)v12 initWithResult:*(*(&buf + 1) + 40), v20, v21, v22, v23];
   v14 = MEMORY[0x1E696AD98];
-  v15 = [(LADomainState *)v13 biometry];
-  v16 = [v14 numberWithInteger:{objc_msgSend(v15, "biometryType")}];
+  biometry = [(LADomainState *)v13 biometry];
+  v16 = [v14 numberWithInteger:{objc_msgSend(biometry, "biometryType")}];
   v17 = _cachedBiometryType;
   _cachedBiometryType = v16;
 
-  if (a4)
+  if (error)
   {
-    *a4 = v29[5];
+    *error = v29[5];
   }
 
   _Block_object_dispose(&v28, 8);
@@ -2094,13 +2094,13 @@ void __48__LAContext__fetchDomainStateWithOptions_error___block_invoke(void *a1,
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)setCredential:(id)a3 type:(int64_t)a4 options:(id)a5 error:(id *)a6
+- (BOOL)setCredential:(id)credential type:(int64_t)type options:(id)options error:(id *)error
 {
-  v10 = a5;
-  v11 = a3;
-  LOBYTE(a6) = [(LAContext *)self _setCredential:v11 type:a4 options:v10 log:16 cid:+[LAContext error:"newCommandId"], a6];
+  optionsCopy = options;
+  credentialCopy = credential;
+  LOBYTE(error) = [(LAContext *)self _setCredential:credentialCopy type:type options:optionsCopy log:16 cid:+[LAContext error:"newCommandId"], error];
 
-  return a6;
+  return error;
 }
 
 void __55__LAContext__setCredential_type_options_log_cid_error___block_invoke_2(uint64_t a1, int a2, id obj)
@@ -2110,48 +2110,48 @@ void __55__LAContext__setCredential_type_options_log_cid_error___block_invoke_2(
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)setCredential:(id)a3 type:(int64_t)a4 options:(id)a5 reply:(id)a6
+- (void)setCredential:(id)credential type:(int64_t)type options:(id)options reply:(id)reply
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a3;
-  [(LAContext *)self _setCredential:v12 type:a4 options:v11 log:16 cid:+[LAContext reply:"newCommandId"], v10];
+  replyCopy = reply;
+  optionsCopy = options;
+  credentialCopy = credential;
+  [(LAContext *)self _setCredential:credentialCopy type:type options:optionsCopy log:16 cid:+[LAContext reply:"newCommandId"], replyCopy];
 }
 
-- (void)_setCredential:(id)a3 type:(int64_t)a4 options:(id)a5 log:(int64_t)a6 cid:(unsigned int)a7 reply:(id)a8
+- (void)_setCredential:(id)credential type:(int64_t)type options:(id)options log:(int64_t)log cid:(unsigned int)cid reply:(id)reply
 {
   v46 = *MEMORY[0x1E69E9840];
-  v29 = a3;
-  v13 = a5;
-  v28 = a8;
+  credentialCopy = credential;
+  optionsCopy = options;
+  replyCopy = reply;
   v14 = [(LAContext *)self description];
   v15 = LALogForCategory();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 67109890;
-    HIDWORD(buf) = a4;
+    HIDWORD(buf) = type;
     v40 = 2114;
-    v41 = v13;
+    v41 = optionsCopy;
     v42 = 2114;
     v43 = v14;
     v44 = 1024;
-    v45 = a7;
+    cidCopy = cid;
     _os_log_impl(&dword_1A784E000, v15, OS_LOG_TYPE_INFO, "setCredential:type:%d options:%{public}@ on %{public}@ cid:%u", &buf, 0x22u);
   }
 
-  if ([(LAContext *)self _checkCredentialRequiresExtractionEntitlements:a4])
+  if ([(LAContext *)self _checkCredentialRequiresExtractionEntitlements:type])
   {
-    v16 = [MEMORY[0x1E69AD278] sharedInstance];
-    v17 = [v16 featureFlagExtractableCredentialProtectionEnabled];
+    mEMORY[0x1E69AD278] = [MEMORY[0x1E69AD278] sharedInstance];
+    featureFlagExtractableCredentialProtectionEnabled = [mEMORY[0x1E69AD278] featureFlagExtractableCredentialProtectionEnabled];
 
-    if ((v17 & 1) == 0)
+    if ((featureFlagExtractableCredentialProtectionEnabled & 1) == 0)
     {
       v27 = *MEMORY[0x1E69AD0F8];
-      v18 = [(LAContext *)self entitlementsChecker];
+      entitlementsChecker = [(LAContext *)self entitlementsChecker];
       v38 = v27;
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v38 count:1];
       v37 = 0;
-      v20 = [v18 checkHasEntitlements:v19 error:&v37];
+      v20 = [entitlementsChecker checkHasEntitlements:v19 error:&v37];
       v21 = v37;
 
       if ((v20 & 1) == 0 && os_log_type_enabled(v15, OS_LOG_TYPE_FAULT))
@@ -2169,15 +2169,15 @@ void __55__LAContext__setCredential_type_options_log_cid_error___block_invoke_2(
   objc_copyWeak(v35, &buf);
   v22 = v15;
   v31 = v22;
-  v35[1] = a4;
+  v35[1] = type;
   v23 = v14;
   v32 = v23;
-  v36 = a7;
-  v24 = v28;
+  cidCopy2 = cid;
+  v24 = replyCopy;
   v34 = v24;
-  v25 = v13;
+  v25 = optionsCopy;
   v33 = v25;
-  [(LAContext *)self _encodeCredential:v29 type:a4 reply:v30];
+  [(LAContext *)self _encodeCredential:credentialCopy type:type reply:v30];
 
   objc_destroyWeak(v35);
   objc_destroyWeak(&buf);
@@ -2291,17 +2291,17 @@ void __55__LAContext__setCredential_type_options_log_cid_reply___block_invoke_92
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)credentialOfType:(int64_t)a3 reply:(id)a4
+- (void)credentialOfType:(int64_t)type reply:(id)reply
 {
   v35 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   v7 = LALogForCategory();
   v8 = +[LAContext newCommandId];
   v9 = [(LAContext *)self description];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     LODWORD(buf) = 67109634;
-    HIDWORD(buf) = a3;
+    HIDWORD(buf) = type;
     v31 = 2114;
     v32 = v9;
     v33 = 1024;
@@ -2309,19 +2309,19 @@ void __55__LAContext__setCredential_type_options_log_cid_reply___block_invoke_92
     _os_log_impl(&dword_1A784E000, v7, OS_LOG_TYPE_INFO, "credentialOfType:%d on %{public}@ cid:%u", &buf, 0x18u);
   }
 
-  if ([(LAContext *)self _checkCredentialRequiresExtractionEntitlements:a3])
+  if ([(LAContext *)self _checkCredentialRequiresExtractionEntitlements:type])
   {
-    v10 = [MEMORY[0x1E69AD278] sharedInstance];
-    v11 = [v10 featureFlagExtractableCredentialProtectionEnabled];
+    mEMORY[0x1E69AD278] = [MEMORY[0x1E69AD278] sharedInstance];
+    featureFlagExtractableCredentialProtectionEnabled = [mEMORY[0x1E69AD278] featureFlagExtractableCredentialProtectionEnabled];
 
-    if ((v11 & 1) == 0)
+    if ((featureFlagExtractableCredentialProtectionEnabled & 1) == 0)
     {
       v21 = *MEMORY[0x1E69AD0F0];
-      v12 = [(LAContext *)self entitlementsChecker];
+      entitlementsChecker = [(LAContext *)self entitlementsChecker];
       v29 = v21;
       v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v29 count:1];
       v28 = 0;
-      v14 = [v12 checkHasEntitlements:v13 error:&v28];
+      v14 = [entitlementsChecker checkHasEntitlements:v13 error:&v28];
       v15 = v28;
 
       if ((v14 & 1) == 0 && os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
@@ -2340,13 +2340,13 @@ void __55__LAContext__setCredential_type_options_log_cid_reply___block_invoke_92
   objc_copyWeak(v26, &buf);
   v17 = v7;
   v23 = v17;
-  v26[1] = a3;
+  v26[1] = type;
   v18 = v9;
   v24 = v18;
   v27 = v8;
-  v19 = v6;
+  v19 = replyCopy;
   v25 = v19;
-  [(LAClient *)client credentialOfType:a3 reply:v22];
+  [(LAClient *)client credentialOfType:type reply:v22];
 
   objc_destroyWeak(v26);
   objc_destroyWeak(&buf);
@@ -2454,7 +2454,7 @@ void __36__LAContext_credentialOfType_reply___block_invoke_93(uint64_t a1, void 
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)credentialOfType:(int64_t)a3 error:(id *)a4
+- (id)credentialOfType:(int64_t)type error:(id *)error
 {
   v21 = 0;
   v22 = &v21;
@@ -2477,11 +2477,11 @@ void __36__LAContext_credentialOfType_reply___block_invoke_93(uint64_t a1, void 
   v14 = &v15;
   v8 = v7;
   v12 = v8;
-  [(LAContext *)self credentialOfType:a3 reply:v11];
+  [(LAContext *)self credentialOfType:type reply:v11];
   dispatch_block_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
-    *a4 = v16[5];
+    *error = v16[5];
   }
 
   v9 = v22[5];
@@ -2605,11 +2605,11 @@ void __29__LAContext_isCredentialSet___block_invoke_2(uint64_t a1, char a2, void
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setOptions:(id)a3 forInternalOperation:(int64_t)a4 reply:(id)a5
+- (void)setOptions:(id)options forInternalOperation:(int64_t)operation reply:(id)reply
 {
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
+  optionsCopy = options;
+  replyCopy = reply;
   v10 = LALogForCategory();
   v11 = +[LAContext newCommandId];
   v12 = [(LAContext *)self description];
@@ -2617,9 +2617,9 @@ void __29__LAContext_isCredentialSet___block_invoke_2(uint64_t a1, char a2, void
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
     *buf = 67109890;
-    v28 = [v8 hash];
+    v28 = [optionsCopy hash];
     v29 = 1024;
-    v30 = a4;
+    operationCopy = operation;
     v31 = 2114;
     v32 = v12;
     v33 = 1024;
@@ -2633,16 +2633,16 @@ void __29__LAContext_isCredentialSet___block_invoke_2(uint64_t a1, char a2, void
   v20[2] = __51__LAContext_setOptions_forInternalOperation_reply___block_invoke;
   v20[3] = &unk_1E77CC5F8;
   v21 = v13;
-  v22 = v8;
-  v24 = v9;
-  v25 = a4;
+  v22 = optionsCopy;
+  v24 = replyCopy;
+  operationCopy2 = operation;
   v26 = v11;
   v23 = v12;
-  v15 = v9;
+  v15 = replyCopy;
   v16 = v12;
-  v17 = v8;
+  v17 = optionsCopy;
   v18 = v13;
-  [(LAClient *)client setOptions:v17 forInternalOperation:a4 reply:v20];
+  [(LAClient *)client setOptions:v17 forInternalOperation:operation reply:v20];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -2698,17 +2698,17 @@ void __51__LAContext_setOptions_forInternalOperation_reply___block_invoke(uint64
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)optionsForInternalOperation:(int64_t)a3 reply:(id)a4
+- (void)optionsForInternalOperation:(int64_t)operation reply:(id)reply
 {
   v27 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  replyCopy = reply;
   v7 = LALogForCategory();
   v8 = +[LAContext newCommandId];
   v9 = [(LAContext *)self description];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     *buf = 67109634;
-    v22 = a3;
+    operationCopy = operation;
     v23 = 2114;
     v24 = v9;
     v25 = 1024;
@@ -2724,12 +2724,12 @@ void __51__LAContext_setOptions_forInternalOperation_reply___block_invoke(uint64
   v16 = v7;
   v17 = v9;
   v20 = v8;
-  v18 = v6;
-  v19 = a3;
-  v11 = v6;
+  v18 = replyCopy;
+  operationCopy2 = operation;
+  v11 = replyCopy;
   v12 = v9;
   v13 = v7;
-  [(LAClient *)client optionsForInternalOperation:a3 reply:v15];
+  [(LAClient *)client optionsForInternalOperation:operation reply:v15];
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -2774,10 +2774,10 @@ void __47__LAContext_optionsForInternalOperation_reply___block_invoke(uint64_t a
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)prearmTouchIDWithReply:(id)a3
+- (void)prearmTouchIDWithReply:(id)reply
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = LALogForCategory();
   v6 = +[LAContext newCommandId];
   v7 = [(LAContext *)self description];
@@ -2799,8 +2799,8 @@ void __47__LAContext_optionsForInternalOperation_reply___block_invoke(uint64_t a
   v14 = v5;
   v17 = v6;
   v15 = v7;
-  v16 = v4;
-  v9 = v4;
+  v16 = replyCopy;
+  v9 = replyCopy;
   v10 = v7;
   v11 = v5;
   [(LAClient *)client prearmTouchIdWithReply:v13];
@@ -2849,10 +2849,10 @@ void __36__LAContext_prearmTouchIDWithReply___block_invoke(uint64_t a1, void *a2
   v13 = *MEMORY[0x1E69E9840];
 }
 
-- (void)resetWithReply:(id)a3
+- (void)resetWithReply:(id)reply
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = LALogForCategory();
   v6 = +[LAContext newCommandId];
   v7 = [(LAContext *)self description];
@@ -2873,8 +2873,8 @@ void __36__LAContext_prearmTouchIDWithReply___block_invoke(uint64_t a1, void *a2
   v14 = v5;
   v15 = v7;
   v17 = v6;
-  v16 = v4;
-  v9 = v4;
+  v16 = replyCopy;
+  v9 = replyCopy;
   v10 = v7;
   v11 = v5;
   [(LAClient *)client resetProcessedEvent:0 reply:v13];
@@ -2925,10 +2925,10 @@ void __28__LAContext_resetWithReply___block_invoke(uint64_t a1, uint64_t a2, voi
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (void)authMethodWithReply:(id)a3
+- (void)authMethodWithReply:(id)reply
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  replyCopy = reply;
   v5 = LALogForCategory();
   v6 = +[LAContext newCommandId];
   v7 = [(LAContext *)self description];
@@ -2949,8 +2949,8 @@ void __28__LAContext_resetWithReply___block_invoke(uint64_t a1, uint64_t a2, voi
   v14 = v5;
   v15 = v7;
   v17 = v6;
-  v16 = v4;
-  v9 = v4;
+  v16 = replyCopy;
+  v9 = replyCopy;
   v10 = v7;
   v11 = v5;
   [(LAClient *)client authMethodWithReply:v13];
@@ -3044,35 +3044,35 @@ void __48__LAContext_setShowingCoachingHint_event_reply___block_invoke(uint64_t 
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)checkContextValidWithError:(id *)a3
+- (BOOL)checkContextValidWithError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = [(LAClient *)self->_client permanentError];
+    *error = [(LAClient *)self->_client permanentError];
   }
 
-  v5 = [(LAClient *)self->_client permanentError];
-  v6 = v5 == 0;
+  permanentError = [(LAClient *)self->_client permanentError];
+  v6 = permanentError == 0;
 
   return v6;
 }
 
-- (BOOL)verifyFileVaultUser:(id)a3 volumeUuid:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (BOOL)verifyFileVaultUser:(id)user volumeUuid:(id)uuid options:(unint64_t)options error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
+  userCopy = user;
+  uuidCopy = uuid;
   v12 = LALogForCategory();
   v13 = +[LAContext newCommandId];
   v14 = [(LAContext *)self description];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
     *buf = 138544386;
-    *&buf[4] = v10;
+    *&buf[4] = userCopy;
     *&buf[12] = 2114;
-    *&buf[14] = v11;
+    *&buf[14] = uuidCopy;
     *&buf[22] = 1024;
-    LODWORD(v36) = a5;
+    LODWORD(v36) = options;
     WORD2(v36) = 2114;
     *(&v36 + 6) = v14;
     HIWORD(v36) = 1024;
@@ -3097,19 +3097,19 @@ void __48__LAContext_setShowingCoachingHint_event_reply___block_invoke(uint64_t 
   v23[3] = &unk_1E77CC8C8;
   v16 = v12;
   v24 = v16;
-  v17 = v10;
+  v17 = userCopy;
   v25 = v17;
-  v18 = v11;
+  v18 = uuidCopy;
   v26 = v18;
   v19 = v14;
   v30 = v13;
   v27 = v19;
   v28 = &v31;
   v29 = buf;
-  [(LAClient *)client verifyFileVaultUser:v17 volumeUuid:v18 options:a5 reply:v23];
-  if (a6)
+  [(LAClient *)client verifyFileVaultUser:v17 volumeUuid:v18 options:options reply:v23];
+  if (error)
   {
-    *a6 = *(*&buf[8] + 40);
+    *error = *(*&buf[8] + 40);
   }
 
   v20 = *(v32 + 24);
@@ -3169,7 +3169,7 @@ void __58__LAContext_verifyFileVaultUser_volumeUuid_options_error___block_invoke
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (id)_serverPropertyValueForOption:(int64_t)a3 log:(int64_t)a4
+- (id)_serverPropertyValueForOption:(int64_t)option log:(int64_t)log
 {
   v27 = *MEMORY[0x1E69E9840];
   v6 = LALogForCategory();
@@ -3178,7 +3178,7 @@ void __58__LAContext_verifyFileVaultUser_volumeUuid_options_error___block_invoke
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 67109634;
-    v20 = a3;
+    optionCopy2 = option;
     v21 = 2114;
     v22 = v8;
     v23 = 1024;
@@ -3188,10 +3188,10 @@ void __58__LAContext_verifyFileVaultUser_volumeUuid_options_error___block_invoke
 
   client = self->_client;
   v18 = 0;
-  v10 = [(LAClient *)client serverPropertyForOption:a3 error:&v18];
+  v10 = [(LAClient *)client serverPropertyForOption:option error:&v18];
   v11 = v18;
-  v12 = [MEMORY[0x1E695DFB0] null];
-  v13 = [v10 isEqual:v12];
+  null = [MEMORY[0x1E695DFB0] null];
+  v13 = [v10 isEqual:null];
 
   if (v13)
   {
@@ -3213,7 +3213,7 @@ void __58__LAContext_verifyFileVaultUser_volumeUuid_options_error___block_invoke
     }
 
     *buf = 67109890;
-    v20 = a3;
+    optionCopy2 = option;
     v21 = 2114;
     v22 = v8;
     v23 = 1024;
@@ -3228,19 +3228,19 @@ void __58__LAContext_verifyFileVaultUser_volumeUuid_options_error___block_invoke
   return v10;
 }
 
-- (void)_setServerPropertyForOption:(int64_t)a3 value:(id)a4 log:(int64_t)a5
+- (void)_setServerPropertyForOption:(int64_t)option value:(id)value log:(int64_t)log
 {
   v29 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  valueCopy = value;
   v8 = LALogForCategory();
   v9 = +[LAContext newCommandId];
   v10 = [(LAContext *)self description];
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     *buf = 67109890;
-    v20 = a3;
+    optionCopy2 = option;
     v21 = 2114;
-    v22 = v7;
+    v22 = valueCopy;
     v23 = 2114;
     v24 = v10;
     v25 = 1024;
@@ -3256,16 +3256,16 @@ void __58__LAContext_verifyFileVaultUser_volumeUuid_options_error___block_invoke
 
   [(LACCacheSync *)self->_domainStateCache invalidate];
   client = self->_client;
-  v12 = v7;
-  if (!v7)
+  null = valueCopy;
+  if (!valueCopy)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
   v18 = 0;
-  v13 = [(LAClient *)client setServerPropertyForOption:a3 value:v12 error:&v18];
+  v13 = [(LAClient *)client setServerPropertyForOption:option value:null error:&v18];
   v14 = v18;
-  if (!v7)
+  if (!valueCopy)
   {
   }
 
@@ -3279,9 +3279,9 @@ void __58__LAContext_verifyFileVaultUser_volumeUuid_options_error___block_invoke
       v16 = v14;
     }
 
-    v20 = a3;
+    optionCopy2 = option;
     v21 = 2114;
-    v22 = v7;
+    v22 = valueCopy;
     v23 = 2114;
     v24 = v10;
     v25 = 1024;
@@ -3309,35 +3309,35 @@ void __58__LAContext_verifyFileVaultUser_volumeUuid_options_error___block_invoke
   [(LAContext *)self _setServerPropertyForOption:1017 value:v4 log:8];
 }
 
-- (void)addContextObserver:(id)a3
+- (void)addContextObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(LAContext *)self observers];
+  observerCopy = observer;
+  observers = [(LAContext *)self observers];
 
-  if (!v5)
+  if (!observers)
   {
-    v6 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
-    [(LAContext *)self setObservers:v6];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    [(LAContext *)self setObservers:weakObjectsHashTable];
   }
 
-  v7 = [(LAContext *)self observers];
-  [v7 addObject:v4];
+  observers2 = [(LAContext *)self observers];
+  [observers2 addObject:observerCopy];
 }
 
-- (void)removeContextObserver:(id)a3
+- (void)removeContextObserver:(id)observer
 {
-  v9 = a3;
-  v4 = [(LAContext *)self observers];
-  if (v4)
+  observerCopy = observer;
+  observers = [(LAContext *)self observers];
+  if (observers)
   {
-    v5 = v4;
-    v6 = [(LAContext *)self observers];
-    v7 = [v6 containsObject:v9];
+    v5 = observers;
+    observers2 = [(LAContext *)self observers];
+    v7 = [observers2 containsObject:observerCopy];
 
     if (v7)
     {
-      v8 = [(LAContext *)self observers];
-      [v8 removeObject:v9];
+      observers3 = [(LAContext *)self observers];
+      [observers3 removeObject:observerCopy];
     }
   }
 }
@@ -3348,21 +3348,21 @@ void __58__LAContext_verifyFileVaultUser_volumeUuid_options_error___block_invoke
   v3 = LALogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(LAContext *)self observers];
+    observers = [(LAContext *)self observers];
     *buf = 67109378;
-    v24 = [v4 count];
+    v24 = [observers count];
     v25 = 2114;
-    v26 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A784E000, v3, OS_LOG_TYPE_INFO, "Will notify %d observers of changes in %{public}@", buf, 0x12u);
   }
 
   v5 = MEMORY[0x1E695DEC8];
-  v6 = [(LAContext *)self observers];
-  v7 = [v6 allObjects];
-  v8 = v7;
-  if (v7)
+  observers2 = [(LAContext *)self observers];
+  allObjects = [observers2 allObjects];
+  v8 = allObjects;
+  if (allObjects)
   {
-    v9 = v7;
+    v9 = allObjects;
   }
 
   else
@@ -3407,13 +3407,13 @@ void __58__LAContext_verifyFileVaultUser_volumeUuid_options_error___block_invoke
   v17 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_encodeCredential:(id)a3 type:(int64_t)a4 reply:(id)a5
+- (void)_encodeCredential:(id)credential type:(int64_t)type reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v8;
+  credentialCopy = credential;
+  replyCopy = reply;
+  v10 = credentialCopy;
   v11 = v10;
-  if (v10 && [v10 length] && (objc_msgSend(MEMORY[0x1E69AD248], "checkCredentialRequiresEncoding:", a4) & 1) != 0)
+  if (v10 && [v10 length] && (objc_msgSend(MEMORY[0x1E69AD248], "checkCredentialRequiresEncoding:", type) & 1) != 0)
   {
     objc_initWeak(&location, self);
     client = self->_client;
@@ -3422,7 +3422,7 @@ void __58__LAContext_verifyFileVaultUser_volumeUuid_options_error___block_invoke
     v13[2] = __42__LAContext__encodeCredential_type_reply___block_invoke;
     v13[3] = &unk_1E77CB850;
     objc_copyWeak(&v16, &location);
-    v15 = v9;
+    v15 = replyCopy;
     v14 = v11;
     [(LAClient *)client credentialEncodingSeedWithReply:v13];
 
@@ -3432,7 +3432,7 @@ void __58__LAContext_verifyFileVaultUser_volumeUuid_options_error___block_invoke
 
   else
   {
-    (*(v9 + 2))(v9, v11, 0);
+    (*(replyCopy + 2))(replyCopy, v11, 0);
   }
 }
 
@@ -3472,11 +3472,11 @@ void __42__LAContext__encodeCredential_type_reply___block_invoke(uint64_t a1, vo
   }
 }
 
-- (void)_decodeCredential:(id)a3 type:(int64_t)a4 reply:(id)a5
+- (void)_decodeCredential:(id)credential type:(int64_t)type reply:(id)reply
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8 && [v8 length] && (objc_msgSend(MEMORY[0x1E69AD248], "checkCredentialRequiresEncoding:", a4) & 1) != 0)
+  credentialCopy = credential;
+  replyCopy = reply;
+  if (credentialCopy && [credentialCopy length] && (objc_msgSend(MEMORY[0x1E69AD248], "checkCredentialRequiresEncoding:", type) & 1) != 0)
   {
     objc_initWeak(&location, self);
     client = self->_client;
@@ -3485,8 +3485,8 @@ void __42__LAContext__encodeCredential_type_reply___block_invoke(uint64_t a1, vo
     v11[2] = __42__LAContext__decodeCredential_type_reply___block_invoke;
     v11[3] = &unk_1E77CB850;
     objc_copyWeak(&v14, &location);
-    v13 = v9;
-    v12 = v8;
+    v13 = replyCopy;
+    v12 = credentialCopy;
     [(LAClient *)client credentialEncodingSeedWithReply:v11];
 
     objc_destroyWeak(&v14);
@@ -3495,7 +3495,7 @@ void __42__LAContext__encodeCredential_type_reply___block_invoke(uint64_t a1, vo
 
   else
   {
-    (*(v9 + 2))(v9, v8, 0);
+    (*(replyCopy + 2))(replyCopy, credentialCopy, 0);
   }
 }
 
@@ -3564,8 +3564,8 @@ void __42__LAContext__decodeCredential_type_reply___block_invoke(uint64_t a1, vo
   if (!credentialCoder)
   {
     v4 = objc_alloc(MEMORY[0x1E69AD248]);
-    v5 = [(LAContext *)self externalizedContext];
-    v6 = [v4 initWithExternalizedContextRef:v5];
+    externalizedContext = [(LAContext *)self externalizedContext];
+    v6 = [v4 initWithExternalizedContextRef:externalizedContext];
     v7 = self->_credentialCoder;
     self->_credentialCoder = v6;
 
@@ -3578,25 +3578,25 @@ void __42__LAContext__decodeCredential_type_reply___block_invoke(uint64_t a1, vo
 - (BOOL)interactionNotAllowed
 {
   v2 = [(LAContext *)self _serverPropertyValueForOption:1000 log:8];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (BOOL)evaluateBoolOption:(int64_t)a3 options:(id)a4 property:(id)a5
+- (BOOL)evaluateBoolOption:(int64_t)option options:(id)options property:(id)property
 {
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a5;
+  propertyCopy = property;
   v8 = MEMORY[0x1E696AD98];
-  v9 = a4;
-  v10 = [v8 numberWithInteger:a3];
-  v11 = [v9 objectForKey:v10];
+  optionsCopy = options;
+  v10 = [v8 numberWithInteger:option];
+  v11 = [optionsCopy objectForKey:v10];
 
   if (v11)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
-    if (v7)
+    if (propertyCopy)
     {
       goto LABEL_3;
     }
@@ -3609,19 +3609,19 @@ LABEL_13:
     }
 
 LABEL_14:
-    v17 = 0;
+    bOOLValue5 = 0;
     if ((v14 & 1) == 0)
     {
       goto LABEL_11;
     }
 
 LABEL_15:
-    v18 = [v7 BOOLValue];
+    bOOLValue = [propertyCopy BOOLValue];
     goto LABEL_16;
   }
 
   isKindOfClass = 0;
-  if (!v7)
+  if (!propertyCopy)
   {
     goto LABEL_13;
   }
@@ -3632,18 +3632,18 @@ LABEL_3:
   v14 = v13;
   if (isKindOfClass & v13)
   {
-    v15 = [v7 BOOLValue];
-    if (v15 != [v11 BOOLValue])
+    bOOLValue2 = [propertyCopy BOOLValue];
+    if (bOOLValue2 != [v11 BOOLValue])
     {
       v16 = LALogForCategory();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         v21[0] = 67109632;
-        v21[1] = a3;
+        v21[1] = option;
         v22 = 1024;
-        v23 = [v11 BOOLValue];
+        bOOLValue3 = [v11 BOOLValue];
         v24 = 1024;
-        v25 = [v7 BOOLValue];
+        bOOLValue4 = [propertyCopy BOOLValue];
         _os_log_error_impl(&dword_1A784E000, v16, OS_LOG_TYPE_ERROR, "Discrepancy between option %d value (%d) and property value (%d)", v21, 0x14u);
       }
     }
@@ -3657,18 +3657,18 @@ LABEL_3:
   }
 
 LABEL_10:
-  v17 = [v11 BOOLValue];
+  bOOLValue5 = [v11 BOOLValue];
   if (v14)
   {
     goto LABEL_15;
   }
 
 LABEL_11:
-  v18 = 0;
+  bOOLValue = 0;
 LABEL_16:
 
   v19 = *MEMORY[0x1E69E9840];
-  return (v17 | v18) & 1;
+  return (bOOLValue5 | bOOLValue) & 1;
 }
 
 void __29__LAContext_encodeWithCoder___block_invoke_cold_1(uint64_t a1, uint64_t a2)

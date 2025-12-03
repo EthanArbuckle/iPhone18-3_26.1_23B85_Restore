@@ -2,7 +2,7 @@
 - (VKMetricsDescriptor)init;
 - (id).cxx_construct;
 - (shared_ptr<gss::StylesheetManager<gss::PropertyID>>)styleManager;
-- (void)setStyleManager:(shared_ptr<gss::StylesheetManager<gss::PropertyID>>)a3;
+- (void)setStyleManager:(shared_ptr<gss::StylesheetManager<gss::PropertyID>>)manager;
 @end
 
 @implementation VKMetricsDescriptor
@@ -14,10 +14,10 @@
   return self;
 }
 
-- (void)setStyleManager:(shared_ptr<gss::StylesheetManager<gss::PropertyID>>)a3
+- (void)setStyleManager:(shared_ptr<gss::StylesheetManager<gss::PropertyID>>)manager
 {
-  v4 = *a3.__ptr_;
-  v3 = *(a3.__ptr_ + 1);
+  v4 = *manager.__ptr_;
+  v3 = *(manager.__ptr_ + 1);
   if (v3)
   {
     atomic_fetch_add_explicit((v3 + 8), 1uLL, memory_order_relaxed);

@@ -1,27 +1,27 @@
 @interface LADomainStateCompanion
-- (LADomainStateCompanion)initWithResult:(id)a3;
+- (LADomainStateCompanion)initWithResult:(id)result;
 - (id)description;
-- (id)stateHashForCompanionType:(int64_t)a3;
+- (id)stateHashForCompanionType:(int64_t)type;
 - (void)_resolveCombinedStateHash;
 @end
 
 @implementation LADomainStateCompanion
 
-- (LADomainStateCompanion)initWithResult:(id)a3
+- (LADomainStateCompanion)initWithResult:(id)result
 {
   v34 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v32.receiver = self;
   v32.super_class = LADomainStateCompanion;
   v5 = [(LADomainStateCompanion *)&v32 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AAE8] mainBundle];
-    v7 = [v6 bundleIdentifier];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
 
-    v8 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69AD0D8]];
-    v27 = v4;
-    v9 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69AD0E8]];
+    v8 = [resultCopy objectForKeyedSubscript:*MEMORY[0x1E69AD0D8]];
+    v27 = resultCopy;
+    v9 = [resultCopy objectForKeyedSubscript:*MEMORY[0x1E69AD0E8]];
     v10 = objc_opt_new();
     availableCompanions = v5->_availableCompanions;
     v5->_availableCompanions = v10;
@@ -51,14 +51,14 @@
 
           v19 = *(*(&v28 + 1) + 8 * i);
           v20 = [v14 objectForKeyedSubscript:v19];
-          v21 = [v20 BOOLValue];
+          bOOLValue = [v20 BOOLValue];
 
-          if (v21)
+          if (bOOLValue)
           {
             [(NSMutableSet *)v5->_availableCompanions addObject:v19];
             v22 = MEMORY[0x1E69AD258];
             v23 = [v9 objectForKeyedSubscript:v19];
-            v24 = [v22 saltHash:v23 withBundleID:v7];
+            v24 = [v22 saltHash:v23 withBundleID:bundleIdentifier];
 
             [(NSMutableDictionary *)v5->_stateHashForCompanionType setObject:v24 forKeyedSubscript:v19];
           }
@@ -71,17 +71,17 @@
     }
 
     [(LADomainStateCompanion *)v5 _resolveCombinedStateHash];
-    v4 = v27;
+    resultCopy = v27;
   }
 
   v25 = *MEMORY[0x1E69E9840];
   return v5;
 }
 
-- (id)stateHashForCompanionType:(int64_t)a3
+- (id)stateHashForCompanionType:(int64_t)type
 {
   stateHashForCompanionType = self->_stateHashForCompanionType;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
   v5 = [(NSMutableDictionary *)stateHashForCompanionType objectForKeyedSubscript:v4];
 
   return v5;
@@ -90,12 +90,12 @@
 - (void)_resolveCombinedStateHash
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(NSMutableDictionary *)self->_stateHashForCompanionType allKeys];
-  v4 = [v3 sortedArrayUsingSelector:sel_compare_];
+  allKeys = [(NSMutableDictionary *)self->_stateHashForCompanionType allKeys];
+  v4 = [allKeys sortedArrayUsingSelector:sel_compare_];
 
   if ([v4 count] > 1)
   {
-    v5 = objc_opt_new();
+    allValues = objc_opt_new();
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
@@ -117,7 +117,7 @@
           }
 
           v12 = [(NSMutableDictionary *)self->_stateHashForCompanionType objectForKeyedSubscript:*(*(&v15 + 1) + 8 * v11), v15];
-          [v5 appendData:v12];
+          [allValues appendData:v12];
 
           ++v11;
         }
@@ -129,17 +129,17 @@
       while (v9);
     }
 
-    v6 = [MEMORY[0x1E69AD258] createHashForDomainState:v5];
+    firstObject = [MEMORY[0x1E69AD258] createHashForDomainState:allValues];
   }
 
   else
   {
-    v5 = [(NSMutableDictionary *)self->_stateHashForCompanionType allValues];
-    v6 = [v5 firstObject];
+    allValues = [(NSMutableDictionary *)self->_stateHashForCompanionType allValues];
+    firstObject = [allValues firstObject];
   }
 
   stateHash = self->_stateHash;
-  self->_stateHash = v6;
+  self->_stateHash = firstObject;
 
   v14 = *MEMORY[0x1E69E9840];
 }
@@ -150,12 +150,12 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = MEMORY[0x1E696AEC0];
-  v6 = [(LADomainStateCompanion *)self availableCompanionTypes];
-  v7 = [v5 stringWithFormat:@"availableCompanions: %@", v6];
+  availableCompanionTypes = [(LADomainStateCompanion *)self availableCompanionTypes];
+  v7 = [v5 stringWithFormat:@"availableCompanions: %@", availableCompanionTypes];
   v16[0] = v7;
   v8 = MEMORY[0x1E696AEC0];
-  v9 = [(LADomainStateCompanion *)self stateHash];
-  v10 = [v8 stringWithFormat:@"stateHash: %@", v9];
+  stateHash = [(LADomainStateCompanion *)self stateHash];
+  v10 = [v8 stringWithFormat:@"stateHash: %@", stateHash];
   v16[1] = v10;
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:2];
   v12 = [v11 componentsJoinedByString:@" "];;

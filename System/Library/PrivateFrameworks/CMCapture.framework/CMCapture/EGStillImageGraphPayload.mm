@@ -1,12 +1,12 @@
 @interface EGStillImageGraphPayload
 - (BWStillImageInferences)stillImageInferences;
 - (BWStillImageProcessorController)processorController;
-- (EGStillImageGraphPayload)initWithDictionary:(id)a3;
+- (EGStillImageGraphPayload)initWithDictionary:(id)dictionary;
 - (EGStillImageGraphPayload)initWithEmptyPayload;
-- (EGStillImageGraphPayload)initWithNumber:(id)a3;
-- (EGStillImageGraphPayload)initWithProcessorController:(id)a3;
-- (EGStillImageGraphPayload)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3;
-- (EGStillImageGraphPayload)initWithStillImageInferences:(id)a3;
+- (EGStillImageGraphPayload)initWithNumber:(id)number;
+- (EGStillImageGraphPayload)initWithProcessorController:(id)controller;
+- (EGStillImageGraphPayload)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer;
+- (EGStillImageGraphPayload)initWithStillImageInferences:(id)inferences;
 - (NSDictionary)dictionary;
 - (NSNumber)number;
 - (id)debugDescription;
@@ -30,16 +30,16 @@
   return result;
 }
 
-- (EGStillImageGraphPayload)initWithSampleBuffer:(opaqueCMSampleBuffer *)a3
+- (EGStillImageGraphPayload)initWithSampleBuffer:(opaqueCMSampleBuffer *)buffer
 {
   v7.receiver = self;
   v7.super_class = EGStillImageGraphPayload;
   v4 = [(EGStillImageGraphPayload *)&v7 init];
   if (v4)
   {
-    if (a3)
+    if (buffer)
     {
-      v5 = CFRetain(a3);
+      v5 = CFRetain(buffer);
     }
 
     else
@@ -54,56 +54,56 @@
   return v4;
 }
 
-- (EGStillImageGraphPayload)initWithProcessorController:(id)a3
+- (EGStillImageGraphPayload)initWithProcessorController:(id)controller
 {
   v6.receiver = self;
   v6.super_class = EGStillImageGraphPayload;
   v4 = [(EGStillImageGraphPayload *)&v6 init];
   if (v4)
   {
-    v4->_payload = a3;
+    v4->_payload = controller;
     v4->_type = 2;
   }
 
   return v4;
 }
 
-- (EGStillImageGraphPayload)initWithStillImageInferences:(id)a3
+- (EGStillImageGraphPayload)initWithStillImageInferences:(id)inferences
 {
   v6.receiver = self;
   v6.super_class = EGStillImageGraphPayload;
   v4 = [(EGStillImageGraphPayload *)&v6 init];
   if (v4)
   {
-    v4->_payload = a3;
+    v4->_payload = inferences;
     v4->_type = 3;
   }
 
   return v4;
 }
 
-- (EGStillImageGraphPayload)initWithNumber:(id)a3
+- (EGStillImageGraphPayload)initWithNumber:(id)number
 {
   v6.receiver = self;
   v6.super_class = EGStillImageGraphPayload;
   v4 = [(EGStillImageGraphPayload *)&v6 init];
   if (v4)
   {
-    v4->_payload = a3;
+    v4->_payload = number;
     v4->_type = 4;
   }
 
   return v4;
 }
 
-- (EGStillImageGraphPayload)initWithDictionary:(id)a3
+- (EGStillImageGraphPayload)initWithDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = EGStillImageGraphPayload;
   v4 = [(EGStillImageGraphPayload *)&v6 init];
   if (v4)
   {
-    v4->_payload = a3;
+    v4->_payload = dictionary;
     v4->_type = 5;
   }
 

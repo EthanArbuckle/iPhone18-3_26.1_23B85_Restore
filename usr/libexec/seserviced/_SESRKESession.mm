@@ -1,41 +1,41 @@
 @interface _SESRKESession
 + (BOOL)isDebugAllowAllEndpointsEnabled;
-+ (id)_debugGetReaderIdentifiersForAllEndpoints:(id *)a3;
-+ (id)getAllowedVehicleIdentifiersForConnection:(id)a3 error:(id *)a4;
-+ (id)validateEntitlements:(id)a3;
++ (id)_debugGetReaderIdentifiersForAllEndpoints:(id *)endpoints;
++ (id)getAllowedVehicleIdentifiersForConnection:(id)connection error:(id *)error;
++ (id)validateEntitlements:(id)entitlements;
 - (_NSRange)subscriptionRange;
-- (_SESRKESession)initWithRemoteObject:(id)a3 subscriptionRange:(_NSRange)a4 queue:(id)a5;
+- (_SESRKESession)initWithRemoteObject:(id)object subscriptionRange:(_NSRange)range queue:(id)queue;
 - (id)updateAllowlistedVehicles;
-- (void)cancelRKEFunction:(unint64_t)a3 readerIdentifier:(id)a4 reply:(id)a5;
-- (void)continueExecutingRKEFunction:(unint64_t)a3 action:(unint64_t)a4 arbitraryData:(id)a5 readerIdentifier:(id)a6 reply:(id)a7;
+- (void)cancelRKEFunction:(unint64_t)function readerIdentifier:(id)identifier reply:(id)reply;
+- (void)continueExecutingRKEFunction:(unint64_t)function action:(unint64_t)action arbitraryData:(id)data readerIdentifier:(id)identifier reply:(id)reply;
 - (void)dealloc;
-- (void)didCreateKey:(id)a3;
-- (void)didInvalidateWithError:(id)a3;
-- (void)didReceiveContinuationRequestFor:(id)a3 actionIdentifier:(id)a4 arbitraryData:(id)a5 keyIdentifier:(id)a6;
-- (void)didReceivePassthroughMessage:(id)a3 keyIdentifier:(id)a4;
-- (void)endSession:(id)a3;
-- (void)endSessionInternal:(id)a3;
-- (void)getVehicleReports:(id)a3;
-- (void)isPassiveEntryAvailable:(id)a3 reply:(id)a4;
+- (void)didCreateKey:(id)key;
+- (void)didInvalidateWithError:(id)error;
+- (void)didReceiveContinuationRequestFor:(id)for actionIdentifier:(id)identifier arbitraryData:(id)data keyIdentifier:(id)keyIdentifier;
+- (void)didReceivePassthroughMessage:(id)message keyIdentifier:(id)identifier;
+- (void)endSession:(id)session;
+- (void)endSessionInternal:(id)internal;
+- (void)getVehicleReports:(id)reports;
+- (void)isPassiveEntryAvailable:(id)available reply:(id)reply;
 - (void)releaseRemoteObject;
-- (void)sendEvent:(id)a3 keyIdentifier:(id)a4;
-- (void)sendPassthroughMessage:(id)a3 readerIdentifier:(id)a4 reply:(id)a5;
-- (void)sendRKEFunction:(unint64_t)a3 action:(unint64_t)a4 readerIdentifier:(id)a5 authorization:(id)a6 isEnduring:(BOOL)a7 isHandlingExternal:(BOOL)a8 completion:(id)a9;
-- (void)setDidEndCallback:(id)a3;
-- (void)sign:(id)a3 readerIdentifier:(id)a4 reply:(id)a5;
+- (void)sendEvent:(id)event keyIdentifier:(id)identifier;
+- (void)sendPassthroughMessage:(id)message readerIdentifier:(id)identifier reply:(id)reply;
+- (void)sendRKEFunction:(unint64_t)function action:(unint64_t)action readerIdentifier:(id)identifier authorization:(id)authorization isEnduring:(BOOL)enduring isHandlingExternal:(BOOL)external completion:(id)completion;
+- (void)setDidEndCallback:(id)callback;
+- (void)sign:(id)sign readerIdentifier:(id)identifier reply:(id)reply;
 - (void)start;
 - (void)wakeUpClientIfBackgrounded;
 @end
 
 @implementation _SESRKESession
 
-- (_SESRKESession)initWithRemoteObject:(id)a3 subscriptionRange:(_NSRange)a4 queue:(id)a5
+- (_SESRKESession)initWithRemoteObject:(id)object subscriptionRange:(_NSRange)range queue:(id)queue
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v14.receiver = self;
   v14.super_class = _SESRKESession;
-  v7 = [(_SESSession *)&v14 initWithRemoteObject:a3 queue:a5];
+  v7 = [(_SESSession *)&v14 initWithRemoteObject:object queue:queue];
   v8 = v7;
   if (v7)
   {
@@ -57,25 +57,25 @@
 
 - (void)dealloc
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  sub_1003AE754(v2->_rbsAssertionTimer);
-  rbsAssertionTimer = v2->_rbsAssertionTimer;
-  v2->_rbsAssertionTimer = 0;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sub_1003AE754(selfCopy->_rbsAssertionTimer);
+  rbsAssertionTimer = selfCopy->_rbsAssertionTimer;
+  selfCopy->_rbsAssertionTimer = 0;
 
-  [(RBSAssertion *)v2->_rbsAssertion invalidate];
-  rbsAssertion = v2->_rbsAssertion;
-  v2->_rbsAssertion = 0;
+  [(RBSAssertion *)selfCopy->_rbsAssertion invalidate];
+  rbsAssertion = selfCopy->_rbsAssertion;
+  selfCopy->_rbsAssertion = 0;
 
-  objc_sync_exit(v2);
-  v5.receiver = v2;
+  objc_sync_exit(selfCopy);
+  v5.receiver = selfCopy;
   v5.super_class = _SESRKESession;
   [(_SESRKESession *)&v5 dealloc];
 }
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  v3 = [_SESSessionClientInfo withConnection:a3];
+  v3 = [_SESSessionClientInfo withConnection:entitlements];
   if ([v3 rkeSessionEntitlement])
   {
     v4 = 0;
@@ -84,24 +84,24 @@
   else
   {
     v5 = SESDefaultLogObject();
-    v7 = [v3 clientName];
+    clientName = [v3 clientName];
     v4 = SESCreateAndLogError();
   }
 
   return v4;
 }
 
-- (void)setDidEndCallback:(id)a3
+- (void)setDidEndCallback:(id)callback
 {
   v3.receiver = self;
   v3.super_class = _SESRKESession;
-  [(_SESSession *)&v3 setDidEndCallback:a3];
+  [(_SESSession *)&v3 setDidEndCallback:callback];
 }
 
 - (void)releaseRemoteObject
 {
-  v3 = [(_SESSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_SESSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4.receiver = self;
   v4.super_class = _SESRKESession;
@@ -110,21 +110,21 @@
 
 - (void)start
 {
-  v3 = [(_SESSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_SESSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = SESDefaultLogObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v28 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "SESRKESession start %@", buf, 0xCu);
   }
 
-  v5 = [(_SESRKESession *)self updateAllowlistedVehicles];
-  if (v5)
+  updateAllowlistedVehicles = [(_SESRKESession *)self updateAllowlistedVehicles];
+  if (updateAllowlistedVehicles)
   {
-    [(_SESRKESession *)self endSessionInternal:v5];
+    [(_SESRKESession *)self endSessionInternal:updateAllowlistedVehicles];
   }
 
   else
@@ -134,7 +134,7 @@
     {
       allowlistedVehicleIdentifiers = self->_allowlistedVehicleIdentifiers;
       *buf = 138412290;
-      v28 = allowlistedVehicleIdentifiers;
+      selfCopy = allowlistedVehicleIdentifiers;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Allowed vehicle identifiers %@", buf, 0xCu);
     }
 
@@ -161,12 +161,12 @@
           v14 = +[_TtC10seserviced14AlishaExternal shared];
           v15 = [v14 getEndpointWithReaderIdentifier:v13];
 
-          v16 = [v15 bleUUID];
+          bleUUID = [v15 bleUUID];
 
-          if (v16)
+          if (bleUUID)
           {
-            v17 = [v15 bleUUID];
-            v18 = [NSUUID ses_withUUIDString:v17];
+            bleUUID2 = [v15 bleUUID];
+            v18 = [NSUUID ses_withUUIDString:bleUUID2];
 
             v19 = +[_TtC10seserviced14AlishaExternal shared];
             [v19 resetDisconnectionHistoryFor:v18];
@@ -188,7 +188,7 @@
     v21.receiver = self;
     v21.super_class = _SESRKESession;
     [(_SESSession *)&v21 start];
-    v5 = 0;
+    updateAllowlistedVehicles = 0;
   }
 }
 
@@ -206,12 +206,12 @@
   return v2;
 }
 
-+ (id)_debugGetReaderIdentifiersForAllEndpoints:(id *)a3
++ (id)_debugGetReaderIdentifiersForAllEndpoints:(id *)endpoints
 {
   v3 = +[_TtC10seserviced14AlishaExternal shared];
-  v4 = [v3 getAllEndpoints];
+  getAllEndpoints = [v3 getAllEndpoints];
 
-  v5 = [v4 allObjects];
+  allObjects = [getAllEndpoints allObjects];
   v6 = TransformIf();
 
   v7 = [NSSet setWithArray:v6];
@@ -219,43 +219,43 @@
   return v7;
 }
 
-+ (id)getAllowedVehicleIdentifiersForConnection:(id)a3 error:(id *)a4
++ (id)getAllowedVehicleIdentifiersForConnection:(id)connection error:(id *)error
 {
-  v5 = a3;
+  connectionCopy = connection;
   if (!+[PKPassLibrary isPassLibraryAvailable])
   {
-    if (a4)
+    if (error)
     {
       v39 = SESDefaultLogObject();
-      *a4 = SESCreateAndLogError();
+      *error = SESCreateAndLogError();
     }
 
     v13 = 0;
     goto LABEL_44;
   }
 
-  v6 = [_SESSessionClientInfo withConnection:v5];
-  v7 = [v6 clientName];
+  v6 = [_SESSessionClientInfo withConnection:connectionCopy];
+  clientName = [v6 clientName];
 
-  if (!v7)
+  if (!clientName)
   {
-    if (a4)
+    if (error)
     {
       v40 = SESDefaultLogObject();
-      *a4 = SESCreateAndLogError();
+      *error = SESCreateAndLogError();
     }
 
     v13 = 0;
     goto LABEL_43;
   }
 
-  v45 = v5;
+  v45 = connectionCopy;
   v8 = objc_opt_new();
   v44 = v6;
-  v9 = [v6 clientName];
-  v10 = [v8 passUniqueIDsForAssociatedApplicationIdentifier:v9];
+  clientName2 = [v6 clientName];
+  v10 = [v8 passUniqueIDsForAssociatedApplicationIdentifier:clientName2];
 
-  v11 = [v8 passes];
+  passes = [v8 passes];
   v58 = _NSConcreteStackBlock;
   v59 = 3221225472;
   v60 = sub_10003E34C;
@@ -298,10 +298,10 @@
       v51 = 0u;
       v52 = 0u;
       v53 = 0u;
-      v19 = [v18 devicePrimaryPaymentApplication];
-      v20 = [v19 subcredentials];
+      devicePrimaryPaymentApplication = [v18 devicePrimaryPaymentApplication];
+      subcredentials = [devicePrimaryPaymentApplication subcredentials];
 
-      v21 = [v20 countByEnumeratingWithState:&v50 objects:v65 count:16];
+      v21 = [subcredentials countByEnumeratingWithState:&v50 objects:v65 count:16];
       if (v21)
       {
         v22 = v21;
@@ -313,45 +313,45 @@
           {
             if (*v51 != v23)
             {
-              objc_enumerationMutation(v20);
+              objc_enumerationMutation(subcredentials);
             }
 
             v25 = *(*(&v50 + 1) + 8 * v24);
-            v26 = [v25 pairedReaderIdentifier];
-            v27 = [v26 hexStringAsData];
+            pairedReaderIdentifier = [v25 pairedReaderIdentifier];
+            hexStringAsData = [pairedReaderIdentifier hexStringAsData];
 
-            if (v27)
+            if (hexStringAsData)
             {
               goto LABEL_14;
             }
 
-            v28 = [v25 identifier];
-            v27 = [v28 hexStringAsData];
+            identifier = [v25 identifier];
+            hexStringAsData = [identifier hexStringAsData];
 
-            if (v27)
+            if (hexStringAsData)
             {
-              v29 = [v16 + 520 shared];
-              v30 = [v29 getEndpointWithKeyIdentifier:v27];
+              shared = [v16 + 520 shared];
+              v30 = [shared getEndpointWithKeyIdentifier:hexStringAsData];
 
               if (v30)
               {
-                v31 = [v30 readerIdentifier];
-                if (v31)
+                readerIdentifier = [v30 readerIdentifier];
+                if (readerIdentifier)
                 {
-                  v32 = v31;
+                  v32 = readerIdentifier;
 
-                  v27 = v32;
+                  hexStringAsData = v32;
 LABEL_14:
-                  [v13 addObject:v27];
+                  [v13 addObject:hexStringAsData];
                   goto LABEL_15;
                 }
 
                 v34 = SESDefaultLogObject();
                 if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
                 {
-                  v35 = [v27 asHexString];
+                  asHexString = [hexStringAsData asHexString];
                   *buf = 138412290;
-                  v64 = v35;
+                  v64 = asHexString;
                   v36 = v34;
                   v37 = "Failed to retrieve reader ID from endpoint %@";
 LABEL_28:
@@ -366,9 +366,9 @@ LABEL_28:
                 v34 = SESDefaultLogObject();
                 if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
                 {
-                  v35 = [v27 asHexString];
+                  asHexString = [hexStringAsData asHexString];
                   *buf = 138412290;
-                  v64 = v35;
+                  v64 = asHexString;
                   v36 = v34;
                   v37 = "Failed to retrieve endpoint %@";
                   goto LABEL_28;
@@ -378,13 +378,13 @@ LABEL_28:
               goto LABEL_15;
             }
 
-            v27 = SESDefaultLogObject();
-            if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
+            hexStringAsData = SESDefaultLogObject();
+            if (os_log_type_enabled(hexStringAsData, OS_LOG_TYPE_ERROR))
             {
-              v33 = [v25 asDictionary];
+              asDictionary = [v25 asDictionary];
               *buf = 138412290;
-              v64 = v33;
-              _os_log_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "Skipping credential with invalid paired reader ID and endpoint ID %@", buf, 0xCu);
+              v64 = asDictionary;
+              _os_log_impl(&_mh_execute_header, hexStringAsData, OS_LOG_TYPE_ERROR, "Skipping credential with invalid paired reader ID and endpoint ID %@", buf, 0xCu);
             }
 
             v15 = 1;
@@ -394,7 +394,7 @@ LABEL_15:
           }
 
           while (v22 != v24);
-          v38 = [v20 countByEnumeratingWithState:&v50 objects:v65 count:16];
+          v38 = [subcredentials countByEnumeratingWithState:&v50 objects:v65 count:16];
           v22 = v38;
         }
 
@@ -420,7 +420,7 @@ LABEL_15:
 LABEL_42:
 
   v6 = v44;
-  v5 = v45;
+  connectionCopy = v45;
 LABEL_43:
 
 LABEL_44:
@@ -428,11 +428,11 @@ LABEL_44:
   return v13;
 }
 
-- (void)endSessionInternal:(id)a3
+- (void)endSessionInternal:(id)internal
 {
-  v34 = a3;
-  v4 = [(_SESSession *)self queue];
-  dispatch_assert_queue_V2(v4);
+  internalCopy = internal;
+  queue = [(_SESSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v5 = SESDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -440,19 +440,19 @@ LABEL_44:
     *buf = 138412546;
     *v58 = self;
     *&v58[8] = 2112;
-    *&v58[10] = v34;
+    *&v58[10] = internalCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "SESRKESession endSessionInternal %@ error %@", buf, 0x16u);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  sub_1003AE754(v6->_rbsAssertionTimer);
-  [(RBSAssertion *)v6->_rbsAssertion invalidate];
-  objc_sync_exit(v6);
-  v37 = v6;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  sub_1003AE754(selfCopy->_rbsAssertionTimer);
+  [(RBSAssertion *)selfCopy->_rbsAssertion invalidate];
+  objc_sync_exit(selfCopy);
+  v37 = selfCopy;
 
   v7 = +[_TtC10seserviced14AlishaExternal shared];
-  v36 = [v7 getEnduringRKERequestsInProgress];
+  getEnduringRKERequestsInProgress = [v7 getEnduringRKERequestsInProgress];
 
   v55 = 0u;
   v56 = 0u;
@@ -480,17 +480,17 @@ LABEL_44:
         v11 = +[_TtC10seserviced14AlishaExternal shared];
         v42 = [v11 getEndpointWithReaderIdentifier:v10];
 
-        v12 = [v42 bleUUID];
-        LODWORD(v11) = v12 == 0;
+        bleUUID = [v42 bleUUID];
+        LODWORD(v11) = bleUUID == 0;
 
         if (v11)
         {
           v29 = SESDefaultLogObject();
           if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
           {
-            v30 = [v10 asHexString];
+            asHexString = [v10 asHexString];
             *buf = 138412290;
-            *v58 = v30;
+            *v58 = asHexString;
             _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_ERROR, "Couldn't find endpoint for vehicle ID %@", buf, 0xCu);
           }
         }
@@ -523,20 +523,20 @@ LABEL_44:
 
                 v17 = *(*(&v44 + 1) + 8 * i);
                 v18 = +[_TtC10seserviced14AlishaExternal shared];
-                v19 = [v17 functionIdentifier];
-                v20 = [v17 keyIdentifier];
-                v21 = [v18 cancelRKERequestWithFunctionIdentifier:v19 keyIdentifier:v20];
+                functionIdentifier = [v17 functionIdentifier];
+                keyIdentifier = [v17 keyIdentifier];
+                v21 = [v18 cancelRKERequestWithFunctionIdentifier:functionIdentifier keyIdentifier:keyIdentifier];
 
                 v22 = SESDefaultLogObject();
                 if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
                 {
-                  v23 = [v17 functionIdentifier];
-                  v24 = [v17 keyIdentifier];
-                  v25 = [v24 asHexString];
+                  functionIdentifier2 = [v17 functionIdentifier];
+                  keyIdentifier2 = [v17 keyIdentifier];
+                  asHexString2 = [keyIdentifier2 asHexString];
                   *buf = 67109634;
-                  *v58 = v23;
+                  *v58 = functionIdentifier2;
                   *&v58[4] = 2112;
-                  *&v58[6] = v25;
+                  *&v58[6] = asHexString2;
                   *&v58[14] = 2112;
                   *&v58[16] = v21;
                   _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Cancelled function 0x%X key %@ error %@", buf, 0x1Cu);
@@ -552,8 +552,8 @@ LABEL_44:
           if (v37->_subscriptionRange.location && v37->_subscriptionRange.length)
           {
             v26 = +[_TtC10seserviced14AlishaExternal shared];
-            v27 = [v38 bleUUID];
-            v28 = [NSUUID ses_withUUIDString:v27];
+            bleUUID2 = [v38 bleUUID];
+            v28 = [NSUUID ses_withUUIDString:bleUUID2];
             [v26 subscribeToVehicleFunctionStatusEventsWithRange:0 peerUUID:{0, v28}];
           }
 
@@ -584,162 +584,162 @@ LABEL_44:
 
   v43.receiver = v31;
   v43.super_class = _SESRKESession;
-  [(_SESSession *)&v43 endSessionInternal:v34];
+  [(_SESSession *)&v43 endSessionInternal:internalCopy];
 }
 
-- (void)endSession:(id)a3
+- (void)endSession:(id)session
 {
-  v4 = a3;
-  v5 = [(_SESSession *)self queue];
+  sessionCopy = session;
+  queue = [(_SESSession *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10003EB00;
   v7[3] = &unk_1004C0F00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = sessionCopy;
+  v6 = sessionCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)isPassiveEntryAvailable:(id)a3 reply:(id)a4
+- (void)isPassiveEntryAvailable:(id)available reply:(id)reply
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_SESSession *)self queue];
+  availableCopy = available;
+  replyCopy = reply;
+  queue = [(_SESSession *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003EC9C;
   block[3] = &unk_1004C0F68;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = availableCopy;
+  v13 = replyCopy;
+  v9 = replyCopy;
+  v10 = availableCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)sendRKEFunction:(unint64_t)a3 action:(unint64_t)a4 readerIdentifier:(id)a5 authorization:(id)a6 isEnduring:(BOOL)a7 isHandlingExternal:(BOOL)a8 completion:(id)a9
+- (void)sendRKEFunction:(unint64_t)function action:(unint64_t)action readerIdentifier:(id)identifier authorization:(id)authorization isEnduring:(BOOL)enduring isHandlingExternal:(BOOL)external completion:(id)completion
 {
-  v15 = a5;
-  v16 = a6;
-  v17 = a9;
-  v18 = [(_SESSession *)self queue];
+  identifierCopy = identifier;
+  authorizationCopy = authorization;
+  completionCopy = completion;
+  queue = [(_SESSession *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10003EFE0;
   block[3] = &unk_1004C27D0;
-  v26 = a3;
-  v27 = a4;
+  functionCopy = function;
+  actionCopy = action;
   block[4] = self;
-  v23 = v15;
-  v28 = a7;
-  v29 = a8;
-  v24 = v16;
-  v25 = v17;
-  v19 = v17;
-  v20 = v16;
-  v21 = v15;
-  dispatch_async(v18, block);
+  v23 = identifierCopy;
+  enduringCopy = enduring;
+  externalCopy = external;
+  v24 = authorizationCopy;
+  v25 = completionCopy;
+  v19 = completionCopy;
+  v20 = authorizationCopy;
+  v21 = identifierCopy;
+  dispatch_async(queue, block);
 }
 
-- (void)cancelRKEFunction:(unint64_t)a3 readerIdentifier:(id)a4 reply:(id)a5
+- (void)cancelRKEFunction:(unint64_t)function readerIdentifier:(id)identifier reply:(id)reply
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = [(_SESSession *)self queue];
+  identifierCopy = identifier;
+  replyCopy = reply;
+  queue = [(_SESSession *)self queue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = sub_10003F6F0;
   v13[3] = &unk_1004C27F8;
   v13[4] = self;
-  v14 = v8;
-  v15 = v9;
-  v16 = a3;
-  v11 = v9;
-  v12 = v8;
-  dispatch_async(v10, v13);
+  v14 = identifierCopy;
+  v15 = replyCopy;
+  functionCopy = function;
+  v11 = replyCopy;
+  v12 = identifierCopy;
+  dispatch_async(queue, v13);
 }
 
-- (void)continueExecutingRKEFunction:(unint64_t)a3 action:(unint64_t)a4 arbitraryData:(id)a5 readerIdentifier:(id)a6 reply:(id)a7
+- (void)continueExecutingRKEFunction:(unint64_t)function action:(unint64_t)action arbitraryData:(id)data readerIdentifier:(id)identifier reply:(id)reply
 {
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [(_SESSession *)self queue];
+  dataCopy = data;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  queue = [(_SESSession *)self queue];
   v19[0] = _NSConcreteStackBlock;
   v19[1] = 3221225472;
   v19[2] = sub_10003FAE0;
   v19[3] = &unk_1004C2820;
-  v23 = a3;
-  v24 = a4;
+  functionCopy = function;
+  actionCopy = action;
   v19[4] = self;
-  v20 = v12;
-  v21 = v13;
-  v22 = v14;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  dispatch_async(v15, v19);
+  v20 = dataCopy;
+  v21 = identifierCopy;
+  v22 = replyCopy;
+  v16 = replyCopy;
+  v17 = identifierCopy;
+  v18 = dataCopy;
+  dispatch_async(queue, v19);
 }
 
-- (void)sendPassthroughMessage:(id)a3 readerIdentifier:(id)a4 reply:(id)a5
+- (void)sendPassthroughMessage:(id)message readerIdentifier:(id)identifier reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_SESSession *)self queue];
+  messageCopy = message;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  queue = [(_SESSession *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_10003FF48;
   v15[3] = &unk_1004C2548;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
-  dispatch_async(v11, v15);
+  v16 = identifierCopy;
+  v17 = messageCopy;
+  v18 = replyCopy;
+  v12 = messageCopy;
+  v13 = replyCopy;
+  v14 = identifierCopy;
+  dispatch_async(queue, v15);
 }
 
-- (void)getVehicleReports:(id)a3
+- (void)getVehicleReports:(id)reports
 {
-  v4 = a3;
-  v5 = [(_SESSession *)self queue];
+  reportsCopy = reports;
+  queue = [(_SESSession *)self queue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100040408;
   v7[3] = &unk_1004C0F00;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = reportsCopy;
+  v6 = reportsCopy;
+  dispatch_async(queue, v7);
 }
 
-- (void)sign:(id)a3 readerIdentifier:(id)a4 reply:(id)a5
+- (void)sign:(id)sign readerIdentifier:(id)identifier reply:(id)reply
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_SESSession *)self queue];
+  signCopy = sign;
+  identifierCopy = identifier;
+  replyCopy = reply;
+  queue = [(_SESSession *)self queue];
   v15[0] = _NSConcreteStackBlock;
   v15[1] = 3221225472;
   v15[2] = sub_100040814;
   v15[3] = &unk_1004C0968;
   v15[4] = self;
-  v16 = v9;
-  v17 = v8;
-  v18 = v10;
-  v12 = v8;
-  v13 = v9;
-  v14 = v10;
-  dispatch_async(v11, v15);
+  v16 = identifierCopy;
+  v17 = signCopy;
+  v18 = replyCopy;
+  v12 = signCopy;
+  v13 = identifierCopy;
+  v14 = replyCopy;
+  dispatch_async(queue, v15);
 }
 
 - (id)updateAllowlistedVehicles
 {
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (+[_SESRKESession isDebugAllowAllEndpointsEnabled])
   {
     v3 = SESDefaultLogObject();
@@ -752,66 +752,66 @@ LABEL_44:
     v11 = 0;
     v4 = [_SESRKESession _debugGetReaderIdentifiersForAllEndpoints:&v11];
     v5 = v11;
-    allowlistedVehicleIdentifiers = v2->_allowlistedVehicleIdentifiers;
-    v2->_allowlistedVehicleIdentifiers = v4;
+    allowlistedVehicleIdentifiers = selfCopy->_allowlistedVehicleIdentifiers;
+    selfCopy->_allowlistedVehicleIdentifiers = v4;
   }
 
   else
   {
-    allowlistedVehicleIdentifiers = [(_SESSession *)v2 connection];
+    allowlistedVehicleIdentifiers = [(_SESSession *)selfCopy connection];
     v10 = 0;
     v7 = [_SESRKESession getAllowedVehicleIdentifiersForConnection:allowlistedVehicleIdentifiers error:&v10];
     v5 = v10;
-    v8 = v2->_allowlistedVehicleIdentifiers;
-    v2->_allowlistedVehicleIdentifiers = v7;
+    v8 = selfCopy->_allowlistedVehicleIdentifiers;
+    selfCopy->_allowlistedVehicleIdentifiers = v7;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v5;
 }
 
-- (void)didInvalidateWithError:(id)a3
+- (void)didInvalidateWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(_SESSession *)self queue];
-  dispatch_assert_queue_V2(v5);
+  errorCopy = error;
+  queue = [(_SESSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = SESDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v8 = 138412546;
-    v9 = self;
+    selfCopy = self;
     v10 = 2112;
-    v11 = v4;
+    v11 = errorCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "SESRKESession %@ didInvalidateWithError %@", &v8, 0x16u);
   }
 
   if ([(_SESSession *)self isActive])
   {
-    v7 = [(_SESSession *)self remoteObject];
-    [v7 didInvalidateWithError:v4];
+    remoteObject = [(_SESSession *)self remoteObject];
+    [remoteObject didInvalidateWithError:errorCopy];
   }
 
-  [(_SESRKESession *)self endSessionInternal:v4];
+  [(_SESRKESession *)self endSessionInternal:errorCopy];
 }
 
-- (void)didCreateKey:(id)a3
+- (void)didCreateKey:(id)key
 {
-  v4 = a3;
-  v5 = [(_SESSession *)self queue];
-  dispatch_assert_queue_V2(v5);
+  keyCopy = key;
+  queue = [(_SESSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   if ([(_SESSession *)self isActive])
   {
-    v6 = [(_SESRKESession *)self updateAllowlistedVehicles];
-    if (v6)
+    updateAllowlistedVehicles = [(_SESRKESession *)self updateAllowlistedVehicles];
+    if (updateAllowlistedVehicles)
     {
       v7 = SESDefaultLogObject();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         v22 = 138412290;
-        v23 = v6;
+        selfCopy2 = updateAllowlistedVehicles;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to update list of allowlisted vehicles %@", &v22, 0xCu);
       }
     }
@@ -819,13 +819,13 @@ LABEL_44:
     else
     {
       v8 = +[_TtC10seserviced14AlishaExternal shared];
-      v7 = [v8 getEndpointWithKeyIdentifier:v4];
+      v7 = [v8 getEndpointWithKeyIdentifier:keyCopy];
 
       if (v7)
       {
         allowlistedVehicleIdentifiers = self->_allowlistedVehicleIdentifiers;
-        v10 = [v7 readerIdentifier];
-        v11 = [(NSSet *)allowlistedVehicleIdentifiers containsObject:v10];
+        readerIdentifier = [v7 readerIdentifier];
+        v11 = [(NSSet *)allowlistedVehicleIdentifiers containsObject:readerIdentifier];
 
         v12 = SESDefaultLogObject();
         v13 = os_log_type_enabled(v12, OS_LOG_TYPE_INFO);
@@ -833,23 +833,23 @@ LABEL_44:
         {
           if (v13)
           {
-            v14 = [v7 publicKeyIdentifier];
-            v15 = [v14 asHexString];
-            v16 = [v7 readerIdentifier];
-            v17 = [v16 asHexString];
+            publicKeyIdentifier = [v7 publicKeyIdentifier];
+            asHexString = [publicKeyIdentifier asHexString];
+            readerIdentifier2 = [v7 readerIdentifier];
+            asHexString2 = [readerIdentifier2 asHexString];
             v22 = 138412802;
-            v23 = self;
+            selfCopy2 = self;
             v24 = 2112;
-            v25 = v15;
+            v25 = asHexString;
             v26 = 2112;
-            v27 = v17;
+            v27 = asHexString2;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Calling client of %@ to handle new key %@ readerIdentifier %@", &v22, 0x20u);
           }
 
-          v18 = [(_SESSession *)self remoteObject];
-          v19 = [v7 publicKeyIdentifier];
-          v20 = [v7 readerIdentifier];
-          [v18 didCreateKey:v19 forVehicle:v20];
+          remoteObject = [(_SESSession *)self remoteObject];
+          publicKeyIdentifier2 = [v7 publicKeyIdentifier];
+          readerIdentifier3 = [v7 readerIdentifier];
+          [remoteObject didCreateKey:publicKeyIdentifier2 forVehicle:readerIdentifier3];
 
           [(_SESRKESession *)self wakeUpClientIfBackgrounded];
         }
@@ -859,7 +859,7 @@ LABEL_44:
           if (v13)
           {
             v22 = 138412290;
-            v23 = self;
+            selfCopy2 = self;
             _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Dropping notification due to vehicle not allowed in the active session %@", &v22, 0xCu);
           }
         }
@@ -871,7 +871,7 @@ LABEL_44:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
         {
           v22 = 138412290;
-          v23 = v4;
+          selfCopy2 = keyCopy;
           _os_log_impl(&_mh_execute_header, v21, OS_LOG_TYPE_INFO, "Dropping notification due to missing endpoint %@", &v22, 0xCu);
         }
       }
@@ -879,49 +879,49 @@ LABEL_44:
   }
 }
 
-- (void)sendEvent:(id)a3 keyIdentifier:(id)a4
+- (void)sendEvent:(id)event keyIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_SESSession *)self queue];
-  dispatch_assert_queue_V2(v8);
+  eventCopy = event;
+  identifierCopy = identifier;
+  queue = [(_SESSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = SESDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v17 = 138412290;
-    v18 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "SESRKESession %@ sendEvent", &v17, 0xCu);
   }
 
   if ([(_SESSession *)self isActive])
   {
     v10 = +[_TtC10seserviced14AlishaExternal shared];
-    v11 = [v10 getEndpointWithKeyIdentifier:v7];
+    v11 = [v10 getEndpointWithKeyIdentifier:identifierCopy];
 
     if (v11)
     {
-      v12 = [v11 readerIdentifier];
-      if ([(NSSet *)self->_allowlistedVehicleIdentifiers containsObject:v12])
+      readerIdentifier = [v11 readerIdentifier];
+      if ([(NSSet *)self->_allowlistedVehicleIdentifiers containsObject:readerIdentifier])
       {
         if (qword_10050CCB0 != -1)
         {
           sub_1003AD8A0();
         }
 
-        v13 = [(_SESRKESession *)v6 objectForKeyedSubscript:@"xpcEventName"];
+        v13 = [(_SESRKESession *)eventCopy objectForKeyedSubscript:@"xpcEventName"];
         if ([qword_10050CCA8 containsObject:v13])
         {
           v14 = SESDefaultLogObject();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
           {
             v17 = 138412290;
-            v18 = v6;
+            selfCopy = eventCopy;
             _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_INFO, "Sending event via session delegate %@", &v17, 0xCu);
           }
 
-          v15 = [(_SESSession *)self remoteObject];
-          [v15 sendEvent:v6 fromVehicle:v12];
+          remoteObject = [(_SESSession *)self remoteObject];
+          [remoteObject sendEvent:eventCopy fromVehicle:readerIdentifier];
 
           [(_SESRKESession *)self wakeUpClientIfBackgrounded];
         }
@@ -940,13 +940,13 @@ LABEL_44:
 
     else
     {
-      v12 = SESDefaultLogObject();
-      if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
+      readerIdentifier = SESDefaultLogObject();
+      if (os_log_type_enabled(readerIdentifier, OS_LOG_TYPE_INFO))
       {
-        v16 = [v7 asHexString];
+        asHexString = [identifierCopy asHexString];
         v17 = 138412290;
-        v18 = v16;
-        _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "Dropping event due to missing endpoint %@", &v17, 0xCu);
+        selfCopy = asHexString;
+        _os_log_impl(&_mh_execute_header, readerIdentifier, OS_LOG_TYPE_INFO, "Dropping event due to missing endpoint %@", &v17, 0xCu);
       }
     }
   }
@@ -957,39 +957,39 @@ LABEL_44:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       v17 = 138412290;
-      v18 = v6;
+      selfCopy = eventCopy;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Dropping event due to session not active %@", &v17, 0xCu);
     }
   }
 }
 
-- (void)didReceivePassthroughMessage:(id)a3 keyIdentifier:(id)a4
+- (void)didReceivePassthroughMessage:(id)message keyIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(_SESSession *)self queue];
-  dispatch_assert_queue_V2(v8);
+  messageCopy = message;
+  identifierCopy = identifier;
+  queue = [(_SESSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v9 = SESDefaultLogObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v19 = 138412290;
-    v20 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "SESRKESession %@ didReceivePassthroughMessage", &v19, 0xCu);
   }
 
   if ([(_SESSession *)self isActive])
   {
     v10 = +[_TtC10seserviced14AlishaExternal shared];
-    v11 = [v10 getEndpointWithKeyIdentifier:v7];
+    v11 = [v10 getEndpointWithKeyIdentifier:identifierCopy];
 
     if (v11)
     {
-      v12 = [v11 readerIdentifier];
-      if ([(NSSet *)self->_allowlistedVehicleIdentifiers containsObject:v12])
+      readerIdentifier = [v11 readerIdentifier];
+      if ([(NSSet *)self->_allowlistedVehicleIdentifiers containsObject:readerIdentifier])
       {
-        v13 = [(_SESSession *)self remoteObject];
-        [v13 didReceivePassthroughMessage:v6 fromVehicle:v12];
+        remoteObject = [(_SESSession *)self remoteObject];
+        [remoteObject didReceivePassthroughMessage:messageCopy fromVehicle:readerIdentifier];
 
         [(_SESRKESession *)self wakeUpClientIfBackgrounded];
 LABEL_15:
@@ -997,8 +997,8 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v14 = SESDefaultLogObject();
-      if (!os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
+      asHexString = SESDefaultLogObject();
+      if (!os_log_type_enabled(asHexString, OS_LOG_TYPE_INFO))
       {
 LABEL_14:
 
@@ -1007,24 +1007,24 @@ LABEL_14:
 
       LOWORD(v19) = 0;
       v15 = "Dropping passthrough message due to vehicle not in the active session";
-      v16 = v14;
+      v16 = asHexString;
       v17 = OS_LOG_TYPE_INFO;
       v18 = 2;
     }
 
     else
     {
-      v12 = SESDefaultLogObject();
-      if (!os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
+      readerIdentifier = SESDefaultLogObject();
+      if (!os_log_type_enabled(readerIdentifier, OS_LOG_TYPE_ERROR))
       {
         goto LABEL_15;
       }
 
-      v14 = [v7 asHexString];
+      asHexString = [identifierCopy asHexString];
       v19 = 138412290;
-      v20 = v14;
+      selfCopy = asHexString;
       v15 = "No endpoint matching key %@";
-      v16 = v12;
+      v16 = readerIdentifier;
       v17 = OS_LOG_TYPE_ERROR;
       v18 = 12;
     }
@@ -1043,42 +1043,42 @@ LABEL_14:
 LABEL_16:
 }
 
-- (void)didReceiveContinuationRequestFor:(id)a3 actionIdentifier:(id)a4 arbitraryData:(id)a5 keyIdentifier:(id)a6
+- (void)didReceiveContinuationRequestFor:(id)for actionIdentifier:(id)identifier arbitraryData:(id)data keyIdentifier:(id)keyIdentifier
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [(_SESSession *)self queue];
-  dispatch_assert_queue_V2(v14);
+  forCopy = for;
+  identifierCopy = identifier;
+  dataCopy = data;
+  keyIdentifierCopy = keyIdentifier;
+  queue = [(_SESSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v15 = +[_TtC10seserviced14AlishaExternal shared];
-  v16 = [v15 getEndpointWithKeyIdentifier:v13];
+  v16 = [v15 getEndpointWithKeyIdentifier:keyIdentifierCopy];
 
   if (v16)
   {
-    v17 = [v16 readerIdentifier];
-    v18 = [(NSSet *)self->_allowlistedVehicleIdentifiers containsObject:v17];
+    readerIdentifier = [v16 readerIdentifier];
+    v18 = [(NSSet *)self->_allowlistedVehicleIdentifiers containsObject:readerIdentifier];
     v19 = SESDefaultLogObject();
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_INFO);
     if (v18)
     {
       if (v20)
       {
-        v21 = [v17 asHexString];
+        asHexString = [readerIdentifier asHexString];
         v24 = 138413058;
-        v25 = v21;
+        v25 = asHexString;
         v26 = 2112;
-        v27 = v10;
+        v27 = forCopy;
         v28 = 2112;
-        v29 = v11;
+        v29 = identifierCopy;
         v30 = 1024;
-        v31 = v12 != 0;
+        v31 = dataCopy != 0;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Calling client to handle continuation request for %@ function %@ action %@ with arbitraryData %d", &v24, 0x26u);
       }
 
-      v22 = [(_SESSession *)self remoteObject];
-      [v22 didReceiveContinuationRequestFor:v10 actionIdentifier:v11 arbitraryData:v12 fromVehicle:v17];
+      remoteObject = [(_SESSession *)self remoteObject];
+      [remoteObject didReceiveContinuationRequestFor:forCopy actionIdentifier:identifierCopy arbitraryData:dataCopy fromVehicle:readerIdentifier];
 
       [(_SESRKESession *)self wakeUpClientIfBackgrounded];
     }
@@ -1095,28 +1095,28 @@ LABEL_16:
 
   else
   {
-    v17 = SESDefaultLogObject();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
+    readerIdentifier = SESDefaultLogObject();
+    if (os_log_type_enabled(readerIdentifier, OS_LOG_TYPE_ERROR))
     {
-      v23 = [v13 asHexString];
+      asHexString2 = [keyIdentifierCopy asHexString];
       v24 = 138412290;
-      v25 = v23;
-      _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "No endpoint matching key %@", &v24, 0xCu);
+      v25 = asHexString2;
+      _os_log_impl(&_mh_execute_header, readerIdentifier, OS_LOG_TYPE_ERROR, "No endpoint matching key %@", &v24, 0xCu);
     }
   }
 }
 
 - (void)wakeUpClientIfBackgrounded
 {
-  v3 = [(_SESSession *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(_SESSession *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   obj = self;
   objc_sync_enter(obj);
   sub_1003AE754(obj->_rbsAssertionTimer);
-  v4 = [(_SESSession *)obj isBackgrounded];
+  isBackgrounded = [(_SESSession *)obj isBackgrounded];
   rbsAssertion = obj->_rbsAssertion;
-  if (v4)
+  if (isBackgrounded)
   {
     if (!rbsAssertion)
     {
@@ -1128,13 +1128,13 @@ LABEL_16:
       v9 = [FBSOpenApplicationOptions optionsWithDictionary:v8];
 
       v10 = +[FBSOpenApplicationService serviceWithDefaultShellEndpoint];
-      v11 = [(_SESRKESession *)obj clientBundleIdentifier];
+      clientBundleIdentifier = [(_SESRKESession *)obj clientBundleIdentifier];
       v13[0] = _NSConcreteStackBlock;
       v13[1] = 3221225472;
       v13[2] = sub_1000420D4;
       v13[3] = &unk_1004C2908;
       v13[4] = obj;
-      [v10 openApplication:v11 withOptions:v9 completion:v13];
+      [v10 openApplication:clientBundleIdentifier withOptions:v9 completion:v13];
 
       return;
     }

@@ -1,65 +1,65 @@
 @interface PKDisambiguationFooterView
-+ (id)buttonWithTitle:(id)a3 textStyle:(id)a4 action:(id)a5;
++ (id)buttonWithTitle:(id)title textStyle:(id)style action:(id)action;
 + (id)descriptionLabel;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKDisambiguationFooterView)initWithFrame:(CGRect)a3 action:(id)a4 secondaryAction:(id)a5 title:(id)a6 secondaryTitle:(id)a7 desscription:(id)a8;
-- (double)_recommendedSecondaryActionTopPaddingForTableView:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKDisambiguationFooterView)initWithFrame:(CGRect)frame action:(id)action secondaryAction:(id)secondaryAction title:(id)title secondaryTitle:(id)secondaryTitle desscription:(id)desscription;
+- (double)_recommendedSecondaryActionTopPaddingForTableView:(id)view;
 - (void)layoutSubviews;
-- (void)sizeToFitForTableView:(id)a3;
+- (void)sizeToFitForTableView:(id)view;
 @end
 
 @implementation PKDisambiguationFooterView
 
-- (PKDisambiguationFooterView)initWithFrame:(CGRect)a3 action:(id)a4 secondaryAction:(id)a5 title:(id)a6 secondaryTitle:(id)a7 desscription:(id)a8
+- (PKDisambiguationFooterView)initWithFrame:(CGRect)frame action:(id)action secondaryAction:(id)secondaryAction title:(id)title secondaryTitle:(id)secondaryTitle desscription:(id)desscription
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  actionCopy = action;
+  secondaryActionCopy = secondaryAction;
+  titleCopy = title;
+  secondaryTitleCopy = secondaryTitle;
   v29.receiver = self;
   v29.super_class = PKDisambiguationFooterView;
-  v21 = [(PKDisambiguationFooterView *)&v29 initWithFrame:x, y, width, height];
-  if (v21)
+  height = [(PKDisambiguationFooterView *)&v29 initWithFrame:x, y, width, height];
+  if (height)
   {
-    if (v17)
+    if (actionCopy)
     {
-      v22 = [objc_opt_class() buttonWithTitle:v19 textStyle:*MEMORY[0x1E69DDCF8] action:v17];
-      actionButton = v21->_actionButton;
-      v21->_actionButton = v22;
+      v22 = [objc_opt_class() buttonWithTitle:titleCopy textStyle:*MEMORY[0x1E69DDCF8] action:actionCopy];
+      actionButton = height->_actionButton;
+      height->_actionButton = v22;
 
-      [(PKDisambiguationFooterView *)v21 addSubview:v21->_actionButton];
+      [(PKDisambiguationFooterView *)height addSubview:height->_actionButton];
     }
 
-    if (v18)
+    if (secondaryActionCopy)
     {
-      v24 = [objc_opt_class() buttonWithTitle:v20 textStyle:*MEMORY[0x1E69DDD28] action:v18];
-      secondaryActionButton = v21->_secondaryActionButton;
-      v21->_secondaryActionButton = v24;
+      v24 = [objc_opt_class() buttonWithTitle:secondaryTitleCopy textStyle:*MEMORY[0x1E69DDD28] action:secondaryActionCopy];
+      secondaryActionButton = height->_secondaryActionButton;
+      height->_secondaryActionButton = v24;
 
-      [(PKDisambiguationFooterView *)v21 addSubview:v21->_secondaryActionButton];
+      [(PKDisambiguationFooterView *)height addSubview:height->_secondaryActionButton];
     }
 
-    if (a8)
+    if (desscription)
     {
-      v26 = [objc_opt_class() descriptionLabel];
-      descriptionLabel = v21->_descriptionLabel;
-      v21->_descriptionLabel = v26;
+      descriptionLabel = [objc_opt_class() descriptionLabel];
+      descriptionLabel = height->_descriptionLabel;
+      height->_descriptionLabel = descriptionLabel;
 
-      [(PKDisambiguationFooterView *)v21 addSubview:v21->_descriptionLabel];
+      [(PKDisambiguationFooterView *)height addSubview:height->_descriptionLabel];
     }
   }
 
-  return v21;
+  return height;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   [(PKDisambiguationFooterView *)self layoutMargins];
   v7 = v6;
   [(PKDisambiguationFooterView *)self layoutMargins];
@@ -75,9 +75,9 @@
   }
 
   v15 = v9 + topPadding;
-  v16 = [(UILabel *)self->_descriptionLabel text];
+  text = [(UILabel *)self->_descriptionLabel text];
 
-  if (v16)
+  if (text)
   {
     [(UILabel *)self->_descriptionLabel sizeThatFits:width - (v11 + v13) + -20.0, height];
     v15 = v15 + v17;
@@ -163,12 +163,12 @@ LABEL_15:
   v18 = *MEMORY[0x1E695F058];
   v20 = *(MEMORY[0x1E695F058] + 16);
   v19 = *(MEMORY[0x1E695F058] + 24);
-  v21 = [(UILabel *)self->_descriptionLabel text];
+  text = [(UILabel *)self->_descriptionLabel text];
 
   v42 = v19;
   v44 = v20;
   v46 = v18;
-  if (v21)
+  if (text)
   {
     [(UILabel *)self->_descriptionLabel frame];
     [(UILabel *)self->_descriptionLabel sizeThatFits:v13 + -20.0, v15];
@@ -246,17 +246,17 @@ LABEL_13:
   [(UIButton *)self->_secondaryActionButton setFrame:v37, v34 + v41, v39, v40];
 }
 
-- (double)_recommendedSecondaryActionTopPaddingForTableView:(id)a3
+- (double)_recommendedSecondaryActionTopPaddingForTableView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   Height = CGRectGetHeight(v17);
-  [v4 contentInset];
+  [viewCopy contentInset];
   v7 = v6;
-  [v4 _rectForTableFooterView];
+  [viewCopy _rectForTableFooterView];
   MinY = CGRectGetMinY(v18);
-  [v4 setNeedsLayout];
-  [v4 layoutIfNeeded];
+  [viewCopy setNeedsLayout];
+  [viewCopy layoutIfNeeded];
   [(PKDisambiguationFooterView *)self setNeedsLayout];
   [(PKDisambiguationFooterView *)self layoutIfNeeded];
   [(UIButton *)self->_actionButton frame];
@@ -275,17 +275,17 @@ LABEL_13:
 
   [(PKDisambiguationFooterView *)self layoutMargins];
   v13 = bottomPadding + v12;
-  [v4 contentInset];
+  [viewCopy contentInset];
   v15 = v14;
 
   return fmax(Height - v7 - MinY - MaxY - v10 - v13 - v15, 50.0);
 }
 
-- (void)sizeToFitForTableView:(id)a3
+- (void)sizeToFitForTableView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(PKDisambiguationFooterView *)self sizeToFit];
-  [(PKDisambiguationFooterView *)self _recommendedSecondaryActionTopPaddingForTableView:v4];
+  [(PKDisambiguationFooterView *)self _recommendedSecondaryActionTopPaddingForTableView:viewCopy];
   v6 = v5;
 
   [(PKDisambiguationFooterView *)self setSecondaryActionTopPadding:v6];
@@ -293,16 +293,16 @@ LABEL_13:
   [(PKDisambiguationFooterView *)self sizeToFit];
 }
 
-+ (id)buttonWithTitle:(id)a3 textStyle:(id)a4 action:(id)a5
++ (id)buttonWithTitle:(id)title textStyle:(id)style action:(id)action
 {
   v7 = MEMORY[0x1E69DC740];
   v8 = MEMORY[0x1E69DB878];
-  v9 = a5;
-  v10 = a3;
-  v11 = [v8 preferredFontForTextStyle:a4];
-  v12 = [v7 pkui_plainConfigurationWithTitle:v10 font:v11];
+  actionCopy = action;
+  titleCopy = title;
+  v11 = [v8 preferredFontForTextStyle:style];
+  v12 = [v7 pkui_plainConfigurationWithTitle:titleCopy font:v11];
 
-  v13 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v12 primaryAction:v9];
+  v13 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v12 primaryAction:actionCopy];
 
   return v13;
 }

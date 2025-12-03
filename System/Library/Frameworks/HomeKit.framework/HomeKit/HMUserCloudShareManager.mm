@@ -1,32 +1,32 @@
 @interface HMUserCloudShareManager
 + (id)logCategory;
-- (HMUserCloudShareManager)initWithDataSource:(id)a3;
-- (HMUserCloudShareManager)initWithDataSource:(id)a3 context:(id)a4;
+- (HMUserCloudShareManager)initWithDataSource:(id)source;
+- (HMUserCloudShareManager)initWithDataSource:(id)source context:(id)context;
 - (HMUserCloudShareManagerDataSource)dataSource;
 - (HMUserCloudShareManagerDelegate)delegate;
 - (id)messageDestination;
 - (void)__registerForMessages;
-- (void)_handleDidReceiveRepairRequest:(id)a3;
-- (void)_handleDidReceiveShare:(id)a3;
-- (void)_registerWithCompletion:(id)a3;
+- (void)_handleDidReceiveRepairRequest:(id)request;
+- (void)_handleDidReceiveShare:(id)share;
+- (void)_registerWithCompletion:(id)completion;
 - (void)_unconfigure;
 - (void)configure;
 - (void)reconnect;
-- (void)registerForContainerIDs:(id)a3 completion:(id)a4;
+- (void)registerForContainerIDs:(id)ds completion:(id)completion;
 @end
 
 @implementation HMUserCloudShareManager
 
 - (void)configure
 {
-  v3 = [(HMUserCloudShareManager *)self context];
-  v4 = [v3 queue];
+  context = [(HMUserCloudShareManager *)self context];
+  queue = [context queue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__HMUserCloudShareManager_configure__block_invoke;
   block[3] = &unk_1E754E2A8;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(queue, block);
 }
 
 void __36__HMUserCloudShareManager_configure__block_invoke(uint64_t a1)
@@ -48,13 +48,13 @@ void __36__HMUserCloudShareManager_configure__block_invoke(uint64_t a1)
 
 - (void)__registerForMessages
 {
-  v3 = [(HMUserCloudShareManager *)self context];
-  v4 = [v3 messageDispatcher];
-  [v4 registerForMessage:@"HMUCSM.rs" receiver:self selector:sel__handleDidReceiveShare_];
+  context = [(HMUserCloudShareManager *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher registerForMessage:@"HMUCSM.rs" receiver:self selector:sel__handleDidReceiveShare_];
 
-  v6 = [(HMUserCloudShareManager *)self context];
-  v5 = [v6 messageDispatcher];
-  [v5 registerForMessage:@"HMUCSM.rRep" receiver:self selector:sel__handleDidReceiveRepairRequest_];
+  context2 = [(HMUserCloudShareManager *)self context];
+  messageDispatcher2 = [context2 messageDispatcher];
+  [messageDispatcher2 registerForMessage:@"HMUCSM.rRep" receiver:self selector:sel__handleDidReceiveRepairRequest_];
 }
 
 - (HMUserCloudShareManagerDataSource)dataSource
@@ -74,26 +74,26 @@ void __36__HMUserCloudShareManager_configure__block_invoke(uint64_t a1)
 - (id)messageDestination
 {
   v3 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v4 = [(HMUserCloudShareManager *)self messageTargetUUID];
-  v5 = [v3 initWithTarget:v4];
+  messageTargetUUID = [(HMUserCloudShareManager *)self messageTargetUUID];
+  v5 = [v3 initWithTarget:messageTargetUUID];
 
   return v5;
 }
 
-- (void)_registerWithCompletion:(id)a3
+- (void)_registerWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMUserCloudShareManager *)self context];
-  if (v5)
+  completionCopy = completion;
+  context = [(HMUserCloudShareManager *)self context];
+  if (context)
   {
     v6 = MEMORY[0x1E69A2A10];
-    v7 = [(HMUserCloudShareManager *)self messageDestination];
+    messageDestination = [(HMUserCloudShareManager *)self messageDestination];
     v22 = @"containerIds";
-    v8 = [(HMUserCloudShareManager *)self containerIDs];
-    v23 = v8;
+    containerIDs = [(HMUserCloudShareManager *)self containerIDs];
+    v23 = containerIDs;
     v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v23 forKeys:&v22 count:1];
-    v10 = [v6 messageWithName:@"HMUCSM.reg" destination:v7 payload:v9];
+    v10 = [v6 messageWithName:@"HMUCSM.reg" destination:messageDestination payload:v9];
 
     objc_initWeak(location, self);
     v18[0] = MEMORY[0x1E69E9820];
@@ -101,12 +101,12 @@ void __36__HMUserCloudShareManager_configure__block_invoke(uint64_t a1)
     v18[2] = __51__HMUserCloudShareManager__registerWithCompletion___block_invoke;
     v18[3] = &unk_1E754D058;
     objc_copyWeak(&v21, location);
-    v11 = v5;
+    v11 = context;
     v19 = v11;
-    v20 = v4;
+    v20 = completionCopy;
     [v10 setResponseHandler:v18];
-    v12 = [v11 messageDispatcher];
-    [v12 sendMessage:v10 completionHandler:0];
+    messageDispatcher = [v11 messageDispatcher];
+    [messageDispatcher sendMessage:v10 completionHandler:0];
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(location);
@@ -115,7 +115,7 @@ void __36__HMUserCloudShareManager_configure__block_invoke(uint64_t a1)
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -211,23 +211,23 @@ LABEL_7:
 - (void)reconnect
 {
   v16 = *MEMORY[0x1E69E9840];
-  v3 = [(HMUserCloudShareManager *)self context];
-  v4 = v3;
-  if (v3)
+  context = [(HMUserCloudShareManager *)self context];
+  v4 = context;
+  if (context)
   {
-    v5 = [v3 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __36__HMUserCloudShareManager_reconnect__block_invoke;
     block[3] = &unk_1E754E2A8;
     block[4] = self;
-    dispatch_async(v5, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -270,17 +270,17 @@ uint64_t __36__HMUserCloudShareManager_reconnect__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)registerForContainerIDs:(id)a3 completion:(id)a4
+- (void)registerForContainerIDs:(id)ds completion:(id)completion
 {
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMUserCloudShareManager *)self context];
-  if (!v7)
+  dsCopy = ds;
+  completionCopy = completion;
+  context = [(HMUserCloudShareManager *)self context];
+  if (!completionCopy)
   {
     v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMUserCloudShareManager registerForContainerIDs:completion:]", @"completion"];
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
@@ -297,24 +297,24 @@ uint64_t __36__HMUserCloudShareManager_reconnect__block_invoke(uint64_t a1)
     objc_exception_throw(v22);
   }
 
-  v9 = v8;
-  if (v8)
+  v9 = context;
+  if (context)
   {
-    v10 = [v8 queue];
+    queue = [context queue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_invoke;
     block[3] = &unk_1E754E0F8;
     block[4] = self;
-    v25 = v7;
-    v24 = v6;
-    dispatch_async(v10, block);
+    v25 = completionCopy;
+    v24 = dsCopy;
+    dispatch_async(queue, block);
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy2 = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -328,7 +328,7 @@ uint64_t __36__HMUserCloudShareManager_reconnect__block_invoke(uint64_t a1)
 
     objc_autoreleasePoolPop(v11);
     v15 = [MEMORY[0x1E696ABC0] hmErrorWithCode:12];
-    (*(v7 + 2))(v7, v15);
+    (*(completionCopy + 2))(completionCopy, v15);
   }
 
   v16 = *MEMORY[0x1E69E9840];
@@ -366,30 +366,30 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
   }
 }
 
-- (void)_handleDidReceiveRepairRequest:(id)a3
+- (void)_handleDidReceiveRepairRequest:(id)request
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 messagePayload];
-  v6 = [v5 hmf_UUIDForKey:@"HM.u.homeuuid"];
+  requestCopy = request;
+  messagePayload = [requestCopy messagePayload];
+  v6 = [messagePayload hmf_UUIDForKey:@"HM.u.homeuuid"];
 
   v7 = MEMORY[0x1E696ACD0];
   v8 = objc_opt_class();
-  v9 = [v4 messagePayload];
-  v10 = [v9 objectForKeyedSubscript:@"HM.u.repairInfo"];
+  messagePayload2 = [requestCopy messagePayload];
+  v10 = [messagePayload2 objectForKeyedSubscript:@"HM.u.repairInfo"];
   v28 = 0;
   v11 = [v7 unarchivedObjectOfClass:v8 fromData:v10 error:&v28];
   v12 = v28;
 
-  v13 = [(HMUserCloudShareManager *)self dataSource];
-  v14 = [v13 shareManager:self homeWithUUID:v6];
+  dataSource = [(HMUserCloudShareManager *)self dataSource];
+  v14 = [dataSource shareManager:self homeWithUUID:v6];
 
   if (v14 && v11)
   {
-    v15 = [(HMUserCloudShareManager *)self delegate];
+    delegate = [(HMUserCloudShareManager *)self delegate];
     v16 = objc_opt_respondsToSelector();
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy = self;
     v19 = HMFGetOSLogHandle();
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_INFO);
     if (v16)
@@ -403,7 +403,7 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
       }
 
       objc_autoreleasePoolPop(v17);
-      [v15 shareManager:v18 didReceiveRepairInfo:v11 home:v14];
+      [delegate shareManager:selfCopy didReceiveRepairInfo:v11 home:v14];
     }
 
     else
@@ -423,7 +423,7 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
   else
   {
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
     {
@@ -443,16 +443,16 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
   v27 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleDidReceiveShare:(id)a3
+- (void)_handleDidReceiveShare:(id)share
 {
   v139 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(HMUserCloudShareManager *)self delegate];
+  shareCopy = share;
+  delegate = [(HMUserCloudShareManager *)self delegate];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = v8;
-  if (v5)
+  if (delegate)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -464,7 +464,7 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
 
     objc_autoreleasePoolPop(v6);
     v11 = objc_autoreleasePoolPush();
-    v12 = v7;
+    v12 = selfCopy;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
@@ -477,10 +477,10 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
     objc_autoreleasePoolPop(v11);
     v15 = MEMORY[0x1E696ACD0];
     v16 = objc_opt_class();
-    v17 = [v4 messagePayload];
-    v18 = [v17 objectForKeyedSubscript:@"HM.u.to"];
+    messagePayload = [shareCopy messagePayload];
+    v18 = [messagePayload objectForKeyedSubscript:@"HM.u.to"];
     v132 = 0;
-    v19 = [v15 unarchivedObjectOfClass:v16 fromData:v18 error:&v132];
+    responseHandler6 = [v15 unarchivedObjectOfClass:v16 fromData:v18 error:&v132];
     v20 = v132;
 
     if (v20)
@@ -509,8 +509,8 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
       objc_autoreleasePoolPop(v26);
       v30 = MEMORY[0x1E696ACD0];
       v31 = objc_opt_class();
-      v32 = [v4 messagePayload];
-      v33 = [v32 objectForKeyedSubscript:@"HM.u.url"];
+      messagePayload2 = [shareCopy messagePayload];
+      v33 = [messagePayload2 objectForKeyedSubscript:@"HM.u.url"];
       v131 = 0;
       v114 = [v30 unarchivedObjectOfClass:v31 fromData:v33 error:&v131];
       v34 = v131;
@@ -539,8 +539,8 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
         }
 
         objc_autoreleasePoolPop(v35);
-        v39 = [v4 messagePayload];
-        v113 = [v39 objectForKeyedSubscript:@"HM.u.token"];
+        messagePayload3 = [shareCopy messagePayload];
+        v113 = [messagePayload3 objectForKeyedSubscript:@"HM.u.token"];
 
         v40 = objc_autoreleasePoolPush();
         v41 = v36;
@@ -554,8 +554,8 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
         }
 
         objc_autoreleasePoolPop(v40);
-        v44 = [v4 messagePayload];
-        v23 = [v44 objectForKeyedSubscript:@"HM.u.container"];
+        messagePayload4 = [shareCopy messagePayload];
+        v23 = [messagePayload4 objectForKeyedSubscript:@"HM.u.container"];
 
         v45 = objc_autoreleasePoolPush();
         v46 = v41;
@@ -571,8 +571,8 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
         objc_autoreleasePoolPop(v45);
         v49 = MEMORY[0x1E696ACD0];
         v50 = objc_opt_class();
-        v51 = [v4 messagePayload];
-        v52 = [v51 objectForKeyedSubscript:@"HM.u.from"];
+        messagePayload5 = [shareCopy messagePayload];
+        v52 = [messagePayload5 objectForKeyedSubscript:@"HM.u.from"];
         v130 = 0;
         v122 = [v49 unarchivedObjectOfClass:v50 fromData:v52 error:&v130];
         v53 = v130;
@@ -603,8 +603,8 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
 
           objc_autoreleasePoolPop(v54);
           v58 = objc_alloc(MEMORY[0x1E696ACD0]);
-          v59 = [v4 messagePayload];
-          v60 = [v59 objectForKeyedSubscript:@"HM.u.home"];
+          messagePayload6 = [shareCopy messagePayload];
+          v60 = [messagePayload6 objectForKeyedSubscript:@"HM.u.home"];
           v129 = 0;
           v61 = [v58 initForReadingFromData:v60 error:&v129];
           v62 = v129;
@@ -659,7 +659,7 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
               v76 = v89;
             }
 
-            v77 = [[HMUserCloudShareInvitation alloc] initWithUser:v19 URL:v114 shareToken:v76 containerID:v23 forHome:v121 fromUser:v122];
+            v77 = [[HMUserCloudShareInvitation alloc] initWithUser:responseHandler6 URL:v114 shareToken:v76 containerID:v23 forHome:v121 fromUser:v122];
             if (objc_opt_respondsToSelector())
             {
               contextb = v76;
@@ -683,8 +683,8 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
               v125[2] = __50__HMUserCloudShareManager__handleDidReceiveShare___block_invoke;
               v125[3] = &unk_1E754C6C8;
               v125[4] = v95;
-              v126 = v4;
-              [v5 shareManager:v95 didReceiveShareInvitation:v77 completionHandler:v125];
+              v126 = shareCopy;
+              [delegate shareManager:v95 didReceiveShareInvitation:v77 completionHandler:v125];
 
               v22 = v113;
               v76 = contextb;
@@ -714,8 +714,8 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
                 v123[2] = __50__HMUserCloudShareManager__handleDidReceiveShare___block_invoke_60;
                 v123[3] = &unk_1E754C6F0;
                 v123[4] = v99;
-                v124 = v4;
-                [v5 shareManager:v99 didReceiveShareInvitation:v77 completion:v123];
+                v124 = shareCopy;
+                [delegate shareManager:v99 didReceiveShareInvitation:v77 completion:v123];
               }
 
               else
@@ -731,13 +731,13 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
                 }
 
                 objc_autoreleasePoolPop(contextc);
-                v107 = [v4 responseHandler];
+                responseHandler = [shareCopy responseHandler];
 
-                if (v107)
+                if (responseHandler)
                 {
-                  v108 = [v4 responseHandler];
+                  responseHandler2 = [shareCopy responseHandler];
                   v109 = [MEMORY[0x1E696ABC0] hmErrorWithCode:2 description:@"Delegate does implement method to accept shares" reason:@"Need a delegate implements method to accept shares" suggestion:0];
-                  (v108)[2](v108, v109, 0);
+                  (responseHandler2)[2](responseHandler2, v109, 0);
                 }
               }
 
@@ -760,12 +760,12 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
     if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
     {
       v69 = HMFGetLogIdentifier();
-      [v4 messagePayload];
+      [shareCopy messagePayload];
       v115 = v23;
-      v70 = v4;
-      v71 = v5;
+      v70 = shareCopy;
+      v71 = delegate;
       v72 = v22;
-      v73 = v19;
+      v73 = responseHandler6;
       v75 = v74 = v21;
       *buf = 138543618;
       v136 = v69;
@@ -774,25 +774,25 @@ void __62__HMUserCloudShareManager_registerForContainerIDs_completion___block_in
       _os_log_impl(&dword_19BB39000, v68, OS_LOG_TYPE_ERROR, "%{public}@Could not decode all items in payload: %@", buf, 0x16u);
 
       v21 = v74;
-      v19 = v73;
+      responseHandler6 = v73;
       v22 = v72;
-      v5 = v71;
-      v4 = v70;
+      delegate = v71;
+      shareCopy = v70;
       v23 = v115;
     }
 
     objc_autoreleasePoolPop(v66);
     v76 = context;
     v77 = [MEMORY[0x1E696ABC0] hmErrorWithCode:3 description:@"Unable to decode payload" reason:@"Could not decode all items in payload" suggestion:0 underlyingError:context];
-    v78 = [v4 responseHandler];
+    responseHandler3 = [shareCopy responseHandler];
 
-    if (v78)
+    if (responseHandler3)
     {
-      v79 = [v4 responseHandler];
+      responseHandler4 = [shareCopy responseHandler];
       v133 = @"didAccept";
       v134 = MEMORY[0x1E695E110];
       v80 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v134 forKeys:&v133 count:1];
-      (v79)[2](v79, v77, v80);
+      (responseHandler4)[2](responseHandler4, v77, v80);
     }
 
 LABEL_33:
@@ -809,13 +809,13 @@ LABEL_33:
   }
 
   objc_autoreleasePoolPop(v6);
-  v25 = [v4 responseHandler];
+  responseHandler5 = [shareCopy responseHandler];
 
-  if (v25)
+  if (responseHandler5)
   {
-    v19 = [v4 responseHandler];
+    responseHandler6 = [shareCopy responseHandler];
     v21 = [MEMORY[0x1E696ABC0] hmErrorWithCode:2 description:@"Delegate does not respond to shares" reason:@"Need a delegate that responds to shares" suggestion:0];
-    (v19)[2](v19, v21, 0);
+    (responseHandler6)[2](responseHandler6, v21, 0);
 LABEL_34:
   }
 
@@ -1018,23 +1018,23 @@ void __36__HMUserCloudShareManager_configure__block_invoke_2(uint64_t a1)
 
 - (void)_unconfigure
 {
-  v4 = [(HMUserCloudShareManager *)self context];
-  v3 = [v4 messageDispatcher];
-  [v3 deregisterReceiver:self];
+  context = [(HMUserCloudShareManager *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher deregisterReceiver:self];
 }
 
-- (HMUserCloudShareManager)initWithDataSource:(id)a3 context:(id)a4
+- (HMUserCloudShareManager)initWithDataSource:(id)source context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  sourceCopy = source;
+  contextCopy = context;
   v13.receiver = self;
   v13.super_class = HMUserCloudShareManager;
   v8 = [(HMUserCloudShareManager *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_dataSource, v6);
-    objc_storeStrong(&v9->_context, a4);
+    objc_storeWeak(&v8->_dataSource, sourceCopy);
+    objc_storeStrong(&v9->_context, context);
     v10 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:@"4BEBFE01-79E8-4433-8EAA-D41948E39F02"];
     identifier = v9->_identifier;
     v9->_identifier = v10;
@@ -1043,11 +1043,11 @@ void __36__HMUserCloudShareManager_configure__block_invoke_2(uint64_t a1)
   return v9;
 }
 
-- (HMUserCloudShareManager)initWithDataSource:(id)a3
+- (HMUserCloudShareManager)initWithDataSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = [[_HMContext alloc] initWithName:@"com.apple.HomeKit.UserCSManager"];
-  v6 = [(HMUserCloudShareManager *)self initWithDataSource:v4 context:v5];
+  v6 = [(HMUserCloudShareManager *)self initWithDataSource:sourceCopy context:v5];
 
   return v6;
 }

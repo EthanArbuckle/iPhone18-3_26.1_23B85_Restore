@@ -1,14 +1,14 @@
 @interface HKSimulatedWatchView
-- (HKSimulatedWatchView)initWithIconImage:(id)a3 titleText:(id)a4 detailText:(id)a5 tintColor:(id)a6;
-- (HKSimulatedWatchView)initWithWatchView:(id)a3;
+- (HKSimulatedWatchView)initWithIconImage:(id)image titleText:(id)text detailText:(id)detailText tintColor:(id)color;
+- (HKSimulatedWatchView)initWithWatchView:(id)view;
 - (void)layoutSubviews;
 @end
 
 @implementation HKSimulatedWatchView
 
-- (HKSimulatedWatchView)initWithWatchView:(id)a3
+- (HKSimulatedWatchView)initWithWatchView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v19.receiver = self;
   v19.super_class = HKSimulatedWatchView;
   v6 = *MEMORY[0x1E695F058];
@@ -22,7 +22,7 @@
     containerView = v10->_containerView;
     v10->_containerView = v11;
 
-    objc_storeStrong(&v10->_watchScreenView, a3);
+    objc_storeStrong(&v10->_watchScreenView, view);
     v13 = MEMORY[0x1E69DCAB8];
     v14 = HKHealthUIFrameworkBundle();
     v15 = [v13 imageNamed:@"simulated_watch_2" inBundle:v14 compatibleWithTraitCollection:0];
@@ -30,8 +30,8 @@
     v16 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v15];
     [(HKSimulatedWatchView *)v10 addSubview:v16];
     [(UIView *)v10->_containerView addSubview:v10->_watchScreenView];
-    v17 = [MEMORY[0x1E69DC888] blackColor];
-    [(UIView *)v10->_containerView setBackgroundColor:v17];
+    blackColor = [MEMORY[0x1E69DC888] blackColor];
+    [(UIView *)v10->_containerView setBackgroundColor:blackColor];
 
     [(HKSimulatedWatchView *)v10 addSubview:v10->_containerView];
     [(UIView *)v10->_watchScreenView setContentMode:2];
@@ -44,13 +44,13 @@
   return v10;
 }
 
-- (HKSimulatedWatchView)initWithIconImage:(id)a3 titleText:(id)a4 detailText:(id)a5 tintColor:(id)a6
+- (HKSimulatedWatchView)initWithIconImage:(id)image titleText:(id)text detailText:(id)detailText tintColor:(id)color
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[HKSimulatedWatchNotificationQuickLookView alloc] initWithIconImage:v13 titleText:v12 detailText:v11 tintColor:v10];
+  colorCopy = color;
+  detailTextCopy = detailText;
+  textCopy = text;
+  imageCopy = image;
+  v14 = [[HKSimulatedWatchNotificationQuickLookView alloc] initWithIconImage:imageCopy titleText:textCopy detailText:detailTextCopy tintColor:colorCopy];
 
   v15 = [(HKSimulatedWatchView *)self initWithWatchView:v14];
   return v15;
@@ -66,15 +66,15 @@
   v6 = v5 * 0.249;
   v7 = v3 * 0.68;
   v8 = v5 * 0.5;
-  v9 = [(HKSimulatedWatchView *)self containerView];
-  [v9 setFrame:{v4, v6, v7, v8}];
+  containerView = [(HKSimulatedWatchView *)self containerView];
+  [containerView setFrame:{v4, v6, v7, v8}];
 
   [(UIView *)self->_containerView bounds];
   MidX = CGRectGetMidX(v21);
   [(UIView *)self->_containerView bounds];
   MidY = CGRectGetMidY(v22);
-  v12 = [(HKSimulatedWatchView *)self watchScreenView];
-  [v12 setCenter:{MidX, MidY}];
+  watchScreenView = [(HKSimulatedWatchView *)self watchScreenView];
+  [watchScreenView setCenter:{MidX, MidY}];
 
   [(UIView *)self->_containerView frame];
   v14 = v13 / 142.0;
@@ -86,9 +86,9 @@
   }
 
   CGAffineTransformMakeScale(&v19, v16, v16);
-  v17 = [(HKSimulatedWatchView *)self watchScreenView];
+  watchScreenView2 = [(HKSimulatedWatchView *)self watchScreenView];
   v18 = v19;
-  [v17 setTransform:&v18];
+  [watchScreenView2 setTransform:&v18];
 }
 
 @end

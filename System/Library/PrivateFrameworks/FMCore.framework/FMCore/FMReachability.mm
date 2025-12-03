@@ -1,11 +1,11 @@
 @interface FMReachability
 + (id)reachabilityForInternetConnection;
 + (id)reachabilityForLocalWiFi;
-+ (id)reachabilityWithAddress:(const sockaddr_in *)a3;
-+ (id)reachabilityWithHostName:(id)a3;
++ (id)reachabilityWithAddress:(const sockaddr_in *)address;
++ (id)reachabilityWithHostName:(id)name;
 - (BOOL)startNotifier;
 - (unint64_t)currentReachabilityStatus;
-- (unint64_t)networkStatusForFlags:(unsigned int)a3;
+- (unint64_t)networkStatusForFlags:(unsigned int)flags;
 - (void)dealloc;
 - (void)stopNotifier;
 @end
@@ -54,41 +54,41 @@
   [(FMReachability *)&v4 dealloc];
 }
 
-+ (id)reachabilityWithHostName:(id)a3
++ (id)reachabilityWithHostName:(id)name
 {
-  v5 = a3;
-  v6 = [a3 UTF8String];
-  if (v6)
+  nameCopy = name;
+  uTF8String = [name UTF8String];
+  if (uTF8String)
   {
-    v6 = SCNetworkReachabilityCreateWithName(0, v6);
-    if (v6)
+    uTF8String = SCNetworkReachabilityCreateWithName(0, uTF8String);
+    if (uTF8String)
     {
-      v7 = v6;
-      v6 = objc_alloc_init(a1);
-      if (v6)
+      v7 = uTF8String;
+      uTF8String = objc_alloc_init(self);
+      if (uTF8String)
       {
-        *(v6 + 2) = v7;
-        *(v6 + 8) = 0;
+        *(uTF8String + 2) = v7;
+        *(uTF8String + 8) = 0;
       }
 
       else
       {
         CFRelease(v7);
-        v6 = 0;
+        uTF8String = 0;
       }
     }
   }
 
-  return v6;
+  return uTF8String;
 }
 
-+ (id)reachabilityWithAddress:(const sockaddr_in *)a3
++ (id)reachabilityWithAddress:(const sockaddr_in *)address
 {
-  v4 = SCNetworkReachabilityCreateWithAddress(*MEMORY[0x277CBECE8], a3);
+  v4 = SCNetworkReachabilityCreateWithAddress(*MEMORY[0x277CBECE8], address);
   if (v4)
   {
     v5 = v4;
-    v4 = objc_alloc_init(a1);
+    v4 = objc_alloc_init(self);
     if (v4)
     {
       *(v4 + 2) = v5;
@@ -110,7 +110,7 @@
   v5[2] = *MEMORY[0x277D85DE8];
   v5[1] = 0;
   v5[0] = 528;
-  v2 = [a1 reachabilityWithAddress:v5];
+  v2 = [self reachabilityWithAddress:v5];
   v3 = *MEMORY[0x277D85DE8];
 
   return v2;
@@ -121,7 +121,7 @@
   v5[2] = *MEMORY[0x277D85DE8];
   v5[1] = 0;
   v5[0] = 0xFEA900000210;
-  v2 = [a1 reachabilityWithAddress:v5];
+  v2 = [self reachabilityWithAddress:v5];
   if (v2)
   {
     v2[8] = 1;
@@ -132,20 +132,20 @@
   return v2;
 }
 
-- (unint64_t)networkStatusForFlags:(unsigned int)a3
+- (unint64_t)networkStatusForFlags:(unsigned int)flags
 {
-  if ((a3 & 2) == 0)
+  if ((flags & 2) == 0)
   {
     return 0;
   }
 
-  LODWORD(v4) = (a3 & 0x28) != 0;
-  if ((a3 & 0x10) != 0)
+  LODWORD(v4) = (flags & 0x28) != 0;
+  if ((flags & 0x10) != 0)
   {
     LODWORD(v4) = 0;
   }
 
-  if ((a3 & 4) != 0)
+  if ((flags & 4) != 0)
   {
     v4 = v4;
   }
@@ -155,7 +155,7 @@
     v4 = 1;
   }
 
-  if ((a3 & 0x40000) != 0)
+  if ((flags & 0x40000) != 0)
   {
     return 2;
   }

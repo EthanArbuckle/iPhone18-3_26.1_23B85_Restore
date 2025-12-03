@@ -1,13 +1,13 @@
 @interface LiveSpeechCaptionsClient
 + (LiveSpeechCaptionsClient)shared;
-- (BOOL)startLiveCaptionsAndReturnError:(id *)a3;
-- (BOOL)startLiveSpeechAndReturnError:(id *)a3;
-- (BOOL)stopLiveCaptionsAndReturnError:(id *)a3;
-- (BOOL)stopLiveSpeechAndReturnError:(id *)a3;
+- (BOOL)startLiveCaptionsAndReturnError:(id *)error;
+- (BOOL)startLiveSpeechAndReturnError:(id *)error;
+- (BOOL)stopLiveCaptionsAndReturnError:(id *)error;
+- (BOOL)stopLiveSpeechAndReturnError:(id *)error;
 - (LiveSpeechCaptionsClient)init;
 - (NSString)serviceName;
-- (id)userInterfaceClient:(id)a3 accessQueueForProcessingMessageWithIdentifier:(int64_t)a4;
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3;
+- (id)userInterfaceClient:(id)client accessQueueForProcessingMessageWithIdentifier:(int64_t)identifier;
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client;
 - (void)dealloc;
 @end
 
@@ -39,40 +39,40 @@
 - (void)dealloc
 {
   ObjectType = swift_getObjectType();
-  v4 = self;
+  selfCopy = self;
   sub_256016644();
-  v5.receiver = v4;
+  v5.receiver = selfCopy;
   v5.super_class = ObjectType;
   [(LiveSpeechCaptionsClient *)&v5 dealloc];
 }
 
-- (BOOL)startLiveSpeechAndReturnError:(id *)a3
+- (BOOL)startLiveSpeechAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   LiveSpeechCaptionsClient.startLiveSpeech()();
 
   return 1;
 }
 
-- (BOOL)stopLiveSpeechAndReturnError:(id *)a3
+- (BOOL)stopLiveSpeechAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   LiveSpeechCaptionsClient.stopLiveSpeech()();
 
   return 1;
 }
 
-- (BOOL)startLiveCaptionsAndReturnError:(id *)a3
+- (BOOL)startLiveCaptionsAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   LiveSpeechCaptionsClient.startLiveCaptions()();
 
   return 1;
 }
 
-- (BOOL)stopLiveCaptionsAndReturnError:(id *)a3
+- (BOOL)stopLiveCaptionsAndReturnError:(id *)error
 {
-  v3 = self;
+  selfCopy = self;
   LiveSpeechCaptionsClient.stopLiveCaptions()();
 
   return 1;
@@ -85,18 +85,18 @@
   return v2;
 }
 
-- (id)userInterfaceClient:(id)a3 accessQueueForProcessingMessageWithIdentifier:(int64_t)a4
+- (id)userInterfaceClient:(id)client accessQueueForProcessingMessageWithIdentifier:(int64_t)identifier
 {
-  v4 = [objc_opt_self() mainAccessQueue];
+  mainAccessQueue = [objc_opt_self() mainAccessQueue];
 
-  return v4;
+  return mainAccessQueue;
 }
 
-- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)a3
+- (void)connectionWithServiceWasInterruptedForUserInterfaceClient:(id)client
 {
-  v5 = a3;
-  v6 = self;
-  LiveSpeechCaptionsClient.connectionWithServiceWasInterrupted(forUserInterfaceClient:)(a3);
+  clientCopy = client;
+  selfCopy = self;
+  LiveSpeechCaptionsClient.connectionWithServiceWasInterrupted(forUserInterfaceClient:)(client);
 }
 
 @end

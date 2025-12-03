@@ -20,14 +20,14 @@
     return 0;
   }
 
-  v6 = [(NSNumber *)self->super.inputRadius intValue];
-  v7 = fabsf(v6);
+  intValue = [(NSNumber *)self->super.inputRadius intValue];
+  v7 = fabsf(intValue);
   if (v7 >= 1.0)
   {
-    v9 = v6;
+    v9 = intValue;
     if (v7 >= 5.0)
     {
-      if (v6 >= 0)
+      if (intValue >= 0)
       {
         v18 = &CI::_min3x3;
       }
@@ -58,15 +58,15 @@
           }
 
           v25 = [CIVector vectorWithX:v24 Y:v24 * 0.707106781 Z:-v24 * 0.707106781 W:0.0];
-          v26 = [(CIImage *)v4 imageBySamplingNearest];
-          [(CIImage *)v26 extent];
+          imageBySamplingNearest = [(CIImage *)v4 imageBySamplingNearest];
+          [(CIImage *)imageBySamplingNearest extent];
           v38 = CGRectInset(v37, -v24, -v24);
           v27[0] = MEMORY[0x1E69E9820];
           v27[1] = 3221225472;
           v27[2] = __32__CICheapMorphology_outputImage__block_invoke_2;
           v27[3] = &__block_descriptor_36_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l;
           v28 = v24;
-          v31[0] = v26;
+          v31[0] = imageBySamplingNearest;
           v31[1] = v25;
           v4 = -[CIKernel applyWithExtent:roiCallback:arguments:](v22, "applyWithExtent:roiCallback:arguments:", v27, [MEMORY[0x1E695DEC8] arrayWithObjects:v31 count:2], v38.origin.x, v38.origin.y, v38.size.width, v38.size.height);
           v20 = v23;
@@ -78,7 +78,7 @@
 
     else
     {
-      v10 = [(CIImage *)self->super.inputImage imageBySamplingNearest];
+      imageBySamplingNearest2 = [(CIImage *)self->super.inputImage imageBySamplingNearest];
       if (v9 >= 0)
       {
         v11 = &CI::_minDisk;
@@ -91,7 +91,7 @@
 
       v12 = [CIKernel kernelWithInternalRepresentation:v11];
       v13 = floorf(v7);
-      [(CIImage *)v10 extent];
+      [(CIImage *)imageBySamplingNearest2 extent];
       v36 = CGRectInset(v35, -v13, -v13);
       x = v36.origin.x;
       y = v36.origin.y;
@@ -102,7 +102,7 @@
       v29[2] = __32__CICheapMorphology_outputImage__block_invoke;
       v29[3] = &__block_descriptor_36_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l;
       v30 = v13;
-      v32[0] = v10;
+      v32[0] = imageBySamplingNearest2;
       v32[1] = [MEMORY[0x1E696AD98] numberWithFloat:COERCE_DOUBLE(LODWORD(v7))];
       return -[CIKernel applyWithExtent:roiCallback:arguments:](v12, "applyWithExtent:roiCallback:arguments:", v29, [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2], x, y, width, height);
     }

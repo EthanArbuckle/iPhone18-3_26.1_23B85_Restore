@@ -1,19 +1,19 @@
 @interface HDClientDataCollectionTaskServer
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5;
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error;
 + (id)requiredEntitlements;
-- (HDClientDataCollectionTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6;
+- (HDClientDataCollectionTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate;
 - (NSString)description;
 - (id)_loggingClientProxy;
-- (id)identifierForDataAggregator:(id)a3;
-- (void)beginCollectionForDataAggregator:(id)a3 lastPersistedSensorDatum:(id)a4;
+- (id)identifierForDataAggregator:(id)aggregator;
+- (void)beginCollectionForDataAggregator:(id)aggregator lastPersistedSensorDatum:(id)datum;
 - (void)connectionConfigured;
 - (void)connectionInvalidated;
-- (void)dataAggregator:(id)a3 didPersistDatums:(id)a4 success:(BOOL)a5 error:(id)a6;
-- (void)dataAggregator:(id)a3 requestsCollectionThroughDate:(id)a4 completion:(id)a5;
-- (void)dataAggregator:(id)a3 wantsCollectionWithConfiguration:(id)a4;
-- (void)remote_insertDatums:(id)a3 device:(id)a4 metadata:(id)a5 options:(unint64_t)a6 batchUUID:(id)a7 registrationUUID:(id)a8 completion:(id)a9;
-- (void)remote_registerWithCompletion:(id)a3;
-- (void)remote_setCollectionState:(id)a3 completion:(id)a4;
+- (void)dataAggregator:(id)aggregator didPersistDatums:(id)datums success:(BOOL)success error:(id)error;
+- (void)dataAggregator:(id)aggregator requestsCollectionThroughDate:(id)date completion:(id)completion;
+- (void)dataAggregator:(id)aggregator wantsCollectionWithConfiguration:(id)configuration;
+- (void)remote_insertDatums:(id)datums device:(id)device metadata:(id)metadata options:(unint64_t)options batchUUID:(id)d registrationUUID:(id)iD completion:(id)completion;
+- (void)remote_registerWithCompletion:(id)completion;
+- (void)remote_setCollectionState:(id)state completion:(id)completion;
 @end
 
 @implementation HDClientDataCollectionTaskServer
@@ -28,44 +28,44 @@
   return v2;
 }
 
-- (HDClientDataCollectionTaskServer)initWithUUID:(id)a3 configuration:(id)a4 client:(id)a5 delegate:(id)a6
+- (HDClientDataCollectionTaskServer)initWithUUID:(id)d configuration:(id)configuration client:(id)client delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v12)
+  dCopy = d;
+  configurationCopy = configuration;
+  clientCopy = client;
+  delegateCopy = delegate;
+  if (!configurationCopy)
   {
-    v32 = [MEMORY[0x277CCA890] currentHandler];
-    [v32 handleFailureInMethod:a2 object:self file:@"HDClientDataCollectionTaskServer.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDClientDataCollectionTaskServer.m" lineNumber:69 description:{@"Invalid parameter not satisfying: %@", @"configuration"}];
   }
 
   v33.receiver = self;
   v33.super_class = HDClientDataCollectionTaskServer;
-  v15 = [(HDStandardTaskServer *)&v33 initWithUUID:v11 configuration:v12 client:v13 delegate:v14];
+  v15 = [(HDStandardTaskServer *)&v33 initWithUUID:dCopy configuration:configurationCopy client:clientCopy delegate:delegateCopy];
   if (v15)
   {
     v16 = HKCreateSerialDispatchQueue();
     queue = v15->_queue;
     v15->_queue = v16;
 
-    objc_storeStrong(&v15->_configuration, a4);
+    objc_storeStrong(&v15->_configuration, configuration);
     v18 = objc_alloc(MEMORY[0x277CCD298]);
-    v19 = [(HKDataCollectorTaskServerConfiguration *)v15->_configuration quantityType];
-    [v19 code];
+    quantityType = [(HKDataCollectorTaskServerConfiguration *)v15->_configuration quantityType];
+    [quantityType code];
     HKDefaultAggregationIntervalForType();
     v21 = v20;
-    v22 = [(HKDataCollectorTaskServerConfiguration *)v15->_configuration quantityType];
-    [v22 code];
+    quantityType2 = [(HKDataCollectorTaskServerConfiguration *)v15->_configuration quantityType];
+    [quantityType2 code];
     HKDefaultCollectionLatencyForType();
     v24 = [v18 initWithCollectionInterval:1 collectionLatency:v21 collectionType:v23];
     collectionConfiguration = v15->_collectionConfiguration;
     v15->_collectionConfiguration = v24;
 
     v26 = MEMORY[0x277CCDA00];
-    v27 = [(HDStandardTaskServer *)v15 client];
-    v28 = [v12 bundleIdentifier];
-    v29 = [v26 hd_sourceForClient:v27 bundleIdentifier:v28];
+    client = [(HDStandardTaskServer *)v15 client];
+    bundleIdentifier = [configurationCopy bundleIdentifier];
+    v29 = [v26 hd_sourceForClient:client bundleIdentifier:bundleIdentifier];
     clientSource = v15->_clientSource;
     v15->_clientSource = v29;
   }
@@ -73,14 +73,14 @@
   return v15;
 }
 
-+ (BOOL)validateConfiguration:(id)a3 client:(id)a4 error:(id *)a5
++ (BOOL)validateConfiguration:(id)configuration client:(id)client error:(id *)error
 {
-  if (!a3)
+  if (!configuration)
   {
-    [MEMORY[0x277CCA9B8] hk_assignError:a5 code:3 description:@"HKDataCollectorTaskServerConfiguration is nil"];
+    [MEMORY[0x277CCA9B8] hk_assignError:error code:3 description:@"HKDataCollectorTaskServerConfiguration is nil"];
   }
 
-  return a3 != 0;
+  return configuration != 0;
 }
 
 - (void)connectionConfigured
@@ -141,20 +141,20 @@ void __56__HDClientDataCollectionTaskServer_connectionConfigured__block_invoke(u
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_setCollectionState:(id)a3 completion:(id)a4
+- (void)remote_setCollectionState:(id)state completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  stateCopy = state;
+  completionCopy = completion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__HDClientDataCollectionTaskServer_remote_setCollectionState_completion___block_invoke;
   block[3] = &unk_278614160;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = stateCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = stateCopy;
   dispatch_sync(queue, block);
 }
 
@@ -167,21 +167,21 @@ uint64_t __73__HDClientDataCollectionTaskServer_remote_setCollectionState_comple
   return v2();
 }
 
-- (void)remote_insertDatums:(id)a3 device:(id)a4 metadata:(id)a5 options:(unint64_t)a6 batchUUID:(id)a7 registrationUUID:(id)a8 completion:(id)a9
+- (void)remote_insertDatums:(id)datums device:(id)device metadata:(id)metadata options:(unint64_t)options batchUUID:(id)d registrationUUID:(id)iD completion:(id)completion
 {
   v40 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  datumsCopy = datums;
+  deviceCopy = device;
+  metadataCopy = metadata;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   _HKInitializeLogging();
   v21 = *MEMORY[0x277CCC298];
   if (os_log_type_enabled(*MEMORY[0x277CCC298], OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v39 = self;
+    selfCopy = self;
     _os_log_impl(&dword_228986000, v21, OS_LOG_TYPE_DEFAULT, "%{public}@: remote_insertDatums:device:... called.", buf, 0xCu);
   }
 
@@ -191,19 +191,19 @@ uint64_t __73__HDClientDataCollectionTaskServer_remote_setCollectionState_comple
   v30[2] = __118__HDClientDataCollectionTaskServer_remote_insertDatums_device_metadata_options_batchUUID_registrationUUID_completion___block_invoke;
   v30[3] = &unk_27862DA68;
   v30[4] = self;
-  v31 = v15;
-  v32 = v16;
-  v33 = v17;
-  v34 = v18;
-  v35 = v19;
-  v36 = v20;
-  v37 = a6;
-  v23 = v20;
-  v24 = v19;
-  v25 = v18;
-  v26 = v17;
-  v27 = v16;
-  v28 = v15;
+  v31 = datumsCopy;
+  v32 = deviceCopy;
+  v33 = metadataCopy;
+  v34 = dCopy;
+  v35 = iDCopy;
+  v36 = completionCopy;
+  optionsCopy = options;
+  v23 = completionCopy;
+  v24 = iDCopy;
+  v25 = dCopy;
+  v26 = metadataCopy;
+  v27 = deviceCopy;
+  v28 = datumsCopy;
   dispatch_sync(queue, v30);
 
   v29 = *MEMORY[0x277D85DE8];
@@ -452,9 +452,9 @@ LABEL_41:
   v54 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remote_registerWithCompletion:(id)a3
+- (void)remote_registerWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __66__HDClientDataCollectionTaskServer_remote_registerWithCompletion___block_invoke;
@@ -466,8 +466,8 @@ LABEL_41:
   v7[2] = __66__HDClientDataCollectionTaskServer_remote_registerWithCompletion___block_invoke_312;
   v7[3] = &unk_2786173C8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [v5 clientRemote_synchronizeWithCompletion:v7];
 }
 
@@ -527,11 +527,11 @@ void __66__HDClientDataCollectionTaskServer_remote_registerWithCompletion___bloc
 - (void)connectionInvalidated
 {
   v19 = *MEMORY[0x277D85DE8];
-  v3 = [(HDStandardTaskServer *)self profile];
-  v4 = [v3 daemon];
-  v5 = [v4 isTerminating];
+  profile = [(HDStandardTaskServer *)self profile];
+  daemon = [profile daemon];
+  isTerminating = [daemon isTerminating];
 
-  if ((v5 & 1) == 0)
+  if ((isTerminating & 1) == 0)
   {
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC298];
@@ -539,12 +539,12 @@ void __66__HDClientDataCollectionTaskServer_remote_registerWithCompletion___bloc
     {
       v7 = v6;
       v8 = [(HDClientDataCollectionTaskServer *)self description];
-      v9 = [(HKDataCollectorTaskServerConfiguration *)self->_configuration bundleIdentifier];
+      bundleIdentifier = [(HKDataCollectorTaskServerConfiguration *)self->_configuration bundleIdentifier];
       v10 = [(HDDataAggregator *)self->_aggregator description];
       *buf = 138543874;
       v14 = v8;
       v15 = 2114;
-      v16 = v9;
+      v16 = bundleIdentifier;
       v17 = 2114;
       v18 = v10;
       _os_log_impl(&dword_228986000, v7, OS_LOG_TYPE_DEFAULT, "Unregistering data collector %{public}@ with bundle identifier %{public}@ from data aggregator: %{public}@", buf, 0x20u);
@@ -561,20 +561,20 @@ void __66__HDClientDataCollectionTaskServer_remote_registerWithCompletion___bloc
 
 - (id)_loggingClientProxy
 {
-  v1 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [a1 client];
-    v3 = [v2 connection];
+    client = [self client];
+    connection = [client connection];
     v5[0] = MEMORY[0x277D85DD0];
     v5[1] = 3221225472;
     v5[2] = __55__HDClientDataCollectionTaskServer__loggingClientProxy__block_invoke;
     v5[3] = &unk_2786138D0;
-    v5[4] = v1;
-    v1 = [v3 remoteObjectProxyWithErrorHandler:v5];
+    v5[4] = selfCopy;
+    selfCopy = [connection remoteObjectProxyWithErrorHandler:v5];
   }
 
-  return v1;
+  return selfCopy;
 }
 
 void __118__HDClientDataCollectionTaskServer__queue_insertDatums_device_metadata_options_batchUUID_registrationUUID_completion___block_invoke_2(uint64_t a1, uint64_t a2, void *a3)
@@ -622,20 +622,20 @@ void __55__HDClientDataCollectionTaskServer__loggingClientProxy__block_invoke(ui
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginCollectionForDataAggregator:(id)a3 lastPersistedSensorDatum:(id)a4
+- (void)beginCollectionForDataAggregator:(id)aggregator lastPersistedSensorDatum:(id)datum
 {
-  v6 = a3;
-  v7 = a4;
+  aggregatorCopy = aggregator;
+  datumCopy = datum;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __94__HDClientDataCollectionTaskServer_beginCollectionForDataAggregator_lastPersistedSensorDatum___block_invoke;
   block[3] = &unk_278613830;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = aggregatorCopy;
+  v13 = datumCopy;
+  v9 = datumCopy;
+  v10 = aggregatorCopy;
   dispatch_async(queue, block);
 }
 
@@ -694,17 +694,17 @@ void __94__HDClientDataCollectionTaskServer_beginCollectionForDataAggregator_las
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataAggregator:(id)a3 wantsCollectionWithConfiguration:(id)a4
+- (void)dataAggregator:(id)aggregator wantsCollectionWithConfiguration:(id)configuration
 {
-  v5 = a4;
+  configurationCopy = configuration;
   queue = self->_queue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __84__HDClientDataCollectionTaskServer_dataAggregator_wantsCollectionWithConfiguration___block_invoke;
   v8[3] = &unk_278613920;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = configurationCopy;
+  v7 = configurationCopy;
   dispatch_async(queue, v8);
 }
 
@@ -719,31 +719,31 @@ void __84__HDClientDataCollectionTaskServer_dataAggregator_wantsCollectionWithCo
   [v2 clientRemote_collectionConfigurationDidChange:*(*(a1 + 32) + 96)];
 }
 
-- (id)identifierForDataAggregator:(id)a3
+- (id)identifierForDataAggregator:(id)aggregator
 {
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(HKDataCollectorTaskServerConfiguration *)self->_configuration bundleIdentifier];
-  v6 = [(HKDataCollectorTaskServerConfiguration *)self->_configuration quantityType];
-  v7 = [v4 stringWithFormat:@"%@%@", v5, v6];
+  bundleIdentifier = [(HKDataCollectorTaskServerConfiguration *)self->_configuration bundleIdentifier];
+  quantityType = [(HKDataCollectorTaskServerConfiguration *)self->_configuration quantityType];
+  v7 = [v4 stringWithFormat:@"%@%@", bundleIdentifier, quantityType];
 
   return v7;
 }
 
-- (void)dataAggregator:(id)a3 didPersistDatums:(id)a4 success:(BOOL)a5 error:(id)a6
+- (void)dataAggregator:(id)aggregator didPersistDatums:(id)datums success:(BOOL)success error:(id)error
 {
-  v9 = a4;
-  v10 = a6;
+  datumsCopy = datums;
+  errorCopy = error;
   queue = self->_queue;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __82__HDClientDataCollectionTaskServer_dataAggregator_didPersistDatums_success_error___block_invoke;
   v14[3] = &unk_278617A98;
-  v17 = a5;
+  successCopy = success;
   v14[4] = self;
-  v15 = v9;
-  v16 = v10;
-  v12 = v10;
-  v13 = v9;
+  v15 = datumsCopy;
+  v16 = errorCopy;
+  v12 = errorCopy;
+  v13 = datumsCopy;
   dispatch_async(queue, v14);
 }
 
@@ -837,11 +837,11 @@ LABEL_17:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dataAggregator:(id)a3 requestsCollectionThroughDate:(id)a4 completion:(id)a5
+- (void)dataAggregator:(id)aggregator requestsCollectionThroughDate:(id)date completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  aggregatorCopy = aggregator;
+  dateCopy = date;
+  completionCopy = completion;
   v43[0] = 0;
   v43[1] = v43;
   v43[2] = 0x2020000000;
@@ -859,27 +859,27 @@ LABEL_17:
   aBlock[4] = self;
   v35 = v43;
   v36 = &v37;
-  v11 = v10;
+  v11 = completionCopy;
   v34 = v11;
   v12 = _Block_copy(aBlock);
-  v13 = [(HDStandardTaskServer *)self client];
-  v14 = [v13 process];
+  client = [(HDStandardTaskServer *)self client];
+  process = [client process];
 
-  v15 = [v14 processIdentifier];
+  processIdentifier = [process processIdentifier];
   v16 = objc_alloc(MEMORY[0x277CEEEA8]);
   v27[0] = MEMORY[0x277D85DD0];
   v27[1] = 3221225472;
   v27[2] = __92__HDClientDataCollectionTaskServer_dataAggregator_requestsCollectionThroughDate_completion___block_invoke_2;
   v27[3] = &unk_27862DB08;
-  v17 = v14;
-  v32 = v15;
+  v17 = process;
+  v32 = processIdentifier;
   v28 = v17;
-  v29 = self;
+  selfCopy = self;
   v18 = v12;
   v31 = v18;
-  v19 = v9;
+  v19 = dateCopy;
   v30 = v19;
-  v20 = [v16 initWithPID:v15 flags:3 reason:4 name:@"HealthKit Background Data Collection Flush" withHandler:v27];
+  v20 = [v16 initWithPID:processIdentifier flags:3 reason:4 name:@"HealthKit Background Data Collection Flush" withHandler:v27];
   v21 = v38[5];
   v38[5] = v20;
 
@@ -1033,9 +1033,9 @@ void __92__HDClientDataCollectionTaskServer_dataAggregator_requestsCollectionThr
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HKDataCollectorTaskServerConfiguration *)self->_configuration bundleIdentifier];
-  v7 = [(HKDataCollectorTaskServerConfiguration *)self->_configuration quantityType];
-  v8 = [v3 stringWithFormat:@"<%@:%p %@: %@>", v5, self, v6, v7];
+  bundleIdentifier = [(HKDataCollectorTaskServerConfiguration *)self->_configuration bundleIdentifier];
+  quantityType = [(HKDataCollectorTaskServerConfiguration *)self->_configuration quantityType];
+  v8 = [v3 stringWithFormat:@"<%@:%p %@: %@>", v5, self, bundleIdentifier, quantityType];
 
   return v8;
 }

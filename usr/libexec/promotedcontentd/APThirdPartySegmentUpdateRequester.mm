@@ -1,25 +1,25 @@
 @interface APThirdPartySegmentUpdateRequester
-- (APThirdPartySegmentUpdateRequester)initWithBundleID:(id)a3 identifier:(id)a4 segmentIdentifiers:(id)a5 replaceExisting:(BOOL)a6 privateSegment:(BOOL)a7;
+- (APThirdPartySegmentUpdateRequester)initWithBundleID:(id)d identifier:(id)identifier segmentIdentifiers:(id)identifiers replaceExisting:(BOOL)existing privateSegment:(BOOL)segment;
 - (id)protoBuffer;
 @end
 
 @implementation APThirdPartySegmentUpdateRequester
 
-- (APThirdPartySegmentUpdateRequester)initWithBundleID:(id)a3 identifier:(id)a4 segmentIdentifiers:(id)a5 replaceExisting:(BOOL)a6 privateSegment:(BOOL)a7
+- (APThirdPartySegmentUpdateRequester)initWithBundleID:(id)d identifier:(id)identifier segmentIdentifiers:(id)identifiers replaceExisting:(BOOL)existing privateSegment:(BOOL)segment
 {
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
+  identifiersCopy = identifiers;
+  identifierCopy = identifier;
+  dCopy = d;
   v16 = +[APIDAccountProvider privateUserAccount];
   v19.receiver = self;
   v19.super_class = APThirdPartySegmentUpdateRequester;
-  v17 = [(APServerRequester *)&v19 initWithBundleID:v15 requestIdentifier:v14 contextIdentifier:0 contentIdentifier:0 idAccount:v16];
+  v17 = [(APServerRequester *)&v19 initWithBundleID:dCopy requestIdentifier:identifierCopy contextIdentifier:0 contentIdentifier:0 idAccount:v16];
 
   if (v17)
   {
-    objc_storeStrong(&v17->_segmentIdentifiers, a5);
-    v17->_replaceExisting = a6;
-    v17->_privateSegment = a7;
+    objc_storeStrong(&v17->_segmentIdentifiers, identifiers);
+    v17->_replaceExisting = existing;
+    v17->_privateSegment = segment;
   }
 
   return v17;
@@ -29,8 +29,8 @@
 {
   v3 = objc_alloc_init(APPBThirdPartySegmentUpdateRequest);
   v4 = +[APEncryptedIDProvider provider];
-  v5 = [(APServerRequester *)self idAccount];
-  v6 = [v4 encryptedIDsForIDAccountPrivate:v5];
+  idAccount = [(APServerRequester *)self idAccount];
+  v6 = [v4 encryptedIDsForIDAccountPrivate:idAccount];
 
   if ([(APThirdPartySegmentUpdateRequester *)self privateSegment])
   {
@@ -44,19 +44,19 @@
   v7 = ;
   [(APPBThirdPartySegmentUpdateRequest *)v3 setIAdID:v7];
 
-  v8 = [v6 toroID];
-  [(APPBThirdPartySegmentUpdateRequest *)v3 setToroID:v8];
+  toroID = [v6 toroID];
+  [(APPBThirdPartySegmentUpdateRequest *)v3 setToroID:toroID];
 
-  v9 = [v6 DPID];
-  [(APPBThirdPartySegmentUpdateRequest *)v3 setDPID:v9];
+  dPID = [v6 DPID];
+  [(APPBThirdPartySegmentUpdateRequest *)v3 setDPID:dPID];
 
-  v10 = [(APThirdPartySegmentUpdateRequester *)self segmentIdentifiers];
-  v11 = [v10 mutableCopy];
+  segmentIdentifiers = [(APThirdPartySegmentUpdateRequester *)self segmentIdentifiers];
+  v11 = [segmentIdentifiers mutableCopy];
   [(APPBThirdPartySegmentUpdateRequest *)v3 setSegmentIdentifiers:v11];
 
   [(APPBThirdPartySegmentUpdateRequest *)v3 setResetSegmentMembership:[(APThirdPartySegmentUpdateRequester *)self replaceExisting]];
-  v12 = [(APServerRequester *)self bundleID];
-  [(APPBThirdPartySegmentUpdateRequest *)v3 setAppID:v12];
+  bundleID = [(APServerRequester *)self bundleID];
+  [(APPBThirdPartySegmentUpdateRequest *)v3 setAppID:bundleID];
 
   if (+[APSystemInternal isAppleInternalInstall])
   {

@@ -1,24 +1,24 @@
 @interface MADCacheDeleteManagerError
-+ (id)buildError:(int64_t)a3 fromOperation:(id)a4 underlyingError:(id)a5 withDescription:(id)a6;
-+ (id)summaryForCode:(int64_t)a3 fromOperation:(id)a4;
++ (id)buildError:(int64_t)error fromOperation:(id)operation underlyingError:(id)underlyingError withDescription:(id)description;
++ (id)summaryForCode:(int64_t)code fromOperation:(id)operation;
 + (void)mapCacheDeleteManagerErrorIndications;
 @end
 
 @implementation MADCacheDeleteManagerError
 
-+ (id)summaryForCode:(int64_t)a3 fromOperation:(id)a4
++ (id)summaryForCode:(int64_t)code fromOperation:(id)operation
 {
-  if (a3 > 3)
+  if (code > 3)
   {
     v4 = @"MADCacheDeleteManagerError";
   }
 
   else
   {
-    v4 = *(&off_4B50F0 + a3);
+    v4 = *(&off_4B50F0 + code);
   }
 
-  return [NSString stringWithFormat:@"%@:%@(%lld)", a4, v4, a3];
+  return [NSString stringWithFormat:@"%@:%@(%lld)", operation, v4, code];
 }
 
 + (void)mapCacheDeleteManagerErrorIndications
@@ -38,37 +38,37 @@ void __67__MADCacheDeleteManagerError_mapCacheDeleteManagerErrorIndications__blo
   [SUCoreErrorInformation attributesOfErrorForDomain:@"com.apple.MobileAssetError" withCode:3 codeName:@"CacheDeleteNotSupported"];
 }
 
-+ (id)buildError:(int64_t)a3 fromOperation:(id)a4 underlyingError:(id)a5 withDescription:(id)a6
++ (id)buildError:(int64_t)error fromOperation:(id)operation underlyingError:(id)underlyingError withDescription:(id)description
 {
-  v9 = a5;
-  v10 = a6;
-  v11 = a4;
+  underlyingErrorCopy = underlyingError;
+  descriptionCopy = description;
+  operationCopy = operation;
   v12 = objc_opt_new();
-  v13 = [MADCacheDeleteManagerError summaryForCode:a3 fromOperation:v11];
+  v13 = [MADCacheDeleteManagerError summaryForCode:error fromOperation:operationCopy];
 
   v14 = [NSString alloc];
-  if (v10)
+  if (descriptionCopy)
   {
-    v15 = [v14 initWithFormat:@"[%@] %@", v13, v10];
+    descriptionCopy = [v14 initWithFormat:@"[%@] %@", v13, descriptionCopy];
   }
 
   else
   {
-    v15 = [v14 initWithFormat:@"[%@]", v13, v19];
+    descriptionCopy = [v14 initWithFormat:@"[%@]", v13, v19];
   }
 
-  v16 = v15;
-  if (v15)
+  v16 = descriptionCopy;
+  if (descriptionCopy)
   {
-    [v12 setObject:v15 forKey:NSLocalizedDescriptionKey];
+    [v12 setObject:descriptionCopy forKey:NSLocalizedDescriptionKey];
   }
 
-  if (v9)
+  if (underlyingErrorCopy)
   {
-    [v12 setObject:v9 forKey:NSUnderlyingErrorKey];
+    [v12 setObject:underlyingErrorCopy forKey:NSUnderlyingErrorKey];
   }
 
-  v17 = [NSError errorWithDomain:@"com.apple.MobileAssetError" code:a3 userInfo:v12];
+  v17 = [NSError errorWithDomain:@"com.apple.MobileAssetError" code:error userInfo:v12];
 
   return v17;
 }

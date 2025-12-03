@@ -2,7 +2,7 @@
 - (BOOL)shouldIgnoreForegroundColor;
 - (BOOL)shouldRespectOutputBlending;
 - (CUIBackgroundStyleEffectConfiguration)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
 @end
@@ -29,14 +29,14 @@
   [(CUIStyleEffectConfiguration *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CUIBackgroundStyleEffectConfiguration;
   v5 = [(CUIStyleEffectConfiguration *)&v7 copyWithZone:?];
   if (v5)
   {
-    v5[10] = [(NSString *)self->_backgroundType copyWithZone:a3];
+    v5[10] = [(NSString *)self->_backgroundType copyWithZone:zone];
     *(v5 + 88) = self->_effectShowsValue;
   }
 
@@ -58,8 +58,8 @@
 
     else
     {
-      v5 = [(CUIBackgroundStyleEffectConfiguration *)self backgroundType];
-      _CUILog(4, "CoreUI: Invalid background type requested: %@", v6, v7, v8, v9, v10, v11, v5);
+      backgroundType = [(CUIBackgroundStyleEffectConfiguration *)self backgroundType];
+      _CUILog(4, "CoreUI: Invalid background type requested: %@", v6, v7, v8, v9, v10, v11, backgroundType);
     }
   }
 
@@ -84,8 +84,8 @@
 
       else
       {
-        v6 = [(CUIBackgroundStyleEffectConfiguration *)self backgroundType];
-        _CUILog(4, "CoreUI: Invalid background type requested: %@", v7, v8, v9, v10, v11, v12, v6);
+        backgroundType = [(CUIBackgroundStyleEffectConfiguration *)self backgroundType];
+        _CUILog(4, "CoreUI: Invalid background type requested: %@", v7, v8, v9, v10, v11, v12, backgroundType);
       }
     }
   }

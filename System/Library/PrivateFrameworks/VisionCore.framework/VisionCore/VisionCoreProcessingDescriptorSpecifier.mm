@@ -1,53 +1,53 @@
 @interface VisionCoreProcessingDescriptorSpecifier
-- (BOOL)isEqual:(id)a3;
-- (VisionCoreProcessingDescriptorSpecifier)initWithCoder:(id)a3;
-- (VisionCoreProcessingDescriptorSpecifier)initWithIdentifier:(id)a3 version:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (VisionCoreProcessingDescriptorSpecifier)initWithCoder:(id)coder;
+- (VisionCoreProcessingDescriptorSpecifier)initWithIdentifier:(id)identifier version:(id)version;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VisionCoreProcessingDescriptorSpecifier
 
-- (VisionCoreProcessingDescriptorSpecifier)initWithCoder:(id)a3
+- (VisionCoreProcessingDescriptorSpecifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"version"];
     if (v6)
     {
       self = [(VisionCoreProcessingDescriptorSpecifier *)self initWithIdentifier:v5 version:v6];
-      v7 = self;
+      selfCopy = self;
     }
 
     else
     {
-      v7 = 0;
+      selfCopy = 0;
     }
   }
 
   else
   {
-    v7 = 0;
+    selfCopy = 0;
   }
 
-  return v7;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"identifier"];
-  [v5 encodeObject:self->_version forKey:@"version"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
+  [coderCopy encodeObject:self->_version forKey:@"version"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -57,16 +57,16 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(VisionCoreProcessingDescriptorSpecifier *)self identifier];
-      v7 = [(VisionCoreProcessingDescriptorSpecifier *)v5 identifier];
-      v8 = [v6 isEqualToString:v7];
+      v5 = equalCopy;
+      identifier = [(VisionCoreProcessingDescriptorSpecifier *)self identifier];
+      identifier2 = [(VisionCoreProcessingDescriptorSpecifier *)v5 identifier];
+      v8 = [identifier isEqualToString:identifier2];
 
       if (v8)
       {
-        v9 = [(VisionCoreProcessingDescriptorSpecifier *)self version];
-        v10 = [(VisionCoreProcessingDescriptorSpecifier *)v5 version];
-        v11 = [v9 isEqual:v10];
+        version = [(VisionCoreProcessingDescriptorSpecifier *)self version];
+        version2 = [(VisionCoreProcessingDescriptorSpecifier *)v5 version];
+        v11 = [version isEqual:version2];
       }
 
       else
@@ -86,10 +86,10 @@
 
 - (unint64_t)hash
 {
-  v3 = [(VisionCoreProcessingDescriptorSpecifier *)self identifier];
-  v4 = [v3 hash];
-  v5 = [(VisionCoreProcessingDescriptorSpecifier *)self version];
-  v6 = [v5 hash];
+  identifier = [(VisionCoreProcessingDescriptorSpecifier *)self identifier];
+  v4 = [identifier hash];
+  version = [(VisionCoreProcessingDescriptorSpecifier *)self version];
+  v6 = [version hash];
 
   return v6 ^ v4;
 }
@@ -97,27 +97,27 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(VisionCoreProcessingDescriptorSpecifier *)self identifier];
-  v5 = [(VisionCoreProcessingDescriptorSpecifier *)self version];
-  v6 = [v3 initWithFormat:@"%@ %@", v4, v5];
+  identifier = [(VisionCoreProcessingDescriptorSpecifier *)self identifier];
+  version = [(VisionCoreProcessingDescriptorSpecifier *)self version];
+  v6 = [v3 initWithFormat:@"%@ %@", identifier, version];
 
   return v6;
 }
 
-- (VisionCoreProcessingDescriptorSpecifier)initWithIdentifier:(id)a3 version:(id)a4
+- (VisionCoreProcessingDescriptorSpecifier)initWithIdentifier:(id)identifier version:(id)version
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  versionCopy = version;
   v12.receiver = self;
   v12.super_class = VisionCoreProcessingDescriptorSpecifier;
   v8 = [(VisionCoreProcessingDescriptorSpecifier *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [identifierCopy copy];
     identifier = v8->_identifier;
     v8->_identifier = v9;
 
-    objc_storeStrong(&v8->_version, a4);
+    objc_storeStrong(&v8->_version, version);
   }
 
   return v8;

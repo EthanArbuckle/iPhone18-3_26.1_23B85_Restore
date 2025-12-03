@@ -1,47 +1,47 @@
 @interface AAWalrusPCSAuthRequest
-- (AAWalrusPCSAuthRequest)initWithAccount:(id)a3 WebSessionID:(id)a4 webSessionConsentUUID:(id)a5 encryptionEnvelope:(id)a6 appName:(id)a7 responseIdentities:(id)a8 serverInfo:(id)a9 urlString:(id)a10;
+- (AAWalrusPCSAuthRequest)initWithAccount:(id)account WebSessionID:(id)d webSessionConsentUUID:(id)iD encryptionEnvelope:(id)envelope appName:(id)name responseIdentities:(id)identities serverInfo:(id)info urlString:(id)self0;
 - (id)urlRequest;
 @end
 
 @implementation AAWalrusPCSAuthRequest
 
-- (AAWalrusPCSAuthRequest)initWithAccount:(id)a3 WebSessionID:(id)a4 webSessionConsentUUID:(id)a5 encryptionEnvelope:(id)a6 appName:(id)a7 responseIdentities:(id)a8 serverInfo:(id)a9 urlString:(id)a10
+- (AAWalrusPCSAuthRequest)initWithAccount:(id)account WebSessionID:(id)d webSessionConsentUUID:(id)iD encryptionEnvelope:(id)envelope appName:(id)name responseIdentities:(id)identities serverInfo:(id)info urlString:(id)self0
 {
   v35[6] = *MEMORY[0x1E69E9840];
-  v32 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = a9;
-  v23 = a10;
+  accountCopy = account;
+  dCopy = d;
+  iDCopy = iD;
+  envelopeCopy = envelope;
+  nameCopy = name;
+  identitiesCopy = identities;
+  infoCopy = info;
+  stringCopy = string;
   v33.receiver = self;
   v33.super_class = AAWalrusPCSAuthRequest;
   v24 = [(AAWalrusPCSAuthRequest *)&v33 init];
   v25 = v24;
   if (v24)
   {
-    objc_storeStrong(&v24->_account, a3);
+    objc_storeStrong(&v24->_account, account);
     v34[0] = @"PCSIdentitiesInResponse";
     v34[1] = @"encryptedEnvelope";
-    v35[0] = v21;
-    v35[1] = v19;
-    v35[2] = v20;
+    v35[0] = identitiesCopy;
+    v35[1] = envelopeCopy;
+    v35[2] = nameCopy;
     v34[2] = @"appName";
     v34[3] = @"webSessionID";
-    v26 = [v17 lowercaseString];
-    v35[3] = v26;
+    lowercaseString = [dCopy lowercaseString];
+    v35[3] = lowercaseString;
     v34[4] = @"webSessionConsentUUID";
-    v27 = [v18 lowercaseString];
+    lowercaseString2 = [iDCopy lowercaseString];
     v34[5] = @"serverInfo";
-    v35[4] = v27;
-    v35[5] = v22;
+    v35[4] = lowercaseString2;
+    v35[5] = infoCopy;
     v28 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v35 forKeys:v34 count:6];
     bodyParams = v25->_bodyParams;
     v25->_bodyParams = v28;
 
-    objc_storeStrong(&v25->_internalURLString, a10);
+    objc_storeStrong(&v25->_internalURLString, string);
   }
 
   v30 = *MEMORY[0x1E69E9840];
@@ -52,8 +52,8 @@
 {
   v7.receiver = self;
   v7.super_class = AAWalrusPCSAuthRequest;
-  v3 = [(AARequest *)&v7 urlRequest];
-  v4 = [v3 mutableCopy];
+  urlRequest = [(AARequest *)&v7 urlRequest];
+  v4 = [urlRequest mutableCopy];
 
   if (([v4 aa_addAuthTokenOrBasicAuthHeaderWithAccount:self->_account preferUsingPassword:0] & 1) == 0)
   {

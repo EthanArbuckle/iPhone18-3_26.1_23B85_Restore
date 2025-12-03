@@ -1,11 +1,11 @@
 @interface PKExplanationView
 - (BOOL)_isBuddyiPad;
 - (CGSize)logoImageViewTargetSize;
-- (PKExplanationView)initWithContext:(int64_t)a3 delegate:(id)a4;
+- (PKExplanationView)initWithContext:(int64_t)context delegate:(id)delegate;
 - (PKExplanationViewDelegate)delegate;
 - (double)_resolvedHorizontalMargin;
 - (id)_createBodyTextView;
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4;
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection;
 - (void)_bodyButtonTapped;
 - (void)_calculateBlur;
 - (void)_configureScrollViewBackgroundColor;
@@ -19,90 +19,90 @@
 - (void)_updateTitleLabel;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)pk_applyAppearance:(id)a3;
-- (void)setAttributedBodyText:(id)a3;
-- (void)setAttributedSecondaryBodyText:(id)a3;
-- (void)setBodyButtonNumberOfLines:(int64_t)a3;
-- (void)setBodyButtonText:(id)a3;
-- (void)setBodyButtonUsesLearnMoreStyle:(BOOL)a3;
-- (void)setBodyDataDetectorTypes:(unint64_t)a3;
-- (void)setBodyImage:(id)a3;
-- (void)setBodyText:(id)a3;
-- (void)setBodyTextAlignment:(int64_t)a3;
-- (void)setBodyTextColor:(id)a3;
-- (void)setBodyView:(id)a3;
-- (void)setBodyViewContentMode:(unint64_t)a3;
-- (void)setBodyViewPadding:(double)a3;
-- (void)setBodyViewThatFitsOverride:(id)a3;
-- (void)setForceShowSetupLaterButton:(BOOL)a3;
-- (void)setHeroView:(id)a3;
-- (void)setHeroViewContentMode:(unint64_t)a3;
-- (void)setHeroViewPrefersSizeTransform:(BOOL)a3;
-- (void)setHeroViewSizeThatFitsOverride:(id)a3;
-- (void)setHideTitleText:(BOOL)a3;
-- (void)setHorizontalMargin:(unint64_t)a3;
-- (void)setImage:(id)a3;
-- (void)setImageStyle:(unint64_t)a3;
-- (void)setLogoImageViewTargetSize:(CGSize)a3;
-- (void)setPrivacyLink:(id)a3;
-- (void)setReverseBodyViewAndBodyButtonOrder:(BOOL)a3;
-- (void)setShowPrivacyView:(BOOL)a3;
-- (void)setShowSpinner:(BOOL)a3;
-- (void)setTitleAccessoriesEnabled:(BOOL)a3;
-- (void)setTitleAlignment:(int64_t)a3;
-- (void)setTitleFont:(id)a3;
-- (void)setTitleHyphenationFactor:(double)a3;
-- (void)setTitleImage:(id)a3;
+- (void)pk_applyAppearance:(id)appearance;
+- (void)setAttributedBodyText:(id)text;
+- (void)setAttributedSecondaryBodyText:(id)text;
+- (void)setBodyButtonNumberOfLines:(int64_t)lines;
+- (void)setBodyButtonText:(id)text;
+- (void)setBodyButtonUsesLearnMoreStyle:(BOOL)style;
+- (void)setBodyDataDetectorTypes:(unint64_t)types;
+- (void)setBodyImage:(id)image;
+- (void)setBodyText:(id)text;
+- (void)setBodyTextAlignment:(int64_t)alignment;
+- (void)setBodyTextColor:(id)color;
+- (void)setBodyView:(id)view;
+- (void)setBodyViewContentMode:(unint64_t)mode;
+- (void)setBodyViewPadding:(double)padding;
+- (void)setBodyViewThatFitsOverride:(id)override;
+- (void)setForceShowSetupLaterButton:(BOOL)button;
+- (void)setHeroView:(id)view;
+- (void)setHeroViewContentMode:(unint64_t)mode;
+- (void)setHeroViewPrefersSizeTransform:(BOOL)transform;
+- (void)setHeroViewSizeThatFitsOverride:(id)override;
+- (void)setHideTitleText:(BOOL)text;
+- (void)setHorizontalMargin:(unint64_t)margin;
+- (void)setImage:(id)image;
+- (void)setImageStyle:(unint64_t)style;
+- (void)setLogoImageViewTargetSize:(CGSize)size;
+- (void)setPrivacyLink:(id)link;
+- (void)setReverseBodyViewAndBodyButtonOrder:(BOOL)order;
+- (void)setShowPrivacyView:(BOOL)view;
+- (void)setShowSpinner:(BOOL)spinner;
+- (void)setTitleAccessoriesEnabled:(BOOL)enabled;
+- (void)setTitleAlignment:(int64_t)alignment;
+- (void)setTitleFont:(id)font;
+- (void)setTitleHyphenationFactor:(double)factor;
+- (void)setTitleImage:(id)image;
 - (void)setTitleLabelAttributedText;
-- (void)setTitleLineBreakStrategy:(unint64_t)a3;
-- (void)setTitleText:(id)a3;
-- (void)setTitleTextColor:(id)a3;
-- (void)setTitleTextNumberOfLines:(int64_t)a3;
-- (void)setTopBackgroundColor:(id)a3;
-- (void)setTopMargin:(double)a3;
-- (void)showCheckmark:(BOOL)a3 animated:(BOOL)a4;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)setTitleLineBreakStrategy:(unint64_t)strategy;
+- (void)setTitleText:(id)text;
+- (void)setTitleTextColor:(id)color;
+- (void)setTitleTextNumberOfLines:(int64_t)lines;
+- (void)setTopBackgroundColor:(id)color;
+- (void)setTopMargin:(double)margin;
+- (void)showCheckmark:(BOOL)checkmark animated:(BOOL)animated;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PKExplanationView
 
-- (void)pk_applyAppearance:(id)a3
+- (void)pk_applyAppearance:(id)appearance
 {
-  v4 = a3;
-  v5 = [v4 backgroundColor];
-  [(PKExplanationView *)self setBackgroundColor:v5];
+  appearanceCopy = appearance;
+  backgroundColor = [appearanceCopy backgroundColor];
+  [(PKExplanationView *)self setBackgroundColor:backgroundColor];
 
-  v6 = [v4 tintColor];
-  [(PKExplanationView *)self setTintColor:v6];
+  tintColor = [appearanceCopy tintColor];
+  [(PKExplanationView *)self setTintColor:tintColor];
 
-  LODWORD(v6) = [v4 hasDarkAppearance];
-  if (v6)
+  LODWORD(tintColor) = [appearanceCopy hasDarkAppearance];
+  if (tintColor)
   {
-    v12 = [(PKExplanationView *)self logoImageView];
-    v7 = [v12 image];
+    logoImageView = [(PKExplanationView *)self logoImageView];
+    image = [logoImageView image];
 
-    if (v7)
+    if (image)
     {
-      v8 = [v12 image];
-      v9 = [MEMORY[0x1E69DC888] whiteColor];
-      v10 = [v8 _flatImageWithColor:v9];
+      image2 = [logoImageView image];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      v10 = [image2 _flatImageWithColor:whiteColor];
       v11 = [v10 imageWithRenderingMode:1];
-      [v12 setImage:v11];
+      [logoImageView setImage:v11];
     }
   }
 }
 
-- (PKExplanationView)initWithContext:(int64_t)a3 delegate:(id)a4
+- (PKExplanationView)initWithContext:(int64_t)context delegate:(id)delegate
 {
-  v6 = a4;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = PKExplanationView;
   v7 = [(PKExplanationView *)&v17 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
   v8 = v7;
   if (v7)
   {
-    v7->_context = a3;
-    objc_storeWeak(&v7->_delegate, v6);
+    v7->_context = context;
+    objc_storeWeak(&v7->_delegate, delegateCopy);
     v8->_showPrivacyView = 1;
     v8->_topMargin = 0.0;
     v8->_horizontalMargin = 0;
@@ -134,8 +134,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = PKExplanationView;
@@ -211,8 +211,8 @@
 
   if (width >= 768.0)
   {
-    v23 = [(PKExplanationView *)self readableContentGuide];
-    [v23 layoutFrame];
+    readableContentGuide = [(PKExplanationView *)self readableContentGuide];
+    [readableContentGuide layoutFrame];
   }
 
   v131 = x;
@@ -226,9 +226,9 @@
   v143 = &v142;
   v144 = 0x2020000000;
   v145 = 0;
-  v29 = [(UIImageView *)self->_imageView superview];
+  superview = [(UIImageView *)self->_imageView superview];
 
-  if (v29)
+  if (superview)
   {
     v30 = self->_imageView;
     [(UIImageView *)v30 frame];
@@ -256,9 +256,9 @@
 
   else
   {
-    v31 = [(UIView *)self->_heroView superview];
+    superview2 = [(UIView *)self->_heroView superview];
 
-    if (v31)
+    if (superview2)
     {
       if (self->_imageIgnoresTopSafeArea)
       {
@@ -275,15 +275,15 @@
     }
   }
 
-  v41 = [(PKExplanationView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKExplanationView *)self _shouldReverseLayoutDirection];
   v42 = MEMORY[0x1E695F060];
   if (!self->_hideTitleText)
   {
     if ([(PKExplanationView *)self _showTitleLogoImageView])
     {
       v43 = self->_logoImageView;
-      v44 = [(UIImageView *)v43 image];
-      [v44 size];
+      image = [(UIImageView *)v43 image];
+      [image size];
       v46 = v45;
 
       [(UIImageView *)v43 frame];
@@ -339,9 +339,9 @@
     v143[3] = v56 + *p_topLogoBottomPadding + v143[3];
   }
 
-  v58 = [(UIImageView *)self->_bodyImageView superview];
+  superview3 = [(UIImageView *)self->_bodyImageView superview];
 
-  if (v58)
+  if (superview3)
   {
     [(UIImageView *)self->_bodyImageView frame];
     UIRectCenteredXInRect();
@@ -450,7 +450,7 @@
   aBlock[7] = v128;
   *&aBlock[8] = v28;
   *&aBlock[9] = v129;
-  v141 = v41;
+  v141 = _shouldReverseLayoutDirection;
   *&aBlock[10] = v131;
   *&aBlock[11] = rect;
   *&aBlock[12] = width;
@@ -488,20 +488,20 @@
   v87 = width;
   if (width >= 768.0)
   {
-    v88 = [(PKExplanationView *)self readableContentGuide];
-    [v88 layoutFrame];
+    readableContentGuide2 = [(PKExplanationView *)self readableContentGuide];
+    [readableContentGuide2 layoutFrame];
     v87 = v89;
   }
 
-  v90 = [(OBPrivacyLinkController *)self->_privacyLink view];
-  v91 = v90;
-  if (v90 && self->_showPrivacyView)
+  view = [(OBPrivacyLinkController *)self->_privacyLink view];
+  v91 = view;
+  if (view && self->_showPrivacyView)
   {
     v93 = self->_cachedPrivacyViewSize.width;
     v92 = self->_cachedPrivacyViewSize.height;
     if (v93 == *v42 && v92 == v42[1])
     {
-      [v90 setFrame:{0.0, 0.0, v28, 0.0}];
+      [view setFrame:{0.0, 0.0, v28, 0.0}];
       [v91 setNeedsLayout];
       [v91 layoutIfNeeded];
       LODWORD(v94) = 1148846080;
@@ -531,18 +531,18 @@
 
     if (height - (v92 + 11.0 + v98 + v99) >= MaxY)
     {
-      v104 = [v91 superview];
+      superview4 = [v91 superview];
       dockView = self->_dockView;
 
-      if (v104 != dockView)
+      if (superview4 != dockView)
       {
         [v91 removeFromSuperview];
       }
 
-      v106 = [(PKPaymentSetupDockView *)self->_dockView privacyLink];
+      privacyLink = [(PKPaymentSetupDockView *)self->_dockView privacyLink];
       privacyLink = self->_privacyLink;
 
-      if (v106 != privacyLink)
+      if (privacyLink != privacyLink)
       {
         [(PKPaymentSetupDockView *)self->_dockView setPrivacyLink:self->_privacyLink];
       }
@@ -552,16 +552,16 @@
 
     else
     {
-      v100 = [(PKPaymentSetupDockView *)self->_dockView privacyLink];
+      privacyLink2 = [(PKPaymentSetupDockView *)self->_dockView privacyLink];
 
-      if (v100)
+      if (privacyLink2)
       {
         [(PKPaymentSetupDockView *)self->_dockView setPrivacyLink:0];
       }
 
-      v101 = [v91 superview];
+      superview5 = [v91 superview];
 
-      if (!v101)
+      if (!superview5)
       {
         [(UIScrollView *)self->_scrollView addSubview:v91];
       }
@@ -785,19 +785,19 @@ void __35__PKExplanationView_layoutSubviews__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)setShowPrivacyView:(BOOL)a3
+- (void)setShowPrivacyView:(BOOL)view
 {
-  if (self->_showPrivacyView != a3)
+  if (self->_showPrivacyView != view)
   {
-    self->_showPrivacyView = a3;
+    self->_showPrivacyView = view;
     privacyLink = self->_privacyLink;
     if (privacyLink)
     {
-      v5 = [(OBPrivacyLinkController *)privacyLink view];
-      v6 = v5;
+      view = [(OBPrivacyLinkController *)privacyLink view];
+      v6 = view;
       if (!self->_showPrivacyView)
       {
-        [v5 removeFromSuperview];
+        [view removeFromSuperview];
         [(PKPaymentSetupDockView *)self->_dockView setPrivacyLink:0];
       }
     }
@@ -808,143 +808,143 @@ void __35__PKExplanationView_layoutSubviews__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)setPrivacyLink:(id)a3
+- (void)setPrivacyLink:(id)link
 {
-  v6 = a3;
+  linkCopy = link;
   if ((PKEqualObjects() & 1) == 0)
   {
-    v5 = [(OBPrivacyLinkController *)self->_privacyLink view];
-    [v5 removeFromSuperview];
+    view = [(OBPrivacyLinkController *)self->_privacyLink view];
+    [view removeFromSuperview];
 
     [(PKPaymentSetupDockView *)self->_dockView setPrivacyLink:0];
-    objc_storeStrong(&self->_privacyLink, a3);
+    objc_storeStrong(&self->_privacyLink, link);
     self->_cachedPrivacyViewSize = *MEMORY[0x1E695F060];
     [(PKExplanationView *)self setNeedsLayout];
   }
 }
 
-- (void)setHideTitleText:(BOOL)a3
+- (void)setHideTitleText:(BOOL)text
 {
-  if (self->_hideTitleText != a3)
+  if (self->_hideTitleText != text)
   {
-    self->_hideTitleText = a3;
+    self->_hideTitleText = text;
     [(PKExplanationView *)self _updateTitleLabel];
   }
 }
 
-- (void)setForceShowSetupLaterButton:(BOOL)a3
+- (void)setForceShowSetupLaterButton:(BOOL)button
 {
-  if (self->_forceShowSetupLaterButton != a3)
+  if (self->_forceShowSetupLaterButton != button)
   {
-    v4 = a3;
-    self->_forceShowSetupLaterButton = a3;
-    v6 = [(PKExplanationView *)self dockView];
-    v8 = [v6 footerView];
+    buttonCopy = button;
+    self->_forceShowSetupLaterButton = button;
+    dockView = [(PKExplanationView *)self dockView];
+    footerView = [dockView footerView];
 
-    if ((PKPaymentSetupContextIsSetupAssistant() & 1) != 0 || v4)
+    if ((PKPaymentSetupContextIsSetupAssistant() & 1) != 0 || buttonCopy)
     {
-      v7 = [v8 setUpLaterButton];
-      [v7 addTarget:self action:sel__setupLater forControlEvents:0x2000];
+      setUpLaterButton = [footerView setUpLaterButton];
+      [setUpLaterButton addTarget:self action:sel__setupLater forControlEvents:0x2000];
     }
 
     else
     {
-      [v8 setSetUpLaterButton:0];
+      [footerView setSetUpLaterButton:0];
     }
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v7 = v5;
-    v6 = [(UIImageView *)self->_imageView superview];
+    v7 = imageCopy;
+    superview = [(UIImageView *)self->_imageView superview];
 
-    if (v6)
+    if (superview)
     {
       [(UIImageView *)self->_imageView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_image, a3);
+    objc_storeStrong(&self->_image, image);
     [(PKExplanationView *)self _updateImage];
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
-- (void)setImageStyle:(unint64_t)a3
+- (void)setImageStyle:(unint64_t)style
 {
-  if (self->_imageStyle != a3)
+  if (self->_imageStyle != style)
   {
-    self->_imageStyle = a3;
+    self->_imageStyle = style;
     [(PKExplanationView *)self _updateImage];
   }
 }
 
-- (void)setHeroView:(id)a3
+- (void)setHeroView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   heroView = self->_heroView;
-  if (heroView != v5)
+  if (heroView != viewCopy)
   {
-    v9 = v5;
-    v7 = [(UIView *)heroView superview];
+    v9 = viewCopy;
+    superview = [(UIView *)heroView superview];
 
-    if (v7)
+    if (superview)
     {
       [(UIView *)self->_heroView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_heroView, a3);
-    v8 = [(UIView *)self->_heroView superview];
+    objc_storeStrong(&self->_heroView, view);
+    superview2 = [(UIView *)self->_heroView superview];
 
-    if (!v8)
+    if (!superview2)
     {
       [(UIScrollView *)self->_scrollView addSubview:self->_heroView];
     }
 
     [(UIImageView *)self->_imageView removeFromSuperview];
     [(PKExplanationView *)self setNeedsLayout];
-    v5 = v9;
+    viewCopy = v9;
   }
 }
 
-- (void)setHeroViewSizeThatFitsOverride:(id)a3
+- (void)setHeroViewSizeThatFitsOverride:(id)override
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(override);
   heroViewSizeThatFitsOverride = self->_heroViewSizeThatFitsOverride;
   self->_heroViewSizeThatFitsOverride = v4;
 
   [(PKExplanationView *)self setNeedsLayout];
 }
 
-- (void)setHeroViewContentMode:(unint64_t)a3
+- (void)setHeroViewContentMode:(unint64_t)mode
 {
-  if (self->_heroViewContentMode != a3)
+  if (self->_heroViewContentMode != mode)
   {
-    self->_heroViewContentMode = a3;
+    self->_heroViewContentMode = mode;
     [(PKExplanationView *)self setNeedsLayout];
   }
 }
 
-- (void)setHeroViewPrefersSizeTransform:(BOOL)a3
+- (void)setHeroViewPrefersSizeTransform:(BOOL)transform
 {
-  if (self->_heroViewPrefersSizeTransform == !a3)
+  if (self->_heroViewPrefersSizeTransform == !transform)
   {
-    self->_heroViewPrefersSizeTransform = a3;
+    self->_heroViewPrefersSizeTransform = transform;
     [(PKExplanationView *)self setNeedsLayout];
   }
 }
 
-- (void)setTopBackgroundColor:(id)a3
+- (void)setTopBackgroundColor:(id)color
 {
-  v9 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_topBackgroundColor, a3);
+    objc_storeStrong(&self->_topBackgroundColor, color);
     topBackgroundView = self->_topBackgroundView;
-    if (v9)
+    if (colorCopy)
     {
       if (!topBackgroundView)
       {
@@ -971,66 +971,66 @@ void __35__PKExplanationView_layoutSubviews__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)setTitleText:(id)a3
+- (void)setTitleText:(id)text
 {
-  v5 = a3;
-  if (([v5 isEqualToString:self->_titleText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_titleText] & 1) == 0)
   {
-    objc_storeStrong(&self->_titleText, a3);
+    objc_storeStrong(&self->_titleText, text);
     [(PKExplanationView *)self _updateTitleLabel];
   }
 }
 
-- (void)setTitleFont:(id)a3
+- (void)setTitleFont:(id)font
 {
-  v5 = a3;
-  if (self->_titleFont != v5)
+  fontCopy = font;
+  if (self->_titleFont != fontCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_titleFont, a3);
+    v6 = fontCopy;
+    objc_storeStrong(&self->_titleFont, font);
     [(PKExplanationView *)self setTitleLabelAttributedText];
     [(PKExplanationView *)self setNeedsLayout];
-    v5 = v6;
+    fontCopy = v6;
   }
 }
 
-- (void)setTitleTextColor:(id)a3
+- (void)setTitleTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_titleTextColor, a3);
+    objc_storeStrong(&self->_titleTextColor, color);
     [(PKExplanationView *)self setTitleLabelAttributedText];
   }
 }
 
-- (void)setTitleTextNumberOfLines:(int64_t)a3
+- (void)setTitleTextNumberOfLines:(int64_t)lines
 {
   titleLabel = self->_titleLabel;
   if (titleLabel)
   {
-    [(PKTrailingAccessoryLabel *)titleLabel setMaximumNumberOfLines:a3];
+    [(PKTrailingAccessoryLabel *)titleLabel setMaximumNumberOfLines:lines];
 
     [(PKExplanationView *)self _updateTitleLabel];
   }
 }
 
-- (void)setTitleLineBreakStrategy:(unint64_t)a3
+- (void)setTitleLineBreakStrategy:(unint64_t)strategy
 {
-  if (self->_titleLineBreakStrategy != a3)
+  if (self->_titleLineBreakStrategy != strategy)
   {
-    self->_titleLineBreakStrategy = a3;
+    self->_titleLineBreakStrategy = strategy;
     [(PKExplanationView *)self _updateTitleLabel];
   }
 }
 
-- (void)setShowSpinner:(BOOL)a3
+- (void)setShowSpinner:(BOOL)spinner
 {
-  if (self->_showSpinner == !a3)
+  if (self->_showSpinner == !spinner)
   {
-    self->_showSpinner = a3;
+    self->_showSpinner = spinner;
     activityIndicator = self->_activityIndicator;
-    if (a3)
+    if (spinner)
     {
       [(UIActivityIndicatorView *)activityIndicator setHidden:0];
       v5 = self->_activityIndicator;
@@ -1046,37 +1046,37 @@ void __35__PKExplanationView_layoutSubviews__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)showCheckmark:(BOOL)a3 animated:(BOOL)a4
+- (void)showCheckmark:(BOOL)checkmark animated:(BOOL)animated
 {
-  if (self->_showCheckmark == !a3)
+  if (self->_showCheckmark == !checkmark)
   {
-    self->_showCheckmark = a3;
+    self->_showCheckmark = checkmark;
     [PKCheckmarkView showCheckmark:"showCheckmark:animated:" animated:?];
   }
 }
 
-- (void)setBodyImage:(id)a3
+- (void)setBodyImage:(id)image
 {
-  v5 = a3;
-  if (self->_bodyImage != v5)
+  imageCopy = image;
+  if (self->_bodyImage != imageCopy)
   {
-    v9 = v5;
-    v6 = [(UIImageView *)self->_bodyImageView superview];
+    v9 = imageCopy;
+    superview = [(UIImageView *)self->_bodyImageView superview];
 
-    if (v6)
+    if (superview)
     {
       [(UIImageView *)self->_imageView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_bodyImage, a3);
+    objc_storeStrong(&self->_bodyImage, image);
     [(UIImageView *)self->_bodyImageView setImage:self->_bodyImage];
     [(UIImageView *)self->_bodyImageView sizeToFit];
     bodyImageView = self->_bodyImageView;
     if (self->_bodyImage)
     {
-      v8 = [(UIImageView *)bodyImageView superview];
+      superview2 = [(UIImageView *)bodyImageView superview];
 
-      if (!v8)
+      if (!superview2)
       {
         [(UIScrollView *)self->_scrollView addSubview:self->_bodyImageView];
       }
@@ -1086,38 +1086,38 @@ void __35__PKExplanationView_layoutSubviews__block_invoke_3(uint64_t a1)
 
     [(UIImageView *)bodyImageView removeFromSuperview];
     [(PKExplanationView *)self setNeedsLayout];
-    v5 = v9;
+    imageCopy = v9;
   }
 }
 
-- (void)setBodyTextAlignment:(int64_t)a3
+- (void)setBodyTextAlignment:(int64_t)alignment
 {
-  if (self->_bodyTextAlignment != a3)
+  if (self->_bodyTextAlignment != alignment)
   {
-    self->_bodyTextAlignment = a3;
+    self->_bodyTextAlignment = alignment;
     [(UITextView *)self->_bodyTextView setTextAlignment:?];
 
     [(PKExplanationView *)self setNeedsLayout];
   }
 }
 
-- (void)setTitleAlignment:(int64_t)a3
+- (void)setTitleAlignment:(int64_t)alignment
 {
-  if (self->_titleAlignment != a3)
+  if (self->_titleAlignment != alignment)
   {
-    self->_titleAlignment = a3;
+    self->_titleAlignment = alignment;
     [(PKExplanationView *)self setTitleLabelAttributedText];
 
     [(PKExplanationView *)self setNeedsLayout];
   }
 }
 
-- (void)setBodyText:(id)a3
+- (void)setBodyText:(id)text
 {
-  v11 = a3;
-  if (([v11 isEqualToString:self->_bodyText] & 1) == 0)
+  textCopy = text;
+  if (([textCopy isEqualToString:self->_bodyText] & 1) == 0)
   {
-    objc_storeStrong(&self->_bodyText, a3);
+    objc_storeStrong(&self->_bodyText, text);
     attributedBodyText = self->_attributedBodyText;
     self->_attributedBodyText = 0;
 
@@ -1127,9 +1127,9 @@ void __35__PKExplanationView_layoutSubviews__block_invoke_3(uint64_t a1)
     {
       if (!bodyTextView)
       {
-        v8 = [(PKExplanationView *)self _createBodyTextView];
+        _createBodyTextView = [(PKExplanationView *)self _createBodyTextView];
         v9 = self->_bodyTextView;
-        self->_bodyTextView = v8;
+        self->_bodyTextView = _createBodyTextView;
 
         [(UIScrollView *)self->_scrollView addSubview:self->_bodyTextView];
         bodyTextView = self->_bodyTextView;
@@ -1150,31 +1150,31 @@ void __35__PKExplanationView_layoutSubviews__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)setBodyTextColor:(id)a3
+- (void)setBodyTextColor:(id)color
 {
-  v5 = a3;
+  colorCopy = color;
   if ((PKEqualObjects() & 1) == 0)
   {
-    objc_storeStrong(&self->_bodyTextColor, a3);
+    objc_storeStrong(&self->_bodyTextColor, color);
     [(UITextView *)self->_bodyTextView setTextColor:self->_bodyTextColor];
   }
 }
 
-- (void)setAttributedSecondaryBodyText:(id)a3
+- (void)setAttributedSecondaryBodyText:(id)text
 {
-  v10 = a3;
+  textCopy = text;
   if (![(NSAttributedString *)self->_attributedSecondaryBodyText isEqualToAttributedString:?])
   {
-    objc_storeStrong(&self->_attributedSecondaryBodyText, a3);
+    objc_storeStrong(&self->_attributedSecondaryBodyText, text);
     attributedSecondaryBodyText = self->_attributedSecondaryBodyText;
     secondaryBodyTextView = self->_secondaryBodyTextView;
     if (attributedSecondaryBodyText)
     {
       if (!secondaryBodyTextView)
       {
-        v7 = [(PKExplanationView *)self _createBodyTextView];
+        _createBodyTextView = [(PKExplanationView *)self _createBodyTextView];
         v8 = self->_secondaryBodyTextView;
-        self->_secondaryBodyTextView = v7;
+        self->_secondaryBodyTextView = _createBodyTextView;
 
         [(UIScrollView *)self->_scrollView addSubview:self->_secondaryBodyTextView];
         secondaryBodyTextView = self->_secondaryBodyTextView;
@@ -1195,14 +1195,14 @@ void __35__PKExplanationView_layoutSubviews__block_invoke_3(uint64_t a1)
   }
 }
 
-- (void)setAttributedBodyText:(id)a3
+- (void)setAttributedBodyText:(id)text
 {
-  v16 = a3;
-  v4 = [v16 isEqualToAttributedString:self->_attributedBodyText];
-  v5 = v16;
+  textCopy = text;
+  v4 = [textCopy isEqualToAttributedString:self->_attributedBodyText];
+  v5 = textCopy;
   if ((v4 & 1) == 0)
   {
-    v6 = [v16 copy];
+    v6 = [textCopy copy];
     attributedBodyText = self->_attributedBodyText;
     self->_attributedBodyText = v6;
 
@@ -1215,9 +1215,9 @@ void __35__PKExplanationView_layoutSubviews__block_invoke_3(uint64_t a1)
     {
       if (!bodyTextView)
       {
-        v11 = [(PKExplanationView *)self _createBodyTextView];
+        _createBodyTextView = [(PKExplanationView *)self _createBodyTextView];
         v12 = self->_bodyTextView;
-        self->_bodyTextView = v11;
+        self->_bodyTextView = _createBodyTextView;
 
         [(UIScrollView *)self->_scrollView addSubview:self->_bodyTextView];
         bodyTextView = self->_bodyTextView;
@@ -1240,37 +1240,37 @@ void __35__PKExplanationView_layoutSubviews__block_invoke_3(uint64_t a1)
     }
 
     [(PKExplanationView *)self setNeedsLayout];
-    v5 = v16;
+    v5 = textCopy;
   }
 }
 
-- (void)setBodyView:(id)a3
+- (void)setBodyView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   bodyView = self->_bodyView;
-  if (bodyView != v5)
+  if (bodyView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(UIView *)bodyView removeFromSuperview];
-    objc_storeStrong(&self->_bodyView, a3);
+    objc_storeStrong(&self->_bodyView, view);
     if (self->_bodyView)
     {
       [(UIScrollView *)self->_scrollView addSubview:?];
     }
 
     [(PKExplanationView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setBodyButtonText:(id)a3
+- (void)setBodyButtonText:(id)text
 {
-  v5 = a3;
-  v6 = [(UIButton *)self->_bodyButton configuration];
-  v7 = [v6 attributedTitle];
-  v8 = [v7 string];
-  v14 = v5;
-  v9 = v8;
+  textCopy = text;
+  configuration = [(UIButton *)self->_bodyButton configuration];
+  attributedTitle = [configuration attributedTitle];
+  string = [attributedTitle string];
+  v14 = textCopy;
+  v9 = string;
   v10 = v9;
   if (v9 == v14)
   {
@@ -1282,7 +1282,7 @@ void __35__PKExplanationView_layoutSubviews__block_invoke_3(uint64_t a1)
   {
 
 LABEL_8:
-    objc_storeStrong(&self->_bodyButtonText, a3);
+    objc_storeStrong(&self->_bodyButtonText, text);
     bodyButton = self->_bodyButton;
     if (v14)
     {
@@ -1319,27 +1319,27 @@ LABEL_8:
 LABEL_14:
 }
 
-- (void)setBodyButtonNumberOfLines:(int64_t)a3
+- (void)setBodyButtonNumberOfLines:(int64_t)lines
 {
-  if (self->_bodyButtonNumberOfLines != a3)
+  if (self->_bodyButtonNumberOfLines != lines)
   {
-    self->_bodyButtonNumberOfLines = a3;
+    self->_bodyButtonNumberOfLines = lines;
     bodyButton = self->_bodyButton;
     if (bodyButton)
     {
-      v5 = [(UIButton *)bodyButton titleLabel];
-      [v5 setNumberOfLines:self->_bodyButtonNumberOfLines];
+      titleLabel = [(UIButton *)bodyButton titleLabel];
+      [titleLabel setNumberOfLines:self->_bodyButtonNumberOfLines];
 
       [(PKExplanationView *)self setNeedsLayout];
     }
   }
 }
 
-- (void)setBodyButtonUsesLearnMoreStyle:(BOOL)a3
+- (void)setBodyButtonUsesLearnMoreStyle:(BOOL)style
 {
-  if (self->_bodyButtonUsesLearnMoreStyle != a3)
+  if (self->_bodyButtonUsesLearnMoreStyle != style)
   {
-    self->_bodyButtonUsesLearnMoreStyle = a3;
+    self->_bodyButtonUsesLearnMoreStyle = style;
     [(UIButton *)self->_bodyButton removeFromSuperview];
     bodyButton = self->_bodyButton;
     self->_bodyButton = 0;
@@ -1350,54 +1350,54 @@ LABEL_14:
   }
 }
 
-- (void)setHorizontalMargin:(unint64_t)a3
+- (void)setHorizontalMargin:(unint64_t)margin
 {
-  if (self->_horizontalMargin != a3)
+  if (self->_horizontalMargin != margin)
   {
-    self->_horizontalMargin = a3;
+    self->_horizontalMargin = margin;
     [(PKExplanationView *)self setNeedsLayout];
   }
 }
 
-- (void)setTopMargin:(double)a3
+- (void)setTopMargin:(double)margin
 {
-  if (self->_topMargin != a3)
+  if (self->_topMargin != margin)
   {
-    self->_topMargin = a3;
+    self->_topMargin = margin;
     [(PKExplanationView *)self setNeedsLayout];
   }
 }
 
-- (void)setTitleHyphenationFactor:(double)a3
+- (void)setTitleHyphenationFactor:(double)factor
 {
-  if (self->_titleHyphenationFactor != a3)
+  if (self->_titleHyphenationFactor != factor)
   {
-    self->_titleHyphenationFactor = a3;
+    self->_titleHyphenationFactor = factor;
     [(PKExplanationView *)self setTitleLabelAttributedText];
   }
 }
 
-- (void)setTitleImage:(id)a3
+- (void)setTitleImage:(id)image
 {
-  v5 = a3;
-  if (self->_titleImage != v5)
+  imageCopy = image;
+  if (self->_titleImage != imageCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_titleImage, a3);
+    v6 = imageCopy;
+    objc_storeStrong(&self->_titleImage, image);
     [(UIImageView *)self->_logoImageView setImage:self->_titleImage];
     [(UIImageView *)self->_logoImageView sizeToFit];
     [(PKExplanationView *)self setNeedsLayout];
-    v5 = v6;
+    imageCopy = v6;
   }
 }
 
-- (void)setTitleAccessoriesEnabled:(BOOL)a3
+- (void)setTitleAccessoriesEnabled:(BOOL)enabled
 {
-  if (self->_titleAccessoriesEnabled == !a3)
+  if (self->_titleAccessoriesEnabled == !enabled)
   {
-    self->_titleAccessoriesEnabled = a3;
+    self->_titleAccessoriesEnabled = enabled;
     titleLabel = self->_titleLabel;
-    if (a3)
+    if (enabled)
     {
       checkmarkView = self->_checkmarkView;
       [(PKCheckmarkView *)checkmarkView intrinsicContentSize];
@@ -1417,20 +1417,20 @@ LABEL_14:
   }
 }
 
-- (void)setLogoImageViewTargetSize:(CGSize)a3
+- (void)setLogoImageViewTargetSize:(CGSize)size
 {
-  if (self->_logoImageViewTargetSize.width != a3.width || self->_logoImageViewTargetSize.height != a3.height)
+  if (self->_logoImageViewTargetSize.width != size.width || self->_logoImageViewTargetSize.height != size.height)
   {
-    self->_logoImageViewTargetSize = a3;
+    self->_logoImageViewTargetSize = size;
     [(PKExplanationView *)self setNeedsLayout];
   }
 }
 
-- (void)setBodyDataDetectorTypes:(unint64_t)a3
+- (void)setBodyDataDetectorTypes:(unint64_t)types
 {
-  if (self->_bodyDataDetectorTypes != a3)
+  if (self->_bodyDataDetectorTypes != types)
   {
-    self->_bodyDataDetectorTypes = a3;
+    self->_bodyDataDetectorTypes = types;
     [(UITextView *)self->_bodyTextView setDataDetectorTypes:?];
     [(UITextView *)self->_secondaryBodyTextView setDataDetectorTypes:self->_bodyDataDetectorTypes];
 
@@ -1438,38 +1438,38 @@ LABEL_14:
   }
 }
 
-- (void)setBodyViewPadding:(double)a3
+- (void)setBodyViewPadding:(double)padding
 {
-  if (self->_bodyViewPadding != a3)
+  if (self->_bodyViewPadding != padding)
   {
-    self->_bodyViewPadding = a3;
+    self->_bodyViewPadding = padding;
     [(PKExplanationView *)self setNeedsLayout];
   }
 }
 
-- (void)setBodyViewThatFitsOverride:(id)a3
+- (void)setBodyViewThatFitsOverride:(id)override
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(override);
   bodyViewThatFitsOverride = self->_bodyViewThatFitsOverride;
   self->_bodyViewThatFitsOverride = v4;
 
   [(PKExplanationView *)self setNeedsLayout];
 }
 
-- (void)setBodyViewContentMode:(unint64_t)a3
+- (void)setBodyViewContentMode:(unint64_t)mode
 {
-  if (self->_bodyViewContentMode != a3)
+  if (self->_bodyViewContentMode != mode)
   {
-    self->_bodyViewContentMode = a3;
+    self->_bodyViewContentMode = mode;
     [(PKExplanationView *)self setNeedsLayout];
   }
 }
 
-- (void)setReverseBodyViewAndBodyButtonOrder:(BOOL)a3
+- (void)setReverseBodyViewAndBodyButtonOrder:(BOOL)order
 {
-  if (self->_reverseBodyViewAndBodyButtonOrder != a3)
+  if (self->_reverseBodyViewAndBodyButtonOrder != order)
   {
-    self->_reverseBodyViewAndBodyButtonOrder = a3;
+    self->_reverseBodyViewAndBodyButtonOrder = order;
     [(PKExplanationView *)self setNeedsLayout];
   }
 }
@@ -1611,8 +1611,8 @@ LABEL_14:
   self->_logoImageView = v17;
 
   v19 = self->_logoImageView;
-  v20 = [MEMORY[0x1E69DC888] labelColor];
-  [(UIImageView *)v19 setTintColor:v20];
+  labelColor = [MEMORY[0x1E69DC888] labelColor];
+  [(UIImageView *)v19 setTintColor:labelColor];
 
   v21 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
   bodyImageView = self->_bodyImageView;
@@ -1631,22 +1631,22 @@ LABEL_14:
   [(PKPaymentSetupDockView *)self->_dockView setPrivacyLink:0];
   if (PKPaymentSetupContextIsSetupAssistant())
   {
-    v30 = [(PKPaymentSetupDockView *)self->_dockView footerView];
-    v31 = [v30 setUpLaterButton];
-    [v31 addTarget:self action:sel__setupLater forControlEvents:0x2000];
+    footerView = [(PKPaymentSetupDockView *)self->_dockView footerView];
+    setUpLaterButton = [footerView setUpLaterButton];
+    [setUpLaterButton addTarget:self action:sel__setupLater forControlEvents:0x2000];
   }
 
-  v32 = [(PKPaymentSetupDockView *)self->_dockView primaryButton];
+  primaryButton = [(PKPaymentSetupDockView *)self->_dockView primaryButton];
   v33 = PKLocalizedPaymentString(&cfstr_Continue.isa);
-  [v32 setTitle:v33 forState:0];
+  [primaryButton setTitle:v33 forState:0];
 
-  v34 = [(PKPaymentSetupDockView *)self->_dockView primaryButton];
-  [v34 addTarget:self action:sel__continue forControlEvents:0x2000];
+  primaryButton2 = [(PKPaymentSetupDockView *)self->_dockView primaryButton];
+  [primaryButton2 addTarget:self action:sel__continue forControlEvents:0x2000];
 
   if (_UISolariumFeatureFlagEnabled())
   {
-    v35 = [objc_alloc(MEMORY[0x1E69DD6C8]) initWithScrollView:self->_scrollView edge:4 style:0];
-    [(PKPaymentSetupDockView *)self->_dockView addInteraction:v35];
+    contentView = [objc_alloc(MEMORY[0x1E69DD6C8]) initWithScrollView:self->_scrollView edge:4 style:0];
+    [(PKPaymentSetupDockView *)self->_dockView addInteraction:contentView];
   }
 
   else
@@ -1658,8 +1658,8 @@ LABEL_14:
     [(_PKVisibilityBackdropView *)self->_blurringView setDelegate:self];
     [(_PKVisibilityBackdropView *)self->_blurringView setUserInteractionEnabled:1];
     [(_PKVisibilityBackdropView *)self->_blurringView pkui_setVisibility:0 animated:self->_backdropWeight];
-    v35 = [(_UIBackdropView *)self->_blurringView contentView];
-    [v35 addSubview:self->_dockView];
+    contentView = [(_UIBackdropView *)self->_blurringView contentView];
+    [contentView addSubview:self->_dockView];
   }
 
   [(PKExplanationView *)self addSubview:self->_scrollView];
@@ -1692,11 +1692,11 @@ LABEL_14:
   [(PKExplanationView *)self _updateIconBorderColor];
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v4.receiver = self;
   v4.super_class = PKExplanationView;
-  [(PKExplanationView *)&v4 traitCollectionDidChange:a3];
+  [(PKExplanationView *)&v4 traitCollectionDidChange:change];
   self->_cachedPrivacyViewSize = *MEMORY[0x1E695F060];
   [(PKExplanationView *)self setNeedsLayout];
 }
@@ -1713,9 +1713,9 @@ LABEL_6:
 
   if ([(PKExplanationView *)self _showTitleLogoImageView])
   {
-    v3 = [(UIImageView *)self->_logoImageView superview];
+    superview = [(UIImageView *)self->_logoImageView superview];
 
-    if (!v3)
+    if (!superview)
     {
       [(UIScrollView *)self->_scrollView addSubview:self->_logoImageView];
     }
@@ -1723,9 +1723,9 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v4 = [(PKTrailingAccessoryLabel *)self->_titleLabel superview];
+  superview2 = [(PKTrailingAccessoryLabel *)self->_titleLabel superview];
 
-  if (!v4)
+  if (!superview2)
   {
     [(UIScrollView *)self->_scrollView addSubview:self->_titleLabel];
   }
@@ -1739,11 +1739,11 @@ LABEL_10:
 
 - (BOOL)_isBuddyiPad
 {
-  v2 = [(PKExplanationView *)self traitCollection];
-  v3 = [v2 userInterfaceIdiom];
+  traitCollection = [(PKExplanationView *)self traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
   result = PKPaymentSetupContextIsSetupAssistant();
-  if ((v3 & 0xFFFFFFFFFFFFFFFBLL) != 1)
+  if ((userInterfaceIdiom & 0xFFFFFFFFFFFFFFFBLL) != 1)
   {
     return 0;
   }
@@ -1769,8 +1769,8 @@ LABEL_10:
   [v3 setTextColor:self->_bodyTextColor];
   [v3 setContentInset:{v4, v5, v6, v7}];
   [v3 setContentInsetAdjustmentBehavior:2];
-  v8 = [v3 textContainer];
-  [v8 setLineFragmentPadding:0.0];
+  textContainer = [v3 textContainer];
+  [textContainer setLineFragmentPadding:0.0];
 
   v13 = *MEMORY[0x1E69DB650];
   if (PKPaymentSetupContextIsBridge())
@@ -1873,8 +1873,8 @@ void __38__PKExplanationView__createBodyButton__block_invoke_2(uint64_t a1, void
       [*p_imageView setFrame:{0.0, 0.0, 80.0, 80.0}];
       [*p_imageView setClipsToBounds:1];
       [*p_imageView _setContinuousCornerRadius:14.0];
-      v6 = [*p_imageView layer];
-      [v6 setBorderWidth:0.5];
+      layer = [*p_imageView layer];
+      [layer setBorderWidth:0.5];
 
       [(PKExplanationView *)self _updateIconBorderColor];
     }
@@ -1884,14 +1884,14 @@ void __38__PKExplanationView__createBodyButton__block_invoke_2(uint64_t a1, void
       [*p_imageView sizeToFit];
       [*p_imageView setClipsToBounds:0];
       [*p_imageView _setContinuousCornerRadius:0.0];
-      v5 = [*p_imageView layer];
-      [v5 setBorderColor:0];
-      [v5 setBorderWidth:0.0];
+      layer2 = [*p_imageView layer];
+      [layer2 setBorderColor:0];
+      [layer2 setBorderWidth:0.0];
     }
 
-    v7 = [*p_imageView superview];
+    superview = [*p_imageView superview];
 
-    if (!v7)
+    if (!superview)
     {
       [(UIScrollView *)self->_scrollView addSubview:*p_imageView];
     }
@@ -1910,13 +1910,13 @@ void __38__PKExplanationView__createBodyButton__block_invoke_2(uint64_t a1, void
   {
     v6[7] = v2;
     v6[8] = v3;
-    v5 = [(PKExplanationView *)self traitCollection];
+    traitCollection = [(PKExplanationView *)self traitCollection];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __43__PKExplanationView__updateIconBorderColor__block_invoke;
     v6[3] = &unk_1E8010970;
     v6[4] = self;
-    PKUIPerformWithEffectiveTraitCollection(v5, v6);
+    PKUIPerformWithEffectiveTraitCollection(traitCollection, v6);
   }
 }
 
@@ -1947,15 +1947,15 @@ void __43__PKExplanationView__updateIconBorderColor__block_invoke(uint64_t a1)
   }
 }
 
-- (int64_t)visibilityBackdropView:(id)a3 preferredStyleForTraitCollection:(id)a4
+- (int64_t)visibilityBackdropView:(id)view preferredStyleForTraitCollection:(id)collection
 {
-  v4 = a4;
+  collectionCopy = collection;
   if (PKPaymentSetupForceBridgeAppearance() & 1) != 0 || (PKPaymentSetupContextIsBridge())
   {
     v5 = 2030;
   }
 
-  else if ([v4 userInterfaceStyle] == 2)
+  else if ([collectionCopy userInterfaceStyle] == 2)
   {
     v5 = 2030;
   }

@@ -2,7 +2,7 @@
 + (id)sharedInstance;
 + (void)initialize;
 - (FigContinuityCaptureNotificationMonitor)init;
-- (void)_handleContinuityCaptureNotification:(id)a3;
+- (void)_handleContinuityCaptureNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -10,7 +10,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     FigNote_AllowInternalDefaultLogs();
     fig_note_initialize_category_with_default_work_cf();
@@ -36,13 +36,13 @@ FigContinuityCaptureNotificationMonitor *__57__FigContinuityCaptureNotificationM
   return result;
 }
 
-- (void)_handleContinuityCaptureNotification:(id)a3
+- (void)_handleContinuityCaptureNotification:(id)notification
 {
-  v4 = [a3 name];
-  if (v4)
+  name = [notification name];
+  if (name)
   {
-    v5 = v4;
-    v6 = [a3 object];
+    v5 = name;
+    object = [notification object];
     if (dword_1ED8441B0)
     {
       v23 = 0;
@@ -52,7 +52,7 @@ FigContinuityCaptureNotificationMonitor *__57__FigContinuityCaptureNotificationM
       fig_log_call_emit_and_clean_up_after_send_and_compose();
     }
 
-    if ([v5 isEqualToString:{@"ContinuityCaptureNotificationOnBoardingComplete", v12, v13}] && objc_msgSend(v6, "isEqualToString:", @"YES"))
+    if ([v5 isEqualToString:{@"ContinuityCaptureNotificationOnBoardingComplete", v12, v13}] && objc_msgSend(object, "isEqualToString:", @"YES"))
     {
       v8 = [MEMORY[0x1E695DF00] now];
       if (dword_1ED8441B0)

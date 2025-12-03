@@ -1,28 +1,28 @@
 @interface VCVirtualAVCaptureDevice
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)activeVideoMaxFrameDuration;
 - ($3CC8671D27C23BF42ADDB32F2B5E48AE)activeVideoMinFrameDuration;
-- (BOOL)lockForConfiguration:(id *)a3;
+- (BOOL)lockForConfiguration:(id *)configuration;
 - (CGRect)centerStageRectOfInterest;
 - (NSArray)formats;
-- (VCVirtualAVCaptureDevice)initWithUniqueID:(id)a3 orientation:(int)a4;
+- (VCVirtualAVCaptureDevice)initWithUniqueID:(id)d orientation:(int)orientation;
 - (id)activeFormat;
 - (id)description;
 - (id)deviceCode;
 - (id)deviceInputs;
 - (int)startVirtualCapture;
 - (int)stopVirtualCapture;
-- (void)addDeviceInput:(id)a3;
-- (void)configureResizingConverterWithFormat:(id)a3;
+- (void)addDeviceInput:(id)input;
+- (void)configureResizingConverterWithFormat:(id)format;
 - (void)dealloc;
 - (void)deregisterBlocksFromService;
-- (void)executeBlockUnderConfigurationLock:(id)a3;
+- (void)executeBlockUnderConfigurationLock:(id)lock;
 - (void)registerBlocksForService;
-- (void)removeDeviceInput:(id)a3;
-- (void)setActiveFormat:(id)a3;
-- (void)setActiveVideoMaxFrameDuration:(id *)a3;
-- (void)setActiveVideoMinFrameDuration:(id *)a3;
-- (void)setCenterStageRectOfInterest:(CGRect)a3;
-- (void)setOutputAspectRatio:(id)a3 completionHandler:(id)a4;
+- (void)removeDeviceInput:(id)input;
+- (void)setActiveFormat:(id)format;
+- (void)setActiveVideoMaxFrameDuration:(id *)duration;
+- (void)setActiveVideoMinFrameDuration:(id *)duration;
+- (void)setCenterStageRectOfInterest:(CGRect)interest;
+- (void)setOutputAspectRatio:(id)ratio completionHandler:(id)handler;
 - (void)startDumpCollector;
 - (void)stopDumpCollector;
 - (void)verifyLockForConfiguration;
@@ -30,7 +30,7 @@
 
 @implementation VCVirtualAVCaptureDevice
 
-- (VCVirtualAVCaptureDevice)initWithUniqueID:(id)a3 orientation:(int)a4
+- (VCVirtualAVCaptureDevice)initWithUniqueID:(id)d orientation:(int)orientation
 {
   v17 = *MEMORY[0x1E69E9840];
   v16.__sig = 0xAAAAAAAAAAAAAAAALL;
@@ -40,7 +40,7 @@
   pthread_mutex_init(&self->_deviceMutex, &v16);
   pthread_mutexattr_destroy(&v16);
   self->_lockCount = 0;
-  self->_orientation = a4;
+  self->_orientation = orientation;
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
   self->_deviceInputs = v7;
   if (!v7)
@@ -51,7 +51,7 @@ LABEL_15:
     return 0;
   }
 
-  v8 = [a3 copy];
+  v8 = [d copy];
   self->_deviceUniqueID = v8;
   if (!v8)
   {
@@ -103,12 +103,12 @@ LABEL_15:
   return self;
 }
 
-- (void)configureResizingConverterWithFormat:(id)a3
+- (void)configureResizingConverterWithFormat:(id)format
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = [a3 formatDescription];
-  MediaSubType = CMFormatDescriptionGetMediaSubType(v4);
-  Dimensions = CMVideoFormatDescriptionGetDimensions(v4);
+  formatDescription = [format formatDescription];
+  MediaSubType = CMFormatDescriptionGetMediaSubType(formatDescription);
+  Dimensions = CMVideoFormatDescriptionGetDimensions(formatDescription);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__VCVirtualAVCaptureDevice_configureResizingConverterWithFormat___block_invoke;
@@ -175,7 +175,7 @@ void __65__VCVirtualAVCaptureDevice_configureResizingConverterWithFormat___block
       v10 = 1024;
       v11 = 158;
       v12 = 2048;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCVirtualAVCaptureDevice-startVirtualCapture [%p]", &v6, 0x26u);
     }
   }
@@ -201,14 +201,14 @@ void __65__VCVirtualAVCaptureDevice_configureResizingConverterWithFormat___block
       v11 = 1024;
       v12 = 164;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCVirtualAVCaptureDevice-stopVirtualCapture [%p]", &v7, 0x26u);
     }
   }
 
-  v5 = [(VCCannedVideoCaptureSource *)self->_captureSource stop];
+  stop = [(VCCannedVideoCaptureSource *)self->_captureSource stop];
   [(VCVirtualAVCaptureDevice *)self stopDumpCollector];
-  return v5;
+  return stop;
 }
 
 - (void)dealloc
@@ -228,7 +228,7 @@ void __65__VCVirtualAVCaptureDevice_configureResizingConverterWithFormat___block
       v11 = 1024;
       v12 = 171;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1DB56E000, v4, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d @:@ VCVirtualAVCaptureDevice-dealloc [%p]", buf, 0x26u);
     }
   }
@@ -301,7 +301,7 @@ uint64_t __52__VCVirtualAVCaptureDevice_registerBlocksForService__block_invoke_2
   [v2 deregisterFromService:"previewSetVirtualCaptureAttributes"];
 }
 
-- (void)executeBlockUnderConfigurationLock:(id)a3
+- (void)executeBlockUnderConfigurationLock:(id)lock
 {
   v8[1] = *MEMORY[0x1E69E9840];
   v8[0] = 0;
@@ -313,17 +313,17 @@ uint64_t __52__VCVirtualAVCaptureDevice_registerBlocksForService__block_invoke_2
     objc_exception_throw([v5 exceptionWithName:v6 reason:v7 userInfo:{objc_msgSend(v8[0], "userInfo")}]);
   }
 
-  (*(a3 + 2))(a3);
+  (*(lock + 2))(lock);
   [(VCVirtualAVCaptureDevice *)self unlockForConfiguration];
 }
 
-- (void)setActiveFormat:(id)a3
+- (void)setActiveFormat:(id)format
 {
   [(VCVirtualAVCaptureDevice *)self verifyLockForConfiguration];
 
-  v5 = a3;
-  self->_activeFormat = v5;
-  [(VCVirtualAVCaptureDevice *)self configureResizingConverterWithFormat:v5];
+  formatCopy = format;
+  self->_activeFormat = formatCopy;
+  [(VCVirtualAVCaptureDevice *)self configureResizingConverterWithFormat:formatCopy];
   Dimensions = CMVideoFormatDescriptionGetDimensions([(AVCaptureDeviceFormat *)self->_activeFormat formatDescription]);
   captureSource = self->_captureSource;
 
@@ -358,11 +358,11 @@ id __40__VCVirtualAVCaptureDevice_activeFormat__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)setActiveVideoMinFrameDuration:(id *)a3
+- (void)setActiveVideoMinFrameDuration:(id *)duration
 {
   [(VCVirtualAVCaptureDevice *)self verifyLockForConfiguration];
-  var3 = a3->var3;
-  *&self->_activeVideoMinFrameDuration.value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_activeVideoMinFrameDuration.value = *&duration->var0;
   self->_activeVideoMinFrameDuration.epoch = var3;
   v6 = self->_activeVideoMinFrameDuration.value / self->_activeVideoMinFrameDuration.timescale;
   if (v6 == 0.0)
@@ -413,11 +413,11 @@ __n128 __55__VCVirtualAVCaptureDevice_activeVideoMinFrameDuration__block_invoke(
   return result;
 }
 
-- (void)setActiveVideoMaxFrameDuration:(id *)a3
+- (void)setActiveVideoMaxFrameDuration:(id *)duration
 {
   [(VCVirtualAVCaptureDevice *)self verifyLockForConfiguration];
-  var3 = a3->var3;
-  *&self->_activeVideoMaxFrameDuration.value = *&a3->var0;
+  var3 = duration->var3;
+  *&self->_activeVideoMaxFrameDuration.value = *&duration->var0;
   self->_activeVideoMaxFrameDuration.epoch = var3;
 }
 
@@ -454,7 +454,7 @@ __n128 __55__VCVirtualAVCaptureDevice_activeVideoMaxFrameDuration__block_invoke(
   return result;
 }
 
-- (void)addDeviceInput:(id)a3
+- (void)addDeviceInput:(id)input
 {
   v3[6] = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
@@ -462,7 +462,7 @@ __n128 __55__VCVirtualAVCaptureDevice_activeVideoMaxFrameDuration__block_invoke(
   v3[2] = __43__VCVirtualAVCaptureDevice_addDeviceInput___block_invoke;
   v3[3] = &unk_1E85F37F0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = input;
   [(VCVirtualAVCaptureDevice *)self executeBlockUnderConfigurationLock:v3];
 }
 
@@ -489,7 +489,7 @@ void __43__VCVirtualAVCaptureDevice_addDeviceInput___block_invoke(uint64_t a1)
   }
 }
 
-- (void)removeDeviceInput:(id)a3
+- (void)removeDeviceInput:(id)input
 {
   v3[6] = *MEMORY[0x1E69E9840];
   v3[0] = MEMORY[0x1E69E9820];
@@ -497,7 +497,7 @@ void __43__VCVirtualAVCaptureDevice_addDeviceInput___block_invoke(uint64_t a1)
   v3[2] = __46__VCVirtualAVCaptureDevice_removeDeviceInput___block_invoke;
   v3[3] = &unk_1E85F37F0;
   v3[4] = self;
-  v3[5] = a3;
+  v3[5] = input;
   [(VCVirtualAVCaptureDevice *)self executeBlockUnderConfigurationLock:v3];
 }
 
@@ -580,18 +580,18 @@ uint64_t __40__VCVirtualAVCaptureDevice_deviceInputs__block_invoke(uint64_t a1)
   pthread_mutex_unlock(&self->_deviceMutex);
 }
 
-- (BOOL)lockForConfiguration:(id *)a3
+- (BOOL)lockForConfiguration:(id *)configuration
 {
   v9[1] = *MEMORY[0x1E69E9840];
   v5 = pthread_mutex_lock(&self->_deviceMutex);
   if (v5)
   {
-    if (a3)
+    if (configuration)
     {
       v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"pthread mutex lock failed with result=%d", v5];
       v8 = *MEMORY[0x1E696A578];
       v9[0] = v6;
-      *a3 = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCVirtualAVCaptureDevice" code:-1 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v9, &v8, 1)}];
+      *configuration = [MEMORY[0x1E696ABC0] errorWithDomain:@"VCVirtualAVCaptureDevice" code:-1 userInfo:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithObjects:forKeys:count:", v9, &v8, 1)}];
     }
   }
 
@@ -652,12 +652,12 @@ __n128 __53__VCVirtualAVCaptureDevice_centerStageRectOfInterest__block_invoke(ui
   return result;
 }
 
-- (void)setCenterStageRectOfInterest:(CGRect)a3
+- (void)setCenterStageRectOfInterest:(CGRect)interest
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   [(VCVirtualAVCaptureDevice *)self verifyLockForConfiguration];
   self->_centerStageRectOfInterest.origin.x = x;
   self->_centerStageRectOfInterest.origin.y = y;
@@ -665,7 +665,7 @@ __n128 __53__VCVirtualAVCaptureDevice_centerStageRectOfInterest__block_invoke(ui
   self->_centerStageRectOfInterest.size.height = height;
 }
 
-- (void)setOutputAspectRatio:(id)a3 completionHandler:(id)a4
+- (void)setOutputAspectRatio:(id)ratio completionHandler:(id)handler
 {
   v17 = *MEMORY[0x1E69E9840];
   if (VRTraceGetErrorLogLevelForModule() >= 7)
@@ -681,18 +681,18 @@ __n128 __53__VCVirtualAVCaptureDevice_centerStageRectOfInterest__block_invoke(ui
       v13 = 1024;
       v14 = 430;
       v15 = 2112;
-      v16 = a3;
+      ratioCopy = ratio;
       _os_log_impl(&dword_1DB56E000, v7, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d VCVirtualAVCaptureDevice setOutputAspectRatio: aspectRatio=[%@] (mocked)", buf, 0x26u);
     }
   }
 
-  if (a4)
+  if (handler)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __67__VCVirtualAVCaptureDevice_setOutputAspectRatio_completionHandler___block_invoke;
     block[3] = &unk_1E85F7268;
-    block[4] = a4;
+    block[4] = handler;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }

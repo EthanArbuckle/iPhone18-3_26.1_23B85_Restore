@@ -1,7 +1,7 @@
 @interface RTBootInfo
-+ (BOOL)isFirstRunSinceBootWithDefaultsManager:(id)a3 defaultsKey:(id)a4;
++ (BOOL)isFirstRunSinceBootWithDefaultsManager:(id)manager defaultsKey:(id)key;
 + (id)getCurrentBootSessionID;
-+ (void)setBootSessionIDWithDefaultsManager:(id)a3 defaultsKey:(id)a4;
++ (void)setBootSessionIDWithDefaultsManager:(id)manager defaultsKey:(id)key;
 @end
 
 @implementation RTBootInfo
@@ -23,12 +23,12 @@
   return v4;
 }
 
-+ (BOOL)isFirstRunSinceBootWithDefaultsManager:(id)a3 defaultsKey:(id)a4
++ (BOOL)isFirstRunSinceBootWithDefaultsManager:(id)manager defaultsKey:(id)key
 {
   v20 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  managerCopy = manager;
+  keyCopy = key;
+  if (!managerCopy)
   {
     v7 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -44,7 +44,7 @@
   v8 = +[RTBootInfo getCurrentBootSessionID];
   if (v8)
   {
-    v9 = [v5 objectForKey:v6];
+    v9 = [managerCopy objectForKey:keyCopy];
     v10 = v9;
     v11 = !v9 || ([v9 isEqual:v8]& 1) == 0;
     if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -81,11 +81,11 @@
   return v11;
 }
 
-+ (void)setBootSessionIDWithDefaultsManager:(id)a3 defaultsKey:(id)a4
++ (void)setBootSessionIDWithDefaultsManager:(id)manager defaultsKey:(id)key
 {
   v13 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  managerCopy = manager;
+  keyCopy = key;
   v7 = +[RTBootInfo getCurrentBootSessionID];
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
   {
@@ -100,7 +100,7 @@
     }
   }
 
-  [v5 setObject:v7 forKey:v6];
+  [managerCopy setObject:v7 forKey:keyCopy];
 }
 
 @end

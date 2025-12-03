@@ -2,33 +2,33 @@
 - (BOOL)hasDocumentVersionUUID;
 - (BOOL)ignoreReferencesToUnknownObjects;
 - (BOOL)isReadingFromDocument;
-- (BOOL)readLazyReference:(id)a3 object:(id *)a4 error:(id *)a5;
+- (BOOL)readLazyReference:(id)reference object:(id *)object error:(id *)error;
 - (BOOL)resolveExternalReferences;
 - (NSError)error;
 - (NSUUID)baseObjectUUID;
 - (TSPReadCoordinatorBase)init;
 - (id).cxx_construct;
 - (id)context;
-- (id)contextForReader:(id)a3;
-- (id)lazyReferenceDelegateForReader:(id)a3;
-- (id)objectDelegateForReader:(id)a3;
-- (id)objectForIdentifier:(int64_t)a3;
-- (id)reader:(id)a3 wantsDataForIdentifier:(int64_t)a4;
-- (int64_t)reader:(id)a3 wantsObjectIdentifierForUUID:(id)a4;
+- (id)contextForReader:(id)reader;
+- (id)lazyReferenceDelegateForReader:(id)reader;
+- (id)objectDelegateForReader:(id)reader;
+- (id)objectForIdentifier:(int64_t)identifier;
+- (id)reader:(id)reader wantsDataForIdentifier:(int64_t)identifier;
+- (int64_t)reader:(id)reader wantsObjectIdentifierForUUID:(id)d;
 - (unint64_t)fileFormatVersion;
 - (unint64_t)readVersion;
 - (unsigned)packageIdentifier;
 - (unsigned)sourceType;
-- (void)addLoadObserver:(id)a3 action:(SEL)a4 forLazyReference:(id)a5;
-- (void)didReferenceExternalObject:(id)a3 withIdentifier:(int64_t)a4;
-- (void)externalReferenceInfoForObjectIdentifier:(int64_t)a3 componentIdentifier:(int64_t)a4;
-- (void)lazyReference:(id)a3 didCreateCopy:(id)a4;
-- (void)reader:(id)a3 didFindExternalReferenceToObjectIdentifier:(int64_t)a4 componentIdentifier:(int64_t)a5 isWeak:(BOOL)a6 allowUnknownObject:(BOOL)a7 objectClass:(Class)a8 objectProtocol:(id)a9 fromParentObject:(id)a10 completion:(id)a11;
-- (void)reader:(id)a3 didFindExternalRepeatedReference:(id)a4 isWeak:(BOOL)a5 allowUnknownObject:(BOOL)a6 objectClass:(Class)a7 objectProtocol:(id)a8 fromParentObject:(id)a9 completion:(id)a10;
-- (void)reader:(id)a3 didReadLazyReference:(id)a4;
-- (void)setError:(id)a3;
-- (void)setLazyReferencesDelegate:(id)a3 forLazyReference:(id)a4;
-- (void)setLazyReferencesDelegate:(id)a3 forLazyReferenceCopy:(id)a4;
+- (void)addLoadObserver:(id)observer action:(SEL)action forLazyReference:(id)reference;
+- (void)didReferenceExternalObject:(id)object withIdentifier:(int64_t)identifier;
+- (void)externalReferenceInfoForObjectIdentifier:(int64_t)identifier componentIdentifier:(int64_t)componentIdentifier;
+- (void)lazyReference:(id)reference didCreateCopy:(id)copy;
+- (void)reader:(id)reader didFindExternalReferenceToObjectIdentifier:(int64_t)identifier componentIdentifier:(int64_t)componentIdentifier isWeak:(BOOL)weak allowUnknownObject:(BOOL)object objectClass:(Class)class objectProtocol:(id)protocol fromParentObject:(id)self0 completion:(id)self1;
+- (void)reader:(id)reader didFindExternalRepeatedReference:(id)reference isWeak:(BOOL)weak allowUnknownObject:(BOOL)object objectClass:(Class)class objectProtocol:(id)protocol fromParentObject:(id)parentObject completion:(id)self0;
+- (void)reader:(id)reader didReadLazyReference:(id)reference;
+- (void)setError:(id)error;
+- (void)setLazyReferencesDelegate:(id)delegate forLazyReference:(id)reference;
+- (void)setLazyReferencesDelegate:(id)delegate forLazyReferenceCopy:(id)copy;
 - (void)setLazyReferencesDelegateToObjectContext;
 - (void)updatePersistedDataReferenceMap;
 @end
@@ -73,11 +73,11 @@
   return v2;
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  errorCopy = error;
+  v5 = errorCopy;
+  if (errorCopy)
   {
     errorQueue = self->_errorQueue;
     v7[0] = MEMORY[0x277D85DD0];
@@ -85,7 +85,7 @@
     v7[2] = sub_276A7F1FC;
     v7[3] = &unk_27A6E2898;
     v7[4] = self;
-    v8 = v4;
+    v8 = errorCopy;
     dispatch_async(errorQueue, v7);
     atomic_store(0, &self->_success);
   }
@@ -174,33 +174,33 @@
   }
 }
 
-- (void)setLazyReferencesDelegate:(id)a3 forLazyReference:(id)a4
+- (void)setLazyReferencesDelegate:(id)delegate forLazyReference:(id)reference
 {
-  v17 = a3;
-  if ((objc_msgSend_isExternal(a4, v6, v7) & 1) == 0)
+  delegateCopy = delegate;
+  if ((objc_msgSend_isExternal(reference, v6, v7) & 1) == 0)
   {
-    v10 = objc_msgSend_strongObject(a4, v8, v9);
+    v10 = objc_msgSend_strongObject(reference, v8, v9);
 
     if (!v10)
     {
-      v12 = objc_msgSend_tsp_identifier(a4, v8, v11);
+      v12 = objc_msgSend_tsp_identifier(reference, v8, v11);
       v15 = objc_msgSend_unarchivedObjectForIdentifier_isReadFinished_(self, v13, v12, 1);
       if (v15)
       {
-        objc_msgSend_retainObject_(a4, v14, v15);
+        objc_msgSend_retainObject_(reference, v14, v15);
       }
     }
   }
 
-  objc_msgSend_setDelegate_(a4, v8, v17);
-  objc_msgSend_didUpdateLazyReferenceDelegate_(self, v16, a4);
+  objc_msgSend_setDelegate_(reference, v8, delegateCopy);
+  objc_msgSend_didUpdateLazyReferenceDelegate_(self, v16, reference);
 }
 
-- (void)setLazyReferencesDelegate:(id)a3 forLazyReferenceCopy:(id)a4
+- (void)setLazyReferencesDelegate:(id)delegate forLazyReferenceCopy:(id)copy
 {
-  objc_msgSend_setDelegate_(a4, a2, a3);
-  v8 = objc_msgSend_tsp_identifier(a4, v6, v7);
-  v11 = objc_msgSend_component(a4, v9, v10);
+  objc_msgSend_setDelegate_(copy, a2, delegate);
+  v8 = objc_msgSend_tsp_identifier(copy, v6, v7);
+  v11 = objc_msgSend_component(copy, v9, v10);
   v13 = objc_msgSend_externalReferenceInfoForObjectIdentifier_(v11, v12, v8);
 
   if (!v13)
@@ -208,11 +208,11 @@
     v16 = objc_msgSend_unarchivedObjectForIdentifier_isReadFinished_(self, v14, v8, 1);
     if (v16)
     {
-      objc_msgSend_retainObject_(a4, v15, v16);
+      objc_msgSend_retainObject_(copy, v15, v16);
     }
   }
 
-  objc_msgSend_didUpdateLazyReferenceDelegate_(self, v14, a4);
+  objc_msgSend_didUpdateLazyReferenceDelegate_(self, v14, copy);
 }
 
 - (void)updatePersistedDataReferenceMap
@@ -270,9 +270,9 @@
   objc_exception_throw(v18);
 }
 
-- (void)didReferenceExternalObject:(id)a3 withIdentifier:(int64_t)a4
+- (void)didReferenceExternalObject:(id)object withIdentifier:(int64_t)identifier
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSPReadCoordinatorBase didReferenceExternalObject:withIdentifier:]");
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPReadCoordinator.mm");
@@ -439,21 +439,21 @@
   objc_exception_throw(v18);
 }
 
-- (id)contextForReader:(id)a3
+- (id)contextForReader:(id)reader
 {
-  v3 = objc_msgSend_context(self, a2, a3);
+  v3 = objc_msgSend_context(self, a2, reader);
 
   return v3;
 }
 
-- (id)objectDelegateForReader:(id)a3
+- (id)objectDelegateForReader:(id)reader
 {
-  v3 = objc_msgSend_context(self, a2, a3);
+  v3 = objc_msgSend_context(self, a2, reader);
 
   return v3;
 }
 
-- (id)lazyReferenceDelegateForReader:(id)a3
+- (id)lazyReferenceDelegateForReader:(id)reader
 {
   v4 = atomic_load(&self->_didSetLazyReferenceDelegate);
   if (v4)
@@ -464,21 +464,21 @@
     objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v5, v9, v6, v8, 581, 0, "Already set lazy references delegate.");
 
     objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v10, v11);
-    v14 = objc_msgSend_context(self, v12, v13);
+    selfCopy = objc_msgSend_context(self, v12, v13);
   }
 
   else
   {
-    v14 = self;
+    selfCopy = self;
   }
 
-  return v14;
+  return selfCopy;
 }
 
-- (int64_t)reader:(id)a3 wantsObjectIdentifierForUUID:(id)a4
+- (int64_t)reader:(id)reader wantsObjectIdentifierForUUID:(id)d
 {
-  v5 = a3;
-  v6 = a4;
+  readerCopy = reader;
+  dCopy = d;
   v7 = MEMORY[0x277D81150];
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSPReadCoordinatorBase reader:wantsObjectIdentifierForUUID:]");
   v11 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v10, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPReadCoordinator.mm");
@@ -498,9 +498,9 @@
   objc_exception_throw(v24);
 }
 
-- (id)reader:(id)a3 wantsDataForIdentifier:(int64_t)a4
+- (id)reader:(id)reader wantsDataForIdentifier:(int64_t)identifier
 {
-  v4 = a3;
+  readerCopy = reader;
   v5 = MEMORY[0x277D81150];
   v7 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v6, "[TSPReadCoordinatorBase reader:wantsDataForIdentifier:]");
   v9 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPReadCoordinator.mm");
@@ -520,10 +520,10 @@
   objc_exception_throw(v22);
 }
 
-- (void)externalReferenceInfoForObjectIdentifier:(int64_t)a3 componentIdentifier:(int64_t)a4
+- (void)externalReferenceInfoForObjectIdentifier:(int64_t)identifier componentIdentifier:(int64_t)componentIdentifier
 {
-  v6 = a3;
-  v4 = sub_2769ABC64(&self->_externalReferences.__table_.__bucket_list_.__ptr_, &v6);
+  identifierCopy = identifier;
+  v4 = sub_2769ABC64(&self->_externalReferences.__table_.__bucket_list_.__ptr_, &identifierCopy);
   if (!v4)
   {
     sub_276A83ED8();
@@ -532,39 +532,39 @@
   return v4 + 3;
 }
 
-- (void)reader:(id)a3 didFindExternalReferenceToObjectIdentifier:(int64_t)a4 componentIdentifier:(int64_t)a5 isWeak:(BOOL)a6 allowUnknownObject:(BOOL)a7 objectClass:(Class)a8 objectProtocol:(id)a9 fromParentObject:(id)a10 completion:(id)a11
+- (void)reader:(id)reader didFindExternalReferenceToObjectIdentifier:(int64_t)identifier componentIdentifier:(int64_t)componentIdentifier isWeak:(BOOL)weak allowUnknownObject:(BOOL)object objectClass:(Class)class objectProtocol:(id)protocol fromParentObject:(id)self0 completion:(id)self1
 {
-  v18 = a9;
-  v21 = a11;
-  if (v21)
+  protocolCopy = protocol;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v22 = objc_msgSend_component(a3, v19, v20);
+    v22 = objc_msgSend_component(reader, v19, v20);
     externalReferenceQueue = self->_externalReferenceQueue;
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = sub_276A82ECC;
     v24[3] = &unk_27A6E5B78;
     v24[4] = self;
-    v27 = a4;
-    v28 = a5;
+    identifierCopy = identifier;
+    componentIdentifierCopy = componentIdentifier;
     v29 = v22;
-    v31 = a6;
-    v32 = a7;
-    v26 = v21;
-    v30 = a8;
-    v25 = v18;
+    weakCopy = weak;
+    objectCopy = object;
+    v26 = completionCopy;
+    classCopy = class;
+    v25 = protocolCopy;
     dispatch_sync(externalReferenceQueue, v24);
   }
 }
 
-- (void)reader:(id)a3 didFindExternalRepeatedReference:(id)a4 isWeak:(BOOL)a5 allowUnknownObject:(BOOL)a6 objectClass:(Class)a7 objectProtocol:(id)a8 fromParentObject:(id)a9 completion:(id)a10
+- (void)reader:(id)reader didFindExternalRepeatedReference:(id)reference isWeak:(BOOL)weak allowUnknownObject:(BOOL)object objectClass:(Class)class objectProtocol:(id)protocol fromParentObject:(id)parentObject completion:(id)self0
 {
-  v16 = a4;
-  v17 = a8;
-  v20 = a10;
-  if (v20)
+  referenceCopy = reference;
+  protocolCopy = protocol;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v21 = objc_msgSend_component(a3, v18, v19);
+    v21 = objc_msgSend_component(reader, v18, v19);
     externalReferenceQueue = self->_externalReferenceQueue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
@@ -572,27 +572,27 @@
     block[3] = &unk_27A6E5BA0;
     block[4] = self;
     v27 = v21;
-    v24 = v16;
-    v29 = a5;
-    v30 = a6;
-    v26 = v20;
-    v28 = a7;
-    v25 = v17;
+    v24 = referenceCopy;
+    weakCopy = weak;
+    objectCopy = object;
+    v26 = completionCopy;
+    classCopy = class;
+    v25 = protocolCopy;
     dispatch_sync(externalReferenceQueue, block);
   }
 }
 
-- (void)reader:(id)a3 didReadLazyReference:(id)a4
+- (void)reader:(id)reader didReadLazyReference:(id)reference
 {
-  v5 = a4;
+  referenceCopy = reference;
   lazyReferenceQueue = self->_lazyReferenceQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_276A8338C;
   v8[3] = &unk_27A6E2898;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = referenceCopy;
+  v7 = referenceCopy;
   dispatch_sync(lazyReferenceQueue, v8);
 }
 
@@ -604,32 +604,32 @@
   return v6;
 }
 
-- (id)objectForIdentifier:(int64_t)a3
+- (id)objectForIdentifier:(int64_t)identifier
 {
-  v5 = objc_msgSend_unarchivedObjectForIdentifier_isReadFinished_(self, a2, a3, 0);
+  v5 = objc_msgSend_unarchivedObjectForIdentifier_isReadFinished_(self, a2, identifier, 0);
   if (!v5)
   {
-    v5 = objc_msgSend_externalObjectForIdentifier_componentIdentifier_isReadFinished_(self, v6, a3, 0, 0);
+    v5 = objc_msgSend_externalObjectForIdentifier_componentIdentifier_isReadFinished_(self, v6, identifier, 0, 0);
   }
 
   return v5;
 }
 
-- (BOOL)readLazyReference:(id)a3 object:(id *)a4 error:(id *)a5
+- (BOOL)readLazyReference:(id)reference object:(id *)object error:(id *)error
 {
-  v7 = a3;
+  referenceCopy = reference;
   v8 = MEMORY[0x277D81150];
   v10 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v9, "[TSPReadCoordinatorBase readLazyReference:object:error:]");
   v12 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/persistence/src/TSPReadCoordinator.mm");
   objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v8, v13, v10, v12, 670, 0, "Lazy reference resolution cannot happen while the document is getting unarchived.");
 
   objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v14, v15);
-  v18 = objc_msgSend_tsp_identifier(v7, v16, v17);
+  v18 = objc_msgSend_tsp_identifier(referenceCopy, v16, v17);
   v20 = objc_msgSend_objectForIdentifier_(self, v19, v18);
-  if (a4)
+  if (object)
   {
     v20 = v20;
-    *a4 = v20;
+    *object = v20;
   }
 
   v21 = v20 != 0;
@@ -637,10 +637,10 @@
   return v21;
 }
 
-- (void)addLoadObserver:(id)a3 action:(SEL)a4 forLazyReference:(id)a5
+- (void)addLoadObserver:(id)observer action:(SEL)action forLazyReference:(id)reference
 {
-  v8 = a3;
-  v9 = a5;
+  observerCopy = observer;
+  referenceCopy = reference;
   v12 = objc_msgSend_context(self, v10, v11);
   lazyReferenceQueue = self->_lazyReferenceQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -648,26 +648,26 @@
   block[2] = sub_276A83778;
   block[3] = &unk_27A6E5BF0;
   v20 = v12;
-  v21 = a4;
-  v17 = v8;
-  v18 = v9;
-  v19 = self;
-  v14 = v9;
-  v15 = v8;
+  actionCopy = action;
+  v17 = observerCopy;
+  v18 = referenceCopy;
+  selfCopy = self;
+  v14 = referenceCopy;
+  v15 = observerCopy;
   dispatch_sync(lazyReferenceQueue, block);
 }
 
-- (void)lazyReference:(id)a3 didCreateCopy:(id)a4
+- (void)lazyReference:(id)reference didCreateCopy:(id)copy
 {
-  v5 = a4;
+  copyCopy = copy;
   lazyReferenceQueue = self->_lazyReferenceQueue;
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = sub_276A83998;
   v8[3] = &unk_27A6E2898;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = copyCopy;
+  v7 = copyCopy;
   dispatch_sync(lazyReferenceQueue, v8);
 }
 

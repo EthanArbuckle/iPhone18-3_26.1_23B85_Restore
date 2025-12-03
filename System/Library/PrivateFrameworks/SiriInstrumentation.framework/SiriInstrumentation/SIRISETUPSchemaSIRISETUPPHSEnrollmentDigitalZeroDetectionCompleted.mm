@@ -1,32 +1,32 @@
 @interface SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted)initWithDictionary:(id)a3;
-- (SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted)initWithJSON:(id)a3;
+- (SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted)initWithDictionary:(id)dictionary;
+- (SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasDidTriggerFirstPass:(BOOL)a3;
-- (void)setHasIsMaxNumContinuousZerosOverThreshold:(BOOL)a3;
-- (void)setHasMaxNumAllowedContinuousZeros:(BOOL)a3;
-- (void)setHasMaxNumContinuousZeros:(BOOL)a3;
-- (void)setHasSpeechStartPointDetected:(BOOL)a3;
-- (void)setHasStageStatus:(BOOL)a3;
-- (void)setHasTwoPassRecognizerUsed:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasDidTriggerFirstPass:(BOOL)pass;
+- (void)setHasIsMaxNumContinuousZerosOverThreshold:(BOOL)threshold;
+- (void)setHasMaxNumAllowedContinuousZeros:(BOOL)zeros;
+- (void)setHasMaxNumContinuousZeros:(BOOL)zeros;
+- (void)setHasSpeechStartPointDetected:(BOOL)detected;
+- (void)setHasStageStatus:(BOOL)status;
+- (void)setHasTwoPassRecognizerUsed:(BOOL)used;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted
 
-- (SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted)initWithDictionary:(id)a3
+- (SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v27.receiver = self;
   v27.super_class = SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted;
   v5 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)&v27 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"pageNumber"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"pageNumber"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -34,7 +34,7 @@
     }
 
     v26 = v6;
-    v7 = [v4 objectForKeyedSubscript:@"phraseId"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"phraseId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -42,21 +42,21 @@
       [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)v5 setPhraseId:v8];
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"maxNumContinuousZeros"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"maxNumContinuousZeros"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted setMaxNumContinuousZeros:](v5, "setMaxNumContinuousZeros:", [v9 unsignedIntValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"maxNumAllowedContinuousZeros"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"maxNumAllowedContinuousZeros"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted setMaxNumAllowedContinuousZeros:](v5, "setMaxNumAllowedContinuousZeros:", [v10 unsignedIntValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"isMaxNumContinuousZerosOverThreshold"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"isMaxNumContinuousZerosOverThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,7 +64,7 @@
     }
 
     v25 = v9;
-    v12 = [v4 objectForKeyedSubscript:{@"vtAssetConfigVersion", v11}];
+    v12 = [dictionaryCopy objectForKeyedSubscript:{@"vtAssetConfigVersion", v11}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -72,7 +72,7 @@
       [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)v5 setVtAssetConfigVersion:v13];
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"locale"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"locale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -80,7 +80,7 @@
       [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)v5 setLocale:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"stageStatus"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"stageStatus"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -88,7 +88,7 @@
     }
 
     v24 = v10;
-    v17 = [v4 objectForKeyedSubscript:@"speechStartPointDetected"];
+    v17 = [dictionaryCopy objectForKeyedSubscript:@"speechStartPointDetected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -96,14 +96,14 @@
     }
 
     v18 = v7;
-    v19 = [v4 objectForKeyedSubscript:@"twoPassRecognizerUsed"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"twoPassRecognizerUsed"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted setTwoPassRecognizerUsed:](v5, "setTwoPassRecognizerUsed:", [v19 BOOLValue]);
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"didTriggerFirstPass"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"didTriggerFirstPass"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -116,30 +116,30 @@
   return v5;
 }
 
-- (SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted)initWithJSON:(id)a3
+- (SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -152,7 +152,7 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*(&self->_didTriggerFirstPass + 1) & 0x80) == 0)
   {
     if ((*(&self->_didTriggerFirstPass + 1) & 8) == 0)
@@ -164,28 +164,28 @@
   }
 
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted didTriggerFirstPass](self, "didTriggerFirstPass")}];
-  [v3 setObject:v21 forKeyedSubscript:@"didTriggerFirstPass"];
+  [dictionary setObject:v21 forKeyedSubscript:@"didTriggerFirstPass"];
 
   if ((*(&self->_didTriggerFirstPass + 1) & 8) != 0)
   {
 LABEL_3:
     v4 = [MEMORY[0x1E696AD98] numberWithBool:{-[SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted isMaxNumContinuousZerosOverThreshold](self, "isMaxNumContinuousZerosOverThreshold")}];
-    [v3 setObject:v4 forKeyedSubscript:@"isMaxNumContinuousZerosOverThreshold"];
+    [dictionary setObject:v4 forKeyedSubscript:@"isMaxNumContinuousZerosOverThreshold"];
   }
 
 LABEL_4:
   if (self->_locale)
   {
-    v5 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self locale];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"locale"];
+    locale = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self locale];
+    v6 = [locale copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"locale"];
   }
 
   v7 = *(&self->_didTriggerFirstPass + 1);
   if ((v7 & 4) != 0)
   {
     v16 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted maxNumAllowedContinuousZeros](self, "maxNumAllowedContinuousZeros")}];
-    [v3 setObject:v16 forKeyedSubscript:@"maxNumAllowedContinuousZeros"];
+    [dictionary setObject:v16 forKeyedSubscript:@"maxNumAllowedContinuousZeros"];
 
     v7 = *(&self->_didTriggerFirstPass + 1);
     if ((v7 & 2) == 0)
@@ -206,28 +206,28 @@ LABEL_8:
   }
 
   v17 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted maxNumContinuousZeros](self, "maxNumContinuousZeros")}];
-  [v3 setObject:v17 forKeyedSubscript:@"maxNumContinuousZeros"];
+  [dictionary setObject:v17 forKeyedSubscript:@"maxNumContinuousZeros"];
 
   if (*(&self->_didTriggerFirstPass + 1))
   {
 LABEL_9:
     v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted pageNumber](self, "pageNumber")}];
-    [v3 setObject:v8 forKeyedSubscript:@"pageNumber"];
+    [dictionary setObject:v8 forKeyedSubscript:@"pageNumber"];
   }
 
 LABEL_10:
   if (self->_phraseId)
   {
-    v9 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self phraseId];
-    v10 = [v9 copy];
-    [v3 setObject:v10 forKeyedSubscript:@"phraseId"];
+    phraseId = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self phraseId];
+    v10 = [phraseId copy];
+    [dictionary setObject:v10 forKeyedSubscript:@"phraseId"];
   }
 
   v11 = *(&self->_didTriggerFirstPass + 1);
   if ((v11 & 0x20) != 0)
   {
     v18 = [MEMORY[0x1E696AD98] numberWithBool:{-[SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted speechStartPointDetected](self, "speechStartPointDetected")}];
-    [v3 setObject:v18 forKeyedSubscript:@"speechStartPointDetected"];
+    [dictionary setObject:v18 forKeyedSubscript:@"speechStartPointDetected"];
 
     v11 = *(&self->_didTriggerFirstPass + 1);
     if ((v11 & 0x10) == 0)
@@ -258,25 +258,25 @@ LABEL_14:
     v20 = off_1E78E2CA0[v19];
   }
 
-  [v3 setObject:v20 forKeyedSubscript:@"stageStatus"];
+  [dictionary setObject:v20 forKeyedSubscript:@"stageStatus"];
   if ((*(&self->_didTriggerFirstPass + 1) & 0x40) != 0)
   {
 LABEL_15:
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted twoPassRecognizerUsed](self, "twoPassRecognizerUsed")}];
-    [v3 setObject:v12 forKeyedSubscript:@"twoPassRecognizerUsed"];
+    [dictionary setObject:v12 forKeyedSubscript:@"twoPassRecognizerUsed"];
   }
 
 LABEL_16:
   if (self->_vtAssetConfigVersion)
   {
-    v13 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self vtAssetConfigVersion];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"vtAssetConfigVersion"];
+    vtAssetConfigVersion = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self vtAssetConfigVersion];
+    v14 = [vtAssetConfigVersion copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"vtAssetConfigVersion"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -382,15 +382,15 @@ LABEL_15:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ v12 ^ v13;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
-  if (*(&self->_didTriggerFirstPass + 1) != (v4[63] & 1))
+  if (*(&self->_didTriggerFirstPass + 1) != (equalCopy[63] & 1))
   {
     goto LABEL_31;
   }
@@ -398,26 +398,26 @@ LABEL_15:
   if (*(&self->_didTriggerFirstPass + 1))
   {
     pageNumber = self->_pageNumber;
-    if (pageNumber != [v4 pageNumber])
+    if (pageNumber != [equalCopy pageNumber])
     {
       goto LABEL_31;
     }
   }
 
-  v6 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self phraseId];
-  v7 = [v4 phraseId];
-  if ((v6 != 0) == (v7 == 0))
+  phraseId = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self phraseId];
+  phraseId2 = [equalCopy phraseId];
+  if ((phraseId != 0) == (phraseId2 == 0))
   {
     goto LABEL_30;
   }
 
-  v8 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self phraseId];
-  if (v8)
+  phraseId3 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self phraseId];
+  if (phraseId3)
   {
-    v9 = v8;
-    v10 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self phraseId];
-    v11 = [v4 phraseId];
-    v12 = [v10 isEqual:v11];
+    v9 = phraseId3;
+    phraseId4 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self phraseId];
+    phraseId5 = [equalCopy phraseId];
+    v12 = [phraseId4 isEqual:phraseId5];
 
     if (!v12)
     {
@@ -431,7 +431,7 @@ LABEL_15:
 
   v13 = *(&self->_didTriggerFirstPass + 1);
   v14 = (v13 >> 1) & 1;
-  v15 = v4[63];
+  v15 = equalCopy[63];
   if (v14 != ((v15 >> 1) & 1))
   {
     goto LABEL_31;
@@ -440,13 +440,13 @@ LABEL_15:
   if (v14)
   {
     maxNumContinuousZeros = self->_maxNumContinuousZeros;
-    if (maxNumContinuousZeros != [v4 maxNumContinuousZeros])
+    if (maxNumContinuousZeros != [equalCopy maxNumContinuousZeros])
     {
       goto LABEL_31;
     }
 
     v13 = *(&self->_didTriggerFirstPass + 1);
-    v15 = v4[63];
+    v15 = equalCopy[63];
   }
 
   v17 = (v13 >> 2) & 1;
@@ -458,13 +458,13 @@ LABEL_15:
   if (v17)
   {
     maxNumAllowedContinuousZeros = self->_maxNumAllowedContinuousZeros;
-    if (maxNumAllowedContinuousZeros != [v4 maxNumAllowedContinuousZeros])
+    if (maxNumAllowedContinuousZeros != [equalCopy maxNumAllowedContinuousZeros])
     {
       goto LABEL_31;
     }
 
     v13 = *(&self->_didTriggerFirstPass + 1);
-    v15 = v4[63];
+    v15 = equalCopy[63];
   }
 
   v19 = (v13 >> 3) & 1;
@@ -476,26 +476,26 @@ LABEL_15:
   if (v19)
   {
     isMaxNumContinuousZerosOverThreshold = self->_isMaxNumContinuousZerosOverThreshold;
-    if (isMaxNumContinuousZerosOverThreshold != [v4 isMaxNumContinuousZerosOverThreshold])
+    if (isMaxNumContinuousZerosOverThreshold != [equalCopy isMaxNumContinuousZerosOverThreshold])
     {
       goto LABEL_31;
     }
   }
 
-  v6 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self vtAssetConfigVersion];
-  v7 = [v4 vtAssetConfigVersion];
-  if ((v6 != 0) == (v7 == 0))
+  phraseId = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self vtAssetConfigVersion];
+  phraseId2 = [equalCopy vtAssetConfigVersion];
+  if ((phraseId != 0) == (phraseId2 == 0))
   {
     goto LABEL_30;
   }
 
-  v21 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self vtAssetConfigVersion];
-  if (v21)
+  vtAssetConfigVersion = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self vtAssetConfigVersion];
+  if (vtAssetConfigVersion)
   {
-    v22 = v21;
-    v23 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self vtAssetConfigVersion];
-    v24 = [v4 vtAssetConfigVersion];
-    v25 = [v23 isEqual:v24];
+    v22 = vtAssetConfigVersion;
+    vtAssetConfigVersion2 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self vtAssetConfigVersion];
+    vtAssetConfigVersion3 = [equalCopy vtAssetConfigVersion];
+    v25 = [vtAssetConfigVersion2 isEqual:vtAssetConfigVersion3];
 
     if (!v25)
     {
@@ -507,22 +507,22 @@ LABEL_15:
   {
   }
 
-  v6 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self locale];
-  v7 = [v4 locale];
-  if ((v6 != 0) == (v7 == 0))
+  phraseId = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self locale];
+  phraseId2 = [equalCopy locale];
+  if ((phraseId != 0) == (phraseId2 == 0))
   {
 LABEL_30:
 
     goto LABEL_31;
   }
 
-  v26 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self locale];
-  if (v26)
+  locale = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self locale];
+  if (locale)
   {
-    v27 = v26;
-    v28 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self locale];
-    v29 = [v4 locale];
-    v30 = [v28 isEqual:v29];
+    v27 = locale;
+    locale2 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self locale];
+    locale3 = [equalCopy locale];
+    v30 = [locale2 isEqual:locale3];
 
     if (!v30)
     {
@@ -536,19 +536,19 @@ LABEL_30:
 
   v33 = *(&self->_didTriggerFirstPass + 1);
   v34 = (v33 >> 4) & 1;
-  v35 = v4[63];
+  v35 = equalCopy[63];
   if (v34 == ((v35 >> 4) & 1))
   {
     if (v34)
     {
       stageStatus = self->_stageStatus;
-      if (stageStatus != [v4 stageStatus])
+      if (stageStatus != [equalCopy stageStatus])
       {
         goto LABEL_31;
       }
 
       v33 = *(&self->_didTriggerFirstPass + 1);
-      v35 = v4[63];
+      v35 = equalCopy[63];
     }
 
     v37 = (v33 >> 5) & 1;
@@ -557,13 +557,13 @@ LABEL_30:
       if (v37)
       {
         speechStartPointDetected = self->_speechStartPointDetected;
-        if (speechStartPointDetected != [v4 speechStartPointDetected])
+        if (speechStartPointDetected != [equalCopy speechStartPointDetected])
         {
           goto LABEL_31;
         }
 
         v33 = *(&self->_didTriggerFirstPass + 1);
-        v35 = v4[63];
+        v35 = equalCopy[63];
       }
 
       v39 = (v33 >> 6) & 1;
@@ -572,18 +572,18 @@ LABEL_30:
         if (v39)
         {
           twoPassRecognizerUsed = self->_twoPassRecognizerUsed;
-          if (twoPassRecognizerUsed != [v4 twoPassRecognizerUsed])
+          if (twoPassRecognizerUsed != [equalCopy twoPassRecognizerUsed])
           {
             goto LABEL_31;
           }
 
           v33 = *(&self->_didTriggerFirstPass + 1);
-          v35 = v4[63];
+          v35 = equalCopy[63];
         }
 
         if (((v35 ^ v33) & 0x80) == 0)
         {
-          if ((v33 & 0x80) == 0 || (didTriggerFirstPass = self->_didTriggerFirstPass, didTriggerFirstPass == [v4 didTriggerFirstPass]))
+          if ((v33 & 0x80) == 0 || (didTriggerFirstPass = self->_didTriggerFirstPass, didTriggerFirstPass == [equalCopy didTriggerFirstPass]))
           {
             v31 = 1;
             goto LABEL_32;
@@ -600,17 +600,17 @@ LABEL_32:
   return v31;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
+  toCopy = to;
   if (*(&self->_didTriggerFirstPass + 1))
   {
     PBDataWriterWriteUint32Field();
   }
 
-  v4 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self phraseId];
+  phraseId = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self phraseId];
 
-  if (v4)
+  if (phraseId)
   {
     PBDataWriterWriteStringField();
   }
@@ -645,16 +645,16 @@ LABEL_8:
   }
 
 LABEL_9:
-  v6 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self vtAssetConfigVersion];
+  vtAssetConfigVersion = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self vtAssetConfigVersion];
 
-  if (v6)
+  if (vtAssetConfigVersion)
   {
     PBDataWriterWriteStringField();
   }
 
-  v7 = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self locale];
+  locale = [(SIRISETUPSchemaSIRISETUPPHSEnrollmentDigitalZeroDetectionCompleted *)self locale];
 
-  if (v7)
+  if (locale)
   {
     PBDataWriterWriteStringField();
   }
@@ -706,9 +706,9 @@ LABEL_26:
 LABEL_17:
 }
 
-- (void)setHasDidTriggerFirstPass:(BOOL)a3
+- (void)setHasDidTriggerFirstPass:(BOOL)pass
 {
-  if (a3)
+  if (pass)
   {
     v3 = 0x80;
   }
@@ -721,9 +721,9 @@ LABEL_17:
   *(&self->_didTriggerFirstPass + 1) = v3 & 0x80 | *(&self->_didTriggerFirstPass + 1) & 0x7F;
 }
 
-- (void)setHasTwoPassRecognizerUsed:(BOOL)a3
+- (void)setHasTwoPassRecognizerUsed:(BOOL)used
 {
-  if (a3)
+  if (used)
   {
     v3 = 64;
   }
@@ -736,9 +736,9 @@ LABEL_17:
   *(&self->_didTriggerFirstPass + 1) = *(&self->_didTriggerFirstPass + 1) & 0xBF | v3;
 }
 
-- (void)setHasSpeechStartPointDetected:(BOOL)a3
+- (void)setHasSpeechStartPointDetected:(BOOL)detected
 {
-  if (a3)
+  if (detected)
   {
     v3 = 32;
   }
@@ -751,9 +751,9 @@ LABEL_17:
   *(&self->_didTriggerFirstPass + 1) = *(&self->_didTriggerFirstPass + 1) & 0xDF | v3;
 }
 
-- (void)setHasStageStatus:(BOOL)a3
+- (void)setHasStageStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }
@@ -766,9 +766,9 @@ LABEL_17:
   *(&self->_didTriggerFirstPass + 1) = *(&self->_didTriggerFirstPass + 1) & 0xEF | v3;
 }
 
-- (void)setHasIsMaxNumContinuousZerosOverThreshold:(BOOL)a3
+- (void)setHasIsMaxNumContinuousZerosOverThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 8;
   }
@@ -781,9 +781,9 @@ LABEL_17:
   *(&self->_didTriggerFirstPass + 1) = *(&self->_didTriggerFirstPass + 1) & 0xF7 | v3;
 }
 
-- (void)setHasMaxNumAllowedContinuousZeros:(BOOL)a3
+- (void)setHasMaxNumAllowedContinuousZeros:(BOOL)zeros
 {
-  if (a3)
+  if (zeros)
   {
     v3 = 4;
   }
@@ -796,9 +796,9 @@ LABEL_17:
   *(&self->_didTriggerFirstPass + 1) = *(&self->_didTriggerFirstPass + 1) & 0xFB | v3;
 }
 
-- (void)setHasMaxNumContinuousZeros:(BOOL)a3
+- (void)setHasMaxNumContinuousZeros:(BOOL)zeros
 {
-  if (a3)
+  if (zeros)
   {
     v3 = 2;
   }

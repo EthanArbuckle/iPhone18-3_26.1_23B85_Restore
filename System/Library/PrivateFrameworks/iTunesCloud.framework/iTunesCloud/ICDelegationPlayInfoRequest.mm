@@ -3,29 +3,29 @@
 - (NSMutableDictionary)propertyListRepresentation;
 - (NSString)playerDeviceGUID;
 - (NSString)playerUserAgent;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ICDelegationPlayInfoRequest
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   if (v5)
   {
-    v6 = [(NSData *)self->_playerAnisetteMID copyWithZone:a3];
+    v6 = [(NSData *)self->_playerAnisetteMID copyWithZone:zone];
     v7 = v5[3];
     v5[3] = v6;
 
-    v8 = [(NSString *)self->_playerDeviceGUID copyWithZone:a3];
+    v8 = [(NSString *)self->_playerDeviceGUID copyWithZone:zone];
     v9 = v5[1];
     v5[1] = v8;
 
-    v10 = [(NSString *)self->_playerUserAgent copyWithZone:a3];
+    v10 = [(NSString *)self->_playerUserAgent copyWithZone:zone];
     v11 = v5[4];
     v5[4] = v10;
 
-    v12 = [(NSArray *)self->_tokenRequests copyWithZone:a3];
+    v12 = [(NSArray *)self->_tokenRequests copyWithZone:zone];
     v13 = v5[2];
     v5[2] = v12;
   }
@@ -36,21 +36,21 @@
 - (NSMutableDictionary)propertyListRepresentation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSData *)self->_playerAnisetteMID length])
   {
     v4 = [(NSData *)self->_playerAnisetteMID base64EncodedStringWithOptions:0];
-    [v3 setObject:v4 forKey:@"player-mid"];
+    [dictionary setObject:v4 forKey:@"player-mid"];
   }
 
   if ([(NSString *)self->_playerDeviceGUID length])
   {
-    [v3 setObject:self->_playerDeviceGUID forKey:@"player-guid"];
+    [dictionary setObject:self->_playerDeviceGUID forKey:@"player-guid"];
   }
 
   if ([(NSString *)self->_playerUserAgent length])
   {
-    [v3 setObject:self->_playerUserAgent forKey:@"player-user-agent"];
+    [dictionary setObject:self->_playerUserAgent forKey:@"player-user-agent"];
   }
 
   if (self->_tokenRequests)
@@ -75,8 +75,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) propertyListRepresentation];
-          [v5 addObject:v11];
+          propertyListRepresentation = [*(*(&v13 + 1) + 8 * i) propertyListRepresentation];
+          [v5 addObject:propertyListRepresentation];
         }
 
         v8 = [(NSArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -85,10 +85,10 @@
       while (v8);
     }
 
-    [v3 setObject:v5 forKey:@"enqueuers"];
+    [dictionary setObject:v5 forKey:@"enqueuers"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (NSString)playerUserAgent

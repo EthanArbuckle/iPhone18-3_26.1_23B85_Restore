@@ -1,7 +1,7 @@
 @interface PXGHostedContentTextureProvider
 - (PXGHostedContentTextureProvider)init;
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7;
-- (void)cancelTextureRequests:(id)a3;
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout;
+- (void)cancelTextureRequests:(id)requests;
 @end
 
 @implementation PXGHostedContentTextureProvider
@@ -15,11 +15,11 @@
   return [(PXGTextureProvider *)&v5 init];
 }
 
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout
 {
-  v12 = a7;
-  v13 = self;
-  v14 = sub_1A40370E4(*&a3, a4, a5, a6, v12);
+  layoutCopy = layout;
+  selfCopy = self;
+  v14 = sub_1A40370E4(*&range, geometries, styles, infos, layoutCopy);
   v16 = v15;
 
   v17 = v14;
@@ -29,14 +29,14 @@
   return result;
 }
 
-- (void)cancelTextureRequests:(id)a3
+- (void)cancelTextureRequests:(id)requests
 {
   v4 = sub_1A52414C4();
   v5 = *(v4 - 8);
   MEMORY[0x1EEE9AC00](v4);
   v7 = &v9 - ((v6 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1A5241444();
-  v8 = self;
+  selfCopy = self;
   sub_1A4037854(v7);
 
   (*(v5 + 8))(v7, v4);

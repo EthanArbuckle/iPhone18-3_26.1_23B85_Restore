@@ -1,50 +1,50 @@
 @interface LACPSAuthorizerComposite
-- (LACPSAuthorizerComposite)initWithAuthorizers:(id)a3;
-- (void)_performAuthorizationWithAuthorizers:(id)a3 handler:(id)a4;
-- (void)authorizeWithCompletion:(id)a3;
+- (LACPSAuthorizerComposite)initWithAuthorizers:(id)authorizers;
+- (void)_performAuthorizationWithAuthorizers:(id)authorizers handler:(id)handler;
+- (void)authorizeWithCompletion:(id)completion;
 @end
 
 @implementation LACPSAuthorizerComposite
 
-- (LACPSAuthorizerComposite)initWithAuthorizers:(id)a3
+- (LACPSAuthorizerComposite)initWithAuthorizers:(id)authorizers
 {
-  v5 = a3;
+  authorizersCopy = authorizers;
   v9.receiver = self;
   v9.super_class = LACPSAuthorizerComposite;
   v6 = [(LACPSAuthorizerComposite *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_authorizers, a3);
+    objc_storeStrong(&v6->_authorizers, authorizers);
   }
 
   return v7;
 }
 
-- (void)authorizeWithCompletion:(id)a3
+- (void)authorizeWithCompletion:(id)completion
 {
   authorizers = self->_authorizers;
-  v5 = a3;
+  completionCopy = completion;
   v6 = [(NSArray *)authorizers mutableCopy];
-  [(LACPSAuthorizerComposite *)self _performAuthorizationWithAuthorizers:v6 handler:v5];
+  [(LACPSAuthorizerComposite *)self _performAuthorizationWithAuthorizers:v6 handler:completionCopy];
 }
 
-- (void)_performAuthorizationWithAuthorizers:(id)a3 handler:(id)a4
+- (void)_performAuthorizationWithAuthorizers:(id)authorizers handler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 count])
+  authorizersCopy = authorizers;
+  handlerCopy = handler;
+  if ([authorizersCopy count])
   {
     objc_initWeak(&location, self);
-    v8 = [v6 firstObject];
+    firstObject = [authorizersCopy firstObject];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __73__LACPSAuthorizerComposite__performAuthorizationWithAuthorizers_handler___block_invoke;
     v9[3] = &unk_1E7A95648;
     objc_copyWeak(&v12, &location);
-    v11 = v7;
-    v10 = v6;
-    [v8 authorizeWithCompletion:v9];
+    v11 = handlerCopy;
+    v10 = authorizersCopy;
+    [firstObject authorizeWithCompletion:v9];
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
@@ -52,7 +52,7 @@
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 

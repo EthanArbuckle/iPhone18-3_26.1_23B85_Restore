@@ -1,25 +1,25 @@
 @interface WFNetworkListRandomMACManager
-- (BOOL)isSSIDinCache:(id)a3;
-- (BOOL)shouldEnableRandomMACForSSID:(id)a3;
-- (WFNetworkListRandomMACManager)initWithClient:(id)a3;
-- (id)cachedRandomMACForSSID:(id)a3;
-- (id)newScanRecordWithRandomMACFromScanRecord:(id)a3;
-- (void)resetCacheWithCurrentNetworkName:(id)a3;
-- (void)setRandomMAC:(id)a3 forNetwork:(id)a4 mode:(unint64_t)a5;
+- (BOOL)isSSIDinCache:(id)cache;
+- (BOOL)shouldEnableRandomMACForSSID:(id)d;
+- (WFNetworkListRandomMACManager)initWithClient:(id)client;
+- (id)cachedRandomMACForSSID:(id)d;
+- (id)newScanRecordWithRandomMACFromScanRecord:(id)record;
+- (void)resetCacheWithCurrentNetworkName:(id)name;
+- (void)setRandomMAC:(id)c forNetwork:(id)network mode:(unint64_t)mode;
 @end
 
 @implementation WFNetworkListRandomMACManager
 
-- (WFNetworkListRandomMACManager)initWithClient:(id)a3
+- (WFNetworkListRandomMACManager)initWithClient:(id)client
 {
-  v4 = a3;
+  clientCopy = client;
   v9.receiver = self;
   v9.super_class = WFNetworkListRandomMACManager;
   v5 = [(WFNetworkListRandomMACManager *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    [(WFNetworkListRandomMACManager *)v5 setClient:v4];
+    [(WFNetworkListRandomMACManager *)v5 setClient:clientCopy];
     v7 = objc_alloc_init(MEMORY[0x277CBEB38]);
     [(WFNetworkListRandomMACManager *)v6 setCache:v7];
 
@@ -29,10 +29,10 @@
   return v6;
 }
 
-- (void)resetCacheWithCurrentNetworkName:(id)a3
+- (void)resetCacheWithCurrentNetworkName:(id)name
 {
   *&v17[13] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  nameCopy = name;
   v5 = WFLogForCategory(8uLL);
   v6 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v5 && os_log_type_enabled(v5, v6))
@@ -43,17 +43,17 @@
     v16 = 1024;
     *v17 = shouldResetCache;
     v17[2] = 2112;
-    *&v17[3] = v4;
+    *&v17[3] = nameCopy;
     _os_log_impl(&dword_273ECD000, v5, v6, "%s: shouldResetCache=%d currentNetworkName=%@", &v14, 0x1Cu);
   }
 
   if (self->_shouldResetCache)
   {
-    if (v4)
+    if (nameCopy)
     {
-      v8 = [(NSMutableDictionary *)self->_cache objectForKey:v4];
-      v9 = [(WFNetworkListRandomMACManager *)self cache];
-      [v9 removeAllObjects];
+      v8 = [(NSMutableDictionary *)self->_cache objectForKey:nameCopy];
+      cache = [(WFNetworkListRandomMACManager *)self cache];
+      [cache removeAllObjects];
 
       if (v8)
       {
@@ -64,12 +64,12 @@
           v14 = 136315394;
           v15 = "[WFNetworkListRandomMACManager resetCacheWithCurrentNetworkName:]";
           v16 = 2112;
-          *v17 = v4;
+          *v17 = nameCopy;
           _os_log_impl(&dword_273ECD000, v10, v11, "%s: leaving current network='%@' in cache", &v14, 0x16u);
         }
 
-        v12 = [(WFNetworkListRandomMACManager *)self cache];
-        [v12 setObject:v8 forKey:v4];
+        cache2 = [(WFNetworkListRandomMACManager *)self cache];
+        [cache2 setObject:v8 forKey:nameCopy];
       }
 
       self->_shouldResetCache = 0;
@@ -84,17 +84,17 @@
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)newScanRecordWithRandomMACFromScanRecord:(id)a3
+- (id)newScanRecordWithRandomMACFromScanRecord:(id)record
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 attributes];
-  v6 = [v5 mutableCopy];
+  recordCopy = record;
+  attributes = [recordCopy attributes];
+  v6 = [attributes mutableCopy];
 
-  v7 = [v4 privateAddressMode];
+  privateAddressMode = [recordCopy privateAddressMode];
   cache = self->_cache;
-  v9 = [v4 ssid];
-  v10 = [(NSMutableDictionary *)cache objectForKey:v9];
+  ssid = [recordCopy ssid];
+  v10 = [(NSMutableDictionary *)cache objectForKey:ssid];
 
   if (v10)
   {
@@ -108,29 +108,29 @@
         v14 = v12;
         if (os_log_type_enabled(v14, v13))
         {
-          v15 = [v4 ssid];
+          ssid2 = [recordCopy ssid];
           v36 = 136315394;
           v37 = "[WFNetworkListRandomMACManager newScanRecordWithRandomMACFromScanRecord:]";
           v38 = 2112;
-          v39 = v15;
+          v39 = ssid2;
           _os_log_impl(&dword_273ECD000, v14, v13, "%s: private address not in cache for '%@'", &v36, 0x16u);
         }
       }
 
-      v16 = [(WFNetworkListRandomMACManager *)self client];
-      v17 = [v4 ssid];
-      v11 = [v16 newRandomMACAddressForSSID:v17];
+      client = [(WFNetworkListRandomMACManager *)self client];
+      ssid3 = [recordCopy ssid];
+      v11 = [client newRandomMACAddressForSSID:ssid3];
     }
 
-    v18 = [v10 objectForKey:@"kWFNetworkListRandomMACCacheStatusKey"];
-    v7 = [v18 intValue];
+    client2 = [v10 objectForKey:@"kWFNetworkListRandomMACCacheStatusKey"];
+    privateAddressMode = [client2 intValue];
   }
 
   else
   {
-    v18 = [(WFNetworkListRandomMACManager *)self client];
-    v19 = [v4 ssid];
-    v11 = [v18 newRandomMACAddressForSSID:v19];
+    client2 = [(WFNetworkListRandomMACManager *)self client];
+    ssid4 = [recordCopy ssid];
+    v11 = [client2 newRandomMACAddressForSSID:ssid4];
   }
 
   v20 = WFLogForCategory(8uLL);
@@ -140,15 +140,15 @@
     v22 = v20;
     if (os_log_type_enabled(v22, v21))
     {
-      v23 = [v4 ssid];
+      ssid5 = [recordCopy ssid];
       v36 = 136315906;
       v37 = "[WFNetworkListRandomMACManager newScanRecordWithRandomMACFromScanRecord:]";
       v38 = 2112;
       v39 = v11;
       v40 = 2112;
-      v41 = v23;
+      v41 = ssid5;
       v42 = 2048;
-      v43 = v7;
+      v43 = privateAddressMode;
       _os_log_impl(&dword_273ECD000, v22, v21, "%s: private address='%@' for '%@' (mode=%lu)", &v36, 0x2Au);
     }
   }
@@ -166,19 +166,19 @@
         v28 = v27;
         [v26 setObject:v27 forKey:@"PRIVATE_MAC_ADDRESS_VALUE"];
 
-        v29 = [MEMORY[0x277CCABB0] numberWithInt:v7];
+        v29 = [MEMORY[0x277CCABB0] numberWithInt:privateAddressMode];
         [v26 setObject:v29 forKey:@"PRIVATE_MAC_ADDRESS_TYPE"];
 
         [v6 setObject:v26 forKey:@"PRIVATE_MAC_ADDRESS"];
       }
     }
 
-    v30 = [v4 ssid];
+    ssid6 = [recordCopy ssid];
 
-    if (v30)
+    if (ssid6)
     {
-      v31 = [v4 ssid];
-      [(WFNetworkListRandomMACManager *)self setRandomMAC:v11 forNetwork:v31 mode:v7];
+      ssid7 = [recordCopy ssid];
+      [(WFNetworkListRandomMACManager *)self setRandomMAC:v11 forNetwork:ssid7 mode:privateAddressMode];
     }
   }
 
@@ -190,24 +190,24 @@
   return v33;
 }
 
-- (void)setRandomMAC:(id)a3 forNetwork:(id)a4 mode:(unint64_t)a5
+- (void)setRandomMAC:(id)c forNetwork:(id)network mode:(unint64_t)mode
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (v8)
+  cCopy = c;
+  networkCopy = network;
+  if (cCopy)
   {
-    v10 = [(NSMutableDictionary *)self->_cache objectForKey:v9];
+    v10 = [(NSMutableDictionary *)self->_cache objectForKey:networkCopy];
     if (!v10)
     {
       v10 = objc_alloc_init(MEMORY[0x277CBEB38]);
     }
 
-    [v10 setObject:v8 forKey:@"kWFNetworkListRandomMACCacheAddressKey"];
-    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a5];
+    [v10 setObject:cCopy forKey:@"kWFNetworkListRandomMACCacheAddressKey"];
+    v11 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:mode];
     [v10 setObject:v11 forKey:@"kWFNetworkListRandomMACCacheStatusKey"];
 
-    [(NSMutableDictionary *)self->_cache setObject:v10 forKey:v9];
+    [(NSMutableDictionary *)self->_cache setObject:v10 forKey:networkCopy];
     v12 = WFLogForCategory(8uLL);
     v13 = OSLogForWFLogLevel(1uLL);
     if (WFCurrentLogLevel() && v12 && os_log_type_enabled(v12, v13))
@@ -215,11 +215,11 @@
       v16 = 136315906;
       v17 = "[WFNetworkListRandomMACManager setRandomMAC:forNetwork:mode:]";
       v18 = 2112;
-      v19 = v8;
+      v19 = cCopy;
       v20 = 2112;
-      v21 = v9;
+      modeCopy2 = networkCopy;
       v22 = 2048;
-      v23 = a5;
+      modeCopy = mode;
       _os_log_impl(&dword_273ECD000, v12, v13, "%s: caching private address='%@' for '%@' (mode=%lu)", &v16, 0x2Au);
     }
   }
@@ -233,9 +233,9 @@
       v16 = 136315650;
       v17 = "[WFNetworkListRandomMACManager setRandomMAC:forNetwork:mode:]";
       v18 = 2112;
-      v19 = v9;
+      v19 = networkCopy;
       v20 = 2048;
-      v21 = a5;
+      modeCopy2 = mode;
       _os_log_impl(&dword_273ECD000, v10, v15, "%s: unable to cache nil private address for '%@' (mode=%lu)", &v16, 0x20u);
     }
   }
@@ -243,11 +243,11 @@
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isSSIDinCache:(id)a3
+- (BOOL)isSSIDinCache:(id)cache
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_cache objectForKey:v4];
+  cacheCopy = cache;
+  v5 = [(NSMutableDictionary *)self->_cache objectForKey:cacheCopy];
   v6 = WFLogForCategory(8uLL);
   v7 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v6 && os_log_type_enabled(v6, v7))
@@ -257,7 +257,7 @@
     v12 = 1024;
     v13 = v5 != 0;
     v14 = 2112;
-    v15 = v4;
+    v15 = cacheCopy;
     _os_log_impl(&dword_273ECD000, v6, v7, "%s: cached=%d private address for '%@'", &v10, 0x1Cu);
   }
 
@@ -265,16 +265,16 @@
   return v5 != 0;
 }
 
-- (BOOL)shouldEnableRandomMACForSSID:(id)a3
+- (BOOL)shouldEnableRandomMACForSSID:(id)d
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_cache objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_cache objectForKey:dCopy];
   v6 = v5;
   if (v5)
   {
     v7 = [v5 objectForKey:@"kWFNetworkListRandomMACCacheStatusKey"];
-    v8 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
 
     v9 = WFLogForCategory(8uLL);
     v10 = OSLogForWFLogLevel(4uLL);
@@ -283,9 +283,9 @@
       v18 = 136315650;
       v19 = "[WFNetworkListRandomMACManager shouldEnableRandomMACForSSID:]";
       v20 = 2112;
-      v21 = v4;
+      v21 = dCopy;
       v22 = 1024;
-      v23 = v8;
+      v23 = bOOLValue;
       v11 = "%s: cached value for '%@' enabled=%d";
       v12 = v9;
       v13 = v10;
@@ -299,13 +299,13 @@ LABEL_10:
   {
     v9 = WFLogForCategory(8uLL);
     v15 = OSLogForWFLogLevel(4uLL);
-    LOBYTE(v8) = 1;
+    LOBYTE(bOOLValue) = 1;
     if (WFCurrentLogLevel() >= 4 && v9 && os_log_type_enabled(v9, v15))
     {
       v18 = 136315394;
       v19 = "[WFNetworkListRandomMACManager shouldEnableRandomMACForSSID:]";
       v20 = 2112;
-      v21 = v4;
+      v21 = dCopy;
       v11 = "%s: no cached value for '%@'";
       v12 = v9;
       v13 = v15;
@@ -315,14 +315,14 @@ LABEL_10:
   }
 
   v16 = *MEMORY[0x277D85DE8];
-  return v8;
+  return bOOLValue;
 }
 
-- (id)cachedRandomMACForSSID:(id)a3
+- (id)cachedRandomMACForSSID:(id)d
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_cache objectForKey:v4];
+  dCopy = d;
+  v5 = [(NSMutableDictionary *)self->_cache objectForKey:dCopy];
   v6 = v5;
   if (v5)
   {
@@ -343,7 +343,7 @@ LABEL_10:
         v14 = 136315650;
         v15 = "[WFNetworkListRandomMACManager cachedRandomMACForSSID:]";
         v16 = 2112;
-        v17 = v4;
+        v17 = dCopy;
         v18 = 2048;
         v19 = v10;
         _os_log_impl(&dword_273ECD000, v8, v9, "%s: no private address found for '%@' (cached=%lu)", &v14, 0x20u);
@@ -360,7 +360,7 @@ LABEL_10:
       v14 = 136315394;
       v15 = "[WFNetworkListRandomMACManager cachedRandomMACForSSID:]";
       v16 = 2112;
-      v17 = v4;
+      v17 = dCopy;
       _os_log_impl(&dword_273ECD000, v8, v11, "%s: '%@' does not exist in cache", &v14, 0x16u);
     }
   }

@@ -1,6 +1,6 @@
 @interface IMAudioController
-+ (id)audioControllerWithContentsOfURLs:(id)a3;
-- (IMAudioController)initWithContentsOfURLs:(id)a3;
++ (id)audioControllerWithContentsOfURLs:(id)ls;
+- (IMAudioController)initWithContentsOfURLs:(id)ls;
 - (IMAudioControllerDelegate)delegate;
 - (NSArray)audioURLs;
 - (double)currentMediaObjectDuration;
@@ -8,16 +8,16 @@
 - (float)volume;
 - (id)currentMediaObject;
 - (unint64_t)audioSessionControllerOptions;
-- (void)_playSoundWithURL:(id)a3 completion:(id)a4;
-- (void)audioPlayerCurrentTimeDidChange:(id)a3;
-- (void)audioPlayerDidFinishPlaying:(id)a3;
+- (void)_playSoundWithURL:(id)l completion:(id)completion;
+- (void)audioPlayerCurrentTimeDidChange:(id)change;
+- (void)audioPlayerDidFinishPlaying:(id)playing;
 - (void)dealloc;
 - (void)pause;
-- (void)playAfterDelay:(double)a3;
-- (void)playListenEndSound:(id)a3;
-- (void)playListenSound:(id)a3;
+- (void)playAfterDelay:(double)delay;
+- (void)playListenEndSound:(id)sound;
+- (void)playListenSound:(id)sound;
 - (void)prepareToPlay;
-- (void)setVolume:(float)a3;
+- (void)setVolume:(float)volume;
 - (void)stop;
 @end
 
@@ -32,15 +32,15 @@
   [(IMAudioController *)&v5 dealloc];
 }
 
-- (IMAudioController)initWithContentsOfURLs:(id)a3
+- (IMAudioController)initWithContentsOfURLs:(id)ls
 {
-  v4 = a3;
+  lsCopy = ls;
   v11.receiver = self;
   v11.super_class = IMAudioController;
   v7 = [(IMAudioController *)&v11 init];
   if (v7)
   {
-    v8 = objc_msgSend_mutableCopy(v4, v5, v6);
+    v8 = objc_msgSend_mutableCopy(lsCopy, v5, v6);
     audioURLs = v7->_audioURLs;
     v7->_audioURLs = v8;
 
@@ -51,11 +51,11 @@
   return v7;
 }
 
-+ (id)audioControllerWithContentsOfURLs:(id)a3
++ (id)audioControllerWithContentsOfURLs:(id)ls
 {
-  v4 = a3;
-  v7 = objc_alloc(objc_msgSend_audioControllerClass(a1, v5, v6));
-  v9 = objc_msgSend_initWithContentsOfURLs_(v7, v8, v4);
+  lsCopy = ls;
+  v7 = objc_alloc(objc_msgSend_audioControllerClass(self, v5, v6));
+  v9 = objc_msgSend_initWithContentsOfURLs_(v7, v8, lsCopy);
 
   return v9;
 }
@@ -86,7 +86,7 @@
   }
 }
 
-- (void)playAfterDelay:(double)a3
+- (void)playAfterDelay:(double)delay
 {
   v63 = *MEMORY[0x277D85DE8];
   v5 = self->_audioURLs;
@@ -116,10 +116,10 @@
       v54[3] = &unk_279789090;
       v14 = v14;
       v55 = v14;
-      v58[1] = *&a3;
+      v58[1] = *&delay;
       objc_copyWeak(&v57, &buf);
       objc_copyWeak(v58, &location);
-      v56 = self;
+      selfCopy = self;
       objc_msgSend_activateWithOptions_completion_(v19, v23, v22, v54);
 
       objc_destroyWeak(v58);
@@ -159,10 +159,10 @@
       v49[3] = &unk_279789090;
       v14 = v31;
       v50 = v14;
-      v53[1] = *&a3;
+      v53[1] = *&delay;
       objc_copyWeak(&v52, &buf);
       objc_copyWeak(v53, &location);
-      v51 = self;
+      selfCopy2 = self;
       objc_msgSend_activateWithOptions_completion_(v36, v40, v39, v49);
 
       v43 = objc_msgSend_delegate(self, v41, v42);
@@ -240,7 +240,7 @@ LABEL_6:
     v25[3] = &unk_2797890B8;
     v21 = v17;
     v26 = v21;
-    v27 = self;
+    selfCopy = self;
     v22 = v16;
     v28 = v22;
     v29 = &v30;
@@ -329,10 +329,10 @@ LABEL_8:
   return v7;
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v8 = objc_msgSend_audioPlayer(self, a2, v3);
-  *&v5 = a3;
+  *&v5 = volume;
   objc_msgSend_setVolume_(v8, v6, v7, v5);
 }
 
@@ -345,23 +345,23 @@ LABEL_8:
   return v7;
 }
 
-- (void)audioPlayerCurrentTimeDidChange:(id)a3
+- (void)audioPlayerCurrentTimeDidChange:(id)change
 {
-  v18 = a3;
+  changeCopy = change;
   v6 = objc_msgSend_delegate(self, v4, v5);
   if (objc_opt_respondsToSelector())
   {
     v9 = objc_msgSend_currentMediaObject(self, v7, v8);
-    objc_msgSend_currentTime(v18, v10, v11);
+    objc_msgSend_currentTime(changeCopy, v10, v11);
     v13 = v12;
-    objc_msgSend_duration(v18, v14, v15);
+    objc_msgSend_duration(changeCopy, v14, v15);
     objc_msgSend_audioController_didChangeProgressForContentAtURL_currentTime_duration_(v6, v16, self, v9, v13, v17);
   }
 }
 
-- (void)audioPlayerDidFinishPlaying:(id)a3
+- (void)audioPlayerDidFinishPlaying:(id)playing
 {
-  v4 = a3;
+  playingCopy = playing;
   v7 = objc_msgSend_delegate(self, v5, v6);
   if (objc_opt_respondsToSelector())
   {
@@ -369,7 +369,7 @@ LABEL_8:
     objc_msgSend_audioController_didFinishPlayingContentAtURL_(v7, v11, self, v10);
   }
 
-  objc_msgSend_setDelegate_(v4, v8, 0);
+  objc_msgSend_setDelegate_(playingCopy, v8, 0);
   objc_msgSend_setAudioPlayer_(self, v12, 0);
   v13 = self->_currentIndex + 1;
   if (v13 >= objc_msgSend_count(self->_audioURLs, v14, v15))
@@ -397,11 +397,11 @@ LABEL_8:
   }
 }
 
-- (void)_playSoundWithURL:(id)a3 completion:(id)a4
+- (void)_playSoundWithURL:(id)l completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v9 = objc_msgSend_audioPlayerWithContentsOfURL_(IMAudioPlayer, v8, v6);
+  lCopy = l;
+  completionCopy = completion;
+  v9 = objc_msgSend_audioPlayerWithContentsOfURL_(IMAudioPlayer, v8, lCopy);
   objc_msgSend_setListenAudioPlayer_(self, v10, v9);
   objc_initWeak(&location, self);
   v13[0] = MEMORY[0x277D85DD0];
@@ -409,7 +409,7 @@ LABEL_8:
   v13[2] = sub_2547FF410;
   v13[3] = &unk_279789108;
   objc_copyWeak(&v15, &location);
-  v11 = v7;
+  v11 = completionCopy;
   v14 = v11;
   objc_msgSend_playAfterDelay_completion_(v9, v12, v13, 0.0);
 
@@ -417,18 +417,18 @@ LABEL_8:
   objc_destroyWeak(&location);
 }
 
-- (void)playListenSound:(id)a3
+- (void)playListenSound:(id)sound
 {
-  v4 = a3;
+  soundCopy = sound;
   v6 = IMURLForResourceFromSharedUIBundle(@"MessageListen", @"caf");
-  objc_msgSend__playSoundWithURL_completion_(self, v5, v6, v4);
+  objc_msgSend__playSoundWithURL_completion_(self, v5, v6, soundCopy);
 }
 
-- (void)playListenEndSound:(id)a3
+- (void)playListenEndSound:(id)sound
 {
-  v4 = a3;
+  soundCopy = sound;
   v6 = IMURLForResourceFromSharedUIBundle(@"MessageListenEnd", @"caf");
-  objc_msgSend__playSoundWithURL_completion_(self, v5, v6, v4);
+  objc_msgSend__playSoundWithURL_completion_(self, v5, v6, soundCopy);
 }
 
 - (IMAudioControllerDelegate)delegate

@@ -1,8 +1,8 @@
 @interface HFItemGroupItem
 - (HFItemGroupItem)init;
-- (HFItemGroupItem)initWithItems:(id)a3;
-- (id)_subclass_updateWithOptions:(id)a3;
-- (void)setItems:(id)a3;
+- (HFItemGroupItem)initWithItems:(id)items;
+- (id)_subclass_updateWithOptions:(id)options;
+- (void)setItems:(id)items;
 @end
 
 @implementation HFItemGroupItem
@@ -22,47 +22,47 @@
   return v2;
 }
 
-- (HFItemGroupItem)initWithItems:(id)a3
+- (HFItemGroupItem)initWithItems:(id)items
 {
-  v5 = a3;
+  itemsCopy = items;
   v6 = [(HFItemGroupItem *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_items, a3);
+    objc_storeStrong(&v6->_items, items);
   }
 
   return v7;
 }
 
-- (void)setItems:(id)a3
+- (void)setItems:(id)items
 {
-  v5 = a3;
-  if (self->_items != v5)
+  itemsCopy = items;
+  if (self->_items != itemsCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_items, a3);
-    v5 = v6;
+    v6 = itemsCopy;
+    objc_storeStrong(&self->_items, items);
+    itemsCopy = v6;
   }
 }
 
-- (id)_subclass_updateWithOptions:(id)a3
+- (id)_subclass_updateWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v6 = [(HFItemGroupItem *)self items];
+  items = [(HFItemGroupItem *)self items];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __47__HFItemGroupItem__subclass_updateWithOptions___block_invoke;
   v20[3] = &unk_277E027D0;
-  v21 = v4;
-  v7 = v4;
-  v8 = [v6 na_map:v20];
+  v21 = optionsCopy;
+  v7 = optionsCopy;
+  v8 = [items na_map:v20];
 
   v9 = MEMORY[0x277D2C900];
-  v10 = [v8 allObjects];
-  v11 = [MEMORY[0x277D2C938] mainThreadScheduler];
-  v12 = [v9 combineAllFutures:v10 ignoringErrors:1 scheduler:v11];
+  allObjects = [v8 allObjects];
+  mainThreadScheduler = [MEMORY[0x277D2C938] mainThreadScheduler];
+  v12 = [v9 combineAllFutures:allObjects ignoringErrors:1 scheduler:mainThreadScheduler];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;

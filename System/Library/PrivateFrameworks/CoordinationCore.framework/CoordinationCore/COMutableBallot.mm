@@ -1,71 +1,71 @@
 @interface COMutableBallot
-- (BOOL)addDiscoveryRecord:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)addCandidate:(id)a3;
+- (BOOL)addDiscoveryRecord:(id)record;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)addCandidate:(id)candidate;
 - (void)clearInsignificantCandidates;
-- (void)mergeBallot:(id)a3;
-- (void)removeCandidate:(id)a3;
+- (void)mergeBallot:(id)ballot;
+- (void)removeCandidate:(id)candidate;
 @end
 
 @implementation COMutableBallot
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [COBallot alloc];
 
   return [(COBallot *)v4 initWithBallot:self];
 }
 
-- (void)addCandidate:(id)a3
+- (void)addCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [(COBallot *)self candidates];
-  v6 = [v5 mutableCopy];
+  candidateCopy = candidate;
+  candidates = [(COBallot *)self candidates];
+  v6 = [candidates mutableCopy];
 
-  [v6 addObject:v4];
+  [v6 addObject:candidateCopy];
   [v6 sortUsingComparator:&__block_literal_global_12];
   [(COBallot *)self setCandidates:v6];
 }
 
-- (void)removeCandidate:(id)a3
+- (void)removeCandidate:(id)candidate
 {
-  v4 = a3;
-  v5 = [(COBallot *)self candidates];
-  v8 = [v5 mutableCopy];
+  candidateCopy = candidate;
+  candidates = [(COBallot *)self candidates];
+  v8 = [candidates mutableCopy];
 
-  [v8 removeObject:v4];
+  [v8 removeObject:candidateCopy];
   [(COBallot *)self setCandidates:v8];
-  v6 = [(COBallot *)self discovery];
-  v7 = [v6 mutableCopy];
+  discovery = [(COBallot *)self discovery];
+  v7 = [discovery mutableCopy];
 
-  [v7 removeObjectForKey:v4];
+  [v7 removeObjectForKey:candidateCopy];
   [(COBallot *)self setDiscovery:v7];
 }
 
-- (void)mergeBallot:(id)a3
+- (void)mergeBallot:(id)ballot
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(COBallot *)self candidates];
-  v6 = [v5 mutableCopy];
+  ballotCopy = ballot;
+  candidates = [(COBallot *)self candidates];
+  v6 = [candidates mutableCopy];
 
-  v7 = [v4 candidates];
-  [v6 unionOrderedSet:v7];
+  candidates2 = [ballotCopy candidates];
+  [v6 unionOrderedSet:candidates2];
 
   [v6 sortUsingComparator:&__block_literal_global_59];
   v22 = v6;
   [(COBallot *)self setCandidates:v6];
-  v24 = self;
-  v8 = [(COBallot *)self discovery];
-  v9 = [v8 mutableCopy];
+  selfCopy = self;
+  discovery = [(COBallot *)self discovery];
+  v9 = [discovery mutableCopy];
 
-  v23 = v4;
-  v10 = [v4 discovery];
+  v23 = ballotCopy;
+  discovery2 = [ballotCopy discovery];
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
-  v11 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+  v11 = [discovery2 countByEnumeratingWithState:&v25 objects:v29 count:16];
   if (v11)
   {
     v12 = v11;
@@ -76,13 +76,13 @@
       {
         if (*v26 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(discovery2);
         }
 
         v15 = *(*(&v25 + 1) + 8 * i);
-        v16 = [v10 objectForKey:v15];
-        v17 = [(COBallot *)v24 discovery];
-        v18 = [v17 objectForKey:v15];
+        v16 = [discovery2 objectForKey:v15];
+        discovery3 = [(COBallot *)selfCopy discovery];
+        v18 = [discovery3 objectForKey:v15];
 
         if (v18)
         {
@@ -99,40 +99,40 @@
         [v9 setObject:v20 forKey:v15];
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v25 objects:v29 count:16];
+      v12 = [discovery2 countByEnumeratingWithState:&v25 objects:v29 count:16];
     }
 
     while (v12);
   }
 
-  [(COBallot *)v24 setDiscovery:v9];
+  [(COBallot *)selfCopy setDiscovery:v9];
 
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)addDiscoveryRecord:(id)a3
+- (BOOL)addDiscoveryRecord:(id)record
 {
-  v4 = a3;
-  v5 = [(CODiscoveryRecord *)v4 constituent];
-  v6 = [(COBallot *)self discovery];
-  v7 = [v6 mutableCopy];
+  recordCopy = record;
+  constituent = [(CODiscoveryRecord *)recordCopy constituent];
+  discovery = [(COBallot *)self discovery];
+  v7 = [discovery mutableCopy];
 
-  v8 = [v7 objectForKey:v5];
+  v8 = [v7 objectForKey:constituent];
   v9 = v8;
   if (!v8)
   {
     goto LABEL_5;
   }
 
-  if (([v8 isEqualToDiscoveryRecord:v4] & 1) == 0)
+  if (([v8 isEqualToDiscoveryRecord:recordCopy] & 1) == 0)
   {
     v11 = [v9 mutableCopy];
-    [v11 addDestinationsFromDiscoveryRecord:v4];
+    [v11 addDestinationsFromDiscoveryRecord:recordCopy];
     v12 = [[CODiscoveryRecord alloc] initWithDiscoveryRecord:v11];
 
-    v4 = v12;
+    recordCopy = v12;
 LABEL_5:
-    [v7 setObject:v4 forKey:v5];
+    [v7 setObject:recordCopy forKey:constituent];
     [(COBallot *)self setDiscovery:v7];
     v10 = 1;
     goto LABEL_6;
@@ -146,16 +146,16 @@ LABEL_6:
 
 - (void)clearInsignificantCandidates
 {
-  v3 = [(COBallot *)self candidates];
-  v6 = [v3 firstObject];
+  candidates = [(COBallot *)self candidates];
+  firstObject = [candidates firstObject];
 
-  v4 = v6;
-  if (v6)
+  v4 = firstObject;
+  if (firstObject)
   {
-    v5 = [MEMORY[0x277CBEB70] orderedSetWithObject:v6];
+    v5 = [MEMORY[0x277CBEB70] orderedSetWithObject:firstObject];
     [(COBallot *)self setCandidates:v5];
 
-    v4 = v6;
+    v4 = firstObject;
   }
 }
 

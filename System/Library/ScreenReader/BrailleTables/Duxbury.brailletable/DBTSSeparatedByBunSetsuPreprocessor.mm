@@ -1,25 +1,25 @@
 @interface DBTSSeparatedByBunSetsuPreprocessor
 - (DBTSSeparatedByBunSetsuPreprocessor)init;
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 isEightDot:(BOOL)a5 textFormattingRanges:(id)a6;
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map isEightDot:(BOOL)dot textFormattingRanges:(id)ranges;
 - (void)dealloc;
 @end
 
 @implementation DBTSSeparatedByBunSetsuPreprocessor
 
-- (id)preprocessPrintString:(id)a3 withLocationMap:(id *)a4 isEightDot:(BOOL)a5 textFormattingRanges:(id)a6
+- (id)preprocessPrintString:(id)string withLocationMap:(id *)map isEightDot:(BOOL)dot textFormattingRanges:(id)ranges
 {
-  v9 = a3;
-  v10 = a6;
-  if (!v9)
+  stringCopy = string;
+  rangesCopy = ranges;
+  if (!stringCopy)
   {
     v12 = 0;
     goto LABEL_49;
   }
 
-  v61 = v10;
-  v11 = [(__CFString *)v9 length];
+  v61 = rangesCopy;
+  v11 = [(__CFString *)stringCopy length];
   v12 = +[NSMutableString string];
-  if (a4)
+  if (map)
   {
     v13 = [NSMutableData dataWithLength:0];
   }
@@ -31,9 +31,9 @@
 
   v72.location = 0;
   v72.length = v11;
-  tokenizer = CFStringTokenizerCreate(0, v9, v72, 4uLL, self->_locale);
-  v65 = v9;
-  v60 = a4;
+  tokenizer = CFStringTokenizerCreate(0, stringCopy, v72, 4uLL, self->_locale);
+  v65 = stringCopy;
+  mapCopy = map;
   if (!CFStringTokenizerAdvanceToNextToken(tokenizer))
   {
     v49 = 0;
@@ -238,14 +238,14 @@ LABEL_42:
   }
 
   CFRelease(tokenizer);
-  if (v60)
+  if (mapCopy)
   {
     v57 = v13;
-    *v60 = v13;
+    *mapCopy = v13;
   }
 
-  v9 = v65;
-  v10 = v61;
+  stringCopy = v65;
+  rangesCopy = v61;
 LABEL_49:
 
   return v12;

@@ -1,16 +1,16 @@
 @interface OFUITableViewCell
-- (OFUITableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (OFUITableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)dealloc;
 - (void)prepareForReuse;
 @end
 
 @implementation OFUITableViewCell
 
-- (OFUITableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (OFUITableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = OFUITableViewCell;
-  return [(OFUITableViewCell *)&v5 initWithStyle:a3 reuseIdentifier:a4];
+  return [(OFUITableViewCell *)&v5 initWithStyle:style reuseIdentifier:identifier];
 }
 
 - (void)dealloc

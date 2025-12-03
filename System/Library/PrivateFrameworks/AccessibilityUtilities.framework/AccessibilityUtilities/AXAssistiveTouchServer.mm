@@ -3,9 +3,9 @@
 - (BOOL)_connectIfNecessary;
 - (BOOL)home;
 - (BOOL)isMenuOpen;
-- (BOOL)setPointerPosition:(CGPoint)a3;
-- (BOOL)tapMenuItem:(id)a3;
-- (CGPoint)getMenuItemPosition:(id)a3;
+- (BOOL)setPointerPosition:(CGPoint)position;
+- (BOOL)tapMenuItem:(id)item;
+- (CGPoint)getMenuItemPosition:(id)position;
 - (CGPoint)getNubbitPosition;
 - (CGPoint)getPointerPosition;
 - (id)currentBubbleElement;
@@ -14,11 +14,11 @@
 - (void)_wasDisconnectedFromClient;
 - (void)_willClearServer;
 - (void)closeMenu;
-- (void)menuAction:(id)a3;
+- (void)menuAction:(id)action;
 - (void)openMenu;
 - (void)pointerClick;
-- (void)setNubbitPosition:(CGPoint)a3;
-- (void)virtualPointer:(BOOL)a3;
+- (void)setNubbitPosition:(CGPoint)position;
+- (void)virtualPointer:(BOOL)pointer;
 @end
 
 @implementation AXAssistiveTouchServer
@@ -83,22 +83,22 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
 
 - (BOOL)home
 {
-  v3 = [(AXAssistiveTouchServer *)self _connectIfNecessary];
-  if (v3)
+  _connectIfNecessary = [(AXAssistiveTouchServer *)self _connectIfNecessary];
+  if (_connectIfNecessary)
   {
     v4 = [AXIPCMessage alloc];
     v5 = [(AXIPCMessage *)v4 initWithKey:6002 payload:MEMORY[0x1E695E0F8]];
-    v6 = [(AXServer *)self client];
-    v7 = [v6 sendMessage:v5 withError:0];
+    client = [(AXServer *)self client];
+    v7 = [client sendMessage:v5 withError:0];
 
-    v8 = [v7 payload];
-    v9 = [v8 objectForKeyedSubscript:@"result"];
-    v10 = [v9 BOOLValue];
+    payload = [v7 payload];
+    v9 = [payload objectForKeyedSubscript:@"result"];
+    bOOLValue = [v9 BOOLValue];
 
-    LOBYTE(v3) = v10;
+    LOBYTE(_connectIfNecessary) = bOOLValue;
   }
 
-  return v3;
+  return _connectIfNecessary;
 }
 
 - (CGPoint)getNubbitPosition
@@ -109,11 +109,11 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
   {
     v5 = [AXIPCMessage alloc];
     v6 = [(AXIPCMessage *)v5 initWithKey:6023 payload:MEMORY[0x1E695E0F8]];
-    v7 = [(AXServer *)self client];
-    v8 = [v7 sendMessage:v6 withError:0];
+    client = [(AXServer *)self client];
+    v8 = [client sendMessage:v6 withError:0];
 
-    v9 = [v8 payload];
-    v10 = [v9 objectForKeyedSubscript:@"result"];
+    payload = [v8 payload];
+    v10 = [payload objectForKeyedSubscript:@"result"];
     [v10 axCGPointValue];
     v3 = v11;
     v4 = v12;
@@ -126,10 +126,10 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
   return result;
 }
 
-- (void)setNubbitPosition:(CGPoint)a3
+- (void)setNubbitPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v14[1] = *MEMORY[0x1E69E9840];
   if ([(AXAssistiveTouchServer *)self _connectIfNecessary])
   {
@@ -142,8 +142,8 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
     v9 = [(AXIPCMessage *)v6 initWithKey:6024 payload:v8];
 
-    v10 = [(AXServer *)self client];
-    v11 = [v10 sendMessage:v9 withError:0];
+    client = [(AXServer *)self client];
+    v11 = [client sendMessage:v9 withError:0];
   }
 }
 
@@ -153,8 +153,8 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
   {
     v3 = [AXIPCMessage alloc];
     v6 = [(AXIPCMessage *)v3 initWithKey:6020 payload:MEMORY[0x1E695E0F8]];
-    v4 = [(AXServer *)self client];
-    v5 = [v4 sendMessage:v6 withError:0];
+    client = [(AXServer *)self client];
+    v5 = [client sendMessage:v6 withError:0];
   }
 }
 
@@ -164,29 +164,29 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
   {
     v3 = [AXIPCMessage alloc];
     v6 = [(AXIPCMessage *)v3 initWithKey:6021 payload:MEMORY[0x1E695E0F8]];
-    v4 = [(AXServer *)self client];
-    v5 = [v4 sendMessage:v6 withError:0];
+    client = [(AXServer *)self client];
+    v5 = [client sendMessage:v6 withError:0];
   }
 }
 
 - (BOOL)isMenuOpen
 {
-  v3 = [(AXAssistiveTouchServer *)self _connectIfNecessary];
-  if (v3)
+  _connectIfNecessary = [(AXAssistiveTouchServer *)self _connectIfNecessary];
+  if (_connectIfNecessary)
   {
     v4 = [AXIPCMessage alloc];
     v5 = [(AXIPCMessage *)v4 initWithKey:6022 payload:MEMORY[0x1E695E0F8]];
-    v6 = [(AXServer *)self client];
-    v7 = [v6 sendMessage:v5 withError:0];
+    client = [(AXServer *)self client];
+    v7 = [client sendMessage:v5 withError:0];
 
-    v8 = [v7 payload];
-    v9 = [v8 objectForKeyedSubscript:@"result"];
-    v10 = [v9 BOOLValue];
+    payload = [v7 payload];
+    v9 = [payload objectForKeyedSubscript:@"result"];
+    bOOLValue = [v9 BOOLValue];
 
-    LOBYTE(v3) = v10;
+    LOBYTE(_connectIfNecessary) = bOOLValue;
   }
 
-  return v3;
+  return _connectIfNecessary;
 }
 
 - (id)menuItems
@@ -195,14 +195,14 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
   {
     v3 = [AXIPCMessage alloc];
     v4 = [(AXIPCMessage *)v3 initWithKey:6025 payload:MEMORY[0x1E695E0F8]];
-    v5 = [(AXServer *)self client];
-    v6 = [v5 sendMessage:v4 withError:0];
+    client = [(AXServer *)self client];
+    v6 = [client sendMessage:v4 withError:0];
 
-    v7 = [v6 payload];
-    v8 = [v7 objectForKeyedSubscript:@"result"];
-    v9 = [v8 stringValue];
+    payload = [v6 payload];
+    v8 = [payload objectForKeyedSubscript:@"result"];
+    stringValue = [v8 stringValue];
 
-    v10 = [v9 componentsSeparatedByString:@"|"];
+    v10 = [stringValue componentsSeparatedByString:@"|"];
   }
 
   else
@@ -213,70 +213,70 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
   return v10;
 }
 
-- (BOOL)tapMenuItem:(id)a3
+- (BOOL)tapMenuItem:(id)item
 {
   v15[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemCopy = item;
   if ([(AXAssistiveTouchServer *)self _connectIfNecessary])
   {
     v5 = [AXIPCMessage alloc];
     v14 = @"action";
-    v15[0] = v4;
+    v15[0] = itemCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
     v7 = [(AXIPCMessage *)v5 initWithKey:6026 payload:v6];
 
-    v8 = [(AXServer *)self client];
-    v9 = [v8 sendMessage:v7 withError:0];
+    client = [(AXServer *)self client];
+    v9 = [client sendMessage:v7 withError:0];
 
-    v10 = [v9 payload];
-    v11 = [v10 objectForKeyedSubscript:@"result"];
-    v12 = [v11 BOOLValue];
+    payload = [v9 payload];
+    v11 = [payload objectForKeyedSubscript:@"result"];
+    bOOLValue = [v11 BOOLValue];
   }
 
   else
   {
-    v12 = 0;
+    bOOLValue = 0;
   }
 
-  return v12;
+  return bOOLValue;
 }
 
-- (void)menuAction:(id)a3
+- (void)menuAction:(id)action
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  actionCopy = action;
   if ([(AXAssistiveTouchServer *)self _connectIfNecessary])
   {
     v5 = [AXIPCMessage alloc];
     v10 = @"action";
-    v11[0] = v4;
+    v11[0] = actionCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1];
     v7 = [(AXIPCMessage *)v5 initWithKey:6027 payload:v6];
 
-    v8 = [(AXServer *)self client];
-    v9 = [v8 sendMessage:v7 withError:0];
+    client = [(AXServer *)self client];
+    v9 = [client sendMessage:v7 withError:0];
   }
 }
 
-- (CGPoint)getMenuItemPosition:(id)a3
+- (CGPoint)getMenuItemPosition:(id)position
 {
   v19[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  positionCopy = position;
   v5 = -1.0;
   v6 = -1.0;
   if ([(AXAssistiveTouchServer *)self _connectIfNecessary])
   {
     v7 = [AXIPCMessage alloc];
     v18 = @"action";
-    v19[0] = v4;
+    v19[0] = positionCopy;
     v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v19 forKeys:&v18 count:1];
     v9 = [(AXIPCMessage *)v7 initWithKey:6033 payload:v8];
 
-    v10 = [(AXServer *)self client];
-    v11 = [v10 sendMessage:v9 withError:0];
+    client = [(AXServer *)self client];
+    v11 = [client sendMessage:v9 withError:0];
 
-    v12 = [v11 payload];
-    v13 = [v12 objectForKeyedSubscript:@"result"];
+    payload = [v11 payload];
+    v13 = [payload objectForKeyedSubscript:@"result"];
     [v13 axCGPointValue];
     v5 = v14;
     v6 = v15;
@@ -289,21 +289,21 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
   return result;
 }
 
-- (void)virtualPointer:(BOOL)a3
+- (void)virtualPointer:(BOOL)pointer
 {
-  v3 = a3;
+  pointerCopy = pointer;
   v12[1] = *MEMORY[0x1E69E9840];
   if ([(AXAssistiveTouchServer *)self _connectIfNecessary])
   {
     v5 = [AXIPCMessage alloc];
     v11 = @"action";
-    v6 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+    v6 = [MEMORY[0x1E696AD98] numberWithBool:pointerCopy];
     v12[0] = v6;
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     v8 = [(AXIPCMessage *)v5 initWithKey:6028 payload:v7];
 
-    v9 = [(AXServer *)self client];
-    v10 = [v9 sendMessage:v8 withError:0];
+    client = [(AXServer *)self client];
+    v10 = [client sendMessage:v8 withError:0];
   }
 }
 
@@ -315,11 +315,11 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
   {
     v5 = [AXIPCMessage alloc];
     v6 = [(AXIPCMessage *)v5 initWithKey:6029 payload:MEMORY[0x1E695E0F8]];
-    v7 = [(AXServer *)self client];
-    v8 = [v7 sendMessage:v6 withError:0];
+    client = [(AXServer *)self client];
+    v8 = [client sendMessage:v6 withError:0];
 
-    v9 = [v8 payload];
-    v10 = [v9 objectForKeyedSubscript:@"result"];
+    payload = [v8 payload];
+    v10 = [payload objectForKeyedSubscript:@"result"];
     [v10 axCGPointValue];
     v3 = v11;
     v4 = v12;
@@ -332,10 +332,10 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
   return result;
 }
 
-- (BOOL)setPointerPosition:(CGPoint)a3
+- (BOOL)setPointerPosition:(CGPoint)position
 {
-  y = a3.y;
-  x = a3.x;
+  y = position.y;
+  x = position.x;
   v18[1] = *MEMORY[0x1E69E9840];
   if (![(AXAssistiveTouchServer *)self _connectIfNecessary])
   {
@@ -351,14 +351,14 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v18 forKeys:&v17 count:1];
   v9 = [(AXIPCMessage *)v6 initWithKey:6030 payload:v8];
 
-  v10 = [(AXServer *)self client];
-  v11 = [v10 sendMessage:v9 withError:0];
+  client = [(AXServer *)self client];
+  v11 = [client sendMessage:v9 withError:0];
 
-  v12 = [v11 payload];
-  v13 = [v12 objectForKeyedSubscript:@"result"];
-  v14 = [v13 BOOLValue];
+  payload = [v11 payload];
+  v13 = [payload objectForKeyedSubscript:@"result"];
+  bOOLValue = [v13 BOOLValue];
 
-  return v14;
+  return bOOLValue;
 }
 
 - (void)pointerClick
@@ -367,8 +367,8 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
   {
     v3 = [AXIPCMessage alloc];
     v6 = [(AXIPCMessage *)v3 initWithKey:6032 payload:MEMORY[0x1E695E0F8]];
-    v4 = [(AXServer *)self client];
-    v5 = [v4 sendMessage:v6 withError:0];
+    client = [(AXServer *)self client];
+    v5 = [client sendMessage:v6 withError:0];
   }
 }
 
@@ -378,11 +378,11 @@ uint64_t __32__AXAssistiveTouchServer_server__block_invoke()
   {
     v3 = [AXIPCMessage alloc];
     v4 = [(AXIPCMessage *)v3 initWithKey:6031 payload:MEMORY[0x1E695E0F8]];
-    v5 = [(AXServer *)self client];
-    v6 = [v5 sendMessage:v4 withError:0];
+    client = [(AXServer *)self client];
+    v6 = [client sendMessage:v4 withError:0];
 
-    v7 = [v6 payload];
-    v8 = [v7 objectForKeyedSubscript:@"result"];
+    payload = [v6 payload];
+    v8 = [payload objectForKeyedSubscript:@"result"];
   }
 
   else

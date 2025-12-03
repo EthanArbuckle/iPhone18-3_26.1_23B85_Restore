@@ -1,5 +1,5 @@
 @interface _MKFMatterCommandAction
-+ (id)modelIDForParentRelationshipTo:(id)a3;
++ (id)modelIDForParentRelationshipTo:(id)to;
 - (MKFHome)home;
 - (MKFMatterCommandActionDatabaseID)databaseID;
 - (NSArray)matterPaths;
@@ -7,9 +7,9 @@
 
 @implementation _MKFMatterCommandAction
 
-+ (id)modelIDForParentRelationshipTo:(id)a3
++ (id)modelIDForParentRelationshipTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];
@@ -24,17 +24,17 @@
 - (NSArray)matterPaths
 {
   v2 = [(_MKFMatterCommandAction *)self valueForKey:@"matterPaths_"];
-  v3 = [v2 allObjects];
+  allObjects = [v2 allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (MKFHome)home
 {
-  v2 = [(_MKFMatterCommandAction *)self actionSet];
-  v3 = [v2 home];
+  actionSet = [(_MKFMatterCommandAction *)self actionSet];
+  home = [actionSet home];
 
-  return v3;
+  return home;
 }
 
 - (MKFMatterCommandActionDatabaseID)databaseID

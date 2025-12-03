@@ -1,43 +1,43 @@
 @interface NUANFArticleDataProvider
 - (NSString)articleID;
-- (NUANFArticleDataProvider)initWithArticle:(id)a3 contentContext:(id)a4 fontRegistration:(id)a5 host:(id)a6 embedDataManager:(id)a7 linkedContentManager:(id)a8;
+- (NUANFArticleDataProvider)initWithArticle:(id)article contentContext:(id)context fontRegistration:(id)registration host:(id)host embedDataManager:(id)manager linkedContentManager:(id)contentManager;
 - (void)cancelAssetPrefetch;
 - (void)dealloc;
-- (void)loadArticleWithCompletionBlock:(id)a3;
-- (void)loadContextWithCompletionBlock:(id)a3;
+- (void)loadArticleWithCompletionBlock:(id)block;
+- (void)loadContextWithCompletionBlock:(id)block;
 - (void)prefetchAssets;
 - (void)reloadArticleIfNeeded;
-- (void)setRelativePriority:(int64_t)a3;
-- (void)setupAssetPrefetchCancellationWithOperation:(id)a3;
-- (void)setupAssetPrefetchRequestEventsWithEvents:(id)a3;
+- (void)setRelativePriority:(int64_t)priority;
+- (void)setupAssetPrefetchCancellationWithOperation:(id)operation;
+- (void)setupAssetPrefetchRequestEventsWithEvents:(id)events;
 @end
 
 @implementation NUANFArticleDataProvider
 
-- (NUANFArticleDataProvider)initWithArticle:(id)a3 contentContext:(id)a4 fontRegistration:(id)a5 host:(id)a6 embedDataManager:(id)a7 linkedContentManager:(id)a8
+- (NUANFArticleDataProvider)initWithArticle:(id)article contentContext:(id)context fontRegistration:(id)registration host:(id)host embedDataManager:(id)manager linkedContentManager:(id)contentManager
 {
   v31[2] = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v28 = a4;
-  v27 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  articleCopy = article;
+  contextCopy = context;
+  registrationCopy = registration;
+  hostCopy = host;
+  managerCopy = manager;
+  contentManagerCopy = contentManager;
   v30.receiver = self;
   v30.super_class = NUANFArticleDataProvider;
   v18 = [(NUANFArticleDataProvider *)&v30 init];
   v19 = v18;
   if (v18)
   {
-    objc_storeStrong(&v18->_article, a3);
-    objc_storeStrong(&v19->_contentContext, a4);
-    objc_storeStrong(&v19->_fontRegistration, a5);
-    objc_storeStrong(&v19->_host, a6);
-    objc_storeStrong(&v19->_embedDataManger, a7);
-    objc_storeStrong(&v19->_linkedContentManager, a8);
-    v20 = [v17 linkedContentProviders];
+    objc_storeStrong(&v18->_article, article);
+    objc_storeStrong(&v19->_contentContext, context);
+    objc_storeStrong(&v19->_fontRegistration, registration);
+    objc_storeStrong(&v19->_host, host);
+    objc_storeStrong(&v19->_embedDataManger, manager);
+    objc_storeStrong(&v19->_linkedContentManager, contentManager);
+    linkedContentProviders = [contentManagerCopy linkedContentProviders];
     linkedContentProviders = v19->_linkedContentProviders;
-    v19->_linkedContentProviders = v20;
+    v19->_linkedContentProviders = linkedContentProviders;
 
     v19->_relativePriority = 0;
     v22 = MEMORY[0x277CBEB98];
@@ -54,8 +54,8 @@
 
 - (void)dealloc
 {
-  v3 = [(NUANFArticleDataProvider *)self fontLoader];
-  [v3 unregisterFontsWithCompletion:&__block_literal_global_11];
+  fontLoader = [(NUANFArticleDataProvider *)self fontLoader];
+  [fontLoader unregisterFontsWithCompletion:&__block_literal_global_11];
 
   v4.receiver = self;
   v4.super_class = NUANFArticleDataProvider;
@@ -64,24 +64,24 @@
 
 - (NSString)articleID
 {
-  v2 = [(NUANFArticleDataProvider *)self article];
-  v3 = [v2 articleID];
+  article = [(NUANFArticleDataProvider *)self article];
+  articleID = [article articleID];
 
-  return v3;
+  return articleID;
 }
 
-- (void)loadContextWithCompletionBlock:(id)a3
+- (void)loadContextWithCompletionBlock:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  blockCopy = block;
   v5 = CACurrentMediaTime();
   v6 = NUArticleLoadLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(NUANFArticleDataProvider *)self article];
-    v8 = [v7 articleID];
+    article = [(NUANFArticleDataProvider *)self article];
+    articleID = [article articleID];
     *buf = 138543362;
-    v15 = v8;
+    v15 = articleID;
     _os_log_impl(&dword_25C2D6000, v6, OS_LOG_TYPE_DEFAULT, "Article data loader did start loading, articleID=%{public}@", buf, 0xCu);
   }
 
@@ -93,7 +93,7 @@
   v11[4] = self;
   v13[1] = *&v5;
   objc_copyWeak(v13, buf);
-  v9 = v4;
+  v9 = blockCopy;
   v12 = v9;
   [(NUANFArticleDataProvider *)self loadArticleWithCompletionBlock:v11];
 
@@ -500,59 +500,59 @@ void __59__NUANFArticleDataProvider_loadContextWithCompletionBlock___block_invok
 
 - (void)prefetchAssets
 {
-  v3 = [MEMORY[0x277CCAC38] processInfo];
-  v4 = [v3 isLowPowerModeEnabled];
+  processInfo = [MEMORY[0x277CCAC38] processInfo];
+  isLowPowerModeEnabled = [processInfo isLowPowerModeEnabled];
 
-  if ((v4 & 1) == 0)
+  if ((isLowPowerModeEnabled & 1) == 0)
   {
-    v5 = [MEMORY[0x277D31140] sharedNetworkReachability];
-    v6 = [v5 isLowDataModeEnabled];
+    mEMORY[0x277D31140] = [MEMORY[0x277D31140] sharedNetworkReachability];
+    isLowDataModeEnabled = [mEMORY[0x277D31140] isLowDataModeEnabled];
 
-    if ((v6 & 1) == 0)
+    if ((isLowDataModeEnabled & 1) == 0)
     {
-      v7 = [(NUANFArticleDataProvider *)self eventManager];
-      [v7 fireEvent:@"assetPrefetchRequestEvent"];
+      eventManager = [(NUANFArticleDataProvider *)self eventManager];
+      [eventManager fireEvent:@"assetPrefetchRequestEvent"];
     }
   }
 }
 
 - (void)cancelAssetPrefetch
 {
-  v2 = [(NUANFArticleDataProvider *)self eventManager];
-  [v2 fireEvent:@"assetPrefetchCancelEvent"];
+  eventManager = [(NUANFArticleDataProvider *)self eventManager];
+  [eventManager fireEvent:@"assetPrefetchCancelEvent"];
 }
 
-- (void)setRelativePriority:(int64_t)a3
+- (void)setRelativePriority:(int64_t)priority
 {
-  self->_relativePriority = a3;
-  v5 = [(NUANFArticleDataProvider *)self contextLoader];
-  [v5 setRelativePriority:a3];
+  self->_relativePriority = priority;
+  contextLoader = [(NUANFArticleDataProvider *)self contextLoader];
+  [contextLoader setRelativePriority:priority];
 
-  v6 = [(NUANFArticleDataProvider *)self fontLoader];
-  [v6 setRelativePriority:a3];
+  fontLoader = [(NUANFArticleDataProvider *)self fontLoader];
+  [fontLoader setRelativePriority:priority];
 }
 
-- (void)loadArticleWithCompletionBlock:(id)a3
+- (void)loadArticleWithCompletionBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   [(NUANFArticleDataProvider *)self reloadArticleIfNeeded];
-  v5 = [(NUANFArticleDataProvider *)self contextLoader];
-  if (v5 && (v6 = v5, [(NUANFArticleDataProvider *)self fontLoader], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
+  contextLoader = [(NUANFArticleDataProvider *)self contextLoader];
+  if (contextLoader && (v6 = contextLoader, [(NUANFArticleDataProvider *)self fontLoader], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7))
   {
-    v4[2](v4, 0);
+    blockCopy[2](blockCopy, 0);
   }
 
   else
   {
     objc_initWeak(&location, self);
-    v8 = [(NUANFArticleDataProvider *)self article];
+    article = [(NUANFArticleDataProvider *)self article];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __59__NUANFArticleDataProvider_loadArticleWithCompletionBlock___block_invoke;
     v9[3] = &unk_2799A3300;
     objc_copyWeak(&v11, &location);
-    v10 = v4;
-    [v8 performBlockWhenFullyLoaded:v9];
+    v10 = blockCopy;
+    [article performBlockWhenFullyLoaded:v9];
 
     objc_destroyWeak(&v11);
     objc_destroyWeak(&location);
@@ -665,22 +665,22 @@ LABEL_6:
 - (void)reloadArticleIfNeeded
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = [(NUANFArticleDataProvider *)self article];
-  v4 = [v3 headline];
+  article = [(NUANFArticleDataProvider *)self article];
+  headline = [article headline];
 
-  if (v4)
+  if (headline)
   {
-    v5 = v4;
+    v5 = headline;
     if ([v5 needsRapidUpdates])
     {
-      v6 = [(NUANFArticleDataProvider *)self contentContext];
-      v7 = [v6 networkReachability];
-      v8 = [v7 isNetworkReachable];
+      contentContext = [(NUANFArticleDataProvider *)self contentContext];
+      networkReachability = [contentContext networkReachability];
+      isNetworkReachable = [networkReachability isNetworkReachable];
 
-      if (v8)
+      if (isNetworkReachable)
       {
-        v9 = [v5 lastFetchedDate];
-        [v9 fc_timeIntervalUntilNow];
+        lastFetchedDate = [v5 lastFetchedDate];
+        [lastFetchedDate fc_timeIntervalUntilNow];
         v11 = v10;
 
         if (v11 > 30.0)
@@ -688,20 +688,20 @@ LABEL_6:
           v12 = NUArticleLoadLog();
           if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
           {
-            v13 = [(NUANFArticleDataProvider *)self article];
-            v14 = [v13 articleID];
+            article2 = [(NUANFArticleDataProvider *)self article];
+            articleID = [article2 articleID];
             *buf = 138543362;
-            v24 = v14;
+            v24 = articleID;
             _os_log_impl(&dword_25C2D6000, v12, OS_LOG_TYPE_DEFAULT, "Article data loader did reset for rapid updates, articleID=%{public}@", buf, 0xCu);
           }
 
           [(NUANFArticleDataProvider *)self setContextLoader:0];
           [(NUANFArticleDataProvider *)self setFontLoader:0];
-          v15 = [(NUANFArticleDataProvider *)self contentContext];
-          v16 = [v15 articleController];
-          v17 = [(NUANFArticleDataProvider *)self articleID];
+          contentContext2 = [(NUANFArticleDataProvider *)self contentContext];
+          articleController = [contentContext2 articleController];
+          articleID2 = [(NUANFArticleDataProvider *)self articleID];
           [(NUANFArticleDataProvider *)self relativePriority];
-          v18 = [v16 articleWithID:v17 forceArticleUpdate:1 qualityOfService:FCInferQualityOfServiceFromRelativePriority() relativePriority:{-[NUANFArticleDataProvider relativePriority](self, "relativePriority")}];
+          v18 = [articleController articleWithID:articleID2 forceArticleUpdate:1 qualityOfService:FCInferQualityOfServiceFromRelativePriority() relativePriority:{-[NUANFArticleDataProvider relativePriority](self, "relativePriority")}];
           [(NUANFArticleDataProvider *)self setArticle:v18];
         }
 
@@ -712,7 +712,7 @@ LABEL_6:
           v20[2] = __49__NUANFArticleDataProvider_reloadArticleIfNeeded__block_invoke_47;
           v20[3] = &unk_2799A3440;
           v21 = v5;
-          v22 = self;
+          selfCopy = self;
           __49__NUANFArticleDataProvider_reloadArticleIfNeeded__block_invoke_47(v20);
         }
       }
@@ -756,20 +756,20 @@ void __49__NUANFArticleDataProvider_reloadArticleIfNeeded__block_invoke_47(uint6
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setupAssetPrefetchRequestEventsWithEvents:(id)a3
+- (void)setupAssetPrefetchRequestEventsWithEvents:(id)events
 {
-  v4 = a3;
+  eventsCopy = events;
   v5 = objc_alloc_init(MEMORY[0x277D34758]);
   [(NUANFArticleDataProvider *)self setEventManager:v5];
 
   objc_initWeak(&location, self);
-  v6 = [(NUANFArticleDataProvider *)self eventManager];
+  eventManager = [(NUANFArticleDataProvider *)self eventManager];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __70__NUANFArticleDataProvider_setupAssetPrefetchRequestEventsWithEvents___block_invoke;
   v7[3] = &unk_2799A3CD0;
   objc_copyWeak(&v8, &location);
-  [v6 triggerOnceWhenAllEventsHaveOccurred:v4 block:v7];
+  [eventManager triggerOnceWhenAllEventsHaveOccurred:eventsCopy block:v7];
 
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
@@ -823,12 +823,12 @@ void __70__NUANFArticleDataProvider_setupAssetPrefetchRequestEventsWithEvents___
   *(v1 + 40) = 0;
 }
 
-- (void)setupAssetPrefetchCancellationWithOperation:(id)a3
+- (void)setupAssetPrefetchCancellationWithOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   objc_initWeak(&location, self);
-  objc_initWeak(&from, v4);
-  v5 = [(NUANFArticleDataProvider *)self eventManager];
+  objc_initWeak(&from, operationCopy);
+  eventManager = [(NUANFArticleDataProvider *)self eventManager];
   v6 = [MEMORY[0x277CBEB98] setWithObject:@"assetPrefetchCancelEvent"];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
@@ -836,7 +836,7 @@ void __70__NUANFArticleDataProvider_setupAssetPrefetchRequestEventsWithEvents___
   v7[3] = &unk_2799A4558;
   objc_copyWeak(&v8, &from);
   objc_copyWeak(&v9, &location);
-  [v5 triggerOnceWhenAllEventsHaveOccurred:v6 block:v7];
+  [eventManager triggerOnceWhenAllEventsHaveOccurred:v6 block:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&v8);

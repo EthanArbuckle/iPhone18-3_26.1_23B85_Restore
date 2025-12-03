@@ -8,15 +8,15 @@
 - (id)crCodableDataRepresentation
 {
   v17 = *MEMORY[0x1E69E9840];
-  v15 = [a1 count];
+  v15 = [self count];
   v2 = [MEMORY[0x1E695DF88] dataWithCapacity:(32 * v15) | 8];
   [v2 appendBytes:&v15 length:8];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = a1;
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+  selfCopy = self;
+  v4 = [selfCopy countByEnumeratingWithState:&v11 objects:v16 count:16];
   if (v4)
   {
     v5 = v4;
@@ -27,7 +27,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(selfCopy);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -41,7 +41,7 @@
         [CRCodingUtilities appendCodable:v8 toData:v2, v11];
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v16 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v11 objects:v16 count:16];
       if (v5)
       {
         continue;
@@ -75,17 +75,17 @@ LABEL_11:
       }
     }
 
-    a1 = [a1 initWithArray:i];
+    self = [self initWithArray:i];
 
-    v12 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 @end

@@ -4,9 +4,9 @@
 - (UIEdgeInsets)popoverContentInsets;
 - (UIEdgeInsets)popoverFadeInsets;
 - (UIEdgeInsets)popoverFadeSizes;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)scaleWithFactor:(double)a3;
+- (void)scaleWithFactor:(double)factor;
 @end
 
 @implementation TSWPopoverTheme
@@ -45,7 +45,7 @@
   [(TSWPopoverTheme *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(TSWPopoverTheme);
   [(TSWPopoverTheme *)v5 setPopoverHasGradientBackground:[(TSWPopoverTheme *)self popoverHasGradientBackground]];
@@ -65,30 +65,30 @@
   [(TSWPopoverTheme *)v5 setPopoverShadowOpacity:?];
   [(TSWPopoverTheme *)v5 setPresentationMode:[(TSWPopoverTheme *)self presentationMode]];
   [(TSWPopoverTheme *)v5 setPopoverBackgroundColor:[(TSUColor *)[(TSWPopoverTheme *)self popoverBackgroundColor] copy]];
-  [(TSWPopoverTheme *)v5 setPopoverStroke:[(TSDStroke *)[(TSWPopoverTheme *)self popoverStroke] mutableCopyWithZone:a3]];
+  [(TSWPopoverTheme *)v5 setPopoverStroke:[(TSDStroke *)[(TSWPopoverTheme *)self popoverStroke] mutableCopyWithZone:zone]];
   [(TSWPopoverTheme *)v5 setPopoverShadowColor:[(TSUColor *)[(TSWPopoverTheme *)self popoverShadowColor] copy]];
   return v5;
 }
 
-- (void)scaleWithFactor:(double)a3
+- (void)scaleWithFactor:(double)factor
 {
-  self->_popoverCornerRadius = self->_popoverCornerRadius * a3;
-  v4 = vmulq_n_f64(*&self->_popoverFadeInsets.top, a3);
-  *&self->_popoverContentInsets.bottom = vmulq_n_f64(*&self->_popoverContentInsets.bottom, a3);
+  self->_popoverCornerRadius = self->_popoverCornerRadius * factor;
+  v4 = vmulq_n_f64(*&self->_popoverFadeInsets.top, factor);
+  *&self->_popoverContentInsets.bottom = vmulq_n_f64(*&self->_popoverContentInsets.bottom, factor);
   *&self->_popoverFadeInsets.top = v4;
-  v5 = vmulq_n_f64(*&self->_popoverFadeSizes.top, a3);
-  *&self->_popoverFadeInsets.bottom = vmulq_n_f64(*&self->_popoverFadeInsets.bottom, a3);
+  v5 = vmulq_n_f64(*&self->_popoverFadeSizes.top, factor);
+  *&self->_popoverFadeInsets.bottom = vmulq_n_f64(*&self->_popoverFadeInsets.bottom, factor);
   *&self->_popoverFadeSizes.top = v5;
-  *&self->_popoverFadeSizes.bottom = vmulq_n_f64(*&self->_popoverFadeSizes.bottom, a3);
-  v6 = vmulq_n_f64(*&self->_popoverContentInsets.top, a3);
-  self->_popoverShadowOffset = vmulq_n_f64(self->_popoverShadowOffset, a3);
+  *&self->_popoverFadeSizes.bottom = vmulq_n_f64(*&self->_popoverFadeSizes.bottom, factor);
+  v6 = vmulq_n_f64(*&self->_popoverContentInsets.top, factor);
+  self->_popoverShadowOffset = vmulq_n_f64(self->_popoverShadowOffset, factor);
   *&self->_popoverContentInsets.top = v6;
-  self->_popoverShadowRadius = self->_popoverShadowRadius * a3;
+  self->_popoverShadowRadius = self->_popoverShadowRadius * factor;
   v7 = [(TSDStroke *)[(TSWPopoverTheme *)self popoverStroke] mutableCopy];
   [v7 width];
-  [v7 setWidth:v8 * a3];
+  [v7 setWidth:v8 * factor];
   [v7 miterLimit];
-  [v7 setMiterLimit:v9 * a3];
+  [v7 setMiterLimit:v9 * factor];
 
   [(TSWPopoverTheme *)self setPopoverStroke:v7];
 }

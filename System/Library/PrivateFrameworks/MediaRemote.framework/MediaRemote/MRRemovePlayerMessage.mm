@@ -1,22 +1,22 @@
 @interface MRRemovePlayerMessage
 - (MRPlayerPath)playerPath;
-- (MRRemovePlayerMessage)initWithPlayerPath:(id)a3;
+- (MRRemovePlayerMessage)initWithPlayerPath:(id)path;
 @end
 
 @implementation MRRemovePlayerMessage
 
-- (MRRemovePlayerMessage)initWithPlayerPath:(id)a3
+- (MRRemovePlayerMessage)initWithPlayerPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v10.receiver = self;
   v10.super_class = MRRemovePlayerMessage;
   v5 = [(MRProtocolMessage *)&v10 init];
   if (v5)
   {
     v6 = objc_alloc_init(_MRRemovePlayerMessageProtobuf);
-    v7 = [v4 skeleton];
-    v8 = [v7 protobuf];
-    [(_MRRemovePlayerMessageProtobuf *)v6 setPlayerPath:v8];
+    skeleton = [pathCopy skeleton];
+    protobuf = [skeleton protobuf];
+    [(_MRRemovePlayerMessageProtobuf *)v6 setPlayerPath:protobuf];
 
     [(MRProtocolMessage *)v5 setUnderlyingCodableMessage:v6];
   }
@@ -27,9 +27,9 @@
 - (MRPlayerPath)playerPath
 {
   v3 = [MRPlayerPath alloc];
-  v4 = [(MRProtocolMessage *)self underlyingCodableMessage];
-  v5 = [v4 playerPath];
-  v6 = [(MRPlayerPath *)v3 initWithProtobuf:v5];
+  underlyingCodableMessage = [(MRProtocolMessage *)self underlyingCodableMessage];
+  playerPath = [underlyingCodableMessage playerPath];
+  v6 = [(MRPlayerPath *)v3 initWithProtobuf:playerPath];
 
   return v6;
 }

@@ -1,7 +1,7 @@
 @interface MTL4CounterHeapDescriptor
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MTL4CounterHeapDescriptor)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -16,22 +16,22 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   result = objc_opt_new();
   *(result + 8) = *&self->_type;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     return 1;
   }
 
   Class = object_getClass(self);
-  return Class == object_getClass(a3) && *(a3 + 2) == self->_count && *(a3 + 1) == self->_type;
+  return Class == object_getClass(equal) && *(equal + 2) == self->_count && *(equal + 1) == self->_type;
 }
 
 - (unint64_t)hash

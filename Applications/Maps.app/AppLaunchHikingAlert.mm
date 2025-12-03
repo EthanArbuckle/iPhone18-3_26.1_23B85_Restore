@@ -2,7 +2,7 @@
 - (BOOL)_shouldDisplayAlert;
 - (void)_alertDidFinishProcessing;
 - (void)_presentAlertUI;
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3;
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler;
 @end
 
 @implementation AppLaunchHikingAlert
@@ -32,8 +32,8 @@
   self->_hikingWelcomeViewController = v3;
 
   v5 = +[UIApplication sharedMapsDelegate];
-  v6 = [v5 chromeViewController];
-  [v6 _maps_topMostPresentViewController:self->_hikingWelcomeViewController animated:1 completion:0];
+  chromeViewController = [v5 chromeViewController];
+  [chromeViewController _maps_topMostPresentViewController:self->_hikingWelcomeViewController animated:1 completion:0];
 }
 
 - (BOOL)_shouldDisplayAlert
@@ -76,9 +76,9 @@ LABEL_12:
     }
 
     v7 = +[GEOCountryConfiguration sharedConfiguration];
-    v8 = [v7 currentCountrySupportsCustomRouteCreation];
+    currentCountrySupportsCustomRouteCreation = [v7 currentCountrySupportsCustomRouteCreation];
 
-    if ((v8 & 1) == 0)
+    if ((currentCountrySupportsCustomRouteCreation & 1) == 0)
     {
       v4 = sub_100005610();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
@@ -96,16 +96,16 @@ LABEL_12:
   return 0;
 }
 
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler
 {
-  v4 = [a3 copy];
+  v4 = [handler copy];
   completionBlock = self->_completionBlock;
   self->_completionBlock = v4;
 
-  v6 = [(AppLaunchHikingAlert *)self _shouldDisplayAlert];
+  _shouldDisplayAlert = [(AppLaunchHikingAlert *)self _shouldDisplayAlert];
   v7 = sub_100005610();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_INFO);
-  if (v6)
+  if (_shouldDisplayAlert)
   {
     if (v8)
     {

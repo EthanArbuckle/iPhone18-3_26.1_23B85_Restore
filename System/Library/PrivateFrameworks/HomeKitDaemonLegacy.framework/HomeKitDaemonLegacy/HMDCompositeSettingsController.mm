@@ -1,28 +1,28 @@
 @interface HMDCompositeSettingsController
 + (id)logCategory;
 - (BOOL)configured;
-- (HMDCompositeSettingsController)initWithDatabaseAdapter:(id)a3 model:(Class)a4 homeUUID:(id)a5 ownerUUID:(id)a6 logEventSubmitter:(id)a7 settingKeyPathBlockList:(id)a8;
-- (HMDCompositeSettingsController)initWithDatabaseAdapter:(id)a3 model:(Class)a4 homeUUID:(id)a5 ownerUUID:(id)a6 settingKeyPathBlockList:(id)a7;
+- (HMDCompositeSettingsController)initWithDatabaseAdapter:(id)adapter model:(Class)model homeUUID:(id)d ownerUUID:(id)iD logEventSubmitter:(id)submitter settingKeyPathBlockList:(id)list;
+- (HMDCompositeSettingsController)initWithDatabaseAdapter:(id)adapter model:(Class)model homeUUID:(id)d ownerUUID:(id)iD settingKeyPathBlockList:(id)list;
 - (HMDCompositeSettingsControllerDelegate)delegate;
 - (HMDCompositeSettingsZoneManager)zoneManager;
-- (id)_metricSubmittingSingleFetchCompletionFromCompletion:(void *)a1;
-- (id)_metricSubmittingSingleUpdateCompletionFromCompletion:(void *)a1;
-- (id)_migrateUpdatedSettings:(void *)a1;
-- (id)_settingFromSetting:(id)a3 value:(id)a4 error:(id *)a5;
+- (id)_metricSubmittingSingleFetchCompletionFromCompletion:(void *)completion;
+- (id)_metricSubmittingSingleUpdateCompletionFromCompletion:(void *)completion;
+- (id)_migrateUpdatedSettings:(void *)settings;
+- (id)_settingFromSetting:(id)setting value:(id)value error:(id *)error;
 - (id)emptyModelForTransaction;
-- (id)fetchSynchronousSettingsForKeyPaths:(id)a3 callerVersion:(id)a4 callerPrivilege:(unint64_t)a5;
+- (id)fetchSynchronousSettingsForKeyPaths:(id)paths callerVersion:(id)version callerPrivilege:(unint64_t)privilege;
 - (id)logIdentifier;
-- (void)_createSettingsFromModel:(id)a3;
-- (void)_fetchSettingForKeyPath:(void *)a3 callerVersion:(uint64_t)a4 callerPrivilege:(void *)a5 completion:;
-- (void)_handleModelCreationOrUpdate:(void *)a1;
-- (void)database:(id)a3 didConfigureWithError:(id)a4;
-- (void)database:(id)a3 didProcessDeletionForModel:(id)a4;
-- (void)fetchSettingForKeyPath:(id)a3 callerVersion:(id)a4 callerPrivilege:(unint64_t)a5 completion:(id)a6;
-- (void)fetchSettingsForKeyPaths:(id)a3 callerVersion:(id)a4 callerPrivilege:(unint64_t)a5 completion:(id)a6;
-- (void)setConfigured:(BOOL)a3;
+- (void)_createSettingsFromModel:(id)model;
+- (void)_fetchSettingForKeyPath:(void *)path callerVersion:(uint64_t)version callerPrivilege:(void *)privilege completion:;
+- (void)_handleModelCreationOrUpdate:(void *)update;
+- (void)database:(id)database didConfigureWithError:(id)error;
+- (void)database:(id)database didProcessDeletionForModel:(id)model;
+- (void)fetchSettingForKeyPath:(id)path callerVersion:(id)version callerPrivilege:(unint64_t)privilege completion:(id)completion;
+- (void)fetchSettingsForKeyPaths:(id)paths callerVersion:(id)version callerPrivilege:(unint64_t)privilege completion:(id)completion;
+- (void)setConfigured:(BOOL)configured;
 - (void)start;
-- (void)updateSettingForKeyPath:(id)a3 value:(id)a4 callerVersion:(id)a5 completion:(id)a6;
-- (void)updateSettingsForKeyPaths:(id)a3 callerVersion:(id)a4 completion:(id)a5;
+- (void)updateSettingForKeyPath:(id)path value:(id)value callerVersion:(id)version completion:(id)completion;
+- (void)updateSettingsForKeyPaths:(id)paths callerVersion:(id)version completion:(id)completion;
 @end
 
 @implementation HMDCompositeSettingsController
@@ -41,15 +41,15 @@
   return WeakRetained;
 }
 
-- (void)database:(id)a3 didConfigureWithError:(id)a4
+- (void)database:(id)database didConfigureWithError:(id)error
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v8 = a4;
-  if (v8)
+  databaseCopy = database;
+  errorCopy = error;
+  if (errorCopy)
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -57,7 +57,7 @@
       *v33 = 138543618;
       *&v33[4] = v12;
       *&v33[12] = 2112;
-      *&v33[14] = v8;
+      *&v33[14] = errorCopy;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_ERROR, "%{public}@Error configuring database adapter: %@", v33, 0x16u);
     }
 
@@ -75,29 +75,29 @@
         dispatch_assert_queue_V2(v15);
 
         v17 = objc_getProperty(self, v16, 64, 1);
-        v18 = [(HMDCompositeSettingsController *)self uuid];
-        v19 = [v17 fetchModelWithID:v18];
+        uuid = [(HMDCompositeSettingsController *)self uuid];
+        emptyModelForTransaction = [v17 fetchModelWithID:uuid];
 
-        if (!v19)
+        if (!emptyModelForTransaction)
         {
-          v19 = [(HMDCompositeSettingsController *)self emptyModelForTransaction];
+          emptyModelForTransaction = [(HMDCompositeSettingsController *)self emptyModelForTransaction];
         }
 
-        v21 = [(HMDCompositeSettingsController *)self _migrateUpdatedSettings:v19];
+        v21 = [(HMDCompositeSettingsController *)self _migrateUpdatedSettings:emptyModelForTransaction];
         *v33 = MEMORY[0x277D85DD0];
         *&v33[8] = 3221225472;
         *&v33[16] = __59__HMDCompositeSettingsController__migrateAndCreateSettings__block_invoke;
         v34 = &unk_279735918;
-        v35 = self;
-        v36 = v19;
-        v22 = v19;
+        selfCopy2 = self;
+        v36 = emptyModelForTransaction;
+        v22 = emptyModelForTransaction;
         v23 = [v21 addSuccessBlock:v33];
       }
 
       else
       {
         v24 = objc_autoreleasePoolPush();
-        v25 = self;
+        selfCopy3 = self;
         v26 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v26, OS_LOG_TYPE_INFO))
         {
@@ -120,8 +120,8 @@
     }
 
     v30 = Property;
-    v31 = [(HMDCompositeSettingsController *)self uuid];
-    [v30 startObservingModelWithID:v31];
+    uuid2 = [(HMDCompositeSettingsController *)self uuid];
+    [v30 startObservingModelWithID:uuid2];
   }
 
   v32 = *MEMORY[0x277D85DE8];
@@ -129,28 +129,28 @@
 
 - (id)emptyModelForTransaction
 {
-  v3 = objc_getProperty(a1, a2, 64, 1);
-  v4 = [a1 uuid];
-  v5 = [a1 uuid];
-  v7 = [v3 emptyModelWithID:v4 parentModelID:v5 modelClass:{objc_getProperty(a1, v6, 40, 1)}];
+  v3 = objc_getProperty(self, a2, 64, 1);
+  uuid = [self uuid];
+  uuid2 = [self uuid];
+  v7 = [v3 emptyModelWithID:uuid parentModelID:uuid2 modelClass:{objc_getProperty(self, v6, 40, 1)}];
 
   return v7;
 }
 
-- (id)_migrateUpdatedSettings:(void *)a1
+- (id)_migrateUpdatedSettings:(void *)settings
 {
   v36 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  v6 = objc_getProperty(a1, v4, 64, 1);
+  v6 = objc_getProperty(settings, v4, 64, 1);
   if (v6)
   {
-    v7 = [objc_getProperty(a1 v5];
+    v7 = [objc_getProperty(settings v5];
     dispatch_assert_queue_V2(v7);
 
-    v8 = [MEMORY[0x277D2C900] futureWithNoResult];
-    v9 = [v3 keyPathsToSettingsForMigration];
+    futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
+    keyPathsToSettingsForMigration = [v3 keyPathsToSettingsForMigration];
     v10 = objc_autoreleasePoolPush();
-    v11 = a1;
+    settingsCopy = settings;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -158,12 +158,12 @@
       *buf = 138543618;
       v33 = v13;
       v34 = 2112;
-      v35 = v9;
+      v35 = keyPathsToSettingsForMigration;
       _os_log_impl(&dword_2531F8000, v12, OS_LOG_TYPE_INFO, "%{public}@Settings to migrate: %@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v10);
-    if ([v9 count])
+    if ([keyPathsToSettingsForMigration count])
     {
       v29[0] = MEMORY[0x277D85DD0];
       v29[1] = 3221225472;
@@ -171,27 +171,27 @@
       v29[3] = &unk_279729238;
       v14 = v3;
       v30 = v14;
-      v31 = v11;
-      [v9 na_each:v29];
+      v31 = settingsCopy;
+      [keyPathsToSettingsForMigration na_each:v29];
       v15 = MEMORY[0x277D2C900];
       v27 = MEMORY[0x277D85DD0];
       v28 = v14;
       v16 = MEMORY[0x277D2C938];
-      v18 = [objc_getProperty(v11 v17];
+      v18 = [objc_getProperty(settingsCopy v17];
       v19 = [v16 schedulerWithDispatchQueue:v18];
       v20 = [v15 futureWithBlock:&v27 scheduler:v19];
     }
 
     else
     {
-      v20 = v8;
+      v20 = futureWithNoResult;
     }
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = a1;
+    settingsCopy2 = settings;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
@@ -280,15 +280,15 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
   }
 }
 
-- (void)database:(id)a3 didProcessDeletionForModel:(id)a4
+- (void)database:(id)database didProcessDeletionForModel:(id)model
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  modelCopy = model;
   if (self)
   {
     v7 = objc_getProperty(self, v5, 64, 1);
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     v11 = os_log_type_enabled(v10, OS_LOG_TYPE_INFO);
     if (v7)
@@ -299,18 +299,18 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
         v21 = 138543618;
         v22 = v12;
         v23 = 2112;
-        v24 = v6;
+        v24 = modelCopy;
         _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_INFO, "%{public}@Processing  model deletion, model:%@", &v21, 0x16u);
       }
 
       objc_autoreleasePoolPop(v8);
-      v14 = objc_getProperty(v9, v13, 64, 1);
-      v15 = [(HMDCompositeSettingsController *)v9 uuid];
-      [v14 stopObservingModelWithID:v15];
+      v14 = objc_getProperty(selfCopy, v13, 64, 1);
+      uuid = [(HMDCompositeSettingsController *)selfCopy uuid];
+      [v14 stopObservingModelWithID:uuid];
 
       v16 = MEMORY[0x277CBEC10];
-      objc_setProperty_atomic_copy(v9, v17, MEMORY[0x277CBEC10], 24);
-      objc_setProperty_atomic_copy(v9, v18, v16, 32);
+      objc_setProperty_atomic_copy(selfCopy, v17, MEMORY[0x277CBEC10], 24);
+      objc_setProperty_atomic_copy(selfCopy, v18, v16, 32);
     }
 
     else
@@ -330,21 +330,21 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleModelCreationOrUpdate:(void *)a1
+- (void)_handleModelCreationOrUpdate:(void *)update
 {
   v17 = *MEMORY[0x277D85DE8];
   v4 = a2;
-  if (a1)
+  if (update)
   {
-    v5 = [objc_getProperty(a1 v3];
+    v5 = [objc_getProperty(update v3];
     if (v5)
     {
-      v6 = [(HMDCompositeSettingsController *)a1 _migrateUpdatedSettings:v4];
+      v6 = [(HMDCompositeSettingsController *)update _migrateUpdatedSettings:v4];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __63__HMDCompositeSettingsController__handleModelCreationOrUpdate___block_invoke;
       v13[3] = &unk_27972E9E0;
-      v13[4] = a1;
+      v13[4] = update;
       v14 = v4;
       v7 = [v6 addCompletionBlock:v13];
     }
@@ -352,7 +352,7 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
     else
     {
       v8 = objc_autoreleasePoolPush();
-      v9 = a1;
+      updateCopy = update;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -369,15 +369,15 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_settingFromSetting:(id)a3 value:(id)a4 error:(id *)a5
+- (id)_settingFromSetting:(id)setting value:(id)value error:(id *)error
 {
   v166 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  settingCopy = setting;
+  valueCopy = value;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v10 = v9;
+    v10 = valueCopy;
   }
 
   else
@@ -389,7 +389,7 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
 
   if (!v11)
   {
-    v29 = v8;
+    v29 = settingCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -405,7 +405,7 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
 
     if (v28)
     {
-      v31 = v9;
+      v31 = valueCopy;
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
@@ -422,10 +422,10 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
       if (v22)
       {
         v33 = [HMDCompositeStringSetting alloc];
-        v34 = [v22 stringValue];
-        v35 = [v28 readVersion];
-        v36 = [v28 writeVersion];
-        self = [(HMDCompositeStringSetting *)v33 initWithValue:v34 readVersion:v35 writeVersion:v36];
+        stringValue = [v22 stringValue];
+        readVersion = [v28 readVersion];
+        writeVersion = [v28 writeVersion];
+        self = [(HMDCompositeStringSetting *)v33 initWithValue:stringValue readVersion:readVersion writeVersion:writeVersion];
 
         v14 = 0;
       }
@@ -434,7 +434,7 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
       {
         v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:19 description:@"Invalid string setting value" reason:0 suggestion:{@"Setting type is String, please pass a String value"}];
         v62 = objc_autoreleasePoolPush();
-        v63 = self;
+        selfCopy = self;
         v64 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
         {
@@ -450,12 +450,12 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
         }
 
         objc_autoreleasePoolPop(v62);
-        if (a5)
+        if (error)
         {
           v67 = v14;
           v22 = 0;
           self = 0;
-          *a5 = v14;
+          *error = v14;
         }
 
         else
@@ -484,7 +484,7 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
 
       if (v22)
       {
-        v46 = v9;
+        v46 = valueCopy;
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
@@ -503,15 +503,15 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
           v49 = v48;
           v50 = [HMDCompositeBoolSetting alloc];
           v51 = v49;
-          v52 = [v49 BOOLValue];
-          v53 = [v22 readVersion];
+          bOOLValue = [v49 BOOLValue];
+          readVersion2 = [v22 readVersion];
           [v22 writeVersion];
-          v55 = v54 = v8;
-          v56 = v52;
+          v55 = v54 = settingCopy;
+          v56 = bOOLValue;
           v57 = v51;
-          self = [(HMDCompositeBoolSetting *)v50 initWithValue:v56 readVersion:v53 writeVersion:v55];
+          self = [(HMDCompositeBoolSetting *)v50 initWithValue:v56 readVersion:readVersion2 writeVersion:v55];
 
-          v8 = v54;
+          settingCopy = v54;
           v11 = 0;
 
           v14 = 0;
@@ -519,10 +519,10 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
 
         else
         {
-          v93 = a5;
+          errorCopy = error;
           v14 = [MEMORY[0x277CCA9B8] hmErrorWithCode:19 description:@"Invalid BOOL setting value" reason:0 suggestion:{@"Setting type is Bool, please pass a Bool value"}];
           v94 = objc_autoreleasePoolPush();
-          v95 = self;
+          selfCopy2 = self;
           v96 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v96, OS_LOG_TYPE_ERROR))
           {
@@ -538,12 +538,12 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
           }
 
           objc_autoreleasePoolPop(v94);
-          if (v93)
+          if (errorCopy)
           {
             v99 = v14;
             v57 = 0;
             self = 0;
-            *v93 = v14;
+            *errorCopy = v14;
           }
 
           else
@@ -575,7 +575,7 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
         v149 = v70;
         if (v70)
         {
-          v71 = v9;
+          v71 = valueCopy;
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
@@ -595,7 +595,7 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
           {
             v75 = [MEMORY[0x277CCA9B8] hmErrorWithCode:19 description:@"Invalid Number setting value" reason:0 suggestion:{@"Setting type is Number, please pass a Number value"}];
             v76 = objc_autoreleasePoolPush();
-            v77 = self;
+            selfCopy3 = self;
             v78 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v78, OS_LOG_TYPE_ERROR))
             {
@@ -608,10 +608,10 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
             }
 
             objc_autoreleasePoolPop(v76);
-            if (a5)
+            if (error)
             {
               v80 = v75;
-              *a5 = v75;
+              *error = v75;
             }
 
             v74 = v75;
@@ -619,15 +619,15 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
           }
 
           v81 = [HMDCompositeNumberSetting alloc];
-          v82 = [v73 numberValue];
+          numberValue = [v73 numberValue];
           [v149 readVersion];
-          v84 = v83 = v8;
-          v85 = [v149 writeVersion];
+          v84 = v83 = settingCopy;
+          writeVersion2 = [v149 writeVersion];
           v86 = v81;
           v14 = v74;
-          self = [(HMDCompositeNumberSetting *)v86 initWithValue:v82 readVersion:v84 writeVersion:v85];
+          self = [(HMDCompositeNumberSetting *)v86 initWithValue:numberValue readVersion:v84 writeVersion:writeVersion2];
 
-          v8 = v83;
+          settingCopy = v83;
           v87 = v152;
         }
 
@@ -649,8 +649,8 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
 
           if (v102)
           {
-            v159 = v8;
-            v103 = v9;
+            v159 = settingCopy;
+            v103 = valueCopy;
             if ([v103 conformsToProtocol:&unk_28667C8D8])
             {
               v104 = v103;
@@ -669,7 +669,7 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
               v153 = v102;
               v107 = [MEMORY[0x277CCA9B8] hmErrorWithCode:19 description:@"Invalid Language setting value" reason:0 suggestion:{@"Setting type is Language, please pass a Language value"}];
               v108 = objc_autoreleasePoolPush();
-              v109 = self;
+              selfCopy4 = self;
               v110 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v110, OS_LOG_TYPE_ERROR))
               {
@@ -682,10 +682,10 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
               }
 
               objc_autoreleasePoolPop(v108);
-              if (a5)
+              if (error)
               {
                 v106 = v107;
-                *a5 = v107;
+                *error = v107;
               }
 
               else
@@ -698,29 +698,29 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
 
             v154 = v106;
             v157 = [HMDCompositeLanguageSetting alloc];
-            v147 = [v105 inputLanguageCode];
-            v137 = [v105 outputVoiceLanguageCode];
-            v138 = [v105 outputVoiceGenderCode];
+            inputLanguageCode = [v105 inputLanguageCode];
+            outputVoiceLanguageCode = [v105 outputVoiceLanguageCode];
+            outputVoiceGenderCode = [v105 outputVoiceGenderCode];
             v139 = v105;
             v148 = v105;
-            v140 = v138;
-            v141 = [v139 voiceName];
-            v142 = [v102 readVersion];
-            v143 = [v102 writeVersion];
-            self = [(HMDCompositeLanguageSetting *)v157 initWithInputLanguage:v147 outputVoiceLanguageCode:v137 outputVoiceGenderCode:v140 voiceName:v141 readVersion:v142 writeVersion:v143];
+            v140 = outputVoiceGenderCode;
+            voiceName = [v139 voiceName];
+            readVersion3 = [v102 readVersion];
+            writeVersion3 = [v102 writeVersion];
+            self = [(HMDCompositeLanguageSetting *)v157 initWithInputLanguage:inputLanguageCode outputVoiceLanguageCode:outputVoiceLanguageCode outputVoiceGenderCode:v140 voiceName:voiceName readVersion:readVersion3 writeVersion:writeVersion3];
 
             v87 = v102;
             v14 = v154;
 
-            v8 = v159;
+            settingCopy = v159;
           }
 
           else
           {
-            v123 = v8;
+            v123 = settingCopy;
             v124 = [MEMORY[0x277CCA9B8] hmErrorWithCode:19 description:@"trying to create an invalid setting from value" reason:0 suggestion:0];
             v125 = objc_autoreleasePoolPush();
-            v126 = self;
+            selfCopy5 = self;
             v127 = HMFGetOSLogHandle();
             if (os_log_type_enabled(v127, OS_LOG_TYPE_ERROR))
             {
@@ -733,21 +733,21 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
             }
 
             objc_autoreleasePoolPop(v125);
-            if (a5)
+            if (error)
             {
               v129 = v124;
               v87 = 0;
               self = 0;
-              *a5 = v124;
+              *error = v124;
               v14 = v124;
-              v8 = v123;
+              settingCopy = v123;
             }
 
             else
             {
               v87 = 0;
               self = 0;
-              v8 = v123;
+              settingCopy = v123;
               v14 = v124;
             }
           }
@@ -761,19 +761,19 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
     goto LABEL_116;
   }
 
-  v158 = v8;
-  v12 = v8;
+  v158 = settingCopy;
+  v12 = settingCopy;
   v13 = v11;
   v14 = v13;
   if (self)
   {
-    v156 = a5;
-    v15 = [v13 type];
-    if ((v15 - 1) >= 2)
+    errorCopy2 = error;
+    type = [v13 type];
+    if ((type - 1) >= 2)
     {
       v22 = [MEMORY[0x277CCA9B8] hmErrorWithCode:3 description:@"Unable to derived setting" reason:@"unknown version type" suggestion:0];
       v37 = objc_autoreleasePoolPush();
-      v38 = self;
+      selfCopy6 = self;
       v39 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
@@ -792,11 +792,11 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
       }
 
       objc_autoreleasePoolPop(v37);
-      if (v156)
+      if (errorCopy2)
       {
         v43 = v22;
         self = 0;
-        *v156 = v22;
+        *errorCopy2 = v22;
       }
 
       else
@@ -804,7 +804,7 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
         self = 0;
       }
 
-      v8 = v158;
+      settingCopy = v158;
       v28 = v12;
     }
 
@@ -813,32 +813,32 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
       v155 = v11;
       [v12 readVersion];
       v17 = v16 = v14;
-      v18 = [v12 writeVersion];
+      writeVersion4 = [v12 writeVersion];
       v151 = v16;
-      v19 = [v16 version];
-      if (v15 == 1)
+      version = [v16 version];
+      if (type == 1)
       {
         v20 = v17;
       }
 
       else
       {
-        v20 = v18;
+        v20 = writeVersion4;
       }
 
-      if (v15 == 1)
+      if (type == 1)
       {
-        v21 = v18;
+        v21 = writeVersion4;
       }
 
       else
       {
-        v21 = v19;
+        v21 = version;
       }
 
-      if (v15 == 1)
+      if (type == 1)
       {
-        v22 = v19;
+        v22 = version;
       }
 
       else
@@ -863,8 +863,8 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
       if (v25)
       {
         v26 = [HMDCompositeStringSetting alloc];
-        v27 = [v25 stringValue];
-        self = [(HMDCompositeStringSetting *)v26 initWithValue:v27 readVersion:v22 writeVersion:v21];
+        stringValue2 = [v25 stringValue];
+        self = [(HMDCompositeStringSetting *)v26 initWithValue:stringValue2 readVersion:v22 writeVersion:v21];
 
         v14 = v16;
         v11 = v155;
@@ -916,8 +916,8 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
           if (v90)
           {
             v91 = [HMDCompositeNumberSetting alloc];
-            v92 = [v90 numberValue];
-            self = [(HMDCompositeNumberSetting *)v91 initWithValue:v92 readVersion:v22 writeVersion:v150];
+            numberValue2 = [v90 numberValue];
+            self = [(HMDCompositeNumberSetting *)v91 initWithValue:numberValue2 readVersion:v22 writeVersion:v150];
 
             v14 = v16;
             v11 = v155;
@@ -942,14 +942,14 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
             if (v114)
             {
               v115 = [HMDCompositeLanguageSetting alloc];
-              v116 = [v114 inputLanguageCode];
-              v117 = [v114 outputVoiceLanguageCode];
-              v118 = [v114 outputVoiceGenderCode];
+              inputLanguageCode2 = [v114 inputLanguageCode];
+              outputVoiceLanguageCode2 = [v114 outputVoiceLanguageCode];
+              outputVoiceGenderCode2 = [v114 outputVoiceGenderCode];
               [v114 voiceName];
               v120 = v119 = v114;
               v121 = v115;
-              v122 = v117;
-              self = [(HMDCompositeLanguageSetting *)v121 initWithInputLanguage:v116 outputVoiceLanguageCode:v117 outputVoiceGenderCode:v118 voiceName:v120 readVersion:v22 writeVersion:v150];
+              v122 = outputVoiceLanguageCode2;
+              self = [(HMDCompositeLanguageSetting *)v121 initWithInputLanguage:inputLanguageCode2 outputVoiceLanguageCode:outputVoiceLanguageCode2 outputVoiceGenderCode:outputVoiceGenderCode2 voiceName:v120 readVersion:v22 writeVersion:v150];
 
               v14 = v151;
               v11 = v155;
@@ -961,7 +961,7 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
               v146 = v112;
               v130 = [MEMORY[0x277CCA9B8] hmErrorWithCode:19 description:@"Unable to derived setting" reason:@"unknown setting type" suggestion:0];
               v131 = objc_autoreleasePoolPush();
-              v132 = self;
+              selfCopy7 = self;
               v133 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v133, OS_LOG_TYPE_ERROR))
               {
@@ -980,10 +980,10 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
 
               objc_autoreleasePoolPop(v131);
               v11 = v155;
-              if (v156)
+              if (errorCopy2)
               {
                 v136 = v130;
-                *v156 = v130;
+                *errorCopy2 = v130;
               }
 
               self = 0;
@@ -1000,7 +1000,7 @@ void __58__HMDCompositeSettingsController__migrateUpdatedSettings___block_invoke
         }
       }
 
-      v8 = v158;
+      settingCopy = v158;
     }
 
 LABEL_116:
@@ -1016,14 +1016,14 @@ LABEL_117:
   return self;
 }
 
-- (void)updateSettingsForKeyPaths:(id)a3 callerVersion:(id)a4 completion:(id)a5
+- (void)updateSettingsForKeyPaths:(id)paths callerVersion:(id)version completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(HMDCompositeSettingsController *)self _metricSubmittingSingleUpdateCompletionFromCompletion:v10];
-  if ([v8 count])
+  pathsCopy = paths;
+  versionCopy = version;
+  completionCopy = completion;
+  v11 = [(HMDCompositeSettingsController *)self _metricSubmittingSingleUpdateCompletionFromCompletion:completionCopy];
+  if ([pathsCopy count])
   {
     if (self)
     {
@@ -1035,10 +1035,10 @@ LABEL_117:
       Property = 0;
     }
 
-    v14 = [Property rawDatabase];
-    if (v14)
+    rawDatabase = [Property rawDatabase];
+    if (rawDatabase)
     {
-      v16 = v14;
+      v16 = rawDatabase;
       if (self)
       {
         v17 = objc_getProperty(self, v15, 64, 1);
@@ -1049,22 +1049,22 @@ LABEL_117:
         v17 = 0;
       }
 
-      v18 = [v17 queue];
+      queue = [v17 queue];
       v30[0] = MEMORY[0x277D85DD0];
       v30[1] = 3221225472;
       v30[2] = __85__HMDCompositeSettingsController_updateSettingsForKeyPaths_callerVersion_completion___block_invoke;
       v30[3] = &unk_279734578;
       v30[4] = self;
-      v31 = v8;
-      v32 = v9;
+      v31 = pathsCopy;
+      v32 = versionCopy;
       v33 = v11;
-      dispatch_async(v18, v30);
+      dispatch_async(queue, v30);
     }
 
     else
     {
       v23 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy = self;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
@@ -1086,7 +1086,7 @@ LABEL_117:
   else
   {
     v19 = objc_autoreleasePoolPush();
-    v20 = self;
+    selfCopy2 = self;
     v21 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
     {
@@ -1104,23 +1104,23 @@ LABEL_117:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_metricSubmittingSingleUpdateCompletionFromCompletion:(void *)a1
+- (id)_metricSubmittingSingleUpdateCompletionFromCompletion:(void *)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
     [MEMORY[0x277D17DC0] currentTime];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __88__HMDCompositeSettingsController__metricSubmittingSingleUpdateCompletionFromCompletion___block_invoke;
     aBlock[3] = &unk_27972FAB0;
-    aBlock[4] = a1;
+    aBlock[4] = completion;
     v8 = v4;
     v7 = v3;
-    a1 = _Block_copy(aBlock);
+    completion = _Block_copy(aBlock);
   }
 
-  return a1;
+  return completion;
 }
 
 void __85__HMDCompositeSettingsController_updateSettingsForKeyPaths_callerVersion_completion___block_invoke(uint64_t a1)
@@ -1456,14 +1456,14 @@ void __88__HMDCompositeSettingsController__metricSubmittingSingleUpdateCompletio
   (*(*(a1 + 5) + 16))();
 }
 
-- (void)updateSettingForKeyPath:(id)a3 value:(id)a4 callerVersion:(id)a5 completion:(id)a6
+- (void)updateSettingForKeyPath:(id)path value:(id)value callerVersion:(id)version completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v15 = [(HMDCompositeSettingsController *)self _metricSubmittingSingleUpdateCompletionFromCompletion:v13];
+  pathCopy = path;
+  valueCopy = value;
+  versionCopy = version;
+  completionCopy = completion;
+  v15 = [(HMDCompositeSettingsController *)self _metricSubmittingSingleUpdateCompletionFromCompletion:completionCopy];
   if (self)
   {
     Property = objc_getProperty(self, v14, 64, 1);
@@ -1474,8 +1474,8 @@ void __88__HMDCompositeSettingsController__metricSubmittingSingleUpdateCompletio
     Property = 0;
   }
 
-  v18 = [Property rawDatabase];
-  if (v18)
+  rawDatabase = [Property rawDatabase];
+  if (rawDatabase)
   {
     if (self)
     {
@@ -1487,23 +1487,23 @@ void __88__HMDCompositeSettingsController__metricSubmittingSingleUpdateCompletio
       v19 = 0;
     }
 
-    v20 = [v19 queue];
+    queue = [v19 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __89__HMDCompositeSettingsController_updateSettingForKeyPath_value_callerVersion_completion___block_invoke;
     block[3] = &unk_279734668;
     block[4] = self;
-    v29 = v10;
-    v30 = v11;
-    v31 = v12;
+    v29 = pathCopy;
+    v30 = valueCopy;
+    v31 = versionCopy;
     v32 = v15;
-    dispatch_async(v20, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
@@ -1515,7 +1515,7 @@ void __88__HMDCompositeSettingsController__metricSubmittingSingleUpdateCompletio
 
     objc_autoreleasePoolPop(v21);
     v25 = [MEMORY[0x277CCA9B8] hmErrorWithCode:21];
-    v26 = [[HMDCompositeSettingOperationResult alloc] initWithKeyPath:v10 setting:0 metadata:0 error:v25];
+    v26 = [[HMDCompositeSettingOperationResult alloc] initWithKeyPath:pathCopy setting:0 metadata:0 error:v25];
     (v15)[2](v15, v26);
   }
 
@@ -1817,12 +1817,12 @@ void __90__HMDCompositeSettingsController__updateSettingForKeyPath_value_callerV
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchSynchronousSettingsForKeyPaths:(id)a3 callerVersion:(id)a4 callerPrivilege:(unint64_t)a5
+- (id)fetchSynchronousSettingsForKeyPaths:(id)paths callerVersion:(id)version callerPrivilege:(unint64_t)privilege
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v11 = [MEMORY[0x277CBEB18] array];
+  pathsCopy = paths;
+  versionCopy = version;
+  array = [MEMORY[0x277CBEB18] array];
   if (self)
   {
     Property = objc_getProperty(self, v10, 64, 1);
@@ -1833,8 +1833,8 @@ void __90__HMDCompositeSettingsController__updateSettingForKeyPath_value_callerV
     Property = 0;
   }
 
-  v14 = [Property rawDatabase];
-  if (v14)
+  rawDatabase = [Property rawDatabase];
+  if (rawDatabase)
   {
     if (self)
     {
@@ -1846,25 +1846,25 @@ void __90__HMDCompositeSettingsController__updateSettingForKeyPath_value_callerV
       v15 = 0;
     }
 
-    v16 = [v15 queue];
-    dispatch_assert_queue_V2(v16);
+    queue = [v15 queue];
+    dispatch_assert_queue_V2(queue);
 
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __100__HMDCompositeSettingsController_fetchSynchronousSettingsForKeyPaths_callerVersion_callerPrivilege___block_invoke_2;
     v28[3] = &unk_279729288;
     v28[4] = self;
-    v29 = v9;
-    v31 = a5;
-    v17 = v11;
+    v29 = versionCopy;
+    privilegeCopy = privilege;
+    v17 = array;
     v30 = v17;
-    [v8 na_each:v28];
+    [pathsCopy na_each:v28];
   }
 
   else
   {
     v18 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy = self;
     v20 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
     {
@@ -1882,7 +1882,7 @@ void __90__HMDCompositeSettingsController__updateSettingForKeyPath_value_callerV
     v32[3] = &unk_2797330F0;
     v33 = v22;
     v23 = v22;
-    v24 = [v8 na_map:v32];
+    v24 = [pathsCopy na_map:v32];
     v17 = [v24 mutableCopy];
   }
 
@@ -1916,38 +1916,38 @@ void __100__HMDCompositeSettingsController_fetchSynchronousSettingsForKeyPaths_c
   [(HMDCompositeSettingsController *)v3 _fetchSettingForKeyPath:v6 callerVersion:v4 callerPrivilege:v5 completion:v7];
 }
 
-- (id)_metricSubmittingSingleFetchCompletionFromCompletion:(void *)a1
+- (id)_metricSubmittingSingleFetchCompletionFromCompletion:(void *)completion
 {
   v3 = a2;
-  if (a1)
+  if (completion)
   {
     [MEMORY[0x277D17DC0] currentTime];
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __87__HMDCompositeSettingsController__metricSubmittingSingleFetchCompletionFromCompletion___block_invoke;
     aBlock[3] = &unk_27972FAB0;
-    aBlock[4] = a1;
+    aBlock[4] = completion;
     v8 = v4;
     v7 = v3;
-    a1 = _Block_copy(aBlock);
+    completion = _Block_copy(aBlock);
   }
 
-  return a1;
+  return completion;
 }
 
-- (void)_fetchSettingForKeyPath:(void *)a3 callerVersion:(uint64_t)a4 callerPrivilege:(void *)a5 completion:
+- (void)_fetchSettingForKeyPath:(void *)path callerVersion:(uint64_t)version callerPrivilege:(void *)privilege completion:
 {
   v55 = *MEMORY[0x277D85DE8];
   v9 = a2;
-  v10 = a3;
-  v11 = a5;
-  v13 = v11;
-  if (a1 && v11)
+  pathCopy = path;
+  privilegeCopy = privilege;
+  v13 = privilegeCopy;
+  if (self && privilegeCopy)
   {
-    if ([objc_getProperty(a1 v12])
+    if ([objc_getProperty(self v12])
     {
       v15 = objc_autoreleasePoolPush();
-      v16 = a1;
+      selfCopy = self;
       v17 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
       {
@@ -1966,11 +1966,11 @@ void __100__HMDCompositeSettingsController_fetchSynchronousSettingsForKeyPaths_c
       goto LABEL_26;
     }
 
-    v19 = [objc_getProperty(a1 v14];
+    v19 = [objc_getProperty(self v14];
     if (!v19)
     {
       v37 = objc_autoreleasePoolPush();
-      v38 = a1;
+      selfCopy2 = self;
       v39 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_INFO))
       {
@@ -1987,17 +1987,17 @@ void __100__HMDCompositeSettingsController_fetchSynchronousSettingsForKeyPaths_c
       goto LABEL_25;
     }
 
-    v22 = [objc_getProperty(a1 v21];
+    v22 = [objc_getProperty(self v21];
     dispatch_assert_queue_V2(v22);
 
-    v20 = [objc_getProperty(a1 v23];
-    v25 = [objc_getProperty(a1 v24];
+    v20 = [objc_getProperty(self v23];
+    v25 = [objc_getProperty(self v24];
     v26 = v25;
     if (!v20)
     {
       v42 = [MEMORY[0x277CCA9B8] hmErrorWithCode:21 description:@"Setting has not been configured yet (no setting)" reason:0 suggestion:0];
       v43 = objc_autoreleasePoolPush();
-      v44 = a1;
+      selfCopy3 = self;
       v45 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
       {
@@ -2017,11 +2017,11 @@ void __100__HMDCompositeSettingsController_fetchSynchronousSettingsForKeyPaths_c
       goto LABEL_25;
     }
 
-    if (!v25 || (-[HMDCompositeSettingOperationResult privileges](v25, "privileges"), v27 = objc_claimAutoreleasedReturnValue(), v28 = HMDUserPrivilegeCompare(a4, [v27 minReadUserPrivilege]), v27, v28 == -1))
+    if (!v25 || (-[HMDCompositeSettingOperationResult privileges](v25, "privileges"), v27 = objc_claimAutoreleasedReturnValue(), v28 = HMDUserPrivilegeCompare(version, [v27 minReadUserPrivilege]), v27, v28 == -1))
     {
       v31 = [MEMORY[0x277CCA9B8] hmErrorWithCode:17 description:@"Insufficient User read Privilege or missing Metadata" reason:0 suggestion:0];
       v32 = objc_autoreleasePoolPush();
-      v33 = a1;
+      selfCopy5 = self;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
@@ -2038,8 +2038,8 @@ void __100__HMDCompositeSettingsController_fetchSynchronousSettingsForKeyPaths_c
 
     else
     {
-      v29 = [(HMDCompositeSettingOperationResult *)v20 readVersion];
-      v30 = [v29 isGreaterThanVersion:v10];
+      readVersion = [(HMDCompositeSettingOperationResult *)v20 readVersion];
+      v30 = [readVersion isGreaterThanVersion:pathCopy];
 
       if (!v30)
       {
@@ -2051,7 +2051,7 @@ void __100__HMDCompositeSettingsController_fetchSynchronousSettingsForKeyPaths_c
 
       v31 = [MEMORY[0x277CCA9B8] hmErrorWithCode:10 description:@"Read version does not meet the minimum" reason:0 suggestion:0];
       v32 = objc_autoreleasePoolPush();
-      v33 = a1;
+      selfCopy5 = self;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
       {
@@ -2100,12 +2100,12 @@ void __87__HMDCompositeSettingsController__metricSubmittingSingleFetchCompletion
   (*(*(a1 + 5) + 16))();
 }
 
-- (void)fetchSettingsForKeyPaths:(id)a3 callerVersion:(id)a4 callerPrivilege:(unint64_t)a5 completion:(id)a6
+- (void)fetchSettingsForKeyPaths:(id)paths callerVersion:(id)version callerPrivilege:(unint64_t)privilege completion:(id)completion
 {
   v49 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v13 = a6;
+  pathsCopy = paths;
+  versionCopy = version;
+  completionCopy = completion;
   if (self)
   {
     Property = objc_getProperty(self, v12, 64, 1);
@@ -2116,8 +2116,8 @@ void __87__HMDCompositeSettingsController__metricSubmittingSingleFetchCompletion
     Property = 0;
   }
 
-  v15 = [Property rawDatabase];
-  v16 = v13;
+  rawDatabase = [Property rawDatabase];
+  v16 = completionCopy;
   if (self)
   {
     [MEMORY[0x277D17DC0] currentTime];
@@ -2125,7 +2125,7 @@ void __87__HMDCompositeSettingsController__metricSubmittingSingleFetchCompletion
     *(&aBlock + 1) = 3221225472;
     v44 = __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompletionFromCompletion___block_invoke;
     v45 = &unk_279729210;
-    v46 = self;
+    selfCopy = self;
     v48 = v17;
     v47 = v16;
     v18 = _Block_copy(&aBlock);
@@ -2136,12 +2136,12 @@ void __87__HMDCompositeSettingsController__metricSubmittingSingleFetchCompletion
     v18 = 0;
   }
 
-  if (v15)
+  if (rawDatabase)
   {
-    if (![v10 count])
+    if (![pathsCopy count])
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = self;
+      selfCopy2 = self;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
@@ -2168,17 +2168,17 @@ void __87__HMDCompositeSettingsController__metricSubmittingSingleFetchCompletion
       v24 = 0;
     }
 
-    v25 = [v24 queue];
+    queue = [v24 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __100__HMDCompositeSettingsController_fetchSettingsForKeyPaths_callerVersion_callerPrivilege_completion___block_invoke_49;
     block[3] = &unk_2797309E0;
-    v36 = v10;
-    v37 = self;
-    v38 = v11;
-    v40 = a5;
+    v36 = pathsCopy;
+    selfCopy3 = self;
+    v38 = versionCopy;
+    privilegeCopy = privilege;
     v39 = v18;
-    dispatch_async(v25, block);
+    dispatch_async(queue, block);
 
     v26 = v36;
   }
@@ -2186,7 +2186,7 @@ void __87__HMDCompositeSettingsController__metricSubmittingSingleFetchCompletion
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy4 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
     {
@@ -2204,7 +2204,7 @@ void __87__HMDCompositeSettingsController__metricSubmittingSingleFetchCompletion
     v41[3] = &unk_2797330F0;
     v42 = v31;
     v26 = v31;
-    v32 = [v10 na_map:v41];
+    v32 = [pathsCopy na_map:v41];
     (v18)[2](v18, v32);
   }
 
@@ -2283,13 +2283,13 @@ void __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompleti
   [v5 submitLogEvent:v9 error:v10];
 }
 
-- (void)fetchSettingForKeyPath:(id)a3 callerVersion:(id)a4 callerPrivilege:(unint64_t)a5 completion:(id)a6
+- (void)fetchSettingForKeyPath:(id)path callerVersion:(id)version callerPrivilege:(unint64_t)privilege completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  v14 = [(HMDCompositeSettingsController *)self _metricSubmittingSingleFetchCompletionFromCompletion:v12];
+  pathCopy = path;
+  versionCopy = version;
+  completionCopy = completion;
+  v14 = [(HMDCompositeSettingsController *)self _metricSubmittingSingleFetchCompletionFromCompletion:completionCopy];
   if (self)
   {
     Property = objc_getProperty(self, v13, 64, 1);
@@ -2300,8 +2300,8 @@ void __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompleti
     Property = 0;
   }
 
-  v17 = [Property rawDatabase];
-  if (v17)
+  rawDatabase = [Property rawDatabase];
+  if (rawDatabase)
   {
     if (self)
     {
@@ -2313,23 +2313,23 @@ void __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompleti
       v18 = 0;
     }
 
-    v19 = [v18 queue];
+    queue = [v18 queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __98__HMDCompositeSettingsController_fetchSettingForKeyPath_callerVersion_callerPrivilege_completion___block_invoke;
     block[3] = &unk_2797309E0;
     block[4] = self;
-    v28 = v10;
-    v29 = v11;
-    v31 = a5;
+    v28 = pathCopy;
+    v29 = versionCopy;
+    privilegeCopy = privilege;
     v30 = v14;
-    dispatch_async(v19, block);
+    dispatch_async(queue, block);
   }
 
   else
   {
     v20 = objc_autoreleasePoolPush();
-    v21 = self;
+    selfCopy = self;
     v22 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
     {
@@ -2341,7 +2341,7 @@ void __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompleti
 
     objc_autoreleasePoolPop(v20);
     v24 = [MEMORY[0x277CCA9B8] hmErrorWithCode:21];
-    v25 = [[HMDCompositeSettingOperationResult alloc] initWithKeyPath:v10 setting:0 metadata:0 error:v24];
+    v25 = [[HMDCompositeSettingOperationResult alloc] initWithKeyPath:pathCopy setting:0 metadata:0 error:v24];
     (v14)[2](v14, v25);
   }
 
@@ -2351,17 +2351,17 @@ void __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompleti
 - (id)logIdentifier
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(HMDCompositeSettingsController *)self homeUUID];
-  v5 = [(HMDCompositeSettingsController *)self uuid];
-  v6 = [v3 stringWithFormat:@"%@.%@", v4, v5];
+  homeUUID = [(HMDCompositeSettingsController *)self homeUUID];
+  uuid = [(HMDCompositeSettingsController *)self uuid];
+  v6 = [v3 stringWithFormat:@"%@.%@", homeUUID, uuid];
 
   return v6;
 }
 
-- (void)_createSettingsFromModel:(id)a3
+- (void)_createSettingsFromModel:(id)model
 {
   v66 = *MEMORY[0x277D85DE8];
-  v57 = a3;
+  modelCopy = model;
   if (self)
   {
     Property = objc_getProperty(self, v4, 64, 1);
@@ -2372,8 +2372,8 @@ void __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompleti
     Property = 0;
   }
 
-  v56 = [Property rawDatabase];
-  if (v56)
+  rawDatabase = [Property rawDatabase];
+  if (rawDatabase)
   {
     if (self)
     {
@@ -2385,16 +2385,16 @@ void __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompleti
 
     else
     {
-      v55 = [0 queue];
-      dispatch_assert_queue_V2(v55);
+      queue = [0 queue];
+      dispatch_assert_queue_V2(queue);
 
       v9 = 0;
     }
 
     v10 = v9;
-    v11 = [v57 keyPathsToSettings];
+    keyPathsToSettings = [modelCopy keyPathsToSettings];
     v12 = v10;
-    v13 = v11;
+    v13 = keyPathsToSettings;
     v14 = v13;
     if (self)
     {
@@ -2408,7 +2408,7 @@ void __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompleti
       v62 = v16;
       [v14 na_each:v59];
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
@@ -2430,7 +2430,7 @@ void __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompleti
     }
 
     v22 = objc_autoreleasePoolPush();
-    v23 = self;
+    selfCopy2 = self;
     v24 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
     {
@@ -2450,20 +2450,20 @@ void __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompleti
       if (self)
       {
         v28 = [v26 mutableCopy];
-        v30 = objc_getProperty(v23, v29, 56, 1);
+        v30 = objc_getProperty(selfCopy2, v29, 56, 1);
         *v59 = MEMORY[0x277D85DD0];
         *&v59[8] = 3221225472;
         *&v59[16] = __62__HMDCompositeSettingsController_filteredSettingsForSettings___block_invoke;
         v60 = &unk_279732AC0;
         v31 = v28;
         v61 = v31;
-        v62 = v23;
+        v62 = selfCopy2;
         [v30 na_each:v59];
         v32 = v31;
 
         if ([v32 count])
         {
-          v33 = [MEMORY[0x277CBEB38] dictionary];
+          dictionary = [MEMORY[0x277CBEB38] dictionary];
           v64 = 0u;
           v65 = 0u;
           memset(buf, 0, sizeof(buf));
@@ -2482,8 +2482,8 @@ void __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompleti
                 }
 
                 v38 = *(*&buf[8] + 8 * i);
-                v39 = [objc_getProperty(v23 v34];
-                [v33 setObject:v39 forKeyedSubscript:v38];
+                v39 = [objc_getProperty(selfCopy2 v34];
+                [dictionary setObject:v39 forKeyedSubscript:v38];
               }
 
               v35 = [v27 countByEnumeratingWithState:buf objects:v59 count:16];
@@ -2492,9 +2492,9 @@ void __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompleti
             while (v35);
           }
 
-          v40 = [(HMDCompositeSettingsController *)v23 delegate];
-          v41 = [v33 copy];
-          [v40 settingsController:v23 didUpdateSettings:v27 metadata:v41];
+          delegate = [(HMDCompositeSettingsController *)selfCopy2 delegate];
+          v41 = [dictionary copy];
+          [delegate settingsController:selfCopy2 didUpdateSettings:v27 metadata:v41];
         }
 
         else
@@ -2504,41 +2504,41 @@ void __89__HMDCompositeSettingsController__metricSubmittingMultipleFetchCompleti
       }
     }
 
-    v47 = [v57 keyPathsToSettings];
+    keyPathsToSettings2 = [modelCopy keyPathsToSettings];
     if (self)
     {
-      objc_setProperty_atomic_copy(v23, v46, v47, 24);
+      objc_setProperty_atomic_copy(selfCopy2, v46, keyPathsToSettings2, 24);
     }
 
     v48 = self == 0;
 
-    v50 = [v57 keyPathsToSettingMetadata];
+    keyPathsToSettingMetadata = [modelCopy keyPathsToSettingMetadata];
     if (!v48)
     {
-      objc_setProperty_atomic_copy(v23, v49, v50, 32);
+      objc_setProperty_atomic_copy(selfCopy2, v49, keyPathsToSettingMetadata, 32);
     }
 
     os_unfair_lock_lock_with_options();
-    if (!v23->_configured)
+    if (!selfCopy2->_configured)
     {
-      v23->_configured = 1;
-      v52 = objc_getProperty(v23, v51, 64, 1);
-      v53 = [v52 queue];
+      selfCopy2->_configured = 1;
+      v52 = objc_getProperty(selfCopy2, v51, 64, 1);
+      queue2 = [v52 queue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __59__HMDCompositeSettingsController__createSettingsFromModel___block_invoke;
       block[3] = &unk_279735D00;
-      block[4] = v23;
-      dispatch_async(v53, block);
+      block[4] = selfCopy2;
+      dispatch_async(queue2, block);
     }
 
-    os_unfair_lock_unlock(&v23->_lock);
+    os_unfair_lock_unlock(&selfCopy2->_lock);
   }
 
   else
   {
     v42 = objc_autoreleasePoolPush();
-    v43 = self;
+    selfCopy3 = self;
     v44 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v44, OS_LOG_TYPE_INFO))
     {
@@ -2620,10 +2620,10 @@ void __74__HMDCompositeSettingsController__addedOrUpdatedSettingsFrom_newSetting
   }
 }
 
-- (void)setConfigured:(BOOL)a3
+- (void)setConfigured:(BOOL)configured
 {
   os_unfair_lock_lock_with_options();
-  self->_configured = a3;
+  self->_configured = configured;
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -2638,22 +2638,22 @@ void __74__HMDCompositeSettingsController__addedOrUpdatedSettingsFrom_newSetting
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   if (self)
   {
     self = objc_getProperty(self, a2, 64, 1);
   }
 
-  [(HMDCompositeSettingsController *)self startWithDelegate:v2];
+  [(HMDCompositeSettingsController *)self startWithDelegate:selfCopy];
 }
 
-- (HMDCompositeSettingsController)initWithDatabaseAdapter:(id)a3 model:(Class)a4 homeUUID:(id)a5 ownerUUID:(id)a6 logEventSubmitter:(id)a7 settingKeyPathBlockList:(id)a8
+- (HMDCompositeSettingsController)initWithDatabaseAdapter:(id)adapter model:(Class)model homeUUID:(id)d ownerUUID:(id)iD logEventSubmitter:(id)submitter settingKeyPathBlockList:(id)list
 {
-  v22 = a3;
-  v21 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
+  adapterCopy = adapter;
+  dCopy = d;
+  iDCopy = iD;
+  submitterCopy = submitter;
+  listCopy = list;
   v23.receiver = self;
   v23.super_class = HMDCompositeSettingsController;
   v18 = [(HMDCompositeSettingsController *)&v23 init];
@@ -2662,25 +2662,25 @@ void __74__HMDCompositeSettingsController__addedOrUpdatedSettingsFrom_newSetting
   {
     v18->_lock._os_unfair_lock_opaque = 0;
     v18->_configured = 0;
-    objc_storeStrong(&v18->_modelClass, a4);
-    objc_storeStrong(&v19->_databaseAdapter, a3);
-    objc_storeStrong(&v19->_uuid, a6);
-    objc_storeStrong(&v19->_homeUUID, a5);
-    objc_storeStrong(&v19->_logEventSubmitter, a7);
-    objc_storeStrong(&v19->_settingKeyPathBlockList, a8);
+    objc_storeStrong(&v18->_modelClass, model);
+    objc_storeStrong(&v19->_databaseAdapter, adapter);
+    objc_storeStrong(&v19->_uuid, iD);
+    objc_storeStrong(&v19->_homeUUID, d);
+    objc_storeStrong(&v19->_logEventSubmitter, submitter);
+    objc_storeStrong(&v19->_settingKeyPathBlockList, list);
   }
 
   return v19;
 }
 
-- (HMDCompositeSettingsController)initWithDatabaseAdapter:(id)a3 model:(Class)a4 homeUUID:(id)a5 ownerUUID:(id)a6 settingKeyPathBlockList:(id)a7
+- (HMDCompositeSettingsController)initWithDatabaseAdapter:(id)adapter model:(Class)model homeUUID:(id)d ownerUUID:(id)iD settingKeyPathBlockList:(id)list
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a3;
+  listCopy = list;
+  iDCopy = iD;
+  dCopy = d;
+  adapterCopy = adapter;
   v16 = +[HMDMetricsManager sharedLogEventSubmitter];
-  v17 = [(HMDCompositeSettingsController *)self initWithDatabaseAdapter:v15 model:a4 homeUUID:v14 ownerUUID:v13 logEventSubmitter:v16 settingKeyPathBlockList:v12];
+  v17 = [(HMDCompositeSettingsController *)self initWithDatabaseAdapter:adapterCopy model:model homeUUID:dCopy ownerUUID:iDCopy logEventSubmitter:v16 settingKeyPathBlockList:listCopy];
 
   return v17;
 }

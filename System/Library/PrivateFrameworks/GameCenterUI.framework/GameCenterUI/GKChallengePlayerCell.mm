@@ -1,24 +1,24 @@
 @interface GKChallengePlayerCell
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation GKChallengePlayerCell
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v9.receiver = self;
   v9.super_class = GKChallengePlayerCell;
-  [(GKChallengePlayerCell *)&v9 drawRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [MEMORY[0x277D75348] quaternaryLabelColor];
-  v5 = [(GKChallengePlayerCell *)self seperatorLine];
-  [v5 setBackgroundColor:v4];
+  [(GKChallengePlayerCell *)&v9 drawRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
+  quaternaryLabelColor = [MEMORY[0x277D75348] quaternaryLabelColor];
+  seperatorLine = [(GKChallengePlayerCell *)self seperatorLine];
+  [seperatorLine setBackgroundColor:quaternaryLabelColor];
 
-  v6 = [(GKChallengePlayerCell *)self chevronImageView];
-  [v6 setClipsToBounds:0];
+  chevronImageView = [(GKChallengePlayerCell *)self chevronImageView];
+  [chevronImageView setClipsToBounds:0];
 
-  v7 = [MEMORY[0x277D75348] quaternaryLabelColor];
-  v8 = [(GKChallengePlayerCell *)self chevronImageView];
-  [v8 setTintColor:v7];
+  quaternaryLabelColor2 = [MEMORY[0x277D75348] quaternaryLabelColor];
+  chevronImageView2 = [(GKChallengePlayerCell *)self chevronImageView];
+  [chevronImageView2 setTintColor:quaternaryLabelColor2];
 }
 
 @end

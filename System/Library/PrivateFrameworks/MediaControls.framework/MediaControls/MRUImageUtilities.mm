@@ -1,16 +1,16 @@
 @interface MRUImageUtilities
-+ (BOOL)imageIsEfficientFormat:(id)a3;
-+ (BOOL)imageIsJPEG:(id)a3;
-+ (BOOL)shouldResizeImage:(id)a3 forFittingSize:(CGSize)a4;
-+ (CGSize)sizeFromSource:(CGImageSource *)a3;
++ (BOOL)imageIsEfficientFormat:(id)format;
++ (BOOL)imageIsJPEG:(id)g;
++ (BOOL)shouldResizeImage:(id)image forFittingSize:(CGSize)size;
++ (CGSize)sizeFromSource:(CGImageSource *)source;
 + (MSVLRUDictionary)cache;
-+ (id)derivedSourceImageForImage:(id)a3;
-+ (id)formatImage:(id)a3 withIdentifier:(id)a4 forDisplayAtSize:(CGSize)a5 useCache:(BOOL)a6;
-+ (id)formattedImageForIdentifier:(id)a3 size:(CGSize)a4;
-+ (id)jpegDataForImage:(id)a3;
-+ (id)resizedImage:(id)a3 forFittingSize:(CGSize)a4;
-+ (id)sourceDataForImage:(id)a3;
-+ (int64_t)subsampleFactorForMaxPixelSize:(int64_t)a3 imageSize:(CGSize)a4;
++ (id)derivedSourceImageForImage:(id)image;
++ (id)formatImage:(id)image withIdentifier:(id)identifier forDisplayAtSize:(CGSize)size useCache:(BOOL)cache;
++ (id)formattedImageForIdentifier:(id)identifier size:(CGSize)size;
++ (id)jpegDataForImage:(id)image;
++ (id)resizedImage:(id)image forFittingSize:(CGSize)size;
++ (id)sourceDataForImage:(id)image;
++ (int64_t)subsampleFactorForMaxPixelSize:(int64_t)size imageSize:(CGSize)imageSize;
 + (void)clearCache;
 @end
 
@@ -96,19 +96,19 @@ void __26__MRUImageUtilities_cache__block_invoke_2()
   [v2 removeAllObjects];
 }
 
-+ (id)sourceDataForImage:(id)a3
++ (id)sourceDataForImage:(id)image
 {
-  [a3 CGImage];
+  [image CGImage];
   v3 = CGImageCopySourceData();
 
   return v3;
 }
 
-+ (BOOL)imageIsJPEG:(id)a3
++ (BOOL)imageIsJPEG:(id)g
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 CGImage])
+  gCopy = g;
+  v4 = gCopy;
+  if (gCopy && [gCopy CGImage])
   {
     [v4 CGImage];
     v5 = MSVImageUtilitiesCopyUTTypeForImage();
@@ -123,11 +123,11 @@ void __26__MRUImageUtilities_cache__block_invoke_2()
   return v6;
 }
 
-+ (BOOL)imageIsEfficientFormat:(id)a3
++ (BOOL)imageIsEfficientFormat:(id)format
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 CGImage])
+  formatCopy = format;
+  v4 = formatCopy;
+  if (formatCopy && [formatCopy CGImage])
   {
     [v4 CGImage];
     v5 = MSVImageUtilitiesCopyUTTypeForImage();
@@ -150,11 +150,11 @@ void __26__MRUImageUtilities_cache__block_invoke_2()
   return v6;
 }
 
-+ (id)jpegDataForImage:(id)a3
++ (id)jpegDataForImage:(id)image
 {
   v10 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([MRUImageUtilities imageIsJPEG:v3]&& ([MRUImageUtilities sourceDataForImage:v3], (v4 = objc_claimAutoreleasedReturnValue()) != 0) || (UIImageJPEGRepresentation(v3, 0.9), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+  imageCopy = image;
+  if ([MRUImageUtilities imageIsJPEG:imageCopy]&& ([MRUImageUtilities sourceDataForImage:imageCopy], (v4 = objc_claimAutoreleasedReturnValue()) != 0) || (UIImageJPEGRepresentation(imageCopy, 0.9), (v4 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v5 = v4;
   }
@@ -165,7 +165,7 @@ void __26__MRUImageUtilities_cache__block_invoke_2()
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v8 = 138412290;
-      v9 = v3;
+      v9 = imageCopy;
       _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_ERROR, "[MRUImageUtilities] Failed to produce JPEG data for image %@.", &v8, 0xCu);
     }
 
@@ -175,21 +175,21 @@ void __26__MRUImageUtilities_cache__block_invoke_2()
   return v5;
 }
 
-+ (id)formatImage:(id)a3 withIdentifier:(id)a4 forDisplayAtSize:(CGSize)a5 useCache:(BOOL)a6
++ (id)formatImage:(id)image withIdentifier:(id)identifier forDisplayAtSize:(CGSize)size useCache:(BOOL)cache
 {
-  v6 = a6;
-  height = a5.height;
-  width = a5.width;
+  cacheCopy = cache;
+  height = size.height;
+  width = size.width;
   v85 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = [MEMORY[0x1E696AFB0] UUID];
-  v13 = [v12 UUIDString];
+  imageCopy = image;
+  identifierCopy = identifier;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v14 = [MEMORY[0x1E69B0B08] currentSettings];
-  v15 = [v14 verboseImageLoadingLogging];
+  currentSettings = [MEMORY[0x1E69B0B08] currentSettings];
+  verboseImageLoadingLogging = [currentSettings verboseImageLoadingLogging];
 
-  if (v15)
+  if (verboseImageLoadingLogging)
   {
     v16 = MCLogCategoryDefault();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
@@ -198,42 +198,42 @@ void __26__MRUImageUtilities_cache__block_invoke_2()
       v87.height = height;
       v17 = NSStringFromCGSize(v87);
       *buf = 138412802;
-      v80 = v13;
+      v80 = uUIDString;
       v81 = 2112;
-      v82 = v10;
+      v82 = imageCopy;
       v83 = 2112;
       v84 = v17;
       _os_log_impl(&dword_1A20FC000, v16, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] formatImageForDisplay<%@> %@ at size: %@", buf, 0x20u);
     }
   }
 
-  if (v10)
+  if (imageCopy)
   {
-    if (!v6)
+    if (!cacheCopy)
     {
-      v26 = v10;
+      v26 = imageCopy;
       v20 = 0;
       goto LABEL_47;
     }
 
-    v18 = [v11 copy];
+    v18 = [identifierCopy copy];
     if (!v18)
     {
-      v27 = [MEMORY[0x1E69B0B08] currentSettings];
-      v28 = [v27 verboseImageLoadingLogging];
+      currentSettings2 = [MEMORY[0x1E69B0B08] currentSettings];
+      verboseImageLoadingLogging2 = [currentSettings2 verboseImageLoadingLogging];
 
-      if (v28)
+      if (verboseImageLoadingLogging2)
       {
         v29 = MCLogCategoryDefault();
         if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v80 = v13;
+          v80 = uUIDString;
           _os_log_impl(&dword_1A20FC000, v29, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] formatImageForDisplay<%@> cannot generate derived image for nil identifier. Will format original.", buf, 0xCu);
         }
       }
 
-      v26 = v10;
+      v26 = imageCopy;
       v20 = 0;
       goto LABEL_46;
     }
@@ -241,22 +241,22 @@ void __26__MRUImageUtilities_cache__block_invoke_2()
     v19 = +[MRUImageUtilities cache];
     v20 = [v19 objectForKey:v18];
 
-    v21 = [v20 image];
-    if (v21)
+    image = [v20 image];
+    if (image)
     {
-      v22 = v21;
+      v22 = image;
     }
 
     else
     {
-      v30 = [MRUImageUtilities derivedSourceImageForImage:v10];
+      v30 = [MRUImageUtilities derivedSourceImageForImage:imageCopy];
       if (!v30)
       {
         v77 = MCLogCategoryDefault();
         if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412290;
-          v80 = v13;
+          v80 = uUIDString;
           _os_log_impl(&dword_1A20FC000, v77, OS_LOG_TYPE_ERROR, "[MRUImageUtilities] formatImageForDisplay<%@> returning nil because unable to create derived image.", buf, 0xCu);
         }
 
@@ -265,10 +265,10 @@ void __26__MRUImageUtilities_cache__block_invoke_2()
       }
 
       v22 = v30;
-      v31 = [MEMORY[0x1E69B0B08] currentSettings];
-      v32 = [v31 verboseImageLoadingLogging];
+      currentSettings3 = [MEMORY[0x1E69B0B08] currentSettings];
+      verboseImageLoadingLogging3 = [currentSettings3 verboseImageLoadingLogging];
 
-      if (v32)
+      if (verboseImageLoadingLogging3)
       {
         v33 = MCLogCategoryDefault();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
@@ -276,7 +276,7 @@ void __26__MRUImageUtilities_cache__block_invoke_2()
           [v22 size];
           v34 = NSStringFromCGSize(v88);
           *buf = 138412802;
-          v80 = v13;
+          v80 = uUIDString;
           v81 = 2112;
           v82 = v34;
           v83 = 2112;
@@ -298,7 +298,7 @@ void __26__MRUImageUtilities_cache__block_invoke_2()
     }
 
     [v22 size];
-    if (v37 >= width && ([v22 size], v38 >= height) || (objc_msgSend(v22, "size"), v40 = v39, objc_msgSend(v10, "size"), v40 >= v41) && (objc_msgSend(v22, "size"), v43 = v42, objc_msgSend(v10, "size"), v43 >= v44))
+    if (v37 >= width && ([v22 size], v38 >= height) || (objc_msgSend(v22, "size"), v40 = v39, objc_msgSend(imageCopy, "size"), v40 >= v41) && (objc_msgSend(v22, "size"), v43 = v42, objc_msgSend(imageCopy, "size"), v43 >= v44))
     {
       v26 = v22;
 LABEL_42:
@@ -316,53 +316,53 @@ LABEL_46:
 LABEL_47:
       [v26 size];
       v58 = v57;
-      [v10 size];
-      if (v58 > v59 || ([v26 size], v61 = v60, objc_msgSend(v10, "size"), v61 > v62))
+      [imageCopy size];
+      if (v58 > v59 || ([v26 size], v61 = v60, objc_msgSend(imageCopy, "size"), v61 > v62))
       {
-        [v10 size];
-        if (v63 >= width || ([v10 size], v64 >= height))
+        [imageCopy size];
+        if (v63 >= width || ([imageCopy size], v64 >= height))
         {
-          if (![MRUImageUtilities shouldTranscodeImage:v10])
+          if (![MRUImageUtilities shouldTranscodeImage:imageCopy])
           {
-            v65 = v10;
+            v65 = imageCopy;
 
             v26 = v65;
           }
         }
       }
 
-      v66 = [MRUImageUtilities shouldResizeImage:v26 forFittingSize:width, height];
+      height = [MRUImageUtilities shouldResizeImage:v26 forFittingSize:width, height];
       v67 = [MRUImageUtilities shouldTranscodeImage:v26];
-      v68 = [MEMORY[0x1E69B0B08] currentSettings];
-      v69 = [v68 verboseImageLoadingLogging];
+      currentSettings4 = [MEMORY[0x1E69B0B08] currentSettings];
+      verboseImageLoadingLogging4 = [currentSettings4 verboseImageLoadingLogging];
 
-      if (v66)
+      if (height)
       {
-        if (v69)
+        if (verboseImageLoadingLogging4)
         {
           v70 = MCLogCategoryDefault();
           if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v80 = v13;
+            v80 = uUIDString;
             _os_log_impl(&dword_1A20FC000, v70, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] formatImageForDisplay<%@> resizing image.", buf, 0xCu);
           }
         }
 
-        v71 = [MRUImageUtilities resizedImage:v26 forFittingSize:width, height];
+        height2 = [MRUImageUtilities resizedImage:v26 forFittingSize:width, height];
       }
 
       else
       {
         if (v67)
         {
-          if (v69)
+          if (verboseImageLoadingLogging4)
           {
             v72 = MCLogCategoryDefault();
             if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 138412290;
-              v80 = v13;
+              v80 = uUIDString;
               _os_log_impl(&dword_1A20FC000, v72, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] formatImageForDisplay<%@> transcoding image.", buf, 0xCu);
             }
           }
@@ -381,26 +381,26 @@ LABEL_47:
           goto LABEL_74;
         }
 
-        if (v69)
+        if (verboseImageLoadingLogging4)
         {
           v74 = MCLogCategoryDefault();
           if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            v80 = v13;
+            v80 = uUIDString;
             _os_log_impl(&dword_1A20FC000, v74, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] formatImageForDisplay<%@> derived image is appropriate for display.", buf, 0xCu);
           }
         }
 
-        v71 = v26;
+        height2 = v26;
       }
 
-      v25 = v71;
+      v25 = height2;
 LABEL_74:
-      v75 = [MEMORY[0x1E69B0B08] currentSettings];
-      v76 = [v75 verboseImageLoadingLogging];
+      currentSettings5 = [MEMORY[0x1E69B0B08] currentSettings];
+      verboseImageLoadingLogging5 = [currentSettings5 verboseImageLoadingLogging];
 
-      if (!v76)
+      if (!verboseImageLoadingLogging5)
       {
 LABEL_84:
 
@@ -411,7 +411,7 @@ LABEL_84:
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v80 = v13;
+        v80 = uUIDString;
         v81 = 2112;
         v82 = v25;
         _os_log_impl(&dword_1A20FC000, v18, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] formatImageForDisplay<%@> Result: %@", buf, 0x16u);
@@ -422,28 +422,28 @@ LABEL_83:
       goto LABEL_84;
     }
 
-    v45 = [MEMORY[0x1E69B0B08] currentSettings];
-    v46 = [v45 verboseImageLoadingLogging];
+    currentSettings6 = [MEMORY[0x1E69B0B08] currentSettings];
+    verboseImageLoadingLogging6 = [currentSettings6 verboseImageLoadingLogging];
 
-    if (v46)
+    if (verboseImageLoadingLogging6)
     {
       v47 = MCLogCategoryDefault();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v80 = v13;
+        v80 = uUIDString;
         _os_log_impl(&dword_1A20FC000, v47, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] formatImageForDisplay<%@> regenerating derived image.", buf, 0xCu);
       }
     }
 
-    v48 = [MRUImageUtilities derivedSourceImageForImage:v10];
+    v48 = [MRUImageUtilities derivedSourceImageForImage:imageCopy];
     if (v48)
     {
       v26 = v48;
-      v49 = [MEMORY[0x1E69B0B08] currentSettings];
-      v50 = [v49 verboseImageLoadingLogging];
+      currentSettings7 = [MEMORY[0x1E69B0B08] currentSettings];
+      verboseImageLoadingLogging7 = [currentSettings7 verboseImageLoadingLogging];
 
-      if (v50)
+      if (verboseImageLoadingLogging7)
       {
         v51 = MCLogCategoryDefault();
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
@@ -451,7 +451,7 @@ LABEL_83:
           [v26 size];
           v52 = NSStringFromCGSize(v89);
           *buf = 138412802;
-          v80 = v13;
+          v80 = uUIDString;
           v81 = 2112;
           v82 = v52;
           v83 = 2112;
@@ -477,7 +477,7 @@ LABEL_83:
     if (os_log_type_enabled(v77, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v80 = v13;
+      v80 = uUIDString;
       _os_log_impl(&dword_1A20FC000, v77, OS_LOG_TYPE_ERROR, "[MRUImageUtilities] formatImageForDisplay<%@> returning nil due to error in regenerating derived image", buf, 0xCu);
     }
 
@@ -488,10 +488,10 @@ LABEL_82:
     goto LABEL_83;
   }
 
-  v23 = [MEMORY[0x1E69B0B08] currentSettings];
-  v24 = [v23 verboseImageLoadingLogging];
+  currentSettings8 = [MEMORY[0x1E69B0B08] currentSettings];
+  verboseImageLoadingLogging8 = [currentSettings8 verboseImageLoadingLogging];
 
-  if (!v24)
+  if (!verboseImageLoadingLogging8)
   {
     v25 = 0;
     goto LABEL_86;
@@ -501,7 +501,7 @@ LABEL_82:
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v80 = v13;
+    v80 = uUIDString;
     _os_log_impl(&dword_1A20FC000, v20, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] formatImageForDisplay<%@> returning nil for nil image.", buf, 0xCu);
   }
 
@@ -513,16 +513,16 @@ LABEL_86:
   return v25;
 }
 
-+ (id)formattedImageForIdentifier:(id)a3 size:(CGSize)a4
++ (id)formattedImageForIdentifier:(id)identifier size:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v6 = [a3 copy];
+  height = size.height;
+  width = size.width;
+  v6 = [identifier copy];
   v7 = +[MRUImageUtilities cache];
   v8 = [v7 objectForKey:v6];
 
-  v9 = [v8 image];
-  [v9 size];
+  image = [v8 image];
+  [image size];
   if (width >= height)
   {
     v11 = width;
@@ -550,7 +550,7 @@ LABEL_86:
 
   else
   {
-    [v9 size];
+    [image size];
     v14 = v13 >= height - v12;
   }
 
@@ -566,21 +566,21 @@ LABEL_86:
     v17 = v16 >= height;
   }
 
-  v18 = 0;
-  if (v9 && (v14 || v17))
+  height = 0;
+  if (image && (v14 || v17))
   {
-    v18 = [MRUImageUtilities formatImage:v9 withIdentifier:v6 forDisplayAtSize:0 useCache:width, height];
+    height = [MRUImageUtilities formatImage:image withIdentifier:v6 forDisplayAtSize:0 useCache:width, height];
   }
 
-  return v18;
+  return height;
 }
 
-+ (id)derivedSourceImageForImage:(id)a3
++ (id)derivedSourceImageForImage:(id)image
 {
   v25 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AFB0] UUID];
-  v5 = [v4 UUIDString];
+  imageCopy = image;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v6 = +[MRUImageLoaderCoordinator sharedCoordinator];
   [v6 requestSize];
@@ -595,25 +595,25 @@ LABEL_86:
     v8 = v11;
   }
 
-  v12 = [MRUImageUtilities shouldResizeImage:v3 forFittingSize:v8, v8];
-  v13 = [MRUImageUtilities shouldTranscodeImage:v3];
-  v14 = [MEMORY[0x1E69B0B08] currentSettings];
-  v15 = [v14 verboseImageLoadingLogging];
+  v12 = [MRUImageUtilities shouldResizeImage:imageCopy forFittingSize:v8, v8];
+  v13 = [MRUImageUtilities shouldTranscodeImage:imageCopy];
+  currentSettings = [MEMORY[0x1E69B0B08] currentSettings];
+  verboseImageLoadingLogging = [currentSettings verboseImageLoadingLogging];
 
   if (v12)
   {
-    if (v15)
+    if (verboseImageLoadingLogging)
     {
       v16 = MCLogCategoryDefault();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 138412290;
-        v24 = v5;
+        v24 = uUIDString;
         _os_log_impl(&dword_1A20FC000, v16, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] derivedSourceImageForImage<%@> resizing image.", &v23, 0xCu);
       }
     }
 
-    v17 = [MRUImageUtilities resizedImage:v3 forFittingSize:v8, v8];
+    v17 = [MRUImageUtilities resizedImage:imageCopy forFittingSize:v8, v8];
 LABEL_21:
     v20 = v17;
     goto LABEL_24;
@@ -621,33 +621,33 @@ LABEL_21:
 
   if (!v13)
   {
-    if (v15)
+    if (verboseImageLoadingLogging)
     {
       v21 = MCLogCategoryDefault();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
       {
         v23 = 138412290;
-        v24 = v5;
+        v24 = uUIDString;
         _os_log_impl(&dword_1A20FC000, v21, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] derivedSourceImageForImage<%@> returning original.", &v23, 0xCu);
       }
     }
 
-    v17 = v3;
+    v17 = imageCopy;
     goto LABEL_21;
   }
 
-  if (v15)
+  if (verboseImageLoadingLogging)
   {
     v18 = MCLogCategoryDefault();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v23 = 138412290;
-      v24 = v5;
+      v24 = uUIDString;
       _os_log_impl(&dword_1A20FC000, v18, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] derivedSourceImageForImage<%@> transcoding image.", &v23, 0xCu);
     }
   }
 
-  v19 = [MRUImageUtilities jpegDataForImage:v3];
+  v19 = [MRUImageUtilities jpegDataForImage:imageCopy];
   if (v19)
   {
     v20 = [MEMORY[0x1E69DCAB8] imageWithData:v19];
@@ -663,11 +663,11 @@ LABEL_24:
   return v20;
 }
 
-+ (BOOL)shouldResizeImage:(id)a3 forFittingSize:(CGSize)a4
++ (BOOL)shouldResizeImage:(id)image forFittingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  [a3 size];
+  height = size.height;
+  width = size.width;
+  [image size];
   v8 = v6 / width;
   if (v6 / width < v7 / height)
   {
@@ -684,19 +684,19 @@ LABEL_24:
   return v8 > 1.25 && v9 > 100.0;
 }
 
-+ (id)resizedImage:(id)a3 forFittingSize:(CGSize)a4
++ (id)resizedImage:(id)image forFittingSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v44 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AFB0] UUID];
-  v8 = [v7 UUIDString];
+  imageCopy = image;
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  v9 = [MEMORY[0x1E69B0B08] currentSettings];
-  v10 = [v9 verboseImageLoadingLogging];
+  currentSettings = [MEMORY[0x1E69B0B08] currentSettings];
+  verboseImageLoadingLogging = [currentSettings verboseImageLoadingLogging];
 
-  if (v10)
+  if (verboseImageLoadingLogging)
   {
     v11 = MCLogCategoryDefault();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -705,20 +705,20 @@ LABEL_24:
       v46.height = height;
       v12 = NSStringFromCGSize(v46);
       *buf = 138412802;
-      v39 = v8;
+      v39 = uUIDString;
       v40 = 2112;
-      v41 = v6;
+      v41 = imageCopy;
       v42 = 2112;
       v43 = v12;
       _os_log_impl(&dword_1A20FC000, v11, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] resizedImage<%@> %@ to fitting size %@", buf, 0x20u);
     }
   }
 
-  [v6 size];
+  [imageCopy size];
   MSVImageUtilitiesMakeBoundingBoxSize();
   v14 = v13;
   v16 = v15;
-  v17 = [MRUImageUtilities sourceDataForImage:v6];
+  v17 = [MRUImageUtilities sourceDataForImage:imageCopy];
   if (v17)
   {
     v18 = *MEMORY[0x1E696E0A8];
@@ -754,16 +754,16 @@ LABEL_24:
     CGImageDestinationAddImageFromSource(v28, v20, 0, v26);
     CGImageDestinationFinalize(v28);
     v29 = [MEMORY[0x1E69DCAB8] imageWithData:v27];
-    v30 = [MEMORY[0x1E69B0B08] currentSettings];
-    v31 = [v30 verboseImageLoadingLogging];
+    currentSettings2 = [MEMORY[0x1E69B0B08] currentSettings];
+    verboseImageLoadingLogging2 = [currentSettings2 verboseImageLoadingLogging];
 
-    if (v31)
+    if (verboseImageLoadingLogging2)
     {
       v32 = MCLogCategoryDefault();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v39 = v8;
+        v39 = uUIDString;
         v40 = 2112;
         v41 = v29;
         _os_log_impl(&dword_1A20FC000, v32, OS_LOG_TYPE_DEFAULT, "[MRUImageUtilities] resizedImage<%@> Result: %@", buf, 0x16u);
@@ -782,32 +782,32 @@ LABEL_24:
   return v29;
 }
 
-+ (CGSize)sizeFromSource:(CGImageSource *)a3
++ (CGSize)sizeFromSource:(CGImageSource *)source
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v10 = *MEMORY[0x1E696E0A8];
   v11[0] = MEMORY[0x1E695E110];
-  v3 = CGImageSourceCopyPropertiesAtIndex(a3, 0, [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1]);
+  v3 = CGImageSourceCopyPropertiesAtIndex(source, 0, [MEMORY[0x1E695DF20] dictionaryWithObjects:v11 forKeys:&v10 count:1]);
   v4 = [(__CFDictionary *)v3 objectForKeyedSubscript:*MEMORY[0x1E696DED8]];
   v5 = [(__CFDictionary *)v3 objectForKeyedSubscript:*MEMORY[0x1E696DEC8]];
-  v6 = [v4 integerValue];
-  v7 = [v5 integerValue];
+  integerValue = [v4 integerValue];
+  integerValue2 = [v5 integerValue];
 
-  v8 = v6;
-  v9 = v7;
+  v8 = integerValue;
+  v9 = integerValue2;
   result.height = v9;
   result.width = v8;
   return result;
 }
 
-+ (int64_t)subsampleFactorForMaxPixelSize:(int64_t)a3 imageSize:(CGSize)a4
++ (int64_t)subsampleFactorForMaxPixelSize:(int64_t)size imageSize:(CGSize)imageSize
 {
-  if (a4.width < a4.height)
+  if (imageSize.width < imageSize.height)
   {
-    a4.width = a4.height;
+    imageSize.width = imageSize.height;
   }
 
-  return vcvtmd_s64_f64(a4.width / a3);
+  return vcvtmd_s64_f64(imageSize.width / size);
 }
 
 @end

@@ -1,28 +1,28 @@
 @interface CHE5MLExecutionContext
-- (BOOL)predictFromPreboundInputsWithError:(id *)a3;
-- (CHE5MLExecutionContext)initWithFunction:(id)a3;
-- (id)newE5RTExecutionContextForFunctionDescriptor:(id)a3 error:(id *)a4;
-- (id)newE5RTExecutionContextForFunctionDescriptor:(id)a3 preboundInputs:(id)a4 preboundOutputs:(id)a5 error:(id *)a6;
-- (id)predictionFromFeatureProvider:(id)a3 error:(id *)a4;
-- (id)predictionFromInputObjects:(id)a3 error:(id *)a4;
-- (id)sharedExecutionContextWithError:(id *)a3;
-- (void)prebindInputs:(id)a3;
-- (void)predictFromPreboundInputsAsync:(id)a3;
+- (BOOL)predictFromPreboundInputsWithError:(id *)error;
+- (CHE5MLExecutionContext)initWithFunction:(id)function;
+- (id)newE5RTExecutionContextForFunctionDescriptor:(id)descriptor error:(id *)error;
+- (id)newE5RTExecutionContextForFunctionDescriptor:(id)descriptor preboundInputs:(id)inputs preboundOutputs:(id)outputs error:(id *)error;
+- (id)predictionFromFeatureProvider:(id)provider error:(id *)error;
+- (id)predictionFromInputObjects:(id)objects error:(id *)error;
+- (id)sharedExecutionContextWithError:(id *)error;
+- (void)prebindInputs:(id)inputs;
+- (void)predictFromPreboundInputsAsync:(id)async;
 - (void)unbindInputs;
 @end
 
 @implementation CHE5MLExecutionContext
 
-- (CHE5MLExecutionContext)initWithFunction:(id)a3
+- (CHE5MLExecutionContext)initWithFunction:(id)function
 {
-  v5 = a3;
+  functionCopy = function;
   v21.receiver = self;
   v21.super_class = CHE5MLExecutionContext;
   v6 = [(CHE5MLExecutionContext *)&v21 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_functionDescriptor, a3);
+    objc_storeStrong(&v6->_functionDescriptor, function);
     v7->_executionLock._os_unfair_lock_opaque = 0;
     v8 = dispatch_block_create(DISPATCH_BLOCK_ASSIGN_CURRENT, &unk_1EF1BEA50);
     prewarmBlock = v7->_prewarmBlock;
@@ -50,39 +50,39 @@
   return v7;
 }
 
-- (id)newE5RTExecutionContextForFunctionDescriptor:(id)a3 error:(id *)a4
+- (id)newE5RTExecutionContextForFunctionDescriptor:(id)descriptor error:(id *)error
 {
   v6 = MEMORY[0x1E69DF8D8];
-  v7 = a3;
+  descriptorCopy = descriptor;
   v8 = objc_alloc_init(v6);
   dispatch_block_wait(self->_prewarmBlock, 0xFFFFFFFFFFFFFFFFLL);
   objc_msgSend_setPrewarmedState_(v8, v9, self->_prewarmedState, v10, v11, v12);
-  v18 = objc_msgSend_function(v7, v13, v14, v15, v16, v17);
+  v18 = objc_msgSend_function(descriptorCopy, v13, v14, v15, v16, v17);
 
-  v22 = objc_msgSend_newExecutionContextWithConfiguration_error_(v18, v19, v8, a4, v20, v21);
+  v22 = objc_msgSend_newExecutionContextWithConfiguration_error_(v18, v19, v8, error, v20, v21);
   return v22;
 }
 
-- (id)newE5RTExecutionContextForFunctionDescriptor:(id)a3 preboundInputs:(id)a4 preboundOutputs:(id)a5 error:(id *)a6
+- (id)newE5RTExecutionContextForFunctionDescriptor:(id)descriptor preboundInputs:(id)inputs preboundOutputs:(id)outputs error:(id *)error
 {
   v10 = MEMORY[0x1E69DF8D8];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  outputsCopy = outputs;
+  inputsCopy = inputs;
+  descriptorCopy = descriptor;
   v14 = objc_alloc_init(v10);
   dispatch_block_wait(self->_prewarmBlock, 0xFFFFFFFFFFFFFFFFLL);
   objc_msgSend_setPrewarmedState_(v14, v15, self->_prewarmedState, v16, v17, v18);
-  objc_msgSend_setBoundInputObjects_(v14, v19, v12, v20, v21, v22);
+  objc_msgSend_setBoundInputObjects_(v14, v19, inputsCopy, v20, v21, v22);
 
-  objc_msgSend_setBoundOutputObjects_(v14, v23, v11, v24, v25, v26);
+  objc_msgSend_setBoundOutputObjects_(v14, v23, outputsCopy, v24, v25, v26);
   objc_msgSend_setPrewireInUseAllocations_(v14, v27, 1, v28, v29, v30);
-  v36 = objc_msgSend_function(v13, v31, v32, v33, v34, v35);
+  v36 = objc_msgSend_function(descriptorCopy, v31, v32, v33, v34, v35);
 
-  v40 = objc_msgSend_newExecutionContextWithConfiguration_error_(v36, v37, v14, a6, v38, v39);
+  v40 = objc_msgSend_newExecutionContextWithConfiguration_error_(v36, v37, v14, error, v38, v39);
   return v40;
 }
 
-- (id)sharedExecutionContextWithError:(id *)a3
+- (id)sharedExecutionContextWithError:(id *)error
 {
   executionContext = self->_executionContext;
   if (executionContext)
@@ -91,7 +91,7 @@
 
   else
   {
-    v8 = objc_msgSend_newE5RTExecutionContextForFunctionDescriptor_error_(self, a2, self->_functionDescriptor, a3, v3, v4);
+    v8 = objc_msgSend_newE5RTExecutionContextForFunctionDescriptor_error_(self, a2, self->_functionDescriptor, error, v3, v4);
     v9 = self->_executionContext;
     self->_executionContext = v8;
 
@@ -101,16 +101,16 @@
   return executionContext;
 }
 
-- (id)predictionFromInputObjects:(id)a3 error:(id *)a4
+- (id)predictionFromInputObjects:(id)objects error:(id *)error
 {
-  v10 = a3;
-  if (!v10)
+  objectsCopy = objects;
+  if (!objectsCopy)
   {
     v20 = 0;
     goto LABEL_24;
   }
 
-  v11 = objc_msgSend_sharedExecutionContextWithError_(self, v6, a4, v7, v8, v9);
+  v11 = objc_msgSend_sharedExecutionContextWithError_(self, v6, error, v7, v8, v9);
   if (!v11)
   {
     v20 = 0;
@@ -167,7 +167,7 @@ LABEL_9:
     _os_log_impl(&dword_18366B000, v16, OS_LOG_TYPE_DEFAULT, "BEGIN CHE5MLContextExecution", v26, 2u);
   }
 
-  v20 = objc_msgSend_executeWithInputObjects_error_(v11, v17, v10, a4, v18, v19);
+  v20 = objc_msgSend_executeWithInputObjects_error_(v11, v17, objectsCopy, error, v18, v19);
   if (qword_1EA84DC48 == -1)
   {
     v21 = qword_1EA84DC88;
@@ -225,14 +225,14 @@ LABEL_24:
   return v20;
 }
 
-- (id)predictionFromFeatureProvider:(id)a3 error:(id *)a4
+- (id)predictionFromFeatureProvider:(id)provider error:(id *)error
 {
   v55 = *MEMORY[0x1E69E9840];
-  v8 = objc_msgSend_createInputSurfacesForFeatureProvider_(CHE5MLUtilities, a2, a3, a4, v4, v5);
+  v8 = objc_msgSend_createInputSurfacesForFeatureProvider_(CHE5MLUtilities, a2, provider, error, v4, v5);
   v14 = objc_msgSend_functionDescriptor(self, v9, v10, v11, v12, v13);
-  v17 = objc_msgSend_newInputsForFunctionDescriptor_surfaces_error_(CHE5MLUtilities, v15, v14, v8, a4, v16);
+  v17 = objc_msgSend_newInputsForFunctionDescriptor_surfaces_error_(CHE5MLUtilities, v15, v14, v8, error, v16);
 
-  v21 = objc_msgSend_predictionFromInputObjects_error_(self, v18, v17, a4, v19, v20);
+  v21 = objc_msgSend_predictionFromInputObjects_error_(self, v18, v17, error, v19, v20);
   if (v21)
   {
     v49 = v17;
@@ -268,7 +268,7 @@ LABEL_24:
     }
 
     v45 = objc_msgSend_functionDescriptor(self, v40, v41, v42, v43, v44);
-    v47 = objc_msgSend_featureProviderForE5RTOutputs_functionDescriptor_dataType_error_(CHE5MLUtilities, v46, v21, v45, 65568, a4);
+    v47 = objc_msgSend_featureProviderForE5RTOutputs_functionDescriptor_dataType_error_(CHE5MLUtilities, v46, v21, v45, 65568, error);
 
     v17 = v49;
   }
@@ -281,10 +281,10 @@ LABEL_24:
   return v47;
 }
 
-- (void)prebindInputs:(id)a3
+- (void)prebindInputs:(id)inputs
 {
-  objc_storeStrong(&self->_preboundInputObjects, a3);
-  v6 = a3;
+  objc_storeStrong(&self->_preboundInputObjects, inputs);
+  inputsCopy = inputs;
   preboundExecutionContext = self->_preboundExecutionContext;
   self->_preboundExecutionContext = 0;
 }
@@ -298,7 +298,7 @@ LABEL_24:
   self->_preboundExecutionContext = 0;
 }
 
-- (BOOL)predictFromPreboundInputsWithError:(id *)a3
+- (BOOL)predictFromPreboundInputsWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_executionLock);
   if (self->_preboundOutputObjects)
@@ -311,7 +311,7 @@ LABEL_24:
 
   else
   {
-    v8 = objc_msgSend_newE5RTExecutionOutputsForFunctionDescriptor_error_(CHE5MLUtilities, v5, self->_functionDescriptor, a3, v6, v7);
+    v8 = objc_msgSend_newE5RTExecutionOutputsForFunctionDescriptor_error_(CHE5MLUtilities, v5, self->_functionDescriptor, error, v6, v7);
     preboundOutputObjects = self->_preboundOutputObjects;
     self->_preboundOutputObjects = v8;
 
@@ -321,7 +321,7 @@ LABEL_24:
     }
   }
 
-  v10 = objc_msgSend_newE5RTExecutionContextForFunctionDescriptor_preboundInputs_preboundOutputs_error_(self, v5, self->_functionDescriptor, self->_preboundInputObjects, self->_preboundOutputObjects, a3);
+  v10 = objc_msgSend_newE5RTExecutionContextForFunctionDescriptor_preboundInputs_preboundOutputs_error_(self, v5, self->_functionDescriptor, self->_preboundInputObjects, self->_preboundOutputObjects, error);
   preboundExecutionContext = self->_preboundExecutionContext;
   self->_preboundExecutionContext = v10;
 
@@ -382,7 +382,7 @@ LABEL_12:
     _os_log_impl(&dword_18366B000, v16, OS_LOG_TYPE_DEFAULT, "BEGIN CHE5MLContextExecution", v26, 2u);
   }
 
-  objc_msgSend_executeAndReturnError_(self->_preboundExecutionContext, v17, a3, v18, v19, v20);
+  objc_msgSend_executeAndReturnError_(self->_preboundExecutionContext, v17, error, v18, v19, v20);
   if (qword_1EA84DC48 == -1)
   {
     v21 = qword_1EA84DC88;
@@ -432,7 +432,7 @@ LABEL_22:
 
 LABEL_23:
 
-  if (a3 && *a3)
+  if (error && *error)
   {
     goto LABEL_25;
   }
@@ -441,9 +441,9 @@ LABEL_23:
   return 1;
 }
 
-- (void)predictFromPreboundInputsAsync:(id)a3
+- (void)predictFromPreboundInputsAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   os_unfair_lock_lock(&self->_executionLock);
   if (self->_preboundOutputObjects)
   {
@@ -485,7 +485,7 @@ LABEL_3:
   if (!self->_preboundExecutionContext)
   {
     os_unfair_lock_unlock(&self->_executionLock);
-    v4[2](v4, 0, v9);
+    asyncCopy[2](asyncCopy, 0, v9);
     goto LABEL_17;
   }
 
@@ -541,7 +541,7 @@ LABEL_10:
   v29[3] = &unk_1E6DDF150;
   v31 = v21;
   v29[4] = self;
-  v30 = v4;
+  v30 = asyncCopy;
   objc_msgSend_executeWithCompletionHandler_(v24, v25, v29, v26, v27, v28);
 
 LABEL_17:

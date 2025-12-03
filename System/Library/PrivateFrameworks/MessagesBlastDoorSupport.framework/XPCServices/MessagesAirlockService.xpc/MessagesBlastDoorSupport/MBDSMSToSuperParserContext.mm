@@ -1,16 +1,16 @@
 @interface MBDSMSToSuperParserContext
-- (void)_addPart:(id)a3;
+- (void)_addPart:(id)part;
 @end
 
 @implementation MBDSMSToSuperParserContext
 
-- (void)_addPart:(id)a3
+- (void)_addPart:(id)part
 {
-  v4 = a3;
-  if (v4)
+  partCopy = part;
+  if (partCopy)
   {
     orderedParts = self->_orderedParts;
-    v8 = v4;
+    v8 = partCopy;
     if (!orderedParts)
     {
       v6 = objc_alloc_init(NSMutableArray);

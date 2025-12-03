@@ -1,28 +1,28 @@
 @interface SCMLUserDefaults
-+ (id)globalBoolWithName:(id)a3 defaultValue:(BOOL)a4 error:(id *)a5;
++ (id)globalBoolWithName:(id)name defaultValue:(BOOL)value error:(id *)error;
 - (_TtC26SensitiveContentAnalysisML16SCMLUserDefaults)init;
 @end
 
 @implementation SCMLUserDefaults
 
-+ (id)globalBoolWithName:(id)a3 defaultValue:(BOOL)a4 error:(id *)a5
++ (id)globalBoolWithName:(id)name defaultValue:(BOOL)value error:(id *)error
 {
   v6 = sub_1B8AF0668();
   v8 = sub_1B8AEDA08(v6, v7);
 
   if (v8 == 2)
   {
-    v9 = a4;
+    valueCopy = value;
   }
 
   else
   {
-    v9 = v8;
+    valueCopy = v8;
   }
 
-  v10 = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithBool_];
+  initWithBool_ = [objc_allocWithZone(MEMORY[0x1E696AD98]) initWithBool_];
 
-  return v10;
+  return initWithBool_;
 }
 
 - (_TtC26SensitiveContentAnalysisML16SCMLUserDefaults)init

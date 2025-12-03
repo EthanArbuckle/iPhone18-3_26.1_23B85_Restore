@@ -1,23 +1,23 @@
 @interface FCTagRelationshipsOperation
-- (FCTagRelationshipsOperation)initWithContext:(id)a3 tag:(id)a4;
-- (void)operationWillFinishWithError:(id)a3;
+- (FCTagRelationshipsOperation)initWithContext:(id)context tag:(id)tag;
+- (void)operationWillFinishWithError:(id)error;
 - (void)performOperation;
 @end
 
 @implementation FCTagRelationshipsOperation
 
-- (FCTagRelationshipsOperation)initWithContext:(id)a3 tag:(id)a4
+- (FCTagRelationshipsOperation)initWithContext:(id)context tag:(id)tag
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  tagCopy = tag;
   v14.receiver = self;
   v14.super_class = FCTagRelationshipsOperation;
   v9 = [(FCOperation *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_context, context);
+    v11 = [tagCopy copy];
     tag = v10->_tag;
     v10->_tag = v11;
   }
@@ -30,19 +30,19 @@
   v36[1] = *MEMORY[0x1E69E9840];
   v3 = @"relatedChannelTagIDsForOnboarding";
   v4 = +[FCAppleAccount sharedAccount];
-  v5 = [v4 contentStoreFrontID];
-  v6 = FCCKLocalizedRecordKey(v3, v5);
+  contentStoreFrontID = [v4 contentStoreFrontID];
+  v6 = FCCKLocalizedRecordKey(v3, contentStoreFrontID);
 
   v7 = objc_alloc_init(FCCKContentFetchOperation);
-  v8 = [(FCTagRelationshipsOperation *)self context];
-  v9 = [v8 internalContentContext];
-  v10 = [v9 contentDatabase];
-  [(FCCKContentFetchOperation *)v7 setDatabase:v10];
+  context = [(FCTagRelationshipsOperation *)self context];
+  internalContentContext = [context internalContentContext];
+  contentDatabase = [internalContentContext contentDatabase];
+  [(FCCKContentFetchOperation *)v7 setDatabase:contentDatabase];
 
   v11 = objc_alloc(MEMORY[0x1E695BA70]);
   v12 = [(FCTagRelationshipsOperation *)self tag];
-  v13 = [v12 identifier];
-  v14 = [v11 initWithRecordName:v13];
+  identifier = [v12 identifier];
+  v14 = [v11 initWithRecordName:identifier];
   v36[0] = v14;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v36 count:1];
   if (v7)
@@ -78,7 +78,7 @@
   v25 = 3221225472;
   v26 = __47__FCTagRelationshipsOperation_performOperation__block_invoke_2;
   v27 = &unk_1E7C47A80;
-  v28 = self;
+  selfCopy = self;
   v31 = v33;
   v20 = v6;
   v29 = v20;
@@ -89,7 +89,7 @@
     objc_setProperty_nonatomic_copy(v7, v21, &v24, 424);
   }
 
-  [(FCOperation *)self associateChildOperation:v7, v24, v25, v26, v27, v28];
+  [(FCOperation *)self associateChildOperation:v7, v24, v25, v26, v27, selfCopy];
   [(FCOperation *)v7 start];
 
   _Block_object_dispose(v33, 8);
@@ -171,16 +171,16 @@ void __47__FCTagRelationshipsOperation_performOperation__block_invoke_5(uint64_t
   [v1 finishedPerformingOperationWithError:v2];
 }
 
-- (void)operationWillFinishWithError:(id)a3
+- (void)operationWillFinishWithError:(id)error
 {
-  v7 = a3;
-  v4 = [(FCTagRelationshipsOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(FCTagRelationshipsOperation *)self completionHandler];
 
-  if (v4)
+  if (completionHandler)
   {
-    v5 = [(FCTagRelationshipsOperation *)self completionHandler];
-    v6 = [(FCTagRelationshipsOperation *)self resultTagRelationships];
-    (v5)[2](v5, v6, v7);
+    completionHandler2 = [(FCTagRelationshipsOperation *)self completionHandler];
+    resultTagRelationships = [(FCTagRelationshipsOperation *)self resultTagRelationships];
+    (completionHandler2)[2](completionHandler2, resultTagRelationships, errorCopy);
   }
 }
 

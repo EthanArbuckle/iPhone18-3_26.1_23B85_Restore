@@ -1,70 +1,70 @@
 @interface IOGPUMetalBlitCommandEncoder
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10;
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7;
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7 pixelFormat:(unint64_t)a8;
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0;
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color;
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color pixelFormat:(unint64_t)format;
 @end
 
 @implementation IOGPUMetalBlitCommandEncoder
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color
 {
-  var3 = a7.var3;
-  var2 = a7.var2;
-  var1 = a7.var1;
-  var0 = a7.var0;
-  v16 = [a3 pixelFormat];
-  v17 = *&a6->var0.var2;
-  v18[0] = *&a6->var0.var0;
+  var3 = color.var3;
+  var2 = color.var2;
+  var1 = color.var1;
+  var0 = color.var0;
+  pixelFormat = [texture pixelFormat];
+  v17 = *&region->var0.var2;
+  v18[0] = *&region->var0.var0;
   v18[1] = v17;
-  v18[2] = *&a6->var1.var1;
-  [(IOGPUMetalBlitCommandEncoder *)self fillTexture:a3 level:a4 slice:a5 region:v18 color:v16 pixelFormat:var0, var1, var2, var3];
+  v18[2] = *&region->var1.var1;
+  [(IOGPUMetalBlitCommandEncoder *)self fillTexture:texture level:level slice:slice region:v18 color:pixelFormat pixelFormat:var0, var1, var2, var3];
 }
 
-- (void)fillTexture:(id)a3 level:(unint64_t)a4 slice:(unint64_t)a5 region:(id *)a6 color:(id)a7 pixelFormat:(unint64_t)a8
+- (void)fillTexture:(id)texture level:(unint64_t)level slice:(unint64_t)slice region:(id *)region color:(id)color pixelFormat:(unint64_t)format
 {
   v19 = *MEMORY[0x1E69E9840];
-  v17 = a7;
+  colorCopy = color;
   v13 = MTLPackColor();
-  v14 = *&a6->var0.var2;
-  v16[0] = *&a6->var0.var0;
+  v14 = *&region->var0.var2;
+  v16[0] = *&region->var0.var0;
   v16[1] = v14;
-  v16[2] = *&a6->var1.var1;
-  [(IOGPUMetalBlitCommandEncoder *)self fillTexture:a3 level:a4 slice:a5 region:v16 bytes:v18 length:v13];
+  v16[2] = *&region->var1.var1;
+  [(IOGPUMetalBlitCommandEncoder *)self fillTexture:texture level:level slice:slice region:v16 bytes:v18 length:v13];
   v15 = *MEMORY[0x1E69E9840];
 }
 
-- (void)copyFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 toTexture:(id)a6 destinationSlice:(unint64_t)a7 destinationLevel:(unint64_t)a8 sliceCount:(unint64_t)a9 levelCount:(unint64_t)a10
+- (void)copyFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)destinationLevel sliceCount:(unint64_t)count levelCount:(unint64_t)self0
 {
-  v14 = [a3 width];
-  v15 = [a3 height];
-  v16 = [a3 depth];
-  if (a10)
+  width = [texture width];
+  height = [texture height];
+  depth = [texture depth];
+  if (levelCount)
   {
     v17 = 0;
-    v18.i64[0] = v14;
-    v18.i64[1] = v15;
-    v19 = vshlq_u64(v18, vnegq_s64(vdupq_n_s64(a5)));
+    v18.i64[0] = width;
+    v18.i64[1] = height;
+    v19 = vshlq_u64(v18, vnegq_s64(vdupq_n_s64(level)));
     v20 = vdupq_n_s64(1uLL);
-    if (v16 >> a5 <= 1)
+    if (depth >> level <= 1)
     {
       v21 = 1;
     }
 
     else
     {
-      v21 = v16 >> a5;
+      v21 = depth >> level;
     }
 
     v22 = vcgtq_u64(v19, v20);
     v23 = vsubq_s64(vandq_s8(v19, v22), vmvnq_s8(v22));
     do
     {
-      if (a9)
+      if (count)
       {
-        v24 = a7;
-        v25 = a4;
-        v26 = a9;
+        destinationSliceCopy = destinationSlice;
+        sliceCopy = slice;
+        countCopy = count;
         v31 = v23;
         do
         {
@@ -72,14 +72,14 @@
           memset(v34, 0, sizeof(v34));
           v32 = v23;
           v33 = v21;
-          [(IOGPUMetalBlitCommandEncoder *)self copyFromTexture:a3 sourceSlice:v25 sourceLevel:v17 + a5 sourceOrigin:v35 sourceSize:&v32 toTexture:a6 destinationSlice:v24 destinationLevel:v17 + a8 destinationOrigin:v34];
+          [(IOGPUMetalBlitCommandEncoder *)self copyFromTexture:texture sourceSlice:sliceCopy sourceLevel:v17 + level sourceOrigin:v35 sourceSize:&v32 toTexture:toTexture destinationSlice:destinationSliceCopy destinationLevel:v17 + destinationLevel destinationOrigin:v34];
           v23 = v31;
-          ++v24;
-          ++v25;
-          --v26;
+          ++destinationSliceCopy;
+          ++sliceCopy;
+          --countCopy;
         }
 
-        while (v26);
+        while (countCopy);
       }
 
       v27 = vcgtq_u64(v23, vdupq_n_s64(1uLL));
@@ -97,35 +97,35 @@
       ++v17;
     }
 
-    while (v17 != a10);
+    while (v17 != levelCount);
   }
 }
 
-- (void)copyFromTexture:(id)a3 toTexture:(id)a4
+- (void)copyFromTexture:(id)texture toTexture:(id)toTexture
 {
-  v7 = [a3 width];
-  v8 = v7;
-  v9 = [a3 height];
-  v10 = [a3 depth];
-  v45 = v10;
-  v46 = v9;
-  v11 = [a4 width];
-  v12 = [a4 height];
-  v13 = [a4 depth];
-  v43 = v13;
-  v44 = v12;
+  width = [texture width];
+  v8 = width;
+  height = [texture height];
+  depth = [texture depth];
+  v45 = depth;
+  v46 = height;
+  width2 = [toTexture width];
+  height2 = [toTexture height];
+  depth2 = [toTexture depth];
+  v43 = depth2;
+  v44 = height2;
   v41 = 0;
   v42 = 0;
-  if (v7 <= v11 && v9 <= v12 && v10 <= v13)
+  if (width <= width2 && height <= height2 && depth <= depth2)
   {
     v14 = &v41;
     v15 = &v42;
     v16 = &v46;
     v17 = &v45;
-    v18 = v7;
-    v19 = v13;
-    v20 = v12;
-    v8 = v11;
+    v18 = width;
+    v19 = depth2;
+    v20 = height2;
+    v8 = width2;
   }
 
   else
@@ -134,9 +134,9 @@
     v15 = &v41;
     v16 = &v44;
     v17 = &v43;
-    v18 = v11;
-    v19 = v10;
-    v20 = v9;
+    v18 = width2;
+    v19 = depth;
+    v20 = height;
   }
 
   v21 = 0;
@@ -153,15 +153,15 @@
   *v15 = 0;
   *v14 = v21;
   v24 = v42;
-  v25 = v7 >> v42;
-  if (v7 >> v42 <= 1)
+  v25 = width >> v42;
+  if (width >> v42 <= 1)
   {
     v25 = 1;
   }
 
   v26 = v41;
-  v27 = v11 >> v41;
-  if (v11 >> v41 <= 1)
+  v27 = width2 >> v41;
+  if (width2 >> v41 <= 1)
   {
     v27 = 1;
   }
@@ -171,14 +171,14 @@
     goto LABEL_40;
   }
 
-  v28 = v9 >> v42;
-  if (v9 >> v42 <= 1)
+  v28 = height >> v42;
+  if (height >> v42 <= 1)
   {
     v28 = 1;
   }
 
-  v29 = v12 >> v41;
-  if (v12 >> v41 <= 1)
+  v29 = height2 >> v41;
+  if (height2 >> v41 <= 1)
   {
     v29 = 1;
   }
@@ -188,14 +188,14 @@
     goto LABEL_40;
   }
 
-  v30 = v10 >> v42;
-  if (v10 >> v42 <= 1)
+  v30 = depth >> v42;
+  if (depth >> v42 <= 1)
   {
     v30 = 1;
   }
 
-  v31 = v13 >> v41;
-  if (v13 >> v41 <= 1)
+  v31 = depth2 >> v41;
+  if (depth2 >> v41 <= 1)
   {
     v31 = 1;
   }
@@ -206,11 +206,11 @@ LABEL_40:
     [IOGPUMetalBlitCommandEncoder copyFromTexture:toTexture:];
   }
 
-  v32 = [a3 mipmapLevelCount] - v24;
-  v33 = [a4 mipmapLevelCount];
-  if (v32 >= v33 - v26)
+  v32 = [texture mipmapLevelCount] - v24;
+  mipmapLevelCount = [toTexture mipmapLevelCount];
+  if (v32 >= mipmapLevelCount - v26)
   {
-    v34 = v33 - v26;
+    v34 = mipmapLevelCount - v26;
   }
 
   else
@@ -218,8 +218,8 @@ LABEL_40:
     v34 = v32;
   }
 
-  v35 = [a3 arrayLength];
-  if (([a3 textureType] - 5) >= 2)
+  arrayLength = [texture arrayLength];
+  if (([texture textureType] - 5) >= 2)
   {
     v36 = 1;
   }
@@ -229,9 +229,9 @@ LABEL_40:
     v36 = 6;
   }
 
-  v37 = v36 * v35;
-  v38 = [a4 arrayLength];
-  if (([a4 textureType] - 5) >= 2)
+  v37 = v36 * arrayLength;
+  arrayLength2 = [toTexture arrayLength];
+  if (([toTexture textureType] - 5) >= 2)
   {
     v39 = 1;
   }
@@ -241,13 +241,13 @@ LABEL_40:
     v39 = 6;
   }
 
-  v40 = v39 * v38;
+  v40 = v39 * arrayLength2;
   if (v37 < v40)
   {
     v40 = v37;
   }
 
-  [(IOGPUMetalBlitCommandEncoder *)self copyFromTexture:a3 sourceSlice:0 sourceLevel:v24 toTexture:a4 destinationSlice:0 destinationLevel:v26 sliceCount:v40 levelCount:v34];
+  [(IOGPUMetalBlitCommandEncoder *)self copyFromTexture:texture sourceSlice:0 sourceLevel:v24 toTexture:toTexture destinationSlice:0 destinationLevel:v26 sliceCount:v40 levelCount:v34];
 }
 
 @end

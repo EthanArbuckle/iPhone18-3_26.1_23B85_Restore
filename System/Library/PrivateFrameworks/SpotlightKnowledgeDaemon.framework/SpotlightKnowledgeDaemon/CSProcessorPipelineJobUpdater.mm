@@ -1,7 +1,7 @@
 @interface CSProcessorPipelineJobUpdater
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6;
-- (BOOL)shouldHandleJournalItem:(id)a3 bundleID:(id)a4;
-- (CSProcessorPipelineJobUpdater)initWithJournalJob:(id)a3;
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block;
+- (BOOL)shouldHandleJournalItem:(id)item bundleID:(id)d;
+- (CSProcessorPipelineJobUpdater)initWithJournalJob:(id)job;
 - (id)description;
 - (id)excludeBundleIDs;
 - (id)excludeContentTypes;
@@ -13,37 +13,37 @@
 
 @implementation CSProcessorPipelineJobUpdater
 
-- (CSProcessorPipelineJobUpdater)initWithJournalJob:(id)a3
+- (CSProcessorPipelineJobUpdater)initWithJournalJob:(id)job
 {
-  v5 = a3;
+  jobCopy = job;
   v22.receiver = self;
   v22.super_class = CSProcessorPipelineJobUpdater;
   v6 = [(CSProcessorPipelineJobUpdater *)&v22 init];
   if (v6)
   {
-    v7 = [v5 name];
-    v8 = [v7 lowercaseString];
+    name = [jobCopy name];
+    lowercaseString = [name lowercaseString];
 
-    objc_storeStrong(&v6->_job, a3);
+    objc_storeStrong(&v6->_job, job);
     v9 = objc_alloc_init(CSEventListenerConfig);
     taskConfig = v6->_taskConfig;
     v6->_taskConfig = v9;
 
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"task-%@", v8];
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"task-%@", lowercaseString];
     [(CSEventListenerConfig *)v6->_taskConfig setName:v11];
 
-    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.spotlightkowledged.task.%@", v8];
+    v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.spotlightkowledged.task.%@", lowercaseString];
     [(CSEventListenerConfig *)v6->_taskConfig setTaskIdentifier:v12];
 
-    v13 = [v5 requiredBundleIDs];
-    [(CSEventListenerConfig *)v6->_taskConfig setIncludeBundleIDs:v13];
+    requiredBundleIDs = [jobCopy requiredBundleIDs];
+    [(CSEventListenerConfig *)v6->_taskConfig setIncludeBundleIDs:requiredBundleIDs];
 
-    v14 = [v5 excludedBundleIDs];
-    [(CSEventListenerConfig *)v6->_taskConfig setExcludeBundleIDs:v14];
+    excludedBundleIDs = [jobCopy excludedBundleIDs];
+    [(CSEventListenerConfig *)v6->_taskConfig setExcludeBundleIDs:excludedBundleIDs];
 
-    v15 = [v5 bgstOptions];
-    v16 = [v15 objectForKeyedSubscript:@"priority"];
-    if (v16 && (v17 = v16, [v15 objectForKeyedSubscript:@"priority"], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqualToString:", @"immediate"), v18, v17, (v19 & 1) != 0))
+    bgstOptions = [jobCopy bgstOptions];
+    v16 = [bgstOptions objectForKeyedSubscript:@"priority"];
+    if (v16 && (v17 = v16, [bgstOptions objectForKeyedSubscript:@"priority"], v18 = objc_claimAutoreleasedReturnValue(), v19 = objc_msgSend(v18, "isEqualToString:", @"immediate"), v18, v17, (v19 & 1) != 0))
     {
       v20 = 4;
     }
@@ -54,7 +54,7 @@
     }
 
     [(CSEventListenerConfig *)v6->_taskConfig setEventFlags:v20];
-    [(CSEventListenerConfig *)v6->_taskConfig setTaskOptions:v15];
+    [(CSEventListenerConfig *)v6->_taskConfig setTaskOptions:bgstOptions];
   }
 
   return v6;
@@ -64,70 +64,70 @@
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
   v4 = objc_opt_class();
-  v5 = [(CSProcessorPipelineJobUpdater *)self taskName];
-  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, v5];
+  taskName = [(CSProcessorPipelineJobUpdater *)self taskName];
+  v6 = [v3 initWithFormat:@"<%@:%p; %@>", v4, self, taskName];
 
   return v6;
 }
 
 - (id)taskName
 {
-  v2 = [(CSProcessorPipelineJobUpdater *)self taskConfig];
-  v3 = [v2 name];
+  taskConfig = [(CSProcessorPipelineJobUpdater *)self taskConfig];
+  name = [taskConfig name];
 
-  return v3;
+  return name;
 }
 
 - (unint64_t)eventFlags
 {
-  v2 = [(CSProcessorPipelineJobUpdater *)self taskConfig];
-  v3 = [v2 eventFlags];
+  taskConfig = [(CSProcessorPipelineJobUpdater *)self taskConfig];
+  eventFlags = [taskConfig eventFlags];
 
-  return v3;
+  return eventFlags;
 }
 
 - (id)includeBundleIDs
 {
-  v2 = [(CSProcessorPipelineJobUpdater *)self taskConfig];
-  v3 = [v2 includeBundleIDs];
+  taskConfig = [(CSProcessorPipelineJobUpdater *)self taskConfig];
+  includeBundleIDs = [taskConfig includeBundleIDs];
 
-  return v3;
+  return includeBundleIDs;
 }
 
 - (id)excludeBundleIDs
 {
-  v2 = [(CSProcessorPipelineJobUpdater *)self taskConfig];
-  v3 = [v2 excludeBundleIDs];
+  taskConfig = [(CSProcessorPipelineJobUpdater *)self taskConfig];
+  excludeBundleIDs = [taskConfig excludeBundleIDs];
 
-  return v3;
+  return excludeBundleIDs;
 }
 
 - (id)includeContentTypes
 {
-  v2 = [(CSProcessorPipelineJobUpdater *)self taskConfig];
-  v3 = [v2 includeContentTypes];
+  taskConfig = [(CSProcessorPipelineJobUpdater *)self taskConfig];
+  includeContentTypes = [taskConfig includeContentTypes];
 
-  return v3;
+  return includeContentTypes;
 }
 
 - (id)excludeContentTypes
 {
-  v2 = [(CSProcessorPipelineJobUpdater *)self taskConfig];
-  v3 = [v2 excludeContentTypes];
+  taskConfig = [(CSProcessorPipelineJobUpdater *)self taskConfig];
+  excludeContentTypes = [taskConfig excludeContentTypes];
 
-  return v3;
+  return excludeContentTypes;
 }
 
-- (BOOL)shouldHandleJournalItem:(id)a3 bundleID:(id)a4
+- (BOOL)shouldHandleJournalItem:(id)item bundleID:(id)d
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7 && ([v6 isUserActivity] & 1) == 0)
+  itemCopy = item;
+  dCopy = d;
+  if (dCopy && ([itemCopy isUserActivity] & 1) == 0)
   {
     v9 = self->_job;
-    v10 = [(SKDJournalProcessingJob *)v9 requiredAttributes];
-    v11 = [v10 count];
+    requiredAttributes = [(SKDJournalProcessingJob *)v9 requiredAttributes];
+    v11 = [requiredAttributes count];
 
     if (v11)
     {
@@ -135,8 +135,8 @@
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v12 = [(SKDJournalProcessingJob *)v9 requiredAttributes];
-      v8 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      requiredAttributes2 = [(SKDJournalProcessingJob *)v9 requiredAttributes];
+      v8 = [requiredAttributes2 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v8)
       {
         v13 = *v18;
@@ -146,17 +146,17 @@
           {
             if (*v18 != v13)
             {
-              objc_enumerationMutation(v12);
+              objc_enumerationMutation(requiredAttributes2);
             }
 
-            if ([v6 containsAttribute:*(*(&v17 + 1) + 8 * i)])
+            if ([itemCopy containsAttribute:*(*(&v17 + 1) + 8 * i)])
             {
               LOBYTE(v8) = 1;
               goto LABEL_15;
             }
           }
 
-          v8 = [v12 countByEnumeratingWithState:&v17 objects:v21 count:16];
+          v8 = [requiredAttributes2 countByEnumeratingWithState:&v17 objects:v21 count:16];
           if (v8)
           {
             continue;
@@ -184,43 +184,43 @@ LABEL_15:
   return v8;
 }
 
-- (BOOL)handleDonation:(id)a3 turboEnabled:(BOOL)a4 completionHandler:(id)a5 cancelBlock:(id)a6
+- (BOOL)handleDonation:(id)donation turboEnabled:(BOOL)enabled completionHandler:(id)handler cancelBlock:(id)block
 {
   v141 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v88 = a5;
-  v9 = a6;
+  donationCopy = donation;
+  handlerCopy = handler;
+  blockCopy = block;
   if (SKGLogGetCurrentLoggingLevel() >= 4)
   {
     v10 = SKGLogScheduledReceiverInit();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      *&buf[4] = v8;
+      *&buf[4] = donationCopy;
       *&buf[12] = 2080;
-      *&buf[14] = [(CSEventListenerManager *)v8 journalMap];
+      *&buf[14] = [(CSEventListenerManager *)donationCopy journalMap];
       _os_log_impl(&dword_231B25000, v10, OS_LOG_TYPE_DEFAULT, "**** handleDonation for %@ / %s", buf, 0x16u);
     }
   }
 
   v82 = objc_autoreleasePoolPush();
   v11 = objc_alloc(MEMORY[0x277CCACA8]);
-  v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](v8)];
+  v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalMap](donationCopy)];
   v13 = [v11 initWithString:v12];
 
   v14 = objc_alloc(MEMORY[0x277CCACA8]);
-  v15 = [(CSEventListenerDonation *)v8 protectionClass];
-  v85 = [v14 initWithString:v15];
+  protectionClass = [(CSEventListenerDonation *)donationCopy protectionClass];
+  v85 = [v14 initWithString:protectionClass];
 
   v16 = objc_alloc(MEMORY[0x277CCACA8]);
-  v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalQueue](v8)];
+  v17 = [MEMORY[0x277CCACA8] stringWithUTF8String:-[CSEventListenerManager journalQueue](donationCopy)];
   v18 = [v16 initWithString:v17];
 
   v19 = self->_job;
-  v20 = [(SKDBaseJob *)v19 name];
-  v84 = [v20 capitalizedString];
+  name = [(SKDBaseJob *)v19 name];
+  capitalizedString = [name capitalizedString];
 
-  v21 = [SKGUpdaterStore instanceForIndexType:[(CSEventListenerManager *)v8 folderFd]];
+  v21 = [SKGUpdaterStore instanceForIndexType:[(CSEventListenerManager *)donationCopy folderFd]];
   v22 = SKGLogEventInit();
   spid = os_signpost_id_generate(v22);
 
@@ -268,13 +268,13 @@ LABEL_15:
   v117 = &v124;
   v96 = v27;
   v112 = v96;
-  v113 = v8;
+  v113 = donationCopy;
   v29 = v19;
   v114 = v29;
   v81 = v28;
   v115 = v81;
   v118 = buf;
-  v87 = v9;
+  v87 = blockCopy;
   v116 = v87;
   v89 = v113;
   [v113 iterateItems:v109];
@@ -304,16 +304,16 @@ LABEL_15:
           }
 
           v32 = *(*(&v105 + 1) + 8 * i);
-          v33 = [(SKDBaseCSItemProcessingJob *)v95 processCSItemRecord:v32, context];
-          if ([v33 status] == 3)
+          context = [(SKDBaseCSItemProcessingJob *)v95 processCSItemRecord:v32, context];
+          if ([context status] == 3)
           {
 
             v48 = 1;
             goto LABEL_27;
           }
 
-          v34 = [v33 searchableItem];
-          if (v34)
+          searchableItem = [context searchableItem];
+          if (searchableItem)
           {
             v35 = v97;
             if (!v97)
@@ -322,25 +322,25 @@ LABEL_15:
             }
 
             v97 = v35;
-            [v35 addObject:v34];
+            [v35 addObject:searchableItem];
           }
 
-          v36 = [v33 attributes];
-          v37 = [v36 objectForKeyedSubscript:@"kMDItemTextContentLanguage"];
+          attributes = [context attributes];
+          v37 = [attributes objectForKeyedSubscript:@"kMDItemTextContentLanguage"];
 
           if (v37)
           {
-            v38 = [(SKDCSItemRecord *)v32 bundleID];
-            v39 = v38;
-            v40 = [v38 UTF8String];
-            v41 = [(SKDCSItemRecord *)v32 uniqueID];
-            v42 = v41;
-            v43 = [v41 UTF8String];
+            bundleID = [(SKDCSItemRecord *)v32 bundleID];
+            v39 = bundleID;
+            uTF8String = [bundleID UTF8String];
+            uniqueID = [(SKDCSItemRecord *)v32 uniqueID];
+            v42 = uniqueID;
+            uTF8String2 = [uniqueID UTF8String];
             v44 = v96;
-            v45 = [v96 UTF8String];
+            uTF8String3 = [v96 UTF8String];
             v46 = v125[3];
             v47 = v37;
-            [v92 writeLanguageForBundleID:v40 identifier:v43 UUID:v45 serialNumber:v46 language:{objc_msgSend(v37, "UTF8String")}];
+            [v92 writeLanguageForBundleID:uTF8String identifier:uTF8String2 UUID:uTF8String3 serialNumber:v46 language:{objc_msgSend(v37, "UTF8String")}];
           }
         }
 
@@ -384,18 +384,18 @@ LABEL_29:
       v49 = SKGLogUpdaterInit();
       if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
       {
-        v50 = [(CSProcessorPipelineJobUpdater *)self taskConfig];
-        v51 = [v50 name];
-        v52 = v51;
-        v53 = [v51 UTF8String];
-        v54 = [(CSEventListenerDonation *)v89 indexTypeName];
-        v55 = [(CSEventListenerManager *)v89 totalJournalSize];
+        taskConfig = [(CSProcessorPipelineJobUpdater *)self taskConfig];
+        name2 = [taskConfig name];
+        v52 = name2;
+        uTF8String4 = [name2 UTF8String];
+        indexTypeName = [(CSEventListenerDonation *)v89 indexTypeName];
+        totalJournalSize = [(CSEventListenerManager *)v89 totalJournalSize];
         *v128 = 136315650;
-        v129 = v53;
+        selfCopy = uTF8String4;
         v130 = 2080;
-        v131 = v54;
+        v131 = indexTypeName;
         v132 = 2048;
-        v133 = v55;
+        v133 = totalJournalSize;
         _os_log_impl(&dword_231B25000, v49, OS_LOG_TYPE_DEFAULT, "### cancelling %s due to expiration request while processing type='%s' sn:'%llu'", v128, 0x20u);
       }
     }
@@ -408,7 +408,7 @@ LABEL_29:
       _os_signpost_emit_with_name_impl(&dword_231B25000, v57, OS_SIGNPOST_INTERVAL_END, spid, "CSUpdaterHandleDonation", "", v128, 2u);
     }
 
-    (*(v88 + 2))(v88, 0, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
     goto LABEL_69;
   }
 
@@ -427,14 +427,14 @@ LABEL_29:
     v59 = SKGLogUpdaterInit();
     if (os_log_type_enabled(v59, OS_LOG_TYPE_INFO))
     {
-      v60 = [(CSEventListenerDonation *)v89 indexTypeName];
-      v61 = [(CSEventListenerManager *)v89 totalJournalSize];
+      indexTypeName2 = [(CSEventListenerDonation *)v89 indexTypeName];
+      totalJournalSize2 = [(CSEventListenerManager *)v89 totalJournalSize];
       *v128 = 138413058;
-      v129 = self;
+      selfCopy = self;
       v130 = 2080;
-      v131 = v60;
+      v131 = indexTypeName2;
       v132 = 2048;
-      v133 = v61;
+      v133 = totalJournalSize2;
       v134 = 2048;
       v135 = v58;
       _os_log_impl(&dword_231B25000, v59, OS_LOG_TYPE_INFO, "### donation %@ %s sn:%llu found %lu items", v128, 0x2Au);
@@ -443,8 +443,8 @@ LABEL_29:
 
   if ([(CSEventListenerManager *)v89 throttled])
   {
-    v62 = [(CSEventListenerDonation *)v89 homePathHash];
-    v63 = getCSBasePathForId(v62);
+    homePathHash = [(CSEventListenerDonation *)v89 homePathHash];
+    v63 = getCSBasePathForId(homePathHash);
     if (v63)
     {
       if (SKGLogGetCurrentLoggingLevel() >= 4)
@@ -453,9 +453,9 @@ LABEL_29:
         if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
         {
           v65 = v63;
-          v66 = [v63 UTF8String];
+          uTF8String5 = [v63 UTF8String];
           *v128 = 136315138;
-          v129 = v66;
+          selfCopy = uTF8String5;
           _os_log_impl(&dword_231B25000, v64, OS_LOG_TYPE_DEFAULT, "Creating CSManagedSearchableIndex for path = %s", v128, 0xCu);
         }
       }
@@ -474,8 +474,8 @@ LABEL_59:
       v68 = SKGLogUpdaterInit();
       if (os_log_type_enabled(v68, OS_LOG_TYPE_ERROR))
       {
-        v69 = [(CSEventListenerDonation *)v89 homePathHash];
-        [CSDocumentUnderstandingUpdater handleDonation:v128 turboEnabled:v69 completionHandler:v68 cancelBlock:?];
+        homePathHash2 = [(CSEventListenerDonation *)v89 homePathHash];
+        [CSDocumentUnderstandingUpdater handleDonation:v128 turboEnabled:homePathHash2 completionHandler:v68 cancelBlock:?];
       }
     }
 
@@ -488,7 +488,7 @@ LABEL_59:
     goto LABEL_65;
   }
 
-  v67 = [objc_alloc(MEMORY[0x277CC34A8]) _initWithName:v84 protectionClass:v85 bundleIdentifier:v83 options:32];
+  v67 = [objc_alloc(MEMORY[0x277CC34A8]) _initWithName:capitalizedString protectionClass:v85 bundleIdentifier:v83 options:32];
 LABEL_60:
   if (v67)
   {
@@ -512,7 +512,7 @@ LABEL_60:
     v101 = v58;
     v102 = v71;
     v103 = spid;
-    v100 = v88;
+    v100 = handlerCopy;
     [v67 indexSearchableItems:v97 timeout:v74 timeoutError:v98 completion:3.0e11];
 
     goto LABEL_69;
@@ -527,7 +527,7 @@ LABEL_65:
     _os_signpost_emit_with_name_impl(&dword_231B25000, v76, OS_SIGNPOST_INTERVAL_END, spid, "CSUpdaterHandleDonation", "", v104, 2u);
   }
 
-  (*(v88 + 2))(v88, 0, 0, 0);
+  (*(handlerCopy + 2))(handlerCopy, 0, 0, 0);
 LABEL_69:
 
   _Block_object_dispose(&v124, 8);

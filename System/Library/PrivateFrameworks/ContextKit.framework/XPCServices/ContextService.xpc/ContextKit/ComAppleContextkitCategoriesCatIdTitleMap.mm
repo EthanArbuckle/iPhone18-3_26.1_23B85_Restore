@@ -1,18 +1,18 @@
 @interface ComAppleContextkitCategoriesCatIdTitleMap
-- (ComAppleContextkitCategoriesCatIdTitleMap)initWithOrgApacheLuceneStoreIndexInput:(id)a3 withInt:(int)a4;
-- (id)categoryIdToTitleWithInt:(int)a3;
+- (ComAppleContextkitCategoriesCatIdTitleMap)initWithOrgApacheLuceneStoreIndexInput:(id)input withInt:(int)int;
+- (id)categoryIdToTitleWithInt:(int)int;
 - (id)clone;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)close;
 - (void)dealloc;
 @end
 
 @implementation ComAppleContextkitCategoriesCatIdTitleMap
 
-- (ComAppleContextkitCategoriesCatIdTitleMap)initWithOrgApacheLuceneStoreIndexInput:(id)a3 withInt:(int)a4
+- (ComAppleContextkitCategoriesCatIdTitleMap)initWithOrgApacheLuceneStoreIndexInput:(id)input withInt:(int)int
 {
-  JreStrongAssign(&self->titleIn_, a3);
-  self->maxTitleIdExcl_ = a4;
+  JreStrongAssign(&self->titleIn_, input);
+  self->maxTitleIdExcl_ = int;
   return self;
 }
 
@@ -24,18 +24,18 @@
     JreThrowNullPointerException();
   }
 
-  v4 = [(OrgApacheLuceneStoreIndexInput *)titleIn clone];
+  clone = [(OrgApacheLuceneStoreIndexInput *)titleIn clone];
   maxTitleIdExcl = self->maxTitleIdExcl_;
   v6 = [ComAppleContextkitCategoriesCatIdTitleMap alloc];
-  JreStrongAssign(&v6->titleIn_, v4);
+  JreStrongAssign(&v6->titleIn_, clone);
   v6->maxTitleIdExcl_ = maxTitleIdExcl;
 
   return v6;
 }
 
-- (id)categoryIdToTitleWithInt:(int)a3
+- (id)categoryIdToTitleWithInt:(int)int
 {
-  if (a3 < 1 || self->maxTitleIdExcl_ <= a3)
+  if (int < 1 || self->maxTitleIdExcl_ <= int)
   {
     return 0;
   }
@@ -46,15 +46,15 @@
     JreThrowNullPointerException();
   }
 
-  [(OrgApacheLuceneStoreIndexInput *)titleIn seekWithLong:4 * a3 + 4];
-  v5 = [(OrgApacheLuceneStoreDataInput *)self->titleIn_ readInt];
-  if (v5 <= 0)
+  [(OrgApacheLuceneStoreIndexInput *)titleIn seekWithLong:4 * int + 4];
+  readInt = [(OrgApacheLuceneStoreDataInput *)self->titleIn_ readInt];
+  if (readInt <= 0)
   {
     v8 = new_JavaLangIllegalStateException_init();
     objc_exception_throw(v8);
   }
 
-  [(OrgApacheLuceneStoreIndexInput *)self->titleIn_ seekWithLong:v5];
+  [(OrgApacheLuceneStoreIndexInput *)self->titleIn_ seekWithLong:readInt];
   v6 = self->titleIn_;
 
   return [(OrgApacheLuceneStoreDataInput *)v6 readString];
@@ -78,11 +78,11 @@
   [(ComAppleContextkitCategoriesCatIdTitleMap *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v3 = [(ComAppleContextkitCategoriesCatIdTitleMap *)self clone];
+  clone = [(ComAppleContextkitCategoriesCatIdTitleMap *)self clone];
 
-  return v3;
+  return clone;
 }
 
 @end

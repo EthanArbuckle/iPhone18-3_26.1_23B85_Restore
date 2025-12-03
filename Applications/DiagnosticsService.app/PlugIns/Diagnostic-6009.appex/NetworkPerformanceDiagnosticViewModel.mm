@@ -1,7 +1,7 @@
 @interface NetworkPerformanceDiagnosticViewModel
 - (_TtC15Diagnostic_600937NetworkPerformanceDiagnosticViewModel)init;
-- (void)performanceTest:(id)a3 didReceiveDownloadSpeedMetric:(id)a4;
-- (void)performanceTest:(id)a3 didReceiveUploadSpeedMetric:(id)a4;
+- (void)performanceTest:(id)test didReceiveDownloadSpeedMetric:(id)metric;
+- (void)performanceTest:(id)test didReceiveUploadSpeedMetric:(id)metric;
 - (void)performanceTestWillStartDownload;
 - (void)performanceTestWillStartPing;
 - (void)performanceTestWillStartUpload;
@@ -26,26 +26,26 @@
 
 - (void)performanceTestWillStartPing
 {
-  v2 = self;
+  selfCopy = self;
   sub_100018BA0();
 }
 
 - (void)performanceTestWillStartDownload
 {
-  v2 = self;
+  selfCopy = self;
   sub_100018C10();
 }
 
 - (void)performanceTestWillStartUpload
 {
-  v2 = self;
+  selfCopy = self;
   sub_100018F30();
 }
 
-- (void)performanceTest:(id)a3 didReceiveDownloadSpeedMetric:(id)a4
+- (void)performanceTest:(id)test didReceiveDownloadSpeedMetric:(id)metric
 {
   v4 = qword_1000315D8;
-  v5 = a4;
+  metricCopy = metric;
   if (v4 != -1)
   {
     swift_once();
@@ -56,10 +56,10 @@
   sub_1000200F4();
 }
 
-- (void)performanceTest:(id)a3 didReceiveUploadSpeedMetric:(id)a4
+- (void)performanceTest:(id)test didReceiveUploadSpeedMetric:(id)metric
 {
   v4 = qword_1000315D8;
-  v5 = a4;
+  metricCopy = metric;
   if (v4 != -1)
   {
     swift_once();

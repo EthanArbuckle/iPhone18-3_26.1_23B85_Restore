@@ -1,10 +1,10 @@
 @interface MBCameraRollPlugin
-- (BOOL)shouldScrubSQLiteFileCopyAtRelativePath:(id)a3 domain:(id)a4;
+- (BOOL)shouldScrubSQLiteFileCopyAtRelativePath:(id)path domain:(id)domain;
 - (MBCameraRollPlugin)init;
-- (id)scrubSQLiteFileCopyAtRelativePath:(id)a3 copyTemporaryPath:(id)a4 domain:(id)a5;
-- (id)startingBackupWithEngine:(id)a3;
-- (void)_populatePathsForEngine:(id)a3 domainName:(id)a4;
-- (void)_updateCameraRollBackupStateWithEngine:(id)a3 foundiCPLSyncMarker:(BOOL)a4;
+- (id)scrubSQLiteFileCopyAtRelativePath:(id)path copyTemporaryPath:(id)temporaryPath domain:(id)domain;
+- (id)startingBackupWithEngine:(id)engine;
+- (void)_populatePathsForEngine:(id)engine domainName:(id)name;
+- (void)_updateCameraRollBackupStateWithEngine:(id)engine foundiCPLSyncMarker:(BOOL)marker;
 @end
 
 @implementation MBCameraRollPlugin
@@ -23,11 +23,11 @@
   return v3;
 }
 
-- (void)_populatePathsForEngine:(id)a3 domainName:(id)a4
+- (void)_populatePathsForEngine:(id)engine domainName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 backupPolicy] == 1)
+  engineCopy = engine;
+  nameCopy = name;
+  if ([engineCopy backupPolicy] == 1)
   {
     v8 = MBGetDefaultLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -37,20 +37,20 @@
       _MBLog();
     }
 
-    [(MBCameraRollPlugin *)self _updateCameraRollBackupStateWithEngine:v6 foundiCPLSyncMarker:0];
+    [(MBCameraRollPlugin *)self _updateCameraRollBackupStateWithEngine:engineCopy foundiCPLSyncMarker:0];
   }
 
   else
   {
-    v9 = [(MBCameraRollPlugin *)self cloudPhotosSyncedMarkerPath];
+    cloudPhotosSyncedMarkerPath = [(MBCameraRollPlugin *)self cloudPhotosSyncedMarkerPath];
     v10 = +[NSFileManager defaultManager];
-    v11 = [v10 fileExistsAtPath:v9];
+    v11 = [v10 fileExistsAtPath:cloudPhotosSyncedMarkerPath];
 
     if (v11)
     {
       v12 = +[NSFileManager defaultManager];
       v44 = 0;
-      v13 = [v12 attributesOfItemAtPath:v9 error:&v44];
+      v13 = [v12 attributesOfItemAtPath:cloudPhotosSyncedMarkerPath error:&v44];
       v14 = v44;
 
       if (!v13)
@@ -59,11 +59,11 @@
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v46 = v9;
+          v46 = cloudPhotosSyncedMarkerPath;
           v47 = 2112;
           v48 = v14;
           _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed to fetch the attributes for %@: %@", buf, 0x16u);
-          v38 = v9;
+          v38 = cloudPhotosSyncedMarkerPath;
           v40 = v14;
           _MBLog();
         }
@@ -77,12 +77,12 @@
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v46 = v9;
+        v46 = cloudPhotosSyncedMarkerPath;
         v47 = 2048;
         v48 = v18;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "Found %@ (%.3f)", buf, 0x16u);
         v41 = v18;
-        v39 = v9;
+        v39 = cloudPhotosSyncedMarkerPath;
         _MBLog();
       }
 
@@ -96,28 +96,28 @@
         _MBLog();
       }
 
-      [(MBCameraRollPlugin *)self _updateCameraRollBackupStateWithEngine:v6 foundiCPLSyncMarker:1];
-      v21 = [v6 domainManager];
-      v22 = [v21 domainForName:v7];
+      [(MBCameraRollPlugin *)self _updateCameraRollBackupStateWithEngine:engineCopy foundiCPLSyncMarker:1];
+      domainManager = [engineCopy domainManager];
+      v22 = [domainManager domainForName:nameCopy];
 
-      v23 = [v22 relativePathsToBackupAndRestore];
-      v42 = [v23 containsObject:@"Media/MediaAnalysis/.backup"];
+      relativePathsToBackupAndRestore = [v22 relativePathsToBackupAndRestore];
+      v42 = [relativePathsToBackupAndRestore containsObject:@"Media/MediaAnalysis/.backup"];
 
-      v24 = [v22 relativePathsToBackupAndRestore];
-      v25 = [v24 containsObject:@"Media/PhotoData"];
+      relativePathsToBackupAndRestore2 = [v22 relativePathsToBackupAndRestore];
+      v25 = [relativePathsToBackupAndRestore2 containsObject:@"Media/PhotoData"];
 
-      v26 = [v22 relativePathsToBackupAndRestore];
-      v27 = [v26 containsObject:@"Media/PhotoData/private"];
+      relativePathsToBackupAndRestore3 = [v22 relativePathsToBackupAndRestore];
+      v27 = [relativePathsToBackupAndRestore3 containsObject:@"Media/PhotoData/private"];
 
-      v28 = [v22 relativePathsToBackupAndRestore];
-      v29 = [v28 containsObject:@"Media/PhotoData/internal/photosuiconfiguration"];
+      relativePathsToBackupAndRestore4 = [v22 relativePathsToBackupAndRestore];
+      v29 = [relativePathsToBackupAndRestore4 containsObject:@"Media/PhotoData/internal/photosuiconfiguration"];
 
-      v30 = [v22 relativePathsToBackupAndRestore];
+      relativePathsToBackupAndRestore5 = [v22 relativePathsToBackupAndRestore];
 
-      if (v30)
+      if (relativePathsToBackupAndRestore5)
       {
-        v31 = [v22 relativePathsToBackupAndRestore];
-        v32 = [v31 mutableCopy];
+        relativePathsToBackupAndRestore6 = [v22 relativePathsToBackupAndRestore];
+        v32 = [relativePathsToBackupAndRestore6 mutableCopy];
       }
 
       else
@@ -148,12 +148,12 @@
       }
 
       [v22 setRelativePathsToBackupAndRestore:{v35, v39, v41}];
-      v36 = [v22 relativePathsNotToBackup];
+      relativePathsNotToBackup = [v22 relativePathsNotToBackup];
 
-      if (v36)
+      if (relativePathsNotToBackup)
       {
-        v37 = [v22 relativePathsNotToBackup];
-        [v32 unionSet:v37];
+        relativePathsNotToBackup2 = [v22 relativePathsNotToBackup];
+        [v32 unionSet:relativePathsNotToBackup2];
       }
 
       [v22 setRelativePathsNotToBackup:v32];
@@ -169,25 +169,25 @@
         _MBLog();
       }
 
-      [(MBCameraRollPlugin *)self _updateCameraRollBackupStateWithEngine:v6 foundiCPLSyncMarker:0];
+      [(MBCameraRollPlugin *)self _updateCameraRollBackupStateWithEngine:engineCopy foundiCPLSyncMarker:0];
     }
   }
 }
 
-- (void)_updateCameraRollBackupStateWithEngine:(id)a3 foundiCPLSyncMarker:(BOOL)a4
+- (void)_updateCameraRollBackupStateWithEngine:(id)engine foundiCPLSyncMarker:(BOOL)marker
 {
-  v4 = a4;
-  v5 = a3;
+  markerCopy = marker;
+  engineCopy = engine;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = engineCopy;
     v7 = +[MBAppManager appManager];
-    v8 = [v6 persona];
-    v9 = [v7 isDomainNameEnabled:@"CameraRollDomain" forPersona:v8];
+    persona = [v6 persona];
+    v9 = [v7 isDomainNameEnabled:@"CameraRollDomain" forPersona:persona];
 
     v10 = 1;
-    if (v4)
+    if (markerCopy)
     {
       v10 = 2;
     }
@@ -212,7 +212,7 @@
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v14 = [v6 cameraRollBackupState];
+      cameraRollBackupState = [v6 cameraRollBackupState];
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "MBCameraRollBackupState: %ld", buf, 0xCu);
       [v6 cameraRollBackupState];
       _MBLog();
@@ -220,26 +220,26 @@
   }
 }
 
-- (id)startingBackupWithEngine:(id)a3
+- (id)startingBackupWithEngine:(id)engine
 {
-  v4 = a3;
-  if ([v4 backsUpPrimaryAccount])
+  engineCopy = engine;
+  if ([engineCopy backsUpPrimaryAccount])
   {
     if (!MBIsInternalInstall() || (+[MBBehaviorOptions sharedOptions](MBBehaviorOptions, "sharedOptions"), v5 = objc_claimAutoreleasedReturnValue(), [v5 domainsToBackUpRegex], v6 = objc_claimAutoreleasedReturnValue(), v6, v5, !v6))
     {
-      [(MBCameraRollPlugin *)self _populatePathsForEngine:v4 domainName:@"CameraRollDomain"];
+      [(MBCameraRollPlugin *)self _populatePathsForEngine:engineCopy domainName:@"CameraRollDomain"];
     }
   }
 
   return 0;
 }
 
-- (BOOL)shouldScrubSQLiteFileCopyAtRelativePath:(id)a3 domain:(id)a4
+- (BOOL)shouldScrubSQLiteFileCopyAtRelativePath:(id)path domain:(id)domain
 {
-  v5 = a3;
-  if ([a4 isCameraRollDomain])
+  pathCopy = path;
+  if ([domain isCameraRollDomain])
   {
-    v6 = [v5 isEqualToString:@"Media/PhotoData/Photos.sqlite"];
+    v6 = [pathCopy isEqualToString:@"Media/PhotoData/Photos.sqlite"];
   }
 
   else
@@ -250,11 +250,11 @@
   return v6;
 }
 
-- (id)scrubSQLiteFileCopyAtRelativePath:(id)a3 copyTemporaryPath:(id)a4 domain:(id)a5
+- (id)scrubSQLiteFileCopyAtRelativePath:(id)path copyTemporaryPath:(id)temporaryPath domain:(id)domain
 {
-  v8 = a3;
-  v9 = a4;
-  if (![(MBCameraRollPlugin *)self shouldScrubSQLiteFileCopyAtRelativePath:v8 domain:a5])
+  pathCopy = path;
+  temporaryPathCopy = temporaryPath;
+  if (![(MBCameraRollPlugin *)self shouldScrubSQLiteFileCopyAtRelativePath:pathCopy domain:domain])
   {
     v11 = 0;
     goto LABEL_22;
@@ -262,17 +262,17 @@
 
   ppDb = 0;
   memset(&v32, 0, sizeof(v32));
-  if (lstat([v9 fileSystemRepresentation], &v32))
+  if (lstat([temporaryPathCopy fileSystemRepresentation], &v32))
   {
     v10 = *__error();
-    v11 = [MBError posixErrorWithPath:v9 format:@"lstat error"];
+    v11 = [MBError posixErrorWithPath:temporaryPathCopy format:@"lstat error"];
     v12 = MBGetDefaultLog();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v35 = v9;
+      v35 = temporaryPathCopy;
       v36 = 2114;
-      v37 = v8;
+      v37 = pathCopy;
       v38 = 1024;
       LODWORD(v39) = v10;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "lstat failed at %{public}@ (%{public}@): %{errno}d", buf, 0x1Cu);
@@ -287,20 +287,20 @@
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v35 = v9;
+      v35 = temporaryPathCopy;
       v36 = 2114;
-      v37 = v8;
+      v37 = pathCopy;
       v38 = 2048;
       v39 = *&st_size;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Scrubbing the SQLite database at %{public}@ (%{public}@) (%lld bytes)", buf, 0x20u);
-      v30 = v8;
+      v30 = pathCopy;
       v31 = st_size;
       _MBLog();
     }
 
     +[NSDate timeIntervalSinceReferenceDate];
     v16 = v15;
-    v17 = sqlite3_open_v2([v9 fileSystemRepresentation], &ppDb, 2, 0);
+    v17 = sqlite3_open_v2([temporaryPathCopy fileSystemRepresentation], &ppDb, 2, 0);
     if (v17)
     {
       v18 = v17;
@@ -308,18 +308,18 @@
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v35 = v9;
+        v35 = temporaryPathCopy;
         v36 = 2114;
-        v37 = v8;
+        v37 = pathCopy;
         v38 = 1024;
         LODWORD(v39) = v18;
         _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "sqlite3_open_v2 failed at %{public}@ (%{public}@): %d", buf, 0x1Cu);
-        v30 = v8;
+        v30 = pathCopy;
         v31 = v18;
         _MBLog();
       }
 
-      [MBError errorWithCode:1 path:v9 format:@"sqlite3_open_v2 failed: %d", v18, v30, v31];
+      [MBError errorWithCode:1 path:temporaryPathCopy format:@"sqlite3_open_v2 failed: %d", v18, v30, v31];
     }
 
     else
@@ -329,7 +329,7 @@
       {
         +[NSDate timeIntervalSinceReferenceDate];
         v25 = v24;
-        v26 = lstat([v9 fileSystemRepresentation], &v32);
+        v26 = lstat([temporaryPathCopy fileSystemRepresentation], &v32);
         v27 = v32.st_size;
         v28 = MBGetDefaultLog();
         if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -345,9 +345,9 @@
             v29 = v27;
           }
 
-          v35 = v9;
+          v35 = temporaryPathCopy;
           v36 = 2114;
-          v37 = v8;
+          v37 = pathCopy;
           v38 = 2048;
           v39 = v25 - v16;
           v40 = 2048;
@@ -365,9 +365,9 @@
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543874;
-        v35 = v9;
+        v35 = temporaryPathCopy;
         v36 = 2114;
-        v37 = v8;
+        v37 = pathCopy;
         v38 = 1024;
         LODWORD(v39) = v21;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "sqlite3_exec failed at %{public}@ (%{public}@): %d", buf, 0x1Cu);
@@ -375,7 +375,7 @@
         _MBLog();
       }
 
-      [MBError errorWithCode:1 path:v9 format:@"sqlite3_exec failed: %s (%d)", sqlite3_errmsg(ppDb), v21, v31];
+      [MBError errorWithCode:1 path:temporaryPathCopy format:@"sqlite3_exec failed: %s (%d)", sqlite3_errmsg(ppDb), v21, v31];
     }
     v11 = ;
   }
@@ -388,7 +388,7 @@ LABEL_18:
 
   if (v11)
   {
-    [MBSQLiteFileHandle removeJournalsForSQLiteFileAtPath:v9 error:0];
+    [MBSQLiteFileHandle removeJournalsForSQLiteFileAtPath:temporaryPathCopy error:0];
   }
 
 LABEL_22:

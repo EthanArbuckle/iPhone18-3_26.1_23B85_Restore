@@ -1,13 +1,13 @@
 @interface HUSceneTileCell
 - (BOOL)isRearranging;
 - (BOOL)reorderable;
-- (HUSceneTileCell)initWithCoder:(id)a3;
-- (HUSceneTileCell)initWithFrame:(CGRect)a3;
+- (HUSceneTileCell)initWithCoder:(id)coder;
+- (HUSceneTileCell)initWithFrame:(CGRect)frame;
 - (id)executeActionSetFuture;
-- (void)setExecuteActionSetFuture:(id)a3;
-- (void)setRearranging:(BOOL)a3;
-- (void)setReorderable:(BOOL)a3;
-- (void)updateUIWithAnimation:(BOOL)a3;
+- (void)setExecuteActionSetFuture:(id)future;
+- (void)setRearranging:(BOOL)rearranging;
+- (void)setReorderable:(BOOL)reorderable;
+- (void)updateUIWithAnimation:(BOOL)animation;
 @end
 
 @implementation HUSceneTileCell
@@ -19,14 +19,14 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setExecuteActionSetFuture:(id)a3
+- (void)setExecuteActionSetFuture:(id)future
 {
   v5 = OBJC_IVAR___HUSceneTileCell_executeActionSetFuture;
   swift_beginAccess();
   v6 = *(&self->super.super.super.super.super.super.isa + v5);
-  *(&self->super.super.super.super.super.super.isa + v5) = a3;
-  v7 = a3;
-  v8 = self;
+  *(&self->super.super.super.super.super.super.isa + v5) = future;
+  futureCopy = future;
+  selfCopy = self;
 
   sub_20CFFB560();
 }
@@ -38,10 +38,10 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setRearranging:(BOOL)a3
+- (void)setRearranging:(BOOL)rearranging
 {
-  v4 = self;
-  sub_20CFFBFA4(a3);
+  selfCopy = self;
+  sub_20CFFBFA4(rearranging);
 }
 
 - (BOOL)reorderable
@@ -51,25 +51,25 @@
   return *(&self->super.super.super.super.super.super.isa + v3);
 }
 
-- (void)setReorderable:(BOOL)a3
+- (void)setReorderable:(BOOL)reorderable
 {
-  v4 = self;
-  sub_20CFFC22C(a3);
+  selfCopy = self;
+  sub_20CFFC22C(reorderable);
 }
 
-- (void)updateUIWithAnimation:(BOOL)a3
+- (void)updateUIWithAnimation:(BOOL)animation
 {
-  v3 = self;
-  [(HUSceneTileCell *)v3 setNeedsUpdateConfiguration];
+  selfCopy = self;
+  [(HUSceneTileCell *)selfCopy setNeedsUpdateConfiguration];
   sub_20CFFC4AC();
 }
 
-- (HUSceneTileCell)initWithFrame:(CGRect)a3
+- (HUSceneTileCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR___HUSceneTileCell_dimsWhenReorderingAndNotReorderable) = 1;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR___HUSceneTileCell__executeActionSetFuture) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR___HUSceneTileCell_executeActionSetFuture) = 0;
@@ -78,15 +78,15 @@
   return [(HUTileCell *)&v8 initWithFrame:x, y, width, height];
 }
 
-- (HUSceneTileCell)initWithCoder:(id)a3
+- (HUSceneTileCell)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR___HUSceneTileCell_dimsWhenReorderingAndNotReorderable) = 1;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR___HUSceneTileCell__executeActionSetFuture) = 0;
   *(&self->super.super.super.super.super.super.isa + OBJC_IVAR___HUSceneTileCell_executeActionSetFuture) = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for SceneTileCell();
-  v4 = a3;
-  v5 = [(HUTileCell *)&v7 initWithCoder:v4];
+  coderCopy = coder;
+  v5 = [(HUTileCell *)&v7 initWithCoder:coderCopy];
 
   if (v5)
   {

@@ -7,33 +7,33 @@
 
 - (BOOL)inDocument
 {
-  v1 = a1;
-  v2 = [v1 ownerDocument];
+  selfCopy = self;
+  ownerDocument = [selfCopy ownerDocument];
   do
   {
-    v3 = v1;
-    v1 = [v1 parentNode];
+    v3 = selfCopy;
+    selfCopy = [selfCopy parentNode];
   }
 
-  while (v1 && v1 != v2);
+  while (selfCopy && selfCopy != ownerDocument);
 
-  return v1 != 0;
+  return selfCopy != 0;
 }
 
 - (uint64_t)isHidden
 {
-  if (![a1 offsetWidth] || !objc_msgSend(a1, "offsetHeight"))
+  if (![self offsetWidth] || !objc_msgSend(self, "offsetHeight"))
   {
     return 1;
   }
 
-  v2 = [a1 ownerDocument];
-  v3 = [v2 getComputedStyle:a1 pseudoElement:&stru_1EFB14550];
+  ownerDocument = [self ownerDocument];
+  v3 = [ownerDocument getComputedStyle:self pseudoElement:&stru_1EFB14550];
 
   v4 = [v3 getPropertyValue:@"visibility"];
-  LODWORD(v2) = [v4 isEqualToString:@"visible"];
+  LODWORD(ownerDocument) = [v4 isEqualToString:@"visible"];
 
-  v5 = v2 ^ 1;
+  v5 = ownerDocument ^ 1;
   return v5;
 }
 

@@ -1,73 +1,73 @@
 @interface WFEncodedTypedValue
-- (BOOL)isEqual:(id)a3;
-- (WFEncodedTypedValue)initWithBSXPCCoder:(id)a3;
-- (WFEncodedTypedValue)initWithCoder:(id)a3;
-- (WFEncodedTypedValue)initWithData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (WFEncodedTypedValue)initWithBSXPCCoder:(id)coder;
+- (WFEncodedTypedValue)initWithCoder:(id)coder;
+- (WFEncodedTypedValue)initWithData:(id)data;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFEncodedTypedValue
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFEncodedTypedValue *)self data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  data = [(WFEncodedTypedValue *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
-- (WFEncodedTypedValue)initWithBSXPCCoder:(id)a3
+- (WFEncodedTypedValue)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
 
   v6 = [(WFEncodedTypedValue *)self initWithData:v5];
   return v6;
 }
 
-- (WFEncodedTypedValue)initWithCoder:(id)a3
+- (WFEncodedTypedValue)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"data"];
 
   v6 = [(WFEncodedTypedValue *)self initWithData:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(WFEncodedTypedValue *)self data];
-  [v4 encodeObject:v5 forKey:@"data"];
+  coderCopy = coder;
+  data = [(WFEncodedTypedValue *)self data];
+  [coderCopy encodeObject:data forKey:@"data"];
 }
 
 - (unint64_t)hash
 {
-  v2 = [(WFEncodedTypedValue *)self data];
-  v3 = [v2 hash];
+  data = [(WFEncodedTypedValue *)self data];
+  v3 = [data hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (v6 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v7 = [(WFEncodedTypedValue *)self data];
-      v8 = [(WFEncodedTypedValue *)v6 data];
-      v9 = v7;
-      v10 = v8;
+      data = [(WFEncodedTypedValue *)self data];
+      data2 = [(WFEncodedTypedValue *)v6 data];
+      v9 = data;
+      v10 = data2;
       v11 = v10;
       if (v9 == v10)
       {
@@ -93,16 +93,16 @@
   return v12;
 }
 
-- (WFEncodedTypedValue)initWithData:(id)a3
+- (WFEncodedTypedValue)initWithData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   v10.receiver = self;
   v10.super_class = WFEncodedTypedValue;
   v6 = [(WFEncodedTypedValue *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_data, a3);
+    objc_storeStrong(&v6->_data, data);
     v8 = v7;
   }
 

@@ -1,59 +1,59 @@
 @interface _VisionCoreCamGazeClassifier
-+ (void)classifierForGazeProbabilitiesOutputDescriptor:(void *)a3 error:;
-- (BOOL)getGazeClassification:(int64_t *)a3 fromGazeProbabilitiesOutputData:(id)a4 error:(id *)a5;
-- (id)_initWithGazeProbabilitiesOutputDescriptor:(id)a3;
++ (void)classifierForGazeProbabilitiesOutputDescriptor:(void *)descriptor error:;
+- (BOOL)getGazeClassification:(int64_t *)classification fromGazeProbabilitiesOutputData:(id)data error:(id *)error;
+- (id)_initWithGazeProbabilitiesOutputDescriptor:(id)descriptor;
 @end
 
 @implementation _VisionCoreCamGazeClassifier
 
-- (BOOL)getGazeClassification:(int64_t *)a3 fromGazeProbabilitiesOutputData:(id)a4 error:(id *)a5
+- (BOOL)getGazeClassification:(int64_t *)classification fromGazeProbabilitiesOutputData:(id)data error:(id *)error
 {
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v9 = [VisionCoreRuntimeUtilities signatureForItem:self selector:a2];
-  [v8 handleFailureInMethod:a2 object:self file:@"VisionCoreCamGazeNetworkDescriptor.m" lineNumber:90 description:{@"%@ must be implemented", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"VisionCoreCamGazeNetworkDescriptor.m" lineNumber:90 description:{@"%@ must be implemented", v9}];
 
-  if (a5)
+  if (error)
   {
-    *a5 = [MEMORY[0x1E696ABC0] VisionCoreErrorForFailedOperationWithLocalizedDescription:@"could not validate the gaze probabilities data shape"];
+    *error = [MEMORY[0x1E696ABC0] VisionCoreErrorForFailedOperationWithLocalizedDescription:@"could not validate the gaze probabilities data shape"];
   }
 
   return 0;
 }
 
-- (id)_initWithGazeProbabilitiesOutputDescriptor:(id)a3
+- (id)_initWithGazeProbabilitiesOutputDescriptor:(id)descriptor
 {
-  v5 = a3;
+  descriptorCopy = descriptor;
   v9.receiver = self;
   v9.super_class = _VisionCoreCamGazeClassifier;
   v6 = [(_VisionCoreCamGazeClassifier *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_gazeProbabilitiesOutputDescriptor, a3);
+    objc_storeStrong(&v6->_gazeProbabilitiesOutputDescriptor, descriptor);
   }
 
   return v7;
 }
 
-+ (void)classifierForGazeProbabilitiesOutputDescriptor:(void *)a3 error:
++ (void)classifierForGazeProbabilitiesOutputDescriptor:(void *)descriptor error:
 {
   v4 = a2;
   objc_opt_self();
-  v5 = [v4 shape];
-  if ([v4 dataType] == 65568 && objc_msgSend(v5, "elementCount") == 3 && (v6 = objc_opt_class()) != 0)
+  shape = [v4 shape];
+  if ([v4 dataType] == 65568 && objc_msgSend(shape, "elementCount") == 3 && (v6 = objc_opt_class()) != 0)
   {
-    a3 = [[v6 alloc] _initWithGazeProbabilitiesOutputDescriptor:v4];
+    descriptor = [[v6 alloc] _initWithGazeProbabilitiesOutputDescriptor:v4];
   }
 
-  else if (a3)
+  else if (descriptor)
   {
     v7 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"A gaze probabilties output of %@ is not supported", v4];
-    *a3 = [MEMORY[0x1E696ABC0] VisionCoreErrorForFailedOperationWithLocalizedDescription:v7];
+    *descriptor = [MEMORY[0x1E696ABC0] VisionCoreErrorForFailedOperationWithLocalizedDescription:v7];
 
-    a3 = 0;
+    descriptor = 0;
   }
 
-  return a3;
+  return descriptor;
 }
 
 @end

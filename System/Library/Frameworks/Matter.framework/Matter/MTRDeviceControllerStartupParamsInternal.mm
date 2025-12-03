@@ -1,20 +1,20 @@
 @interface MTRDeviceControllerStartupParamsInternal
 - (BOOL)keypairsMatchCertificates;
-- (MTRDeviceControllerStartupParamsInternal)initWithParams:(id)a3;
+- (MTRDeviceControllerStartupParamsInternal)initWithParams:(id)params;
 - (Optional<unsigned)fabricIndex;
-- (id)initForExistingFabric:(void *)a3 fabricIndex:(unsigned __int8)a4 keystore:(OperationalKeystore *)a5 advertiseOperational:(BOOL)a6 params:(id)a7;
-- (id)initForNewController:(id)a3 fabricTable:(void *)a4 keystore:(OperationalKeystore *)a5 advertiseOperational:(BOOL)a6 params:(id)a7 error:(ChipError *)a8;
-- (id)initForNewFabric:(void *)a3 keystore:(OperationalKeystore *)a4 advertiseOperational:(BOOL)a5 params:(id)a6;
+- (id)initForExistingFabric:(void *)fabric fabricIndex:(unsigned __int8)index keystore:(OperationalKeystore *)keystore advertiseOperational:(BOOL)operational params:(id)params;
+- (id)initForNewController:(id)controller fabricTable:(void *)table keystore:(OperationalKeystore *)keystore advertiseOperational:(BOOL)operational params:(id)params error:(ChipError *)error;
+- (id)initForNewFabric:(void *)fabric keystore:(OperationalKeystore *)keystore advertiseOperational:(BOOL)operational params:(id)params;
 @end
 
 @implementation MTRDeviceControllerStartupParamsInternal
 
-- (MTRDeviceControllerStartupParamsInternal)initWithParams:(id)a3
+- (MTRDeviceControllerStartupParamsInternal)initWithParams:(id)params
 {
-  v4 = a3;
+  paramsCopy = params;
   v28.receiver = self;
   v28.super_class = MTRDeviceControllerStartupParamsInternal;
-  v5 = [(MTRDeviceControllerStartupParams *)&v28 initWithParams:v4];
+  v5 = [(MTRDeviceControllerStartupParams *)&v28 initWithParams:paramsCopy];
   v6 = v5;
   if (!v5)
   {
@@ -27,16 +27,16 @@
   storageDelegateQueue = v6->_storageDelegateQueue;
   v6->_storageDelegateQueue = 0;
 
-  v9 = [(MTRDeviceControllerStartupParams *)v6 nocSigner];
-  if (v9)
+  nocSigner = [(MTRDeviceControllerStartupParams *)v6 nocSigner];
+  if (nocSigner)
   {
   }
 
   else
   {
-    v10 = [(MTRDeviceControllerStartupParams *)v6 rootCertificate];
+    rootCertificate = [(MTRDeviceControllerStartupParams *)v6 rootCertificate];
 
-    if (!v10)
+    if (!rootCertificate)
     {
       v22 = sub_2393D9044(0);
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -54,12 +54,12 @@
     }
   }
 
-  v11 = [(MTRDeviceControllerStartupParams *)v6 operationalCertificate];
-  if (v11)
+  operationalCertificate = [(MTRDeviceControllerStartupParams *)v6 operationalCertificate];
+  if (operationalCertificate)
   {
-    v12 = [(MTRDeviceControllerStartupParams *)v6 nodeID];
+    nodeID = [(MTRDeviceControllerStartupParams *)v6 nodeID];
 
-    if (v12)
+    if (nodeID)
     {
       v13 = sub_2393D9044(0);
       if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -77,12 +77,12 @@
     }
   }
 
-  v14 = [(MTRDeviceControllerStartupParams *)v6 caseAuthenticatedTags];
-  if (v14)
+  caseAuthenticatedTags = [(MTRDeviceControllerStartupParams *)v6 caseAuthenticatedTags];
+  if (caseAuthenticatedTags)
   {
-    v15 = [(MTRDeviceControllerStartupParams *)v6 nodeID];
+    nodeID2 = [(MTRDeviceControllerStartupParams *)v6 nodeID];
 
-    if (!v15)
+    if (!nodeID2)
     {
       v23 = sub_2393D9044(0);
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -100,17 +100,17 @@
     }
   }
 
-  v16 = [(MTRDeviceControllerStartupParams *)v6 operationalCertificate];
+  operationalCertificate2 = [(MTRDeviceControllerStartupParams *)v6 operationalCertificate];
 
-  if (v16)
+  if (operationalCertificate2)
   {
-    v17 = [(MTRDeviceControllerStartupParams *)v6 operationalKeypair];
+    operationalKeypair = [(MTRDeviceControllerStartupParams *)v6 operationalKeypair];
 
-    if (v17)
+    if (operationalKeypair)
     {
-      v18 = [(MTRDeviceControllerStartupParams *)v6 operationalKeypair];
-      v19 = [(MTRDeviceControllerStartupParams *)v6 operationalCertificate];
-      v20 = [MTRCertificates keypair:v18 matchesCertificate:v19];
+      operationalKeypair2 = [(MTRDeviceControllerStartupParams *)v6 operationalKeypair];
+      operationalCertificate3 = [(MTRDeviceControllerStartupParams *)v6 operationalCertificate];
+      v20 = [MTRCertificates keypair:operationalKeypair2 matchesCertificate:operationalCertificate3];
 
       if (v20)
       {
@@ -159,11 +159,11 @@ LABEL_34:
   return v21;
 }
 
-- (id)initForNewFabric:(void *)a3 keystore:(OperationalKeystore *)a4 advertiseOperational:(BOOL)a5 params:(id)a6
+- (id)initForNewFabric:(void *)fabric keystore:(OperationalKeystore *)keystore advertiseOperational:(BOOL)operational params:(id)params
 {
   v33 = *MEMORY[0x277D85DE8];
-  v10 = a6;
-  v11 = [(MTRDeviceControllerStartupParamsInternal *)self initWithParams:v10];
+  paramsCopy = params;
+  v11 = [(MTRDeviceControllerStartupParamsInternal *)self initWithParams:paramsCopy];
   v12 = v11;
   if (!v11)
   {
@@ -172,16 +172,16 @@ LABEL_20:
     goto LABEL_21;
   }
 
-  v13 = [(MTRDeviceControllerStartupParams *)v11 nocSigner];
-  if (v13)
+  nocSigner = [(MTRDeviceControllerStartupParams *)v11 nocSigner];
+  if (nocSigner)
   {
   }
 
   else
   {
-    v14 = [(MTRDeviceControllerStartupParams *)v12 operationalCertificate];
+    operationalCertificate = [(MTRDeviceControllerStartupParams *)v12 operationalCertificate];
 
-    if (!v14)
+    if (!operationalCertificate)
     {
       v24 = sub_2393D9044(0);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -199,30 +199,30 @@ LABEL_20:
     }
   }
 
-  v15 = [(MTRDeviceControllerStartupParams *)v12 operationalCertificate];
-  if (!v15)
+  operationalCertificate2 = [(MTRDeviceControllerStartupParams *)v12 operationalCertificate];
+  if (!operationalCertificate2)
   {
-    v16 = [(MTRDeviceControllerStartupParams *)v12 nodeID];
+    nodeID = [(MTRDeviceControllerStartupParams *)v12 nodeID];
 
-    if (v16)
+    if (nodeID)
     {
       goto LABEL_8;
     }
 
     v27 = arc4random();
-    v15 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(arc4random() >> 1) | (v27 << 31)];
-    [(MTRDeviceControllerStartupParams *)v12 setNodeID:v15];
+    operationalCertificate2 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:(arc4random() >> 1) | (v27 << 31)];
+    [(MTRDeviceControllerStartupParams *)v12 setNodeID:operationalCertificate2];
   }
 
 LABEL_8:
-  v17 = [(MTRDeviceControllerStartupParams *)v12 rootCertificate];
+  rootCertificate = [(MTRDeviceControllerStartupParams *)v12 rootCertificate];
 
-  if (!v17)
+  if (!rootCertificate)
   {
-    v19 = [(MTRDeviceControllerStartupParams *)v12 nocSigner];
-    v20 = [(MTRDeviceControllerStartupParams *)v12 fabricID];
+    nocSigner2 = [(MTRDeviceControllerStartupParams *)v12 nocSigner];
+    fabricID = [(MTRDeviceControllerStartupParams *)v12 fabricID];
     v30 = 0;
-    v21 = [MTRCertificates createRootCertificate:v19 issuerID:0 fabricID:v20 error:&v30];
+    v21 = [MTRCertificates createRootCertificate:nocSigner2 issuerID:0 fabricID:fabricID error:&v30];
     v22 = v30;
     [(MTRDeviceControllerStartupParams *)v12 setRootCertificate:v21];
 
@@ -245,9 +245,9 @@ LABEL_8:
     }
   }
 
-  v12->_fabricTable = a3;
-  v12->_keystore = a4;
-  v12->_advertiseOperational = a5;
+  v12->_fabricTable = fabric;
+  v12->_keystore = keystore;
+  v12->_advertiseOperational = operational;
   v12->_allowMultipleControllersPerFabric = 0;
   v18 = v12;
 LABEL_21:
@@ -256,28 +256,28 @@ LABEL_21:
   return v18;
 }
 
-- (id)initForExistingFabric:(void *)a3 fabricIndex:(unsigned __int8)a4 keystore:(OperationalKeystore *)a5 advertiseOperational:(BOOL)a6 params:(id)a7
+- (id)initForExistingFabric:(void *)fabric fabricIndex:(unsigned __int8)index keystore:(OperationalKeystore *)keystore advertiseOperational:(BOOL)operational params:(id)params
 {
-  v8 = a4;
+  indexCopy = index;
   v68 = *MEMORY[0x277D85DE8];
-  v11 = a7;
-  v12 = [(MTRDeviceControllerStartupParamsInternal *)self initWithParams:v11];
+  paramsCopy = params;
+  v12 = [(MTRDeviceControllerStartupParamsInternal *)self initWithParams:paramsCopy];
   if (!v12)
   {
     goto LABEL_79;
   }
 
-  v13 = sub_2394A7FC0(a3, v8);
-  v14 = [(MTRDeviceControllerStartupParams *)v12 vendorID];
+  v13 = sub_2394A7FC0(fabric, indexCopy);
+  vendorID = [(MTRDeviceControllerStartupParams *)v12 vendorID];
 
-  if (!v14)
+  if (!vendorID)
   {
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:*(v13 + 138)];
     [(MTRDeviceControllerStartupParams *)v12 setVendorID:v15];
   }
 
-  v16 = [(MTRDeviceControllerStartupParams *)v12 operationalCertificate];
-  if (v16)
+  operationalCertificate = [(MTRDeviceControllerStartupParams *)v12 operationalCertificate];
+  if (operationalCertificate)
   {
 
 LABEL_7:
@@ -285,9 +285,9 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  v17 = [(MTRDeviceControllerStartupParams *)v12 nodeID];
+  nodeID = [(MTRDeviceControllerStartupParams *)v12 nodeID];
 
-  if (v17)
+  if (nodeID)
   {
     goto LABEL_7;
   }
@@ -297,7 +297,7 @@ LABEL_7:
 
   v63 = v67;
   v64 = 400;
-  if (sub_2394A847C(a3, *(v13 + 137), &v63))
+  if (sub_2394A847C(fabric, *(v13 + 137), &v63))
   {
     v23 = sub_2393D9044(0);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -316,8 +316,8 @@ LABEL_7:
     goto LABEL_20;
   }
 
-  v35 = [(MTRDeviceControllerStartupParams *)v12 operationalKeypair];
-  v36 = v35 == 0;
+  operationalKeypair = [(MTRDeviceControllerStartupParams *)v12 operationalKeypair];
+  v36 = operationalKeypair == 0;
 
   if (v36)
   {
@@ -325,8 +325,8 @@ LABEL_7:
     v48 = sub_23921FFF0(buf);
     [(MTRDeviceControllerStartupParams *)v12 setOperationalCertificate:v48];
 
-    v49 = [(MTRDeviceControllerStartupParams *)v12 operationalCertificate];
-    v50 = v49 == 0;
+    operationalCertificate2 = [(MTRDeviceControllerStartupParams *)v12 operationalCertificate];
+    v50 = operationalCertificate2 == 0;
 
     if (v50)
     {
@@ -351,7 +351,7 @@ LABEL_21:
       goto LABEL_79;
     }
 
-    if (((*(a5->var0 + 3))(a5, *(v13 + 137)) & 1) == 0)
+    if (((*(keystore->var0 + 3))(keystore, *(v13 + 137)) & 1) == 0)
     {
       v51 = sub_2393D9044(0);
       if (os_log_type_enabled(v51, OS_LOG_TYPE_ERROR))
@@ -420,7 +420,7 @@ LABEL_79:
 LABEL_8:
   v63 = v67;
   v64 = 400;
-  if (sub_2394A8274(a3, *(v13 + 137), &v63))
+  if (sub_2394A8274(fabric, *(v13 + 137), &v63))
   {
     v19 = sub_2393D9044(0);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -455,17 +455,17 @@ LABEL_8:
   }
 
   v59 = v21;
-  v25 = [(MTRDeviceControllerStartupParams *)v12 nocSigner];
-  if (v25)
+  nocSigner = [(MTRDeviceControllerStartupParams *)v12 nocSigner];
+  if (nocSigner)
   {
-    v26 = [(MTRDeviceControllerStartupParams *)v12 intermediateCertificate];
-    v27 = v26 || v59 == 0;
+    intermediateCertificate = [(MTRDeviceControllerStartupParams *)v12 intermediateCertificate];
+    v27 = intermediateCertificate || v59 == 0;
     v28 = !v27;
 
     if (v28)
     {
-      v29 = [(MTRDeviceControllerStartupParams *)v12 nocSigner];
-      v30 = [MTRCertificates keypair:v29 matchesCertificate:v59];
+      nocSigner2 = [(MTRDeviceControllerStartupParams *)v12 nocSigner];
+      v30 = [MTRCertificates keypair:nocSigner2 matchesCertificate:v59];
 
       if (v30)
       {
@@ -479,9 +479,9 @@ LABEL_8:
     goto LABEL_47;
   }
 
-  v31 = [(MTRDeviceControllerStartupParams *)v12 intermediateCertificate];
-  v32 = v31;
-  if ((v59 == 0) == (v31 != 0))
+  intermediateCertificate2 = [(MTRDeviceControllerStartupParams *)v12 intermediateCertificate];
+  v32 = intermediateCertificate2;
+  if ((v59 == 0) == (intermediateCertificate2 != 0))
   {
 
     goto LABEL_39;
@@ -493,8 +493,8 @@ LABEL_8:
     goto LABEL_47;
   }
 
-  v33 = [(MTRDeviceControllerStartupParams *)v12 intermediateCertificate];
-  v34 = [MTRCertificates isCertificate:v59 equalTo:v33];
+  intermediateCertificate3 = [(MTRDeviceControllerStartupParams *)v12 intermediateCertificate];
+  v34 = [MTRCertificates isCertificate:v59 equalTo:intermediateCertificate3];
 
   if (!v34)
   {
@@ -505,7 +505,7 @@ LABEL_39:
 LABEL_47:
   v63 = v67;
   v64 = 400;
-  if (sub_2394A7BFC(a3, *(v13 + 137), &v63))
+  if (sub_2394A7BFC(fabric, *(v13 + 137), &v63))
   {
     v39 = sub_2393D9044(0);
     if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
@@ -531,8 +531,8 @@ LABEL_47:
     v41 = sub_23921FFF0(buf);
     if (v41)
     {
-      v43 = [(MTRDeviceControllerStartupParams *)v12 rootCertificate];
-      v44 = v43 == 0;
+      rootCertificate = [(MTRDeviceControllerStartupParams *)v12 rootCertificate];
+      v44 = rootCertificate == 0;
 
       if (v44)
       {
@@ -541,8 +541,8 @@ LABEL_47:
 
       else
       {
-        v45 = [(MTRDeviceControllerStartupParams *)v12 rootCertificate];
-        v46 = [MTRCertificates isCertificate:v41 equalTo:v45];
+        rootCertificate2 = [(MTRDeviceControllerStartupParams *)v12 rootCertificate];
+        v46 = [MTRCertificates isCertificate:v41 equalTo:rootCertificate2];
 
         if (!v46)
         {
@@ -562,11 +562,11 @@ LABEL_47:
         }
       }
 
-      v12->_fabricTable = a3;
+      v12->_fabricTable = fabric;
       v12->_fabricIndex.mValueHolder.mHasValue = 1;
-      v12->_fabricIndex.mValueHolder.mValue.mData = v8;
-      v12->_keystore = a5;
-      v12->_advertiseOperational = a6;
+      v12->_fabricIndex.mValueHolder.mValue.mData = indexCopy;
+      v12->_keystore = keystore;
+      v12->_advertiseOperational = operational;
       v12->_allowMultipleControllersPerFabric = 0;
       v42 = v12;
       goto LABEL_54;
@@ -582,33 +582,33 @@ LABEL_80:
   return v42;
 }
 
-- (id)initForNewController:(id)a3 fabricTable:(void *)a4 keystore:(OperationalKeystore *)a5 advertiseOperational:(BOOL)a6 params:(id)a7 error:(ChipError *)a8
+- (id)initForNewController:(id)controller fabricTable:(void *)table keystore:(OperationalKeystore *)keystore advertiseOperational:(BOOL)operational params:(id)params error:(ChipError *)error
 {
   v75 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a7;
+  controllerCopy = controller;
+  paramsCopy = params;
   v70.receiver = self;
   v70.super_class = MTRDeviceControllerStartupParamsInternal;
-  v16 = [(MTRDeviceControllerStartupParams *)&v70 initWithParameters:v15 error:a8];
+  v16 = [(MTRDeviceControllerStartupParams *)&v70 initWithParameters:paramsCopy error:error];
   v17 = v16;
   if (v16)
   {
     v73[0] = &unk_284BB9138;
-    v18 = [(MTRDeviceControllerStartupParams *)v16 rootCertificate];
-    v19 = v18;
-    sub_238DB6950(buf, [v18 bytes], objc_msgSend(v18, "length"));
+    rootCertificate = [(MTRDeviceControllerStartupParams *)v16 rootCertificate];
+    v19 = rootCertificate;
+    sub_238DB6950(buf, [rootCertificate bytes], objc_msgSend(rootCertificate, "length"));
 
     v69 = *buf;
-    *&a8->mError = sub_2393FA970(&v69, v73);
-    a8->mFile = v20;
+    *&error->mError = sub_2393FA970(&v69, v73);
+    error->mFile = v20;
 
-    if (a8->mError)
+    if (error->mError)
     {
       v21 = sub_2393D9044(0);
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = *&a8->mError;
-        mFile = a8->mFile;
+        v22 = *&error->mError;
+        mFile = error->mFile;
         v24 = sub_2393C9138();
         *buf = 136315138;
         *&buf[4] = v24;
@@ -617,8 +617,8 @@ LABEL_80:
 
       if (sub_2393D5398(1u))
       {
-        v25 = *&a8->mError;
-        v26 = a8->mFile;
+        v25 = *&error->mError;
+        v26 = error->mFile;
         sub_2393C9138();
         sub_2393D5320(0, 1);
       }
@@ -626,15 +626,15 @@ LABEL_80:
       goto LABEL_7;
     }
 
-    v28 = [(MTRDeviceControllerStartupParams *)v17 operationalCertificate];
+    operationalCertificate = [(MTRDeviceControllerStartupParams *)v17 operationalCertificate];
     v68 = 0;
-    v29 = sub_239220D54(v28, &v68, buf);
+    v29 = sub_239220D54(operationalCertificate, &v68, buf);
     v31 = v30;
     v61 = v68;
-    *&a8->mError = v29;
-    a8->mFile = v31;
+    *&error->mError = v29;
+    error->mFile = v31;
 
-    if (a8->mError)
+    if (error->mError)
     {
       v27 = 0;
 LABEL_45:
@@ -642,8 +642,8 @@ LABEL_45:
       goto LABEL_46;
     }
 
-    v32 = [(MTRDeviceControllerStartupParams *)v17 fabricID];
-    v33 = sub_2394A7F44(a4, v73, [v32 unsignedLongLongValue], objc_msgSend(v61, "unsignedLongLongValue")) == 0;
+    fabricID = [(MTRDeviceControllerStartupParams *)v17 fabricID];
+    v33 = sub_2394A7F44(table, v73, [fabricID unsignedLongLongValue], objc_msgSend(v61, "unsignedLongLongValue")) == 0;
 
     if (!v33)
     {
@@ -660,17 +660,17 @@ LABEL_45:
       }
 
       v27 = 0;
-      *&a8->mError = 0x27A0000002FLL;
-      a8->mFile = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDeviceControllerStartupParams.mm";
+      *&error->mError = 0x27A0000002FLL;
+      error->mFile = "/Library/Caches/com.apple.xbs/Sources/CHIPFramework/connectedhomeip/src/darwin/Framework/CHIP/MTRDeviceControllerStartupParams.mm";
       goto LABEL_45;
     }
 
-    v35 = [v14 controllerDataStore];
-    v36 = [v35 fetchLastLocallyUsedNOC];
+    controllerDataStore = [controllerCopy controllerDataStore];
+    fetchLastLocallyUsedNOC = [controllerDataStore fetchLastLocallyUsedNOC];
 
-    if (v36)
+    if (fetchLastLocallyUsedNOC)
     {
-      v37 = v36;
+      v37 = fetchLastLocallyUsedNOC;
       v38 = v37;
       sub_238DB6950(buf, [v37 bytes], objc_msgSend(v37, "length"));
 
@@ -719,8 +719,8 @@ LABEL_45:
         goto LABEL_34;
       }
 
-      v43 = [(MTRDeviceControllerStartupParams *)v17 operationalCertificate];
-      v44 = [MTRCertificates convertX509Certificate:v43];
+      operationalCertificate2 = [(MTRDeviceControllerStartupParams *)v17 operationalCertificate];
+      v44 = [MTRCertificates convertX509Certificate:operationalCertificate2];
 
       if (!v44)
       {
@@ -755,8 +755,8 @@ LABEL_44:
         goto LABEL_34;
       }
 
-      v48 = [v61 unsignedLongLongValue];
-      if (v48 != v66 || !sub_239220F58(&v64, &v62))
+      unsignedLongLongValue = [v61 unsignedLongLongValue];
+      if (unsignedLongLongValue != v66 || !sub_239220F58(&v64, &v62))
       {
         v49 = sub_2393D9044(0);
         if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
@@ -770,30 +770,30 @@ LABEL_44:
           sub_2393D5320(0, 2);
         }
 
-        v50 = [v14 controllerDataStore];
-        [v50 clearAllResumptionInfo];
+        controllerDataStore2 = [controllerCopy controllerDataStore];
+        [controllerDataStore2 clearAllResumptionInfo];
       }
     }
 
-    v17->_fabricTable = a4;
-    v17->_keystore = a5;
-    v17->_advertiseOperational = a6;
+    v17->_fabricTable = table;
+    v17->_keystore = keystore;
+    v17->_advertiseOperational = operational;
     v17->_allowMultipleControllersPerFabric = 1;
-    v51 = [v15 storageDelegate];
+    storageDelegate = [paramsCopy storageDelegate];
     storageDelegate = v17->_storageDelegate;
-    v17->_storageDelegate = v51;
+    v17->_storageDelegate = storageDelegate;
 
-    v53 = [v15 storageDelegateQueue];
+    storageDelegateQueue = [paramsCopy storageDelegateQueue];
     storageDelegateQueue = v17->_storageDelegateQueue;
-    v17->_storageDelegateQueue = v53;
+    v17->_storageDelegateQueue = storageDelegateQueue;
 
-    v55 = [v15 productAttestationAuthorityCertificates];
+    productAttestationAuthorityCertificates = [paramsCopy productAttestationAuthorityCertificates];
     productAttestationAuthorityCertificates = v17->_productAttestationAuthorityCertificates;
-    v17->_productAttestationAuthorityCertificates = v55;
+    v17->_productAttestationAuthorityCertificates = productAttestationAuthorityCertificates;
 
-    v57 = [v15 certificationDeclarationCertificates];
+    certificationDeclarationCertificates = [paramsCopy certificationDeclarationCertificates];
     certificationDeclarationCertificates = v17->_certificationDeclarationCertificates;
-    v17->_certificationDeclarationCertificates = v57;
+    v17->_certificationDeclarationCertificates = certificationDeclarationCertificates;
 
     v27 = v17;
     goto LABEL_44;
@@ -809,15 +809,15 @@ LABEL_46:
 
 - (BOOL)keypairsMatchCertificates
 {
-  v3 = [(MTRDeviceControllerStartupParams *)self nocSigner];
+  nocSigner = [(MTRDeviceControllerStartupParams *)self nocSigner];
 
-  if (v3)
+  if (nocSigner)
   {
-    v4 = [(MTRDeviceControllerStartupParams *)self intermediateCertificate];
-    if (v4 || ([(MTRDeviceControllerStartupParams *)self rootCertificate], (v4 = objc_claimAutoreleasedReturnValue()) != 0))
+    intermediateCertificate = [(MTRDeviceControllerStartupParams *)self intermediateCertificate];
+    if (intermediateCertificate || ([(MTRDeviceControllerStartupParams *)self rootCertificate], (intermediateCertificate = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v5 = [(MTRDeviceControllerStartupParams *)self nocSigner];
-      v6 = [MTRCertificates keypair:v5 matchesCertificate:v4];
+      nocSigner2 = [(MTRDeviceControllerStartupParams *)self nocSigner];
+      v6 = [MTRCertificates keypair:nocSigner2 matchesCertificate:intermediateCertificate];
 
       if (v6)
       {
@@ -847,7 +847,7 @@ LABEL_46:
         _os_log_impl(&dword_238DAE000, v16, OS_LOG_TYPE_ERROR, "No certificate to match nocSigner", v20, 2u);
       }
 
-      v4 = 0;
+      intermediateCertificate = 0;
       if (sub_2393D5398(1u))
       {
         sub_2393D5320(0, 1);
@@ -858,16 +858,16 @@ LABEL_46:
   }
 
 LABEL_6:
-  v7 = [(MTRDeviceControllerStartupParams *)self operationalCertificate];
-  if (!v7)
+  operationalCertificate = [(MTRDeviceControllerStartupParams *)self operationalCertificate];
+  if (!operationalCertificate)
   {
     goto LABEL_9;
   }
 
-  v8 = v7;
-  v9 = [(MTRDeviceControllerStartupParams *)self operationalKeypair];
+  v8 = operationalCertificate;
+  operationalKeypair = [(MTRDeviceControllerStartupParams *)self operationalKeypair];
 
-  if (!v9 || ([(MTRDeviceControllerStartupParams *)self operationalKeypair], v10 = objc_claimAutoreleasedReturnValue(), [(MTRDeviceControllerStartupParams *)self operationalCertificate], v11 = objc_claimAutoreleasedReturnValue(), v12 = [MTRCertificates keypair:v10 matchesCertificate:v11], v11, v10, v12))
+  if (!operationalKeypair || ([(MTRDeviceControllerStartupParams *)self operationalKeypair], v10 = objc_claimAutoreleasedReturnValue(), [(MTRDeviceControllerStartupParams *)self operationalCertificate], v11 = objc_claimAutoreleasedReturnValue(), v12 = [MTRCertificates keypair:v10 matchesCertificate:v11], v11, v10, v12))
   {
 LABEL_9:
     LOBYTE(v13) = 1;

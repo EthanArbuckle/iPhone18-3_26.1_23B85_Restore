@@ -1,18 +1,18 @@
 @interface PKPaymentAuthorizationClientCallbackStateParam
-+ (PKPaymentAuthorizationClientCallbackStateParam)paramWithCallbackKind:(int64_t)a3 object:(id)a4;
++ (PKPaymentAuthorizationClientCallbackStateParam)paramWithCallbackKind:(int64_t)kind object:(id)object;
 - (id)description;
 @end
 
 @implementation PKPaymentAuthorizationClientCallbackStateParam
 
-+ (PKPaymentAuthorizationClientCallbackStateParam)paramWithCallbackKind:(int64_t)a3 object:(id)a4
++ (PKPaymentAuthorizationClientCallbackStateParam)paramWithCallbackKind:(int64_t)kind object:(id)object
 {
-  v6 = a4;
-  v7 = [a1 param];
-  [v7 setKind:a3];
-  [v7 setObject:v6];
+  objectCopy = object;
+  param = [self param];
+  [param setKind:kind];
+  [param setObject:objectCopy];
 
-  return v7;
+  return param;
 }
 
 - (id)description

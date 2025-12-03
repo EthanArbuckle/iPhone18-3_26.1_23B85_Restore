@@ -1,30 +1,30 @@
 @interface EDTableColumn
-+ (id)tableColumnWithResources:(id)a3;
-- (EDTableColumn)initWithResources:(id)a3;
++ (id)tableColumnWithResources:(id)resources;
+- (EDTableColumn)initWithResources:(id)resources;
 - (id)dataAreaDxf;
 - (id)description;
 - (id)headerRowDxf;
 - (id)totalsRowDxf;
-- (void)setDataAreaDxf:(id)a3;
-- (void)setHeaderRowDxf:(id)a3;
-- (void)setName:(id)a3;
-- (void)setTotalsRowDxf:(id)a3;
-- (void)setTotalsRowLabel:(id)a3;
-- (void)setUniqueName:(id)a3;
+- (void)setDataAreaDxf:(id)dxf;
+- (void)setHeaderRowDxf:(id)dxf;
+- (void)setName:(id)name;
+- (void)setTotalsRowDxf:(id)dxf;
+- (void)setTotalsRowLabel:(id)label;
+- (void)setUniqueName:(id)name;
 @end
 
 @implementation EDTableColumn
 
-- (EDTableColumn)initWithResources:(id)a3
+- (EDTableColumn)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v8.receiver = self;
   v8.super_class = EDTableColumn;
   v5 = [(EDTableColumn *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
     v6->mHeaderRowDxfIndex = -1;
     v6->mTotalsRowDxfIndex = -1;
     v6->mDataAreaDxfIndex = -1;
@@ -33,10 +33,10 @@
   return v6;
 }
 
-+ (id)tableColumnWithResources:(id)a3
++ (id)tableColumnWithResources:(id)resources
 {
-  v3 = a3;
-  v4 = [objc_alloc(objc_opt_class()) initWithResources:v3];
+  resourcesCopy = resources;
+  v4 = [objc_alloc(objc_opt_class()) initWithResources:resourcesCopy];
 
   return v4;
 }
@@ -44,96 +44,96 @@
 - (id)headerRowDxf
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  v5 = [v4 objectAtIndex:self->mHeaderRowDxfIndex];
+  v5 = [differentialStyles objectAtIndex:self->mHeaderRowDxfIndex];
 
   return v5;
 }
 
-- (void)setHeaderRowDxf:(id)a3
+- (void)setHeaderRowDxf:(id)dxf
 {
-  v6 = a3;
+  dxfCopy = dxf;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  self->mHeaderRowDxfIndex = [v5 addObject:v6];
+  self->mHeaderRowDxfIndex = [differentialStyles addObject:dxfCopy];
 }
 
 - (id)totalsRowDxf
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  v5 = [v4 objectAtIndex:self->mTotalsRowDxfIndex];
+  v5 = [differentialStyles objectAtIndex:self->mTotalsRowDxfIndex];
 
   return v5;
 }
 
-- (void)setTotalsRowDxf:(id)a3
+- (void)setTotalsRowDxf:(id)dxf
 {
-  v6 = a3;
+  dxfCopy = dxf;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  self->mTotalsRowDxfIndex = [v5 addObject:v6];
+  self->mTotalsRowDxfIndex = [differentialStyles addObject:dxfCopy];
 }
 
 - (id)dataAreaDxf
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  v5 = [v4 objectAtIndex:self->mDataAreaDxfIndex];
+  v5 = [differentialStyles objectAtIndex:self->mDataAreaDxfIndex];
 
   return v5;
 }
 
-- (void)setDataAreaDxf:(id)a3
+- (void)setDataAreaDxf:(id)dxf
 {
-  v6 = a3;
+  dxfCopy = dxf;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained differentialStyles];
+  differentialStyles = [WeakRetained differentialStyles];
 
-  self->mDataAreaDxfIndex = [v5 addObject:v6];
+  self->mDataAreaDxfIndex = [differentialStyles addObject:dxfCopy];
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   mName = self->mName;
   p_mName = &self->mName;
-  if (mName != v5)
+  if (mName != nameCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_mName, name);
+    nameCopy = v8;
   }
 }
 
-- (void)setUniqueName:(id)a3
+- (void)setUniqueName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   mUniqueName = self->mUniqueName;
   p_mUniqueName = &self->mUniqueName;
-  if (mUniqueName != v5)
+  if (mUniqueName != nameCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mUniqueName, a3);
-    v5 = v8;
+    v8 = nameCopy;
+    objc_storeStrong(p_mUniqueName, name);
+    nameCopy = v8;
   }
 }
 
-- (void)setTotalsRowLabel:(id)a3
+- (void)setTotalsRowLabel:(id)label
 {
-  v5 = a3;
+  labelCopy = label;
   mTotalsRowLabel = self->mTotalsRowLabel;
   p_mTotalsRowLabel = &self->mTotalsRowLabel;
-  if (mTotalsRowLabel != v5)
+  if (mTotalsRowLabel != labelCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mTotalsRowLabel, a3);
-    v5 = v8;
+    v8 = labelCopy;
+    objc_storeStrong(p_mTotalsRowLabel, label);
+    labelCopy = v8;
   }
 }
 

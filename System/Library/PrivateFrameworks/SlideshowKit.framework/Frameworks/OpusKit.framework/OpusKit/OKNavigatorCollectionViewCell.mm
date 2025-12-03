@@ -1,18 +1,18 @@
 @interface OKNavigatorCollectionViewCell
-- (OKNavigatorCollectionViewCell)initWithFrame:(CGRect)a3;
+- (OKNavigatorCollectionViewCell)initWithFrame:(CGRect)frame;
 - (void)dealloc;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setPageViewController:(id)a3;
+- (void)setPageViewController:(id)controller;
 @end
 
 @implementation OKNavigatorCollectionViewCell
 
-- (OKNavigatorCollectionViewCell)initWithFrame:(CGRect)a3
+- (OKNavigatorCollectionViewCell)initWithFrame:(CGRect)frame
 {
   v4.receiver = self;
   v4.super_class = OKNavigatorCollectionViewCell;
-  result = [(OKNavigatorCollectionViewCell *)&v4 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  result = [(OKNavigatorCollectionViewCell *)&v4 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (result)
   {
     result->_pageViewController = 0;
@@ -63,7 +63,7 @@
   }
 }
 
-- (void)setPageViewController:(id)a3
+- (void)setPageViewController:(id)controller
 {
   pageViewController = self->_pageViewController;
   if (pageViewController)
@@ -78,9 +78,9 @@
     }
   }
 
-  if (a3)
+  if (controller)
   {
-    self->_pageViewController = a3;
+    self->_pageViewController = controller;
   }
 }
 

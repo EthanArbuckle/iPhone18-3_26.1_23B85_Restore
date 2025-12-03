@@ -1,6 +1,6 @@
 @interface FMRequestAckRegister
-- (BOOL)canReplace:(id)a3;
-- (FMRequestAckRegister)initWithProvider:(id)a3 registerCommand:(id)a4 ackURL:(id)a5;
+- (BOOL)canReplace:(id)replace;
+- (FMRequestAckRegister)initWithProvider:(id)provider registerCommand:(id)command ackURL:(id)l;
 - (id)requestBody;
 - (void)deinitializeRequest;
 @end
@@ -16,18 +16,18 @@
   [(FMRequestAckRegister *)self setAckURL:0];
 }
 
-- (FMRequestAckRegister)initWithProvider:(id)a3 registerCommand:(id)a4 ackURL:(id)a5
+- (FMRequestAckRegister)initWithProvider:(id)provider registerCommand:(id)command ackURL:(id)l
 {
-  v8 = a4;
-  v9 = a5;
+  commandCopy = command;
+  lCopy = l;
   v13.receiver = self;
   v13.super_class = FMRequestAckRegister;
-  v10 = [(FMRequest *)&v13 initWithProvider:a3];
+  v10 = [(FMRequest *)&v13 initWithProvider:provider];
   v11 = v10;
   if (v10)
   {
-    [(FMRequestAckRegister *)v10 setRegisterCommand:v8];
-    [(FMRequestAckRegister *)v11 setAckURL:v9];
+    [(FMRequestAckRegister *)v10 setRegisterCommand:commandCopy];
+    [(FMRequestAckRegister *)v11 setAckURL:lCopy];
   }
 
   return v11;
@@ -37,40 +37,40 @@
 {
   v10.receiver = self;
   v10.super_class = FMRequestAckRegister;
-  v3 = [(FMRequest *)&v10 requestBody];
-  v4 = [(FMRequest *)self provider];
-  v5 = [v4 standardDeviceContext];
-  [v3 setObject:v5 forKeyedSubscript:@"deviceContext"];
+  requestBody = [(FMRequest *)&v10 requestBody];
+  provider = [(FMRequest *)self provider];
+  standardDeviceContext = [provider standardDeviceContext];
+  [requestBody setObject:standardDeviceContext forKeyedSubscript:@"deviceContext"];
 
-  v6 = [(FMRequest *)self provider];
-  v7 = [v6 fullDeviceInfo];
-  [v3 setObject:v7 forKeyedSubscript:@"deviceInfo"];
+  provider2 = [(FMRequest *)self provider];
+  fullDeviceInfo = [provider2 fullDeviceInfo];
+  [requestBody setObject:fullDeviceInfo forKeyedSubscript:@"deviceInfo"];
 
-  [v3 setObject:&off_100062FD0 forKeyedSubscript:@"statusCode"];
-  v8 = [(FMRequestAckRegister *)self registerCommand];
-  [v3 setObject:v8 forKeyedSubscript:@"cmdContext"];
+  [requestBody setObject:&off_100062FD0 forKeyedSubscript:@"statusCode"];
+  registerCommand = [(FMRequestAckRegister *)self registerCommand];
+  [requestBody setObject:registerCommand forKeyedSubscript:@"cmdContext"];
 
-  return v3;
+  return requestBody;
 }
 
-- (BOOL)canReplace:(id)a3
+- (BOOL)canReplace:(id)replace
 {
-  v4 = a3;
+  replaceCopy = replace;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = replaceCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = [(FMRequest *)self delegate];
-      v7 = [v5 delegate];
-      if (v6 == v7)
+      delegate = [(FMRequest *)self delegate];
+      delegate2 = [v5 delegate];
+      if (delegate == delegate2)
       {
-        v9 = [(FMRequestAckRegister *)self registerCommand];
-        v10 = [v9 objectForKeyedSubscript:@"id"];
-        v11 = [v5 registerCommand];
-        v12 = [v11 objectForKeyedSubscript:@"id"];
+        registerCommand = [(FMRequestAckRegister *)self registerCommand];
+        v10 = [registerCommand objectForKeyedSubscript:@"id"];
+        registerCommand2 = [v5 registerCommand];
+        v12 = [registerCommand2 objectForKeyedSubscript:@"id"];
         v8 = [v10 isEqualToString:v12];
       }
 

@@ -1,6 +1,6 @@
 @interface THWFreeTransformGestureRecognizer
 - (CGAffineTransform)transform;
-- (CGAffineTransform)transformWithScale:(SEL)a3 angle:(double)a4;
+- (CGAffineTransform)transformWithScale:(SEL)scale angle:(double)angle;
 - (CGPoint)centerPoint;
 - (CGPoint)initialLocation1;
 - (CGPoint)initialLocation2;
@@ -8,33 +8,33 @@
 - (CGPoint)location2;
 - (CGPoint)previousLocation1;
 - (CGPoint)previousLocation2;
-- (THWFreeTransformGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
+- (THWFreeTransformGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
 - (double)p_calculateAngle;
-- (double)p_calculateAngleFromLocation1:(CGPoint)a3 location2:(CGPoint)a4;
+- (double)p_calculateAngleFromLocation1:(CGPoint)location1 location2:(CGPoint)location2;
 - (double)p_calculateScale;
-- (double)p_calculateScaleFromLocation1:(CGPoint)a3 location2:(CGPoint)a4;
+- (double)p_calculateScaleFromLocation1:(CGPoint)location1 location2:(CGPoint)location2;
 - (void)dealloc;
 - (void)p_clearDynamicFreeTransformController;
-- (void)p_failWithGestureState:(int64_t)a3;
+- (void)p_failWithGestureState:(int64_t)state;
 - (void)p_tryToBegin;
 - (void)p_updateTransform;
-- (void)recenterOnTargetWithRectInView:(CGRect)a3;
-- (void)recenterOnTargetWithRectInView:(CGRect)a3 withTouchPoint:(CGPoint)a4 withTouchPoint:(CGPoint)a5;
+- (void)recenterOnTargetWithRectInView:(CGRect)view;
+- (void)recenterOnTargetWithRectInView:(CGRect)view withTouchPoint:(CGPoint)point withTouchPoint:(CGPoint)touchPoint;
 - (void)reset;
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 - (void)updateAngle;
 @end
 
 @implementation THWFreeTransformGestureRecognizer
 
-- (THWFreeTransformGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (THWFreeTransformGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v8.receiver = self;
   v8.super_class = THWFreeTransformGestureRecognizer;
-  v4 = [(THWFreeTransformGestureRecognizer *)&v8 initWithTarget:a3 action:a4];
+  v4 = [(THWFreeTransformGestureRecognizer *)&v8 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -73,7 +73,7 @@
   }
 }
 
-- (double)p_calculateScaleFromLocation1:(CGPoint)a3 location2:(CGPoint)a4
+- (double)p_calculateScaleFromLocation1:(CGPoint)location1 location2:(CGPoint)location2
 {
   [(THWFreeTransformGestureRecognizer *)self initialLocation1];
   [(THWFreeTransformGestureRecognizer *)self initialLocation2];
@@ -114,7 +114,7 @@
   return result;
 }
 
-- (double)p_calculateAngleFromLocation1:(CGPoint)a3 location2:(CGPoint)a4
+- (double)p_calculateAngleFromLocation1:(CGPoint)location1 location2:(CGPoint)location2
 {
   [(THWFreeTransformGestureRecognizer *)self initialLocation1];
   [(THWFreeTransformGestureRecognizer *)self initialLocation2];
@@ -147,7 +147,7 @@
   return round(v9 * 100.0) / 100.0;
 }
 
-- (CGAffineTransform)transformWithScale:(SEL)a3 angle:(double)a4
+- (CGAffineTransform)transformWithScale:(SEL)scale angle:(double)angle
 {
   v21 = *&CGAffineTransformIdentity.c;
   v22 = *&CGAffineTransformIdentity.a;
@@ -162,7 +162,7 @@
   *&t1.c = v21;
   *&t1.tx = v20;
   CGAffineTransformConcat(retstr, &t1, &t2);
-  CGAffineTransformMakeScale(&t1, a4, a4);
+  CGAffineTransformMakeScale(&t1, angle, angle);
   v11 = *&retstr->c;
   *&v23.a = *&retstr->a;
   *&v23.c = v11;
@@ -213,25 +213,25 @@
   [(THWFreeTransformGestureRecognizer *)self p_updateTransform];
 }
 
-- (void)recenterOnTargetWithRectInView:(CGRect)a3
+- (void)recenterOnTargetWithRectInView:(CGRect)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = view.size.height;
+  width = view.size.width;
+  y = view.origin.y;
+  x = view.origin.x;
   if ([(THWFreeTransformGestureRecognizer *)self touch1]&& [(THWFreeTransformGestureRecognizer *)self touch2])
   {
-    v8 = [(THWFreeTransformGestureRecognizer *)self view];
-    [(UITouch *)[(THWFreeTransformGestureRecognizer *)self touch1] locationInView:v8];
+    view = [(THWFreeTransformGestureRecognizer *)self view];
+    [(UITouch *)[(THWFreeTransformGestureRecognizer *)self touch1] locationInView:view];
     v10 = v9;
     v12 = v11;
-    [(UITouch *)[(THWFreeTransformGestureRecognizer *)self touch2] locationInView:v8];
+    [(UITouch *)[(THWFreeTransformGestureRecognizer *)self touch2] locationInView:view];
 
     [(THWFreeTransformGestureRecognizer *)self recenterOnTargetWithRectInView:x withTouchPoint:y withTouchPoint:width, height, v10, v12, v13, v14];
   }
 }
 
-- (void)recenterOnTargetWithRectInView:(CGRect)a3 withTouchPoint:(CGPoint)a4 withTouchPoint:(CGPoint)a5
+- (void)recenterOnTargetWithRectInView:(CGRect)view withTouchPoint:(CGPoint)point withTouchPoint:(CGPoint)touchPoint
 {
   TSDAveragePoints();
   v7 = v6;
@@ -291,52 +291,52 @@
   }
 }
 
-- (void)p_failWithGestureState:(int64_t)a3
+- (void)p_failWithGestureState:(int64_t)state
 {
-  [(THWFreeTransformGestureRecognizer *)self setState:a3];
+  [(THWFreeTransformGestureRecognizer *)self setState:state];
 
   [(THWFreeTransformGestureRecognizer *)self p_clearDynamicFreeTransformController];
 }
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
   v17.receiver = self;
   v17.super_class = THWFreeTransformGestureRecognizer;
   [THWFreeTransformGestureRecognizer touchesBegan:"touchesBegan:withEvent:" withEvent:?];
-  if ([a3 count] >= 3)
+  if ([began count] >= 3)
   {
     goto LABEL_2;
   }
 
-  v9 = [a4 allTouches];
-  if ([v9 count] != &dword_0 + 2 || -[THWFreeTransformGestureRecognizer state](self, "state"))
+  allTouches = [event allTouches];
+  if ([allTouches count] != &dword_0 + 2 || -[THWFreeTransformGestureRecognizer state](self, "state"))
   {
-    if (-[THWFreeTransformGestureRecognizer state](self, "state") != &dword_0 + 1 || [v9 containsObject:{-[THWFreeTransformGestureRecognizer touch1](self, "touch1")}] && (objc_msgSend(v9, "containsObject:", -[THWFreeTransformGestureRecognizer touch2](self, "touch2")) & 1) != 0)
+    if (-[THWFreeTransformGestureRecognizer state](self, "state") != &dword_0 + 1 || [allTouches containsObject:{-[THWFreeTransformGestureRecognizer touch1](self, "touch1")}] && (objc_msgSend(allTouches, "containsObject:", -[THWFreeTransformGestureRecognizer touch2](self, "touch2")) & 1) != 0)
     {
       [(THWFreeTransformGestureRecognizer *)self setState:0];
       return;
     }
 
-    v7 = self;
+    selfCopy2 = self;
     v8 = 4;
     goto LABEL_10;
   }
 
-  v10 = [v9 allObjects];
-  v11 = [v10 objectAtIndex:0];
-  v12 = [v10 objectAtIndex:1];
-  v13 = [(THWFreeTransformGestureRecognizer *)self view];
-  v14 = [v13 superview];
-  [v11 locationInView:v14];
-  [v12 locationInView:v14];
+  allObjects = [allTouches allObjects];
+  v11 = [allObjects objectAtIndex:0];
+  v12 = [allObjects objectAtIndex:1];
+  view = [(THWFreeTransformGestureRecognizer *)self view];
+  superview = [view superview];
+  [v11 locationInView:superview];
+  [v12 locationInView:superview];
   TSDAveragePoints();
-  if (![objc_msgSend(v14 hitTest:0) withEvent:{"isDescendantOfView:", v13}])
+  if (![objc_msgSend(superview hitTest:0) withEvent:{"isDescendantOfView:", view}])
   {
 LABEL_2:
-    v7 = self;
+    selfCopy2 = self;
     v8 = 5;
 LABEL_10:
-    [(THWFreeTransformGestureRecognizer *)v7 p_failWithGestureState:v8];
+    [(THWFreeTransformGestureRecognizer *)selfCopy2 p_failWithGestureState:v8];
     return;
   }
 
@@ -362,11 +362,11 @@ LABEL_10:
     goto LABEL_2;
   }
 
-  v16 = [(THWFreeTransformGestureRecognizer *)self unmovingParentView];
+  unmovingParentView = [(THWFreeTransformGestureRecognizer *)self unmovingParentView];
   [(THWFreeTransformGestureRecognizer *)self setMovements:0];
-  [v11 locationInView:v16];
+  [v11 locationInView:unmovingParentView];
   [(THWFreeTransformGestureRecognizer *)self setInitialLocation1:?];
-  [v12 locationInView:v16];
+  [v12 locationInView:unmovingParentView];
   [(THWFreeTransformGestureRecognizer *)self setInitialLocation2:?];
   [(THWFreeTransformGestureRecognizer *)self initialLocation1];
   [(THWFreeTransformGestureRecognizer *)self setPreviousLocation1:?];
@@ -382,12 +382,12 @@ LABEL_10:
   [(THWFreeTransformGestureRecognizer *)self setAngle:?];
   if ([(THWFreeTransformGestureRecognizer *)self useGestureViewForReCentering])
   {
-    v16 = [(THWFreeTransformGestureRecognizer *)self view];
+    unmovingParentView = [(THWFreeTransformGestureRecognizer *)self view];
   }
 
-  [v11 locationInView:v16];
-  [v12 locationInView:v16];
-  [(UIView *)v16 bounds];
+  [v11 locationInView:unmovingParentView];
+  [v12 locationInView:unmovingParentView];
+  [(UIView *)unmovingParentView bounds];
   [THWFreeTransformGestureRecognizer recenterOnTargetWithRectInView:"recenterOnTargetWithRectInView:withTouchPoint:withTouchPoint:" withTouchPoint:? withTouchPoint:?];
   self->mReady = 1;
   if (([(THWFreeTransformGestureRecognizerDelegate *)[(THWFreeTransformGestureRecognizer *)self freeTransformDelegate] freeTransformGestureRecognizerShouldDelayRecognizeUntilScaleChange:self]& 1) == 0)
@@ -396,9 +396,9 @@ LABEL_10:
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v7 = [a4 allTouches];
+  allTouches = [event allTouches];
   [(UITouch *)[(THWFreeTransformGestureRecognizer *)self touch1] previousLocationInView:[(THWFreeTransformGestureRecognizer *)self unmovingParentView]];
   [(THWFreeTransformGestureRecognizer *)self setPreviousLocation1:?];
   [(UITouch *)[(THWFreeTransformGestureRecognizer *)self touch2] previousLocationInView:[(THWFreeTransformGestureRecognizer *)self unmovingParentView]];
@@ -413,7 +413,7 @@ LABEL_10:
   [(THWFreeTransformGestureRecognizer *)self setAngle:?];
   if ([(THWFreeTransformGestureRecognizer *)self state]|| !self->mReady)
   {
-    if (-[THWFreeTransformGestureRecognizer state](self, "state") != &dword_0 + 1 || [v7 containsObject:{-[THWFreeTransformGestureRecognizer touch1](self, "touch1")}] && (objc_msgSend(v7, "containsObject:", -[THWFreeTransformGestureRecognizer touch2](self, "touch2")) & 1) != 0)
+    if (-[THWFreeTransformGestureRecognizer state](self, "state") != &dword_0 + 1 || [allTouches containsObject:{-[THWFreeTransformGestureRecognizer touch1](self, "touch1")}] && (objc_msgSend(allTouches, "containsObject:", -[THWFreeTransformGestureRecognizer touch2](self, "touch2")) & 1) != 0)
     {
       if ([(THWFreeTransformGestureRecognizer *)self state]!= &dword_0 + 1 && [(THWFreeTransformGestureRecognizer *)self state]!= &dword_0 + 2)
       {
@@ -422,17 +422,17 @@ LABEL_10:
 
       [(THWFreeTransformGestureRecognizer *)self setMovements:[(THWFreeTransformGestureRecognizer *)self movements]+ 1];
       [(THWFreeTransformGestureRecognizer *)self p_updateTransform];
-      v9 = self;
+      selfCopy2 = self;
       v10 = 2;
     }
 
     else
     {
-      v9 = self;
+      selfCopy2 = self;
       v10 = 4;
     }
 
-    [(THWFreeTransformGestureRecognizer *)v9 setState:v10];
+    [(THWFreeTransformGestureRecognizer *)selfCopy2 setState:v10];
     goto LABEL_13;
   }
 
@@ -445,10 +445,10 @@ LABEL_10:
 LABEL_13:
   v11.receiver = self;
   v11.super_class = THWFreeTransformGestureRecognizer;
-  [(THWFreeTransformGestureRecognizer *)&v11 touchesMoved:a3 withEvent:a4];
+  [(THWFreeTransformGestureRecognizer *)&v11 touchesMoved:moved withEvent:event];
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   if ([(THWFreeTransformGestureRecognizer *)self state]== &dword_0 + 2 || [(THWFreeTransformGestureRecognizer *)self state]== &dword_0 + 1)
   {
@@ -457,7 +457,7 @@ LABEL_13:
 
   else
   {
-    if ([objc_msgSend(a4 "allTouches")] != &dword_0 + 1)
+    if ([objc_msgSend(event "allTouches")] != &dword_0 + 1)
     {
       goto LABEL_5;
     }
@@ -469,15 +469,15 @@ LABEL_13:
 LABEL_5:
   v8.receiver = self;
   v8.super_class = THWFreeTransformGestureRecognizer;
-  [(THWFreeTransformGestureRecognizer *)&v8 touchesEnded:a3 withEvent:a4];
+  [(THWFreeTransformGestureRecognizer *)&v8 touchesEnded:ended withEvent:event];
 }
 
-- (void)touchesCancelled:(id)a3 withEvent:(id)a4
+- (void)touchesCancelled:(id)cancelled withEvent:(id)event
 {
   [(THWFreeTransformGestureRecognizer *)self setState:4];
   v7.receiver = self;
   v7.super_class = THWFreeTransformGestureRecognizer;
-  [(THWFreeTransformGestureRecognizer *)&v7 touchesCancelled:a3 withEvent:a4];
+  [(THWFreeTransformGestureRecognizer *)&v7 touchesCancelled:cancelled withEvent:event];
 }
 
 - (void)reset

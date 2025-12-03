@@ -1,14 +1,14 @@
 @interface PKAccountWebServiceAddFundingSourceRequest
-- (id)_urlRequestWithAppleAccountInformation:(id)a3;
+- (id)_urlRequestWithAppleAccountInformation:(id)information;
 @end
 
 @implementation PKAccountWebServiceAddFundingSourceRequest
 
-- (id)_urlRequestWithAppleAccountInformation:(id)a3
+- (id)_urlRequestWithAppleAccountInformation:(id)information
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  informationCopy = information;
+  v5 = informationCopy;
   baseURL = self->_baseURL;
   if (!baseURL)
   {
@@ -30,7 +30,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (!v4)
+  if (!informationCopy)
   {
     v10 = PKLogFacilityTypeGetObject(0xFuLL);
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
@@ -127,23 +127,23 @@ LABEL_25:
   [v9 setHTTPMethod:@"POST"];
   [v9 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   v10 = [(PKAccountPaymentFundingSource *)self->_fundingSource jsonDictionaryRepresentationWithCertificatesResponse:self->_certificatesResponse];
-  v11 = [MEMORY[0x1E695DF90] dictionary];
-  [v11 setObject:v10 forKeyedSubscript:@"fundingSource"];
-  [v11 setObject:self->_fundingSourceTermsIdentifier forKeyedSubscript:@"fundingSourceTermsIdentifier"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v10 forKeyedSubscript:@"fundingSource"];
+  [dictionary setObject:self->_fundingSourceTermsIdentifier forKeyedSubscript:@"fundingSourceTermsIdentifier"];
   deviceMetadata = self->_deviceMetadata;
   if (deviceMetadata)
   {
-    v13 = [(PKPaymentDeviceMetadata *)deviceMetadata dictionaryRepresentation];
-    [v11 setObject:v13 forKeyedSubscript:@"deviceMetadata"];
+    dictionaryRepresentation = [(PKPaymentDeviceMetadata *)deviceMetadata dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"deviceMetadata"];
   }
 
   odiAssessment = self->_odiAssessment;
   if (odiAssessment)
   {
-    [v11 setObject:odiAssessment forKeyedSubscript:@"odiAssessment"];
+    [dictionary setObject:odiAssessment forKeyedSubscript:@"odiAssessment"];
   }
 
-  v15 = [objc_opt_class() _HTTPBodyWithDictionary:v11];
+  v15 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v9 setHTTPBody:v15];
 
 LABEL_26:

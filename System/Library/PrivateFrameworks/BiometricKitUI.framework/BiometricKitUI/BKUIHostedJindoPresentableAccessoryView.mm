@@ -1,10 +1,10 @@
 @interface BKUIHostedJindoPresentableAccessoryView
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
 @end
 
 @implementation BKUIHostedJindoPresentableAccessoryView
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
   v4 = 60.0;
   v5 = 20.0;

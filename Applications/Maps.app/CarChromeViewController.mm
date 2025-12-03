@@ -3,30 +3,30 @@
 + (id)localizedLocationAuthorizationTitle;
 + (void)_updateAllowOneHandedZooming;
 + (void)initialize;
-- (BOOL)_areAccessoriesHiddenForContext:(id)a3;
+- (BOOL)_areAccessoriesHiddenForContext:(id)context;
 - (BOOL)_areAccessoriesHiddenForCurrentContext;
-- (BOOL)_autohidingContentIsHiddenForContext:(id)a3;
+- (BOOL)_autohidingContentIsHiddenForContext:(id)context;
 - (BOOL)_canSelectAlternateRoutes;
 - (BOOL)_hideStatusBanner;
-- (BOOL)_isFocusMovementValidInContext:(id)a3;
-- (BOOL)_shouldAccessoriesModifyMapInsetsForContext:(id)a3;
+- (BOOL)_isFocusMovementValidInContext:(id)context;
+- (BOOL)_shouldAccessoriesModifyMapInsetsForContext:(id)context;
 - (BOOL)_shouldAllowKnobFocusMovement;
-- (BOOL)_shouldMapControlsModifyMapInsetsForContext:(id)a3;
-- (BOOL)dismissCurrentInterruptionOfKind:(int64_t)a3;
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4;
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4;
-- (BOOL)isAutohidingContentHiddenForContext:(id)a3;
+- (BOOL)_shouldMapControlsModifyMapInsetsForContext:(id)context;
+- (BOOL)dismissCurrentInterruptionOfKind:(int64_t)kind;
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)isAutohidingContentHiddenForContext:(id)context;
 - (BOOL)isAutohidingContentHiddenForCurrentContext;
 - (BOOL)isDisplayingNavigation;
-- (BOOL)mapSettings:(id)a3 shouldApplyAnimated:(BOOL *)a4;
-- (BOOL)mapView:(id)a3 shouldSelectLabelMarker:(id)a4;
-- (BOOL)shouldAnimateMapTransition:(BOOL)a3;
+- (BOOL)mapSettings:(id)settings shouldApplyAnimated:(BOOL *)animated;
+- (BOOL)mapView:(id)view shouldSelectLabelMarker:(id)marker;
+- (BOOL)shouldAnimateMapTransition:(BOOL)transition;
 - (BOOL)shouldRecenterAndZoom;
-- (BOOL)shouldUpdateFocusInContext:(id)a3;
+- (BOOL)shouldUpdateFocusInContext:(id)context;
 - (BOOL)suppressIdleFocus;
 - (BOOL)wantsNavigationDisplayByDefault;
 - (CarChromeContext)topContext;
-- (CarChromeViewController)initWithCarSceneType:(int64_t)a3;
+- (CarChromeViewController)initWithCarSceneType:(int64_t)type;
 - (CarMapNudgerizer)nudgerizer;
 - (CarRouteGeniusAnnotationsManager)routeGeniusAnnotationsManager;
 - (CarRouteSelectionController)routeSelectionController;
@@ -39,20 +39,20 @@
 - (NSMapTable)lastFocusedIdentifiersByContext;
 - (NSMapTable)lastFocusedItemsByContext;
 - (id)_desiredCards;
-- (id)_presentSearchRefinementWithUserInfo:(id)a3 completionHandler:(id)a4;
+- (id)_presentSearchRefinementWithUserInfo:(id)info completionHandler:(id)handler;
 - (id)_previousContext;
-- (id)acquireForcedAutohideBehaviourTokenWithBehaviour:(int64_t)a3;
-- (id)acquireModernMapTokenForReason:(unint64_t)a3;
+- (id)acquireForcedAutohideBehaviourTokenWithBehaviour:(int64_t)behaviour;
+- (id)acquireModernMapTokenForReason:(unint64_t)reason;
 - (id)allComponents;
-- (id)chromeViewItemForContext:(id)a3 createIfNeeded:(BOOL)a4;
+- (id)chromeViewItemForContext:(id)context createIfNeeded:(BOOL)needed;
 - (id)createMapReplacementView;
 - (id)createMapView;
 - (id)currentTraits;
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4;
-- (id)presentInterruptionOfKind:(int64_t)a3 userInfo:(id)a4 completionHandler:(id)a5;
+- (id)mapView:(id)view viewForAnnotation:(id)annotation;
+- (id)presentInterruptionOfKind:(int64_t)kind userInfo:(id)info completionHandler:(id)handler;
 - (id)visuallySelectedItem;
 - (int)_currentUsageTarget;
-- (int64_t)_autohidingBehaviorForContext:(id)a3;
+- (int64_t)_autohidingBehaviorForContext:(id)context;
 - (int64_t)forcedAutohideBehavior;
 - (int64_t)modernMapProjectionType;
 - (int64_t)modernMapTerrainMode;
@@ -60,39 +60,39 @@
 - (void)_addAutohideGestureRecognizer;
 - (void)_audioControlPressed;
 - (void)_autohideBecameIdle;
-- (void)_autohideGestureRecognizerDetectedTap:(id)a3;
-- (void)_captureUserActionBackToContext:(id)a3;
-- (void)_carExternalDeviceStateUpdated:(id)a3;
-- (void)_carOneHandedZoomSettingUpdated:(id)a3;
-- (void)_carPlayWindowMapStyleDidChange:(id)a3;
-- (void)_dismissAlertViewController:(id)a3 animated:(BOOL)a4;
-- (void)_enableZoomGesture:(BOOL)a3;
+- (void)_autohideGestureRecognizerDetectedTap:(id)tap;
+- (void)_captureUserActionBackToContext:(id)context;
+- (void)_carExternalDeviceStateUpdated:(id)updated;
+- (void)_carOneHandedZoomSettingUpdated:(id)updated;
+- (void)_carPlayWindowMapStyleDidChange:(id)change;
+- (void)_dismissAlertViewController:(id)controller animated:(BOOL)animated;
+- (void)_enableZoomGesture:(BOOL)gesture;
 - (void)_handleBackButton;
-- (void)_handleDoubleTap:(id)a3;
+- (void)_handleDoubleTap:(id)tap;
 - (void)_humanPresenceDidChange;
-- (void)_locationAuthorizationDidChange:(id)a3;
+- (void)_locationAuthorizationDidChange:(id)change;
 - (void)_navRecenterButtonPressed;
-- (void)_navigationObscuredTimeoutFired:(id)a3;
-- (void)_performMapUpdateToUserInterfaceStyle:(int64_t)a3 animation:(id)a4;
-- (void)_presentAlertViewController:(id)a3 animated:(BOOL)a4;
-- (void)_presentAnyPendingAlert:(BOOL)a3;
-- (void)_preserveFocusedItemFromContext:(id)a3 toContext:(id)a4;
-- (void)_recordAutohidingContentIsHidden:(BOOL)a3 forContext:(id)a4;
-- (void)_reloadAccessoriesForContext:(id)a3 withAnimation:(id)a4;
-- (void)_reloadAccessoriesInsetsForContext:(id)a3;
+- (void)_navigationObscuredTimeoutFired:(id)fired;
+- (void)_performMapUpdateToUserInterfaceStyle:(int64_t)style animation:(id)animation;
+- (void)_presentAlertViewController:(id)controller animated:(BOOL)animated;
+- (void)_presentAnyPendingAlert:(BOOL)alert;
+- (void)_preserveFocusedItemFromContext:(id)context toContext:(id)toContext;
+- (void)_recordAutohidingContentIsHidden:(BOOL)hidden forContext:(id)context;
+- (void)_reloadAccessoriesForContext:(id)context withAnimation:(id)animation;
+- (void)_reloadAccessoriesInsetsForContext:(id)context;
 - (void)_reloadCardOverlayConstraintsIfNeeded;
-- (void)_reloadCardsAnimated:(BOOL)a3;
-- (void)_reloadFocusContainerGuidesForContext:(id)a3;
-- (void)_reloadMapControlsForContext:(id)a3 withAnimation:(id)a4;
-- (void)_reloadMapControlsInsetsForContext:(id)a3;
-- (void)_reloadStatusBannerWithAnimation:(id)a3;
+- (void)_reloadCardsAnimated:(BOOL)animated;
+- (void)_reloadFocusContainerGuidesForContext:(id)context;
+- (void)_reloadMapControlsForContext:(id)context withAnimation:(id)animation;
+- (void)_reloadMapControlsInsetsForContext:(id)context;
+- (void)_reloadStatusBannerWithAnimation:(id)animation;
 - (void)_removeAutohideGestureRecognizer;
 - (void)_reportIncidentPressed;
-- (void)_requestAutohideBehaviorForContext:(id)a3;
-- (void)_resetMapViewDefaults:(id)a3;
+- (void)_requestAutohideBehaviorForContext:(id)context;
+- (void)_resetMapViewDefaults:(id)defaults;
 - (void)_restartAutohideIdleTimer;
 - (void)_restartNavigationObscuredTimeout;
-- (void)_setAutohideBehavior:(int64_t)a3 forContext:(id)a4;
+- (void)_setAutohideBehavior:(int64_t)behavior forContext:(id)context;
 - (void)_startAutohideIdleTimerIfStopped;
 - (void)_startNavigationObscuredTimeout;
 - (void)_stopAutohideIdleTimer;
@@ -104,84 +104,84 @@
 - (void)_updateAudioControls;
 - (void)_updateAutohideBehavior;
 - (void)_updateCameraToggleButton;
-- (void)_updateCardsForContext:(id)a3 withAnimation:(id)a4 completion:(id)a5;
-- (void)_updateMapToCurrentUserInterfaceStyleAnimated:(BOOL)a3;
-- (void)_updateMapUserInterfaceStyle:(int64_t)a3 animated:(BOOL)a4;
+- (void)_updateCardsForContext:(id)context withAnimation:(id)animation completion:(id)completion;
+- (void)_updateMapToCurrentUserInterfaceStyleAnimated:(BOOL)animated;
+- (void)_updateMapUserInterfaceStyle:(int64_t)style animated:(BOOL)animated;
 - (void)_updateModernMapCartographicConfiguration;
 - (void)_updateNudgerizer;
 - (void)_updateOfflineModernMapToken;
 - (void)_updateRouteSelectionController;
-- (void)captureUserAction:(int)a3 eventValue:(id)a4;
-- (void)captureUserAction:(int)a3 mapItem:(id)a4 atResultIndex:(int)a5;
-- (void)captureUserAction:(int)a3 onTarget:(int)a4 eventValue:(id)a5;
-- (void)captureUserAction:(int)a3 selectedRouteIndex:(int)a4;
-- (void)captureUserActionChangedTrackingMode:(int64_t)a3;
-- (void)captureUserActionPannedInDirection:(int64_t)a3;
-- (void)captureUserActionSelectedSearchCategory:(id)a3 categoriesDisplayed:(id)a4;
-- (void)carCardView:(id)a3 chevronButtonSelected:(id)a4;
-- (void)carCardView:(id)a3 didChangeFocus:(BOOL)a4;
-- (void)carCardViewCloseButtonTapped:(id)a3;
-- (void)carMapControls:(id)a3 didTriggerAction:(unint64_t)a4;
+- (void)captureUserAction:(int)action eventValue:(id)value;
+- (void)captureUserAction:(int)action mapItem:(id)item atResultIndex:(int)index;
+- (void)captureUserAction:(int)action onTarget:(int)target eventValue:(id)value;
+- (void)captureUserAction:(int)action selectedRouteIndex:(int)index;
+- (void)captureUserActionChangedTrackingMode:(int64_t)mode;
+- (void)captureUserActionPannedInDirection:(int64_t)direction;
+- (void)captureUserActionSelectedSearchCategory:(id)category categoriesDisplayed:(id)displayed;
+- (void)carCardView:(id)view chevronButtonSelected:(id)selected;
+- (void)carCardView:(id)view didChangeFocus:(BOOL)focus;
+- (void)carCardViewCloseButtonTapped:(id)tapped;
+- (void)carMapControls:(id)controls didTriggerAction:(unint64_t)action;
 - (void)carStatusBannerDidTapBanner;
-- (void)chromeNavigationDisplay:(id)a3 configurationDidChange:(id)a4;
-- (void)chromeNavigationDisplay:(id)a3 didChangePanning:(BOOL)a4 animated:(BOOL)a5;
-- (void)chromeNavigationDisplayDidRenderRoute:(id)a3;
+- (void)chromeNavigationDisplay:(id)display configurationDidChange:(id)change;
+- (void)chromeNavigationDisplay:(id)display didChangePanning:(BOOL)panning animated:(BOOL)animated;
+- (void)chromeNavigationDisplayDidRenderRoute:(id)route;
 - (void)clearMapGesturesAndAnimations;
-- (void)configureAccessoriesOverlay:(id)a3 forContext:(id)a4;
-- (void)contextStackDidUpdateFrom:(id)a3 to:(id)a4 withAnimation:(id)a5;
-- (void)contextStackWillUpdateFrom:(id)a3 to:(id)a4 withAnimation:(id)a5;
+- (void)configureAccessoriesOverlay:(id)overlay forContext:(id)context;
+- (void)contextStackDidUpdateFrom:(id)from to:(id)to withAnimation:(id)animation;
+- (void)contextStackWillUpdateFrom:(id)from to:(id)to withAnimation:(id)animation;
 - (void)deactivationReasonsDidChange;
 - (void)dealloc;
-- (void)decrementForToken:(id)a3;
-- (void)didBecomeInactive:(BOOL)a3;
+- (void)decrementForToken:(id)token;
+- (void)didBecomeInactive:(BOOL)inactive;
 - (void)didSuppress;
 - (void)didUnsuppress;
 - (void)disableDoubleTapRecognizer;
-- (void)enableDoubleTapRecognizerWithBlock:(id)a3;
-- (void)incrementForToken:(id)a3;
+- (void)enableDoubleTapRecognizerWithBlock:(id)block;
+- (void)incrementForToken:(id)token;
 - (void)interruptAutohideForIncidentalInteraction;
 - (void)loadView;
-- (void)mapView:(id)a3 canEnter3DModeDidChange:(BOOL)a4;
-- (void)mapView:(id)a3 canZoomInDidChange:(BOOL)a4;
-- (void)mapView:(id)a3 canZoomOutDidChange:(BOOL)a4;
-- (void)mapView:(id)a3 didBecomePitched:(BOOL)a4;
-- (void)mapView:(id)a3 didDeselectLabelMarker:(id)a4;
-- (void)mapView:(id)a3 didFailToLocateUserWithError:(id)a4;
-- (void)mapView:(id)a3 didSelectLabelMarker:(id)a4;
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8;
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4;
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4;
-- (void)mapViewDidFinishRenderingMap:(id)a3 fullyRendered:(BOOL)a4;
-- (void)mapViewNavigationCameraHasStoppedPanning:(id)a3;
-- (void)offlineStateChanged:(id)a3;
+- (void)mapView:(id)view canEnter3DModeDidChange:(BOOL)change;
+- (void)mapView:(id)view canZoomInDidChange:(BOOL)change;
+- (void)mapView:(id)view canZoomOutDidChange:(BOOL)change;
+- (void)mapView:(id)view didBecomePitched:(BOOL)pitched;
+- (void)mapView:(id)view didDeselectLabelMarker:(id)marker;
+- (void)mapView:(id)view didFailToLocateUserWithError:(id)error;
+- (void)mapView:(id)view didSelectLabelMarker:(id)marker;
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection;
+- (void)mapView:(id)view didUpdateUserLocation:(id)location;
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated;
+- (void)mapViewDidFinishRenderingMap:(id)map fullyRendered:(BOOL)rendered;
+- (void)mapViewNavigationCameraHasStoppedPanning:(id)panning;
+- (void)offlineStateChanged:(id)changed;
 - (void)panButtonPressed;
 - (void)prepareMapViewForFirstUse;
-- (void)pressesBegan:(id)a3 withEvent:(id)a4;
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4;
-- (void)pressesChanged:(id)a3 withEvent:(id)a4;
-- (void)pressesEnded:(id)a3 withEvent:(id)a4;
-- (void)reloadAccessoriesForContext:(id)a3 animated:(BOOL)a4;
-- (void)reloadStatusBannerAnimated:(BOOL)a3;
+- (void)pressesBegan:(id)began withEvent:(id)event;
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event;
+- (void)pressesChanged:(id)changed withEvent:(id)event;
+- (void)pressesEnded:(id)ended withEvent:(id)event;
+- (void)reloadAccessoriesForContext:(id)context animated:(BOOL)animated;
+- (void)reloadStatusBannerAnimated:(BOOL)animated;
 - (void)restartAutohideIdleTimerIfStarted;
-- (void)setAutohidingContentHiddenForCurrentContext:(BOOL)a3;
-- (void)setHardwareBackButtonBehavior:(int64_t)a3 forContext:(id)a4;
-- (void)setNeedsAutohideBehaviorUpdateForContext:(id)a3;
+- (void)setAutohidingContentHiddenForCurrentContext:(BOOL)context;
+- (void)setHardwareBackButtonBehavior:(int64_t)behavior forContext:(id)context;
+- (void)setNeedsAutohideBehaviorUpdateForContext:(id)context;
 - (void)setNeedsFocusUpdateIfUnfocused;
-- (void)setNotificationLayoutGuide:(id)a3;
-- (void)setOwnsFocus:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
-- (void)updateComponent:(id)a3 forTiming:(unint64_t)a4 withAnimation:(id)a5;
+- (void)setNotificationLayoutGuide:(id)guide;
+- (void)setOwnsFocus:(BOOL)focus;
+- (void)traitCollectionDidChange:(id)change;
+- (void)updateComponent:(id)component forTiming:(unint64_t)timing withAnimation:(id)animation;
 - (void)updateHardwareBackButtonBehavior;
 - (void)updateZoomControls;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
-- (void)willUpdateComponents:(id)a3 withAnimation:(id)a4;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
+- (void)willUpdateComponents:(id)components withAnimation:(id)animation;
 - (void)zoomIn;
 - (void)zoomInButtonPressed;
 - (void)zoomOut;
@@ -194,9 +194,9 @@
 {
   v4.receiver = self;
   v4.super_class = CarChromeViewController;
-  v2 = [(ChromeViewController *)&v4 topContext];
+  topContext = [(ChromeViewController *)&v4 topContext];
 
-  return v2;
+  return topContext;
 }
 
 - (id)createMapReplacementView
@@ -219,13 +219,13 @@
   {
 LABEL_6:
     v6 = [CarMapReplacementView alloc];
-    v7 = [(CarChromeViewController *)self view];
-    [v7 bounds];
+    view = [(CarChromeViewController *)self view];
+    [view bounds];
     v5 = [(CarMapReplacementView *)v6 initWithFrame:?];
 
     [(CarMapReplacementView *)v5 setUserInteractionEnabled:0];
-    v8 = [(ChromeViewController *)self deactivationReasons];
-    [(CarMapReplacementView *)v5 setReasonStrings:v8];
+    deactivationReasons = [(ChromeViewController *)self deactivationReasons];
+    [(CarMapReplacementView *)v5 setReasonStrings:deactivationReasons];
 
     if (+[CarDisplayController debugLaunchPerformance])
     {
@@ -237,8 +237,8 @@ LABEL_6:
 
     else
     {
-      v10 = [(CarChromeViewController *)self mapReplacementColor];
-      [(CarMapReplacementView *)v5 setBackgroundColor:v10];
+      mapReplacementColor = [(CarChromeViewController *)self mapReplacementColor];
+      [(CarMapReplacementView *)v5 setBackgroundColor:mapReplacementColor];
 
       [UIColor colorWithDynamicProvider:&stru_101622508];
     }
@@ -265,28 +265,28 @@ LABEL_10:
   {
     v32.receiver = self;
     v32.super_class = CarChromeViewController;
-    v9 = [(CarChromeViewController *)&v32 preferredFocusEnvironments];
+    preferredFocusEnvironments = [(CarChromeViewController *)&v32 preferredFocusEnvironments];
     goto LABEL_24;
   }
 
-  v3 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   WeakRetained = objc_loadWeakRetained(&self->_restoreFocusForContext);
 
-  if (v3 == WeakRetained)
+  if (topContext == WeakRetained)
   {
-    v5 = [(CarChromeViewController *)self lastFocusedItemsByContext];
-    v6 = [(CarChromeViewController *)self topContext];
-    v7 = [v5 objectForKey:v6];
+    lastFocusedItemsByContext = [(CarChromeViewController *)self lastFocusedItemsByContext];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    v7 = [lastFocusedItemsByContext objectForKey:topContext2];
 
     if ([v7 canBecomeFocused])
     {
-      v8 = [v7 superview];
+      superview = [v7 superview];
 
-      if (v8)
+      if (superview)
       {
         objc_storeWeak(&self->_restoreFocusForContext, 0);
         v37 = v7;
-        v9 = [NSArray arrayWithObjects:&v37 count:1];
+        preferredFocusEnvironments = [NSArray arrayWithObjects:&v37 count:1];
       }
 
       else
@@ -317,7 +317,7 @@ LABEL_10:
           }
         }
 
-        v9 = &__NSArray0__struct;
+        preferredFocusEnvironments = &__NSArray0__struct;
       }
 
       goto LABEL_24;
@@ -332,15 +332,15 @@ LABEL_10:
   *&v35 = sub_100592630;
   *(&v35 + 1) = sub_100592640;
   v36 = +[NSMutableArray array];
-  v10 = [(CarChromeViewController *)self topContext];
+  topContext3 = [(CarChromeViewController *)self topContext];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(CarChromeViewController *)self topContext];
-    v13 = [v12 preferredCarFocusEnvironments];
+    topContext4 = [(CarChromeViewController *)self topContext];
+    preferredCarFocusEnvironments = [topContext4 preferredCarFocusEnvironments];
 
-    if ([v13 count])
+    if ([preferredCarFocusEnvironments count])
     {
       v31[0] = _NSConcreteStackBlock;
       v31[1] = 3221225472;
@@ -359,7 +359,7 @@ LABEL_10:
       v29 = 0u;
       v26 = 0u;
       v27 = 0u;
-      v16 = v13;
+      v16 = preferredCarFocusEnvironments;
       v17 = [v16 countByEnumeratingWithState:&v26 objects:v33 count:16];
       if (v17)
       {
@@ -386,22 +386,22 @@ LABEL_10:
 
   if ([*(*&buf[8] + 40) count])
   {
-    v20 = [*(*&buf[8] + 40) copy];
+    preferredFocusEnvironments2 = [*(*&buf[8] + 40) copy];
   }
 
   else
   {
     v25.receiver = self;
     v25.super_class = CarChromeViewController;
-    v20 = [(CarChromeViewController *)&v25 preferredFocusEnvironments];
+    preferredFocusEnvironments2 = [(CarChromeViewController *)&v25 preferredFocusEnvironments];
   }
 
-  v9 = v20;
+  preferredFocusEnvironments = preferredFocusEnvironments2;
   _Block_object_dispose(buf, 8);
 
 LABEL_24:
 
-  return v9;
+  return preferredFocusEnvironments;
 }
 
 - (NSMapTable)lastFocusedItemsByContext
@@ -421,19 +421,19 @@ LABEL_24:
 
 - (BOOL)_canSelectAlternateRoutes
 {
-  v3 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(CarChromeViewController *)self topContext];
-    v5 = [v4 supportsAlternateRouteSelection];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    supportsAlternateRouteSelection = [topContext2 supportsAlternateRouteSelection];
   }
 
   else
   {
-    v5 = 0;
+    supportsAlternateRouteSelection = 0;
   }
 
-  return v5;
+  return supportsAlternateRouteSelection;
 }
 
 - (void)restartAutohideIdleTimerIfStarted
@@ -458,25 +458,25 @@ LABEL_24:
 {
   if ([(CarChromeViewController *)self canShowCards])
   {
-    v3 = [(CarChromeViewController *)self topContext];
+    topContext = [(CarChromeViewController *)self topContext];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(CarChromeViewController *)self topContext];
-      v5 = [v4 desiredCards];
+      topContext2 = [(CarChromeViewController *)self topContext];
+      desiredCards = [topContext2 desiredCards];
     }
 
     else
     {
-      v5 = &__NSArray0__struct;
+      desiredCards = &__NSArray0__struct;
     }
   }
 
   else
   {
-    v5 = &__NSArray0__struct;
+    desiredCards = &__NSArray0__struct;
   }
 
-  return v5;
+  return desiredCards;
 }
 
 - (void)deactivationReasonsDidChange
@@ -484,15 +484,15 @@ LABEL_24:
   v6.receiver = self;
   v6.super_class = CarChromeViewController;
   [(ChromeViewController *)&v6 deactivationReasonsDidChange];
-  v3 = [(ChromeViewController *)self currentMapReplacementView];
-  if (v3)
+  currentMapReplacementView = [(ChromeViewController *)self currentMapReplacementView];
+  if (currentMapReplacementView)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = v3;
-      v5 = [(ChromeViewController *)self deactivationReasons];
-      [v4 setReasonStrings:v5];
+      v4 = currentMapReplacementView;
+      deactivationReasons = [(ChromeViewController *)self deactivationReasons];
+      [v4 setReasonStrings:deactivationReasons];
     }
   }
 }
@@ -510,7 +510,7 @@ LABEL_24:
 
 - (int)_currentUsageTarget
 {
-  v3 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -518,10 +518,10 @@ LABEL_24:
     return 0;
   }
 
-  v5 = [(CarChromeViewController *)self topContext];
-  v6 = [v5 currentUsageTarget];
+  topContext2 = [(CarChromeViewController *)self topContext];
+  currentUsageTarget = [topContext2 currentUsageTarget];
 
-  return v6;
+  return currentUsageTarget;
 }
 
 - (NSMapTable)chromeItemsByContext
@@ -541,71 +541,71 @@ LABEL_24:
 
 - (void)_reloadCardOverlayConstraintsIfNeeded
 {
-  v48 = [(ChromeViewController *)self overlayController];
-  v3 = [v48 contentLayoutGuide];
-  if (v3)
+  overlayController = [(ChromeViewController *)self overlayController];
+  contentLayoutGuide = [overlayController contentLayoutGuide];
+  if (contentLayoutGuide)
   {
     didSetupOverlayConstraints = self->_didSetupOverlayConstraints;
 
     if (!didSetupOverlayConstraints)
     {
       self->_didSetupOverlayConstraints = 1;
-      v5 = [(ChromeViewController *)self overlayController];
-      v6 = [v5 contentLayoutGuide];
+      overlayController2 = [(ChromeViewController *)self overlayController];
+      contentLayoutGuide2 = [overlayController2 contentLayoutGuide];
 
-      v49 = [(UILayoutGuide *)self->_statusBannerLayoutGuide topAnchor];
-      v47 = [v6 topAnchor];
-      v46 = [v49 constraintEqualToAnchor:v47];
+      topAnchor = [(UILayoutGuide *)self->_statusBannerLayoutGuide topAnchor];
+      topAnchor2 = [contentLayoutGuide2 topAnchor];
+      v46 = [topAnchor constraintEqualToAnchor:topAnchor2];
       v50[0] = v46;
-      v45 = [(UILayoutGuide *)self->_statusBannerLayoutGuide leadingAnchor];
-      v44 = [v6 leadingAnchor];
-      v43 = [v45 constraintEqualToAnchor:v44];
+      leadingAnchor = [(UILayoutGuide *)self->_statusBannerLayoutGuide leadingAnchor];
+      leadingAnchor2 = [contentLayoutGuide2 leadingAnchor];
+      v43 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
       v50[1] = v43;
-      v42 = [(UILayoutGuide *)self->_statusBannerLayoutGuide trailingAnchor];
-      v41 = [v6 trailingAnchor];
-      v40 = [v42 constraintEqualToAnchor:v41];
+      trailingAnchor = [(UILayoutGuide *)self->_statusBannerLayoutGuide trailingAnchor];
+      trailingAnchor2 = [contentLayoutGuide2 trailingAnchor];
+      v40 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
       v50[2] = v40;
-      v39 = [(UILayoutGuide *)self->_accessoriesCompactLayoutGuide leadingAnchor];
-      v38 = [v6 leadingAnchor];
-      v37 = [v39 constraintEqualToAnchor:v38];
+      leadingAnchor3 = [(UILayoutGuide *)self->_accessoriesCompactLayoutGuide leadingAnchor];
+      leadingAnchor4 = [contentLayoutGuide2 leadingAnchor];
+      v37 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
       v50[3] = v37;
-      v36 = [(UILayoutGuide *)self->_accessoriesCompactLayoutGuide trailingAnchor];
-      v35 = [v6 trailingAnchor];
-      v34 = [v36 constraintEqualToAnchor:v35];
+      trailingAnchor3 = [(UILayoutGuide *)self->_accessoriesCompactLayoutGuide trailingAnchor];
+      trailingAnchor4 = [contentLayoutGuide2 trailingAnchor];
+      v34 = [trailingAnchor3 constraintEqualToAnchor:trailingAnchor4];
       v50[4] = v34;
-      v33 = [(UILayoutGuide *)self->_accessoriesCompactLayoutGuide topAnchor];
-      v32 = [v6 topAnchor];
+      topAnchor3 = [(UILayoutGuide *)self->_accessoriesCompactLayoutGuide topAnchor];
+      topAnchor4 = [contentLayoutGuide2 topAnchor];
       LODWORD(v7) = 1148846080;
-      v31 = [v33 constraintGreaterThanOrEqualToAnchor:v32 constant:0.0 priority:v7];
+      v31 = [topAnchor3 constraintGreaterThanOrEqualToAnchor:topAnchor4 constant:0.0 priority:v7];
       v50[5] = v31;
-      v30 = [(UILayoutGuide *)self->_accessoriesCompactLayoutGuide bottomAnchor];
-      v29 = [v6 bottomAnchor];
-      v28 = [v30 constraintEqualToAnchor:v29];
+      bottomAnchor = [(UILayoutGuide *)self->_accessoriesCompactLayoutGuide bottomAnchor];
+      bottomAnchor2 = [contentLayoutGuide2 bottomAnchor];
+      v28 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
       v50[6] = v28;
-      v27 = [(UILayoutGuide *)self->_statusBannerLayoutGuide bottomAnchor];
-      v26 = [(UILayoutGuide *)self->_accessoriesCompactLayoutGuide topAnchor];
-      v25 = [v27 constraintEqualToAnchor:v26 constant:8.0];
+      bottomAnchor3 = [(UILayoutGuide *)self->_statusBannerLayoutGuide bottomAnchor];
+      topAnchor5 = [(UILayoutGuide *)self->_accessoriesCompactLayoutGuide topAnchor];
+      v25 = [bottomAnchor3 constraintEqualToAnchor:topAnchor5 constant:8.0];
       v50[7] = v25;
-      v24 = [(UILayoutGuide *)self->_cardsLayoutGuide leadingAnchor];
-      v23 = [v6 leadingAnchor];
-      v22 = [v24 constraintEqualToAnchor:v23];
+      leadingAnchor5 = [(UILayoutGuide *)self->_cardsLayoutGuide leadingAnchor];
+      leadingAnchor6 = [contentLayoutGuide2 leadingAnchor];
+      v22 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6];
       v50[8] = v22;
-      v21 = [(UILayoutGuide *)self->_cardsLayoutGuide trailingAnchor];
-      v20 = [v6 trailingAnchor];
-      v19 = [v21 constraintEqualToAnchor:v20];
+      trailingAnchor5 = [(UILayoutGuide *)self->_cardsLayoutGuide trailingAnchor];
+      trailingAnchor6 = [contentLayoutGuide2 trailingAnchor];
+      v19 = [trailingAnchor5 constraintEqualToAnchor:trailingAnchor6];
       v50[9] = v19;
-      v18 = [(UILayoutGuide *)self->_cardsLayoutGuide topAnchor];
-      v8 = [v6 topAnchor];
+      topAnchor6 = [(UILayoutGuide *)self->_cardsLayoutGuide topAnchor];
+      topAnchor7 = [contentLayoutGuide2 topAnchor];
       LODWORD(v9) = 1148846080;
-      v10 = [v18 constraintGreaterThanOrEqualToAnchor:v8 constant:0.0 priority:v9];
+      v10 = [topAnchor6 constraintGreaterThanOrEqualToAnchor:topAnchor7 constant:0.0 priority:v9];
       v50[10] = v10;
-      v11 = [(UILayoutGuide *)self->_cardsLayoutGuide bottomAnchor];
-      v12 = [v6 bottomAnchor];
-      v13 = [v11 constraintEqualToAnchor:v12];
+      bottomAnchor4 = [(UILayoutGuide *)self->_cardsLayoutGuide bottomAnchor];
+      bottomAnchor5 = [contentLayoutGuide2 bottomAnchor];
+      v13 = [bottomAnchor4 constraintEqualToAnchor:bottomAnchor5];
       v50[11] = v13;
-      v14 = [(UILayoutGuide *)self->_statusBannerLayoutGuide bottomAnchor];
-      v15 = [(UILayoutGuide *)self->_cardsLayoutGuide topAnchor];
-      v16 = [v14 constraintEqualToAnchor:v15 constant:8.0];
+      bottomAnchor6 = [(UILayoutGuide *)self->_statusBannerLayoutGuide bottomAnchor];
+      topAnchor8 = [(UILayoutGuide *)self->_cardsLayoutGuide topAnchor];
+      v16 = [bottomAnchor6 constraintEqualToAnchor:topAnchor8 constant:8.0];
       v50[12] = v16;
       v17 = [NSArray arrayWithObjects:v50 count:13];
       [NSLayoutConstraint activateConstraints:v17];
@@ -639,13 +639,13 @@ LABEL_24:
   [v7 doubleValue];
   v9 = v8;
 
-  v10 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   LOBYTE(v7) = objc_opt_respondsToSelector();
 
   if (v7)
   {
-    v11 = [(CarChromeViewController *)self topContext];
-    [v11 autohideIdlenessInterval];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    [topContext2 autohideIdlenessInterval];
     v9 = v12;
   }
 
@@ -658,8 +658,8 @@ LABEL_24:
 {
   v6.receiver = self;
   v6.super_class = CarChromeViewController;
-  v2 = [(ChromeViewController *)&v6 allComponents];
-  v3 = [v2 mutableCopy];
+  allComponents = [(ChromeViewController *)&v6 allComponents];
+  v3 = [allComponents mutableCopy];
 
   v7[0] = @"cards";
   v7[1] = @"accessories";
@@ -673,33 +673,33 @@ LABEL_24:
 
 - (BOOL)wantsNavigationDisplayByDefault
 {
-  v3 = [(CarChromeViewController *)self isDisplayingNavigation];
+  isDisplayingNavigation = [(CarChromeViewController *)self isDisplayingNavigation];
   if (sub_10008B2E8())
   {
-    v4 = [(CarChromeViewController *)self defaultMapSettings];
-    v5 = [v4 pitched];
+    defaultMapSettings = [(CarChromeViewController *)self defaultMapSettings];
+    pitched = [defaultMapSettings pitched];
   }
 
   else
   {
-    v5 = 0;
+    pitched = 0;
   }
 
-  return (v3 | v5) & 1;
+  return (isDisplayingNavigation | pitched) & 1;
 }
 
 - (BOOL)isDisplayingNavigation
 {
-  v3 = [(ChromeViewController *)self pendingContexts];
-  v4 = v3;
-  if (!v3)
+  pendingContexts = [(ChromeViewController *)self pendingContexts];
+  contexts = pendingContexts;
+  if (!pendingContexts)
   {
-    v4 = [(ChromeViewController *)self contexts];
+    contexts = [(ChromeViewController *)self contexts];
   }
 
-  v5 = [v4 _maps_firstContextOfClass:objc_opt_class()];
+  v5 = [contexts _maps_firstContextOfClass:objc_opt_class()];
 
-  if (!v3)
+  if (!pendingContexts)
   {
   }
 
@@ -715,13 +715,13 @@ LABEL_24:
     return 1;
   }
 
-  v4 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(CarChromeViewController *)self topContext];
-    v6 = [v5 hidesStatusBanner];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    hidesStatusBanner = [topContext2 hidesStatusBanner];
 
-    return (v6 & 1) != 0;
+    return (hidesStatusBanner & 1) != 0;
   }
 
   return 0;
@@ -729,15 +729,15 @@ LABEL_24:
 
 - (id)currentTraits
 {
-  v3 = [(ChromeViewController *)self mapView];
+  mapView = [(ChromeViewController *)self mapView];
 
-  if (v3)
+  if (mapView)
   {
     v4 = +[MKMapService sharedService];
-    v5 = [(ChromeViewController *)self mapView];
-    v6 = [(ChromeViewController *)self mapViewEnteredForegroundDate];
-    v7 = [(ChromeViewController *)self lastMapViewportChangedDate];
-    v8 = [v4 mapsDefaultTraitsForMapView:v5 mapViewEnteredForegroundDate:v6 mapViewportChangedDate:v7 directionsType:1 includeCarPlayInfo:1];
+    mapView2 = [(ChromeViewController *)self mapView];
+    mapViewEnteredForegroundDate = [(ChromeViewController *)self mapViewEnteredForegroundDate];
+    lastMapViewportChangedDate = [(ChromeViewController *)self lastMapViewportChangedDate];
+    v8 = [v4 mapsDefaultTraitsForMapView:mapView2 mapViewEnteredForegroundDate:mapViewEnteredForegroundDate mapViewportChangedDate:lastMapViewportChangedDate directionsType:1 includeCarPlayInfo:1];
 
     v9 = [[ClientTypeResolver alloc] initWithCurrentLocation:1 parkedCar:0 personalizedItems:1];
     [GEOMapServiceTraits addCommonKnownClientResolvedTypesIfAvailableWithClientTypeResolver:v9 toTraits:v8];
@@ -753,21 +753,21 @@ LABEL_24:
 
 - (BOOL)isAutohidingContentHiddenForCurrentContext
 {
-  v2 = self;
-  v3 = [(CarChromeViewController *)self topContext];
-  LOBYTE(v2) = [(CarChromeViewController *)v2 _autohidingContentIsHiddenForContext:v3];
+  selfCopy = self;
+  topContext = [(CarChromeViewController *)self topContext];
+  LOBYTE(selfCopy) = [(CarChromeViewController *)selfCopy _autohidingContentIsHiddenForContext:topContext];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_update3DButton
 {
   if (sub_10008B2E8())
   {
-    v3 = [(ChromeViewController *)self isRunningNavigationDisplay];
-    v4 = [(CarChromeViewController *)self mapControlsOverlay];
-    v5 = v4;
-    if (v3)
+    isRunningNavigationDisplay = [(ChromeViewController *)self isRunningNavigationDisplay];
+    mapControlsOverlay = [(CarChromeViewController *)self mapControlsOverlay];
+    v5 = mapControlsOverlay;
+    if (isRunningNavigationDisplay)
     {
       v6 = 1;
     }
@@ -777,20 +777,20 @@ LABEL_24:
       v6 = 2;
     }
 
-    [v4 setMode3DState:v6];
+    [mapControlsOverlay setMode3DState:v6];
 
-    v14 = [(CarChromeViewController *)self mapControlsOverlay];
-    [v14 setMode3DEnabled:1];
+    mapControlsOverlay2 = [(CarChromeViewController *)self mapControlsOverlay];
+    [mapControlsOverlay2 setMode3DEnabled:1];
   }
 
   else
   {
-    v7 = [(ChromeViewController *)self mapView];
-    v8 = [v7 _isPitched];
+    mapView = [(ChromeViewController *)self mapView];
+    _isPitched = [mapView _isPitched];
 
-    v9 = [(CarChromeViewController *)self mapControlsOverlay];
-    v10 = v9;
-    if (v8)
+    mapControlsOverlay3 = [(CarChromeViewController *)self mapControlsOverlay];
+    v10 = mapControlsOverlay3;
+    if (_isPitched)
     {
       v11 = 1;
     }
@@ -800,12 +800,12 @@ LABEL_24:
       v11 = 2;
     }
 
-    [v9 setMode3DState:v11];
+    [mapControlsOverlay3 setMode3DState:v11];
 
-    v14 = [(ChromeViewController *)self mapView];
-    v12 = [v14 _canEnter3DMode];
-    v13 = [(CarChromeViewController *)self mapControlsOverlay];
-    [v13 setMode3DEnabled:v12];
+    mapControlsOverlay2 = [(ChromeViewController *)self mapView];
+    _canEnter3DMode = [mapControlsOverlay2 _canEnter3DMode];
+    mapControlsOverlay4 = [(CarChromeViewController *)self mapControlsOverlay];
+    [mapControlsOverlay4 setMode3DEnabled:_canEnter3DMode];
   }
 }
 
@@ -813,14 +813,14 @@ LABEL_24:
 {
   if (![(ChromeViewController *)self isSuppressed])
   {
-    v3 = [(CarChromeViewController *)self topContext];
+    topContext = [(CarChromeViewController *)self topContext];
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(CarChromeViewController *)self mapControlsOverlay];
-      if (v4)
+      mapControlsOverlay = [(CarChromeViewController *)self mapControlsOverlay];
+      if (mapControlsOverlay)
       {
-        v5 = v4;
-        [v4 configuration];
+        v5 = mapControlsOverlay;
+        [mapControlsOverlay configuration];
         if (*buf == 2 || *&buf[8] == 2)
         {
 
@@ -830,18 +830,18 @@ LABEL_24:
         if (*&buf[16] == 2)
         {
 LABEL_27:
-          v18 = [v3 audioSettingsCurrentState];
+          audioSettingsCurrentState = [topContext audioSettingsCurrentState];
           v19 = sub_100006E1C();
           if (!os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
           {
 LABEL_42:
 
-            v6 = [(CarChromeViewController *)self mapControlsOverlay];
-            [v6 setAudioSettings:v18];
+            mapControlsOverlay2 = [(CarChromeViewController *)self mapControlsOverlay];
+            [mapControlsOverlay2 setAudioSettings:audioSettingsCurrentState];
             goto LABEL_43;
           }
 
-          v20 = v3;
+          v20 = topContext;
           if (!v20)
           {
             v25 = @"<nil>";
@@ -869,7 +869,7 @@ LABEL_41:
           *buf = 134349570;
           *&buf[4] = self;
           *&buf[12] = 2048;
-          *&buf[14] = v18;
+          *&buf[14] = audioSettingsCurrentState;
           *&buf[22] = 2114;
           v28 = v25;
           _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_DEFAULT, "[%{public}p] Updating mapControls.audioControls with audioSettings: %ld per request from context: %{public}@.", buf, 0x20u);
@@ -878,10 +878,10 @@ LABEL_41:
         }
       }
 
-      v6 = sub_100006E1C();
-      if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+      mapControlsOverlay2 = sub_100006E1C();
+      if (os_log_type_enabled(mapControlsOverlay2, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = v3;
+        v13 = topContext;
         if (!v13)
         {
           v12 = @"<nil>";
@@ -919,13 +919,13 @@ LABEL_43:
       goto LABEL_44;
     }
 
-    v6 = sub_100006E1C();
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    mapControlsOverlay2 = sub_100006E1C();
+    if (!os_log_type_enabled(mapControlsOverlay2, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_43;
     }
 
-    v7 = v3;
+    v7 = topContext;
     if (!v7)
     {
       v12 = @"<nil>";
@@ -956,17 +956,17 @@ LABEL_36:
     *&buf[14] = v12;
     v26 = "[%{public}p] %{public}@ does not respond to audioSettingsCurrentState. Ignoring the call";
 LABEL_39:
-    _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, v26, buf, 0x16u);
+    _os_log_impl(&_mh_execute_header, mapControlsOverlay2, OS_LOG_TYPE_DEFAULT, v26, buf, 0x16u);
 
     goto LABEL_43;
   }
 
-  v3 = sub_100006E1C();
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  topContext = sub_100006E1C();
+  if (os_log_type_enabled(topContext, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
     *&buf[4] = self;
-    _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}p] Chrome is suppressed, ignoring call to update audio controls.", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, topContext, OS_LOG_TYPE_DEFAULT, "[%{public}p] Chrome is suppressed, ignoring call to update audio controls.", buf, 0xCu);
   }
 
 LABEL_44:
@@ -976,15 +976,15 @@ LABEL_44:
 {
   if (![(ChromeViewController *)self isSuppressed])
   {
-    v3 = [(CarChromeViewController *)self topContext];
-    v4 = [(CarChromeViewController *)self mapControlsOverlay];
-    if (!v4)
+    topContext = [(CarChromeViewController *)self topContext];
+    mapControlsOverlay = [(CarChromeViewController *)self mapControlsOverlay];
+    if (!mapControlsOverlay)
     {
       goto LABEL_8;
     }
 
-    v5 = v4;
-    [v4 configuration];
+    v5 = mapControlsOverlay;
+    [mapControlsOverlay configuration];
     if (*buf == 2 || *&buf[8] == 2)
     {
     }
@@ -995,10 +995,10 @@ LABEL_44:
       if (*&buf[16] != 2)
       {
 LABEL_8:
-        v6 = sub_100006E1C();
-        if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+        mapControlsOverlay2 = sub_100006E1C();
+        if (os_log_type_enabled(mapControlsOverlay2, OS_LOG_TYPE_DEFAULT))
         {
-          v7 = v3;
+          v7 = topContext;
           if (!v7)
           {
             v12 = @"<nil>";
@@ -1029,7 +1029,7 @@ LABEL_35:
           *&buf[14] = v12;
           v26 = "[%{public}p] %{public}@'s mapControls configuration doesn't have audio controls. Ignoring the call.";
 LABEL_41:
-          _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, v26, buf, 0x16u);
+          _os_log_impl(&_mh_execute_header, mapControlsOverlay2, OS_LOG_TYPE_DEFAULT, v26, buf, 0x16u);
         }
 
 LABEL_42:
@@ -1040,18 +1040,18 @@ LABEL_42:
 
     if (objc_opt_respondsToSelector())
     {
-      v13 = [v3 audioSettingsCurrentState];
+      audioSettingsCurrentState = [topContext audioSettingsCurrentState];
       v14 = sub_100006E1C();
       if (!os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_38:
 
-        v6 = [(CarChromeViewController *)self mapControlsOverlay];
-        [v6 setAudioControlButtonType:v13];
+        mapControlsOverlay2 = [(CarChromeViewController *)self mapControlsOverlay];
+        [mapControlsOverlay2 setAudioControlButtonType:audioSettingsCurrentState];
         goto LABEL_42;
       }
 
-      v15 = v3;
+      v15 = topContext;
       if (!v15)
       {
         v20 = @"<nil>";
@@ -1079,7 +1079,7 @@ LABEL_37:
       *buf = 134349570;
       *&buf[4] = self;
       *&buf[12] = 2048;
-      *&buf[14] = v13;
+      *&buf[14] = audioSettingsCurrentState;
       *&buf[22] = 2114;
       v28 = v20;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[%{public}p] Updating mapControls.audioControls with audioSettings: %ld per request from context: %{public}@.", buf, 0x20u);
@@ -1087,13 +1087,13 @@ LABEL_37:
       goto LABEL_38;
     }
 
-    v6 = sub_100006E1C();
-    if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    mapControlsOverlay2 = sub_100006E1C();
+    if (!os_log_type_enabled(mapControlsOverlay2, OS_LOG_TYPE_DEFAULT))
     {
       goto LABEL_42;
     }
 
-    v21 = v3;
+    v21 = topContext;
     if (!v21)
     {
       v12 = @"<nil>";
@@ -1126,12 +1126,12 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v3 = sub_100006E1C();
-  if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
+  topContext = sub_100006E1C();
+  if (os_log_type_enabled(topContext, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349056;
     *&buf[4] = self;
-    _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "[%{public}p] Chrome is suppressed, ignoring call to update audio controls.", buf, 0xCu);
+    _os_log_impl(&_mh_execute_header, topContext, OS_LOG_TYPE_DEFAULT, "[%{public}p] Chrome is suppressed, ignoring call to update audio controls.", buf, 0xCu);
   }
 
 LABEL_43:
@@ -1139,17 +1139,17 @@ LABEL_43:
 
 - (BOOL)_areAccessoriesHiddenForCurrentContext
 {
-  v2 = self;
-  v3 = [(CarChromeViewController *)self topContext];
-  LOBYTE(v2) = [(CarChromeViewController *)v2 _areAccessoriesHiddenForContext:v3];
+  selfCopy = self;
+  topContext = [(CarChromeViewController *)self topContext];
+  LOBYTE(selfCopy) = [(CarChromeViewController *)selfCopy _areAccessoriesHiddenForContext:topContext];
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)_updateCameraToggleButton
 {
-  v3 = [(CarChromeViewController *)self mapControlsOverlay];
-  if (!v3)
+  mapControlsOverlay = [(CarChromeViewController *)self mapControlsOverlay];
+  if (!mapControlsOverlay)
   {
     v6 = 0;
 LABEL_39:
@@ -1157,8 +1157,8 @@ LABEL_39:
     return;
   }
 
-  v4 = v3;
-  [v3 configuration];
+  v4 = mapControlsOverlay;
+  [mapControlsOverlay configuration];
   if (*v24 == 2 || *&v24[8] == 2)
   {
 
@@ -1170,13 +1170,13 @@ LABEL_39:
 LABEL_10:
     if ([(ChromeViewController *)self isRunningNavigationDisplay])
     {
-      v7 = [(ChromeViewController *)self navigationDisplay];
-      v8 = [v7 currentCameraMode];
+      navigationDisplay = [(ChromeViewController *)self navigationDisplay];
+      currentCameraMode = [navigationDisplay currentCameraMode];
 
-      v9 = [(CarChromeViewController *)self mapControlsOverlay];
-      v10 = [v9 cameraToggleButtonState];
+      mapControlsOverlay2 = [(CarChromeViewController *)self mapControlsOverlay];
+      cameraToggleButtonState = [mapControlsOverlay2 cameraToggleButtonState];
 
-      if ((v8 - 2) < 2)
+      if ((currentCameraMode - 2) < 2)
       {
         v16 = sub_10006D178();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -1216,12 +1216,12 @@ LABEL_10:
       else
       {
         v11 = 2;
-        if (v8 != 1)
+        if (currentCameraMode != 1)
         {
           v11 = 0;
         }
 
-        if (v8)
+        if (currentCameraMode)
         {
           v12 = v11;
         }
@@ -1232,20 +1232,20 @@ LABEL_10:
         }
       }
 
-      v20 = [(CarChromeViewController *)self mapControlsOverlay];
-      [v20 setCameraToggleButtonState:v12];
+      mapControlsOverlay3 = [(CarChromeViewController *)self mapControlsOverlay];
+      [mapControlsOverlay3 setCameraToggleButtonState:v12];
 
       v6 = sub_100006E1C();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
       {
-        if (v10 > 2)
+        if (cameraToggleButtonState > 2)
         {
           v21 = @".Unknown";
         }
 
         else
         {
-          v21 = *(&off_1016373E0 + v10);
+          v21 = *(&off_1016373E0 + cameraToggleButtonState);
         }
 
         v22 = v21;
@@ -1302,14 +1302,14 @@ LABEL_10:
   v7.receiver = self;
   v7.super_class = CarChromeViewController;
   [(ChromeViewController *)&v7 viewDidLayoutSubviews];
-  v3 = [(ChromeViewController *)self overlayController];
+  overlayController = [(ChromeViewController *)self overlayController];
 
-  if (v3)
+  if (overlayController)
   {
-    v4 = [(CarChromeViewController *)self view];
-    v5 = [(ChromeViewController *)self overlayController];
-    v6 = [v5 overlayContentView];
-    [v4 bringSubviewToFront:v6];
+    view = [(CarChromeViewController *)self view];
+    overlayController2 = [(ChromeViewController *)self overlayController];
+    overlayContentView = [overlayController2 overlayContentView];
+    [view bringSubviewToFront:overlayContentView];
   }
 }
 
@@ -1322,30 +1322,30 @@ LABEL_4:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v15 = 134349056;
-      v16 = self;
+      selfCopy5 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Will set autohide to never", &v15, 0xCu);
     }
 
-    v6 = [(CarChromeViewController *)self topContext];
-    v7 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:v6];
+    topContext = [(CarChromeViewController *)self topContext];
+    v7 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:topContext];
 
     if (!v7)
     {
       goto LABEL_9;
     }
 
-    v8 = self;
+    selfCopy6 = self;
     v9 = 0;
 LABEL_8:
-    [(CarChromeViewController *)v8 setAutohidingContentHiddenForCurrentContext:v9];
+    [(CarChromeViewController *)selfCopy6 setAutohidingContentHiddenForCurrentContext:v9];
 LABEL_9:
     [(CarChromeViewController *)self _stopAutohideIdleTimer];
     [(CarChromeViewController *)self _removeAutohideGestureRecognizer];
     return;
   }
 
-  v3 = [(CarChromeViewController *)self topContext];
-  v4 = [(CarChromeViewController *)self _autohidingBehaviorForContext:v3];
+  topContext2 = [(CarChromeViewController *)self topContext];
+  v4 = [(CarChromeViewController *)self _autohidingBehaviorForContext:topContext2];
 
   if (v4 > 1)
   {
@@ -1357,7 +1357,7 @@ LABEL_9:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
           v15 = 134349056;
-          v16 = self;
+          selfCopy5 = self;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "[%{public}p] Will set autohide to toggle", &v15, 0xCu);
         }
 
@@ -1371,7 +1371,7 @@ LABEL_9:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         v15 = 134349056;
-        v16 = self;
+        selfCopy5 = self;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "[%{public}p] Will set autohide to when idle/toggle with initial idle hiding", &v15, 0xCu);
       }
 
@@ -1393,19 +1393,19 @@ LABEL_9:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         v15 = 134349056;
-        v16 = self;
+        selfCopy5 = self;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "[%{public}p] Will set autohide to always", &v15, 0xCu);
       }
 
-      v12 = [(CarChromeViewController *)self topContext];
-      v13 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:v12];
+      topContext3 = [(CarChromeViewController *)self topContext];
+      v13 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:topContext3];
 
       if (v13)
       {
         goto LABEL_9;
       }
 
-      v8 = self;
+      selfCopy6 = self;
       v9 = 1;
       goto LABEL_8;
     }
@@ -1414,22 +1414,22 @@ LABEL_9:
 
 - (void)_updateNudgerizer
 {
-  v3 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CarChromeViewController *)self topContext];
-    v6 = [v5 allowKnobNudgeMapPanning];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    allowKnobNudgeMapPanning = [topContext2 allowKnobNudgeMapPanning];
   }
 
   else
   {
-    v6 = 0;
+    allowKnobNudgeMapPanning = 0;
   }
 
-  v7 = [(CarChromeViewController *)self nudgerizer];
-  [v7 setActive:v6];
+  nudgerizer = [(CarChromeViewController *)self nudgerizer];
+  [nudgerizer setActive:allowKnobNudgeMapPanning];
 }
 
 - (CarMapNudgerizer)nudgerizer
@@ -1441,8 +1441,8 @@ LABEL_9:
     v5 = self->_nudgerizer;
     self->_nudgerizer = v4;
 
-    v6 = [(ChromeViewController *)self mapView];
-    [(CarMapNudgerizer *)self->_nudgerizer setMapView:v6];
+    mapView = [(ChromeViewController *)self mapView];
+    [(CarMapNudgerizer *)self->_nudgerizer setMapView:mapView];
 
     nudgerizer = self->_nudgerizer;
   }
@@ -1452,29 +1452,29 @@ LABEL_9:
 
 - (void)_updateRouteSelectionController
 {
-  v3 = [(CarChromeViewController *)self _canSelectAlternateRoutes];
-  v4 = [(ChromeViewController *)self mapView];
-  [v4 _setCanSelectPOIs:v3];
+  _canSelectAlternateRoutes = [(CarChromeViewController *)self _canSelectAlternateRoutes];
+  mapView = [(ChromeViewController *)self mapView];
+  [mapView _setCanSelectPOIs:_canSelectAlternateRoutes];
 
-  if (v3)
+  if (_canSelectAlternateRoutes)
   {
-    v5 = [(CarChromeViewController *)self routeSelectionController];
+    routeSelectionController = [(CarChromeViewController *)self routeSelectionController];
   }
 
   else
   {
-    v5 = 0;
+    routeSelectionController = 0;
   }
 
-  v6 = [(CarChromeViewController *)self mapViewResponder];
-  [v6 setTarget:v5];
+  mapViewResponder = [(CarChromeViewController *)self mapViewResponder];
+  [mapViewResponder setTarget:routeSelectionController];
 
-  if (v3)
+  if (_canSelectAlternateRoutes)
   {
   }
 
-  v7 = [(CarChromeViewController *)self routeSelectionController];
-  [v7 setActive:v3];
+  routeSelectionController2 = [(CarChromeViewController *)self routeSelectionController];
+  [routeSelectionController2 setActive:_canSelectAlternateRoutes];
 }
 
 - (void)_stopNavigationObscuredTimeout
@@ -1485,7 +1485,7 @@ LABEL_9:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
       v6 = 134349056;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "[%{public}p] Cancelling navigation obscured timeout", &v6, 0xCu);
     }
 
@@ -1508,8 +1508,8 @@ LABEL_9:
   if (!mapViewResponder)
   {
     v4 = [MapViewResponder alloc];
-    v5 = [(ChromeViewController *)self mapView];
-    v6 = [(MapViewResponder *)v4 initWithMapView:v5];
+    mapView = [(ChromeViewController *)self mapView];
+    v6 = [(MapViewResponder *)v4 initWithMapView:mapView];
     v7 = self->_mapViewResponder;
     self->_mapViewResponder = v6;
 
@@ -1525,14 +1525,14 @@ LABEL_9:
   if (!routeSelectionController)
   {
     v4 = +[CarDisplayController sharedInstance];
-    v5 = [v4 platformController];
+    platformController = [v4 platformController];
 
-    v6 = [[CarRouteSelectionController alloc] initWithPlatformController:v5 chromeViewController:self];
+    v6 = [[CarRouteSelectionController alloc] initWithPlatformController:platformController chromeViewController:self];
     v7 = self->_routeSelectionController;
     self->_routeSelectionController = v6;
 
-    v8 = [(ChromeViewController *)self mapView];
-    [(CarRouteSelectionController *)self->_routeSelectionController setMapView:v8];
+    mapView = [(ChromeViewController *)self mapView];
+    [(CarRouteSelectionController *)self->_routeSelectionController setMapView:mapView];
 
     routeSelectionController = self->_routeSelectionController;
   }
@@ -1560,37 +1560,37 @@ LABEL_9:
 
 - (void)updateHardwareBackButtonBehavior
 {
-  v3 = [(CarChromeViewController *)self topContext];
-  v4 = [(CarChromeViewController *)self chromeViewItemForContext:v3 createIfNeeded:0];
-  v5 = [v4 hardwareBackButtonBehavior];
+  topContext = [(CarChromeViewController *)self topContext];
+  v4 = [(CarChromeViewController *)self chromeViewItemForContext:topContext createIfNeeded:0];
+  hardwareBackButtonBehavior = [v4 hardwareBackButtonBehavior];
 
-  if (v5 > 1)
+  if (hardwareBackButtonBehavior > 1)
   {
-    if (v5 == 2)
+    if (hardwareBackButtonBehavior == 2)
     {
-      v6 = [(CarChromeViewController *)self backButtonRecognizer];
-      v10 = v6;
+      backButtonRecognizer = [(CarChromeViewController *)self backButtonRecognizer];
+      contexts = backButtonRecognizer;
       v7 = 0;
       goto LABEL_10;
     }
 
-    if (v5 != 3)
+    if (hardwareBackButtonBehavior != 3)
     {
       return;
     }
 
 LABEL_7:
-    v6 = [(CarChromeViewController *)self backButtonRecognizer];
-    v10 = v6;
+    backButtonRecognizer = [(CarChromeViewController *)self backButtonRecognizer];
+    contexts = backButtonRecognizer;
     v7 = 1;
 LABEL_10:
-    [v6 setEnabled:v7];
+    [backButtonRecognizer setEnabled:v7];
     goto LABEL_11;
   }
 
-  if (v5)
+  if (hardwareBackButtonBehavior)
   {
-    if (v5 != 1)
+    if (hardwareBackButtonBehavior != 1)
     {
       return;
     }
@@ -1598,10 +1598,10 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  v10 = [(ChromeViewController *)self contexts];
-  v8 = [v10 count] > 1;
-  v9 = [(CarChromeViewController *)self backButtonRecognizer];
-  [v9 setEnabled:v8];
+  contexts = [(ChromeViewController *)self contexts];
+  v8 = [contexts count] > 1;
+  backButtonRecognizer2 = [(CarChromeViewController *)self backButtonRecognizer];
+  [backButtonRecognizer2 setEnabled:v8];
 
 LABEL_11:
 }
@@ -1617,7 +1617,7 @@ LABEL_11:
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
       {
         v5 = 134349056;
-        v6 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] Will disable double tap gesture", &v5, 0xCu);
       }
     }
@@ -1631,8 +1631,8 @@ LABEL_11:
 {
   if (self->_isCurrentlyVisible)
   {
-    v3 = [(CarChromeViewController *)self topContext];
-    v4 = [(CarChromeViewController *)self _autohidingBehaviorForContext:v3];
+    topContext = [(CarChromeViewController *)self topContext];
+    v4 = [(CarChromeViewController *)self _autohidingBehaviorForContext:topContext];
 
     if (v4 == 4)
     {
@@ -1678,7 +1678,7 @@ LABEL_11:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
     {
       v9 = 134349312;
-      v10 = self;
+      selfCopy = self;
       v11 = 2048;
       v12 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] Scheduling navigation obscured timeout (%.1f)", &v9, 0x16u);
@@ -1729,10 +1729,10 @@ LABEL_11:
 
 + (void)initialize
 {
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___CarChromeViewController;
   objc_msgSendSuper2(&v4, "initialize");
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v3 = +[NSUserDefaults standardUserDefaults];
     [v3 registerDefaults:&off_1016EE268];
@@ -1741,23 +1741,23 @@ LABEL_11:
 
 - (void)_handleBackButton
 {
-  v3 = [(CarChromeViewController *)self topContext];
-  v4 = [(CarChromeViewController *)self chromeViewItemForContext:v3 createIfNeeded:0];
+  topContext = [(CarChromeViewController *)self topContext];
+  v4 = [(CarChromeViewController *)self chromeViewItemForContext:topContext createIfNeeded:0];
 
-  v5 = [v4 hardwareBackButtonBehavior];
-  if (!v5)
+  hardwareBackButtonBehavior = [v4 hardwareBackButtonBehavior];
+  if (!hardwareBackButtonBehavior)
   {
-    v13 = [(CarChromeViewController *)self _previousContext];
-    [(CarChromeViewController *)self _captureUserActionBackToContext:v13];
+    _previousContext = [(CarChromeViewController *)self _previousContext];
+    [(CarChromeViewController *)self _captureUserActionBackToContext:_previousContext];
 
     v14 = +[CarChromeModeCoordinator sharedInstance];
-    v15 = [(CarChromeViewController *)self topContext];
-    [v14 popFromContext:v15];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    [v14 popFromContext:topContext2];
 
     goto LABEL_16;
   }
 
-  if (v5 == 1)
+  if (hardwareBackButtonBehavior == 1)
   {
     v6 = sub_100006E1C();
     if (!os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -1765,8 +1765,8 @@ LABEL_11:
       goto LABEL_14;
     }
 
-    v7 = [(CarChromeViewController *)self topContext];
-    if (!v7)
+    topContext3 = [(CarChromeViewController *)self topContext];
+    if (!topContext3)
     {
       v12 = @"<nil>";
       goto LABEL_13;
@@ -1776,34 +1776,34 @@ LABEL_11:
     v9 = NSStringFromClass(v8);
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v7 performSelector:"accessibilityIdentifier"];
+      v10 = [topContext3 performSelector:"accessibilityIdentifier"];
       v11 = v10;
       if (v10 && ![v10 isEqualToString:v9])
       {
-        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, v7, v11];
+        v12 = [NSString stringWithFormat:@"%@<%p, %@>", v9, topContext3, v11];
 
         goto LABEL_10;
       }
     }
 
-    v12 = [NSString stringWithFormat:@"%@<%p>", v9, v7];
+    v12 = [NSString stringWithFormat:@"%@<%p>", v9, topContext3];
 LABEL_10:
 
 LABEL_13:
     *buf = 134349314;
-    v20 = self;
+    selfCopy = self;
     v21 = 2112;
     v22 = v12;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEBUG, "[%{public}p] %@ will handle hardware back button", buf, 0x16u);
 
 LABEL_14:
-    v16 = [(CarChromeViewController *)self topContext];
+    topContext4 = [(CarChromeViewController *)self topContext];
     v17 = objc_opt_respondsToSelector();
 
     if (v17)
     {
-      v18 = [(CarChromeViewController *)self topContext];
-      [v18 handleHardwareBackButtonPressed];
+      topContext5 = [(CarChromeViewController *)self topContext];
+      [topContext5 handleHardwareBackButtonPressed];
     }
   }
 
@@ -1812,16 +1812,16 @@ LABEL_16:
 
 - (id)_previousContext
 {
-  v3 = [(ChromeViewController *)self contexts];
-  v4 = [v3 count];
+  contexts = [(ChromeViewController *)self contexts];
+  v4 = [contexts count];
 
-  v5 = [(ChromeViewController *)self contexts];
-  v6 = [v5 count];
+  contexts2 = [(ChromeViewController *)self contexts];
+  v6 = [contexts2 count];
 
   if (v6 >= 2)
   {
-    v8 = [(ChromeViewController *)self contexts];
-    v7 = [v8 objectAtIndexedSubscript:v4 - 2];
+    contexts3 = [(ChromeViewController *)self contexts];
+    v7 = [contexts3 objectAtIndexedSubscript:v4 - 2];
   }
 
   else
@@ -1832,25 +1832,25 @@ LABEL_16:
   return v7;
 }
 
-- (void)setHardwareBackButtonBehavior:(int64_t)a3 forContext:(id)a4
+- (void)setHardwareBackButtonBehavior:(int64_t)behavior forContext:(id)context
 {
-  v6 = a4;
-  v7 = [(CarChromeViewController *)self chromeViewItemForContext:v6 createIfNeeded:1];
-  if (a3 != 1)
+  contextCopy = context;
+  v7 = [(CarChromeViewController *)self chromeViewItemForContext:contextCopy createIfNeeded:1];
+  if (behavior != 1)
   {
     goto LABEL_19;
   }
 
   if (objc_opt_respondsToSelector())
   {
-    a3 = 1;
+    behavior = 1;
     goto LABEL_19;
   }
 
   v8 = sub_10006D178();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
-    v9 = v6;
+    v9 = contextCopy;
     if (!v9)
     {
       v14 = @"<nil>";
@@ -1877,7 +1877,7 @@ LABEL_11:
 LABEL_13:
     v15 = [NSString stringWithFormat:@"Context %@ wants Custom back button behavior, but does not implement -handleHardwareBackButtonPressed", v14];
     *buf = 136316162;
-    v31 = "[CarChromeViewController setHardwareBackButtonBehavior:forContext:]";
+    selfCopy = "[CarChromeViewController setHardwareBackButtonBehavior:forContext:]";
     v32 = 2080;
     v33 = "CarChromeViewController.m";
     v34 = 1024;
@@ -1896,24 +1896,24 @@ LABEL_13:
     {
       v17 = +[NSThread callStackSymbols];
       *buf = 138412290;
-      v31 = v17;
+      selfCopy = v17;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
     }
   }
 
-  a3 = 0;
+  behavior = 0;
 LABEL_19:
   v18 = sub_100006E1C();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_DEBUG))
   {
-    v19 = [v7 hardwareBackButtonBehavior];
-    if (v19 >= 4)
+    hardwareBackButtonBehavior = [v7 hardwareBackButtonBehavior];
+    if (hardwareBackButtonBehavior >= 4)
     {
       v21 = sub_10006D178();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
-        v31 = "NSString *NSStringFromCarChromeHardwareBackButtonBehavior(CarChromeHardwareBackButtonBehavior)";
+        selfCopy = "NSString *NSStringFromCarChromeHardwareBackButtonBehavior(CarChromeHardwareBackButtonBehavior)";
         v32 = 2080;
         v33 = "CarChromeViewController.m";
         v34 = 1024;
@@ -1928,7 +1928,7 @@ LABEL_19:
         {
           v23 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v31 = v23;
+          selfCopy = v23;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -1938,16 +1938,16 @@ LABEL_19:
 
     else
     {
-      v20 = off_1016227A8[v19];
+      v20 = off_1016227A8[hardwareBackButtonBehavior];
     }
 
-    if (a3 >= 4)
+    if (behavior >= 4)
     {
       v25 = sub_10006D178();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
-        v31 = "NSString *NSStringFromCarChromeHardwareBackButtonBehavior(CarChromeHardwareBackButtonBehavior)";
+        selfCopy = "NSString *NSStringFromCarChromeHardwareBackButtonBehavior(CarChromeHardwareBackButtonBehavior)";
         v32 = 2080;
         v33 = "CarChromeViewController.m";
         v34 = 1024;
@@ -1962,7 +1962,7 @@ LABEL_19:
         {
           v27 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v31 = v27;
+          selfCopy = v27;
           _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -1972,13 +1972,13 @@ LABEL_19:
 
     else
     {
-      v24 = off_1016227A8[a3];
+      v24 = off_1016227A8[behavior];
     }
 
     v28 = objc_opt_class();
     v29 = NSStringFromClass(v28);
     *buf = 134349826;
-    v31 = self;
+    selfCopy = self;
     v32 = 2112;
     v33 = v20;
     v34 = 2112;
@@ -1988,13 +1988,13 @@ LABEL_19:
     _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEBUG, "[%{public}p] Updating HW back button behavior from: %@ to : %@. For context: %@", buf, 0x2Au);
   }
 
-  [v7 setHardwareBackButtonBehavior:a3];
+  [v7 setHardwareBackButtonBehavior:behavior];
   [(CarChromeViewController *)self updateHardwareBackButtonBehavior];
 }
 
-- (void)decrementForToken:(id)a3
+- (void)decrementForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -2006,7 +2006,7 @@ LABEL_19:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
       {
         *buf = 136316418;
-        v27 = "[CarChromeViewController decrementForToken:]";
+        selfCopy2 = "[CarChromeViewController decrementForToken:]";
         v28 = 2080;
         v29 = "CarChromeViewController.m";
         v30 = 1024;
@@ -2027,15 +2027,15 @@ LABEL_19:
         {
           v24 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v27 = v24;
+          selfCopy2 = v24;
           _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
     }
   }
 
-  v8 = [v4 tokenGroupName];
-  v9 = [v8 isEqualToString:@"CarForcedAutohideBehaviorTokenGroup"];
+  tokenGroupName = [tokenCopy tokenGroupName];
+  v9 = [tokenGroupName isEqualToString:@"CarForcedAutohideBehaviorTokenGroup"];
 
   if (v9)
   {
@@ -2048,7 +2048,7 @@ LABEL_24:
       goto LABEL_25;
     }
 
-    v11 = v4;
+    v11 = tokenCopy;
     if (!v11)
     {
       v16 = @"<nil>";
@@ -2074,7 +2074,7 @@ LABEL_15:
 
 LABEL_23:
     *buf = 134349314;
-    v27 = self;
+    selfCopy2 = self;
     v28 = 2112;
     v29 = v16;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] _endForcingAutohideBehaviorWithToken (token: %@)", buf, 0x16u);
@@ -2082,8 +2082,8 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v17 = [v4 tokenGroupName];
-  v18 = [v17 isEqualToString:@"CarChromeModernMap"];
+  tokenGroupName2 = [tokenCopy tokenGroupName];
+  v18 = [tokenGroupName2 isEqualToString:@"CarChromeModernMap"];
 
   if (v18)
   {
@@ -2091,18 +2091,18 @@ LABEL_23:
     if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
     {
       *buf = 134349314;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2112;
-      v29 = v4;
+      v29 = tokenCopy;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "[%{public}p] Releasing modern map token: %@", buf, 0x16u);
     }
 
     v20 = +[NSNotificationCenter defaultCenter];
     [v20 postNotificationName:@"ChromeViewControllerDidUpdateShouldUseModernMap" object:self];
 
-    v21 = [(ChromeViewController *)self mapView];
+    mapView = [(ChromeViewController *)self mapView];
 
-    if (v21)
+    if (mapView)
     {
       [(CarChromeViewController *)self _updateModernMapCartographicConfiguration];
     }
@@ -2112,26 +2112,26 @@ LABEL_23:
   {
     v25.receiver = self;
     v25.super_class = CarChromeViewController;
-    [(ChromeViewController *)&v25 decrementForToken:v4];
+    [(ChromeViewController *)&v25 decrementForToken:tokenCopy];
   }
 
 LABEL_25:
 }
 
-- (void)incrementForToken:(id)a3
+- (void)incrementForToken:(id)token
 {
-  v4 = a3;
+  tokenCopy = token;
   v27.receiver = self;
   v27.super_class = CarChromeViewController;
-  [(ChromeViewController *)&v27 incrementForToken:v4];
-  v5 = [v4 tokenGroupName];
-  v6 = [v5 isEqualToString:@"CarForcedAutohideBehaviorTokenGroup"];
+  [(ChromeViewController *)&v27 incrementForToken:tokenCopy];
+  tokenGroupName = [tokenCopy tokenGroupName];
+  v6 = [tokenGroupName isEqualToString:@"CarForcedAutohideBehaviorTokenGroup"];
 
   if (v6)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:@"CarForcedAutohideBehaviorKey"];
-    v9 = [v8 integerValue];
+    userInfo = [tokenCopy userInfo];
+    v8 = [userInfo objectForKeyedSubscript:@"CarForcedAutohideBehaviorKey"];
+    integerValue = [v8 integerValue];
 
     v10 = sub_100006E1C();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
@@ -2142,7 +2142,7 @@ LABEL_26:
       goto LABEL_27;
     }
 
-    v11 = v4;
+    v11 = tokenCopy;
     if (!v11)
     {
       v16 = @"<nil>";
@@ -2168,9 +2168,9 @@ LABEL_9:
 
 LABEL_25:
     *buf = 134349570;
-    v29 = self;
+    selfCopy2 = self;
     v30 = 2048;
-    v31 = v9;
+    v31 = integerValue;
     v32 = 2112;
     v33 = v16;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] _beginForcingAutohideBehavior (behavior: %ld, token: %@)", buf, 0x20u);
@@ -2178,13 +2178,13 @@ LABEL_25:
     goto LABEL_26;
   }
 
-  v17 = [v4 tokenGroupName];
-  v18 = [v17 isEqualToString:@"CarChromeModernMap"];
+  tokenGroupName2 = [tokenCopy tokenGroupName];
+  v18 = [tokenGroupName2 isEqualToString:@"CarChromeModernMap"];
 
   if (v18)
   {
-    v19 = [v4 userInfo];
-    v20 = [v19 objectForKeyedSubscript:@"reason"];
+    userInfo2 = [tokenCopy userInfo];
+    v20 = [userInfo2 objectForKeyedSubscript:@"reason"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -2193,7 +2193,7 @@ LABEL_25:
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
-        v29 = "[CarChromeViewController incrementForToken:]";
+        selfCopy2 = "[CarChromeViewController incrementForToken:]";
         v30 = 2080;
         v31 = "CarChromeViewController.m";
         v32 = 1024;
@@ -2208,7 +2208,7 @@ LABEL_25:
         {
           v23 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v29 = v23;
+          selfCopy2 = v23;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -2217,9 +2217,9 @@ LABEL_25:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
         *buf = 134349314;
-        v29 = self;
+        selfCopy2 = self;
         v30 = 2112;
-        v31 = v4;
+        v31 = tokenCopy;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_ERROR, "[%{public}p] Invalid modern map token: %@", buf, 0x16u);
       }
     }
@@ -2227,9 +2227,9 @@ LABEL_25:
     v25 = +[NSNotificationCenter defaultCenter];
     [v25 postNotificationName:@"ChromeViewControllerDidUpdateShouldUseModernMap" object:self];
 
-    v26 = [(ChromeViewController *)self mapView];
+    mapView = [(ChromeViewController *)self mapView];
 
-    if (v26)
+    if (mapView)
     {
       [(CarChromeViewController *)self _updateModernMapCartographicConfiguration];
     }
@@ -2238,11 +2238,11 @@ LABEL_25:
 LABEL_27:
 }
 
-- (id)acquireForcedAutohideBehaviourTokenWithBehaviour:(int64_t)a3
+- (id)acquireForcedAutohideBehaviourTokenWithBehaviour:(int64_t)behaviour
 {
   forcedAutohideTokens = self->_forcedAutohideTokens;
   v8 = @"CarForcedAutohideBehaviorKey";
-  v4 = [NSNumber numberWithInteger:a3];
+  v4 = [NSNumber numberWithInteger:behaviour];
   v9 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v6 = [(MapsTokenStorage *)forcedAutohideTokens tokenWithUserInfo:v5];
@@ -2257,38 +2257,38 @@ LABEL_27:
     return -1;
   }
 
-  v3 = [(MapsTokenStorage *)self->_forcedAutohideTokens tokens];
-  v4 = [v3 lastObject];
+  tokens = [(MapsTokenStorage *)self->_forcedAutohideTokens tokens];
+  lastObject = [tokens lastObject];
 
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:@"CarForcedAutohideBehaviorKey"];
-  v7 = [v6 integerValue];
+  userInfo = [lastObject userInfo];
+  v6 = [userInfo objectForKeyedSubscript:@"CarForcedAutohideBehaviorKey"];
+  integerValue = [v6 integerValue];
 
   v8 = sub_100006E1C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v10 = 134349312;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
-    v13 = v7;
+    v13 = integerValue;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] forcedAutohideBehavior: %ld", &v10, 0x16u);
   }
 
-  return v7;
+  return integerValue;
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRequireFailureOfGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRequireFailureOfGestureRecognizer:(id)gestureRecognizer
 {
-  if (self->_autohideTapRecognizer != a3)
+  if (self->_autohideTapRecognizer != recognizer)
   {
     return 0;
   }
 
-  v5 = a4;
-  v6 = [(ChromeViewController *)self mapView];
-  v7 = [v6 _selectingTapGestureRecognizer];
+  gestureRecognizerCopy = gestureRecognizer;
+  mapView = [(ChromeViewController *)self mapView];
+  _selectingTapGestureRecognizer = [mapView _selectingTapGestureRecognizer];
 
-  if (v7 != v5)
+  if (_selectingTapGestureRecognizer != gestureRecognizerCopy)
   {
     return 0;
   }
@@ -2296,36 +2296,36 @@ LABEL_27:
   return [(CarChromeViewController *)self _canSelectAlternateRoutes];
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldReceiveTouch:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldReceiveTouch:(id)touch
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 view];
-  v9 = [(ChromeViewController *)self passThroughView];
-  if (v8 != v9 && ([v8 isDescendantOfView:v9] & 1) == 0)
+  recognizerCopy = recognizer;
+  touchCopy = touch;
+  view = [touchCopy view];
+  passThroughView = [(ChromeViewController *)self passThroughView];
+  if (view != passThroughView && ([view isDescendantOfView:passThroughView] & 1) == 0)
   {
-    v10 = [(CarChromeViewController *)self viewIfLoaded];
+    viewIfLoaded = [(CarChromeViewController *)self viewIfLoaded];
 
-    if (v8 != v10)
+    if (view != viewIfLoaded)
     {
       goto LABEL_7;
     }
   }
 
-  if (self->_autohideTapRecognizer != v6)
+  if (self->_autohideTapRecognizer != recognizerCopy)
   {
     goto LABEL_9;
   }
 
-  v11 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
     goto LABEL_9;
   }
 
-  v12 = [(CarChromeViewController *)self topContext];
-  v13 = [v12 shouldSuppressAutohideRecognizerForTouch:v7];
+  topContext2 = [(CarChromeViewController *)self topContext];
+  v13 = [topContext2 shouldSuppressAutohideRecognizerForTouch:touchCopy];
 
   if ((v13 & 1) == 0)
   {
@@ -2357,33 +2357,33 @@ LABEL_10:
       [(UITapGestureRecognizer *)self->_autohideTapRecognizer requireGestureRecognizerToFail:?];
     }
 
-    v6 = [(CarChromeViewController *)self view];
-    [v6 addGestureRecognizer:self->_autohideTapRecognizer];
+    view = [(CarChromeViewController *)self view];
+    [view addGestureRecognizer:self->_autohideTapRecognizer];
 
     autohideTapRecognizer = self->_autohideTapRecognizer;
   }
 
   [(UITapGestureRecognizer *)autohideTapRecognizer setEnabled:1];
-  v7 = [(ChromeViewController *)self mapView];
-  v8 = [v7 _doubleTapGestureRecognizer];
+  mapView = [(ChromeViewController *)self mapView];
+  _doubleTapGestureRecognizer = [mapView _doubleTapGestureRecognizer];
 
-  if (v8)
+  if (_doubleTapGestureRecognizer)
   {
     v9 = self->_autohideTapRecognizer;
-    v10 = [(ChromeViewController *)self mapView];
-    v11 = [v10 _doubleTapGestureRecognizer];
-    [(UITapGestureRecognizer *)v9 requireGestureRecognizerToFail:v11];
+    mapView2 = [(ChromeViewController *)self mapView];
+    _doubleTapGestureRecognizer2 = [mapView2 _doubleTapGestureRecognizer];
+    [(UITapGestureRecognizer *)v9 requireGestureRecognizerToFail:_doubleTapGestureRecognizer2];
   }
 
-  v12 = [(ChromeViewController *)self mapView];
-  v13 = [v12 _oneHandedZoomGestureRecognizer];
+  mapView3 = [(ChromeViewController *)self mapView];
+  _oneHandedZoomGestureRecognizer = [mapView3 _oneHandedZoomGestureRecognizer];
 
-  if (v13)
+  if (_oneHandedZoomGestureRecognizer)
   {
     v14 = self->_autohideTapRecognizer;
-    v15 = [(ChromeViewController *)self mapView];
-    v16 = [v15 _oneHandedZoomGestureRecognizer];
-    [(UITapGestureRecognizer *)v14 requireGestureRecognizerToFail:v16];
+    mapView4 = [(ChromeViewController *)self mapView];
+    _oneHandedZoomGestureRecognizer2 = [mapView4 _oneHandedZoomGestureRecognizer];
+    [(UITapGestureRecognizer *)v14 requireGestureRecognizerToFail:_oneHandedZoomGestureRecognizer2];
   }
 
   if (!self->_autohidePresenceObserverToken)
@@ -2414,40 +2414,40 @@ LABEL_10:
   }
 }
 
-- (BOOL)_areAccessoriesHiddenForContext:(id)a3
+- (BOOL)_areAccessoriesHiddenForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     goto LABEL_16;
   }
 
-  v5 = [v4 accessoriesHidingBehavior];
-  if (v5 > 1)
+  accessoriesHidingBehavior = [contextCopy accessoriesHidingBehavior];
+  if (accessoriesHidingBehavior > 1)
   {
-    if (v5 == 2)
+    if (accessoriesHidingBehavior == 2)
     {
-      v7 = [(CarChromeViewController *)self isAutohidingContentHiddenForContext:v4];
+      v7 = [(CarChromeViewController *)self isAutohidingContentHiddenForContext:contextCopy];
       goto LABEL_17;
     }
 
-    if (v5 == 3)
+    if (accessoriesHidingBehavior == 3)
     {
-      v6 = [(ChromeViewController *)self isCurrentContext:v4];
+      v6 = [(ChromeViewController *)self isCurrentContext:contextCopy];
       goto LABEL_9;
     }
 
     goto LABEL_10;
   }
 
-  if (!v5)
+  if (!accessoriesHidingBehavior)
   {
 LABEL_16:
     v7 = 1;
     goto LABEL_17;
   }
 
-  if (v5 != 1)
+  if (accessoriesHidingBehavior != 1)
   {
 LABEL_10:
     v8 = sub_10006D178();
@@ -2477,7 +2477,7 @@ LABEL_10:
     goto LABEL_16;
   }
 
-  v6 = [(CarChromeViewController *)self isAutohidingContentHiddenForContext:v4];
+  v6 = [(CarChromeViewController *)self isAutohidingContentHiddenForContext:contextCopy];
 LABEL_9:
   v7 = v6 ^ 1;
 LABEL_17:
@@ -2485,12 +2485,12 @@ LABEL_17:
   return v7;
 }
 
-- (BOOL)isAutohidingContentHiddenForContext:(id)a3
+- (BOOL)isAutohidingContentHiddenForContext:(id)context
 {
-  v4 = a3;
-  if ([(ChromeViewController *)self isCurrentContext:v4])
+  contextCopy = context;
+  if ([(ChromeViewController *)self isCurrentContext:contextCopy])
   {
-    v5 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:v4];
+    v5 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:contextCopy];
   }
 
   else
@@ -2501,48 +2501,48 @@ LABEL_17:
   return v5;
 }
 
-- (void)setAutohidingContentHiddenForCurrentContext:(BOOL)a3
+- (void)setAutohidingContentHiddenForCurrentContext:(BOOL)context
 {
-  v3 = a3;
-  v5 = [(CarChromeViewController *)self topContext];
-  v6 = [(CarChromeViewController *)self _autohidingBehaviorForContext:v5];
+  contextCopy = context;
+  topContext = [(CarChromeViewController *)self topContext];
+  v6 = [(CarChromeViewController *)self _autohidingBehaviorForContext:topContext];
 
-  if (!v3 || (self->_isCurrentlyVisible ? (v7 = v6 == 0) : (v7 = 1), !v7))
+  if (!contextCopy || (self->_isCurrentlyVisible ? (v7 = v6 == 0) : (v7 = 1), !v7))
   {
-    v8 = [(CarChromeViewController *)self topContext];
-    v9 = [(CarChromeViewController *)self _autohidingBehaviorForContext:v8];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    v9 = [(CarChromeViewController *)self _autohidingBehaviorForContext:topContext2];
 
-    if (v3 || v9 != 1)
+    if (contextCopy || v9 != 1)
     {
-      v10 = [(CarChromeViewController *)self topContext];
-      v11 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:v10];
+      topContext3 = [(CarChromeViewController *)self topContext];
+      v11 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:topContext3];
 
-      if (v11 != v3)
+      if (v11 != contextCopy)
       {
-        v12 = [(CarChromeViewController *)self topContext];
-        [(CarChromeViewController *)self _recordAutohidingContentIsHidden:v3 forContext:v12];
+        topContext4 = [(CarChromeViewController *)self topContext];
+        [(CarChromeViewController *)self _recordAutohidingContentIsHidden:contextCopy forContext:topContext4];
 
         v13 = +[CarDisplayController sharedInstance];
-        v14 = [v13 window];
-        v15 = [v14 windowScene];
-        v16 = [v15 focusSystem];
-        v23 = [v16 focusedItem];
+        window = [v13 window];
+        windowScene = [window windowScene];
+        focusSystem = [windowScene focusSystem];
+        focusedItem = [focusSystem focusedItem];
 
-        if (!self->_ownsFocus || v3 || v23)
+        if (!self->_ownsFocus || contextCopy || focusedItem)
         {
-          if (!self->_ownsFocus || !v23 || ([v23 canBecomeFocused] & 1) != 0)
+          if (!self->_ownsFocus || !focusedItem || ([focusedItem canBecomeFocused] & 1) != 0)
           {
 LABEL_14:
             v18 = +[GroupAnimation animation];
-            v19 = [(CarChromeViewController *)self topContext];
-            if (v3)
+            topContext5 = [(CarChromeViewController *)self topContext];
+            if (contextCopy)
             {
               v20 = objc_opt_respondsToSelector();
 
               if (v20)
               {
-                v21 = [(CarChromeViewController *)self topContext];
-                [v21 hideAutohidingContentWithAnimation:v18];
+                topContext6 = [(CarChromeViewController *)self topContext];
+                [topContext6 hideAutohidingContentWithAnimation:v18];
 LABEL_24:
               }
             }
@@ -2553,8 +2553,8 @@ LABEL_24:
 
               if (v22)
               {
-                v21 = [(CarChromeViewController *)self topContext];
-                [v21 showAutohidingContentWithAnimation:v18];
+                topContext6 = [(CarChromeViewController *)self topContext];
+                [topContext6 showAutohidingContentWithAnimation:v18];
                 goto LABEL_24;
               }
             }
@@ -2570,8 +2570,8 @@ LABEL_24:
 
         else
         {
-          v17 = [(CarChromeViewController *)self topContext];
-          objc_storeWeak(&self->_restoreFocusForContext, v17);
+          topContext7 = [(CarChromeViewController *)self topContext];
+          objc_storeWeak(&self->_restoreFocusForContext, topContext7);
         }
 
         [(CarChromeViewController *)self setNeedsFocusUpdate];
@@ -2585,9 +2585,9 @@ LABEL_24:
 - (void)_humanPresenceDidChange
 {
   v3 = +[CarDisplayController sharedInstance];
-  v7 = [v3 screen];
+  screen = [v3 screen];
 
-  if ([v7 _isCarPlayHumanPresenceInRange])
+  if ([screen _isCarPlayHumanPresenceInRange])
   {
     [(CarChromeViewController *)self setAutohidingContentHiddenForCurrentContext:0];
     [(CarChromeViewController *)self _stopAutohideIdleTimer];
@@ -2595,11 +2595,11 @@ LABEL_24:
 
   else
   {
-    v4 = [(CarChromeViewController *)self topContext];
-    if ([(CarChromeViewController *)self _autohidingBehaviorForContext:v4]== 2)
+    topContext = [(CarChromeViewController *)self topContext];
+    if ([(CarChromeViewController *)self _autohidingBehaviorForContext:topContext]== 2)
     {
-      v5 = [(CarChromeViewController *)self topContext];
-      v6 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:v5];
+      topContext2 = [(CarChromeViewController *)self topContext];
+      v6 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:topContext2];
 
       if ((v6 & 1) == 0)
       {
@@ -2613,7 +2613,7 @@ LABEL_24:
   }
 }
 
-- (void)_autohideGestureRecognizerDetectedTap:(id)a3
+- (void)_autohideGestureRecognizerDetectedTap:(id)tap
 {
   if ([(UITapGestureRecognizer *)self->_autohideTapRecognizer state]== 3)
   {
@@ -2621,12 +2621,12 @@ LABEL_24:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v16 = 134349056;
-      v17 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] Autohide gesture recognizer fired", &v16, 0xCu);
     }
 
-    v5 = [(CarChromeViewController *)self topContext];
-    v6 = [(CarChromeViewController *)self _autohidingBehaviorForContext:v5];
+    topContext = [(CarChromeViewController *)self topContext];
+    v6 = [(CarChromeViewController *)self _autohidingBehaviorForContext:topContext];
 
     if (v6 <= 1)
     {
@@ -2634,7 +2634,7 @@ LABEL_24:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         v16 = 136315906;
-        v17 = "[CarChromeViewController _autohideGestureRecognizerDetectedTap:]";
+        selfCopy2 = "[CarChromeViewController _autohideGestureRecognizerDetectedTap:]";
         v18 = 2080;
         v19 = "CarChromeViewController.m";
         v20 = 1024;
@@ -2651,7 +2651,7 @@ LABEL_24:
         {
           v14 = +[NSThread callStackSymbols];
           v16 = 138412290;
-          v17 = v14;
+          selfCopy2 = v14;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "%@", &v16, 0xCu);
         }
       }
@@ -2660,7 +2660,7 @@ LABEL_24:
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
         v16 = 134349056;
-        v17 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "[%{public}p] Autohide gesture recognizer tried to show/hide content, but it shouldn't be installed.", &v16, 0xCu);
       }
     }
@@ -2668,8 +2668,8 @@ LABEL_24:
     else
     {
       [(CarChromeViewController *)self _stopAutohideIdleTimer];
-      v7 = [(CarChromeViewController *)self topContext];
-      v8 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:v7];
+      topContext2 = [(CarChromeViewController *)self topContext];
+      v8 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:topContext2];
 
       if (v8)
       {
@@ -2685,8 +2685,8 @@ LABEL_24:
       [(CarChromeViewController *)self setAutohidingContentHiddenForCurrentContext:v8 ^ 1];
       if (v6 == 2)
       {
-        v10 = [(CarChromeViewController *)self topContext];
-        v11 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:v10];
+        topContext3 = [(CarChromeViewController *)self topContext];
+        v11 = [(CarChromeViewController *)self _autohidingContentIsHiddenForContext:topContext3];
 
         if ((v11 & 1) == 0)
         {
@@ -2701,13 +2701,13 @@ LABEL_24:
 {
   [(CarChromeViewController *)self _stopAutohideIdleTimer];
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 screen];
-  v5 = [v4 _isCarPlayHumanPresenceInRange];
+  screen = [v3 screen];
+  _isCarPlayHumanPresenceInRange = [screen _isCarPlayHumanPresenceInRange];
 
-  if ((v5 & 1) == 0)
+  if ((_isCarPlayHumanPresenceInRange & 1) == 0)
   {
-    v6 = [(CarChromeViewController *)self topContext];
-    v7 = [(CarChromeViewController *)self _autohidingBehaviorForContext:v6];
+    topContext = [(CarChromeViewController *)self topContext];
+    v7 = [(CarChromeViewController *)self _autohidingBehaviorForContext:topContext];
 
     if ((v7 & 0xFFFFFFFFFFFFFFFELL) == 2)
     {
@@ -2717,13 +2717,13 @@ LABEL_24:
   }
 }
 
-- (void)_setAutohideBehavior:(int64_t)a3 forContext:(id)a4
+- (void)_setAutohideBehavior:(int64_t)behavior forContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = sub_100006E1C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
-    v8 = v6;
+    v8 = contextCopy;
     if (!v8)
     {
       v13 = @"<nil>";
@@ -2749,59 +2749,59 @@ LABEL_8:
 
 LABEL_10:
     *buf = 134349570;
-    v16 = self;
+    selfCopy = self;
     v17 = 2048;
-    v18 = a3;
+    behaviorCopy = behavior;
     v19 = 2112;
     v20 = v13;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] _setAutohideBehaviour (behavior:%ld, context:%@", buf, 0x20u);
   }
 
-  v14 = [(CarChromeViewController *)self chromeViewItemForContext:v6 createIfNeeded:1];
-  [v14 setAutohideBehavior:a3];
+  v14 = [(CarChromeViewController *)self chromeViewItemForContext:contextCopy createIfNeeded:1];
+  [v14 setAutohideBehavior:behavior];
 }
 
-- (int64_t)_autohidingBehaviorForContext:(id)a3
+- (int64_t)_autohidingBehaviorForContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   if ([(CarChromeViewController *)self isForcingAutohideBehavior])
   {
-    v5 = [(CarChromeViewController *)self forcedAutohideBehavior];
+    forcedAutohideBehavior = [(CarChromeViewController *)self forcedAutohideBehavior];
   }
 
   else
   {
-    v6 = [(CarChromeViewController *)self chromeViewItemForContext:v4 createIfNeeded:0];
+    v6 = [(CarChromeViewController *)self chromeViewItemForContext:contextCopy createIfNeeded:0];
     v7 = v6;
     if (v6)
     {
-      v5 = [v6 autohideBehavior];
+      forcedAutohideBehavior = [v6 autohideBehavior];
     }
 
     else
     {
-      v5 = 0;
+      forcedAutohideBehavior = 0;
     }
   }
 
-  return v5;
+  return forcedAutohideBehavior;
 }
 
-- (void)_recordAutohidingContentIsHidden:(BOOL)a3 forContext:(id)a4
+- (void)_recordAutohidingContentIsHidden:(BOOL)hidden forContext:(id)context
 {
-  v4 = a3;
-  v6 = a4;
+  hiddenCopy = hidden;
+  contextCopy = context;
   v7 = sub_100006E1C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v8 = @"NO";
-    if (v4)
+    if (hiddenCopy)
     {
       v8 = @"YES";
     }
 
     v9 = v8;
-    v10 = v6;
+    v10 = contextCopy;
     if (!v10)
     {
       v15 = @"<nil>";
@@ -2827,7 +2827,7 @@ LABEL_10:
 
 LABEL_12:
     *buf = 134349570;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v9;
     v21 = 2112;
@@ -2835,42 +2835,42 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] _setAutohidingContentIsHidden (hidden:%@, context:%@", buf, 0x20u);
   }
 
-  v16 = [(CarChromeViewController *)self chromeViewItemForContext:v6 createIfNeeded:1];
-  [v16 setAutohidingContentIsHidden:v4];
+  v16 = [(CarChromeViewController *)self chromeViewItemForContext:contextCopy createIfNeeded:1];
+  [v16 setAutohidingContentIsHidden:hiddenCopy];
 }
 
-- (BOOL)_autohidingContentIsHiddenForContext:(id)a3
+- (BOOL)_autohidingContentIsHiddenForContext:(id)context
 {
-  v3 = [(CarChromeViewController *)self chromeViewItemForContext:a3 createIfNeeded:0];
-  v4 = [v3 isAutohidingContentHidden];
+  v3 = [(CarChromeViewController *)self chromeViewItemForContext:context createIfNeeded:0];
+  isAutohidingContentHidden = [v3 isAutohidingContentHidden];
 
-  return v4;
+  return isAutohidingContentHidden;
 }
 
-- (void)_requestAutohideBehaviorForContext:(id)a3
+- (void)_requestAutohideBehaviorForContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v5 autohideBehavior];
+    autohideBehavior = [contextCopy autohideBehavior];
   }
 
   else
   {
-    v4 = 0;
+    autohideBehavior = 0;
   }
 
-  if (v4 != [(CarChromeViewController *)self _autohidingBehaviorForContext:v5])
+  if (autohideBehavior != [(CarChromeViewController *)self _autohidingBehaviorForContext:contextCopy])
   {
-    [(CarChromeViewController *)self _setAutohideBehavior:v4 forContext:v5];
+    [(CarChromeViewController *)self _setAutohideBehavior:autohideBehavior forContext:contextCopy];
   }
 }
 
-- (void)setNeedsAutohideBehaviorUpdateForContext:(id)a3
+- (void)setNeedsAutohideBehaviorUpdateForContext:(id)context
 {
-  v4 = a3;
-  [(CarChromeViewController *)self _requestAutohideBehaviorForContext:v4];
-  v5 = [(ChromeViewController *)self isTopContext:v4];
+  contextCopy = context;
+  [(CarChromeViewController *)self _requestAutohideBehaviorForContext:contextCopy];
+  v5 = [(ChromeViewController *)self isTopContext:contextCopy];
 
   if (v5)
   {
@@ -2879,11 +2879,11 @@ LABEL_12:
   }
 }
 
-- (void)carCardView:(id)a3 didChangeFocus:(BOOL)a4
+- (void)carCardView:(id)view didChangeFocus:(BOOL)focus
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CarChromeViewController *)self topContext];
+  focusCopy = focus;
+  viewCopy = view;
+  topContext = [(CarChromeViewController *)self topContext];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
@@ -2892,20 +2892,20 @@ LABEL_12:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
       v11 = 134349056;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] CardView became focused, topContext will handle responding.", &v11, 0xCu);
     }
 
-    v10 = [(CarChromeViewController *)self topContext];
-    [v10 carCardView:v6 didChangeFocus:v4];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    [topContext2 carCardView:viewCopy didChangeFocus:focusCopy];
   }
 }
 
-- (void)carCardView:(id)a3 chevronButtonSelected:(id)a4
+- (void)carCardView:(id)view chevronButtonSelected:(id)selected
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CarChromeViewController *)self topContext];
+  viewCopy = view;
+  selectedCopy = selected;
+  topContext = [(CarChromeViewController *)self topContext];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
@@ -2914,19 +2914,19 @@ LABEL_12:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v12 = 134349056;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] CardView chevronButton accessory tapped, top context will handle responding.", &v12, 0xCu);
     }
 
-    v11 = [(CarChromeViewController *)self topContext];
-    [v11 carCardView:v6 chevronButtonSelected:v7];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    [topContext2 carCardView:viewCopy chevronButtonSelected:selectedCopy];
   }
 }
 
-- (void)carCardViewCloseButtonTapped:(id)a3
+- (void)carCardViewCloseButtonTapped:(id)tapped
 {
-  v4 = a3;
-  v5 = [(CarChromeViewController *)self topContext];
+  tappedCopy = tapped;
+  topContext = [(CarChromeViewController *)self topContext];
   v6 = objc_opt_respondsToSelector();
 
   v7 = sub_10006CF98();
@@ -2937,20 +2937,20 @@ LABEL_12:
     {
 LABEL_15:
 
-      v20 = [(CarChromeViewController *)self _previousContext];
-      [(CarChromeViewController *)self _captureUserActionBackToContext:v20];
+      _previousContext = [(CarChromeViewController *)self _previousContext];
+      [(CarChromeViewController *)self _captureUserActionBackToContext:_previousContext];
 
-      v11 = +[CarChromeModeCoordinator sharedInstance];
-      v21 = [(CarChromeViewController *)self topContext];
-      [v11 popFromContext:v21];
+      topContext5 = +[CarChromeModeCoordinator sharedInstance];
+      topContext2 = [(CarChromeViewController *)self topContext];
+      [topContext5 popFromContext:topContext2];
 
       goto LABEL_16;
     }
 
-    v12 = self;
-    if (!v12)
+    selfCopy = self;
+    if (!selfCopy)
     {
-      v17 = @"<nil>";
+      selfCopy = @"<nil>";
       goto LABEL_14;
     }
 
@@ -2958,28 +2958,28 @@ LABEL_15:
     v14 = NSStringFromClass(v13);
     if (objc_opt_respondsToSelector())
     {
-      v15 = [(CarChromeViewController *)v12 performSelector:"accessibilityIdentifier"];
+      v15 = [(CarChromeViewController *)selfCopy performSelector:"accessibilityIdentifier"];
       v16 = v15;
       if (v15 && ![v15 isEqualToString:v14])
       {
-        v17 = [NSString stringWithFormat:@"%@<%p, %@>", v14, v12, v16];
+        selfCopy = [NSString stringWithFormat:@"%@<%p, %@>", v14, selfCopy, v16];
 
         goto LABEL_12;
       }
     }
 
-    v17 = [NSString stringWithFormat:@"%@<%p>", v14, v12];
+    selfCopy = [NSString stringWithFormat:@"%@<%p>", v14, selfCopy];
 LABEL_12:
 
 LABEL_14:
-    v18 = [(CarChromeViewController *)v12 topContext];
-    v19 = [(ChromeViewController *)v12 contexts];
+    topContext3 = [(CarChromeViewController *)selfCopy topContext];
+    contexts = [(ChromeViewController *)selfCopy contexts];
     *buf = 138543874;
-    v23 = v17;
+    selfCopy2 = selfCopy;
     v24 = 2112;
-    v25 = v18;
+    v25 = topContext3;
     v26 = 2112;
-    v27 = v19;
+    v27 = contexts;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}@] CardView closeButton accessory tapped, chrome will pop current context. Top Context: %@ All Contexts : %@", buf, 0x20u);
 
     goto LABEL_15;
@@ -2987,35 +2987,35 @@ LABEL_14:
 
   if (v8)
   {
-    v9 = [(CarChromeViewController *)self topContext];
-    v10 = [(ChromeViewController *)self contexts];
+    topContext4 = [(CarChromeViewController *)self topContext];
+    contexts2 = [(ChromeViewController *)self contexts];
     *buf = 134349570;
-    v23 = self;
+    selfCopy2 = self;
     v24 = 2112;
-    v25 = v9;
+    v25 = topContext4;
     v26 = 2112;
-    v27 = v10;
+    v27 = contexts2;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] CardView closeButton accessory tapped, top context will handle responding. Top Context: %@ All Contexts : %@", buf, 0x20u);
   }
 
-  v11 = [(CarChromeViewController *)self topContext];
-  [v11 carCardViewCloseButtonTapped:v4];
+  topContext5 = [(CarChromeViewController *)self topContext];
+  [topContext5 carCardViewCloseButtonTapped:tappedCopy];
 LABEL_16:
 }
 
-- (void)_reloadCardsAnimated:(BOOL)a3
+- (void)_reloadCardsAnimated:(BOOL)animated
 {
   [(CarChromeViewController *)self _reloadCardOverlayConstraintsIfNeeded];
   if ([(ChromeViewController *)self isSuppressed])
   {
-    v4 = sub_10006CF98();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    _desiredCards = sub_10006CF98();
+    if (os_log_type_enabled(_desiredCards, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v35 = self;
+      selfCopy4 = self;
       v5 = "[%{public}p] Will not reload cards, suppressed.";
 LABEL_19:
-      v23 = v4;
+      v23 = _desiredCards;
       v24 = OS_LOG_TYPE_INFO;
 LABEL_25:
       _os_log_impl(&_mh_execute_header, v23, v24, v5, buf, 0xCu);
@@ -3024,24 +3024,24 @@ LABEL_25:
 
   else
   {
-    v6 = [(ChromeViewController *)self overlayController];
-    v7 = [v6 overlayContentView];
+    overlayController = [(ChromeViewController *)self overlayController];
+    overlayContentView = [overlayController overlayContentView];
 
-    if (v7)
+    if (overlayContentView)
     {
-      v8 = [(CarChromeViewController *)self cardsOverlay];
-      [v8 dismissAllCardsAnimated:0 completion:0];
+      cardsOverlay = [(CarChromeViewController *)self cardsOverlay];
+      [cardsOverlay dismissAllCardsAnimated:0 completion:0];
 
-      v9 = [(ChromeViewController *)self overlayController];
-      v10 = [v9 overlayContentView];
-      [v10 setAccessibilityViewIsModal:0];
+      overlayController2 = [(ChromeViewController *)self overlayController];
+      overlayContentView2 = [overlayController2 overlayContentView];
+      [overlayContentView2 setAccessibilityViewIsModal:0];
 
-      v11 = [(CarChromeViewController *)self topContext];
-      LOBYTE(v10) = objc_opt_respondsToSelector();
+      topContext = [(CarChromeViewController *)self topContext];
+      LOBYTE(overlayContentView2) = objc_opt_respondsToSelector();
 
-      if (v10)
+      if (overlayContentView2)
       {
-        v12 = [(CarChromeViewController *)self topContext];
+        topContext2 = [(CarChromeViewController *)self topContext];
         v13 = objc_opt_respondsToSelector();
 
         if ((v13 & 1) == 0)
@@ -3050,7 +3050,7 @@ LABEL_25:
           if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
           {
             *buf = 136315906;
-            v35 = "[CarChromeViewController _reloadCardsAnimated:]";
+            selfCopy4 = "[CarChromeViewController _reloadCardsAnimated:]";
             v36 = 2080;
             v37 = "CarChromeViewController.m";
             v38 = 1024;
@@ -3067,26 +3067,26 @@ LABEL_25:
             {
               v27 = +[NSThread callStackSymbols];
               *buf = 138412290;
-              v35 = v27;
+              selfCopy4 = v27;
               _os_log_impl(&_mh_execute_header, v26, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
             }
           }
         }
 
-        v14 = [(CarChromeViewController *)self topContext];
+        topContext3 = [(CarChromeViewController *)self topContext];
         v15 = objc_opt_respondsToSelector();
 
         if (v15)
         {
-          v4 = [(CarChromeViewController *)self _desiredCards];
-          if ([v4 count])
+          _desiredCards = [(CarChromeViewController *)self _desiredCards];
+          if ([_desiredCards count])
           {
             v31 = 0u;
             v32 = 0u;
             v29 = 0u;
             v30 = 0u;
-            v4 = v4;
-            v16 = [v4 countByEnumeratingWithState:&v29 objects:v33 count:16];
+            _desiredCards = _desiredCards;
+            v16 = [_desiredCards countByEnumeratingWithState:&v29 objects:v33 count:16];
             if (v16)
             {
               v17 = v16;
@@ -3097,65 +3097,65 @@ LABEL_25:
                 {
                   if (*v30 != v18)
                   {
-                    objc_enumerationMutation(v4);
+                    objc_enumerationMutation(_desiredCards);
                   }
 
                   v20 = *(*(&v29 + 1) + 8 * i);
-                  v21 = [(CarChromeViewController *)self cardsOverlay];
+                  cardsOverlay2 = [(CarChromeViewController *)self cardsOverlay];
                   v28[0] = _NSConcreteStackBlock;
                   v28[1] = 3221225472;
                   v28[2] = sub_10058F708;
                   v28[3] = &unk_101622738;
                   v28[4] = self;
                   v28[5] = v20;
-                  [v21 configureCard:v20 withBlock:v28];
+                  [cardsOverlay2 configureCard:v20 withBlock:v28];
                 }
 
-                v17 = [v4 countByEnumeratingWithState:&v29 objects:v33 count:16];
+                v17 = [_desiredCards countByEnumeratingWithState:&v29 objects:v33 count:16];
               }
 
               while (v17);
             }
 
-            v22 = [(CarChromeViewController *)self cardsOverlay];
-            [v22 presentAllCardsAnimated:0 completion:0];
+            cardsOverlay3 = [(CarChromeViewController *)self cardsOverlay];
+            [cardsOverlay3 presentAllCardsAnimated:0 completion:0];
           }
 
           goto LABEL_26;
         }
 
-        v4 = sub_10006CF98();
-        if (!os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+        _desiredCards = sub_10006CF98();
+        if (!os_log_type_enabled(_desiredCards, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_26;
         }
 
         *buf = 134349056;
-        v35 = self;
+        selfCopy4 = self;
       }
 
       else
       {
-        v4 = sub_10006CF98();
-        if (!os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
+        _desiredCards = sub_10006CF98();
+        if (!os_log_type_enabled(_desiredCards, OS_LOG_TYPE_ERROR))
         {
           goto LABEL_26;
         }
 
         *buf = 134349056;
-        v35 = self;
+        selfCopy4 = self;
       }
 
-      v23 = v4;
+      v23 = _desiredCards;
       v24 = OS_LOG_TYPE_ERROR;
       goto LABEL_25;
     }
 
-    v4 = sub_10006CF98();
-    if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
+    _desiredCards = sub_10006CF98();
+    if (os_log_type_enabled(_desiredCards, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v35 = self;
+      selfCopy4 = self;
       v5 = "[%{public}p] Will not reload cards, no overlay content view available.";
       goto LABEL_19;
     }
@@ -3164,30 +3164,30 @@ LABEL_25:
 LABEL_26:
 }
 
-- (void)_updateCardsForContext:(id)a3 withAnimation:(id)a4 completion:(id)a5
+- (void)_updateCardsForContext:(id)context withAnimation:(id)animation completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([(ChromeViewController *)self isCurrentContext:v8])
+  contextCopy = context;
+  animationCopy = animation;
+  completionCopy = completion;
+  if ([(ChromeViewController *)self isCurrentContext:contextCopy])
   {
     v11 = sub_10006CF98();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v27 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "[%{public}p] Chrome started configuring cards.", buf, 0xCu);
     }
 
-    v12 = [(CarChromeViewController *)self topContext];
-    v13 = [(CarChromeViewController *)self _desiredCards];
+    topContext = [(CarChromeViewController *)self topContext];
+    _desiredCards = [(CarChromeViewController *)self _desiredCards];
     if (objc_opt_respondsToSelector())
     {
-      [v12 chromeDidStartConfiguringCards:v13];
+      [topContext chromeDidStartConfiguringCards:_desiredCards];
     }
 
     objc_initWeak(buf, self);
-    v14 = [(CarChromeViewController *)self cardsOverlay];
+    cardsOverlay = [(CarChromeViewController *)self cardsOverlay];
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_10058FA90;
@@ -3199,12 +3199,12 @@ LABEL_26:
     v20[3] = &unk_101622710;
     v20[4] = self;
     objc_copyWeak(&v24, buf);
-    v15 = v12;
+    v15 = topContext;
     v21 = v15;
-    v16 = v13;
+    v16 = _desiredCards;
     v22 = v16;
-    v23 = v10;
-    [v14 performBatchUpdates:v25 withAnimation:v9 completion:v20];
+    v23 = completionCopy;
+    [cardsOverlay performBatchUpdates:v25 withAnimation:animationCopy completion:v20];
 
     objc_destroyWeak(&v24);
     objc_destroyWeak(buf);
@@ -3218,34 +3218,34 @@ LABEL_26:
       v18 = objc_opt_class();
       v19 = NSStringFromClass(v18);
       *buf = 134349570;
-      v27 = self;
+      selfCopy2 = self;
       v28 = 2112;
       v29 = v19;
       v30 = 2048;
-      v31 = v8;
+      v31 = contextCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "[%{public}p] %@ (%p) asked for card update, but it is not the current context. Ignoring the call.", buf, 0x20u);
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
 
-- (void)captureUserActionSelectedSearchCategory:(id)a3 categoriesDisplayed:(id)a4
+- (void)captureUserActionSelectedSearchCategory:(id)category categoriesDisplayed:(id)displayed
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CarChromeViewController *)self _currentUsageTarget];
+  displayedCopy = displayed;
+  categoryCopy = category;
+  _currentUsageTarget = [(CarChromeViewController *)self _currentUsageTarget];
   v10 = +[MKMapService sharedService];
-  v9 = [v7 displayString];
-  [v10 captureUserAction:2004 onTarget:v8 eventValue:v9 categoriesDisplayed:v6 categorySelected:v7];
+  displayString = [categoryCopy displayString];
+  [v10 captureUserAction:2004 onTarget:_currentUsageTarget eventValue:displayString categoriesDisplayed:displayedCopy categorySelected:categoryCopy];
 }
 
-- (void)captureUserActionPannedInDirection:(int64_t)a3
+- (void)captureUserActionPannedInDirection:(int64_t)direction
 {
-  if ((a3 - 1) >= 4)
+  if ((direction - 1) >= 4)
   {
     v4 = sub_10006D178();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -3274,15 +3274,15 @@ LABEL_26:
 
   else
   {
-    v3 = dword_101212BD0[a3 - 1];
+    v3 = dword_101212BD0[direction - 1];
 
     [(CarChromeViewController *)self captureUserAction:v3];
   }
 }
 
-- (void)captureUserActionChangedTrackingMode:(int64_t)a3
+- (void)captureUserActionChangedTrackingMode:(int64_t)mode
 {
-  if (a3 >= 3)
+  if (mode >= 3)
   {
     v4 = sub_10006D178();
     if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -3311,31 +3311,31 @@ LABEL_26:
 
   else
   {
-    v3 = dword_101212F38[a3];
+    v3 = dword_101212F38[mode];
 
     [(CarChromeViewController *)self captureUserAction:v3];
   }
 }
 
-- (void)captureUserAction:(int)a3 selectedRouteIndex:(int)a4
+- (void)captureUserAction:(int)action selectedRouteIndex:(int)index
 {
-  v4 = *&a4;
-  v5 = *&a3;
-  v6 = [(CarChromeViewController *)self _currentUsageTarget];
+  v4 = *&index;
+  v5 = *&action;
+  _currentUsageTarget = [(CarChromeViewController *)self _currentUsageTarget];
   v8 = [GEORouteDetails routeDetailsWithResultIndex:v4];
   v7 = +[MKMapService sharedService];
-  [v7 captureUserAction:v5 onTarget:v6 eventValue:0 routeDetails:v8];
+  [v7 captureUserAction:v5 onTarget:_currentUsageTarget eventValue:0 routeDetails:v8];
 }
 
-- (void)captureUserAction:(int)a3 mapItem:(id)a4 atResultIndex:(int)a5
+- (void)captureUserAction:(int)action mapItem:(id)item atResultIndex:(int)index
 {
-  v5 = *&a5;
-  v6 = *&a3;
-  v11 = a4;
-  v8 = [(CarChromeViewController *)self _currentUsageTarget];
-  if (v11 || (v5 & 0x80000000) == 0)
+  v5 = *&index;
+  v6 = *&action;
+  itemCopy = item;
+  _currentUsageTarget = [(CarChromeViewController *)self _currentUsageTarget];
+  if (itemCopy || (v5 & 0x80000000) == 0)
   {
-    v9 = [(CarChromeViewController *)self _userActionDetailsWithMapItem:v11 resultIndex:v5];
+    v9 = [(CarChromeViewController *)self _userActionDetailsWithMapItem:itemCopy resultIndex:v5];
   }
 
   else
@@ -3344,44 +3344,44 @@ LABEL_26:
   }
 
   v10 = +[MKMapService sharedService];
-  [v10 captureUserAction:v6 onTarget:v8 eventValue:0 placeActionDetails:v9];
+  [v10 captureUserAction:v6 onTarget:_currentUsageTarget eventValue:0 placeActionDetails:v9];
 }
 
-- (void)captureUserAction:(int)a3 eventValue:(id)a4
+- (void)captureUserAction:(int)action eventValue:(id)value
 {
-  v4 = *&a3;
-  v6 = a4;
-  [(CarChromeViewController *)self captureUserAction:v4 onTarget:[(CarChromeViewController *)self _currentUsageTarget] eventValue:v6];
+  v4 = *&action;
+  valueCopy = value;
+  [(CarChromeViewController *)self captureUserAction:v4 onTarget:[(CarChromeViewController *)self _currentUsageTarget] eventValue:valueCopy];
 }
 
-- (void)captureUserAction:(int)a3 onTarget:(int)a4 eventValue:(id)a5
+- (void)captureUserAction:(int)action onTarget:(int)target eventValue:(id)value
 {
-  v5 = *&a4;
-  v6 = *&a3;
-  v7 = a5;
+  v5 = *&target;
+  v6 = *&action;
+  valueCopy = value;
   v8 = +[MKMapService sharedService];
-  [v8 captureUserAction:v6 onTarget:v5 eventValue:v7];
+  [v8 captureUserAction:v6 onTarget:v5 eventValue:valueCopy];
 }
 
-- (void)_captureUserActionBackToContext:(id)a3
+- (void)_captureUserActionBackToContext:(id)context
 {
-  v8 = a3;
-  v4 = [(CarChromeViewController *)self topContext];
+  contextCopy = context;
+  topContext = [(CarChromeViewController *)self topContext];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     v6 = 25;
     goto LABEL_5;
   }
 
-  v5 = [(CarChromeViewController *)self topContext];
-  v6 = [v5 backButtonUsageActionToContext:v8];
+  topContext2 = [(CarChromeViewController *)self topContext];
+  v6 = [topContext2 backButtonUsageActionToContext:contextCopy];
 
   if (v6)
   {
 LABEL_5:
     if (objc_opt_respondsToSelector())
     {
-      v7 = [v4 backButtonUsageEventValueToContext:v8];
+      v7 = [topContext backButtonUsageEventValueToContext:contextCopy];
     }
 
     else
@@ -3397,13 +3397,13 @@ LABEL_5:
 {
   v6.receiver = self;
   v6.super_class = CarChromeViewController;
-  v3 = [(ChromeViewController *)&v6 desiredRadarScreenshotTypes];
+  desiredRadarScreenshotTypes = [(ChromeViewController *)&v6 desiredRadarScreenshotTypes];
   if ([(ChromeViewController *)self isInactive]|| ([(ChromeViewController *)self currentMapReplacementView], v4 = objc_claimAutoreleasedReturnValue(), v4, v4))
   {
-    v3 |= 8uLL;
+    desiredRadarScreenshotTypes |= 8uLL;
   }
 
-  return v3;
+  return desiredRadarScreenshotTypes;
 }
 
 - (void)carStatusBannerDidTapBanner
@@ -3412,10 +3412,10 @@ LABEL_5:
   [v2 interruptApplicationWithKind:21 userInfo:0 completionHandler:&stru_1016226E8];
 }
 
-- (void)_enableZoomGesture:(BOOL)a3
+- (void)_enableZoomGesture:(BOOL)gesture
 {
-  v3 = a3;
-  if (a3)
+  gestureCopy = gesture;
+  if (gesture)
   {
     objc_initWeak(&location, self);
     v14 = _NSConcreteStackBlock;
@@ -3438,39 +3438,39 @@ LABEL_5:
 
   if (v6)
   {
-    v7 = [(CarChromeViewController *)self topContext];
-    v3 = [v7 allowMapZoomAndRecentering];
+    topContext = [(CarChromeViewController *)self topContext];
+    gestureCopy = [topContext allowMapZoomAndRecentering];
   }
 
-  v8 = [(ChromeViewController *)self mapView];
-  [v8 setZoomEnabled:v3];
+  mapView = [(ChromeViewController *)self mapView];
+  [mapView setZoomEnabled:gestureCopy];
 
-  v9 = [(ChromeViewController *)self mapView];
-  v10 = [v9 _doubleTapGestureRecognizer];
-  [v10 setEnabled:0];
+  mapView2 = [(ChromeViewController *)self mapView];
+  _doubleTapGestureRecognizer = [mapView2 _doubleTapGestureRecognizer];
+  [_doubleTapGestureRecognizer setEnabled:0];
 
-  v11 = 0;
-  if (v3)
+  allowOneHandedZooming = 0;
+  if (gestureCopy)
   {
-    v11 = [objc_opt_class() allowOneHandedZooming];
+    allowOneHandedZooming = [objc_opt_class() allowOneHandedZooming];
   }
 
-  v12 = [(ChromeViewController *)self mapView];
-  v13 = [v12 _oneHandedZoomGestureRecognizer];
-  [v13 setEnabled:v11];
+  mapView3 = [(ChromeViewController *)self mapView];
+  _oneHandedZoomGestureRecognizer = [mapView3 _oneHandedZoomGestureRecognizer];
+  [_oneHandedZoomGestureRecognizer setEnabled:allowOneHandedZooming];
 }
 
 - (void)updateZoomControls
 {
-  v3 = [(ChromeViewController *)self mapView];
-  v4 = [v3 _canZoomIn];
-  v5 = [(CarChromeViewController *)self mapControlsOverlay];
-  [v5 setZoomInEnabled:v4];
+  mapView = [(ChromeViewController *)self mapView];
+  _canZoomIn = [mapView _canZoomIn];
+  mapControlsOverlay = [(CarChromeViewController *)self mapControlsOverlay];
+  [mapControlsOverlay setZoomInEnabled:_canZoomIn];
 
-  v8 = [(ChromeViewController *)self mapView];
-  v6 = [v8 _canZoomOut];
-  v7 = [(CarChromeViewController *)self mapControlsOverlay];
-  [v7 setZoomOutEnabled:v6];
+  mapView2 = [(ChromeViewController *)self mapView];
+  _canZoomOut = [mapView2 _canZoomOut];
+  mapControlsOverlay2 = [(CarChromeViewController *)self mapControlsOverlay];
+  [mapControlsOverlay2 setZoomOutEnabled:_canZoomOut];
 }
 
 - (void)_reportIncidentPressed
@@ -3489,13 +3489,13 @@ LABEL_5:
 
 - (void)_toggleCameraPressed
 {
-  v3 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CarChromeViewController *)self topContext];
-    [v5 toggleCameraPressed];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    [topContext2 toggleCameraPressed];
 
     [(CarChromeViewController *)self _updateCameraToggleButton];
   }
@@ -3506,7 +3506,7 @@ LABEL_5:
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
       v10 = 136315650;
-      v11 = "[CarChromeViewController _toggleCameraPressed]";
+      selfCopy = "[CarChromeViewController _toggleCameraPressed]";
       v12 = 2080;
       v13 = "CarChromeViewController.m";
       v14 = 1024;
@@ -3521,7 +3521,7 @@ LABEL_5:
       {
         v8 = +[NSThread callStackSymbols];
         v10 = 138412290;
-        v11 = v8;
+        selfCopy = v8;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "%@", &v10, 0xCu);
       }
     }
@@ -3530,7 +3530,7 @@ LABEL_5:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v10 = 134349056;
-      v11 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "[%{public}p] _toggleCameraPressed called, because toggleCameraButton is present in map controls, but topContext doesn't respond to toggleCameraPressed", &v10, 0xCu);
     }
   }
@@ -3540,9 +3540,9 @@ LABEL_5:
 {
   if (sub_10008B2E8())
   {
-    v3 = [(ChromeViewController *)self isRunningNavigationDisplay];
-    v4 = v3 ^ 1;
-    if (v3)
+    isRunningNavigationDisplay = [(ChromeViewController *)self isRunningNavigationDisplay];
+    v4 = isRunningNavigationDisplay ^ 1;
+    if (isRunningNavigationDisplay)
     {
       v5 = 5010;
     }
@@ -3553,25 +3553,25 @@ LABEL_5:
     }
 
     [(CarChromeViewController *)self captureUserAction:v5];
-    v6 = [(CarChromeViewController *)self defaultMapSettings];
-    [v6 setPitched:v4];
+    defaultMapSettings = [(CarChromeViewController *)self defaultMapSettings];
+    [defaultMapSettings setPitched:v4];
 
     [(ChromeViewController *)self setNeedsUpdateComponent:@"navigationDisplay" animated:1];
     [(ChromeViewController *)self updateComponentsIfNeeded];
     [(CarChromeViewController *)self _update3DButton];
     if ((v4 & 1) == 0)
     {
-      v13 = [(CarChromeViewController *)self defaultMapSettings];
-      [v13 applyToMapViewAnimated:1 duration:0 completion:-1.0];
+      defaultMapSettings2 = [(CarChromeViewController *)self defaultMapSettings];
+      [defaultMapSettings2 applyToMapViewAnimated:1 duration:0 completion:-1.0];
     }
   }
 
   else
   {
-    v7 = [(ChromeViewController *)self mapView];
-    v8 = [v7 _isPitched];
+    mapView = [(ChromeViewController *)self mapView];
+    _isPitched = [mapView _isPitched];
 
-    if (v8)
+    if (_isPitched)
     {
       v9 = 5010;
     }
@@ -3582,19 +3582,19 @@ LABEL_5:
     }
 
     [(CarChromeViewController *)self captureUserAction:v9];
-    v10 = [(CarChromeViewController *)self defaultMapSettings];
-    [v10 setPitched:v8 ^ 1];
+    defaultMapSettings3 = [(CarChromeViewController *)self defaultMapSettings];
+    [defaultMapSettings3 setPitched:_isPitched ^ 1];
 
-    v11 = [(ChromeViewController *)self mapView];
-    v12 = v11;
-    if (v8)
+    mapView2 = [(ChromeViewController *)self mapView];
+    v12 = mapView2;
+    if (_isPitched)
     {
-      [v11 _exit3DMode];
+      [mapView2 _exit3DMode];
     }
 
     else
     {
-      [v11 _enter3DMode];
+      [mapView2 _enter3DMode];
     }
 
     [(CarChromeViewController *)self _update3DButton];
@@ -3604,25 +3604,25 @@ LABEL_5:
 - (void)zoomOut
 {
   [(CarChromeViewController *)self captureUserAction:1050];
-  v3 = [(CarChromeViewController *)self topContext];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v3 zoomOutButtonPressed] & 1) == 0)
+  topContext = [(CarChromeViewController *)self topContext];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([topContext zoomOutButtonPressed] & 1) == 0)
   {
-    v4 = [(ChromeViewController *)self navigationDisplay];
-    if (v4 && (v5 = v4, +[CarDisplayController sharedInstance](CarDisplayController, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isCarAppSceneHostingNavigation], v6, v5, v7))
+    navigationDisplay = [(ChromeViewController *)self navigationDisplay];
+    if (navigationDisplay && (v5 = navigationDisplay, +[CarDisplayController sharedInstance](CarDisplayController, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isCarAppSceneHostingNavigation], v6, v5, v7))
     {
-      v8 = [(ChromeViewController *)self navigationDisplay];
-      [v8 zoomOut];
+      navigationDisplay2 = [(ChromeViewController *)self navigationDisplay];
+      [navigationDisplay2 zoomOut];
     }
 
     else
     {
-      v8 = [(ChromeViewController *)self mapView];
+      navigationDisplay2 = [(ChromeViewController *)self mapView];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_100590C40;
       v9[3] = &unk_101661B18;
       v9[4] = self;
-      [v8 _zoomOutWithCompletionHandler:v9];
+      [navigationDisplay2 _zoomOutWithCompletionHandler:v9];
     }
   }
 
@@ -3635,7 +3635,7 @@ LABEL_5:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 134349056;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] zoomOut button pressed", &v4, 0xCu);
   }
 
@@ -3645,25 +3645,25 @@ LABEL_5:
 - (void)zoomIn
 {
   [(CarChromeViewController *)self captureUserAction:1049];
-  v3 = [(CarChromeViewController *)self topContext];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v3 zoomInButtonPressed] & 1) == 0)
+  topContext = [(CarChromeViewController *)self topContext];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([topContext zoomInButtonPressed] & 1) == 0)
   {
-    v4 = [(ChromeViewController *)self navigationDisplay];
-    if (v4 && (v5 = v4, +[CarDisplayController sharedInstance](CarDisplayController, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isCarAppSceneHostingNavigation], v6, v5, v7))
+    navigationDisplay = [(ChromeViewController *)self navigationDisplay];
+    if (navigationDisplay && (v5 = navigationDisplay, +[CarDisplayController sharedInstance](CarDisplayController, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 isCarAppSceneHostingNavigation], v6, v5, v7))
     {
-      v8 = [(ChromeViewController *)self navigationDisplay];
-      [v8 zoomIn];
+      navigationDisplay2 = [(ChromeViewController *)self navigationDisplay];
+      [navigationDisplay2 zoomIn];
     }
 
     else
     {
-      v8 = [(ChromeViewController *)self mapView];
+      navigationDisplay2 = [(ChromeViewController *)self mapView];
       v9[0] = _NSConcreteStackBlock;
       v9[1] = 3221225472;
       v9[2] = sub_100590E94;
       v9[3] = &unk_101661B18;
       v9[4] = self;
-      [v8 _zoomInWithCompletionHandler:v9];
+      [navigationDisplay2 _zoomInWithCompletionHandler:v9];
     }
   }
 
@@ -3676,7 +3676,7 @@ LABEL_5:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     v4 = 134349056;
-    v5 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] zoomIn button pressed", &v4, 0xCu);
   }
 
@@ -3693,43 +3693,43 @@ LABEL_5:
 - (void)_navRecenterButtonPressed
 {
   [(CarChromeViewController *)self captureUserAction:4001];
-  v4 = [(CarChromeViewController *)self topContext];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ([v4 recenterButtonPressed] & 1) == 0)
+  topContext = [(CarChromeViewController *)self topContext];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ([topContext recenterButtonPressed] & 1) == 0)
   {
-    v3 = [(ChromeViewController *)self navigationDisplay];
-    [v3 recenterCameraAnimated:1];
+    navigationDisplay = [(ChromeViewController *)self navigationDisplay];
+    [navigationDisplay recenterCameraAnimated:1];
   }
 }
 
-- (void)carMapControls:(id)a3 didTriggerAction:(unint64_t)a4
+- (void)carMapControls:(id)controls didTriggerAction:(unint64_t)action
 {
-  v6 = a3;
-  if (a4 > 4)
+  controlsCopy = controls;
+  if (action > 4)
   {
-    if (a4 > 6)
+    if (action > 6)
     {
-      if (a4 == 7)
+      if (action == 7)
       {
-        v7 = v6;
+        v7 = controlsCopy;
         [(CarChromeViewController *)self _audioControlPressed];
       }
 
       else
       {
-        if (a4 != 8)
+        if (action != 8)
         {
           goto LABEL_19;
         }
 
-        v7 = v6;
+        v7 = controlsCopy;
         [(CarChromeViewController *)self _reportIncidentPressed];
       }
     }
 
     else
     {
-      v7 = v6;
-      if (a4 == 5)
+      v7 = controlsCopy;
+      if (action == 5)
       {
         [(CarChromeViewController *)self _toggle3DButtonPressed];
       }
@@ -3741,10 +3741,10 @@ LABEL_5:
     }
   }
 
-  else if (a4 > 2)
+  else if (action > 2)
   {
-    v7 = v6;
-    if (a4 == 3)
+    v7 = controlsCopy;
+    if (action == 3)
     {
       [(CarChromeViewController *)self zoomInButtonPressed];
     }
@@ -3755,35 +3755,35 @@ LABEL_5:
     }
   }
 
-  else if (a4 == 1)
+  else if (action == 1)
   {
-    v7 = v6;
+    v7 = controlsCopy;
     [(CarChromeViewController *)self _navRecenterButtonPressed];
   }
 
   else
   {
-    if (a4 != 2)
+    if (action != 2)
     {
       goto LABEL_19;
     }
 
-    v7 = v6;
+    v7 = controlsCopy;
     [(CarChromeViewController *)self panButtonPressed];
   }
 
-  v6 = v7;
+  controlsCopy = v7;
 LABEL_19:
 }
 
-- (void)_reloadMapControlsInsetsForContext:(id)a3
+- (void)_reloadMapControlsInsetsForContext:(id)context
 {
-  v4 = a3;
-  v5 = [(CarChromeViewController *)self mapControlsOverlay];
-  v6 = v5;
-  if (v5)
+  contextCopy = context;
+  mapControlsOverlay = [(CarChromeViewController *)self mapControlsOverlay];
+  v6 = mapControlsOverlay;
+  if (mapControlsOverlay)
   {
-    [v5 configuration];
+    [mapControlsOverlay configuration];
     if (v11 == 0)
     {
 
@@ -3798,23 +3798,23 @@ LABEL_19:
     {
     }
 
-    v6 = [(CarChromeViewController *)self _shouldMapControlsModifyMapInsetsForContext:v4];
+    v6 = [(CarChromeViewController *)self _shouldMapControlsModifyMapInsetsForContext:contextCopy];
   }
 
 LABEL_8:
-  v7 = [(ChromeViewController *)self overlayController];
-  v8 = [(CarChromeViewController *)self mapControlsOverlay];
-  [v7 setViewportConstraintsEnabled:v6 forOverlay:v8];
+  overlayController = [(ChromeViewController *)self overlayController];
+  mapControlsOverlay2 = [(CarChromeViewController *)self mapControlsOverlay];
+  [overlayController setViewportConstraintsEnabled:v6 forOverlay:mapControlsOverlay2];
 
-  v9 = [(ChromeViewController *)self overlayController];
-  v10 = [(CarChromeViewController *)self mapControlsOverlay];
-  [v9 setMapInsetsConstraintsEnabled:v6 forOverlay:v10];
+  overlayController2 = [(ChromeViewController *)self overlayController];
+  mapControlsOverlay3 = [(CarChromeViewController *)self mapControlsOverlay];
+  [overlayController2 setMapInsetsConstraintsEnabled:v6 forOverlay:mapControlsOverlay3];
 }
 
-- (void)_reloadMapControlsForContext:(id)a3 withAnimation:(id)a4
+- (void)_reloadMapControlsForContext:(id)context withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  animationCopy = animation;
   if ([(ChromeViewController *)self isSuppressed])
   {
     v8 = sub_100006E1C();
@@ -3830,7 +3830,7 @@ LABEL_4:
     goto LABEL_12;
   }
 
-  if (![(ChromeViewController *)self isCurrentContext:v6])
+  if (![(ChromeViewController *)self isCurrentContext:contextCopy])
   {
     v8 = sub_100006E1C();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -3842,26 +3842,26 @@ LABEL_4:
       *&buf[12] = 2112;
       *&buf[14] = v10;
       *&buf[22] = 2048;
-      v18 = v6;
+      v18 = contextCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_ERROR, "[%{public}p] %@ (%p) asked for mapControls update, but it is not the current context. Ignoring the call.", buf, 0x20u);
     }
 
     goto LABEL_4;
   }
 
-  if (v7)
+  if (animationCopy)
   {
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x2020000000;
-    LOBYTE(v18) = [v7 isAnimated];
-    objc_initWeak(&location, v7);
+    LOBYTE(v18) = [animationCopy isAnimated];
+    objc_initWeak(&location, animationCopy);
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_1005915A0;
     v12[3] = &unk_1016226C8;
     v12[4] = self;
-    v13 = v6;
+    v13 = contextCopy;
     v14 = buf;
     objc_copyWeak(&v15, &location);
     v11[0] = _NSConcreteStackBlock;
@@ -3869,7 +3869,7 @@ LABEL_4:
     v11[2] = sub_100591750;
     v11[3] = &unk_101661B18;
     v11[4] = self;
-    [v7 addPreparation:v12 animations:v11 completion:0];
+    [animationCopy addPreparation:v12 animations:v11 completion:0];
     objc_destroyWeak(&v15);
 
     objc_destroyWeak(&location);
@@ -3878,27 +3878,27 @@ LABEL_4:
 
   else
   {
-    v7 = [GroupAnimation animationForAnimatedFlag:0];
-    [(CarChromeViewController *)self _reloadMapControlsForContext:v6 withAnimation:v7];
-    [v7 runWithCurrentOptions];
+    animationCopy = [GroupAnimation animationForAnimatedFlag:0];
+    [(CarChromeViewController *)self _reloadMapControlsForContext:contextCopy withAnimation:animationCopy];
+    [animationCopy runWithCurrentOptions];
   }
 
 LABEL_12:
 }
 
-- (void)_reloadStatusBannerWithAnimation:(id)a3
+- (void)_reloadStatusBannerWithAnimation:(id)animation
 {
-  v4 = a3;
-  v5 = [(CarChromeViewController *)self topContext];
-  v6 = [(ChromeViewController *)self isCurrentContext:v5];
+  animationCopy = animation;
+  topContext = [(CarChromeViewController *)self topContext];
+  v6 = [(ChromeViewController *)self isCurrentContext:topContext];
 
   if (v6)
   {
-    v7 = [(CarChromeViewController *)self topContext];
+    topContext2 = [(CarChromeViewController *)self topContext];
     if (objc_opt_respondsToSelector())
     {
-      v8 = [(CarChromeViewController *)self topContext];
-      v9 = [v8 suppressesStatusBannerAnimation] ^ 1;
+      topContext3 = [(CarChromeViewController *)self topContext];
+      v9 = [topContext3 suppressesStatusBannerAnimation] ^ 1;
     }
 
     else
@@ -3916,8 +3916,8 @@ LABEL_12:
     v15[2] = sub_100591A50;
     v15[3] = &unk_101661AE0;
     v15[4] = self;
-    v16 = [v4 isAnimated] & v9;
-    [v4 addPreparation:v17 animations:v15 completion:0];
+    v16 = [animationCopy isAnimated] & v9;
+    [animationCopy addPreparation:v17 animations:v15 completion:0];
   }
 
   else
@@ -3925,61 +3925,61 @@ LABEL_12:
     v10 = sub_100006E1C();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
-      v11 = [(CarChromeViewController *)self topContext];
+      topContext4 = [(CarChromeViewController *)self topContext];
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      v14 = [(CarChromeViewController *)self topContext];
+      topContext5 = [(CarChromeViewController *)self topContext];
       *buf = 134349570;
-      v19 = self;
+      selfCopy = self;
       v20 = 2112;
       v21 = v13;
       v22 = 2048;
-      v23 = v14;
+      v23 = topContext5;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "[%{public}p] %@ (%p) asked for status banner reload, but it is not the current context. Ignoring the call.", buf, 0x20u);
     }
   }
 }
 
-- (void)reloadStatusBannerAnimated:(BOOL)a3
+- (void)reloadStatusBannerAnimated:(BOOL)animated
 {
-  v4 = [GroupAnimation animationForAnimatedFlag:a3];
+  v4 = [GroupAnimation animationForAnimatedFlag:animated];
   [(CarChromeViewController *)self _reloadStatusBannerWithAnimation:v4];
   [v4 runWithCurrentOptions];
 }
 
-- (void)_reloadAccessoriesInsetsForContext:(id)a3
+- (void)_reloadAccessoriesInsetsForContext:(id)context
 {
-  v9 = a3;
-  v4 = ![(CarChromeViewController *)self _areAccessoriesHiddenForCurrentContext]&& [(CarChromeViewController *)self _shouldAccessoriesModifyMapInsetsForContext:v9];
-  v5 = [(ChromeViewController *)self overlayController];
-  v6 = [(CarChromeViewController *)self accessoriesOverlay];
-  [v5 setViewportConstraintsEnabled:v4 forOverlay:v6];
+  contextCopy = context;
+  v4 = ![(CarChromeViewController *)self _areAccessoriesHiddenForCurrentContext]&& [(CarChromeViewController *)self _shouldAccessoriesModifyMapInsetsForContext:contextCopy];
+  overlayController = [(ChromeViewController *)self overlayController];
+  accessoriesOverlay = [(CarChromeViewController *)self accessoriesOverlay];
+  [overlayController setViewportConstraintsEnabled:v4 forOverlay:accessoriesOverlay];
 
-  v7 = [(ChromeViewController *)self overlayController];
-  v8 = [(CarChromeViewController *)self accessoriesOverlay];
-  [v7 setMapInsetsConstraintsEnabled:v4 forOverlay:v8];
+  overlayController2 = [(ChromeViewController *)self overlayController];
+  accessoriesOverlay2 = [(CarChromeViewController *)self accessoriesOverlay];
+  [overlayController2 setMapInsetsConstraintsEnabled:v4 forOverlay:accessoriesOverlay2];
 }
 
-- (void)_reloadAccessoriesForContext:(id)a3 withAnimation:(id)a4
+- (void)_reloadAccessoriesForContext:(id)context withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(ChromeViewController *)self isCurrentContext:v6])
+  contextCopy = context;
+  animationCopy = animation;
+  if ([(ChromeViewController *)self isCurrentContext:contextCopy])
   {
-    v8 = [v7 isAnimated];
+    isAnimated = [animationCopy isAnimated];
     v14[0] = _NSConcreteStackBlock;
     v14[1] = 3221225472;
     v14[2] = sub_100591DD0;
     v14[3] = &unk_101661A90;
     v14[4] = self;
-    v15 = v6;
+    v15 = contextCopy;
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100591E5C;
     v12[3] = &unk_101661AE0;
     v12[4] = self;
-    v13 = v8;
-    [v7 addPreparation:v14 animations:v12 completion:0];
+    v13 = isAnimated;
+    [animationCopy addPreparation:v14 animations:v12 completion:0];
   }
 
   else
@@ -3990,69 +3990,69 @@ LABEL_12:
       v10 = objc_opt_class();
       v11 = NSStringFromClass(v10);
       *buf = 134349570;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v11;
       v20 = 2048;
-      v21 = v6;
+      v21 = contextCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "[%{public}p] %@ (%p) asked for accessories reload, but it is not the current context. Ignoring the call.", buf, 0x20u);
     }
   }
 }
 
-- (void)reloadAccessoriesForContext:(id)a3 animated:(BOOL)a4
+- (void)reloadAccessoriesForContext:(id)context animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [GroupAnimation animationForAnimatedFlag:v4];
-  [(CarChromeViewController *)self _reloadAccessoriesForContext:v6 withAnimation:v7];
+  animatedCopy = animated;
+  contextCopy = context;
+  v7 = [GroupAnimation animationForAnimatedFlag:animatedCopy];
+  [(CarChromeViewController *)self _reloadAccessoriesForContext:contextCopy withAnimation:v7];
 
   [v7 runWithCurrentOptions];
 }
 
-- (void)configureAccessoriesOverlay:(id)a3 forContext:(id)a4
+- (void)configureAccessoriesOverlay:(id)overlay forContext:(id)context
 {
-  v9 = a4;
+  contextCopy = context;
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v9 showsSpeedLimit];
+    showsSpeedLimit = [contextCopy showsSpeedLimit];
   }
 
   else
   {
-    v5 = 0;
+    showsSpeedLimit = 0;
   }
 
-  v6 = [(CarChromeViewController *)self accessoriesOverlay];
-  [v6 setShowSpeedSign:v5];
+  accessoriesOverlay = [(CarChromeViewController *)self accessoriesOverlay];
+  [accessoriesOverlay setShowSpeedSign:showsSpeedLimit];
 
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v9 showsHeadingIndicator];
+    showsHeadingIndicator = [contextCopy showsHeadingIndicator];
   }
 
   else
   {
-    v7 = 0;
+    showsHeadingIndicator = 0;
   }
 
-  v8 = [(CarChromeViewController *)self accessoriesOverlay];
-  [v8 setShowHeadingIndicator:v7];
+  accessoriesOverlay2 = [(CarChromeViewController *)self accessoriesOverlay];
+  [accessoriesOverlay2 setShowHeadingIndicator:showsHeadingIndicator];
 }
 
-- (void)_reloadFocusContainerGuidesForContext:(id)a3
+- (void)_reloadFocusContainerGuidesForContext:(id)context
 {
-  v4 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   v5 = objc_opt_respondsToSelector();
 
   focusContainerGuideController = self->_focusContainerGuideController;
   if (v5)
   {
-    v7 = [(CarFocusContainerGuideController *)focusContainerGuideController activeEdges];
-    v8 = [(CarChromeViewController *)self topContext];
-    [v8 configureFocusContainerGuideController:self->_focusContainerGuideController];
+    activeEdges = [(CarFocusContainerGuideController *)focusContainerGuideController activeEdges];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    [topContext2 configureFocusContainerGuideController:self->_focusContainerGuideController];
 
-    v9 = [(CarFocusContainerGuideController *)self->_focusContainerGuideController activeEdges];
+    activeEdges2 = [(CarFocusContainerGuideController *)self->_focusContainerGuideController activeEdges];
     v10 = sub_100006E1C();
     if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -4061,8 +4061,8 @@ LABEL_15:
       return;
     }
 
-    v11 = [(CarChromeViewController *)self topContext];
-    if (!v11)
+    topContext3 = [(CarChromeViewController *)self topContext];
+    if (!topContext3)
     {
       v16 = @"<nil>";
       goto LABEL_14;
@@ -4072,28 +4072,28 @@ LABEL_15:
     v13 = NSStringFromClass(v12);
     if (objc_opt_respondsToSelector())
     {
-      v14 = [v11 performSelector:"accessibilityIdentifier"];
+      v14 = [topContext3 performSelector:"accessibilityIdentifier"];
       v15 = v14;
       if (v14 && ![v14 isEqualToString:v13])
       {
-        v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, v11, v15];
+        v16 = [NSString stringWithFormat:@"%@<%p, %@>", v13, topContext3, v15];
 
         goto LABEL_9;
       }
     }
 
-    v16 = [NSString stringWithFormat:@"%@<%p>", v13, v11];
+    v16 = [NSString stringWithFormat:@"%@<%p>", v13, topContext3];
 LABEL_9:
 
 LABEL_14:
     *buf = 134349826;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
     v20 = v16;
     v21 = 2048;
-    v22 = v7;
+    v22 = activeEdges;
     v23 = 2048;
-    v24 = v9;
+    v24 = activeEdges2;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "[%{public}p] Top context: %@, configured focusContainer guides from: %lu, to %lu", buf, 0x2Au);
 
     goto LABEL_15;
@@ -4104,12 +4104,12 @@ LABEL_14:
 
 - (NSArray)_linearFocusMovementSequences
 {
-  v3 = [(CarChromeViewController *)self topContext];
-  v4 = [v3 carFocusOrderSequences];
+  topContext = [(CarChromeViewController *)self topContext];
+  carFocusOrderSequences = [topContext carFocusOrderSequences];
 
-  if ([v4 count])
+  if ([carFocusOrderSequences count])
   {
-    if ([v4 count] >= 2)
+    if ([carFocusOrderSequences count] >= 2)
     {
       v5 = sub_10006D178();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -4136,7 +4136,7 @@ LABEL_14:
       }
     }
 
-    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
+    v8 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [carFocusOrderSequences count]);
     *buf = 0;
     *&buf[8] = buf;
     *&buf[16] = 0x3032000000;
@@ -4167,7 +4167,7 @@ LABEL_14:
     v19 = v12;
     v13 = v8;
     v17 = v13;
-    [v4 enumerateObjectsWithOptions:2 usingBlock:v16];
+    [carFocusOrderSequences enumerateObjectsWithOptions:2 usingBlock:v16];
     if ([v13 count])
     {
       v14 = [v13 copy];
@@ -4189,18 +4189,18 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)shouldUpdateFocusInContext:(id)a3
+- (BOOL)shouldUpdateFocusInContext:(id)context
 {
-  v4 = a3;
-  if ([(CarChromeViewController *)self _isFocusMovementValidInContext:v4])
+  contextCopy = context;
+  if ([(CarChromeViewController *)self _isFocusMovementValidInContext:contextCopy])
   {
-    v5 = [(CarChromeViewController *)self topContext];
+    topContext = [(CarChromeViewController *)self topContext];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
-      v7 = [(CarChromeViewController *)self topContext];
-      v8 = [v7 shouldUpdateFocusInContext:v4];
+      topContext2 = [(CarChromeViewController *)self topContext];
+      v8 = [topContext2 shouldUpdateFocusInContext:contextCopy];
     }
 
     else
@@ -4217,19 +4217,19 @@ LABEL_14:
   return v8;
 }
 
-- (BOOL)_isFocusMovementValidInContext:(id)a3
+- (BOOL)_isFocusMovementValidInContext:(id)context
 {
-  v4 = a3;
-  if (([v4 focusHeading] & 0x20) != 0 || (objc_msgSend(v4, "focusHeading") & 0x10) != 0 || (objc_msgSend(v4, "focusHeading") & 0x100) != 0 || (objc_msgSend(v4, "focusHeading") & 0x200) != 0)
+  contextCopy = context;
+  if (([contextCopy focusHeading] & 0x20) != 0 || (objc_msgSend(contextCopy, "focusHeading") & 0x10) != 0 || (objc_msgSend(contextCopy, "focusHeading") & 0x100) != 0 || (objc_msgSend(contextCopy, "focusHeading") & 0x200) != 0)
   {
-    v6 = [(CarChromeViewController *)self _linearFocusMovementSequences];
-    if ([v6 count] >= 2)
+    _linearFocusMovementSequences = [(CarChromeViewController *)self _linearFocusMovementSequences];
+    if ([_linearFocusMovementSequences count] >= 2)
     {
       v46 = sub_10006D178();
       if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315906;
-        v65 = "[CarChromeViewController _isFocusMovementValidInContext:]";
+        selfCopy7 = "[CarChromeViewController _isFocusMovementValidInContext:]";
         v66 = 2080;
         v67 = "CarChromeViewController.m";
         v68 = 1024;
@@ -4246,34 +4246,34 @@ LABEL_14:
         {
           v48 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v65 = v48;
+          selfCopy7 = v48;
           _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
     }
 
-    if ([v6 count] >= 2)
+    if ([_linearFocusMovementSequences count] >= 2)
     {
       v7 = sub_100006E1C();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_FAULT))
       {
         *buf = 134349314;
-        v65 = self;
+        selfCopy7 = self;
         v66 = 2112;
-        v67 = v6;
+        v67 = _linearFocusMovementSequences;
         _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_FAULT, "[%{public}p] We've produced more than 1 linearMovementSequence, this is not supported. sequences: %@", buf, 0x16u);
       }
     }
 
-    v8 = [v6 firstObject];
-    v9 = v8;
-    if (!v8)
+    firstObject = [_linearFocusMovementSequences firstObject];
+    v9 = firstObject;
+    if (!firstObject)
     {
       v31 = sub_100006E1C();
       if (os_log_type_enabled(v31, OS_LOG_TYPE_FAULT))
       {
         *buf = 134349056;
-        v65 = self;
+        selfCopy7 = self;
         _os_log_impl(&_mh_execute_header, v31, OS_LOG_TYPE_FAULT, "[%{public}p] We've don't have a linearMovementSequence. This should never happen. If you see this, check the implementation of _linearFocusMovementSequences.", buf, 0xCu);
       }
 
@@ -4281,32 +4281,32 @@ LABEL_14:
       goto LABEL_61;
     }
 
-    v10 = [v8 items];
+    items = [firstObject items];
     v58[0] = _NSConcreteStackBlock;
     v58[1] = 3221225472;
     v58[2] = sub_1005933C4;
     v58[3] = &unk_101622598;
-    v11 = v4;
+    v11 = contextCopy;
     v59 = v11;
-    v12 = [v10 indexOfObjectPassingTest:v58];
+    v12 = [items indexOfObjectPassingTest:v58];
 
     if (v12 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v13 = sub_100006E1C();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
       {
-        v14 = [v9 items];
-        v15 = v14;
-        if (v14)
+        items2 = [v9 items];
+        v15 = items2;
+        if (items2)
         {
-          if ([v14 count])
+          if ([items2 count])
           {
             v50 = v11;
             v51 = v13;
             v52 = v9;
-            v53 = self;
-            v54 = v6;
-            v55 = v4;
+            selfCopy3 = self;
+            v54 = _linearFocusMovementSequences;
+            v55 = contextCopy;
             v16 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v15 count]);
             v60 = 0u;
             v61 = 0u;
@@ -4376,10 +4376,10 @@ LABEL_33:
                 v29 = [v17 componentsJoinedByString:{@", "}];
                 v30 = [NSString stringWithFormat:@"<%p> [%@]", v17, v29];
 
-                v6 = v54;
-                v4 = v55;
+                _linearFocusMovementSequences = v54;
+                contextCopy = v55;
                 v9 = v52;
-                self = v53;
+                self = selfCopy3;
                 v11 = v50;
                 v13 = v51;
                 v15 = v49;
@@ -4398,13 +4398,13 @@ LABEL_33:
 
 LABEL_58:
 
-        v44 = [v11 nextFocusedItem];
+        nextFocusedItem = [v11 nextFocusedItem];
         *buf = 134349570;
-        v65 = self;
+        selfCopy7 = self;
         v66 = 2112;
         v67 = v30;
         v68 = 2112;
-        *v69 = v44;
+        *v69 = nextFocusedItem;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEBUG, "[%{public}p] Focus engine tried to focus something which was not in our provided sequence of items. sequence.items: %@, nextItem: %@", buf, 0x20u);
       }
 
@@ -4412,9 +4412,9 @@ LABEL_58:
       goto LABEL_60;
     }
 
-    v32 = [v9 items];
+    items3 = [v9 items];
     v33 = v11;
-    v34 = v32;
+    v34 = items3;
     v56[0] = _NSConcreteStackBlock;
     v56[1] = 3221225472;
     v56[2] = sub_100593418;
@@ -4423,16 +4423,16 @@ LABEL_58:
     v57 = v35;
     v36 = [v34 indexOfObjectPassingTest:v56];
 
-    v37 = [v35 focusHeading];
+    focusHeading = [v35 focusHeading];
     if (v36 == 0x7FFFFFFFFFFFFFFFLL)
     {
-      if ((v37 & 0x100) == 0)
+      if ((focusHeading & 0x100) == 0)
       {
         v38 = sub_100006E1C();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134349056;
-          v65 = self;
+          selfCopy7 = self;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEBUG, "[%{public}p] The currently focused item is no longer present in the linear sequence, knob can focus anything.", buf, 0xCu);
         }
 
@@ -4445,7 +4445,7 @@ LABEL_58:
         if (os_log_type_enabled(v43, OS_LOG_TYPE_INFO))
         {
           *buf = 134349056;
-          v65 = self;
+          selfCopy7 = self;
           _os_log_impl(&_mh_execute_header, v43, OS_LOG_TYPE_INFO, "[%{public}p] We are coming to the app from the status bar, but focus engine is trying to focus an item that is not first in the provided linearMovementSequence. Denying this attempt and forcing a new pass.", buf, 0xCu);
         }
 
@@ -4463,22 +4463,22 @@ LABEL_61:
       }
     }
 
-    else if (((v37 & 0x20) == 0 || v36 - 1 != v12) && (([v35 focusHeading]& 0x10) == 0 || v36 + 1 != v12))
+    else if (((focusHeading & 0x20) == 0 || v36 - 1 != v12) && (([v35 focusHeading]& 0x10) == 0 || v36 + 1 != v12))
     {
       v39 = sub_100006E1C();
       if (os_log_type_enabled(v39, OS_LOG_TYPE_ERROR))
       {
-        v40 = [v35 previouslyFocusedItem];
-        v41 = [v35 nextFocusedItem];
-        v42 = [v35 focusHeading];
+        previouslyFocusedItem = [v35 previouslyFocusedItem];
+        nextFocusedItem2 = [v35 nextFocusedItem];
+        focusHeading2 = [v35 focusHeading];
         *buf = 134349826;
-        v65 = self;
+        selfCopy7 = self;
         v66 = 2112;
-        v67 = v40;
+        v67 = previouslyFocusedItem;
         v68 = 2112;
-        *v69 = v41;
+        *v69 = nextFocusedItem2;
         *&v69[8] = 2048;
-        *&v69[10] = v42;
+        *&v69[10] = focusHeading2;
         _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_ERROR, "[%{public}p] Focus engine tried to focus: %@ from current item: %@ with heading: %ld. This is not supported", buf, 0x2Au);
       }
 
@@ -4496,13 +4496,13 @@ LABEL_62:
   return v5;
 }
 
-- (void)setOwnsFocus:(BOOL)a3
+- (void)setOwnsFocus:(BOOL)focus
 {
-  if (self->_ownsFocus != a3)
+  if (self->_ownsFocus != focus)
   {
     block[5] = v3;
     block[6] = v4;
-    self->_ownsFocus = a3;
+    self->_ownsFocus = focus;
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_1005934FC;
@@ -4512,25 +4512,25 @@ LABEL_62:
   }
 }
 
-- (void)_preserveFocusedItemFromContext:(id)a3 toContext:(id)a4
+- (void)_preserveFocusedItemFromContext:(id)context toContext:(id)toContext
 {
-  v5 = a4;
+  toContextCopy = toContext;
   v6 = +[CarDisplayController sharedInstance];
-  v7 = [v6 window];
-  v8 = [v7 windowScene];
-  v9 = [v8 focusSystem];
-  v10 = [v9 focusedItem];
+  window = [v6 window];
+  windowScene = [window windowScene];
+  focusSystem = [windowScene focusSystem];
+  focusedItem = [focusSystem focusedItem];
 
-  if (v10)
+  if (focusedItem)
   {
-    v11 = [(CarChromeViewController *)self mapControlsOverlay];
-    v12 = [v11 focusOrderSubItems];
+    mapControlsOverlay = [(CarChromeViewController *)self mapControlsOverlay];
+    focusOrderSubItems = [mapControlsOverlay focusOrderSubItems];
 
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v13 = v12;
+    v13 = focusOrderSubItems;
     v14 = [v13 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v14)
     {
@@ -4545,10 +4545,10 @@ LABEL_62:
             objc_enumerationMutation(v13);
           }
 
-          if (v10 == *(*(&v19 + 1) + 8 * i))
+          if (focusedItem == *(*(&v19 + 1) + 8 * i))
           {
-            v18 = [(CarChromeViewController *)self lastFocusedItemsByContext];
-            [v18 setObject:v10 forKey:v5];
+            lastFocusedItemsByContext = [(CarChromeViewController *)self lastFocusedItemsByContext];
+            [lastFocusedItemsByContext setObject:focusedItem forKey:toContextCopy];
 
             goto LABEL_12;
           }
@@ -4585,52 +4585,52 @@ LABEL_12:
 
 - (id)visuallySelectedItem
 {
-  v3 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CarChromeViewController *)self topContext];
-    v6 = [v5 visuallySelectedItem];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    visuallySelectedItem = [topContext2 visuallySelectedItem];
   }
 
   else
   {
-    v6 = 0;
+    visuallySelectedItem = 0;
   }
 
-  return v6;
+  return visuallySelectedItem;
 }
 
 - (BOOL)suppressIdleFocus
 {
-  v2 = self;
-  v3 = [(CarChromeViewController *)self topContext];
-  LOBYTE(v2) = [(CarChromeViewController *)v2 isAutohidingContentHiddenForContext:v3];
+  selfCopy = self;
+  topContext = [(CarChromeViewController *)self topContext];
+  LOBYTE(selfCopy) = [(CarChromeViewController *)selfCopy isAutohidingContentHiddenForContext:topContext];
 
-  return v2;
+  return selfCopy;
 }
 
-- (void)pressesCancelled:(id)a3 withEvent:(id)a4
+- (void)pressesCancelled:(id)cancelled withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  cancelledCopy = cancelled;
+  eventCopy = event;
   if ([(ChromeViewController *)self isSuppressed]|| ([(CarChromeViewController *)self topContext], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
 LABEL_11:
     v12.receiver = self;
     v12.super_class = CarChromeViewController;
-    [(CarChromeViewController *)&v12 pressesCancelled:v6 withEvent:v7];
+    [(CarChromeViewController *)&v12 pressesCancelled:cancelledCopy withEvent:eventCopy];
     goto LABEL_12;
   }
 
-  v9 = [(CarChromeViewController *)self topContext];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ![v9 handlePressesCancelled:v6 withEvent:v7])
+  topContext = [(CarChromeViewController *)self topContext];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ![topContext handlePressesCancelled:cancelledCopy withEvent:eventCopy])
   {
-    if (objc_opt_respondsToSelector() & 1) != 0 && ([v9 allowKnobNudgeMapPanning])
+    if (objc_opt_respondsToSelector() & 1) != 0 && ([topContext allowKnobNudgeMapPanning])
     {
-      v10 = [v6 anyObject];
-      v11 = [(CarChromeViewController *)self _nudgeHandlesPress:v10];
+      anyObject = [cancelledCopy anyObject];
+      v11 = [(CarChromeViewController *)self _nudgeHandlesPress:anyObject];
 
       if (v11)
       {
@@ -4648,20 +4648,20 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)pressesEnded:(id)a3 withEvent:(id)a4
+- (void)pressesEnded:(id)ended withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  endedCopy = ended;
+  eventCopy = event;
   if ([(ChromeViewController *)self isSuppressed]|| ([(CarChromeViewController *)self topContext], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
 LABEL_15:
     v16.receiver = self;
     v16.super_class = CarChromeViewController;
-    [(CarChromeViewController *)&v16 pressesEnded:v6 withEvent:v7];
+    [(CarChromeViewController *)&v16 pressesEnded:endedCopy withEvent:eventCopy];
     goto LABEL_16;
   }
 
-  v9 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
     if (![(CarChromeViewController *)self _canSelectAlternateRoutes])
@@ -4672,13 +4672,13 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  v10 = [v9 handlePressesEnded:v6 withEvent:v7];
+  v10 = [topContext handlePressesEnded:endedCopy withEvent:eventCopy];
   if ([(CarChromeViewController *)self _canSelectAlternateRoutes])
   {
 LABEL_8:
-    v11 = [(CarChromeViewController *)self routeSelectionController];
-    v12 = [v6 anyObject];
-    v13 = [v11 handleKnobPress:v12];
+    routeSelectionController = [(CarChromeViewController *)self routeSelectionController];
+    anyObject = [endedCopy anyObject];
+    v13 = [routeSelectionController handleKnobPress:anyObject];
 
     if (v13)
     {
@@ -4686,10 +4686,10 @@ LABEL_8:
     }
 
 LABEL_10:
-    if (objc_opt_respondsToSelector() & 1) != 0 && ([v9 allowKnobNudgeMapPanning])
+    if (objc_opt_respondsToSelector() & 1) != 0 && ([topContext allowKnobNudgeMapPanning])
     {
-      v14 = [v6 anyObject];
-      v15 = [(CarChromeViewController *)self _nudgeHandlesPress:v14];
+      anyObject2 = [endedCopy anyObject];
+      v15 = [(CarChromeViewController *)self _nudgeHandlesPress:anyObject2];
 
       if (v15)
       {
@@ -4714,26 +4714,26 @@ LABEL_9:
 LABEL_16:
 }
 
-- (void)pressesChanged:(id)a3 withEvent:(id)a4
+- (void)pressesChanged:(id)changed withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  eventCopy = event;
   if ([(ChromeViewController *)self isSuppressed]|| ([(CarChromeViewController *)self topContext], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
 LABEL_11:
     v12.receiver = self;
     v12.super_class = CarChromeViewController;
-    [(CarChromeViewController *)&v12 pressesChanged:v6 withEvent:v7];
+    [(CarChromeViewController *)&v12 pressesChanged:changedCopy withEvent:eventCopy];
     goto LABEL_12;
   }
 
-  v9 = [(CarChromeViewController *)self topContext];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ![v9 handlePressesChanged:v6 withEvent:v7])
+  topContext = [(CarChromeViewController *)self topContext];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ![topContext handlePressesChanged:changedCopy withEvent:eventCopy])
   {
-    if (objc_opt_respondsToSelector() & 1) != 0 && ([v9 allowKnobNudgeMapPanning])
+    if (objc_opt_respondsToSelector() & 1) != 0 && ([topContext allowKnobNudgeMapPanning])
     {
-      v10 = [v6 anyObject];
-      v11 = [(CarChromeViewController *)self _nudgeHandlesPress:v10];
+      anyObject = [changedCopy anyObject];
+      v11 = [(CarChromeViewController *)self _nudgeHandlesPress:anyObject];
 
       if (v11)
       {
@@ -4751,26 +4751,26 @@ LABEL_11:
 LABEL_12:
 }
 
-- (void)pressesBegan:(id)a3 withEvent:(id)a4
+- (void)pressesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  beganCopy = began;
+  eventCopy = event;
   if ([(ChromeViewController *)self isSuppressed]|| ([(CarChromeViewController *)self topContext], v8 = objc_claimAutoreleasedReturnValue(), v8, !v8))
   {
 LABEL_11:
     v12.receiver = self;
     v12.super_class = CarChromeViewController;
-    [(CarChromeViewController *)&v12 pressesBegan:v6 withEvent:v7];
+    [(CarChromeViewController *)&v12 pressesBegan:beganCopy withEvent:eventCopy];
     goto LABEL_12;
   }
 
-  v9 = [(CarChromeViewController *)self topContext];
-  if ((objc_opt_respondsToSelector() & 1) == 0 || ![v9 handlePressesBegan:v6 withEvent:v7])
+  topContext = [(CarChromeViewController *)self topContext];
+  if ((objc_opt_respondsToSelector() & 1) == 0 || ![topContext handlePressesBegan:beganCopy withEvent:eventCopy])
   {
-    if (objc_opt_respondsToSelector() & 1) != 0 && ([v9 allowKnobNudgeMapPanning])
+    if (objc_opt_respondsToSelector() & 1) != 0 && ([topContext allowKnobNudgeMapPanning])
     {
-      v10 = [v6 anyObject];
-      v11 = [(CarChromeViewController *)self _nudgeHandlesPress:v10];
+      anyObject = [beganCopy anyObject];
+      v11 = [(CarChromeViewController *)self _nudgeHandlesPress:anyObject];
 
       if (v11)
       {
@@ -4791,32 +4791,32 @@ LABEL_12:
 - (BOOL)_shouldAllowKnobFocusMovement
 {
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 focusSystem];
-  v7 = [v6 focusedItem];
+  window = [v3 window];
+  windowScene = [window windowScene];
+  focusSystem = [windowScene focusSystem];
+  focusedItem = [focusSystem focusedItem];
 
-  v8 = [(CarChromeViewController *)self isAutohidingContentHiddenForCurrentContext];
-  v9 = [(CarChromeViewController *)self topContext];
-  LOBYTE(v5) = objc_opt_respondsToSelector();
+  isAutohidingContentHiddenForCurrentContext = [(CarChromeViewController *)self isAutohidingContentHiddenForCurrentContext];
+  topContext = [(CarChromeViewController *)self topContext];
+  LOBYTE(windowScene) = objc_opt_respondsToSelector();
 
-  if ((v5 & 1) == 0)
+  if ((windowScene & 1) == 0)
   {
-    v11 = 0;
-    if (v7)
+    shouldAllowKnobFocusMovement = 0;
+    if (focusedItem)
     {
       goto LABEL_3;
     }
 
 LABEL_5:
-    v12 = v8 ^ 1 | v11;
+    v12 = isAutohidingContentHiddenForCurrentContext ^ 1 | shouldAllowKnobFocusMovement;
     return v12 & 1;
   }
 
-  v10 = [(CarChromeViewController *)self topContext];
-  v11 = [v10 shouldAllowKnobFocusMovement];
+  topContext2 = [(CarChromeViewController *)self topContext];
+  shouldAllowKnobFocusMovement = [topContext2 shouldAllowKnobFocusMovement];
 
-  if (!v7)
+  if (!focusedItem)
   {
     goto LABEL_5;
   }
@@ -4829,22 +4829,22 @@ LABEL_3:
 - (void)setNeedsFocusUpdateIfUnfocused
 {
   v3 = +[CarDisplayController sharedInstance];
-  v4 = [v3 window];
-  v5 = [v4 windowScene];
-  v6 = [v5 focusSystem];
-  v7 = [v6 focusedItem];
+  window = [v3 window];
+  windowScene = [window windowScene];
+  focusSystem = [windowScene focusSystem];
+  focusedItem = [focusSystem focusedItem];
 
-  if (!v7)
+  if (!focusedItem)
   {
 
     [(CarChromeViewController *)self setNeedsFocusUpdate];
   }
 }
 
-- (void)enableDoubleTapRecognizerWithBlock:(id)a3
+- (void)enableDoubleTapRecognizerWithBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
     doubleTapRecognizer = self->_doubleTapRecognizer;
     if (!doubleTapRecognizer)
@@ -4862,8 +4862,8 @@ LABEL_3:
         [(UITapGestureRecognizer *)autohideTapRecognizer requireGestureRecognizerToFail:self->_doubleTapRecognizer];
       }
 
-      v9 = [(CarChromeViewController *)self view];
-      [v9 addGestureRecognizer:self->_doubleTapRecognizer];
+      view = [(CarChromeViewController *)self view];
+      [view addGestureRecognizer:self->_doubleTapRecognizer];
 
       doubleTapRecognizer = self->_doubleTapRecognizer;
     }
@@ -4874,12 +4874,12 @@ LABEL_3:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
         v11 = 134349056;
-        v12 = self;
+        selfCopy = self;
         _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "[%{public}p] Will enable double tap gesture", &v11, 0xCu);
       }
     }
 
-    [(CarChromeViewController *)self setDoubleTapBlock:v4];
+    [(CarChromeViewController *)self setDoubleTapBlock:blockCopy];
     [(UITapGestureRecognizer *)self->_doubleTapRecognizer setEnabled:1];
   }
 
@@ -4889,58 +4889,58 @@ LABEL_3:
   }
 }
 
-- (void)_handleDoubleTap:(id)a3
+- (void)_handleDoubleTap:(id)tap
 {
-  v4 = [(CarChromeViewController *)self doubleTapBlock];
+  doubleTapBlock = [(CarChromeViewController *)self doubleTapBlock];
 
-  if (v4)
+  if (doubleTapBlock)
   {
     v5 = sub_100006E1C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v7 = 134349056;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Will fire doubleTapBlock", &v7, 0xCu);
     }
 
-    v6 = [(CarChromeViewController *)self doubleTapBlock];
-    v6[2]();
+    doubleTapBlock2 = [(CarChromeViewController *)self doubleTapBlock];
+    doubleTapBlock2[2]();
   }
 }
 
-- (void)_carOneHandedZoomSettingUpdated:(id)a3
+- (void)_carOneHandedZoomSettingUpdated:(id)updated
 {
   v3 = objc_opt_class();
 
   [v3 _updateAllowOneHandedZooming];
 }
 
-- (void)chromeNavigationDisplayDidRenderRoute:(id)a3
+- (void)chromeNavigationDisplayDidRenderRoute:(id)route
 {
   v4.receiver = self;
   v4.super_class = CarChromeViewController;
-  [(ChromeViewController *)&v4 chromeNavigationDisplayDidRenderRoute:a3];
+  [(ChromeViewController *)&v4 chromeNavigationDisplayDidRenderRoute:route];
   [(CarChromeViewController *)self captureUserAction:3072];
 }
 
-- (void)chromeNavigationDisplay:(id)a3 didChangePanning:(BOOL)a4 animated:(BOOL)a5
+- (void)chromeNavigationDisplay:(id)display didChangePanning:(BOOL)panning animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v7.receiver = self;
   v7.super_class = CarChromeViewController;
-  [(ChromeViewController *)&v7 chromeNavigationDisplay:a3 didChangePanning:a4 animated:?];
-  [(ChromeViewController *)self setNeedsUpdateComponent:@"mapcontrols" animated:v5];
+  [(ChromeViewController *)&v7 chromeNavigationDisplay:display didChangePanning:panning animated:?];
+  [(ChromeViewController *)self setNeedsUpdateComponent:@"mapcontrols" animated:animatedCopy];
 }
 
-- (void)chromeNavigationDisplay:(id)a3 configurationDidChange:(id)a4
+- (void)chromeNavigationDisplay:(id)display configurationDidChange:(id)change
 {
   v5.receiver = self;
   v5.super_class = CarChromeViewController;
-  [(ChromeViewController *)&v5 chromeNavigationDisplay:a3 configurationDidChange:a4];
+  [(ChromeViewController *)&v5 chromeNavigationDisplay:display configurationDidChange:change];
   [(CarChromeViewController *)self updateZoomControls];
 }
 
-- (void)_navigationObscuredTimeoutFired:(id)a3
+- (void)_navigationObscuredTimeoutFired:(id)fired
 {
   [(CarChromeViewController *)self _stopNavigationObscuredTimeout];
   if ([(CarChromeViewController *)self isDisplayingNavigation])
@@ -4949,7 +4949,7 @@ LABEL_3:
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
     {
       v6 = 134349056;
-      v7 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEBUG, "[%{public}p] Navigation obscured timeout fired", &v6, 0xCu);
     }
 
@@ -4962,11 +4962,11 @@ LABEL_3:
 {
   usingOfflineDataModernMapToken = self->_usingOfflineDataModernMapToken;
   v4 = +[GEOOfflineService shared];
-  v5 = [v4 isUsingOffline];
+  isUsingOffline = [v4 isUsingOffline];
 
-  if ((((usingOfflineDataModernMapToken == 0) ^ v5) & 1) == 0)
+  if ((((usingOfflineDataModernMapToken == 0) ^ isUsingOffline) & 1) == 0)
   {
-    if (v5)
+    if (isUsingOffline)
     {
       v6 = [(CarChromeViewController *)self acquireModernMapTokenForReason:0];
     }
@@ -4981,13 +4981,13 @@ LABEL_3:
   }
 }
 
-- (void)offlineStateChanged:(id)a3
+- (void)offlineStateChanged:(id)changed
 {
   v4 = sub_100006E1C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 134349056;
-    v6 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "[%{public}p] UsingOfflineMapsStateChangedNotification fired, will _updateOfflineModernMapToken & reloadStatusBannerAnimated", &v5, 0xCu);
   }
 
@@ -4995,11 +4995,11 @@ LABEL_3:
   [(CarChromeViewController *)self reloadStatusBannerAnimated:1];
 }
 
-- (id)acquireModernMapTokenForReason:(unint64_t)a3
+- (id)acquireModernMapTokenForReason:(unint64_t)reason
 {
   modernMapTokens = self->_modernMapTokens;
   v8 = @"reason";
-  v4 = [NSNumber numberWithUnsignedInteger:a3];
+  v4 = [NSNumber numberWithUnsignedInteger:reason];
   v9 = v4;
   v5 = [NSDictionary dictionaryWithObjects:&v9 forKeys:&v8 count:1];
   v6 = [(MapsTokenStorage *)modernMapTokens tokenWithUserInfo:v5];
@@ -5011,14 +5011,14 @@ LABEL_3:
 {
   if ([(CarChromeViewController *)self shouldUseModernMap])
   {
-    v3 = [(CarChromeViewController *)self modernMapTerrainMode];
-    v4 = [(CarChromeViewController *)self modernMapProjectionType];
+    modernMapTerrainMode = [(CarChromeViewController *)self modernMapTerrainMode];
+    modernMapProjectionType = [(CarChromeViewController *)self modernMapProjectionType];
   }
 
   else
   {
-    v3 = 1;
-    v4 = 1;
+    modernMapTerrainMode = 1;
+    modernMapProjectionType = 1;
   }
 
   v5 = sub_10000B11C();
@@ -5027,20 +5027,20 @@ LABEL_3:
     *buf = 134349568;
     *&buf[4] = self;
     *&buf[12] = 2048;
-    *&buf[14] = v3;
+    *&buf[14] = modernMapTerrainMode;
     *&buf[22] = 2048;
-    *&buf[24] = v4;
+    *&buf[24] = modernMapProjectionType;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[%{public}p] _updateModernMapCartographicConfiguration with terrainMode: %ld projectionType: %ld", buf, 0x20u);
   }
 
   v17 = 0;
   v16 = 0u;
   memset(buf, 0, sizeof(buf));
-  v6 = [(ChromeViewController *)self mapView];
-  v7 = v6;
-  if (v6)
+  mapView = [(ChromeViewController *)self mapView];
+  v7 = mapView;
+  if (mapView)
   {
-    [v6 _cartographicConfiguration];
+    [mapView _cartographicConfiguration];
   }
 
   else
@@ -5050,18 +5050,18 @@ LABEL_3:
     memset(buf, 0, sizeof(buf));
   }
 
-  *&buf[16] = v4;
-  *&buf[24] = v3;
+  *&buf[16] = modernMapProjectionType;
+  *&buf[24] = modernMapTerrainMode;
   v12 = *&buf[16];
   v13 = v16;
   v14 = v17;
   v11 = *buf;
-  v8 = [(ChromeViewController *)self mapView];
+  mapView2 = [(ChromeViewController *)self mapView];
   v9[0] = v11;
   v9[1] = v12;
   v9[2] = v13;
   v10 = v14;
-  [v8 _setCartographicConfiguration:v9];
+  [mapView2 _setCartographicConfiguration:v9];
 }
 
 - (int64_t)modernMapProjectionType
@@ -5140,15 +5140,15 @@ LABEL_3:
 
 - (void)clearMapGesturesAndAnimations
 {
-  v3 = [(CarChromeViewController *)self nudgerizer];
-  [v3 _clearGesturesAndAnimations];
+  nudgerizer = [(CarChromeViewController *)self nudgerizer];
+  [nudgerizer _clearGesturesAndAnimations];
 
   v4.receiver = self;
   v4.super_class = CarChromeViewController;
   [(ChromeViewController *)&v4 clearMapGesturesAndAnimations];
 }
 
-- (void)_locationAuthorizationDidChange:(id)a3
+- (void)_locationAuthorizationDidChange:(id)change
 {
   v4 = +[MKLocationManager sharedLocationManager];
   if ([v4 isLocationServicesAuthorizationNeeded])
@@ -5157,30 +5157,30 @@ LABEL_3:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
       v12 = 134349056;
-      v13 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Location authorization changed, but it's not yet approved", &v12, 0xCu);
     }
   }
 
   else
   {
-    v6 = [v4 isLocationServicesApproved];
-    v7 = [(ChromeViewController *)self mapView];
-    [v7 setShowsUserLocation:v6];
+    isLocationServicesApproved = [v4 isLocationServicesApproved];
+    mapView = [(ChromeViewController *)self mapView];
+    [mapView setShowsUserLocation:isLocationServicesApproved];
 
     v8 = sub_100006E1C();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      v9 = [v4 isLocationServicesApproved];
+      isLocationServicesApproved2 = [v4 isLocationServicesApproved];
       v10 = @"NO";
-      if (v9)
+      if (isLocationServicesApproved2)
       {
         v10 = @"YES";
       }
 
       v11 = v10;
       v12 = 134349314;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2112;
       v15 = v11;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "[%{public}p] mapView.showsUserLocation = %@", &v12, 0x16u);
@@ -5191,45 +5191,45 @@ LABEL_3:
   }
 }
 
-- (void)mapViewNavigationCameraHasStoppedPanning:(id)a3
+- (void)mapViewNavigationCameraHasStoppedPanning:(id)panning
 {
-  v4 = a3;
-  v5 = [v4 _canZoomIn];
-  v6 = [(CarChromeViewController *)self mapControlsOverlay];
-  [v6 setZoomInEnabled:v5];
+  panningCopy = panning;
+  _canZoomIn = [panningCopy _canZoomIn];
+  mapControlsOverlay = [(CarChromeViewController *)self mapControlsOverlay];
+  [mapControlsOverlay setZoomInEnabled:_canZoomIn];
 
-  v7 = [v4 _canZoomOut];
-  v8 = [(CarChromeViewController *)self mapControlsOverlay];
-  [v8 setZoomOutEnabled:v7];
+  _canZoomOut = [panningCopy _canZoomOut];
+  mapControlsOverlay2 = [(CarChromeViewController *)self mapControlsOverlay];
+  [mapControlsOverlay2 setZoomOutEnabled:_canZoomOut];
 }
 
-- (void)mapViewDidFinishRenderingMap:(id)a3 fullyRendered:(BOOL)a4
+- (void)mapViewDidFinishRenderingMap:(id)map fullyRendered:(BOOL)rendered
 {
-  v4 = a4;
-  v6 = a3;
+  renderedCopy = rendered;
+  mapCopy = map;
   v7 = sub_100006E1C();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349056;
-    v11 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEBUG, "[%{public}p] Map view did finish rendering, informing Search pins manager so that it can drop pins.", buf, 0xCu);
   }
 
-  v8 = [(ChromeViewController *)self searchPinsManager];
-  [v8 mapViewDidBecomeFullyDrawn];
+  searchPinsManager = [(ChromeViewController *)self searchPinsManager];
+  [searchPinsManager mapViewDidBecomeFullyDrawn];
 
   v9.receiver = self;
   v9.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v9 mapViewDidFinishRenderingMap:v6 fullyRendered:v4];
+  [(CarChromeViewController *)&v9 mapViewDidFinishRenderingMap:mapCopy fullyRendered:renderedCopy];
 }
 
-- (id)mapView:(id)a3 viewForAnnotation:(id)a4
+- (id)mapView:(id)view viewForAnnotation:(id)annotation
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [v7 userLocation];
+  viewCopy = view;
+  annotationCopy = annotation;
+  userLocation = [viewCopy userLocation];
 
-  if (v9 == v8 && ([(ChromeViewController *)self userLocationView], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (userLocation == annotationCopy && ([(ChromeViewController *)self userLocationView], (v15 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v11 = v15;
   }
@@ -5237,7 +5237,7 @@ LABEL_3:
   else
   {
     v10 = [(ChromeViewController *)self mapViewDelegateForSelector:a2];
-    v11 = [v10 mapView:v7 viewForAnnotation:v8];
+    v11 = [v10 mapView:viewCopy viewForAnnotation:annotationCopy];
 
     if (!v11)
     {
@@ -5274,32 +5274,32 @@ LABEL_3:
   return v11;
 }
 
-- (void)mapView:(id)a3 canEnter3DModeDidChange:(BOOL)a4
+- (void)mapView:(id)view canEnter3DModeDidChange:(BOOL)change
 {
   v5.receiver = self;
   v5.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v5 mapView:a3 canEnter3DModeDidChange:a4];
+  [(CarChromeViewController *)&v5 mapView:view canEnter3DModeDidChange:change];
   [(CarChromeViewController *)self _update3DButton];
 }
 
-- (void)mapView:(id)a3 didBecomePitched:(BOOL)a4
+- (void)mapView:(id)view didBecomePitched:(BOOL)pitched
 {
-  v4 = a4;
+  pitchedCopy = pitched;
   v7.receiver = self;
   v7.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v7 mapView:a3 didBecomePitched:?];
-  v6 = [(CarChromeViewController *)self defaultMapSettings];
-  [v6 setPitched:v4];
+  [(CarChromeViewController *)&v7 mapView:view didBecomePitched:?];
+  defaultMapSettings = [(CarChromeViewController *)self defaultMapSettings];
+  [defaultMapSettings setPitched:pitchedCopy];
 
   [(CarChromeViewController *)self _update3DButton];
   [(CarChromeViewController *)self _updateCameraToggleButton];
 }
 
-- (void)mapView:(id)a3 didStopRespondingToGesture:(int64_t)a4 zoomDirection:(int64_t)a5 zoomGestureType:(int64_t)a6 didDecelerate:(BOOL)a7 tiltDirection:(int64_t)a8
+- (void)mapView:(id)view didStopRespondingToGesture:(int64_t)gesture zoomDirection:(int64_t)direction zoomGestureType:(int64_t)type didDecelerate:(BOOL)decelerate tiltDirection:(int64_t)tiltDirection
 {
-  v9 = a7;
-  v14 = a3;
-  if (!a4)
+  decelerateCopy = decelerate;
+  viewCopy = view;
+  if (!gesture)
   {
     v15 = 1001;
 LABEL_11:
@@ -5307,9 +5307,9 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (a4 == 1)
+  if (gesture == 1)
   {
-    if (a5 == 1)
+    if (direction == 1)
     {
       v15 = 1043;
     }
@@ -5319,15 +5319,15 @@ LABEL_11:
       v15 = 1044;
     }
 
-    if (a6 <= 7)
+    if (type <= 7)
     {
       v16 = &unk_101212F18;
-      if (a5 == 1)
+      if (direction == 1)
       {
         v16 = &unk_101212EF8;
       }
 
-      v15 = v16[a6];
+      v15 = v16[type];
     }
 
     goto LABEL_11;
@@ -5336,168 +5336,168 @@ LABEL_11:
 LABEL_12:
   v17.receiver = self;
   v17.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v17 mapView:v14 didStopRespondingToGesture:a4 zoomDirection:a5 zoomGestureType:a6 didDecelerate:v9 tiltDirection:a8];
+  [(CarChromeViewController *)&v17 mapView:viewCopy didStopRespondingToGesture:gesture zoomDirection:direction zoomGestureType:type didDecelerate:decelerateCopy tiltDirection:tiltDirection];
 }
 
-- (void)mapView:(id)a3 canZoomOutDidChange:(BOOL)a4
+- (void)mapView:(id)view canZoomOutDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CarChromeViewController *)self mapControlsOverlay];
-  [v7 setZoomOutEnabled:v4];
+  changeCopy = change;
+  viewCopy = view;
+  mapControlsOverlay = [(CarChromeViewController *)self mapControlsOverlay];
+  [mapControlsOverlay setZoomOutEnabled:changeCopy];
 
   v8.receiver = self;
   v8.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v8 mapView:v6 canZoomOutDidChange:v4];
+  [(CarChromeViewController *)&v8 mapView:viewCopy canZoomOutDidChange:changeCopy];
 }
 
-- (void)mapView:(id)a3 canZoomInDidChange:(BOOL)a4
+- (void)mapView:(id)view canZoomInDidChange:(BOOL)change
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(CarChromeViewController *)self mapControlsOverlay];
-  [v7 setZoomInEnabled:v4];
+  changeCopy = change;
+  viewCopy = view;
+  mapControlsOverlay = [(CarChromeViewController *)self mapControlsOverlay];
+  [mapControlsOverlay setZoomInEnabled:changeCopy];
 
   v8.receiver = self;
   v8.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v8 mapView:v6 canZoomInDidChange:v4];
+  [(CarChromeViewController *)&v8 mapView:viewCopy canZoomInDidChange:changeCopy];
 }
 
-- (void)mapView:(id)a3 regionDidChangeAnimated:(BOOL)a4
+- (void)mapView:(id)view regionDidChangeAnimated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [v6 _canZoomIn];
-  v8 = [(CarChromeViewController *)self mapControlsOverlay];
-  [v8 setZoomInEnabled:v7];
+  animatedCopy = animated;
+  viewCopy = view;
+  _canZoomIn = [viewCopy _canZoomIn];
+  mapControlsOverlay = [(CarChromeViewController *)self mapControlsOverlay];
+  [mapControlsOverlay setZoomInEnabled:_canZoomIn];
 
-  v9 = [v6 _canZoomOut];
-  v10 = [(CarChromeViewController *)self mapControlsOverlay];
-  [v10 setZoomOutEnabled:v9];
+  _canZoomOut = [viewCopy _canZoomOut];
+  mapControlsOverlay2 = [(CarChromeViewController *)self mapControlsOverlay];
+  [mapControlsOverlay2 setZoomOutEnabled:_canZoomOut];
 
   v11 = +[MapsOfflineUIHelper sharedHelper];
-  LODWORD(v10) = [v11 isUsingOfflineMaps];
+  LODWORD(mapControlsOverlay2) = [v11 isUsingOfflineMaps];
 
-  if (v10)
+  if (mapControlsOverlay2)
   {
     v12 = [[CLLocation alloc] initWithLatitude:self->_mapViewRegion.center.latitude longitude:self->_mapViewRegion.center.longitude];
     v13 = [CLLocation alloc];
-    [v6 region];
+    [viewCopy region];
     v15 = v14;
-    [v6 region];
+    [viewCopy region];
     v16 = [v13 initWithLatitude:v15 longitude:?];
     [v12 distanceFromLocation:v16];
     v18 = v17;
     Integer = GEOConfigGetInteger();
     GEOConfigGetDouble();
     v21 = v20;
-    if (v18 > Integer || ([v6 _zoomLevel], vabdd_f64(v22, self->_zoomLevel) > v21))
+    if (v18 > Integer || ([viewCopy _zoomLevel], vabdd_f64(v22, self->_zoomLevel) > v21))
     {
-      [v6 region];
+      [viewCopy region];
       self->_mapViewRegion.center.latitude = v23;
       self->_mapViewRegion.center.longitude = v24;
       self->_mapViewRegion.span.latitudeDelta = v25;
       self->_mapViewRegion.span.longitudeDelta = v26;
-      [v6 _zoomLevel];
+      [viewCopy _zoomLevel];
       self->_zoomLevel = v27;
-      v28 = [(CarChromeViewController *)self topContext];
+      topContext = [(CarChromeViewController *)self topContext];
       v29 = objc_opt_respondsToSelector();
 
       if (v29)
       {
-        v30 = [(CarChromeViewController *)self topContext];
-        [v30 checkFullTextSearchSupport];
+        topContext2 = [(CarChromeViewController *)self topContext];
+        [topContext2 checkFullTextSearchSupport];
       }
     }
   }
 
   v31.receiver = self;
   v31.super_class = CarChromeViewController;
-  [(ChromeViewController *)&v31 mapView:v6 regionDidChangeAnimated:v4];
+  [(ChromeViewController *)&v31 mapView:viewCopy regionDidChangeAnimated:animatedCopy];
 }
 
-- (void)mapView:(id)a3 didDeselectLabelMarker:(id)a4
+- (void)mapView:(id)view didDeselectLabelMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(CarChromeViewController *)self topContext];
+  viewCopy = view;
+  markerCopy = marker;
+  topContext = [(CarChromeViewController *)self topContext];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(CarChromeViewController *)self topContext];
-    [v10 mapView:v6 didDeselectLabelMarker:v7];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    [topContext2 mapView:viewCopy didDeselectLabelMarker:markerCopy];
   }
 
   v11.receiver = self;
   v11.super_class = CarChromeViewController;
-  [(ChromeViewController *)&v11 mapView:v6 didDeselectLabelMarker:v7];
+  [(ChromeViewController *)&v11 mapView:viewCopy didDeselectLabelMarker:markerCopy];
 }
 
-- (void)mapView:(id)a3 didSelectLabelMarker:(id)a4
+- (void)mapView:(id)view didSelectLabelMarker:(id)marker
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  markerCopy = marker;
   v8 = sub_100006E1C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    v9 = [v7 isRouteEta];
+    isRouteEta = [markerCopy isRouteEta];
     v10 = @"NO";
-    if (v9)
+    if (isRouteEta)
     {
       v10 = @"YES";
     }
 
     v11 = v10;
     *buf = 134349570;
-    v18 = self;
+    selfCopy = self;
     v19 = 2112;
-    v20 = v7;
+    v20 = markerCopy;
     v21 = 2112;
     v22 = v11;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] User didSelectLabelMarker: %@, isRouteETA: %@", buf, 0x20u);
   }
 
-  if ([v7 isRouteEta])
+  if ([markerCopy isRouteEta])
   {
-    v12 = [(CarChromeViewController *)self routeSelectionController];
-    [v12 mapView:v6 didSelectLabelMarker:v7];
+    routeSelectionController = [(CarChromeViewController *)self routeSelectionController];
+    [routeSelectionController mapView:viewCopy didSelectLabelMarker:markerCopy];
   }
 
-  v13 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   v14 = objc_opt_respondsToSelector();
 
   if (v14)
   {
-    v15 = [(CarChromeViewController *)self topContext];
-    [v15 mapView:v6 didSelectLabelMarker:v7];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    [topContext2 mapView:viewCopy didSelectLabelMarker:markerCopy];
   }
 
   v16.receiver = self;
   v16.super_class = CarChromeViewController;
-  [(ChromeViewController *)&v16 mapView:v6 didSelectLabelMarker:v7];
+  [(ChromeViewController *)&v16 mapView:viewCopy didSelectLabelMarker:markerCopy];
 }
 
-- (BOOL)mapView:(id)a3 shouldSelectLabelMarker:(id)a4
+- (BOOL)mapView:(id)view shouldSelectLabelMarker:(id)marker
 {
-  v6 = a4;
+  markerCopy = marker;
   v14.receiver = self;
   v14.super_class = CarChromeViewController;
-  [(ChromeViewController *)&v14 mapView:a3 shouldSelectLabelMarker:v6];
+  [(ChromeViewController *)&v14 mapView:view shouldSelectLabelMarker:markerCopy];
   if ([(CarChromeViewController *)self _canSelectAlternateRoutes])
   {
-    v7 = [v6 isRouteEta];
+    isRouteEta = [markerCopy isRouteEta];
   }
 
   else
   {
-    v7 = 0;
+    isRouteEta = 0;
   }
 
   v8 = sub_100006E1C();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
-    if (v7)
+    if (isRouteEta)
     {
       v9 = @"YES";
     }
@@ -5508,7 +5508,7 @@ LABEL_12:
     }
 
     v10 = v9;
-    if ([v6 isRouteEta])
+    if ([markerCopy isRouteEta])
     {
       v11 = @"YES";
     }
@@ -5520,7 +5520,7 @@ LABEL_12:
 
     v12 = v11;
     *buf = 134349570;
-    v16 = self;
+    selfCopy = self;
     v17 = 2112;
     v18 = v10;
     v19 = 2112;
@@ -5528,25 +5528,25 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] shouldSelectLabelMarker: %@, isRouteETA: %@", buf, 0x20u);
   }
 
-  return v7;
+  return isRouteEta;
 }
 
-- (void)mapView:(id)a3 didFailToLocateUserWithError:(id)a4
+- (void)mapView:(id)view didFailToLocateUserWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  errorCopy = error;
   v15.receiver = self;
   v15.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v15 mapView:v6 didFailToLocateUserWithError:v7];
-  if (([v6 hasUserLocation] & 1) == 0)
+  [(CarChromeViewController *)&v15 mapView:viewCopy didFailToLocateUserWithError:errorCopy];
+  if (([viewCopy hasUserLocation] & 1) == 0)
   {
     v8 = +[CarDisplayController sharedInstance];
-    v9 = [v8 isCurrentlyConnectedToCarAppScene];
+    isCurrentlyConnectedToCarAppScene = [v8 isCurrentlyConnectedToCarAppScene];
 
-    if (v9)
+    if (isCurrentlyConnectedToCarAppScene)
     {
-      v10 = [v7 domain];
-      v11 = [v10 isEqualToString:MKLocationErrorDomain];
+      domain = [errorCopy domain];
+      v11 = [domain isEqualToString:MKLocationErrorDomain];
 
       if (v11)
       {
@@ -5554,33 +5554,33 @@ LABEL_12:
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134349056;
-          v17 = self;
+          selfCopy2 = self;
           _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "[%{public}p] Notified did fail to locate user, will request location services error alert", buf, 0xCu);
         }
 
         v13 = +[UIApplication sharedMapsDelegate];
-        [v13 showLocationServicesAlertWithError:v7];
+        [v13 showLocationServicesAlertWithError:errorCopy];
 
         v14 = sub_100006E1C();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
         {
           *buf = 134349056;
-          v17 = self;
+          selfCopy2 = self;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "[%{public}p] Will force user tracking to None and hide user location", buf, 0xCu);
         }
 
-        [v6 setUserTrackingMode:0];
-        [v6 setShowsUserLocation:0];
+        [viewCopy setUserTrackingMode:0];
+        [viewCopy setShowsUserLocation:0];
       }
     }
   }
 }
 
-- (void)mapView:(id)a3 didUpdateUserLocation:(id)a4
+- (void)mapView:(id)view didUpdateUserLocation:(id)location
 {
   v14.receiver = self;
   v14.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v14 mapView:a3 didUpdateUserLocation:a4];
+  [(CarChromeViewController *)&v14 mapView:view didUpdateUserLocation:location];
   v5 = +[MKLocationManager sharedLocationManager];
   [v5 vehicleHeadingOrCourse];
   v7 = v6;
@@ -5591,11 +5591,11 @@ LABEL_12:
   }
 
   v8 = +[MNNavigationService sharedService];
-  v9 = [v8 isInNavigatingState];
+  isInNavigatingState = [v8 isInNavigatingState];
 
   if (v7 == -1.0)
   {
-    v10 = v9;
+    v10 = isInNavigatingState;
   }
 
   else
@@ -5603,48 +5603,48 @@ LABEL_12:
     v10 = 1;
   }
 
-  v11 = [(ChromeViewController *)self userLocationView];
-  v12 = [v11 mode];
+  userLocationView = [(ChromeViewController *)self userLocationView];
+  mode = [userLocationView mode];
 
-  if (v12 != v10)
+  if (mode != v10)
   {
-    v13 = [(ChromeViewController *)self userLocationView];
-    [v13 setMode:v10];
+    userLocationView2 = [(ChromeViewController *)self userLocationView];
+    [userLocationView2 setMode:v10];
   }
 }
 
 - (BOOL)shouldRecenterAndZoom
 {
   configuringMapView = self->_configuringMapView;
-  v4 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(CarChromeViewController *)self topContext];
-    configuringMapView = [v6 allowMapZoomAndRecentering];
+    topContext2 = [(CarChromeViewController *)self topContext];
+    configuringMapView = [topContext2 allowMapZoomAndRecentering];
   }
 
   return configuringMapView;
 }
 
-- (BOOL)mapSettings:(id)a3 shouldApplyAnimated:(BOOL *)a4
+- (BOOL)mapSettings:(id)settings shouldApplyAnimated:(BOOL *)animated
 {
-  v6 = a3;
-  if (sub_10008B2E8() && [(ChromeMapSettings *)v6 type]== 1 && ([(ChromeViewController *)self setNeedsUpdateComponent:@"navigationDisplay" animated:*a4], [(ChromeMapSettings *)v6 pitched]))
+  settingsCopy = settings;
+  if (sub_10008B2E8() && [(ChromeMapSettings *)settingsCopy type]== 1 && ([(ChromeViewController *)self setNeedsUpdateComponent:@"navigationDisplay" animated:*animated], [(ChromeMapSettings *)settingsCopy pitched]))
   {
-    v7 = [(CarChromeViewController *)self shouldAnimateMapTransition:*a4];
+    v7 = [(CarChromeViewController *)self shouldAnimateMapTransition:*animated];
     v8 = 0;
-    *a4 = v7;
+    *animated = v7;
   }
 
-  else if (self->_defaultMapSettings == v6 && ![(CarChromeViewController *)self shouldRecenterAndZoom])
+  else if (self->_defaultMapSettings == settingsCopy && ![(CarChromeViewController *)self shouldRecenterAndZoom])
   {
     v10 = sub_100006E1C();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       v11 = 134349056;
-      v12 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "[%{public}p] Will not recenter and zoom, not allowed", &v11, 0xCu);
     }
 
@@ -5653,9 +5653,9 @@ LABEL_12:
 
   else
   {
-    if (a4)
+    if (animated)
     {
-      *a4 = [(CarChromeViewController *)self shouldAnimateMapTransition:*a4];
+      *animated = [(CarChromeViewController *)self shouldAnimateMapTransition:*animated];
     }
 
     v8 = 1;
@@ -5664,44 +5664,44 @@ LABEL_12:
   return v8;
 }
 
-- (void)updateComponent:(id)a3 forTiming:(unint64_t)a4 withAnimation:(id)a5
+- (void)updateComponent:(id)component forTiming:(unint64_t)timing withAnimation:(id)animation
 {
-  v8 = a3;
-  v9 = a5;
-  if (v8 == @"cards")
+  componentCopy = component;
+  animationCopy = animation;
+  if (componentCopy == @"cards")
   {
-    v18 = [(CarChromeViewController *)self topContext];
-    [(CarChromeViewController *)self _updateCardsForContext:v18 withAnimation:v9 completion:0];
+    topContext = [(CarChromeViewController *)self topContext];
+    [(CarChromeViewController *)self _updateCardsForContext:topContext withAnimation:animationCopy completion:0];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  if (v8 != @"statusBanner")
+  if (componentCopy != @"statusBanner")
   {
-    if (v8 == @"accessories")
+    if (componentCopy == @"accessories")
     {
-      v18 = [(CarChromeViewController *)self topContext];
-      [(CarChromeViewController *)self _reloadAccessoriesForContext:v18 withAnimation:v9];
+      topContext = [(CarChromeViewController *)self topContext];
+      [(CarChromeViewController *)self _reloadAccessoriesForContext:topContext withAnimation:animationCopy];
     }
 
     else
     {
-      if (v8 != @"mapcontrols")
+      if (componentCopy != @"mapcontrols")
       {
-        if (v8 != @"mapInsets")
+        if (componentCopy != @"mapInsets")
         {
 LABEL_19:
           v19.receiver = self;
           v19.super_class = CarChromeViewController;
-          [(ChromeViewController *)&v19 updateComponent:v8 forTiming:a4 withAnimation:v9];
+          [(ChromeViewController *)&v19 updateComponent:componentCopy forTiming:timing withAnimation:animationCopy];
           goto LABEL_15;
         }
 
         if (![(ChromeViewController *)self isRunningNavigationDisplay])
         {
-          v10 = [(ChromeViewController *)self mapView];
-          if ([v10 userTrackingMode] == 2)
+          mapView = [(ChromeViewController *)self mapView];
+          if ([mapView userTrackingMode] == 2)
           {
             v11 = +[MKLocationManager sharedLocationManager];
             [v11 vehicleHeadingOrCourse];
@@ -5709,8 +5709,8 @@ LABEL_19:
 
             if (v13 > -1.0)
             {
-              v14 = [(CarChromeViewController *)self view];
-              [v14 bounds];
+              view = [(CarChromeViewController *)self view];
+              [view bounds];
               p_headingUpMapInsetAdjustmentConstraint = &self->_headingUpMapInsetAdjustmentConstraint;
               [(NSLayoutConstraint *)self->_headingUpMapInsetAdjustmentConstraint setConstant:round(v15 * 0.4)];
 
@@ -5731,26 +5731,26 @@ LABEL_18:
         goto LABEL_18;
       }
 
-      v18 = [(CarChromeViewController *)self topContext];
-      [(CarChromeViewController *)self _reloadMapControlsForContext:v18 withAnimation:v9];
+      topContext = [(CarChromeViewController *)self topContext];
+      [(CarChromeViewController *)self _reloadMapControlsForContext:topContext withAnimation:animationCopy];
     }
 
     goto LABEL_14;
   }
 
-  [(CarChromeViewController *)self _reloadStatusBannerWithAnimation:v9];
+  [(CarChromeViewController *)self _reloadStatusBannerWithAnimation:animationCopy];
 LABEL_15:
 }
 
-- (void)willUpdateComponents:(id)a3 withAnimation:(id)a4
+- (void)willUpdateComponents:(id)components withAnimation:(id)animation
 {
-  v6 = a3;
-  v7 = a4;
+  componentsCopy = components;
+  animationCopy = animation;
   v13.receiver = self;
   v13.super_class = CarChromeViewController;
-  [(ChromeViewController *)&v13 willUpdateComponents:v6 withAnimation:v7];
+  [(ChromeViewController *)&v13 willUpdateComponents:componentsCopy withAnimation:animationCopy];
   v8 = [NSSet setWithObjects:@"cards", @"statusBanner", 0];
-  v9 = [v6 intersectsSet:v8];
+  v9 = [componentsCopy intersectsSet:v8];
 
   v10 = 1.0;
   if (v9)
@@ -5759,19 +5759,19 @@ LABEL_15:
   }
 
   v11 = [NSSet setWithObjects:@"accessories", 1.0, @"mapcontrols", 0];
-  v12 = [v6 intersectsSet:v11];
+  v12 = [componentsCopy intersectsSet:v11];
 
   if (v12)
   {
     v10 = 0.1;
 LABEL_4:
-    [v7 setDuration:v10];
+    [animationCopy setDuration:v10];
   }
 }
 
-- (BOOL)shouldAnimateMapTransition:(BOOL)a3
+- (BOOL)shouldAnimateMapTransition:(BOOL)transition
 {
-  if (!a3)
+  if (!transition)
   {
     return 0;
   }
@@ -5781,19 +5781,19 @@ LABEL_4:
     return 1;
   }
 
-  v4 = [(CarChromeViewController *)self topContext];
-  v5 = [(ChromeViewController *)self previousTopContext];
-  if ([v4 showsMapView])
+  topContext = [(CarChromeViewController *)self topContext];
+  previousTopContext = [(ChromeViewController *)self previousTopContext];
+  if ([topContext showsMapView])
   {
-    v6 = [v5 showsMapView];
+    showsMapView = [previousTopContext showsMapView];
   }
 
   else
   {
-    v6 = 0;
+    showsMapView = 0;
   }
 
-  return v6;
+  return showsMapView;
 }
 
 - (void)prepareMapViewForFirstUse
@@ -5801,40 +5801,40 @@ LABEL_4:
   v26.receiver = self;
   v26.super_class = CarChromeViewController;
   [(ChromeViewController *)&v26 prepareMapViewForFirstUse];
-  v3 = [(ChromeViewController *)self mapView];
-  v4 = [[MapViewResponder alloc] initWithMapView:v3];
+  mapView = [(ChromeViewController *)self mapView];
+  v4 = [[MapViewResponder alloc] initWithMapView:mapView];
   mapViewResponder = self->_mapViewResponder;
   self->_mapViewResponder = v4;
 
-  [(CarMapNudgerizer *)self->_nudgerizer setMapView:v3];
-  [(ChromeMapSettings *)self->_defaultMapSettings setMapView:v3];
-  [(CarRouteSelectionController *)self->_routeSelectionController setMapView:v3];
+  [(CarMapNudgerizer *)self->_nudgerizer setMapView:mapView];
+  [(ChromeMapSettings *)self->_defaultMapSettings setMapView:mapView];
+  [(CarRouteSelectionController *)self->_routeSelectionController setMapView:mapView];
   [(CarChromeViewController *)self _updateOfflineModernMapToken];
   self->_configuringMapView = 1;
-  v6 = [v3 _mapLayer];
-  [v6 setNavigationShieldSize:5];
+  _mapLayer = [mapView _mapLayer];
+  [_mapLayer setNavigationShieldSize:5];
 
-  v7 = [v3 _mapLayer];
-  [v7 setShieldSize:4];
+  _mapLayer2 = [mapView _mapLayer];
+  [_mapLayer2 setShieldSize:4];
 
-  v8 = [v3 _mapLayer];
-  [v8 setShieldIdiom:1];
+  _mapLayer3 = [mapView _mapLayer];
+  [_mapLayer3 setShieldIdiom:1];
 
-  v9 = [v3 _mapLayer];
-  [v9 setLabelScaleFactor:2];
+  _mapLayer4 = [mapView _mapLayer];
+  [_mapLayer4 setLabelScaleFactor:2];
 
-  v10 = [v3 _mapLayer];
-  [v10 setApplicationUILayout:1];
+  _mapLayer5 = [mapView _mapLayer];
+  [_mapLayer5 setApplicationUILayout:1];
 
-  [v3 setShowsTraffic:1];
-  [v3 _setShowsTrafficIncidents:1];
+  [mapView setShowsTraffic:1];
+  [mapView _setShowsTrafficIncidents:1];
   v25 = 0;
   v23 = 0u;
   v24 = 0u;
   v22 = 0u;
-  if (v3)
+  if (mapView)
   {
-    [v3 _cartographicConfiguration];
+    [mapView _cartographicConfiguration];
   }
 
   *(&v22 + 1) = 2;
@@ -5848,45 +5848,45 @@ LABEL_4:
   v20[1] = v23;
   v20[2] = v24;
   v21 = v25;
-  [v3 _setCartographicConfiguration:v20];
-  [v3 setCompassEnabled:0];
-  [v3 setScaleEnabled:0];
-  [v3 _setUseVehicleHeading:1];
-  [v3 _setCanSelectPOIs:{-[CarChromeViewController _canSelectAlternateRoutes](self, "_canSelectAlternateRoutes")}];
+  [mapView _setCartographicConfiguration:v20];
+  [mapView setCompassEnabled:0];
+  [mapView setScaleEnabled:0];
+  [mapView _setUseVehicleHeading:1];
+  [mapView _setCanSelectPOIs:{-[CarChromeViewController _canSelectAlternateRoutes](self, "_canSelectAlternateRoutes")}];
   v11 = +[UIColor _maps_keyColor];
-  [v3 setTintColor:v11];
+  [mapView setTintColor:v11];
 
-  [v3 _setShouldLoadFallbackTiles:0];
-  v12 = [v3 _panningGestureRecognizer];
-  [v12 setAllowedTouchTypes:&off_1016EC740];
+  [mapView _setShouldLoadFallbackTiles:0];
+  _panningGestureRecognizer = [mapView _panningGestureRecognizer];
+  [_panningGestureRecognizer setAllowedTouchTypes:&off_1016EC740];
 
-  v13 = [v3 _oneHandedZoomGestureRecognizer];
-  [v13 setAllowedPressTypes:&off_1016EC758];
-  v14 = [[CarOneHandedZoomConfiguration alloc] initWithGestureRecongizer:v13];
-  [v13 setConfiguration:v14];
+  _oneHandedZoomGestureRecognizer = [mapView _oneHandedZoomGestureRecognizer];
+  [_oneHandedZoomGestureRecognizer setAllowedPressTypes:&off_1016EC758];
+  v14 = [[CarOneHandedZoomConfiguration alloc] initWithGestureRecongizer:_oneHandedZoomGestureRecognizer];
+  [_oneHandedZoomGestureRecognizer setConfiguration:v14];
 
-  [v3 _setShowsVenues:0];
-  [v3 _setLoadLookAroundAvailability:0];
-  [(CarChromeViewController *)self _resetMapViewDefaults:v3];
-  v15 = [(CarChromeViewController *)self _maps_mapsSceneDelegate];
-  v16 = [v15 entryPointsCoordinator];
-  v17 = [v16 didLaunchWithExplicitIntent];
+  [mapView _setShowsVenues:0];
+  [mapView _setLoadLookAroundAvailability:0];
+  [(CarChromeViewController *)self _resetMapViewDefaults:mapView];
+  _maps_mapsSceneDelegate = [(CarChromeViewController *)self _maps_mapsSceneDelegate];
+  entryPointsCoordinator = [_maps_mapsSceneDelegate entryPointsCoordinator];
+  didLaunchWithExplicitIntent = [entryPointsCoordinator didLaunchWithExplicitIntent];
 
-  if ((v17 & 1) == 0)
+  if ((didLaunchWithExplicitIntent & 1) == 0)
   {
-    v18 = [(CarChromeViewController *)self defaultMapSettings];
-    [v18 applyToMapViewAnimated:0 duration:0 completion:0.0];
+    defaultMapSettings = [(CarChromeViewController *)self defaultMapSettings];
+    [defaultMapSettings applyToMapViewAnimated:0 duration:0 completion:0.0];
   }
 
-  v19 = [(CarChromeViewController *)self traitCollection];
-  -[CarChromeViewController _updateMapUserInterfaceStyle:animated:](self, "_updateMapUserInterfaceStyle:animated:", [v19 _car_userInterfaceStyle], 1);
+  traitCollection = [(CarChromeViewController *)self traitCollection];
+  -[CarChromeViewController _updateMapUserInterfaceStyle:animated:](self, "_updateMapUserInterfaceStyle:animated:", [traitCollection _car_userInterfaceStyle], 1);
 }
 
-- (void)_resetMapViewDefaults:(id)a3
+- (void)_resetMapViewDefaults:(id)defaults
 {
-  if (a3)
+  if (defaults)
   {
-    v4 = a3;
+    defaultsCopy = defaults;
     v5 = sub_100006E1C();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
     {
@@ -5895,33 +5895,33 @@ LABEL_4:
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "[%{public}p] Will reset mapView default settings", v8, 0xCu);
     }
 
-    [v4 setZoomEnabled:0];
-    v6 = [objc_opt_class() allowOneHandedZooming];
-    v7 = [v4 _oneHandedZoomGestureRecognizer];
-    [v7 setEnabled:v6];
+    [defaultsCopy setZoomEnabled:0];
+    allowOneHandedZooming = [objc_opt_class() allowOneHandedZooming];
+    _oneHandedZoomGestureRecognizer = [defaultsCopy _oneHandedZoomGestureRecognizer];
+    [_oneHandedZoomGestureRecognizer setEnabled:allowOneHandedZooming];
 
-    [v4 setShowsUserLocation:1];
+    [defaultsCopy setShowsUserLocation:1];
     *&v8[1] = *(VKAnnotationTrackingBehaviorDefault + 1);
     *&v8[16] = VKAnnotationTrackingBehaviorDefault[2];
     v8[0] = 0;
-    [v4 _setUserTrackingBehavior:v8];
+    [defaultsCopy _setUserTrackingBehavior:v8];
   }
 }
 
-- (void)_performMapUpdateToUserInterfaceStyle:(int64_t)a3 animation:(id)a4
+- (void)_performMapUpdateToUserInterfaceStyle:(int64_t)style animation:(id)animation
 {
-  v6 = a4;
+  animationCopy = animation;
   v7 = sub_10004F508();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    if (a3 >= 3)
+    if (style >= 3)
     {
-      v8 = [NSString stringWithFormat:@"<Unknown %ld>", a3];
+      style = [NSString stringWithFormat:@"<Unknown %ld>", style];
     }
 
     else
     {
-      v8 = off_101622790[a3];
+      style = off_101622790[style];
     }
 
     BOOL = GEOConfigGetBOOL();
@@ -5933,9 +5933,9 @@ LABEL_4:
 
     v11 = v10;
     *buf = 134349570;
-    v23 = self;
+    selfCopy3 = self;
     v24 = 2112;
-    v25 = v8;
+    v25 = style;
     v26 = 2112;
     v27 = v11;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] In _performMapUpdateToUserInterfaceStyle: %@, CarPlayMapAppearanceShouldFollowUserInterfaceStyle: %@", buf, 0x20u);
@@ -5944,21 +5944,21 @@ LABEL_4:
   v12 = sub_10004F508();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    v13 = [(ChromeViewController *)self mapView];
-    v14 = [v13 traitCollection];
-    v15 = [v14 _car_userInterfaceStyle];
-    if (v15 >= 3)
+    mapView = [(ChromeViewController *)self mapView];
+    traitCollection = [mapView traitCollection];
+    _car_userInterfaceStyle = [traitCollection _car_userInterfaceStyle];
+    if (_car_userInterfaceStyle >= 3)
     {
-      v16 = [NSString stringWithFormat:@"<Unknown %ld>", v15];
+      v16 = [NSString stringWithFormat:@"<Unknown %ld>", _car_userInterfaceStyle];
     }
 
     else
     {
-      v16 = off_101622790[v15];
+      v16 = off_101622790[_car_userInterfaceStyle];
     }
 
     *buf = 134349314;
-    v23 = self;
+    selfCopy3 = self;
     v24 = 2112;
     v25 = v16;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_INFO, "[%{public}p] self.mapView.traitCollection._car_userInterfaceStyle: %@", buf, 0x16u);
@@ -5967,20 +5967,20 @@ LABEL_4:
   v17 = sub_10004F508();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [(ChromeViewController *)self mapView];
-    v19 = [v18 overrideUserInterfaceStyle];
-    if (v19 >= 3)
+    mapView2 = [(ChromeViewController *)self mapView];
+    overrideUserInterfaceStyle = [mapView2 overrideUserInterfaceStyle];
+    if (overrideUserInterfaceStyle >= 3)
     {
-      v20 = [NSString stringWithFormat:@"<Unknown %ld>", v19];
+      v20 = [NSString stringWithFormat:@"<Unknown %ld>", overrideUserInterfaceStyle];
     }
 
     else
     {
-      v20 = off_101622790[v19];
+      v20 = off_101622790[overrideUserInterfaceStyle];
     }
 
     *buf = 134349314;
-    v23 = self;
+    selfCopy3 = self;
     v24 = 2112;
     v25 = v20;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}p] self.mapView.overrideUserInterfaceStyle: %@", buf, 0x16u);
@@ -5991,72 +5991,72 @@ LABEL_4:
   v21[2] = sub_100596A88;
   v21[3] = &unk_101661650;
   v21[4] = self;
-  v21[5] = a3;
-  [v6 addAnimations:v21 completion:0];
+  v21[5] = style;
+  [animationCopy addAnimations:v21 completion:0];
 }
 
-- (void)_updateMapUserInterfaceStyle:(int64_t)a3 animated:(BOOL)a4
+- (void)_updateMapUserInterfaceStyle:(int64_t)style animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   v7 = sub_10004F508();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
-    if (a3 >= 3)
+    if (style >= 3)
     {
-      v8 = [NSString stringWithFormat:@"<Unknown %ld>", a3];
+      style = [NSString stringWithFormat:@"<Unknown %ld>", style];
     }
 
     else
     {
-      v8 = off_101622790[a3];
+      style = off_101622790[style];
     }
 
     *buf = 134349314;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2112;
-    v18 = v8;
+    v18 = style;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "[%{public}p] In _updateMapUserInterfaceStyle : %@", buf, 0x16u);
   }
 
   v9 = sub_10004F508();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
-    v10 = [(ChromeViewController *)self mapView];
-    v11 = [v10 _showsNightMode];
+    mapView = [(ChromeViewController *)self mapView];
+    _showsNightMode = [mapView _showsNightMode];
     v12 = @"NO";
-    if (v11)
+    if (_showsNightMode)
     {
       v12 = @"YES";
     }
 
     v13 = v12;
     *buf = 134349314;
-    v16 = self;
+    selfCopy2 = self;
     v17 = 2112;
     v18 = v13;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] In _updateMapUserInterfaceStyle self.mapView.showsNightMode : %@", buf, 0x16u);
   }
 
-  v14 = [GroupAnimation animationForAnimatedFlag:v4];
-  [(CarChromeViewController *)self _performMapUpdateToUserInterfaceStyle:a3 animation:v14];
+  v14 = [GroupAnimation animationForAnimatedFlag:animatedCopy];
+  [(CarChromeViewController *)self _performMapUpdateToUserInterfaceStyle:style animation:v14];
   [v14 runWithDuration:196608 delay:2.0 options:0.0];
 }
 
-- (void)_updateMapToCurrentUserInterfaceStyleAnimated:(BOOL)a3
+- (void)_updateMapToCurrentUserInterfaceStyleAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v5 = [(CarChromeViewController *)self traitCollection];
-  -[CarChromeViewController _updateMapUserInterfaceStyle:animated:](self, "_updateMapUserInterfaceStyle:animated:", [v5 _car_userInterfaceStyle], v3);
+  animatedCopy = animated;
+  traitCollection = [(CarChromeViewController *)self traitCollection];
+  -[CarChromeViewController _updateMapUserInterfaceStyle:animated:](self, "_updateMapUserInterfaceStyle:animated:", [traitCollection _car_userInterfaceStyle], animatedCopy);
 }
 
-- (void)_carPlayWindowMapStyleDidChange:(id)a3
+- (void)_carPlayWindowMapStyleDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 object];
+  changeCopy = change;
+  object = [changeCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = object;
   }
 
   else
@@ -6072,7 +6072,7 @@ LABEL_4:
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
       *buf = 136315906;
-      v33 = "[CarChromeViewController _carPlayWindowMapStyleDidChange:]";
+      selfCopy4 = "[CarChromeViewController _carPlayWindowMapStyleDidChange:]";
       v34 = 2080;
       v35 = "CarChromeViewController.m";
       v36 = 1024;
@@ -6089,7 +6089,7 @@ LABEL_4:
       {
         v31 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v33 = v31;
+        selfCopy4 = v31;
         _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -6101,9 +6101,9 @@ LABEL_4:
     }
 
     *buf = 134349314;
-    v33 = self;
+    selfCopy4 = self;
     v34 = 2112;
-    v35 = v4;
+    v35 = changeCopy;
     v14 = "[%{public}p] was notified from an unsupported window scene: %@";
     v15 = v11;
     v16 = OS_LOG_TYPE_FAULT;
@@ -6112,23 +6112,23 @@ LABEL_4:
 
   if (([(CarChromeViewController *)self isViewLoaded]& 1) != 0)
   {
-    v8 = [(CarChromeViewController *)self view];
-    v9 = [v8 window];
+    view = [(CarChromeViewController *)self view];
+    window = [view window];
 
     v10 = sub_10004F508();
     v11 = v10;
-    if (v7 != v9)
+    if (v7 != window)
     {
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [(CarChromeViewController *)self view];
-        v13 = [v12 window];
+        view2 = [(CarChromeViewController *)self view];
+        window2 = [view2 window];
         *buf = 134349570;
-        v33 = self;
+        selfCopy4 = self;
         v34 = 2112;
         v35 = v7;
         v36 = 2112;
-        *v37 = v13;
+        *v37 = window2;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "[%{public}p] Ignoring update from a window: %@ that does not belong to this VC (%@)", buf, 0x20u);
       }
 
@@ -6143,10 +6143,10 @@ LABEL_30:
       goto LABEL_13;
     }
 
-    v17 = self;
-    if (!v17)
+    selfCopy3 = self;
+    if (!selfCopy3)
     {
-      v22 = @"<nil>";
+      selfCopy3 = @"<nil>";
       goto LABEL_23;
     }
 
@@ -6154,48 +6154,48 @@ LABEL_30:
     v19 = NSStringFromClass(v18);
     if (objc_opt_respondsToSelector())
     {
-      v20 = [(CarChromeViewController *)v17 performSelector:"accessibilityIdentifier"];
+      v20 = [(CarChromeViewController *)selfCopy3 performSelector:"accessibilityIdentifier"];
       v21 = v20;
       if (v20 && ![v20 isEqualToString:v19])
       {
-        v22 = [NSString stringWithFormat:@"%@<%p, %@>", v19, v17, v21];
+        selfCopy3 = [NSString stringWithFormat:@"%@<%p, %@>", v19, selfCopy3, v21];
 
         goto LABEL_21;
       }
     }
 
-    v22 = [NSString stringWithFormat:@"%@<%p>", v19, v17];
+    selfCopy3 = [NSString stringWithFormat:@"%@<%p>", v19, selfCopy3];
 LABEL_21:
 
 LABEL_23:
-    v23 = v22;
-    v24 = [(CarChromeViewController *)v17 sceneType];
-    if (v24 > 6)
+    v23 = selfCopy3;
+    sceneType = [(CarChromeViewController *)selfCopy3 sceneType];
+    if (sceneType > 6)
     {
       v25 = @".Unknown";
     }
 
     else
     {
-      v25 = off_101622758[v24];
+      v25 = off_101622758[sceneType];
     }
 
-    v26 = [(CarChromeViewController *)v17 traitCollection];
-    v27 = [v26 _car_userInterfaceStyle];
-    if (v27 >= 3)
+    traitCollection = [(CarChromeViewController *)selfCopy3 traitCollection];
+    _car_userInterfaceStyle = [traitCollection _car_userInterfaceStyle];
+    if (_car_userInterfaceStyle >= 3)
     {
-      v28 = [NSString stringWithFormat:@"<Unknown %ld>", v27];
+      v28 = [NSString stringWithFormat:@"<Unknown %ld>", _car_userInterfaceStyle];
     }
 
     else
     {
-      v28 = off_101622790[v27];
+      v28 = off_101622790[_car_userInterfaceStyle];
     }
 
     *buf = 138544130;
-    v33 = v23;
+    selfCopy4 = v23;
     v34 = 2112;
-    v35 = v17;
+    v35 = selfCopy3;
     v36 = 2112;
     *v37 = v25;
     *&v37[8] = 2112;
@@ -6209,7 +6209,7 @@ LABEL_23:
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
   {
     *buf = 134349314;
-    v33 = self;
+    selfCopy4 = self;
     v34 = 2112;
     v35 = v7;
     v14 = "[%{public}p] Ignoring update from window %@, our view is not loaded";
@@ -6224,47 +6224,47 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v15.receiver = self;
   v15.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v15 traitCollectionDidChange:v4];
-  v5 = [v4 _car_userInterfaceStyle];
-  v6 = [(CarChromeViewController *)self traitCollection];
-  v7 = [v6 _car_userInterfaceStyle];
+  [(CarChromeViewController *)&v15 traitCollectionDidChange:changeCopy];
+  _car_userInterfaceStyle = [changeCopy _car_userInterfaceStyle];
+  traitCollection = [(CarChromeViewController *)self traitCollection];
+  _car_userInterfaceStyle2 = [traitCollection _car_userInterfaceStyle];
 
-  if (v5 != v7)
+  if (_car_userInterfaceStyle != _car_userInterfaceStyle2)
   {
     v8 = sub_10004F508();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v4 _car_userInterfaceStyle];
-      if (v9 >= 3)
+      _car_userInterfaceStyle3 = [changeCopy _car_userInterfaceStyle];
+      if (_car_userInterfaceStyle3 >= 3)
       {
-        v10 = [NSString stringWithFormat:@"<Unknown %ld>", v9];
+        v10 = [NSString stringWithFormat:@"<Unknown %ld>", _car_userInterfaceStyle3];
       }
 
       else
       {
-        v10 = off_101622790[v9];
+        v10 = off_101622790[_car_userInterfaceStyle3];
       }
 
       v11 = v10;
-      v12 = [(CarChromeViewController *)self traitCollection];
-      v13 = [v12 _car_userInterfaceStyle];
-      if (v13 >= 3)
+      traitCollection2 = [(CarChromeViewController *)self traitCollection];
+      _car_userInterfaceStyle4 = [traitCollection2 _car_userInterfaceStyle];
+      if (_car_userInterfaceStyle4 >= 3)
       {
-        v14 = [NSString stringWithFormat:@"<Unknown %ld>", v13];
+        v14 = [NSString stringWithFormat:@"<Unknown %ld>", _car_userInterfaceStyle4];
       }
 
       else
       {
-        v14 = off_101622790[v13];
+        v14 = off_101622790[_car_userInterfaceStyle4];
       }
 
       *buf = 134349570;
-      v17 = self;
+      selfCopy = self;
       v18 = 2112;
       v19 = v11;
       v20 = 2112;
@@ -6276,25 +6276,25 @@ LABEL_13:
   }
 }
 
-- (void)_presentAnyPendingAlert:(BOOL)a3
+- (void)_presentAnyPendingAlert:(BOOL)alert
 {
-  v3 = a3;
+  alertCopy = alert;
   currentAlertViewController = self->_currentAlertViewController;
-  v6 = [(CarChromeViewController *)self presentedViewController];
+  presentedViewController = [(CarChromeViewController *)self presentedViewController];
 
-  if (currentAlertViewController != v6)
+  if (currentAlertViewController != presentedViewController)
   {
-    v7 = [(CarChromeViewController *)self presentedViewController];
+    presentedViewController2 = [(CarChromeViewController *)self presentedViewController];
 
-    if (v7)
+    if (presentedViewController2)
     {
       v15[0] = _NSConcreteStackBlock;
       v15[1] = 3221225472;
       v15[2] = sub_100597720;
       v15[3] = &unk_101661AE0;
       v15[4] = self;
-      v16 = v3;
-      [(CarChromeViewController *)self dismissViewControllerAnimated:v3 completion:v15];
+      v16 = alertCopy;
+      [(CarChromeViewController *)self dismissViewControllerAnimated:alertCopy completion:v15];
       return;
     }
 
@@ -6305,7 +6305,7 @@ LABEL_13:
       {
 LABEL_15:
 
-        [(CarChromeViewController *)self presentViewController:self->_currentAlertViewController animated:v3 completion:0];
+        [(CarChromeViewController *)self presentViewController:self->_currentAlertViewController animated:alertCopy completion:0];
         return;
       }
 
@@ -6335,7 +6335,7 @@ LABEL_12:
 
 LABEL_14:
       *buf = 134349314;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
       v20 = v14;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "[%{public}p] Ready for new alert, presenting %@", buf, 0x16u);
@@ -6345,12 +6345,12 @@ LABEL_14:
   }
 }
 
-- (void)_dismissAlertViewController:(id)a3 animated:(BOOL)a4
+- (void)_dismissAlertViewController:(id)controller animated:(BOOL)animated
 {
-  v5 = a4;
-  v7 = a3;
+  animatedCopy = animated;
+  controllerCopy = controller;
   currentAlertViewController = self->_currentAlertViewController;
-  if (currentAlertViewController != v7)
+  if (currentAlertViewController != controllerCopy)
   {
     v9 = sub_100006E1C();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_INFO);
@@ -6365,7 +6365,7 @@ LABEL_14:
 LABEL_28:
 
           v30 = v16;
-          v31 = v7;
+          v31 = controllerCopy;
           if (!v31)
           {
             v36 = @"<nil>";
@@ -6391,7 +6391,7 @@ LABEL_34:
 
 LABEL_36:
           *buf = 134349570;
-          v40 = self;
+          selfCopy3 = self;
           v41 = 2112;
           v42 = v30;
           v43 = 2112;
@@ -6431,7 +6431,7 @@ LABEL_39:
       goto LABEL_39;
     }
 
-    v22 = v7;
+    v22 = controllerCopy;
     if (!v22)
     {
       v27 = @"<nil>";
@@ -6457,7 +6457,7 @@ LABEL_21:
 
 LABEL_38:
     *buf = 134349314;
-    v40 = self;
+    selfCopy3 = self;
     v41 = 2112;
     v42 = v27;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] Will not dismiss current alert, we do not have one presented (specified:%@)", buf, 0x16u);
@@ -6468,9 +6468,9 @@ LABEL_38:
   v17 = sub_100006E1C();
   if (os_log_type_enabled(v17, OS_LOG_TYPE_INFO))
   {
-    v18 = [(CarAlertViewController *)self->_currentAlertViewController alertTitle];
-    v19 = [(CarAlertViewController *)self->_currentAlertViewController alertTitle];
-    v20 = [v19 length];
+    alertTitle = [(CarAlertViewController *)self->_currentAlertViewController alertTitle];
+    alertTitle2 = [(CarAlertViewController *)self->_currentAlertViewController alertTitle];
+    v20 = [alertTitle2 length];
     if (v20 > 0x13)
     {
       v21 = 20;
@@ -6478,13 +6478,13 @@ LABEL_38:
 
     else
     {
-      v4 = [(CarAlertViewController *)self->_currentAlertViewController alertTitle];
-      v21 = [v4 length];
+      alertTitle3 = [(CarAlertViewController *)self->_currentAlertViewController alertTitle];
+      v21 = [alertTitle3 length];
     }
 
-    v28 = [v18 substringToIndex:v21];
+    v28 = [alertTitle substringToIndex:v21];
     *buf = 134349314;
-    v40 = self;
+    selfCopy3 = self;
     v41 = 2112;
     v42 = v28;
     _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "[%{public}p] Will dismiss current alert %@", buf, 0x16u);
@@ -6501,25 +6501,25 @@ LABEL_38:
   v37[2] = sub_100597C10;
   v37[3] = &unk_101661AE0;
   v37[4] = self;
-  v38 = v5;
-  [(CarChromeViewController *)self dismissViewControllerAnimated:v5 completion:v37];
+  v38 = animatedCopy;
+  [(CarChromeViewController *)self dismissViewControllerAnimated:animatedCopy completion:v37];
 LABEL_40:
 }
 
-- (void)_presentAlertViewController:(id)a3 animated:(BOOL)a4
+- (void)_presentAlertViewController:(id)controller animated:(BOOL)animated
 {
-  v32 = a4;
-  v8 = a3;
-  v9 = [(CarChromeViewController *)self presentedViewController];
+  animatedCopy = animated;
+  controllerCopy = controller;
+  presentedViewController = [(CarChromeViewController *)self presentedViewController];
   v10 = sub_100006E1C();
   v11 = os_log_type_enabled(&v10->super.super.super, OS_LOG_TYPE_INFO);
-  if (v9 == v8)
+  if (presentedViewController == controllerCopy)
   {
     if (v11)
     {
-      v16 = [v8 alertTitle];
-      v17 = [v8 alertTitle];
-      v18 = [v17 length];
+      alertTitle = [controllerCopy alertTitle];
+      alertTitle2 = [controllerCopy alertTitle];
+      v18 = [alertTitle2 length];
       if (v18 > 0x13)
       {
         v19 = 20;
@@ -6527,14 +6527,14 @@ LABEL_40:
 
       else
       {
-        v4 = [v8 alertTitle];
-        v19 = [v4 length];
+        alertTitle3 = [controllerCopy alertTitle];
+        v19 = [alertTitle3 length];
       }
 
       v28 = v18 < 0x14;
-      v29 = [v16 substringToIndex:v19];
+      v29 = [alertTitle substringToIndex:v19];
       *buf = 134349314;
-      v37 = self;
+      selfCopy4 = self;
       v38 = 2112;
       v39 = v29;
       _os_log_impl(&_mh_execute_header, &v10->super.super.super, OS_LOG_TYPE_INFO, "[%{public}p] Asked to present alert, but it's already visible: %@", buf, 0x16u);
@@ -6548,9 +6548,9 @@ LABEL_40:
   {
     if (v11)
     {
-      v12 = [v8 alertTitle];
-      v13 = [v8 alertTitle];
-      v14 = [v13 length];
+      alertTitle4 = [controllerCopy alertTitle];
+      alertTitle5 = [controllerCopy alertTitle];
+      v14 = [alertTitle5 length];
       if (v14 > 0x13)
       {
         v15 = 20;
@@ -6558,14 +6558,14 @@ LABEL_40:
 
       else
       {
-        v5 = [v8 alertTitle];
-        v15 = [v5 length];
+        alertTitle6 = [controllerCopy alertTitle];
+        v15 = [alertTitle6 length];
       }
 
       v20 = v14 < 0x14;
-      v21 = [v12 substringToIndex:v15];
+      v21 = [alertTitle4 substringToIndex:v15];
       *buf = 134349314;
-      v37 = self;
+      selfCopy4 = self;
       v38 = 2112;
       v39 = v21;
       _os_log_impl(&_mh_execute_header, &v10->super.super.super, OS_LOG_TYPE_INFO, "[%{public}p] Asked to present alert: %@", buf, 0x16u);
@@ -6575,7 +6575,7 @@ LABEL_40:
     }
 
     v10 = self->_currentAlertViewController;
-    objc_storeStrong(&self->_currentAlertViewController, a3);
+    objc_storeStrong(&self->_currentAlertViewController, controller);
     [(CarAlertViewController *)self->_currentAlertViewController setModalPresentationStyle:5];
     if (v10)
     {
@@ -6583,7 +6583,7 @@ LABEL_40:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 134349056;
-        v37 = self;
+        selfCopy4 = self;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "[%{public}p] Already have an alert showing, transition to the new one", buf, 0xCu);
       }
 
@@ -6591,10 +6591,10 @@ LABEL_40:
     }
 
     objc_initWeak(&location, self);
-    if (v9)
+    if (presentedViewController)
     {
       objc_copyWeak(&v33, &location);
-      v34 = v32;
+      v34 = animatedCopy;
       [CarChromeViewController dismissViewControllerAnimated:"dismissViewControllerAnimated:completion:" completion:?];
       objc_destroyWeak(&v33);
     }
@@ -6604,9 +6604,9 @@ LABEL_40:
       v23 = sub_100006E1C();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
       {
-        v24 = [(CarAlertViewController *)self->_currentAlertViewController alertTitle];
-        v25 = [(CarAlertViewController *)self->_currentAlertViewController alertTitle];
-        v26 = [v25 length];
+        alertTitle7 = [(CarAlertViewController *)self->_currentAlertViewController alertTitle];
+        alertTitle8 = [(CarAlertViewController *)self->_currentAlertViewController alertTitle];
+        v26 = [alertTitle8 length];
         if (v26 > 0x13)
         {
           v27 = 20;
@@ -6614,13 +6614,13 @@ LABEL_40:
 
         else
         {
-          v31 = [(CarAlertViewController *)self->_currentAlertViewController alertTitle];
-          v27 = [v31 length];
+          alertTitle9 = [(CarAlertViewController *)self->_currentAlertViewController alertTitle];
+          v27 = [alertTitle9 length];
         }
 
-        v30 = [v24 substringToIndex:v27];
+        v30 = [alertTitle7 substringToIndex:v27];
         *buf = 134349314;
-        v37 = self;
+        selfCopy4 = self;
         v38 = 2112;
         v39 = v30;
         _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_INFO, "[%{public}p] Will show a new alert %@", buf, 0x16u);
@@ -6629,19 +6629,19 @@ LABEL_40:
         }
       }
 
-      [(CarChromeViewController *)self presentViewController:self->_currentAlertViewController animated:v32 completion:0];
+      [(CarChromeViewController *)self presentViewController:self->_currentAlertViewController animated:animatedCopy completion:0];
     }
 
     objc_destroyWeak(&location);
   }
 }
 
-- (id)_presentSearchRefinementWithUserInfo:(id)a3 completionHandler:(id)a4
+- (id)_presentSearchRefinementWithUserInfo:(id)info completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
-  v8 = [v6 objectForKeyedSubscript:@"kMapsInterruptionSearchRefinementResults"];
+  v8 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionSearchRefinementResults"];
   if (v8)
   {
     objc_opt_class();
@@ -6651,7 +6651,7 @@ LABEL_40:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315906;
-        v26 = "[CarChromeViewController _presentSearchRefinementWithUserInfo:completionHandler:]";
+        selfCopy2 = "[CarChromeViewController _presentSearchRefinementWithUserInfo:completionHandler:]";
         v27 = 2080;
         v28 = "CarChromeViewController.m";
         v29 = 1024;
@@ -6668,7 +6668,7 @@ LABEL_40:
         {
           v18 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v26 = v18;
+          selfCopy2 = v18;
           _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -6680,13 +6680,13 @@ LABEL_40:
     v21[2] = sub_1005984E8;
     v21[3] = &unk_10165E7A0;
     objc_copyWeak(&v23, &location);
-    v22 = v7;
+    v22 = handlerCopy;
     v10 = [(CarDisambiguationModeController *)v9 initWithSearchInfo:v8 completionBlock:v21];
     v11 = sub_100006E1C();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134349056;
-      v26 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEBUG, "[%{public}p] Will present search refinement controller", buf, 0xCu);
     }
 
@@ -6709,7 +6709,7 @@ LABEL_40:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134349056;
-      v26 = self;
+      selfCopy2 = self;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEBUG, "[%{public}p] Will not present search refinement, no search info provided", buf, 0xCu);
     }
 
@@ -6721,12 +6721,12 @@ LABEL_40:
   return v13;
 }
 
-- (id)presentInterruptionOfKind:(int64_t)a3 userInfo:(id)a4 completionHandler:(id)a5
+- (id)presentInterruptionOfKind:(int64_t)kind userInfo:(id)info completionHandler:(id)handler
 {
-  v8 = a4;
-  v109 = a5;
-  v9 = [(CarChromeViewController *)self topContext];
-  if ((objc_opt_respondsToSelector() & 1) != 0 && [v9 canPresentInterruptionOfKind:a3])
+  infoCopy = info;
+  handlerCopy = handler;
+  topContext = [(CarChromeViewController *)self topContext];
+  if ((objc_opt_respondsToSelector() & 1) != 0 && [topContext canPresentInterruptionOfKind:kind])
   {
     if ((objc_opt_respondsToSelector() & 1) == 0)
     {
@@ -6734,7 +6734,7 @@ LABEL_40:
       if (os_log_type_enabled(v91, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315906;
-        v123 = "[CarChromeViewController presentInterruptionOfKind:userInfo:completionHandler:]";
+        selfCopy4 = "[CarChromeViewController presentInterruptionOfKind:userInfo:completionHandler:]";
         v124 = 2080;
         v125 = "CarChromeViewController.m";
         v126 = 1024;
@@ -6751,7 +6751,7 @@ LABEL_40:
         {
           v93 = +[NSThread callStackSymbols];
           *buf = 138412290;
-          v123 = v93;
+          selfCopy4 = v93;
           _os_log_impl(&_mh_execute_header, v92, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
         }
       }
@@ -6762,24 +6762,24 @@ LABEL_40:
     {
       v11 = objc_opt_class();
       *buf = 134349826;
-      v123 = self;
+      selfCopy4 = self;
       v124 = 2112;
       v125 = v11;
       v126 = 2048;
-      *v127 = a3;
+      *v127 = kind;
       *&v127[8] = 2112;
-      *&v127[10] = v8;
+      *&v127[10] = infoCopy;
       v12 = v11;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "[%{public}p] Will ask top context %@ to present interruption (kind:%ld, userInfo:%@)", buf, 0x2Au);
     }
 
-    v13 = [v9 presentInterruptionOfKind:a3 userInfo:v8 completionHandler:v109];
+    v13 = [topContext presentInterruptionOfKind:kind userInfo:infoCopy completionHandler:handlerCopy];
     goto LABEL_13;
   }
 
-  if (a3 == 4)
+  if (kind == 4)
   {
-    v13 = [(CarChromeViewController *)self _presentSearchRefinementWithUserInfo:v8 completionHandler:v109];
+    v13 = [(CarChromeViewController *)self _presentSearchRefinementWithUserInfo:infoCopy completionHandler:handlerCopy];
 LABEL_13:
     v18 = v13;
     goto LABEL_14;
@@ -6794,27 +6794,27 @@ LABEL_13:
     {
       v17 = self->_interruptionManager;
       *buf = 134349314;
-      v123 = self;
+      selfCopy4 = self;
       v124 = 2112;
       v125 = v17;
       _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[%{public}p] Asking interruption manager %@ to present the interruption", buf, 0x16u);
     }
 
-    v13 = [(InterruptionManager *)self->_interruptionManager presentUnhandledInterruptionOfKind:a3 userInfo:v8 completionHandler:v109];
+    v13 = [(InterruptionManager *)self->_interruptionManager presentUnhandledInterruptionOfKind:kind userInfo:infoCopy completionHandler:handlerCopy];
     goto LABEL_13;
   }
 
   if (v16)
   {
     *buf = 134349056;
-    v123 = self;
+    selfCopy4 = self;
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEFAULT, "[%{public}p] Handing interruption with legacy alerts", buf, 0xCu);
   }
 
-  v107 = [v8 objectForKeyedSubscript:@"kMapsInterruptionActions"];
-  v106 = 680;
+  v107 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionActions"];
+  title3 = 680;
   val = self->_currentAlertViewController;
-  if ([(CarAlertViewController *)val tag]== a3)
+  if ([(CarAlertViewController *)val tag]== kind)
   {
     [(CarAlertViewController *)val supersede];
     [(CarAlertViewController *)val reset];
@@ -6824,15 +6824,15 @@ LABEL_13:
   {
     v20 = objc_alloc_init(CarAlertViewController);
 
-    [(CarAlertViewController *)v20 setTag:a3];
+    [(CarAlertViewController *)v20 setTag:kind];
     val = v20;
   }
 
   v18 = 0;
-  switch(a3)
+  switch(kind)
   {
     case 1:
-      v50 = [v8 objectForKeyedSubscript:@"kMapsInterruptionTitle"];
+      v50 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionTitle"];
       if (v50)
       {
         [(CarAlertViewController *)val setAlertTitle:v50];
@@ -6845,7 +6845,7 @@ LABEL_13:
         [(CarAlertViewController *)val setAlertTitle:v74];
       }
 
-      v22 = [v8 objectForKeyedSubscript:@"kMapsInterruptionMessage"];
+      v22 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionMessage"];
       if (v22)
       {
         [(CarAlertViewController *)val setAlertMessage:v22];
@@ -6873,10 +6873,10 @@ LABEL_13:
     case 19:
     case 20:
     case 23:
-      v21 = [v8 objectForKeyedSubscript:@"kMapsInterruptionTitle"];
+      v21 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionTitle"];
       [(CarAlertViewController *)val setAlertTitle:v21];
 
-      v22 = [v8 objectForKeyedSubscript:@"kMapsInterruptionMessage"];
+      v22 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionMessage"];
       [(CarAlertViewController *)val setAlertMessage:v22];
       goto LABEL_48;
     case 5:
@@ -6940,15 +6940,15 @@ LABEL_13:
       [(CarAlertViewController *)val setAlertMessage:v22];
       goto LABEL_48;
     case 14:
-      v22 = [v8 objectForKeyedSubscript:@"kMapsInterruptionSharedTripSenderName"];
-      v102 = [v8 objectForKeyedSubscript:@"kMapsInterruptionSharedTripSenderHandle"];
+      v22 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionSharedTripSenderName"];
+      v102 = [infoCopy objectForKeyedSubscript:@"kMapsInterruptionSharedTripSenderHandle"];
       if (!v22 || !v102)
       {
         v94 = sub_10006D178();
         if (os_log_type_enabled(v94, OS_LOG_TYPE_ERROR))
         {
           *buf = 136315906;
-          v123 = "[CarChromeViewController presentInterruptionOfKind:userInfo:completionHandler:]";
+          selfCopy4 = "[CarChromeViewController presentInterruptionOfKind:userInfo:completionHandler:]";
           v124 = 2080;
           v125 = "CarChromeViewController.m";
           v126 = 1024;
@@ -6965,7 +6965,7 @@ LABEL_13:
           {
             v96 = +[NSThread callStackSymbols];
             *buf = 138412290;
-            v123 = v96;
+            selfCopy4 = v96;
             _os_log_impl(&_mh_execute_header, v95, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
           }
         }
@@ -6973,15 +6973,15 @@ LABEL_13:
 
       v58 = +[NSBundle mainBundle];
       v59 = [v58 localizedStringForKey:@"Maps always shares as [name] [email/phone] [CarPlay]" value:@"localized string not found" table:0];
-      v99 = [NSString stringWithFormat:v59, v22, v102];
+      v102 = [NSString stringWithFormat:v59, v22, v102];
 
       v60 = [NSMutableAttributedString alloc];
       v61 = +[CarAlertViewController defaultMessageAttributes];
-      v105 = [v60 initWithString:v99 attributes:v61];
+      v105 = [v60 initWithString:v102 attributes:v61];
 
       v62 = +[UIColor secondaryLabelColor];
-      v63 = [v105 string];
-      v64 = [v63 rangeOfString:v102];
+      string = [v105 string];
+      v64 = [string rangeOfString:v102];
       [v105 addAttribute:NSForegroundColorAttributeName value:v62 range:{v64, v65}];
 
       v66 = +[NSBundle mainBundle];
@@ -7046,7 +7046,7 @@ LABEL_40:
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
         *buf = 136315650;
-        v123 = "[CarChromeViewController presentInterruptionOfKind:userInfo:completionHandler:]";
+        selfCopy4 = "[CarChromeViewController presentInterruptionOfKind:userInfo:completionHandler:]";
         v124 = 2080;
         v125 = "CarChromeViewController.m";
         v126 = 1024;
@@ -7064,7 +7064,7 @@ LABEL_40:
       {
         v24 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v123 = v24;
+        selfCopy4 = v24;
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
 
@@ -7095,8 +7095,8 @@ LABEL_53:
       v112[1] = 3221225472;
       v112[2] = sub_100599B0C;
       v112[3] = &unk_101622570;
-      v114 = v109;
-      v115 = a3;
+      v114 = handlerCopy;
+      kindCopy = kind;
       v112[4] = self;
       v107 = v107;
       v113 = v107;
@@ -7114,9 +7114,9 @@ LABEL_53:
           v83 = @"create";
         }
 
-        v84 = [(CarAlertViewController *)val title];
-        v85 = [(CarAlertViewController *)val title];
-        v86 = [v85 length];
+        title = [(CarAlertViewController *)val title];
+        title2 = [(CarAlertViewController *)val title];
+        v86 = [title2 length];
         if (v86 > 0x13)
         {
           v87 = 20;
@@ -7124,18 +7124,18 @@ LABEL_53:
 
         else
         {
-          v106 = [(CarAlertViewController *)val title];
-          v87 = [v106 length];
+          title3 = [(CarAlertViewController *)val title];
+          v87 = [title3 length];
         }
 
         v88 = v86 < 0x14;
-        v89 = [v84 substringToIndex:v87];
+        v89 = [title substringToIndex:v87];
         *buf = 134349826;
-        v123 = self;
+        selfCopy4 = self;
         v124 = 2112;
         v125 = v83;
         v126 = 2048;
-        *v127 = a3;
+        *v127 = kind;
         *&v127[8] = 2112;
         *&v127[10] = v89;
         _os_log_impl(&_mh_execute_header, v82, OS_LOG_TYPE_INFO, "[%{public}p] Did %@ alert controller (kind:%ld, title:%@)", buf, 0x2Au);
@@ -7167,18 +7167,18 @@ LABEL_14:
   return v18;
 }
 
-- (BOOL)dismissCurrentInterruptionOfKind:(int64_t)a3
+- (BOOL)dismissCurrentInterruptionOfKind:(int64_t)kind
 {
   v5 = [(CarAlertViewController *)self->_currentAlertViewController tag];
-  if (v5 == a3)
+  if (v5 == kind)
   {
     [(CarChromeViewController *)self dismissInterruption];
   }
 
-  return v5 == a3;
+  return v5 == kind;
 }
 
-- (void)_carExternalDeviceStateUpdated:(id)a3
+- (void)_carExternalDeviceStateUpdated:(id)updated
 {
   v4 = sub_100006E1C();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -7190,24 +7190,24 @@ LABEL_14:
   v5 = +[MapsExternalDevice sharedInstance];
   v6 = [v5 hasLimitedUI] ^ 1;
 
-  v7 = [(ChromeViewController *)self mapView];
-  [v7 setVehicleState:v6];
+  mapView = [(ChromeViewController *)self mapView];
+  [mapView setVehicleState:v6];
 }
 
-- (id)chromeViewItemForContext:(id)a3 createIfNeeded:(BOOL)a4
+- (id)chromeViewItemForContext:(id)context createIfNeeded:(BOOL)needed
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  neededCopy = needed;
+  contextCopy = context;
+  if (contextCopy)
   {
-    v7 = [(CarChromeViewController *)self chromeItemsByContext];
-    v8 = [v7 objectForKey:v6];
+    chromeItemsByContext = [(CarChromeViewController *)self chromeItemsByContext];
+    v8 = [chromeItemsByContext objectForKey:contextCopy];
 
-    if (!v8 && v4)
+    if (!v8 && neededCopy)
     {
-      v8 = [CarChromeViewItem itemWithContext:v6];
-      v9 = [(CarChromeViewController *)self chromeItemsByContext];
-      [v9 setObject:v8 forKey:v6];
+      v8 = [CarChromeViewItem itemWithContext:contextCopy];
+      chromeItemsByContext2 = [(CarChromeViewController *)self chromeItemsByContext];
+      [chromeItemsByContext2 setObject:v8 forKey:contextCopy];
     }
   }
 
@@ -7219,30 +7219,30 @@ LABEL_14:
   return v8;
 }
 
-- (void)contextStackDidUpdateFrom:(id)a3 to:(id)a4 withAnimation:(id)a5
+- (void)contextStackDidUpdateFrom:(id)from to:(id)to withAnimation:(id)animation
 {
-  v8 = a3;
-  v9 = a4;
+  fromCopy = from;
+  toCopy = to;
   v27.receiver = self;
   v27.super_class = CarChromeViewController;
-  v10 = a5;
-  [(ChromeViewController *)&v27 contextStackDidUpdateFrom:v8 to:v9 withAnimation:v10];
-  v11 = [v10 isAnimated];
-  v12 = [v8 lastObject];
-  v13 = [v9 lastObject];
-  [(CarChromeViewController *)self _reloadMapControlsForContext:v13 withAnimation:v10];
-  [(CarChromeViewController *)self _reloadAccessoriesForContext:v13 withAnimation:v10];
-  [(CarChromeViewController *)self _reloadStatusBannerWithAnimation:v10];
+  animationCopy = animation;
+  [(ChromeViewController *)&v27 contextStackDidUpdateFrom:fromCopy to:toCopy withAnimation:animationCopy];
+  isAnimated = [animationCopy isAnimated];
+  lastObject = [fromCopy lastObject];
+  lastObject2 = [toCopy lastObject];
+  [(CarChromeViewController *)self _reloadMapControlsForContext:lastObject2 withAnimation:animationCopy];
+  [(CarChromeViewController *)self _reloadAccessoriesForContext:lastObject2 withAnimation:animationCopy];
+  [(CarChromeViewController *)self _reloadStatusBannerWithAnimation:animationCopy];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = sub_10059A284;
   v20[3] = &unk_10163B9E0;
-  v21 = v8;
-  v22 = v9;
-  v23 = self;
-  v24 = v12;
-  v25 = v13;
-  v26 = v11;
+  v21 = fromCopy;
+  v22 = toCopy;
+  selfCopy = self;
+  v24 = lastObject;
+  v25 = lastObject2;
+  v26 = isAnimated;
   v18[0] = _NSConcreteStackBlock;
   v18[1] = 3221225472;
   v18[2] = sub_10059A874;
@@ -7250,22 +7250,22 @@ LABEL_14:
   v18[4] = self;
   v19 = v25;
   v14 = v25;
-  v15 = v12;
-  v16 = v9;
-  v17 = v8;
-  [v10 addPreparation:v20 animations:&stru_101622548 completion:v18];
+  v15 = lastObject;
+  v16 = toCopy;
+  v17 = fromCopy;
+  [animationCopy addPreparation:v20 animations:&stru_101622548 completion:v18];
 }
 
-- (void)contextStackWillUpdateFrom:(id)a3 to:(id)a4 withAnimation:(id)a5
+- (void)contextStackWillUpdateFrom:(id)from to:(id)to withAnimation:(id)animation
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  fromCopy = from;
+  toCopy = to;
+  animationCopy = animation;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v11 = [toCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v11)
   {
     v12 = v11;
@@ -7276,17 +7276,17 @@ LABEL_14:
       {
         if (*v19 != v13)
         {
-          objc_enumerationMutation(v9);
+          objc_enumerationMutation(toCopy);
         }
 
         v15 = *(*(&v18 + 1) + 8 * i);
-        if ([v8 containsObject:v15] & 1) == 0 && (objc_opt_respondsToSelector())
+        if ([fromCopy containsObject:v15] & 1) == 0 && (objc_opt_respondsToSelector())
         {
           [v15 setChromeViewController:self];
         }
       }
 
-      v12 = [v9 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v12 = [toCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v12);
@@ -7294,21 +7294,21 @@ LABEL_14:
 
   v17.receiver = self;
   v17.super_class = CarChromeViewController;
-  [(ChromeViewController *)&v17 contextStackWillUpdateFrom:v8 to:v9 withAnimation:v10];
-  v16 = [(ChromeViewController *)self mapView];
-  [(CarChromeViewController *)self _resetMapViewDefaults:v16];
+  [(ChromeViewController *)&v17 contextStackWillUpdateFrom:fromCopy to:toCopy withAnimation:animationCopy];
+  mapView = [(ChromeViewController *)self mapView];
+  [(CarChromeViewController *)self _resetMapViewDefaults:mapView];
 }
 
-- (void)setNotificationLayoutGuide:(id)a3
+- (void)setNotificationLayoutGuide:(id)guide
 {
-  v5 = a3;
-  if (!v5)
+  guideCopy = guide;
+  if (!guideCopy)
   {
     goto LABEL_5;
   }
 
-  v6 = [(ChromeViewController *)self mapInsetsLayoutGuide];
-  if (!v6 || [(ChromeViewController *)self isSuppressed])
+  mapInsetsLayoutGuide = [(ChromeViewController *)self mapInsetsLayoutGuide];
+  if (!mapInsetsLayoutGuide || [(ChromeViewController *)self isSuppressed])
   {
 
 LABEL_5:
@@ -7318,20 +7318,20 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  v8 = [(CarChromeViewController *)self isViewLoaded];
+  isViewLoaded = [(CarChromeViewController *)self isViewLoaded];
 
-  if ((v8 & 1) == 0)
+  if ((isViewLoaded & 1) == 0)
   {
     goto LABEL_5;
   }
 
-  if (self->_notificationLayoutGuide != v5)
+  if (self->_notificationLayoutGuide != guideCopy)
   {
-    objc_storeStrong(&self->_notificationLayoutGuide, a3);
-    v9 = [(UILayoutGuide *)self->_notificationLayoutGuide topAnchor];
-    v10 = [(ChromeViewController *)self mapInsetsLayoutGuide];
-    v11 = [v10 bottomAnchor];
-    v12 = [v9 constraintGreaterThanOrEqualToAnchor:v11];
+    objc_storeStrong(&self->_notificationLayoutGuide, guide);
+    topAnchor = [(UILayoutGuide *)self->_notificationLayoutGuide topAnchor];
+    mapInsetsLayoutGuide2 = [(ChromeViewController *)self mapInsetsLayoutGuide];
+    bottomAnchor = [mapInsetsLayoutGuide2 bottomAnchor];
+    v12 = [topAnchor constraintGreaterThanOrEqualToAnchor:bottomAnchor];
     v14 = v12;
     v13 = [NSArray arrayWithObjects:&v14 count:1];
     [NSLayoutConstraint activateConstraints:v13];
@@ -7341,36 +7341,36 @@ LABEL_5:
 LABEL_6:
 }
 
-- (BOOL)_shouldMapControlsModifyMapInsetsForContext:(id)a3
+- (BOOL)_shouldMapControlsModifyMapInsetsForContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 shouldMapControlsModifyMapInsets];
+    shouldMapControlsModifyMapInsets = [contextCopy shouldMapControlsModifyMapInsets];
   }
 
   else
   {
-    v4 = 0;
+    shouldMapControlsModifyMapInsets = 0;
   }
 
-  return v4;
+  return shouldMapControlsModifyMapInsets;
 }
 
-- (BOOL)_shouldAccessoriesModifyMapInsetsForContext:(id)a3
+- (BOOL)_shouldAccessoriesModifyMapInsetsForContext:(id)context
 {
-  v3 = a3;
+  contextCopy = context;
   if (GEOConfigGetBOOL() && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    v4 = [v3 shouldAccessoriesModifyMapInsets];
+    shouldAccessoriesModifyMapInsets = [contextCopy shouldAccessoriesModifyMapInsets];
   }
 
   else
   {
-    v4 = 0;
+    shouldAccessoriesModifyMapInsets = 0;
   }
 
-  return v4;
+  return shouldAccessoriesModifyMapInsets;
 }
 
 - (void)viewSafeAreaInsetsDidChange
@@ -7381,11 +7381,11 @@ LABEL_6:
   [(ChromeViewController *)self setNeedsUpdateMapInsets];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v6 viewDidDisappear:a3];
+  [(CarChromeViewController *)&v6 viewDidDisappear:disappear];
   self->_isCurrentlyVisible = 0;
   v4 = [(ChromeViewController *)self acquireChromeDeactivationTokenForReason:@"view controller no longer in hierarchy"];
   visibilityDeactivationToken = self->_visibilityDeactivationToken;
@@ -7394,32 +7394,32 @@ LABEL_6:
   [(CarChromeViewController *)self _updateAutohideBehavior];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v4 viewWillDisappear:a3];
+  [(CarChromeViewController *)&v4 viewWillDisappear:disappear];
   [(CarChromeViewController *)self _updateAutohideBehavior];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v6.receiver = self;
   v6.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v6 viewDidAppear:a3];
+  [(CarChromeViewController *)&v6 viewDidAppear:appear];
   v4 = +[GEOOfflineService shared];
-  v5 = [(ChromeViewController *)self mapView];
-  [v4 registerMapView:v5 withPriority:{-[CarChromeViewController sceneType](self, "sceneType")}];
+  mapView = [(ChromeViewController *)self mapView];
+  [v4 registerMapView:mapView withPriority:{-[CarChromeViewController sceneType](self, "sceneType")}];
 
   [(CarChromeViewController *)self _updateAutohideBehavior];
   [(CarChromeViewController *)self interruptAutohideForIncidentalInteraction];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v5 viewWillAppear:a3];
+  [(CarChromeViewController *)&v5 viewWillAppear:appear];
   self->_isCurrentlyVisible = 1;
   [(CarChromeViewController *)self _updateMapToCurrentUserInterfaceStyleAnimated:0];
   [(CarChromeViewController *)self _updateAutohideBehavior];
@@ -7435,29 +7435,29 @@ LABEL_6:
   v49.receiver = self;
   v49.super_class = CarChromeViewController;
   [(ChromeViewController *)&v49 viewDidLoad];
-  v3 = [(CarChromeViewController *)self view];
-  [v3 setTintAdjustmentMode:1];
+  view = [(CarChromeViewController *)self view];
+  [view setTintAdjustmentMode:1];
 
-  v4 = [(CarChromeViewController *)self backButtonRecognizer];
+  backButtonRecognizer = [(CarChromeViewController *)self backButtonRecognizer];
 
-  if (!v4)
+  if (!backButtonRecognizer)
   {
     v5 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_handleBackButtonPressed:"];
     [(CarChromeViewController *)self setBackButtonRecognizer:v5];
 
-    v6 = [(CarChromeViewController *)self backButtonRecognizer];
-    [v6 setAllowedPressTypes:&off_1016EC728];
+    backButtonRecognizer2 = [(CarChromeViewController *)self backButtonRecognizer];
+    [backButtonRecognizer2 setAllowedPressTypes:&off_1016EC728];
 
-    v7 = [(CarChromeViewController *)self backButtonRecognizer];
-    [v7 setDelegate:self];
+    backButtonRecognizer3 = [(CarChromeViewController *)self backButtonRecognizer];
+    [backButtonRecognizer3 setDelegate:self];
 
-    v8 = [(CarChromeViewController *)self backButtonRecognizer];
-    [v8 setEnabled:0];
+    backButtonRecognizer4 = [(CarChromeViewController *)self backButtonRecognizer];
+    [backButtonRecognizer4 setEnabled:0];
   }
 
-  v9 = [(CarChromeViewController *)self view];
-  v10 = [(CarChromeViewController *)self backButtonRecognizer];
-  [v9 addGestureRecognizer:v10];
+  view2 = [(CarChromeViewController *)self view];
+  backButtonRecognizer5 = [(CarChromeViewController *)self backButtonRecognizer];
+  [view2 addGestureRecognizer:backButtonRecognizer5];
 
   v11 = objc_alloc_init(UILayoutGuide);
   cardsLayoutGuide = self->_cardsLayoutGuide;
@@ -7468,8 +7468,8 @@ LABEL_6:
   v15 = [NSString stringWithFormat:@"%@.cardsLayoutGuide", v14];
   [(UILayoutGuide *)self->_cardsLayoutGuide setIdentifier:v15];
 
-  v16 = [(CarChromeViewController *)self view];
-  [v16 addLayoutGuide:self->_cardsLayoutGuide];
+  view3 = [(CarChromeViewController *)self view];
+  [view3 addLayoutGuide:self->_cardsLayoutGuide];
 
   v17 = objc_alloc_init(UILayoutGuide);
   statusBannerLayoutGuide = self->_statusBannerLayoutGuide;
@@ -7480,8 +7480,8 @@ LABEL_6:
   v21 = [NSString stringWithFormat:@"%@.statusBannerLayoutGuide", v20];
   [(UILayoutGuide *)self->_statusBannerLayoutGuide setIdentifier:v21];
 
-  v22 = [(CarChromeViewController *)self view];
-  [v22 addLayoutGuide:self->_statusBannerLayoutGuide];
+  view4 = [(CarChromeViewController *)self view];
+  [view4 addLayoutGuide:self->_statusBannerLayoutGuide];
 
   v23 = objc_alloc_init(UILayoutGuide);
   accessoriesCompactLayoutGuide = self->_accessoriesCompactLayoutGuide;
@@ -7492,43 +7492,43 @@ LABEL_6:
   v27 = [NSString stringWithFormat:@"%@.accessoriesDashboardLayoutGuide", v26];
   [(UILayoutGuide *)self->_accessoriesCompactLayoutGuide setIdentifier:v27];
 
-  v28 = [(CarChromeViewController *)self view];
-  [v28 addLayoutGuide:self->_accessoriesCompactLayoutGuide];
+  view5 = [(CarChromeViewController *)self view];
+  [view5 addLayoutGuide:self->_accessoriesCompactLayoutGuide];
 
   v29 = [[CarCardsOverlay alloc] initWithCarSceneType:[(CarChromeViewController *)self sceneType]];
   [(CarCardsOverlay *)v29 setCardDelegate:self];
-  v30 = [(ChromeViewController *)self overlayController];
-  [v30 addOverlay:v29 inLayoutGuide:self->_cardsLayoutGuide];
+  overlayController = [(ChromeViewController *)self overlayController];
+  [overlayController addOverlay:v29 inLayoutGuide:self->_cardsLayoutGuide];
 
   [(CarChromeViewController *)self setCardsOverlay:v29];
   v31 = [[CarStatusBannerOverlay alloc] initWithChromeViewController:self];
   [(CarStatusBannerOverlay *)v31 setDelegate:self];
-  v32 = [(ChromeViewController *)self overlayController];
-  [v32 addOverlay:v31 inLayoutGuide:self->_statusBannerLayoutGuide];
+  overlayController2 = [(ChromeViewController *)self overlayController];
+  [overlayController2 addOverlay:v31 inLayoutGuide:self->_statusBannerLayoutGuide];
 
   [(CarChromeViewController *)self setStatusBannerOverlay:v31];
   v33 = [[CarAccessoriesOverlay alloc] initWithCarSceneType:self->_sceneType];
   if ([(CarChromeViewController *)self sceneType]== 6 && GEOConfigGetBOOL())
   {
     [(CarAccessoriesOverlay *)v33 setIgnoresCollisionConstraints:1];
-    v34 = [(ChromeViewController *)self overlayController];
-    v35 = [(ChromeViewController *)self viewportLayoutGuide];
-    [v34 addOverlay:v33 inLayoutGuide:v35];
+    overlayController3 = [(ChromeViewController *)self overlayController];
+    viewportLayoutGuide = [(ChromeViewController *)self viewportLayoutGuide];
+    [overlayController3 addOverlay:v33 inLayoutGuide:viewportLayoutGuide];
   }
 
   else
   {
-    v36 = [(CarChromeViewController *)self sceneType];
-    if (v36 <= 6 && ((1 << v36) & 0x72) != 0 && [(CarChromeViewController *)self sceneType]< 4)
+    sceneType = [(CarChromeViewController *)self sceneType];
+    if (sceneType <= 6 && ((1 << sceneType) & 0x72) != 0 && [(CarChromeViewController *)self sceneType]< 4)
     {
-      v34 = [(ChromeViewController *)self overlayController];
-      [v34 addOverlay:v33];
+      overlayController3 = [(ChromeViewController *)self overlayController];
+      [overlayController3 addOverlay:v33];
     }
 
     else
     {
-      v34 = [(ChromeViewController *)self overlayController];
-      [v34 addOverlay:v33 inLayoutGuide:self->_accessoriesCompactLayoutGuide];
+      overlayController3 = [(ChromeViewController *)self overlayController];
+      [overlayController3 addOverlay:v33 inLayoutGuide:self->_accessoriesCompactLayoutGuide];
     }
   }
 
@@ -7537,23 +7537,23 @@ LABEL_6:
   {
     v37 = objc_alloc_init(CarMapControlsOverlay);
     [(CarMapControlsOverlay *)v37 setDelegate:self];
-    v38 = [(ChromeViewController *)self overlayController];
-    [v38 addOverlay:v37];
+    overlayController4 = [(ChromeViewController *)self overlayController];
+    [overlayController4 addOverlay:v37];
 
     [(CarChromeViewController *)self setMapControlsOverlay:v37];
   }
 
-  v39 = [(ChromeViewController *)self mapInsetsLayoutGuide];
-  v40 = [v39 topAnchor];
-  v41 = [(CarChromeViewController *)self view];
-  v42 = [v41 topAnchor];
-  v43 = [v40 constraintGreaterThanOrEqualToAnchor:v42 constant:0.0];
+  mapInsetsLayoutGuide = [(ChromeViewController *)self mapInsetsLayoutGuide];
+  topAnchor = [mapInsetsLayoutGuide topAnchor];
+  view6 = [(CarChromeViewController *)self view];
+  topAnchor2 = [view6 topAnchor];
+  v43 = [topAnchor constraintGreaterThanOrEqualToAnchor:topAnchor2 constant:0.0];
   headingUpMapInsetAdjustmentConstraint = self->_headingUpMapInsetAdjustmentConstraint;
   self->_headingUpMapInsetAdjustmentConstraint = v43;
 
   v45 = [CarFocusContainerGuideController alloc];
-  v46 = [(CarChromeViewController *)self view];
-  v47 = [(CarFocusContainerGuideController *)v45 initWithHostView:v46];
+  view7 = [(CarChromeViewController *)self view];
+  v47 = [(CarFocusContainerGuideController *)v45 initWithHostView:view7];
   focusContainerGuideController = self->_focusContainerGuideController;
   self->_focusContainerGuideController = v47;
 }
@@ -7564,16 +7564,16 @@ LABEL_6:
   [(CarChromeViewController *)self setView:v3];
 
   v5 = +[UIColor systemBackgroundColor];
-  v4 = [(CarChromeViewController *)self view];
-  [v4 setBackgroundColor:v5];
+  view = [(CarChromeViewController *)self view];
+  [view setBackgroundColor:v5];
 }
 
 - (ChromeMapSettings)transientMapSettings
 {
   v3 = [[ChromeMapSettings alloc] initWithType:0 userInterfaceIdiom:3];
   [(ChromeMapSettings *)v3 setDelegate:self];
-  v4 = [(ChromeViewController *)self mapView];
-  [(ChromeMapSettings *)v3 setMapView:v4];
+  mapView = [(ChromeViewController *)self mapView];
+  [(ChromeMapSettings *)v3 setMapView:mapView];
 
   return v3;
 }
@@ -7588,8 +7588,8 @@ LABEL_6:
     self->_defaultMapSettings = v4;
 
     [(ChromeMapSettings *)self->_defaultMapSettings setDelegate:self];
-    v6 = [(ChromeViewController *)self mapView];
-    [(ChromeMapSettings *)self->_defaultMapSettings setMapView:v6];
+    mapView = [(ChromeViewController *)self mapView];
+    [(ChromeMapSettings *)self->_defaultMapSettings setMapView:mapView];
 
     defaultMapSettings = self->_defaultMapSettings;
   }
@@ -7614,20 +7614,20 @@ LABEL_6:
 
 - (id)createMapView
 {
-  v3 = [(CarChromeViewController *)self sceneType];
-  if ((v3 - 1) > 5)
+  sceneType = [(CarChromeViewController *)self sceneType];
+  if ((sceneType - 1) > 5)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = qword_101212EC8[v3 - 1];
+    v4 = qword_101212EC8[sceneType - 1];
   }
 
   v5 = [MKMapView alloc];
-  v6 = [(CarChromeViewController *)self view];
-  [v6 bounds];
+  view = [(CarChromeViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -7638,18 +7638,18 @@ LABEL_6:
   return v16;
 }
 
-- (void)didBecomeInactive:(BOOL)a3
+- (void)didBecomeInactive:(BOOL)inactive
 {
   v6.receiver = self;
   v6.super_class = CarChromeViewController;
   [(ChromeViewController *)&v6 didBecomeInactive:?];
-  if (!a3)
+  if (!inactive)
   {
     v5 = sub_10004F508();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 134349056;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "[%{public}p] Force updating light level as the map view is no longer inactive", buf, 0xCu);
     }
 
@@ -7662,7 +7662,7 @@ LABEL_6:
   v15.receiver = self;
   v15.super_class = CarChromeViewController;
   [(ChromeViewController *)&v15 didUnsuppress];
-  v3 = [(CarChromeViewController *)self topContext];
+  topContext = [(CarChromeViewController *)self topContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -7670,7 +7670,7 @@ LABEL_6:
 
   else
   {
-    v4 = [(CarChromeViewController *)self topContext];
+    topContext2 = [(CarChromeViewController *)self topContext];
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
 
@@ -7684,37 +7684,37 @@ LABEL_6:
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v17 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[%{public}p] is unsuppressing. Will try to activate RG for chrome.", buf, 0xCu);
   }
 
   v7 = +[CarDisplayController sharedInstance];
-  v8 = [v7 routeGeniusManager];
-  [v8 activateIfPossibleForChrome:self];
+  routeGeniusManager = [v7 routeGeniusManager];
+  [routeGeniusManager activateIfPossibleForChrome:self];
 
 LABEL_7:
   [(ChromeViewController *)self setNeedsUpdateComponent:@"mapcontrols" animated:0];
   [(ChromeViewController *)self setNeedsUpdateComponent:@"accessories" animated:0];
   [(ChromeViewController *)self setNeedsUpdateComponent:@"statusBanner" animated:0];
   v9 = +[MKLocationManager sharedLocationManager];
-  v10 = [v9 isLocationServicesAuthorizationNeeded];
+  isLocationServicesAuthorizationNeeded = [v9 isLocationServicesAuthorizationNeeded];
 
-  if (v10)
+  if (isLocationServicesAuthorizationNeeded)
   {
     v11 = +[NSNotificationCenter defaultCenter];
     [v11 addObserver:self selector:"_locationAuthorizationDidChange:" name:MKLocationManagerApprovalDidChangeNotification object:0];
   }
 
-  v12 = [(CarChromeViewController *)self topContext];
-  [(CarChromeViewController *)self updateCardsForContext:v12 animated:0 completion:0];
+  topContext3 = [(CarChromeViewController *)self topContext];
+  [(CarChromeViewController *)self updateCardsForContext:topContext3 animated:0 completion:0];
 
   [(ChromeViewController *)self setNeedsUpdateComponent:@"navigationDisplay" animated:0];
   currentAlertViewController = self->_currentAlertViewController;
   if (currentAlertViewController)
   {
-    v14 = [(CarAlertViewController *)currentAlertViewController presentingViewController];
+    presentingViewController = [(CarAlertViewController *)currentAlertViewController presentingViewController];
 
-    if (v14 != self)
+    if (presentingViewController != self)
     {
       [(CarChromeViewController *)self presentViewController:self->_currentAlertViewController animated:0 completion:0];
     }
@@ -7732,23 +7732,23 @@ LABEL_7:
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v15 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "[%{public}p] is suppressing. Will deactivate RG for chrome.", buf, 0xCu);
   }
 
   v5 = +[CarDisplayController sharedInstance];
-  v6 = [v5 routeGeniusManager];
-  [v6 deactivateForChrome:self];
+  routeGeniusManager = [v5 routeGeniusManager];
+  [routeGeniusManager deactivateForChrome:self];
 
-  v7 = [(ChromeViewController *)self navigationDisplay];
-  [v7 setSuppressed:1];
+  navigationDisplay = [(ChromeViewController *)self navigationDisplay];
+  [navigationDisplay setSuppressed:1];
 
   [(CarChromeViewController *)self disableDoubleTapRecognizer];
-  v8 = [(CarChromeViewController *)self nudgerizer];
-  [v8 setActive:0];
+  nudgerizer = [(CarChromeViewController *)self nudgerizer];
+  [nudgerizer setActive:0];
 
-  v9 = [(CarChromeViewController *)self cardsOverlay];
-  [v9 reset];
+  cardsOverlay = [(CarChromeViewController *)self cardsOverlay];
+  [cardsOverlay reset];
 
   notificationLayoutGuide = self->_notificationLayoutGuide;
   self->_notificationLayoutGuide = 0;
@@ -7756,9 +7756,9 @@ LABEL_7:
   currentAlertViewController = self->_currentAlertViewController;
   if (currentAlertViewController)
   {
-    v12 = [(CarAlertViewController *)currentAlertViewController presentingViewController];
+    presentingViewController = [(CarAlertViewController *)currentAlertViewController presentingViewController];
 
-    if (v12 == self)
+    if (presentingViewController == self)
     {
       [(CarChromeViewController *)self dismissViewControllerAnimated:0 completion:0];
     }
@@ -7769,18 +7769,18 @@ LABEL_7:
   [(ChromeViewController *)&v13 didSuppress];
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  v4 = a4;
-  v6 = a3;
+  disappearCopy = disappear;
+  windowCopy = window;
   v11.receiver = self;
   v11.super_class = CarChromeViewController;
-  [(CarChromeViewController *)&v11 viewDidMoveToWindow:v6 shouldAppearOrDisappear:v4];
-  if (v6)
+  [(CarChromeViewController *)&v11 viewDidMoveToWindow:windowCopy shouldAppearOrDisappear:disappearCopy];
+  if (windowCopy)
   {
     v7 = [MapsLightLevelController alloc];
-    v8 = [v6 windowScene];
-    v9 = [(MapsLightLevelController *)v7 initWithWindowScene:v8];
+    windowScene = [windowCopy windowScene];
+    v9 = [(MapsLightLevelController *)v7 initWithWindowScene:windowScene];
     lightLevelController = self->_lightLevelController;
     self->_lightLevelController = v9;
 
@@ -7794,7 +7794,7 @@ LABEL_7:
   }
 }
 
-- (CarChromeViewController)initWithCarSceneType:(int64_t)a3
+- (CarChromeViewController)initWithCarSceneType:(int64_t)type
 {
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
@@ -7843,14 +7843,14 @@ LABEL_7:
     v9 = sub_100006E1C();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
-      if (a3 > 6)
+      if (type > 6)
       {
         v10 = @".Unknown";
       }
 
       else
       {
-        v10 = off_101622758[a3];
+        v10 = off_101622758[type];
       }
 
       *buf = 134349314;
@@ -7860,7 +7860,7 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "[%{public}p] initialising with sceneType: %{public}@", buf, 0x16u);
     }
 
-    v8->_sceneType = a3;
+    v8->_sceneType = type;
     v11 = [[MapsTokenStorage alloc] initWithDelegate:v8 tokenGroupName:@"CarForcedAutohideBehaviorTokenGroup" callbackQueue:&_dispatch_main_q];
     forcedAutohideTokens = v8->_forcedAutohideTokens;
     v8->_forcedAutohideTokens = v11;
@@ -7893,7 +7893,7 @@ LABEL_7:
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
     *buf = 134349056;
-    v16 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "[%{public}p] Deallocating", buf, 0xCu);
   }
 
@@ -7907,7 +7907,7 @@ LABEL_7:
       v10 = dispatch_queue_get_label(&_dispatch_main_q);
       v11 = dispatch_queue_get_label(0);
       *buf = 136316418;
-      v16 = "[CarChromeViewController dealloc]";
+      selfCopy = "[CarChromeViewController dealloc]";
       v17 = 2080;
       v18 = "CarChromeViewController.m";
       v19 = 1024;
@@ -7928,7 +7928,7 @@ LABEL_7:
       {
         v13 = +[NSThread callStackSymbols];
         *buf = 138412290;
-        v16 = v13;
+        selfCopy = v13;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%@", buf, 0xCu);
       }
     }
@@ -7938,8 +7938,8 @@ LABEL_7:
   [v6 removeObserver:self];
 
   v7 = +[CarDisplayController sharedInstance];
-  v8 = [v7 routeGeniusManager];
-  [v8 deactivateForChrome:self];
+  routeGeniusManager = [v7 routeGeniusManager];
+  [routeGeniusManager deactivateForChrome:self];
 
   v14.receiver = self;
   v14.super_class = CarChromeViewController;

@@ -1,42 +1,42 @@
 @interface DKNotableUserDataWalletCardView
 - (CGSize)setupAssistantCredentialCardArtSize;
-- (DKNotableUserDataWalletCardView)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5;
-- (void)addCardCell:(id)a3;
-- (void)setupAssistantCredentialUpdatedCardArt:(id)a3;
+- (DKNotableUserDataWalletCardView)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon;
+- (void)addCardCell:(id)cell;
+- (void)setupAssistantCredentialUpdatedCardArt:(id)art;
 @end
 
 @implementation DKNotableUserDataWalletCardView
 
-- (DKNotableUserDataWalletCardView)initWithTitle:(id)a3 subtitle:(id)a4 icon:(id)a5
+- (DKNotableUserDataWalletCardView)initWithTitle:(id)title subtitle:(id)subtitle icon:(id)icon
 {
   v9.receiver = self;
   v9.super_class = DKNotableUserDataWalletCardView;
-  v5 = [(DKNotableUserDataCardView *)&v9 initWithTitle:a3 subtitle:a4 icon:a5];
+  v5 = [(DKNotableUserDataCardView *)&v9 initWithTitle:title subtitle:subtitle icon:icon];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     featureCardCellMap = v5->_featureCardCellMap;
-    v5->_featureCardCellMap = v6;
+    v5->_featureCardCellMap = dictionary;
   }
 
   return v5;
 }
 
-- (void)addCardCell:(id)a3
+- (void)addCardCell:(id)cell
 {
-  v4 = a3;
-  v5 = [v4 uniqueIdentifier];
+  cellCopy = cell;
+  uniqueIdentifier = [cellCopy uniqueIdentifier];
 
-  if (v5)
+  if (uniqueIdentifier)
   {
-    v6 = [(DKNotableUserDataWalletCardView *)self featureCardCellMap];
-    v7 = [v4 uniqueIdentifier];
-    [v6 setObject:v4 forKeyedSubscript:v7];
+    featureCardCellMap = [(DKNotableUserDataWalletCardView *)self featureCardCellMap];
+    uniqueIdentifier2 = [cellCopy uniqueIdentifier];
+    [featureCardCellMap setObject:cellCopy forKeyedSubscript:uniqueIdentifier2];
   }
 
   v8.receiver = self;
   v8.super_class = DKNotableUserDataWalletCardView;
-  [(DKNotableUserDataCardView *)&v8 addCardCell:v4];
+  [(DKNotableUserDataCardView *)&v8 addCardCell:cellCopy];
 }
 
 - (CGSize)setupAssistantCredentialCardArtSize
@@ -48,18 +48,18 @@
   return result;
 }
 
-- (void)setupAssistantCredentialUpdatedCardArt:(id)a3
+- (void)setupAssistantCredentialUpdatedCardArt:(id)art
 {
-  v9 = a3;
-  v4 = [(DKNotableUserDataWalletCardView *)self featureCardCellMap];
-  v5 = [v9 uniqueIdentifier];
-  v6 = [v4 objectForKeyedSubscript:v5];
+  artCopy = art;
+  featureCardCellMap = [(DKNotableUserDataWalletCardView *)self featureCardCellMap];
+  uniqueIdentifier = [artCopy uniqueIdentifier];
+  v6 = [featureCardCellMap objectForKeyedSubscript:uniqueIdentifier];
 
   if (v6)
   {
-    v7 = [v6 accessoryView];
-    v8 = [v9 passSnapshot];
-    [v7 setImage:v8];
+    accessoryView = [v6 accessoryView];
+    passSnapshot = [artCopy passSnapshot];
+    [accessoryView setImage:passSnapshot];
   }
 }
 

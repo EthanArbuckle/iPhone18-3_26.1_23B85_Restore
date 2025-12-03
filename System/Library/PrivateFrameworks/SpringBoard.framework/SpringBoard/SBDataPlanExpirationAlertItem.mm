@@ -1,32 +1,32 @@
 @interface SBDataPlanExpirationAlertItem
-- (SBDataPlanExpirationAlertItem)initWithAccountURL:(id)a3 expirationDate:(id)a4;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (SBDataPlanExpirationAlertItem)initWithAccountURL:(id)l expirationDate:(id)date;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBDataPlanExpirationAlertItem
 
-- (SBDataPlanExpirationAlertItem)initWithAccountURL:(id)a3 expirationDate:(id)a4
+- (SBDataPlanExpirationAlertItem)initWithAccountURL:(id)l expirationDate:(id)date
 {
-  v6 = a4;
-  v7 = [(SBDataPlanAccountAlertItem *)self initWithAccountURL:a3];
+  dateCopy = date;
+  v7 = [(SBDataPlanAccountAlertItem *)self initWithAccountURL:l];
   v8 = v7;
   if (v7)
   {
-    [(SBDataPlanExpirationAlertItem *)v7 setExpirationDate:v6];
+    [(SBDataPlanExpirationAlertItem *)v7 setExpirationDate:dateCopy];
   }
 
   return v8;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
   v16.receiver = self;
   v16.super_class = SBDataPlanExpirationAlertItem;
-  [(SBDataPlanAccountAlertItem *)&v16 configure:a3 requirePasscodeForActions:a4];
-  v5 = [(SBAlertItem *)self alertController];
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 localizedStringForKey:@"DATA_PLAN_ADD_TITLE" value:&stru_283094718 table:@"SpringBoard"];
-  [v5 setTitle:v7];
+  [(SBDataPlanAccountAlertItem *)&v16 configure:configure requirePasscodeForActions:actions];
+  alertController = [(SBAlertItem *)self alertController];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v7 = [mainBundle localizedStringForKey:@"DATA_PLAN_ADD_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+  [alertController setTitle:v7];
   [(NSDate *)self->_expirationDate timeIntervalSinceNow];
   if (v8 >= 3600.0)
   {
@@ -60,11 +60,11 @@
   }
 
   v12 = MEMORY[0x277CCACA8];
-  v13 = [MEMORY[0x277CCA8D8] mainBundle];
-  v14 = [v13 localizedStringForKey:v10 value:&stru_283094718 table:@"SpringBoardPlurals"];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v14 = [mainBundle2 localizedStringForKey:v10 value:&stru_283094718 table:@"SpringBoardPlurals"];
   v15 = [v12 localizedStringWithFormat:v14, v9];
 
-  [v5 setMessage:v15];
+  [alertController setMessage:v15];
 }
 
 @end

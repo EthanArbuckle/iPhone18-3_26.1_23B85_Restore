@@ -1,26 +1,26 @@
 @interface CCAppEnumTypeDisplayRepresentation
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4;
-- (CCAppEnumTypeDisplayRepresentation)initWithJSONDictionary:(id)a3 error:(id *)a4;
-- (CCAppEnumTypeDisplayRepresentation)initWithName:(id)a3 synonyms:(id)a4 error:(id *)a5;
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error;
+- (CCAppEnumTypeDisplayRepresentation)initWithJSONDictionary:(id)dictionary error:(id *)error;
+- (CCAppEnumTypeDisplayRepresentation)initWithName:(id)name synonyms:(id)synonyms error:(id *)error;
 - (NSArray)synonyms;
 - (NSString)name;
 - (id)jsonDictionary;
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4;
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type;
 @end
 
 @implementation CCAppEnumTypeDisplayRepresentation
 
-- (CCAppEnumTypeDisplayRepresentation)initWithJSONDictionary:(id)a3 error:(id *)a4
+- (CCAppEnumTypeDisplayRepresentation)initWithJSONDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   IsInstanceOfExpectedClass = CCValidateIsInstanceOfExpectedClass();
   v8 = 0;
   if (IsInstanceOfExpectedClass)
   {
-    v9 = [v6 objectForKeyedSubscript:@"name"];
-    v10 = [v6 objectForKeyedSubscript:@"synonyms"];
-    v11 = [[CCAppEnumTypeDisplayRepresentation alloc] initWithName:v9 synonyms:v10 error:a4];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"name"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"synonyms"];
+    v11 = [[CCAppEnumTypeDisplayRepresentation alloc] initWithName:v9 synonyms:v10 error:error];
   }
 
   else
@@ -37,14 +37,14 @@
   v3 = objc_opt_new();
   if (self->_name)
   {
-    v4 = [(CCAppEnumTypeDisplayRepresentation *)self name];
-    [v3 setObject:v4 forKeyedSubscript:@"name"];
+    name = [(CCAppEnumTypeDisplayRepresentation *)self name];
+    [v3 setObject:name forKeyedSubscript:@"name"];
   }
 
   if (self->_synonyms)
   {
-    v5 = [(CCAppEnumTypeDisplayRepresentation *)self synonyms];
-    [v3 setObject:v5 forKeyedSubscript:@"synonyms"];
+    synonyms = [(CCAppEnumTypeDisplayRepresentation *)self synonyms];
+    [v3 setObject:synonyms forKeyedSubscript:@"synonyms"];
   }
 
   v6 = [v3 copy];
@@ -52,19 +52,19 @@
   return v6;
 }
 
-- (void)enumerateFieldsUsingBlock:(id)a3 parentFieldType:(unsigned __int16)a4
+- (void)enumerateFieldsUsingBlock:(id)block parentFieldType:(unsigned __int16)type
 {
-  v7 = a3;
+  blockCopy = block;
   if (self->_name)
   {
     v5 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:42621 stringValue:self->_name];
-    v7[2](v7, v5);
+    blockCopy[2](blockCopy, v5);
   }
 
   if (self->_synonyms)
   {
     v6 = [objc_alloc(MEMORY[0x1E69939F0]) initWithFieldType:42622 repeatedStringValue:self->_synonyms];
-    v7[2](v7, v6);
+    blockCopy[2](blockCopy, v6);
   }
 }
 
@@ -82,11 +82,11 @@
   return v2;
 }
 
-- (BOOL)initializeFieldValuesFromData:(id)a3 error:(id *)a4
+- (BOOL)initializeFieldValuesFromData:(id)data error:(id *)error
 {
-  v37 = a4;
-  v38 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:v38];
+  errorCopy = error;
+  dataCopy = data;
+  v5 = [objc_alloc(MEMORY[0x1E6993A20]) initWithData:dataCopy];
   v6 = MEMORY[0x1E6993AB8];
   v7 = MEMORY[0x1E6993AB0];
   if (*&v5[*MEMORY[0x1E6993AB8]] < *&v5[*MEMORY[0x1E6993AB0]])
@@ -223,7 +223,7 @@ LABEL_27:
       }
     }
 
-    [v9 addObject:{name, v37}];
+    [v9 addObject:{name, errorCopy}];
     goto LABEL_27;
   }
 
@@ -239,13 +239,13 @@ LABEL_38:
   {
     CCSetError();
     v29 = 0;
-    v30 = v38;
+    v30 = dataCopy;
   }
 
   else
   {
     v31 = MEMORY[0x1E6993AA8];
-    v30 = v38;
+    v30 = dataCopy;
     if (*&v5[*MEMORY[0x1E6993AA8]])
     {
       v32 = objc_opt_class();
@@ -266,16 +266,16 @@ LABEL_38:
   return v29;
 }
 
-- (CCAppEnumTypeDisplayRepresentation)initWithName:(id)a3 synonyms:(id)a4 error:(id *)a5
+- (CCAppEnumTypeDisplayRepresentation)initWithName:(id)name synonyms:(id)synonyms error:(id *)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
+  nameCopy = name;
+  synonymsCopy = synonyms;
   v10 = objc_opt_new();
-  if (!v8)
+  if (!nameCopy)
   {
     v12 = 0;
-    if (!v9)
+    if (!synonymsCopy)
     {
       goto LABEL_15;
     }
@@ -289,7 +289,7 @@ LABEL_6:
     if (!v13)
     {
       CCSetError();
-      v22 = 0;
+      selfCopy = 0;
       v12 = v14;
       goto LABEL_18;
     }
@@ -298,7 +298,7 @@ LABEL_6:
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v15 = v9;
+    v15 = synonymsCopy;
     v16 = [v15 countByEnumeratingWithState:&v25 objects:v31 count:16];
     if (v16)
     {
@@ -337,25 +337,25 @@ LABEL_6:
   if (!IsInstanceOfExpectedClass)
   {
     CCSetError();
-    v22 = 0;
+    selfCopy = 0;
     goto LABEL_18;
   }
 
   CCPBDataWriterWriteStringField();
-  if (v9)
+  if (synonymsCopy)
   {
     goto LABEL_6;
   }
 
 LABEL_15:
-  v21 = [v10 immutableData];
-  self = [(CCItemMessage *)self initWithData:v21 error:a5];
+  immutableData = [v10 immutableData];
+  self = [(CCItemMessage *)self initWithData:immutableData error:error];
 
-  v22 = self;
+  selfCopy = self;
 LABEL_18:
 
   v23 = *MEMORY[0x1E69E9840];
-  return v22;
+  return selfCopy;
 }
 
 @end

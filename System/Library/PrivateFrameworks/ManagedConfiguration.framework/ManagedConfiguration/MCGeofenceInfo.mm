@@ -1,5 +1,5 @@
 @interface MCGeofenceInfo
-+ (id)geofenceWithID:(id)a3 latitude:(id)a4 longitude:(id)a5 radius:(id)a6;
++ (id)geofenceWithID:(id)d latitude:(id)latitude longitude:(id)longitude radius:(id)radius;
 - (id)description;
 @end
 
@@ -7,11 +7,11 @@
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
-  v4 = v3;
+  string = [MEMORY[0x1E696AD60] string];
+  v4 = string;
   if (self->_longitude)
   {
-    [v3 appendFormat:@"Longitude : %@\n", self->_longitude];
+    [string appendFormat:@"Longitude : %@\n", self->_longitude];
   }
 
   if (self->_latitude)
@@ -32,19 +32,19 @@
   return v4;
 }
 
-+ (id)geofenceWithID:(id)a3 latitude:(id)a4 longitude:(id)a5 radius:(id)a6
++ (id)geofenceWithID:(id)d latitude:(id)latitude longitude:(id)longitude radius:(id)radius
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  radiusCopy = radius;
+  longitudeCopy = longitude;
+  latitudeCopy = latitude;
+  dCopy = d;
   v13 = objc_opt_new();
-  [v13 setLatitude:v11];
+  [v13 setLatitude:latitudeCopy];
 
-  [v13 setLongitude:v10];
-  [v13 setRadius:v9];
+  [v13 setLongitude:longitudeCopy];
+  [v13 setRadius:radiusCopy];
 
-  [v13 setGeofenceId:v12];
+  [v13 setGeofenceId:dCopy];
 
   return v13;
 }

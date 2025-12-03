@@ -9,9 +9,9 @@
   v2 = [(MFMessageHeaderViewAccessibility *)self _accessibilityFindAncestor:&__block_literal_global_5 startWithSelf:0];
   objc_opt_class();
   v3 = __UIAccessibilityCastAsSafeCategory();
-  v4 = [v3 _accessibilityMessageIndexDescription];
+  _accessibilityMessageIndexDescription = [v3 _accessibilityMessageIndexDescription];
 
-  return 4 * (v4 == 0);
+  return 4 * (_accessibilityMessageIndexDescription == 0);
 }
 
 uint64_t __62__MFMessageHeaderViewAccessibility_accessibilityContainerType__block_invoke(uint64_t a1, void *a2)

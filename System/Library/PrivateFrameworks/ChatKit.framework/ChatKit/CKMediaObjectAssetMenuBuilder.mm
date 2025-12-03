@@ -1,66 +1,66 @@
 @interface CKMediaObjectAssetMenuBuilder
 - (CKMediaObjectAssetMenuBuilderDelegate)delegate;
-- (id)_copyActionForChatItems:(id)a3;
-- (id)_deleteMenuForChatItems:(id)a3;
-- (id)_exportActionForChatItems:(id)a3;
-- (id)_exportMenuForChatItem:(id)a3;
-- (id)_forwardActionForChatItems:(id)a3;
-- (id)_forwardAndCopyMenuForChatItems:(id)a3;
-- (id)_openActionForChatItems:(id)a3;
-- (id)_quickLookActionForChatItems:(id)a3 cursorChatItem:(id)a4;
-- (id)_quickLookAndOpenActionsForChatItems:(id)a3 cursorChatItem:(id)a4;
-- (id)_quickLookAndOpenMenuForChatItems:(id)a3 cursorChatItem:(id)a4;
-- (id)_replyActionForChatItem:(id)a3;
-- (id)_tapbackActionForChatItem:(id)a3;
-- (id)_tapbackAndReplyMenuForChatItems:(id)a3;
-- (id)_tapbackElementsForChatItem:(id)a3;
-- (id)contextMenuForChatItems:(id)a3 cursorChatItem:(id)a4 isCMM:(BOOL)a5;
-- (void)_copyChatItems:(id)a3;
-- (void)_deleteChatItems:(id)a3;
-- (void)_forwardChatItems:(id)a3;
-- (void)_openFile:(id)a3;
-- (void)_openFiles:(id)a3;
-- (void)_quickLookChatItem:(id)a3;
-- (void)_replyToChatItem:(id)a3;
-- (void)_tapbackChatItem:(id)a3;
+- (id)_copyActionForChatItems:(id)items;
+- (id)_deleteMenuForChatItems:(id)items;
+- (id)_exportActionForChatItems:(id)items;
+- (id)_exportMenuForChatItem:(id)item;
+- (id)_forwardActionForChatItems:(id)items;
+- (id)_forwardAndCopyMenuForChatItems:(id)items;
+- (id)_openActionForChatItems:(id)items;
+- (id)_quickLookActionForChatItems:(id)items cursorChatItem:(id)item;
+- (id)_quickLookAndOpenActionsForChatItems:(id)items cursorChatItem:(id)item;
+- (id)_quickLookAndOpenMenuForChatItems:(id)items cursorChatItem:(id)item;
+- (id)_replyActionForChatItem:(id)item;
+- (id)_tapbackActionForChatItem:(id)item;
+- (id)_tapbackAndReplyMenuForChatItems:(id)items;
+- (id)_tapbackElementsForChatItem:(id)item;
+- (id)contextMenuForChatItems:(id)items cursorChatItem:(id)item isCMM:(BOOL)m;
+- (void)_copyChatItems:(id)items;
+- (void)_deleteChatItems:(id)items;
+- (void)_forwardChatItems:(id)items;
+- (void)_openFile:(id)file;
+- (void)_openFiles:(id)files;
+- (void)_quickLookChatItem:(id)item;
+- (void)_replyToChatItem:(id)item;
+- (void)_tapbackChatItem:(id)item;
 @end
 
 @implementation CKMediaObjectAssetMenuBuilder
 
-- (id)contextMenuForChatItems:(id)a3 cursorChatItem:(id)a4 isCMM:(BOOL)a5
+- (id)contextMenuForChatItems:(id)items cursorChatItem:(id)item isCMM:(BOOL)m
 {
-  v8 = a3;
-  v9 = a4;
+  itemsCopy = items;
+  itemCopy = item;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__6;
   v23 = __Block_byref_object_dispose__6;
-  v24 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __78__CKMediaObjectAssetMenuBuilder_contextMenuForChatItems_cursorChatItem_isCMM___block_invoke;
   aBlock[3] = &unk_1E72ED128;
   aBlock[4] = &v19;
   v10 = _Block_copy(aBlock);
-  v11 = [(CKMediaObjectAssetMenuBuilder *)self _quickLookAndOpenMenuForChatItems:v8 cursorChatItem:v9];
+  v11 = [(CKMediaObjectAssetMenuBuilder *)self _quickLookAndOpenMenuForChatItems:itemsCopy cursorChatItem:itemCopy];
   v10[2](v10, v11);
 
-  v12 = [(CKMediaObjectAssetMenuBuilder *)self _exportMenuForChatItem:v8];
+  v12 = [(CKMediaObjectAssetMenuBuilder *)self _exportMenuForChatItem:itemsCopy];
   v10[2](v10, v12);
 
-  if (!a5)
+  if (!m)
   {
-    v13 = [(CKMediaObjectAssetMenuBuilder *)self _tapbackAndReplyMenuForChatItems:v8];
+    v13 = [(CKMediaObjectAssetMenuBuilder *)self _tapbackAndReplyMenuForChatItems:itemsCopy];
     v10[2](v10, v13);
   }
 
-  v14 = [(CKMediaObjectAssetMenuBuilder *)self _forwardAndCopyMenuForChatItems:v8];
+  v14 = [(CKMediaObjectAssetMenuBuilder *)self _forwardAndCopyMenuForChatItems:itemsCopy];
   v10[2](v10, v14);
 
-  if (!a5)
+  if (!m)
   {
-    v15 = [(CKMediaObjectAssetMenuBuilder *)self _deleteMenuForChatItems:v8];
+    v15 = [(CKMediaObjectAssetMenuBuilder *)self _deleteMenuForChatItems:itemsCopy];
     v10[2](v10, v15);
   }
 
@@ -89,9 +89,9 @@ uint64_t __78__CKMediaObjectAssetMenuBuilder_contextMenuForChatItems_cursorChatI
   return result;
 }
 
-- (id)_quickLookAndOpenMenuForChatItems:(id)a3 cursorChatItem:(id)a4
+- (id)_quickLookAndOpenMenuForChatItems:(id)items cursorChatItem:(id)item
 {
-  v4 = [(CKMediaObjectAssetMenuBuilder *)self _quickLookAndOpenActionsForChatItems:a3 cursorChatItem:a4];
+  v4 = [(CKMediaObjectAssetMenuBuilder *)self _quickLookAndOpenActionsForChatItems:items cursorChatItem:item];
   if ([v4 count])
   {
     v5 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:v4];
@@ -105,33 +105,33 @@ uint64_t __78__CKMediaObjectAssetMenuBuilder_contextMenuForChatItems_cursorChatI
   return v5;
 }
 
-- (id)_quickLookAndOpenActionsForChatItems:(id)a3 cursorChatItem:(id)a4
+- (id)_quickLookAndOpenActionsForChatItems:(id)items cursorChatItem:(id)item
 {
   v6 = MEMORY[0x1E695DF70];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v6 array];
-  v10 = [(CKMediaObjectAssetMenuBuilder *)self _quickLookActionForChatItems:v8 cursorChatItem:v7];
+  itemCopy = item;
+  itemsCopy = items;
+  array = [v6 array];
+  v10 = [(CKMediaObjectAssetMenuBuilder *)self _quickLookActionForChatItems:itemsCopy cursorChatItem:itemCopy];
 
-  v11 = [(CKMediaObjectAssetMenuBuilder *)self _openActionForChatItems:v8];
+  v11 = [(CKMediaObjectAssetMenuBuilder *)self _openActionForChatItems:itemsCopy];
 
   if (v10)
   {
-    [v9 addObject:v10];
+    [array addObject:v10];
   }
 
   if (v11)
   {
-    [v9 addObject:v11];
+    [array addObject:v11];
   }
 
-  return v9;
+  return array;
 }
 
-- (id)_quickLookActionForChatItems:(id)a3 cursorChatItem:(id)a4
+- (id)_quickLookActionForChatItems:(id)items cursorChatItem:(id)item
 {
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v8 = MEMORY[0x1E69DC628];
   v9 = CKFrameworkBundle();
@@ -141,7 +141,7 @@ uint64_t __78__CKMediaObjectAssetMenuBuilder_contextMenuForChatItems_cursorChatI
   v14[2] = __77__CKMediaObjectAssetMenuBuilder__quickLookActionForChatItems_cursorChatItem___block_invoke;
   v14[3] = &unk_1E72EBF48;
   objc_copyWeak(&v16, &location);
-  v11 = v7;
+  v11 = itemCopy;
   v15 = v11;
   v12 = [v8 actionWithTitle:v10 image:0 identifier:0 handler:v14];
 
@@ -157,23 +157,23 @@ void __77__CKMediaObjectAssetMenuBuilder__quickLookActionForChatItems_cursorChat
   [WeakRetained _quickLookChatItem:*(a1 + 32)];
 }
 
-- (void)_quickLookChatItem:(id)a3
+- (void)_quickLookChatItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CKMediaObjectAssetMenuBuilder *)self delegate];
-  [v5 menuBuilder:self quickLookChatItem:v4];
+  itemCopy = item;
+  delegate = [(CKMediaObjectAssetMenuBuilder *)self delegate];
+  [delegate menuBuilder:self quickLookChatItem:itemCopy];
 }
 
-- (id)_openActionForChatItems:(id)a3
+- (id)_openActionForChatItems:(id)items
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  itemsCopy = items;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
@@ -187,13 +187,13 @@ void __77__CKMediaObjectAssetMenuBuilder__quickLookActionForChatItems_cursorChat
           objc_enumerationMutation(v6);
         }
 
-        v10 = [*(*(&v22 + 1) + 8 * i) mediaObject];
-        v11 = [v10 fileURL];
-        v12 = [v11 path];
+        mediaObject = [*(*(&v22 + 1) + 8 * i) mediaObject];
+        fileURL = [mediaObject fileURL];
+        path = [fileURL path];
 
-        if (v12)
+        if (path)
         {
-          [v5 addObject:v12];
+          [v5 addObject:path];
         }
       }
 
@@ -235,15 +235,15 @@ void __57__CKMediaObjectAssetMenuBuilder__openActionForChatItems___block_invoke(
   [WeakRetained _openFiles:*(a1 + 32)];
 }
 
-- (void)_openFiles:(id)a3
+- (void)_openFiles:(id)files
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  filesCopy = files;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [filesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -255,37 +255,37 @@ void __57__CKMediaObjectAssetMenuBuilder__openActionForChatItems___block_invoke(
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(filesCopy);
         }
 
         [(CKMediaObjectAssetMenuBuilder *)self _openFile:*(*(&v9 + 1) + 8 * v8++)];
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [filesCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (void)_openFile:(id)a3
+- (void)_openFile:(id)file
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = a3;
-  v6 = [[v3 alloc] initFileURLWithPath:v4];
+  fileCopy = file;
+  v6 = [[v3 alloc] initFileURLWithPath:fileCopy];
 
   if (v6)
   {
-    v5 = [MEMORY[0x1E6963608] defaultWorkspace];
-    [v5 openURL:v6 configuration:0 completionHandler:0];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
+    [defaultWorkspace openURL:v6 configuration:0 completionHandler:0];
   }
 }
 
-- (id)_exportMenuForChatItem:(id)a3
+- (id)_exportMenuForChatItem:(id)item
 {
   v9[1] = *MEMORY[0x1E69E9840];
-  v3 = [(CKMediaObjectAssetMenuBuilder *)self _exportActionForChatItems:a3];
+  v3 = [(CKMediaObjectAssetMenuBuilder *)self _exportActionForChatItems:item];
   v4 = v3;
   if (v3)
   {
@@ -303,16 +303,16 @@ void __57__CKMediaObjectAssetMenuBuilder__openActionForChatItems___block_invoke(
   return v7;
 }
 
-- (id)_exportActionForChatItems:(id)a3
+- (id)_exportActionForChatItems:(id)items
 {
   v24 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v3, "count")}];
+  itemsCopy = items;
+  v4 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v5 = v3;
+  v5 = itemsCopy;
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v6)
   {
@@ -330,8 +330,8 @@ void __57__CKMediaObjectAssetMenuBuilder__openActionForChatItems___block_invoke(
         v10 = *(*(&v19 + 1) + 8 * i);
         if ([v10 canExport])
         {
-          v11 = [v10 mediaObject];
-          [v4 addObject:v11];
+          mediaObject = [v10 mediaObject];
+          [v4 addObject:mediaObject];
         }
       }
 
@@ -413,28 +413,28 @@ LABEL_9:
   }
 }
 
-- (id)_tapbackAndReplyMenuForChatItems:(id)a3
+- (id)_tapbackAndReplyMenuForChatItems:(id)items
 {
-  v4 = a3;
-  if ([v4 count] == 1 && (-[CKMediaObjectAssetMenuBuilder delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "shouldHideInteractionsForMenuBuilder:", self), v5, (v6 & 1) == 0))
+  itemsCopy = items;
+  if ([itemsCopy count] == 1 && (-[CKMediaObjectAssetMenuBuilder delegate](self, "delegate"), v5 = objc_claimAutoreleasedReturnValue(), v6 = objc_msgSend(v5, "shouldHideInteractionsForMenuBuilder:", self), v5, (v6 & 1) == 0))
   {
-    v8 = [v4 firstObject];
-    v9 = [MEMORY[0x1E695DF70] array];
-    v10 = [(CKMediaObjectAssetMenuBuilder *)self _tapbackElementsForChatItem:v8];
+    firstObject = [itemsCopy firstObject];
+    array = [MEMORY[0x1E695DF70] array];
+    v10 = [(CKMediaObjectAssetMenuBuilder *)self _tapbackElementsForChatItem:firstObject];
     if (v10)
     {
-      [v9 addObjectsFromArray:v10];
+      [array addObjectsFromArray:v10];
     }
 
-    v11 = [(CKMediaObjectAssetMenuBuilder *)self _replyActionForChatItem:v8];
+    v11 = [(CKMediaObjectAssetMenuBuilder *)self _replyActionForChatItem:firstObject];
     if (v11)
     {
-      [v9 addObject:v11];
+      [array addObject:v11];
     }
 
-    if ([v9 count])
+    if ([array count])
     {
-      v7 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:v9];
+      v7 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:array];
     }
 
     else
@@ -451,9 +451,9 @@ LABEL_9:
   return v7;
 }
 
-- (id)_tapbackActionForChatItem:(id)a3
+- (id)_tapbackActionForChatItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DC628];
   v6 = CKFrameworkBundle();
@@ -463,7 +463,7 @@ LABEL_9:
   v11[2] = __59__CKMediaObjectAssetMenuBuilder__tapbackActionForChatItem___block_invoke;
   v11[3] = &unk_1E72EBF48;
   objc_copyWeak(&v13, &location);
-  v8 = v4;
+  v8 = itemCopy;
   v12 = v8;
   v9 = [v5 actionWithTitle:v7 image:0 identifier:0 handler:v11];
 
@@ -479,25 +479,25 @@ void __59__CKMediaObjectAssetMenuBuilder__tapbackActionForChatItem___block_invok
   [WeakRetained _tapbackChatItem:*(a1 + 32)];
 }
 
-- (id)_tapbackElementsForChatItem:(id)a3
+- (id)_tapbackElementsForChatItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CKMediaObjectAssetMenuBuilder *)self delegate];
-  v6 = [v5 menuBuilder:self tapbackElementsForChatItem:v4];
+  itemCopy = item;
+  delegate = [(CKMediaObjectAssetMenuBuilder *)self delegate];
+  v6 = [delegate menuBuilder:self tapbackElementsForChatItem:itemCopy];
 
   return v6;
 }
 
-- (void)_tapbackChatItem:(id)a3
+- (void)_tapbackChatItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CKMediaObjectAssetMenuBuilder *)self delegate];
-  [v5 menuBuilder:self tapbackChatItem:v4];
+  itemCopy = item;
+  delegate = [(CKMediaObjectAssetMenuBuilder *)self delegate];
+  [delegate menuBuilder:self tapbackChatItem:itemCopy];
 }
 
-- (id)_replyActionForChatItem:(id)a3
+- (id)_replyActionForChatItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DC628];
   v6 = CKFrameworkBundle();
@@ -507,7 +507,7 @@ void __59__CKMediaObjectAssetMenuBuilder__tapbackActionForChatItem___block_invok
   v11[2] = __57__CKMediaObjectAssetMenuBuilder__replyActionForChatItem___block_invoke;
   v11[3] = &unk_1E72EBF48;
   objc_copyWeak(&v13, &location);
-  v8 = v4;
+  v8 = itemCopy;
   v12 = v8;
   v9 = [v5 actionWithTitle:v7 image:0 identifier:0 handler:v11];
 
@@ -523,32 +523,32 @@ void __57__CKMediaObjectAssetMenuBuilder__replyActionForChatItem___block_invoke(
   [WeakRetained _replyToChatItem:*(a1 + 32)];
 }
 
-- (void)_replyToChatItem:(id)a3
+- (void)_replyToChatItem:(id)item
 {
-  v4 = a3;
-  v5 = [(CKMediaObjectAssetMenuBuilder *)self delegate];
-  [v5 menuBuilder:self replyChatItem:v4];
+  itemCopy = item;
+  delegate = [(CKMediaObjectAssetMenuBuilder *)self delegate];
+  [delegate menuBuilder:self replyChatItem:itemCopy];
 }
 
-- (id)_forwardAndCopyMenuForChatItems:(id)a3
+- (id)_forwardAndCopyMenuForChatItems:(id)items
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] array];
-  v6 = [(CKMediaObjectAssetMenuBuilder *)self _forwardActionForChatItems:v4];
+  itemsCopy = items;
+  array = [MEMORY[0x1E695DF70] array];
+  v6 = [(CKMediaObjectAssetMenuBuilder *)self _forwardActionForChatItems:itemsCopy];
   if (v6)
   {
-    [v5 addObject:v6];
+    [array addObject:v6];
   }
 
-  v7 = [(CKMediaObjectAssetMenuBuilder *)self _copyActionForChatItems:v4];
+  v7 = [(CKMediaObjectAssetMenuBuilder *)self _copyActionForChatItems:itemsCopy];
   if (v7)
   {
-    [v5 addObject:v7];
+    [array addObject:v7];
   }
 
-  if ([v5 count])
+  if ([array count])
   {
-    v8 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:v5];
+    v8 = [MEMORY[0x1E69DCC60] menuWithTitle:&stru_1F04268F8 image:0 identifier:0 options:1 children:array];
   }
 
   else
@@ -559,16 +559,16 @@ void __57__CKMediaObjectAssetMenuBuilder__replyActionForChatItem___block_invoke(
   return v8;
 }
 
-- (id)_forwardActionForChatItems:(id)a3
+- (id)_forwardActionForChatItems:(id)items
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  itemsCopy = items;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -627,23 +627,23 @@ void __60__CKMediaObjectAssetMenuBuilder__forwardActionForChatItems___block_invo
   [WeakRetained _forwardChatItems:*(a1 + 32)];
 }
 
-- (void)_forwardChatItems:(id)a3
+- (void)_forwardChatItems:(id)items
 {
-  v4 = a3;
-  v5 = [(CKMediaObjectAssetMenuBuilder *)self delegate];
-  [v5 menuBuilder:self forwardChatItems:v4];
+  itemsCopy = items;
+  delegate = [(CKMediaObjectAssetMenuBuilder *)self delegate];
+  [delegate menuBuilder:self forwardChatItems:itemsCopy];
 }
 
-- (id)_copyActionForChatItems:(id)a3
+- (id)_copyActionForChatItems:(id)items
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  itemsCopy = items;
+  v5 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(itemsCopy, "count")}];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v6 = v4;
+  v6 = itemsCopy;
   v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v7)
   {
@@ -702,17 +702,17 @@ void __57__CKMediaObjectAssetMenuBuilder__copyActionForChatItems___block_invoke(
   [WeakRetained _copyChatItems:*(a1 + 32)];
 }
 
-- (void)_copyChatItems:(id)a3
+- (void)_copyChatItems:(id)items
 {
-  v4 = a3;
-  v5 = [(CKMediaObjectAssetMenuBuilder *)self delegate];
-  [v5 menuBuilder:self copyChatItems:v4];
+  itemsCopy = items;
+  delegate = [(CKMediaObjectAssetMenuBuilder *)self delegate];
+  [delegate menuBuilder:self copyChatItems:itemsCopy];
 }
 
-- (id)_deleteMenuForChatItems:(id)a3
+- (id)_deleteMenuForChatItems:(id)items
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  itemsCopy = items;
   objc_initWeak(&location, self);
   v5 = MEMORY[0x1E69DC628];
   v6 = CKFrameworkBundle();
@@ -722,7 +722,7 @@ void __57__CKMediaObjectAssetMenuBuilder__copyActionForChatItems___block_invoke(
   v14[2] = __57__CKMediaObjectAssetMenuBuilder__deleteMenuForChatItems___block_invoke;
   v14[3] = &unk_1E72EBF48;
   objc_copyWeak(&v16, &location);
-  v8 = v4;
+  v8 = itemsCopy;
   v15 = v8;
   v9 = [v5 actionWithTitle:v7 image:0 identifier:0 handler:v14];
 
@@ -743,11 +743,11 @@ void __57__CKMediaObjectAssetMenuBuilder__deleteMenuForChatItems___block_invoke(
   [WeakRetained _deleteChatItems:*(a1 + 32)];
 }
 
-- (void)_deleteChatItems:(id)a3
+- (void)_deleteChatItems:(id)items
 {
-  v4 = a3;
-  v5 = [(CKMediaObjectAssetMenuBuilder *)self delegate];
-  [v5 menuBuilder:self deleteChatItems:v4];
+  itemsCopy = items;
+  delegate = [(CKMediaObjectAssetMenuBuilder *)self delegate];
+  [delegate menuBuilder:self deleteChatItems:itemsCopy];
 }
 
 - (CKMediaObjectAssetMenuBuilderDelegate)delegate

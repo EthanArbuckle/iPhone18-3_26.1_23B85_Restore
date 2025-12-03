@@ -1,30 +1,30 @@
 @interface SMTGlobalNNLM
-+ (id)attachmentURL:(id)a3 withName:(id)a4;
-+ (id)compressedAttachmentURLFromRecipe:(id)a3 attachments:(id)a4;
++ (id)attachmentURL:(id)l withName:(id)name;
++ (id)compressedAttachmentURLFromRecipe:(id)recipe attachments:(id)attachments;
 + (void)initialize;
-- (SMTGlobalNNLM)initWithRecipe:(id)a3;
-- (id)_fetchTensorInfo:(id)a3;
-- (id)computeDelta:(BOOL)a3;
+- (SMTGlobalNNLM)initWithRecipe:(id)recipe;
+- (id)_fetchTensorInfo:(id)info;
+- (id)computeDelta:(BOOL)delta;
 - (id)evaluate;
 - (id)evaluatePartialDelta;
-- (id)getEvalTask:(id *)a3;
-- (id)getTrainTask:(id *)a3;
+- (id)getEvalTask:(id *)task;
+- (id)getTrainTask:(id *)task;
 - (id)loadData;
-- (id)restoreFromLatestWeights:(id)a3;
+- (id)restoreFromLatestWeights:(id)weights;
 - (id)setup;
 - (id)train;
 @end
 
 @implementation SMTGlobalNNLM
 
-- (id)computeDelta:(BOOL)a3
+- (id)computeDelta:(BOOL)delta
 {
-  v3 = a3;
+  deltaCopy = delta;
   v5 = objc_autoreleasePoolPush();
   v139 = 0;
   v6 = [(SMTGlobalNNLM *)self getEvalTask:&v139];
   context = v5;
-  v122 = v3;
+  v122 = deltaCopy;
   v7 = v139;
   v123 = v7;
   v125 = v6;
@@ -92,7 +92,7 @@
           v19 = *(*(&v135 + 1) + 8 * v18);
           v20 = [(__CFString *)obj objectForKeyedSubscript:v19];
           v120 = v18;
-          v21 = [v20 dataPointer];
+          dataPointer = [v20 dataPointer];
 
           v22 = 0;
           while (1)
@@ -108,14 +108,14 @@
 
             v26 = [(NSDictionary *)self->_tensorInfo objectForKeyedSubscript:v19];
             v27 = [v26 objectForKeyedSubscript:@"offset"];
-            v28 = [v27 intValue];
+            intValue = [v27 intValue];
 
             weightsRawPtr = self->_weightsRawPtr;
-            v30 = weightsRawPtr[(v22 + v28)] - v21[v22];
-            weightsRawPtr[(v22++ + v28)] = v30;
+            v30 = weightsRawPtr[(v22 + intValue)] - dataPointer[v22];
+            weightsRawPtr[(v22++ + intValue)] = v30;
             if ((LODWORD(v30) & 0x7FFFFFFFu) >= 0x7F800000)
             {
-              v37 = [NSString stringWithFormat:@"delta[%d] is not finite", v28 + v22 - 1];
+              v37 = [NSString stringWithFormat:@"delta[%d] is not finite", intValue + v22 - 1];
               v160 = NSLocalizedDescriptionKey;
               v161 = v37;
               v38 = [NSDictionary dictionaryWithObjects:&v161 forKeys:&v160 count:1];
@@ -202,7 +202,7 @@
           v10 = *(*(&v131 + 1) + 8 * v46);
           v47 = [(NSDictionary *)self->_tensorInfo objectForKeyedSubscript:v10];
           v48 = [v47 objectForKeyedSubscript:@"offset"];
-          v49 = [v48 intValue];
+          intValue2 = [v48 intValue];
 
           v50 = [(NSMutableDictionary *)self->_partialUpdateOffsets objectForKeyedSubscript:v10];
           LOBYTE(v48) = v50 == 0;
@@ -244,7 +244,7 @@
             v59 = [(NSMutableDictionary *)self->_partialUpdateOffsets objectForKeyedSubscript:v10];
             v60 = [v59 objectAtIndexedSubscript:j];
             v61 = [v60 objectForKeyedSubscript:@"start"];
-            v62 = [v61 unsignedIntValue];
+            unsignedIntValue = [v61 unsignedIntValue];
 
             v63 = [(NSMutableDictionary *)self->_partialUpdateOffsets objectForKeyedSubscript:v10];
             v64 = [v63 objectAtIndexedSubscript:j];
@@ -257,8 +257,8 @@
             [v68 floatValue];
             v70 = v69;
 
-            v71 = v62 + v49;
-            v72 = v60 + v49;
+            v71 = unsignedIntValue + intValue2;
+            v72 = v60 + intValue2;
             if (v71 < v72)
             {
               v73 = self->_numParam;
@@ -481,13 +481,13 @@ LABEL_96:
 
           if (v107)
           {
-            v109 = [NSString stringWithFormat:@"Unable to read recipe[%@]", v105];
+            v105 = [NSString stringWithFormat:@"Unable to read recipe[%@]", v105];
             v148 = NSLocalizedDescriptionKey;
-            v149 = v109;
+            v149 = v105;
             v112 = [NSDictionary dictionaryWithObjects:&v149 forKeys:&v148 count:1];
             [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:153 userInfo:v112];
             *&v10 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
-            v108 = delta;
+            deltaCopy2 = delta;
             goto LABEL_94;
           }
         }
@@ -502,17 +502,17 @@ LABEL_96:
       }
     }
 
-    v108 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"iCloudAggServiceKey"];
-    if (v108 || ([(NSDictionary *)self->_recipe objectForKeyedSubscript:@"HaruspexKey"], (v108 = objc_claimAutoreleasedReturnValue()) != 0))
+    deltaCopy2 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"iCloudAggServiceKey"];
+    if (deltaCopy2 || ([(NSDictionary *)self->_recipe objectForKeyedSubscript:@"HaruspexKey"], (deltaCopy2 = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v109 = [[NSData alloc] initWithBase64EncodedString:v108 options:0];
+      v105 = [[NSData alloc] initWithBase64EncodedString:deltaCopy2 options:0];
       v110 = NSLocalizedDescriptionKey;
-      if (!v109)
+      if (!v105)
       {
         v146 = NSLocalizedDescriptionKey;
         v147 = @"Corrupted HaruspexKey";
-        v109 = [NSDictionary dictionaryWithObjects:&v147 forKeys:&v146 count:1];
-        [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:153 userInfo:v109];
+        v105 = [NSDictionary dictionaryWithObjects:&v147 forKeys:&v146 count:1];
+        [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:153 userInfo:v105];
         *&v10 = COERCE_DOUBLE(objc_claimAutoreleasedReturnValue());
 LABEL_95:
 
@@ -522,7 +522,7 @@ LABEL_95:
 
     else
     {
-      v109 = 0;
+      v105 = 0;
       v110 = NSLocalizedDescriptionKey;
     }
 
@@ -545,15 +545,15 @@ LABEL_97:
 {
   v48[0] = 0;
   v3 = [(SMTGlobalNNLM *)self getEvalTask:v48];
-  v4 = v48[0];
+  evaluate = v48[0];
   v42 = v3;
-  if (v3 && !v4)
+  if (v3 && !evaluate)
   {
     v5 = sub_10000726C(self->_tensorInfo, v3, self->_weightsRawPtr);
     tensors = self->_tensors;
     self->_tensors = v5;
 
-    v43 = [(SMTSimpleMmapBuffer *)self->_mmappedPartialWeights dataPointer];
+    dataPointer = [(SMTSimpleMmapBuffer *)self->_mmappedPartialWeights dataPointer];
     v7 = [(SMTSimpleMmapBuffer *)self->_mmappedPartialWeights size];
     v46 = 0u;
     v47 = 0u;
@@ -594,27 +594,27 @@ LABEL_97:
             v17 = [(NSMutableDictionary *)self->_partialUpdateOffsets objectForKeyedSubscript:v14];
             v18 = [v17 objectAtIndexedSubscript:v13];
             v19 = [v18 objectForKeyedSubscript:@"start"];
-            v20 = [v19 unsignedIntegerValue];
+            unsignedIntegerValue = [v19 unsignedIntegerValue];
 
             v21 = [(NSMutableDictionary *)self->_partialUpdateOffsets objectForKeyedSubscript:v14];
             v22 = [v21 objectAtIndexedSubscript:v13];
             v23 = [v22 objectForKeyedSubscript:@"end"];
-            v24 = [v23 unsignedIntegerValue];
+            unsignedIntegerValue2 = [v23 unsignedIntegerValue];
 
             v25 = [(NSDictionary *)self->_tensorInfo objectForKeyedSubscript:v14];
             v26 = [v25 objectForKeyedSubscript:@"size"];
-            v27 = [v26 unsignedIntValue];
+            unsignedIntValue = [v26 unsignedIntValue];
 
             v28 = [(NSDictionary *)self->_tensors objectForKeyedSubscript:v14];
-            v29 = [v28 dataPointer];
+            dataPointer2 = [v28 dataPointer];
 
-            if (v20 < v24)
+            if (unsignedIntegerValue < unsignedIntegerValue2)
             {
               while (1)
               {
-                if (v20 > v27)
+                if (unsignedIntegerValue > unsignedIntValue)
                 {
-                  v34 = [NSString stringWithFormat:@"setting %@[%lu] while size(%@) == %lu", v14, v20, v14, v27];
+                  v34 = [NSString stringWithFormat:@"setting %@[%lu] while size(%@) == %lu", v14, unsignedIntegerValue, v14, unsignedIntValue];
                   v53 = NSLocalizedDescriptionKey;
                   v54 = v34;
                   v35 = [NSDictionary dictionaryWithObjects:&v54 forKeys:&v53 count:1];
@@ -628,10 +628,10 @@ LABEL_97:
                 }
 
                 v30 = v9 + 1;
-                v29[v20] = v43[v9] + v29[v20];
-                ++v20;
+                dataPointer2[unsignedIntegerValue] = dataPointer[v9] + dataPointer2[unsignedIntegerValue];
+                ++unsignedIntegerValue;
                 ++v9;
-                if (v24 == v20)
+                if (unsignedIntegerValue2 == unsignedIntegerValue)
                 {
                   goto LABEL_16;
                 }
@@ -679,10 +679,10 @@ LABEL_16:
       _os_log_debug_impl(&_mh_execute_header, v31, OS_LOG_TYPE_DEBUG, "parsed %lu chosen gradients", buf, 0xCu);
     }
 
-    v4 = [(SMTGlobalNNLM *)self evaluate];
+    evaluate = [(SMTGlobalNNLM *)self evaluate];
   }
 
-  v32 = v4;
+  v32 = evaluate;
   v33 = v32;
 LABEL_26:
 
@@ -719,11 +719,11 @@ LABEL_26:
   v8 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"learningRateName"];
   v9 = [v4 getTensorNamed:v8];
 
-  v10 = [v9 dataPointer];
+  dataPointer = [v9 dataPointer];
   v11 = qword_10003FF18;
   if (os_log_type_enabled(qword_10003FF18, OS_LOG_TYPE_INFO))
   {
-    v12 = *v10;
+    v12 = *dataPointer;
     LODWORD(buf) = 134217984;
     *(&buf + 4) = v12;
     _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "The learning rate embedded in the training graph is %f", &buf, 0xCu);
@@ -736,7 +736,7 @@ LABEL_26:
   {
     v15 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"learningRateValue"];
     [v15 floatValue];
-    *v10 = v16;
+    *dataPointer = v16;
 
     v17 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"learningRateName"];
     v91 = 0;
@@ -757,7 +757,7 @@ LABEL_26:
 
     if (os_log_type_enabled(qword_10003FF18, OS_LOG_TYPE_INFO))
     {
-      v22 = *v10;
+      v22 = *dataPointer;
       LODWORD(buf) = 134217984;
       *(&buf + 4) = v22;
       _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_INFO, "Override learning rate with value %f", &buf, 0xCu);
@@ -769,7 +769,7 @@ LABEL_15:
 
 LABEL_16:
   v23 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"batchPerUpdate"];
-  v24 = [v23 unsignedIntValue];
+  unsignedIntValue = [v23 unsignedIntValue];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -851,8 +851,8 @@ LABEL_27:
   *&v97 = 0;
   *(&v97 + 1) = &v97;
   v98 = 0x2020000000;
-  v99 = v24 > 0;
-  if (v24 >= 1)
+  v99 = unsignedIntValue > 0;
+  if (unsignedIntValue >= 1)
   {
     v37 = qword_10003FF18;
     if (os_log_type_enabled(qword_10003FF18, OS_LOG_TYPE_INFO))
@@ -871,7 +871,7 @@ LABEL_27:
   v39 = v50;
   v68 = v39;
   v69 = v55;
-  v70 = self;
+  selfCopy = self;
   v72 = v83;
   p_buf = &buf;
   v74 = v77;
@@ -886,10 +886,10 @@ LABEL_27:
   v57[3] = &unk_1000389C0;
   v41 = v39;
   v58 = v41;
-  v59 = self;
+  selfCopy2 = self;
   v60 = v83;
   v61 = &buf;
-  v66 = v24;
+  v66 = unsignedIntValue;
   v62 = &v85;
   v63 = v77;
   v64 = &v79;
@@ -981,7 +981,7 @@ LABEL_7:
   v82 = 0u;
   obj = self->_evalData;
   v66 = v3;
-  v70 = self;
+  selfCopy = self;
   v55 = [(NSMutableArray *)obj countByEnumeratingWithState:&v81 objects:v93 count:16];
   if (v55)
   {
@@ -1001,8 +1001,8 @@ LABEL_7:
 
         v62 = [*(*(&v81 + 1) + 8 * i) mutableCopy];
         [(SMTTextProcessorInference *)self->_textProcessorInference resetWithBOS:[(SMTKaldiVocab *)self->_vocab beginOfSentenceIndex]];
-        v8 = [(SMTKaldiVocab *)self->_vocab endOfSentenceToken];
-        [v62 addObject:v8];
+        endOfSentenceToken = [(SMTKaldiVocab *)self->_vocab endOfSentenceToken];
+        [v62 addObject:endOfSentenceToken];
 
         v79 = 0u;
         v80 = 0u;
@@ -1026,10 +1026,10 @@ LABEL_7:
               }
 
               v68 = *(*(&v77 + 1) + 8 * v10);
-              [(SMTTextProcessorInference *)v70->_textProcessorInference addText:?];
-              [(SMTDataSourceInference *)v70->_fofeInferenceSource setVectorsWithProcessor:v70->_textProcessorInference];
+              [(SMTTextProcessorInference *)selfCopy->_textProcessorInference addText:?];
+              [(SMTDataSourceInference *)selfCopy->_fofeInferenceSource setVectorsWithProcessor:selfCopy->_textProcessorInference];
               v11 = objc_autoreleasePoolPush();
-              fofeInferenceSource = v70->_fofeInferenceSource;
+              fofeInferenceSource = selfCopy->_fofeInferenceSource;
               v76 = v69;
               v13 = [v66 doInferenceOnData:fofeInferenceSource error:&v76];
               v14 = v76;
@@ -1071,9 +1071,9 @@ LABEL_7:
 
                       v21 = *(*(&v71 + 1) + 8 * j);
                       v22 = [v25 objectForKeyedSubscript:v21];
-                      v23 = [v22 dataPointer];
+                      dataPointer = [v22 dataPointer];
 
-                      v24 = *v23;
+                      v24 = *dataPointer;
                       v7 = v7 + v24;
                     }
 
@@ -1117,7 +1117,7 @@ LABEL_7:
         }
 
         v6 = v69;
-        self = v70;
+        self = selfCopy;
       }
 
       v55 = [(NSMutableArray *)obj countByEnumeratingWithState:&v81 objects:v93 count:16];
@@ -1135,45 +1135,45 @@ LABEL_7:
 
   v69 = v6;
 
-  v26 = [(NSMutableDictionary *)v70->_results objectForKeyedSubscript:@"NumWordsInEvaluation"];
+  v26 = [(NSMutableDictionary *)selfCopy->_results objectForKeyedSubscript:@"NumWordsInEvaluation"];
   v27 = v26;
   if (!v26)
   {
     v26 = &off_10003B180;
   }
 
-  v28 = [v26 intValue];
+  intValue = [v26 intValue];
 
-  if (v28 >= 1 && v28 != v59)
+  if (intValue >= 1 && intValue != v59)
   {
     v30 = qword_10003FF18;
     if (os_log_type_enabled(qword_10003FF18, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109376;
-      *v87 = v28;
+      *v87 = intValue;
       *&v87[4] = 1024;
       *&v87[6] = v59;
       _os_log_error_impl(&_mh_execute_header, v30, OS_LOG_TYPE_ERROR, "Data size mismatch. %d tokens were fetched while %d words were evaluated", buf, 0xEu);
     }
   }
 
-  if (v70->_weightsAreUpdated)
+  if (selfCopy->_weightsAreUpdated)
   {
-    if (v70->_mmappedPartialWeights)
+    if (selfCopy->_mmappedPartialWeights)
     {
       *&v29 = v7;
       v31 = [NSNumber numberWithFloat:v29];
-      [(NSMutableDictionary *)v70->_results setObject:v31 forKeyedSubscript:@"TotalEvalCostWithPartialUpdate"];
+      [(NSMutableDictionary *)selfCopy->_results setObject:v31 forKeyedSubscript:@"TotalEvalCostWithPartialUpdate"];
 
       v32 = v7 / v59;
       v33 = expf(v32);
       *&v34 = v32;
       v35 = [NSNumber numberWithFloat:v34];
-      [(NSMutableDictionary *)v70->_results setObject:v35 forKeyedSubscript:@"EvaluationCostWithPartialUpdate"];
+      [(NSMutableDictionary *)selfCopy->_results setObject:v35 forKeyedSubscript:@"EvaluationCostWithPartialUpdate"];
 
       *&v36 = v33;
       v37 = [NSNumber numberWithFloat:v36];
-      [(NSMutableDictionary *)v70->_results setObject:v37 forKeyedSubscript:@"EvaluationPPLWithPartialUpdate"];
+      [(NSMutableDictionary *)selfCopy->_results setObject:v37 forKeyedSubscript:@"EvaluationPPLWithPartialUpdate"];
 
       v38 = qword_10003FF18;
       if (!os_log_type_enabled(qword_10003FF18, OS_LOG_TYPE_INFO))
@@ -1192,17 +1192,17 @@ LABEL_7:
     {
       *&v29 = v7;
       v47 = [NSNumber numberWithFloat:v29];
-      [(NSMutableDictionary *)v70->_results setObject:v47 forKeyedSubscript:@"TotalEvalCostAfterTraining"];
+      [(NSMutableDictionary *)selfCopy->_results setObject:v47 forKeyedSubscript:@"TotalEvalCostAfterTraining"];
 
       v48 = v7 / v59;
       v49 = expf(v48);
       *&v50 = v48;
       v51 = [NSNumber numberWithFloat:v50];
-      [(NSMutableDictionary *)v70->_results setObject:v51 forKeyedSubscript:@"EvaluationCostAfterTraining"];
+      [(NSMutableDictionary *)selfCopy->_results setObject:v51 forKeyedSubscript:@"EvaluationCostAfterTraining"];
 
       *&v52 = v49;
       v53 = [NSNumber numberWithFloat:v52];
-      [(NSMutableDictionary *)v70->_results setObject:v53 forKeyedSubscript:@"EvaluationPPLAfterTraining"];
+      [(NSMutableDictionary *)selfCopy->_results setObject:v53 forKeyedSubscript:@"EvaluationPPLAfterTraining"];
 
       v38 = qword_10003FF18;
       if (!os_log_type_enabled(qword_10003FF18, OS_LOG_TYPE_INFO))
@@ -1222,17 +1222,17 @@ LABEL_7:
   {
     *&v29 = v7;
     v40 = [NSNumber numberWithFloat:v29];
-    [(NSMutableDictionary *)v70->_results setObject:v40 forKeyedSubscript:@"TotalEvalCostBeforeTraining"];
+    [(NSMutableDictionary *)selfCopy->_results setObject:v40 forKeyedSubscript:@"TotalEvalCostBeforeTraining"];
 
     v41 = v7 / v59;
     v42 = expf(v41);
     *&v43 = v41;
     v44 = [NSNumber numberWithFloat:v43];
-    [(NSMutableDictionary *)v70->_results setObject:v44 forKeyedSubscript:@"EvaluationCostBeforeTraining"];
+    [(NSMutableDictionary *)selfCopy->_results setObject:v44 forKeyedSubscript:@"EvaluationCostBeforeTraining"];
 
     *&v45 = v42;
     v46 = [NSNumber numberWithFloat:v45];
-    [(NSMutableDictionary *)v70->_results setObject:v46 forKeyedSubscript:@"EvaluationPPLBeforeTraining"];
+    [(NSMutableDictionary *)selfCopy->_results setObject:v46 forKeyedSubscript:@"EvaluationPPLBeforeTraining"];
 
     v38 = qword_10003FF18;
     if (!os_log_type_enabled(qword_10003FF18, OS_LOG_TYPE_INFO))
@@ -1259,9 +1259,9 @@ LABEL_59:
   return v61;
 }
 
-- (id)restoreFromLatestWeights:(id)a3
+- (id)restoreFromLatestWeights:(id)weights
 {
-  v4 = a3;
+  weightsCopy = weights;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1281,7 +1281,7 @@ LABEL_3:
       }
 
       v9 = *(*(&v14 + 1) + 8 * v8);
-      v10 = [v4 getTensorNamed:v9 directBind:1];
+      v10 = [weightsCopy getTensorNamed:v9 directBind:1];
       v11 = [(NSDictionary *)self->_tensors objectForKeyedSubscript:v9];
       v12 = sub_100009230(v11, v10);
 
@@ -1312,7 +1312,7 @@ LABEL_9:
   return v12;
 }
 
-- (id)getTrainTask:(id *)a3
+- (id)getTrainTask:(id *)task
 {
   v51[0] = @"trainingGraph";
   v51[1] = @"inferenceInputs";
@@ -1347,12 +1347,12 @@ LABEL_9:
         {
           v27 = [NSString stringWithFormat:@"Unable to read recipe[%@]", v9];
           v13 = v27;
-          if (a3)
+          if (task)
           {
             v48 = NSLocalizedDescriptionKey;
             v49 = v27;
             v28 = [NSDictionary dictionaryWithObjects:&v49 forKeys:&v48 count:1];
-            *a3 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:152 userInfo:v28];
+            *task = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:152 userInfo:v28];
           }
 
           v26 = 0;
@@ -1387,7 +1387,7 @@ LABEL_9:
 
     if (v18 || !v36)
     {
-      if (!a3)
+      if (!task)
       {
         v26 = 0;
 LABEL_43:
@@ -1403,7 +1403,7 @@ LABEL_43:
       }
 
       [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:152 userInfo:v19];
-      *a3 = v26 = 0;
+      *task = v26 = 0;
     }
 
     else
@@ -1414,7 +1414,7 @@ LABEL_43:
       v19 = v34;
       if (v18 || !v34)
       {
-        if (!a3)
+        if (!task)
         {
           v26 = 0;
           goto LABEL_42;
@@ -1427,7 +1427,7 @@ LABEL_43:
           [v30 setObject:v18 forKey:NSUnderlyingErrorKey];
         }
 
-        *a3 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:152 userInfo:v31];
+        *task = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:152 userInfo:v31];
       }
 
       else
@@ -1448,10 +1448,10 @@ LABEL_43:
         {
           v19 = v34;
           v24 = v34;
-          if (a3)
+          if (task)
           {
             v25 = [(SMTGlobalNNLM *)self restoreFromLatestWeights:v34];
-            *a3 = v25;
+            *task = v25;
             v19 = v34;
             if (v25)
             {
@@ -1469,12 +1469,12 @@ LABEL_43:
           goto LABEL_42;
         }
 
-        if (a3)
+        if (task)
         {
           v44 = NSLocalizedDescriptionKey;
           v45 = @"Unexpected number of paramters changed (training, this[%lu] vs previous[%lu])";
           v32 = [NSDictionary dictionaryWithObjects:&v45 forKeys:&v44 count:1];
-          *a3 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:152 userInfo:v32];
+          *task = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:152 userInfo:v32];
         }
 
         v18 = 0;
@@ -1489,7 +1489,7 @@ LABEL_42:
     goto LABEL_43;
   }
 
-  if (!a3)
+  if (!task)
   {
     v9 = 0;
     v26 = 0;
@@ -1501,7 +1501,7 @@ LABEL_42:
   v13 = [NSDictionary dictionaryWithObjects:&v47 forKeys:&v46 count:1];
   [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:152 userInfo:v13];
   v9 = 0;
-  *a3 = v26 = 0;
+  *task = v26 = 0;
 LABEL_44:
 
 LABEL_45:
@@ -1509,7 +1509,7 @@ LABEL_45:
   return v26;
 }
 
-- (id)getEvalTask:(id *)a3
+- (id)getEvalTask:(id *)task
 {
   v28 = 0u;
   v29 = 0u;
@@ -1536,7 +1536,7 @@ LABEL_9:
 
     if (v18 || !v17)
     {
-      if (!a3)
+      if (!task)
       {
         v20 = 0;
 LABEL_27:
@@ -1554,7 +1554,7 @@ LABEL_28:
       }
 
       [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:154 userInfo:v19];
-      *a3 = v20 = 0;
+      *task = v20 = 0;
     }
 
     else
@@ -1564,7 +1564,7 @@ LABEL_28:
       v18 = v26;
       if (v18 || !v19)
       {
-        if (a3)
+        if (task)
         {
           v23 = [NSMutableDictionary dictionaryWithObject:@"Unable to create ETTaskDefinition (evaluation)" forKey:NSLocalizedDescriptionKey];
           v24 = v23;
@@ -1573,7 +1573,7 @@ LABEL_28:
             [v23 setObject:v18 forKey:NSUnderlyingErrorKey];
           }
 
-          *a3 = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:154 userInfo:v24];
+          *task = [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:154 userInfo:v24];
         }
 
         v20 = 0;
@@ -1623,13 +1623,13 @@ LABEL_3:
 
   v21 = [NSString stringWithFormat:@"Unable to read recipe[%@]", v9];
   v12 = v21;
-  if (a3)
+  if (task)
   {
     v32 = NSLocalizedDescriptionKey;
     v33 = v21;
     v13 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
     [NSError errorWithDomain:@"com.apple.siri.speechmodeltraining" code:154 userInfo:v13];
-    *a3 = v20 = 0;
+    *task = v20 = 0;
     goto LABEL_28;
   }
 
@@ -1806,10 +1806,10 @@ LABEL_24:
 
       v40 = [SMTDataSourceInference alloc];
       v41 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"inferenceContextSize"];
-      v42 = [v41 integerValue];
+      integerValue = [v41 integerValue];
       v43 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"trainingContextKey"];
       v44 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"trainingTargetKey"];
-      v45 = [(SMTDataSourceInference *)v40 initWithLength:v42 contextKey:v43 targetKey:v44];
+      v45 = [(SMTDataSourceInference *)v40 initWithLength:integerValue contextKey:v43 targetKey:v44];
       fofeInferenceSource = self->_fofeInferenceSource;
       self->_fofeInferenceSource = v45;
 
@@ -1830,18 +1830,18 @@ LABEL_24:
       v87[5] = v41;
       [(NSMutableArray *)trainData enumerateObjectsUsingBlock:v87];
       v52 = [SMTDataSourceTrain alloc];
-      v53 = [(SMTTextProcessorTrain *)self->_textProcessorTrain numberSamples];
+      numberSamples = [(SMTTextProcessorTrain *)self->_textProcessorTrain numberSamples];
       [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"numNoise"];
-      v83 = v82 = v53;
-      LODWORD(v53) = [v83 intValue];
+      v83 = v82 = numberSamples;
+      LODWORD(numberSamples) = [v83 intValue];
       v81 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"batchSize"];
-      v54 = [v81 intValue];
-      v55 = [(SMTKaldiVocab *)self->_vocab vocabSize];
+      intValue = [v81 intValue];
+      vocabSize = [(SMTKaldiVocab *)self->_vocab vocabSize];
       v85 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"trainingContextKey"];
       v84 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"trainingTargetKey"];
       v56 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"trainingMaskKey"];
       v57 = [(NSDictionary *)self->_recipe objectForKeyedSubscript:@"trainingNoiseKey"];
-      v58 = [(SMTDataSourceTrain *)v52 initWithNumDataPoints:v82 sequenceLength:v50 noiseSize:v53 batchSize:v54 vocabSize:v55 contextKey:v85 targetKey:v84 maskKey:v56 noiseKey:v57];
+      v58 = [(SMTDataSourceTrain *)v52 initWithNumDataPoints:v82 sequenceLength:v50 noiseSize:numberSamples batchSize:intValue vocabSize:vocabSize contextKey:v85 targetKey:v84 maskKey:v56 noiseKey:v57];
       fofeTrainSource = self->_fofeTrainSource;
       self->_fofeTrainSource = v58;
 
@@ -1891,9 +1891,9 @@ LABEL_24:
             operator delete[]();
           }
 
-          v71 = [(SMTSimpleMmapBuffer *)v69 dataPointer];
-          self->_weightsRawPtr = v71;
-          v76 = sub_10000726C(self->_tensorInfo, v61, v71);
+          dataPointer = [(SMTSimpleMmapBuffer *)v69 dataPointer];
+          self->_weightsRawPtr = dataPointer;
+          v76 = sub_10000726C(self->_tensorInfo, v61, dataPointer);
           tensors = self->_tensors;
           self->_tensors = v76;
 
@@ -2078,16 +2078,16 @@ LABEL_11:
   return 0;
 }
 
-- (SMTGlobalNNLM)initWithRecipe:(id)a3
+- (SMTGlobalNNLM)initWithRecipe:(id)recipe
 {
-  v5 = a3;
+  recipeCopy = recipe;
   v16.receiver = self;
   v16.super_class = SMTGlobalNNLM;
   v6 = [(SMTGlobalNNLM *)&v16 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_recipe, a3);
+    objc_storeStrong(&v6->_recipe, recipe);
     v7->_numParam = 0;
     v8 = objc_opt_new();
     trainData = v7->_trainData;
@@ -2112,9 +2112,9 @@ LABEL_11:
   return v7;
 }
 
-- (id)_fetchTensorInfo:(id)a3
+- (id)_fetchTensorInfo:(id)info
 {
-  v29 = a3;
+  infoCopy = info;
   v26 = objc_opt_new();
   v30 = objc_opt_new();
   v42 = 0u;
@@ -2140,14 +2140,14 @@ LABEL_11:
 
         v6 = *(*(&v40 + 1) + 8 * v5);
         context = objc_autoreleasePoolPush();
-        v7 = [v29 getTensorNamed:v6 directBind:1];
+        v7 = [infoCopy getTensorNamed:v6 directBind:1];
         v38 = 0u;
         v39 = 0u;
         v36 = 0u;
         v37 = 0u;
         v35 = v7;
-        v8 = [v7 shape];
-        v9 = [v8 countByEnumeratingWithState:&v36 objects:v46 count:16];
+        shape = [v7 shape];
+        v9 = [shape countByEnumeratingWithState:&v36 objects:v46 count:16];
         if (v9)
         {
           v10 = *v37;
@@ -2158,16 +2158,16 @@ LABEL_11:
             {
               if (*v37 != v10)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(shape);
               }
 
               v13 = *(*(&v36 + 1) + 8 * i);
-              v14 = [v13 intValue];
+              intValue = [v13 intValue];
 
-              v11 = v14 * v11;
+              v11 = intValue * v11;
             }
 
-            v9 = [v8 countByEnumeratingWithState:&v36 objects:v46 count:16];
+            v9 = [shape countByEnumeratingWithState:&v36 objects:v46 count:16];
           }
 
           while (v9);
@@ -2185,13 +2185,13 @@ LABEL_11:
         v45[1] = v32;
         v44[2] = @"shape";
         v15 = [NSMutableArray alloc];
-        v16 = [v35 shape];
-        v17 = [v15 initWithArray:v16 copyItems:1];
+        shape2 = [v35 shape];
+        v17 = [v15 initWithArray:shape2 copyItems:1];
         v45[2] = v17;
         v44[3] = @"strides";
         v18 = [NSMutableArray alloc];
-        v19 = [v35 strides];
-        v20 = [v18 initWithArray:v19 copyItems:1];
+        strides = [v35 strides];
+        v20 = [v18 initWithArray:strides copyItems:1];
         v45[3] = v20;
         v44[4] = @"offset";
         v21 = [NSNumber numberWithInt:v34];
@@ -2224,14 +2224,14 @@ LABEL_11:
   return v26;
 }
 
-+ (id)compressedAttachmentURLFromRecipe:(id)a3 attachments:(id)a4
++ (id)compressedAttachmentURLFromRecipe:(id)recipe attachments:(id)attachments
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKeyedSubscript:@"compressedAttachmentFilename"];
+  recipeCopy = recipe;
+  attachmentsCopy = attachments;
+  v8 = [recipeCopy objectForKeyedSubscript:@"compressedAttachmentFilename"];
   if (v8)
   {
-    v9 = [a1 attachmentURL:v7 withName:v8];
+    v9 = [self attachmentURL:attachmentsCopy withName:v8];
     v10 = qword_10003FF18;
     if (os_log_type_enabled(qword_10003FF18, OS_LOG_TYPE_INFO))
     {
@@ -2254,20 +2254,20 @@ LABEL_11:
   return v9;
 }
 
-+ (id)attachmentURL:(id)a3 withName:(id)a4
++ (id)attachmentURL:(id)l withName:(id)name
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
+  lCopy = l;
+  nameCopy = name;
+  v7 = [lCopy count];
   v8 = 0;
-  if (v6 && v7)
+  if (nameCopy && v7)
   {
     v11[0] = _NSConcreteStackBlock;
     v11[1] = 3221225472;
     v11[2] = sub_10000D0AC;
     v11[3] = &unk_100038948;
-    v12 = v6;
-    v9 = [v5 indexOfObjectPassingTest:v11];
+    v12 = nameCopy;
+    v9 = [lCopy indexOfObjectPassingTest:v11];
     if (v9 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v8 = 0;
@@ -2275,7 +2275,7 @@ LABEL_11:
 
     else
     {
-      v8 = [v5 objectAtIndexedSubscript:v9];
+      v8 = [lCopy objectAtIndexedSubscript:v9];
     }
   }
 
@@ -2284,7 +2284,7 @@ LABEL_11:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     qword_10003FF18 = os_log_create("com.apple.speech.speechmodeltraining", "SMTGlobalNNLM");
 

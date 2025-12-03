@@ -1,7 +1,7 @@
 @interface MSTrackListTableHeaderView
 - (void)dealloc;
-- (void)drawRect:(CGRect)a3;
-- (void)setTitle:(id)a3;
+- (void)drawRect:(CGRect)rect;
+- (void)setTitle:(id)title;
 - (void)sizeToFit;
 @end
 
@@ -15,9 +15,9 @@
   [(MSTrackListTableHeaderView *)&v3 dealloc];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  [(MSTrackListTableHeaderView *)self bounds:a3.origin.x];
+  [(MSTrackListTableHeaderView *)self bounds:rect.origin.x];
   v5 = v4;
   v7 = v6;
   if (self->_title)
@@ -63,13 +63,13 @@
   [(MSTrackListTableHeaderView *)self setFrame:?];
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
   title = self->_title;
-  if (title != a3)
+  if (title != title)
   {
 
-    self->_title = a3;
+    self->_title = title;
     self->_titleSize = *MEMORY[0x277CBF3A8];
 
     [(MSTrackListTableHeaderView *)self setNeedsDisplay];

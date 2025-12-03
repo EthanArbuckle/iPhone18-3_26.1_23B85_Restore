@@ -1,31 +1,31 @@
 @interface CESRSpeechProfileCategoryGroup
-+ (id)_addAssociatedSpeechCategories:(id)a3;
++ (id)_addAssociatedSpeechCategories:(id)categories;
 + (id)_all;
 + (id)all;
-+ (id)groupForSets:(id)a3;
-+ (id)groupForSpeechCategories:(id)a3;
-+ (id)mergeGroups:(id)a3;
++ (id)groupForSets:(id)sets;
++ (id)groupForSpeechCategories:(id)categories;
++ (id)mergeGroups:(id)groups;
 + (void)_buildCaches;
-+ (void)_buildCachesFromBaseMap:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSpeechCategoryGroup:(id)a3;
-- (CESRSpeechProfileCategoryGroup)initWithItemTypes:(id)a3 speechCategories:(id)a4;
++ (void)_buildCachesFromBaseMap:(id)map;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSpeechCategoryGroup:(id)group;
+- (CESRSpeechProfileCategoryGroup)initWithItemTypes:(id)types speechCategories:(id)categories;
 - (id)description;
 - (id)speechCategoriesDescription;
 @end
 
 @implementation CESRSpeechProfileCategoryGroup
 
-- (BOOL)isEqualToSpeechCategoryGroup:(id)a3
+- (BOOL)isEqualToSpeechCategoryGroup:(id)group
 {
-  v4 = a3;
+  groupCopy = group;
   itemTypes = self->_itemTypes;
-  v6 = [v4 itemTypes];
-  if ([(NSSet *)itemTypes isEqual:v6])
+  itemTypes = [groupCopy itemTypes];
+  if ([(NSSet *)itemTypes isEqual:itemTypes])
   {
     speechCategories = self->_speechCategories;
-    v8 = [v4 speechCategories];
-    v9 = [(NSSet *)speechCategories isEqual:v8];
+    speechCategories = [groupCopy speechCategories];
+    v9 = [(NSSet *)speechCategories isEqual:speechCategories];
   }
 
   else
@@ -36,18 +36,18 @@
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CESRSpeechProfileCategoryGroup *)self isEqualToSpeechCategoryGroup:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CESRSpeechProfileCategoryGroup *)self isEqualToSpeechCategoryGroup:v5];
   }
 
   return v6;
@@ -87,8 +87,8 @@
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v18 + 1) + 8 * i) unsignedShortValue];
-        v12 = [MEMORY[0x277D21178] descriptionForTypeIdentifier:v11];
+        unsignedShortValue = [*(*(&v18 + 1) + 8 * i) unsignedShortValue];
+        v12 = [MEMORY[0x277D21178] descriptionForTypeIdentifier:unsignedShortValue];
         [v5 addObject:v12];
       }
 
@@ -108,16 +108,16 @@
   return v15;
 }
 
-- (CESRSpeechProfileCategoryGroup)initWithItemTypes:(id)a3 speechCategories:(id)a4
+- (CESRSpeechProfileCategoryGroup)initWithItemTypes:(id)types speechCategories:(id)categories
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  typesCopy = types;
+  categoriesCopy = categories;
   v17.receiver = self;
   v17.super_class = CESRSpeechProfileCategoryGroup;
   v9 = [(CESRSpeechProfileCategoryGroup *)&v17 init];
   v10 = v9;
-  if (!v9 || (objc_storeStrong(&v9->_itemTypes, a3), objc_storeStrong(&v10->_speechCategories, a4), v10->_itemTypes) && v10->_speechCategories)
+  if (!v9 || (objc_storeStrong(&v9->_itemTypes, types), objc_storeStrong(&v10->_speechCategories, categories), v10->_itemTypes) && v10->_speechCategories)
   {
     v11 = v10;
   }
@@ -143,13 +143,13 @@
   return v11;
 }
 
-+ (id)mergeGroups:(id)a3
++ (id)mergeGroups:(id)groups
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count] == 1)
+  groupsCopy = groups;
+  if ([groupsCopy count] == 1)
   {
-    v4 = [v3 firstObject];
+    firstObject = [groupsCopy firstObject];
   }
 
   else
@@ -160,7 +160,7 @@
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = v3;
+    v7 = groupsCopy;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -176,13 +176,13 @@
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 itemTypes];
-          v14 = [v13 allObjects];
-          [v5 addObjectsFromArray:v14];
+          itemTypes = [v12 itemTypes];
+          allObjects = [itemTypes allObjects];
+          [v5 addObjectsFromArray:allObjects];
 
-          v15 = [v12 speechCategories];
-          v16 = [v15 allObjects];
-          [v6 addObjectsFromArray:v16];
+          speechCategories = [v12 speechCategories];
+          allObjects2 = [speechCategories allObjects];
+          [v6 addObjectsFromArray:allObjects2];
         }
 
         v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
@@ -191,24 +191,24 @@
       while (v9);
     }
 
-    v4 = [[CESRSpeechProfileCategoryGroup alloc] initWithItemTypes:v5 speechCategories:v6];
+    firstObject = [[CESRSpeechProfileCategoryGroup alloc] initWithItemTypes:v5 speechCategories:v6];
   }
 
   v17 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return firstObject;
 }
 
 + (id)_all
 {
   [objc_opt_class() _buildCaches];
   v2 = MEMORY[0x277CBEB98];
-  v3 = [speechCategoryToItemTypeCache allKeys];
-  v4 = [v2 setWithArray:v3];
+  allKeys = [speechCategoryToItemTypeCache allKeys];
+  v4 = [v2 setWithArray:allKeys];
 
   v5 = MEMORY[0x277CBEB98];
-  v6 = [itemTypeToSpeechCategoryCache allKeys];
-  v7 = [v5 setWithArray:v6];
+  allKeys2 = [itemTypeToSpeechCategoryCache allKeys];
+  v7 = [v5 setWithArray:allKeys2];
 
   v8 = [objc_alloc(objc_opt_class()) initWithItemTypes:v7 speechCategories:v4];
 
@@ -221,7 +221,7 @@
   block[1] = 3221225472;
   block[2] = __37__CESRSpeechProfileCategoryGroup_all__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (all_onceToken != -1)
   {
     dispatch_once(&all_onceToken, block);
@@ -242,9 +242,9 @@ uint64_t __37__CESRSpeechProfileCategoryGroup_all__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8](v2, v3);
 }
 
-+ (id)_addAssociatedSpeechCategories:(id)a3
++ (id)_addAssociatedSpeechCategories:(id)categories
 {
-  v3 = [MEMORY[0x277CBEB58] setWithSet:a3];
+  v3 = [MEMORY[0x277CBEB58] setWithSet:categories];
   if (([v3 containsObject:@"\\NT-contact"] & 1) != 0 || objc_msgSend(v3, "containsObject:", @"\\NT-appcontact"))
   {
     [v3 addObject:@"\\NT-contact"];
@@ -254,13 +254,13 @@ uint64_t __37__CESRSpeechProfileCategoryGroup_all__block_invoke(uint64_t a1)
   return v3;
 }
 
-+ (id)groupForSpeechCategories:(id)a3
++ (id)groupForSpeechCategories:(id)categories
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  categoriesCopy = categories;
   [objc_opt_class() _buildCaches];
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v5 = [CESRSpeechProfileCategoryGroup _addAssociatedSpeechCategories:v3];
+  v5 = [CESRSpeechProfileCategoryGroup _addAssociatedSpeechCategories:categoriesCopy];
 
   v19 = 0u;
   v20 = 0u;
@@ -315,11 +315,11 @@ uint64_t __37__CESRSpeechProfileCategoryGroup_all__block_invoke(uint64_t a1)
   return v14;
 }
 
-+ (id)groupForSets:(id)a3
++ (id)groupForSets:(id)sets
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v21 = a1;
+  setsCopy = sets;
+  selfCopy = self;
   [objc_opt_class() _buildCaches];
   v23 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
@@ -327,7 +327,7 @@ uint64_t __37__CESRSpeechProfileCategoryGroup_all__block_invoke(uint64_t a1)
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  obj = v4;
+  obj = setsCopy;
   v6 = [obj countByEnumeratingWithState:&v29 objects:v34 count:16];
   if (v6)
   {
@@ -342,7 +342,7 @@ uint64_t __37__CESRSpeechProfileCategoryGroup_all__block_invoke(uint64_t a1)
           objc_enumerationMutation(obj);
         }
 
-        v9 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(*(*(&v29 + 1) + 8 * i), "itemType", v21)}];
+        v9 = [MEMORY[0x277CCABB0] numberWithUnsignedShort:{objc_msgSend(*(*(&v29 + 1) + 8 * i), "itemType", selfCopy)}];
         v10 = [itemTypeToSpeechCategoryCache objectForKey:v9];
         v11 = [CESRSpeechProfileCategoryGroup _addAssociatedSpeechCategories:v10];
 
@@ -403,7 +403,7 @@ uint64_t __37__CESRSpeechProfileCategoryGroup_all__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __46__CESRSpeechProfileCategoryGroup__buildCaches__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_buildCaches_onceToken[0] != -1)
   {
     dispatch_once(_buildCaches_onceToken, block);
@@ -418,11 +418,11 @@ void __46__CESRSpeechProfileCategoryGroup__buildCaches__block_invoke(uint64_t a1
   [v2 _buildCachesFromBaseMap:v3];
 }
 
-+ (void)_buildCachesFromBaseMap:(id)a3
++ (void)_buildCachesFromBaseMap:(id)map
 {
   v42 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  mapCopy = map;
+  v4 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(mapCopy, "count")}];
   v5 = speechCategoryToItemTypeCache;
   speechCategoryToItemTypeCache = v4;
 
@@ -434,7 +434,7 @@ void __46__CESRSpeechProfileCategoryGroup__buildCaches__block_invoke(uint64_t a1
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = [v3 allKeys];
+  obj = [mapCopy allKeys];
   v25 = [obj countByEnumeratingWithState:&v32 objects:v41 count:16];
   if (v25)
   {
@@ -455,7 +455,7 @@ void __46__CESRSpeechProfileCategoryGroup__buildCaches__block_invoke(uint64_t a1
         v29 = 0u;
         v30 = 0u;
         v31 = 0u;
-        v10 = [v3 objectForKey:v9];
+        v10 = [mapCopy objectForKey:v9];
         v11 = [v10 countByEnumeratingWithState:&v28 objects:v40 count:16];
         if (v11)
         {
@@ -471,9 +471,9 @@ void __46__CESRSpeechProfileCategoryGroup__buildCaches__block_invoke(uint64_t a1
                 objc_enumerationMutation(v10);
               }
 
-              v16 = [*(*(&v28 + 1) + 8 * i) unsignedShortValue];
+              unsignedShortValue = [*(*(&v28 + 1) + 8 * i) unsignedShortValue];
               v27 = 0;
-              v17 = [MEMORY[0x277D21178] itemTypeForFieldType:v16 error:&v27];
+              v17 = [MEMORY[0x277D21178] itemTypeForFieldType:unsignedShortValue error:&v27];
               v18 = v27;
               if (v17)
               {

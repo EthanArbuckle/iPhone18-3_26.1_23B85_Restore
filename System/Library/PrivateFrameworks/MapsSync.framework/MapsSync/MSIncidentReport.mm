@@ -1,21 +1,21 @@
 @interface MSIncidentReport
 + (Class)managedClass;
-- (MSIncidentReport)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6;
-- (MSIncidentReport)initWithStore:(id)a3 countryCode:(id)a4 positionIndex:(int64_t)a5 type:(signed __int16)a6;
+- (MSIncidentReport)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (MSIncidentReport)initWithStore:(id)store countryCode:(id)code positionIndex:(int64_t)index type:(signed __int16)type;
 - (NSString)countryCode;
 - (int64_t)positionIndex;
 - (signed)type;
-- (void)setCountryCode:(id)a3;
-- (void)setPositionIndex:(int64_t)a3;
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5;
-- (void)setType:(signed __int16)a3;
+- (void)setCountryCode:(id)code;
+- (void)setPositionIndex:(int64_t)index;
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent;
+- (void)setType:(signed __int16)type;
 @end
 
 @implementation MSIncidentReport
 
-- (MSIncidentReport)initWithStore:(id)a3 countryCode:(id)a4 positionIndex:(int64_t)a5 type:(signed __int16)a6
+- (MSIncidentReport)initWithStore:(id)store countryCode:(id)code positionIndex:(int64_t)index type:(signed __int16)type
 {
-  if (a4)
+  if (code)
   {
     v9 = sub_1B63BEBD4();
     v11 = v10;
@@ -27,7 +27,7 @@
     v11 = 0;
   }
 
-  return IncidentReport.init(store:countryCode:positionIndex:type:)(a3, v9, v11, a5, a6);
+  return IncidentReport.init(store:countryCode:positionIndex:type:)(store, v9, v11, index, type);
 }
 
 + (Class)managedClass
@@ -37,16 +37,16 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (void)setPropertiesUnsafeWithManagedObject:(id)a3 lazyLoad:(BOOL)a4 parent:(BOOL)a5
+- (void)setPropertiesUnsafeWithManagedObject:(id)object lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v7 = a3;
-  v8 = self;
-  sub_1B6309D0C(v7, a4);
+  objectCopy = object;
+  selfCopy = self;
+  sub_1B6309D0C(objectCopy, load);
 }
 
 - (NSString)countryCode
 {
-  v2 = self;
+  selfCopy = self;
   sub_1B6308408();
   v4 = v3;
 
@@ -63,9 +63,9 @@
   return v5;
 }
 
-- (void)setCountryCode:(id)a3
+- (void)setCountryCode:(id)code
 {
-  if (a3)
+  if (code)
   {
     v4 = sub_1B63BEBD4();
     v6 = v5;
@@ -77,7 +77,7 @@
     v6 = 0;
   }
 
-  v7 = self;
+  selfCopy = self;
   sub_1B6308814(v4, v6);
 }
 
@@ -85,44 +85,44 @@
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  v6 = *(&v5->super.super.isa + OBJC_IVAR___MSIncidentReport__positionIndex);
+  v6 = *(&selfCopy->super.super.isa + OBJC_IVAR___MSIncidentReport__positionIndex);
   [*(&self->super.super.isa + v3) unlock];
 
   return v6;
 }
 
-- (void)setPositionIndex:(int64_t)a3
+- (void)setPositionIndex:(int64_t)index
 {
-  v4 = self;
-  sub_1B6308D80(a3);
+  selfCopy = self;
+  sub_1B6308D80(index);
 }
 
 - (signed)type
 {
   v3 = OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock;
   v4 = *(&self->super.super.isa + OBJC_IVAR____TtC8MapsSync14MapsSyncObject__propertyLock);
-  v5 = self;
+  selfCopy = self;
   [v4 lock];
-  LOWORD(v4) = *(&v5->super.super.isa + OBJC_IVAR___MSIncidentReport__type);
+  LOWORD(v4) = *(&selfCopy->super.super.isa + OBJC_IVAR___MSIncidentReport__type);
   [*(&self->super.super.isa + v3) unlock];
 
   return v4;
 }
 
-- (void)setType:(signed __int16)a3
+- (void)setType:(signed __int16)type
 {
-  v4 = self;
-  sub_1B6309144(a3);
+  selfCopy = self;
+  sub_1B6309144(type);
 }
 
-- (MSIncidentReport)initWithObject:(id)a3 store:(id)a4 lazyLoad:(BOOL)a5 parent:(BOOL)a6
+- (MSIncidentReport)initWithObject:(id)object store:(id)store lazyLoad:(BOOL)load parent:(BOOL)parent
 {
-  v6 = a6;
-  v7 = a5;
-  v10 = a3;
-  return sub_1B630944C(a3, a4, v7, v6);
+  parentCopy = parent;
+  loadCopy = load;
+  objectCopy = object;
+  return sub_1B630944C(object, store, loadCopy, parentCopy);
 }
 
 @end

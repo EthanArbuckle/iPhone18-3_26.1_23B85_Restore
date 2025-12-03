@@ -1,20 +1,20 @@
 @interface PKTranscriptionResult
-- (PKTranscriptionResult)initWithTranscription:(id)a3 didShowHUD:(BOOL)a4;
+- (PKTranscriptionResult)initWithTranscription:(id)transcription didShowHUD:(BOOL)d;
 @end
 
 @implementation PKTranscriptionResult
 
-- (PKTranscriptionResult)initWithTranscription:(id)a3 didShowHUD:(BOOL)a4
+- (PKTranscriptionResult)initWithTranscription:(id)transcription didShowHUD:(BOOL)d
 {
-  v7 = a3;
+  transcriptionCopy = transcription;
   v11.receiver = self;
   v11.super_class = PKTranscriptionResult;
   v8 = [(PKTranscriptionResult *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_transcription, a3);
-    v9->_didShowHUD = a4;
+    objc_storeStrong(&v8->_transcription, transcription);
+    v9->_didShowHUD = d;
   }
 
   return v9;

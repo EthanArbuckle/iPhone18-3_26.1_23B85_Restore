@@ -1,8 +1,8 @@
 @interface SettingsActivityViewController
 + (NSString)dndModeKey;
 - (_TtC13FocusSettings30SettingsActivityViewController)init;
-- (_TtC13FocusSettings30SettingsActivityViewController)initWithCoder:(id)a3;
-- (_TtC13FocusSettings30SettingsActivityViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC13FocusSettings30SettingsActivityViewController)initWithCoder:(id)coder;
+- (_TtC13FocusSettings30SettingsActivityViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -29,7 +29,7 @@
   return [(SettingsActivityViewController *)&v8 initWithNibName:0 bundle:0];
 }
 
-- (_TtC13FocusSettings30SettingsActivityViewController)initWithCoder:(id)a3
+- (_TtC13FocusSettings30SettingsActivityViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC13FocusSettings30SettingsActivityViewController_hostViewModel;
   v5 = sub_13454();
@@ -45,11 +45,11 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_CF3C();
 }
 
-- (_TtC13FocusSettings30SettingsActivityViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC13FocusSettings30SettingsActivityViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

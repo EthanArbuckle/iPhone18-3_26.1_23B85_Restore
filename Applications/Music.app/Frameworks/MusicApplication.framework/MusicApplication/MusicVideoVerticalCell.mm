@@ -3,7 +3,7 @@
 - (CGRect)bounds;
 - (CGRect)frame;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation MusicVideoVerticalCell
@@ -30,15 +30,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_2B6A08();
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_2B6CF8(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_2B6CF8(change);
 }
 
 + (unint64_t)visualContentInsets

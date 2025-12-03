@@ -1,7 +1,7 @@
 @interface IDSGroupEncryptionController
 + (IDSGroupEncryptionController)sharedInstance;
-- (BOOL)_isUsingAccount:(id)a3;
-- (BOOL)_isValidPushToken:(id)a3;
+- (BOOL)_isUsingAccount:(id)account;
+- (BOOL)_isValidPushToken:(id)token;
 - (BOOL)_shouldEnforceRemoteTimeout;
 - (IDSDSessionController)sessionController;
 - (IDSGroupEncryptionController)init;
@@ -9,56 +9,56 @@
 - (__SecKey)localPublicPreKey;
 - (__SecKey)previousLocalPrivatePreKey;
 - (__SecKey)previousLocalPublicPreKey;
-- (__SecKey)publicKeyForPushToken:(id)a3;
+- (__SecKey)publicKeyForPushToken:(id)token;
 - (double)_multiwayFTMessageSendTimeout;
-- (id)_compactKeyMaterialMessage:(id)a3 isOutgoing:(BOOL)a4 groupID:(id)a5;
-- (id)_generateMKMBlobForQRFromMessage:(id)a3 account:(id)a4 destination:(id)a5 fromURI:(id)a6;
+- (id)_compactKeyMaterialMessage:(id)message isOutgoing:(BOOL)outgoing groupID:(id)d;
+- (id)_generateMKMBlobForQRFromMessage:(id)message account:(id)account destination:(id)destination fromURI:(id)i;
 - (id)_localDevicePushToken;
-- (id)activeParticipantsForGroup:(id)a3;
-- (id)createRealTimeEncryptionFullIdentityForDevice:(id)a3 completionBlock:(id)a4;
+- (id)activeParticipantsForGroup:(id)group;
+- (id)createRealTimeEncryptionFullIdentityForDevice:(id)device completionBlock:(id)block;
 - (id)publicKeys;
-- (id)receivedAndSetKeyMaterial:(id)a3 stableKeyMaterial:(id)a4 forDevice:(id)a5 fromURI:(id)a6 groupID:(id)a7 sessionID:(id)a8 fromSender:(BOOL)a9 error:(id *)a10 forMKM:(BOOL)a11 forSKM:(BOOL)a12;
-- (id)stableKeyMaterialForGroup:(id)a3;
-- (id)stableKeyMaterialForGroup:(id)a3 sessionID:(id)a4;
-- (int64_t)setLocalParticipantID:(unint64_t)a3 forGroupID:(id)a4 sessionID:(id)a5;
-- (unint64_t)encryptionSequenceNumberForGroupID:(id)a3;
-- (unint64_t)localParticipantIDForGroupID:(id)a3;
-- (unint64_t)participantIDForPushToken:(id)a3 inGroup:(id)a4;
-- (void)_sendMessage:(id)a3 toDestination:(id)a4 forGroup:(id)a5 sessionID:(id)a6 command:(int64_t)a7 timeout:(double)a8 shouldExpire:(BOOL)a9 useQR:(BOOL)a10 completion:(id)a11 completionBlock:(id)a12;
-- (void)_updateRelevantEncryptedDataBlobForSession:(id)a3;
-- (void)account:(id)a3 didUpdateRegisteredDevices:(id)a4;
-- (void)cleanUpSessionForID:(id)a3 groupID:(id)a4;
-- (void)didReceiveEndpointsUpdate:(id)a3 forGroup:(id)a4 sessionID:(id)a5;
-- (void)didUpdateMembers:(id)a3 forGroup:(id)a4 sessionID:(id)a5 lightweightStatusDict:(id)a6 hasChangedStandardMembers:(BOOL)a7 newlyAddedMembers:(id)a8;
-- (void)didUpdateParticipants:(id)a3 ofType:(int64_t)a4 forGroup:(id)a5 sessionID:(id)a6;
-- (void)ensureSessionForID:(id)a3 groupID:(id)a4;
-- (void)processIncomingKeyMaterialsRecoveryRequest:(id)a3 fromDevice:(id)a4 fromURI:(id)a5 groupID:(id)a6 sessionID:(id)a7 serverDate:(id)a8 requireMKM:(BOOL)a9 requireSKM:(BOOL)a10;
-- (void)processIncomingPrekeyAckForGroup:(id)a3;
-- (void)processedQRMKMPayloadFromData:(id)a3 forGroupID:(id)a4 account:(id)a5 remoteURI:(id)a6 localURI:(id)a7 tokens:(id)a8 completionHandler:(id)a9;
-- (void)reliablyRequestKeyMaterialForGroup:(id)a3 sessionID:(id)a4;
-- (void)removeAccountForGroup:(id)a3;
-- (void)removeActiveParticipant:(id)a3 forGroup:(id)a4;
-- (void)removeLocalActiveParticipantForGroup:(id)a3;
-- (void)reportPrekeyAckStatus:(id)a3;
-- (void)requestKeyMaterialForGroup:(id)a3 sessionID:(id)a4;
-- (void)requestKeyMaterialForGroup:(id)a3 sessionID:(id)a4 toSpecificMembers:(id)a5 requireMKM:(BOOL)a6 requireSKM:(BOOL)a7;
+- (id)receivedAndSetKeyMaterial:(id)material stableKeyMaterial:(id)keyMaterial forDevice:(id)device fromURI:(id)i groupID:(id)d sessionID:(id)iD fromSender:(BOOL)sender error:(id *)self0 forMKM:(BOOL)self1 forSKM:(BOOL)self2;
+- (id)stableKeyMaterialForGroup:(id)group;
+- (id)stableKeyMaterialForGroup:(id)group sessionID:(id)d;
+- (int64_t)setLocalParticipantID:(unint64_t)d forGroupID:(id)iD sessionID:(id)sessionID;
+- (unint64_t)encryptionSequenceNumberForGroupID:(id)d;
+- (unint64_t)localParticipantIDForGroupID:(id)d;
+- (unint64_t)participantIDForPushToken:(id)token inGroup:(id)group;
+- (void)_sendMessage:(id)message toDestination:(id)destination forGroup:(id)group sessionID:(id)d command:(int64_t)command timeout:(double)timeout shouldExpire:(BOOL)expire useQR:(BOOL)self0 completion:(id)self1 completionBlock:(id)self2;
+- (void)_updateRelevantEncryptedDataBlobForSession:(id)session;
+- (void)account:(id)account didUpdateRegisteredDevices:(id)devices;
+- (void)cleanUpSessionForID:(id)d groupID:(id)iD;
+- (void)didReceiveEndpointsUpdate:(id)update forGroup:(id)group sessionID:(id)d;
+- (void)didUpdateMembers:(id)members forGroup:(id)group sessionID:(id)d lightweightStatusDict:(id)dict hasChangedStandardMembers:(BOOL)standardMembers newlyAddedMembers:(id)addedMembers;
+- (void)didUpdateParticipants:(id)participants ofType:(int64_t)type forGroup:(id)group sessionID:(id)d;
+- (void)ensureSessionForID:(id)d groupID:(id)iD;
+- (void)processIncomingKeyMaterialsRecoveryRequest:(id)request fromDevice:(id)device fromURI:(id)i groupID:(id)d sessionID:(id)iD serverDate:(id)date requireMKM:(BOOL)m requireSKM:(BOOL)self0;
+- (void)processIncomingPrekeyAckForGroup:(id)group;
+- (void)processedQRMKMPayloadFromData:(id)data forGroupID:(id)d account:(id)account remoteURI:(id)i localURI:(id)rI tokens:(id)tokens completionHandler:(id)handler;
+- (void)reliablyRequestKeyMaterialForGroup:(id)group sessionID:(id)d;
+- (void)removeAccountForGroup:(id)group;
+- (void)removeActiveParticipant:(id)participant forGroup:(id)group;
+- (void)removeLocalActiveParticipantForGroup:(id)group;
+- (void)reportPrekeyAckStatus:(id)status;
+- (void)requestKeyMaterialForGroup:(id)group sessionID:(id)d;
+- (void)requestKeyMaterialForGroup:(id)group sessionID:(id)d toSpecificMembers:(id)members requireMKM:(BOOL)m requireSKM:(BOOL)kM;
 - (void)resetDevicePrekey;
-- (void)resetKeyMaterialCacheTimerIfNeeded:(id)a3;
-- (void)resetKeysForGroup:(id)a3 shouldRemoveCurrentParticipants:(BOOL)a4;
-- (void)resetMKMLocalSentStatus:(id)a3;
-- (void)rollNewKeysAfterResettingPrekeysForGroups:(id)a3 withReason:(int64_t)a4;
-- (void)sendKeyMaterialMessage:(id)a3 toDestination:(id)a4 forGroup:(id)a5 sessionID:(id)a6 completion:(id)a7;
-- (void)sendKeyMaterialRequestMessage:(id)a3 toDestination:(id)a4 forGroup:(id)a5 sessionID:(id)a6;
-- (void)sendKeyMaterialsRecoveryRequestToGroup:(id)a3 requireMKM:(BOOL)a4 requireSKM:(BOOL)a5;
-- (void)sendKeyMaterialsRecoveryRequestToParticipants:(id)a3 groupID:(id)a4 sessionID:(id)a5 requireMKM:(BOOL)a6 requireSKM:(BOOL)a7;
-- (void)sendPreKeyMessage:(id)a3 toDestination:(id)a4 forGroup:(id)a5 sessionID:(id)a6;
-- (void)sendPreKeyRequestMessage:(id)a3 toDestination:(id)a4 forGroup:(id)a5 sessionID:(id)a6;
-- (void)setAccount:(id)a3 fromURI:(id)a4 forGroup:(id)a5;
-- (void)setMembers:(id)a3 forGroup:(id)a4 sessionID:(id)a5 lightweightStatusDict:(id)a6;
-- (void)storeEncryptionSequenceNumber:(unint64_t)a3 groupID:(id)a4;
-- (void)unsubscribeEndpointsForGroup:(id)a3;
-- (void)updateLightweightMemberTypes:(id)a3 members:(id)a4 triggeredLocally:(BOOL)a5 forGroup:(id)a6 sessionID:(id)a7;
-- (void)updateServerDesiredKeyMaterialsForGroup:(id)a3 sessionID:(id)a4;
+- (void)resetKeyMaterialCacheTimerIfNeeded:(id)needed;
+- (void)resetKeysForGroup:(id)group shouldRemoveCurrentParticipants:(BOOL)participants;
+- (void)resetMKMLocalSentStatus:(id)status;
+- (void)rollNewKeysAfterResettingPrekeysForGroups:(id)groups withReason:(int64_t)reason;
+- (void)sendKeyMaterialMessage:(id)message toDestination:(id)destination forGroup:(id)group sessionID:(id)d completion:(id)completion;
+- (void)sendKeyMaterialRequestMessage:(id)message toDestination:(id)destination forGroup:(id)group sessionID:(id)d;
+- (void)sendKeyMaterialsRecoveryRequestToGroup:(id)group requireMKM:(BOOL)m requireSKM:(BOOL)kM;
+- (void)sendKeyMaterialsRecoveryRequestToParticipants:(id)participants groupID:(id)d sessionID:(id)iD requireMKM:(BOOL)m requireSKM:(BOOL)kM;
+- (void)sendPreKeyMessage:(id)message toDestination:(id)destination forGroup:(id)group sessionID:(id)d;
+- (void)sendPreKeyRequestMessage:(id)message toDestination:(id)destination forGroup:(id)group sessionID:(id)d;
+- (void)setAccount:(id)account fromURI:(id)i forGroup:(id)group;
+- (void)setMembers:(id)members forGroup:(id)group sessionID:(id)d lightweightStatusDict:(id)dict;
+- (void)storeEncryptionSequenceNumber:(unint64_t)number groupID:(id)d;
+- (void)unsubscribeEndpointsForGroup:(id)group;
+- (void)updateLightweightMemberTypes:(id)types members:(id)members triggeredLocally:(BOOL)locally forGroup:(id)group sessionID:(id)d;
+- (void)updateServerDesiredKeyMaterialsForGroup:(id)group sessionID:(id)d;
 @end
 
 @implementation IDSGroupEncryptionController
@@ -117,14 +117,14 @@
 
     v20 = [[_TtC17identityservicesd36IDSGroupEncryptionIdentityController alloc] initWithConfig:v19];
     v21 = [_TtC17identityservicesd29IDSGroupEncryptionController2 alloc];
-    v22 = [(IDSGroupEncryptionController *)v2 sessionController];
-    v23 = [(IDSGroupEncryptionController2 *)v21 initWithDelegate:v2 config:v19 sessionProvider:v22 identityController:v20 pushHandler:v2];
+    sessionController = [(IDSGroupEncryptionController *)v2 sessionController];
+    v23 = [(IDSGroupEncryptionController2 *)v21 initWithDelegate:v2 config:v19 sessionProvider:sessionController identityController:v20 pushHandler:v2];
     internal = v2->_internal;
     v2->_internal = v23;
 
-    v25 = [(IDSGroupEncryptionController2 *)v2->_internal createP2PNegotiatorProvider];
+    createP2PNegotiatorProvider = [(IDSGroupEncryptionController2 *)v2->_internal createP2PNegotiatorProvider];
     p2pNegotiatorProvider = v2->_p2pNegotiatorProvider;
-    v2->_p2pNegotiatorProvider = v25;
+    v2->_p2pNegotiatorProvider = createP2PNegotiatorProvider;
   }
 
   return v2;
@@ -149,105 +149,105 @@
 - (id)_localDevicePushToken
 {
   v2 = +[IDSPushHandler sharedInstance];
-  v3 = [v2 pushToken];
-  v4 = [IDSPushToken pushTokenWithData:v3];
+  pushToken = [v2 pushToken];
+  v4 = [IDSPushToken pushTokenWithData:pushToken];
 
   return v4;
 }
 
 - (__SecKey)localPublicPreKey
 {
-  v2 = [(IDSGroupEncryptionController2 *)self->_internal objcPublicIdentity];
-  v3 = [v2 publicIdentity];
+  objcPublicIdentity = [(IDSGroupEncryptionController2 *)self->_internal objcPublicIdentity];
+  publicIdentity = [objcPublicIdentity publicIdentity];
 
-  return v3;
+  return publicIdentity;
 }
 
 - (__SecKey)localPrivatePreKey
 {
-  v2 = [(IDSGroupEncryptionController2 *)self->_internal objcIdentity];
-  v3 = [v2 fullIdentity];
+  objcIdentity = [(IDSGroupEncryptionController2 *)self->_internal objcIdentity];
+  fullIdentity = [objcIdentity fullIdentity];
 
-  return v3;
+  return fullIdentity;
 }
 
 - (__SecKey)previousLocalPublicPreKey
 {
-  v2 = [(IDSGroupEncryptionController2 *)self->_internal objcPreviousPublicIdentity];
-  v3 = [v2 publicIdentity];
+  objcPreviousPublicIdentity = [(IDSGroupEncryptionController2 *)self->_internal objcPreviousPublicIdentity];
+  publicIdentity = [objcPreviousPublicIdentity publicIdentity];
 
-  return v3;
+  return publicIdentity;
 }
 
 - (__SecKey)previousLocalPrivatePreKey
 {
-  v2 = [(IDSGroupEncryptionController2 *)self->_internal objcPreviousIdentity];
-  v3 = [v2 fullIdentity];
+  objcPreviousIdentity = [(IDSGroupEncryptionController2 *)self->_internal objcPreviousIdentity];
+  fullIdentity = [objcPreviousIdentity fullIdentity];
 
-  return v3;
+  return fullIdentity;
 }
 
-- (__SecKey)publicKeyForPushToken:(id)a3
+- (__SecKey)publicKeyForPushToken:(id)token
 {
-  v3 = [(IDSGroupEncryptionController2 *)self->_internal objcPublicIdentityForPushToken:a3];
-  v4 = [v3 publicIdentity];
+  v3 = [(IDSGroupEncryptionController2 *)self->_internal objcPublicIdentityForPushToken:token];
+  publicIdentity = [v3 publicIdentity];
 
-  return v4;
+  return publicIdentity;
 }
 
-- (BOOL)_isUsingAccount:(id)a3
+- (BOOL)_isUsingAccount:(id)account
 {
-  v4 = a3;
+  accountCopy = account;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v5 = [(NSMutableDictionary *)self->_accountIDs allValues];
+  allValues = [(NSMutableDictionary *)self->_accountIDs allValues];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_1006C6DE4;
   v8[3] = &unk_100BE5558;
-  v6 = v4;
+  v6 = accountCopy;
   v9 = v6;
   v10 = &v11;
-  [v5 enumerateObjectsUsingBlock:v8];
+  [allValues enumerateObjectsUsingBlock:v8];
 
-  LOBYTE(v5) = *(v12 + 24);
+  LOBYTE(allValues) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v5;
+  return allValues;
 }
 
-- (void)setAccount:(id)a3 fromURI:(id)a4 forGroup:(id)a5
+- (void)setAccount:(id)account fromURI:(id)i forGroup:(id)group
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = v9;
-  if (v8 && v9)
+  accountCopy = account;
+  groupCopy = group;
+  v10 = groupCopy;
+  if (accountCopy && groupCopy)
   {
-    v11 = a4;
+    iCopy = i;
     os_unfair_lock_lock(&self->_lock);
-    if (![(IDSGroupEncryptionController *)self _isUsingAccount:v8])
+    if (![(IDSGroupEncryptionController *)self _isUsingAccount:accountCopy])
     {
       v12 = im_primary_queue();
       v14 = _NSConcreteStackBlock;
       v15 = 3221225472;
       v16 = sub_1006C6FD8;
       v17 = &unk_100BD6E40;
-      v18 = v8;
-      v19 = self;
+      v18 = accountCopy;
+      selfCopy = self;
       dispatch_async(v12, &v14);
     }
 
-    [(NSMutableDictionary *)self->_accountIDs setObject:v8 forKeyedSubscript:v10, v14, v15, v16, v17];
-    [(NSMutableDictionary *)self->_fromURIs setObject:v11 forKeyedSubscript:v10];
+    [(NSMutableDictionary *)self->_accountIDs setObject:accountCopy forKeyedSubscript:v10, v14, v15, v16, v17];
+    [(NSMutableDictionary *)self->_fromURIs setObject:iCopy forKeyedSubscript:v10];
 
     os_unfair_lock_unlock(&self->_lock);
     v13 = +[IDSFoundationLog RealTimeEncryptionController];
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v21 = v8;
+      v21 = accountCopy;
       v22 = 2112;
       v23 = v10;
       _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "setAccount: added the accountID %@ for group %@", buf, 0x16u);
@@ -255,15 +255,15 @@
   }
 }
 
-- (void)removeAccountForGroup:(id)a3
+- (void)removeAccountForGroup:(id)group
 {
-  v4 = a3;
-  if (v4)
+  groupCopy = group;
+  if (groupCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(NSMutableDictionary *)self->_accountIDs objectForKeyedSubscript:v4];
-    [(NSMutableDictionary *)self->_accountIDs setObject:0 forKeyedSubscript:v4];
-    [(NSMutableDictionary *)self->_fromURIs setObject:0 forKeyedSubscript:v4];
+    v5 = [(NSMutableDictionary *)self->_accountIDs objectForKeyedSubscript:groupCopy];
+    [(NSMutableDictionary *)self->_accountIDs setObject:0 forKeyedSubscript:groupCopy];
+    [(NSMutableDictionary *)self->_fromURIs setObject:0 forKeyedSubscript:groupCopy];
     if (v5 && ![(IDSGroupEncryptionController *)self _isUsingAccount:v5])
     {
       v6 = im_primary_queue();
@@ -272,7 +272,7 @@
       v8[2] = sub_1006C7390;
       v8[3] = &unk_100BD6E40;
       v9 = v5;
-      v10 = self;
+      selfCopy = self;
       dispatch_async(v6, v8);
     }
 
@@ -281,110 +281,110 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v12 = v4;
+      v12 = groupCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "removeAccountForGroup: removed the account for group %@", buf, 0xCu);
     }
   }
 }
 
-- (void)requestKeyMaterialForGroup:(id)a3 sessionID:(id)a4 toSpecificMembers:(id)a5 requireMKM:(BOOL)a6 requireSKM:(BOOL)a7
+- (void)requestKeyMaterialForGroup:(id)group sessionID:(id)d toSpecificMembers:(id)members requireMKM:(BOOL)m requireSKM:(BOOL)kM
 {
-  v7 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:a3, a4, a5, a6, a7];
+  v7 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:group, d, members, m, kM];
   [v7 updateDesiredMaterials];
 }
 
-- (void)requestKeyMaterialForGroup:(id)a3 sessionID:(id)a4
+- (void)requestKeyMaterialForGroup:(id)group sessionID:(id)d
 {
-  v4 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:a3, a4];
+  v4 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:group, d];
   [v4 updateDesiredMaterials];
 }
 
-- (void)reliablyRequestKeyMaterialForGroup:(id)a3 sessionID:(id)a4
+- (void)reliablyRequestKeyMaterialForGroup:(id)group sessionID:(id)d
 {
-  v4 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:a3, a4];
+  v4 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:group, d];
   [v4 updateDesiredMaterials];
 }
 
-- (id)createRealTimeEncryptionFullIdentityForDevice:(id)a3 completionBlock:(id)a4
+- (id)createRealTimeEncryptionFullIdentityForDevice:(id)device completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   internal = self->_internal;
-  v8 = a3;
-  v9 = [(IDSGroupEncryptionController2 *)internal identityController];
-  v10 = [v9 ensurePublicIdentityForDevice:v8];
+  deviceCopy = device;
+  identityController = [(IDSGroupEncryptionController2 *)internal identityController];
+  v10 = [identityController ensurePublicIdentityForDevice:deviceCopy];
 
   v11 = im_primary_queue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006C7670;
   block[3] = &unk_100BD7270;
-  v16 = v6;
-  v12 = v6;
+  v16 = blockCopy;
+  v12 = blockCopy;
   v13 = dispatch_block_create_with_qos_class(DISPATCH_BLOCK_ENFORCE_QOS_CLASS|DISPATCH_BLOCK_ASSIGN_CURRENT, QOS_CLASS_USER_INITIATED, 0, block);
   dispatch_async(v11, v13);
 
   return v10;
 }
 
-- (void)processIncomingPrekeyAckForGroup:(id)a3
+- (void)processIncomingPrekeyAckForGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_prekeyAckCountForGroup objectForKeyedSubscript:v4];
+  groupCopy = group;
+  v5 = [(NSMutableDictionary *)self->_prekeyAckCountForGroup objectForKeyedSubscript:groupCopy];
   v6 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v5 intValue] + 1);
-  [(NSMutableDictionary *)self->_prekeyAckCountForGroup setObject:v6 forKeyedSubscript:v4];
+  [(NSMutableDictionary *)self->_prekeyAckCountForGroup setObject:v6 forKeyedSubscript:groupCopy];
 
   v7 = +[IDSFoundationLog RealTimeEncryptionController];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    v8 = [(NSMutableDictionary *)self->_prekeyAckCountForGroup objectForKeyedSubscript:v4];
+    v8 = [(NSMutableDictionary *)self->_prekeyAckCountForGroup objectForKeyedSubscript:groupCopy];
     v9 = 138412546;
     v10 = v8;
     v11 = 2112;
-    v12 = v4;
+    v12 = groupCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Current ACK'd number of prekey: %@ for group: %@", &v9, 0x16u);
   }
 }
 
-- (void)reportPrekeyAckStatus:(id)a3
+- (void)reportPrekeyAckStatus:(id)status
 {
-  v4 = a3;
+  statusCopy = status;
   v5 = +[IDSFoundationLog RealTimeEncryptionController];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(NSMutableDictionary *)self->_prekeyAckCountForGroup objectForKeyedSubscript:v4];
+    v6 = [(NSMutableDictionary *)self->_prekeyAckCountForGroup objectForKeyedSubscript:statusCopy];
     v7 = 138412546;
     v8 = v6;
     v9 = 2112;
-    v10 = v4;
+    v10 = statusCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Report the prekey ACK'd (final count: %@) result for group: %@", &v7, 0x16u);
   }
 
-  [(NSMutableDictionary *)self->_prekeyAckCountForGroup removeObjectForKey:v4];
+  [(NSMutableDictionary *)self->_prekeyAckCountForGroup removeObjectForKey:statusCopy];
 }
 
-- (void)resetKeyMaterialCacheTimerIfNeeded:(id)a3
+- (void)resetKeyMaterialCacheTimerIfNeeded:(id)needed
 {
-  v3 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:a3];
+  v3 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:needed];
   [v3 cancelKMCacheReset];
 }
 
-- (void)storeEncryptionSequenceNumber:(unint64_t)a3 groupID:(id)a4
+- (void)storeEncryptionSequenceNumber:(unint64_t)number groupID:(id)d
 {
-  v6 = a4;
-  v7 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:v6];
-  v8 = [v7 encryptionSequenceNumber];
+  dCopy = d;
+  v7 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:dCopy];
+  encryptionSequenceNumber = [v7 encryptionSequenceNumber];
   v9 = +[IDSFoundationLog RealTimeEncryptionController];
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
-  if (v8 >= a3)
+  if (encryptionSequenceNumber >= number)
   {
     if (v10)
     {
       v11 = 134218498;
-      v12 = a3;
+      numberCopy2 = number;
       v13 = 2048;
-      v14 = v8;
+      v14 = encryptionSequenceNumber;
       v15 = 2112;
-      v16 = v6;
+      v16 = dCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "ignoring encryption sequence number %llu (old: %llu) for groupID %@ (Client -> *IDSD)", &v11, 0x20u);
     }
   }
@@ -394,68 +394,68 @@
     if (v10)
     {
       v11 = 134218498;
-      v12 = a3;
+      numberCopy2 = number;
       v13 = 2048;
-      v14 = v8;
+      v14 = encryptionSequenceNumber;
       v15 = 2112;
-      v16 = v6;
+      v16 = dCopy;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "storing encryption sequence number %llu (old: %llu) for groupID %@ (Client -> *IDSD)", &v11, 0x20u);
     }
 
-    [v7 setEncryptionSequenceNumber:a3];
+    [v7 setEncryptionSequenceNumber:number];
   }
 }
 
-- (unint64_t)encryptionSequenceNumberForGroupID:(id)a3
+- (unint64_t)encryptionSequenceNumberForGroupID:(id)d
 {
-  v4 = a3;
-  v5 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:v4];
-  v6 = [v5 encryptionSequenceNumber];
+  dCopy = d;
+  v5 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:dCopy];
+  encryptionSequenceNumber = [v5 encryptionSequenceNumber];
   v7 = +[IDSFoundationLog RealTimeEncryptionController];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 134218242;
-    v10 = v6;
+    v10 = encryptionSequenceNumber;
     v11 = 2112;
-    v12 = v4;
+    v12 = dCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "returning stored encryption sequence number %llu for groupID %@ (Client <- *IDSD)", &v9, 0x16u);
   }
 
-  return v6;
+  return encryptionSequenceNumber;
 }
 
 - (id)publicKeys
 {
-  v2 = [(IDSGroupEncryptionController2 *)self->_internal publicKeys];
+  publicKeys = [(IDSGroupEncryptionController2 *)self->_internal publicKeys];
   v3 = +[IDSFoundationLog RealTimeEncryptionController];
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v2;
+    v6 = publicKeys;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "publicKeys: %@", &v5, 0xCu);
   }
 
-  return v2;
+  return publicKeys;
 }
 
-- (int64_t)setLocalParticipantID:(unint64_t)a3 forGroupID:(id)a4 sessionID:(id)a5
+- (int64_t)setLocalParticipantID:(unint64_t)d forGroupID:(id)iD sessionID:(id)sessionID
 {
-  if (!a3)
+  if (!d)
   {
     return 0;
   }
 
   internal = self->_internal;
-  v8 = a4;
-  v9 = [(IDSGroupEncryptionController2 *)internal groupForID:v8];
-  v10 = [v9 localParticipantID];
+  iDCopy = iD;
+  v9 = [(IDSGroupEncryptionController2 *)internal groupForID:iDCopy];
+  localParticipantID = [v9 localParticipantID];
 
-  v11 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:v8];
+  v11 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:iDCopy];
 
-  [v11 setLocalParticipantID:a3];
-  if (v10)
+  [v11 setLocalParticipantID:d];
+  if (localParticipantID)
   {
-    return 2 * (v10 != a3);
+    return 2 * (localParticipantID != d);
   }
 
   else
@@ -464,32 +464,32 @@
   }
 }
 
-- (unint64_t)localParticipantIDForGroupID:(id)a3
+- (unint64_t)localParticipantIDForGroupID:(id)d
 {
-  v3 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:a3];
-  v4 = [v3 localParticipantID];
+  v3 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:d];
+  localParticipantID = [v3 localParticipantID];
 
-  return v4;
+  return localParticipantID;
 }
 
-- (void)sendKeyMaterialsRecoveryRequestToGroup:(id)a3 requireMKM:(BOOL)a4 requireSKM:(BOOL)a5
+- (void)sendKeyMaterialsRecoveryRequestToGroup:(id)group requireMKM:(BOOL)m requireSKM:(BOOL)kM
 {
-  v5 = a5;
-  v6 = a4;
-  v8 = a3;
-  v9 = [(IDSGroupEncryptionController *)self sessionController];
-  v10 = [v9 sessionWithGroupID:v8];
+  kMCopy = kM;
+  mCopy = m;
+  groupCopy = group;
+  sessionController = [(IDSGroupEncryptionController *)self sessionController];
+  v10 = [sessionController sessionWithGroupID:groupCopy];
 
   if (v10)
   {
-    v19 = v8;
-    v11 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:v8];
+    v19 = groupCopy;
+    v11 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:groupCopy];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v12 = [v11 participants];
-    v13 = [v12 countByEnumeratingWithState:&v20 objects:v25 count:16];
+    participants = [v11 participants];
+    v13 = [participants countByEnumeratingWithState:&v20 objects:v25 count:16];
     if (v13)
     {
       v14 = v13;
@@ -501,24 +501,24 @@
         {
           if (*v21 != v15)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(participants);
           }
 
           v17 = *(*(&v20 + 1) + 8 * v16);
-          v18 = [v10 uniqueID];
-          [v17 recoverKeyMaterialForSessionID:v18 mkm:v6 skm:v5];
+          uniqueID = [v10 uniqueID];
+          [v17 recoverKeyMaterialForSessionID:uniqueID mkm:mCopy skm:kMCopy];
 
           v16 = v16 + 1;
         }
 
         while (v14 != v16);
-        v14 = [v12 countByEnumeratingWithState:&v20 objects:v25 count:16];
+        v14 = [participants countByEnumeratingWithState:&v20 objects:v25 count:16];
       }
 
       while (v14);
     }
 
-    v8 = v19;
+    groupCopy = v19;
   }
 
   else
@@ -532,18 +532,18 @@
   }
 }
 
-- (void)sendKeyMaterialsRecoveryRequestToParticipants:(id)a3 groupID:(id)a4 sessionID:(id)a5 requireMKM:(BOOL)a6 requireSKM:(BOOL)a7
+- (void)sendKeyMaterialsRecoveryRequestToParticipants:(id)participants groupID:(id)d sessionID:(id)iD requireMKM:(BOOL)m requireSKM:(BOOL)kM
 {
-  v25 = a7;
-  v7 = a6;
-  v11 = a3;
-  v12 = a5;
-  v13 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:a4];
+  kMCopy = kM;
+  mCopy = m;
+  participantsCopy = participants;
+  iDCopy = iD;
+  v13 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:d];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v14 = v11;
+  v14 = participantsCopy;
   v15 = [v14 countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v15)
   {
@@ -565,7 +565,7 @@
         v22 = v21;
         if (v21)
         {
-          [v21 recoverKeyMaterialForSessionID:v12 mkm:v7 skm:v25];
+          [v21 recoverKeyMaterialForSessionID:iDCopy mkm:mCopy skm:kMCopy];
         }
 
         else
@@ -587,42 +587,42 @@
   }
 }
 
-- (void)sendKeyMaterialRequestMessage:(id)a3 toDestination:(id)a4 forGroup:(id)a5 sessionID:(id)a6
+- (void)sendKeyMaterialRequestMessage:(id)message toDestination:(id)destination forGroup:(id)group sessionID:(id)d
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v14 = a3;
+  dCopy = d;
+  groupCopy = group;
+  destinationCopy = destination;
+  messageCopy = message;
   [(IDSGroupEncryptionController *)self _multiwayFTMessageSendTimeout];
   LOBYTE(v13) = 0;
-  [(IDSGroupEncryptionController *)self _sendMessage:v14 toDestination:v12 forGroup:v11 sessionID:v10 command:211 timeout:1 shouldExpire:v13 useQR:0 completion:0 completionBlock:?];
+  [(IDSGroupEncryptionController *)self _sendMessage:messageCopy toDestination:destinationCopy forGroup:groupCopy sessionID:dCopy command:211 timeout:1 shouldExpire:v13 useQR:0 completion:0 completionBlock:?];
 }
 
-- (void)processIncomingKeyMaterialsRecoveryRequest:(id)a3 fromDevice:(id)a4 fromURI:(id)a5 groupID:(id)a6 sessionID:(id)a7 serverDate:(id)a8 requireMKM:(BOOL)a9 requireSKM:(BOOL)a10
+- (void)processIncomingKeyMaterialsRecoveryRequest:(id)request fromDevice:(id)device fromURI:(id)i groupID:(id)d sessionID:(id)iD serverDate:(id)date requireMKM:(BOOL)m requireSKM:(BOOL)self0
 {
-  v16 = a3;
-  v17 = a4;
-  v18 = a5;
-  v19 = a6;
-  v20 = a7;
-  v21 = a8;
-  v22 = [(IDSGroupEncryptionController *)self sessionController];
-  v23 = [v22 sessionWithUniqueID:v20];
+  requestCopy = request;
+  deviceCopy = device;
+  iCopy = i;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
+  sessionController = [(IDSGroupEncryptionController *)self sessionController];
+  v23 = [sessionController sessionWithUniqueID:iDCopy];
 
-  v65 = self;
-  v24 = [(IDSGroupEncryptionController *)self sessionController];
-  v25 = [v24 sessionWithGroupID:v19];
+  selfCopy = self;
+  sessionController2 = [(IDSGroupEncryptionController *)self sessionController];
+  v25 = [sessionController2 sessionWithGroupID:dCopy];
 
-  v67 = [v18 URIByAddingOptionalPushToken:v17];
+  v67 = [iCopy URIByAddingOptionalPushToken:deviceCopy];
   if ([v23 destinationsContainFromURI:?] && (objc_msgSend(v25, "destinationsContainFromURI:", v67) & 1) != 0)
   {
     v58 = v25;
     v63 = v23;
-    v64 = v21;
-    v60 = v20;
-    v61 = v19;
-    v62 = v16;
-    v59 = [(IDSGroupEncryptionController2 *)v65->_internal groupForID:v19];
+    v64 = dateCopy;
+    v60 = iDCopy;
+    v61 = dCopy;
+    v62 = requestCopy;
+    v59 = [(IDSGroupEncryptionController2 *)selfCopy->_internal groupForID:dCopy];
     [v59 participants];
     v69 = 0u;
     v70 = 0u;
@@ -643,27 +643,27 @@
           }
 
           v30 = *(*(&v69 + 1) + 8 * i);
-          v31 = [v30 pushToken];
-          v32 = [v31 isEqual:v17];
+          pushToken = [v30 pushToken];
+          v32 = [pushToken isEqual:deviceCopy];
 
           if (v32)
           {
             v33 = [IDSURI alloc];
-            v34 = [v30 allocatedURI];
-            v35 = [v33 initWithPrefixedURI:v34];
-            v36 = [v18 isEqual:v35];
+            allocatedURI = [v30 allocatedURI];
+            v35 = [v33 initWithPrefixedURI:allocatedURI];
+            v36 = [iCopy isEqual:v35];
 
             if (v36)
             {
               v45 = v30;
 
-              v16 = v62;
+              requestCopy = v62;
               v57 = [v62 objectForKeyedSubscript:IDSDSessionMessageRealTimeEncryptionPublicKey];
               v56 = [v62 _numberForKey:IDSDSessionMessageRealTimeEncryptionWrapModeKey];
               v46 = +[IDSFoundationLog RealTimeEncryptionController];
-              v20 = v60;
-              v19 = v61;
-              v21 = v64;
+              iDCopy = v60;
+              dCopy = v61;
+              dateCopy = v64;
               if (os_log_type_enabled(v46, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138413571;
@@ -673,9 +673,9 @@
                 v77 = 2112;
                 v78 = v64;
                 v79 = 2112;
-                v80 = v17;
+                v80 = deviceCopy;
                 v81 = 2112;
-                v82 = v18;
+                v82 = iCopy;
                 v83 = 2113;
                 v84 = v62;
                 _os_log_impl(&_mh_execute_header, v46, OS_LOG_TYPE_DEFAULT, "processIncomingKeyMaterialsRecoveryRequest for group %@, session %@, serverDate %@, pushToken: %@, fromID: %@, message %{private}@", buf, 0x3Eu);
@@ -691,22 +691,22 @@
                 _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Receiving Key Material (Push, KeyMaterialsRecovery) [PreKey] -- %f", buf, 0xCu);
               }
 
-              -[IDSGroupEncryptionController setRealTimeEncryptionPublicKey:forDevice:fromURI:groupID:sessionID:serverDate:wrapMode:](v65, "setRealTimeEncryptionPublicKey:forDevice:fromURI:groupID:sessionID:serverDate:wrapMode:", v57, v17, v18, v61, v60, v64, [v56 integerValue]);
+              -[IDSGroupEncryptionController setRealTimeEncryptionPublicKey:forDevice:fromURI:groupID:sessionID:serverDate:wrapMode:](selfCopy, "setRealTimeEncryptionPublicKey:forDevice:fromURI:groupID:sessionID:serverDate:wrapMode:", v57, deviceCopy, iCopy, v61, v60, v64, [v56 integerValue]);
               if (v63)
               {
-                v49 = [v18 prefixedURI];
-                v50 = [v17 rawToken];
-                v66 = [IDSDestination destinationWithAlias:v49 pushToken:v50];
+                prefixedURI = [iCopy prefixedURI];
+                rawToken = [deviceCopy rawToken];
+                v66 = [IDSDestination destinationWithAlias:prefixedURI pushToken:rawToken];
 
                 v23 = v63;
-                v51 = [(IDSGroupEncryptionController2 *)v65->_internal groupForID:v61];
+                v51 = [(IDSGroupEncryptionController2 *)selfCopy->_internal groupForID:v61];
                 v52 = [v51 ensureSessionForID:v60];
-                [v52 setKeyMaterialIsNeededForParticipant:v45 forMKM:a9 forSKM:a10];
+                [v52 setKeyMaterialIsNeededForParticipant:v45 forMKM:m forSKM:kM];
 
-                v21 = v64;
-                [(IDSGroupEncryptionController *)v65 sendPublicKeyToDestination:v66 group:v61 sessionID:v60];
-                v53 = [v17 rawToken];
-                [v63 reportPreKeyReceivedOverPushFromToken:v53];
+                dateCopy = v64;
+                [(IDSGroupEncryptionController *)selfCopy sendPublicKeyToDestination:v66 group:v61 sessionID:v60];
+                rawToken2 = [deviceCopy rawToken];
+                [v63 reportPreKeyReceivedOverPushFromToken:rawToken2];
 
                 v54 = v66;
                 v43 = v58;
@@ -737,10 +737,10 @@
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
             {
               v38 = [IDSURI alloc];
-              v39 = [v30 allocatedURI];
-              v40 = [v38 initWithPrefixedURI:v39];
+              allocatedURI2 = [v30 allocatedURI];
+              v40 = [v38 initWithPrefixedURI:allocatedURI2];
               *buf = 138412546;
-              v74 = v18;
+              v74 = iCopy;
               v75 = 2112;
               v76 = v40;
               _os_log_impl(&_mh_execute_header, v37, OS_LOG_TYPE_DEFAULT, "processIncomingKeyMaterialsRecoveryRequest: found a participant with different URI %@ vs %@.", buf, 0x16u);
@@ -759,22 +759,22 @@
     }
 
     v41 = +[IDSFoundationLog RealTimeEncryptionController];
-    v19 = v61;
+    dCopy = v61;
     if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
       v74 = v61;
       v75 = 2112;
-      v76 = v17;
+      v76 = deviceCopy;
       _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEFAULT, "processIncomingKeyMaterialsRecoveryRequest: We'll drop this key recovery request for group [%@] since deviceToken [%@] is not in the active participant list!", buf, 0x16u);
     }
 
     v23 = v63;
     v42 = v67;
     [v63 rejectedKeyRecoveryRequestFromURI:v67 reason:2];
-    v16 = v62;
-    v20 = v60;
-    v21 = v64;
+    requestCopy = v62;
+    iDCopy = v60;
+    dateCopy = v64;
     v43 = v58;
 LABEL_31:
   }
@@ -786,7 +786,7 @@ LABEL_31:
     if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v74 = v19;
+      v74 = dCopy;
       v75 = 2112;
       v76 = v67;
       _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "processIncomingKeyMaterialsRecoveryRequest: We'll drop this prekey recovery request for group %@ since %@ is not in this group!", buf, 0x16u);
@@ -797,18 +797,18 @@ LABEL_31:
   }
 }
 
-- (id)receivedAndSetKeyMaterial:(id)a3 stableKeyMaterial:(id)a4 forDevice:(id)a5 fromURI:(id)a6 groupID:(id)a7 sessionID:(id)a8 fromSender:(BOOL)a9 error:(id *)a10 forMKM:(BOOL)a11 forSKM:(BOOL)a12
+- (id)receivedAndSetKeyMaterial:(id)material stableKeyMaterial:(id)keyMaterial forDevice:(id)device fromURI:(id)i groupID:(id)d sessionID:(id)iD fromSender:(BOOL)sender error:(id *)self0 forMKM:(BOOL)self1 forSKM:(BOOL)self2
 {
-  v18 = a3;
-  v19 = a4;
-  v20 = a5;
-  v21 = a6;
-  v22 = a7;
-  v23 = a8;
-  if (v18)
+  materialCopy = material;
+  keyMaterialCopy = keyMaterial;
+  deviceCopy = device;
+  iCopy = i;
+  dCopy = d;
+  iDCopy = iD;
+  if (materialCopy)
   {
-    v24 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:v22];
-    v25 = [v24 receiveMKMWithKeyMaterialDictionary:v18 fromPushToken:v20 fromURI:v21 sessionID:v23 isFromSender:a9];
+    v24 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:dCopy];
+    v25 = [v24 receiveMKMWithKeyMaterialDictionary:materialCopy fromPushToken:deviceCopy fromURI:iCopy sessionID:iDCopy isFromSender:sender];
 
     if (v25)
     {
@@ -826,7 +826,7 @@ LABEL_31:
       Mutable = 0;
     }
 
-    if (v19)
+    if (keyMaterialCopy)
     {
       goto LABEL_9;
     }
@@ -835,28 +835,28 @@ LABEL_31:
   else
   {
     Mutable = 0;
-    if (v19)
+    if (keyMaterialCopy)
     {
 LABEL_9:
-      v27 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:v22];
-      v28 = [v27 receiveSKMWithKeyMaterialDictionary:v19 fromPushToken:v20 fromURI:v21 sessionID:v23 isFromSender:a9];
+      v27 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:dCopy];
+      v28 = [v27 receiveSKMWithKeyMaterialDictionary:keyMaterialCopy fromPushToken:deviceCopy fromURI:iCopy sessionID:iDCopy isFromSender:sender];
     }
   }
 
   return Mutable;
 }
 
-- (id)stableKeyMaterialForGroup:(id)a3
+- (id)stableKeyMaterialForGroup:(id)group
 {
-  v3 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:a3];
-  v4 = [v3 stableKeyMaterial];
+  v3 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:group];
+  stableKeyMaterial = [v3 stableKeyMaterial];
 
-  return v4;
+  return stableKeyMaterial;
 }
 
-- (void)resetMKMLocalSentStatus:(id)a3
+- (void)resetMKMLocalSentStatus:(id)status
 {
-  v3 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:a3];
+  v3 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:status];
   [v3 resetKeysSentToClient];
 }
 
@@ -898,12 +898,12 @@ LABEL_9:
 
   if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
     v5 = +[IDSFoundationLog RealTimeEncryptionController];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v6 = @"NO";
-      if (v4)
+      if (bOOLValue)
       {
         v6 = @"YES";
       }
@@ -916,10 +916,10 @@ LABEL_9:
 
   else
   {
-    LOBYTE(v4) = 1;
+    LOBYTE(bOOLValue) = 1;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (void)resetDevicePrekey
@@ -932,65 +932,65 @@ LABEL_9:
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v4 = [(IDSGroupEncryptionController2 *)self->_internal identityController];
-  [v4 resetPreKey];
+  identityController = [(IDSGroupEncryptionController2 *)self->_internal identityController];
+  [identityController resetPreKey];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (id)activeParticipantsForGroup:(id)a3
+- (id)activeParticipantsForGroup:(id)group
 {
-  if (a3)
+  if (group)
   {
-    v4 = a3;
+    groupCopy = group;
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:v4];
+    v5 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:groupCopy];
 
-    v6 = [v5 participantPushTokens];
-    v7 = [v6 allObjects];
+    participantPushTokens = [v5 participantPushTokens];
+    allObjects = [participantPushTokens allObjects];
 
     os_unfair_lock_unlock(&self->_lock);
   }
 
   else
   {
-    v7 = 0;
+    allObjects = 0;
   }
 
-  return v7;
+  return allObjects;
 }
 
-- (void)removeLocalActiveParticipantForGroup:(id)a3
+- (void)removeLocalActiveParticipantForGroup:(id)group
 {
-  v4 = a3;
-  v5 = [(IDSGroupEncryptionController *)self _localDevicePushToken];
-  [(IDSGroupEncryptionController *)self removeActiveParticipant:v5 forGroup:v4];
+  groupCopy = group;
+  _localDevicePushToken = [(IDSGroupEncryptionController *)self _localDevicePushToken];
+  [(IDSGroupEncryptionController *)self removeActiveParticipant:_localDevicePushToken forGroup:groupCopy];
 }
 
-- (void)removeActiveParticipant:(id)a3 forGroup:(id)a4
+- (void)removeActiveParticipant:(id)participant forGroup:(id)group
 {
-  if (a3 && a4)
+  if (participant && group)
   {
-    v6 = a4;
-    v7 = a3;
+    groupCopy = group;
+    participantCopy = participant;
     os_unfair_lock_lock(&self->_lock);
-    v8 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:v6];
+    v8 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:groupCopy];
 
-    [v8 removeParticipantForToken:v7];
+    [v8 removeParticipantForToken:participantCopy];
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)resetKeysForGroup:(id)a3 shouldRemoveCurrentParticipants:(BOOL)a4
+- (void)resetKeysForGroup:(id)group shouldRemoveCurrentParticipants:(BOOL)participants
 {
-  v4 = a4;
-  v6 = a3;
-  if (v6)
+  participantsCopy = participants;
+  groupCopy = group;
+  if (groupCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v7 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:v6];
+    v7 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:groupCopy];
     v8 = v7;
-    if (v4)
+    if (participantsCopy)
     {
       [v7 removeAllParticipants];
       [v8 resetKeysToPropagate];
@@ -1008,13 +1008,13 @@ LABEL_9:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = @"NO";
-      if (v4)
+      if (participantsCopy)
       {
         v10 = @"YES";
       }
 
       v11 = 138412546;
-      v12 = v6;
+      v12 = groupCopy;
       v13 = 2112;
       v14 = v10;
       _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "resetKeysForGroup: %@, shouldRemoveCurrentParticipants: %@", &v11, 0x16u);
@@ -1024,21 +1024,21 @@ LABEL_9:
   }
 }
 
-- (void)unsubscribeEndpointsForGroup:(id)a3
+- (void)unsubscribeEndpointsForGroup:(id)group
 {
-  v4 = a3;
-  if (v4)
+  groupCopy = group;
+  if (groupCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:v4];
+    v5 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:groupCopy];
     [v5 removeAllMembers];
     [v5 removeAllParticipants];
-    [(NSMutableDictionary *)self->_lastKnownGroupIDToPushTokens setObject:0 forKeyedSubscript:v4];
+    [(NSMutableDictionary *)self->_lastKnownGroupIDToPushTokens setObject:0 forKeyedSubscript:groupCopy];
     v6 = +[IDSFoundationLog RealTimeEncryptionController];
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138412290;
-      v8 = v4;
+      v8 = groupCopy;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "unsubscribeEndpointsForGroup: %@", &v7, 0xCu);
     }
 
@@ -1046,40 +1046,40 @@ LABEL_9:
   }
 }
 
-- (unint64_t)participantIDForPushToken:(id)a3 inGroup:(id)a4
+- (unint64_t)participantIDForPushToken:(id)token inGroup:(id)group
 {
   internal = self->_internal;
-  v6 = a3;
-  v7 = [(IDSGroupEncryptionController2 *)internal groupForID:a4];
-  v8 = [v7 participantForToken:v6];
+  tokenCopy = token;
+  v7 = [(IDSGroupEncryptionController2 *)internal groupForID:group];
+  v8 = [v7 participantForToken:tokenCopy];
 
-  v9 = [v8 participantID];
-  return v9;
+  participantID = [v8 participantID];
+  return participantID;
 }
 
-- (id)stableKeyMaterialForGroup:(id)a3 sessionID:(id)a4
+- (id)stableKeyMaterialForGroup:(id)group sessionID:(id)d
 {
   internal = self->_internal;
-  v6 = a4;
-  v7 = [(IDSGroupEncryptionController2 *)internal groupForID:a3];
-  v8 = [v7 ensureSessionForID:v6];
+  dCopy = d;
+  v7 = [(IDSGroupEncryptionController2 *)internal groupForID:group];
+  v8 = [v7 ensureSessionForID:dCopy];
 
-  v9 = [v8 skmController];
-  [v9 ensureKey];
+  skmController = [v8 skmController];
+  [skmController ensureKey];
 
-  v10 = [v8 skmController];
-  v11 = [v10 currentObjcMaterial];
+  skmController2 = [v8 skmController];
+  currentObjcMaterial = [skmController2 currentObjcMaterial];
 
-  return v11;
+  return currentObjcMaterial;
 }
 
-- (void)sendKeyMaterialMessage:(id)a3 toDestination:(id)a4 forGroup:(id)a5 sessionID:(id)a6 completion:(id)a7
+- (void)sendKeyMaterialMessage:(id)message toDestination:(id)destination forGroup:(id)group sessionID:(id)d completion:(id)completion
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  completionCopy = completion;
+  dCopy = d;
+  groupCopy = group;
+  destinationCopy = destination;
+  messageCopy = message;
   [(IDSGroupEncryptionController *)self _multiwayFTMessageSendTimeout];
   v18 = v17;
   shouldSendMKMOverQR = self->_shouldSendMKMOverQR;
@@ -1087,26 +1087,26 @@ LABEL_9:
   v22[1] = 3221225472;
   v22[2] = sub_1006C9454;
   v22[3] = &unk_100BE55C0;
-  v23 = v12;
-  v20 = v12;
+  v23 = completionCopy;
+  v20 = completionCopy;
   LOBYTE(v21) = shouldSendMKMOverQR;
-  [(IDSGroupEncryptionController *)self _sendMessage:v16 toDestination:v15 forGroup:v14 sessionID:v13 command:211 timeout:1 shouldExpire:v18 useQR:v21 completion:&stru_100BE5598 completionBlock:v22];
+  [(IDSGroupEncryptionController *)self _sendMessage:messageCopy toDestination:destinationCopy forGroup:groupCopy sessionID:dCopy command:211 timeout:1 shouldExpire:v18 useQR:v21 completion:&stru_100BE5598 completionBlock:v22];
 }
 
-- (void)_sendMessage:(id)a3 toDestination:(id)a4 forGroup:(id)a5 sessionID:(id)a6 command:(int64_t)a7 timeout:(double)a8 shouldExpire:(BOOL)a9 useQR:(BOOL)a10 completion:(id)a11 completionBlock:(id)a12
+- (void)_sendMessage:(id)message toDestination:(id)destination forGroup:(id)group sessionID:(id)d command:(int64_t)command timeout:(double)timeout shouldExpire:(BOOL)expire useQR:(BOOL)self0 completion:(id)self1 completionBlock:(id)self2
 {
-  v12 = a9;
-  v56 = a3;
-  v19 = a4;
-  v20 = a5;
-  v55 = a6;
-  v53 = a11;
-  v54 = a12;
+  expireCopy = expire;
+  messageCopy = message;
+  destinationCopy = destination;
+  groupCopy = group;
+  dCopy = d;
+  completionCopy = completion;
+  blockCopy = block;
   v21 = +[IDSDAccountController sharedInstance];
-  v22 = [(NSMutableDictionary *)self->_accountIDs objectForKeyedSubscript:v20];
+  v22 = [(NSMutableDictionary *)self->_accountIDs objectForKeyedSubscript:groupCopy];
   v23 = [v21 accountWithUniqueID:v22];
 
-  v24 = [(NSMutableDictionary *)self->_fromURIs objectForKeyedSubscript:v20];
+  v24 = [(NSMutableDictionary *)self->_fromURIs objectForKeyedSubscript:groupCopy];
   v25 = v24;
   if (v23 && v24)
   {
@@ -1119,17 +1119,17 @@ LABEL_9:
     v74[2] = 0x2020000000;
     v75 = 0;
     v26 = IMGetDomainBoolForKey() ^ 1;
-    if (a7 != 211)
+    if (command != 211)
     {
       LOBYTE(v26) = 1;
     }
 
     if (v26)
     {
-      v29 = [(IDSGroupEncryptionController *)self sessionController];
-      v27 = [v29 sessionWithUniqueID:v55];
+      sessionController = [(IDSGroupEncryptionController *)self sessionController];
+      v27 = [sessionController sessionWithUniqueID:dCopy];
 
-      if (a7 == 211 && a10)
+      if (command == 211 && r)
       {
         v30 = +[IDSFoundationLog RealTimeEncryptionController];
         if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -1138,7 +1138,7 @@ LABEL_9:
           _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "sendMessage: calling _generateMKMBlobForQRFromMessage", buf, 2u);
         }
 
-        v31 = [(IDSGroupEncryptionController *)self _generateMKMBlobForQRFromMessage:v56 account:v23 destination:v19 fromURI:v25];
+        v31 = [(IDSGroupEncryptionController *)self _generateMKMBlobForQRFromMessage:messageCopy account:v23 destination:destinationCopy fromURI:v25];
         if (v31)
         {
           v67[0] = _NSConcreteStackBlock;
@@ -1147,11 +1147,11 @@ LABEL_9:
           v67[3] = &unk_100BE55E8;
           v72 = v82;
           v73 = v74;
-          v68 = v20;
-          v69 = v55;
-          v70 = v53;
-          v71 = v54;
-          [v27 sendKeyMaterialMessageDataOverQR:v31 toDestination:v19 completionBlock:v67];
+          v68 = groupCopy;
+          v69 = dCopy;
+          v70 = completionCopy;
+          v71 = blockCopy;
+          [v27 sendKeyMaterialMessageDataOverQR:v31 toDestination:destinationCopy completionBlock:v67];
 
           v32 = v68;
         }
@@ -1170,14 +1170,14 @@ LABEL_9:
 
       v52 = +[NSString stringGUID];
       v33 = objc_alloc_init(IDSSendParameters);
-      v34 = [v25 unprefixedURI];
-      [v33 setFromID:v34];
+      unprefixedURI = [v25 unprefixedURI];
+      [v33 setFromID:unprefixedURI];
 
-      [v33 setMessage:v56];
+      [v33 setMessage:messageCopy];
       [v33 setEncryptPayload:1];
       [v33 setPriority:300];
-      [v33 setDestinations:v19];
-      v35 = [NSNumber numberWithInteger:a7];
+      [v33 setDestinations:destinationCopy];
+      v35 = [NSNumber numberWithInteger:command];
       [v33 setCommand:v35];
 
       [v33 setIdentifier:v52];
@@ -1185,48 +1185,48 @@ LABEL_9:
       v36 = IDSGetUUIDData();
       [v33 setMessageUUID:v36];
 
-      [v33 setTimeout:a8];
+      [v33 setTimeout:timeout];
       [v33 setIgnoreMaxRetryCount:1];
       [v33 setWantsResponse:1];
-      if (v12)
+      if (expireCopy)
       {
         [v33 setEnforceRemoteTimeouts:{-[IDSGroupEncryptionController _shouldEnforceRemoteTimeout](self, "_shouldEnforceRemoteTimeout")}];
       }
 
-      v37 = [v27 requiredLackOfCapabilities];
-      v38 = [v37 count];
+      requiredLackOfCapabilities = [v27 requiredLackOfCapabilities];
+      v38 = [requiredLackOfCapabilities count];
 
       if (v38)
       {
         v39 = +[IDSFoundationLog RealTimeEncryptionController];
         if (os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT))
         {
-          v40 = [v27 requiredLackOfCapabilities];
+          requiredLackOfCapabilities2 = [v27 requiredLackOfCapabilities];
           *buf = 138412290;
-          v77 = v40;
+          v77 = requiredLackOfCapabilities2;
           _os_log_impl(&_mh_execute_header, v39, OS_LOG_TYPE_DEFAULT, "Group session encryption message requires lack of properties {requiredLackOfCapabilities: %@}", buf, 0xCu);
         }
 
-        v41 = [v27 requiredLackOfCapabilities];
-        [v33 setRequireLackOfRegistrationProperties:v41];
+        requiredLackOfCapabilities3 = [v27 requiredLackOfCapabilities];
+        [v33 setRequireLackOfRegistrationProperties:requiredLackOfCapabilities3];
       }
 
-      v42 = [v27 requiredCapabilities];
-      v43 = [v42 count];
+      requiredCapabilities = [v27 requiredCapabilities];
+      v43 = [requiredCapabilities count];
 
       if (v43)
       {
         v44 = +[IDSFoundationLog RealTimeEncryptionController];
         if (os_log_type_enabled(v44, OS_LOG_TYPE_DEFAULT))
         {
-          v45 = [v27 requiredCapabilities];
+          requiredCapabilities2 = [v27 requiredCapabilities];
           *buf = 138412290;
-          v77 = v45;
+          v77 = requiredCapabilities2;
           _os_log_impl(&_mh_execute_header, v44, OS_LOG_TYPE_DEFAULT, "Group session encryption message requires properties {requiredCapabilities: %@}", buf, 0xCu);
         }
 
-        v46 = [v27 requiredCapabilities];
-        [v33 setRequireAllRegistrationProperties:v46];
+        requiredCapabilities3 = [v27 requiredCapabilities];
+        [v33 setRequireAllRegistrationProperties:requiredCapabilities3];
       }
 
       v47 = +[IDSFoundationLog RealTimeEncryptionController];
@@ -1236,7 +1236,7 @@ LABEL_9:
         *buf = 138412802;
         v77 = v52;
         v78 = 2048;
-        v79 = a7;
+        commandCopy = command;
         v80 = 2048;
         v81 = v48;
         _os_log_impl(&_mh_execute_header, v47, OS_LOG_TYPE_DEFAULT, "Sending group session encryption message { GUID: %@, command: %ld, timeout: %f }", buf, 0x20u);
@@ -1250,16 +1250,16 @@ LABEL_9:
       v59 = v49;
       v64 = v82;
       v65 = v74;
-      v66 = a7;
-      v60 = v20;
-      v61 = v55;
-      v62 = v53;
-      v63 = v54;
+      commandCopy2 = command;
+      v60 = groupCopy;
+      v61 = dCopy;
+      v62 = completionCopy;
+      v63 = blockCopy;
       [v23 sendMessageWithSendParameters:v33 willSendBlock:0 completionBlock:v58];
-      v50 = [NSNumber numberWithInteger:a7];
-      v51 = [NSString stringWithFormat:@"sendMessage: Sent messageID %@ to the destination %@ command %@ (message: %@)", v49, v19, v50, v56];
+      v50 = [NSNumber numberWithInteger:command];
+      messageCopy = [NSString stringWithFormat:@"sendMessage: Sent messageID %@ to the destination %@ command %@ (message: %@)", v49, destinationCopy, v50, messageCopy];
 
-      v57 = v51;
+      v57 = messageCopy;
       cut_dispatch_log_queue();
     }
 
@@ -1287,73 +1287,73 @@ LABEL_9:
       *&v82[12] = 2112;
       *&v82[14] = v25;
       *&v82[22] = 2112;
-      v83 = v20;
+      v83 = groupCopy;
       _os_log_error_impl(&_mh_execute_header, v28, OS_LOG_TYPE_ERROR, "sendMessage: account: %@ fromID: %@ - failed to get the account forGroup: %@", v82, 0x20u);
     }
   }
 }
 
-- (void)sendPreKeyMessage:(id)a3 toDestination:(id)a4 forGroup:(id)a5 sessionID:(id)a6
+- (void)sendPreKeyMessage:(id)message toDestination:(id)destination forGroup:(id)group sessionID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  destinationCopy = destination;
+  groupCopy = group;
+  dCopy = d;
   v14 = im_primary_queue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006CA374;
   block[3] = &unk_100BD9FC0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = messageCopy;
+  v21 = destinationCopy;
+  v22 = groupCopy;
+  v23 = dCopy;
+  v15 = dCopy;
+  v16 = groupCopy;
+  v17 = destinationCopy;
+  v18 = messageCopy;
   dispatch_async(v14, block);
 }
 
-- (void)sendPreKeyRequestMessage:(id)a3 toDestination:(id)a4 forGroup:(id)a5 sessionID:(id)a6
+- (void)sendPreKeyRequestMessage:(id)message toDestination:(id)destination forGroup:(id)group sessionID:(id)d
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  messageCopy = message;
+  destinationCopy = destination;
+  groupCopy = group;
+  dCopy = d;
   v14 = im_primary_queue();
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1006CA504;
   block[3] = &unk_100BD9FC0;
   block[4] = self;
-  v20 = v10;
-  v21 = v11;
-  v22 = v12;
-  v23 = v13;
-  v15 = v13;
-  v16 = v12;
-  v17 = v11;
-  v18 = v10;
+  v20 = messageCopy;
+  v21 = destinationCopy;
+  v22 = groupCopy;
+  v23 = dCopy;
+  v15 = dCopy;
+  v16 = groupCopy;
+  v17 = destinationCopy;
+  v18 = messageCopy;
   dispatch_async(v14, block);
 }
 
-- (void)processedQRMKMPayloadFromData:(id)a3 forGroupID:(id)a4 account:(id)a5 remoteURI:(id)a6 localURI:(id)a7 tokens:(id)a8 completionHandler:(id)a9
+- (void)processedQRMKMPayloadFromData:(id)data forGroupID:(id)d account:(id)account remoteURI:(id)i localURI:(id)rI tokens:(id)tokens completionHandler:(id)handler
 {
-  v62 = a3;
-  v59 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  v60 = a9;
+  dataCopy = data;
+  dCopy = d;
+  accountCopy = account;
+  iCopy = i;
+  rICopy = rI;
+  tokensCopy = tokens;
+  handlerCopy = handler;
   v18 = +[NSMutableSet set];
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v19 = v17;
+  v19 = tokensCopy;
   v20 = [v19 countByEnumeratingWithState:&v70 objects:v80 count:16];
   if (v20)
   {
@@ -1371,8 +1371,8 @@ LABEL_9:
         v24 = *(*(&v70 + 1) + 8 * i);
         if (v24 && ([*(*(&v70 + 1) + 8 * i) isNull] & 1) == 0)
         {
-          v25 = [v24 __imHexString];
-          [v18 addObject:v25];
+          __imHexString = [v24 __imHexString];
+          [v18 addObject:__imHexString];
         }
       }
 
@@ -1383,17 +1383,17 @@ LABEL_9:
   }
 
   v26 = +[IDSPeerIDManager sharedInstance];
-  v79 = v15;
+  v79 = iCopy;
   v27 = [NSArray arrayWithObjects:&v79 count:1];
-  v58 = v14;
-  v28 = [v14 service];
-  v29 = [v28 identifier];
-  v30 = [v26 endpointsForURIs:v27 service:v29 fromURI:v16];
+  v58 = accountCopy;
+  service = [accountCopy service];
+  identifier = [service identifier];
+  v30 = [v26 endpointsForURIs:v27 service:identifier fromURI:rICopy];
 
   v55 = v30;
-  v31 = [v30 objectForKey:v15];
-  v56 = v16;
-  v57 = v15;
+  v31 = [v30 objectForKey:iCopy];
+  v56 = rICopy;
+  v57 = iCopy;
   if ([v19 count])
   {
     v68[0] = _NSConcreteStackBlock;
@@ -1428,7 +1428,7 @@ LABEL_9:
         v37 = *(*(&v64 + 1) + 8 * j);
         v38 = +[IDSEncryptionController sharedInstance];
         v63 = 0;
-        v39 = [v38 publicKeyDecryptData:v62 fromEndpoint:v37 pkType:1 priority:300 error:&v63];
+        v39 = [v38 publicKeyDecryptData:dataCopy fromEndpoint:v37 pkType:1 priority:300 error:&v63];
         v40 = v63;
 
         if (v40)
@@ -1449,8 +1449,8 @@ LABEL_9:
           v48 = v37;
 
           v49 = JWDecodeDictionary();
-          v44 = v59;
-          v50 = [(IDSGroupEncryptionController *)self _compactKeyMaterialMessage:v49 isOutgoing:0 groupID:v59];
+          v44 = dCopy;
+          v50 = [(IDSGroupEncryptionController *)self _compactKeyMaterialMessage:v49 isOutgoing:0 groupID:dCopy];
           v51 = +[IDSFoundationLog RealTimeEncryptionController];
           if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
           {
@@ -1468,13 +1468,13 @@ LABEL_9:
             _os_log_impl(&_mh_execute_header, v52, OS_LOG_TYPE_DEFAULT, "Expanded QR MKM Payload {expandedPayload: %@}", buf, 0xCu);
           }
 
-          v47 = v60;
-          if (v60)
+          v47 = handlerCopy;
+          if (handlerCopy)
           {
-            v53 = [v48 pushToken];
-            (*(v60 + 2))(v60, v50, v53);
+            pushToken = [v48 pushToken];
+            (*(handlerCopy + 2))(handlerCopy, v50, pushToken);
 
-            v47 = v60;
+            v47 = handlerCopy;
           }
 
           v45 = v57;
@@ -1501,13 +1501,13 @@ LABEL_9:
   }
 
   v43 = v58;
-  v44 = v59;
+  v44 = dCopy;
   v46 = v56;
   v45 = v57;
-  v47 = v60;
-  if (v60)
+  v47 = handlerCopy;
+  if (handlerCopy)
   {
-    (*(v60 + 2))(v60, 0, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0);
   }
 
   v39 = 0;
@@ -1515,50 +1515,50 @@ LABEL_9:
 LABEL_37:
 }
 
-- (id)_generateMKMBlobForQRFromMessage:(id)a3 account:(id)a4 destination:(id)a5 fromURI:(id)a6
+- (id)_generateMKMBlobForQRFromMessage:(id)message account:(id)account destination:(id)destination fromURI:(id)i
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v12 destinationURIs];
-  v15 = [v14 count];
+  messageCopy = message;
+  accountCopy = account;
+  destinationCopy = destination;
+  iCopy = i;
+  destinationURIs = [destinationCopy destinationURIs];
+  v15 = [destinationURIs count];
 
   if (v15 < 2)
   {
-    v18 = [v12 destinationURIs];
-    v16 = [v18 anyObject];
+    destinationURIs2 = [destinationCopy destinationURIs];
+    anyObject = [destinationURIs2 anyObject];
 
     v55 = 0;
-    v19 = [v16 _stripPotentialTokenURIWithToken:&v55];
+    v19 = [anyObject _stripPotentialTokenURIWithToken:&v55];
     v20 = v55;
     if (v20)
     {
-      v44 = self;
-      v48 = v16;
-      v49 = v12;
-      v52 = v10;
+      selfCopy = self;
+      v48 = anyObject;
+      v49 = destinationCopy;
+      v52 = messageCopy;
       v21 = +[IDSPeerIDManager sharedInstance];
-      v22 = [v11 service];
-      [v22 identifier];
+      service = [accountCopy service];
+      [service identifier];
       v24 = v23 = v19;
       v46 = v20;
       v25 = [IDSPushToken pushTokenWithData:v20 withServiceLoggingHint:v24];
-      v26 = [v11 service];
-      v27 = [v26 identifier];
+      service2 = [accountCopy service];
+      identifier = [service2 identifier];
       v47 = v23;
-      v28 = [IDSURI URIWithPrefixedURI:v23 withServiceLoggingHint:v27];
-      v51 = v11;
-      v29 = [v11 service];
-      v30 = [v29 identifier];
-      v50 = v13;
-      v31 = [v21 endpointForPushToken:v25 URI:v28 service:v30 fromURI:v13];
+      v28 = [IDSURI URIWithPrefixedURI:v23 withServiceLoggingHint:identifier];
+      v51 = accountCopy;
+      service3 = [accountCopy service];
+      identifier2 = [service3 identifier];
+      v50 = iCopy;
+      v31 = [v21 endpointForPushToken:v25 URI:v28 service:identifier2 fromURI:iCopy];
 
       v32 = v31;
       if (v31)
       {
-        v10 = v52;
-        v33 = [(IDSGroupEncryptionController *)v44 _compactKeyMaterialMessage:v52 isOutgoing:1 groupID:0];
+        messageCopy = v52;
+        v33 = [(IDSGroupEncryptionController *)selfCopy _compactKeyMaterialMessage:v52 isOutgoing:1 groupID:0];
         v34 = JWEncodeDictionary();
         v54 = 0xAAAAAAAAAAAAAAAALL;
         v35 = +[IDSEncryptionController sharedInstance];
@@ -1573,9 +1573,9 @@ LABEL_37:
           v38 = v54;
           v39 = +[IDSFoundationLog RealTimeEncryptionController];
           v40 = os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT);
-          v12 = v49;
-          v13 = v50;
-          v16 = v48;
+          destinationCopy = v49;
+          iCopy = v50;
+          anyObject = v48;
           v20 = v46;
           if (v38 == 4)
           {
@@ -1607,9 +1607,9 @@ LABEL_37:
         else
         {
           v41 = +[IDSFoundationLog RealTimeEncryptionController];
-          v12 = v49;
-          v13 = v50;
-          v16 = v48;
+          destinationCopy = v49;
+          iCopy = v50;
+          anyObject = v48;
           v20 = v46;
           if (os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT))
           {
@@ -1626,7 +1626,7 @@ LABEL_37:
       else
       {
         v33 = +[IDSFoundationLog RealTimeEncryptionController];
-        v10 = v52;
+        messageCopy = v52;
         if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412802;
@@ -1636,26 +1636,26 @@ LABEL_37:
           v58 = 2112;
           v59 = v46;
           v60 = 2112;
-          v13 = v50;
+          iCopy = v50;
           v61 = v50;
           _os_log_impl(&_mh_execute_header, v33, OS_LOG_TYPE_DEFAULT, "No endpoint found to target, not triggering a query -- returning nil {destinationURIString: %@, tokenFromURL: %@, fromURI: %@}", buf, 0x20u);
           v17 = 0;
-          v16 = v48;
-          v12 = v49;
+          anyObject = v48;
+          destinationCopy = v49;
         }
 
         else
         {
           v17 = 0;
-          v12 = v49;
-          v13 = v50;
+          destinationCopy = v49;
+          iCopy = v50;
           v19 = v47;
-          v16 = v48;
+          anyObject = v48;
           v20 = v46;
         }
       }
 
-      v11 = v51;
+      accountCopy = v51;
     }
 
     else
@@ -1664,7 +1664,7 @@ LABEL_37:
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v57 = v16;
+        v57 = anyObject;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "Unable to generate a QR MKM payload to a non-specific URI -- returning nil {fullDestinationURIString: %@}", buf, 0xCu);
       }
 
@@ -1674,12 +1674,12 @@ LABEL_37:
 
   else
   {
-    v16 = +[IDSFoundationLog RealTimeEncryptionController];
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    anyObject = +[IDSFoundationLog RealTimeEncryptionController];
+    if (os_log_type_enabled(anyObject, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v57 = v12;
-      _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Unable to generate a QR MKM payload to more than 1 destination -- returning nil {destination: %@}", buf, 0xCu);
+      v57 = destinationCopy;
+      _os_log_impl(&_mh_execute_header, anyObject, OS_LOG_TYPE_DEFAULT, "Unable to generate a QR MKM payload to more than 1 destination -- returning nil {destination: %@}", buf, 0xCu);
     }
 
     v17 = 0;
@@ -1688,13 +1688,13 @@ LABEL_37:
   return v17;
 }
 
-- (id)_compactKeyMaterialMessage:(id)a3 isOutgoing:(BOOL)a4 groupID:(id)a5
+- (id)_compactKeyMaterialMessage:(id)message isOutgoing:(BOOL)outgoing groupID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
+  outgoingCopy = outgoing;
+  messageCopy = message;
+  dCopy = d;
   v9 = objc_autoreleasePoolPush();
-  if (v6)
+  if (outgoingCopy)
   {
     v10 = &off_100C3DDC0;
   }
@@ -1704,7 +1704,7 @@ LABEL_37:
     v10 = &off_100C3DDD8;
   }
 
-  if (v6)
+  if (outgoingCopy)
   {
     v11 = &off_100C3DDD8;
   }
@@ -1714,15 +1714,15 @@ LABEL_37:
     v11 = &off_100C3DDC0;
   }
 
-  v12 = [v7 mutableCopy];
+  v12 = [messageCopy mutableCopy];
   [v12 removeObjectForKey:IDSDSessionMessageRealTimeEncryptionKeyAllValidKeyMaterialsKey];
   [v12 removeObjectForKey:IDSDSessionMessageRealTimeEncryptionKeyAllValidKeyMaterialsURIsKey];
   [v12 removeObjectForKey:IDSFanoutMessageGroupIDKey];
   [v12 removeObjectForKey:IDSDSessionMessageRealTimeEncryptionStableKeyMaterialKey];
-  if (v8)
+  if (dCopy)
   {
     v13 = [v11 objectAtIndexedSubscript:0];
-    [v12 setObject:v8 forKeyedSubscript:v13];
+    [v12 setObject:dCopy forKeyedSubscript:v13];
   }
 
   v14 = [v10 objectAtIndexedSubscript:1];
@@ -1744,7 +1744,7 @@ LABEL_37:
   if (v20)
   {
     v40 = v9;
-    v41 = v8;
+    v41 = dCopy;
     v21 = [v10 objectAtIndexedSubscript:4];
     v22 = [v20 _numberForKey:v21];
 
@@ -1769,7 +1769,7 @@ LABEL_37:
       [v20 setObject:v26 forKeyedSubscript:v28];
     }
 
-    v42 = v7;
+    v42 = messageCopy;
     v29 = [v10 objectAtIndexedSubscript:6];
     v30 = [v20 _dataForKey:v29];
 
@@ -1800,8 +1800,8 @@ LABEL_37:
     v38 = [v11 objectAtIndexedSubscript:2];
     [v12 setObject:v20 forKeyedSubscript:v38];
 
-    v8 = v41;
-    v7 = v42;
+    dCopy = v41;
+    messageCopy = v42;
     v9 = v40;
   }
 
@@ -1810,22 +1810,22 @@ LABEL_37:
   return v12;
 }
 
-- (void)updateServerDesiredKeyMaterialsForGroup:(id)a3 sessionID:(id)a4
+- (void)updateServerDesiredKeyMaterialsForGroup:(id)group sessionID:(id)d
 {
-  v4 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:a3, a4];
+  v4 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:group, d];
   [v4 updateDesiredMaterials];
 }
 
-- (void)rollNewKeysAfterResettingPrekeysForGroups:(id)a3 withReason:(int64_t)a4
+- (void)rollNewKeysAfterResettingPrekeysForGroups:(id)groups withReason:(int64_t)reason
 {
-  v5 = a3;
+  groupsCopy = groups;
   v6 = +[IDSFoundationLog RealTimeEncryptionController];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = v5;
+    v27 = groupsCopy;
     v28 = 2048;
-    v29 = a4;
+    reasonCopy2 = reason;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "rollNewKeysAfterResettingPrekeysForGroups: %@ reason: %ld", buf, 0x16u);
   }
 
@@ -1833,22 +1833,22 @@ LABEL_37:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v27 = v5;
+    v27 = groupsCopy;
     v28 = 2048;
-    v29 = a4;
+    reasonCopy2 = reason;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "rollNewKeysAfterResettingPrekeysForGroups: %@ reason: %ld", buf, 0x16u);
   }
 
-  v8 = [(IDSGroupEncryptionController *)self identityForDevice];
-  v9 = [v8 pushToken];
-  v10 = [v9 copy];
+  identityForDevice = [(IDSGroupEncryptionController *)self identityForDevice];
+  pushToken = [identityForDevice pushToken];
+  v10 = [pushToken copy];
 
   [(IDSGroupEncryptionController *)self resetDevicePrekey];
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = v5;
+  v11 = groupsCopy;
   v12 = [v11 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v12)
   {
@@ -1886,17 +1886,17 @@ LABEL_37:
   }
 }
 
-- (void)didReceiveEndpointsUpdate:(id)a3 forGroup:(id)a4 sessionID:(id)a5
+- (void)didReceiveEndpointsUpdate:(id)update forGroup:(id)group sessionID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  updateCopy = update;
+  groupCopy = group;
+  dCopy = d;
   v11 = +[NSMutableSet set];
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v12 = v8;
+  v12 = updateCopy;
   v13 = [v12 countByEnumeratingWithState:&v40 objects:v52 count:16];
   if (v13)
   {
@@ -1912,8 +1912,8 @@ LABEL_37:
           objc_enumerationMutation(v12);
         }
 
-        v17 = [*(*(&v40 + 1) + 8 * v16) pushTokenObject];
-        [v11 addObject:v17];
+        pushTokenObject = [*(*(&v40 + 1) + 8 * v16) pushTokenObject];
+        [v11 addObject:pushTokenObject];
 
         v16 = v16 + 1;
       }
@@ -1926,7 +1926,7 @@ LABEL_37:
   }
 
   os_unfair_lock_lock(&self->_lock);
-  v18 = [(NSMutableDictionary *)self->_lastKnownGroupIDToPushTokens objectForKeyedSubscript:v9];
+  v18 = [(NSMutableDictionary *)self->_lastKnownGroupIDToPushTokens objectForKeyedSubscript:groupCopy];
   v19 = objc_autoreleasePoolPush();
   v20 = [v18 mutableCopy];
   [v20 intersectsSet:v11];
@@ -1939,7 +1939,7 @@ LABEL_37:
   cut_dispatch_log_queue();
 
   objc_autoreleasePoolPop(v19);
-  [(NSMutableDictionary *)self->_lastKnownGroupIDToPushTokens setObject:v11 forKeyedSubscript:v9];
+  [(NSMutableDictionary *)self->_lastKnownGroupIDToPushTokens setObject:v11 forKeyedSubscript:groupCopy];
   os_unfair_lock_unlock(&self->_lock);
   if ([v18 isEqualToSet:v11])
   {
@@ -1949,7 +1949,7 @@ LABEL_37:
       *buf = 138412802;
       v45 = v12;
       v46 = 2112;
-      v47 = v9;
+      v47 = groupCopy;
       v48 = 2112;
       v49 = v18;
       _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "didReceiveEndpointsUpdate: %@ forGroup: %@ - nothing changed.(previous %@)", buf, 0x20u);
@@ -1971,7 +1971,7 @@ LABEL_37:
         *buf = 138413058;
         v45 = v12;
         v46 = 2112;
-        v47 = v9;
+        v47 = groupCopy;
         v48 = 2048;
         v49 = 0x4000000000000000;
         v50 = 2112;
@@ -1987,9 +1987,9 @@ LABEL_37:
     v30[2] = sub_1006CC2B0;
     v30[3] = &unk_100BE5660;
     v31 = v12;
-    v32 = v9;
+    v32 = groupCopy;
     v33 = v18;
-    v34 = self;
+    selfCopy = self;
     v28 = [v26 initWithQueue:v27 interval:2 repeats:0 handlerBlock:v30];
     v29 = self->_endpointUpdateTimer;
     self->_endpointUpdateTimer = v28;
@@ -1998,29 +1998,29 @@ LABEL_37:
   }
 }
 
-- (void)updateLightweightMemberTypes:(id)a3 members:(id)a4 triggeredLocally:(BOOL)a5 forGroup:(id)a6 sessionID:(id)a7
+- (void)updateLightweightMemberTypes:(id)types members:(id)members triggeredLocally:(BOOL)locally forGroup:(id)group sessionID:(id)d
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  typesCopy = types;
+  membersCopy = members;
+  groupCopy = group;
   os_unfair_lock_lock(&self->_lock);
-  v14 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:v13];
+  v14 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:groupCopy];
   v15 = &IDSRegistrationControlErrorDomain_ptr;
-  if (a5)
+  if (locally)
   {
     v43 = 0u;
     v44 = 0u;
     v41 = 0u;
     v42 = 0u;
-    v16 = v11;
+    v16 = typesCopy;
     v17 = [v16 countByEnumeratingWithState:&v41 objects:v49 count:16];
     if (v17)
     {
       v18 = v17;
-      v36 = v13;
-      v37 = v11;
-      v38 = v12;
-      v39 = self;
+      v36 = groupCopy;
+      v37 = typesCopy;
+      v38 = membersCopy;
+      selfCopy = self;
       v19 = *v42;
       do
       {
@@ -2033,33 +2033,33 @@ LABEL_37:
 
           v21 = *(*(&v41 + 1) + 8 * i);
           v22 = [v16 objectForKeyedSubscript:{v21, v36, v37}];
-          v23 = [v22 BOOLValue];
+          bOOLValue = [v22 BOOLValue];
           v24 = [IDSURI URIWithPrefixedURI:v21];
           v25 = [v14 memberForURI:v24];
-          [v25 setIsLightweight:v23];
+          [v25 setIsLightweight:bOOLValue];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v41 objects:v49 count:16];
       }
 
       while (v18);
-      v11 = v37;
-      v12 = v38;
-      self = v39;
-      v13 = v36;
+      typesCopy = v37;
+      membersCopy = v38;
+      self = selfCopy;
+      groupCopy = v36;
       v15 = &IDSRegistrationControlErrorDomain_ptr;
     }
   }
 
   else
   {
-    v40 = self;
+    selfCopy2 = self;
     v16 = +[NSMutableSet set];
     v45 = 0u;
     v46 = 0u;
     v47 = 0u;
     v48 = 0u;
-    v26 = v12;
+    v26 = membersCopy;
     v27 = [v26 countByEnumeratingWithState:&v45 objects:v54 count:16];
     if (v27)
     {
@@ -2084,53 +2084,53 @@ LABEL_37:
       while (v28);
     }
 
-    [v14 updateMembersWithURIs:v16 lightweightStatusDict:v11];
+    [v14 updateMembersWithURIs:v16 lightweightStatusDict:typesCopy];
     v15 = &IDSRegistrationControlErrorDomain_ptr;
     v32 = +[IDSFoundationLog RealTimeEncryptionController];
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
     {
-      v33 = [v14 memberURIs];
+      memberURIs = [v14 memberURIs];
       *buf = 138412546;
-      v51 = v33;
+      v51 = memberURIs;
       v52 = 2112;
-      v53 = v13;
+      v53 = groupCopy;
       _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "updateLightweightMemberTypes: membersForGroup: %@ for group: %@", buf, 0x16u);
     }
 
-    self = v40;
+    self = selfCopy2;
   }
 
-  v34 = [v15[240] RealTimeEncryptionController];
-  if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
+  realTimeEncryptionController = [v15[240] RealTimeEncryptionController];
+  if (os_log_type_enabled(realTimeEncryptionController, OS_LOG_TYPE_DEFAULT))
   {
-    v35 = [v14 allMembers];
+    allMembers = [v14 allMembers];
     *buf = 138412546;
-    v51 = v35;
+    v51 = allMembers;
     v52 = 2112;
-    v53 = v13;
-    _os_log_impl(&_mh_execute_header, v34, OS_LOG_TYPE_DEFAULT, "updateLightweightMemberTypes: members: %@ for group: %@", buf, 0x16u);
+    v53 = groupCopy;
+    _os_log_impl(&_mh_execute_header, realTimeEncryptionController, OS_LOG_TYPE_DEFAULT, "updateLightweightMemberTypes: members: %@ for group: %@", buf, 0x16u);
   }
 
   [v14 updateDesiredMaterials];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setMembers:(id)a3 forGroup:(id)a4 sessionID:(id)a5 lightweightStatusDict:(id)a6
+- (void)setMembers:(id)members forGroup:(id)group sessionID:(id)d lightweightStatusDict:(id)dict
 {
-  v10 = a3;
-  v11 = a4;
-  v36 = a5;
-  v12 = a6;
+  membersCopy = members;
+  groupCopy = group;
+  dCopy = d;
+  dictCopy = dict;
   os_unfair_lock_lock(&self->_lock);
-  v13 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:v11];
-  v14 = [NSSet setWithArray:v10];
-  v35 = v12;
-  [v13 updateMembersWithURIs:v14 lightweightStatusDict:v12];
+  v13 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:groupCopy];
+  v14 = [NSSet setWithArray:membersCopy];
+  v35 = dictCopy;
+  [v13 updateMembersWithURIs:v14 lightweightStatusDict:dictCopy];
 
   v15 = +[IDSFoundationLog RealTimeEncryptionController];
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
-    sub_100931FE4(v13, v11, v15);
+    sub_100931FE4(v13, groupCopy, v15);
   }
 
   v34 = v13;
@@ -2140,7 +2140,7 @@ LABEL_37:
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v17 = v10;
+  v17 = membersCopy;
   v18 = [v17 countByEnumeratingWithState:&v42 objects:v50 count:16];
   if (v18)
   {
@@ -2165,14 +2165,14 @@ LABEL_37:
   }
 
   v22 = +[IDSDAccountController sharedInstance];
-  v23 = [(NSMutableDictionary *)self->_accountIDs objectForKeyedSubscript:v11];
+  v23 = [(NSMutableDictionary *)self->_accountIDs objectForKeyedSubscript:groupCopy];
   v24 = [v22 accountWithUniqueID:v23];
 
-  v25 = [(NSMutableDictionary *)self->_fromURIs objectForKeyedSubscript:v11];
+  v25 = [(NSMutableDictionary *)self->_fromURIs objectForKeyedSubscript:groupCopy];
   v26 = [IDSEndpointSubscription alloc];
-  v27 = [v24 service];
-  v28 = [v27 identifier];
-  v29 = [(IDSEndpointSubscription *)v26 initWithServiceIdentifier:v28 localURI:v25 subscribedURIs:v16 queue:self->_realtimeEncryptionQueue];
+  service = [v24 service];
+  identifier = [service identifier];
+  v29 = [(IDSEndpointSubscription *)v26 initWithServiceIdentifier:identifier localURI:v25 subscribedURIs:v16 queue:self->_realtimeEncryptionQueue];
 
   [v34 setEndpointSubscription:v29];
   v30 = +[IDSFoundationLog RealTimeEncryptionController];
@@ -2181,22 +2181,22 @@ LABEL_37:
     *buf = 134218242;
     v47 = v29;
     v48 = 2112;
-    v49 = v11;
+    v49 = groupCopy;
     _os_log_impl(&_mh_execute_header, v30, OS_LOG_TYPE_DEFAULT, "setMembers: endpointSubscription %p forGroup: %@", buf, 0x16u);
   }
 
   if (self->_isInternal)
   {
-    v31 = [(NSMutableDictionary *)self->_prekeyAckCountForGroup objectForKey:v11];
+    v31 = [(NSMutableDictionary *)self->_prekeyAckCountForGroup objectForKey:groupCopy];
 
     if (!v31)
     {
-      [(NSMutableDictionary *)self->_prekeyAckCountForGroup setObject:&off_100C3D420 forKeyedSubscript:v11];
+      [(NSMutableDictionary *)self->_prekeyAckCountForGroup setObject:&off_100C3D420 forKeyedSubscript:groupCopy];
       v32 = +[IDSFoundationLog RealTimeEncryptionController];
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v47 = v11;
+        v47 = groupCopy;
         _os_log_impl(&_mh_execute_header, v32, OS_LOG_TYPE_DEFAULT, "ACK'd prekey count is reset to 0 forGroup: %@", buf, 0xCu);
       }
     }
@@ -2211,40 +2211,40 @@ LABEL_37:
     block[2] = sub_1006CCBB4;
     block[3] = &unk_100BD7020;
     v38 = v29;
-    v39 = self;
-    v40 = v11;
-    v41 = v36;
+    selfCopy = self;
+    v40 = groupCopy;
+    v41 = dCopy;
     dispatch_async(realtimeEncryptionQueue, block);
   }
 }
 
-- (void)didUpdateMembers:(id)a3 forGroup:(id)a4 sessionID:(id)a5 lightweightStatusDict:(id)a6 hasChangedStandardMembers:(BOOL)a7 newlyAddedMembers:(id)a8
+- (void)didUpdateMembers:(id)members forGroup:(id)group sessionID:(id)d lightweightStatusDict:(id)dict hasChangedStandardMembers:(BOOL)standardMembers newlyAddedMembers:(id)addedMembers
 {
-  v13 = a4;
-  v14 = a5;
+  groupCopy = group;
+  dCopy = d;
   internal = self->_internal;
-  v16 = a6;
-  v17 = a3;
-  v18 = [(IDSGroupEncryptionController2 *)internal groupForID:v13];
-  v19 = [NSSet setWithArray:v17];
+  dictCopy = dict;
+  membersCopy = members;
+  v18 = [(IDSGroupEncryptionController2 *)internal groupForID:groupCopy];
+  v19 = [NSSet setWithArray:membersCopy];
 
-  [v18 updateMembersWithURIs:v19 lightweightStatusDict:v16];
+  [v18 updateMembersWithURIs:v19 lightweightStatusDict:dictCopy];
   v20 = +[IDSFoundationLog RealTimeEncryptionController];
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-  if (a7)
+  if (standardMembers)
   {
     if (v21)
     {
-      v22 = [v18 allMembers];
+      allMembers = [v18 allMembers];
       v23 = 138412546;
-      v24 = v22;
+      v24 = allMembers;
       v25 = 2112;
       v26 = @"YES";
       _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "didUpdateMembers to %@, didChangeStandardMembers: %@", &v23, 0x16u);
     }
 
-    [(IDSGroupEncryptionController *)self _updateRelevantEncryptedDataBlobForSession:v14];
-    [(IDSGroupEncryptionController *)self updateServerDesiredKeyMaterialsForGroup:v13 sessionID:v14];
+    [(IDSGroupEncryptionController *)self _updateRelevantEncryptedDataBlobForSession:dCopy];
+    [(IDSGroupEncryptionController *)self updateServerDesiredKeyMaterialsForGroup:groupCopy sessionID:dCopy];
   }
 
   else
@@ -2257,11 +2257,11 @@ LABEL_37:
   }
 }
 
-- (void)_updateRelevantEncryptedDataBlobForSession:(id)a3
+- (void)_updateRelevantEncryptedDataBlobForSession:(id)session
 {
-  v4 = a3;
-  v5 = [(IDSGroupEncryptionController *)self sessionController];
-  v6 = [v5 sessionWithUniqueID:v4];
+  sessionCopy = session;
+  sessionController = [(IDSGroupEncryptionController *)self sessionController];
+  v6 = [sessionController sessionWithUniqueID:sessionCopy];
 
   if (v6)
   {
@@ -2273,16 +2273,16 @@ LABEL_37:
     v7 = +[IDSFoundationLog RealTimeEncryptionController];
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      sub_100932094(v4, v7);
+      sub_100932094(sessionCopy, v7);
     }
   }
 }
 
-- (BOOL)_isValidPushToken:(id)a3
+- (BOOL)_isValidPushToken:(id)token
 {
-  if (a3)
+  if (token)
   {
-    v3 = a3;
+    tokenCopy = token;
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
   }
@@ -2295,29 +2295,29 @@ LABEL_37:
   return isKindOfClass & 1;
 }
 
-- (void)didUpdateParticipants:(id)a3 ofType:(int64_t)a4 forGroup:(id)a5 sessionID:(id)a6
+- (void)didUpdateParticipants:(id)participants ofType:(int64_t)type forGroup:(id)group sessionID:(id)d
 {
   internal = self->_internal;
-  v9 = a3;
-  v10 = [(IDSGroupEncryptionController2 *)internal groupForID:a5];
-  [v10 updateParticipants:v9 lightweight:a4 == 1];
+  participantsCopy = participants;
+  v10 = [(IDSGroupEncryptionController2 *)internal groupForID:group];
+  [v10 updateParticipants:participantsCopy lightweight:type == 1];
 }
 
-- (void)account:(id)a3 didUpdateRegisteredDevices:(id)a4
+- (void)account:(id)account didUpdateRegisteredDevices:(id)devices
 {
-  v6 = a3;
-  v7 = a4;
-  v33 = self;
-  v8 = [(IDSGroupEncryptionController *)self sessionController];
-  v32 = [v8 groupSessionGroupIDs];
+  accountCopy = account;
+  devicesCopy = devices;
+  selfCopy = self;
+  sessionController = [(IDSGroupEncryptionController *)self sessionController];
+  groupSessionGroupIDs = [sessionController groupSessionGroupIDs];
 
-  if (([v6 isRegistered] & 1) == 0)
+  if (([accountCopy isRegistered] & 1) == 0)
   {
     v42 = 0u;
     v43 = 0u;
     v40 = 0u;
     v41 = 0u;
-    v9 = v32;
+    v9 = groupSessionGroupIDs;
     v10 = [v9 countByEnumeratingWithState:&v40 objects:v49 count:16];
     if (v10)
     {
@@ -2338,7 +2338,7 @@ LABEL_37:
           block[1] = 3221225472;
           block[2] = sub_1006CD600;
           block[3] = &unk_100BD6E40;
-          block[4] = v33;
+          block[4] = selfCopy;
           block[5] = v14;
           dispatch_async(v15, block);
         }
@@ -2350,16 +2350,16 @@ LABEL_37:
     }
   }
 
-  lastKnownAccountIDToPushTokens = v33->_lastKnownAccountIDToPushTokens;
-  v17 = [v6 uniqueID];
-  v31 = [(NSMutableDictionary *)lastKnownAccountIDToPushTokens objectForKeyedSubscript:v17];
+  lastKnownAccountIDToPushTokens = selfCopy->_lastKnownAccountIDToPushTokens;
+  uniqueID = [accountCopy uniqueID];
+  v31 = [(NSMutableDictionary *)lastKnownAccountIDToPushTokens objectForKeyedSubscript:uniqueID];
 
   v18 = objc_alloc_init(NSMutableSet);
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  obj = v7;
+  obj = devicesCopy;
   v19 = [obj countByEnumeratingWithState:&v35 objects:v48 count:16];
   if (v19)
   {
@@ -2374,10 +2374,10 @@ LABEL_37:
           objc_enumerationMutation(obj);
         }
 
-        v23 = [*(*(&v35 + 1) + 8 * j) pushToken];
-        v24 = [v6 service];
-        v25 = [v24 identifier];
-        v26 = [IDSPushToken pushTokenWithData:v23 withServiceLoggingHint:v25];
+        pushToken = [*(*(&v35 + 1) + 8 * j) pushToken];
+        service = [accountCopy service];
+        identifier = [service identifier];
+        v26 = [IDSPushToken pushTokenWithData:pushToken withServiceLoggingHint:identifier];
         [v18 addObject:v26];
       }
 
@@ -2387,42 +2387,42 @@ LABEL_37:
     while (v20);
   }
 
-  os_unfair_lock_lock(&v33->_lock);
-  v27 = v33->_lastKnownAccountIDToPushTokens;
-  v28 = [v6 uniqueID];
-  [(NSMutableDictionary *)v27 setObject:v18 forKeyedSubscript:v28];
+  os_unfair_lock_lock(&selfCopy->_lock);
+  v27 = selfCopy->_lastKnownAccountIDToPushTokens;
+  uniqueID2 = [accountCopy uniqueID];
+  [(NSMutableDictionary *)v27 setObject:v18 forKeyedSubscript:uniqueID2];
 
-  os_unfair_lock_unlock(&v33->_lock);
+  os_unfair_lock_unlock(&selfCopy->_lock);
   v29 = +[IDSFoundationLog RealTimeEncryptionController];
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
-    v30 = [v6 uniqueID];
+    uniqueID3 = [accountCopy uniqueID];
     *buf = 138412546;
     v45 = obj;
     v46 = 2112;
-    v47 = v30;
+    v47 = uniqueID3;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "didUpdateRegisteredDevices: %@ for account: %@", buf, 0x16u);
   }
 
   if (([v18 isEqualToSet:v31] & 1) == 0)
   {
-    [(IDSGroupEncryptionController *)v33 rollNewKeysAfterResettingPrekeysForGroups:v32 withReason:1];
+    [(IDSGroupEncryptionController *)selfCopy rollNewKeysAfterResettingPrekeysForGroups:groupSessionGroupIDs withReason:1];
   }
 }
 
-- (void)ensureSessionForID:(id)a3 groupID:(id)a4
+- (void)ensureSessionForID:(id)d groupID:(id)iD
 {
-  v8 = a3;
-  v6 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:a4];
-  v7 = [v6 ensureSessionForID:v8];
+  dCopy = d;
+  v6 = [(IDSGroupEncryptionController2 *)self->_internal groupForID:iD];
+  v7 = [v6 ensureSessionForID:dCopy];
 }
 
-- (void)cleanUpSessionForID:(id)a3 groupID:(id)a4
+- (void)cleanUpSessionForID:(id)d groupID:(id)iD
 {
   internal = self->_internal;
-  v6 = a3;
-  v7 = [(IDSGroupEncryptionController2 *)internal groupForID:a4];
-  [v7 cleanUpSessionForID:v6];
+  dCopy = d;
+  v7 = [(IDSGroupEncryptionController2 *)internal groupForID:iD];
+  [v7 cleanUpSessionForID:dCopy];
 }
 
 @end

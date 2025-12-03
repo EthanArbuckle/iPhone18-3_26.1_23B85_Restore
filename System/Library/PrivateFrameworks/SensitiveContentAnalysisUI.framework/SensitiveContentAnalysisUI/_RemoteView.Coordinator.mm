@@ -1,31 +1,31 @@
 @interface _RemoteView.Coordinator
 - (_TtCV26SensitiveContentAnalysisUI11_RemoteView11Coordinator)init;
-- (void)configureRemoteViewWith:(id)a3;
-- (void)handleInterventionActionWith:(id)a3;
-- (void)hostViewControllerDidActivate:(id)a3;
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4;
+- (void)configureRemoteViewWith:(id)with;
+- (void)handleInterventionActionWith:(id)with;
+- (void)hostViewControllerDidActivate:(id)activate;
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error;
 @end
 
 @implementation _RemoteView.Coordinator
 
-- (void)hostViewControllerDidActivate:(id)a3
+- (void)hostViewControllerDidActivate:(id)activate
 {
-  v4 = a3;
-  v5 = self;
-  sub_1BC6DA558(v4);
+  activateCopy = activate;
+  selfCopy = self;
+  sub_1BC6DA558(activateCopy);
 }
 
-- (void)hostViewControllerWillDeactivate:(id)a3 error:(id)a4
+- (void)hostViewControllerWillDeactivate:(id)deactivate error:(id)error
 {
-  v6 = a3;
-  v7 = self;
-  v8 = a4;
+  deactivateCopy = deactivate;
+  selfCopy = self;
+  errorCopy = error;
   sub_1BC6DC6F4();
 }
 
-- (void)configureRemoteViewWith:(id)a3
+- (void)configureRemoteViewWith:(id)with
 {
-  v3 = a3;
+  withCopy = with;
   v4 = sub_1BC759870();
   sub_1BC6AE140(v4, v5);
 
@@ -38,10 +38,10 @@
   sub_1BC75C6F0();
 }
 
-- (void)handleInterventionActionWith:(id)a3
+- (void)handleInterventionActionWith:(id)with
 {
-  v4 = a3;
-  v8 = self;
+  withCopy = with;
+  selfCopy = self;
   v5 = sub_1BC759870();
   v7 = v6;
 

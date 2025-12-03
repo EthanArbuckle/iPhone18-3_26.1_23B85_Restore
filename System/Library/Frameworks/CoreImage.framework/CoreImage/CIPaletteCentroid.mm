@@ -59,12 +59,12 @@
   inputPerceptual = self->inputPerceptual;
   if (inputPerceptual)
   {
-    v11 = [(NSNumber *)inputPerceptual BOOLValue];
+    bOOLValue = [(NSNumber *)inputPerceptual BOOLValue];
   }
 
   else
   {
-    v11 = 0;
+    bOOLValue = 0;
   }
 
   [(CIImage *)self->inputImage extent];
@@ -72,20 +72,20 @@
   v15 = v14;
   v17 = v16;
   v19 = v18;
-  v20 = [(CIPaletteCentroid *)self _kernelClusterMask];
+  _kernelClusterMask = [(CIPaletteCentroid *)self _kernelClusterMask];
   v21 = self->inputPaletteImage;
   [(CIImage *)v21 extent];
   v23 = -v22;
   [(CIImage *)self->inputPaletteImage extent];
   CGAffineTransformMakeTranslation(&v47, v23, -v24);
   v25 = [(CIImage *)v21 imageByApplyingTransform:&v47];
-  if (v11)
+  if (bOOLValue)
   {
     inputImage = [(CIImage *)inputImage imageByApplyingFilter:@"CILinearToSRGBToneCurve"];
     v25 = [(CIImage *)v25 imageByApplyingFilter:@"CILinearToSRGBToneCurve"];
   }
 
-  v26 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+  imageByUnpremultiplyingAlpha = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
   v27 = +[CIImage emptyImage];
   if (v8)
   {
@@ -103,7 +103,7 @@
       v34 = v29[1];
       v35 = v29[2];
       v36 = v29[3];
-      v50[0] = v26;
+      v50[0] = imageByUnpremultiplyingAlpha;
       v50[1] = v25;
       v50[2] = [MEMORY[0x1E696AD98] numberWithUnsignedLong:{v8, v43, v44, v45, v45, v43, v44, &__block_descriptor_40_e73__CGRect__CGPoint_dd__CGSize_dd__44__0i8_CGRect__CGPoint_dd__CGSize_dd__12l, v8}];
       v50[3] = [MEMORY[0x1E696AD98] numberWithInt:v28];
@@ -112,13 +112,13 @@
       v13 = v32;
       v15 = v31;
       v17 = v30;
-      v39 = v20;
-      v40 = [v20 applyWithExtent:&v46 roiCallback:v37 arguments:{v33, v38, v35, v36}];
+      v39 = _kernelClusterMask;
+      v40 = [_kernelClusterMask applyWithExtent:&v46 roiCallback:v37 arguments:{v33, v38, v35, v36}];
       v48 = @"inputExtent";
       v49 = [CIVector vectorWithCGRect:v13, v15, v30, v19];
       v41 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v49 forKeys:&v48 count:1];
       v42 = v40;
-      v20 = v39;
+      _kernelClusterMask = v39;
       v27 = [objc_msgSend(objc_msgSend(objc_msgSend(v42 imageByApplyingFilter:@"CIAreaRedCentroid" withInputParameters:{v41), "imageByClampingToExtent"), "imageByCroppingToRect:", v28++, 0.0, 1.0, 1.0), "imageByCompositingOverImage:", v27}];
     }
 
@@ -140,8 +140,8 @@ double __32__CIPaletteCentroid_outputImage__block_invoke(uint64_t a1, int a2)
 
 - (void)outputImage
 {
-  [*a1 extent];
-  [*a1 extent];
+  [*self extent];
+  [*self extent];
   OUTLINED_FUNCTION_1_1();
   _os_log_error_impl(v2, v3, v4, v5, v6, 0x20u);
 }

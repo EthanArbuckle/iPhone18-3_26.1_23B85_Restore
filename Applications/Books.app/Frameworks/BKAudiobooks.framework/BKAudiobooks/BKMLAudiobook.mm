@@ -1,17 +1,17 @@
 @interface BKMLAudiobook
 - (BKMLAudiobook)init;
-- (BOOL)isEqualToAudiobook:(id)a3;
+- (BOOL)isEqualToAudiobook:(id)audiobook;
 - (BOOL)isSG;
 - (NSDate)dateLastOpened;
 - (NSString)assetID;
 - (NSString)description;
 - (double)bookmarkTime;
 - (id)representativeItem;
-- (unint64_t)indexOfTrack:(id)a3;
-- (void)addTracks:(id)a3;
-- (void)artworkWithCompletion:(id)a3;
-- (void)coverArtWithCompletion:(id)a3;
-- (void)setBookmarkTime:(double)a3;
+- (unint64_t)indexOfTrack:(id)track;
+- (void)addTracks:(id)tracks;
+- (void)artworkWithCompletion:(id)completion;
+- (void)coverArtWithCompletion:(id)completion;
+- (void)setBookmarkTime:(double)time;
 @end
 
 @implementation BKMLAudiobook
@@ -44,10 +44,10 @@
   return v3;
 }
 
-- (void)addTracks:(id)a3
+- (void)addTracks:(id)tracks
 {
-  v5 = a3;
-  objc_storeStrong(&self->_mediaLibraryTracks, a3);
+  tracksCopy = tracks;
+  objc_storeStrong(&self->_mediaLibraryTracks, tracks);
   v6 = objc_opt_new();
   v36 = 0u;
   v37 = 0u;
@@ -68,8 +68,8 @@
         }
 
         v11 = *(*(&v36 + 1) + 8 * i);
-        v12 = [v11 chapters];
-        [v6 addObjectsFromArray:v12];
+        chapters = [v11 chapters];
+        [v6 addObjectsFromArray:chapters];
 
         [v11 duration];
         self->_duration = v13 + self->_duration;
@@ -85,24 +85,24 @@
   mediaLibraryChapters = self->_mediaLibraryChapters;
   self->_mediaLibraryChapters = v14;
 
-  v16 = [(BKMLAudiobook *)self representativeItem];
-  v17 = [v16 bk_effectiveTitle];
+  representativeItem = [(BKMLAudiobook *)self representativeItem];
+  bk_effectiveTitle = [representativeItem bk_effectiveTitle];
   title = self->_title;
-  self->_title = v17;
+  self->_title = bk_effectiveTitle;
 
-  v19 = [(BKMLAudiobook *)self representativeItem];
-  v20 = [v19 bk_effectiveAuthor];
+  representativeItem2 = [(BKMLAudiobook *)self representativeItem];
+  bk_effectiveAuthor = [representativeItem2 bk_effectiveAuthor];
   author = self->_author;
-  self->_author = v20;
+  self->_author = bk_effectiveAuthor;
 
   objc_initWeak(&location, self);
-  v22 = [v5 firstObject];
+  firstObject = [tracksCopy firstObject];
   v30 = _NSConcreteStackBlock;
   v31 = 3221225472;
   v32 = sub_DA48;
   v33 = &unk_3CF20;
   objc_copyWeak(&v34, &location);
-  [v22 lookupRacGUIDWithCompletion:&v30];
+  [firstObject lookupRacGUIDWithCompletion:&v30];
 
   v23 = BKAudiobooksLog();
   if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
@@ -132,15 +132,15 @@
   objc_destroyWeak(&location);
 }
 
-- (void)coverArtWithCompletion:(id)a3
+- (void)coverArtWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BKMLAudiobook *)self representativeItem];
-  if (v5)
+  completionCopy = completion;
+  representativeItem = [(BKMLAudiobook *)self representativeItem];
+  if (representativeItem)
   {
     if (self->_coverArt)
     {
-      v6 = objc_retainBlock(v4);
+      v6 = objc_retainBlock(completionCopy);
       v7 = v6;
       if (v6)
       {
@@ -163,8 +163,8 @@
       v12[2] = sub_DCEC;
       v12[3] = &unk_3CF48;
       objc_copyWeak(&v14, buf);
-      v13 = v4;
-      [v5 bk_artworkImageWithCompletion:v12];
+      v13 = completionCopy;
+      [representativeItem bk_artworkImageWithCompletion:v12];
 
       objc_destroyWeak(&v14);
       objc_destroyWeak(buf);
@@ -179,7 +179,7 @@
       sub_21524(v8);
     }
 
-    v9 = objc_retainBlock(v4);
+    v9 = objc_retainBlock(completionCopy);
     v10 = v9;
     if (v9)
     {
@@ -188,29 +188,29 @@
   }
 }
 
-- (void)artworkWithCompletion:(id)a3
+- (void)artworkWithCompletion:(id)completion
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_DE18;
   v5[3] = &unk_3CF70;
-  v6 = a3;
-  v4 = v6;
+  completionCopy = completion;
+  v4 = completionCopy;
   [(BKMLAudiobook *)self coverArtWithCompletion:v5];
 }
 
 - (NSString)assetID
 {
-  v2 = [(BKMLAudiobook *)self representativeItem];
-  v3 = [v2 bk_assetID];
+  representativeItem = [(BKMLAudiobook *)self representativeItem];
+  bk_assetID = [representativeItem bk_assetID];
 
-  return v3;
+  return bk_assetID;
 }
 
 - (double)bookmarkTime
 {
-  v2 = [(NSArray *)self->_mediaLibraryTracks firstObject];
-  [v2 bookmarkTime];
+  firstObject = [(NSArray *)self->_mediaLibraryTracks firstObject];
+  [firstObject bookmarkTime];
   v4 = v3;
 
   v5 = BKAudiobooksLog();
@@ -224,7 +224,7 @@
   return v4;
 }
 
-- (void)setBookmarkTime:(double)a3
+- (void)setBookmarkTime:(double)time
 {
   if ([(NSArray *)self->_mediaLibraryTracks count])
   {
@@ -232,20 +232,20 @@
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 134217984;
-      v8 = a3;
+      timeCopy = time;
       _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Saving media library bookmark time to be %.2f.", &v7, 0xCu);
     }
 
-    v6 = [(NSArray *)self->_mediaLibraryTracks firstObject];
-    [v6 setBookmarkTime:a3];
+    firstObject = [(NSArray *)self->_mediaLibraryTracks firstObject];
+    [firstObject setBookmarkTime:time];
   }
 }
 
 - (NSDate)dateLastOpened
 {
-  v2 = [(BKMLAudiobook *)self representativeItem];
+  representativeItem = [(BKMLAudiobook *)self representativeItem];
   objc_opt_class();
-  v3 = [v2 objectForKeyedSubscript:MPMediaItemPropertyLastPlayedDate];
+  v3 = [representativeItem objectForKeyedSubscript:MPMediaItemPropertyLastPlayedDate];
   v4 = BUDynamicCast();
 
   v5 = BKAudiobooksLog();
@@ -259,9 +259,9 @@
   return v4;
 }
 
-- (unint64_t)indexOfTrack:(id)a3
+- (unint64_t)indexOfTrack:(id)track
 {
-  v4 = a3;
+  trackCopy = track;
   objc_opt_class();
   v5 = BUDynamicCast();
 
@@ -271,20 +271,20 @@
 
 - (id)representativeItem
 {
-  v2 = [(NSArray *)self->_mediaLibraryTracks firstObject];
-  v3 = [v2 mediaItem];
+  firstObject = [(NSArray *)self->_mediaLibraryTracks firstObject];
+  mediaItem = [firstObject mediaItem];
 
-  return v3;
+  return mediaItem;
 }
 
-- (BOOL)isEqualToAudiobook:(id)a3
+- (BOOL)isEqualToAudiobook:(id)audiobook
 {
-  v4 = a3;
-  v5 = [(BKMLAudiobook *)self assetID];
-  v6 = [v4 assetID];
+  audiobookCopy = audiobook;
+  assetID = [(BKMLAudiobook *)self assetID];
+  assetID2 = [audiobookCopy assetID];
 
-  LOBYTE(v4) = [v5 isEqualToString:v6];
-  return v4;
+  LOBYTE(audiobookCopy) = [assetID isEqualToString:assetID2];
+  return audiobookCopy;
 }
 
 - (BOOL)isSG
@@ -302,11 +302,11 @@
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(BKMLAudiobook *)self title];
-  v6 = [(BKMLAudiobook *)self author];
-  v7 = [NSMutableString stringWithFormat:@"<%@:%p title=%@ author=%@ _coverArt=%p tracks=\n", v4, self, v5, v6, self->_coverArt];
+  title = [(BKMLAudiobook *)self title];
+  author = [(BKMLAudiobook *)self author];
+  v7 = [NSMutableString stringWithFormat:@"<%@:%p title=%@ author=%@ _coverArt=%p tracks=\n", v4, self, title, author, self->_coverArt];
 
-  v21 = self;
+  selfCopy = self;
   v8 = [(NSArray *)self->_mediaLibraryTracks count];
   if (v8)
   {
@@ -315,7 +315,7 @@
     v11 = v8 - 1;
     do
     {
-      v12 = [(NSArray *)v21->_mediaLibraryTracks objectAtIndexedSubscript:v10];
+      v12 = [(NSArray *)selfCopy->_mediaLibraryTracks objectAtIndexedSubscript:v10];
       v13 = [v12 description];
 
       v24 = 0u;

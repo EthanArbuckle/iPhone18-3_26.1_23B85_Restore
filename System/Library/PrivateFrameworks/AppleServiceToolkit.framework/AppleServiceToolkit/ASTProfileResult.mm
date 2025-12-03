@@ -1,8 +1,8 @@
 @interface ASTProfileResult
-+ (id)resultWithIdentity:(id)a3;
-+ (id)sealedProfileResultWithPayload:(id)a3 signature:(id)a4;
++ (id)resultWithIdentity:(id)identity;
++ (id)sealedProfileResultWithPayload:(id)payload signature:(id)signature;
 - (ASTProfileResult)init;
-- (ASTProfileResult)initWithIdentity:(id)a3;
+- (ASTProfileResult)initWithIdentity:(id)identity;
 - (id)generatePayload;
 @end
 
@@ -16,16 +16,16 @@
   return v4;
 }
 
-- (ASTProfileResult)initWithIdentity:(id)a3
+- (ASTProfileResult)initWithIdentity:(id)identity
 {
-  v5 = a3;
+  identityCopy = identity;
   v12.receiver = self;
   v12.super_class = ASTProfileResult;
   v6 = [(ASTProfileResult *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_identity, a3);
+    objc_storeStrong(&v6->_identity, identity);
     properties = v7->_properties;
     v9 = MEMORY[0x277CBEBF8];
     v7->_properties = MEMORY[0x277CBEBF8];
@@ -37,10 +37,10 @@
   return v7;
 }
 
-+ (id)resultWithIdentity:(id)a3
++ (id)resultWithIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentity:v4];
+  identityCopy = identity;
+  v5 = [[self alloc] initWithIdentity:identityCopy];
 
   return v5;
 }
@@ -49,15 +49,15 @@
 {
   v36 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CBEB18];
-  v4 = [(ASTProfileResult *)self tests];
-  v5 = [v3 arrayWithCapacity:{objc_msgSend(v4, "count")}];
+  tests = [(ASTProfileResult *)self tests];
+  v5 = [v3 arrayWithCapacity:{objc_msgSend(tests, "count")}];
 
   v33 = 0u;
   v34 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v6 = [(ASTProfileResult *)self tests];
-  v7 = [v6 countByEnumeratingWithState:&v31 objects:v35 count:16];
+  tests2 = [(ASTProfileResult *)self tests];
+  v7 = [tests2 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v7)
   {
     v8 = v7;
@@ -68,51 +68,51 @@
       {
         if (*v32 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(tests2);
         }
 
-        v11 = [*(*(&v31 + 1) + 8 * i) dictionary];
-        [v5 addObject:v11];
+        dictionary = [*(*(&v31 + 1) + 8 * i) dictionary];
+        [v5 addObject:dictionary];
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v31 objects:v35 count:16];
+      v8 = [tests2 countByEnumeratingWithState:&v31 objects:v35 count:16];
     }
 
     while (v8);
   }
 
-  v12 = [(ASTProfileResult *)self identity];
-  v13 = [v12 hostAppBuild];
-  v14 = v13;
-  if (v13)
+  identity = [(ASTProfileResult *)self identity];
+  hostAppBuild = [identity hostAppBuild];
+  v14 = hostAppBuild;
+  if (hostAppBuild)
   {
-    v15 = v13;
+    null = hostAppBuild;
   }
 
   else
   {
-    v15 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v16 = v15;
+  v16 = null;
 
-  v17 = [(ASTProfileResult *)self identity];
-  v18 = [v17 hostAppVersion];
-  v19 = v18;
-  if (v18)
+  identity2 = [(ASTProfileResult *)self identity];
+  hostAppVersion = [identity2 hostAppVersion];
+  v19 = hostAppVersion;
+  if (hostAppVersion)
   {
-    v20 = v18;
+    null2 = hostAppVersion;
   }
 
   else
   {
-    v20 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v21 = v20;
+  v21 = null2;
 
-  v22 = [(ASTProfileResult *)self properties];
-  if (v22)
+  properties = [(ASTProfileResult *)self properties];
+  if (properties)
   {
     [(ASTProfileResult *)self properties];
   }
@@ -124,17 +124,17 @@
   v23 = ;
 
   v24 = +[ASTEnvironment currentEnvironment];
-  v25 = [v24 environmentType];
+  environmentType = [v24 environmentType];
 
   v26 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:5];
   [v26 setObject:v23 forKeyedSubscript:@"profile"];
   [v26 setObject:v5 forKeyedSubscript:@"tests"];
-  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v25];
+  v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:environmentType];
   [v26 setObject:v27 forKeyedSubscript:@"environment"];
 
   [v26 setObject:v16 forKeyedSubscript:@"diagnosticsBuild"];
   [v26 setObject:v21 forKeyedSubscript:@"diagnosticsVersion"];
-  if ((v25 - 9) <= 1)
+  if ((environmentType - 9) <= 1)
   {
     [v26 setObject:&unk_2852D5E80 forKeyedSubscript:@"context"];
   }
@@ -146,11 +146,11 @@
   return v28;
 }
 
-+ (id)sealedProfileResultWithPayload:(id)a3 signature:(id)a4
++ (id)sealedProfileResultWithPayload:(id)payload signature:(id)signature
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [(ASTSealablePayload *)[ASTProfileResult alloc] initWithPayload:v6 signature:v5];
+  signatureCopy = signature;
+  payloadCopy = payload;
+  v7 = [(ASTSealablePayload *)[ASTProfileResult alloc] initWithPayload:payloadCopy signature:signatureCopy];
 
   return v7;
 }

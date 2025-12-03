@@ -1,17 +1,17 @@
 @interface UIKBTutorialMultipageView
-- (UIKBTutorialMultipageView)initWithPageViews:(id)a3 pagingInterval:(double)a4;
+- (UIKBTutorialMultipageView)initWithPageViews:(id)views pagingInterval:(double)interval;
 - (void)configMediaView;
 - (void)resetPageScrolling;
 - (void)scrollToNextPage;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
 @end
 
 @implementation UIKBTutorialMultipageView
 
-- (UIKBTutorialMultipageView)initWithPageViews:(id)a3 pagingInterval:(double)a4
+- (UIKBTutorialMultipageView)initWithPageViews:(id)views pagingInterval:(double)interval
 {
-  v7 = a3;
+  viewsCopy = views;
   v8 = (UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1;
   v9 = dbl_18A67B8C0[v8];
   v10 = dbl_18A67B8D0[v8];
@@ -21,9 +21,9 @@
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_pageViews, a3);
+    objc_storeStrong(&v11->_pageViews, views);
     v48 = 440;
-    v12->_pagingInterval = a4;
+    v12->_pagingInterval = interval;
     if ((UIKeyboardGetSafeDeviceIdiom() & 0xFFFFFFFFFFFFFFFBLL) == 1)
     {
       v13 = 11.0;
@@ -66,43 +66,43 @@
         v22 = [(NSArray *)v12->_pageViews objectAtIndex:v20, v48];
         [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
         [(UIView *)v12->_pageScrollView addSubview:v22];
-        v23 = [v22 leadingAnchor];
+        leadingAnchor = [v22 leadingAnchor];
         if (v21)
         {
-          v24 = [v21 trailingAnchor];
-          v25 = [v23 constraintEqualToAnchor:v24];
-          [v25 setActive:1];
+          trailingAnchor = [v21 trailingAnchor];
+          leadingAnchor2 = [leadingAnchor constraintEqualToAnchor:trailingAnchor];
+          [leadingAnchor2 setActive:1];
         }
 
         else
         {
-          v24 = [(UIScrollView *)v12->_pageScrollView contentLayoutGuide];
-          v25 = [v24 leadingAnchor];
-          v26 = [v23 constraintEqualToAnchor:v25];
+          trailingAnchor = [(UIScrollView *)v12->_pageScrollView contentLayoutGuide];
+          leadingAnchor2 = [trailingAnchor leadingAnchor];
+          v26 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
           [v26 setActive:1];
         }
 
-        v27 = [v22 topAnchor];
-        v28 = [(UIScrollView *)v12->_pageScrollView contentLayoutGuide];
-        v29 = [v28 topAnchor];
-        v30 = [v27 constraintEqualToAnchor:v29];
+        topAnchor = [v22 topAnchor];
+        contentLayoutGuide = [(UIScrollView *)v12->_pageScrollView contentLayoutGuide];
+        topAnchor2 = [contentLayoutGuide topAnchor];
+        v30 = [topAnchor constraintEqualToAnchor:topAnchor2];
         [v30 setActive:1];
 
-        v31 = [v22 bottomAnchor];
-        v32 = [(UIScrollView *)v12->_pageScrollView contentLayoutGuide];
-        v33 = [v32 bottomAnchor];
-        v34 = [v31 constraintEqualToAnchor:v33];
+        bottomAnchor = [v22 bottomAnchor];
+        contentLayoutGuide2 = [(UIScrollView *)v12->_pageScrollView contentLayoutGuide];
+        bottomAnchor2 = [contentLayoutGuide2 bottomAnchor];
+        v34 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
         [v34 setActive:1];
 
-        v35 = [v22 widthAnchor];
-        v36 = [(UIScrollView *)v12->_pageScrollView frameLayoutGuide];
-        v37 = [v36 widthAnchor];
-        v38 = [v35 constraintEqualToAnchor:v37];
+        widthAnchor = [v22 widthAnchor];
+        frameLayoutGuide = [(UIScrollView *)v12->_pageScrollView frameLayoutGuide];
+        widthAnchor2 = [frameLayoutGuide widthAnchor];
+        v38 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
         [v38 setActive:1];
 
-        v39 = [v22 heightAnchor];
-        v40 = [(UIView *)v12->_pageScrollView heightAnchor];
-        v41 = [v39 constraintEqualToAnchor:v40 multiplier:0.99];
+        heightAnchor = [v22 heightAnchor];
+        heightAnchor2 = [(UIView *)v12->_pageScrollView heightAnchor];
+        v41 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:0.99];
         [v41 setActive:1];
 
         ++v20;
@@ -117,10 +117,10 @@
       v22 = 0;
     }
 
-    v42 = [(UIScrollView *)v12->_pageScrollView contentLayoutGuide];
-    v43 = [v42 trailingAnchor];
-    v44 = [v22 trailingAnchor];
-    v45 = [v43 constraintEqualToAnchor:v44];
+    contentLayoutGuide3 = [(UIScrollView *)v12->_pageScrollView contentLayoutGuide];
+    trailingAnchor2 = [contentLayoutGuide3 trailingAnchor];
+    trailingAnchor3 = [v22 trailingAnchor];
+    v45 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
     [v45 setActive:1];
 
     if ([(NSArray *)v12->_pageViews count]> 1 && *(&v12->super.super.super.isa + v49) > 0.0)
@@ -136,114 +136,114 @@
 
 - (void)configMediaView
 {
-  v3 = [(UIKBTutorialMultipageView *)self pageControl];
-  [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
+  pageControl = [(UIKBTutorialMultipageView *)self pageControl];
+  [pageControl setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v4 = [(UIKBTutorialMultipageView *)self pageControl];
-  v5 = [v4 centerXAnchor];
-  v6 = [(UIView *)self centerXAnchor];
-  v7 = [v5 constraintEqualToAnchor:v6];
+  pageControl2 = [(UIKBTutorialMultipageView *)self pageControl];
+  centerXAnchor = [pageControl2 centerXAnchor];
+  centerXAnchor2 = [(UIView *)self centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   [v7 setActive:1];
 
-  v8 = [(UIKBTutorialMultipageView *)self pageControl];
-  v9 = [v8 bottomAnchor];
-  v10 = [(UIView *)self bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  pageControl3 = [(UIKBTutorialMultipageView *)self pageControl];
+  bottomAnchor = [pageControl3 bottomAnchor];
+  bottomAnchor2 = [(UIView *)self bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   [v11 setActive:1];
 
-  v12 = [(UIKBTutorialMultipageView *)self pageScrollView];
-  [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
+  pageScrollView = [(UIKBTutorialMultipageView *)self pageScrollView];
+  [pageScrollView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v13 = [(UIKBTutorialMultipageView *)self pageScrollView];
-  v14 = [v13 leadingAnchor];
-  v15 = [(UIView *)self leadingAnchor];
-  v16 = [v14 constraintEqualToAnchor:v15];
+  pageScrollView2 = [(UIKBTutorialMultipageView *)self pageScrollView];
+  leadingAnchor = [pageScrollView2 leadingAnchor];
+  leadingAnchor2 = [(UIView *)self leadingAnchor];
+  v16 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   [v16 setActive:1];
 
-  v17 = [(UIKBTutorialMultipageView *)self pageScrollView];
-  v18 = [v17 trailingAnchor];
-  v19 = [(UIView *)self trailingAnchor];
-  v20 = [v18 constraintEqualToAnchor:v19];
+  pageScrollView3 = [(UIKBTutorialMultipageView *)self pageScrollView];
+  trailingAnchor = [pageScrollView3 trailingAnchor];
+  trailingAnchor2 = [(UIView *)self trailingAnchor];
+  v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   [v20 setActive:1];
 
-  v21 = [(UIKBTutorialMultipageView *)self pageScrollView];
-  v22 = [v21 topAnchor];
-  v23 = [(UIView *)self topAnchor];
-  v24 = [v22 constraintEqualToAnchor:v23];
+  pageScrollView4 = [(UIKBTutorialMultipageView *)self pageScrollView];
+  topAnchor = [pageScrollView4 topAnchor];
+  topAnchor2 = [(UIView *)self topAnchor];
+  v24 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v24 setActive:1];
 
   if ([(NSArray *)self->_pageViews count]> 1)
   {
-    v25 = [(UIKBTutorialMultipageView *)self pageControl];
-    v29 = [v25 topAnchor];
+    pageControl4 = [(UIKBTutorialMultipageView *)self pageControl];
+    topAnchor3 = [pageControl4 topAnchor];
   }
 
   else
   {
-    v29 = [(UIView *)self bottomAnchor];
+    topAnchor3 = [(UIView *)self bottomAnchor];
   }
 
-  v26 = [(UIKBTutorialMultipageView *)self pageScrollView];
-  v27 = [v26 bottomAnchor];
-  v28 = [v27 constraintEqualToAnchor:v29];
+  pageScrollView5 = [(UIKBTutorialMultipageView *)self pageScrollView];
+  bottomAnchor3 = [pageScrollView5 bottomAnchor];
+  v28 = [bottomAnchor3 constraintEqualToAnchor:topAnchor3];
   [v28 setActive:1];
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
-  [a3 contentOffset];
+  [scroll contentOffset];
   v5 = v4;
-  v6 = [(UIKBTutorialMultipageView *)self pageScrollView];
-  [v6 bounds];
+  pageScrollView = [(UIKBTutorialMultipageView *)self pageScrollView];
+  [pageScrollView bounds];
   v7 = v5 / CGRectGetWidth(v10);
 
-  v8 = [(UIKBTutorialMultipageView *)self pageControl];
-  [v8 setCurrentPage:llround(v7)];
+  pageControl = [(UIKBTutorialMultipageView *)self pageControl];
+  [pageControl setCurrentPage:llround(v7)];
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v4 = [(UIKBTutorialMultipageView *)self nextPageScrollTimer];
-  [v4 invalidate];
+  nextPageScrollTimer = [(UIKBTutorialMultipageView *)self nextPageScrollTimer];
+  [nextPageScrollTimer invalidate];
 
   [(UIKBTutorialMultipageView *)self setNextPageScrollTimer:0];
 }
 
 - (void)scrollToNextPage
 {
-  v3 = [(UIKBTutorialMultipageView *)self pageControl];
-  v4 = [v3 currentPage];
+  pageControl = [(UIKBTutorialMultipageView *)self pageControl];
+  currentPage = [pageControl currentPage];
 
-  v5 = [(UIKBTutorialMultipageView *)self nextPageScrollTimer];
+  nextPageScrollTimer = [(UIKBTutorialMultipageView *)self nextPageScrollTimer];
 
-  if (v5)
+  if (nextPageScrollTimer)
   {
-    v6 = v4 + 1;
-    v7 = [(UIKBTutorialMultipageView *)self pageControl];
-    v8 = [v7 numberOfPages];
+    v6 = currentPage + 1;
+    pageControl2 = [(UIKBTutorialMultipageView *)self pageControl];
+    numberOfPages = [pageControl2 numberOfPages];
 
-    if (v6 >= v8)
+    if (v6 >= numberOfPages)
     {
-      v21 = [(UIKBTutorialMultipageView *)self nextPageScrollTimer];
-      [v21 invalidate];
+      nextPageScrollTimer2 = [(UIKBTutorialMultipageView *)self nextPageScrollTimer];
+      [nextPageScrollTimer2 invalidate];
 
       [(UIKBTutorialMultipageView *)self setNextPageScrollTimer:0];
     }
 
     else
     {
-      v9 = [(UIKBTutorialMultipageView *)self pageScrollView];
-      [v9 setNeedsLayout];
+      pageScrollView = [(UIKBTutorialMultipageView *)self pageScrollView];
+      [pageScrollView setNeedsLayout];
 
-      v10 = [(UIKBTutorialMultipageView *)self pageScrollView];
-      v11 = [(UIKBTutorialMultipageView *)self pageScrollView];
-      [v11 contentSize];
+      pageScrollView2 = [(UIKBTutorialMultipageView *)self pageScrollView];
+      pageScrollView3 = [(UIKBTutorialMultipageView *)self pageScrollView];
+      [pageScrollView3 contentSize];
       v13 = v12;
-      v14 = [(UIKBTutorialMultipageView *)self pageControl];
-      [v10 setContentOffset:1 animated:{v13 / objc_msgSend(v14, "numberOfPages") * v6, 0.0}];
+      pageControl3 = [(UIKBTutorialMultipageView *)self pageControl];
+      [pageScrollView2 setContentOffset:1 animated:{v13 / objc_msgSend(pageControl3, "numberOfPages") * v6, 0.0}];
 
-      v22 = [(UIKBTutorialMultipageView *)self pageControl];
-      [v22 setCurrentPage:v6];
+      pageControl4 = [(UIKBTutorialMultipageView *)self pageControl];
+      [pageControl4 setCurrentPage:v6];
     }
   }
 
@@ -262,23 +262,23 @@
     v18 = [v15 initWithFireDate:v17 interval:1 repeats:v23 block:?];
     [(UIKBTutorialMultipageView *)self setNextPageScrollTimer:v18];
 
-    v19 = [MEMORY[0x1E695DFD0] mainRunLoop];
-    v20 = [(UIKBTutorialMultipageView *)self nextPageScrollTimer];
-    [v19 addTimer:v20 forMode:*MEMORY[0x1E695D918]];
+    mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+    nextPageScrollTimer3 = [(UIKBTutorialMultipageView *)self nextPageScrollTimer];
+    [mainRunLoop addTimer:nextPageScrollTimer3 forMode:*MEMORY[0x1E695D918]];
   }
 }
 
 - (void)resetPageScrolling
 {
-  v3 = [(UIKBTutorialMultipageView *)self pageControl];
-  [v3 setCurrentPage:0];
+  pageControl = [(UIKBTutorialMultipageView *)self pageControl];
+  [pageControl setCurrentPage:0];
 
-  v4 = [(UIKBTutorialMultipageView *)self nextPageScrollTimer];
-  [v4 invalidate];
+  nextPageScrollTimer = [(UIKBTutorialMultipageView *)self nextPageScrollTimer];
+  [nextPageScrollTimer invalidate];
 
   [(UIKBTutorialMultipageView *)self setNextPageScrollTimer:0];
-  v5 = [(UIKBTutorialMultipageView *)self pageScrollView];
-  [v5 setContentOffset:{0.0, 0.0}];
+  pageScrollView = [(UIKBTutorialMultipageView *)self pageScrollView];
+  [pageScrollView setContentOffset:{0.0, 0.0}];
 
   [(UIKBTutorialMultipageView *)self scrollToNextPage];
 }

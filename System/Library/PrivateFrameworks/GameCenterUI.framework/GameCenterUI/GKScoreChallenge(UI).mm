@@ -12,40 +12,40 @@
 
 - (id)alertGoalText
 {
-  v2 = [a1 leaderboard];
-  v3 = [v2 localizedTitle];
+  leaderboard = [self leaderboard];
+  localizedTitle = [leaderboard localizedTitle];
   v4 = MEMORY[0x277CCACA8];
   v5 = GKGameCenterUIFrameworkBundle();
   v6 = GKGetLocalizedStringFromTableInBundle();
-  v7 = [a1 score];
-  v8 = [v7 formattedValue];
-  v9 = [v4 stringWithFormat:v6, v8, v3];
+  score = [self score];
+  formattedValue = [score formattedValue];
+  v9 = [v4 stringWithFormat:v6, formattedValue, localizedTitle];
 
   return v9;
 }
 
 - (id)listTitleText
 {
-  v1 = [a1 internal];
-  v2 = [v1 leaderboard];
-  v3 = [v2 title];
+  internal = [self internal];
+  leaderboard = [internal leaderboard];
+  title = [leaderboard title];
 
-  return v3;
+  return title;
 }
 
 - (id)listGoalText
 {
-  v2 = [a1 score];
-  v3 = [v2 formattedValue];
+  score = [self score];
+  formattedValue = [score formattedValue];
 
-  if (v3 && ([a1 leaderboard], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "title"), v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
+  if (formattedValue && ([self leaderboard], v4 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "title"), v5 = objc_claimAutoreleasedReturnValue(), v5, v4, v5))
   {
     v6 = MEMORY[0x277CCACA8];
     v7 = GKGameCenterUIFrameworkBundle();
     v8 = GKGetLocalizedStringFromTableInBundle();
-    v9 = [a1 issuingPlayer];
-    v10 = [v9 displayNameWithOptions:0];
-    v11 = [v6 stringWithFormat:v8, v3, v10];
+    issuingPlayer = [self issuingPlayer];
+    v10 = [issuingPlayer displayNameWithOptions:0];
+    v11 = [v6 stringWithFormat:v8, formattedValue, v10];
   }
 
   else
@@ -58,20 +58,20 @@
 
 - (id)composeGoalText
 {
-  v2 = [a1 score];
-  v3 = [v2 formattedValue];
+  score = [self score];
+  formattedValue = [score formattedValue];
 
-  v4 = [a1 internal];
-  v5 = [v4 leaderboard];
-  v6 = [v5 title];
+  internal = [self internal];
+  leaderboard = [internal leaderboard];
+  title = [leaderboard title];
 
   v7 = 0;
-  if (v3 && v6)
+  if (formattedValue && title)
   {
     v8 = MEMORY[0x277CCACA8];
     v9 = GKGameCenterUIFrameworkBundle();
     v10 = GKGetLocalizedStringFromTableInBundle();
-    v7 = [v8 stringWithFormat:v10, v3, v6];
+    v7 = [v8 stringWithFormat:v10, formattedValue, title];
   }
 
   return v7;
@@ -79,26 +79,26 @@
 
 - (id)iconSource
 {
-  v0 = [MEMORY[0x277D0C8C8] sharedTheme];
-  v1 = [v0 iconLeaderboardListSource];
+  mEMORY[0x277D0C8C8] = [MEMORY[0x277D0C8C8] sharedTheme];
+  iconLeaderboardListSource = [mEMORY[0x277D0C8C8] iconLeaderboardListSource];
 
-  return v1;
+  return iconLeaderboardListSource;
 }
 
 - (id)smallIconURLString
 {
-  v1 = [a1 leaderboard];
-  v2 = [v1 miniImageURL];
+  leaderboard = [self leaderboard];
+  miniImageURL = [leaderboard miniImageURL];
 
-  return v2;
+  return miniImageURL;
 }
 
 - (id)iconURLString
 {
-  v1 = [a1 leaderboard];
-  v2 = [v1 imageURL];
+  leaderboard = [self leaderboard];
+  imageURL = [leaderboard imageURL];
 
-  return v2;
+  return imageURL;
 }
 
 @end

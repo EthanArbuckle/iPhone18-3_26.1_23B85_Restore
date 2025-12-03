@@ -1,49 +1,49 @@
 @interface SKDItemUpdate
-+ (id)invalidBundleUpdateForIdentifier:(id)a3 uniqueID:(id)a4;
-- (void)addAttribute:(id)a3 value:(id)a4;
-- (void)addAttributesFromDictionary:(id)a3;
-- (void)setKeyphrasesCount:(unint64_t)a3;
-- (void)setTextContentLength:(unint64_t)a3;
++ (id)invalidBundleUpdateForIdentifier:(id)identifier uniqueID:(id)d;
+- (void)addAttribute:(id)attribute value:(id)value;
+- (void)addAttributesFromDictionary:(id)dictionary;
+- (void)setKeyphrasesCount:(unint64_t)count;
+- (void)setTextContentLength:(unint64_t)length;
 @end
 
 @implementation SKDItemUpdate
 
-+ (id)invalidBundleUpdateForIdentifier:(id)a3 uniqueID:(id)a4
++ (id)invalidBundleUpdateForIdentifier:(id)identifier uniqueID:(id)d
 {
   v15[1] = *MEMORY[0x277D85DE8];
   v5 = MEMORY[0x277CCA9B8];
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  identifierCopy = identifier;
   v8 = [v5 alloc];
   v14 = @"messageInfoKey";
   v15[0] = @"invalid bundle";
   v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:&v14 count:1];
   v10 = [v8 initWithDomain:@"SKDItemProcessorInfoErrorDomain" code:-1000 userInfo:v9];
 
-  v11 = [(SKDEvent *)[SKDItemUpdate alloc] initWithStatus:4 identifier:v7 info:v10];
-  [(SKDItemUpdate *)v11 setUniqueID:v6];
+  v11 = [(SKDEvent *)[SKDItemUpdate alloc] initWithStatus:4 identifier:identifierCopy info:v10];
+  [(SKDItemUpdate *)v11 setUniqueID:dCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 
   return v11;
 }
 
-- (void)setTextContentLength:(unint64_t)a3
+- (void)setTextContentLength:(unint64_t)length
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:length];
   [(SKDEvent *)self addFeedback:@"textContentLength" value:v4];
 }
 
-- (void)setKeyphrasesCount:(unint64_t)a3
+- (void)setKeyphrasesCount:(unint64_t)count
 {
-  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:count];
   [(SKDEvent *)self addFeedback:@"keyphrases" value:v4];
 }
 
-- (void)addAttribute:(id)a3 value:(id)a4
+- (void)addAttribute:(id)attribute value:(id)value
 {
-  v10 = a3;
-  v6 = a4;
+  attributeCopy = attribute;
+  valueCopy = value;
   attributes = self->_attributes;
   if (!attributes)
   {
@@ -54,16 +54,16 @@
     attributes = self->_attributes;
   }
 
-  [(NSMutableDictionary *)attributes setObject:v6 forKey:v10];
+  [(NSMutableDictionary *)attributes setObject:valueCopy forKey:attributeCopy];
 }
 
-- (void)addAttributesFromDictionary:(id)a3
+- (void)addAttributesFromDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     attributes = self->_attributes;
-    v8 = v4;
+    v8 = dictionaryCopy;
     if (!attributes)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -74,7 +74,7 @@
     }
 
     [(NSMutableDictionary *)attributes addEntriesFromDictionary:v8];
-    v4 = v8;
+    dictionaryCopy = v8;
   }
 }
 

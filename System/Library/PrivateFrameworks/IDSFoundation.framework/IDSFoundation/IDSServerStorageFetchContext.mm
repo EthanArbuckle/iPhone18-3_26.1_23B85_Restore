@@ -1,20 +1,20 @@
 @interface IDSServerStorageFetchContext
-- (IDSServerStorageFetchContext)initWithCoder:(id)a3;
-- (IDSServerStorageFetchContext)initWithDictionary:(id)a3;
-- (IDSServerStorageFetchContext)initWithServerStorageSSM:(id)a3 service:(id)a4;
+- (IDSServerStorageFetchContext)initWithCoder:(id)coder;
+- (IDSServerStorageFetchContext)initWithDictionary:(id)dictionary;
+- (IDSServerStorageFetchContext)initWithServerStorageSSM:(id)m service:(id)service;
 - (id)dictionaryRepresentation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation IDSServerStorageFetchContext
 
-- (IDSServerStorageFetchContext)initWithServerStorageSSM:(id)a3 service:(id)a4
+- (IDSServerStorageFetchContext)initWithServerStorageSSM:(id)m service:(id)service
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  v10 = 0;
-  if (v7 && v8)
+  mCopy = m;
+  serviceCopy = service;
+  v9 = serviceCopy;
+  selfCopy = 0;
+  if (mCopy && serviceCopy)
   {
     v14.receiver = self;
     v14.super_class = IDSServerStorageFetchContext;
@@ -22,50 +22,50 @@
     p_isa = &v11->super.isa;
     if (v11)
     {
-      objc_storeStrong(&v11->_serverStorageSSM, a3);
-      objc_storeStrong(p_isa + 2, a4);
+      objc_storeStrong(&v11->_serverStorageSSM, m);
+      objc_storeStrong(p_isa + 2, service);
     }
 
     self = p_isa;
-    v10 = self;
+    selfCopy = self;
   }
 
-  return v10;
+  return selfCopy;
 }
 
-- (IDSServerStorageFetchContext)initWithDictionary:(id)a3
+- (IDSServerStorageFetchContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  if (v4)
+  dictionaryCopy = dictionary;
+  if (dictionaryCopy)
   {
     v14.receiver = self;
     v14.super_class = IDSServerStorageFetchContext;
     v5 = [(IDSServerStorageFetchContext *)&v14 init];
     if (v5)
     {
-      v6 = [v4 objectForKeyedSubscript:@"IDSServerStorageSSMKey"];
+      v6 = [dictionaryCopy objectForKeyedSubscript:@"IDSServerStorageSSMKey"];
       serverStorageSSM = v5->_serverStorageSSM;
       v5->_serverStorageSSM = v6;
 
-      v8 = [v4 objectForKeyedSubscript:@"IDSServerStorageServiceKey"];
+      v8 = [dictionaryCopy objectForKeyedSubscript:@"IDSServerStorageServiceKey"];
       service = v5->_service;
       v5->_service = v8;
 
-      v10 = [v4 objectForKeyedSubscript:@"IDSServerStorageReasonKey"];
+      v10 = [dictionaryCopy objectForKeyedSubscript:@"IDSServerStorageReasonKey"];
       reason = v5->_reason;
       v5->_reason = v10;
     }
 
     self = v5;
-    v12 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
-  return v12;
+  return selfCopy;
 }
 
 - (id)dictionaryRepresentation
@@ -95,20 +95,20 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   serverStorageSSM = self->_serverStorageSSM;
-  v5 = a3;
-  [v5 encodeObject:serverStorageSSM forKey:@"IDSServerStorageSSMKey"];
-  [v5 encodeObject:self->_service forKey:@"IDSServerStorageServiceKey"];
-  [v5 encodeObject:self->_reason forKey:@"IDSServerStorageReasonKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:serverStorageSSM forKey:@"IDSServerStorageSSMKey"];
+  [coderCopy encodeObject:self->_service forKey:@"IDSServerStorageServiceKey"];
+  [coderCopy encodeObject:self->_reason forKey:@"IDSServerStorageReasonKey"];
 }
 
-- (IDSServerStorageFetchContext)initWithCoder:(id)a3
+- (IDSServerStorageFetchContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSServerStorageSSMKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IDSServerStorageServiceKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSServerStorageSSMKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IDSServerStorageServiceKey"];
 
   v7 = [(IDSServerStorageFetchContext *)self initWithServerStorageSSM:v5 service:v6];
   [(IDSServerStorageFetchContext *)v7 setReason:v7->_reason];

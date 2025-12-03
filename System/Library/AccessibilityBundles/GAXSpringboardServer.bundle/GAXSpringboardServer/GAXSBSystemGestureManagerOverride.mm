@@ -1,10 +1,10 @@
 @interface GAXSBSystemGestureManagerOverride
-- (BOOL)_isGestureWithTypeAllowed:(unint64_t)a3;
+- (BOOL)_isGestureWithTypeAllowed:(unint64_t)allowed;
 @end
 
 @implementation GAXSBSystemGestureManagerOverride
 
-- (BOOL)_isGestureWithTypeAllowed:(unint64_t)a3
+- (BOOL)_isGestureWithTypeAllowed:(unint64_t)allowed
 {
   v13.receiver = self;
   v13.super_class = GAXSBSystemGestureManagerOverride;
@@ -14,13 +14,13 @@
   }
 
   v5 = +[GAXSpringboard sharedInstance];
-  v6 = [v5 isOnlyGuidedAccessDisablingSystemGestures];
+  isOnlyGuidedAccessDisablingSystemGestures = [v5 isOnlyGuidedAccessDisablingSystemGestures];
 
-  if (v6)
+  if (isOnlyGuidedAccessDisablingSystemGestures)
   {
-    if (a3 - 13 >= 4 && a3 != 11)
+    if (allowed - 13 >= 4 && allowed != 11)
     {
-      if (a3 != 2 || (AXDeviceHasHomeButton() & 1) != 0)
+      if (allowed != 2 || (AXDeviceHasHomeButton() & 1) != 0)
       {
         return 0;
       }
@@ -39,15 +39,15 @@
     }
 
     v7 = +[AXSettings sharedInstance];
-    v8 = [v7 guidedAccessAllowsMultipleWindows];
+    guidedAccessAllowsMultipleWindows = [v7 guidedAccessAllowsMultipleWindows];
 
-    if (v8)
+    if (guidedAccessAllowsMultipleWindows)
     {
       v9 = GAXLogCommon();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134217984;
-        v15 = a3;
+        allowedCopy = allowed;
         v10 = "Allowing Medusa gesture: %lu";
         v11 = v9;
         v12 = 12;

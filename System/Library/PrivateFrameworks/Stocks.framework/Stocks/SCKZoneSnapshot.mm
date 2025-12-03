@@ -1,19 +1,19 @@
 @interface SCKZoneSnapshot
-- (BOOL)isEqualToSnapshot:(id)a3;
-- (SCKZoneSnapshot)initWithZoneSchema:(id)a3 records:(id)a4;
+- (BOOL)isEqualToSnapshot:(id)snapshot;
+- (SCKZoneSnapshot)initWithZoneSchema:(id)schema records:(id)records;
 - (id)descriptionOfContents;
-- (id)recordOfType:(id)a3 passingTest:(id)a4;
-- (id)recordWithName:(id)a3;
-- (id)recordsOfType:(id)a3;
+- (id)recordOfType:(id)type passingTest:(id)test;
+- (id)recordWithName:(id)name;
+- (id)recordsOfType:(id)type;
 @end
 
 @implementation SCKZoneSnapshot
 
-- (SCKZoneSnapshot)initWithZoneSchema:(id)a3 records:(id)a4
+- (SCKZoneSnapshot)initWithZoneSchema:(id)schema records:(id)records
 {
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  schemaCopy = schema;
+  recordsCopy = records;
+  if (!schemaCopy)
   {
     [SCKZoneSnapshot initWithZoneSchema:a2 records:self];
   }
@@ -24,10 +24,10 @@
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_zoneSchema, a3);
-    if (v9)
+    objc_storeStrong(&v10->_zoneSchema, schema);
+    if (recordsCopy)
     {
-      v12 = [v9 copy];
+      v12 = [recordsCopy copy];
     }
 
     else
@@ -42,26 +42,26 @@
   return v11;
 }
 
-- (BOOL)isEqualToSnapshot:(id)a3
+- (BOOL)isEqualToSnapshot:(id)snapshot
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(SCKZoneSnapshot *)self records];
-  v6 = [v5 sck_dictionaryWithKeyBlock:&__block_literal_global_9];
+  snapshotCopy = snapshot;
+  records = [(SCKZoneSnapshot *)self records];
+  v6 = [records sck_dictionaryWithKeyBlock:&__block_literal_global_9];
 
-  v7 = [v4 records];
-  v8 = [v7 sck_dictionaryWithKeyBlock:&__block_literal_global_6];
+  records2 = [snapshotCopy records];
+  v8 = [records2 sck_dictionaryWithKeyBlock:&__block_literal_global_6];
 
   v9 = [v6 count];
   if (v9 == [v8 count])
   {
     v10 = MEMORY[0x277CBEB98];
-    v11 = [v6 allKeys];
-    v12 = [v10 setWithArray:v11];
+    allKeys = [v6 allKeys];
+    v12 = [v10 setWithArray:allKeys];
 
     v13 = MEMORY[0x277CBEB98];
-    v14 = [v8 allKeys];
-    v15 = [v13 setWithArray:v14];
+    allKeys2 = [v8 allKeys];
+    v15 = [v13 setWithArray:allKeys2];
 
     if ([v12 isEqualToSet:v15])
     {
@@ -74,7 +74,7 @@
       if (v17)
       {
         v18 = v17;
-        v36 = v4;
+        v36 = snapshotCopy;
         v37 = *v39;
         v34 = v15;
         v35 = v12;
@@ -91,16 +91,16 @@
             v21 = [v16 objectForKeyedSubscript:{v20, v34, v35, v36}];
             v22 = [v8 objectForKeyedSubscript:v20];
             v23 = MEMORY[0x277D82BB8];
-            v24 = [v21 recordChangeTag];
-            v25 = [v22 recordChangeTag];
-            LODWORD(v23) = [v23 sck_object:v24 isEqualToObject:v25];
+            recordChangeTag = [v21 recordChangeTag];
+            recordChangeTag2 = [v22 recordChangeTag];
+            LODWORD(v23) = [v23 sck_object:recordChangeTag isEqualToObject:recordChangeTag2];
 
             if (!v23 || ([v21 valuesByKey], v26 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "valuesByKey"), v27 = objc_claimAutoreleasedReturnValue(), v28 = __37__SCKZoneSnapshot_isEqualToSnapshot___block_invoke_6(v27, v26, v27), v27, v26, !v28) || (objc_msgSend(v21, "encryptedValuesByKey"), v29 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v22, "encryptedValuesByKey"), v30 = objc_claimAutoreleasedReturnValue(), v31 = __37__SCKZoneSnapshot_isEqualToSnapshot___block_invoke_6(v30, v29, v30), v30, v29, !v31))
             {
 
               v32 = 0;
               v12 = v35;
-              v4 = v36;
+              snapshotCopy = v36;
               v15 = v34;
               goto LABEL_18;
             }
@@ -109,7 +109,7 @@
           v18 = [v16 countByEnumeratingWithState:&v38 objects:v42 count:16];
           v32 = 1;
           v12 = v35;
-          v4 = v36;
+          snapshotCopy = v36;
           v15 = v34;
           if (v18)
           {
@@ -219,20 +219,20 @@ LABEL_13:
   return v21;
 }
 
-- (id)recordsOfType:(id)a3
+- (id)recordsOfType:(id)type
 {
-  v4 = a3;
-  v5 = [(SCKZoneSnapshot *)self records];
+  typeCopy = type;
+  records = [(SCKZoneSnapshot *)self records];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __33__SCKZoneSnapshot_recordsOfType___block_invoke;
   v11[3] = &unk_279D15C78;
-  v12 = v4;
-  v6 = v4;
-  v7 = [v5 indexesOfObjectsPassingTest:v11];
+  v12 = typeCopy;
+  v6 = typeCopy;
+  v7 = [records indexesOfObjectsPassingTest:v11];
 
-  v8 = [(SCKZoneSnapshot *)self records];
-  v9 = [v8 objectsAtIndexes:v7];
+  records2 = [(SCKZoneSnapshot *)self records];
+  v9 = [records2 objectsAtIndexes:v7];
 
   return v9;
 }
@@ -245,20 +245,20 @@ uint64_t __33__SCKZoneSnapshot_recordsOfType___block_invoke(uint64_t a1, void *a
   return v4;
 }
 
-- (id)recordOfType:(id)a3 passingTest:(id)a4
+- (id)recordOfType:(id)type passingTest:(id)test
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SCKZoneSnapshot *)self records];
+  typeCopy = type;
+  testCopy = test;
+  records = [(SCKZoneSnapshot *)self records];
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __44__SCKZoneSnapshot_recordOfType_passingTest___block_invoke;
   v18 = &unk_279D16738;
-  v19 = v6;
-  v20 = v7;
-  v9 = v7;
-  v10 = v6;
-  v11 = [v8 indexOfObjectPassingTest:&v15];
+  v19 = typeCopy;
+  v20 = testCopy;
+  v9 = testCopy;
+  v10 = typeCopy;
+  v11 = [records indexOfObjectPassingTest:&v15];
 
   if (v11 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -291,23 +291,23 @@ uint64_t __44__SCKZoneSnapshot_recordOfType_passingTest___block_invoke(uint64_t 
   return v5;
 }
 
-- (id)recordWithName:(id)a3
+- (id)recordWithName:(id)name
 {
   v4 = MEMORY[0x277CBC5D0];
-  v5 = a3;
+  nameCopy = name;
   v6 = [v4 alloc];
-  v7 = [(SCKZoneSnapshot *)self zoneSchema];
-  v8 = [v7 zoneID];
-  v9 = [v6 initWithRecordName:v5 zoneID:v8];
+  zoneSchema = [(SCKZoneSnapshot *)self zoneSchema];
+  zoneID = [zoneSchema zoneID];
+  v9 = [v6 initWithRecordName:nameCopy zoneID:zoneID];
 
-  v10 = [(SCKZoneSnapshot *)self records];
+  records = [(SCKZoneSnapshot *)self records];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __34__SCKZoneSnapshot_recordWithName___block_invoke;
   v16[3] = &unk_279D15C78;
   v11 = v9;
   v17 = v11;
-  v12 = [v10 indexOfObjectPassingTest:v16];
+  v12 = [records indexOfObjectPassingTest:v16];
 
   if (v12 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -316,8 +316,8 @@ uint64_t __44__SCKZoneSnapshot_recordOfType_passingTest___block_invoke(uint64_t 
 
   else
   {
-    v14 = [(SCKZoneSnapshot *)self records];
-    v13 = [v14 objectAtIndex:v12];
+    records2 = [(SCKZoneSnapshot *)self records];
+    v13 = [records2 objectAtIndex:v12];
   }
 
   return v13;
@@ -357,31 +357,31 @@ uint64_t __34__SCKZoneSnapshot_recordWithName___block_invoke(uint64_t a1, void *
 
         v32 = v3;
         v4 = *(*(&v37 + 1) + 8 * v3);
-        v5 = [MEMORY[0x277CBEB38] dictionary];
-        v6 = [v4 recordID];
-        v7 = [v6 recordName];
-        [v5 setObject:v7 forKeyedSubscript:@"recordName"];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        recordID = [v4 recordID];
+        recordName = [recordID recordName];
+        [dictionary setObject:recordName forKeyedSubscript:@"recordName"];
 
-        v8 = [v4 recordChangeTag];
-        [v5 setObject:v8 forKeyedSubscript:@"changeTag"];
+        recordChangeTag = [v4 recordChangeTag];
+        [dictionary setObject:recordChangeTag forKeyedSubscript:@"changeTag"];
 
-        v9 = [v4 creationDate];
-        [v5 setObject:v9 forKeyedSubscript:@"creationDate"];
+        creationDate = [v4 creationDate];
+        [dictionary setObject:creationDate forKeyedSubscript:@"creationDate"];
 
-        v10 = [v4 modificationDate];
-        [v5 setObject:v10 forKeyedSubscript:@"modificationDate"];
+        modificationDate = [v4 modificationDate];
+        [dictionary setObject:modificationDate forKeyedSubscript:@"modificationDate"];
 
-        v11 = [(SCKZoneSnapshot *)v28 zoneSchema];
-        v12 = [v4 recordType];
-        v13 = [v11 schemaForRecordType:v12];
+        zoneSchema = [(SCKZoneSnapshot *)v28 zoneSchema];
+        recordType = [v4 recordType];
+        v13 = [zoneSchema schemaForRecordType:recordType];
 
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
         v34 = 0u;
         v31 = v13;
-        v14 = [v13 fieldSchemas];
-        v15 = [v14 countByEnumeratingWithState:&v33 objects:v41 count:16];
+        fieldSchemas = [v13 fieldSchemas];
+        v15 = [fieldSchemas countByEnumeratingWithState:&v33 objects:v41 count:16];
         if (v15)
         {
           v16 = v15;
@@ -392,7 +392,7 @@ uint64_t __34__SCKZoneSnapshot_recordWithName___block_invoke(uint64_t a1, void *
             {
               if (*v34 != v17)
               {
-                objc_enumerationMutation(v14);
+                objc_enumerationMutation(fieldSchemas);
               }
 
               v19 = *(*(&v33 + 1) + 8 * i);
@@ -406,23 +406,23 @@ uint64_t __34__SCKZoneSnapshot_recordWithName___block_invoke(uint64_t a1, void *
                 [v4 valuesByKey];
               }
               v20 = ;
-              v21 = [v19 name];
-              v22 = [v20 objectForKeyedSubscript:v21];
+              name = [v19 name];
+              v22 = [v20 objectForKeyedSubscript:name];
 
               if (v22)
               {
-                v23 = [v19 name];
-                [v5 setObject:v22 forKeyedSubscript:v23];
+                name2 = [v19 name];
+                [dictionary setObject:v22 forKeyedSubscript:name2];
               }
             }
 
-            v16 = [v14 countByEnumeratingWithState:&v33 objects:v41 count:16];
+            v16 = [fieldSchemas countByEnumeratingWithState:&v33 objects:v41 count:16];
           }
 
           while (v16);
         }
 
-        [v29 addObject:v5];
+        [v29 addObject:dictionary];
         v3 = v32 + 1;
       }
 

@@ -1,33 +1,33 @@
 @interface ICASTranscriptInteractionTarget
-- (ICASTranscriptInteractionTarget)initWithTranscriptInteractionTarget:(int64_t)a3;
-- (id)toJsonValueAndReturnError:(id *)a3;
+- (ICASTranscriptInteractionTarget)initWithTranscriptInteractionTarget:(int64_t)target;
+- (id)toJsonValueAndReturnError:(id *)error;
 @end
 
 @implementation ICASTranscriptInteractionTarget
 
-- (ICASTranscriptInteractionTarget)initWithTranscriptInteractionTarget:(int64_t)a3
+- (ICASTranscriptInteractionTarget)initWithTranscriptInteractionTarget:(int64_t)target
 {
   v5.receiver = self;
   v5.super_class = ICASTranscriptInteractionTarget;
   result = [(ICASTranscriptInteractionTarget *)&v5 init];
   if (result)
   {
-    result->_transcriptInteractionTarget = a3;
+    result->_transcriptInteractionTarget = target;
   }
 
   return result;
 }
 
-- (id)toJsonValueAndReturnError:(id *)a3
+- (id)toJsonValueAndReturnError:(id *)error
 {
-  v3 = [(ICASTranscriptInteractionTarget *)self transcriptInteractionTarget];
+  transcriptInteractionTarget = [(ICASTranscriptInteractionTarget *)self transcriptInteractionTarget];
   v4 = @"unknown";
-  if (v3 == 1)
+  if (transcriptInteractionTarget == 1)
   {
     v4 = @"audioTranscript";
   }
 
-  if (v3 == 2)
+  if (transcriptInteractionTarget == 2)
   {
     return @"audioSummary";
   }

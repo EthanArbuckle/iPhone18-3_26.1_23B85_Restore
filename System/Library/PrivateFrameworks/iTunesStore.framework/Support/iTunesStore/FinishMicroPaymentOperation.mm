@@ -1,13 +1,13 @@
 @interface FinishMicroPaymentOperation
-- (BOOL)_parseResponse:(id)a3 returningError:(id *)a4;
+- (BOOL)_parseResponse:(id)response returningError:(id *)error;
 - (NSNumber)userDSID;
 - (NSString)transactionIdentifier;
 - (StoreKitClientIdentity)clientIdentity;
 - (void)dealloc;
 - (void)run;
-- (void)setClientIdentity:(id)a3;
-- (void)setTransactionIdentifier:(id)a3;
-- (void)setUserDSID:(id)a3;
+- (void)setClientIdentity:(id)identity;
+- (void)setTransactionIdentifier:(id)identifier;
+- (void)setUserDSID:(id)d;
 @end
 
 @implementation FinishMicroPaymentOperation
@@ -27,40 +27,40 @@
   return v3;
 }
 
-- (void)setClientIdentity:(id)a3
+- (void)setClientIdentity:(id)identity
 {
   [(FinishMicroPaymentOperation *)self lock];
   clientIdentity = self->_clientIdentity;
-  if (clientIdentity != a3)
+  if (clientIdentity != identity)
   {
 
-    self->_clientIdentity = [a3 copy];
+    self->_clientIdentity = [identity copy];
   }
 
   [(FinishMicroPaymentOperation *)self unlock];
 }
 
-- (void)setTransactionIdentifier:(id)a3
+- (void)setTransactionIdentifier:(id)identifier
 {
   [(FinishMicroPaymentOperation *)self lock];
   transactionIdentifier = self->_transactionIdentifier;
-  if (transactionIdentifier != a3)
+  if (transactionIdentifier != identifier)
   {
 
-    self->_transactionIdentifier = [a3 copy];
+    self->_transactionIdentifier = [identifier copy];
   }
 
   [(FinishMicroPaymentOperation *)self unlock];
 }
 
-- (void)setUserDSID:(id)a3
+- (void)setUserDSID:(id)d
 {
   [(FinishMicroPaymentOperation *)self lock];
   userDSID = self->_userDSID;
-  if (userDSID != a3)
+  if (userDSID != d)
   {
 
-    self->_userDSID = a3;
+    self->_userDSID = d;
   }
 
   [(FinishMicroPaymentOperation *)self unlock];
@@ -112,15 +112,15 @@
     v8 = +[SSLogConfig sharedConfig];
   }
 
-  v9 = [v8 shouldLog];
+  shouldLog = [v8 shouldLog];
   if ([v8 shouldLogToDisk])
   {
-    v10 = v9 | 2;
+    v10 = shouldLog | 2;
   }
 
   else
   {
-    v10 = v9;
+    v10 = shouldLog;
   }
 
   if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_INFO))
@@ -133,7 +133,7 @@
     v18 = 138412546;
     v19 = objc_opt_class();
     v20 = 2112;
-    v21 = [(FinishMicroPaymentOperation *)self transactionIdentifier];
+    transactionIdentifier = [(FinishMicroPaymentOperation *)self transactionIdentifier];
     LODWORD(v16) = 22;
     v15 = &v18;
     v11 = _os_log_send_and_compose_impl();
@@ -160,7 +160,7 @@
   }
 }
 
-- (BOOL)_parseResponse:(id)a3 returningError:(id *)a4
+- (BOOL)_parseResponse:(id)response returningError:(id *)error
 {
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -171,15 +171,15 @@
       v11 = +[SSLogConfig sharedConfig];
     }
 
-    v12 = [v11 shouldLog];
+    shouldLog = [v11 shouldLog];
     if ([v11 shouldLogToDisk])
     {
-      v13 = v12 | 2;
+      v13 = shouldLog | 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = shouldLog;
     }
 
     if (!os_log_type_enabled([v11 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -206,7 +206,7 @@ LABEL_21:
 LABEL_23:
     v16 = ISError();
     result = 0;
-    if (!a4)
+    if (!error)
     {
       return result;
     }
@@ -214,7 +214,7 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v6 = [a3 objectForKey:kISFailureTypeKey];
+  v6 = [response objectForKey:kISFailureTypeKey];
   if (v6)
   {
     v7 = v6;
@@ -224,15 +224,15 @@ LABEL_23:
       v8 = +[SSLogConfig sharedConfig];
     }
 
-    v9 = [v8 shouldLog];
+    shouldLog2 = [v8 shouldLog];
     if ([v8 shouldLogToDisk])
     {
-      v10 = v9 | 2;
+      v10 = shouldLog2 | 2;
     }
 
     else
     {
-      v10 = v9;
+      v10 = shouldLog2;
     }
 
     if (!os_log_type_enabled([v8 OSLogObject], OS_LOG_TYPE_DEFAULT))
@@ -255,13 +255,13 @@ LABEL_23:
 
   v16 = 0;
   result = 1;
-  if (!a4)
+  if (!error)
   {
     return result;
   }
 
 LABEL_24:
-  *a4 = v16;
+  *error = v16;
   return result;
 }
 

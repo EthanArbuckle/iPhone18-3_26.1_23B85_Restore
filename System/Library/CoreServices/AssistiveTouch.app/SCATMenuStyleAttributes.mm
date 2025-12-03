@@ -91,7 +91,7 @@
 
   v14 = fmax(v11, v13) + -30.0;
   v15 = fmin(v11, v13) + v8 * -2.0;
-  [a1 itemSize];
+  [self itemSize];
   v17 = ceil((v14 - v4) / (v4 + v16));
   v18 = ceil((v15 - v5) / (v5 + v16));
   v19 = (v14 - v16 * v17) / (v17 + 1.0);

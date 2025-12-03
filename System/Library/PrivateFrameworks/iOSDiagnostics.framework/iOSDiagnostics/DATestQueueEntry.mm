@@ -1,37 +1,37 @@
 @interface DATestQueueEntry
-+ (id)queueEntryWithAttributes:(id)a3 parameters:(id)a4 completion:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTestQueueEntry:(id)a3;
-- (DATestQueueEntry)initWithAttributes:(id)a3 parameters:(id)a4 completion:(id)a5;
++ (id)queueEntryWithAttributes:(id)attributes parameters:(id)parameters completion:(id)completion;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTestQueueEntry:(id)entry;
+- (DATestQueueEntry)initWithAttributes:(id)attributes parameters:(id)parameters completion:(id)completion;
 - (unint64_t)hash;
 @end
 
 @implementation DATestQueueEntry
 
-+ (id)queueEntryWithAttributes:(id)a3 parameters:(id)a4 completion:(id)a5
++ (id)queueEntryWithAttributes:(id)attributes parameters:(id)parameters completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[a1 alloc] initWithAttributes:v10 parameters:v9 completion:v8];
+  completionCopy = completion;
+  parametersCopy = parameters;
+  attributesCopy = attributes;
+  v11 = [[self alloc] initWithAttributes:attributesCopy parameters:parametersCopy completion:completionCopy];
 
   return v11;
 }
 
-- (DATestQueueEntry)initWithAttributes:(id)a3 parameters:(id)a4 completion:(id)a5
+- (DATestQueueEntry)initWithAttributes:(id)attributes parameters:(id)parameters completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  attributesCopy = attributes;
+  parametersCopy = parameters;
+  completionCopy = completion;
   v17.receiver = self;
   v17.super_class = DATestQueueEntry;
   v12 = [(DATestQueueEntry *)&v17 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_attributes, a3);
-    objc_storeStrong(&v13->_parameters, a4);
-    v14 = objc_retainBlock(v11);
+    objc_storeStrong(&v12->_attributes, attributes);
+    objc_storeStrong(&v13->_parameters, parameters);
+    v14 = objc_retainBlock(completionCopy);
     completion = v13->_completion;
     v13->_completion = v14;
   }
@@ -41,34 +41,34 @@
 
 - (unint64_t)hash
 {
-  v2 = [(DATestQueueEntry *)self attributes];
-  v3 = [v2 identifier];
-  v4 = [v3 hash];
+  attributes = [(DATestQueueEntry *)self attributes];
+  identifier = [attributes identifier];
+  v4 = [identifier hash];
 
   return v4;
 }
 
-- (BOOL)isEqualToTestQueueEntry:(id)a3
+- (BOOL)isEqualToTestQueueEntry:(id)entry
 {
-  v4 = a3;
-  v5 = [(DATestQueueEntry *)self attributes];
-  v6 = [v5 identifier];
-  v7 = [v4 attributes];
+  entryCopy = entry;
+  attributes = [(DATestQueueEntry *)self attributes];
+  identifier = [attributes identifier];
+  attributes2 = [entryCopy attributes];
 
-  v8 = [v7 identifier];
-  v9 = [v6 isEqual:v8];
+  identifier2 = [attributes2 identifier];
+  v9 = [identifier isEqual:identifier2];
 
   return v9;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = self == v4;
+  equalCopy = equal;
+  v5 = self == equalCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(DATestQueueEntry *)self isEqualToTestQueueEntry:v4];
+    v5 = [(DATestQueueEntry *)self isEqualToTestQueueEntry:equalCopy];
   }
 
   return v5;

@@ -1,16 +1,16 @@
 @interface InteractionAnalysisPETInteractionEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (uint64_t)setTimestamp:(uint64_t)result;
 - (unint64_t)hash;
-- (void)setAssociatedMemberIDs:(uint64_t)a1;
-- (void)setBundleID:(uint64_t)a1;
-- (void)setDirection:(uint64_t)a1;
-- (void)setEventMechanism:(uint64_t)a1;
-- (void)setInteractionID:(uint64_t)a1;
-- (void)writeTo:(id)a3;
+- (void)setAssociatedMemberIDs:(uint64_t)ds;
+- (void)setBundleID:(uint64_t)d;
+- (void)setDirection:(uint64_t)direction;
+- (void)setEventMechanism:(uint64_t)mechanism;
+- (void)setInteractionID:(uint64_t)d;
+- (void)writeTo:(id)to;
 @end
 
 @implementation InteractionAnalysisPETInteractionEvent
@@ -21,56 +21,56 @@
   v8.receiver = self;
   v8.super_class = InteractionAnalysisPETInteractionEvent;
   v4 = [(InteractionAnalysisPETInteractionEvent *)&v8 description];
-  v5 = [(InteractionAnalysisPETInteractionEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(InteractionAnalysisPETInteractionEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = [MEMORY[0x1E696AD98] numberWithDouble:self->_timestamp];
-  [v3 setObject:v4 forKey:@"timestamp"];
+  [dictionary setObject:v4 forKey:@"timestamp"];
 
   eventMechanism = self->_eventMechanism;
   if (eventMechanism)
   {
-    [v3 setObject:eventMechanism forKey:@"eventMechanism"];
+    [dictionary setObject:eventMechanism forKey:@"eventMechanism"];
   }
 
   bundleID = self->_bundleID;
   if (bundleID)
   {
-    [v3 setObject:bundleID forKey:@"bundleID"];
+    [dictionary setObject:bundleID forKey:@"bundleID"];
   }
 
   direction = self->_direction;
   if (direction)
   {
-    [v3 setObject:direction forKey:@"direction"];
+    [dictionary setObject:direction forKey:@"direction"];
   }
 
   interactionID = self->_interactionID;
   if (interactionID)
   {
-    [v3 setObject:interactionID forKey:@"interactionID"];
+    [dictionary setObject:interactionID forKey:@"interactionID"];
   }
 
   associatedMemberIDs = self->_associatedMemberIDs;
   if (associatedMemberIDs)
   {
-    [v3 setObject:associatedMemberIDs forKey:@"associatedMemberIDs"];
+    [dictionary setObject:associatedMemberIDs forKey:@"associatedMemberIDs"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   timestamp = self->_timestamp;
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteDoubleField();
   if (!self->_eventMechanism)
   {
@@ -101,40 +101,40 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v5 + 8) = self->_timestamp;
-  v6 = [(NSString *)self->_eventMechanism copyWithZone:a3];
+  v6 = [(NSString *)self->_eventMechanism copyWithZone:zone];
   v7 = *(v5 + 40);
   *(v5 + 40) = v6;
 
-  v8 = [(NSString *)self->_bundleID copyWithZone:a3];
+  v8 = [(NSString *)self->_bundleID copyWithZone:zone];
   v9 = *(v5 + 24);
   *(v5 + 24) = v8;
 
-  v10 = [(NSString *)self->_direction copyWithZone:a3];
+  v10 = [(NSString *)self->_direction copyWithZone:zone];
   v11 = *(v5 + 32);
   *(v5 + 32) = v10;
 
-  v12 = [(NSString *)self->_interactionID copyWithZone:a3];
+  v12 = [(NSString *)self->_interactionID copyWithZone:zone];
   v13 = *(v5 + 48);
   *(v5 + 48) = v12;
 
-  v14 = [(NSString *)self->_associatedMemberIDs copyWithZone:a3];
+  v14 = [(NSString *)self->_associatedMemberIDs copyWithZone:zone];
   v15 = *(v5 + 16);
   *(v5 + 16) = v14;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && self->_timestamp == *(v4 + 1) && ((eventMechanism = self->_eventMechanism, !(eventMechanism | v4[5])) || -[NSString isEqual:](eventMechanism, "isEqual:")) && ((bundleID = self->_bundleID, !(bundleID | v4[3])) || -[NSString isEqual:](bundleID, "isEqual:")) && ((direction = self->_direction, !(direction | v4[4])) || -[NSString isEqual:](direction, "isEqual:")) && ((interactionID = self->_interactionID, !(interactionID | v4[6])) || -[NSString isEqual:](interactionID, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && self->_timestamp == *(equalCopy + 1) && ((eventMechanism = self->_eventMechanism, !(eventMechanism | equalCopy[5])) || -[NSString isEqual:](eventMechanism, "isEqual:")) && ((bundleID = self->_bundleID, !(bundleID | equalCopy[3])) || -[NSString isEqual:](bundleID, "isEqual:")) && ((direction = self->_direction, !(direction | equalCopy[4])) || -[NSString isEqual:](direction, "isEqual:")) && ((interactionID = self->_interactionID, !(interactionID | equalCopy[6])) || -[NSString isEqual:](interactionID, "isEqual:")))
   {
     associatedMemberIDs = self->_associatedMemberIDs;
-    if (associatedMemberIDs | v4[2])
+    if (associatedMemberIDs | equalCopy[2])
     {
       v10 = [(NSString *)associatedMemberIDs isEqual:?];
     }
@@ -192,43 +192,43 @@
   return v15 ^ [(NSString *)self->_associatedMemberIDs hash]^ v11;
 }
 
-- (void)setEventMechanism:(uint64_t)a1
+- (void)setEventMechanism:(uint64_t)mechanism
 {
-  if (a1)
+  if (mechanism)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 40);
+    OUTLINED_FUNCTION_0_8(mechanism, a2, 40);
   }
 }
 
-- (void)setBundleID:(uint64_t)a1
+- (void)setBundleID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 24);
+    OUTLINED_FUNCTION_0_8(d, a2, 24);
   }
 }
 
-- (void)setDirection:(uint64_t)a1
+- (void)setDirection:(uint64_t)direction
 {
-  if (a1)
+  if (direction)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 32);
+    OUTLINED_FUNCTION_0_8(direction, a2, 32);
   }
 }
 
-- (void)setInteractionID:(uint64_t)a1
+- (void)setInteractionID:(uint64_t)d
 {
-  if (a1)
+  if (d)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 48);
+    OUTLINED_FUNCTION_0_8(d, a2, 48);
   }
 }
 
-- (void)setAssociatedMemberIDs:(uint64_t)a1
+- (void)setAssociatedMemberIDs:(uint64_t)ds
 {
-  if (a1)
+  if (ds)
   {
-    OUTLINED_FUNCTION_0_8(a1, a2, 16);
+    OUTLINED_FUNCTION_0_8(ds, a2, 16);
   }
 }
 

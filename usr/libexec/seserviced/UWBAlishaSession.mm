@@ -1,15 +1,15 @@
 @interface UWBAlishaSession
-- (void)session:(id)a3 didUpdateHealthStatus:(int64_t)a4;
-- (void)session:(id)a3 relayDCKMessage:(id)a4;
+- (void)session:(id)session didUpdateHealthStatus:(int64_t)status;
+- (void)session:(id)session relayDCKMessage:(id)message;
 @end
 
 @implementation UWBAlishaSession
 
-- (void)session:(id)a3 relayDCKMessage:(id)a4
+- (void)session:(id)session relayDCKMessage:(id)message
 {
-  v6 = a3;
-  v7 = a4;
-  v11 = self;
+  sessionCopy = session;
+  messageCopy = message;
+  selfCopy = self;
   v8 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v10 = v9;
 
@@ -17,11 +17,11 @@
   sub_10006A178(v8, v10);
 }
 
-- (void)session:(id)a3 didUpdateHealthStatus:(int64_t)a4
+- (void)session:(id)session didUpdateHealthStatus:(int64_t)status
 {
-  v6 = a3;
-  v7 = self;
-  sub_10024E700(a4);
+  sessionCopy = session;
+  selfCopy = self;
+  sub_10024E700(status);
 }
 
 @end

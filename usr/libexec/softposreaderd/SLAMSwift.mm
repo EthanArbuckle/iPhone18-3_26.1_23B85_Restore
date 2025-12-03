@@ -1,13 +1,13 @@
 @interface SLAMSwift
-- (id)transceive:(id)a3 error:(id *)a4;
-- (void)log:(id)a3;
+- (id)transceive:(id)transceive error:(id *)error;
+- (void)log:(id)log;
 @end
 
 @implementation SLAMSwift
 
-- (id)transceive:(id)a3 error:(id *)a4
+- (id)transceive:(id)transceive error:(id *)error
 {
-  v6 = a3;
+  transceiveCopy = transceive;
 
   v7 = static Data._unconditionallyBridgeFromObjectiveC(_:)();
   v9 = v8;
@@ -21,13 +21,13 @@
     swift_willThrow();
 
     sub_100009548(v7, v9);
-    if (a4)
+    if (error)
     {
       v12 = _convertErrorToNSError(_:)();
 
       v13 = v12;
       v18 = 0;
-      *a4 = v12;
+      *error = v12;
     }
 
     else
@@ -55,7 +55,7 @@
   return v18;
 }
 
-- (void)log:(id)a3
+- (void)log:(id)log
 {
   v3 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v5 = v4;

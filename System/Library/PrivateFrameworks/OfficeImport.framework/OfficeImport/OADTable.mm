@@ -1,15 +1,15 @@
 @interface OADTable
-+ (void)applyTextStyle:(id)a3 toParagraphProperties:(id)a4;
-- (OADTMatrixPos)masterPosOfPos:(OADTMatrixPos)a3;
++ (void)applyTextStyle:(id)style toParagraphProperties:(id)properties;
+- (OADTMatrixPos)masterPosOfPos:(OADTMatrixPos)pos;
 - (OADTable)init;
 - (id)addRow;
-- (id)cellAtPos:(OADTMatrixPos)a3;
+- (id)cellAtPos:(OADTMatrixPos)pos;
 - (id)description;
-- (id)masterCellOfPos:(OADTMatrixPos)a3;
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3;
+- (id)masterCellOfPos:(OADTMatrixPos)pos;
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values;
 - (void)flattenStyle;
 - (void)flipTableRTL;
-- (void)setParentTextListStyle:(id)a3;
+- (void)setParentTextListStyle:(id)style;
 @end
 
 @implementation OADTable
@@ -45,10 +45,10 @@
 - (void)flipTableRTL
 {
   [(OADTableGrid *)self->mGrid flipColumnsRTL];
-  v3 = [(OADTable *)self rowCount];
-  if (v3)
+  rowCount = [(OADTable *)self rowCount];
+  if (rowCount)
   {
-    v4 = v3;
+    v4 = rowCount;
     for (i = 0; i != v4; ++i)
     {
       v6 = [(OADTable *)self rowAtIndex:i];
@@ -57,23 +57,23 @@
   }
 }
 
-- (void)setParentTextListStyle:(id)a3
+- (void)setParentTextListStyle:(id)style
 {
-  v11 = a3;
-  v4 = [(OADTable *)self rowCount];
-  if (v4)
+  styleCopy = style;
+  rowCount = [(OADTable *)self rowCount];
+  if (rowCount)
   {
-    for (i = 0; i != v4; ++i)
+    for (i = 0; i != rowCount; ++i)
     {
       v6 = [(OADTable *)self rowAtIndex:i];
-      v7 = [v6 cellCount];
-      if (v7)
+      cellCount = [v6 cellCount];
+      if (cellCount)
       {
-        for (j = 0; j != v7; ++j)
+        for (j = 0; j != cellCount; ++j)
         {
           v9 = [v6 cellAtIndex:j];
-          v10 = [v9 textBody];
-          [v10 setParentTextListStyle:v11];
+          textBody = [v9 textBody];
+          [textBody setParentTextListStyle:styleCopy];
         }
       }
     }
@@ -89,39 +89,39 @@
   return v2;
 }
 
-- (id)cellAtPos:(OADTMatrixPos)a3
+- (id)cellAtPos:(OADTMatrixPos)pos
 {
-  v4 = [(OADTable *)self rowAtIndex:a3.var0];
-  v5 = [v4 cellAtIndex:*&a3 >> 32];
+  v4 = [(OADTable *)self rowAtIndex:pos.var0];
+  v5 = [v4 cellAtIndex:*&pos >> 32];
 
   return v5;
 }
 
-- (OADTMatrixPos)masterPosOfPos:(OADTMatrixPos)a3
+- (OADTMatrixPos)masterPosOfPos:(OADTMatrixPos)pos
 {
-  if (a3.var0 < 1)
+  if (pos.var0 < 1)
   {
-    var0 = a3.var0;
+    var0 = pos.var0;
   }
 
   else
   {
-    v5 = a3.var0;
+    v5 = pos.var0;
     do
     {
-      v6 = [(OADTable *)self cellAtPos:*&a3 & 0xFFFFFFFF00000000 | v5];
-      v7 = [v6 vertMerge];
+      v6 = [(OADTable *)self cellAtPos:*&pos & 0xFFFFFFFF00000000 | v5];
+      vertMerge = [v6 vertMerge];
       --v5;
     }
 
-    while ((v7 & 1) != 0);
+    while ((vertMerge & 1) != 0);
     var0 = v5 + 1;
   }
 
-  v9 = HIDWORD(*&a3);
-  if (*&a3 <= 0)
+  v9 = HIDWORD(*&pos);
+  if (*&pos <= 0)
   {
-    return (*&a3 & 0xFFFFFFFF00000000 | var0);
+    return (*&pos & 0xFFFFFFFF00000000 | var0);
   }
 
   else
@@ -131,19 +131,19 @@
     {
       v11 = (v10 | (v9 << 32));
       v12 = [(OADTable *)self cellAtPos:v11];
-      v13 = [v12 horzMerge];
+      horzMerge = [v12 horzMerge];
       v9 = (v9 - 1);
     }
 
-    while ((v13 & 1) != 0);
+    while ((horzMerge & 1) != 0);
   }
 
   return v11;
 }
 
-- (id)masterCellOfPos:(OADTMatrixPos)a3
+- (id)masterCellOfPos:(OADTMatrixPos)pos
 {
-  v4 = [(OADTable *)self masterPosOfPos:a3];
+  v4 = [(OADTable *)self masterPosOfPos:pos];
 
   return [(OADTable *)self cellAtPos:v4];
 }
@@ -154,79 +154,79 @@
   [(OADTableStyleResolver *)v2 flatten];
 }
 
-+ (void)applyTextStyle:(id)a3 toParagraphProperties:(id)a4
++ (void)applyTextStyle:(id)style toParagraphProperties:(id)properties
 {
-  v14 = a3;
-  v5 = a4;
-  v6 = [v5 parent];
-  [v5 setParent:0];
-  v7 = [v14 fontReference];
+  styleCopy = style;
+  propertiesCopy = properties;
+  parent = [propertiesCopy parent];
+  [propertiesCopy setParent:0];
+  fontReference = [styleCopy fontReference];
 
-  if (v7)
+  if (fontReference)
   {
-    v8 = [v14 fontReference];
-    [v8 setColor:0];
+    fontReference2 = [styleCopy fontReference];
+    [fontReference2 setColor:0];
 
-    v9 = [v14 fontReference];
-    [v9 applyToParagraphProperties:v5];
+    fontReference3 = [styleCopy fontReference];
+    [fontReference3 applyToParagraphProperties:propertiesCopy];
   }
 
-  v10 = [v14 color];
-  if (v10)
+  color = [styleCopy color];
+  if (color)
   {
-    v11 = [v5 hasFill];
+    hasFill = [propertiesCopy hasFill];
 
-    if ((v11 & 1) == 0)
+    if ((hasFill & 1) == 0)
     {
       v12 = objc_alloc_init(OADSolidFill);
-      v13 = [v14 color];
-      [(OADSolidFill *)v12 setColor:v13];
+      color2 = [styleCopy color];
+      [(OADSolidFill *)v12 setColor:color2];
 
-      [v5 setFill:v12];
+      [propertiesCopy setFill:v12];
     }
   }
 
-  if ([v14 bold] != 2 && (objc_msgSend(v5, "hasIsBold") & 1) == 0)
+  if ([styleCopy bold] != 2 && (objc_msgSend(propertiesCopy, "hasIsBold") & 1) == 0)
   {
-    [v5 setIsBold:{objc_msgSend(v14, "bold") == 0}];
+    [propertiesCopy setIsBold:{objc_msgSend(styleCopy, "bold") == 0}];
   }
 
-  if ([v14 italic] != 2 && (objc_msgSend(v5, "hasIsItalic") & 1) == 0)
+  if ([styleCopy italic] != 2 && (objc_msgSend(propertiesCopy, "hasIsItalic") & 1) == 0)
   {
-    [v5 setIsItalic:{objc_msgSend(v14, "italic") == 0}];
+    [propertiesCopy setIsItalic:{objc_msgSend(styleCopy, "italic") == 0}];
   }
 
-  [v5 setParent:v6];
+  [propertiesCopy setParent:parent];
 }
 
-- (void)changeParentTextListStylePreservingEffectiveValues:(id)a3
+- (void)changeParentTextListStylePreservingEffectiveValues:(id)values
 {
-  v14 = a3;
-  v4 = [(OADTable *)self tableProperties];
-  v5 = [v4 style];
+  valuesCopy = values;
+  tableProperties = [(OADTable *)self tableProperties];
+  style = [tableProperties style];
 
-  if (v5)
+  if (style)
   {
-    v6 = [[OADTableUnnecessaryOverrideRemover alloc] initWithTable:self parentTextListStyle:v14];
+    v6 = [[OADTableUnnecessaryOverrideRemover alloc] initWithTable:self parentTextListStyle:valuesCopy];
     [(OADTableStyleResolver *)v6 flatten];
   }
 
   else
   {
-    v7 = [(OADTable *)self rowCount];
-    if (v7)
+    rowCount = [(OADTable *)self rowCount];
+    if (rowCount)
     {
-      for (i = 0; i != v7; ++i)
+      for (i = 0; i != rowCount; ++i)
       {
         v9 = [(OADTable *)self rowAtIndex:i];
-        v10 = [v9 cellCount];
-        if (v10)
+        cellCount = [v9 cellCount];
+        if (cellCount)
         {
-          for (j = 0; j != v10; ++j)
+          for (j = 0; j != cellCount; ++j)
           {
             v12 = [v9 cellAtIndex:j];
-            v13 = [v12 textBody];
-            [v13 changeParentTextListStylePreservingEffectiveValues:v14 ownTextListStyle:0];
+            textBody = [v12 textBody];
+            [textBody changeParentTextListStylePreservingEffectiveValues:valuesCopy ownTextListStyle:0];
           }
         }
       }

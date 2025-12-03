@@ -1,21 +1,21 @@
 @interface MCUISpecifierCell
 - (id)_scriptingInfo;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation MCUISpecifierCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v9.receiver = self;
   v9.super_class = MCUISpecifierCell;
-  [(PSTableCell *)&v9 refreshCellContentsWithSpecifier:v4];
-  v5 = [v4 propertyForKey:@"MCUIPSExpiredKey"];
-  v6 = [v5 BOOLValue];
+  [(PSTableCell *)&v9 refreshCellContentsWithSpecifier:specifierCopy];
+  v5 = [specifierCopy propertyForKey:@"MCUIPSExpiredKey"];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     [MEMORY[0x277D75348] DMCProfileRedColor];
   }
@@ -25,9 +25,9 @@
     [MEMORY[0x277D75348] DMCProfileSecondaryLabelColor];
   }
   v7 = ;
-  v8 = [MEMORY[0x277D756E0] cellConfiguration];
-  [MEMORY[0x277D032A8] updateConfiguration:v8 forSpecifier:v4 subtitleColor:v7];
-  [(MCUISpecifierCell *)self setContentConfiguration:v8];
+  cellConfiguration = [MEMORY[0x277D756E0] cellConfiguration];
+  [MEMORY[0x277D032A8] updateConfiguration:cellConfiguration forSpecifier:specifierCopy subtitleColor:v7];
+  [(MCUISpecifierCell *)self setContentConfiguration:cellConfiguration];
 }
 
 - (void)prepareForReuse
@@ -42,18 +42,18 @@
 {
   v9.receiver = self;
   v9.super_class = MCUISpecifierCell;
-  v3 = [(MCUISpecifierCell *)&v9 _scriptingInfo];
-  v4 = [(MCUISpecifierCell *)self textLabel];
-  v5 = [v4 text];
+  _scriptingInfo = [(MCUISpecifierCell *)&v9 _scriptingInfo];
+  textLabel = [(MCUISpecifierCell *)self textLabel];
+  text = [textLabel text];
 
-  if (v5)
+  if (text)
   {
-    v6 = [(MCUISpecifierCell *)self textLabel];
-    v7 = [v6 text];
-    [v3 setObject:v7 forKey:@"ID"];
+    textLabel2 = [(MCUISpecifierCell *)self textLabel];
+    text2 = [textLabel2 text];
+    [_scriptingInfo setObject:text2 forKey:@"ID"];
   }
 
-  return v3;
+  return _scriptingInfo;
 }
 
 @end

@@ -7,12 +7,12 @@
 - (void)SCNMutableDeepCopy
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [a1 mutableCopy];
+  v2 = [self mutableCopy];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [a1 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  v3 = [self countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v3)
   {
     v4 = v3;
@@ -26,14 +26,14 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(a1);
+          objc_enumerationMutation(self);
         }
 
         v8 = *(*(&v11 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          v9 = [v8 SCNMutableDeepCopy];
-          [v2 replaceObjectAtIndex:v5 withObject:v9];
+          sCNMutableDeepCopy = [v8 SCNMutableDeepCopy];
+          [v2 replaceObjectAtIndex:v5 withObject:sCNMutableDeepCopy];
         }
 
         ++v5;
@@ -41,7 +41,7 @@
       }
 
       while (v4 != v7);
-      v4 = [a1 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v4 = [self countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v4);

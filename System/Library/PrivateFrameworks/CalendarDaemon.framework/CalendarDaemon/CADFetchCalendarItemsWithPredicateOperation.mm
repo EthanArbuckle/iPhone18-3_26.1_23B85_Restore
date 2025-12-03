@@ -1,8 +1,8 @@
 @interface CADFetchCalendarItemsWithPredicateOperation
-+ (BOOL)isJunkEvent:(void *)a3;
-+ (id)performSynchronouslyWithPredicate:(id)a3 entityType:(int)a4 connection:(id)a5 fetchIdentifier:(unsigned int)a6 cancellationToken:(id)a7;
-- (CADFetchCalendarItemsWithPredicateOperation)initWithPredicate:(id)a3 entityType:(int)a4 connection:(id)a5 fetchIdentifier:(unsigned int)a6 completionHandler:(id)a7;
-- (void)_callCompletionOnceWithResults:(id)a3;
++ (BOOL)isJunkEvent:(void *)event;
++ (id)performSynchronouslyWithPredicate:(id)predicate entityType:(int)type connection:(id)connection fetchIdentifier:(unsigned int)identifier cancellationToken:(id)token;
+- (CADFetchCalendarItemsWithPredicateOperation)initWithPredicate:(id)predicate entityType:(int)type connection:(id)connection fetchIdentifier:(unsigned int)identifier completionHandler:(id)handler;
+- (void)_callCompletionOnceWithResults:(id)results;
 - (void)cancel;
 - (void)main;
 @end
@@ -25,22 +25,22 @@
   }
 }
 
-- (CADFetchCalendarItemsWithPredicateOperation)initWithPredicate:(id)a3 entityType:(int)a4 connection:(id)a5 fetchIdentifier:(unsigned int)a6 completionHandler:(id)a7
+- (CADFetchCalendarItemsWithPredicateOperation)initWithPredicate:(id)predicate entityType:(int)type connection:(id)connection fetchIdentifier:(unsigned int)identifier completionHandler:(id)handler
 {
-  v13 = a3;
-  v14 = a5;
-  v15 = a7;
+  predicateCopy = predicate;
+  connectionCopy = connection;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = CADFetchCalendarItemsWithPredicateOperation;
   v16 = [(CADFetchCalendarItemsWithPredicateOperation *)&v21 init];
   v17 = v16;
   if (v16)
   {
-    objc_storeStrong(&v16->_predicate, a3);
-    v17->_entityType = a4;
-    objc_storeStrong(&v17->_connection, a5);
-    v17->_token = a6;
-    v18 = MEMORY[0x22AA4DCD0](v15);
+    objc_storeStrong(&v16->_predicate, predicate);
+    v17->_entityType = type;
+    objc_storeStrong(&v17->_connection, connection);
+    v17->_token = identifier;
+    v18 = MEMORY[0x22AA4DCD0](handlerCopy);
     completion = v17->_completion;
     v17->_completion = v18;
   }
@@ -48,40 +48,40 @@
   return v17;
 }
 
-+ (id)performSynchronouslyWithPredicate:(id)a3 entityType:(int)a4 connection:(id)a5 fetchIdentifier:(unsigned int)a6 cancellationToken:(id)a7
++ (id)performSynchronouslyWithPredicate:(id)predicate entityType:(int)type connection:(id)connection fetchIdentifier:(unsigned int)identifier cancellationToken:(id)token
 {
   v49 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a5;
-  v12 = a7;
-  v13 = [v10 databasesToQuery];
+  predicateCopy = predicate;
+  connectionCopy = connection;
+  tokenCopy = token;
+  databasesToQuery = [predicateCopy databasesToQuery];
   v14 = [CADFetchedObjectSerializer alloc];
-  v15 = [v10 defaultPropertiesToLoad];
-  v16 = [v10 relatedObjectPropertiesToLoad];
-  v17 = [(CADFetchedObjectSerializer *)v14 initWithConnection:v11 defaultPropertiesToLoad:v15 relatedObjectPropertiesToLoad:v16];
+  defaultPropertiesToLoad = [predicateCopy defaultPropertiesToLoad];
+  relatedObjectPropertiesToLoad = [predicateCopy relatedObjectPropertiesToLoad];
+  v17 = [(CADFetchedObjectSerializer *)v14 initWithConnection:connectionCopy defaultPropertiesToLoad:defaultPropertiesToLoad relatedObjectPropertiesToLoad:relatedObjectPropertiesToLoad];
 
   v42[0] = MEMORY[0x277D85DD0];
   v42[1] = 3221225472;
   v42[2] = __137__CADFetchCalendarItemsWithPredicateOperation_performSynchronouslyWithPredicate_entityType_connection_fetchIdentifier_cancellationToken___block_invoke;
   v42[3] = &unk_27851B938;
-  v47 = a1;
-  v18 = v10;
+  selfCopy = self;
+  v18 = predicateCopy;
   v43 = v18;
-  v19 = v11;
+  v19 = connectionCopy;
   v44 = v19;
   v20 = v17;
   v45 = v20;
-  v21 = v12;
+  v21 = tokenCopy;
   v46 = v21;
   v22 = MEMORY[0x22AA4DCD0](v42);
   v23 = v22;
-  if (v13)
+  if (databasesToQuery)
   {
     v38 = 0u;
     v39 = 0u;
     v36 = 0u;
     v37 = 0u;
-    v24 = v13;
+    v24 = databasesToQuery;
     v25 = [v24 countByEnumeratingWithState:&v36 objects:v48 count:16];
     if (v25)
     {
@@ -97,13 +97,13 @@
             objc_enumerationMutation(v24);
           }
 
-          v29 = [*(*(&v36 + 1) + 8 * i) intValue];
+          intValue = [*(*(&v36 + 1) + 8 * i) intValue];
           v34[0] = MEMORY[0x277D85DD0];
           v34[1] = 3221225472;
           v34[2] = __137__CADFetchCalendarItemsWithPredicateOperation_performSynchronouslyWithPredicate_entityType_connection_fetchIdentifier_cancellationToken___block_invoke_3;
           v34[3] = &unk_27851A480;
           v35 = v23;
-          [v19 withDatabaseID:v29 perform:v34];
+          [v19 withDatabaseID:intValue perform:v34];
         }
 
         v26 = [v24 countByEnumeratingWithState:&v36 objects:v48 count:16];
@@ -127,17 +127,17 @@
 
   if ([v21 isCancelled])
   {
-    v30 = 0;
+    fetchedObjectWrappers = 0;
   }
 
   else
   {
-    v30 = [(CADFetchedObjectSerializer *)v20 fetchedObjectWrappers];
+    fetchedObjectWrappers = [(CADFetchedObjectSerializer *)v20 fetchedObjectWrappers];
   }
 
   v31 = *MEMORY[0x277D85DE8];
 
-  return v30;
+  return fetchedObjectWrappers;
 }
 
 uint64_t __137__CADFetchCalendarItemsWithPredicateOperation_performSynchronouslyWithPredicate_entityType_connection_fetchIdentifier_cancellationToken___block_invoke(void *a1, uint64_t a2, uint64_t a3)
@@ -152,10 +152,10 @@ uint64_t __137__CADFetchCalendarItemsWithPredicateOperation_performSynchronously
   return [v7 queryDatabase:a3 withID:a2 predicate:v8 connection:v9 serializer:v10 cancellationToken:v11];
 }
 
-+ (BOOL)isJunkEvent:(void *)a3
++ (BOOL)isJunkEvent:(void *)event
 {
-  Event = a3;
-  v4 = CFGetTypeID(a3);
+  Event = event;
+  v4 = CFGetTypeID(event);
   if (v4 == CalEventOccurrenceGetTypeID())
   {
     Event = CalEventOccurrenceGetEvent();
@@ -172,7 +172,7 @@ uint64_t __137__CADFetchCalendarItemsWithPredicateOperation_performSynchronously
   [(CADFetchCalendarItemsWithPredicateOperation *)self _callCompletionOnceWithResults:0];
 }
 
-- (void)_callCompletionOnceWithResults:(id)a3
+- (void)_callCompletionOnceWithResults:(id)results
 {
   if ((atomic_exchange(&self->_hasRunCompletion._Value, 1u) & 1) == 0)
   {

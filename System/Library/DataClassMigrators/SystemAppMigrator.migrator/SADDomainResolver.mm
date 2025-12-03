@@ -1,22 +1,22 @@
 @interface SADDomainResolver
-- (id)eligibilityForDomain:(unint64_t)a3 error:(id *)a4;
+- (id)eligibilityForDomain:(unint64_t)domain error:(id *)error;
 @end
 
 @implementation SADDomainResolver
 
-- (id)eligibilityForDomain:(unint64_t)a3 error:(id *)a4
+- (id)eligibilityForDomain:(unint64_t)domain error:(id *)error
 {
   domain_answer = os_eligibility_get_domain_answer();
   if (domain_answer)
   {
-    if (a4)
+    if (error)
     {
       v7 = domain_answer;
       strerror(domain_answer);
-      v9 = _CreateError("[SADDomainResolver eligibilityForDomain:error:]", 134, NSPOSIXErrorDomain, v7, 0, 0, @"Failed to read eligibility for %llu with error: %s", v8, a3);
+      v9 = _CreateError("[SADDomainResolver eligibilityForDomain:error:]", 134, NSPOSIXErrorDomain, v7, 0, 0, @"Failed to read eligibility for %llu with error: %s", v8, domain);
       v10 = v9;
       v11 = 0;
-      *a4 = v9;
+      *error = v9;
     }
 
     else

@@ -13,15 +13,15 @@
   v1 = v0;
   if (v0 && [v0 integerValue] >= 1)
   {
-    v2 = [v1 integerValue];
+    integerValue = [v1 integerValue];
   }
 
   else
   {
-    v2 = 0x7FFFFFFFFFFFFFFFLL;
+    integerValue = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  return v2;
+  return integerValue;
 }
 
 + (id)nationalDirectDialingPrefixForISOCountryCode:()PhoneNumbers
@@ -34,10 +34,10 @@
 
 - (uint64_t)ITUCountryCode
 {
-  v1 = [a1 countryCode];
-  if (v1)
+  countryCode = [self countryCode];
+  if (countryCode)
   {
-    v2 = [objc_opt_class() ITUCountryCodeForISOCountryCode:v1];
+    v2 = [objc_opt_class() ITUCountryCodeForISOCountryCode:countryCode];
   }
 
   else
@@ -50,10 +50,10 @@
 
 - (id)nationalDirectDialingPrefix
 {
-  v1 = [a1 countryCode];
-  if (v1)
+  countryCode = [self countryCode];
+  if (countryCode)
   {
-    v2 = [objc_opt_class() nationalDirectDialingPrefixForISOCountryCode:v1];
+    v2 = [objc_opt_class() nationalDirectDialingPrefixForISOCountryCode:countryCode];
   }
 
   else

@@ -1,16 +1,16 @@
 @interface IDSAppleIDNotificationCenter
 + (IDSAppleIDNotificationCenter)sharedInstance;
 - (IDSAppleIDNotificationCenter)init;
-- (id)_localizedServicesAccessStringForDevice:(id)a3 serviceMessage:(id)a4;
-- (id)_localizedServicesUsageStringForDevice:(id)a3 useSingular:(BOOL)a4;
-- (void)_noteNewAvailableNotification:(id)a3;
-- (void)_noteNewUsageNotification:(id)a3;
-- (void)_postAvailableNotificationForSessions:(id)a3 appleID:(id)a4 aliases:(id)a5 deviceName:(id)a6 serviceTypes:(id)a7 blockMap:(id)a8;
-- (void)_postUsageNotificationForSessions:(id)a3 appleID:(id)a4 aliases:(id)a5 deviceName:(id)a6 deviceModel:(id)a7 deviceCapabilities:(id)a8 serviceTypes:(id)a9;
+- (id)_localizedServicesAccessStringForDevice:(id)device serviceMessage:(id)message;
+- (id)_localizedServicesUsageStringForDevice:(id)device useSingular:(BOOL)singular;
+- (void)_noteNewAvailableNotification:(id)notification;
+- (void)_noteNewUsageNotification:(id)notification;
+- (void)_postAvailableNotificationForSessions:(id)sessions appleID:(id)d aliases:(id)aliases deviceName:(id)name serviceTypes:(id)types blockMap:(id)map;
+- (void)_postUsageNotificationForSessions:(id)sessions appleID:(id)d aliases:(id)aliases deviceName:(id)name deviceModel:(id)model deviceCapabilities:(id)capabilities serviceTypes:(id)types;
 - (void)_processAvailableNotifications;
 - (void)_processUsageNotifications;
-- (void)addAvailableNotificationForSession:(id)a3 appleID:(id)a4 alias:(id)a5 deviceName:(id)a6 serviceType:(id)a7 completionBlock:(id)a8;
-- (void)addUsageNotificationForSession:(id)a3 appleID:(id)a4 alias:(id)a5 deviceName:(id)a6 hardwareVersion:(id)a7 deviceCapabilities:(id)a8 serviceType:(id)a9;
+- (void)addAvailableNotificationForSession:(id)session appleID:(id)d alias:(id)alias deviceName:(id)name serviceType:(id)type completionBlock:(id)block;
+- (void)addUsageNotificationForSession:(id)session appleID:(id)d alias:(id)alias deviceName:(id)name hardwareVersion:(id)version deviceCapabilities:(id)capabilities serviceType:(id)type;
 - (void)reportDailyNotificationMetrics;
 @end
 
@@ -68,27 +68,27 @@
   return v2;
 }
 
-- (void)_postAvailableNotificationForSessions:(id)a3 appleID:(id)a4 aliases:(id)a5 deviceName:(id)a6 serviceTypes:(id)a7 blockMap:(id)a8
+- (void)_postAvailableNotificationForSessions:(id)sessions appleID:(id)d aliases:(id)aliases deviceName:(id)name serviceTypes:(id)types blockMap:(id)map
 {
-  v45 = a3;
-  v47 = a4;
-  v13 = a5;
-  v14 = a6;
-  v49 = a7;
-  v44 = a8;
+  sessionsCopy = sessions;
+  dCopy = d;
+  aliasesCopy = aliases;
+  nameCopy = name;
+  typesCopy = types;
+  mapCopy = map;
   v15 = [NSBundle bundleForClass:objc_opt_class()];
   v68 = 0u;
   v69 = 0u;
   v70 = 0u;
   v71 = 0u;
-  v16 = v14;
-  obj = v13;
+  v16 = nameCopy;
+  obj = aliasesCopy;
   v50 = [obj countByEnumeratingWithState:&v68 objects:v73 count:16];
   if (v50)
   {
     v48 = *v69;
     v43 = kFZAppBundleIdentifier;
-    v55 = v14;
+    v55 = nameCopy;
     do
     {
       for (i = 0; i != v50; i = i + 1)
@@ -106,7 +106,7 @@
         v65 = 0u;
         v66 = 0u;
         v67 = 0u;
-        v20 = v49;
+        v20 = typesCopy;
         v21 = [v20 countByEnumeratingWithState:&v64 objects:v72 count:16];
         if (v21)
         {
@@ -136,24 +136,24 @@
           while (v22);
         }
 
-        v27 = [v19 allObjects];
-        v54 = [v18 allObjects];
+        allObjects = [v19 allObjects];
+        allObjects2 = [v18 allObjects];
         v28 = @"%@";
-        if ([v54 count] >= 2)
+        if ([allObjects2 count] >= 2)
         {
           v28 = IMLocalizedStringFromTableInBundle();
         }
 
-        v29 = [v27 __imFirstObject];
-        v52 = v27;
-        v30 = [v27 lastObject];
+        __imFirstObject = [allObjects __imFirstObject];
+        v52 = allObjects;
+        lastObject = [allObjects lastObject];
         v53 = v28;
-        v31 = [NSString localizedStringWithFormat:v28, v29, v30];
+        v31 = [NSString localizedStringWithFormat:v28, __imFirstObject, lastObject];
 
         v58 = IMLocalizedStringFromTableInBundle();
         v57 = IMLocalizedStringFromTableInBundle();
         v32 = IMFormattedDisplayStringForID();
-        v56 = [v32 stringWithLTREmbedding];
+        stringWithLTREmbedding = [v32 stringWithLTREmbedding];
 
         v16 = v55;
         if (IsEmail)
@@ -170,7 +170,7 @@
             v34 = IMLocalizedStringFromTableInBundle();
           }
 
-          v36 = [NSString localizedStringWithFormat:v34, v47, v42];
+          v36 = [NSString localizedStringWithFormat:v34, dCopy, v42];
         }
 
         else
@@ -203,7 +203,7 @@
               v35 = IMLocalizedStringFromTableInBundle();
             }
 
-            v36 = [NSString localizedStringWithFormat:v35, v47, v42];
+            v36 = [NSString localizedStringWithFormat:v35, dCopy, v42];
           }
 
           v16 = v55;
@@ -212,7 +212,7 @@
         v37 = 0;
         if (v33 && v36)
         {
-          v38 = [NSString localizedStringWithFormat:v33, v56, v31];
+          v38 = [NSString localizedStringWithFormat:v33, stringWithLTREmbedding, v31];
           v37 = [IMUserNotification userNotificationWithIdentifier:@"ServerAlerts" title:v38 message:v36 defaultButton:v58 alternateButton:0 otherButton:v57];
 
           if (v37)
@@ -226,8 +226,8 @@
               v60[2] = sub_1004A69BC;
               v60[3] = &unk_100BDDAE0;
               v60[4] = v59;
-              v61 = v45;
-              v62 = v44;
+              v61 = sessionsCopy;
+              v62 = mapCopy;
               [v41 addUserNotification:v37 listener:0 completionHandler:v60];
             }
           }
@@ -243,23 +243,23 @@
   }
 }
 
-- (void)_postUsageNotificationForSessions:(id)a3 appleID:(id)a4 aliases:(id)a5 deviceName:(id)a6 deviceModel:(id)a7 deviceCapabilities:(id)a8 serviceTypes:(id)a9
+- (void)_postUsageNotificationForSessions:(id)sessions appleID:(id)d aliases:(id)aliases deviceName:(id)name deviceModel:(id)model deviceCapabilities:(id)capabilities serviceTypes:(id)types
 {
-  v76 = a4;
-  v12 = a5;
-  v13 = a7;
-  v14 = a9;
+  dCopy = d;
+  aliasesCopy = aliases;
+  modelCopy = model;
+  typesCopy = types;
   v15 = objc_alloc_init(NSMutableArray);
   v16 = objc_alloc_init(NSMutableArray);
   v17 = objc_alloc_init(NSMutableArray);
   v78 = objc_alloc_init(NSMutableArray);
-  v73 = self;
+  selfCopy = self;
   v79 = [NSBundle bundleForClass:objc_opt_class()];
   v85 = 0u;
   v86 = 0u;
   v87 = 0u;
   v88 = 0u;
-  v18 = v12;
+  v18 = aliasesCopy;
   v19 = [v18 countByEnumeratingWithState:&v85 objects:v92 count:16];
   if (v19)
   {
@@ -294,12 +294,12 @@
     while (v20);
   }
 
-  v77 = [IMDeviceSupport marketingNameForModel:v13];
+  v77 = [IMDeviceSupport marketingNameForModel:modelCopy];
   v74 = v18;
-  v75 = v13;
-  if ([v77 isEqualToString:@"Mac"] && objc_msgSend(v13, "rangeOfString:", @"Mac") == 0x7FFFFFFFFFFFFFFFLL)
+  v75 = modelCopy;
+  if ([v77 isEqualToString:@"Mac"] && objc_msgSend(modelCopy, "rangeOfString:", @"Mac") == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v25 = [v13 rangeOfString:@"Browser"];
+    v25 = [modelCopy rangeOfString:@"Browser"];
 
     v26 = @"browser";
     if (v25 == 0x7FFFFFFFFFFFFFFFLL)
@@ -314,7 +314,7 @@
   v84 = 0u;
   v81 = 0u;
   v82 = 0u;
-  v27 = v14;
+  v27 = typesCopy;
   v28 = [v27 countByEnumeratingWithState:&v81 objects:v91 count:16];
   if (v28)
   {
@@ -417,17 +417,17 @@ LABEL_47:
     v71 = v49;
     v69 = [(IDSSystemAccountAdapter *)v49 iCloudSystemAccountWithError:&v80];
     v70 = v80;
-    v50 = [v69 username];
-    v68 = v50;
-    if (v76 && v50)
+    username = [v69 username];
+    v68 = username;
+    if (dCopy && username)
     {
-      [v76 isEqualToString:v50];
+      [dCopy isEqualToString:username];
     }
 
     v51 = IMLocalizedStringFromTableInBundle();
     v52 = IMLocalizedStringFromTableInBundle();
     v72 = v42;
-    v53 = [(IDSAppleIDNotificationCenter *)v73 _localizedServicesAccessStringForDevice:v77 serviceMessage:v42];
+    v53 = [(IDSAppleIDNotificationCenter *)selfCopy _localizedServicesAccessStringForDevice:v77 serviceMessage:v42];
     v65 = objc_alloc_init(IMWeakLinkClass());
     v54 = objc_alloc_init(IMWeakLinkClass());
     v67 = v52;
@@ -438,14 +438,14 @@ LABEL_47:
 
     [v54 setAction:0];
     v56 = IDSDailyAccountAddedNotificationMetricTotalKey;
-    v57 = [(IDSPersistentMap *)v73->_dailyMetricsData objectForKey:IDSDailyAccountAddedNotificationMetricTotalKey];
+    v57 = [(IDSPersistentMap *)selfCopy->_dailyMetricsData objectForKey:IDSDailyAccountAddedNotificationMetricTotalKey];
     [v57 doubleValue];
     v59 = v58;
 
-    v60 = [(IDSPersistentMap *)v73->_dailyMetricsData objectForKey:IDSDailyAccountAddedNotificationMetricDuplicateKey];
+    v60 = [(IDSPersistentMap *)selfCopy->_dailyMetricsData objectForKey:IDSDailyAccountAddedNotificationMetricDuplicateKey];
     [v60 doubleValue];
 
-    dailyMetricsData = v73->_dailyMetricsData;
+    dailyMetricsData = selfCopy->_dailyMetricsData;
     v62 = [NSNumber numberWithInteger:v59 + 1];
     [(IDSPersistentMap *)dailyMetricsData setObject:v62 forKey:v56];
 
@@ -462,12 +462,12 @@ LABEL_47:
   }
 }
 
-- (id)_localizedServicesAccessStringForDevice:(id)a3 serviceMessage:(id)a4
+- (id)_localizedServicesAccessStringForDevice:(id)device serviceMessage:(id)message
 {
-  v5 = a3;
-  v6 = a4;
+  deviceCopy = device;
+  messageCopy = message;
   v7 = [NSBundle bundleForClass:objc_opt_class()];
-  if ([v5 isEqualToString:@"Mac"] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", @"browser"))
+  if ([deviceCopy isEqualToString:@"Mac"] & 1) != 0 || (objc_msgSend(deviceCopy, "isEqualToString:", @"browser"))
   {
     v8 = @"A %@ now has access to %@. %%@";
   }
@@ -475,30 +475,30 @@ LABEL_47:
   else
   {
     v8 = @"A %@ now has access to %@. %%@";
-    if (([v5 isEqualToString:@"device"] & 1) == 0 && !objc_msgSend(v5, "isEqualToString:", @"HomePod"))
+    if (([deviceCopy isEqualToString:@"device"] & 1) == 0 && !objc_msgSend(deviceCopy, "isEqualToString:", @"HomePod"))
     {
       v8 = @"An %@ now has access to %@. %%@";
     }
   }
 
-  v9 = [NSString localizedStringWithFormat:v8, v5, v6];
+  messageCopy = [NSString localizedStringWithFormat:v8, deviceCopy, messageCopy];
   v10 = IMLocalizedStringFromTableInBundle();
 
   return v10;
 }
 
-- (id)_localizedServicesUsageStringForDevice:(id)a3 useSingular:(BOOL)a4
+- (id)_localizedServicesUsageStringForDevice:(id)device useSingular:(BOOL)singular
 {
-  v4 = a4;
-  v5 = a3;
+  singularCopy = singular;
+  deviceCopy = device;
   v6 = [NSBundle bundleForClass:objc_opt_class()];
   v7 = @"are";
-  if (v4)
+  if (singularCopy)
   {
     v7 = @"is";
   }
 
-  v8 = [NSString localizedStringWithFormat:@"Your %%@ %@ now being used for %%@ on a new %@.", v7, v5];
+  deviceCopy = [NSString localizedStringWithFormat:@"Your %%@ %@ now being used for %%@ on a new %@.", v7, deviceCopy];
 
   v9 = IMLocalizedStringFromTableInBundle();
 
@@ -526,16 +526,16 @@ LABEL_47:
         }
 
         v3 = *(*(&v17 + 1) + 8 * i);
-        v4 = [v3 sessions];
-        v5 = [v4 allObjects];
-        v6 = [v3 appleID];
-        v7 = [v3 aliases];
-        v8 = [v7 allObjects];
-        v9 = [v3 deviceName];
-        v10 = [v3 serviceTypes];
-        v11 = [v10 allObjects];
-        v12 = [v3 sessionToBlockMap];
-        [(IDSAppleIDNotificationCenter *)self _postAvailableNotificationForSessions:v5 appleID:v6 aliases:v8 deviceName:v9 serviceTypes:v11 blockMap:v12];
+        sessions = [v3 sessions];
+        allObjects = [sessions allObjects];
+        appleID = [v3 appleID];
+        aliases = [v3 aliases];
+        allObjects2 = [aliases allObjects];
+        deviceName = [v3 deviceName];
+        serviceTypes = [v3 serviceTypes];
+        allObjects3 = [serviceTypes allObjects];
+        sessionToBlockMap = [v3 sessionToBlockMap];
+        [(IDSAppleIDNotificationCenter *)self _postAvailableNotificationForSessions:allObjects appleID:appleID aliases:allObjects2 deviceName:deviceName serviceTypes:allObjects3 blockMap:sessionToBlockMap];
       }
 
       v16 = [(NSMutableArray *)obj countByEnumeratingWithState:&v17 objects:v21 count:16];
@@ -568,17 +568,17 @@ LABEL_47:
         }
 
         v3 = *(*(&v18 + 1) + 8 * i);
-        v17 = [v3 sessions];
-        v4 = [v17 allObjects];
-        v5 = [v3 appleID];
-        v6 = [v3 aliases];
-        v7 = [v6 allObjects];
-        v8 = [v3 deviceName];
-        v9 = [v3 deviceModel];
-        v10 = [v3 deviceCapabilities];
-        v11 = [v3 serviceTypes];
-        v12 = [v11 allObjects];
-        [(IDSAppleIDNotificationCenter *)self _postUsageNotificationForSessions:v4 appleID:v5 aliases:v7 deviceName:v8 deviceModel:v9 deviceCapabilities:v10 serviceTypes:v12];
+        sessions = [v3 sessions];
+        allObjects = [sessions allObjects];
+        appleID = [v3 appleID];
+        aliases = [v3 aliases];
+        allObjects2 = [aliases allObjects];
+        deviceName = [v3 deviceName];
+        deviceModel = [v3 deviceModel];
+        deviceCapabilities = [v3 deviceCapabilities];
+        serviceTypes = [v3 serviceTypes];
+        allObjects3 = [serviceTypes allObjects];
+        [(IDSAppleIDNotificationCenter *)self _postUsageNotificationForSessions:allObjects appleID:appleID aliases:allObjects2 deviceName:deviceName deviceModel:deviceModel deviceCapabilities:deviceCapabilities serviceTypes:allObjects3];
       }
 
       v16 = [(NSMutableArray *)obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -590,69 +590,69 @@ LABEL_47:
   [(NSMutableArray *)self->_usageNotifications removeAllObjects];
 }
 
-- (void)_noteNewAvailableNotification:(id)a3
+- (void)_noteNewAvailableNotification:(id)notification
 {
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
     [(CUTDeferredTaskQueue *)self->_processAvailableNotificationsTask cancelPendingExecutions];
     [(CUTDeferredTaskQueue *)self->_processAvailableNotificationsTask enqueueExecutionWithTarget:self afterDelay:5.0];
-    if (([(NSMutableArray *)self->_availableNotifications containsObjectIdenticalTo:v4]& 1) == 0)
+    if (([(NSMutableArray *)self->_availableNotifications containsObjectIdenticalTo:notificationCopy]& 1) == 0)
     {
-      [(NSMutableArray *)self->_availableNotifications addObject:v4];
+      [(NSMutableArray *)self->_availableNotifications addObject:notificationCopy];
     }
   }
 }
 
-- (void)_noteNewUsageNotification:(id)a3
+- (void)_noteNewUsageNotification:(id)notification
 {
-  v4 = a3;
-  if (v4)
+  notificationCopy = notification;
+  if (notificationCopy)
   {
     [(CUTDeferredTaskQueue *)self->_processUsageNotificationsTask cancelPendingExecutions];
     [(CUTDeferredTaskQueue *)self->_processUsageNotificationsTask enqueueExecutionWithTarget:self afterDelay:5.0];
-    if (([(NSMutableArray *)self->_usageNotifications containsObjectIdenticalTo:v4]& 1) == 0)
+    if (([(NSMutableArray *)self->_usageNotifications containsObjectIdenticalTo:notificationCopy]& 1) == 0)
     {
-      [(NSMutableArray *)self->_usageNotifications addObject:v4];
+      [(NSMutableArray *)self->_usageNotifications addObject:notificationCopy];
     }
   }
 }
 
-- (void)addAvailableNotificationForSession:(id)a3 appleID:(id)a4 alias:(id)a5 deviceName:(id)a6 serviceType:(id)a7 completionBlock:(id)a8
+- (void)addAvailableNotificationForSession:(id)session appleID:(id)d alias:(id)alias deviceName:(id)name serviceType:(id)type completionBlock:(id)block
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v41 = a6;
-  v17 = a7;
-  v18 = a8;
+  sessionCopy = session;
+  dCopy = d;
+  aliasCopy = alias;
+  nameCopy = name;
+  typeCopy = type;
+  blockCopy = block;
   v19 = +[IDSPairingManager sharedInstance];
-  v20 = [v19 isCurrentDeviceTinkerConfiguredWatch];
+  isCurrentDeviceTinkerConfiguredWatch = [v19 isCurrentDeviceTinkerConfiguredWatch];
 
   v21 = +[FTDeviceSupport sharedInstance];
-  v22 = [v21 deviceType];
+  deviceType = [v21 deviceType];
 
-  if (v22 != 6 || v20 != 0)
+  if (deviceType != 6 || isCurrentDeviceTinkerConfiguredWatch != 0)
   {
     v24 = +[IMLockdownManager sharedInstance];
-    v25 = [v24 isInternalInstall];
+    isInternalInstall = [v24 isInternalInstall];
 
-    if (v25)
+    if (isInternalInstall)
     {
       v26 = IMGetDomainBoolForKey();
-      if (!v16 || (v26 & 1) != 0)
+      if (!aliasCopy || (v26 & 1) != 0)
       {
         goto LABEL_24;
       }
     }
 
-    else if (!v16)
+    else if (!aliasCopy)
     {
       goto LABEL_24;
     }
 
-    v39 = self;
-    v40 = v15;
+    selfCopy = self;
+    v40 = dCopy;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
@@ -662,8 +662,8 @@ LABEL_47:
     if (v28)
     {
       v29 = v28;
-      v37 = v17;
-      v38 = v14;
+      v37 = typeCopy;
+      v38 = sessionCopy;
       v30 = 0;
       v31 = *v43;
       do
@@ -676,8 +676,8 @@ LABEL_47:
           }
 
           v33 = *(*(&v42 + 1) + 8 * i);
-          v34 = [v33 aliases];
-          v35 = [v34 containsObject:v16];
+          aliases = [v33 aliases];
+          v35 = [aliases containsObject:aliasCopy];
 
           if (v35)
           {
@@ -692,9 +692,9 @@ LABEL_47:
 
       while (v29);
 
-      v17 = v37;
-      v14 = v38;
-      v15 = v40;
+      typeCopy = v37;
+      sessionCopy = v38;
+      dCopy = v40;
       if (v30)
       {
         goto LABEL_23;
@@ -706,43 +706,43 @@ LABEL_47:
     }
 
     v30 = objc_alloc_init(IDSAppleIDNotification);
-    [(IDSAppleIDNotification *)v30 setAppleID:v15];
-    [(IDSAppleIDNotification *)v30 setDeviceName:v41];
-    [(IDSAppleIDNotification *)v30 addAlias:v16];
+    [(IDSAppleIDNotification *)v30 setAppleID:dCopy];
+    [(IDSAppleIDNotification *)v30 setDeviceName:nameCopy];
+    [(IDSAppleIDNotification *)v30 addAlias:aliasCopy];
 LABEL_23:
-    [(IDSAppleIDNotification *)v30 addServiceType:v17];
-    [(IDSAppleIDNotification *)v30 addSession:v14];
-    [(IDSAppleIDNotification *)v30 addCompletionBlock:v18 forSession:v14];
-    [(IDSAppleIDNotificationCenter *)v39 _noteNewAvailableNotification:v30];
+    [(IDSAppleIDNotification *)v30 addServiceType:typeCopy];
+    [(IDSAppleIDNotification *)v30 addSession:sessionCopy];
+    [(IDSAppleIDNotification *)v30 addCompletionBlock:blockCopy forSession:sessionCopy];
+    [(IDSAppleIDNotificationCenter *)selfCopy _noteNewAvailableNotification:v30];
   }
 
 LABEL_24:
 }
 
-- (void)addUsageNotificationForSession:(id)a3 appleID:(id)a4 alias:(id)a5 deviceName:(id)a6 hardwareVersion:(id)a7 deviceCapabilities:(id)a8 serviceType:(id)a9
+- (void)addUsageNotificationForSession:(id)session appleID:(id)d alias:(id)alias deviceName:(id)name hardwareVersion:(id)version deviceCapabilities:(id)capabilities serviceType:(id)type
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v40 = a7;
-  v41 = a8;
-  v19 = a9;
+  sessionCopy = session;
+  dCopy = d;
+  aliasCopy = alias;
+  nameCopy = name;
+  versionCopy = version;
+  capabilitiesCopy = capabilities;
+  typeCopy = type;
   v20 = +[IDSPairingManager sharedInstance];
-  v21 = [v20 isCurrentDeviceTinkerConfiguredWatch];
+  isCurrentDeviceTinkerConfiguredWatch = [v20 isCurrentDeviceTinkerConfiguredWatch];
 
   v22 = +[FTDeviceSupport sharedInstance];
-  v23 = [v22 deviceType];
+  deviceType = [v22 deviceType];
 
-  if (v23 != 6 || v21)
+  if (deviceType != 6 || isCurrentDeviceTinkerConfiguredWatch)
   {
     v24 = +[IMLockdownManager sharedInstance];
-    v25 = [v24 isInternalInstall];
+    isInternalInstall = [v24 isInternalInstall];
 
-    if (!v25 || (IMGetDomainBoolForKey() & 1) == 0)
+    if (!isInternalInstall || (IMGetDomainBoolForKey() & 1) == 0)
     {
-      v38 = self;
-      v39 = v16;
+      selfCopy = self;
+      v39 = dCopy;
       v44 = 0u;
       v45 = 0u;
       v42 = 0u;
@@ -752,8 +752,8 @@ LABEL_24:
       if (v27)
       {
         v28 = v27;
-        v36 = v17;
-        v37 = v15;
+        v36 = aliasCopy;
+        v37 = sessionCopy;
         v29 = 0;
         v30 = *v43;
         do
@@ -766,8 +766,8 @@ LABEL_24:
             }
 
             v32 = *(*(&v42 + 1) + 8 * i);
-            v33 = [v32 deviceName];
-            v34 = [v33 isEqualToString:v18];
+            deviceName = [v32 deviceName];
+            v34 = [deviceName isEqualToString:nameCopy];
 
             if (v34)
             {
@@ -782,9 +782,9 @@ LABEL_24:
 
         while (v28);
 
-        v17 = v36;
-        v15 = v37;
-        v16 = v39;
+        aliasCopy = v36;
+        sessionCopy = v37;
+        dCopy = v39;
         if (v29)
         {
           goto LABEL_18;
@@ -796,26 +796,26 @@ LABEL_24:
       }
 
       v29 = objc_alloc_init(IDSAppleIDNotification);
-      [(IDSAppleIDNotification *)v29 setAppleID:v16];
-      [(IDSAppleIDNotification *)v29 setDeviceName:v18];
-      [(IDSAppleIDNotification *)v29 setDeviceModel:v40];
+      [(IDSAppleIDNotification *)v29 setAppleID:dCopy];
+      [(IDSAppleIDNotification *)v29 setDeviceName:nameCopy];
+      [(IDSAppleIDNotification *)v29 setDeviceModel:versionCopy];
 LABEL_18:
-      [(IDSAppleIDNotification *)v29 addAlias:v17];
-      [(IDSAppleIDNotification *)v29 addServiceType:v19];
-      [(IDSAppleIDNotification *)v29 addSession:v15];
-      [(IDSAppleIDNotification *)v29 setDeviceCapabilities:v41];
-      [(IDSAppleIDNotificationCenter *)v38 _noteNewUsageNotification:v29];
+      [(IDSAppleIDNotification *)v29 addAlias:aliasCopy];
+      [(IDSAppleIDNotification *)v29 addServiceType:typeCopy];
+      [(IDSAppleIDNotification *)v29 addSession:sessionCopy];
+      [(IDSAppleIDNotification *)v29 setDeviceCapabilities:capabilitiesCopy];
+      [(IDSAppleIDNotificationCenter *)selfCopy _noteNewUsageNotification:v29];
     }
   }
 }
 
 - (void)reportDailyNotificationMetrics
 {
-  v9 = [(IDSPersistentMap *)self->_dailyMetricsData copyDictionaryRepresentation];
+  copyDictionaryRepresentation = [(IDSPersistentMap *)self->_dailyMetricsData copyDictionaryRepresentation];
   v3 = IDSDailyAccountAddedNotificationMetricTotalKey;
-  v4 = [v9 objectForKey:IDSDailyAccountAddedNotificationMetricTotalKey];
+  v4 = [copyDictionaryRepresentation objectForKey:IDSDailyAccountAddedNotificationMetricTotalKey];
   v5 = IDSDailyAccountAddedNotificationMetricDuplicateKey;
-  v6 = [v9 objectForKey:IDSDailyAccountAddedNotificationMetricDuplicateKey];
+  v6 = [copyDictionaryRepresentation objectForKey:IDSDailyAccountAddedNotificationMetricDuplicateKey];
   v7 = [[IDSDailyAccountAddedNotificationsMetric alloc] initWithNotificationsPostedToday:v4 duplicateNotificationPostedToday:v6];
   v8 = +[IDSCoreAnalyticsLogger defaultLogger];
   [v8 logMetric:v7];

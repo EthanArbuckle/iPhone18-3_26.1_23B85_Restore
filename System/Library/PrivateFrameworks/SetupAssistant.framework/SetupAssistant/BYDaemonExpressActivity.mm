@@ -2,7 +2,7 @@
 + (id)sharedActivity;
 - (BYDaemonExpressActivity)init;
 - (SASExpressCloudSettings)cloudSettings;
-- (void)_updateSettingsForActivity:(id)a3;
+- (void)_updateSettingsForActivity:(id)activity;
 - (void)registerActivity;
 - (void)registerBackupActivity;
 - (void)registerMaintenanceActivity;
@@ -69,8 +69,8 @@
 
 - (SASExpressCloudSettings)cloudSettings
 {
-  v3 = [(BYDaemonExpressActivity *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(BYDaemonExpressActivity *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   cloudSettings = self->_cloudSettings;
   if (!cloudSettings)
@@ -109,9 +109,9 @@
   [v3 registerActivityWithIdentifier:"com.apple.purplebuddy.backup" criteria:XPC_ACTIVITY_CHECK_IN handler:v4];
 }
 
-- (void)_updateSettingsForActivity:(id)a3
+- (void)_updateSettingsForActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   v5 = objc_alloc_init(MBManager);
   if ([v5 isBackupEnabled] && (+[BYPreferencesController buddyPreferencesInternal](BYPreferencesController, "buddyPreferencesInternal"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "BOOLForKey:", @"SkipExpressSettingsUpload"), v6, !v7))
   {
@@ -121,16 +121,16 @@
     v16 = sub_100003938;
     v17 = sub_100003948;
     v18 = os_transaction_create();
-    [v4 setState:4];
-    v9 = [(BYDaemonExpressActivity *)self queue];
+    [activityCopy setState:4];
+    queue = [(BYDaemonExpressActivity *)self queue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100003950;
     block[3] = &unk_100020730;
     block[4] = self;
-    v11 = v4;
+    v11 = activityCopy;
     v12 = buf;
-    dispatch_async(v9, block);
+    dispatch_async(queue, block);
 
     _Block_object_dispose(buf, 8);
   }
@@ -144,7 +144,7 @@
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Skipping updating express settings", buf, 2u);
     }
 
-    [v4 setState:5];
+    [activityCopy setState:5];
   }
 }
 

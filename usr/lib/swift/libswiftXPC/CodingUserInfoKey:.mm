@@ -7,7 +7,7 @@
 - (uint64_t)Any
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&_sSDys17CodingUserInfoKeyVypGMd, &_sSDys17CodingUserInfoKeyVypGMR);
-  (*(*(v4 - 8) + 16))(a2, a1, v4);
+  (*(*(v4 - 8) + 16))(a2, self, v4);
   return a2;
 }
 

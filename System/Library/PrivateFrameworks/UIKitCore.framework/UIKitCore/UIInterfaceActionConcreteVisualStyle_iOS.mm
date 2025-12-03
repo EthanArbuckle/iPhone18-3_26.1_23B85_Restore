@@ -1,34 +1,34 @@
 @interface UIInterfaceActionConcreteVisualStyle_iOS
 - (UIEdgeInsets)actionSequenceEdgeInsets;
 - (UIEdgeInsets)contentMargin;
-- (UIInterfaceActionConcreteVisualStyle_iOS)initWithTraitCollection:(id)a3;
-- (double)actionSpacingForGroupViewState:(id)a3;
+- (UIInterfaceActionConcreteVisualStyle_iOS)initWithTraitCollection:(id)collection;
+- (double)actionSpacingForGroupViewState:(id)state;
 - (double)contentCornerRadius;
 - (id)_highlightedView;
 - (id)_preferredActionFont;
 - (id)_regularActionFont;
-- (id)actionBackgroundColorForViewState:(id)a3;
-- (id)actionTitleLabelColorForViewState:(id)a3;
-- (id)actionTitleLabelFontForViewState:(id)a3;
+- (id)actionBackgroundColorForViewState:(id)state;
+- (id)actionTitleLabelColorForViewState:(id)state;
+- (id)actionTitleLabelFontForViewState:(id)state;
 - (id)defaultScreen;
-- (id)newActionBackgroundViewForViewState:(id)a3;
-- (id)newActionSeparatorViewForGroupViewState:(id)a3;
-- (id)newGroupBackgroundViewWithGroupViewState:(id)a3;
-- (id)newSectionSeparatorViewForGroupViewState:(id)a3;
+- (id)newActionBackgroundViewForViewState:(id)state;
+- (id)newActionSeparatorViewForGroupViewState:(id)state;
+- (id)newGroupBackgroundViewWithGroupViewState:(id)state;
+- (id)newSectionSeparatorViewForGroupViewState:(id)state;
 @end
 
 @implementation UIInterfaceActionConcreteVisualStyle_iOS
 
-- (UIInterfaceActionConcreteVisualStyle_iOS)initWithTraitCollection:(id)a3
+- (UIInterfaceActionConcreteVisualStyle_iOS)initWithTraitCollection:(id)collection
 {
-  v5 = a3;
+  collectionCopy = collection;
   v9.receiver = self;
   v9.super_class = UIInterfaceActionConcreteVisualStyle_iOS;
   v6 = [(UIInterfaceActionConcreteVisualStyle_iOS *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_traitCollection, a3);
+    objc_storeStrong(&v6->_traitCollection, collection);
   }
 
   return v7;
@@ -55,8 +55,8 @@
 
 - (UIEdgeInsets)contentMargin
 {
-  v2 = [UIApp preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v2);
+  preferredContentSizeCategory = [UIApp preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (IsAccessibilityCategory)
   {
@@ -84,7 +84,7 @@
   return result;
 }
 
-- (double)actionSpacingForGroupViewState:(id)a3
+- (double)actionSpacingForGroupViewState:(id)state
 {
   v3 = _UISolariumEnabled();
   result = 0.0;
@@ -115,9 +115,9 @@
   return result;
 }
 
-- (id)actionTitleLabelFontForViewState:(id)a3
+- (id)actionTitleLabelFontForViewState:(id)state
 {
-  if ([a3 isPreferred])
+  if ([state isPreferred])
   {
     [(UIInterfaceActionConcreteVisualStyle_iOS *)self _preferredActionFont];
   }
@@ -131,46 +131,46 @@
   return v4;
 }
 
-- (id)actionTitleLabelColorForViewState:(id)a3
+- (id)actionTitleLabelColorForViewState:(id)state
 {
-  v3 = a3;
-  if (_shouldUseSolariumDesign(v3))
+  stateCopy = state;
+  if (_shouldUseSolariumDesign(stateCopy))
   {
-    v4 = +[UIColor labelColor];
-    v5 = [v3 action];
-    if ([v5 isEnabled])
+    action4 = +[UIColor labelColor];
+    action = [stateCopy action];
+    if ([action isEnabled])
     {
-      if ([v3 isPreferred])
+      if ([stateCopy isPreferred])
       {
         v6 = +[UIColor systemWhiteColor];
 
-        v4 = v6;
+        action4 = v6;
       }
 
-      v7 = [v3 action];
-      v8 = [v7 type];
+      action2 = [stateCopy action];
+      type = [action2 type];
 
-      if (v8 == 2)
+      if (type == 2)
       {
         v9 = +[UIColor systemRedColor];
       }
 
       else
       {
-        v16 = [v3 action];
-        v17 = [v16 type];
+        action3 = [stateCopy action];
+        type2 = [action3 type];
 
-        if (v17 != 100)
+        if (type2 != 100)
         {
           goto LABEL_29;
         }
 
-        v18 = [v3 tintColor];
+        tintColor = [stateCopy tintColor];
 
         v19 = +[UIColor systemBlueColor];
-        v15 = v18;
+        v15 = tintColor;
         v20 = v19;
-        v4 = v20;
+        action4 = v20;
         if (v15 == v20)
         {
         }
@@ -192,7 +192,7 @@
         }
 
         v9 = +[UIColor _systemBlueColor2];
-        v4 = v15;
+        action4 = v15;
       }
     }
 
@@ -205,50 +205,50 @@
 LABEL_17:
 
 LABEL_18:
-    v4 = v15;
+    action4 = v15;
 LABEL_29:
 
     goto LABEL_30;
   }
 
-  v4 = [v3 action];
-  v10 = [v4 type];
+  action4 = [stateCopy action];
+  type3 = [action4 type];
 
-  if (v10 >= 2)
+  if (type3 >= 2)
   {
-    if (v10 == 2)
+    if (type3 == 2)
     {
-      v4 = +[UIColor systemRedColor];
+      action4 = +[UIColor systemRedColor];
       goto LABEL_30;
     }
 
-    if (v10 != 100)
+    if (type3 != 100)
     {
       goto LABEL_30;
     }
   }
 
-  v11 = [v3 tintColor];
+  tintColor2 = [stateCopy tintColor];
   v12 = +[UIColor systemBlueColor];
-  v4 = v11;
+  action4 = tintColor2;
   v13 = v12;
-  v5 = v13;
-  if (v4 == v13)
+  action = v13;
+  if (action4 == v13)
   {
 
 LABEL_26:
     +[UIColor _systemBlueColor2];
-    v4 = v5 = v4;
+    action4 = action = action4;
     goto LABEL_29;
   }
 
-  if (!v4 || !v13)
+  if (!action4 || !v13)
   {
 
     goto LABEL_29;
   }
 
-  v14 = [v4 isEqual:v13];
+  v14 = [action4 isEqual:v13];
 
   if (v14)
   {
@@ -257,26 +257,26 @@ LABEL_26:
 
 LABEL_30:
 
-  return v4;
+  return action4;
 }
 
-- (id)actionBackgroundColorForViewState:(id)a3
+- (id)actionBackgroundColorForViewState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = +[UIColor tertiarySystemFillColor];
-  v5 = [v3 action];
-  if ([v5 isEnabled])
+  action = [stateCopy action];
+  if ([action isEnabled])
   {
-    if ([v3 isPreferred])
+    if ([stateCopy isPreferred])
     {
-      v6 = [v3 action];
-      v7 = [v6 type];
+      action2 = [stateCopy action];
+      type = [action2 type];
 
-      if (v7 != 2)
+      if (type != 2)
       {
-        v8 = [v3 tintColor];
+        tintColor = [stateCopy tintColor];
 
-        v4 = v8;
+        v4 = tintColor;
       }
     }
   }
@@ -291,30 +291,30 @@ LABEL_30:
   return v2;
 }
 
-- (id)newActionBackgroundViewForViewState:(id)a3
+- (id)newActionBackgroundViewForViewState:(id)state
 {
-  v4 = a3;
-  if (_shouldUseSolariumDesign(v4))
+  stateCopy = state;
+  if (_shouldUseSolariumDesign(stateCopy))
   {
-    v5 = objc_alloc_init(_UIAlertControllerFilledBackgroundView);
-    v6 = [(UIInterfaceActionConcreteVisualStyle_iOS *)self actionBackgroundColorForViewState:v4];
-    [(_UIAlertControllerFilledBackgroundView *)v5 setFillColor:v6];
+    _highlightedView = objc_alloc_init(_UIAlertControllerFilledBackgroundView);
+    v6 = [(UIInterfaceActionConcreteVisualStyle_iOS *)self actionBackgroundColorForViewState:stateCopy];
+    [(_UIAlertControllerFilledBackgroundView *)_highlightedView setFillColor:v6];
   }
 
-  else if ([v4 isHighlighted])
+  else if ([stateCopy isHighlighted])
   {
-    v5 = [(UIInterfaceActionConcreteVisualStyle_iOS *)self _highlightedView];
+    _highlightedView = [(UIInterfaceActionConcreteVisualStyle_iOS *)self _highlightedView];
   }
 
   else
   {
-    v5 = 0;
+    _highlightedView = 0;
   }
 
-  return v5;
+  return _highlightedView;
 }
 
-- (id)newGroupBackgroundViewWithGroupViewState:(id)a3
+- (id)newGroupBackgroundViewWithGroupViewState:(id)state
 {
   if (_UISolariumEnabled())
   {
@@ -330,7 +330,7 @@ LABEL_30:
   }
 }
 
-- (id)newActionSeparatorViewForGroupViewState:(id)a3
+- (id)newActionSeparatorViewForGroupViewState:(id)state
 {
   if (_UISolariumEnabled())
   {
@@ -340,7 +340,7 @@ LABEL_30:
   return objc_opt_new();
 }
 
-- (id)newSectionSeparatorViewForGroupViewState:(id)a3
+- (id)newSectionSeparatorViewForGroupViewState:(id)state
 {
   if (_UISolariumEnabled())
   {
@@ -359,8 +359,8 @@ LABEL_30:
 
   else
   {
-    v4 = [(UIInterfaceActionConcreteVisualStyle_iOS *)self traitCollection];
-    v5 = _traitCollectionByFlooringContentSizeCategoryToLarge(v4);
+    traitCollection = [(UIInterfaceActionConcreteVisualStyle_iOS *)self traitCollection];
+    v5 = _traitCollectionByFlooringContentSizeCategoryToLarge(traitCollection);
     v3 = [off_1E70ECC18 preferredFontForTextStyle:@"UICTFontTextStyleHeadline" compatibleWithTraitCollection:v5];
   }
 

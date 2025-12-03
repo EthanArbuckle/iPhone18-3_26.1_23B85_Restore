@@ -1,52 +1,52 @@
 @interface SFManageExtensionsViewController
-+ (id)createManageExtensionsNavigationControllerFromPageFormatMenu:(id)a3 activeDocument:(id)a4;
-- (BOOL)_isAppStoreLinkSection:(int64_t)a3;
-- (BOOL)_isInstalledExtensionsSection:(int64_t)a3;
-- (BOOL)_isOnOtherDevicesSection:(int64_t)a3;
-- (BOOL)_isRecommendationsSection:(int64_t)a3;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
++ (id)createManageExtensionsNavigationControllerFromPageFormatMenu:(id)menu activeDocument:(id)document;
+- (BOOL)_isAppStoreLinkSection:(int64_t)section;
+- (BOOL)_isInstalledExtensionsSection:(int64_t)section;
+- (BOOL)_isOnOtherDevicesSection:(int64_t)section;
+- (BOOL)_isRecommendationsSection:(int64_t)section;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
 - (_SFPageFormatMenuController)presentingPageFormatMenu;
 - (id)_adamIDsForInstalledAndCloudExtensions;
 - (id)_adamIDsForInstalledExtensions;
-- (id)_tintIconForDarkModeIfNeeded:(id)a3;
-- (id)initFromPageFormatMenu:(id)a3 activeDocument:(id)a4;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
-- (void)_enableExtensionWithWrapper:(id)a3;
-- (void)_extensionEnabledStateDidChange:(id)a3;
-- (void)_extensionStateWasToggled:(id)a3;
-- (void)_extensionWasAdded:(id)a3;
+- (id)_tintIconForDarkModeIfNeeded:(id)needed;
+- (id)initFromPageFormatMenu:(id)menu activeDocument:(id)document;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
+- (void)_enableExtensionWithWrapper:(id)wrapper;
+- (void)_extensionEnabledStateDidChange:(id)change;
+- (void)_extensionStateWasToggled:(id)toggled;
+- (void)_extensionWasAdded:(id)added;
 - (void)_filterExtensionAppLockupViews;
 - (void)_filterExtensionsBasedOnUserTypedSearchQuery;
-- (void)_managedConfigurationSettingsDidChange:(id)a3;
-- (void)_refreshExtensionDataAndUpdateLockupViews:(BOOL)a3;
+- (void)_managedConfigurationSettingsDidChange:(id)change;
+- (void)_refreshExtensionDataAndUpdateLockupViews:(BOOL)views;
 - (void)_reload;
-- (void)_setPrivateBrowsingStateForExtension:(id)a3 isOn:(BOOL)a4;
+- (void)_setPrivateBrowsingStateForExtension:(id)extension isOn:(BOOL)on;
 - (void)_updateLastViewedDate;
 - (void)_updateLockupViews;
 - (void)_updateRecommendedLockupViews;
 - (void)dealloc;
-- (void)searchBar:(id)a3 textDidChange:(id)a4;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)searchBar:(id)bar textDidChange:(id)change;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation SFManageExtensionsViewController
 
-+ (id)createManageExtensionsNavigationControllerFromPageFormatMenu:(id)a3 activeDocument:(id)a4
++ (id)createManageExtensionsNavigationControllerFromPageFormatMenu:(id)menu activeDocument:(id)document
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [[SFManageExtensionsViewController alloc] initFromPageFormatMenu:v5 activeDocument:v6];
+  menuCopy = menu;
+  documentCopy = document;
+  v7 = [[SFManageExtensionsViewController alloc] initFromPageFormatMenu:menuCopy activeDocument:documentCopy];
   objc_initWeak(&location, v7);
   v8 = objc_alloc(MEMORY[0x1E69DC708]);
-  v9 = [MEMORY[0x1E69DC708] _sf_popoverDoneButtonItem];
+  _sf_popoverDoneButtonItem = [MEMORY[0x1E69DC708] _sf_popoverDoneButtonItem];
   v10 = MEMORY[0x1E69DC628];
   v16 = MEMORY[0x1E69E9820];
   v17 = 3221225472;
@@ -54,9 +54,9 @@
   v19 = &unk_1E721F278;
   objc_copyWeak(&v20, &location);
   v11 = [v10 actionWithTitle:&stru_1EFF36230 image:0 identifier:0 handler:&v16];
-  v12 = [v8 initWithBarButtonSystemItem:v9 primaryAction:{v11, v16, v17, v18, v19}];
-  v13 = [v7 navigationItem];
-  [v13 sf_setPreferredDismissOrDoneButtonItem:v12];
+  v12 = [v8 initWithBarButtonSystemItem:_sf_popoverDoneButtonItem primaryAction:{v11, v16, v17, v18, v19}];
+  navigationItem = [v7 navigationItem];
+  [navigationItem sf_setPreferredDismissOrDoneButtonItem:v12];
 
   v14 = [objc_alloc(MEMORY[0x1E69DCCD8]) initWithRootViewController:v7];
   objc_destroyWeak(&v20);
@@ -71,43 +71,43 @@ void __112__SFManageExtensionsViewController_createManageExtensionsNavigationCon
   [WeakRetained dismissViewControllerAnimated:1 completion:0];
 }
 
-- (id)initFromPageFormatMenu:(id)a3 activeDocument:(id)a4
+- (id)initFromPageFormatMenu:(id)menu activeDocument:(id)document
 {
-  v6 = a3;
-  v7 = a4;
+  menuCopy = menu;
+  documentCopy = document;
   v22.receiver = self;
   v22.super_class = SFManageExtensionsViewController;
   v8 = [(SFManageExtensionsViewController *)&v22 initWithStyle:2];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_presentingPageFormatMenu, v6);
-    v9->_presentedFromPrivateBrowsing = [v7 isPrivateBrowsingEnabled];
-    v10 = [v7 webExtensionsController];
+    objc_storeWeak(&v8->_presentingPageFormatMenu, menuCopy);
+    v9->_presentedFromPrivateBrowsing = [documentCopy isPrivateBrowsingEnabled];
+    webExtensionsController = [documentCopy webExtensionsController];
     webExtensionsController = v9->_webExtensionsController;
-    v9->_webExtensionsController = v10;
+    v9->_webExtensionsController = webExtensionsController;
 
-    v12 = [v7 contentBlockerManager];
+    contentBlockerManager = [documentCopy contentBlockerManager];
     contentBlockerManager = v9->_contentBlockerManager;
-    v9->_contentBlockerManager = v12;
+    v9->_contentBlockerManager = contentBlockerManager;
 
     v14 = v9->_webExtensionsController;
     [(SFManageExtensionsViewController *)v9 _refreshExtensionData];
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v9 selector:sel__extensionWasAdded_ name:*MEMORY[0x1E69C92B8] object:0];
-    [v15 addObserver:v9 selector:sel__extensionEnabledStateDidChange_ name:*MEMORY[0x1E69C9220] object:0];
-    [v15 addObserver:v9 selector:sel__reload name:*MEMORY[0x1E69C9930] object:0];
-    [v15 addObserver:v9 selector:sel__reload name:*MEMORY[0x1E69C8C38] object:0];
-    v16 = [MEMORY[0x1E69ADFB8] sharedConnection];
-    [v15 addObserver:v9 selector:sel__managedConfigurationSettingsDidChange_ name:*MEMORY[0x1E69ADD68] object:v16];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v9 selector:sel__extensionWasAdded_ name:*MEMORY[0x1E69C92B8] object:0];
+    [defaultCenter addObserver:v9 selector:sel__extensionEnabledStateDidChange_ name:*MEMORY[0x1E69C9220] object:0];
+    [defaultCenter addObserver:v9 selector:sel__reload name:*MEMORY[0x1E69C9930] object:0];
+    [defaultCenter addObserver:v9 selector:sel__reload name:*MEMORY[0x1E69C8C38] object:0];
+    mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
+    [defaultCenter addObserver:v9 selector:sel__managedConfigurationSettingsDidChange_ name:*MEMORY[0x1E69ADD68] object:mEMORY[0x1E69ADFB8]];
 
     [(WBSExtensionsController *)v14 addObserver:v9];
     v17 = _WBSLocalizedString();
     [(SFManageExtensionsViewController *)v9 setTitle:v17];
 
-    v18 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     composedIdentifierToToggleMap = v9->_composedIdentifierToToggleMap;
-    v9->_composedIdentifierToToggleMap = v18;
+    v9->_composedIdentifierToToggleMap = dictionary;
 
     v20 = v9;
   }
@@ -115,20 +115,20 @@ void __112__SFManageExtensionsViewController_createManageExtensionsNavigationCon
   return v9;
 }
 
-- (void)_refreshExtensionDataAndUpdateLockupViews:(BOOL)a3
+- (void)_refreshExtensionDataAndUpdateLockupViews:(BOOL)views
 {
-  v3 = a3;
+  viewsCopy = views;
   v5 = self->_webExtensionsController;
-  v6 = [(WBSExtensionsController *)v5 extensions];
+  extensions = [(WBSExtensionsController *)v5 extensions];
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __78__SFManageExtensionsViewController__refreshExtensionDataAndUpdateLockupViews___block_invoke;
   v19[3] = &unk_1E721F2A0;
   v7 = v5;
   v20 = v7;
-  v8 = [v6 safari_mapAndFilterObjectsUsingBlock:v19];
-  v9 = [(SFContentBlockerManager *)self->_contentBlockerManager extensions];
-  v10 = [v9 allObjects];
+  v8 = [extensions safari_mapAndFilterObjectsUsingBlock:v19];
+  extensions2 = [(SFContentBlockerManager *)self->_contentBlockerManager extensions];
+  allObjects = [extensions2 allObjects];
 
   v16[0] = MEMORY[0x1E69E9820];
   v16[1] = 3221225472;
@@ -136,15 +136,15 @@ void __112__SFManageExtensionsViewController_createManageExtensionsNavigationCon
   v16[3] = &unk_1E721F2C8;
   v11 = v7;
   v17 = v11;
-  v18 = self;
-  v12 = [v10 safari_mapAndFilterObjectsUsingBlock:v16];
+  selfCopy = self;
+  v12 = [allObjects safari_mapAndFilterObjectsUsingBlock:v16];
   v13 = [v8 arrayByAddingObjectsFromArray:v12];
   v14 = [v13 sortedArrayUsingSelector:sel_localizedCompare_];
   extensions = self->_extensions;
   self->_extensions = v14;
 
   [(SFManageExtensionsViewController *)self _filterExtensionsBasedOnUserTypedSearchQuery];
-  if (v3)
+  if (viewsCopy)
   {
     [(SFManageExtensionsViewController *)self _updateLockupViews];
   }
@@ -169,10 +169,10 @@ id __78__SFManageExtensionsViewController__refreshExtensionDataAndUpdateLockupVi
 
 - (void)_updateLockupViews
 {
-  v3 = [MEMORY[0x1E69C88D0] sharedInstance];
-  v4 = [v3 shouldHideExtensionDiscovery];
+  mEMORY[0x1E69C88D0] = [MEMORY[0x1E69C88D0] sharedInstance];
+  shouldHideExtensionDiscovery = [mEMORY[0x1E69C88D0] shouldHideExtensionDiscovery];
 
-  if (v4)
+  if (shouldHideExtensionDiscovery)
   {
     if ([(NSArray *)self->_fromOtherDevicesAppLockupViews count])
     {
@@ -198,21 +198,21 @@ id __78__SFManageExtensionsViewController__refreshExtensionDataAndUpdateLockupVi
 
     if (v5)
     {
-      v11 = [(SFManageExtensionsViewController *)self tableView];
-      [v11 reloadData];
+      tableView = [(SFManageExtensionsViewController *)self tableView];
+      [tableView reloadData];
     }
   }
 
   else if (!self->_waitingForLockupViews)
   {
     self->_waitingForLockupViews = 1;
-    v6 = [MEMORY[0x1E69C9778] sharedManager];
+    mEMORY[0x1E69C9778] = [MEMORY[0x1E69C9778] sharedManager];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __54__SFManageExtensionsViewController__updateLockupViews__block_invoke;
     v12[3] = &unk_1E721F2F0;
     v12[4] = self;
-    [v6 getLockupViewsForAppsOnOtherDevicesWithCompletionHandler:v12];
+    [mEMORY[0x1E69C9778] getLockupViewsForAppsOnOtherDevicesWithCompletionHandler:v12];
   }
 }
 
@@ -240,19 +240,19 @@ void __54__SFManageExtensionsViewController__updateLockupViews__block_invoke(uin
   {
     self->_waitingForLockupViews = 0;
     [(SFManageExtensionsViewController *)self _filterExtensionAppLockupViews];
-    v4 = [(SFManageExtensionsViewController *)self tableView];
-    [v4 reloadData];
+    tableView = [(SFManageExtensionsViewController *)self tableView];
+    [tableView reloadData];
   }
 
   else
   {
-    v3 = [MEMORY[0x1E69C9740] sharedGenerator];
+    mEMORY[0x1E69C9740] = [MEMORY[0x1E69C9740] sharedGenerator];
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __65__SFManageExtensionsViewController__updateRecommendedLockupViews__block_invoke;
     v5[3] = &unk_1E721F2F0;
     v5[4] = self;
-    [v3 getAvailableAppsFromAppStoreExtensionEditorialContentWithCompletionHandler:v5];
+    [mEMORY[0x1E69C9740] getAvailableAppsFromAppStoreExtensionEditorialContentWithCompletionHandler:v5];
   }
 }
 
@@ -308,10 +308,10 @@ void __65__SFManageExtensionsViewController__updateRecommendedLockupViews__block
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v14 + 1) + 8 * i) lockup];
-        v9 = [v8 id];
-        v10 = [v9 stringValue];
-        [v3 safari_addObjectUnlessNil:v10];
+        lockup = [*(*(&v14 + 1) + 8 * i) lockup];
+        v9 = [lockup id];
+        stringValue = [v9 stringValue];
+        [v3 safari_addObjectUnlessNil:stringValue];
       }
 
       v5 = [(NSArray *)v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
@@ -320,8 +320,8 @@ void __65__SFManageExtensionsViewController__updateRecommendedLockupViews__block
     while (v5);
   }
 
-  v11 = [(SFManageExtensionsViewController *)self _adamIDsForInstalledExtensions];
-  v12 = [v11 setByAddingObjectsFromSet:v3];
+  _adamIDsForInstalledExtensions = [(SFManageExtensionsViewController *)self _adamIDsForInstalledExtensions];
+  v12 = [_adamIDsForInstalledExtensions setByAddingObjectsFromSet:v3];
 
   return v12;
 }
@@ -348,9 +348,9 @@ void __65__SFManageExtensionsViewController__updateRecommendedLockupViews__block
           objc_enumerationMutation(v4);
         }
 
-        v8 = [*(*(&v12 + 1) + 8 * i) extension];
-        v9 = [v8 safari_containingAppAdamID];
-        [v3 safari_addObjectUnlessNil:v9];
+        extension = [*(*(&v12 + 1) + 8 * i) extension];
+        safari_containingAppAdamID = [extension safari_containingAppAdamID];
+        [v3 safari_addObjectUnlessNil:safari_containingAppAdamID];
       }
 
       v5 = [(NSArray *)v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
@@ -378,16 +378,16 @@ void __65__SFManageExtensionsViewController__updateRecommendedLockupViews__block
   v5.super_class = SFManageExtensionsViewController;
   [(SFManageExtensionsViewController *)&v5 viewDidLayoutSubviews];
   searchBar = self->_searchBar;
-  v4 = [(SFManageExtensionsViewController *)self tableView];
-  [v4 layoutMargins];
+  tableView = [(SFManageExtensionsViewController *)self tableView];
+  [tableView layoutMargins];
   [(UISearchBar *)searchBar _setOverrideContentInsets:10 forRectEdges:?];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = SFManageExtensionsViewController;
-  [(SFManageExtensionsViewController *)&v4 viewWillAppear:a3];
+  [(SFManageExtensionsViewController *)&v4 viewWillAppear:appear];
   [(SFContentBlockerManager *)self->_contentBlockerManager addObserver:self];
 }
 
@@ -396,15 +396,15 @@ void __65__SFManageExtensionsViewController__updateRecommendedLockupViews__block
   v10.receiver = self;
   v10.super_class = SFManageExtensionsViewController;
   [(SFManageExtensionsViewController *)&v10 viewDidLoad];
-  v3 = [(SFManageExtensionsViewController *)self view];
-  [v3 setAccessibilityIdentifier:@"ManageWebExtensionsView"];
+  view = [(SFManageExtensionsViewController *)self view];
+  [view setAccessibilityIdentifier:@"ManageWebExtensionsView"];
 
-  v4 = [(SFManageExtensionsViewController *)self tableView];
-  [v4 setKeyboardDismissMode:2];
+  tableView = [(SFManageExtensionsViewController *)self tableView];
+  [tableView setKeyboardDismissMode:2];
 
   v5 = MEMORY[0x1E69DCF08];
-  v6 = [(SFManageExtensionsViewController *)self tableView];
-  v7 = [v5 sf_installSearchBarInTableView:v6 includeSeparator:0];
+  tableView2 = [(SFManageExtensionsViewController *)self tableView];
+  v7 = [v5 sf_installSearchBarInTableView:tableView2 includeSeparator:0];
   searchBar = self->_searchBar;
   self->_searchBar = v7;
 
@@ -415,38 +415,38 @@ void __65__SFManageExtensionsViewController__updateRecommendedLockupViews__block
   [(SFManageExtensionsViewController *)self _updateLastViewedDate];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v5.receiver = self;
   v5.super_class = SFManageExtensionsViewController;
-  [(SFManageExtensionsViewController *)&v5 viewDidDisappear:a3];
+  [(SFManageExtensionsViewController *)&v5 viewDidDisappear:disappear];
   [(SFContentBlockerManager *)self->_contentBlockerManager removeObserver:self];
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"SFManageWebExtensionsViewDidDismissNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"SFManageWebExtensionsViewDidDismissNotification" object:self];
 }
 
 - (void)_updateLastViewedDate
 {
   if (!self->_presentedFromPrivateBrowsing)
   {
-    v4 = [MEMORY[0x1E695E000] standardUserDefaults];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
     v3 = [MEMORY[0x1E695DF00] now];
-    [v4 safari_setDate:v3 forKey:*MEMORY[0x1E69C9390]];
+    [standardUserDefaults safari_setDate:v3 forKey:*MEMORY[0x1E69C9390]];
   }
 
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v5 postNotificationName:*MEMORY[0x1E69C9A30] object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69C9A30] object:self];
 }
 
-- (void)_extensionWasAdded:(id)a3
+- (void)_extensionWasAdded:(id)added
 {
   v30 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v4 = [v22 object];
+  addedCopy = added;
+  object = [addedCopy object];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = object;
   }
 
   else
@@ -456,8 +456,8 @@ void __65__SFManageExtensionsViewController__updateRecommendedLockupViews__block
 
   v6 = v5;
 
-  v23 = [v6 safari_containingAppAdamID];
-  if (v23)
+  safari_containingAppAdamID = [v6 safari_containingAppAdamID];
+  if (safari_containingAppAdamID)
   {
     v27 = 0u;
     v28 = 0u;
@@ -478,11 +478,11 @@ void __65__SFManageExtensionsViewController__updateRecommendedLockupViews__block
           }
 
           v10 = *(*(&v25 + 1) + 8 * i);
-          v11 = [v6 safari_containingAppAdamID];
-          v12 = [v10 lockup];
-          v13 = [v12 id];
-          v14 = [v13 stringValue];
-          v15 = [v11 isEqualToString:v14];
+          safari_containingAppAdamID2 = [v6 safari_containingAppAdamID];
+          lockup = [v10 lockup];
+          v13 = [lockup id];
+          stringValue = [v13 stringValue];
+          v15 = [safari_containingAppAdamID2 isEqualToString:stringValue];
 
           if (v15)
           {
@@ -490,15 +490,15 @@ void __65__SFManageExtensionsViewController__updateRecommendedLockupViews__block
             for (j = 0; j < [(NSArray *)self->_extensions count]; ++j)
             {
               v17 = [(NSArray *)self->_extensions objectAtIndexedSubscript:j];
-              v18 = [v17 extension];
-              v19 = [v18 isEqual:v6];
+              extension = [v17 extension];
+              v19 = [extension isEqual:v6];
 
               if (v19)
               {
                 [(SFManageExtensionsViewController *)self _enableExtensionWithWrapper:v17];
                 v20 = [MEMORY[0x1E696AC88] indexPathForRow:j inSection:0];
-                v21 = [(SFManageExtensionsViewController *)self tableView];
-                [v21 scrollToRowAtIndexPath:v20 atScrollPosition:1 animated:1];
+                tableView = [(SFManageExtensionsViewController *)self tableView];
+                [tableView scrollToRowAtIndexPath:v20 atScrollPosition:1 animated:1];
 
                 goto LABEL_19;
               }
@@ -516,7 +516,7 @@ LABEL_19:
   }
 }
 
-- (void)_extensionEnabledStateDidChange:(id)a3
+- (void)_extensionEnabledStateDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -573,13 +573,13 @@ void __68__SFManageExtensionsViewController__extensionEnabledStateDidChange___bl
 - (void)_reload
 {
   [(SFManageExtensionsViewController *)self _refreshExtensionData];
-  v3 = [(SFManageExtensionsViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(SFManageExtensionsViewController *)self tableView];
+  [tableView reloadData];
 
   [(SFManageExtensionsViewController *)self _updateLastViewedDate];
 }
 
-- (void)_managedConfigurationSettingsDidChange:(id)a3
+- (void)_managedConfigurationSettingsDidChange:(id)change
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -589,59 +589,59 @@ void __68__SFManageExtensionsViewController__extensionEnabledStateDidChange___bl
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (id)_tintIconForDarkModeIfNeeded:(id)a3
+- (id)_tintIconForDarkModeIfNeeded:(id)needed
 {
-  v3 = a3;
-  [v3 safari_computeAverageLuminance];
+  neededCopy = needed;
+  [neededCopy safari_computeAverageLuminance];
   v5 = v4;
-  v6 = [v3 safari_isGrayscale];
-  if (((v5 < 0.1) & v6 & [v3 safari_transparencyAnalysisResultIsNotOpaque]) == 1)
+  safari_isGrayscale = [neededCopy safari_isGrayscale];
+  if (((v5 < 0.1) & safari_isGrayscale & [neededCopy safari_transparencyAnalysisResultIsNotOpaque]) == 1)
   {
-    v7 = [MEMORY[0x1E69DC888] labelColor];
-    v8 = [v3 imageWithTintColor:v7];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v8 = [neededCopy imageWithTintColor:labelColor];
 
-    v3 = v8;
+    neededCopy = v8;
   }
 
-  return v3;
+  return neededCopy;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v70[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (-[SFManageExtensionsViewController _isOnOtherDevicesSection:](self, "_isOnOtherDevicesSection:", [v7 section]))
+  viewCopy = view;
+  pathCopy = path;
+  if (-[SFManageExtensionsViewController _isOnOtherDevicesSection:](self, "_isOnOtherDevicesSection:", [pathCopy section]))
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"availableAppCell"];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"availableAppCell"];
     if (!v8)
     {
       v8 = [[SFAvailableAppTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"availableAppCell"];
     }
 
-    v9 = -[NSArray objectAtIndexedSubscript:](self->_filteredFromOtherDevicesAppLockupViews, "objectAtIndexedSubscript:", [v7 row]);
-    [(SFAvailableAppTableViewCell *)v8 setLockupView:v9];
+    mEMORY[0x1E69C88D0] = -[NSArray objectAtIndexedSubscript:](self->_filteredFromOtherDevicesAppLockupViews, "objectAtIndexedSubscript:", [pathCopy row]);
+    [(SFAvailableAppTableViewCell *)v8 setLockupView:mEMORY[0x1E69C88D0]];
 LABEL_14:
 
     goto LABEL_15;
   }
 
-  if (!-[SFManageExtensionsViewController _isRecommendationsSection:](self, "_isRecommendationsSection:", [v7 section]))
+  if (!-[SFManageExtensionsViewController _isRecommendationsSection:](self, "_isRecommendationsSection:", [pathCopy section]))
   {
-    if (-[SFManageExtensionsViewController _isAppStoreLinkSection:](self, "_isAppStoreLinkSection:", [v7 section]))
+    if (-[SFManageExtensionsViewController _isAppStoreLinkSection:](self, "_isAppStoreLinkSection:", [pathCopy section]))
     {
-      v8 = [v6 dequeueReusableCellWithIdentifier:@"appStoreLinkCell"];
+      v8 = [viewCopy dequeueReusableCellWithIdentifier:@"appStoreLinkCell"];
       if (!v8)
       {
         v8 = [[SFAppStoreLinkTableViewCell alloc] initWithStyle:1 reuseIdentifier:@"appStoreLinkCell"];
       }
 
-      v9 = [MEMORY[0x1E69C88D0] sharedInstance];
-      -[SFAvailableAppTableViewCell setHidden:](v8, "setHidden:", [v9 shouldHideExtensionDiscovery]);
+      mEMORY[0x1E69C88D0] = [MEMORY[0x1E69C88D0] sharedInstance];
+      -[SFAvailableAppTableViewCell setHidden:](v8, "setHidden:", [mEMORY[0x1E69C88D0] shouldHideExtensionDiscovery]);
       goto LABEL_14;
     }
 
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"toggleExtensionCell"];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"toggleExtensionCell"];
     if (!v8)
     {
       v8 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"toggleExtensionCell"];
@@ -652,7 +652,7 @@ LABEL_14:
     [v11 addTarget:self action:sel__extensionStateWasToggled_ forControlEvents:4096];
     v67 = v11;
     v65 = self->_webExtensionsController;
-    v12 = -[NSArray objectAtIndexedSubscript:](self->_filteredExtensions, "objectAtIndexedSubscript:", [v7 row]);
+    v12 = -[NSArray objectAtIndexedSubscript:](self->_filteredExtensions, "objectAtIndexedSubscript:", [pathCopy row]);
     v13 = v12;
     if (self->_presentedFromPrivateBrowsing)
     {
@@ -662,38 +662,38 @@ LABEL_14:
         goto LABEL_31;
       }
 
-      v14 = [v13 allowedInPrivateBrowsing];
+      allowedInPrivateBrowsing = [v13 allowedInPrivateBrowsing];
     }
 
     else
     {
-      v14 = [v12 isEnabled];
+      allowedInPrivateBrowsing = [v12 isEnabled];
     }
 
-    v25 = v14;
+    v25 = allowedInPrivateBrowsing;
 LABEL_31:
     [v11 setOn:v25];
     composedIdentifierToToggleMap = self->_composedIdentifierToToggleMap;
-    v27 = [v13 composedIdentifier];
-    [(NSMutableDictionary *)composedIdentifierToToggleMap setObject:v67 forKeyedSubscript:v27];
+    composedIdentifier = [v13 composedIdentifier];
+    [(NSMutableDictionary *)composedIdentifierToToggleMap setObject:v67 forKeyedSubscript:composedIdentifier];
 
-    v28 = [(SFWebExtensionsController *)v65 parentalControlsAreEnabledForExtensions];
-    if (self->_presentedFromPrivateBrowsing || v28)
+    parentalControlsAreEnabledForExtensions = [(SFWebExtensionsController *)v65 parentalControlsAreEnabledForExtensions];
+    if (self->_presentedFromPrivateBrowsing || parentalControlsAreEnabledForExtensions)
     {
-      if (v28)
+      if (parentalControlsAreEnabledForExtensions)
       {
         v29 = 0;
       }
 
       else
       {
-        v32 = [MEMORY[0x1E69C88C8] sharedController];
-        v33 = [v13 composedIdentifier];
-        v34 = [v32 managedExtensionPrivateBrowsingStateForComposedIdentifier:v33];
+        mEMORY[0x1E69C88C8] = [MEMORY[0x1E69C88C8] sharedController];
+        composedIdentifier2 = [v13 composedIdentifier];
+        v34 = [mEMORY[0x1E69C88C8] managedExtensionPrivateBrowsingStateForComposedIdentifier:composedIdentifier2];
 
-        v35 = [MEMORY[0x1E69C88C8] sharedController];
-        v36 = [v13 composedIdentifier];
-        v37 = [v35 managedExtensionStateForComposedIdentifier:v36];
+        mEMORY[0x1E69C88C8]2 = [MEMORY[0x1E69C88C8] sharedController];
+        composedIdentifier3 = [v13 composedIdentifier];
+        v37 = [mEMORY[0x1E69C88C8]2 managedExtensionStateForComposedIdentifier:composedIdentifier3];
 
         if (v34)
         {
@@ -711,31 +711,31 @@ LABEL_31:
 
     else
     {
-      v30 = [MEMORY[0x1E69C88C8] sharedController];
-      v31 = [v13 composedIdentifier];
-      v29 = [v30 managedExtensionStateForComposedIdentifier:v31] == 0;
+      mEMORY[0x1E69C88C8]3 = [MEMORY[0x1E69C88C8] sharedController];
+      composedIdentifier4 = [v13 composedIdentifier];
+      v29 = [mEMORY[0x1E69C88C8]3 managedExtensionStateForComposedIdentifier:composedIdentifier4] == 0;
     }
 
     [v67 setEnabled:v29];
-    [v67 setTag:{objc_msgSend(v7, "row")}];
+    [v67 setTag:{objc_msgSend(pathCopy, "row")}];
     v39 = MEMORY[0x1E6963678];
-    v40 = [v13 extension];
-    v41 = [v40 _plugIn];
-    v42 = [v41 uuid];
-    v64 = [v39 pluginKitProxyForUUID:v42];
+    extension = [v13 extension];
+    _plugIn = [extension _plugIn];
+    uuid = [_plugIn uuid];
+    v64 = [v39 pluginKitProxyForUUID:uuid];
 
-    v43 = [v13 displayName];
+    displayName = [v13 displayName];
     if ([v13 contentBlockerHasSameNameAsWebExtensionFromSameApp:self->_extensions])
     {
       v44 = MEMORY[0x1E696AEC0];
       v45 = _WBSLocalizedString();
-      v46 = [v13 displayName];
-      v47 = [v44 stringWithFormat:v45, v46];
+      displayName2 = [v13 displayName];
+      v47 = [v44 stringWithFormat:v45, displayName2];
     }
 
     else
     {
-      v47 = v43;
+      v47 = displayName;
     }
 
     if (([v13 isContentBlocker] & 1) != 0 || (objc_msgSend(v13, "extension"), v48 = objc_claimAutoreleasedReturnValue(), -[WBSWebExtensionsController webExtensionForExtension:](v65, "webExtensionForExtension:", v48), v49 = objc_claimAutoreleasedReturnValue(), v48, !v49) || (objc_msgSend(v49, "preferencesIcon"), v50 = objc_claimAutoreleasedReturnValue(), v49, !v50))
@@ -755,25 +755,25 @@ LABEL_31:
     v69[4] = self;
     v56 = [v50 safari_dynamicImageWithSize:v69 generator:{v53, v55}];
 
-    v57 = [(SFAvailableAppTableViewCell *)v8 imageView];
-    [v57 setImage:v56];
+    imageView = [(SFAvailableAppTableViewCell *)v8 imageView];
+    [imageView setImage:v56];
 
-    v58 = [(SFAvailableAppTableViewCell *)v8 textLabel];
-    [v58 setText:v47];
+    textLabel = [(SFAvailableAppTableViewCell *)v8 textLabel];
+    [textLabel setText:v47];
 
     goto LABEL_15;
   }
 
   if ([(NSArray *)self->_filteredRecommendedAppLockupViews count])
   {
-    v8 = [v6 dequeueReusableCellWithIdentifier:@"availableAppCell"];
+    v8 = [viewCopy dequeueReusableCellWithIdentifier:@"availableAppCell"];
     if (!v8)
     {
       v8 = [[SFAvailableAppTableViewCell alloc] initWithStyle:0 reuseIdentifier:@"availableAppCell"];
     }
 
-    v9 = -[NSArray objectAtIndexedSubscript:](self->_filteredRecommendedAppLockupViews, "objectAtIndexedSubscript:", [v7 row]);
-    [(SFAvailableAppTableViewCell *)v8 setLockupView:v9];
+    mEMORY[0x1E69C88D0] = -[NSArray objectAtIndexedSubscript:](self->_filteredRecommendedAppLockupViews, "objectAtIndexedSubscript:", [pathCopy row]);
+    [(SFAvailableAppTableViewCell *)v8 setLockupView:mEMORY[0x1E69C88D0]];
     goto LABEL_14;
   }
 
@@ -786,29 +786,29 @@ LABEL_31:
     [(UIActivityIndicatorView *)self->_spinner setTranslatesAutoresizingMaskIntoConstraints:0];
   }
 
-  v8 = [v6 dequeueReusableCellWithIdentifier:@"loadingIndicatorCell"];
+  v8 = [viewCopy dequeueReusableCellWithIdentifier:@"loadingIndicatorCell"];
   if (!v8)
   {
     v17 = [objc_alloc(MEMORY[0x1E69DD028]) initWithStyle:0 reuseIdentifier:@"loadingIndicatorCell"];
     [(SFAvailableAppTableViewCell *)v17 setBackgroundView:0];
-    v18 = [MEMORY[0x1E69DC888] clearColor];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
     v62 = v17;
-    [(SFAvailableAppTableViewCell *)v17 setBackgroundColor:v18];
+    [(SFAvailableAppTableViewCell *)v17 setBackgroundColor:clearColor];
 
-    v68 = [(SFAvailableAppTableViewCell *)v17 contentView];
-    [v68 addSubview:self->_spinner];
+    contentView = [(SFAvailableAppTableViewCell *)v17 contentView];
+    [contentView addSubview:self->_spinner];
     v19 = MEMORY[0x1E696ACD8];
-    v66 = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
-    v61 = [v68 centerXAnchor];
-    v60 = [v66 constraintEqualToAnchor:?];
+    centerXAnchor = [(UIActivityIndicatorView *)self->_spinner centerXAnchor];
+    centerXAnchor2 = [contentView centerXAnchor];
+    v60 = [centerXAnchor constraintEqualToAnchor:?];
     v70[0] = v60;
-    v63 = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
-    v59 = [v68 centerYAnchor];
-    v20 = [v63 constraintEqualToAnchor:?];
+    centerYAnchor = [(UIActivityIndicatorView *)self->_spinner centerYAnchor];
+    centerYAnchor2 = [contentView centerYAnchor];
+    v20 = [centerYAnchor constraintEqualToAnchor:?];
     v70[1] = v20;
-    v21 = [v68 heightAnchor];
-    v22 = [(UIActivityIndicatorView *)self->_spinner heightAnchor];
-    v23 = [v21 constraintEqualToAnchor:v22 multiplier:1.0 constant:20.0];
+    heightAnchor = [contentView heightAnchor];
+    heightAnchor2 = [(UIActivityIndicatorView *)self->_spinner heightAnchor];
+    v23 = [heightAnchor constraintEqualToAnchor:heightAnchor2 multiplier:1.0 constant:20.0];
     v70[2] = v23;
     v24 = [MEMORY[0x1E695DEC8] arrayWithObjects:v70 count:3];
     [v19 activateConstraints:v24];
@@ -830,16 +830,16 @@ id __68__SFManageExtensionsViewController_tableView_cellForRowAtIndexPath___bloc
   return v2;
 }
 
-- (void)_extensionStateWasToggled:(id)a3
+- (void)_extensionStateWasToggled:(id)toggled
 {
-  v4 = a3;
-  v5 = -[NSArray objectAtIndexedSubscript:](self->_filteredExtensions, "objectAtIndexedSubscript:", [v4 tag]);
+  toggledCopy = toggled;
+  v5 = -[NSArray objectAtIndexedSubscript:](self->_filteredExtensions, "objectAtIndexedSubscript:", [toggledCopy tag]);
   v19 = 0;
   v6 = [v5 canLoadWithErrorString:&v19];
   v7 = v19;
   if (v6)
   {
-    if ([v4 isOn])
+    if ([toggledCopy isOn])
     {
       [(SFManageExtensionsViewController *)self _enableExtensionWithWrapper:v5];
     }
@@ -857,11 +857,11 @@ id __68__SFManageExtensionsViewController_tableView_cellForRowAtIndexPath___bloc
 
   else
   {
-    v8 = [v5 displayName];
+    displayName = [v5 displayName];
     v9 = MEMORY[0x1E69DC650];
     v10 = MEMORY[0x1E696AEC0];
     v11 = _WBSLocalizedString();
-    v12 = [v10 stringWithFormat:v11, v8];
+    v12 = [v10 stringWithFormat:v11, displayName];
     v13 = [v9 alertControllerWithTitle:v12 message:v7 preferredStyle:1];
 
     v14 = MEMORY[0x1E69DC648];
@@ -870,7 +870,7 @@ id __68__SFManageExtensionsViewController_tableView_cellForRowAtIndexPath___bloc
     v17[1] = 3221225472;
     v17[2] = __62__SFManageExtensionsViewController__extensionStateWasToggled___block_invoke;
     v17[3] = &unk_1E721F340;
-    v18 = v4;
+    v18 = toggledCopy;
     v16 = [v14 actionWithTitle:v15 style:0 handler:v17];
     [v13 addAction:v16];
 
@@ -878,13 +878,13 @@ id __68__SFManageExtensionsViewController_tableView_cellForRowAtIndexPath___bloc
   }
 }
 
-- (void)_enableExtensionWithWrapper:(id)a3
+- (void)_enableExtensionWithWrapper:(id)wrapper
 {
-  v4 = a3;
-  v5 = v4;
+  wrapperCopy = wrapper;
+  v5 = wrapperCopy;
   if (self->_presentedFromPrivateBrowsing)
   {
-    if ([v4 isEnabled])
+    if ([wrapperCopy isEnabled])
     {
       [(SFManageExtensionsViewController *)self _setPrivateBrowsingStateForExtension:v5 isOn:1];
     }
@@ -903,34 +903,34 @@ id __68__SFManageExtensionsViewController_tableView_cellForRowAtIndexPath___bloc
 
   else
   {
-    [v4 enableWithPresentingViewController:self completionHandler:&__block_literal_global_63];
+    [wrapperCopy enableWithPresentingViewController:self completionHandler:&__block_literal_global_63];
   }
 }
 
-- (void)_setPrivateBrowsingStateForExtension:(id)a3 isOn:(BOOL)a4
+- (void)_setPrivateBrowsingStateForExtension:(id)extension isOn:(BOOL)on
 {
-  v4 = a4;
-  v6 = a3;
-  [v6 setAllowedInPrivateBrowsing:v4];
-  v5 = [MEMORY[0x1E696ABB0] defaultCenter];
-  [v5 postNotificationName:*MEMORY[0x1E69C9A58] object:0];
+  onCopy = on;
+  extensionCopy = extension;
+  [extensionCopy setAllowedInPrivateBrowsing:onCopy];
+  defaultCenter = [MEMORY[0x1E696ABB0] defaultCenter];
+  [defaultCenter postNotificationName:*MEMORY[0x1E69C9A58] object:0];
 }
 
-- (void)searchBar:(id)a3 textDidChange:(id)a4
+- (void)searchBar:(id)bar textDidChange:(id)change
 {
-  v11 = a3;
-  v6 = a4;
+  barCopy = bar;
+  changeCopy = change;
   userTypedQuery = self->_userTypedQuery;
-  if (userTypedQuery != v6 && ![(NSString *)userTypedQuery isEqualToString:v6])
+  if (userTypedQuery != changeCopy && ![(NSString *)userTypedQuery isEqualToString:changeCopy])
   {
-    v8 = [(NSString *)v6 copy];
+    v8 = [(NSString *)changeCopy copy];
     v9 = self->_userTypedQuery;
     self->_userTypedQuery = v8;
 
     [(SFManageExtensionsViewController *)self _filterExtensionsBasedOnUserTypedSearchQuery];
     [(SFManageExtensionsViewController *)self _filterExtensionAppLockupViews];
-    v10 = [(SFManageExtensionsViewController *)self tableView];
-    [v10 reloadData];
+    tableView = [(SFManageExtensionsViewController *)self tableView];
+    [tableView reloadData];
   }
 }
 
@@ -978,28 +978,28 @@ uint64_t __80__SFManageExtensionsViewController__filterExtensionsBasedOnUserType
 
 - (void)_filterExtensionAppLockupViews
 {
-  v3 = [(SFManageExtensionsViewController *)self _adamIDsForInstalledExtensions];
+  _adamIDsForInstalledExtensions = [(SFManageExtensionsViewController *)self _adamIDsForInstalledExtensions];
   fromOtherDevicesAppLockupViews = self->_fromOtherDevicesAppLockupViews;
   v15[0] = MEMORY[0x1E69E9820];
   v15[1] = 3221225472;
   v15[2] = __66__SFManageExtensionsViewController__filterExtensionAppLockupViews__block_invoke;
   v15[3] = &unk_1E721F3B8;
   v15[4] = self;
-  v5 = v3;
+  v5 = _adamIDsForInstalledExtensions;
   v16 = v5;
   v6 = [(NSArray *)fromOtherDevicesAppLockupViews safari_filterObjectsUsingBlock:v15];
   filteredFromOtherDevicesAppLockupViews = self->_filteredFromOtherDevicesAppLockupViews;
   self->_filteredFromOtherDevicesAppLockupViews = v6;
 
-  v8 = [(SFManageExtensionsViewController *)self _adamIDsForInstalledAndCloudExtensions];
+  _adamIDsForInstalledAndCloudExtensions = [(SFManageExtensionsViewController *)self _adamIDsForInstalledAndCloudExtensions];
   recommendedAppLockupViews = self->_recommendedAppLockupViews;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __66__SFManageExtensionsViewController__filterExtensionAppLockupViews__block_invoke_2;
   v13[3] = &unk_1E721F3B8;
   v13[4] = self;
-  v14 = v8;
-  v10 = v8;
+  v14 = _adamIDsForInstalledAndCloudExtensions;
+  v10 = _adamIDsForInstalledAndCloudExtensions;
   v11 = [(NSArray *)recommendedAppLockupViews safari_filterObjectsUsingBlock:v13];
   filteredRecommendedAppLockupViews = self->_filteredRecommendedAppLockupViews;
   self->_filteredRecommendedAppLockupViews = v11;
@@ -1071,9 +1071,9 @@ LABEL_6:
   return v7;
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  if ([(SFManageExtensionsViewController *)self _isInstalledExtensionsSection:a4])
+  if ([(SFManageExtensionsViewController *)self _isInstalledExtensionsSection:section])
   {
     v6 = &OBJC_IVAR___SFManageExtensionsViewController__filteredExtensions;
 LABEL_5:
@@ -1081,15 +1081,15 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([(SFManageExtensionsViewController *)self _isOnOtherDevicesSection:a4])
+  if ([(SFManageExtensionsViewController *)self _isOnOtherDevicesSection:section])
   {
     v6 = &OBJC_IVAR___SFManageExtensionsViewController__filteredFromOtherDevicesAppLockupViews;
     goto LABEL_5;
   }
 
-  if (![(SFManageExtensionsViewController *)self _isRecommendationsSection:a4])
+  if (![(SFManageExtensionsViewController *)self _isRecommendationsSection:section])
   {
-    return [(SFManageExtensionsViewController *)self _isAppStoreLinkSection:a4];
+    return [(SFManageExtensionsViewController *)self _isAppStoreLinkSection:section];
   }
 
   p_filteredRecommendedAppLockupViews = &self->_filteredRecommendedAppLockupViews;
@@ -1104,34 +1104,34 @@ LABEL_6:
   return [(NSArray *)v8 count];
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v9 = a3;
-  v6 = a4;
-  if (-[SFManageExtensionsViewController _isAppStoreLinkSection:](self, "_isAppStoreLinkSection:", [v6 section]))
+  viewCopy = view;
+  pathCopy = path;
+  if (-[SFManageExtensionsViewController _isAppStoreLinkSection:](self, "_isAppStoreLinkSection:", [pathCopy section]))
   {
-    [v9 deselectRowAtIndexPath:v6 animated:1];
-    v7 = [MEMORY[0x1E6963608] defaultWorkspace];
+    [viewCopy deselectRowAtIndexPath:pathCopy animated:1];
+    defaultWorkspace = [MEMORY[0x1E6963608] defaultWorkspace];
     v8 = [MEMORY[0x1E695DFF8] URLWithString:*MEMORY[0x1E69C9A50]];
-    [v7 openURL:v8 withOptions:0];
+    [defaultWorkspace openURL:v8 withOptions:0];
   }
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  LOBYTE(self) = -[SFManageExtensionsViewController _isAppStoreLinkSection:](self, "_isAppStoreLinkSection:", [v5 section]);
+  pathCopy = path;
+  LOBYTE(self) = -[SFManageExtensionsViewController _isAppStoreLinkSection:](self, "_isAppStoreLinkSection:", [pathCopy section]);
 
   return self;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
   v4 = [(NSArray *)self->_filteredExtensions count];
   v5 = [(NSArray *)self->_filteredFromOtherDevicesAppLockupViews count];
-  v6 = [(SFManageExtensionsViewController *)self _haveRecommendationsSection];
-  v7 = [MEMORY[0x1E69C88D0] sharedInstance];
-  v8 = [v7 shouldHideExtensionDiscovery];
+  _haveRecommendationsSection = [(SFManageExtensionsViewController *)self _haveRecommendationsSection];
+  mEMORY[0x1E69C88D0] = [MEMORY[0x1E69C88D0] sharedInstance];
+  shouldHideExtensionDiscovery = [mEMORY[0x1E69C88D0] shouldHideExtensionDiscovery];
   v9 = v4 != 0;
   v10 = 1;
   if (v4)
@@ -1144,14 +1144,14 @@ LABEL_6:
     v9 = v10;
   }
 
-  v11 = v9 + v6;
+  v11 = v9 + _haveRecommendationsSection;
 
-  return v11 + (v8 ^ 1u);
+  return v11 + (shouldHideExtensionDiscovery ^ 1u);
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if ([(SFManageExtensionsViewController *)self _isInstalledExtensionsSection:a4])
+  if ([(SFManageExtensionsViewController *)self _isInstalledExtensionsSection:section])
   {
     if (self->_presentedFromPrivateBrowsing)
     {
@@ -1160,8 +1160,8 @@ LABEL_6:
 
     if ([(SFWebExtensionsController *)self->_webExtensionsController hasNamedProfiles])
     {
-      v6 = [(SFWebExtensionsController *)self->_webExtensionsController profile];
-      v7 = [v6 title];
+      profile = [(SFWebExtensionsController *)self->_webExtensionsController profile];
+      title = [profile title];
 
       goto LABEL_18;
     }
@@ -1174,40 +1174,40 @@ LABEL_6:
     goto LABEL_16;
   }
 
-  if ([(SFManageExtensionsViewController *)self _isOnOtherDevicesSection:a4])
+  if ([(SFManageExtensionsViewController *)self _isOnOtherDevicesSection:section])
   {
     goto LABEL_14;
   }
 
-  if (![(SFManageExtensionsViewController *)self _isRecommendationsSection:a4])
+  if (![(SFManageExtensionsViewController *)self _isRecommendationsSection:section])
   {
-    [(SFManageExtensionsViewController *)self _isAppStoreLinkSection:a4];
+    [(SFManageExtensionsViewController *)self _isAppStoreLinkSection:section];
 LABEL_16:
-    v7 = 0;
+    title = 0;
     goto LABEL_18;
   }
 
   if ([(NSArray *)self->_filteredRecommendedAppLockupViews count])
   {
 LABEL_14:
-    v7 = _WBSLocalizedString();
+    title = _WBSLocalizedString();
     goto LABEL_18;
   }
 
-  v7 = &stru_1EFF36230;
+  title = &stru_1EFF36230;
 LABEL_18:
 
-  return v7;
+  return title;
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  if ([(SFManageExtensionsViewController *)self _isInstalledExtensionsSection:a4])
+  if ([(SFManageExtensionsViewController *)self _isInstalledExtensionsSection:section])
   {
-    v5 = [MEMORY[0x1E69C88C8] sharedController];
-    v6 = [v5 hasAnyExtensionManagement];
+    mEMORY[0x1E69C88C8] = [MEMORY[0x1E69C88C8] sharedController];
+    hasAnyExtensionManagement = [mEMORY[0x1E69C88C8] hasAnyExtensionManagement];
 
-    if (v6)
+    if (hasAnyExtensionManagement)
     {
       extensions = self->_extensions;
       v10[0] = MEMORY[0x1E69E9820];
@@ -1255,10 +1255,10 @@ BOOL __70__SFManageExtensionsViewController_tableView_titleForFooterInSection___
   return v7 == 0;
 }
 
-- (BOOL)_isInstalledExtensionsSection:(int64_t)a3
+- (BOOL)_isInstalledExtensionsSection:(int64_t)section
 {
   v4 = [(NSArray *)self->_filteredExtensions count];
-  if (a3)
+  if (section)
   {
     v5 = 1;
   }
@@ -1271,21 +1271,21 @@ BOOL __70__SFManageExtensionsViewController_tableView_titleForFooterInSection___
   return !v5;
 }
 
-- (BOOL)_isOnOtherDevicesSection:(int64_t)a3
+- (BOOL)_isOnOtherDevicesSection:(int64_t)section
 {
   v5 = [(NSArray *)self->_filteredFromOtherDevicesAppLockupViews count];
   if (v5)
   {
-    LOBYTE(v5) = ([(NSArray *)self->_filteredExtensions count]!= 0) == a3;
+    LOBYTE(v5) = ([(NSArray *)self->_filteredExtensions count]!= 0) == section;
   }
 
   return v5;
 }
 
-- (BOOL)_isRecommendationsSection:(int64_t)a3
+- (BOOL)_isRecommendationsSection:(int64_t)section
 {
-  v5 = [(SFManageExtensionsViewController *)self _haveRecommendationsSection];
-  if (v5)
+  _haveRecommendationsSection = [(SFManageExtensionsViewController *)self _haveRecommendationsSection];
+  if (_haveRecommendationsSection)
   {
     v6 = [(NSArray *)self->_filteredExtensions count];
     v7 = [(NSArray *)self->_filteredFromOtherDevicesAppLockupViews count];
@@ -1301,18 +1301,18 @@ BOOL __70__SFManageExtensionsViewController_tableView_titleForFooterInSection___
       v8 = v9;
     }
 
-    LOBYTE(v5) = v8 == a3;
+    LOBYTE(_haveRecommendationsSection) = v8 == section;
   }
 
-  return v5;
+  return _haveRecommendationsSection;
 }
 
-- (BOOL)_isAppStoreLinkSection:(int64_t)a3
+- (BOOL)_isAppStoreLinkSection:(int64_t)section
 {
-  v5 = [MEMORY[0x1E69C88D0] sharedInstance];
-  v6 = [v5 shouldHideExtensionDiscovery];
+  mEMORY[0x1E69C88D0] = [MEMORY[0x1E69C88D0] sharedInstance];
+  shouldHideExtensionDiscovery = [mEMORY[0x1E69C88D0] shouldHideExtensionDiscovery];
 
-  if (v6)
+  if (shouldHideExtensionDiscovery)
   {
     return 0;
   }
@@ -1335,7 +1335,7 @@ BOOL __70__SFManageExtensionsViewController_tableView_titleForFooterInSection___
     v11 = v8 != 0;
   }
 
-  return v11 + [(SFManageExtensionsViewController *)self _haveRecommendationsSection]== a3;
+  return v11 + [(SFManageExtensionsViewController *)self _haveRecommendationsSection]== section;
 }
 
 - (_SFPageFormatMenuController)presentingPageFormatMenu

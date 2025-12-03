@@ -1,16 +1,16 @@
 @interface CKDetailsSeparatorCell
-- (CKDetailsSeparatorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CKDetailsSeparatorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
 @end
 
 @implementation CKDetailsSeparatorCell
 
-- (CKDetailsSeparatorCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CKDetailsSeparatorCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v12.receiver = self;
   v12.super_class = CKDetailsSeparatorCell;
-  v4 = [(CKDetailsCell *)&v12 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CKDetailsCell *)&v12 initWithStyle:style reuseIdentifier:identifier];
   if (v4)
   {
     v5 = objc_alloc(MEMORY[0x1E69DD250]);
@@ -19,13 +19,13 @@
     v4->_separatorView = v6;
 
     v8 = v4->_separatorView;
-    v9 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)v8 setBackgroundColor:v9];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)v8 setBackgroundColor:separatorColor];
 
     [(CKDetailsSeparatorCell *)v4 addSubview:v4->_separatorView];
     [(CKDetailsSeparatorCell *)v4 setIndentSeparator:1];
-    v10 = [MEMORY[0x1E69DC888] clearColor];
-    [(CKDetailsSeparatorCell *)v4 setBackgroundColor:v10];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CKDetailsSeparatorCell *)v4 setBackgroundColor:clearColor];
   }
 
   return v4;
@@ -40,7 +40,7 @@
   v4 = v3;
   v6 = v5;
   v7 = +[CKUIBehavior sharedBehaviors];
-  v8 = [v7 detailsSeperatorsFollowLayoutMargins];
+  detailsSeperatorsFollowLayoutMargins = [v7 detailsSeperatorsFollowLayoutMargins];
 
   [(CKDetailsSeparatorCell *)self bounds];
   v10 = v9;
@@ -48,7 +48,7 @@
   [v11 defaultSeparatorHeight];
   v13 = v12;
 
-  LOBYTE(v11) = [(CKDetailsSeparatorCell *)self indentSeparator]| v8;
+  LOBYTE(v11) = [(CKDetailsSeparatorCell *)self indentSeparator]| detailsSeperatorsFollowLayoutMargins;
   [(CKDetailsSeparatorCell *)self leadingSpace];
   v15 = v14;
   v16 = 0.0;
@@ -63,8 +63,8 @@
   }
 
   v17 = v10 - v4 - v16;
-  v18 = [(CKDetailsSeparatorCell *)self separatorView];
-  [v18 setFrame:{v4, v15, v17, v13}];
+  separatorView = [(CKDetailsSeparatorCell *)self separatorView];
+  [separatorView setFrame:{v4, v15, v17, v13}];
 }
 
 - (void)prepareForReuse

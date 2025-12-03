@@ -1,50 +1,50 @@
 @interface AlgsConfigEvent
-- (BOOL)decodeFromMap:(void *)a3;
-- (BOOL)hsDecode:(void *)a3;
-- (BOOL)hsEncode:(void *)a3;
+- (BOOL)decodeFromMap:(void *)map;
+- (BOOL)hsDecode:(void *)decode;
+- (BOOL)hsEncode:(void *)encode;
 - (NSString)description;
 - (id)debug;
 - (uint64_t)deviceType;
 - (uint64_t)parserOptions;
 - (uint64_t)setDeviceType:(uint64_t)result;
 - (uint64_t)setParserOptions:(uint64_t)result;
-- (uint64_t)setSurfaceCoordinates:(uint64_t)a3;
+- (uint64_t)setSurfaceCoordinates:(uint64_t)coordinates;
 - (uint64_t)setSurfaceSize:(uint64_t)result;
 - (uint64_t)surfaceCoordinates;
 - (uint64_t)surfaceSize;
-- (void)encodeToMap:(void *)a3;
+- (void)encodeToMap:(void *)map;
 @end
 
 @implementation AlgsConfigEvent
 
-- (void)encodeToMap:(void *)a3
+- (void)encodeToMap:(void *)map
 {
   if (self)
   {
-    HSUtil::Encoder::encodeUInt(a3, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)118,(char)105,(char)99,(char)101,(char)84,(char)121,(char)112,(char)101>::Key, self->_deviceType);
-    HSUtil::Encoder::encodeInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)83,(char)105,(char)122,(char)101,(char)87,(char)105,(char)100,(char)116,(char)104>::Key, self->_surfaceSize.width);
-    HSUtil::Encoder::encodeInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)83,(char)105,(char)122,(char)101,(char)72,(char)101,(char)105,(char)103,(char)104,(char)116>::Key, self->_surfaceSize.height);
-    HSUtil::Encoder::encodeInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)84,(char)111,(char)112>::Key, self->_surfaceCoordinates.top);
-    HSUtil::Encoder::encodeInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)82,(char)105,(char)103,(char)104,(char)116>::Key, self->_surfaceCoordinates.right);
-    HSUtil::Encoder::encodeInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)66,(char)111,(char)116,(char)116,(char)111,(char)109>::Key, self->_surfaceCoordinates.bottom);
+    HSUtil::Encoder::encodeUInt(map, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)118,(char)105,(char)99,(char)101,(char)84,(char)121,(char)112,(char)101>::Key, self->_deviceType);
+    HSUtil::Encoder::encodeInt(map, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)83,(char)105,(char)122,(char)101,(char)87,(char)105,(char)100,(char)116,(char)104>::Key, self->_surfaceSize.width);
+    HSUtil::Encoder::encodeInt(map, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)83,(char)105,(char)122,(char)101,(char)72,(char)101,(char)105,(char)103,(char)104,(char)116>::Key, self->_surfaceSize.height);
+    HSUtil::Encoder::encodeInt(map, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)84,(char)111,(char)112>::Key, self->_surfaceCoordinates.top);
+    HSUtil::Encoder::encodeInt(map, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)82,(char)105,(char)103,(char)104,(char)116>::Key, self->_surfaceCoordinates.right);
+    HSUtil::Encoder::encodeInt(map, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)66,(char)111,(char)116,(char)116,(char)111,(char)109>::Key, self->_surfaceCoordinates.bottom);
     left = self->_surfaceCoordinates.left;
   }
 
   else
   {
-    [(AlgsConfigEvent *)a3 encodeToMap:(char)101, (char)118, (char)105, (char)99, (char)101, (char)84, (char)121, (char)112, (char)101>::Key];
+    [(AlgsConfigEvent *)map encodeToMap:(char)101, (char)118, (char)105, (char)99, (char)101, (char)84, (char)121, (char)112, (char)101>::Key];
     left = 0;
   }
 
   v6 = HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)76,(char)101,(char)102,(char)116>::Key;
 
-  HSUtil::Encoder::encodeInt(a3, v6, left);
+  HSUtil::Encoder::encodeInt(map, v6, left);
 }
 
-- (BOOL)decodeFromMap:(void *)a3
+- (BOOL)decodeFromMap:(void *)map
 {
-  self->_deviceType = HSUtil::Decoder::decodeUInt(a3, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)118,(char)105,(char)99,(char)101,(char)84,(char)121,(char)112,(char)101>::Key);
-  if (*a3)
+  self->_deviceType = HSUtil::Decoder::decodeUInt(map, HSUtil::CoderKey::Literal<(char)100,(char)101,(char)118,(char)105,(char)99,(char)101,(char)84,(char)121,(char)112,(char)101>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -56,8 +56,8 @@
     return 0;
   }
 
-  self->_surfaceSize.width = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)83,(char)105,(char)122,(char)101,(char)87,(char)105,(char)100,(char)116,(char)104>::Key);
-  if (*a3)
+  self->_surfaceSize.width = HSUtil::Decoder::decodeInt(map, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)83,(char)105,(char)122,(char)101,(char)87,(char)105,(char)100,(char)116,(char)104>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -69,8 +69,8 @@
     return 0;
   }
 
-  self->_surfaceSize.height = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)83,(char)105,(char)122,(char)101,(char)72,(char)101,(char)105,(char)103,(char)104,(char)116>::Key);
-  if (*a3)
+  self->_surfaceSize.height = HSUtil::Decoder::decodeInt(map, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)83,(char)105,(char)122,(char)101,(char)72,(char)101,(char)105,(char)103,(char)104,(char)116>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -82,8 +82,8 @@
     return 0;
   }
 
-  self->_surfaceCoordinates.top = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)84,(char)111,(char)112>::Key);
-  if (*a3)
+  self->_surfaceCoordinates.top = HSUtil::Decoder::decodeInt(map, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)84,(char)111,(char)112>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -95,8 +95,8 @@
     return 0;
   }
 
-  self->_surfaceCoordinates.right = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)82,(char)105,(char)103,(char)104,(char)116>::Key);
-  if (*a3)
+  self->_surfaceCoordinates.right = HSUtil::Decoder::decodeInt(map, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)82,(char)105,(char)103,(char)104,(char)116>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -108,8 +108,8 @@
     return 0;
   }
 
-  self->_surfaceCoordinates.bottom = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)66,(char)111,(char)116,(char)116,(char)111,(char)109>::Key);
-  if (*a3)
+  self->_surfaceCoordinates.bottom = HSUtil::Decoder::decodeInt(map, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)66,(char)111,(char)116,(char)116,(char)111,(char)109>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -121,8 +121,8 @@
     return 0;
   }
 
-  self->_surfaceCoordinates.left = HSUtil::Decoder::decodeInt(a3, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)76,(char)101,(char)102,(char)116>::Key);
-  if (*a3)
+  self->_surfaceCoordinates.left = HSUtil::Decoder::decodeInt(map, HSUtil::CoderKey::Literal<(char)115,(char)117,(char)114,(char)102,(char)97,(char)99,(char)101,(char)67,(char)111,(char)111,(char)114,(char)100,(char)105,(char)110,(char)97,(char)116,(char)101,(char)115,(char)76,(char)101,(char)102,(char)116>::Key);
+  if (*map)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -137,26 +137,26 @@
   return 1;
 }
 
-- (BOOL)hsEncode:(void *)a3
+- (BOOL)hsEncode:(void *)encode
 {
-  if (!*a3)
+  if (!*encode)
   {
-    *&v6 = *(a3 + 17);
+    *&v6 = *(encode + 17);
     DWORD2(v6) = 2;
-    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](a3 + 56, &v6);
-    HSUtil::Encoder::_writeTokenValue16(a3, 0xEAu, 0);
+    std::vector<HSUtil::Encoder::ContainerRecord>::push_back[abi:ne200100](encode + 56, &v6);
+    HSUtil::Encoder::_writeTokenValue16(encode, 0xEAu, 0);
   }
 
-  [(AlgsConfigEvent *)self encodeToMap:a3];
-  if (!*a3)
+  [(AlgsConfigEvent *)self encodeToMap:encode];
+  if (!*encode)
   {
-    HSUtil::Encoder::_encodeContainerStop(a3);
+    HSUtil::Encoder::_encodeContainerStop(encode);
   }
 
   return 1;
 }
 
-- (BOOL)hsDecode:(void *)a3
+- (BOOL)hsDecode:(void *)decode
 {
   *&v5 = 0xAAAAAAAAAAAAAAAALL;
   *(&v5 + 1) = 0xAAAAAAAAAAAAAAAALL;
@@ -165,8 +165,8 @@
   v10 = v5;
   v11 = v5;
   v9 = v5;
-  HSUtil::Decoder::decodeMap(a3, &v9);
-  if (*a3)
+  HSUtil::Decoder::decodeMap(decode, &v9);
+  if (*decode)
   {
     memset(__b, 170, sizeof(__b));
     basename_r("/Library/Caches/com.apple.xbs/Sources/Multitouch/MT2TPHIDService/HSTrackpad/HSTrackpadDefs.mm", __b);
@@ -398,12 +398,12 @@
   return result;
 }
 
-- (uint64_t)setSurfaceCoordinates:(uint64_t)a3
+- (uint64_t)setSurfaceCoordinates:(uint64_t)coordinates
 {
   if (result)
   {
     *(result + 24) = a2;
-    *(result + 32) = a3;
+    *(result + 32) = coordinates;
   }
 
   return result;

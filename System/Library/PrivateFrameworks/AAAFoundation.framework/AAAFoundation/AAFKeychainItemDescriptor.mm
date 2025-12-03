@@ -1,84 +1,84 @@
 @interface AAFKeychainItemDescriptor
-- (AAFKeychainItemDescriptor)initWithAttributes:(id)a3;
-- (id)_keychainAccessibleWithAccessible:(unint64_t)a3;
-- (id)_keychainClassWithClass:(unint64_t)a3;
-- (id)_objectForOptionalBool:(unint64_t)a3;
+- (AAFKeychainItemDescriptor)initWithAttributes:(id)attributes;
+- (id)_keychainAccessibleWithAccessible:(unint64_t)accessible;
+- (id)_keychainClassWithClass:(unint64_t)class;
+- (id)_objectForOptionalBool:(unint64_t)bool;
 - (id)attributes;
-- (id)copyWithZone:(_NSZone *)a3;
-- (unint64_t)_accessibleWithKeychainAccessible:(id)a3;
-- (unint64_t)_classWithKeychainClass:(id)a3;
-- (unint64_t)_optionalValueFromObject:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (unint64_t)_accessibleWithKeychainAccessible:(id)accessible;
+- (unint64_t)_classWithKeychainClass:(id)class;
+- (unint64_t)_optionalValueFromObject:(id)object;
 @end
 
 @implementation AAFKeychainItemDescriptor
 
-- (AAFKeychainItemDescriptor)initWithAttributes:(id)a3
+- (AAFKeychainItemDescriptor)initWithAttributes:(id)attributes
 {
-  v4 = a3;
+  attributesCopy = attributes;
   v31.receiver = self;
   v31.super_class = AAFKeychainItemDescriptor;
   v5 = [(AAFKeychainItemDescriptor *)&v31 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AFF8]];
+    v6 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697AFF8]];
     v5->_itemClass = [(AAFKeychainItemDescriptor *)v5 _classWithKeychainClass:v6];
 
-    v7 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697ABD8]];
+    v7 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697ABD8]];
     v5->_itemAccessible = [(AAFKeychainItemDescriptor *)v5 _accessibleWithKeychainAccessible:v7];
 
-    v8 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AC30]];
+    v8 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697AC30]];
     account = v5->_account;
     v5->_account = v8;
 
-    v10 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AE88]];
+    v10 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697AE88]];
     service = v5->_service;
     v5->_service = v10;
 
-    v12 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AE80]];
+    v12 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697AE80]];
     server = v5->_server;
     v5->_server = v12;
 
-    v14 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AE70]];
+    v14 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697AE70]];
     securityDomain = v5->_securityDomain;
     v5->_securityDomain = v14;
 
-    v16 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697ADC8]];
+    v16 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697ADC8]];
     label = v5->_label;
     v5->_label = v16;
 
-    v18 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697ABD0]];
+    v18 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697ABD0]];
     accessGroup = v5->_accessGroup;
     v5->_accessGroup = v18;
 
-    v20 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AE90]];
+    v20 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697AE90]];
     sharingGroup = v5->_sharingGroup;
     v5->_sharingGroup = v20;
 
-    v22 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AE00]];
+    v22 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697AE00]];
     itemProtocol = v5->_itemProtocol;
     v5->_itemProtocol = v22;
 
-    v24 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697ACD8]];
+    v24 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697ACD8]];
     creator = v5->_creator;
     v5->_creator = v24;
 
-    v26 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AD00]];
+    v26 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697AD00]];
     v5->_invisible = [(AAFKeychainItemDescriptor *)v5 _optionalValueFromObject:v26];
 
-    v27 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AEB0]];
+    v27 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697AEB0]];
     v5->_synchronizable = [(AAFKeychainItemDescriptor *)v5 _optionalValueFromObject:v27];
 
-    v28 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697B390]];
+    v28 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697B390]];
     v5->_useDataProtection = [(AAFKeychainItemDescriptor *)v5 _optionalValueFromObject:v28];
 
-    v29 = [v4 objectForKeyedSubscript:*MEMORY[0x1E697AEC0]];
+    v29 = [attributesCopy objectForKeyedSubscript:*MEMORY[0x1E697AEC0]];
     v5->_sysBound = [(AAFKeychainItemDescriptor *)v5 _optionalValueFromObject:v29];
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AAFKeychainItemDescriptor);
   v4->_itemClass = self->_itemClass;
@@ -161,40 +161,40 @@
   return v10;
 }
 
-- (id)_keychainClassWithClass:(unint64_t)a3
+- (id)_keychainClassWithClass:(unint64_t)class
 {
-  if (a3 - 1 > 3)
+  if (class - 1 > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = **(&unk_1E831BA10 + a3 - 1);
+    v4 = **(&unk_1E831BA10 + class - 1);
   }
 
   return v4;
 }
 
-- (unint64_t)_classWithKeychainClass:(id)a3
+- (unint64_t)_classWithKeychainClass:(id)class
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E697B008]])
+  classCopy = class;
+  if ([classCopy isEqualToString:*MEMORY[0x1E697B008]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E697B018]])
+  else if ([classCopy isEqualToString:*MEMORY[0x1E697B018]])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E697B020]])
+  else if ([classCopy isEqualToString:*MEMORY[0x1E697B020]])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E697B010]])
+  else if ([classCopy isEqualToString:*MEMORY[0x1E697B010]])
   {
     v4 = 4;
   }
@@ -207,45 +207,45 @@
   return v4;
 }
 
-- (id)_keychainAccessibleWithAccessible:(unint64_t)a3
+- (id)_keychainAccessibleWithAccessible:(unint64_t)accessible
 {
-  if (a3 - 1 > 4)
+  if (accessible - 1 > 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = **(&unk_1E831BA30 + a3 - 1);
+    v4 = **(&unk_1E831BA30 + accessible - 1);
   }
 
   return v4;
 }
 
-- (unint64_t)_accessibleWithKeychainAccessible:(id)a3
+- (unint64_t)_accessibleWithKeychainAccessible:(id)accessible
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E697AC20]])
+  accessibleCopy = accessible;
+  if ([accessibleCopy isEqualToString:*MEMORY[0x1E697AC20]])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E697ABE0]])
+  else if ([accessibleCopy isEqualToString:*MEMORY[0x1E697ABE0]])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E697AC18]])
+  else if ([accessibleCopy isEqualToString:*MEMORY[0x1E697AC18]])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E697AC28]])
+  else if ([accessibleCopy isEqualToString:*MEMORY[0x1E697AC28]])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:*MEMORY[0x1E697ABE8]])
+  else if ([accessibleCopy isEqualToString:*MEMORY[0x1E697ABE8]])
   {
     v4 = 5;
   }
@@ -258,14 +258,14 @@
   return v4;
 }
 
-- (unint64_t)_optionalValueFromObject:(id)a3
+- (unint64_t)_optionalValueFromObject:(id)object
 {
-  if (!a3)
+  if (!object)
   {
     return 0;
   }
 
-  if ([a3 BOOLValue])
+  if ([object BOOLValue])
   {
     return 2;
   }
@@ -273,15 +273,15 @@
   return 1;
 }
 
-- (id)_objectForOptionalBool:(unint64_t)a3
+- (id)_objectForOptionalBool:(unint64_t)bool
 {
   v3 = MEMORY[0x1E695E118];
-  if (a3 != 2)
+  if (bool != 2)
   {
     v3 = 0;
   }
 
-  if (a3 == 1)
+  if (bool == 1)
   {
     return MEMORY[0x1E695E110];
   }

@@ -1,6 +1,6 @@
 @interface VCPExpressionSegment
 - ($AFC8CF76A46F37F9FB23C20884F4FD99)timeRange;
-- (void)setTimeRange:(id *)a3;
+- (void)setTimeRange:(id *)range;
 @end
 
 @implementation VCPExpressionSegment
@@ -14,11 +14,11 @@
   return self;
 }
 
-- (void)setTimeRange:(id *)a3
+- (void)setTimeRange:(id *)range
 {
-  v3 = *&a3->var0.var0;
-  v4 = *&a3->var0.var3;
-  *(&self->_timeRange.duration.value + 4) = *&a3->var1.var1;
+  v3 = *&range->var0.var0;
+  v4 = *&range->var0.var3;
+  *(&self->_timeRange.duration.value + 4) = *&range->var1.var1;
   *&self->_timeRange.start.flags = v4;
   *(&self->_score + 1) = v3;
 }

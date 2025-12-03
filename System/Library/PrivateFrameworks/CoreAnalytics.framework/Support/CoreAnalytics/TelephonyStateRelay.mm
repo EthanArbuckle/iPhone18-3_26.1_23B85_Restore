@@ -1,51 +1,51 @@
 @interface TelephonyStateRelay
-- (BOOL)isStewieActive:(id)a3;
-- (TelephonyStateRelay)initWithMonitoring:(TelephonyStateDelegate *)a3;
+- (BOOL)isStewieActive:(id)active;
+- (TelephonyStateRelay)initWithMonitoring:(TelephonyStateDelegate *)monitoring;
 - (basic_string<char,)formatCellularRAT:(std::allocator<char>> *__return_ptr)retstr;
 - (basic_string<char,)formatCellularRat:(std::allocator<char>> *__return_ptr)retstr forDeploymentType:;
 - (basic_string<char,)formatInternetConnection:(std::allocator<char>> *__return_ptr)retstr;
-- (char)formatSignalBars:(id)a3;
+- (char)formatSignalBars:(id)bars;
 - (id).cxx_construct;
 - (id)dataSubscriptionContext;
-- (id)extractServingCellInfo:(id)a3;
-- (int)cellularInternetConnectionStateAsEnum:(int)a3;
-- (pair<LinkStateNotificationType,)extractLinkStateChange:(id)a3;
-- (unsigned)extractHighThroughput:(id)a3;
-- (void)_updateCellInternetStatusAndLQM:(int)a3 pdpContext:(int)a4;
-- (void)_updateCellularLQM:(optional<LQMThreshold>)a3;
+- (id)extractServingCellInfo:(id)info;
+- (int)cellularInternetConnectionStateAsEnum:(int)enum;
+- (pair<LinkStateNotificationType,)extractLinkStateChange:(id)change;
+- (unsigned)extractHighThroughput:(id)throughput;
+- (void)_updateCellInternetStatusAndLQM:(int)m pdpContext:(int)context;
+- (void)_updateCellularLQM:(optional<LQMThreshold>)m;
 - (void)_updateCellularRAT:()basic_string<char;
-- (void)_updateHighThroughput:(BOOL)a3;
-- (void)_updateIsDualSim:(optional<BOOL>)a3;
-- (void)_updateServingCarrierName:(optional<std::string> *)a3;
-- (void)_updateSignalBars:(char)a3;
-- (void)_updateSubscriberCarrierBundleVersion:(optional<std::string> *)a3;
-- (void)_updateSubscriberCarrierCountry:(optional<std::string> *)a3;
-- (void)_updateSubscriberCarrierName:(optional<std::string> *)a3;
-- (void)carrierBundleChange:(id)a3;
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4;
-- (void)currentDataSimChanged:(id)a3;
+- (void)_updateHighThroughput:(BOOL)throughput;
+- (void)_updateIsDualSim:(optional<BOOL>)sim;
+- (void)_updateServingCarrierName:(optional<std::string> *)name;
+- (void)_updateSignalBars:(char)bars;
+- (void)_updateSubscriberCarrierBundleVersion:(optional<std::string> *)version;
+- (void)_updateSubscriberCarrierCountry:(optional<std::string> *)country;
+- (void)_updateSubscriberCarrierName:(optional<std::string> *)name;
+- (void)carrierBundleChange:(id)change;
+- (void)cellMonitorUpdate:(id)update info:(id)info;
+- (void)currentDataSimChanged:(id)changed;
 - (void)dealloc;
-- (void)displayStatusChanged:(id)a3 status:(id)a4;
-- (void)enhancedDataLinkQualityChanged:(id)a3 metric:(id)a4;
-- (void)handleCarrierBundleChanged:(id)a3;
-- (void)handleCellMonitorUpdate:(id)a3 info:(id)a4;
-- (void)handleCurrentDataSimChanged:(id)a3;
-- (void)handleDisplayStatusChanged:(id)a3 status:(id)a4;
-- (void)handleDisplayStatusChangedForSatelliteStatus:(BOOL)a3;
-- (void)handleEnhancedLQMChanged:(id)a3 metric:(id)a4;
-- (void)handleHighThroughputChanged:(id)a3 metric:(id)a4;
-- (void)handleInternetConnectionStateChanged:(id)a3;
-- (void)handleLinkStateChanged:(id)a3 metric:(id)a4;
-- (void)handleOperatorBundleChanged:(id)a3;
-- (void)handleRadioStateChanged:(id)a3;
-- (void)handleSignalStrengthChanged:(id)a3 info:(id)a4;
-- (void)handleStewieStateChanged:(id)a3;
+- (void)displayStatusChanged:(id)changed status:(id)status;
+- (void)enhancedDataLinkQualityChanged:(id)changed metric:(id)metric;
+- (void)handleCarrierBundleChanged:(id)changed;
+- (void)handleCellMonitorUpdate:(id)update info:(id)info;
+- (void)handleCurrentDataSimChanged:(id)changed;
+- (void)handleDisplayStatusChanged:(id)changed status:(id)status;
+- (void)handleDisplayStatusChangedForSatelliteStatus:(BOOL)status;
+- (void)handleEnhancedLQMChanged:(id)changed metric:(id)metric;
+- (void)handleHighThroughputChanged:(id)changed metric:(id)metric;
+- (void)handleInternetConnectionStateChanged:(id)changed;
+- (void)handleLinkStateChanged:(id)changed metric:(id)metric;
+- (void)handleOperatorBundleChanged:(id)changed;
+- (void)handleRadioStateChanged:(id)changed;
+- (void)handleSignalStrengthChanged:(id)changed info:(id)info;
+- (void)handleStewieStateChanged:(id)changed;
 - (void)handleSubscriptionInfoChanged;
 - (void)initCTServerConnection;
 - (void)initTelephonyClient;
-- (void)internetConnectionStateChanged:(id)a3;
-- (void)operatorBundleChange:(id)a3;
-- (void)radioStateChanged:(id)a3;
+- (void)internetConnectionStateChanged:(id)changed;
+- (void)operatorBundleChange:(id)change;
+- (void)radioStateChanged:(id)changed;
 - (void)refreshInternetConnectionSync;
 - (void)refreshIsDualSimSync;
 - (void)refreshIsSatelliteSystemSync;
@@ -54,8 +54,8 @@
 - (void)refreshServingCarrierNameSync;
 - (void)refreshSignalStrengthBarsSync;
 - (void)refreshSubscriberInfoSync;
-- (void)signalStrengthChanged:(id)a3 info:(id)a4;
-- (void)stateChanged:(id)a3;
+- (void)signalStrengthChanged:(id)changed info:(id)info;
+- (void)stateChanged:(id)changed;
 - (void)subscriptionInfoDidChange;
 @end
 
@@ -98,7 +98,7 @@
   return v5;
 }
 
-- (TelephonyStateRelay)initWithMonitoring:(TelephonyStateDelegate *)a3
+- (TelephonyStateRelay)initWithMonitoring:(TelephonyStateDelegate *)monitoring
 {
   v21.receiver = self;
   v21.super_class = TelephonyStateRelay;
@@ -106,7 +106,7 @@
   v5 = v4;
   if (v4)
   {
-    v4->_telephonyStateDelegate = a3;
+    v4->_telephonyStateDelegate = monitoring;
     v6 = dispatch_queue_create("com.apple.analyticsd.TelephonyStateRelay.myQueue", 0);
     fObj = v5->_stateRelayQueue.fObj.fObj;
     v5->_stateRelayQueue.fObj.fObj = v6;
@@ -455,8 +455,8 @@ LABEL_29:
   if (coreTelephonyClient)
   {
     v6 = [(CoreTelephonyClient *)coreTelephonyClient getSubscriptionInfoWithError:0];
-    v4 = [v6 subscriptionsInUse];
-    if ([v4 count] <= 1)
+    subscriptionsInUse = [v6 subscriptionsInUse];
+    if ([subscriptionsInUse count] <= 1)
     {
       v5 = 256;
     }
@@ -518,127 +518,127 @@ LABEL_29:
   }
 }
 
-- (void)cellMonitorUpdate:(id)a3 info:(id)a4
+- (void)cellMonitorUpdate:(id)update info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  updateCopy = update;
+  infoCopy = info;
   v8 = sub_100006020(&self->_stateRelayQueue.fObj.fObj);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100098574;
   v11[3] = &unk_100185CD8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = updateCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = updateCopy;
   dispatch_async(v8, v11);
 }
 
-- (void)signalStrengthChanged:(id)a3 info:(id)a4
+- (void)signalStrengthChanged:(id)changed info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  infoCopy = info;
   v8 = sub_100006020(&self->_stateRelayQueue.fObj.fObj);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000986AC;
   v11[3] = &unk_100185CD8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changedCopy;
+  v13 = infoCopy;
+  v9 = infoCopy;
+  v10 = changedCopy;
   dispatch_async(v8, v11);
 }
 
-- (void)enhancedDataLinkQualityChanged:(id)a3 metric:(id)a4
+- (void)enhancedDataLinkQualityChanged:(id)changed metric:(id)metric
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  metricCopy = metric;
   v8 = sub_100006020(&self->_stateRelayQueue.fObj.fObj);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_1000987E4;
   v11[3] = &unk_100185CD8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changedCopy;
+  v13 = metricCopy;
+  v9 = metricCopy;
+  v10 = changedCopy;
   dispatch_async(v8, v11);
 }
 
-- (void)displayStatusChanged:(id)a3 status:(id)a4
+- (void)displayStatusChanged:(id)changed status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
+  changedCopy = changed;
+  statusCopy = status;
   v8 = sub_100006020(&self->_stateRelayQueue.fObj.fObj);
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_10009891C;
   v11[3] = &unk_100185CD8;
   v11[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = changedCopy;
+  v13 = statusCopy;
+  v9 = statusCopy;
+  v10 = changedCopy;
   dispatch_async(v8, v11);
 }
 
-- (void)currentDataSimChanged:(id)a3
+- (void)currentDataSimChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_100006020(&self->_stateRelayQueue.fObj.fObj);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100098A24;
   block[3] = &unk_100184D00;
   block[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(v5, block);
 }
 
-- (void)internetConnectionStateChanged:(id)a3
+- (void)internetConnectionStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_100006020(&self->_stateRelayQueue.fObj.fObj);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100098B28;
   block[3] = &unk_100184D00;
   block[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(v5, block);
 }
 
-- (void)carrierBundleChange:(id)a3
+- (void)carrierBundleChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = sub_100006020(&self->_stateRelayQueue.fObj.fObj);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100098C2C;
   block[3] = &unk_100184D00;
   block[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(v5, block);
 }
 
-- (void)operatorBundleChange:(id)a3
+- (void)operatorBundleChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v5 = sub_100006020(&self->_stateRelayQueue.fObj.fObj);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100098D30;
   block[3] = &unk_100184D00;
   block[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_async(v5, block);
 }
 
@@ -653,57 +653,57 @@ LABEL_29:
   dispatch_async(v3, v4);
 }
 
-- (void)stateChanged:(id)a3
+- (void)stateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_100006020(&self->_stateRelayQueue.fObj.fObj);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100098EF4;
   block[3] = &unk_100184D00;
   block[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(v5, block);
 }
 
-- (void)radioStateChanged:(id)a3
+- (void)radioStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   v5 = sub_100006020(&self->_stateRelayQueue.fObj.fObj);
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100098FF8;
   block[3] = &unk_100184D00;
   block[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changedCopy;
+  v6 = changedCopy;
   dispatch_async(v5, block);
 }
 
-- (void)handleCurrentDataSimChanged:(id)a3
+- (void)handleCurrentDataSimChanged:(id)changed
 {
-  v5 = a3;
-  objc_storeStrong(&self->_dataSubscriptionContext, a3);
+  changedCopy = changed;
+  objc_storeStrong(&self->_dataSubscriptionContext, changed);
   v6 = qword_100192D98;
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
-    v7 = [(CTXPCServiceSubscriptionContext *)self->_dataSubscriptionContext slotID];
+    slotID = [(CTXPCServiceSubscriptionContext *)self->_dataSubscriptionContext slotID];
     v8 = 134217984;
-    v9 = v7;
+    v9 = slotID;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "[TelephonyStateRelay] Changing data preferred to slot = %ld", &v8, 0xCu);
   }
 
   [(TelephonyStateRelay *)self refreshOnCurrentDataSimChange];
 }
 
-- (void)handleInternetConnectionStateChanged:(id)a3
+- (void)handleInternetConnectionStateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  changedCopy = changed;
+  v5 = changedCopy;
+  if (changedCopy)
   {
-    v6 = -[TelephonyStateRelay cellularInternetConnectionStateAsEnum:](self, "cellularInternetConnectionStateAsEnum:", [v4 state]);
+    v6 = -[TelephonyStateRelay cellularInternetConnectionStateAsEnum:](self, "cellularInternetConnectionStateAsEnum:", [changedCopy state]);
     v7 = [v5 pdp];
     -[TelephonyStateRelay _updateCellInternetStatusAndLQM:pdpContext:](self, "_updateCellInternetStatusAndLQM:pdpContext:", v6, [v7 intValue]);
   }
@@ -714,18 +714,18 @@ LABEL_29:
   }
 }
 
-- (void)handleCellMonitorUpdate:(id)a3 info:(id)a4
+- (void)handleCellMonitorUpdate:(id)update info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TelephonyStateRelay *)self dataSubscriptionContext];
-  v9 = v8;
-  if (v7 && v6 && v8)
+  updateCopy = update;
+  infoCopy = info;
+  dataSubscriptionContext = [(TelephonyStateRelay *)self dataSubscriptionContext];
+  v9 = dataSubscriptionContext;
+  if (infoCopy && updateCopy && dataSubscriptionContext)
   {
-    v10 = [v8 slotID];
-    if (v10 == [v6 slotID])
+    slotID = [dataSubscriptionContext slotID];
+    if (slotID == [updateCopy slotID])
     {
-      v11 = [(TelephonyStateRelay *)self extractServingCellInfo:v7];
+      v11 = [(TelephonyStateRelay *)self extractServingCellInfo:infoCopy];
       v12 = v11;
       if (v11)
       {
@@ -750,18 +750,18 @@ LABEL_29:
   }
 }
 
-- (void)handleSignalStrengthChanged:(id)a3 info:(id)a4
+- (void)handleSignalStrengthChanged:(id)changed info:(id)info
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TelephonyStateRelay *)self dataSubscriptionContext];
-  v9 = v8;
-  if (v7 && v6 && v8)
+  changedCopy = changed;
+  infoCopy = info;
+  dataSubscriptionContext = [(TelephonyStateRelay *)self dataSubscriptionContext];
+  v9 = dataSubscriptionContext;
+  if (infoCopy && changedCopy && dataSubscriptionContext)
   {
-    v10 = [v8 slotID];
-    if (v10 == [v6 slotID])
+    slotID = [dataSubscriptionContext slotID];
+    if (slotID == [changedCopy slotID])
     {
-      [(TelephonyStateRelay *)self _updateSignalBars:[(TelephonyStateRelay *)self formatSignalBars:v7]];
+      [(TelephonyStateRelay *)self _updateSignalBars:[(TelephonyStateRelay *)self formatSignalBars:infoCopy]];
     }
   }
 
@@ -771,22 +771,22 @@ LABEL_29:
   }
 }
 
-- (void)handleEnhancedLQMChanged:(id)a3 metric:(id)a4
+- (void)handleEnhancedLQMChanged:(id)changed metric:(id)metric
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  changedCopy = changed;
+  metricCopy = metric;
+  v8 = metricCopy;
+  if (metricCopy)
   {
-    v9 = [v7 metricType];
-    if (v9 == 1)
+    metricType = [metricCopy metricType];
+    if (metricType == 1)
     {
-      [(TelephonyStateRelay *)self handleLinkStateChanged:v6 metric:v8];
+      [(TelephonyStateRelay *)self handleLinkStateChanged:changedCopy metric:v8];
     }
 
-    else if (v9 == 8)
+    else if (metricType == 8)
     {
-      [(TelephonyStateRelay *)self handleHighThroughputChanged:v6 metric:v8];
+      [(TelephonyStateRelay *)self handleHighThroughputChanged:changedCopy metric:v8];
     }
   }
 
@@ -796,19 +796,19 @@ LABEL_29:
   }
 }
 
-- (void)handleLinkStateChanged:(id)a3 metric:(id)a4
+- (void)handleLinkStateChanged:(id)changed metric:(id)metric
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TelephonyStateRelay *)self dataSubscriptionContext];
-  v9 = v8;
-  if (v7 && v6 && v8)
+  changedCopy = changed;
+  metricCopy = metric;
+  dataSubscriptionContext = [(TelephonyStateRelay *)self dataSubscriptionContext];
+  v9 = dataSubscriptionContext;
+  if (metricCopy && changedCopy && dataSubscriptionContext)
   {
-    v10 = [v8 slotID];
-    if (v10 == [v6 slotID])
+    slotID = [dataSubscriptionContext slotID];
+    if (slotID == [changedCopy slotID])
     {
-      v11 = [v7 enhancedLinkQuality];
-      v12 = [(TelephonyStateRelay *)self extractLinkStateChange:v11];
+      enhancedLinkQuality = [metricCopy enhancedLinkQuality];
+      v12 = [(TelephonyStateRelay *)self extractLinkStateChange:enhancedLinkQuality];
       v13 = HIBYTE(v12);
       v14 = v12;
 
@@ -825,16 +825,16 @@ LABEL_29:
   }
 }
 
-- (pair<LinkStateNotificationType,)extractLinkStateChange:(id)a3
+- (pair<LinkStateNotificationType,)extractLinkStateChange:(id)change
 {
-  v3 = a3;
+  changeCopy = change;
   v9 = 0;
-  if (v3)
+  if (changeCopy)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && [v3 length] == 5)
+    if ((objc_opt_isKindOfClass() & 1) != 0 && [changeCopy length] == 5)
     {
-      [v3 getBytes:&v9 range:{1, 1}];
+      [changeCopy getBytes:&v9 range:{1, 1}];
       v8 = -1;
       switch(v9)
       {
@@ -857,7 +857,7 @@ LABEL_29:
           goto LABEL_16;
       }
 
-      [v3 getBytes:&v8 range:{v4, 1}];
+      [changeCopy getBytes:&v8 range:{v4, 1}];
       v6 = v8;
 LABEL_16:
       v5 = v9;
@@ -872,19 +872,19 @@ LABEL_9:
   return (v5 | (v6 << 8));
 }
 
-- (void)handleHighThroughputChanged:(id)a3 metric:(id)a4
+- (void)handleHighThroughputChanged:(id)changed metric:(id)metric
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(TelephonyStateRelay *)self dataSubscriptionContext];
-  v9 = v8;
-  if (v7 && v6 && v8)
+  changedCopy = changed;
+  metricCopy = metric;
+  dataSubscriptionContext = [(TelephonyStateRelay *)self dataSubscriptionContext];
+  v9 = dataSubscriptionContext;
+  if (metricCopy && changedCopy && dataSubscriptionContext)
   {
-    v10 = [v8 slotID];
-    if (v10 == [v6 slotID])
+    slotID = [dataSubscriptionContext slotID];
+    if (slotID == [changedCopy slotID])
     {
-      v11 = [v7 enhancedLinkQuality];
-      v12 = [(TelephonyStateRelay *)self extractHighThroughput:v11];
+      enhancedLinkQuality = [metricCopy enhancedLinkQuality];
+      v12 = [(TelephonyStateRelay *)self extractHighThroughput:enhancedLinkQuality];
 
       if (v12 <= 1)
       {
@@ -899,15 +899,15 @@ LABEL_9:
   }
 }
 
-- (void)handleCarrierBundleChanged:(id)a3
+- (void)handleCarrierBundleChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(TelephonyStateRelay *)self dataSubscriptionContext];
-  v6 = v5;
-  if (v4 && v5)
+  changedCopy = changed;
+  dataSubscriptionContext = [(TelephonyStateRelay *)self dataSubscriptionContext];
+  v6 = dataSubscriptionContext;
+  if (changedCopy && dataSubscriptionContext)
   {
-    v7 = [v5 slotID];
-    if (v7 == [v4 slotID])
+    slotID = [dataSubscriptionContext slotID];
+    if (slotID == [changedCopy slotID])
     {
       [(TelephonyStateRelay *)self refreshSubscriberInfoSync];
     }
@@ -919,15 +919,15 @@ LABEL_9:
   }
 }
 
-- (void)handleOperatorBundleChanged:(id)a3
+- (void)handleOperatorBundleChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [(TelephonyStateRelay *)self dataSubscriptionContext];
-  v6 = v5;
-  if (v4 && v5)
+  changedCopy = changed;
+  dataSubscriptionContext = [(TelephonyStateRelay *)self dataSubscriptionContext];
+  v6 = dataSubscriptionContext;
+  if (changedCopy && dataSubscriptionContext)
   {
-    v7 = [v5 slotID];
-    if (v7 == [v4 slotID])
+    slotID = [dataSubscriptionContext slotID];
+    if (slotID == [changedCopy slotID])
     {
       [(TelephonyStateRelay *)self refreshServingCarrierNameSync];
     }
@@ -939,20 +939,20 @@ LABEL_9:
   }
 }
 
-- (void)handleDisplayStatusChanged:(id)a3 status:(id)a4
+- (void)handleDisplayStatusChanged:(id)changed status:(id)status
 {
-  v6 = a3;
-  v7 = a4;
-  -[TelephonyStateRelay handleDisplayStatusChangedForSatelliteStatus:](self, "handleDisplayStatusChangedForSatelliteStatus:", [v7 isSatelliteSystem]);
-  v8 = [(TelephonyStateRelay *)self dataSubscriptionContext];
-  v9 = v8;
-  if (v6 && v8)
+  changedCopy = changed;
+  statusCopy = status;
+  -[TelephonyStateRelay handleDisplayStatusChangedForSatelliteStatus:](self, "handleDisplayStatusChangedForSatelliteStatus:", [statusCopy isSatelliteSystem]);
+  dataSubscriptionContext = [(TelephonyStateRelay *)self dataSubscriptionContext];
+  v9 = dataSubscriptionContext;
+  if (changedCopy && dataSubscriptionContext)
   {
-    v10 = [v8 slotID];
-    if (v10 == [v6 slotID])
+    slotID = [dataSubscriptionContext slotID];
+    if (slotID == [changedCopy slotID])
     {
-      v11 = [v7 registrationDisplayStatus];
-      if ([v11 isEqualToString:kCTRegistrationStatusNotRegistered])
+      registrationDisplayStatus = [statusCopy registrationDisplayStatus];
+      if ([registrationDisplayStatus isEqualToString:kCTRegistrationStatusNotRegistered])
       {
         satelliteStatus = self->_satelliteStatus;
 
@@ -971,8 +971,8 @@ LABEL_9:
       {
       }
 
-      v13 = [v7 registrationDisplayStatus];
-      v14 = sub_10008D4D0(v13);
+      registrationDisplayStatus2 = [statusCopy registrationDisplayStatus];
+      v14 = sub_10008D4D0(registrationDisplayStatus2);
 
       if (v14)
       {
@@ -988,28 +988,28 @@ LABEL_9:
   }
 }
 
-- (void)handleDisplayStatusChangedForSatelliteStatus:(BOOL)a3
+- (void)handleDisplayStatusChangedForSatelliteStatus:(BOOL)status
 {
-  v3 = a3;
-  if (a3 || self->_satelliteStatus != 1)
+  statusCopy = status;
+  if (status || self->_satelliteStatus != 1)
   {
     v5 = qword_100192D98;
     if (os_log_type_enabled(qword_100192D98, OS_LOG_TYPE_DEBUG))
     {
-      sub_10011EDDC(v3, self, v5);
-      if (v3)
+      sub_10011EDDC(statusCopy, self, v5);
+      if (statusCopy)
       {
         goto LABEL_5;
       }
     }
 
-    else if (v3)
+    else if (statusCopy)
     {
 LABEL_5:
-      v6 = self;
+      selfCopy2 = self;
       v7 = 3;
 LABEL_9:
-      [(TelephonyStateRelay *)v6 updateSatelliteStatusAndCellularRAT:v7];
+      [(TelephonyStateRelay *)selfCopy2 updateSatelliteStatusAndCellularRAT:v7];
       return;
     }
 
@@ -1018,7 +1018,7 @@ LABEL_9:
       return;
     }
 
-    v6 = self;
+    selfCopy2 = self;
     v7 = 1;
     goto LABEL_9;
   }
@@ -1031,15 +1031,15 @@ LABEL_9:
   [(TelephonyStateRelay *)self refreshSubscriberInfoSync];
 }
 
-- (void)handleStewieStateChanged:(id)a3
+- (void)handleStewieStateChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (os_log_type_enabled(qword_100192D98, OS_LOG_TYPE_DEBUG))
   {
     sub_10011EE5C();
   }
 
-  if ([(TelephonyStateRelay *)self isStewieActive:v4])
+  if ([(TelephonyStateRelay *)self isStewieActive:changedCopy])
   {
     [(TelephonyStateRelay *)self updateSatelliteStatusAndCellularRAT:2];
   }
@@ -1050,43 +1050,43 @@ LABEL_9:
   }
 }
 
-- (void)handleRadioStateChanged:(id)a3
+- (void)handleRadioStateChanged:(id)changed
 {
-  v4 = a3;
-  v5 = [v4 intValue];
-  if (v5 != self->_ctRadioState)
+  changedCopy = changed;
+  intValue = [changedCopy intValue];
+  if (intValue != self->_ctRadioState)
   {
     v6 = qword_100192D98;
     if (os_log_type_enabled(qword_100192D98, OS_LOG_TYPE_DEBUG))
     {
-      sub_10011EEC8(v5, v6);
+      sub_10011EEC8(intValue, v6);
     }
 
-    self->_ctRadioState = v5;
+    self->_ctRadioState = intValue;
     (*(self->_telephonyStateDelegate->var0 + 12))(&v8);
     v7 = v8;
     v8 = 0;
   }
 }
 
-- (unsigned)extractHighThroughput:(id)a3
+- (unsigned)extractHighThroughput:(id)throughput
 {
-  v3 = a3;
+  throughputCopy = throughput;
   v4 = -1;
   v8 = -1;
-  if (v3)
+  if (throughputCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if ([v3 length] == 8)
+      if ([throughputCopy length] == 8)
       {
         v7 = 0;
-        [v3 getBytes:&v7 range:{4, 4}];
+        [throughputCopy getBytes:&v7 range:{4, 4}];
         v4 = v7 != 0;
       }
 
-      else if ([v3 length] < 2 || (objc_msgSend(v3, "getBytes:range:", &v8, 1, 1), v4 = v8, v8 >= 2u))
+      else if ([throughputCopy length] < 2 || (objc_msgSend(throughputCopy, "getBytes:range:", &v8, 1, 1), v4 = v8, v8 >= 2u))
       {
         v5 = qword_100192D98;
         if (os_log_type_enabled(qword_100192D98, OS_LOG_TYPE_ERROR))
@@ -1102,13 +1102,13 @@ LABEL_9:
   return v4;
 }
 
-- (id)extractServingCellInfo:(id)a3
+- (id)extractServingCellInfo:(id)info
 {
-  v3 = a3;
-  v4 = [v3 legacyInfo];
-  v5 = [v3 legacyInfo];
+  infoCopy = info;
+  legacyInfo = [infoCopy legacyInfo];
+  legacyInfo2 = [infoCopy legacyInfo];
 
-  if (v5)
+  if (legacyInfo2)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1124,23 +1124,23 @@ LABEL_9:
       v7[2] = sub_10009A21C;
       v7[3] = &unk_100185D00;
       v7[4] = &v8;
-      [v4 enumerateObjectsUsingBlock:v7];
-      v5 = v9[5];
+      [legacyInfo enumerateObjectsUsingBlock:v7];
+      legacyInfo2 = v9[5];
       _Block_object_dispose(&v8, 8);
     }
 
     else
     {
-      v5 = 0;
+      legacyInfo2 = 0;
     }
   }
 
-  return v5;
+  return legacyInfo2;
 }
 
-- (void)_updateCellInternetStatusAndLQM:(int)a3 pdpContext:(int)a4
+- (void)_updateCellInternetStatusAndLQM:(int)m pdpContext:(int)context
 {
-  self->_internetCellStatus = a3;
+  self->_internetCellStatus = m;
   telephonyStateDelegate = self->_telephonyStateDelegate;
   [(TelephonyStateRelay *)self formatInternetConnection:?];
   *__p = *v7;
@@ -1158,7 +1158,7 @@ LABEL_9:
   [(TelephonyStateRelay *)self _updateCellularLQM:0];
 }
 
-- (void)_updateCellularLQM:(optional<LQMThreshold>)a3
+- (void)_updateCellularLQM:(optional<LQMThreshold>)m
 {
   internetCellStatus = self->_internetCellStatus;
   (*(self->_telephonyStateDelegate->var0 + 5))(&v5);
@@ -1166,14 +1166,14 @@ LABEL_9:
   v5 = 0;
 }
 
-- (void)_updateSignalBars:(char)a3
+- (void)_updateSignalBars:(char)bars
 {
   (*(self->_telephonyStateDelegate->var0 + 3))(&v4);
   v3 = v4;
   v4 = 0;
 }
 
-- (void)_updateHighThroughput:(BOOL)a3
+- (void)_updateHighThroughput:(BOOL)throughput
 {
   (*(self->_telephonyStateDelegate->var0 + 6))(&v4);
   v3 = v4;
@@ -1228,10 +1228,10 @@ LABEL_9:
   }
 }
 
-- (void)_updateSubscriberCarrierName:(optional<std::string> *)a3
+- (void)_updateSubscriberCarrierName:(optional<std::string> *)name
 {
   p_subscriberCarrierName = &self->_subscriberCarrierName;
-  if (a3[1].var0.var0 == 1)
+  if (name[1].var0.var0 == 1)
   {
     v6 = *(&self->_subscriberCarrierName.__rep_.__l + 23);
     if (v6 >= 0)
@@ -1244,14 +1244,14 @@ LABEL_9:
       size = self->_subscriberCarrierName.__rep_.__l.__size_;
     }
 
-    v8 = *(&a3->var0.var1.__rep_.__l + 23);
+    v8 = *(&name->var0.var1.__rep_.__l + 23);
     v9 = v8;
     if ((v8 & 0x80u) != 0)
     {
-      v8 = a3->var0.var1.__rep_.__l.__size_;
+      v8 = name->var0.var1.__rep_.__l.__size_;
     }
 
-    if (size != v8 || (v6 >= 0 ? (v10 = &self->_subscriberCarrierName) : (v10 = p_subscriberCarrierName->__r_.__value_.__r.__words[0]), (v11 = a3->var0.var1.__rep_.__l.__data_, v9 >= 0) ? (v12 = a3) : (v12 = a3->var0.var1.__rep_.__l.__data_), memcmp(v10, v12, size)))
+    if (size != v8 || (v6 >= 0 ? (v10 = &self->_subscriberCarrierName) : (v10 = p_subscriberCarrierName->__r_.__value_.__r.__words[0]), (v11 = name->var0.var1.__rep_.__l.__data_, v9 >= 0) ? (v12 = name) : (v12 = name->var0.var1.__rep_.__l.__data_), memcmp(v10, v12, size)))
     {
       v13 = qword_100192D98;
       if (os_log_type_enabled(qword_100192D98, OS_LOG_TYPE_INFO))
@@ -1262,10 +1262,10 @@ LABEL_9:
           v14 = p_subscriberCarrierName->__r_.__value_.__r.__words[0];
         }
 
-        data = a3;
-        if (*(&a3->var0.var1.__rep_.__l + 23) < 0)
+        data = name;
+        if (*(&name->var0.var1.__rep_.__l + 23) < 0)
         {
-          data = a3->var0.var1.__rep_.__l.__data_;
+          data = name->var0.var1.__rep_.__l.__data_;
         }
 
         *buf = 136315394;
@@ -1275,9 +1275,9 @@ LABEL_9:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[TelephonyStateRelay] Changing homeCarrierName from %s to %s", buf, 0x16u);
       }
 
-      std::string::operator=(p_subscriberCarrierName, a3);
+      std::string::operator=(p_subscriberCarrierName, name);
       telephonyStateDelegate = self->_telephonyStateDelegate;
-      sub_10009B928(v24, &a3->var0.var0);
+      sub_10009B928(v24, &name->var0.var0);
       (*(telephonyStateDelegate->var0 + 7))(&v22, telephonyStateDelegate, v24);
       v17 = v22;
       v22 = 0;
@@ -1295,7 +1295,7 @@ LABEL_27:
   {
     std::string::assign(&self->_subscriberCarrierName, "");
     v19 = self->_telephonyStateDelegate;
-    sub_10009B928(v23, &a3->var0.var0);
+    sub_10009B928(v23, &name->var0.var0);
     (*(v19->var0 + 7))(&v21, v19, v23);
     v20 = v21;
     v21 = 0;
@@ -1308,10 +1308,10 @@ LABEL_27:
   }
 }
 
-- (void)_updateSubscriberCarrierCountry:(optional<std::string> *)a3
+- (void)_updateSubscriberCarrierCountry:(optional<std::string> *)country
 {
   p_subscriberCarrierCountry = &self->_subscriberCarrierCountry;
-  if (a3[1].var0.var0 == 1)
+  if (country[1].var0.var0 == 1)
   {
     v6 = *(&self->_subscriberCarrierCountry.__rep_.__l + 23);
     if (v6 >= 0)
@@ -1324,14 +1324,14 @@ LABEL_27:
       size = self->_subscriberCarrierCountry.__rep_.__l.__size_;
     }
 
-    v8 = *(&a3->var0.var1.__rep_.__l + 23);
+    v8 = *(&country->var0.var1.__rep_.__l + 23);
     v9 = v8;
     if ((v8 & 0x80u) != 0)
     {
-      v8 = a3->var0.var1.__rep_.__l.__size_;
+      v8 = country->var0.var1.__rep_.__l.__size_;
     }
 
-    if (size != v8 || (v6 >= 0 ? (v10 = &self->_subscriberCarrierCountry) : (v10 = p_subscriberCarrierCountry->__r_.__value_.__r.__words[0]), (v11 = a3->var0.var1.__rep_.__l.__data_, v9 >= 0) ? (v12 = a3) : (v12 = a3->var0.var1.__rep_.__l.__data_), memcmp(v10, v12, size)))
+    if (size != v8 || (v6 >= 0 ? (v10 = &self->_subscriberCarrierCountry) : (v10 = p_subscriberCarrierCountry->__r_.__value_.__r.__words[0]), (v11 = country->var0.var1.__rep_.__l.__data_, v9 >= 0) ? (v12 = country) : (v12 = country->var0.var1.__rep_.__l.__data_), memcmp(v10, v12, size)))
     {
       v13 = qword_100192D98;
       if (os_log_type_enabled(qword_100192D98, OS_LOG_TYPE_INFO))
@@ -1342,10 +1342,10 @@ LABEL_27:
           v14 = p_subscriberCarrierCountry->__r_.__value_.__r.__words[0];
         }
 
-        data = a3;
-        if (*(&a3->var0.var1.__rep_.__l + 23) < 0)
+        data = country;
+        if (*(&country->var0.var1.__rep_.__l + 23) < 0)
         {
-          data = a3->var0.var1.__rep_.__l.__data_;
+          data = country->var0.var1.__rep_.__l.__data_;
         }
 
         *buf = 136315394;
@@ -1355,9 +1355,9 @@ LABEL_27:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[TelephonyStateRelay] Changing homeCarrierCountry from %s to %s", buf, 0x16u);
       }
 
-      std::string::operator=(p_subscriberCarrierCountry, a3);
+      std::string::operator=(p_subscriberCarrierCountry, country);
       telephonyStateDelegate = self->_telephonyStateDelegate;
-      sub_10009B928(v24, &a3->var0.var0);
+      sub_10009B928(v24, &country->var0.var0);
       (*(telephonyStateDelegate->var0 + 9))(&v22, telephonyStateDelegate, v24);
       v17 = v22;
       v22 = 0;
@@ -1375,7 +1375,7 @@ LABEL_27:
   {
     std::string::assign(&self->_subscriberCarrierCountry, "");
     v19 = self->_telephonyStateDelegate;
-    sub_10009B928(v23, &a3->var0.var0);
+    sub_10009B928(v23, &country->var0.var0);
     (*(v19->var0 + 9))(&v21, v19, v23);
     v20 = v21;
     v21 = 0;
@@ -1388,10 +1388,10 @@ LABEL_27:
   }
 }
 
-- (void)_updateSubscriberCarrierBundleVersion:(optional<std::string> *)a3
+- (void)_updateSubscriberCarrierBundleVersion:(optional<std::string> *)version
 {
   p_subscriberCarrierBundleVersion = &self->_subscriberCarrierBundleVersion;
-  if (a3[1].var0.var0 == 1)
+  if (version[1].var0.var0 == 1)
   {
     v6 = *(&self->_subscriberCarrierBundleVersion.__rep_.__l + 23);
     if (v6 >= 0)
@@ -1404,14 +1404,14 @@ LABEL_27:
       size = self->_subscriberCarrierBundleVersion.__rep_.__l.__size_;
     }
 
-    v8 = *(&a3->var0.var1.__rep_.__l + 23);
+    v8 = *(&version->var0.var1.__rep_.__l + 23);
     v9 = v8;
     if ((v8 & 0x80u) != 0)
     {
-      v8 = a3->var0.var1.__rep_.__l.__size_;
+      v8 = version->var0.var1.__rep_.__l.__size_;
     }
 
-    if (size != v8 || (v6 >= 0 ? (v10 = &self->_subscriberCarrierBundleVersion) : (v10 = p_subscriberCarrierBundleVersion->__r_.__value_.__r.__words[0]), (v11 = a3->var0.var1.__rep_.__l.__data_, v9 >= 0) ? (v12 = a3) : (v12 = a3->var0.var1.__rep_.__l.__data_), memcmp(v10, v12, size)))
+    if (size != v8 || (v6 >= 0 ? (v10 = &self->_subscriberCarrierBundleVersion) : (v10 = p_subscriberCarrierBundleVersion->__r_.__value_.__r.__words[0]), (v11 = version->var0.var1.__rep_.__l.__data_, v9 >= 0) ? (v12 = version) : (v12 = version->var0.var1.__rep_.__l.__data_), memcmp(v10, v12, size)))
     {
       v13 = qword_100192D98;
       if (os_log_type_enabled(qword_100192D98, OS_LOG_TYPE_INFO))
@@ -1422,10 +1422,10 @@ LABEL_27:
           v14 = p_subscriberCarrierBundleVersion->__r_.__value_.__r.__words[0];
         }
 
-        data = a3;
-        if (*(&a3->var0.var1.__rep_.__l + 23) < 0)
+        data = version;
+        if (*(&version->var0.var1.__rep_.__l + 23) < 0)
         {
-          data = a3->var0.var1.__rep_.__l.__data_;
+          data = version->var0.var1.__rep_.__l.__data_;
         }
 
         *buf = 136315394;
@@ -1435,9 +1435,9 @@ LABEL_27:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[TelephonyStateRelay] Changing homeCarrierBundleVersion from %s to %s", buf, 0x16u);
       }
 
-      std::string::operator=(p_subscriberCarrierBundleVersion, a3);
+      std::string::operator=(p_subscriberCarrierBundleVersion, version);
       telephonyStateDelegate = self->_telephonyStateDelegate;
-      sub_10009B928(v24, &a3->var0.var0);
+      sub_10009B928(v24, &version->var0.var0);
       (*(telephonyStateDelegate->var0 + 8))(&v22, telephonyStateDelegate, v24);
       v17 = v22;
       v22 = 0;
@@ -1455,7 +1455,7 @@ LABEL_27:
   {
     std::string::assign(&self->_subscriberCarrierBundleVersion, "");
     v19 = self->_telephonyStateDelegate;
-    sub_10009B928(v23, &a3->var0.var0);
+    sub_10009B928(v23, &version->var0.var0);
     (*(v19->var0 + 8))(&v21, v19, v23);
     v20 = v21;
     v21 = 0;
@@ -1468,10 +1468,10 @@ LABEL_27:
   }
 }
 
-- (void)_updateServingCarrierName:(optional<std::string> *)a3
+- (void)_updateServingCarrierName:(optional<std::string> *)name
 {
   p_servingCarrierName = &self->_servingCarrierName;
-  if (a3[1].var0.var0 == 1)
+  if (name[1].var0.var0 == 1)
   {
     v6 = *(&self->_servingCarrierName.__rep_.__l + 23);
     if (v6 >= 0)
@@ -1484,14 +1484,14 @@ LABEL_27:
       size = self->_servingCarrierName.__rep_.__l.__size_;
     }
 
-    v8 = *(&a3->var0.var1.__rep_.__l + 23);
+    v8 = *(&name->var0.var1.__rep_.__l + 23);
     v9 = v8;
     if ((v8 & 0x80u) != 0)
     {
-      v8 = a3->var0.var1.__rep_.__l.__size_;
+      v8 = name->var0.var1.__rep_.__l.__size_;
     }
 
-    if (size != v8 || (v6 >= 0 ? (v10 = &self->_servingCarrierName) : (v10 = p_servingCarrierName->__r_.__value_.__r.__words[0]), (v11 = a3->var0.var1.__rep_.__l.__data_, v9 >= 0) ? (v12 = a3) : (v12 = a3->var0.var1.__rep_.__l.__data_), memcmp(v10, v12, size)))
+    if (size != v8 || (v6 >= 0 ? (v10 = &self->_servingCarrierName) : (v10 = p_servingCarrierName->__r_.__value_.__r.__words[0]), (v11 = name->var0.var1.__rep_.__l.__data_, v9 >= 0) ? (v12 = name) : (v12 = name->var0.var1.__rep_.__l.__data_), memcmp(v10, v12, size)))
     {
       v13 = qword_100192D98;
       if (os_log_type_enabled(qword_100192D98, OS_LOG_TYPE_INFO))
@@ -1502,10 +1502,10 @@ LABEL_27:
           v14 = p_servingCarrierName->__r_.__value_.__r.__words[0];
         }
 
-        data = a3;
-        if (*(&a3->var0.var1.__rep_.__l + 23) < 0)
+        data = name;
+        if (*(&name->var0.var1.__rep_.__l + 23) < 0)
         {
-          data = a3->var0.var1.__rep_.__l.__data_;
+          data = name->var0.var1.__rep_.__l.__data_;
         }
 
         *buf = 136315394;
@@ -1515,9 +1515,9 @@ LABEL_27:
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "[TelephonyStateRelay] Changing servingCarrierName from %s to %s", buf, 0x16u);
       }
 
-      std::string::operator=(p_servingCarrierName, a3);
+      std::string::operator=(p_servingCarrierName, name);
       telephonyStateDelegate = self->_telephonyStateDelegate;
-      sub_10009B928(v24, &a3->var0.var0);
+      sub_10009B928(v24, &name->var0.var0);
       (*(telephonyStateDelegate->var0 + 10))(&v22, telephonyStateDelegate, v24);
       v17 = v22;
       v22 = 0;
@@ -1535,7 +1535,7 @@ LABEL_27:
   {
     std::string::assign(&self->_servingCarrierName, "");
     v19 = self->_telephonyStateDelegate;
-    sub_10009B928(v23, &a3->var0.var0);
+    sub_10009B928(v23, &name->var0.var0);
     (*(v19->var0 + 10))(&v21, v19, v23);
     v20 = v21;
     v21 = 0;
@@ -1548,41 +1548,41 @@ LABEL_27:
   }
 }
 
-- (void)_updateIsDualSim:(optional<BOOL>)a3
+- (void)_updateIsDualSim:(optional<BOOL>)sim
 {
   (*(self->_telephonyStateDelegate->var0 + 11))(&v4);
   v3 = v4;
   v4 = 0;
 }
 
-- (int)cellularInternetConnectionStateAsEnum:(int)a3
+- (int)cellularInternetConnectionStateAsEnum:(int)enum
 {
-  if (a3 > 3)
+  if (enum > 3)
   {
     return 0;
   }
 
   else
   {
-    return dword_100145030[a3];
+    return dword_100145030[enum];
   }
 }
 
-- (char)formatSignalBars:(id)a3
+- (char)formatSignalBars:(id)bars
 {
-  v3 = [a3 displayBars];
-  v4 = v3;
-  if (v3)
+  displayBars = [bars displayBars];
+  v4 = displayBars;
+  if (displayBars)
   {
-    v5 = [v3 intValue];
+    intValue = [displayBars intValue];
   }
 
   else
   {
-    v5 = -1;
+    intValue = -1;
   }
 
-  return v5;
+  return intValue;
 }
 
 - (basic_string<char,)formatInternetConnection:(std::allocator<char>> *__return_ptr)retstr
@@ -1718,21 +1718,21 @@ LABEL_5:
   return result;
 }
 
-- (BOOL)isStewieActive:(id)a3
+- (BOOL)isStewieActive:(id)active
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  activeCopy = active;
+  v4 = activeCopy;
+  if (activeCopy)
   {
-    v5 = [v3 isStewieActive];
+    isStewieActive = [activeCopy isStewieActive];
   }
 
   else
   {
-    v5 = 0;
+    isStewieActive = 0;
   }
 
-  return v5;
+  return isStewieActive;
 }
 
 - (id).cxx_construct

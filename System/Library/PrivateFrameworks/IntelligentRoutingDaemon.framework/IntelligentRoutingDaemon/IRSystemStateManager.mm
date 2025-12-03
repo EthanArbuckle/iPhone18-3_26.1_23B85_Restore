@@ -1,48 +1,48 @@
 @interface IRSystemStateManager
 - (BOOL)_updateSystemStateWithAppInFocusWindowEnd;
-- (BOOL)_updateSystemStateWithDeviceWiFi:(id)a3;
-- (BOOL)_updateSystemStateWithMediaRoute:(id)a3;
-- (BOOL)_updateSystemStateWithOutputDevice:(id)a3;
-- (BOOL)_updateSystemStateWithPredictedOutputDevice:(id)a3;
+- (BOOL)_updateSystemStateWithDeviceWiFi:(id)fi;
+- (BOOL)_updateSystemStateWithMediaRoute:(id)route;
+- (BOOL)_updateSystemStateWithOutputDevice:(id)device;
+- (BOOL)_updateSystemStateWithPredictedOutputDevice:(id)device;
 - (BOOL)startLowLatencyMiLo;
 - (IRPolicyManagerContextObserver)contextObserver;
-- (IRSystemStateManager)initWithQueue:(id)a3 contextObserver:(id)a4 biomeProvider:(id)a5 miloProvider:(id)a6 proximityProvider:(id)a7 serviceStore:(id)a8 displayMonitor:(id)a9 audioAVOutputContextController:(id)a10 isLowLatencyMiLo:(BOOL)a11;
+- (IRSystemStateManager)initWithQueue:(id)queue contextObserver:(id)observer biomeProvider:(id)provider miloProvider:(id)miloProvider proximityProvider:(id)proximityProvider serviceStore:(id)store displayMonitor:(id)monitor audioAVOutputContextController:(id)self0 isLowLatencyMiLo:(BOOL)self1;
 - (void)_cancelAppInFocusWindowTimer;
-- (void)_checkAndStartPDRFenceLogicIfNeededWithEvent:(id)a3 andCandidate:(id)a4;
+- (void)_checkAndStartPDRFenceLogicIfNeededWithEvent:(id)event andCandidate:(id)candidate;
 - (void)_checkAndStopPDRFenceLogicIfNeeded;
-- (void)_checkAndUpdateLatestPickerChoiceDateIfNeededForEvent:(id)a3;
-- (void)_didUpdateContextWithReason:(id)a3;
+- (void)_checkAndUpdateLatestPickerChoiceDateIfNeededForEvent:(id)event;
+- (void)_didUpdateContextWithReason:(id)reason;
 - (void)_initBiomeIfNeededUponAppInFocus;
 - (void)_startAppInFocusWindowTimer;
 - (void)_unregisterForBiomeEvents;
 - (void)_unregisterFromMiLo;
-- (void)addEvent:(id)a3 forCandidate:(id)a4;
-- (void)context:(id)a3 didUpdateOutputDevice:(id)a4;
-- (void)context:(id)a3 didUpdatePredicatedOutputDevice:(id)a4;
+- (void)addEvent:(id)event forCandidate:(id)candidate;
+- (void)context:(id)context didUpdateOutputDevice:(id)device;
+- (void)context:(id)context didUpdatePredicatedOutputDevice:(id)device;
 - (void)dealloc;
 - (void)deallocSync;
-- (void)didSpotOnLocationCompleteWithError:(id)a3;
+- (void)didSpotOnLocationCompleteWithError:(id)error;
 - (void)endAppInFocusWindow;
 - (void)logProviderState;
-- (void)monitor:(id)a3 didUpdateAppInFocus:(id)a4 isScreenUnlockEvent:(BOOL)a5;
-- (void)monitor:(id)a3 didUpdateDisplayOn:(BOOL)a4;
-- (void)monitor:(id)a3 didUpdateIsContinuityDisplay:(BOOL)a4;
-- (void)onPrediction:(id)a3;
-- (void)provider:(id)a3 didUpdateDeviceWiFi:(id)a4;
-- (void)provider:(id)a3 didUpdateMediaRoute:(id)a4;
-- (void)provider:(id)a3 didUpdateNearbyDevices:(id)a4;
+- (void)monitor:(id)monitor didUpdateAppInFocus:(id)focus isScreenUnlockEvent:(BOOL)event;
+- (void)monitor:(id)monitor didUpdateDisplayOn:(BOOL)on;
+- (void)monitor:(id)monitor didUpdateIsContinuityDisplay:(BOOL)display;
+- (void)onPrediction:(id)prediction;
+- (void)provider:(id)provider didUpdateDeviceWiFi:(id)fi;
+- (void)provider:(id)provider didUpdateMediaRoute:(id)route;
+- (void)provider:(id)provider didUpdateNearbyDevices:(id)devices;
 @end
 
 @implementation IRSystemStateManager
 
 - (void)_cancelAppInFocusWindowTimer
 {
-  v3 = [(IRSystemStateManager *)self appInFocusWindowTimer];
+  appInFocusWindowTimer = [(IRSystemStateManager *)self appInFocusWindowTimer];
 
-  if (v3)
+  if (appInFocusWindowTimer)
   {
-    v4 = [(IRSystemStateManager *)self appInFocusWindowTimer];
-    [v4 invalidate];
+    appInFocusWindowTimer2 = [(IRSystemStateManager *)self appInFocusWindowTimer];
+    [appInFocusWindowTimer2 invalidate];
 
     [(IRSystemStateManager *)self setAppInFocusWindowTimer:0];
   }
@@ -53,16 +53,16 @@
   objc_initWeak(&location, self);
   v3 = [IRTimer alloc];
   v4 = +[IRPreferences shared];
-  v5 = [v4 appInFocusWindowInSeconds];
-  [v5 doubleValue];
+  appInFocusWindowInSeconds = [v4 appInFocusWindowInSeconds];
+  [appInFocusWindowInSeconds doubleValue];
   v7 = v6;
-  v8 = [(IRSystemStateManager *)self queue];
+  queue = [(IRSystemStateManager *)self queue];
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __51__IRSystemStateManager__startAppInFocusWindowTimer__block_invoke;
   v13 = &unk_2797E0C18;
   objc_copyWeak(&v14, &location);
-  v9 = [(IRTimer *)v3 initWithInterval:0 repeats:v8 queue:&v10 block:v7];
+  v9 = [(IRTimer *)v3 initWithInterval:0 repeats:queue queue:&v10 block:v7];
   [(IRSystemStateManager *)self setAppInFocusWindowTimer:v9, v10, v11, v12, v13];
 
   objc_destroyWeak(&v14);
@@ -76,26 +76,26 @@
     return;
   }
 
-  v3 = [(IRSystemStateManager *)self contextObserver];
-  v4 = [v3 getService];
-  v5 = [v4 servicePackage];
+  contextObserver = [(IRSystemStateManager *)self contextObserver];
+  getService = [contextObserver getService];
+  servicePackage = [getService servicePackage];
 
-  if (v5 != 1)
+  if (servicePackage != 1)
   {
     return;
   }
 
-  v6 = [(IRSystemStateManager *)self systemState];
-  v7 = [v6 appInFocusBundleID];
-  if ([v7 isEqual:@"com.apple.TVRemoteUIService"])
+  systemState = [(IRSystemStateManager *)self systemState];
+  appInFocusBundleID = [systemState appInFocusBundleID];
+  if ([appInFocusBundleID isEqual:@"com.apple.TVRemoteUIService"])
   {
   }
 
   else
   {
-    v8 = [(IRSystemStateManager *)self systemState];
-    v9 = [v8 appInFocusBundleID];
-    v10 = [v9 isEqual:@"com.apple.facetime"];
+    systemState2 = [(IRSystemStateManager *)self systemState];
+    appInFocusBundleID2 = [systemState2 appInFocusBundleID];
+    v10 = [appInFocusBundleID2 isEqual:@"com.apple.facetime"];
 
     if ((v10 & 1) == 0)
     {
@@ -110,29 +110,29 @@
       continue;
     }
 
-    v12 = [(IRSystemStateManager *)self biomeProvider];
-    [v12 addObserver:self forEvent:i];
+    biomeProvider = [(IRSystemStateManager *)self biomeProvider];
+    [biomeProvider addObserver:self forEvent:i];
 
-    v13 = [(IRSystemStateManager *)self biomeProvider];
-    v14 = [v13 fetchLatestEventsOfEventType:i numEvents:1];
+    biomeProvider2 = [(IRSystemStateManager *)self biomeProvider];
+    v14 = [biomeProvider2 fetchLatestEventsOfEventType:i numEvents:1];
 
     if (v14 && [v14 count] == 1)
     {
       if (i == 2)
       {
-        v17 = [v14 firstObject];
-        v16 = [v17 eventBody];
+        firstObject = [v14 firstObject];
+        eventBody = [firstObject eventBody];
 
-        [(IRSystemStateManager *)self _updateSystemStateWithMediaRoute:v16];
+        [(IRSystemStateManager *)self _updateSystemStateWithMediaRoute:eventBody];
         goto LABEL_14;
       }
 
       if (i == 1)
       {
-        v15 = [v14 firstObject];
-        v16 = [v15 eventBody];
+        firstObject2 = [v14 firstObject];
+        eventBody = [firstObject2 eventBody];
 
-        [(IRSystemStateManager *)self _updateSystemStateWithDeviceWiFi:v16];
+        [(IRSystemStateManager *)self _updateSystemStateWithDeviceWiFi:eventBody];
 LABEL_14:
       }
     }
@@ -155,58 +155,58 @@ LABEL_14:
   if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(IRSystemStateManager *)self nearbyDeviceContainer];
+    nearbyDeviceContainer = [(IRSystemStateManager *)self nearbyDeviceContainer];
     v7 = 138412290;
-    v8 = v5;
+    v8 = nearbyDeviceContainer;
     _os_log_impl(&dword_25543D000, v4, OS_LOG_TYPE_DEFAULT, "#system-state-manager, Cached Nearby devices: %@", &v7, 0xCu);
   }
 
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (IRSystemStateManager)initWithQueue:(id)a3 contextObserver:(id)a4 biomeProvider:(id)a5 miloProvider:(id)a6 proximityProvider:(id)a7 serviceStore:(id)a8 displayMonitor:(id)a9 audioAVOutputContextController:(id)a10 isLowLatencyMiLo:(BOOL)a11
+- (IRSystemStateManager)initWithQueue:(id)queue contextObserver:(id)observer biomeProvider:(id)provider miloProvider:(id)miloProvider proximityProvider:(id)proximityProvider serviceStore:(id)store displayMonitor:(id)monitor audioAVOutputContextController:(id)self0 isLowLatencyMiLo:(BOOL)self1
 {
   v80 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a6;
-  v21 = a7;
-  v22 = a8;
-  v23 = a9;
-  v24 = a10;
+  queueCopy = queue;
+  observerCopy = observer;
+  providerCopy = provider;
+  miloProviderCopy = miloProvider;
+  proximityProviderCopy = proximityProvider;
+  storeCopy = store;
+  monitorCopy = monitor;
+  controllerCopy = controller;
   v73.receiver = self;
   v73.super_class = IRSystemStateManager;
   v25 = [(IRSystemStateManager *)&v73 init];
   if (v25)
   {
-    v72 = v24;
+    v72 = controllerCopy;
     v26 = objc_alloc_init(MEMORY[0x277D02820]);
-    v71 = v17;
-    [(IRSystemStateManager *)v25 setQueue:v17];
-    v70 = v18;
-    [(IRSystemStateManager *)v25 setContextObserver:v18];
-    v69 = v19;
-    [(IRSystemStateManager *)v25 setBiomeProvider:v19];
-    v68 = v20;
-    [(IRSystemStateManager *)v25 setMiloProvider:v20];
-    v66 = v22;
-    [(IRSystemStateManager *)v25 setServiceStore:v22];
-    v67 = v21;
-    [(IRSystemStateManager *)v25 setProximityProvider:v21];
-    v65 = v23;
-    [(IRSystemStateManager *)v25 setDisplayMonitor:v23];
-    [(IRSystemStateManager *)v25 setAudioAVOutputContextController:v24];
+    v71 = queueCopy;
+    [(IRSystemStateManager *)v25 setQueue:queueCopy];
+    v70 = observerCopy;
+    [(IRSystemStateManager *)v25 setContextObserver:observerCopy];
+    v69 = providerCopy;
+    [(IRSystemStateManager *)v25 setBiomeProvider:providerCopy];
+    v68 = miloProviderCopy;
+    [(IRSystemStateManager *)v25 setMiloProvider:miloProviderCopy];
+    v66 = storeCopy;
+    [(IRSystemStateManager *)v25 setServiceStore:storeCopy];
+    v67 = proximityProviderCopy;
+    [(IRSystemStateManager *)v25 setProximityProvider:proximityProviderCopy];
+    v65 = monitorCopy;
+    [(IRSystemStateManager *)v25 setDisplayMonitor:monitorCopy];
+    [(IRSystemStateManager *)v25 setAudioAVOutputContextController:controllerCopy];
     v27 = [v26 copyMyAppleIDAndReturnError:0];
-    v28 = [MEMORY[0x277CBEBB0] localTimeZone];
-    v29 = [v28 secondsFromGMT];
-    v30 = [(IRSystemStateManager *)v25 displayMonitor];
-    v31 = [v30 isContinuityDisplay];
-    v32 = [(IRSystemStateManager *)v25 displayMonitor];
-    BYTE1(v64) = [v32 displayOn];
-    LOBYTE(v64) = v31;
+    localTimeZone = [MEMORY[0x277CBEBB0] localTimeZone];
+    secondsFromGMT = [localTimeZone secondsFromGMT];
+    displayMonitor = [(IRSystemStateManager *)v25 displayMonitor];
+    isContinuityDisplay = [displayMonitor isContinuityDisplay];
+    displayMonitor2 = [(IRSystemStateManager *)v25 displayMonitor];
+    BYTE1(v64) = [displayMonitor2 displayOn];
+    LOBYTE(v64) = isContinuityDisplay;
     LOWORD(v63) = 0;
-    v33 = [IRSystemStateDO systemStateDOWithAppInFocusBundleID:"systemStateDOWithAppInFocusBundleID:appInFocusWindowValid:deviceWiFiSSID:locationSemanticUserSpecificPlaceType:locationSemanticLoiIdentifier:iCloudId:avInitialRouteSharingPolicy:mediaRouteGroupLeaderOutputDeviceID:timeZoneSeconds:outputDeviceName:outputDeviceType:outputDeviceSubType:predictedOutputDeviceName:predictedOutputDeviceType:predictedOutputDeviceSubType:appInFocusWindowScreenUnlockEvent:pdrFenceActive:latestPickerChoiceDate:isContinuityDisplay:displayOn:" appInFocusWindowValid:0 deviceWiFiSSID:0 locationSemanticUserSpecificPlaceType:0 locationSemanticLoiIdentifier:0 iCloudId:0 avInitialRouteSharingPolicy:v27 mediaRouteGroupLeaderOutputDeviceID:0 timeZoneSeconds:0 outputDeviceName:v29 outputDeviceType:0 outputDeviceSubType:0 predictedOutputDeviceName:0 predictedOutputDeviceType:0 predictedOutputDeviceSubType:0 appInFocusWindowScreenUnlockEvent:0 pdrFenceActive:v63 latestPickerChoiceDate:0 isContinuityDisplay:v64 displayOn:?];
+    v33 = [IRSystemStateDO systemStateDOWithAppInFocusBundleID:"systemStateDOWithAppInFocusBundleID:appInFocusWindowValid:deviceWiFiSSID:locationSemanticUserSpecificPlaceType:locationSemanticLoiIdentifier:iCloudId:avInitialRouteSharingPolicy:mediaRouteGroupLeaderOutputDeviceID:timeZoneSeconds:outputDeviceName:outputDeviceType:outputDeviceSubType:predictedOutputDeviceName:predictedOutputDeviceType:predictedOutputDeviceSubType:appInFocusWindowScreenUnlockEvent:pdrFenceActive:latestPickerChoiceDate:isContinuityDisplay:displayOn:" appInFocusWindowValid:0 deviceWiFiSSID:0 locationSemanticUserSpecificPlaceType:0 locationSemanticLoiIdentifier:0 iCloudId:0 avInitialRouteSharingPolicy:v27 mediaRouteGroupLeaderOutputDeviceID:0 timeZoneSeconds:0 outputDeviceName:secondsFromGMT outputDeviceType:0 outputDeviceSubType:0 predictedOutputDeviceName:0 predictedOutputDeviceType:0 predictedOutputDeviceSubType:0 appInFocusWindowScreenUnlockEvent:0 pdrFenceActive:v63 latestPickerChoiceDate:0 isContinuityDisplay:v64 displayOn:?];
     [(IRSystemStateManager *)v25 setSystemState:v33];
 
     v34 = [IRNearbyDeviceContainerDO alloc];
@@ -214,22 +214,22 @@ LABEL_14:
     v36 = [(IRNearbyDeviceContainerDO *)v34 initWithFreezeDateNIHomeDevice:0 nearbyDevices:v35];
     [(IRSystemStateManager *)v25 setNearbyDeviceContainer:v36];
 
-    [(IRSystemStateManager *)v25 _registerToMiLo:a11];
-    v37 = [(IRSystemStateManager *)v25 proximityProvider];
-    [v37 addObserver:v25];
+    [(IRSystemStateManager *)v25 _registerToMiLo:lo];
+    proximityProvider = [(IRSystemStateManager *)v25 proximityProvider];
+    [proximityProvider addObserver:v25];
 
-    v38 = [(IRSystemStateManager *)v25 displayMonitor];
-    [v38 addObserver:v25];
+    displayMonitor3 = [(IRSystemStateManager *)v25 displayMonitor];
+    [displayMonitor3 addObserver:v25];
 
-    v39 = [(IRSystemStateManager *)v25 audioAVOutputContextController];
-    [v39 addObserver:v25];
+    audioAVOutputContextController = [(IRSystemStateManager *)v25 audioAVOutputContextController];
+    [audioAVOutputContextController addObserver:v25];
 
-    v40 = [(IRSystemStateManager *)v25 displayMonitor];
-    v41 = [v40 getAppInFocusWithTimestamp];
+    displayMonitor4 = [(IRSystemStateManager *)v25 displayMonitor];
+    getAppInFocusWithTimestamp = [displayMonitor4 getAppInFocusWithTimestamp];
 
     v42 = +[IRPreferences shared];
-    v43 = [v42 appInFocusWindowEnableOnServiceRun];
-    if ([v43 BOOLValue])
+    appInFocusWindowEnableOnServiceRun = [v42 appInFocusWindowEnableOnServiceRun];
+    if ([appInFocusWindowEnableOnServiceRun BOOLValue])
     {
       v44 = 1;
     }
@@ -237,49 +237,49 @@ LABEL_14:
     else
     {
       v45 = [MEMORY[0x277CBEAA8] now];
-      v46 = [v41 second];
-      [v45 timeIntervalSinceDate:v46];
+      second = [getAppInFocusWithTimestamp second];
+      [v45 timeIntervalSinceDate:second];
       v48 = v47;
       v49 = +[IRPreferences shared];
-      v50 = [v49 appInFocusWindowInSeconds];
-      [v50 doubleValue];
+      appInFocusWindowInSeconds = [v49 appInFocusWindowInSeconds];
+      [appInFocusWindowInSeconds doubleValue];
       v44 = v48 <= v51;
     }
 
-    v52 = [v41 first];
-    [(IRSystemStateManager *)v25 _updateSystemStateWithAppInFocus:v52 andOpenWindowIfApplicable:v44 isScreenUnlockEvent:0];
+    first = [getAppInFocusWithTimestamp first];
+    [(IRSystemStateManager *)v25 _updateSystemStateWithAppInFocus:first andOpenWindowIfApplicable:v44 isScreenUnlockEvent:0];
 
-    v53 = [(IRSystemStateManager *)v25 audioAVOutputContextController];
-    v54 = [v53 getOutputDevice];
-    [(IRSystemStateManager *)v25 _updateSystemStateWithOutputDevice:v54];
+    audioAVOutputContextController2 = [(IRSystemStateManager *)v25 audioAVOutputContextController];
+    getOutputDevice = [audioAVOutputContextController2 getOutputDevice];
+    [(IRSystemStateManager *)v25 _updateSystemStateWithOutputDevice:getOutputDevice];
 
-    v55 = [(IRSystemStateManager *)v25 audioAVOutputContextController];
-    v56 = [v55 getPredictedOutputDevice];
-    [(IRSystemStateManager *)v25 _updateSystemStateWithPredictedOutputDevice:v56];
+    audioAVOutputContextController3 = [(IRSystemStateManager *)v25 audioAVOutputContextController];
+    getPredictedOutputDevice = [audioAVOutputContextController3 getPredictedOutputDevice];
+    [(IRSystemStateManager *)v25 _updateSystemStateWithPredictedOutputDevice:getPredictedOutputDevice];
 
     v57 = dispatch_get_specific(*MEMORY[0x277D21308]);
     v58 = *MEMORY[0x277D21260];
-    v19 = v69;
-    v18 = v70;
-    v23 = v65;
-    v24 = v72;
+    providerCopy = v69;
+    observerCopy = v70;
+    monitorCopy = v65;
+    controllerCopy = v72;
     if (os_log_type_enabled(*MEMORY[0x277D21260], OS_LOG_TYPE_DEFAULT))
     {
       v59 = v58;
-      v60 = [(IRSystemStateManager *)v25 systemState];
+      systemState = [(IRSystemStateManager *)v25 systemState];
       *buf = 136315650;
       v75 = "#system-state-manager, ";
       v76 = 2112;
       v77 = v57;
       v78 = 2112;
-      v79 = v60;
+      v79 = systemState;
       _os_log_impl(&dword_25543D000, v59, OS_LOG_TYPE_DEFAULT, "%s[%@], Initial state of system state = %@", buf, 0x20u);
     }
 
-    v17 = v71;
-    v21 = v67;
-    v20 = v68;
-    v22 = v66;
+    queueCopy = v71;
+    proximityProviderCopy = v67;
+    miloProviderCopy = v68;
+    storeCopy = v66;
   }
 
   v61 = *MEMORY[0x277D85DE8];
@@ -297,47 +297,47 @@ LABEL_14:
 {
   [(IRSystemStateManager *)self _unregisterFromMiLo];
   [(IRSystemStateManager *)self _unregisterForBiomeEvents];
-  v3 = [(IRSystemStateManager *)self proximityProvider];
-  [v3 removeObserver:self];
+  proximityProvider = [(IRSystemStateManager *)self proximityProvider];
+  [proximityProvider removeObserver:self];
 
-  v4 = [(IRSystemStateManager *)self displayMonitor];
-  [v4 removeObserver:self];
+  displayMonitor = [(IRSystemStateManager *)self displayMonitor];
+  [displayMonitor removeObserver:self];
 
-  v5 = [(IRSystemStateManager *)self audioAVOutputContextController];
-  [v5 removeObserver:self];
+  audioAVOutputContextController = [(IRSystemStateManager *)self audioAVOutputContextController];
+  [audioAVOutputContextController removeObserver:self];
 }
 
-- (void)addEvent:(id)a3 forCandidate:(id)a4
+- (void)addEvent:(id)event forCandidate:(id)candidate
 {
-  v6 = a4;
-  v8 = a3;
-  v7 = [(IRSystemStateManager *)self queue];
-  dispatch_assert_queue_V2(v7);
+  candidateCopy = candidate;
+  eventCopy = event;
+  queue = [(IRSystemStateManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   [(IRSystemStateManager *)self _updateSystemStateWithAppInFocusWindowEnd];
-  [(IRSystemStateManager *)self _checkAndStartPDRFenceLogicIfNeededWithEvent:v8 andCandidate:v6];
+  [(IRSystemStateManager *)self _checkAndStartPDRFenceLogicIfNeededWithEvent:eventCopy andCandidate:candidateCopy];
 
   [(IRSystemStateManager *)self _didUpdateContextWithReason:@"Add event"];
-  [(IRSystemStateManager *)self _checkAndUpdateLatestPickerChoiceDateIfNeededForEvent:v8];
+  [(IRSystemStateManager *)self _checkAndUpdateLatestPickerChoiceDateIfNeededForEvent:eventCopy];
 }
 
 - (BOOL)startLowLatencyMiLo
 {
-  v3 = [(IRSystemStateManager *)self miloProvider];
-  v4 = [v3 startLowLatencyMiLo];
+  miloProvider = [(IRSystemStateManager *)self miloProvider];
+  startLowLatencyMiLo = [miloProvider startLowLatencyMiLo];
 
-  if (v4)
+  if (startLowLatencyMiLo)
   {
-    v5 = [(IRSystemStateManager *)self miloProvider];
-    v6 = [v5 requestSinglePrediction];
+    miloProvider2 = [(IRSystemStateManager *)self miloProvider];
+    requestSinglePrediction = [miloProvider2 requestSinglePrediction];
 
     v7 = [MEMORY[0x277CBEB98] set];
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = [IRMiloLslPredictionDO miloLslPredictionDOWithPredictionId:v6 isPredictionValid:1 isMapValid:0 isMotionDetected:0 scores:v7 predictionTime:v8];
+    date = [MEMORY[0x277CBEAA8] date];
+    v9 = [IRMiloLslPredictionDO miloLslPredictionDOWithPredictionId:requestSinglePrediction isPredictionValid:1 isMapValid:0 isMotionDetected:0 scores:v7 predictionTime:date];
     [(IRSystemStateManager *)self setMiloProviderLslPredictionResults:v9];
   }
 
-  return v4;
+  return startLowLatencyMiLo;
 }
 
 - (void)endAppInFocusWindow
@@ -351,8 +351,8 @@ LABEL_14:
 
 - (void)_unregisterFromMiLo
 {
-  v2 = [(IRSystemStateManager *)self miloProvider];
-  [v2 removeObserver];
+  miloProvider = [(IRSystemStateManager *)self miloProvider];
+  [miloProvider removeObserver];
 }
 
 - (void)_unregisterForBiomeEvents
@@ -361,19 +361,19 @@ LABEL_14:
   {
     if ([IRSystemStateManager isObservedEventType:i])
     {
-      v4 = [(IRSystemStateManager *)self biomeProvider];
-      [v4 removeObserver:self forEvent:i];
+      biomeProvider = [(IRSystemStateManager *)self biomeProvider];
+      [biomeProvider removeObserver:self forEvent:i];
     }
   }
 }
 
-- (void)_checkAndUpdateLatestPickerChoiceDateIfNeededForEvent:(id)a3
+- (void)_checkAndUpdateLatestPickerChoiceDateIfNeededForEvent:(id)event
 {
-  if ([a3 isPickerChoiceEvent])
+  if ([event isPickerChoiceEvent])
   {
-    v6 = [(IRSystemStateManager *)self systemState];
+    systemState = [(IRSystemStateManager *)self systemState];
     v4 = [MEMORY[0x277CBEAA8] now];
-    v5 = [v6 copyWithReplacementLatestPickerChoiceDate:v4];
+    v5 = [systemState copyWithReplacementLatestPickerChoiceDate:v4];
     [(IRSystemStateManager *)self setSystemState:v5];
   }
 }
@@ -389,19 +389,19 @@ void __51__IRSystemStateManager__startAppInFocusWindowTimer__block_invoke(uint64
   }
 }
 
-- (void)_checkAndStartPDRFenceLogicIfNeededWithEvent:(id)a3 andCandidate:(id)a4
+- (void)_checkAndStartPDRFenceLogicIfNeededWithEvent:(id)event andCandidate:(id)candidate
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(IRSystemStateManager *)self pdrFenceTimer];
+  eventCopy = event;
+  candidateCopy = candidate;
+  pdrFenceTimer = [(IRSystemStateManager *)self pdrFenceTimer];
 
-  if (!v8)
+  if (!pdrFenceTimer)
   {
     v9 = [IREventDO eventDOWithMediaType:9];
     v10 = [IREventDO eventDOWithMediaType:10];
     v34 = [IREventDO eventDOWithMediaType:0];
-    if (([v6 isEqual:v9] & 1) != 0 || (objc_msgSend(v6, "isEqual:", v10) & 1) != 0 || objc_msgSend(v7, "isBrokeredDevice") && objc_msgSend(v6, "isEqual:", v34))
+    if (([eventCopy isEqual:v9] & 1) != 0 || (objc_msgSend(eventCopy, "isEqual:", v10) & 1) != 0 || objc_msgSend(candidateCopy, "isBrokeredDevice") && objc_msgSend(eventCopy, "isEqual:", v34))
     {
       v11 = dispatch_get_specific(*MEMORY[0x277D21308]);
       v12 = *MEMORY[0x277D21260];
@@ -416,13 +416,13 @@ void __51__IRSystemStateManager__startAppInFocusWindowTimer__block_invoke(uint64
 
       objc_initWeak(buf, self);
       v13 = +[IRPreferences shared];
-      v14 = [v13 pdrFenceOtherThanRadiusTimeoutInSeconds];
-      v15 = [v14 integerValue];
+      pdrFenceOtherThanRadiusTimeoutInSeconds = [v13 pdrFenceOtherThanRadiusTimeoutInSeconds];
+      integerValue = [pdrFenceOtherThanRadiusTimeoutInSeconds integerValue];
 
       if (+[IRCMPDRFenceBridge isAvailable])
       {
-        v16 = [(IRSystemStateManager *)self pdrFenceBridge];
-        v17 = v16 == 0;
+        pdrFenceBridge = [(IRSystemStateManager *)self pdrFenceBridge];
+        v17 = pdrFenceBridge == 0;
 
         if (v17)
         {
@@ -430,42 +430,42 @@ void __51__IRSystemStateManager__startAppInFocusWindowTimer__block_invoke(uint64
           [(IRSystemStateManager *)self setPdrFenceBridge:v18];
         }
 
-        v19 = [(IRSystemStateManager *)self pdrFenceBridge];
-        [v19 startSession];
+        pdrFenceBridge2 = [(IRSystemStateManager *)self pdrFenceBridge];
+        [pdrFenceBridge2 startSession];
 
         v20 = +[IRPreferences shared];
-        v21 = [v20 pdrFenceRadiusInMeters];
-        [v21 floatValue];
+        pdrFenceRadiusInMeters = [v20 pdrFenceRadiusInMeters];
+        [pdrFenceRadiusInMeters floatValue];
         v23 = v22;
 
-        v24 = [(IRSystemStateManager *)self pdrFenceBridge];
+        pdrFenceBridge3 = [(IRSystemStateManager *)self pdrFenceBridge];
         v37[0] = MEMORY[0x277D85DD0];
         v37[1] = 3221225472;
         v37[2] = __82__IRSystemStateManager__checkAndStartPDRFenceLogicIfNeededWithEvent_andCandidate___block_invoke;
         v37[3] = &unk_2797E0C18;
         objc_copyWeak(&v38, buf);
         LODWORD(v25) = v23;
-        [v24 setFence:v37 withCompletion:v25];
+        [pdrFenceBridge3 setFence:v37 withCompletion:v25];
 
         v26 = +[IRPreferences shared];
-        v27 = [v26 pdrFenceRadiusTimeoutInSeconds];
-        v15 = [v27 integerValue];
+        pdrFenceRadiusTimeoutInSeconds = [v26 pdrFenceRadiusTimeoutInSeconds];
+        integerValue = [pdrFenceRadiusTimeoutInSeconds integerValue];
 
         objc_destroyWeak(&v38);
       }
 
       v28 = [IRTimer alloc];
-      v29 = [(IRSystemStateManager *)self queue];
+      queue = [(IRSystemStateManager *)self queue];
       v35[0] = MEMORY[0x277D85DD0];
       v35[1] = 3221225472;
       v35[2] = __82__IRSystemStateManager__checkAndStartPDRFenceLogicIfNeededWithEvent_andCandidate___block_invoke_35;
       v35[3] = &unk_2797E0C18;
       objc_copyWeak(&v36, buf);
-      v30 = [(IRTimer *)v28 initWithInterval:0 repeats:v29 queue:v35 block:v15];
+      v30 = [(IRTimer *)v28 initWithInterval:0 repeats:queue queue:v35 block:integerValue];
       [(IRSystemStateManager *)self setPdrFenceTimer:v30];
 
-      v31 = [(IRSystemStateManager *)self systemState];
-      v32 = [v31 copyWithReplacementPdrFenceActive:1];
+      systemState = [(IRSystemStateManager *)self systemState];
+      v32 = [systemState copyWithReplacementPdrFenceActive:1];
       [(IRSystemStateManager *)self setSystemState:v32];
 
       objc_destroyWeak(&v36);
@@ -542,12 +542,12 @@ void __82__IRSystemStateManager__checkAndStartPDRFenceLogicIfNeededWithEvent_and
 - (void)_checkAndStopPDRFenceLogicIfNeeded
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(IRSystemStateManager *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(IRSystemStateManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
-  v4 = [(IRSystemStateManager *)self pdrFenceTimer];
+  pdrFenceTimer = [(IRSystemStateManager *)self pdrFenceTimer];
 
-  if (v4)
+  if (pdrFenceTimer)
   {
     v5 = dispatch_get_specific(*MEMORY[0x277D21308]);
     v6 = *MEMORY[0x277D21260];
@@ -560,18 +560,18 @@ void __82__IRSystemStateManager__checkAndStartPDRFenceLogicIfNeededWithEvent_and
       _os_log_impl(&dword_25543D000, v6, OS_LOG_TYPE_INFO, "%s[%@], Stopping PDR fence logic", &v13, 0x16u);
     }
 
-    v7 = [(IRSystemStateManager *)self pdrFenceBridge];
-    [v7 clearFence];
+    pdrFenceBridge = [(IRSystemStateManager *)self pdrFenceBridge];
+    [pdrFenceBridge clearFence];
 
-    v8 = [(IRSystemStateManager *)self pdrFenceBridge];
-    [v8 endSession];
+    pdrFenceBridge2 = [(IRSystemStateManager *)self pdrFenceBridge];
+    [pdrFenceBridge2 endSession];
 
-    v9 = [(IRSystemStateManager *)self pdrFenceTimer];
-    [v9 invalidate];
+    pdrFenceTimer2 = [(IRSystemStateManager *)self pdrFenceTimer];
+    [pdrFenceTimer2 invalidate];
 
     [(IRSystemStateManager *)self setPdrFenceTimer:0];
-    v10 = [(IRSystemStateManager *)self systemState];
-    v11 = [v10 copyWithReplacementPdrFenceActive:0];
+    systemState = [(IRSystemStateManager *)self systemState];
+    v11 = [systemState copyWithReplacementPdrFenceActive:0];
     [(IRSystemStateManager *)self setSystemState:v11];
 
     [(IRSystemStateManager *)self _didUpdateContextWithReason:@"PDR fence crossed"];
@@ -580,17 +580,17 @@ void __82__IRSystemStateManager__checkAndStartPDRFenceLogicIfNeededWithEvent_and
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provider:(id)a3 didUpdateDeviceWiFi:(id)a4
+- (void)provider:(id)provider didUpdateDeviceWiFi:(id)fi
 {
-  v5 = a4;
-  v6 = [(IRSystemStateManager *)self queue];
+  fiCopy = fi;
+  queue = [(IRSystemStateManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__IRSystemStateManager_provider_didUpdateDeviceWiFi___block_invoke;
   v8[3] = &unk_2797E20F0;
-  v9 = v5;
-  v7 = v5;
-  IRDispatchAsyncWithStrongSelf(v6, self, v8);
+  v9 = fiCopy;
+  v7 = fiCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v8);
 }
 
 void __53__IRSystemStateManager_provider_didUpdateDeviceWiFi___block_invoke(uint64_t a1, void *a2)
@@ -602,17 +602,17 @@ void __53__IRSystemStateManager_provider_didUpdateDeviceWiFi___block_invoke(uint
   }
 }
 
-- (void)provider:(id)a3 didUpdateMediaRoute:(id)a4
+- (void)provider:(id)provider didUpdateMediaRoute:(id)route
 {
-  v5 = a4;
-  v6 = [(IRSystemStateManager *)self queue];
+  routeCopy = route;
+  queue = [(IRSystemStateManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __53__IRSystemStateManager_provider_didUpdateMediaRoute___block_invoke;
   v8[3] = &unk_2797E20F0;
-  v9 = v5;
-  v7 = v5;
-  IRDispatchAsyncWithStrongSelf(v6, self, v8);
+  v9 = routeCopy;
+  v7 = routeCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v8);
 }
 
 void __53__IRSystemStateManager_provider_didUpdateMediaRoute___block_invoke(uint64_t a1, void *a2)
@@ -624,26 +624,26 @@ void __53__IRSystemStateManager_provider_didUpdateMediaRoute___block_invoke(uint
   }
 }
 
-- (void)_didUpdateContextWithReason:(id)a3
+- (void)_didUpdateContextWithReason:(id)reason
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  reasonCopy = reason;
   v5 = dispatch_get_specific(*MEMORY[0x277D21308]);
   v6 = *MEMORY[0x277D21270];
   if (os_log_type_enabled(*MEMORY[0x277D21270], OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(IRSystemStateManager *)self systemState];
-    v9 = [IRLogQEUtility getSystemStateAsString:v8];
-    v10 = [(IRSystemStateManager *)self miloProvider];
-    v11 = [(IRSystemStateManager *)self miloProviderLslPredictionResults];
-    v12 = [v10 getMiloServiceStatusStringQEWithPrediction:v11];
+    systemState = [(IRSystemStateManager *)self systemState];
+    v9 = [IRLogQEUtility getSystemStateAsString:systemState];
+    miloProvider = [(IRSystemStateManager *)self miloProvider];
+    miloProviderLslPredictionResults = [(IRSystemStateManager *)self miloProviderLslPredictionResults];
+    v12 = [miloProvider getMiloServiceStatusStringQEWithPrediction:miloProviderLslPredictionResults];
     v15 = 136316162;
     v16 = "#system-state-manager, ";
     v17 = 2112;
     v18 = v5;
     v19 = 2112;
-    v20 = v4;
+    v20 = reasonCopy;
     v21 = 2112;
     v22 = v9;
     v23 = 2112;
@@ -651,18 +651,18 @@ void __53__IRSystemStateManager_provider_didUpdateMediaRoute___block_invoke(uint
     _os_log_impl(&dword_25543D000, v7, OS_LOG_TYPE_DEFAULT, "%s[%@], System state might have changed due to %@:\n%@\n%@", &v15, 0x34u);
   }
 
-  v13 = [(IRSystemStateManager *)self contextObserver];
-  [v13 didUpdateContextWithReason:v4 andOverrides:0];
+  contextObserver = [(IRSystemStateManager *)self contextObserver];
+  [contextObserver didUpdateContextWithReason:reasonCopy andOverrides:0];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)onPrediction:(id)a3
+- (void)onPrediction:(id)prediction
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(IRSystemStateManager *)self queue];
-  dispatch_assert_queue_V2(v5);
+  predictionCopy = prediction;
+  queue = [(IRSystemStateManager *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v6 = dispatch_get_specific(*MEMORY[0x277D21308]);
   v7 = *MEMORY[0x277D21270];
@@ -673,159 +673,159 @@ void __53__IRSystemStateManager_provider_didUpdateMediaRoute___block_invoke(uint
     v11 = 2112;
     v12 = v6;
     v13 = 2112;
-    v14 = v4;
+    v14 = predictionCopy;
     _os_log_impl(&dword_25543D000, v7, OS_LOG_TYPE_DEFAULT, "%s[%@], Received MiLo prediction: %@", &v9, 0x20u);
   }
 
-  [(IRSystemStateManager *)self setMiloProviderLslPredictionResults:v4];
+  [(IRSystemStateManager *)self setMiloProviderLslPredictionResults:predictionCopy];
   [(IRSystemStateManager *)self _didUpdateContextWithReason:@"MiLo prediction"];
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didSpotOnLocationCompleteWithError:(id)a3
+- (void)didSpotOnLocationCompleteWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(IRSystemStateManager *)self contextObserver];
-  [v5 didSpotOnLocationComplete:v4];
+  errorCopy = error;
+  contextObserver = [(IRSystemStateManager *)self contextObserver];
+  [contextObserver didSpotOnLocationComplete:errorCopy];
 }
 
-- (BOOL)_updateSystemStateWithDeviceWiFi:(id)a3
+- (BOOL)_updateSystemStateWithDeviceWiFi:(id)fi
 {
-  v4 = a3;
-  v5 = [(IRSystemStateManager *)self systemState];
-  v6 = [v5 copy];
+  fiCopy = fi;
+  systemState = [(IRSystemStateManager *)self systemState];
+  v6 = [systemState copy];
 
-  v7 = [(IRSystemStateManager *)self systemState];
-  v8 = [v4 SSID];
+  systemState2 = [(IRSystemStateManager *)self systemState];
+  sSID = [fiCopy SSID];
 
-  v9 = [v7 copyWithReplacementDeviceWiFiSSID:v8];
+  v9 = [systemState2 copyWithReplacementDeviceWiFiSSID:sSID];
   [(IRSystemStateManager *)self setSystemState:v9];
 
-  v10 = [(IRSystemStateManager *)self systemState];
-  LOBYTE(v9) = [v10 isEqual:v6];
+  systemState3 = [(IRSystemStateManager *)self systemState];
+  LOBYTE(v9) = [systemState3 isEqual:v6];
 
   return v9 ^ 1;
 }
 
-- (BOOL)_updateSystemStateWithMediaRoute:(id)a3
+- (BOOL)_updateSystemStateWithMediaRoute:(id)route
 {
-  v4 = a3;
-  v5 = [(IRSystemStateManager *)self systemState];
-  v6 = [v5 copy];
+  routeCopy = route;
+  systemState = [(IRSystemStateManager *)self systemState];
+  v6 = [systemState copy];
 
-  v7 = [v4 groupLeaderOutputDeviceID];
-  if (v7)
+  groupLeaderOutputDeviceID = [routeCopy groupLeaderOutputDeviceID];
+  if (groupLeaderOutputDeviceID)
   {
-    v8 = [v4 outputDevices];
-    v9 = [v8 count];
+    outputDevices = [routeCopy outputDevices];
+    v9 = [outputDevices count];
 
     if (v9 == 1)
     {
-      v7 = [v4 groupLeaderOutputDeviceID];
+      groupLeaderOutputDeviceID = [routeCopy groupLeaderOutputDeviceID];
     }
 
     else
     {
-      v7 = 0;
+      groupLeaderOutputDeviceID = 0;
     }
   }
 
-  v10 = [(IRSystemStateManager *)self systemState];
-  v11 = [v10 copyWithReplacementMediaRouteGroupLeaderOutputDeviceID:v7];
+  systemState2 = [(IRSystemStateManager *)self systemState];
+  v11 = [systemState2 copyWithReplacementMediaRouteGroupLeaderOutputDeviceID:groupLeaderOutputDeviceID];
   [(IRSystemStateManager *)self setSystemState:v11];
 
-  v12 = [(IRSystemStateManager *)self systemState];
-  LOBYTE(v10) = [v12 isEqual:v6];
+  systemState3 = [(IRSystemStateManager *)self systemState];
+  LOBYTE(systemState2) = [systemState3 isEqual:v6];
 
-  return v10 ^ 1;
+  return systemState2 ^ 1;
 }
 
 - (BOOL)_updateSystemStateWithAppInFocusWindowEnd
 {
-  v3 = [(IRSystemStateManager *)self systemState];
-  v4 = [v3 copy];
+  systemState = [(IRSystemStateManager *)self systemState];
+  v4 = [systemState copy];
 
   [(IRSystemStateManager *)self _cancelAppInFocusWindowTimer];
-  v5 = [(IRSystemStateManager *)self systemState];
-  v6 = [v5 copyWithReplacementAppInFocusWindowValid:0];
+  systemState2 = [(IRSystemStateManager *)self systemState];
+  v6 = [systemState2 copyWithReplacementAppInFocusWindowValid:0];
   [(IRSystemStateManager *)self setSystemState:v6];
 
-  v7 = [(IRSystemStateManager *)self systemState];
-  v8 = [v7 copyWithReplacementAppInFocusWindowScreenUnlockEvent:0];
+  systemState3 = [(IRSystemStateManager *)self systemState];
+  v8 = [systemState3 copyWithReplacementAppInFocusWindowScreenUnlockEvent:0];
   [(IRSystemStateManager *)self setSystemState:v8];
 
-  v9 = [(IRSystemStateManager *)self systemState];
-  LOBYTE(v7) = [v9 isEqual:v4];
+  systemState4 = [(IRSystemStateManager *)self systemState];
+  LOBYTE(systemState3) = [systemState4 isEqual:v4];
 
-  return v7 ^ 1;
+  return systemState3 ^ 1;
 }
 
-- (BOOL)_updateSystemStateWithOutputDevice:(id)a3
+- (BOOL)_updateSystemStateWithOutputDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(IRSystemStateManager *)self systemState];
-  v6 = [v5 copy];
+  deviceCopy = device;
+  systemState = [(IRSystemStateManager *)self systemState];
+  v6 = [systemState copy];
 
-  v7 = [(IRSystemStateManager *)self systemState];
-  v8 = [v4 deviceName];
-  v9 = [v7 copyWithReplacementOutputDeviceName:v8];
+  systemState2 = [(IRSystemStateManager *)self systemState];
+  deviceName = [deviceCopy deviceName];
+  v9 = [systemState2 copyWithReplacementOutputDeviceName:deviceName];
   [(IRSystemStateManager *)self setSystemState:v9];
 
-  v10 = [(IRSystemStateManager *)self systemState];
-  v11 = [v10 copyWithReplacementOutputDeviceType:{objc_msgSend(v4, "deviceType")}];
+  systemState3 = [(IRSystemStateManager *)self systemState];
+  v11 = [systemState3 copyWithReplacementOutputDeviceType:{objc_msgSend(deviceCopy, "deviceType")}];
   [(IRSystemStateManager *)self setSystemState:v11];
 
-  v12 = [(IRSystemStateManager *)self systemState];
-  v13 = [v4 deviceSubType];
+  systemState4 = [(IRSystemStateManager *)self systemState];
+  deviceSubType = [deviceCopy deviceSubType];
 
-  v14 = [v12 copyWithReplacementOutputDeviceSubType:v13];
+  v14 = [systemState4 copyWithReplacementOutputDeviceSubType:deviceSubType];
   [(IRSystemStateManager *)self setSystemState:v14];
 
-  v15 = [(IRSystemStateManager *)self systemState];
-  LOBYTE(v14) = [v15 isEqual:v6];
+  systemState5 = [(IRSystemStateManager *)self systemState];
+  LOBYTE(v14) = [systemState5 isEqual:v6];
 
   return v14 ^ 1;
 }
 
-- (BOOL)_updateSystemStateWithPredictedOutputDevice:(id)a3
+- (BOOL)_updateSystemStateWithPredictedOutputDevice:(id)device
 {
-  v4 = a3;
-  v5 = [(IRSystemStateManager *)self systemState];
-  v6 = [v5 copy];
+  deviceCopy = device;
+  systemState = [(IRSystemStateManager *)self systemState];
+  v6 = [systemState copy];
 
-  v7 = [(IRSystemStateManager *)self systemState];
-  v8 = [v4 deviceName];
-  v9 = [v7 copyWithReplacementPredictedOutputDeviceName:v8];
+  systemState2 = [(IRSystemStateManager *)self systemState];
+  deviceName = [deviceCopy deviceName];
+  v9 = [systemState2 copyWithReplacementPredictedOutputDeviceName:deviceName];
   [(IRSystemStateManager *)self setSystemState:v9];
 
-  v10 = [(IRSystemStateManager *)self systemState];
-  v11 = [v10 copyWithReplacementPredictedOutputDeviceType:{objc_msgSend(v4, "deviceType")}];
+  systemState3 = [(IRSystemStateManager *)self systemState];
+  v11 = [systemState3 copyWithReplacementPredictedOutputDeviceType:{objc_msgSend(deviceCopy, "deviceType")}];
   [(IRSystemStateManager *)self setSystemState:v11];
 
-  v12 = [(IRSystemStateManager *)self systemState];
-  v13 = [v4 deviceSubType];
+  systemState4 = [(IRSystemStateManager *)self systemState];
+  deviceSubType = [deviceCopy deviceSubType];
 
-  v14 = [v12 copyWithReplacementPredictedOutputDeviceSubType:v13];
+  v14 = [systemState4 copyWithReplacementPredictedOutputDeviceSubType:deviceSubType];
   [(IRSystemStateManager *)self setSystemState:v14];
 
-  v15 = [(IRSystemStateManager *)self systemState];
-  LOBYTE(v14) = [v15 isEqual:v6];
+  systemState5 = [(IRSystemStateManager *)self systemState];
+  LOBYTE(v14) = [systemState5 isEqual:v6];
 
   return v14 ^ 1;
 }
 
-- (void)provider:(id)a3 didUpdateNearbyDevices:(id)a4
+- (void)provider:(id)provider didUpdateNearbyDevices:(id)devices
 {
-  v5 = a4;
-  v6 = [(IRSystemStateManager *)self queue];
+  devicesCopy = devices;
+  queue = [(IRSystemStateManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __56__IRSystemStateManager_provider_didUpdateNearbyDevices___block_invoke;
   v8[3] = &unk_2797E20F0;
-  v9 = v5;
-  v7 = v5;
-  IRDispatchAsyncWithStrongSelf(v6, self, v8);
+  v9 = devicesCopy;
+  v7 = devicesCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v8);
 }
 
 void __56__IRSystemStateManager_provider_didUpdateNearbyDevices___block_invoke(uint64_t a1, void *a2)
@@ -863,18 +863,18 @@ void __56__IRSystemStateManager_provider_didUpdateNearbyDevices___block_invoke(u
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)monitor:(id)a3 didUpdateAppInFocus:(id)a4 isScreenUnlockEvent:(BOOL)a5
+- (void)monitor:(id)monitor didUpdateAppInFocus:(id)focus isScreenUnlockEvent:(BOOL)event
 {
-  v7 = a4;
-  v8 = [(IRSystemStateManager *)self queue];
+  focusCopy = focus;
+  queue = [(IRSystemStateManager *)self queue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__IRSystemStateManager_monitor_didUpdateAppInFocus_isScreenUnlockEvent___block_invoke;
   v10[3] = &unk_2797E2118;
-  v11 = v7;
-  v12 = a5;
-  v9 = v7;
-  IRDispatchAsyncWithStrongSelf(v8, self, v10);
+  v11 = focusCopy;
+  eventCopy = event;
+  v9 = focusCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v10);
 }
 
 void __72__IRSystemStateManager_monitor_didUpdateAppInFocus_isScreenUnlockEvent___block_invoke(uint64_t a1, void *a2)
@@ -886,15 +886,15 @@ void __72__IRSystemStateManager_monitor_didUpdateAppInFocus_isScreenUnlockEvent_
   }
 }
 
-- (void)monitor:(id)a3 didUpdateIsContinuityDisplay:(BOOL)a4
+- (void)monitor:(id)monitor didUpdateIsContinuityDisplay:(BOOL)display
 {
-  v6 = [(IRSystemStateManager *)self queue];
+  queue = [(IRSystemStateManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __61__IRSystemStateManager_monitor_didUpdateIsContinuityDisplay___block_invoke;
   v7[3] = &__block_descriptor_33_e30_v16__0__IRSystemStateManager_8l;
-  v8 = a4;
-  IRDispatchAsyncWithStrongSelf(v6, self, v7);
+  displayCopy = display;
+  IRDispatchAsyncWithStrongSelf(queue, self, v7);
 }
 
 void __61__IRSystemStateManager_monitor_didUpdateIsContinuityDisplay___block_invoke(uint64_t a1, void *a2)
@@ -906,15 +906,15 @@ void __61__IRSystemStateManager_monitor_didUpdateIsContinuityDisplay___block_inv
   }
 }
 
-- (void)monitor:(id)a3 didUpdateDisplayOn:(BOOL)a4
+- (void)monitor:(id)monitor didUpdateDisplayOn:(BOOL)on
 {
-  v6 = [(IRSystemStateManager *)self queue];
+  queue = [(IRSystemStateManager *)self queue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__IRSystemStateManager_monitor_didUpdateDisplayOn___block_invoke;
   v7[3] = &__block_descriptor_33_e30_v16__0__IRSystemStateManager_8l;
-  v8 = a4;
-  IRDispatchAsyncWithStrongSelf(v6, self, v7);
+  onCopy = on;
+  IRDispatchAsyncWithStrongSelf(queue, self, v7);
 }
 
 void __51__IRSystemStateManager_monitor_didUpdateDisplayOn___block_invoke(uint64_t a1, void *a2)
@@ -926,17 +926,17 @@ void __51__IRSystemStateManager_monitor_didUpdateDisplayOn___block_invoke(uint64
   }
 }
 
-- (void)context:(id)a3 didUpdateOutputDevice:(id)a4
+- (void)context:(id)context didUpdateOutputDevice:(id)device
 {
-  v5 = a4;
-  v6 = [(IRSystemStateManager *)self queue];
+  deviceCopy = device;
+  queue = [(IRSystemStateManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __54__IRSystemStateManager_context_didUpdateOutputDevice___block_invoke;
   v8[3] = &unk_2797E20F0;
-  v9 = v5;
-  v7 = v5;
-  IRDispatchAsyncWithStrongSelf(v6, self, v8);
+  v9 = deviceCopy;
+  v7 = deviceCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v8);
 }
 
 void __54__IRSystemStateManager_context_didUpdateOutputDevice___block_invoke(uint64_t a1, void *a2)
@@ -948,17 +948,17 @@ void __54__IRSystemStateManager_context_didUpdateOutputDevice___block_invoke(uin
   }
 }
 
-- (void)context:(id)a3 didUpdatePredicatedOutputDevice:(id)a4
+- (void)context:(id)context didUpdatePredicatedOutputDevice:(id)device
 {
-  v5 = a4;
-  v6 = [(IRSystemStateManager *)self queue];
+  deviceCopy = device;
+  queue = [(IRSystemStateManager *)self queue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __64__IRSystemStateManager_context_didUpdatePredicatedOutputDevice___block_invoke;
   v8[3] = &unk_2797E20F0;
-  v9 = v5;
-  v7 = v5;
-  IRDispatchAsyncWithStrongSelf(v6, self, v8);
+  v9 = deviceCopy;
+  v7 = deviceCopy;
+  IRDispatchAsyncWithStrongSelf(queue, self, v8);
 }
 
 void __64__IRSystemStateManager_context_didUpdatePredicatedOutputDevice___block_invoke(uint64_t a1, void *a2)

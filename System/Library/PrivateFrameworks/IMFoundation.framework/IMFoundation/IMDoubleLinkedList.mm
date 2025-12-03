@@ -1,15 +1,15 @@
 @interface IMDoubleLinkedList
-- (BOOL)containsObject:(id)a3;
+- (BOOL)containsObject:(id)object;
 - (IMDoubleLinkedList)init;
 - (id)allObjects;
 - (id)popObject;
-- (void)appendLinkedListNode:(id)a3;
-- (void)appendObject:(id)a3;
+- (void)appendLinkedListNode:(id)node;
+- (void)appendObject:(id)object;
 - (void)dealloc;
-- (void)pushLinkedListNode:(id)a3;
-- (void)pushObject:(id)a3;
+- (void)pushLinkedListNode:(id)node;
+- (void)pushObject:(id)object;
 - (void)removeAllObjects;
-- (void)removeLinkedListNode:(id)a3;
+- (void)removeLinkedListNode:(id)node;
 @end
 
 @implementation IMDoubleLinkedList
@@ -35,20 +35,20 @@
   [(IMDoubleLinkedList *)&v4 dealloc];
 }
 
-- (void)appendObject:(id)a3
+- (void)appendObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [IMDoubleLinkedListNode alloc];
-  v8 = objc_msgSend_initWithObject_(v5, v6, v4);
+  v8 = objc_msgSend_initWithObject_(v5, v6, objectCopy);
 
   objc_msgSend_appendLinkedListNode_(self, v7, v8);
 }
 
-- (void)pushObject:(id)a3
+- (void)pushObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v5 = [IMDoubleLinkedListNode alloc];
-  v8 = objc_msgSend_initWithObject_(v5, v6, v4);
+  v8 = objc_msgSend_initWithObject_(v5, v6, objectCopy);
 
   objc_msgSend_pushLinkedListNode_(self, v7, v8);
 }
@@ -71,10 +71,10 @@
   return v5;
 }
 
-- (void)appendLinkedListNode:(id)a3
+- (void)appendLinkedListNode:(id)node
 {
-  v6 = a3;
-  if (!v6)
+  nodeCopy = node;
+  if (!nodeCopy)
   {
     v31[0] = "/Library/Caches/com.apple.xbs/Sources/IMFoundation/IMFoundation/IMDoubleLinkedList.m";
     v31[1] = 0;
@@ -107,14 +107,14 @@
   last = self->_last;
   if (last)
   {
-    objc_msgSend_setNext_(last, v5, v6);
-    objc_msgSend_setPrev_(v6, v26, *p_last);
+    objc_msgSend_setNext_(last, v5, nodeCopy);
+    objc_msgSend_setPrev_(nodeCopy, v26, *p_last);
     p_first = &self->_last;
   }
 
   else
   {
-    objc_storeStrong(&self->_last, a3);
+    objc_storeStrong(&self->_last, node);
     first = self->_first;
     if (first)
     {
@@ -126,15 +126,15 @@
     p_first = &self->_first;
   }
 
-  objc_storeStrong(p_first, a3);
+  objc_storeStrong(p_first, node);
 LABEL_13:
   ++self->_count;
 }
 
-- (void)pushLinkedListNode:(id)a3
+- (void)pushLinkedListNode:(id)node
 {
-  v6 = a3;
-  if (!v6)
+  nodeCopy = node;
+  if (!nodeCopy)
   {
     v31[0] = "/Library/Caches/com.apple.xbs/Sources/IMFoundation/IMFoundation/IMDoubleLinkedList.m";
     v31[1] = 0;
@@ -167,14 +167,14 @@ LABEL_13:
   first = self->_first;
   if (first)
   {
-    objc_msgSend_setPrev_(first, v5, v6);
-    objc_msgSend_setNext_(v6, v26, *p_first);
+    objc_msgSend_setPrev_(first, v5, nodeCopy);
+    objc_msgSend_setNext_(nodeCopy, v26, *p_first);
     p_last = &self->_first;
   }
 
   else
   {
-    objc_storeStrong(&self->_first, a3);
+    objc_storeStrong(&self->_first, node);
     last = self->_last;
     if (last)
     {
@@ -186,18 +186,18 @@ LABEL_13:
     p_last = &self->_last;
   }
 
-  objc_storeStrong(p_last, a3);
+  objc_storeStrong(p_last, node);
 LABEL_13:
   ++self->_count;
 }
 
-- (void)removeLinkedListNode:(id)a3
+- (void)removeLinkedListNode:(id)node
 {
-  v6 = a3;
-  if (v6)
+  nodeCopy = node;
+  if (nodeCopy)
   {
     first = self->_first;
-    if (first == v6)
+    if (first == nodeCopy)
     {
       v8 = objc_msgSend_next(first, v4, v5);
       v9 = self->_first;
@@ -205,15 +205,15 @@ LABEL_13:
     }
 
     last = self->_last;
-    if (last == v6)
+    if (last == nodeCopy)
     {
       v11 = objc_msgSend_prev(last, v4, v5);
       v12 = self->_last;
       self->_last = v11;
     }
 
-    objc_msgSend_removeFromList(v6, v4, v5);
-    objc_msgSend_setObject_(v6, v13, 0);
+    objc_msgSend_removeFromList(nodeCopy, v4, v5);
+    objc_msgSend_setObject_(nodeCopy, v13, 0);
     --self->_count;
   }
 
@@ -304,16 +304,16 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)containsObject:(id)a3
+- (BOOL)containsObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v7 = self->_first;
   if (v7)
   {
     while (1)
     {
       v9 = objc_msgSend_object(v7, v5, v6);
-      if (v9 == v4 || objc_msgSend_isEqual_(v4, v8, v9))
+      if (v9 == objectCopy || objc_msgSend_isEqual_(objectCopy, v8, v9))
       {
         break;
       }

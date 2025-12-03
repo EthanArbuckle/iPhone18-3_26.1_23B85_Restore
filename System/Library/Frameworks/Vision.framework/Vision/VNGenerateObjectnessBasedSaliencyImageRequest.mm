@@ -1,25 +1,25 @@
 @interface VNGenerateObjectnessBasedSaliencyImageRequest
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4;
-+ (id)descriptionForPrivateRevision:(unint64_t)a3;
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision;
++ (id)descriptionForPrivateRevision:(unint64_t)revision;
 + (id)privateRevisionsSet;
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5;
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4;
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4;
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error;
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error;
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session;
 @end
 
 @implementation VNGenerateObjectnessBasedSaliencyImageRequest
 
-- (BOOL)internalPerformRevision:(unint64_t)a3 inContext:(id)a4 error:(id *)a5
+- (BOOL)internalPerformRevision:(unint64_t)revision inContext:(id)context error:(id *)error
 {
   v26[1] = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  contextCopy = context;
   VNValidatedLog(1, @"Processing Analyze Image Objectness request\n", v9, v10, v11, v12, v13, v14, v24);
-  v15 = [v8 imageBufferAndReturnError:a5];
+  v15 = [contextCopy imageBufferAndReturnError:error];
   if (v15)
   {
-    v16 = [v8 session];
+    session = [contextCopy session];
     v25 = 0;
-    v17 = [(VNRequest *)self applicableDetectorAndOptions:&v25 forRevision:a3 loadedInSession:v16 error:a5];
+    v17 = [(VNRequest *)self applicableDetectorAndOptions:&v25 forRevision:revision loadedInSession:session error:error];
     v18 = v25;
     if (v17)
     {
@@ -27,9 +27,9 @@
       v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v26 count:1];
       [v18 setObject:v19 forKeyedSubscript:@"VNDetectorProcessOption_InputImageBuffers"];
 
-      v20 = [v8 qosClass];
+      qosClass = [contextCopy qosClass];
       [(VNImageBasedRequest *)self regionOfInterest];
-      v21 = [v17 processUsingQualityOfServiceClass:v20 options:v18 regionOfInterest:self warningRecorder:a5 error:0 progressHandler:?];
+      v21 = [v17 processUsingQualityOfServiceClass:qosClass options:v18 regionOfInterest:self warningRecorder:error error:0 progressHandler:?];
       v22 = v21 != 0;
       if (v21)
       {
@@ -51,14 +51,14 @@
   return v22;
 }
 
-- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)a3 session:(id)a4
+- (id)newDefaultDetectorOptionsForRequestRevision:(unint64_t)revision session:(id)session
 {
   v17[1] = *MEMORY[0x1E69E9840];
   v16.receiver = self;
   v16.super_class = VNGenerateObjectnessBasedSaliencyImageRequest;
-  v6 = [(VNRequest *)&v16 newDefaultDetectorOptionsForRequestRevision:a3 session:a4];
-  v7 = [(VNRequest *)self frameworkClass];
-  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:v7 revision:a3])
+  v6 = [(VNRequest *)&v16 newDefaultDetectorOptionsForRequestRevision:revision session:session];
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:frameworkClass revision:revision])
   {
     v8 = [(VNCoreSceneUnderstandingDetectorFeatureConfiguration *)[VNCoreSceneUnderstandingDetectorImageSaliencyOConfiguration alloc] initWithObservationsRecipient:self];
     v17[0] = v8;
@@ -70,7 +70,7 @@
 
   else
   {
-    v11 = [VNImageAnalyzerMultiDetector modelForRequestClass:v7 revision:a3];
+    v11 = [VNImageAnalyzerMultiDetector modelForRequestClass:frameworkClass revision:revision];
     if (v11)
     {
       v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v11];
@@ -86,10 +86,10 @@
   return v6;
 }
 
-- (id)applicableDetectorTypeForRevision:(unint64_t)a3 error:(id *)a4
+- (id)applicableDetectorTypeForRevision:(unint64_t)revision error:(id *)error
 {
-  v7 = [(VNRequest *)self frameworkClass];
-  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:v7 revision:a3])
+  frameworkClass = [(VNRequest *)self frameworkClass];
+  if ([VNCoreSceneUnderstandingDetector handlesRequestClass:frameworkClass revision:revision])
   {
     v8 = @"VNCoreSceneUnderstandingDetectorType";
 LABEL_5:
@@ -97,16 +97,16 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if ([VNImageAnalyzerMultiDetector modelForRequestClass:v7 revision:a3])
+  if ([VNImageAnalyzerMultiDetector modelForRequestClass:frameworkClass revision:revision])
   {
     v8 = @"VNImageAnalyzerMultiDetectorType";
     goto LABEL_5;
   }
 
-  if (a4)
+  if (error)
   {
-    [VNError errorForUnsupportedRevision:a3 ofRequest:self];
-    *a4 = v8 = 0;
+    [VNError errorForUnsupportedRevision:revision ofRequest:self];
+    *error = v8 = 0;
   }
 
   else
@@ -119,34 +119,34 @@ LABEL_6:
   return v8;
 }
 
-+ (BOOL)revision:(unint64_t)a3 mayAcceptResultsProducedByRevision:(unint64_t)a4
++ (BOOL)revision:(unint64_t)revision mayAcceptResultsProducedByRevision:(unint64_t)byRevision
 {
-  if (a3 != a4)
+  if (revision != byRevision)
   {
     return 0;
   }
 
   v8 = v4;
   v9 = v5;
-  v7.receiver = a1;
+  v7.receiver = self;
   v7.super_class = &OBJC_METACLASS___VNGenerateObjectnessBasedSaliencyImageRequest;
-  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, a3, a3);
+  return objc_msgSendSuper2(&v7, sel_revision_mayAcceptResultsProducedByRevision_, revision, revision);
 }
 
-+ (id)descriptionForPrivateRevision:(unint64_t)a3
++ (id)descriptionForPrivateRevision:(unint64_t)revision
 {
-  if (a3 - 3737841664u >= 3)
+  if (revision - 3737841664u >= 3)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___VNGenerateObjectnessBasedSaliencyImageRequest;
     v5 = objc_msgSendSuper2(&v7, sel_descriptionForPrivateRevision_);
   }
 
   else
   {
-    v5 = *(&off_1E77B6728 + a3 - 3737841664u);
+    v5 = *(&off_1E77B6728 + revision - 3737841664u);
   }
 
   return v5;

@@ -8,15 +8,15 @@
 + (id)metadataDestinationIDWithVoicemailMessage:()PhoneKit
 {
   v4 = a3;
-  v5 = [v4 senderDestinationID];
-  if ([v5 length])
+  senderDestinationID = [v4 senderDestinationID];
+  if ([senderDestinationID length])
   {
-    v6 = [v4 senderISOCountryCode];
-    v7 = [TUHandle normalizedPhoneNumberHandleForValue:v5 isoCountryCode:v6];
+    senderISOCountryCode = [v4 senderISOCountryCode];
+    v7 = [TUHandle normalizedPhoneNumberHandleForValue:senderDestinationID isoCountryCode:senderISOCountryCode];
 
     if (v7)
     {
-      v8 = [[a1 alloc] initWithHandle:v7];
+      v8 = [[self alloc] initWithHandle:v7];
     }
 
     else
@@ -57,11 +57,11 @@
         }
 
         v9 = *(*(&v21 + 1) + 8 * i);
-        v10 = [v9 receiverDestinationID];
-        if ([v10 length])
+        receiverDestinationID = [v9 receiverDestinationID];
+        if ([receiverDestinationID length])
         {
-          v11 = [v9 receiverISOCountryCode];
-          v12 = [TUHandle normalizedPhoneNumberHandleForValue:v10 isoCountryCode:v11];
+          receiverISOCountryCode = [v9 receiverISOCountryCode];
+          v12 = [TUHandle normalizedPhoneNumberHandleForValue:receiverDestinationID isoCountryCode:receiverISOCountryCode];
 
           if (v12)
           {
@@ -81,12 +81,12 @@
           v13 = 0;
         }
 
-        v14 = [v9 senderDestinationID];
+        senderDestinationID = [v9 senderDestinationID];
 
-        if ([v14 length])
+        if ([senderDestinationID length])
         {
-          v15 = [v9 senderISOCountryCode];
-          v16 = [TUHandle normalizedPhoneNumberHandleForValue:v14 isoCountryCode:v15];
+          senderISOCountryCode = [v9 senderISOCountryCode];
+          v16 = [TUHandle normalizedPhoneNumberHandleForValue:senderDestinationID isoCountryCode:senderISOCountryCode];
 
           if (v16)
           {
@@ -105,9 +105,9 @@
     while (v6);
   }
 
-  v18 = [v4 array];
+  array = [v4 array];
 
-  return v18;
+  return array;
 }
 
 @end

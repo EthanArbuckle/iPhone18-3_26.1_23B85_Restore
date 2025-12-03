@@ -1,8 +1,8 @@
 @interface HDHealthOntologyConfiguration
 + (id)bundledHealthOntologyConfiguration;
 - (HDHealthOntologyConfiguration)init;
-- (HDHealthOntologyConfiguration)initWithCountryConfigurations:(id)a3;
-- (id)configurationForCountryCode:(id)a3;
+- (HDHealthOntologyConfiguration)initWithCountryConfigurations:(id)configurations;
+- (id)configurationForCountryCode:(id)code;
 @end
 
 @implementation HDHealthOntologyConfiguration
@@ -17,10 +17,10 @@
   return 0;
 }
 
-- (HDHealthOntologyConfiguration)initWithCountryConfigurations:(id)a3
+- (HDHealthOntologyConfiguration)initWithCountryConfigurations:(id)configurations
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  configurationsCopy = configurations;
   v25.receiver = self;
   v25.super_class = HDHealthOntologyConfiguration;
   v6 = [(HDHealthOntologyConfiguration *)&v25 init];
@@ -31,7 +31,7 @@
     v22 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v8 = v5;
+    v8 = configurationsCopy;
     v9 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
     if (v9)
     {
@@ -47,15 +47,15 @@
           }
 
           v13 = *(*(&v21 + 1) + 8 * i);
-          v14 = [v13 countryCode];
+          countryCode = [v13 countryCode];
 
-          if (!v14)
+          if (!countryCode)
           {
-            v16 = [MEMORY[0x277CCA890] currentHandler];
+            currentHandler = [MEMORY[0x277CCA890] currentHandler];
           }
 
-          v15 = [v13 countryCode];
-          [v7 setObject:v13 forKeyedSubscript:v15];
+          countryCode2 = [v13 countryCode];
+          [v7 setObject:v13 forKeyedSubscript:countryCode2];
         }
 
         v10 = [v8 countByEnumeratingWithState:&v21 objects:v26 count:16];
@@ -79,7 +79,7 @@
   block[1] = 3221225472;
   block[2] = __67__HDHealthOntologyConfiguration_bundledHealthOntologyConfiguration__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (qword_280D67D10 != -1)
   {
     dispatch_once(&qword_280D67D10, block);
@@ -164,16 +164,16 @@ void __67__HDHealthOntologyConfiguration_bundledHealthOntologyConfiguration__blo
   v30 = *MEMORY[0x277D85DE8];
 }
 
-- (id)configurationForCountryCode:(id)a3
+- (id)configurationForCountryCode:(id)code
 {
   countryConfigurations = self->_countryConfigurations;
   v4 = *MEMORY[0x277CCBBC8];
-  if (!a3)
+  if (!code)
   {
-    a3 = *MEMORY[0x277CCBBC8];
+    code = *MEMORY[0x277CCBBC8];
   }
 
-  return [(NSDictionary *)countryConfigurations objectForKeyedSubscript:a3];
+  return [(NSDictionary *)countryConfigurations objectForKeyedSubscript:code];
 }
 
 @end

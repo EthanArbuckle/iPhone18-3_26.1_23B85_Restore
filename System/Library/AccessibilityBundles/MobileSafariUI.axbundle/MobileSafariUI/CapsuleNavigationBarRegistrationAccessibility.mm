@@ -1,25 +1,25 @@
 @interface CapsuleNavigationBarRegistrationAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (CapsuleNavigationBarRegistrationAccessibility)initWithBar:(id)a3 barManager:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (CapsuleNavigationBarRegistrationAccessibility)initWithBar:(id)bar barManager:(id)manager;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CapsuleNavigationBarRegistrationAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CapsuleNavigationBarRegistration" hasInstanceVariable:@"_formatMenuButton" withType:"SFNavigationBarToggleButton"];
-  [v3 validateClass:@"CapsuleNavigationBarRegistration" hasInstanceMethod:@"initWithBar:barManager:" withFullSignature:{"@", "@", 0}];
-  [v3 validateClass:@"CapsuleNavigationBarRegistration" hasInstanceVariable:@"_buttonsByBarItem" withType:"NSMutableDictionary"];
-  [v3 validateClass:@"CapsuleNavigationBarRegistration" hasInstanceVariable:@"_pageFormatItemState" withType:"Q"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CapsuleNavigationBarRegistration" hasInstanceVariable:@"_formatMenuButton" withType:"SFNavigationBarToggleButton"];
+  [validationsCopy validateClass:@"CapsuleNavigationBarRegistration" hasInstanceMethod:@"initWithBar:barManager:" withFullSignature:{"@", "@", 0}];
+  [validationsCopy validateClass:@"CapsuleNavigationBarRegistration" hasInstanceVariable:@"_buttonsByBarItem" withType:"NSMutableDictionary"];
+  [validationsCopy validateClass:@"CapsuleNavigationBarRegistration" hasInstanceVariable:@"_pageFormatItemState" withType:"Q"];
 }
 
-- (CapsuleNavigationBarRegistrationAccessibility)initWithBar:(id)a3 barManager:(id)a4
+- (CapsuleNavigationBarRegistrationAccessibility)initWithBar:(id)bar barManager:(id)manager
 {
   v6.receiver = self;
   v6.super_class = CapsuleNavigationBarRegistrationAccessibility;
-  v4 = [(CapsuleNavigationBarRegistrationAccessibility *)&v6 initWithBar:a3 barManager:a4];
+  v4 = [(CapsuleNavigationBarRegistrationAccessibility *)&v6 initWithBar:bar barManager:manager];
   [(CapsuleNavigationBarRegistrationAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
 
   return v4;
@@ -49,7 +49,7 @@
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        v7 = [v5 className];
+        className = [v5 className];
         _AXAssert();
       }
 

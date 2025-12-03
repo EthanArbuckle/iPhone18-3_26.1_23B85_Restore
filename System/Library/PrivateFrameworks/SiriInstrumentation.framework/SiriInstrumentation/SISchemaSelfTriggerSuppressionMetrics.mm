@@ -1,36 +1,36 @@
 @interface SISchemaSelfTriggerSuppressionMetrics
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (SISchemaSelfTriggerSuppressionMetrics)initWithDictionary:(id)a3;
-- (SISchemaSelfTriggerSuppressionMetrics)initWithJSON:(id)a3;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (SISchemaSelfTriggerSuppressionMetrics)initWithDictionary:(id)dictionary;
+- (SISchemaSelfTriggerSuppressionMetrics)initWithJSON:(id)n;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addSelfTriggerSuppressionSessions:(id)a3;
-- (void)setHasDurationSelfTriggerSuppressionWasActiveInSeconds:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addSelfTriggerSuppressionSessions:(id)sessions;
+- (void)setHasDurationSelfTriggerSuppressionWasActiveInSeconds:(BOOL)seconds;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SISchemaSelfTriggerSuppressionMetrics
 
-- (SISchemaSelfTriggerSuppressionMetrics)initWithDictionary:(id)a3
+- (SISchemaSelfTriggerSuppressionMetrics)initWithDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v24.receiver = self;
   v24.super_class = SISchemaSelfTriggerSuppressionMetrics;
   v5 = [(SISchemaSelfTriggerSuppressionMetrics *)&v24 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"numSelfTriggersDetected"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"numSelfTriggersDetected"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[SISchemaSelfTriggerSuppressionMetrics setNumSelfTriggersDetected:](v5, "setNumSelfTriggersDetected:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"durationSelfTriggerSuppressionWasActiveInSeconds"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"durationSelfTriggerSuppressionWasActiveInSeconds"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,7 +38,7 @@
       [(SISchemaSelfTriggerSuppressionMetrics *)v5 setDurationSelfTriggerSuppressionWasActiveInSeconds:?];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"selfTriggerSuppressionSessions"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"selfTriggerSuppressionSessions"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -92,30 +92,30 @@
   return v5;
 }
 
-- (SISchemaSelfTriggerSuppressionMetrics)initWithJSON:(id)a3
+- (SISchemaSelfTriggerSuppressionMetrics)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(SISchemaSelfTriggerSuppressionMetrics *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(SISchemaSelfTriggerSuppressionMetrics *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(SISchemaSelfTriggerSuppressionMetrics *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -129,14 +129,14 @@
 - (id)dictionaryRepresentation
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = MEMORY[0x1E696AD98];
     [(SISchemaSelfTriggerSuppressionMetrics *)self durationSelfTriggerSuppressionWasActiveInSeconds];
     v6 = [v5 numberWithDouble:?];
-    [v3 setObject:v6 forKeyedSubscript:@"durationSelfTriggerSuppressionWasActiveInSeconds"];
+    [dictionary setObject:v6 forKeyedSubscript:@"durationSelfTriggerSuppressionWasActiveInSeconds"];
 
     has = self->_has;
   }
@@ -144,12 +144,12 @@
   if (has)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithInt:{-[SISchemaSelfTriggerSuppressionMetrics numSelfTriggersDetected](self, "numSelfTriggersDetected")}];
-    [v3 setObject:v7 forKeyedSubscript:@"numSelfTriggersDetected"];
+    [dictionary setObject:v7 forKeyedSubscript:@"numSelfTriggersDetected"];
   }
 
   if ([(NSArray *)self->_selfTriggerSuppressionSessions count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -169,16 +169,16 @@
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
-          if (v14)
+          dictionaryRepresentation = [*(*(&v17 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v8 addObject:v14];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DFB0] null];
-            [v8 addObject:v15];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -188,12 +188,12 @@
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"selfTriggerSuppressionSessions"];
+    [dictionary setObject:array forKeyedSubscript:@"selfTriggerSuppressionSessions"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3, v17];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary, v17];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -246,16 +246,16 @@ LABEL_3:
   return v12 ^ v8 ^ [(NSArray *)self->_selfTriggerSuppressionSessions hash:v3];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_14;
   }
 
   has = self->_has;
-  v6 = v4[32];
+  v6 = equalCopy[32];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_14;
@@ -264,27 +264,27 @@ LABEL_3:
   if (*&has)
   {
     numSelfTriggersDetected = self->_numSelfTriggersDetected;
-    if (numSelfTriggersDetected != [v4 numSelfTriggersDetected])
+    if (numSelfTriggersDetected != [equalCopy numSelfTriggersDetected])
     {
       goto LABEL_14;
     }
 
     has = self->_has;
-    v6 = v4[32];
+    v6 = equalCopy[32];
   }
 
   v8 = (*&has >> 1) & 1;
   if (v8 == ((v6 >> 1) & 1))
   {
-    if (!v8 || (durationSelfTriggerSuppressionWasActiveInSeconds = self->_durationSelfTriggerSuppressionWasActiveInSeconds, [v4 durationSelfTriggerSuppressionWasActiveInSeconds], durationSelfTriggerSuppressionWasActiveInSeconds == v10))
+    if (!v8 || (durationSelfTriggerSuppressionWasActiveInSeconds = self->_durationSelfTriggerSuppressionWasActiveInSeconds, [equalCopy durationSelfTriggerSuppressionWasActiveInSeconds], durationSelfTriggerSuppressionWasActiveInSeconds == v10))
     {
-      v11 = [(SISchemaSelfTriggerSuppressionMetrics *)self selfTriggerSuppressionSessions];
-      v12 = [v4 selfTriggerSuppressionSessions];
-      v13 = v12;
-      if ((v11 != 0) != (v12 == 0))
+      selfTriggerSuppressionSessions = [(SISchemaSelfTriggerSuppressionMetrics *)self selfTriggerSuppressionSessions];
+      selfTriggerSuppressionSessions2 = [equalCopy selfTriggerSuppressionSessions];
+      v13 = selfTriggerSuppressionSessions2;
+      if ((selfTriggerSuppressionSessions != 0) != (selfTriggerSuppressionSessions2 == 0))
       {
-        v14 = [(SISchemaSelfTriggerSuppressionMetrics *)self selfTriggerSuppressionSessions];
-        if (!v14)
+        selfTriggerSuppressionSessions3 = [(SISchemaSelfTriggerSuppressionMetrics *)self selfTriggerSuppressionSessions];
+        if (!selfTriggerSuppressionSessions3)
         {
 
 LABEL_17:
@@ -292,10 +292,10 @@ LABEL_17:
           goto LABEL_15;
         }
 
-        v15 = v14;
-        v16 = [(SISchemaSelfTriggerSuppressionMetrics *)self selfTriggerSuppressionSessions];
-        v17 = [v4 selfTriggerSuppressionSessions];
-        v18 = [v16 isEqual:v17];
+        v15 = selfTriggerSuppressionSessions3;
+        selfTriggerSuppressionSessions4 = [(SISchemaSelfTriggerSuppressionMetrics *)self selfTriggerSuppressionSessions];
+        selfTriggerSuppressionSessions5 = [equalCopy selfTriggerSuppressionSessions];
+        v18 = [selfTriggerSuppressionSessions4 isEqual:selfTriggerSuppressionSessions5];
 
         if (v18)
         {
@@ -316,10 +316,10 @@ LABEL_15:
   return v19;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v16 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -361,27 +361,27 @@ LABEL_15:
   }
 }
 
-- (void)addSelfTriggerSuppressionSessions:(id)a3
+- (void)addSelfTriggerSuppressionSessions:(id)sessions
 {
-  v4 = a3;
+  sessionsCopy = sessions;
   selfTriggerSuppressionSessions = self->_selfTriggerSuppressionSessions;
-  v8 = v4;
+  v8 = sessionsCopy;
   if (!selfTriggerSuppressionSessions)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_selfTriggerSuppressionSessions;
-    self->_selfTriggerSuppressionSessions = v6;
+    self->_selfTriggerSuppressionSessions = array;
 
-    v4 = v8;
+    sessionsCopy = v8;
     selfTriggerSuppressionSessions = self->_selfTriggerSuppressionSessions;
   }
 
-  [(NSArray *)selfTriggerSuppressionSessions addObject:v4];
+  [(NSArray *)selfTriggerSuppressionSessions addObject:sessionsCopy];
 }
 
-- (void)setHasDurationSelfTriggerSuppressionWasActiveInSeconds:(BOOL)a3
+- (void)setHasDurationSelfTriggerSuppressionWasActiveInSeconds:(BOOL)seconds
 {
-  if (a3)
+  if (seconds)
   {
     v3 = 2;
   }
@@ -394,14 +394,14 @@ LABEL_15:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = SISchemaSelfTriggerSuppressionMetrics;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(SISchemaSelfTriggerSuppressionMetrics *)self selfTriggerSuppressionSessions:v9.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
 
   [(SISchemaSelfTriggerSuppressionMetrics *)self setSelfTriggerSuppressionSessions:v7];
 

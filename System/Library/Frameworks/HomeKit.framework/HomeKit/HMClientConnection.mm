@@ -5,25 +5,25 @@
 + (id)sharedInstance;
 + (id)siriCurrentHome;
 - (HMClientConnection)init;
-- (HMClientConnection)initWithContext:(id)a3 areHomesConfigured:(BOOL)a4;
-- (void)fetchHH1EOLStatusForResidentDevice:(id)a3 completion:(id)a4;
-- (void)requestSiriSyncDataWithValidity:(id)a3 completion:(id)a4;
-- (void)sendIntentRequestCommand:(id)a3 withPayload:(id)a4 completionHandler:(id)a5;
-- (void)sendSiriCommand:(id)a3 completionHandler:(id)a4;
+- (HMClientConnection)initWithContext:(id)context areHomesConfigured:(BOOL)configured;
+- (void)fetchHH1EOLStatusForResidentDevice:(id)device completion:(id)completion;
+- (void)requestSiriSyncDataWithValidity:(id)validity completion:(id)completion;
+- (void)sendIntentRequestCommand:(id)command withPayload:(id)payload completionHandler:(id)handler;
+- (void)sendSiriCommand:(id)command completionHandler:(id)handler;
 @end
 
 @implementation HMClientConnection
 
-- (void)fetchHH1EOLStatusForResidentDevice:(id)a3 completion:(id)a4
+- (void)fetchHH1EOLStatusForResidentDevice:(id)device completion:(id)completion
 {
   v34 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  deviceCopy = device;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s: %@ cannot be nil", "-[HMClientConnection fetchHH1EOLStatusForResidentDevice:completion:]", @"completion"];
     v21 = objc_autoreleasePoolPush();
-    v22 = self;
+    selfCopy = self;
     v23 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
     {
@@ -40,14 +40,14 @@
     objc_exception_throw(v25);
   }
 
-  v8 = v7;
+  v8 = completionCopy;
   v9 = MEMORY[0x1E69A2A10];
   v10 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v11 = [objc_opt_class() UUID];
-  v12 = [v10 initWithTarget:v11];
+  uUID = [objc_opt_class() UUID];
+  v12 = [v10 initWithTarget:uUID];
   v28 = @"version";
-  v13 = [v6 versionString];
-  v29 = v13;
+  versionString = [deviceCopy versionString];
+  v29 = versionString;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
   v15 = [v9 messageWithName:@"HMCC.hh1EOLStatus" destination:v12 payload:v14];
 
@@ -58,9 +58,9 @@
   v27 = v8;
   v16 = v8;
   [v15 setResponseHandler:v26];
-  v17 = [(HMClientConnection *)self context];
-  v18 = [v17 messageDispatcher];
-  [v18 sendMessage:v15];
+  context = [(HMClientConnection *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v15];
 
   v19 = *MEMORY[0x1E69E9840];
 }
@@ -76,11 +76,11 @@ void __68__HMClientConnection_fetchHH1EOLStatusForResidentDevice_completion___bl
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)requestSiriSyncDataWithValidity:(id)a3 completion:(id)a4
+- (void)requestSiriSyncDataWithValidity:(id)validity completion:(id)completion
 {
   v45 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  validityCopy = validity;
+  completionCopy = completion;
   if ([(HMClientConnection *)self areHomesConfigured])
   {
     v9 = objc_alloc(MEMORY[0x1E69A29C0]);
@@ -90,42 +90,42 @@ void __68__HMClientConnection_fetchHH1EOLStatusForResidentDevice_completion___bl
     v38 = [v9 initWithName:v12];
 
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v38 identifier];
-      v18 = [v17 shortDescription];
+      identifier = [v38 identifier];
+      shortDescription = [identifier shortDescription];
       *buf = 138543874;
       v40 = v16;
       v41 = 2114;
-      v42 = v18;
+      v42 = shortDescription;
       v43 = 2112;
-      v44 = v7;
+      v44 = validityCopy;
       _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Requesting Siri sync data with validity: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v13);
     v19 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:2];
-    [v19 setObject:v7 forKeyedSubscript:@"kSiriSyncDataValidityKey"];
+    [v19 setObject:validityCopy forKeyedSubscript:@"kSiriSyncDataValidityKey"];
     v20 = objc_alloc(MEMORY[0x1E69A2A10]);
     v21 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v22 = [objc_opt_class() UUID];
-    v23 = [v21 initWithTarget:v22];
+    uUID = [objc_opt_class() UUID];
+    v23 = [v21 initWithTarget:uUID];
     v24 = [v20 initWithName:@"HMCC.m.siriSyncData" destination:v23 payload:v19];
 
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __65__HMClientConnection_requestSiriSyncDataWithValidity_completion___block_invoke;
     v35[3] = &unk_1E754E480;
-    v35[4] = v14;
+    v35[4] = selfCopy;
     v36 = v38;
-    v37 = v8;
+    v37 = completionCopy;
     [v24 setResponseHandler:v35];
-    v25 = [(HMClientConnection *)v14 context];
-    v26 = [v25 messageDispatcher];
-    [v26 sendMessage:v24];
+    context = [(HMClientConnection *)selfCopy context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v24];
 
     __HMFActivityScopeLeave();
   }
@@ -133,7 +133,7 @@ void __68__HMClientConnection_fetchHH1EOLStatusForResidentDevice_completion___bl
   else
   {
     v27 = objc_autoreleasePoolPush();
-    v28 = self;
+    selfCopy2 = self;
     v29 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v29, OS_LOG_TYPE_ERROR))
     {
@@ -146,11 +146,11 @@ void __68__HMClientConnection_fetchHH1EOLStatusForResidentDevice_completion___bl
     objc_autoreleasePoolPop(v27);
     v31 = objc_alloc_init(MEMORY[0x1E69C7810]);
     [v31 setCommandOutcome:*MEMORY[0x1E69C7D88]];
-    v32 = [MEMORY[0x1E695DEC8] array];
-    [v31 setActionResults:v32];
+    array = [MEMORY[0x1E695DEC8] array];
+    [v31 setActionResults:array];
 
-    v33 = [v31 dictionary];
-    (*(v8 + 2))(v8, 0, v33);
+    dictionary = [v31 dictionary];
+    (*(completionCopy + 2))(completionCopy, 0, dictionary);
   }
 
   v34 = *MEMORY[0x1E69E9840];
@@ -209,12 +209,12 @@ LABEL_6:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendIntentRequestCommand:(id)a3 withPayload:(id)a4 completionHandler:(id)a5
+- (void)sendIntentRequestCommand:(id)command withPayload:(id)payload completionHandler:(id)handler
 {
   v45 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  commandCopy = command;
+  payloadCopy = payload;
+  handlerCopy = handler;
   if ([(HMClientConnection *)self areHomesConfigured])
   {
     v12 = objc_alloc(MEMORY[0x1E69A29C0]);
@@ -224,40 +224,40 @@ LABEL_6:
     v38 = [v12 initWithName:v15];
 
     v16 = objc_autoreleasePoolPush();
-    v17 = self;
+    selfCopy = self;
     v18 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
     {
       v19 = HMFGetLogIdentifier();
-      v20 = [v38 identifier];
-      v21 = [v20 shortDescription];
+      identifier = [v38 identifier];
+      shortDescription = [identifier shortDescription];
       *buf = 138543874;
       v40 = v19;
       v41 = 2114;
-      v42 = v21;
+      v42 = shortDescription;
       v43 = 2112;
-      v44 = v9;
+      v44 = commandCopy;
       _os_log_impl(&dword_19BB39000, v18, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Sending control home intent: %@", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v16);
     v22 = objc_alloc(MEMORY[0x1E69A2A10]);
     v23 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v24 = [objc_opt_class() UUID];
-    v25 = [v23 initWithTarget:v24];
-    v26 = [v22 initWithName:@"kSiriIntentRequestKey" destination:v25 payload:v10];
+    uUID = [objc_opt_class() UUID];
+    v25 = [v23 initWithTarget:uUID];
+    v26 = [v22 initWithName:@"kSiriIntentRequestKey" destination:v25 payload:payloadCopy];
 
     v35[0] = MEMORY[0x1E69E9820];
     v35[1] = 3221225472;
     v35[2] = __77__HMClientConnection_sendIntentRequestCommand_withPayload_completionHandler___block_invoke;
     v35[3] = &unk_1E754E480;
-    v35[4] = v17;
+    v35[4] = selfCopy;
     v36 = v38;
-    v37 = v11;
+    v37 = handlerCopy;
     [v26 setResponseHandler:v35];
-    v27 = [(HMClientConnection *)v17 context];
-    v28 = [v27 messageDispatcher];
-    [v28 sendMessage:v26];
+    context = [(HMClientConnection *)selfCopy context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v26];
 
     __HMFActivityScopeLeave();
   }
@@ -265,7 +265,7 @@ LABEL_6:
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy2 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -277,7 +277,7 @@ LABEL_6:
 
     objc_autoreleasePoolPop(v29);
     v33 = [MEMORY[0x1E696ABC0] hmErrorWithCode:2];
-    (*(v11 + 2))(v11, v33, 0);
+    (*(handlerCopy + 2))(handlerCopy, v33, 0);
   }
 
   v34 = *MEMORY[0x1E69E9840];
@@ -336,11 +336,11 @@ LABEL_6:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (void)sendSiriCommand:(id)a3 completionHandler:(id)a4
+- (void)sendSiriCommand:(id)command completionHandler:(id)handler
 {
   v50[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  commandCopy = command;
+  handlerCopy = handler;
   if ([(HMClientConnection *)self areHomesConfigured])
   {
     v9 = objc_alloc(MEMORY[0x1E69A29C0]);
@@ -350,30 +350,30 @@ LABEL_6:
     v41 = [v9 initWithName:v12];
 
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = HMFGetLogIdentifier();
-      v17 = [v41 identifier];
-      v18 = [v17 shortDescription];
-      v19 = [v7 actionRequests];
+      identifier = [v41 identifier];
+      shortDescription = [identifier shortDescription];
+      actionRequests = [commandCopy actionRequests];
       *buf = 138543874;
       v45 = v16;
       v46 = 2114;
-      v47 = v18;
+      v47 = shortDescription;
       v48 = 2048;
-      v49 = [v19 count];
+      v49 = [actionRequests count];
       _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_INFO, "%{public}@[%{public}@] Sending Siri command with %lu action requests", buf, 0x20u);
     }
 
     objc_autoreleasePoolPop(v13);
     v20 = objc_alloc(MEMORY[0x1E69A2A10]);
     v21 = objc_alloc(MEMORY[0x1E69A2A00]);
-    v22 = [objc_opt_class() UUID];
-    v23 = [v21 initWithTarget:v22];
+    uUID = [objc_opt_class() UUID];
+    v23 = [v21 initWithTarget:uUID];
     v42 = @"kSiriCommandKey";
-    v24 = encodeRootObject(v7);
+    v24 = encodeRootObject(commandCopy);
     v43 = v24;
     v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v43 forKeys:&v42 count:1];
     v26 = [v20 initWithName:@"HMCC.m.siriCommand" destination:v23 payload:v25];
@@ -383,13 +383,13 @@ LABEL_6:
     v38[1] = 3221225472;
     v38[2] = __56__HMClientConnection_sendSiriCommand_completionHandler___block_invoke;
     v38[3] = &unk_1E754E480;
-    v38[4] = v14;
+    v38[4] = selfCopy;
     v39 = v41;
-    v40 = v8;
+    v40 = handlerCopy;
     [v26 setResponseHandler:v38];
-    v27 = [(HMClientConnection *)v14 context];
-    v28 = [v27 messageDispatcher];
-    [v28 sendMessage:v26];
+    context = [(HMClientConnection *)selfCopy context];
+    messageDispatcher = [context messageDispatcher];
+    [messageDispatcher sendMessage:v26];
 
     __HMFActivityScopeLeave();
   }
@@ -397,7 +397,7 @@ LABEL_6:
   else
   {
     v29 = objc_autoreleasePoolPush();
-    v30 = self;
+    selfCopy2 = self;
     v31 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
@@ -416,8 +416,8 @@ LABEL_6:
     v35 = [MEMORY[0x1E695DEC8] arrayWithObjects:v50 count:1];
     [v33 setActionResults:v35];
 
-    v36 = [v33 dictionary];
-    (*(v8 + 2))(v8, 0, v36);
+    dictionary = [v33 dictionary];
+    (*(handlerCopy + 2))(handlerCopy, 0, dictionary);
   }
 
   v37 = *MEMORY[0x1E69E9840];
@@ -476,17 +476,17 @@ LABEL_6:
   v19 = *MEMORY[0x1E69E9840];
 }
 
-- (HMClientConnection)initWithContext:(id)a3 areHomesConfigured:(BOOL)a4
+- (HMClientConnection)initWithContext:(id)context areHomesConfigured:(BOOL)configured
 {
-  v7 = a3;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = HMClientConnection;
   v8 = [(HMClientConnection *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_context, a3);
-    v9->_homesConfigured = a4;
+    objc_storeStrong(&v8->_context, context);
+    v9->_homesConfigured = configured;
   }
 
   return v9;
@@ -494,9 +494,9 @@ LABEL_6:
 
 - (HMClientConnection)init
 {
-  v3 = [objc_opt_class() areHomesConfigured];
+  areHomesConfigured = [objc_opt_class() areHomesConfigured];
 
-  return [(HMClientConnection *)self initWithAreHomesConfigured:v3];
+  return [(HMClientConnection *)self initWithAreHomesConfigured:areHomesConfigured];
 }
 
 + (id)logCategory
@@ -524,9 +524,9 @@ uint64_t __33__HMClientConnection_logCategory__block_invoke()
 + (NSURL)siriHomeIdentifier
 {
   v2 = +[HMClientConnection siriCurrentHome];
-  v3 = [v2 currentHomeIdentifier];
+  currentHomeIdentifier = [v2 currentHomeIdentifier];
 
-  v4 = [MEMORY[0x1E695DFF8] URLWithString:v3];
+  v4 = [MEMORY[0x1E695DFF8] URLWithString:currentHomeIdentifier];
 
   return v4;
 }

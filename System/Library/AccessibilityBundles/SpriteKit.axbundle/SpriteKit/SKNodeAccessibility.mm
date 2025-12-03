@@ -1,40 +1,40 @@
 @interface SKNodeAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)accessibilityElementsHidden;
 - (CGRect)accessibilityFrame;
 - (id)_accessibilitySpriteKitChildrenNodes;
 - (id)accessibilityContainer;
-- (id)accessibilityElementAtIndex:(int64_t)a3;
+- (id)accessibilityElementAtIndex:(int64_t)index;
 - (id)accessibilityLabel;
 - (int64_t)accessibilityElementCount;
-- (int64_t)indexOfAccessibilityElement:(id)a3;
+- (int64_t)indexOfAccessibilityElement:(id)element;
 @end
 
 @implementation SKNodeAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"SKNode" hasInstanceMethod:@"children" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKNode" hasInstanceMethod:@"frame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
-  [v3 validateClass:@"SKNode" hasInstanceMethod:@"scene" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKNode" hasInstanceMethod:@"parent" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKNode" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"SKNode" hasInstanceMethod:@"alpha" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"SKNode" hasInstanceMethod:@"isHidden" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"SKNode" hasInstanceMethod:@"children" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKNode" hasInstanceMethod:@"frame" withFullSignature:{"{CGRect={CGPoint=dd}{CGSize=dd}}", 0}];
+  [validationsCopy validateClass:@"SKNode" hasInstanceMethod:@"scene" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKNode" hasInstanceMethod:@"parent" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKNode" hasInstanceMethod:@"name" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"SKNode" hasInstanceMethod:@"alpha" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"SKNode" hasInstanceMethod:@"isHidden" withFullSignature:{"B", 0}];
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(SKNodeAccessibility *)self accessibilityUserDefinedLabel];
-  if (![v3 length])
+  accessibilityUserDefinedLabel = [(SKNodeAccessibility *)self accessibilityUserDefinedLabel];
+  if (![accessibilityUserDefinedLabel length])
   {
     v4 = [(SKNodeAccessibility *)self safeValueForKey:@"name"];
 
-    v3 = v4;
+    accessibilityUserDefinedLabel = v4;
   }
 
-  return v3;
+  return accessibilityUserDefinedLabel;
 }
 
 - (id)_accessibilitySpriteKitChildrenNodes
@@ -85,13 +85,13 @@ void __59__SKNodeAccessibility__accessibilitySpriteKitChildrenNodes__block_invok
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v6 scene];
-  v16 = [v6 parent];
-  v17 = [v15 view];
-  v18 = v17;
-  v19 = !v15 || v6 == 0;
-  v20 = v19 || v16 == 0;
-  v21 = v20 || v17 == 0;
+  scene = [v6 scene];
+  parent = [v6 parent];
+  view = [scene view];
+  v18 = view;
+  v19 = !scene || v6 == 0;
+  v20 = v19 || parent == 0;
+  v21 = v20 || view == 0;
   v22 = !v21;
   if (v21)
   {
@@ -136,8 +136,8 @@ void __59__SKNodeAccessibility__accessibilitySpriteKitChildrenNodes__block_invok
           }
 
           [*(*(&v43 + 1) + 8 * i) CGPointValue];
-          [v15 convertPoint:v16 fromNode:?];
-          [v15 convertPointToView:?];
+          [scene convertPoint:parent fromNode:?];
+          [scene convertPointToView:?];
           if (v36 >= v34)
           {
             v34 = v36;
@@ -220,57 +220,57 @@ LABEL_35:
 {
   v5.receiver = self;
   v5.super_class = SKNodeAccessibility;
-  v3 = [(SKNodeAccessibility *)&v5 accessibilityContainer];
-  if (!v3)
+  accessibilityContainer = [(SKNodeAccessibility *)&v5 accessibilityContainer];
+  if (!accessibilityContainer)
   {
-    v3 = [(SKNodeAccessibility *)self safeValueForKey:@"parent"];
-    if (!v3)
+    accessibilityContainer = [(SKNodeAccessibility *)self safeValueForKey:@"parent"];
+    if (!accessibilityContainer)
     {
-      v3 = [(SKNodeAccessibility *)self safeValueForKey:@"scene"];
+      accessibilityContainer = [(SKNodeAccessibility *)self safeValueForKey:@"scene"];
     }
   }
 
-  return v3;
+  return accessibilityContainer;
 }
 
 - (int64_t)accessibilityElementCount
 {
   v6.receiver = self;
   v6.super_class = SKNodeAccessibility;
-  v3 = [(SKNodeAccessibility *)&v6 accessibilityElementCount];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  accessibilityElementCount = [(SKNodeAccessibility *)&v6 accessibilityElementCount];
+  if (accessibilityElementCount == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [(SKNodeAccessibility *)self _accessibilitySpriteKitChildrenNodes];
-    v3 = [v4 accessibilityElementCount];
+    _accessibilitySpriteKitChildrenNodes = [(SKNodeAccessibility *)self _accessibilitySpriteKitChildrenNodes];
+    accessibilityElementCount = [_accessibilitySpriteKitChildrenNodes accessibilityElementCount];
   }
 
-  return v3;
+  return accessibilityElementCount;
 }
 
-- (id)accessibilityElementAtIndex:(int64_t)a3
+- (id)accessibilityElementAtIndex:(int64_t)index
 {
   v8.receiver = self;
   v8.super_class = SKNodeAccessibility;
   v5 = [(SKNodeAccessibility *)&v8 accessibilityElementAtIndex:?];
   if (!v5)
   {
-    v6 = [(SKNodeAccessibility *)self _accessibilitySpriteKitChildrenNodes];
-    v5 = [v6 accessibilityElementAtIndex:a3];
+    _accessibilitySpriteKitChildrenNodes = [(SKNodeAccessibility *)self _accessibilitySpriteKitChildrenNodes];
+    v5 = [_accessibilitySpriteKitChildrenNodes accessibilityElementAtIndex:index];
   }
 
   return v5;
 }
 
-- (int64_t)indexOfAccessibilityElement:(id)a3
+- (int64_t)indexOfAccessibilityElement:(id)element
 {
-  v4 = a3;
+  elementCopy = element;
   v8.receiver = self;
   v8.super_class = SKNodeAccessibility;
-  v5 = [(SKNodeAccessibility *)&v8 indexOfAccessibilityElement:v4];
+  v5 = [(SKNodeAccessibility *)&v8 indexOfAccessibilityElement:elementCopy];
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = [(SKNodeAccessibility *)self _accessibilitySpriteKitChildrenNodes];
-    v5 = [v6 indexOfAccessibilityElement:v4];
+    _accessibilitySpriteKitChildrenNodes = [(SKNodeAccessibility *)self _accessibilitySpriteKitChildrenNodes];
+    v5 = [_accessibilitySpriteKitChildrenNodes indexOfAccessibilityElement:elementCopy];
   }
 
   return v5;

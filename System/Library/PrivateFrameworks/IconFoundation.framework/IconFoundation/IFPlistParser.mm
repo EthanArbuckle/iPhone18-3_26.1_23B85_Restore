@@ -1,16 +1,16 @@
 @interface IFPlistParser
-+ (id)catalogAssetExcerptForAssetName:(id)a3 style:(unint64_t)a4;
-+ (id)fileAssetsExcerptForFilenames:(id)a3 style:(unint64_t)a4;
-+ (id)grahpicIconExcerptForConfigDictionary:(id)a3;
++ (id)catalogAssetExcerptForAssetName:(id)name style:(unint64_t)style;
++ (id)fileAssetsExcerptForFilenames:(id)filenames style:(unint64_t)style;
++ (id)grahpicIconExcerptForConfigDictionary:(id)dictionary;
 + (id)topLevelAppBundleIconKeys;
-- (BOOL)hasGraphicIconReturningPlistExcerpt:(id *)a3;
-- (IFPlistParser)initWithInfoDictionary:(id)a3;
+- (BOOL)hasGraphicIconReturningPlistExcerpt:(id *)excerpt;
+- (IFPlistParser)initWithInfoDictionary:(id)dictionary;
 - (NSDictionary)iconContent;
 - (NSDictionary)iconDictionary;
 - (NSString)catalogAssetName;
-- (id)catalogAssetNamesReturningPlistExcerpt:(id *)a3;
-- (id)looseFilesNamesReturningPlistExcerpt:(id *)a3;
-- (id)subDictionaryForAlternateIconName:(id)a3 variants:(id)a4;
+- (id)catalogAssetNamesReturningPlistExcerpt:(id *)excerpt;
+- (id)looseFilesNamesReturningPlistExcerpt:(id *)excerpt;
+- (id)subDictionaryForAlternateIconName:(id)name variants:(id)variants;
 - (unint64_t)iconPlatform;
 - (unint64_t)supportedPlatform;
 - (unint64_t)uiDeviceFamily;
@@ -43,15 +43,15 @@ void __42__IFPlistParser_topLevelAppBundleIconKeys__block_invoke()
   topLevelAppBundleIconKeys_keys = v0;
 }
 
-- (IFPlistParser)initWithInfoDictionary:(id)a3
+- (IFPlistParser)initWithInfoDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v9.receiver = self;
   v9.super_class = IFPlistParser;
   v5 = [(IFPlistParser *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [dictionaryCopy copy];
     infoDictionary = v5->_infoDictionary;
     v5->_infoDictionary = v6;
 
@@ -63,18 +63,18 @@ void __42__IFPlistParser_topLevelAppBundleIconKeys__block_invoke()
 
 - (NSDictionary)iconContent
 {
-  v2 = [(IFPlistParser *)self infoDictionary];
+  infoDictionary = [(IFPlistParser *)self infoDictionary];
   v3 = +[IFPlistParser topLevelAppBundleIconKeys];
-  v4 = [v2 _IF_dictionarySubsetForKeys:v3];
+  v4 = [infoDictionary _IF_dictionarySubsetForKeys:v3];
 
   return v4;
 }
 
 - (NSDictionary)iconDictionary
 {
-  v2 = [(IFPlistParser *)self infoDictionary];
+  infoDictionary = [(IFPlistParser *)self infoDictionary];
   v3 = objc_opt_new();
-  v4 = [v2 _IF_dictionaryForKey:@"CFBundleIcons"];
+  v4 = [infoDictionary _IF_dictionaryForKey:@"CFBundleIcons"];
   v5 = [v4 _IF_dictionaryForKey:@"CFBundlePrimaryIcon"];
 
   if (v5)
@@ -84,7 +84,7 @@ void __42__IFPlistParser_topLevelAppBundleIconKeys__block_invoke()
 
   if (![v3 count])
   {
-    v6 = [v2 _IF_dictionaryForKey:@"CFBundleIcons"];
+    v6 = [infoDictionary _IF_dictionaryForKey:@"CFBundleIcons"];
     v7 = [v6 _IF_stringForKey:@"CFBundlePrimaryIcon"];
 
     if (v7)
@@ -95,26 +95,26 @@ void __42__IFPlistParser_topLevelAppBundleIconKeys__block_invoke()
 
   if (![v3 count])
   {
-    v8 = [v2 _IF_stringForKey:@"CFBundleIconFile"];
+    v8 = [infoDictionary _IF_stringForKey:@"CFBundleIconFile"];
     if (v8)
     {
       [v3 setObject:v8 forKeyedSubscript:@"CFBundleIconFile"];
     }
 
-    v9 = [v2 _IF_arrayForKey:@"CFBundleIconFiles"];
+    v9 = [infoDictionary _IF_arrayForKey:@"CFBundleIconFiles"];
     if (v9)
     {
       [v3 setObject:v9 forKeyedSubscript:@"CFBundleIconFiles"];
     }
 
-    v10 = [v2 _IF_stringForKey:@"CFBundleIconName"];
+    v10 = [infoDictionary _IF_stringForKey:@"CFBundleIconName"];
     if (v10)
     {
       [v3 setObject:v10 forKeyedSubscript:@"CFBundleIconName"];
     }
   }
 
-  v11 = [v2 _IF_dictionaryForKey:@"CFBundleIcons"];
+  v11 = [infoDictionary _IF_dictionaryForKey:@"CFBundleIcons"];
   v12 = [v11 _IF_dictionaryForKey:@"ISGraphicIconConfiguration"];
 
   if (v12)
@@ -122,7 +122,7 @@ void __42__IFPlistParser_topLevelAppBundleIconKeys__block_invoke()
     [v3 setObject:v12 forKeyedSubscript:@"ISGraphicIconConfiguration"];
   }
 
-  v13 = [v2 _IF_dictionaryForKey:@"ISFolderIconConfiguration"];
+  v13 = [infoDictionary _IF_dictionaryForKey:@"ISFolderIconConfiguration"];
   if (v13)
   {
     [v3 setObject:v13 forKeyedSubscript:@"ISFolderIconConfiguration"];
@@ -133,16 +133,16 @@ void __42__IFPlistParser_topLevelAppBundleIconKeys__block_invoke()
 
 - (NSString)catalogAssetName
 {
-  v2 = [(IFPlistParser *)self iconDictionary];
-  v3 = [v2 _IF_stringForKey:@"CFBundleIconName"];
+  iconDictionary = [(IFPlistParser *)self iconDictionary];
+  v3 = [iconDictionary _IF_stringForKey:@"CFBundleIconName"];
 
   return v3;
 }
 
 - (unint64_t)supportedPlatform
 {
-  v2 = [(IFPlistParser *)self infoDictionary];
-  v3 = [v2 _IF_arrayForKey:@"CFBundleSupportedPlatforms"];
+  infoDictionary = [(IFPlistParser *)self infoDictionary];
+  v3 = [infoDictionary _IF_arrayForKey:@"CFBundleSupportedPlatforms"];
 
   v4 = +[IFPlatformInfo sharedInstance];
   v5 = [v4 platformFromPlatformStrings:v3];
@@ -153,8 +153,8 @@ void __42__IFPlistParser_topLevelAppBundleIconKeys__block_invoke()
 - (unint64_t)iconPlatform
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  v2 = [(IFPlistParser *)self infoDictionary];
-  v3 = [v2 _IF_stringForKey:@"ISIconPlatform"];
+  infoDictionary = [(IFPlistParser *)self infoDictionary];
+  v3 = [infoDictionary _IF_stringForKey:@"ISIconPlatform"];
 
   if (v3)
   {
@@ -174,8 +174,8 @@ void __42__IFPlistParser_topLevelAppBundleIconKeys__block_invoke()
 
 - (unint64_t)uiDeviceFamily
 {
-  v2 = [(IFPlistParser *)self infoDictionary];
-  v3 = [v2 _IF_arrayForKey:@"UIDeviceFamily"];
+  infoDictionary = [(IFPlistParser *)self infoDictionary];
+  v3 = [infoDictionary _IF_arrayForKey:@"UIDeviceFamily"];
 
   v4 = +[IFPlatformInfo sharedInstance];
   v5 = [v4 platformFromUIDeviceFamily:v3];
@@ -183,25 +183,25 @@ void __42__IFPlistParser_topLevelAppBundleIconKeys__block_invoke()
   return v5;
 }
 
-+ (id)catalogAssetExcerptForAssetName:(id)a3 style:(unint64_t)a4
++ (id)catalogAssetExcerptForAssetName:(id)name style:(unint64_t)style
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5)
+  nameCopy = name;
+  v6 = nameCopy;
+  if (!nameCopy)
   {
 LABEL_12:
     v8 = 0;
     goto LABEL_17;
   }
 
-  if (a4 <= 1)
+  if (style <= 1)
   {
-    if (a4)
+    if (style)
     {
-      if (a4 == 1)
+      if (style == 1)
       {
-        v22 = v5;
+        v22 = nameCopy;
         v23 = @"CFBundleIcons";
         v21 = @"CFBundlePrimaryIcon";
         v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
@@ -216,7 +216,7 @@ LABEL_15:
     }
 
     v35 = @"CFBundleIcons";
-    v32 = v5;
+    v32 = nameCopy;
     v33 = @"CFBundlePrimaryIcon";
     v31 = @"CFBundleIconName";
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
@@ -229,16 +229,16 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  if (a4 != 2)
+  if (style != 2)
   {
-    if (a4 != 3)
+    if (style != 3)
     {
 LABEL_9:
       v13 = IFDefaultLog();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v15 = 134218242;
-        v16 = a4;
+        styleCopy = style;
         v17 = 2112;
         v18 = v6;
       }
@@ -247,7 +247,7 @@ LABEL_9:
     }
 
     v29 = @"CFBundleIcons~ipad";
-    v26 = v5;
+    v26 = nameCopy;
     v27 = @"CFBundlePrimaryIcon";
     v25 = @"CFBundleIconName";
     v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
@@ -264,37 +264,37 @@ LABEL_14:
   }
 
   v19 = @"CFBundleIconName";
-  v20 = v5;
+  v20 = nameCopy;
   v8 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v20 forKeys:&v19 count:1];
 LABEL_17:
 
   return v8;
 }
 
-+ (id)fileAssetsExcerptForFilenames:(id)a3 style:(unint64_t)a4
++ (id)fileAssetsExcerptForFilenames:(id)filenames style:(unint64_t)style
 {
   v36[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = v5;
-  if (!v5 || ![v5 count])
+  filenamesCopy = filenames;
+  v6 = filenamesCopy;
+  if (!filenamesCopy || ![filenamesCopy count])
   {
     v11 = 0;
     goto LABEL_20;
   }
 
-  if (a4 <= 2)
+  if (style <= 2)
   {
-    if (a4)
+    if (style)
     {
-      if (a4 != 2)
+      if (style != 2)
       {
         goto LABEL_16;
       }
 
 LABEL_11:
       v23 = @"CFBundleIconFile";
-      v7 = [v6 firstObject];
-      v24 = v7;
+      firstObject = [v6 firstObject];
+      v24 = firstObject;
       v8 = MEMORY[0x1E695DF20];
       v9 = &v24;
       v10 = &v23;
@@ -305,8 +305,8 @@ LABEL_11:
     v32 = v6;
     v33 = @"CFBundlePrimaryIcon";
     v31 = @"CFBundleIconFiles";
-    v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-    v34 = v7;
+    firstObject = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
+    v34 = firstObject;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v34 forKeys:&v33 count:1];
     v36[0] = v12;
     v13 = MEMORY[0x1E695DF20];
@@ -318,14 +318,14 @@ LABEL_15:
     goto LABEL_19;
   }
 
-  if (a4 == 3)
+  if (style == 3)
   {
     v29 = @"CFBundleIcons~ipad";
     v26 = v6;
     v27 = @"CFBundlePrimaryIcon";
     v25 = @"CFBundleIconFiles";
-    v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
-    v28 = v7;
+    firstObject = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v26 forKeys:&v25 count:1];
+    v28 = firstObject;
     v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v28 forKeys:&v27 count:1];
     v30 = v12;
     v13 = MEMORY[0x1E695DF20];
@@ -334,19 +334,19 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  if (a4 == 4)
+  if (style == 4)
   {
     goto LABEL_11;
   }
 
-  if (a4 != 5)
+  if (style != 5)
   {
 LABEL_16:
-    v7 = IFDefaultLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+    firstObject = IFDefaultLog();
+    if (os_log_type_enabled(firstObject, OS_LOG_TYPE_DEFAULT))
     {
       v17 = 134218242;
-      v18 = a4;
+      styleCopy = style;
       v19 = 2112;
       v20 = v6;
     }
@@ -356,8 +356,8 @@ LABEL_16:
   }
 
   v21 = @"CFBundleIconFile~ipad";
-  v7 = [v6 firstObject];
-  v22 = v7;
+  firstObject = [v6 firstObject];
+  v22 = firstObject;
   v8 = MEMORY[0x1E695DF20];
   v9 = &v22;
   v10 = &v21;
@@ -370,12 +370,12 @@ LABEL_20:
   return v11;
 }
 
-+ (id)grahpicIconExcerptForConfigDictionary:(id)a3
++ (id)grahpicIconExcerptForConfigDictionary:(id)dictionary
 {
   v11[1] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy && [dictionaryCopy count])
   {
     v9 = v4;
     v10 = @"CFBundleIcons";
@@ -393,13 +393,13 @@ LABEL_20:
   return v6;
 }
 
-- (id)catalogAssetNamesReturningPlistExcerpt:(id *)a3
+- (id)catalogAssetNamesReturningPlistExcerpt:(id *)excerpt
 {
   v35[1] = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [(IFPlistParser *)self infoDictionary];
-  v8 = [v7 _IF_dictionaryForKey:@"CFBundleIcons"];
+  infoDictionary = [(IFPlistParser *)self infoDictionary];
+  v8 = [infoDictionary _IF_dictionaryForKey:@"CFBundleIcons"];
   v9 = [v8 _IF_dictionaryForKey:@"CFBundlePrimaryIcon"];
   v10 = [v9 _IF_stringForKey:@"CFBundleIconName"];
 
@@ -410,8 +410,8 @@ LABEL_20:
     [v5 addEntriesFromDictionary:v11];
   }
 
-  v12 = [(IFPlistParser *)self infoDictionary];
-  v13 = [v12 _IF_dictionaryForKey:@"CFBundleIcons~ipad"];
+  infoDictionary2 = [(IFPlistParser *)self infoDictionary];
+  v13 = [infoDictionary2 _IF_dictionaryForKey:@"CFBundleIcons~ipad"];
   v14 = [v13 _IF_dictionaryForKey:@"CFBundlePrimaryIcon"];
   v15 = [v14 _IF_stringForKey:@"CFBundleIconName"];
 
@@ -422,8 +422,8 @@ LABEL_20:
     [v5 addEntriesFromDictionary:v16];
   }
 
-  v17 = [(IFPlistParser *)self infoDictionary];
-  v18 = [v17 _IF_dictionaryForKey:@"CFBundleIcons"];
+  infoDictionary3 = [(IFPlistParser *)self infoDictionary];
+  v18 = [infoDictionary3 _IF_dictionaryForKey:@"CFBundleIcons"];
   v19 = [v18 _IF_stringForKey:@"CFBundlePrimaryIcon"];
 
   if (v19)
@@ -433,8 +433,8 @@ LABEL_20:
     [v5 addEntriesFromDictionary:v20];
   }
 
-  v21 = [(IFPlistParser *)self infoDictionary];
-  v22 = [v21 _IF_stringForKey:@"CFBundleIconName"];
+  infoDictionary4 = [(IFPlistParser *)self infoDictionary];
+  v22 = [infoDictionary4 _IF_stringForKey:@"CFBundleIconName"];
 
   if (v22)
   {
@@ -445,10 +445,10 @@ LABEL_20:
 
   if ([(IFPlistParser *)self captureAccentColorInfo])
   {
-    v24 = [(IFPlistParser *)self infoDictionary];
+    infoDictionary5 = [(IFPlistParser *)self infoDictionary];
     v35[0] = @"NSAccentColorName";
     v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:v35 count:1];
-    v26 = [v24 _IF_dictionarySubsetForKeys:v25];
+    v26 = [infoDictionary5 _IF_dictionarySubsetForKeys:v25];
 
     if ([v26 count])
     {
@@ -476,9 +476,9 @@ LABEL_20:
       }
     }
 
-    if (a3)
+    if (excerpt)
     {
-      *a3 = [v5 copy];
+      *excerpt = [v5 copy];
     }
 
     v33 = v6;
@@ -492,13 +492,13 @@ LABEL_20:
   return v33;
 }
 
-- (id)looseFilesNamesReturningPlistExcerpt:(id *)a3
+- (id)looseFilesNamesReturningPlistExcerpt:(id *)excerpt
 {
   v34[1] = *MEMORY[0x1E69E9840];
   v5 = objc_opt_new();
   v6 = objc_opt_new();
-  v7 = [(IFPlistParser *)self infoDictionary];
-  v8 = [v7 _IF_dictionaryForKey:@"CFBundleIcons"];
+  infoDictionary = [(IFPlistParser *)self infoDictionary];
+  v8 = [infoDictionary _IF_dictionaryForKey:@"CFBundleIcons"];
   v9 = [v8 _IF_dictionaryForKey:@"CFBundlePrimaryIcon"];
   v10 = [v9 _IF_arrayForKey:@"CFBundleIconFiles"];
 
@@ -509,8 +509,8 @@ LABEL_20:
     [v5 addEntriesFromDictionary:v11];
   }
 
-  v12 = [(IFPlistParser *)self infoDictionary];
-  v13 = [v12 _IF_dictionaryForKey:@"CFBundleIcons~ipad"];
+  infoDictionary2 = [(IFPlistParser *)self infoDictionary];
+  v13 = [infoDictionary2 _IF_dictionaryForKey:@"CFBundleIcons~ipad"];
   v14 = [v13 _IF_dictionaryForKey:@"CFBundlePrimaryIcon"];
   v15 = [v14 _IF_arrayForKey:@"CFBundleIconFiles"];
 
@@ -521,8 +521,8 @@ LABEL_20:
     [v5 addEntriesFromDictionary:v16];
   }
 
-  v17 = [(IFPlistParser *)self infoDictionary];
-  v18 = [v17 _IF_arrayForKey:@"CFBundleIconFiles"];
+  infoDictionary3 = [(IFPlistParser *)self infoDictionary];
+  v18 = [infoDictionary3 _IF_arrayForKey:@"CFBundleIconFiles"];
 
   if (v18 && [v18 count])
   {
@@ -531,8 +531,8 @@ LABEL_20:
     [v5 addEntriesFromDictionary:v19];
   }
 
-  v20 = [(IFPlistParser *)self infoDictionary];
-  v21 = [v20 _IF_arrayForKey:@"CFBundleIconFiles~ipad"];
+  infoDictionary4 = [(IFPlistParser *)self infoDictionary];
+  v21 = [infoDictionary4 _IF_arrayForKey:@"CFBundleIconFiles~ipad"];
 
   if (v21 && [v21 count])
   {
@@ -541,8 +541,8 @@ LABEL_20:
     [v5 addEntriesFromDictionary:v22];
   }
 
-  v23 = [(IFPlistParser *)self infoDictionary];
-  v24 = [v23 _IF_stringForKey:@"CFBundleIconFile"];
+  infoDictionary5 = [(IFPlistParser *)self infoDictionary];
+  v24 = [infoDictionary5 _IF_stringForKey:@"CFBundleIconFile"];
 
   if (v24)
   {
@@ -553,8 +553,8 @@ LABEL_20:
     [v5 addEntriesFromDictionary:v26];
   }
 
-  v27 = [(IFPlistParser *)self infoDictionary];
-  v28 = [v27 _IF_stringForKey:@"CFBundleIconFile~ipad"];
+  infoDictionary6 = [(IFPlistParser *)self infoDictionary];
+  v28 = [infoDictionary6 _IF_stringForKey:@"CFBundleIconFile~ipad"];
 
   if (v28)
   {
@@ -567,9 +567,9 @@ LABEL_20:
 
   if ([v6 count])
   {
-    if (a3)
+    if (excerpt)
     {
-      *a3 = [v5 copy];
+      *excerpt = [v5 copy];
     }
 
     v31 = v6;
@@ -583,32 +583,32 @@ LABEL_20:
   return v31;
 }
 
-- (BOOL)hasGraphicIconReturningPlistExcerpt:(id *)a3
+- (BOOL)hasGraphicIconReturningPlistExcerpt:(id *)excerpt
 {
-  v4 = [(IFPlistParser *)self infoDictionary];
-  v5 = [v4 _IF_dictionaryForKey:@"CFBundleIcons"];
+  infoDictionary = [(IFPlistParser *)self infoDictionary];
+  v5 = [infoDictionary _IF_dictionaryForKey:@"CFBundleIcons"];
   v6 = [v5 _IF_dictionaryForKey:@"ISGraphicIconConfiguration"];
 
-  if (a3)
+  if (excerpt)
   {
-    *a3 = [IFPlistParser grahpicIconExcerptForConfigDictionary:v6];
+    *excerpt = [IFPlistParser grahpicIconExcerptForConfigDictionary:v6];
   }
 
   return v6 != 0;
 }
 
-- (id)subDictionaryForAlternateIconName:(id)a3 variants:(id)a4
+- (id)subDictionaryForAlternateIconName:(id)name variants:(id)variants
 {
   v49 = *MEMORY[0x1E69E9840];
-  v33 = a3;
-  v6 = a4;
+  nameCopy = name;
+  variantsCopy = variants;
   v7 = objc_opt_new();
   [v7 addObject:@"CFBundleIcons"];
   v40 = 0u;
   v41 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v8 = v6;
+  v8 = variantsCopy;
   v9 = [v8 countByEnumeratingWithState:&v38 objects:v48 count:16];
   if (v9)
   {
@@ -656,11 +656,11 @@ LABEL_20:
         }
 
         v18 = *(*(&v34 + 1) + 8 * j);
-        v19 = self;
-        v20 = [(IFPlistParser *)self infoDictionary];
-        v21 = [v20 _IF_dictionaryForKey:v18];
+        selfCopy = self;
+        infoDictionary = [(IFPlistParser *)self infoDictionary];
+        v21 = [infoDictionary _IF_dictionaryForKey:v18];
         v22 = [v21 _IF_dictionaryForKey:@"CFBundleAlternateIcons"];
-        v23 = [v22 _IF_dictionaryForKey:v33];
+        v23 = [v22 _IF_dictionaryForKey:nameCopy];
 
         if (v23)
         {
@@ -674,7 +674,7 @@ LABEL_20:
           [v32 addEntriesFromDictionary:v25];
         }
 
-        self = v19;
+        self = selfCopy;
       }
 
       v15 = [obj countByEnumeratingWithState:&v34 objects:v47 count:16];
@@ -685,10 +685,10 @@ LABEL_20:
 
   if ([(IFPlistParser *)self captureAccentColorInfo])
   {
-    v26 = [(IFPlistParser *)self infoDictionary];
+    infoDictionary2 = [(IFPlistParser *)self infoDictionary];
     v42 = @"NSAccentColorName";
     v27 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v42 count:1];
-    v28 = [v26 _IF_dictionarySubsetForKeys:v27];
+    v28 = [infoDictionary2 _IF_dictionarySubsetForKeys:v27];
 
     if ([v28 count])
     {

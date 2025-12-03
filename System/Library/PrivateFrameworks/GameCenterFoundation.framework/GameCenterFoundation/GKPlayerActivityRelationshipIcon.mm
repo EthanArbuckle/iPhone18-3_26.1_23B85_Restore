@@ -1,6 +1,6 @@
 @interface GKPlayerActivityRelationshipIcon
 + (id)secureCodedPropertyKeys;
-- (GKPlayerActivityRelationshipIcon)initWithDictionary:(id)a3;
+- (GKPlayerActivityRelationshipIcon)initWithDictionary:(id)dictionary;
 @end
 
 @implementation GKPlayerActivityRelationshipIcon
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __59__GKPlayerActivityRelationshipIcon_secureCodedPropertyKeys__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (secureCodedPropertyKeys_onceToken_365 != -1)
   {
     dispatch_once(&secureCodedPropertyKeys_onceToken_365, block);
@@ -47,24 +47,24 @@ void __59__GKPlayerActivityRelationshipIcon_secureCodedPropertyKeys__block_invok
   v5 = *MEMORY[0x277D85DE8];
 }
 
-- (GKPlayerActivityRelationshipIcon)initWithDictionary:(id)a3
+- (GKPlayerActivityRelationshipIcon)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = GKPlayerActivityRelationshipIcon;
   v5 = [(GKPlayerActivityRelationshipIcon *)&v11 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"url"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"url"];
     [(GKPlayerActivityRelationshipIcon *)v5 setUrl:v6];
 
-    v7 = [v4 objectForKeyedSubscript:@"platform"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"platform"];
     [(GKPlayerActivityRelationshipIcon *)v5 setPlatform:[GKGameDescriptor gamePlatformFromServerGameDescriptorString:v7]];
 
-    v8 = [v4 objectForKeyedSubscript:@"width"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"width"];
     [(GKPlayerActivityRelationshipIcon *)v5 setWidth:v8];
 
-    v9 = [v4 objectForKeyedSubscript:@"height"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"height"];
     [(GKPlayerActivityRelationshipIcon *)v5 setHeight:v9];
   }
 

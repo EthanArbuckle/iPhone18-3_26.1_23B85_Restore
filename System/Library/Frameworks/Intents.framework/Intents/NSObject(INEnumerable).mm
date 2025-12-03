@@ -9,7 +9,7 @@
   v6 = a4;
   if (objc_opt_class() == a3)
   {
-    v7 = v6[2](v6, a1);
+    v7 = v6[2](v6, self);
   }
 
   else

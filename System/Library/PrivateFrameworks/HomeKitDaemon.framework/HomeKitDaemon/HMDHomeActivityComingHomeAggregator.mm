@@ -1,12 +1,12 @@
 @interface HMDHomeActivityComingHomeAggregator
 + (id)logCategory;
-- (BOOL)isExpiredReport:(id)a3;
-- (BOOL)isStateEquivalentForExistingReport:(id)a3 newReport:(id)a4;
-- (BOOL)shouldSuppressIsComingHome:(BOOL)a3 withStateEnd:(id)a4;
-- (HMDHomeActivityComingHomeAggregator)initWithDataSource:(id)a3;
+- (BOOL)isExpiredReport:(id)report;
+- (BOOL)isStateEquivalentForExistingReport:(id)report newReport:(id)newReport;
+- (BOOL)shouldSuppressIsComingHome:(BOOL)home withStateEnd:(id)end;
+- (HMDHomeActivityComingHomeAggregator)initWithDataSource:(id)source;
 - (HMDHomeActivityComingHomeAggregatorState)computedState;
-- (double)timeIntervalFromETAExpiredToCurrentDate:(id)a3;
-- (double)timeIntervalFromETAReportingThresholdToStateEnd:(id)a3;
+- (double)timeIntervalFromETAExpiredToCurrentDate:(id)date;
+- (double)timeIntervalFromETAReportingThresholdToStateEnd:(id)end;
 - (id)nextRefreshTimestamp;
 @end
 
@@ -32,14 +32,14 @@ void __50__HMDHomeActivityComingHomeAggregator_logCategory__block_invoke()
   logCategory__hmf_once_v10_285925 = v1;
 }
 
-- (BOOL)isStateEquivalentForExistingReport:(id)a3 newReport:(id)a4
+- (BOOL)isStateEquivalentForExistingReport:(id)report newReport:(id)newReport
 {
-  v5 = a3;
-  v6 = a4;
+  reportCopy = report;
+  newReportCopy = newReport;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = v5;
+    v7 = reportCopy;
   }
 
   else
@@ -48,7 +48,7 @@ void __50__HMDHomeActivityComingHomeAggregator_logCategory__block_invoke()
   }
 
   v8 = v7;
-  v9 = v6;
+  v9 = newReportCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -79,21 +79,21 @@ void __50__HMDHomeActivityComingHomeAggregator_logCategory__block_invoke()
 
   else
   {
-    v13 = [v8 state];
-    v14 = v13 == [v11 state];
+    state = [v8 state];
+    v14 = state == [v11 state];
   }
 
   return v14;
 }
 
-- (BOOL)isExpiredReport:(id)a3
+- (BOOL)isExpiredReport:(id)report
 {
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateAggregator *)self dataSource];
-  v6 = [v5 currentDate];
-  v7 = [(HMDHomeActivityStateAggregator *)self dataSource];
-  [v7 reportValidityInterval];
-  v8 = [v4 isExpiredWithCurrentDate:v6 validInterval:?];
+  reportCopy = report;
+  dataSource = [(HMDHomeActivityStateAggregator *)self dataSource];
+  currentDate = [dataSource currentDate];
+  dataSource2 = [(HMDHomeActivityStateAggregator *)self dataSource];
+  [dataSource2 reportValidityInterval];
+  v8 = [reportCopy isExpiredWithCurrentDate:currentDate validInterval:?];
 
   if (v8)
   {
@@ -102,7 +102,7 @@ void __50__HMDHomeActivityComingHomeAggregator_logCategory__block_invoke()
 
   else
   {
-    v10 = v4;
+    v10 = reportCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -118,8 +118,8 @@ void __50__HMDHomeActivityComingHomeAggregator_logCategory__block_invoke()
 
     if (v12 && [v12 state] == 2)
     {
-      v13 = [v12 stateEnd];
-      [(HMDHomeActivityComingHomeAggregator *)self timeIntervalFromETAExpiredToCurrentDate:v13];
+      stateEnd = [v12 stateEnd];
+      [(HMDHomeActivityComingHomeAggregator *)self timeIntervalFromETAExpiredToCurrentDate:stateEnd];
       v15 = v14;
 
       v9 = v15 > 0.0;
@@ -136,14 +136,14 @@ void __50__HMDHomeActivityComingHomeAggregator_logCategory__block_invoke()
 
 - (id)nextRefreshTimestamp
 {
-  v3 = [(HMDHomeActivityStateAggregator *)self userActivityMap];
-  v4 = [MEMORY[0x277CBEAA8] distantFuture];
+  userActivityMap = [(HMDHomeActivityStateAggregator *)self userActivityMap];
+  distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __59__HMDHomeActivityComingHomeAggregator_nextRefreshTimestamp__block_invoke;
   v7[3] = &unk_27868A818;
   v7[4] = self;
-  v5 = [v3 na_reduceWithInitialValue:v4 reducer:v7];
+  v5 = [userActivityMap na_reduceWithInitialValue:distantFuture reducer:v7];
 
   return v5;
 }
@@ -257,22 +257,22 @@ LABEL_14:
 {
   v23 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDHomeActivityStateAggregator *)v4 userActivityMap];
+    userActivityMap = [(HMDHomeActivityStateAggregator *)selfCopy userActivityMap];
     *buf = 138543618;
     *&buf[4] = v6;
     *&buf[12] = 2112;
-    *&buf[14] = v7;
+    *&buf[14] = userActivityMap;
     _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_INFO, "%{public}@Computing state from user activity map %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
-  v8 = [(HMDHomeActivityStateAggregator *)v4 userActivityMap];
-  v9 = [v8 copy];
+  userActivityMap2 = [(HMDHomeActivityStateAggregator *)selfCopy userActivityMap];
+  v9 = [userActivityMap2 copy];
 
   if ([v9 count])
   {
@@ -285,16 +285,16 @@ LABEL_14:
     *&buf[16] = 0x3032000000;
     v20 = __Block_byref_object_copy__285954;
     v21 = __Block_byref_object_dispose__285955;
-    v22 = [MEMORY[0x277CBEAA8] distantFuture];
+    distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __52__HMDHomeActivityComingHomeAggregator_computedState__block_invoke;
     v14[3] = &unk_27868A7F0;
-    v14[4] = v4;
+    v14[4] = selfCopy;
     v14[5] = &v15;
     v14[6] = buf;
     [v9 na_each:v14];
-    if ([(HMDHomeActivityComingHomeAggregator *)v4 shouldSuppressIsComingHome:*(v16 + 24) withStateEnd:*(*&buf[8] + 40)])
+    if ([(HMDHomeActivityComingHomeAggregator *)selfCopy shouldSuppressIsComingHome:*(v16 + 24) withStateEnd:*(*&buf[8] + 40)])
     {
       *(v16 + 24) = 0;
       v10 = *(*&buf[8] + 40);
@@ -366,19 +366,19 @@ void __52__HMDHomeActivityComingHomeAggregator_computedState__block_invoke(uint6
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)shouldSuppressIsComingHome:(BOOL)a3 withStateEnd:(id)a4
+- (BOOL)shouldSuppressIsComingHome:(BOOL)home withStateEnd:(id)end
 {
-  LODWORD(v4) = a3;
+  LODWORD(v4) = home;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  endCopy = end;
   if (v4)
   {
-    [(HMDHomeActivityComingHomeAggregator *)self timeIntervalFromETAReportingThresholdToStateEnd:v6];
+    [(HMDHomeActivityComingHomeAggregator *)self timeIntervalFromETAReportingThresholdToStateEnd:endCopy];
     if (v7 > 0.0)
     {
       v8 = v7;
       v4 = objc_autoreleasePoolPush();
-      v9 = self;
+      selfCopy = self;
       v10 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -404,35 +404,35 @@ void __52__HMDHomeActivityComingHomeAggregator_computedState__block_invoke(uint6
   return v4;
 }
 
-- (double)timeIntervalFromETAExpiredToCurrentDate:(id)a3
+- (double)timeIntervalFromETAExpiredToCurrentDate:(id)date
 {
-  v4 = [a3 dateByAddingTimeInterval:900.0];
-  v5 = [(HMDHomeActivityStateAggregator *)self dataSource];
-  v6 = [v5 currentDate];
-  [v6 timeIntervalSinceDate:v4];
+  v4 = [date dateByAddingTimeInterval:900.0];
+  dataSource = [(HMDHomeActivityStateAggregator *)self dataSource];
+  currentDate = [dataSource currentDate];
+  [currentDate timeIntervalSinceDate:v4];
   v8 = v7;
 
   return v8;
 }
 
-- (double)timeIntervalFromETAReportingThresholdToStateEnd:(id)a3
+- (double)timeIntervalFromETAReportingThresholdToStateEnd:(id)end
 {
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateAggregator *)self dataSource];
-  v6 = [v5 currentDate];
-  v7 = [v6 dateByAddingTimeInterval:3600.0];
+  endCopy = end;
+  dataSource = [(HMDHomeActivityStateAggregator *)self dataSource];
+  currentDate = [dataSource currentDate];
+  v7 = [currentDate dateByAddingTimeInterval:3600.0];
 
-  [v4 timeIntervalSinceDate:v7];
+  [endCopy timeIntervalSinceDate:v7];
   v9 = v8;
 
   return v9;
 }
 
-- (HMDHomeActivityComingHomeAggregator)initWithDataSource:(id)a3
+- (HMDHomeActivityComingHomeAggregator)initWithDataSource:(id)source
 {
-  v4 = a3;
-  v5 = [(HMDHomeActivityStateAggregatorStorage *)[HMDHomeActivityComingHomeAggregatorStorage alloc] initWithDataSource:v4];
-  v6 = [(HMDHomeActivityStateAggregator *)self initWithStorage:v5 dataSource:v4];
+  sourceCopy = source;
+  v5 = [(HMDHomeActivityStateAggregatorStorage *)[HMDHomeActivityComingHomeAggregatorStorage alloc] initWithDataSource:sourceCopy];
+  v6 = [(HMDHomeActivityStateAggregator *)self initWithStorage:v5 dataSource:sourceCopy];
 
   return v6;
 }

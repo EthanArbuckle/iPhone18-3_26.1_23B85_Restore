@@ -1,9 +1,9 @@
 @interface IDEDataProvider_procinfo
 + (id)sharedDataProvider;
-- (BOOL)captureAttributes:(id)a3 toDictionary:(id)a4 forPID:(id)a5;
+- (BOOL)captureAttributes:(id)attributes toDictionary:(id)dictionary forPID:(id)d;
 - (IDEDataProvider_procinfo)init;
 - (id).cxx_construct;
-- (id)captureAttributes:(id)a3 forPIDs:(id)a4;
+- (id)captureAttributes:(id)attributes forPIDs:(id)ds;
 - (id)supportedAttributes;
 @end
 
@@ -48,12 +48,12 @@
   return v3;
 }
 
-- (BOOL)captureAttributes:(id)a3 toDictionary:(id)a4 forPID:(id)a5
+- (BOOL)captureAttributes:(id)attributes toDictionary:(id)dictionary forPID:(id)d
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v10 intValue];
+  attributesCopy = attributes;
+  dictionaryCopy = dictionary;
+  dCopy = d;
+  intValue = [dCopy intValue];
   p_processInfoByPID = &self->_processInfoByPID;
   size = self->_processInfoByPID.__table_.__bucket_list_.__deleter_.__size_;
   if (!size)
@@ -65,16 +65,16 @@
   v14.i16[0] = vaddlv_u8(v14);
   if (v14.u32[0] > 1uLL)
   {
-    v15 = v11;
-    if (size <= v11)
+    v15 = intValue;
+    if (size <= intValue)
     {
-      v15 = v11 % size;
+      v15 = intValue % size;
     }
   }
 
   else
   {
-    v15 = (size - 1) & v11;
+    v15 = (size - 1) & intValue;
   }
 
   v16 = p_processInfoByPID->__table_.__bucket_list_.__ptr_[v15];
@@ -87,7 +87,7 @@ LABEL_18:
   while (1)
   {
     v18 = v17[1];
-    if (v18 == v11)
+    if (v18 == intValue)
     {
       break;
     }
@@ -118,7 +118,7 @@ LABEL_17:
     }
   }
 
-  if (*(v17 + 4) != v11)
+  if (*(v17 + 4) != intValue)
   {
     goto LABEL_17;
   }
@@ -129,15 +129,15 @@ LABEL_17:
   v95 = 0u;
   v93 = 0u;
   memset(buffer, 0, sizeof(buffer));
-  v19 = proc_pid_rusage([v10 intValue], 2, buffer);
+  v19 = proc_pid_rusage([dCopy intValue], 2, buffer);
   if (v19 != 3)
   {
-    if (v19 || proc_pidinfo([v10 intValue], 20, 1uLL, v81, 40) <= 0 || coalition_info_resource_usage())
+    if (v19 || proc_pidinfo([dCopy intValue], 20, 1uLL, v81, 40) <= 0 || coalition_info_resource_usage())
     {
-      v20 = [v10 intValue];
+      intValue2 = [dCopy intValue];
       v21 = __error();
-      v22 = [NSString stringWithFormat:@"couldn't get info for process %i: %s", v20, strerror(*v21)];
-      [v9 setObject:v22 forKeyedSubscript:@"error"];
+      v22 = [NSString stringWithFormat:@"couldn't get info for process %i: %s", intValue2, strerror(*v21)];
+      [dictionaryCopy setObject:v22 forKeyedSubscript:@"error"];
     }
 
     else
@@ -154,48 +154,48 @@ LABEL_17:
       v17[6] = v97;
       v17[7] = v35 - v36;
       v37 = [NSNumber numberWithDouble:(mach_absolute_time() - v93) / 1000000000.0];
-      [v9 setObject:v37 forKeyedSubscript:@"process.age"];
+      [dictionaryCopy setObject:v37 forKeyedSubscript:@"process.age"];
 
       v38 = [NSNumber numberWithUnsignedLongLong:v17[6]];
-      [v9 setObject:v38 forKeyedSubscript:@"disk.rd.bytes"];
+      [dictionaryCopy setObject:v38 forKeyedSubscript:@"disk.rd.bytes"];
 
       v39 = [NSNumber numberWithUnsignedLongLong:v17[6] - v17[4]];
-      [v9 setObject:v39 forKeyedSubscript:@"disk.rd.bytes.delta"];
+      [dictionaryCopy setObject:v39 forKeyedSubscript:@"disk.rd.bytes.delta"];
 
       v40 = [NSNumber numberWithUnsignedLongLong:v17[7]];
-      [v9 setObject:v40 forKeyedSubscript:@"disk.wr.bytes"];
+      [dictionaryCopy setObject:v40 forKeyedSubscript:@"disk.wr.bytes"];
 
       v41 = [NSNumber numberWithUnsignedLongLong:v17[7] - v17[5]];
-      [v9 setObject:v41 forKeyedSubscript:@"disk.wr.bytes.delta"];
+      [dictionaryCopy setObject:v41 forKeyedSubscript:@"disk.wr.bytes.delta"];
 
       v42 = [NSNumber numberWithUnsignedLongLong:v17[7] + v17[6]];
-      [v9 setObject:v42 forKeyedSubscript:@"disk.bytes"];
+      [dictionaryCopy setObject:v42 forKeyedSubscript:@"disk.bytes"];
 
       v43 = [NSNumber numberWithUnsignedLongLong:v17[7] + v17[6] - (v17[4] + v17[5])];
-      [v9 setObject:v43 forKeyedSubscript:@"disk.bytes.delta"];
+      [dictionaryCopy setObject:v43 forKeyedSubscript:@"disk.bytes.delta"];
 
-      if ([v8 containsObject:@"disk.openfiles[]"])
+      if ([attributesCopy containsObject:@"disk.openfiles[]"])
       {
-        v44 = proc_pidinfo([v10 intValue], 1, 0, 0, 0);
+        v44 = proc_pidinfo([dCopy intValue], 1, 0, 0, 0);
         v45 = v44;
         if ((v44 & 0x80000000) != 0)
         {
-          v68 = [v10 intValue];
+          intValue3 = [dCopy intValue];
           v69 = __error();
-          v70 = [NSString stringWithFormat:@"couldn't determine number of file descriptors of process %i: %s", v68, strerror(*v69)];
-          [v9 setObject:v70 forKeyedSubscript:@"error"];
+          v70 = [NSString stringWithFormat:@"couldn't determine number of file descriptors of process %i: %s", intValue3, strerror(*v69)];
+          [dictionaryCopy setObject:v70 forKeyedSubscript:@"error"];
         }
 
         else
         {
           v79 = malloc_type_malloc(v44, 0x100004000313F17uLL);
-          v46 = proc_pidinfo([v10 intValue], 1, 0, v79, v45);
+          v46 = proc_pidinfo([dCopy intValue], 1, 0, v79, v45);
           if (v46 < 0)
           {
-            v74 = [v10 intValue];
+            intValue4 = [dCopy intValue];
             v75 = __error();
-            v66 = [NSString stringWithFormat:@"couldn't get list of file descriptors of process %i: %s", v74, strerror(*v75)];
-            [v9 setObject:v66 forKeyedSubscript:@"error"];
+            v66 = [NSString stringWithFormat:@"couldn't get list of file descriptors of process %i: %s", intValue4, strerror(*v75)];
+            [dictionaryCopy setObject:v66 forKeyedSubscript:@"error"];
           }
 
           else
@@ -214,11 +214,11 @@ LABEL_17:
                   v51 = [NSNumber numberWithInt:v49];
                   [v50 setObject:v51 forKeyedSubscript:@"fd"];
 
-                  if (proc_pidfdinfo([v10 intValue], v49, 2, v82, 1200) < 0)
+                  if (proc_pidfdinfo([dCopy intValue], v49, 2, v82, 1200) < 0)
                   {
-                    v64 = [v10 intValue];
+                    intValue5 = [dCopy intValue];
                     v65 = __error();
-                    v55 = [NSString stringWithFormat:@"couldn't get info for file descriptor %i of process %i: %s", v49, v64, strerror(*v65)];
+                    v55 = [NSString stringWithFormat:@"couldn't get info for file descriptor %i of process %i: %s", v49, intValue5, strerror(*v65)];
                     [v50 setObject:v55 forKeyedSubscript:@"error"];
                   }
 
@@ -273,7 +273,7 @@ LABEL_17:
             }
 
             v66 = v80;
-            [v9 setObject:v80 forKeyedSubscript:@"disk.openfiles[]"];
+            [dictionaryCopy setObject:v80 forKeyedSubscript:@"disk.openfiles[]"];
           }
 
           free(v79);
@@ -285,29 +285,29 @@ LABEL_17:
     goto LABEL_93;
   }
 
-  v24 = [v10 intValue];
+  intValue6 = [dCopy intValue];
   v25 = p_processInfoByPID->__table_.__bucket_list_.__deleter_.__size_;
   if (!v25)
   {
     goto LABEL_92;
   }
 
-  v26 = v24;
-  v27 = v24;
+  v26 = intValue6;
+  v27 = intValue6;
   v28 = vcnt_s8(v25);
   v28.i16[0] = vaddlv_u8(v28);
   if (v28.u32[0] > 1uLL)
   {
-    v29 = v24;
-    if (v25 <= v24)
+    v29 = intValue6;
+    if (v25 <= intValue6)
     {
-      v29 = v24 % v25;
+      v29 = intValue6 % v25;
     }
   }
 
   else
   {
-    v29 = (v25 - 1) & v24;
+    v29 = (v25 - 1) & intValue6;
   }
 
   ptr = p_processInfoByPID->__table_.__bucket_list_.__ptr_;
@@ -479,23 +479,23 @@ LABEL_93:
   return v23;
 }
 
-- (id)captureAttributes:(id)a3 forPIDs:(id)a4
+- (id)captureAttributes:(id)attributes forPIDs:(id)ds
 {
-  v6 = a3;
-  v7 = a4;
+  attributesCopy = attributes;
+  dsCopy = ds;
   v8 = objc_opt_new();
   capture_lock = self->_capture_lock;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_7DA4;
   v16[3] = &unk_104C0;
-  v17 = v7;
-  v18 = self;
-  v19 = v6;
+  v17 = dsCopy;
+  selfCopy = self;
+  v19 = attributesCopy;
   v10 = v8;
   v20 = v10;
-  v11 = v6;
-  v12 = v7;
+  v11 = attributesCopy;
+  v12 = dsCopy;
   dispatch_sync(capture_lock, v16);
   v13 = v20;
   v14 = v10;

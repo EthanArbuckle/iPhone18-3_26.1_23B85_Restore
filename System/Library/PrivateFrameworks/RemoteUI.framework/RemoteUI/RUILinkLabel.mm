@@ -1,21 +1,21 @@
 @interface RUILinkLabel
-- (RUILinkLabel)initWithFrame:(CGRect)a3;
+- (RUILinkLabel)initWithFrame:(CGRect)frame;
 - (UIButton)linkButton;
 - (void)_linkPressed;
-- (void)setAction:(id)a3;
-- (void)setButtonConfiguration:(id)a3;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFont:(id)a3;
-- (void)setLineBreakMode:(int64_t)a3;
-- (void)setNumberOfLines:(int64_t)a3;
-- (void)setText:(id)a3;
-- (void)setTextAlignment:(int64_t)a3;
+- (void)setAction:(id)action;
+- (void)setButtonConfiguration:(id)configuration;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFont:(id)font;
+- (void)setLineBreakMode:(int64_t)mode;
+- (void)setNumberOfLines:(int64_t)lines;
+- (void)setText:(id)text;
+- (void)setTextAlignment:(int64_t)alignment;
 - (void)updateConstraints;
 @end
 
 @implementation RUILinkLabel
 
-- (RUILinkLabel)initWithFrame:(CGRect)a3
+- (RUILinkLabel)initWithFrame:(CGRect)frame
 {
   v24[4] = *MEMORY[0x277D85DE8];
   v23.receiver = self;
@@ -27,27 +27,27 @@
     textLabel = v3->_textLabel;
     v3->_textLabel = v4;
 
-    v6 = [MEMORY[0x277D75348] clearColor];
-    [(UILabel *)v3->_textLabel setBackgroundColor:v6];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UILabel *)v3->_textLabel setBackgroundColor:clearColor];
 
     [(UILabel *)v3->_textLabel setNumberOfLines:0];
     [(UILabel *)v3->_textLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(RUILinkLabel *)v3 addSubview:v3->_textLabel];
-    v22 = [(UILabel *)v3->_textLabel topAnchor];
-    v21 = [(RUILinkLabel *)v3 topAnchor];
-    v20 = [v22 constraintEqualToAnchor:v21];
+    topAnchor = [(UILabel *)v3->_textLabel topAnchor];
+    topAnchor2 = [(RUILinkLabel *)v3 topAnchor];
+    v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v24[0] = v20;
-    v7 = [(UILabel *)v3->_textLabel bottomAnchor];
-    v8 = [(RUILinkLabel *)v3 bottomAnchor];
-    v9 = [v7 constraintEqualToAnchor:v8];
+    bottomAnchor = [(UILabel *)v3->_textLabel bottomAnchor];
+    bottomAnchor2 = [(RUILinkLabel *)v3 bottomAnchor];
+    v9 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v24[1] = v9;
-    v10 = [(UILabel *)v3->_textLabel leadingAnchor];
-    v11 = [(RUILinkLabel *)v3 leadingAnchor];
-    v12 = [v10 constraintEqualToAnchor:v11];
+    leadingAnchor = [(UILabel *)v3->_textLabel leadingAnchor];
+    leadingAnchor2 = [(RUILinkLabel *)v3 leadingAnchor];
+    v12 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v24[2] = v12;
-    v13 = [(UILabel *)v3->_textLabel trailingAnchor];
-    v14 = [(RUILinkLabel *)v3 trailingAnchor];
-    v15 = [v13 constraintEqualToAnchor:v14];
+    trailingAnchor = [(UILabel *)v3->_textLabel trailingAnchor];
+    trailingAnchor2 = [(RUILinkLabel *)v3 trailingAnchor];
+    v15 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v24[3] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:4];
     textLabelContraints = v3->_textLabelContraints;
@@ -62,15 +62,15 @@
   return v3;
 }
 
-- (void)setButtonConfiguration:(id)a3
+- (void)setButtonConfiguration:(id)configuration
 {
-  objc_storeStrong(&self->_buttonConfiguration, a3);
-  v5 = a3;
-  [(UIButton *)self->_linkButton setConfiguration:v5];
+  objc_storeStrong(&self->_buttonConfiguration, configuration);
+  configurationCopy = configuration;
+  [(UIButton *)self->_linkButton setConfiguration:configurationCopy];
   linkButton = self->_linkButton;
-  v8 = [(UIButton *)linkButton configuration];
-  v7 = [v8 baseForegroundColor];
-  [(UIButton *)linkButton setTitleColor:v7 forState:0];
+  configuration = [(UIButton *)linkButton configuration];
+  baseForegroundColor = [configuration baseForegroundColor];
+  [(UIButton *)linkButton setTitleColor:baseForegroundColor forState:0];
 }
 
 - (void)updateConstraints
@@ -81,16 +81,16 @@
   action = self->_action;
   if (action)
   {
-    v4 = [(RUILinkLabel *)self linkButton];
+    linkButton = [(RUILinkLabel *)self linkButton];
   }
 
   else
   {
-    v4 = self->_textLabel;
+    linkButton = self->_textLabel;
   }
 
-  v5 = v4;
-  [(UILabel *)v4 setNeedsLayout];
+  v5 = linkButton;
+  [(UILabel *)linkButton setNeedsLayout];
   LODWORD(v6) = 1144750080;
   [(UILabel *)self->_textLabel setContentHuggingPriority:0 forAxis:v6];
   LODWORD(v7) = 1144750080;
@@ -111,8 +111,8 @@
 
   else
   {
-    v13 = [(UILabel *)textLabel text];
-    v14 = [v13 length];
+    text = [(UILabel *)textLabel text];
+    v14 = [text length];
 
     v15 = self->_textLabel;
     if (!v14)
@@ -133,67 +133,67 @@
 LABEL_9:
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   textLabel = self->_textLabel;
-  v5 = a3;
-  [(UILabel *)textLabel setText:v5];
-  [(UIButton *)self->_linkButton setTitle:v5 forState:0];
+  textCopy = text;
+  [(UILabel *)textLabel setText:textCopy];
+  [(UIButton *)self->_linkButton setTitle:textCopy forState:0];
 
   [(RUILinkLabel *)self setNeedsUpdateConstraints];
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
   textLabel = self->_textLabel;
-  v5 = a3;
-  [(UILabel *)textLabel setFont:v5];
-  v6 = [(UIButton *)self->_linkButton titleLabel];
-  [v6 setFont:v5];
+  fontCopy = font;
+  [(UILabel *)textLabel setFont:fontCopy];
+  titleLabel = [(UIButton *)self->_linkButton titleLabel];
+  [titleLabel setFont:fontCopy];
 }
 
-- (void)setNumberOfLines:(int64_t)a3
+- (void)setNumberOfLines:(int64_t)lines
 {
-  if ([(UILabel *)self->_textLabel numberOfLines]!= a3)
+  if ([(UILabel *)self->_textLabel numberOfLines]!= lines)
   {
-    [(UILabel *)self->_textLabel setNumberOfLines:a3];
-    v5 = [(UIButton *)self->_linkButton titleLabel];
-    [v5 setNumberOfLines:a3];
+    [(UILabel *)self->_textLabel setNumberOfLines:lines];
+    titleLabel = [(UIButton *)self->_linkButton titleLabel];
+    [titleLabel setNumberOfLines:lines];
   }
 }
 
-- (void)setLineBreakMode:(int64_t)a3
+- (void)setLineBreakMode:(int64_t)mode
 {
-  if ([(UILabel *)self->_textLabel lineBreakMode]!= a3)
+  if ([(UILabel *)self->_textLabel lineBreakMode]!= mode)
   {
-    [(UILabel *)self->_textLabel setLineBreakMode:a3];
-    v5 = [(UIButton *)self->_linkButton titleLabel];
-    [v5 setLineBreakMode:a3];
+    [(UILabel *)self->_textLabel setLineBreakMode:mode];
+    titleLabel = [(UIButton *)self->_linkButton titleLabel];
+    [titleLabel setLineBreakMode:mode];
   }
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  if (self->_action != a3)
+  if (self->_action != action)
   {
-    v5 = [a3 copy];
+    v5 = [action copy];
     action = self->_action;
     self->_action = v5;
 
-    v7 = [(RUILinkLabel *)self linkButton];
-    [v7 setHidden:a3 == 0];
+    linkButton = [(RUILinkLabel *)self linkButton];
+    [linkButton setHidden:action == 0];
 
-    [(UILabel *)self->_textLabel setHidden:a3 != 0];
+    [(UILabel *)self->_textLabel setHidden:action != 0];
 
     [(RUILinkLabel *)self setNeedsUpdateConstraints];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  if (self->_enabled != a3)
+  if (self->_enabled != enabled)
   {
-    self->_enabled = a3;
+    self->_enabled = enabled;
     [(UIButton *)self->_linkButton setEnabled:?];
   }
 }
@@ -208,51 +208,51 @@ LABEL_9:
     v5 = self->_linkButton;
     self->_linkButton = v4;
 
-    v6 = [(RUILinkLabel *)self buttonConfiguration];
+    buttonConfiguration = [(RUILinkLabel *)self buttonConfiguration];
 
-    if (v6)
+    if (buttonConfiguration)
     {
-      v7 = [(RUILinkLabel *)self buttonConfiguration];
-      [(UIButton *)self->_linkButton setConfiguration:v7];
+      buttonConfiguration2 = [(RUILinkLabel *)self buttonConfiguration];
+      [(UIButton *)self->_linkButton setConfiguration:buttonConfiguration2];
     }
 
     [(UIButton *)self->_linkButton setExclusiveTouch:1];
     [(UIButton *)self->_linkButton addTarget:self action:sel__linkPressed forControlEvents:0x2000];
     [(UIButton *)self->_linkButton setHidden:self->_action == 0];
     [(UIButton *)self->_linkButton setEnabled:self->_enabled];
-    v8 = [(UIButton *)self->_linkButton titleLabel];
+    titleLabel = [(UIButton *)self->_linkButton titleLabel];
     v9 = self->_linkButton;
-    v10 = [(UILabel *)self->_textLabel text];
-    [(UIButton *)v9 setTitle:v10 forState:0];
+    text = [(UILabel *)self->_textLabel text];
+    [(UIButton *)v9 setTitle:text forState:0];
 
     v11 = self->_linkButton;
-    v12 = [MEMORY[0x277D75348] linkColor];
-    [(UIButton *)v11 setTitleColor:v12 forState:0];
+    linkColor = [MEMORY[0x277D75348] linkColor];
+    [(UIButton *)v11 setTitleColor:linkColor forState:0];
 
-    [v8 setLineBreakMode:{-[UILabel lineBreakMode](self->_textLabel, "lineBreakMode")}];
-    [v8 setNumberOfLines:{-[UILabel numberOfLines](self->_textLabel, "numberOfLines")}];
-    v13 = [(UILabel *)self->_textLabel font];
-    v29 = v8;
-    [v8 setFont:v13];
+    [titleLabel setLineBreakMode:{-[UILabel lineBreakMode](self->_textLabel, "lineBreakMode")}];
+    [titleLabel setNumberOfLines:{-[UILabel numberOfLines](self->_textLabel, "numberOfLines")}];
+    font = [(UILabel *)self->_textLabel font];
+    v29 = titleLabel;
+    [titleLabel setFont:font];
 
-    [v8 setTextAlignment:{-[UILabel textAlignment](self->_textLabel, "textAlignment")}];
+    [titleLabel setTextAlignment:{-[UILabel textAlignment](self->_textLabel, "textAlignment")}];
     [(RUILinkLabel *)self addSubview:self->_linkButton];
     [(UIButton *)self->_linkButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v28 = [(UIButton *)self->_linkButton topAnchor];
-    v27 = [(RUILinkLabel *)self topAnchor];
-    v26 = [v28 constraintEqualToAnchor:v27];
+    topAnchor = [(UIButton *)self->_linkButton topAnchor];
+    topAnchor2 = [(RUILinkLabel *)self topAnchor];
+    v26 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v30[0] = v26;
-    v25 = [(UIButton *)self->_linkButton bottomAnchor];
-    v14 = [(RUILinkLabel *)self bottomAnchor];
-    v15 = [v25 constraintEqualToAnchor:v14];
+    bottomAnchor = [(UIButton *)self->_linkButton bottomAnchor];
+    bottomAnchor2 = [(RUILinkLabel *)self bottomAnchor];
+    v15 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v30[1] = v15;
-    v16 = [(UIButton *)self->_linkButton leadingAnchor];
-    v17 = [(RUILinkLabel *)self leadingAnchor];
-    v18 = [v16 constraintEqualToAnchor:v17];
+    leadingAnchor = [(UIButton *)self->_linkButton leadingAnchor];
+    leadingAnchor2 = [(RUILinkLabel *)self leadingAnchor];
+    v18 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v30[2] = v18;
-    v19 = [(UIButton *)self->_linkButton trailingAnchor];
-    v20 = [(RUILinkLabel *)self trailingAnchor];
-    v21 = [v19 constraintEqualToAnchor:v20];
+    trailingAnchor = [(UIButton *)self->_linkButton trailingAnchor];
+    trailingAnchor2 = [(RUILinkLabel *)self trailingAnchor];
+    v21 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v30[3] = v21;
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:4];
     linkButtonContraints = self->_linkButtonContraints;
@@ -264,17 +264,17 @@ LABEL_9:
   return linkButton;
 }
 
-- (void)setTextAlignment:(int64_t)a3
+- (void)setTextAlignment:(int64_t)alignment
 {
-  if ([(UILabel *)self->_textLabel textAlignment]!= a3)
+  if ([(UILabel *)self->_textLabel textAlignment]!= alignment)
   {
-    [(UILabel *)self->_textLabel setTextAlignment:a3];
-    v5 = [(UIButton *)self->_linkButton titleLabel];
-    [v5 setTextAlignment:a3];
+    [(UILabel *)self->_textLabel setTextAlignment:alignment];
+    titleLabel = [(UIButton *)self->_linkButton titleLabel];
+    [titleLabel setTextAlignment:alignment];
 
-    if (a3 <= 4)
+    if (alignment <= 4)
     {
-      [(UIButton *)self->_linkButton setContentHorizontalAlignment:qword_21BA91F18[a3]];
+      [(UIButton *)self->_linkButton setContentHorizontalAlignment:qword_21BA91F18[alignment]];
     }
 
     [(RUILinkLabel *)self setNeedsLayout];

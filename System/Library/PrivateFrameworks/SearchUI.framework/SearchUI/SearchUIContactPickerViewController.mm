@@ -1,13 +1,13 @@
 @interface SearchUIContactPickerViewController
-- (SearchUIContactPickerViewController)initWithContact:(id)a3;
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4;
+- (SearchUIContactPickerViewController)initWithContact:(id)contact;
+- (void)contactPicker:(id)picker didSelectContact:(id)contact;
 @end
 
 @implementation SearchUIContactPickerViewController
 
-- (SearchUIContactPickerViewController)initWithContact:(id)a3
+- (SearchUIContactPickerViewController)initWithContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   v9.receiver = self;
   v9.super_class = SearchUIContactPickerViewController;
   v5 = [(SearchUIContactPickerViewController *)&v9 init];
@@ -21,24 +21,24 @@
     [(CNContactPickerViewController *)v6 setPredicateForSelectionOfContact:v7];
 
     [(CNContactPickerViewController *)v6 setDelegate:v6];
-    [(SearchUIContactPickerViewController *)v6 setContact:v4];
+    [(SearchUIContactPickerViewController *)v6 setContact:contactCopy];
   }
 
   return v6;
 }
 
-- (void)contactPicker:(id)a3 didSelectContact:(id)a4
+- (void)contactPicker:(id)picker didSelectContact:(id)contact
 {
   v6 = MEMORY[0x1E695D148];
-  v7 = a4;
-  v8 = a3;
-  v9 = [(SearchUIContactPickerViewController *)self contact];
-  v11 = [v6 viewControllerForUpdatingContact:v7 withPropertiesFromContact:v9];
+  contactCopy = contact;
+  pickerCopy = picker;
+  contact = [(SearchUIContactPickerViewController *)self contact];
+  v11 = [v6 viewControllerForUpdatingContact:contactCopy withPropertiesFromContact:contact];
 
   [v11 setDelegate:self];
-  v10 = [v8 navigationController];
+  navigationController = [pickerCopy navigationController];
 
-  [v10 pushViewController:v11 animated:1];
+  [navigationController pushViewController:v11 animated:1];
 }
 
 @end

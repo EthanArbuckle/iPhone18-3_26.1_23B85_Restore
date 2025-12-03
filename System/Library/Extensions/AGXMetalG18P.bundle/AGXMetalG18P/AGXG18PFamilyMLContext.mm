@@ -1,26 +1,26 @@
 @interface AGXG18PFamilyMLContext
-- (AGXG18PFamilyMLContext)initWithCommandBuffer:(id)a3 allocator:(id)a4;
+- (AGXG18PFamilyMLContext)initWithCommandBuffer:(id)buffer allocator:(id)allocator;
 - (void)dealloc;
 - (void)destroyImpl;
 - (void)endEncoding;
-- (void)endEncodingWithSignalEvent:(id)a3 waitEvent:(id)a4 signalValue:(unint64_t)a5 waitValue:(unint64_t)a6;
-- (void)updateFence:(id)a3 afterEncoderStages:(unint64_t)a4;
-- (void)waitForFence:(id)a3 beforeEncoderStages:(unint64_t)a4;
+- (void)endEncodingWithSignalEvent:(id)event waitEvent:(id)waitEvent signalValue:(unint64_t)value waitValue:(unint64_t)waitValue;
+- (void)updateFence:(id)fence afterEncoderStages:(unint64_t)stages;
+- (void)waitForFence:(id)fence beforeEncoderStages:(unint64_t)stages;
 @end
 
 @implementation AGXG18PFamilyMLContext
 
-- (void)endEncodingWithSignalEvent:(id)a3 waitEvent:(id)a4 signalValue:(unint64_t)a5 waitValue:(unint64_t)a6
+- (void)endEncodingWithSignalEvent:(id)event waitEvent:(id)waitEvent signalValue:(unint64_t)value waitValue:(unint64_t)waitValue
 {
   impl = self->_impl;
-  v11 = [a3 eventPort];
+  eventPort = [event eventPort];
   v12 = impl[30];
-  *(v12 + 16) = v11;
-  *v12 = a5;
-  v13 = [a4 eventPort];
+  *(v12 + 16) = eventPort;
+  *v12 = value;
+  eventPort2 = [waitEvent eventPort];
   v14 = impl[30];
-  *(v14 + 20) = v13;
-  *(v14 + 8) = a6;
+  *(v14 + 20) = eventPort2;
+  *(v14 + 8) = waitValue;
   AGX::MLContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::endMLPass(impl, v15, v16, v17, v18);
   v19.receiver = self;
   v19.super_class = AGXG18PFamilyMLContext;
@@ -39,22 +39,22 @@
   *(impl + 220) = vorr_s8(vdup_n_s32(vorr_s8(vdup_lane_s32(*v6.i8, 1), *v6.i8).u32[0] | vorr_s8(vdup_lane_s32(*v4.i8, 1), *v4.i8).u32[0]), v5);
   v22.receiver = self;
   v22.super_class = AGXG18PFamilyMLContext;
-  v7 = [(_MTL4MachineLearningCommandEncoder *)&v22 event];
+  event = [(_MTL4MachineLearningCommandEncoder *)&v22 event];
   v21.receiver = self;
   v21.super_class = AGXG18PFamilyMLContext;
-  v8 = [(_MTL4MachineLearningCommandEncoder *)&v21 startEventValue];
+  startEventValue = [(_MTL4MachineLearningCommandEncoder *)&v21 startEventValue];
   v20.receiver = self;
   v20.super_class = AGXG18PFamilyMLContext;
-  v9 = [(_MTL4MachineLearningCommandEncoder *)&v20 endEventValue];
+  endEventValue = [(_MTL4MachineLearningCommandEncoder *)&v20 endEventValue];
   v10 = self->_impl;
-  v11 = [v7 eventPort];
+  eventPort = [event eventPort];
   v12 = v10[30];
-  *(v12 + 16) = v11;
-  *v12 = v8;
-  v13 = [v7 eventPort];
+  *(v12 + 16) = eventPort;
+  *v12 = startEventValue;
+  eventPort2 = [event eventPort];
   v14 = v10[30];
-  *(v14 + 20) = v13;
-  *(v14 + 8) = v9;
+  *(v14 + 20) = eventPort2;
+  *(v14 + 8) = endEventValue;
   AGX::MLContext<AGX::HAL300::Encoders,AGX::HAL300::Classes,AGX::HAL300::ObjClasses>::endMLPass(v10, v15, v16, v17, v18);
   v19.receiver = self;
   v19.super_class = AGXG18PFamilyMLContext;
@@ -62,7 +62,7 @@
   [(AGXG18PFamilyMLContext *)self destroyImpl];
 }
 
-- (void)waitForFence:(id)a3 beforeEncoderStages:(unint64_t)a4
+- (void)waitForFence:(id)fence beforeEncoderStages:(unint64_t)stages
 {
   v4 = *(self->_impl + 32);
   if (!v4)
@@ -70,12 +70,12 @@
     operator new();
   }
 
-  v5 = *(a3 + *MEMORY[0x29EDC5610]);
+  v5 = *(fence + *MEMORY[0x29EDC5610]);
 
   AGX::FenceList::insertFence(v4, v5);
 }
 
-- (void)updateFence:(id)a3 afterEncoderStages:(unint64_t)a4
+- (void)updateFence:(id)fence afterEncoderStages:(unint64_t)stages
 {
   v4 = *(self->_impl + 31);
   if (!v4)
@@ -83,7 +83,7 @@
     operator new();
   }
 
-  v5 = *(a3 + *MEMORY[0x29EDC5610]);
+  v5 = *(fence + *MEMORY[0x29EDC5610]);
 
   AGX::FenceList::insertFence(v4, v5);
 }
@@ -146,9 +146,9 @@
   }
 }
 
-- (AGXG18PFamilyMLContext)initWithCommandBuffer:(id)a3 allocator:(id)a4
+- (AGXG18PFamilyMLContext)initWithCommandBuffer:(id)buffer allocator:(id)allocator
 {
-  self->_allocator = a4;
+  self->_allocator = allocator;
   v24.receiver = self;
   v24.super_class = AGXG18PFamilyMLContext;
   v6 = [IOGPUMetal4MachineLearningCommandEncoder initWithCommandBuffer:sel_initWithCommandBuffer_allocator_ allocator:?];
@@ -157,8 +157,8 @@
   {
     v23.receiver = v6;
     v23.super_class = AGXG18PFamilyMLContext;
-    [(_MTL4CommandEncoder *)&v23 setCommandBuffer:a3];
-    v8 = *(a4 + 22);
+    [(_MTL4CommandEncoder *)&v23 setCommandBuffer:buffer];
+    v8 = *(allocator + 22);
     *(v8 + 16) = 1;
     v9 = *(v8 + 8);
     v9[32] = 0;
@@ -180,15 +180,15 @@
     *(v9 + 1) = 0u;
     v7->_impl = v9;
     v10 = v7->_allocator;
-    v11 = [a3 device];
-    v12 = *(a3 + 13);
-    v13 = [a3 commandBufferStorage];
+    device = [buffer device];
+    v12 = *(buffer + 13);
+    commandBufferStorage = [buffer commandBufferStorage];
     impl = v7->_impl;
     *impl = 0;
     *(impl + 1) = v12;
-    *(impl + 2) = v13;
-    *(impl + 5) = v13;
-    *(impl + 6) = v13 + 64;
+    *(impl + 2) = commandBufferStorage;
+    *(impl + 5) = commandBufferStorage;
+    *(impl + 6) = commandBufferStorage + 64;
     impl[80] = 0;
     impl[121] = 0;
     *(impl + 19) = 0;
@@ -200,11 +200,11 @@
     *(impl + 204) = 0u;
     *(impl + 188) = 0u;
     impl[229] = 1;
-    *(impl + 4) = v11;
-    *(impl + 56) = *(v13 + 728);
-    *(impl + 9) = v13 + 144;
-    *(impl + 16) = *(v13 + 48);
-    *(impl + 17) = *(v13 + 56);
+    *(impl + 4) = device;
+    *(impl + 56) = *(commandBufferStorage + 728);
+    *(impl + 9) = commandBufferStorage + 144;
+    *(impl + 16) = *(commandBufferStorage + 48);
+    *(impl + 17) = *(commandBufferStorage + 56);
     *(impl + 21) = 0;
     *(impl + 92) = 0xFFFFFFFF00000000;
     *(impl + 29) = 0;

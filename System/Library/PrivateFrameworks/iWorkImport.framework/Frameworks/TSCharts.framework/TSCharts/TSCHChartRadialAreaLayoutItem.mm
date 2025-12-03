@@ -1,6 +1,6 @@
 @interface TSCHChartRadialAreaLayoutItem
 - (CGRect)titleFrame;
-- (id)renderersWithRep:(id)a3;
+- (id)renderersWithRep:(id)rep;
 - (id)seriesIndexedPieNormalizedLabelDistancesFromWedgeTips;
 - (void)buildSubTree;
 - (void)layoutInward;
@@ -476,13 +476,13 @@ LABEL_15:
   objc_msgSend_setLayoutOffset_(self, v275, *MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v276);
 }
 
-- (id)renderersWithRep:(id)a3
+- (id)renderersWithRep:(id)rep
 {
-  v4 = a3;
+  repCopy = rep;
   v5 = objc_opt_new();
   v12.receiver = self;
   v12.super_class = TSCHChartRadialAreaLayoutItem;
-  v6 = [(TSCHChartLayoutItem *)&v12 renderersWithRep:v4];
+  v6 = [(TSCHChartLayoutItem *)&v12 renderersWithRep:repCopy];
 
   objc_msgSend_addObjectsFromArray_(v5, v7, v8, v9, v10, v6);
 

@@ -1,44 +1,44 @@
 @interface TAPredictedLocationOfInterest
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
-- (TAPredictedLocationOfInterest)initWithCoder:(id)a3;
-- (TAPredictedLocationOfInterest)initWithType:(unint64_t)a3 latitude:(double)a4 longitude:(double)a5 horizontalAccuracy:(double)a6 referenceFrame:(unint64_t)a7 confidence:(double)a8 nextEntryTime:(id)a9 date:(id)a10;
-- (id)copyWithZone:(_NSZone *)a3;
+- (TAPredictedLocationOfInterest)initWithCoder:(id)coder;
+- (TAPredictedLocationOfInterest)initWithType:(unint64_t)type latitude:(double)latitude longitude:(double)longitude horizontalAccuracy:(double)accuracy referenceFrame:(unint64_t)frame confidence:(double)confidence nextEntryTime:(id)time date:(id)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)descriptionDictionary;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5;
+- (void)encodeWithCoder:(id)coder;
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length;
 @end
 
 @implementation TAPredictedLocationOfInterest
 
-- (TAPredictedLocationOfInterest)initWithType:(unint64_t)a3 latitude:(double)a4 longitude:(double)a5 horizontalAccuracy:(double)a6 referenceFrame:(unint64_t)a7 confidence:(double)a8 nextEntryTime:(id)a9 date:(id)a10
+- (TAPredictedLocationOfInterest)initWithType:(unint64_t)type latitude:(double)latitude longitude:(double)longitude horizontalAccuracy:(double)accuracy referenceFrame:(unint64_t)frame confidence:(double)confidence nextEntryTime:(id)time date:(id)self0
 {
-  v18 = a9;
-  v19 = a10;
+  timeCopy = time;
+  dateCopy = date;
   v28.receiver = self;
   v28.super_class = TAPredictedLocationOfInterest;
   v20 = [(TAPredictedLocationOfInterest *)&v28 init];
   v21 = v20;
   if (v20)
   {
-    if (!v19)
+    if (!dateCopy)
     {
       v26 = 0;
       goto LABEL_6;
     }
 
-    v20->_type = a3;
-    v20->_latitude = a4;
-    v20->_longitude = a5;
-    v20->_horizontalAccuracy = a6;
-    v20->_referenceFrame = a7;
-    v20->_confidence = a8;
-    v22 = [v18 copy];
+    v20->_type = type;
+    v20->_latitude = latitude;
+    v20->_longitude = longitude;
+    v20->_horizontalAccuracy = accuracy;
+    v20->_referenceFrame = frame;
+    v20->_confidence = confidence;
+    v22 = [timeCopy copy];
     nextEntryTime = v21->_nextEntryTime;
     v21->_nextEntryTime = v22;
 
-    v24 = [v19 copy];
+    v24 = [dateCopy copy];
     date = v21->_date;
     v21->_date = v24;
   }
@@ -65,10 +65,10 @@ LABEL_6:
   return v9 ^ v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v24 = 1;
   }
@@ -78,9 +78,9 @@ LABEL_6:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(TAPredictedLocationOfInterest *)self type];
-      if (v7 != [(TAPredictedLocationOfInterest *)v6 type])
+      v6 = equalCopy;
+      type = [(TAPredictedLocationOfInterest *)self type];
+      if (type != [(TAPredictedLocationOfInterest *)v6 type])
       {
         goto LABEL_14;
       }
@@ -105,13 +105,13 @@ LABEL_15:
         goto LABEL_16;
       }
 
-      v21 = [(TAPredictedLocationOfInterest *)self nextEntryTime];
-      v22 = [(TAPredictedLocationOfInterest *)v6 nextEntryTime];
-      if (v21 != v22)
+      nextEntryTime = [(TAPredictedLocationOfInterest *)self nextEntryTime];
+      nextEntryTime2 = [(TAPredictedLocationOfInterest *)v6 nextEntryTime];
+      if (nextEntryTime != nextEntryTime2)
       {
-        v23 = [(TAPredictedLocationOfInterest *)self nextEntryTime];
-        v3 = [(TAPredictedLocationOfInterest *)v6 nextEntryTime];
-        if (![v23 isEqual:v3])
+        nextEntryTime3 = [(TAPredictedLocationOfInterest *)self nextEntryTime];
+        nextEntryTime4 = [(TAPredictedLocationOfInterest *)v6 nextEntryTime];
+        if (![nextEntryTime3 isEqual:nextEntryTime4])
         {
           v24 = 0;
 LABEL_22:
@@ -120,13 +120,13 @@ LABEL_23:
           goto LABEL_15;
         }
 
-        v31 = v23;
+        v31 = nextEntryTime3;
       }
 
-      v26 = [(TAPredictedLocationOfInterest *)self date];
-      v27 = [(TAPredictedLocationOfInterest *)v6 date];
-      v28 = v27;
-      if (v26 == v27)
+      date = [(TAPredictedLocationOfInterest *)self date];
+      date2 = [(TAPredictedLocationOfInterest *)v6 date];
+      v28 = date2;
+      if (date == date2)
       {
 
         v24 = 1;
@@ -134,13 +134,13 @@ LABEL_23:
 
       else
       {
-        v29 = [(TAPredictedLocationOfInterest *)self date];
-        v30 = [(TAPredictedLocationOfInterest *)v6 date];
-        v24 = [v29 isEqual:v30];
+        date3 = [(TAPredictedLocationOfInterest *)self date];
+        date4 = [(TAPredictedLocationOfInterest *)v6 date];
+        v24 = [date3 isEqual:date4];
       }
 
-      v23 = v31;
-      if (v21 == v22)
+      nextEntryTime3 = v31;
+      if (nextEntryTime == nextEntryTime2)
       {
         goto LABEL_23;
       }
@@ -182,26 +182,26 @@ LABEL_16:
   v8 = [MEMORY[0x277CCABB0] numberWithDouble:self->_confidence];
   v20[6] = v8;
   v19[7] = @"NextEntryTime";
-  v9 = [(TAPredictedLocationOfInterest *)self nextEntryTime];
-  if (v9)
+  nextEntryTime = [(TAPredictedLocationOfInterest *)self nextEntryTime];
+  if (nextEntryTime)
   {
-    v2 = [(TAPredictedLocationOfInterest *)self nextEntryTime];
-    v10 = [v2 getDateString];
+    nextEntryTime2 = [(TAPredictedLocationOfInterest *)self nextEntryTime];
+    getDateString = [nextEntryTime2 getDateString];
   }
 
   else
   {
-    v10 = &stru_287F632C0;
+    getDateString = &stru_287F632C0;
   }
 
-  v20[7] = v10;
+  v20[7] = getDateString;
   v19[8] = @"Date";
-  v11 = [(TAPredictedLocationOfInterest *)self date];
-  v12 = [v11 getDateString];
-  v20[8] = v12;
+  date = [(TAPredictedLocationOfInterest *)self date];
+  getDateString2 = [date getDateString];
+  v20[8] = getDateString2;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:9];
 
-  if (v9)
+  if (nextEntryTime)
   {
   }
 
@@ -212,9 +212,9 @@ LABEL_16:
 
 - (NSString)description
 {
-  v3 = [(TAPredictedLocationOfInterest *)self descriptionDictionary];
+  descriptionDictionary = [(TAPredictedLocationOfInterest *)self descriptionDictionary];
   v10 = 0;
-  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:v3 error:&v10];
+  v4 = [MEMORY[0x277CCAAA0] JSONStringFromNSDictionary:descriptionDictionary error:&v10];
   v5 = v10;
   if (v5)
   {
@@ -224,20 +224,20 @@ LABEL_16:
       [(TAOutgoingRequests *)v6 description];
     }
 
-    v7 = [MEMORY[0x277CCACA8] string];
+    string = [MEMORY[0x277CCACA8] string];
   }
 
   else
   {
-    v7 = v4;
+    string = v4;
   }
 
-  v8 = v7;
+  v8 = string;
 
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [TAPredictedLocationOfInterest alloc];
   type = self->_type;
@@ -251,46 +251,46 @@ LABEL_16:
   return [(TAPredictedLocationOfInterest *)v4 initWithType:type latitude:nextEntryTime longitude:date horizontalAccuracy:latitude confidence:longitude nextEntryTime:horizontalAccuracy date:confidence];
 }
 
-- (TAPredictedLocationOfInterest)initWithCoder:(id)a3
+- (TAPredictedLocationOfInterest)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"Type"];
-  [v4 decodeDoubleForKey:@"Latitude"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"Type"];
+  [coderCopy decodeDoubleForKey:@"Latitude"];
   v7 = v6;
-  [v4 decodeDoubleForKey:@"Longitude"];
+  [coderCopy decodeDoubleForKey:@"Longitude"];
   v9 = v8;
-  [v4 decodeDoubleForKey:@"HorizontalAccuracy"];
+  [coderCopy decodeDoubleForKey:@"HorizontalAccuracy"];
   v11 = v10;
-  v12 = [v4 decodeIntegerForKey:@"ReferenceFrame"];
-  [v4 decodeDoubleForKey:@"Confidence"];
+  v12 = [coderCopy decodeIntegerForKey:@"ReferenceFrame"];
+  [coderCopy decodeDoubleForKey:@"Confidence"];
   v14 = v13;
-  v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NextEntryTime"];
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
+  v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NextEntryTime"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Date"];
 
   v17 = [(TAPredictedLocationOfInterest *)self initWithType:v5 latitude:v12 longitude:v15 horizontalAccuracy:v16 referenceFrame:v7 confidence:v9 nextEntryTime:v11 date:v14];
   return v17;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"Type"];
-  [v5 encodeDouble:@"Latitude" forKey:self->_latitude];
-  [v5 encodeDouble:@"Longitude" forKey:self->_longitude];
-  [v5 encodeDouble:@"HorizontalAccuracy" forKey:self->_horizontalAccuracy];
-  [v5 encodeInteger:self->_referenceFrame forKey:@"ReferenceFrame"];
-  [v5 encodeDouble:@"Confidence" forKey:self->_confidence];
-  [v5 encodeObject:self->_nextEntryTime forKey:@"NextEntryTime"];
-  [v5 encodeObject:self->_date forKey:@"Date"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"Type"];
+  [coderCopy encodeDouble:@"Latitude" forKey:self->_latitude];
+  [coderCopy encodeDouble:@"Longitude" forKey:self->_longitude];
+  [coderCopy encodeDouble:@"HorizontalAccuracy" forKey:self->_horizontalAccuracy];
+  [coderCopy encodeInteger:self->_referenceFrame forKey:@"ReferenceFrame"];
+  [coderCopy encodeDouble:@"Confidence" forKey:self->_confidence];
+  [coderCopy encodeObject:self->_nextEntryTime forKey:@"NextEntryTime"];
+  [coderCopy encodeObject:self->_date forKey:@"Date"];
 }
 
-- (void)encodeWithOSLogCoder:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5
+- (void)encodeWithOSLogCoder:(id)coder options:(unint64_t)options maxLength:(unint64_t)length
 {
-  v8 = a3;
+  coderCopy = coder;
   v6 = objc_autoreleasePoolPush();
   v7 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:0];
-  [v8 appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
+  [coderCopy appendBytes:objc_msgSend(v7 length:{"bytes"), objc_msgSend(v7, "length")}];
 
   objc_autoreleasePoolPop(v6);
 }

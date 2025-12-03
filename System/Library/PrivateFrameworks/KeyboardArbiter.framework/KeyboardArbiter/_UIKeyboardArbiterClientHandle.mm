@@ -1,43 +1,43 @@
 @interface _UIKeyboardArbiterClientHandle
-+ (id)handlerWithArbiter:(id)a3 forConnection:(id)a4;
-- (BOOL)_isKeyboardOnScreen:(id)a3;
-- (BOOL)_shouldRejectSceneIdentityUpdateCorrectingClientIfNeeded:(id)a3 fromSelector:(SEL)a4;
-- (BOOL)isHandlerShowableWithHandler:(id)a3;
++ (id)handlerWithArbiter:(id)arbiter forConnection:(id)connection;
+- (BOOL)_isKeyboardOnScreen:(id)screen;
+- (BOOL)_shouldRejectSceneIdentityUpdateCorrectingClientIfNeeded:(id)needed fromSelector:(SEL)selector;
+- (BOOL)isHandlerShowableWithHandler:(id)handler;
 - (BOOL)isKeyboardOnScreen;
-- (BOOL)takeProcessAssertionOnRemoteWithQueue:(id)a3;
+- (BOOL)takeProcessAssertionOnRemoteWithQueue:(id)queue;
 - (id)description;
 - (id)descriptionForLog;
 - (id)sceneDescription;
 - (void)_deactivateScene;
-- (void)_reevaluateRemoteFocusContext:(id)a3;
+- (void)_reevaluateRemoteFocusContext:(id)context;
 - (void)activeProcessResign;
-- (void)addHostedPids:(id)a3;
-- (void)applicationShouldFocusWithBundle:(id)a3 onCompletion:(id)a4;
-- (void)beginAcquiringFocusOnQueue:(id)a3;
+- (void)addHostedPids:(id)pids;
+- (void)applicationShouldFocusWithBundle:(id)bundle onCompletion:(id)completion;
+- (void)beginAcquiringFocusOnQueue:(id)queue;
 - (void)cacheWindowContext;
-- (void)checkActivation:(unint64_t)a3;
+- (void)checkActivation:(unint64_t)activation;
 - (void)clearAcquiringFocus;
 - (void)dealloc;
 - (void)didAttachLayer;
 - (void)didDetachLayer;
 - (void)invalidate;
-- (void)notifyIAVHeight:(double)a3;
-- (void)pointIsWithinKeyboardContent:(CGPoint)a3 onCompletion:(id)a4;
+- (void)notifyIAVHeight:(double)height;
+- (void)pointIsWithinKeyboardContent:(CGPoint)content onCompletion:(id)completion;
 - (void)releaseProcessAssertion;
-- (void)retrieveDebugInformation:(id)a3;
-- (void)retrieveMoreDebugInformationWithCompletion:(id)a3;
-- (void)setAllVisibleFrames:(id)a3;
-- (void)setClientFocusContext:(id)a3;
-- (void)setDeactivating:(BOOL)a3;
-- (void)setWantsFencing:(BOOL)a3;
-- (void)signalAutofillUIBringupWithCompletion:(id)a3;
-- (void)signalEventSourceChanged:(int64_t)a3 completionHandler:(id)a4;
+- (void)retrieveDebugInformation:(id)information;
+- (void)retrieveMoreDebugInformationWithCompletion:(id)completion;
+- (void)setAllVisibleFrames:(id)frames;
+- (void)setClientFocusContext:(id)context;
+- (void)setDeactivating:(BOOL)deactivating;
+- (void)setWantsFencing:(BOOL)fencing;
+- (void)signalAutofillUIBringupWithCompletion:(id)completion;
+- (void)signalEventSourceChanged:(int64_t)changed completionHandler:(id)handler;
 - (void)signalKeyboardChangeComplete;
-- (void)signalKeyboardChanged:(id)a3 onCompletion:(id)a4;
-- (void)signalKeyboardClientChanged:(id)a3 onCompletion:(id)a4;
-- (void)signalKeyboardUIDidChange:(id)a3 onCompletion:(id)a4;
-- (void)startArbitrationWithExpectedState:(id)a3 focusContext:(id)a4 hostingPIDs:(id)a5 usingFence:(BOOL)a6 withSuppression:(int)a7 onConnected:(id)a8;
-- (void)transition:(id)a3 eventStage:(unint64_t)a4 withInfo:(id)a5;
+- (void)signalKeyboardChanged:(id)changed onCompletion:(id)completion;
+- (void)signalKeyboardClientChanged:(id)changed onCompletion:(id)completion;
+- (void)signalKeyboardUIDidChange:(id)change onCompletion:(id)completion;
+- (void)startArbitrationWithExpectedState:(id)state focusContext:(id)context hostingPIDs:(id)ds usingFence:(BOOL)fence withSuppression:(int)suppression onConnected:(id)connected;
+- (void)transition:(id)transition eventStage:(unint64_t)stage withInfo:(id)info;
 - (void)uncacheWindowContext;
 - (void)userFirstTapOnKeyboard;
 @end
@@ -101,7 +101,7 @@
 {
   v3 = MEMORY[0x277CCACA8];
   bundleIdentifier = self->_bundleIdentifier;
-  v5 = [(UIKBArbiterClientFocusContext *)self->_remoteFocusContext descriptionForLog];
+  descriptionForLog = [(UIKBArbiterClientFocusContext *)self->_remoteFocusContext descriptionForLog];
   if (self->_running)
   {
     v6 = "Y";
@@ -112,8 +112,8 @@
     v6 = "N";
   }
 
-  v7 = [(NSMutableSet *)self->_hostedPids allObjects];
-  v8 = numberArrayToString(v7);
+  allObjects = [(NSMutableSet *)self->_hostedPids allObjects];
+  v8 = numberArrayToString(allObjects);
 
   level = self->_level;
   if (self->_active)
@@ -139,7 +139,7 @@
     v14 = "N";
   }
 
-  v15 = [v3 stringWithFormat:@"<%@ focus:%@ run:%s hosting:%@ level:%.0f active:%s wantedState:%@ #suppr:%d iavHeight:%.0f onScreen:%s>", bundleIdentifier, v5, v6, v8, *&level, v10, v12, self->_suppressionCount, *&self->_iavHeight, v14];
+  v15 = [v3 stringWithFormat:@"<%@ focus:%@ run:%s hosting:%@ level:%.0f active:%s wantedState:%@ #suppr:%d iavHeight:%.0f onScreen:%s>", bundleIdentifier, descriptionForLog, v6, v8, *&level, v10, v12, self->_suppressionCount, *&self->_iavHeight, v14];
 
   return v15;
 }
@@ -151,15 +151,15 @@
   v4 = _UIArbiterLog();
   os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
   v5 = NSStringFromSelector(a2);
-  v6 = [(_UIKeyboardArbiterClientHandle *)self remoteFocusContext];
-  v7 = [v6 sceneIdentity];
-  v8 = [v7 stringRepresentation];
+  remoteFocusContext = [(_UIKeyboardArbiterClientHandle *)self remoteFocusContext];
+  sceneIdentity = [remoteFocusContext sceneIdentity];
+  stringRepresentation = [sceneIdentity stringRepresentation];
   v14 = 138412802;
-  v15 = self;
+  selfCopy = self;
   v16 = 2112;
   v17 = v5;
   v18 = 2112;
-  v19 = v8;
+  v19 = stringRepresentation;
   LODWORD(v13) = 32;
   v9 = _os_log_send_and_compose_impl();
 
@@ -195,7 +195,7 @@
   os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG);
   remoteKeepAliveAssertionCount = self->_remoteKeepAliveAssertionCount;
   v12 = 138412546;
-  v13 = self;
+  selfCopy = self;
   v14 = 2048;
   v15 = remoteKeepAliveAssertionCount;
   LODWORD(v11) = 22;
@@ -216,10 +216,10 @@
 - (id)sceneDescription
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSXPCConnection *)self->_connection processIdentifier];
-  v5 = [(UIKBArbiterClientFocusContext *)self->_remoteFocusContext sceneIdentity];
-  v6 = [v5 stringRepresentation];
-  v7 = [v3 stringWithFormat:@"<pid: %d scene: %@>", v4, v6];;
+  processIdentifier = [(NSXPCConnection *)self->_connection processIdentifier];
+  sceneIdentity = [(UIKBArbiterClientFocusContext *)self->_remoteFocusContext sceneIdentity];
+  stringRepresentation = [sceneIdentity stringRepresentation];
+  v7 = [v3 stringWithFormat:@"<pid: %d scene: %@>", processIdentifier, stringRepresentation];;
 
   return v7;
 }
@@ -231,19 +231,19 @@
     return 1;
   }
 
-  v3 = self;
-  v4 = [MEMORY[0x277CBEB18] array];
-  LOBYTE(v3) = [(_UIKeyboardArbiterClientHandle *)v3 _isKeyboardOnScreen:v4];
+  selfCopy = self;
+  array = [MEMORY[0x277CBEB18] array];
+  LOBYTE(selfCopy) = [(_UIKeyboardArbiterClientHandle *)selfCopy _isKeyboardOnScreen:array];
 
-  return v3;
+  return selfCopy;
 }
 
 - (void)didAttachLayer
 {
   if (!self->_sceneLayer)
   {
-    v15 = [MEMORY[0x277CCA890] currentHandler];
-    [v15 handleFailureInMethod:a2 object:self file:@"_UIKeyboardArbiter.m" lineNumber:2506 description:@"Layer must exist for us to attach visibility to."];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIKeyboardArbiter.m" lineNumber:2506 description:@"Layer must exist for us to attach visibility to."];
   }
 
   if (self->_endpointGrantInjector)
@@ -257,10 +257,10 @@
   }
 
   v3 = [MEMORY[0x277D0ADC0] identityForIdentifier:@"com.apple.UIKit.remote-keyboard"];
-  v4 = [getFBSceneManagerClass() sharedInstance];
-  v5 = [v4 newSceneIdentityTokenForIdentity:v3];
+  sharedInstance = [getFBSceneManagerClass() sharedInstance];
+  v5 = [sharedInstance newSceneIdentityTokenForIdentity:v3];
 
-  v6 = [v5 stringRepresentation];
+  stringRepresentation = [v5 stringRepresentation];
   v7 = _UISVisibilityEnvironmentForSceneIdentityTokenString();
 
   [(FBSCAContextSceneLayer *)self->_sceneLayer contextID];
@@ -286,9 +286,9 @@
   v4 = _UIArbiterClientHandleLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+    bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
     *buf = 138543618;
-    *&buf[4] = v5;
+    *&buf[4] = bundleIdentifier;
     *&buf[12] = 1024;
     *&buf[14] = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
     _os_log_impl(&dword_2557BA000, v4, OS_LOG_TYPE_DEFAULT, "RX %{public}@(%d) signalKeyboardChangeComplete", buf, 0x12u);
@@ -329,7 +329,7 @@
   os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
   v7 = NSStringFromSelector(a2);
   v13 = 138412546;
-  v14 = self;
+  selfCopy = self;
   v15 = 2112;
   v16 = v7;
   LODWORD(v12) = 22;
@@ -356,7 +356,7 @@
   os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG);
   v5 = NSStringFromSelector(a2);
   v20 = 138412546;
-  v21 = self;
+  selfCopy = self;
   v22 = 2112;
   v23 = v5;
   LODWORD(v17) = 22;
@@ -402,22 +402,22 @@
   v16 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)handlerWithArbiter:(id)a3 forConnection:(id)a4
++ (id)handlerWithArbiter:(id)arbiter forConnection:(id)connection
 {
   v69 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  arbiterCopy = arbiter;
+  connectionCopy = connection;
   v9 = objc_alloc_init(_UIKeyboardArbiterClientHandle);
-  objc_storeStrong(&v9->_owner, a3);
-  v9->_connection = v8;
+  objc_storeStrong(&v9->_owner, arbiter);
+  v9->_connection = connectionCopy;
   v10 = [MEMORY[0x277CBEB58] set];
   hostedPids = v9->_hostedPids;
   v9->_hostedPids = v10;
 
   v9->_running = 1;
-  if (v8)
+  if (connectionCopy)
   {
-    [(NSXPCConnection *)v8 auditToken];
+    [(NSXPCConnection *)connectionCopy auditToken];
   }
 
   else
@@ -469,7 +469,7 @@
       v17 = _UIArbiterLog();
       os_log_type_enabled(v17, OS_LOG_TYPE_ERROR);
       v34 = 138412802;
-      v35 = a1;
+      selfCopy2 = self;
       v36 = 1024;
       LODWORD(v37[0]) = v13;
       WORD2(v37[0]) = 2112;
@@ -490,10 +490,10 @@
     else
     {
       objc_storeStrong(&v9->_processHandle, v15);
-      v25 = [v15 bundle];
-      v26 = [v25 identifier];
+      bundle = [v15 bundle];
+      identifier = [bundle identifier];
       bundleIdentifier = v9->_bundleIdentifier;
-      v9->_bundleIdentifier = v26;
+      v9->_bundleIdentifier = identifier;
     }
   }
 
@@ -533,9 +533,9 @@
     v21 = _UIArbiterLog();
     os_log_type_enabled(v21, OS_LOG_TYPE_ERROR);
     v34 = 138412546;
-    v35 = a1;
+    selfCopy2 = self;
     v36 = 2112;
-    v37[0] = v8;
+    v37[0] = connectionCopy;
     LODWORD(v32) = 22;
     v22 = _os_log_send_and_compose_impl();
 
@@ -549,10 +549,10 @@
     }
   }
 
-  v28 = [(NSXPCConnection *)v8 valueForEntitlement:@"com.apple.KeyboardArbiter.client.debuginfo"];
-  v29 = [v28 BOOLValue];
+  v28 = [(NSXPCConnection *)connectionCopy valueForEntitlement:@"com.apple.KeyboardArbiter.client.debuginfo"];
+  bOOLValue = [v28 BOOLValue];
 
-  if (v29)
+  if (bOOLValue)
   {
     v9->_hasDebugInformationEntitlement = 1;
   }
@@ -571,7 +571,7 @@
     v3 = _UIArbiterLog();
     os_log_type_enabled(v3, OS_LOG_TYPE_ERROR);
     v10 = 138412290;
-    v11 = self;
+    selfCopy = self;
     LODWORD(v8) = 12;
     v4 = _os_log_send_and_compose_impl();
 
@@ -599,42 +599,42 @@
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDeactivating:(BOOL)a3
+- (void)setDeactivating:(BOOL)deactivating
 {
-  v3 = a3;
+  deactivatingCopy = deactivating;
   v18 = *MEMORY[0x277D85DE8];
-  if (self->_deactivating != a3)
+  if (self->_deactivating != deactivating)
   {
     v5 = _UIArbiterClientHandleLog();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
-      v6 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
-      v7 = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
+      bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+      processIdentifier = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
       v8 = "N";
       v12 = 138543874;
-      v13 = v6;
-      if (v3)
+      v13 = bundleIdentifier;
+      if (deactivatingCopy)
       {
         v8 = "Y";
       }
 
       v14 = 1024;
-      v15 = v7;
+      v15 = processIdentifier;
       v16 = 2080;
       v17 = v8;
       _os_log_impl(&dword_2557BA000, v5, OS_LOG_TYPE_DEFAULT, "RX %{public}@(%d) setDeactivating:%s", &v12, 0x1Cu);
     }
   }
 
-  self->_deactivating = v3;
-  if (!v3)
+  self->_deactivating = deactivatingCopy;
+  if (!deactivatingCopy)
   {
-    v9 = [(_UIKeyboardArbiterClientHandle *)self pendingNotifyKeyboardChanged];
+    pendingNotifyKeyboardChanged = [(_UIKeyboardArbiterClientHandle *)self pendingNotifyKeyboardChanged];
 
-    if (v9)
+    if (pendingNotifyKeyboardChanged)
     {
-      v10 = [(_UIKeyboardArbiterClientHandle *)self pendingNotifyKeyboardChanged];
-      (v10)[2](v10, self);
+      pendingNotifyKeyboardChanged2 = [(_UIKeyboardArbiterClientHandle *)self pendingNotifyKeyboardChanged];
+      (pendingNotifyKeyboardChanged2)[2](pendingNotifyKeyboardChanged2, self);
 
       [(_UIKeyboardArbiterClientHandle *)self setPendingNotifyKeyboardChanged:0];
     }
@@ -643,11 +643,11 @@
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addHostedPids:(id)a3
+- (void)addHostedPids:(id)pids
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(NSMutableSet *)self->_hostedPids addObjectsFromArray:v4];
+  pidsCopy = pids;
+  [(NSMutableSet *)self->_hostedPids addObjectsFromArray:pidsCopy];
   v17 = 0u;
   v18 = 0u;
   v15 = 0u;
@@ -683,51 +683,51 @@
 
   owner = self->_owner;
   childrenSuppressionCount = self->_childrenSuppressionCount;
-  v13 = [MEMORY[0x277CBEB98] setWithArray:v4];
+  v13 = [MEMORY[0x277CBEB98] setWithArray:pidsCopy];
   [(_UIKeyboardArbiter *)owner setSuppressionCount:childrenSuppressionCount ofPIDs:v13];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startArbitrationWithExpectedState:(id)a3 focusContext:(id)a4 hostingPIDs:(id)a5 usingFence:(BOOL)a6 withSuppression:(int)a7 onConnected:(id)a8
+- (void)startArbitrationWithExpectedState:(id)state focusContext:(id)context hostingPIDs:(id)ds usingFence:(BOOL)fence withSuppression:(int)suppression onConnected:(id)connected
 {
-  v35 = a6;
+  fenceCopy = fence;
   v76 = *MEMORY[0x277D85DE8];
-  v13 = a3;
-  obj = a4;
-  v14 = a4;
-  v15 = a5;
-  v33 = a8;
+  stateCopy = state;
+  obj = context;
+  contextCopy = context;
+  dsCopy = ds;
+  connectedCopy = connected;
   v16 = _UIArbiterClientHandleLog();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
   {
-    v17 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
-    v18 = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
-    [v13 descriptionForLog];
+    bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+    processIdentifier = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
+    [stateCopy descriptionForLog];
     v19 = v31 = a2;
-    v20 = [v14 descriptionForLog];
-    v21 = numberArrayToString(v15);
+    descriptionForLog = [contextCopy descriptionForLog];
+    v21 = numberArrayToString(dsCopy);
     v22 = v21;
     *buf = 138544899;
     v23 = "N";
-    *&buf[4] = v17;
-    if (v35)
+    *&buf[4] = bundleIdentifier;
+    if (fenceCopy)
     {
       v23 = "Y";
     }
 
     *&buf[12] = 1024;
-    *&buf[14] = v18;
+    *&buf[14] = processIdentifier;
     *&buf[18] = 2114;
     *&buf[20] = v19;
     *&buf[28] = 2113;
-    *&buf[30] = v20;
+    *&buf[30] = descriptionForLog;
     *&buf[38] = 2112;
     *&buf[40] = v21;
     LOWORD(v47) = 2080;
     *(&v47 + 2) = v23;
     WORD5(v47) = 1024;
-    HIDWORD(v47) = a7;
+    HIDWORD(v47) = suppression;
     _os_log_impl(&dword_2557BA000, v16, OS_LOG_TYPE_DEFAULT, "RX %{public}@(%d) startArbitration\n    expectedState:%{public}@\n    focusContext:%{private}@\n    hostingPIDs:%@ usingFence:%s withSuppression:%d", buf, 0x40u);
 
     a2 = v31;
@@ -767,15 +767,15 @@
   os_log_type_enabled(v24, OS_LOG_TYPE_DEBUG);
   v25 = NSStringFromSelector(a2);
   v36 = 138413314;
-  v37 = self;
+  selfCopy = self;
   v38 = 2112;
   v39 = v25;
   v40 = 2112;
-  v41 = v13;
+  v41 = stateCopy;
   v42 = 2112;
-  v43 = v14;
+  v43 = contextCopy;
   v44 = 2112;
-  v45 = v15;
+  v45 = dsCopy;
   LODWORD(v30) = 52;
   v26 = _os_log_send_and_compose_impl();
 
@@ -788,17 +788,17 @@
     free(v26);
   }
 
-  self->_suppressionCount = a7;
-  self->_wantsFence = v35;
+  self->_suppressionCount = suppression;
+  self->_wantsFence = fenceCopy;
   objc_storeStrong(&self->_remoteFocusContext, obj);
-  self->_keyboardOnScreen = [v13 keyboardOnScreen];
-  self->_multipleScenes = [v13 multipleScenes];
-  if (v15)
+  self->_keyboardOnScreen = [stateCopy keyboardOnScreen];
+  self->_multipleScenes = [stateCopy multipleScenes];
+  if (dsCopy)
   {
-    [(_UIKeyboardArbiterClientHandle *)self addHostedPids:v15];
+    [(_UIKeyboardArbiterClientHandle *)self addHostedPids:dsCopy];
   }
 
-  [(_UIKeyboardArbiter *)self->_owner newClientConnected:self withExpectedState:v13 onConnected:v33];
+  [(_UIKeyboardArbiter *)self->_owner newClientConnected:self withExpectedState:stateCopy onConnected:connectedCopy];
   if (self->_active)
   {
     [(_UIKeyboardArbiterClientHandle *)self updateSuspensionCountForPids:self->_hostedPids active:1];
@@ -817,29 +817,29 @@
   }
 
   [(_UIKeyboardArbiterClientHandle *)self updateSuspensionCountForPids:self->_hostedPids active:0];
-  v4 = [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle];
-  if (v4 == self)
+  activeInputDestinationHandle = [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle];
+  if (activeInputDestinationHandle == self)
   {
     goto LABEL_7;
   }
 
-  v5 = [(_UIKeyboardArbiter *)self->_owner focusRequestedHandle];
-  v6 = v5;
-  if (v5 != self)
+  focusRequestedHandle = [(_UIKeyboardArbiter *)self->_owner focusRequestedHandle];
+  v6 = focusRequestedHandle;
+  if (focusRequestedHandle != self)
   {
 
 LABEL_7:
     goto LABEL_8;
   }
 
-  v7 = [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle];
-  v8 = [v7 active];
+  activeInputDestinationHandle2 = [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle];
+  active = [activeInputDestinationHandle2 active];
 
-  if (v8)
+  if (active)
   {
     owner = self->_owner;
-    v4 = [(_UIKeyboardArbiter *)owner activeInputDestinationHandle];
-    [(_UIKeyboardArbiter *)owner activateHandle:v4];
+    activeInputDestinationHandle = [(_UIKeyboardArbiter *)owner activeInputDestinationHandle];
+    [(_UIKeyboardArbiter *)owner activateHandle:activeInputDestinationHandle];
     goto LABEL_7;
   }
 
@@ -852,8 +852,8 @@ LABEL_8:
 {
   v29 = *MEMORY[0x277D85DE8];
   v4 = [(_UIKeyboardArbiter *)self->_owner handlerForPID:[(_UIKeyboardArbiterClientHandle *)self prevActiveIdentifier]];
-  v5 = [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle];
-  if (!v5 || (v6 = v5, [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7 == self))
+  activeInputDestinationHandle = [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle];
+  if (!activeInputDestinationHandle || (v6 = activeInputDestinationHandle, [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle], v7 = objc_claimAutoreleasedReturnValue(), v7, v6, v7 == self))
   {
     v12 = 1;
   }
@@ -862,8 +862,8 @@ LABEL_8:
   {
     hostedPids = self->_hostedPids;
     v9 = MEMORY[0x277CCABB0];
-    v10 = [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle];
-    v11 = [v9 numberWithInt:{objc_msgSend(v10, "processIdentifier")}];
+    activeInputDestinationHandle2 = [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle];
+    v11 = [v9 numberWithInt:{objc_msgSend(activeInputDestinationHandle2, "processIdentifier")}];
     v12 = [(NSMutableSet *)hostedPids containsObject:v11];
   }
 
@@ -873,14 +873,14 @@ LABEL_8:
     v13 = _UIArbiterLog();
     os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
     v14 = NSStringFromSelector(a2);
-    v15 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
-    v16 = [v4 bundleIdentifier];
+    bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+    bundleIdentifier2 = [v4 bundleIdentifier];
     v22 = 138412802;
     v23 = v14;
     v24 = 2112;
-    v25 = v15;
+    v25 = bundleIdentifier;
     v26 = 2112;
-    v27 = v16;
+    v27 = bundleIdentifier2;
     LODWORD(v21) = 32;
     v17 = _os_log_send_and_compose_impl();
 
@@ -899,18 +899,18 @@ LABEL_8:
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_isKeyboardOnScreen:(id)a3
+- (BOOL)_isKeyboardOnScreen:(id)screen
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 containsObject:self])
+  screenCopy = screen;
+  if ([screenCopy containsObject:self])
   {
     v5 = 0;
   }
 
   else
   {
-    [v4 addObject:self];
+    [screenCopy addObject:self];
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
@@ -931,7 +931,7 @@ LABEL_8:
           }
 
           v11 = -[_UIKeyboardArbiter handlerForPID:](self->_owner, "handlerForPID:", [*(*(&v15 + 1) + 8 * i) intValue]);
-          v12 = [v11 _isKeyboardOnScreen:v4];
+          v12 = [v11 _isKeyboardOnScreen:screenCopy];
 
           if (v12)
           {
@@ -958,10 +958,10 @@ LABEL_13:
   return v5;
 }
 
-- (void)beginAcquiringFocusOnQueue:(id)a3
+- (void)beginAcquiringFocusOnQueue:(id)queue
 {
   v59 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  queueCopy = queue;
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
@@ -997,15 +997,15 @@ LABEL_13:
   v6 = _UIArbiterLog();
   os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG);
   v7 = NSStringFromSelector(a2);
-  v8 = [(_UIKeyboardArbiterClientHandle *)self remoteFocusContext];
-  v9 = [v8 sceneIdentity];
-  v10 = [v9 stringRepresentation];
+  remoteFocusContext = [(_UIKeyboardArbiterClientHandle *)self remoteFocusContext];
+  sceneIdentity = [remoteFocusContext sceneIdentity];
+  stringRepresentation = [sceneIdentity stringRepresentation];
   v21 = 138412802;
-  v22 = self;
+  selfCopy = self;
   v23 = 2112;
   v24 = v7;
   v25 = 2112;
-  v26 = v10;
+  v26 = stringRepresentation;
   LODWORD(v18) = 32;
   v11 = _os_log_send_and_compose_impl();
 
@@ -1036,36 +1036,36 @@ LABEL_13:
   v19[3] = &unk_2797F4BB8;
   objc_copyWeak(&v20, location);
   v19[4] = self;
-  [(BSAbsoluteMachTimer *)acquiringFocusTimer scheduleWithFireInterval:v5 leewayInterval:v19 queue:5.0 handler:0.1];
+  [(BSAbsoluteMachTimer *)acquiringFocusTimer scheduleWithFireInterval:queueCopy leewayInterval:v19 queue:5.0 handler:0.1];
   objc_destroyWeak(&v20);
   objc_destroyWeak(location);
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_shouldRejectSceneIdentityUpdateCorrectingClientIfNeeded:(id)a3 fromSelector:(SEL)a4
+- (BOOL)_shouldRejectSceneIdentityUpdateCorrectingClientIfNeeded:(id)needed fromSelector:(SEL)selector
 {
   v70 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(_UIKeyboardArbiterClientHandle *)self remoteFocusContext];
-  v8 = [v7 sceneIdentity];
+  neededCopy = needed;
+  remoteFocusContext = [(_UIKeyboardArbiterClientHandle *)self remoteFocusContext];
+  sceneIdentity = [remoteFocusContext sceneIdentity];
 
-  v9 = [(_UIKeyboardArbiterClientHandle *)self isAcquiringFocus];
+  isAcquiringFocus = [(_UIKeyboardArbiterClientHandle *)self isAcquiringFocus];
   v10 = BSEqualObjects();
-  v11 = [(_UIKeyboardArbiter *)self->_owner omniscientDelegate];
-  v12 = v11;
-  if (!v11 || !v9 || (v6 == 0) != (v8 == 0) || v10)
+  omniscientDelegate = [(_UIKeyboardArbiter *)self->_owner omniscientDelegate];
+  v12 = omniscientDelegate;
+  if (!omniscientDelegate || !isAcquiringFocus || (neededCopy == 0) != (sceneIdentity == 0) || v10)
   {
   }
 
   else
   {
-    v13 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
-    v14 = [v13 isEqualToString:@"com.apple.Spotlight"];
+    bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+    v14 = [bundleIdentifier isEqualToString:@"com.apple.Spotlight"];
 
     if (!v14)
     {
-      v15 = [(_UIKeyboardArbiterClientHandle *)self requestedCorrectionOfClientSceneIdentityWhileAcquiringFocus];
+      requestedCorrectionOfClientSceneIdentityWhileAcquiringFocus = [(_UIKeyboardArbiterClientHandle *)self requestedCorrectionOfClientSceneIdentityWhileAcquiringFocus];
       v68 = 0u;
       v69 = 0u;
       v66 = 0u;
@@ -1100,14 +1100,14 @@ LABEL_13:
       v39 = 0u;
       v16 = _UIArbiterLog();
       os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
-      v17 = NSStringFromSelector(a4);
-      v18 = [v6 stringRepresentation];
+      v17 = NSStringFromSelector(selector);
+      stringRepresentation = [neededCopy stringRepresentation];
       v32 = 138412802;
-      v33 = self;
+      selfCopy2 = self;
       v34 = 2112;
       v35 = v17;
       v36 = 2112;
-      v37 = v18;
+      v37 = stringRepresentation;
       LODWORD(v31) = 32;
       v19 = _os_log_send_and_compose_impl();
 
@@ -1120,7 +1120,7 @@ LABEL_13:
         free(v19);
       }
 
-      if (!v15)
+      if (!requestedCorrectionOfClientSceneIdentityWhileAcquiringFocus)
       {
         [(_UIKeyboardArbiter *)self->_owner handlerRequestedForcedClientSceneIdentityUpdate:self];
       }
@@ -1130,7 +1130,7 @@ LABEL_13:
     }
   }
 
-  if (v9)
+  if (isAcquiringFocus)
   {
     v68 = 0u;
     v69 = 0u;
@@ -1166,14 +1166,14 @@ LABEL_13:
     v39 = 0u;
     v23 = _UIArbiterLog();
     os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG);
-    v24 = NSStringFromSelector(a4);
-    v25 = [v6 stringRepresentation];
+    v24 = NSStringFromSelector(selector);
+    stringRepresentation2 = [neededCopy stringRepresentation];
     v32 = 138412802;
-    v33 = self;
+    selfCopy2 = self;
     v34 = 2112;
     v35 = v24;
     v36 = 2112;
-    v37 = v25;
+    v37 = stringRepresentation2;
     LODWORD(v31) = 32;
     v26 = _os_log_send_and_compose_impl();
 
@@ -1196,22 +1196,22 @@ LABEL_17:
   return v22;
 }
 
-- (void)setClientFocusContext:(id)a3
+- (void)setClientFocusContext:(id)context
 {
   v58 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  contextCopy = context;
   v6 = _UIArbiterClientHandleLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
-    v8 = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
-    v9 = [v5 descriptionForLog];
+    bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+    processIdentifier = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
+    descriptionForLog = [contextCopy descriptionForLog];
     *buf = 138543874;
-    *&buf[4] = v7;
+    *&buf[4] = bundleIdentifier;
     *&buf[12] = 1024;
-    *&buf[14] = v8;
+    *&buf[14] = processIdentifier;
     *&buf[18] = 2114;
-    *&buf[20] = v9;
+    *&buf[20] = descriptionForLog;
     _os_log_impl(&dword_2557BA000, v6, OS_LOG_TYPE_DEFAULT, "RX %{public}@(%d) setClientFocusContext\n    focusContext:%{public}@", buf, 0x1Cu);
   }
 
@@ -1249,14 +1249,14 @@ LABEL_17:
   v10 = _UIArbiterLog();
   os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
   v11 = NSStringFromSelector(a2);
-  v12 = [v5 sceneIdentity];
-  v13 = [v12 stringRepresentation];
+  sceneIdentity = [contextCopy sceneIdentity];
+  stringRepresentation = [sceneIdentity stringRepresentation];
   v21 = 138412802;
-  v22 = self;
+  selfCopy = self;
   v23 = 2112;
   v24 = v11;
   v25 = 2112;
-  v26 = v13;
+  v26 = stringRepresentation;
   LODWORD(v20) = 32;
   v14 = _os_log_send_and_compose_impl();
 
@@ -1269,24 +1269,24 @@ LABEL_17:
     free(v14);
   }
 
-  v17 = [v5 sceneIdentity];
-  v18 = [(_UIKeyboardArbiterClientHandle *)self _shouldRejectSceneIdentityUpdateCorrectingClientIfNeeded:v17 fromSelector:a2];
+  sceneIdentity2 = [contextCopy sceneIdentity];
+  v18 = [(_UIKeyboardArbiterClientHandle *)self _shouldRejectSceneIdentityUpdateCorrectingClientIfNeeded:sceneIdentity2 fromSelector:a2];
 
   if (!v18)
   {
-    [(_UIKeyboardArbiterClientHandle *)self _reevaluateRemoteFocusContext:v5];
+    [(_UIKeyboardArbiterClientHandle *)self _reevaluateRemoteFocusContext:contextCopy];
     [(_UIKeyboardArbiter *)self->_owner reevaluateFocusedSceneIdentityForKeyboardFocusStealingKeyboardOnSuccess:0];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_reevaluateRemoteFocusContext:(id)a3
+- (void)_reevaluateRemoteFocusContext:(id)context
 {
-  v6 = a3;
+  contextCopy = context;
   v5 = +[_UIKeyboardArbiterDebug sharedInstance];
   objc_sync_enter(v5);
-  objc_storeStrong(&self->_remoteFocusContext, a3);
+  objc_storeStrong(&self->_remoteFocusContext, context);
   if (([MEMORY[0x277D75658] inputUIOOP] & 1) != 0 || self->_sceneLayer)
   {
     [(_UIKeyboardArbiterClientHandle *)self checkActivation:self->_wantedState];
@@ -1297,29 +1297,29 @@ LABEL_17:
   objc_sync_exit(v5);
 }
 
-- (void)checkActivation:(unint64_t)a3
+- (void)checkActivation:(unint64_t)activation
 {
-  v5 = [MEMORY[0x277D75658] inputUIOOP];
+  inputUIOOP = [MEMORY[0x277D75658] inputUIOOP];
   owner = self->_owner;
-  if (v5)
+  if (inputUIOOP)
   {
-    v7 = [(_UIKeyboardArbiter *)owner lastActivatedHandle];
-    v8 = v7 != self;
+    lastActivatedHandle = [(_UIKeyboardArbiter *)owner lastActivatedHandle];
+    v8 = lastActivatedHandle != self;
   }
 
   else
   {
-    v7 = [(_UIKeyboardArbiter *)owner sceneLayer];
-    v9 = [(_UIKeyboardArbiterClientHandle *)self sceneLayer];
-    v8 = v7 != v9;
+    lastActivatedHandle = [(_UIKeyboardArbiter *)owner sceneLayer];
+    sceneLayer = [(_UIKeyboardArbiterClientHandle *)self sceneLayer];
+    v8 = lastActivatedHandle != sceneLayer;
   }
 
   if (self->_active)
   {
-    v10 = a3 == 1 && v8;
-    if (a3 != 2 && !v10)
+    v10 = activation == 1 && v8;
+    if (activation != 2 && !v10)
     {
-      if (!a3)
+      if (!activation)
       {
 
         [(_UIKeyboardArbiterClientHandle *)self _deactivateScene];
@@ -1329,7 +1329,7 @@ LABEL_17:
     }
   }
 
-  else if (a3 - 1 > 1)
+  else if (activation - 1 > 1)
   {
     return;
   }
@@ -1351,25 +1351,25 @@ LABEL_17:
   self->_endpointGrantInjector = 0;
 }
 
-- (void)setWantsFencing:(BOOL)a3
+- (void)setWantsFencing:(BOOL)fencing
 {
-  v3 = a3;
+  fencingCopy = fencing;
   v53 = *MEMORY[0x277D85DE8];
   v6 = _UIArbiterClientHandleLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
-    v8 = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
+    bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+    processIdentifier = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
     v9 = "N";
     *buf = 138543874;
-    *&buf[4] = v7;
-    if (v3)
+    *&buf[4] = bundleIdentifier;
+    if (fencingCopy)
     {
       v9 = "Y";
     }
 
     *&buf[12] = 1024;
-    *&buf[14] = v8;
+    *&buf[14] = processIdentifier;
     *&buf[18] = 2080;
     *&buf[20] = v9;
     _os_log_impl(&dword_2557BA000, v6, OS_LOG_TYPE_DEFAULT, "RX %{public}@(%d) setWantsFencing:%s", buf, 0x1Cu);
@@ -1414,7 +1414,7 @@ LABEL_17:
   *v19 = 138412802;
   *&v19[4] = self;
   *&v19[12] = 2112;
-  if (v3)
+  if (fencingCopy)
   {
     v13 = @"YES";
   }
@@ -1434,15 +1434,15 @@ LABEL_17:
     free(v14);
   }
 
-  self->_wantsFence = v3;
+  self->_wantsFence = fencingCopy;
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)signalKeyboardUIDidChange:(id)a3 onCompletion:(id)a4
+- (void)signalKeyboardUIDidChange:(id)change onCompletion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  changeCopy = change;
+  completionCopy = completion;
   if (+[_UIKeyboardArbiter unitTestEnvironment])
   {
     [(_UIKeyboardArbiter *)self->_owner setKeyboardUIHandle:self];
@@ -1456,11 +1456,11 @@ LABEL_17:
     os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
     v10 = NSStringFromSelector(a2);
     v20 = 138412802;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v10;
     v24 = 2112;
-    v25 = v7;
+    v25 = changeCopy;
     LODWORD(v19) = 32;
     v11 = _os_log_send_and_compose_impl();
 
@@ -1473,43 +1473,43 @@ LABEL_17:
       free(v11);
     }
 
-    self->_keyboardOnScreen = [v7 keyboardOnScreen];
-    -[_UIKeyboardArbiter setKeyboardScenePresentationMode:](self->_owner, "setKeyboardScenePresentationMode:", [v7 keyboardScenePresentationMode]);
-    [(_UIKeyboardArbiter *)self->_owner updateKeyboardUIStatus:v7 fromHandler:self];
-    v14 = [(_UIKeyboardArbiter *)self->_owner sceneDelegate];
+    self->_keyboardOnScreen = [changeCopy keyboardOnScreen];
+    -[_UIKeyboardArbiter setKeyboardScenePresentationMode:](self->_owner, "setKeyboardScenePresentationMode:", [changeCopy keyboardScenePresentationMode]);
+    [(_UIKeyboardArbiter *)self->_owner updateKeyboardUIStatus:changeCopy fromHandler:self];
+    sceneDelegate = [(_UIKeyboardArbiter *)self->_owner sceneDelegate];
     v15 = objc_opt_respondsToSelector();
 
     if (v15)
     {
-      v16 = [(_UIKeyboardArbiter *)self->_owner sceneDelegate];
-      v17 = [(_UIKeyboardArbiter *)self->_owner focusContext];
-      [v16 focusContext:v17 didChangeKeyboardScenePresentationMode:{-[_UIKeyboardArbiter keyboardScenePresentationMode](self->_owner, "keyboardScenePresentationMode")}];
+      sceneDelegate2 = [(_UIKeyboardArbiter *)self->_owner sceneDelegate];
+      focusContext = [(_UIKeyboardArbiter *)self->_owner focusContext];
+      [sceneDelegate2 focusContext:focusContext didChangeKeyboardScenePresentationMode:{-[_UIKeyboardArbiter keyboardScenePresentationMode](self->_owner, "keyboardScenePresentationMode")}];
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)signalKeyboardClientChanged:(id)a3 onCompletion:(id)a4
+- (void)signalKeyboardClientChanged:(id)changed onCompletion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  changedCopy = changed;
+  completionCopy = completion;
   memset(v22, 0, sizeof(v22));
   v9 = _UIArbiterLog();
   os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
   v10 = NSStringFromSelector(a2);
   v16 = 138412802;
-  v17 = self;
+  selfCopy = self;
   v18 = 2112;
   v19 = v10;
   v20 = 2112;
-  v21 = v7;
+  v21 = changedCopy;
   LODWORD(v15) = 32;
   v11 = _os_log_send_and_compose_impl();
 
@@ -1522,34 +1522,34 @@ LABEL_17:
     free(v11);
   }
 
-  self->_keyboardOnScreen = [v7 keyboardOnScreen];
-  self->_multipleScenes = [v7 multipleScenes];
-  [(_UIKeyboardArbiter *)self->_owner updateKeyboardStatus:v7 fromHandler:self];
-  if (v8)
+  self->_keyboardOnScreen = [changedCopy keyboardOnScreen];
+  self->_multipleScenes = [changedCopy multipleScenes];
+  [(_UIKeyboardArbiter *)self->_owner updateKeyboardStatus:changedCopy fromHandler:self];
+  if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)signalKeyboardChanged:(id)a3 onCompletion:(id)a4
+- (void)signalKeyboardChanged:(id)changed onCompletion:(id)completion
 {
   v58 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  changedCopy = changed;
+  completionCopy = completion;
   v9 = _UIArbiterClientHandleLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
-    v11 = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
-    v12 = [v7 descriptionForLog];
+    bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+    processIdentifier = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
+    descriptionForLog = [changedCopy descriptionForLog];
     *buf = 138543874;
-    *&buf[4] = v10;
+    *&buf[4] = bundleIdentifier;
     *&buf[12] = 1024;
-    *&buf[14] = v11;
+    *&buf[14] = processIdentifier;
     *&buf[18] = 2114;
-    *&buf[20] = v12;
+    *&buf[20] = descriptionForLog;
     _os_log_impl(&dword_2557BA000, v9, OS_LOG_TYPE_DEFAULT, "RX %{public}@(%d) signalKeyboardChanged\n    keyboardChanges:%{public}@", buf, 0x1Cu);
   }
 
@@ -1588,11 +1588,11 @@ LABEL_17:
   os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG);
   v14 = NSStringFromSelector(a2);
   v21 = 138412802;
-  v22 = self;
+  selfCopy = self;
   v23 = 2112;
   v24 = v14;
   v25 = 2112;
-  v26 = v7;
+  v26 = changedCopy;
   LODWORD(v20) = 32;
   v15 = _os_log_send_and_compose_impl();
 
@@ -1605,17 +1605,17 @@ LABEL_17:
     free(v15);
   }
 
-  self->_keyboardOnScreen = [v7 keyboardOnScreen];
-  self->_multipleScenes = [v7 multipleScenes];
-  [(_UIKeyboardArbiter *)self->_owner updateKeyboardStatus:v7 fromHandler:self];
+  self->_keyboardOnScreen = [changedCopy keyboardOnScreen];
+  self->_multipleScenes = [changedCopy multipleScenes];
+  [(_UIKeyboardArbiter *)self->_owner updateKeyboardStatus:changedCopy fromHandler:self];
   if (!self->_keyboardOnScreen)
   {
     if ([(_UIKeyboardArbiterClientHandle *)self isViewService])
     {
       if ([(_UIKeyboardArbiterClientHandle *)self prevActiveIdentifier])
       {
-        v18 = [v7 hostProcessIdentifier];
-        if (v18 == getpid())
+        hostProcessIdentifier = [changedCopy hostProcessIdentifier];
+        if (hostProcessIdentifier == getpid())
         {
           [(_UIKeyboardArbiterClientHandle *)self activeProcessResign];
         }
@@ -1623,26 +1623,26 @@ LABEL_17:
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
-    v8[2](v8);
+    completionCopy[2](completionCopy);
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)signalAutofillUIBringupWithCompletion:(id)a3
+- (void)signalAutofillUIBringupWithCompletion:(id)completion
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = _UIArbiterClientHandleLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+    bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
     v8 = 138543618;
-    v9 = v6;
+    v9 = bundleIdentifier;
     v10 = 1024;
-    v11 = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
+    processIdentifier = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
     _os_log_impl(&dword_2557BA000, v5, OS_LOG_TYPE_DEFAULT, "RX %{public}@(%d) signalAutofillUIBringup", &v8, 0x12u);
   }
 
@@ -1650,16 +1650,16 @@ LABEL_17:
   {
     [(_UIKeyboardArbiterClientHandle *)self setRequiresInputUIForAutofillUIOnly:1];
     [(_UIKeyboardArbiter *)self->_owner reevaluateSceneClientSettings];
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4);
+      completionCopy[2](completionCopy);
     }
   }
 
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)notifyIAVHeight:(double)a3
+- (void)notifyIAVHeight:(double)height
 {
   v17 = *MEMORY[0x277D85DE8];
   v6 = _UIArbiterLog();
@@ -1667,57 +1667,57 @@ LABEL_17:
   {
     v12 = NSStringFromSelector(a2);
     v13 = 138412802;
-    v14 = self;
+    selfCopy = self;
     v15 = 2112;
     *v16 = v12;
     *&v16[8] = 2048;
-    *&v16[10] = a3;
+    *&v16[10] = height;
     _os_log_debug_impl(&dword_2557BA000, v6, OS_LOG_TYPE_DEBUG, "[%@] %@: %f", &v13, 0x20u);
   }
 
-  if (self->_iavHeight != a3)
+  if (self->_iavHeight != height)
   {
     v7 = _UIArbiterClientHandleLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
-      v9 = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
+      bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+      processIdentifier = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
       iavHeight = self->_iavHeight;
       v13 = 138544130;
-      v14 = v8;
+      selfCopy = bundleIdentifier;
       v15 = 1024;
-      *v16 = v9;
+      *v16 = processIdentifier;
       *&v16[4] = 2048;
-      *&v16[6] = a3;
+      *&v16[6] = height;
       *&v16[14] = 2048;
       *&v16[16] = iavHeight;
       _os_log_impl(&dword_2557BA000, v7, OS_LOG_TYPE_DEFAULT, "RX %{public}@(%d) notifyIAVHeight:%.1f (was %.1f)", &v13, 0x26u);
     }
 
-    self->_iavHeight = a3;
+    self->_iavHeight = height;
     [(_UIKeyboardArbiter *)self->_owner notifyHeightUpdated:self];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)transition:(id)a3 eventStage:(unint64_t)a4 withInfo:(id)a5
+- (void)transition:(id)transition eventStage:(unint64_t)stage withInfo:(id)info
 {
   v62 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a5;
+  transitionCopy = transition;
+  infoCopy = info;
   v11 = _UIArbiterClientHandleLog();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
-    v13 = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
+    bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+    processIdentifier = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
     v14 = _UIKeyboardTransitionStageToString();
     *buf = 138544130;
-    *&buf[4] = v12;
+    *&buf[4] = bundleIdentifier;
     *&buf[12] = 1024;
-    *&buf[14] = v13;
+    *&buf[14] = processIdentifier;
     *&buf[18] = 2114;
-    *&buf[20] = v9;
+    *&buf[20] = transitionCopy;
     *&buf[28] = 2114;
     *&buf[30] = v14;
     _os_log_impl(&dword_2557BA000, v11, OS_LOG_TYPE_DEFAULT, "RX %{public}@(%d) transition:%{public}@ eventStage:%{public}@", buf, 0x26u);
@@ -1757,15 +1757,15 @@ LABEL_17:
   os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG);
   v16 = NSStringFromSelector(a2);
   v22 = 138413314;
-  v23 = self;
+  selfCopy = self;
   v24 = 2112;
   v25 = v16;
   v26 = 2112;
-  v27 = v9;
+  v27 = transitionCopy;
   v28 = 1024;
-  v29 = a4;
+  stageCopy = stage;
   v30 = 2112;
-  v31 = v10;
+  v31 = infoCopy;
   LODWORD(v21) = 48;
   v17 = _os_log_send_and_compose_impl();
 
@@ -1778,21 +1778,21 @@ LABEL_17:
     free(v17);
   }
 
-  [(_UIKeyboardArbiter *)self->_owner transition:v9 eventStage:a4 withInfo:v10 fromHandler:self];
+  [(_UIKeyboardArbiter *)self->_owner transition:transitionCopy eventStage:stage withInfo:infoCopy fromHandler:self];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveDebugInformation:(id)a3
+- (void)retrieveDebugInformation:(id)information
 {
   v56 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  informationCopy = information;
   v6 = _UIArbiterClientHandleLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v18 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+    bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
     *buf = 138543618;
-    *&buf[4] = v18;
+    *&buf[4] = bundleIdentifier;
     *&buf[12] = 1024;
     *&buf[14] = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
     _os_log_debug_impl(&dword_2557BA000, v6, OS_LOG_TYPE_DEBUG, "RX %{public}@(%d) retrieveDebugInfo", buf, 0x12u);
@@ -1833,7 +1833,7 @@ LABEL_17:
   os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
   v8 = NSStringFromSelector(a2);
   v21 = 138412546;
-  v22 = self;
+  selfCopy2 = self;
   v23 = 2112;
   v24 = v8;
   LODWORD(v19) = 22;
@@ -1850,10 +1850,10 @@ LABEL_17:
 
   if ([(_UIKeyboardArbiterClientHandle *)self hasDebugInformationEntitlement])
   {
-    if (v5)
+    if (informationCopy)
     {
       v12 = [(_UIKeyboardArbiter *)self->_owner description];
-      v5[2](v5, v12);
+      informationCopy[2](informationCopy, v12);
     }
   }
 
@@ -1893,7 +1893,7 @@ LABEL_17:
     v13 = _UIArbiterLog();
     os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
     v21 = 138412290;
-    v22 = self;
+    selfCopy2 = self;
     LODWORD(v20) = 12;
     v14 = _os_log_send_and_compose_impl();
 
@@ -1906,22 +1906,22 @@ LABEL_17:
       free(v14);
     }
 
-    v5[2](v5, 0);
+    informationCopy[2](informationCopy, 0);
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveMoreDebugInformationWithCompletion:(id)a3
+- (void)retrieveMoreDebugInformationWithCompletion:(id)completion
 {
   v55 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  completionCopy = completion;
   v6 = _UIArbiterClientHandleLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    v17 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+    bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
     *buf = 138543618;
-    *&buf[4] = v17;
+    *&buf[4] = bundleIdentifier;
     *&buf[12] = 1024;
     *&buf[14] = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
     _os_log_debug_impl(&dword_2557BA000, v6, OS_LOG_TYPE_DEBUG, "RX %{public}@(%d) retrieveMoreDebugInfo", buf, 0x12u);
@@ -1962,7 +1962,7 @@ LABEL_17:
   os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG);
   v8 = NSStringFromSelector(a2);
   v20 = 138412546;
-  v21 = self;
+  selfCopy2 = self;
   v22 = 2112;
   v23 = v8;
   LODWORD(v18) = 22;
@@ -1979,7 +1979,7 @@ LABEL_17:
 
   if ([(_UIKeyboardArbiterClientHandle *)self hasDebugInformationEntitlement])
   {
-    [(_UIKeyboardArbiter *)self->_owner retrieveDebugInformationWithCompletion:v5];
+    [(_UIKeyboardArbiter *)self->_owner retrieveDebugInformationWithCompletion:completionCopy];
   }
 
   else
@@ -2018,7 +2018,7 @@ LABEL_17:
     v12 = _UIArbiterLog();
     os_log_type_enabled(v12, OS_LOG_TYPE_ERROR);
     v20 = 138412290;
-    v21 = self;
+    selfCopy2 = self;
     LODWORD(v19) = 12;
     v13 = _os_log_send_and_compose_impl();
 
@@ -2031,21 +2031,21 @@ LABEL_17:
       free(v13);
     }
 
-    v5[2](v5, 0);
+    completionCopy[2](completionCopy, 0);
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isHandlerShowableWithHandler:(id)a3
+- (BOOL)isHandlerShowableWithHandler:(id)handler
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = v4;
-  if (v4 && !self->_checkingShowability)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (handlerCopy && !self->_checkingShowability)
   {
     LOBYTE(v6) = 1;
-    if (v4 != self)
+    if (handlerCopy != self)
     {
       self->_checkingShowability = 1;
       v14 = 0u;
@@ -2101,10 +2101,10 @@ LABEL_15:
   return v6;
 }
 
-- (BOOL)takeProcessAssertionOnRemoteWithQueue:(id)a3
+- (BOOL)takeProcessAssertionOnRemoteWithQueue:(id)queue
 {
   v109 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queueCopy = queue;
   remoteKeepAliveAssertionCount = self->_remoteKeepAliveAssertionCount;
   self->_remoteKeepAliveAssertionCount = remoteKeepAliveAssertionCount + 1;
   v6 = &off_2557D5000;
@@ -2113,8 +2113,8 @@ LABEL_15:
     goto LABEL_27;
   }
 
-  v7 = [(NSXPCConnection *)self->_connection processIdentifier];
-  if (v7 == getpid())
+  processIdentifier = [(NSXPCConnection *)self->_connection processIdentifier];
+  if (processIdentifier == getpid())
   {
     goto LABEL_27;
   }
@@ -2185,7 +2185,7 @@ LABEL_23:
       v49 = _UIArbiterLog();
       os_log_type_enabled(v49, OS_LOG_TYPE_DEBUG);
       v72 = *(v29 + 506);
-      v73 = v25;
+      selfCopy = v25;
       LODWORD(v61) = 12;
       v50 = _os_log_send_and_compose_impl();
 
@@ -2239,7 +2239,7 @@ LABEL_23:
     v31 = _UIArbiterLog();
     os_log_type_enabled(v31, OS_LOG_TYPE_ERROR);
     v72 = 138412546;
-    v73 = v25;
+    selfCopy = v25;
     v74 = 2112;
     v75 = v30;
     LODWORD(v61) = 22;
@@ -2254,14 +2254,14 @@ LABEL_23:
       free(v32);
     }
 
-    v35 = [v65 domain];
+    domain = [v65 domain];
     v36 = *MEMORY[0x277D47098];
     v29 = &off_2557D5000;
-    if ([v35 isEqual:*MEMORY[0x277D47098]])
+    if ([domain isEqual:*MEMORY[0x277D47098]])
     {
-      v37 = [v65 code];
+      code = [v65 code];
 
-      if (v37 == 1)
+      if (code == 1)
       {
         v107 = 0u;
         v108 = 0u;
@@ -2298,7 +2298,7 @@ LABEL_23:
         v38 = _UIArbiterLog();
         os_log_type_enabled(v38, OS_LOG_TYPE_ERROR);
         v72 = 138412290;
-        v73 = v25;
+        selfCopy = v25;
         LODWORD(v62) = 12;
         v39 = _os_log_send_and_compose_impl();
 
@@ -2319,11 +2319,11 @@ LABEL_23:
     {
     }
 
-    v42 = [v65 domain];
-    if ([v42 isEqual:v36])
+    domain2 = [v65 domain];
+    if ([domain2 isEqual:v36])
     {
-      v43 = [v65 localizedFailureReason];
-      v44 = [v43 isEqual:@"Could not find plist for domain attribute"];
+      localizedFailureReason = [v65 localizedFailureReason];
+      v44 = [localizedFailureReason isEqual:@"Could not find plist for domain attribute"];
 
       if (v44)
       {
@@ -2372,7 +2372,7 @@ LABEL_23:
     v46 = _UIArbiterLog();
     os_log_type_enabled(v46, OS_LOG_TYPE_ERROR);
     v72 = 138412290;
-    v73 = v25;
+    selfCopy = v25;
     LODWORD(v62) = 12;
     v39 = _os_log_send_and_compose_impl();
 
@@ -2427,7 +2427,7 @@ LABEL_22:
   v9 = _UIArbiterLog();
   os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
   v72 = 138412290;
-  v73 = v8;
+  selfCopy = v8;
   LODWORD(v61) = 12;
   v10 = _os_log_send_and_compose_impl();
 
@@ -2441,13 +2441,13 @@ LABEL_22:
   }
 
   v13 = objc_alloc(MEMORY[0x277CEEEA8]);
-  v14 = [(NSXPCConnection *)self->_connection processIdentifier];
+  processIdentifier2 = [(NSXPCConnection *)self->_connection processIdentifier];
   v70[0] = MEMORY[0x277D85DD0];
   v70[1] = 3221225472;
   v70[2] = __72___UIKeyboardArbiterClientHandle_takeProcessAssertionOnRemoteWithQueue___block_invoke;
   v70[3] = &unk_2797F4810;
   v71 = v8;
-  v15 = [v13 initWithPID:v14 flags:39 reason:4 name:@"com.apple.UIKit.KeyboardManagement.message" withHandler:v70];
+  v15 = [v13 initWithPID:processIdentifier2 flags:39 reason:4 name:@"com.apple.UIKit.KeyboardManagement.message" withHandler:v70];
   v16 = self->_remoteKeepAliveAssertion;
   self->_remoteKeepAliveAssertion = v15;
 
@@ -2492,7 +2492,7 @@ LABEL_27:
   os_log_type_enabled(v53, OS_LOG_TYPE_DEBUG);
   v54 = self->_remoteKeepAliveAssertionCount;
   v72 = *(v6 + 508);
-  v73 = self;
+  selfCopy = self;
   v74 = 2048;
   v75 = v54;
   LODWORD(v61) = 22;
@@ -2514,7 +2514,7 @@ LABEL_27:
   block[2] = __72___UIKeyboardArbiterClientHandle_takeProcessAssertionOnRemoteWithQueue___block_invoke_582;
   block[3] = &unk_2797F4630;
   block[4] = self;
-  dispatch_after(v58, v4, block);
+  dispatch_after(v58, queueCopy, block);
   v45 = 1;
 LABEL_30:
 
@@ -2532,13 +2532,13 @@ LABEL_30:
       v3 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:{-[FBSCAContextSceneLayer contextID](self->_sceneLayer, "contextID")}];
       v10[0] = v3;
       remoteFocusContext = self->_remoteFocusContext;
-      v5 = remoteFocusContext;
+      null = remoteFocusContext;
       if (!remoteFocusContext)
       {
-        v5 = [MEMORY[0x277CBEB68] null];
+        null = [MEMORY[0x277CBEB68] null];
       }
 
-      v6 = [MEMORY[0x277CCABB0] numberWithDouble:{self->_level, v10[0], v5}];
+      v6 = [MEMORY[0x277CCABB0] numberWithDouble:{self->_level, v10[0], null}];
       v10[2] = v6;
       v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:3];
       cachedContext = self->_cachedContext;
@@ -2562,7 +2562,7 @@ LABEL_30:
     if (![(_UIKeyboardArbiterClientHandle *)self active])
     {
       v3 = [(NSArray *)self->_cachedContext objectAtIndexedSubscript:0];
-      v4 = [v3 intValue];
+      intValue = [v3 intValue];
       v5 = [(NSArray *)self->_cachedContext objectAtIndexedSubscript:1];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
@@ -2577,7 +2577,7 @@ LABEL_30:
       }
 
       v8 = [(NSArray *)self->_cachedContext objectAtIndexedSubscript:2];
-      -[_UIKeyboardArbiterClientHandle setWindowContextID:focusContext:windowState:withLevel:](self, "setWindowContextID:focusContext:windowState:withLevel:", v4, v7, 1, [v8 intValue]);
+      -[_UIKeyboardArbiterClientHandle setWindowContextID:focusContext:windowState:withLevel:](self, "setWindowContextID:focusContext:windowState:withLevel:", intValue, v7, 1, [v8 intValue]);
 
       if (isKindOfClass)
       {
@@ -2589,36 +2589,36 @@ LABEL_30:
   }
 }
 
-- (void)pointIsWithinKeyboardContent:(CGPoint)a3 onCompletion:(id)a4
+- (void)pointIsWithinKeyboardContent:(CGPoint)content onCompletion:(id)completion
 {
-  if (a4)
+  if (completion)
   {
-    y = a3.y;
-    x = a3.x;
+    y = content.y;
+    x = content.x;
     v6 = MEMORY[0x277D75830];
-    v7 = a4;
-    v7[2](v7, [v6 pointIsWithinKeyboardContent:{x, y}]);
+    completionCopy = completion;
+    completionCopy[2](completionCopy, [v6 pointIsWithinKeyboardContent:{x, y}]);
   }
 }
 
-- (void)setAllVisibleFrames:(id)a3
+- (void)setAllVisibleFrames:(id)frames
 {
-  v4 = a3;
+  framesCopy = frames;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __54___UIKeyboardArbiterClientHandle_setAllVisibleFrames___block_invoke;
   v6[3] = &unk_2797F45E0;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = framesCopy;
+  v5 = framesCopy;
   dispatch_async(MEMORY[0x277D85CD0], v6);
 }
 
 - (void)userFirstTapOnKeyboard
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle];
-  if (v4 != self)
+  activeInputDestinationHandle = [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle];
+  if (activeInputDestinationHandle != self)
   {
     goto LABEL_2;
   }
@@ -2629,9 +2629,9 @@ LABEL_30:
 
   else
   {
-    v23 = [(_UIKeyboardArbiter *)self->_owner focusRequestedHandle];
-    v24 = v23;
-    if (v23 != self)
+    focusRequestedHandle = [(_UIKeyboardArbiter *)self->_owner focusRequestedHandle];
+    v24 = focusRequestedHandle;
+    if (focusRequestedHandle != self)
     {
 
 LABEL_2:
@@ -2640,7 +2640,7 @@ LABEL_3:
       if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
       {
         v6 = NSStringFromSelector(a2);
-        v7 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+        bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
         if ([(_UIKeyboardArbiterClientHandle *)self active])
         {
           v8 = @"YES";
@@ -2651,20 +2651,20 @@ LABEL_3:
           v8 = @"NO";
         }
 
-        v9 = [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle];
-        v10 = [v9 bundleIdentifier];
-        v11 = [(_UIKeyboardArbiter *)self->_owner focusRequestedHandle];
-        v12 = [v11 bundleIdentifier];
+        activeInputDestinationHandle2 = [(_UIKeyboardArbiter *)self->_owner activeInputDestinationHandle];
+        bundleIdentifier2 = [activeInputDestinationHandle2 bundleIdentifier];
+        focusRequestedHandle2 = [(_UIKeyboardArbiter *)self->_owner focusRequestedHandle];
+        bundleIdentifier3 = [focusRequestedHandle2 bundleIdentifier];
         *buf = 138413314;
         v29 = v6;
         v30 = 2112;
-        v31 = v7;
+        v31 = bundleIdentifier;
         v32 = 2112;
         v33 = v8;
         v34 = 2112;
-        v35 = v10;
+        v35 = bundleIdentifier2;
         v36 = 2112;
-        v37 = v12;
+        v37 = bundleIdentifier3;
         _os_log_impl(&dword_2557BA000, v5, OS_LOG_TYPE_DEFAULT, "[%@] %@(active=%@) taps on blank keyboard, activeInputDestinationHandle: %@, focusRequestedHandle: %@", buf, 0x34u);
       }
 
@@ -2681,9 +2681,9 @@ LABEL_3:
       goto LABEL_9;
     }
 
-    v25 = [(_UIKeyboardArbiterClientHandle *)self active];
+    active = [(_UIKeyboardArbiterClientHandle *)self active];
 
-    if (!v25)
+    if (!active)
     {
       goto LABEL_3;
     }
@@ -2697,13 +2697,13 @@ LABEL_3:
     if (Current - v17 > 1800.0)
     {
       [(_UIKeyboardArbiter *)self->_owner setBlankKeyboardRecordTime:0.0];
-      v18 = [(_UIKeyboardArbiter *)self->_owner blankKeyboardLogs];
-      v19 = [v18 count];
+      blankKeyboardLogs = [(_UIKeyboardArbiter *)self->_owner blankKeyboardLogs];
+      v19 = [blankKeyboardLogs count];
 
       if (v19)
       {
-        v20 = [(_UIKeyboardArbiter *)self->_owner blankKeyboardLogs];
-        v21 = [v20 objectAtIndexedSubscript:0];
+        blankKeyboardLogs2 = [(_UIKeyboardArbiter *)self->_owner blankKeyboardLogs];
+        v21 = [blankKeyboardLogs2 objectAtIndexedSubscript:0];
         v27 = v21;
         v22 = [MEMORY[0x277CBEA60] arrayWithObjects:&v27 count:1];
         [(_UIKeyboardArbiter *)self->_owner setBlankKeyboardLogs:v22];
@@ -2715,53 +2715,53 @@ LABEL_9:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationShouldFocusWithBundle:(id)a3 onCompletion:(id)a4
+- (void)applicationShouldFocusWithBundle:(id)bundle onCompletion:(id)completion
 {
   v72 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  bundleCopy = bundle;
+  completionCopy = completion;
   v9 = _UIArbiterClientHandleLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
-    v11 = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
+    bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+    processIdentifier = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
     v12 = @"(self)";
     *buf = 138543874;
-    *&buf[4] = v10;
-    if (v7)
+    *&buf[4] = bundleIdentifier;
+    if (bundleCopy)
     {
-      v12 = v7;
+      v12 = bundleCopy;
     }
 
     *&buf[12] = 1024;
-    *&buf[14] = v11;
+    *&buf[14] = processIdentifier;
     *&buf[18] = 2114;
     *&buf[20] = v12;
     _os_log_impl(&dword_2557BA000, v9, OS_LOG_TYPE_DEFAULT, "RX %{public}@(%d) applicationShouldFocusWithBundle:%{public}@", buf, 0x1Cu);
   }
 
-  if (!v7)
+  if (!bundleCopy)
   {
     goto LABEL_10;
   }
 
-  v13 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
-  if ([v13 isEqual:v7])
+  bundleIdentifier2 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+  if ([bundleIdentifier2 isEqual:bundleCopy])
   {
 
     goto LABEL_9;
   }
 
-  v14 = [(_UIKeyboardArbiterClientHandle *)self hasDebugInformationEntitlement];
+  hasDebugInformationEntitlement = [(_UIKeyboardArbiterClientHandle *)self hasDebugInformationEntitlement];
 
-  if (v14)
+  if (hasDebugInformationEntitlement)
   {
 LABEL_9:
-    if (([(__CFString *)v7 isEqualToString:&stru_2867933A0]& 1) == 0)
+    if (([(__CFString *)bundleCopy isEqualToString:&stru_2867933A0]& 1) == 0)
     {
-      v15 = [(_UIKeyboardArbiter *)self->_owner handlerForBundleID:v7];
+      selfCopy2 = [(_UIKeyboardArbiter *)self->_owner handlerForBundleID:bundleCopy];
 LABEL_12:
-      v16 = v15;
+      v16 = selfCopy2;
       v70 = 0u;
       v71 = 0u;
       v68 = 0u;
@@ -2797,11 +2797,11 @@ LABEL_12:
       os_log_type_enabled(v17, OS_LOG_TYPE_DEBUG);
       v18 = NSStringFromSelector(a2);
       v33 = 138413058;
-      v34 = self;
+      selfCopy3 = self;
       v35 = 2112;
       v36 = v18;
       v37 = 2112;
-      v38 = v7;
+      v38 = bundleCopy;
       v39 = 2114;
       v40 = v16;
       LODWORD(v32) = 42;
@@ -2821,7 +2821,7 @@ LABEL_12:
         owner = self->_owner;
         v25 = 1;
         [(_UIKeyboardArbiter *)owner handlerRequestedFocus:v16 shouldStealKeyboard:1];
-        if (!v8)
+        if (!completionCopy)
         {
           goto LABEL_19;
         }
@@ -2830,7 +2830,7 @@ LABEL_12:
       else
       {
         v25 = 0;
-        if (!v8)
+        if (!completionCopy)
         {
 LABEL_19:
 
@@ -2838,12 +2838,12 @@ LABEL_19:
         }
       }
 
-      v8[2](v8, v25);
+      completionCopy[2](completionCopy, v25);
       goto LABEL_19;
     }
 
 LABEL_10:
-    v15 = self;
+    selfCopy2 = self;
     goto LABEL_12;
   }
 
@@ -2881,9 +2881,9 @@ LABEL_10:
   v28 = _UIArbiterLog();
   os_log_type_enabled(v28, OS_LOG_TYPE_ERROR);
   v33 = 138412546;
-  v34 = self;
+  selfCopy3 = self;
   v35 = 2112;
-  v36 = v7;
+  v36 = bundleCopy;
   LODWORD(v32) = 22;
   v29 = _os_log_send_and_compose_impl();
 
@@ -2896,26 +2896,26 @@ LABEL_10:
     free(v29);
   }
 
-  v8[2](v8, 0);
+  completionCopy[2](completionCopy, 0);
 LABEL_20:
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)signalEventSourceChanged:(int64_t)a3 completionHandler:(id)a4
+- (void)signalEventSourceChanged:(int64_t)changed completionHandler:(id)handler
 {
   v56 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  handlerCopy = handler;
   v8 = _UIArbiterClientHandleLog();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
-    v10 = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
+    bundleIdentifier = [(_UIKeyboardArbiterClientHandle *)self bundleIdentifier];
+    processIdentifier = [(_UIKeyboardArbiterClientHandle *)self processIdentifier];
     v11 = _UITextInputSourceToString();
     *buf = 138543874;
-    *&buf[4] = v9;
+    *&buf[4] = bundleIdentifier;
     *&buf[12] = 1024;
-    *&buf[14] = v10;
+    *&buf[14] = processIdentifier;
     *&buf[18] = 2114;
     *&buf[20] = v11;
     _os_log_impl(&dword_2557BA000, v8, OS_LOG_TYPE_DEFAULT, "RX %{public}@(%d) signalEventSourceChanged:%{public}@", buf, 0x1Cu);
@@ -2956,11 +2956,11 @@ LABEL_20:
   os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG);
   v13 = NSStringFromSelector(a2);
   v19 = 138412802;
-  v20 = self;
+  selfCopy = self;
   v21 = 2112;
   v22 = v13;
   v23 = 1024;
-  v24 = a3;
+  changedCopy = changed;
   LODWORD(v18) = 28;
   v14 = _os_log_send_and_compose_impl();
 
@@ -2973,7 +2973,7 @@ LABEL_20:
     free(v14);
   }
 
-  [(_UIKeyboardArbiter *)self->_owner signalEventSourceChanged:a3 fromHandler:self completionHandler:v7];
+  [(_UIKeyboardArbiter *)self->_owner signalEventSourceChanged:changed fromHandler:self completionHandler:handlerCopy];
 
   v17 = *MEMORY[0x277D85DE8];
 }

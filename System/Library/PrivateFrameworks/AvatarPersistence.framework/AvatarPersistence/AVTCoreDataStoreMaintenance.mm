@@ -1,49 +1,49 @@
 @interface AVTCoreDataStoreMaintenance
-- (AVTCoreDataStoreMaintenance)initWithEnvironment:(id)a3 managedObjectContextFactory:(id)a4;
-- (AVTCoreDataStoreMaintenance)initWithWorkQueue:(id)a3 managedObjectContextFactory:(id)a4 eventCoalescer:(id)a5 logger:(id)a6;
-- (BOOL)fixDuplicateRecordIdentifiers:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
-- (BOOL)mitigateDuplicatesWithManagedObjectContext:(id)a3 error:(id *)a4;
-- (id)duplicatedIdentifiersInManagedObjectContext:(id)a3 error:(id *)a4;
-- (id)fetchDuplicatedRecordsForIdentifiers:(id)a3 managedObjectContext:(id)a4 error:(id *)a5;
+- (AVTCoreDataStoreMaintenance)initWithEnvironment:(id)environment managedObjectContextFactory:(id)factory;
+- (AVTCoreDataStoreMaintenance)initWithWorkQueue:(id)queue managedObjectContextFactory:(id)factory eventCoalescer:(id)coalescer logger:(id)logger;
+- (BOOL)fixDuplicateRecordIdentifiers:(id)identifiers managedObjectContext:(id)context error:(id *)error;
+- (BOOL)mitigateDuplicatesWithManagedObjectContext:(id)context error:(id *)error;
+- (id)duplicatedIdentifiersInManagedObjectContext:(id)context error:(id *)error;
+- (id)fetchDuplicatedRecordsForIdentifiers:(id)identifiers managedObjectContext:(id)context error:(id *)error;
 - (void)runMaintenanceTasks;
 - (void)storeDidChange;
 @end
 
 @implementation AVTCoreDataStoreMaintenance
 
-- (AVTCoreDataStoreMaintenance)initWithEnvironment:(id)a3 managedObjectContextFactory:(id)a4
+- (AVTCoreDataStoreMaintenance)initWithEnvironment:(id)environment managedObjectContextFactory:(id)factory
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 serialQueueProvider];
-  v9 = (v8)[2](v8, "com.apple.AvatarUI.AVTCoreDataStoreMaintenance.workQueue");
+  factoryCopy = factory;
+  environmentCopy = environment;
+  serialQueueProvider = [environmentCopy serialQueueProvider];
+  v9 = (serialQueueProvider)[2](serialQueueProvider, "com.apple.AvatarUI.AVTCoreDataStoreMaintenance.workQueue");
 
   v10 = [AVTEventCoalescer alloc];
-  v11 = [v7 logger];
-  v12 = [(AVTEventCoalescer *)v10 initWithDelay:v9 queue:v11 logger:5.0];
+  logger = [environmentCopy logger];
+  v12 = [(AVTEventCoalescer *)v10 initWithDelay:v9 queue:logger logger:5.0];
 
-  v13 = [v7 logger];
+  logger2 = [environmentCopy logger];
 
-  v14 = [(AVTCoreDataStoreMaintenance *)self initWithWorkQueue:v9 managedObjectContextFactory:v6 eventCoalescer:v12 logger:v13];
+  v14 = [(AVTCoreDataStoreMaintenance *)self initWithWorkQueue:v9 managedObjectContextFactory:factoryCopy eventCoalescer:v12 logger:logger2];
   return v14;
 }
 
-- (AVTCoreDataStoreMaintenance)initWithWorkQueue:(id)a3 managedObjectContextFactory:(id)a4 eventCoalescer:(id)a5 logger:(id)a6
+- (AVTCoreDataStoreMaintenance)initWithWorkQueue:(id)queue managedObjectContextFactory:(id)factory eventCoalescer:(id)coalescer logger:(id)logger
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queueCopy = queue;
+  factoryCopy = factory;
+  coalescerCopy = coalescer;
+  loggerCopy = logger;
   v24.receiver = self;
   v24.super_class = AVTCoreDataStoreMaintenance;
   v15 = [(AVTCoreDataStoreMaintenance *)&v24 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_workQueue, a3);
-    objc_storeStrong(&v16->_logger, a6);
-    objc_storeStrong(&v16->_eventCoalescer, a5);
-    v17 = [v12 copy];
+    objc_storeStrong(&v15->_workQueue, queue);
+    objc_storeStrong(&v16->_logger, logger);
+    objc_storeStrong(&v16->_eventCoalescer, coalescer);
+    v17 = [factoryCopy copy];
     mocFactory = v16->_mocFactory;
     v16->_mocFactory = v17;
 
@@ -70,19 +70,19 @@ void __99__AVTCoreDataStoreMaintenance_initWithWorkQueue_managedObjectContextFac
 
 - (void)storeDidChange
 {
-  v2 = [(AVTCoreDataStoreMaintenance *)self eventCoalescer];
-  [v2 eventDidOccur:0];
+  eventCoalescer = [(AVTCoreDataStoreMaintenance *)self eventCoalescer];
+  [eventCoalescer eventDidOccur:0];
 }
 
 - (void)runMaintenanceTasks
 {
-  v3 = [(AVTCoreDataStoreMaintenance *)self logger];
+  logger = [(AVTCoreDataStoreMaintenance *)self logger];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __50__AVTCoreDataStoreMaintenance_runMaintenanceTasks__block_invoke;
   v4[3] = &unk_278CFA430;
   v4[4] = self;
-  [v3 runningMaintenance:v4];
+  [logger runningMaintenance:v4];
 }
 
 void __50__AVTCoreDataStoreMaintenance_runMaintenanceTasks__block_invoke(uint64_t a1)
@@ -120,19 +120,19 @@ void __50__AVTCoreDataStoreMaintenance_runMaintenanceTasks__block_invoke(uint64_
   }
 }
 
-- (BOOL)mitigateDuplicatesWithManagedObjectContext:(id)a3 error:(id *)a4
+- (BOOL)mitigateDuplicatesWithManagedObjectContext:(id)context error:(id *)error
 {
-  v6 = a3;
-  v7 = [(AVTCoreDataStoreMaintenance *)self duplicatedIdentifiersInManagedObjectContext:v6 error:a4];
+  contextCopy = context;
+  v7 = [(AVTCoreDataStoreMaintenance *)self duplicatedIdentifiersInManagedObjectContext:contextCopy error:error];
   v8 = v7;
   if (v7)
   {
     if ([v7 count])
     {
-      v9 = [(AVTCoreDataStoreMaintenance *)self fetchDuplicatedRecordsForIdentifiers:v8 managedObjectContext:v6 error:a4];
+      v9 = [(AVTCoreDataStoreMaintenance *)self fetchDuplicatedRecordsForIdentifiers:v8 managedObjectContext:contextCopy error:error];
       if (v9)
       {
-        v10 = [(AVTCoreDataStoreMaintenance *)self fixDuplicateRecordIdentifiers:v9 managedObjectContext:v6 error:a4];
+        v10 = [(AVTCoreDataStoreMaintenance *)self fixDuplicateRecordIdentifiers:v9 managedObjectContext:contextCopy error:error];
       }
 
       else
@@ -155,18 +155,18 @@ void __50__AVTCoreDataStoreMaintenance_runMaintenanceTasks__block_invoke(uint64_
   return v10;
 }
 
-- (BOOL)fixDuplicateRecordIdentifiers:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (BOOL)fixDuplicateRecordIdentifiers:(id)identifiers managedObjectContext:(id)context error:(id *)error
 {
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __88__AVTCoreDataStoreMaintenance_fixDuplicateRecordIdentifiers_managedObjectContext_error___block_invoke;
   v9[3] = &unk_278CFA458;
   v9[4] = self;
-  v7 = a4;
-  [a3 enumerateKeysAndObjectsUsingBlock:v9];
-  LOBYTE(a5) = [v7 save:a5];
+  contextCopy = context;
+  [identifiers enumerateKeysAndObjectsUsingBlock:v9];
+  LOBYTE(error) = [contextCopy save:error];
 
-  return a5;
+  return error;
 }
 
 void __88__AVTCoreDataStoreMaintenance_fixDuplicateRecordIdentifiers_managedObjectContext_error___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -217,14 +217,14 @@ void __88__AVTCoreDataStoreMaintenance_fixDuplicateRecordIdentifiers_managedObje
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (id)fetchDuplicatedRecordsForIdentifiers:(id)a3 managedObjectContext:(id)a4 error:(id *)a5
+- (id)fetchDuplicatedRecordsForIdentifiers:(id)identifiers managedObjectContext:(id)context error:(id *)error
 {
   v36[1] = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  identifiersCopy = identifiers;
+  contextCopy = context;
   v9 = [MEMORY[0x277CBE428] fetchRequestWithEntityName:@"Avatar"];
-  v10 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"identifier", v7];
-  [v9 setPredicate:v10];
+  identifiersCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K IN %@", @"identifier", identifiersCopy];
+  [v9 setPredicate:identifiersCopy];
 
   v11 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"orderDate" ascending:1];
   v36[0] = v11;
@@ -236,12 +236,12 @@ void __88__AVTCoreDataStoreMaintenance_fixDuplicateRecordIdentifiers_managedObje
   v13 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:2];
   [v9 setPropertiesToFetch:v13];
 
-  v14 = [v8 executeFetchRequest:v9 error:a5];
+  v14 = [contextCopy executeFetchRequest:v9 error:error];
   if (v14)
   {
-    v28 = v8;
-    v29 = v7;
-    v15 = [MEMORY[0x277CBEB38] dictionary];
+    v28 = contextCopy;
+    v29 = identifiersCopy;
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -263,17 +263,17 @@ void __88__AVTCoreDataStoreMaintenance_fixDuplicateRecordIdentifiers_managedObje
           }
 
           v21 = *(*(&v30 + 1) + 8 * i);
-          v22 = [v21 identifier];
-          v23 = [v15 objectForKeyedSubscript:v22];
+          identifier = [v21 identifier];
+          array = [dictionary objectForKeyedSubscript:identifier];
 
-          if (!v23)
+          if (!array)
           {
-            v23 = [MEMORY[0x277CBEB18] array];
-            v24 = [v21 identifier];
-            [v15 setObject:v23 forKeyedSubscript:v24];
+            array = [MEMORY[0x277CBEB18] array];
+            identifier2 = [v21 identifier];
+            [dictionary setObject:array forKeyedSubscript:identifier2];
           }
 
-          [v23 addObject:v21];
+          [array addObject:v21];
         }
 
         v18 = [v16 countByEnumeratingWithState:&v30 objects:v34 count:16];
@@ -282,26 +282,26 @@ void __88__AVTCoreDataStoreMaintenance_fixDuplicateRecordIdentifiers_managedObje
       while (v18);
     }
 
-    v8 = v28;
-    v7 = v29;
+    contextCopy = v28;
+    identifiersCopy = v29;
     v14 = v27;
   }
 
   else
   {
-    v15 = 0;
+    dictionary = 0;
   }
 
   v25 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return dictionary;
 }
 
-- (id)duplicatedIdentifiersInManagedObjectContext:(id)a3 error:(id *)a4
+- (id)duplicatedIdentifiersInManagedObjectContext:(id)context error:(id *)error
 {
   v29[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBE428];
-  v5 = a3;
+  contextCopy = context;
   v6 = [v4 fetchRequestWithEntityName:@"Avatar"];
   v7 = [MEMORY[0x277CCA9C0] expressionForKeyPath:@"identifier"];
   v8 = objc_alloc_init(MEMORY[0x277CBE410]);
@@ -332,13 +332,13 @@ void __88__AVTCoreDataStoreMaintenance_fixDuplicateRecordIdentifiers_managedObje
   v17 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%@ > 1", v16];
   [v6 setHavingPredicate:v17];
 
-  v18 = [v5 executeFetchRequest:v6 error:a4];
+  v18 = [contextCopy executeFetchRequest:v6 error:error];
 
   if (v18)
   {
-    v19 = [(AVTCoreDataStoreMaintenance *)self logger];
+    logger = [(AVTCoreDataStoreMaintenance *)self logger];
     v20 = [v18 description];
-    [v19 logDiscoveredDuplicates:v20 count:{objc_msgSend(v18, "count")}];
+    [logger logDiscoveredDuplicates:v20 count:{objc_msgSend(v18, "count")}];
 
     v21 = [v18 avt_map:&__block_literal_global_2];
   }

@@ -1,40 +1,40 @@
 @interface CIDepthEffectApplyBlurMapRemainder
 + (id)customAttributes;
 - (id)outputImage;
-- (id)unifiedRenderingOutputImage:(CGImageMetadata *)a3;
+- (id)unifiedRenderingOutputImage:(CGImageMetadata *)image;
 @end
 
 @implementation CIDepthEffectApplyBlurMapRemainder
 
 + (id)customAttributes
 {
-  v3.receiver = a1;
+  v3.receiver = self;
   v3.super_class = &OBJC_METACLASS___CIDepthEffectApplyBlurMapRemainder;
   return objc_msgSendSuper2(&v3, sel_customAttributes);
 }
 
-- (id)unifiedRenderingOutputImage:(CGImageMetadata *)a3
+- (id)unifiedRenderingOutputImage:(CGImageMetadata *)image
 {
-  if (!a3)
+  if (!image)
   {
     return 0;
   }
 
   TypeID = CGImageMetadataGetTypeID();
-  if (TypeID != CFGetTypeID(a3))
+  if (TypeID != CFGetTypeID(image))
   {
     return 0;
   }
 
   inputImage = self->super.inputImage;
-  RenderingParametersFromCGImageMetadata = getRenderingParametersFromCGImageMetadata(a3);
+  RenderingParametersFromCGImageMetadata = getRenderingParametersFromCGImageMetadata(image);
   if (!RenderingParametersFromCGImageMetadata)
   {
     return 0;
   }
 
   v8 = RenderingParametersFromCGImageMetadata;
-  v9 = [(CIDepthEffectApplyBlurMap *)self alterBlurmap];
+  alterBlurmap = [(CIDepthEffectApplyBlurMap *)self alterBlurmap];
   [(NSNumber *)self->super.inputAperture floatValue];
   v11 = v10;
   [(NSNumber *)self->super.inputScale floatValue];
@@ -45,29 +45,29 @@
   inputBackground = self->inputBackground;
   inputGainMap = self->super.inputGainMap;
   inputCaptureFolderMiscPath = self->super.inputCaptureFolderMiscPath;
-  v20 = [MEMORY[0x1E695DF90] dictionary];
-  [v20 setObject:MEMORY[0x1E695E0F8] forKeyedSubscript:@"options"];
-  [v20 setObject:v8 forKeyedSubscript:@"metadata"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:MEMORY[0x1E695E0F8] forKeyedSubscript:@"options"];
+  [dictionary setObject:v8 forKeyedSubscript:@"metadata"];
   LODWORD(v21) = v11;
-  [v20 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v21), @"simulatedAperture"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v21), @"simulatedAperture"}];
   LODWORD(v22) = 1022739087;
-  [v20 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v22), @"maxBlur"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v22), @"maxBlur"}];
   LODWORD(v23) = v13;
-  [v20 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v23), @"inputScale"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v23), @"inputScale"}];
   LODWORD(v24) = v15;
-  [v20 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v24), @"lumaNoiseAmplitude"}];
-  [v20 setObject:v9 forKeyedSubscript:@"inputBlurMap"];
-  [v20 setObject:inputMatteImage forKeyedSubscript:@"inputAlpha"];
-  [v20 setObject:inputImage forKeyedSubscript:@"inputImage"];
-  [v20 setObject:0 forKeyedSubscript:@"inputImageLuma"];
-  [v20 setObject:0 forKeyedSubscript:@"inputImageChroma"];
-  [v20 setObject:inputGainMap forKeyedSubscript:@"inputGainMap"];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKeyedSubscript:{"numberWithFloat:", v24), @"lumaNoiseAmplitude"}];
+  [dictionary setObject:alterBlurmap forKeyedSubscript:@"inputBlurMap"];
+  [dictionary setObject:inputMatteImage forKeyedSubscript:@"inputAlpha"];
+  [dictionary setObject:inputImage forKeyedSubscript:@"inputImage"];
+  [dictionary setObject:0 forKeyedSubscript:@"inputImageLuma"];
+  [dictionary setObject:0 forKeyedSubscript:@"inputImageChroma"];
+  [dictionary setObject:inputGainMap forKeyedSubscript:@"inputGainMap"];
   if (inputCaptureFolderMiscPath)
   {
-    [v20 setObject:inputCaptureFolderMiscPath forKeyedSubscript:@"captureFolderMiscPath"];
+    [dictionary setObject:inputCaptureFolderMiscPath forKeyedSubscript:@"captureFolderMiscPath"];
   }
 
-  v25 = [objc_alloc(envCCApplyBlurMapArgsClass()) initWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithDictionary:", v20)}];
+  v25 = [objc_alloc(envCCApplyBlurMapArgsClass()) initWithDictionary:{objc_msgSend(MEMORY[0x1E695DF20], "dictionaryWithDictionary:", dictionary)}];
   if (v25 && (v26 = [objc_alloc(envCCApplyBlurMapClass()) initWithMetalQueue:0]) != 0)
   {
     v27 = v26;
@@ -141,14 +141,14 @@
   v10 = MEMORY[0x1E696AD98];
   v11 = v9 ? [v9 unsignedIntegerValue] : 1;
   v12 = [v10 numberWithUnsignedInteger:v11];
-  v13 = [v12 intValue];
-  if (v13 < +[CIFilter minSDOFRenderingVersionSupported])
+  intValue = [v12 intValue];
+  if (intValue < +[CIFilter minSDOFRenderingVersionSupported])
   {
     return 0;
   }
 
-  v14 = [v12 intValue];
-  if (v14 > +[CIFilter maxSDOFRenderingVersionSupported])
+  intValue2 = [v12 intValue];
+  if (intValue2 > +[CIFilter maxSDOFRenderingVersionSupported])
   {
     return 0;
   }

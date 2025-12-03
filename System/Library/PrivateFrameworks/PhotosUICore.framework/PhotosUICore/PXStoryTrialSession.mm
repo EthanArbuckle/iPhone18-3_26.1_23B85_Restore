@@ -1,18 +1,18 @@
 @interface PXStoryTrialSession
 - (PXStoryTrialSession)init;
-- (id)fileURLForFactorName:(id)a3;
+- (id)fileURLForFactorName:(id)name;
 @end
 
 @implementation PXStoryTrialSession
 
-- (id)fileURLForFactorName:(id)a3
+- (id)fileURLForFactorName:(id)name
 {
-  v3 = [(PXStoryTrialSession *)self _levelForFactorName:a3];
-  v4 = [v3 fileValue];
-  if ([v4 hasPath])
+  v3 = [(PXStoryTrialSession *)self _levelForFactorName:name];
+  fileValue = [v3 fileValue];
+  if ([fileValue hasPath])
   {
-    v5 = [v4 path];
-    v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:v5];
+    path = [fileValue path];
+    v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:path];
   }
 
   else

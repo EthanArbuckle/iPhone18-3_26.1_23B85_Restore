@@ -1,23 +1,23 @@
 @interface TSCHLegendAnchorHalfSpace
-+ (id)halfSpaceWithLine:(TSCHLegendAnchorLine *)a3;
-- (TSCHLegendAnchorHalfSpace)initWithLine:(TSCHLegendAnchorLine *)a3;
++ (id)halfSpaceWithLine:(TSCHLegendAnchorLine *)line;
+- (TSCHLegendAnchorHalfSpace)initWithLine:(TSCHLegendAnchorLine *)line;
 - (id)description;
 @end
 
 @implementation TSCHLegendAnchorHalfSpace
 
-+ (id)halfSpaceWithLine:(TSCHLegendAnchorLine *)a3
++ (id)halfSpaceWithLine:(TSCHLegendAnchorLine *)line
 {
   v6 = v5;
   v7 = v4;
   v8 = v3;
-  v9 = [a1 alloc];
+  v9 = [self alloc];
   v11 = objc_msgSend_initWithLine_(v9, v10, v8, v7, v6);
 
   return v11;
 }
 
-- (TSCHLegendAnchorHalfSpace)initWithLine:(TSCHLegendAnchorLine *)a3
+- (TSCHLegendAnchorHalfSpace)initWithLine:(TSCHLegendAnchorLine *)line
 {
   v6 = v5;
   v7 = v4;

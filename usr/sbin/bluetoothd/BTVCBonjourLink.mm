@@ -1,32 +1,32 @@
 @interface BTVCBonjourLink
 - (BTVCBonjourLink)init;
-- (BTVCBonjourLink)initWithDelegate:(id)a3 queue:(id)a4;
+- (BTVCBonjourLink)initWithDelegate:(id)delegate queue:(id)queue;
 - (void)_listenForBTVCBonjourEvents;
-- (void)connectToPeer:(id)a3 withParameters:(id)a4;
-- (void)disconnectFromPeer:(id)a3 withParameters:(id)a4;
+- (void)connectToPeer:(id)peer withParameters:(id)parameters;
+- (void)disconnectFromPeer:(id)peer withParameters:(id)parameters;
 - (void)invalidate;
-- (void)sendData:(id)a3 toPeer:(id)a4;
-- (void)startAdvertisingOfType:(int64_t)a3 withData:(id)a4;
-- (void)startScanningForType:(int64_t)a3 data:(id)a4 mask:(id)a5 peers:(id)a6 scanMode:(int64_t)a7 rssi:(id)a8 duplicates:(BOOL)a9 scanCache:(BOOL)a10 useCaseList:(id)a11;
-- (void)stopAdvertisingOfType:(int64_t)a3;
-- (void)stopScanningForType:(int64_t)a3;
+- (void)sendData:(id)data toPeer:(id)peer;
+- (void)startAdvertisingOfType:(int64_t)type withData:(id)data;
+- (void)startScanningForType:(int64_t)type data:(id)data mask:(id)mask peers:(id)peers scanMode:(int64_t)mode rssi:(id)rssi duplicates:(BOOL)duplicates scanCache:(BOOL)self0 useCaseList:(id)self1;
+- (void)stopAdvertisingOfType:(int64_t)type;
+- (void)stopScanningForType:(int64_t)type;
 @end
 
 @implementation BTVCBonjourLink
 
-- (BTVCBonjourLink)initWithDelegate:(id)a3 queue:(id)a4
+- (BTVCBonjourLink)initWithDelegate:(id)delegate queue:(id)queue
 {
-  v7 = a3;
-  v8 = a4;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = BTVCBonjourLink;
   v9 = [(BTVCBonjourLink *)&v18 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_delegate, a3);
-    objc_storeStrong(&v10->_dispatch_queue, a4);
-    v11 = [[BTVCBonjourService alloc] initWithQueue:v8];
+    objc_storeStrong(&v9->_delegate, delegate);
+    objc_storeStrong(&v10->_dispatch_queue, queue);
+    v11 = [[BTVCBonjourService alloc] initWithQueue:queueCopy];
     btvcBonjourService = v10->_btvcBonjourService;
     v10->_btvcBonjourService = v11;
 
@@ -130,77 +130,77 @@
   objc_destroyWeak(&location);
 }
 
-- (void)startAdvertisingOfType:(int64_t)a3 withData:(id)a4
+- (void)startAdvertisingOfType:(int64_t)type withData:(id)data
 {
-  v6 = a4;
+  dataCopy = data;
   v7 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
-    v22 = "[BTVCBonjourLink startAdvertisingOfType:withData:]";
+    typeCopy = "[BTVCBonjourLink startAdvertisingOfType:withData:]";
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v22 = a3;
+    typeCopy = type;
     v23 = 2112;
-    v24 = v6;
+    v24 = dataCopy;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "[BTVCBonjourLink] startAdvertisingOfType %ld with data %@\n", buf, 0x16u);
   }
 
-  advertiserTypesAdvData = v8->_advertiserTypesAdvData;
-  v11 = [NSNumber numberWithInteger:a3];
-  [(NSMutableDictionary *)advertiserTypesAdvData setObject:v6 forKeyedSubscript:v11];
+  advertiserTypesAdvData = selfCopy->_advertiserTypesAdvData;
+  v11 = [NSNumber numberWithInteger:type];
+  [(NSMutableDictionary *)advertiserTypesAdvData setObject:dataCopy forKeyedSubscript:v11];
 
-  objc_initWeak(&location, v8);
+  objc_initWeak(&location, selfCopy);
   v19[0] = @"BTVCBonjourLinkType";
-  v12 = [NSNumber numberWithInteger:a3];
+  v12 = [NSNumber numberWithInteger:type];
   v19[1] = @"BTVCBonjourPayloadKey";
   v20[0] = v12;
-  v20[1] = v6;
+  v20[1] = dataCopy;
   v13 = [NSDictionary dictionaryWithObjects:v20 forKeys:v19 count:2];
 
   v14 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
-    v22 = "[BTVCBonjourLink startAdvertisingOfType:withData:]";
+    typeCopy = "[BTVCBonjourLink startAdvertisingOfType:withData:]";
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "[BTVCBonjourLink] %s _btvcBonjourService startAdvertisingWithData", buf, 0xCu);
   }
 
-  btvcBonjourService = v8->_btvcBonjourService;
+  btvcBonjourService = selfCopy->_btvcBonjourService;
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = sub_1006924D0;
   v16[3] = &unk_100B05AE8;
   objc_copyWeak(v17, &location);
-  v17[1] = a3;
+  v17[1] = type;
   [(BTVCBonjourService *)btvcBonjourService startAdvertisingWithData:v13 completionHandler:v16];
   objc_destroyWeak(v17);
 
   objc_destroyWeak(&location);
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)stopAdvertisingOfType:(int64_t)a3
+- (void)stopAdvertisingOfType:(int64_t)type
 {
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
-    v25 = "[BTVCBonjourLink stopAdvertisingOfType:]";
+    typeCopy2 = "[BTVCBonjourLink stopAdvertisingOfType:]";
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s", buf, 0xCu);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  advertiserTypesAdvData = v6->_advertiserTypesAdvData;
-  v8 = [NSNumber numberWithInteger:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  advertiserTypesAdvData = selfCopy->_advertiserTypesAdvData;
+  v8 = [NSNumber numberWithInteger:type];
   v9 = [(NSMutableDictionary *)advertiserTypesAdvData objectForKeyedSubscript:v8];
   LODWORD(advertiserTypesAdvData) = v9 == 0;
 
@@ -211,7 +211,7 @@
     if (v11)
     {
       *buf = 134217984;
-      v25 = a3;
+      typeCopy2 = type;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[BTVCBonjourLink] No Advertising for type %ld, not stopping anything!\n", buf, 0xCu);
     }
   }
@@ -221,57 +221,57 @@
     if (v11)
     {
       *buf = 134217984;
-      v25 = a3;
+      typeCopy2 = type;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "[BTVCBonjourLink] stopAdvertisingOfType %ld", buf, 0xCu);
     }
 
     v22[0] = @"BTVCBonjourLinkType";
-    v12 = [NSNumber numberWithInteger:a3];
+    v12 = [NSNumber numberWithInteger:type];
     v22[1] = @"BTVCBonjourPayloadKey";
     v23[0] = v12;
-    v13 = v6->_advertiserTypesAdvData;
-    v14 = [NSNumber numberWithInteger:a3];
+    v13 = selfCopy->_advertiserTypesAdvData;
+    v14 = [NSNumber numberWithInteger:type];
     v15 = [(NSMutableDictionary *)v13 objectForKeyedSubscript:v14];
     v23[1] = v15;
     v16 = [NSDictionary dictionaryWithObjects:v23 forKeys:v22 count:2];
 
-    v17 = v6->_advertiserTypesAdvData;
-    v18 = [NSNumber numberWithInteger:a3];
+    v17 = selfCopy->_advertiserTypesAdvData;
+    v18 = [NSNumber numberWithInteger:type];
     [(NSMutableDictionary *)v17 removeObjectForKey:v18];
 
-    objc_initWeak(buf, v6);
-    btvcBonjourService = v6->_btvcBonjourService;
+    objc_initWeak(buf, selfCopy);
+    btvcBonjourService = selfCopy->_btvcBonjourService;
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
     v20[2] = sub_1006928C8;
     v20[3] = &unk_100B05AE8;
     objc_copyWeak(v21, buf);
-    v21[1] = a3;
+    v21[1] = type;
     [(BTVCBonjourService *)btvcBonjourService stopAdvertisingForData:v16 completionHandler:v20];
     objc_destroyWeak(v21);
     objc_destroyWeak(buf);
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)startScanningForType:(int64_t)a3 data:(id)a4 mask:(id)a5 peers:(id)a6 scanMode:(int64_t)a7 rssi:(id)a8 duplicates:(BOOL)a9 scanCache:(BOOL)a10 useCaseList:(id)a11
+- (void)startScanningForType:(int64_t)type data:(id)data mask:(id)mask peers:(id)peers scanMode:(int64_t)mode rssi:(id)rssi duplicates:(BOOL)duplicates scanCache:(BOOL)self0 useCaseList:(id)self1
 {
-  v29 = a4;
-  v31 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a11;
+  dataCopy = data;
+  maskCopy = mask;
+  peersCopy = peers;
+  rssiCopy = rssi;
+  listCopy = list;
   v20 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136315138;
-    v35 = "[BTVCBonjourLink startScanningForType:data:mask:peers:scanMode:rssi:duplicates:scanCache:useCaseList:]";
+    typeCopy = "[BTVCBonjourLink startScanningForType:data:mask:peers:scanMode:rssi:duplicates:scanCache:useCaseList:]";
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEFAULT, "%s\n", buf, 0xCu);
   }
 
-  v21 = self;
-  objc_sync_enter(v21);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v22 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
@@ -280,8 +280,8 @@
   }
 
   v32 = @"scanMode";
-  v23 = [NSNumber numberWithInteger:a7, v29];
-  v33 = v23;
+  dataCopy = [NSNumber numberWithInteger:mode, dataCopy];
+  v33 = dataCopy;
   v24 = [NSDictionary dictionaryWithObjects:&v33 forKeys:&v32 count:1];
 
   v25 = qword_100BCEA70;
@@ -291,43 +291,43 @@
     _os_log_impl(&_mh_execute_header, v25, OS_LOG_TYPE_DEFAULT, "[BTVCBonjourLink] startScanningForType _scannerTypesToScan\n", buf, 2u);
   }
 
-  scannerTypesToScan = v21->_scannerTypesToScan;
-  v27 = [NSNumber numberWithInteger:a3];
+  scannerTypesToScan = selfCopy->_scannerTypesToScan;
+  v27 = [NSNumber numberWithInteger:type];
   [(NSMutableDictionary *)scannerTypesToScan setObject:v24 forKey:v27];
 
   v28 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v35 = a3;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "[BTVCBonjourLink] [Discovery] starting for type %ld\n", buf, 0xCu);
   }
 
-  [(BTVCBonjourService *)v21->_btvcBonjourService startDiscovery];
+  [(BTVCBonjourService *)selfCopy->_btvcBonjourService startDiscovery];
 
-  objc_sync_exit(v21);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)stopScanningForType:(int64_t)a3
+- (void)stopScanningForType:(int64_t)type
 {
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v5 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 134217984;
-    v12 = a3;
+    typeCopy = type;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "[BTVCBonjourLink] [Discovery] stopping for type %ld\n", &v11, 0xCu);
   }
 
-  scannerTypesToScan = v4->_scannerTypesToScan;
-  v7 = [NSNumber numberWithInteger:a3];
+  scannerTypesToScan = selfCopy->_scannerTypesToScan;
+  v7 = [NSNumber numberWithInteger:type];
   [(NSMutableDictionary *)scannerTypesToScan removeObjectForKey:v7];
 
-  v8 = [(NSMutableDictionary *)v4->_scannerTypesToScan allKeys];
-  v9 = [v8 count] == 0;
+  allKeys = [(NSMutableDictionary *)selfCopy->_scannerTypesToScan allKeys];
+  v9 = [allKeys count] == 0;
 
-  btvcBonjourService = v4->_btvcBonjourService;
+  btvcBonjourService = selfCopy->_btvcBonjourService;
   if (v9)
   {
     [(BTVCBonjourService *)btvcBonjourService stopDiscovery];
@@ -338,47 +338,47 @@
     [(BTVCBonjourService *)btvcBonjourService startDiscovery];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)connectToPeer:(id)a3 withParameters:(id)a4
+- (void)connectToPeer:(id)peer withParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  parametersCopy = parameters;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = peerCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[BTVCBonjourLink] Connecting to peer %@ with parameters %@", &v9, 0x16u);
   }
 
-  [(BTVCBonjourService *)self->_btvcBonjourService connectToDevice:v6 withParameters:v7];
+  [(BTVCBonjourService *)self->_btvcBonjourService connectToDevice:peerCopy withParameters:parametersCopy];
 }
 
-- (void)disconnectFromPeer:(id)a3 withParameters:(id)a4
+- (void)disconnectFromPeer:(id)peer withParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  peerCopy = peer;
+  parametersCopy = parameters;
   v8 = qword_100BCEA70;
   if (os_log_type_enabled(qword_100BCEA70, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412546;
-    v10 = v6;
+    v10 = peerCopy;
     v11 = 2112;
-    v12 = v7;
+    v12 = parametersCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "[BTVCBonjourLink] Disconnecting from peer %@ with parameters %@", &v9, 0x16u);
   }
 
-  [(BTVCBonjourService *)self->_btvcBonjourService disconnectFromDevice:v6 withParameters:v7];
+  [(BTVCBonjourService *)self->_btvcBonjourService disconnectFromDevice:peerCopy withParameters:parametersCopy];
 }
 
-- (void)sendData:(id)a3 toPeer:(id)a4
+- (void)sendData:(id)data toPeer:(id)peer
 {
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  peerCopy = peer;
   objc_initWeak(&location, self);
   btvcBonjourService = self->_btvcBonjourService;
   v11[0] = _NSConcreteStackBlock;
@@ -386,10 +386,10 @@
   v11[2] = sub_1006930BC;
   v11[3] = &unk_100B05B10;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dataCopy;
+  v13 = peerCopy;
+  v9 = peerCopy;
+  v10 = dataCopy;
   [(BTVCBonjourService *)btvcBonjourService sendData:v10 toDevice:v9 completionHandler:v11];
 
   objc_destroyWeak(&v14);

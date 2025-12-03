@@ -1,14 +1,14 @@
 @interface CDIncomingCallsGetAuthInfoResponse
-- (CDIncomingCallsGetAuthInfoResponse)initWithRapportDictionary:(id)a3;
+- (CDIncomingCallsGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary;
 - (NSString)description;
 - (id)makeRapportDictionary;
 @end
 
 @implementation CDIncomingCallsGetAuthInfoResponse
 
-- (CDIncomingCallsGetAuthInfoResponse)initWithRapportDictionary:(id)a3
+- (CDIncomingCallsGetAuthInfoResponse)initWithRapportDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v11.receiver = self;
   v11.super_class = CDIncomingCallsGetAuthInfoResponse;
   v5 = [(CDIncomingCallsGetAuthInfoResponse *)&v11 init];
@@ -43,9 +43,9 @@
   v3 = [BSDescriptionBuilder builderWithObject:self];
   [v3 appendString:self->_deviceIdentifier withName:@"deviceIdentifier" skipIfEmpty:1];
   [v3 appendString:self->_deviceName withName:@"deviceName" skipIfEmpty:1];
-  v4 = [v3 build];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
 @end

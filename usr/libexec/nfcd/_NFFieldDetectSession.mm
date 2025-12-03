@@ -1,19 +1,19 @@
 @interface _NFFieldDetectSession
-+ (id)validateEntitlements:(id)a3;
-- (BOOL)isFeatureSupported:(unint64_t)a3;
-- (_NFFieldDetectSession)initWithRemoteObject:(id)a3 workQueue:(id)a4;
-- (void)didStartSession:(id)a3;
-- (void)handleFieldNotification:(id)a3;
-- (void)handleFilteredFieldNotification:(id)a3;
++ (id)validateEntitlements:(id)entitlements;
+- (BOOL)isFeatureSupported:(unint64_t)supported;
+- (_NFFieldDetectSession)initWithRemoteObject:(id)object workQueue:(id)queue;
+- (void)didStartSession:(id)session;
+- (void)handleFieldNotification:(id)notification;
+- (void)handleFilteredFieldNotification:(id)notification;
 @end
 
 @implementation _NFFieldDetectSession
 
-- (_NFFieldDetectSession)initWithRemoteObject:(id)a3 workQueue:(id)a4
+- (_NFFieldDetectSession)initWithRemoteObject:(id)object workQueue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = _NFFieldDetectSession;
-  v4 = [(_NFXPCSession *)&v8 initWithRemoteObject:a3 workQueue:a4];
+  v4 = [(_NFXPCSession *)&v8 initWithRemoteObject:object workQueue:queue];
   v5 = v4;
   if (v4)
   {
@@ -25,9 +25,9 @@
   return v5;
 }
 
-+ (id)validateEntitlements:(id)a3
++ (id)validateEntitlements:(id)entitlements
 {
-  if ([a3 cardModeAccess])
+  if ([entitlements cardModeAccess])
   {
     v5 = 0;
   }
@@ -39,9 +39,9 @@
     if (Logger)
     {
       v7 = Logger;
-      Class = object_getClass(a1);
+      Class = object_getClass(self);
       isMetaClass = class_isMetaClass(Class);
-      ClassName = object_getClassName(a1);
+      ClassName = object_getClassName(self);
       Name = sel_getName(a2);
       v11 = 45;
       if (isMetaClass)
@@ -56,7 +56,7 @@
     v12 = NFSharedLogGetLogger();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      v13 = object_getClass(a1);
+      v13 = object_getClass(self);
       if (class_isMetaClass(v13))
       {
         v14 = 43;
@@ -70,7 +70,7 @@
       *buf = 67109890;
       v26 = v14;
       v27 = 2082;
-      v28 = object_getClassName(a1);
+      v28 = object_getClassName(self);
       v29 = 2082;
       v30 = sel_getName(a2);
       v31 = 1024;
@@ -98,64 +98,64 @@
   return v5;
 }
 
-- (void)handleFieldNotification:(id)a3
+- (void)handleFieldNotification:(id)notification
 {
-  v6 = a3;
+  notificationCopy = notification;
   if (([(_NFFieldDetectSession *)self notificationConfig]& 2) != 0)
   {
-    v4 = [(_NFXPCSession *)self remoteObject];
-    [v4 didDetectField:1];
+    remoteObject = [(_NFXPCSession *)self remoteObject];
+    [remoteObject didDetectField:1];
   }
 
   if (([(_NFFieldDetectSession *)self notificationConfig]& 1) != 0)
   {
-    v5 = [(_NFXPCSession *)self remoteObject];
-    [v5 didDetectFieldNotification:v6];
+    remoteObject2 = [(_NFXPCSession *)self remoteObject];
+    [remoteObject2 didDetectFieldNotification:notificationCopy];
   }
 }
 
-- (void)handleFilteredFieldNotification:(id)a3
+- (void)handleFilteredFieldNotification:(id)notification
 {
-  v8 = a3;
-  v4 = [(_NFFieldDetectSession *)self unfiltered];
-  v5 = v8;
-  if (v4)
+  notificationCopy = notification;
+  unfiltered = [(_NFFieldDetectSession *)self unfiltered];
+  v5 = notificationCopy;
+  if (unfiltered)
   {
     if (([(_NFFieldDetectSession *)self notificationConfig]& 2) != 0)
     {
-      v6 = [(_NFXPCSession *)self remoteObject];
-      [v6 didDetectField:1];
+      remoteObject = [(_NFXPCSession *)self remoteObject];
+      [remoteObject didDetectField:1];
     }
 
-    v4 = [(_NFFieldDetectSession *)self notificationConfig];
-    v5 = v8;
-    if (v4)
+    unfiltered = [(_NFFieldDetectSession *)self notificationConfig];
+    v5 = notificationCopy;
+    if (unfiltered)
     {
-      v7 = [(_NFXPCSession *)self remoteObject];
-      [v7 didDetectFieldNotification:v8];
+      remoteObject2 = [(_NFXPCSession *)self remoteObject];
+      [remoteObject2 didDetectFieldNotification:notificationCopy];
 
-      v5 = v8;
+      v5 = notificationCopy;
     }
   }
 
-  _objc_release_x1(v4, v5);
+  _objc_release_x1(unfiltered, v5);
 }
 
-- (void)didStartSession:(id)a3
+- (void)didStartSession:(id)session
 {
   v6.receiver = self;
   v6.super_class = _NFFieldDetectSession;
-  v4 = a3;
-  [(_NFXPCSession *)&v6 didStartSession:v4];
+  sessionCopy = session;
+  [(_NFXPCSession *)&v6 didStartSession:sessionCopy];
   v5 = [(_NFXPCSession *)self remoteObject:v6.receiver];
-  [v5 didStartSession:v4];
+  [v5 didStartSession:sessionCopy];
 }
 
-- (BOOL)isFeatureSupported:(unint64_t)a3
+- (BOOL)isFeatureSupported:(unint64_t)supported
 {
   v4.receiver = self;
   v4.super_class = _NFFieldDetectSession;
-  return [(_NFSession *)&v4 isFeatureSupported:a3];
+  return [(_NFSession *)&v4 isFeatureSupported:supported];
 }
 
 @end

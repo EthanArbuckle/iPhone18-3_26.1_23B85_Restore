@@ -2,30 +2,30 @@
 - (NSArray)rules;
 - (NSString)styleSheetId;
 - (NSString)text;
-- (RWIProtocolCSSStyleSheetBody)initWithStyleSheetId:(id)a3 rules:(id)a4;
-- (void)setRules:(id)a3;
-- (void)setStyleSheetId:(id)a3;
-- (void)setText:(id)a3;
+- (RWIProtocolCSSStyleSheetBody)initWithStyleSheetId:(id)id rules:(id)rules;
+- (void)setRules:(id)rules;
+- (void)setStyleSheetId:(id)id;
+- (void)setText:(id)text;
 @end
 
 @implementation RWIProtocolCSSStyleSheetBody
 
-- (RWIProtocolCSSStyleSheetBody)initWithStyleSheetId:(id)a3 rules:(id)a4
+- (RWIProtocolCSSStyleSheetBody)initWithStyleSheetId:(id)id rules:(id)rules
 {
   v28 = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v21 = a4;
+  idCopy = id;
+  rulesCopy = rules;
   v26.receiver = self;
   v26.super_class = RWIProtocolCSSStyleSheetBody;
   v6 = [(RWIProtocolJSONObject *)&v26 init];
   if (v6)
   {
-    if (!v20)
+    if (!idCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"styleSheetId"}];
     }
 
-    if (!v21)
+    if (!rulesCopy)
     {
       [MEMORY[0x277CBEAD8] raise:*MEMORY[0x277CBE660] format:{@"required property '%@' cannot be nil", @"rules"}];
     }
@@ -35,7 +35,7 @@
     v25 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = v21;
+    v7 = rulesCopy;
     v8 = [v7 countByEnumeratingWithState:&v22 objects:v27 count:16];
     if (v8)
     {
@@ -72,7 +72,7 @@
     }
 
     v6 = v19;
-    [(RWIProtocolCSSStyleSheetBody *)v19 setStyleSheetId:v20];
+    [(RWIProtocolCSSStyleSheetBody *)v19 setStyleSheetId:idCopy];
     [(RWIProtocolCSSStyleSheetBody *)v19 setRules:v7];
     v16 = v19;
   }
@@ -81,11 +81,11 @@
   return v6;
 }
 
-- (void)setStyleSheetId:(id)a3
+- (void)setStyleSheetId:(id)id
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyleSheetBody;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"styleSheetId"];
+  [(RWIProtocolJSONObject *)&v3 setString:id forKey:@"styleSheetId"];
 }
 
 - (NSString)styleSheetId
@@ -97,14 +97,14 @@
   return v2;
 }
 
-- (void)setRules:(id)a3
+- (void)setRules:(id)rules
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = rules;
   v3 = [obj countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v3)
   {
@@ -168,11 +168,11 @@
   return v2;
 }
 
-- (void)setText:(id)a3
+- (void)setText:(id)text
 {
   v3.receiver = self;
   v3.super_class = RWIProtocolCSSStyleSheetBody;
-  [(RWIProtocolJSONObject *)&v3 setString:a3 forKey:@"text"];
+  [(RWIProtocolJSONObject *)&v3 setString:text forKey:@"text"];
 }
 
 - (NSString)text

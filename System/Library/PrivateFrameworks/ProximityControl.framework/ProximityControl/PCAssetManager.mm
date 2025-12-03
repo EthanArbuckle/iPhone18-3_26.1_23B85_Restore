@@ -1,18 +1,18 @@
 @interface PCAssetManager
 + (PCAssetManager)sharedInstance;
 - (PCAssetManager)init;
-- (id)alternateBundleForAssetType:(int64_t)a3;
-- (id)assetQueryForAssetType:(int64_t)a3 alternate:(BOOL)a4;
-- (id)assetRequestConfiguration:(int64_t)a3 alternate:(BOOL)a4;
-- (id)bundleForAssetType:(int64_t)a3;
-- (id)imageForAssetType:(int64_t)a3;
-- (id)imageNameForAssetType:(int64_t)a3;
-- (unsigned)colorCodeForAssetType:(int64_t)a3;
-- (unsigned)productVersionForAssetType:(int64_t)a3;
+- (id)alternateBundleForAssetType:(int64_t)type;
+- (id)assetQueryForAssetType:(int64_t)type alternate:(BOOL)alternate;
+- (id)assetRequestConfiguration:(int64_t)configuration alternate:(BOOL)alternate;
+- (id)bundleForAssetType:(int64_t)type;
+- (id)imageForAssetType:(int64_t)type;
+- (id)imageNameForAssetType:(int64_t)type;
+- (unsigned)colorCodeForAssetType:(int64_t)type;
+- (unsigned)productVersionForAssetType:(int64_t)type;
 - (void)dealloc;
-- (void)handleDownloadCompletion:(id)a3 assetType:(int64_t)a4 error:(id)a5;
-- (void)handleQueryResult:(id)a3 assetType:(int64_t)a4 productType:(id)a5 isFallback:(BOOL)a6 error:(id)a7 isAlternateBundle:(BOOL)a8;
-- (void)initiateQuery:(id)a3 config:(id)a4;
+- (void)handleDownloadCompletion:(id)completion assetType:(int64_t)type error:(id)error;
+- (void)handleQueryResult:(id)result assetType:(int64_t)type productType:(id)productType isFallback:(BOOL)fallback error:(id)error isAlternateBundle:(BOOL)bundle;
+- (void)initiateQuery:(id)query config:(id)config;
 - (void)sfAssetManagerEnsureStarted;
 @end
 
@@ -89,20 +89,20 @@ LABEL_6:
   [(PCAssetManager *)&v4 dealloc];
 }
 
-- (id)bundleForAssetType:(int64_t)a3
+- (id)bundleForAssetType:(int64_t)type
 {
-  if ((a3 - 1) >= 8)
+  if ((type - 1) >= 8)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", a3];
+    type = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", type];
   }
 
   else
   {
-    v5 = off_279AD1CB0[a3 - 1];
+    type = off_279AD1CB0[type - 1];
   }
 
   bundles = self->_bundles;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v8 = [(NSMutableDictionary *)bundles objectForKeyedSubscript:v7];
 
   var0 = self->_ucat->var0;
@@ -134,7 +134,7 @@ LABEL_12:
     {
 LABEL_10:
       LogPrintF();
-      [(PCAssetManager *)self prewarmBundleForAssetType:a3, v5];
+      [(PCAssetManager *)self prewarmBundleForAssetType:type, type];
       goto LABEL_15;
     }
 
@@ -145,26 +145,26 @@ LABEL_10:
     }
   }
 
-  [(PCAssetManager *)self prewarmBundleForAssetType:a3, v14];
+  [(PCAssetManager *)self prewarmBundleForAssetType:type, v14];
 LABEL_15:
 
   return v8;
 }
 
-- (id)alternateBundleForAssetType:(int64_t)a3
+- (id)alternateBundleForAssetType:(int64_t)type
 {
-  if ((a3 - 1) >= 8)
+  if ((type - 1) >= 8)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", a3];
+    type = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", type];
   }
 
   else
   {
-    v5 = off_279AD1CB0[a3 - 1];
+    type = off_279AD1CB0[type - 1];
   }
 
   alternateBundles = self->_alternateBundles;
-  v7 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v7 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v8 = [(NSMutableDictionary *)alternateBundles objectForKeyedSubscript:v7];
 
   var0 = self->_ucat->var0;
@@ -196,7 +196,7 @@ LABEL_12:
     {
 LABEL_10:
       LogPrintF();
-      [(PCAssetManager *)self prewarmAlternateBundleForAssetType:a3, v5];
+      [(PCAssetManager *)self prewarmAlternateBundleForAssetType:type, type];
       goto LABEL_15;
     }
 
@@ -207,22 +207,22 @@ LABEL_10:
     }
   }
 
-  [(PCAssetManager *)self prewarmAlternateBundleForAssetType:a3, v14];
+  [(PCAssetManager *)self prewarmAlternateBundleForAssetType:type, v14];
 LABEL_15:
 
   return v8;
 }
 
-- (id)imageForAssetType:(int64_t)a3
+- (id)imageForAssetType:(int64_t)type
 {
-  if ((a3 - 1) >= 8)
+  if ((type - 1) >= 8)
   {
-    v5 = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", a3];
+    type = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", type];
   }
 
   else
   {
-    v5 = off_279AD1CB0[a3 - 1];
+    type = off_279AD1CB0[type - 1];
   }
 
   var0 = self->_ucat->var0;
@@ -231,7 +231,7 @@ LABEL_15:
     if (var0 != -1)
     {
 LABEL_6:
-      v16 = v5;
+      v16 = type;
       LogPrintF();
       goto LABEL_8;
     }
@@ -244,14 +244,14 @@ LABEL_6:
   }
 
 LABEL_8:
-  v7 = [(PCAssetManager *)self bundleForAssetType:a3, v16];
+  v7 = [(PCAssetManager *)self bundleForAssetType:type, v16];
   if (!v7)
   {
     v9 = 0;
     goto LABEL_22;
   }
 
-  v8 = [(PCAssetManager *)self imageNameForAssetType:a3];
+  v8 = [(PCAssetManager *)self imageNameForAssetType:type];
   if (!v8)
   {
     v11 = self->_ucat->var0;
@@ -299,20 +299,20 @@ LABEL_22:
   return v9;
 }
 
-- (id)assetQueryForAssetType:(int64_t)a3 alternate:(BOOL)a4
+- (id)assetQueryForAssetType:(int64_t)type alternate:(BOOL)alternate
 {
-  v4 = a4;
-  if ((a3 - 1) >= 8)
+  alternateCopy = alternate;
+  if ((type - 1) >= 8)
   {
-    v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", a3];
+    type = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", type];
   }
 
   else
   {
-    v7 = off_279AD1CB0[a3 - 1];
+    type = off_279AD1CB0[type - 1];
   }
 
-  v8 = [(PCAssetManager *)self colorCodeForAssetType:a3];
+  v8 = [(PCAssetManager *)self colorCodeForAssetType:type];
   if (v8 == *MEMORY[0x277D54D48])
   {
     var0 = self->_ucat->var0;
@@ -335,7 +335,7 @@ LABEL_22:
   }
 
   v10 = v8;
-  v11 = [(PCAssetManager *)self productVersionForAssetType:a3];
+  v11 = [(PCAssetManager *)self productVersionForAssetType:type];
   v12 = self->_ucat->var0;
   if (v11)
   {
@@ -356,7 +356,7 @@ LABEL_22:
 
 LABEL_18:
     v14 = objc_alloc(MEMORY[0x277D54C58]);
-    if (v4)
+    if (alternateCopy)
     {
       v15 = [v14 initWithHomePodColor:v10 version:v11];
     }
@@ -393,7 +393,7 @@ LABEL_24:
   return v16;
 }
 
-- (id)assetRequestConfiguration:(int64_t)a3 alternate:(BOOL)a4
+- (id)assetRequestConfiguration:(int64_t)configuration alternate:(BOOL)alternate
 {
   objc_initWeak(&location, self);
   v6 = objc_alloc(MEMORY[0x277D54C60]);
@@ -402,15 +402,15 @@ LABEL_24:
   v11[2] = __54__PCAssetManager_assetRequestConfiguration_alternate___block_invoke;
   v11[3] = &unk_279AD1C68;
   objc_copyWeak(v12, &location);
-  v12[1] = a3;
-  v13 = a4;
+  v12[1] = configuration;
+  alternateCopy = alternate;
   v7 = [v6 initWithQueryResultHandler:v11];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __54__PCAssetManager_assetRequestConfiguration_alternate___block_invoke_2;
   v9[3] = &unk_279AD1C90;
   objc_copyWeak(v10, &location);
-  v10[1] = a3;
+  v10[1] = configuration;
   [v7 setDownloadCompletionHandler:v9];
   objc_destroyWeak(v10);
   objc_destroyWeak(v12);
@@ -442,35 +442,35 @@ void __54__PCAssetManager_assetRequestConfiguration_alternate___block_invoke_2(u
   objc_destroyWeak(&to);
 }
 
-- (unsigned)colorCodeForAssetType:(int64_t)a3
+- (unsigned)colorCodeForAssetType:(int64_t)type
 {
   v3 = *MEMORY[0x277D54D48];
-  if ((a3 - 1) < 8)
+  if ((type - 1) < 8)
   {
-    return 0x201210807090201uLL >> (8 * (a3 - 1));
+    return 0x201210807090201uLL >> (8 * (type - 1));
   }
 
   return v3;
 }
 
-- (void)handleDownloadCompletion:(id)a3 assetType:(int64_t)a4 error:(id)a5
+- (void)handleDownloadCompletion:(id)completion assetType:(int64_t)type error:(id)error
 {
-  v13 = a3;
-  v8 = a5;
+  completionCopy = completion;
+  errorCopy = error;
   var0 = self->_ucat->var0;
   if (var0 <= 30)
   {
     if (var0 != -1)
     {
 LABEL_3:
-      if ((a4 - 1) >= 8)
+      if ((type - 1) >= 8)
       {
-        v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", a4];
+        type = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", type];
       }
 
       else
       {
-        v10 = off_279AD1CB0[a4 - 1];
+        type = off_279AD1CB0[type - 1];
       }
 
       LogPrintF();
@@ -489,18 +489,18 @@ LABEL_3:
 LABEL_9:
 }
 
-- (void)initiateQuery:(id)a3 config:(id)a4
+- (void)initiateQuery:(id)query config:(id)config
 {
-  v11 = a3;
-  v6 = a4;
+  queryCopy = query;
+  configCopy = config;
   var0 = self->_ucat->var0;
   if (var0 <= 30)
   {
     if (var0 != -1)
     {
 LABEL_3:
-      v9 = v11;
-      v10 = v6;
+      v9 = queryCopy;
+      v10 = configCopy;
       LogPrintF();
       goto LABEL_5;
     }
@@ -514,16 +514,16 @@ LABEL_3:
 
 LABEL_5:
   [(PCAssetManager *)self sfAssetManagerEnsureStarted:v9];
-  [(SFDeviceAssetManager *)self->_sfAssetManager getAssetBundleForDeviceQuery:v11 withRequestConfiguration:v6];
+  [(SFDeviceAssetManager *)self->_sfAssetManager getAssetBundleForDeviceQuery:queryCopy withRequestConfiguration:configCopy];
 }
 
-- (void)handleQueryResult:(id)a3 assetType:(int64_t)a4 productType:(id)a5 isFallback:(BOOL)a6 error:(id)a7 isAlternateBundle:(BOOL)a8
+- (void)handleQueryResult:(id)result assetType:(int64_t)type productType:(id)productType isFallback:(BOOL)fallback error:(id)error isAlternateBundle:(BOOL)bundle
 {
-  v8 = a8;
-  v10 = a6;
-  v41 = a3;
-  v14 = a5;
-  v15 = a7;
+  bundleCopy = bundle;
+  fallbackCopy = fallback;
+  resultCopy = result;
+  productTypeCopy = productType;
+  errorCopy = error;
   var0 = self->_ucat->var0;
   if (var0 <= 30)
   {
@@ -538,33 +538,33 @@ LABEL_5:
       v19 = self->_ucat;
     }
 
-    if ((a4 - 1) >= 8)
+    if ((type - 1) >= 8)
     {
-      v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", a4];
+      type = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", type];
     }
 
     else
     {
-      v17 = off_279AD1CB0[a4 - 1];
+      type = off_279AD1CB0[type - 1];
     }
 
     v20 = "no";
-    if (v10)
+    if (fallbackCopy)
     {
       v20 = "yes";
     }
 
     v39 = v20;
-    v40 = v15;
-    v36 = v17;
-    v37 = v41;
-    v38 = v14;
+    v40 = errorCopy;
+    v36 = type;
+    v37 = resultCopy;
+    v38 = productTypeCopy;
     LogPrintF();
   }
 
 LABEL_11:
   dispatch_assert_queue_V2(self->_internalQueue);
-  if (!v41 || v15)
+  if (!resultCopy || errorCopy)
   {
     v30 = self->_ucat->var0;
     if (v30 > 60)
@@ -583,23 +583,23 @@ LABEL_11:
       v34 = self->_ucat;
     }
 
-    if ((a4 - 1) >= 8)
+    if ((type - 1) >= 8)
     {
-      v29 = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", a4];
+      type2 = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", type];
     }
 
     else
     {
-      v29 = off_279AD1CB0[a4 - 1];
+      type2 = off_279AD1CB0[type - 1];
     }
 
     LogPrintF();
     goto LABEL_31;
   }
 
-  if (a4)
+  if (type)
   {
-    if (v8)
+    if (bundleCopy)
     {
       alternateBundles = self->_alternateBundles;
       p_alternateBundles = &self->_alternateBundles;
@@ -607,13 +607,13 @@ LABEL_11:
       if (alternateBundles)
       {
 LABEL_17:
-        v26 = [MEMORY[0x277CCABB0] numberWithInteger:{a4, v36, v37, v38, v39, v40}];
-        [(NSMutableDictionary *)v22 setObject:v41 forKeyedSubscript:v26];
+        v26 = [MEMORY[0x277CCABB0] numberWithInteger:{type, v36, v37, v38, v39, v40}];
+        [(NSMutableDictionary *)v22 setObject:resultCopy forKeyedSubscript:v26];
 
         v27 = MEMORY[0x277CCAB98];
         v28 = kPCAssetManagerNotificationNameQueryDidComplete;
-        v29 = [v27 defaultCenter];
-        [(__CFString *)v29 postNotificationName:v28 object:0];
+        type2 = [v27 defaultCenter];
+        [(__CFString *)type2 postNotificationName:v28 object:0];
 
 LABEL_31:
         goto LABEL_32;
@@ -661,13 +661,13 @@ LABEL_24:
 LABEL_32:
 }
 
-- (id)imageNameForAssetType:(int64_t)a3
+- (id)imageNameForAssetType:(int64_t)type
 {
   v5 = *MEMORY[0x277D54D40];
-  v6 = [MEMORY[0x277D75C80] currentTraitCollection];
-  v7 = [v6 userInterfaceStyle];
+  currentTraitCollection = [MEMORY[0x277D75C80] currentTraitCollection];
+  userInterfaceStyle = [currentTraitCollection userInterfaceStyle];
 
-  if (v7 == 2)
+  if (userInterfaceStyle == 2)
   {
     v8 = *MEMORY[0x277D54D38];
 
@@ -680,24 +680,24 @@ LABEL_32:
     if (var0 != -1)
     {
 LABEL_5:
-      if ((a3 - 1) >= 8)
+      if ((type - 1) >= 8)
       {
-        v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", a3];
+        type = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", type];
       }
 
       else
       {
-        v10 = off_279AD1CB0[a3 - 1];
+        type = off_279AD1CB0[type - 1];
       }
 
-      if (v7 >= 3)
+      if (userInterfaceStyle >= 3)
       {
-        v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", v7];
+        v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"? (%ld)", userInterfaceStyle];
       }
 
       else
       {
-        v13 = off_279AD1CF0[v7];
+        v13 = off_279AD1CF0[userInterfaceStyle];
       }
 
       LogPrintF();
@@ -718,16 +718,16 @@ LABEL_14:
   return v5;
 }
 
-- (unsigned)productVersionForAssetType:(int64_t)a3
+- (unsigned)productVersionForAssetType:(int64_t)type
 {
-  if ((a3 - 1) > 7)
+  if ((type - 1) > 7)
   {
     return 0;
   }
 
   else
   {
-    return dword_26118DD60[a3 - 1];
+    return dword_26118DD60[type - 1];
   }
 }
 

@@ -1,43 +1,43 @@
 @interface NSKeyValueSlowMutableCollectionGetter
 - (BOOL)treatNilValuesLikeEmptyCollections;
-- (NSKeyValueSlowMutableCollectionGetter)initWithContainerClassID:(id)a3 key:(id)a4 baseGetter:(id)a5 baseSetter:(id)a6 containerIsa:(Class)a7 proxyClass:(Class)a8;
+- (NSKeyValueSlowMutableCollectionGetter)initWithContainerClassID:(id)d key:(id)key baseGetter:(id)getter baseSetter:(id)setter containerIsa:(Class)isa proxyClass:(Class)class;
 - (void)dealloc;
 @end
 
 @implementation NSKeyValueSlowMutableCollectionGetter
 
-- (NSKeyValueSlowMutableCollectionGetter)initWithContainerClassID:(id)a3 key:(id)a4 baseGetter:(id)a5 baseSetter:(id)a6 containerIsa:(Class)a7 proxyClass:(Class)a8
+- (NSKeyValueSlowMutableCollectionGetter)initWithContainerClassID:(id)d key:(id)key baseGetter:(id)getter baseSetter:(id)setter containerIsa:(Class)isa proxyClass:(Class)class
 {
   v18 = *MEMORY[0x1E69E9840];
   v17.receiver = self;
   v17.super_class = NSKeyValueSlowMutableCollectionGetter;
-  v13 = [(NSKeyValueProxyGetter *)&v17 initWithContainerClassID:a3 key:a4 proxyClass:a8];
+  v13 = [(NSKeyValueProxyGetter *)&v17 initWithContainerClassID:d key:key proxyClass:class];
   if (v13)
   {
     objc_opt_self();
     if (objc_opt_isKindOfClass())
     {
-      v14 = [[NSKeyValueSlowGetter alloc] initWithContainerClassID:a3 key:a4 containerIsa:a7];
+      getterCopy = [[NSKeyValueSlowGetter alloc] initWithContainerClassID:d key:key containerIsa:isa];
     }
 
     else
     {
-      v14 = a5;
+      getterCopy = getter;
     }
 
-    v13->_baseGetter = &v14->super;
+    v13->_baseGetter = &getterCopy->super;
     objc_opt_self();
     if (objc_opt_isKindOfClass())
     {
-      v15 = [[NSKeyValueSlowSetter alloc] initWithContainerClassID:a3 key:a4 containerIsa:a7];
+      setterCopy = [[NSKeyValueSlowSetter alloc] initWithContainerClassID:d key:key containerIsa:isa];
     }
 
     else
     {
-      v15 = a6;
+      setterCopy = setter;
     }
 
-    v13->_baseSetter = &v15->super;
+    v13->_baseSetter = &setterCopy->super;
   }
 
   return v13;

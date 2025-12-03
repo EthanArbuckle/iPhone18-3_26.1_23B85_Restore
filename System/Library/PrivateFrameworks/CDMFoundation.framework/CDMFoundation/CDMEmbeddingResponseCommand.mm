@@ -1,5 +1,5 @@
 @interface CDMEmbeddingResponseCommand
-- (CDMEmbeddingResponseCommand)initWithTokenChain:(id)a3 embeddingTensor:(id)a4 numTokens:(unint64_t)a5 numLayers:(unint64_t)a6 embeddingDim:(unint64_t)a7;
+- (CDMEmbeddingResponseCommand)initWithTokenChain:(id)chain embeddingTensor:(id)tensor numTokens:(unint64_t)tokens numLayers:(unint64_t)layers embeddingDim:(unint64_t)dim;
 - (id)dictionaryRepresentation;
 @end
 
@@ -8,8 +8,8 @@
 - (id)dictionaryRepresentation
 {
   v12[4] = *MEMORY[0x1E69E9840];
-  v3 = [(NLv4EmbeddingTensor *)self->_embeddingTensor values];
-  v4 = [v3 componentsJoinedByString:{@", "}];
+  values = [(NLv4EmbeddingTensor *)self->_embeddingTensor values];
+  v4 = [values componentsJoinedByString:{@", "}];
 
   v12[0] = v4;
   v11[0] = @"embeddings";
@@ -29,26 +29,26 @@
   return v8;
 }
 
-- (CDMEmbeddingResponseCommand)initWithTokenChain:(id)a3 embeddingTensor:(id)a4 numTokens:(unint64_t)a5 numLayers:(unint64_t)a6 embeddingDim:(unint64_t)a7
+- (CDMEmbeddingResponseCommand)initWithTokenChain:(id)chain embeddingTensor:(id)tensor numTokens:(unint64_t)tokens numLayers:(unint64_t)layers embeddingDim:(unint64_t)dim
 {
-  v12 = a3;
-  v13 = a4;
+  chainCopy = chain;
+  tensorCopy = tensor;
   v20.receiver = self;
   v20.super_class = CDMEmbeddingResponseCommand;
   v14 = [(CDMBaseCommand *)&v20 init];
   if (v14)
   {
-    v15 = [v12 copy];
+    v15 = [chainCopy copy];
     tokenChain = v14->_tokenChain;
     v14->_tokenChain = v15;
 
-    v17 = [v13 copy];
+    v17 = [tensorCopy copy];
     embeddingTensor = v14->_embeddingTensor;
     v14->_embeddingTensor = v17;
 
-    v14->_numTokens = a5;
-    v14->_numLayers = a6;
-    v14->_embeddingDim = a7;
+    v14->_numTokens = tokens;
+    v14->_numLayers = layers;
+    v14->_embeddingDim = dim;
   }
 
   return v14;

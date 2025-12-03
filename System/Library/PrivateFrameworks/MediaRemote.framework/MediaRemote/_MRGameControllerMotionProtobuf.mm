@@ -1,12 +1,12 @@
 @interface _MRGameControllerMotionProtobuf
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _MRGameControllerMotionProtobuf
@@ -17,133 +17,133 @@
   v8.receiver = self;
   v8.super_class = _MRGameControllerMotionProtobuf;
   v4 = [(_MRGameControllerMotionProtobuf *)&v8 description];
-  v5 = [(_MRGameControllerMotionProtobuf *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(_MRGameControllerMotionProtobuf *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   gravity = self->_gravity;
   if (gravity)
   {
-    v5 = [(_MRGameControllerAccelerationProtobuf *)gravity dictionaryRepresentation];
-    [v3 setObject:v5 forKey:@"gravity"];
+    dictionaryRepresentation = [(_MRGameControllerAccelerationProtobuf *)gravity dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"gravity"];
   }
 
   userAcceleration = self->_userAcceleration;
   if (userAcceleration)
   {
-    v7 = [(_MRGameControllerAccelerationProtobuf *)userAcceleration dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"userAcceleration"];
+    dictionaryRepresentation2 = [(_MRGameControllerAccelerationProtobuf *)userAcceleration dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"userAcceleration"];
   }
 
   attitude = self->_attitude;
   if (attitude)
   {
-    v9 = [(_MRGameControllerAccelerationProtobuf *)attitude dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"attitude"];
+    dictionaryRepresentation3 = [(_MRGameControllerAccelerationProtobuf *)attitude dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"attitude"];
   }
 
   rotation = self->_rotation;
   if (rotation)
   {
-    v11 = [(_MRGameControllerAccelerationProtobuf *)rotation dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"rotation"];
+    dictionaryRepresentation4 = [(_MRGameControllerAccelerationProtobuf *)rotation dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"rotation"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_gravity)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_userAcceleration)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_attitude)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_rotation)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_gravity)
   {
-    [v4 setGravity:?];
-    v4 = v5;
+    [toCopy setGravity:?];
+    toCopy = v5;
   }
 
   if (self->_userAcceleration)
   {
     [v5 setUserAcceleration:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_attitude)
   {
     [v5 setAttitude:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_rotation)
   {
     [v5 setRotation:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(_MRGameControllerAccelerationProtobuf *)self->_gravity copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(_MRGameControllerAccelerationProtobuf *)self->_gravity copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(_MRGameControllerAccelerationProtobuf *)self->_userAcceleration copyWithZone:a3];
+  v8 = [(_MRGameControllerAccelerationProtobuf *)self->_userAcceleration copyWithZone:zone];
   v9 = v5[4];
   v5[4] = v8;
 
-  v10 = [(_MRGameControllerAccelerationProtobuf *)self->_attitude copyWithZone:a3];
+  v10 = [(_MRGameControllerAccelerationProtobuf *)self->_attitude copyWithZone:zone];
   v11 = v5[1];
   v5[1] = v10;
 
-  v12 = [(_MRGameControllerAccelerationProtobuf *)self->_rotation copyWithZone:a3];
+  v12 = [(_MRGameControllerAccelerationProtobuf *)self->_rotation copyWithZone:zone];
   v13 = v5[3];
   v5[3] = v12;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((gravity = self->_gravity, !(gravity | v4[2])) || -[_MRGameControllerAccelerationProtobuf isEqual:](gravity, "isEqual:")) && ((userAcceleration = self->_userAcceleration, !(userAcceleration | v4[4])) || -[_MRGameControllerAccelerationProtobuf isEqual:](userAcceleration, "isEqual:")) && ((attitude = self->_attitude, !(attitude | v4[1])) || -[_MRGameControllerAccelerationProtobuf isEqual:](attitude, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((gravity = self->_gravity, !(gravity | equalCopy[2])) || -[_MRGameControllerAccelerationProtobuf isEqual:](gravity, "isEqual:")) && ((userAcceleration = self->_userAcceleration, !(userAcceleration | equalCopy[4])) || -[_MRGameControllerAccelerationProtobuf isEqual:](userAcceleration, "isEqual:")) && ((attitude = self->_attitude, !(attitude | equalCopy[1])) || -[_MRGameControllerAccelerationProtobuf isEqual:](attitude, "isEqual:")))
   {
     rotation = self->_rotation;
-    if (rotation | v4[3])
+    if (rotation | equalCopy[3])
     {
       v9 = [(_MRGameControllerAccelerationProtobuf *)rotation isEqual:?];
     }
@@ -170,12 +170,12 @@
   return v4 ^ v5 ^ [(_MRGameControllerAccelerationProtobuf *)self->_rotation hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   gravity = self->_gravity;
-  v13 = v4;
-  v6 = v4[2];
+  v13 = fromCopy;
+  v6 = fromCopy[2];
   if (gravity)
   {
     if (v6)

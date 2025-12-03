@@ -1,43 +1,43 @@
 @interface SIRINLUEXTERNALLegacyNLContext
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsLegacyContextSource:(id)a3;
+- (int)StringAsLegacyContextSource:(id)source;
 - (int)legacyContextSource;
 - (unint64_t)hash;
-- (void)addRenderedTexts:(id)a3;
-- (void)addResponseSemanticValues:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDictationPrompt:(BOOL)a3;
-- (void)setHasListenAfterSpeaking:(BOOL)a3;
-- (void)setHasStrictPrompt:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addRenderedTexts:(id)texts;
+- (void)addResponseSemanticValues:(id)values;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDictationPrompt:(BOOL)prompt;
+- (void)setHasListenAfterSpeaking:(BOOL)speaking;
+- (void)setHasStrictPrompt:(BOOL)prompt;
+- (void)writeTo:(id)to;
 @end
 
 @implementation SIRINLUEXTERNALLegacyNLContext
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  v6 = v4[44];
+  fromCopy = from;
+  v5 = fromCopy;
+  v6 = fromCopy[44];
   if ((v6 & 2) != 0)
   {
-    self->_dictationPrompt = v4[40];
+    self->_dictationPrompt = fromCopy[40];
     *&self->_has |= 2u;
-    v6 = v4[44];
+    v6 = fromCopy[44];
   }
 
   if ((v6 & 8) != 0)
   {
-    self->_strictPrompt = v4[42];
+    self->_strictPrompt = fromCopy[42];
     *&self->_has |= 8u;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(SIRINLUEXTERNALLegacyNLContext *)self setPreviousDomainName:?];
   }
@@ -162,72 +162,72 @@ LABEL_6:
   return v4 ^ v3 ^ v6 ^ v5 ^ v7 ^ v8 ^ [(NSMutableArray *)self->_responseSemanticValues hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_38;
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
   if ((has & 2) != 0)
   {
-    if ((*(v4 + 44) & 2) == 0)
+    if ((*(equalCopy + 44) & 2) == 0)
     {
       goto LABEL_38;
     }
 
-    v9 = *(v4 + 40);
+    v9 = *(equalCopy + 40);
     if (self->_dictationPrompt)
     {
-      if ((*(v4 + 40) & 1) == 0)
+      if ((*(equalCopy + 40) & 1) == 0)
       {
         goto LABEL_38;
       }
     }
 
-    else if (*(v4 + 40))
+    else if (*(equalCopy + 40))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 44) & 2) != 0)
+  else if ((*(equalCopy + 44) & 2) != 0)
   {
     goto LABEL_38;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 44) & 8) == 0)
+    if ((*(equalCopy + 44) & 8) == 0)
     {
       goto LABEL_38;
     }
 
-    v10 = *(v4 + 42);
+    v10 = *(equalCopy + 42);
     if (self->_strictPrompt)
     {
-      if ((*(v4 + 42) & 1) == 0)
+      if ((*(equalCopy + 42) & 1) == 0)
       {
         goto LABEL_38;
       }
     }
 
-    else if (*(v4 + 42))
+    else if (*(equalCopy + 42))
     {
       goto LABEL_38;
     }
   }
 
-  else if ((*(v4 + 44) & 8) != 0)
+  else if ((*(equalCopy + 44) & 8) != 0)
   {
     goto LABEL_38;
   }
 
   previousDomainName = self->_previousDomainName;
-  if (previousDomainName | *(v4 + 2))
+  if (previousDomainName | *(equalCopy + 2))
   {
     if (![(NSString *)previousDomainName isEqual:?])
     {
@@ -235,7 +235,7 @@ LABEL_6:
     }
 
     has = self->_has;
-    v6 = *(v4 + 44);
+    v6 = *(equalCopy + 44);
   }
 
   if ((has & 4) != 0)
@@ -245,16 +245,16 @@ LABEL_6:
       goto LABEL_38;
     }
 
-    v11 = *(v4 + 41);
+    v11 = *(equalCopy + 41);
     if (self->_listenAfterSpeaking)
     {
-      if ((*(v4 + 41) & 1) == 0)
+      if ((*(equalCopy + 41) & 1) == 0)
       {
         goto LABEL_38;
       }
     }
 
-    else if (*(v4 + 41))
+    else if (*(equalCopy + 41))
     {
       goto LABEL_38;
     }
@@ -266,7 +266,7 @@ LABEL_6:
   }
 
   renderedTexts = self->_renderedTexts;
-  if (!(renderedTexts | *(v4 + 3)))
+  if (!(renderedTexts | *(equalCopy + 3)))
   {
     goto LABEL_14;
   }
@@ -279,11 +279,11 @@ LABEL_38:
   }
 
   has = self->_has;
-  v6 = *(v4 + 44);
+  v6 = *(equalCopy + 44);
 LABEL_14:
   if (has)
   {
-    if ((v6 & 1) == 0 || self->_legacyContextSource != *(v4 + 2))
+    if ((v6 & 1) == 0 || self->_legacyContextSource != *(equalCopy + 2))
     {
       goto LABEL_38;
     }
@@ -295,7 +295,7 @@ LABEL_14:
   }
 
   responseSemanticValues = self->_responseSemanticValues;
-  if (responseSemanticValues | *(v4 + 4))
+  if (responseSemanticValues | *(equalCopy + 4))
   {
     v13 = [(NSMutableArray *)responseSemanticValues isEqual:?];
   }
@@ -310,10 +310,10 @@ LABEL_39:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v34 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 2) != 0)
@@ -329,7 +329,7 @@ LABEL_39:
     v5[44] |= 8u;
   }
 
-  v8 = [(NSString *)self->_previousDomainName copyWithZone:a3];
+  v8 = [(NSString *)self->_previousDomainName copyWithZone:zone];
   v9 = *(v6 + 2);
   *(v6 + 2) = v8;
 
@@ -358,7 +358,7 @@ LABEL_39:
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v28 + 1) + 8 * i) copyWithZone:a3];
+        v15 = [*(*(&v28 + 1) + 8 * i) copyWithZone:zone];
         [v6 addRenderedTexts:v15];
       }
 
@@ -393,7 +393,7 @@ LABEL_39:
           objc_enumerationMutation(v16);
         }
 
-        v21 = [*(*(&v24 + 1) + 8 * j) copyWithZone:{a3, v24}];
+        v21 = [*(*(&v24 + 1) + 8 * j) copyWithZone:{zone, v24}];
         [v6 addResponseSemanticValues:v21];
       }
 
@@ -407,43 +407,43 @@ LABEL_39:
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[40] = self->_dictationPrompt;
-    v4[44] |= 2u;
+    toCopy[40] = self->_dictationPrompt;
+    toCopy[44] |= 2u;
     has = self->_has;
   }
 
   if ((has & 8) != 0)
   {
-    v4[42] = self->_strictPrompt;
-    v4[44] |= 8u;
+    toCopy[42] = self->_strictPrompt;
+    toCopy[44] |= 8u;
   }
 
-  v14 = v4;
+  v14 = toCopy;
   if (self->_previousDomainName)
   {
-    [v4 setPreviousDomainName:?];
-    v4 = v14;
+    [toCopy setPreviousDomainName:?];
+    toCopy = v14;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    v4[41] = self->_listenAfterSpeaking;
-    v4[44] |= 4u;
+    toCopy[41] = self->_listenAfterSpeaking;
+    toCopy[44] |= 4u;
   }
 
   if ([(SIRINLUEXTERNALLegacyNLContext *)self renderedTextsCount])
   {
     [v14 clearRenderedTexts];
-    v6 = [(SIRINLUEXTERNALLegacyNLContext *)self renderedTextsCount];
-    if (v6)
+    renderedTextsCount = [(SIRINLUEXTERNALLegacyNLContext *)self renderedTextsCount];
+    if (renderedTextsCount)
     {
-      v7 = v6;
+      v7 = renderedTextsCount;
       for (i = 0; i != v7; ++i)
       {
         v9 = [(SIRINLUEXTERNALLegacyNLContext *)self renderedTextsAtIndex:i];
@@ -461,10 +461,10 @@ LABEL_39:
   if ([(SIRINLUEXTERNALLegacyNLContext *)self responseSemanticValuesCount])
   {
     [v14 clearResponseSemanticValues];
-    v10 = [(SIRINLUEXTERNALLegacyNLContext *)self responseSemanticValuesCount];
-    if (v10)
+    responseSemanticValuesCount = [(SIRINLUEXTERNALLegacyNLContext *)self responseSemanticValuesCount];
+    if (responseSemanticValuesCount)
     {
-      v11 = v10;
+      v11 = responseSemanticValuesCount;
       for (j = 0; j != v11; ++j)
       {
         v13 = [(SIRINLUEXTERNALLegacyNLContext *)self responseSemanticValuesAtIndex:j];
@@ -474,10 +474,10 @@ LABEL_39:
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -573,12 +573,12 @@ LABEL_39:
 - (id)dictionaryRepresentation
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 2) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithBool:self->_dictationPrompt];
-    [v3 setObject:v5 forKey:@"dictation_prompt"];
+    [dictionary setObject:v5 forKey:@"dictation_prompt"];
 
     has = self->_has;
   }
@@ -586,19 +586,19 @@ LABEL_39:
   if ((has & 8) != 0)
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:self->_strictPrompt];
-    [v3 setObject:v6 forKey:@"strict_prompt"];
+    [dictionary setObject:v6 forKey:@"strict_prompt"];
   }
 
   previousDomainName = self->_previousDomainName;
   if (previousDomainName)
   {
-    [v3 setObject:previousDomainName forKey:@"previous_domain_name"];
+    [dictionary setObject:previousDomainName forKey:@"previous_domain_name"];
   }
 
   if ((*&self->_has & 4) != 0)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:self->_listenAfterSpeaking];
-    [v3 setObject:v8 forKey:@"listen_after_speaking"];
+    [dictionary setObject:v8 forKey:@"listen_after_speaking"];
   }
 
   if ([(NSMutableArray *)self->_renderedTexts count])
@@ -623,8 +623,8 @@ LABEL_39:
             objc_enumerationMutation(v10);
           }
 
-          v15 = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
-          [v9 addObject:v15];
+          dictionaryRepresentation = [*(*(&v21 + 1) + 8 * i) dictionaryRepresentation];
+          [v9 addObject:dictionaryRepresentation];
         }
 
         v12 = [(NSMutableArray *)v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
@@ -633,7 +633,7 @@ LABEL_39:
       while (v12);
     }
 
-    [v3 setObject:v9 forKey:@"rendered_texts"];
+    [dictionary setObject:v9 forKey:@"rendered_texts"];
   }
 
   if (*&self->_has)
@@ -649,18 +649,18 @@ LABEL_39:
       v17 = off_1E8328268[legacyContextSource];
     }
 
-    [v3 setObject:v17 forKey:@"legacy_context_source"];
+    [dictionary setObject:v17 forKey:@"legacy_context_source"];
   }
 
   responseSemanticValues = self->_responseSemanticValues;
   if (responseSemanticValues)
   {
-    [v3 setObject:responseSemanticValues forKey:@"response_semantic_values"];
+    [dictionary setObject:responseSemanticValues forKey:@"response_semantic_values"];
   }
 
   v19 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -669,49 +669,49 @@ LABEL_39:
   v8.receiver = self;
   v8.super_class = SIRINLUEXTERNALLegacyNLContext;
   v4 = [(SIRINLUEXTERNALLegacyNLContext *)&v8 description];
-  v5 = [(SIRINLUEXTERNALLegacyNLContext *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(SIRINLUEXTERNALLegacyNLContext *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)addResponseSemanticValues:(id)a3
+- (void)addResponseSemanticValues:(id)values
 {
-  v4 = a3;
+  valuesCopy = values;
   responseSemanticValues = self->_responseSemanticValues;
-  v8 = v4;
+  v8 = valuesCopy;
   if (!responseSemanticValues)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_responseSemanticValues;
     self->_responseSemanticValues = v6;
 
-    v4 = v8;
+    valuesCopy = v8;
     responseSemanticValues = self->_responseSemanticValues;
   }
 
-  [(NSMutableArray *)responseSemanticValues addObject:v4];
+  [(NSMutableArray *)responseSemanticValues addObject:valuesCopy];
 }
 
-- (int)StringAsLegacyContextSource:(id)a3
+- (int)StringAsLegacyContextSource:(id)source
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LEGACYCONTEXTSOURCE_UNKNOWN"])
+  sourceCopy = source;
+  if ([sourceCopy isEqualToString:@"LEGACYCONTEXTSOURCE_UNKNOWN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"LEGACYCONTEXTSOURCE_MODALITY"])
+  else if ([sourceCopy isEqualToString:@"LEGACYCONTEXTSOURCE_MODALITY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LEGACYCONTEXTSOURCE_POMMES"])
+  else if ([sourceCopy isEqualToString:@"LEGACYCONTEXTSOURCE_POMMES"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"LEGACYCONTEXTSOURCE_PROTO_PROMPT_CONTEXT"])
+  else if ([sourceCopy isEqualToString:@"LEGACYCONTEXTSOURCE_PROTO_PROMPT_CONTEXT"])
   {
     v4 = 3;
   }
@@ -737,27 +737,27 @@ LABEL_39:
   }
 }
 
-- (void)addRenderedTexts:(id)a3
+- (void)addRenderedTexts:(id)texts
 {
-  v4 = a3;
+  textsCopy = texts;
   renderedTexts = self->_renderedTexts;
-  v8 = v4;
+  v8 = textsCopy;
   if (!renderedTexts)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_renderedTexts;
     self->_renderedTexts = v6;
 
-    v4 = v8;
+    textsCopy = v8;
     renderedTexts = self->_renderedTexts;
   }
 
-  [(NSMutableArray *)renderedTexts addObject:v4];
+  [(NSMutableArray *)renderedTexts addObject:textsCopy];
 }
 
-- (void)setHasListenAfterSpeaking:(BOOL)a3
+- (void)setHasListenAfterSpeaking:(BOOL)speaking
 {
-  if (a3)
+  if (speaking)
   {
     v3 = 4;
   }
@@ -770,9 +770,9 @@ LABEL_39:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasStrictPrompt:(BOOL)a3
+- (void)setHasStrictPrompt:(BOOL)prompt
 {
-  if (a3)
+  if (prompt)
   {
     v3 = 8;
   }
@@ -785,9 +785,9 @@ LABEL_39:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasDictationPrompt:(BOOL)a3
+- (void)setHasDictationPrompt:(BOOL)prompt
 {
-  if (a3)
+  if (prompt)
   {
     v3 = 2;
   }

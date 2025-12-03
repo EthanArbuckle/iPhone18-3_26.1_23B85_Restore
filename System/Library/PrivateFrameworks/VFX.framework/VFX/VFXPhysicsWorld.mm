@@ -1,45 +1,45 @@
 @interface VFXPhysicsWorld
 - (BOOL)_isDefault;
 - (BOOL)_needsRedraw;
-- (BOOL)parseSpecialKey:(id)a3 withPath:(id)a4 intoDestination:(id *)a5;
+- (BOOL)parseSpecialKey:(id)key withPath:(id)path intoDestination:(id *)destination;
 - (NSArray)physicsJoints;
-- (VFXPhysicsWorld)initWithCoder:(id)a3;
-- (VFXPhysicsWorld)initWithWorld:(id)a3;
+- (VFXPhysicsWorld)initWithCoder:(id)coder;
+- (VFXPhysicsWorld)initWithWorld:(id)world;
 - (btVehicleRaycaster)_defaultVehicleRayCaster;
 - (id)_physicsContact;
-- (id)_rayTestWithSegmentFromPoint:(btVector3)a3 toPoint:(btVector3)a4 options:(id)a5;
-- (id)contactTestBetweenBody:(id)a3 andBody:(id)a4 options:(id)a5;
-- (id)contactTestWithBody:(id)a3 options:(id)a4;
+- (id)_rayTestWithSegmentFromPoint:(btVector3)point toPoint:(btVector3)toPoint options:(id)options;
+- (id)contactTestBetweenBody:(id)body andBody:(id)andBody options:(id)options;
+- (id)contactTestWithBody:(id)body options:(id)options;
 - (id)gravityValue;
-- (id)rayTestWithSegmentFrom:(id)a3 to:(id)a4 options:(id)a5;
-- (id)rayTestWithSegmentFromPoint:(VFXPhysicsWorld *)self toPoint:(SEL)a2 options:(id)a3;
-- (id)valueForUndefinedKey:(id)a3;
-- (uint64_t)convexSweepTestWithShape:(void *)a3 fromTransform:(void *)a4 toTransform:(int8x16_t)a5 options:(int8x16_t)a6;
+- (id)rayTestWithSegmentFrom:(id)from to:(id)to options:(id)options;
+- (id)rayTestWithSegmentFromPoint:(VFXPhysicsWorld *)self toPoint:(SEL)point options:(id)options;
+- (id)valueForUndefinedKey:(id)key;
+- (uint64_t)convexSweepTestWithShape:(void *)shape fromTransform:(void *)transform toTransform:(int8x16_t)toTransform options:(int8x16_t)options;
 - (void)_allowGhostObjects;
 - (void)_createDynamicWorldIfNeeded;
-- (void)_drawDebugInAuthoringEnvironment:(void *)a3;
-- (void)_preTick:(double)a3;
+- (void)_drawDebugInAuthoringEnvironment:(void *)environment;
+- (void)_preTick:(double)tick;
 - (void)_registerPhysicsJoints;
 - (void)_reset;
-- (void)_step:(double)a3;
-- (void)activatePhysicsJoint:(id)a3;
-- (void)addPhysicsBody:(id)a3 nodeRef:(__CFXNode *)a4 colGroup:(unint64_t)a5 colMask:(unint64_t)a6 colTest:(unint64_t)a7;
-- (void)addPhysicsJoint:(id)a3;
+- (void)_step:(double)_step;
+- (void)activatePhysicsJoint:(id)joint;
+- (void)addPhysicsBody:(id)body nodeRef:(__CFXNode *)ref colGroup:(unint64_t)group colMask:(unint64_t)mask colTest:(unint64_t)test;
+- (void)addPhysicsJoint:(id)joint;
 - (void)commonInit;
-- (void)copyTo:(id)a3 withContext:(id)a4;
-- (void)deactivatePhysicsJoint:(id)a3;
+- (void)copyTo:(id)to withContext:(id)context;
+- (void)deactivatePhysicsJoint:(id)joint;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)enumerateBodiesUsingBlock:(id)a3;
-- (void)removePhysicsBody:(id)a3 handle:(void *)a4;
-- (void)removePhysicsJoint:(id)a3;
-- (void)setContactDelegate:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)enumerateBodiesUsingBlock:(id)block;
+- (void)removePhysicsBody:(id)body handle:(void *)handle;
+- (void)removePhysicsJoint:(id)joint;
+- (void)setContactDelegate:(id)delegate;
 - (void)setGravity:(VFXPhysicsWorld *)self;
-- (void)setGravityValue:(id)a3;
-- (void)setScale:(float)a3;
-- (void)setTimeStep:(double)a3;
-- (void)setUseFixedTimeStep:(BOOL)a3;
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4;
+- (void)setGravityValue:(id)value;
+- (void)setScale:(float)scale;
+- (void)setTimeStep:(double)step;
+- (void)setUseFixedTimeStep:(BOOL)step;
+- (void)setValue:(id)value forUndefinedKey:(id)key;
 - (void)updateCollisionPairs;
 - (void)wakeUpAllBodies;
 - (void)worldWillDie;
@@ -64,41 +64,41 @@
   return objc_msgSend_arrayWithObjects_count_(MEMORY[0x1E695DEC8], v27, v29, 3);
 }
 
-- (void)setGravityValue:(id)a3
+- (void)setGravityValue:(id)value
 {
-  v6 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, v3);
+  v6 = objc_msgSend_objectAtIndexedSubscript_(value, a2, 0, v3);
   objc_msgSend_floatValue(v6, v7, v8, v9);
   v28 = v10;
-  v13 = objc_msgSend_objectAtIndexedSubscript_(a3, v11, 1, v12);
+  v13 = objc_msgSend_objectAtIndexedSubscript_(value, v11, 1, v12);
   objc_msgSend_floatValue(v13, v14, v15, v16);
   v27 = v17;
-  v20 = objc_msgSend_objectAtIndexedSubscript_(a3, v18, 2, v19);
+  v20 = objc_msgSend_objectAtIndexedSubscript_(value, v18, 2, v19);
   objc_msgSend_floatValue(v20, v21, v22, v23);
 
   objc_msgSend_setGravity_(self, v24, v25, v26, COERCE_DOUBLE(__PAIR64__(v27, v28)));
 }
 
-- (id)rayTestWithSegmentFrom:(id)a3 to:(id)a4 options:(id)a5
+- (id)rayTestWithSegmentFrom:(id)from to:(id)to options:(id)options
 {
-  v9 = objc_msgSend_objectAtIndexedSubscript_(a3, a2, 0, a4);
+  v9 = objc_msgSend_objectAtIndexedSubscript_(from, a2, 0, to);
   objc_msgSend_floatValue(v9, v10, v11, v12);
-  v15 = objc_msgSend_objectAtIndexedSubscript_(a3, v13, 1, v14);
+  v15 = objc_msgSend_objectAtIndexedSubscript_(from, v13, 1, v14);
   objc_msgSend_floatValue(v15, v16, v17, v18);
-  v21 = objc_msgSend_objectAtIndexedSubscript_(a3, v19, 2, v20);
+  v21 = objc_msgSend_objectAtIndexedSubscript_(from, v19, 2, v20);
   objc_msgSend_floatValue(v21, v22, v23, v24);
-  v27 = objc_msgSend_objectAtIndexedSubscript_(a4, v25, 0, v26);
+  v27 = objc_msgSend_objectAtIndexedSubscript_(to, v25, 0, v26);
   objc_msgSend_floatValue(v27, v28, v29, v30);
-  v33 = objc_msgSend_objectAtIndexedSubscript_(a4, v31, 1, v32);
+  v33 = objc_msgSend_objectAtIndexedSubscript_(to, v31, 1, v32);
   objc_msgSend_floatValue(v33, v34, v35, v36);
-  v39 = objc_msgSend_objectAtIndexedSubscript_(a4, v37, 2, v38);
+  v39 = objc_msgSend_objectAtIndexedSubscript_(to, v37, 2, v38);
   objc_msgSend_floatValue(v39, v40, v41, v42);
 
-  return MEMORY[0x1EEE66B58](self, sel_rayTestWithSegmentFromPoint_toPoint_options_, a5, v43);
+  return MEMORY[0x1EEE66B58](self, sel_rayTestWithSegmentFromPoint_toPoint_options_, options, v43);
 }
 
-- (void)_preTick:(double)a3
+- (void)_preTick:(double)tick
 {
-  self->_elapsedTime = self->_elapsedTime + a3;
+  self->_elapsedTime = self->_elapsedTime + tick;
   v6 = objc_msgSend_world(self, a2, v3, v4);
   v10 = objc_msgSend_worldRef(v6, v7, v8, v9);
   if (v10)
@@ -212,7 +212,7 @@
   self->_registeredBodies = objc_alloc_init(MEMORY[0x1E695DFA8]);
 }
 
-- (VFXPhysicsWorld)initWithWorld:(id)a3
+- (VFXPhysicsWorld)initWithWorld:(id)world
 {
   v15.receiver = self;
   v15.super_class = VFXPhysicsWorld;
@@ -227,7 +227,7 @@
     *&v8->_speed = _D0;
     v8->_useFixedTimeStep = 0;
     v8->_timeStep = 0.0166666667;
-    v8->_vfxWorld = a3;
+    v8->_vfxWorld = world;
   }
 
   return v8;
@@ -391,28 +391,28 @@
   v4[1] = 3221225472;
   v4[2] = sub_1AF362EE8;
   v4[3] = &unk_1E7A7E5C8;
-  v6 = self;
+  selfCopy = self;
   v5 = v3;
   objc_msgSend__postCommandWithBlock_(self, a2, v4, v2);
 }
 
-- (void)setScale:(float)a3
+- (void)setScale:(float)scale
 {
-  if (self->_scale != a3)
+  if (self->_scale != scale)
   {
-    self->_scale = a3;
+    self->_scale = scale;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = sub_1AF363078;
     v11[3] = &unk_1E7A7E270;
     v11[4] = self;
-    v12 = a3;
+    scaleCopy = scale;
     objc_msgSend__postCommandWithBlock_(self, a2, v11, v3);
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = sub_1AF363090;
     v9[3] = &unk_1E7A7F8D8;
-    v10 = a3;
+    scaleCopy2 = scale;
     objc_msgSend_enumerateBodiesUsingBlock_(self, v6, v9, v7);
     debugDrawer = self->_debugDrawer;
     if (debugDrawer)
@@ -422,9 +422,9 @@
   }
 }
 
-- (void)setTimeStep:(double)a3
+- (void)setTimeStep:(double)step
 {
-  v5 = fmin(a3, 0.0666666701);
+  v5 = fmin(step, 0.0666666701);
   if (v5 >= 0.00416666688)
   {
     v6 = v5;
@@ -441,20 +441,20 @@
   objc_msgSend_setTimeStep_(v7, v8, v9, v10, v6);
 }
 
-- (void)setUseFixedTimeStep:(BOOL)a3
+- (void)setUseFixedTimeStep:(BOOL)step
 {
-  v4 = a3;
-  self->_useFixedTimeStep = a3;
-  v5 = objc_msgSend_clock(self->_vfxWorld, a2, a3, v3);
+  stepCopy = step;
+  self->_useFixedTimeStep = step;
+  v5 = objc_msgSend_clock(self->_vfxWorld, a2, step, v3);
 
-  objc_msgSend_setUseFixedTimeStep_(v5, v6, v4, v7);
+  objc_msgSend_setUseFixedTimeStep_(v5, v6, stepCopy, v7);
 }
 
-- (void)setContactDelegate:(id)a3
+- (void)setContactDelegate:(id)delegate
 {
-  if (objc_loadWeak(&self->_contactDelegate) != a3)
+  if (objc_loadWeak(&self->_contactDelegate) != delegate)
   {
-    objc_storeWeak(&self->_contactDelegate, a3);
+    objc_storeWeak(&self->_contactDelegate, delegate);
   }
 
   v7[0] = MEMORY[0x1E69E9820];
@@ -462,16 +462,16 @@
   v7[2] = sub_1AF3631F4;
   v7[3] = &unk_1E7A7E220;
   v7[4] = self;
-  v7[5] = a3;
+  v7[5] = delegate;
   objc_msgSend__postCommandWithBlock_(self, v5, v7, v6);
 }
 
-- (void)addPhysicsJoint:(id)a3
+- (void)addPhysicsJoint:(id)joint
 {
-  v6 = objc_msgSend_physicsWorld(a3, a2, a3, v3);
+  v6 = objc_msgSend_physicsWorld(joint, a2, joint, v3);
   if (v6 != self)
   {
-    objc_msgSend_removePhysicsJoint_(v6, v7, a3, v8);
+    objc_msgSend_removePhysicsJoint_(v6, v7, joint, v8);
     os_unfair_lock_lock(&self->_lock);
     physicsJoints = self->_physicsJoints;
     if (!physicsJoints)
@@ -480,45 +480,45 @@
       self->_physicsJoints = physicsJoints;
     }
 
-    objc_msgSend_addObject_(physicsJoints, v9, a3, v10);
+    objc_msgSend_addObject_(physicsJoints, v9, joint, v10);
     os_unfair_lock_unlock(&self->_lock);
     v14[0] = MEMORY[0x1E69E9820];
     v14[1] = 3221225472;
     v14[2] = sub_1AF3632DC;
     v14[3] = &unk_1E7A7E220;
     v14[4] = self;
-    v14[5] = a3;
+    v14[5] = joint;
     objc_msgSend__postCommandWithBlock_(self, v12, v14, v13);
   }
 }
 
-- (void)activatePhysicsJoint:(id)a3
+- (void)activatePhysicsJoint:(id)joint
 {
-  if ((objc_msgSend_isActive(a3, a2, a3, v3) & 1) == 0)
+  if ((objc_msgSend_isActive(joint, a2, joint, v3) & 1) == 0)
   {
-    objc_msgSend__addToPhysicsWorld_(a3, v6, self, v7);
-    v11 = objc_msgSend_bodyA(a3, v8, v9, v10);
+    objc_msgSend__addToPhysicsWorld_(joint, v6, self, v7);
+    v11 = objc_msgSend_bodyA(joint, v8, v9, v10);
     objc_msgSend__activate(v11, v12, v13, v14);
-    v18 = objc_msgSend_bodyB(a3, v15, v16, v17);
+    v18 = objc_msgSend_bodyB(joint, v15, v16, v17);
 
     objc_msgSend__activate(v18, v19, v20, v21);
   }
 }
 
-- (void)deactivatePhysicsJoint:(id)a3
+- (void)deactivatePhysicsJoint:(id)joint
 {
-  if (objc_msgSend_isActive(a3, a2, a3, v3))
+  if (objc_msgSend_isActive(joint, a2, joint, v3))
   {
-    objc_msgSend__willRemoveFromPhysicsWorld_(a3, v6, self, v7);
-    v11 = objc_msgSend_bodyA(a3, v8, v9, v10);
+    objc_msgSend__willRemoveFromPhysicsWorld_(joint, v6, self, v7);
+    v11 = objc_msgSend_bodyA(joint, v8, v9, v10);
     objc_msgSend__activate(v11, v12, v13, v14);
-    v18 = objc_msgSend_bodyB(a3, v15, v16, v17);
+    v18 = objc_msgSend_bodyB(joint, v15, v16, v17);
 
     objc_msgSend__activate(v18, v19, v20, v21);
   }
 }
 
-- (void)removePhysicsJoint:(id)a3
+- (void)removePhysicsJoint:(id)joint
 {
   os_unfair_lock_lock(&self->_lock);
   v9[0] = MEMORY[0x1E69E9820];
@@ -526,15 +526,15 @@
   v9[2] = sub_1AF36345C;
   v9[3] = &unk_1E7A7E220;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = joint;
   objc_msgSend__postCommandWithBlock_(self, v5, v9, v6);
-  objc_msgSend_removeObject_(self->_physicsJoints, v7, a3, v8);
+  objc_msgSend_removeObject_(self->_physicsJoints, v7, joint, v8);
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (BOOL)parseSpecialKey:(id)a3 withPath:(id)a4 intoDestination:(id *)a5
+- (BOOL)parseSpecialKey:(id)key withPath:(id)path intoDestination:(id *)destination
 {
-  v8 = objc_msgSend_rangeOfString_(a3, a2, @"[", a4);
+  v8 = objc_msgSend_rangeOfString_(key, a2, @"[", path);
   if (v8 == 0x7FFFFFFFFFFFFFFFLL)
   {
     return 0;
@@ -542,13 +542,13 @@
 
   v12 = v8;
   v13 = v8 + 1;
-  if (v8 + 1 >= objc_msgSend_length(a3, v9, v10, v11))
+  if (v8 + 1 >= objc_msgSend_length(key, v9, v10, v11))
   {
     return 0;
   }
 
-  v16 = objc_msgSend_substringToIndex_(a3, v14, v12, v15);
-  v19 = objc_msgSend_substringFromIndex_(a3, v17, v13, v18);
+  v16 = objc_msgSend_substringToIndex_(key, v14, v12, v15);
+  v19 = objc_msgSend_substringFromIndex_(key, v17, v13, v18);
   v22 = objc_msgSend_rangeOfString_(v19, v20, @"]", v21);
   if (v22 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -563,19 +563,19 @@
     return 0;
   }
 
-  *a5 = objc_msgSend_objectAtIndex_(v32, v36, v29, v37);
+  *destination = objc_msgSend_objectAtIndex_(v32, v36, v29, v37);
   return 1;
 }
 
-- (id)valueForUndefinedKey:(id)a3
+- (id)valueForUndefinedKey:(id)key
 {
   v16 = 0;
-  if (objc_msgSend_parseSpecialKey_withPath_intoDestination_(self, a2, a3, a3, &v16))
+  if (objc_msgSend_parseSpecialKey_withPath_intoDestination_(self, a2, key, key, &v16))
   {
     return v16;
   }
 
-  if (objc_msgSend_isEqual_(a3, v5, @"gravity", v6))
+  if (objc_msgSend_isEqual_(key, v5, @"gravity", v6))
   {
     v11 = MEMORY[0x1E696B098];
     objc_msgSend_gravity(self, v8, v9, v10);
@@ -586,15 +586,15 @@
   {
     v15.receiver = self;
     v15.super_class = VFXPhysicsWorld;
-    return [(VFXPhysicsWorld *)&v15 valueForUndefinedKey:a3];
+    return [(VFXPhysicsWorld *)&v15 valueForUndefinedKey:key];
   }
 }
 
-- (void)setValue:(id)a3 forUndefinedKey:(id)a4
+- (void)setValue:(id)value forUndefinedKey:(id)key
 {
-  if (objc_msgSend_isEqual_(a4, a2, @"gravity", a4))
+  if (objc_msgSend_isEqual_(key, a2, @"gravity", key))
   {
-    objc_msgSend_VFXFloat3Value(a3, v7, v8, v9);
+    objc_msgSend_VFXFloat3Value(value, v7, v8, v9);
 
     objc_msgSend_setGravity_(self, v10, v11, v12);
   }
@@ -603,7 +603,7 @@
   {
     v13.receiver = self;
     v13.super_class = VFXPhysicsWorld;
-    [(VFXPhysicsWorld *)&v13 setValue:a3 forUndefinedKey:a4];
+    [(VFXPhysicsWorld *)&v13 setValue:value forUndefinedKey:key];
   }
 }
 
@@ -620,13 +620,13 @@
   }
 }
 
-- (id)rayTestWithSegmentFromPoint:(VFXPhysicsWorld *)self toPoint:(SEL)a2 options:(id)a3
+- (id)rayTestWithSegmentFromPoint:(VFXPhysicsWorld *)self toPoint:(SEL)point options:(id)options
 {
   HIDWORD(v3) = 0;
   HIDWORD(v4) = 0;
   v6 = v4;
   v7 = v3;
-  result = objc_msgSend__rayTestWithSegmentFromPoint_toPoint_options_(self, a2, &v7, &v6, a3);
+  result = objc_msgSend__rayTestWithSegmentFromPoint_toPoint_options_(self, point, &v7, &v6, options);
   if (!result)
   {
     return MEMORY[0x1E695E0F0];
@@ -635,11 +635,11 @@
   return result;
 }
 
-- (id)_rayTestWithSegmentFromPoint:(btVector3)a3 toPoint:(btVector3)a4 options:(id)a5
+- (id)_rayTestWithSegmentFromPoint:(btVector3)point toPoint:(btVector3)toPoint options:(id)options
 {
   v7 = v6;
   v8 = v5;
-  v11 = objc_msgSend_world(self, a2, a5, v5, *a3.var0.var0, *&a3.var0.var0[1], *&a3.var0.var0[2], *&a3.var0.var0[3], *a4.var0.var0, *&a4.var0.var0[1], *&a4.var0.var0[2], *&a4.var0.var0[3]);
+  v11 = objc_msgSend_world(self, a2, options, v5, *point.var0.var0, *&point.var0.var0[1], *&point.var0.var0[2], *&point.var0.var0[3], *toPoint.var0.var0, *&toPoint.var0.var0[1], *&toPoint.var0.var0[2], *&toPoint.var0.var0[3]);
   v15 = objc_msgSend_worldRef(v11, v12, v13, v14);
   if (!v15 || !self->_btWorld)
   {
@@ -647,7 +647,7 @@
   }
 
   v16 = v15;
-  v17 = sub_1AF368664(v48, a5, v8);
+  v17 = sub_1AF368664(v48, options, v8);
   v20 = objc_msgSend_objectForKey_(v7, v18, @"backfaceCulling", v19, v17);
   if (!v20 || objc_msgSend_BOOLValue(v20, v21, v22, v23))
   {
@@ -679,7 +679,7 @@
 
   v48[4] = v34;
   sub_1AF1CEA20(v16);
-  (*(*self->_btWorld + 64))(self->_btWorld, a5, v8, v48);
+  (*(*self->_btWorld + 64))(self->_btWorld, options, v8, v48);
   sub_1AF1CEA9C(v16);
   if (v50 == 2)
   {
@@ -754,9 +754,9 @@ LABEL_22:
   return v38;
 }
 
-- (id)contactTestBetweenBody:(id)a3 andBody:(id)a4 options:(id)a5
+- (id)contactTestBetweenBody:(id)body andBody:(id)andBody options:(id)options
 {
-  v9 = objc_msgSend_world(self, a2, a3, a4);
+  v9 = objc_msgSend_world(self, a2, body, andBody);
   v13 = objc_msgSend_worldRef(v9, v10, v11, v12);
   if (v13)
   {
@@ -764,7 +764,7 @@ LABEL_22:
     if (btWorld)
     {
       v17 = v13;
-      v18 = objc_msgSend_objectForKey_(a5, v14, @"collisionBitMask", v15);
+      v18 = objc_msgSend_objectForKey_(options, v14, @"collisionBitMask", v15);
       if (v18)
       {
         v22 = objc_msgSend_unsignedIntegerValue(v18, v19, v20, v21);
@@ -781,8 +781,8 @@ LABEL_22:
       v35 = v22;
       v36 = 0;
       sub_1AF1CEA20(v17);
-      v26 = objc_msgSend__handle(a3, v23, v24, v25);
-      v30 = objc_msgSend__handle(a4, v27, v28, v29);
+      v26 = objc_msgSend__handle(body, v23, v24, v25);
+      v30 = objc_msgSend__handle(andBody, v27, v28, v29);
       if (v26 && v30)
       {
         sub_1AFD75F88(self->_btWorld, v26, v30, &v32);
@@ -809,9 +809,9 @@ LABEL_22:
   }
 }
 
-- (id)contactTestWithBody:(id)a3 options:(id)a4
+- (id)contactTestWithBody:(id)body options:(id)options
 {
-  v7 = objc_msgSend_world(self, a2, a3, a4);
+  v7 = objc_msgSend_world(self, a2, body, options);
   v11 = objc_msgSend_worldRef(v7, v8, v9, v10);
   if (v11)
   {
@@ -819,7 +819,7 @@ LABEL_22:
     if (btWorld)
     {
       v15 = v11;
-      v16 = objc_msgSend_objectForKey_(a4, v12, @"collisionBitMask", v13);
+      v16 = objc_msgSend_objectForKey_(options, v12, @"collisionBitMask", v13);
       if (v16)
       {
         v20 = objc_msgSend_unsignedIntegerValue(v16, v17, v18, v19);
@@ -836,7 +836,7 @@ LABEL_22:
       v29 = v20;
       v30 = 0;
       sub_1AF1CEA20(v15);
-      v24 = objc_msgSend__handle(a3, v21, v22, v23);
+      v24 = objc_msgSend__handle(body, v21, v22, v23);
       if (v24)
       {
         sub_1AFD75EC0(self->_btWorld, v24, &v26);
@@ -863,10 +863,10 @@ LABEL_22:
   }
 }
 
-- (uint64_t)convexSweepTestWithShape:(void *)a3 fromTransform:(void *)a4 toTransform:(int8x16_t)a5 options:(int8x16_t)a6
+- (uint64_t)convexSweepTestWithShape:(void *)shape fromTransform:(void *)transform toTransform:(int8x16_t)toTransform options:(int8x16_t)options
 {
   v101 = *MEMORY[0x1E69E9840];
-  v15 = objc_msgSend_world(a1, a2, a3, a4);
+  v15 = objc_msgSend_world(self, a2, shape, transform);
   v19 = objc_msgSend_worldRef(v15, v16, v17, v18);
   if (!v19)
   {
@@ -874,10 +874,10 @@ LABEL_22:
   }
 
   v22 = MEMORY[0x1E695E0F0];
-  if (a1[1])
+  if (self[1])
   {
     v23 = v19;
-    v24 = objc_msgSend_objectForKey_(a4, v20, @"ccdPenetration", v21);
+    v24 = objc_msgSend_objectForKey_(transform, v20, @"ccdPenetration", v21);
     if (v24)
     {
       objc_msgSend_floatValue(v24, v25, v26, v27);
@@ -889,7 +889,7 @@ LABEL_22:
       v29 = 0.0;
     }
 
-    v30 = objc_msgSend_objectForKey_(a4, v25, @"collisionBitMask", v27);
+    v30 = objc_msgSend_objectForKey_(transform, v25, @"collisionBitMask", v27);
     if (v30)
     {
       v34 = objc_msgSend_unsignedIntegerValue(v30, v31, v32, v33);
@@ -900,7 +900,7 @@ LABEL_22:
       v34 = -1;
     }
 
-    v35 = objc_msgSend_objectForKey_(a4, v31, @"results", v33);
+    v35 = objc_msgSend_objectForKey_(transform, v31, @"results", v33);
     if (objc_msgSend_isEqualToString_(v35, v36, @"all", v37))
     {
       v40 = 2;
@@ -912,7 +912,7 @@ LABEL_22:
     }
 
     sub_1AF1CEA20(v23);
-    v43 = objc_msgSend__shapeHandle_(a3, v41, 0, v42);
+    v43 = objc_msgSend__shapeHandle_(shape, v41, 0, v42);
     v47 = objc_msgSend_btShape(v43, v44, v45, v46);
     if (v47)
     {
@@ -927,13 +927,13 @@ LABEL_22:
 
       else
       {
-        v79 = vzip1_s32(*a5.i8, *a6.i8);
+        v79 = vzip1_s32(*toTransform.i8, *options.i8);
         v80 = a7.n128_u32[0];
         v81 = 0;
-        v82 = vzip2_s32(*a5.i8, *a6.i8);
+        v82 = vzip2_s32(*toTransform.i8, *options.i8);
         v83 = a7.n128_u32[1];
         v84 = 0;
-        v85 = vzip1_s32(*&vextq_s8(a5, a5, 8uLL), *&vextq_s8(a6, a6, 8uLL));
+        v85 = vzip1_s32(*&vextq_s8(toTransform, toTransform, 8uLL), *&vextq_s8(options, options, 8uLL));
         v86 = a7.n128_u32[2];
         v87 = 0;
         *&v88 = a8.n128_u64[0];
@@ -959,7 +959,7 @@ LABEL_22:
         v100 = 0;
         v89 = &unk_1F24EC7C8;
         v96 = v40;
-        sub_1AFD75D50(a1[1], v47, &v79, &v69, &v89, v29);
+        sub_1AFD75D50(self[1], v47, &v79, &v69, &v89, v29);
         if (v90 < 1.0)
         {
           if (v40 == 2)
@@ -1021,7 +1021,7 @@ LABEL_21:
   return btWorld & 1;
 }
 
-- (void)enumerateBodiesUsingBlock:(id)a3
+- (void)enumerateBodiesUsingBlock:(id)block
 {
   v18 = *MEMORY[0x1E69E9840];
   os_unfair_lock_lock(&self->_lock);
@@ -1045,7 +1045,7 @@ LABEL_3:
         objc_enumerationMutation(registeredBodies);
       }
 
-      (*(a3 + 2))(a3, *(*(&v12 + 1) + 8 * v10), &v16);
+      (*(block + 2))(block, *(*(&v12 + 1) + 8 * v10), &v16);
       if (v16)
       {
         break;
@@ -1106,15 +1106,15 @@ LABEL_3:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)_step:(double)a3
+- (void)_step:(double)_step
 {
   btWorld = self->_btWorld;
   if (btWorld)
   {
     timeStep = self->_timeStep;
     speed = self->_speed;
-    a3 = speed * a3;
-    *&a3 = a3;
+    _step = speed * _step;
+    *&_step = _step;
     v7 = vcvtps_s32_f32(speed * ((1.0 / timeStep) / 15.0));
     if (v7 <= 1)
     {
@@ -1130,13 +1130,13 @@ LABEL_3:
     if (!self->_firstSimulationDone)
     {
       self->_firstSimulationDone = 1;
-      if (timeStep >= *&a3)
+      if (timeStep >= *&_step)
       {
-        *&a3 = timeStep;
+        *&_step = timeStep;
       }
     }
 
-    (*(*btWorld + 104))(btWorld, v8, *&a3);
+    (*(*btWorld + 104))(btWorld, v8, *&_step);
     if (objc_loadWeak(&self->_contactDelegate))
     {
 
@@ -1166,14 +1166,14 @@ LABEL_3:
   }
 }
 
-- (void)_drawDebugInAuthoringEnvironment:(void *)a3
+- (void)_drawDebugInAuthoringEnvironment:(void *)environment
 {
   if (self->_btWorld)
   {
     debugDrawer = self->_debugDrawer;
     if (debugDrawer)
     {
-      debugDrawer->var3 = a3;
+      debugDrawer->var3 = environment;
       (*(*self->_btWorld + 32))(self->_btWorld, self->_debugDrawer);
       (*(*self->_btWorld + 48))(self->_btWorld);
       (*(*self->_btWorld + 32))(self->_btWorld, 0);
@@ -1182,37 +1182,37 @@ LABEL_3:
   }
 }
 
-- (void)addPhysicsBody:(id)a3 nodeRef:(__CFXNode *)a4 colGroup:(unint64_t)a5 colMask:(unint64_t)a6 colTest:(unint64_t)a7
+- (void)addPhysicsBody:(id)body nodeRef:(__CFXNode *)ref colGroup:(unint64_t)group colMask:(unint64_t)mask colTest:(unint64_t)test
 {
-  v13 = objc_msgSend__handle(self, a2, a3, a4);
+  v13 = objc_msgSend__handle(self, a2, body, ref);
   if (v13)
   {
     v17 = v13;
-    objc_msgSend_centerOfMassOffset(a3, v14, v15, v16);
+    objc_msgSend_centerOfMassOffset(body, v14, v15, v16);
     v27 = v18;
-    v22 = objc_msgSend__handle(a3, v19, v20, v21);
-    sub_1AF3643E4(v17, v22, a4, a5, a6, a7, v27);
+    v22 = objc_msgSend__handle(body, v19, v20, v21);
+    sub_1AF3643E4(v17, v22, ref, group, mask, test, v27);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  objc_msgSend_addObject_(self->_registeredBodies, v23, a3, v24);
-  objc_msgSend_flagAsActive_(a3, v25, 1, v26);
+  objc_msgSend_addObject_(self->_registeredBodies, v23, body, v24);
+  objc_msgSend_flagAsActive_(body, v25, 1, v26);
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removePhysicsBody:(id)a3 handle:(void *)a4
+- (void)removePhysicsBody:(id)body handle:(void *)handle
 {
   v27 = *MEMORY[0x1E69E9840];
   btWorld = self->_btWorld;
   if (btWorld)
   {
-    (*(*btWorld + 184))(btWorld, a4);
+    (*(*btWorld + 184))(btWorld, handle);
   }
 
   os_unfair_lock_lock(&self->_lock);
-  objc_msgSend_removeObject_(self->_registeredBodies, v7, a3, v8);
-  objc_msgSend_flagAsActive_(a3, v9, 0, v10);
+  objc_msgSend_removeObject_(self->_registeredBodies, v7, body, v8);
+  objc_msgSend_flagAsActive_(body, v9, 0, v10);
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
@@ -1233,7 +1233,7 @@ LABEL_3:
         }
 
         v20 = *(*(&v22 + 1) + 8 * i);
-        if (objc_msgSend_bodyA(v20, v14, v15, v16) == a3 || objc_msgSend_bodyB(v20, v14, v21, v16) == a3)
+        if (objc_msgSend_bodyA(v20, v14, v15, v16) == body || objc_msgSend_bodyB(v20, v14, v21, v16) == body)
         {
           objc_msgSend_deactivatePhysicsJoint_(self, v14, v20, v16);
         }
@@ -1248,43 +1248,43 @@ LABEL_3:
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)copyTo:(id)a3 withContext:(id)a4
+- (void)copyTo:(id)to withContext:(id)context
 {
-  objc_msgSend_gravity(self, a2, a3, a4);
-  objc_msgSend_setGravity_(a3, v6, v7, v8);
+  objc_msgSend_gravity(self, a2, to, context);
+  objc_msgSend_setGravity_(to, v6, v7, v8);
   objc_msgSend_speed(self, v9, v10, v11);
-  objc_msgSend_setSpeed_(a3, v12, v13, v14);
+  objc_msgSend_setSpeed_(to, v12, v13, v14);
   v18 = objc_msgSend_useFixedTimeStep(self, v15, v16, v17);
-  objc_msgSend_setUseFixedTimeStep_(a3, v19, v18, v20);
+  objc_msgSend_setUseFixedTimeStep_(to, v19, v18, v20);
   objc_msgSend_timeStep(self, v21, v22, v23);
 
-  objc_msgSend_setTimeStep_(a3, v24, v25, v26);
+  objc_msgSend_setTimeStep_(to, v24, v25, v26);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   vfxWorld = self->_vfxWorld;
   if (vfxWorld)
   {
-    objc_msgSend_encodeObject_forKey_(a3, a2, vfxWorld, @"world");
+    objc_msgSend_encodeObject_forKey_(coder, a2, vfxWorld, @"world");
   }
 
   physicsJoints = self->_physicsJoints;
   if (physicsJoints)
   {
-    objc_msgSend_encodeObject_forKey_(a3, a2, physicsJoints, @"joints");
+    objc_msgSend_encodeObject_forKey_(coder, a2, physicsJoints, @"joints");
   }
 
-  sub_1AF371A8C(a3, @"gravity", *self->_gravity);
-  objc_msgSend_encodeDouble_forKey_(a3, v7, @"speed", v8, self->_speed);
-  objc_msgSend_encodeDouble_forKey_(a3, v9, @"scale", v10, self->_scale);
-  objc_msgSend_encodeBool_forKey_(a3, v11, self->_useFixedTimeStep, @"useFixedTimeStep");
+  sub_1AF371A8C(coder, @"gravity", *self->_gravity);
+  objc_msgSend_encodeDouble_forKey_(coder, v7, @"speed", v8, self->_speed);
+  objc_msgSend_encodeDouble_forKey_(coder, v9, @"scale", v10, self->_scale);
+  objc_msgSend_encodeBool_forKey_(coder, v11, self->_useFixedTimeStep, @"useFixedTimeStep");
   timeStep = self->_timeStep;
 
-  objc_msgSend_encodeDouble_forKey_(a3, v12, @"timeStep", v13, timeStep);
+  objc_msgSend_encodeDouble_forKey_(coder, v12, @"timeStep", v13, timeStep);
 }
 
-- (VFXPhysicsWorld)initWithCoder:(id)a3
+- (VFXPhysicsWorld)initWithCoder:(id)coder
 {
   v50.receiver = self;
   v50.super_class = VFXPhysicsWorld;
@@ -1295,22 +1295,22 @@ LABEL_3:
     objc_msgSend_setImmediateMode_(VFXTransaction, v9, 1, v10);
     objc_msgSend_commonInit(v7, v11, v12, v13);
     v14 = objc_opt_class();
-    v16 = objc_msgSend_decodeObjectOfClass_forKey_(a3, v15, v14, @"world");
+    v16 = objc_msgSend_decodeObjectOfClass_forKey_(coder, v15, v14, @"world");
     objc_msgSend_setWorld_(v7, v17, v16, v18);
-    v19 = sub_1AF371BC4(a3, @"gravity");
+    v19 = sub_1AF371BC4(coder, @"gravity");
     objc_msgSend_setGravity_(v7, v20, v21, v22, v19);
-    objc_msgSend_decodeDoubleForKey_(a3, v23, @"speed", v24);
+    objc_msgSend_decodeDoubleForKey_(coder, v23, @"speed", v24);
     *&v25 = v25;
     objc_msgSend_setSpeed_(v7, v26, v27, v28, v25);
-    objc_msgSend_decodeDoubleForKey_(a3, v29, @"scale", v30);
+    objc_msgSend_decodeDoubleForKey_(coder, v29, @"scale", v30);
     *&v31 = v31;
     objc_msgSend_setScale_(v7, v32, v33, v34, v31);
-    v37 = objc_msgSend_decodeBoolForKey_(a3, v35, @"useFixedTimeStep", v36);
+    v37 = objc_msgSend_decodeBoolForKey_(coder, v35, @"useFixedTimeStep", v36);
     objc_msgSend_setUseFixedTimeStep_(v7, v38, v37, v39);
-    objc_msgSend_decodeDoubleForKey_(a3, v40, @"timeStep", v41);
+    objc_msgSend_decodeDoubleForKey_(coder, v40, @"timeStep", v41);
     objc_msgSend_setTimeStep_(v7, v42, v43, v44);
     v45 = objc_opt_class();
-    v7->_tempLoadedJoints = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(a3, v46, v45, @"joints");
+    v7->_tempLoadedJoints = objc_msgSend_vfx_decodeArrayOfObjectsOfClass_forKey_(coder, v46, v45, @"joints");
     objc_msgSend_setImmediateMode_(VFXTransaction, v47, v8, v48);
   }
 

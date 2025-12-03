@@ -1,9 +1,9 @@
 @interface HMDAccessorySettingsLegacyMessageReceiver
-- (HMDAccessorySettingsLegacyMessageReceiver)initWithMessageTargetUUID:(id)a3 messageDispatcher:(id)a4;
+- (HMDAccessorySettingsLegacyMessageReceiver)initWithMessageTargetUUID:(id)d messageDispatcher:(id)dispatcher;
 - (HMDAccessorySettingsMessenger)messenger;
-- (void)registerForMessagesWithHome:(id)a3;
-- (void)routeAccessorySettingsFetchRequestMessage:(id)a3;
-- (void)routeAccessorySettingsUpdateRequestMessage:(id)a3;
+- (void)registerForMessagesWithHome:(id)home;
+- (void)routeAccessorySettingsFetchRequestMessage:(id)message;
+- (void)routeAccessorySettingsUpdateRequestMessage:(id)message;
 @end
 
 @implementation HMDAccessorySettingsLegacyMessageReceiver
@@ -15,12 +15,12 @@
   return WeakRetained;
 }
 
-- (void)routeAccessorySettingsUpdateRequestMessage:(id)a3
+- (void)routeAccessorySettingsUpdateRequestMessage:(id)message
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -28,23 +28,23 @@
     v17 = 138543618;
     v18 = v8;
     v19 = 2112;
-    v20 = v4;
+    v20 = messageCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Routing legacy update request message: %@", &v17, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDAccessorySettingsLegacyMessageReceiver *)v6 messenger];
-  v10 = v9;
-  if (v9)
+  messenger = [(HMDAccessorySettingsLegacyMessageReceiver *)selfCopy messenger];
+  v10 = messenger;
+  if (messenger)
   {
-    [v9 routeAccessorySettingsUpdateRequestMessage:v4];
+    [messenger routeAccessorySettingsUpdateRequestMessage:messageCopy];
   }
 
   else
   {
     v11 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
     v12 = objc_autoreleasePoolPush();
-    v13 = v6;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -57,18 +57,18 @@
     }
 
     objc_autoreleasePoolPop(v12);
-    [v4 respondWithError:v11];
+    [messageCopy respondWithError:v11];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)routeAccessorySettingsFetchRequestMessage:(id)a3
+- (void)routeAccessorySettingsFetchRequestMessage:(id)message
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  messageCopy = message;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -76,23 +76,23 @@
     v17 = 138543618;
     v18 = v8;
     v19 = 2112;
-    v20 = v4;
+    v20 = messageCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Routing legacy fetch request message: %@", &v17, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDAccessorySettingsLegacyMessageReceiver *)v6 messenger];
-  v10 = v9;
-  if (v9)
+  messenger = [(HMDAccessorySettingsLegacyMessageReceiver *)selfCopy messenger];
+  v10 = messenger;
+  if (messenger)
   {
-    [v9 routeAccessorySettingsFetchRequestMessage:v4];
+    [messenger routeAccessorySettingsFetchRequestMessage:messageCopy];
   }
 
   else
   {
     v11 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
     v12 = objc_autoreleasePoolPush();
-    v13 = v6;
+    v13 = selfCopy;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
@@ -105,52 +105,52 @@
     }
 
     objc_autoreleasePoolPop(v12);
-    [v4 respondWithError:v11];
+    [messageCopy respondWithError:v11];
   }
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)registerForMessagesWithHome:(id)a3
+- (void)registerForMessagesWithHome:(id)home
 {
   v17[3] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   v5 = +[HMDRemoteMessagePolicy defaultSecurePolicy];
   v6 = [HMDXPCMessagePolicy policyWithEntitlements:5];
-  v7 = [HMDUserMessagePolicy userMessagePolicyWithHome:v4 userPrivilege:0 remoteAccessRequired:0];
-  v8 = [HMDUserMessagePolicy userMessagePolicyWithHome:v4 userPrivilege:4 remoteAccessRequired:0];
+  v7 = [HMDUserMessagePolicy userMessagePolicyWithHome:homeCopy userPrivilege:0 remoteAccessRequired:0];
+  v8 = [HMDUserMessagePolicy userMessagePolicyWithHome:homeCopy userPrivilege:4 remoteAccessRequired:0];
 
-  v9 = [(HMDAccessorySettingsLegacyMessageReceiver *)self messageDispatcher];
+  messageDispatcher = [(HMDAccessorySettingsLegacyMessageReceiver *)self messageDispatcher];
   v10 = *MEMORY[0x277CCEDB8];
   v17[0] = v5;
   v17[1] = v6;
   v17[2] = v7;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:3];
-  [v9 registerForMessage:v10 receiver:self policies:v11 selector:sel_routeAccessorySettingsFetchRequestMessage_];
+  [messageDispatcher registerForMessage:v10 receiver:self policies:v11 selector:sel_routeAccessorySettingsFetchRequestMessage_];
 
-  v12 = [(HMDAccessorySettingsLegacyMessageReceiver *)self messageDispatcher];
+  messageDispatcher2 = [(HMDAccessorySettingsLegacyMessageReceiver *)self messageDispatcher];
   v13 = *MEMORY[0x277CCEDC8];
   v16[0] = v5;
   v16[1] = v6;
   v16[2] = v8;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v16 count:3];
-  [v12 registerForMessage:v13 receiver:self policies:v14 selector:sel_routeAccessorySettingsUpdateRequestMessage_];
+  [messageDispatcher2 registerForMessage:v13 receiver:self policies:v14 selector:sel_routeAccessorySettingsUpdateRequestMessage_];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAccessorySettingsLegacyMessageReceiver)initWithMessageTargetUUID:(id)a3 messageDispatcher:(id)a4
+- (HMDAccessorySettingsLegacyMessageReceiver)initWithMessageTargetUUID:(id)d messageDispatcher:(id)dispatcher
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  dCopy = d;
+  dispatcherCopy = dispatcher;
+  if (!dCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_7;
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = dispatcherCopy;
+  if (!dispatcherCopy)
   {
 LABEL_7:
     v13 = _HMFPreconditionFailure();
@@ -163,8 +163,8 @@ LABEL_7:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_messageTargetUUID, a3);
-    objc_storeStrong(&v11->_messageDispatcher, a4);
+    objc_storeStrong(&v10->_messageTargetUUID, d);
+    objc_storeStrong(&v11->_messageDispatcher, dispatcher);
   }
 
   return v11;

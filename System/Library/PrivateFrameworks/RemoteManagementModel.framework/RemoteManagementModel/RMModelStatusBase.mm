@@ -1,21 +1,21 @@
 @interface RMModelStatusBase
-+ (BOOL)isSupportedStatusItem:(id)a3 platform:(int64_t)a4 scope:(int64_t)a5;
-+ (id)stubObjectForStatusItemType:(id)a3;
++ (BOOL)isSupportedStatusItem:(id)item platform:(int64_t)platform scope:(int64_t)scope;
++ (id)stubObjectForStatusItemType:(id)type;
 @end
 
 @implementation RMModelStatusBase
 
-+ (id)stubObjectForStatusItemType:(id)a3
++ (id)stubObjectForStatusItemType:(id)type
 {
-  v3 = a3;
-  if ([RMModelClasses classForStatusItemType:v3])
+  typeCopy = type;
+  if ([RMModelClasses classForStatusItemType:typeCopy])
   {
     v4 = objc_opt_new();
   }
 
   else
   {
-    v4 = [RMModelStatusDynamic buildWithStatusItemType:v3];
+    v4 = [RMModelStatusDynamic buildWithStatusItemType:typeCopy];
   }
 
   v5 = v4;
@@ -23,13 +23,13 @@
   return v5;
 }
 
-+ (BOOL)isSupportedStatusItem:(id)a3 platform:(int64_t)a4 scope:(int64_t)a5
++ (BOOL)isSupportedStatusItem:(id)item platform:(int64_t)platform scope:(int64_t)scope
 {
-  v7 = a3;
-  v8 = [RMModelClasses classForStatusItemType:v7];
+  itemCopy = item;
+  v8 = [RMModelClasses classForStatusItemType:itemCopy];
   if (v8)
   {
-    if (([(objc_class *)v8 isSupportedForPlatform:a4 scope:a5]& 1) == 0)
+    if (([(objc_class *)v8 isSupportedForPlatform:platform scope:scope]& 1) == 0)
     {
       goto LABEL_9;
     }
@@ -38,9 +38,9 @@
   else
   {
     v9 = +[RMModelStatusSchema schemas];
-    v10 = [v9 objectForKeyedSubscript:v7];
+    v10 = [v9 objectForKeyedSubscript:itemCopy];
 
-    if (!v10 || ([v10 isSupportedForPlatform:a4 scope:a5] & 1) == 0)
+    if (!v10 || ([v10 isSupportedForPlatform:platform scope:scope] & 1) == 0)
     {
 
 LABEL_9:

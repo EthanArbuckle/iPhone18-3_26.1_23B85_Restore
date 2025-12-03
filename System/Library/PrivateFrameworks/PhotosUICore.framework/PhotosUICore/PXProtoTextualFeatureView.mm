@@ -13,8 +13,8 @@
   v18.receiver = self;
   v18.super_class = PXProtoTextualFeatureView;
   [(PXProtoFeatureView *)&v18 layoutSubviews];
-  v3 = [(UILabel *)self->_label superview];
-  [v3 bounds];
+  superview = [(UILabel *)self->_label superview];
+  [superview bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -41,8 +41,8 @@
   if (!self->_label)
   {
     v3 = objc_alloc(MEMORY[0x1E69DCC10]);
-    v4 = [(PXProtoFeatureView *)self contentView];
-    [v4 bounds];
+    contentView = [(PXProtoFeatureView *)self contentView];
+    [contentView bounds];
     v5 = [v3 initWithFrame:?];
     label = self->_label;
     self->_label = v5;
@@ -50,16 +50,16 @@
     [(UILabel *)self->_label setAdjustsFontSizeToFitWidth:1];
     [(UILabel *)self->_label setMinimumScaleFactor:0.6];
     [(UILabel *)self->_label setTextAlignment:1];
-    v7 = [(PXProtoFeatureView *)self contentView];
-    [v7 addSubview:self->_label];
+    contentView2 = [(PXProtoFeatureView *)self contentView];
+    [contentView2 addSubview:self->_label];
   }
 
-  v8 = [(PXProtoFeatureView *)self feature];
-  v9 = [v8 featureLocalizedTitle];
-  [(UILabel *)self->_label setText:v9];
+  feature = [(PXProtoFeatureView *)self feature];
+  featureLocalizedTitle = [feature featureLocalizedTitle];
+  [(UILabel *)self->_label setText:featureLocalizedTitle];
 
-  v10 = [MEMORY[0x1E69DC888] whiteColor];
-  [(UILabel *)self->_label setTextColor:v10];
+  whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+  [(UILabel *)self->_label setTextColor:whiteColor];
 }
 
 - (CGSize)compactContentSize

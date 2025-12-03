@@ -1,27 +1,27 @@
 @interface WFMediaRouteDescriptor
-+ (BOOL)routeUID:(id)a3 isEqualToRouteUID:(id)a4;
-- (BOOL)isEqualInRouteUIDs:(id)a3;
++ (BOOL)routeUID:(id)d isEqualToRouteUID:(id)iD;
+- (BOOL)isEqualInRouteUIDs:(id)ds;
 - (NSString)displayName;
-- (WFMediaRouteDescriptor)initWithRouteUID:(id)a3 groupUID:(id)a4 routeName:(id)a5 isLocalDevice:(BOOL)a6;
-- (id)findMatchingRoute:(id)a3;
+- (WFMediaRouteDescriptor)initWithRouteUID:(id)d groupUID:(id)iD routeName:(id)name isLocalDevice:(BOOL)device;
+- (id)findMatchingRoute:(id)route;
 @end
 
 @implementation WFMediaRouteDescriptor
 
-- (id)findMatchingRoute:(id)a3
+- (id)findMatchingRoute:(id)route
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(WFMediaRouteDescriptor *)self routeUID];
+  routeCopy = route;
+  routeUID = [(WFMediaRouteDescriptor *)self routeUID];
 
-  if (v5)
+  if (routeUID)
   {
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v6 = v4;
-    v7 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    routeName2 = routeCopy;
+    v7 = [routeName2 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v7)
     {
       v8 = v7;
@@ -32,14 +32,14 @@
         {
           if (*v21 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(routeName2);
           }
 
           v11 = *(*(&v20 + 1) + 8 * i);
           v12 = objc_opt_class();
-          v13 = [v11 routeUID];
-          v14 = [(WFMediaRouteDescriptor *)self routeUID];
-          LOBYTE(v12) = [v12 routeUID:v13 isEqualToRouteUID:v14];
+          routeUID2 = [v11 routeUID];
+          routeUID3 = [(WFMediaRouteDescriptor *)self routeUID];
+          LOBYTE(v12) = [v12 routeUID:routeUID2 isEqualToRouteUID:routeUID3];
 
           if (v12)
           {
@@ -48,7 +48,7 @@
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v8 = [routeName2 countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v8)
         {
           continue;
@@ -59,14 +59,14 @@
     }
   }
 
-  if (!-[WFMediaRouteDescriptor isLocalDevice](self, "isLocalDevice", v20) || ([v4 objectMatchingKey:@"isDeviceSpeakerRoute" BOOLValue:1], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!-[WFMediaRouteDescriptor isLocalDevice](self, "isLocalDevice", v20) || ([routeCopy objectMatchingKey:@"isDeviceSpeakerRoute" BOOLValue:1], (v15 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v16 = [(WFMediaRouteDescriptor *)self routeName];
+    routeName = [(WFMediaRouteDescriptor *)self routeName];
 
-    if (v16)
+    if (routeName)
     {
-      v6 = [(WFMediaRouteDescriptor *)self routeName];
-      v17 = [v4 objectMatchingKey:@"routeName" value:v6];
+      routeName2 = [(WFMediaRouteDescriptor *)self routeName];
+      v17 = [routeCopy objectMatchingKey:@"routeName" value:routeName2];
 LABEL_16:
       v15 = v17;
     }
@@ -82,67 +82,67 @@ LABEL_16:
   return v15;
 }
 
-- (BOOL)isEqualInRouteUIDs:(id)a3
+- (BOOL)isEqualInRouteUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_class();
-  v6 = [(WFMediaRouteDescriptor *)self routeUID];
-  v7 = [v4 routeUID];
+  routeUID = [(WFMediaRouteDescriptor *)self routeUID];
+  routeUID2 = [dsCopy routeUID];
 
-  LOBYTE(v4) = [v5 routeUID:v6 isEqualToRouteUID:v7];
-  return v4;
+  LOBYTE(dsCopy) = [v5 routeUID:routeUID isEqualToRouteUID:routeUID2];
+  return dsCopy;
 }
 
 - (NSString)displayName
 {
   if ([(WFMediaRouteDescriptor *)self isLocalDevice])
   {
-    v3 = [MEMORY[0x277D79F18] currentDevice];
-    v4 = [v3 localizedModel];
+    currentDevice = [MEMORY[0x277D79F18] currentDevice];
+    localizedModel = [currentDevice localizedModel];
   }
 
   else
   {
-    v4 = [(WFMediaRouteDescriptor *)self routeName];
+    localizedModel = [(WFMediaRouteDescriptor *)self routeName];
   }
 
-  return v4;
+  return localizedModel;
 }
 
-- (WFMediaRouteDescriptor)initWithRouteUID:(id)a3 groupUID:(id)a4 routeName:(id)a5 isLocalDevice:(BOOL)a6
+- (WFMediaRouteDescriptor)initWithRouteUID:(id)d groupUID:(id)iD routeName:(id)name isLocalDevice:(BOOL)device
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  nameCopy = name;
   v22.receiver = self;
   v22.super_class = WFMediaRouteDescriptor;
   v13 = [(MTLModel *)&v22 init];
   if (v13)
   {
-    v14 = [v11 copy];
+    v14 = [iDCopy copy];
     groupUID = v13->_groupUID;
     v13->_groupUID = v14;
 
-    v16 = [v10 copy];
+    v16 = [dCopy copy];
     routeUID = v13->_routeUID;
     v13->_routeUID = v16;
 
-    v18 = [v12 copy];
+    v18 = [nameCopy copy];
     routeName = v13->_routeName;
     v13->_routeName = v18;
 
-    v13->_isLocalDevice = a6;
+    v13->_isLocalDevice = device;
     v20 = v13;
   }
 
   return v13;
 }
 
-+ (BOOL)routeUID:(id)a3 isEqualToRouteUID:(id)a4
++ (BOOL)routeUID:(id)d isEqualToRouteUID:(id)iD
 {
-  v5 = a4;
-  v6 = [a3 componentsSeparatedByString:@"//"];
-  v7 = [v5 componentsSeparatedByString:@"//"];
+  iDCopy = iD;
+  v6 = [d componentsSeparatedByString:@"//"];
+  v7 = [iDCopy componentsSeparatedByString:@"//"];
 
   v8 = [v6 objectAtIndexedSubscript:{objc_msgSend(v6, "count") != 1}];
   v9 = [v7 objectAtIndexedSubscript:{objc_msgSend(v7, "count") != 1}];

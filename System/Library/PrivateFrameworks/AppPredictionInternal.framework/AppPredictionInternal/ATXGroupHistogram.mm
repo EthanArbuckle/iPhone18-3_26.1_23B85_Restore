@@ -1,8 +1,8 @@
 @interface ATXGroupHistogram
 - (ATXGroupHistogram)init;
 - (double)_getTotalScore;
-- (double)getScoreForGroup:(id)a3;
-- (void)addScore:(double)a3 group:(id)a4;
+- (double)getScoreForGroup:(id)group;
+- (void)addScore:(double)score group:(id)group;
 - (void)dealloc;
 @end
 
@@ -35,13 +35,13 @@
   [(ATXGroupHistogram *)&v3 dealloc];
 }
 
-- (void)addScore:(double)a3 group:(id)a4
+- (void)addScore:(double)score group:(id)group
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  groupCopy = group;
+  v7 = groupCopy;
+  if (groupCopy)
   {
-    v10 = v6;
+    v10 = groupCopy;
     pthread_mutex_lock(&self->_lock);
     self->_isTotalScoreValid = 0;
     v8 = [(NSMutableDictionary *)self->_histogram objectForKeyedSubscript:v10];
@@ -49,26 +49,26 @@
     if (v8)
     {
       v9 = [(NSMutableDictionary *)self->_histogram objectForKeyedSubscript:v10];
-      [(ATXGroupHistogramEntry *)v9 addScore:a3];
+      [(ATXGroupHistogramEntry *)v9 addScore:score];
     }
 
     else
     {
-      v9 = [[ATXGroupHistogramEntry alloc] initWithScore:a3];
+      v9 = [[ATXGroupHistogramEntry alloc] initWithScore:score];
       [(NSMutableDictionary *)self->_histogram setObject:v9 forKeyedSubscript:v10];
     }
 
-    v6 = pthread_mutex_unlock(&self->_lock);
+    groupCopy = pthread_mutex_unlock(&self->_lock);
     v7 = v10;
   }
 
-  MEMORY[0x2821F96F8](v6, v7);
+  MEMORY[0x2821F96F8](groupCopy, v7);
 }
 
-- (double)getScoreForGroup:(id)a3
+- (double)getScoreForGroup:(id)group
 {
-  v4 = a3;
-  if (v4)
+  groupCopy = group;
+  if (groupCopy)
   {
     pthread_mutex_lock(&self->_lock);
     [(ATXGroupHistogram *)self _getTotalScore];
@@ -80,7 +80,7 @@
     else
     {
       v6 = v5;
-      v7 = [(NSMutableDictionary *)self->_histogram objectForKeyedSubscript:v4];
+      v7 = [(NSMutableDictionary *)self->_histogram objectForKeyedSubscript:groupCopy];
       [v7 score];
       v9 = v8 / v6;
     }
@@ -106,8 +106,8 @@
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v3 = [(NSMutableDictionary *)self->_histogram objectEnumerator];
-    v4 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    objectEnumerator = [(NSMutableDictionary *)self->_histogram objectEnumerator];
+    v4 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v4)
     {
       v5 = v4;
@@ -118,7 +118,7 @@
         {
           if (*v14 != v6)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(objectEnumerator);
           }
 
           v8 = *(*(&v13 + 1) + 8 * i);
@@ -127,7 +127,7 @@
           self->_total = self->_total + v9 * v10;
         }
 
-        v5 = [v3 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v5 = [objectEnumerator countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v5);

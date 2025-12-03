@@ -1,13 +1,13 @@
 @interface MTSyncSnooze
-+ (id)deserialize:(id)a3;
-+ (id)syncSnoozeOfObjectWithIdentifier:(id)a3 snoozeDate:(id)a4 date:(id)a5 version:(float)a6;
-- (BOOL)isEqual:(id)a3;
-- (MTSyncSnooze)initWithSnoozedObjectIdentifier:(id)a3 snoozeDate:(id)a4 date:(id)a5 version:(float)a6;
++ (id)deserialize:(id)deserialize;
++ (id)syncSnoozeOfObjectWithIdentifier:(id)identifier snoozeDate:(id)date date:(id)a5 version:(float)version;
+- (BOOL)isEqual:(id)equal;
+- (MTSyncSnooze)initWithSnoozedObjectIdentifier:(id)identifier snoozeDate:(id)date date:(id)a5 version:(float)version;
 - (NSString)description;
-- (id)initFromDeserializer:(id)a3;
-- (id)preferred:(id)a3;
+- (id)initFromDeserializer:(id)deserializer;
+- (id)preferred:(id)preferred;
 - (id)serialize;
-- (void)serializeWithSerializer:(id)a3;
+- (void)serializeWithSerializer:(id)serializer;
 @end
 
 @implementation MTSyncSnooze
@@ -15,18 +15,18 @@
 - (id)serialize
 {
   v3 = objc_opt_new();
-  v4 = [(MTSyncSnooze *)self syncDate];
-  [v4 timeIntervalSinceReferenceDate];
+  syncDate = [(MTSyncSnooze *)self syncDate];
+  [syncDate timeIntervalSinceReferenceDate];
   [v3 setSyncDate:?];
 
-  v5 = [(MTSyncSnooze *)self syncIdentifier];
-  [v3 setSyncID:v5];
+  syncIdentifier = [(MTSyncSnooze *)self syncIdentifier];
+  [v3 setSyncID:syncIdentifier];
 
   [(MTSyncSnooze *)self syncVersion];
   [v3 setSyncVersion:v6];
   v7 = objc_opt_new();
-  v8 = [(MTSyncSnooze *)self snoozeDate];
-  [v8 timeIntervalSinceReferenceDate];
+  snoozeDate = [(MTSyncSnooze *)self snoozeDate];
+  [snoozeDate timeIntervalSinceReferenceDate];
   [v7 setSnoozeDate:?];
 
   [v3 setSnoozeAction:v7];
@@ -34,76 +34,76 @@
   return v3;
 }
 
-+ (id)deserialize:(id)a3
++ (id)deserialize:(id)deserialize
 {
-  v5 = a3;
+  deserializeCopy = deserialize;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    [(MTSyncSnooze(ProtoBuffer) *)v5 deserialize:a2, a1];
+    [(MTSyncSnooze(ProtoBuffer) *)deserializeCopy deserialize:a2, self];
   }
 
-  v6 = v5;
+  v6 = deserializeCopy;
   if ([v6 hasSnoozeAction])
   {
-    v7 = [v6 snoozeAction];
-    v8 = [v6 syncID];
+    snoozeAction = [v6 snoozeAction];
+    syncID = [v6 syncID];
     v9 = MEMORY[0x1E695DF00];
-    [v7 snoozeDate];
+    [snoozeAction snoozeDate];
     v10 = [v9 dateWithTimeIntervalSinceReferenceDate:?];
     v11 = MEMORY[0x1E695DF00];
     [v6 syncDate];
     v12 = [v11 dateWithTimeIntervalSinceReferenceDate:?];
     [v6 syncVersion];
     *&v13 = v13;
-    v14 = [MTSyncSnooze syncSnoozeOfObjectWithIdentifier:v8 snoozeDate:v10 date:v12 version:v13];
+    v14 = [MTSyncSnooze syncSnoozeOfObjectWithIdentifier:syncID snoozeDate:v10 date:v12 version:v13];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:a1 file:@"MTSyncSnooze+ProtoBuffer.m" lineNumber:40 description:{@"Unexpected codeable: %@", v6}];
+    snoozeAction = [MEMORY[0x1E696AAA8] currentHandler];
+    [snoozeAction handleFailureInMethod:a2 object:self file:@"MTSyncSnooze+ProtoBuffer.m" lineNumber:40 description:{@"Unexpected codeable: %@", v6}];
     v14 = 0;
   }
 
   return v14;
 }
 
-- (id)initFromDeserializer:(id)a3
+- (id)initFromDeserializer:(id)deserializer
 {
-  v4 = [a3 mtCoder];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"data"];
+  mtCoder = [deserializer mtCoder];
+  v5 = [mtCoder decodeObjectOfClass:objc_opt_class() forKey:@"data"];
   v6 = [[MTPBSyncMessage alloc] initWithData:v5];
   v7 = [objc_opt_class() deserialize:v6];
 
   return v7;
 }
 
-- (void)serializeWithSerializer:(id)a3
+- (void)serializeWithSerializer:(id)serializer
 {
-  v6 = [a3 mtCoder];
-  v4 = [(MTSyncSnooze *)self serialize];
-  v5 = [v4 data];
+  mtCoder = [serializer mtCoder];
+  serialize = [(MTSyncSnooze *)self serialize];
+  data = [serialize data];
 
-  [v6 encodeObject:v5 forKey:@"data"];
+  [mtCoder encodeObject:data forKey:@"data"];
 }
 
-+ (id)syncSnoozeOfObjectWithIdentifier:(id)a3 snoozeDate:(id)a4 date:(id)a5 version:(float)a6
++ (id)syncSnoozeOfObjectWithIdentifier:(id)identifier snoozeDate:(id)date date:(id)a5 version:(float)version
 {
   v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [a1 alloc];
-  *&v14 = a6;
-  v15 = [v13 initWithSnoozedObjectIdentifier:v12 snoozeDate:v11 date:v10 version:v14];
+  dateCopy = date;
+  identifierCopy = identifier;
+  v13 = [self alloc];
+  *&v14 = version;
+  v15 = [v13 initWithSnoozedObjectIdentifier:identifierCopy snoozeDate:dateCopy date:v10 version:v14];
 
   return v15;
 }
 
-- (MTSyncSnooze)initWithSnoozedObjectIdentifier:(id)a3 snoozeDate:(id)a4 date:(id)a5 version:(float)a6
+- (MTSyncSnooze)initWithSnoozedObjectIdentifier:(id)identifier snoozeDate:(id)date date:(id)a5 version:(float)version
 {
-  v11 = a3;
-  v12 = a4;
+  identifierCopy = identifier;
+  dateCopy = date;
   v13 = a5;
   v17.receiver = self;
   v17.super_class = MTSyncSnooze;
@@ -111,19 +111,19 @@
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_identifier, a3);
-    objc_storeStrong(&v15->_snoozeDate, a4);
+    objc_storeStrong(&v14->_identifier, identifier);
+    objc_storeStrong(&v15->_snoozeDate, date);
     objc_storeStrong(&v15->_date, a5);
-    v15->_syncVersion = a6;
+    v15->_syncVersion = version;
   }
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -133,18 +133,18 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MTSyncSnooze *)self date];
-      v7 = [(MTSyncSnooze *)v5 date];
-      if ([v6 isEqualToDate:v7])
+      v5 = equalCopy;
+      date = [(MTSyncSnooze *)self date];
+      date2 = [(MTSyncSnooze *)v5 date];
+      if ([date isEqualToDate:date2])
       {
-        v8 = [(MTSyncSnooze *)self snoozeDate];
-        v9 = [(MTSyncSnooze *)v5 snoozeDate];
-        if ([v8 isEqual:v9])
+        snoozeDate = [(MTSyncSnooze *)self snoozeDate];
+        snoozeDate2 = [(MTSyncSnooze *)v5 snoozeDate];
+        if ([snoozeDate isEqual:snoozeDate2])
         {
-          v10 = [(MTSyncSnooze *)self identifier];
-          v11 = [(MTSyncSnooze *)v5 identifier];
-          if ([v10 isEqualToString:v11])
+          identifier = [(MTSyncSnooze *)self identifier];
+          identifier2 = [(MTSyncSnooze *)v5 identifier];
+          if ([identifier isEqualToString:identifier2])
           {
             [(MTSyncSnooze *)self syncVersion];
             v13 = v12;
@@ -179,17 +179,17 @@
   return v15;
 }
 
-- (id)preferred:(id)a3
+- (id)preferred:(id)preferred
 {
-  v4 = a3;
-  v5 = [(MTSyncSnooze *)self syncDate];
-  v6 = [(MTSyncSnooze *)v4 syncDate];
-  if (![v5 mtIsAfterDate:v6])
+  preferredCopy = preferred;
+  syncDate = [(MTSyncSnooze *)self syncDate];
+  syncDate2 = [(MTSyncSnooze *)preferredCopy syncDate];
+  if (![syncDate mtIsAfterDate:syncDate2])
   {
-    self = v4;
+    self = preferredCopy;
   }
 
-  v7 = self;
+  selfCopy = self;
 
   return self;
 }
@@ -198,10 +198,10 @@
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(MTSyncSnooze *)self syncIdentifier];
-  v6 = [(MTSyncSnooze *)self snoozeDate];
-  v7 = [(MTSyncSnooze *)self date];
-  v8 = [v3 stringWithFormat:@"<%@:%p %@ snoozeDate: %@ (%@)>", v4, self, v5, v6, v7];
+  syncIdentifier = [(MTSyncSnooze *)self syncIdentifier];
+  snoozeDate = [(MTSyncSnooze *)self snoozeDate];
+  date = [(MTSyncSnooze *)self date];
+  v8 = [v3 stringWithFormat:@"<%@:%p %@ snoozeDate: %@ (%@)>", v4, self, syncIdentifier, snoozeDate, date];
 
   return v8;
 }

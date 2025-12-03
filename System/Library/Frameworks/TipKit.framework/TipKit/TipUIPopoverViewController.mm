@@ -1,7 +1,7 @@
 @interface TipUIPopoverViewController
 - (BOOL)_canShowWhileLocked;
 - (UIPopoverPresentationController)popoverPresentationController;
-- (_TtC6TipKit26TipUIPopoverViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC6TipKit26TipUIPopoverViewController)initWithNibName:(id)name bundle:(id)bundle;
 @end
 
 @implementation TipUIPopoverViewController
@@ -16,7 +16,7 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   v4 = TipUIPopoverViewController.popoverPresentationController.getter();
 
   return v4;
@@ -32,13 +32,13 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   canShowWhile = TipUIPopoverViewController._canShowWhileLocked()();
 
   return canShowWhile;
 }
 
-- (_TtC6TipKit26TipUIPopoverViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC6TipKit26TipUIPopoverViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_1A3622E3C();
   sub_1A3622E2C();
@@ -48,10 +48,10 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     v6 = sub_1A3622B8C();
-    a3 = v7;
+    name = v7;
   }
 
   else
@@ -59,8 +59,8 @@
     v6 = 0;
   }
 
-  v8 = a4;
-  v9 = TipUIPopoverViewController.init(nibName:bundle:)(v6, a3, a4);
+  bundleCopy = bundle;
+  v9 = TipUIPopoverViewController.init(nibName:bundle:)(v6, name, bundle);
 
   return v9;
 }

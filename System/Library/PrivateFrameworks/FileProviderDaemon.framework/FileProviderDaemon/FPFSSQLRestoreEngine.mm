@@ -1,23 +1,23 @@
 @interface FPFSSQLRestoreEngine
 - (_TtC18FileProviderDaemon20FPFSSQLRestoreEngine)init;
-- (_TtC18FileProviderDaemon20FPFSSQLRestoreEngine)initWithUserURL:(id)a3 backupBuild:(id)a4 restoreType:(id)a5;
-- (void)restorePurgenciesAndResidencyReasonsWithCompletionHandler:(id)a3;
-- (void)restoreWithCleanupOnSuccess:(BOOL)a3 completionHandler:(id)a4;
+- (_TtC18FileProviderDaemon20FPFSSQLRestoreEngine)initWithUserURL:(id)l backupBuild:(id)build restoreType:(id)type;
+- (void)restorePurgenciesAndResidencyReasonsWithCompletionHandler:(id)handler;
+- (void)restoreWithCleanupOnSuccess:(BOOL)success completionHandler:(id)handler;
 @end
 
 @implementation FPFSSQLRestoreEngine
 
-- (_TtC18FileProviderDaemon20FPFSSQLRestoreEngine)initWithUserURL:(id)a3 backupBuild:(id)a4 restoreType:(id)a5
+- (_TtC18FileProviderDaemon20FPFSSQLRestoreEngine)initWithUserURL:(id)l backupBuild:(id)build restoreType:(id)type
 {
   v7 = sub_1CF9E5A58();
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x1EEE9AC00](v7 - 8);
   v10 = &v17 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   sub_1CF9E59D8();
-  if (!a4)
+  if (!build)
   {
     v12 = 0;
-    if (a5)
+    if (type)
     {
       goto LABEL_3;
     }
@@ -25,12 +25,12 @@
 LABEL_5:
     v13 = 0;
     v15 = 0;
-    return FPFSSQLRestoreEngine.init(userURL:backupBuild:restoreType:)(v10, a4, v12, v13, v15);
+    return FPFSSQLRestoreEngine.init(userURL:backupBuild:restoreType:)(v10, build, v12, v13, v15);
   }
 
-  a4 = _sSo28NSFileProviderItemIdentifiera04FileB6DaemonE15parseableStringSSvg_0();
+  build = _sSo28NSFileProviderItemIdentifiera04FileB6DaemonE15parseableStringSSvg_0();
   v12 = v11;
-  if (!a5)
+  if (!type)
   {
     goto LABEL_5;
   }
@@ -38,26 +38,26 @@ LABEL_5:
 LABEL_3:
   v13 = _sSo28NSFileProviderItemIdentifiera04FileB6DaemonE15parseableStringSSvg_0();
   v15 = v14;
-  return FPFSSQLRestoreEngine.init(userURL:backupBuild:restoreType:)(v10, a4, v12, v13, v15);
+  return FPFSSQLRestoreEngine.init(userURL:backupBuild:restoreType:)(v10, build, v12, v13, v15);
 }
 
-- (void)restoreWithCleanupOnSuccess:(BOOL)a3 completionHandler:(id)a4
+- (void)restoreWithCleanupOnSuccess:(BOOL)success completionHandler:(id)handler
 {
-  v4 = a3;
-  v6 = _Block_copy(a4);
+  successCopy = success;
+  v6 = _Block_copy(handler);
   _Block_copy(v6);
-  v7 = self;
-  sub_1CF1FB4D4(v4, v7, v6);
+  selfCopy = self;
+  sub_1CF1FB4D4(successCopy, selfCopy, v6);
   _Block_release(v6);
   _Block_release(v6);
 }
 
-- (void)restorePurgenciesAndResidencyReasonsWithCompletionHandler:(id)a3
+- (void)restorePurgenciesAndResidencyReasonsWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   _Block_copy(v4);
-  v5 = self;
-  sub_1CF1FCADC(v5, v4);
+  selfCopy = self;
+  sub_1CF1FCADC(selfCopy, v4);
   _Block_release(v4);
   _Block_release(v4);
 }

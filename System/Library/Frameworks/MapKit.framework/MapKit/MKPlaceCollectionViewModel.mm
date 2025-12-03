@@ -1,18 +1,18 @@
 @interface MKPlaceCollectionViewModel
 - (BOOL)isSaved;
 - (CGSize)photoSize;
-- (MKPlaceCollectionViewModel)initWithGEOPlaceCollection:(id)a3 usingSyncCoordinator:(id)a4 inContext:(int64_t)a5 usingTitleFont:(id)a6;
+- (MKPlaceCollectionViewModel)initWithGEOPlaceCollection:(id)collection usingSyncCoordinator:(id)coordinator inContext:(int64_t)context usingTitleFont:(id)font;
 - (NSAttributedString)collectionLongTitle;
 - (NSAttributedString)collectionTitle;
 - (NSAttributedString)secondaryCollectionTitle;
 - (UIColor)backgroundColor;
 - (id)description;
-- (void)_publisherImageWithIdentifier:(unsigned int)a3 completion:(id)a4;
-- (void)collectionImageForSize:(CGSize)a3 onCompletion:(id)a4;
+- (void)_publisherImageWithIdentifier:(unsigned int)identifier completion:(id)completion;
+- (void)collectionImageForSize:(CGSize)size onCompletion:(id)completion;
 - (void)contentCategorySizeDidChange;
 - (void)initializeFonts;
-- (void)publisherIconImageWithCompletion:(id)a3;
-- (void)publisherLogoImageWithCompletion:(id)a3;
+- (void)publisherIconImageWithCompletion:(id)completion;
+- (void)publisherLogoImageWithCompletion:(id)completion;
 @end
 
 @implementation MKPlaceCollectionViewModel
@@ -29,26 +29,26 @@
 - (id)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(GEOPlaceCollection *)self->_placeCollection collectionLongTitle];
-  v5 = v4;
-  if (!v4)
+  collectionLongTitle = [(GEOPlaceCollection *)self->_placeCollection collectionLongTitle];
+  collectionTitle = collectionLongTitle;
+  if (!collectionLongTitle)
   {
-    v5 = [(GEOPlaceCollection *)self->_placeCollection collectionTitle];
+    collectionTitle = [(GEOPlaceCollection *)self->_placeCollection collectionTitle];
   }
 
-  v6 = [(GEOPlaceCollection *)self->_placeCollection collectionIdentifier];
-  v7 = [v3 stringWithFormat:@"Guide: %@, MUID: %llu", v5, objc_msgSend(v6, "muid")];
+  collectionIdentifier = [(GEOPlaceCollection *)self->_placeCollection collectionIdentifier];
+  v7 = [v3 stringWithFormat:@"Guide: %@, MUID: %llu", collectionTitle, objc_msgSend(collectionIdentifier, "muid")];
 
-  if (!v4)
+  if (!collectionLongTitle)
   {
   }
 
   return v7;
 }
 
-- (void)publisherLogoImageWithCompletion:(id)a3
+- (void)publisherLogoImageWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   imageLoadingQueue = self->_imageLoadingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -56,8 +56,8 @@
   block[2] = __63__MKPlaceCollectionViewModel_publisherLogoImageWithCompletion___block_invoke;
   block[3] = &unk_1E76CA9E8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(imageLoadingQueue, block);
 
   objc_destroyWeak(&v9);
@@ -89,9 +89,9 @@ void __63__MKPlaceCollectionViewModel_publisherLogoImageWithCompletion___block_i
   }
 }
 
-- (void)publisherIconImageWithCompletion:(id)a3
+- (void)publisherIconImageWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   objc_initWeak(&location, self);
   imageLoadingQueue = self->_imageLoadingQueue;
   block[0] = MEMORY[0x1E69E9820];
@@ -99,8 +99,8 @@ void __63__MKPlaceCollectionViewModel_publisherLogoImageWithCompletion___block_i
   block[2] = __63__MKPlaceCollectionViewModel_publisherIconImageWithCompletion___block_invoke;
   block[3] = &unk_1E76CA9E8;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(imageLoadingQueue, block);
 
   objc_destroyWeak(&v9);
@@ -123,14 +123,14 @@ void __63__MKPlaceCollectionViewModel_publisherIconImageWithCompletion___block_i
   }
 }
 
-- (void)_publisherImageWithIdentifier:(unsigned int)a3 completion:(id)a4
+- (void)_publisherImageWithIdentifier:(unsigned int)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v24[0] = MEMORY[0x1E69E9820];
   v24[1] = 3221225472;
   v24[2] = __71__MKPlaceCollectionViewModel__publisherImageWithIdentifier_completion___block_invoke;
   v24[3] = &unk_1E76CA970;
-  v7 = v6;
+  v7 = completionCopy;
   v25 = v7;
   v8 = MEMORY[0x1A58E9F30](v24);
   v9 = v8;
@@ -144,17 +144,17 @@ void __63__MKPlaceCollectionViewModel_publisherIconImageWithCompletion___block_i
 
     else
     {
-      v11 = [(MKPlaceCollectionViewModel *)self publisherLogoImage];
-      if (v11)
+      publisherLogoImage = [(MKPlaceCollectionViewModel *)self publisherLogoImage];
+      if (publisherLogoImage)
       {
-        (v9)[2](v9, v11);
+        (v9)[2](v9, publisherLogoImage);
       }
 
       else
       {
-        v12 = [(MKPlaceCollectionViewModel *)self placeCollection];
-        v13 = [v12 publisherAttribution];
-        v14 = [v13 displayName];
+        placeCollection = [(MKPlaceCollectionViewModel *)self placeCollection];
+        publisherAttribution = [placeCollection publisherAttribution];
+        displayName = [publisherAttribution displayName];
 
         objc_initWeak(&location, self);
         imageLoadingQueue = self->_imageLoadingQueue;
@@ -162,10 +162,10 @@ void __63__MKPlaceCollectionViewModel_publisherIconImageWithCompletion___block_i
         block[1] = 3221225472;
         block[2] = __71__MKPlaceCollectionViewModel__publisherImageWithIdentifier_completion___block_invoke_3;
         block[3] = &unk_1E76CA9C0;
-        v22 = a3;
-        v18 = v14;
-        v19 = self;
-        v16 = v14;
+        identifierCopy = identifier;
+        v18 = displayName;
+        selfCopy = self;
+        v16 = displayName;
         objc_copyWeak(&v21, &location);
         v20 = v9;
         dispatch_async(imageLoadingQueue, block);
@@ -231,11 +231,11 @@ void __71__MKPlaceCollectionViewModel__publisherImageWithIdentifier_completion__
 
 - (BOOL)isSaved
 {
-  v2 = self;
-  v3 = [(MKPlaceCollectionViewModel *)self syncCoordinator];
-  LOBYTE(v2) = [v3 collectionIsSaved:v2->_placeCollection];
+  selfCopy = self;
+  syncCoordinator = [(MKPlaceCollectionViewModel *)self syncCoordinator];
+  LOBYTE(selfCopy) = [syncCoordinator collectionIsSaved:selfCopy->_placeCollection];
 
-  return v2;
+  return selfCopy;
 }
 
 - (NSAttributedString)secondaryCollectionTitle
@@ -251,25 +251,25 @@ void __71__MKPlaceCollectionViewModel__publisherImageWithIdentifier_completion__
   {
     v5 = MEMORY[0x1E696AEC0];
     v6 = _MKLocalizedStringFromThisBundle(@"[Guides Home] Place Count In Collection List Cell");
-    v7 = [(MKPlaceCollectionViewModel *)self placeCollection];
-    v8 = [v5 localizedStringWithFormat:v6, objc_msgSend(v7, "numberOfItems")];
+    placeCollection = [(MKPlaceCollectionViewModel *)self placeCollection];
+    v8 = [v5 localizedStringWithFormat:v6, objc_msgSend(placeCollection, "numberOfItems")];
 
-    v9 = [MEMORY[0x1E69DC668] sharedApplication];
-    v10 = [v9 userInterfaceLayoutDirection];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x1E69DC668] userInterfaceLayoutDirection];
 
     v11 = MEMORY[0x1E696AEC0];
-    v12 = [(MKPlaceCollectionViewModel *)self placeCollection];
-    v13 = [v12 publisherAttribution];
-    v14 = [v13 displayName];
-    v15 = v14;
-    if (v10 == 1)
+    placeCollection2 = [(MKPlaceCollectionViewModel *)self placeCollection];
+    publisherAttribution = [placeCollection2 publisherAttribution];
+    displayName = [publisherAttribution displayName];
+    v15 = displayName;
+    if (userInterfaceLayoutDirection == 1)
     {
-      [v11 localizedStringWithFormat:@"%@ · %@", v8, v14];
+      [v11 localizedStringWithFormat:@"%@ · %@", v8, displayName];
     }
 
     else
     {
-      [v11 localizedStringWithFormat:@"%@ · %@", v14, v8];
+      [v11 localizedStringWithFormat:@"%@ · %@", displayName, v8];
     }
     v16 = ;
 
@@ -294,19 +294,19 @@ void __71__MKPlaceCollectionViewModel__publisherImageWithIdentifier_completion__
   collectionLongTitle = self->_collectionLongTitle;
   if (!collectionLongTitle)
   {
-    v4 = [(MKPlaceCollectionViewModel *)self placeCollection];
-    v5 = [v4 collectionLongTitle];
+    placeCollection = [(MKPlaceCollectionViewModel *)self placeCollection];
+    collectionLongTitle = [placeCollection collectionLongTitle];
 
-    if (v5)
+    if (collectionLongTitle)
     {
       v6 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v7 = [(MKPlaceCollectionViewModel *)self placeCollection];
-      v8 = [v7 collectionLongTitle];
+      placeCollection2 = [(MKPlaceCollectionViewModel *)self placeCollection];
+      collectionLongTitle2 = [placeCollection2 collectionLongTitle];
       titleFont = self->_titleFont;
       v14 = *MEMORY[0x1E69DB648];
       v15[0] = titleFont;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-      v11 = [v6 initWithString:v8 attributes:v10];
+      v11 = [v6 initWithString:collectionLongTitle2 attributes:v10];
       v12 = self->_collectionLongTitle;
       self->_collectionLongTitle = v11;
     }
@@ -323,19 +323,19 @@ void __71__MKPlaceCollectionViewModel__publisherImageWithIdentifier_completion__
   collectionTitle = self->_collectionTitle;
   if (!collectionTitle)
   {
-    v4 = [(MKPlaceCollectionViewModel *)self placeCollection];
-    v5 = [v4 collectionTitle];
+    placeCollection = [(MKPlaceCollectionViewModel *)self placeCollection];
+    collectionTitle = [placeCollection collectionTitle];
 
-    if (v5)
+    if (collectionTitle)
     {
       v6 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v7 = [(MKPlaceCollectionViewModel *)self placeCollection];
-      v8 = [v7 collectionTitle];
+      placeCollection2 = [(MKPlaceCollectionViewModel *)self placeCollection];
+      collectionTitle2 = [placeCollection2 collectionTitle];
       titleFont = self->_titleFont;
       v14 = *MEMORY[0x1E69DB648];
       v15[0] = titleFont;
       v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v15 forKeys:&v14 count:1];
-      v11 = [v6 initWithString:v8 attributes:v10];
+      v11 = [v6 initWithString:collectionTitle2 attributes:v10];
       v12 = self->_collectionTitle;
       self->_collectionTitle = v11;
     }
@@ -406,18 +406,18 @@ void __71__MKPlaceCollectionViewModel__publisherImageWithIdentifier_completion__
   }
 }
 
-- (MKPlaceCollectionViewModel)initWithGEOPlaceCollection:(id)a3 usingSyncCoordinator:(id)a4 inContext:(int64_t)a5 usingTitleFont:(id)a6
+- (MKPlaceCollectionViewModel)initWithGEOPlaceCollection:(id)collection usingSyncCoordinator:(id)coordinator inContext:(int64_t)context usingTitleFont:(id)font
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
+  collectionCopy = collection;
+  coordinatorCopy = coordinator;
+  fontCopy = font;
   v23.receiver = self;
   v23.super_class = MKPlaceCollectionViewModel;
   v14 = [(MKPlaceCollectionViewModel *)&v23 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_placeCollection, a3);
+    objc_storeStrong(&v14->_placeCollection, collection);
     v16 = geo_dispatch_queue_create_with_qos();
     imageLoadingQueue = v15->_imageLoadingQueue;
     v15->_imageLoadingQueue = v16;
@@ -426,16 +426,16 @@ void __71__MKPlaceCollectionViewModel__publisherImageWithIdentifier_completion__
     [v18 screenScale];
     v15->_screenScale = v19;
 
-    v20 = [MEMORY[0x1E696AAE8] mainBundle];
-    v21 = [v20 bundleIdentifier];
-    [v21 isEqualToString:@"com.apple.Maps"];
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    [bundleIdentifier isEqualToString:@"com.apple.Maps"];
 
-    objc_storeStrong(&v15->_syncCoordinator, a4);
-    v15->_context = a5;
-    if (v13)
+    objc_storeStrong(&v15->_syncCoordinator, coordinator);
+    v15->_context = context;
+    if (fontCopy)
     {
       v15->_isUsingInjectedFont = 1;
-      objc_storeStrong(&v15->_titleFont, a6);
+      objc_storeStrong(&v15->_titleFont, font);
     }
 
     else
@@ -448,16 +448,16 @@ void __71__MKPlaceCollectionViewModel__publisherImageWithIdentifier_completion__
   return v15;
 }
 
-- (void)collectionImageForSize:(CGSize)a3 onCompletion:(id)a4
+- (void)collectionImageForSize:(CGSize)size onCompletion:(id)completion
 {
-  height = a3.height;
-  width = a3.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  completionCopy = completion;
   [(MKPlaceCollectionViewModel *)self setPhotoSize:width, height];
   collectionImage = self->_collectionImage;
   if (collectionImage)
   {
-    v7[2](v7, collectionImage, 0, 1, 1);
+    completionCopy[2](completionCopy, collectionImage, 0, 1, 1);
   }
 
   else
@@ -470,7 +470,7 @@ void __71__MKPlaceCollectionViewModel__publisherImageWithIdentifier_completion__
     v10[4] = self;
     v12 = width;
     v13 = height;
-    v11 = v7;
+    v11 = completionCopy;
     dispatch_async(imageLoadingQueue, v10);
   }
 }

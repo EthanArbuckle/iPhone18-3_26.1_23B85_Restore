@@ -1,31 +1,31 @@
 @interface RMSDAAPTouchRemoteManager
-- (CGPoint)_locationForDirection:(int64_t)a3 repeatCount:(int)a4;
-- (RMSDAAPTouchRemoteManager)initWithRequestManager:(id)a3;
+- (CGPoint)_locationForDirection:(int64_t)direction repeatCount:(int)count;
+- (RMSDAAPTouchRemoteManager)initWithRequestManager:(id)manager;
 - (RMSDAAPTouchRemoteManagerDelegate)delegate;
-- (unsigned)_timeForDirection:(int64_t)a3 repeatCount:(int)a4;
+- (unsigned)_timeForDirection:(int64_t)direction repeatCount:(int)count;
 - (void)_createSocket;
-- (void)_parsePortInfoItems:(id)a3;
+- (void)_parsePortInfoItems:(id)items;
 - (void)_requestPortInfo;
-- (void)_requestPromptUpdate:(id)a3;
-- (void)initiateControlWithCompletionHandler:(id)a3;
-- (void)sendNavigationCommand:(int64_t)a3;
-- (void)sendTouchEndWithDirection:(int64_t)a3 repeatCount:(int)a4;
-- (void)sendTouchMoveWithDirection:(int64_t)a3 repeatCount:(int)a4;
-- (void)touchRemoteSocketDidDisconnect:(id)a3;
+- (void)_requestPromptUpdate:(id)update;
+- (void)initiateControlWithCompletionHandler:(id)handler;
+- (void)sendNavigationCommand:(int64_t)command;
+- (void)sendTouchEndWithDirection:(int64_t)direction repeatCount:(int)count;
+- (void)sendTouchMoveWithDirection:(int64_t)direction repeatCount:(int)count;
+- (void)touchRemoteSocketDidDisconnect:(id)disconnect;
 @end
 
 @implementation RMSDAAPTouchRemoteManager
 
-- (RMSDAAPTouchRemoteManager)initWithRequestManager:(id)a3
+- (RMSDAAPTouchRemoteManager)initWithRequestManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   v9.receiver = self;
   v9.super_class = RMSDAAPTouchRemoteManager;
   v6 = [(RMSDAAPTouchRemoteManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_requestManager, a3);
+    objc_storeStrong(&v6->_requestManager, manager);
     *&v7->_touchDistanceMin = 0x439B333342480000;
     *&v7->_touchTimeMin = 0x3200000001;
     CFPreferencesAppSynchronize(@"com.apple.RemoteMediaServices");
@@ -35,10 +35,10 @@
   return v7;
 }
 
-- (void)initiateControlWithCompletionHandler:(id)a3
+- (void)initiateControlWithCompletionHandler:(id)handler
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   if (!self->_portSecret)
   {
     do
@@ -65,7 +65,7 @@
   v9[2] = __66__RMSDAAPTouchRemoteManager_initiateControlWithCompletionHandler___block_invoke;
   v9[3] = &unk_279B092B0;
   objc_copyWeak(&v11, &buf);
-  v8 = v4;
+  v8 = handlerCopy;
   v10 = v8;
   [(RMSDAAPTouchRemoteManager *)self _requestPromptUpdate:v9];
 
@@ -86,15 +86,15 @@ uint64_t __66__RMSDAAPTouchRemoteManager_initiateControlWithCompletionHandler___
   return v4();
 }
 
-- (void)sendTouchMoveWithDirection:(int64_t)a3 repeatCount:(int)a4
+- (void)sendTouchMoveWithDirection:(int64_t)direction repeatCount:(int)count
 {
-  v4 = *&a4;
+  v4 = *&count;
   [(RMSTouchRemoteSocket *)self->_socket sendTouchCode:256 timeInMilliseconds:0 location:160.0, 228.5];
-  [(RMSDAAPTouchRemoteManager *)self _locationForDirection:a3 repeatCount:v4];
-  [(RMSTouchRemoteSocket *)self->_socket sendTouchCode:257 timeInMilliseconds:[(RMSDAAPTouchRemoteManager *)self _timeForDirection:a3 repeatCount:v4] location:v7, v8];
+  [(RMSDAAPTouchRemoteManager *)self _locationForDirection:direction repeatCount:v4];
+  [(RMSTouchRemoteSocket *)self->_socket sendTouchCode:257 timeInMilliseconds:[(RMSDAAPTouchRemoteManager *)self _timeForDirection:direction repeatCount:v4] location:v7, v8];
   if (self->_shouldWriteTimestampsForPPT)
   {
-    v9 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     v10 = RMSLogger();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
@@ -112,8 +112,8 @@ uint64_t __66__RMSDAAPTouchRemoteManager_initiateControlWithCompletionHandler___
     block[1] = 3221225472;
     block[2] = __68__RMSDAAPTouchRemoteManager_sendTouchMoveWithDirection_repeatCount___block_invoke_2;
     block[3] = &unk_279B088E8;
-    v14 = v9;
-    v12 = v9;
+    v14 = date;
+    v12 = date;
     dispatch_async(v11, block);
   }
 }
@@ -144,37 +144,37 @@ void __68__RMSDAAPTouchRemoteManager_sendTouchMoveWithDirection_repeatCount___bl
   }
 }
 
-- (void)sendTouchEndWithDirection:(int64_t)a3 repeatCount:(int)a4
+- (void)sendTouchEndWithDirection:(int64_t)direction repeatCount:(int)count
 {
-  v4 = *&a4;
+  v4 = *&count;
   [RMSDAAPTouchRemoteManager _locationForDirection:"_locationForDirection:repeatCount:" repeatCount:?];
   v8 = v7;
   v10 = v9;
-  v11 = [(RMSDAAPTouchRemoteManager *)self _timeForDirection:a3 repeatCount:v4];
+  v11 = [(RMSDAAPTouchRemoteManager *)self _timeForDirection:direction repeatCount:v4];
   v12 = v10 + 15.0;
   v13 = v10 + -15.0;
-  if (a3 != 2)
+  if (direction != 2)
   {
     v13 = v10;
   }
 
-  if (a3 != 3)
+  if (direction != 3)
   {
     v12 = v13;
   }
 
   v14 = v8 + 15.0;
-  if (a3 != 1)
+  if (direction != 1)
   {
     v14 = v8;
   }
 
-  if (!a3)
+  if (!direction)
   {
     v14 = v8 + -15.0;
   }
 
-  if (a3 > 1)
+  if (direction > 1)
   {
     v14 = v8;
   }
@@ -190,22 +190,22 @@ void __68__RMSDAAPTouchRemoteManager_sendTouchMoveWithDirection_repeatCount___bl
   [(RMSTouchRemoteSocket *)socket sendTouchCode:258 timeInMilliseconds:v15 location:v14, v12];
 }
 
-- (void)sendNavigationCommand:(int64_t)a3
+- (void)sendNavigationCommand:(int64_t)command
 {
-  if ((a3 - 1) > 2)
+  if ((command - 1) > 2)
   {
     v5 = @"menu";
   }
 
   else
   {
-    v5 = off_279B092F8[a3 - 1];
+    v5 = off_279B092F8[command - 1];
   }
 
   v6 = [(RMSDAAPRequestManager *)self->_requestManager requestControlCommand:v5 text:0 promptRevision:self->_controlPromptRevision completionHandler:0, v3, v4];
 }
 
-- (void)touchRemoteSocketDidDisconnect:(id)a3
+- (void)touchRemoteSocketDidDisconnect:(id)disconnect
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained touchRemoteManagerDidDisconnect:self];
@@ -213,8 +213,8 @@ void __68__RMSDAAPTouchRemoteManager_sendTouchMoveWithDirection_repeatCount___bl
 
 - (void)_createSocket
 {
-  v5 = [(RMSDAAPRequestManager *)self->_requestManager hostName];
-  v3 = [[RMSTouchRemoteSocket alloc] initWithHost:v5 port:self->_port encryptionKey:self->_encryptionKey];
+  hostName = [(RMSDAAPRequestManager *)self->_requestManager hostName];
+  v3 = [[RMSTouchRemoteSocket alloc] initWithHost:hostName port:self->_port encryptionKey:self->_encryptionKey];
   socket = self->_socket;
   self->_socket = v3;
 
@@ -222,10 +222,10 @@ void __68__RMSDAAPTouchRemoteManager_sendTouchMoveWithDirection_repeatCount___bl
   [(RMSTouchRemoteSocket *)self->_socket connect];
 }
 
-- (void)_requestPromptUpdate:(id)a3
+- (void)_requestPromptUpdate:(id)update
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  updateCopy = update;
   requestManager = self->_requestManager;
   v12 = @"prompt-id";
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:self->_controlPromptRevision];
@@ -236,8 +236,8 @@ void __68__RMSDAAPTouchRemoteManager_sendTouchMoveWithDirection_repeatCount___bl
   v10[2] = __50__RMSDAAPTouchRemoteManager__requestPromptUpdate___block_invoke;
   v10[3] = &unk_279B092D8;
   v10[4] = self;
-  v11 = v4;
-  v8 = v4;
+  v11 = updateCopy;
+  v8 = updateCopy;
   v9 = [(RMSDAAPRequestManager *)requestManager requestWithPath:@"controlpromptupdate" method:@"GET" postData:0 queryArgs:v7 completionHandler:v10];
 }
 
@@ -324,14 +324,14 @@ LABEL_15:
   }
 }
 
-- (void)_parsePortInfoItems:(id)a3
+- (void)_parsePortInfoItems:(id)items
 {
   v26 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  obj = a3;
+  obj = items;
   v4 = [obj countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v4)
   {
@@ -380,15 +380,15 @@ LABEL_15:
 {
   v3 = MEMORY[0x277CCACA8];
   portSecret = self->_portSecret;
-  v5 = [(RMSDAAPRequestManager *)self->_requestManager pairingGUID];
-  v7 = [v3 stringWithFormat:@"%d, %@", portSecret, v5];
+  pairingGUID = [(RMSDAAPRequestManager *)self->_requestManager pairingGUID];
+  v7 = [v3 stringWithFormat:@"%d, %@", portSecret, pairingGUID];
 
   v6 = [(RMSDAAPRequestManager *)self->_requestManager requestControlCommand:@"DRPortInfoRequest" text:v7 promptRevision:self->_controlPromptRevision completionHandler:0];
 }
 
-- (unsigned)_timeForDirection:(int64_t)a3 repeatCount:(int)a4
+- (unsigned)_timeForDirection:(int64_t)direction repeatCount:(int)count
 {
-  v4 = a4 * 6.0;
+  v4 = count * 6.0;
   v5 = self->_touchTimeMax - (v4 * v4);
   if (v5 <= self->_touchTimeMin)
   {
@@ -398,24 +398,24 @@ LABEL_15:
   return v5;
 }
 
-- (CGPoint)_locationForDirection:(int64_t)a3 repeatCount:(int)a4
+- (CGPoint)_locationForDirection:(int64_t)direction repeatCount:(int)count
 {
   v4 = 12.0;
-  if (a4 == 2)
+  if (count == 2)
   {
     v4 = 16.0;
   }
 
-  if (a4 > 2)
+  if (count > 2)
   {
     v4 = 23.0;
   }
 
-  v5 = fminf(self->_touchDistanceMax, (v4 * a4) + self->_touchDistanceMin);
+  v5 = fminf(self->_touchDistanceMax, (v4 * count) + self->_touchDistanceMin);
   v6 = 0.0;
-  if (a3 > 1)
+  if (direction > 1)
   {
-    if (a3 == 2)
+    if (direction == 2)
     {
       v9 = 228.0 - v5;
     }
@@ -423,7 +423,7 @@ LABEL_15:
     else
     {
       v7 = 0.0;
-      if (a3 != 3)
+      if (direction != 3)
       {
         goto LABEL_16;
       }
@@ -436,14 +436,14 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!a3)
+  if (!direction)
   {
     v8 = 160.0 - v5;
     goto LABEL_13;
   }
 
   v7 = 0.0;
-  if (a3 == 1)
+  if (direction == 1)
   {
     v8 = v5 + 160.0;
 LABEL_13:

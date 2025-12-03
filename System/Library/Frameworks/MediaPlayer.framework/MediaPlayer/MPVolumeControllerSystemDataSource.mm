@@ -1,34 +1,34 @@
 @interface MPVolumeControllerSystemDataSource
 - (MPVolumeControllerDataSourceDelegate)delegate;
-- (MPVolumeControllerSystemDataSource)initWithVolumeAudioCategories:(id)a3;
-- (MPVolumeControllerSystemDataSource)initWithVolumeAudioCategory:(id)a3;
+- (MPVolumeControllerSystemDataSource)initWithVolumeAudioCategories:(id)categories;
+- (MPVolumeControllerSystemDataSource)initWithVolumeAudioCategory:(id)category;
 - (NSString)description;
 - (NSString)volumeControlLabel;
 - (float)_effectiveVolume;
-- (id)_categoryForActiveCategory:(id)a3 currentCategory:(id)a4 categories:(id)a5;
+- (id)_categoryForActiveCategory:(id)category currentCategory:(id)currentCategory categories:(id)categories;
 - (id)_mediaPlaybackVolumeAudioCategory;
 - (id)_reloadQueue;
 - (id)initCommon;
-- (void)_mediaServerDiedNotification:(id)a3;
-- (void)_notifyVolumeDidChage:(float)a3 silenceVolumeHUD:(BOOL)a4;
+- (void)_mediaServerDiedNotification:(id)notification;
+- (void)_notifyVolumeDidChage:(float)chage silenceVolumeHUD:(BOOL)d;
 - (void)_reload;
-- (void)_routeDidChangeNotification:(id)a3;
-- (void)_setVolumeAudioCategory:(id)a3;
+- (void)_routeDidChangeNotification:(id)notification;
+- (void)_setVolumeAudioCategory:(id)category;
 - (void)_setup;
-- (void)_systemVolumeDidChange:(id)a3;
+- (void)_systemVolumeDidChange:(id)change;
 - (void)_tearDown;
-- (void)adjustVolumeValue:(float)a3;
+- (void)adjustVolumeValue:(float)value;
 - (void)dealloc;
 - (void)endDecreasingRelativeVolume;
 - (void)endIncreasingRelativeVolume;
-- (void)getVolumeValueWithCompletion:(id)a3;
+- (void)getVolumeValueWithCompletion:(id)completion;
 - (void)reload;
-- (void)setMuted:(BOOL)a3;
-- (void)setVolume:(float)a3;
-- (void)setVolumeAudioCategory:(id)a3;
-- (void)updateVolume:(float)a3 silenceVolumeHUD:(BOOL)a4;
-- (void)updateVolumeControlCapabilities:(unsigned int)a3;
-- (void)updateVolumeMuted:(BOOL)a3;
+- (void)setMuted:(BOOL)muted;
+- (void)setVolume:(float)volume;
+- (void)setVolumeAudioCategory:(id)category;
+- (void)updateVolume:(float)volume silenceVolumeHUD:(BOOL)d;
+- (void)updateVolumeControlCapabilities:(unsigned int)capabilities;
+- (void)updateVolumeMuted:(BOOL)muted;
 @end
 
 @implementation MPVolumeControllerSystemDataSource
@@ -93,7 +93,7 @@ void __71__MPVolumeControllerSystemDataSource__mediaPlaybackVolumeAudioCategory_
     self->_volumeMutedInitialized = 0;
     v4 = dispatch_group_create();
     dispatch_group_enter(v4);
-    v5 = [(MPVolumeControllerSystemDataSource *)self _reloadQueue];
+    _reloadQueue = [(MPVolumeControllerSystemDataSource *)self _reloadQueue];
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
     block[2] = __45__MPVolumeControllerSystemDataSource__reload__block_invoke;
@@ -105,7 +105,7 @@ void __71__MPVolumeControllerSystemDataSource__mediaPlaybackVolumeAudioCategory_
     v9 = v3;
     v10 = v4;
     v6 = v4;
-    dispatch_async(v5, block);
+    dispatch_async(_reloadQueue, block);
 
     v7[0] = MEMORY[0x1E69E9820];
     v7[1] = 3221225472;
@@ -244,15 +244,15 @@ _BYTE *__45__MPVolumeControllerSystemDataSource__reload__block_invoke_27(void *a
   v2 = +[MPAVRoutingController systemRoute];
   if ([v2 isDeviceSpeakerRoute])
   {
-    v3 = &stru_1F149ECA8;
+    routeName = &stru_1F149ECA8;
   }
 
   else
   {
-    v3 = [v2 routeName];
+    routeName = [v2 routeName];
   }
 
-  return v3;
+  return routeName;
 }
 
 - (MPVolumeControllerDataSourceDelegate)delegate
@@ -264,15 +264,15 @@ _BYTE *__45__MPVolumeControllerSystemDataSource__reload__block_invoke_27(void *a
 
 - (void)_tearDown
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   *&self->_volumeInitialized = 0;
   self->_volumeMutedInitialized = 0;
-  [v4 removeObserver:self name:*MEMORY[0x1E69AEA78] object:0];
-  [v4 removeObserver:self name:*MEMORY[0x1E69AECE8] object:0];
-  [v4 removeObserver:self name:*MEMORY[0x1E69AEAA0] object:0];
-  [v4 removeObserver:self name:*MEMORY[0x1E69AECB8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AEA78] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AECE8] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AEAA0] object:0];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69AECB8] object:0];
   v3 = +[MPAVRoutingController systemRoute];
-  [v4 removeObserver:self name:@"MPAVRouteDidChangeNotification" object:v3];
+  [defaultCenter removeObserver:self name:@"MPAVRouteDidChangeNotification" object:v3];
 }
 
 - (void)_setup
@@ -284,8 +284,8 @@ _BYTE *__45__MPVolumeControllerSystemDataSource__reload__block_invoke_27(void *a
   block[3] = &unk_1E7682518;
   block[4] = self;
   dispatch_async(avscQueue, block);
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 addObserver:self selector:sel__routeDidChangeNotification_ name:@"MPAVRouteDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__routeDidChangeNotification_ name:@"MPAVRouteDidChangeNotification" object:0];
 }
 
 void __44__MPVolumeControllerSystemDataSource__setup__block_invoke(uint64_t a1)
@@ -346,54 +346,54 @@ void __44__MPVolumeControllerSystemDataSource__setup__block_invoke(uint64_t a1)
   }
 }
 
-- (id)_categoryForActiveCategory:(id)a3 currentCategory:(id)a4 categories:(id)a5
+- (id)_categoryForActiveCategory:(id)category currentCategory:(id)currentCategory categories:(id)categories
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v10 containsObject:v8])
+  categoryCopy = category;
+  currentCategoryCopy = currentCategory;
+  categoriesCopy = categories;
+  if ([categoriesCopy containsObject:categoryCopy])
   {
-    v11 = v8;
+    _mediaPlaybackVolumeAudioCategory = categoryCopy;
   }
 
-  else if ([v10 containsObject:@"Audio/Video"])
+  else if ([categoriesCopy containsObject:@"Audio/Video"])
   {
-    v11 = [(MPVolumeControllerSystemDataSource *)self _mediaPlaybackVolumeAudioCategory];
+    _mediaPlaybackVolumeAudioCategory = [(MPVolumeControllerSystemDataSource *)self _mediaPlaybackVolumeAudioCategory];
   }
 
-  else if (v9)
+  else if (currentCategoryCopy)
   {
-    v11 = v9;
+    _mediaPlaybackVolumeAudioCategory = currentCategoryCopy;
   }
 
   else
   {
-    v11 = [v10 anyObject];
+    _mediaPlaybackVolumeAudioCategory = [categoriesCopy anyObject];
   }
 
-  v12 = v11;
+  v12 = _mediaPlaybackVolumeAudioCategory;
 
   return v12;
 }
 
-- (void)_systemVolumeDidChange:(id)a3
+- (void)_systemVolumeDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [v5 objectForKeyedSubscript:*MEMORY[0x1E69AEA18]];
+  changeCopy = change;
+  userInfo = [changeCopy userInfo];
+  v6 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69AEA18]];
   [v6 floatValue];
   v8 = v7;
 
-  v9 = [v4 userInfo];
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x1E69AEA10]];
+  userInfo2 = [changeCopy userInfo];
+  v10 = [userInfo2 objectForKeyedSubscript:*MEMORY[0x1E69AEA10]];
 
-  v11 = [v4 userInfo];
-  v12 = [v11 objectForKeyedSubscript:*MEMORY[0x1E69AEA08]];
-  v13 = [v12 BOOLValue];
+  userInfo3 = [changeCopy userInfo];
+  v12 = [userInfo3 objectForKeyedSubscript:*MEMORY[0x1E69AEA08]];
+  bOOLValue = [v12 BOOLValue];
 
-  v14 = [v4 userInfo];
+  userInfo4 = [changeCopy userInfo];
 
-  v15 = [v14 objectForKeyedSubscript:*MEMORY[0x1E69AE9F8]];
+  v15 = [userInfo4 objectForKeyedSubscript:*MEMORY[0x1E69AE9F8]];
 
   v16 = [v10 isEqualToString:@"RouteChange"];
   v17 = [v10 isEqualToString:@"CategoryChange"];
@@ -428,7 +428,7 @@ void __44__MPVolumeControllerSystemDataSource__setup__block_invoke(uint64_t a1)
     v26 = v8;
     v24 = v15;
     v25 = v10;
-    v28 = v13;
+    v28 = bOOLValue;
     v27 = v22;
     dispatch_async(MEMORY[0x1E69E96A0], v23);
   }
@@ -469,11 +469,11 @@ void __61__MPVolumeControllerSystemDataSource__systemVolumeDidChange___block_inv
   [*(a1 + 32) updateVolume:*(a1 + 64) silenceVolumeHUD:v10];
 }
 
-- (void)_routeDidChangeNotification:(id)a3
+- (void)_routeDidChangeNotification:(id)notification
 {
-  v4 = [a3 object];
+  object = [notification object];
   v5 = +[MPAVRoutingController systemRoute];
-  v6 = [v4 isEqual:v5];
+  v6 = [object isEqual:v5];
 
   if (v6)
   {
@@ -494,7 +494,7 @@ void __66__MPVolumeControllerSystemDataSource__routeDidChangeNotification___bloc
   [WeakRetained volumeControllerDataSource:v2 didChangeVolumeLabel:v3];
 }
 
-- (void)_mediaServerDiedNotification:(id)a3
+- (void)_mediaServerDiedNotification:(id)notification
 {
   [(MPVolumeControllerSystemDataSource *)self _tearDown];
   [(MPVolumeControllerSystemDataSource *)self _setup];
@@ -504,34 +504,34 @@ void __66__MPVolumeControllerSystemDataSource__routeDidChangeNotification___bloc
 
 - (void)endDecreasingRelativeVolume
 {
-  v3 = [(MPVolumeControllerSystemDataSource *)self volumeAudioCategory];
-  v4 = [(MPVolumeControllerSystemDataSource *)self _mediaPlaybackVolumeAudioCategory];
-  v5 = [v3 isEqualToString:v4];
+  volumeAudioCategory = [(MPVolumeControllerSystemDataSource *)self volumeAudioCategory];
+  _mediaPlaybackVolumeAudioCategory = [(MPVolumeControllerSystemDataSource *)self _mediaPlaybackVolumeAudioCategory];
+  v5 = [volumeAudioCategory isEqualToString:_mediaPlaybackVolumeAudioCategory];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
-    [v6 adjustVolume:5 queue:MEMORY[0x1E69E96A0] completion:&__block_literal_global_34];
+    mEMORY[0x1E69B09A0] = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
+    [mEMORY[0x1E69B09A0] adjustVolume:5 queue:MEMORY[0x1E69E96A0] completion:&__block_literal_global_34];
   }
 }
 
 - (void)endIncreasingRelativeVolume
 {
-  v3 = [(MPVolumeControllerSystemDataSource *)self volumeAudioCategory];
-  v4 = [(MPVolumeControllerSystemDataSource *)self _mediaPlaybackVolumeAudioCategory];
-  v5 = [v3 isEqualToString:v4];
+  volumeAudioCategory = [(MPVolumeControllerSystemDataSource *)self volumeAudioCategory];
+  _mediaPlaybackVolumeAudioCategory = [(MPVolumeControllerSystemDataSource *)self _mediaPlaybackVolumeAudioCategory];
+  v5 = [volumeAudioCategory isEqualToString:_mediaPlaybackVolumeAudioCategory];
 
   if (v5)
   {
-    v6 = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
-    [v6 adjustVolume:2 queue:MEMORY[0x1E69E96A0] completion:&__block_literal_global_32];
+    mEMORY[0x1E69B09A0] = [MEMORY[0x1E69B09A0] sharedLocalEndpoint];
+    [mEMORY[0x1E69B09A0] adjustVolume:2 queue:MEMORY[0x1E69E96A0] completion:&__block_literal_global_32];
   }
 }
 
-- (void)getVolumeValueWithCompletion:(id)a3
+- (void)getVolumeValueWithCompletion:(id)completion
 {
-  v4 = a3;
-  v10 = v4;
+  completionCopy = completion;
+  v10 = completionCopy;
   if (self->_volumeInitialized)
   {
     [(MPVolumeControllerSystemDataSource *)self volume];
@@ -547,20 +547,20 @@ void __66__MPVolumeControllerSystemDataSource__routeDidChangeNotification___bloc
       v7 = self->_pendingVolumeCompletions;
       self->_pendingVolumeCompletions = v6;
 
-      v4 = v10;
+      completionCopy = v10;
       pendingVolumeCompletions = self->_pendingVolumeCompletions;
     }
 
-    v8 = [v4 copy];
+    v8 = [completionCopy copy];
     v9 = _Block_copy(v8);
     [(NSMutableArray *)pendingVolumeCompletions addObject:v9];
   }
 }
 
-- (void)adjustVolumeValue:(float)a3
+- (void)adjustVolumeValue:(float)value
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3 * 100000.0;
+  v4 = value * 100000.0;
   v5 = floorf(v4) * 0.00001;
   v6 = os_log_create("com.apple.amp.mediaplayer", "Volume");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -568,7 +568,7 @@ void __66__MPVolumeControllerSystemDataSource__routeDidChangeNotification___bloc
     v8 = 138543874;
     v9 = objc_opt_class();
     v10 = 2048;
-    v11 = self;
+    selfCopy = self;
     v12 = 2048;
     v13 = v5;
     _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> Adjusting local endpoint volume by: %f", &v8, 0x20u);
@@ -587,16 +587,16 @@ void __50__MPVolumeControllerSystemDataSource__reloadQueue__block_invoke()
   _reloadQueue__queue = v0;
 }
 
-- (void)updateVolumeMuted:(BOOL)a3
+- (void)updateVolumeMuted:(BOOL)muted
 {
-  v3 = a3;
+  mutedCopy = muted;
   v27 = *MEMORY[0x1E69E9840];
-  if (!self->_volumeMutedInitialized || self->_muted != a3)
+  if (!self->_volumeMutedInitialized || self->_muted != muted)
   {
     self->_volumeMutedInitialized = 1;
-    self->_muted = a3;
+    self->_muted = muted;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    [WeakRetained volumeControllerDataSource:self didChangeMuted:v3];
+    [WeakRetained volumeControllerDataSource:self didChangeMuted:mutedCopy];
     v6 = MRMediaRemotePickedRouteVolumeControlCapabilitiesCopyDescription();
     v7 = os_log_create("com.apple.amp.mediaplayer", "Volume");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
@@ -609,7 +609,7 @@ void __50__MPVolumeControllerSystemDataSource__reloadQueue__block_invoke()
       v13 = 138544898;
       v14 = v8;
       v15 = 2048;
-      v16 = self;
+      selfCopy = self;
       v17 = 2048;
       v18 = volume;
       v19 = 2114;
@@ -619,15 +619,15 @@ void __50__MPVolumeControllerSystemDataSource__reloadQueue__block_invoke()
       v23 = 2112;
       v24 = v6;
       v25 = 1024;
-      v26 = muted;
+      mutedCopy2 = muted;
       _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> AVSystemController update mute to: %f | category %{public}@ | available: %{BOOL}u | capabilities: %@ | muted: %{BOOL}u", &v13, 0x40u);
     }
   }
 }
 
-- (void)updateVolumeControlCapabilities:(unsigned int)a3
+- (void)updateVolumeControlCapabilities:(unsigned int)capabilities
 {
-  v3 = *&a3;
+  v3 = *&capabilities;
   v26 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v6 = WeakRetained;
@@ -646,7 +646,7 @@ void __50__MPVolumeControllerSystemDataSource__reloadQueue__block_invoke()
       v12 = 138544898;
       v13 = v8;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2048;
       v17 = volume;
       v18 = 2114;
@@ -662,33 +662,33 @@ void __50__MPVolumeControllerSystemDataSource__reloadQueue__block_invoke()
   }
 }
 
-- (void)_notifyVolumeDidChage:(float)a3 silenceVolumeHUD:(BOOL)a4
+- (void)_notifyVolumeDidChage:(float)chage silenceVolumeHUD:(BOOL)d
 {
-  v4 = a4;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
-    *&v7 = a3;
-    [WeakRetained volumeControllerDataSource:self didChangeVolume:v4 silenceVolumeHUD:v7];
+    *&v7 = chage;
+    [WeakRetained volumeControllerDataSource:self didChangeVolume:dCopy silenceVolumeHUD:v7];
   }
 
   else
   {
-    *&v7 = a3;
+    *&v7 = chage;
     [WeakRetained volumeControllerDataSource:self didChangeVolume:v7];
   }
 }
 
-- (void)updateVolume:(float)a3 silenceVolumeHUD:(BOOL)a4
+- (void)updateVolume:(float)volume silenceVolumeHUD:(BOOL)d
 {
-  v4 = a4;
+  dCopy = d;
   v40 = *MEMORY[0x1E69E9840];
   if (!self->_volumeInitialized)
   {
     goto LABEL_5;
   }
 
-  v6 = self->_volume - a3;
+  v6 = self->_volume - volume;
   if (v6 < 0.0)
   {
     v6 = -v6;
@@ -698,9 +698,9 @@ void __50__MPVolumeControllerSystemDataSource__reloadQueue__block_invoke()
   {
 LABEL_5:
     self->_volumeInitialized = 1;
-    self->_volume = a3;
+    self->_volume = volume;
     [(MPVolumeControllerSystemDataSource *)self _effectiveVolume];
-    [(MPVolumeControllerSystemDataSource *)self _notifyVolumeDidChage:v4 silenceVolumeHUD:?];
+    [(MPVolumeControllerSystemDataSource *)self _notifyVolumeDidChage:dCopy silenceVolumeHUD:?];
     v7 = MRMediaRemotePickedRouteVolumeControlCapabilitiesCopyDescription();
     v8 = os_log_create("com.apple.amp.mediaplayer", "Volume");
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
@@ -713,9 +713,9 @@ LABEL_5:
       *buf = 138544898;
       v27 = v9;
       v28 = 2048;
-      v29 = self;
+      selfCopy = self;
       v30 = 2048;
-      v31 = volume;
+      volumeCopy = volume;
       v32 = 2114;
       v33 = volumeAudioCategory;
       v34 = 1024;
@@ -764,12 +764,12 @@ LABEL_5:
   }
 }
 
-- (void)setMuted:(BOOL)a3
+- (void)setMuted:(BOOL)muted
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (self->_muted != a3)
+  if (self->_muted != muted)
   {
-    v3 = a3;
+    mutedCopy = muted;
     v5 = os_log_create("com.apple.amp.mediaplayer", "Volume");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
@@ -778,15 +778,15 @@ LABEL_5:
       *buf = 138544130;
       v12 = v6;
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 1024;
-      v16 = v3;
+      v16 = mutedCopy;
       v17 = 2114;
       v18 = volumeAudioCategory;
       _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> AVSystemController set mute to: %{BOOL}u | category %{public}@", buf, 0x26u);
     }
 
-    [(MPVolumeControllerSystemDataSource *)self updateVolumeMuted:v3];
+    [(MPVolumeControllerSystemDataSource *)self updateVolumeMuted:mutedCopy];
     if (![(MPVolumeControllerSystemDataSource *)self _supportsNativeMute])
     {
       [(MPVolumeControllerSystemDataSource *)self _effectiveVolume];
@@ -799,7 +799,7 @@ LABEL_5:
     v9[2] = __47__MPVolumeControllerSystemDataSource_setMuted___block_invoke;
     v9[3] = &unk_1E7682280;
     v9[4] = self;
-    v10 = v3;
+    v10 = mutedCopy;
     dispatch_async(avscQueue, v9);
   }
 }
@@ -811,10 +811,10 @@ void __47__MPVolumeControllerSystemDataSource_setMuted___block_invoke(uint64_t a
   [v1 setAttribute:v2 forKey:*MEMORY[0x1E69AEA90] error:0];
 }
 
-- (void)setVolume:(float)a3
+- (void)setVolume:(float)volume
 {
   v20 = *MEMORY[0x1E69E9840];
-  if (self->_volume != a3)
+  if (self->_volume != volume)
   {
     v5 = os_log_create("com.apple.amp.mediaplayer", "Volume");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -824,15 +824,15 @@ void __47__MPVolumeControllerSystemDataSource_setMuted___block_invoke(uint64_t a
       *buf = 138544130;
       v13 = v6;
       v14 = 2048;
-      v15 = self;
+      selfCopy = self;
       v16 = 2048;
-      v17 = a3;
+      volumeCopy = volume;
       v18 = 2114;
       v19 = volumeAudioCategory;
       _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> AVSystemController set volume to: %f | category %{public}@", buf, 0x2Au);
     }
 
-    *&v8 = a3;
+    *&v8 = volume;
     [(MPVolumeControllerSystemDataSource *)self updateVolume:0 silenceVolumeHUD:v8];
     avscQueue = self->_avscQueue;
     v10[0] = MEMORY[0x1E69E9820];
@@ -840,48 +840,48 @@ void __47__MPVolumeControllerSystemDataSource_setMuted___block_invoke(uint64_t a
     v10[2] = __48__MPVolumeControllerSystemDataSource_setVolume___block_invoke;
     v10[3] = &unk_1E76811D8;
     v10[4] = self;
-    v11 = a3;
+    volumeCopy2 = volume;
     dispatch_async(avscQueue, v10);
   }
 }
 
-- (void)_setVolumeAudioCategory:(id)a3
+- (void)_setVolumeAudioCategory:(id)category
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  categoryCopy = category;
   v5 = os_log_create("com.apple.amp.mediaplayer", "Volume");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138543874;
     v8 = objc_opt_class();
     v9 = 2048;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
+    v12 = categoryCopy;
     _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> changed volumeAudioCategory to: %{public}@", &v7, 0x20u);
   }
 
   volumeAudioCategory = self->_volumeAudioCategory;
-  self->_volumeAudioCategory = v4;
+  self->_volumeAudioCategory = categoryCopy;
 }
 
-- (void)setVolumeAudioCategory:(id)a3
+- (void)setVolumeAudioCategory:(id)category
 {
-  v4 = a3;
-  if (!v4)
+  categoryCopy = category;
+  if (!categoryCopy)
   {
-    v4 = [(MPVolumeControllerSystemDataSource *)self _mediaPlaybackVolumeAudioCategory];
+    categoryCopy = [(MPVolumeControllerSystemDataSource *)self _mediaPlaybackVolumeAudioCategory];
   }
 
   volumeAudioCategories = self->_volumeAudioCategories;
-  v10 = v4;
-  if (!volumeAudioCategories || (v6 = [(NSSet *)volumeAudioCategories containsObject:v4], v4 = v10, v6))
+  v10 = categoryCopy;
+  if (!volumeAudioCategories || (v6 = [(NSSet *)volumeAudioCategories containsObject:categoryCopy], categoryCopy = v10, v6))
   {
     volumeAudioCategory = self->_volumeAudioCategory;
-    if (volumeAudioCategory != v4)
+    if (volumeAudioCategory != categoryCopy)
     {
       v8 = [(NSString *)volumeAudioCategory isEqual:v10];
-      v4 = v10;
+      categoryCopy = v10;
       if ((v8 & 1) == 0)
       {
         [(MPVolumeControllerSystemDataSource *)self _setVolumeAudioCategory:v10];
@@ -889,7 +889,7 @@ void __47__MPVolumeControllerSystemDataSource_setMuted___block_invoke(uint64_t a
         [WeakRetained volumeControllerDataSource:self didChangeVolumeAudioCategory:v10];
 
         [(MPVolumeControllerSystemDataSource *)self reload];
-        v4 = v10;
+        categoryCopy = v10;
       }
     }
   }
@@ -920,17 +920,17 @@ void __47__MPVolumeControllerSystemDataSource_setMuted___block_invoke(uint64_t a
   [(MPVolumeControllerSystemDataSource *)&v3 dealloc];
 }
 
-- (MPVolumeControllerSystemDataSource)initWithVolumeAudioCategories:(id)a3
+- (MPVolumeControllerSystemDataSource)initWithVolumeAudioCategories:(id)categories
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [(MPVolumeControllerSystemDataSource *)self initCommon];
-  if (v6)
+  categoriesCopy = categories;
+  initCommon = [(MPVolumeControllerSystemDataSource *)self initCommon];
+  if (initCommon)
   {
-    if (!v5 || ![v5 count])
+    if (!categoriesCopy || ![categoriesCopy count])
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:v6 file:@"MPVolumeControllerSystemDataSource.m" lineNumber:97 description:@"Must provide at least one cateogry"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:initCommon file:@"MPVolumeControllerSystemDataSource.m" lineNumber:97 description:@"Must provide at least one cateogry"];
     }
 
     v7 = os_log_create("com.apple.amp.mediaplayer", "Volume");
@@ -939,23 +939,23 @@ void __47__MPVolumeControllerSystemDataSource_setMuted___block_invoke(uint64_t a
       *buf = 138543874;
       v15 = objc_opt_class();
       v16 = 2048;
-      v17 = v6;
+      v17 = initCommon;
       v18 = 2114;
-      v19 = v5;
+      v19 = categoriesCopy;
       _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> init volumeAudioCategories: %{public}@", buf, 0x20u);
     }
 
-    avscQueue = v6->_avscQueue;
+    avscQueue = initCommon->_avscQueue;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __68__MPVolumeControllerSystemDataSource_initWithVolumeAudioCategories___block_invoke;
     v11[3] = &unk_1E76823C0;
-    v12 = v6;
-    v13 = v5;
+    v12 = initCommon;
+    v13 = categoriesCopy;
     dispatch_async(avscQueue, v11);
   }
 
-  return v6;
+  return initCommon;
 }
 
 void __68__MPVolumeControllerSystemDataSource_initWithVolumeAudioCategories___block_invoke(uint64_t a1)
@@ -998,19 +998,19 @@ void __68__MPVolumeControllerSystemDataSource_initWithVolumeAudioCategories___bl
   [*(a1 + 32) reload];
 }
 
-- (MPVolumeControllerSystemDataSource)initWithVolumeAudioCategory:(id)a3
+- (MPVolumeControllerSystemDataSource)initWithVolumeAudioCategory:(id)category
 {
-  v4 = a3;
-  v5 = [(MPVolumeControllerSystemDataSource *)self initCommon];
-  v6 = v5;
-  if (v5)
+  categoryCopy = category;
+  initCommon = [(MPVolumeControllerSystemDataSource *)self initCommon];
+  v6 = initCommon;
+  if (initCommon)
   {
-    if (!v4)
+    if (!categoryCopy)
     {
-      v4 = [(MPVolumeControllerSystemDataSource *)v5 _mediaPlaybackVolumeAudioCategory];
+      categoryCopy = [(MPVolumeControllerSystemDataSource *)initCommon _mediaPlaybackVolumeAudioCategory];
     }
 
-    [(MPVolumeControllerSystemDataSource *)v6 _setVolumeAudioCategory:v4];
+    [(MPVolumeControllerSystemDataSource *)v6 _setVolumeAudioCategory:categoryCopy];
     [(MPVolumeControllerSystemDataSource *)v6 reload];
   }
 

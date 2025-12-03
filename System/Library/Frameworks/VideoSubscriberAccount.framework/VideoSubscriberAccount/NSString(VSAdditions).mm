@@ -13,20 +13,20 @@
 
 - (unint64_t)vs_unsignedLongLongValue
 {
-  v1 = [a1 UTF8String];
+  uTF8String = [self UTF8String];
 
-  return strtoull(v1, 0, 0);
+  return strtoull(uTF8String, 0, 0);
 }
 
 - (BOOL)vs_composedCharacterIsWhitespace
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
 
-  v2 = [MEMORY[0x277CCA900] whitespaceCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  whitespaceCharacterSet = [MEMORY[0x277CCA900] whitespaceCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:whitespaceCharacterSet];
   v4 = [v3 length] == 0;
 
   return v4;
@@ -34,13 +34,13 @@
 
 - (BOOL)vs_composedCharacterIsLetter
 {
-  if (![a1 length])
+  if (![self length])
   {
     return 0;
   }
 
-  v2 = [MEMORY[0x277CCA900] letterCharacterSet];
-  v3 = [a1 stringByTrimmingCharactersInSet:v2];
+  letterCharacterSet = [MEMORY[0x277CCA900] letterCharacterSet];
+  v3 = [self stringByTrimmingCharactersInSet:letterCharacterSet];
   v4 = [v3 length] == 0;
 
   return v4;
@@ -48,11 +48,11 @@
 
 - (uint64_t)vs_composedCharacterIsUppercase
 {
-  result = [a1 vs_composedCharacterIsLetter];
+  result = [self vs_composedCharacterIsLetter];
   if (result)
   {
-    v3 = [a1 uppercaseString];
-    v4 = [a1 isEqualToString:v3];
+    uppercaseString = [self uppercaseString];
+    v4 = [self isEqualToString:uppercaseString];
 
     return v4;
   }
@@ -62,11 +62,11 @@
 
 - (uint64_t)vs_composedCharacterIsLowercase
 {
-  result = [a1 vs_composedCharacterIsLetter];
+  result = [self vs_composedCharacterIsLetter];
   if (result)
   {
-    v3 = [a1 lowercaseString];
-    v4 = [a1 isEqualToString:v3];
+    lowercaseString = [self lowercaseString];
+    v4 = [self isEqualToString:lowercaseString];
 
     return v4;
   }
@@ -76,11 +76,11 @@
 
 + (void)vs_localizedStringFromBool:()VSAdditions
 {
-  v4 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v5 = [v4 localizedStringForKey:@"STRING_REPRESENTATION_OF_YES" value:0 table:0];
+  vs_frameworkBundle = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v5 = [vs_frameworkBundle localizedStringForKey:@"STRING_REPRESENTATION_OF_YES" value:0 table:0];
 
-  v6 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
-  v7 = [v6 localizedStringForKey:@"STRING_REPRESENTATION_OF_NO" value:0 table:0];
+  vs_frameworkBundle2 = [MEMORY[0x277CCA8D8] vs_frameworkBundle];
+  v7 = [vs_frameworkBundle2 localizedStringForKey:@"STRING_REPRESENTATION_OF_NO" value:0 table:0];
 
   if (a3)
   {

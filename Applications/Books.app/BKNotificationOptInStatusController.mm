@@ -1,25 +1,25 @@
 @interface BKNotificationOptInStatusController
 - (BKNotificationOptInStatusController)init;
-- (BKNotificationOptInStatusController)initWithCenter:(id)a3 status:(int64_t)a4;
+- (BKNotificationOptInStatusController)initWithCenter:(id)center status:(int64_t)status;
 - (void)checkAndReportOptInStatus;
 @end
 
 @implementation BKNotificationOptInStatusController
 
-- (BKNotificationOptInStatusController)initWithCenter:(id)a3 status:(int64_t)a4
+- (BKNotificationOptInStatusController)initWithCenter:(id)center status:(int64_t)status
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___BKNotificationOptInStatusController_center) = a3;
-  *(&self->super.isa + OBJC_IVAR___BKNotificationOptInStatusController_status) = a4;
+  *(&self->super.isa + OBJC_IVAR___BKNotificationOptInStatusController_center) = center;
+  *(&self->super.isa + OBJC_IVAR___BKNotificationOptInStatusController_status) = status;
   v10.receiver = self;
   v10.super_class = ObjectType;
-  v8 = a3;
+  centerCopy = center;
   return [(BKNotificationOptInStatusController *)&v10 init];
 }
 
 - (void)checkAndReportOptInStatus
 {
-  v2 = self;
+  selfCopy = self;
   NotificationOptInStatusController.checkAndReportOptInStatus()();
 }
 

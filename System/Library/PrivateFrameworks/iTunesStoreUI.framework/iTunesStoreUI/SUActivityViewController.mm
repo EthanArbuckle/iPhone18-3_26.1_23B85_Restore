@@ -1,26 +1,26 @@
 @interface SUActivityViewController
-- (SUActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4;
-- (id)_titleForActivity:(id)a3;
-- (void)_performActivity:(id)a3;
-- (void)_prepareActivity:(id)a3;
+- (SUActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities;
+- (id)_titleForActivity:(id)activity;
+- (void)_performActivity:(id)activity;
+- (void)_prepareActivity:(id)activity;
 - (void)dealloc;
-- (void)setTitle:(id)a3 forActivityType:(id)a4;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)setTitle:(id)title forActivityType:(id)type;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SUActivityViewController
 
-- (SUActivityViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4
+- (SUActivityViewController)initWithActivityItems:(id)items applicationActivities:(id)activities
 {
   v7.receiver = self;
   v7.super_class = SUActivityViewController;
-  v5 = [(SUActivityViewController *)&v7 initWithActivityItems:a3 applicationActivities:a4];
+  v5 = [(SUActivityViewController *)&v7 initWithActivityItems:items applicationActivities:activities];
   if (v5)
   {
-    v5->_suActivityItems = [a3 copy];
+    v5->_suActivityItems = [items copy];
   }
 
   return v5;
@@ -46,10 +46,10 @@
   [(SUActivityViewController *)&v4 dealloc];
 }
 
-- (void)setTitle:(id)a3 forActivityType:(id)a4
+- (void)setTitle:(id)title forActivityType:(id)type
 {
   customTitles = self->_customTitles;
-  if (a3)
+  if (title)
   {
     if (!customTitles)
     {
@@ -57,17 +57,17 @@
       self->_customTitles = customTitles;
     }
 
-    [(NSMutableDictionary *)customTitles setObject:a3 forKey:a4];
+    [(NSMutableDictionary *)customTitles setObject:title forKey:type];
   }
 
   else
   {
 
-    [(NSMutableDictionary *)customTitles removeObjectForKey:a4];
+    [(NSMutableDictionary *)customTitles removeObjectForKey:type];
   }
 }
 
-- (void)_performActivity:(id)a3
+- (void)_performActivity:(id)activity
 {
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
@@ -89,7 +89,7 @@
           objc_enumerationMutation(suActivityItems);
         }
 
-        [*(*(&v11 + 1) + 8 * i) setSUActivity:a3];
+        [*(*(&v11 + 1) + 8 * i) setSUActivity:activity];
       }
 
       v7 = [(NSArray *)suActivityItems countByEnumeratingWithState:&v11 objects:v15 count:16];
@@ -100,17 +100,17 @@
 
   v10.receiver = self;
   v10.super_class = SUActivityViewController;
-  [(SUActivityViewController *)&v10 _performActivity:a3];
+  [(SUActivityViewController *)&v10 _performActivity:activity];
 }
 
-- (void)_prepareActivity:(id)a3
+- (void)_prepareActivity:(id)activity
 {
   v19 = *MEMORY[0x1E69E9840];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [a3 socialComposeViewController];
-    [v5 removeAllURLs];
+    socialComposeViewController = [activity socialComposeViewController];
+    [socialComposeViewController removeAllURLs];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -131,11 +131,11 @@
           }
 
           v11 = *(*(&v14 + 1) + 8 * i);
-          v12 = [v11 suLastProvidedItem];
+          suLastProvidedItem = [v11 suLastProvidedItem];
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [v5 addURL:v12 withPreviewImage:{objc_msgSend(v11, "suPreviewImage")}];
+            [socialComposeViewController addURL:suLastProvidedItem withPreviewImage:{objc_msgSend(v11, "suPreviewImage")}];
           }
         }
 
@@ -148,27 +148,27 @@
 
   v13.receiver = self;
   v13.super_class = SUActivityViewController;
-  [(SUActivityViewController *)&v13 _prepareActivity:a3];
+  [(SUActivityViewController *)&v13 _prepareActivity:activity];
 }
 
-- (id)_titleForActivity:(id)a3
+- (id)_titleForActivity:(id)activity
 {
   result = [(NSMutableDictionary *)self->_customTitles objectForKey:?];
   if (!result)
   {
     v6.receiver = self;
     v6.super_class = SUActivityViewController;
-    return [(SUActivityViewController *)&v6 _titleForActivity:a3];
+    return [(SUActivityViewController *)&v6 _titleForActivity:activity];
   }
 
   return result;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v7.receiver = self;
   v7.super_class = SUActivityViewController;
-  [(SUActivityViewController *)&v7 viewDidAppear:a3];
+  [(SUActivityViewController *)&v7 viewDidAppear:appear];
   transitionSafetyCount = self->_transitionSafetyCount;
   v5 = transitionSafetyCount < 1;
   v6 = transitionSafetyCount - 1;
@@ -179,11 +179,11 @@
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v7.receiver = self;
   v7.super_class = SUActivityViewController;
-  [(SUActivityViewController *)&v7 viewDidDisappear:a3];
+  [(SUActivityViewController *)&v7 viewDidDisappear:disappear];
   transitionSafetyCount = self->_transitionSafetyCount;
   v5 = transitionSafetyCount < 1;
   v6 = transitionSafetyCount - 1;
@@ -194,10 +194,10 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
-  if (a3)
+  appearCopy = appear;
+  if (appear)
   {
     ++self->_transitionSafetyCount;
     [objc_opt_class() beginTransitionSafety];
@@ -205,12 +205,12 @@
 
   v5.receiver = self;
   v5.super_class = SUActivityViewController;
-  [(SUActivityViewController *)&v5 viewWillAppear:v3];
+  [(SUActivityViewController *)&v5 viewWillAppear:appearCopy];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   transitionSafetyCount = self->_transitionSafetyCount;
   if (transitionSafetyCount >= 1)
   {
@@ -224,7 +224,7 @@
     while (transitionSafetyCount > 0);
   }
 
-  if (v3)
+  if (disappearCopy)
   {
     self->_transitionSafetyCount = transitionSafetyCount + 1;
     [objc_opt_class() beginTransitionSafety];
@@ -232,7 +232,7 @@
 
   v6.receiver = self;
   v6.super_class = SUActivityViewController;
-  [(SUActivityViewController *)&v6 viewWillDisappear:v3];
+  [(SUActivityViewController *)&v6 viewWillDisappear:disappearCopy];
 }
 
 @end

@@ -1,22 +1,22 @@
 @interface ENExposureDetectionHistoryFile
-- (ENExposureDetectionHistoryFile)initWithXPCObject:(id)a3 error:(id *)a4;
+- (ENExposureDetectionHistoryFile)initWithXPCObject:(id)object error:(id *)error;
 - (id)description;
-- (void)encodeWithXPCObject:(id)a3;
+- (void)encodeWithXPCObject:(id)object;
 @end
 
 @implementation ENExposureDetectionHistoryFile
 
-- (void)encodeWithXPCObject:(id)a3
+- (void)encodeWithXPCObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   fileHash = self->_fileHash;
   if (fileHash)
   {
     v6 = fileHash;
-    v7 = [(NSData *)v6 bytes];
-    if (v7)
+    bytes = [(NSData *)v6 bytes];
+    if (bytes)
     {
-      v8 = v7;
+      v8 = bytes;
     }
 
     else
@@ -26,30 +26,30 @@
 
     v9 = [(NSData *)v6 length];
 
-    xpc_dictionary_set_data(v4, "fileHash", v8, v9);
+    xpc_dictionary_set_data(objectCopy, "fileHash", v8, v9);
   }
 
   [(NSDate *)self->_processDate timeIntervalSinceReferenceDate];
-  xpc_dictionary_set_double(v4, "date", v10);
-  xpc_dictionary_set_uint64(v4, "keyCt", [(NSNumber *)self->_keyCount unsignedLongLongValue]);
+  xpc_dictionary_set_double(objectCopy, "date", v10);
+  xpc_dictionary_set_uint64(objectCopy, "keyCt", [(NSNumber *)self->_keyCount unsignedLongLongValue]);
   matchCount = self->_matchCount;
   if (matchCount)
   {
-    xpc_dictionary_set_uint64(v4, "mtKC", [(NSNumber *)matchCount unsignedLongLongValue]);
+    xpc_dictionary_set_uint64(objectCopy, "mtKC", [(NSNumber *)matchCount unsignedLongLongValue]);
   }
 
   if (self->_metadata)
   {
     v12 = _CFXPCCreateXPCObjectFromCFObject();
-    xpc_dictionary_set_value(v4, "meta", v12);
+    xpc_dictionary_set_value(objectCopy, "meta", v12);
   }
 
   sourceAppBundleIdentifier = self->_sourceAppBundleIdentifier;
-  xdict = v4;
-  v14 = [(NSString *)sourceAppBundleIdentifier UTF8String];
-  if (v14)
+  xdict = objectCopy;
+  uTF8String = [(NSString *)sourceAppBundleIdentifier UTF8String];
+  if (uTF8String)
   {
-    xpc_dictionary_set_string(xdict, "aBid", v14);
+    xpc_dictionary_set_string(xdict, "aBid", uTF8String);
   }
 
   sourceRegion = self->_sourceRegion;
@@ -119,18 +119,18 @@
   return v9;
 }
 
-- (ENExposureDetectionHistoryFile)initWithXPCObject:(id)a3 error:(id *)a4
+- (ENExposureDetectionHistoryFile)initWithXPCObject:(id)object error:(id *)error
 {
-  v6 = a3;
+  objectCopy = object;
   v27.receiver = self;
   v27.super_class = ENExposureDetectionHistoryFile;
   v7 = [(ENExposureDetectionHistoryFile *)&v27 init];
   if (!v7)
   {
-    if (a4)
+    if (error)
     {
       ENErrorF(2);
-      *a4 = v25 = 0;
+      *error = v25 = 0;
       goto LABEL_12;
     }
 
@@ -145,33 +145,33 @@ LABEL_15:
     goto LABEL_15;
   }
 
-  v8 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:{xpc_dictionary_get_double(v6, "date")}];
+  v8 = [objc_alloc(MEMORY[0x277CBEAA8]) initWithTimeIntervalSinceReferenceDate:{xpc_dictionary_get_double(objectCopy, "date")}];
   processDate = v7->_processDate;
   v7->_processDate = v8;
 
-  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{xpc_dictionary_get_uint64(v6, "keyCt")}];
+  v10 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{xpc_dictionary_get_uint64(objectCopy, "keyCt")}];
   keyCount = v7->_keyCount;
   v7->_keyCount = v10;
 
-  v12 = xpc_dictionary_get_value(v6, "mtKC");
+  v12 = xpc_dictionary_get_value(objectCopy, "mtKC");
 
   if (v12)
   {
-    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{xpc_dictionary_get_uint64(v6, "mtKC")}];
+    v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:{xpc_dictionary_get_uint64(objectCopy, "mtKC")}];
     matchCount = v7->_matchCount;
     v7->_matchCount = v13;
   }
 
-  v15 = xpc_dictionary_get_value(v6, "meta");
+  v15 = xpc_dictionary_get_value(objectCopy, "meta");
   v16 = v15;
   if (v15)
   {
     if (MEMORY[0x2383EE9C0](v15) != MEMORY[0x277D86468])
     {
-      if (a4)
+      if (error)
       {
         ENErrorF(2);
-        *a4 = v25 = 0;
+        *error = v25 = 0;
         goto LABEL_11;
       }
 
@@ -184,9 +184,9 @@ LABEL_21:
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
-      if (a4)
+      if (error)
       {
-        *a4 = ENErrorF(2);
+        *error = ENErrorF(2);
       }
 
       goto LABEL_21;

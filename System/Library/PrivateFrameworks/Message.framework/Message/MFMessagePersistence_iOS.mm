@@ -1,43 +1,43 @@
 @interface MFMessagePersistence_iOS
 + (OS_os_log)log;
 - (BOOL)messageFilesAreClassC;
-- (BOOL)messageFilesNeedProtectionClassMigration:(BOOL *)a3;
-- (BOOL)persistMessageAuthenticationState:(int64_t)a3 forMessage:(id)a4;
-- (MFMessagePersistence_iOS)initWithMailboxPersistence:(id)a3 database:(id)a4 userProfileProvider:(id)a5 blockedSenderManager:(id)a6 vipReader:(id)a7 hookRegistry:(id)a8 library:(id)a9;
-- (id)_libraryMessageForMessageObjectID:(id)a3 preferNonOutgoingMessages:(BOOL)a4;
-- (id)_requestSummaryForLibraryMessage:(id)a3;
-- (id)baseMessageForOutgoingMessage:(id)a3 isDraft:(BOOL)a4;
-- (id)cachedDatabaseIDsDictionaryForGlobalMessageIDs:(id)a3;
+- (BOOL)messageFilesNeedProtectionClassMigration:(BOOL *)migration;
+- (BOOL)persistMessageAuthenticationState:(int64_t)state forMessage:(id)message;
+- (MFMessagePersistence_iOS)initWithMailboxPersistence:(id)persistence database:(id)database userProfileProvider:(id)provider blockedSenderManager:(id)manager vipReader:(id)reader hookRegistry:(id)registry library:(id)library;
+- (id)_libraryMessageForMessageObjectID:(id)d preferNonOutgoingMessages:(BOOL)messages;
+- (id)_requestSummaryForLibraryMessage:(id)message;
+- (id)baseMessageForOutgoingMessage:(id)message isDraft:(BOOL)draft;
+- (id)cachedDatabaseIDsDictionaryForGlobalMessageIDs:(id)ds;
 - (id)collectStatistics;
 - (id)createContextForIteration;
 - (id)enabledAccountMailboxesExpression;
 - (id)expressionForFilteringUnavailableMessages;
 - (id)expressionForFindingOnlyJournaledMessages;
-- (id)flagsForLegacyFlags:(int64_t)a3 numberOfAttachments:(int64_t *)a4;
-- (id)fullDataIfAvailableForMessage:(id)a3;
+- (id)flagsForLegacyFlags:(int64_t)flags numberOfAttachments:(int64_t *)attachments;
+- (id)fullDataIfAvailableForMessage:(id)message;
 - (id)library;
-- (id)libraryMessageForMessageObjectID:(id)a3;
-- (id)mailboxesQueryExpressionForMailboxDatabaseIDs:(id)a3 forExclusion:(BOOL)a4;
-- (id)messageIDsWithBasePaths:(id)a3;
-- (id)persistedMessageForSQLRow:(id)a3 connection:(id)a4 iterationContext:(id)a5;
-- (id)requestContentForMessageObjectID:(id)a3 requestID:(unint64_t)a4 options:(id)a5 delegate:(id)a6 completionHandler:(id)a7;
-- (id)requestSummaryForMessageObjectID:(id)a3;
-- (int64_t)globalIDForMessageWithDatabaseID:(int64_t)a3 mailboxScope:(id *)a4;
-- (void)generateSummaryForMessage:(id)a3 downloadIfNecessary:(BOOL)a4;
-- (void)messageObjectIDForSearchIndexerIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)persistenceDidChangeGlobalMessageID:(int64_t)a3 orConversationID:(int64_t)a4 message:(id)a5 generationWindow:(id)a6;
-- (void)setContentProtectionForAttachmentFile:(id)a3;
-- (void)setMigrationIsComplete:(BOOL)a3;
+- (id)libraryMessageForMessageObjectID:(id)d;
+- (id)mailboxesQueryExpressionForMailboxDatabaseIDs:(id)ds forExclusion:(BOOL)exclusion;
+- (id)messageIDsWithBasePaths:(id)paths;
+- (id)persistedMessageForSQLRow:(id)row connection:(id)connection iterationContext:(id)context;
+- (id)requestContentForMessageObjectID:(id)d requestID:(unint64_t)iD options:(id)options delegate:(id)delegate completionHandler:(id)handler;
+- (id)requestSummaryForMessageObjectID:(id)d;
+- (int64_t)globalIDForMessageWithDatabaseID:(int64_t)d mailboxScope:(id *)scope;
+- (void)generateSummaryForMessage:(id)message downloadIfNecessary:(BOOL)necessary;
+- (void)messageObjectIDForSearchIndexerIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)persistenceDidChangeGlobalMessageID:(int64_t)d orConversationID:(int64_t)iD message:(id)message generationWindow:(id)window;
+- (void)setContentProtectionForAttachmentFile:(id)file;
+- (void)setMigrationIsComplete:(BOOL)complete;
 @end
 
 @implementation MFMessagePersistence_iOS
 
 - (id)enabledAccountMailboxesExpression
 {
-  v2 = [(MFMessagePersistence_iOS *)&self->super.super.isa library];
-  v3 = [v2 enabledAccountMailboxesExpression];
+  library = [(MFMessagePersistence_iOS *)&self->super.super.isa library];
+  enabledAccountMailboxesExpression = [library enabledAccountMailboxesExpression];
 
-  return v3;
+  return enabledAccountMailboxesExpression;
 }
 
 - (id)library
@@ -64,7 +64,7 @@
   block[1] = 3221225472;
   block[2] = __31__MFMessagePersistence_iOS_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_24 != -1)
   {
     dispatch_once(&log_onceToken_24, block);
@@ -75,22 +75,22 @@
   return v2;
 }
 
-- (MFMessagePersistence_iOS)initWithMailboxPersistence:(id)a3 database:(id)a4 userProfileProvider:(id)a5 blockedSenderManager:(id)a6 vipReader:(id)a7 hookRegistry:(id)a8 library:(id)a9
+- (MFMessagePersistence_iOS)initWithMailboxPersistence:(id)persistence database:(id)database userProfileProvider:(id)provider blockedSenderManager:(id)manager vipReader:(id)reader hookRegistry:(id)registry library:(id)library
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  persistenceCopy = persistence;
+  databaseCopy = database;
+  providerCopy = provider;
+  managerCopy = manager;
+  readerCopy = reader;
+  registryCopy = registry;
+  libraryCopy = library;
   v37.receiver = self;
   v37.super_class = MFMessagePersistence_iOS;
-  v22 = [(MFMessagePersistence_iOS *)&v37 initWithMailboxPersistence:v15 database:v16 hookRegistry:v20 userProfileProvider:v17 blockedSenderManager:v18 vipReader:v19 gmailLabelPersistence:0];
+  v22 = [(MFMessagePersistence_iOS *)&v37 initWithMailboxPersistence:persistenceCopy database:databaseCopy hookRegistry:registryCopy userProfileProvider:providerCopy blockedSenderManager:managerCopy vipReader:readerCopy gmailLabelPersistence:0];
   v23 = v22;
   if (v22)
   {
-    objc_storeWeak(&v22->_library, v21);
+    objc_storeWeak(&v22->_library, libraryCopy);
     v24 = [MEMORY[0x1E699B978] operationQueueSchedulerWithMaxConcurrentOperationCount:3];
     networkContentLoadScheduler = v23->_networkContentLoadScheduler;
     v23->_networkContentLoadScheduler = v24;
@@ -114,16 +114,16 @@
     requestSummaryQueue = v23->_requestSummaryQueue;
     v23->_requestSummaryQueue = v34;
 
-    [v20 registerMessageChangeHookResponder:v23];
+    [registryCopy registerMessageChangeHookResponder:v23];
   }
 
   return v23;
 }
 
-- (id)messageIDsWithBasePaths:(id)a3
+- (id)messageIDsWithBasePaths:(id)paths
 {
   v27[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pathsCopy = paths;
   v5 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v27[0] = @"global_message_id";
   v27[1] = @"mailbox";
@@ -135,10 +135,10 @@
   v10 = [v8 initWithResult:v9 table:@"messages"];
 
   v11 = [MEMORY[0x1E699B8C8] column:@"global_message_id"];
-  v12 = [v11 in:v4];
+  v12 = [v11 in:pathsCopy];
   [v10 setWhere:v12];
 
-  v13 = [(MFMessagePersistence_iOS *)self database];
+  database = [(MFMessagePersistence_iOS *)self database];
   v14 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMessagePersistence_iOS messageIDsWithBasePaths:]"];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
@@ -146,12 +146,12 @@
   v22[3] = &unk_1E7AA3C20;
   v15 = v10;
   v23 = v15;
-  v24 = self;
+  selfCopy = self;
   v16 = v5;
   v25 = v16;
-  v17 = v4;
+  v17 = pathsCopy;
   v26 = v17;
-  [v13 __performReadWithCaller:v14 usingBlock:v22];
+  [database __performReadWithCaller:v14 usingBlock:v22];
 
   v18 = v26;
   v19 = v16;
@@ -160,19 +160,19 @@
   return v16;
 }
 
-- (id)baseMessageForOutgoingMessage:(id)a3 isDraft:(BOOL)a4
+- (id)baseMessageForOutgoingMessage:(id)message isDraft:(BOOL)draft
 {
-  v4 = a4;
-  v5 = [a3 messageData];
-  v6 = [(MFMessage *)MFMailMessage messageWithRFC822Data:v5];
+  draftCopy = draft;
+  messageData = [message messageData];
+  v6 = [(MFMessage *)MFMailMessage messageWithRFC822Data:messageData];
 
-  if (v4)
+  if (draftCopy)
   {
     [v6 markAsViewed];
     [v6 setMessageFlags:{objc_msgSend(v6, "messageFlags") | 0x40}];
-    v7 = [v6 senders];
-    v8 = [v7 firstObject];
-    v9 = [MailAccount accountContainingEmailAddress:v8];
+    senders = [v6 senders];
+    firstObject = [senders firstObject];
+    v9 = [MailAccount accountContainingEmailAddress:firstObject];
 
     v10 = [v9 mailboxUidOfType:5 createIfNeeded:1];
     v11 = [v9 storeForMailboxUid:v10];
@@ -187,16 +187,16 @@
   v15[2] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = MFMessagePersistence_iOS;
-  v2 = [(MFMessagePersistence_iOS *)&v14 expressionForFilteringUnavailableMessages];
+  expressionForFilteringUnavailableMessages = [(MFMessagePersistence_iOS *)&v14 expressionForFilteringUnavailableMessages];
   v3 = MEMORY[0x1E699B8F8];
   v4 = MEMORY[0x1E699B8C8];
-  v5 = [MEMORY[0x1E699B5C0] messagesTableName];
-  v6 = [v4 table:v5 column:@"journaled"];
+  messagesTableName = [MEMORY[0x1E699B5C0] messagesTableName];
+  v6 = [v4 table:messagesTableName column:@"journaled"];
   v7 = [v6 equalTo:&unk_1F27760F0];
   v8 = [v3 unlikely:v7];
 
   v9 = MEMORY[0x1E699B898];
-  v15[0] = v2;
+  v15[0] = expressionForFilteringUnavailableMessages;
   v15[1] = v8;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   v11 = [v9 combined:v10];
@@ -211,16 +211,16 @@
   v15[2] = *MEMORY[0x1E69E9840];
   v14.receiver = self;
   v14.super_class = MFMessagePersistence_iOS;
-  v2 = [(MFMessagePersistence_iOS *)&v14 expressionForFilteringUnavailableMessages];
+  expressionForFilteringUnavailableMessages = [(MFMessagePersistence_iOS *)&v14 expressionForFilteringUnavailableMessages];
   v3 = MEMORY[0x1E699B8F8];
   v4 = MEMORY[0x1E699B8C8];
-  v5 = [MEMORY[0x1E699B5C0] messagesTableName];
-  v6 = [v4 table:v5 column:@"journaled"];
+  messagesTableName = [MEMORY[0x1E699B5C0] messagesTableName];
+  v6 = [v4 table:messagesTableName column:@"journaled"];
   v7 = [v6 equalTo:&unk_1F2776108];
   v8 = [v3 likely:v7];
 
   v9 = MEMORY[0x1E699B898];
-  v15[0] = v2;
+  v15[0] = expressionForFilteringUnavailableMessages;
   v15[1] = v8;
   v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
   v11 = [v9 combined:v10];
@@ -230,39 +230,39 @@
   return v11;
 }
 
-- (id)requestContentForMessageObjectID:(id)a3 requestID:(unint64_t)a4 options:(id)a5 delegate:(id)a6 completionHandler:(id)a7
+- (id)requestContentForMessageObjectID:(id)d requestID:(unint64_t)iD options:(id)options delegate:(id)delegate completionHandler:(id)handler
 {
   v93 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v68 = a5;
-  v63 = a6;
-  v64 = a7;
-  v65 = v12;
-  v13 = [(MFMessagePersistence_iOS *)self _libraryMessageForMessageObjectID:v12 preferNonOutgoingMessages:1];
+  dCopy = d;
+  optionsCopy = options;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  v65 = dCopy;
+  v13 = [(MFMessagePersistence_iOS *)self _libraryMessageForMessageObjectID:dCopy preferNonOutgoingMessages:1];
   if (!v13)
   {
     goto LABEL_5;
   }
 
-  v14 = [v68 cacheBehavior];
-  if (v14 == 1)
+  cacheBehavior = [optionsCopy cacheBehavior];
+  if (cacheBehavior == 1)
   {
-    v29 = [v13 messageStore];
-    [v29 flushCacheForMessage:v13];
+    messageStore = [v13 messageStore];
+    [messageStore flushCacheForMessage:v13];
   }
 
-  else if (v14 == 2)
+  else if (cacheBehavior == 2)
   {
-    v15 = [v13 messageStore];
-    [v15 flushCacheForMessage:v13];
+    messageStore2 = [v13 messageStore];
+    [messageStore2 flushCacheForMessage:v13];
 
-    v16 = [(MFMessagePersistence_iOS *)&self->super.super.isa library];
-    v17 = [v16 dataDirectoryURLForMessage:v13];
+    library = [(MFMessagePersistence_iOS *)&self->super.super.isa library];
+    v17 = [library dataDirectoryURLForMessage:v13];
 
-    v18 = [MEMORY[0x1E696AC08] defaultManager];
-    [v18 removeItemAtURL:v17 error:0];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+    [defaultManager removeItemAtURL:v17 error:0];
 
-    v19 = [(MFMessagePersistence_iOS *)self _libraryMessageForMessageObjectID:v12 preferNonOutgoingMessages:1];
+    v19 = [(MFMessagePersistence_iOS *)self _libraryMessageForMessageObjectID:dCopy preferNonOutgoingMessages:1];
 
     v13 = v19;
     if (!v19)
@@ -271,12 +271,12 @@ LABEL_5:
       v20 = EMLogCategoryMessageLoading();
       if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
       {
-        [(MFMessagePersistence_iOS *)v12 requestContentForMessageObjectID:v20 requestID:v21 options:v22 delegate:v23 completionHandler:v24, v25, v26];
+        [(MFMessagePersistence_iOS *)dCopy requestContentForMessageObjectID:v20 requestID:v21 options:v22 delegate:v23 completionHandler:v24, v25, v26];
       }
 
-      v27 = [MEMORY[0x1E696ABC0] em_itemNotFoundErrorWithItemID:v12];
+      v27 = [MEMORY[0x1E696ABC0] em_itemNotFoundErrorWithItemID:dCopy];
       v28 = 0;
-      v64[2](v64, 0, v27);
+      handlerCopy[2](handlerCopy, 0, v27);
       goto LABEL_17;
     }
   }
@@ -285,20 +285,20 @@ LABEL_5:
   v59 = v13;
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
   {
-    v31 = [v68 requestedRepresentation];
-    v32 = [v13 ef_publicDescription];
+    requestedRepresentation = [optionsCopy requestedRepresentation];
+    ef_publicDescription = [v13 ef_publicDescription];
     *buf = 138543874;
-    v88 = v31;
+    v88 = requestedRepresentation;
     v89 = 2114;
-    v90 = v32;
+    v90 = ef_publicDescription;
     v91 = 2114;
-    v92 = v12;
+    v92 = dCopy;
     _os_log_impl(&dword_1B0389000, v30, OS_LOG_TYPE_DEFAULT, "requesting %{public}@ content for message %{public}@ (%{public}@)", buf, 0x20u);
   }
 
   v58 = [MEMORY[0x1E696AE38] discreteProgressWithTotalUnitCount:2];
-  v33 = [v68 networkUsage] != 0;
-  v34 = [MEMORY[0x1E696B0B8] currentConnection];
+  v33 = [optionsCopy networkUsage] != 0;
+  currentConnection = [MEMORY[0x1E696B0B8] currentConnection];
   v35 = EFBundleIdentifierForXPCConnection();
   v36 = v35;
   if (v35)
@@ -309,14 +309,14 @@ LABEL_5:
   else
   {
     v37 = MEMORY[0x1E696AEC0];
-    v38 = [MEMORY[0x1E696B0B8] currentConnection];
-    v57 = [v37 stringWithFormat:@"client_%d", objc_msgSend(v38, "processIdentifier")];
+    currentConnection2 = [MEMORY[0x1E696B0B8] currentConnection];
+    v57 = [v37 stringWithFormat:@"client_%d", objc_msgSend(currentConnection2, "processIdentifier")];
   }
 
   v56 = objc_alloc_init(MEMORY[0x1E699B578]);
   WeakRetained = objc_loadWeakRetained(&self->_library);
-  v39 = [WeakRetained persistence];
-  v40 = [v39 listUnsubscribeHandler];
+  persistence = [WeakRetained persistence];
+  listUnsubscribeHandler = [persistence listUnsubscribeHandler];
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -326,29 +326,29 @@ LABEL_5:
   v83 = v41;
   v42 = v58;
   v84 = v42;
-  v85 = self;
-  v86 = v64;
+  selfCopy = self;
+  v86 = handlerCopy;
   v43 = _Block_copy(aBlock);
   v69[0] = MEMORY[0x1E69E9820];
   v69[1] = 3221225472;
   v69[2] = __106__MFMessagePersistence_iOS_requestContentForMessageObjectID_requestID_options_delegate_completionHandler___block_invoke_2;
   v69[3] = &unk_1E7AA7100;
   v81 = v33;
-  v44 = v68;
+  v44 = optionsCopy;
   v70 = v44;
   v45 = v65;
   v71 = v45;
   v27 = v41;
   v72 = v27;
-  v73 = self;
-  v80 = a4;
+  selfCopy2 = self;
+  iDCopy = iD;
   v61 = v56;
   v74 = v61;
-  v67 = v40;
+  v67 = listUnsubscribeHandler;
   v75 = v67;
   v60 = v57;
   v76 = v60;
-  v46 = v63;
+  v46 = delegateCopy;
   v77 = v46;
   v55 = v43;
   v79 = v55;
@@ -367,8 +367,8 @@ LABEL_5:
   }
 
   v50 = offlineContentLoadScheduler;
-  v51 = [(MFMessagePersistence_iOS *)self messageTransformer];
-  v52 = [MFMessageContentRequest onScheduler:v50 requestID:a4 requestContentForObjectID:v45 messagePersistence:self legacyMessage:v27 messageTransformer:v51 mailDropAttachmentGenerator:v61 listUnsubscribeHandler:v67 clientIdentifier:v60 options:v48 delegate:v46 completionHandler:v62];
+  messageTransformer = [(MFMessagePersistence_iOS *)self messageTransformer];
+  v52 = [MFMessageContentRequest onScheduler:v50 requestID:iD requestContentForObjectID:v45 messagePersistence:self legacyMessage:v27 messageTransformer:messageTransformer mailDropAttachmentGenerator:v61 listUnsubscribeHandler:v67 clientIdentifier:v60 options:v48 delegate:v46 completionHandler:v62];
 
   [v47 addChild:v52 withPendingUnitCount:1];
   v28 = v47;
@@ -379,14 +379,14 @@ LABEL_17:
   return v28;
 }
 
-- (void)generateSummaryForMessage:(id)a3 downloadIfNecessary:(BOOL)a4
+- (void)generateSummaryForMessage:(id)message downloadIfNecessary:(BOOL)necessary
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  messageCopy = message;
   v7 = EMLogCategoryMessageLoading();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
-    [v6 messageID];
+    [messageCopy messageID];
     objc_claimAutoreleasedReturnValue();
     [MFMessagePersistence_iOS generateSummaryForMessage:downloadIfNecessary:];
   }
@@ -406,19 +406,19 @@ LABEL_17:
   block[2] = __74__MFMessagePersistence_iOS_generateSummaryForMessage_downloadIfNecessary___block_invoke;
   block[3] = &unk_1E7AA7148;
   block[4] = self;
-  v12 = v6;
-  v13 = a4;
-  v9 = v6;
+  v12 = messageCopy;
+  necessaryCopy = necessary;
+  v9 = messageCopy;
   dispatch_async(requestSummaryQueue, block);
 
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (id)requestSummaryForMessageObjectID:(id)a3
+- (id)requestSummaryForMessageObjectID:(id)d
 {
   v12 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(MFMessagePersistence_iOS *)self libraryMessageForMessageObjectID:v4];
+  dCopy = d;
+  v5 = [(MFMessagePersistence_iOS *)self libraryMessageForMessageObjectID:dCopy];
   if (v5)
   {
     v6 = [(MFMessagePersistence_iOS *)self _requestSummaryForLibraryMessage:v5];
@@ -430,7 +430,7 @@ LABEL_17:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = dCopy;
       _os_log_impl(&dword_1B0389000, v7, OS_LOG_TYPE_INFO, "Cannot create summary loader. No Library Message for object ID: %@", &v10, 0xCu);
     }
 
@@ -442,57 +442,57 @@ LABEL_17:
   return v6;
 }
 
-- (id)_requestSummaryForLibraryMessage:(id)a3
+- (id)_requestSummaryForLibraryMessage:(id)message
 {
-  v4 = a3;
-  v5 = [(MFMessagePersistence_iOS *)self summaryLoaderProvider];
-  v6 = [v5 messageSummaryLoaderForMessage:v4];
+  messageCopy = message;
+  summaryLoaderProvider = [(MFMessagePersistence_iOS *)self summaryLoaderProvider];
+  v6 = [summaryLoaderProvider messageSummaryLoaderForMessage:messageCopy];
 
-  v7 = [v6 requestSummary];
+  requestSummary = [v6 requestSummary];
 
   return v6;
 }
 
-- (id)libraryMessageForMessageObjectID:(id)a3
+- (id)libraryMessageForMessageObjectID:(id)d
 {
-  v3 = [(MFMessagePersistence_iOS *)self _libraryMessageForMessageObjectID:a3 preferNonOutgoingMessages:0];
+  v3 = [(MFMessagePersistence_iOS *)self _libraryMessageForMessageObjectID:d preferNonOutgoingMessages:0];
 
   return v3;
 }
 
-- (id)_libraryMessageForMessageObjectID:(id)a3 preferNonOutgoingMessages:(BOOL)a4
+- (id)_libraryMessageForMessageObjectID:(id)d preferNonOutgoingMessages:(BOOL)messages
 {
-  v4 = a4;
+  messagesCopy = messages;
   v14[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v14[0] = v6;
+  dCopy = d;
+  v14[0] = dCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v14 count:1];
   v8 = [(MFMessagePersistence_iOS *)self persistedMessagesForMessageObjectIDs:v7 requireProtectedData:0 temporarilyUnavailableMessageObjectIDs:0];
 
-  if (!v4 || ([v8 ef_firstObjectPassingTest:&__block_literal_global_77], (v9 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (!messagesCopy || ([v8 ef_firstObjectPassingTest:&__block_literal_global_77], (firstObject = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    v9 = [v8 firstObject];
+    firstObject = [v8 firstObject];
   }
 
-  v10 = [v9 mailbox];
-  v11 = [v10 store];
-  [v9 setMessageStore:v11];
+  mailbox = [firstObject mailbox];
+  store = [mailbox store];
+  [firstObject setMessageStore:store];
 
   v12 = *MEMORY[0x1E69E9840];
 
-  return v9;
+  return firstObject;
 }
 
-- (id)cachedDatabaseIDsDictionaryForGlobalMessageIDs:(id)a3
+- (id)cachedDatabaseIDsDictionaryForGlobalMessageIDs:(id)ds
 {
   v19 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_opt_new();
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = v4;
+  v6 = dsCopy;
   v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
@@ -525,10 +525,10 @@ LABEL_17:
   return v5;
 }
 
-- (void)setContentProtectionForAttachmentFile:(id)a3
+- (void)setContentProtectionForAttachmentFile:(id)file
 {
   v11[4] = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  fileCopy = file;
   if (_os_feature_enabled_impl())
   {
     v4 = 3;
@@ -539,10 +539,10 @@ LABEL_17:
     v4 = 2;
   }
 
-  v5 = [MEMORY[0x1E696AC08] defaultManager];
-  v6 = [v3 path];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  path = [fileCopy path];
   v11[0] = 0;
-  v7 = [v5 mf_protectFileAtPath:v6 withClass:v4 error:v11];
+  v7 = [defaultManager mf_protectFileAtPath:path withClass:v4 error:v11];
   v8 = v11[0];
 
   if ((v7 & 1) == 0)
@@ -550,7 +550,7 @@ LABEL_17:
     v9 = +[MFMessagePersistence_iOS log];
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
-      [v3 path];
+      [fileCopy path];
       objc_claimAutoreleasedReturnValue();
       [MFMessagePersistence_iOS setContentProtectionForAttachmentFile:];
     }
@@ -559,10 +559,10 @@ LABEL_17:
   v10 = *MEMORY[0x1E69E9840];
 }
 
-- (int64_t)globalIDForMessageWithDatabaseID:(int64_t)a3 mailboxScope:(id *)a4
+- (int64_t)globalIDForMessageWithDatabaseID:(int64_t)d mailboxScope:(id *)scope
 {
   v37[1] = *MEMORY[0x1E69E9840];
-  v7 = a4 != 0;
+  v7 = scope != 0;
   v33 = 0;
   v34 = &v33;
   v35 = 0x2020000000;
@@ -573,7 +573,7 @@ LABEL_17:
   v30 = __Block_byref_object_copy__17;
   v31 = __Block_byref_object_dispose__17;
   v32 = 0;
-  v8 = [(MFMessagePersistence_iOS *)self database];
+  database = [(MFMessagePersistence_iOS *)self database];
   v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMessagePersistence_iOS globalIDForMessageWithDatabaseID:mailboxScope:]"];
   v25[0] = MEMORY[0x1E69E9820];
   v25[1] = 3221225472;
@@ -583,10 +583,10 @@ LABEL_17:
   v25[4] = self;
   v25[5] = &v33;
   v25[6] = &v27;
-  v25[7] = a3;
-  [v8 __performReadWithCaller:v9 usingBlock:v25];
+  v25[7] = d;
+  [database __performReadWithCaller:v9 usingBlock:v25];
 
-  if (a4)
+  if (scope)
   {
     if (v34[3])
     {
@@ -598,23 +598,23 @@ LABEL_17:
         v13 = MEMORY[0x1E699AD28];
         v37[0] = v12;
         v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:1];
-        *a4 = [v13 mailboxScopeForMailboxObjectIDs:v14 forExclusion:0];
+        *scope = [v13 mailboxScopeForMailboxObjectIDs:v14 forExclusion:0];
       }
 
       else
       {
-        *a4 = [MEMORY[0x1E699AD28] noMailboxesScope];
+        *scope = [MEMORY[0x1E699AD28] noMailboxesScope];
         v15 = +[MFMessagePersistence_iOS log];
         if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
         {
-          [(MFMessagePersistence_iOS *)a3 globalIDForMessageWithDatabaseID:v15 mailboxScope:v16, v17, v18, v19, v20, v21];
+          [(MFMessagePersistence_iOS *)d globalIDForMessageWithDatabaseID:v15 mailboxScope:v16, v17, v18, v19, v20, v21];
         }
       }
     }
 
     else
     {
-      *a4 = 0;
+      *scope = 0;
     }
   }
 
@@ -626,86 +626,86 @@ LABEL_17:
   return v22;
 }
 
-- (id)mailboxesQueryExpressionForMailboxDatabaseIDs:(id)a3 forExclusion:(BOOL)a4
+- (id)mailboxesQueryExpressionForMailboxDatabaseIDs:(id)ds forExclusion:(BOOL)exclusion
 {
-  v4 = a4;
-  v5 = a3;
-  if (v4)
+  exclusionCopy = exclusion;
+  dsCopy = ds;
+  if (exclusionCopy)
   {
     v6 = [objc_alloc(MEMORY[0x1E699B8C8]) initWithName:@"mailbox"];
-    [v6 notIn:v5];
+    [v6 notIn:dsCopy];
   }
 
   else
   {
     v6 = [objc_alloc(MEMORY[0x1E699B8C8]) initWithName:@"mailbox"];
-    [v6 in:v5];
+    [v6 in:dsCopy];
   }
   v7 = ;
 
   return v7;
 }
 
-- (id)flagsForLegacyFlags:(int64_t)a3 numberOfAttachments:(int64_t *)a4
+- (id)flagsForLegacyFlags:(int64_t)flags numberOfAttachments:(int64_t *)attachments
 {
-  if (a3 >> 10 == 63)
+  if (flags >> 10 == 63)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = a3 >> 10;
+    v4 = flags >> 10;
   }
 
-  *a4 = v4;
-  return MFFlagsObjectForFlags(a3);
+  *attachments = v4;
+  return MFFlagsObjectForFlags(flags);
 }
 
-- (BOOL)persistMessageAuthenticationState:(int64_t)a3 forMessage:(id)a4
+- (BOOL)persistMessageAuthenticationState:(int64_t)state forMessage:(id)message
 {
-  v6 = a4;
+  messageCopy = message;
   v9.receiver = self;
   v9.super_class = MFMessagePersistence_iOS;
-  v7 = [(MFMessagePersistence_iOS *)&v9 persistMessageAuthenticationState:a3 forMessage:v6];
+  v7 = [(MFMessagePersistence_iOS *)&v9 persistMessageAuthenticationState:state forMessage:messageCopy];
   if (v7)
   {
-    [v6 setAuthenticationState:a3];
+    [messageCopy setAuthenticationState:state];
   }
 
   return v7;
 }
 
-- (void)messageObjectIDForSearchIndexerIdentifier:(id)a3 completionHandler:(id)a4
+- (void)messageObjectIDForSearchIndexerIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MFMessagePersistence_iOS *)&self->super.super.isa library];
-  v9 = [v8 persistence];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  library = [(MFMessagePersistence_iOS *)&self->super.super.isa library];
+  persistence = [library persistence];
 
-  v10 = [v9 serverMessagesIndexer];
+  serverMessagesIndexer = [persistence serverMessagesIndexer];
   v12[0] = MEMORY[0x1E69E9820];
   v12[1] = 3221225472;
   v12[2] = __88__MFMessagePersistence_iOS_messageObjectIDForSearchIndexerIdentifier_completionHandler___block_invoke;
   v12[3] = &unk_1E7AA7230;
-  v11 = v7;
+  v11 = handlerCopy;
   v12[4] = self;
   v13 = v11;
-  [v10 lookUpIdentifier:v6 completion:v12];
+  [serverMessagesIndexer lookUpIdentifier:identifierCopy completion:v12];
 }
 
-- (id)fullDataIfAvailableForMessage:(id)a3
+- (id)fullDataIfAvailableForMessage:(id)message
 {
-  v5 = a3;
+  messageCopy = message;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"MFMessagePersistence_iOS.m" lineNumber:458 description:@"Unexpected message class"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MFMessagePersistence_iOS.m" lineNumber:458 description:@"Unexpected message class"];
   }
 
   v10 = 0;
-  v6 = [v5 messageDataIsComplete:&v10 downloadIfNecessary:0];
+  v6 = [messageCopy messageDataIsComplete:&v10 downloadIfNecessary:0];
   v7 = v6;
   if ((v10 & 1) == 0)
   {
@@ -716,16 +716,16 @@ LABEL_17:
   return v7;
 }
 
-- (void)persistenceDidChangeGlobalMessageID:(int64_t)a3 orConversationID:(int64_t)a4 message:(id)a5 generationWindow:(id)a6
+- (void)persistenceDidChangeGlobalMessageID:(int64_t)d orConversationID:(int64_t)iD message:(id)message generationWindow:(id)window
 {
-  v8 = a5;
+  messageCopy = message;
   obsoleteGlobalMessageIDToDatabaseIDMap = self->_obsoleteGlobalMessageIDToDatabaseIDMap;
-  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v10 = [MEMORY[0x1E696AD98] numberWithLongLong:d];
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __106__MFMessagePersistence_iOS_persistenceDidChangeGlobalMessageID_orConversationID_message_generationWindow___block_invoke;
   v13[3] = &unk_1E7AA7258;
-  v11 = v8;
+  v11 = messageCopy;
   v14 = v11;
   v12 = [(EFLazyCache *)obsoleteGlobalMessageIDToDatabaseIDMap objectForKey:v10 generator:v13];
 }
@@ -736,7 +736,7 @@ LABEL_17:
   v10.receiver = self;
   v10.super_class = MFMessagePersistence_iOS;
   [(MFMessagePersistence_iOS *)&v10 collectStatisticsWithStatistics:v3];
-  v4 = [(MFMessagePersistence_iOS *)self database];
+  database = [(MFMessagePersistence_iOS *)self database];
   v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[MFMessagePersistence_iOS collectStatistics]"];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
@@ -744,7 +744,7 @@ LABEL_17:
   v8[3] = &unk_1E7AA43C8;
   v6 = v3;
   v9 = v6;
-  [v4 __performReadWithCaller:v5 usingBlock:v8];
+  [database __performReadWithCaller:v5 usingBlock:v8];
 
   return v6;
 }
@@ -760,14 +760,14 @@ LABEL_17:
   return v3;
 }
 
-- (BOOL)messageFilesNeedProtectionClassMigration:(BOOL *)a3
+- (BOOL)messageFilesNeedProtectionClassMigration:(BOOL *)migration
 {
-  v4 = [(MFMessagePersistence_iOS *)self database];
-  v5 = [v4 valueForProperty:@"FileProtectionClass"];
+  database = [(MFMessagePersistence_iOS *)self database];
+  v5 = [database valueForProperty:@"FileProtectionClass"];
 
   if (v5)
   {
-    v6 = [v5 unsignedIntegerValue];
+    unsignedIntegerValue = [v5 unsignedIntegerValue];
     v7 = _os_feature_enabled_impl();
     v8 = 1;
     if (!v7)
@@ -775,15 +775,15 @@ LABEL_17:
       v8 = 2;
     }
 
-    if (v6 == v8)
+    if (unsignedIntegerValue == v8)
     {
-      if (a3)
+      if (migration)
       {
 LABEL_6:
         v9 = 0;
         v10 = 0;
 LABEL_17:
-        *a3 = v9;
+        *migration = v9;
         goto LABEL_18;
       }
 
@@ -797,11 +797,11 @@ LABEL_17:
       v12 = 10;
     }
 
-    if (v6 == v12)
+    if (unsignedIntegerValue == v12)
     {
       v9 = 1;
       v10 = 1;
-      if (!a3)
+      if (!migration)
       {
         goto LABEL_18;
       }
@@ -812,7 +812,7 @@ LABEL_17:
 
   else if ((_os_feature_enabled_impl() & 1) == 0)
   {
-    if (a3)
+    if (migration)
     {
       goto LABEL_6;
     }
@@ -823,7 +823,7 @@ LABEL_9:
   }
 
   v10 = 1;
-  if (a3)
+  if (migration)
   {
     v9 = 0;
     goto LABEL_17;
@@ -834,9 +834,9 @@ LABEL_18:
   return v10;
 }
 
-- (void)setMigrationIsComplete:(BOOL)a3
+- (void)setMigrationIsComplete:(BOOL)complete
 {
-  v3 = a3;
+  completeCopy = complete;
   v5 = _os_feature_enabled_impl();
   v6 = 1;
   if (!v5)
@@ -850,7 +850,7 @@ LABEL_18:
     v7 = 10;
   }
 
-  if (v3)
+  if (completeCopy)
   {
     v8 = v6;
   }
@@ -860,17 +860,17 @@ LABEL_18:
     v8 = v7;
   }
 
-  v10 = [(MFMessagePersistence_iOS *)self database];
+  database = [(MFMessagePersistence_iOS *)self database];
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v8];
-  [v10 setValue:v9 forProperty:@"FileProtectionClass"];
+  [database setValue:v9 forProperty:@"FileProtectionClass"];
 }
 
-- (id)persistedMessageForSQLRow:(id)a3 connection:(id)a4 iterationContext:(id)a5
+- (id)persistedMessageForSQLRow:(id)row connection:(id)connection iterationContext:(id)context
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(MFMessagePersistence_iOS *)&self->super.super.isa library];
+  rowCopy = row;
+  connectionCopy = connection;
+  contextCopy = context;
+  library = [(MFMessagePersistence_iOS *)&self->super.super.isa library];
   if (self)
   {
     if (qword_1EB6E7F18 != -1)
@@ -881,11 +881,11 @@ LABEL_18:
     self = _MergedGlobals;
   }
 
-  v12 = [v11 _messageForRow:v8 options:self timestamp:mach_absolute_time() connection:v9 isProtectedDataAvailable:objc_msgSend(v9 recipientsCache:{"protectedDatabaseAttached"), v10}];
+  v12 = [library _messageForRow:rowCopy options:self timestamp:mach_absolute_time() connection:connectionCopy isProtectedDataAvailable:objc_msgSend(connectionCopy recipientsCache:{"protectedDatabaseAttached"), contextCopy}];
 
-  v13 = [v12 mailbox];
-  v14 = [v13 store];
-  [v12 setMessageStore:v14];
+  mailbox = [v12 mailbox];
+  store = [mailbox store];
+  [v12 setMessageStore:store];
 
   return v12;
 }

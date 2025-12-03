@@ -1,18 +1,18 @@
 @interface SKIMusicInvocation
-+ (id)searchMusicRequestInApp:(id)a3;
++ (id)searchMusicRequestInApp:(id)app;
 @end
 
 @implementation SKIMusicInvocation
 
-+ (id)searchMusicRequestInApp:(id)a3
++ (id)searchMusicRequestInApp:(id)app
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  appCopy = app;
   v4 = [[SKIDirectInvocationPayload alloc] initWithIdentifier:@"com.apple.siri.directInvocation.music.search"];
-  if ([v3 length])
+  if ([appCopy length])
   {
     v11 = @"appBundleId";
-    v12[0] = v3;
+    v12[0] = appCopy;
     v5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
     [(SKIDirectInvocationPayload *)v4 setUserData:v5];
   }

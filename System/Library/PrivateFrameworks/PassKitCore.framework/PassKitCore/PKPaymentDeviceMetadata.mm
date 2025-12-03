@@ -1,14 +1,14 @@
 @interface PKPaymentDeviceMetadata
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPaymentDeviceMetadata:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPaymentDeviceMetadata:(id)metadata;
 - (NSString)extensiveLatitude;
 - (NSString)extensiveLongitude;
-- (PKPaymentDeviceMetadata)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKPaymentDeviceMetadata)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentDeviceMetadata
@@ -65,16 +65,16 @@
     [v4 setObject:signedPhoneNumberVersion forKeyedSubscript:@"signedPhoneNumberVersion"];
   }
 
-  v13 = [(PKPaymentDeviceMetadata *)self extensiveLatitude];
-  if (v13)
+  extensiveLatitude = [(PKPaymentDeviceMetadata *)self extensiveLatitude];
+  if (extensiveLatitude)
   {
-    [v4 setObject:v13 forKeyedSubscript:@"extensiveLatitude"];
+    [v4 setObject:extensiveLatitude forKeyedSubscript:@"extensiveLatitude"];
   }
 
-  v14 = [(PKPaymentDeviceMetadata *)self extensiveLongitude];
-  if (v14)
+  extensiveLongitude = [(PKPaymentDeviceMetadata *)self extensiveLongitude];
+  if (extensiveLongitude)
   {
-    [v4 setObject:v14 forKeyedSubscript:@"extensiveLongitude"];
+    [v4 setObject:extensiveLongitude forKeyedSubscript:@"extensiveLongitude"];
   }
 
   return v4;
@@ -124,55 +124,55 @@
   return v5;
 }
 
-- (PKPaymentDeviceMetadata)initWithCoder:(id)a3
+- (PKPaymentDeviceMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v29.receiver = self;
   v29.super_class = PKPaymentDeviceMetadata;
   v5 = [(PKPaymentDeviceMetadata *)&v29 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueDeviceIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueDeviceIdentifier"];
     uniqueDeviceIdentifier = v5->_uniqueDeviceIdentifier;
     v5->_uniqueDeviceIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uniqueChipIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uniqueChipIdentifier"];
     uniqueChipIdentifier = v5->_uniqueChipIdentifier;
     v5->_uniqueChipIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"serialNumber"];
     serialNumber = v5->_serialNumber;
     v5->_serialNumber = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceName"];
     deviceName = v5->_deviceName;
     v5->_deviceName = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"secureElementIdentifier"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"secureElementIdentifier"];
     secureElementIdentifier = v5->_secureElementIdentifier;
     v5->_secureElementIdentifier = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
     v19 = v5->_phoneNumber;
     v5->_phoneNumber = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location"];
     location = v5->_location;
     v5->_location = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signedPhoneNumber"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signedPhoneNumber"];
     signedPhoneNumber = v5->_signedPhoneNumber;
     v5->_signedPhoneNumber = v22;
 
-    v24 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"signedPhoneNumberVersion"];
+    v24 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"signedPhoneNumberVersion"];
     signedPhoneNumberVersion = v5->_signedPhoneNumberVersion;
     v5->_signedPhoneNumberVersion = v24;
 
-    v26 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"jsblSequenceCounter"];
+    v26 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"jsblSequenceCounter"];
     primaryJSBLSequenceCounter = v5->_primaryJSBLSequenceCounter;
     v5->_primaryJSBLSequenceCounter = v26;
   }
@@ -180,62 +180,62 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uniqueDeviceIdentifier = self->_uniqueDeviceIdentifier;
-  v5 = a3;
-  [v5 encodeObject:uniqueDeviceIdentifier forKey:@"uniqueDeviceIdentifier"];
-  [v5 encodeObject:self->_uniqueChipIdentifier forKey:@"uniqueChipIdentifier"];
-  [v5 encodeObject:self->_serialNumber forKey:@"serialNumber"];
-  [v5 encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
-  [v5 encodeObject:self->_deviceName forKey:@"deviceName"];
-  [v5 encodeObject:self->_secureElementIdentifier forKey:@"secureElementIdentifier"];
-  [v5 encodeObject:self->_location forKey:@"location"];
-  [v5 encodeObject:self->_signedPhoneNumber forKey:@"signedPhoneNumber"];
-  [v5 encodeObject:self->_signedPhoneNumberVersion forKey:@"signedPhoneNumberVersion"];
-  [v5 encodeObject:self->_primaryJSBLSequenceCounter forKey:@"jsblSequenceCounter"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uniqueDeviceIdentifier forKey:@"uniqueDeviceIdentifier"];
+  [coderCopy encodeObject:self->_uniqueChipIdentifier forKey:@"uniqueChipIdentifier"];
+  [coderCopy encodeObject:self->_serialNumber forKey:@"serialNumber"];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
+  [coderCopy encodeObject:self->_deviceName forKey:@"deviceName"];
+  [coderCopy encodeObject:self->_secureElementIdentifier forKey:@"secureElementIdentifier"];
+  [coderCopy encodeObject:self->_location forKey:@"location"];
+  [coderCopy encodeObject:self->_signedPhoneNumber forKey:@"signedPhoneNumber"];
+  [coderCopy encodeObject:self->_signedPhoneNumberVersion forKey:@"signedPhoneNumberVersion"];
+  [coderCopy encodeObject:self->_primaryJSBLSequenceCounter forKey:@"jsblSequenceCounter"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_deviceName copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_deviceName copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSString *)self->_phoneNumber copyWithZone:a3];
+  v8 = [(NSString *)self->_phoneNumber copyWithZone:zone];
   v9 = v5[7];
   v5[7] = v8;
 
-  v10 = [(CLLocation *)self->_location copyWithZone:a3];
+  v10 = [(CLLocation *)self->_location copyWithZone:zone];
   v11 = v5[10];
   v5[10] = v10;
 
-  v12 = [(NSString *)self->_signedPhoneNumber copyWithZone:a3];
+  v12 = [(NSString *)self->_signedPhoneNumber copyWithZone:zone];
   v13 = v5[8];
   v5[8] = v12;
 
-  v14 = [(NSString *)self->_signedPhoneNumberVersion copyWithZone:a3];
+  v14 = [(NSString *)self->_signedPhoneNumberVersion copyWithZone:zone];
   v15 = v5[9];
   v5[9] = v14;
 
-  v16 = [(NSNumber *)self->_primaryJSBLSequenceCounter copyWithZone:a3];
+  v16 = [(NSNumber *)self->_primaryJSBLSequenceCounter copyWithZone:zone];
   v17 = v5[2];
   v5[2] = v16;
 
-  v18 = [(NSString *)self->_uniqueDeviceIdentifier copyWithZone:a3];
+  v18 = [(NSString *)self->_uniqueDeviceIdentifier copyWithZone:zone];
   v19 = v5[4];
   v5[4] = v18;
 
-  v20 = [(NSNumber *)self->_uniqueChipIdentifier copyWithZone:a3];
+  v20 = [(NSNumber *)self->_uniqueChipIdentifier copyWithZone:zone];
   v21 = v5[5];
   v5[5] = v20;
 
-  v22 = [(NSString *)self->_serialNumber copyWithZone:a3];
+  v22 = [(NSString *)self->_serialNumber copyWithZone:zone];
   v23 = v5[6];
   v5[6] = v22;
 
-  v24 = [(NSString *)self->_secureElementIdentifier copyWithZone:a3];
+  v24 = [(NSString *)self->_secureElementIdentifier copyWithZone:zone];
   v25 = v5[3];
   v5[3] = v24;
 
@@ -267,11 +267,11 @@
 
 - (unint64_t)hash
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   if (self->_uniqueDeviceIdentifier)
   {
-    [v3 addObject:?];
+    [array addObject:?];
   }
 
   if (self->_uniqueChipIdentifier)
@@ -324,28 +324,28 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentDeviceMetadata *)self isEqualToPaymentDeviceMetadata:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentDeviceMetadata *)self isEqualToPaymentDeviceMetadata:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPaymentDeviceMetadata:(id)a3
+- (BOOL)isEqualToPaymentDeviceMetadata:(id)metadata
 {
-  v4 = a3;
+  metadataCopy = metadata;
   uniqueDeviceIdentifier = self->_uniqueDeviceIdentifier;
-  v6 = v4[4];
+  v6 = metadataCopy[4];
   if (uniqueDeviceIdentifier)
   {
     v7 = v6 == 0;
@@ -370,7 +370,7 @@
   }
 
   uniqueChipIdentifier = self->_uniqueChipIdentifier;
-  v9 = v4[5];
+  v9 = metadataCopy[5];
   if (uniqueChipIdentifier && v9)
   {
     if (([(NSNumber *)uniqueChipIdentifier isEqual:?]& 1) == 0)
@@ -385,7 +385,7 @@
   }
 
   serialNumber = self->_serialNumber;
-  v11 = v4[6];
+  v11 = metadataCopy[6];
   if (serialNumber && v11)
   {
     if (([(NSString *)serialNumber isEqual:?]& 1) == 0)
@@ -400,7 +400,7 @@
   }
 
   phoneNumber = self->_phoneNumber;
-  v13 = v4[7];
+  v13 = metadataCopy[7];
   if (phoneNumber && v13)
   {
     if (([(NSString *)phoneNumber isEqual:?]& 1) == 0)
@@ -415,7 +415,7 @@
   }
 
   deviceName = self->_deviceName;
-  v15 = v4[1];
+  v15 = metadataCopy[1];
   if (deviceName && v15)
   {
     if (([(NSString *)deviceName isEqual:?]& 1) == 0)
@@ -430,7 +430,7 @@
   }
 
   secureElementIdentifier = self->_secureElementIdentifier;
-  v17 = v4[3];
+  v17 = metadataCopy[3];
   if (secureElementIdentifier && v17)
   {
     if (([(NSString *)secureElementIdentifier isEqual:?]& 1) == 0)
@@ -445,7 +445,7 @@
   }
 
   location = self->_location;
-  v19 = v4[10];
+  v19 = metadataCopy[10];
   if (location && v19)
   {
     if (([(CLLocation *)location isEqual:?]& 1) == 0)
@@ -460,7 +460,7 @@
   }
 
   signedPhoneNumber = self->_signedPhoneNumber;
-  v21 = v4[8];
+  v21 = metadataCopy[8];
   if (signedPhoneNumber && v21)
   {
     if (([(NSString *)signedPhoneNumber isEqual:?]& 1) == 0)
@@ -475,7 +475,7 @@
   }
 
   signedPhoneNumberVersion = self->_signedPhoneNumberVersion;
-  v23 = v4[9];
+  v23 = metadataCopy[9];
   if (!signedPhoneNumberVersion || !v23)
   {
     if (signedPhoneNumberVersion == v23)
@@ -495,7 +495,7 @@ LABEL_51:
 
 LABEL_47:
   primaryJSBLSequenceCounter = self->_primaryJSBLSequenceCounter;
-  v25 = v4[2];
+  v25 = metadataCopy[2];
   if (primaryJSBLSequenceCounter && v25)
   {
     v26 = [(NSNumber *)primaryJSBLSequenceCounter isEqual:?];

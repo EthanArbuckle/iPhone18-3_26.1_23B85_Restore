@@ -44,8 +44,8 @@ uint64_t __39__CACSystemStatusManager_sharedManager__block_invoke()
 
     if (v3)
     {
-      v6 = [MEMORY[0x277CCACC8] callStackSymbols];
-      _CACAssertionFailed("/Library/Caches/com.apple.xbs/Sources/SpeechRecognitionCommandAndControl/CommandAndControlFramework/SpokenCommandManager/CACSystemStatusManager.m", 52, "[CACSystemStatusManager init]", v6, @"Could not register for dictation notifications", v7, v8, v9, v11[0]);
+      callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+      _CACAssertionFailed("/Library/Caches/com.apple.xbs/Sources/SpeechRecognitionCommandAndControl/CommandAndControlFramework/SpokenCommandManager/CACSystemStatusManager.m", 52, "[CACSystemStatusManager init]", callStackSymbols, @"Could not register for dictation notifications", v7, v8, v9, v11[0]);
     }
 
     objc_destroyWeak(&v12);

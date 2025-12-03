@@ -1,27 +1,27 @@
 @interface ICDrawingConversionOperation
-- (ICDrawingConversionOperation)initWithAttachment:(id)a3 textAttachment:(id)a4 automatic:(BOOL)a5;
+- (ICDrawingConversionOperation)initWithAttachment:(id)attachment textAttachment:(id)textAttachment automatic:(BOOL)automatic;
 - (void)main;
 @end
 
 @implementation ICDrawingConversionOperation
 
-- (ICDrawingConversionOperation)initWithAttachment:(id)a3 textAttachment:(id)a4 automatic:(BOOL)a5
+- (ICDrawingConversionOperation)initWithAttachment:(id)attachment textAttachment:(id)textAttachment automatic:(BOOL)automatic
 {
-  v9 = a3;
-  v10 = a4;
+  attachmentCopy = attachment;
+  textAttachmentCopy = textAttachment;
   v16.receiver = self;
   v16.super_class = ICDrawingConversionOperation;
   v11 = [(ICDrawingConversionOperation *)&v16 init];
   v12 = v11;
   if (v11)
   {
-    v11->_isAutomatic = a5;
-    objc_storeStrong(&v11->_attachment, a3);
-    v13 = [v9 objectID];
+    v11->_isAutomatic = automatic;
+    objc_storeStrong(&v11->_attachment, attachment);
+    objectID = [attachmentCopy objectID];
     attachmentID = v12->_attachmentID;
-    v12->_attachmentID = v13;
+    v12->_attachmentID = objectID;
 
-    objc_storeStrong(&v12->_textAttachment, a4);
+    objc_storeStrong(&v12->_textAttachment, textAttachment);
   }
 
   return v12;
@@ -30,18 +30,18 @@
 - (void)main
 {
   v3 = +[ICDrawingPencilKitConverter sharedConverter];
-  v4 = [MEMORY[0x1E69B7800] sharedContext];
-  v5 = [v4 workerManagedObjectContext];
+  mEMORY[0x1E69B7800] = [MEMORY[0x1E69B7800] sharedContext];
+  workerManagedObjectContext = [mEMORY[0x1E69B7800] workerManagedObjectContext];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__ICDrawingConversionOperation_main__block_invoke;
   v8[3] = &unk_1E8468D98;
-  v9 = v5;
-  v10 = self;
+  v9 = workerManagedObjectContext;
+  selfCopy = self;
   v11 = v3;
   v6 = v3;
-  v7 = v5;
+  v7 = workerManagedObjectContext;
   [v7 performBlockAndWait:v8];
   [v6 operationComplete:self];
 }

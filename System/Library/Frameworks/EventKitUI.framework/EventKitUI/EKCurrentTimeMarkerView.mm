@@ -1,25 +1,25 @@
 @interface EKCurrentTimeMarkerView
 + (double)_spacingAdjustmentFontSize;
-+ (id)timeMarkerFontForSizeClass:(int64_t)a3;
++ (id)timeMarkerFontForSizeClass:(int64_t)class;
 - (CGRect)_lineFrame;
 - (CGRect)currentTimeFrame;
-- (EKCurrentTimeMarkerView)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4;
+- (EKCurrentTimeMarkerView)initWithFrame:(CGRect)frame sizeClass:(int64_t)class;
 - (double)extensionLineHeight;
 - (double)markerWidth;
-- (void)_updateTimeWithForce:(BOOL)a3;
-- (void)drawRect:(CGRect)a3;
+- (void)_updateTimeWithForce:(BOOL)force;
+- (void)drawRect:(CGRect)rect;
 - (void)invalidateFonts;
 - (void)layoutSubviews;
-- (void)setShowsLine:(BOOL)a3;
-- (void)setShowsThumb:(BOOL)a3;
+- (void)setShowsLine:(BOOL)line;
+- (void)setShowsThumb:(BOOL)thumb;
 @end
 
 @implementation EKCurrentTimeMarkerView
 
 - (double)markerWidth
 {
-  v2 = [(EKCurrentTimeMarkerView *)self currentTimeLabel];
-  [v2 sizeThatFits:{10.0, 10.0}];
+  currentTimeLabel = [(EKCurrentTimeMarkerView *)self currentTimeLabel];
+  [currentTimeLabel sizeThatFits:{10.0, 10.0}];
   v4 = v3;
 
   return v4 + 10.0;
@@ -32,8 +32,8 @@
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(EKCurrentTimeMarkerView *)self superview];
-  [(EKCurrentTimeMarkerView *)self convertRect:v11 toView:v4, v6, v8, v10];
+  superview = [(EKCurrentTimeMarkerView *)self superview];
+  [(EKCurrentTimeMarkerView *)self convertRect:superview toView:v4, v6, v8, v10];
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -87,8 +87,8 @@
 
 - (double)extensionLineHeight
 {
-  v2 = [(EKCurrentTimeMarkerView *)self traitCollection];
-  v3 = EKUIUsesLargeTextLayout(v2);
+  traitCollection = [(EKCurrentTimeMarkerView *)self traitCollection];
+  v3 = EKUIUsesLargeTextLayout(traitCollection);
 
   result = 2.0;
   if (v3)
@@ -99,18 +99,18 @@
   return result;
 }
 
-- (EKCurrentTimeMarkerView)initWithFrame:(CGRect)a3 sizeClass:(int64_t)a4
+- (EKCurrentTimeMarkerView)initWithFrame:(CGRect)frame sizeClass:(int64_t)class
 {
   v37[6] = *MEMORY[0x1E69E9840];
   v36.receiver = self;
   v36.super_class = EKCurrentTimeMarkerView;
-  v5 = [(EKCurrentTimeMarkerView *)&v36 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(EKCurrentTimeMarkerView *)&v36 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
     [(EKCurrentTimeMarkerView *)v5 setOpaque:0];
-    v7 = [MEMORY[0x1E69DC888] clearColor];
-    [(EKCurrentTimeMarkerView *)v6 setBackgroundColor:v7];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(EKCurrentTimeMarkerView *)v6 setBackgroundColor:clearColor];
 
     [(EKCurrentTimeMarkerView *)v6 setUserInteractionEnabled:0];
     [(EKCurrentTimeMarkerView *)v6 setShowsLine:1];
@@ -120,48 +120,48 @@
     v8 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     [(EKCurrentTimeMarkerView *)v6 setCurrentTimeLabel:v8];
 
-    v9 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
-    [v9 setTranslatesAutoresizingMaskIntoConstraints:0];
+    currentTimeLabel = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
+    [currentTimeLabel setTranslatesAutoresizingMaskIntoConstraints:0];
 
-    v10 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
-    [v10 setTextAlignment:1];
+    currentTimeLabel2 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
+    [currentTimeLabel2 setTextAlignment:1];
 
-    v11 = [objc_opt_class() timeMarkerFontForSizeClass:a4];
-    v12 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
-    [v12 setFont:v11];
+    v11 = [objc_opt_class() timeMarkerFontForSizeClass:class];
+    currentTimeLabel3 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
+    [currentTimeLabel3 setFont:v11];
 
     v13 = objc_alloc_init(MEMORY[0x1E69DD250]);
     timeLabelPill = v6->_timeLabelPill;
     v6->_timeLabelPill = v13;
 
     [(UIView *)v6->_timeLabelPill setTranslatesAutoresizingMaskIntoConstraints:0];
-    v15 = [MEMORY[0x1E69DC888] cuik_todayTimelineColor];
-    [(UIView *)v6->_timeLabelPill setBackgroundColor:v15];
+    cuik_todayTimelineColor = [MEMORY[0x1E69DC888] cuik_todayTimelineColor];
+    [(UIView *)v6->_timeLabelPill setBackgroundColor:cuik_todayTimelineColor];
 
     [(UIView *)v6->_timeLabelPill setClipsToBounds:1];
     [(UIView *)v6->_timeLabelPill setHidden:1];
     v16 = v6->_timeLabelPill;
-    v17 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
-    [(UIView *)v16 addSubview:v17];
+    currentTimeLabel4 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
+    [(UIView *)v16 addSubview:currentTimeLabel4];
 
     [(EKCurrentTimeMarkerView *)v6 addSubview:v6->_timeLabelPill];
     v18 = MEMORY[0x1E696ACD8];
-    v35 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
-    v34 = [v18 constraintWithItem:v35 attribute:9 relatedBy:0 toItem:v6->_timeLabelPill attribute:9 multiplier:1.0 constant:0.0];
+    currentTimeLabel5 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
+    v34 = [v18 constraintWithItem:currentTimeLabel5 attribute:9 relatedBy:0 toItem:v6->_timeLabelPill attribute:9 multiplier:1.0 constant:0.0];
     v37[0] = v34;
     v19 = MEMORY[0x1E696ACD8];
-    v33 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
-    v20 = [v19 constraintWithItem:v33 attribute:10 relatedBy:0 toItem:v6->_timeLabelPill attribute:10 multiplier:1.0 constant:0.0];
+    currentTimeLabel6 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
+    v20 = [v19 constraintWithItem:currentTimeLabel6 attribute:10 relatedBy:0 toItem:v6->_timeLabelPill attribute:10 multiplier:1.0 constant:0.0];
     v37[1] = v20;
     v21 = MEMORY[0x1E696ACD8];
     v22 = v6->_timeLabelPill;
-    v23 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
-    v24 = [v21 constraintWithItem:v22 attribute:7 relatedBy:0 toItem:v23 attribute:7 multiplier:1.0 constant:10.0];
+    currentTimeLabel7 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
+    v24 = [v21 constraintWithItem:v22 attribute:7 relatedBy:0 toItem:currentTimeLabel7 attribute:7 multiplier:1.0 constant:10.0];
     v37[2] = v24;
     v25 = MEMORY[0x1E696ACD8];
     v26 = v6->_timeLabelPill;
-    v27 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
-    v28 = [v25 constraintWithItem:v26 attribute:8 relatedBy:0 toItem:v27 attribute:8 multiplier:1.0 constant:2.0];
+    currentTimeLabel8 = [(EKCurrentTimeMarkerView *)v6 currentTimeLabel];
+    v28 = [v25 constraintWithItem:v26 attribute:8 relatedBy:0 toItem:currentTimeLabel8 attribute:8 multiplier:1.0 constant:2.0];
     v37[3] = v28;
     v29 = [MEMORY[0x1E696ACD8] constraintWithItem:v6 attribute:10 relatedBy:0 toItem:v6->_timeLabelPill attribute:10 multiplier:1.0 constant:0.0];
     v37[4] = v29;
@@ -181,15 +181,15 @@
   [(EKCurrentTimeMarkerView *)&v6 layoutSubviews];
   [(UIView *)self->_timeLabelPill frame];
   v4 = v3 * 0.5;
-  v5 = [(UIView *)self->_timeLabelPill layer];
-  [v5 setCornerRadius:v4];
+  layer = [(UIView *)self->_timeLabelPill layer];
+  [layer setCornerRadius:v4];
 }
 
-+ (id)timeMarkerFontForSizeClass:(int64_t)a3
++ (id)timeMarkerFontForSizeClass:(int64_t)class
 {
   v3 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
-  v4 = [v3 fontDescriptor];
-  [v4 pointSize];
+  fontDescriptor = [v3 fontDescriptor];
+  [fontDescriptor pointSize];
   v6 = v5;
 
   CalRoundToScreenScale(v6 * 1.09090909);
@@ -202,42 +202,42 @@
 + (double)_spacingAdjustmentFontSize
 {
   v2 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD10]];
-  v3 = [v2 fontDescriptor];
-  [v3 pointSize];
+  fontDescriptor = [v2 fontDescriptor];
+  [fontDescriptor pointSize];
   v5 = v4;
 
   CalRoundToScreenScale(v5 * 0.454545455);
   return result;
 }
 
-- (void)setShowsLine:(BOOL)a3
+- (void)setShowsLine:(BOOL)line
 {
-  if (self->_showsLine != a3)
+  if (self->_showsLine != line)
   {
-    self->_showsLine = a3;
+    self->_showsLine = line;
     [(EKCurrentTimeMarkerView *)self setNeedsDisplay];
   }
 }
 
-- (void)_updateTimeWithForce:(BOOL)a3
+- (void)_updateTimeWithForce:(BOOL)force
 {
-  v3 = a3;
-  v5 = [(EKCurrentTimeMarkerView *)self currentTimeLabel];
-  v14 = [v5 text];
+  forceCopy = force;
+  currentTimeLabel = [(EKCurrentTimeMarkerView *)self currentTimeLabel];
+  text = [currentTimeLabel text];
 
   v6 = CUIKNowDate();
   v7 = *MEMORY[0x1E6992E88];
-  v8 = [MEMORY[0x1E695DFE8] calendarTimeZone];
-  v9 = [v6 localizedStringWithFormat:v7 timeZone:v8];
+  calendarTimeZone = [MEMORY[0x1E695DFE8] calendarTimeZone];
+  v9 = [v6 localizedStringWithFormat:v7 timeZone:calendarTimeZone];
 
-  if (!CalInterfaceIsLeftToRight() || ([v9 isEqualToString:v14] ? (v10 = !v3) : (v10 = 0), !v10))
+  if (!CalInterfaceIsLeftToRight() || ([v9 isEqualToString:text] ? (v10 = !forceCopy) : (v10 = 0), !v10))
   {
-    v11 = [(EKCurrentTimeMarkerView *)self currentTimeLabel];
-    [v11 setText:v9];
+    currentTimeLabel2 = [(EKCurrentTimeMarkerView *)self currentTimeLabel];
+    [currentTimeLabel2 setText:v9];
 
-    v12 = [MEMORY[0x1E69DC888] whiteColor];
-    v13 = [(EKCurrentTimeMarkerView *)self currentTimeLabel];
-    [v13 setTextColor:v12];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    currentTimeLabel3 = [(EKCurrentTimeMarkerView *)self currentTimeLabel];
+    [currentTimeLabel3 setTextColor:whiteColor];
   }
 }
 
@@ -254,22 +254,22 @@
   }
 
   v4 = [objc_opt_class() timeMarkerFontForSizeClass:v3];
-  v5 = [(EKCurrentTimeMarkerView *)self currentTimeLabel];
-  [v5 setFont:v4];
+  currentTimeLabel = [(EKCurrentTimeMarkerView *)self currentTimeLabel];
+  [currentTimeLabel setFont:v4];
 
   [(EKCurrentTimeMarkerView *)self _updateTimeWithForce:1];
 }
 
-- (void)setShowsThumb:(BOOL)a3
+- (void)setShowsThumb:(BOOL)thumb
 {
-  if (self->_showsThumb != a3)
+  if (self->_showsThumb != thumb)
   {
-    v5 = !a3;
-    [(UIView *)self->_timeLabelPill setHidden:!a3];
+    v5 = !thumb;
+    [(UIView *)self->_timeLabelPill setHidden:!thumb];
     if (v5)
     {
-      v6 = [(EKCurrentTimeMarkerView *)self subviews];
-      [v6 makeObjectsPerformSelector:sel_removeFromSuperview];
+      subviews = [(EKCurrentTimeMarkerView *)self subviews];
+      [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
     }
 
     else
@@ -278,10 +278,10 @@
     }
   }
 
-  self->_showsThumb = a3;
+  self->_showsThumb = thumb;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   if (!self->_showsLine)
   {
@@ -292,10 +292,10 @@
   v59 = v3;
   if (self->_showsThumb)
   {
-    v18 = [MEMORY[0x1E69DC888] cuik_todayTimelineColor];
+    cuik_todayTimelineColor = [MEMORY[0x1E69DC888] cuik_todayTimelineColor];
 LABEL_7:
-    v20 = v18;
-    [v18 set];
+    v20 = cuik_todayTimelineColor;
+    [cuik_todayTimelineColor set];
 
     [(EKCurrentTimeMarkerView *)self _lineFrame];
     v23 = v22;
@@ -304,10 +304,10 @@ LABEL_7:
     goto LABEL_8;
   }
 
-  [(EKCurrentTimeMarkerView *)self todayWidth:a3.origin.x];
+  [(EKCurrentTimeMarkerView *)self todayWidth:rect.origin.x];
   if (v19 == 0.0)
   {
-    v18 = [MEMORY[0x1E69DC888] cuik_nonTodayTimelineColor];
+    cuik_todayTimelineColor = [MEMORY[0x1E69DC888] cuik_nonTodayTimelineColor];
     goto LABEL_7;
   }
 
@@ -323,8 +323,8 @@ LABEL_7:
   v61.size.height = height;
   MinY = CGRectGetMinY(v61);
   IsLeftToRight = CalTimeDirectionIsLeftToRight();
-  v36 = [MEMORY[0x1E69DC888] cuik_todayTimelineColor];
-  [v36 set];
+  cuik_todayTimelineColor2 = [MEMORY[0x1E69DC888] cuik_todayTimelineColor];
+  [cuik_todayTimelineColor2 set];
 
   [(EKCurrentTimeMarkerView *)self todayStart];
   v38 = v37;
@@ -336,8 +336,8 @@ LABEL_7:
     v42 = MinY;
     v43 = v27;
     UIRectFill(*(&v40 - 2));
-    v44 = [MEMORY[0x1E69DC888] cuik_nonTodayTimelineColor];
-    [v44 set];
+    cuik_nonTodayTimelineColor = [MEMORY[0x1E69DC888] cuik_nonTodayTimelineColor];
+    [cuik_nonTodayTimelineColor set];
 
     v62.origin.x = x;
     v62.origin.y = y;
@@ -370,8 +370,8 @@ LABEL_7:
     v65.origin.y = MinY;
     v65.size.height = v27;
     UIRectFill(v65);
-    v52 = [MEMORY[0x1E69DC888] cuik_nonTodayTimelineColor];
-    [v52 set];
+    cuik_nonTodayTimelineColor2 = [MEMORY[0x1E69DC888] cuik_nonTodayTimelineColor];
+    [cuik_nonTodayTimelineColor2 set];
 
     v66.origin.x = x;
     v66.origin.y = y;

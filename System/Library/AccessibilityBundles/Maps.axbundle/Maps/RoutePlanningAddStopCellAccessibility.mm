@@ -1,15 +1,15 @@
 @interface RoutePlanningAddStopCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (unint64_t)accessibilityTraits;
 @end
 
 @implementation RoutePlanningAddStopCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"RoutePlanningAddStopCell" isKindOfClass:@"UITableViewCell"];
-  [v3 validateClass:@"RoutePlanningAddStopCell" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"RoutePlanningAddStopCell" isKindOfClass:@"UITableViewCell"];
+  [validationsCopy validateClass:@"RoutePlanningAddStopCell" hasInstanceMethod:@"isEnabled" withFullSignature:{"B", 0}];
 }
 
 - (unint64_t)accessibilityTraits

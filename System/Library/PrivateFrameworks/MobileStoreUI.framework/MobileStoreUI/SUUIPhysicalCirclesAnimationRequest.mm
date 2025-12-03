@@ -1,6 +1,6 @@
 @interface SUUIPhysicalCirclesAnimationRequest
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_setCompletionBlock:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_setCompletionBlock:(id)block;
 - (void)finishAnimation;
 @end
 
@@ -17,11 +17,11 @@
   }
 }
 
-- (void)_setCompletionBlock:(id)a3
+- (void)_setCompletionBlock:(id)block
 {
-  if (self->_completionBlock != a3)
+  if (self->_completionBlock != block)
   {
-    v5 = [a3 copy];
+    v5 = [block copy];
     completionBlock = self->_completionBlock;
     self->_completionBlock = v5;
 
@@ -29,9 +29,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v4 setAnimationType:self->_animationType];
   [v4 _setCompletionBlock:self->_completionBlock];
   return v4;

@@ -1,18 +1,18 @@
 @interface HPSConstrainedStringSetting
-- (HPSConstrainedStringSetting)initWithCoder:(id)a3;
-- (HPSConstrainedStringSetting)initWithKeyPath:(id)a3 stringValue:(id)a4 items:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (HPSConstrainedStringSetting)initWithCoder:(id)coder;
+- (HPSConstrainedStringSetting)initWithKeyPath:(id)path stringValue:(id)value items:(id)items;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HPSConstrainedStringSetting
 
-- (HPSConstrainedStringSetting)initWithKeyPath:(id)a3 stringValue:(id)a4 items:(id)a5
+- (HPSConstrainedStringSetting)initWithKeyPath:(id)path stringValue:(id)value items:(id)items
 {
-  v8 = a5;
-  v9 = [(HPSStringSetting *)self initWithKeyPath:a3 stringValue:a4];
+  itemsCopy = items;
+  v9 = [(HPSStringSetting *)self initWithKeyPath:path stringValue:value];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [itemsCopy copy];
     items = v9->_items;
     v9->_items = v10;
   }
@@ -20,27 +20,27 @@
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6.receiver = self;
   v6.super_class = HPSConstrainedStringSetting;
-  [(HPSSetting *)&v6 encodeWithCoder:v4];
-  v5 = [(HPSConstrainedStringSetting *)self items];
-  if (v5)
+  [(HPSSetting *)&v6 encodeWithCoder:coderCopy];
+  items = [(HPSConstrainedStringSetting *)self items];
+  if (items)
   {
-    [v4 encodeObject:v5 forKey:@"setting.items"];
+    [coderCopy encodeObject:items forKey:@"setting.items"];
   }
 }
 
-- (HPSConstrainedStringSetting)initWithCoder:(id)a3
+- (HPSConstrainedStringSetting)initWithCoder:(id)coder
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = HPSConstrainedStringSetting;
-  v5 = [(HPSSetting *)&v24 initWithCoder:v4];
-  if (!v5 || ![v4 containsValueForKey:@"setting.items"])
+  v5 = [(HPSSetting *)&v24 initWithCoder:coderCopy];
+  if (!v5 || ![coderCopy containsValueForKey:@"setting.items"])
   {
 LABEL_13:
     v11 = v5;
@@ -49,7 +49,7 @@ LABEL_13:
 
   v6 = objc_opt_class();
   v7 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), v6, 0}];
-  v8 = [v4 decodeObjectOfClasses:v7 forKey:@"setting.items"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"setting.items"];
   items = v5->_items;
   v5->_items = v8;
 

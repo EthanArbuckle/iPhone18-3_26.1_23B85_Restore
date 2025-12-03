@@ -1,28 +1,28 @@
 @interface TUSmartHoldingRequest
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToSession:(id)a3;
-- (TUSmartHoldingRequest)initWithCallUUID:(id)a3 requestType:(int64_t)a4;
-- (TUSmartHoldingRequest)initWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToSession:(id)session;
+- (TUSmartHoldingRequest)initWithCallUUID:(id)d requestType:(int64_t)type;
+- (TUSmartHoldingRequest)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TUSmartHoldingRequest
 
-- (TUSmartHoldingRequest)initWithCallUUID:(id)a3 requestType:(int64_t)a4
+- (TUSmartHoldingRequest)initWithCallUUID:(id)d requestType:(int64_t)type
 {
-  v7 = a3;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = TUSmartHoldingRequest;
   v8 = [(TUSmartHoldingRequest *)&v12 init];
   if (v8)
   {
-    v9 = [MEMORY[0x1E696AFB0] UUID];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
     uuid = v8->_uuid;
-    v8->_uuid = v9;
+    v8->_uuid = uUID;
 
-    objc_storeStrong(&v8->_callUUID, a3);
-    v8->_requestType = a4;
+    objc_storeStrong(&v8->_callUUID, d);
+    v8->_requestType = type;
   }
 
   return v8;
@@ -35,11 +35,11 @@
   v3 = [(TUSmartHoldingRequest *)&v8 description];
   v4 = [v3 mutableCopy];
 
-  v5 = [(TUSmartHoldingRequest *)self uuid];
-  [v4 appendFormat:@" uuid=%@", v5];
+  uuid = [(TUSmartHoldingRequest *)self uuid];
+  [v4 appendFormat:@" uuid=%@", uuid];
 
-  v6 = [(TUSmartHoldingRequest *)self callUUID];
-  [v4 appendFormat:@" callUUID=%@", v6];
+  callUUID = [(TUSmartHoldingRequest *)self callUUID];
+  [v4 appendFormat:@" callUUID=%@", callUUID];
 
   [v4 appendFormat:@" requestType=%lu", -[TUSmartHoldingRequest requestType](self, "requestType")];
   [v4 appendFormat:@" "];
@@ -48,41 +48,41 @@
   return v4;
 }
 
-- (TUSmartHoldingRequest)initWithCoder:(id)a3
+- (TUSmartHoldingRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = TUSmartHoldingRequest;
   v5 = [(TUSmartHoldingRequest *)&v11 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"uuid"];
     uuid = v5->_uuid;
     v5->_uuid = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"callUUID"];
     callUUID = v5->_callUUID;
     v5->_callUUID = v8;
 
-    v5->_requestType = [v4 decodeIntForKey:@"requestType"];
+    v5->_requestType = [coderCopy decodeIntForKey:@"requestType"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uuid = self->_uuid;
-  v5 = a3;
-  [v5 encodeObject:uuid forKey:@"uuid"];
-  [v5 encodeObject:self->_callUUID forKey:@"callUUID"];
-  [v5 encodeInt:LODWORD(self->_requestType) forKey:@"requestType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uuid forKey:@"uuid"];
+  [coderCopy encodeObject:self->_callUUID forKey:@"callUUID"];
+  [coderCopy encodeInt:LODWORD(self->_requestType) forKey:@"requestType"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -90,25 +90,25 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUSmartHoldingRequest *)self isEqualToSession:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TUSmartHoldingRequest *)self isEqualToSession:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isEqualToSession:(id)a3
+- (BOOL)isEqualToSession:(id)session
 {
-  v4 = a3;
-  v5 = [(TUSmartHoldingRequest *)self uuid];
-  v6 = [v4 uuid];
-  if ([v5 isEqual:v6])
+  sessionCopy = session;
+  uuid = [(TUSmartHoldingRequest *)self uuid];
+  uuid2 = [sessionCopy uuid];
+  if ([uuid isEqual:uuid2])
   {
-    v7 = [(TUSmartHoldingRequest *)self callUUID];
-    v8 = [v4 callUUID];
-    if ([v7 isEqual:v8])
+    callUUID = [(TUSmartHoldingRequest *)self callUUID];
+    callUUID2 = [sessionCopy callUUID];
+    if ([callUUID isEqual:callUUID2])
     {
-      v9 = [(TUSmartHoldingRequest *)self requestType];
-      v10 = v9 == [v4 requestType];
+      requestType = [(TUSmartHoldingRequest *)self requestType];
+      v10 = requestType == [sessionCopy requestType];
     }
 
     else

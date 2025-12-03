@@ -1,6 +1,6 @@
 @interface ControlCenterSettingsViewController
-- (ControlCenterSettingsViewController)initWithCoder:(id)a3;
-- (ControlCenterSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (ControlCenterSettingsViewController)initWithCoder:(id)coder;
+- (ControlCenterSettingsViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -16,11 +16,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   ControlCenterSettingsViewController.viewDidLoad()();
 }
 
-- (ControlCenterSettingsViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (ControlCenterSettingsViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_BA8C();
   sub_BA7C();
@@ -30,26 +30,26 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_BA3C();
-    v7 = a4;
-    a3 = sub_BA2C();
+    bundleCopy = bundle;
+    name = sub_BA2C();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
   }
 
   v11.receiver = self;
   v11.super_class = ControlCenterSettingsViewController;
-  v9 = [(ControlCenterSettingsViewController *)&v11 initWithNibName:a3 bundle:a4];
+  v9 = [(ControlCenterSettingsViewController *)&v11 initWithNibName:name bundle:bundle];
 
   return v9;
 }
 
-- (ControlCenterSettingsViewController)initWithCoder:(id)a3
+- (ControlCenterSettingsViewController)initWithCoder:(id)coder
 {
   sub_BA8C();
   sub_BA7C();
@@ -61,8 +61,8 @@
 
   v8.receiver = self;
   v8.super_class = ControlCenterSettingsViewController;
-  v5 = a3;
-  v6 = [(ControlCenterSettingsViewController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(ControlCenterSettingsViewController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

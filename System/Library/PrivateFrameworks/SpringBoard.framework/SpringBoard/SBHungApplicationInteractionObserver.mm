@@ -1,51 +1,51 @@
 @interface SBHungApplicationInteractionObserver
-- (BOOL)_transitionContextRepresentsActivatingAppFromAppSwitcher:(id)a3;
-- (BOOL)_transitionContextRepresentsActivatingDynamicIslandApp:(id)a3;
-- (BOOL)_transitionContextRepresentsActivatingHomeScreen:(id)a3;
-- (BOOL)_transitionContextRepresentsArcSwipingToPreviousApp:(id)a3;
-- (BOOL)_transitionContextRepresentsTappingBreadcrumbToPreviousApp:(id)a3;
+- (BOOL)_transitionContextRepresentsActivatingAppFromAppSwitcher:(id)switcher;
+- (BOOL)_transitionContextRepresentsActivatingDynamicIslandApp:(id)app;
+- (BOOL)_transitionContextRepresentsActivatingHomeScreen:(id)screen;
+- (BOOL)_transitionContextRepresentsArcSwipingToPreviousApp:(id)app;
+- (BOOL)_transitionContextRepresentsTappingBreadcrumbToPreviousApp:(id)app;
 - (uint64_t)setPreviousLockState:(uint64_t)result;
-- (void)_lockStateDidChange:(id)a3;
-- (void)_notifyInteractionWithPossiblyHungApplicationSceneEntities:(id)a3 withInteractionType:(int64_t)a4;
+- (void)_lockStateDidChange:(id)change;
+- (void)_notifyInteractionWithPossiblyHungApplicationSceneEntities:(id)entities withInteractionType:(int64_t)type;
 - (void)activate;
-- (void)observeBackgroundingApplicationSceneEntities:(id)a3 withTransitionContext:(id)a4;
-- (void)observeRemovedApplicationSceneEntity:(id)a3;
+- (void)observeBackgroundingApplicationSceneEntities:(id)entities withTransitionContext:(id)context;
+- (void)observeRemovedApplicationSceneEntity:(id)entity;
 @end
 
 @implementation SBHungApplicationInteractionObserver
 
 - (void)activate
 {
-  v0 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v1 = [MEMORY[0x277CCACA8] stringWithUTF8String:"void soft_HTInitializeHangTracerMonitor(void)"];
-  [v0 handleFailureInFunction:v1 file:@"SBHungApplicationInteractionObserver.m" lineNumber:28 description:{@"%s", dlerror()}];
+  [currentHandler handleFailureInFunction:v1 file:@"SBHungApplicationInteractionObserver.m" lineNumber:28 description:{@"%s", dlerror()}];
 
   __break(1u);
 }
 
-- (void)observeBackgroundingApplicationSceneEntities:(id)a3 withTransitionContext:(id)a4
+- (void)observeBackgroundingApplicationSceneEntities:(id)entities withTransitionContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(SBHungApplicationInteractionObserver *)self _transitionContextRepresentsActivatingAppFromAppSwitcher:v7])
+  entitiesCopy = entities;
+  contextCopy = context;
+  if ([(SBHungApplicationInteractionObserver *)self _transitionContextRepresentsActivatingAppFromAppSwitcher:contextCopy])
   {
     v8 = 0;
     v9 = 1;
   }
 
-  else if ([(SBHungApplicationInteractionObserver *)self _transitionContextRepresentsActivatingDynamicIslandApp:v7])
+  else if ([(SBHungApplicationInteractionObserver *)self _transitionContextRepresentsActivatingDynamicIslandApp:contextCopy])
   {
     v8 = 1;
     v9 = 2;
   }
 
-  else if ([(SBHungApplicationInteractionObserver *)self _transitionContextRepresentsActivatingHomeScreen:v7])
+  else if ([(SBHungApplicationInteractionObserver *)self _transitionContextRepresentsActivatingHomeScreen:contextCopy])
   {
     v8 = 0;
     v9 = 3;
   }
 
-  else if ([(SBHungApplicationInteractionObserver *)self _transitionContextRepresentsArcSwipingToPreviousApp:v7])
+  else if ([(SBHungApplicationInteractionObserver *)self _transitionContextRepresentsArcSwipingToPreviousApp:contextCopy])
   {
     v8 = 0;
     v9 = 4;
@@ -53,7 +53,7 @@
 
   else
   {
-    v10 = [(SBHungApplicationInteractionObserver *)self _transitionContextRepresentsTappingBreadcrumbToPreviousApp:v7];
+    v10 = [(SBHungApplicationInteractionObserver *)self _transitionContextRepresentsTappingBreadcrumbToPreviousApp:contextCopy];
     v8 = !v10;
     if (v10)
     {
@@ -75,39 +75,39 @@
 
   if ((v8 & 1) == 0)
   {
-    [(SBHungApplicationInteractionObserver *)self _notifyInteractionWithPossiblyHungApplicationSceneEntities:v6 withInteractionType:v9];
+    [(SBHungApplicationInteractionObserver *)self _notifyInteractionWithPossiblyHungApplicationSceneEntities:entitiesCopy withInteractionType:v9];
   }
 }
 
-- (void)observeRemovedApplicationSceneEntity:(id)a3
+- (void)observeRemovedApplicationSceneEntity:(id)entity
 {
-  v4 = [MEMORY[0x277CBEB98] setWithObject:a3];
+  v4 = [MEMORY[0x277CBEB98] setWithObject:entity];
   [(SBHungApplicationInteractionObserver *)self _notifyInteractionWithPossiblyHungApplicationSceneEntities:v4 withInteractionType:7];
 }
 
-- (void)_lockStateDidChange:(id)a3
+- (void)_lockStateDidChange:(id)change
 {
-  v3 = self;
+  selfCopy = self;
   v38 = *MEMORY[0x277D85DE8];
   previousLockState = self->_previousLockState;
-  v5 = [a3 userInfo];
-  v6 = [v5 objectForKey:@"SBAggregateLockStateKey"];
-  v7 = [v6 unsignedIntegerValue];
+  userInfo = [change userInfo];
+  v6 = [userInfo objectForKey:@"SBAggregateLockStateKey"];
+  unsignedIntegerValue = [v6 unsignedIntegerValue];
 
-  if ((previousLockState & 2) == 0 && (v7 & 2) != 0)
+  if ((previousLockState & 2) == 0 && (unsignedIntegerValue & 2) != 0)
   {
-    v25 = v7;
-    v26 = v3;
+    v25 = unsignedIntegerValue;
+    v26 = selfCopy;
     v8 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v9 = [SBApp windowSceneManager];
-    v10 = [v9 connectedWindowScenes];
+    windowSceneManager = [SBApp windowSceneManager];
+    connectedWindowScenes = [windowSceneManager connectedWindowScenes];
 
-    obj = v10;
-    v11 = [v10 countByEnumeratingWithState:&v32 objects:v37 count:16];
+    obj = connectedWindowScenes;
+    v11 = [connectedWindowScenes countByEnumeratingWithState:&v32 objects:v37 count:16];
     if (v11)
     {
       v12 = v11;
@@ -127,11 +127,11 @@
           v29 = 0u;
           v30 = 0u;
           v31 = 0u;
-          v16 = [v15 switcherController];
-          v17 = [v16 layoutState];
-          v18 = [v17 elements];
+          switcherController = [v15 switcherController];
+          layoutState = [switcherController layoutState];
+          elements = [layoutState elements];
 
-          v19 = [v18 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          v19 = [elements countByEnumeratingWithState:&v28 objects:v36 count:16];
           if (v19)
           {
             v20 = v19;
@@ -143,18 +143,18 @@
               {
                 if (*v29 != v21)
                 {
-                  objc_enumerationMutation(v18);
+                  objc_enumerationMutation(elements);
                 }
 
-                v23 = [*(*(&v28 + 1) + 8 * v22) workspaceEntity];
-                v24 = [v23 applicationSceneEntity];
+                workspaceEntity = [*(*(&v28 + 1) + 8 * v22) workspaceEntity];
+                applicationSceneEntity = [workspaceEntity applicationSceneEntity];
 
-                [v8 bs_safeAddObject:v24];
+                [v8 bs_safeAddObject:applicationSceneEntity];
                 ++v22;
               }
 
               while (v20 != v22);
-              v20 = [v18 countByEnumeratingWithState:&v28 objects:v36 count:16];
+              v20 = [elements countByEnumeratingWithState:&v28 objects:v36 count:16];
             }
 
             while (v20);
@@ -170,25 +170,25 @@
       while (v12);
     }
 
-    v3 = v26;
+    selfCopy = v26;
     [(SBHungApplicationInteractionObserver *)v26 _notifyInteractionWithPossiblyHungApplicationSceneEntities:v8 withInteractionType:6];
 
-    v7 = v25;
+    unsignedIntegerValue = v25;
   }
 
-  v3->_previousLockState = v7;
+  selfCopy->_previousLockState = unsignedIntegerValue;
 }
 
-- (void)_notifyInteractionWithPossiblyHungApplicationSceneEntities:(id)a3 withInteractionType:(int64_t)a4
+- (void)_notifyInteractionWithPossiblyHungApplicationSceneEntities:(id)entities withInteractionType:(int64_t)type
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = _NSStringFromHungApplicationInteractionObserverInteractionType(a4);
+  entitiesCopy = entities;
+  v6 = _NSStringFromHungApplicationInteractionObserverInteractionType(type);
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v5;
+  obj = entitiesCopy;
   v7 = [obj countByEnumeratingWithState:&v23 objects:v31 count:16];
   if (v7)
   {
@@ -205,10 +205,10 @@
           objc_enumerationMutation(obj);
         }
 
-        v11 = [*(*(&v23 + 1) + 8 * i) sceneHandle];
-        v12 = [v11 application];
-        v13 = [v12 processState];
-        v14 = [v13 pid];
+        sceneHandle = [*(*(&v23 + 1) + 8 * i) sceneHandle];
+        application = [sceneHandle application];
+        processState = [application processState];
+        v14 = [processState pid];
 
         v15 = SBLogHangTracer();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
@@ -256,12 +256,12 @@
   }
 }
 
-- (BOOL)_transitionContextRepresentsActivatingAppFromAppSwitcher:(id)a3
+- (BOOL)_transitionContextRepresentsActivatingAppFromAppSwitcher:(id)switcher
 {
-  v3 = a3;
-  v4 = [v3 previousLayoutState];
+  switcherCopy = switcher;
+  previousLayoutState = [switcherCopy previousLayoutState];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = previousLayoutState;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -282,10 +282,10 @@
 
   v8 = v7;
 
-  v9 = [v3 layoutState];
+  layoutState = [switcherCopy layoutState];
 
   v10 = objc_opt_class();
-  v11 = v9;
+  v11 = layoutState;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -310,12 +310,12 @@
   return v14;
 }
 
-- (BOOL)_transitionContextRepresentsActivatingDynamicIslandApp:(id)a3
+- (BOOL)_transitionContextRepresentsActivatingDynamicIslandApp:(id)app
 {
-  v3 = a3;
-  v4 = [v3 previousLayoutState];
+  appCopy = app;
+  previousLayoutState = [appCopy previousLayoutState];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = previousLayoutState;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -336,9 +336,9 @@
 
   v8 = v7;
 
-  v9 = [v3 layoutState];
+  layoutState = [appCopy layoutState];
   v10 = objc_opt_class();
-  v11 = v9;
+  v11 = layoutState;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -359,19 +359,19 @@
 
   v13 = v12;
 
-  v14 = [v3 request];
-  v15 = [v14 source];
+  request = [appCopy request];
+  source = [request source];
 
-  v17 = [v8 unlockedEnvironmentMode] == 3 && objc_msgSend(v13, "unlockedEnvironmentMode") == 3 && v15 == 61;
+  v17 = [v8 unlockedEnvironmentMode] == 3 && objc_msgSend(v13, "unlockedEnvironmentMode") == 3 && source == 61;
   return v17;
 }
 
-- (BOOL)_transitionContextRepresentsArcSwipingToPreviousApp:(id)a3
+- (BOOL)_transitionContextRepresentsArcSwipingToPreviousApp:(id)app
 {
-  v3 = a3;
-  v4 = [v3 previousLayoutState];
+  appCopy = app;
+  previousLayoutState = [appCopy previousLayoutState];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = previousLayoutState;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -392,9 +392,9 @@
 
   v8 = v7;
 
-  v9 = [v3 layoutState];
+  layoutState = [appCopy layoutState];
   v10 = objc_opt_class();
-  v11 = v9;
+  v11 = layoutState;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -415,17 +415,17 @@
 
   v13 = v12;
 
-  v14 = [v3 request];
-  v15 = [v14 source];
+  request = [appCopy request];
+  source = [request source];
 
   if ([v8 unlockedEnvironmentMode] == 3)
   {
     LOBYTE(v16) = 0;
-    if ([v13 unlockedEnvironmentMode] == 3 && v15 == 11)
+    if ([v13 unlockedEnvironmentMode] == 3 && source == 11)
     {
-      v17 = [v13 elements];
-      v18 = [v8 elements];
-      v16 = [v17 intersectsSet:v18] ^ 1;
+      elements = [v13 elements];
+      elements2 = [v8 elements];
+      v16 = [elements intersectsSet:elements2] ^ 1;
     }
   }
 
@@ -437,11 +437,11 @@
   return v16;
 }
 
-- (BOOL)_transitionContextRepresentsActivatingHomeScreen:(id)a3
+- (BOOL)_transitionContextRepresentsActivatingHomeScreen:(id)screen
 {
-  v3 = [a3 layoutState];
+  layoutState = [screen layoutState];
   v4 = objc_opt_class();
-  v5 = v3;
+  v5 = layoutState;
   if (v4)
   {
     if (objc_opt_isKindOfClass())
@@ -462,16 +462,16 @@
 
   v7 = v6;
 
-  v8 = [v7 unlockedEnvironmentMode];
-  return v8 == 1;
+  unlockedEnvironmentMode = [v7 unlockedEnvironmentMode];
+  return unlockedEnvironmentMode == 1;
 }
 
-- (BOOL)_transitionContextRepresentsTappingBreadcrumbToPreviousApp:(id)a3
+- (BOOL)_transitionContextRepresentsTappingBreadcrumbToPreviousApp:(id)app
 {
-  v3 = a3;
-  v4 = [v3 previousLayoutState];
+  appCopy = app;
+  previousLayoutState = [appCopy previousLayoutState];
   v5 = objc_opt_class();
-  v6 = v4;
+  v6 = previousLayoutState;
   if (v5)
   {
     if (objc_opt_isKindOfClass())
@@ -492,9 +492,9 @@
 
   v8 = v7;
 
-  v9 = [v3 layoutState];
+  layoutState = [appCopy layoutState];
   v10 = objc_opt_class();
-  v11 = v9;
+  v11 = layoutState;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -515,10 +515,10 @@
 
   v13 = v12;
 
-  v14 = [v3 request];
-  v15 = [v14 source];
+  request = [appCopy request];
+  source = [request source];
 
-  v17 = [v8 unlockedEnvironmentMode] == 3 && objc_msgSend(v13, "unlockedEnvironmentMode") == 3 && v15 == 15;
+  v17 = [v8 unlockedEnvironmentMode] == 3 && objc_msgSend(v13, "unlockedEnvironmentMode") == 3 && source == 15;
   return v17;
 }
 

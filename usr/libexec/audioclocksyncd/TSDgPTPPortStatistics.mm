@@ -1,6 +1,6 @@
 @interface TSDgPTPPortStatistics
 - (TSDgPTPPortStatistics)init;
-- (TSDgPTPPortStatistics)initWithPort:(id)a3;
+- (TSDgPTPPortStatistics)initWithPort:(id)port;
 @end
 
 @implementation TSDgPTPPortStatistics
@@ -13,21 +13,21 @@
   return 0;
 }
 
-- (TSDgPTPPortStatistics)initWithPort:(id)a3
+- (TSDgPTPPortStatistics)initWithPort:(id)port
 {
-  v4 = a3;
+  portCopy = port;
   v64.receiver = self;
   v64.super_class = TSDgPTPPortStatistics;
   v5 = [(TSDgPTPPortStatistics *)&v64 init];
   if (v5)
   {
-    v5->_portType = [v4 portType];
+    v5->_portType = [portCopy portType];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v6 = [NSString alloc];
-      v7 = [v4 interfaceName];
-      v8 = [v6 initWithFormat:@"Ethernet|%@", v7];
+      interfaceName = [portCopy interfaceName];
+      v8 = [v6 initWithFormat:@"Ethernet|%@", interfaceName];
       portIdentifier = v5->_portIdentifier;
       v5->_portIdentifier = v8;
     }
@@ -38,9 +38,9 @@
       if (objc_opt_isKindOfClass())
       {
         v10 = [NSString alloc];
-        v7 = [v4 interfaceName];
-        portIdentifier = [v4 destinationAddressString];
-        v11 = [v10 initWithFormat:@"LLPtP|%@|%@", v7, portIdentifier];
+        interfaceName = [portCopy interfaceName];
+        portIdentifier = [portCopy destinationAddressString];
+        portIdentifier = [v10 initWithFormat:@"LLPtP|%@|%@", interfaceName, portIdentifier];
       }
 
       else
@@ -49,9 +49,9 @@
         if (objc_opt_isKindOfClass())
         {
           v12 = [NSString alloc];
-          v7 = [v4 interfaceName];
-          portIdentifier = [v4 destinationAddressString];
-          v11 = [v12 initWithFormat:@"UDPv4PtP|%@|%@", v7, portIdentifier];
+          interfaceName = [portCopy interfaceName];
+          portIdentifier = [portCopy destinationAddressString];
+          portIdentifier = [v12 initWithFormat:@"UDPv4PtP|%@|%@", interfaceName, portIdentifier];
         }
 
         else
@@ -60,9 +60,9 @@
           if (objc_opt_isKindOfClass())
           {
             v13 = [NSString alloc];
-            v7 = [v4 interfaceName];
-            portIdentifier = [v4 destinationAddressString];
-            v11 = [v13 initWithFormat:@"UDPv6PtP|%@|%@", v7, portIdentifier];
+            interfaceName = [portCopy interfaceName];
+            portIdentifier = [portCopy destinationAddressString];
+            portIdentifier = [v13 initWithFormat:@"UDPv6PtP|%@|%@", interfaceName, portIdentifier];
           }
 
           else
@@ -71,9 +71,9 @@
             if (objc_opt_isKindOfClass())
             {
               v14 = [NSString alloc];
-              v7 = [v4 interfaceName];
-              portIdentifier = [v4 destinationAddressString];
-              v11 = [v14 initWithFormat:@"LLEtE|%@|%@", v7, portIdentifier];
+              interfaceName = [portCopy interfaceName];
+              portIdentifier = [portCopy destinationAddressString];
+              portIdentifier = [v14 initWithFormat:@"LLEtE|%@|%@", interfaceName, portIdentifier];
             }
 
             else
@@ -82,9 +82,9 @@
               if (objc_opt_isKindOfClass())
               {
                 v15 = [NSString alloc];
-                v7 = [v4 interfaceName];
-                portIdentifier = [v4 destinationAddressString];
-                v11 = [v15 initWithFormat:@"UDPv4EtE|%@|%@", v7, portIdentifier];
+                interfaceName = [portCopy interfaceName];
+                portIdentifier = [portCopy destinationAddressString];
+                portIdentifier = [v15 initWithFormat:@"UDPv4EtE|%@|%@", interfaceName, portIdentifier];
               }
 
               else
@@ -96,9 +96,9 @@
                 }
 
                 v16 = [NSString alloc];
-                v7 = [v4 interfaceName];
-                portIdentifier = [v4 destinationAddressString];
-                v11 = [v16 initWithFormat:@"UDPv6EtE|%@|%@", v7, portIdentifier];
+                interfaceName = [portCopy interfaceName];
+                portIdentifier = [portCopy destinationAddressString];
+                portIdentifier = [v16 initWithFormat:@"UDPv6EtE|%@|%@", interfaceName, portIdentifier];
               }
             }
           }
@@ -106,75 +106,75 @@
       }
 
       v17 = v5->_portIdentifier;
-      v5->_portIdentifier = v11;
+      v5->_portIdentifier = portIdentifier;
     }
 
 LABEL_18:
-    v5->_portRole = [v4 portRole];
-    v18 = [v4 service];
-    v19 = [v18 iodProperties];
+    v5->_portRole = [portCopy portRole];
+    service = [portCopy service];
+    iodProperties = [service iodProperties];
 
-    if (v19)
+    if (iodProperties)
     {
-      v20 = [v19 objectForKeyedSubscript:@"ReceivedSyncCounter"];
+      v20 = [iodProperties objectForKeyedSubscript:@"ReceivedSyncCounter"];
       v5->_receivedSyncCounter = [v20 unsignedIntValue];
 
-      v21 = [v19 objectForKeyedSubscript:@"ReceivedFollowUpCounter"];
+      v21 = [iodProperties objectForKeyedSubscript:@"ReceivedFollowUpCounter"];
       v5->_receivedFollowUpCounter = [v21 unsignedIntValue];
 
-      v22 = [v19 objectForKeyedSubscript:@"ReceivedAnnounceCounter"];
+      v22 = [iodProperties objectForKeyedSubscript:@"ReceivedAnnounceCounter"];
       v5->_receivedAnnounceCounter = [v22 unsignedIntValue];
 
-      v23 = [v19 objectForKeyedSubscript:@"ReceivedSignalCounter"];
+      v23 = [iodProperties objectForKeyedSubscript:@"ReceivedSignalCounter"];
       v5->_receivedSignalCounter = [v23 unsignedIntValue];
 
       v5->_receivedPacketDiscardCounter = 0;
-      v24 = [v19 objectForKeyedSubscript:@"SyncReceiptTimeoutCounter"];
+      v24 = [iodProperties objectForKeyedSubscript:@"SyncReceiptTimeoutCounter"];
       v5->_syncReceiptTimeoutCounter = [v24 unsignedIntValue];
 
-      v25 = [v19 objectForKeyedSubscript:@"AnnounceReceiptTimeoutCounter"];
+      v25 = [iodProperties objectForKeyedSubscript:@"AnnounceReceiptTimeoutCounter"];
       v5->_announceReceiptTimeoutCounter = [v25 unsignedIntValue];
 
-      v26 = [v19 objectForKeyedSubscript:@"AllowedLostResponsesExceededCounter"];
+      v26 = [iodProperties objectForKeyedSubscript:@"AllowedLostResponsesExceededCounter"];
       v5->_allowedLostResponsesExceededCounter = [v26 unsignedIntValue];
 
-      v27 = [v19 objectForKeyedSubscript:@"TransmittedSyncCounter"];
+      v27 = [iodProperties objectForKeyedSubscript:@"TransmittedSyncCounter"];
       v5->_transmittedSyncCounter = [v27 unsignedIntValue];
 
-      v28 = [v19 objectForKeyedSubscript:@"TransmittedFollowUpCounter"];
+      v28 = [iodProperties objectForKeyedSubscript:@"TransmittedFollowUpCounter"];
       v5->_transmittedFollowUpCounter = [v28 unsignedIntValue];
 
-      v29 = [v19 objectForKeyedSubscript:@"TransmittedAnnounceCounter"];
+      v29 = [iodProperties objectForKeyedSubscript:@"TransmittedAnnounceCounter"];
       v5->_transmittedAnnounceCounter = [v29 unsignedIntValue];
 
-      v30 = [v19 objectForKeyedSubscript:@"TransmittedSignalCounter"];
+      v30 = [iodProperties objectForKeyedSubscript:@"TransmittedSignalCounter"];
       v5->_transmittedSignalCounter = [v30 unsignedIntValue];
 
-      v31 = [v19 objectForKeyedSubscript:@"TransmittedPacketDiscardCounter"];
+      v31 = [iodProperties objectForKeyedSubscript:@"TransmittedPacketDiscardCounter"];
       v5->_transmittedPacketDiscardCounter = [v31 unsignedIntValue];
 
-      v32 = [v19 objectForKeyedSubscript:@"AttemptedSyncCounter"];
+      v32 = [iodProperties objectForKeyedSubscript:@"AttemptedSyncCounter"];
       v5->_attemptedSyncCounter = [v32 unsignedIntValue];
 
-      v33 = [v19 objectForKeyedSubscript:@"AttemptedFollowUpCounter"];
+      v33 = [iodProperties objectForKeyedSubscript:@"AttemptedFollowUpCounter"];
       v5->_attemptedFollowUpCounter = [v33 unsignedIntValue];
 
-      v34 = [v19 objectForKeyedSubscript:@"AttemptedAnnounceCounter"];
+      v34 = [iodProperties objectForKeyedSubscript:@"AttemptedAnnounceCounter"];
       v5->_attemptedAnnounceCounter = [v34 unsignedIntValue];
 
-      v35 = [v19 objectForKeyedSubscript:@"AttemptedSignalCounter"];
+      v35 = [iodProperties objectForKeyedSubscript:@"AttemptedSignalCounter"];
       v5->_attemptedSignalCounter = [v35 unsignedIntValue];
 
-      v36 = [v19 objectForKeyedSubscript:@"RawDelayExceededCounter"];
+      v36 = [iodProperties objectForKeyedSubscript:@"RawDelayExceededCounter"];
       v5->_rawDelayExceededCounter = [v36 unsignedIntValue];
 
-      v37 = [v19 objectForKeyedSubscript:@"RawDelayMeasurementCounter"];
+      v37 = [iodProperties objectForKeyedSubscript:@"RawDelayMeasurementCounter"];
       v5->_rawDelayMeasurementCounter = [v37 unsignedIntValue];
 
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v38 = [v19 objectForKeyedSubscript:@"ReceivedPDelayRequestCounter"];
+        v38 = [iodProperties objectForKeyedSubscript:@"ReceivedPDelayRequestCounter"];
         v5->_receivedPDelayRequestCounter = [v38 unsignedIntValue];
 
         v62 = @"ReceivedPDelayResponseCounter";
@@ -194,28 +194,28 @@ LABEL_18:
         v44 = 96;
         v45 = @"TransmittedPDelayResponseCounter";
 LABEL_23:
-        v46 = [v19 objectForKeyedSubscript:v45];
+        v46 = [iodProperties objectForKeyedSubscript:v45];
         *(&v5->super.isa + v44) = [v46 unsignedIntValue];
 
-        v47 = [v19 objectForKeyedSubscript:v40];
+        v47 = [iodProperties objectForKeyedSubscript:v40];
         *(&v5->super.isa + v43) = [v47 unsignedIntValue];
 
-        v48 = [v19 objectForKeyedSubscript:v39];
+        v48 = [iodProperties objectForKeyedSubscript:v39];
         *(&v5->super.isa + v42) = [v48 unsignedIntValue];
 
-        v49 = [v19 objectForKeyedSubscript:v56];
+        v49 = [iodProperties objectForKeyedSubscript:v56];
         *(&v5->super.isa + v41) = [v49 unsignedIntValue];
 
-        v50 = [v19 objectForKeyedSubscript:v58];
+        v50 = [iodProperties objectForKeyedSubscript:v58];
         *(&v5->super.isa + v55) = [v50 unsignedIntValue];
 
-        v51 = [v19 objectForKeyedSubscript:v60];
+        v51 = [iodProperties objectForKeyedSubscript:v60];
         *(&v5->super.isa + v57) = [v51 unsignedIntValue];
 
-        v52 = [v19 objectForKeyedSubscript:v62];
+        v52 = [iodProperties objectForKeyedSubscript:v62];
         *(&v5->super.isa + v59) = [v52 unsignedIntValue];
 
-        v53 = [v19 objectForKeyedSubscript:v63];
+        v53 = [iodProperties objectForKeyedSubscript:v63];
         *(&v5->super.isa + v61) = [v53 unsignedIntValue];
 
         goto LABEL_24;

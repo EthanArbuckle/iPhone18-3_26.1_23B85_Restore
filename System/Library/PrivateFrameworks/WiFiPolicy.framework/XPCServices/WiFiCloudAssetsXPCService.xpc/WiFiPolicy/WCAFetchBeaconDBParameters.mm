@@ -1,136 +1,136 @@
 @interface WCAFetchBeaconDBParameters
-- (void)fetchWithCompletion:(id)a3;
+- (void)fetchWithCompletion:(id)completion;
 @end
 
 @implementation WCAFetchBeaconDBParameters
 
-- (void)fetchWithCompletion:(id)a3
+- (void)fetchWithCompletion:(id)completion
 {
-  v42 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   v40 = objc_alloc_init(WCAFetchSQLiteRequest);
   [v40 setTableName:@"prof_clean"];
   [v40 setColumnNames:&off_100012A10];
   [v40 setLimit:1];
   v39 = objc_opt_new();
-  [(WCAFetchBeaconDBParameters *)v42 wlanTimDtimPeriod];
+  [(WCAFetchBeaconDBParameters *)selfCopy wlanTimDtimPeriod];
   if (v3 != 0.0)
   {
-    [(WCAFetchBeaconDBParameters *)v42 wlanTimDtimPeriod];
+    [(WCAFetchBeaconDBParameters *)selfCopy wlanTimDtimPeriod];
     v32 = [NSNumber numberWithFloat:?];
     [v39 setValue:? forKey:?];
   }
 
-  v31 = [(WCAFetchBeaconDBParameters *)v42 wlanHTCapabilities];
+  wlanHTCapabilities = [(WCAFetchBeaconDBParameters *)selfCopy wlanHTCapabilities];
 
-  if (v31)
+  if (wlanHTCapabilities)
   {
-    v30 = [(WCAFetchBeaconDBParameters *)v42 wlanHTCapabilities];
+    wlanHTCapabilities2 = [(WCAFetchBeaconDBParameters *)selfCopy wlanHTCapabilities];
     [v39 setValue:? forKey:?];
   }
 
-  v29 = [(WCAFetchBeaconDBParameters *)v42 wlanWfaIeWmeQosInfo];
+  wlanWfaIeWmeQosInfo = [(WCAFetchBeaconDBParameters *)selfCopy wlanWfaIeWmeQosInfo];
 
-  if (v29)
+  if (wlanWfaIeWmeQosInfo)
   {
-    v28 = [(WCAFetchBeaconDBParameters *)v42 wlanWfaIeWmeQosInfo];
+    wlanWfaIeWmeQosInfo2 = [(WCAFetchBeaconDBParameters *)selfCopy wlanWfaIeWmeQosInfo];
     [v39 setValue:? forKey:?];
   }
 
-  v27 = [(WCAFetchBeaconDBParameters *)v42 wlanHtexCapabilities];
+  wlanHtexCapabilities = [(WCAFetchBeaconDBParameters *)selfCopy wlanHtexCapabilities];
 
-  if (v27)
+  if (wlanHtexCapabilities)
   {
-    v26 = [(WCAFetchBeaconDBParameters *)v42 wlanHtexCapabilities];
+    wlanHtexCapabilities2 = [(WCAFetchBeaconDBParameters *)selfCopy wlanHtexCapabilities];
     [v39 setValue:? forKey:?];
   }
 
-  v25 = [(WCAFetchBeaconDBParameters *)v42 wlanHTAmpduparam];
+  wlanHTAmpduparam = [(WCAFetchBeaconDBParameters *)selfCopy wlanHTAmpduparam];
 
-  if (v25)
+  if (wlanHTAmpduparam)
   {
-    v24 = [(WCAFetchBeaconDBParameters *)v42 wlanHTAmpduparam];
+    wlanHTAmpduparam2 = [(WCAFetchBeaconDBParameters *)selfCopy wlanHTAmpduparam];
     [v39 setValue:? forKey:?];
   }
 
-  v23 = [(WCAFetchBeaconDBParameters *)v42 wlanVhtCapabilities];
+  wlanVhtCapabilities = [(WCAFetchBeaconDBParameters *)selfCopy wlanVhtCapabilities];
 
-  if (v23)
+  if (wlanVhtCapabilities)
   {
-    v22 = [(WCAFetchBeaconDBParameters *)v42 wlanVhtCapabilities];
+    wlanVhtCapabilities2 = [(WCAFetchBeaconDBParameters *)selfCopy wlanVhtCapabilities];
     [v39 setValue:? forKey:?];
   }
 
-  v21 = [(WCAFetchBeaconDBParameters *)v42 wlanTxbf];
+  wlanTxbf = [(WCAFetchBeaconDBParameters *)selfCopy wlanTxbf];
 
-  if (v21)
+  if (wlanTxbf)
   {
-    v20 = [(WCAFetchBeaconDBParameters *)v42 wlanTxbf];
+    wlanTxbf2 = [(WCAFetchBeaconDBParameters *)selfCopy wlanTxbf];
     [v39 setValue:? forKey:?];
   }
 
-  v19 = [(WCAFetchBeaconDBParameters *)v42 wlanAsel];
+  wlanAsel = [(WCAFetchBeaconDBParameters *)selfCopy wlanAsel];
 
-  if (v19)
+  if (wlanAsel)
   {
-    v18 = [(WCAFetchBeaconDBParameters *)v42 wlanAsel];
+    wlanAsel2 = [(WCAFetchBeaconDBParameters *)selfCopy wlanAsel];
     [v39 setValue:? forKey:?];
   }
 
-  v17 = [(WCAFetchBeaconDBParameters *)v42 wlanFixedCapabilities];
+  wlanFixedCapabilities = [(WCAFetchBeaconDBParameters *)selfCopy wlanFixedCapabilities];
 
-  if (v17)
+  if (wlanFixedCapabilities)
   {
-    v16 = [(WCAFetchBeaconDBParameters *)v42 wlanFixedCapabilities];
+    wlanFixedCapabilities2 = [(WCAFetchBeaconDBParameters *)selfCopy wlanFixedCapabilities];
     [v39 setValue:? forKey:?];
   }
 
-  if ([(WCAFetchBeaconDBParameters *)v42 beaconInterval])
+  if ([(WCAFetchBeaconDBParameters *)selfCopy beaconInterval])
   {
-    v15 = [NSNumber numberWithLong:[(WCAFetchBeaconDBParameters *)v42 beaconInterval]];
+    v15 = [NSNumber numberWithLong:[(WCAFetchBeaconDBParameters *)selfCopy beaconInterval]];
     [v39 setValue:? forKey:?];
   }
 
-  if ([(WCAFetchBeaconDBParameters *)v42 QBSS_Load])
+  if ([(WCAFetchBeaconDBParameters *)selfCopy QBSS_Load])
   {
-    v14 = [NSNumber numberWithBool:[(WCAFetchBeaconDBParameters *)v42 QBSS_Load]];
+    v14 = [NSNumber numberWithBool:[(WCAFetchBeaconDBParameters *)selfCopy QBSS_Load]];
     [v39 setValue:? forKey:?];
   }
 
-  if ([(WCAFetchBeaconDBParameters *)v42 has_11krm])
+  if ([(WCAFetchBeaconDBParameters *)selfCopy has_11krm])
   {
-    v13 = [NSNumber numberWithBool:[(WCAFetchBeaconDBParameters *)v42 has_11krm]];
+    v13 = [NSNumber numberWithBool:[(WCAFetchBeaconDBParameters *)selfCopy has_11krm]];
     [v39 setValue:? forKey:?];
   }
 
-  if ([(WCAFetchBeaconDBParameters *)v42 UAPSD])
+  if ([(WCAFetchBeaconDBParameters *)selfCopy UAPSD])
   {
-    v12 = [NSNumber numberWithBool:[(WCAFetchBeaconDBParameters *)v42 UAPSD]];
+    v12 = [NSNumber numberWithBool:[(WCAFetchBeaconDBParameters *)selfCopy UAPSD]];
     [v39 setValue:? forKey:?];
   }
 
-  [(WCAFetchBeaconDBParameters *)v42 antennas11c];
+  [(WCAFetchBeaconDBParameters *)selfCopy antennas11c];
   if (v4 != 0.0)
   {
-    [(WCAFetchBeaconDBParameters *)v42 antennas11c];
+    [(WCAFetchBeaconDBParameters *)selfCopy antennas11c];
     v11 = [NSNumber numberWithFloat:?];
     [v39 setValue:? forKey:?];
   }
 
-  v10 = [(WCAFetchBeaconDBParameters *)v42 antennas11n];
+  antennas11n = [(WCAFetchBeaconDBParameters *)selfCopy antennas11n];
 
-  if (v10)
+  if (antennas11n)
   {
-    v9 = [(WCAFetchBeaconDBParameters *)v42 antennas11n];
+    antennas11n2 = [(WCAFetchBeaconDBParameters *)selfCopy antennas11n];
     [v39 setValue:? forKey:?];
   }
 
-  [(WCAFetchBeaconDBParameters *)v42 max_rates];
+  [(WCAFetchBeaconDBParameters *)selfCopy max_rates];
   if (v5 != 0.0)
   {
-    [(WCAFetchBeaconDBParameters *)v42 max_rates];
+    [(WCAFetchBeaconDBParameters *)selfCopy max_rates];
     v8 = [NSNumber numberWithFloat:?];
     [v39 setValue:? forKey:?];
   }

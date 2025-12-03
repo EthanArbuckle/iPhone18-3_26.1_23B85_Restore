@@ -4,7 +4,7 @@
 - (id)onInvalidate;
 - (void)_entityRevisionUpdated;
 - (void)dealloc;
-- (void)setOnInvalidate:(id)a3;
+- (void)setOnInvalidate:(id)invalidate;
 @end
 
 @implementation _MPLibraryObjectDatabaseProgressiveContext
@@ -187,10 +187,10 @@
   return self;
 }
 
-- (void)setOnInvalidate:(id)a3
+- (void)setOnInvalidate:(id)invalidate
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  invalidateCopy = invalidate;
   os_unfair_lock_lock_with_options();
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -217,7 +217,7 @@
       _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] context::%{sonic:fourCC}u::%{sonic:fourCC}u | calling invalidation handler [already invalid]", buf, 0x14u);
     }
 
-    v4[2](v4);
+    invalidateCopy[2](invalidateCopy);
   }
 
   else
@@ -236,7 +236,7 @@
       _os_log_impl(&dword_1A238D000, v7, OS_LOG_TYPE_DEBUG, "[LOD:%{sonic:fourCC}u] context::%{sonic:fourCC}u::%{sonic:fourCC}u | setting up invalidation handler []", buf, 0x14u);
     }
 
-    v15 = _Block_copy(v4);
+    v15 = _Block_copy(invalidateCopy);
     onInvalidate = self->_onInvalidate;
     self->_onInvalidate = v15;
   }
@@ -265,9 +265,9 @@
   id = self->_lod->_id;
   notify_cancel(self->_notifyToken);
   v4 = MEMORY[0x1E696AEC0];
-  v5 = [(MPLibraryObjectDatabase *)self->_lod library];
-  v6 = [v5 databasePath];
-  v7 = [v4 stringWithFormat:@"com.apple.medialibrary.entity-revision-changed::%zu", objc_msgSend(v6, "hash")];
+  library = [(MPLibraryObjectDatabase *)self->_lod library];
+  databasePath = [library databasePath];
+  v7 = [v4 stringWithFormat:@"com.apple.medialibrary.entity-revision-changed::%zu", objc_msgSend(databasePath, "hash")];
 
   v8 = os_log_create("com.apple.amp.mediaplayer", "LibraryObjects");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))

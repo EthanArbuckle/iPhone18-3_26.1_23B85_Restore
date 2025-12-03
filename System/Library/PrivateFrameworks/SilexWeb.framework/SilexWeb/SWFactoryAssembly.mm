@@ -1,48 +1,48 @@
 @interface SWFactoryAssembly
-- (void)loadInRegistry:(id)a3;
+- (void)loadInRegistry:(id)registry;
 @end
 
 @implementation SWFactoryAssembly
 
-- (void)loadInRegistry:(id)a3
+- (void)loadInRegistry:(id)registry
 {
-  v3 = a3;
-  v4 = [v3 publicContainer];
-  v5 = [v4 registerProtocol:&unk_1F524F030 name:@"web-content" factory:&__block_literal_global_0];
+  registryCopy = registry;
+  publicContainer = [registryCopy publicContainer];
+  v5 = [publicContainer registerProtocol:&unk_1F524F030 name:@"web-content" factory:&__block_literal_global_0];
   v6 = [v5 inScope:2];
 
-  v7 = [v3 publicContainer];
-  v8 = [v7 registerProtocol:&unk_1F526A378 factory:&__block_literal_global_51];
+  publicContainer2 = [registryCopy publicContainer];
+  v8 = [publicContainer2 registerProtocol:&unk_1F526A378 factory:&__block_literal_global_51];
 
-  v9 = [v3 privateContainer];
-  v10 = [v9 registerClass:objc_opt_class() name:@"web-content" factory:&__block_literal_global_56];
+  privateContainer = [registryCopy privateContainer];
+  v10 = [privateContainer registerClass:objc_opt_class() name:@"web-content" factory:&__block_literal_global_56];
   v11 = [v10 inScope:2];
 
-  v12 = [v3 privateContainer];
-  v13 = [v12 registerClass:objc_opt_class() name:@"web-content" factory:&__block_literal_global_60];
+  privateContainer2 = [registryCopy privateContainer];
+  v13 = [privateContainer2 registerClass:objc_opt_class() name:@"web-content" factory:&__block_literal_global_60];
   v14 = [v13 inScope:2];
   v15 = [v14 withConfiguration:&__block_literal_global_63];
 
-  v16 = [v3 privateContainer];
-  v17 = [v16 registerClass:objc_opt_class() name:@"web-content" factory:&__block_literal_global_66];
+  privateContainer3 = [registryCopy privateContainer];
+  v17 = [privateContainer3 registerClass:objc_opt_class() name:@"web-content" factory:&__block_literal_global_66];
   v18 = [v17 withConfiguration:&__block_literal_global_69];
 
-  v19 = [v3 publicContainer];
-  v20 = [v19 registerClass:objc_opt_class() name:@"web-content" factory:&__block_literal_global_73];
+  publicContainer3 = [registryCopy publicContainer];
+  v20 = [publicContainer3 registerClass:objc_opt_class() name:@"web-content" factory:&__block_literal_global_73];
 
-  v21 = [v3 privateContainer];
-  v22 = [v21 registerProtocol:&unk_1F5259CB8 name:@"web-content" factory:&__block_literal_global_79];
+  privateContainer4 = [registryCopy privateContainer];
+  v22 = [privateContainer4 registerProtocol:&unk_1F5259CB8 name:@"web-content" factory:&__block_literal_global_79];
   v23 = [v22 inScope:2];
 
-  v24 = [v3 publicContainer];
-  v25 = [v24 registerClass:objc_opt_class() name:@"web-content" factory:&__block_literal_global_83];
+  publicContainer4 = [registryCopy publicContainer];
+  v25 = [publicContainer4 registerClass:objc_opt_class() name:@"web-content" factory:&__block_literal_global_83];
 
-  v26 = [v3 publicContainer];
-  v27 = [v26 registerClass:objc_opt_class() factory:&__block_literal_global_86];
+  publicContainer5 = [registryCopy publicContainer];
+  v27 = [publicContainer5 registerClass:objc_opt_class() factory:&__block_literal_global_86];
 
-  v29 = [v3 publicContainer];
+  publicContainer6 = [registryCopy publicContainer];
 
-  v28 = [v29 registerClass:objc_opt_class() factory:&__block_literal_global_89];
+  v28 = [publicContainer6 registerClass:objc_opt_class() factory:&__block_literal_global_89];
 }
 
 SWWebViewFactory *__36__SWFactoryAssembly_loadInRegistry___block_invoke()

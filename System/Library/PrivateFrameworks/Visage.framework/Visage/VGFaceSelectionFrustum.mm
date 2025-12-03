@@ -1,9 +1,9 @@
 @interface VGFaceSelectionFrustum
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (VGFaceSelectionFrustum)init;
-- (VGFaceSelectionFrustum)initWithCoder:(id)a3;
+- (VGFaceSelectionFrustum)initWithCoder:(id)coder;
 - (id)toDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VGFaceSelectionFrustum
@@ -29,33 +29,33 @@
   return v2;
 }
 
-- (VGFaceSelectionFrustum)initWithCoder:(id)a3
+- (VGFaceSelectionFrustum)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(VGFaceSelectionFrustum *)self init];
   if (v5)
   {
-    if ([v4 containsValueForKey:@"selectionFrustumYawOffsetLeft"])
+    if ([coderCopy containsValueForKey:@"selectionFrustumYawOffsetLeft"])
     {
-      [v4 decodeFloatForKey:@"selectionFrustumYawOffsetLeft"];
+      [coderCopy decodeFloatForKey:@"selectionFrustumYawOffsetLeft"];
       v5->_yawOffsetLeft = v6;
     }
 
-    if ([v4 containsValueForKey:@"selectionFrustumYawOffsetRight"])
+    if ([coderCopy containsValueForKey:@"selectionFrustumYawOffsetRight"])
     {
-      [v4 decodeFloatForKey:@"selectionFrustumYawOffsetRight"];
+      [coderCopy decodeFloatForKey:@"selectionFrustumYawOffsetRight"];
       v5->_yawOffsetRight = v7;
     }
 
-    if ([v4 containsValueForKey:@"selectionFrustumPitchOffsetTop"])
+    if ([coderCopy containsValueForKey:@"selectionFrustumPitchOffsetTop"])
     {
-      [v4 decodeFloatForKey:@"selectionFrustumPitchOffsetTop"];
+      [coderCopy decodeFloatForKey:@"selectionFrustumPitchOffsetTop"];
       v5->_pitchOffsetTop = v8;
     }
 
-    if ([v4 containsValueForKey:@"selectionFrustumPitchOffsetBottom"])
+    if ([coderCopy containsValueForKey:@"selectionFrustumPitchOffsetBottom"])
     {
-      [v4 decodeFloatForKey:@"selectionFrustumPitchOffsetBottom"];
+      [coderCopy decodeFloatForKey:@"selectionFrustumPitchOffsetBottom"];
       v5->_pitchOffsetBottom = v9;
     }
 
@@ -65,12 +65,12 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   *&v5 = self->_yawOffsetLeft;
-  v9 = v4;
-  [v4 encodeFloat:@"selectionFrustumYawOffsetLeft" forKey:v5];
+  v9 = coderCopy;
+  [coderCopy encodeFloat:@"selectionFrustumYawOffsetLeft" forKey:v5];
   *&v6 = self->_yawOffsetRight;
   [v9 encodeFloat:@"selectionFrustumYawOffsetRight" forKey:v6];
   *&v7 = self->_pitchOffsetTop;
@@ -79,13 +79,13 @@
   [v9 encodeFloat:@"selectionFrustumPitchOffsetBottom" forKey:v8];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     yawOffsetLeft = self->_yawOffsetLeft;
     [v5 yawOffsetLeft];
     if (yawOffsetLeft == v7 && (yawOffsetRight = self->_yawOffsetRight, [v5 yawOffsetRight], yawOffsetRight == v9) && (pitchOffsetTop = self->_pitchOffsetTop, objc_msgSend(v5, "pitchOffsetTop"), pitchOffsetTop == v11))

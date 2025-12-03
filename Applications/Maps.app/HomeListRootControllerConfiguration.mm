@@ -2,19 +2,19 @@
 - (HomeActionDelegate)homeActionDelegate;
 - (HomeUpdateDelegate)homeUpdateDelegate;
 - (_TtC4Maps35HomeListRootControllerConfiguration)init;
-- (_TtC4Maps35HomeListRootControllerConfiguration)initWithCollectionView:(id)a3;
+- (_TtC4Maps35HomeListRootControllerConfiguration)initWithCollectionView:(id)view;
 @end
 
 @implementation HomeListRootControllerConfiguration
 
-- (_TtC4Maps35HomeListRootControllerConfiguration)initWithCollectionView:(id)a3
+- (_TtC4Maps35HomeListRootControllerConfiguration)initWithCollectionView:(id)view
 {
   swift_unknownObjectWeakInit();
   swift_unknownObjectWeakInit();
-  *(self + OBJC_IVAR____TtC4Maps35HomeListRootControllerConfiguration_collectionView) = a3;
+  *(self + OBJC_IVAR____TtC4Maps35HomeListRootControllerConfiguration_collectionView) = view;
   v7.receiver = self;
   v7.super_class = type metadata accessor for HomeListRootControllerConfiguration();
-  v5 = a3;
+  viewCopy = view;
   return [(HomeListRootControllerConfiguration *)&v7 init];
 }
 

@@ -1,38 +1,38 @@
 @interface ISDialog
-+ (__CFString)buttonTitleKeyForCFUserNotificationButtonTag:(unint64_t)a3;
-+ (int64_t)displayCountForKey:(id)a3;
-+ (unint64_t)buttonTagForCFUserNotificationButtonTitleKey:(__CFString *)a3;
++ (__CFString)buttonTitleKeyForCFUserNotificationButtonTag:(unint64_t)tag;
++ (int64_t)displayCountForKey:(id)key;
++ (unint64_t)buttonTagForCFUserNotificationButtonTitleKey:(__CFString *)key;
 + (void)_initializeStaticButtonTitleKeyAndTagMapping;
 - (BOOL)isDisplayable;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (ISDialog)init;
-- (ISDialog)initWithAuthenticationChallege:(id)a3;
-- (ISDialog)initWithDialogDictionary:(id)a3 authenticationContext:(id)a4;
-- (ISDialog)initWithError:(id)a3;
-- (ISDialog)initWithOfferDeviceError:(id)a3;
-- (ISDialog)initWithTitle:(id)a3 message:(id)a4;
-- (ISDialog)initWithXPCEncoding:(id)a3;
+- (ISDialog)initWithAuthenticationChallege:(id)challege;
+- (ISDialog)initWithDialogDictionary:(id)dictionary authenticationContext:(id)context;
+- (ISDialog)initWithError:(id)error;
+- (ISDialog)initWithOfferDeviceError:(id)error;
+- (ISDialog)initWithTitle:(id)title message:(id)message;
+- (ISDialog)initWithXPCEncoding:(id)encoding;
 - (NSString)displayCountKey;
 - (id)buyParams;
 - (id)copyUserNotification;
 - (id)copyXPCEncoding;
 - (id)orderedButtonTitleKeysForCFUserNotification;
-- (id)valueForUserInfoKey:(id)a3;
-- (int64_t)_kindForString:(id)a3;
+- (id)valueForUserInfoKey:(id)key;
+- (int64_t)_kindForString:(id)string;
 - (int64_t)maximumDisplayCount;
-- (void)copyValueForCFUserNotificationKey:(__CFString *)a3;
+- (void)copyValueForCFUserNotificationKey:(__CFString *)key;
 - (void)dealloc;
 - (void)incrementDisplayCount;
-- (void)setButtonsWithTitles:(id)a3;
-- (void)setDisplayCountKey:(id)a3;
-- (void)setMaximumDisplayCount:(int64_t)a3;
-- (void)setValue:(id)a3 forUserInfoKey:(id)a4;
-- (void)setValue:(void *)a3 forCFUserNotificationKey:(__CFString *)a4;
+- (void)setButtonsWithTitles:(id)titles;
+- (void)setDisplayCountKey:(id)key;
+- (void)setMaximumDisplayCount:(int64_t)count;
+- (void)setValue:(id)value forUserInfoKey:(id)key;
+- (void)setValue:(void *)value forCFUserNotificationKey:(__CFString *)key;
 @end
 
 @implementation ISDialog
 
-- (ISDialog)initWithAuthenticationChallege:(id)a3
+- (ISDialog)initWithAuthenticationChallege:(id)challege
 {
   v4 = [(ISDialog *)self init];
   if (v4)
@@ -43,13 +43,13 @@
     [(ISDialog *)v4 setDefaultButtonIndex:1];
     [(ISDialog *)v4 setExpectsResponse:1];
     [(ISDialog *)v4 setGroupsTextFields:1];
-    -[ISDialog setTitle:](v4, "setTitle:", [a3 localizedTitle]);
+    -[ISDialog setTitle:](v4, "setTitle:", [challege localizedTitle]);
     v7 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    if ([a3 userNameIsEditable])
+    if ([challege userNameIsEditable])
     {
       v8 = objc_alloc_init(ISDialogTextField);
-      v9 = [a3 userNameIsEmail];
-      if (v9)
+      userNameIsEmail = [challege userNameIsEmail];
+      if (userNameIsEmail)
       {
         v10 = 7;
       }
@@ -59,7 +59,7 @@
         v10 = 0;
       }
 
-      if (v9)
+      if (userNameIsEmail)
       {
         v11 = @"EMAIL";
       }
@@ -71,17 +71,17 @@
 
       [(ISDialogTextField *)v8 setKeyboardType:v10];
       -[ISDialogTextField setTitle:](v8, "setTitle:", [objc_msgSend(MEMORY[0x277CCA8D8] bundleForClass:{objc_opt_class()), "localizedStringForKey:value:table:", v11, &stru_2884BCFD0, 0}]);
-      -[ISDialogTextField setValue:](v8, "setValue:", [a3 user]);
+      -[ISDialogTextField setValue:](v8, "setValue:", [challege user]);
       [v7 addObject:v8];
     }
 
     else
     {
-      v12 = [a3 user];
-      if (v12)
+      user = [challege user];
+      if (user)
       {
 LABEL_12:
-        [(ISDialog *)v4 setMessage:v12];
+        [(ISDialog *)v4 setMessage:user];
         v13 = objc_alloc_init(ISDialogTextField);
         [(ISDialogTextField *)v13 setKeyboardType:0];
         [(ISDialogTextField *)v13 setSecure:1];
@@ -93,7 +93,7 @@ LABEL_12:
       }
     }
 
-    v12 = [a3 localizedMessage];
+    user = [challege localizedMessage];
     goto LABEL_12;
   }
 
@@ -123,31 +123,31 @@ LABEL_12:
   return v4;
 }
 
-- (ISDialog)initWithDialogDictionary:(id)a3 authenticationContext:(id)a4
+- (ISDialog)initWithDialogDictionary:(id)dictionary authenticationContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  contextCopy = context;
   v8 = [(ISDialog *)self init];
   if (!v8)
   {
-    v11 = v6;
+    dictionaryByEvaluatingConditions = dictionaryCopy;
     goto LABEL_64;
   }
 
-  v9 = [v7 copy];
+  v9 = [contextCopy copy];
   authenticationContext = v8->_authenticationContext;
   v8->_authenticationContext = v9;
 
-  v43 = [objc_alloc(MEMORY[0x277D69C08]) initWithDictionary:v6];
-  v11 = [v43 dictionaryByEvaluatingConditions];
+  v43 = [objc_alloc(MEMORY[0x277D69C08]) initWithDictionary:dictionaryCopy];
+  dictionaryByEvaluatingConditions = [v43 dictionaryByEvaluatingConditions];
 
-  v12 = [v11 objectForKey:@"force-authentication"];
+  v12 = [dictionaryByEvaluatingConditions objectForKey:@"force-authentication"];
   if (objc_opt_respondsToSelector())
   {
     -[ISDialog setAuthorizationIsForced:](v8, "setAuthorizationIsForced:", [v12 BOOLValue]);
   }
 
-  v13 = [v11 objectForKey:@"explanation"];
+  v13 = [dictionaryByEvaluatingConditions objectForKey:@"explanation"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -155,7 +155,7 @@ LABEL_12:
     [(ISDialog *)v8 setMessage:v13];
   }
 
-  v14 = [v11 objectForKey:@"message"];
+  v14 = [dictionaryByEvaluatingConditions objectForKey:@"message"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -163,10 +163,10 @@ LABEL_12:
     [(ISDialog *)v8 setTitle:v14];
   }
 
-  v15 = [v11 objectForKey:@"kind"];
+  v15 = [dictionaryByEvaluatingConditions objectForKey:@"kind"];
 
   [(ISDialog *)v8 setKind:[(ISDialog *)v8 _kindForString:v15]];
-  v16 = [v11 objectForKey:@"display-count-key"];
+  v16 = [dictionaryByEvaluatingConditions objectForKey:@"display-count-key"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -174,14 +174,14 @@ LABEL_12:
     objc_storeStrong(&v8->_displayCountKey, v16);
   }
 
-  v17 = [v11 objectForKey:@"max-display-count"];
+  v17 = [dictionaryByEvaluatingConditions objectForKey:@"max-display-count"];
 
   if (objc_opt_respondsToSelector())
   {
     v8->_maxDisplayCount = [v17 intValue];
   }
 
-  v18 = [v11 objectForKey:@"noDefaultButton"];
+  v18 = [dictionaryByEvaluatingConditions objectForKey:@"noDefaultButton"];
 
   if (objc_opt_respondsToSelector())
   {
@@ -189,10 +189,10 @@ LABEL_12:
   }
 
   v19 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v20 = [v11 objectForKey:@"cancelButtonString"];
+  v20 = [dictionaryByEvaluatingConditions objectForKey:@"cancelButtonString"];
 
   objc_opt_class();
-  v44 = v7;
+  v44 = contextCopy;
   if (objc_opt_isKindOfClass())
   {
     v21 = 1;
@@ -201,7 +201,7 @@ LABEL_12:
 
   else
   {
-    v23 = [v11 objectForKey:@"cancelButton"];
+    v23 = [dictionaryByEvaluatingConditions objectForKey:@"cancelButton"];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -213,7 +213,7 @@ LABEL_12:
 
     else
     {
-      v20 = [v11 objectForKey:@"otherButtonString"];
+      v20 = [dictionaryByEvaluatingConditions objectForKey:@"otherButtonString"];
 
       v21 = 0;
       v22 = @"otherButtonAction";
@@ -225,7 +225,7 @@ LABEL_12:
   {
     v24 = objc_alloc_init(ISDialogButton);
     [(ISDialogButton *)v24 setTitle:v20];
-    v25 = [v11 objectForKey:v22];
+    v25 = [dictionaryByEvaluatingConditions objectForKey:v22];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -251,12 +251,12 @@ LABEL_12:
     v25 = v20;
   }
 
-  v28 = [v11 objectForKey:@"okButtonString"];
+  v28 = [dictionaryByEvaluatingConditions objectForKey:@"okButtonString"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v29 = [v11 objectForKey:@"okButton"];
+    v29 = [dictionaryByEvaluatingConditions objectForKey:@"okButton"];
 
     v28 = v29;
   }
@@ -275,7 +275,7 @@ LABEL_12:
 
   v30 = objc_alloc_init(ISDialogButton);
   [(ISDialogButton *)v30 setTitle:v28];
-  v31 = [v11 objectForKey:@"okButtonAction"];
+  v31 = [dictionaryByEvaluatingConditions objectForKey:@"okButtonAction"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -310,12 +310,12 @@ LABEL_37:
   if (!v21)
   {
 LABEL_44:
-    v7 = v44;
+    contextCopy = v44;
     goto LABEL_48;
   }
 
 LABEL_38:
-  v32 = [v11 objectForKey:@"otherButtonString"];
+  v32 = [dictionaryByEvaluatingConditions objectForKey:@"otherButtonString"];
 
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -326,10 +326,10 @@ LABEL_38:
 
   v33 = objc_alloc_init(ISDialogButton);
   [(ISDialogButton *)v33 setTitle:v32];
-  v31 = [v11 objectForKey:@"otherButtonAction"];
+  v31 = [dictionaryByEvaluatingConditions objectForKey:@"otherButtonAction"];
 
   objc_opt_class();
-  v7 = v44;
+  contextCopy = v44;
   if (objc_opt_isKindOfClass())
   {
     [(ISDialogButton *)v33 loadFromDictionary:v31];
@@ -376,7 +376,7 @@ LABEL_48:
 
   else
   {
-    v36 = [v11 objectForKey:@"paymentSheetInfo"];
+    v36 = [dictionaryByEvaluatingConditions objectForKey:@"paymentSheetInfo"];
 
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -388,19 +388,19 @@ LABEL_48:
     paymentSheet = [(ISDialog *)v8 buyParams];
     v37 = [objc_alloc(MEMORY[0x277D69BE8]) initWithServerResponse:v31 buyParams:paymentSheet];
 
-    v38 = [(SSAuthenticationContext *)v8->_authenticationContext accountName];
-    [v37 setAccountName:v38];
+    accountName = [(SSAuthenticationContext *)v8->_authenticationContext accountName];
+    [v37 setAccountName:accountName];
 
-    v39 = [(ISDialog *)v8 message];
-    if (v39)
+    message = [(ISDialog *)v8 message];
+    if (message)
     {
-      [v37 setExplanation:v39];
+      [v37 setExplanation:message];
     }
 
-    v40 = [(ISDialog *)v8 title];
-    if (v40)
+    title = [(ISDialog *)v8 title];
+    if (title)
     {
-      [v37 setMessage:v40];
+      [v37 setMessage:title];
     }
 
     v41 = v8->_paymentSheet;
@@ -419,10 +419,10 @@ LABEL_64:
   return v8;
 }
 
-- (ISDialog)initWithError:(id)a3
+- (ISDialog)initWithError:(id)error
 {
-  v4 = a3;
-  if (ISErrorIsEqual(v4, @"SSErrorDomain", 16))
+  errorCopy = error;
+  if (ISErrorIsEqual(errorCopy, @"SSErrorDomain", 16))
   {
     v5 = 0;
 LABEL_9:
@@ -433,13 +433,13 @@ LABEL_9:
   v5 = [(ISDialog *)self init];
   if (v5)
   {
-    v6 = [v4 localizedFailureReason];
-    [(ISDialog *)v5 setMessage:v6];
+    localizedFailureReason = [errorCopy localizedFailureReason];
+    [(ISDialog *)v5 setMessage:localizedFailureReason];
 
-    v7 = [v4 localizedDescription];
-    [(ISDialog *)v5 setTitle:v7];
+    localizedDescription = [errorCopy localizedDescription];
+    [(ISDialog *)v5 setTitle:localizedDescription];
 
-    self = [v4 userInfo];
+    self = [errorCopy userInfo];
     v8 = [(ISDialog *)self objectForKey:*MEMORY[0x277D69E40]];
     v9 = [(ISDialog *)self objectForKey:*MEMORY[0x277D69E30]];
     v10 = [(ISDialog *)self objectForKey:*MEMORY[0x277D69E38]];
@@ -477,36 +477,36 @@ LABEL_10:
   return v5;
 }
 
-- (ISDialog)initWithOfferDeviceError:(id)a3
+- (ISDialog)initWithOfferDeviceError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   v20.receiver = self;
   v20.super_class = ISDialog;
   v5 = [(ISDialog *)&v20 init];
   if (v5)
   {
-    v6 = [v4 localizedMessage];
-    v7 = [v4 localizedTitle];
-    v8 = v7;
-    if (v6 && v7)
+    localizedMessage = [errorCopy localizedMessage];
+    localizedTitle = [errorCopy localizedTitle];
+    v8 = localizedTitle;
+    if (localizedMessage && localizedTitle)
     {
-      [(ISDialog *)v5 setMessage:v6];
+      [(ISDialog *)v5 setMessage:localizedMessage];
       v9 = v8;
     }
 
     else
     {
-      if (v6)
+      if (localizedMessage)
       {
-        v9 = v6;
+        v9 = localizedMessage;
       }
 
       else
       {
-        v9 = v7;
+        v9 = localizedTitle;
       }
 
-      if (!(v6 | v7))
+      if (!(localizedMessage | localizedTitle))
       {
         v10 = v5;
         v5 = 0;
@@ -518,11 +518,11 @@ LABEL_15:
 
     [(ISDialog *)v5 setTitle:v9];
     v10 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v11 = [v4 localizedURLTitle];
-    v12 = [v4 URL];
+    localizedURLTitle = [errorCopy localizedURLTitle];
+    v12 = [errorCopy URL];
     v13 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v14 = v13;
-    if (v11 && v12)
+    if (localizedURLTitle && v12)
     {
       v15 = [(ISDialogButton *)v13 localizedStringForKey:@"CANCEL" value:&stru_2884BCFD0 table:0];
       v16 = [ISDialogButton buttonWithTitle:v15];
@@ -531,7 +531,7 @@ LABEL_15:
       v14 = objc_alloc_init(ISDialogButton);
       [(ISDialogButton *)v14 setActionType:4];
       [(ISDialogButton *)v14 setParameter:v12];
-      [(ISDialogButton *)v14 setTitle:v11];
+      [(ISDialogButton *)v14 setTitle:localizedURLTitle];
       [(ISDialog *)v10 addObject:v14];
     }
 
@@ -551,10 +551,10 @@ LABEL_16:
   return v5;
 }
 
-- (ISDialog)initWithTitle:(id)a3 message:(id)a4
+- (ISDialog)initWithTitle:(id)title message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  titleCopy = title;
+  messageCopy = message;
   v8 = [(ISDialog *)self init];
   if (v8)
   {
@@ -565,8 +565,8 @@ LABEL_16:
     v13 = [v9 arrayWithObjects:{v12, 0}];
     [(ISDialog *)v8 setButtons:v13];
 
-    [(ISDialog *)v8 setMessage:v7];
-    [(ISDialog *)v8 setTitle:v6];
+    [(ISDialog *)v8 setMessage:messageCopy];
+    [(ISDialog *)v8 setTitle:titleCopy];
   }
 
   return v8;
@@ -589,9 +589,9 @@ LABEL_16:
   [(ISDialog *)&v4 dealloc];
 }
 
-+ (int64_t)displayCountForKey:(id)a3
++ (int64_t)displayCountForKey:(id)key
 {
-  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"ISDialogDisplayCount-%@", a3];
+  v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"ISDialogDisplayCount-%@", key];
   v4 = *MEMORY[0x277CBF028];
   CFPreferencesAppSynchronize(*MEMORY[0x277CBF028]);
 
@@ -600,13 +600,13 @@ LABEL_16:
 
 - (id)copyUserNotification
 {
-  v2 = self;
+  selfCopy = self;
   [(NSLock *)self->_lock lock];
-  userNotificationValues = v2->_userNotificationValues;
+  userNotificationValues = selfCopy->_userNotificationValues;
   if (userNotificationValues)
   {
     MutableCopy = CFDictionaryCreateMutableCopy(0, 0, userNotificationValues);
-    [(NSLock *)v2->_lock unlock];
+    [(NSLock *)selfCopy->_lock unlock];
     if (MutableCopy)
     {
       goto LABEL_7;
@@ -615,7 +615,7 @@ LABEL_16:
 
   else
   {
-    [(NSLock *)v2->_lock unlock];
+    [(NSLock *)selfCopy->_lock unlock];
   }
 
   result = CFDictionaryCreateMutable(0, 0, MEMORY[0x277CBF138], MEMORY[0x277CBF150]);
@@ -626,41 +626,41 @@ LABEL_16:
 
   MutableCopy = result;
 LABEL_7:
-  v6 = [(ISDialog *)v2 title];
-  if ([v6 length])
+  title = [(ISDialog *)selfCopy title];
+  if ([title length])
   {
-    CFDictionarySetValue(MutableCopy, *MEMORY[0x277CBF188], v6);
+    CFDictionarySetValue(MutableCopy, *MEMORY[0x277CBF188], title);
   }
 
-  v7 = [(ISDialog *)v2 message];
+  message = [(ISDialog *)selfCopy message];
 
-  if (v7)
+  if (message)
   {
-    CFDictionarySetValue(MutableCopy, *MEMORY[0x277CBF198], v7);
+    CFDictionarySetValue(MutableCopy, *MEMORY[0x277CBF198], message);
   }
 
-  v8 = [(ISDialog *)v2 buttons];
-  v9 = [v8 count];
-  v63 = v2;
+  buttons = [(ISDialog *)selfCopy buttons];
+  v9 = [buttons count];
+  v63 = selfCopy;
   if (v9 == 1)
   {
-    v10 = [v8 objectAtIndex:0];
+    orderedButtonTitleKeysForCFUserNotification = [buttons objectAtIndex:0];
     v11 = *MEMORY[0x277CBF1E8];
-    v12 = [v10 title];
-    CFDictionarySetValue(MutableCopy, v11, v12);
+    title2 = [orderedButtonTitleKeysForCFUserNotification title];
+    CFDictionarySetValue(MutableCopy, v11, title2);
   }
 
   else
   {
     v13 = v9;
-    v10 = [(ISDialog *)v2 orderedButtonTitleKeysForCFUserNotification];
-    v67 = [v10 count];
+    orderedButtonTitleKeysForCFUserNotification = [(ISDialog *)selfCopy orderedButtonTitleKeysForCFUserNotification];
+    v67 = [orderedButtonTitleKeysForCFUserNotification count];
     v14 = MutableCopy;
     if (v13 >= 1)
     {
       for (i = 0; i != v13; ++i)
       {
-        v16 = [v8 objectAtIndex:i];
+        v16 = [buttons objectAtIndex:i];
         if (i >= (v67 - 1))
         {
           v17 = v67 - 1;
@@ -671,38 +671,38 @@ LABEL_7:
           v17 = i;
         }
 
-        v18 = [v10 objectAtIndex:v17];
-        v19 = [v16 title];
-        CFDictionarySetValue(v14, v18, v19);
+        v18 = [orderedButtonTitleKeysForCFUserNotification objectAtIndex:v17];
+        title3 = [v16 title];
+        CFDictionarySetValue(v14, v18, title3);
       }
     }
 
-    v20 = [(ISDialog *)v2 defaultButtonIndex];
+    defaultButtonIndex = [(ISDialog *)selfCopy defaultButtonIndex];
     MutableCopy = v14;
-    if ((v20 & 0x8000000000000000) == 0)
+    if ((defaultButtonIndex & 0x8000000000000000) == 0)
     {
-      v21 = v20;
-      if (v20 < v67)
+      v21 = defaultButtonIndex;
+      if (defaultButtonIndex < v67)
       {
-        v22 = [objc_opt_class() buttonTagForCFUserNotificationButtonTitleKey:{objc_msgSend(v10, "objectAtIndex:", v21)}];
+        v22 = [objc_opt_class() buttonTagForCFUserNotificationButtonTitleKey:{objc_msgSend(orderedButtonTitleKeysForCFUserNotification, "objectAtIndex:", v21)}];
         CFDictionarySetValue(v14, *MEMORY[0x277D67300], [MEMORY[0x277CCABB0] numberWithInt:v22]);
       }
     }
 
-    v23 = [(ISDialog *)v2 unlockActionButtonIndex];
-    if ((v23 & 0x8000000000000000) == 0)
+    unlockActionButtonIndex = [(ISDialog *)selfCopy unlockActionButtonIndex];
+    if ((unlockActionButtonIndex & 0x8000000000000000) == 0)
     {
-      v24 = v23;
-      if (v23 < v67)
+      v24 = unlockActionButtonIndex;
+      if (unlockActionButtonIndex < v67)
       {
-        v25 = [objc_opt_class() buttonTagForCFUserNotificationButtonTitleKey:{objc_msgSend(v10, "objectAtIndex:", v24)}];
+        v25 = [objc_opt_class() buttonTagForCFUserNotificationButtonTitleKey:{objc_msgSend(orderedButtonTitleKeysForCFUserNotification, "objectAtIndex:", v24)}];
         CFDictionarySetValue(v14, *MEMORY[0x277D672E0], [MEMORY[0x277CCABB0] numberWithInt:v25]);
       }
     }
   }
 
-  v26 = [(ISDialog *)v2 textFields];
-  v27 = [v26 count];
+  textFields = [(ISDialog *)selfCopy textFields];
+  v27 = [textFields count];
   if (v27 < 1)
   {
     v32 = 3;
@@ -711,7 +711,7 @@ LABEL_7:
   else
   {
     v28 = v27;
-    v62 = v8;
+    v62 = buttons;
     v29 = MEMORY[0x277CBF128];
     Mutable = CFArrayCreateMutable(0, 0, MEMORY[0x277CBF128]);
     v68 = CFArrayCreateMutable(0, 0, v29);
@@ -722,9 +722,9 @@ LABEL_7:
     v32 = 3;
     do
     {
-      v33 = [v26 objectAtIndex:v31];
+      v33 = [textFields objectAtIndex:v31];
       [v33 title];
-      v35 = v34 = v26;
+      v35 = v34 = textFields;
 
       if (v35)
       {
@@ -737,11 +737,11 @@ LABEL_7:
       }
 
       CFArrayAppendValue(theArray, v36);
-      v7 = [v33 value];
+      message = [v33 value];
 
-      if (v7)
+      if (message)
       {
-        v37 = v7;
+        v37 = message;
       }
 
       else
@@ -753,13 +753,13 @@ LABEL_7:
       CFArrayAppendValue(Mutable, [MEMORY[0x277CCABB0] numberWithInt:0]);
       CFArrayAppendValue(v68, [MEMORY[0x277CCABB0] numberWithInt:1]);
       v38 = MEMORY[0x277CCABB0];
-      v39 = [v33 keyboardType];
+      keyboardType = [v33 keyboardType];
       v40 = v38;
-      v26 = v34;
-      CFArrayAppendValue(v66, [v40 numberWithInteger:v39]);
-      v41 = [v33 isSecure];
+      textFields = v34;
+      CFArrayAppendValue(v66, [v40 numberWithInteger:keyboardType]);
+      isSecure = [v33 isSecure];
       v42 = 0x10000 << v31;
-      if (!v41)
+      if (!isSecure)
       {
         v42 = 0;
       }
@@ -780,15 +780,15 @@ LABEL_7:
     CFRelease(v66);
     CFRelease(theArray);
     CFRelease(v64);
-    v2 = v63;
-    v8 = v62;
+    selfCopy = v63;
+    buttons = v62;
   }
 
   v43 = *MEMORY[0x277D67338];
-  v44 = [(ISDialog *)v2 displaysOnLockscreen];
+  displaysOnLockscreen = [(ISDialog *)selfCopy displaysOnLockscreen];
   v45 = *MEMORY[0x277CBED28];
   v46 = *MEMORY[0x277CBED10];
-  if (v44)
+  if (displaysOnLockscreen)
   {
     v47 = *MEMORY[0x277CBED28];
   }
@@ -800,7 +800,7 @@ LABEL_7:
 
   CFDictionarySetValue(MutableCopy, v43, v47);
   v48 = *MEMORY[0x277D67360];
-  if ([(ISDialog *)v2 displaysOnLockscreen])
+  if ([(ISDialog *)selfCopy displaysOnLockscreen])
   {
     v49 = v45;
   }
@@ -812,7 +812,7 @@ LABEL_7:
 
   CFDictionarySetValue(MutableCopy, v48, v49);
   v50 = *MEMORY[0x277D67298];
-  if ([(ISDialog *)v2 dismissOnHomeButton])
+  if ([(ISDialog *)selfCopy dismissOnHomeButton])
   {
     v51 = v45;
   }
@@ -824,7 +824,7 @@ LABEL_7:
 
   CFDictionarySetValue(MutableCopy, v50, v51);
   v52 = *MEMORY[0x277D67320];
-  if ([(ISDialog *)v2 dismissOnLock])
+  if ([(ISDialog *)selfCopy dismissOnLock])
   {
     v53 = v45;
   }
@@ -836,7 +836,7 @@ LABEL_7:
 
   CFDictionarySetValue(MutableCopy, v52, v53);
   v54 = *MEMORY[0x277CBF1B0];
-  if ([(ISDialog *)v2 shouldDisplayAsTopMost])
+  if ([(ISDialog *)selfCopy shouldDisplayAsTopMost])
   {
     v55 = v45;
   }
@@ -848,7 +848,7 @@ LABEL_7:
 
   CFDictionarySetValue(MutableCopy, v54, v55);
   v56 = *MEMORY[0x277D67340];
-  if ([(ISDialog *)v2 shouldDismissAfterUnlock])
+  if ([(ISDialog *)selfCopy shouldDismissAfterUnlock])
   {
     v57 = v46;
   }
@@ -860,7 +860,7 @@ LABEL_7:
 
   CFDictionarySetValue(MutableCopy, v56, v57);
   v58 = *MEMORY[0x277D673D8];
-  if ([(ISDialog *)v2 shouldPendInSetupIfNotAllowed])
+  if ([(ISDialog *)selfCopy shouldPendInSetupIfNotAllowed])
   {
     v59 = v45;
   }
@@ -871,7 +871,7 @@ LABEL_7:
   }
 
   CFDictionarySetValue(MutableCopy, v58, v59);
-  if (v2->_noDefaultButton)
+  if (selfCopy->_noDefaultButton)
   {
     v60 = v32 | 0x20;
   }
@@ -887,11 +887,11 @@ LABEL_7:
   return v61;
 }
 
-- (void)copyValueForCFUserNotificationKey:(__CFString *)a3
+- (void)copyValueForCFUserNotificationKey:(__CFString *)key
 {
   [(NSLock *)self->_lock lock];
   userNotificationValues = self->_userNotificationValues;
-  if (userNotificationValues && (Value = CFDictionaryGetValue(userNotificationValues, a3)) != 0)
+  if (userNotificationValues && (Value = CFDictionaryGetValue(userNotificationValues, key)) != 0)
   {
     v7 = CFRetain(Value);
   }
@@ -952,38 +952,38 @@ LABEL_7:
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(ISDialog *)self message];
-    v6 = [v4 message];
-    if (v5 == v6)
+    message = [(ISDialog *)self message];
+    message2 = [equalCopy message];
+    if (message == message2)
     {
       v7 = 1;
     }
 
     else
     {
-      v7 = [v5 isEqual:v6];
+      v7 = [message isEqual:message2];
     }
 
-    v9 = [(ISDialog *)self title];
+    title = [(ISDialog *)self title];
 
-    v10 = [v4 title];
+    title2 = [equalCopy title];
 
     if (v7)
     {
-      if (v9 == v10)
+      if (title == title2)
       {
         v11 = 1;
       }
 
       else
       {
-        v11 = [v9 isEqual:v10];
+        v11 = [title isEqual:title2];
       }
     }
 
@@ -992,32 +992,32 @@ LABEL_7:
       v11 = 0;
     }
 
-    v12 = [(ISDialog *)self buttons];
+    buttons = [(ISDialog *)self buttons];
 
-    v13 = [v4 buttons];
+    buttons2 = [equalCopy buttons];
 
     if (v11)
     {
-      if (v12 == v13)
+      if (buttons == buttons2)
       {
         v8 = 1;
       }
 
       else
       {
-        v14 = [v12 count];
-        v8 = v14 == [v13 count];
+        v14 = [buttons count];
+        v8 = v14 == [buttons2 count];
       }
 
-      v16 = [v12 count];
+      v16 = [buttons count];
       if (v16 >= 1 && v8)
       {
         v17 = v16;
         v18 = 1;
         do
         {
-          v19 = [v12 objectAtIndex:v18 - 1];
-          v20 = [v13 objectAtIndex:v18 - 1];
+          v19 = [buttons objectAtIndex:v18 - 1];
+          v20 = [buttons2 objectAtIndex:v18 - 1];
           LOBYTE(v8) = [v19 isEqual:v20 superficial:0];
 
           if (v18 >= v17)
@@ -1034,7 +1034,7 @@ LABEL_7:
 
     else
     {
-      [v12 count];
+      [buttons count];
       LOBYTE(v8) = 0;
     }
   }
@@ -1055,18 +1055,18 @@ LABEL_7:
   return maxDisplayCount;
 }
 
-- (void)setButtonsWithTitles:(id)a3
+- (void)setButtonsWithTitles:(id)titles
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  titlesCopy = titles;
+  if (titlesCopy)
   {
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v6 = v4;
+    v6 = titlesCopy;
     v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v7)
     {
@@ -1104,13 +1104,13 @@ LABEL_7:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDisplayCountKey:(id)a3
+- (void)setDisplayCountKey:(id)key
 {
-  v6 = a3;
+  keyCopy = key;
   [(NSLock *)self->_lock lock];
-  if (self->_displayCountKey != v6)
+  if (self->_displayCountKey != keyCopy)
   {
-    v4 = [(NSString *)v6 copy];
+    v4 = [(NSString *)keyCopy copy];
     displayCountKey = self->_displayCountKey;
     self->_displayCountKey = v4;
   }
@@ -1118,19 +1118,19 @@ LABEL_7:
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)setMaximumDisplayCount:(int64_t)a3
+- (void)setMaximumDisplayCount:(int64_t)count
 {
   [(NSLock *)self->_lock lock];
-  self->_maxDisplayCount = a3;
+  self->_maxDisplayCount = count;
   lock = self->_lock;
 
   [(NSLock *)lock unlock];
 }
 
-- (void)setValue:(id)a3 forUserInfoKey:(id)a4
+- (void)setValue:(id)value forUserInfoKey:(id)key
 {
-  v10 = a3;
-  v6 = a4;
+  valueCopy = value;
+  keyCopy = key;
   [(NSLock *)self->_lock lock];
   if (!self->_userInfo)
   {
@@ -1140,24 +1140,24 @@ LABEL_7:
   }
 
   v9 = self->_userInfo;
-  if (v10)
+  if (valueCopy)
   {
-    [(NSMutableDictionary *)v9 setObject:v10 forKey:v6];
+    [(NSMutableDictionary *)v9 setObject:valueCopy forKey:keyCopy];
   }
 
   else
   {
-    [(NSMutableDictionary *)v9 removeObjectForKey:v6];
+    [(NSMutableDictionary *)v9 removeObjectForKey:keyCopy];
   }
 
   [(NSLock *)self->_lock unlock];
 }
 
-- (void)setValue:(void *)a3 forCFUserNotificationKey:(__CFString *)a4
+- (void)setValue:(void *)value forCFUserNotificationKey:(__CFString *)key
 {
   [(NSLock *)self->_lock lock];
   userNotificationValues = self->_userNotificationValues;
-  if (a3)
+  if (value)
   {
     if (!userNotificationValues)
     {
@@ -1165,12 +1165,12 @@ LABEL_7:
       self->_userNotificationValues = userNotificationValues;
     }
 
-    CFDictionarySetValue(userNotificationValues, a4, a3);
+    CFDictionarySetValue(userNotificationValues, key, value);
   }
 
   else if (userNotificationValues)
   {
-    CFDictionaryRemoveValue(userNotificationValues, a4);
+    CFDictionaryRemoveValue(userNotificationValues, key);
   }
 
   lock = self->_lock;
@@ -1178,12 +1178,12 @@ LABEL_7:
   [(NSLock *)lock unlock];
 }
 
-- (id)valueForUserInfoKey:(id)a3
+- (id)valueForUserInfoKey:(id)key
 {
   lock = self->_lock;
-  v5 = a3;
+  keyCopy = key;
   [(NSLock *)lock lock];
-  v6 = [(NSMutableDictionary *)self->_userInfo objectForKey:v5];
+  v6 = [(NSMutableDictionary *)self->_userInfo objectForKey:keyCopy];
 
   [(NSLock *)self->_lock unlock];
 
@@ -1265,17 +1265,17 @@ void *__56__ISDialog__initializeStaticButtonTitleKeyAndTagMapping__block_invoke(
   return result;
 }
 
-+ (unint64_t)buttonTagForCFUserNotificationButtonTitleKey:(__CFString *)a3
++ (unint64_t)buttonTagForCFUserNotificationButtonTitleKey:(__CFString *)key
 {
-  [a1 _initializeStaticButtonTitleKeyAndTagMapping];
-  if (!a3 || sButtonTitleKeyAndTagMappingCount != 1)
+  [self _initializeStaticButtonTitleKeyAndTagMapping];
+  if (!key || sButtonTitleKeyAndTagMappingCount != 1)
   {
     return 0;
   }
 
   v4 = 0;
   v5 = 0;
-  while (!CFEqual(a3, *(sButtonTitleKeyAndTagMapping + v4)))
+  while (!CFEqual(key, *(sButtonTitleKeyAndTagMapping + v4)))
   {
     v6 = sButtonTitleKeyAndTagMappingCount != 1 || v5++ >= 2;
     v4 += 16;
@@ -1288,9 +1288,9 @@ void *__56__ISDialog__initializeStaticButtonTitleKeyAndTagMapping__block_invoke(
   return *(sButtonTitleKeyAndTagMapping + v4 + 8);
 }
 
-+ (__CFString)buttonTitleKeyForCFUserNotificationButtonTag:(unint64_t)a3
++ (__CFString)buttonTitleKeyForCFUserNotificationButtonTag:(unint64_t)tag
 {
-  [a1 _initializeStaticButtonTitleKeyAndTagMapping];
+  [self _initializeStaticButtonTitleKeyAndTagMapping];
   if (sButtonTitleKeyAndTagMappingCount != 1)
   {
     return 0;
@@ -1298,7 +1298,7 @@ void *__56__ISDialog__initializeStaticButtonTitleKeyAndTagMapping__block_invoke(
 
   v4 = (sButtonTitleKeyAndTagMapping + 8);
   v5 = -1;
-  while (*v4 != a3)
+  while (*v4 != tag)
   {
     ++v5;
     v4 += 2;
@@ -1319,13 +1319,13 @@ void *__56__ISDialog__initializeStaticButtonTitleKeyAndTagMapping__block_invoke(
   v9 = __Block_byref_object_copy__8;
   v10 = __Block_byref_object_dispose__8;
   v11 = 0;
-  v2 = [(ISDialog *)self buttons];
+  buttons = [(ISDialog *)self buttons];
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __21__ISDialog_buyParams__block_invoke;
   v5[3] = &unk_27A6711A8;
   v5[4] = &v6;
-  [v2 enumerateObjectsUsingBlock:v5];
+  [buttons enumerateObjectsUsingBlock:v5];
 
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -1344,13 +1344,13 @@ void __21__ISDialog_buyParams__block_invoke(uint64_t a1, void *a2, uint64_t a3, 
   }
 }
 
-- (int64_t)_kindForString:(id)a3
+- (int64_t)_kindForString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 isEqualToString:@"authorization"];
+    v4 = [stringCopy isEqualToString:@"authorization"];
   }
 
   else
@@ -1361,11 +1361,11 @@ void __21__ISDialog_buyParams__block_invoke(uint64_t a1, void *a2, uint64_t a3, 
   return v4;
 }
 
-- (ISDialog)initWithXPCEncoding:(id)a3
+- (ISDialog)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && MEMORY[0x277C8C570](v4) == MEMORY[0x277D86468])
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && MEMORY[0x277C8C570](encodingCopy) == MEMORY[0x277D86468])
   {
     v6 = [(ISDialog *)self init];
     if (!v6)

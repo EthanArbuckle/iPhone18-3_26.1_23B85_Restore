@@ -1,14 +1,14 @@
 @interface OKActionBindingPan
 + (id)supportedSettings;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic;
 - (OKActionBindingPan)init;
-- (OKActionBindingPan)initWithSettings:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (OKActionBindingPan)initWithSettings:(id)settings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)handlePan:(id)a3;
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4;
-- (void)performActionWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 translation:(CGPoint)a6 velocity:(CGPoint)a7 direction:(unint64_t)a8 context:(id)a9;
+- (void)handlePan:(id)pan;
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope;
+- (void)performActionWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count translation:(CGPoint)translation velocity:(CGPoint)velocity direction:(unint64_t)direction context:(id)context;
 - (void)unload;
 @end
 
@@ -32,38 +32,38 @@
   return result;
 }
 
-- (OKActionBindingPan)initWithSettings:(id)a3
+- (OKActionBindingPan)initWithSettings:(id)settings
 {
   v12.receiver = self;
   v12.super_class = OKActionBindingPan;
   v4 = [(OKActionBinding *)&v12 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"minimumNumberOfTouches"];
+    v5 = [settings objectForKey:@"minimumNumberOfTouches"];
     if (v5)
     {
       v4->_minimumNumberOfTouches = [v5 unsignedIntegerValue];
     }
 
-    v6 = [a3 objectForKey:@"maximumNumberOfTouches"];
+    v6 = [settings objectForKey:@"maximumNumberOfTouches"];
     if (v6)
     {
       v4->_maximumNumberOfTouches = [v6 unsignedIntegerValue];
     }
 
-    v7 = [a3 objectForKey:@"canPanHorizontally"];
+    v7 = [settings objectForKey:@"canPanHorizontally"];
     if (v7)
     {
       v4->_canPanHorizontally = [v7 BOOLValue];
     }
 
-    v8 = [a3 objectForKey:@"canPanVertically"];
+    v8 = [settings objectForKey:@"canPanVertically"];
     if (v8)
     {
       v4->_canPanVertically = [v8 BOOLValue];
     }
 
-    v9 = [a3 objectForKey:@"directionThreshold"];
+    v9 = [settings objectForKey:@"directionThreshold"];
     if (v9)
     {
       [v9 doubleValue];
@@ -96,11 +96,11 @@
   [(OKActionBinding *)&v5 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = OKActionBindingPan;
-  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:a3];
+  v4 = [(OKActionBindingProxy *)&v7 copyWithZone:zone];
   v5 = v4;
   if (v4)
   {
@@ -117,7 +117,7 @@
 + (id)supportedSettings
 {
   v17[5] = *MEMORY[0x277D85DE8];
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___OKActionBindingPan;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v5, sel_supportedSettings)}];
   v16[0] = @"minimumNumberOfTouches";
@@ -155,17 +155,17 @@
   return v2;
 }
 
-- (void)loadForResponder:(id)a3 scope:(unint64_t)a4
+- (void)loadForResponder:(id)responder scope:(unint64_t)scope
 {
   v9.receiver = self;
   v9.super_class = OKActionBindingPan;
-  [(OKActionBindingProxy *)&v9 loadForResponder:a3 scope:a4];
+  [(OKActionBindingProxy *)&v9 loadForResponder:responder scope:scope];
   if (([(OKActionBindingProxy *)self scope]& 1) != 0)
   {
-    v6 = [a3 actionView];
-    if (v6)
+    actionView = [responder actionView];
+    if (actionView)
     {
-      v7 = v6;
+      v7 = actionView;
       v8 = [objc_alloc(MEMORY[0x277D757F8]) initWithTarget:self action:sel_handlePan_];
       self->_panGestureRecognizer = v8;
       [(UIPanGestureRecognizer *)v8 setDelegate:self];
@@ -191,14 +191,14 @@
   [(OKActionBindingProxy *)&v4 unload];
 }
 
-- (BOOL)respondsToAction:(id)a3 isTouchCountAgnostic:(BOOL)a4
+- (BOOL)respondsToAction:(id)action isTouchCountAgnostic:(BOOL)agnostic
 {
-  v7 = [(OKActionBindingProxy *)self scope];
+  scope = [(OKActionBindingProxy *)self scope];
   result = 0;
-  if (([a3 scope] & v7) != 0)
+  if (([action scope] & scope) != 0)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && (a4 || [a3 touchCount] >= self->_minimumNumberOfTouches && objc_msgSend(a3, "touchCount") <= self->_maximumNumberOfTouches))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && (agnostic || [action touchCount] >= self->_minimumNumberOfTouches && objc_msgSend(action, "touchCount") <= self->_maximumNumberOfTouches))
     {
       return 1;
     }
@@ -207,22 +207,22 @@
   return result;
 }
 
-- (void)performActionWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 translation:(CGPoint)a6 velocity:(CGPoint)a7 direction:(unint64_t)a8 context:(id)a9
+- (void)performActionWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count translation:(CGPoint)translation velocity:(CGPoint)velocity direction:(unint64_t)direction context:(id)context
 {
-  v10 = [OKActionPan panActionWithState:a3 location:a5 touchCount:a8 translation:a9 velocity:a4.x direction:a4.y context:a6.x, a6.y, a7.x, a7.y];
+  v10 = [OKActionPan panActionWithState:state location:count touchCount:direction translation:context velocity:location.x direction:location.y context:translation.x, translation.y, velocity.x, velocity.y];
 
   [(OKActionBindingProxy *)self performAction:v10];
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
   panGestureRecognizer = self->_panGestureRecognizer;
-  if (panGestureRecognizer != a3)
+  if (panGestureRecognizer != begin)
   {
     return 0;
   }
 
-  -[UIPanGestureRecognizer translationInView:](panGestureRecognizer, "translationInView:", [objc_msgSend(a3 "view")]);
+  -[UIPanGestureRecognizer translationInView:](panGestureRecognizer, "translationInView:", [objc_msgSend(begin "view")]);
   if (fabs(v6) <= fabs(v7))
   {
 
@@ -236,27 +236,27 @@
   }
 }
 
-- (void)handlePan:(id)a3
+- (void)handlePan:(id)pan
 {
-  [a3 locationInView:{objc_msgSend(objc_msgSend(a3, "view"), "superview")}];
+  [pan locationInView:{objc_msgSend(objc_msgSend(pan, "view"), "superview")}];
   v47 = v5;
   v48 = v6;
-  [a3 translationInView:{objc_msgSend(objc_msgSend(a3, "view"), "superview")}];
+  [pan translationInView:{objc_msgSend(objc_msgSend(pan, "view"), "superview")}];
   v8 = v7;
   v10 = v9;
-  [a3 velocityInView:{objc_msgSend(objc_msgSend(a3, "view"), "superview")}];
+  [pan velocityInView:{objc_msgSend(objc_msgSend(pan, "view"), "superview")}];
   v12 = v11;
   v14 = v13;
-  if ([a3 state] != 1)
+  if ([pan state] != 1)
   {
-    if ([a3 state] != 2)
+    if ([pan state] != 2)
     {
-      if ([a3 state] == 3)
+      if ([pan state] == 3)
       {
         v25 = 3;
       }
 
-      else if ([a3 state] == 5 || objc_msgSend(a3, "state") == 4)
+      else if ([pan state] == 5 || objc_msgSend(pan, "state") == 4)
       {
         v25 = 4;
       }
@@ -377,15 +377,15 @@ LABEL_35:
   self->_directionLastLocation.y = v48;
   v25 = 1;
 LABEL_36:
-  [(OKActionBindingProxy *)self locationForActionFromGesture:a3];
-  -[OKActionBindingPan performActionWithState:location:touchCount:translation:velocity:direction:context:](self, "performActionWithState:location:touchCount:translation:velocity:direction:context:", v25, [a3 numberOfTouches], +[OKAction directionFromPoint:](OKAction, "directionFromPoint:", self->_direction.x, self->_direction.y), self->_actionContext, v44, v45, v8, v10, v12, v14);
+  [(OKActionBindingProxy *)self locationForActionFromGesture:pan];
+  -[OKActionBindingPan performActionWithState:location:touchCount:translation:velocity:direction:context:](self, "performActionWithState:location:touchCount:translation:velocity:direction:context:", v25, [pan numberOfTouches], +[OKAction directionFromPoint:](OKAction, "directionFromPoint:", self->_direction.x, self->_direction.y), self->_actionContext, v44, v45, v8, v10, v12, v14);
   self->_previousLocation.x = v47;
   self->_previousLocation.y = v48;
   self->_previousTranslation.x = v8;
   self->_previousTranslation.y = v10;
   self->_previousVelocity.x = v12;
   self->_previousVelocity.y = v14;
-  if ([a3 state] == 3 || objc_msgSend(a3, "state") == 5 || objc_msgSend(a3, "state") == 4)
+  if ([pan state] == 3 || objc_msgSend(pan, "state") == 5 || objc_msgSend(pan, "state") == 4)
   {
     v46 = self->_actionContext;
     if (v46)

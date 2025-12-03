@@ -1,17 +1,17 @@
 @interface HKSignedClinicalDataUtilities
-+ (id)preferredRecordIssuerDisplayNameWithIssuerIdentifier:(id)a3;
-+ (id)recordIssuerDisplayNameWithIssuerIdentifier:(id)a3;
-+ (id)recordItemsDisplayNameWithItems:(id)a3;
-+ (id)recordTypeDisplayNameWithTypes:(id)a3;
++ (id)preferredRecordIssuerDisplayNameWithIssuerIdentifier:(id)identifier;
++ (id)recordIssuerDisplayNameWithIssuerIdentifier:(id)identifier;
++ (id)recordItemsDisplayNameWithItems:(id)items;
++ (id)recordTypeDisplayNameWithTypes:(id)types;
 @end
 
 @implementation HKSignedClinicalDataUtilities
 
-+ (id)recordTypeDisplayNameWithTypes:(id)a3
++ (id)recordTypeDisplayNameWithTypes:(id)types
 {
-  v3 = a3;
-  v4 = [v3 containsObject:@"https://smarthealth.cards#covid19"];
-  if ([v3 containsObject:@"https://smarthealth.cards#immunization"])
+  typesCopy = types;
+  v4 = [typesCopy containsObject:@"https://smarthealth.cards#covid19"];
+  if ([typesCopy containsObject:@"https://smarthealth.cards#immunization"])
   {
     v5 = HKHealthKitFrameworkBundle();
     if (v4)
@@ -27,7 +27,7 @@
 
   else
   {
-    v7 = [v3 containsObject:@"https://smarthealth.cards#laboratory"];
+    v7 = [typesCopy containsObject:@"https://smarthealth.cards#laboratory"];
     v5 = HKHealthKitFrameworkBundle();
     if (v7)
     {
@@ -58,11 +58,11 @@
   return v8;
 }
 
-+ (id)recordItemsDisplayNameWithItems:(id)a3
++ (id)recordItemsDisplayNameWithItems:(id)items
 {
   v29 = *MEMORY[0x1E69E9840];
-  v22 = a3;
-  v3 = [objc_alloc(MEMORY[0x1E696AB50]) initWithArray:v22];
+  itemsCopy = items;
+  v3 = [objc_alloc(MEMORY[0x1E696AB50]) initWithArray:itemsCopy];
   v4 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v24 = 0u;
   v25 = 0u;
@@ -130,21 +130,21 @@
   return v19;
 }
 
-+ (id)recordIssuerDisplayNameWithIssuerIdentifier:(id)a3
++ (id)recordIssuerDisplayNameWithIssuerIdentifier:(id)identifier
 {
   v3 = MEMORY[0x1E695DFF8];
-  v4 = a3;
-  v5 = [v3 URLWithString:v4];
-  v6 = [v5 host];
-  v7 = v6;
-  if (v6)
+  identifierCopy = identifier;
+  v5 = [v3 URLWithString:identifierCopy];
+  host = [v5 host];
+  v7 = host;
+  if (host)
   {
-    v8 = v6;
+    v8 = host;
   }
 
   else
   {
-    v8 = v4;
+    v8 = identifierCopy;
   }
 
   v9 = v8;
@@ -152,14 +152,14 @@
   return v8;
 }
 
-+ (id)preferredRecordIssuerDisplayNameWithIssuerIdentifier:(id)a3
++ (id)preferredRecordIssuerDisplayNameWithIssuerIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 hasPrefix:@"http://www.iso.org/3166-1/a2/"])
+  identifierCopy = identifier;
+  if ([identifierCopy hasPrefix:@"http://www.iso.org/3166-1/a2/"])
   {
-    v4 = [v3 substringWithRange:{objc_msgSend(@"http://www.iso.org/3166-1/a2/", "length"), objc_msgSend(v3, "length") - objc_msgSend(@"http://www.iso.org/3166-1/a2/", "length")}];
-    v5 = [MEMORY[0x1E695DF58] hk_testableCurrentLocale];
-    v6 = [v5 localizedStringForCountryCode:v4];
+    v4 = [identifierCopy substringWithRange:{objc_msgSend(@"http://www.iso.org/3166-1/a2/", "length"), objc_msgSend(identifierCopy, "length") - objc_msgSend(@"http://www.iso.org/3166-1/a2/", "length")}];
+    hk_testableCurrentLocale = [MEMORY[0x1E695DF58] hk_testableCurrentLocale];
+    v6 = [hk_testableCurrentLocale localizedStringForCountryCode:v4];
 
     if ([v6 length])
     {

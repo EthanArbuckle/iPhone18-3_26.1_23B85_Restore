@@ -1,15 +1,15 @@
 @interface TTRNLTextSlotParser
-- (TTRNLTextSlotParser)initWithLocale:(id)a3 now:(id)a4;
-- (id)parseString:(id)a3 referenceTimeZone:(id)a4;
+- (TTRNLTextSlotParser)initWithLocale:(id)locale now:(id)now;
+- (id)parseString:(id)string referenceTimeZone:(id)zone;
 - (void)dealloc;
 @end
 
 @implementation TTRNLTextSlotParser
 
-- (TTRNLTextSlotParser)initWithLocale:(id)a3 now:(id)a4
+- (TTRNLTextSlotParser)initWithLocale:(id)locale now:(id)now
 {
-  v7 = a3;
-  v8 = a4;
+  localeCopy = locale;
+  nowCopy = now;
   v15.receiver = self;
   v15.super_class = TTRNLTextSlotParser;
   v9 = [(TTRNLTextSlotParser *)&v15 init];
@@ -18,18 +18,18 @@
     goto LABEL_6;
   }
 
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  [v10 setObject:v7 forKeyedSubscript:*MEMORY[0x277D2B850]];
-  if (v8)
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  [dictionary setObject:localeCopy forKeyedSubscript:*MEMORY[0x277D2B850]];
+  if (nowCopy)
   {
-    [v10 setObject:v8 forKeyedSubscript:*MEMORY[0x277D2B828]];
+    [dictionary setObject:nowCopy forKeyedSubscript:*MEMORY[0x277D2B828]];
   }
 
   v14 = 0;
   v11 = NLTextSlotParserCreate();
   if (v11)
   {
-    objc_storeStrong(&v9->_locale, a3);
+    objc_storeStrong(&v9->_locale, locale);
     v9->_parser = v11;
 
 LABEL_6:
@@ -39,7 +39,7 @@ LABEL_6:
 
   if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_ERROR))
   {
-    [TTRNLTextSlotParser initWithLocale:v7 now:?];
+    [TTRNLTextSlotParser initWithLocale:localeCopy now:?];
   }
 
   v12 = 0;
@@ -56,10 +56,10 @@ LABEL_10:
   [(TTRNLTextSlotParser *)&v3 dealloc];
 }
 
-- (id)parseString:(id)a3 referenceTimeZone:(id)a4
+- (id)parseString:(id)string referenceTimeZone:(id)zone
 {
-  v6 = a4;
-  v7 = a3;
+  zoneCopy = zone;
+  stringCopy = string;
   [(TTRNLTextSlotParser *)self parser];
   StructuredEvent = NLTextSlotParserCreateStructuredEvent();
 

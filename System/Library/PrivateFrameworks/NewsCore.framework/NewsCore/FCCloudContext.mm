@@ -1,13 +1,13 @@
 @interface FCCloudContext
 + (id)testingContext;
-+ (id)testingContextWithDesiredHeadlineFieldOptions:(unint64_t)a3;
++ (id)testingContextWithDesiredHeadlineFieldOptions:(unint64_t)options;
 + (void)initialize;
 - (BOOL)isPrivateDataEncryptionEnabled;
 - (BOOL)isPrivateDataSyncingEnabled;
 - (BOOL)isPrivateDatabaseOnline;
 - (BOOL)isPrivateDatabaseStartingUp;
 - (BOOL)isPrivateDatabaseTemporarilySuspended;
-- (BOOL)shouldAssetKeyManagerSimulateUnauthorizedAssetKeys:(id)a3;
+- (BOOL)shouldAssetKeyManagerSimulateUnauthorizedAssetKeys:(id)keys;
 - (FCAVAssetFactoryType)avAssetFactory;
 - (FCAVAssetPrewarming)avAssetPrewarmer;
 - (FCAppActivityMonitor)appActivityMonitor;
@@ -17,9 +17,9 @@
 - (FCBackgroundTaskable)backgroundTaskable;
 - (FCClientEndpointConnection)endpointConnection;
 - (FCCloudContext)init;
-- (FCCloudContext)initWithConfiguration:(id)a3 configurationManager:(id)a4 contentHostDirectory:(id)a5 privateDataHostDirectory:(id)a6 privateDataActionProvider:(id)a7 networkBehaviorMonitor:(id)a8 appActivityMonitor:(id)a9 desiredHeadlineFieldOptions:(unint64_t)a10 feedUsage:(int64_t)a11 lockStoreFrontIfNeeded:(BOOL)a12 deviceIsiPad:(BOOL)a13 backgroundTaskable:(id)a14 privateDataSyncAvailability:(id)a15 pptContext:(id)a16;
-- (FCCloudContext)initWithConfiguration:(id)a3 configurationManager:(id)a4 contentHostDirectory:(id)a5 privateDataHostDirectory:(id)a6 privateDataActionProvider:(id)a7 networkBehaviorMonitor:(id)a8 networkReachability:(id)a9 appActivityMonitor:(id)a10 desiredHeadlineFieldOptions:(unint64_t)a11 feedUsage:(int64_t)a12 deviceIsiPad:(BOOL)a13 backgroundTaskable:(id)a14 privateDataSyncAvailability:(id)a15 pptContext:(id)a16 options:(int64_t)a17;
-- (FCCloudContext)initWithContentContext:(id)a3 privateDataContext:(id)a4 networkBehaviorMonitor:(id)a5 networkReachability:(id)a6 options:(int64_t)a7;
+- (FCCloudContext)initWithConfiguration:(id)configuration configurationManager:(id)manager contentHostDirectory:(id)directory privateDataHostDirectory:(id)hostDirectory privateDataActionProvider:(id)provider networkBehaviorMonitor:(id)monitor appActivityMonitor:(id)activityMonitor desiredHeadlineFieldOptions:(unint64_t)self0 feedUsage:(int64_t)self1 lockStoreFrontIfNeeded:(BOOL)self2 deviceIsiPad:(BOOL)self3 backgroundTaskable:(id)self4 privateDataSyncAvailability:(id)self5 pptContext:(id)self6;
+- (FCCloudContext)initWithConfiguration:(id)configuration configurationManager:(id)manager contentHostDirectory:(id)directory privateDataHostDirectory:(id)hostDirectory privateDataActionProvider:(id)provider networkBehaviorMonitor:(id)monitor networkReachability:(id)reachability appActivityMonitor:(id)self0 desiredHeadlineFieldOptions:(unint64_t)self1 feedUsage:(int64_t)self2 deviceIsiPad:(BOOL)self3 backgroundTaskable:(id)self4 privateDataSyncAvailability:(id)self5 pptContext:(id)self6 options:(int64_t)self7;
+- (FCCloudContext)initWithContentContext:(id)context privateDataContext:(id)dataContext networkBehaviorMonitor:(id)monitor networkReachability:(id)reachability options:(int64_t)options;
 - (FCCommandQueue)endpointCommandQueue;
 - (FCCommandQueue)notificationsEndpointCommandQueue;
 - (FCContentContext)contentContext;
@@ -71,30 +71,30 @@
 - (NSString)tabiResourcesContentDirectoryLegacy;
 - (NSURL)assetCacheDirectoryURL;
 - (NSURL)contentHostDirectoryURL;
-- (id)convertRecords:(id)a3;
-- (id)initForTestingWithDesiredHeadlineFieldOptions:(unint64_t)a3;
+- (id)convertRecords:(id)records;
+- (id)initForTestingWithDesiredHeadlineFieldOptions:(unint64_t)options;
 - (id)insertTestArticle;
-- (id)insertTestArticlesWithCount:(unint64_t)a3;
-- (id)interestTokenForContentManifest:(id)a3;
+- (id)insertTestArticlesWithCount:(unint64_t)count;
+- (id)interestTokenForContentManifest:(id)manifest;
 - (id)magazinesConfigurationManager;
 - (id)news_core_ConfigurationManager;
 - (id)notificationsController;
-- (id)privateStoreWithName:(id)a3 version:(unint64_t)a4 options:(unint64_t)a5;
-- (id)recordSourceWithSchema:(id)a3;
-- (id)recordTreeSourceWithRecordSources:(id)a3;
+- (id)privateStoreWithName:(id)name version:(unint64_t)version options:(unint64_t)options;
+- (id)recordSourceWithSchema:(id)schema;
+- (id)recordTreeSourceWithRecordSources:(id)sources;
 - (int64_t)preferredContentVariant;
 - (int64_t)storageSize;
 - (void)_purchaseControllerDidAddALaCarteSubscription;
-- (void)bundleSubscriptionDidSubscribe:(id)a3;
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3;
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3 exceptForFlusher:(id)a4;
-- (void)fetchCleanupToVersionForDatabase:(id)a3 completion:(id)a4;
-- (void)fetchDesiredVersionForDatabase:(id)a3 completion:(id)a4;
-- (void)ppt_overrideFeedEndpoint:(int64_t)a3;
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe;
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold;
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold exceptForFlusher:(id)flusher;
+- (void)fetchCleanupToVersionForDatabase:(id)database completion:(id)completion;
+- (void)fetchDesiredVersionForDatabase:(id)database completion:(id)completion;
+- (void)ppt_overrideFeedEndpoint:(int64_t)endpoint;
 - (void)ppt_prewarmFeedDatabase;
 - (void)prewarmStores;
 - (void)save;
-- (void)setLocalChannelsProvider:(id)a3;
+- (void)setLocalChannelsProvider:(id)provider;
 @end
 
 @implementation FCCloudContext
@@ -152,10 +152,10 @@
 
 - (FCNewsAppConfigurationManager)appConfigurationManager
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 appConfigurationManager];
+  contentContext = [(FCCloudContext *)self contentContext];
+  appConfigurationManager = [contentContext appConfigurationManager];
 
-  return v3;
+  return appConfigurationManager;
 }
 
 - (FCBackgroundTaskable)backgroundTaskable
@@ -167,10 +167,10 @@
 
 - (FCCoreConfigurationManager)configurationManager
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 configurationManager];
+  contentContext = [(FCCloudContext *)self contentContext];
+  configurationManager = [contentContext configurationManager];
 
-  return v3;
+  return configurationManager;
 }
 
 - (FCAppActivityMonitor)appActivityMonitor
@@ -208,18 +208,18 @@
 
 - (FCNetworkReachabilityType)networkReachability
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 networkReachability];
+  contentContext = [(FCCloudContext *)self contentContext];
+  networkReachability = [contentContext networkReachability];
 
-  return v3;
+  return networkReachability;
 }
 
 - (FCContentContextInternal)internalContentContext
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 internalContentContext];
+  contentContext = [(FCCloudContext *)self contentContext];
+  internalContentContext = [contentContext internalContentContext];
 
-  return v3;
+  return internalContentContext;
 }
 
 - (FCSubscriptionController)subscriptionController
@@ -257,18 +257,18 @@
 
 - (FCPuzzleHistory)puzzleHistory
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 puzzleHistory];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  puzzleHistory = [privateDataContext puzzleHistory];
 
-  return v3;
+  return puzzleHistory;
 }
 
 - (FCUserInfo)userInfo
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 userInfo];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  userInfo = [privateDataContext userInfo];
 
-  return v3;
+  return userInfo;
 }
 
 - (FCPrivateDataContext)privateDataContext
@@ -306,34 +306,34 @@
 
 - (NSString)privateDataDirectory
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 privateDataDirectory];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  privateDataDirectory = [privateDataContext privateDataDirectory];
 
-  return v3;
+  return privateDataDirectory;
 }
 
 - (FCTagController)tagController
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 tagController];
+  contentContext = [(FCCloudContext *)self contentContext];
+  tagController = [contentContext tagController];
 
-  return v3;
+  return tagController;
 }
 
 - (FCPuzzleController)puzzleController
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 puzzleController];
+  contentContext = [(FCCloudContext *)self contentContext];
+  puzzleController = [contentContext puzzleController];
 
-  return v3;
+  return puzzleController;
 }
 
 - (FCSportsEventController)sportsEventController
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 sportsEventController];
+  contentContext = [(FCCloudContext *)self contentContext];
+  sportsEventController = [contentContext sportsEventController];
 
-  return v3;
+  return sportsEventController;
 }
 
 - (FCNetworkBehaviorMonitor)networkBehaviorMonitor
@@ -371,216 +371,216 @@
 
 - (FCIssueReadingHistory)issueReadingHistory
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 issueReadingHistory];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  issueReadingHistory = [privateDataContext issueReadingHistory];
 
-  return v3;
+  return issueReadingHistory;
 }
 
 - (FCUserEventHistory)userEventHistory
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 userEventHistory];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  userEventHistory = [privateDataContext userEventHistory];
 
-  return v3;
+  return userEventHistory;
 }
 
 - (id)news_core_ConfigurationManager
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 news_core_ConfigurationManager];
+  contentContext = [(FCCloudContext *)self contentContext];
+  news_core_ConfigurationManager = [contentContext news_core_ConfigurationManager];
 
-  return v3;
+  return news_core_ConfigurationManager;
 }
 
 - (FCReadingHistory)readingHistory
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 readingHistory];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  readingHistory = [privateDataContext readingHistory];
 
-  return v3;
+  return readingHistory;
 }
 
 - (FCShortcutList)shortcutList
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 shortcutList];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  shortcutList = [privateDataContext shortcutList];
 
-  return v3;
+  return shortcutList;
 }
 
 - (FCSubscriptionList)subscriptionList
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 subscriptionList];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  subscriptionList = [privateDataContext subscriptionList];
 
-  return v3;
+  return subscriptionList;
 }
 
 - (FCReadingList)readingList
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 readingList];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  readingList = [privateDataContext readingList];
 
-  return v3;
+  return readingList;
 }
 
 - (FCPersonalizationData)personalizationData
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 personalizationData];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  personalizationData = [privateDataContext personalizationData];
 
-  return v3;
+  return personalizationData;
 }
 
 - (FCAssetManager)assetManager
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 assetManager];
+  contentContext = [(FCCloudContext *)self contentContext];
+  assetManager = [contentContext assetManager];
 
-  return v3;
+  return assetManager;
 }
 
 - (FCPuzzleTypeController)puzzleTypeController
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 puzzleTypeController];
+  contentContext = [(FCCloudContext *)self contentContext];
+  puzzleTypeController = [contentContext puzzleTypeController];
 
-  return v3;
+  return puzzleTypeController;
 }
 
 - (FCTagSettings)tagSettings
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 tagSettings];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  tagSettings = [privateDataContext tagSettings];
 
-  return v3;
+  return tagSettings;
 }
 
 - (FCAudioPlaylist)audioPlaylist
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 audioPlaylist];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  audioPlaylist = [privateDataContext audioPlaylist];
 
-  return v3;
+  return audioPlaylist;
 }
 
 - (FCAVAssetPrewarming)avAssetPrewarmer
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 avAssetPrewarmer];
+  contentContext = [(FCCloudContext *)self contentContext];
+  avAssetPrewarmer = [contentContext avAssetPrewarmer];
 
-  return v3;
+  return avAssetPrewarmer;
 }
 
 - (void)prewarmStores
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  [v2 prewarmStores];
+  contentContext = [(FCCloudContext *)self contentContext];
+  [contentContext prewarmStores];
 }
 
 - (FCPrivateChannelMembershipController)privateChannelMembershipController
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 privateChannelMembershipController];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  privateChannelMembershipController = [privateDataContext privateChannelMembershipController];
 
-  return v3;
+  return privateChannelMembershipController;
 }
 
 - (FCShortcutCategoryList)shortcutCategoryList
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 shortcutCategoryList];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  shortcutCategoryList = [privateDataContext shortcutCategoryList];
 
-  return v3;
+  return shortcutCategoryList;
 }
 
 - (FCFlintResourceManager)flintResourceManager
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 flintResourceManager];
+  contentContext = [(FCCloudContext *)self contentContext];
+  flintResourceManager = [contentContext flintResourceManager];
 
-  return v3;
+  return flintResourceManager;
 }
 
 - (FCArticleController)articleController
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 articleController];
+  contentContext = [(FCCloudContext *)self contentContext];
+  articleController = [contentContext articleController];
 
-  return v3;
+  return articleController;
 }
 
 - (NSString)tabiResourcesContentDirectoryLegacy
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 tabiResourcesContentDirectoryLegacy];
+  contentContext = [(FCCloudContext *)self contentContext];
+  tabiResourcesContentDirectoryLegacy = [contentContext tabiResourcesContentDirectoryLegacy];
 
-  return v3;
+  return tabiResourcesContentDirectoryLegacy;
 }
 
 - (NSString)tabiModelsContentDirectoryLegacy
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 tabiModelsContentDirectoryLegacy];
+  contentContext = [(FCCloudContext *)self contentContext];
+  tabiModelsContentDirectoryLegacy = [contentContext tabiModelsContentDirectoryLegacy];
 
-  return v3;
+  return tabiModelsContentDirectoryLegacy;
 }
 
 - (NSString)contentDirectory
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 contentDirectory];
+  contentContext = [(FCCloudContext *)self contentContext];
+  contentDirectory = [contentContext contentDirectory];
 
-  return v3;
+  return contentDirectory;
 }
 
 - (FCRecipeUserEventHistory)recipeUserEventHistory
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 recipeUserEventHistory];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  recipeUserEventHistory = [privateDataContext recipeUserEventHistory];
 
-  return v3;
+  return recipeUserEventHistory;
 }
 
 - (FCAVAssetFactoryType)avAssetFactory
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 avAssetFactory];
+  contentContext = [(FCCloudContext *)self contentContext];
+  avAssetFactory = [contentContext avAssetFactory];
 
-  return v3;
+  return avAssetFactory;
 }
 
 - (FCPuzzleTypeSettings)puzzleTypeSettings
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 puzzleTypeSettings];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  puzzleTypeSettings = [privateDataContext puzzleTypeSettings];
 
-  return v3;
+  return puzzleTypeSettings;
 }
 
 - (FCFeedItemFactoryType)feedItemFactory
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 feedItemFactory];
+  contentContext = [(FCCloudContext *)self contentContext];
+  feedItemFactory = [contentContext feedItemFactory];
 
-  return v3;
+  return feedItemFactory;
 }
 
 - (FCRecipeItemFactoryType)recipeItemFactory
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 recipeItemFactory];
+  contentContext = [(FCCloudContext *)self contentContext];
+  recipeItemFactory = [contentContext recipeItemFactory];
 
-  return v3;
+  return recipeItemFactory;
 }
 
 - (FCFeedDatabase)feedDatabase
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 feedDatabase];
+  contentContext = [(FCCloudContext *)self contentContext];
+  feedDatabase = [contentContext feedDatabase];
 
-  return v3;
+  return feedDatabase;
 }
 
 - (FCCloudContext)init
@@ -609,48 +609,48 @@
   objc_exception_throw(v6);
 }
 
-- (FCCloudContext)initWithConfiguration:(id)a3 configurationManager:(id)a4 contentHostDirectory:(id)a5 privateDataHostDirectory:(id)a6 privateDataActionProvider:(id)a7 networkBehaviorMonitor:(id)a8 appActivityMonitor:(id)a9 desiredHeadlineFieldOptions:(unint64_t)a10 feedUsage:(int64_t)a11 lockStoreFrontIfNeeded:(BOOL)a12 deviceIsiPad:(BOOL)a13 backgroundTaskable:(id)a14 privateDataSyncAvailability:(id)a15 pptContext:(id)a16
+- (FCCloudContext)initWithConfiguration:(id)configuration configurationManager:(id)manager contentHostDirectory:(id)directory privateDataHostDirectory:(id)hostDirectory privateDataActionProvider:(id)provider networkBehaviorMonitor:(id)monitor appActivityMonitor:(id)activityMonitor desiredHeadlineFieldOptions:(unint64_t)self0 feedUsage:(int64_t)self1 lockStoreFrontIfNeeded:(BOOL)self2 deviceIsiPad:(BOOL)self3 backgroundTaskable:(id)self4 privateDataSyncAvailability:(id)self5 pptContext:(id)self6
 {
   v20 = 8;
-  if (!a12)
+  if (!needed)
   {
     v20 = 0;
   }
 
   v34 = v20;
-  v33 = a16;
-  v32 = a15;
-  v21 = a14;
-  v22 = a9;
-  v31 = a8;
-  v23 = a7;
-  v24 = a6;
-  v30 = a5;
-  v25 = a4;
-  v26 = a3;
+  contextCopy = context;
+  availabilityCopy = availability;
+  taskableCopy = taskable;
+  activityMonitorCopy = activityMonitor;
+  monitorCopy = monitor;
+  providerCopy = provider;
+  hostDirectoryCopy = hostDirectory;
+  directoryCopy = directory;
+  managerCopy = manager;
+  configurationCopy = configuration;
   v27 = +[FCNetworkReachability sharedNetworkReachability];
-  LOBYTE(v29) = a13;
-  v38 = [(FCCloudContext *)self initWithConfiguration:v26 configurationManager:v25 contentHostDirectory:v30 privateDataHostDirectory:v24 privateDataActionProvider:v23 networkBehaviorMonitor:v31 networkReachability:v27 appActivityMonitor:v22 desiredHeadlineFieldOptions:a10 feedUsage:a11 deviceIsiPad:v29 backgroundTaskable:v21 privateDataSyncAvailability:v32 pptContext:v33 options:v34];
+  LOBYTE(v29) = pad;
+  v38 = [(FCCloudContext *)self initWithConfiguration:configurationCopy configurationManager:managerCopy contentHostDirectory:directoryCopy privateDataHostDirectory:hostDirectoryCopy privateDataActionProvider:providerCopy networkBehaviorMonitor:monitorCopy networkReachability:v27 appActivityMonitor:activityMonitorCopy desiredHeadlineFieldOptions:options feedUsage:usage deviceIsiPad:v29 backgroundTaskable:taskableCopy privateDataSyncAvailability:availabilityCopy pptContext:contextCopy options:v34];
 
   return v38;
 }
 
-- (FCCloudContext)initWithConfiguration:(id)a3 configurationManager:(id)a4 contentHostDirectory:(id)a5 privateDataHostDirectory:(id)a6 privateDataActionProvider:(id)a7 networkBehaviorMonitor:(id)a8 networkReachability:(id)a9 appActivityMonitor:(id)a10 desiredHeadlineFieldOptions:(unint64_t)a11 feedUsage:(int64_t)a12 deviceIsiPad:(BOOL)a13 backgroundTaskable:(id)a14 privateDataSyncAvailability:(id)a15 pptContext:(id)a16 options:(int64_t)a17
+- (FCCloudContext)initWithConfiguration:(id)configuration configurationManager:(id)manager contentHostDirectory:(id)directory privateDataHostDirectory:(id)hostDirectory privateDataActionProvider:(id)provider networkBehaviorMonitor:(id)monitor networkReachability:(id)reachability appActivityMonitor:(id)self0 desiredHeadlineFieldOptions:(unint64_t)self1 feedUsage:(int64_t)self2 deviceIsiPad:(BOOL)self3 backgroundTaskable:(id)self4 privateDataSyncAvailability:(id)self5 pptContext:(id)self6 options:(int64_t)self7
 {
   v54 = *MEMORY[0x1E69E9840];
-  v41 = a3;
-  v40 = a4;
-  v22 = a5;
-  v23 = a6;
-  v39 = a7;
-  v24 = a8;
-  v25 = a9;
-  v26 = a10;
-  v44 = a14;
-  v43 = a15;
-  v42 = a16;
-  v45 = v22;
-  if (!v22 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  configurationCopy = configuration;
+  managerCopy = manager;
+  directoryCopy = directory;
+  hostDirectoryCopy = hostDirectory;
+  providerCopy = provider;
+  monitorCopy = monitor;
+  reachabilityCopy = reachability;
+  activityMonitorCopy = activityMonitor;
+  taskableCopy = taskable;
+  availabilityCopy = availability;
+  contextCopy = context;
+  v45 = directoryCopy;
+  if (!directoryCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v34 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "contentHostDirectory != nil"];
     *buf = 136315906;
@@ -664,7 +664,7 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (!v23 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!hostDirectoryCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v35 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "privateDataHostDirectory != nil"];
     *buf = 136315906;
@@ -678,7 +678,7 @@
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
   }
 
-  if (!v26 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  if (!activityMonitorCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v36 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "appActivityMonitor != nil"];
     *buf = 136315906;
@@ -697,19 +697,19 @@
     +[FCAppleAccount enableStoreFrontLocking];
   }
 
-  v27 = [[FCContentContext alloc] initWithConfiguration:v41 configurationManager:v40 contentHostDirectory:v22 networkBehaviorMonitor:v24 networkReachability:v25 desiredHeadlineFieldOptions:a11 feedUsage:a12 assetKeyManagerDelegate:self appActivityMonitor:v26 backgroundTaskable:v44 pptContext:v42];
+  v27 = [[FCContentContext alloc] initWithConfiguration:configurationCopy configurationManager:managerCopy contentHostDirectory:directoryCopy networkBehaviorMonitor:monitorCopy networkReachability:reachabilityCopy desiredHeadlineFieldOptions:options feedUsage:usage assetKeyManagerDelegate:self appActivityMonitor:activityMonitorCopy backgroundTaskable:taskableCopy pptContext:contextCopy];
   [(FCCloudContext *)self setContentContext:v27];
-  [(FCCloudContext *)self setAppActivityMonitor:v26];
+  [(FCCloudContext *)self setAppActivityMonitor:activityMonitorCopy];
   v28 = [FCPrivateDataContext alloc];
-  LOBYTE(v37) = [v43 isPrivateDataSyncingAllowed];
-  v29 = [(FCPrivateDataContext *)v28 initWithConfiguration:v41 context:self privateDataHostDirectory:v23 privateDataActionProvider:v39 encryptionDelegate:self networkBehaviorMonitor:v24 privateDataSyncingEnabled:v37];
-  v30 = [(FCCloudContext *)self initWithContentContext:v27 privateDataContext:v29 networkBehaviorMonitor:v24 networkReachability:v25 options:a17];
+  LOBYTE(v37) = [availabilityCopy isPrivateDataSyncingAllowed];
+  v29 = [(FCPrivateDataContext *)v28 initWithConfiguration:configurationCopy context:self privateDataHostDirectory:hostDirectoryCopy privateDataActionProvider:providerCopy encryptionDelegate:self networkBehaviorMonitor:monitorCopy privateDataSyncingEnabled:v37];
+  v30 = [(FCCloudContext *)self initWithContentContext:v27 privateDataContext:v29 networkBehaviorMonitor:monitorCopy networkReachability:reachabilityCopy options:a17];
   v31 = v30;
   if (v30)
   {
-    v30->_deviceIsiPad = a13;
-    objc_storeStrong(&v30->_pptContext, a16);
-    objc_storeWeak(&v31->_backgroundTaskable, v44);
+    v30->_deviceIsiPad = pad;
+    objc_storeStrong(&v30->_pptContext, context);
+    objc_storeWeak(&v31->_backgroundTaskable, taskableCopy);
   }
 
   v32 = *MEMORY[0x1E69E9840];
@@ -718,39 +718,39 @@
 
 + (id)testingContext
 {
-  v2 = [[FCCloudContext alloc] initForTesting];
+  initForTesting = [[FCCloudContext alloc] initForTesting];
 
-  return v2;
+  return initForTesting;
 }
 
-+ (id)testingContextWithDesiredHeadlineFieldOptions:(unint64_t)a3
++ (id)testingContextWithDesiredHeadlineFieldOptions:(unint64_t)options
 {
-  v3 = [[FCCloudContext alloc] initForTestingWithDesiredHeadlineFieldOptions:a3];
+  v3 = [[FCCloudContext alloc] initForTestingWithDesiredHeadlineFieldOptions:options];
 
   return v3;
 }
 
-- (id)initForTestingWithDesiredHeadlineFieldOptions:(unint64_t)a3
+- (id)initForTestingWithDesiredHeadlineFieldOptions:(unint64_t)options
 {
-  v5 = [MEMORY[0x1E696AFB0] UUID];
-  v27 = [v5 UUIDString];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
   v6 = NSTemporaryDirectory();
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"news-testing-cache-%@", v27];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"news-testing-cache-%@", uUIDString];
   v8 = [v6 stringByAppendingPathComponent:v7];
 
   v9 = [MEMORY[0x1E695DFF8] URLWithString:v8];
   v10 = +[FCContextConfiguration defaultConfiguration];
   v11 = [FCNetworkBehaviorMonitor alloc];
-  v12 = [v9 path];
-  v13 = [(FCNetworkBehaviorMonitor *)v11 initWithCacheDirectory:v12];
+  path = [v9 path];
+  v13 = [(FCNetworkBehaviorMonitor *)v11 initWithCacheDirectory:path];
 
   v14 = +[FCNetworkReachability sharedNetworkReachability];
-  v15 = [[FCConfigurationManager alloc] initForTesting];
+  initForTesting = [[FCConfigurationManager alloc] initForTesting];
   v16 = [FCContentContext alloc];
   v17 = +[FCCKTestContentDatabase testingDatabase];
   LOBYTE(v25) = 0;
-  v18 = [(FCContentContext *)v16 initWithConfiguration:v10 configurationManager:v15 contentDatabase:v17 contentHostDirectory:v9 networkBehaviorMonitor:v13 networkReachability:v14 setupCustomURLProtocols:v25 desiredHeadlineFieldOptions:a3 feedUsage:2 assetKeyManagerDelegate:self appActivityMonitor:0 backgroundTaskable:0 pptContext:0];
+  v18 = [(FCContentContext *)v16 initWithConfiguration:v10 configurationManager:initForTesting contentDatabase:v17 contentHostDirectory:v9 networkBehaviorMonitor:v13 networkReachability:v14 setupCustomURLProtocols:v25 desiredHeadlineFieldOptions:options feedUsage:2 assetKeyManagerDelegate:self appActivityMonitor:0 backgroundTaskable:0 pptContext:0];
 
   [(FCCloudContext *)self setContentContext:v18];
   v19 = objc_opt_new();
@@ -765,14 +765,14 @@
   return v23;
 }
 
-- (FCCloudContext)initWithContentContext:(id)a3 privateDataContext:(id)a4 networkBehaviorMonitor:(id)a5 networkReachability:(id)a6 options:(int64_t)a7
+- (FCCloudContext)initWithContentContext:(id)context privateDataContext:(id)dataContext networkBehaviorMonitor:(id)monitor networkReachability:(id)reachability options:(int64_t)options
 {
   v155 = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  if (!v13 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  contextCopy = context;
+  dataContextCopy = dataContext;
+  monitorCopy = monitor;
+  reachabilityCopy = reachability;
+  if (!contextCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v135 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "contentContext"];
     *buf = 136315906;
@@ -785,13 +785,13 @@
     v154 = v135;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v14)
+    if (dataContextCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v14)
+  else if (dataContextCopy)
   {
     goto LABEL_6;
   }
@@ -817,51 +817,51 @@ LABEL_6:
   v18 = v17;
   if (v17)
   {
-    obj = a5;
-    v143 = v15;
-    objc_storeStrong(&v17->_contentContext, a3);
-    objc_storeStrong(&v18->_privateDataContext, a4);
-    [v14 preparePrivateDataControllersForUse];
-    v19 = [v13 configurationManager];
-    v141 = [[FCClientEndpointConnection alloc] initWithConfigurationManager:v19];
+    obj = monitor;
+    v143 = monitorCopy;
+    objc_storeStrong(&v17->_contentContext, context);
+    objc_storeStrong(&v18->_privateDataContext, dataContext);
+    [dataContextCopy preparePrivateDataControllersForUse];
+    configurationManager = [contextCopy configurationManager];
+    v141 = [[FCClientEndpointConnection alloc] initWithConfigurationManager:configurationManager];
     objc_storeStrong(&v18->_endpointConnection, v141);
     v20 = MEMORY[0x1E695DFF8];
-    v21 = [v13 contentDirectory];
-    v22 = [v20 fileURLWithPath:v21];
+    contentDirectory = [contextCopy contentDirectory];
+    v22 = [v20 fileURLWithPath:contentDirectory];
 
     v140 = v22;
-    v142 = v16;
-    v23 = [[FCWebURLResolutionEndpointConnection alloc] initWithConfigurationManager:v19 cachesDirectoryURL:v22 networkReachability:v16];
+    v142 = reachabilityCopy;
+    v23 = [[FCWebURLResolutionEndpointConnection alloc] initWithConfigurationManager:configurationManager cachesDirectoryURL:v22 networkReachability:reachabilityCopy];
     webURLResolutionEndpointConnection = v18->_webURLResolutionEndpointConnection;
     v18->_webURLResolutionEndpointConnection = v23;
 
-    v25 = [v14 internalPrivateDataContext];
-    v26 = [v25 appActivityMonitor];
+    internalPrivateDataContext = [dataContextCopy internalPrivateDataContext];
+    appActivityMonitor = [internalPrivateDataContext appActivityMonitor];
 
-    v144 = v26;
-    objc_storeStrong(&v18->_appActivityMonitor, v26);
-    v18->_options = a7;
+    v144 = appActivityMonitor;
+    objc_storeStrong(&v18->_appActivityMonitor, appActivityMonitor);
+    v18->_options = options;
     v27 = [FCCommandQueue alloc];
-    v28 = [v14 privateDataDirectory];
-    v29 = [(FCCommandQueue *)v27 initWithContext:v18 storeDirectory:v28 storeFilename:@"endPoint_v1.commandqueue" urgency:2 suspended:0 delegate:0];
+    privateDataDirectory = [dataContextCopy privateDataDirectory];
+    v29 = [(FCCommandQueue *)v27 initWithContext:v18 storeDirectory:privateDataDirectory storeFilename:@"endPoint_v1.commandqueue" urgency:2 suspended:0 delegate:0];
     endpointCommandQueue = v18->_endpointCommandQueue;
     v18->_endpointCommandQueue = v29;
 
     v31 = [FCCommandQueue alloc];
-    v32 = [v14 privateDataDirectory];
-    v33 = [(FCCommandQueue *)v31 initWithContext:v18 storeDirectory:v32 storeFilename:@"notificationsEndpoint_v1.commandqueue" urgency:1 suspended:0 delegate:0];
+    privateDataDirectory2 = [dataContextCopy privateDataDirectory];
+    v33 = [(FCCommandQueue *)v31 initWithContext:v18 storeDirectory:privateDataDirectory2 storeFilename:@"notificationsEndpoint_v1.commandqueue" urgency:1 suspended:0 delegate:0];
     notificationsEndpointCommandQueue = v18->_notificationsEndpointCommandQueue;
     v18->_notificationsEndpointCommandQueue = v33;
 
     v35 = [FCCommandQueue alloc];
-    v36 = [v14 privateDataDirectory];
-    v37 = [(FCCommandQueue *)v35 initWithContext:v18 storeDirectory:v36 storeFilename:@"newsletterEndpoint_v1.commandqueue" urgency:2 suspended:0 delegate:0];
+    privateDataDirectory3 = [dataContextCopy privateDataDirectory];
+    v37 = [(FCCommandQueue *)v35 initWithContext:v18 storeDirectory:privateDataDirectory3 storeFilename:@"newsletterEndpoint_v1.commandqueue" urgency:2 suspended:0 delegate:0];
     newsletterEndpointCommandQueue = v18->_newsletterEndpointCommandQueue;
     v18->_newsletterEndpointCommandQueue = v37;
 
     v39 = [FCEntitlementService alloc];
-    v40 = [v13 configurationManager];
-    v41 = [(FCEntitlementService *)v39 initWithConfigurationManager:v40];
+    configurationManager2 = [contextCopy configurationManager];
+    v41 = [(FCEntitlementService *)v39 initWithConfigurationManager:configurationManager2];
     entitlementService = v18->_entitlementService;
     v18->_entitlementService = v41;
 
@@ -871,28 +871,28 @@ LABEL_6:
 
     v45 = [FCPurchaseProvider alloc];
     v46 = v18->_purchaseController;
-    v47 = [v14 privateChannelMembershipController];
-    v48 = [(FCPurchaseProvider *)&v45->super.isa initWithPurchaseController:v46 privateChannelMembershipController:v47];
+    privateChannelMembershipController = [dataContextCopy privateChannelMembershipController];
+    v48 = [(FCPurchaseProvider *)&v45->super.isa initWithPurchaseController:v46 privateChannelMembershipController:privateChannelMembershipController];
     purchaseProvider = v18->_purchaseProvider;
     v18->_purchaseProvider = v48;
 
-    v50 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v50 addObserver:v18 selector:sel__purchaseControllerDidAddALaCarteSubscription name:FCPurchaseAddedNotificationName object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v18 selector:sel__purchaseControllerDidAddALaCarteSubscription name:FCPurchaseAddedNotificationName object:0];
 
-    v51 = [MEMORY[0x1E696AAE8] mainBundle];
-    v52 = [v51 bundleIdentifier];
-    if ([v52 isEqualToString:@"com.apple.news"])
+    mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    if ([bundleIdentifier isEqualToString:@"com.apple.news"])
     {
     }
 
     else
     {
-      v53 = [MEMORY[0x1E696AAE8] mainBundle];
-      [v53 bundleIdentifier];
-      v55 = v54 = v14;
+      mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+      [mainBundle2 bundleIdentifier];
+      v55 = v54 = dataContextCopy;
       v56 = [v55 isEqualToString:@"com.apple.stocks"];
 
-      v14 = v54;
+      dataContextCopy = v54;
       if (!v56)
       {
         v65 = objc_alloc_init(FCNoOpBundleSubscriptionManager);
@@ -903,14 +903,14 @@ LABEL_6:
     }
 
     v57 = [FCBundleEntitlementsProvider alloc];
-    v58 = [v13 configurationManager];
-    bundleSubscriptionManager = [(FCBundleEntitlementsProvider *)v57 initWithConfigurationManager:v58 entitlementService:v18->_entitlementService];
+    configurationManager3 = [contextCopy configurationManager];
+    bundleSubscriptionManager = [(FCBundleEntitlementsProvider *)v57 initWithConfigurationManager:configurationManager3 entitlementService:v18->_entitlementService];
 
     v60 = [FCBundleSubscriptionManager alloc];
-    v61 = [v14 privateDataDirectory];
-    [v13 configurationManager];
-    v62 = v54 = v14;
-    v63 = [(FCBundleSubscriptionManager *)v60 initWithPrivateDataDirectory:v61 configurationManager:v62 cloudContext:v18 contentContext:v13 appActivityMonitor:v144 entitlementsProvider:bundleSubscriptionManager];
+    privateDataDirectory4 = [dataContextCopy privateDataDirectory];
+    [contextCopy configurationManager];
+    v62 = v54 = dataContextCopy;
+    v63 = [(FCBundleSubscriptionManager *)v60 initWithPrivateDataDirectory:privateDataDirectory4 configurationManager:v62 cloudContext:v18 contentContext:contextCopy appActivityMonitor:v144 entitlementsProvider:bundleSubscriptionManager];
     v64 = v18->_bundleSubscriptionManager;
     v18->_bundleSubscriptionManager = v63;
 
@@ -927,18 +927,18 @@ LABEL_12:
     v18->_purchaseManager = v70;
 
     v72 = [FCNotificationController alloc];
-    v73 = [v54 userInfo];
+    userInfo = [v54 userInfo];
     v74 = v18->_notificationsEndpointCommandQueue;
-    v75 = [v13 configurationManager];
-    v76 = [(FCNotificationController *)v72 initWithUserInfo:v73 commandQueue:v74 configurationManager:v75 publisherNotificationsAllowed:(a7 >> 1) & 1 appleNewsNotificationsAllowed:(a7 >> 2) & 1];
+    configurationManager4 = [contextCopy configurationManager];
+    v76 = [(FCNotificationController *)v72 initWithUserInfo:userInfo commandQueue:v74 configurationManager:configurationManager4 publisherNotificationsAllowed:(options >> 1) & 1 appleNewsNotificationsAllowed:(options >> 2) & 1];
     notificationController = v18->_notificationController;
     v18->_notificationController = v76;
 
-    v78 = [[FCNotificationsEndpointConnection alloc] initWithConfigurationManager:v19 bundleSubscriptionManager:v18->_bundleSubscriptionManager];
+    v78 = [[FCNotificationsEndpointConnection alloc] initWithConfigurationManager:configurationManager bundleSubscriptionManager:v18->_bundleSubscriptionManager];
     notificationsEndpointConnection = v18->_notificationsEndpointConnection;
     v18->_notificationsEndpointConnection = v78;
 
-    v80 = [[FCNewsletterEndpointConnection alloc] initWithConfigurationManager:v19];
+    v80 = [[FCNewsletterEndpointConnection alloc] initWithConfigurationManager:configurationManager];
     newsletterEndpointConnection = v18->_newsletterEndpointConnection;
     v18->_newsletterEndpointConnection = v80;
 
@@ -946,26 +946,26 @@ LABEL_12:
     v83 = v18->_newsletterEndpointConnection;
     v84 = v18->_newsletterEndpointCommandQueue;
     v85 = +[FCAppleAccount sharedAccount];
-    v86 = [(FCCloudContext *)v18 appConfigurationManager];
-    v87 = [(FCCloudContext *)v18 userInfo];
+    appConfigurationManager = [(FCCloudContext *)v18 appConfigurationManager];
+    userInfo2 = [(FCCloudContext *)v18 userInfo];
     [(FCCloudContext *)v18 bundleSubscriptionManager];
-    v88 = v138 = v19;
+    v88 = v138 = configurationManager;
     [(FCCloudContext *)v18 privateDataContext];
-    v89 = v145 = v13;
-    v90 = [(FCNewsletterManager *)v82 initWithEndpointConnection:v83 endpointCommandQueue:v84 appleAccount:v85 appConfig:v86 userInfo:v87 bundleSubscriptionManager:v88 privateDataContext:v89];
+    v89 = v145 = contextCopy;
+    v90 = [(FCNewsletterManager *)v82 initWithEndpointConnection:v83 endpointCommandQueue:v84 appleAccount:v85 appConfig:appConfigurationManager userInfo:userInfo2 bundleSubscriptionManager:v88 privateDataContext:v89];
     newsletterManager = v18->_newsletterManager;
     v18->_newsletterManager = v90;
 
     v92 = [FCSubscriptionController alloc];
-    v93 = [v54 subscriptionList];
-    v94 = [v145 tagController];
-    v95 = [v145 puzzleTypeController];
+    subscriptionList = [v54 subscriptionList];
+    tagController = [v145 tagController];
+    puzzleTypeController = [v145 puzzleTypeController];
     v96 = v18->_notificationController;
     v97 = v18->_purchaseProvider;
-    v98 = [v145 configurationManager];
-    v99 = [v145 appConfigurationManager];
-    v100 = [(FCCloudContext *)v18 userInfo];
-    v101 = [(FCSubscriptionController *)v92 initWithSubscriptionList:v93 tagController:v94 puzzleTypeController:v95 notificationController:v96 purchaseProvider:v97 configurationManager:v98 appConfigurationManager:v99 appActivityMonitor:v144 userInfo:v100];
+    configurationManager5 = [v145 configurationManager];
+    appConfigurationManager2 = [v145 appConfigurationManager];
+    userInfo3 = [(FCCloudContext *)v18 userInfo];
+    v101 = [(FCSubscriptionController *)v92 initWithSubscriptionList:subscriptionList tagController:tagController puzzleTypeController:puzzleTypeController notificationController:v96 purchaseProvider:v97 configurationManager:configurationManager5 appConfigurationManager:appConfigurationManager2 appActivityMonitor:v144 userInfo:userInfo3];
     subscriptionController = v18->_subscriptionController;
     v18->_subscriptionController = v101;
 
@@ -984,43 +984,43 @@ LABEL_12:
 
     v109 = [FCCurrentIssuesChecker alloc];
     v110 = v18->_subscriptionController;
-    v14 = v137;
-    v111 = [v137 issueReadingHistory];
-    v112 = [(FCCurrentIssuesChecker *)v109 initWithContext:v145 subscriptionController:v110 issueReadingHistory:v111 bundleSubscriptionProvider:v18->_bundleSubscriptionManager];
+    dataContextCopy = v137;
+    issueReadingHistory = [v137 issueReadingHistory];
+    v112 = [(FCCurrentIssuesChecker *)v109 initWithContext:v145 subscriptionController:v110 issueReadingHistory:issueReadingHistory bundleSubscriptionProvider:v18->_bundleSubscriptionManager];
     currentIssuesChecker = v18->_currentIssuesChecker;
     v18->_currentIssuesChecker = v112;
 
     v114 = [FCPaidAccessChecker alloc];
-    v115 = [(FCCloudContext *)v18 purchaseProvider];
-    v116 = [(FCCloudContext *)v18 bundleSubscriptionManager];
-    v117 = [(FCCloudContext *)v18 configurationManager];
-    v118 = [(FCPaidAccessChecker *)v114 initWithPurchaseProvider:v115 bundleSubscriptionProvider:v116 configurationManager:v117];
+    purchaseProvider = [(FCCloudContext *)v18 purchaseProvider];
+    bundleSubscriptionManager = [(FCCloudContext *)v18 bundleSubscriptionManager];
+    configurationManager6 = [(FCCloudContext *)v18 configurationManager];
+    v118 = [(FCPaidAccessChecker *)v114 initWithPurchaseProvider:purchaseProvider bundleSubscriptionProvider:bundleSubscriptionManager configurationManager:configurationManager6];
 
     paidAccessChecker = v18->_paidAccessChecker;
     v18->_paidAccessChecker = v118;
     v120 = v118;
 
     v121 = [FCIssueAccessChecker alloc];
-    v122 = [v137 privateChannelMembershipController];
-    v123 = [(FCIssueAccessChecker *)v121 initWithPaidAccessChecker:v120 privateChannelMembershipController:v122];
+    privateChannelMembershipController2 = [v137 privateChannelMembershipController];
+    v123 = [(FCIssueAccessChecker *)v121 initWithPaidAccessChecker:v120 privateChannelMembershipController:privateChannelMembershipController2];
     issueAccessChecker = v18->_issueAccessChecker;
     v18->_issueAccessChecker = v123;
 
     v125 = [FCArticleAccessChecker alloc];
-    v126 = [v137 privateChannelMembershipController];
-    v127 = [(FCArticleAccessChecker *)v125 initWithPaidAccessChecker:v120 privateChannelMembershipController:v126];
+    privateChannelMembershipController3 = [v137 privateChannelMembershipController];
+    v127 = [(FCArticleAccessChecker *)v125 initWithPaidAccessChecker:v120 privateChannelMembershipController:privateChannelMembershipController3];
     articleAccessChecker = v18->_articleAccessChecker;
     v18->_articleAccessChecker = v127;
 
     v129 = [FCRecipeAccessChecker alloc];
-    v130 = [v137 privateChannelMembershipController];
-    v131 = [(FCRecipeAccessChecker *)v129 initWithPrivateChannelMembershipController:v130];
+    privateChannelMembershipController4 = [v137 privateChannelMembershipController];
+    v131 = [(FCRecipeAccessChecker *)v129 initWithPrivateChannelMembershipController:privateChannelMembershipController4];
     recipeAccessChecker = v18->_recipeAccessChecker;
     v18->_recipeAccessChecker = v131;
 
-    v13 = v145;
-    v16 = v142;
-    v15 = v143;
+    contextCopy = v145;
+    reachabilityCopy = v142;
+    monitorCopy = v143;
   }
 
   v133 = *MEMORY[0x1E69E9840];
@@ -1031,14 +1031,14 @@ LABEL_12:
 {
   if (!self->_offlineArticleManager)
   {
-    v5 = [(FCCloudContext *)self offlineArticleManagerProvider];
+    offlineArticleManagerProvider = [(FCCloudContext *)self offlineArticleManagerProvider];
 
-    if (v5)
+    if (offlineArticleManagerProvider)
     {
       if ([MEMORY[0x1E696AF00] isMainThread])
       {
-        v6 = [(FCCloudContext *)self offlineArticleManagerProvider];
-        v7 = v6[2]();
+        offlineArticleManagerProvider2 = [(FCCloudContext *)self offlineArticleManagerProvider];
+        v7 = offlineArticleManagerProvider2[2]();
         offlineArticleManager = self->_offlineArticleManager;
         self->_offlineArticleManager = v7;
       }
@@ -1234,22 +1234,22 @@ void __39__FCCloudContext_offlineArticleManager__block_invoke(uint64_t a1)
   return notificationsEndpointCommandQueue;
 }
 
-- (void)setLocalChannelsProvider:(id)a3
+- (void)setLocalChannelsProvider:(id)provider
 {
-  objc_storeStrong(&self->_localChannelsProvider, a3);
-  v5 = a3;
-  v6 = [(FCCloudContext *)self subscriptionController];
-  [v6 setLocalChannelsProvider:v5];
+  objc_storeStrong(&self->_localChannelsProvider, provider);
+  providerCopy = provider;
+  subscriptionController = [(FCCloudContext *)self subscriptionController];
+  [subscriptionController setLocalChannelsProvider:providerCopy];
 }
 
 - (BOOL)isPrivateDataEncryptionEnabled
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 internalPrivateDataContext];
-  v4 = [v3 privateDatabase];
-  if (v4)
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  internalPrivateDataContext = [privateDataContext internalPrivateDataContext];
+  privateDatabase = [internalPrivateDataContext privateDatabase];
+  if (privateDatabase)
   {
-    v5 = v4[5] > 0;
+    v5 = privateDatabase[5] > 0;
   }
 
   else
@@ -1262,12 +1262,12 @@ void __39__FCCloudContext_offlineArticleManager__block_invoke(uint64_t a1)
 
 - (BOOL)isPrivateDatabaseStartingUp
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 internalPrivateDataContext];
-  v4 = [v3 privateDatabase];
-  if (v4)
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  internalPrivateDataContext = [privateDataContext internalPrivateDataContext];
+  privateDatabase = [internalPrivateDataContext privateDatabase];
+  if (privateDatabase)
   {
-    v5 = v4[10] ^ 1;
+    v5 = privateDatabase[10] ^ 1;
   }
 
   else
@@ -1280,12 +1280,12 @@ void __39__FCCloudContext_offlineArticleManager__block_invoke(uint64_t a1)
 
 - (BOOL)isPrivateDatabaseOnline
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 internalPrivateDataContext];
-  v4 = [v3 privateDatabase];
-  if (v4)
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  internalPrivateDataContext = [privateDataContext internalPrivateDataContext];
+  privateDatabase = [internalPrivateDataContext privateDatabase];
+  if (privateDatabase)
   {
-    v5 = v4[20] == 0;
+    v5 = privateDatabase[20] == 0;
   }
 
   else
@@ -1298,12 +1298,12 @@ void __39__FCCloudContext_offlineArticleManager__block_invoke(uint64_t a1)
 
 - (BOOL)isPrivateDatabaseTemporarilySuspended
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 internalPrivateDataContext];
-  v4 = [v3 privateDatabase];
-  if (v4)
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  internalPrivateDataContext = [privateDataContext internalPrivateDataContext];
+  privateDatabase = [internalPrivateDataContext privateDatabase];
+  if (privateDatabase)
   {
-    v5 = v4[20] == 1;
+    v5 = privateDatabase[20] == 1;
   }
 
   else
@@ -1314,24 +1314,24 @@ void __39__FCCloudContext_offlineArticleManager__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (void)ppt_overrideFeedEndpoint:(int64_t)a3
+- (void)ppt_overrideFeedEndpoint:(int64_t)endpoint
 {
-  v4 = [(FCCloudContext *)self contentContext];
-  [v4 ppt_overrideFeedEndpoint:a3];
+  contentContext = [(FCCloudContext *)self contentContext];
+  [contentContext ppt_overrideFeedEndpoint:endpoint];
 }
 
 - (void)ppt_prewarmFeedDatabase
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  [v2 ppt_prewarmFeedDatabase];
+  contentContext = [(FCCloudContext *)self contentContext];
+  [contentContext ppt_prewarmFeedDatabase];
 }
 
 - (NSString)contentEnvironmentToken
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 contentEnvironmentToken];
+  contentContext = [(FCCloudContext *)self contentContext];
+  contentEnvironmentToken = [contentContext contentEnvironmentToken];
 
-  return v3;
+  return contentEnvironmentToken;
 }
 
 - (NSArray)filePathsForDebugAttachments
@@ -1339,34 +1339,34 @@ void __39__FCCloudContext_offlineArticleManager__block_invoke(uint64_t a1)
   v22[10] = *MEMORY[0x1E69E9840];
   if (NFInternalBuild())
   {
-    v3 = [(FCCloudContext *)self privateDataDirectory];
-    v4 = [(FCCloudContext *)self readingHistory];
-    v5 = [v4 articleExposureRegistry];
-    v21 = [v5 toJSON];
+    privateDataDirectory = [(FCCloudContext *)self privateDataDirectory];
+    readingHistory = [(FCCloudContext *)self readingHistory];
+    articleExposureRegistry = [readingHistory articleExposureRegistry];
+    toJSON = [articleExposureRegistry toJSON];
 
     v6 = NSTemporaryDirectory();
     v20 = [v6 stringByAppendingPathComponent:@"article_exposures.json"];
 
-    [v21 writeToFile:v20 atomically:1];
-    v19 = [v3 stringByAppendingPathComponent:@"bundle.json"];
+    [toJSON writeToFile:v20 atomically:1];
+    v19 = [privateDataDirectory stringByAppendingPathComponent:@"bundle.json"];
     v22[0] = v19;
-    v18 = [v3 stringByAppendingPathComponent:@"personalization-aggregates.json"];
+    v18 = [privateDataDirectory stringByAppendingPathComponent:@"personalization-aggregates.json"];
     v22[1] = v18;
-    v7 = [v3 stringByAppendingPathComponent:@"personalization-sessions"];
+    v7 = [privateDataDirectory stringByAppendingPathComponent:@"personalization-sessions"];
     v22[2] = v7;
-    v8 = [v3 stringByAppendingPathComponent:@"user_embedding_transformer.pkg"];
+    v8 = [privateDataDirectory stringByAppendingPathComponent:@"user_embedding_transformer.pkg"];
     v22[3] = v8;
-    v9 = [v3 stringByAppendingPathComponent:@"subscriptions.json"];
+    v9 = [privateDataDirectory stringByAppendingPathComponent:@"subscriptions.json"];
     v22[4] = v9;
-    v10 = [v3 stringByAppendingPathComponent:@"allowlist.json"];
+    v10 = [privateDataDirectory stringByAppendingPathComponent:@"allowlist.json"];
     v22[5] = v10;
-    v11 = [v3 stringByAppendingPathComponent:@"aggregate_store_human_readable.json"];
+    v11 = [privateDataDirectory stringByAppendingPathComponent:@"aggregate_store_human_readable.json"];
     v22[6] = v11;
-    v12 = [v3 stringByAppendingPathComponent:@"aggregate_store_human_readable_previous.json"];
+    v12 = [privateDataDirectory stringByAppendingPathComponent:@"aggregate_store_human_readable_previous.json"];
     v22[7] = v12;
-    v13 = [v3 stringByAppendingPathComponent:@"human_readable_user_embedding_parameters.json"];
+    v13 = [privateDataDirectory stringByAppendingPathComponent:@"human_readable_user_embedding_parameters.json"];
     v22[8] = v13;
-    v14 = [v3 stringByAppendingPathComponent:@"human_readable_embedding_training_history.json"];
+    v14 = [privateDataDirectory stringByAppendingPathComponent:@"human_readable_embedding_training_history.json"];
     v22[9] = v14;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v22 count:10];
   }
@@ -1381,17 +1381,17 @@ void __39__FCCloudContext_offlineArticleManager__block_invoke(uint64_t a1)
   return v15;
 }
 
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3 exceptForFlusher:(id)a4
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold exceptForFlusher:(id)flusher
 {
-  v6 = a4;
-  v7 = [(FCCloudContext *)self contentContext];
-  [v7 enableFlushingWithFlushingThreshold:a3 exceptForFlusher:v6];
+  flusherCopy = flusher;
+  contentContext = [(FCCloudContext *)self contentContext];
+  [contentContext enableFlushingWithFlushingThreshold:threshold exceptForFlusher:flusherCopy];
 }
 
-- (void)enableFlushingWithFlushingThreshold:(unint64_t)a3
+- (void)enableFlushingWithFlushingThreshold:(unint64_t)threshold
 {
-  v4 = [(FCCloudContext *)self contentContext];
-  [v4 enableFlushingWithFlushingThreshold:a3];
+  contentContext = [(FCCloudContext *)self contentContext];
+  [contentContext enableFlushingWithFlushingThreshold:threshold];
 }
 
 - (FCFeedPersonalizing)feedPersonalizer
@@ -1429,192 +1429,192 @@ void __39__FCCloudContext_offlineArticleManager__block_invoke(uint64_t a1)
 
 - (id)magazinesConfigurationManager
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 magazinesConfigurationManager];
+  contentContext = [(FCCloudContext *)self contentContext];
+  magazinesConfigurationManager = [contentContext magazinesConfigurationManager];
 
-  return v3;
+  return magazinesConfigurationManager;
 }
 
 - (NSString)contentStoreFrontID
 {
   v2 = +[FCAppleAccount sharedAccount];
-  v3 = [v2 contentStoreFrontID];
+  contentStoreFrontID = [v2 contentStoreFrontID];
 
-  return v3;
+  return contentStoreFrontID;
 }
 
 - (NSString)supportedContentStoreFrontID
 {
   v2 = +[FCAppleAccount sharedAccount];
-  v3 = [v2 supportedContentStoreFrontID];
+  supportedContentStoreFrontID = [v2 supportedContentStoreFrontID];
 
-  return v3;
+  return supportedContentStoreFrontID;
 }
 
 - (NSString)contentEnvironment
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 contentEnvironment];
+  contentContext = [(FCCloudContext *)self contentContext];
+  contentEnvironment = [contentContext contentEnvironment];
 
-  return v3;
+  return contentEnvironment;
 }
 
 - (NSURL)contentHostDirectoryURL
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 contentHostDirectoryURL];
+  contentContext = [(FCCloudContext *)self contentContext];
+  contentHostDirectoryURL = [contentContext contentHostDirectoryURL];
 
-  return v3;
+  return contentHostDirectoryURL;
 }
 
 - (NSString)tabiResourcesContentDirectory
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 tabiResourcesContentDirectory];
+  contentContext = [(FCCloudContext *)self contentContext];
+  tabiResourcesContentDirectory = [contentContext tabiResourcesContentDirectory];
 
-  return v3;
+  return tabiResourcesContentDirectory;
 }
 
 - (NSString)tabiModelsContentDirectory
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 tabiModelsContentDirectory];
+  contentContext = [(FCCloudContext *)self contentContext];
+  tabiModelsContentDirectory = [contentContext tabiModelsContentDirectory];
 
-  return v3;
+  return tabiModelsContentDirectory;
 }
 
 - (NSString)tabiRequestsContentDirectory
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 tabiRequestsContentDirectory];
+  contentContext = [(FCCloudContext *)self contentContext];
+  tabiRequestsContentDirectory = [contentContext tabiRequestsContentDirectory];
 
-  return v3;
+  return tabiRequestsContentDirectory;
 }
 
 - (NSURL)assetCacheDirectoryURL
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 assetCacheDirectoryURL];
+  contentContext = [(FCCloudContext *)self contentContext];
+  assetCacheDirectoryURL = [contentContext assetCacheDirectoryURL];
 
-  return v3;
+  return assetCacheDirectoryURL;
 }
 
-- (id)recordSourceWithSchema:(id)a3
+- (id)recordSourceWithSchema:(id)schema
 {
-  v4 = a3;
-  v5 = [(FCCloudContext *)self contentContext];
-  v6 = [v5 recordSourceWithSchema:v4];
+  schemaCopy = schema;
+  contentContext = [(FCCloudContext *)self contentContext];
+  v6 = [contentContext recordSourceWithSchema:schemaCopy];
 
   return v6;
 }
 
-- (id)recordTreeSourceWithRecordSources:(id)a3
+- (id)recordTreeSourceWithRecordSources:(id)sources
 {
-  v4 = a3;
-  v5 = [(FCCloudContext *)self contentContext];
-  v6 = [v5 recordTreeSourceWithRecordSources:v4];
+  sourcesCopy = sources;
+  contentContext = [(FCCloudContext *)self contentContext];
+  v6 = [contentContext recordTreeSourceWithRecordSources:sourcesCopy];
 
   return v6;
 }
 
-- (id)interestTokenForContentManifest:(id)a3
+- (id)interestTokenForContentManifest:(id)manifest
 {
-  v4 = a3;
-  v5 = [(FCCloudContext *)self contentContext];
-  v6 = [v5 interestTokenForContentManifest:v4];
+  manifestCopy = manifest;
+  contentContext = [(FCCloudContext *)self contentContext];
+  v6 = [contentContext interestTokenForContentManifest:manifestCopy];
 
   return v6;
 }
 
-- (id)convertRecords:(id)a3
+- (id)convertRecords:(id)records
 {
-  v4 = a3;
-  v5 = [(FCCloudContext *)self contentContext];
-  v6 = [v5 convertRecords:v4];
+  recordsCopy = records;
+  contentContext = [(FCCloudContext *)self contentContext];
+  v6 = [contentContext convertRecords:recordsCopy];
 
   return v6;
 }
 
 - (int64_t)storageSize
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  v3 = [v2 storageSize];
+  contentContext = [(FCCloudContext *)self contentContext];
+  storageSize = [contentContext storageSize];
 
-  return v3;
+  return storageSize;
 }
 
 - (void)save
 {
-  v2 = [(FCCloudContext *)self contentContext];
-  [v2 save];
+  contentContext = [(FCCloudContext *)self contentContext];
+  [contentContext save];
 }
 
 - (BOOL)isPrivateDataSyncingEnabled
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 isPrivateDataSyncingEnabled];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  isPrivateDataSyncingEnabled = [privateDataContext isPrivateDataSyncingEnabled];
 
-  return v3;
+  return isPrivateDataSyncingEnabled;
 }
 
-- (id)privateStoreWithName:(id)a3 version:(unint64_t)a4 options:(unint64_t)a5
+- (id)privateStoreWithName:(id)name version:(unint64_t)version options:(unint64_t)options
 {
-  v8 = a3;
-  v9 = [(FCCloudContext *)self privateDataContext];
-  v10 = [v9 privateStoreWithName:v8 version:a4 options:a5];
+  nameCopy = name;
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  v10 = [privateDataContext privateStoreWithName:nameCopy version:version options:options];
 
   return v10;
 }
 
 - (FCPrivateDataContextInternal)internalPrivateDataContext
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 internalPrivateDataContext];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  internalPrivateDataContext = [privateDataContext internalPrivateDataContext];
 
-  return v3;
+  return internalPrivateDataContext;
 }
 
 - (FCPushNotificationHandling)privatePushNotificationHandler
 {
-  v2 = [(FCCloudContext *)self privateDataContext];
-  v3 = [v2 privatePushNotificationHandler];
+  privateDataContext = [(FCCloudContext *)self privateDataContext];
+  privatePushNotificationHandler = [privateDataContext privatePushNotificationHandler];
 
-  return v3;
+  return privatePushNotificationHandler;
 }
 
 - (id)insertTestArticle
 {
   v3 = objc_opt_class();
-  v4 = [(FCCloudContext *)self contentContext];
-  v5 = [v4 internalContentContext];
-  v6 = [v5 contentDatabase];
-  v7 = FCCheckedDynamicCast(v3, v6);
+  contentContext = [(FCCloudContext *)self contentContext];
+  internalContentContext = [contentContext internalContentContext];
+  contentDatabase = [internalContentContext contentDatabase];
+  v7 = FCCheckedDynamicCast(v3, contentDatabase);
 
-  v8 = [v7 insertTestArticle];
+  insertTestArticle = [v7 insertTestArticle];
 
-  return v8;
+  return insertTestArticle;
 }
 
-- (id)insertTestArticlesWithCount:(unint64_t)a3
+- (id)insertTestArticlesWithCount:(unint64_t)count
 {
   v5 = [MEMORY[0x1E695DFA8] setWithCapacity:?];
-  while (a3)
+  while (count)
   {
-    --a3;
-    v6 = [(FCCloudContext *)self insertTestArticle];
-    [v5 addObject:v6];
+    --count;
+    insertTestArticle = [(FCCloudContext *)self insertTestArticle];
+    [v5 addObject:insertTestArticle];
   }
 
   return v5;
 }
 
-- (void)fetchDesiredVersionForDatabase:(id)a3 completion:(id)a4
+- (void)fetchDesiredVersionForDatabase:(id)database completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x1E696AAE8] mainBundle];
-  v9 = [v8 bundleIdentifier];
-  v10 = [v9 isEqualToString:@"com.apple.news"];
+  databaseCopy = database;
+  completionCopy = completion;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v10 = [bundleIdentifier isEqualToString:@"com.apple.news"];
 
   if ((v10 & 1) == 0)
   {
@@ -1622,7 +1622,7 @@ void __39__FCCloudContext_offlineArticleManager__block_invoke(uint64_t a1)
     v54[1] = 3221225472;
     v54[2] = __60__FCCloudContext_fetchDesiredVersionForDatabase_completion___block_invoke;
     v54[3] = &unk_1E7C379C8;
-    v55 = v7;
+    v55 = completionCopy;
     __60__FCCloudContext_fetchDesiredVersionForDatabase_completion___block_invoke(v54);
     v13 = v55;
 LABEL_7:
@@ -1637,13 +1637,13 @@ LABEL_7:
   {
     if (v12 == 3)
     {
-      (*(v7 + 2))(v7, 2, 0);
+      (*(completionCopy + 2))(completionCopy, 2, 0);
       goto LABEL_14;
     }
 
     if (v12 == 4)
     {
-      (*(v7 + 2))(v7, 3, 0);
+      (*(completionCopy + 2))(completionCopy, 3, 0);
       goto LABEL_14;
     }
 
@@ -1652,7 +1652,7 @@ LABEL_7:
 
   if (v12 == 1)
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
     goto LABEL_14;
   }
 
@@ -1664,7 +1664,7 @@ LABEL_11:
     v52[1] = 3221225472;
     v52[2] = __60__FCCloudContext_fetchDesiredVersionForDatabase_completion___block_invoke_213;
     v52[3] = &unk_1E7C39ED0;
-    v53 = v6;
+    v53 = databaseCopy;
     v15 = [v14 initWithResolver:v52];
     v16 = objc_alloc(MEMORY[0x1E69B68F8]);
     v51[0] = MEMORY[0x1E69E9820];
@@ -1726,7 +1726,7 @@ LABEL_11:
     v37[1] = 3221225472;
     v37[2] = __60__FCCloudContext_fetchDesiredVersionForDatabase_completion___block_invoke_5;
     v37[3] = &unk_1E7C3C700;
-    v25 = v7;
+    v25 = completionCopy;
     v38 = v25;
     v26 = [v23 thenOn:v24 then:v37];
     v27 = zalgo();
@@ -1745,7 +1745,7 @@ LABEL_11:
     goto LABEL_7;
   }
 
-  (*(v7 + 2))(v7, 1, 0);
+  (*(completionCopy + 2))(completionCopy, 1, 0);
 LABEL_14:
 }
 
@@ -2067,12 +2067,12 @@ uint64_t __60__FCCloudContext_fetchDesiredVersionForDatabase_completion___block_
   return [v5 numberWithInteger:v4];
 }
 
-- (void)fetchCleanupToVersionForDatabase:(id)a3 completion:(id)a4
+- (void)fetchCleanupToVersionForDatabase:(id)database completion:(id)completion
 {
-  v5 = a4;
-  v6 = [MEMORY[0x1E696AAE8] mainBundle];
-  v7 = [v6 bundleIdentifier];
-  v8 = [v7 isEqualToString:@"com.apple.news"];
+  completionCopy = completion;
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  v8 = [bundleIdentifier isEqualToString:@"com.apple.news"];
 
   if ((v8 & 1) == 0)
   {
@@ -2080,7 +2080,7 @@ uint64_t __60__FCCloudContext_fetchDesiredVersionForDatabase_completion___block_
     v28[1] = 3221225472;
     v28[2] = __62__FCCloudContext_fetchCleanupToVersionForDatabase_completion___block_invoke;
     v28[3] = &unk_1E7C379C8;
-    v29 = v5;
+    v29 = completionCopy;
     __62__FCCloudContext_fetchCleanupToVersionForDatabase_completion___block_invoke(v28);
 
     goto LABEL_13;
@@ -2093,13 +2093,13 @@ uint64_t __60__FCCloudContext_fetchDesiredVersionForDatabase_completion___block_
   {
     if (v10 == 3)
     {
-      (*(v5 + 2))(v5, 2, 0);
+      (*(completionCopy + 2))(completionCopy, 2, 0);
       goto LABEL_13;
     }
 
     if (v10 == 4)
     {
-      (*(v5 + 2))(v5, 3, 0);
+      (*(completionCopy + 2))(completionCopy, 3, 0);
       goto LABEL_13;
     }
 
@@ -2124,7 +2124,7 @@ LABEL_10:
     v23[1] = 3221225472;
     v23[2] = __62__FCCloudContext_fetchCleanupToVersionForDatabase_completion___block_invoke_2_254;
     v23[3] = &unk_1E7C3C700;
-    v17 = v5;
+    v17 = completionCopy;
     v24 = v17;
     v18 = [v15 thenOn:v16 then:v23];
     v19 = zalgo();
@@ -2140,7 +2140,7 @@ LABEL_10:
 
   if (v10 == 1)
   {
-    (*(v5 + 2))(v5, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
     goto LABEL_13;
   }
 
@@ -2149,7 +2149,7 @@ LABEL_10:
     goto LABEL_10;
   }
 
-  (*(v5 + 2))(v5, 1, 0);
+  (*(completionCopy + 2))(completionCopy, 1, 0);
 LABEL_13:
 }
 
@@ -2292,10 +2292,10 @@ uint64_t __62__FCCloudContext_fetchCleanupToVersionForDatabase_completion___bloc
   return 0;
 }
 
-- (BOOL)shouldAssetKeyManagerSimulateUnauthorizedAssetKeys:(id)a3
+- (BOOL)shouldAssetKeyManagerSimulateUnauthorizedAssetKeys:(id)keys
 {
   v28 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  keysCopy = keys;
   v5 = NewsCoreUserDefaults();
   v6 = [v5 BOOLForKey:@"simulate_no_access_to_awk"];
 
@@ -2311,9 +2311,9 @@ uint64_t __62__FCCloudContext_fetchCleanupToVersionForDatabase_completion___bloc
 
     if (v9)
     {
-      v10 = [(FCCloudContext *)self bundleSubscriptionManager];
+      bundleSubscriptionManager = [(FCCloudContext *)self bundleSubscriptionManager];
 
-      if (!v10 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+      if (!bundleSubscriptionManager && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
       {
         v19 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "self.bundleSubscriptionManager"];
         *buf = 136315906;
@@ -2327,12 +2327,12 @@ uint64_t __62__FCCloudContext_fetchCleanupToVersionForDatabase_completion___bloc
         _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
       }
 
-      v11 = [(FCCloudContext *)self bundleSubscriptionManager];
-      v12 = [v11 cachedSubscription];
-      v13 = objc_getAssociatedObject(v12, (v12 + 1));
-      v14 = [v13 unsignedIntegerValue];
-      v15 = v14;
-      v16 = objc_getAssociatedObject(v12, ~v14);
+      bundleSubscriptionManager2 = [(FCCloudContext *)self bundleSubscriptionManager];
+      cachedSubscription = [bundleSubscriptionManager2 cachedSubscription];
+      v13 = objc_getAssociatedObject(cachedSubscription, (cachedSubscription + 1));
+      unsignedIntegerValue = [v13 unsignedIntegerValue];
+      v15 = unsignedIntegerValue;
+      v16 = objc_getAssociatedObject(cachedSubscription, ~unsignedIntegerValue);
       v7 = (([v16 unsignedIntegerValue] ^ v15) & 1) == 0;
     }
 
@@ -2346,22 +2346,22 @@ uint64_t __62__FCCloudContext_fetchCleanupToVersionForDatabase_completion___bloc
   return v7;
 }
 
-- (void)bundleSubscriptionDidSubscribe:(id)a3
+- (void)bundleSubscriptionDidSubscribe:(id)subscribe
 {
-  v5 = [(FCCloudContext *)self contentContext];
-  v3 = [v5 internalContentContext];
-  v4 = [v3 assetKeyManager];
-  [v4 clearUnauthorizedAssetKeys];
+  contentContext = [(FCCloudContext *)self contentContext];
+  internalContentContext = [contentContext internalContentContext];
+  assetKeyManager = [internalContentContext assetKeyManager];
+  [assetKeyManager clearUnauthorizedAssetKeys];
 }
 
 - (int64_t)preferredContentVariant
 {
-  v2 = [(FCCloudContext *)self bundleSubscriptionManager];
-  v3 = [v2 bundleSubscription];
-  v4 = objc_getAssociatedObject(v3, (v3 + 1));
-  v5 = [v4 unsignedIntegerValue];
-  v6 = v5;
-  v7 = objc_getAssociatedObject(v3, ~v5);
+  bundleSubscriptionManager = [(FCCloudContext *)self bundleSubscriptionManager];
+  bundleSubscription = [bundleSubscriptionManager bundleSubscription];
+  v4 = objc_getAssociatedObject(bundleSubscription, (bundleSubscription + 1));
+  unsignedIntegerValue = [v4 unsignedIntegerValue];
+  v6 = unsignedIntegerValue;
+  v7 = objc_getAssociatedObject(bundleSubscription, ~unsignedIntegerValue);
   v8 = [v7 unsignedIntegerValue] ^ v6;
 
   return v8 & 1;
@@ -2369,10 +2369,10 @@ uint64_t __62__FCCloudContext_fetchCleanupToVersionForDatabase_completion___bloc
 
 - (void)_purchaseControllerDidAddALaCarteSubscription
 {
-  v4 = [(FCCloudContext *)self contentContext];
-  v2 = [v4 internalContentContext];
-  v3 = [v2 assetKeyManager];
-  [v3 clearUnauthorizedAssetKeys];
+  contentContext = [(FCCloudContext *)self contentContext];
+  internalContentContext = [contentContext internalContentContext];
+  assetKeyManager = [internalContentContext assetKeyManager];
+  [assetKeyManager clearUnauthorizedAssetKeys];
 }
 
 @end

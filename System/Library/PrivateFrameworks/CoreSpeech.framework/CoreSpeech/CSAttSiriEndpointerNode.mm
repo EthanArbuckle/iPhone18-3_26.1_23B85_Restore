@@ -1,21 +1,21 @@
 @interface CSAttSiriEndpointerNode
 - (CSAttSiriController)attSiriController;
 - (CSAttSiriEndpointerNode)init;
-- (CSAttSiriEndpointerNode)initWithAttSiriController:(id)a3;
+- (CSAttSiriEndpointerNode)initWithAttSiriController:(id)controller;
 - (CSAttSiriEndpointerNodeDelegate)endpointerNodeDelegate;
 - (CSEndpointAnalyzerDelegate)delegate;
-- (void)_emitStoppedListeningForSpeechContinuationWithTrpId:(id)a3;
-- (void)_reportHardEndpointToXPCClientWithTime:(double)a3 endpointerMetrics:(id)a4 eventType:(int64_t)a5;
-- (void)_sendEndpointEventDelegateAtTime:(double)a3 eventType:(int64_t)a4 endpointerMetrics:(id)a5;
-- (void)addReceiver:(id)a3;
-- (void)attSiriAudioSrcNodeDidStop:(id)a3;
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4;
-- (void)endpointer:(id)a3 detectedTwoShotAtTime:(double)a4;
-- (void)endpointer:(id)a3 didDetectHardEndpointAtTime:(double)a4 withMetrics:(id)a5 eventType:(int64_t)a6;
-- (void)getEndpointerModelVersionWithReply:(id)a3;
-- (void)processSpeechPackage:(id)a3 taskName:(id)a4;
-- (void)removeReceiver:(id)a3;
-- (void)resetForNewRequestWithSampleRate:(unint64_t)a3 recordContext:(id)a4 recordOption:(id)a5 voiceTriggerInfo:(id)a6;
+- (void)_emitStoppedListeningForSpeechContinuationWithTrpId:(id)id;
+- (void)_reportHardEndpointToXPCClientWithTime:(double)time endpointerMetrics:(id)metrics eventType:(int64_t)type;
+- (void)_sendEndpointEventDelegateAtTime:(double)time eventType:(int64_t)type endpointerMetrics:(id)metrics;
+- (void)addReceiver:(id)receiver;
+- (void)attSiriAudioSrcNodeDidStop:(id)stop;
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk;
+- (void)endpointer:(id)endpointer detectedTwoShotAtTime:(double)time;
+- (void)endpointer:(id)endpointer didDetectHardEndpointAtTime:(double)time withMetrics:(id)metrics eventType:(int64_t)type;
+- (void)getEndpointerModelVersionWithReply:(id)reply;
+- (void)processSpeechPackage:(id)package taskName:(id)name;
+- (void)removeReceiver:(id)receiver;
+- (void)resetForNewRequestWithSampleRate:(unint64_t)rate recordContext:(id)context recordOption:(id)option voiceTriggerInfo:(id)info;
 - (void)stopEndpointer;
 @end
 
@@ -42,7 +42,7 @@
   return WeakRetained;
 }
 
-- (void)endpointer:(id)a3 detectedTwoShotAtTime:(double)a4
+- (void)endpointer:(id)endpointer detectedTwoShotAtTime:(double)time
 {
   queue = self->_queue;
   v5[0] = _NSConcreteStackBlock;
@@ -50,28 +50,28 @@
   v5[2] = sub_10002B490;
   v5[3] = &unk_100253C98;
   v5[4] = self;
-  *&v5[5] = a4;
+  *&v5[5] = time;
   dispatch_async(queue, v5);
 }
 
-- (void)_emitStoppedListeningForSpeechContinuationWithTrpId:(id)a3
+- (void)_emitStoppedListeningForSpeechContinuationWithTrpId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002B5D0;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = idCopy;
+  v6 = idCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_sendEndpointEventDelegateAtTime:(double)a3 eventType:(int64_t)a4 endpointerMetrics:(id)a5
+- (void)_sendEndpointEventDelegateAtTime:(double)time eventType:(int64_t)type endpointerMetrics:(id)metrics
 {
-  v8 = a5;
-  v9 = [(CSAttSiriEndpointerNode *)self getUsesAutomaticEndpointing];
+  metricsCopy = metrics;
+  getUsesAutomaticEndpointing = [(CSAttSiriEndpointerNode *)self getUsesAutomaticEndpointing];
   WeakRetained = objc_loadWeakRetained(&self->_endpointerNodeDelegate);
   if (WeakRetained)
   {
@@ -81,8 +81,8 @@
 
     if (v13)
     {
-      v14 = [(CSAttSiriEndpointerNode *)self endpointerNodeDelegate];
-      [v14 attSiriNode:self didDetectEndpointEventAtTime:a4 eventType:v8 withMetrics:v9 usesAutomaticEndpointing:a3];
+      endpointerNodeDelegate = [(CSAttSiriEndpointerNode *)self endpointerNodeDelegate];
+      [endpointerNodeDelegate attSiriNode:self didDetectEndpointEventAtTime:type eventType:metricsCopy withMetrics:getUsesAutomaticEndpointing usesAutomaticEndpointing:time];
     }
   }
 
@@ -90,8 +90,8 @@
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v15 = [(CSAttSiriEndpointerNode *)self receivers];
-  v16 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+  receivers = [(CSAttSiriEndpointerNode *)self receivers];
+  v16 = [receivers countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v16)
   {
     v17 = v16;
@@ -103,7 +103,7 @@
       {
         if (*v23 != v18)
         {
-          objc_enumerationMutation(v15);
+          objc_enumerationMutation(receivers);
         }
 
         v20 = *(*(&v22 + 1) + 8 * v19);
@@ -112,7 +112,7 @@
           v21 = *(*(&v22 + 1) + 8 * v19);
           if (objc_opt_respondsToSelector())
           {
-            [v20 attSiriNode:self didDetectEndpointEventAtTime:a4 eventType:v8 withMetrics:v9 usesAutomaticEndpointing:a3];
+            [v20 attSiriNode:self didDetectEndpointEventAtTime:type eventType:metricsCopy withMetrics:getUsesAutomaticEndpointing usesAutomaticEndpointing:time];
           }
         }
 
@@ -120,29 +120,29 @@
       }
 
       while (v17 != v19);
-      v17 = [v15 countByEnumeratingWithState:&v22 objects:v26 count:16];
+      v17 = [receivers countByEnumeratingWithState:&v22 objects:v26 count:16];
     }
 
     while (v17);
   }
 }
 
-- (void)_reportHardEndpointToXPCClientWithTime:(double)a3 endpointerMetrics:(id)a4 eventType:(int64_t)a5
+- (void)_reportHardEndpointToXPCClientWithTime:(double)time endpointerMetrics:(id)metrics eventType:(int64_t)type
 {
-  v8 = a4;
+  metricsCopy = metrics;
   v9 = CSLogCategoryEP;
   if (os_log_type_enabled(CSLogCategoryEP, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v9;
-    v11 = [(CSAttSiriEndpointerNode *)self endpointerListener];
+    endpointerListener = [(CSAttSiriEndpointerNode *)self endpointerListener];
     *buf = 136315394;
     v32 = "[CSAttSiriEndpointerNode _reportHardEndpointToXPCClientWithTime:endpointerMetrics:eventType:]";
     v33 = 2112;
-    v34 = v11;
+    v34 = endpointerListener;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s endpointerListener: %@", buf, 0x16u);
   }
 
-  v12 = [v8 metricsCopyWithRequestId:self->_requestId lastAudioChunkHostTime:self->_lastAudioChunkHostTime];
+  v12 = [metricsCopy metricsCopyWithRequestId:self->_requestId lastAudioChunkHostTime:self->_lastAudioChunkHostTime];
   endpointerListener = self->_endpointerListener;
   if (objc_opt_respondsToSelector())
   {
@@ -151,22 +151,22 @@
     v26[1] = 3221225472;
     v26[2] = sub_10002BC3C;
     v26[3] = &unk_10024E9E8;
-    v28 = a3;
+    timeCopy = time;
     v27 = v12;
-    v29 = a5;
+    typeCopy = type;
     [(CSConnectionListener *)v14 notifyClientsWithBlock:v26];
   }
 
-  v15 = [(CSAttSiriEndpointerNode *)self getUsesAutomaticEndpointing];
-  v16 = [(CSAttSiriEndpointerNode *)self endpointerNodeDelegate];
-  [v16 attSiriNode:self didDetectHardEndpointAtTime:v8 withMetrics:v15 usesAutomaticEndpointing:a3];
+  getUsesAutomaticEndpointing = [(CSAttSiriEndpointerNode *)self getUsesAutomaticEndpointing];
+  endpointerNodeDelegate = [(CSAttSiriEndpointerNode *)self endpointerNodeDelegate];
+  [endpointerNodeDelegate attSiriNode:self didDetectHardEndpointAtTime:metricsCopy withMetrics:getUsesAutomaticEndpointing usesAutomaticEndpointing:time];
 
   v24 = 0u;
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v17 = [(CSAttSiriEndpointerNode *)self receivers];
-  v18 = [v17 countByEnumeratingWithState:&v22 objects:v30 count:16];
+  receivers = [(CSAttSiriEndpointerNode *)self receivers];
+  v18 = [receivers countByEnumeratingWithState:&v22 objects:v30 count:16];
   if (v18)
   {
     v19 = v18;
@@ -178,38 +178,38 @@
       {
         if (*v23 != v20)
         {
-          objc_enumerationMutation(v17);
+          objc_enumerationMutation(receivers);
         }
 
-        [*(*(&v22 + 1) + 8 * v21) attSiriNode:self didDetectHardEndpointAtTime:v8 withMetrics:v15 usesAutomaticEndpointing:a3];
+        [*(*(&v22 + 1) + 8 * v21) attSiriNode:self didDetectHardEndpointAtTime:metricsCopy withMetrics:getUsesAutomaticEndpointing usesAutomaticEndpointing:time];
         v21 = v21 + 1;
       }
 
       while (v19 != v21);
-      v19 = [v17 countByEnumeratingWithState:&v22 objects:v30 count:16];
+      v19 = [receivers countByEnumeratingWithState:&v22 objects:v30 count:16];
     }
 
     while (v19);
   }
 }
 
-- (void)endpointer:(id)a3 didDetectHardEndpointAtTime:(double)a4 withMetrics:(id)a5 eventType:(int64_t)a6
+- (void)endpointer:(id)endpointer didDetectHardEndpointAtTime:(double)time withMetrics:(id)metrics eventType:(int64_t)type
 {
-  v9 = a5;
+  metricsCopy = metrics;
   queue = self->_queue;
   v12[0] = _NSConcreteStackBlock;
   v12[1] = 3221225472;
   v12[2] = sub_10002BD08;
   v12[3] = &unk_100250B98;
-  v13 = v9;
-  v14 = self;
-  v15 = a6;
-  v16 = a4;
-  v11 = v9;
+  v13 = metricsCopy;
+  selfCopy = self;
+  typeCopy = type;
+  timeCopy = time;
+  v11 = metricsCopy;
   dispatch_async(queue, v12);
 }
 
-- (void)attSiriAudioSrcNodeDidStop:(id)a3
+- (void)attSiriAudioSrcNodeDidStop:(id)stop
 {
   endpointLatencyQueue = self->_endpointLatencyQueue;
   block[0] = _NSConcreteStackBlock;
@@ -220,17 +220,17 @@
   dispatch_async(endpointLatencyQueue, block);
 }
 
-- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)a3 audioChunk:(id)a4
+- (void)attSiriAudioSrcNodeLPCMRecordBufferAvailable:(id)available audioChunk:(id)chunk
 {
-  v5 = a4;
+  chunkCopy = chunk;
   endpointLatencyQueue = self->_endpointLatencyQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002BF9C;
   block[3] = &unk_100253C48;
-  v7 = v5;
+  v7 = chunkCopy;
   v13 = v7;
-  v14 = self;
+  selfCopy = self;
   dispatch_async(endpointLatencyQueue, block);
   queue = self->_queue;
   v10[0] = _NSConcreteStackBlock;
@@ -243,28 +243,28 @@
   dispatch_async(queue, v10);
 }
 
-- (void)processSpeechPackage:(id)a3 taskName:(id)a4
+- (void)processSpeechPackage:(id)package taskName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  packageCopy = package;
   v8 = [CSASRFeatures alloc];
-  v9 = [v7 numOneBestTokensExcludingTriggerPhrase];
-  v10 = [v7 endOfSentenceLikelihood];
-  [v10 doubleValue];
+  numOneBestTokensExcludingTriggerPhrase = [packageCopy numOneBestTokensExcludingTriggerPhrase];
+  endOfSentenceLikelihood = [packageCopy endOfSentenceLikelihood];
+  [endOfSentenceLikelihood doubleValue];
   v12 = v11;
-  [CSAttSiriSpeechPackageHelper getLastTokenEndTimeFromSpeechPackage:v7];
+  [CSAttSiriSpeechPackageHelper getLastTokenEndTimeFromSpeechPackage:packageCopy];
   v14 = v13;
 
-  v15 = [(CSASRFeatures *)v8 initWithWordCount:v9 trailingSilenceDuration:50 eosLikelihood:0 pauseCounts:v6 silencePosterior:(v14 * 1000.0) taskName:v12 processedAudioDurationInMilliseconds:0.0 acousticEndpointerScore:0.0];
+  v15 = [(CSASRFeatures *)v8 initWithWordCount:numOneBestTokensExcludingTriggerPhrase trailingSilenceDuration:50 eosLikelihood:0 pauseCounts:nameCopy silencePosterior:(v14 * 1000.0) taskName:v12 processedAudioDurationInMilliseconds:0.0 acousticEndpointerScore:0.0];
   [(CSHybridEndpointAnalyzer *)self->_endpointAnalyzer processRCFeatures:v15];
 }
 
-- (void)getEndpointerModelVersionWithReply:(id)a3
+- (void)getEndpointerModelVersionWithReply:(id)reply
 {
   endpointAnalyzer = self->_endpointAnalyzer;
-  v5 = a3;
-  v6 = [(CSHybridEndpointAnalyzer *)endpointAnalyzer endpointerModelVersion];
-  (*(a3 + 2))(v5, 0, v6);
+  replyCopy = reply;
+  endpointerModelVersion = [(CSHybridEndpointAnalyzer *)endpointAnalyzer endpointerModelVersion];
+  (*(reply + 2))(replyCopy, 0, endpointerModelVersion);
 }
 
 - (void)stopEndpointer
@@ -279,21 +279,21 @@
   dispatch_async(queue, block);
 }
 
-- (void)resetForNewRequestWithSampleRate:(unint64_t)a3 recordContext:(id)a4 recordOption:(id)a5 voiceTriggerInfo:(id)a6
+- (void)resetForNewRequestWithSampleRate:(unint64_t)rate recordContext:(id)context recordOption:(id)option voiceTriggerInfo:(id)info
 {
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  [(CSHybridEndpointAnalyzer *)self->_endpointAnalyzer resetForNewRequestWithSampleRate:a3 recordContext:v10 recordOption:v11 voiceTriggerInfo:v12];
+  contextCopy = context;
+  optionCopy = option;
+  infoCopy = info;
+  [(CSHybridEndpointAnalyzer *)self->_endpointAnalyzer resetForNewRequestWithSampleRate:rate recordContext:contextCopy recordOption:optionCopy voiceTriggerInfo:infoCopy];
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10002C5C4;
   block[3] = &unk_100253680;
   block[4] = self;
-  v14 = v10;
+  v14 = contextCopy;
   v25 = v14;
-  v15 = v11;
+  v15 = optionCopy;
   v26 = v15;
   dispatch_async(queue, block);
   endpointLatencyQueue = self->_endpointLatencyQueue;
@@ -304,49 +304,49 @@
   v20[4] = self;
   v21 = v15;
   v22 = v14;
-  v23 = v12;
-  v17 = v12;
+  v23 = infoCopy;
+  v17 = infoCopy;
   v18 = v14;
   v19 = v15;
   dispatch_async(endpointLatencyQueue, v20);
 }
 
-- (void)removeReceiver:(id)a3
+- (void)removeReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002C870;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addReceiver:(id)a3
+- (void)addReceiver:(id)receiver
 {
-  v4 = a3;
+  receiverCopy = receiver;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10002C9E0;
   v7[3] = &unk_100253C48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = receiverCopy;
+  v6 = receiverCopy;
   dispatch_async(queue, v7);
 }
 
-- (CSAttSiriEndpointerNode)initWithAttSiriController:(id)a3
+- (CSAttSiriEndpointerNode)initWithAttSiriController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v5 = [(CSAttSiriEndpointerNode *)self init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_attSiriController, v4);
+    objc_storeWeak(&v5->_attSiriController, controllerCopy);
   }
 
   return v6;

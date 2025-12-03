@@ -1,10 +1,10 @@
 @interface NWConcrete_nw_endpoint_resolver
-- (BOOL)applyWithHandler:(id)a3 toChildren:(id)a4;
+- (BOOL)applyWithHandler:(id)handler toChildren:(id)children;
 - (NWConcrete_nw_endpoint_resolver)init;
-- (void)cancelWithHandler:(id)a3 forced:(BOOL)a4;
+- (void)cancelWithHandler:(id)handler forced:(BOOL)forced;
 - (void)dealloc;
-- (void)startWithHandler:(id)a3;
-- (void)updatePathWithHandler:(id)a3;
+- (void)startWithHandler:(id)handler;
+- (void)updatePathWithHandler:(id)handler;
 @end
 
 @implementation NWConcrete_nw_endpoint_resolver
@@ -103,12 +103,12 @@ LABEL_3:
   [(NWConcrete_nw_endpoint_resolver *)&v2 dealloc];
 }
 
-- (BOOL)applyWithHandler:(id)a3 toChildren:(id)a4
+- (BOOL)applyWithHandler:(id)handler toChildren:(id)children
 {
   v50 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  handlerCopy = handler;
+  childrenCopy = children;
+  if (!handlerCopy)
   {
     v27 = __nwlog_obj();
     *buf = 136446210;
@@ -181,7 +181,7 @@ LABEL_66:
     goto LABEL_40;
   }
 
-  v8 = v6;
+  v8 = handlerCopy;
   v9 = v8[29];
 
   if (v9 != 1)
@@ -347,7 +347,7 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  if (!v7)
+  if (!childrenCopy)
   {
     v29 = __nwlog_obj();
     *buf = 136446210;
@@ -424,7 +424,7 @@ LABEL_39:
   aBlock[1] = 3221225472;
   aBlock[2] = __63__NWConcrete_nw_endpoint_resolver_applyWithHandler_toChildren___block_invoke;
   aBlock[3] = &unk_1E6A3CD30;
-  v11 = v7;
+  v11 = childrenCopy;
   v39 = v11;
   if (child_endpoint_handlers)
   {
@@ -441,12 +441,12 @@ LABEL_43:
   return v12;
 }
 
-- (void)updatePathWithHandler:(id)a3
+- (void)updatePathWithHandler:(id)handler
 {
   v36 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = v3;
-  if (!v3)
+  handlerCopy = handler;
+  v4 = handlerCopy;
+  if (!handlerCopy)
   {
     v20 = __nwlog_obj();
     *buf = 136446210;
@@ -524,7 +524,7 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v5 = v3;
+  v5 = handlerCopy;
   mode = v5->mode;
 
   if (mode == 1)
@@ -687,13 +687,13 @@ LABEL_35:
 LABEL_38:
 }
 
-- (void)cancelWithHandler:(id)a3 forced:(BOOL)a4
+- (void)cancelWithHandler:(id)handler forced:(BOOL)forced
 {
-  v4 = a4;
+  forcedCopy = forced;
   v51 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = v6;
-  if (!v6)
+  handlerCopy = handler;
+  v7 = handlerCopy;
+  if (!handlerCopy)
   {
     v35 = __nwlog_obj();
     *buf = 136446210;
@@ -771,7 +771,7 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  v8 = v6;
+  v8 = handlerCopy;
   v9 = v8[29];
 
   if (v9 == 1)
@@ -797,7 +797,7 @@ LABEL_52:
         v11 = v14;
         if (v14)
         {
-          nw_endpoint_handler_cancel(v14, v4, 0);
+          nw_endpoint_handler_cancel(v14, forcedCopy, 0);
         }
       }
 
@@ -999,12 +999,12 @@ LABEL_50:
 LABEL_53:
 }
 
-- (void)startWithHandler:(id)a3
+- (void)startWithHandler:(id)handler
 {
   v118 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  handlerCopy = handler;
+  v5 = handlerCopy;
+  if (!handlerCopy)
   {
     v70 = __nwlog_obj();
     *buf = 136446210;
@@ -1076,7 +1076,7 @@ LABEL_81:
     goto LABEL_82;
   }
 
-  v6 = v4;
+  v6 = handlerCopy;
   v7 = v6[29];
 
   if (v7 != 1)

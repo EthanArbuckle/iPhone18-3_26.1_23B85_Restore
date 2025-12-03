@@ -1,47 +1,47 @@
 @interface HMDAccessorySetupMetricDispatcher
 + (id)logCategory;
-- (BOOL)hasHome:(id)a3;
+- (BOOL)hasHome:(id)home;
 - (BOOL)submitted;
-- (HMDAccessorySetupMetricDispatcher)initWithQueue:(id)a3 discoveryController:(id)a4 networkInfoController:(id)a5 trackingInfo:(id)a6 setupSessionIdentifier:(id)a7 homeManager:(id)a8 logEventSubmitter:(id)a9 radarInitiator:(id)a10 timerFactory:(id)a11;
-- (HMDAccessorySetupMetricDispatcher)initWithQueue:(id)a3 trackingInfo:(id)a4 setupSessionIdentifier:(id)a5 homeManager:(id)a6;
+- (HMDAccessorySetupMetricDispatcher)initWithQueue:(id)queue discoveryController:(id)controller networkInfoController:(id)infoController trackingInfo:(id)info setupSessionIdentifier:(id)identifier homeManager:(id)manager logEventSubmitter:(id)submitter radarInitiator:(id)self0 timerFactory:(id)self1;
+- (HMDAccessorySetupMetricDispatcher)initWithQueue:(id)queue trackingInfo:(id)info setupSessionIdentifier:(id)identifier homeManager:(id)manager;
 - (HMDAccessorySetupMetricDispatcherDelegate)delegate;
 - (HMDDeviceSetupTrackingInfo)trackingInfo;
 - (id)home;
 - (id)logIdentifier;
-- (id)networkMetricWithDiscoveryController:(id)a3 networkInfoController:(id)a4 sessionID:(id)a5 idsIdentifierString:(id)a6 currentWiFiInfo:(id)a7 currentWiFiNetworkRSSI:(int)a8 numResidents:(int64_t)a9 numAppleMediaAccessories:(int64_t)a10 accessoryDiagnosticInfo:(id)a11 primaryResidentIdsIdentifierString:(id)a12 primaryResidentDiagnosticInfo:(id)a13 homeUUID:(id)a14 primaryResidentDiagnosticInfoFetched:(BOOL)a15;
+- (id)networkMetricWithDiscoveryController:(id)controller networkInfoController:(id)infoController sessionID:(id)d idsIdentifierString:(id)string currentWiFiInfo:(id)info currentWiFiNetworkRSSI:(int)i numResidents:(int64_t)residents numAppleMediaAccessories:(int64_t)self0 accessoryDiagnosticInfo:(id)self1 primaryResidentIdsIdentifierString:(id)self2 primaryResidentDiagnosticInfo:(id)self3 homeUUID:(id)self4 primaryResidentDiagnosticInfoFetched:(BOOL)self5;
 - (id)obtainDiscoveryAssertion;
-- (void)_queryRemoteAndSubmitWithConfigurationError:(uint64_t)a1;
-- (void)addHome:(id)a3;
-- (void)addRemoteEventRouterAssertion:(id)a3;
-- (void)didReceiveEvent:(id)a3 topic:(id)a4;
+- (void)_queryRemoteAndSubmitWithConfigurationError:(uint64_t)error;
+- (void)addHome:(id)home;
+- (void)addRemoteEventRouterAssertion:(id)assertion;
+- (void)didReceiveEvent:(id)event topic:(id)topic;
 - (void)markAccessoryAddCompleted;
 - (void)markAccessoryRemoved;
-- (void)markEventRouterPrimaryClientConnectMessageFailedWithError:(id)a3;
-- (void)markEventRouterPrimaryClientConnectStatusChanged:(BOOL)a3;
+- (void)markEventRouterPrimaryClientConnectMessageFailedWithError:(id)error;
+- (void)markEventRouterPrimaryClientConnectStatusChanged:(BOOL)changed;
 - (void)markFirstSettingObserved;
 - (void)markLanguageSettingObserved;
 - (void)markLocalAccessoryAddStarted;
 - (void)markPrimaryResidentChanged;
-- (void)markRemoteAccessoryAddEndedWithError:(id)a3;
+- (void)markRemoteAccessoryAddEndedWithError:(id)error;
 - (void)markRemoteAccessoryAddStarted;
-- (void)markRemoteAccessoryAddWillStart:(id)a3;
+- (void)markRemoteAccessoryAddWillStart:(id)start;
 - (void)markRepairSessionComplete;
-- (void)releaseDiscoveryAssertionWithAssertionHandle:(id)a3;
-- (void)subscribeToSettingsEvents:(id *)a1;
-- (void)timerDidFire:(id)a3;
-- (void)updateTrackingInfo:(id)a3;
+- (void)releaseDiscoveryAssertionWithAssertionHandle:(id)handle;
+- (void)subscribeToSettingsEvents:(id *)events;
+- (void)timerDidFire:(id)fire;
+- (void)updateTrackingInfo:(id)info;
 @end
 
 @implementation HMDAccessorySetupMetricDispatcher
 
-- (id)networkMetricWithDiscoveryController:(id)a3 networkInfoController:(id)a4 sessionID:(id)a5 idsIdentifierString:(id)a6 currentWiFiInfo:(id)a7 currentWiFiNetworkRSSI:(int)a8 numResidents:(int64_t)a9 numAppleMediaAccessories:(int64_t)a10 accessoryDiagnosticInfo:(id)a11 primaryResidentIdsIdentifierString:(id)a12 primaryResidentDiagnosticInfo:(id)a13 homeUUID:(id)a14 primaryResidentDiagnosticInfoFetched:(BOOL)a15
+- (id)networkMetricWithDiscoveryController:(id)controller networkInfoController:(id)infoController sessionID:(id)d idsIdentifierString:(id)string currentWiFiInfo:(id)info currentWiFiNetworkRSSI:(int)i numResidents:(int64_t)residents numAppleMediaAccessories:(int64_t)self0 accessoryDiagnosticInfo:(id)self1 primaryResidentIdsIdentifierString:(id)self2 primaryResidentDiagnosticInfo:(id)self3 homeUUID:(id)self4 primaryResidentDiagnosticInfoFetched:(BOOL)self5
 {
-  v44 = a8;
-  v38 = self;
-  v42 = a15;
-  v18 = a12;
-  v40 = a9;
-  v41 = a10;
+  iCopy = i;
+  selfCopy = self;
+  fetchedCopy = fetched;
+  identifierStringCopy = identifierString;
+  residentsCopy = residents;
+  accessoriesCopy = accessories;
   v19 = sub_22A4DB7DC();
   v45 = *(v19 - 8);
   v46 = v19;
@@ -52,9 +52,9 @@
   v43 = v24;
   v37 = sub_22A4DD5EC();
   v39 = v25;
-  if (a12)
+  if (identifierString)
   {
-    v18 = sub_22A4DD5EC();
+    identifierStringCopy = sub_22A4DD5EC();
     v27 = v26;
   }
 
@@ -64,13 +64,13 @@
   }
 
   sub_22A4DB79C();
-  v28 = a3;
-  v29 = a4;
-  v30 = a7;
-  v36 = a11;
-  v31 = a13;
-  v32 = v38;
-  v33 = sub_2295B295C(v28, v29, v23, v43, v37, v39, v30, v44, v40, v41, a11, v18, v27, a13, v22, v42);
+  controllerCopy = controller;
+  infoControllerCopy = infoController;
+  infoCopy = info;
+  diagnosticInfoCopy = diagnosticInfo;
+  residentDiagnosticInfoCopy = residentDiagnosticInfo;
+  v32 = selfCopy;
+  v33 = sub_2295B295C(controllerCopy, infoControllerCopy, v23, v43, v37, v39, infoCopy, iCopy, residentsCopy, accessoriesCopy, diagnosticInfo, identifierStringCopy, v27, residentDiagnosticInfo, v22, fetchedCopy);
 
   (*(v45 + 8))(v22, v46);
 
@@ -84,7 +84,7 @@
   return v2;
 }
 
-- (void)releaseDiscoveryAssertionWithAssertionHandle:(id)a3
+- (void)releaseDiscoveryAssertionWithAssertionHandle:(id)handle
 {
   type metadata accessor for AssertionHandle();
   swift_unknownObjectRetain();
@@ -105,19 +105,19 @@
 
 - (id)logIdentifier
 {
-  v2 = [(HMDAccessorySetupMetricDispatcher *)self trackingInfo];
-  v3 = [v2 identifier];
-  v4 = [v3 UUIDString];
+  trackingInfo = [(HMDAccessorySetupMetricDispatcher *)self trackingInfo];
+  identifier = [trackingInfo identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v4;
+  return uUIDString;
 }
 
-- (BOOL)hasHome:(id)a3
+- (BOOL)hasHome:(id)home
 {
-  v4 = a3;
-  v5 = [(HMDAccessorySetupMetricDispatcher *)&self->super.super.isa home];
+  homeCopy = home;
+  home = [(HMDAccessorySetupMetricDispatcher *)&self->super.super.isa home];
 
-  return v5 == v4;
+  return home == homeCopy;
 }
 
 - (id)home
@@ -131,16 +131,16 @@
   return WeakRetained;
 }
 
-- (void)addHome:(id)a3
+- (void)addHome:(id)home
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  homeCopy = home;
   if (self)
   {
-    v19 = v4;
-    objc_storeWeak(&self->_home, v4);
+    v19 = homeCopy;
+    objc_storeWeak(&self->_home, homeCopy);
     WeakRetained = objc_loadWeakRetained(&self->_homeManager);
-    v6 = [WeakRetained homes];
+    homes = [WeakRetained homes];
 
     v18 = 8;
     os_unfair_lock_lock_with_options();
@@ -151,7 +151,7 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = v6;
+    v8 = homes;
     v9 = [v8 countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v9)
     {
@@ -168,17 +168,17 @@
           v12 = *(*(&v20 + 1) + 8 * i);
           if ([v12 homeLocation] == 1)
           {
-            v13 = [v12 uuid];
-            v14 = [v7 uuid];
-            if ([v13 isEqual:v14])
+            uuid = [v12 uuid];
+            uuid2 = [v7 uuid];
+            if ([uuid isEqual:uuid2])
             {
             }
 
             else
             {
-              v15 = [v12 isOwnerUser];
+              isOwnerUser = [v12 isOwnerUser];
 
-              if (v15)
+              if (isOwnerUser)
               {
                 self->_isUserAtOtherOwnedHome = 1;
               }
@@ -193,44 +193,44 @@
     }
 
     os_unfair_lock_unlock((self + v18));
-    v16 = [(HMDAccessorySetupMetricDispatcher *)self submitted];
-    v4 = v19;
-    if (!v16)
+    submitted = [(HMDAccessorySetupMetricDispatcher *)self submitted];
+    homeCopy = v19;
+    if (!submitted)
     {
       [(HMDAccessorySetupMetricDispatcher *)&self->super.super.isa subscribeToSettingsEvents:?];
-      v4 = v19;
+      homeCopy = v19;
     }
   }
 
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)subscribeToSettingsEvents:(id *)a1
+- (void)subscribeToSettingsEvents:(id *)events
 {
   v41 = *MEMORY[0x277D85DE8];
-  WeakRetained = objc_loadWeakRetained(a1 + 17);
-  v5 = [WeakRetained uuid];
+  WeakRetained = objc_loadWeakRetained(events + 17);
+  uuid = [WeakRetained uuid];
 
   v6 = &unk_22A586000;
-  if (v5)
+  if (uuid)
   {
-    v7 = [a1 trackingInfo];
-    v8 = [v7 accessoryUUID];
+    trackingInfo = [events trackingInfo];
+    accessoryUUID = [trackingInfo accessoryUUID];
 
-    if (v8)
+    if (accessoryUUID)
     {
-      v9 = [MEMORY[0x277CD1790] defaultSettingsAllKeyPaths];
+      defaultSettingsAllKeyPaths = [MEMORY[0x277CD1790] defaultSettingsAllKeyPaths];
       *&buf = MEMORY[0x277D85DD0];
       *(&buf + 1) = 3221225472;
       v37 = __60__HMDAccessorySetupMetricDispatcher_accessorySettingsTopics__block_invoke;
       v38 = &unk_278689190;
-      v10 = v5;
+      v10 = uuid;
       v39 = v10;
-      v11 = v8;
+      v11 = accessoryUUID;
       v40 = v11;
-      v12 = [v9 na_map:&buf];
+      v12 = [defaultSettingsAllKeyPaths na_map:&buf];
 
-      v13 = [MEMORY[0x277CD1790] languageKeyPaths];
+      languageKeyPaths = [MEMORY[0x277CD1790] languageKeyPaths];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __60__HMDAccessorySetupMetricDispatcher_accessorySettingsTopics__block_invoke_2;
@@ -239,7 +239,7 @@
       v14 = v11;
       v6 = &unk_22A586000;
       v35 = v14;
-      v15 = [v13 na_map:v33];
+      v15 = [languageKeyPaths na_map:v33];
       v16 = [v15 arrayByAddingObjectsFromArray:v12];
     }
 
@@ -258,7 +258,7 @@
   {
     v17 = v16;
     v18 = objc_autoreleasePoolPush();
-    v19 = a1;
+    eventsCopy = events;
     v20 = HMFGetOSLogHandle();
     v21 = os_log_type_enabled(v20, OS_LOG_TYPE_INFO);
     if (a2)
@@ -289,20 +289,20 @@
     }
 
     objc_autoreleasePoolPop(v18);
-    v29 = objc_loadWeakRetained(v19 + 14);
-    v30 = [v29 localAndRemoteSubscriptionProvider];
+    v29 = objc_loadWeakRetained(eventsCopy + 14);
+    localAndRemoteSubscriptionProvider = [v29 localAndRemoteSubscriptionProvider];
     v32[0] = MEMORY[0x277D85DD0];
     v32[1] = v6[441];
     v32[2] = __63__HMDAccessorySetupMetricDispatcher_subscribeToSettingsEvents___block_invoke;
     v32[3] = &unk_278689230;
-    v32[4] = v19;
-    [v30 changeRegistrationsForConsumer:v19 topicFilterAdditions:v17 topicFilterRemovals:v23 completion:v32];
+    v32[4] = eventsCopy;
+    [localAndRemoteSubscriptionProvider changeRegistrationsForConsumer:eventsCopy topicFilterAdditions:v17 topicFilterRemovals:v23 completion:v32];
   }
 
   else
   {
     v24 = objc_autoreleasePoolPush();
-    v25 = a1;
+    eventsCopy2 = events;
     v26 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
@@ -430,17 +430,17 @@ void __60__HMDAccessorySetupMetricDispatcher_accessorySettingsTopics__block_invo
     self->_languageSettingTime = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW) / 0x3B9ACA00;
     os_unfair_lock_unlock(&self->_lock);
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = HMFGetLogIdentifier();
-      v8 = [(HMDAccessorySetupMetricDispatcher *)v5 trackingInfo];
-      v9 = [v8 accessoryUUID];
+      trackingInfo = [(HMDAccessorySetupMetricDispatcher *)selfCopy trackingInfo];
+      accessoryUUID = [trackingInfo accessoryUUID];
       v11 = 138543618;
       v12 = v7;
       v13 = 2112;
-      v14 = v9;
+      v14 = accessoryUUID;
       _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_INFO, "%{public}@Marked language setting observed (%@)", &v11, 0x16u);
     }
 
@@ -465,29 +465,29 @@ void __60__HMDAccessorySetupMetricDispatcher_accessorySettingsTopics__block_invo
     self->_firstSettingTime = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW) / 0x3B9ACA00;
     os_unfair_lock_unlock(&self->_lock);
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = HMFGetLogIdentifier();
-      v8 = [(HMDAccessorySetupMetricDispatcher *)v5 trackingInfo];
-      v9 = [v8 accessoryUUID];
+      trackingInfo = [(HMDAccessorySetupMetricDispatcher *)selfCopy trackingInfo];
+      accessoryUUID = [trackingInfo accessoryUUID];
       v15 = 138543618;
       v16 = v7;
       v17 = 2112;
-      v18 = v9;
+      v18 = accessoryUUID;
       _os_log_impl(&dword_229538000, v6, OS_LOG_TYPE_INFO, "%{public}@Marked first setting observed (%@)", &v15, 0x16u);
     }
 
     objc_autoreleasePoolPop(v4);
-    logger = v5->_logger;
+    logger = selfCopy->_logger;
     if (os_signpost_enabled(logger))
     {
       v11 = logger;
-      v12 = [(HMDAccessorySetupMetricDispatcher *)v5 trackingInfo];
-      v13 = [v12 accessoryUUID];
+      trackingInfo2 = [(HMDAccessorySetupMetricDispatcher *)selfCopy trackingInfo];
+      accessoryUUID2 = [trackingInfo2 accessoryUUID];
       v15 = 138412290;
-      v16 = v13;
+      v16 = accessoryUUID2;
       _os_signpost_emit_with_name_impl(&dword_229538000, v11, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "FirstAccessorySettingObserved", "accessoryUUID=%{signpost.description:attribute}@ ", &v15, 0xCu);
     }
 
@@ -502,88 +502,88 @@ void __60__HMDAccessorySetupMetricDispatcher_accessorySettingsTopics__block_invo
   self->_accessoryRemovedTime = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW) / 0x3B9ACA00;
   os_unfair_lock_unlock(&self->_lock);
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDAccessorySetupMetricDispatcher *)v4 trackingInfo];
-    v8 = [v7 accessoryUUID];
+    trackingInfo = [(HMDAccessorySetupMetricDispatcher *)selfCopy trackingInfo];
+    accessoryUUID = [trackingInfo accessoryUUID];
     v11 = 138543618;
     v12 = v6;
     v13 = 2112;
-    v14 = v8;
+    v14 = accessoryUUID;
     _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_INFO, "%{public}@No longer tracking accessory (%@) setup time as it was removed", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v3);
   v9 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2029];
-  [(HMDAccessorySetupMetricDispatcher *)v4 _queryRemoteAndSubmitWithConfigurationError:v9];
+  [(HMDAccessorySetupMetricDispatcher *)selfCopy _queryRemoteAndSubmitWithConfigurationError:v9];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_queryRemoteAndSubmitWithConfigurationError:(uint64_t)a1
+- (void)_queryRemoteAndSubmitWithConfigurationError:(uint64_t)error
 {
   v3 = a2;
-  if (a1)
+  if (error)
   {
     v4 = dispatch_group_create();
-    WeakRetained = objc_loadWeakRetained((a1 + 136));
-    v6 = [a1 delegate];
-    v7 = [WeakRetained residentDeviceManager];
-    v8 = [v7 primaryResidentDevice];
+    WeakRetained = objc_loadWeakRetained((error + 136));
+    delegate = [error delegate];
+    residentDeviceManager = [WeakRetained residentDeviceManager];
+    primaryResidentDevice = [residentDeviceManager primaryResidentDevice];
 
-    v9 = [a1 obtainDiscoveryAssertion];
-    v10 = *(a1 + 184);
-    *(a1 + 184) = v9;
+    obtainDiscoveryAssertion = [error obtainDiscoveryAssertion];
+    v10 = *(error + 184);
+    *(error + 184) = obtainDiscoveryAssertion;
 
-    v11 = [WeakRetained appleMediaAccessories];
+    appleMediaAccessories = [WeakRetained appleMediaAccessories];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __81__HMDAccessorySetupMetricDispatcher__queryRemoteAndSubmitWithConfigurationError___block_invoke;
     v28[3] = &unk_278688F28;
-    v12 = v8;
+    v12 = primaryResidentDevice;
     v29 = v12;
-    v13 = [v11 na_firstObjectPassingTest:v28];
+    v13 = [appleMediaAccessories na_firstObjectPassingTest:v28];
 
     dispatch_group_enter(v4);
-    v14 = [a1 trackingInfo];
-    v15 = [v14 accessoryUUID];
+    trackingInfo = [error trackingInfo];
+    accessoryUUID = [trackingInfo accessoryUUID];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __81__HMDAccessorySetupMetricDispatcher__queryRemoteAndSubmitWithConfigurationError___block_invoke_2;
     v26[3] = &unk_278688F90;
-    v26[4] = a1;
+    v26[4] = error;
     v16 = v4;
     v27 = v16;
-    [v6 querySetupDiagnosticStateForAccessoryUUID:v15 completion:v26];
+    [delegate querySetupDiagnosticStateForAccessoryUUID:accessoryUUID completion:v26];
 
     if (v13)
     {
       dispatch_group_enter(v16);
-      v17 = [v13 uuid];
+      uuid = [v13 uuid];
       v24[0] = MEMORY[0x277D85DD0];
       v24[1] = 3221225472;
       v24[2] = __81__HMDAccessorySetupMetricDispatcher__queryRemoteAndSubmitWithConfigurationError___block_invoke_3;
       v24[3] = &unk_278688F90;
-      v24[4] = a1;
+      v24[4] = error;
       v25 = v16;
-      [v6 querySetupDiagnosticStateForAccessoryUUID:v17 completion:v24];
+      [delegate querySetupDiagnosticStateForAccessoryUUID:uuid completion:v24];
     }
 
     else
     {
       v19 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2032];
-      objc_setProperty_atomic(a1, v20, v19, 168);
+      objc_setProperty_atomic(error, v20, v19, 168);
     }
 
-    Property = objc_getProperty(a1, v18, 80, 1);
+    Property = objc_getProperty(error, v18, 80, 1);
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __81__HMDAccessorySetupMetricDispatcher__queryRemoteAndSubmitWithConfigurationError___block_invoke_4;
     v22[3] = &unk_27868A750;
-    v22[4] = a1;
+    v22[4] = error;
     v23 = v3;
     dispatch_group_notify(v16, Property, v22);
   }
@@ -1020,17 +1020,17 @@ LABEL_63:
   self->_addAccessoryFinishTime = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW) / 0x3B9ACA00;
   os_unfair_lock_unlock(&self->_lock);
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDAccessorySetupMetricDispatcher *)v4 trackingInfo];
-    v8 = [v7 accessoryUUID];
+    trackingInfo = [(HMDAccessorySetupMetricDispatcher *)selfCopy trackingInfo];
+    accessoryUUID = [trackingInfo accessoryUUID];
     v10 = 138543618;
     v11 = v6;
     v12 = 2112;
-    v13 = v8;
+    v13 = accessoryUUID;
     _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_INFO, "%{public}@Marked accessory add (%@)", &v10, 0x16u);
   }
 
@@ -1045,17 +1045,17 @@ LABEL_63:
   self->_didAddAccessoryLocally = 1;
   os_unfair_lock_unlock(&self->_lock);
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDAccessorySetupMetricDispatcher *)v4 trackingInfo];
-    v8 = [v7 accessoryUUID];
+    trackingInfo = [(HMDAccessorySetupMetricDispatcher *)selfCopy trackingInfo];
+    accessoryUUID = [trackingInfo accessoryUUID];
     v10 = 138543618;
     v11 = v6;
     v12 = 2112;
-    v13 = v8;
+    v13 = accessoryUUID;
     _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_INFO, "%{public}@Marked accessory add (%@) started locally", &v10, 0x16u);
   }
 
@@ -1063,30 +1063,30 @@ LABEL_63:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markRemoteAccessoryAddEndedWithError:(id)a3
+- (void)markRemoteAccessoryAddEndedWithError:(id)error
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  errorCopy = error;
   os_unfair_lock_lock_with_options();
-  v5 = [v4 copy];
+  v5 = [errorCopy copy];
   addAccessoryOnPrimaryFailError = self->_addAccessoryOnPrimaryFailError;
   self->_addAccessoryOnPrimaryFailError = v5;
 
   os_unfair_lock_unlock(&self->_lock);
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     v10 = HMFGetLogIdentifier();
-    v11 = [(HMDAccessorySetupMetricDispatcher *)v8 trackingInfo];
-    v12 = [v11 accessoryUUID];
+    trackingInfo = [(HMDAccessorySetupMetricDispatcher *)selfCopy trackingInfo];
+    accessoryUUID = [trackingInfo accessoryUUID];
     v14 = 138543874;
     v15 = v10;
     v16 = 2112;
-    v17 = v12;
+    v17 = accessoryUUID;
     v18 = 2112;
-    v19 = v4;
+    v19 = errorCopy;
     _os_log_impl(&dword_229538000, v9, OS_LOG_TYPE_INFO, "%{public}@Marked accessory add (%@) remotely ended with error (%@)", &v14, 0x20u);
   }
 
@@ -1101,17 +1101,17 @@ LABEL_63:
   self->_didSendAddAccessoryRequestToPrimary = 1;
   os_unfair_lock_unlock(&self->_lock);
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6 = HMFGetLogIdentifier();
-    v7 = [(HMDAccessorySetupMetricDispatcher *)v4 trackingInfo];
-    v8 = [v7 accessoryUUID];
+    trackingInfo = [(HMDAccessorySetupMetricDispatcher *)selfCopy trackingInfo];
+    accessoryUUID = [trackingInfo accessoryUUID];
     v10 = 138543618;
     v11 = v6;
     v12 = 2112;
-    v13 = v8;
+    v13 = accessoryUUID;
     _os_log_impl(&dword_229538000, v5, OS_LOG_TYPE_INFO, "%{public}@Marked accessory add (%@) started remotely", &v10, 0x16u);
   }
 
@@ -1119,38 +1119,38 @@ LABEL_63:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markRemoteAccessoryAddWillStart:(id)a3
+- (void)markRemoteAccessoryAddWillStart:(id)start
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  startCopy = start;
   os_unfair_lock_lock_with_options();
-  v5 = [(HMDAccessorySetupMetricDispatcher *)&self->super.super.isa home];
-  v6 = [v5 appleMediaAccessories];
+  home = [(HMDAccessorySetupMetricDispatcher *)&self->super.super.isa home];
+  appleMediaAccessories = [home appleMediaAccessories];
   v36[0] = MEMORY[0x277D85DD0];
   v36[1] = 3221225472;
   v36[2] = __69__HMDAccessorySetupMetricDispatcher_markRemoteAccessoryAddWillStart___block_invoke;
   v36[3] = &unk_278688F28;
-  v35 = v4;
+  v35 = startCopy;
   v37 = v35;
-  v7 = [v6 na_filter:v36];
+  v7 = [appleMediaAccessories na_filter:v36];
 
   v8 = [v7 na_map:&__block_literal_global_187_274826];
-  v9 = [v8 asSet];
+  asSet = [v8 asSet];
 
-  v10 = [v5 residentDeviceManager];
-  v11 = [v10 primaryResidentDevice];
-  LOBYTE(v4) = v11 == 0;
+  residentDeviceManager = [home residentDeviceManager];
+  primaryResidentDevice = [residentDeviceManager primaryResidentDevice];
+  LOBYTE(startCopy) = primaryResidentDevice == 0;
 
-  if ((v4 & 1) == 0)
+  if ((startCopy & 1) == 0)
   {
-    v12 = [v5 residentDeviceManager];
-    v13 = [v12 primaryResidentDevice];
-    v14 = [v13 device];
-    v15 = [v14 idsIdentifier];
+    residentDeviceManager2 = [home residentDeviceManager];
+    primaryResidentDevice2 = [residentDeviceManager2 primaryResidentDevice];
+    device = [primaryResidentDevice2 device];
+    idsIdentifier = [device idsIdentifier];
 
-    if (v15)
+    if (idsIdentifier)
     {
-      self->_primaryResidentIdenticalToAccessoryBeingAdded = [v9 containsObject:v15];
+      self->_primaryResidentIdenticalToAccessoryBeingAdded = [asSet containsObject:idsIdentifier];
     }
 
     else
@@ -1161,40 +1161,40 @@ LABEL_63:
     self->_primaryResidentAssignedInHomeWhenAddAccessory = 1;
   }
 
-  v16 = [v5 appleMediaAccessories];
-  v17 = [v16 count];
+  appleMediaAccessories2 = [home appleMediaAccessories];
+  v17 = [appleMediaAccessories2 count];
   self->_numberOfMediaAccessoriesnHome = v17 - [v7 count];
 
-  v18 = [v5 residentDeviceManager];
-  v19 = [v18 availableResidentDevices];
-  v20 = [v19 na_map:&__block_literal_global_190_274827];
-  v21 = [v20 asSet];
-  v22 = [v21 mutableCopy];
+  residentDeviceManager3 = [home residentDeviceManager];
+  availableResidentDevices = [residentDeviceManager3 availableResidentDevices];
+  v20 = [availableResidentDevices na_map:&__block_literal_global_190_274827];
+  asSet2 = [v20 asSet];
+  v22 = [asSet2 mutableCopy];
 
-  [v22 minusSet:v9];
+  [v22 minusSet:asSet];
   self->_numberOfAvailableResidentsInHome = [v22 count];
-  v23 = [v5 residentDeviceManager];
-  v24 = [v23 residentDevices];
-  v25 = [v24 na_map:&__block_literal_global_192];
-  v26 = [v25 asSet];
-  v27 = [v26 mutableCopy];
+  residentDeviceManager4 = [home residentDeviceManager];
+  residentDevices = [residentDeviceManager4 residentDevices];
+  v25 = [residentDevices na_map:&__block_literal_global_192];
+  asSet3 = [v25 asSet];
+  v27 = [asSet3 mutableCopy];
 
-  [v27 minusSet:v9];
+  [v27 minusSet:asSet];
   self->_numberOfResidentsInHome = [v27 count];
 
   os_unfair_lock_unlock(&self->_lock);
   v28 = objc_autoreleasePoolPush();
-  v29 = self;
+  selfCopy = self;
   v30 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v30, OS_LOG_TYPE_INFO))
   {
     v31 = HMFGetLogIdentifier();
-    v32 = [(HMDAccessorySetupMetricDispatcher *)v29 trackingInfo];
-    v33 = [v32 accessoryUUID];
+    trackingInfo = [(HMDAccessorySetupMetricDispatcher *)selfCopy trackingInfo];
+    accessoryUUID = [trackingInfo accessoryUUID];
     *buf = 138543618;
     v39 = v31;
     v40 = 2112;
-    v41 = v33;
+    v41 = accessoryUUID;
     _os_log_impl(&dword_229538000, v30, OS_LOG_TYPE_INFO, "%{public}@Marked accessory add (%@) will start", buf, 0x16u);
   }
 
@@ -1235,18 +1235,18 @@ id __69__HMDAccessorySetupMetricDispatcher_markRemoteAccessoryAddWillStart___blo
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)markEventRouterPrimaryClientConnectMessageFailedWithError:(id)a3
+- (void)markEventRouterPrimaryClientConnectMessageFailedWithError:(id)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  errorCopy = error;
   os_unfair_lock_lock_with_options();
   if (self->_lastPrimaryResidentAvailableTime)
   {
     ++self->_numberOfTimesPrimaryClientConnectMessageFailed;
-    objc_storeStrong(&self->_lastPrimaryClientConnectMessageFailError, a3);
+    objc_storeStrong(&self->_lastPrimaryClientConnectMessageFailError, error);
     os_unfair_lock_unlock(&self->_lock);
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
@@ -1254,7 +1254,7 @@ id __69__HMDAccessorySetupMetricDispatcher_markRemoteAccessoryAddWillStart___blo
       v11 = 138543618;
       v12 = v9;
       v13 = 2112;
-      v14 = v5;
+      v14 = errorCopy;
       _os_log_impl(&dword_229538000, v8, OS_LOG_TYPE_INFO, "%{public}@Marked primary client connect message failed with error: %@", &v11, 0x16u);
     }
 
@@ -1269,14 +1269,14 @@ id __69__HMDAccessorySetupMetricDispatcher_markRemoteAccessoryAddWillStart___blo
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)markEventRouterPrimaryClientConnectStatusChanged:(BOOL)a3
+- (void)markEventRouterPrimaryClientConnectStatusChanged:(BOOL)changed
 {
-  v3 = a3;
+  changedCopy = changed;
   v17 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock_with_options();
   if (self->_lastPrimaryResidentAvailableTime)
   {
-    if (v3)
+    if (changedCopy)
     {
       self->_lastPrimaryClientConnectedTime = clock_gettime_nsec_np(_CLOCK_MONOTONIC_RAW) / 0x3B9ACA00;
       v5 = &OBJC_IVAR___HMDAccessorySetupMetricDispatcher__numberOfTimesPrimaryClientConnected;
@@ -1290,7 +1290,7 @@ id __69__HMDAccessorySetupMetricDispatcher_markRemoteAccessoryAddWillStart___blo
     ++*(&self->super.super.isa + *v5);
     os_unfair_lock_unlock(&self->_lock);
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
     {
@@ -1327,7 +1327,7 @@ id __69__HMDAccessorySetupMetricDispatcher_markRemoteAccessoryAddWillStart___blo
 
   os_unfair_lock_unlock(&self->_lock);
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1341,14 +1341,14 @@ id __69__HMDAccessorySetupMetricDispatcher_markRemoteAccessoryAddWillStart___blo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)timerDidFire:(id)a3
+- (void)timerDidFire:(id)fire
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (self && (v6 = objc_getProperty(self, v4, 88, 1), v5) && v6 == v5 && objc_getProperty(self, v7, 88, 1))
+  fireCopy = fire;
+  if (self && (v6 = objc_getProperty(self, v4, 88, 1), fireCopy) && v6 == fireCopy && objc_getProperty(self, v7, 88, 1))
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
@@ -1356,21 +1356,21 @@ id __69__HMDAccessorySetupMetricDispatcher_markRemoteAccessoryAddWillStart___blo
       *buf = 138543618;
       v23 = v11;
       v24 = 2112;
-      v25 = v9;
+      v25 = selfCopy;
       _os_log_impl(&dword_229538000, v10, OS_LOG_TYPE_INFO, "%{public}@Timer did fire for setup metric dispatcher:%@", buf, 0x16u);
     }
 
     objc_autoreleasePoolPop(v8);
-    if ([(HMDAccessorySetupMetricDispatcher *)v9 languageSettingTime])
+    if ([(HMDAccessorySetupMetricDispatcher *)selfCopy languageSettingTime])
     {
-      [(HMDAccessorySetupMetricDispatcher *)v9 submit];
+      [(HMDAccessorySetupMetricDispatcher *)selfCopy submit];
     }
 
     else
     {
       v19 = [MEMORY[0x277CCA9B8] hmPrivateErrorWithCode:2030];
-      [(HMDAccessorySetupMetricDispatcher *)v9 _queryRemoteAndSubmitWithConfigurationError:v19];
-      WeakRetained = objc_loadWeakRetained(&v9->_radarInitiator);
+      [(HMDAccessorySetupMetricDispatcher *)selfCopy _queryRemoteAndSubmitWithConfigurationError:v19];
+      WeakRetained = objc_loadWeakRetained(&selfCopy->_radarInitiator);
       v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@, %@", @"HomePod Database Sync Timed Out", v19];
       [WeakRetained requestRadarWithDisplayReason:@"HomePod Database Sync Timed Out" radarTitle:v21 componentName:@"HomeKit" componentVersion:@"HomeKit Device Setup" componentID:1364036];
     }
@@ -1379,14 +1379,14 @@ id __69__HMDAccessorySetupMetricDispatcher_markRemoteAccessoryAddWillStart___blo
   else
   {
     v12 = objc_autoreleasePoolPush();
-    v13 = self;
+    selfCopy2 = self;
     v14 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
     {
       v16 = HMFGetLogIdentifier();
       if (self)
       {
-        Property = objc_getProperty(v13, v15, 88, 1);
+        Property = objc_getProperty(selfCopy2, v15, 88, 1);
       }
 
       else
@@ -1397,7 +1397,7 @@ id __69__HMDAccessorySetupMetricDispatcher_markRemoteAccessoryAddWillStart___blo
       *buf = 138543874;
       v23 = v16;
       v24 = 2112;
-      v25 = v5;
+      v25 = fireCopy;
       v26 = 2112;
       v27 = Property;
       _os_log_impl(&dword_229538000, v14, OS_LOG_TYPE_ERROR, "%{public}@Unexpected delegate callback from timer:%@, expected:%@", buf, 0x20u);
@@ -1409,18 +1409,18 @@ id __69__HMDAccessorySetupMetricDispatcher_markRemoteAccessoryAddWillStart___blo
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didReceiveEvent:(id)a3 topic:(id)a4
+- (void)didReceiveEvent:(id)event topic:(id)topic
 {
   v46 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277CD19F0] decodeTopic:v7];
-  v9 = [v8 asAccessorySettingTopic];
+  eventCopy = event;
+  topicCopy = topic;
+  v8 = [MEMORY[0x277CD19F0] decodeTopic:topicCopy];
+  asAccessorySettingTopic = [v8 asAccessorySettingTopic];
 
-  if (v9)
+  if (asAccessorySettingTopic)
   {
-    v10 = v6;
-    v11 = v9;
+    v10 = eventCopy;
+    v11 = asAccessorySettingTopic;
     if (!self)
     {
 LABEL_20:
@@ -1438,7 +1438,7 @@ LABEL_20:
       {
         v15 = v14;
         v16 = objc_autoreleasePoolPush();
-        v17 = self;
+        selfCopy = self;
         v18 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
         {
@@ -1452,7 +1452,7 @@ LABEL_20:
         }
 
         objc_autoreleasePoolPop(v16);
-        [(HMDAccessorySetupMetricDispatcher *)&v17->super.super.isa subscribeToSettingsEvents:?];
+        [(HMDAccessorySetupMetricDispatcher *)&selfCopy->super.super.isa subscribeToSettingsEvents:?];
         v14 = v15;
         goto LABEL_19;
       }
@@ -1474,7 +1474,7 @@ LABEL_19:
       [(HMDAccessorySetupMetricDispatcher *)self markLanguageSettingObserved];
       [(HMDAccessorySetupMetricDispatcher *)self submit];
       v32 = objc_autoreleasePoolPush();
-      v33 = self;
+      selfCopy2 = self;
       v34 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v34, OS_LOG_TYPE_INFO))
       {
@@ -1487,14 +1487,14 @@ LABEL_19:
       }
 
       objc_autoreleasePoolPop(v32);
-      [(HMDAccessorySetupMetricDispatcher *)&v33->super.super.isa subscribeToSettingsEvents:?];
+      [(HMDAccessorySetupMetricDispatcher *)&selfCopy2->super.super.isa subscribeToSettingsEvents:?];
     }
 
     else
     {
       v38 = v13;
       v24 = objc_autoreleasePoolPush();
-      v25 = self;
+      selfCopy3 = self;
       v26 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
       {
@@ -1519,7 +1519,7 @@ LABEL_19:
   }
 
   v20 = objc_autoreleasePoolPush();
-  v21 = self;
+  selfCopy4 = self;
   v22 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
   {
@@ -1527,7 +1527,7 @@ LABEL_19:
     *buf = 138543618;
     v41 = v23;
     v42 = 2112;
-    v43 = v7;
+    v43 = topicCopy;
     _os_log_impl(&dword_229538000, v22, OS_LOG_TYPE_INFO, "%{public}@Do not handle topic: %@", buf, 0x16u);
   }
 
@@ -1546,23 +1546,23 @@ LABEL_21:
   return v3;
 }
 
-- (void)updateTrackingInfo:(id)a3
+- (void)updateTrackingInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   if (self)
   {
     os_unfair_lock_lock_with_options();
-    objc_storeStrong(&self->_trackingInfo, a3);
+    objc_storeStrong(&self->_trackingInfo, info);
     os_unfair_lock_unlock(&self->_lock);
   }
 }
 
-- (void)addRemoteEventRouterAssertion:(id)a3
+- (void)addRemoteEventRouterAssertion:(id)assertion
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  assertionCopy = assertion;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1570,33 +1570,33 @@ LABEL_21:
     v11 = 138543618;
     v12 = v8;
     v13 = 2112;
-    v14 = v4;
+    v14 = assertionCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Setting remote event router assertion for setup metric collection: %@", &v11, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  if (v6)
+  if (selfCopy)
   {
-    objc_setProperty_atomic(v6, v9, v4, 176);
+    objc_setProperty_atomic(selfCopy, v9, assertionCopy, 176);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDAccessorySetupMetricDispatcher)initWithQueue:(id)a3 trackingInfo:(id)a4 setupSessionIdentifier:(id)a5 homeManager:(id)a6
+- (HMDAccessorySetupMetricDispatcher)initWithQueue:(id)queue trackingInfo:(id)info setupSessionIdentifier:(id)identifier homeManager:(id)manager
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
+  managerCopy = manager;
+  identifierCopy = identifier;
+  infoCopy = info;
+  queueCopy = queue;
   v22 = +[HMDMainDriver driver];
-  v20 = [v22 discoveryController];
+  discoveryController = [v22 discoveryController];
   v13 = +[HMDMainDriver driver];
-  v14 = [v13 networkInfoController];
+  networkInfoController = [v13 networkInfoController];
   v15 = +[HMDMetricsManager sharedLogEventSubmitter];
-  v16 = [v9 metricsManager];
-  v17 = [v16 radarInitiator];
-  v18 = [(HMDAccessorySetupMetricDispatcher *)self initWithQueue:v12 discoveryController:v20 networkInfoController:v14 trackingInfo:v11 setupSessionIdentifier:v10 homeManager:v9 logEventSubmitter:v15 radarInitiator:v17 timerFactory:&__block_literal_global_274852];
+  metricsManager = [managerCopy metricsManager];
+  radarInitiator = [metricsManager radarInitiator];
+  v18 = [(HMDAccessorySetupMetricDispatcher *)self initWithQueue:queueCopy discoveryController:discoveryController networkInfoController:networkInfoController trackingInfo:infoCopy setupSessionIdentifier:identifierCopy homeManager:managerCopy logEventSubmitter:v15 radarInitiator:radarInitiator timerFactory:&__block_literal_global_274852];
 
   return v18;
 }
@@ -1613,15 +1613,15 @@ id __99__HMDAccessorySetupMetricDispatcher_initWithQueue_trackingInfo_setupSessi
   return v4;
 }
 
-- (HMDAccessorySetupMetricDispatcher)initWithQueue:(id)a3 discoveryController:(id)a4 networkInfoController:(id)a5 trackingInfo:(id)a6 setupSessionIdentifier:(id)a7 homeManager:(id)a8 logEventSubmitter:(id)a9 radarInitiator:(id)a10 timerFactory:(id)a11
+- (HMDAccessorySetupMetricDispatcher)initWithQueue:(id)queue discoveryController:(id)controller networkInfoController:(id)infoController trackingInfo:(id)info setupSessionIdentifier:(id)identifier homeManager:(id)manager logEventSubmitter:(id)submitter radarInitiator:(id)self0 timerFactory:(id)self1
 {
-  v16 = a3;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
+  queueCopy = queue;
+  infoCopy = info;
+  identifierCopy = identifier;
+  managerCopy = manager;
+  submitterCopy = submitter;
+  initiatorCopy = initiator;
+  factoryCopy = factory;
   v37.receiver = self;
   v37.super_class = HMDAccessorySetupMetricDispatcher;
   v23 = [(HMDAccessorySetupMetricDispatcher *)&v37 init];
@@ -1631,30 +1631,30 @@ id __99__HMDAccessorySetupMetricDispatcher_initWithQueue_trackingInfo_setupSessi
     logger = v23->_logger;
     v23->_logger = v24;
 
-    objc_storeStrong(&v23->_queue, a3);
+    objc_storeStrong(&v23->_queue, queue);
     v26 = +[HMDMainDriver driver];
-    v27 = [v26 discoveryController];
+    discoveryController = [v26 discoveryController];
     discoveryController = v23->_discoveryController;
-    v23->_discoveryController = v27;
+    v23->_discoveryController = discoveryController;
 
     v29 = +[HMDMainDriver driver];
-    v30 = [v29 networkInfoController];
+    networkInfoController = [v29 networkInfoController];
     networkInfoController = v23->_networkInfoController;
-    v23->_networkInfoController = v30;
+    v23->_networkInfoController = networkInfoController;
 
-    objc_storeStrong(&v23->_trackingInfo, a6);
-    objc_storeWeak(&v23->_submitter, v20);
-    v32 = v22[2](v22, v23);
+    objc_storeStrong(&v23->_trackingInfo, info);
+    objc_storeWeak(&v23->_submitter, submitterCopy);
+    v32 = factoryCopy[2](factoryCopy, v23);
     timer = v23->_timer;
     v23->_timer = v32;
 
-    v34 = [v18 copy];
+    v34 = [identifierCopy copy];
     setupSessionIdentifier = v23->_setupSessionIdentifier;
     v23->_setupSessionIdentifier = v34;
 
     v23->_lock._os_unfair_lock_opaque = 0;
-    objc_storeWeak(&v23->_homeManager, v19);
-    objc_storeWeak(&v23->_radarInitiator, v21);
+    objc_storeWeak(&v23->_homeManager, managerCopy);
+    objc_storeWeak(&v23->_radarInitiator, initiatorCopy);
   }
 
   return v23;

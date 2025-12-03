@@ -1,26 +1,26 @@
 @interface SUUIProductPageItem
-- (SUUIProductPageItem)initWithLookupDictionary:(id)a3;
+- (SUUIProductPageItem)initWithLookupDictionary:(id)dictionary;
 - (id)loadedChildItems;
 - (int64_t)numberOfChildItems;
-- (void)_setVersionHistory:(id)a3;
+- (void)_setVersionHistory:(id)history;
 @end
 
 @implementation SUUIProductPageItem
 
-- (SUUIProductPageItem)initWithLookupDictionary:(id)a3
+- (SUUIProductPageItem)initWithLookupDictionary:(id)dictionary
 {
   v139 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v135.receiver = self;
   v135.super_class = SUUIProductPageItem;
-  v5 = [(SUUIItem *)&v135 initWithLookupDictionary:v4];
+  v5 = [(SUUIItem *)&v135 initWithLookupDictionary:dictionaryCopy];
 
   if (!v5)
   {
     goto LABEL_110;
   }
 
-  v6 = [v4 objectForKey:*MEMORY[0x277D6A2F8]];
+  v6 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A2F8]];
   v7 = 0x277CCA000uLL;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -30,7 +30,7 @@
     v5->_artistPageURL = v8;
   }
 
-  v10 = [v4 objectForKey:*MEMORY[0x277D6A320]];
+  v10 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A320]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -40,7 +40,7 @@
     v5->_copyrightString = v11;
   }
 
-  v13 = [v4 objectForKey:@"regularPriceFormatted"];
+  v13 = [dictionaryCopy objectForKey:@"regularPriceFormatted"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -50,7 +50,7 @@
     v5->_regularPriceString = v14;
   }
 
-  v16 = [v4 objectForKey:*MEMORY[0x277D6A398]];
+  v16 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A398]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -75,7 +75,7 @@
     v5->_lastUpdateDateString = v19;
   }
 
-  v21 = [v4 objectForKey:*MEMORY[0x277D6A3D8]];
+  v21 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A3D8]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -85,18 +85,18 @@
     v5->_shortenedProductPageURLString = v22;
   }
 
-  v24 = [v4 objectForKey:@"childrenIds"];
+  v24 = [dictionaryCopy objectForKey:@"childrenIds"];
   objc_opt_class();
   v118 = v24;
   v121 = v5;
-  v116 = v4;
+  v116 = dictionaryCopy;
   if (objc_opt_isKindOfClass())
   {
     v25 = [v24 copy];
     childItemIdentifiers = v5->_childItemIdentifiers;
     v5->_childItemIdentifiers = v25;
 
-    v27 = [v4 objectForKey:@"children"];
+    v27 = [dictionaryCopy objectForKey:@"children"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -125,8 +125,8 @@
             }
 
             v35 = *(*(&v131 + 1) + 8 * i);
-            v36 = [v35 stringValue];
-            v37 = [v27 objectForKey:v36];
+            stringValue = [v35 stringValue];
+            v37 = [v27 objectForKey:stringValue];
 
             objc_opt_class();
             if (objc_opt_isKindOfClass())
@@ -146,12 +146,12 @@
       }
 
       v21 = v113;
-      v4 = v116;
+      dictionaryCopy = v116;
       v7 = 0x277CCA000uLL;
     }
   }
 
-  v39 = [v4 objectForKey:@"appBundleAdamIds"];
+  v39 = [dictionaryCopy objectForKey:@"appBundleAdamIds"];
   objc_opt_class();
   v117 = v39;
   if (objc_opt_isKindOfClass())
@@ -161,19 +161,19 @@
     v5->_parentBundleItemIdentifiers = v40;
   }
 
-  v42 = [v4 objectForKey:@"contentRatingsBySystem"];
+  v42 = [dictionaryCopy objectForKey:@"contentRatingsBySystem"];
   objc_opt_class();
   v122 = v42;
   if (objc_opt_isKindOfClass())
   {
     v114 = v21;
-    v43 = [v42 keyEnumerator];
+    keyEnumerator = [v42 keyEnumerator];
     v119 = objc_alloc_init(MEMORY[0x277CBEB18]);
     v127 = 0u;
     v128 = 0u;
     v129 = 0u;
     v130 = 0u;
-    v44 = v43;
+    v44 = keyEnumerator;
     v45 = [v44 countByEnumeratingWithState:&v127 objects:v137 count:16];
     if (v45)
     {
@@ -230,11 +230,11 @@
     v121->_secondaryContentRatings = v59;
 
     v21 = v114;
-    v4 = v116;
+    dictionaryCopy = v116;
     goto LABEL_48;
   }
 
-  v44 = [v4 objectForKey:*MEMORY[0x277D6A310]];
+  v44 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A310]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -244,7 +244,7 @@
 LABEL_48:
   }
 
-  v62 = [v4 objectForKey:*MEMORY[0x277D6A328]];
+  v62 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A328]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -264,7 +264,7 @@ LABEL_48:
     v63 = v21;
   }
 
-  v66 = [v4 objectForKey:*MEMORY[0x277D6A3E0]];
+  v66 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A3E0]];
   objc_opt_class();
   v120 = v66;
   if (objc_opt_isKindOfClass())
@@ -333,8 +333,8 @@ LABEL_48:
       v5->_developerInfo = v82;
 
       v84 = v5->_developerInfo;
-      v85 = [(SUUIItem *)v5 artistName];
-      [(SUUIDeveloperInfo *)v84 setTradeName:v85];
+      artistName = [(SUUIItem *)v5 artistName];
+      [(SUUIDeveloperInfo *)v84 setTradeName:artistName];
     }
 
     v63 = [v66 objectForKey:@"seller"];
@@ -348,7 +348,7 @@ LABEL_48:
     }
   }
 
-  v88 = [v4 objectForKey:@"supportsPassbook"];
+  v88 = [dictionaryCopy objectForKey:@"supportsPassbook"];
 
   if ((objc_opt_respondsToSelector() & 1) != 0 && [v88 BOOLValue])
   {
@@ -360,7 +360,7 @@ LABEL_48:
     v5->_supportedFeatures |= 8uLL;
   }
 
-  v89 = [v4 objectForKey:@"gameCenterInfo"];
+  v89 = [dictionaryCopy objectForKey:@"gameCenterInfo"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -401,7 +401,7 @@ LABEL_48:
   }
 
   v115 = v89;
-  v94 = [v4 objectForKey:*MEMORY[0x277D6A3F8]];
+  v94 = [dictionaryCopy objectForKey:*MEMORY[0x277D6A3F8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -423,7 +423,7 @@ LABEL_48:
     v97 = v88;
   }
 
-  v98 = SUUIItemScreenshotsForDictionary(v4);
+  v98 = SUUIItemScreenshotsForDictionary(dictionaryCopy);
   screenshots = v5->_screenshots;
   v5->_screenshots = v98;
 
@@ -474,7 +474,7 @@ LABEL_48:
     v109 = v121->_screenshots;
     v121->_screenshots = v108;
 
-    v4 = v116;
+    dictionaryCopy = v116;
     v62 = v112;
   }
 
@@ -487,7 +487,7 @@ LABEL_110:
 - (id)loadedChildItems
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -510,7 +510,7 @@ LABEL_110:
         v9 = [(NSMutableDictionary *)self->_loadedChildItems objectForKey:*(*(&v11 + 1) + 8 * i), v11];
         if (v9)
         {
-          [v3 addObject:v9];
+          [array addObject:v9];
         }
       }
 
@@ -520,7 +520,7 @@ LABEL_110:
     while (v6);
   }
 
-  return v3;
+  return array;
 }
 
 - (int64_t)numberOfChildItems
@@ -542,24 +542,24 @@ LABEL_110:
   }
 }
 
-- (void)_setVersionHistory:(id)a3
+- (void)_setVersionHistory:(id)history
 {
-  v13 = a3;
-  if ([v13 count])
+  historyCopy = history;
+  if ([historyCopy count])
   {
     v5 = objc_alloc_init(MEMORY[0x277CCA968]);
     [(NSString *)v5 setDateStyle:2];
     [(NSString *)v5 setTimeStyle:0];
-    v6 = [v13 objectAtIndex:0];
-    v7 = [v6 date];
-    v8 = [(NSString *)v5 stringFromDate:v7];
+    v6 = [historyCopy objectAtIndex:0];
+    date = [v6 date];
+    v8 = [(NSString *)v5 stringFromDate:date];
     lastUpdateDateString = self->_lastUpdateDateString;
     self->_lastUpdateDateString = v8;
 
-    objc_storeStrong(&self->_releaseNotes, a3);
-    v10 = [v6 changeNotes];
+    objc_storeStrong(&self->_releaseNotes, history);
+    changeNotes = [v6 changeNotes];
     updateDescription = self->_updateDescription;
-    self->_updateDescription = v10;
+    self->_updateDescription = changeNotes;
   }
 
   else

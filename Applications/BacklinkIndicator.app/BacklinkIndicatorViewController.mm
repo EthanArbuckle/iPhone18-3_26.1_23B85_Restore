@@ -3,7 +3,7 @@
 - (BacklinkIndicatorViewControllerDelegate)delegate;
 - (void)_updateUI;
 - (void)actionButtonTapped;
-- (void)setUserActivity:(id)a3;
+- (void)setUserActivity:(id)activity;
 - (void)viewDidLoad;
 - (void)willAnimatePictureInPictureStop;
 @end
@@ -35,9 +35,9 @@
 
     v4 = v3;
     _Block_object_dispose(&v10, 8);
-    v5 = [v3 shared];
+    shared = [v3 shared];
     previewProvider = v2->_previewProvider;
-    v2->_previewProvider = v5;
+    v2->_previewProvider = shared;
   }
 
   return v2;
@@ -49,42 +49,42 @@
   v30.super_class = BacklinkIndicatorViewController;
   [(BacklinkIndicatorViewController *)&v30 viewDidLoad];
   v3 = +[UIColor systemBackgroundColor];
-  v4 = [(BacklinkIndicatorViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  view = [(BacklinkIndicatorViewController *)self view];
+  [view setBackgroundColor:v3];
 
   v5 = objc_alloc_init(UIImageView);
   [(BacklinkIndicatorViewController *)self setImageView:v5];
 
-  v6 = [(BacklinkIndicatorViewController *)self imageView];
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
+  imageView = [(BacklinkIndicatorViewController *)self imageView];
+  [imageView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v7 = [(BacklinkIndicatorViewController *)self view];
-  v8 = [(BacklinkIndicatorViewController *)self imageView];
-  [v7 addSubview:v8];
+  view2 = [(BacklinkIndicatorViewController *)self view];
+  imageView2 = [(BacklinkIndicatorViewController *)self imageView];
+  [view2 addSubview:imageView2];
 
-  v29 = [(BacklinkIndicatorViewController *)self imageView];
-  v27 = [v29 topAnchor];
-  v28 = [(BacklinkIndicatorViewController *)self view];
-  v26 = [v28 topAnchor];
-  v25 = [v27 constraintEqualToAnchor:v26];
+  imageView3 = [(BacklinkIndicatorViewController *)self imageView];
+  topAnchor = [imageView3 topAnchor];
+  view3 = [(BacklinkIndicatorViewController *)self view];
+  topAnchor2 = [view3 topAnchor];
+  v25 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v31[0] = v25;
-  v24 = [(BacklinkIndicatorViewController *)self imageView];
-  v22 = [v24 leadingAnchor];
-  v23 = [(BacklinkIndicatorViewController *)self view];
-  v21 = [v23 leadingAnchor];
-  v20 = [v22 constraintEqualToAnchor:v21];
+  imageView4 = [(BacklinkIndicatorViewController *)self imageView];
+  leadingAnchor = [imageView4 leadingAnchor];
+  view4 = [(BacklinkIndicatorViewController *)self view];
+  leadingAnchor2 = [view4 leadingAnchor];
+  v20 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v31[1] = v20;
-  v19 = [(BacklinkIndicatorViewController *)self imageView];
-  v18 = [v19 trailingAnchor];
-  v9 = [(BacklinkIndicatorViewController *)self view];
-  v10 = [v9 trailingAnchor];
-  v11 = [v18 constraintEqualToAnchor:v10];
+  imageView5 = [(BacklinkIndicatorViewController *)self imageView];
+  trailingAnchor = [imageView5 trailingAnchor];
+  view5 = [(BacklinkIndicatorViewController *)self view];
+  trailingAnchor2 = [view5 trailingAnchor];
+  v11 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v31[2] = v11;
-  v12 = [(BacklinkIndicatorViewController *)self imageView];
-  v13 = [v12 bottomAnchor];
-  v14 = [(BacklinkIndicatorViewController *)self view];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15];
+  imageView6 = [(BacklinkIndicatorViewController *)self imageView];
+  bottomAnchor = [imageView6 bottomAnchor];
+  view6 = [(BacklinkIndicatorViewController *)self view];
+  bottomAnchor2 = [view6 bottomAnchor];
+  v16 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v31[3] = v16;
   v17 = [NSArray arrayWithObjects:v31 count:4];
   [NSLayoutConstraint activateConstraints:v17];
@@ -92,32 +92,32 @@
   [(BacklinkIndicatorViewController *)self _updateUI];
 }
 
-- (void)setUserActivity:(id)a3
+- (void)setUserActivity:(id)activity
 {
-  v5 = a3;
-  if (self->_userActivity != v5)
+  activityCopy = activity;
+  if (self->_userActivity != activityCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_userActivity, a3);
+    v6 = activityCopy;
+    objc_storeStrong(&self->_userActivity, activity);
     [(BacklinkIndicatorViewController *)self _updateUI];
-    v5 = v6;
+    activityCopy = v6;
   }
 }
 
 - (void)_updateUI
 {
-  v3 = [(BacklinkIndicatorViewController *)self viewIfLoaded];
+  viewIfLoaded = [(BacklinkIndicatorViewController *)self viewIfLoaded];
 
-  if (v3)
+  if (viewIfLoaded)
   {
-    v4 = [(BacklinkIndicatorViewController *)self userActivity];
+    userActivity = [(BacklinkIndicatorViewController *)self userActivity];
 
-    if (v4)
+    if (userActivity)
     {
-      v5 = [(BacklinkIndicatorViewController *)self previewProvider];
-      v6 = [(BacklinkIndicatorViewController *)self userActivity];
+      previewProvider = [(BacklinkIndicatorViewController *)self previewProvider];
+      userActivity2 = [(BacklinkIndicatorViewController *)self userActivity];
       v18 = 0;
-      v7 = [v5 previewForUserActivity:v6 error:&v18];
+      v7 = [previewProvider previewForUserActivity:userActivity2 error:&v18];
       v8 = v18;
 
       if (v8)
@@ -160,10 +160,10 @@
         v14 = sub_100000DF0();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = [(BacklinkIndicatorViewController *)self userActivity];
-          v16 = [v15 _syLoggableDescription];
+          userActivity3 = [(BacklinkIndicatorViewController *)self userActivity];
+          _syLoggableDescription = [userActivity3 _syLoggableDescription];
           LODWORD(buf) = 138412290;
-          *(&buf + 4) = v16;
+          *(&buf + 4) = _syLoggableDescription;
           _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "found no preview for user activity: %@", &buf, 0xCu);
         }
       }
@@ -174,30 +174,30 @@
       v13 = 0;
     }
 
-    v17 = [(BacklinkIndicatorViewController *)self imageView];
-    [v17 setImage:v13];
+    imageView = [(BacklinkIndicatorViewController *)self imageView];
+    [imageView setImage:v13];
   }
 }
 
 - (void)actionButtonTapped
 {
-  v3 = [(BacklinkIndicatorViewController *)self delegate];
+  delegate = [(BacklinkIndicatorViewController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(BacklinkIndicatorViewController *)self delegate];
-    [v4 backlinkIndicatorViewControllerDidReceiveTap:self];
+    delegate2 = [(BacklinkIndicatorViewController *)self delegate];
+    [delegate2 backlinkIndicatorViewControllerDidReceiveTap:self];
   }
 }
 
 - (void)willAnimatePictureInPictureStop
 {
-  v3 = [(BacklinkIndicatorViewController *)self delegate];
+  delegate = [(BacklinkIndicatorViewController *)self delegate];
 
-  if (v3)
+  if (delegate)
   {
-    v4 = [(BacklinkIndicatorViewController *)self delegate];
-    [v4 backlinkIndicatorViewControllerWillDismiss:self];
+    delegate2 = [(BacklinkIndicatorViewController *)self delegate];
+    [delegate2 backlinkIndicatorViewControllerWillDismiss:self];
   }
 }
 

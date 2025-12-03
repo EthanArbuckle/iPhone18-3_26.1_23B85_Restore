@@ -1,12 +1,12 @@
 @interface MCPOIBusynessData
 + (id)cacheFileURL;
-+ (id)readLastFromDisk:(id *)a3;
++ (id)readLastFromDisk:(id *)disk;
 - ($F24F406B2B787EFB06265DBA3D28CBD5)leechedGEOCoordinate2D;
-- (MCPOIBusynessData)initWithCoder:(id)a3;
-- (MCPOIBusynessData)initWithLocation:(id)a3 visit:(id)a4;
+- (MCPOIBusynessData)initWithCoder:(id)coder;
+- (MCPOIBusynessData)initWithLocation:(id)location visit:(id)visit;
 - (id)description;
 - (id)leechedGEOLocation;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 - (void)writeToDisk;
 @end
 
@@ -15,8 +15,8 @@
 + (id)cacheFileURL
 {
   v2 = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, 1uLL, 1);
-  v3 = [v2 firstObject];
-  v4 = [v3 stringByAppendingPathComponent:@"com.apple.geocorrectiond"];
+  firstObject = [v2 firstObject];
+  v4 = [firstObject stringByAppendingPathComponent:@"com.apple.geocorrectiond"];
 
   v14 = 0;
   v5 = +[NSFileManager defaultManager];
@@ -57,26 +57,26 @@ LABEL_8:
   return v10;
 }
 
-- (MCPOIBusynessData)initWithLocation:(id)a3 visit:(id)a4
+- (MCPOIBusynessData)initWithLocation:(id)location visit:(id)visit
 {
-  v7 = a3;
-  v8 = a4;
+  locationCopy = location;
+  visitCopy = visit;
   v12.receiver = self;
   v12.super_class = MCPOIBusynessData;
   v9 = [(MCPOIBusynessData *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_leechedLocation, a3);
-    objc_storeStrong(&v10->_visit, a4);
+    objc_storeStrong(&v9->_leechedLocation, location);
+    objc_storeStrong(&v10->_visit, visit);
   }
 
   return v10;
 }
 
-- (MCPOIBusynessData)initWithCoder:(id)a3
+- (MCPOIBusynessData)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = MCPOIBusynessData;
   v5 = [(MCPOIBusynessData *)&v12 init];
@@ -85,11 +85,11 @@ LABEL_8:
     goto LABEL_7;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"loc"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"loc"];
   leechedLocation = v5->_leechedLocation;
   v5->_leechedLocation = v6;
 
-  [v4 decodeDoubleForKey:@"ts"];
+  [coderCopy decodeDoubleForKey:@"ts"];
   v5->_uploadedTimestamp = v8;
   if (v5->_leechedLocation && v8 > 1.0)
   {
@@ -105,30 +105,30 @@ LABEL_7:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   leechedLocation = self->_leechedLocation;
-  v5 = a3;
-  [v5 encodeObject:leechedLocation forKey:@"loc"];
-  [v5 encodeDouble:@"ts" forKey:self->_uploadedTimestamp];
+  coderCopy = coder;
+  [coderCopy encodeObject:leechedLocation forKey:@"loc"];
+  [coderCopy encodeDouble:@"ts" forKey:self->_uploadedTimestamp];
 }
 
-+ (id)readLastFromDisk:(id *)a3
++ (id)readLastFromDisk:(id *)disk
 {
   v4 = +[GEOKeyBagNotification sharedObject];
   v5 = [v4 canAccessFilesWithProtection:1];
 
   if (v5)
   {
-    v6 = [objc_opt_class() cacheFileURL];
+    cacheFileURL = [objc_opt_class() cacheFileURL];
     v7 = +[NSFileManager defaultManager];
-    v8 = [v6 path];
-    v9 = [v7 fileExistsAtPath:v8];
+    path = [cacheFileURL path];
+    v9 = [v7 fileExistsAtPath:path];
 
     if (v9)
     {
       v22 = 0;
-      v10 = [[NSData alloc] initWithContentsOfURL:v6 options:0 error:&v22];
+      v10 = [[NSData alloc] initWithContentsOfURL:cacheFileURL options:0 error:&v22];
       v11 = v22;
       v12 = v11;
       if (!v10 || v11)
@@ -137,17 +137,17 @@ LABEL_7:
         if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v24 = v6;
+          v24 = cacheFileURL;
           v25 = 2112;
           v26 = v12;
           _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "Failed read %@: %@", buf, 0x16u);
         }
 
-        if (a3)
+        if (disk)
         {
           v19 = v12;
           v16 = 0;
-          *a3 = v12;
+          *disk = v12;
         }
 
         else
@@ -168,7 +168,7 @@ LABEL_7:
           if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
           {
             *buf = 138412546;
-            v24 = v6;
+            v24 = cacheFileURL;
             v25 = 2112;
             v26 = v12;
             _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_ERROR, "Failed unarchive %@: %@", buf, 0x16u);
@@ -198,7 +198,7 @@ LABEL_7:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v24 = v6;
+        v24 = cacheFileURL;
         _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEBUG, "Last location does not exist at %@", buf, 0xCu);
       }
 
@@ -215,10 +215,10 @@ LABEL_7:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "Refusing to read last location, device is not unlocked", buf, 2u);
     }
 
-    if (a3)
+    if (disk)
     {
       [NSError errorWithDomain:NSCocoaErrorDomain code:257 userInfo:0];
-      *a3 = v16 = 0;
+      *disk = v16 = 0;
     }
 
     else
@@ -238,7 +238,7 @@ LABEL_7:
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138477827;
-      v14 = self;
+      selfCopy4 = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEBUG, "Already wrote %{private}@", buf, 0xCu);
     }
   }
@@ -261,9 +261,9 @@ LABEL_7:
 
     if (v6)
     {
-      v7 = [objc_opt_class() cacheFileURL];
+      cacheFileURL = [objc_opt_class() cacheFileURL];
       v11 = 0;
-      v8 = [v4 writeToURL:v7 options:0x20000000 error:&v11];
+      v8 = [v4 writeToURL:cacheFileURL options:0x20000000 error:&v11];
       v3 = v11;
       v9 = GEOGetPOIBusynessLog();
       v10 = v9;
@@ -272,9 +272,9 @@ LABEL_7:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           *buf = 138478339;
-          v14 = self;
+          selfCopy4 = self;
           v15 = 2112;
-          v16 = v7;
+          v16 = cacheFileURL;
           v17 = 2112;
           v18 = v3;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Failed to write %{private}@ to %@: %@", buf, 0x20u);
@@ -286,7 +286,7 @@ LABEL_7:
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
         {
           *buf = 138477827;
-          v14 = self;
+          selfCopy4 = self;
           _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEBUG, "Successfuly wrote %{private}@", buf, 0xCu);
         }
 
@@ -297,14 +297,14 @@ LABEL_7:
     else
     {
       v3 = v5;
-      v7 = GEOGetPOIBusynessLog();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+      cacheFileURL = GEOGetPOIBusynessLog();
+      if (os_log_type_enabled(cacheFileURL, OS_LOG_TYPE_ERROR))
       {
         *buf = 138478083;
-        v14 = self;
+        selfCopy4 = self;
         v15 = 2112;
         v16 = v3;
-        _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to archive %{private}@: %@", buf, 0x16u);
+        _os_log_impl(&_mh_execute_header, cacheFileURL, OS_LOG_TYPE_ERROR, "Failed to archive %{private}@: %@", buf, 0x16u);
       }
     }
   }
@@ -320,19 +320,19 @@ LABEL_7:
   [v5 setHorizontalAccuracy:?];
   [(CLLocation *)self->_leechedLocation verticalAccuracy];
   [v5 setVerticalAccuracy:?];
-  v7 = [(CLLocation *)self->_leechedLocation timestamp];
-  [v7 timeIntervalSinceReferenceDate];
+  timestamp = [(CLLocation *)self->_leechedLocation timestamp];
+  [timestamp timeIntervalSinceReferenceDate];
   [v5 setTimestamp:?];
 
-  v8 = [(CLLocation *)self->_leechedLocation referenceFrame];
-  if (v8 == 1)
+  referenceFrame = [(CLLocation *)self->_leechedLocation referenceFrame];
+  if (referenceFrame == 1)
   {
     v9 = 1;
   }
 
   else
   {
-    v9 = 2 * (v8 == 2);
+    v9 = 2 * (referenceFrame == 2);
   }
 
   [v5 setReferenceFrame:v9];

@@ -1,26 +1,26 @@
 @interface MRUShadowView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 - (CGSize)offset;
-- (MRUShadowView)initWithFrame:(CGRect)a3;
-- (void)setColor:(id)a3;
-- (void)setCompositingFilter:(id)a3;
-- (void)setOffset:(CGSize)a3;
-- (void)setOpacity:(float)a3;
-- (void)setRadius:(double)a3;
+- (MRUShadowView)initWithFrame:(CGRect)frame;
+- (void)setColor:(id)color;
+- (void)setCompositingFilter:(id)filter;
+- (void)setOffset:(CGSize)offset;
+- (void)setOpacity:(float)opacity;
+- (void)setRadius:(double)radius;
 @end
 
 @implementation MRUShadowView
 
-- (MRUShadowView)initWithFrame:(CGRect)a3
+- (MRUShadowView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = MRUShadowView;
-  v3 = [(MRUShadowView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MRUShadowView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(MRUShadowView *)v3 layer];
-    [v5 setShadowPathIsBounds:1];
+    layer = [(MRUShadowView *)v3 layer];
+    [layer setShadowPathIsBounds:1];
 
     [(MRUShadowView *)v4 setUserInteractionEnabled:0];
   }
@@ -28,55 +28,55 @@
   return v4;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  v5 = a3;
-  v6 = [a3 CGColor];
-  v7 = [(MRUShadowView *)self layer];
-  [v7 setShadowColor:v6];
+  colorCopy = color;
+  cGColor = [color CGColor];
+  layer = [(MRUShadowView *)self layer];
+  [layer setShadowColor:cGColor];
 }
 
-- (void)setCompositingFilter:(id)a3
+- (void)setCompositingFilter:(id)filter
 {
-  v4 = a3;
-  v5 = [(MRUShadowView *)self layer];
-  [v5 setCompositingFilter:v4];
+  filterCopy = filter;
+  layer = [(MRUShadowView *)self layer];
+  [layer setCompositingFilter:filterCopy];
 }
 
-- (void)setOffset:(CGSize)a3
+- (void)setOffset:(CGSize)offset
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(MRUShadowView *)self layer];
-  [v5 setShadowOffset:{width, height}];
+  height = offset.height;
+  width = offset.width;
+  layer = [(MRUShadowView *)self layer];
+  [layer setShadowOffset:{width, height}];
 }
 
-- (void)setRadius:(double)a3
+- (void)setRadius:(double)radius
 {
-  v4 = [(MRUShadowView *)self layer];
-  [v4 setShadowRadius:a3];
+  layer = [(MRUShadowView *)self layer];
+  [layer setShadowRadius:radius];
 }
 
-- (void)setOpacity:(float)a3
+- (void)setOpacity:(float)opacity
 {
-  v5 = [(MRUShadowView *)self layer];
-  *&v4 = a3;
-  [v5 setShadowOpacity:v4];
+  layer = [(MRUShadowView *)self layer];
+  *&v4 = opacity;
+  [layer setShadowOpacity:v4];
 }
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v7.receiver = self;
   v7.super_class = MRUShadowView;
-  if ([(MRUShadowView *)&v7 _shouldAnimatePropertyWithKey:v4])
+  if ([(MRUShadowView *)&v7 _shouldAnimatePropertyWithKey:keyCopy])
   {
     v5 = 1;
   }
 
   else
   {
-    v5 = [v4 hasPrefix:@"shadow"];
+    v5 = [keyCopy hasPrefix:@"shadow"];
   }
 
   return v5;

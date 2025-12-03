@@ -4,40 +4,40 @@
 - (BOOL)handleHomeButtonPressed;
 - (BOOL)isIssuerInstallmentsRepayment;
 - (BOOL)supportsSecondaryViewController;
-- (PKPaymentAuthorizationPresentationCoordinator)initWithContext:(id)a3 delegate:(id)a4;
+- (PKPaymentAuthorizationPresentationCoordinator)initWithContext:(id)context delegate:(id)delegate;
 - (UIViewController)primaryPresentingViewController;
 - (UIViewController)secondaryPresentingViewController;
-- (id)_createPaymentInterfaceConfigurationWithRelevantPassID:(id)a3;
-- (id)_springboardButtonTagForEvent:(unint64_t)a3;
-- (id)createConnectionToEndpoint:(id)a3;
+- (id)_createPaymentInterfaceConfigurationWithRelevantPassID:(id)d;
+- (id)_springboardButtonTagForEvent:(unint64_t)event;
+- (id)createConnectionToEndpoint:(id)endpoint;
 - (unint64_t)supportedInterfaceOrientations;
-- (void)_beginSubjectReporting:(id)a3;
-- (void)_canPresentPaymentRequest:(id)a3 completion:(id)a4;
-- (void)_checkEligibilityForDynamicButtonWithCompletion:(id)a3;
+- (void)_beginSubjectReporting:(id)reporting;
+- (void)_canPresentPaymentRequest:(id)request completion:(id)completion;
+- (void)_checkEligibilityForDynamicButtonWithCompletion:(id)completion;
 - (void)_endAnalyticsReporting;
-- (void)_handlePaymentRequestPresentationResultType:(int64_t)a3 relevantUniqueID:(id)a4;
-- (void)_openApplication:(id)a3;
-- (void)_presentActivatingPassAlertWithRelevantUniqueID:(id)a3;
+- (void)_handlePaymentRequestPresentationResultType:(int64_t)type relevantUniqueID:(id)d;
+- (void)_openApplication:(id)application;
+- (void)_presentActivatingPassAlertWithRelevantUniqueID:(id)d;
 - (void)_presentAddCardAlert;
-- (void)_presentAlertController:(id)a3;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 actionTitle:(id)a5 actionHandler:(id)a6;
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 cancelTitle:(id)a5 actionTitle:(id)a6 actionHandler:(id)a7 finalError:(id)a8;
-- (void)_presentAwaitingRemoteNetworkPaymentRequestWithRelevantUniqueID:(id)a3;
+- (void)_presentAlertController:(id)controller;
+- (void)_presentAlertWithTitle:(id)title message:(id)message actionTitle:(id)actionTitle actionHandler:(id)handler;
+- (void)_presentAlertWithTitle:(id)title message:(id)message cancelTitle:(id)cancelTitle actionTitle:(id)actionTitle actionHandler:(id)handler finalError:(id)error;
+- (void)_presentAwaitingRemoteNetworkPaymentRequestWithRelevantUniqueID:(id)d;
 - (void)_presentEnrollAccessibilityIntentAlert;
 - (void)_presentInvalidAlert;
-- (void)_presentLostModeAlertWithRelevantUniqueID:(id)a3;
-- (void)_presentNextStepDismissingCurrentInterface:(BOOL)a3 withDefaultPassID:(id)a4;
-- (void)_presentOnboardingForContext:(int64_t)a3;
-- (void)_presentPassNotSupportedAlertWithRelevantUniqueID:(id)a3;
-- (void)_presentPaymentAuthorizationWithRelevantUniqueID:(id)a3;
-- (void)_presentPaymentInterface:(id)a3 completion:(id)a4;
+- (void)_presentLostModeAlertWithRelevantUniqueID:(id)d;
+- (void)_presentNextStepDismissingCurrentInterface:(BOOL)interface withDefaultPassID:(id)d;
+- (void)_presentOnboardingForContext:(int64_t)context;
+- (void)_presentPassNotSupportedAlertWithRelevantUniqueID:(id)d;
+- (void)_presentPaymentAuthorizationWithRelevantUniqueID:(id)d;
+- (void)_presentPaymentInterface:(id)interface completion:(id)completion;
 - (void)_presentPeerPaymentIdentityVerification;
 - (void)_presentPeerPaymentIdentityVerificationAlert;
-- (void)_presentVerifyPassAlertWithRelevantUniqueID:(id)a3;
+- (void)_presentVerifyPassAlertWithRelevantUniqueID:(id)d;
 - (void)_presentWalletUninstalledAlert;
 - (void)_reportAddCardAlertPresentedAnalytics;
-- (void)_reportConnectionEstablishedAnalyticsForConnection:(id)a3;
-- (void)_reportEncounteredAuthorizationEvent:(unint64_t)a3;
+- (void)_reportConnectionEstablishedAnalyticsForConnection:(id)connection;
+- (void)_reportEncounteredAuthorizationEvent:(unint64_t)event;
 - (void)_reportPaymentPassMissingAnalytics;
 - (void)_reportPaymentRequestDetails;
 - (void)_reportUnsupportedPaymentPassAnalytics;
@@ -45,39 +45,39 @@
 - (void)_startAnalyticsReporting;
 - (void)_startSuppressingNotificationsIfNecessary;
 - (void)_stopSuppressingNotifications;
-- (void)authorizationDidAuthorizeApplePayTrustSignature:(id)a3;
+- (void)authorizationDidAuthorizeApplePayTrustSignature:(id)signature;
 - (void)authorizationDidAuthorizeContext;
-- (void)authorizationDidAuthorizePayment:(id)a3;
-- (void)authorizationDidAuthorizePeerPaymentQuote:(id)a3;
-- (void)authorizationDidAuthorizePurchase:(id)a3;
-- (void)authorizationDidChangeCouponCode:(id)a3;
-- (void)authorizationDidFinishWithError:(id)a3;
-- (void)authorizationDidFulfillPaymentRequest:(id)a3 completion:(id)a4;
+- (void)authorizationDidAuthorizePayment:(id)payment;
+- (void)authorizationDidAuthorizePeerPaymentQuote:(id)quote;
+- (void)authorizationDidAuthorizePurchase:(id)purchase;
+- (void)authorizationDidChangeCouponCode:(id)code;
+- (void)authorizationDidFinishWithError:(id)error;
+- (void)authorizationDidFulfillPaymentRequest:(id)request completion:(id)completion;
 - (void)authorizationDidPresent;
 - (void)authorizationDidRejectPaymentRequestPromise;
 - (void)authorizationDidRequestMerchantSession;
-- (void)authorizationDidSelectPaymentMethod:(id)a3;
-- (void)authorizationDidSelectShippingAddress:(id)a3;
-- (void)authorizationDidSelectShippingMethod:(id)a3;
-- (void)authorizationDidUpdateAccountServicePaymentMethod:(id)a3;
+- (void)authorizationDidSelectPaymentMethod:(id)method;
+- (void)authorizationDidSelectShippingAddress:(id)address;
+- (void)authorizationDidSelectShippingMethod:(id)method;
+- (void)authorizationDidUpdateAccountServicePaymentMethod:(id)method;
 - (void)authorizationWillStart;
 - (void)dealloc;
-- (void)didEncounterAuthorizationEvent:(unint64_t)a3;
-- (void)dismissBothPresentationsAnimated:(BOOL)a3 completion:(id)a4;
-- (void)dismissPrimaryViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)dismissSecondaryViewControllerAnimated:(BOOL)a3 completion:(id)a4;
-- (void)dismissWithReason:(unint64_t)a3 completion:(id)a4;
+- (void)didEncounterAuthorizationEvent:(unint64_t)event;
+- (void)dismissBothPresentationsAnimated:(BOOL)animated completion:(id)completion;
+- (void)dismissPrimaryViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)dismissSecondaryViewControllerAnimated:(BOOL)animated completion:(id)completion;
+- (void)dismissWithReason:(unint64_t)reason completion:(id)completion;
 - (void)invalidate;
-- (void)openConnection:(id)a3;
-- (void)paymentAuthorizationOnboardingDidFinishWithError:(id)a3;
-- (void)paymentAuthorizationProvisioningDidFinishWithPass:(id)a3;
-- (void)presentAdditionalInAppPaymentWithContext:(id)a3 completion:(id)a4;
-- (void)presentPaymentProvisioningDismissingAfterwards:(BOOL)a3;
-- (void)presentSecondaryViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
+- (void)openConnection:(id)connection;
+- (void)paymentAuthorizationOnboardingDidFinishWithError:(id)error;
+- (void)paymentAuthorizationProvisioningDidFinishWithPass:(id)pass;
+- (void)presentAdditionalInAppPaymentWithContext:(id)context completion:(id)completion;
+- (void)presentPaymentProvisioningDismissingAfterwards:(BOOL)afterwards;
+- (void)presentSecondaryViewController:(id)controller animated:(BOOL)animated completion:(id)completion;
 - (void)start;
 - (void)startAllowingAdditionalPaymentPresentation;
-- (void)updatePrimaryPresentingViewController:(id)a3 isInitialPresentation:(BOOL)a4;
-- (void)updateSecondaryPresentingViewController:(id)a3;
+- (void)updatePrimaryPresentingViewController:(id)controller isInitialPresentation:(BOOL)presentation;
+- (void)updateSecondaryPresentingViewController:(id)controller;
 @end
 
 @implementation PKPaymentAuthorizationPresentationCoordinator
@@ -95,18 +95,18 @@
   }
 }
 
-- (PKPaymentAuthorizationPresentationCoordinator)initWithContext:(id)a3 delegate:(id)a4
+- (PKPaymentAuthorizationPresentationCoordinator)initWithContext:(id)context delegate:(id)delegate
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  delegateCopy = delegate;
   v17.receiver = self;
   v17.super_class = PKPaymentAuthorizationPresentationCoordinator;
   v9 = [(PKPaymentAuthorizationPresentationCoordinator *)&v17 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_context, a3);
-    objc_storeWeak(&v10->_delegate, v8);
+    objc_storeStrong(&v9->_context, context);
+    objc_storeWeak(&v10->_delegate, delegateCopy);
     v11 = objc_alloc_init(MEMORY[0x1E69B8960]);
     inAppPaymentService = v10->_inAppPaymentService;
     v10->_inAppPaymentService = v11;
@@ -117,8 +117,8 @@
     v10->_defaultService = v13;
 
     [(PKPaymentAuthorizationDefaultService *)v10->_defaultService setPresenter:v10];
-    v15 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v15 addObserver:v10 selector:sel__openApplication_ name:@"PKOpenApplicationNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v10 selector:sel__openApplication_ name:@"PKOpenApplicationNotification" object:0];
   }
 
   return v10;
@@ -132,29 +132,29 @@
   [(PKPaymentAuthorizationPresentationCoordinator *)&v3 dealloc];
 }
 
-- (void)updatePrimaryPresentingViewController:(id)a3 isInitialPresentation:(BOOL)a4
+- (void)updatePrimaryPresentingViewController:(id)controller isInitialPresentation:(BOOL)presentation
 {
-  self->_isPrimaryInitialViewController = a4;
-  objc_storeWeak(&self->_primaryPresentingViewController, a3);
+  self->_isPrimaryInitialViewController = presentation;
+  objc_storeWeak(&self->_primaryPresentingViewController, controller);
 
   [(PKPaymentAuthorizationPresentationCoordinator *)self start];
 }
 
-- (void)updateSecondaryPresentingViewController:(id)a3
+- (void)updateSecondaryPresentingViewController:(id)controller
 {
-  v7 = a3;
-  objc_storeWeak(&self->_secondaryPresentingViewController, v7);
-  v4 = v7;
-  if (v7)
+  controllerCopy = controller;
+  objc_storeWeak(&self->_secondaryPresentingViewController, controllerCopy);
+  v4 = controllerCopy;
+  if (controllerCopy)
   {
     pendingSecondaryViewController = self->_pendingSecondaryViewController;
     if (pendingSecondaryViewController)
     {
-      [v7 presentViewController:pendingSecondaryViewController animated:1 completion:0];
+      [controllerCopy presentViewController:pendingSecondaryViewController animated:1 completion:0];
       v6 = self->_pendingSecondaryViewController;
       self->_pendingSecondaryViewController = 0;
 
-      v4 = v7;
+      v4 = controllerCopy;
     }
   }
 }
@@ -171,13 +171,13 @@
   [(PKPaymentAuthorizationPresentationCoordinator *)self _startAnalyticsReporting];
   [(PKPaymentAuthorizationPresentationCoordinator *)self _startSuppressingNotificationsIfNecessary];
   inAppPaymentService = self->_inAppPaymentService;
-  v5 = [(PKInAppPaymentPresentationHostContext *)self->_context identifier];
+  identifier = [(PKInAppPaymentPresentationHostContext *)self->_context identifier];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __54__PKPaymentAuthorizationPresentationCoordinator_start__block_invoke;
   v6[3] = &unk_1E801F9D8;
   v6[4] = self;
-  [(PKInAppPaymentService *)inAppPaymentService retrievePaymentListenerEndpointForHostIdentifier:v5 completion:v6];
+  [(PKInAppPaymentService *)inAppPaymentService retrievePaymentListenerEndpointForHostIdentifier:identifier completion:v6];
 }
 
 void __54__PKPaymentAuthorizationPresentationCoordinator_start__block_invoke(uint64_t a1, char a2, void *a3)
@@ -307,11 +307,11 @@ void __54__PKPaymentAuthorizationPresentationCoordinator_start__block_invoke_2(u
     hostConnection = self->_hostConnection;
     self->_hostConnection = 0;
 
-    v12 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v12 pkui_resetSharedRootAuthenticationContext];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] pkui_resetSharedRootAuthenticationContext];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 removeObserver:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     [(PKPaymentAuthorizationPresentationCoordinator *)self _endAnalyticsReporting];
     [(PKInAppPaymentService *)self->_inAppPaymentService unregisterInterfaceAvailableForAdditionalPaymentRequestWithCompletion:0];
@@ -365,10 +365,10 @@ void __90__PKPaymentAuthorizationPresentationCoordinator_stopAllowingAdditionalP
   }
 }
 
-- (id)createConnectionToEndpoint:(id)a3
+- (id)createConnectionToEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:v4];
+  endpointCopy = endpoint;
+  v5 = [objc_alloc(MEMORY[0x1E696B0B8]) initWithListenerEndpoint:endpointCopy];
   v6 = PKPaymentAuthorizationHostInterface();
   [v5 setRemoteObjectInterface:v6];
 
@@ -376,8 +376,8 @@ void __90__PKPaymentAuthorizationPresentationCoordinator_stopAllowingAdditionalP
   [v5 setExportedInterface:v7];
 
   v8 = [PKPaymentAuthorizationServiceProxy alloc];
-  v9 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-  v10 = [(PKPaymentAuthorizationServiceProxy *)v8 initWithConnection:v5 paymentRequest:v9];
+  paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  v10 = [(PKPaymentAuthorizationServiceProxy *)v8 initWithConnection:v5 paymentRequest:paymentRequest];
 
   [(PKPaymentAuthorizationServiceProxy *)v10 setDelegate:self->_defaultService];
   [v5 setExportedObject:v10];
@@ -449,20 +449,20 @@ void __76__PKPaymentAuthorizationPresentationCoordinator_createConnectionToEndpo
   [WeakRetained invalidate];
 }
 
-- (void)openConnection:(id)a3
+- (void)openConnection:(id)connection
 {
-  v4 = a3;
-  [v4 resume];
+  connectionCopy = connection;
+  [connectionCopy resume];
   objc_initWeak(&location, self);
-  v5 = [v4 remoteObjectProxy];
+  remoteObjectProxy = [connectionCopy remoteObjectProxy];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __64__PKPaymentAuthorizationPresentationCoordinator_openConnection___block_invoke;
   v7[3] = &unk_1E80110E0;
   objc_copyWeak(&v9, &location);
-  v6 = v4;
+  v6 = connectionCopy;
   v8 = v6;
-  [v5 handleConnectionDidOpenWithCompletion:v7];
+  [remoteObjectProxy handleConnectionDidOpenWithCompletion:v7];
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -499,12 +499,12 @@ void __64__PKPaymentAuthorizationPresentationCoordinator_openConnection___block_
   }
 }
 
-- (void)_beginSubjectReporting:(id)a3
+- (void)_beginSubjectReporting:(id)reporting
 {
-  v8 = a3;
-  v4 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-  v5 = [v4 clientAnalyticsParameters];
-  v6 = [v5 objectForKey:*MEMORY[0x1E69BC170]];
+  reportingCopy = reporting;
+  paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  clientAnalyticsParameters = [paymentRequest clientAnalyticsParameters];
+  v6 = [clientAnalyticsParameters objectForKey:*MEMORY[0x1E69BC170]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -518,20 +518,20 @@ void __64__PKPaymentAuthorizationPresentationCoordinator_openConnection___block_
 
   if (v7)
   {
-    [MEMORY[0x1E69B8540] beginSubjectReporting:v8 withArchivedParent:v7];
+    [MEMORY[0x1E69B8540] beginSubjectReporting:reportingCopy withArchivedParent:v7];
   }
 
   else
   {
-    [MEMORY[0x1E69B8540] beginSubjectReporting:v8];
+    [MEMORY[0x1E69B8540] beginSubjectReporting:reportingCopy];
   }
 }
 
 - (void)_startAnalyticsReporting
 {
-  v3 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-  v4 = [v3 clientAnalyticsParameters];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BC180]];
+  paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  clientAnalyticsParameters = [paymentRequest clientAnalyticsParameters];
+  v5 = [clientAnalyticsParameters objectForKeyedSubscript:*MEMORY[0x1E69BC180]];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v7 = *MEMORY[0x1E69BB6E0];
@@ -552,9 +552,9 @@ void __64__PKPaymentAuthorizationPresentationCoordinator_openConnection___block_
 - (void)_reportPaymentRequestDetails
 {
   v163 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-  v4 = [v3 clientAnalyticsParameters];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69BC180]];
+  paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  clientAnalyticsParameters = [paymentRequest clientAnalyticsParameters];
+  v5 = [clientAnalyticsParameters objectForKeyedSubscript:*MEMORY[0x1E69BC180]];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v7 = *MEMORY[0x1E69BB6E0];
@@ -573,104 +573,104 @@ void __64__PKPaymentAuthorizationPresentationCoordinator_openConnection___block_
   }
 
   v149 = v8;
-  v10 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  paymentRequest2 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
   v11 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:12];
-  v12 = [v10 supportedNetworks];
-  v13 = [v12 componentsJoinedByString:{@", "}];
+  supportedNetworks = [paymentRequest2 supportedNetworks];
+  v13 = [supportedNetworks componentsJoinedByString:{@", "}];
 
   [v11 setObject:v13 forKeyedSubscript:*MEMORY[0x1E69BADF8]];
-  v14 = [v10 requestType];
-  v150 = self;
-  if (v14 > 0xF)
+  requestType = [paymentRequest2 requestType];
+  selfCopy = self;
+  if (requestType > 0xF)
   {
     v15 = @"unknown";
   }
 
   else
   {
-    v15 = off_1E801FB10[v14];
+    v15 = off_1E801FB10[requestType];
   }
 
   [v11 setObject:v15 forKeyedSubscript:*MEMORY[0x1E69BAE00]];
-  v16 = [v10 merchantSession];
-  v17 = [v16 merchantIdentifier];
+  merchantSession = [paymentRequest2 merchantSession];
+  merchantIdentifier = [merchantSession merchantIdentifier];
 
   v18 = MEMORY[0x1E69BADE0];
-  if (v17)
+  if (merchantIdentifier)
   {
-    [v11 setObject:v17 forKeyedSubscript:*MEMORY[0x1E69BADE0]];
+    [v11 setObject:merchantIdentifier forKeyedSubscript:*MEMORY[0x1E69BADE0]];
   }
 
   else
   {
-    v19 = [v10 merchantIdentifier];
-    [v11 setObject:v19 forKeyedSubscript:*v18];
+    merchantIdentifier2 = [paymentRequest2 merchantIdentifier];
+    [v11 setObject:merchantIdentifier2 forKeyedSubscript:*v18];
   }
 
-  v20 = [v10 originatingURL];
+  originatingURL = [paymentRequest2 originatingURL];
 
-  if (v20)
+  if (originatingURL)
   {
-    v21 = [v10 originatingURL];
-    v22 = [v21 host];
-    [v11 setObject:v22 forKeyedSubscript:*MEMORY[0x1E69BADD8]];
+    originatingURL2 = [paymentRequest2 originatingURL];
+    host = [originatingURL2 host];
+    [v11 setObject:host forKeyedSubscript:*MEMORY[0x1E69BADD8]];
   }
 
-  v23 = [v10 countryCode];
-  if (v23)
+  countryCode = [paymentRequest2 countryCode];
+  if (countryCode)
   {
-    [v11 setObject:v23 forKeyedSubscript:*MEMORY[0x1E69BADD0]];
+    [v11 setObject:countryCode forKeyedSubscript:*MEMORY[0x1E69BADD0]];
   }
 
-  v147 = v23;
-  v148 = v17;
-  v24 = [v10 merchantSession];
-  v25 = [v24 operationalAnalyticsIdentifier];
+  v147 = countryCode;
+  v148 = merchantIdentifier;
+  merchantSession2 = [paymentRequest2 merchantSession];
+  operationalAnalyticsIdentifier = [merchantSession2 operationalAnalyticsIdentifier];
 
-  if (v25)
+  if (operationalAnalyticsIdentifier)
   {
-    [v11 setObject:v25 forKeyedSubscript:*MEMORY[0x1E69BAD98]];
+    [v11 setObject:operationalAnalyticsIdentifier forKeyedSubscript:*MEMORY[0x1E69BAD98]];
   }
 
-  v146 = v25;
-  v26 = [v10 requiredBillingContactFields];
-  v27 = [v26 allObjects];
-  v28 = [v27 componentsJoinedByString:{@", "}];
+  v146 = operationalAnalyticsIdentifier;
+  requiredBillingContactFields = [paymentRequest2 requiredBillingContactFields];
+  allObjects = [requiredBillingContactFields allObjects];
+  v28 = [allObjects componentsJoinedByString:{@", "}];
   [v11 setObject:v28 forKeyedSubscript:*MEMORY[0x1E69BAE48]];
 
-  v29 = [v10 requiredShippingContactFields];
-  v30 = [v29 allObjects];
-  v31 = [v30 componentsJoinedByString:{@", "}];
+  requiredShippingContactFields = [paymentRequest2 requiredShippingContactFields];
+  allObjects2 = [requiredShippingContactFields allObjects];
+  v31 = [allObjects2 componentsJoinedByString:{@", "}];
   [v11 setObject:v31 forKeyedSubscript:*MEMORY[0x1E69BAE50]];
 
-  v32 = [v10 billingContact];
+  billingContact = [paymentRequest2 billingContact];
   v33 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:4];
-  if (v32)
+  if (billingContact)
   {
-    v34 = [v32 postalAddress];
+    postalAddress = [billingContact postalAddress];
 
-    if (v34)
+    if (postalAddress)
     {
       [v33 addObject:@"post"];
     }
 
-    v35 = [v32 phoneNumber];
+    phoneNumber = [billingContact phoneNumber];
 
-    if (v35)
+    if (phoneNumber)
     {
       [v33 addObject:@"phone"];
     }
 
-    v36 = [v32 emailAddress];
+    emailAddress = [billingContact emailAddress];
 
-    if (v36)
+    if (emailAddress)
     {
       [v33 addObject:@"email"];
     }
 
-    v37 = [v32 name];
+    name = [billingContact name];
 
-    if (v37)
+    if (name)
     {
       [v33 addObject:@"name"];
     }
@@ -679,35 +679,35 @@ void __64__PKPaymentAuthorizationPresentationCoordinator_openConnection___block_
   v38 = [v33 componentsJoinedByString:{@", "}];
   [v11 setObject:v38 forKeyedSubscript:*MEMORY[0x1E69BADB0]];
 
-  v39 = [v10 shippingContact];
+  shippingContact = [paymentRequest2 shippingContact];
 
   [v33 removeAllObjects];
-  if (v39)
+  if (shippingContact)
   {
-    v40 = [v39 postalAddress];
+    postalAddress2 = [shippingContact postalAddress];
 
-    if (v40)
+    if (postalAddress2)
     {
       [v33 addObject:@"post"];
     }
 
-    v41 = [v39 phoneNumber];
+    phoneNumber2 = [shippingContact phoneNumber];
 
-    if (v41)
+    if (phoneNumber2)
     {
       [v33 addObject:@"phone"];
     }
 
-    v42 = [v39 emailAddress];
+    emailAddress2 = [shippingContact emailAddress];
 
-    if (v42)
+    if (emailAddress2)
     {
       [v33 addObject:@"email"];
     }
 
-    v43 = [v39 name];
+    name2 = [shippingContact name];
 
-    if (v43)
+    if (name2)
     {
       [v33 addObject:@"name"];
     }
@@ -716,9 +716,9 @@ void __64__PKPaymentAuthorizationPresentationCoordinator_openConnection___block_
   v44 = [v33 componentsJoinedByString:{@", "}];
   [v11 setObject:v44 forKeyedSubscript:*MEMORY[0x1E69BAE58]];
 
-  v45 = [v10 availableShippingMethods];
-  v46 = [v45 methods];
-  v47 = [v46 count];
+  availableShippingMethods = [paymentRequest2 availableShippingMethods];
+  methods = [availableShippingMethods methods];
+  v47 = [methods count];
 
   if (v47 <= 4)
   {
@@ -731,35 +731,35 @@ void __64__PKPaymentAuthorizationPresentationCoordinator_openConnection___block_
   }
 
   [v11 setObject:v48 forKeyedSubscript:*MEMORY[0x1E69BAE68]];
-  v49 = [v10 shippingType];
-  v50 = v49;
-  if (v49 > 3)
+  shippingType = [paymentRequest2 shippingType];
+  v50 = shippingType;
+  if (shippingType > 3)
   {
     v51 = @"unknown";
   }
 
   else
   {
-    v51 = off_1E801FB90[v49];
+    v51 = off_1E801FB90[shippingType];
   }
 
   [v11 setObject:v51 forKeyedSubscript:*MEMORY[0x1E69BAE78]];
   if ((v50 & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
-    v52 = [v39 postalAddress];
+    postalAddress3 = [shippingContact postalAddress];
     v53 = PKAnalyticsReportSwitchToggleResultValue();
     [v11 setObject:v53 forKeyedSubscript:*MEMORY[0x1E69BAE10]];
 
-    [v10 isShippingEditable];
+    [paymentRequest2 isShippingEditable];
     v54 = PKAnalyticsReportSwitchToggleResultValue();
     [v11 setObject:v54 forKeyedSubscript:*MEMORY[0x1E69BAE08]];
   }
 
-  v55 = [v45 methods];
-  v56 = [v55 count];
+  methods2 = [availableShippingMethods methods];
+  v56 = [methods2 count];
 
-  v145 = v45;
-  v151 = v39;
+  v145 = availableShippingMethods;
+  v151 = shippingContact;
   v152 = v33;
   if (v56)
   {
@@ -768,8 +768,8 @@ void __64__PKPaymentAuthorizationPresentationCoordinator_openConnection___block_
     v161 = 0u;
     v158 = 0u;
     v159 = 0u;
-    v57 = [v45 methods];
-    v58 = [v57 countByEnumeratingWithState:&v158 objects:v162 count:16];
+    methods3 = [availableShippingMethods methods];
+    v58 = [methods3 countByEnumeratingWithState:&v158 objects:v162 count:16];
     if (v58)
     {
       v59 = v58;
@@ -782,19 +782,19 @@ void __64__PKPaymentAuthorizationPresentationCoordinator_openConnection___block_
         {
           if (*v159 != v62)
           {
-            objc_enumerationMutation(v57);
+            objc_enumerationMutation(methods3);
           }
 
-          v64 = [*(*(&v158 + 1) + 8 * i) dateComponentsRange];
-          v65 = [v64 startDateComponents];
+          dateComponentsRange = [*(*(&v158 + 1) + 8 * i) dateComponentsRange];
+          startDateComponents = [dateComponentsRange startDateComponents];
 
-          v61 |= v65 != 0;
-          v66 = [v64 endDateComponents];
+          v61 |= startDateComponents != 0;
+          endDateComponents = [dateComponentsRange endDateComponents];
 
-          v60 |= v66 != 0;
+          v60 |= endDateComponents != 0;
         }
 
-        v59 = [v57 countByEnumeratingWithState:&v158 objects:v162 count:16];
+        v59 = [methods3 countByEnumeratingWithState:&v158 objects:v162 count:16];
       }
 
       while (v59);
@@ -806,16 +806,16 @@ void __64__PKPaymentAuthorizationPresentationCoordinator_openConnection___block_
     v68 = PKAnalyticsReportSwitchToggleResultValue();
     [v11 setObject:v68 forKeyedSubscript:*MEMORY[0x1E69BAE60]];
 
-    v39 = v151;
+    shippingContact = v151;
     v33 = v152;
     v48 = v143;
   }
 
-  v69 = [v10 currencyCode];
-  [v11 setObject:v69 forKeyedSubscript:*MEMORY[0x1E69BB350]];
+  currencyCode = [paymentRequest2 currencyCode];
+  [v11 setObject:currencyCode forKeyedSubscript:*MEMORY[0x1E69BB350]];
 
-  v70 = [v10 paymentSummaryItems];
-  v71 = [v70 count];
+  paymentSummaryItems = [paymentRequest2 paymentSummaryItems];
+  v71 = [paymentSummaryItems count];
 
   if (v71 <= 4)
   {
@@ -829,28 +829,28 @@ void __64__PKPaymentAuthorizationPresentationCoordinator_openConnection___block_
 
   v144 = v72;
   [v11 setObject:v72 forKeyedSubscript:*MEMORY[0x1E69BADE8]];
-  [v10 supportsCouponCode];
+  [paymentRequest2 supportsCouponCode];
   v73 = PKAnalyticsReportSwitchToggleResultValue();
   [v11 setObject:v73 forKeyedSubscript:*MEMORY[0x1E69BADC0]];
 
-  v74 = [v10 couponCode];
-  [v74 length];
+  couponCode = [paymentRequest2 couponCode];
+  [couponCode length];
 
   v75 = PKAnalyticsReportSwitchToggleResultValue();
   [v11 setObject:v75 forKeyedSubscript:*MEMORY[0x1E69BADB8]];
 
-  [v10 isMultiTokenRequest];
+  [paymentRequest2 isMultiTokenRequest];
   v76 = PKAnalyticsReportSwitchToggleResultValue();
   [v11 setObject:v76 forKeyedSubscript:*MEMORY[0x1E69BADF0]];
 
-  if ([v10 APIType] == 1)
+  if ([paymentRequest2 APIType] == 1)
   {
     v77 = MEMORY[0x1E69BB678];
   }
 
   else
   {
-    if ([v10 APIType] != 2)
+    if ([paymentRequest2 APIType] != 2)
     {
       goto LABEL_60;
     }
@@ -860,25 +860,25 @@ void __64__PKPaymentAuthorizationPresentationCoordinator_openConnection___block_
 
   [v11 setObject:*v77 forKeyedSubscript:*MEMORY[0x1E69BB680]];
 LABEL_60:
-  v78 = [v10 userAgent];
-  if ([v78 length])
+  userAgent = [paymentRequest2 userAgent];
+  if ([userAgent length])
   {
-    [v11 setObject:v78 forKeyedSubscript:*MEMORY[0x1E69BB3B8]];
+    [v11 setObject:userAgent forKeyedSubscript:*MEMORY[0x1E69BB3B8]];
   }
 
-  v142 = v78;
-  v79 = [v10 paymentSummaryItems];
-  v80 = [v79 lastObject];
+  v142 = userAgent;
+  paymentSummaryItems2 = [paymentRequest2 paymentSummaryItems];
+  lastObject = [paymentSummaryItems2 lastObject];
 
   objc_opt_class();
   v81 = objc_opt_isKindOfClass();
   v82 = MEMORY[0x1E69BAE30];
   v83 = MEMORY[0x1E69BAE28];
   v84 = MEMORY[0x1E69BAE20];
-  v141 = v80;
+  v141 = lastObject;
   if (v81)
   {
-    v85 = v80;
+    v85 = lastObject;
     v86 = v82;
     v87 = v11;
     v88 = v85;
@@ -894,11 +894,11 @@ LABEL_60:
     v91 = PKAnalyticsReportSwitchToggleResultValue();
     [v87 setObject:v91 forKeyedSubscript:*v83];
 
-    v92 = [v88 startDate];
+    startDate = [v88 startDate];
     v93 = PKAnalyticsReportSwitchToggleResultValue();
     [v87 setObject:v93 forKeyedSubscript:*MEMORY[0x1E69BAE38]];
 
-    v94 = [v88 endDate];
+    endDate = [v88 endDate];
     v95 = PKAnalyticsReportSwitchToggleResultValue();
     [v87 setObject:v95 forKeyedSubscript:*v84];
 
@@ -931,8 +931,8 @@ LABEL_60:
     [v100 setObject:v99 forKeyedSubscript:v97];
   }
 
-  v101 = [v10 recurringPaymentRequest];
-  if (v101)
+  recurringPaymentRequest = [paymentRequest2 recurringPaymentRequest];
+  if (recurringPaymentRequest)
   {
     v102 = @"MPAN";
   }
@@ -943,11 +943,11 @@ LABEL_60:
   }
 
   [v11 setObject:v102 forKeyedSubscript:*MEMORY[0x1E69BAE80]];
-  if (v101)
+  if (recurringPaymentRequest)
   {
-    v103 = [v101 billingAgreement];
+    billingAgreement = [recurringPaymentRequest billingAgreement];
     v104 = v11;
-    v105 = v103;
+    v105 = billingAgreement;
     v106 = [v105 length];
     v107 = PKAnalyticsReportSwitchToggleResultValue();
     [v104 setObject:v107 forKeyedSubscript:*MEMORY[0x1E69BADA8]];
@@ -993,9 +993,9 @@ LABEL_60:
       [v104 setObject:v114 forKeyedSubscript:*MEMORY[0x1E69BADA0]];
     }
 
-    v115 = [v101 regularBilling];
+    regularBilling = [recurringPaymentRequest regularBilling];
     v116 = v104;
-    v117 = v115;
+    v117 = regularBilling;
     v118 = PKAnalyticsReportSwitchToggleResultValue();
     [v116 setObject:v118 forKeyedSubscript:v140];
 
@@ -1007,24 +1007,24 @@ LABEL_60:
     v120 = PKAnalyticsReportSwitchToggleResultValue();
     [v116 setObject:v120 forKeyedSubscript:*MEMORY[0x1E69BAE28]];
 
-    v121 = [v117 startDate];
+    startDate2 = [v117 startDate];
     v122 = PKAnalyticsReportSwitchToggleResultValue();
     [v116 setObject:v122 forKeyedSubscript:*MEMORY[0x1E69BAE38]];
 
-    v123 = [v117 endDate];
+    endDate2 = [v117 endDate];
     v124 = PKAnalyticsReportSwitchToggleResultValue();
     [v116 setObject:v124 forKeyedSubscript:*MEMORY[0x1E69BAE20]];
 
-    v125 = [v101 trialBilling];
+    trialBilling = [recurringPaymentRequest trialBilling];
     v126 = PKAnalyticsReportSwitchToggleResultValue();
     [v116 setObject:v126 forKeyedSubscript:v97];
 
-    v39 = v151;
+    shippingContact = v151;
     v33 = v152;
   }
 
-  v127 = [v10 remoteNetworkRequestInitiationType];
-  v128 = [v127 length];
+  remoteNetworkRequestInitiationType = [paymentRequest2 remoteNetworkRequestInitiationType];
+  v128 = [remoteNetworkRequestInitiationType length];
 
   v129 = *MEMORY[0x1E69BB0E0];
   if (v128)
@@ -1039,16 +1039,16 @@ LABEL_60:
   }
 
   [v11 setObject:v96 forKeyedSubscript:*MEMORY[0x1E69BAA00]];
-  v130 = [v10 merchantCategoryCode];
-  if (v130 >= 1)
+  merchantCategoryCode = [paymentRequest2 merchantCategoryCode];
+  if (merchantCategoryCode >= 1)
   {
-    v131 = [MEMORY[0x1E696AD98] numberWithShort:v130];
-    v132 = [v131 stringValue];
-    [v11 setObject:v132 forKeyedSubscript:*MEMORY[0x1E69BADC8]];
+    v131 = [MEMORY[0x1E696AD98] numberWithShort:merchantCategoryCode];
+    stringValue = [v131 stringValue];
+    [v11 setObject:stringValue forKeyedSubscript:*MEMORY[0x1E69BADC8]];
   }
 
-  v133 = [v10 clientAnalyticsParameters];
-  v134 = [v133 PKDictionaryForKey:*MEMORY[0x1E69BC178]];
+  clientAnalyticsParameters2 = [paymentRequest2 clientAnalyticsParameters];
+  v134 = [clientAnalyticsParameters2 PKDictionaryForKey:*MEMORY[0x1E69BC178]];
 
   v156[0] = MEMORY[0x1E69E9820];
   v156[1] = 3221225472;
@@ -1057,8 +1057,8 @@ LABEL_60:
   v135 = v11;
   v157 = v135;
   [v134 enumerateKeysAndObjectsUsingBlock:v156];
-  v136 = [v10 analyticsProductType];
-  [v135 setObject:v136 forKeyedSubscript:*MEMORY[0x1E69BAC90]];
+  analyticsProductType = [paymentRequest2 analyticsProductType];
+  [v135 setObject:analyticsProductType forKeyedSubscript:*MEMORY[0x1E69BAC90]];
 
   v137 = v135;
   v153[0] = MEMORY[0x1E69E9820];
@@ -1069,7 +1069,7 @@ LABEL_60:
   v154 = v138;
   v139 = v149;
   v155 = v139;
-  [(PKPaymentAuthorizationPresentationCoordinator *)v150 _checkEligibilityForDynamicButtonWithCompletion:v153];
+  [(PKPaymentAuthorizationPresentationCoordinator *)selfCopy _checkEligibilityForDynamicButtonWithCompletion:v153];
 }
 
 void __77__PKPaymentAuthorizationPresentationCoordinator__reportPaymentRequestDetails__block_invoke(uint64_t a1)
@@ -1087,9 +1087,9 @@ void __77__PKPaymentAuthorizationPresentationCoordinator__reportPaymentRequestDe
 
 - (void)_endAnalyticsReporting
 {
-  v2 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-  v3 = [v2 clientAnalyticsParameters];
-  v4 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69BC180]];
+  paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  clientAnalyticsParameters = [paymentRequest clientAnalyticsParameters];
+  v4 = [clientAnalyticsParameters objectForKeyedSubscript:*MEMORY[0x1E69BC180]];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
   v6 = *MEMORY[0x1E69BB6E0];
@@ -1103,10 +1103,10 @@ void __77__PKPaymentAuthorizationPresentationCoordinator__reportPaymentRequestDe
   [MEMORY[0x1E69B8540] endSubjectReporting:v7];
 }
 
-- (void)_reportConnectionEstablishedAnalyticsForConnection:(id)a3
+- (void)_reportConnectionEstablishedAnalyticsForConnection:(id)connection
 {
   v20[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  connectionCopy = connection;
   v5 = MEMORY[0x1E69B8540];
   v6 = *MEMORY[0x1E69BB6E0];
   v7 = *MEMORY[0x1E69BB128];
@@ -1117,12 +1117,12 @@ void __77__PKPaymentAuthorizationPresentationCoordinator__reportPaymentRequestDe
   v20[0] = v7;
   v20[1] = v9;
   v19[2] = *MEMORY[0x1E69BA248];
-  v10 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-  v11 = v4;
-  v12 = [v10 originatingURL];
-  v13 = [v12 host];
+  paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  v11 = connectionCopy;
+  originatingURL = [paymentRequest originatingURL];
+  host = [originatingURL host];
 
-  if (v13)
+  if (host)
   {
     v14 = MEMORY[0x1E69BA8C8];
   }
@@ -1130,10 +1130,10 @@ void __77__PKPaymentAuthorizationPresentationCoordinator__reportPaymentRequestDe
   else
   {
     v15 = [v11 valueForEntitlement:@"com.apple.developer.on-demand-install-capable"];
-    v16 = [v15 BOOLValue];
+    bOOLValue = [v15 BOOLValue];
 
     v14 = MEMORY[0x1E69BA8C0];
-    if (v16)
+    if (bOOLValue)
     {
       v14 = MEMORY[0x1E69BA8B8];
     }
@@ -1212,10 +1212,10 @@ void __77__PKPaymentAuthorizationPresentationCoordinator__reportPaymentRequestDe
   [v2 subject:v3 sendEvent:v6];
 }
 
-- (void)_reportEncounteredAuthorizationEvent:(unint64_t)a3
+- (void)_reportEncounteredAuthorizationEvent:(unint64_t)event
 {
   v10[2] = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentAuthorizationPresentationCoordinator *)self _springboardButtonTagForEvent:a3];
+  v3 = [(PKPaymentAuthorizationPresentationCoordinator *)self _springboardButtonTagForEvent:event];
   v4 = v3;
   if (v3)
   {
@@ -1231,10 +1231,10 @@ void __77__PKPaymentAuthorizationPresentationCoordinator__reportPaymentRequestDe
   }
 }
 
-- (id)_springboardButtonTagForEvent:(unint64_t)a3
+- (id)_springboardButtonTagForEvent:(unint64_t)event
 {
-  v4 = a3 - 6;
-  if (a3 - 6 <= 5 && ((0x39u >> v4) & 1) != 0)
+  v4 = event - 6;
+  if (event - 6 <= 5 && ((0x39u >> v4) & 1) != 0)
   {
     v5 = **(&unk_1E801FBB0 + v4);
   }
@@ -1247,12 +1247,12 @@ void __77__PKPaymentAuthorizationPresentationCoordinator__reportPaymentRequestDe
   return v5;
 }
 
-- (void)_checkEligibilityForDynamicButtonWithCompletion:(id)a3
+- (void)_checkEligibilityForDynamicButtonWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = objc_alloc_init(MEMORY[0x1E69B8EC8]);
-  v6 = [MEMORY[0x1E695DF00] date];
-  v7 = [v6 dateByAddingTimeInterval:-2592000.0];
+  date = [MEMORY[0x1E695DF00] date];
+  v7 = [date dateByAddingTimeInterval:-2592000.0];
 
   [v5 setTransactionTypes:&unk_1F3CC85E8];
   [v5 setStartDate:v7];
@@ -1260,15 +1260,15 @@ void __77__PKPaymentAuthorizationPresentationCoordinator__reportPaymentRequestDe
   [v5 setHasBackingData:0];
   [v5 setOriginatedByDevice:1];
   [v5 setLimit:1];
-  v8 = [MEMORY[0x1E69B8DB8] paymentService];
+  paymentService = [MEMORY[0x1E69B8DB8] paymentService];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __97__PKPaymentAuthorizationPresentationCoordinator__checkEligibilityForDynamicButtonWithCompletion___block_invoke;
   v10[3] = &unk_1E801FA00;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  [v8 transactionCountForRequest:v5 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [paymentService transactionCountForRequest:v5 completion:v10];
 }
 
 void __97__PKPaymentAuthorizationPresentationCoordinator__checkEligibilityForDynamicButtonWithCompletion___block_invoke(uint64_t a1, void *a2)
@@ -1385,20 +1385,20 @@ void __90__PKPaymentAuthorizationPresentationCoordinator__startSuppressingNotifi
   self->_notificationSuppressionAssertion = 0;
 }
 
-- (void)_presentNextStepDismissingCurrentInterface:(BOOL)a3 withDefaultPassID:(id)a4
+- (void)_presentNextStepDismissingCurrentInterface:(BOOL)interface withDefaultPassID:(id)d
 {
-  v6 = a4;
+  dCopy = d;
   objc_initWeak(&location, self);
-  v7 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __110__PKPaymentAuthorizationPresentationCoordinator__presentNextStepDismissingCurrentInterface_withDefaultPassID___block_invoke;
   v9[3] = &unk_1E801FA28;
   objc_copyWeak(&v11, &location);
-  v8 = v6;
+  v8 = dCopy;
   v10 = v8;
-  v12 = a3;
-  [(PKPaymentAuthorizationPresentationCoordinator *)self _canPresentPaymentRequest:v7 completion:v9];
+  interfaceCopy = interface;
+  [(PKPaymentAuthorizationPresentationCoordinator *)self _canPresentPaymentRequest:paymentRequest completion:v9];
 
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
@@ -1462,11 +1462,11 @@ void __110__PKPaymentAuthorizationPresentationCoordinator__presentNextStepDismis
   }
 }
 
-- (void)_canPresentPaymentRequest:(id)a3 completion:(id)a4
+- (void)_canPresentPaymentRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  requestCopy = request;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(PKInAppPaymentPresentationHostContext *)self->_context awaitingRemoteNetworkPaymentRequest])
     {
@@ -1485,17 +1485,17 @@ void __110__PKPaymentAuthorizationPresentationCoordinator__presentNextStepDismis
           _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "Bypassing PKPassLibrary: Wallet must not be deleted", v17, 2u);
         }
 
-        (*(v7 + 2))(v7, 9, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 9, 0, 0);
       }
 
-      (*(v7 + 2))(v7, 10, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 10, 0, 0);
     }
 
     else
     {
-      v9 = [v6 requestType];
-      v10 = [v6 isPeerPaymentRequest];
-      if (v9 <= 0xF && ((1 << v9) & 0xA0C6) != 0 || v10)
+      requestType = [requestCopy requestType];
+      isPeerPaymentRequest = [requestCopy isPeerPaymentRequest];
+      if (requestType <= 0xF && ((1 << requestType) & 0xA0C6) != 0 || isPeerPaymentRequest)
       {
         v11 = PKLogFacilityTypeGetObject();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1504,16 +1504,16 @@ void __110__PKPaymentAuthorizationPresentationCoordinator__presentNextStepDismis
           _os_log_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEFAULT, "Bypassing PKPassLibrary canPresentPaymentRequest check due to request type", v16, 2u);
         }
 
-        (*(v7 + 2))(v7, 1, 0, 0);
+        (*(completionCopy + 2))(completionCopy, 1, 0, 0);
       }
 
       else
       {
-        v12 = [MEMORY[0x1E69B8A58] sharedInstance];
-        v13 = v12;
-        if (v12)
+        mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+        v13 = mEMORY[0x1E69B8A58];
+        if (mEMORY[0x1E69B8A58])
         {
-          [v12 canPresentPaymentRequest:v6 completion:v7];
+          [mEMORY[0x1E69B8A58] canPresentPaymentRequest:requestCopy completion:completionCopy];
         }
 
         else
@@ -1525,17 +1525,17 @@ void __110__PKPaymentAuthorizationPresentationCoordinator__presentNextStepDismis
             _os_log_impl(&dword_1BD026000, v14, OS_LOG_TYPE_DEFAULT, "Error: No pass library to validate payment request. Bailing out", v15, 2u);
           }
 
-          (*(v7 + 2))(v7, 0, 0, 0);
+          (*(completionCopy + 2))(completionCopy, 0, 0, 0);
         }
       }
     }
   }
 }
 
-- (void)_handlePaymentRequestPresentationResultType:(int64_t)a3 relevantUniqueID:(id)a4
+- (void)_handlePaymentRequestPresentationResultType:(int64_t)type relevantUniqueID:(id)d
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  dCopy = d;
   paymentSetupState = self->_paymentSetupState;
   v9 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -1552,17 +1552,17 @@ void __110__PKPaymentAuthorizationPresentationCoordinator__presentNextStepDismis
     *&v31[12] = 2112;
     *&v31[14] = v11;
     v32 = 2048;
-    v33 = a3;
+    typeCopy = type;
     _os_log_impl(&dword_1BD026000, v9, OS_LOG_TYPE_DEFAULT, "%@ => %@,  %ld", v31, 0x20u);
   }
 
-  if (a3 <= 4)
+  if (type <= 4)
   {
-    if (a3 <= 1)
+    if (type <= 1)
     {
-      if (a3)
+      if (type)
       {
-        if (a3 != 1)
+        if (type != 1)
         {
           goto LABEL_71;
         }
@@ -1593,7 +1593,7 @@ void __110__PKPaymentAuthorizationPresentationCoordinator__presentNextStepDismis
 
     else
     {
-      if (a3 == 2)
+      if (type == 2)
       {
         [(PKPaymentAuthorizationPresentationCoordinator *)self _reportPaymentPassMissingAnalytics];
         v13 = *MEMORY[0x1E69B9FC0];
@@ -1615,10 +1615,10 @@ void __110__PKPaymentAuthorizationPresentationCoordinator__presentNextStepDismis
           goto LABEL_53;
         }
 
-        v29 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-        v30 = [v29 requestType];
+        paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+        requestType = [paymentRequest requestType];
 
-        if (v30 == 5)
+        if (requestType == 5)
         {
           [(PKPaymentAuthorizationPresentationCoordinator *)self _presentOnboardingForContext:1];
           if (!v13)
@@ -1641,7 +1641,7 @@ void __110__PKPaymentAuthorizationPresentationCoordinator__presentNextStepDismis
         }
 
 LABEL_28:
-        [(PKPaymentAuthorizationPresentationCoordinator *)self _presentPaymentAuthorizationWithRelevantUniqueID:v7, *v31];
+        [(PKPaymentAuthorizationPresentationCoordinator *)self _presentPaymentAuthorizationWithRelevantUniqueID:dCopy, *v31];
         if (!v13)
         {
           goto LABEL_71;
@@ -1650,7 +1650,7 @@ LABEL_28:
         goto LABEL_70;
       }
 
-      if (a3 == 3)
+      if (type == 3)
       {
         v20 = MEMORY[0x1E69B9FA8];
         if (paymentSetupState)
@@ -1659,7 +1659,7 @@ LABEL_28:
         }
 
         v13 = *v20;
-        [(PKPaymentAuthorizationPresentationCoordinator *)self _presentActivatingPassAlertWithRelevantUniqueID:v7];
+        [(PKPaymentAuthorizationPresentationCoordinator *)self _presentActivatingPassAlertWithRelevantUniqueID:dCopy];
         if (!v13)
         {
           goto LABEL_71;
@@ -1675,8 +1675,8 @@ LABEL_28:
         }
 
         v13 = *v12;
-        v14 = [(PKInAppPaymentPresentationHostContext *)self->_context request];
-        v15 = [v14 originatingURL];
+        request = [(PKInAppPaymentPresentationHostContext *)self->_context request];
+        originatingURL = [request originatingURL];
         v16 = PKPaymentSheetShowExpressProvisioning();
 
         if (v16)
@@ -1684,12 +1684,12 @@ LABEL_28:
           v17 = objc_alloc_init(MEMORY[0x1E69B8D48]);
           if ([v17 countSupportedProvisioningExtensions])
           {
-            [(PKPaymentAuthorizationPresentationCoordinator *)self _presentPaymentAuthorizationWithRelevantUniqueID:v7];
+            [(PKPaymentAuthorizationPresentationCoordinator *)self _presentPaymentAuthorizationWithRelevantUniqueID:dCopy];
           }
 
           else
           {
-            [(PKPaymentAuthorizationPresentationCoordinator *)self _presentVerifyPassAlertWithRelevantUniqueID:v7];
+            [(PKPaymentAuthorizationPresentationCoordinator *)self _presentVerifyPassAlertWithRelevantUniqueID:dCopy];
           }
 
           if (!v13)
@@ -1700,7 +1700,7 @@ LABEL_28:
 
         else
         {
-          [(PKPaymentAuthorizationPresentationCoordinator *)self _presentVerifyPassAlertWithRelevantUniqueID:v7];
+          [(PKPaymentAuthorizationPresentationCoordinator *)self _presentVerifyPassAlertWithRelevantUniqueID:dCopy];
           if (!v13)
           {
             goto LABEL_71;
@@ -1715,14 +1715,14 @@ LABEL_70:
     goto LABEL_71;
   }
 
-  if (a3 > 7)
+  if (type > 7)
   {
-    switch(a3)
+    switch(type)
     {
       case 8:
-        v27 = [(PKInAppPaymentPresentationHostContext *)self->_context request];
-        v28 = [v27 installmentConfiguration];
-        [v28 feature];
+        request2 = [(PKInAppPaymentPresentationHostContext *)self->_context request];
+        installmentConfiguration = [request2 installmentConfiguration];
+        [installmentConfiguration feature];
         PKFeatureIdentifierFromPaymentSetupFeatureType();
 
         if (paymentSetupState || !PKDeviceSupportsApplicationForFeatureIdentifier())
@@ -1740,14 +1740,14 @@ LABEL_70:
         [(PKPaymentAuthorizationPresentationCoordinator *)self _presentWalletUninstalledAlert];
         break;
       case 10:
-        [(PKPaymentAuthorizationPresentationCoordinator *)self _presentAwaitingRemoteNetworkPaymentRequestWithRelevantUniqueID:v7];
+        [(PKPaymentAuthorizationPresentationCoordinator *)self _presentAwaitingRemoteNetworkPaymentRequestWithRelevantUniqueID:dCopy];
         break;
     }
 
     goto LABEL_71;
   }
 
-  if (a3 == 5)
+  if (type == 5)
   {
     [(PKPaymentAuthorizationPresentationCoordinator *)self _reportUnsupportedPaymentPassAnalytics];
     v13 = *MEMORY[0x1E69B9FB0];
@@ -1765,7 +1765,7 @@ LABEL_70:
     v26 = v25;
     if (paymentSetupState)
     {
-      [(PKPaymentAuthorizationPresentationCoordinator *)self _presentPassNotSupportedAlertWithRelevantUniqueID:v7];
+      [(PKPaymentAuthorizationPresentationCoordinator *)self _presentPassNotSupportedAlertWithRelevantUniqueID:dCopy];
 LABEL_53:
       v13 = v22;
       if (!v22)
@@ -1790,7 +1790,7 @@ LABEL_53:
     goto LABEL_28;
   }
 
-  if (a3 != 6)
+  if (type != 6)
   {
     if (self->_peerPaymentIdentityVerificationCompleted)
     {
@@ -1812,7 +1812,7 @@ LABEL_53:
   }
 
   v13 = *v21;
-  [(PKPaymentAuthorizationPresentationCoordinator *)self _presentLostModeAlertWithRelevantUniqueID:v7];
+  [(PKPaymentAuthorizationPresentationCoordinator *)self _presentLostModeAlertWithRelevantUniqueID:dCopy];
   if (v13)
   {
     goto LABEL_70;
@@ -1821,44 +1821,44 @@ LABEL_53:
 LABEL_71:
 }
 
-- (id)_createPaymentInterfaceConfigurationWithRelevantPassID:(id)a3
+- (id)_createPaymentInterfaceConfigurationWithRelevantPassID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = objc_alloc_init(PKPaymentRequestViewInterfaceConfiguration);
-  v6 = [(PKInAppPaymentPresentationHostContext *)self->_context request];
-  [(PKPaymentRequestViewInterfaceConfiguration *)v5 setRequest:v6];
+  request = [(PKInAppPaymentPresentationHostContext *)self->_context request];
+  [(PKPaymentRequestViewInterfaceConfiguration *)v5 setRequest:request];
 
-  [(PKPaymentRequestViewInterfaceConfiguration *)v5 setRelevantPassUniqueID:v4];
+  [(PKPaymentRequestViewInterfaceConfiguration *)v5 setRelevantPassUniqueID:dCopy];
   [(PKPaymentRequestViewInterfaceConfiguration *)v5 setPresenter:self];
-  v7 = [(PKInAppPaymentPresentationHostContext *)self->_context applicationName];
-  [(PKPaymentRequestViewInterfaceConfiguration *)v5 setLocalizedApplicationName:v7];
+  applicationName = [(PKInAppPaymentPresentationHostContext *)self->_context applicationName];
+  [(PKPaymentRequestViewInterfaceConfiguration *)v5 setLocalizedApplicationName:applicationName];
 
-  v8 = [(PKInAppPaymentPresentationHostContext *)self->_context bundleIdentifier];
-  [(PKPaymentRequestViewInterfaceConfiguration *)v5 setBundleIdentifier:v8];
+  bundleIdentifier = [(PKInAppPaymentPresentationHostContext *)self->_context bundleIdentifier];
+  [(PKPaymentRequestViewInterfaceConfiguration *)v5 setBundleIdentifier:bundleIdentifier];
 
-  v9 = [(PKInAppPaymentPresentationHostContext *)self->_context applicationIdentifier];
-  [(PKPaymentRequestViewInterfaceConfiguration *)v5 setApplicationIdentifier:v9];
+  applicationIdentifier = [(PKInAppPaymentPresentationHostContext *)self->_context applicationIdentifier];
+  [(PKPaymentRequestViewInterfaceConfiguration *)v5 setApplicationIdentifier:applicationIdentifier];
 
   return v5;
 }
 
-- (void)_presentPaymentInterface:(id)a3 completion:(id)a4
+- (void)_presentPaymentInterface:(id)interface completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
+  interfaceCopy = interface;
+  completionCopy = completion;
   p_paymentInterface = &self->_paymentInterface;
   if (objc_opt_respondsToSelector())
   {
     [(PKPaymentAuthorizationInterface *)*p_paymentInterface invalidate];
   }
 
-  objc_storeStrong(&self->_paymentInterface, a3);
+  objc_storeStrong(&self->_paymentInterface, interface);
   if ((objc_opt_respondsToSelector() & 1) != 0 && ([(PKPaymentAuthorizationInterface *)*p_paymentInterface serviceDelegate], (v10 = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v11 = v10;
-    v12 = [(PKPaymentAuthorizationPresentationCoordinator *)self exportedObject];
-    [v12 setDelegate:v11];
+    exportedObject2 = v10;
+    exportedObject = [(PKPaymentAuthorizationPresentationCoordinator *)self exportedObject];
+    [exportedObject setDelegate:exportedObject2];
   }
 
   else
@@ -1868,14 +1868,14 @@ LABEL_71:
     {
       paymentInterface = self->_paymentInterface;
       *buf = 134349312;
-      v21 = self;
+      selfCopy = self;
       v22 = 2050;
       v23 = paymentInterface;
       _os_log_impl(&dword_1BD026000, v13, OS_LOG_TYPE_DEFAULT, "PKPaymentAuthorizationPresentationCoordinator (%{public}p): displayed interface (%{public}p) didn't provide a service delegate - using default one.", buf, 0x16u);
     }
 
-    v11 = [(PKPaymentAuthorizationPresentationCoordinator *)self exportedObject];
-    [v11 setDelegate:self->_defaultService];
+    exportedObject2 = [(PKPaymentAuthorizationPresentationCoordinator *)self exportedObject];
+    [exportedObject2 setDelegate:self->_defaultService];
   }
 
   if (objc_opt_respondsToSelector())
@@ -1884,15 +1884,15 @@ LABEL_71:
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_primaryPresentingViewController);
-  v16 = [(PKPaymentAuthorizationInterface *)self->_paymentInterface primaryViewController];
+  primaryViewController = [(PKPaymentAuthorizationInterface *)self->_paymentInterface primaryViewController];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __85__PKPaymentAuthorizationPresentationCoordinator__presentPaymentInterface_completion___block_invoke;
   v18[3] = &unk_1E8010DD0;
   v18[4] = self;
-  v19 = v8;
-  v17 = v8;
-  [WeakRetained presentViewController:v16 animated:1 completion:v18];
+  v19 = completionCopy;
+  v17 = completionCopy;
+  [WeakRetained presentViewController:primaryViewController animated:1 completion:v18];
 }
 
 uint64_t __85__PKPaymentAuthorizationPresentationCoordinator__presentPaymentInterface_completion___block_invoke(uint64_t a1)
@@ -1914,17 +1914,17 @@ uint64_t __85__PKPaymentAuthorizationPresentationCoordinator__presentPaymentInte
   return result;
 }
 
-- (void)_openApplication:(id)a3
+- (void)_openApplication:(id)application
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  applicationCopy = application;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134349314;
-    v10 = self;
+    selfCopy = self;
     v11 = 2114;
-    v12 = v4;
+    v12 = applicationCopy;
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "PKPaymentAuthorizationPresentationCoordinator (%{public}p): asked to open application for notification %{public}@", buf, 0x16u);
   }
 
@@ -1932,12 +1932,12 @@ uint64_t __85__PKPaymentAuthorizationPresentationCoordinator__presentPaymentInte
   v7[1] = 3221225472;
   v7[2] = __66__PKPaymentAuthorizationPresentationCoordinator__openApplication___block_invoke;
   v7[3] = &unk_1E8010970;
-  v8 = v4;
-  v6 = v4;
+  v8 = applicationCopy;
+  v6 = applicationCopy;
   [(PKPaymentAuthorizationPresentationCoordinator *)self dismissWithReason:3 completion:v7];
 }
 
-- (void)_presentOnboardingForContext:(int64_t)a3
+- (void)_presentOnboardingForContext:(int64_t)context
 {
   v10 = *MEMORY[0x1E69E9840];
   if (self->_paymentSetupState)
@@ -1946,7 +1946,7 @@ uint64_t __85__PKPaymentAuthorizationPresentationCoordinator__presentPaymentInte
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_1BD026000, v4, OS_LOG_TYPE_DEFAULT, "PKPaymentAuthorizationPresentationCoordinator (%{public}p): asked to show onboarding flow but payment setup was already initiated. Ignoring request.", &v8, 0xCu);
     }
   }
@@ -1955,7 +1955,7 @@ uint64_t __85__PKPaymentAuthorizationPresentationCoordinator__presentPaymentInte
   {
     self->_paymentSetupState = 1;
     v4 = [(PKPaymentAuthorizationPresentationCoordinator *)self _createPaymentInterfaceConfigurationWithRelevantPassID:0];
-    v6 = [[PKPaymentAuthorizationOnboardingInterface alloc] initWithOnboardingContext:a3 supportedInterfaceOrientations:[(PKPaymentAuthorizationPresentationCoordinator *)self supportedInterfaceOrientations] configuration:v4 delegate:self];
+    v6 = [[PKPaymentAuthorizationOnboardingInterface alloc] initWithOnboardingContext:context supportedInterfaceOrientations:[(PKPaymentAuthorizationPresentationCoordinator *)self supportedInterfaceOrientations] configuration:v4 delegate:self];
     if (v6)
     {
       [(PKPaymentAuthorizationPresentationCoordinator *)self _presentPaymentInterface:v6 completion:0];
@@ -1967,7 +1967,7 @@ uint64_t __85__PKPaymentAuthorizationPresentationCoordinator__presentPaymentInte
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = 134349056;
-        v9 = self;
+        selfCopy2 = self;
         _os_log_impl(&dword_1BD026000, v7, OS_LOG_TYPE_DEFAULT, "PKPaymentAuthorizationPresentationCoordinator (%{public}p): cannot create onboarding interface - dismissing.", &v8, 0xCu);
       }
 
@@ -1976,10 +1976,10 @@ uint64_t __85__PKPaymentAuthorizationPresentationCoordinator__presentPaymentInte
   }
 }
 
-- (void)paymentAuthorizationOnboardingDidFinishWithError:(id)a3
+- (void)paymentAuthorizationOnboardingDidFinishWithError:(id)error
 {
   self->_paymentSetupState = 2;
-  if (a3)
+  if (error)
   {
     [(PKPaymentAuthorizationPresentationCoordinator *)self dismissWithReason:1 completion:0];
   }
@@ -2051,9 +2051,9 @@ void __88__PKPaymentAuthorizationPresentationCoordinator__presentPeerPaymentIden
   }
 }
 
-- (void)_presentAwaitingRemoteNetworkPaymentRequestWithRelevantUniqueID:(id)a3
+- (void)_presentAwaitingRemoteNetworkPaymentRequestWithRelevantUniqueID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -2061,16 +2061,16 @@ void __88__PKPaymentAuthorizationPresentationCoordinator__presentPeerPaymentIden
     _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, "FlowCoordinator: Displaying awaiting remote request view", v8, 2u);
   }
 
-  v6 = [(PKPaymentAuthorizationPresentationCoordinator *)self _createPaymentInterfaceConfigurationWithRelevantPassID:v4];
+  v6 = [(PKPaymentAuthorizationPresentationCoordinator *)self _createPaymentInterfaceConfigurationWithRelevantPassID:dCopy];
   v7 = [[PKRemoteNetworkPaymentLoadingViewInterface alloc] initWithConfiguration:v6 host:self];
   [(PKPaymentAuthorizationPresentationCoordinator *)self _presentPaymentInterface:v7 completion:0];
 }
 
-- (void)_presentPaymentAuthorizationWithRelevantUniqueID:(id)a3
+- (void)_presentPaymentAuthorizationWithRelevantUniqueID:(id)d
 {
   v15 = *MEMORY[0x1E69E9840];
   v5 = PKLogFacilityTypeGetObject();
-  v6 = a3;
+  dCopy = d;
   v7 = os_signpost_id_make_with_pointer(v5, self);
   if (v7 - 1 <= 0xFFFFFFFFFFFFFFFDLL)
   {
@@ -2082,7 +2082,7 @@ void __88__PKPaymentAuthorizationPresentationCoordinator__presentPeerPaymentIden
     }
   }
 
-  v9 = [(PKPaymentAuthorizationPresentationCoordinator *)self _createPaymentInterfaceConfigurationWithRelevantPassID:v6];
+  v9 = [(PKPaymentAuthorizationPresentationCoordinator *)self _createPaymentInterfaceConfigurationWithRelevantPassID:dCopy];
 
   v10 = [[PKPaymentAuthorizationPaymentUIInterface alloc] initWithConfiguration:v9 host:self];
   if (v10)
@@ -2101,7 +2101,7 @@ void __88__PKPaymentAuthorizationPresentationCoordinator__presentPeerPaymentIden
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349056;
-      v14 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1BD026000, v11, OS_LOG_TYPE_DEFAULT, "PKPaymentAuthorizationPresentationCoordinator (%{public}p): cannot create authorization interface - dismissing.", buf, 0xCu);
     }
 
@@ -2124,17 +2124,17 @@ void __98__PKPaymentAuthorizationPresentationCoordinator__presentPaymentAuthoriz
   }
 }
 
-- (void)_presentActivatingPassAlertWithRelevantUniqueID:(id)a3
+- (void)_presentActivatingPassAlertWithRelevantUniqueID:(id)d
 {
   v14 = *MEMORY[0x1E69E9840];
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-    v6 = [v5 originatingURL];
-    v7 = [v6 host];
+    paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+    originatingURL = [paymentRequest originatingURL];
+    host = [originatingURL host];
     v8 = @"Web payment";
-    if (!v7)
+    if (!host)
     {
       v8 = @"In app payment";
     }
@@ -2150,18 +2150,18 @@ void __98__PKPaymentAuthorizationPresentationCoordinator__presentPaymentAuthoriz
   [(PKPaymentAuthorizationPresentationCoordinator *)self _presentAlertWithTitle:v9 message:v10 cancelTitle:v11 actionTitle:0 actionHandler:0];
 }
 
-- (void)_presentVerifyPassAlertWithRelevantUniqueID:(id)a3
+- (void)_presentVerifyPassAlertWithRelevantUniqueID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-    v7 = [v6 originatingURL];
-    v8 = [v7 host];
+    paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+    originatingURL = [paymentRequest originatingURL];
+    host = [originatingURL host];
     v9 = @"Web payment";
-    if (!v8)
+    if (!host)
     {
       v9 = @"In app payment";
     }
@@ -2180,8 +2180,8 @@ void __98__PKPaymentAuthorizationPresentationCoordinator__presentPaymentAuthoriz
   v14[2] = __93__PKPaymentAuthorizationPresentationCoordinator__presentVerifyPassAlertWithRelevantUniqueID___block_invoke;
   v14[3] = &unk_1E8010A10;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
+  v15 = dCopy;
+  v13 = dCopy;
   [(PKPaymentAuthorizationPresentationCoordinator *)self _presentAlertWithTitle:v10 message:v11 actionTitle:v12 actionHandler:v14];
 }
 
@@ -2192,18 +2192,18 @@ void __93__PKPaymentAuthorizationPresentationCoordinator__presentVerifyPassAlert
   [v2 presentWalletWithRelevantPassUniqueID:*(a1 + 40)];
 }
 
-- (void)_presentLostModeAlertWithRelevantUniqueID:(id)a3
+- (void)_presentLostModeAlertWithRelevantUniqueID:(id)d
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dCopy = d;
   v5 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-    v7 = [v6 originatingURL];
-    v8 = [v7 host];
+    paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+    originatingURL = [paymentRequest originatingURL];
+    host = [originatingURL host];
     v9 = @"Web payment";
-    if (!v8)
+    if (!host)
     {
       v9 = @"In app payment";
     }
@@ -2221,8 +2221,8 @@ void __93__PKPaymentAuthorizationPresentationCoordinator__presentVerifyPassAlert
   v14[2] = __91__PKPaymentAuthorizationPresentationCoordinator__presentLostModeAlertWithRelevantUniqueID___block_invoke;
   v14[3] = &unk_1E8010A10;
   v14[4] = self;
-  v15 = v4;
-  v13 = v4;
+  v15 = dCopy;
+  v13 = dCopy;
   [(PKPaymentAuthorizationPresentationCoordinator *)self _presentAlertWithTitle:v10 message:v11 actionTitle:v12 actionHandler:v14];
 }
 
@@ -2239,11 +2239,11 @@ void __91__PKPaymentAuthorizationPresentationCoordinator__presentLostModeAlertWi
   v3 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-    v5 = [v4 originatingURL];
-    v6 = [v5 host];
+    paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+    originatingURL = [paymentRequest originatingURL];
+    host = [originatingURL host];
     v7 = @"Web payment";
-    if (!v6)
+    if (!host)
     {
       v7 = @"In app payment";
     }
@@ -2270,11 +2270,11 @@ void __91__PKPaymentAuthorizationPresentationCoordinator__presentLostModeAlertWi
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
-    v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-    v6 = [v5 originatingURL];
-    v2 = [v6 host];
+    paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+    originatingURL = [paymentRequest originatingURL];
+    host = [originatingURL host];
     v7 = @"Web payment";
-    if (!v2)
+    if (!host)
     {
       v7 = @"In app payment";
     }
@@ -2286,17 +2286,17 @@ void __91__PKPaymentAuthorizationPresentationCoordinator__presentLostModeAlertWi
 
   [(PKPaymentAuthorizationPresentationCoordinator *)self _reportAddCardAlertPresentedAnalytics];
   v8 = PKLocalizedPaymentString(&cfstr_LocalSetupUnsu.isa);
-  v9 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-  v10 = [v9 originatingURL];
-  if (v10)
+  paymentRequest2 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  originatingURL2 = [paymentRequest2 originatingURL];
+  if (originatingURL2)
   {
     PKLocalizedPaymentString(&cfstr_LocalSetupUnsu_0.isa);
   }
 
   else
   {
-    v2 = [(PKInAppPaymentPresentationHostContext *)self->_context applicationName];
-    PKLocalizedPaymentString(&cfstr_LocalSetupUnsu_1.isa, &stru_1F3BD5BF0.isa, v2);
+    host = [(PKInAppPaymentPresentationHostContext *)self->_context applicationName];
+    PKLocalizedPaymentString(&cfstr_LocalSetupUnsu_1.isa, &stru_1F3BD5BF0.isa, host);
   }
   v11 = ;
   v12 = PKLocalizedPaymentString(&cfstr_LocalSetupUnsu_2.isa);
@@ -2307,10 +2307,10 @@ void __91__PKPaymentAuthorizationPresentationCoordinator__presentLostModeAlertWi
   v13[4] = self;
   [(PKPaymentAuthorizationPresentationCoordinator *)self _presentAlertWithTitle:v8 message:v11 actionTitle:v12 actionHandler:v13];
 
-  if (!v10)
+  if (!originatingURL2)
   {
 
-    v11 = v2;
+    v11 = host;
   }
 }
 
@@ -2330,19 +2330,19 @@ void __69__PKPaymentAuthorizationPresentationCoordinator__presentAddCardAlert__b
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_presentPassNotSupportedAlertWithRelevantUniqueID:(id)a3
+- (void)_presentPassNotSupportedAlertWithRelevantUniqueID:(id)d
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-  v6 = [v5 originatingURL];
-  v7 = [v6 host];
+  dCopy = d;
+  paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  originatingURL = [paymentRequest originatingURL];
+  host = [originatingURL host];
 
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v9 = @"Web payment";
-    if (!v7)
+    if (!host)
     {
       v9 = @"In app payment";
     }
@@ -2352,23 +2352,23 @@ void __69__PKPaymentAuthorizationPresentationCoordinator__presentAddCardAlert__b
     _os_log_impl(&dword_1BD026000, v8, OS_LOG_TYPE_DEFAULT, "%@: displaying pass not supported alert", buf, 0xCu);
   }
 
-  v10 = [MEMORY[0x1E69B8A58] sharedInstance];
-  v11 = [v10 passWithUniqueID:v4];
+  mEMORY[0x1E69B8A58] = [MEMORY[0x1E69B8A58] sharedInstance];
+  v11 = [mEMORY[0x1E69B8A58] passWithUniqueID:dCopy];
 
-  v12 = [v11 devicePrimaryPaymentApplication];
-  [v12 paymentNetworkIdentifier];
-  v13 = PKDisplayablePaymentNetworkNameForPaymentCredentialType();
+  devicePrimaryPaymentApplication = [v11 devicePrimaryPaymentApplication];
+  [devicePrimaryPaymentApplication paymentNetworkIdentifier];
+  organizationName = PKDisplayablePaymentNetworkNameForPaymentCredentialType();
 
-  if (!v13)
+  if (!organizationName)
   {
-    v13 = [v11 organizationName];
+    organizationName = [v11 organizationName];
   }
 
-  v14 = [(PKInAppPaymentPresentationHostContext *)self->_context applicationName];
-  v15 = PKLocalizedPaymentString(&cfstr_LocalSetupCard.isa, &cfstr_12.isa, v14, v13);
+  applicationName = [(PKInAppPaymentPresentationHostContext *)self->_context applicationName];
+  v15 = PKLocalizedPaymentString(&cfstr_LocalSetupCard.isa, &cfstr_12.isa, applicationName, organizationName);
 
-  v16 = [(PKInAppPaymentPresentationHostContext *)self->_context applicationName];
-  v17 = PKLocalizedPaymentString(&cfstr_LocalSetupCard_0.isa, &stru_1F3BD5BF0.isa, v16);
+  applicationName2 = [(PKInAppPaymentPresentationHostContext *)self->_context applicationName];
+  v17 = PKLocalizedPaymentString(&cfstr_LocalSetupCard_0.isa, &stru_1F3BD5BF0.isa, applicationName2);
 
   v18 = PKLocalizedString(&cfstr_OkButtonTitle.isa);
   v19 = PKLocalizedPaymentString(&cfstr_LocalSetupUnsu_2.isa);
@@ -2378,9 +2378,9 @@ void __69__PKPaymentAuthorizationPresentationCoordinator__presentAddCardAlert__b
   aBlock[3] = &unk_1E8010970;
   aBlock[4] = self;
   v20 = _Block_copy(aBlock);
-  if (v7)
+  if (host)
   {
-    v21 = PKLocalizedPaymentString(&cfstr_LocalSetupCard_1.isa, &stru_1F3BD5BF0.isa, v13);
+    v21 = PKLocalizedPaymentString(&cfstr_LocalSetupCard_1.isa, &stru_1F3BD5BF0.isa, organizationName);
 
     v22 = PKLocalizedPaymentString(&cfstr_LocalSetupCard_2.isa);
 
@@ -2410,37 +2410,37 @@ void __99__PKPaymentAuthorizationPresentationCoordinator__presentPassNotSupporte
 - (void)_presentInvalidAlert
 {
   v20 = *MEMORY[0x1E69E9840];
-  v3 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-  v4 = [v3 requestType];
+  paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  requestType = [paymentRequest requestType];
 
-  v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-  v6 = v5;
-  if (v4 == 5)
+  paymentRequest2 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  v6 = paymentRequest2;
+  if (requestType == 5)
   {
-    v7 = [v5 installmentConfiguration];
-    [v7 feature];
+    installmentConfiguration = [paymentRequest2 installmentConfiguration];
+    [installmentConfiguration feature];
     v8 = PKFeatureIdentifierFromPaymentSetupFeatureType();
 
-    v9 = [MEMORY[0x1E69B8400] sharedInstance];
+    mEMORY[0x1E69B8400] = [MEMORY[0x1E69B8400] sharedInstance];
     v17[0] = MEMORY[0x1E69E9820];
     v17[1] = 3221225472;
     v17[2] = __69__PKPaymentAuthorizationPresentationCoordinator__presentInvalidAlert__block_invoke;
     v17[3] = &unk_1E801FA50;
     v17[4] = self;
     v17[5] = v8;
-    [v9 defaultAccountForFeature:v8 completion:v17];
+    [mEMORY[0x1E69B8400] defaultAccountForFeature:v8 completion:v17];
   }
 
   else
   {
-    v10 = [v5 originatingURL];
-    v11 = [v10 host];
+    originatingURL = [paymentRequest2 originatingURL];
+    host = [originatingURL host];
 
     v12 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v13 = @"Web payment";
-      if (!v11)
+      if (!host)
       {
         v13 = @"In app payment";
       }
@@ -2450,22 +2450,22 @@ void __99__PKPaymentAuthorizationPresentationCoordinator__presentPassNotSupporte
       _os_log_impl(&dword_1BD026000, v12, OS_LOG_TYPE_DEFAULT, "%@: displaying invalid alert", buf, 0xCu);
     }
 
-    if (v11)
+    if (host)
     {
-      v9 = PKLocalizedPaymentString(&cfstr_WebPaymentErro.isa);
+      mEMORY[0x1E69B8400] = PKLocalizedPaymentString(&cfstr_WebPaymentErro.isa);
       v14 = 0;
     }
 
     else
     {
-      v15 = [(PKInAppPaymentPresentationHostContext *)self->_context applicationName];
-      v9 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_1.isa, &stru_1F3BD5BF0.isa, v15);
+      applicationName = [(PKInAppPaymentPresentationHostContext *)self->_context applicationName];
+      mEMORY[0x1E69B8400] = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_1.isa, &stru_1F3BD5BF0.isa, applicationName);
 
       v14 = PKLocalizedPaymentString(&cfstr_InAppPaymentEr_2.isa);
     }
 
     v16 = PKLocalizedString(&cfstr_OkButtonTitle.isa);
-    [(PKPaymentAuthorizationPresentationCoordinator *)self _presentAlertWithTitle:v9 message:v14 cancelTitle:v16 actionTitle:0 actionHandler:0];
+    [(PKPaymentAuthorizationPresentationCoordinator *)self _presentAlertWithTitle:mEMORY[0x1E69B8400] message:v14 cancelTitle:v16 actionTitle:0 actionHandler:0];
   }
 }
 
@@ -2513,48 +2513,48 @@ void __69__PKPaymentAuthorizationPresentationCoordinator__presentInvalidAlert__b
   }
 }
 
-- (void)_presentAlertController:(id)a3
+- (void)_presentAlertController:(id)controller
 {
-  v4 = a3;
-  v5 = [[PKPaymentAuthorizationMinimalInterface alloc] initWithPrimaryViewController:v4];
+  controllerCopy = controller;
+  v5 = [[PKPaymentAuthorizationMinimalInterface alloc] initWithPrimaryViewController:controllerCopy];
 
   [(PKPaymentAuthorizationPresentationCoordinator *)self _presentPaymentInterface:v5 completion:0];
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 cancelTitle:(id)a5 actionTitle:(id)a6 actionHandler:(id)a7 finalError:(id)a8
+- (void)_presentAlertWithTitle:(id)title message:(id)message cancelTitle:(id)cancelTitle actionTitle:(id)actionTitle actionHandler:(id)handler finalError:(id)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  if (!v16)
+  titleCopy = title;
+  messageCopy = message;
+  cancelTitleCopy = cancelTitle;
+  actionTitleCopy = actionTitle;
+  handlerCopy = handler;
+  errorCopy = error;
+  if (!cancelTitleCopy)
   {
-    v16 = PKLocalizedString(&cfstr_Cancel.isa);
+    cancelTitleCopy = PKLocalizedString(&cfstr_Cancel.isa);
   }
 
-  v20 = [MEMORY[0x1E69DC650] alertControllerWithTitle:v14 message:v15 preferredStyle:1];
+  v20 = [MEMORY[0x1E69DC650] alertControllerWithTitle:titleCopy message:messageCopy preferredStyle:1];
   v21 = MEMORY[0x1E69DC648];
   v28[0] = MEMORY[0x1E69E9820];
   v28[1] = 3221225472;
   v28[2] = __129__PKPaymentAuthorizationPresentationCoordinator__presentAlertWithTitle_message_cancelTitle_actionTitle_actionHandler_finalError___block_invoke;
   v28[3] = &unk_1E8011310;
   v28[4] = self;
-  v22 = v19;
+  v22 = errorCopy;
   v29 = v22;
-  v23 = [v21 actionWithTitle:v16 style:1 handler:v28];
+  v23 = [v21 actionWithTitle:cancelTitleCopy style:1 handler:v28];
   [v20 addAction:v23];
 
-  if (v17)
+  if (actionTitleCopy)
   {
     v24 = MEMORY[0x1E69DC648];
     v26[0] = MEMORY[0x1E69E9820];
     v26[1] = 3221225472;
     v26[2] = __129__PKPaymentAuthorizationPresentationCoordinator__presentAlertWithTitle_message_cancelTitle_actionTitle_actionHandler_finalError___block_invoke_2;
     v26[3] = &unk_1E8011248;
-    v27 = v18;
-    v25 = [v24 actionWithTitle:v17 style:0 handler:v26];
+    v27 = handlerCopy;
+    v25 = [v24 actionWithTitle:actionTitleCopy style:0 handler:v26];
     [v20 addAction:v25];
   }
 
@@ -2572,14 +2572,14 @@ uint64_t __129__PKPaymentAuthorizationPresentationCoordinator__presentAlertWithT
   return result;
 }
 
-- (void)_presentAlertWithTitle:(id)a3 message:(id)a4 actionTitle:(id)a5 actionHandler:(id)a6
+- (void)_presentAlertWithTitle:(id)title message:(id)message actionTitle:(id)actionTitle actionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  handlerCopy = handler;
+  actionTitleCopy = actionTitle;
+  messageCopy = message;
+  titleCopy = title;
   v14 = PKLocalizedString(&cfstr_Cancel.isa);
-  [(PKPaymentAuthorizationPresentationCoordinator *)self _presentAlertWithTitle:v13 message:v12 cancelTitle:v14 actionTitle:v11 actionHandler:v10];
+  [(PKPaymentAuthorizationPresentationCoordinator *)self _presentAlertWithTitle:titleCopy message:messageCopy cancelTitle:v14 actionTitle:actionTitleCopy actionHandler:handlerCopy];
 }
 
 - (void)_presentEnrollAccessibilityIntentAlert
@@ -2665,10 +2665,10 @@ void __79__PKPaymentAuthorizationPresentationCoordinator__presentWalletUninstall
   }
 }
 
-- (void)presentAdditionalInAppPaymentWithContext:(id)a3 completion:(id)a4
+- (void)presentAdditionalInAppPaymentWithContext:(id)context completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  completionCopy = completion;
   v8 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -2681,10 +2681,10 @@ void __79__PKPaymentAuthorizationPresentationCoordinator__presentWalletUninstall
   block[2] = __101__PKPaymentAuthorizationPresentationCoordinator_presentAdditionalInAppPaymentWithContext_completion___block_invoke;
   block[3] = &unk_1E8012300;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = contextCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = contextCopy;
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
@@ -2710,38 +2710,38 @@ void __101__PKPaymentAuthorizationPresentationCoordinator_presentAdditionalInApp
 
 - (void)authorizationWillStart
 {
-  v2 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-  [v2 authorizationWillStart];
+  remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+  [remoteObjectProxy authorizationWillStart];
 }
 
 - (void)authorizationDidRequestMerchantSession
 {
-  v2 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-  [v2 authorizationDidRequestMerchantSession];
+  remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+  [remoteObjectProxy authorizationDidRequestMerchantSession];
 }
 
-- (void)authorizationDidFinishWithError:(id)a3
+- (void)authorizationDidFinishWithError:(id)error
 {
   if (!self->_didSendAuthorizationDidFinish)
   {
     self->_didSendAuthorizationDidFinish = 1;
-    v5 = a3;
-    v6 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-    [v6 authorizationDidFinishWithError:v5];
+    errorCopy = error;
+    remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+    [remoteObjectProxy authorizationDidFinishWithError:errorCopy];
   }
 }
 
 - (void)authorizationDidAuthorizeContext
 {
-  v2 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-  [v2 authorizationDidAuthorizeContext];
+  remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+  [remoteObjectProxy authorizationDidAuthorizeContext];
 }
 
-- (void)authorizationDidAuthorizePayment:(id)a3
+- (void)authorizationDidAuthorizePayment:(id)payment
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-  [v5 authorizationDidAuthorizePayment:v4];
+  paymentCopy = payment;
+  remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+  [remoteObjectProxy authorizationDidAuthorizePayment:paymentCopy];
 
   if (self->_paymentSetupState == 2)
   {
@@ -2750,67 +2750,67 @@ void __101__PKPaymentAuthorizationPresentationCoordinator_presentAdditionalInApp
   }
 }
 
-- (void)authorizationDidAuthorizePurchase:(id)a3
+- (void)authorizationDidAuthorizePurchase:(id)purchase
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-  [v5 authorizationDidAuthorizePurchase:v4];
+  purchaseCopy = purchase;
+  remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+  [remoteObjectProxy authorizationDidAuthorizePurchase:purchaseCopy];
 }
 
-- (void)authorizationDidAuthorizePeerPaymentQuote:(id)a3
+- (void)authorizationDidAuthorizePeerPaymentQuote:(id)quote
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-  [v5 authorizationDidAuthorizePeerPaymentQuote:v4];
+  quoteCopy = quote;
+  remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+  [remoteObjectProxy authorizationDidAuthorizePeerPaymentQuote:quoteCopy];
 }
 
-- (void)authorizationDidAuthorizeApplePayTrustSignature:(id)a3
+- (void)authorizationDidAuthorizeApplePayTrustSignature:(id)signature
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-  [v5 authorizationDidAuthorizeApplePayTrustSignature:v4];
+  signatureCopy = signature;
+  remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+  [remoteObjectProxy authorizationDidAuthorizeApplePayTrustSignature:signatureCopy];
 }
 
-- (void)authorizationDidUpdateAccountServicePaymentMethod:(id)a3
+- (void)authorizationDidUpdateAccountServicePaymentMethod:(id)method
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-  [v5 authorizationDidUpdateAccountServicePaymentMethod:v4];
+  methodCopy = method;
+  remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+  [remoteObjectProxy authorizationDidUpdateAccountServicePaymentMethod:methodCopy];
 }
 
-- (void)authorizationDidSelectShippingMethod:(id)a3
+- (void)authorizationDidSelectShippingMethod:(id)method
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-  [v5 authorizationDidSelectShippingMethod:v4];
+  methodCopy = method;
+  remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+  [remoteObjectProxy authorizationDidSelectShippingMethod:methodCopy];
 }
 
-- (void)authorizationDidSelectShippingAddress:(id)a3
+- (void)authorizationDidSelectShippingAddress:(id)address
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-  [v5 authorizationDidSelectShippingAddress:v4];
+  addressCopy = address;
+  remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+  [remoteObjectProxy authorizationDidSelectShippingAddress:addressCopy];
 }
 
-- (void)authorizationDidSelectPaymentMethod:(id)a3
+- (void)authorizationDidSelectPaymentMethod:(id)method
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-  [v5 authorizationDidSelectPaymentMethod:v4];
+  methodCopy = method;
+  remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+  [remoteObjectProxy authorizationDidSelectPaymentMethod:methodCopy];
 }
 
-- (void)authorizationDidChangeCouponCode:(id)a3
+- (void)authorizationDidChangeCouponCode:(id)code
 {
-  v4 = a3;
-  v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-  [v5 authorizationDidChangeCouponCode:v4];
+  codeCopy = code;
+  remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+  [remoteObjectProxy authorizationDidChangeCouponCode:codeCopy];
 }
 
-- (void)didEncounterAuthorizationEvent:(unint64_t)a3
+- (void)didEncounterAuthorizationEvent:(unint64_t)event
 {
   [(PKPaymentAuthorizationPresentationCoordinator *)self _reportEncounteredAuthorizationEvent:?];
-  v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-  [v5 didEncounterAuthorizationEvent:a3];
+  remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+  [remoteObjectProxy didEncounterAuthorizationEvent:event];
 }
 
 - (void)authorizationDidPresent
@@ -2818,29 +2818,29 @@ void __101__PKPaymentAuthorizationPresentationCoordinator_presentAdditionalInApp
   if (!self->_didSendAuthorizationDidPresent)
   {
     self->_didSendAuthorizationDidPresent = 1;
-    v3 = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
-    [v3 authorizationDidPresent];
+    remoteObjectProxy = [(PKPaymentAuthorizationPresentationCoordinator *)self remoteObjectProxy];
+    [remoteObjectProxy authorizationDidPresent];
   }
 }
 
-- (void)authorizationDidFulfillPaymentRequest:(id)a3 completion:(id)a4
+- (void)authorizationDidFulfillPaymentRequest:(id)request completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  [(PKInAppPaymentPresentationHostContext *)self->_context fulfillPromisedRemoteNetworkPaymentRequest:v6];
+  requestCopy = request;
+  completionCopy = completion;
+  [(PKInAppPaymentPresentationHostContext *)self->_context fulfillPromisedRemoteNetworkPaymentRequest:requestCopy];
   [(PKPaymentAuthorizationPresentationCoordinator *)self _reportPaymentRequestDetails];
   [(PKPaymentAuthorizationPresentationCoordinator *)self _reportConnectionEstablishedAnalyticsForConnection:self->_hostConnection];
   objc_initWeak(&location, self);
-  v8 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __98__PKPaymentAuthorizationPresentationCoordinator_authorizationDidFulfillPaymentRequest_completion___block_invoke;
   v10[3] = &unk_1E801FAA0;
   objc_copyWeak(&v12, &location);
   v10[4] = self;
-  v9 = v7;
+  v9 = completionCopy;
   v11 = v9;
-  [(PKPaymentAuthorizationPresentationCoordinator *)self _canPresentPaymentRequest:v8 completion:v10];
+  [(PKPaymentAuthorizationPresentationCoordinator *)self _canPresentPaymentRequest:paymentRequest completion:v10];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -2940,9 +2940,9 @@ uint64_t __98__PKPaymentAuthorizationPresentationCoordinator_authorizationDidFul
 - (BOOL)supportsSecondaryViewController
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v3 = [WeakRetained supportsSecondaryViewController];
+  supportsSecondaryViewController = [WeakRetained supportsSecondaryViewController];
 
-  return v3;
+  return supportsSecondaryViewController;
 }
 
 - (BOOL)isIssuerInstallmentsRepayment
@@ -2958,9 +2958,9 @@ uint64_t __98__PKPaymentAuthorizationPresentationCoordinator_authorizationDidFul
   }
 }
 
-- (void)presentSecondaryViewController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentSecondaryViewController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v7 = a3;
+  controllerCopy = controller;
   WeakRetained = objc_loadWeakRetained(&self->_secondaryPresentingViewController);
 
   if (WeakRetained)
@@ -2977,16 +2977,16 @@ uint64_t __98__PKPaymentAuthorizationPresentationCoordinator_authorizationDidFul
 
   else
   {
-    objc_storeStrong(&self->_pendingSecondaryViewController, a3);
+    objc_storeStrong(&self->_pendingSecondaryViewController, controller);
     v10 = objc_loadWeakRetained(&self->_delegate);
     [v10 requestSecondaryViewController];
   }
 }
 
-- (void)dismissPrimaryViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPrimaryViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_primaryPresentingViewController);
   if (WeakRetained)
   {
@@ -2994,13 +2994,13 @@ uint64_t __98__PKPaymentAuthorizationPresentationCoordinator_authorizationDidFul
     v8[1] = 3221225472;
     v8[2] = __97__PKPaymentAuthorizationPresentationCoordinator_dismissPrimaryViewControllerAnimated_completion___block_invoke;
     v8[3] = &unk_1E8010B50;
-    v9 = v6;
-    [WeakRetained dismissViewControllerAnimated:v4 completion:v8];
+    v9 = completionCopy;
+    [WeakRetained dismissViewControllerAnimated:animatedCopy completion:v8];
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -3015,10 +3015,10 @@ uint64_t __97__PKPaymentAuthorizationPresentationCoordinator_dismissPrimaryViewC
   return result;
 }
 
-- (void)dismissSecondaryViewControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissSecondaryViewControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   pendingSecondaryViewController = self->_pendingSecondaryViewController;
   if (pendingSecondaryViewController)
   {
@@ -3033,17 +3033,17 @@ uint64_t __97__PKPaymentAuthorizationPresentationCoordinator_dismissPrimaryViewC
     v9[1] = 3221225472;
     v9[2] = __99__PKPaymentAuthorizationPresentationCoordinator_dismissSecondaryViewControllerAnimated_completion___block_invoke;
     v9[3] = &unk_1E801FAC8;
-    v10 = v6;
+    v10 = completionCopy;
     objc_copyWeak(&v11, &location);
-    [WeakRetained dismissViewControllerAnimated:v4 completion:v9];
+    [WeakRetained dismissViewControllerAnimated:animatedCopy completion:v9];
     objc_destroyWeak(&v11);
 
     objc_destroyWeak(&location);
   }
 
-  else if (v6)
+  else if (completionCopy)
   {
-    v6[2](v6);
+    completionCopy[2](completionCopy);
   }
 }
 
@@ -3066,10 +3066,10 @@ void __99__PKPaymentAuthorizationPresentationCoordinator_dismissSecondaryViewCon
   }
 }
 
-- (void)dismissBothPresentationsAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissBothPresentationsAnimated:(BOOL)animated completion:(id)completion
 {
-  v4 = a3;
-  v6 = a4;
+  animatedCopy = animated;
+  completionCopy = completion;
   v7 = dispatch_group_create();
   dispatch_group_enter(v7);
   v12[0] = MEMORY[0x1E69E9820];
@@ -3078,7 +3078,7 @@ void __99__PKPaymentAuthorizationPresentationCoordinator_dismissSecondaryViewCon
   v12[3] = &unk_1E8010970;
   v8 = v7;
   v13 = v8;
-  [(PKPaymentAuthorizationPresentationCoordinator *)self dismissPrimaryViewControllerAnimated:v4 completion:v12];
+  [(PKPaymentAuthorizationPresentationCoordinator *)self dismissPrimaryViewControllerAnimated:animatedCopy completion:v12];
   dispatch_group_enter(v8);
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
@@ -3086,16 +3086,16 @@ void __99__PKPaymentAuthorizationPresentationCoordinator_dismissSecondaryViewCon
   v10[3] = &unk_1E8010970;
   v9 = v8;
   v11 = v9;
-  [(PKPaymentAuthorizationPresentationCoordinator *)self dismissSecondaryViewControllerAnimated:v4 completion:v10];
-  if (v6)
+  [(PKPaymentAuthorizationPresentationCoordinator *)self dismissSecondaryViewControllerAnimated:animatedCopy completion:v10];
+  if (completionCopy)
   {
-    dispatch_group_notify(v9, MEMORY[0x1E69E96A0], v6);
+    dispatch_group_notify(v9, MEMORY[0x1E69E96A0], completionCopy);
   }
 }
 
-- (void)presentPaymentProvisioningDismissingAfterwards:(BOOL)a3
+- (void)presentPaymentProvisioningDismissingAfterwards:(BOOL)afterwards
 {
-  self->_dismissAfterPaymentSetup = a3;
+  self->_dismissAfterPaymentSetup = afterwards;
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __96__PKPaymentAuthorizationPresentationCoordinator_presentPaymentProvisioningDismissingAfterwards___block_invoke;
@@ -3150,10 +3150,10 @@ void __96__PKPaymentAuthorizationPresentationCoordinator_presentPaymentProvision
   }
 }
 
-- (void)paymentAuthorizationProvisioningDidFinishWithPass:(id)a3
+- (void)paymentAuthorizationProvisioningDidFinishWithPass:(id)pass
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  passCopy = pass;
   dispatch_assert_queue_V2(MEMORY[0x1E69E96A0]);
   self->_paymentSetupState = 2;
   if (self->_dismissAfterPaymentSetup)
@@ -3162,7 +3162,7 @@ void __96__PKPaymentAuthorizationPresentationCoordinator_presentPaymentProvision
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy2 = self;
       v6 = "PKPaymentAuthorizationPresentationCoordinator (%{public}p): Dismissing following completed payment setup";
 LABEL_8:
       _os_log_impl(&dword_1BD026000, v5, OS_LOG_TYPE_DEFAULT, v6, &v8, 0xCu);
@@ -3172,13 +3172,13 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  if (!v4)
+  if (!passCopy)
   {
     v5 = PKLogFacilityTypeGetObject();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 134349056;
-      v9 = self;
+      selfCopy2 = self;
       v6 = "PKPaymentAuthorizationPresentationCoordinator (%{public}p): Provisioning didn't produce any pass. Dismissing";
       goto LABEL_8;
     }
@@ -3189,16 +3189,16 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v7 = [v4 uniqueID];
-  [(PKPaymentAuthorizationPresentationCoordinator *)self _presentNextStepDismissingCurrentInterface:1 withDefaultPassID:v7];
+  uniqueID = [passCopy uniqueID];
+  [(PKPaymentAuthorizationPresentationCoordinator *)self _presentNextStepDismissingCurrentInterface:1 withDefaultPassID:uniqueID];
 
 LABEL_10:
 }
 
-- (void)dismissWithReason:(unint64_t)a3 completion:(id)a4
+- (void)dismissWithReason:(unint64_t)reason completion:(id)completion
 {
-  v6 = a4;
-  if (v6)
+  completionCopy = completion;
+  if (completionCopy)
   {
     dismissCompletions = self->_dismissCompletions;
     if (!dismissCompletions)
@@ -3210,7 +3210,7 @@ LABEL_10:
       dismissCompletions = self->_dismissCompletions;
     }
 
-    v10 = _Block_copy(v6);
+    v10 = _Block_copy(completionCopy);
     [(NSMutableSet *)dismissCompletions addObject:v10];
   }
 
@@ -3222,7 +3222,7 @@ LABEL_10:
     v12[2] = __78__PKPaymentAuthorizationPresentationCoordinator_dismissWithReason_completion___block_invoke;
     v12[3] = &unk_1E80119C8;
     v12[4] = self;
-    v12[5] = a3;
+    v12[5] = reason;
     v11 = _Block_copy(v12);
     [MEMORY[0x1E69BC740] performWhenSecureIndicatorRemoved:v11];
   }
@@ -3292,7 +3292,7 @@ void __78__PKPaymentAuthorizationPresentationCoordinator_dismissWithReason_compl
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 134217984;
-      v14 = self;
+      selfCopy3 = self;
       _os_log_impl(&dword_1BD026000, v3, OS_LOG_TYPE_DEFAULT, "PKPaymentAuthorizationPresentationCoordinator (%p): preventing home action due to secure indicator.", &v13, 0xCu);
     }
 
@@ -3304,17 +3304,17 @@ void __78__PKPaymentAuthorizationPresentationCoordinator_dismissWithReason_compl
     return 0;
   }
 
-  v5 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-  if ([v5 requestType] == 1)
+  paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  if ([paymentRequest requestType] == 1)
   {
   }
 
   else
   {
-    v6 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-    v7 = [v6 requestType];
+    paymentRequest2 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+    requestType = [paymentRequest2 requestType];
 
-    if (v7)
+    if (requestType)
     {
       goto LABEL_14;
     }
@@ -3340,7 +3340,7 @@ LABEL_14:
     if (v11)
     {
       v13 = 134349056;
-      v14 = self;
+      selfCopy3 = self;
       v12 = "PKPaymentAuthorizationPresentationCoordinator (%{public}p): Dismissing because the home button was pressed";
 LABEL_19:
       _os_log_impl(&dword_1BD026000, v10, OS_LOG_TYPE_DEFAULT, v12, &v13, 0xCu);
@@ -3350,7 +3350,7 @@ LABEL_19:
   else if (v11)
   {
     v13 = 134349056;
-    v14 = self;
+    selfCopy3 = self;
     v12 = "PKPaymentAuthorizationPresentationCoordinator (%{public}p): Dismissing because the home indicator was swiped";
     goto LABEL_19;
   }
@@ -3361,10 +3361,10 @@ LABEL_19:
 
 - (BOOL)_canPresentPaymentSheetWithEmptyPass
 {
-  v2 = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
-  if ([v2 requestType])
+  paymentRequest = [(PKPaymentAuthorizationPresentationCoordinator *)self paymentRequest];
+  if ([paymentRequest requestType])
   {
-    v3 = [v2 requestType] == 10;
+    v3 = [paymentRequest requestType] == 10;
   }
 
   else

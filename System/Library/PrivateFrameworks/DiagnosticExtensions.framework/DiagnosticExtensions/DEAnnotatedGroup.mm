@@ -1,31 +1,31 @@
 @interface DEAnnotatedGroup
-- (DEAnnotatedGroup)initWithCoder:(id)a3;
-- (DEAnnotatedGroup)initWithDisplayName:(id)a3 localizedDescription:(id)a4 iconType:(id)a5 additionalInfo:(id)a6 attachmentItems:(id)a7;
+- (DEAnnotatedGroup)initWithCoder:(id)coder;
+- (DEAnnotatedGroup)initWithDisplayName:(id)name localizedDescription:(id)description iconType:(id)type additionalInfo:(id)info attachmentItems:(id)items;
 - (id)debugDescription;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DEAnnotatedGroup
 
-- (DEAnnotatedGroup)initWithDisplayName:(id)a3 localizedDescription:(id)a4 iconType:(id)a5 additionalInfo:(id)a6 attachmentItems:(id)a7
+- (DEAnnotatedGroup)initWithDisplayName:(id)name localizedDescription:(id)description iconType:(id)type additionalInfo:(id)info attachmentItems:(id)items
 {
-  v20 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  nameCopy = name;
+  descriptionCopy = description;
+  typeCopy = type;
+  infoCopy = info;
+  itemsCopy = items;
   v21.receiver = self;
   v21.super_class = DEAnnotatedGroup;
   v17 = [(DEAnnotatedGroup *)&v21 init];
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_displayName, a3);
-    objc_storeStrong(&v18->_localizedDescription, a4);
-    objc_storeStrong(&v18->_iconType, a5);
-    objc_storeStrong(&v18->_additionalInfo, a6);
-    objc_storeStrong(&v18->_items, a7);
+    objc_storeStrong(&v17->_displayName, name);
+    objc_storeStrong(&v18->_localizedDescription, description);
+    objc_storeStrong(&v18->_iconType, type);
+    objc_storeStrong(&v18->_additionalInfo, info);
+    objc_storeStrong(&v18->_items, items);
   }
 
   return v18;
@@ -36,9 +36,9 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(DEAnnotatedGroup *)self displayName];
-  v7 = [(DEAnnotatedGroup *)self items];
-  v8 = [v3 stringWithFormat:@"[%@] %@ with %lu items", v5, v6, objc_msgSend(v7, "count")];
+  displayName = [(DEAnnotatedGroup *)self displayName];
+  items = [(DEAnnotatedGroup *)self items];
+  v8 = [v3 stringWithFormat:@"[%@] %@ with %lu items", v5, displayName, objc_msgSend(items, "count")];
 
   return v8;
 }
@@ -48,66 +48,66 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(DEAnnotatedGroup *)self displayName];
-  v7 = [(DEAnnotatedGroup *)self localizedDescription];
-  v8 = [(DEAnnotatedGroup *)self iconType];
-  v9 = [(DEAnnotatedGroup *)self additionalInfo];
-  v10 = [(DEAnnotatedGroup *)self items];
-  v11 = [v3 stringWithFormat:@"%@\nDisplay Name: %@ \nDescription: %@ \nIcon Type: %@ \nAdditional Info: %@ \nItems:\n%@", v5, v6, v7, v8, v9, v10];
+  displayName = [(DEAnnotatedGroup *)self displayName];
+  localizedDescription = [(DEAnnotatedGroup *)self localizedDescription];
+  iconType = [(DEAnnotatedGroup *)self iconType];
+  additionalInfo = [(DEAnnotatedGroup *)self additionalInfo];
+  items = [(DEAnnotatedGroup *)self items];
+  v11 = [v3 stringWithFormat:@"%@\nDisplay Name: %@ \nDescription: %@ \nIcon Type: %@ \nAdditional Info: %@ \nItems:\n%@", v5, displayName, localizedDescription, iconType, additionalInfo, items];
 
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v11 = a3;
-  v4 = [(DEAnnotatedGroup *)self displayName];
-  [v11 encodeObject:v4 forKey:@"displayName"];
+  coderCopy = coder;
+  displayName = [(DEAnnotatedGroup *)self displayName];
+  [coderCopy encodeObject:displayName forKey:@"displayName"];
 
-  v5 = [(DEAnnotatedGroup *)self localizedDescription];
-  [v11 encodeObject:v5 forKey:@"localizedDescription"];
+  localizedDescription = [(DEAnnotatedGroup *)self localizedDescription];
+  [coderCopy encodeObject:localizedDescription forKey:@"localizedDescription"];
 
-  v6 = [(DEAnnotatedGroup *)self iconType];
+  iconType = [(DEAnnotatedGroup *)self iconType];
 
-  if (v6)
+  if (iconType)
   {
-    v7 = [(DEAnnotatedGroup *)self iconType];
-    [v11 encodeObject:v7 forKey:@"iconType"];
+    iconType2 = [(DEAnnotatedGroup *)self iconType];
+    [coderCopy encodeObject:iconType2 forKey:@"iconType"];
   }
 
-  v8 = [(DEAnnotatedGroup *)self additionalInfo];
+  additionalInfo = [(DEAnnotatedGroup *)self additionalInfo];
 
-  if (v8)
+  if (additionalInfo)
   {
-    v9 = [(DEAnnotatedGroup *)self additionalInfo];
-    [v11 encodeObject:v9 forKey:@"additionalInfo"];
+    additionalInfo2 = [(DEAnnotatedGroup *)self additionalInfo];
+    [coderCopy encodeObject:additionalInfo2 forKey:@"additionalInfo"];
   }
 
-  v10 = [(DEAnnotatedGroup *)self items];
-  [v11 encodeObject:v10 forKey:@"items"];
+  items = [(DEAnnotatedGroup *)self items];
+  [coderCopy encodeObject:items forKey:@"items"];
 }
 
-- (DEAnnotatedGroup)initWithCoder:(id)a3
+- (DEAnnotatedGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(DEAnnotatedGroup *)self init];
-  v6 = [v4 decodeObjectForKey:@"displayName"];
+  v6 = [coderCopy decodeObjectForKey:@"displayName"];
   displayName = v5->_displayName;
   v5->_displayName = v6;
 
-  v8 = [v4 decodeObjectForKey:@"localizedDescription"];
+  v8 = [coderCopy decodeObjectForKey:@"localizedDescription"];
   localizedDescription = v5->_localizedDescription;
   v5->_localizedDescription = v8;
 
-  v10 = [v4 decodeObjectForKey:@"iconType"];
+  v10 = [coderCopy decodeObjectForKey:@"iconType"];
   iconType = v5->_iconType;
   v5->_iconType = v10;
 
-  v12 = [v4 decodeObjectForKey:@"additionalInfo"];
+  v12 = [coderCopy decodeObjectForKey:@"additionalInfo"];
   additionalInfo = v5->_additionalInfo;
   v5->_additionalInfo = v12;
 
-  v14 = [v4 decodeObjectForKey:@"items"];
+  v14 = [coderCopy decodeObjectForKey:@"items"];
 
   items = v5->_items;
   v5->_items = v14;

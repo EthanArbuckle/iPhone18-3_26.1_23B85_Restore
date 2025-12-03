@@ -1,55 +1,55 @@
 @interface CUIStructuredThemeStore
-- (BOOL)_formatStorageKeyArrayBytes:(void *)a3 length:(unint64_t)a4 fromKey:(const _renditionkeytoken *)a5;
+- (BOOL)_formatStorageKeyArrayBytes:(void *)bytes length:(unint64_t)length fromKey:(const _renditionkeytoken *)key;
 - (BOOL)_subImageTexturingShouldBeSupported;
-- (BOOL)assetExistsForKey:(const _renditionkeytoken *)a3;
-- (BOOL)caAllowSubimageOfImage:(CGImage *)a3;
-- (BOOL)canGetRenditionWithKey:(const _renditionkeytoken *)a3;
-- (BOOL)getFontName:(id *)a3 baselineOffset:(double *)a4 forFontType:(id)a5;
-- (BOOL)getPhysicalColor:(_colordef *)a3 withName:(id)a4;
-- (BOOL)hasPhysicalColorWithName:(id)a3;
-- (BOOL)imageNamedShouldFlip:(id)a3;
-- (BOOL)localizationWorkaroundForKeyList:(const _renditionkeytoken *)a3 withLocale:(id)a4;
+- (BOOL)assetExistsForKey:(const _renditionkeytoken *)key;
+- (BOOL)caAllowSubimageOfImage:(CGImage *)image;
+- (BOOL)canGetRenditionWithKey:(const _renditionkeytoken *)key;
+- (BOOL)getFontName:(id *)name baselineOffset:(double *)offset forFontType:(id)type;
+- (BOOL)getPhysicalColor:(_colordef *)color withName:(id)name;
+- (BOOL)hasPhysicalColorWithName:(id)name;
+- (BOOL)imageNamedShouldFlip:(id)flip;
+- (BOOL)localizationWorkaroundForKeyList:(const _renditionkeytoken *)list withLocale:(id)locale;
 - (BOOL)usesCUISystemThemeRenditionKey;
-- (CUIStructuredThemeStore)initWithBytes:(const void *)a3 length:(unint64_t)a4;
-- (CUIStructuredThemeStore)initWithPath:(id)a3;
-- (CUIStructuredThemeStore)initWithURL:(id)a3;
+- (CUIStructuredThemeStore)initWithBytes:(const void *)bytes length:(unint64_t)length;
+- (CUIStructuredThemeStore)initWithPath:(id)path;
+- (CUIStructuredThemeStore)initWithURL:(id)l;
 - (const)keyAttributeIndex;
 - (const)keyFormat;
-- (const)renditionKeyForName:(id)a3 cursorHotSpot:(CGPoint *)a4;
+- (const)renditionKeyForName:(id)name cursorHotSpot:(CGPoint *)spot;
 - (const)renditionKeyFormat;
-- (double)fontSizeForFontSizeType:(id)a3;
-- (id)_newRenditionKeyDataFromKey:(const _renditionkeytoken *)a3;
-- (id)aliasForName:(id)a3;
+- (double)fontSizeForFontSizeType:(id)type;
+- (id)_newRenditionKeyDataFromKey:(const _renditionkeytoken *)key;
+- (id)aliasForName:(id)name;
 - (id)catalogGlobals;
-- (id)convertRenditionKeyToKeyData:(const _renditionkeytoken *)a3;
-- (id)copyKeySignatureForKey:(const _renditionkeytoken *)a3 withBytesNoCopy:(char *)a4 length:(unint64_t)a5;
-- (id)copyLookupKeySignatureForKey:(const _renditionkeytoken *)a3;
-- (id)debugDescriptionForKeyList:(const _renditionkeytoken *)a3;
+- (id)convertRenditionKeyToKeyData:(const _renditionkeytoken *)data;
+- (id)copyKeySignatureForKey:(const _renditionkeytoken *)key withBytesNoCopy:(char *)copy length:(unint64_t)length;
+- (id)copyLookupKeySignatureForKey:(const _renditionkeytoken *)key;
+- (id)debugDescriptionForKeyList:(const _renditionkeytoken *)list;
 - (id)defaultAppearanceName;
-- (id)imagesWithName:(id)a3;
-- (id)lookupAssetForKey:(const _renditionkeytoken *)a3;
+- (id)imagesWithName:(id)name;
+- (id)lookupAssetForKey:(const _renditionkeytoken *)key;
 - (id)mappedAliases;
-- (id)renditionInfoForIdentifier:(unsigned __int16)a3;
-- (id)renditionWithKey:(const _renditionkeytoken *)a3 usingKeySignature:(id)a4;
+- (id)renditionInfoForIdentifier:(unsigned __int16)identifier;
+- (id)renditionWithKey:(const _renditionkeytoken *)key usingKeySignature:(id)signature;
 - (int64_t)maximumRenditionKeyTokenCount;
 - (unint64_t)colorSpaceID;
 - (void)_commonInit;
-- (void)_updateKeyWithCompatibilityMapping:(_renditionkeytoken *)a3;
+- (void)_updateKeyWithCompatibilityMapping:(_renditionkeytoken *)mapping;
 - (void)clearRenditionCache;
 - (void)dealloc;
-- (void)setBundleID:(id)a3;
+- (void)setBundleID:(id)d;
 @end
 
 @implementation CUIStructuredThemeStore
 
 - (void)_commonInit
 {
-  v3 = [(CUICommonAssetStorage *)self->_store path];
+  path = [(CUICommonAssetStorage *)self->_store path];
   *&self->_cacheLock._os_unfair_lock_opaque = 0;
   self->_themeIndex = -1;
   self->_cache = objc_alloc_init(NSMutableDictionary);
   self->_namedRenditionKeyCache = objc_alloc_init(NSCache);
-  -[NSCache setName:](self->_namedRenditionKeyCache, "setName:", [@"com.apple.coreui-namecache-" stringByAppendingString:v3]);
+  -[NSCache setName:](self->_namedRenditionKeyCache, "setName:", [@"com.apple.coreui-namecache-" stringByAppendingString:path]);
   [(NSCache *)self->_namedRenditionKeyCache setEvictsObjectsWithDiscardedContent:0];
   namedRenditionKeyCache = self->_namedRenditionKeyCache;
 
@@ -188,22 +188,22 @@
   }
 }
 
-- (id)copyKeySignatureForKey:(const _renditionkeytoken *)a3 withBytesNoCopy:(char *)a4 length:(unint64_t)a5
+- (id)copyKeySignatureForKey:(const _renditionkeytoken *)key withBytesNoCopy:(char *)copy length:(unint64_t)length
 {
-  v6 = CUICopyKeySignature(a4, a5, a3, [(CUIStructuredThemeStore *)self keyFormat], [(CUIStructuredThemeStore *)self keyAttributeIndex]);
+  v6 = CUICopyKeySignature(copy, length, key, [(CUIStructuredThemeStore *)self keyFormat], [(CUIStructuredThemeStore *)self keyAttributeIndex]);
   v7 = [NSString alloc];
 
-  return [v7 initWithBytesNoCopy:a4 length:v6 encoding:1 freeWhenDone:0];
+  return [v7 initWithBytesNoCopy:copy length:v6 encoding:1 freeWhenDone:0];
 }
 
-- (id)copyLookupKeySignatureForKey:(const _renditionkeytoken *)a3
+- (id)copyLookupKeySignatureForKey:(const _renditionkeytoken *)key
 {
   memset(v7, 0, 92);
-  CUIRenditionKeyCopy(v7, a3, 0x16u);
-  return [[NSString alloc] initWithBytes:v6 length:CUICopyKeySignature(v6 encoding:{0x100uLL, a3, -[CUIStructuredThemeStore keyFormat](self, "keyFormat"), -[CUIStructuredThemeStore keyAttributeIndex](self, "keyAttributeIndex")), 1}];
+  CUIRenditionKeyCopy(v7, key, 0x16u);
+  return [[NSString alloc] initWithBytes:v6 length:CUICopyKeySignature(v6 encoding:{0x100uLL, key, -[CUIStructuredThemeStore keyFormat](self, "keyFormat"), -[CUIStructuredThemeStore keyAttributeIndex](self, "keyAttributeIndex")), 1}];
 }
 
-- (BOOL)assetExistsForKey:(const _renditionkeytoken *)a3
+- (BOOL)assetExistsForKey:(const _renditionkeytoken *)key
 {
   *v12 = 0u;
   v5 = [(CUIStructuredThemeStore *)self keyFormat:0];
@@ -220,7 +220,7 @@
     v8 = 2 * v5->var2;
   }
 
-  if ([(CUIStructuredThemeStore *)self _formatStorageKeyArrayBytes:v7 length:v8 fromKey:a3])
+  if ([(CUIStructuredThemeStore *)self _formatStorageKeyArrayBytes:v7 length:v8 fromKey:key])
   {
     v9 = [(CUICommonAssetStorage *)self->_store assetExistsForKeyData:v7 length:2 * v5->var2];
   }
@@ -238,14 +238,14 @@
   return v9;
 }
 
-- (CUIStructuredThemeStore)initWithPath:(id)a3
+- (CUIStructuredThemeStore)initWithPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = CUIStructuredThemeStore;
   v4 = [(CUIStructuredThemeStore *)&v7 init];
   if (v4)
   {
-    v5 = [[CUICommonAssetStorage alloc] initWithPath:a3];
+    v5 = [[CUICommonAssetStorage alloc] initWithPath:path];
     v4->_store = v5;
     if (v5)
     {
@@ -262,21 +262,21 @@
   return v4;
 }
 
-- (CUIStructuredThemeStore)initWithURL:(id)a3
+- (CUIStructuredThemeStore)initWithURL:(id)l
 {
-  v4 = [a3 path];
+  path = [l path];
 
-  return [(CUIStructuredThemeStore *)self initWithPath:v4];
+  return [(CUIStructuredThemeStore *)self initWithPath:path];
 }
 
-- (CUIStructuredThemeStore)initWithBytes:(const void *)a3 length:(unint64_t)a4
+- (CUIStructuredThemeStore)initWithBytes:(const void *)bytes length:(unint64_t)length
 {
   v9.receiver = self;
   v9.super_class = CUIStructuredThemeStore;
   v6 = [(CUIStructuredThemeStore *)&v9 init];
   if (v6)
   {
-    v7 = [[CUICommonAssetStorage alloc] initWithBytes:a3 length:a4];
+    v7 = [[CUICommonAssetStorage alloc] initWithBytes:bytes length:length];
     v6->_store = v7;
     if (v7)
     {
@@ -295,8 +295,8 @@
 
 - (id)defaultAppearanceName
 {
-  v2 = [(CUICommonAssetStorage *)self->_store deploymentPlatformString];
-  if ([v2 isEqualToString:kCUIPlatformMac[0]])
+  deploymentPlatformString = [(CUICommonAssetStorage *)self->_store deploymentPlatformString];
+  if ([deploymentPlatformString isEqualToString:kCUIPlatformMac[0]])
   {
     return @"NSAppearanceNameSystem";
   }
@@ -307,53 +307,53 @@
   }
 }
 
-- (BOOL)getPhysicalColor:(_colordef *)a3 withName:(id)a4
+- (BOOL)getPhysicalColor:(_colordef *)color withName:(id)name
 {
   os_unfair_lock_lock(&self->_storeLock);
-  LOBYTE(a4) = -[CUICommonAssetStorage getColor:forName:](self->_store, "getColor:forName:", a3, [a4 UTF8String]);
+  LOBYTE(name) = -[CUICommonAssetStorage getColor:forName:](self->_store, "getColor:forName:", color, [name UTF8String]);
   os_unfair_lock_unlock(&self->_storeLock);
-  return a4;
+  return name;
 }
 
-- (BOOL)hasPhysicalColorWithName:(id)a3
+- (BOOL)hasPhysicalColorWithName:(id)name
 {
   os_unfair_lock_lock(&self->_storeLock);
-  LOBYTE(a3) = -[CUICommonAssetStorage hasColorForName:](self->_store, "hasColorForName:", [a3 UTF8String]);
+  LOBYTE(name) = -[CUICommonAssetStorage hasColorForName:](self->_store, "hasColorForName:", [name UTF8String]);
   os_unfair_lock_unlock(&self->_storeLock);
-  return a3;
+  return name;
 }
 
-- (BOOL)getFontName:(id *)a3 baselineOffset:(double *)a4 forFontType:(id)a5
+- (BOOL)getFontName:(id *)name baselineOffset:(double *)offset forFontType:(id)type
 {
   os_unfair_lock_lock(&self->_storeLock);
   v11 = 0.0;
-  v9 = [(CUICommonAssetStorage *)self->_store getFontName:a3 baselineOffset:&v11 forFontType:a5];
+  v9 = [(CUICommonAssetStorage *)self->_store getFontName:name baselineOffset:&v11 forFontType:type];
   os_unfair_lock_unlock(&self->_storeLock);
-  if (a4 && v9)
+  if (offset && v9)
   {
-    *a4 = v11;
+    *offset = v11;
   }
 
   return v9;
 }
 
-- (double)fontSizeForFontSizeType:(id)a3
+- (double)fontSizeForFontSizeType:(id)type
 {
   os_unfair_lock_lock(&self->_storeLock);
-  [(CUICommonAssetStorage *)self->_store fontSizeForFontSizeType:a3];
+  [(CUICommonAssetStorage *)self->_store fontSizeForFontSizeType:type];
   v6 = v5;
   os_unfair_lock_unlock(&self->_storeLock);
   return v6;
 }
 
-- (void)_updateKeyWithCompatibilityMapping:(_renditionkeytoken *)a3
+- (void)_updateKeyWithCompatibilityMapping:(_renditionkeytoken *)mapping
 {
   if ([(CUICommonAssetStorage *)self->_store storageVersion]<= 4)
   {
-    v4 = CUIRenditionKeyIndexForAttribute(&a3->identifier, 14);
+    v4 = CUIRenditionKeyIndexForAttribute(&mapping->identifier, 14);
     if ((v4 & 0x80000000) == 0)
     {
-      v5 = &a3[v4];
+      v5 = &mapping[v4];
       v5->identifier = 7;
       if (v5->value)
       {
@@ -370,28 +370,28 @@
   }
 }
 
-- (BOOL)_formatStorageKeyArrayBytes:(void *)a3 length:(unint64_t)a4 fromKey:(const _renditionkeytoken *)a5
+- (BOOL)_formatStorageKeyArrayBytes:(void *)bytes length:(unint64_t)length fromKey:(const _renditionkeytoken *)key
 {
-  v9 = [(CUIStructuredThemeStore *)self keyFormat];
-  v10 = [(CUIStructuredThemeStore *)self keyAttributeIndex];
-  if (!a3 || a4 < 2 * v9->var2)
+  keyFormat = [(CUIStructuredThemeStore *)self keyFormat];
+  keyAttributeIndex = [(CUIStructuredThemeStore *)self keyAttributeIndex];
+  if (!bytes || length < 2 * keyFormat->var2)
   {
     return 0;
   }
 
-  v12 = v10;
-  CUIRenditionKeyCopy(v14, a5, 0x16u);
+  v12 = keyAttributeIndex;
+  CUIRenditionKeyCopy(v14, key, 0x16u);
   [(CUIStructuredThemeStore *)self _updateKeyWithCompatibilityMapping:v14];
-  CUIFillCARKeyArrayForRenditionKey2(a3, v14, v9, v12);
+  CUIFillCARKeyArrayForRenditionKey2(bytes, v14, keyFormat, v12);
   if ([(CUICommonAssetStorage *)self->_store swapped])
   {
-    var2 = v9->var2;
+    var2 = keyFormat->var2;
     if (var2)
     {
       do
       {
-        *a3 = bswap32(*a3) >> 16;
-        a3 = a3 + 2;
+        *bytes = bswap32(*bytes) >> 16;
+        bytes = bytes + 2;
         --var2;
       }
 
@@ -402,7 +402,7 @@
   return 1;
 }
 
-- (id)_newRenditionKeyDataFromKey:(const _renditionkeytoken *)a3
+- (id)_newRenditionKeyDataFromKey:(const _renditionkeytoken *)key
 {
   *v17 = 0u;
   v5 = [(CUIStructuredThemeStore *)self keyFormat:0];
@@ -419,7 +419,7 @@
     v8 = 2 * v5->var2;
   }
 
-  v9 = [(CUIStructuredThemeStore *)self _formatStorageKeyArrayBytes:v7 length:v8 fromKey:a3];
+  v9 = [(CUIStructuredThemeStore *)self _formatStorageKeyArrayBytes:v7 length:v8 fromKey:key];
   v10 = v5->var2;
   if (v9)
   {
@@ -452,28 +452,28 @@
   return v14;
 }
 
-- (id)convertRenditionKeyToKeyData:(const _renditionkeytoken *)a3
+- (id)convertRenditionKeyToKeyData:(const _renditionkeytoken *)data
 {
-  v3 = [(CUIStructuredThemeStore *)self _newRenditionKeyDataFromKey:a3];
+  v3 = [(CUIStructuredThemeStore *)self _newRenditionKeyDataFromKey:data];
 
   return v3;
 }
 
 - (const)renditionKeyFormat
 {
-  v3 = [(CUICommonAssetStorage *)self->_store keySemantics];
-  v4 = [(CUICommonAssetStorage *)self->_store storageVersion];
+  keySemantics = [(CUICommonAssetStorage *)self->_store keySemantics];
+  storageVersion = [(CUICommonAssetStorage *)self->_store storageVersion];
 
-  return CUIDefaultThemeRenditionKeyFormat(v3, v4, v5, v6, v7, v8, v9, v10);
+  return CUIDefaultThemeRenditionKeyFormat(keySemantics, storageVersion, v5, v6, v7, v8, v9, v10);
 }
 
-- (id)debugDescriptionForKeyList:(const _renditionkeytoken *)a3
+- (id)debugDescriptionForKeyList:(const _renditionkeytoken *)list
 {
-  v5 = [(CUIStructuredThemeStore *)self renditionKeyFormat];
-  if (v5 != CUISystemThemeRenditionKeyFormat())
+  renditionKeyFormat = [(CUIStructuredThemeStore *)self renditionKeyFormat];
+  if (renditionKeyFormat != CUISystemThemeRenditionKeyFormat())
   {
-    v6 = CUIRenditionKeyValueForAttribute(&a3->identifier, 12);
-    v7 = CUIRenditionKeyValueForAttribute(&a3->identifier, 15);
+    v6 = CUIRenditionKeyValueForAttribute(&list->identifier, 12);
+    v7 = CUIRenditionKeyValueForAttribute(&list->identifier, 15);
     if (v7 > 6)
     {
       v8 = [NSString stringWithFormat:@"%ld - Unnamed idiom", v7];
@@ -486,11 +486,11 @@
 
     v12 = v8;
     v13 = v6;
-    v14 = CUIRenditionKeyValueForAttribute(&a3->identifier, 16);
-    v15 = CUIRenditionKeyValueForAttribute(&a3->identifier, 17);
-    v16 = [NSString stringWithFormat:@"%ld", CUIRenditionKeyValueForAttribute(&a3->identifier, 1)];
-    v17 = [NSString stringWithFormat:@"%ld", CUIRenditionKeyValueForAttribute(&a3->identifier, 2)];
-    v18 = CUIRenditionKeyValueForAttribute(&a3->identifier, 10);
+    v14 = CUIRenditionKeyValueForAttribute(&list->identifier, 16);
+    v15 = CUIRenditionKeyValueForAttribute(&list->identifier, 17);
+    v16 = [NSString stringWithFormat:@"%ld", CUIRenditionKeyValueForAttribute(&list->identifier, 1)];
+    v17 = [NSString stringWithFormat:@"%ld", CUIRenditionKeyValueForAttribute(&list->identifier, 2)];
+    v18 = CUIRenditionKeyValueForAttribute(&list->identifier, 10);
     if (v18 > 4)
     {
       v19 = [NSString stringWithFormat:@"%ld - Unnamed state value", v18];
@@ -502,7 +502,7 @@
     }
 
     v20 = v19;
-    v21 = CUIRenditionKeyValueForAttribute(&a3->identifier, 6);
+    v21 = CUIRenditionKeyValueForAttribute(&list->identifier, 6);
     if (v21 > 2)
     {
       v22 = [NSString stringWithFormat:@"%ld - Unnamed on/off/mixed value", v21];
@@ -516,11 +516,11 @@
     return [NSString stringWithFormat:@"\n\tIdiom: %@\n\tSubtype: %ld\n\tName Identifier: %ld\n\tScale: %ld\n\tElement: %@\n\tPart: %@\n\tState: %@\n\tValue: %@\nin theme store associated with bundle: %@", v12, v14, v15, v13, v16, v17, v20, v22, [(CUIStructuredThemeStore *)self bundleID], v48, v49, v50, v51, v52, v53];
   }
 
-  v70 = CUIRenditionKeyValueForAttribute(&a3->identifier, 1);
+  v70 = CUIRenditionKeyValueForAttribute(&list->identifier, 1);
   v62 = [NSString stringWithFormat:@"%ld", v70];
-  v69 = CUIRenditionKeyValueForAttribute(&a3->identifier, 2);
+  v69 = CUIRenditionKeyValueForAttribute(&list->identifier, 2);
   v61 = [NSString stringWithFormat:@"%ld", v69];
-  v9 = CUIRenditionKeyValueForAttribute(&a3->identifier, 3);
+  v9 = CUIRenditionKeyValueForAttribute(&list->identifier, 3);
   v10 = v9;
   if (v9 > 1)
   {
@@ -566,7 +566,7 @@ LABEL_21:
 
 LABEL_23:
   v60 = v11;
-  v24 = CUIRenditionKeyValueForAttribute(&a3->identifier, 4);
+  v24 = CUIRenditionKeyValueForAttribute(&list->identifier, 4);
   v67 = v24;
   if (v24 > 5)
   {
@@ -579,7 +579,7 @@ LABEL_23:
   }
 
   v59 = v25;
-  v26 = CUIRenditionKeyValueForAttribute(&a3->identifier, 6);
+  v26 = CUIRenditionKeyValueForAttribute(&list->identifier, 6);
   v66 = v26;
   if (v26 > 2)
   {
@@ -592,7 +592,7 @@ LABEL_23:
   }
 
   v58 = v27;
-  v28 = CUIRenditionKeyValueForAttribute(&a3->identifier, 10);
+  v28 = CUIRenditionKeyValueForAttribute(&list->identifier, 10);
   v65 = v28;
   if (v28 > 4)
   {
@@ -605,7 +605,7 @@ LABEL_23:
   }
 
   v57 = v29;
-  v30 = CUIRenditionKeyValueForAttribute(&a3->identifier, 18);
+  v30 = CUIRenditionKeyValueForAttribute(&list->identifier, 18);
   v64 = v30;
   if (v30 > 2)
   {
@@ -618,7 +618,7 @@ LABEL_23:
   }
 
   v56 = v31;
-  v32 = CUIRenditionKeyValueForAttribute(&a3->identifier, 19);
+  v32 = CUIRenditionKeyValueForAttribute(&list->identifier, 19);
   v68 = v10;
   v63 = v32;
   if (v32 > 4)
@@ -632,9 +632,9 @@ LABEL_23:
   }
 
   v55 = v33;
-  v34 = CUIRenditionKeyValueForAttribute(&a3->identifier, 14);
+  v34 = CUIRenditionKeyValueForAttribute(&list->identifier, 14);
   v35 = v34;
-  v36 = self;
+  selfCopy = self;
   if (v34 > 2)
   {
     v37 = [NSString stringWithFormat:@"%ld - Unnamed presentation state value", v34];
@@ -646,7 +646,7 @@ LABEL_23:
   }
 
   v54 = v37;
-  v38 = CUIRenditionKeyValueForAttribute(&a3->identifier, 11);
+  v38 = CUIRenditionKeyValueForAttribute(&list->identifier, 11);
   v39 = v38;
   if (v38 > 4)
   {
@@ -660,43 +660,43 @@ LABEL_23:
 
   v41 = v40;
   v42 = -[NSDictionary objectForKey:]([+[NSProcessInfo processInfo](NSProcessInfo environment], "objectForKey:", @"CUISuppressMissingAssetLogs");
-  v43 = CUIRenditionKeyValueForAttribute(&a3->identifier, 8);
-  v44 = CUIRenditionKeyValueForAttribute(&a3->identifier, 9);
-  v45 = CUIRenditionKeyValueForAttribute(&a3->identifier, 12);
-  v46 = CUIRenditionKeyValueForAttribute(&a3->identifier, 17);
-  v47 = [(CUIStructuredThemeStore *)v36 bundleID];
+  v43 = CUIRenditionKeyValueForAttribute(&list->identifier, 8);
+  v44 = CUIRenditionKeyValueForAttribute(&list->identifier, 9);
+  v45 = CUIRenditionKeyValueForAttribute(&list->identifier, 12);
+  v46 = CUIRenditionKeyValueForAttribute(&list->identifier, 17);
+  bundleID = [(CUIStructuredThemeStore *)selfCopy bundleID];
   if (v42)
   {
-    return [NSString stringWithFormat:@"(%ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld) in %@", v70, v69, v68, v67, v66, v43, v44, v65, v63, v64, v35, v39, v45, v46, v47];
+    return [NSString stringWithFormat:@"(%ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld, %ld) in %@", v70, v69, v68, v67, v66, v43, v44, v65, v63, v64, v35, v39, v45, v46, bundleID];
   }
 
   else
   {
-    return [NSString stringWithFormat:@"\n\tElement: %@\n\tPart: %@\n\tSize: %@\n\tDirection: %@\n\tValue: %@\n\tDimension 1: %d\n\tDimension 2: %d\n\tState: %@\n\tPrevious State: %@\n\tPrevious Value: %@\n\tPresentation State: %@\n\tDrawing Layer: %@\n\tScale: %d\n\tIdentifier: %d\nin theme store associated with bundle: %@", v62, v61, v60, v59, v58, v43, v44, v57, v55, v56, v54, v41, v45, v46, v47];
+    return [NSString stringWithFormat:@"\n\tElement: %@\n\tPart: %@\n\tSize: %@\n\tDirection: %@\n\tValue: %@\n\tDimension 1: %d\n\tDimension 2: %d\n\tState: %@\n\tPrevious State: %@\n\tPrevious Value: %@\n\tPresentation State: %@\n\tDrawing Layer: %@\n\tScale: %d\n\tIdentifier: %d\nin theme store associated with bundle: %@", v62, v61, v60, v59, v58, v43, v44, v57, v55, v56, v54, v41, v45, v46, bundleID];
   }
 }
 
-- (id)lookupAssetForKey:(const _renditionkeytoken *)a3
+- (id)lookupAssetForKey:(const _renditionkeytoken *)key
 {
-  v4 = [(CUIStructuredThemeStore *)self _newRenditionKeyDataFromKey:a3];
+  v4 = [(CUIStructuredThemeStore *)self _newRenditionKeyDataFromKey:key];
   v5 = [(CUICommonAssetStorage *)self->_store assetForKey:v4];
 
   if (v5 && [(CUICommonAssetStorage *)self->_store swapped])
   {
     v5 = [v5 mutableCopy];
-    v6 = [v5 bytes];
-    *(v6 + 4) = vrev32q_s8(*(v6 + 4));
-    *(v6 + 20) = vrev32_s8(*(v6 + 20));
-    v7 = bswap32(*(v6 + 8));
-    *(v6 + 7) = *(v6 + 7) & 0xF | (16 * bswap32(*(v6 + 7) >> 4));
-    *(v6 + 8) = v7;
-    *(v6 + 18) = bswap32(*(v6 + 18)) >> 16;
-    *(v6 + 19) = bswap32(*(v6 + 19)) >> 16;
-    v8 = *(v6 + 168);
+    bytes = [v5 bytes];
+    *(bytes + 4) = vrev32q_s8(*(bytes + 4));
+    *(bytes + 20) = vrev32_s8(*(bytes + 20));
+    v7 = bswap32(*(bytes + 8));
+    *(bytes + 7) = *(bytes + 7) & 0xF | (16 * bswap32(*(bytes + 7) >> 4));
+    *(bytes + 8) = v7;
+    *(bytes + 18) = bswap32(*(bytes + 18)) >> 16;
+    *(bytes + 19) = bswap32(*(bytes + 19)) >> 16;
+    v8 = *(bytes + 168);
     v9 = vrev32_s8(v8);
-    *(v6 + 21) = v9;
+    *(bytes + 21) = v9;
     LODWORD(v10) = v9.i32[1];
-    v11 = (v6 + 176);
+    v11 = (bytes + 176);
     if ((v9.i32[1] + 1) > 1)
     {
       v12 = (v9.i32[1] + 1);
@@ -707,7 +707,7 @@ LABEL_23:
       v12 = 1;
     }
 
-    v13 = (v6 + 176);
+    v13 = (bytes + 176);
     do
     {
       *v13 = bswap32(*v13);
@@ -788,7 +788,7 @@ LABEL_23:
       }
 
       while (v16 < v15);
-      LODWORD(v10) = *(v6 + 43);
+      LODWORD(v10) = *(bytes + 43);
     }
 
     if (v10)
@@ -807,8 +807,8 @@ LABEL_23:
     }
   }
 
-  v26 = [v5 bytes];
-  if (v26 && *v26 != 1129599817 && v26[1] <= 1u)
+  bytes2 = [v5 bytes];
+  if (bytes2 && *bytes2 != 1129599817 && bytes2[1] <= 1u)
   {
     v27 = [-[CUIStructuredThemeStore store](self "store")];
     _CUILog(4, "CoreUI: [CUIStructuredThemeStore lookupAssetForKey:] got invalid CSIData for AssetCatalog '%@'", v28, v29, v30, v31, v32, v33, v27);
@@ -818,25 +818,25 @@ LABEL_23:
   return v5;
 }
 
-- (id)renditionWithKey:(const _renditionkeytoken *)a3 usingKeySignature:(id)a4
+- (id)renditionWithKey:(const _renditionkeytoken *)key usingKeySignature:(id)signature
 {
   v7 = objc_autoreleasePoolPush();
-  if (a4)
+  if (signature)
   {
-    v8 = a4;
+    signatureCopy = signature;
   }
 
   else
   {
-    a4 = [(CUIStructuredThemeStore *)self copyKeySignatureForKey:a3 withBytesNoCopy:v31 length:256];
+    signature = [(CUIStructuredThemeStore *)self copyKeySignatureForKey:key withBytesNoCopy:v31 length:256];
   }
 
   os_unfair_lock_lock(&self->_cacheLock);
-  v9 = [(NSMutableDictionary *)self->_cache objectForKey:a4];
+  v9 = [(NSMutableDictionary *)self->_cache objectForKey:signature];
   os_unfair_lock_unlock(&self->_cacheLock);
   if (!v9)
   {
-    v9 = [(CUIStructuredThemeStore *)self lookupAssetForKey:a3];
+    v9 = [(CUIStructuredThemeStore *)self lookupAssetForKey:key];
     if (v9)
     {
       if (CUILogRenditionLogEnabled())
@@ -844,18 +844,18 @@ LABEL_23:
         v10 = CUILogHandle();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
         {
-          v11 = [(CUICommonAssetStorage *)self->_store path];
+          path = [(CUICommonAssetStorage *)self->_store path];
           *buf = 138543874;
-          v26 = v11;
+          v26 = path;
           v27 = 2050;
-          v28 = [(CUIThemeRendition *)v9 bytes];
+          bytes = [(CUIThemeRendition *)v9 bytes];
           v29 = 2114;
-          v30 = a4;
+          signatureCopy2 = signature;
           _os_log_impl(&dword_18DF47000, v10, OS_LOG_TYPE_INFO, "CoreUI-l %{public}@ %{public}p %{public}@", buf, 0x20u);
         }
       }
 
-      v9 = [[CUIThemeRendition alloc] initWithCSIData:v9 forKey:a3 version:[(CUIStructuredThemeStore *)self distilledInCoreUIVersion]];
+      v9 = [[CUIThemeRendition alloc] initWithCSIData:v9 forKey:key version:[(CUIStructuredThemeStore *)self distilledInCoreUIVersion]];
       if ([(CUIStructuredThemeStore *)self distilledInCoreUIVersion]<= 0x178 && [(CUIThemeRendition *)v9 pixelFormat]== 1246774599)
       {
         [(CUIThemeRendition *)v9 setOpacity:1.0];
@@ -873,7 +873,7 @@ LABEL_23:
     cache = self->_cache;
     if (cache && v9)
     {
-      v20 = [(NSMutableDictionary *)cache objectForKey:a4];
+      v20 = [(NSMutableDictionary *)cache objectForKey:signature];
       if (v20)
       {
         v21 = v20;
@@ -886,7 +886,7 @@ LABEL_23:
 
       else
       {
-        v23 = [[NSString alloc] initWithUTF8String:{objc_msgSend(a4, "UTF8String")}];
+        v23 = [[NSString alloc] initWithUTF8String:{objc_msgSend(signature, "UTF8String")}];
         [(NSMutableDictionary *)self->_cache setObject:v9 forKey:v23];
       }
     }
@@ -898,11 +898,11 @@ LABEL_23:
   return v9;
 }
 
-- (BOOL)canGetRenditionWithKey:(const _renditionkeytoken *)a3
+- (BOOL)canGetRenditionWithKey:(const _renditionkeytoken *)key
 {
   v5 = +[CUIRuntimeStatistics sharedRuntimeStatistics];
   [v5 incrementStatisticLookup];
-  v6 = [(CUICommonAssetStorage *)self->_store renditionInfoForIdentifier:CUIRenditionKeyValueForAttribute(&a3->identifier, 17)];
+  v6 = [(CUICommonAssetStorage *)self->_store renditionInfoForIdentifier:CUIRenditionKeyValueForAttribute(&key->identifier, 17)];
   if (v6)
   {
     v7 = v6;
@@ -911,17 +911,17 @@ LABEL_23:
       self->_attributePresent = [v6 methodForSelector:sel_attributePresent_withValue_];
     }
 
-    v8 = [(CUIStructuredThemeStore *)self keyAttributeIndex];
-    v9 = CUIRenditionKeyTokenCount(a3);
-    nkeys = v8->nkeys;
-    if (nkeys >= v9 ? v9 : v8->nkeys)
+    keyAttributeIndex = [(CUIStructuredThemeStore *)self keyAttributeIndex];
+    v9 = CUIRenditionKeyTokenCount(key);
+    nkeys = keyAttributeIndex->nkeys;
+    if (nkeys >= v9 ? v9 : keyAttributeIndex->nkeys)
     {
       v12 = v9;
       v13 = 0;
-      p_value = &a3->value;
+      p_value = &key->value;
       do
       {
-        if ((v8->keymask & (1 << *(p_value - 1))) != 0)
+        if ((keyAttributeIndex->keymask & (1 << *(p_value - 1))) != 0)
         {
           if (!(self->_attributePresent)(v7, sel_attributePresent_withValue_))
           {
@@ -929,7 +929,7 @@ LABEL_23:
             return 0;
           }
 
-          nkeys = v8->nkeys;
+          nkeys = keyAttributeIndex->nkeys;
         }
 
         ++v13;
@@ -950,7 +950,7 @@ LABEL_23:
     }
   }
 
-  v16 = [(CUIStructuredThemeStore *)self copyKeySignatureForKey:a3 withBytesNoCopy:&v20 length:256];
+  v16 = [(CUIStructuredThemeStore *)self copyKeySignatureForKey:key withBytesNoCopy:&v20 length:256];
   os_unfair_lock_lock(&self->_cacheLock);
   v17 = [(NSMutableDictionary *)self->_cache objectForKey:v16];
   os_unfair_lock_unlock(&self->_cacheLock);
@@ -962,7 +962,7 @@ LABEL_23:
 
   else
   {
-    v18 = [(CUIStructuredThemeStore *)self assetExistsForKey:a3];
+    v18 = [(CUIStructuredThemeStore *)self assetExistsForKey:key];
 
     if (v5 && !v18)
     {
@@ -974,51 +974,51 @@ LABEL_23:
   return v18;
 }
 
-- (const)renditionKeyForName:(id)a3 cursorHotSpot:(CGPoint *)a4
+- (const)renditionKeyForName:(id)name cursorHotSpot:(CGPoint *)spot
 {
-  if (a3)
+  if (name)
   {
-    if (a4)
+    if (spot)
     {
-      v7 = [a3 mutableCopy];
-      [v7 appendString:NSStringFromPoint(*a4)];
+      nameCopy = [name mutableCopy];
+      [nameCopy appendString:NSStringFromPoint(*spot)];
     }
 
     else
     {
-      v7 = a3;
+      nameCopy = name;
     }
 
-    v9 = [(NSCache *)self->_namedRenditionKeyCache objectForKey:v7];
+    v9 = [(NSCache *)self->_namedRenditionKeyCache objectForKey:nameCopy];
     if (v9)
     {
       if (v9 == kCFNull)
       {
-        v8 = 0;
+        bytes = 0;
       }
 
       else
       {
-        v8 = [(__CFNull *)v9 bytes];
+        bytes = [(__CFNull *)v9 bytes];
       }
 
       goto LABEL_16;
     }
 
-    MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(a3);
+    MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(name);
     v11 = malloc_type_malloc(MaximumSizeOfFileSystemRepresentation, 0xDF8DEC27uLL);
-    if (CFStringGetFileSystemRepresentation(a3, v11, MaximumSizeOfFileSystemRepresentation))
+    if (CFStringGetFileSystemRepresentation(name, v11, MaximumSizeOfFileSystemRepresentation))
     {
-      v8 = [(CUICommonAssetStorage *)self->_store renditionKeyForName:v11 hotSpot:a4];
+      bytes = [(CUICommonAssetStorage *)self->_store renditionKeyForName:v11 hotSpot:spot];
       free(v11);
-      if (v8)
+      if (bytes)
       {
-        v12 = [NSData dataWithBytes:v8 length:4 * CUIRenditionKeyTokenCount(v8) + 4];
+        v12 = [NSData dataWithBytes:bytes length:4 * CUIRenditionKeyTokenCount(bytes) + 4];
 LABEL_15:
-        [(NSCache *)self->_namedRenditionKeyCache setObject:v12 forKey:v7];
+        [(NSCache *)self->_namedRenditionKeyCache setObject:v12 forKey:nameCopy];
 LABEL_16:
 
-        return v8;
+        return bytes;
       }
     }
 
@@ -1027,7 +1027,7 @@ LABEL_16:
       free(v11);
     }
 
-    v8 = 0;
+    bytes = 0;
     v12 = kCFNull;
     goto LABEL_15;
   }
@@ -1035,17 +1035,17 @@ LABEL_16:
   return 0;
 }
 
-- (id)imagesWithName:(id)a3
+- (id)imagesWithName:(id)name
 {
   v5 = +[NSMutableArray array];
-  v6 = CUIRenditionKeyValueForAttribute([(CUIStructuredThemeStore *)self renditionKeyForName:a3], 17);
+  v6 = CUIRenditionKeyValueForAttribute([(CUIStructuredThemeStore *)self renditionKeyForName:name], 17);
   store = self->_store;
   v9[0] = _NSConcreteStackBlock;
   v9[1] = 3221225472;
   v9[2] = __42__CUIStructuredThemeStore_imagesWithName___block_invoke;
   v9[3] = &unk_1E7250FB8;
   v9[4] = self;
-  v9[5] = a3;
+  v9[5] = name;
   v9[6] = v5;
   v9[7] = v6;
   [(CUICommonAssetStorage *)store assetKeysMatchingBlock:v9];
@@ -1179,18 +1179,18 @@ LABEL_5:
   return result;
 }
 
-- (id)renditionInfoForIdentifier:(unsigned __int16)a3
+- (id)renditionInfoForIdentifier:(unsigned __int16)identifier
 {
-  v3 = a3;
-  v4 = [(CUIStructuredThemeStore *)self themeStore];
+  identifierCopy = identifier;
+  themeStore = [(CUIStructuredThemeStore *)self themeStore];
 
-  return [v4 renditionInfoForIdentifier:v3];
+  return [themeStore renditionInfoForIdentifier:identifierCopy];
 }
 
-- (BOOL)caAllowSubimageOfImage:(CGImage *)a3
+- (BOOL)caAllowSubimageOfImage:(CGImage *)image
 {
-  Height = CGImageGetHeight(a3);
-  if (CGImageGetBytesPerRow(a3) * Height < vm_page_size)
+  Height = CGImageGetHeight(image);
+  if (CGImageGetBytesPerRow(image) * Height < vm_page_size)
   {
     return 1;
   }
@@ -1198,25 +1198,25 @@ LABEL_5:
   return [(CUIStructuredThemeStore *)self _subImageTexturingShouldBeSupported];
 }
 
-- (BOOL)localizationWorkaroundForKeyList:(const _renditionkeytoken *)a3 withLocale:(id)a4
+- (BOOL)localizationWorkaroundForKeyList:(const _renditionkeytoken *)list withLocale:(id)locale
 {
   if (![-[CUIStructuredThemeStore bundleID](self "bundleID")])
   {
     return 0;
   }
 
-  if (!a4)
+  if (!locale)
   {
-    a4 = +[NSLocale currentLocale];
+    locale = +[NSLocale currentLocale];
   }
 
-  v7 = [a4 languageCode];
-  if (([v7 isEqualToString:@"ar"] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"hi") & 1) == 0 && !objc_msgSend(v7, "isEqualToString:", @"pa"))
+  languageCode = [locale languageCode];
+  if (([languageCode isEqualToString:@"ar"] & 1) == 0 && (objc_msgSend(languageCode, "isEqualToString:", @"hi") & 1) == 0 && !objc_msgSend(languageCode, "isEqualToString:", @"pa"))
   {
     return 0;
   }
 
-  if (![objc_msgSend(a4 "numberingSystem")])
+  if (![objc_msgSend(locale "numberingSystem")])
   {
     return 0;
   }
@@ -1226,12 +1226,12 @@ LABEL_5:
     [CUIStructuredThemeStore localizationWorkaroundForKeyList:withLocale:];
   }
 
-  v8 = [[NSNumber alloc] initWithUnsignedShort:{CUIRenditionKeyValueForAttribute(&a3->identifier, 17)}];
+  v8 = [[NSNumber alloc] initWithUnsignedShort:{CUIRenditionKeyValueForAttribute(&list->identifier, 17)}];
   os_unfair_lock_lock(&self->_cacheLock);
   v9 = [(NSCache *)self->_nameCache objectForKey:v8];
   if (!v9)
   {
-    v9 = [(CUICommonAssetStorage *)self->_store renditionNameForKeyBaseList:a3];
+    v9 = [(CUICommonAssetStorage *)self->_store renditionNameForKeyBaseList:list];
     nameCache = self->_nameCache;
     if (!nameCache)
     {
@@ -1254,13 +1254,13 @@ id __71__CUIStructuredThemeStore_localizationWorkaroundForKeyList_withLocale___b
   return result;
 }
 
-- (id)aliasForName:(id)a3
+- (id)aliasForName:(id)name
 {
-  v5 = [(CUIStructuredThemeStore *)self bundleID];
+  bundleID = [(CUIStructuredThemeStore *)self bundleID];
   if (!self->_aliasDictionary)
   {
-    v6 = v5;
-    if ([v5 hasPrefix:@"com.apple.CoreGlyphs"])
+    v6 = bundleID;
+    if ([bundleID hasPrefix:@"com.apple.CoreGlyphs"])
     {
       v7 = [NSBundle bundleWithIdentifier:v6];
       if (v7)
@@ -1272,7 +1272,7 @@ id __71__CUIStructuredThemeStore_localizationWorkaroundForKeyList_withLocale___b
 
   aliasDictionary = self->_aliasDictionary;
 
-  return [(NSDictionary *)aliasDictionary objectForKey:a3];
+  return [(NSDictionary *)aliasDictionary objectForKey:name];
 }
 
 - (id)mappedAliases
@@ -1288,18 +1288,18 @@ id __71__CUIStructuredThemeStore_localizationWorkaroundForKeyList_withLocale___b
   return result;
 }
 
-- (BOOL)imageNamedShouldFlip:(id)a3
+- (BOOL)imageNamedShouldFlip:(id)flip
 {
   if (dyld_program_sdk_at_least())
   {
     return 0;
   }
 
-  v6 = [(CUIStructuredThemeStore *)self bundleID];
+  bundleID = [(CUIStructuredThemeStore *)self bundleID];
   if (!self->_legacyFlippableSet)
   {
-    v7 = v6;
-    if ([v6 hasPrefix:@"com.apple.CoreGlyphs"])
+    v7 = bundleID;
+    if ([bundleID hasPrefix:@"com.apple.CoreGlyphs"])
     {
       v8 = [NSBundle bundleWithIdentifier:v7];
       if (v8)
@@ -1315,14 +1315,14 @@ id __71__CUIStructuredThemeStore_localizationWorkaroundForKeyList_withLocale___b
 
   legacyFlippableSet = self->_legacyFlippableSet;
 
-  return [(NSSet *)legacyFlippableSet containsObject:a3];
+  return [(NSSet *)legacyFlippableSet containsObject:flip];
 }
 
-- (void)setBundleID:(id)a3
+- (void)setBundleID:(id)d
 {
-  if (self->_bundleID != a3)
+  if (self->_bundleID != d)
   {
-    self->_bundleID = [a3 copy];
+    self->_bundleID = [d copy];
   }
 }
 

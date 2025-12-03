@@ -8,7 +8,7 @@
 
 + (id)ak_dynamicFontWithStyle:()AuthKitUI traits:
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -24,7 +24,7 @@
 + (id)ak_preferredFontForStyle:()AuthKitUI weight:
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
   objc_storeStrong(location, obj);
@@ -49,11 +49,11 @@
 
 + (id)ak_preferredFontForSize:()AuthKitUI weight:
 {
-  v4 = [MEMORY[0x277D75520] defaultMetrics];
-  v3 = [MEMORY[0x277D74300] systemFontOfSize:a1 weight:a2];
-  v5 = [v4 scaledFontForFont:?];
+  defaultMetrics = [MEMORY[0x277D75520] defaultMetrics];
+  v3 = [MEMORY[0x277D74300] systemFontOfSize:self weight:a2];
+  v5 = [defaultMetrics scaledFontForFont:?];
   MEMORY[0x277D82BD8](v3);
-  MEMORY[0x277D82BD8](v4);
+  MEMORY[0x277D82BD8](defaultMetrics);
 
   return v5;
 }

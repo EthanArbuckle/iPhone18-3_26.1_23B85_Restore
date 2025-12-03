@@ -8,10 +8,10 @@
 {
   v6 = a4;
   v7 = a3;
-  v8 = +[SearchUISectionModel sectionModelWithScrollingRowModels:numberOfRows:section:](SearchUISectionModel, "sectionModelWithScrollingRowModels:numberOfRows:section:", v7, [a1 numberOfRows], v6);
+  v8 = +[SearchUISectionModel sectionModelWithScrollingRowModels:numberOfRows:section:](SearchUISectionModel, "sectionModelWithScrollingRowModels:numberOfRows:section:", v7, [self numberOfRows], v6);
 
-  v9 = [v8 rowModels];
-  v10 = [v9 count];
+  rowModels = [v8 rowModels];
+  v10 = [rowModels count];
 
   if (v10)
   {

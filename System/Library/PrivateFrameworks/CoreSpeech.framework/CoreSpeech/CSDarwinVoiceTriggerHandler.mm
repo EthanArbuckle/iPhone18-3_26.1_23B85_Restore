@@ -1,59 +1,59 @@
 @interface CSDarwinVoiceTriggerHandler
-- (CSDarwinVoiceTriggerHandler)initWithRemoteDevice:(id)a3 voiceTriggerEventsCoordinator:(id)a4 delegate:(id)a5 testContext:(id)a6;
+- (CSDarwinVoiceTriggerHandler)initWithRemoteDevice:(id)device voiceTriggerEventsCoordinator:(id)coordinator delegate:(id)delegate testContext:(id)context;
 - (CSDarwinVoiceTriggerHandlerDelegate)delegate;
 - (CSVoiceTriggerEventsCoordinator)voiceTriggerEventsCoordinator;
 - (id)_connectRemoteCoreSpeechIfNeeded;
 - (id)_getSpeakerProfileForCurrentLanguage;
 - (int64_t)_currentSystemUserActiveState;
 - (unint64_t)_fetchUserPreferredVoiceTriggerPhraseType;
-- (void)CSBluetoothWirelessSplitterMonitor:(id)a3 didReceiveSplitterStateChange:(unint64_t)a4 shouldDisableSpeakerVerificationInSplitterMode:(BOOL)a5;
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4;
-- (void)CSScreenLockMonitor:(id)a3 didReceiveScreenLockStateChanged:(BOOL)a4;
-- (void)CSSystemUserActivityMonitor:(id)a3 activeStateChanged:(BOOL)a4;
-- (void)CSVoiceTriggerAssetDownloadMonitor:(id)a3 didInstallNewAsset:(BOOL)a4;
-- (void)CSVoiceTriggerUserSelectedPhraseDidChange:(BOOL)a3;
+- (void)CSBluetoothWirelessSplitterMonitor:(id)monitor didReceiveSplitterStateChange:(unint64_t)change shouldDisableSpeakerVerificationInSplitterMode:(BOOL)mode;
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed;
+- (void)CSScreenLockMonitor:(id)monitor didReceiveScreenLockStateChanged:(BOOL)changed;
+- (void)CSSystemUserActivityMonitor:(id)monitor activeStateChanged:(BOOL)changed;
+- (void)CSVoiceTriggerAssetDownloadMonitor:(id)monitor didInstallNewAsset:(BOOL)asset;
+- (void)CSVoiceTriggerUserSelectedPhraseDidChange:(BOOL)change;
 - (void)_disableRemoteVoiceTrigger;
 - (void)_disconnectRemoteCoreSpeech;
 - (void)_enableRemoteVoiceTrigger;
 - (void)_handleDeviceDisconnection;
 - (void)_handleRemoteCoreSpeechFirstTimeConnected;
-- (void)_handleSelfTriggerDetected:(id)a3 myriadHash:(id)a4;
-- (void)_handleVoiceTriggerEnabled:(BOOL)a3;
+- (void)_handleSelfTriggerDetected:(id)detected myriadHash:(id)hash;
+- (void)_handleVoiceTriggerEnabled:(BOOL)enabled;
 - (void)_invalidateRemoteControlClient;
 - (void)_markRemoteVoiceTriggerEnabled;
 - (void)_releasePreventSystemSleepPowerAssertion;
-- (void)_remoteVoiceTriggerEnabled:(id)a3;
-- (void)_retryVoiceTriggerEnable:(id)a3;
+- (void)_remoteVoiceTriggerEnabled:(id)enabled;
+- (void)_retryVoiceTriggerEnable:(id)enable;
 - (void)_safeAssetChangeHandler;
-- (void)_sendSELFMetricsForCachedVoiceTriggerEvents:(id)a3 secondPassRejectEvents:(id)a4 secondPassCancelledEvents:(id)a5;
+- (void)_sendSELFMetricsForCachedVoiceTriggerEvents:(id)events secondPassRejectEvents:(id)rejectEvents secondPassCancelledEvents:(id)cancelledEvents;
 - (void)_startMonitoringSystemUserActivity;
 - (void)_startPreventSleepAssertionTimer;
 - (void)_startRetryTimer;
 - (void)_stopMonitoringSystemUserActivity;
 - (void)_stopPreventSleepAssertionTimer;
 - (void)_stopRetryTimer;
-- (void)_switchSelfTriggerStatus:(BOOL)a3;
-- (void)_switchVoiceTriggerStatus:(BOOL)a3;
-- (void)_transferDarwinVoiceTriggerAsset:(id)a3 languageCode:(id)a4;
-- (void)_updateRemoteSupportedVoiceTriggerPhraseType:(unint64_t)a3;
+- (void)_switchSelfTriggerStatus:(BOOL)status;
+- (void)_switchVoiceTriggerStatus:(BOOL)status;
+- (void)_transferDarwinVoiceTriggerAsset:(id)asset languageCode:(id)code;
+- (void)_updateRemoteSupportedVoiceTriggerPhraseType:(unint64_t)type;
 - (void)_updateSystemSleepPowerAssertionState;
-- (void)_wakeSiriIfNeededFromFullWake:(BOOL)a3 completion:(id)a4;
-- (void)_writeMyriadHashFile:(id)a3;
+- (void)_wakeSiriIfNeededFromFullWake:(BOOL)wake completion:(id)completion;
+- (void)_writeMyriadHashFile:(id)file;
 - (void)dealloc;
-- (void)didReceiveConnectionInvalidated:(id)a3;
-- (void)didReceiveSelfTriggerDetected:(id)a3 myriadHash:(id)a4;
-- (void)didReceiveVoiceTriggerAssetsDownloadingRequest:(id)a3 withConfigVersion:(id)a4 languageCode:(id)a5;
-- (void)didReceiveVoiceTriggered:(id)a3;
-- (void)disconnected:(id)a3;
+- (void)didReceiveConnectionInvalidated:(id)invalidated;
+- (void)didReceiveSelfTriggerDetected:(id)detected myriadHash:(id)hash;
+- (void)didReceiveVoiceTriggerAssetsDownloadingRequest:(id)request withConfigVersion:(id)version languageCode:(id)code;
+- (void)didReceiveVoiceTriggered:(id)triggered;
+- (void)disconnected:(id)disconnected;
 - (void)handleAssetChange;
 - (void)onDaemonExit;
 - (void)onDarkWake;
 - (void)onEarlyWake;
 - (void)onFullWake;
 - (void)onSleep;
-- (void)onUserSessionActive:(id)a3;
-- (void)onUserSessionResign:(id)a3;
-- (void)retryVoiceTriggerEnable:(id)a3;
+- (void)onUserSessionActive:(id)active;
+- (void)onUserSessionResign:(id)resign;
+- (void)retryVoiceTriggerEnable:(id)enable;
 - (void)start;
 - (void)stop;
 @end
@@ -74,7 +74,7 @@
   return WeakRetained;
 }
 
-- (void)CSBluetoothWirelessSplitterMonitor:(id)a3 didReceiveSplitterStateChange:(unint64_t)a4 shouldDisableSpeakerVerificationInSplitterMode:(BOOL)a5
+- (void)CSBluetoothWirelessSplitterMonitor:(id)monitor didReceiveSplitterStateChange:(unint64_t)change shouldDisableSpeakerVerificationInSplitterMode:(BOOL)mode
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -82,12 +82,12 @@
   block[2] = sub_10000D238;
   block[3] = &unk_100253028;
   block[4] = self;
-  block[5] = a4;
-  v7 = a5;
+  block[5] = change;
+  modeCopy = mode;
   dispatch_async(queue, block);
 }
 
-- (void)CSVoiceTriggerUserSelectedPhraseDidChange:(BOOL)a3
+- (void)CSVoiceTriggerUserSelectedPhraseDidChange:(BOOL)change
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -95,13 +95,13 @@
   v4[2] = sub_10000D2FC;
   v4[3] = &unk_100253BF8;
   v4[4] = self;
-  v5 = a3;
+  changeCopy = change;
   dispatch_async(queue, v4);
 }
 
-- (void)CSScreenLockMonitor:(id)a3 didReceiveScreenLockStateChanged:(BOOL)a4
+- (void)CSScreenLockMonitor:(id)monitor didReceiveScreenLockStateChanged:(BOOL)changed
 {
-  if (!a4)
+  if (!changed)
   {
     queue = self->_queue;
     block[0] = _NSConcreteStackBlock;
@@ -119,21 +119,21 @@
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     v10 = 136315394;
     v11 = "[CSDarwinVoiceTriggerHandler _safeAssetChangeHandler]";
     v12 = 2114;
-    v13 = v5;
+    v13 = remoteDeviceId;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Performing _safeAssetChangeHandler", &v10, 0x16u);
   }
 
-  v6 = [(CSPolicy *)self->_voiceTriggerStartPolicy isEnabled];
-  v7 = [(CSDarwinVoiceTriggerHandler *)self _connectRemoteCoreSpeechIfNeeded];
+  isEnabled = [(CSPolicy *)self->_voiceTriggerStartPolicy isEnabled];
+  _connectRemoteCoreSpeechIfNeeded = [(CSDarwinVoiceTriggerHandler *)self _connectRemoteCoreSpeechIfNeeded];
   remoteControlClient = self->_remoteControlClient;
   v9 = [CSUtils getSiriLanguageWithFallback:@"en-US"];
   [(CSRemoteControlClient *)remoteControlClient notifyVoiceTriggerAssetChangeWithSiriLanguageCode:v9];
 
-  if (v6)
+  if (isEnabled)
   {
     [(CSDarwinVoiceTriggerHandler *)self _enableRemoteVoiceTrigger];
   }
@@ -155,44 +155,44 @@
   dispatch_async(queue, block);
 }
 
-- (void)CSLanguageCodeUpdateMonitor:(id)a3 didReceiveLanguageCodeChanged:(id)a4
+- (void)CSLanguageCodeUpdateMonitor:(id)monitor didReceiveLanguageCodeChanged:(id)changed
 {
-  v5 = a4;
+  changedCopy = changed;
   v6 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v7 = v6;
-    v8 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     v9 = 136315650;
     v10 = "[CSDarwinVoiceTriggerHandler CSLanguageCodeUpdateMonitor:didReceiveLanguageCodeChanged:]";
     v11 = 2114;
-    v12 = v8;
+    v12 = remoteDeviceId;
     v13 = 2114;
-    v14 = v5;
+    v14 = changedCopy;
     _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:LanguageCode changed to : %{public}@", &v9, 0x20u);
   }
 
   [(CSDarwinVoiceTriggerHandler *)self handleAssetChange];
 }
 
-- (void)CSVoiceTriggerAssetDownloadMonitor:(id)a3 didInstallNewAsset:(BOOL)a4
+- (void)CSVoiceTriggerAssetDownloadMonitor:(id)monitor didInstallNewAsset:(BOOL)asset
 {
   v5 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     v8 = 136315394;
     v9 = "[CSDarwinVoiceTriggerHandler CSVoiceTriggerAssetDownloadMonitor:didInstallNewAsset:]";
     v10 = 2114;
-    v11 = v7;
+    v11 = remoteDeviceId;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Download new asset", &v8, 0x16u);
   }
 
   [(CSDarwinVoiceTriggerHandler *)self handleAssetChange];
 }
 
-- (void)_switchSelfTriggerStatus:(BOOL)a3
+- (void)_switchSelfTriggerStatus:(BOOL)status
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -200,7 +200,7 @@
   v4[2] = sub_10000DE7C;
   v4[3] = &unk_100253BF8;
   v4[4] = self;
-  v5 = a3;
+  statusCopy = status;
   dispatch_async(queue, v4);
 }
 
@@ -222,23 +222,23 @@
   return v5;
 }
 
-- (void)_remoteVoiceTriggerEnabled:(id)a3
+- (void)_remoteVoiceTriggerEnabled:(id)enabled
 {
-  v5 = a3;
-  v4 = [(CSDarwinVoiceTriggerHandler *)self _connectRemoteCoreSpeechIfNeeded];
-  [(CSRemoteControlClient *)self->_remoteControlClient voiceTriggerEnabledWithCompletion:v5];
+  enabledCopy = enabled;
+  _connectRemoteCoreSpeechIfNeeded = [(CSDarwinVoiceTriggerHandler *)self _connectRemoteCoreSpeechIfNeeded];
+  [(CSRemoteControlClient *)self->_remoteControlClient voiceTriggerEnabledWithCompletion:enabledCopy];
 }
 
 - (void)_disableRemoteVoiceTrigger
 {
-  v3 = [(CSDarwinVoiceTriggerHandler *)self _connectRemoteCoreSpeechIfNeeded];
+  _connectRemoteCoreSpeechIfNeeded = [(CSDarwinVoiceTriggerHandler *)self _connectRemoteCoreSpeechIfNeeded];
   v4 = dispatch_semaphore_create(0);
   remoteControlClient = self->_remoteControlClient;
   v10 = _NSConcreteStackBlock;
   v11 = 3221225472;
   v12 = sub_10000E13C;
   v13 = &unk_10024E420;
-  v14 = self;
+  selfCopy = self;
   v6 = v4;
   v15 = v6;
   [(CSRemoteControlClient *)remoteControlClient setVoiceTriggerEnable:0 withCompletion:&v10];
@@ -263,15 +263,15 @@
 {
   if (self->_isUserSessionActive)
   {
-    v3 = [(CSDarwinVoiceTriggerHandler *)self _connectRemoteCoreSpeechIfNeeded];
+    _connectRemoteCoreSpeechIfNeeded = [(CSDarwinVoiceTriggerHandler *)self _connectRemoteCoreSpeechIfNeeded];
     v4 = [CSUtils getSiriLanguageWithFallback:@"en-US"];
-    v5 = [(CSDarwinVoiceTriggerHandler *)self _getSpeakerProfileForCurrentLanguage];
-    if (v5)
+    _getSpeakerProfileForCurrentLanguage = [(CSDarwinVoiceTriggerHandler *)self _getSpeakerProfileForCurrentLanguage];
+    if (_getSpeakerProfileForCurrentLanguage)
     {
       v6 = +[SSRAESKeyManager getVoiceTriggerProfilesAESKey];
       if (!CSIsOSX() || v6)
       {
-        v14 = [v5 getEnrollmentUtterancesForModelType:{+[SSRUtils explicitSpIdTypeForSpId:](SSRUtils, "explicitSpIdTypeForSpId:", 1)}];
+        v14 = [_getSpeakerProfileForCurrentLanguage getEnrollmentUtterancesForModelType:{+[SSRUtils explicitSpIdTypeForSpId:](SSRUtils, "explicitSpIdTypeForSpId:", 1)}];
         [(CSRemoteControlClient *)self->_remoteControlClient setVoiceTriggerEnable:0 withCompletion:0];
         objc_initWeak(buf, self);
         remoteControlClient = self->_remoteControlClient;
@@ -298,12 +298,12 @@
         if (v8)
         {
           v21 = v7;
-          v22 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+          remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
           v23 = [(CSRemoteControlClient *)self->_remoteControlClient description];
           *buf = 136315650;
           v28 = "[CSDarwinVoiceTriggerHandler _enableRemoteVoiceTrigger]";
           v29 = 2114;
-          v30 = v22;
+          v30 = remoteDeviceId;
           v31 = 2114;
           v32 = v23;
           _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%s CSDarwinVTHandler[%{public}@]:ERR: cannot find AES key, remote VoiceTrigger %{public}@ will be turned on without PHS", buf, 0x20u);
@@ -321,12 +321,12 @@
       if (v13)
       {
         v18 = v12;
-        v19 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+        remoteDeviceId2 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
         v20 = [(CSRemoteControlClient *)self->_remoteControlClient description];
         *buf = 136315650;
         v28 = "[CSDarwinVoiceTriggerHandler _enableRemoteVoiceTrigger]";
         v29 = 2114;
-        v30 = v19;
+        v30 = remoteDeviceId2;
         v31 = 2114;
         v32 = v20;
         _os_log_error_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s CSDarwinVTHandler[%{public}@]:ERR: No Speaker Profile, remote VoiceTrigger %{public}@ will be turned on without PHS", buf, 0x20u);
@@ -343,11 +343,11 @@
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
     {
       v10 = v9;
-      v11 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+      remoteDeviceId3 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
       *buf = 136315394;
       v28 = "[CSDarwinVoiceTriggerHandler _enableRemoteVoiceTrigger]";
       v29 = 2114;
-      v30 = v11;
+      v30 = remoteDeviceId3;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Does not enable remote Voice Trigger since user session is deactivated", buf, 0x16u);
     }
   }
@@ -359,29 +359,29 @@
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     v8 = 136315394;
     v9 = "[CSDarwinVoiceTriggerHandler _markRemoteVoiceTriggerEnabled]";
     v10 = 2114;
-    v11 = v5;
+    v11 = remoteDeviceId;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:", &v8, 0x16u);
   }
 
   [(CSDarwinVoiceTriggerHandler *)self setVoiceTriggerEnabled:1];
   v6 = +[CSRemoteDarwinDeviceInfo sharedInstance];
-  v7 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
-  [v6 notifyVoiceTriggerEnabledWithDeviceUUID:v7];
+  remoteDeviceId2 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+  [v6 notifyVoiceTriggerEnabledWithDeviceUUID:remoteDeviceId2];
 
   [(CSDarwinVoiceTriggerHandler *)self _updateSystemSleepPowerAssertionState];
 }
 
-- (void)_transferDarwinVoiceTriggerAsset:(id)a3 languageCode:(id)a4
+- (void)_transferDarwinVoiceTriggerAsset:(id)asset languageCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
+  assetCopy = asset;
+  codeCopy = code;
   if (self->_isUserSessionActive)
   {
-    v8 = [(CSDarwinVoiceTriggerHandler *)self _connectRemoteCoreSpeechIfNeeded];
+    _connectRemoteCoreSpeechIfNeeded = [(CSDarwinVoiceTriggerHandler *)self _connectRemoteCoreSpeechIfNeeded];
     [(CSRemoteControlClient *)self->_remoteControlClient setVoiceTriggerEnable:0 withCompletion:0];
     remoteControlClient = self->_remoteControlClient;
     v14[0] = _NSConcreteStackBlock;
@@ -389,7 +389,7 @@
     v14[2] = sub_10000ED34;
     v14[3] = &unk_100253300;
     v14[4] = self;
-    [(CSRemoteControlClient *)remoteControlClient transferVoiceTriggerAsset:v6 forLanguageCode:v7 completion:v14];
+    [(CSRemoteControlClient *)remoteControlClient transferVoiceTriggerAsset:assetCopy forLanguageCode:codeCopy completion:v14];
     v10 = +[CSSuddenTerminationProtector sharedInstance];
     [v10 disallowSuddenTermiation];
   }
@@ -400,29 +400,29 @@
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
     {
       v12 = v11;
-      v13 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+      remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
       *buf = 136315394;
       v16 = "[CSDarwinVoiceTriggerHandler _transferDarwinVoiceTriggerAsset:languageCode:]";
       v17 = 2114;
-      v18 = v13;
+      v18 = remoteDeviceId;
       _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Skip transfer since user session became inactive", buf, 0x16u);
     }
   }
 }
 
-- (void)_retryVoiceTriggerEnable:(id)a3
+- (void)_retryVoiceTriggerEnable:(id)enable
 {
-  v4 = a3;
+  enableCopy = enable;
   v5 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     v8 = [(CSRemoteControlClient *)self->_remoteControlClient description];
     *buf = 136315650;
     v17 = "[CSDarwinVoiceTriggerHandler _retryVoiceTriggerEnable:]";
     v18 = 2114;
-    v19 = v7;
+    v19 = remoteDeviceId;
     v20 = 2114;
     v21 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:remoteClient : %{public}@", buf, 0x20u);
@@ -437,11 +437,11 @@
     }
 
     v10 = v9;
-    v11 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId2 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     *buf = 136315394;
     v17 = "[CSDarwinVoiceTriggerHandler _retryVoiceTriggerEnable:]";
     v18 = 2114;
-    v19 = v11;
+    v19 = remoteDeviceId2;
     v12 = "%s CSDarwinVTHandler[%{public}@]:user session is not active on macOS, should stop this timer";
     goto LABEL_10;
   }
@@ -453,7 +453,7 @@
     v14[2] = sub_10000F010;
     v14[3] = &unk_10024E390;
     v14[4] = self;
-    v15 = v4;
+    v15 = enableCopy;
     [(CSDarwinVoiceTriggerHandler *)self _remoteVoiceTriggerEnabled:v14];
 
     goto LABEL_13;
@@ -463,42 +463,42 @@
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v10 = v13;
-    v11 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId2 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     *buf = 136315394;
     v17 = "[CSDarwinVoiceTriggerHandler _retryVoiceTriggerEnable:]";
     v18 = 2114;
-    v19 = v11;
+    v19 = remoteDeviceId2;
     v12 = "%s CSDarwinVTHandler[%{public}@]:VoiceTrigger is disabled on macOS, should stop this timer";
 LABEL_10:
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, v12, buf, 0x16u);
   }
 
 LABEL_11:
-  if (v4)
+  if (enableCopy)
   {
-    (*(v4 + 2))(v4, 1);
+    (*(enableCopy + 2))(enableCopy, 1);
   }
 
 LABEL_13:
 }
 
-- (void)retryVoiceTriggerEnable:(id)a3
+- (void)retryVoiceTriggerEnable:(id)enable
 {
-  v4 = a3;
+  enableCopy = enable;
   queue = self->_queue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_10000F378;
   v7[3] = &unk_100253718;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = enableCopy;
+  v6 = enableCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)_handleVoiceTriggerEnabled:(BOOL)a3
+- (void)_handleVoiceTriggerEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     [(CSDarwinVoiceTriggerHandler *)self _enableRemoteVoiceTrigger];
 
@@ -512,7 +512,7 @@ LABEL_13:
   }
 }
 
-- (void)_switchVoiceTriggerStatus:(BOOL)a3
+- (void)_switchVoiceTriggerStatus:(BOOL)status
 {
   queue = self->_queue;
   v4[0] = _NSConcreteStackBlock;
@@ -520,11 +520,11 @@ LABEL_13:
   v4[2] = sub_10000F45C;
   v4[3] = &unk_100253BF8;
   v4[4] = self;
-  v5 = a3;
+  statusCopy = status;
   dispatch_async(queue, v4);
 }
 
-- (void)CSSystemUserActivityMonitor:(id)a3 activeStateChanged:(BOOL)a4
+- (void)CSSystemUserActivityMonitor:(id)monitor activeStateChanged:(BOOL)changed
 {
   v5 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
@@ -555,20 +555,20 @@ LABEL_13:
 
 - (void)_updateSystemSleepPowerAssertionState
 {
-  v3 = [(CSDarwinVoiceTriggerHandler *)self _currentSystemUserActiveState];
+  _currentSystemUserActiveState = [(CSDarwinVoiceTriggerHandler *)self _currentSystemUserActiveState];
   v4 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 136315394;
     v6 = "[CSDarwinVoiceTriggerHandler _updateSystemSleepPowerAssertionState]";
     v7 = 2048;
-    v8 = v3;
+    v8 = _currentSystemUserActiveState;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s System User Activity State %ld", &v5, 0x16u);
   }
 
-  if (v3)
+  if (_currentSystemUserActiveState)
   {
-    if (v3 == 1)
+    if (_currentSystemUserActiveState == 1)
     {
       [(CSDarwinVoiceTriggerHandler *)self _startPreventSleepAssertionTimer];
       [(CSDarwinPreventSystemSleepManager *)self->_preventSystemSleepManager acquireAssertionForActiveUser];
@@ -596,9 +596,9 @@ LABEL_13:
   }
 
   v3 = +[CSSystemUserActivityMonitor sharedInstance];
-  v4 = [v3 systemUserActivityState];
+  systemUserActivityState = [v3 systemUserActivityState];
 
-  return v4;
+  return systemUserActivityState;
 }
 
 - (void)_stopMonitoringSystemUserActivity
@@ -631,11 +631,11 @@ LABEL_13:
       if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
       {
         v5 = v4;
-        v6 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+        remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
         v8 = 136315394;
         v9 = "[CSDarwinVoiceTriggerHandler _stopPreventSleepAssertionTimer]";
         v10 = 2114;
-        v11 = v6;
+        v11 = remoteDeviceId;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:", &v8, 0x16u);
 
         preventSleepAssertionTimer = self->_preventSleepAssertionTimer;
@@ -659,11 +659,11 @@ LABEL_13:
       if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
       {
         v4 = v3;
-        v5 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+        remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
         *buf = 136315650;
         v14 = "[CSDarwinVoiceTriggerHandler _startPreventSleepAssertionTimer]";
         v15 = 2114;
-        v16 = v5;
+        v16 = remoteDeviceId;
         v17 = 2048;
         v18 = 0x4082C00000000000;
         _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Setting PreventSystemSleep timer for %f seconds", buf, 0x20u);
@@ -690,31 +690,31 @@ LABEL_13:
     else if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_ERROR))
     {
       v9 = v3;
-      v10 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+      remoteDeviceId2 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
       *buf = 136315394;
       v14 = "[CSDarwinVoiceTriggerHandler _startPreventSleepAssertionTimer]";
       v15 = 2114;
-      v16 = v10;
+      v16 = remoteDeviceId2;
       _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%s CSDarwinVTHandler[%{public}@]:Sleep manager is unavailable.", buf, 0x16u);
     }
   }
 }
 
-- (void)didReceiveVoiceTriggerAssetsDownloadingRequest:(id)a3 withConfigVersion:(id)a4 languageCode:(id)a5
+- (void)didReceiveVoiceTriggerAssetsDownloadingRequest:(id)request withConfigVersion:(id)version languageCode:(id)code
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  requestCopy = request;
+  versionCopy = version;
+  codeCopy = code;
   v11 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v12 = v11;
-    v13 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
-    v14 = [v8 description];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    v14 = [requestCopy description];
     *buf = 136315650;
     v24 = "[CSDarwinVoiceTriggerHandler didReceiveVoiceTriggerAssetsDownloadingRequest:withConfigVersion:languageCode:]";
     v25 = 2114;
-    v26 = v13;
+    v26 = remoteDeviceId;
     v27 = 2114;
     v28 = v14;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:darwin client : %{public}@", buf, 0x20u);
@@ -726,26 +726,26 @@ LABEL_13:
   v19[2] = sub_10000FF30;
   v19[3] = &unk_100252F38;
   v19[4] = self;
-  v20 = v10;
-  v21 = v9;
-  v22 = v8;
-  v16 = v8;
-  v17 = v9;
-  v18 = v10;
+  v20 = codeCopy;
+  v21 = versionCopy;
+  v22 = requestCopy;
+  v16 = requestCopy;
+  v17 = versionCopy;
+  v18 = codeCopy;
   dispatch_async(queue, v19);
 }
 
-- (void)_handleSelfTriggerDetected:(id)a3 myriadHash:(id)a4
+- (void)_handleSelfTriggerDetected:(id)detected myriadHash:(id)hash
 {
-  v5 = a4;
+  hashCopy = hash;
   queue = self->_queue;
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100010540;
   v8[3] = &unk_100253C48;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = hashCopy;
+  v7 = hashCopy;
   dispatch_async(queue, v8);
 }
 
@@ -756,41 +756,41 @@ LABEL_13:
   self->_remoteControlClient = 0;
 }
 
-- (void)didReceiveSelfTriggerDetected:(id)a3 myriadHash:(id)a4
+- (void)didReceiveSelfTriggerDetected:(id)detected myriadHash:(id)hash
 {
-  v6 = a3;
-  v7 = a4;
+  detectedCopy = detected;
+  hashCopy = hash;
   v8 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
-    v11 = [v6 description];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    v11 = [detectedCopy description];
     v12 = 136315650;
     v13 = "[CSDarwinVoiceTriggerHandler didReceiveSelfTriggerDetected:myriadHash:]";
     v14 = 2114;
-    v15 = v10;
+    v15 = remoteDeviceId;
     v16 = 2114;
     v17 = v11;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:remoteClient : %{public}@", &v12, 0x20u);
   }
 
-  [(CSDarwinVoiceTriggerHandler *)self _handleSelfTriggerDetected:v6 myriadHash:v7];
+  [(CSDarwinVoiceTriggerHandler *)self _handleSelfTriggerDetected:detectedCopy myriadHash:hashCopy];
 }
 
-- (void)didReceiveVoiceTriggered:(id)a3
+- (void)didReceiveVoiceTriggered:(id)triggered
 {
-  v4 = a3;
+  triggeredCopy = triggered;
   v5 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v6 = v5;
-    v7 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
-    v8 = [v4 description];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    v8 = [triggeredCopy description];
     *buf = 136315650;
     v15 = "[CSDarwinVoiceTriggerHandler didReceiveVoiceTriggered:]";
     v16 = 2114;
-    v17 = v7;
+    v17 = remoteDeviceId;
     v18 = 2114;
     v19 = v8;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:remoteClient : %{public}@", buf, 0x20u);
@@ -805,12 +805,12 @@ LABEL_13:
   v12[2] = sub_1000109F4;
   v12[3] = &unk_100253C48;
   v12[4] = self;
-  v13 = v4;
-  v11 = v4;
+  v13 = triggeredCopy;
+  v11 = triggeredCopy;
   dispatch_async(queue, v12);
 }
 
-- (void)didReceiveConnectionInvalidated:(id)a3
+- (void)didReceiveConnectionInvalidated:(id)invalidated
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -821,7 +821,7 @@ LABEL_13:
   dispatch_async(queue, block);
 }
 
-- (void)disconnected:(id)a3
+- (void)disconnected:(id)disconnected
 {
   queue = self->_queue;
   block[0] = _NSConcreteStackBlock;
@@ -832,12 +832,12 @@ LABEL_13:
   dispatch_async(queue, block);
 }
 
-- (void)_updateRemoteSupportedVoiceTriggerPhraseType:(unint64_t)a3
+- (void)_updateRemoteSupportedVoiceTriggerPhraseType:(unint64_t)type
 {
   remoteControlClient = self->_remoteControlClient;
   if (remoteControlClient)
   {
-    [(CSRemoteControlClient *)remoteControlClient setUserSelectedVoiceTriggerPhraseType:a3];
+    [(CSRemoteControlClient *)remoteControlClient setUserSelectedVoiceTriggerPhraseType:type];
   }
 }
 
@@ -854,11 +854,11 @@ LABEL_13:
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
     {
       v7 = v6;
-      v8 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+      remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
       *buf = 136315650;
       v12 = "[CSDarwinVoiceTriggerHandler _fetchUserPreferredVoiceTriggerPhraseType]";
       v13 = 2114;
-      v14 = v8;
+      v14 = remoteDeviceId;
       v15 = 2112;
       v16 = v5;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Failed to fetch user selected phrase type with error %@", buf, 0x20u);
@@ -868,17 +868,17 @@ LABEL_13:
   return v4;
 }
 
-- (void)_sendSELFMetricsForCachedVoiceTriggerEvents:(id)a3 secondPassRejectEvents:(id)a4 secondPassCancelledEvents:(id)a5
+- (void)_sendSELFMetricsForCachedVoiceTriggerEvents:(id)events secondPassRejectEvents:(id)rejectEvents secondPassCancelledEvents:(id)cancelledEvents
 {
-  v7 = a3;
-  v8 = a4;
-  v37 = a5;
-  obj = v7;
+  eventsCopy = events;
+  rejectEventsCopy = rejectEvents;
+  cancelledEventsCopy = cancelledEvents;
+  obj = eventsCopy;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v9 = [v7 countByEnumeratingWithState:&v48 objects:v54 count:16];
+  v9 = [eventsCopy countByEnumeratingWithState:&v48 objects:v54 count:16];
   if (v9)
   {
     v10 = v9;
@@ -913,7 +913,7 @@ LABEL_13:
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v39 = v8;
+  v39 = rejectEventsCopy;
   v18 = [v39 countByEnumeratingWithState:&v44 objects:v53 count:16];
   if (v18)
   {
@@ -956,7 +956,7 @@ LABEL_13:
   v43 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v30 = v37;
+  v30 = cancelledEventsCopy;
   v31 = [v30 countByEnumeratingWithState:&v40 objects:v52 count:16];
   if (v31)
   {
@@ -986,16 +986,16 @@ LABEL_13:
   }
 }
 
-- (void)_writeMyriadHashFile:(id)a3
+- (void)_writeMyriadHashFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   v5 = +[CSFPreferences sharedPreferences];
-  v6 = [v5 myriadHashFilePath];
+  myriadHashFilePath = [v5 myriadHashFilePath];
 
-  if (!v4)
+  if (!fileCopy)
   {
     v11 = +[NSFileManager defaultManager];
-    [v11 removeItemAtPath:v6 error:0];
+    [v11 removeItemAtPath:myriadHashFilePath error:0];
 
     v12 = CSLogCategoryVT;
     if (!os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_ERROR))
@@ -1004,18 +1004,18 @@ LABEL_13:
     }
 
     v9 = v12;
-    v10 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     v14 = 136315394;
     v15 = "[CSDarwinVoiceTriggerHandler _writeMyriadHashFile:]";
     v16 = 2114;
-    v17 = v10;
+    v17 = remoteDeviceId;
     v13 = "%s CSDarwinVTHandler[%{public}@]:Myriad hash is nil";
 LABEL_9:
     _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, v13, &v14, 0x16u);
     goto LABEL_10;
   }
 
-  v7 = [v4 writeToFile:v6 atomically:0];
+  v7 = [fileCopy writeToFile:myriadHashFilePath atomically:0];
   v8 = CSLogCategoryVT;
   if (!v7)
   {
@@ -1025,11 +1025,11 @@ LABEL_9:
     }
 
     v9 = v8;
-    v10 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     v14 = 136315394;
     v15 = "[CSDarwinVoiceTriggerHandler _writeMyriadHashFile:]";
     v16 = 2114;
-    v17 = v10;
+    v17 = remoteDeviceId;
     v13 = "%s CSDarwinVTHandler[%{public}@]:Cannot write Myriad hash into file";
     goto LABEL_9;
   }
@@ -1037,11 +1037,11 @@ LABEL_9:
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v9 = v8;
-    v10 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     v14 = 136315394;
     v15 = "[CSDarwinVoiceTriggerHandler _writeMyriadHashFile:]";
     v16 = 2114;
-    v17 = v10;
+    v17 = remoteDeviceId;
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Successfully write Myriad hash", &v14, 0x16u);
 LABEL_10:
   }
@@ -1049,18 +1049,18 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_wakeSiriIfNeededFromFullWake:(BOOL)a3 completion:(id)a4
+- (void)_wakeSiriIfNeededFromFullWake:(BOOL)wake completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v8 = v7;
-    v9 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     *buf = 136315394;
     v25 = "[CSDarwinVoiceTriggerHandler _wakeSiriIfNeededFromFullWake:completion:]";
     v26 = 2114;
-    v27 = v9;
+    v27 = remoteDeviceId;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:", buf, 0x16u);
   }
 
@@ -1068,12 +1068,12 @@ LABEL_11:
   v22[1] = 3221225472;
   v22[2] = sub_1000117D8;
   v22[3] = &unk_10024F648;
-  v10 = v6;
+  v10 = completionCopy;
   v23 = v10;
   v11 = objc_retainBlock(v22);
   if (self->_isUserSessionActive)
   {
-    v12 = [(CSDarwinVoiceTriggerHandler *)self _connectRemoteCoreSpeechIfNeeded];
+    _connectRemoteCoreSpeechIfNeeded = [(CSDarwinVoiceTriggerHandler *)self _connectRemoteCoreSpeechIfNeeded];
     kdebug_trace();
     remoteControlClient = self->_remoteControlClient;
     v19[0] = _NSConcreteStackBlock;
@@ -1082,7 +1082,7 @@ LABEL_11:
     v19[3] = &unk_10024E2F0;
     v19[4] = self;
     v20 = v11;
-    v21 = a3;
+    wakeCopy = wake;
     [(CSRemoteControlClient *)remoteControlClient readAndClearVoiceTriggeredTokenWithCompletion:v19];
     v14 = self->_remoteControlClient;
     v18[0] = _NSConcreteStackBlock;
@@ -1099,11 +1099,11 @@ LABEL_11:
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
     {
       v16 = v15;
-      v17 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+      remoteDeviceId2 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
       *buf = 136315394;
       v25 = "[CSDarwinVoiceTriggerHandler _wakeSiriIfNeededFromFullWake:completion:]";
       v26 = 2114;
-      v27 = v17;
+      v27 = remoteDeviceId2;
       _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Does not wake Siri since user session is not activated", buf, 0x16u);
     }
 
@@ -1117,12 +1117,12 @@ LABEL_11:
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     remoteDeviceId = self->_remoteDeviceId;
     v9 = 136315650;
     v10 = "[CSDarwinVoiceTriggerHandler _handleDeviceDisconnection]";
     v11 = 2114;
-    v12 = v5;
+    v12 = remoteDeviceId;
     v13 = 2114;
     v14 = remoteDeviceId;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Report darwin device(%{public}@) disconnected", &v9, 0x20u);
@@ -1153,11 +1153,11 @@ LABEL_11:
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
     {
       v4 = v3;
-      v5 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+      remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
       v6 = 136315394;
       v7 = "[CSDarwinVoiceTriggerHandler _disconnectRemoteCoreSpeech]";
       v8 = 2114;
-      v9 = v5;
+      v9 = remoteDeviceId;
       _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:It try to disconnect remote corespeechd connection even though it does not exist", &v6, 0x16u);
     }
   }
@@ -1173,12 +1173,12 @@ LABEL_11:
     if (v5)
     {
       v6 = v4;
-      v7 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+      remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
       v8 = [(CSRemoteControlClient *)self->_remoteControlClient description];
       v15 = 136315650;
       v16 = "[CSDarwinVoiceTriggerHandler _handleRemoteCoreSpeechFirstTimeConnected]";
       v17 = 2114;
-      v18 = v7;
+      v18 = remoteDeviceId;
       v19 = 2114;
       v20 = v8;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:darwin client : %{public}@", &v15, 0x20u);
@@ -1220,11 +1220,11 @@ LABEL_11:
   else if (v5)
   {
     v13 = v4;
-    v14 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId2 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     v15 = 136315394;
     v16 = "[CSDarwinVoiceTriggerHandler _handleRemoteCoreSpeechFirstTimeConnected]";
     v17 = 2114;
-    v18 = v14;
+    v18 = remoteDeviceId2;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Skip handling Darwin connected event since user session is inactive", &v15, 0x16u);
   }
 }
@@ -1237,11 +1237,11 @@ LABEL_11:
     if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_ERROR))
     {
       v23 = v6;
-      v24 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+      remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
       *buf = 136315394;
       *&buf[4] = "[CSDarwinVoiceTriggerHandler _connectRemoteCoreSpeechIfNeeded]";
       *&buf[12] = 2114;
-      *&buf[14] = v24;
+      *&buf[14] = remoteDeviceId;
       _os_log_error_impl(&_mh_execute_header, v23, OS_LOG_TYPE_ERROR, "%s CSDarwinVTHandler[%{public}@]:Invalid darwin device", buf, 0x16u);
     }
 
@@ -1286,18 +1286,18 @@ LABEL_11:
         if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
         {
           v13 = v12;
-          v14 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+          remoteDeviceId2 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
           *buf = 136315394;
           *&buf[4] = "[CSDarwinVoiceTriggerHandler _connectRemoteCoreSpeechIfNeeded]";
           *&buf[12] = 2114;
-          *&buf[14] = v14;
+          *&buf[14] = remoteDeviceId2;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Connected remote corespeechd successfully", buf, 0x16u);
         }
 
         [(CSRemoteControlClient *)self->_remoteControlClient addObserver:self];
-        v15 = [(CSRemoteControlClient *)self->_remoteControlClient deviceId];
+        deviceId = [(CSRemoteControlClient *)self->_remoteControlClient deviceId];
         remoteDeviceId = self->_remoteDeviceId;
-        self->_remoteDeviceId = v15;
+        self->_remoteDeviceId = deviceId;
 
         v17 = +[CSRemoteDarwinDeviceInfo sharedInstance];
         [v17 deviceConnectedWithUUID:self->_remoteDeviceId];
@@ -1314,11 +1314,11 @@ LABEL_11:
         if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_ERROR))
         {
           v21 = v12;
-          v22 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+          remoteDeviceId3 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
           *buf = 136315394;
           *&buf[4] = "[CSDarwinVoiceTriggerHandler _connectRemoteCoreSpeechIfNeeded]";
           *&buf[12] = 2114;
-          *&buf[14] = v22;
+          *&buf[14] = remoteDeviceId3;
           _os_log_error_impl(&_mh_execute_header, v21, OS_LOG_TYPE_ERROR, "%s CSDarwinVTHandler[%{public}@]:Connecting to remote corespeechd failed", buf, 0x16u);
         }
 
@@ -1395,17 +1395,17 @@ LABEL_11:
   dispatch_sync(queue, block);
 }
 
-- (void)onUserSessionResign:(id)a3
+- (void)onUserSessionResign:(id)resign
 {
   v4 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     *buf = 136315394;
     v10 = "[CSDarwinVoiceTriggerHandler onUserSessionResign:]";
     v11 = 2114;
-    v12 = v6;
+    v12 = remoteDeviceId;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Deactivation session", buf, 0x16u);
   }
 
@@ -1418,17 +1418,17 @@ LABEL_11:
   dispatch_async(queue, block);
 }
 
-- (void)onUserSessionActive:(id)a3
+- (void)onUserSessionActive:(id)active
 {
   v4 = CSLogCategoryVT;
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v5 = v4;
-    v6 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     *buf = 136315394;
     v10 = "[CSDarwinVoiceTriggerHandler onUserSessionActive:]";
     v11 = 2114;
-    v12 = v6;
+    v12 = remoteDeviceId;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Activation session", buf, 0x16u);
   }
 
@@ -1447,11 +1447,11 @@ LABEL_11:
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     v8 = 136315394;
     v9 = "[CSDarwinVoiceTriggerHandler _stopRetryTimer]";
     v10 = 2114;
-    v11 = v5;
+    v11 = remoteDeviceId;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:", &v8, 0x16u);
   }
 
@@ -1471,11 +1471,11 @@ LABEL_11:
   if (os_log_type_enabled(CSLogCategoryVT, OS_LOG_TYPE_DEFAULT))
   {
     v4 = v3;
-    v5 = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
+    remoteDeviceId = [(CSDarwinVoiceTriggerHandler *)self remoteDeviceId];
     *buf = 136315394;
     v12 = "[CSDarwinVoiceTriggerHandler _startRetryTimer]";
     v13 = 2114;
-    v14 = v5;
+    v14 = remoteDeviceId;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "%s CSDarwinVTHandler[%{public}@]:Creating VoiceTrigger enable retry timer", buf, 0x16u);
   }
 
@@ -1638,12 +1638,12 @@ LABEL_11:
   [(CSDarwinVoiceTriggerHandler *)&v4 dealloc];
 }
 
-- (CSDarwinVoiceTriggerHandler)initWithRemoteDevice:(id)a3 voiceTriggerEventsCoordinator:(id)a4 delegate:(id)a5 testContext:(id)a6
+- (CSDarwinVoiceTriggerHandler)initWithRemoteDevice:(id)device voiceTriggerEventsCoordinator:(id)coordinator delegate:(id)delegate testContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  deviceCopy = device;
+  coordinatorCopy = coordinator;
+  delegateCopy = delegate;
+  contextCopy = context;
   v22.receiver = self;
   v22.super_class = CSDarwinVoiceTriggerHandler;
   v15 = [(CSDarwinVoiceTriggerHandler *)&v22 init];
@@ -1660,14 +1660,14 @@ LABEL_11:
     v15->_queue = v16;
 
     v15->_voiceTriggerEnabled = 0;
-    objc_storeWeak(&v15->_voiceTriggerEventsCoordinator, v12);
-    objc_storeWeak(&v15->_delegate, v13);
-    objc_storeStrong(&v15->_remoteDevice, a3);
-    v18 = [v14 preventSystemSleepManager];
+    objc_storeWeak(&v15->_voiceTriggerEventsCoordinator, coordinatorCopy);
+    objc_storeWeak(&v15->_delegate, delegateCopy);
+    objc_storeStrong(&v15->_remoteDevice, device);
+    preventSystemSleepManager = [contextCopy preventSystemSleepManager];
     preventSystemSleepManager = v15->_preventSystemSleepManager;
-    v15->_preventSystemSleepManager = v18;
+    v15->_preventSystemSleepManager = preventSystemSleepManager;
 
-    objc_storeStrong(&v15->_testContext, a6);
+    objc_storeStrong(&v15->_testContext, context);
   }
 
   v20 = v15;

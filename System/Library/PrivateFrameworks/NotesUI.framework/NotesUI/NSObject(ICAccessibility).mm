@@ -8,7 +8,7 @@
 
 - (uint64_t)icaxRespondsToSelector:()ICAccessibility fromExtrasProtocol:
 {
-  v4 = [a1 conformsToProtocol:a4];
+  v4 = [self conformsToProtocol:a4];
   if (v4)
   {
     LOBYTE(v4) = objc_opt_respondsToSelector();
@@ -20,7 +20,7 @@
 - (id)icaxValueForKey:()ICAccessibility
 {
   v4 = a3;
-  v5 = [a1 valueForKey:v4];
+  v5 = [self valueForKey:v4];
 
   return v5;
 }
@@ -28,7 +28,7 @@
 - (id)icaxValueForKeyPath:()ICAccessibility
 {
   v4 = a3;
-  v5 = [a1 valueForKeyPath:v4];
+  v5 = [self valueForKeyPath:v4];
 
   return v5;
 }

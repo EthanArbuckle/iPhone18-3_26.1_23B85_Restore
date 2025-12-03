@@ -1,18 +1,18 @@
 @interface BWSmartFramingPerceptionSinkNode
 - (BOOL)hasNonLiveConfigurationChanges;
-- (BWSmartFramingPerceptionSinkNode)initWithSinkID:(id)a3 captureDevice:(id)a4 inferenceScheduler:(id)a5;
-- (id)inputInferenceVideoFormatForAttachedMediaKey:(id)a3;
+- (BWSmartFramingPerceptionSinkNode)initWithSinkID:(id)d captureDevice:(id)device inferenceScheduler:(id)scheduler;
+- (id)inputInferenceVideoFormatForAttachedMediaKey:(id)key;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
+- (void)didReachEndOfDataForInput:(id)input;
 - (void)prepareForCurrentConfigurationToBecomeLive;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWSmartFramingPerceptionSinkNode
 
-- (BWSmartFramingPerceptionSinkNode)initWithSinkID:(id)a3 captureDevice:(id)a4 inferenceScheduler:(id)a5
+- (BWSmartFramingPerceptionSinkNode)initWithSinkID:(id)d captureDevice:(id)device inferenceScheduler:(id)scheduler
 {
-  if (!a3)
+  if (!d)
   {
     [BWSmartFramingPerceptionSinkNode initWithSinkID:captureDevice:inferenceScheduler:];
 LABEL_11:
@@ -20,7 +20,7 @@ LABEL_11:
     return 0;
   }
 
-  if (!a4)
+  if (!device)
   {
     [BWSmartFramingPerceptionSinkNode initWithSinkID:captureDevice:inferenceScheduler:];
     goto LABEL_11;
@@ -36,7 +36,7 @@ LABEL_11:
     [(BWNodeInputMediaConfiguration *)[(BWNodeInput *)v9 primaryMediaConfiguration] setRetainedBufferCount:1];
     [(BWNodeInputMediaConfiguration *)[(BWNodeInput *)v9 primaryMediaConfiguration] setIndefinitelyHeldBufferCount:1];
     [v8 addInput:v9];
-    *(v8 + 26) = a4;
+    *(v8 + 26) = device;
     *(v8 + 31) = FigDispatchQueueCreateWithPriority();
     *(v8 + 60) = 2;
     *(v8 + 61) = 4;
@@ -49,17 +49,17 @@ LABEL_11:
     *(v8 + 284) = *MEMORY[0x1E6960CC0];
     *(v8 + 300) = *(v11 + 16);
     *(v8 + 77) = 0;
-    if (a5)
+    if (scheduler)
     {
-      v12 = a5;
+      schedulerCopy = scheduler;
     }
 
     else
     {
-      v12 = objc_alloc_init(BWInferenceScheduler);
+      schedulerCopy = objc_alloc_init(BWInferenceScheduler);
     }
 
-    *(v8 + 27) = v12;
+    *(v8 + 27) = schedulerCopy;
     [v8 setSupportsLiveReconfiguration:1];
     *(v8 + 39) = objc_alloc_init(MEMORY[0x1E695DF70]);
   }
@@ -85,16 +85,16 @@ LABEL_11:
 {
   v4.receiver = self;
   v4.super_class = BWSmartFramingPerceptionSinkNode;
-  v2 = [(BWNode *)&v4 hasNonLiveConfigurationChanges];
-  if (v2)
+  hasNonLiveConfigurationChanges = [(BWNode *)&v4 hasNonLiveConfigurationChanges];
+  if (hasNonLiveConfigurationChanges)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D920] reason:objc_msgSend(MEMORY[0x1E696AEC0] userInfo:{"stringWithFormat:", @"Live reconfiguring BWSmartFramingPerceptionSinkNode with changing formats is not supported", 0}]);
   }
 
-  return v2;
+  return hasNonLiveConfigurationChanges;
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   [(BWSmartFramingPerceptionSinkNode *)self _waitForInferenceToComplete];
   faceGroupIDsForInference = self->_faceGroupIDsForInference;
@@ -106,12 +106,12 @@ LABEL_11:
 
   v6.receiver = self;
   v6.super_class = BWSmartFramingPerceptionSinkNode;
-  [(BWSinkNode *)&v6 didReachEndOfDataForInput:a3];
+  [(BWSinkNode *)&v6 didReachEndOfDataForInput:input];
 }
 
-- (id)inputInferenceVideoFormatForAttachedMediaKey:(id)a3
+- (id)inputInferenceVideoFormatForAttachedMediaKey:(id)key
 {
-  if (![a3 isEqualToString:@"PrimaryFormat"])
+  if (![key isEqualToString:@"PrimaryFormat"])
   {
     return 0;
   }
@@ -143,15 +143,15 @@ LABEL_11:
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
-  v5 = a3;
-  if ([(BWFigVideoCaptureDevice *)self->_captureDevice smartFramingIsMonitoringScene:a3])
+  bufferCopy = buffer;
+  if ([(BWFigVideoCaptureDevice *)self->_captureDevice smartFramingIsMonitoringScene:buffer])
   {
     if (![(BWFigVideoCaptureDevice *)self->_captureDevice dockedTrackingActive])
     {
       memset(&v148, 0, sizeof(v148));
-      CMSampleBufferGetPresentationTimeStamp(&v148, v5);
+      CMSampleBufferGetPresentationTimeStamp(&v148, bufferCopy);
       memset(&v147, 0, sizeof(v147));
       lhs = v148;
       rhs = *(&self->_inferenceSkipInterval.epoch + 4);
@@ -182,13 +182,13 @@ LABEL_11:
 
             else
             {
-              v9 = [objc_msgSend(CMGetAttachment(v5 *off_1E798A5A8];
+              v9 = [objc_msgSend(CMGetAttachment(bufferCopy *off_1E798A5A8];
               v10 = objc_alloc_init(MEMORY[0x1E695DF70]);
               v141 = 0u;
               v142 = 0u;
               v143 = 0u;
               v144 = 0u;
-              v18 = OUTLINED_FUNCTION_3_87(v10, v11, v12, v13, v14, v15, v16, v17, v82, v85, v88, v5, block, v96, v97, v98, v99, value, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, *(&v117 + 1), v118, *(&v118 + 1), v119, *(&v119 + 1), v120, *(&v120 + 1), v121, v122, v123, v124, v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, v135, v136, v137, *(&v137 + 1), v138, *(&v138 + 1), v139);
+              v18 = OUTLINED_FUNCTION_3_87(v10, v11, v12, v13, v14, v15, v16, v17, v82, v85, v88, bufferCopy, block, v96, v97, v98, selfCopy, value, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, *(&v117 + 1), v118, *(&v118 + 1), v119, *(&v119 + 1), v120, *(&v120 + 1), v121, v122, v123, v124, v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, v135, v136, v137, *(&v137 + 1), v138, *(&v138 + 1), v139);
               if (v18)
               {
                 v19 = v18;
@@ -212,7 +212,7 @@ LABEL_11:
                     v24 = [v10 addObject:v23];
                   }
 
-                  v19 = OUTLINED_FUNCTION_3_87(v24, v25, v26, v27, v28, v29, v30, v31, v83, v86, v89, v92, block, v96, v97, v98, v99, value, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, *(&v117 + 1), v118, *(&v118 + 1), v119, *(&v119 + 1), v120, *(&v120 + 1), v121, v122, v123, v124, v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, v135, v136, v137, *(&v137 + 1), v138, *(&v138 + 1), v139);
+                  v19 = OUTLINED_FUNCTION_3_87(v24, v25, v26, v27, v28, v29, v30, v31, v83, v86, v89, v92, block, v96, v97, v98, selfCopy, value, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, *(&v117 + 1), v118, *(&v118 + 1), v119, *(&v119 + 1), v120, *(&v120 + 1), v121, v122, v123, v124, v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, v135, v136, v137, *(&v137 + 1), v138, *(&v138 + 1), v139);
                 }
 
                 while (v19);
@@ -224,7 +224,7 @@ LABEL_11:
               v139 = 0u;
               v140 = 0u;
               v33 = *&self->_inferenceLock._os_unfair_lock_opaque;
-              v41 = OUTLINED_FUNCTION_1_109(v32, v34, v35, v36, v37, v38, v39, v40, v83, v86, v89, v92, block, v96, v97, v98, v99, value, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, *(&v117 + 1), v118, *(&v118 + 1), v119, *(&v119 + 1), v120, *(&v120 + 1), v121, v122, v123, v124, v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, v135, v136, 0);
+              v41 = OUTLINED_FUNCTION_1_109(v32, v34, v35, v36, v37, v38, v39, v40, v83, v86, v89, v92, block, v96, v97, v98, selfCopy, value, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, *(&v117 + 1), v118, *(&v118 + 1), v119, *(&v119 + 1), v120, *(&v120 + 1), v121, v122, v123, v124, v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, v135, v136, 0);
               if (v41)
               {
                 v42 = v41;
@@ -246,7 +246,7 @@ LABEL_11:
                     }
                   }
 
-                  v42 = OUTLINED_FUNCTION_1_109(v46, v47, v48, v49, v50, v51, v52, v53, v84, v87, v90, v93, block, v96, v97, v98, v99, value, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, *(&v117 + 1), v118, *(&v118 + 1), v119, *(&v119 + 1), v120, *(&v120 + 1), v121, v122, v123, v124, v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, v135, v136, v137);
+                  v42 = OUTLINED_FUNCTION_1_109(v46, v47, v48, v49, v50, v51, v52, v53, v84, v87, v90, v93, block, v96, v97, v98, selfCopy, value, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117, *(&v117 + 1), v118, *(&v118 + 1), v119, *(&v119 + 1), v120, *(&v120 + 1), v121, v122, v123, v124, v125, v126, v127, v128, v129, v130, v131, v132, v133, v134, v135, v136, v137);
                 }
 
                 while (v42);
@@ -270,7 +270,7 @@ LABEL_11:
               v118 = 0u;
               v119 = 0u;
               v120 = 0u;
-              v66 = OUTLINED_FUNCTION_60_1(v58, v59, v60, v61, v62, v63, v64, v65, v84, v87, v90, v93, block, v96, v97, v98, v99, value, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, 0);
+              v66 = OUTLINED_FUNCTION_60_1(v58, v59, v60, v61, v62, v63, v64, v65, v84, v87, v90, v93, block, v96, v97, v98, selfCopy, value, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, 0);
               if (v66)
               {
                 v67 = v66;
@@ -293,7 +293,7 @@ LABEL_11:
                     }
                   }
 
-                  v67 = OUTLINED_FUNCTION_60_1(v72, v73, v74, v75, v76, v77, v78, v79, v82, v85, v91, v94, block, v96, v97, v98, v99, value, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117);
+                  v67 = OUTLINED_FUNCTION_60_1(v72, v73, v74, v75, v76, v77, v78, v79, v82, v85, v91, v94, block, v96, v97, v98, selfCopy, value, v101, v102, v103, v104, v105, v106, v107, v108, v109, v110, v111, v112, v113, v114, v115, v116, v117);
                 }
 
                 while (v67);
@@ -304,11 +304,11 @@ LABEL_11:
               v96 = 3221225472;
               v97 = __64__BWSmartFramingPerceptionSinkNode_renderSampleBuffer_forInput___block_invoke;
               v98 = &unk_1E7990178;
-              v99 = self;
+              selfCopy = self;
               value = lhs.value;
               dispatch_async(self->_inferenceQueue, &block);
 
-              v5 = v94;
+              bufferCopy = v94;
             }
           }
         }
@@ -322,9 +322,9 @@ LABEL_11:
     CFRelease(faceGroupIDsForInference);
   }
 
-  if (v5)
+  if (bufferCopy)
   {
-    v81 = CFRetain(v5);
+    v81 = CFRetain(bufferCopy);
   }
 
   else
@@ -333,7 +333,7 @@ LABEL_11:
   }
 
   self->_faceGroupIDsForInference = v81;
-  [(BWNodeOutput *)self->super.super._output emitSampleBuffer:v5, v82, v85];
+  [(BWNodeOutput *)self->super.super._output emitSampleBuffer:bufferCopy, v82, v85];
 }
 
 void __64__BWSmartFramingPerceptionSinkNode_renderSampleBuffer_forInput___block_invoke(uint64_t a1)

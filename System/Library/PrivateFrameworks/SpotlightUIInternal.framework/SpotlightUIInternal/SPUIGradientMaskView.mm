@@ -12,14 +12,14 @@
   v2 = [(SPUIGradientMaskView *)&v17 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D75128] sharedApplication];
-    v4 = [v3 userInterfaceLayoutDirection];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    userInterfaceLayoutDirection = [mEMORY[0x277D75128] userInterfaceLayoutDirection];
 
-    if (v4 == 1)
+    if (userInterfaceLayoutDirection == 1)
     {
-      v5 = [MEMORY[0x277D75348] clearColor];
-      v19[0] = [v5 CGColor];
-      v6 = [MEMORY[0x277D75348] whiteColor];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      v19[0] = [clearColor CGColor];
+      whiteColor = [MEMORY[0x277D75348] whiteColor];
       v7 = 0.5;
       v8 = 0.0;
       v9 = v19;
@@ -28,25 +28,25 @@
 
     else
     {
-      v5 = [MEMORY[0x277D75348] whiteColor];
-      v18 = [v5 CGColor];
-      v6 = [MEMORY[0x277D75348] clearColor];
+      clearColor = [MEMORY[0x277D75348] whiteColor];
+      cGColor = [clearColor CGColor];
+      whiteColor = [MEMORY[0x277D75348] clearColor];
       v7 = 0.5;
       v10 = 1.0;
-      v9 = &v18;
+      v9 = &cGColor;
       v8 = 0.9;
     }
 
-    v9[1] = [v6 CGColor];
+    v9[1] = [whiteColor CGColor];
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:2];
-    v12 = [(SPUIGradientMaskView *)v2 layer];
-    [v12 setColors:v11];
+    layer = [(SPUIGradientMaskView *)v2 layer];
+    [layer setColors:v11];
 
-    v13 = [(SPUIGradientMaskView *)v2 layer];
-    [v13 setStartPoint:{v8, v7}];
+    layer2 = [(SPUIGradientMaskView *)v2 layer];
+    [layer2 setStartPoint:{v8, v7}];
 
-    v14 = [(SPUIGradientMaskView *)v2 layer];
-    [v14 setEndPoint:{v10, v7}];
+    layer3 = [(SPUIGradientMaskView *)v2 layer];
+    [layer3 setEndPoint:{v10, v7}];
   }
 
   v15 = *MEMORY[0x277D85DE8];

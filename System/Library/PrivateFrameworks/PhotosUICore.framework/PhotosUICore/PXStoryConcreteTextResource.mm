@@ -1,32 +1,32 @@
 @interface PXStoryConcreteTextResource
-- (BOOL)isEqual:(id)a3;
-- (PXStoryConcreteTextResource)initWithAssetCollection:(id)a3 type:(int64_t)a4;
-- (PXStoryConcreteTextResource)initWithChapter:(id)a3 type:(int64_t)a4;
-- (PXStoryConcreteTextResource)initWithIdentifier:(id)a3 kind:(int64_t)a4;
+- (BOOL)isEqual:(id)equal;
+- (PXStoryConcreteTextResource)initWithAssetCollection:(id)collection type:(int64_t)type;
+- (PXStoryConcreteTextResource)initWithChapter:(id)chapter type:(int64_t)type;
+- (PXStoryConcreteTextResource)initWithIdentifier:(id)identifier kind:(int64_t)kind;
 @end
 
 @implementation PXStoryConcreteTextResource
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v9.receiver = self;
   v9.super_class = PXStoryConcreteTextResource;
-  if ([(PXStoryConcreteResource *)&v9 isEqual:v4])
+  if ([(PXStoryConcreteResource *)&v9 isEqual:equalCopy])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(PXStoryConcreteTextResource *)self px_storyResourceTextResourceInfo];
-      v6 = [v4 px_storyResourceTextResourceInfo];
-      if (v5 == v6)
+      px_storyResourceTextResourceInfo = [(PXStoryConcreteTextResource *)self px_storyResourceTextResourceInfo];
+      px_storyResourceTextResourceInfo2 = [equalCopy px_storyResourceTextResourceInfo];
+      if (px_storyResourceTextResourceInfo == px_storyResourceTextResourceInfo2)
       {
         v7 = 1;
       }
 
       else
       {
-        v7 = [v5 isEqual:v6];
+        v7 = [px_storyResourceTextResourceInfo isEqual:px_storyResourceTextResourceInfo2];
       }
     }
 
@@ -44,42 +44,42 @@
   return v7;
 }
 
-- (PXStoryConcreteTextResource)initWithChapter:(id)a3 type:(int64_t)a4
+- (PXStoryConcreteTextResource)initWithChapter:(id)chapter type:(int64_t)type
 {
-  v6 = a3;
+  chapterCopy = chapter;
   v7 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v8 = [v6 identifier];
-  v9 = [v7 initWithFormat:@"chapter:%@ type:%ti", v8, a4];
+  identifier = [chapterCopy identifier];
+  type = [v7 initWithFormat:@"chapter:%@ type:%ti", identifier, type];
 
   v20.receiver = self;
   v20.super_class = PXStoryConcreteTextResource;
-  v10 = [(PXStoryConcreteResource *)&v20 initWithIdentifier:v9 kind:3];
+  v10 = [(PXStoryConcreteResource *)&v20 initWithIdentifier:type kind:3];
   if (!v10)
   {
     goto LABEL_12;
   }
 
-  v11 = [v6 localizedSubtitle];
-  v12 = v11;
-  if (a4 == 1)
+  localizedSubtitle = [chapterCopy localizedSubtitle];
+  v12 = localizedSubtitle;
+  if (type == 1)
   {
-    v13 = v11;
+    localizedTitle = localizedSubtitle;
   }
 
   else
   {
-    if (a4)
+    if (type)
     {
       v14 = 0;
       goto LABEL_8;
     }
 
-    v13 = [v6 localizedTitle];
+    localizedTitle = [chapterCopy localizedTitle];
   }
 
-  v14 = v13;
+  v14 = localizedTitle;
 LABEL_8:
-  v10->_type = a4;
+  v10->_type = type;
   v15 = [PXStoryTextResourceInfo alloc];
   if (v14)
   {
@@ -91,7 +91,7 @@ LABEL_8:
     v16 = &stru_1F1741150;
   }
 
-  v17 = [(PXStoryTextResourceInfo *)v15 initWithString:v16 associatedSubtitleString:v12 type:a4 layoutScheme:1 assetCollectionUUID:0];
+  v17 = [(PXStoryTextResourceInfo *)v15 initWithString:v16 associatedSubtitleString:v12 type:type layoutScheme:1 assetCollectionUUID:0];
   textResourceInfo = v10->_textResourceInfo;
   v10->_textResourceInfo = v17;
 
@@ -99,43 +99,43 @@ LABEL_12:
   return v10;
 }
 
-- (PXStoryConcreteTextResource)initWithAssetCollection:(id)a3 type:(int64_t)a4
+- (PXStoryConcreteTextResource)initWithAssetCollection:(id)collection type:(int64_t)type
 {
-  v6 = a3;
+  collectionCopy = collection;
   v7 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v8 = [v6 uuid];
-  v9 = [v7 initWithFormat:@"assetCollection:%@ type:%ti", v8, a4];
+  uuid = [collectionCopy uuid];
+  type = [v7 initWithFormat:@"assetCollection:%@ type:%ti", uuid, type];
 
   v22.receiver = self;
   v22.super_class = PXStoryConcreteTextResource;
-  v10 = [(PXStoryConcreteResource *)&v22 initWithIdentifier:v9 kind:3];
+  v10 = [(PXStoryConcreteResource *)&v22 initWithIdentifier:type kind:3];
   if (!v10)
   {
     goto LABEL_12;
   }
 
-  v11 = [[_TtC12PhotosUICore27PXPhotosCollectionTitleInfo alloc] initWithAssetCollection:v6];
-  v12 = [(PXPhotosCollectionTitleInfo *)v11 subtitle];
-  v13 = v12;
-  if (a4 == 1)
+  v11 = [[_TtC12PhotosUICore27PXPhotosCollectionTitleInfo alloc] initWithAssetCollection:collectionCopy];
+  subtitle = [(PXPhotosCollectionTitleInfo *)v11 subtitle];
+  v13 = subtitle;
+  if (type == 1)
   {
-    v14 = v12;
+    title = subtitle;
   }
 
   else
   {
-    if (a4)
+    if (type)
     {
       v15 = 0;
       goto LABEL_8;
     }
 
-    v14 = [(PXPhotosCollectionTitleInfo *)v11 title];
+    title = [(PXPhotosCollectionTitleInfo *)v11 title];
   }
 
-  v15 = v14;
+  v15 = title;
 LABEL_8:
-  v10->_type = a4;
+  v10->_type = type;
   v16 = [PXStoryTextResourceInfo alloc];
   if (v15)
   {
@@ -147,8 +147,8 @@ LABEL_8:
     v17 = &stru_1F1741150;
   }
 
-  v18 = [v6 uuid];
-  v19 = [(PXStoryTextResourceInfo *)v16 initWithString:v17 associatedSubtitleString:v13 type:a4 layoutScheme:0 assetCollectionUUID:v18];
+  uuid2 = [collectionCopy uuid];
+  v19 = [(PXStoryTextResourceInfo *)v16 initWithString:v17 associatedSubtitleString:v13 type:type layoutScheme:0 assetCollectionUUID:uuid2];
   textResourceInfo = v10->_textResourceInfo;
   v10->_textResourceInfo = v19;
 
@@ -156,11 +156,11 @@ LABEL_12:
   return v10;
 }
 
-- (PXStoryConcreteTextResource)initWithIdentifier:(id)a3 kind:(int64_t)a4
+- (PXStoryConcreteTextResource)initWithIdentifier:(id)identifier kind:(int64_t)kind
 {
-  v6 = a3;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v7 handleFailureInMethod:a2 object:self file:@"PXStoryConcreteResources.m" lineNumber:66 description:{@"%s is not available as initializer", "-[PXStoryConcreteTextResource initWithIdentifier:kind:]"}];
+  identifierCopy = identifier;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryConcreteResources.m" lineNumber:66 description:{@"%s is not available as initializer", "-[PXStoryConcreteTextResource initWithIdentifier:kind:]"}];
 
   abort();
 }

@@ -1,33 +1,33 @@
 @interface BLSHBacklightDisplayStateMachine
-- (BLSHBacklightDisplayStateMachine)initWithDelegate:(id)a3 platformProvider:(id)a4 osInterfaceProvider:(id)a5;
+- (BLSHBacklightDisplayStateMachine)initWithDelegate:(id)delegate platformProvider:(id)provider osInterfaceProvider:(id)interfaceProvider;
 - (BLSHBacklightDisplayStateMachineDelegate)delegate;
 - (BOOL)isHighLuminanceAlwaysOn;
 - (BOOL)isTransitioningDisplayMode;
 - (BOOL)releaseLiveRenderingSystemActivityAssertion;
 - (NSString)description;
-- (id)abortContextForTimer:(id)a3;
+- (id)abortContextForTimer:(id)timer;
 - (id)identifier;
 - (int64_t)displayMode;
 - (int64_t)lastSteadyStateDisplayMode;
 - (os_unfair_lock_s)switchToFlipbookState:(os_unfair_lock_s *)result;
 - (os_unfair_lock_s)transitionToCADisplayState:(os_unfair_lock_s *)result;
 - (uint64_t)_lock_cbDisplayModeForBacklightDisplayMode:(uint64_t)result;
-- (uint64_t)displayModeForOSInterfaceProvider:(uint64_t)a1;
+- (uint64_t)displayModeForOSInterfaceProvider:(uint64_t)provider;
 - (void)_acquireLiveRenderingSystemActivityAssertion;
-- (void)acquireDisplayPowerAssertionForReason:(os_unfair_lock_s *)a1;
-- (void)acquireLiveRenderingSystemActivityAssertionIfNecessary:(uint64_t)a1;
+- (void)acquireDisplayPowerAssertionForReason:(os_unfair_lock_s *)reason;
+- (void)acquireLiveRenderingSystemActivityAssertionIfNecessary:(uint64_t)necessary;
 - (void)dealloc;
 - (void)onMain_performNextStepInModeTransition;
-- (void)osInterfaceProvider:(id)a3 didCompleteSwitchToCBFlipbookState:(int64_t)a4 withError:(id)a5;
-- (void)osInterfaceProvider:(id)a3 didCompleteTransitionToCADisplayState:(int64_t)a4 currentState:(int64_t)a5 transitionStatus:(int64_t)a6;
-- (void)osInterfaceProvider:(id)a3 didCompleteTransitionToCBDisplayMode:(int64_t)a4 withError:(id)a5;
-- (void)prewarmForDisplayMode:(int64_t)a3;
+- (void)osInterfaceProvider:(id)provider didCompleteSwitchToCBFlipbookState:(int64_t)state withError:(id)error;
+- (void)osInterfaceProvider:(id)provider didCompleteTransitionToCADisplayState:(int64_t)state currentState:(int64_t)currentState transitionStatus:(int64_t)status;
+- (void)osInterfaceProvider:(id)provider didCompleteTransitionToCBDisplayMode:(int64_t)mode withError:(id)error;
+- (void)prewarmForDisplayMode:(int64_t)mode;
 - (void)releaseDisplayPowerAssertion;
 - (void)replaceCurrentWatchdog;
-- (void)resumeDisplayMode:(int64_t)a3;
-- (void)setDisplayMode:(int64_t)a3 withRampDuration:(double)a4;
-- (void)setHighLuminanceAlwaysOn:(BOOL)a3;
-- (void)transitionToDisplayMode:(int)a3 withDuration:(double)a4 shouldWaitForCompletion:;
+- (void)resumeDisplayMode:(int64_t)mode;
+- (void)setDisplayMode:(int64_t)mode withRampDuration:(double)duration;
+- (void)setHighLuminanceAlwaysOn:(BOOL)on;
+- (void)transitionToDisplayMode:(int)mode withDuration:(double)duration shouldWaitForCompletion:;
 @end
 
 @implementation BLSHBacklightDisplayStateMachine
@@ -36,7 +36,7 @@
 {
   os_unfair_lock_assert_not_owner(&self->_lock);
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface isShowingBlankingWindow];
+  isShowingBlankingWindow = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface isShowingBlankingWindow];
   v4 = [MEMORY[0x277CF0C00] builderWithObject:self];
   displayMode = self->_lock_displayRampOperation.displayMode;
   v6 = NSStringFromBLSBacklightDisplayMode(displayMode);
@@ -126,11 +126,11 @@ LABEL_18:
   v23 = NSStringFromCBDisplayMode_bls([(BLSHBacklightOSInterfaceProviding *)self->_osInterface cbDisplayMode]);
   v24 = [v4 appendObject:v23 withName:@"cbDisplayMode"];
 
-  v25 = [v4 appendBool:v3 withName:@"showingBlankingWindow" ifEqualTo:1];
+  v25 = [v4 appendBool:isShowingBlankingWindow withName:@"showingBlankingWindow" ifEqualTo:1];
   v26 = [v4 appendInteger:-[BLSHBacklightOSInterfaceProviding cbFlipbookState](self->_osInterface withName:{"cbFlipbookState"), @"cbFlipbookState"}];
-  v27 = [v4 build];
+  build = [v4 build];
 
-  return v27;
+  return build;
 }
 
 - (int64_t)displayMode
@@ -144,9 +144,9 @@ LABEL_18:
 - (void)_acquireLiveRenderingSystemActivityAssertion
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_9_2(a1);
+    OUTLINED_FUNCTION_9_2(self);
     if (*(v1 + 288))
     {
       v2 = bls_backlight_log();
@@ -187,13 +187,13 @@ LABEL_18:
 - (void)replaceCurrentWatchdog
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_9_2(a1);
+    OUTLINED_FUNCTION_9_2(self);
     v2 = *(v1 + 8);
     if (v2)
     {
-      v3 = [v2 explanation];
+      explanation = [v2 explanation];
       v4 = bls_diagnostics_log();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
       {
@@ -202,7 +202,7 @@ LABEL_18:
       }
 
       [*(v1 + 8) invalidate:1];
-      v9 = [*(v1 + 32) scheduleWatchdogWithDelegate:v1 explanation:v3 timeout:20.0 + 2.0 + 2.0];
+      v9 = [*(v1 + 32) scheduleWatchdogWithDelegate:v1 explanation:explanation timeout:20.0 + 2.0 + 2.0];
       v10 = *(v1 + 8);
       *(v1 + 8) = v9;
     }
@@ -277,11 +277,11 @@ void __80__BLSHBacklightDisplayStateMachine__acquireLiveRenderingSystemActivityA
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (BLSHBacklightDisplayStateMachine)initWithDelegate:(id)a3 platformProvider:(id)a4 osInterfaceProvider:(id)a5
+- (BLSHBacklightDisplayStateMachine)initWithDelegate:(id)delegate platformProvider:(id)provider osInterfaceProvider:(id)interfaceProvider
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  delegateCopy = delegate;
+  providerCopy = provider;
+  interfaceProviderCopy = interfaceProvider;
   v29.receiver = self;
   v29.super_class = BLSHBacklightDisplayStateMachine;
   v11 = [(BLSHBacklightDisplayStateMachine *)&v29 init];
@@ -289,7 +289,7 @@ void __80__BLSHBacklightDisplayStateMachine__acquireLiveRenderingSystemActivityA
   if (v11)
   {
     v11->_lock._os_unfair_lock_opaque = 0;
-    v14 = [(BLSHBacklightDisplayStateMachine *)v11 displayModeForOSInterfaceProvider:v10];
+    v14 = [(BLSHBacklightDisplayStateMachine *)v11 displayModeForOSInterfaceProvider:interfaceProviderCopy];
     *(v12 + 104) = v14;
     *(v12 + 112) = v14;
     *(v12 + 56) = 0;
@@ -298,24 +298,24 @@ void __80__BLSHBacklightDisplayStateMachine__acquireLiveRenderingSystemActivityA
     *(v12 + 80) = 0;
     *(v12 + 88) = 0;
     *(v12 + 96) = 2;
-    [v10 setDisplayStateDelegate:v12];
-    v15 = [v10 cbDisplayMode];
+    [interfaceProviderCopy setDisplayStateDelegate:v12];
+    cbDisplayMode = [interfaceProviderCopy cbDisplayMode];
     *(v12 + 128) = 0;
-    *(v12 + 136) = v15;
+    *(v12 + 136) = cbDisplayMode;
     *(v12 + 144) = 0u;
     *(v12 + 160) = 0u;
     *(v12 + 176) = 0;
     *(v12 + 184) = xmmword_21FDA5490;
-    *(v12 + 120) = v15;
-    v16 = [v10 cbFlipbookState];
+    *(v12 + 120) = cbDisplayMode;
+    cbFlipbookState = [interfaceProviderCopy cbFlipbookState];
     v17 = mach_continuous_time();
     *(v12 + 200) = 0;
-    *(v12 + 208) = v16;
+    *(v12 + 208) = cbFlipbookState;
     *(v12 + 216) = 2;
     *(v12 + 224) = v17;
-    *(v12 + 232) = v16;
-    objc_storeStrong((v12 + 32), a5);
-    objc_storeWeak((v12 + 320), v8);
+    *(v12 + 232) = cbFlipbookState;
+    objc_storeStrong((v12 + 32), interfaceProvider);
+    objc_storeWeak((v12 + 320), delegateCopy);
     objc_initWeak(&location, v12);
     v23 = MEMORY[0x277D85DD0];
     v24 = 3221225472;
@@ -341,7 +341,7 @@ void __80__BLSHBacklightDisplayStateMachine__acquireLiveRenderingSystemActivityA
       v20 = qword_21FDA54B0[v14 - 2];
     }
 
-    v21 = [v10 createDisplayPowerResourceHintWithState:{v20, v23, v24, v25, v26}];
+    v21 = [interfaceProviderCopy createDisplayPowerResourceHintWithState:{v20, v23, v24, v25, v26}];
     v22 = *(v12 + 40);
     *(v12 + 40) = v21;
 
@@ -399,11 +399,11 @@ uint64_t __90__BLSHBacklightDisplayStateMachine_initWithDelegate_platformProvide
   return lock_highLuminanceAlwaysOn;
 }
 
-- (void)setHighLuminanceAlwaysOn:(BOOL)a3
+- (void)setHighLuminanceAlwaysOn:(BOOL)on
 {
-  v3 = a3;
+  onCopy = on;
   os_unfair_lock_lock(&self->_lock);
-  if (self->_lock_highLuminanceAlwaysOn == v3)
+  if (self->_lock_highLuminanceAlwaysOn == onCopy)
   {
 
     os_unfair_lock_unlock(&self->_lock);
@@ -412,7 +412,7 @@ uint64_t __90__BLSHBacklightDisplayStateMachine_initWithDelegate_platformProvide
   else
   {
     v5 = IsAlwaysOnBrightnessForBLSBacklightDisplayMode(self->_lock_displayRampOperation.displayMode);
-    self->_lock_highLuminanceAlwaysOn = v3;
+    self->_lock_highLuminanceAlwaysOn = onCopy;
     os_unfair_lock_unlock(&self->_lock);
     if (v5)
     {
@@ -421,22 +421,22 @@ uint64_t __90__BLSHBacklightDisplayStateMachine_initWithDelegate_platformProvide
   }
 }
 
-- (void)resumeDisplayMode:(int64_t)a3
+- (void)resumeDisplayMode:(int64_t)mode
 {
   v20 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
   displayMode = self->_lock_displayRampOperation.displayMode;
   lock_isPrewarmingDisplayMode = self->_lock_isPrewarmingDisplayMode;
   self->_lock_isPrewarmingDisplayMode = 0;
-  if (displayMode != a3)
+  if (displayMode != mode)
   {
     v9 = bls_backlight_log();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
     {
-      v12 = NSStringFromBLSBacklightDisplayMode(a3);
+      v12 = NSStringFromBLSBacklightDisplayMode(mode);
       v13 = NSStringFromBLSBacklightDisplayMode(displayMode);
       *buf = 134218498;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2114;
       v17 = v12;
       v18 = 2114;
@@ -458,9 +458,9 @@ uint64_t __90__BLSHBacklightDisplayStateMachine_initWithDelegate_platformProvide
     v7 = bls_backlight_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = NSStringFromBLSBacklightDisplayMode(a3);
+      v8 = NSStringFromBLSBacklightDisplayMode(mode);
       *buf = 134218242;
-      v15 = self;
+      selfCopy2 = self;
       v16 = 2114;
       v17 = v8;
       _os_log_impl(&dword_21FD11000, v7, OS_LOG_TYPE_INFO, "DSM:%p resumed transition to display mode:%{public}@", buf, 0x16u);
@@ -504,40 +504,40 @@ id __91__BLSHBacklightDisplayStateMachine_acquireLiveRenderingSystemActivityAsse
   return v0;
 }
 
-- (void)osInterfaceProvider:(id)a3 didCompleteTransitionToCBDisplayMode:(int64_t)a4 withError:(id)a5
+- (void)osInterfaceProvider:(id)provider didCompleteTransitionToCBDisplayMode:(int64_t)mode withError:(id)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  providerCopy = provider;
+  errorCopy = error;
+  if (errorCopy)
   {
     v10 = bls_backlight_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      v18 = NSStringFromCBDisplayMode_bls(a4);
-      v19 = [v9 bls_loggingString];
+      v18 = NSStringFromCBDisplayMode_bls(mode);
+      bls_loggingString = [errorCopy bls_loggingString];
       *buf = 134218498;
-      v21 = self;
+      selfCopy3 = self;
       v22 = 2114;
       v23 = v18;
       v24 = 2114;
-      v25 = v19;
+      v25 = bls_loggingString;
       _os_log_fault_impl(&dword_21FD11000, v10, OS_LOG_TYPE_FAULT, "DSM:%p core brightness failed to switch to display mode:%{public}@ error:%{public}@", buf, 0x20u);
     }
   }
 
   os_unfair_lock_lock(&self->_lock);
-  self->_lock_completedCBDisplayMode = a4;
-  if (self->_lock_cbDisplayModeTransitionOperation.cbDisplayMode != a4)
+  self->_lock_completedCBDisplayMode = mode;
+  if (self->_lock_cbDisplayModeTransitionOperation.cbDisplayMode != mode)
   {
     v13 = bls_backlight_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = NSStringFromCBDisplayMode_bls(a4);
+      v14 = NSStringFromCBDisplayMode_bls(mode);
       v15 = NSStringFromCBDisplayMode_bls(self->_lock_cbDisplayModeTransitionOperation.cbDisplayMode);
       phase = self->_lock_cbDisplayModeTransitionOperation.phase;
       *buf = 134218754;
-      v21 = self;
+      selfCopy3 = self;
       v22 = 2114;
       v23 = v14;
       v24 = 2114;
@@ -562,9 +562,9 @@ LABEL_18:
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
-      v14 = NSStringFromCBDisplayMode_bls(a4);
+      v14 = NSStringFromCBDisplayMode_bls(mode);
       *buf = 134218242;
-      v21 = self;
+      selfCopy3 = self;
       v22 = 2114;
       v23 = v14;
       _os_log_impl(&dword_21FD11000, v13, OS_LOG_TYPE_INFO, "DSM:%p (likely initialization) core brightness completed switch to display mode:%{public}@", buf, 0x16u);
@@ -578,7 +578,7 @@ LABEL_18:
   {
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
     {
-      [BLSHBacklightDisplayStateMachine osInterfaceProvider:a4 didCompleteTransitionToCBDisplayMode:? withError:?];
+      [BLSHBacklightDisplayStateMachine osInterfaceProvider:mode didCompleteTransitionToCBDisplayMode:? withError:?];
     }
 
     goto LABEL_18;
@@ -586,7 +586,7 @@ LABEL_18:
 
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
-    [BLSHBacklightDisplayStateMachine osInterfaceProvider:a4 didCompleteTransitionToCBDisplayMode:? withError:?];
+    [BLSHBacklightDisplayStateMachine osInterfaceProvider:mode didCompleteTransitionToCBDisplayMode:? withError:?];
   }
 
   self->_lock_cbDisplayModeTransitionOperation.phase = 2;
@@ -597,37 +597,37 @@ LABEL_19:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)osInterfaceProvider:(id)a3 didCompleteSwitchToCBFlipbookState:(int64_t)a4 withError:(id)a5
+- (void)osInterfaceProvider:(id)provider didCompleteSwitchToCBFlipbookState:(int64_t)state withError:(id)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  providerCopy = provider;
+  errorCopy = error;
+  if (errorCopy)
   {
     v10 = bls_backlight_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_FAULT))
     {
-      v17 = NSStringFromCBFlipbookState_bls(a4);
-      v18 = [v9 bls_loggingString];
+      v17 = NSStringFromCBFlipbookState_bls(state);
+      bls_loggingString = [errorCopy bls_loggingString];
       *buf = 134218498;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2114;
       v22 = v17;
       v23 = 2114;
-      v24 = v18;
+      v24 = bls_loggingString;
       _os_log_fault_impl(&dword_21FD11000, v10, OS_LOG_TYPE_FAULT, "DSM:%p core brightness failed to switch to flipbook state:%{public}@ error:%{public}@", buf, 0x20u);
     }
   }
 
   os_unfair_lock_lock(&self->_lock);
   lock_completedCBFlipbookState = self->_lock_completedCBFlipbookState;
-  self->_lock_completedCBFlipbookState = a4;
-  if (self->_lock_cbFlipbookStateChangeOperation.phase == 1 && self->_lock_cbFlipbookStateChangeOperation.cbFlipbookState == a4)
+  self->_lock_completedCBFlipbookState = state;
+  if (self->_lock_cbFlipbookStateChangeOperation.phase == 1 && self->_lock_cbFlipbookStateChangeOperation.cbFlipbookState == state)
   {
     v12 = bls_backlight_log();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
     {
-      [BLSHBacklightDisplayStateMachine osInterfaceProvider:a4 didCompleteSwitchToCBFlipbookState:? withError:?];
+      [BLSHBacklightDisplayStateMachine osInterfaceProvider:state didCompleteSwitchToCBFlipbookState:? withError:?];
     }
 
     self->_lock_cbFlipbookStateChangeOperation.phase = 2;
@@ -641,10 +641,10 @@ LABEL_19:
     v13 = bls_backlight_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
     {
-      v14 = NSStringFromCBFlipbookState_bls(a4);
+      v14 = NSStringFromCBFlipbookState_bls(state);
       v15 = NSStringFromCBFlipbookState_bls(self->_lock_cbFlipbookStateChangeOperation.cbFlipbookState);
       *buf = 134218498;
-      v20 = self;
+      selfCopy2 = self;
       v21 = 2114;
       v22 = v14;
       v23 = 2114;
@@ -658,11 +658,11 @@ LABEL_19:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)osInterfaceProvider:(id)a3 didCompleteTransitionToCADisplayState:(int64_t)a4 currentState:(int64_t)a5 transitionStatus:(int64_t)a6
+- (void)osInterfaceProvider:(id)provider didCompleteTransitionToCADisplayState:(int64_t)state currentState:(int64_t)currentState transitionStatus:(int64_t)status
 {
   v49 = *MEMORY[0x277D85DE8];
   os_unfair_lock_lock(&self->_lock);
-  if (a6 != 3 && a6)
+  if (status != 3 && status)
   {
     v11 = bls_backlight_log();
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_FAULT))
@@ -680,7 +680,7 @@ LABEL_19:
     mach_continuous_time();
     BSTimeDifferenceFromMachTimeToMachTime();
     *buf = 134219522;
-    v38 = self;
+    selfCopy6 = self;
     v39 = 2112;
     v40 = v26;
     v41 = 2114;
@@ -699,8 +699,8 @@ LABEL_16:
     goto LABEL_18;
   }
 
-  self->_lock_completedCADisplayState = a4;
-  if (self->_lock_caDisplayStateChangeOperation.caDisplayState != a4)
+  self->_lock_completedCADisplayState = state;
+  if (self->_lock_caDisplayStateChangeOperation.caDisplayState != state)
   {
     v11 = bls_backlight_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
@@ -714,7 +714,7 @@ LABEL_16:
       mach_continuous_time();
       BSTimeDifferenceFromMachTimeToMachTime();
       *buf = 134219266;
-      v38 = self;
+      selfCopy6 = self;
       v39 = 2114;
       v40 = v19;
       v41 = 2114;
@@ -745,7 +745,7 @@ LABEL_16:
     v27 = NSStringFromCADisplayState();
     v28 = NSStringFromCADisplayState();
     *buf = 134218754;
-    v38 = self;
+    selfCopy6 = self;
     v39 = 2114;
     v40 = v26;
     v41 = 2114;
@@ -758,7 +758,7 @@ LABEL_16:
 
   if (v9 == 1)
   {
-    if (a6)
+    if (status)
     {
       if (!os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
       {
@@ -779,7 +779,7 @@ LABEL_21:
       mach_continuous_time();
       BSTimeDifferenceFromMachTimeToMachTime();
       *buf = 134219266;
-      v38 = self;
+      selfCopy6 = self;
       v39 = 2114;
       v40 = v12;
       v41 = 2114;
@@ -806,7 +806,7 @@ LABEL_21:
       mach_continuous_time();
       BSTimeDifferenceFromMachTimeToMachTime();
       *buf = 134218754;
-      v38 = self;
+      selfCopy6 = self;
       v39 = 2114;
       v40 = v12;
       v41 = 2114;
@@ -825,7 +825,7 @@ LABEL_21:
     v27 = NSStringFromCADisplayState();
     v28 = NSStringFromCADisplayState();
     *buf = 134218754;
-    v38 = self;
+    selfCopy6 = self;
     v39 = 2114;
     v40 = v26;
     v41 = 2114;
@@ -843,22 +843,22 @@ LABEL_19:
   v34 = *MEMORY[0x277D85DE8];
 }
 
-- (id)abortContextForTimer:(id)a3
+- (id)abortContextForTimer:(id)timer
 {
-  v4 = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface caDisplayState];
-  v5 = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface cbDisplayMode];
-  v6 = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface isShowingBlankingWindow];
+  caDisplayState = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface caDisplayState];
+  cbDisplayMode = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface cbDisplayMode];
+  isShowingBlankingWindow = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface isShowingBlankingWindow];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v8 = [WeakRetained hasEnsureFlipbookCurrent];
+  hasEnsureFlipbookCurrent = [WeakRetained hasEnsureFlipbookCurrent];
 
-  v9 = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface systemSleepMonitor];
+  systemSleepMonitor = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface systemSleepMonitor];
   v10 = [BLSHBacklightDisplayStateMachineAbortContext alloc];
   displayMode = self->_lock_displayRampOperation.displayMode;
   lock_prewarmingDisplayMode = self->_lock_prewarmingDisplayMode;
   lock_lastSteadyStateDisplayMode = self->_lock_lastSteadyStateDisplayMode;
-  v14 = [v9 aggregateState];
-  LOBYTE(v17) = v8;
-  v15 = [(BLSHBacklightDisplayStateMachineAbortContext *)v10 initWithDisplayMode:displayMode prewarmingDisplayMode:lock_prewarmingDisplayMode lastSteadyStateDisplayMode:lock_lastSteadyStateDisplayMode caDisplayState:v4 cbDisplayMode:v5 showingBlankingWindow:v6 sleepMonitorAggregateState:v14 hasEnsureFlipbookCurrent:v17];
+  aggregateState = [systemSleepMonitor aggregateState];
+  LOBYTE(v17) = hasEnsureFlipbookCurrent;
+  v15 = [(BLSHBacklightDisplayStateMachineAbortContext *)v10 initWithDisplayMode:displayMode prewarmingDisplayMode:lock_prewarmingDisplayMode lastSteadyStateDisplayMode:lock_lastSteadyStateDisplayMode caDisplayState:caDisplayState cbDisplayMode:cbDisplayMode showingBlankingWindow:isShowingBlankingWindow sleepMonitorAggregateState:aggregateState hasEnsureFlipbookCurrent:v17];
 
   return v15;
 }
@@ -866,9 +866,9 @@ LABEL_19:
 - (id)identifier
 {
   v2 = [MEMORY[0x277CF0C00] builderWithObject:self];
-  v3 = [v2 build];
+  build = [v2 build];
 
-  return v3;
+  return build;
 }
 
 - (BLSHBacklightDisplayStateMachineDelegate)delegate
@@ -878,71 +878,71 @@ LABEL_19:
   return WeakRetained;
 }
 
-- (uint64_t)displayModeForOSInterfaceProvider:(uint64_t)a1
+- (uint64_t)displayModeForOSInterfaceProvider:(uint64_t)provider
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (provider)
   {
-    v5 = [v3 caDisplayState];
-    v6 = [v4 cbDisplayMode];
-    if (v5 == 3)
+    caDisplayState = [v3 caDisplayState];
+    cbDisplayMode = [v4 cbDisplayMode];
+    if (caDisplayState == 3)
     {
-      a1 = 1;
+      provider = 1;
     }
 
     else
     {
-      a1 = v6;
-      if (v6)
+      provider = cbDisplayMode;
+      if (cbDisplayMode)
       {
-        if (v5 == 2)
+        if (caDisplayState == 2)
         {
-          a1 = 2;
+          provider = 2;
         }
 
-        else if (v5 == 1)
+        else if (caDisplayState == 1)
         {
-          v7 = [v4 isShowingBlankingWindow];
+          isShowingBlankingWindow = [v4 isShowingBlankingWindow];
           v8 = 3;
-          if (a1 != 1)
+          if (provider != 1)
           {
             v8 = 4;
           }
 
-          if (a1 == 4)
+          if (provider == 4)
           {
             v8 = 6;
           }
 
-          if (v7)
+          if (isShowingBlankingWindow)
           {
-            a1 = 5;
+            provider = 5;
           }
 
           else
           {
-            a1 = v8;
+            provider = v8;
           }
         }
 
         else
         {
-          a1 = 0;
+          provider = 0;
         }
       }
     }
   }
 
-  return a1;
+  return provider;
 }
 
-- (void)acquireLiveRenderingSystemActivityAssertionIfNecessary:(uint64_t)a1
+- (void)acquireLiveRenderingSystemActivityAssertionIfNecessary:(uint64_t)necessary
 {
-  if (a1 && !IsBlankedForBLSBacklightDisplayMode(a2))
+  if (necessary && !IsBlankedForBLSBacklightDisplayMode(a2))
   {
     v4 = WouldUserExpectDisplayToBeActiveForBLSBacklightDisplayMode(a2);
-    v5 = *(a1 + 16);
+    v5 = *(necessary + 16);
     if (v4)
     {
       [v5 stopWatchdog];
@@ -952,25 +952,25 @@ LABEL_19:
     {
       if (!v5)
       {
-        v6 = [[BLSHTTRWatchdog alloc] initWithOSProvider:*(a1 + 32) configurationProvider:&__block_literal_global_26 detailProvider:&__block_literal_global_146];
-        v7 = *(a1 + 16);
-        *(a1 + 16) = v6;
+        v6 = [[BLSHTTRWatchdog alloc] initWithOSProvider:*(necessary + 32) configurationProvider:&__block_literal_global_26 detailProvider:&__block_literal_global_146];
+        v7 = *(necessary + 16);
+        *(necessary + 16) = v6;
 
-        v5 = *(a1 + 16);
+        v5 = *(necessary + 16);
       }
 
       [v5 startWatchdog];
     }
 
-    [(BLSHBacklightDisplayStateMachine *)a1 _acquireLiveRenderingSystemActivityAssertion];
+    [(BLSHBacklightDisplayStateMachine *)necessary _acquireLiveRenderingSystemActivityAssertion];
   }
 }
 
-- (void)acquireDisplayPowerAssertionForReason:(os_unfair_lock_s *)a1
+- (void)acquireDisplayPowerAssertionForReason:(os_unfair_lock_s *)reason
 {
-  if (a1)
+  if (reason)
   {
-    OUTLINED_FUNCTION_9_2(a1);
+    OUTLINED_FUNCTION_9_2(reason);
     v4 = [*(v2 + 32) acquireDisplayPowerAssertionForReason:a2];
     v5 = *(v2 + 280);
     *(v2 + 280) = v4;
@@ -981,9 +981,9 @@ LABEL_19:
 
 - (void)releaseDisplayPowerAssertion
 {
-  if (a1)
+  if (self)
   {
-    OUTLINED_FUNCTION_9_2(a1);
+    OUTLINED_FUNCTION_9_2(self);
     [*(v1 + 280) invalidate];
     v2 = *(v1 + 280);
     *(v1 + 280) = 0;
@@ -992,22 +992,22 @@ LABEL_19:
   }
 }
 
-- (void)prewarmForDisplayMode:(int64_t)a3
+- (void)prewarmForDisplayMode:(int64_t)mode
 {
   v54 = *MEMORY[0x277D85DE8];
-  if ((a3 - 3) <= 3)
+  if ((mode - 3) <= 3)
   {
     [(BLSDisplayPowerResourceHint *)self->_powerResourceHint updateState:101];
   }
 
-  v5 = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface cbDisplayMode];
+  cbDisplayMode = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface cbDisplayMode];
   os_unfair_lock_lock(&self->_lock);
   lock_isPrewarmingDisplayMode = self->_lock_isPrewarmingDisplayMode;
   lock_prewarmingDisplayMode = self->_lock_prewarmingDisplayMode;
-  LODWORD(v7) = IsOffForBLSBacklightDisplayMode(a3);
+  LODWORD(v7) = IsOffForBLSBacklightDisplayMode(mode);
   displayMode = self->_lock_displayRampOperation.displayMode;
-  v9 = displayMode != a3;
-  if ((v5 & 0xFFFFFFFFFFFFFFFDLL) != 0)
+  v9 = displayMode != mode;
+  if ((cbDisplayMode & 0xFFFFFFFFFFFFFFFDLL) != 0)
   {
     v10 = 0;
   }
@@ -1020,10 +1020,10 @@ LABEL_19:
   phase = self->_lock_cbFlipbookStateChangeOperation.phase;
   lock_caDisplayPowerAssertion = self->_lock_caDisplayPowerAssertion;
   self->_lock_isPrewarmingDisplayMode = v9;
-  self->_lock_prewarmingDisplayMode = a3;
+  self->_lock_prewarmingDisplayMode = mode;
   v30 = v10;
-  v12 = displayMode == a3 && lock_isPrewarmingDisplayMode;
-  if (displayMode != a3)
+  v12 = displayMode == mode && lock_isPrewarmingDisplayMode;
+  if (displayMode != mode)
   {
     self->_lock_prewarmingDisplayMode_startTimestamp = mach_continuous_time();
   }
@@ -1046,7 +1046,7 @@ LABEL_19:
     NSStringFromBLSBacklightDisplayMode(displayMode);
     v16 = v26 = v7 ^ 1;
     v27 = v16;
-    v17 = NSStringFromBLSBacklightDisplayMode(a3);
+    v17 = NSStringFromBLSBacklightDisplayMode(mode);
     v18 = phase;
     v19 = v17;
     v28 = v7;
@@ -1061,11 +1061,11 @@ LABEL_19:
     }
 
     v20 = NSStringFromBLSBacklightDisplayMode(lock_prewarmingDisplayMode);
-    v21 = v5;
+    v21 = cbDisplayMode;
     v22 = v20;
     NSStringFromCBDisplayMode_bls(v21);
     *buf = 134220546;
-    v33 = self;
+    selfCopy = self;
     v34 = 2114;
     v35 = v16;
     v36 = 2114;
@@ -1080,7 +1080,7 @@ LABEL_19:
     v45 = v26;
     v46 = 1024;
     LOBYTE(v7) = v28;
-    v47 = displayMode != a3;
+    v47 = displayMode != mode;
     v48 = 1024;
     v49 = v30;
     v50 = 1024;
@@ -1095,7 +1095,7 @@ LABEL_19:
 
   if (v7)
   {
-    v12 = (displayMode == a3) & ((lock_caDisplayPowerAssertion != 0) | v12);
+    v12 = (displayMode == mode) & ((lock_caDisplayPowerAssertion != 0) | v12);
   }
 
   else if (!lock_caDisplayPowerAssertion)
@@ -1103,8 +1103,8 @@ LABEL_19:
     [(BLSHBacklightDisplayStateMachine *)self acquireDisplayPowerAssertionForReason:?];
   }
 
-  [(BLSHBacklightDisplayStateMachine *)self acquireLiveRenderingSystemActivityAssertionIfNecessary:a3];
-  if (displayMode != a3)
+  [(BLSHBacklightDisplayStateMachine *)self acquireLiveRenderingSystemActivityAssertionIfNecessary:mode];
+  if (displayMode != mode)
   {
     [(BLSHBacklightDisplayStateMachine *)self replaceCurrentWatchdog];
     if (!v12)
@@ -1125,10 +1125,10 @@ LABEL_26:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setDisplayMode:(int64_t)a3 withRampDuration:(double)a4
+- (void)setDisplayMode:(int64_t)mode withRampDuration:(double)duration
 {
   v59 = *MEMORY[0x277D85DE8];
-  if ((a3 - 3) <= 3)
+  if ((mode - 3) <= 3)
   {
     [(BLSDisplayPowerResourceHint *)self->_powerResourceHint updateState:101];
   }
@@ -1147,11 +1147,11 @@ LABEL_26:
     v14 = bls_backlight_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
     {
-      v15 = NSStringFromBLSBacklightDisplayMode(a3);
+      v15 = NSStringFromBLSBacklightDisplayMode(mode);
       OUTLINED_FUNCTION_12_5();
       v44 = v16;
       v45 = 2048;
-      v46 = a4;
+      durationCopy2 = duration;
       v47 = 1024;
       v48 = v7;
       _os_log_impl(&dword_21FD11000, v14, OS_LOG_TYPE_INFO, "DSM:%p setDisplayMode:%{public}@ duration:%lf seqId:%d", buf, 0x26u);
@@ -1183,11 +1183,11 @@ LABEL_26:
     if (os_log_type_enabled(v20, v21))
     {
       v42 = sequenceNumber;
-      NSStringFromBLSBacklightDisplayMode(a3);
+      NSStringFromBLSBacklightDisplayMode(mode);
       v41 = v40 = displayMode;
       v22 = NSStringFromBLSBacklightDisplayMode(displayMode);
       v23 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:startSeconds];
-      v24 = [v23 bls_shortLoggingString];
+      bls_shortLoggingString = [v23 bls_shortLoggingString];
       if (v17 <= 3.0)
       {
         v25 = &stru_283373E60;
@@ -1201,17 +1201,17 @@ LABEL_26:
       OUTLINED_FUNCTION_12_5();
       v44 = v41;
       v45 = 2048;
-      v46 = a4;
+      durationCopy2 = duration;
       v47 = 1024;
       v48 = v7;
       v49 = v26;
       v50 = v22;
       v51 = 2048;
-      v52 = duration;
+      durationCopy3 = duration;
       v53 = 1024;
       v54 = v42;
       v55 = v26;
-      v56 = v24;
+      v56 = bls_shortLoggingString;
       v57 = v26;
       v58 = v25;
       _os_log_impl(&dword_21FD11000, v14, v21, "DSM:%p setDisplayMode:%{public}@ duration:%lf seqId:%d interrupting previous setDisplayMode:%{public}@ duration:%lf seqId:%d with started at:%{public}@%{public}@", buf, 0x54u);
@@ -1230,28 +1230,28 @@ LABEL_26:
   v28 = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface now];
   [v28 timeIntervalSinceReferenceDate];
   self->_lock_displayRampOperation.sequenceNumber = v7;
-  self->_lock_displayRampOperation.displayMode = a3;
+  self->_lock_displayRampOperation.displayMode = mode;
   self->_lock_displayRampOperation.previousDisplayMode = v27;
-  self->_lock_displayRampOperation.duration = a4;
+  self->_lock_displayRampOperation.duration = duration;
   self->_lock_displayRampOperation.startSeconds = v29;
   self->_lock_displayRampOperation.phase = 1;
 
   self->_lock_isPrewarmingDisplayMode = 0;
   [(BLSHWatchdogInvalidatable *)self->_watchdogTimer invalidate:1];
   v30 = *(v13 + 3240);
-  v31 = NSStringFromBLSBacklightDisplayMode(a3);
+  v31 = NSStringFromBLSBacklightDisplayMode(mode);
   v32 = v31;
   if (phase == 2)
   {
-    v33 = [v30 stringWithFormat:@"%p transition to displayMode:%@ duration:%lf seqId:%d", self, v31, *&a4, v7];
+    v33 = [v30 stringWithFormat:@"%p transition to displayMode:%@ duration:%lf seqId:%d", self, v31, *&duration, v7];
   }
 
   else
   {
     v34 = NSStringFromBLSBacklightDisplayMode(displayMode);
     v35 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:startSeconds];
-    v36 = [v35 bls_shortLoggingString];
-    v33 = [v30 stringWithFormat:@"DSM:%p transition to displayMode:%@ duration:%lf seqId:%d interrupting previous setDisplayMode:%@ duration:%lf seqId:%d with started at:%@", self, v32, *&a4, v7, v34, *&duration, sequenceNumber, v36];
+    bls_shortLoggingString2 = [v35 bls_shortLoggingString];
+    v33 = [v30 stringWithFormat:@"DSM:%p transition to displayMode:%@ duration:%lf seqId:%d interrupting previous setDisplayMode:%@ duration:%lf seqId:%d with started at:%@", self, v32, *&duration, v7, v34, *&duration, sequenceNumber, bls_shortLoggingString2];
   }
 
   v37 = [(BLSHBacklightOSInterfaceProviding *)self->_osInterface scheduleWatchdogWithDelegate:self explanation:v33 timeout:18.0];
@@ -1259,7 +1259,7 @@ LABEL_26:
   self->_watchdogTimer = v37;
 
   os_unfair_lock_unlock(&self->_lock);
-  [(BLSHBacklightDisplayStateMachine *)self acquireLiveRenderingSystemActivityAssertionIfNecessary:a3];
+  [(BLSHBacklightDisplayStateMachine *)self acquireLiveRenderingSystemActivityAssertionIfNecessary:mode];
   BSDispatchMain();
 
   v39 = *MEMORY[0x277D85DE8];
@@ -1268,30 +1268,30 @@ LABEL_26:
 - (BOOL)releaseLiveRenderingSystemActivityAssertion
 {
   v15 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 24));
-    v2 = *(a1 + 288);
+    os_unfair_lock_lock((self + 24));
+    v2 = *(self + 288);
     v3 = v2 != 0;
     if (v2)
     {
       v4 = bls_backlight_log();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
       {
-        v14 = *(a1 + 288);
+        v14 = *(self + 288);
         OUTLINED_FUNCTION_10_2();
         OUTLINED_FUNCTION_14_4(v9, v10, v11, v12, v13);
       }
 
-      [*(a1 + 288) invalidate];
-      v5 = *(a1 + 288);
-      *(a1 + 288) = 0;
+      [*(self + 288) invalidate];
+      v5 = *(self + 288);
+      *(self + 288) = 0;
     }
 
-    os_unfair_lock_unlock((a1 + 24));
-    [*(a1 + 16) stopWatchdog];
-    v6 = *(a1 + 16);
-    *(a1 + 16) = 0;
+    os_unfair_lock_unlock((self + 24));
+    [*(self + 16) stopWatchdog];
+    v6 = *(self + 16);
+    *(self + 16) = 0;
   }
 
   else
@@ -1383,15 +1383,15 @@ LABEL_26:
   return result;
 }
 
-- (void)transitionToDisplayMode:(int)a3 withDuration:(double)a4 shouldWaitForCompletion:
+- (void)transitionToDisplayMode:(int)mode withDuration:(double)duration shouldWaitForCompletion:
 {
   v80 = *MEMORY[0x277D85DE8];
-  if (!a1)
+  if (!self)
   {
     goto LABEL_33;
   }
 
-  OUTLINED_FUNCTION_9_2(a1);
+  OUTLINED_FUNCTION_9_2(self);
   v8 = [*(v4 + 32) now];
   [v8 timeIntervalSinceReferenceDate];
   v10 = v9;
@@ -1408,11 +1408,11 @@ LABEL_26:
       v60 = 2114;
       v61 = v13;
       v62 = 2048;
-      v63 = a4;
+      durationCopy = duration;
       v64 = 2048;
-      v65 = a4;
+      durationCopy2 = duration;
       v66 = 1024;
-      v67 = a3;
+      modeCopy = mode;
       OUTLINED_FUNCTION_7_4();
       _os_log_debug_impl(v14, v15, v16, v17, v18, 0x30u);
 LABEL_35:
@@ -1450,29 +1450,29 @@ LABEL_35:
         v27 = v23 / v22;
       }
 
-      v28 = v27 * a4;
-      v29 = v10 - (a4 - v27 * a4);
+      durationCopy5 = v27 * duration;
+      v29 = v10 - (duration - v27 * duration);
       v12 = bls_backlight_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
       {
         v30 = NSStringFromCBDisplayMode_bls(v11);
         v31 = *(v4 + 152);
         v32 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:*(v4 + 168)];
-        v33 = [v32 bls_shortLoggingString];
+        bls_shortLoggingString = [v32 bls_shortLoggingString];
         v34 = NSStringFromCBDisplayMode_bls(a2);
         OUTLINED_FUNCTION_2_13();
         v68 = v35;
         v69 = v23;
         v70 = v35;
-        v71 = v27;
+        durationCopy4 = v27;
         v72 = v36;
         v73 = v37;
         v74 = v35;
-        v75 = v27 * a4;
+        v75 = v27 * duration;
         v76 = v35;
-        v77 = a4;
+        durationCopy3 = duration;
         v78 = 1024;
-        v79 = a3;
+        modeCopy2 = mode;
         OUTLINED_FUNCTION_7_4();
         _os_log_debug_impl(v38, v39, v40, v41, v42, 0x6Cu);
       }
@@ -1486,15 +1486,15 @@ LABEL_35:
       v13 = NSStringFromCBDisplayMode_bls(v11);
       v45 = *(v4 + 152);
       v46 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSinceReferenceDate:*(v4 + 168)];
-      v47 = [v46 bls_shortLoggingString];
+      bls_shortLoggingString2 = [v46 bls_shortLoggingString];
       v48 = NSStringFromCBDisplayMode_bls(a2);
       OUTLINED_FUNCTION_2_13();
       v68 = v49;
       v69 = v50;
       v70 = v51;
-      v71 = a4;
+      durationCopy4 = duration;
       v72 = 1024;
-      LODWORD(v73) = a3;
+      LODWORD(v73) = mode;
       OUTLINED_FUNCTION_7_4();
       _os_log_debug_impl(v52, v53, v54, v55, v56, 0x4Eu);
 
@@ -1503,7 +1503,7 @@ LABEL_35:
   }
 
   v29 = v10;
-  v28 = a4;
+  durationCopy5 = duration;
 LABEL_31:
 
   v43 = *(v4 + 48) + 1;
@@ -1511,15 +1511,15 @@ LABEL_31:
   *(v4 + 128) = v43;
   *(v4 + 136) = a2;
   *(v4 + 144) = v11;
-  *(v4 + 152) = v28;
-  *(v4 + 160) = a4;
+  *(v4 + 152) = durationCopy5;
+  *(v4 + 160) = duration;
   *(v4 + 168) = v10;
   *(v4 + 176) = v29;
   *(v4 + 184) = 1;
-  *(v4 + 192) = a3;
+  *(v4 + 192) = mode;
   os_unfair_lock_unlock((v4 + 24));
-  [*(v4 + 32) transitionToDisplayMode:a2 withDuration:v28];
-  if ((a3 & 1) == 0)
+  [*(v4 + 32) transitionToDisplayMode:a2 withDuration:durationCopy5];
+  if ((mode & 1) == 0)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;

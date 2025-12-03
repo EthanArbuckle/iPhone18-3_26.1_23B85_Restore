@@ -8,7 +8,7 @@
 {
   v21 = *MEMORY[0x277D85DE8];
   v14 = 0;
-  v3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:a1 requiringSecureCoding:1 error:&v14];
+  v3 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:self requiringSecureCoding:1 error:&v14];
   v4 = v14;
   if (v3)
   {

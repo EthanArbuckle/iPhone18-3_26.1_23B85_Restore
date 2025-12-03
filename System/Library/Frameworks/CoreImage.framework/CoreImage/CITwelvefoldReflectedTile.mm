@@ -52,7 +52,7 @@
   affine::inverse(&v44, v43);
   v30 = [CIVector vectorWithX:v43[0] Y:v43[2] Z:v43[1] W:v43[3]];
   v31 = [CIVector vectorWithX:v44 Y:v46 Z:v45 W:v47];
-  v32 = [(CITwelvefoldReflectedTile *)self _kernel];
+  _kernel = [(CITwelvefoldReflectedTile *)self _kernel];
   v33 = *MEMORY[0x1E695F040];
   v34 = *(MEMORY[0x1E695F040] + 8);
   v36 = *(MEMORY[0x1E695F040] + 16);
@@ -69,7 +69,7 @@
   v48[0] = [CIVector vectorWithX:v38 Y:v39];
   v48[1] = v30;
   v48[2] = v31;
-  return [v32 applyWithExtent:v42 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v48, 3), v33, v34, v36, v35}];
+  return [_kernel applyWithExtent:v42 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v48, 3), v33, v34, v36, v35}];
 }
 
 @end

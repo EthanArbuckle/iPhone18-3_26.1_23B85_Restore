@@ -1,13 +1,13 @@
 @interface CLKeyboardMotionAdapter
-- (void)eventUpdateForDevice:(id)a3 event:(id)a4;
-- (void)inputReportForDevice:(id)a3 report:(char *)a4 length:(int64_t)a5;
-- (void)monitorUpdateForDevice:(id)a3 added:(BOOL)a4;
-- (void)smartCoverStateDidChange:(int64_t)a3;
+- (void)eventUpdateForDevice:(id)device event:(id)event;
+- (void)inputReportForDevice:(id)device report:(char *)report length:(int64_t)length;
+- (void)monitorUpdateForDevice:(id)device added:(BOOL)added;
+- (void)smartCoverStateDidChange:(int64_t)change;
 @end
 
 @implementation CLKeyboardMotionAdapter
 
-- (void)inputReportForDevice:(id)a3 report:(char *)a4 length:(int64_t)a5
+- (void)inputReportForDevice:(id)device report:(char *)report length:(int64_t)length
 {
   v46 = *MEMORY[0x1E69E9840];
   if (qword_1ED71D2B0 != -1)
@@ -16,17 +16,17 @@
   }
 
   v8 = qword_1ED71D2A8;
-  if (*(qword_1ED71D2A8 + 48) == a3)
+  if (*(qword_1ED71D2A8 + 48) == device)
   {
-    if (a5 == 30)
+    if (length == 30)
     {
-      v11 = *(a4 + 7);
-      v12 = a4[17];
-      v13 = *(a4 + 26);
-      *buf = *(a4 + 9);
+      v11 = *(report + 7);
+      v12 = report[17];
+      v13 = *(report + 26);
+      *buf = *(report + 9);
       *&buf[20] = v11;
       v45 = v12;
-      *&buf[8] = *(a4 + 18);
+      *&buf[8] = *(report + 18);
       *&buf[16] = v13;
       sub_19B41E070(*buf);
       v14 = buf;
@@ -47,7 +47,7 @@ LABEL_17:
     if (os_log_type_enabled(qword_1ED71C7C8, OS_LOG_TYPE_FAULT))
     {
       *buf = 134218240;
-      *&buf[4] = a5;
+      *&buf[4] = length;
       *&buf[12] = 2048;
       *&buf[14] = 30;
       _os_log_impl(&dword_19B41C000, v20, OS_LOG_TYPE_FAULT, "Bad motion report input %ld, expected %lu", buf, 0x16u);
@@ -64,7 +64,7 @@ LABEL_17:
     {
 LABEL_35:
       v40 = 134218240;
-      v41 = a5;
+      lengthCopy2 = length;
       v42 = 2048;
       v43 = 30;
 LABEL_90:
@@ -83,9 +83,9 @@ LABEL_105:
     goto LABEL_35;
   }
 
-  if (*(qword_1ED71D2A8 + 40) == a3)
+  if (*(qword_1ED71D2A8 + 40) == device)
   {
-    if (!a5)
+    if (!length)
     {
       if (qword_1ED71C7B8 != -1)
       {
@@ -115,12 +115,12 @@ LABEL_105:
       goto LABEL_92;
     }
 
-    v18 = *a4;
+    v18 = *report;
     if (v18 == 196)
     {
-      if (a5 == 3)
+      if (length == 3)
       {
-        v24 = a4[1] & 2;
+        v24 = report[1] & 2;
         if (*(qword_1ED71D2A8 + 88) != v24 >> 1)
         {
           if (qword_1ED71C7B8 != -1)
@@ -166,7 +166,7 @@ LABEL_105:
             }
 
             v40 = 136315138;
-            v41 = v28;
+            lengthCopy2 = v28;
             v29 = _os_log_send_and_compose_impl();
             sub_19B6BB7CC("Generic", 1, 0, 2, "void CLKeyboardMotionNotifier::onIoHidReportBounce(CLHidDevice *, uint8_t *, CFIndex)", "CoreLocation: %s\n", v29);
             if (v29 != buf)
@@ -205,7 +205,7 @@ LABEL_105:
         if (os_log_type_enabled(qword_1ED71C7C8, OS_LOG_TYPE_FAULT))
         {
           *buf = 134218240;
-          *&buf[4] = a5;
+          *&buf[4] = length;
           *&buf[12] = 2048;
           *&buf[14] = 3;
           _os_log_impl(&dword_19B41C000, v34, OS_LOG_TYPE_FAULT, "Bad motion report input state %ld, expected %lu", buf, 0x16u);
@@ -221,7 +221,7 @@ LABEL_105:
           }
 
           v40 = 134218240;
-          v41 = a5;
+          lengthCopy2 = length;
           v42 = 2048;
           v43 = 3;
           goto LABEL_90;
@@ -236,10 +236,10 @@ LABEL_105:
       goto LABEL_92;
     }
 
-    if (a5 == 30)
+    if (length == 30)
     {
-      *buf = *a4;
-      *&buf[8] = *(a4 + 4);
+      *buf = *report;
+      *&buf[8] = *(report + 4);
       v19 = 1;
       if (buf[0] == 1 && !buf[1] && !buf[2])
       {
@@ -273,7 +273,7 @@ LABEL_105:
     if (os_log_type_enabled(qword_1ED71C7C8, OS_LOG_TYPE_FAULT))
     {
       *buf = 134218240;
-      *&buf[4] = a5;
+      *&buf[4] = length;
       *&buf[12] = 2048;
       *&buf[14] = 30;
       _os_log_impl(&dword_19B41C000, v32, OS_LOG_TYPE_FAULT, "Bad motion report input %ld, expected %lu", buf, 0x16u);
@@ -323,23 +323,23 @@ LABEL_92:
   v37 = *MEMORY[0x1E69E9840];
 }
 
-- (void)monitorUpdateForDevice:(id)a3 added:(BOOL)a4
+- (void)monitorUpdateForDevice:(id)device added:(BOOL)added
 {
-  v4 = a4;
+  addedCopy = added;
   if (qword_1ED71D2B0 != -1)
   {
     dispatch_once(&qword_1ED71D2B0, &unk_1F0E295E0);
   }
 
   v6 = qword_1ED71D2A8;
-  if (*(qword_1ED71D2A8 + 40) == a3)
+  if (*(qword_1ED71D2A8 + 40) == device)
   {
-    v14 = v4;
+    v14 = addedCopy;
     v10 = mach_absolute_time();
     sub_19B41E070(v10);
     sub_19B41DF08(v6, 2, &v14, 1);
     *(v6 + 91) = v14;
-    if (v4)
+    if (addedCopy)
     {
       v11 = sub_19B677F14();
       if (*(v6 + 89) != v11)
@@ -360,9 +360,9 @@ LABEL_92:
     }
   }
 
-  else if (*(qword_1ED71D2A8 + 48) == a3)
+  else if (*(qword_1ED71D2A8 + 48) == device)
   {
-    if (v4)
+    if (addedCopy)
     {
       v7 = sub_19B677C18();
       if (*(v6 + 90) != v7)
@@ -384,7 +384,7 @@ LABEL_92:
   }
 }
 
-- (void)eventUpdateForDevice:(id)a3 event:(id)a4
+- (void)eventUpdateForDevice:(id)device event:(id)event
 {
   if (qword_1ED71D2B0 != -1)
   {
@@ -421,7 +421,7 @@ LABEL_92:
   }
 }
 
-- (void)smartCoverStateDidChange:(int64_t)a3
+- (void)smartCoverStateDidChange:(int64_t)change
 {
   v16 = *MEMORY[0x1E69E9840];
   if (qword_1ED71D2B0 != -1)
@@ -432,14 +432,14 @@ LABEL_92:
   v4 = qword_1ED71D2A8;
   if (*(qword_1ED71D2A8 + 91) == 1)
   {
-    if (a3 == 1)
+    if (change == 1)
     {
       v5 = 2;
     }
 
     else
     {
-      if (a3 != 3)
+      if (change != 3)
       {
         goto LABEL_21;
       }
@@ -457,7 +457,7 @@ LABEL_92:
     if (os_log_type_enabled(qword_1ED71C7C8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v15 = (off_1EE5DEA18[0])(a3);
+      v15 = (off_1EE5DEA18[0])(change);
       _os_log_impl(&dword_19B41C000, v6, OS_LOG_TYPE_INFO, "iPad Hall Effect sensor detected the cover was, %@", buf, 0xCu);
     }
 
@@ -471,7 +471,7 @@ LABEL_92:
       }
 
       v12 = 138412290;
-      v13 = (off_1EE5DEA18[0])(a3);
+      v13 = (off_1EE5DEA18[0])(change);
       v8 = _os_log_send_and_compose_impl();
       sub_19B6BB7CC("Generic", 1, 0, 2, "void CLKeyboardMotionNotifier::onSmartCoverOpened(SBSSmartCoverState)", "CoreLocation: %s\n", v8);
       if (v8 != buf)

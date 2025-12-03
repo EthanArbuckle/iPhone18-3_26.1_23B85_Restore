@@ -1,12 +1,12 @@
 @interface CMGenericWorkout
 + (BOOL)isAvailable;
-+ (id)genericWorkoutInstance:(id)a3;
-- (CMGenericWorkout)initWithCoder:(id)a3;
-- (CMGenericWorkout)initWithSessionId:(id)a3 workoutLabel:(unint64_t)a4;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)genericWorkoutInstance:(id)instance;
+- (CMGenericWorkout)initWithCoder:(id)coder;
+- (CMGenericWorkout)initWithSessionId:(id)id workoutLabel:(unint64_t)label;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMGenericWorkout
@@ -21,14 +21,14 @@
   return objc_msgSend_isAvailable(CMWorkout, v2, v3);
 }
 
-- (CMGenericWorkout)initWithSessionId:(id)a3 workoutLabel:(unint64_t)a4
+- (CMGenericWorkout)initWithSessionId:(id)id workoutLabel:(unint64_t)label
 {
   v6.receiver = self;
   v6.super_class = CMGenericWorkout;
-  result = [(CMWorkout *)&v6 initWithSessionId:a3 type:14];
+  result = [(CMWorkout *)&v6 initWithSessionId:id type:14];
   if (result)
   {
-    result->fWorkoutLabel = a4;
+    result->fWorkoutLabel = label;
   }
 
   return result;
@@ -41,23 +41,23 @@
   [(CMWorkout *)&v2 dealloc];
 }
 
-- (CMGenericWorkout)initWithCoder:(id)a3
+- (CMGenericWorkout)initWithCoder:(id)coder
 {
   v8.receiver = self;
   v8.super_class = CMGenericWorkout;
   v5 = [(CMWorkout *)&v8 initWithCoder:?];
-  if (v5 && objc_msgSend_containsValueForKey_(a3, v4, @"kCMWorkoutDataCodingKeyWorkoutLabel"))
+  if (v5 && objc_msgSend_containsValueForKey_(coder, v4, @"kCMWorkoutDataCodingKeyWorkoutLabel"))
   {
-    v5->fWorkoutLabel = objc_msgSend_decodeIntegerForKey_(a3, v6, @"kCMWorkoutDataCodingKeyWorkoutLabel");
+    v5->fWorkoutLabel = objc_msgSend_decodeIntegerForKey_(coder, v6, @"kCMWorkoutDataCodingKeyWorkoutLabel");
   }
 
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_sessionId(self, v8, v9);
   v13 = objc_msgSend_workoutLabel(self, v11, v12);
   v15 = objc_msgSend_initWithSessionId_workoutLabel_(v7, v14, v10, v13);
@@ -66,12 +66,12 @@
   return v15;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = CMGenericWorkout;
   [(CMWorkout *)&v6 encodeWithCoder:?];
-  objc_msgSend_encodeInteger_forKey_(a3, v5, self->fWorkoutLabel, @"kCMWorkoutDataCodingKeyWorkoutLabel");
+  objc_msgSend_encodeInteger_forKey_(coder, v5, self->fWorkoutLabel, @"kCMWorkoutDataCodingKeyWorkoutLabel");
 }
 
 - (id)description
@@ -84,12 +84,12 @@
   return objc_msgSend_stringWithFormat_(v3, v12, @"%@, <sessionId %@, label, %lu>", v5, v8, v11);
 }
 
-+ (id)genericWorkoutInstance:(id)a3
++ (id)genericWorkoutInstance:(id)instance
 {
   v4 = objc_opt_class();
-  if (objc_msgSend_isMemberOfClass_(a3, v5, v4))
+  if (objc_msgSend_isMemberOfClass_(instance, v5, v4))
   {
-    return a3;
+    return instance;
   }
 
   else

@@ -1,14 +1,14 @@
 @interface IMURLBag
 + (id)sharedInstance;
-+ (void)registerBagKeys:(id)a3;
++ (void)registerBagKeys:(id)keys;
 - (BOOL)isExpired;
 - (IMURLBag)init;
 - (NSDate)expirationDate;
 - (NSString)profile;
 - (NSString)profileVersion;
-- (id)BOOLForKey:(id)a3;
-- (id)URLForKey:(id)a3;
-- (id)arrayForKey:(id)a3;
+- (id)BOOLForKey:(id)key;
+- (id)URLForKey:(id)key;
+- (id)arrayForKey:(id)key;
 - (id)backgroundFetchInterval;
 - (id)bag;
 - (id)batchFeedFetchIsEnabled;
@@ -17,12 +17,12 @@
 - (id)commerceMusicSubscriptionInfoUrl;
 - (id)commerceOAuthCancellationUrl;
 - (id)commerceOAuthVerificationUrl;
-- (id)dictionaryForKey:(id)a3;
-- (id)doubleForKey:(id)a3;
+- (id)dictionaryForKey:(id)key;
+- (id)doubleForKey:(id)key;
 - (id)fetchCategoriesSyncThresholdValue;
 - (id)fetchMusicSubscriptionThresholdValue;
 - (id)includeEntitlementsContent;
-- (id)integerForKey:(id)a3;
+- (id)integerForKey:(id)key;
 - (id)languageTag;
 - (id)libraryShowFetchThreshold;
 - (id)mediaTaskCountryCode;
@@ -43,20 +43,20 @@
 - (id)podcastsMediaAPIHostUrl;
 - (id)reportAConcernURL;
 - (id)storefrontSupportsColdStart;
-- (id)stringForKey:(id)a3;
-- (id)syncStringForKey:(id)a3;
-- (id)syncValueForKey:(id)a3;
+- (id)stringForKey:(id)key;
+- (id)syncStringForKey:(id)key;
+- (id)syncValueForKey:(id)key;
 - (id)tokenServiceUrl;
 - (id)transcriptCensorWords;
 - (id)trustedDomains;
 - (id)unpersonalizedLookupURL;
 - (unint64_t)explicitContentBadgeTreatment;
 - (void)_registerBagKeysIfNeeded;
-- (void)createSnapshotWithCompletion:(id)a3;
-- (void)reportAConcernURLWithCompletion:(id)a3;
-- (void)scheduleBagUpdateOnDate:(id)a3;
+- (void)createSnapshotWithCompletion:(id)completion;
+- (void)reportAConcernURLWithCompletion:(id)completion;
+- (void)scheduleBagUpdateOnDate:(id)date;
 - (void)updateBagOnCurrentQueue;
-- (void)updateWithNewBag:(id)a3;
+- (void)updateWithNewBag:(id)bag;
 @end
 
 @implementation IMURLBag
@@ -76,7 +76,7 @@ void __26__IMURLBag_sharedInstance__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __26__IMURLBag_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -92,13 +92,13 @@ void __26__IMURLBag_sharedInstance__block_invoke(uint64_t a1)
   if (os_feature_enabled_bag_snapshot_overlay())
   {
     objc_initWeak(&location, self);
-    v3 = [(IMURLBag *)self liveBag];
+    liveBag = [(IMURLBag *)self liveBag];
     v4[0] = MEMORY[0x1E69E9820];
     v4[1] = 3221225472;
     v4[2] = __35__IMURLBag_updateBagOnCurrentQueue__block_invoke;
     v4[3] = &unk_1E856AFE0;
     objc_copyWeak(&v5, &location);
-    [v3 createSnapshotWithCompletion:v4];
+    [liveBag createSnapshotWithCompletion:v4];
 
     objc_destroyWeak(&v5);
     objc_destroyWeak(&location);
@@ -129,27 +129,27 @@ void __16__IMURLBag_init__block_invoke(uint64_t a1)
 {
   if (os_feature_enabled_bag_snapshot_overlay())
   {
-    v3 = [(IMURLBag *)self currentSnapshot];
-    v4 = v3;
-    if (v3)
+    currentSnapshot = [(IMURLBag *)self currentSnapshot];
+    v4 = currentSnapshot;
+    if (currentSnapshot)
     {
-      v5 = v3;
+      liveBag = currentSnapshot;
     }
 
     else
     {
-      v5 = [(IMURLBag *)self liveBag];
+      liveBag = [(IMURLBag *)self liveBag];
     }
 
-    v6 = v5;
+    liveBag2 = liveBag;
   }
 
   else
   {
-    v6 = [(IMURLBag *)self liveBag];
+    liveBag2 = [(IMURLBag *)self liveBag];
   }
 
-  return v6;
+  return liveBag2;
 }
 
 - (IMURLBag)init
@@ -478,9 +478,9 @@ void __35__IMURLBag_updateBagOnCurrentQueue__block_invoke_2(uint64_t a1)
 - (BOOL)isExpired
 {
   v2 = [(IMURLBag *)self bag];
-  v3 = [v2 isExpired];
+  isExpired = [v2 isExpired];
 
-  return v3;
+  return isExpired;
 }
 
 - (id)batchFeedFetchIsEnabled
@@ -531,41 +531,41 @@ void __35__IMURLBag_updateBagOnCurrentQueue__block_invoke_2(uint64_t a1)
   return v3;
 }
 
-+ (void)registerBagKeys:(id)a3
++ (void)registerBagKeys:(id)keys
 {
   v3 = MEMORY[0x1E698C7E0];
-  v4 = a3;
+  keysCopy = keys;
   v6 = +[PFClientUtil bagProfileName];
   v5 = +[PFClientUtil bagProfileVersion];
-  [v3 registerBagKeySet:v4 forProfile:v6 profileVersion:v5];
+  [v3 registerBagKeySet:keysCopy forProfile:v6 profileVersion:v5];
 }
 
-- (void)updateWithNewBag:(id)a3
+- (void)updateWithNewBag:(id)bag
 {
-  if (a3)
+  if (bag)
   {
-    v4 = a3;
-    [(IMURLBag *)self setCurrentSnapshot:v4];
-    v6 = [v4 expirationDate];
+    bagCopy = bag;
+    [(IMURLBag *)self setCurrentSnapshot:bagCopy];
+    expirationDate = [bagCopy expirationDate];
 
-    v5 = [v6 dateByAddingTimeInterval:1.0];
+    v5 = [expirationDate dateByAddingTimeInterval:1.0];
     [(IMURLBag *)self scheduleBagUpdateOnDate:v5];
   }
 }
 
-- (void)scheduleBagUpdateOnDate:(id)a3
+- (void)scheduleBagUpdateOnDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   objc_initWeak(&location, self);
-  [v4 timeIntervalSinceNow];
+  [dateCopy timeIntervalSinceNow];
   v6 = dispatch_time(0, (v5 * 1000000000.0));
-  v7 = [(IMURLBag *)self queue];
+  queue = [(IMURLBag *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __36__IMURLBag_scheduleBagUpdateOnDate___block_invoke;
   v8[3] = &unk_1E8568EF0;
   objc_copyWeak(&v9, &location);
-  dispatch_after(v6, v7, v8);
+  dispatch_after(v6, queue, v8);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -580,39 +580,39 @@ void __36__IMURLBag_scheduleBagUpdateOnDate___block_invoke(uint64_t a1)
 - (NSDate)expirationDate
 {
   v2 = [(IMURLBag *)self bag];
-  v3 = [v2 expirationDate];
+  expirationDate = [v2 expirationDate];
 
-  return v3;
+  return expirationDate;
 }
 
 - (NSString)profile
 {
   v2 = [(IMURLBag *)self bag];
-  v3 = [v2 profile];
+  profile = [v2 profile];
 
-  return v3;
+  return profile;
 }
 
 - (NSString)profileVersion
 {
   v2 = [(IMURLBag *)self bag];
-  v3 = [v2 profileVersion];
+  profileVersion = [v2 profileVersion];
 
-  return v3;
+  return profileVersion;
 }
 
-- (void)reportAConcernURLWithCompletion:(id)a3
+- (void)reportAConcernURLWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IMURLBag *)self reportAConcernURL];
-  v6 = [(IMURLBag *)self queue];
+  completionCopy = completion;
+  reportAConcernURL = [(IMURLBag *)self reportAConcernURL];
+  queue = [(IMURLBag *)self queue];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __44__IMURLBag_reportAConcernURLWithCompletion___block_invoke;
   v8[3] = &unk_1E85692A0;
-  v9 = v4;
-  v7 = v4;
-  [v5 asyncValueOnQueue:v6 withCompletion:v8];
+  v9 = completionCopy;
+  v7 = completionCopy;
+  [reportAConcernURL asyncValueOnQueue:queue withCompletion:v8];
 }
 
 void __44__IMURLBag_reportAConcernURLWithCompletion___block_invoke(uint64_t a1, void *a2, uint64_t a3, void *a4)
@@ -891,75 +891,75 @@ void __44__IMURLBag_reportAConcernURLWithCompletion___block_invoke_2(void *a1)
   return v3;
 }
 
-- (id)doubleForKey:(id)a3
+- (id)doubleForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(IMURLBag *)self bag];
-  v6 = [v5 doubleForKey:v4];
+  v6 = [v5 doubleForKey:keyCopy];
 
   return v6;
 }
 
-- (id)stringForKey:(id)a3
+- (id)stringForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(IMURLBag *)self bag];
-  v6 = [v5 stringForKey:v4];
+  v6 = [v5 stringForKey:keyCopy];
 
   return v6;
 }
 
-- (id)BOOLForKey:(id)a3
+- (id)BOOLForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(IMURLBag *)self bag];
-  v6 = [v5 BOOLForKey:v4];
+  v6 = [v5 BOOLForKey:keyCopy];
 
   return v6;
 }
 
-- (id)integerForKey:(id)a3
+- (id)integerForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(IMURLBag *)self bag];
-  v6 = [v5 integerForKey:v4];
+  v6 = [v5 integerForKey:keyCopy];
 
   return v6;
 }
 
-- (id)URLForKey:(id)a3
+- (id)URLForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(IMURLBag *)self bag];
-  v6 = [v5 URLForKey:v4];
+  v6 = [v5 URLForKey:keyCopy];
 
   return v6;
 }
 
-- (id)dictionaryForKey:(id)a3
+- (id)dictionaryForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(IMURLBag *)self bag];
-  v6 = [v5 dictionaryForKey:v4];
+  v6 = [v5 dictionaryForKey:keyCopy];
 
   return v6;
 }
 
-- (id)arrayForKey:(id)a3
+- (id)arrayForKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [(IMURLBag *)self bag];
-  v6 = [v5 arrayForKey:v4];
+  v6 = [v5 arrayForKey:keyCopy];
 
   return v6;
 }
 
-- (id)syncValueForKey:(id)a3
+- (id)syncValueForKey:(id)key
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(IMMutableBagKeySet *)self->_keySet valueTypeMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  valueTypeMap = [(IMMutableBagKeySet *)self->_keySet valueTypeMap];
+  v6 = [valueTypeMap objectForKeyedSubscript:keyCopy];
 
   if (!v6)
   {
@@ -967,38 +967,38 @@ void __44__IMURLBag_reportAConcernURLWithCompletion___block_invoke_2(void *a1)
     goto LABEL_36;
   }
 
-  v7 = [v6 integerValue];
+  integerValue = [v6 integerValue];
   v8 = 0;
-  if (v7 <= 2)
+  if (integerValue <= 2)
   {
-    if (v7 == 1)
+    if (integerValue == 1)
     {
-      v9 = [(IMURLBag *)self BOOLForKey:v4];
+      v9 = [(IMURLBag *)self BOOLForKey:keyCopy];
     }
 
     else
     {
-      if (v7 != 2)
+      if (integerValue != 2)
       {
         goto LABEL_15;
       }
 
-      v9 = [(IMURLBag *)self doubleForKey:v4];
+      v9 = [(IMURLBag *)self doubleForKey:keyCopy];
     }
   }
 
   else
   {
-    switch(v7)
+    switch(integerValue)
     {
       case 3:
-        v9 = [(IMURLBag *)self integerForKey:v4];
+        v9 = [(IMURLBag *)self integerForKey:keyCopy];
         break;
       case 5:
-        v9 = [(IMURLBag *)self URLForKey:v4];
+        v9 = [(IMURLBag *)self URLForKey:keyCopy];
         break;
       case 4:
-        v9 = [(IMURLBag *)self stringForKey:v4];
+        v9 = [(IMURLBag *)self stringForKey:keyCopy];
         break;
       default:
         goto LABEL_15;
@@ -1016,39 +1016,39 @@ LABEL_15:
   if (v12 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v13))
   {
     *buf = 138412290;
-    v42 = v4;
+    v42 = keyCopy;
     _os_signpost_emit_with_name_impl(&dword_1D8CEC000, v14, OS_SIGNPOST_INTERVAL_BEGIN, v12, "IMURLBag.syncValue", "Key: %@", buf, 0xCu);
   }
 
   v16 = [(IMURLBag *)self bag];
-  v17 = [(IMURLBag *)self liveBag];
-  if (v16 == v17)
+  liveBag = [(IMURLBag *)self liveBag];
+  if (v16 == liveBag)
   {
-    v19 = [(IMURLBag *)self liveBag];
-    v18 = [v19 isExpired];
+    liveBag2 = [(IMURLBag *)self liveBag];
+    isExpired = [liveBag2 isExpired];
   }
 
   else
   {
-    v18 = 0;
+    isExpired = 0;
   }
 
   v20 = 0;
   v21 = 0;
-  if (![v8 isLoaded] || (v18 & 1) != 0 || (objc_msgSend(v8, "asyncValuePromise"), v22 = objc_claimAutoreleasedReturnValue(), v40 = 0, objc_msgSend(v22, "resultWithTimeout:error:", &v40, 0.15), v21 = objc_claimAutoreleasedReturnValue(), v20 = v40, v22, !v21) || v20)
+  if (![v8 isLoaded] || (isExpired & 1) != 0 || (objc_msgSend(v8, "asyncValuePromise"), v22 = objc_claimAutoreleasedReturnValue(), v40 = 0, objc_msgSend(v22, "resultWithTimeout:error:", &v40, 0.15), v21 = objc_claimAutoreleasedReturnValue(), v20 = v40, v22, !v21) || v20)
   {
-    v39 = v4;
+    v39 = keyCopy;
     v25 = _MTLogCategoryBag();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v8 isLoaded];
+      isLoaded = [v8 isLoaded];
       v27 = v12 - 1;
       v28 = v6;
       v29 = v8;
       v30 = v16;
       v31 = v12;
-      v32 = v26;
-      v33 = [(IMURLBag *)self isExpired];
+      v32 = isLoaded;
+      isExpired2 = [(IMURLBag *)self isExpired];
       *buf = 138413058;
       v42 = v39;
       v43 = 1024;
@@ -1059,7 +1059,7 @@ LABEL_15:
       v6 = v28;
       v15 = v27;
       v45 = 1024;
-      v46 = v33;
+      v46 = isExpired2;
       v47 = 2112;
       v48 = v20;
       _os_log_impl(&dword_1D8CEC000, v25, OS_LOG_TYPE_ERROR, "Failed synchronous bag key request: %@ isLoaded %d, isExpired %d. Error: %@", buf, 0x22u);
@@ -1074,9 +1074,9 @@ LABEL_15:
       _os_signpost_emit_with_name_impl(&dword_1D8CEC000, v35, OS_SIGNPOST_INTERVAL_END, v12, "IMURLBag.syncValue", "Error: %@", buf, 0xCu);
     }
 
-    v36 = [(IMMutableBagKeySet *)self->_keySet defaultValueMap];
-    v4 = v39;
-    v10 = [v36 objectForKeyedSubscript:v39];
+    defaultValueMap = [(IMMutableBagKeySet *)self->_keySet defaultValueMap];
+    keyCopy = v39;
+    v10 = [defaultValueMap objectForKeyedSubscript:v39];
   }
 
   else
@@ -1100,9 +1100,9 @@ LABEL_36:
   return v10;
 }
 
-- (id)syncStringForKey:(id)a3
+- (id)syncStringForKey:(id)key
 {
-  v3 = [(IMURLBag *)self syncValueForKey:a3];
+  v3 = [(IMURLBag *)self syncValueForKey:key];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -1119,17 +1119,17 @@ LABEL_36:
   return v5;
 }
 
-- (void)createSnapshotWithCompletion:(id)a3
+- (void)createSnapshotWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(IMURLBag *)self liveBag];
+  completionCopy = completion;
+  liveBag = [(IMURLBag *)self liveBag];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __41__IMURLBag_createSnapshotWithCompletion___block_invoke;
   v7[3] = &unk_1E856B008;
-  v8 = v4;
-  v6 = v4;
-  [v5 createSnapshotWithCompletion:v7];
+  v8 = completionCopy;
+  v6 = completionCopy;
+  [liveBag createSnapshotWithCompletion:v7];
 }
 
 @end

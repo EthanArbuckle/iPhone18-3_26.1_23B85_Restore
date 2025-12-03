@@ -1,9 +1,9 @@
 @interface WFGetExternalAddressOperation
 - (void)dealloc;
-- (void)handleStreamEvent:(unint64_t)a3;
-- (void)setError:(id)a3;
-- (void)setResult:(id)a3;
-- (void)setStream:(__CFReadStream *)a3;
+- (void)handleStreamEvent:(unint64_t)event;
+- (void)setError:(id)error;
+- (void)setResult:(id)result;
+- (void)setStream:(__CFReadStream *)stream;
 - (void)start;
 - (void)update;
 @end
@@ -19,31 +19,31 @@
   [(WFGetExternalAddressOperation *)self didChangeValueForKey:@"isFinished"];
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  objc_storeStrong(&self->_error, a3);
+  objc_storeStrong(&self->_error, error);
 
   [(WFGetExternalAddressOperation *)self update];
 }
 
-- (void)setResult:(id)a3
+- (void)setResult:(id)result
 {
-  objc_storeStrong(&self->_result, a3);
+  objc_storeStrong(&self->_result, result);
 
   [(WFGetExternalAddressOperation *)self update];
 }
 
-- (void)handleStreamEvent:(unint64_t)a3
+- (void)handleStreamEvent:(unint64_t)event
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  if (a3 == 16)
+  if (event == 16)
   {
     v6 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:self->_data encoding:4];
     [(WFGetExternalAddressOperation *)self setResult:v6];
 
-    v7 = [(WFGetExternalAddressOperation *)self result];
+    result = [(WFGetExternalAddressOperation *)self result];
 
-    if (!v7)
+    if (!result)
     {
       v8 = MEMORY[0x277CCA9B8];
       v9 = *MEMORY[0x277CCA5B8];
@@ -58,9 +58,9 @@
     goto LABEL_12;
   }
 
-  if (a3 != 8)
+  if (event != 8)
   {
-    if (a3 == 2)
+    if (event == 2)
     {
       v4 = CFReadStreamRead(self->_stream, v14, 1024);
       if (v4 >= 1)
@@ -92,15 +92,15 @@ LABEL_12:
   [(WFGetExternalAddressOperation *)&v4 dealloc];
 }
 
-- (void)setStream:(__CFReadStream *)a3
+- (void)setStream:(__CFReadStream *)stream
 {
   stream = self->_stream;
-  if (a3)
+  if (stream)
   {
-    CFRetain(a3);
+    CFRetain(stream);
   }
 
-  self->_stream = a3;
+  self->_stream = stream;
   if (stream)
   {
 
@@ -114,7 +114,7 @@ LABEL_12:
   v4 = [MEMORY[0x277CBEBC0] URLWithString:@"https://www.icloud.com/shortcuts/api/external_ip"];
   v5 = [v3 componentsWithURL:v4 resolvingAgainstBaseURL:0];
 
-  v6 = [v5 host];
+  host = [v5 host];
   v7 = +[WFNetworkInterface activeNetworkInterface];
   if (v7)
   {
@@ -123,8 +123,8 @@ LABEL_12:
     block[1] = 3221225472;
     block[2] = __38__WFGetExternalAddressOperation_start__block_invoke;
     block[3] = &unk_278C21F68;
-    v11 = v6;
-    v12 = self;
+    v11 = host;
+    selfCopy = self;
     v13 = v5;
     dispatch_async(v8, block);
   }

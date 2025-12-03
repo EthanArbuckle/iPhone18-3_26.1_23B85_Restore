@@ -8,390 +8,390 @@
 - (BOOL)_isSimultaneousSinglePollingAndGymKitSupported;
 - (BOOL)_isSubcredentialArchivingWithRenamedConfigurationSupported;
 - (BOOL)_isUnifiedAccessProvisioningSupported;
-- (BOOL)_supportsFeaturesForWebService:(id)a3;
+- (BOOL)_supportsFeaturesForWebService:(id)service;
 - (BOOL)areUnifiedAccessPassesSupported;
 - (BOOL)canAddToCompanionPrecheckForegroundConnectivity;
 - (BOOL)deviceSupportMultipleExpressPasses;
 - (BOOL)deviceSupportTransitReminderSetting;
 - (BOOL)felicaSecureElementIsAvailable;
 - (BOOL)isGymKitEnabled;
-- (BOOL)paymentWebService:(id)a3 canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)a4;
-- (BOOL)paymentWebService:(id)a3 hasPassWithUniqueID:(id)a4;
-- (BOOL)paymentWebService:(id)a3 hasPassesOfType:(unint64_t)a4;
-- (BOOL)paymentWebServiceSupportsAccounts:(id)a3;
-- (BOOL)paymentWebServiceSupportsPeerPaymentRegistration:(id)a3;
-- (BOOL)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)a3;
+- (BOOL)paymentWebService:(id)service canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)identifier;
+- (BOOL)paymentWebService:(id)service hasPassWithUniqueID:(id)d;
+- (BOOL)paymentWebService:(id)service hasPassesOfType:(unint64_t)type;
+- (BOOL)paymentWebServiceSupportsAccounts:(id)accounts;
+- (BOOL)paymentWebServiceSupportsPeerPaymentRegistration:(id)registration;
+- (BOOL)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)default;
 - (NPKCompanionAgentConnection)companionAgentConnection;
 - (NPKCompanionPasscodeChangeCoordinatorProtocol)passcodeChangeCoordinator;
-- (NPKPaymentWebServiceCompanionTargetDevice)initWithContext:(unint64_t)a3 responseQueue:(id)a4;
+- (NPKPaymentWebServiceCompanionTargetDevice)initWithContext:(unint64_t)context responseQueue:(id)queue;
 - (NPKPaymentWebServiceCompanionTargetDeviceDelegate)delegate;
 - (NPKSubcredentialInvitationCoordinator)subcredentialInvitationCoordinator;
 - (NPKTapToRadarManager)manager;
 - (PUConnection)passcodeConnection;
 - (id)_deviceSupportedFeatureIdentifiers;
-- (id)_dummyExpressPassInformationForPass:(id)a3 fromUpgradeRequest:(id)a4;
-- (id)_eligibleExpressUpgradeRequestsForPass:(id)a3;
-- (id)_expressModesFromExpressPassConfigurations:(id)a3;
-- (id)_expressPassConfigurationForPaymentPass:(id)a3;
-- (id)_expressPassesConfigurationFromDataArray:(id)a3;
-- (id)_expressPassesInformationFromDataArray:(id)a3;
+- (id)_dummyExpressPassInformationForPass:(id)pass fromUpgradeRequest:(id)request;
+- (id)_eligibleExpressUpgradeRequestsForPass:(id)pass;
+- (id)_expressModesFromExpressPassConfigurations:(id)configurations;
+- (id)_expressPassConfigurationForPaymentPass:(id)pass;
+- (id)_expressPassesConfigurationFromDataArray:(id)array;
+- (id)_expressPassesInformationFromDataArray:(id)array;
 - (id)_idsShortSendTimeoutProvisioningOptions;
-- (id)_secureArchiveSubcredential:(id)a3;
-- (id)_secureUnarchiveSubcredential:(id)a3;
-- (id)_sendProtobuf:(id)a3 responseIdentifier:(id)a4;
+- (id)_secureArchiveSubcredential:(id)subcredential;
+- (id)_secureUnarchiveSubcredential:(id)subcredential;
+- (id)_sendProtobuf:(id)protobuf responseIdentifier:(id)identifier;
 - (id)_serialNumbersOfAllPairedDevices;
-- (id)_supportedRegionsForWebService:(id)a3;
-- (id)_synthesizedExpressPassStateForExpressPassConfiguration:(id)a3 otherPaymentPasses:(id)a4;
+- (id)_supportedRegionsForWebService:(id)service;
+- (id)_synthesizedExpressPassStateForExpressPassConfiguration:(id)configuration otherPaymentPasses:(id)passes;
 - (id)appleAccountInformation;
 - (id)bridgedClientInfo;
 - (id)deviceClass;
-- (id)deviceDescriptionForPaymentWebService:(id)a3;
+- (id)deviceDescriptionForPaymentWebService:(id)service;
 - (id)deviceIDSIdentifier;
 - (id)deviceName;
 - (id)deviceSerialNumber;
 - (id)deviceVersion;
-- (id)identityPassesOfTypes:(id)a3;
+- (id)identityPassesOfTypes:(id)types;
 - (id)osVersion;
 - (id)passcodeUpgradeFlowController;
-- (id)passesOfCardType:(int64_t)a3;
-- (id)passesWithReaderIdentifier:(id)a3;
-- (id)paymentWebService:(id)a3 passWithUniqueID:(id)a4;
-- (id)paymentWebService:(id)a3 passesOfType:(unint64_t)a4;
-- (id)paymentWebService:(id)a3 supportedRegionFeatureOfType:(int64_t)a4;
-- (id)supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:(id)a3;
-- (id)supportedFeatureIdentifiersWithPaymentWebService:(id)a3;
-- (id)trustedDeviceEnrollmentInfoForWebService:(id)a3;
-- (id)upgradeRequestForPass:(id)a3;
+- (id)passesOfCardType:(int64_t)type;
+- (id)passesWithReaderIdentifier:(id)identifier;
+- (id)paymentWebService:(id)service passWithUniqueID:(id)d;
+- (id)paymentWebService:(id)service passesOfType:(unint64_t)type;
+- (id)paymentWebService:(id)service supportedRegionFeatureOfType:(int64_t)type;
+- (id)supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:(id)service;
+- (id)supportedFeatureIdentifiersWithPaymentWebService:(id)service;
+- (id)trustedDeviceEnrollmentInfoForWebService:(id)service;
+- (id)upgradeRequestForPass:(id)pass;
 - (unint64_t)currentPassbookState;
-- (unint64_t)paymentSupportedInCurrentRegionForWebService:(id)a3;
-- (unint64_t)registrationSupportedInCurrentRegionForWebService:(id)a3;
-- (void)_acquireAssertionOfType:(unint64_t)a3;
-- (void)_addCompanionDevicePhoneNumberDataIfNeededWithFields:(unint64_t)a3 toDeviceMetadata:(id)a4;
-- (void)_canAddSecureElementPassWithConfiguration:(id)a3 completion:(id)a4;
-- (void)_checkConflictsForPass:(id)a3 withConfiguration:(id)a4 webService:(id)a5 hasDisqualifyingConflicts:(id)a6;
-- (void)_checkUpgradedPasscodePolicyByApplyingRestrictions:(BOOL)a3 applyBackgroundEnforcementIfNecessary:(BOOL)a4 completion:(id)a5;
-- (void)_displayableEntitlementsForPassIdentifier:(id)a3 completion:(id)a4;
-- (void)_displayableSharesForPassIdentifier:(id)a3 completion:(id)a4;
-- (void)_getPairingInfoAndSetAuthRandomIfNotPaired:(BOOL)a3 completion:(id)a4;
-- (void)_handleOpenLoopPassUpgradeWithPass:(id)a3 webService:(id)a4 completion:(id)a5;
-- (void)_invalidateAssertionOfType:(unint64_t)a3;
-- (void)_multipleExpressTransitPassPaymentWebService:(id)a3 handlePotentialExpressPassConfiguration:(id)a4 pass:(id)a5 withCompletionHandler:(id)a6;
-- (void)_paymentWebService:(id)a3 presentStandaloneTransaction:(int64_t)a4 forPassUniqueIdentifier:(id)a5 terminalReaderIdentifier:(id)a6 validUntilDate:(id)a7 completion:(id)a8;
-- (void)_paymentWebService:(id)a3 registrationDataWithAuthToken:(id)a4 completionHandler:(id)a5;
-- (void)_setNewAuthRandomReturningPairingState:(id)a3;
-- (void)_singleExpressTransitPassPaymentWebService:(id)a3 handlePotentialExpressPassConfiguration:(id)a4 withCompletionHandler:(id)a5;
-- (void)_trackOutstandingRequestWithMessageIdentifier:(id)a3 completionHandler:(id)a4 errorHandler:(id)a5;
-- (void)_updateDataAccessorForPass:(id)a3;
-- (void)acceptCarKeyShareForMessage:(id)a3 activationCode:(id)a4 completion:(id)a5;
-- (void)acceptCarKeyShareForMessageResponse:(id)a3;
-- (void)acceptSubcredentialInvitationResponse:(id)a3;
-- (void)accountAttestationAnonymizationSaltResponse:(id)a3;
-- (void)accountWithIdentifier:(id)a3 completion:(id)a4;
-- (void)accountWithIdentifierResponse:(id)a3;
-- (void)addISO18013Blobs:(id)a3 cardType:(int64_t)a4 completion:(id)a5;
-- (void)addISO18013BlobsResponse:(id)a3;
-- (void)addPendingProvisionings:(id)a3 completion:(id)a4;
-- (void)addPendingProvisioningsRequest:(id)a3;
-- (void)addPendingProvisioningsResponse:(id)a3;
-- (void)addSecureElementPassWithPropertiesResponse:(id)a3;
-- (void)allPaymentApplicationUsageSummariesWithCompletion:(id)a3;
-- (void)archiveBackgroundContext:(id)a3;
-- (void)archiveContext:(id)a3;
-- (void)availableHomeKeyPassesResponse:(id)a3;
-- (void)availableHomeKeyPassesWithCompletionHandler:(id)a3;
-- (void)availableProductsResponse:(id)a3;
-- (void)balanceReminderForBalance:(id)a3 pass:(id)a4 completion:(id)a5;
-- (void)balanceReminderWithBalanceAndPassResponse:(id)a3;
-- (void)cacheSharingMessageFromMailboxAddress:(id)a3 message:(id)a4;
-- (void)canAcceptInvitationRequest:(id)a3;
-- (void)canAcceptInvitationResponse:(id)a3;
-- (void)canAddSecureElementPassWithConfigurationResponse:(id)a3;
-- (void)cancelAutoTopUpForPassWithUniqueIdentifier:(id)a3 balanceIdentifiers:(id)a4 completion:(id)a5;
-- (void)cancelAutoTopUpResponse:(id)a3;
+- (unint64_t)paymentSupportedInCurrentRegionForWebService:(id)service;
+- (unint64_t)registrationSupportedInCurrentRegionForWebService:(id)service;
+- (void)_acquireAssertionOfType:(unint64_t)type;
+- (void)_addCompanionDevicePhoneNumberDataIfNeededWithFields:(unint64_t)fields toDeviceMetadata:(id)metadata;
+- (void)_canAddSecureElementPassWithConfiguration:(id)configuration completion:(id)completion;
+- (void)_checkConflictsForPass:(id)pass withConfiguration:(id)configuration webService:(id)service hasDisqualifyingConflicts:(id)conflicts;
+- (void)_checkUpgradedPasscodePolicyByApplyingRestrictions:(BOOL)restrictions applyBackgroundEnforcementIfNecessary:(BOOL)necessary completion:(id)completion;
+- (void)_displayableEntitlementsForPassIdentifier:(id)identifier completion:(id)completion;
+- (void)_displayableSharesForPassIdentifier:(id)identifier completion:(id)completion;
+- (void)_getPairingInfoAndSetAuthRandomIfNotPaired:(BOOL)paired completion:(id)completion;
+- (void)_handleOpenLoopPassUpgradeWithPass:(id)pass webService:(id)service completion:(id)completion;
+- (void)_invalidateAssertionOfType:(unint64_t)type;
+- (void)_multipleExpressTransitPassPaymentWebService:(id)service handlePotentialExpressPassConfiguration:(id)configuration pass:(id)pass withCompletionHandler:(id)handler;
+- (void)_paymentWebService:(id)service presentStandaloneTransaction:(int64_t)transaction forPassUniqueIdentifier:(id)identifier terminalReaderIdentifier:(id)readerIdentifier validUntilDate:(id)date completion:(id)completion;
+- (void)_paymentWebService:(id)service registrationDataWithAuthToken:(id)token completionHandler:(id)handler;
+- (void)_setNewAuthRandomReturningPairingState:(id)state;
+- (void)_singleExpressTransitPassPaymentWebService:(id)service handlePotentialExpressPassConfiguration:(id)configuration withCompletionHandler:(id)handler;
+- (void)_trackOutstandingRequestWithMessageIdentifier:(id)identifier completionHandler:(id)handler errorHandler:(id)errorHandler;
+- (void)_updateDataAccessorForPass:(id)pass;
+- (void)acceptCarKeyShareForMessage:(id)message activationCode:(id)code completion:(id)completion;
+- (void)acceptCarKeyShareForMessageResponse:(id)response;
+- (void)acceptSubcredentialInvitationResponse:(id)response;
+- (void)accountAttestationAnonymizationSaltResponse:(id)response;
+- (void)accountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)accountWithIdentifierResponse:(id)response;
+- (void)addISO18013Blobs:(id)blobs cardType:(int64_t)type completion:(id)completion;
+- (void)addISO18013BlobsResponse:(id)response;
+- (void)addPendingProvisionings:(id)provisionings completion:(id)completion;
+- (void)addPendingProvisioningsRequest:(id)request;
+- (void)addPendingProvisioningsResponse:(id)response;
+- (void)addSecureElementPassWithPropertiesResponse:(id)response;
+- (void)allPaymentApplicationUsageSummariesWithCompletion:(id)completion;
+- (void)archiveBackgroundContext:(id)context;
+- (void)archiveContext:(id)context;
+- (void)availableHomeKeyPassesResponse:(id)response;
+- (void)availableHomeKeyPassesWithCompletionHandler:(id)handler;
+- (void)availableProductsResponse:(id)response;
+- (void)balanceReminderForBalance:(id)balance pass:(id)pass completion:(id)completion;
+- (void)balanceReminderWithBalanceAndPassResponse:(id)response;
+- (void)cacheSharingMessageFromMailboxAddress:(id)address message:(id)message;
+- (void)canAcceptInvitationRequest:(id)request;
+- (void)canAcceptInvitationResponse:(id)response;
+- (void)canAddSecureElementPassWithConfigurationResponse:(id)response;
+- (void)cancelAutoTopUpForPassWithUniqueIdentifier:(id)identifier balanceIdentifiers:(id)identifiers completion:(id)completion;
+- (void)cancelAutoTopUpResponse:(id)response;
 - (void)cancelOutstandingEnableServiceModeRequests;
-- (void)cancelOutstandingRemotePassUpdateRequest:(id)a3 pass:(id)a4;
-- (void)cancelOutstandingSetDefaultExpressPassRequestsWithExpressMode:(id)a3;
-- (void)carKeyAcceptInvitationResponse:(id)a3;
-- (void)carKeyAcceptInvitationWithInvitationIdentifier:(id)a3 activationCode:(id)a4 analyticsUpdateConfig:(id)a5 completion:(id)a6;
-- (void)carKeyAccountAttestationRequestForCredential:(id)a3 completion:(id)a4;
-- (void)carKeyAccountAttestationResponse:(id)a3;
-- (void)carKeyDecryptData:(id)a3 credential:(id)a4 ephemeralPublicKey:(id)a5 completion:(id)a6;
-- (void)carKeyDecryptDataResponse:(id)a3;
-- (void)carKeyGetPretrackRequestForKeyWithInvitationIdentifier:(id)a3 completion:(id)a4;
-- (void)carKeyGetPretrackResponse:(id)a3;
-- (void)carKeyGetProductPlanIdentifierRequestForInvitationWithIdentifier:(id)a3 transportIdentifier:(id)a4 completion:(id)a5;
-- (void)carKeyGetProductPlanIdentifierResponse:(id)a3;
-- (void)carKeyHandleRecipientMessage:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5;
-- (void)carKeyHandleRecipientMessageResponse:(id)a3;
-- (void)carKeyRejectInvitation:(id)a3 completion:(id)a4;
-- (void)carKeyRejectInvitationResponse:(id)a3;
-- (void)carKeyRetryActivationCodeResponse:(id)a3;
-- (void)carKeyRetryActivationCodeWithInvitationIdentifier:(id)a3 activationCode:(id)a4 completion:(id)a5;
-- (void)carKeyRoutingInformationForInvitationWithIdentifier:(id)a3 transportIdentifier:(id)a4 completion:(id)a5;
-- (void)carKeyRoutingInformationResponse:(id)a3;
-- (void)carKeySetAccountAttestation:(id)a3 forCredential:(id)a4 completion:(id)a5;
-- (void)carKeySetAccountAttestationResponse:(id)a3;
-- (void)carKeySetEncryptedProductPlanIdentifierContainer:(id)a3 invitationIdentifier:(id)a4 completion:(id)a5;
-- (void)carKeySetEncryptedProductPlanIdentifierContainerResponse:(id)a3;
-- (void)carKeyStartShareAcceptanceFlow:(id)a3 transportIdentifier:(id)a4 completion:(id)a5;
-- (void)carKeyStartShareAcceptanceFlowResponse:(id)a3;
-- (void)carKeyUpdateTrackingAttestation:(id)a3 forCredential:(id)a4 encryptedContainer:(id)a5 completion:(id)a6;
-- (void)carKeyUpdateTrackingAttestationResponse:(id)a3;
-- (void)checkCompanionPeerPaymentRegistrationState:(id)a3;
-- (void)checkFidoKeyPresenceForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 completion:(id)a6;
-- (void)checkFidoKeyResponse:(id)a3;
-- (void)checkInvitationStatusForMailboxAddress:(id)a3 completion:(id)a4;
-- (void)checkInvitationStatusForMailboxAddressResponse:(id)a3;
-- (void)checkTLKsMissingResponse:(id)a3;
-- (void)checkTLKsMissingWithCompletion:(id)a3;
-- (void)claimSecureElementForCurrentUserWithCompletion:(id)a3;
-- (void)cloudStoreStatusResponse:(id)a3;
-- (void)cloudStoreStatusWithCompletion:(id)a3;
-- (void)commutePlanReminderForCommutePlan:(id)a3 pass:(id)a4 withCompletion:(id)a5;
-- (void)commutePlanReminderWithCommutePlanAndPassResponse:(id)a3;
-- (void)configurationDataResponse:(id)a3;
-- (void)conflictingExpressPassIdentifiersForPassConfiguration:(id)a3 completion:(id)a4;
-- (void)conflictingExpressPassIdentifiersForPassConfiguration:(id)a3 withReferenceExpressState:(id)a4 completion:(id)a5;
-- (void)conflictingExpressPassIdentifiersForPassInformationResponse:(id)a3;
+- (void)cancelOutstandingRemotePassUpdateRequest:(id)request pass:(id)pass;
+- (void)cancelOutstandingSetDefaultExpressPassRequestsWithExpressMode:(id)mode;
+- (void)carKeyAcceptInvitationResponse:(id)response;
+- (void)carKeyAcceptInvitationWithInvitationIdentifier:(id)identifier activationCode:(id)code analyticsUpdateConfig:(id)config completion:(id)completion;
+- (void)carKeyAccountAttestationRequestForCredential:(id)credential completion:(id)completion;
+- (void)carKeyAccountAttestationResponse:(id)response;
+- (void)carKeyDecryptData:(id)data credential:(id)credential ephemeralPublicKey:(id)key completion:(id)completion;
+- (void)carKeyDecryptDataResponse:(id)response;
+- (void)carKeyGetPretrackRequestForKeyWithInvitationIdentifier:(id)identifier completion:(id)completion;
+- (void)carKeyGetPretrackResponse:(id)response;
+- (void)carKeyGetProductPlanIdentifierRequestForInvitationWithIdentifier:(id)identifier transportIdentifier:(id)transportIdentifier completion:(id)completion;
+- (void)carKeyGetProductPlanIdentifierResponse:(id)response;
+- (void)carKeyHandleRecipientMessage:(id)message forInvitationIdentifier:(id)identifier completion:(id)completion;
+- (void)carKeyHandleRecipientMessageResponse:(id)response;
+- (void)carKeyRejectInvitation:(id)invitation completion:(id)completion;
+- (void)carKeyRejectInvitationResponse:(id)response;
+- (void)carKeyRetryActivationCodeResponse:(id)response;
+- (void)carKeyRetryActivationCodeWithInvitationIdentifier:(id)identifier activationCode:(id)code completion:(id)completion;
+- (void)carKeyRoutingInformationForInvitationWithIdentifier:(id)identifier transportIdentifier:(id)transportIdentifier completion:(id)completion;
+- (void)carKeyRoutingInformationResponse:(id)response;
+- (void)carKeySetAccountAttestation:(id)attestation forCredential:(id)credential completion:(id)completion;
+- (void)carKeySetAccountAttestationResponse:(id)response;
+- (void)carKeySetEncryptedProductPlanIdentifierContainer:(id)container invitationIdentifier:(id)identifier completion:(id)completion;
+- (void)carKeySetEncryptedProductPlanIdentifierContainerResponse:(id)response;
+- (void)carKeyStartShareAcceptanceFlow:(id)flow transportIdentifier:(id)identifier completion:(id)completion;
+- (void)carKeyStartShareAcceptanceFlowResponse:(id)response;
+- (void)carKeyUpdateTrackingAttestation:(id)attestation forCredential:(id)credential encryptedContainer:(id)container completion:(id)completion;
+- (void)carKeyUpdateTrackingAttestationResponse:(id)response;
+- (void)checkCompanionPeerPaymentRegistrationState:(id)state;
+- (void)checkFidoKeyPresenceForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash completion:(id)completion;
+- (void)checkFidoKeyResponse:(id)response;
+- (void)checkInvitationStatusForMailboxAddress:(id)address completion:(id)completion;
+- (void)checkInvitationStatusForMailboxAddressResponse:(id)response;
+- (void)checkTLKsMissingResponse:(id)response;
+- (void)checkTLKsMissingWithCompletion:(id)completion;
+- (void)claimSecureElementForCurrentUserWithCompletion:(id)completion;
+- (void)cloudStoreStatusResponse:(id)response;
+- (void)cloudStoreStatusWithCompletion:(id)completion;
+- (void)commutePlanReminderForCommutePlan:(id)plan pass:(id)pass withCompletion:(id)completion;
+- (void)commutePlanReminderWithCommutePlanAndPassResponse:(id)response;
+- (void)configurationDataResponse:(id)response;
+- (void)conflictingExpressPassIdentifiersForPassConfiguration:(id)configuration completion:(id)completion;
+- (void)conflictingExpressPassIdentifiersForPassConfiguration:(id)configuration withReferenceExpressState:(id)state completion:(id)completion;
+- (void)conflictingExpressPassIdentifiersForPassInformationResponse:(id)response;
 - (void)consistencyCheck;
-- (void)createFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 externalizedAuth:(id)a6 completion:(id)a7;
-- (void)createFidoKeyResponse:(id)a3;
-- (void)createShareForPartialShareInvitation:(id)a3 authorization:(id)a4 completion:(id)a5;
-- (void)createShareForPartialShareInvitationResponse:(id)a3;
-- (void)currentPasscodeMeetsUpgradedPasscodePolicy:(id)a3;
-- (void)currentSecureElementSnapshot:(id)a3;
-- (void)currentSecureElementSnapshotResponse:(id)a3;
-- (void)declineRelatedSharingInvitationsIfNecessaryRequest:(id)a3;
-- (void)declineRelatedSharingInvitationsIfNecessaryResponse:(id)a3;
-- (void)deleteKeyMaterialForSubCredentialId:(id)a3;
-- (void)deleteReservation:(id)a3 completion:(id)a4;
-- (void)deleteReservationResponse:(id)a3;
-- (void)deviceMetadataResponse:(id)a3;
-- (void)deviceSupportedRadioTechnologiesWithCompletion:(id)a3;
-- (void)didRegisterResponse:(id)a3;
-- (void)dismissRemoteDevicePasscodeUpgradePromptWithCompletion:(id)a3;
-- (void)displayableEntitlementsForPassIdentifier:(id)a3 completion:(id)a4;
-- (void)displayableEntitlementsForPassIdentifierResponse:(id)a3;
-- (void)displayableSharesForPassIdentifier:(id)a3 completion:(id)a4;
-- (void)displayableSharesForPassIdentifierResponse:(id)a3;
-- (void)downloadAllPaymentPasses:(id)a3;
-- (void)downloadAllPaymentPassesForPaymentWebService:(id)a3;
-- (void)dumpLogsResponse:(id)a3;
-- (void)dumpLogsWithCompletion:(id)a3;
-- (void)enableServiceModeForPassWithUniqueIdentifier:(id)a3 completion:(id)a4;
-- (void)enableServiceModeResponse:(id)a3;
+- (void)createFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge externalizedAuth:(id)auth completion:(id)completion;
+- (void)createFidoKeyResponse:(id)response;
+- (void)createShareForPartialShareInvitation:(id)invitation authorization:(id)authorization completion:(id)completion;
+- (void)createShareForPartialShareInvitationResponse:(id)response;
+- (void)currentPasscodeMeetsUpgradedPasscodePolicy:(id)policy;
+- (void)currentSecureElementSnapshot:(id)snapshot;
+- (void)currentSecureElementSnapshotResponse:(id)response;
+- (void)declineRelatedSharingInvitationsIfNecessaryRequest:(id)request;
+- (void)declineRelatedSharingInvitationsIfNecessaryResponse:(id)response;
+- (void)deleteKeyMaterialForSubCredentialId:(id)id;
+- (void)deleteReservation:(id)reservation completion:(id)completion;
+- (void)deleteReservationResponse:(id)response;
+- (void)deviceMetadataResponse:(id)response;
+- (void)deviceSupportedRadioTechnologiesWithCompletion:(id)completion;
+- (void)didRegisterResponse:(id)response;
+- (void)dismissRemoteDevicePasscodeUpgradePromptWithCompletion:(id)completion;
+- (void)displayableEntitlementsForPassIdentifier:(id)identifier completion:(id)completion;
+- (void)displayableEntitlementsForPassIdentifierResponse:(id)response;
+- (void)displayableSharesForPassIdentifier:(id)identifier completion:(id)completion;
+- (void)displayableSharesForPassIdentifierResponse:(id)response;
+- (void)downloadAllPaymentPasses:(id)passes;
+- (void)downloadAllPaymentPassesForPaymentWebService:(id)service;
+- (void)dumpLogsResponse:(id)response;
+- (void)dumpLogsWithCompletion:(id)completion;
+- (void)enableServiceModeForPassWithUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)enableServiceModeResponse:(id)response;
 - (void)endRequiringUpgradedPasscodeIfNecessary;
-- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)a3;
-- (void)expressModeEnabledForPassIdentifier:(id)a3 completion:(id)a4;
-- (void)familyMembersWithCompletion:(id)a3;
-- (void)featureApplicationsForAccountIdentifier:(id)a3 completion:(id)a4;
-- (void)featureApplicationsForAccountIdentifierResponse:(id)a3;
-- (void)fetchOrInitializeAccountAttestationAnonymizationSaltRequest:(id)a3;
-- (void)fetchRemoteDevicePasscodeStateWithCompletion:(id)a3;
-- (void)generateAuxiliaryCapabilitiesForRequirements:(id)a3 completion:(id)a4;
-- (void)generateAuxiliaryCapabilitiesResponse:(id)a3;
-- (void)generateISOEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4;
-- (void)generateISOEncryptionCertificateForSubCredentialIdResponse:(id)a3;
-- (void)generateSEEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4;
-- (void)generateSEEncryptionCertificateForSubCredentialIdResponse:(id)a3;
-- (void)generateTransactionKeyWithParametersResponse:(id)a3;
-- (void)getPairingInfoResponse:(id)a3;
-- (void)handleAcceptSubcredentialProvisioningForMailboxAddressRequest:(id)a3;
-- (void)handleAcceptSubcredentialProvisioningRequest:(id)a3;
-- (void)handleApplyRestrictionsForPasscodeUpgradeFlowControllerResponse:(id)a3;
-- (void)handleBalanceChange:(id)a3;
-- (void)handleBalanceReminderWithBalanceAndPassRequest:(id)a3;
-- (void)handleCheckUpgradedPasscodePolicyResponse:(id)a3;
-- (void)handleCompanionMigrationResponse:(id)a3;
-- (void)handleCompanionMigrationWithCompletion:(id)a3;
+- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)completion;
+- (void)expressModeEnabledForPassIdentifier:(id)identifier completion:(id)completion;
+- (void)familyMembersWithCompletion:(id)completion;
+- (void)featureApplicationsForAccountIdentifier:(id)identifier completion:(id)completion;
+- (void)featureApplicationsForAccountIdentifierResponse:(id)response;
+- (void)fetchOrInitializeAccountAttestationAnonymizationSaltRequest:(id)request;
+- (void)fetchRemoteDevicePasscodeStateWithCompletion:(id)completion;
+- (void)generateAuxiliaryCapabilitiesForRequirements:(id)requirements completion:(id)completion;
+- (void)generateAuxiliaryCapabilitiesResponse:(id)response;
+- (void)generateISOEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion;
+- (void)generateISOEncryptionCertificateForSubCredentialIdResponse:(id)response;
+- (void)generateSEEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion;
+- (void)generateSEEncryptionCertificateForSubCredentialIdResponse:(id)response;
+- (void)generateTransactionKeyWithParametersResponse:(id)response;
+- (void)getPairingInfoResponse:(id)response;
+- (void)handleAcceptSubcredentialProvisioningForMailboxAddressRequest:(id)request;
+- (void)handleAcceptSubcredentialProvisioningRequest:(id)request;
+- (void)handleApplyRestrictionsForPasscodeUpgradeFlowControllerResponse:(id)response;
+- (void)handleBalanceChange:(id)change;
+- (void)handleBalanceReminderWithBalanceAndPassRequest:(id)request;
+- (void)handleCheckUpgradedPasscodePolicyResponse:(id)response;
+- (void)handleCompanionMigrationResponse:(id)response;
+- (void)handleCompanionMigrationWithCompletion:(id)completion;
 - (void)handleCompanionPeerPaymentRegistration;
 - (void)handleCompanioniCloudSignout;
-- (void)handleCredentialsChange:(id)a3;
-- (void)handleDeletePaymentTransactionWithIdentifier:(id)a3 passUniqueIdentifier:(id)a4;
-- (void)handleDeviceUnlockedForPendingProvisioningRequest:(id)a3;
-- (void)handlePasscodeUpgradeFlowShouldExitRequest:(id)a3;
-- (void)handlePaymentTransactions:(id)a3;
-- (void)handlePeerPaymentTermsAndConditionsAcceptanceRequest:(id)a3;
-- (void)handlePendingRemovalOfPaymentPass:(id)a3 uniqueID:(id)a4 completion:(id)a5;
-- (void)handlePreferredAID:(id)a3 forPassWithUniqueID:(id)a4 completion:(id)a5;
-- (void)handleRemoteDevicePasscodeStateResponse:(id)a3;
-- (void)handleRemoteDevicePasscodeUpgradePresentationPromptResponse:(id)a3;
-- (void)handleRemovedTransaction:(id)a3;
-- (void)handleShowPaymentSetupRequest:(id)a3;
-- (void)handleTransactionDefaultsNeededRequest:(id)a3;
-- (void)handleUpdatedAppletState:(id)a3;
-- (void)handleUpdatedPeerPaymentWebServiceContext:(id)a3;
-- (void)handleValueAddedServiceTransactions:(id)a3;
-- (void)handleWebServiceContextDidChangeRequest:(id)a3;
-- (void)handleWebServiceContextNeededRequest:(id)a3;
-- (void)hasActiveExternallySharedPasses:(id)a3;
-- (void)hasActiveExternallySharedPassesResponse:(id)a3;
-- (void)hasActiveExternallySharedPassesWithCompletion:(id)a3;
-- (void)initializeCloudStoreIfNecessaryResponse:(id)a3;
-- (void)initializeCloudStoreIfNecessaryWithCompletion:(id)a3;
-- (void)initializeCloudStoreIfNecessaryWithHandler:(id)a3;
-- (void)initializeCloudStoreIfNecessaryWithHandlerResponse:(id)a3;
-- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)a3 reuseExisting:(BOOL)a4 completion:(id)a5;
-- (void)longTermPrivacyKeyForCredentialGroupIdentifierResponse:(id)a3;
-- (void)markAllAppletsForDeletionResponse:(id)a3;
-- (void)markAllAppletsForDeletionWithCompletion:(id)a3;
-- (void)matchingCredentialOnDeviceResponse:(id)a3;
+- (void)handleCredentialsChange:(id)change;
+- (void)handleDeletePaymentTransactionWithIdentifier:(id)identifier passUniqueIdentifier:(id)uniqueIdentifier;
+- (void)handleDeviceUnlockedForPendingProvisioningRequest:(id)request;
+- (void)handlePasscodeUpgradeFlowShouldExitRequest:(id)request;
+- (void)handlePaymentTransactions:(id)transactions;
+- (void)handlePeerPaymentTermsAndConditionsAcceptanceRequest:(id)request;
+- (void)handlePendingRemovalOfPaymentPass:(id)pass uniqueID:(id)d completion:(id)completion;
+- (void)handlePreferredAID:(id)d forPassWithUniqueID:(id)iD completion:(id)completion;
+- (void)handleRemoteDevicePasscodeStateResponse:(id)response;
+- (void)handleRemoteDevicePasscodeUpgradePresentationPromptResponse:(id)response;
+- (void)handleRemovedTransaction:(id)transaction;
+- (void)handleShowPaymentSetupRequest:(id)request;
+- (void)handleTransactionDefaultsNeededRequest:(id)request;
+- (void)handleUpdatedAppletState:(id)state;
+- (void)handleUpdatedPeerPaymentWebServiceContext:(id)context;
+- (void)handleValueAddedServiceTransactions:(id)transactions;
+- (void)handleWebServiceContextDidChangeRequest:(id)request;
+- (void)handleWebServiceContextNeededRequest:(id)request;
+- (void)hasActiveExternallySharedPasses:(id)passes;
+- (void)hasActiveExternallySharedPassesResponse:(id)response;
+- (void)hasActiveExternallySharedPassesWithCompletion:(id)completion;
+- (void)initializeCloudStoreIfNecessaryResponse:(id)response;
+- (void)initializeCloudStoreIfNecessaryWithCompletion:(id)completion;
+- (void)initializeCloudStoreIfNecessaryWithHandler:(id)handler;
+- (void)initializeCloudStoreIfNecessaryWithHandlerResponse:(id)response;
+- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)identifier reuseExisting:(BOOL)existing completion:(id)completion;
+- (void)longTermPrivacyKeyForCredentialGroupIdentifierResponse:(id)response;
+- (void)markAllAppletsForDeletionResponse:(id)response;
+- (void)markAllAppletsForDeletionWithCompletion:(id)completion;
+- (void)matchingCredentialOnDeviceResponse:(id)response;
 - (void)noteProvisioningDidBegin;
 - (void)noteProvisioningDidEnd;
 - (void)noteProvisioningUserInterfaceDidAppear;
 - (void)noteProvisioningUserInterfaceDidDisappear;
-- (void)openURLWithRequest:(id)a3;
-- (void)passSharesForCredentialIdentifierResponse:(id)a3;
-- (void)passcodeChangeCoordinator:(id)a3 checkRemoteDeviceLockStateWithCompletion:(id)a4;
-- (void)passcodeChangeCoordinator:(id)a3 remoteDeviceShouldCancelPasscodeChangeWithCompletion:(id)a4;
-- (void)passcodeChangeCoordinator:(id)a3 remoteDeviceShouldInitiatePasscodeChangeForType:(unint64_t)a4 completion:(id)a5;
-- (void)paymentApplicationUsageSummariesResponse:(id)a3;
-- (void)paymentSetupFeaturesForConfiguration:(id)a3 completion:(id)a4;
-- (void)paymentSetupFeaturesForConfigurationResponse:(id)a3;
-- (void)paymentWebService:(id)a3 acceptSubcredentialInvitation:(id)a4 completion:(id)a5;
-- (void)paymentWebService:(id)a3 acceptSubcredentialInvitationWithIdentifier:(id)a4 metadata:(id)a5 completion:(id)a6;
-- (void)paymentWebService:(id)a3 accountAttestationAnonymizationSaltWithCompletion:(id)a4;
-- (void)paymentWebService:(id)a3 addPaymentPass:(id)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 addSecureElementPass:(id)a4 properties:(id)a5 completion:(id)a6;
-- (void)paymentWebService:(id)a3 canAcceptInvitation:(id)a4 withCompletionV2:(id)a5;
-- (void)paymentWebService:(id)a3 canAddSecureElementPassWithConfiguration:(id)a4 completion:(id)a5;
-- (void)paymentWebService:(id)a3 canHandlePotentialExpressPass:(id)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 configurationDataWithCompletionHandler:(id)a4;
-- (void)paymentWebService:(id)a3 declineRelatedSharingInvitationsIfNecessary:(id)a4 withCompletion:(id)a5;
-- (void)paymentWebService:(id)a3 deleteApplicationWithAID:(id)a4;
-- (void)paymentWebService:(id)a3 deviceMetadataWithFields:(unint64_t)a4 completion:(id)a5;
-- (void)paymentWebService:(id)a3 didRegisterWithRegionMap:(id)a4 primaryRegionTopic:(id)a5;
-- (void)paymentWebService:(id)a3 generateTransactionKeyWithParameters:(id)a4 withCompletion:(id)a5;
-- (void)paymentWebService:(id)a3 handlePotentialExpressPass:(id)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 matchingInvitationOnDevice:(id)a4 withTimeout:(unint64_t)a5 completion:(id)a6;
-- (void)paymentWebService:(id)a3 passOwnershipTokenWithIdentifier:(id)a4 completion:(id)a5;
-- (void)paymentWebService:(id)a3 passSharesForCredentialIdentifier:(id)a4 completion:(id)a5;
-- (void)paymentWebService:(id)a3 presentStandaloneTransaction:(int64_t)a4 forPassUniqueIdentifier:(id)a5 terminalReaderIdentifier:(id)a6 completion:(id)a7;
-- (void)paymentWebService:(id)a3 provisioningDataIncludingDeviceMetadata:(BOOL)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 queueConnectionToTrustedServiceManagerForPushTopic:(id)a4 withCompletion:(id)a5;
-- (void)paymentWebService:(id)a3 registrationDataWithCompletionHandler:(id)a4;
-- (void)paymentWebService:(id)a3 removePass:(id)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 removeSharingInvitation:(id)a4 withCompletion:(id)a5;
-- (void)paymentWebService:(id)a3 requestPassUpgrade:(id)a4 pass:(id)a5 completion:(id)a6;
-- (void)paymentWebService:(id)a3 requestSubcredentialInvitation:(id)a4 completion:(id)a5;
-- (void)paymentWebService:(id)a3 setAccountAttestationAnonymizationSalt:(id)a4 withCompletion:(id)a5;
-- (void)paymentWebService:(id)a3 setDefaultPaymentPassUniqueIdentifier:(id)a4;
-- (void)paymentWebService:(id)a3 setNewAuthRandom:(id)a4;
-- (void)paymentWebService:(id)a3 setNewAuthRandomIfNecessaryReturningPairingState:(id)a4;
-- (void)paymentWebService:(id)a3 signData:(id)a4 signatureEntanglementMode:(unint64_t)a5 withCompletionHandler:(id)a6;
-- (void)paymentWebService:(id)a3 signData:(id)a4 withCompletionHandler:(id)a5;
-- (void)paymentWebService:(id)a3 subcredentialInvitationsWithCompletion:(id)a4;
-- (void)paymentWebService:(id)a3 updateAccountWithIdentifier:(id)a4 completion:(id)a5;
-- (void)paymentWebService:(id)a3 updateMetadataOnPass:(id)a4 withCredential:(id)a5 completion:(id)a6;
-- (void)paymentWebService:(id)a3 validateAddBiometricPassPreconditionsWithCompletion:(id)a4;
-- (void)paymentWebService:(id)a3 validateAddPreconditionsWithCompletion:(id)a4;
-- (void)paymentWebService:(id)a3 validateTransferPreconditionsWithCompletion:(id)a4;
-- (void)paymentWebServiceDidUpdateConfiguration:(id)a3;
-- (void)paymentWebServiceOwnershipTokenResponse:(id)a3;
-- (void)paymentWebServiceRegisterResponse:(id)a3;
-- (void)peerPaymentRegisterResponse:(id)a3;
-- (void)peerPaymentRegisterWithURL:(id)a3 forceReRegistration:(BOOL)a4 completion:(id)a5;
-- (void)peerPaymentUnregisterResponse:(id)a3;
-- (void)peerPaymentUnregisterWithCompletion:(id)a3;
-- (void)pendingProvisioningReceiptRequest:(id)a3;
-- (void)pendingRemovalResponse:(id)a3;
-- (void)performDeviceCheckInResponse:(id)a3;
-- (void)performDeviceCheckInWithCompletion:(id)a3;
-- (void)performDeviceRegistrationForReason:(id)a3 brokerURL:(id)a4 completion:(id)a5;
-- (void)performProductActionRequest:(id)a3 completion:(id)a4;
-- (void)performProductActionResponse:(id)a3;
-- (void)photosForFamilyMembersWithDSIDs:(id)a3 completion:(id)a4;
-- (void)photosForFamilyMembersWithDSIDsResponse:(id)a3;
-- (void)preconditionNotMet:(id)a3;
-- (void)preferredAIDRequest:(id)a3;
-- (void)preferredAIDResponse:(id)a3;
-- (void)prepareProvisioningTarget:(id)a3 checkFamilyCircle:(BOOL)a4 completion:(id)a5;
-- (void)prepareProvisioningTargetResponse:(id)a3;
-- (void)presentRemoteDevicePasscodeUpgradePromptForChangeType:(unint64_t)a3 completion:(id)a4;
-- (void)presentStandaloneTransactionForPassUniqueIdentifierResponse:(id)a3;
-- (void)prewarmCreateShareForPassIdentifier:(id)a3 completion:(id)a4;
-- (void)prewarmCreateShareForPassIdentifierResponse:(id)a3;
-- (void)productsWithRequest:(id)a3 completion:(id)a4;
-- (void)provisionHomeKeyPassForSerialNumbers:(id)a3 completionHandler:(id)a4;
-- (void)provisionHomeKeyPassForSerialNumbersResponse:(id)a3;
-- (void)provisionPassForRemoteCredentialWithType:(int64_t)a3 andIdentifier:(id)a4 completion:(id)a5;
-- (void)provisionPassForRemoteCredentialWithTypeAndIdentifierResponse:(id)a3;
-- (void)provisionPeerPaymentPassResponse:(id)a3;
-- (void)provisionPeerPaymentPassWithCompletion:(id)a3;
-- (void)provisioningDataResponse:(id)a3;
-- (void)queueTSMConnectionResponse:(id)a3;
-- (void)reclaimUnusedSEMemory:(id)a3;
-- (void)reclaimUnusedSEMemoryResponse:(id)a3;
-- (void)registerCredentialsResponse:(id)a3;
-- (void)registerCredentialsWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)registrationDataResponse:(id)a3;
-- (void)remotePassUpgradeResponse:(id)a3;
-- (void)remotePassUpgradeWithRequest:(id)a3 pass:(id)a4 requireAuthorization:(BOOL)a5 notifyUserOnPairedDevice:(BOOL)a6 updateBlock:(id)a7;
-- (void)removeAIDsFromSecureElement:(id)a3 withCompletion:(id)a4;
-- (void)removeExpressPassWithUniqueIdentifier:(id)a3 completion:(id)a4;
-- (void)removeExpressPassWithUniqueIdentifierResponse:(id)a3;
-- (void)removeSharingInvitationResponse:(id)a3;
-- (void)renewAppleAccountWithCompletionHandler:(id)a3;
-- (void)requestAndStoreExternalizedAuthWithCompletion:(id)a3;
-- (void)requestAndStoreExternalizedAuthWithCompletionResponse:(id)a3;
-- (void)requestAutomaticProvisioningForCompanionPaymentPass:(id)a3;
-- (void)requestPasscodeUpgradeForPasscodeUpgradeFlowController:(id)a3 withVisibleViewController:(id)a4 completion:(id)a5;
-- (void)requestSubcredentialInvitationResponse:(id)a3;
-- (void)reserveStorageForAppletTypes:(id)a3 metadata:(id)a4 completion:(id)a5;
-- (void)reserveStorageForAppletTypesResponse:(id)a3;
-- (void)resetApplePayManateeViewResponse:(id)a3;
-- (void)resetApplePayManateeViewWithCompletion:(id)a3;
-- (void)retrieveShareInvitationForMailboxAddress:(id)a3 completion:(id)a4;
-- (void)retrieveShareInvitationForMailboxAddressResponse:(id)a3;
-- (void)retrieveTransactionsForPassWithUniqueID:(id)a3;
-- (void)revokeCredentialsResponse:(id)a3;
-- (void)revokeCredentialsWithIdentifiers:(id)a3 completion:(id)a4;
-- (void)revokeCredentialsWithReaderIdentifiers:(id)a3 completion:(id)a4;
-- (void)revokeCredentialsWithReaderIdentifiersResponse:(id)a3;
-- (void)revokeShareForPassIdentifier:(id)a3 share:(id)a4 shouldCascade:(BOOL)a5 completion:(id)a6;
-- (void)revokeShareForPassIdentifierResponse:(id)a3;
-- (void)secureElementAppletsWithCompletion:(id)a3;
-- (void)secureElementGetAppletsResponse:(id)a3;
-- (void)secureElementRemoveAppletsResponse:(id)a3;
+- (void)openURLWithRequest:(id)request;
+- (void)passSharesForCredentialIdentifierResponse:(id)response;
+- (void)passcodeChangeCoordinator:(id)coordinator checkRemoteDeviceLockStateWithCompletion:(id)completion;
+- (void)passcodeChangeCoordinator:(id)coordinator remoteDeviceShouldCancelPasscodeChangeWithCompletion:(id)completion;
+- (void)passcodeChangeCoordinator:(id)coordinator remoteDeviceShouldInitiatePasscodeChangeForType:(unint64_t)type completion:(id)completion;
+- (void)paymentApplicationUsageSummariesResponse:(id)response;
+- (void)paymentSetupFeaturesForConfiguration:(id)configuration completion:(id)completion;
+- (void)paymentSetupFeaturesForConfigurationResponse:(id)response;
+- (void)paymentWebService:(id)service acceptSubcredentialInvitation:(id)invitation completion:(id)completion;
+- (void)paymentWebService:(id)service acceptSubcredentialInvitationWithIdentifier:(id)identifier metadata:(id)metadata completion:(id)completion;
+- (void)paymentWebService:(id)service accountAttestationAnonymizationSaltWithCompletion:(id)completion;
+- (void)paymentWebService:(id)service addPaymentPass:(id)pass withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service addSecureElementPass:(id)pass properties:(id)properties completion:(id)completion;
+- (void)paymentWebService:(id)service canAcceptInvitation:(id)invitation withCompletionV2:(id)v2;
+- (void)paymentWebService:(id)service canAddSecureElementPassWithConfiguration:(id)configuration completion:(id)completion;
+- (void)paymentWebService:(id)service canHandlePotentialExpressPass:(id)pass withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service configurationDataWithCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service declineRelatedSharingInvitationsIfNecessary:(id)necessary withCompletion:(id)completion;
+- (void)paymentWebService:(id)service deleteApplicationWithAID:(id)d;
+- (void)paymentWebService:(id)service deviceMetadataWithFields:(unint64_t)fields completion:(id)completion;
+- (void)paymentWebService:(id)service didRegisterWithRegionMap:(id)map primaryRegionTopic:(id)topic;
+- (void)paymentWebService:(id)service generateTransactionKeyWithParameters:(id)parameters withCompletion:(id)completion;
+- (void)paymentWebService:(id)service handlePotentialExpressPass:(id)pass withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service matchingInvitationOnDevice:(id)device withTimeout:(unint64_t)timeout completion:(id)completion;
+- (void)paymentWebService:(id)service passOwnershipTokenWithIdentifier:(id)identifier completion:(id)completion;
+- (void)paymentWebService:(id)service passSharesForCredentialIdentifier:(id)identifier completion:(id)completion;
+- (void)paymentWebService:(id)service presentStandaloneTransaction:(int64_t)transaction forPassUniqueIdentifier:(id)identifier terminalReaderIdentifier:(id)readerIdentifier completion:(id)completion;
+- (void)paymentWebService:(id)service provisioningDataIncludingDeviceMetadata:(BOOL)metadata withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service queueConnectionToTrustedServiceManagerForPushTopic:(id)topic withCompletion:(id)completion;
+- (void)paymentWebService:(id)service registrationDataWithCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service removePass:(id)pass withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service removeSharingInvitation:(id)invitation withCompletion:(id)completion;
+- (void)paymentWebService:(id)service requestPassUpgrade:(id)upgrade pass:(id)pass completion:(id)completion;
+- (void)paymentWebService:(id)service requestSubcredentialInvitation:(id)invitation completion:(id)completion;
+- (void)paymentWebService:(id)service setAccountAttestationAnonymizationSalt:(id)salt withCompletion:(id)completion;
+- (void)paymentWebService:(id)service setDefaultPaymentPassUniqueIdentifier:(id)identifier;
+- (void)paymentWebService:(id)service setNewAuthRandom:(id)random;
+- (void)paymentWebService:(id)service setNewAuthRandomIfNecessaryReturningPairingState:(id)state;
+- (void)paymentWebService:(id)service signData:(id)data signatureEntanglementMode:(unint64_t)mode withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service signData:(id)data withCompletionHandler:(id)handler;
+- (void)paymentWebService:(id)service subcredentialInvitationsWithCompletion:(id)completion;
+- (void)paymentWebService:(id)service updateAccountWithIdentifier:(id)identifier completion:(id)completion;
+- (void)paymentWebService:(id)service updateMetadataOnPass:(id)pass withCredential:(id)credential completion:(id)completion;
+- (void)paymentWebService:(id)service validateAddBiometricPassPreconditionsWithCompletion:(id)completion;
+- (void)paymentWebService:(id)service validateAddPreconditionsWithCompletion:(id)completion;
+- (void)paymentWebService:(id)service validateTransferPreconditionsWithCompletion:(id)completion;
+- (void)paymentWebServiceDidUpdateConfiguration:(id)configuration;
+- (void)paymentWebServiceOwnershipTokenResponse:(id)response;
+- (void)paymentWebServiceRegisterResponse:(id)response;
+- (void)peerPaymentRegisterResponse:(id)response;
+- (void)peerPaymentRegisterWithURL:(id)l forceReRegistration:(BOOL)registration completion:(id)completion;
+- (void)peerPaymentUnregisterResponse:(id)response;
+- (void)peerPaymentUnregisterWithCompletion:(id)completion;
+- (void)pendingProvisioningReceiptRequest:(id)request;
+- (void)pendingRemovalResponse:(id)response;
+- (void)performDeviceCheckInResponse:(id)response;
+- (void)performDeviceCheckInWithCompletion:(id)completion;
+- (void)performDeviceRegistrationForReason:(id)reason brokerURL:(id)l completion:(id)completion;
+- (void)performProductActionRequest:(id)request completion:(id)completion;
+- (void)performProductActionResponse:(id)response;
+- (void)photosForFamilyMembersWithDSIDs:(id)ds completion:(id)completion;
+- (void)photosForFamilyMembersWithDSIDsResponse:(id)response;
+- (void)preconditionNotMet:(id)met;
+- (void)preferredAIDRequest:(id)request;
+- (void)preferredAIDResponse:(id)response;
+- (void)prepareProvisioningTarget:(id)target checkFamilyCircle:(BOOL)circle completion:(id)completion;
+- (void)prepareProvisioningTargetResponse:(id)response;
+- (void)presentRemoteDevicePasscodeUpgradePromptForChangeType:(unint64_t)type completion:(id)completion;
+- (void)presentStandaloneTransactionForPassUniqueIdentifierResponse:(id)response;
+- (void)prewarmCreateShareForPassIdentifier:(id)identifier completion:(id)completion;
+- (void)prewarmCreateShareForPassIdentifierResponse:(id)response;
+- (void)productsWithRequest:(id)request completion:(id)completion;
+- (void)provisionHomeKeyPassForSerialNumbers:(id)numbers completionHandler:(id)handler;
+- (void)provisionHomeKeyPassForSerialNumbersResponse:(id)response;
+- (void)provisionPassForRemoteCredentialWithType:(int64_t)type andIdentifier:(id)identifier completion:(id)completion;
+- (void)provisionPassForRemoteCredentialWithTypeAndIdentifierResponse:(id)response;
+- (void)provisionPeerPaymentPassResponse:(id)response;
+- (void)provisionPeerPaymentPassWithCompletion:(id)completion;
+- (void)provisioningDataResponse:(id)response;
+- (void)queueTSMConnectionResponse:(id)response;
+- (void)reclaimUnusedSEMemory:(id)memory;
+- (void)reclaimUnusedSEMemoryResponse:(id)response;
+- (void)registerCredentialsResponse:(id)response;
+- (void)registerCredentialsWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)registrationDataResponse:(id)response;
+- (void)remotePassUpgradeResponse:(id)response;
+- (void)remotePassUpgradeWithRequest:(id)request pass:(id)pass requireAuthorization:(BOOL)authorization notifyUserOnPairedDevice:(BOOL)device updateBlock:(id)block;
+- (void)removeAIDsFromSecureElement:(id)element withCompletion:(id)completion;
+- (void)removeExpressPassWithUniqueIdentifier:(id)identifier completion:(id)completion;
+- (void)removeExpressPassWithUniqueIdentifierResponse:(id)response;
+- (void)removeSharingInvitationResponse:(id)response;
+- (void)renewAppleAccountWithCompletionHandler:(id)handler;
+- (void)requestAndStoreExternalizedAuthWithCompletion:(id)completion;
+- (void)requestAndStoreExternalizedAuthWithCompletionResponse:(id)response;
+- (void)requestAutomaticProvisioningForCompanionPaymentPass:(id)pass;
+- (void)requestPasscodeUpgradeForPasscodeUpgradeFlowController:(id)controller withVisibleViewController:(id)viewController completion:(id)completion;
+- (void)requestSubcredentialInvitationResponse:(id)response;
+- (void)reserveStorageForAppletTypes:(id)types metadata:(id)metadata completion:(id)completion;
+- (void)reserveStorageForAppletTypesResponse:(id)response;
+- (void)resetApplePayManateeViewResponse:(id)response;
+- (void)resetApplePayManateeViewWithCompletion:(id)completion;
+- (void)retrieveShareInvitationForMailboxAddress:(id)address completion:(id)completion;
+- (void)retrieveShareInvitationForMailboxAddressResponse:(id)response;
+- (void)retrieveTransactionsForPassWithUniqueID:(id)d;
+- (void)revokeCredentialsResponse:(id)response;
+- (void)revokeCredentialsWithIdentifiers:(id)identifiers completion:(id)completion;
+- (void)revokeCredentialsWithReaderIdentifiers:(id)identifiers completion:(id)completion;
+- (void)revokeCredentialsWithReaderIdentifiersResponse:(id)response;
+- (void)revokeShareForPassIdentifier:(id)identifier share:(id)share shouldCascade:(BOOL)cascade completion:(id)completion;
+- (void)revokeShareForPassIdentifierResponse:(id)response;
+- (void)secureElementAppletsWithCompletion:(id)completion;
+- (void)secureElementGetAppletsResponse:(id)response;
+- (void)secureElementRemoveAppletsResponse:(id)response;
 - (void)sendPaymentOptionsDefaultsToWatch;
-- (void)sendWebServiceContextToWatch:(id)a3;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7;
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7;
-- (void)service:(id)a3 activeAccountsChanged:(id)a4;
-- (void)service:(id)a3 devicesChanged:(id)a4;
-- (void)serviceProviderDataForPassWithUniqueIdentifier:(id)a3 encrypted:(BOOL)a4 completion:(id)a5;
-- (void)serviceProviderDataForPassWithUniqueIdentifierResponse:(id)a3;
-- (void)setAccountAttestationAnonymizationSaltResponse:(id)a3;
-- (void)setBalanceReminder:(id)a3 forBalance:(id)a4 pass:(id)a5 completion:(id)a6;
-- (void)setBalanceReminderWithBalanceAndPassResponse:(id)a3;
-- (void)setCommutePlanReminder:(id)a3 forCommutePlan:(id)a4 pass:(id)a5 completion:(id)a6;
-- (void)setCommutePlanReminderWithCommutePlanAndPassResponse:(id)a3;
-- (void)setExpressPassResponse:(id)a3;
-- (void)setExpressWithPassConfiguration:(id)a3 requestAuthorization:(BOOL)a4 completion:(id)a5;
-- (void)setNewAuthRandomIfNecessaryAtBeginningOfProvisioningFlow:(id)a3;
-- (void)setNewAuthRandomResponse:(id)a3;
-- (void)setPasscodeUpgradeFlowController:(id)a3;
-- (void)setPeerPaymentPreferences:(id)a3 completion:(id)a4;
-- (void)setPeerPaymentPreferencesResponse:(id)a3;
-- (void)signDataResponse:(id)a3;
-- (void)signWithFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 challenge:(id)a6 publicKeyIdentifier:(id)a7 externalizedAuth:(id)a8 completion:(id)a9;
-- (void)signWithFidoKeyResponse:(id)a3;
-- (void)startBackgroundVerificationObserverForPass:(id)a3 verificationMethod:(id)a4;
-- (void)startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:(BOOL)a3;
-- (void)statusForShareableCredentials:(id)a3 completion:(id)a4;
-- (void)statusForShareableCredentialsResponse:(id)a3;
-- (void)subcredentialInvitationsResponse:(id)a3;
-- (void)triggerCloudStoreZoneCreationForAccount:(id)a3 withCompletion:(id)a4;
-- (void)triggerCloudStoreZoneCreationForAccountResponse:(id)a3;
-- (void)updateAccountWithIdentifierResponse:(id)a3;
-- (void)updatePaymentPass:(id)a3;
-- (void)updatePeerPaymentAccountResponse:(id)a3;
-- (void)updatePeerPaymentAccountWithCompletion:(id)a3;
-- (void)updatePushToken:(id)a3;
-- (void)updateShareForPassIdentifier:(id)a3 share:(id)a4 authorization:(id)a5 completion:(id)a6;
-- (void)updateShareForPassIdentifierResponse:(id)a3;
-- (void)updateSubcredentialMetadataResponse:(id)a3;
-- (void)updatedAccountsForProvisioningWithCompletion:(id)a3;
+- (void)sendWebServiceContextToWatch:(id)watch;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error;
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context;
+- (void)service:(id)service activeAccountsChanged:(id)changed;
+- (void)service:(id)service devicesChanged:(id)changed;
+- (void)serviceProviderDataForPassWithUniqueIdentifier:(id)identifier encrypted:(BOOL)encrypted completion:(id)completion;
+- (void)serviceProviderDataForPassWithUniqueIdentifierResponse:(id)response;
+- (void)setAccountAttestationAnonymizationSaltResponse:(id)response;
+- (void)setBalanceReminder:(id)reminder forBalance:(id)balance pass:(id)pass completion:(id)completion;
+- (void)setBalanceReminderWithBalanceAndPassResponse:(id)response;
+- (void)setCommutePlanReminder:(id)reminder forCommutePlan:(id)plan pass:(id)pass completion:(id)completion;
+- (void)setCommutePlanReminderWithCommutePlanAndPassResponse:(id)response;
+- (void)setExpressPassResponse:(id)response;
+- (void)setExpressWithPassConfiguration:(id)configuration requestAuthorization:(BOOL)authorization completion:(id)completion;
+- (void)setNewAuthRandomIfNecessaryAtBeginningOfProvisioningFlow:(id)flow;
+- (void)setNewAuthRandomResponse:(id)response;
+- (void)setPasscodeUpgradeFlowController:(id)controller;
+- (void)setPeerPaymentPreferences:(id)preferences completion:(id)completion;
+- (void)setPeerPaymentPreferencesResponse:(id)response;
+- (void)signDataResponse:(id)response;
+- (void)signWithFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash challenge:(id)challenge publicKeyIdentifier:(id)identifier externalizedAuth:(id)auth completion:(id)completion;
+- (void)signWithFidoKeyResponse:(id)response;
+- (void)startBackgroundVerificationObserverForPass:(id)pass verificationMethod:(id)method;
+- (void)startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:(BOOL)policy;
+- (void)statusForShareableCredentials:(id)credentials completion:(id)completion;
+- (void)statusForShareableCredentialsResponse:(id)response;
+- (void)subcredentialInvitationsResponse:(id)response;
+- (void)triggerCloudStoreZoneCreationForAccount:(id)account withCompletion:(id)completion;
+- (void)triggerCloudStoreZoneCreationForAccountResponse:(id)response;
+- (void)updateAccountWithIdentifierResponse:(id)response;
+- (void)updatePaymentPass:(id)pass;
+- (void)updatePeerPaymentAccountResponse:(id)response;
+- (void)updatePeerPaymentAccountWithCompletion:(id)completion;
+- (void)updatePushToken:(id)token;
+- (void)updateShareForPassIdentifier:(id)identifier share:(id)share authorization:(id)authorization completion:(id)completion;
+- (void)updateShareForPassIdentifierResponse:(id)response;
+- (void)updateSubcredentialMetadataResponse:(id)response;
+- (void)updatedAccountsForProvisioningWithCompletion:(id)completion;
 @end
 
 @implementation NPKPaymentWebServiceCompanionTargetDevice
@@ -469,36 +469,36 @@
   v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v21];
   v3 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@;%@", v20, v19, v18];;
   v4 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-  v5 = [v4 infoDictionary];
+  infoDictionary = [v4 infoDictionary];
   v6 = *MEMORY[0x277CBED58];
-  v7 = [v5 objectForKey:*MEMORY[0x277CBED58]];
+  v7 = [infoDictionary objectForKey:*MEMORY[0x277CBED58]];
 
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 infoDictionary];
-  v10 = [v9 objectForKey:v6];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  infoDictionary2 = [mainBundle infoDictionary];
+  v10 = [infoDictionary2 objectForKey:v6];
 
   v11 = MEMORY[0x277CCACA8];
-  v12 = [v4 bundleIdentifier];
-  v13 = [v8 bundleIdentifier];
-  v14 = [v11 stringWithFormat:@"%@/%@ (%@/%@)", v12, v7, v13, v10];
+  bundleIdentifier = [v4 bundleIdentifier];
+  bundleIdentifier2 = [mainBundle bundleIdentifier];
+  v14 = [v11 stringWithFormat:@"%@/%@ (%@/%@)", bundleIdentifier, v7, bundleIdentifier2, v10];
 
   v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"<%@> <%@> <%@>", v17, v3, v14];
 
   return v15;
 }
 
-- (NPKPaymentWebServiceCompanionTargetDevice)initWithContext:(unint64_t)a3 responseQueue:(id)a4
+- (NPKPaymentWebServiceCompanionTargetDevice)initWithContext:(unint64_t)context responseQueue:(id)queue
 {
-  v6 = a4;
+  queueCopy = queue;
   v16.receiver = self;
   v16.super_class = NPKPaymentWebServiceCompanionTargetDevice;
   v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)&v16 init];
   v8 = v7;
   if (v7)
   {
-    [(NPKPaymentWebServiceCompanionTargetDevice *)v7 setResponseQueue:v6];
-    [(NPKPaymentWebServiceCompanionTargetDevice *)v8 setContext:a3];
-    if (a3 == 1)
+    [(NPKPaymentWebServiceCompanionTargetDevice *)v7 setResponseQueue:queueCopy];
+    [(NPKPaymentWebServiceCompanionTargetDevice *)v8 setContext:context];
+    if (context == 1)
     {
       v9 = @"com.apple.private.alloy.passbook.maintenance";
     }
@@ -654,14 +654,14 @@
     [v10 setProtobufAction:sel_pendingProvisioningReceiptRequest_ forIncomingRequestsOfType:156];
     [v10 setProtobufAction:sel_paymentApplicationUsageSummariesResponse_ forIncomingResponsesOfType:157];
     [v10 setProtobufAction:sel_reclaimUnusedSEMemoryResponse_ forIncomingResponsesOfType:158];
-    [v10 addDelegate:v8 queue:v6];
+    [v10 addDelegate:v8 queue:queueCopy];
     [(NPKPaymentWebServiceCompanionTargetDevice *)v8 setProvisioningService:v10];
     v11 = [[NPKTargetDeviceAssertionManager alloc] initWithTransportationService:v10];
     remoteDeviceAssertionManager = v8->_remoteDeviceAssertionManager;
     v8->_remoteDeviceAssertionManager = v11;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
-    [(NPKPaymentWebServiceCompanionTargetDevice *)v8 setOutstandingRequests:v13];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(NPKPaymentWebServiceCompanionTargetDevice *)v8 setOutstandingRequests:dictionary];
 
     v14 = dispatch_queue_create("com.apple.NPKPaymentWebServiceCompanionTargetDevice", 0);
     [(NPKPaymentWebServiceCompanionTargetDevice *)v8 setInternalQueue:v14];
@@ -670,10 +670,10 @@
   return v8;
 }
 
-- (void)service:(id)a3 activeAccountsChanged:(id)a4
+- (void)service:(id)service activeAccountsChanged:(id)changed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  changedCopy = changed;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -683,7 +683,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = changedCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Active accounts changed: %@", &v9, 0xCu);
     }
   }
@@ -691,10 +691,10 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 devicesChanged:(id)a4
+- (void)service:(id)service devicesChanged:(id)changed
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = a4;
+  changedCopy = changed;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -704,7 +704,7 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412290;
-      v10 = v4;
+      v10 = changedCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Devices changed: %@", &v9, 0xCu);
     }
   }
@@ -712,14 +712,14 @@
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingUnhandledProtobuf:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingUnhandledProtobuf:(id)protobuf fromID:(id)d context:(id)context
 {
   v30 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  protobufCopy = protobuf;
+  dCopy = d;
+  contextCopy = context;
   v16 = pk_Payment_log();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_ERROR);
 
@@ -729,15 +729,15 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
       v20 = 138413314;
-      v21 = v11;
+      v21 = serviceCopy;
       v22 = 2112;
-      v23 = v12;
+      v23 = accountCopy;
       v24 = 2112;
-      v25 = v13;
+      v25 = protobufCopy;
       v26 = 2112;
-      v27 = v14;
+      v27 = dCopy;
       v28 = 2112;
-      v29 = v15;
+      v29 = contextCopy;
       _os_log_impl(&dword_25B300000, v18, OS_LOG_TYPE_ERROR, "Error: Incoming unhandled protobuf: %@ %@ %@ %@ %@", &v20, 0x34u);
     }
   }
@@ -745,14 +745,14 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error
 {
-  v8 = a6;
+  successCopy = success;
   v37 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
   v16 = pk_Payment_log();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
 
@@ -762,31 +762,31 @@
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138413314;
-      v28 = v12;
+      v28 = serviceCopy;
       v29 = 2112;
-      v30 = v13;
+      v30 = accountCopy;
       v31 = 2112;
-      v32 = v14;
+      v32 = identifierCopy;
       v33 = 1024;
-      v34 = v8;
+      v34 = successCopy;
       v35 = 2112;
-      v36 = v15;
+      v36 = errorCopy;
       _os_log_impl(&dword_25B300000, v18, OS_LOG_TYPE_DEFAULT, "Notice: Service sent with success: %@ %@ %@ %d %@", buf, 0x30u);
     }
   }
 
-  v19 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __97__NPKPaymentWebServiceCompanionTargetDevice_service_account_identifier_didSendWithSuccess_error___block_invoke;
   v23[3] = &unk_279949A68;
   v23[4] = self;
-  v24 = v14;
-  v26 = v8;
-  v25 = v15;
-  v20 = v15;
-  v21 = v14;
-  dispatch_async(v19, v23);
+  v24 = identifierCopy;
+  v26 = successCopy;
+  v25 = errorCopy;
+  v20 = errorCopy;
+  v21 = identifierCopy;
+  dispatch_async(internalQueue, v23);
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -921,11 +921,11 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_service_account_identifier_
   [(NPKPaymentWebServiceCompanionTargetDevice *)self _invalidateAssertionOfType:1];
 }
 
-- (void)startBackgroundVerificationObserverForPass:(id)a3 verificationMethod:(id)a4
+- (void)startBackgroundVerificationObserverForPass:(id)pass verificationMethod:(id)method
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  passCopy = pass;
+  methodCopy = method;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -934,18 +934,18 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_service_account_identifier_
     v10 = pk_Payment_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v6 uniqueID];
-      v12 = [v7 identifier];
+      uniqueID = [passCopy uniqueID];
+      identifier = [methodCopy identifier];
       v15 = 138412546;
-      v16 = v11;
+      v16 = uniqueID;
       v17 = 2112;
-      v18 = v12;
+      v18 = identifier;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Starting background verification observer for %@ with verification method %@", &v15, 0x16u);
     }
   }
 
-  v13 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v13 startBackgroundVerificationObserverForPass:v6 verificationMethod:v7];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate startBackgroundVerificationObserverForPass:passCopy verificationMethod:methodCopy];
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -968,13 +968,13 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_service_account_identifier_
   v6 = NPKPairedOrPairingDevice();
   if (v6)
   {
-    v7 = [MEMORY[0x277D2BCF8] sharedInstance];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __83__NPKPaymentWebServiceCompanionTargetDevice_noteProvisioningUserInterfaceDidAppear__block_invoke;
     v8[3] = &unk_279949A90;
     v8[4] = self;
-    [v7 setActivePairedDevice:v6 withActiveDeviceAssertionHandler:v8];
+    [mEMORY[0x277D2BCF8] setActivePairedDevice:v6 withActiveDeviceAssertionHandler:v8];
   }
 }
 
@@ -1025,16 +1025,16 @@ void __83__NPKPaymentWebServiceCompanionTargetDevice_noteProvisioningUserInterfa
     }
   }
 
-  v6 = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningActiveDeviceAssertion];
-  [v6 invalidate];
+  provisioningActiveDeviceAssertion = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningActiveDeviceAssertion];
+  [provisioningActiveDeviceAssertion invalidate];
 
   [(NPKPaymentWebServiceCompanionTargetDevice *)self setProvisioningActiveDeviceAssertion:0];
 }
 
-- (void)archiveContext:(id)a3
+- (void)archiveContext:(id)context
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1044,24 +1044,24 @@ void __83__NPKPaymentWebServiceCompanionTargetDevice_noteProvisioningUserInterfa
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = contextCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Archiving web service context: %@", &v11, 0xCu);
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v8 archiveWebServiceContext:v4];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate archiveWebServiceContext:contextCopy];
 
-  v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v9 sendWebServiceContextToWatch];
+  delegate2 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate2 sendWebServiceContextToWatch];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)archiveBackgroundContext:(id)a3
+- (void)archiveBackgroundContext:(id)context
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  contextCopy = context;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1071,34 +1071,34 @@ void __83__NPKPaymentWebServiceCompanionTargetDevice_noteProvisioningUserInterfa
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412290;
-      v11 = v4;
+      v11 = contextCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Archiving web service background context: %@", &v10, 0xCu);
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v8 archiveWebServiceBackgroundContext:v4];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate archiveWebServiceBackgroundContext:contextCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)paymentWebService:(id)a3 hasPassesOfType:(unint64_t)a4
+- (BOOL)paymentWebService:(id)service hasPassesOfType:(unint64_t)type
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  serviceCopy = service;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
   v19 = 0;
-  if (a4 == 1)
+  if (type == 1)
   {
-    v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+    companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __79__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_hasPassesOfType___block_invoke;
     v15[3] = &unk_279949AB8;
     v15[4] = &v16;
-    [v7 paymentPassUniqueIDsSynchronous:1 reply:v15];
+    [companionAgentConnection paymentPassUniqueIDsSynchronous:1 reply:v15];
   }
 
   v8 = pk_Payment_log();
@@ -1111,7 +1111,7 @@ void __83__NPKPaymentWebServiceCompanionTargetDevice_noteProvisioningUserInterfa
     {
       v11 = *(v17 + 24);
       *buf = 134218240;
-      v21 = a4;
+      typeCopy = type;
       v22 = 1024;
       v23 = v11;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Payment web service has passes of type %lu? %d", buf, 0x12u);
@@ -1132,22 +1132,22 @@ uint64_t __79__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_hasPa
   return result;
 }
 
-- (id)paymentWebService:(id)a3 passesOfType:(unint64_t)a4
+- (id)paymentWebService:(id)service passesOfType:(unint64_t)type
 {
-  v6 = [MEMORY[0x277CBEB18] array];
-  if (a4 == 1)
+  array = [MEMORY[0x277CBEB18] array];
+  if (type == 1)
   {
-    v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+    companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __76__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_passesOfType___block_invoke;
     v9[3] = &unk_279947BD8;
     v9[4] = self;
-    v10 = v6;
-    [v7 paymentPassUniqueIDsSynchronous:1 reply:v9];
+    v10 = array;
+    [companionAgentConnection paymentPassUniqueIDsSynchronous:1 reply:v9];
   }
 
-  return v6;
+  return array;
 }
 
 void __76__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_passesOfType___block_invoke(uint64_t a1, void *a2)
@@ -1185,7 +1185,7 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_passe
   return result;
 }
 
-- (id)passesOfCardType:(int64_t)a3
+- (id)passesOfCardType:(int64_t)type
 {
   v9 = 0;
   v10 = &v9;
@@ -1193,15 +1193,15 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_passe
   v12 = __Block_byref_object_copy__22;
   v13 = __Block_byref_object_dispose__22;
   v14 = 0;
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __62__NPKPaymentWebServiceCompanionTargetDevice_passesOfCardType___block_invoke;
   block[3] = &unk_279947890;
   block[5] = &v9;
-  block[6] = a3;
+  block[6] = type;
   block[4] = self;
-  dispatch_sync(v5, block);
+  dispatch_sync(internalQueue, block);
 
   v6 = v10[5];
   _Block_object_dispose(&v9, 8);
@@ -1221,25 +1221,25 @@ void __62__NPKPaymentWebServiceCompanionTargetDevice_passesOfCardType___block_in
   [v2 passesOfCardType:v3 completion:v4];
 }
 
-- (id)identityPassesOfTypes:(id)a3
+- (id)identityPassesOfTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__22;
   v16 = __Block_byref_object_dispose__22;
   v17 = 0;
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__NPKPaymentWebServiceCompanionTargetDevice_identityPassesOfTypes___block_invoke;
   block[3] = &unk_279948090;
   block[4] = self;
-  v10 = v4;
+  v10 = typesCopy;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = typesCopy;
+  dispatch_sync(internalQueue, block);
 
   v7 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1259,45 +1259,45 @@ void __67__NPKPaymentWebServiceCompanionTargetDevice_identityPassesOfTypes___blo
   [v2 identityPassesOfTypes:v3 completion:v4];
 }
 
-- (BOOL)paymentWebService:(id)a3 hasPassWithUniqueID:(id)a4
+- (BOOL)paymentWebService:(id)service hasPassWithUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  dCopy = d;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __83__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_hasPassWithUniqueID___block_invoke;
   v10[3] = &unk_279949B30;
   v10[4] = &v11;
-  [v8 hasPaymentPassWithUniqueID:v7 synchronous:1 reply:v10];
+  [companionAgentConnection hasPaymentPassWithUniqueID:dCopy synchronous:1 reply:v10];
 
-  LOBYTE(v8) = *(v12 + 24);
+  LOBYTE(companionAgentConnection) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v8;
+  return companionAgentConnection;
 }
 
-- (id)paymentWebService:(id)a3 passWithUniqueID:(id)a4
+- (id)paymentWebService:(id)service passWithUniqueID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  dCopy = d;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
   v15 = __Block_byref_object_copy__22;
   v16 = __Block_byref_object_dispose__22;
   v17 = 0;
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __80__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_passWithUniqueID___block_invoke;
   v11[3] = &unk_279949B58;
   v11[4] = &v12;
-  [v8 paymentPassWithUniqueID:v7 synchronous:1 reply:v11];
+  [companionAgentConnection paymentPassWithUniqueID:dCopy synchronous:1 reply:v11];
 
   v9 = v13[5];
   _Block_object_dispose(&v12, 8);
@@ -1305,11 +1305,11 @@ void __67__NPKPaymentWebServiceCompanionTargetDevice_identityPassesOfTypes___blo
   return v9;
 }
 
-- (BOOL)paymentWebService:(id)a3 canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)a4
+- (BOOL)paymentWebService:(id)service canProvisionPaymentPassWithPrimaryAccountIdentifier:(id)identifier
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  identifierCopy = identifier;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1319,14 +1319,14 @@ void __67__NPKPaymentWebServiceCompanionTargetDevice_identityPassesOfTypes___blo
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = identifierCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Can provision payment pass with primary account identifier %@", &buf, 0xCu);
     }
   }
 
-  if (v7)
+  if (identifierCopy)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+    companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
     v12 = dispatch_semaphore_create(0);
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -1341,7 +1341,7 @@ void __67__NPKPaymentWebServiceCompanionTargetDevice_identityPassesOfTypes___blo
     p_buf = &buf;
     v13 = v12;
     v26 = v13;
-    [v11 paymentPassesWithPrimaryAccountIdentifier:v7 completion:v25];
+    [companionAgentConnection paymentPassesWithPrimaryAccountIdentifier:identifierCopy completion:v25];
     dispatch_semaphore_wait(v13, 0xFFFFFFFFFFFFFFFFLL);
     v23 = 0u;
     v24 = 0u;
@@ -1400,20 +1400,20 @@ void __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_canProvi
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)paymentWebService:(id)a3 validateAddPreconditionsWithCompletion:(id)a4
+- (void)paymentWebService:(id)service validateAddPreconditionsWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  completionCopy = completion;
   v8 = MEMORY[0x277D38098];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_validateAddPreconditionsWithCompletion___block_invoke;
   v11[3] = &unk_2799451C8;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = serviceCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = serviceCopy;
   [v8 configureWebServiceIfNecessary:v10 completion:v11];
 }
 
@@ -1448,21 +1448,21 @@ void __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_validate
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)paymentWebService:(id)a3 validateTransferPreconditionsWithCompletion:(id)a4
+- (void)paymentWebService:(id)service validateTransferPreconditionsWithCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  serviceCopy = service;
   v8 = [NPKPaymentPreflighter alloc];
-  v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
-  v10 = [(NPKPaymentPreflighter *)v8 initWithWebService:v7 targetDevice:self companionAgentConnection:v9];
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  v10 = [(NPKPaymentPreflighter *)v8 initWithWebService:serviceCopy targetDevice:self companionAgentConnection:companionAgentConnection];
 
-  [(NPKPaymentPreflighter *)v10 transferToCompanionPreflightWithCompletion:v6];
+  [(NPKPaymentPreflighter *)v10 transferToCompanionPreflightWithCompletion:completionCopy];
 }
 
-- (void)paymentWebService:(id)a3 validateAddBiometricPassPreconditionsWithCompletion:(id)a4
+- (void)paymentWebService:(id)service validateAddBiometricPassPreconditionsWithCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -1481,11 +1481,11 @@ void __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_validate
   v14[1] = 3221225472;
   v14[2] = __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_validateAddBiometricPassPreconditionsWithCompletion___block_invoke;
   v14[3] = &unk_2799451C8;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
+  v15 = serviceCopy;
+  selfCopy = self;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = serviceCopy;
   [v11 configureWebServiceIfNecessary:v13 completion:v14];
 }
 
@@ -1551,10 +1551,10 @@ void __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_validate
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNewAuthRandomResponse:(id)a3
+- (void)setNewAuthRandomResponse:(id)response
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1563,15 +1563,15 @@ void __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_validate
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -1595,21 +1595,21 @@ void __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_validate
   v28 = __Block_byref_object_copy__22;
   v29 = __Block_byref_object_dispose__22;
   v30 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __70__NPKPaymentWebServiceCompanionTargetDevice_setNewAuthRandomResponse___block_invoke;
     block[3] = &unk_279949BA8;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v37;
     v22 = &v31;
     v23 = &v25;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -1699,18 +1699,18 @@ void __70__NPKPaymentWebServiceCompanionTargetDevice_setNewAuthRandomResponse___
   }
 }
 
-- (void)_setNewAuthRandomReturningPairingState:(id)a3
+- (void)_setNewAuthRandomReturningPairingState:(id)state
 {
-  v4 = a3;
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  stateCopy = state;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__NPKPaymentWebServiceCompanionTargetDevice__setNewAuthRandomReturningPairingState___block_invoke;
   v7[3] = &unk_279945530;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = stateCopy;
+  v6 = stateCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
 void __84__NPKPaymentWebServiceCompanionTargetDevice__setNewAuthRandomReturningPairingState___block_invoke(uint64_t a1)
@@ -1788,10 +1788,10 @@ void __84__NPKPaymentWebServiceCompanionTargetDevice__setNewAuthRandomReturningP
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getPairingInfoResponse:(id)a3
+- (void)getPairingInfoResponse:(id)response
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -1800,15 +1800,15 @@ void __84__NPKPaymentWebServiceCompanionTargetDevice__setNewAuthRandomReturningP
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -1832,21 +1832,21 @@ void __84__NPKPaymentWebServiceCompanionTargetDevice__setNewAuthRandomReturningP
   v28 = __Block_byref_object_copy__22;
   v29 = __Block_byref_object_dispose__22;
   v30 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__NPKPaymentWebServiceCompanionTargetDevice_getPairingInfoResponse___block_invoke;
     block[3] = &unk_279949BA8;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v37;
     v22 = &v31;
     v23 = &v25;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -1958,19 +1958,19 @@ LABEL_13:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_getPairingInfoAndSetAuthRandomIfNotPaired:(BOOL)a3 completion:(id)a4
+- (void)_getPairingInfoAndSetAuthRandomIfNotPaired:(BOOL)paired completion:(id)completion
 {
-  v6 = a4;
-  v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  completionCopy = completion;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __99__NPKPaymentWebServiceCompanionTargetDevice__getPairingInfoAndSetAuthRandomIfNotPaired_completion___block_invoke;
   block[3] = &unk_279945CF0;
-  v11 = a3;
+  pairedCopy = paired;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
-  dispatch_sync(v7, block);
+  v10 = completionCopy;
+  v8 = completionCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 void __99__NPKPaymentWebServiceCompanionTargetDevice__getPairingInfoAndSetAuthRandomIfNotPaired_completion___block_invoke(uint64_t a1)
@@ -2049,15 +2049,15 @@ void __99__NPKPaymentWebServiceCompanionTargetDevice__getPairingInfoAndSetAuthRa
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setNewAuthRandomIfNecessaryAtBeginningOfProvisioningFlow:(id)a3
+- (void)setNewAuthRandomIfNecessaryAtBeginningOfProvisioningFlow:(id)flow
 {
-  v4 = a3;
+  flowCopy = flow;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __102__NPKPaymentWebServiceCompanionTargetDevice_setNewAuthRandomIfNecessaryAtBeginningOfProvisioningFlow___block_invoke;
   v6[3] = &unk_279949BF8;
-  v7 = v4;
-  v5 = v4;
+  v7 = flowCopy;
+  v5 = flowCopy;
   [(NPKPaymentWebServiceCompanionTargetDevice *)self _setNewAuthRandomIfNecessaryReturningPairingState:v6];
 }
 
@@ -2072,10 +2072,10 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_setNewAuthRandomIfNece
   return result;
 }
 
-- (void)paymentWebService:(id)a3 setNewAuthRandomIfNecessaryReturningPairingState:(id)a4
+- (void)paymentWebService:(id)service setNewAuthRandomIfNecessaryReturningPairingState:(id)state
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  stateCopy = state;
   v6 = NPKIsCurrentlyPairing();
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
@@ -2093,7 +2093,7 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_setNewAuthRandomIfNece
 
   if (v6)
   {
-    [(NPKPaymentWebServiceCompanionTargetDevice *)self _setNewAuthRandomIfNecessaryReturningPairingState:v5];
+    [(NPKPaymentWebServiceCompanionTargetDevice *)self _setNewAuthRandomIfNecessaryReturningPairingState:stateCopy];
   }
 
   else
@@ -2111,21 +2111,21 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_setNewAuthRandomIfNece
       }
     }
 
-    [(NPKPaymentWebServiceCompanionTargetDevice *)self _getPairingInfoAndSetAuthRandomIfNotPaired:0 completion:v5];
+    [(NPKPaymentWebServiceCompanionTargetDevice *)self _getPairingInfoAndSetAuthRandomIfNotPaired:0 completion:stateCopy];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)paymentWebService:(id)a3 setNewAuthRandom:(id)a4
+- (void)paymentWebService:(id)service setNewAuthRandom:(id)random
 {
-  v5 = a4;
+  randomCopy = random;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_setNewAuthRandom___block_invoke;
   v7[3] = &unk_279949BF8;
-  v8 = v5;
-  v6 = v5;
+  v8 = randomCopy;
+  v6 = randomCopy;
   [(NPKPaymentWebServiceCompanionTargetDevice *)self _setNewAuthRandomReturningPairingState:v7];
 }
 
@@ -2140,10 +2140,10 @@ uint64_t __80__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_setNe
   return result;
 }
 
-- (void)queueTSMConnectionResponse:(id)a3
+- (void)queueTSMConnectionResponse:(id)response
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -2152,15 +2152,15 @@ uint64_t __80__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_setNe
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -2168,18 +2168,18 @@ uint64_t __80__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_setNe
   v24 = __Block_byref_object_copy__384;
   v25 = __Block_byref_object_dispose__385;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __72__NPKPaymentWebServiceCompanionTargetDevice_queueTSMConnectionResponse___block_invoke;
     block[3] = &unk_279949C20;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -2254,21 +2254,21 @@ void __72__NPKPaymentWebServiceCompanionTargetDevice_queueTSMConnectionResponse_
   }
 }
 
-- (void)paymentWebService:(id)a3 queueConnectionToTrustedServiceManagerForPushTopic:(id)a4 withCompletion:(id)a5
+- (void)paymentWebService:(id)service queueConnectionToTrustedServiceManagerForPushTopic:(id)topic withCompletion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  topicCopy = topic;
+  completionCopy = completion;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __129__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_queueConnectionToTrustedServiceManagerForPushTopic_withCompletion___block_invoke;
   block[3] = &unk_279945A48;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_sync(v9, block);
+  v13 = topicCopy;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
+  v11 = topicCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 void __129__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_queueConnectionToTrustedServiceManagerForPushTopic_withCompletion___block_invoke(uint64_t a1)
@@ -2358,10 +2358,10 @@ uint64_t __129__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_queu
   return result;
 }
 
-- (void)markAllAppletsForDeletionResponse:(id)a3
+- (void)markAllAppletsForDeletionResponse:(id)response
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -2370,15 +2370,15 @@ uint64_t __129__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_queu
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -2396,20 +2396,20 @@ uint64_t __129__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_queu
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __79__NPKPaymentWebServiceCompanionTargetDevice_markAllAppletsForDeletionResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -2506,18 +2506,18 @@ void __79__NPKPaymentWebServiceCompanionTargetDevice_markAllAppletsForDeletionRe
   }
 }
 
-- (void)markAllAppletsForDeletionWithCompletion:(id)a3
+- (void)markAllAppletsForDeletionWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  completionCopy = completion;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __85__NPKPaymentWebServiceCompanionTargetDevice_markAllAppletsForDeletionWithCompletion___block_invoke;
   v7[3] = &unk_279945530;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
 void __85__NPKPaymentWebServiceCompanionTargetDevice_markAllAppletsForDeletionWithCompletion___block_invoke(uint64_t a1)
@@ -2606,15 +2606,15 @@ uint64_t __85__NPKPaymentWebServiceCompanionTargetDevice_markAllAppletsForDeleti
   return result;
 }
 
-- (void)handleBalanceChange:(id)a3
+- (void)handleBalanceChange:(id)change
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = [NPKProtoHandleBalanceChangeRequest alloc];
-  v6 = [v4 data];
+  data = [changeCopy data];
 
-  v7 = [(NPKProtoHandleBalanceChangeRequest *)v5 initWithData:v6];
-  v8 = [(NPKProtoHandleBalanceChangeRequest *)v7 passID];
+  v7 = [(NPKProtoHandleBalanceChangeRequest *)v5 initWithData:data];
+  passID = [(NPKProtoHandleBalanceChangeRequest *)v7 passID];
   v9 = [MEMORY[0x277CBEB58] set];
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
@@ -2625,21 +2625,21 @@ uint64_t __85__NPKPaymentWebServiceCompanionTargetDevice_markAllAppletsForDeleti
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v23 = v8;
+      v23 = passID;
       v24 = 1024;
       LODWORD(v25) = [(NPKProtoHandleBalanceChangeRequest *)v7 balanceBytesCount];
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Got balance update for unique ID %@ with %u balances", buf, 0x12u);
     }
   }
 
-  v13 = [(NPKProtoHandleBalanceChangeRequest *)v7 balanceBytes];
+  balanceBytes = [(NPKProtoHandleBalanceChangeRequest *)v7 balanceBytes];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __65__NPKPaymentWebServiceCompanionTargetDevice_handleBalanceChange___block_invoke;
   v20[3] = &unk_279949C70;
   v14 = v9;
   v21 = v14;
-  [v13 enumerateObjectsUsingBlock:v20];
+  [balanceBytes enumerateObjectsUsingBlock:v20];
 
   v15 = pk_General_log();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -2652,13 +2652,13 @@ uint64_t __85__NPKPaymentWebServiceCompanionTargetDevice_markAllAppletsForDeleti
       *buf = 138412546;
       v23 = v14;
       v24 = 2112;
-      v25 = v8;
+      v25 = passID;
       _os_log_impl(&dword_25B300000, v17, OS_LOG_TYPE_DEFAULT, "Notice: Handling balance update %@ for unique ID %@", buf, 0x16u);
     }
   }
 
-  v18 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v18 handleBalanceUpdate:v14 forUniqueID:v8];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate handleBalanceUpdate:v14 forUniqueID:passID];
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -2677,10 +2677,10 @@ void __65__NPKPaymentWebServiceCompanionTargetDevice_handleBalanceChange___block
   }
 }
 
-- (void)registrationDataResponse:(id)a3
+- (void)registrationDataResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -2689,15 +2689,15 @@ void __65__NPKPaymentWebServiceCompanionTargetDevice_handleBalanceChange___block
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -2717,20 +2717,20 @@ void __65__NPKPaymentWebServiceCompanionTargetDevice_handleBalanceChange___block
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __70__NPKPaymentWebServiceCompanionTargetDevice_registrationDataResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v24;
     v22 = &v30;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -2876,45 +2876,45 @@ LABEL_20:
 
 - (id)appleAccountInformation
 {
-  v2 = [MEMORY[0x277D37D38] sharedInstance];
-  v3 = [v2 appleAccountInformation];
+  mEMORY[0x277D37D38] = [MEMORY[0x277D37D38] sharedInstance];
+  appleAccountInformation = [mEMORY[0x277D37D38] appleAccountInformation];
 
-  return v3;
+  return appleAccountInformation;
 }
 
-- (void)renewAppleAccountWithCompletionHandler:(id)a3
+- (void)renewAppleAccountWithCompletionHandler:(id)handler
 {
   v3 = MEMORY[0x277D37D38];
-  v4 = a3;
-  v5 = [v3 sharedInstance];
-  [v5 renewAppleAccountWithCompletionHandler:v4];
+  handlerCopy = handler;
+  sharedInstance = [v3 sharedInstance];
+  [sharedInstance renewAppleAccountWithCompletionHandler:handlerCopy];
 }
 
-- (void)paymentWebService:(id)a3 registrationDataWithCompletionHandler:(id)a4
+- (void)paymentWebService:(id)service registrationDataWithCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self appleAccountInformation];
-  v9 = [v8 authorizationHeader];
+  handlerCopy = handler;
+  serviceCopy = service;
+  appleAccountInformation = [(NPKPaymentWebServiceCompanionTargetDevice *)self appleAccountInformation];
+  authorizationHeader = [appleAccountInformation authorizationHeader];
 
-  [(NPKPaymentWebServiceCompanionTargetDevice *)self _paymentWebService:v7 registrationDataWithAuthToken:v9 completionHandler:v6];
+  [(NPKPaymentWebServiceCompanionTargetDevice *)self _paymentWebService:serviceCopy registrationDataWithAuthToken:authorizationHeader completionHandler:handlerCopy];
 }
 
-- (void)_paymentWebService:(id)a3 registrationDataWithAuthToken:(id)a4 completionHandler:(id)a5
+- (void)_paymentWebService:(id)service registrationDataWithAuthToken:(id)token completionHandler:(id)handler
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  tokenCopy = token;
+  handlerCopy = handler;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __112__NPKPaymentWebServiceCompanionTargetDevice__paymentWebService_registrationDataWithAuthToken_completionHandler___block_invoke;
   block[3] = &unk_279945A48;
-  v13 = v7;
-  v14 = self;
-  v15 = v8;
-  v10 = v8;
-  v11 = v7;
-  dispatch_sync(v9, block);
+  v13 = tokenCopy;
+  selfCopy = self;
+  v15 = handlerCopy;
+  v10 = handlerCopy;
+  v11 = tokenCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 void __112__NPKPaymentWebServiceCompanionTargetDevice__paymentWebService_registrationDataWithAuthToken_completionHandler___block_invoke(uint64_t a1)
@@ -3029,10 +3029,10 @@ uint64_t __112__NPKPaymentWebServiceCompanionTargetDevice__paymentWebService_reg
   return result;
 }
 
-- (void)provisioningDataResponse:(id)a3
+- (void)provisioningDataResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -3041,15 +3041,15 @@ uint64_t __112__NPKPaymentWebServiceCompanionTargetDevice__paymentWebService_reg
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -3063,19 +3063,19 @@ uint64_t __112__NPKPaymentWebServiceCompanionTargetDevice__paymentWebService_reg
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __70__NPKPaymentWebServiceCompanionTargetDevice_provisioningDataResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v23;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -3158,19 +3158,19 @@ void __70__NPKPaymentWebServiceCompanionTargetDevice_provisioningDataResponse___
   }
 }
 
-- (void)paymentWebService:(id)a3 provisioningDataIncludingDeviceMetadata:(BOOL)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service provisioningDataIncludingDeviceMetadata:(BOOL)metadata withCompletionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  handlerCopy = handler;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __125__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_provisioningDataIncludingDeviceMetadata_withCompletionHandler___block_invoke;
   block[3] = &unk_279945CF0;
-  v12 = a4;
+  metadataCopy = metadata;
   block[4] = self;
-  v11 = v7;
-  v9 = v7;
-  dispatch_sync(v8, block);
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 void __125__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_provisioningDataIncludingDeviceMetadata_withCompletionHandler___block_invoke(uint64_t a1)
@@ -3436,10 +3436,10 @@ uint64_t __125__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_prov
   return result;
 }
 
-- (void)configurationDataResponse:(id)a3
+- (void)configurationDataResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -3448,15 +3448,15 @@ uint64_t __125__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_prov
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -3470,19 +3470,19 @@ uint64_t __125__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_prov
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__NPKPaymentWebServiceCompanionTargetDevice_configurationDataResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v23;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -3565,18 +3565,18 @@ void __71__NPKPaymentWebServiceCompanionTargetDevice_configurationDataResponse__
   }
 }
 
-- (void)paymentWebService:(id)a3 configurationDataWithCompletionHandler:(id)a4
+- (void)paymentWebService:(id)service configurationDataWithCompletionHandler:(id)handler
 {
-  v5 = a4;
-  v6 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  handlerCopy = handler;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_configurationDataWithCompletionHandler___block_invoke;
   v8[3] = &unk_279945530;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_sync(v6, v8);
+  v9 = handlerCopy;
+  v7 = handlerCopy;
+  dispatch_sync(internalQueue, v8);
 }
 
 void __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_configurationDataWithCompletionHandler___block_invoke(uint64_t a1)
@@ -3665,10 +3665,10 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_conf
   return result;
 }
 
-- (id)trustedDeviceEnrollmentInfoForWebService:(id)a3
+- (id)trustedDeviceEnrollmentInfoForWebService:(id)service
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  serviceCopy = service;
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -3678,34 +3678,34 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_conf
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v18 = 138412290;
-      v19 = v3;
+      v19 = serviceCopy;
       _os_log_impl(&dword_25B300000, v6, OS_LOG_TYPE_DEFAULT, "Notice: Requested Trusted Device Enrollment Info for WebService: %@", &v18, 0xCu);
     }
   }
 
-  v7 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v8 = [v7 getActivePairedDevice];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-  if (v8)
+  if (getActivePairedDevice)
   {
     v9 = objc_alloc_init(MEMORY[0x277D38318]);
-    v10 = [v8 valueForProperty:*MEMORY[0x277D2BBA8]];
+    v10 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BBA8]];
     [v9 setDeviceName:v10];
 
-    v11 = [v8 valueForProperty:*MEMORY[0x277D2BBF8]];
+    v11 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BBF8]];
     [v9 setDeviceSerialNumber:v11];
 
-    v12 = [v8 valueForProperty:*MEMORY[0x277D2BC30]];
+    v12 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BC30]];
     [v9 setDeviceUDID:v12];
 
-    v13 = [v8 valueForProperty:*MEMORY[0x277D2BBC0]];
+    v13 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BBC0]];
     [v9 setProductType:v13];
 
-    v14 = [v8 valueForProperty:*MEMORY[0x277D2BBE0]];
+    v14 = [getActivePairedDevice valueForProperty:*MEMORY[0x277D2BBE0]];
     [v9 setSecureElementIdentifier:v14];
 
     v15 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"6BD289D4-EFF7-4E48-A3AD-776E924C8723"];
-    [v9 setSupportsAccessExpressMode:{objc_msgSend(v8, "supportsCapability:", v15)}];
+    [v9 setSupportsAccessExpressMode:{objc_msgSend(getActivePairedDevice, "supportsCapability:", v15)}];
   }
 
   else
@@ -3718,10 +3718,10 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_conf
   return v9;
 }
 
-- (void)signDataResponse:(id)a3
+- (void)signDataResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -3730,15 +3730,15 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_conf
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -3758,20 +3758,20 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_conf
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__NPKPaymentWebServiceCompanionTargetDevice_signDataResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v30;
     v22 = &v24;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -3864,11 +3864,11 @@ void __62__NPKPaymentWebServiceCompanionTargetDevice_signDataResponse___block_in
   }
 }
 
-- (void)paymentWebService:(id)a3 signData:(id)a4 signatureEntanglementMode:(unint64_t)a5 withCompletionHandler:(id)a6
+- (void)paymentWebService:(id)service signData:(id)data signatureEntanglementMode:(unint64_t)mode withCompletionHandler:(id)handler
 {
   v27 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a6;
+  dataCopy = data;
+  handlerCopy = handler;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -3878,25 +3878,25 @@ void __62__NPKPaymentWebServiceCompanionTargetDevice_signDataResponse___block_in
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218240;
-      v24 = [v9 length];
+      v24 = [dataCopy length];
       v25 = 1024;
-      v26 = a5;
+      modeCopy = mode;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Request to sign data of length %lu with signature entanglement mode %d", buf, 0x12u);
     }
   }
 
-  v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __120__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_signData_signatureEntanglementMode_withCompletionHandler___block_invoke;
   v18[3] = &unk_279949D98;
-  v19 = v9;
-  v20 = self;
-  v21 = v10;
-  v22 = a5;
-  v15 = v10;
-  v16 = v9;
-  dispatch_sync(v14, v18);
+  v19 = dataCopy;
+  selfCopy = self;
+  v21 = handlerCopy;
+  modeCopy2 = mode;
+  v15 = handlerCopy;
+  v16 = dataCopy;
+  dispatch_sync(internalQueue, v18);
 
   v17 = *MEMORY[0x277D85DE8];
 }
@@ -3989,11 +3989,11 @@ uint64_t __120__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_sign
   return result;
 }
 
-- (void)paymentWebService:(id)a3 signData:(id)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service signData:(id)data withCompletionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  dataCopy = data;
+  handlerCopy = handler;
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -4003,22 +4003,22 @@ uint64_t __120__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_sign
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134217984;
-      v21 = [v7 length];
+      v21 = [dataCopy length];
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Request to sign data of length %lu", buf, 0xCu);
     }
   }
 
-  v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __94__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_signData_withCompletionHandler___block_invoke;
   block[3] = &unk_279945A48;
-  v17 = v7;
-  v18 = self;
-  v19 = v8;
-  v13 = v8;
-  v14 = v7;
-  dispatch_sync(v12, block);
+  v17 = dataCopy;
+  selfCopy = self;
+  v19 = handlerCopy;
+  v13 = handlerCopy;
+  v14 = dataCopy;
+  dispatch_sync(internalQueue, block);
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -4112,10 +4112,10 @@ uint64_t __94__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_signD
   return result;
 }
 
-- (void)didRegisterResponse:(id)a3
+- (void)didRegisterResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -4124,15 +4124,15 @@ uint64_t __94__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_signD
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -4144,19 +4144,19 @@ uint64_t __94__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_signD
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __65__NPKPaymentWebServiceCompanionTargetDevice_didRegisterResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v23;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -4233,24 +4233,24 @@ void __65__NPKPaymentWebServiceCompanionTargetDevice_didRegisterResponse___block
   }
 }
 
-- (void)paymentWebService:(id)a3 didRegisterWithRegionMap:(id)a4 primaryRegionTopic:(id)a5
+- (void)paymentWebService:(id)service didRegisterWithRegionMap:(id)map primaryRegionTopic:(id)topic
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  serviceCopy = service;
+  mapCopy = map;
+  topicCopy = topic;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __107__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_didRegisterWithRegionMap_primaryRegionTopic___block_invoke;
   v15[3] = &unk_279946260;
-  v16 = v9;
-  v17 = v10;
-  v18 = v8;
-  v19 = self;
-  v12 = v8;
-  v13 = v10;
-  v14 = v9;
-  dispatch_sync(v11, v15);
+  v16 = mapCopy;
+  v17 = topicCopy;
+  v18 = serviceCopy;
+  selfCopy = self;
+  v12 = serviceCopy;
+  v13 = topicCopy;
+  v14 = mapCopy;
+  dispatch_sync(internalQueue, v15);
 }
 
 void __107__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_didRegisterWithRegionMap_primaryRegionTopic___block_invoke(uint64_t a1)
@@ -4372,44 +4372,44 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_didRegis
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_supportedRegionsForWebService:(id)a3
+- (id)_supportedRegionsForWebService:(id)service
 {
-  v3 = [a3 context];
-  v4 = [v3 configuration];
-  v5 = NPKSupportedRegionsForWebServiceConfiguration(v4);
+  context = [service context];
+  configuration = [context configuration];
+  v5 = NPKSupportedRegionsForWebServiceConfiguration(configuration);
 
   return v5;
 }
 
-- (BOOL)_supportsFeaturesForWebService:(id)a3
+- (BOOL)_supportsFeaturesForWebService:(id)service
 {
-  v3 = [a3 context];
-  v4 = [v3 configuration];
-  v5 = NPKSupportsFeaturesForWebServiceConfiguration(v4);
+  context = [service context];
+  configuration = [context configuration];
+  v5 = NPKSupportsFeaturesForWebServiceConfiguration(configuration);
 
   return v5;
 }
 
-- (void)paymentWebServiceDidUpdateConfiguration:(id)a3
+- (void)paymentWebServiceDidUpdateConfiguration:(id)configuration
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _supportedRegionsForWebService:v4];
-  v6 = [v4 context];
+  configurationCopy = configuration;
+  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _supportedRegionsForWebService:configurationCopy];
+  context = [configurationCopy context];
 
-  v7 = [v6 configuration];
-  v8 = [v7 configuration];
+  configuration = [context configuration];
+  v7Configuration = [configuration configuration];
 
   v9 = pk_Payment_log();
-  LODWORD(v7) = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
+  LODWORD(configuration) = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
-  if (v7)
+  if (configuration)
   {
     v10 = pk_Payment_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v22 = v8;
+      v22 = v7Configuration;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Payment web service updated configuration: %@", buf, 0xCu);
     }
   }
@@ -4418,7 +4418,7 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_didRegis
   v12 = v11;
   if (v5)
   {
-    [v11 setObject:v8 forKey:@"Configuration"];
+    [v11 setObject:v7Configuration forKey:@"Configuration"];
     v13 = *MEMORY[0x277D389D8];
     [v12 setObject:v5 forKey:*MEMORY[0x277D389D8]];
   }
@@ -4430,7 +4430,7 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_didRegis
     [v12 removeObjectForKey:*MEMORY[0x277D389D8]];
   }
 
-  v14 = [v12 synchronize];
+  synchronize = [v12 synchronize];
   v15 = objc_alloc_init(MEMORY[0x277D2BA60]);
   v16 = MEMORY[0x277CBEB98];
   v20[0] = @"Configuration";
@@ -4442,14 +4442,14 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_didRegis
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)paymentSupportedInCurrentRegionForWebService:(id)a3
+- (unint64_t)paymentSupportedInCurrentRegionForWebService:(id)service
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceRegion];
-  if (v5)
+  serviceCopy = service;
+  deviceRegion = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceRegion];
+  if (deviceRegion)
   {
-    v6 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _supportedRegionsForWebService:v4];
+    v6 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _supportedRegionsForWebService:serviceCopy];
     if (v6)
     {
       v7 = PKStockholmSetupSupportedInRegion();
@@ -4485,7 +4485,7 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_didRegis
       }
 
       v14 = 138412546;
-      v15 = v5;
+      v15 = deviceRegion;
       v16 = 2112;
       v17 = v11;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: region %@ support %@", &v14, 0x16u);
@@ -4496,15 +4496,15 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_didRegis
   return v7;
 }
 
-- (unint64_t)registrationSupportedInCurrentRegionForWebService:(id)a3
+- (unint64_t)registrationSupportedInCurrentRegionForWebService:(id)service
 {
-  v4 = a3;
-  if ([(NPKPaymentWebServiceCompanionTargetDevice *)self paymentSupportedInCurrentRegionForWebService:v4]== 1)
+  serviceCopy = service;
+  if ([(NPKPaymentWebServiceCompanionTargetDevice *)self paymentSupportedInCurrentRegionForWebService:serviceCopy]== 1)
   {
     v5 = 1;
   }
 
-  else if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _supportsFeaturesForWebService:v4])
+  else if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _supportsFeaturesForWebService:serviceCopy])
   {
     v5 = 1;
   }
@@ -4517,22 +4517,22 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_didRegis
   return v5;
 }
 
-- (id)paymentWebService:(id)a3 supportedRegionFeatureOfType:(int64_t)a4
+- (id)paymentWebService:(id)service supportedRegionFeatureOfType:(int64_t)type
 {
   v26 = *MEMORY[0x277D85DE8];
-  v6 = [a3 context];
-  v7 = [v6 configuration];
+  context = [service context];
+  configuration = [context configuration];
 
-  if (v7)
+  if (configuration)
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceRegion];
-    v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceClass];
-    v10 = [v7 featureWithType:a4 inRegion:v8];
+    deviceRegion = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceRegion];
+    deviceClass = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceClass];
+    v10 = [configuration featureWithType:type inRegion:deviceRegion];
     if (v10)
     {
-      v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceVersion];
-      v12 = [v10 versionRange];
-      v13 = [v12 versionMeetsRequirements:v11 deviceClass:v9];
+      deviceVersion = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceVersion];
+      versionRange = [v10 versionRange];
+      v13 = [versionRange versionMeetsRequirements:deviceVersion deviceClass:deviceClass];
 
       if (v13)
       {
@@ -4554,7 +4554,7 @@ LABEL_19:
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
           v24 = 134217984;
-          v25 = a4;
+          typeCopy3 = type;
           _os_log_impl(&dword_25B300000, v21, OS_LOG_TYPE_DEFAULT, "Notice: Unsupported OS version for feature with type %ld", &v24, 0xCu);
         }
       }
@@ -4571,12 +4571,12 @@ LABEL_19:
         goto LABEL_18;
       }
 
-      v11 = pk_Payment_log();
-      if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
+      deviceVersion = pk_Payment_log();
+      if (os_log_type_enabled(deviceVersion, OS_LOG_TYPE_DEFAULT))
       {
         v24 = 134217984;
-        v25 = a4;
-        _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: No feature of type %ld found", &v24, 0xCu);
+        typeCopy3 = type;
+        _os_log_impl(&dword_25B300000, deviceVersion, OS_LOG_TYPE_DEFAULT, "Notice: No feature of type %ld found", &v24, 0xCu);
       }
     }
 
@@ -4589,12 +4589,12 @@ LABEL_19:
 
   if (v16)
   {
-    v8 = pk_Payment_log();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+    deviceRegion = pk_Payment_log();
+    if (os_log_type_enabled(deviceRegion, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 134217984;
-      v25 = a4;
-      _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: No feature of type %ld found - device not registered", &v24, 0xCu);
+      typeCopy3 = type;
+      _os_log_impl(&dword_25B300000, deviceRegion, OS_LOG_TYPE_DEFAULT, "Notice: No feature of type %ld found - device not registered", &v24, 0xCu);
     }
 
     v14 = 0;
@@ -4609,7 +4609,7 @@ LABEL_20:
   return v14;
 }
 
-- (id)deviceDescriptionForPaymentWebService:(id)a3
+- (id)deviceDescriptionForPaymentWebService:(id)service
 {
   v3 = NPKPairedOrPairingDevice();
   v4 = [v3 valueForProperty:*MEMORY[0x277D2BBA8]];
@@ -4657,10 +4657,10 @@ LABEL_20:
   return v3;
 }
 
-- (void)paymentWebService:(id)a3 deleteApplicationWithAID:(id)a4
+- (void)paymentWebService:(id)service deleteApplicationWithAID:(id)d
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  dCopy = d;
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -4670,20 +4670,20 @@ LABEL_20:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v5;
+      v15 = dCopy;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Delete application with AID %@", buf, 0xCu);
     }
   }
 
-  if (v5)
+  if (dCopy)
   {
-    v13 = v5;
+    v13 = dCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:&v13 count:1];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __88__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_deleteApplicationWithAID___block_invoke;
     v11[3] = &unk_279949DE0;
-    v12 = v5;
+    v12 = dCopy;
     [(NPKPaymentWebServiceCompanionTargetDevice *)self removeAIDsFromSecureElement:v9 withCompletion:v11];
   }
 
@@ -4716,12 +4716,12 @@ void __88__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_deleteApp
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)paymentWebService:(id)a3 addPaymentPass:(id)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service addPaymentPass:(id)pass withCompletionHandler:(id)handler
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  passCopy = pass;
+  handlerCopy = handler;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -4730,32 +4730,32 @@ void __88__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_deleteApp
     v13 = pk_Payment_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v9 uniqueID];
+      uniqueID = [passCopy uniqueID];
       *buf = 138412290;
-      v29 = v14;
+      v29 = uniqueID;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Add payment pass: %@", buf, 0xCu);
     }
   }
 
-  v15 = [v8 context];
-  [(NPKPaymentWebServiceCompanionTargetDevice *)self archiveContext:v15];
+  context = [serviceCopy context];
+  [(NPKPaymentWebServiceCompanionTargetDevice *)self archiveContext:context];
 
   v16 = NPKGizmoScreenScale();
-  v17 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
-  [v17 setQueueAppropriateFailedActions:1];
-  v18 = [MEMORY[0x277D37E18] sharedInstance];
-  v19 = [v9 dataAccessor];
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  [companionAgentConnection setQueueAppropriateFailedActions:1];
+  mEMORY[0x277D37E18] = [MEMORY[0x277D37E18] sharedInstance];
+  dataAccessor = [passCopy dataAccessor];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __100__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addPaymentPass_withCompletionHandler___block_invoke;
   v24[3] = &unk_279946698;
-  v25 = v17;
-  v26 = v9;
-  v27 = v10;
-  v20 = v10;
-  v21 = v9;
-  v22 = v17;
-  [v19 downloadRemoteAssetsWithScreenScale:@"~watch" suffix:v18 cloudStoreCoordinatorDelegate:v24 completion:v16];
+  v25 = companionAgentConnection;
+  v26 = passCopy;
+  v27 = handlerCopy;
+  v20 = handlerCopy;
+  v21 = passCopy;
+  v22 = companionAgentConnection;
+  [dataAccessor downloadRemoteAssetsWithScreenScale:@"~watch" suffix:mEMORY[0x277D37E18] cloudStoreCoordinatorDelegate:v24 completion:v16];
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -4820,13 +4820,13 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addP
   return result;
 }
 
-- (void)paymentWebService:(id)a3 addSecureElementPass:(id)a4 properties:(id)a5 completion:(id)a6
+- (void)paymentWebService:(id)service addSecureElementPass:(id)pass properties:(id)properties completion:(id)completion
 {
   v63 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v32 = a5;
-  v12 = a6;
+  serviceCopy = service;
+  passCopy = pass;
+  propertiesCopy = properties;
+  completionCopy = completion;
   v13 = pk_Payment_log();
   v14 = os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT);
 
@@ -4835,41 +4835,41 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addP
     v15 = pk_Payment_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v11 uniqueID];
+      uniqueID = [passCopy uniqueID];
       *buf = 138412546;
-      *&buf[4] = v16;
+      *&buf[4] = uniqueID;
       *&buf[12] = 2112;
-      *&buf[14] = v32;
+      *&buf[14] = propertiesCopy;
       _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_DEFAULT, "Notice: Add secure element pass pass: %@, with properties: %@", buf, 0x16u);
     }
   }
 
-  if (v11)
+  if (passCopy)
   {
     if ([(NPKPaymentWebServiceCompanionTargetDevice *)self supportsSharingInAChain])
     {
-      v17 = [v11 isCarKeyPass];
+      isCarKeyPass = [passCopy isCarKeyPass];
     }
 
     else
     {
-      v17 = 0;
+      isCarKeyPass = 0;
     }
 
-    v21 = [v11 paymentPass];
+    paymentPass = [passCopy paymentPass];
     objc_initWeak(&location, self);
     aBlock[0] = MEMORY[0x277D85DD0];
     aBlock[1] = 3221225472;
     aBlock[2] = __106__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addSecureElementPass_properties_completion___block_invoke;
     aBlock[3] = &unk_279949E30;
     objc_copyWeak(&v57, &location);
-    v22 = v21;
+    v22 = paymentPass;
     v55 = v22;
-    v23 = v12;
+    v23 = completionCopy;
     v56 = v23;
     v24 = _Block_copy(aBlock);
     v25 = v24;
-    if (v17)
+    if (isCarKeyPass)
     {
       v26 = dispatch_group_create();
       dispatch_group_enter(v26);
@@ -4879,8 +4879,8 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addP
       v52[3] = &unk_279944F98;
       v27 = v26;
       v53 = v27;
-      v31 = v10;
-      [(NPKPaymentWebServiceCompanionTargetDevice *)self paymentWebService:v10 addPaymentPass:v22 withCompletionHandler:v52];
+      v31 = serviceCopy;
+      [(NPKPaymentWebServiceCompanionTargetDevice *)self paymentWebService:serviceCopy addPaymentPass:v22 withCompletionHandler:v52];
       *buf = 0;
       *&buf[8] = buf;
       *&buf[16] = 0x3032000000;
@@ -4894,22 +4894,22 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addP
       v50[4] = __Block_byref_object_dispose__22;
       v51 = 0;
       dispatch_group_enter(v27);
-      v28 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+      internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __106__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addSecureElementPass_properties_completion___block_invoke_2;
       block[3] = &unk_279949EA0;
-      v43 = v11;
-      v44 = v32;
+      v43 = passCopy;
+      v44 = propertiesCopy;
       v45 = v27;
-      v46 = self;
+      selfCopy = self;
       v47 = v23;
       v48 = buf;
       v49 = v50;
       v29 = v27;
-      dispatch_sync(v28, block);
+      dispatch_sync(internalQueue, block);
 
-      v10 = v31;
+      serviceCopy = v31;
       v36[0] = MEMORY[0x277D85DD0];
       v36[1] = 3221225472;
       v36[2] = __106__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addSecureElementPass_properties_completion___block_invoke_457;
@@ -4917,7 +4917,7 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addP
       v40 = buf;
       v41 = v50;
       v37 = v22;
-      v38 = self;
+      selfCopy2 = self;
       v39 = v25;
       dispatch_group_notify(v29, MEMORY[0x277D85CD0], v36);
 
@@ -4933,7 +4933,7 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addP
       v33[3] = &unk_279946670;
       v35 = v24;
       v34 = v22;
-      [(NPKPaymentWebServiceCompanionTargetDevice *)self paymentWebService:v10 addPaymentPass:v34 withCompletionHandler:v33];
+      [(NPKPaymentWebServiceCompanionTargetDevice *)self paymentWebService:serviceCopy addPaymentPass:v34 withCompletionHandler:v33];
 
       v29 = v35;
     }
@@ -4957,9 +4957,9 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addP
       }
     }
 
-    if (v12)
+    if (completionCopy)
     {
-      (*(v12 + 2))(v12, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -5367,10 +5367,10 @@ void __106__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addSecur
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addSecureElementPassWithPropertiesResponse:(id)a3
+- (void)addSecureElementPassWithPropertiesResponse:(id)response
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -5379,15 +5379,15 @@ void __106__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addSecur
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target addSecureElementPassWithPropertiesResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -5411,21 +5411,21 @@ void __106__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_addSecur
   v28 = __Block_byref_object_copy__22;
   v29 = __Block_byref_object_dispose__22;
   v30 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __88__NPKPaymentWebServiceCompanionTargetDevice_addSecureElementPassWithPropertiesResponse___block_invoke;
     block[3] = &unk_279949BA8;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v37;
     v23 = &v25;
     v24 = &v31;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -5533,23 +5533,23 @@ void __88__NPKPaymentWebServiceCompanionTargetDevice_addSecureElementPassWithPro
   }
 }
 
-- (void)paymentWebService:(id)a3 removePass:(id)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service removePass:(id)pass withCompletionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
-  [v11 setQueueAppropriateFailedActions:1];
-  v9 = [v8 uniqueID];
+  handlerCopy = handler;
+  passCopy = pass;
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  [companionAgentConnection setQueueAppropriateFailedActions:1];
+  uniqueID = [passCopy uniqueID];
 
   v10 = NPKPairedOrPairingDevice();
-  [v11 removePaymentPassWithUniqueID:v9 forDevice:v10 waitForConfirmation:0 completion:v7];
+  [companionAgentConnection removePaymentPassWithUniqueID:uniqueID forDevice:v10 waitForConfirmation:0 completion:handlerCopy];
 }
 
-- (void)downloadAllPaymentPassesForPaymentWebService:(id)a3
+- (void)downloadAllPaymentPassesForPaymentWebService:(id)service
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  serviceCopy = service;
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -5559,7 +5559,7 @@ void __88__NPKPaymentWebServiceCompanionTargetDevice_addSecureElementPassWithPro
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v14 = v4;
+      v14 = serviceCopy;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Redownloading all payment passes as requested by web service %@", buf, 0xCu);
     }
   }
@@ -5568,9 +5568,9 @@ void __88__NPKPaymentWebServiceCompanionTargetDevice_addSecureElementPassWithPro
   v11[1] = 3221225472;
   v11[2] = __90__NPKPaymentWebServiceCompanionTargetDevice_downloadAllPaymentPassesForPaymentWebService___block_invoke;
   v11[3] = &unk_279944F98;
-  v12 = v4;
-  v9 = v4;
-  [v5 redownloadAllPaymentPassesWithCompletion:v11];
+  v12 = serviceCopy;
+  v9 = serviceCopy;
+  [companionAgentConnection redownloadAllPaymentPassesWithCompletion:v11];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -5596,10 +5596,10 @@ void __90__NPKPaymentWebServiceCompanionTargetDevice_downloadAllPaymentPassesFor
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)secureElementGetAppletsResponse:(id)a3
+- (void)secureElementGetAppletsResponse:(id)response
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -5608,15 +5608,15 @@ void __90__NPKPaymentWebServiceCompanionTargetDevice_downloadAllPaymentPassesFor
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -5624,20 +5624,20 @@ void __90__NPKPaymentWebServiceCompanionTargetDevice_downloadAllPaymentPassesFor
   v26 = __Block_byref_object_copy__384;
   v27 = __Block_byref_object_dispose__385;
   v28 = 0;
-  v11 = [MEMORY[0x277CBEB18] array];
-  if (v10)
+  array = [MEMORY[0x277CBEB18] array];
+  if (incomingResponseIdentifier)
   {
-    v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __77__NPKPaymentWebServiceCompanionTargetDevice_secureElementGetAppletsResponse___block_invoke;
     block[3] = &unk_279949F40;
     block[4] = self;
-    v20 = v10;
-    v21 = v4;
-    v22 = v11;
+    v20 = incomingResponseIdentifier;
+    v21 = responseCopy;
+    v22 = array;
     p_buf = &buf;
-    dispatch_sync(v12, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -5659,7 +5659,7 @@ void __90__NPKPaymentWebServiceCompanionTargetDevice_downloadAllPaymentPassesFor
   v16 = *(*(&buf + 1) + 40);
   if (v16)
   {
-    (*(v16 + 16))(v16, v11, 0);
+    (*(v16 + 16))(v16, array, 0);
   }
 
   _Block_object_dispose(&buf, 8);
@@ -5732,18 +5732,18 @@ void __77__NPKPaymentWebServiceCompanionTargetDevice_secureElementGetAppletsResp
   }
 }
 
-- (void)secureElementAppletsWithCompletion:(id)a3
+- (void)secureElementAppletsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  completionCopy = completion;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__NPKPaymentWebServiceCompanionTargetDevice_secureElementAppletsWithCompletion___block_invoke;
   v7[3] = &unk_279945530;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
 void __80__NPKPaymentWebServiceCompanionTargetDevice_secureElementAppletsWithCompletion___block_invoke(uint64_t a1)
@@ -5832,10 +5832,10 @@ uint64_t __80__NPKPaymentWebServiceCompanionTargetDevice_secureElementAppletsWit
   return result;
 }
 
-- (void)secureElementRemoveAppletsResponse:(id)a3
+- (void)secureElementRemoveAppletsResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -5844,15 +5844,15 @@ uint64_t __80__NPKPaymentWebServiceCompanionTargetDevice_secureElementAppletsWit
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -5864,19 +5864,19 @@ uint64_t __80__NPKPaymentWebServiceCompanionTargetDevice_secureElementAppletsWit
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __80__NPKPaymentWebServiceCompanionTargetDevice_secureElementRemoveAppletsResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v23;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -5953,21 +5953,21 @@ void __80__NPKPaymentWebServiceCompanionTargetDevice_secureElementRemoveAppletsR
   }
 }
 
-- (void)removeAIDsFromSecureElement:(id)a3 withCompletion:(id)a4
+- (void)removeAIDsFromSecureElement:(id)element withCompletion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  elementCopy = element;
+  completionCopy = completion;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __88__NPKPaymentWebServiceCompanionTargetDevice_removeAIDsFromSecureElement_withCompletion___block_invoke;
   block[3] = &unk_279945A48;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = elementCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = elementCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 void __88__NPKPaymentWebServiceCompanionTargetDevice_removeAIDsFromSecureElement_withCompletion___block_invoke(id *a1)
@@ -6059,10 +6059,10 @@ uint64_t __88__NPKPaymentWebServiceCompanionTargetDevice_removeAIDsFromSecureEle
   return result;
 }
 
-- (void)dumpLogsResponse:(id)a3
+- (void)dumpLogsResponse:(id)response
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -6071,15 +6071,15 @@ uint64_t __88__NPKPaymentWebServiceCompanionTargetDevice_removeAIDsFromSecureEle
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -6087,17 +6087,17 @@ uint64_t __88__NPKPaymentWebServiceCompanionTargetDevice_removeAIDsFromSecureEle
   v23 = __Block_byref_object_copy__384;
   v24 = __Block_byref_object_dispose__385;
   v25 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __62__NPKPaymentWebServiceCompanionTargetDevice_dumpLogsResponse___block_invoke;
     block[3] = &unk_279948090;
     block[4] = self;
-    v19 = v10;
+    v19 = incomingResponseIdentifier;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -6160,18 +6160,18 @@ void __62__NPKPaymentWebServiceCompanionTargetDevice_dumpLogsResponse___block_in
   }
 }
 
-- (void)dumpLogsWithCompletion:(id)a3
+- (void)dumpLogsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  completionCopy = completion;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __68__NPKPaymentWebServiceCompanionTargetDevice_dumpLogsWithCompletion___block_invoke;
   v7[3] = &unk_279945530;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = completionCopy;
+  v6 = completionCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
 void __68__NPKPaymentWebServiceCompanionTargetDevice_dumpLogsWithCompletion___block_invoke(uint64_t a1)
@@ -6260,10 +6260,10 @@ uint64_t __68__NPKPaymentWebServiceCompanionTargetDevice_dumpLogsWithCompletion_
   return result;
 }
 
-- (void)pendingRemovalResponse:(id)a3
+- (void)pendingRemovalResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -6272,15 +6272,15 @@ uint64_t __68__NPKPaymentWebServiceCompanionTargetDevice_dumpLogsWithCompletion_
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -6292,19 +6292,19 @@ uint64_t __68__NPKPaymentWebServiceCompanionTargetDevice_dumpLogsWithCompletion_
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__NPKPaymentWebServiceCompanionTargetDevice_pendingRemovalResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -6382,12 +6382,12 @@ void __68__NPKPaymentWebServiceCompanionTargetDevice_pendingRemovalResponse___bl
   }
 }
 
-- (void)handlePendingRemovalOfPaymentPass:(id)a3 uniqueID:(id)a4 completion:(id)a5
+- (void)handlePendingRemovalOfPaymentPass:(id)pass uniqueID:(id)d completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  passCopy = pass;
+  dCopy = d;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -6397,26 +6397,26 @@ void __68__NPKPaymentWebServiceCompanionTargetDevice_pendingRemovalResponse___bl
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v25 = v8;
+      v25 = passCopy;
       v26 = 2112;
-      v27 = v9;
+      v27 = dCopy;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Handle pending removal of pass %@ with unique ID %@", buf, 0x16u);
     }
   }
 
-  v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __99__NPKPaymentWebServiceCompanionTargetDevice_handlePendingRemovalOfPaymentPass_uniqueID_completion___block_invoke;
   v19[3] = &unk_279945BB0;
-  v20 = v9;
-  v21 = v8;
-  v22 = self;
-  v23 = v10;
-  v15 = v10;
-  v16 = v8;
-  v17 = v9;
-  dispatch_sync(v14, v19);
+  v20 = dCopy;
+  v21 = passCopy;
+  selfCopy = self;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = passCopy;
+  v17 = dCopy;
+  dispatch_sync(internalQueue, v19);
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -6562,10 +6562,10 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_handlePendingRemovalOfP
   return result;
 }
 
-- (void)preferredAIDRequest:(id)a3
+- (void)preferredAIDRequest:(id)request
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -6574,19 +6574,19 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_handlePendingRemovalOfP
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [requestCopy npkDescription];
       v19 = 138412290;
-      v20 = v8;
+      v20 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &v19, 0xCu);
     }
   }
 
   v9 = [NPKProtoSetPreferredPaymentApplicationRequest alloc];
-  v10 = [v4 data];
-  v11 = [(NPKProtoSetPreferredPaymentApplicationRequest *)v9 initWithData:v10];
+  data = [requestCopy data];
+  v11 = [(NPKProtoSetPreferredPaymentApplicationRequest *)v9 initWithData:data];
 
-  v12 = [(NPKProtoSetPreferredPaymentApplicationRequest *)v11 passID];
-  v13 = [(NPKProtoSetPreferredPaymentApplicationRequest *)v11 preferredApplicationAID];
+  passID = [(NPKProtoSetPreferredPaymentApplicationRequest *)v11 passID];
+  preferredApplicationAID = [(NPKProtoSetPreferredPaymentApplicationRequest *)v11 preferredApplicationAID];
   v14 = pk_Payment_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -6596,26 +6596,26 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_handlePendingRemovalOfP
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       v19 = 138412546;
-      v20 = v12;
+      v20 = passID;
       v21 = 2112;
-      v22 = v13;
+      v22 = preferredApplicationAID;
       _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: unique ID %@ AID %@", &v19, 0x16u);
     }
   }
 
-  if (v12)
+  if (passID)
   {
-    v17 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-    [v17 handlePreferredAID:v13 forPassWithUniqueID:v12];
+    delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+    [delegate handlePreferredAID:preferredApplicationAID forPassWithUniqueID:passID];
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)preferredAIDResponse:(id)a3
+- (void)preferredAIDResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -6624,15 +6624,15 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_handlePendingRemovalOfP
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -6646,19 +6646,19 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_handlePendingRemovalOfP
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __66__NPKPaymentWebServiceCompanionTargetDevice_preferredAIDResponse___block_invoke;
     block[3] = &unk_279949F68;
     block[4] = self;
-    v19 = v10;
+    v19 = incomingResponseIdentifier;
     p_buf = &buf;
-    v20 = v4;
+    v20 = responseCopy;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -6731,12 +6731,12 @@ void __66__NPKPaymentWebServiceCompanionTargetDevice_preferredAIDResponse___bloc
   }
 }
 
-- (void)handlePreferredAID:(id)a3 forPassWithUniqueID:(id)a4 completion:(id)a5
+- (void)handlePreferredAID:(id)d forPassWithUniqueID:(id)iD completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  iDCopy = iD;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -6746,26 +6746,26 @@ void __66__NPKPaymentWebServiceCompanionTargetDevice_preferredAIDResponse___bloc
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v25 = v8;
+      v25 = dCopy;
       v26 = 2112;
-      v27 = v9;
+      v27 = iDCopy;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Handle preferred AID %@ for unique ID %@", buf, 0x16u);
     }
   }
 
-  v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __95__NPKPaymentWebServiceCompanionTargetDevice_handlePreferredAID_forPassWithUniqueID_completion___block_invoke;
   v19[3] = &unk_279945BB0;
-  v20 = v9;
-  v21 = v8;
-  v22 = self;
-  v23 = v10;
-  v15 = v10;
-  v16 = v8;
-  v17 = v9;
-  dispatch_sync(v14, v19);
+  v20 = iDCopy;
+  v21 = dCopy;
+  selfCopy = self;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = dCopy;
+  v17 = iDCopy;
+  dispatch_sync(internalQueue, v19);
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -6866,15 +6866,15 @@ uint64_t __95__NPKPaymentWebServiceCompanionTargetDevice_handlePreferredAID_forP
   return result;
 }
 
-- (void)updatePaymentPass:(id)a3
+- (void)updatePaymentPass:(id)pass
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  passCopy = pass;
   v5 = [NPKProtoUpdatePaymentPassRequest alloc];
-  v6 = [v4 data];
+  data = [passCopy data];
 
-  v7 = [(NPKProtoUpdatePaymentPassRequest *)v5 initWithData:v6];
-  v8 = [(NPKProtoUpdatePaymentPassRequest *)v7 passTypeIdentifier];
+  v7 = [(NPKProtoUpdatePaymentPassRequest *)v5 initWithData:data];
+  passTypeIdentifier = [(NPKProtoUpdatePaymentPassRequest *)v7 passTypeIdentifier];
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -6884,27 +6884,27 @@ uint64_t __95__NPKPaymentWebServiceCompanionTargetDevice_handlePreferredAID_forP
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v15 = 138412290;
-      v16 = v8;
+      v16 = passTypeIdentifier;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Incoming update payment pass protobuf: %@", &v15, 0xCu);
     }
   }
 
-  v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  v13 = [(NPKProtoUpdatePaymentPassRequest *)v7 passTypeIdentifier];
-  [v12 handleUpdatePaymentPassWithTypeIdentifier:v13];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  passTypeIdentifier2 = [(NPKProtoUpdatePaymentPassRequest *)v7 passTypeIdentifier];
+  [delegate handleUpdatePaymentPassWithTypeIdentifier:passTypeIdentifier2];
 
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updatePushToken:(id)a3
+- (void)updatePushToken:(id)token
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokenCopy = token;
   v5 = [NPKProtoUpdatePushTokenRequest alloc];
-  v6 = [v4 data];
+  data = [tokenCopy data];
 
-  v7 = [(NPKProtoUpdatePushTokenRequest *)v5 initWithData:v6];
-  v8 = [(NPKProtoUpdatePushTokenRequest *)v7 pushToken];
+  v7 = [(NPKProtoUpdatePushTokenRequest *)v5 initWithData:data];
+  pushToken = [(NPKProtoUpdatePushTokenRequest *)v7 pushToken];
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -6914,28 +6914,28 @@ uint64_t __95__NPKPaymentWebServiceCompanionTargetDevice_handlePreferredAID_forP
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v8;
+      v15 = pushToken;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Incoming update push token protobuf: %@", &v14, 0xCu);
     }
   }
 
-  v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v12 handlePushToken:v8];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate handlePushToken:pushToken];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)preconditionNotMet:(id)a3
+- (void)preconditionNotMet:(id)met
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  metCopy = met;
   v5 = [NPKProtoPaymentPreconditionsNotMetRequest alloc];
-  v6 = [v4 data];
+  data = [metCopy data];
 
-  v7 = [(NPKProtoPaymentPreconditionsNotMetRequest *)v5 initWithData:v6];
-  v8 = [(NPKProtoPaymentPreconditionsNotMetRequest *)v7 failedPrecondition];
-  v9 = [(NPKProtoPaymentPreconditionsNotMetRequest *)v7 passIDs];
-  v10 = [v9 copy];
+  v7 = [(NPKProtoPaymentPreconditionsNotMetRequest *)v5 initWithData:data];
+  failedPrecondition = [(NPKProtoPaymentPreconditionsNotMetRequest *)v7 failedPrecondition];
+  passIDs = [(NPKProtoPaymentPreconditionsNotMetRequest *)v7 passIDs];
+  v10 = [passIDs copy];
 
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -6946,41 +6946,41 @@ uint64_t __95__NPKPaymentWebServiceCompanionTargetDevice_handlePreferredAID_forP
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v17[0] = 67109634;
-      v17[1] = v8;
+      v17[1] = failedPrecondition;
       v18 = 2112;
       v19 = v10;
       v20 = 1024;
-      v21 = v8 != 2;
+      v21 = failedPrecondition != 2;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Precondition not met: %d unique IDs %@ should unregister %d", v17, 0x18u);
     }
   }
 
-  if (v8 > 2)
+  if (failedPrecondition > 2)
   {
     v14 = 0;
   }
 
   else
   {
-    v14 = off_27994A930[v8];
+    v14 = off_27994A930[failedPrecondition];
   }
 
-  v15 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v15 handlePreconditionNotMetWithUniqueIDs:v10 preconditionDescription:v14 shouldUnregister:v8 != 2];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate handlePreconditionNotMetWithUniqueIDs:v10 preconditionDescription:v14 shouldUnregister:failedPrecondition != 2];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleValueAddedServiceTransactions:(id)a3
+- (void)handleValueAddedServiceTransactions:(id)transactions
 {
   v34 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  transactionsCopy = transactions;
   v4 = [NPKProtoHandleValueAddedServiceTransactionsRequest alloc];
-  v5 = [v3 data];
-  v6 = [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v4 initWithData:v5];
+  data = [transactionsCopy data];
+  v6 = [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v4 initWithData:data];
 
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -6990,7 +6990,7 @@ uint64_t __95__NPKPaymentWebServiceCompanionTargetDevice_handlePreferredAID_forP
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109120;
-      v31 = [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v6 transactionsBytesCount];
+      transactionsBytesCount = [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v6 transactionsBytesCount];
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: %u transactions", buf, 8u);
     }
   }
@@ -7000,17 +7000,17 @@ uint64_t __95__NPKPaymentWebServiceCompanionTargetDevice_handlePreferredAID_forP
     v12 = 0;
     while (v12 < [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v6 transactionPassIDsCount])
     {
-      v13 = [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v6 transactionsBytes];
-      v14 = [v13 objectAtIndexedSubscript:v12];
+      transactionsBytes = [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v6 transactionsBytes];
+      v14 = [transactionsBytes objectAtIndexedSubscript:v12];
       v15 = objc_opt_class();
       v16 = NPKSecureUnarchiveObject(v14, v15);
 
       if (v16)
       {
-        [v7 addObject:v16];
-        v17 = [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v6 transactionPassIDs];
-        v18 = [v17 objectAtIndexedSubscript:v12];
-        [v8 addObject:v18];
+        [array addObject:v16];
+        transactionPassIDs = [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v6 transactionPassIDs];
+        v18 = [transactionPassIDs objectAtIndexedSubscript:v12];
+        [array2 addObject:v18];
       }
 
       if (++v12 >= [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v6 transactionsBytesCount])
@@ -7027,29 +7027,29 @@ uint64_t __95__NPKPaymentWebServiceCompanionTargetDevice_handlePreferredAID_forP
       v21 = pk_Payment_log();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
       {
-        v22 = [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v6 transactionsBytesCount];
-        v23 = [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v6 transactionPassIDsCount];
+        transactionsBytesCount2 = [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v6 transactionsBytesCount];
+        transactionPassIDsCount = [(NPKProtoHandleValueAddedServiceTransactionsRequest *)v6 transactionPassIDsCount];
         *buf = 67109376;
-        v31 = v22;
+        transactionsBytesCount = transactionsBytesCount2;
         v32 = 1024;
-        v33 = v23;
+        v33 = transactionPassIDsCount;
         _os_log_impl(&dword_25B300000, v21, OS_LOG_TYPE_ERROR, "Error: VAS transaction protobuf does not have matching array lengths (%u %u)!", buf, 0xEu);
       }
     }
   }
 
 LABEL_16:
-  if ([v7 count])
+  if ([array count])
   {
     v24 = objc_alloc_init(MEMORY[0x277D380F0]);
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __81__NPKPaymentWebServiceCompanionTargetDevice_handleValueAddedServiceTransactions___block_invoke;
     v27[3] = &unk_279946EA0;
-    v28 = v8;
+    v28 = array2;
     v29 = v24;
     v25 = v24;
-    [v7 enumerateObjectsUsingBlock:v27];
+    [array enumerateObjectsUsingBlock:v27];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -7068,22 +7068,22 @@ void __81__NPKPaymentWebServiceCompanionTargetDevice_handleValueAddedServiceTran
   [*(a1 + 40) insertOrUpdateValueAddedServiceTransaction:v6 forPassUniqueIdentifier:v5 paymentTransaction:0 completion:0];
 }
 
-- (void)handlePaymentTransactions:(id)a3
+- (void)handlePaymentTransactions:(id)transactions
 {
   v54 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  transactionsCopy = transactions;
   v4 = [NPKProtoHandlePaymentTransactionsRequest alloc];
-  v48 = v3;
-  v5 = [v3 data];
-  v6 = [(NPKProtoHandlePaymentTransactionsRequest *)v4 initWithData:v5];
+  v48 = transactionsCopy;
+  data = [transactionsCopy data];
+  v6 = [(NPKProtoHandlePaymentTransactionsRequest *)v4 initWithData:data];
 
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [MEMORY[0x277CBEB18] array];
-  v9 = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v10 = pk_Payment_log();
-  LODWORD(v5) = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
+  LODWORD(data) = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
-  if (v5)
+  if (data)
   {
     v11 = pk_Payment_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -7099,18 +7099,18 @@ void __81__NPKPaymentWebServiceCompanionTargetDevice_handleValueAddedServiceTran
     v12 = 0;
     while (v12 < [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionPassIDsCount])
     {
-      v13 = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionsBytes];
-      v14 = [v13 objectAtIndexedSubscript:v12];
+      transactionsBytes = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionsBytes];
+      v14 = [transactionsBytes objectAtIndexedSubscript:v12];
       v15 = objc_opt_class();
       v16 = NPKSecureUnarchiveObject(v14, v15);
 
       if (v16)
       {
-        v17 = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionPassIDs];
-        v18 = [v17 objectAtIndexedSubscript:v12];
+        transactionPassIDs = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionPassIDs];
+        v18 = [transactionPassIDs objectAtIndexedSubscript:v12];
 
-        [v7 addObject:v16];
-        [v8 addObject:v18];
+        [array addObject:v16];
+        [array2 addObject:v18];
         v19 = pk_Payment_log();
         v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
 
@@ -7142,12 +7142,12 @@ void __81__NPKPaymentWebServiceCompanionTargetDevice_handleValueAddedServiceTran
       v24 = pk_Payment_log();
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        v25 = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionsBytesCount];
-        v26 = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionPassIDsCount];
+        transactionsBytesCount = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionsBytesCount];
+        transactionPassIDsCount = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionPassIDsCount];
         *buf = 67109376;
-        *v50 = v25;
+        *v50 = transactionsBytesCount;
         *&v50[4] = 1024;
-        *&v50[6] = v26;
+        *&v50[6] = transactionPassIDsCount;
         _os_log_impl(&dword_25B300000, v24, OS_LOG_TYPE_ERROR, "Error: Payment transaction protobuf does not have matching array lengths (%u %u)!", buf, 0xEu);
       }
     }
@@ -7159,22 +7159,22 @@ LABEL_20:
     v27 = 0;
     while (v27 < [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionPassIDsCount])
     {
-      v28 = [(NPKProtoHandlePaymentTransactionsRequest *)v6 passAppletStates];
-      v29 = [v28 objectAtIndexedSubscript:v27];
+      passAppletStates = [(NPKProtoHandlePaymentTransactionsRequest *)v6 passAppletStates];
+      v29 = [passAppletStates objectAtIndexedSubscript:v27];
 
       if ([v29 length])
       {
-        v30 = [(NPKProtoHandlePaymentTransactionsRequest *)v6 passAppletStates];
-        v31 = [v30 objectAtIndexedSubscript:v27];
+        passAppletStates2 = [(NPKProtoHandlePaymentTransactionsRequest *)v6 passAppletStates];
+        v31 = [passAppletStates2 objectAtIndexedSubscript:v27];
         v32 = objc_opt_class();
         v33 = NPKSecureUnarchiveObject(v31, v32);
 
         if (v33)
         {
-          v34 = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionPassIDs];
-          v35 = [v34 objectAtIndexedSubscript:v27];
+          transactionPassIDs2 = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionPassIDs];
+          v35 = [transactionPassIDs2 objectAtIndexedSubscript:v27];
 
-          [v9 setObject:v33 forKey:v35];
+          [dictionary setObject:v33 forKey:v35];
         }
       }
 
@@ -7192,19 +7192,19 @@ LABEL_20:
       v38 = pk_Payment_log();
       if (os_log_type_enabled(v38, OS_LOG_TYPE_ERROR))
       {
-        v39 = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionsBytesCount];
-        v40 = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionPassIDsCount];
+        transactionsBytesCount2 = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionsBytesCount];
+        transactionPassIDsCount2 = [(NPKProtoHandlePaymentTransactionsRequest *)v6 transactionPassIDsCount];
         *buf = 67109376;
-        *v50 = v39;
+        *v50 = transactionsBytesCount2;
         *&v50[4] = 1024;
-        *&v50[6] = v40;
+        *&v50[6] = transactionPassIDsCount2;
         _os_log_impl(&dword_25B300000, v38, OS_LOG_TYPE_ERROR, "Error: Applet state protobuf does not have matching array lengths (%u %u)!", buf, 0xEu);
       }
     }
   }
 
 LABEL_32:
-  if ([v7 count] || objc_msgSend(v9, "count"))
+  if ([array count] || objc_msgSend(dictionary, "count"))
   {
     v41 = pk_General_log();
     v42 = os_log_type_enabled(v41, OS_LOG_TYPE_DEFAULT);
@@ -7215,31 +7215,31 @@ LABEL_32:
       if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412802;
-        *v50 = v7;
+        *v50 = array;
         *&v50[8] = 2112;
-        v51 = v9;
+        v51 = dictionary;
         v52 = 2112;
-        v53 = v8;
+        v53 = array2;
         _os_log_impl(&dword_25B300000, v43, OS_LOG_TYPE_DEFAULT, "Notice: Will handle Transactions: %@ appletStates: %@ for uniqueIDs:%@", buf, 0x20u);
       }
     }
 
-    v44 = [v47 delegate];
-    [v44 handlePaymentTransactions:v7 appletStates:v9 forUniqueIDs:v8];
+    delegate = [v47 delegate];
+    [delegate handlePaymentTransactions:array appletStates:dictionary forUniqueIDs:array2];
   }
 
   v45 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleRemovedTransaction:(id)a3
+- (void)handleRemovedTransaction:(id)transaction
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = [NPKProtoHandleRemoveTransactionsRequest alloc];
-  v6 = [v4 data];
+  data = [transactionCopy data];
 
-  v7 = [(NPKProtoHandleRemoveTransactionsRequest *)v5 initWithData:v6];
-  v8 = [(NPKProtoHandleRemoveTransactionsRequest *)v7 identifiers];
+  v7 = [(NPKProtoHandleRemoveTransactionsRequest *)v5 initWithData:data];
+  identifiers = [(NPKProtoHandleRemoveTransactionsRequest *)v7 identifiers];
   v9 = pk_General_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -7249,21 +7249,21 @@ LABEL_32:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v8;
+      v15 = identifiers;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Request to remove transactions with identfiers: %@", &v14, 0xCu);
     }
   }
 
-  v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v12 handleRemoveTransactionsWithIdentifiers:v8];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate handleRemoveTransactionsWithIdentifiers:identifiers];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveTransactionsForPassWithUniqueID:(id)a3
+- (void)retrieveTransactionsForPassWithUniqueID:(id)d
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  dCopy = d;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -7273,33 +7273,33 @@ LABEL_32:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v24 = v4;
+      v24 = dCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Retrieving transactions for unique ID %@", buf, 0xCu);
     }
   }
 
   v8 = objc_alloc_init(NPKProtoRetrievePaymentTransactionsRequest);
-  [(NPKProtoRetrievePaymentTransactionsRequest *)v8 setPassID:v4];
+  [(NPKProtoRetrievePaymentTransactionsRequest *)v8 setPassID:dCopy];
   v9 = objc_alloc(MEMORY[0x277D189F0]);
-  v10 = [(NPKProtoRetrievePaymentTransactionsRequest *)v8 data];
-  v11 = [v9 initWithProtobufData:v10 type:20 isResponse:0];
+  data = [(NPKProtoRetrievePaymentTransactionsRequest *)v8 data];
+  v11 = [v9 initWithProtobufData:data type:20 isResponse:0];
 
   v21[0] = *MEMORY[0x277D18650];
   v12 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D18828]];
   v22[0] = v12;
   v21[1] = *MEMORY[0x277D18630];
-  v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"retrieveTransactions-%@", v4];
-  v22[1] = v13;
+  dCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"retrieveTransactions-%@", dCopy];
+  v22[1] = dCopy;
   v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
 
-  v15 = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
+  provisioningService = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __85__NPKPaymentWebServiceCompanionTargetDevice_retrieveTransactionsForPassWithUniqueID___block_invoke;
   v19[3] = &unk_279945058;
   v20 = v11;
   v16 = v11;
-  v17 = NPKProtoSendWithOptions(v15, v16, 200, 0, 0, v19, v14);
+  v17 = NPKProtoSendWithOptions(provisioningService, v16, 200, 0, 0, v19, v14);
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -7325,21 +7325,21 @@ void __85__NPKPaymentWebServiceCompanionTargetDevice_retrieveTransactionsForPass
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDeletePaymentTransactionWithIdentifier:(id)a3 passUniqueIdentifier:(id)a4
+- (void)handleDeletePaymentTransactionWithIdentifier:(id)identifier passUniqueIdentifier:(id)uniqueIdentifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  identifierCopy = identifier;
+  uniqueIdentifierCopy = uniqueIdentifier;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __111__NPKPaymentWebServiceCompanionTargetDevice_handleDeletePaymentTransactionWithIdentifier_passUniqueIdentifier___block_invoke;
   block[3] = &unk_279945880;
-  v12 = v6;
-  v13 = v7;
-  v14 = self;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, block);
+  v12 = identifierCopy;
+  v13 = uniqueIdentifierCopy;
+  selfCopy = self;
+  v9 = uniqueIdentifierCopy;
+  v10 = identifierCopy;
+  dispatch_async(internalQueue, block);
 }
 
 void __111__NPKPaymentWebServiceCompanionTargetDevice_handleDeletePaymentTransactionWithIdentifier_passUniqueIdentifier___block_invoke(void *a1)
@@ -7385,15 +7385,15 @@ void __111__NPKPaymentWebServiceCompanionTargetDevice_handleDeletePaymentTransac
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleUpdatedAppletState:(id)a3
+- (void)handleUpdatedAppletState:(id)state
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = [NPKProtoHandleAppletStateChangeRequest alloc];
-  v6 = [v4 data];
+  data = [stateCopy data];
 
-  v7 = [(NPKProtoHandleAppletStateChangeRequest *)v5 initWithData:v6];
-  v8 = [(NPKProtoHandleAppletStateChangeRequest *)v7 passID];
+  v7 = [(NPKProtoHandleAppletStateChangeRequest *)v5 initWithData:data];
+  passID = [(NPKProtoHandleAppletStateChangeRequest *)v7 passID];
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -7403,16 +7403,16 @@ void __111__NPKPaymentWebServiceCompanionTargetDevice_handleDeletePaymentTransac
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 138412290;
-      v21 = v8;
+      v21 = passID;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Received updated applet state for pass with unique ID %@", &v20, 0xCu);
     }
   }
 
-  v12 = [(NPKProtoHandleAppletStateChangeRequest *)v7 passAppletState];
-  if ([v12 length])
+  passAppletState = [(NPKProtoHandleAppletStateChangeRequest *)v7 passAppletState];
+  if ([passAppletState length])
   {
     v13 = objc_opt_class();
-    v14 = NPKSecureUnarchiveObject(v12, v13);
+    v14 = NPKSecureUnarchiveObject(passAppletState, v13);
   }
 
   else
@@ -7434,19 +7434,19 @@ void __111__NPKPaymentWebServiceCompanionTargetDevice_handleDeletePaymentTransac
     }
   }
 
-  if (v8)
+  if (passID)
   {
-    v18 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-    [v18 handleAppletState:v14 forUniqueID:v8];
+    delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+    [delegate handleAppletState:v14 forUniqueID:passID];
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setExpressPassResponse:(id)a3
+- (void)setExpressPassResponse:(id)response
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -7455,15 +7455,15 @@ void __111__NPKPaymentWebServiceCompanionTargetDevice_handleDeletePaymentTransac
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -7487,21 +7487,21 @@ void __111__NPKPaymentWebServiceCompanionTargetDevice_handleDeletePaymentTransac
   v26 = &v25;
   v27 = 0x2020000000;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__NPKPaymentWebServiceCompanionTargetDevice_setExpressPassResponse___block_invoke;
     block[3] = &unk_279949BA8;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v35;
     v22 = &v29;
     p_buf = &buf;
     v24 = &v25;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -7648,13 +7648,13 @@ LABEL_21:
 LABEL_22:
 }
 
-- (void)setExpressWithPassConfiguration:(id)a3 requestAuthorization:(BOOL)a4 completion:(id)a5
+- (void)setExpressWithPassConfiguration:(id)configuration requestAuthorization:(BOOL)authorization completion:(id)completion
 {
-  v6 = a4;
+  authorizationCopy = authorization;
   v38 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 passInformation];
+  configurationCopy = configuration;
+  completionCopy = completion;
+  passInformation = [configurationCopy passInformation];
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -7663,37 +7663,37 @@ LABEL_22:
     v13 = pk_Payment_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v10 expressMode];
-      v15 = [v10 passUniqueIdentifier];
-      v16 = [v10 paymentApplicationIdentifier];
+      expressMode = [passInformation expressMode];
+      passUniqueIdentifier = [passInformation passUniqueIdentifier];
+      paymentApplicationIdentifier = [passInformation paymentApplicationIdentifier];
       *buf = 138413314;
-      v29 = v8;
+      v29 = configurationCopy;
       v30 = 2112;
-      v31 = v14;
+      v31 = expressMode;
       v32 = 2112;
-      v33 = v15;
+      v33 = passUniqueIdentifier;
       v34 = 2112;
-      v35 = v16;
+      v35 = paymentApplicationIdentifier;
       v36 = 1024;
-      v37 = v6;
+      v37 = authorizationCopy;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Target device: set express with configuration %@\n mode: %@\n unique ID %@\n, AID %@\n, request authorization %d", buf, 0x30u);
     }
   }
 
-  v17 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __109__NPKPaymentWebServiceCompanionTargetDevice_setExpressWithPassConfiguration_requestAuthorization_completion___block_invoke;
   block[3] = &unk_279949FB8;
-  v27 = v6;
-  v23 = v10;
-  v24 = v8;
-  v25 = self;
-  v26 = v9;
-  v18 = v9;
-  v19 = v8;
-  v20 = v10;
-  dispatch_sync(v17, block);
+  v27 = authorizationCopy;
+  v23 = passInformation;
+  v24 = configurationCopy;
+  selfCopy = self;
+  v26 = completionCopy;
+  v18 = completionCopy;
+  v19 = configurationCopy;
+  v20 = passInformation;
+  dispatch_sync(internalQueue, block);
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -7849,10 +7849,10 @@ uint64_t __109__NPKPaymentWebServiceCompanionTargetDevice_setExpressWithPassConf
   return result;
 }
 
-- (void)removeExpressPassWithUniqueIdentifierResponse:(id)a3
+- (void)removeExpressPassWithUniqueIdentifierResponse:(id)response
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -7861,15 +7861,15 @@ uint64_t __109__NPKPaymentWebServiceCompanionTargetDevice_setExpressWithPassConf
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: remove express pass with unique identifier: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -7887,20 +7887,20 @@ uint64_t __109__NPKPaymentWebServiceCompanionTargetDevice_setExpressWithPassConf
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __91__NPKPaymentWebServiceCompanionTargetDevice_removeExpressPassWithUniqueIdentifierResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v28;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -8014,11 +8014,11 @@ LABEL_14:
 LABEL_15:
 }
 
-- (void)removeExpressPassWithUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)removeExpressPassWithUniqueIdentifier:(id)identifier completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -8028,22 +8028,22 @@ LABEL_15:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v6;
+      v20 = identifierCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Target device: remove express pass with unique ID: %@", buf, 0xCu);
     }
   }
 
-  v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __94__NPKPaymentWebServiceCompanionTargetDevice_removeExpressPassWithUniqueIdentifier_completion___block_invoke;
   block[3] = &unk_279945A48;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
-  v12 = v7;
-  v13 = v6;
-  dispatch_sync(v11, block);
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  dispatch_sync(internalQueue, block);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -8158,27 +8158,27 @@ void __94__NPKPaymentWebServiceCompanionTargetDevice_removeExpressPassWithUnique
   }
 }
 
-- (void)conflictingExpressPassIdentifiersForPassConfiguration:(id)a3 completion:(id)a4
+- (void)conflictingExpressPassIdentifiersForPassConfiguration:(id)configuration completion:(id)completion
 {
-  v6 = a4;
-  v7 = v6;
-  if (v6)
+  completionCopy = completion;
+  v7 = completionCopy;
+  if (completionCopy)
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __110__NPKPaymentWebServiceCompanionTargetDevice_conflictingExpressPassIdentifiersForPassConfiguration_completion___block_invoke;
     v8[3] = &unk_279949FE0;
-    v9 = v6;
-    [(NPKPaymentWebServiceCompanionTargetDevice *)self conflictingExpressPassIdentifiersForPassConfiguration:a3 withReferenceExpressState:0 completion:v8];
+    v9 = completionCopy;
+    [(NPKPaymentWebServiceCompanionTargetDevice *)self conflictingExpressPassIdentifiersForPassConfiguration:configuration withReferenceExpressState:0 completion:v8];
   }
 }
 
-- (void)conflictingExpressPassIdentifiersForPassConfiguration:(id)a3 withReferenceExpressState:(id)a4 completion:(id)a5
+- (void)conflictingExpressPassIdentifiersForPassConfiguration:(id)configuration withReferenceExpressState:(id)state completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  configurationCopy = configuration;
+  stateCopy = state;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -8188,26 +8188,26 @@ void __94__NPKPaymentWebServiceCompanionTargetDevice_removeExpressPassWithUnique
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v25 = v8;
+      v25 = configurationCopy;
       v26 = 2112;
-      v27 = v9;
+      v27 = stateCopy;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Target device: conflicting express pass identifiers with passConfig %@, referenceExpressPassConfigurations:%@", buf, 0x16u);
     }
   }
 
-  v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __136__NPKPaymentWebServiceCompanionTargetDevice_conflictingExpressPassIdentifiersForPassConfiguration_withReferenceExpressState_completion___block_invoke;
   v19[3] = &unk_279945BB0;
-  v20 = v8;
-  v21 = v9;
-  v22 = self;
-  v23 = v10;
-  v15 = v10;
-  v16 = v9;
-  v17 = v8;
-  dispatch_sync(v14, v19);
+  v20 = configurationCopy;
+  v21 = stateCopy;
+  selfCopy = self;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = stateCopy;
+  v17 = configurationCopy;
+  dispatch_sync(internalQueue, v19);
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -8342,10 +8342,10 @@ uint64_t __136__NPKPaymentWebServiceCompanionTargetDevice_conflictingExpressPass
   return result;
 }
 
-- (void)conflictingExpressPassIdentifiersForPassInformationResponse:(id)a3
+- (void)conflictingExpressPassIdentifiersForPassInformationResponse:(id)response
 {
   v49 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -8354,15 +8354,15 @@ uint64_t __136__NPKPaymentWebServiceCompanionTargetDevice_conflictingExpressPass
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: conflicting express pass identifiers incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -8382,20 +8382,20 @@ uint64_t __136__NPKPaymentWebServiceCompanionTargetDevice_conflictingExpressPass
   v31 = __Block_byref_object_copy__22;
   v32 = __Block_byref_object_dispose__22;
   v33 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __105__NPKPaymentWebServiceCompanionTargetDevice_conflictingExpressPassIdentifiersForPassInformationResponse___block_invoke;
     v22[3] = &unk_279949C48;
     v22[4] = self;
-    v23 = v10;
-    v24 = v4;
+    v23 = incomingResponseIdentifier;
+    v24 = responseCopy;
     p_buf = &buf;
     v26 = &v34;
     v27 = &v28;
-    dispatch_sync(v11, v22);
+    dispatch_sync(internalQueue, v22);
   }
 
   else
@@ -8515,22 +8515,22 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_conflictingExpressPassIden
   }
 }
 
-- (void)handleBalanceReminderWithBalanceAndPassRequest:(id)a3
+- (void)handleBalanceReminderWithBalanceAndPassRequest:(id)request
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = [NPKProtoSetBalanceReminderForBalanceAndPassRequest alloc];
-  v6 = [v4 data];
+  data = [requestCopy data];
 
-  v7 = [(NPKProtoSetBalanceReminderForBalanceAndPassRequest *)v5 initWithData:v6];
-  v8 = [(NPKProtoSetBalanceReminderForBalanceAndPassRequest *)v7 uniqueID];
-  v9 = [(NPKProtoSetBalanceReminderForBalanceAndPassRequest *)v7 balanceBytes];
+  v7 = [(NPKProtoSetBalanceReminderForBalanceAndPassRequest *)v5 initWithData:data];
+  uniqueID = [(NPKProtoSetBalanceReminderForBalanceAndPassRequest *)v7 uniqueID];
+  balanceBytes = [(NPKProtoSetBalanceReminderForBalanceAndPassRequest *)v7 balanceBytes];
   v10 = objc_opt_class();
-  v11 = NPKSecureUnarchiveObject(v9, v10);
+  v11 = NPKSecureUnarchiveObject(balanceBytes, v10);
 
-  v12 = [(NPKProtoSetBalanceReminderForBalanceAndPassRequest *)v7 balanceReminderBytes];
+  balanceReminderBytes = [(NPKProtoSetBalanceReminderForBalanceAndPassRequest *)v7 balanceReminderBytes];
   v13 = objc_opt_class();
-  v14 = NPKSecureUnarchiveObject(v12, v13);
+  v14 = NPKSecureUnarchiveObject(balanceReminderBytes, v13);
 
   v15 = pk_Payment_log();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -8545,21 +8545,21 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_conflictingExpressPassIden
       v22 = 2112;
       v23 = v11;
       v24 = 2112;
-      v25 = v8;
+      v25 = uniqueID;
       _os_log_impl(&dword_25B300000, v17, OS_LOG_TYPE_DEFAULT, "Notice: Handling balance reminder update %@ for balance %@ unique ID %@", &v20, 0x20u);
     }
   }
 
-  v18 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v18 handleBalanceReminderUpdate:v14 balance:v11 forUniqueID:v8];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate handleBalanceReminderUpdate:v14 balance:v11 forUniqueID:uniqueID];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setBalanceReminderWithBalanceAndPassResponse:(id)a3
+- (void)setBalanceReminderWithBalanceAndPassResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -8568,15 +8568,15 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_conflictingExpressPassIden
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: set balance reminder incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -8588,19 +8588,19 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_conflictingExpressPassIden
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __90__NPKPaymentWebServiceCompanionTargetDevice_setBalanceReminderWithBalanceAndPassResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -8678,13 +8678,13 @@ void __90__NPKPaymentWebServiceCompanionTargetDevice_setBalanceReminderWithBalan
   }
 }
 
-- (void)setBalanceReminder:(id)a3 forBalance:(id)a4 pass:(id)a5 completion:(id)a6
+- (void)setBalanceReminder:(id)reminder forBalance:(id)balance pass:(id)pass completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  reminderCopy = reminder;
+  balanceCopy = balance;
+  passCopy = pass;
+  completionCopy = completion;
   v14 = pk_Payment_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -8694,30 +8694,30 @@ void __90__NPKPaymentWebServiceCompanionTargetDevice_setBalanceReminderWithBalan
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v30 = v10;
+      v30 = reminderCopy;
       v31 = 2112;
-      v32 = v11;
+      v32 = balanceCopy;
       v33 = 2112;
-      v34 = v12;
+      v34 = passCopy;
       _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: Target device: setting balance reminder %@ for balance %@ with passInfo %@", buf, 0x20u);
     }
   }
 
-  v17 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__NPKPaymentWebServiceCompanionTargetDevice_setBalanceReminder_forBalance_pass_completion___block_invoke;
   block[3] = &unk_2799467F8;
-  v24 = v12;
-  v25 = v11;
-  v26 = v10;
-  v27 = self;
-  v28 = v13;
-  v18 = v13;
-  v19 = v10;
-  v20 = v11;
-  v21 = v12;
-  dispatch_sync(v17, block);
+  v24 = passCopy;
+  v25 = balanceCopy;
+  v26 = reminderCopy;
+  selfCopy = self;
+  v28 = completionCopy;
+  v18 = completionCopy;
+  v19 = reminderCopy;
+  v20 = balanceCopy;
+  v21 = passCopy;
+  dispatch_sync(internalQueue, block);
 
   v22 = *MEMORY[0x277D85DE8];
 }
@@ -8833,10 +8833,10 @@ uint64_t __91__NPKPaymentWebServiceCompanionTargetDevice_setBalanceReminder_forB
   return result;
 }
 
-- (void)balanceReminderWithBalanceAndPassResponse:(id)a3
+- (void)balanceReminderWithBalanceAndPassResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -8845,15 +8845,15 @@ uint64_t __91__NPKPaymentWebServiceCompanionTargetDevice_setBalanceReminder_forB
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: balance reminder incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -8873,20 +8873,20 @@ uint64_t __91__NPKPaymentWebServiceCompanionTargetDevice_setBalanceReminder_forB
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __87__NPKPaymentWebServiceCompanionTargetDevice_balanceReminderWithBalanceAndPassResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -8981,12 +8981,12 @@ void __87__NPKPaymentWebServiceCompanionTargetDevice_balanceReminderWithBalanceA
   }
 }
 
-- (void)balanceReminderForBalance:(id)a3 pass:(id)a4 completion:(id)a5
+- (void)balanceReminderForBalance:(id)balance pass:(id)pass completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  balanceCopy = balance;
+  passCopy = pass;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -8996,26 +8996,26 @@ void __87__NPKPaymentWebServiceCompanionTargetDevice_balanceReminderWithBalanceA
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v25 = v8;
+      v25 = balanceCopy;
       v26 = 2112;
-      v27 = v9;
+      v27 = passCopy;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Target device: getting balance reminder for balance %@ with passInfo %@", buf, 0x16u);
     }
   }
 
-  v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __87__NPKPaymentWebServiceCompanionTargetDevice_balanceReminderForBalance_pass_completion___block_invoke;
   v19[3] = &unk_279945BB0;
-  v20 = v9;
-  v21 = v8;
-  v22 = self;
-  v23 = v10;
-  v15 = v10;
-  v16 = v8;
-  v17 = v9;
-  dispatch_sync(v14, v19);
+  v20 = passCopy;
+  v21 = balanceCopy;
+  selfCopy = self;
+  v23 = completionCopy;
+  v15 = completionCopy;
+  v16 = balanceCopy;
+  v17 = passCopy;
+  dispatch_sync(internalQueue, v19);
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -9128,10 +9128,10 @@ uint64_t __87__NPKPaymentWebServiceCompanionTargetDevice_balanceReminderForBalan
   return result;
 }
 
-- (void)setCommutePlanReminderWithCommutePlanAndPassResponse:(id)a3
+- (void)setCommutePlanReminderWithCommutePlanAndPassResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -9140,15 +9140,15 @@ uint64_t __87__NPKPaymentWebServiceCompanionTargetDevice_balanceReminderForBalan
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: set commute plan reminder incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -9160,19 +9160,19 @@ uint64_t __87__NPKPaymentWebServiceCompanionTargetDevice_balanceReminderForBalan
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __98__NPKPaymentWebServiceCompanionTargetDevice_setCommutePlanReminderWithCommutePlanAndPassResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -9250,13 +9250,13 @@ void __98__NPKPaymentWebServiceCompanionTargetDevice_setCommutePlanReminderWithC
   }
 }
 
-- (void)setCommutePlanReminder:(id)a3 forCommutePlan:(id)a4 pass:(id)a5 completion:(id)a6
+- (void)setCommutePlanReminder:(id)reminder forCommutePlan:(id)plan pass:(id)pass completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  reminderCopy = reminder;
+  planCopy = plan;
+  passCopy = pass;
+  completionCopy = completion;
   v14 = pk_Payment_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -9265,30 +9265,30 @@ void __98__NPKPaymentWebServiceCompanionTargetDevice_setCommutePlanReminderWithC
     v16 = pk_Payment_log();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
-      v17 = [v12 uniqueID];
+      uniqueID = [passCopy uniqueID];
       *buf = 138412546;
-      v31 = v10;
+      v31 = reminderCopy;
       v32 = 2112;
-      v33 = v17;
+      v33 = uniqueID;
       _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: Target device: setting commute plan reminder %@ for pass %@", buf, 0x16u);
     }
   }
 
-  v18 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __99__NPKPaymentWebServiceCompanionTargetDevice_setCommutePlanReminder_forCommutePlan_pass_completion___block_invoke;
   block[3] = &unk_2799467F8;
-  v25 = v12;
-  v26 = v10;
-  v27 = v11;
-  v28 = self;
-  v29 = v13;
-  v19 = v13;
-  v20 = v11;
-  v21 = v10;
-  v22 = v12;
-  dispatch_sync(v18, block);
+  v25 = passCopy;
+  v26 = reminderCopy;
+  v27 = planCopy;
+  selfCopy = self;
+  v29 = completionCopy;
+  v19 = completionCopy;
+  v20 = planCopy;
+  v21 = reminderCopy;
+  v22 = passCopy;
+  dispatch_sync(internalQueue, block);
 
   v23 = *MEMORY[0x277D85DE8];
 }
@@ -9402,10 +9402,10 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_setCommutePlanReminder_
   return result;
 }
 
-- (void)commutePlanReminderWithCommutePlanAndPassResponse:(id)a3
+- (void)commutePlanReminderWithCommutePlanAndPassResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -9414,15 +9414,15 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_setCommutePlanReminder_
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: commute plan reminder incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -9440,20 +9440,20 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_setCommutePlanReminder_
   v29 = __Block_byref_object_copy__22;
   v30 = __Block_byref_object_dispose__22;
   v31 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __95__NPKPaymentWebServiceCompanionTargetDevice_commutePlanReminderWithCommutePlanAndPassResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v21 = v10;
-    v22 = v4;
+    v21 = incomingResponseIdentifier;
+    v22 = responseCopy;
     p_buf = &buf;
     v24 = &v32;
     v25 = &v26;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -9545,12 +9545,12 @@ void __95__NPKPaymentWebServiceCompanionTargetDevice_commutePlanReminderWithComm
   }
 }
 
-- (void)commutePlanReminderForCommutePlan:(id)a3 pass:(id)a4 withCompletion:(id)a5
+- (void)commutePlanReminderForCommutePlan:(id)plan pass:(id)pass withCompletion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  planCopy = plan;
+  passCopy = pass;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -9559,28 +9559,28 @@ void __95__NPKPaymentWebServiceCompanionTargetDevice_commutePlanReminderWithComm
     v13 = pk_Payment_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v9 uniqueID];
+      uniqueID = [passCopy uniqueID];
       *buf = 138412546;
-      v26 = v8;
+      v26 = planCopy;
       v27 = 2112;
-      v28 = v14;
+      v28 = uniqueID;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Target device: getting commute plan reminder for commute plan:%@ pass %@", buf, 0x16u);
     }
   }
 
-  v15 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __99__NPKPaymentWebServiceCompanionTargetDevice_commutePlanReminderForCommutePlan_pass_withCompletion___block_invoke;
   v20[3] = &unk_279945BB0;
-  v21 = v9;
-  v22 = v8;
-  v23 = self;
-  v24 = v10;
-  v16 = v10;
-  v17 = v8;
-  v18 = v9;
-  dispatch_sync(v15, v20);
+  v21 = passCopy;
+  v22 = planCopy;
+  selfCopy = self;
+  v24 = completionCopy;
+  v16 = completionCopy;
+  v17 = planCopy;
+  v18 = passCopy;
+  dispatch_sync(internalQueue, v20);
 
   v19 = *MEMORY[0x277D85DE8];
 }
@@ -9692,10 +9692,10 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_commutePlanReminderForC
   return result;
 }
 
-- (void)enableServiceModeResponse:(id)a3
+- (void)enableServiceModeResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -9704,15 +9704,15 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_commutePlanReminderForC
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -9724,19 +9724,19 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_commutePlanReminderForC
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__NPKPaymentWebServiceCompanionTargetDevice_enableServiceModeResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v23;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -9813,10 +9813,10 @@ void __71__NPKPaymentWebServiceCompanionTargetDevice_enableServiceModeResponse__
   }
 }
 
-- (void)cancelOutstandingSetDefaultExpressPassRequestsWithExpressMode:(id)a3
+- (void)cancelOutstandingSetDefaultExpressPassRequestsWithExpressMode:(id)mode
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  modeCopy = mode;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -9826,20 +9826,20 @@ void __71__NPKPaymentWebServiceCompanionTargetDevice_enableServiceModeResponse__
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = modeCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Sending message to cancel outstanding set default express pass requests with mode: %@", buf, 0xCu);
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __107__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingSetDefaultExpressPassRequestsWithExpressMode___block_invoke;
   v11[3] = &unk_2799454E0;
-  v12 = v4;
-  v13 = self;
-  v9 = v4;
-  dispatch_sync(v8, v11);
+  v12 = modeCopy;
+  selfCopy = self;
+  v9 = modeCopy;
+  dispatch_sync(internalQueue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -9887,11 +9887,11 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingSetDefaul
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)enableServiceModeForPassWithUniqueIdentifier:(id)a3 completion:(id)a4
+- (void)enableServiceModeForPassWithUniqueIdentifier:(id)identifier completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -9901,22 +9901,22 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingSetDefaul
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v6;
+      v20 = identifierCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Target device: enable service mode for unique ID %@", buf, 0xCu);
     }
   }
 
-  v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __101__NPKPaymentWebServiceCompanionTargetDevice_enableServiceModeForPassWithUniqueIdentifier_completion___block_invoke;
   block[3] = &unk_279945A48;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
-  v12 = v7;
-  v13 = v6;
-  dispatch_sync(v11, block);
+  v16 = identifierCopy;
+  selfCopy = self;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  dispatch_sync(internalQueue, block);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -10034,13 +10034,13 @@ uint64_t __101__NPKPaymentWebServiceCompanionTargetDevice_enableServiceModeForPa
     }
   }
 
-  v6 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __87__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingEnableServiceModeRequests__block_invoke;
   block[3] = &unk_279944F98;
   block[4] = self;
-  dispatch_sync(v6, block);
+  dispatch_sync(internalQueue, block);
 }
 
 void __87__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingEnableServiceModeRequests__block_invoke(uint64_t a1)
@@ -10081,10 +10081,10 @@ void __87__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingEnableServ
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)remotePassUpgradeResponse:(id)a3
+- (void)remotePassUpgradeResponse:(id)response
 {
   v80 = *MEMORY[0x277D85DE8];
-  v32 = a3;
+  responseCopy = response;
   v4 = pk_General_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -10093,17 +10093,17 @@ void __87__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingEnableServ
     v6 = pk_General_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v32 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v6, OS_LOG_TYPE_DEFAULT, "Notice: Remote update pass. Received response:%@", &buf, 0xCu);
     }
   }
 
-  v8 = [v32 context];
-  v31 = [v8 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  if (v31)
+  if (incomingResponseIdentifier)
   {
     *&buf = 0;
     *(&buf + 1) = &buf;
@@ -10139,21 +10139,21 @@ void __87__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingEnableServ
     v49 = __Block_byref_object_copy__22;
     v50 = __Block_byref_object_dispose__22;
     v51 = 0;
-    v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__NPKPaymentWebServiceCompanionTargetDevice_remotePassUpgradeResponse___block_invoke;
     block[3] = &unk_27994A030;
     block[4] = self;
-    v38 = v31;
-    v39 = v32;
+    v38 = incomingResponseIdentifier;
+    v39 = responseCopy;
     p_buf = &buf;
     v41 = &v58;
     v42 = &v62;
     v43 = &v68;
     v44 = &v46;
     v45 = &v52;
-    dispatch_sync(v9, block);
+    dispatch_sync(internalQueue, block);
 
     if (*(*(&buf + 1) + 40))
     {
@@ -10161,13 +10161,13 @@ void __87__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingEnableServ
       {
         v10 = *(*(&buf + 1) + 40);
         v11 = v63[5];
-        v12 = [v69[5] paymentPass];
-        (*(v10 + 16))(v10, v11, v12, v53[5], v59[3]);
+        paymentPass = [v69[5] paymentPass];
+        (*(v10 + 16))(v10, v11, paymentPass, v53[5], v59[3]);
       }
 
       else
       {
-        v12 = objc_alloc_init(MEMORY[0x277CBEB58]);
+        paymentPass = objc_alloc_init(MEMORY[0x277CBEB58]);
         v35 = 0u;
         v36 = 0u;
         v33 = 0u;
@@ -10187,15 +10187,15 @@ void __87__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingEnableServ
               }
 
               v20 = *(*(&v33 + 1) + 8 * i);
-              v21 = [v20 passUniqueIdentifier];
-              v22 = [v69[5] uniqueID];
-              v23 = [v21 isEqualToString:v22];
+              passUniqueIdentifier = [v20 passUniqueIdentifier];
+              uniqueID = [v69[5] uniqueID];
+              v23 = [passUniqueIdentifier isEqualToString:uniqueID];
 
               if (v23)
               {
                 v24 = objc_alloc(MEMORY[0x277D37E88]);
-                v25 = [v69[5] secureElementPass];
-                v26 = [v24 initWithPassInformation:v20 forSecureElementPass:v25];
+                secureElementPass = [v69[5] secureElementPass];
+                v26 = [v24 initWithPassInformation:v20 forSecureElementPass:secureElementPass];
               }
 
               else
@@ -10203,7 +10203,7 @@ void __87__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingEnableServ
                 v26 = [objc_alloc(MEMORY[0x277D37E88]) initWithPassInformation:v20 isNFCExpressEnabled:1 isUWBExpressEnabled:0];
               }
 
-              [v12 pk_safelyAddObject:v26];
+              [paymentPass pk_safelyAddObject:v26];
             }
 
             v17 = [v16 countByEnumeratingWithState:&v33 objects:v74 count:16];
@@ -10214,8 +10214,8 @@ void __87__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingEnableServ
 
         v27 = *(*(&buf + 1) + 40);
         v28 = v63[5];
-        v29 = [v69[5] paymentPass];
-        (*(v27 + 16))(v27, v28, v29, v12, v59[3]);
+        paymentPass2 = [v69[5] paymentPass];
+        (*(v27 + 16))(v27, v28, paymentPass2, paymentPass, v59[3]);
       }
     }
 
@@ -10374,26 +10374,26 @@ LABEL_19:
 LABEL_25:
 }
 
-- (void)remotePassUpgradeWithRequest:(id)a3 pass:(id)a4 requireAuthorization:(BOOL)a5 notifyUserOnPairedDevice:(BOOL)a6 updateBlock:(id)a7
+- (void)remotePassUpgradeWithRequest:(id)request pass:(id)pass requireAuthorization:(BOOL)authorization notifyUserOnPairedDevice:(BOOL)device updateBlock:(id)block
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a7;
-  v15 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  requestCopy = request;
+  passCopy = pass;
+  blockCopy = block;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __137__NPKPaymentWebServiceCompanionTargetDevice_remotePassUpgradeWithRequest_pass_requireAuthorization_notifyUserOnPairedDevice_updateBlock___block_invoke;
   block[3] = &unk_27994A058;
-  v20 = v13;
-  v21 = v12;
-  v24 = a5;
-  v25 = a6;
-  v22 = self;
-  v23 = v14;
-  v16 = v14;
-  v17 = v12;
-  v18 = v13;
-  dispatch_sync(v15, block);
+  v20 = passCopy;
+  v21 = requestCopy;
+  authorizationCopy = authorization;
+  deviceCopy = device;
+  selfCopy = self;
+  v23 = blockCopy;
+  v16 = blockCopy;
+  v17 = requestCopy;
+  v18 = passCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 void __137__NPKPaymentWebServiceCompanionTargetDevice_remotePassUpgradeWithRequest_pass_requireAuthorization_notifyUserOnPairedDevice_updateBlock___block_invoke(uint64_t a1)
@@ -10488,11 +10488,11 @@ LABEL_12:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelOutstandingRemotePassUpdateRequest:(id)a3 pass:(id)a4
+- (void)cancelOutstandingRemotePassUpdateRequest:(id)request pass:(id)pass
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  passCopy = pass;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -10501,24 +10501,24 @@ LABEL_12:
     v10 = pk_Payment_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = [v7 uniqueID];
+      uniqueID = [passCopy uniqueID];
       *buf = 138412290;
-      v21 = v11;
+      v21 = uniqueID;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Sending message to cancel outstanding remote pass Update Reques for pass UniqueID:%@", buf, 0xCu);
     }
   }
 
-  v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __91__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingRemotePassUpdateRequest_pass___block_invoke;
   block[3] = &unk_279945880;
-  v17 = v7;
-  v18 = v6;
-  v19 = self;
-  v13 = v6;
-  v14 = v7;
-  dispatch_sync(v12, block);
+  v17 = passCopy;
+  v18 = requestCopy;
+  selfCopy = self;
+  v13 = requestCopy;
+  v14 = passCopy;
+  dispatch_sync(internalQueue, block);
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -10567,10 +10567,10 @@ void __91__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingRemotePass
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)peerPaymentRegisterResponse:(id)a3
+- (void)peerPaymentRegisterResponse:(id)response
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -10579,15 +10579,15 @@ void __91__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingRemotePass
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Peer payment register: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -10617,22 +10617,22 @@ void __91__NPKPaymentWebServiceCompanionTargetDevice_cancelOutstandingRemotePass
   v29 = __Block_byref_object_copy__22;
   v30 = __Block_byref_object_dispose__22;
   v31 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentRegisterResponse___block_invoke;
     block[3] = &unk_27994A080;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v44;
     v23 = &v38;
     v24 = &v32;
     v25 = &v26;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -10746,12 +10746,12 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentRegisterResponse
   }
 }
 
-- (void)peerPaymentRegisterWithURL:(id)a3 forceReRegistration:(BOOL)a4 completion:(id)a5
+- (void)peerPaymentRegisterWithURL:(id)l forceReRegistration:(BOOL)registration completion:(id)completion
 {
-  v6 = a4;
+  registrationCopy = registration;
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  lCopy = l;
+  completionCopy = completion;
   v10 = pk_Payment_log();
   v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT);
 
@@ -10761,25 +10761,25 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentRegisterResponse
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v23 = v8;
+      v23 = lCopy;
       v24 = 1024;
-      v25 = v6;
+      v25 = registrationCopy;
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: Peer payment register with URL %@ forceReRegistration %i", buf, 0x12u);
     }
   }
 
-  v13 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __103__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentRegisterWithURL_forceReRegistration_completion___block_invoke;
   v17[3] = &unk_27994A0A8;
-  v21 = v6;
-  v18 = v8;
-  v19 = self;
-  v20 = v9;
-  v14 = v9;
-  v15 = v8;
-  dispatch_sync(v13, v17);
+  v21 = registrationCopy;
+  v18 = lCopy;
+  selfCopy = self;
+  v20 = completionCopy;
+  v14 = completionCopy;
+  v15 = lCopy;
+  dispatch_sync(internalQueue, v17);
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -10882,10 +10882,10 @@ uint64_t __103__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentRegisterWit
   return result;
 }
 
-- (void)peerPaymentUnregisterResponse:(id)a3
+- (void)peerPaymentUnregisterResponse:(id)response
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -10894,15 +10894,15 @@ uint64_t __103__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentRegisterWit
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device peer payment unregister: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -10926,21 +10926,21 @@ uint64_t __103__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentRegisterWit
   v28 = __Block_byref_object_copy__22;
   v29 = __Block_byref_object_dispose__22;
   v30 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __75__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentUnregisterResponse___block_invoke;
     block[3] = &unk_279949BA8;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v37;
     v23 = &v31;
     v24 = &v25;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -11045,9 +11045,9 @@ void __75__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentUnregisterRespon
   }
 }
 
-- (void)peerPaymentUnregisterWithCompletion:(id)a3
+- (void)peerPaymentUnregisterWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -11061,15 +11061,15 @@ void __75__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentUnregisterRespon
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __81__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentUnregisterWithCompletion___block_invoke;
   v10[3] = &unk_279945530;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_sync(v8, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  dispatch_sync(internalQueue, v10);
 }
 
 void __81__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentUnregisterWithCompletion___block_invoke(uint64_t a1)
@@ -11166,10 +11166,10 @@ uint64_t __81__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentUnregisterWi
   return result;
 }
 
-- (void)provisionPeerPaymentPassResponse:(id)a3
+- (void)provisionPeerPaymentPassResponse:(id)response
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -11178,15 +11178,15 @@ uint64_t __81__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentUnregisterWi
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device provision peer payment pass: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -11204,20 +11204,20 @@ uint64_t __81__NPKPaymentWebServiceCompanionTargetDevice_peerPaymentUnregisterWi
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __78__NPKPaymentWebServiceCompanionTargetDevice_provisionPeerPaymentPassResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -11305,9 +11305,9 @@ void __78__NPKPaymentWebServiceCompanionTargetDevice_provisionPeerPaymentPassRes
   }
 }
 
-- (void)provisionPeerPaymentPassWithCompletion:(id)a3
+- (void)provisionPeerPaymentPassWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -11321,15 +11321,15 @@ void __78__NPKPaymentWebServiceCompanionTargetDevice_provisionPeerPaymentPassRes
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84__NPKPaymentWebServiceCompanionTargetDevice_provisionPeerPaymentPassWithCompletion___block_invoke;
   v10[3] = &unk_279945530;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_sync(v8, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  dispatch_sync(internalQueue, v10);
 }
 
 void __84__NPKPaymentWebServiceCompanionTargetDevice_provisionPeerPaymentPassWithCompletion___block_invoke(uint64_t a1)
@@ -11426,10 +11426,10 @@ uint64_t __84__NPKPaymentWebServiceCompanionTargetDevice_provisionPeerPaymentPas
   return result;
 }
 
-- (void)updatePeerPaymentAccountResponse:(id)a3
+- (void)updatePeerPaymentAccountResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -11438,15 +11438,15 @@ uint64_t __84__NPKPaymentWebServiceCompanionTargetDevice_provisionPeerPaymentPas
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device update peer payment account: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -11460,19 +11460,19 @@ uint64_t __84__NPKPaymentWebServiceCompanionTargetDevice_provisionPeerPaymentPas
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __78__NPKPaymentWebServiceCompanionTargetDevice_updatePeerPaymentAccountResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -11547,9 +11547,9 @@ void __78__NPKPaymentWebServiceCompanionTargetDevice_updatePeerPaymentAccountRes
   }
 }
 
-- (void)updatePeerPaymentAccountWithCompletion:(id)a3
+- (void)updatePeerPaymentAccountWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -11563,15 +11563,15 @@ void __78__NPKPaymentWebServiceCompanionTargetDevice_updatePeerPaymentAccountRes
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84__NPKPaymentWebServiceCompanionTargetDevice_updatePeerPaymentAccountWithCompletion___block_invoke;
   v10[3] = &unk_279945530;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_sync(v8, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  dispatch_sync(internalQueue, v10);
 }
 
 void __84__NPKPaymentWebServiceCompanionTargetDevice_updatePeerPaymentAccountWithCompletion___block_invoke(uint64_t a1)
@@ -11668,10 +11668,10 @@ uint64_t __84__NPKPaymentWebServiceCompanionTargetDevice_updatePeerPaymentAccoun
   return result;
 }
 
-- (void)setPeerPaymentPreferencesResponse:(id)a3
+- (void)setPeerPaymentPreferencesResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -11680,15 +11680,15 @@ uint64_t __84__NPKPaymentWebServiceCompanionTargetDevice_updatePeerPaymentAccoun
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device update peer payment preferences: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -11708,20 +11708,20 @@ uint64_t __84__NPKPaymentWebServiceCompanionTargetDevice_updatePeerPaymentAccoun
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __79__NPKPaymentWebServiceCompanionTargetDevice_setPeerPaymentPreferencesResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -11842,10 +11842,10 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)setPeerPaymentPreferences:(id)a3 completion:(id)a4
+- (void)setPeerPaymentPreferences:(id)preferences completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  preferencesCopy = preferences;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -11859,17 +11859,17 @@ LABEL_17:
     }
   }
 
-  v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__NPKPaymentWebServiceCompanionTargetDevice_setPeerPaymentPreferences_completion___block_invoke;
   block[3] = &unk_279945A48;
-  v15 = v6;
-  v16 = self;
-  v17 = v7;
-  v12 = v7;
-  v13 = v6;
-  dispatch_sync(v11, block);
+  v15 = preferencesCopy;
+  selfCopy = self;
+  v17 = completionCopy;
+  v12 = completionCopy;
+  v13 = preferencesCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 void __82__NPKPaymentWebServiceCompanionTargetDevice_setPeerPaymentPreferences_completion___block_invoke(uint64_t a1)
@@ -11970,10 +11970,10 @@ uint64_t __82__NPKPaymentWebServiceCompanionTargetDevice_setPeerPaymentPreferenc
   return result;
 }
 
-- (void)openURLWithRequest:(id)a3
+- (void)openURLWithRequest:(id)request
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -11988,28 +11988,28 @@ uint64_t __82__NPKPaymentWebServiceCompanionTargetDevice_setPeerPaymentPreferenc
   }
 
   v8 = [NPKProtoOpenURLRequest alloc];
-  v9 = [v4 data];
+  data = [requestCopy data];
 
-  v10 = [(NPKProtoOpenURLRequest *)v8 initWithData:v9];
+  v10 = [(NPKProtoOpenURLRequest *)v8 initWithData:data];
   v11 = MEMORY[0x277CBEBC0];
-  v12 = [(NPKProtoOpenURLRequest *)v10 urlString];
-  v13 = [v11 URLWithString:v12];
+  urlString = [(NPKProtoOpenURLRequest *)v10 urlString];
+  v13 = [v11 URLWithString:urlString];
 
   v14 = [MEMORY[0x277CCACE0] componentsWithURL:v13 resolvingAgainstBaseURL:0];
-  v15 = [v14 scheme];
-  v16 = [v15 isEqualToString:@"tap-to-radar"];
+  scheme = [v14 scheme];
+  v16 = [scheme isEqualToString:@"tap-to-radar"];
 
   if (v16)
   {
     v17 = [[NPKTapToRadarRequest alloc] initWithURL:v13];
-    v18 = [(NPKPaymentWebServiceCompanionTargetDevice *)self manager];
+    manager = [(NPKPaymentWebServiceCompanionTargetDevice *)self manager];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __64__NPKPaymentWebServiceCompanionTargetDevice_openURLWithRequest___block_invoke;
     v23[3] = &unk_279945058;
     v24 = v17;
     v19 = v17;
-    [v18 fileRadarWithRequest:v19 requestUserPermission:0 completion:v23];
+    [manager fileRadarWithRequest:v19 requestUserPermission:0 completion:v23];
   }
 
   else
@@ -12074,7 +12074,7 @@ void __64__NPKPaymentWebServiceCompanionTargetDevice_openURLWithRequest___block_
   return manager;
 }
 
-- (void)handlePeerPaymentTermsAndConditionsAcceptanceRequest:(id)a3
+- (void)handlePeerPaymentTermsAndConditionsAcceptanceRequest:(id)request
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -12089,11 +12089,11 @@ void __64__NPKPaymentWebServiceCompanionTargetDevice_openURLWithRequest___block_
     }
   }
 
-  v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
-  [v7 handlePeerPaymentTermsAndConditionsRequestFromGizmo];
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  [companionAgentConnection handlePeerPaymentTermsAndConditionsRequestFromGizmo];
 }
 
-- (void)handleDeviceUnlockedForPendingProvisioningRequest:(id)a3
+- (void)handleDeviceUnlockedForPendingProvisioningRequest:(id)request
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -12108,15 +12108,15 @@ void __64__NPKPaymentWebServiceCompanionTargetDevice_openURLWithRequest___block_
     }
   }
 
-  v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
-  [v7 handleDeviceUnlockedForPendingProvisioningRequestFromGizmo];
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  [companionAgentConnection handleDeviceUnlockedForPendingProvisioningRequestFromGizmo];
 }
 
-- (BOOL)paymentWebServiceSupportsAccounts:(id)a3
+- (BOOL)paymentWebServiceSupportsAccounts:(id)accounts
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 needsRegistration])
+  accountsCopy = accounts;
+  if ([accountsCopy needsRegistration])
   {
     v5 = pk_Payment_log();
     v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
@@ -12139,36 +12139,36 @@ LABEL_9:
 
   else
   {
-    v9 = [v4 context];
-    v10 = [v9 primaryRegion];
-    v11 = [v10 accountServiceURL];
+    context = [accountsCopy context];
+    primaryRegion = [context primaryRegion];
+    accountServiceURL = [primaryRegion accountServiceURL];
 
-    v12 = [v4 context];
-    v13 = [v12 primaryRegion];
-    v14 = [v13 hasAccounts];
+    context2 = [accountsCopy context];
+    primaryRegion2 = [context2 primaryRegion];
+    hasAccounts = [primaryRegion2 hasAccounts];
 
-    v15 = [v4 context];
-    v16 = [v15 configuration];
-    v17 = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceRegion];
-    v18 = [v16 accountServiceEnabledForRegion:v17];
+    context3 = [accountsCopy context];
+    configuration = [context3 configuration];
+    deviceRegion = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceRegion];
+    v18 = [configuration accountServiceEnabledForRegion:deviceRegion];
 
-    v7 = (v14 | v18) & (v11 != 0);
+    v7 = (hasAccounts | v18) & (accountServiceURL != 0);
     v19 = pk_Payment_log();
-    LODWORD(v16) = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
+    LODWORD(configuration) = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
 
-    if (v16)
+    if (configuration)
     {
       v8 = pk_Payment_log();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
         v22 = 67109888;
-        v23 = (v14 | v18) & (v11 != 0);
+        v23 = (hasAccounts | v18) & (accountServiceURL != 0);
         v24 = 1024;
-        v25 = v14;
+        v25 = hasAccounts;
         v26 = 1024;
         v27 = v18 & 1;
         v28 = 1024;
-        v29 = v11 != 0;
+        v29 = accountServiceURL != 0;
         _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Payment web service supports accounts = %d, hasAccount: %d, regionEnabled: %d, hasURL: %d", &v22, 0x1Au);
       }
 
@@ -12180,9 +12180,9 @@ LABEL_9:
   return v7;
 }
 
-- (void)updatedAccountsForProvisioningWithCompletion:(id)a3
+- (void)updatedAccountsForProvisioningWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -12196,16 +12196,16 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __90__NPKPaymentWebServiceCompanionTargetDevice_updatedAccountsForProvisioningWithCompletion___block_invoke;
     v9[3] = &unk_279945530;
     v9[4] = self;
-    v10 = v4;
-    dispatch_async(v8, v9);
+    v10 = completionCopy;
+    dispatch_async(internalQueue, v9);
   }
 }
 
@@ -12584,10 +12584,10 @@ LABEL_42:
   v46 = *MEMORY[0x277D85DE8];
 }
 
-- (void)triggerCloudStoreZoneCreationForAccountResponse:(id)a3
+- (void)triggerCloudStoreZoneCreationForAccountResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -12596,15 +12596,15 @@ LABEL_42:
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: (apple-balance-pass-provisioning) Target device triggerCloudStoreZoneCreationForAccount: incoming protobuf: %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -12616,19 +12616,19 @@ LABEL_42:
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __93__NPKPaymentWebServiceCompanionTargetDevice_triggerCloudStoreZoneCreationForAccountResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -12698,11 +12698,11 @@ void __93__NPKPaymentWebServiceCompanionTargetDevice_triggerCloudStoreZoneCreati
   }
 }
 
-- (void)triggerCloudStoreZoneCreationForAccount:(id)a3 withCompletion:(id)a4
+- (void)triggerCloudStoreZoneCreationForAccount:(id)account withCompletion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  accountCopy = account;
+  completionCopy = completion;
   v8 = NPKPairedOrPairingDeviceSupportsAppleBalance();
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -12745,17 +12745,17 @@ void __93__NPKPaymentWebServiceCompanionTargetDevice_triggerCloudStoreZoneCreati
     goto LABEL_16;
   }
 
-  if (v6)
+  if (accountCopy)
   {
-    v13 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __100__NPKPaymentWebServiceCompanionTargetDevice_triggerCloudStoreZoneCreationForAccount_withCompletion___block_invoke;
     block[3] = &unk_279945A48;
-    v22 = v6;
-    v23 = self;
-    v24 = v7;
-    dispatch_sync(v13, block);
+    v22 = accountCopy;
+    selfCopy = self;
+    v24 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     goto LABEL_20;
   }
@@ -12781,9 +12781,9 @@ LABEL_16:
   }
 
 LABEL_18:
-  if (v7)
+  if (completionCopy)
   {
-    (*(v7 + 2))(v7, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_20:
@@ -12888,10 +12888,10 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_triggerCloudStoreZoneC
   return result;
 }
 
-- (void)provisionPassForRemoteCredentialWithTypeAndIdentifierResponse:(id)a3
+- (void)provisionPassForRemoteCredentialWithTypeAndIdentifierResponse:(id)response
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -12900,15 +12900,15 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_triggerCloudStoreZoneC
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: (apple-balance-pass-provisioning) Target device provisionPassForRemoteCredentialWithTypeAndIdentifierResponse: incoming protobuf: %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -12926,20 +12926,20 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_triggerCloudStoreZoneC
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __107__NPKPaymentWebServiceCompanionTargetDevice_provisionPassForRemoteCredentialWithTypeAndIdentifierResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -13054,12 +13054,12 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)provisionPassForRemoteCredentialWithType:(int64_t)a3 andIdentifier:(id)a4 completion:(id)a5
+- (void)provisionPassForRemoteCredentialWithType:(int64_t)type andIdentifier:(id)identifier completion:(id)completion
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  if (a3 != 135)
+  identifierCopy = identifier;
+  completionCopy = completion;
+  if (type != 135)
   {
     goto LABEL_9;
   }
@@ -13088,16 +13088,16 @@ LABEL_18:
   if (v10)
   {
 LABEL_9:
-    v15 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __111__NPKPaymentWebServiceCompanionTargetDevice_provisionPassForRemoteCredentialWithType_andIdentifier_completion___block_invoke;
     v21[3] = &unk_279949D98;
-    v25 = a3;
-    v22 = v8;
-    v23 = self;
-    v24 = v9;
-    dispatch_sync(v15, v21);
+    typeCopy = type;
+    v22 = identifierCopy;
+    selfCopy = self;
+    v24 = completionCopy;
+    dispatch_sync(internalQueue, v21);
 
     v16 = v22;
 LABEL_10:
@@ -13118,10 +13118,10 @@ LABEL_10:
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v9 + 2))(v9, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
     goto LABEL_10;
   }
 
@@ -13226,10 +13226,10 @@ uint64_t __111__NPKPaymentWebServiceCompanionTargetDevice_provisionPassForRemote
   return result;
 }
 
-- (void)deviceMetadataResponse:(id)a3
+- (void)deviceMetadataResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -13238,15 +13238,15 @@ uint64_t __111__NPKPaymentWebServiceCompanionTargetDevice_provisionPassForRemote
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target deviceMetadataWithFields (account-pass-protobuf): incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -13260,19 +13260,19 @@ uint64_t __111__NPKPaymentWebServiceCompanionTargetDevice_provisionPassForRemote
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __68__NPKPaymentWebServiceCompanionTargetDevice_deviceMetadataResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -13373,11 +13373,11 @@ LABEL_12:
 LABEL_13:
 }
 
-- (void)paymentWebService:(id)a3 deviceMetadataWithFields:(unint64_t)a4 completion:(id)a5
+- (void)paymentWebService:(id)service deviceMetadataWithFields:(unint64_t)fields completion:(id)completion
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  serviceCopy = service;
+  completionCopy = completion;
   v10 = NPKPairedOrPairingDevice();
   v11 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"DC264F98-B0E2-4D96-9248-663A801E4FB1"];
   v12 = [v10 supportsCapability:v11];
@@ -13397,7 +13397,7 @@ LABEL_13:
       }
 
       *buf = 134218242;
-      v30 = a4;
+      fieldsCopy = fields;
       v31 = 2112;
       v32 = v15;
       _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: Target device deviceMetadataWithFields: %lu. Apple Card support %@", buf, 0x16u);
@@ -13406,16 +13406,16 @@ LABEL_13:
 
   if (v12)
   {
-    v16 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_deviceMetadataWithFields_completion___block_invoke_598;
     v24[3] = &unk_27994A198;
-    v25 = v9;
-    v26 = a4;
+    v25 = completionCopy;
+    fieldsCopy2 = fields;
     v24[4] = self;
-    v17 = v9;
-    dispatch_sync(v16, v24);
+    v17 = completionCopy;
+    dispatch_sync(internalQueue, v24);
 
     v18 = v25;
   }
@@ -13428,7 +13428,7 @@ LABEL_13:
       v20 = NPKPairedOrPairingDevice();
       v21 = [v20 valueForProperty:*MEMORY[0x277D2BC20]];
       *buf = 138412290;
-      v30 = v21;
+      fieldsCopy = v21;
       _os_log_impl(&dword_25B300000, v19, OS_LOG_TYPE_DEFAULT, "(account-pass-feature-check) watchOSVersion %@ does not support Apple Card capability. We will invoke the older counterpart to this call.", buf, 0xCu);
     }
 
@@ -13436,9 +13436,9 @@ LABEL_13:
     v27[1] = 3221225472;
     v27[2] = __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_deviceMetadataWithFields_completion___block_invoke;
     v27[3] = &unk_27994A148;
-    v28 = v9;
-    v22 = v9;
-    [(NPKPaymentWebServiceCompanionTargetDevice *)self paymentWebService:v8 provisioningDataIncludingDeviceMetadata:1 withCompletionHandler:v27];
+    v28 = completionCopy;
+    v22 = completionCopy;
+    [(NPKPaymentWebServiceCompanionTargetDevice *)self paymentWebService:serviceCopy provisioningDataIncludingDeviceMetadata:1 withCompletionHandler:v27];
     v18 = v28;
   }
 
@@ -13587,10 +13587,10 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
   return result;
 }
 
-- (id)supportedFeatureIdentifiersWithPaymentWebService:(id)a3
+- (id)supportedFeatureIdentifiersWithPaymentWebService:(id)service
 {
   v60 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  serviceCopy = service;
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -13604,23 +13604,23 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
     }
   }
 
-  v7 = [v3 context];
-  v8 = [v7 primaryRegion];
-  v9 = [v7 configuration];
-  v10 = [v3 targetDevice];
+  context = [serviceCopy context];
+  primaryRegion = [context primaryRegion];
+  configuration = [context configuration];
+  targetDevice = [serviceCopy targetDevice];
 
-  v11 = v9;
-  v12 = [v10 deviceRegion];
+  v11 = configuration;
+  deviceRegion = [targetDevice deviceRegion];
 
-  v13 = [v8 applyServiceURL];
+  applyServiceURL = [primaryRegion applyServiceURL];
 
-  v14 = [v8 hasApplications];
-  v15 = [v8 hasAccounts];
+  hasApplications = [primaryRegion hasApplications];
+  hasAccounts = [primaryRegion hasAccounts];
   v49 = v11;
   v16 = v11;
-  v17 = v12;
-  v18 = [v16 applyServiceEnabledForRegion:v12];
-  v19 = v14 | v15 | v18;
+  v17 = deviceRegion;
+  v18 = [v16 applyServiceEnabledForRegion:deviceRegion];
+  v19 = hasApplications | hasAccounts | v18;
   v20 = pk_Payment_log();
   v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
 
@@ -13629,24 +13629,24 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
     v22 = pk_Payment_log();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
-      v23 = v13 != 0;
-      v24 = v15 & 1;
+      v23 = applyServiceURL != 0;
+      v24 = hasAccounts & 1;
       v25 = v18 & 1;
-      if (v13)
+      if (applyServiceURL)
       {
         v26 = &stru_286C934F8;
       }
 
       else
       {
-        v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"primary region: %@", v8];
+        v26 = [MEMORY[0x277CCACA8] stringWithFormat:@"primary region: %@", primaryRegion];
         v23 = 0;
       }
 
       *buf = 67110402;
       *v51 = v19 & 1;
       *&v51[4] = 1024;
-      *&v51[6] = v14;
+      *&v51[6] = hasApplications;
       v52 = 1024;
       v53 = v24;
       v54 = 1024;
@@ -13657,7 +13657,7 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
       v27 = v26;
       v59 = v26;
       _os_log_impl(&dword_25B300000, v22, OS_LOG_TYPE_DEFAULT, "Notice: Payment web service supports apply service: %d, hasApplications: %d, hasAccounts: %d, regionEnabled: %d, hasURL: %d %@", buf, 0x2Au);
-      if (!v13)
+      if (!applyServiceURL)
       {
       }
     }
@@ -13665,8 +13665,8 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
 
   if (v19)
   {
-    v28 = [v7 applyServiceFeaturesForRegionMeetingEnablementThreshold:v17];
-    v29 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _deviceSupportedFeatureIdentifiers];
+    v28 = [context applyServiceFeaturesForRegionMeetingEnablementThreshold:v17];
+    _deviceSupportedFeatureIdentifiers = [(NPKPaymentWebServiceCompanionTargetDevice *)self _deviceSupportedFeatureIdentifiers];
     v30 = pk_Payment_log();
     v31 = os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT);
 
@@ -13676,12 +13676,12 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        *v51 = v29;
+        *v51 = _deviceSupportedFeatureIdentifiers;
         _os_log_impl(&dword_25B300000, v32, OS_LOG_TYPE_DEFAULT, "Notice: Device supported feature identifiers: %@", buf, 0xCu);
       }
     }
 
-    if (![v29 count])
+    if (![_deviceSupportedFeatureIdentifiers count])
     {
       v33 = pk_Payment_log();
       v34 = os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT);
@@ -13698,8 +13698,8 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
     }
 
     v36 = MEMORY[0x277CBEB58];
-    v37 = [v28 allKeys];
-    v38 = [v36 setWithArray:v37];
+    allKeys = [v28 allKeys];
+    v38 = [v36 setWithArray:allKeys];
 
     v39 = pk_Payment_log();
     v40 = os_log_type_enabled(v39, OS_LOG_TYPE_DEFAULT);
@@ -13715,7 +13715,7 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
       }
     }
 
-    [v38 intersectSet:v29];
+    [v38 intersectSet:_deviceSupportedFeatureIdentifiers];
     v42 = pk_Payment_log();
     v43 = os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT);
 
@@ -13743,10 +13743,10 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
   return v45;
 }
 
-- (id)supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:(id)a3
+- (id)supportedFeatureIdentifiersForAccountProvisioningWithPaymentWebService:(id)service
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  serviceCopy = service;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -13760,9 +13760,9 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
     }
   }
 
-  v8 = [v4 context];
-  v9 = [v8 primaryRegion];
-  v10 = [v9 accountServiceURL];
+  context = [serviceCopy context];
+  primaryRegion = [context primaryRegion];
+  accountServiceURL = [primaryRegion accountServiceURL];
 
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -13772,7 +13772,7 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
     v13 = pk_Payment_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      if (v10)
+      if (accountServiceURL)
       {
         v14 = @"YES";
       }
@@ -13782,18 +13782,18 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
         v14 = @"NO";
       }
 
-      v15 = [v9 accountServiceURL];
+      accountServiceURL2 = [primaryRegion accountServiceURL];
       v28 = 138412546;
       v29 = v14;
       v30 = 2112;
-      v31 = v15;
+      v31 = accountServiceURL2;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-provisioning) Payment web service supports account service: %@ accountServiceURL %@", &v28, 0x16u);
     }
   }
 
-  if (v10)
+  if (accountServiceURL)
   {
-    v16 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _deviceSupportedFeatureIdentifiers];
+    _deviceSupportedFeatureIdentifiers = [(NPKPaymentWebServiceCompanionTargetDevice *)self _deviceSupportedFeatureIdentifiers];
     v17 = pk_Payment_log();
     v18 = os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT);
 
@@ -13803,12 +13803,12 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v28 = 138412290;
-        v29 = v16;
+        v29 = _deviceSupportedFeatureIdentifiers;
         _os_log_impl(&dword_25B300000, v19, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-provisioning) Device supported feature identifiers: %@", &v28, 0xCu);
       }
     }
 
-    if (![v16 count])
+    if (![_deviceSupportedFeatureIdentifiers count])
     {
       v20 = pk_Payment_log();
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
@@ -13824,7 +13824,7 @@ uint64_t __99__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_devic
       }
     }
 
-    v23 = [v16 copy];
+    v23 = [_deviceSupportedFeatureIdentifiers copy];
 LABEL_27:
 
     goto LABEL_28;
@@ -13835,12 +13835,12 @@ LABEL_27:
 
   if (v25)
   {
-    v16 = pk_Payment_log();
-    if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
+    _deviceSupportedFeatureIdentifiers = pk_Payment_log();
+    if (os_log_type_enabled(_deviceSupportedFeatureIdentifiers, OS_LOG_TYPE_DEFAULT))
     {
       v28 = 138412290;
-      v29 = v9;
-      _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: primary region: %@", &v28, 0xCu);
+      v29 = primaryRegion;
+      _os_log_impl(&dword_25B300000, _deviceSupportedFeatureIdentifiers, OS_LOG_TYPE_DEFAULT, "Notice: primary region: %@", &v28, 0xCu);
     }
 
     v23 = 0;
@@ -13855,10 +13855,10 @@ LABEL_28:
   return v23;
 }
 
-- (void)updateAccountWithIdentifierResponse:(id)a3
+- (void)updateAccountWithIdentifierResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -13867,15 +13867,15 @@ LABEL_28:
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-provisioning) Target updateAccountWithIdentifier (account-pass-protobuf): incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -13895,20 +13895,20 @@ LABEL_28:
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __81__NPKPaymentWebServiceCompanionTargetDevice_updateAccountWithIdentifierResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -14029,11 +14029,11 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)paymentWebService:(id)a3 updateAccountWithIdentifier:(id)a4 completion:(id)a5
+- (void)paymentWebService:(id)service updateAccountWithIdentifier:(id)identifier completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -14043,22 +14043,22 @@ LABEL_17:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v7;
+      v21 = identifierCopy;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-provisioning) Target device updateAccountWithIdentifier: %@", buf, 0xCu);
     }
   }
 
-  v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_updateAccountWithIdentifier_completion___block_invoke;
   block[3] = &unk_279945A48;
-  v17 = v7;
-  v18 = self;
-  v19 = v8;
-  v13 = v8;
-  v14 = v7;
-  dispatch_sync(v12, block);
+  v17 = identifierCopy;
+  selfCopy = self;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = identifierCopy;
+  dispatch_sync(internalQueue, block);
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -14158,10 +14158,10 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_upda
   return result;
 }
 
-- (void)accountWithIdentifierResponse:(id)a3
+- (void)accountWithIdentifierResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -14170,15 +14170,15 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_upda
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: (apple-balance-pass-provisioning) Target accountWithIdentifier: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -14198,20 +14198,20 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_upda
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __75__NPKPaymentWebServiceCompanionTargetDevice_accountWithIdentifierResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -14317,11 +14317,11 @@ void __75__NPKPaymentWebServiceCompanionTargetDevice_accountWithIdentifierRespon
   }
 }
 
-- (void)accountWithIdentifier:(id)a3 completion:(id)a4
+- (void)accountWithIdentifier:(id)identifier completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -14331,22 +14331,22 @@ void __75__NPKPaymentWebServiceCompanionTargetDevice_accountWithIdentifierRespon
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v6;
+      v20 = identifierCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: (apple-balance-pass-provisioning) Target device accountWithIdentifier: %@", buf, 0xCu);
     }
   }
 
-  v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __78__NPKPaymentWebServiceCompanionTargetDevice_accountWithIdentifier_completion___block_invoke;
   block[3] = &unk_27994A1C0;
-  v17 = self;
-  v18 = v7;
-  v16 = v6;
-  v12 = v7;
-  v13 = v6;
-  dispatch_sync(v11, block);
+  selfCopy = self;
+  v18 = completionCopy;
+  v16 = identifierCopy;
+  v12 = completionCopy;
+  v13 = identifierCopy;
+  dispatch_sync(internalQueue, block);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -14526,10 +14526,10 @@ uint64_t __78__NPKPaymentWebServiceCompanionTargetDevice_accountWithIdentifier_c
   return v3;
 }
 
-- (void)performDeviceCheckInResponse:(id)a3
+- (void)performDeviceCheckInResponse:(id)response
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -14538,15 +14538,15 @@ uint64_t __78__NPKPaymentWebServiceCompanionTargetDevice_accountWithIdentifier_c
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-provisioning) Target performDeviceCheckInResponse (account-pass-protobuf): incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -14564,20 +14564,20 @@ uint64_t __78__NPKPaymentWebServiceCompanionTargetDevice_accountWithIdentifier_c
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __74__NPKPaymentWebServiceCompanionTargetDevice_performDeviceCheckInResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v28;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -14692,10 +14692,10 @@ LABEL_17:
 LABEL_18:
 }
 
-- (void)performDeviceCheckInWithCompletion:(id)a3
+- (void)performDeviceCheckInWithCompletion:(id)completion
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = NPKPairedOrPairingDevice();
   v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"DC264F98-B0E2-4D96-9248-663A801E4FB1"];
   v7 = [v5 supportsCapability:v6];
@@ -14722,14 +14722,14 @@ LABEL_18:
 
   if (v7)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __80__NPKPaymentWebServiceCompanionTargetDevice_performDeviceCheckInWithCompletion___block_invoke;
     v16[3] = &unk_279945530;
     v16[4] = self;
-    v17 = v4;
-    dispatch_sync(v11, v16);
+    v17 = completionCopy;
+    dispatch_sync(internalQueue, v16);
   }
 
   else
@@ -14744,9 +14744,9 @@ LABEL_18:
       _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "(account-pass-feature-check) watchOSVersion %@ does not support Apple Card capability.", buf, 0xCu);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      (*(v4 + 2))(v4, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0);
     }
   }
 
@@ -14847,10 +14847,10 @@ uint64_t __80__NPKPaymentWebServiceCompanionTargetDevice_performDeviceCheckInWit
   return result;
 }
 
-- (void)availableProductsResponse:(id)a3
+- (void)availableProductsResponse:(id)response
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -14859,15 +14859,15 @@ uint64_t __80__NPKPaymentWebServiceCompanionTargetDevice_performDeviceCheckInWit
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-provisioning) Target availableProductsResponse (account-pass-protobuf): incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -14887,20 +14887,20 @@ uint64_t __80__NPKPaymentWebServiceCompanionTargetDevice_performDeviceCheckInWit
   v33 = __Block_byref_object_copy__22;
   v34 = __Block_byref_object_dispose__22;
   v35 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __71__NPKPaymentWebServiceCompanionTargetDevice_availableProductsResponse___block_invoke;
     v24[3] = &unk_279949C48;
     v24[4] = self;
-    v25 = v10;
-    v26 = v4;
+    v25 = incomingResponseIdentifier;
+    v26 = responseCopy;
     p_buf = &buf;
     v28 = &v36;
     v29 = &v30;
-    dispatch_sync(v11, v24);
+    dispatch_sync(internalQueue, v24);
   }
 
   else
@@ -14930,12 +14930,12 @@ uint64_t __80__NPKPaymentWebServiceCompanionTargetDevice_performDeviceCheckInWit
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = v37[5];
-        v21 = [v20 availableProducts];
+        availableProducts = [v20 availableProducts];
         v22 = v31[5];
         *v42 = 138412802;
         v43 = v20;
         v44 = 2112;
-        v45 = v21;
+        v45 = availableProducts;
         v46 = 2112;
         v47 = v22;
         _os_log_impl(&dword_25B300000, v19, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-provisioning) calling completion for availableProductsWithCompletion %@ (%@) %@", v42, 0x20u);
@@ -15041,11 +15041,11 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)productsWithRequest:(id)a3 completion:(id)a4
+- (void)productsWithRequest:(id)request completion:(id)completion
 {
   v34 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -15055,7 +15055,7 @@ LABEL_17:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v33 = v6;
+      v33 = requestCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: TargetDevice: products with request:%@", buf, 0xCu);
     }
   }
@@ -15086,18 +15086,18 @@ LABEL_17:
 
   if (v13)
   {
-    v17 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v27[0] = MEMORY[0x277D85DD0];
     v27[1] = 3221225472;
     v27[2] = __76__NPKPaymentWebServiceCompanionTargetDevice_productsWithRequest_completion___block_invoke_622;
     v27[3] = &unk_279945A48;
     v18 = v28;
-    v6 = v6;
-    v28[0] = v6;
+    requestCopy = requestCopy;
+    v28[0] = requestCopy;
     v28[1] = self;
-    v29 = v7;
-    v19 = v7;
-    dispatch_sync(v17, v27);
+    v29 = completionCopy;
+    v19 = completionCopy;
+    dispatch_sync(internalQueue, v27);
   }
 
   else
@@ -15112,21 +15112,21 @@ LABEL_17:
       _os_log_impl(&dword_25B300000, v20, OS_LOG_TYPE_DEFAULT, "(account-pass-feature-check) watchOSVersion %@ does not implement availableProductsWithCompletion, getting products from web service", buf, 0xCu);
     }
 
-    if (!v6)
+    if (!requestCopy)
     {
-      v6 = objc_alloc_init(MEMORY[0x277D37FF8]);
+      requestCopy = objc_alloc_init(MEMORY[0x277D37FF8]);
     }
 
-    v23 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
-    v24 = [v23 watchPaymentWebService];
+    companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+    watchPaymentWebService = [companionAgentConnection watchPaymentWebService];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __76__NPKPaymentWebServiceCompanionTargetDevice_productsWithRequest_completion___block_invoke;
     v30[3] = &unk_27994A1E8;
     v18 = &v31;
-    v31 = v7;
-    v25 = v7;
-    [v24 availableProductsWithRequest:v6 completion:v30];
+    v31 = completionCopy;
+    v25 = completionCopy;
+    [watchPaymentWebService availableProductsWithRequest:requestCopy completion:v30];
   }
 
   v26 = *MEMORY[0x277D85DE8];
@@ -15263,10 +15263,10 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_productsWithRequest_com
   return result;
 }
 
-- (void)performProductActionResponse:(id)a3
+- (void)performProductActionResponse:(id)response
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -15275,15 +15275,15 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_productsWithRequest_com
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-provisioning) Target performProductActionResponse (account-pass-protobuf): incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -15303,20 +15303,20 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_productsWithRequest_com
   v33 = __Block_byref_object_copy__22;
   v34 = __Block_byref_object_dispose__22;
   v35 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __74__NPKPaymentWebServiceCompanionTargetDevice_performProductActionResponse___block_invoke;
     v24[3] = &unk_279949C48;
     v24[4] = self;
-    v25 = v10;
-    v26 = v4;
+    v25 = incomingResponseIdentifier;
+    v26 = responseCopy;
     p_buf = &buf;
     v28 = &v36;
     v29 = &v30;
-    dispatch_sync(v11, v24);
+    dispatch_sync(internalQueue, v24);
   }
 
   else
@@ -15346,12 +15346,12 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_productsWithRequest_com
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         v20 = v37[5];
-        v21 = [v20 availableProducts];
+        availableProducts = [v20 availableProducts];
         v22 = v31[5];
         *v42 = 138412802;
         v43 = v20;
         v44 = 2112;
-        v45 = v21;
+        v45 = availableProducts;
         v46 = 2112;
         v47 = v22;
         _os_log_impl(&dword_25B300000, v19, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-provisioning) calling completion for performProductActionRequest %@ (%@) %@", v42, 0x20u);
@@ -15457,11 +15457,11 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)performProductActionRequest:(id)a3 completion:(id)a4
+- (void)performProductActionRequest:(id)request completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  requestCopy = request;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -15471,22 +15471,22 @@ LABEL_17:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v6;
+      v20 = requestCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-provisioning) Target device performProductActionRequest %@", buf, 0xCu);
     }
   }
 
-  v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __84__NPKPaymentWebServiceCompanionTargetDevice_performProductActionRequest_completion___block_invoke;
   block[3] = &unk_279945A48;
-  v16 = v6;
-  v17 = self;
-  v18 = v7;
-  v12 = v7;
-  v13 = v6;
-  dispatch_sync(v11, block);
+  v16 = requestCopy;
+  selfCopy = self;
+  v18 = completionCopy;
+  v12 = completionCopy;
+  v13 = requestCopy;
+  dispatch_sync(internalQueue, block);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -15588,10 +15588,10 @@ uint64_t __84__NPKPaymentWebServiceCompanionTargetDevice_performProductActionReq
   return result;
 }
 
-- (void)paymentWebService:(id)a3 setDefaultPaymentPassUniqueIdentifier:(id)a4
+- (void)paymentWebService:(id)service setDefaultPaymentPassUniqueIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  identifierCopy = identifier;
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -15601,19 +15601,19 @@ uint64_t __84__NPKPaymentWebServiceCompanionTargetDevice_performProductActionReq
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v5;
+      v15 = identifierCopy;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-provisioning) Target device setDefaultPaymentPassUniqueIdentifier: %@", buf, 0xCu);
     }
   }
 
-  v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __101__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_setDefaultPaymentPassUniqueIdentifier___block_invoke;
   v12[3] = &unk_279946BF8;
-  v13 = v5;
-  v10 = v5;
-  [v9 setDefaultCardUniqueID:v10 completion:v12];
+  v13 = identifierCopy;
+  v10 = identifierCopy;
+  [companionAgentConnection setDefaultCardUniqueID:v10 completion:v12];
 
   v11 = *MEMORY[0x277D85DE8];
 }
@@ -15647,10 +15647,10 @@ void __101__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_setDefau
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)initializeCloudStoreIfNecessaryResponse:(id)a3
+- (void)initializeCloudStoreIfNecessaryResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -15659,15 +15659,15 @@ void __101__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_setDefau
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device initialize cloud store if necessary: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -15679,19 +15679,19 @@ void __101__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_setDefau
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __85__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfNecessaryResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -15769,9 +15769,9 @@ void __85__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfNeces
   }
 }
 
-- (void)initializeCloudStoreIfNecessaryWithCompletion:(id)a3
+- (void)initializeCloudStoreIfNecessaryWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -15785,15 +15785,15 @@ void __85__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfNeces
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __91__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfNecessaryWithCompletion___block_invoke;
   v10[3] = &unk_279945530;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_sync(v8, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  dispatch_sync(internalQueue, v10);
 }
 
 void __91__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfNecessaryWithCompletion___block_invoke(uint64_t a1)
@@ -15890,10 +15890,10 @@ uint64_t __91__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfN
   return result;
 }
 
-- (void)initializeCloudStoreIfNecessaryWithHandlerResponse:(id)a3
+- (void)initializeCloudStoreIfNecessaryWithHandlerResponse:(id)response
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -15902,15 +15902,15 @@ uint64_t __91__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfN
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device initialize cloud store if necessary with handler: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -15928,20 +15928,20 @@ uint64_t __91__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfN
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __96__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfNecessaryWithHandlerResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -16038,9 +16038,9 @@ void __96__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfNeces
   }
 }
 
-- (void)initializeCloudStoreIfNecessaryWithHandler:(id)a3
+- (void)initializeCloudStoreIfNecessaryWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -16054,15 +16054,15 @@ void __96__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfNeces
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __88__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfNecessaryWithHandler___block_invoke;
   v10[3] = &unk_279945530;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_sync(v8, v10);
+  v11 = handlerCopy;
+  v9 = handlerCopy;
+  dispatch_sync(internalQueue, v10);
 }
 
 void __88__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfNecessaryWithHandler___block_invoke(uint64_t a1)
@@ -16159,10 +16159,10 @@ uint64_t __88__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfN
   return result;
 }
 
-- (void)checkTLKsMissingResponse:(id)a3
+- (void)checkTLKsMissingResponse:(id)response
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -16171,15 +16171,15 @@ uint64_t __88__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfN
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device check TLKs missing: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -16197,20 +16197,20 @@ uint64_t __88__NPKPaymentWebServiceCompanionTargetDevice_initializeCloudStoreIfN
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __70__NPKPaymentWebServiceCompanionTargetDevice_checkTLKsMissingResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -16307,9 +16307,9 @@ void __70__NPKPaymentWebServiceCompanionTargetDevice_checkTLKsMissingResponse___
   }
 }
 
-- (void)checkTLKsMissingWithCompletion:(id)a3
+- (void)checkTLKsMissingWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -16323,15 +16323,15 @@ void __70__NPKPaymentWebServiceCompanionTargetDevice_checkTLKsMissingResponse___
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__NPKPaymentWebServiceCompanionTargetDevice_checkTLKsMissingWithCompletion___block_invoke;
   v10[3] = &unk_279945530;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_sync(v8, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  dispatch_sync(internalQueue, v10);
 }
 
 void __76__NPKPaymentWebServiceCompanionTargetDevice_checkTLKsMissingWithCompletion___block_invoke(uint64_t a1)
@@ -16428,10 +16428,10 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_checkTLKsMissingWithCom
   return result;
 }
 
-- (void)resetApplePayManateeViewResponse:(id)a3
+- (void)resetApplePayManateeViewResponse:(id)response
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -16440,15 +16440,15 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_checkTLKsMissingWithCom
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device reset Apple Pay manatee view: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -16466,20 +16466,20 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_checkTLKsMissingWithCom
   v25 = &v24;
   v26 = 0x2020000000;
   v27 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __78__NPKPaymentWebServiceCompanionTargetDevice_resetApplePayManateeViewResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v24;
     v23 = &v28;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -16575,9 +16575,9 @@ void __78__NPKPaymentWebServiceCompanionTargetDevice_resetApplePayManateeViewRes
   }
 }
 
-- (void)resetApplePayManateeViewWithCompletion:(id)a3
+- (void)resetApplePayManateeViewWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -16591,15 +16591,15 @@ void __78__NPKPaymentWebServiceCompanionTargetDevice_resetApplePayManateeViewRes
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84__NPKPaymentWebServiceCompanionTargetDevice_resetApplePayManateeViewWithCompletion___block_invoke;
   v10[3] = &unk_279945530;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_sync(v8, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  dispatch_sync(internalQueue, v10);
 }
 
 void __84__NPKPaymentWebServiceCompanionTargetDevice_resetApplePayManateeViewWithCompletion___block_invoke(uint64_t a1)
@@ -16696,10 +16696,10 @@ uint64_t __84__NPKPaymentWebServiceCompanionTargetDevice_resetApplePayManateeVie
   return result;
 }
 
-- (void)cloudStoreStatusResponse:(id)a3
+- (void)cloudStoreStatusResponse:(id)response
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -16708,15 +16708,15 @@ uint64_t __84__NPKPaymentWebServiceCompanionTargetDevice_resetApplePayManateeVie
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device cloud store status: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -16740,21 +16740,21 @@ uint64_t __84__NPKPaymentWebServiceCompanionTargetDevice_resetApplePayManateeVie
   v28 = __Block_byref_object_copy__22;
   v29 = __Block_byref_object_dispose__22;
   v30 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __70__NPKPaymentWebServiceCompanionTargetDevice_cloudStoreStatusResponse___block_invoke;
     block[3] = &unk_279949BA8;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v35;
     v23 = &v31;
     v24 = &v25;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -16850,9 +16850,9 @@ void __70__NPKPaymentWebServiceCompanionTargetDevice_cloudStoreStatusResponse___
   }
 }
 
-- (void)cloudStoreStatusWithCompletion:(id)a3
+- (void)cloudStoreStatusWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -16866,15 +16866,15 @@ void __70__NPKPaymentWebServiceCompanionTargetDevice_cloudStoreStatusResponse___
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __76__NPKPaymentWebServiceCompanionTargetDevice_cloudStoreStatusWithCompletion___block_invoke;
   v10[3] = &unk_279945530;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_sync(v8, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  dispatch_sync(internalQueue, v10);
 }
 
 void __76__NPKPaymentWebServiceCompanionTargetDevice_cloudStoreStatusWithCompletion___block_invoke(uint64_t a1)
@@ -16971,10 +16971,10 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_cloudStoreStatusWithCom
   return result;
 }
 
-- (void)downloadAllPaymentPasses:(id)a3
+- (void)downloadAllPaymentPasses:(id)passes
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  passesCopy = passes;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -16983,23 +16983,23 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_cloudStoreStatusWithCom
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [passesCopy npkDescription];
       v11 = 138412290;
-      v12 = v8;
+      v12 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device download all payment passes: incoming protobuf %@", &v11, 0xCu);
     }
   }
 
-  v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v9 handleDownloadAllPaymentPasses];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate handleDownloadAllPaymentPasses];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkCompanionPeerPaymentRegistrationState:(id)a3
+- (void)checkCompanionPeerPaymentRegistrationState:(id)state
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -17008,15 +17008,15 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_cloudStoreStatusWithCom
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [stateCopy npkDescription];
       v11 = 138412290;
-      v12 = v8;
+      v12 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device check companion peer payment registration state: incoming protobuf %@", &v11, 0xCu);
     }
   }
 
-  v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v9 checkCompanionPeerPaymentRegistrationState];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate checkCompanionPeerPaymentRegistrationState];
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -17040,10 +17040,10 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_cloudStoreStatusWithCom
   return NPKIsGymKitEnabled();
 }
 
-- (id)upgradeRequestForPass:(id)a3
+- (id)upgradeRequestForPass:(id)pass
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  passCopy = pass;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -17052,14 +17052,14 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_cloudStoreStatusWithCom
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 uniqueID];
+      uniqueID = [passCopy uniqueID];
       v20 = 138412290;
-      v21 = v8;
+      v21 = uniqueID;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device: handling upgrade request for pass %@", &v20, 0xCu);
     }
   }
 
-  v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _eligibleExpressUpgradeRequestsForPass:v4];
+  v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _eligibleExpressUpgradeRequestsForPass:passCopy];
   v10 = [v9 count];
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
@@ -17071,16 +17071,16 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_cloudStoreStatusWithCom
       v13 = pk_Payment_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v4 uniqueID];
+        uniqueID2 = [passCopy uniqueID];
         v20 = 138412546;
         v21 = v9;
         v22 = 2112;
-        v23 = v14;
+        v23 = uniqueID2;
         _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Target device: found eligible requests (%@) for pass %@. Returning first object.", &v20, 0x16u);
       }
     }
 
-    v15 = [v9 firstObject];
+    firstObject = [v9 firstObject];
   }
 
   else
@@ -17090,53 +17090,53 @@ uint64_t __76__NPKPaymentWebServiceCompanionTargetDevice_cloudStoreStatusWithCom
       v16 = pk_Payment_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v4 uniqueID];
+        uniqueID3 = [passCopy uniqueID];
         v20 = 138412290;
-        v21 = v17;
+        v21 = uniqueID3;
         _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: Target device: no eligible upgrade requests found for pass %@", &v20, 0xCu);
       }
     }
 
-    v15 = 0;
+    firstObject = 0;
   }
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return firstObject;
 }
 
-- (void)paymentWebService:(id)a3 handlePotentialExpressPass:(id)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service handlePotentialExpressPass:(id)pass withCompletionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  passCopy = pass;
+  handlerCopy = handler;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
-  if (v10)
+  if (handlerCopy)
   {
     if (v12)
     {
       v13 = pk_Payment_log();
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [v9 uniqueID];
+        uniqueID = [passCopy uniqueID];
         v18 = 138412290;
-        v19 = v14;
+        v19 = uniqueID;
         _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Target device: handling potential express pass %@", &v18, 0xCu);
       }
     }
 
-    v15 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _expressPassConfigurationForPaymentPass:v9];
+    v15 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _expressPassConfigurationForPaymentPass:passCopy];
     if ([(NPKPaymentWebServiceCompanionTargetDevice *)self deviceSupportMultipleExpressPasses])
     {
-      [(NPKPaymentWebServiceCompanionTargetDevice *)self _multipleExpressTransitPassPaymentWebService:v8 handlePotentialExpressPassConfiguration:v15 pass:v9 withCompletionHandler:v10];
+      [(NPKPaymentWebServiceCompanionTargetDevice *)self _multipleExpressTransitPassPaymentWebService:serviceCopy handlePotentialExpressPassConfiguration:v15 pass:passCopy withCompletionHandler:handlerCopy];
     }
 
     else
     {
-      [(NPKPaymentWebServiceCompanionTargetDevice *)self _singleExpressTransitPassPaymentWebService:v8 handlePotentialExpressPassConfiguration:v15 withCompletionHandler:v10];
+      [(NPKPaymentWebServiceCompanionTargetDevice *)self _singleExpressTransitPassPaymentWebService:serviceCopy handlePotentialExpressPassConfiguration:v15 withCompletionHandler:handlerCopy];
     }
 
 LABEL_12:
@@ -17149,9 +17149,9 @@ LABEL_12:
     v15 = pk_Payment_log();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [v9 uniqueID];
+      uniqueID2 = [passCopy uniqueID];
       v18 = 138412290;
-      v19 = v16;
+      v19 = uniqueID2;
       _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_DEFAULT, "Notice: Target device: missing complition block will not handling potential express pass %@", &v18, 0xCu);
     }
 
@@ -17163,21 +17163,21 @@ LABEL_13:
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_multipleExpressTransitPassPaymentWebService:(id)a3 handlePotentialExpressPassConfiguration:(id)a4 pass:(id)a5 withCompletionHandler:(id)a6
+- (void)_multipleExpressTransitPassPaymentWebService:(id)service handlePotentialExpressPassConfiguration:(id)configuration pass:(id)pass withCompletionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  serviceCopy = service;
+  configurationCopy = configuration;
+  passCopy = pass;
+  handlerCopy = handler;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __157__NPKPaymentWebServiceCompanionTargetDevice__multipleExpressTransitPassPaymentWebService_handlePotentialExpressPassConfiguration_pass_withCompletionHandler___block_invoke;
   aBlock[3] = &unk_279945A98;
   objc_copyWeak(&v27, &location);
-  v14 = v11;
+  v14 = configurationCopy;
   v25 = v14;
-  v15 = v13;
+  v15 = handlerCopy;
   v26 = v15;
   v16 = _Block_copy(aBlock);
   v17 = v16;
@@ -17188,20 +17188,20 @@ LABEL_13:
     v20[2] = __157__NPKPaymentWebServiceCompanionTargetDevice__multipleExpressTransitPassPaymentWebService_handlePotentialExpressPassConfiguration_pass_withCompletionHandler___block_invoke_641;
     v20[3] = &unk_27994A238;
     v22 = v16;
-    v21 = v12;
+    v21 = passCopy;
     v23 = v15;
-    [(NPKPaymentWebServiceCompanionTargetDevice *)self _checkConflictsForPass:v21 withConfiguration:v14 webService:v10 hasDisqualifyingConflicts:v20];
+    [(NPKPaymentWebServiceCompanionTargetDevice *)self _checkConflictsForPass:v21 withConfiguration:v14 webService:serviceCopy hasDisqualifyingConflicts:v20];
   }
 
   else
   {
-    v18 = [v12 devicePrimaryContactlessPaymentApplication];
-    [v18 paymentNetworkIdentifier];
+    devicePrimaryContactlessPaymentApplication = [passCopy devicePrimaryContactlessPaymentApplication];
+    [devicePrimaryContactlessPaymentApplication paymentNetworkIdentifier];
     v19 = PKIsOpenLoopCredentialType();
 
     if (v19)
     {
-      [(NPKPaymentWebServiceCompanionTargetDevice *)self _handleOpenLoopPassUpgradeWithPass:v12 webService:v10 completion:v15];
+      [(NPKPaymentWebServiceCompanionTargetDevice *)self _handleOpenLoopPassUpgradeWithPass:passCopy webService:serviceCopy completion:v15];
     }
   }
 
@@ -17299,12 +17299,12 @@ uint64_t __157__NPKPaymentWebServiceCompanionTargetDevice__multipleExpressTransi
   return result;
 }
 
-- (void)_singleExpressTransitPassPaymentWebService:(id)a3 handlePotentialExpressPassConfiguration:(id)a4 withCompletionHandler:(id)a5
+- (void)_singleExpressTransitPassPaymentWebService:(id)service handlePotentialExpressPassConfiguration:(id)configuration withCompletionHandler:(id)handler
 {
   v71 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  configurationCopy = configuration;
+  handlerCopy = handler;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -17313,14 +17313,14 @@ uint64_t __157__NPKPaymentWebServiceCompanionTargetDevice__multipleExpressTransi
     v13 = pk_Payment_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v9 passUniqueIdentifier];
+      passUniqueIdentifier = [configurationCopy passUniqueIdentifier];
       *buf = 138412290;
-      v70 = v14;
+      v70 = passUniqueIdentifier;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Target device: legacy handling potential express pass %@", buf, 0xCu);
     }
   }
 
-  if (!v9)
+  if (!configurationCopy)
   {
     v49 = pk_Payment_log();
     v50 = os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT);
@@ -17328,7 +17328,7 @@ uint64_t __157__NPKPaymentWebServiceCompanionTargetDevice__multipleExpressTransi
     if (!v50)
     {
 LABEL_36:
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
       goto LABEL_43;
     }
 
@@ -17344,12 +17344,12 @@ LABEL_35:
     goto LABEL_36;
   }
 
-  v15 = [v9 passInformation];
-  v16 = [v15 cardType];
+  passInformation = [configurationCopy passInformation];
+  cardType = [passInformation cardType];
 
-  if (v16 == 2)
+  if (cardType == 2)
   {
-    v58 = v10;
+    v58 = handlerCopy;
     v17 = NPKPairedDeviceExpressPassConfigurationWithCardType(2);
     if ([v17 count])
     {
@@ -17368,24 +17368,24 @@ LABEL_35:
         }
       }
 
-      v22 = [v9 passUniqueIdentifier];
-      v23 = [(NPKPaymentWebServiceCompanionTargetDevice *)self paymentWebService:v8 passesOfType:1];
+      passUniqueIdentifier2 = [configurationCopy passUniqueIdentifier];
+      v23 = [(NPKPaymentWebServiceCompanionTargetDevice *)self paymentWebService:serviceCopy passesOfType:1];
       v24 = MEMORY[0x277CCAC30];
       v65[0] = MEMORY[0x277D85DD0];
       v65[1] = 3221225472;
       v65[2] = __150__NPKPaymentWebServiceCompanionTargetDevice__singleExpressTransitPassPaymentWebService_handlePotentialExpressPassConfiguration_withCompletionHandler___block_invoke;
       v65[3] = &unk_27994A260;
-      v66 = v22;
+      v66 = passUniqueIdentifier2;
       v67 = v23;
-      v25 = v9;
-      v26 = v8;
+      v25 = configurationCopy;
+      v26 = serviceCopy;
       v27 = v23;
-      v28 = v22;
+      v28 = passUniqueIdentifier2;
       v29 = [v24 predicateWithBlock:v65];
       v30 = [v17 filteredSetUsingPredicate:v29];
 
-      v8 = v26;
-      v9 = v25;
+      serviceCopy = v26;
+      configurationCopy = v25;
 
       v17 = v30;
     }
@@ -17407,8 +17407,8 @@ LABEL_35:
 
     if ([v17 count])
     {
-      v56 = v9;
-      v57 = v8;
+      v56 = configurationCopy;
+      v57 = serviceCopy;
       v63 = 0u;
       v64 = 0u;
       v61 = 0u;
@@ -17437,9 +17437,9 @@ LABEL_35:
               v43 = pk_Payment_log();
               if (os_log_type_enabled(v43, OS_LOG_TYPE_DEFAULT))
               {
-                v44 = [v40 passUniqueIdentifier];
+                passUniqueIdentifier3 = [v40 passUniqueIdentifier];
                 *buf = 138412290;
-                v70 = v44;
+                v70 = passUniqueIdentifier3;
                 _os_log_impl(&dword_25B300000, v43, OS_LOG_TYPE_DEFAULT, "Notice: Not setting pass as express due to existing express pass with unique ID %@", buf, 0xCu);
               }
             }
@@ -17454,9 +17454,9 @@ LABEL_35:
       v45 = pk_Payment_log();
       v46 = os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT);
 
-      v9 = v56;
-      v8 = v57;
-      v10 = v58;
+      configurationCopy = v56;
+      serviceCopy = v57;
+      handlerCopy = v58;
       if (!v46)
       {
         goto LABEL_36;
@@ -17465,16 +17465,16 @@ LABEL_35:
       v47 = pk_Payment_log();
       if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
       {
-        v48 = [v56 passUniqueIdentifier];
+        passUniqueIdentifier4 = [v56 passUniqueIdentifier];
         *buf = 138412290;
-        v70 = v48;
+        v70 = passUniqueIdentifier4;
         _os_log_impl(&dword_25B300000, v47, OS_LOG_TYPE_DEFAULT, "Notice: Could not handle protential express pass with unique ID %@.", buf, 0xCu);
       }
 
       goto LABEL_35;
     }
 
-    v10 = v58;
+    handlerCopy = v58;
   }
 
   v51 = pk_General_log();
@@ -17485,9 +17485,9 @@ LABEL_35:
     v53 = pk_General_log();
     if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
     {
-      v54 = [v9 passUniqueIdentifier];
+      passUniqueIdentifier5 = [configurationCopy passUniqueIdentifier];
       *buf = 138412290;
-      v70 = v54;
+      v70 = passUniqueIdentifier5;
       _os_log_impl(&dword_25B300000, v53, OS_LOG_TYPE_DEFAULT, "Notice: Will handle potential express pass with unique ID %@", buf, 0xCu);
     }
   }
@@ -17497,8 +17497,8 @@ LABEL_35:
   v59[2] = __150__NPKPaymentWebServiceCompanionTargetDevice__singleExpressTransitPassPaymentWebService_handlePotentialExpressPassConfiguration_withCompletionHandler___block_invoke_646;
   v59[3] = &unk_27994A288;
   v59[4] = self;
-  v60 = v10;
-  [(NPKPaymentWebServiceCompanionTargetDevice *)self setExpressWithPassConfiguration:v9 requestAuthorization:0 completion:v59];
+  v60 = handlerCopy;
+  [(NPKPaymentWebServiceCompanionTargetDevice *)self setExpressWithPassConfiguration:configurationCopy requestAuthorization:0 completion:v59];
 
 LABEL_43:
   v55 = *MEMORY[0x277D85DE8];
@@ -17623,12 +17623,12 @@ void __150__NPKPaymentWebServiceCompanionTargetDevice__singleExpressTransitPassP
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)paymentWebService:(id)a3 canHandlePotentialExpressPass:(id)a4 withCompletionHandler:(id)a5
+- (void)paymentWebService:(id)service canHandlePotentialExpressPass:(id)pass withCompletionHandler:(id)handler
 {
   v31 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  passCopy = pass;
+  handlerCopy = handler;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -17637,14 +17637,14 @@ void __150__NPKPaymentWebServiceCompanionTargetDevice__singleExpressTransitPassP
     v13 = pk_Payment_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = [v9 uniqueID];
+      uniqueID = [passCopy uniqueID];
       *buf = 138412290;
-      v30 = v14;
+      v30 = uniqueID;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Target device: can handle potential express pass %@", buf, 0xCu);
     }
   }
 
-  if (v10)
+  if (handlerCopy)
   {
     if (![(NPKPaymentWebServiceCompanionTargetDevice *)self deviceSupportMultipleExpressPasses])
     {
@@ -17661,20 +17661,20 @@ void __150__NPKPaymentWebServiceCompanionTargetDevice__singleExpressTransitPassP
         }
       }
 
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
-    v18 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _expressPassConfigurationForPaymentPass:v9];
+    v18 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _expressPassConfigurationForPaymentPass:passCopy];
     if (v18)
     {
       v26[0] = MEMORY[0x277D85DD0];
       v26[1] = 3221225472;
       v26[2] = __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_canHandlePotentialExpressPass_withCompletionHandler___block_invoke;
       v26[3] = &unk_2799451F0;
-      v28 = v10;
+      v28 = handlerCopy;
       v18 = v18;
       v27 = v18;
-      [(NPKPaymentWebServiceCompanionTargetDevice *)self _checkConflictsForPass:v9 withConfiguration:v18 webService:v8 hasDisqualifyingConflicts:v26];
+      [(NPKPaymentWebServiceCompanionTargetDevice *)self _checkConflictsForPass:passCopy withConfiguration:v18 webService:serviceCopy hasDisqualifyingConflicts:v26];
     }
 
     else
@@ -17688,12 +17688,12 @@ void __150__NPKPaymentWebServiceCompanionTargetDevice__singleExpressTransitPassP
         if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v30 = v9;
+          v30 = passCopy;
           _os_log_impl(&dword_25B300000, v24, OS_LOG_TYPE_DEFAULT, "Notice: Could not create configuration for pass %@", buf, 0xCu);
         }
       }
 
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
 
 LABEL_22:
@@ -17709,9 +17709,9 @@ LABEL_22:
     v18 = pk_Payment_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v21 = [v9 uniqueID];
+      uniqueID2 = [passCopy uniqueID];
       *buf = 138412290;
-      v30 = v21;
+      v30 = uniqueID2;
       _os_log_impl(&dword_25B300000, v18, OS_LOG_TYPE_DEFAULT, "Notice: Target device: missing completion block will not check if can handle potential express pass %@", buf, 0xCu);
     }
 
@@ -17741,12 +17741,12 @@ void __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_canHandl
   }
 }
 
-- (id)_dummyExpressPassInformationForPass:(id)a3 fromUpgradeRequest:(id)a4
+- (id)_dummyExpressPassInformationForPass:(id)pass fromUpgradeRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  passCopy = pass;
+  requestCopy = request;
+  if (requestCopy)
   {
     if ([MEMORY[0x277D37E90] instancesRespondToSelector:sel_initDummyExpressInfoForAutomaticSelectionCriteriaUpgradeRequest_paymentPass_withTechologyTest_])
     {
@@ -17756,7 +17756,7 @@ void __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_canHandl
       v16[2] = __100__NPKPaymentWebServiceCompanionTargetDevice__dummyExpressPassInformationForPass_fromUpgradeRequest___block_invoke;
       v16[3] = &unk_27994A2B0;
       v16[4] = self;
-      v9 = [v8 initDummyExpressInfoForAutomaticSelectionCriteriaUpgradeRequest:v7 paymentPass:v6 withTechologyTest:v16];
+      v9 = [v8 initDummyExpressInfoForAutomaticSelectionCriteriaUpgradeRequest:requestCopy paymentPass:passCopy withTechologyTest:v16];
       goto LABEL_9;
     }
 
@@ -17768,9 +17768,9 @@ void __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_canHandl
       v12 = pk_General_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v6 uniqueID];
+        uniqueID = [passCopy uniqueID];
         *buf = 138412290;
-        v18 = v13;
+        v18 = uniqueID;
         _os_log_impl(&dword_25B300000, v12, OS_LOG_TYPE_DEFAULT, "Notice: SPI not available. Can't create dummy express pass information for pass with uniqueID:%@", buf, 0xCu);
       }
     }
@@ -17784,18 +17784,18 @@ LABEL_9:
   return v9;
 }
 
-- (id)_synthesizedExpressPassStateForExpressPassConfiguration:(id)a3 otherPaymentPasses:(id)a4
+- (id)_synthesizedExpressPassStateForExpressPassConfiguration:(id)configuration otherPaymentPasses:(id)passes
 {
   v31 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  configurationCopy = configuration;
+  passesCopy = passes;
   v23 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v7 = [v5 passUniqueIdentifier];
+  passUniqueIdentifier = [configurationCopy passUniqueIdentifier];
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v8 = v6;
+  v8 = passesCopy;
   v9 = [v8 countByEnumeratingWithState:&v24 objects:v30 count:16];
   if (v9)
   {
@@ -17812,8 +17812,8 @@ LABEL_9:
 
         v13 = *(*(&v24 + 1) + 8 * i);
         v14 = [objc_alloc(MEMORY[0x277D37E90]) initForPaymentPass:v13 withTechologyTest:0];
-        v15 = [v13 uniqueID];
-        v16 = [v15 isEqualToString:v7];
+        uniqueID = [v13 uniqueID];
+        v16 = [uniqueID isEqualToString:passUniqueIdentifier];
 
         if ((v16 & 1) == 0 && v14)
         {
@@ -17850,17 +17850,17 @@ LABEL_9:
   return v23;
 }
 
-- (id)_expressPassConfigurationForPaymentPass:(id)a3
+- (id)_expressPassConfigurationForPaymentPass:(id)pass
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  passCopy = pass;
   v5 = objc_alloc(MEMORY[0x277D37E90]);
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __85__NPKPaymentWebServiceCompanionTargetDevice__expressPassConfigurationForPaymentPass___block_invoke;
   v25[3] = &unk_27994A2B0;
   v25[4] = self;
-  v6 = [v5 initForPaymentPass:v4 withTechologyTest:v25];
+  v6 = [v5 initForPaymentPass:passCopy withTechologyTest:v25];
   if (v6)
   {
     v7 = v6;
@@ -17872,9 +17872,9 @@ LABEL_9:
       v10 = pk_Payment_log();
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
-        v11 = [v4 devicePrimaryPaymentApplication];
+        devicePrimaryPaymentApplication = [passCopy devicePrimaryPaymentApplication];
         *buf = 138412546;
-        v27 = v11;
+        v27 = devicePrimaryPaymentApplication;
         v28 = 2112;
         v29 = v7;
         _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Target device: found at given pass with primary payment application:%@ express pass information:%@", buf, 0x16u);
@@ -17885,7 +17885,7 @@ LABEL_9:
   else
   {
     v12 = NPKPairedDeviceSecureElementIdentifiers();
-    NPKIdentifyDevicePaymentApplicationsForPass(v4, v12);
+    NPKIdentifyDevicePaymentApplicationsForPass(passCopy, v12);
 
     v13 = objc_alloc(MEMORY[0x277D37E90]);
     v24[0] = MEMORY[0x277D85DD0];
@@ -17893,7 +17893,7 @@ LABEL_9:
     v24[2] = __85__NPKPaymentWebServiceCompanionTargetDevice__expressPassConfigurationForPaymentPass___block_invoke_2;
     v24[3] = &unk_27994A2B0;
     v24[4] = self;
-    v7 = [v13 initForPaymentPass:v4 withTechologyTest:v24];
+    v7 = [v13 initForPaymentPass:passCopy withTechologyTest:v24];
     v14 = pk_Payment_log();
     v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -17902,9 +17902,9 @@ LABEL_9:
       v16 = pk_Payment_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v4 devicePrimaryPaymentApplication];
+        devicePrimaryPaymentApplication2 = [passCopy devicePrimaryPaymentApplication];
         *buf = 138412546;
-        v27 = v17;
+        v27 = devicePrimaryPaymentApplication2;
         v28 = 2112;
         v29 = v7;
         _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: Target device: found at updated pass with primary payment application:%@ express pass information:%@", buf, 0x16u);
@@ -17918,7 +17918,7 @@ LABEL_9:
     }
   }
 
-  v18 = [objc_alloc(MEMORY[0x277D37E88]) initWithPassInformation:v7 forSecureElementPass:v4];
+  v18 = [objc_alloc(MEMORY[0x277D37E88]) initWithPassInformation:v7 forSecureElementPass:passCopy];
   v19 = pk_General_log();
   v20 = os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT);
 
@@ -17939,21 +17939,21 @@ LABEL_16:
   return v18;
 }
 
-- (id)_eligibleExpressUpgradeRequestsForPass:(id)a3
+- (id)_eligibleExpressUpgradeRequestsForPass:(id)pass
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceClass];
-  v6 = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceVersion];
-  v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self secureElementIdentifiers];
-  if ([v7 count])
+  passCopy = pass;
+  deviceClass = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceClass];
+  deviceVersion = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceVersion];
+  secureElementIdentifiers = [(NPKPaymentWebServiceCompanionTargetDevice *)self secureElementIdentifiers];
+  if ([secureElementIdentifiers count])
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
     v14[2] = __84__NPKPaymentWebServiceCompanionTargetDevice__eligibleExpressUpgradeRequestsForPass___block_invoke;
     v14[3] = &unk_27994A2B0;
     v14[4] = self;
-    v8 = [v4 eligibleExpressUpgradeRequestsForDeviceClass:v5 deviceSEIDs:v7 deviceVersion:v6 technologyTest:v14];
+    v8 = [passCopy eligibleExpressUpgradeRequestsForDeviceClass:deviceClass deviceSEIDs:secureElementIdentifiers deviceVersion:deviceVersion technologyTest:v14];
   }
 
   else
@@ -17980,28 +17980,28 @@ LABEL_16:
   return v8;
 }
 
-- (void)_checkConflictsForPass:(id)a3 withConfiguration:(id)a4 webService:(id)a5 hasDisqualifyingConflicts:(id)a6
+- (void)_checkConflictsForPass:(id)pass withConfiguration:(id)configuration webService:(id)service hasDisqualifyingConflicts:(id)conflicts
 {
   v28 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if (v12)
+  passCopy = pass;
+  configurationCopy = configuration;
+  conflictsCopy = conflicts;
+  if (conflictsCopy)
   {
-    v13 = [(NPKPaymentWebServiceCompanionTargetDevice *)self paymentWebService:a5 passesOfType:1];
+    v13 = [(NPKPaymentWebServiceCompanionTargetDevice *)self paymentWebService:service passesOfType:1];
     if ([v13 count])
     {
-      v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _synthesizedExpressPassStateForExpressPassConfiguration:v11 otherPaymentPasses:v13];
+      v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _synthesizedExpressPassStateForExpressPassConfiguration:configurationCopy otherPaymentPasses:v13];
       v21[0] = MEMORY[0x277D85DD0];
       v21[1] = 3221225472;
       v21[2] = __123__NPKPaymentWebServiceCompanionTargetDevice__checkConflictsForPass_withConfiguration_webService_hasDisqualifyingConflicts___block_invoke;
       v21[3] = &unk_27994A2D8;
       v21[4] = self;
-      v22 = v10;
+      v22 = passCopy;
       v13 = v13;
       v23 = v13;
-      v24 = v11;
-      v25 = v12;
+      v24 = configurationCopy;
+      v25 = conflictsCopy;
       [(NPKPaymentWebServiceCompanionTargetDevice *)self conflictingExpressPassIdentifiersForPassConfiguration:v24 withReferenceExpressState:v14 completion:v21];
     }
 
@@ -18020,7 +18020,7 @@ LABEL_16:
         }
       }
 
-      (*(v12 + 2))(v12, 0);
+      (*(conflictsCopy + 2))(conflictsCopy, 0);
     }
 
 LABEL_12:
@@ -18230,35 +18230,35 @@ LABEL_39:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_handleOpenLoopPassUpgradeWithPass:(id)a3 webService:(id)a4 completion:(id)a5
+- (void)_handleOpenLoopPassUpgradeWithPass:(id)pass webService:(id)service completion:(id)completion
 {
   v36 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  passCopy = pass;
+  serviceCopy = service;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self upgradeRequestForPass:v8];
+    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self upgradeRequestForPass:passCopy];
     if (v11)
     {
-      v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _dummyExpressPassInformationForPass:v8 fromUpgradeRequest:v11];
+      v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _dummyExpressPassInformationForPass:passCopy fromUpgradeRequest:v11];
       if (v12)
       {
         v13 = objc_alloc(MEMORY[0x277D37E88]);
-        v14 = [v8 devicePaymentApplications];
-        v15 = [v13 initWithPassInformation:v12 forPaymentApplications:v14];
+        devicePaymentApplications = [passCopy devicePaymentApplications];
+        v15 = [v13 initWithPassInformation:v12 forPaymentApplications:devicePaymentApplications];
 
         v28[0] = MEMORY[0x277D85DD0];
         v28[1] = 3221225472;
         v28[2] = __102__NPKPaymentWebServiceCompanionTargetDevice__handleOpenLoopPassUpgradeWithPass_webService_completion___block_invoke;
         v28[3] = &unk_27994A328;
-        v29 = v8;
-        v30 = self;
+        v29 = passCopy;
+        selfCopy = self;
         v31 = v11;
         v32 = v15;
-        v33 = v10;
+        v33 = completionCopy;
         v16 = v15;
-        [(NPKPaymentWebServiceCompanionTargetDevice *)self _checkConflictsForPass:v29 withConfiguration:v16 webService:v9 hasDisqualifyingConflicts:v28];
+        [(NPKPaymentWebServiceCompanionTargetDevice *)self _checkConflictsForPass:v29 withConfiguration:v16 webService:serviceCopy hasDisqualifyingConflicts:v28];
       }
 
       else
@@ -18271,14 +18271,14 @@ LABEL_39:
           v25 = pk_General_log();
           if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
           {
-            v26 = [v8 uniqueID];
+            uniqueID = [passCopy uniqueID];
             *buf = 138412290;
-            v35 = v26;
+            v35 = uniqueID;
             _os_log_impl(&dword_25B300000, v25, OS_LOG_TYPE_DEFAULT, "Notice: Invalid upgrade request on pass %@, could not create test express info", buf, 0xCu);
           }
         }
 
-        (*(v10 + 2))(v10, 0);
+        (*(completionCopy + 2))(completionCopy, 0);
       }
     }
 
@@ -18292,14 +18292,14 @@ LABEL_39:
         v21 = pk_General_log();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          v22 = [v8 uniqueID];
+          uniqueID2 = [passCopy uniqueID];
           *buf = 138412290;
-          v35 = v22;
+          v35 = uniqueID2;
           _os_log_impl(&dword_25B300000, v21, OS_LOG_TYPE_DEFAULT, "Notice: No upgrade request for pass %@", buf, 0xCu);
         }
       }
 
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
 
 LABEL_19:
@@ -18455,8 +18455,8 @@ void __102__NPKPaymentWebServiceCompanionTargetDevice__handleOpenLoopPassUpgrade
 
   v6 = +[NPKPaymentOptionsSerialization setTransactionDefaultsRequest];
   v7 = objc_alloc(MEMORY[0x277D189F0]);
-  v8 = [v6 data];
-  v9 = [v7 initWithProtobufData:v8 type:23 isResponse:0];
+  data = [v6 data];
+  v9 = [v7 initWithProtobufData:data type:23 isResponse:0];
 
   v20[0] = *MEMORY[0x277D18650];
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D18828]];
@@ -18465,8 +18465,8 @@ void __102__NPKPaymentWebServiceCompanionTargetDevice__handleOpenLoopPassUpgrade
   v21[1] = @"NPKTransactionDefaultsQueueOne";
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
 
-  v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
-  v13 = NPKProtoSendWithOptions(v12, v9, 200, 0, 0, &__block_literal_global_656, v11);
+  provisioningService = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
+  v13 = NPKProtoSendWithOptions(provisioningService, v9, 200, 0, 0, &__block_literal_global_656, v11);
 
   v14 = pk_Payment_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -18506,11 +18506,11 @@ void __78__NPKPaymentWebServiceCompanionTargetDevice_sendPaymentOptionsDefaultsT
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)sendWebServiceContextToWatch:(id)a3
+- (void)sendWebServiceContextToWatch:(id)watch
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (NPKIsCompanionMigrationNeeded() && ([v4 registrationDate], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  watchCopy = watch;
+  if (NPKIsCompanionMigrationNeeded() && ([watchCopy registrationDate], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v28 = pk_Payment_log();
     v29 = os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT);
@@ -18521,7 +18521,7 @@ void __78__NPKPaymentWebServiceCompanionTargetDevice_sendPaymentOptionsDefaultsT
       if (os_log_type_enabled(&v15->super.super.super, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v34 = v4;
+        v34 = watchCopy;
         v27 = "Warning: Not sending unregistered web service context to watch (%@) while companion migration is needed";
         goto LABEL_23;
       }
@@ -18533,7 +18533,7 @@ LABEL_24:
   else
   {
     v6 = NPKPairedDeviceSecureElementIdentifiers();
-    v7 = NPKValidatePaymentWebServiceContextAgainstWatchSEIDs(v4, v6);
+    v7 = NPKValidatePaymentWebServiceContextAgainstWatchSEIDs(watchCopy, v6);
 
     v8 = pk_Payment_log();
     v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -18545,19 +18545,19 @@ LABEL_24:
         v10 = pk_Payment_log();
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [v4 primaryRegion];
-          v12 = [v11 applyServiceURL];
-          v13 = [v4 primaryRegion];
+          primaryRegion = [watchCopy primaryRegion];
+          applyServiceURL = [primaryRegion applyServiceURL];
+          primaryRegion2 = [watchCopy primaryRegion];
           v14 = @"YES";
           *buf = 138412802;
-          v34 = v4;
+          v34 = watchCopy;
           v35 = 2112;
-          if (!v13)
+          if (!primaryRegion2)
           {
             v14 = @"NO";
           }
 
-          v36 = v12;
+          v36 = applyServiceURL;
           v37 = 2112;
           v38 = v14;
           _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-context) Sending web service context to watch: %@ applyServiceURL %@ primaryRegion %@", buf, 0x20u);
@@ -18565,15 +18565,15 @@ LABEL_24:
       }
 
       v15 = objc_alloc_init(NPKProtoWebServiceContextDidChangeRequest);
-      v16 = NPKSecureArchiveObject(v4);
+      v16 = NPKSecureArchiveObject(watchCopy);
       if (v16)
       {
         [(NPKProtoWebServiceContextDidChangeRequest *)v15 setWebServiceContextBytes:v16];
       }
 
       v17 = objc_alloc(MEMORY[0x277D189F0]);
-      v18 = [(NPKProtoWebServiceContextDidChangeRequest *)v15 data];
-      v19 = [v17 initWithProtobufData:v18 type:17 isResponse:0];
+      data = [(NPKProtoWebServiceContextDidChangeRequest *)v15 data];
+      v19 = [v17 initWithProtobufData:data type:17 isResponse:0];
 
       v20 = [MEMORY[0x277CCABB0] numberWithDouble:{*MEMORY[0x277D18828], *MEMORY[0x277D18650]}];
       v31[1] = *MEMORY[0x277D18630];
@@ -18581,8 +18581,8 @@ LABEL_24:
       v32[1] = @"NPKWebServiceContextQueueOne";
       v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v32 forKeys:v31 count:2];
 
-      v22 = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
-      v23 = NPKProtoSendWithOptions(v22, v19, 200, 0, 0, &__block_literal_global_662, v21);
+      provisioningService = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
+      v23 = NPKProtoSendWithOptions(provisioningService, v19, 200, 0, 0, &__block_literal_global_662, v21);
 
       v24 = pk_Payment_log();
       v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
@@ -18607,7 +18607,7 @@ LABEL_24:
       if (os_log_type_enabled(&v15->super.super.super, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v34 = v4;
+        v34 = watchCopy;
         v27 = "Warning: Not sending invalid web service context to watch (%@)";
 LABEL_23:
         _os_log_impl(&dword_25B300000, &v15->super.super.super, OS_LOG_TYPE_DEFAULT, v27, buf, 0xCu);
@@ -18642,10 +18642,10 @@ void __74__NPKPaymentWebServiceCompanionTargetDevice_sendWebServiceContextToWatc
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleCompanionMigrationResponse:(id)a3
+- (void)handleCompanionMigrationResponse:(id)response
 {
   v60 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -18654,15 +18654,15 @@ void __74__NPKPaymentWebServiceCompanionTargetDevice_sendWebServiceContextToWatc
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -18698,23 +18698,23 @@ void __74__NPKPaymentWebServiceCompanionTargetDevice_sendWebServiceContextToWatc
   v30 = __Block_byref_object_copy__22;
   v31 = __Block_byref_object_dispose__22;
   v32 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __78__NPKPaymentWebServiceCompanionTargetDevice_handleCompanionMigrationResponse___block_invoke;
     block[3] = &unk_27994A030;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v51;
     v23 = &v45;
     v24 = &v39;
     v25 = &v33;
     v26 = &v27;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -18836,9 +18836,9 @@ void __78__NPKPaymentWebServiceCompanionTargetDevice_handleCompanionMigrationRes
   }
 }
 
-- (void)handleCompanionMigrationWithCompletion:(id)a3
+- (void)handleCompanionMigrationWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -18852,15 +18852,15 @@ void __78__NPKPaymentWebServiceCompanionTargetDevice_handleCompanionMigrationRes
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84__NPKPaymentWebServiceCompanionTargetDevice_handleCompanionMigrationWithCompletion___block_invoke;
   v10[3] = &unk_279945530;
   v10[4] = self;
-  v11 = v4;
-  v9 = v4;
-  dispatch_sync(v8, v10);
+  v11 = completionCopy;
+  v9 = completionCopy;
+  dispatch_sync(internalQueue, v10);
 }
 
 void __84__NPKPaymentWebServiceCompanionTargetDevice_handleCompanionMigrationWithCompletion___block_invoke(uint64_t a1)
@@ -18981,8 +18981,8 @@ uint64_t __84__NPKPaymentWebServiceCompanionTargetDevice_handleCompanionMigratio
 
   v6 = objc_alloc_init(NPKProtoHandleCompanionPeerPaymentRegistrationRequest);
   v7 = objc_alloc(MEMORY[0x277D189F0]);
-  v8 = [(NPKProtoHandleCompanionPeerPaymentRegistrationRequest *)v6 data];
-  v9 = [v7 initWithProtobufData:v8 type:36 isResponse:0];
+  data = [(NPKProtoHandleCompanionPeerPaymentRegistrationRequest *)v6 data];
+  v9 = [v7 initWithProtobufData:data type:36 isResponse:0];
 
   v20[0] = *MEMORY[0x277D18650];
   v10 = [MEMORY[0x277CCABB0] numberWithDouble:*MEMORY[0x277D18828]];
@@ -18991,8 +18991,8 @@ uint64_t __84__NPKPaymentWebServiceCompanionTargetDevice_handleCompanionMigratio
   v21[1] = @"NPKCompanionPeerPaymentRegistrationQueueOne";
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
 
-  v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
-  v13 = NPKProtoSendWithOptions(v12, v9, 200, 0, 0, &__block_literal_global_671, v11);
+  provisioningService = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
+  v13 = NPKProtoSendWithOptions(provisioningService, v9, 200, 0, 0, &__block_literal_global_671, v11);
 
   v14 = pk_Payment_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -19050,8 +19050,8 @@ void __83__NPKPaymentWebServiceCompanionTargetDevice_handleCompanionPeerPaymentR
 
   v6 = objc_alloc_init(NPKProtoHandleCompanioniCloudSignoutRequest);
   v7 = objc_alloc(MEMORY[0x277D189F0]);
-  v8 = [(NPKProtoHandleCompanioniCloudSignoutRequest *)v6 data];
-  v9 = [v7 initWithProtobufData:v8 type:49 isResponse:0];
+  data = [(NPKProtoHandleCompanioniCloudSignoutRequest *)v6 data];
+  v9 = [v7 initWithProtobufData:data type:49 isResponse:0];
 
   v10 = *MEMORY[0x277D18630];
   v20[0] = *MEMORY[0x277D18650];
@@ -19059,8 +19059,8 @@ void __83__NPKPaymentWebServiceCompanionTargetDevice_handleCompanionPeerPaymentR
   v21[0] = &unk_286CE7780;
   v21[1] = @"NPKCompanioniCloudSignoutQueueOne";
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v21 forKeys:v20 count:2];
-  v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
-  v13 = NPKProtoSendWithOptions(v12, v9, 200, 0, 0, &__block_literal_global_679, v11);
+  provisioningService = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
+  v13 = NPKProtoSendWithOptions(provisioningService, v9, 200, 0, 0, &__block_literal_global_679, v11);
 
   v14 = pk_Payment_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
@@ -19100,17 +19100,17 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_handleCompanioniCloudSignou
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleWebServiceContextDidChangeRequest:(id)a3
+- (void)handleWebServiceContextDidChangeRequest:(id)request
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = [NPKProtoWebServiceContextDidChangeRequest alloc];
-  v6 = [v4 data];
+  data = [requestCopy data];
 
-  v7 = [(NPKProtoWebServiceContextDidChangeRequest *)v5 initWithData:v6];
-  v8 = [(NPKProtoWebServiceContextDidChangeRequest *)v7 webServiceContextBytes];
+  v7 = [(NPKProtoWebServiceContextDidChangeRequest *)v5 initWithData:data];
+  webServiceContextBytes = [(NPKProtoWebServiceContextDidChangeRequest *)v7 webServiceContextBytes];
   v9 = objc_opt_class();
-  v10 = NPKSecureUnarchiveObject(v8, v9);
+  v10 = NPKSecureUnarchiveObject(webServiceContextBytes, v9);
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -19135,31 +19135,31 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_handleCompanioniCloudSignou
       v16 = pk_Payment_log();
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
-        v17 = [v10 primaryRegion];
-        v18 = [v17 applyServiceURL];
-        v19 = [v10 primaryRegion];
+        primaryRegion = [v10 primaryRegion];
+        applyServiceURL = [primaryRegion applyServiceURL];
+        primaryRegion2 = [v10 primaryRegion];
         v20 = @"YES";
-        if (!v19)
+        if (!primaryRegion2)
         {
           v20 = @"NO";
         }
 
         v23 = 138412546;
-        v24 = v18;
+        v24 = applyServiceURL;
         v25 = 2112;
         v26 = v20;
         _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: (account-pass-context) received updated web service context applyServiceURL %@ primaryRegion %@", &v23, 0x16u);
       }
     }
 
-    v21 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-    [v21 handlePaymentWebServiceContextFromWatch:v10];
+    delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+    [delegate handlePaymentWebServiceContextFromWatch:v10];
   }
 
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleWebServiceContextNeededRequest:(id)a3
+- (void)handleWebServiceContextNeededRequest:(id)request
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -19174,19 +19174,19 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_handleCompanioniCloudSignou
     }
   }
 
-  v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v7 sendWebServiceContextToWatch];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate sendWebServiceContextToWatch];
 }
 
-- (void)handleShowPaymentSetupRequest:(id)a3
+- (void)handleShowPaymentSetupRequest:(id)request
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = [NPKProtoShowPaymentSetupRequest alloc];
-  v6 = [v4 data];
+  data = [requestCopy data];
 
-  v7 = [(NPKProtoShowPaymentSetupRequest *)v5 initWithData:v6];
-  v8 = [(NPKProtoShowPaymentSetupRequest *)v7 appDisplayName];
+  v7 = [(NPKProtoShowPaymentSetupRequest *)v5 initWithData:data];
+  appDisplayName = [(NPKProtoShowPaymentSetupRequest *)v7 appDisplayName];
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -19196,18 +19196,18 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_handleCompanioniCloudSignou
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 138412290;
-      v15 = v8;
+      v15 = appDisplayName;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Watch requested that we show payment setup for app %@", &v14, 0xCu);
     }
   }
 
-  v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v12 showPaymentSetupForAppDisplayName:v8];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate showPaymentSetupForAppDisplayName:appDisplayName];
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleTransactionDefaultsNeededRequest:(id)a3
+- (void)handleTransactionDefaultsNeededRequest:(id)request
 {
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
@@ -19222,13 +19222,13 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_handleCompanioniCloudSignou
     }
   }
 
-  v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-  [v7 sendPaymentOptionsDefaultsToWatch];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  [delegate sendPaymentOptionsDefaultsToWatch];
 }
 
-- (void)handleUpdatedPeerPaymentWebServiceContext:(id)a3
+- (void)handleUpdatedPeerPaymentWebServiceContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -19243,21 +19243,21 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_handleCompanioniCloudSignou
   }
 
   v8 = [NPKProtoPeerPaymentWebServiceContextDidChangeRequest alloc];
-  v9 = [v4 data];
+  data = [contextCopy data];
 
-  v10 = [(NPKProtoPeerPaymentWebServiceContextDidChangeRequest *)v8 initWithData:v9];
-  v11 = [(NPKProtoPeerPaymentWebServiceContextDidChangeRequest *)v10 peerPaymentWebServiceContextData];
+  v10 = [(NPKProtoPeerPaymentWebServiceContextDidChangeRequest *)v8 initWithData:data];
+  peerPaymentWebServiceContextData = [(NPKProtoPeerPaymentWebServiceContextDidChangeRequest *)v10 peerPaymentWebServiceContextData];
   v12 = objc_opt_class();
-  v13 = NPKSecureUnarchiveObject(v11, v12);
+  v13 = NPKSecureUnarchiveObject(peerPaymentWebServiceContextData, v12);
 
-  v14 = [(NPKProtoPeerPaymentWebServiceContextDidChangeRequest *)v10 peerPaymentAccountData];
+  peerPaymentAccountData = [(NPKProtoPeerPaymentWebServiceContextDidChangeRequest *)v10 peerPaymentAccountData];
   v15 = objc_opt_class();
-  v16 = NPKSecureUnarchiveObject(v14, v15);
+  v16 = NPKSecureUnarchiveObject(peerPaymentAccountData, v15);
 
   if (v13)
   {
-    v17 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
-    [v17 handleUpdatedPeerPaymentWebServiceContext:v13 account:v16];
+    delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+    [delegate handleUpdatedPeerPaymentWebServiceContext:v13 account:v16];
   }
 
   else
@@ -19270,47 +19270,47 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_handleCompanioniCloudSignou
       goto LABEL_8;
     }
 
-    v17 = pk_Payment_log();
-    if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
+    delegate = pk_Payment_log();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
       *v20 = 0;
-      _os_log_impl(&dword_25B300000, v17, OS_LOG_TYPE_DEFAULT, "Warning: Got updated peer payment web service message, but could not decode context", v20, 2u);
+      _os_log_impl(&dword_25B300000, delegate, OS_LOG_TYPE_DEFAULT, "Warning: Got updated peer payment web service message, but could not decode context", v20, 2u);
     }
   }
 
 LABEL_8:
 }
 
-- (BOOL)paymentWebServiceSupportsPeerPaymentRegistration:(id)a3
+- (BOOL)paymentWebServiceSupportsPeerPaymentRegistration:(id)registration
 {
-  v4 = a3;
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceRegion];
-  v6 = NPKShouldAllowPeerPaymentRegistrationForWebService(v4, v5);
+  registrationCopy = registration;
+  deviceRegion = [(NPKPaymentWebServiceCompanionTargetDevice *)self deviceRegion];
+  v6 = NPKShouldAllowPeerPaymentRegistrationForWebService(registrationCopy, deviceRegion);
 
   return v6;
 }
 
-- (void)claimSecureElementForCurrentUserWithCompletion:(id)a3
+- (void)claimSecureElementForCurrentUserWithCompletion:(id)completion
 {
-  if (a3)
+  if (completion)
   {
-    (*(a3 + 2))(a3, 1);
+    (*(completion + 2))(completion, 1);
   }
 }
 
-- (void)paymentWebService:(id)a3 requestPassUpgrade:(id)a4 pass:(id)a5 completion:(id)a6
+- (void)paymentWebService:(id)service requestPassUpgrade:(id)upgrade pass:(id)pass completion:(id)completion
 {
-  v9 = a5;
-  v10 = a6;
+  passCopy = pass;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __98__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_requestPassUpgrade_pass_completion___block_invoke;
   v13[3] = &unk_27994A350;
-  v14 = v9;
-  v15 = v10;
-  v11 = v10;
-  v12 = v9;
-  [(NPKPaymentWebServiceCompanionTargetDevice *)self remotePassUpgradeWithRequest:a4 pass:v12 requireAuthorization:1 notifyUserOnPairedDevice:0 updateBlock:v13];
+  v14 = passCopy;
+  v15 = completionCopy;
+  v11 = completionCopy;
+  v12 = passCopy;
+  [(NPKPaymentWebServiceCompanionTargetDevice *)self remotePassUpgradeWithRequest:upgrade pass:v12 requireAuthorization:1 notifyUserOnPairedDevice:0 updateBlock:v13];
 }
 
 void __98__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_requestPassUpgrade_pass_completion___block_invoke(uint64_t a1, void *a2, void *a3, uint64_t a4, unint64_t a5)
@@ -19349,21 +19349,21 @@ void __98__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_requestPa
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)a3
+- (BOOL)willPassWithUniqueIdentifierAutomaticallyBecomeDefault:(id)default
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  defaultCopy = default;
   v14 = 0;
   v15 = &v14;
   v16 = 0x2020000000;
   v17 = 0;
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __100__NPKPaymentWebServiceCompanionTargetDevice_willPassWithUniqueIdentifierAutomaticallyBecomeDefault___block_invoke;
   v13[3] = &unk_279949B30;
   v13[4] = &v14;
-  [v5 willPassWithUniqueIdentifierAutomaticallyBecomeDefault:v4 completion:v13];
+  [companionAgentConnection willPassWithUniqueIdentifierAutomaticallyBecomeDefault:defaultCopy completion:v13];
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -19383,7 +19383,7 @@ void __98__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_requestPa
       }
 
       *buf = 138412546;
-      v19 = v4;
+      v19 = defaultCopy;
       v20 = 2112;
       v21 = v9;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Target Device willPassWithUniqueIdentifierAutomaticallyBecomeDefault for %@ returns %@", buf, 0x16u);
@@ -19399,13 +19399,13 @@ void __98__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_requestPa
 
 - (void)consistencyCheck
 {
-  v2 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
-  [v2 consistencyCheckWithCompletion:0];
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  [companionAgentConnection consistencyCheckWithCompletion:0];
 }
 
-- (void)currentPasscodeMeetsUpgradedPasscodePolicy:(id)a3
+- (void)currentPasscodeMeetsUpgradedPasscodePolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -19423,8 +19423,8 @@ void __98__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_requestPa
   v9[1] = 3221225472;
   v9[2] = __88__NPKPaymentWebServiceCompanionTargetDevice_currentPasscodeMeetsUpgradedPasscodePolicy___block_invoke;
   v9[3] = &unk_279944F48;
-  v10 = v4;
-  v8 = v4;
+  v10 = policyCopy;
+  v8 = policyCopy;
   [(NPKPaymentWebServiceCompanionTargetDevice *)self _checkUpgradedPasscodePolicyByApplyingRestrictions:0 applyBackgroundEnforcementIfNecessary:0 completion:v9];
 }
 
@@ -19439,9 +19439,9 @@ uint64_t __88__NPKPaymentWebServiceCompanionTargetDevice_currentPasscodeMeetsUpg
   return result;
 }
 
-- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)a3
+- (void)enforceUpgradedPasscodePolicyWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -19455,13 +19455,13 @@ uint64_t __88__NPKPaymentWebServiceCompanionTargetDevice_currentPasscodeMeetsUpg
     }
   }
 
-  [(NPKPaymentWebServiceCompanionTargetDevice *)self _checkUpgradedPasscodePolicyByApplyingRestrictions:NPKIsCurrentlyPairing() applyBackgroundEnforcementIfNecessary:1 completion:v4];
+  [(NPKPaymentWebServiceCompanionTargetDevice *)self _checkUpgradedPasscodePolicyByApplyingRestrictions:NPKIsCurrentlyPairing() applyBackgroundEnforcementIfNecessary:1 completion:completionCopy];
 }
 
-- (void)_checkUpgradedPasscodePolicyByApplyingRestrictions:(BOOL)a3 applyBackgroundEnforcementIfNecessary:(BOOL)a4 completion:(id)a5
+- (void)_checkUpgradedPasscodePolicyByApplyingRestrictions:(BOOL)restrictions applyBackgroundEnforcementIfNecessary:(BOOL)necessary completion:(id)completion
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a5;
+  completionCopy = completion;
   v9 = NPKPairedOrPairingDevice();
   v10 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"B68E1DBD-8CE4-4684-8F65-FF0AF2040D4E"];
   v11 = [v9 supportsCapability:v10];
@@ -19483,16 +19483,16 @@ uint64_t __88__NPKPaymentWebServiceCompanionTargetDevice_currentPasscodeMeetsUpg
 
   if (v11)
   {
-    v15 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __145__NPKPaymentWebServiceCompanionTargetDevice__checkUpgradedPasscodePolicyByApplyingRestrictions_applyBackgroundEnforcementIfNecessary_completion___block_invoke;
     block[3] = &unk_27994A378;
-    v22 = a3;
-    v23 = a4;
+    restrictionsCopy = restrictions;
+    necessaryCopy = necessary;
     block[4] = self;
-    v21 = v8;
-    dispatch_sync(v15, block);
+    v21 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -19510,7 +19510,7 @@ uint64_t __88__NPKPaymentWebServiceCompanionTargetDevice_currentPasscodeMeetsUpg
       }
     }
 
-    (*(v8 + 2))(v8, 1, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0);
   }
 
   v19 = *MEMORY[0x277D85DE8];
@@ -19613,10 +19613,10 @@ uint64_t __145__NPKPaymentWebServiceCompanionTargetDevice__checkUpgradedPasscode
   return result;
 }
 
-- (void)handleCheckUpgradedPasscodePolicyResponse:(id)a3
+- (void)handleCheckUpgradedPasscodePolicyResponse:(id)response
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -19625,15 +19625,15 @@ uint64_t __145__NPKPaymentWebServiceCompanionTargetDevice__checkUpgradedPasscode
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: handleCheckUpgradedPasscodePolicyResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -19651,20 +19651,20 @@ uint64_t __145__NPKPaymentWebServiceCompanionTargetDevice__checkUpgradedPasscode
   v32 = __Block_byref_object_copy__22;
   v33 = __Block_byref_object_dispose__22;
   v34 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __87__NPKPaymentWebServiceCompanionTargetDevice_handleCheckUpgradedPasscodePolicyResponse___block_invoke;
     v23[3] = &unk_279949C48;
     v23[4] = self;
-    v24 = v10;
-    v25 = v4;
+    v24 = incomingResponseIdentifier;
+    v25 = responseCopy;
     p_buf = &buf;
     v27 = &v35;
     v28 = &v29;
-    dispatch_sync(v11, v23);
+    dispatch_sync(internalQueue, v23);
   }
 
   else
@@ -19814,12 +19814,12 @@ LABEL_14:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestPasscodeUpgradeForPasscodeUpgradeFlowController:(id)a3 withVisibleViewController:(id)a4 completion:(id)a5
+- (void)requestPasscodeUpgradeForPasscodeUpgradeFlowController:(id)controller withVisibleViewController:(id)viewController completion:(id)completion
 {
   v37 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -19833,16 +19833,16 @@ LABEL_14:
     }
   }
 
-  [(NPKPaymentWebServiceCompanionTargetDevice *)self setPasscodeUpgradeFlowController:v8];
+  [(NPKPaymentWebServiceCompanionTargetDevice *)self setPasscodeUpgradeFlowController:controllerCopy];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __137__NPKPaymentWebServiceCompanionTargetDevice_requestPasscodeUpgradeForPasscodeUpgradeFlowController_withVisibleViewController_completion___block_invoke;
   aBlock[3] = &unk_27994A3A0;
   objc_copyWeak(&v33, &location);
-  v14 = v9;
+  v14 = viewControllerCopy;
   v31 = v14;
-  v15 = v10;
+  v15 = completionCopy;
   v32 = v15;
   v16 = _Block_copy(aBlock);
   v17 = NPKPairedOrPairingDevice();
@@ -19871,14 +19871,14 @@ LABEL_14:
 
   if (v19)
   {
-    v23 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __137__NPKPaymentWebServiceCompanionTargetDevice_requestPasscodeUpgradeForPasscodeUpgradeFlowController_withVisibleViewController_completion___block_invoke_696;
     v28[3] = &unk_279945530;
     v28[4] = self;
     v29 = v16;
-    dispatch_sync(v23, v28);
+    dispatch_sync(internalQueue, v28);
   }
 
   else
@@ -20061,10 +20061,10 @@ uint64_t __137__NPKPaymentWebServiceCompanionTargetDevice_requestPasscodeUpgrade
   return result;
 }
 
-- (void)handleApplyRestrictionsForPasscodeUpgradeFlowControllerResponse:(id)a3
+- (void)handleApplyRestrictionsForPasscodeUpgradeFlowControllerResponse:(id)response
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -20073,15 +20073,15 @@ uint64_t __137__NPKPaymentWebServiceCompanionTargetDevice_requestPasscodeUpgrade
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target handleApplyRestrictionsForPasscodeUpgradeFlowControllerResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -20099,20 +20099,20 @@ uint64_t __137__NPKPaymentWebServiceCompanionTargetDevice_requestPasscodeUpgrade
   v32 = __Block_byref_object_copy__22;
   v33 = __Block_byref_object_dispose__22;
   v34 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __109__NPKPaymentWebServiceCompanionTargetDevice_handleApplyRestrictionsForPasscodeUpgradeFlowControllerResponse___block_invoke;
     v23[3] = &unk_279949C48;
     v23[4] = self;
-    v24 = v10;
-    v25 = v4;
+    v24 = incomingResponseIdentifier;
+    v25 = responseCopy;
     p_buf = &buf;
     v27 = &v35;
     v28 = &v29;
-    dispatch_sync(v11, v23);
+    dispatch_sync(internalQueue, v23);
   }
 
   else
@@ -20262,10 +20262,10 @@ LABEL_14:
   v29 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentRemoteDevicePasscodeUpgradePromptForChangeType:(unint64_t)a3 completion:(id)a4
+- (void)presentRemoteDevicePasscodeUpgradePromptForChangeType:(unint64_t)type completion:(id)completion
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  completionCopy = completion;
   v7 = pk_Payment_log();
   v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
 
@@ -20305,15 +20305,15 @@ LABEL_14:
 
   if (v12)
   {
-    v16 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __110__NPKPaymentWebServiceCompanionTargetDevice_presentRemoteDevicePasscodeUpgradePromptForChangeType_completion___block_invoke;
     block[3] = &unk_27994A198;
-    v24 = a3;
+    typeCopy = type;
     block[4] = self;
-    v23 = v6;
-    dispatch_sync(v16, block);
+    v23 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -20332,7 +20332,7 @@ LABEL_14:
     }
 
     v20 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v6 + 2))(v6, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, v20);
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -20433,10 +20433,10 @@ uint64_t __110__NPKPaymentWebServiceCompanionTargetDevice_presentRemoteDevicePas
   return result;
 }
 
-- (void)handleRemoteDevicePasscodeUpgradePresentationPromptResponse:(id)a3
+- (void)handleRemoteDevicePasscodeUpgradePresentationPromptResponse:(id)response
 {
   v53 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -20445,15 +20445,15 @@ uint64_t __110__NPKPaymentWebServiceCompanionTargetDevice_presentRemoteDevicePas
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target handleRemoteDevicePasscodeUpgradePresentationPromptResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -20471,20 +20471,20 @@ uint64_t __110__NPKPaymentWebServiceCompanionTargetDevice_presentRemoteDevicePas
   v37 = __Block_byref_object_copy__22;
   v38 = __Block_byref_object_dispose__22;
   v39 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v24 = MEMORY[0x277D85DD0];
     v25 = 3221225472;
     v26 = __105__NPKPaymentWebServiceCompanionTargetDevice_handleRemoteDevicePasscodeUpgradePresentationPromptResponse___block_invoke;
     v27 = &unk_279949C48;
-    v28 = self;
-    v29 = v10;
-    v30 = v4;
+    selfCopy = self;
+    v29 = incomingResponseIdentifier;
+    v30 = responseCopy;
     p_buf = &buf;
     v32 = &v40;
     v33 = &v34;
-    dispatch_sync(v11, &v24);
+    dispatch_sync(internalQueue, &v24);
   }
 
   else
@@ -20618,10 +20618,10 @@ LABEL_16:
 LABEL_17:
 }
 
-- (void)dismissRemoteDevicePasscodeUpgradePromptWithCompletion:(id)a3
+- (void)dismissRemoteDevicePasscodeUpgradePromptWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = NPKPairedOrPairingDevice();
   v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"C3FD35B9-C30A-4893-B94B-56080B5FD9B7"];
   v7 = [v5 supportsCapability:v6];
@@ -20648,14 +20648,14 @@ LABEL_17:
 
   if (v7)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __100__NPKPaymentWebServiceCompanionTargetDevice_dismissRemoteDevicePasscodeUpgradePromptWithCompletion___block_invoke;
     v17[3] = &unk_279945530;
     v17[4] = self;
-    v18 = v4;
-    dispatch_sync(v11, v17);
+    v18 = completionCopy;
+    dispatch_sync(internalQueue, v17);
   }
 
   else
@@ -20674,7 +20674,7 @@ LABEL_17:
     }
 
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v4 + 2))(v4, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
   }
 
   v16 = *MEMORY[0x277D85DE8];
@@ -20754,10 +20754,10 @@ LABEL_12:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handlePasscodeUpgradeFlowShouldExitRequest:(id)a3
+- (void)handlePasscodeUpgradeFlowShouldExitRequest:(id)request
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -20766,23 +20766,23 @@ LABEL_12:
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [requestCopy npkDescription];
       v21 = 138412290;
-      v22 = v8;
+      v22 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target handlePasscodeUpgradeFlowShouldExitRequest: incoming protobuf %@", &v21, 0xCu);
     }
   }
 
   v9 = [NPKProtoPasscodeUpgradeFlowShouldExitRequest alloc];
-  v10 = [v4 data];
-  v11 = [(NPKProtoPasscodeUpgradeFlowShouldExitRequest *)v9 initWithData:v10];
+  data = [requestCopy data];
+  v11 = [(NPKProtoPasscodeUpgradeFlowShouldExitRequest *)v9 initWithData:data];
 
-  v12 = [(NPKProtoPasscodeUpgradeFlowShouldExitRequest *)v11 passcodeChanged];
+  passcodeChanged = [(NPKProtoPasscodeUpgradeFlowShouldExitRequest *)v11 passcodeChanged];
   if ([(NPKProtoPasscodeUpgradeFlowShouldExitRequest *)v11 hasErrorData])
   {
-    v13 = [(NPKProtoPasscodeUpgradeFlowShouldExitRequest *)v11 errorData];
+    errorData = [(NPKProtoPasscodeUpgradeFlowShouldExitRequest *)v11 errorData];
     v14 = objc_opt_class();
-    v15 = NPKSecureUnarchiveObject(v13, v14);
+    v15 = NPKSecureUnarchiveObject(errorData, v14);
   }
 
   else
@@ -20799,20 +20799,20 @@ LABEL_12:
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 134218242;
-      v22 = v12;
+      v22 = passcodeChanged;
       v23 = 2112;
       v24 = v15;
       _os_log_impl(&dword_25B300000, v18, OS_LOG_TYPE_DEFAULT, "Notice: Request to exit passcode change flow with passcode changed: %ld error: %@", &v21, 0x16u);
     }
   }
 
-  v19 = [(NPKPaymentWebServiceCompanionTargetDevice *)self passcodeChangeCoordinator];
-  [v19 exitPasscodeChangeFlowWithPasscodeChanged:v12 error:v15];
+  passcodeChangeCoordinator = [(NPKPaymentWebServiceCompanionTargetDevice *)self passcodeChangeCoordinator];
+  [passcodeChangeCoordinator exitPasscodeChangeFlowWithPasscodeChanged:passcodeChanged error:v15];
 
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:(BOOL)a3
+- (void)startRequiringUpgradedPasscodeWithPasscodeMeetsPolicy:(BOOL)policy
 {
   v4 = NPKPairedOrPairingDevice();
   v5 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"B68E1DBD-8CE4-4684-8F65-FF0AF2040D4E"];
@@ -20862,9 +20862,9 @@ LABEL_12:
   }
 }
 
-- (void)fetchRemoteDevicePasscodeStateWithCompletion:(id)a3
+- (void)fetchRemoteDevicePasscodeStateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -20884,14 +20884,14 @@ LABEL_12:
 
   if (v10)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __90__NPKPaymentWebServiceCompanionTargetDevice_fetchRemoteDevicePasscodeStateWithCompletion___block_invoke;
     v15[3] = &unk_279945530;
     v15[4] = self;
-    v16 = v4;
-    dispatch_sync(v11, v15);
+    v16 = completionCopy;
+    dispatch_sync(internalQueue, v15);
   }
 
   else
@@ -20909,7 +20909,7 @@ LABEL_12:
       }
     }
 
-    (*(v4 + 2))(v4, 1, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 1, 0, 0);
   }
 }
 
@@ -21007,10 +21007,10 @@ uint64_t __90__NPKPaymentWebServiceCompanionTargetDevice_fetchRemoteDevicePassco
   return result;
 }
 
-- (void)handleRemoteDevicePasscodeStateResponse:(id)a3
+- (void)handleRemoteDevicePasscodeStateResponse:(id)response
 {
   v44 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -21019,15 +21019,15 @@ uint64_t __90__NPKPaymentWebServiceCompanionTargetDevice_fetchRemoteDevicePassco
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target handleRemoteDevicePasscodeStateResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -21049,21 +21049,21 @@ uint64_t __90__NPKPaymentWebServiceCompanionTargetDevice_fetchRemoteDevicePassco
   v28 = __Block_byref_object_copy__22;
   v29 = __Block_byref_object_dispose__22;
   v30 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __85__NPKPaymentWebServiceCompanionTargetDevice_handleRemoteDevicePasscodeStateResponse___block_invoke;
     block[3] = &unk_279949BA8;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v35;
     v23 = &v31;
     v24 = &v25;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -21153,23 +21153,23 @@ void __85__NPKPaymentWebServiceCompanionTargetDevice_handleRemoteDevicePasscodeS
 
 - (id)deviceIDSIdentifier
 {
-  v3 = [MEMORY[0x277D2BCF8] sharedInstance];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
   v4 = NPKPairedOrPairingDevice();
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
-  v6 = [v5 devices];
+  provisioningService = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
+  devices = [provisioningService devices];
 
-  v7 = [v3 deviceForNRDevice:v4 fromIDSDevices:v6];
-  v8 = [v7 uniqueIDOverride];
+  v7 = [mEMORY[0x277D2BCF8] deviceForNRDevice:v4 fromIDSDevices:devices];
+  uniqueIDOverride = [v7 uniqueIDOverride];
 
-  return v8;
+  return uniqueIDOverride;
 }
 
-- (void)paymentWebService:(id)a3 canAddSecureElementPassWithConfiguration:(id)a4 completion:(id)a5
+- (void)paymentWebService:(id)service canAddSecureElementPassWithConfiguration:(id)configuration completion:(id)completion
 {
   v57 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  serviceCopy = service;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -21178,9 +21178,9 @@ void __85__NPKPaymentWebServiceCompanionTargetDevice_handleRemoteDevicePasscodeS
     v13 = pk_Payment_log();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
-      v14 = _Block_copy(v10);
+      v14 = _Block_copy(completionCopy);
       *buf = 138412546;
-      *&buf[4] = v9;
+      *&buf[4] = configurationCopy;
       *&buf[12] = 2112;
       *&buf[14] = v14;
       _os_log_impl(&dword_25B300000, v13, OS_LOG_TYPE_DEFAULT, "Notice: Target device - can add secure element pass with configuration %@ completion: %@", buf, 0x16u);
@@ -21208,7 +21208,7 @@ void __85__NPKPaymentWebServiceCompanionTargetDevice_handleRemoteDevicePasscodeS
   v45 = v47;
   v16 = v15;
   v42 = v16;
-  v17 = v10;
+  v17 = completionCopy;
   v43 = v17;
   v46 = v51;
   v18 = _Block_copy(aBlock);
@@ -21223,8 +21223,8 @@ void __85__NPKPaymentWebServiceCompanionTargetDevice_handleRemoteDevicePasscodeS
   v55 = __Block_byref_object_dispose__22;
   v56 = 0;
   v19 = [NPKPaymentPreflighter alloc];
-  v20 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
-  v21 = [(NPKPaymentPreflighter *)v19 initWithWebService:v8 targetDevice:self companionAgentConnection:v20];
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  v21 = [(NPKPaymentPreflighter *)v19 initWithWebService:serviceCopy targetDevice:self companionAgentConnection:companionAgentConnection];
 
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
@@ -21249,7 +21249,7 @@ void __85__NPKPaymentWebServiceCompanionTargetDevice_handleRemoteDevicePasscodeS
   v32 = v47;
   v25 = v23;
   v29 = v25;
-  [(NPKPaymentWebServiceCompanionTargetDevice *)self _canAddSecureElementPassWithConfiguration:v9 completion:v27];
+  [(NPKPaymentWebServiceCompanionTargetDevice *)self _canAddSecureElementPassWithConfiguration:configurationCopy completion:v27];
 
   _Block_object_dispose(buf, 8);
   _Block_object_dispose(v39, 8);
@@ -21508,18 +21508,18 @@ uint64_t __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_canA
   return v8();
 }
 
-- (void)_canAddSecureElementPassWithConfiguration:(id)a3 completion:(id)a4
+- (void)_canAddSecureElementPassWithConfiguration:(id)configuration completion:(id)completion
 {
   v41 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x277D37FC0] sharedInstanceWithRemoteLibrary];
-  v9 = [v8 _remoteLibrary];
+  configurationCopy = configuration;
+  completionCopy = completion;
+  mEMORY[0x277D37FC0] = [MEMORY[0x277D37FC0] sharedInstanceWithRemoteLibrary];
+  _remoteLibrary = [mEMORY[0x277D37FC0] _remoteLibrary];
 
-  v10 = [v9 canAddSecureElementPassWithConfiguration:v6];
+  v10 = [_remoteLibrary canAddSecureElementPassWithConfiguration:configurationCopy];
   if (!v10)
   {
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_16;
     }
@@ -21534,16 +21534,16 @@ uint64_t __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_canA
     goto LABEL_14;
   }
 
-  if ([v6 configurationType] != 1)
+  if ([configurationCopy configurationType] != 1)
   {
-    if (!v7)
+    if (!completionCopy)
     {
       goto LABEL_16;
     }
 
     v20 = 0;
 LABEL_14:
-    v7[2](v7, v10, v20);
+    completionCopy[2](completionCopy, v10, v20);
 LABEL_15:
 
     goto LABEL_16;
@@ -21551,35 +21551,35 @@ LABEL_15:
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isUWBSubcredentialProvisioningSupported])
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _deviceIsConnected];
+    _deviceIsConnected = [(NPKPaymentWebServiceCompanionTargetDevice *)self _deviceIsConnected];
     v12 = pk_Payment_log();
     v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
-    if (v11)
+    if (_deviceIsConnected)
     {
       if (v13)
       {
         v14 = pk_Payment_log();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
         {
-          v15 = _Block_copy(v7);
+          v15 = _Block_copy(completionCopy);
           *buf = 138412546;
-          v38 = v6;
+          v38 = configurationCopy;
           v39 = 2112;
           v40 = v15;
           _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: Target device - sending canAddSecureElementPassWithConfiguration request for configuration: %@ completion: %@", buf, 0x16u);
         }
       }
 
-      v16 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+      internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __98__NPKPaymentWebServiceCompanionTargetDevice__canAddSecureElementPassWithConfiguration_completion___block_invoke;
       block[3] = &unk_279945A48;
-      v30 = v6;
-      v31 = self;
-      v32 = v7;
-      dispatch_sync(v16, block);
+      v30 = configurationCopy;
+      selfCopy = self;
+      v32 = completionCopy;
+      dispatch_sync(internalQueue, block);
 
       goto LABEL_16;
     }
@@ -21594,7 +21594,7 @@ LABEL_15:
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
       v26 = MEMORY[0x277CCA9B8];
       v27 = *MEMORY[0x277D389E0];
@@ -21603,7 +21603,7 @@ LABEL_15:
       v28 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v36 forKeys:&v35 count:1];
       v20 = [v26 errorWithDomain:v27 code:19 userInfo:v28];
 
-      v7[2](v7, 0, v20);
+      completionCopy[2](completionCopy, 0, v20);
       goto LABEL_15;
     }
   }
@@ -21623,9 +21623,9 @@ LABEL_15:
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, 1, 0);
+      completionCopy[2](completionCopy, 1, 0);
     }
   }
 
@@ -21735,10 +21735,10 @@ uint64_t __98__NPKPaymentWebServiceCompanionTargetDevice__canAddSecureElementPas
   return result;
 }
 
-- (void)canAddSecureElementPassWithConfigurationResponse:(id)a3
+- (void)canAddSecureElementPassWithConfigurationResponse:(id)response
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -21747,15 +21747,15 @@ uint64_t __98__NPKPaymentWebServiceCompanionTargetDevice__canAddSecureElementPas
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target canAddSecureElementPassWithConfigurationResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -21773,20 +21773,20 @@ uint64_t __98__NPKPaymentWebServiceCompanionTargetDevice__canAddSecureElementPas
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __94__NPKPaymentWebServiceCompanionTargetDevice_canAddSecureElementPassWithConfigurationResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -21875,11 +21875,11 @@ void __94__NPKPaymentWebServiceCompanionTargetDevice_canAddSecureElementPassWith
   }
 }
 
-- (void)paymentWebService:(id)a3 canAcceptInvitation:(id)a4 withCompletionV2:(id)a5
+- (void)paymentWebService:(id)service canAcceptInvitation:(id)invitation withCompletionV2:(id)v2
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  invitationCopy = invitation;
+  v2Copy = v2;
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -21888,9 +21888,9 @@ void __94__NPKPaymentWebServiceCompanionTargetDevice_canAddSecureElementPassWith
     v11 = pk_Payment_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = _Block_copy(v8);
+      v12 = _Block_copy(v2Copy);
       *buf = 138412546;
-      v29 = v7;
+      v29 = invitationCopy;
       v30 = 2112;
       v31 = v12;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Target device - can accept invitation request with invitation: %@ completion: %@", buf, 0x16u);
@@ -21899,15 +21899,15 @@ void __94__NPKPaymentWebServiceCompanionTargetDevice_canAddSecureElementPassWith
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialProvisioningSupported])
   {
-    v13 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __100__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_canAcceptInvitation_withCompletionV2___block_invoke;
     block[3] = &unk_279945A48;
-    v23 = v7;
-    v24 = self;
-    v25 = v8;
-    dispatch_sync(v13, block);
+    v23 = invitationCopy;
+    selfCopy = self;
+    v25 = v2Copy;
+    dispatch_sync(internalQueue, block);
 
     v14 = v23;
 LABEL_13:
@@ -21928,7 +21928,7 @@ LABEL_13:
     }
   }
 
-  if (v8)
+  if (v2Copy)
   {
     v18 = MEMORY[0x277CCA9B8];
     v19 = *MEMORY[0x277D389E0];
@@ -21937,7 +21937,7 @@ LABEL_13:
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v14 = [v18 errorWithDomain:v19 code:21 userInfo:v20];
 
-    (*(v8 + 2))(v8, v14);
+    (*(v2Copy + 2))(v2Copy, v14);
     goto LABEL_13;
   }
 
@@ -22047,10 +22047,10 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_canA
   return result;
 }
 
-- (void)canAcceptInvitationResponse:(id)a3
+- (void)canAcceptInvitationResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -22059,15 +22059,15 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_canA
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target canAcceptInvitationResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -22081,19 +22081,19 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_canA
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__NPKPaymentWebServiceCompanionTargetDevice_canAcceptInvitationResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -22179,10 +22179,10 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_canAcceptInvitationResponse
   }
 }
 
-- (void)canAcceptInvitationRequest:(id)a3
+- (void)canAcceptInvitationRequest:(id)request
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -22191,33 +22191,33 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_canAcceptInvitationResponse
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [requestCopy npkDescription];
       *buf = 138412290;
-      v24 = v8;
+      v24 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device - received can accept invitation request: %@", buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 outgoingResponseIdentifier];
+  context = [requestCopy context];
+  outgoingResponseIdentifier = [context outgoingResponseIdentifier];
 
   v11 = [NPKProtoCanAcceptInvitationRequest alloc];
-  v12 = [v4 data];
-  v13 = [(NPKProtoCanAcceptInvitationRequest *)v11 initWithData:v12];
+  data = [requestCopy data];
+  v13 = [(NPKProtoCanAcceptInvitationRequest *)v11 initWithData:data];
 
-  v14 = [(NPKProtoCanAcceptInvitationRequest *)v13 invitationData];
+  invitationData = [(NPKProtoCanAcceptInvitationRequest *)v13 invitationData];
   v15 = objc_opt_class();
-  v16 = NPKSecureUnarchiveObject(v14, v15);
+  v16 = NPKSecureUnarchiveObject(invitationData, v15);
   objc_initWeak(buf, self);
-  v17 = [(NPKPaymentWebServiceCompanionTargetDevice *)self subcredentialInvitationCoordinator];
+  subcredentialInvitationCoordinator = [(NPKPaymentWebServiceCompanionTargetDevice *)self subcredentialInvitationCoordinator];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __72__NPKPaymentWebServiceCompanionTargetDevice_canAcceptInvitationRequest___block_invoke;
   v20[3] = &unk_27994A440;
   objc_copyWeak(&v22, buf);
-  v18 = v10;
+  v18 = outgoingResponseIdentifier;
   v21 = v18;
-  [v17 canAcceptInvitation:v16 completion:v20];
+  [subcredentialInvitationCoordinator canAcceptInvitation:v16 completion:v20];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(buf);
@@ -22276,9 +22276,9 @@ void __72__NPKPaymentWebServiceCompanionTargetDevice_canAcceptInvitationRequest_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)paymentWebService:(id)a3 subcredentialInvitationsWithCompletion:(id)a4
+- (void)paymentWebService:(id)service subcredentialInvitationsWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -22294,14 +22294,14 @@ void __72__NPKPaymentWebServiceCompanionTargetDevice_canAcceptInvitationRequest_
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialProvisioningSupported])
   {
-    v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_subcredentialInvitationsWithCompletion___block_invoke;
     v13[3] = &unk_279945530;
     v13[4] = self;
-    v14 = v5;
-    dispatch_sync(v9, v13);
+    v14 = completionCopy;
+    dispatch_sync(internalQueue, v13);
   }
 
   else
@@ -22319,9 +22319,9 @@ void __72__NPKPaymentWebServiceCompanionTargetDevice_canAcceptInvitationRequest_
       }
     }
 
-    if (v5)
+    if (completionCopy)
     {
-      (*(v5 + 2))(v5, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -22420,10 +22420,10 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_subc
   return result;
 }
 
-- (void)subcredentialInvitationsResponse:(id)a3
+- (void)subcredentialInvitationsResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -22432,15 +22432,15 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_subc
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target subcredentialInvitationsResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -22454,19 +22454,19 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_subc
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __78__NPKPaymentWebServiceCompanionTargetDevice_subcredentialInvitationsResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -22584,12 +22584,12 @@ LABEL_13:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)paymentWebService:(id)a3 acceptSubcredentialInvitationWithIdentifier:(id)a4 metadata:(id)a5 completion:(id)a6
+- (void)paymentWebService:(id)service acceptSubcredentialInvitationWithIdentifier:(id)identifier metadata:(id)metadata completion:(id)completion
 {
   v35 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  identifierCopy = identifier;
+  metadataCopy = metadata;
+  completionCopy = completion;
   v12 = pk_Payment_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
@@ -22599,25 +22599,25 @@ LABEL_13:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v32 = v9;
+      v32 = identifierCopy;
       v33 = 2112;
-      v34 = v10;
+      v34 = metadataCopy;
       _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: Target device - accept subcredential invitation request with identifier: %@ metadata: %@", buf, 0x16u);
     }
   }
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialProvisioningSupported])
   {
-    v15 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v24[0] = MEMORY[0x277D85DD0];
     v24[1] = 3221225472;
     v24[2] = __127__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_acceptSubcredentialInvitationWithIdentifier_metadata_completion___block_invoke;
     v24[3] = &unk_279945BB0;
-    v25 = v9;
-    v26 = v10;
-    v27 = self;
-    v28 = v11;
-    dispatch_sync(v15, v24);
+    v25 = identifierCopy;
+    v26 = metadataCopy;
+    selfCopy = self;
+    v28 = completionCopy;
+    dispatch_sync(internalQueue, v24);
 
     v16 = v25;
 LABEL_13:
@@ -22638,7 +22638,7 @@ LABEL_13:
     }
   }
 
-  if (v11)
+  if (completionCopy)
   {
     v20 = MEMORY[0x277CCA9B8];
     v21 = *MEMORY[0x277D389E0];
@@ -22647,7 +22647,7 @@ LABEL_13:
     v22 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v30 forKeys:&v29 count:1];
     v16 = [v20 errorWithDomain:v21 code:21 userInfo:v22];
 
-    (*(v11 + 2))(v11, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
     goto LABEL_13;
   }
 
@@ -22754,11 +22754,11 @@ uint64_t __127__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_acce
   return result;
 }
 
-- (void)paymentWebService:(id)a3 acceptSubcredentialInvitation:(id)a4 completion:(id)a5
+- (void)paymentWebService:(id)service acceptSubcredentialInvitation:(id)invitation completion:(id)completion
 {
   v24 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  invitationCopy = invitation;
+  completionCopy = completion;
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -22768,22 +22768,22 @@ uint64_t __127__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_acce
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v23 = v7;
+      v23 = invitationCopy;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Target device - accept subcredential invitation request with invitation: %@", buf, 0xCu);
     }
   }
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __104__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_acceptSubcredentialInvitation_completion___block_invoke;
     block[3] = &unk_279945A48;
-    v19 = v7;
-    v20 = self;
-    v21 = v8;
-    dispatch_sync(v12, block);
+    v19 = invitationCopy;
+    selfCopy = self;
+    v21 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v13 = v19;
 LABEL_13:
@@ -22804,10 +22804,10 @@ LABEL_13:
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v13 = PKDisplayableErrorForCommonType();
-    (*(v8 + 2))(v8, 0, v13);
+    (*(completionCopy + 2))(completionCopy, 0, v13);
     goto LABEL_13;
   }
 
@@ -22913,10 +22913,10 @@ uint64_t __104__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_acce
   return result;
 }
 
-- (void)acceptSubcredentialInvitationResponse:(id)a3
+- (void)acceptSubcredentialInvitationResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -22925,15 +22925,15 @@ uint64_t __104__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_acce
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target acceptSubcredentialInvitationResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -22953,20 +22953,20 @@ uint64_t __104__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_acce
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __83__NPKPaymentWebServiceCompanionTargetDevice_acceptSubcredentialInvitationResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -23068,11 +23068,11 @@ void __83__NPKPaymentWebServiceCompanionTargetDevice_acceptSubcredentialInvitati
   }
 }
 
-- (void)paymentWebService:(id)a3 matchingInvitationOnDevice:(id)a4 withTimeout:(unint64_t)a5 completion:(id)a6
+- (void)paymentWebService:(id)service matchingInvitationOnDevice:(id)device withTimeout:(unint64_t)timeout completion:(id)completion
 {
   v30[1] = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a6;
+  deviceCopy = device;
+  completionCopy = completion;
   v11 = pk_Payment_log();
   v12 = os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT);
 
@@ -23088,16 +23088,16 @@ void __83__NPKPaymentWebServiceCompanionTargetDevice_acceptSubcredentialInvitati
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialProvisioningSupported])
   {
-    v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v23[0] = MEMORY[0x277D85DD0];
     v23[1] = 3221225472;
     v23[2] = __113__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_matchingInvitationOnDevice_withTimeout_completion___block_invoke;
     v23[3] = &unk_279949D98;
-    v27 = a5;
-    v24 = v9;
-    v25 = self;
-    v26 = v10;
-    dispatch_sync(v14, v23);
+    timeoutCopy = timeout;
+    v24 = deviceCopy;
+    selfCopy = self;
+    v26 = completionCopy;
+    dispatch_sync(internalQueue, v23);
 
     v15 = v24;
 LABEL_13:
@@ -23118,7 +23118,7 @@ LABEL_13:
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v19 = MEMORY[0x277CCA9B8];
     v20 = *MEMORY[0x277D389E0];
@@ -23127,7 +23127,7 @@ LABEL_13:
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:&v29 count:1];
     v15 = [v19 errorWithDomain:v20 code:21 userInfo:v21];
 
-    (*(v10 + 2))(v10, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
     goto LABEL_13;
   }
 
@@ -23234,10 +23234,10 @@ uint64_t __113__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_matc
   return result;
 }
 
-- (void)matchingCredentialOnDeviceResponse:(id)a3
+- (void)matchingCredentialOnDeviceResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -23246,15 +23246,15 @@ uint64_t __113__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_matc
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target matchingCredentialOnDeviceResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -23274,20 +23274,20 @@ uint64_t __113__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_matc
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __80__NPKPaymentWebServiceCompanionTargetDevice_matchingCredentialOnDeviceResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -23380,10 +23380,10 @@ void __80__NPKPaymentWebServiceCompanionTargetDevice_matchingCredentialOnDeviceR
   }
 }
 
-- (void)handleAcceptSubcredentialProvisioningRequest:(id)a3
+- (void)handleAcceptSubcredentialProvisioningRequest:(id)request
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -23392,26 +23392,26 @@ void __80__NPKPaymentWebServiceCompanionTargetDevice_matchingCredentialOnDeviceR
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [requestCopy npkDescription];
       *buf = 138412290;
-      v29 = v8;
+      v29 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target handleSubcredentialProvisioningRequest: incoming protobuf %@", buf, 0xCu);
     }
   }
 
   v9 = [NPKProtoAcceptSubcredentialInvitationRequest alloc];
-  v10 = [v4 data];
-  v11 = [(NPKProtoAcceptSubcredentialInvitationRequest *)v9 initWithData:v10];
+  data = [requestCopy data];
+  v11 = [(NPKProtoAcceptSubcredentialInvitationRequest *)v9 initWithData:data];
 
-  v12 = [(NPKProtoAcceptSubcredentialInvitationRequest *)v11 invitationData];
+  invitationData = [(NPKProtoAcceptSubcredentialInvitationRequest *)v11 invitationData];
   v13 = objc_opt_class();
-  v14 = NPKSecureUnarchiveObject(v12, v13);
+  v14 = NPKSecureUnarchiveObject(invitationData, v13);
 
   if ([(NPKProtoAcceptSubcredentialInvitationRequest *)v11 hasMetadataData])
   {
-    v15 = [(NPKProtoAcceptSubcredentialInvitationRequest *)v11 metadataData];
+    metadataData = [(NPKProtoAcceptSubcredentialInvitationRequest *)v11 metadataData];
     v16 = objc_opt_class();
-    v17 = NPKSecureUnarchiveObject(v15, v16);
+    v17 = NPKSecureUnarchiveObject(metadataData, v16);
   }
 
   else
@@ -23439,7 +23439,7 @@ void __80__NPKPaymentWebServiceCompanionTargetDevice_matchingCredentialOnDeviceR
     }
   }
 
-  v23 = [(NPKPaymentWebServiceCompanionTargetDevice *)self subcredentialInvitationCoordinator];
+  subcredentialInvitationCoordinator = [(NPKPaymentWebServiceCompanionTargetDevice *)self subcredentialInvitationCoordinator];
   v26[0] = MEMORY[0x277D85DD0];
   v26[1] = 3221225472;
   v26[2] = __90__NPKPaymentWebServiceCompanionTargetDevice_handleAcceptSubcredentialProvisioningRequest___block_invoke;
@@ -23447,7 +23447,7 @@ void __80__NPKPaymentWebServiceCompanionTargetDevice_matchingCredentialOnDeviceR
   v26[4] = self;
   v27 = v14;
   v24 = v14;
-  [v23 startProvisioningWithInvitation:v24 metadata:v17 completion:v26];
+  [subcredentialInvitationCoordinator startProvisioningWithInvitation:v24 metadata:v17 completion:v26];
 
   v25 = *MEMORY[0x277D85DE8];
 }
@@ -23486,10 +23486,10 @@ void __90__NPKPaymentWebServiceCompanionTargetDevice_handleAcceptSubcredentialPr
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)handleAcceptSubcredentialProvisioningForMailboxAddressRequest:(id)a3
+- (void)handleAcceptSubcredentialProvisioningForMailboxAddressRequest:(id)request
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -23498,19 +23498,19 @@ void __90__NPKPaymentWebServiceCompanionTargetDevice_handleAcceptSubcredentialPr
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [requestCopy npkDescription];
       *buf = 138412290;
-      v25 = v8;
+      v25 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target handleAcceptSubcredentialProvisioningForMailboxAddressRequest: incoming protobuf %@", buf, 0xCu);
     }
   }
 
   v9 = [NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest alloc];
-  v10 = [v4 data];
-  v11 = [(NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest *)v9 initWithData:v10];
+  data = [requestCopy data];
+  v11 = [(NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest *)v9 initWithData:data];
 
-  v12 = [(NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest *)v11 mailboxAddress];
-  v13 = [(NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest *)v11 activationCode];
+  mailboxAddress = [(NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest *)v11 mailboxAddress];
+  activationCode = [(NPKProtoAcceptSubcredentialInvitationWithMailboxAddressRequest *)v11 activationCode];
   v14 = pk_General_log();
   v15 = os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT);
 
@@ -23524,22 +23524,22 @@ void __90__NPKPaymentWebServiceCompanionTargetDevice_handleAcceptSubcredentialPr
       *buf = 138543875;
       v25 = v18;
       v26 = 2113;
-      v27 = v12;
+      v27 = mailboxAddress;
       v28 = 2113;
-      v29 = v13;
+      v29 = activationCode;
       _os_log_impl(&dword_25B300000, v16, OS_LOG_TYPE_DEFAULT, "Notice: %{public}@: Received handle provisioning request with mailboxAddress: %{private}@, activationCode: %{private}@", buf, 0x20u);
     }
   }
 
-  v19 = [(NPKPaymentWebServiceCompanionTargetDevice *)self subcredentialInvitationCoordinator];
+  subcredentialInvitationCoordinator = [(NPKPaymentWebServiceCompanionTargetDevice *)self subcredentialInvitationCoordinator];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __107__NPKPaymentWebServiceCompanionTargetDevice_handleAcceptSubcredentialProvisioningForMailboxAddressRequest___block_invoke;
   v22[3] = &unk_27994A468;
   v22[4] = self;
-  v23 = v12;
-  v20 = v12;
-  [v19 startProvisioningWithMailboxAddress:v20 activationCode:v13 completion:v22];
+  v23 = mailboxAddress;
+  v20 = mailboxAddress;
+  [subcredentialInvitationCoordinator startProvisioningWithMailboxAddress:v20 activationCode:activationCode completion:v22];
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -23578,10 +23578,10 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_handleAcceptSubcredentialP
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)paymentWebService:(id)a3 accountAttestationAnonymizationSaltWithCompletion:(id)a4
+- (void)paymentWebService:(id)service accountAttestationAnonymizationSaltWithCompletion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  completionCopy = completion;
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -23590,7 +23590,7 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_handleAcceptSubcredentialP
     v8 = pk_Payment_log();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
-      v9 = _Block_copy(v5);
+      v9 = _Block_copy(completionCopy);
       *buf = 138412290;
       v24 = v9;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Target device - account attestation anonymization salt request with completion: %@", buf, 0xCu);
@@ -23599,14 +23599,14 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_handleAcceptSubcredentialP
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialProvisioningSupported])
   {
-    v10 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __113__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_accountAttestationAnonymizationSaltWithCompletion___block_invoke;
     v19[3] = &unk_279945530;
     v19[4] = self;
-    v20 = v5;
-    dispatch_sync(v10, v19);
+    v20 = completionCopy;
+    dispatch_sync(internalQueue, v19);
   }
 
   else
@@ -23624,7 +23624,7 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_handleAcceptSubcredentialP
       }
     }
 
-    if (v5)
+    if (completionCopy)
     {
       v14 = MEMORY[0x277CCA9B8];
       v15 = *MEMORY[0x277D389E0];
@@ -23633,7 +23633,7 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_handleAcceptSubcredentialP
       v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v22 forKeys:&v21 count:1];
       v17 = [v14 errorWithDomain:v15 code:21 userInfo:v16];
 
-      (*(v5 + 2))(v5, 0, v17);
+      (*(completionCopy + 2))(completionCopy, 0, v17);
     }
   }
 
@@ -23750,10 +23750,10 @@ void __113__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_accountA
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountAttestationAnonymizationSaltResponse:(id)a3
+- (void)accountAttestationAnonymizationSaltResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -23762,15 +23762,15 @@ void __113__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_accountA
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target accountAttestationAnonymizationSaltResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -23790,20 +23790,20 @@ void __113__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_accountA
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __89__NPKPaymentWebServiceCompanionTargetDevice_accountAttestationAnonymizationSaltResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -23896,10 +23896,10 @@ void __89__NPKPaymentWebServiceCompanionTargetDevice_accountAttestationAnonymiza
   }
 }
 
-- (void)fetchOrInitializeAccountAttestationAnonymizationSaltRequest:(id)a3
+- (void)fetchOrInitializeAccountAttestationAnonymizationSaltRequest:(id)request
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -23908,26 +23908,26 @@ void __89__NPKPaymentWebServiceCompanionTargetDevice_accountAttestationAnonymiza
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [requestCopy npkDescription];
       *buf = 138412290;
-      v18 = v8;
+      v18 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device - received account attestation anonymization salt request: %@", buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 outgoingResponseIdentifier];
+  context = [requestCopy context];
+  outgoingResponseIdentifier = [context outgoingResponseIdentifier];
 
   objc_initWeak(buf, self);
-  v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self subcredentialInvitationCoordinator];
+  subcredentialInvitationCoordinator = [(NPKPaymentWebServiceCompanionTargetDevice *)self subcredentialInvitationCoordinator];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __105__NPKPaymentWebServiceCompanionTargetDevice_fetchOrInitializeAccountAttestationAnonymizationSaltRequest___block_invoke;
   v14[3] = &unk_279945D40;
   objc_copyWeak(&v16, buf);
-  v12 = v10;
+  v12 = outgoingResponseIdentifier;
   v15 = v12;
-  [v11 fetchOrInitializeAccountAttestationAnonymizationSaltIfNecessaryWithCompletion:v14];
+  [subcredentialInvitationCoordinator fetchOrInitializeAccountAttestationAnonymizationSaltIfNecessaryWithCompletion:v14];
 
   objc_destroyWeak(&v16);
   objc_destroyWeak(buf);
@@ -23990,11 +23990,11 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_fetchOrInitializeAccountAt
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)paymentWebService:(id)a3 setAccountAttestationAnonymizationSalt:(id)a4 withCompletion:(id)a5
+- (void)paymentWebService:(id)service setAccountAttestationAnonymizationSalt:(id)salt withCompletion:(id)completion
 {
   v30 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  saltCopy = salt;
+  completionCopy = completion;
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -24003,7 +24003,7 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_fetchOrInitializeAccountAt
     v11 = pk_Payment_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = _Block_copy(v8);
+      v12 = _Block_copy(completionCopy);
       *buf = 138412290;
       v29 = v12;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Target device - set account attestation anonymization salt request with completion: %@", buf, 0xCu);
@@ -24012,15 +24012,15 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_fetchOrInitializeAccountAt
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialProvisioningSupported])
   {
-    v13 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __117__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_setAccountAttestationAnonymizationSalt_withCompletion___block_invoke;
     block[3] = &unk_279945A48;
-    v23 = v7;
-    v24 = self;
-    v25 = v8;
-    dispatch_sync(v13, block);
+    v23 = saltCopy;
+    selfCopy = self;
+    v25 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v14 = v23;
 LABEL_13:
@@ -24041,7 +24041,7 @@ LABEL_13:
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v18 = MEMORY[0x277CCA9B8];
     v19 = *MEMORY[0x277D389E0];
@@ -24050,7 +24050,7 @@ LABEL_13:
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v14 = [v18 errorWithDomain:v19 code:21 userInfo:v20];
 
-    (*(v8 + 2))(v8, v14);
+    (*(completionCopy + 2))(completionCopy, v14);
     goto LABEL_13;
   }
 
@@ -24154,10 +24154,10 @@ uint64_t __117__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_setA
   return result;
 }
 
-- (void)setAccountAttestationAnonymizationSaltResponse:(id)a3
+- (void)setAccountAttestationAnonymizationSaltResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -24166,15 +24166,15 @@ uint64_t __117__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_setA
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target setAccountAttestationAnonymizationSaltResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -24188,19 +24188,19 @@ uint64_t __117__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_setA
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __92__NPKPaymentWebServiceCompanionTargetDevice_setAccountAttestationAnonymizationSaltResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -24284,11 +24284,11 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_setAccountAttestationAnonym
   }
 }
 
-- (void)paymentWebService:(id)a3 requestSubcredentialInvitation:(id)a4 completion:(id)a5
+- (void)paymentWebService:(id)service requestSubcredentialInvitation:(id)invitation completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  invitationCopy = invitation;
+  completionCopy = completion;
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -24297,9 +24297,9 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_setAccountAttestationAnonym
     v11 = pk_Payment_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = _Block_copy(v8);
+      v12 = _Block_copy(completionCopy);
       *buf = 138412546;
-      v29 = v7;
+      v29 = invitationCopy;
       v30 = 2112;
       v31 = v12;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Target device - request subcredential invitation %@ with completion %@", buf, 0x16u);
@@ -24308,15 +24308,15 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_setAccountAttestationAnonym
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialProvisioningSupported])
   {
-    v13 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __105__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_requestSubcredentialInvitation_completion___block_invoke;
     block[3] = &unk_279945A48;
-    v23 = v7;
-    v24 = self;
-    v25 = v8;
-    dispatch_sync(v13, block);
+    v23 = invitationCopy;
+    selfCopy = self;
+    v25 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v14 = v23;
 LABEL_13:
@@ -24337,7 +24337,7 @@ LABEL_13:
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v18 = MEMORY[0x277CCA9B8];
     v19 = *MEMORY[0x277D389E0];
@@ -24346,7 +24346,7 @@ LABEL_13:
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v14 = [v18 errorWithDomain:v19 code:21 userInfo:v20];
 
-    (*(v8 + 2))(v8, v14);
+    (*(completionCopy + 2))(completionCopy, v14);
     goto LABEL_13;
   }
 
@@ -24452,10 +24452,10 @@ uint64_t __105__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_requ
   return result;
 }
 
-- (void)requestSubcredentialInvitationResponse:(id)a3
+- (void)requestSubcredentialInvitationResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -24464,15 +24464,15 @@ uint64_t __105__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_requ
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target requestSubcredentialInvitationResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -24486,19 +24486,19 @@ uint64_t __105__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_requ
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __84__NPKPaymentWebServiceCompanionTargetDevice_requestSubcredentialInvitationResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -24582,12 +24582,12 @@ void __84__NPKPaymentWebServiceCompanionTargetDevice_requestSubcredentialInvitat
   }
 }
 
-- (void)paymentWebService:(id)a3 updateMetadataOnPass:(id)a4 withCredential:(id)a5 completion:(id)a6
+- (void)paymentWebService:(id)service updateMetadataOnPass:(id)pass withCredential:(id)credential completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v9 = a4;
-  v10 = a5;
-  v11 = a6;
+  passCopy = pass;
+  credentialCopy = credential;
+  completionCopy = completion;
   v12 = pk_Payment_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
@@ -24596,11 +24596,11 @@ void __84__NPKPaymentWebServiceCompanionTargetDevice_requestSubcredentialInvitat
     v14 = pk_Payment_log();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
-      v15 = _Block_copy(v11);
+      v15 = _Block_copy(completionCopy);
       *buf = 138412802;
-      v27 = v9;
+      v27 = passCopy;
       v28 = 2112;
-      v29 = v10;
+      v29 = credentialCopy;
       v30 = 2112;
       v31 = v15;
       _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: Target device - update metadata on pass %@ with credential %@ completion %@", buf, 0x20u);
@@ -24609,16 +24609,16 @@ void __84__NPKPaymentWebServiceCompanionTargetDevice_requestSubcredentialInvitat
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialProvisioningSupported])
   {
-    v16 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __110__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_updateMetadataOnPass_withCredential_completion___block_invoke;
     v21[3] = &unk_279945BB0;
-    v22 = v9;
-    v23 = self;
-    v24 = v10;
-    v25 = v11;
-    dispatch_sync(v16, v21);
+    v22 = passCopy;
+    selfCopy = self;
+    v24 = credentialCopy;
+    v25 = completionCopy;
+    dispatch_sync(internalQueue, v21);
   }
 
   else
@@ -24636,9 +24636,9 @@ void __84__NPKPaymentWebServiceCompanionTargetDevice_requestSubcredentialInvitat
       }
     }
 
-    if (v11)
+    if (completionCopy)
     {
-      (*(v11 + 2))(v11, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -24745,10 +24745,10 @@ uint64_t __110__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_upda
   return result;
 }
 
-- (void)updateSubcredentialMetadataResponse:(id)a3
+- (void)updateSubcredentialMetadataResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -24757,15 +24757,15 @@ uint64_t __110__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_upda
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target updateSubcredentialMetadataResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -24779,19 +24779,19 @@ uint64_t __110__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_upda
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __81__NPKPaymentWebServiceCompanionTargetDevice_updateSubcredentialMetadataResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -24868,11 +24868,11 @@ void __81__NPKPaymentWebServiceCompanionTargetDevice_updateSubcredentialMetadata
   }
 }
 
-- (void)registerCredentialsWithIdentifiers:(id)a3 completion:(id)a4
+- (void)registerCredentialsWithIdentifiers:(id)identifiers completion:(id)completion
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -24882,22 +24882,22 @@ void __81__NPKPaymentWebServiceCompanionTargetDevice_updateSubcredentialMetadata
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v28 = v6;
+      v28 = identifiersCopy;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Target device - register credentials with identifiers %@", buf, 0xCu);
     }
   }
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialProvisioningSupported])
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __91__NPKPaymentWebServiceCompanionTargetDevice_registerCredentialsWithIdentifiers_completion___block_invoke;
     block[3] = &unk_279945A48;
-    v22 = v6;
-    v23 = self;
-    v24 = v7;
-    dispatch_sync(v11, block);
+    v22 = identifiersCopy;
+    selfCopy = self;
+    v24 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v12 = v22;
 LABEL_13:
@@ -24918,7 +24918,7 @@ LABEL_13:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v16 = MEMORY[0x277CCA9B8];
     v17 = *MEMORY[0x277D389E0];
@@ -24928,7 +24928,7 @@ LABEL_13:
     v12 = [v16 errorWithDomain:v17 code:21 userInfo:v18];
 
     v19 = [MEMORY[0x277CBEB98] setWithObject:v12];
-    (*(v7 + 2))(v7, 0, v19);
+    (*(completionCopy + 2))(completionCopy, 0, v19);
 
     goto LABEL_13;
   }
@@ -25039,10 +25039,10 @@ void __91__NPKPaymentWebServiceCompanionTargetDevice_registerCredentialsWithIden
   }
 }
 
-- (void)registerCredentialsResponse:(id)a3
+- (void)registerCredentialsResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -25051,15 +25051,15 @@ void __91__NPKPaymentWebServiceCompanionTargetDevice_registerCredentialsWithIden
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target registerCredentialsResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -25079,20 +25079,20 @@ void __91__NPKPaymentWebServiceCompanionTargetDevice_registerCredentialsWithIden
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __73__NPKPaymentWebServiceCompanionTargetDevice_registerCredentialsResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v30;
     v22 = &v24;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -25263,11 +25263,11 @@ LABEL_23:
   v36 = *MEMORY[0x277D85DE8];
 }
 
-- (void)revokeCredentialsWithIdentifiers:(id)a3 completion:(id)a4
+- (void)revokeCredentialsWithIdentifiers:(id)identifiers completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -25276,9 +25276,9 @@ LABEL_23:
     v10 = pk_Payment_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = _Block_copy(v7);
+      v11 = _Block_copy(completionCopy);
       *buf = 138412546;
-      v22 = v6;
+      v22 = identifiersCopy;
       v23 = 2112;
       v24 = v11;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Target device - revoke credentials with identifiers %@ completion %@", buf, 0x16u);
@@ -25287,15 +25287,15 @@ LABEL_23:
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialProvisioningSupported])
   {
-    v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __89__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithIdentifiers_completion___block_invoke;
     block[3] = &unk_279945A48;
-    v18 = v6;
-    v19 = self;
-    v20 = v7;
-    dispatch_sync(v12, block);
+    v18 = identifiersCopy;
+    selfCopy = self;
+    v20 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -25313,9 +25313,9 @@ LABEL_23:
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -25424,10 +25424,10 @@ uint64_t __89__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithId
   return result;
 }
 
-- (void)revokeCredentialsResponse:(id)a3
+- (void)revokeCredentialsResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -25436,15 +25436,15 @@ uint64_t __89__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithId
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target revokeCredentialsResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -25456,19 +25456,19 @@ uint64_t __89__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithId
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v23;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -25537,11 +25537,11 @@ void __71__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsResponse__
   }
 }
 
-- (void)paymentWebService:(id)a3 removeSharingInvitation:(id)a4 withCompletion:(id)a5
+- (void)paymentWebService:(id)service removeSharingInvitation:(id)invitation withCompletion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  invitationCopy = invitation;
+  completionCopy = completion;
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -25550,9 +25550,9 @@ void __71__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsResponse__
     v11 = pk_Payment_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = _Block_copy(v8);
+      v12 = _Block_copy(completionCopy);
       *buf = 138412546;
-      v29 = v7;
+      v29 = invitationCopy;
       v30 = 2112;
       v31 = v12;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Target device - remove sharing invitation %@ with completion %@", buf, 0x16u);
@@ -25561,15 +25561,15 @@ void __71__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsResponse__
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialProvisioningSupported])
   {
-    v13 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_removeSharingInvitation_withCompletion___block_invoke;
     block[3] = &unk_279945A48;
-    v23 = v7;
-    v24 = self;
-    v25 = v8;
-    dispatch_sync(v13, block);
+    v23 = invitationCopy;
+    selfCopy = self;
+    v25 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v14 = v23;
 LABEL_13:
@@ -25590,7 +25590,7 @@ LABEL_13:
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v18 = MEMORY[0x277CCA9B8];
     v19 = *MEMORY[0x277D389E0];
@@ -25599,7 +25599,7 @@ LABEL_13:
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v14 = [v18 errorWithDomain:v19 code:21 userInfo:v20];
 
-    (*(v8 + 2))(v8, v14 != 0);
+    (*(completionCopy + 2))(completionCopy, v14 != 0);
     goto LABEL_13;
   }
 
@@ -25705,10 +25705,10 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_remo
   return result;
 }
 
-- (void)removeSharingInvitationResponse:(id)a3
+- (void)removeSharingInvitationResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -25717,15 +25717,15 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_remo
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target removeSharingInvitationResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -25737,19 +25737,19 @@ uint64_t __102__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_remo
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __77__NPKPaymentWebServiceCompanionTargetDevice_removeSharingInvitationResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -25819,10 +25819,10 @@ void __77__NPKPaymentWebServiceCompanionTargetDevice_removeSharingInvitationResp
   }
 }
 
-- (void)handleCredentialsChange:(id)a3
+- (void)handleCredentialsChange:(id)change
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -25831,19 +25831,19 @@ void __77__NPKPaymentWebServiceCompanionTargetDevice_removeSharingInvitationResp
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [changeCopy npkDescription];
       *buf = 138412290;
-      v36 = v8;
+      v36 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target handleCredentialsChange: incoming protobuf %@", buf, 0xCu);
     }
   }
 
   v9 = [NPKProtoHandleCredentialsChangeRequest alloc];
-  v10 = [v4 data];
-  v11 = [(NPKProtoHandleCredentialsChangeRequest *)v9 initWithData:v10];
+  data = [changeCopy data];
+  v11 = [(NPKProtoHandleCredentialsChangeRequest *)v9 initWithData:data];
 
-  v12 = [(NPKProtoHandleCredentialsChangeRequest *)v11 passID];
-  v13 = [(NPKProtoHandleCredentialsChangeRequest *)v11 paymentApplicationID];
+  passID = [(NPKProtoHandleCredentialsChangeRequest *)v11 passID];
+  paymentApplicationID = [(NPKProtoHandleCredentialsChangeRequest *)v11 paymentApplicationID];
   v14 = [MEMORY[0x277CBEB58] set];
   v15 = pk_Payment_log();
   v16 = os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT);
@@ -25853,18 +25853,18 @@ void __77__NPKPaymentWebServiceCompanionTargetDevice_removeSharingInvitationResp
     v17 = pk_Payment_log();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(NPKProtoHandleCredentialsChangeRequest *)v11 credentialsBytesCount];
+      credentialsBytesCount = [(NPKProtoHandleCredentialsChangeRequest *)v11 credentialsBytesCount];
       *buf = 138412802;
-      v36 = v12;
+      v36 = passID;
       v37 = 1024;
-      *v38 = v18;
+      *v38 = credentialsBytesCount;
       *&v38[4] = 2112;
-      *&v38[6] = v13;
+      *&v38[6] = paymentApplicationID;
       _os_log_impl(&dword_25B300000, v17, OS_LOG_TYPE_DEFAULT, "Notice: Got credentials update for unique ID %@ with %u credentials for paymentApplicationIdentifier %@", buf, 0x1Cu);
     }
   }
 
-  v19 = [(NPKProtoHandleCredentialsChangeRequest *)v11 credentialsBytes];
+  credentialsBytes = [(NPKProtoHandleCredentialsChangeRequest *)v11 credentialsBytes];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __69__NPKPaymentWebServiceCompanionTargetDevice_handleCredentialsChange___block_invoke;
@@ -25872,7 +25872,7 @@ void __77__NPKPaymentWebServiceCompanionTargetDevice_removeSharingInvitationResp
   v33[4] = self;
   v20 = v14;
   v34 = v20;
-  [v19 enumerateObjectsUsingBlock:v33];
+  [credentialsBytes enumerateObjectsUsingBlock:v33];
 
   v21 = pk_General_log();
   v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
@@ -25885,25 +25885,25 @@ void __77__NPKPaymentWebServiceCompanionTargetDevice_removeSharingInvitationResp
       *buf = 138412802;
       v36 = v20;
       v37 = 2112;
-      *v38 = v12;
+      *v38 = passID;
       *&v38[8] = 2112;
-      *&v38[10] = v13;
+      *&v38[10] = paymentApplicationID;
       _os_log_impl(&dword_25B300000, v23, OS_LOG_TYPE_DEFAULT, "Notice: Handling credentials update %@ for unique ID: %@, paymentApplicationIdentifier: %@", buf, 0x20u);
     }
   }
 
-  v24 = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
+  delegate = [(NPKPaymentWebServiceCompanionTargetDevice *)self delegate];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __69__NPKPaymentWebServiceCompanionTargetDevice_handleCredentialsChange___block_invoke_754;
   v29[3] = &unk_2799463A0;
   v30 = v20;
-  v31 = v12;
-  v32 = v13;
-  v25 = v13;
-  v26 = v12;
+  v31 = passID;
+  v32 = paymentApplicationID;
+  v25 = paymentApplicationID;
+  v26 = passID;
   v27 = v20;
-  [v24 handleCredentialsUpdate:v27 forUniqueID:v26 paymentApplicationIdentifier:v25 completion:v29];
+  [delegate handleCredentialsUpdate:v27 forUniqueID:v26 paymentApplicationIdentifier:v25 completion:v29];
 
   v28 = *MEMORY[0x277D85DE8];
 }
@@ -25949,11 +25949,11 @@ void __69__NPKPaymentWebServiceCompanionTargetDevice_handleCredentialsChange___b
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)paymentWebService:(id)a3 declineRelatedSharingInvitationsIfNecessary:(id)a4 withCompletion:(id)a5
+- (void)paymentWebService:(id)service declineRelatedSharingInvitationsIfNecessary:(id)necessary withCompletion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  necessaryCopy = necessary;
+  completionCopy = completion;
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
 
@@ -25962,9 +25962,9 @@ void __69__NPKPaymentWebServiceCompanionTargetDevice_handleCredentialsChange___b
     v11 = pk_Payment_log();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = _Block_copy(v8);
+      v12 = _Block_copy(completionCopy);
       *buf = 138412546;
-      v29 = v7;
+      v29 = necessaryCopy;
       v30 = 2112;
       v31 = v12;
       _os_log_impl(&dword_25B300000, v11, OS_LOG_TYPE_DEFAULT, "Notice: Target device - decline related invitations if necessary for invitation %@ with completion %@", buf, 0x16u);
@@ -25973,15 +25973,15 @@ void __69__NPKPaymentWebServiceCompanionTargetDevice_handleCredentialsChange___b
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialProvisioningSupported])
   {
-    v13 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __122__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_declineRelatedSharingInvitationsIfNecessary_withCompletion___block_invoke;
     block[3] = &unk_279945A48;
-    v23 = v7;
-    v24 = self;
-    v25 = v8;
-    dispatch_sync(v13, block);
+    v23 = necessaryCopy;
+    selfCopy = self;
+    v25 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v14 = v23;
 LABEL_13:
@@ -26002,7 +26002,7 @@ LABEL_13:
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v18 = MEMORY[0x277CCA9B8];
     v19 = *MEMORY[0x277D389E0];
@@ -26011,7 +26011,7 @@ LABEL_13:
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
     v14 = [v18 errorWithDomain:v19 code:21 userInfo:v20];
 
-    (*(v8 + 2))(v8, v14 != 0);
+    (*(completionCopy + 2))(completionCopy, v14 != 0);
     goto LABEL_13;
   }
 
@@ -26117,10 +26117,10 @@ uint64_t __122__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_decl
   return result;
 }
 
-- (void)declineRelatedSharingInvitationsIfNecessaryRequest:(id)a3
+- (void)declineRelatedSharingInvitationsIfNecessaryRequest:(id)request
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -26129,34 +26129,34 @@ uint64_t __122__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_decl
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [requestCopy npkDescription];
       *buf = 138412290;
-      v24 = v8;
+      v24 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device - received decline related sharing invitations if necessary request: %@", buf, 0xCu);
     }
   }
 
   v9 = [NPKProtoDeclineRelatedInvitationsIfNecessaryRequest alloc];
-  v10 = [v4 data];
-  v11 = [(NPKProtoDeclineRelatedInvitationsIfNecessaryRequest *)v9 initWithData:v10];
+  data = [requestCopy data];
+  v11 = [(NPKProtoDeclineRelatedInvitationsIfNecessaryRequest *)v9 initWithData:data];
 
-  v12 = [(NPKProtoDeclineRelatedInvitationsIfNecessaryRequest *)v11 invitationData];
+  invitationData = [(NPKProtoDeclineRelatedInvitationsIfNecessaryRequest *)v11 invitationData];
   v13 = objc_opt_class();
-  v14 = NPKSecureUnarchiveObject(v12, v13);
+  v14 = NPKSecureUnarchiveObject(invitationData, v13);
 
-  v15 = [v4 context];
-  v16 = [v15 outgoingResponseIdentifier];
+  context = [requestCopy context];
+  outgoingResponseIdentifier = [context outgoingResponseIdentifier];
 
   objc_initWeak(buf, self);
-  v17 = [(NPKPaymentWebServiceCompanionTargetDevice *)self subcredentialInvitationCoordinator];
+  subcredentialInvitationCoordinator = [(NPKPaymentWebServiceCompanionTargetDevice *)self subcredentialInvitationCoordinator];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __96__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvitationsIfNecessaryRequest___block_invoke;
   v20[3] = &unk_27994A4B8;
   objc_copyWeak(&v22, buf);
-  v18 = v16;
+  v18 = outgoingResponseIdentifier;
   v21 = v18;
-  [v17 declineRelatedInvitationsIfNecessaryForInvitation:v14 completion:v20];
+  [subcredentialInvitationCoordinator declineRelatedInvitationsIfNecessaryForInvitation:v14 completion:v20];
 
   objc_destroyWeak(&v22);
   objc_destroyWeak(buf);
@@ -26211,10 +26211,10 @@ void __96__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)declineRelatedSharingInvitationsIfNecessaryResponse:(id)a3
+- (void)declineRelatedSharingInvitationsIfNecessaryResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -26223,15 +26223,15 @@ void __96__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target declineRelatedSharingInvitationsIfNecessaryResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -26243,19 +26243,19 @@ void __96__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __97__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvitationsIfNecessaryResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -26325,14 +26325,14 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
   }
 }
 
-- (void)paymentWebService:(id)a3 presentStandaloneTransaction:(int64_t)a4 forPassUniqueIdentifier:(id)a5 terminalReaderIdentifier:(id)a6 completion:(id)a7
+- (void)paymentWebService:(id)service presentStandaloneTransaction:(int64_t)transaction forPassUniqueIdentifier:(id)identifier terminalReaderIdentifier:(id)readerIdentifier completion:(id)completion
 {
   v111 = *MEMORY[0x277D85DE8];
-  v59 = a3;
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
-  v15 = [MEMORY[0x277CBEAA8] date];
+  serviceCopy = service;
+  identifierCopy = identifier;
+  readerIdentifierCopy = readerIdentifier;
+  completionCopy = completion;
+  date = [MEMORY[0x277CBEAA8] date];
   v16 = pk_Payment_log();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
 
@@ -26341,15 +26341,15 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
     v18 = pk_Payment_log();
     if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
     {
-      v19 = _Block_copy(v14);
+      v19 = _Block_copy(completionCopy);
       *buf = 138413314;
-      *&buf[4] = v15;
+      *&buf[4] = date;
       *&buf[12] = 2048;
-      *&buf[14] = a4;
+      *&buf[14] = transaction;
       *&buf[22] = 2112;
-      v109 = v12;
+      v109 = identifierCopy;
       *v110 = 2112;
-      *&v110[2] = v13;
+      *&v110[2] = readerIdentifierCopy;
       *&v110[10] = 2112;
       *&v110[12] = v19;
       _os_log_impl(&dword_25B300000, v18, OS_LOG_TYPE_DEFAULT, "Notice: Target device (%@) - present standalone transaction %lu for pass unique ID %@ reader ID %@ with completion %@", buf, 0x34u);
@@ -26371,7 +26371,7 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
       }
     }
 
-    if (v14)
+    if (completionCopy)
     {
       goto LABEL_18;
     }
@@ -26392,14 +26392,14 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
         if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          *&buf[4] = v15;
+          *&buf[4] = date;
           *&buf[12] = 2112;
-          *&buf[14] = v12;
+          *&buf[14] = identifierCopy;
           _os_log_impl(&dword_25B300000, v48, OS_LOG_TYPE_DEFAULT, "Notice: Target device (%@) - will not present standalone transaction for pass %@; watch is not on supported software.", buf, 0x16u);
         }
       }
 
-      if (v14)
+      if (completionCopy)
       {
         goto LABEL_18;
       }
@@ -26418,14 +26418,14 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
         if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412546;
-          *&buf[4] = v15;
+          *&buf[4] = date;
           *&buf[12] = 2112;
-          *&buf[14] = v12;
+          *&buf[14] = identifierCopy;
           _os_log_impl(&dword_25B300000, v51, OS_LOG_TYPE_DEFAULT, "Notice: Target device (%@) - will not present standalone transaction for pass %@; watch is not immediately reachable.", buf, 0x16u);
         }
       }
 
-      if (v14)
+      if (completionCopy)
       {
         goto LABEL_18;
       }
@@ -26442,14 +26442,14 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
     aBlock[2] = __152__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_presentStandaloneTransaction_forPassUniqueIdentifier_terminalReaderIdentifier_completion___block_invoke;
     aBlock[3] = &unk_27994A4E0;
     v99 = v102;
-    v27 = v15;
+    v27 = date;
     v100 = 0x3FF0000000000000;
     v94 = v27;
-    v95 = self;
-    v96 = v59;
-    v101 = a4;
-    v97 = v13;
-    v98 = v14;
+    selfCopy = self;
+    v96 = serviceCopy;
+    transactionCopy = transaction;
+    v97 = readerIdentifierCopy;
+    v98 = completionCopy;
     v28 = _Block_copy(aBlock);
     v29 = dispatch_time(0, 1000000000);
     block[0] = MEMORY[0x277D85DD0];
@@ -26458,7 +26458,7 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
     block[3] = &unk_27994A508;
     v30 = v27;
     v89 = v30;
-    groupa = v12;
+    groupa = identifierCopy;
     v90 = groupa;
     v92 = v102;
     v31 = v28;
@@ -26476,7 +26476,7 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
     *v110 = __Block_byref_object_dispose__22;
     *&v110[8] = 0;
     dispatch_group_enter(v32);
-    v33 = [(NPKPaymentWebServiceCompanionTargetDevice *)self passcodeConnection];
+    passcodeConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self passcodeConnection];
     v80[0] = MEMORY[0x277D85DD0];
     v80[1] = 3221225472;
     v80[2] = __152__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_presentStandaloneTransaction_forPassUniqueIdentifier_terminalReaderIdentifier_completion___block_invoke_759;
@@ -26489,10 +26489,10 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
     v85 = buf;
     v36 = v32;
     v82 = v36;
-    [v33 getRemoteDeviceState:v80];
+    [passcodeConnection getRemoteDeviceState:v80];
 
     dispatch_group_enter(v36);
-    v37 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+    companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
     v73[0] = MEMORY[0x277D85DD0];
     v73[1] = 3221225472;
     v73[2] = __152__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_presentStandaloneTransaction_forPassUniqueIdentifier_terminalReaderIdentifier_completion___block_invoke_761;
@@ -26507,28 +26507,28 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
     v77 = v39;
     group = v36;
     v76 = group;
-    [v37 paymentPassWithUniqueID:v38 synchronous:0 reply:v73];
+    [companionAgentConnection paymentPassWithUniqueID:v38 synchronous:0 reply:v73];
 
     v55 = objc_alloc_init(MEMORY[0x277D37FC0]);
     v54 = [v55 passWithUniqueID:v38];
-    v40 = [v54 secureElementPass];
-    v41 = [v40 pairedTerminalIdentifier];
+    secureElementPass = [v54 secureElementPass];
+    pairedTerminalIdentifier = [secureElementPass pairedTerminalIdentifier];
 
-    if (v41)
+    if (pairedTerminalIdentifier)
     {
       dispatch_group_enter(group);
-      v42 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+      companionAgentConnection2 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
       v66[0] = MEMORY[0x277D85DD0];
       v66[1] = 3221225472;
       v66[2] = __152__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_presentStandaloneTransaction_forPassUniqueIdentifier_terminalReaderIdentifier_completion___block_invoke_762;
       v66[3] = &unk_27994A5A0;
       v67 = v56;
-      v68 = v41;
+      v68 = pairedTerminalIdentifier;
       v71 = buf;
       v72 = v86;
       v70 = v39;
       v69 = group;
-      [v42 passesWithReaderIdentifier:v68 completion:v66];
+      [companionAgentConnection2 passesWithReaderIdentifier:v68 completion:v66];
 
       v43 = v67;
     }
@@ -26555,7 +26555,7 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_declineRelatedSharingInvita
     }
 
 LABEL_25:
-    v44 = [(NPKPaymentWebServiceCompanionTargetDevice *)self responseQueue];
+    responseQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self responseQueue];
     v60[0] = MEMORY[0x277D85DD0];
     v60[1] = 3221225472;
     v60[2] = __152__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_presentStandaloneTransaction_forPassUniqueIdentifier_terminalReaderIdentifier_completion___block_invoke_767;
@@ -26566,7 +26566,7 @@ LABEL_25:
     v62 = v38;
     v63 = v39;
     v45 = v39;
-    dispatch_group_notify(group, v44, v60);
+    dispatch_group_notify(group, responseQueue, v60);
 
     _Block_object_dispose(buf, 8);
     _Block_object_dispose(v86, 8);
@@ -26588,10 +26588,10 @@ LABEL_25:
     }
   }
 
-  if (v14)
+  if (completionCopy)
   {
 LABEL_18:
-    (*(v14 + 2))(v14, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
 LABEL_19:
@@ -26912,13 +26912,13 @@ uint64_t __152__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_pres
   return result;
 }
 
-- (void)_paymentWebService:(id)a3 presentStandaloneTransaction:(int64_t)a4 forPassUniqueIdentifier:(id)a5 terminalReaderIdentifier:(id)a6 validUntilDate:(id)a7 completion:(id)a8
+- (void)_paymentWebService:(id)service presentStandaloneTransaction:(int64_t)transaction forPassUniqueIdentifier:(id)identifier terminalReaderIdentifier:(id)readerIdentifier validUntilDate:(id)date completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = a8;
+  identifierCopy = identifier;
+  readerIdentifierCopy = readerIdentifier;
+  dateCopy = date;
+  completionCopy = completion;
   if (![(NPKPaymentWebServiceCompanionTargetDevice *)self _isUWBSubcredentialProvisioningSupported])
   {
     v17 = pk_General_log();
@@ -26930,7 +26930,7 @@ uint64_t __152__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_pres
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
         *buf = 136446722;
-        v37 = "[NPKPaymentWebServiceCompanionTargetDevice _paymentWebService:presentStandaloneTransaction:forPassUniqueIdentifier:terminalReaderIdentifier:validUntilDate:completion:]";
+        transactionCopy = "[NPKPaymentWebServiceCompanionTargetDevice _paymentWebService:presentStandaloneTransaction:forPassUniqueIdentifier:terminalReaderIdentifier:validUntilDate:completion:]";
         v38 = 2082;
         v39 = "/Library/Caches/com.apple.xbs/Sources/NanoPassbook_Frameworks/NanoPassKit/NPKPaymentWebServiceCompanionTargetDevice.m";
         v40 = 2048;
@@ -26951,29 +26951,29 @@ uint64_t __152__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_pres
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v37 = a4;
+      transactionCopy = transaction;
       v38 = 2112;
-      v39 = v13;
+      v39 = identifierCopy;
       _os_log_impl(&dword_25B300000, v22, OS_LOG_TYPE_DEFAULT, "Notice: Target device - sending presentStandaloneTransaction request for transactionType: %ld passUniqueIdentifier: %@", buf, 0x16u);
     }
   }
 
-  v23 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v29[0] = MEMORY[0x277D85DD0];
   v29[1] = 3221225472;
   v29[2] = __168__NPKPaymentWebServiceCompanionTargetDevice__paymentWebService_presentStandaloneTransaction_forPassUniqueIdentifier_terminalReaderIdentifier_validUntilDate_completion___block_invoke;
   v29[3] = &unk_27994A5F0;
-  v30 = v13;
-  v31 = v15;
-  v32 = v14;
-  v33 = self;
-  v34 = v16;
-  v35 = a4;
-  v24 = v16;
-  v25 = v14;
-  v26 = v15;
-  v27 = v13;
-  dispatch_sync(v23, v29);
+  v30 = identifierCopy;
+  v31 = dateCopy;
+  v32 = readerIdentifierCopy;
+  selfCopy = self;
+  v34 = completionCopy;
+  transactionCopy2 = transaction;
+  v24 = completionCopy;
+  v25 = readerIdentifierCopy;
+  v26 = dateCopy;
+  v27 = identifierCopy;
+  dispatch_sync(internalQueue, v29);
 
   v28 = *MEMORY[0x277D85DE8];
 }
@@ -27070,10 +27070,10 @@ LABEL_12:
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (void)presentStandaloneTransactionForPassUniqueIdentifierResponse:(id)a3
+- (void)presentStandaloneTransactionForPassUniqueIdentifierResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -27082,15 +27082,15 @@ LABEL_12:
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target presentStandaloneTransactionForPassUniqueIdentifierResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -27102,19 +27102,19 @@ LABEL_12:
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __105__NPKPaymentWebServiceCompanionTargetDevice_presentStandaloneTransactionForPassUniqueIdentifierResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -27184,10 +27184,10 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_presentStandaloneTransacti
   }
 }
 
-- (void)paymentWebServiceOwnershipTokenResponse:(id)a3
+- (void)paymentWebServiceOwnershipTokenResponse:(id)response
 {
   v38 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -27196,15 +27196,15 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_presentStandaloneTransacti
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Payment web service OwnershipToken token request: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -27224,20 +27224,20 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_presentStandaloneTransacti
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __85__NPKPaymentWebServiceCompanionTargetDevice_paymentWebServiceOwnershipTokenResponse___block_invoke;
     v17[3] = &unk_27994A618;
     v17[4] = self;
-    v18 = v10;
+    v18 = incomingResponseIdentifier;
     p_buf = &buf;
-    v19 = v4;
+    v19 = responseCopy;
     v21 = v29;
     v22 = &v23;
-    dispatch_sync(v11, v17);
+    dispatch_sync(internalQueue, v17);
   }
 
   else
@@ -27346,15 +27346,15 @@ LABEL_10:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)paymentWebService:(id)a3 passOwnershipTokenWithIdentifier:(id)a4 completion:(id)a5
+- (void)paymentWebService:(id)service passOwnershipTokenWithIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __107__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_passOwnershipTokenWithIdentifier_completion___block_invoke;
   aBlock[3] = &unk_27994A640;
-  v9 = v8;
+  v9 = completionCopy;
   v25 = v9;
   v10 = _Block_copy(aBlock);
   v11 = NPKPairedOrPairingDevice();
@@ -27363,16 +27363,16 @@ LABEL_10:
 
   if (v13)
   {
-    v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __107__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_passOwnershipTokenWithIdentifier_completion___block_invoke_776;
     block[3] = &unk_27994A668;
-    v20 = v7;
-    v21 = self;
+    v20 = identifierCopy;
+    selfCopy = self;
     v22 = v9;
     v23 = v10;
-    dispatch_async(v14, block);
+    dispatch_async(internalQueue, block);
   }
 
   else
@@ -27504,10 +27504,10 @@ LABEL_12:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestAutomaticProvisioningForCompanionPaymentPass:(id)a3
+- (void)requestAutomaticProvisioningForCompanionPaymentPass:(id)pass
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  passCopy = pass;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -27517,20 +27517,20 @@ LABEL_12:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v4;
+      v15 = passCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Requesting automatic provisioning for companion payment pass with unique ID: %@", buf, 0xCu);
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __97__NPKPaymentWebServiceCompanionTargetDevice_requestAutomaticProvisioningForCompanionPaymentPass___block_invoke;
   v11[3] = &unk_2799454E0;
-  v12 = v4;
-  v13 = self;
-  v9 = v4;
-  dispatch_sync(v8, v11);
+  v12 = passCopy;
+  selfCopy = self;
+  v9 = passCopy;
+  dispatch_sync(internalQueue, v11);
 
   v10 = *MEMORY[0x277D85DE8];
 }
@@ -27591,10 +27591,10 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_requestAutomaticProvisionin
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)familyMembersWithCompletion:(id)a3
+- (void)familyMembersWithCompletion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   IsTinker = NPKPairedOrPairingDeviceIsTinker();
   v5 = IsTinker;
   if (IsTinker)
@@ -27629,8 +27629,8 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_requestAutomaticProvisionin
   v16[3] = &unk_27994A690;
   v19 = v5;
   v17 = v8;
-  v18 = v3;
-  v13 = v3;
+  v18 = completionCopy;
+  v13 = completionCopy;
   v14 = v8;
   [v12 familyMembersWithCompletion:v16];
 
@@ -27693,10 +27693,10 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_familyMembersWithCompletion
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)paymentWebServiceRegisterResponse:(id)a3
+- (void)paymentWebServiceRegisterResponse:(id)response
 {
   v40 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -27705,15 +27705,15 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_familyMembersWithCompletion
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Payment web service registration request: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -27731,20 +27731,20 @@ void __73__NPKPaymentWebServiceCompanionTargetDevice_familyMembersWithCompletion
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __79__NPKPaymentWebServiceCompanionTargetDevice_paymentWebServiceRegisterResponse___block_invoke;
     v17[3] = &unk_279949C48;
     v17[4] = self;
-    v18 = v10;
-    v19 = v4;
+    v18 = incomingResponseIdentifier;
+    v19 = responseCopy;
     p_buf = &buf;
     v21 = &v29;
     v22 = &v23;
-    dispatch_sync(v11, v17);
+    dispatch_sync(internalQueue, v17);
   }
 
   else
@@ -27931,13 +27931,13 @@ LABEL_34:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performDeviceRegistrationForReason:(id)a3 brokerURL:(id)a4 completion:(id)a5
+- (void)performDeviceRegistrationForReason:(id)reason brokerURL:(id)l completion:(id)completion
 {
   v52 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x277CCAD78] UUID];
+  reasonCopy = reason;
+  lCopy = l;
+  completionCopy = completion;
+  uUID = [MEMORY[0x277CCAD78] UUID];
   v12 = pk_General_log();
   v13 = os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT);
 
@@ -27947,11 +27947,11 @@ LABEL_34:
     if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412802;
-      v47 = v8;
+      v47 = reasonCopy;
       v48 = 2112;
-      v49 = v9;
+      v49 = lCopy;
       v50 = 2112;
-      v51 = v11;
+      v51 = uUID;
       _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: target Device: requested register device with reason:%@ brokerURL:%@ UUID:%@", buf, 0x20u);
     }
   }
@@ -27975,25 +27975,25 @@ LABEL_34:
       }
     }
 
-    v21 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __101__NPKPaymentWebServiceCompanionTargetDevice_performDeviceRegistrationForReason_brokerURL_completion___block_invoke_786;
     v34[3] = &unk_2799467F8;
-    v35 = v9;
-    v36 = v8;
-    v37 = self;
-    v38 = v11;
-    v39 = v10;
-    dispatch_sync(v21, v34);
+    v35 = lCopy;
+    v36 = reasonCopy;
+    selfCopy = self;
+    v38 = uUID;
+    v39 = completionCopy;
+    dispatch_sync(internalQueue, v34);
 
-    v22 = v35;
+    webService = v35;
   }
 
   else
   {
     v23 = +[NPKSharedWebServiceProvider sharedWebServiceProvider];
-    v22 = [v23 webService];
+    webService = [v23 webService];
 
     v24 = pk_General_log();
     v25 = os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT);
@@ -28004,7 +28004,7 @@ LABEL_34:
       if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v47 = v22;
+        v47 = webService;
         _os_log_impl(&dword_25B300000, v26, OS_LOG_TYPE_DEFAULT, "Notice: target Device: Active device can't forward registration we will do it locally with webService:%@", buf, 0xCu);
       }
     }
@@ -28013,19 +28013,19 @@ LABEL_34:
     aBlock[1] = 3221225472;
     aBlock[2] = __101__NPKPaymentWebServiceCompanionTargetDevice_performDeviceRegistrationForReason_brokerURL_completion___block_invoke;
     aBlock[3] = &unk_27994A6B8;
-    v45 = v10;
+    v45 = completionCopy;
     v27 = _Block_copy(aBlock);
     v28 = v27;
-    if (v22)
+    if (webService)
     {
-      if (v9)
+      if (lCopy)
       {
         v40[0] = MEMORY[0x277D85DD0];
         v40[1] = 3221225472;
         v40[2] = __101__NPKPaymentWebServiceCompanionTargetDevice_performDeviceRegistrationForReason_brokerURL_completion___block_invoke_2;
         v40[3] = &unk_27994A6B8;
         v41 = v27;
-        [v22 registerDeviceAtBrokerURL:v9 consistencyCheckResults:0 completion:v40];
+        [webService registerDeviceAtBrokerURL:lCopy consistencyCheckResults:0 completion:v40];
         v29 = v41;
       }
 
@@ -28036,7 +28036,7 @@ LABEL_34:
         v42[2] = __101__NPKPaymentWebServiceCompanionTargetDevice_performDeviceRegistrationForReason_brokerURL_completion___block_invoke_785;
         v42[3] = &unk_27994A6B8;
         v43 = v27;
-        [v22 registerDeviceWithCompletion:v42];
+        [webService registerDeviceWithCompletion:v42];
         v29 = v43;
       }
     }
@@ -28242,10 +28242,10 @@ uint64_t __101__NPKPaymentWebServiceCompanionTargetDevice_performDeviceRegistrat
   return result;
 }
 
-- (void)photosForFamilyMembersWithDSIDsResponse:(id)a3
+- (void)photosForFamilyMembersWithDSIDsResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -28254,15 +28254,15 @@ uint64_t __101__NPKPaymentWebServiceCompanionTargetDevice_performDeviceRegistrat
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target photosForFamilyMembersWithDSIDsResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -28276,19 +28276,19 @@ uint64_t __101__NPKPaymentWebServiceCompanionTargetDevice_performDeviceRegistrat
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __85__NPKPaymentWebServiceCompanionTargetDevice_photosForFamilyMembersWithDSIDsResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -28387,27 +28387,27 @@ void __85__NPKPaymentWebServiceCompanionTargetDevice_photosForFamilyMembersWithD
   }
 }
 
-- (void)photosForFamilyMembersWithDSIDs:(id)a3 completion:(id)a4
+- (void)photosForFamilyMembersWithDSIDs:(id)ds completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  completionCopy = completion;
   if (NPKPairedOrPairingDeviceIsTinker())
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __88__NPKPaymentWebServiceCompanionTargetDevice_photosForFamilyMembersWithDSIDs_completion___block_invoke;
     block[3] = &unk_279945A48;
-    v11 = v6;
-    v12 = self;
-    v13 = v7;
-    dispatch_sync(v8, block);
+    v11 = dsCopy;
+    selfCopy = self;
+    v13 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
   {
     v9 = objc_alloc_init(MEMORY[0x277D380F0]);
-    [v9 photosForFamilyMembersWithDSIDs:v6 completion:v7];
+    [v9 photosForFamilyMembersWithDSIDs:dsCopy completion:completionCopy];
   }
 }
 
@@ -28542,10 +28542,10 @@ uint64_t __88__NPKPaymentWebServiceCompanionTargetDevice_photosForFamilyMembersW
   return result;
 }
 
-- (void)featureApplicationsForAccountIdentifierResponse:(id)a3
+- (void)featureApplicationsForAccountIdentifierResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -28554,15 +28554,15 @@ uint64_t __88__NPKPaymentWebServiceCompanionTargetDevice_photosForFamilyMembersW
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target featureApplicationsForAccountIdentifierResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -28576,19 +28576,19 @@ uint64_t __88__NPKPaymentWebServiceCompanionTargetDevice_photosForFamilyMembersW
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __93__NPKPaymentWebServiceCompanionTargetDevice_featureApplicationsForAccountIdentifierResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -28703,21 +28703,21 @@ void __93__NPKPaymentWebServiceCompanionTargetDevice_featureApplicationsForAccou
   }
 }
 
-- (void)featureApplicationsForAccountIdentifier:(id)a3 completion:(id)a4
+- (void)featureApplicationsForAccountIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  identifierCopy = identifier;
+  completionCopy = completion;
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __96__NPKPaymentWebServiceCompanionTargetDevice_featureApplicationsForAccountIdentifier_completion___block_invoke;
   block[3] = &unk_279945A48;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = identifierCopy;
+  selfCopy = self;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  v10 = identifierCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 void __96__NPKPaymentWebServiceCompanionTargetDevice_featureApplicationsForAccountIdentifier_completion___block_invoke(uint64_t a1)
@@ -28849,11 +28849,11 @@ void __96__NPKPaymentWebServiceCompanionTargetDevice_featureApplicationsForAccou
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)provisionHomeKeyPassForSerialNumbers:(id)a3 completionHandler:(id)a4
+- (void)provisionHomeKeyPassForSerialNumbers:(id)numbers completionHandler:(id)handler
 {
   v35 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  numbersCopy = numbers;
+  handlerCopy = handler;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -28862,9 +28862,9 @@ void __96__NPKPaymentWebServiceCompanionTargetDevice_featureApplicationsForAccou
     v10 = pk_Payment_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = _Block_copy(v7);
+      v11 = _Block_copy(handlerCopy);
       *buf = 138412546;
-      v32 = v6;
+      v32 = numbersCopy;
       v33 = 2112;
       v34 = v11;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Target device - provision home key pass for serial numbers: %@ completion: %@", buf, 0x16u);
@@ -28873,15 +28873,15 @@ void __96__NPKPaymentWebServiceCompanionTargetDevice_featureApplicationsForAccou
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isHomeKeyProvisioningSupported])
   {
-    v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __100__NPKPaymentWebServiceCompanionTargetDevice_provisionHomeKeyPassForSerialNumbers_completionHandler___block_invoke;
     block[3] = &unk_279945A48;
-    v26 = v6;
-    v27 = self;
-    v28 = v7;
-    dispatch_sync(v12, block);
+    v26 = numbersCopy;
+    selfCopy = self;
+    v28 = handlerCopy;
+    dispatch_sync(internalQueue, block);
 
     v13 = v26;
 LABEL_13:
@@ -28902,7 +28902,7 @@ LABEL_13:
     }
   }
 
-  if (v7)
+  if (handlerCopy)
   {
     v17 = MEMORY[0x277CCA9B8];
     v18 = *MEMORY[0x277D385D8];
@@ -28917,7 +28917,7 @@ LABEL_13:
     v23 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
     v13 = [v17 errorWithDomain:v18 code:0 userInfo:v23];
 
-    (*(v7 + 2))(v7, 0, v13);
+    (*(handlerCopy + 2))(handlerCopy, 0, v13);
     goto LABEL_13;
   }
 
@@ -29034,10 +29034,10 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_provisionHomeKeyPassFo
   return result;
 }
 
-- (void)provisionHomeKeyPassForSerialNumbersResponse:(id)a3
+- (void)provisionHomeKeyPassForSerialNumbersResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -29046,15 +29046,15 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_provisionHomeKeyPassFo
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target provisionHomeKeyPassForSerialNumbersResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -29074,20 +29074,20 @@ uint64_t __100__NPKPaymentWebServiceCompanionTargetDevice_provisionHomeKeyPassFo
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __90__NPKPaymentWebServiceCompanionTargetDevice_provisionHomeKeyPassForSerialNumbersResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -29297,10 +29297,10 @@ LABEL_34:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)availableHomeKeyPassesWithCompletionHandler:(id)a3
+- (void)availableHomeKeyPassesWithCompletionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -29309,7 +29309,7 @@ LABEL_34:
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = _Block_copy(v4);
+      v8 = _Block_copy(handlerCopy);
       *buf = 138412290;
       v27 = v8;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device - available home key passes with completion: %@", buf, 0xCu);
@@ -29318,14 +29318,14 @@ LABEL_34:
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isHomeKeyProvisioningSupported])
   {
-    v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __89__NPKPaymentWebServiceCompanionTargetDevice_availableHomeKeyPassesWithCompletionHandler___block_invoke;
     v22[3] = &unk_279945530;
     v22[4] = self;
-    v23 = v4;
-    dispatch_sync(v9, v22);
+    v23 = handlerCopy;
+    dispatch_sync(internalQueue, v22);
   }
 
   else
@@ -29343,7 +29343,7 @@ LABEL_34:
       }
     }
 
-    if (v4)
+    if (handlerCopy)
     {
       v13 = MEMORY[0x277CCA9B8];
       v14 = *MEMORY[0x277D385D8];
@@ -29358,7 +29358,7 @@ LABEL_34:
       v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
       v20 = [v13 errorWithDomain:v14 code:0 userInfo:v19];
 
-      (*(v4 + 2))(v4, 0, v20);
+      (*(handlerCopy + 2))(handlerCopy, 0, v20);
     }
   }
 
@@ -29463,10 +29463,10 @@ uint64_t __89__NPKPaymentWebServiceCompanionTargetDevice_availableHomeKeyPassesW
   return result;
 }
 
-- (void)availableHomeKeyPassesResponse:(id)a3
+- (void)availableHomeKeyPassesResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -29475,15 +29475,15 @@ uint64_t __89__NPKPaymentWebServiceCompanionTargetDevice_availableHomeKeyPassesW
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target availableHomeKeyPassesResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -29503,20 +29503,20 @@ uint64_t __89__NPKPaymentWebServiceCompanionTargetDevice_availableHomeKeyPassesW
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __76__NPKPaymentWebServiceCompanionTargetDevice_availableHomeKeyPassesResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -29726,21 +29726,21 @@ LABEL_34:
   v37 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateAuxiliaryCapabilitiesForRequirements:(id)a3 completion:(id)a4
+- (void)generateAuxiliaryCapabilitiesForRequirements:(id)requirements completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  requirementsCopy = requirements;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isAuxiliaryRegistrationSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __101__NPKPaymentWebServiceCompanionTargetDevice_generateAuxiliaryCapabilitiesForRequirements_completion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v15 = v6;
-    v16 = self;
-    v17 = v7;
-    dispatch_sync(v8, block);
+    v15 = requirementsCopy;
+    selfCopy = self;
+    v17 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v9 = v15;
 LABEL_9:
@@ -29761,10 +29761,10 @@ LABEL_9:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
     goto LABEL_9;
   }
 
@@ -29930,10 +29930,10 @@ void __101__NPKPaymentWebServiceCompanionTargetDevice_generateAuxiliaryCapabilit
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateAuxiliaryCapabilitiesResponse:(id)a3
+- (void)generateAuxiliaryCapabilitiesResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -29942,15 +29942,15 @@ void __101__NPKPaymentWebServiceCompanionTargetDevice_generateAuxiliaryCapabilit
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target generateAuxiliaryCapabilitiesResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -29970,20 +29970,20 @@ void __101__NPKPaymentWebServiceCompanionTargetDevice_generateAuxiliaryCapabilit
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __83__NPKPaymentWebServiceCompanionTargetDevice_generateAuxiliaryCapabilitiesResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -30110,28 +30110,28 @@ void __83__NPKPaymentWebServiceCompanionTargetDevice_generateAuxiliaryCapabiliti
   }
 }
 
-- (void)createFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 challenge:(id)a5 externalizedAuth:(id)a6 completion:(id)a7
+- (void)createFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash challenge:(id)challenge externalizedAuth:(id)auth completion:(id)completion
 {
   v40[2] = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
+  partyCopy = party;
+  hashCopy = hash;
+  challengeCopy = challenge;
+  authCopy = auth;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isUnifiedAccessProvisioningSupported])
   {
-    v17 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __136__NPKPaymentWebServiceCompanionTargetDevice_createFidoKeyForRelyingParty_relyingPartyAccountHash_challenge_externalizedAuth_completion___block_invoke;
     block[3] = &unk_27994A708;
-    v33 = v12;
-    v34 = v13;
-    v35 = v14;
-    v36 = v15;
-    v37 = self;
-    v38 = v16;
-    dispatch_sync(v17, block);
+    v33 = partyCopy;
+    v34 = hashCopy;
+    v35 = challengeCopy;
+    v36 = authCopy;
+    selfCopy = self;
+    v38 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v18 = v33;
 LABEL_9:
@@ -30152,12 +30152,12 @@ LABEL_9:
     }
   }
 
-  if (v16)
+  if (completionCopy)
   {
     v29 = MEMORY[0x277CCA9B8];
     v28 = *MEMORY[0x277D385D8];
     v39[0] = *MEMORY[0x277CCA470];
-    v30 = v12;
+    v30 = partyCopy;
     v22 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
     v23 = [v22 localizedStringForKey:@"UNIFIED_ACCESS_ERROR_ALERT_CANNOT_ADD_KEY_TITLE" value:&stru_286C934F8 table:@"NanoPassKitUI-Hydra"];
     v40[0] = v23;
@@ -30168,8 +30168,8 @@ LABEL_9:
     v26 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:2];
     v18 = [v29 errorWithDomain:v28 code:4 userInfo:v26];
 
-    v12 = v30;
-    (*(v16 + 2))(v16, 0, 0, 0, v18);
+    partyCopy = v30;
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, v18);
     goto LABEL_9;
   }
 
@@ -30319,10 +30319,10 @@ void __136__NPKPaymentWebServiceCompanionTargetDevice_createFidoKeyForRelyingPar
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createFidoKeyResponse:(id)a3
+- (void)createFidoKeyResponse:(id)response
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -30331,15 +30331,15 @@ void __136__NPKPaymentWebServiceCompanionTargetDevice_createFidoKeyForRelyingPar
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target createFidoKeyResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -30371,22 +30371,22 @@ void __136__NPKPaymentWebServiceCompanionTargetDevice_createFidoKeyForRelyingPar
   v29 = __Block_byref_object_copy__22;
   v30 = __Block_byref_object_dispose__22;
   v31 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __67__NPKPaymentWebServiceCompanionTargetDevice_createFidoKeyResponse___block_invoke;
     block[3] = &unk_27994A080;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v44;
     v23 = &v38;
     v24 = &v32;
     v25 = &v26;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -30492,25 +30492,25 @@ void __67__NPKPaymentWebServiceCompanionTargetDevice_createFidoKeyResponse___blo
   }
 }
 
-- (void)checkFidoKeyPresenceForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 completion:(id)a6
+- (void)checkFidoKeyPresenceForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  partyCopy = party;
+  hashCopy = hash;
+  keyHashCopy = keyHash;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isUnifiedAccessProvisioningSupported])
   {
-    v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __128__NPKPaymentWebServiceCompanionTargetDevice_checkFidoKeyPresenceForRelyingParty_relyingPartyAccountHash_fidoKeyHash_completion___block_invoke;
     block[3] = &unk_27994A730;
-    v20 = v10;
-    v21 = v11;
-    v22 = v12;
-    v23 = self;
-    v24 = v13;
-    dispatch_sync(v14, block);
+    v20 = partyCopy;
+    v21 = hashCopy;
+    v22 = keyHashCopy;
+    selfCopy = self;
+    v24 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -30528,9 +30528,9 @@ void __67__NPKPaymentWebServiceCompanionTargetDevice_createFidoKeyResponse___blo
       }
     }
 
-    if (v13)
+    if (completionCopy)
     {
-      (*(v13 + 2))(v13, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -30672,10 +30672,10 @@ void __128__NPKPaymentWebServiceCompanionTargetDevice_checkFidoKeyPresenceForRel
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkFidoKeyResponse:(id)a3
+- (void)checkFidoKeyResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -30684,15 +30684,15 @@ void __128__NPKPaymentWebServiceCompanionTargetDevice_checkFidoKeyPresenceForRel
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target checkFidoKeyResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -30704,19 +30704,19 @@ void __128__NPKPaymentWebServiceCompanionTargetDevice_checkFidoKeyPresenceForRel
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __66__NPKPaymentWebServiceCompanionTargetDevice_checkFidoKeyResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -30786,33 +30786,33 @@ void __66__NPKPaymentWebServiceCompanionTargetDevice_checkFidoKeyResponse___bloc
   }
 }
 
-- (void)signWithFidoKeyForRelyingParty:(id)a3 relyingPartyAccountHash:(id)a4 fidoKeyHash:(id)a5 challenge:(id)a6 publicKeyIdentifier:(id)a7 externalizedAuth:(id)a8 completion:(id)a9
+- (void)signWithFidoKeyForRelyingParty:(id)party relyingPartyAccountHash:(id)hash fidoKeyHash:(id)keyHash challenge:(id)challenge publicKeyIdentifier:(id)identifier externalizedAuth:(id)auth completion:(id)completion
 {
   v50[2] = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
-  v38 = v18;
+  partyCopy = party;
+  hashCopy = hash;
+  keyHashCopy = keyHash;
+  challengeCopy = challenge;
+  identifierCopy = identifier;
+  authCopy = auth;
+  completionCopy = completion;
+  v38 = challengeCopy;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isUnifiedAccessProvisioningSupported])
   {
-    v22 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __170__NPKPaymentWebServiceCompanionTargetDevice_signWithFidoKeyForRelyingParty_relyingPartyAccountHash_fidoKeyHash_challenge_publicKeyIdentifier_externalizedAuth_completion___block_invoke;
     block[3] = &unk_27994A758;
-    v41 = v15;
-    v42 = v16;
-    v43 = v17;
-    v44 = v18;
-    v45 = v19;
-    v46 = v20;
-    v47 = self;
-    v48 = v21;
-    dispatch_sync(v22, block);
+    v41 = partyCopy;
+    v42 = hashCopy;
+    v43 = keyHashCopy;
+    v44 = challengeCopy;
+    v45 = identifierCopy;
+    v46 = authCopy;
+    selfCopy = self;
+    v48 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v23 = v41;
 LABEL_9:
@@ -30820,7 +30820,7 @@ LABEL_9:
     goto LABEL_10;
   }
 
-  v24 = v15;
+  v24 = partyCopy;
   v25 = pk_Payment_log();
   v26 = os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT);
 
@@ -30834,15 +30834,15 @@ LABEL_9:
     }
   }
 
-  v15 = v24;
-  if (v21)
+  partyCopy = v24;
+  if (completionCopy)
   {
     v35 = MEMORY[0x277CCA9B8];
     v34 = *MEMORY[0x277D385D8];
     v49[0] = *MEMORY[0x277CCA470];
-    v36 = v17;
+    v36 = keyHashCopy;
     v28 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-    v37 = v16;
+    v37 = hashCopy;
     v29 = [v28 localizedStringForKey:@"UNIFIED_ACCESS_ERROR_ALERT_CANNOT_ADD_KEY_TITLE" value:&stru_286C934F8 table:@"NanoPassKitUI-Hydra"];
     v50[0] = v29;
     v49[1] = *MEMORY[0x277CCA498];
@@ -30852,11 +30852,11 @@ LABEL_9:
     v32 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v50 forKeys:v49 count:2];
     v23 = [v35 errorWithDomain:v34 code:4 userInfo:v32];
 
-    v16 = v37;
-    v17 = v36;
+    hashCopy = v37;
+    keyHashCopy = v36;
 
-    v15 = v24;
-    (*(v21 + 2))(v21, 0, v23);
+    partyCopy = v24;
+    (*(completionCopy + 2))(completionCopy, 0, v23);
     goto LABEL_9;
   }
 
@@ -31014,10 +31014,10 @@ void __170__NPKPaymentWebServiceCompanionTargetDevice_signWithFidoKeyForRelyingP
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)signWithFidoKeyResponse:(id)a3
+- (void)signWithFidoKeyResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -31026,15 +31026,15 @@ void __170__NPKPaymentWebServiceCompanionTargetDevice_signWithFidoKeyForRelyingP
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target signWithFidoKeyResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -31054,20 +31054,20 @@ void __170__NPKPaymentWebServiceCompanionTargetDevice_signWithFidoKeyForRelyingP
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __69__NPKPaymentWebServiceCompanionTargetDevice_signWithFidoKeyResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -31160,22 +31160,22 @@ void __69__NPKPaymentWebServiceCompanionTargetDevice_signWithFidoKeyResponse___b
   }
 }
 
-- (void)generateISOEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4
+- (void)generateISOEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isUnifiedAccessProvisioningSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __107__NPKPaymentWebServiceCompanionTargetDevice_generateISOEncryptionCertificateForSubCredentialId_completion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v23 = v6;
-    v24 = self;
-    v25 = v7;
-    dispatch_sync(v8, block);
+    v23 = idCopy;
+    selfCopy = self;
+    v25 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v9 = v23;
 LABEL_9:
@@ -31196,7 +31196,7 @@ LABEL_9:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = *MEMORY[0x277D385D8];
@@ -31211,7 +31211,7 @@ LABEL_9:
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
     v9 = [v13 errorWithDomain:v14 code:4 userInfo:v19];
 
-    (*(v7 + 2))(v7, 0, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v9);
     goto LABEL_9;
   }
 
@@ -31349,10 +31349,10 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_generateISOEncryptionCerti
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateISOEncryptionCertificateForSubCredentialIdResponse:(id)a3
+- (void)generateISOEncryptionCertificateForSubCredentialIdResponse:(id)response
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -31361,15 +31361,15 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_generateISOEncryptionCerti
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target generateISOEncryptionCertificateForSubCredentialIdResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -31395,21 +31395,21 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_generateISOEncryptionCerti
   v28 = __Block_byref_object_copy__22;
   v29 = __Block_byref_object_dispose__22;
   v30 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __104__NPKPaymentWebServiceCompanionTargetDevice_generateISOEncryptionCertificateForSubCredentialIdResponse___block_invoke;
     block[3] = &unk_279949BA8;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v37;
     v23 = &v31;
     v24 = &v25;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -31508,20 +31508,20 @@ void __104__NPKPaymentWebServiceCompanionTargetDevice_generateISOEncryptionCerti
   }
 }
 
-- (void)requestAndStoreExternalizedAuthWithCompletion:(id)a3
+- (void)requestAndStoreExternalizedAuthWithCompletion:(id)completion
 {
   v22[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isUnifiedAccessProvisioningSupported])
   {
-    v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __91__NPKPaymentWebServiceCompanionTargetDevice_requestAndStoreExternalizedAuthWithCompletion___block_invoke;
     block[3] = &unk_279946670;
     block[4] = self;
-    v20 = v4;
-    dispatch_sync(v5, block);
+    v20 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v6 = v20;
 LABEL_9:
@@ -31542,7 +31542,7 @@ LABEL_9:
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
     v10 = MEMORY[0x277CCA9B8];
     v11 = *MEMORY[0x277D385D8];
@@ -31557,7 +31557,7 @@ LABEL_9:
     v16 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:v21 count:2];
     v6 = [v10 errorWithDomain:v11 code:4 userInfo:v16];
 
-    (*(v4 + 2))(v4, v6);
+    (*(completionCopy + 2))(completionCopy, v6);
     goto LABEL_9;
   }
 
@@ -31691,10 +31691,10 @@ void __91__NPKPaymentWebServiceCompanionTargetDevice_requestAndStoreExternalized
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)requestAndStoreExternalizedAuthWithCompletionResponse:(id)a3
+- (void)requestAndStoreExternalizedAuthWithCompletionResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -31703,15 +31703,15 @@ void __91__NPKPaymentWebServiceCompanionTargetDevice_requestAndStoreExternalized
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target requestAndStoreExternalizedAuthWithCompletionResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -31725,19 +31725,19 @@ void __91__NPKPaymentWebServiceCompanionTargetDevice_requestAndStoreExternalized
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __99__NPKPaymentWebServiceCompanionTargetDevice_requestAndStoreExternalizedAuthWithCompletionResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -31823,22 +31823,22 @@ void __99__NPKPaymentWebServiceCompanionTargetDevice_requestAndStoreExternalized
   }
 }
 
-- (void)paymentWebService:(id)a3 generateTransactionKeyWithParameters:(id)a4 withCompletion:(id)a5
+- (void)paymentWebService:(id)service generateTransactionKeyWithParameters:(id)parameters withCompletion:(id)completion
 {
   v28[2] = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
+  parametersCopy = parameters;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isUnifiedAccessProvisioningSupported])
   {
-    v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_generateTransactionKeyWithParameters_withCompletion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v24 = v7;
-    v25 = self;
-    v26 = v8;
-    dispatch_sync(v9, block);
+    v24 = parametersCopy;
+    selfCopy = self;
+    v26 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v10 = v24;
 LABEL_9:
@@ -31859,7 +31859,7 @@ LABEL_9:
     }
   }
 
-  if (v8)
+  if (completionCopy)
   {
     v14 = MEMORY[0x277CCA9B8];
     v15 = *MEMORY[0x277D385D8];
@@ -31874,7 +31874,7 @@ LABEL_9:
     v20 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v28 forKeys:v27 count:2];
     v10 = [v14 errorWithDomain:v15 code:4 userInfo:v20];
 
-    (*(v8 + 2))(v8, 0, 0, 0, v10);
+    (*(completionCopy + 2))(completionCopy, 0, 0, 0, v10);
     goto LABEL_9;
   }
 
@@ -32013,10 +32013,10 @@ void __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_generate
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateTransactionKeyWithParametersResponse:(id)a3
+- (void)generateTransactionKeyWithParametersResponse:(id)response
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -32025,15 +32025,15 @@ void __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_generate
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target generateTransactionKeyWithParametersResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -32065,22 +32065,22 @@ void __115__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_generate
   v29 = __Block_byref_object_copy__22;
   v30 = __Block_byref_object_dispose__22;
   v31 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __90__NPKPaymentWebServiceCompanionTargetDevice_generateTransactionKeyWithParametersResponse___block_invoke;
     block[3] = &unk_27994A080;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v44;
     v23 = &v38;
     v24 = &v32;
     v25 = &v26;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -32186,22 +32186,22 @@ void __90__NPKPaymentWebServiceCompanionTargetDevice_generateTransactionKeyWithP
   }
 }
 
-- (void)generateSEEncryptionCertificateForSubCredentialId:(id)a3 completion:(id)a4
+- (void)generateSEEncryptionCertificateForSubCredentialId:(id)id completion:(id)completion
 {
   v27[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  idCopy = id;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isUnifiedAccessProvisioningSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __106__NPKPaymentWebServiceCompanionTargetDevice_generateSEEncryptionCertificateForSubCredentialId_completion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v23 = v6;
-    v24 = self;
-    v25 = v7;
-    dispatch_sync(v8, block);
+    v23 = idCopy;
+    selfCopy = self;
+    v25 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v9 = v23;
 LABEL_9:
@@ -32222,7 +32222,7 @@ LABEL_9:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v13 = MEMORY[0x277CCA9B8];
     v14 = *MEMORY[0x277D385D8];
@@ -32237,7 +32237,7 @@ LABEL_9:
     v19 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v27 forKeys:v26 count:2];
     v9 = [v13 errorWithDomain:v14 code:4 userInfo:v19];
 
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
     goto LABEL_9;
   }
 
@@ -32375,10 +32375,10 @@ void __106__NPKPaymentWebServiceCompanionTargetDevice_generateSEEncryptionCertif
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)generateSEEncryptionCertificateForSubCredentialIdResponse:(id)a3
+- (void)generateSEEncryptionCertificateForSubCredentialIdResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -32387,15 +32387,15 @@ void __106__NPKPaymentWebServiceCompanionTargetDevice_generateSEEncryptionCertif
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target generateSEEncryptionCertificateForSubCredentialIdResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -32415,20 +32415,20 @@ void __106__NPKPaymentWebServiceCompanionTargetDevice_generateSEEncryptionCertif
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __103__NPKPaymentWebServiceCompanionTargetDevice_generateSEEncryptionCertificateForSubCredentialIdResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -32521,19 +32521,19 @@ void __103__NPKPaymentWebServiceCompanionTargetDevice_generateSEEncryptionCertif
   }
 }
 
-- (void)deleteKeyMaterialForSubCredentialId:(id)a3
+- (void)deleteKeyMaterialForSubCredentialId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isUnifiedAccessProvisioningSupported])
   {
-    v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __81__NPKPaymentWebServiceCompanionTargetDevice_deleteKeyMaterialForSubCredentialId___block_invoke;
     block[3] = &unk_2799454E0;
-    v11 = v4;
-    v12 = self;
-    dispatch_sync(v5, block);
+    v11 = idCopy;
+    selfCopy = self;
+    dispatch_sync(internalQueue, block);
 
     v6 = v11;
   }
@@ -32609,23 +32609,23 @@ void __81__NPKPaymentWebServiceCompanionTargetDevice_deleteKeyMaterialForSubCred
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addISO18013Blobs:(id)a3 cardType:(int64_t)a4 completion:(id)a5
+- (void)addISO18013Blobs:(id)blobs cardType:(int64_t)type completion:(id)completion
 {
   v30[2] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  blobsCopy = blobs;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isUnifiedAccessProvisioningSupported])
   {
-    v10 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __82__NPKPaymentWebServiceCompanionTargetDevice_addISO18013Blobs_cardType_completion___block_invoke;
     block[3] = &unk_27994A780;
-    v25 = v8;
-    v28 = a4;
-    v26 = self;
-    v27 = v9;
-    dispatch_sync(v10, block);
+    v25 = blobsCopy;
+    typeCopy = type;
+    selfCopy = self;
+    v27 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v11 = v25;
 LABEL_9:
@@ -32646,7 +32646,7 @@ LABEL_9:
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v15 = MEMORY[0x277CCA9B8];
     v16 = *MEMORY[0x277D385D8];
@@ -32661,7 +32661,7 @@ LABEL_9:
     v21 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v30 forKeys:v29 count:2];
     v11 = [v15 errorWithDomain:v16 code:4 userInfo:v21];
 
-    (*(v9 + 2))(v9, v11);
+    (*(completionCopy + 2))(completionCopy, v11);
     goto LABEL_9;
   }
 
@@ -32849,10 +32849,10 @@ void __82__NPKPaymentWebServiceCompanionTargetDevice_addISO18013Blobs_cardType_c
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addISO18013BlobsResponse:(id)a3
+- (void)addISO18013BlobsResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -32861,15 +32861,15 @@ void __82__NPKPaymentWebServiceCompanionTargetDevice_addISO18013Blobs_cardType_c
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target addISO18013BlobsResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -32883,19 +32883,19 @@ void __82__NPKPaymentWebServiceCompanionTargetDevice_addISO18013Blobs_cardType_c
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __70__NPKPaymentWebServiceCompanionTargetDevice_addISO18013BlobsResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -32990,22 +32990,22 @@ void __70__NPKPaymentWebServiceCompanionTargetDevice_addISO18013BlobsResponse___
   return v4;
 }
 
-- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)a3 reuseExisting:(BOOL)a4 completion:(id)a5
+- (void)longTermPrivacyKeyForCredentialGroupIdentifier:(id)identifier reuseExisting:(BOOL)existing completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v10 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __117__NPKPaymentWebServiceCompanionTargetDevice_longTermPrivacyKeyForCredentialGroupIdentifier_reuseExisting_completion___block_invoke;
     block[3] = &unk_27994A7A8;
-    v17 = v8;
-    v20 = a4;
-    v18 = self;
-    v19 = v9;
-    dispatch_sync(v10, block);
+    v17 = identifierCopy;
+    existingCopy = existing;
+    selfCopy = self;
+    v19 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v11 = v17;
 LABEL_9:
@@ -33026,10 +33026,10 @@ LABEL_9:
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v11 = PKDisplayableErrorForCommonType();
-    (*(v9 + 2))(v9, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, v11);
     goto LABEL_9;
   }
 
@@ -33203,10 +33203,10 @@ void __117__NPKPaymentWebServiceCompanionTargetDevice_longTermPrivacyKeyForCrede
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)longTermPrivacyKeyForCredentialGroupIdentifierResponse:(id)a3
+- (void)longTermPrivacyKeyForCredentialGroupIdentifierResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -33215,15 +33215,15 @@ void __117__NPKPaymentWebServiceCompanionTargetDevice_longTermPrivacyKeyForCrede
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target longTermPrivacyKeyForCredentialGroupIdentifierResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -33243,20 +33243,20 @@ void __117__NPKPaymentWebServiceCompanionTargetDevice_longTermPrivacyKeyForCrede
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __100__NPKPaymentWebServiceCompanionTargetDevice_longTermPrivacyKeyForCredentialGroupIdentifierResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -33349,21 +33349,21 @@ void __100__NPKPaymentWebServiceCompanionTargetDevice_longTermPrivacyKeyForCrede
   }
 }
 
-- (void)retrieveShareInvitationForMailboxAddress:(id)a3 completion:(id)a4
+- (void)retrieveShareInvitationForMailboxAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __97__NPKPaymentWebServiceCompanionTargetDevice_retrieveShareInvitationForMailboxAddress_completion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v15 = v6;
-    v16 = self;
-    v17 = v7;
-    dispatch_sync(v8, block);
+    v15 = addressCopy;
+    selfCopy = self;
+    v17 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v9 = v15;
 LABEL_9:
@@ -33384,10 +33384,10 @@ LABEL_9:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v9 = PKDisplayableErrorForCommonType();
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
     goto LABEL_9;
   }
 
@@ -33548,10 +33548,10 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_retrieveShareInvitationForM
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)retrieveShareInvitationForMailboxAddressResponse:(id)a3
+- (void)retrieveShareInvitationForMailboxAddressResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -33560,15 +33560,15 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_retrieveShareInvitationForM
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target retrieveShareInvitationForMailboxAddressResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -33588,20 +33588,20 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_retrieveShareInvitationForM
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __94__NPKPaymentWebServiceCompanionTargetDevice_retrieveShareInvitationForMailboxAddressResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -33707,24 +33707,24 @@ void __94__NPKPaymentWebServiceCompanionTargetDevice_retrieveShareInvitationForM
   }
 }
 
-- (void)revokeShareForPassIdentifier:(id)a3 share:(id)a4 shouldCascade:(BOOL)a5 completion:(id)a6
+- (void)revokeShareForPassIdentifier:(id)identifier share:(id)share shouldCascade:(BOOL)cascade completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  shareCopy = share;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v13 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __105__NPKPaymentWebServiceCompanionTargetDevice_revokeShareForPassIdentifier_share_shouldCascade_completion___block_invoke;
     block[3] = &unk_27994A7D0;
-    v20 = v11;
-    v21 = v10;
-    v24 = a5;
-    v22 = self;
-    v23 = v12;
-    dispatch_sync(v13, block);
+    v20 = shareCopy;
+    v21 = identifierCopy;
+    cascadeCopy = cascade;
+    selfCopy = self;
+    v23 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v14 = v20;
 LABEL_9:
@@ -33745,10 +33745,10 @@ LABEL_9:
     }
   }
 
-  if (v12)
+  if (completionCopy)
   {
     v14 = PKDisplayableErrorForCommonType();
-    (*(v12 + 2))(v12, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
     goto LABEL_9;
   }
 
@@ -33933,10 +33933,10 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_revokeShareForPassIdentifi
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)revokeShareForPassIdentifierResponse:(id)a3
+- (void)revokeShareForPassIdentifierResponse:(id)response
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -33945,15 +33945,15 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_revokeShareForPassIdentifi
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target revokeShareForPassIdentifierResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -33971,20 +33971,20 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_revokeShareForPassIdentifi
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __82__NPKPaymentWebServiceCompanionTargetDevice_revokeShareForPassIdentifierResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -34073,21 +34073,21 @@ void __82__NPKPaymentWebServiceCompanionTargetDevice_revokeShareForPassIdentifie
   }
 }
 
-- (void)paymentWebService:(id)a3 passSharesForCredentialIdentifier:(id)a4 completion:(id)a5
+- (void)paymentWebService:(id)service passSharesForCredentialIdentifier:(id)identifier completion:(id)completion
 {
-  v7 = a4;
-  v8 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __108__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_passSharesForCredentialIdentifier_completion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v15 = v7;
-    v16 = self;
-    v17 = v8;
-    dispatch_sync(v9, block);
+    v15 = identifierCopy;
+    selfCopy = self;
+    v17 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -34105,9 +34105,9 @@ void __82__NPKPaymentWebServiceCompanionTargetDevice_revokeShareForPassIdentifie
       }
     }
 
-    if (v8)
+    if (completionCopy)
     {
-      (*(v8 + 2))(v8, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -34268,10 +34268,10 @@ void __108__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_passShar
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)passSharesForCredentialIdentifierResponse:(id)a3
+- (void)passSharesForCredentialIdentifierResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -34280,15 +34280,15 @@ void __108__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_passShar
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target passSharesForCredentialIdentifierResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -34302,19 +34302,19 @@ void __108__NPKPaymentWebServiceCompanionTargetDevice_paymentWebService_passShar
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __87__NPKPaymentWebServiceCompanionTargetDevice_passSharesForCredentialIdentifierResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -34415,11 +34415,11 @@ void __87__NPKPaymentWebServiceCompanionTargetDevice_passSharesForCredentialIden
   }
 }
 
-- (void)displayableSharesForPassIdentifier:(id)a3 completion:(id)a4
+- (void)displayableSharesForPassIdentifier:(id)identifier completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -34428,9 +34428,9 @@ void __87__NPKPaymentWebServiceCompanionTargetDevice_passSharesForCredentialIden
     v10 = pk_General_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = _Block_copy(v7);
+      v11 = _Block_copy(completionCopy);
       *buf = 138412546;
-      v20 = v6;
+      v20 = identifierCopy;
       v21 = 2112;
       v22 = v11;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Target device - Request for displayable shares for pass identifier: %@, completion: %@\nChecking for displayable shares from the corresponding companion pass first...", buf, 0x16u);
@@ -34442,11 +34442,11 @@ void __87__NPKPaymentWebServiceCompanionTargetDevice_passSharesForCredentialIden
   v16[1] = 3221225472;
   v16[2] = __91__NPKPaymentWebServiceCompanionTargetDevice_displayableSharesForPassIdentifier_completion___block_invoke;
   v16[3] = &unk_27994A7F8;
-  v17 = v6;
-  v18 = v7;
+  v17 = identifierCopy;
+  v18 = completionCopy;
   v16[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifierCopy;
+  v14 = completionCopy;
   [v12 displayableSharesForPassIdentifier:v13 completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -34487,21 +34487,21 @@ void __91__NPKPaymentWebServiceCompanionTargetDevice_displayableSharesForPassIde
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_displayableSharesForPassIdentifier:(id)a3 completion:(id)a4
+- (void)_displayableSharesForPassIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __92__NPKPaymentWebServiceCompanionTargetDevice__displayableSharesForPassIdentifier_completion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v14 = v6;
-    v15 = self;
-    v16 = v7;
-    dispatch_sync(v8, block);
+    v14 = identifierCopy;
+    selfCopy = self;
+    v16 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -34519,9 +34519,9 @@ void __91__NPKPaymentWebServiceCompanionTargetDevice_displayableSharesForPassIde
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -34682,10 +34682,10 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice__displayableSharesForPassId
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayableSharesForPassIdentifierResponse:(id)a3
+- (void)displayableSharesForPassIdentifierResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -34694,15 +34694,15 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice__displayableSharesForPassId
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target displayableSharesForPassIdentifierResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -34716,19 +34716,19 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice__displayableSharesForPassId
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __88__NPKPaymentWebServiceCompanionTargetDevice_displayableSharesForPassIdentifierResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -34829,11 +34829,11 @@ void __88__NPKPaymentWebServiceCompanionTargetDevice_displayableSharesForPassIde
   }
 }
 
-- (void)displayableEntitlementsForPassIdentifier:(id)a3 completion:(id)a4
+- (void)displayableEntitlementsForPassIdentifier:(id)identifier completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v8 = pk_General_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -34842,9 +34842,9 @@ void __88__NPKPaymentWebServiceCompanionTargetDevice_displayableSharesForPassIde
     v10 = pk_General_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = _Block_copy(v7);
+      v11 = _Block_copy(completionCopy);
       *buf = 138412546;
-      v20 = v6;
+      v20 = identifierCopy;
       v21 = 2112;
       v22 = v11;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Target device - Request for displayable entitlements for pass identifier: %@, completion: %@\nChecking for displayable entitlements from the corresponding companion pass first...", buf, 0x16u);
@@ -34856,11 +34856,11 @@ void __88__NPKPaymentWebServiceCompanionTargetDevice_displayableSharesForPassIde
   v16[1] = 3221225472;
   v16[2] = __97__NPKPaymentWebServiceCompanionTargetDevice_displayableEntitlementsForPassIdentifier_completion___block_invoke;
   v16[3] = &unk_27994A7F8;
-  v17 = v6;
-  v18 = v7;
+  v17 = identifierCopy;
+  v18 = completionCopy;
   v16[4] = self;
-  v13 = v6;
-  v14 = v7;
+  v13 = identifierCopy;
+  v14 = completionCopy;
   [v12 displayableEntitlementsForPassIdentifier:v13 completion:v16];
 
   v15 = *MEMORY[0x277D85DE8];
@@ -34901,21 +34901,21 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_displayableEntitlementsForP
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_displayableEntitlementsForPassIdentifier:(id)a3 completion:(id)a4
+- (void)_displayableEntitlementsForPassIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __98__NPKPaymentWebServiceCompanionTargetDevice__displayableEntitlementsForPassIdentifier_completion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v14 = v6;
-    v15 = self;
-    v16 = v7;
-    dispatch_sync(v8, block);
+    v14 = identifierCopy;
+    selfCopy = self;
+    v16 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -34933,9 +34933,9 @@ void __97__NPKPaymentWebServiceCompanionTargetDevice_displayableEntitlementsForP
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -35096,10 +35096,10 @@ void __98__NPKPaymentWebServiceCompanionTargetDevice__displayableEntitlementsFor
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)displayableEntitlementsForPassIdentifierResponse:(id)a3
+- (void)displayableEntitlementsForPassIdentifierResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -35108,15 +35108,15 @@ void __98__NPKPaymentWebServiceCompanionTargetDevice__displayableEntitlementsFor
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target displayableEntitlementsForPassIdentifierResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -35130,19 +35130,19 @@ void __98__NPKPaymentWebServiceCompanionTargetDevice__displayableEntitlementsFor
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __94__NPKPaymentWebServiceCompanionTargetDevice_displayableEntitlementsForPassIdentifierResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -35243,21 +35243,21 @@ void __94__NPKPaymentWebServiceCompanionTargetDevice_displayableEntitlementsForP
   }
 }
 
-- (void)prewarmCreateShareForPassIdentifier:(id)a3 completion:(id)a4
+- (void)prewarmCreateShareForPassIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __92__NPKPaymentWebServiceCompanionTargetDevice_prewarmCreateShareForPassIdentifier_completion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v14 = v6;
-    v15 = self;
-    v16 = v7;
-    dispatch_sync(v8, block);
+    v14 = identifierCopy;
+    selfCopy = self;
+    v16 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -35275,9 +35275,9 @@ void __94__NPKPaymentWebServiceCompanionTargetDevice_displayableEntitlementsForP
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -35438,10 +35438,10 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_prewarmCreateShareForPassId
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prewarmCreateShareForPassIdentifierResponse:(id)a3
+- (void)prewarmCreateShareForPassIdentifierResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -35450,15 +35450,15 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_prewarmCreateShareForPassId
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target prewarmCreateShareForPassIdentifierResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -35470,19 +35470,19 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_prewarmCreateShareForPassId
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __89__NPKPaymentWebServiceCompanionTargetDevice_prewarmCreateShareForPassIdentifierResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -35552,23 +35552,23 @@ void __89__NPKPaymentWebServiceCompanionTargetDevice_prewarmCreateShareForPassId
   }
 }
 
-- (void)createShareForPartialShareInvitation:(id)a3 authorization:(id)a4 completion:(id)a5
+- (void)createShareForPartialShareInvitation:(id)invitation authorization:(id)authorization completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  invitationCopy = invitation;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __107__NPKPaymentWebServiceCompanionTargetDevice_createShareForPartialShareInvitation_authorization_completion___block_invoke;
     block[3] = &unk_279945C50;
-    v18 = v8;
-    v19 = v9;
-    v20 = self;
-    v21 = v10;
-    dispatch_sync(v11, block);
+    v18 = invitationCopy;
+    v19 = authorizationCopy;
+    selfCopy = self;
+    v21 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v12 = v18;
 LABEL_9:
@@ -35589,10 +35589,10 @@ LABEL_9:
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v12 = PKDisplayableErrorForCommonType();
-    (*(v10 + 2))(v10, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
     goto LABEL_9;
   }
 
@@ -35761,10 +35761,10 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_createShareForPartialShare
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createShareForPartialShareInvitationResponse:(id)a3
+- (void)createShareForPartialShareInvitationResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -35773,15 +35773,15 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_createShareForPartialShare
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target createShareForPartialShareInvitationResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -35801,20 +35801,20 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_createShareForPartialShare
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __90__NPKPaymentWebServiceCompanionTargetDevice_createShareForPartialShareInvitationResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -35920,21 +35920,21 @@ void __90__NPKPaymentWebServiceCompanionTargetDevice_createShareForPartialShareI
   }
 }
 
-- (void)checkInvitationStatusForMailboxAddress:(id)a3 completion:(id)a4
+- (void)checkInvitationStatusForMailboxAddress:(id)address completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __95__NPKPaymentWebServiceCompanionTargetDevice_checkInvitationStatusForMailboxAddress_completion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v15 = v6;
-    v16 = self;
-    v17 = v7;
-    dispatch_sync(v8, block);
+    v15 = addressCopy;
+    selfCopy = self;
+    v17 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v9 = v15;
 LABEL_9:
@@ -35955,10 +35955,10 @@ LABEL_9:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v9 = PKDisplayableErrorForCommonType();
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
     goto LABEL_9;
   }
 
@@ -36119,10 +36119,10 @@ void __95__NPKPaymentWebServiceCompanionTargetDevice_checkInvitationStatusForMai
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)checkInvitationStatusForMailboxAddressResponse:(id)a3
+- (void)checkInvitationStatusForMailboxAddressResponse:(id)response
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -36131,15 +36131,15 @@ void __95__NPKPaymentWebServiceCompanionTargetDevice_checkInvitationStatusForMai
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target checkInvitationStatusForMailboxAddressResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -36157,20 +36157,20 @@ void __95__NPKPaymentWebServiceCompanionTargetDevice_checkInvitationStatusForMai
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __92__NPKPaymentWebServiceCompanionTargetDevice_checkInvitationStatusForMailboxAddressResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -36259,21 +36259,21 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_checkInvitationStatusForMai
   }
 }
 
-- (void)statusForShareableCredentials:(id)a3 completion:(id)a4
+- (void)statusForShareableCredentials:(id)credentials completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  credentialsCopy = credentials;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __86__NPKPaymentWebServiceCompanionTargetDevice_statusForShareableCredentials_completion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v15 = v6;
-    v16 = self;
-    v17 = v7;
-    dispatch_sync(v8, block);
+    v15 = credentialsCopy;
+    selfCopy = self;
+    v17 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v9 = v15;
 LABEL_9:
@@ -36294,10 +36294,10 @@ LABEL_9:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v9 = PKDisplayableErrorForCommonType();
-    (*(v7 + 2))(v7, 0, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v9);
     goto LABEL_9;
   }
 
@@ -36478,10 +36478,10 @@ void __86__NPKPaymentWebServiceCompanionTargetDevice_statusForShareableCredentia
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)statusForShareableCredentialsResponse:(id)a3
+- (void)statusForShareableCredentialsResponse:(id)response
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -36490,15 +36490,15 @@ void __86__NPKPaymentWebServiceCompanionTargetDevice_statusForShareableCredentia
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target statusForShareableCredentialsResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -36522,21 +36522,21 @@ void __86__NPKPaymentWebServiceCompanionTargetDevice_statusForShareableCredentia
   v28 = __Block_byref_object_copy__22;
   v29 = __Block_byref_object_dispose__22;
   v30 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __83__NPKPaymentWebServiceCompanionTargetDevice_statusForShareableCredentialsResponse___block_invoke;
     block[3] = &unk_279949BA8;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v37;
     v23 = &v31;
     v24 = &v25;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -36664,22 +36664,22 @@ void __83__NPKPaymentWebServiceCompanionTargetDevice_statusForShareableCredentia
   }
 }
 
-- (void)prepareProvisioningTarget:(id)a3 checkFamilyCircle:(BOOL)a4 completion:(id)a5
+- (void)prepareProvisioningTarget:(id)target checkFamilyCircle:(BOOL)circle completion:(id)completion
 {
-  v8 = a3;
-  v9 = a5;
+  targetCopy = target;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v10 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __100__NPKPaymentWebServiceCompanionTargetDevice_prepareProvisioningTarget_checkFamilyCircle_completion___block_invoke;
     block[3] = &unk_27994A7A8;
-    v17 = v8;
-    v20 = a4;
-    v18 = self;
-    v19 = v9;
-    dispatch_sync(v10, block);
+    v17 = targetCopy;
+    circleCopy = circle;
+    selfCopy = self;
+    v19 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v11 = v17;
 LABEL_9:
@@ -36700,10 +36700,10 @@ LABEL_9:
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v11 = PKDisplayableErrorForCommonType();
-    (*(v9 + 2))(v9, 0, 0, v11);
+    (*(completionCopy + 2))(completionCopy, 0, 0, v11);
     goto LABEL_9;
   }
 
@@ -36881,10 +36881,10 @@ void __100__NPKPaymentWebServiceCompanionTargetDevice_prepareProvisioningTarget_
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)prepareProvisioningTargetResponse:(id)a3
+- (void)prepareProvisioningTargetResponse:(id)response
 {
   v46 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -36893,15 +36893,15 @@ void __100__NPKPaymentWebServiceCompanionTargetDevice_prepareProvisioningTarget_
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target prepareProvisioningTargetResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -36925,21 +36925,21 @@ void __100__NPKPaymentWebServiceCompanionTargetDevice_prepareProvisioningTarget_
   v28 = __Block_byref_object_copy__22;
   v29 = __Block_byref_object_dispose__22;
   v30 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __79__NPKPaymentWebServiceCompanionTargetDevice_prepareProvisioningTargetResponse___block_invoke;
     block[3] = &unk_279949BA8;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v35;
     v23 = &v31;
     v24 = &v25;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -37047,21 +37047,21 @@ void __79__NPKPaymentWebServiceCompanionTargetDevice_prepareProvisioningTargetRe
   }
 }
 
-- (void)cacheSharingMessageFromMailboxAddress:(id)a3 message:(id)a4
+- (void)cacheSharingMessageFromMailboxAddress:(id)address message:(id)message
 {
-  v6 = a3;
-  v7 = a4;
+  addressCopy = address;
+  messageCopy = message;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __91__NPKPaymentWebServiceCompanionTargetDevice_cacheSharingMessageFromMailboxAddress_message___block_invoke;
     block[3] = &unk_279945880;
-    v14 = v6;
-    v15 = v7;
-    v16 = self;
-    dispatch_sync(v8, block);
+    v14 = addressCopy;
+    v15 = messageCopy;
+    selfCopy = self;
+    dispatch_sync(internalQueue, block);
 
     v9 = v14;
   }
@@ -37199,25 +37199,25 @@ LABEL_21:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateShareForPassIdentifier:(id)a3 share:(id)a4 authorization:(id)a5 completion:(id)a6
+- (void)updateShareForPassIdentifier:(id)identifier share:(id)share authorization:(id)authorization completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  shareCopy = share;
+  authorizationCopy = authorization;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __105__NPKPaymentWebServiceCompanionTargetDevice_updateShareForPassIdentifier_share_authorization_completion___block_invoke;
     block[3] = &unk_27994A730;
-    v21 = v10;
-    v22 = v11;
-    v23 = v12;
-    v24 = self;
-    v25 = v13;
-    dispatch_sync(v14, block);
+    v21 = identifierCopy;
+    v22 = shareCopy;
+    v23 = authorizationCopy;
+    selfCopy = self;
+    v25 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v15 = v21;
 LABEL_9:
@@ -37238,10 +37238,10 @@ LABEL_9:
     }
   }
 
-  if (v13)
+  if (completionCopy)
   {
     v15 = PKDisplayableErrorForCommonType();
-    (*(v13 + 2))(v13, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
     goto LABEL_9;
   }
 
@@ -37417,10 +37417,10 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_updateShareForPassIdentifi
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)updateShareForPassIdentifierResponse:(id)a3
+- (void)updateShareForPassIdentifierResponse:(id)response
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -37429,15 +37429,15 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_updateShareForPassIdentifi
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target updateShareForPassIdentifierResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -37455,20 +37455,20 @@ void __105__NPKPaymentWebServiceCompanionTargetDevice_updateShareForPassIdentifi
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __82__NPKPaymentWebServiceCompanionTargetDevice_updateShareForPassIdentifierResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -37557,23 +37557,23 @@ void __82__NPKPaymentWebServiceCompanionTargetDevice_updateShareForPassIdentifie
   }
 }
 
-- (void)acceptCarKeyShareForMessage:(id)a3 activationCode:(id)a4 completion:(id)a5
+- (void)acceptCarKeyShareForMessage:(id)message activationCode:(id)code completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  codeCopy = code;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharedInvitationProvisioningSupported])
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __99__NPKPaymentWebServiceCompanionTargetDevice_acceptCarKeyShareForMessage_activationCode_completion___block_invoke;
     block[3] = &unk_279945C50;
-    v18 = v8;
-    v19 = v9;
-    v20 = self;
-    v21 = v10;
-    dispatch_sync(v11, block);
+    v18 = messageCopy;
+    v19 = codeCopy;
+    selfCopy = self;
+    v21 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v12 = v18;
 LABEL_9:
@@ -37594,10 +37594,10 @@ LABEL_9:
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v12 = PKDisplayableErrorForCommonType();
-    (*(v10 + 2))(v10, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
     goto LABEL_9;
   }
 
@@ -37766,10 +37766,10 @@ void __99__NPKPaymentWebServiceCompanionTargetDevice_acceptCarKeyShareForMessage
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)acceptCarKeyShareForMessageResponse:(id)a3
+- (void)acceptCarKeyShareForMessageResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -37778,15 +37778,15 @@ void __99__NPKPaymentWebServiceCompanionTargetDevice_acceptCarKeyShareForMessage
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target acceptCarKeyShareForMessageResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -37806,20 +37806,20 @@ void __99__NPKPaymentWebServiceCompanionTargetDevice_acceptCarKeyShareForMessage
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __81__NPKPaymentWebServiceCompanionTargetDevice_acceptCarKeyShareForMessageResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -37925,23 +37925,23 @@ void __81__NPKPaymentWebServiceCompanionTargetDevice_acceptCarKeyShareForMessage
   }
 }
 
-- (void)carKeyStartShareAcceptanceFlow:(id)a3 transportIdentifier:(id)a4 completion:(id)a5
+- (void)carKeyStartShareAcceptanceFlow:(id)flow transportIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  flowCopy = flow;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharingInAChainSupported])
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __107__NPKPaymentWebServiceCompanionTargetDevice_carKeyStartShareAcceptanceFlow_transportIdentifier_completion___block_invoke;
     block[3] = &unk_279945C50;
-    v18 = v8;
-    v19 = v9;
-    v20 = self;
-    v21 = v10;
-    dispatch_sync(v11, block);
+    v18 = flowCopy;
+    v19 = identifierCopy;
+    selfCopy = self;
+    v21 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v12 = v18;
 LABEL_9:
@@ -37962,10 +37962,10 @@ LABEL_9:
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v10 + 2))(v10, v12);
+    (*(completionCopy + 2))(completionCopy, v12);
     goto LABEL_9;
   }
 
@@ -38134,10 +38134,10 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_carKeyStartShareAcceptance
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carKeyStartShareAcceptanceFlowResponse:(id)a3
+- (void)carKeyStartShareAcceptanceFlowResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -38146,15 +38146,15 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_carKeyStartShareAcceptance
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target carKeyStartShareAcceptanceFlowResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -38168,19 +38168,19 @@ void __107__NPKPaymentWebServiceCompanionTargetDevice_carKeyStartShareAcceptance
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __84__NPKPaymentWebServiceCompanionTargetDevice_carKeyStartShareAcceptanceFlowResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -38266,23 +38266,23 @@ void __84__NPKPaymentWebServiceCompanionTargetDevice_carKeyStartShareAcceptanceF
   }
 }
 
-- (void)carKeyRoutingInformationForInvitationWithIdentifier:(id)a3 transportIdentifier:(id)a4 completion:(id)a5
+- (void)carKeyRoutingInformationForInvitationWithIdentifier:(id)identifier transportIdentifier:(id)transportIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  transportIdentifierCopy = transportIdentifier;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharingInAChainSupported])
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __128__NPKPaymentWebServiceCompanionTargetDevice_carKeyRoutingInformationForInvitationWithIdentifier_transportIdentifier_completion___block_invoke;
     block[3] = &unk_279945C50;
-    v18 = v8;
-    v19 = v9;
-    v20 = self;
-    v21 = v10;
-    dispatch_sync(v11, block);
+    v18 = identifierCopy;
+    v19 = transportIdentifierCopy;
+    selfCopy = self;
+    v21 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v12 = v18;
 LABEL_9:
@@ -38303,10 +38303,10 @@ LABEL_9:
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v10 + 2))(v10, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
     goto LABEL_9;
   }
 
@@ -38477,10 +38477,10 @@ void __128__NPKPaymentWebServiceCompanionTargetDevice_carKeyRoutingInformationFo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carKeyRoutingInformationResponse:(id)a3
+- (void)carKeyRoutingInformationResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -38489,15 +38489,15 @@ void __128__NPKPaymentWebServiceCompanionTargetDevice_carKeyRoutingInformationFo
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target carKeyRoutingInformationResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -38517,20 +38517,20 @@ void __128__NPKPaymentWebServiceCompanionTargetDevice_carKeyRoutingInformationFo
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __78__NPKPaymentWebServiceCompanionTargetDevice_carKeyRoutingInformationResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -38623,23 +38623,23 @@ void __78__NPKPaymentWebServiceCompanionTargetDevice_carKeyRoutingInformationRes
   }
 }
 
-- (void)carKeyGetProductPlanIdentifierRequestForInvitationWithIdentifier:(id)a3 transportIdentifier:(id)a4 completion:(id)a5
+- (void)carKeyGetProductPlanIdentifierRequestForInvitationWithIdentifier:(id)identifier transportIdentifier:(id)transportIdentifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  transportIdentifierCopy = transportIdentifier;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharingInAChainSupported])
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __141__NPKPaymentWebServiceCompanionTargetDevice_carKeyGetProductPlanIdentifierRequestForInvitationWithIdentifier_transportIdentifier_completion___block_invoke;
     block[3] = &unk_279945C50;
-    v18 = v8;
-    v19 = v9;
-    v20 = self;
-    v21 = v10;
-    dispatch_sync(v11, block);
+    v18 = identifierCopy;
+    v19 = transportIdentifierCopy;
+    selfCopy = self;
+    v21 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v12 = v18;
 LABEL_9:
@@ -38660,10 +38660,10 @@ LABEL_9:
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v10 + 2))(v10, 0, v12);
+    (*(completionCopy + 2))(completionCopy, 0, v12);
     goto LABEL_9;
   }
 
@@ -38831,10 +38831,10 @@ void __141__NPKPaymentWebServiceCompanionTargetDevice_carKeyGetProductPlanIdenti
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carKeyGetProductPlanIdentifierResponse:(id)a3
+- (void)carKeyGetProductPlanIdentifierResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -38843,15 +38843,15 @@ void __141__NPKPaymentWebServiceCompanionTargetDevice_carKeyGetProductPlanIdenti
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target carKeyGetProductPlanIdentifierResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -38871,20 +38871,20 @@ void __141__NPKPaymentWebServiceCompanionTargetDevice_carKeyGetProductPlanIdenti
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __84__NPKPaymentWebServiceCompanionTargetDevice_carKeyGetProductPlanIdentifierResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -38990,23 +38990,23 @@ void __84__NPKPaymentWebServiceCompanionTargetDevice_carKeyGetProductPlanIdentif
   }
 }
 
-- (void)carKeySetEncryptedProductPlanIdentifierContainer:(id)a3 invitationIdentifier:(id)a4 completion:(id)a5
+- (void)carKeySetEncryptedProductPlanIdentifierContainer:(id)container invitationIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  containerCopy = container;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharingInAChainSupported])
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __126__NPKPaymentWebServiceCompanionTargetDevice_carKeySetEncryptedProductPlanIdentifierContainer_invitationIdentifier_completion___block_invoke;
     block[3] = &unk_279945C50;
-    v18 = v8;
-    v19 = v9;
-    v20 = self;
-    v21 = v10;
-    dispatch_sync(v11, block);
+    v18 = containerCopy;
+    v19 = identifierCopy;
+    selfCopy = self;
+    v21 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v12 = v18;
 LABEL_9:
@@ -39027,10 +39027,10 @@ LABEL_9:
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v10 + 2))(v10, v12);
+    (*(completionCopy + 2))(completionCopy, v12);
     goto LABEL_9;
   }
 
@@ -39200,10 +39200,10 @@ void __126__NPKPaymentWebServiceCompanionTargetDevice_carKeySetEncryptedProductP
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carKeySetEncryptedProductPlanIdentifierContainerResponse:(id)a3
+- (void)carKeySetEncryptedProductPlanIdentifierContainerResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -39212,15 +39212,15 @@ void __126__NPKPaymentWebServiceCompanionTargetDevice_carKeySetEncryptedProductP
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target carKeySetEncryptedProductPlanIdentifierContainerResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -39234,19 +39234,19 @@ void __126__NPKPaymentWebServiceCompanionTargetDevice_carKeySetEncryptedProductP
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __102__NPKPaymentWebServiceCompanionTargetDevice_carKeySetEncryptedProductPlanIdentifierContainerResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -39332,21 +39332,21 @@ void __102__NPKPaymentWebServiceCompanionTargetDevice_carKeySetEncryptedProductP
   }
 }
 
-- (void)carKeyAccountAttestationRequestForCredential:(id)a3 completion:(id)a4
+- (void)carKeyAccountAttestationRequestForCredential:(id)credential completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  credentialCopy = credential;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharingInAChainSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __101__NPKPaymentWebServiceCompanionTargetDevice_carKeyAccountAttestationRequestForCredential_completion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v15 = v6;
-    v16 = self;
-    v17 = v7;
-    dispatch_sync(v8, block);
+    v15 = credentialCopy;
+    selfCopy = self;
+    v17 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v9 = v15;
 LABEL_9:
@@ -39367,10 +39367,10 @@ LABEL_9:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
     goto LABEL_9;
   }
 
@@ -39536,10 +39536,10 @@ void __101__NPKPaymentWebServiceCompanionTargetDevice_carKeyAccountAttestationRe
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carKeyAccountAttestationResponse:(id)a3
+- (void)carKeyAccountAttestationResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -39548,15 +39548,15 @@ void __101__NPKPaymentWebServiceCompanionTargetDevice_carKeyAccountAttestationRe
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target carKeyAccountAttestationResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -39576,20 +39576,20 @@ void __101__NPKPaymentWebServiceCompanionTargetDevice_carKeyAccountAttestationRe
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __78__NPKPaymentWebServiceCompanionTargetDevice_carKeyAccountAttestationResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -39695,21 +39695,21 @@ void __78__NPKPaymentWebServiceCompanionTargetDevice_carKeyAccountAttestationRes
   }
 }
 
-- (void)carKeyGetPretrackRequestForKeyWithInvitationIdentifier:(id)a3 completion:(id)a4
+- (void)carKeyGetPretrackRequestForKeyWithInvitationIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharingInAChainSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __111__NPKPaymentWebServiceCompanionTargetDevice_carKeyGetPretrackRequestForKeyWithInvitationIdentifier_completion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v15 = v6;
-    v16 = self;
-    v17 = v7;
-    dispatch_sync(v8, block);
+    v15 = identifierCopy;
+    selfCopy = self;
+    v17 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v9 = v15;
 LABEL_9:
@@ -39730,10 +39730,10 @@ LABEL_9:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
     goto LABEL_9;
   }
 
@@ -39897,10 +39897,10 @@ void __111__NPKPaymentWebServiceCompanionTargetDevice_carKeyGetPretrackRequestFo
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carKeyGetPretrackResponse:(id)a3
+- (void)carKeyGetPretrackResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -39909,15 +39909,15 @@ void __111__NPKPaymentWebServiceCompanionTargetDevice_carKeyGetPretrackRequestFo
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target carKeyGetPretrackResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -39937,20 +39937,20 @@ void __111__NPKPaymentWebServiceCompanionTargetDevice_carKeyGetPretrackRequestFo
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__NPKPaymentWebServiceCompanionTargetDevice_carKeyGetPretrackResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -40056,23 +40056,23 @@ void __71__NPKPaymentWebServiceCompanionTargetDevice_carKeyGetPretrackResponse__
   }
 }
 
-- (void)carKeySetAccountAttestation:(id)a3 forCredential:(id)a4 completion:(id)a5
+- (void)carKeySetAccountAttestation:(id)attestation forCredential:(id)credential completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  attestationCopy = attestation;
+  credentialCopy = credential;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharingInAChainSupported])
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __98__NPKPaymentWebServiceCompanionTargetDevice_carKeySetAccountAttestation_forCredential_completion___block_invoke;
     block[3] = &unk_279945C50;
-    v18 = v8;
-    v19 = v9;
-    v20 = self;
-    v21 = v10;
-    dispatch_sync(v11, block);
+    v18 = attestationCopy;
+    v19 = credentialCopy;
+    selfCopy = self;
+    v21 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v12 = v18;
 LABEL_9:
@@ -40093,10 +40093,10 @@ LABEL_9:
     }
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v10 + 2))(v10, v12);
+    (*(completionCopy + 2))(completionCopy, v12);
     goto LABEL_9;
   }
 
@@ -40266,10 +40266,10 @@ void __98__NPKPaymentWebServiceCompanionTargetDevice_carKeySetAccountAttestation
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carKeySetAccountAttestationResponse:(id)a3
+- (void)carKeySetAccountAttestationResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -40278,15 +40278,15 @@ void __98__NPKPaymentWebServiceCompanionTargetDevice_carKeySetAccountAttestation
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target carKeySetAccountAttestationResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -40300,19 +40300,19 @@ void __98__NPKPaymentWebServiceCompanionTargetDevice_carKeySetAccountAttestation
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __81__NPKPaymentWebServiceCompanionTargetDevice_carKeySetAccountAttestationResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -40398,25 +40398,25 @@ void __81__NPKPaymentWebServiceCompanionTargetDevice_carKeySetAccountAttestation
   }
 }
 
-- (void)carKeyUpdateTrackingAttestation:(id)a3 forCredential:(id)a4 encryptedContainer:(id)a5 completion:(id)a6
+- (void)carKeyUpdateTrackingAttestation:(id)attestation forCredential:(id)credential encryptedContainer:(id)container completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  attestationCopy = attestation;
+  credentialCopy = credential;
+  containerCopy = container;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharingInAChainSupported])
   {
-    v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __121__NPKPaymentWebServiceCompanionTargetDevice_carKeyUpdateTrackingAttestation_forCredential_encryptedContainer_completion___block_invoke;
     block[3] = &unk_27994A730;
-    v20 = v10;
-    v21 = v11;
-    v22 = v12;
-    v23 = self;
-    v24 = v13;
-    dispatch_sync(v14, block);
+    v20 = attestationCopy;
+    v21 = credentialCopy;
+    v22 = containerCopy;
+    selfCopy = self;
+    v24 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -40434,9 +40434,9 @@ void __81__NPKPaymentWebServiceCompanionTargetDevice_carKeySetAccountAttestation
       }
     }
 
-    if (v13)
+    if (completionCopy)
     {
-      (*(v13 + 2))(v13, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -40609,10 +40609,10 @@ void __121__NPKPaymentWebServiceCompanionTargetDevice_carKeyUpdateTrackingAttest
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carKeyUpdateTrackingAttestationResponse:(id)a3
+- (void)carKeyUpdateTrackingAttestationResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -40621,15 +40621,15 @@ void __121__NPKPaymentWebServiceCompanionTargetDevice_carKeyUpdateTrackingAttest
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target carKeyUpdateTrackingAttestationResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -40641,19 +40641,19 @@ void __121__NPKPaymentWebServiceCompanionTargetDevice_carKeyUpdateTrackingAttest
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __85__NPKPaymentWebServiceCompanionTargetDevice_carKeyUpdateTrackingAttestationResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -40729,25 +40729,25 @@ void __85__NPKPaymentWebServiceCompanionTargetDevice_carKeyUpdateTrackingAttesta
   }
 }
 
-- (void)carKeyAcceptInvitationWithInvitationIdentifier:(id)a3 activationCode:(id)a4 analyticsUpdateConfig:(id)a5 completion:(id)a6
+- (void)carKeyAcceptInvitationWithInvitationIdentifier:(id)identifier activationCode:(id)code analyticsUpdateConfig:(id)config completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  identifierCopy = identifier;
+  codeCopy = code;
+  configCopy = config;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharingInAChainSupported])
   {
-    v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __140__NPKPaymentWebServiceCompanionTargetDevice_carKeyAcceptInvitationWithInvitationIdentifier_activationCode_analyticsUpdateConfig_completion___block_invoke;
     block[3] = &unk_27994A730;
-    v20 = v10;
-    v21 = v11;
-    v22 = v12;
-    v23 = self;
-    v24 = v13;
-    dispatch_sync(v14, block);
+    v20 = identifierCopy;
+    v21 = codeCopy;
+    v22 = configCopy;
+    selfCopy = self;
+    v24 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -40765,9 +40765,9 @@ void __85__NPKPaymentWebServiceCompanionTargetDevice_carKeyUpdateTrackingAttesta
       }
     }
 
-    if (v13)
+    if (completionCopy)
     {
-      (*(v13 + 2))(v13, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -40942,10 +40942,10 @@ void __140__NPKPaymentWebServiceCompanionTargetDevice_carKeyAcceptInvitationWith
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carKeyAcceptInvitationResponse:(id)a3
+- (void)carKeyAcceptInvitationResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -40954,15 +40954,15 @@ void __140__NPKPaymentWebServiceCompanionTargetDevice_carKeyAcceptInvitationWith
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target carKeyAcceptInvitationWithInvitationIdentifierResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -40976,19 +40976,19 @@ void __140__NPKPaymentWebServiceCompanionTargetDevice_carKeyAcceptInvitationWith
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __76__NPKPaymentWebServiceCompanionTargetDevice_carKeyAcceptInvitationResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -41082,23 +41082,23 @@ void __76__NPKPaymentWebServiceCompanionTargetDevice_carKeyAcceptInvitationRespo
   }
 }
 
-- (void)carKeyHandleRecipientMessage:(id)a3 forInvitationIdentifier:(id)a4 completion:(id)a5
+- (void)carKeyHandleRecipientMessage:(id)message forInvitationIdentifier:(id)identifier completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  messageCopy = message;
+  identifierCopy = identifier;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharingInAChainSupported])
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __109__NPKPaymentWebServiceCompanionTargetDevice_carKeyHandleRecipientMessage_forInvitationIdentifier_completion___block_invoke;
     block[3] = &unk_279945C50;
-    v17 = v8;
-    v18 = v9;
-    v19 = self;
-    v20 = v10;
-    dispatch_sync(v11, block);
+    v17 = messageCopy;
+    v18 = identifierCopy;
+    selfCopy = self;
+    v20 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -41116,9 +41116,9 @@ void __76__NPKPaymentWebServiceCompanionTargetDevice_carKeyAcceptInvitationRespo
       }
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -41288,10 +41288,10 @@ void __109__NPKPaymentWebServiceCompanionTargetDevice_carKeyHandleRecipientMessa
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carKeyHandleRecipientMessageResponse:(id)a3
+- (void)carKeyHandleRecipientMessageResponse:(id)response
 {
   v34 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -41300,15 +41300,15 @@ void __109__NPKPaymentWebServiceCompanionTargetDevice_carKeyHandleRecipientMessa
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target carKeyHandleRecipientMessageResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -41322,19 +41322,19 @@ void __109__NPKPaymentWebServiceCompanionTargetDevice_carKeyHandleRecipientMessa
   v26 = __Block_byref_object_copy__22;
   v27 = __Block_byref_object_dispose__22;
   v28 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __82__NPKPaymentWebServiceCompanionTargetDevice_carKeyHandleRecipientMessageResponse___block_invoke;
     block[3] = &unk_279949F68;
     block[4] = self;
-    v19 = v10;
+    v19 = incomingResponseIdentifier;
     p_buf = &buf;
-    v20 = v4;
+    v20 = responseCopy;
     v22 = &v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -41420,23 +41420,23 @@ void __82__NPKPaymentWebServiceCompanionTargetDevice_carKeyHandleRecipientMessag
   }
 }
 
-- (void)carKeyRetryActivationCodeWithInvitationIdentifier:(id)a3 activationCode:(id)a4 completion:(id)a5
+- (void)carKeyRetryActivationCodeWithInvitationIdentifier:(id)identifier activationCode:(id)code completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  codeCopy = code;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharingInAChainSupported])
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __121__NPKPaymentWebServiceCompanionTargetDevice_carKeyRetryActivationCodeWithInvitationIdentifier_activationCode_completion___block_invoke;
     block[3] = &unk_279945C50;
-    v17 = v9;
-    v18 = v8;
-    v19 = self;
-    v20 = v10;
-    dispatch_sync(v11, block);
+    v17 = codeCopy;
+    v18 = identifierCopy;
+    selfCopy = self;
+    v20 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -41454,9 +41454,9 @@ void __82__NPKPaymentWebServiceCompanionTargetDevice_carKeyHandleRecipientMessag
       }
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -41624,10 +41624,10 @@ void __121__NPKPaymentWebServiceCompanionTargetDevice_carKeyRetryActivationCodeW
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carKeyRetryActivationCodeResponse:(id)a3
+- (void)carKeyRetryActivationCodeResponse:(id)response
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -41636,15 +41636,15 @@ void __121__NPKPaymentWebServiceCompanionTargetDevice_carKeyRetryActivationCodeW
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target carKeyRetryActivationCodeResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -41658,19 +41658,19 @@ void __121__NPKPaymentWebServiceCompanionTargetDevice_carKeyRetryActivationCodeW
   v23[3] = __Block_byref_object_copy__22;
   v23[4] = __Block_byref_object_dispose__22;
   v24 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __79__NPKPaymentWebServiceCompanionTargetDevice_carKeyRetryActivationCodeResponse___block_invoke;
     block[3] = &unk_279949F68;
     block[4] = self;
-    v19 = v10;
+    v19 = incomingResponseIdentifier;
     p_buf = &buf;
-    v20 = v4;
+    v20 = responseCopy;
     v22 = v23;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -41756,25 +41756,25 @@ void __79__NPKPaymentWebServiceCompanionTargetDevice_carKeyRetryActivationCodeRe
   }
 }
 
-- (void)carKeyDecryptData:(id)a3 credential:(id)a4 ephemeralPublicKey:(id)a5 completion:(id)a6
+- (void)carKeyDecryptData:(id)data credential:(id)credential ephemeralPublicKey:(id)key completion:(id)completion
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dataCopy = data;
+  credentialCopy = credential;
+  keyCopy = key;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharingInAChainSupported])
   {
-    v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __104__NPKPaymentWebServiceCompanionTargetDevice_carKeyDecryptData_credential_ephemeralPublicKey_completion___block_invoke;
     block[3] = &unk_27994A730;
-    v21 = v10;
-    v22 = v11;
-    v23 = v12;
-    v24 = self;
-    v25 = v13;
-    dispatch_sync(v14, block);
+    v21 = dataCopy;
+    v22 = credentialCopy;
+    v23 = keyCopy;
+    selfCopy = self;
+    v25 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v15 = v21;
 LABEL_9:
@@ -41795,10 +41795,10 @@ LABEL_9:
     }
   }
 
-  if (v13)
+  if (completionCopy)
   {
     v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v13 + 2))(v13, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
     goto LABEL_9;
   }
 
@@ -41974,10 +41974,10 @@ void __104__NPKPaymentWebServiceCompanionTargetDevice_carKeyDecryptData_credenti
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carKeyDecryptDataResponse:(id)a3
+- (void)carKeyDecryptDataResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -41986,15 +41986,15 @@ void __104__NPKPaymentWebServiceCompanionTargetDevice_carKeyDecryptData_credenti
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target carKeyDecryptDataResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -42014,20 +42014,20 @@ void __104__NPKPaymentWebServiceCompanionTargetDevice_carKeyDecryptData_credenti
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__NPKPaymentWebServiceCompanionTargetDevice_carKeyDecryptDataResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -42131,21 +42131,21 @@ void __71__NPKPaymentWebServiceCompanionTargetDevice_carKeyDecryptDataResponse__
   }
 }
 
-- (void)carKeyRejectInvitation:(id)a3 completion:(id)a4
+- (void)carKeyRejectInvitation:(id)invitation completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  invitationCopy = invitation;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSharingInAChainSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __79__NPKPaymentWebServiceCompanionTargetDevice_carKeyRejectInvitation_completion___block_invoke;
     block[3] = &unk_27994A1C0;
-    v15 = v6;
-    v16 = self;
-    v17 = v7;
-    dispatch_sync(v8, block);
+    v15 = invitationCopy;
+    selfCopy = self;
+    v17 = completionCopy;
+    dispatch_sync(internalQueue, block);
 
     v9 = v15;
 LABEL_9:
@@ -42166,10 +42166,10 @@ LABEL_9:
     }
   }
 
-  if (v7)
+  if (completionCopy)
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v7 + 2))(v7, 0, v9);
+    (*(completionCopy + 2))(completionCopy, 0, v9);
     goto LABEL_9;
   }
 
@@ -42335,10 +42335,10 @@ void __79__NPKPaymentWebServiceCompanionTargetDevice_carKeyRejectInvitation_comp
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)carKeyRejectInvitationResponse:(id)a3
+- (void)carKeyRejectInvitationResponse:(id)response
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -42347,15 +42347,15 @@ void __79__NPKPaymentWebServiceCompanionTargetDevice_carKeyRejectInvitation_comp
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target carKeyRejectInvitationResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -42375,20 +42375,20 @@ void __79__NPKPaymentWebServiceCompanionTargetDevice_carKeyRejectInvitation_comp
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __76__NPKPaymentWebServiceCompanionTargetDevice_carKeyRejectInvitationResponse___block_invoke;
     block[3] = &unk_279949C48;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     p_buf = &buf;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -42494,11 +42494,11 @@ void __76__NPKPaymentWebServiceCompanionTargetDevice_carKeyRejectInvitationRespo
   }
 }
 
-- (void)revokeCredentialsWithReaderIdentifiers:(id)a3 completion:(id)a4
+- (void)revokeCredentialsWithReaderIdentifiers:(id)identifiers completion:(id)completion
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   v8 = pk_Payment_log();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
 
@@ -42507,9 +42507,9 @@ void __76__NPKPaymentWebServiceCompanionTargetDevice_carKeyRejectInvitationRespo
     v10 = pk_Payment_log();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
-      v11 = _Block_copy(v7);
+      v11 = _Block_copy(completionCopy);
       *buf = 138412546;
-      v22 = v6;
+      v22 = identifiersCopy;
       v23 = 2112;
       v24 = v11;
       _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Notice: Target device - revoke credentials with reader identifiers %@ completion %@", buf, 0x16u);
@@ -42518,15 +42518,15 @@ void __76__NPKPaymentWebServiceCompanionTargetDevice_carKeyRejectInvitationRespo
 
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isRevokeCredentialsWithReaderIdentifiersSupported])
   {
-    v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __95__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithReaderIdentifiers_completion___block_invoke;
     block[3] = &unk_279945A48;
-    v18 = v6;
-    v19 = self;
-    v20 = v7;
-    dispatch_sync(v12, block);
+    v18 = identifiersCopy;
+    selfCopy = self;
+    v20 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -42544,9 +42544,9 @@ void __76__NPKPaymentWebServiceCompanionTargetDevice_carKeyRejectInvitationRespo
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -42671,10 +42671,10 @@ void __95__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithReader
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)revokeCredentialsWithReaderIdentifiersResponse:(id)a3
+- (void)revokeCredentialsWithReaderIdentifiersResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -42683,15 +42683,15 @@ void __95__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithReader
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target revokeCredentialsWithReaderIdentifiersResponse: incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -42703,19 +42703,19 @@ void __95__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithReader
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __92__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithReaderIdentifiersResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v23;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -42784,10 +42784,10 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithReader
   }
 }
 
-- (id)passesWithReaderIdentifier:(id)a3
+- (id)passesWithReaderIdentifier:(id)identifier
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -42797,7 +42797,7 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithReader
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v4;
+      *(&buf + 4) = identifierCopy;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device - passes with reader identifier: %@", &buf, 0xCu);
     }
   }
@@ -42808,13 +42808,13 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithReader
   v21 = __Block_byref_object_copy__22;
   v22 = __Block_byref_object_dispose__22;
   v23 = 0;
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __72__NPKPaymentWebServiceCompanionTargetDevice_passesWithReaderIdentifier___block_invoke;
   v16[3] = &unk_279949AB8;
   v16[4] = &buf;
-  [v8 passesWithReaderIdentifier:v4 synchronous:1 reply:v16];
+  [companionAgentConnection passesWithReaderIdentifier:identifierCopy synchronous:1 reply:v16];
 
   v9 = pk_Payment_log();
   v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
@@ -42839,10 +42839,10 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithReader
   return v13;
 }
 
-- (void)deviceSupportedRadioTechnologiesWithCompletion:(id)a3
+- (void)deviceSupportedRadioTechnologiesWithCompletion:(id)completion
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  completionCopy = completion;
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -42851,14 +42851,14 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithReader
     v6 = pk_Payment_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = _Block_copy(v3);
+      v7 = _Block_copy(completionCopy);
       v14 = 138412290;
       v15 = v7;
       _os_log_impl(&dword_25B300000, v6, OS_LOG_TYPE_DEFAULT, "Notice: Target device - device supported radio technologies with completion: %@", &v14, 0xCu);
     }
   }
 
-  if (v3)
+  if (completionCopy)
   {
     v8 = NPKPairedOrPairingDevice();
     v9 = NPKRadioTechnologySupportedByPairedDevice(3, v8);
@@ -42876,7 +42876,7 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithReader
       }
     }
 
-    (*(v3 + 2))(v3, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 
   v13 = *MEMORY[0x277D85DE8];
@@ -42901,36 +42901,36 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithReader
   v10 = buf;
   v11 = 0x2020000000;
   v12 = 0;
-  v6 = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
+  companionAgentConnection = [(NPKPaymentWebServiceCompanionTargetDevice *)self companionAgentConnection];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __92__NPKPaymentWebServiceCompanionTargetDevice_canAddToCompanionPrecheckForegroundConnectivity__block_invoke;
   v8[3] = &unk_279949B30;
   v8[4] = buf;
-  [v6 canAddToCompanionPrecheckForegroundConnectivitySynchronous:1 reply:v8];
+  [companionAgentConnection canAddToCompanionPrecheckForegroundConnectivitySynchronous:1 reply:v8];
 
-  LOBYTE(v6) = v10[24];
+  LOBYTE(companionAgentConnection) = v10[24];
   _Block_object_dispose(buf, 8);
-  return v6;
+  return companionAgentConnection;
 }
 
-- (void)cancelAutoTopUpForPassWithUniqueIdentifier:(id)a3 balanceIdentifiers:(id)a4 completion:(id)a5
+- (void)cancelAutoTopUpForPassWithUniqueIdentifier:(id)identifier balanceIdentifiers:(id)identifiers completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isAutoTopUpSupported])
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __118__NPKPaymentWebServiceCompanionTargetDevice_cancelAutoTopUpForPassWithUniqueIdentifier_balanceIdentifiers_completion___block_invoke;
     block[3] = &unk_279945C50;
-    v17 = v8;
-    v18 = v9;
-    v19 = self;
-    v20 = v10;
-    dispatch_sync(v11, block);
+    v17 = identifierCopy;
+    v18 = identifiersCopy;
+    selfCopy = self;
+    v20 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -42948,9 +42948,9 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_revokeCredentialsWithReader
       }
     }
 
-    if (v10)
+    if (completionCopy)
     {
-      (*(v10 + 2))(v10, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 }
@@ -43122,10 +43122,10 @@ void __118__NPKPaymentWebServiceCompanionTargetDevice_cancelAutoTopUpForPassWith
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)cancelAutoTopUpResponse:(id)a3
+- (void)cancelAutoTopUpResponse:(id)response
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -43134,15 +43134,15 @@ void __118__NPKPaymentWebServiceCompanionTargetDevice_cancelAutoTopUpForPassWith
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [responseCopy npkDescription];
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v8;
+      *(&buf + 4) = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Cancel auto top up incoming protobuf %@", &buf, 0xCu);
     }
   }
 
-  v9 = [v4 context];
-  v10 = [v9 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *&buf = 0;
   *(&buf + 1) = &buf;
@@ -43154,19 +43154,19 @@ void __118__NPKPaymentWebServiceCompanionTargetDevice_cancelAutoTopUpForPassWith
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (v10)
+  if (incomingResponseIdentifier)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __69__NPKPaymentWebServiceCompanionTargetDevice_cancelAutoTopUpResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v19 = v10;
-    v20 = v4;
+    v19 = incomingResponseIdentifier;
+    v20 = responseCopy;
     v21 = &v23;
     p_buf = &buf;
-    dispatch_sync(v11, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -43232,10 +43232,10 @@ void __69__NPKPaymentWebServiceCompanionTargetDevice_cancelAutoTopUpResponse___b
   }
 }
 
-- (void)serviceProviderDataForPassWithUniqueIdentifierResponse:(id)a3
+- (void)serviceProviderDataForPassWithUniqueIdentifierResponse:(id)response
 {
   v54 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -43244,18 +43244,18 @@ void __69__NPKPaymentWebServiceCompanionTargetDevice_cancelAutoTopUpResponse___b
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
-      v9 = [v4 data];
+      npkDescription = [responseCopy npkDescription];
+      data = [responseCopy data];
       *buf = 138412546;
-      *&buf[4] = v8;
+      *&buf[4] = npkDescription;
       *&buf[12] = 2048;
-      *&buf[14] = [v9 length];
+      *&buf[14] = [data length];
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target serviceProviderDataForPassWithUniqueIdentifierResponse: incoming protobuf %@. Data size: %lu", buf, 0x16u);
     }
   }
 
-  v10 = [v4 context];
-  v11 = [v10 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -43279,21 +43279,21 @@ void __69__NPKPaymentWebServiceCompanionTargetDevice_cancelAutoTopUpResponse___b
   v37 = __Block_byref_object_copy__22;
   v38 = __Block_byref_object_dispose__22;
   v39 = 0;
-  if (v11)
+  if (incomingResponseIdentifier)
   {
-    v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __100__NPKPaymentWebServiceCompanionTargetDevice_serviceProviderDataForPassWithUniqueIdentifierResponse___block_invoke;
     block[3] = &unk_279949BA8;
     block[4] = self;
-    v28 = v11;
-    v29 = v4;
+    v28 = incomingResponseIdentifier;
+    v29 = responseCopy;
     v30 = buf;
     v31 = &v44;
     v32 = &v40;
     v33 = &v34;
-    dispatch_sync(v12, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -43419,11 +43419,11 @@ void __100__NPKPaymentWebServiceCompanionTargetDevice_serviceProviderDataForPass
   }
 }
 
-- (void)serviceProviderDataForPassWithUniqueIdentifier:(id)a3 encrypted:(BOOL)a4 completion:(id)a5
+- (void)serviceProviderDataForPassWithUniqueIdentifier:(id)identifier encrypted:(BOOL)encrypted completion:(id)completion
 {
   v32 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v10 = NPKPairedOrPairingDevice();
   v11 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"674FD660-822D-4A0A-8A10-7ED7299FB8F7"];
   if ([v10 supportsCapability:v11])
@@ -43468,16 +43468,16 @@ void __100__NPKPaymentWebServiceCompanionTargetDevice_serviceProviderDataForPass
 
   if (v12)
   {
-    v19 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __113__NPKPaymentWebServiceCompanionTargetDevice_serviceProviderDataForPassWithUniqueIdentifier_encrypted_completion___block_invoke;
     v25[3] = &unk_27994A0A8;
-    v29 = a4;
-    v26 = v8;
-    v27 = self;
-    v28 = v9;
-    dispatch_sync(v19, v25);
+    encryptedCopy = encrypted;
+    v26 = identifierCopy;
+    selfCopy = self;
+    v28 = completionCopy;
+    dispatch_sync(internalQueue, v25);
 
     v20 = v26;
 LABEL_21:
@@ -43494,15 +43494,15 @@ LABEL_21:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v31 = v8;
+      v31 = identifierCopy;
       _os_log_impl(&dword_25B300000, v23, OS_LOG_TYPE_DEFAULT, "Notice: Target device does not support the message. Not sending message to get Service Provider data for pass with unique ID %@.", buf, 0xCu);
     }
   }
 
-  if (v9)
+  if (completionCopy)
   {
     v20 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v9 + 2))(v9, 0, v20);
+    (*(completionCopy + 2))(completionCopy, 0, v20);
     goto LABEL_21;
   }
 
@@ -43737,10 +43737,10 @@ void __106__NPKPaymentWebServiceCompanionTargetDevice_serviceProviderDataForSecu
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)paymentSetupFeaturesForConfigurationResponse:(id)a3
+- (void)paymentSetupFeaturesForConfigurationResponse:(id)response
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -43749,18 +43749,18 @@ void __106__NPKPaymentWebServiceCompanionTargetDevice_serviceProviderDataForSecu
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
-      v9 = [v4 data];
+      npkDescription = [responseCopy npkDescription];
+      data = [responseCopy data];
       *buf = 138412546;
-      *&buf[4] = v8;
+      *&buf[4] = npkDescription;
       *&buf[12] = 2048;
-      *&buf[14] = [v9 length];
+      *&buf[14] = [data length];
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target paymentSetupFeaturesForConfigurationResponse: incoming protobuf %@. Data size: %lu", buf, 0x16u);
     }
   }
 
-  v10 = [v4 context];
-  v11 = [v10 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -43774,19 +43774,19 @@ void __106__NPKPaymentWebServiceCompanionTargetDevice_serviceProviderDataForSecu
   v33 = __Block_byref_object_copy__22;
   v34 = __Block_byref_object_dispose__22;
   v35 = 0;
-  if (v11)
+  if (incomingResponseIdentifier)
   {
-    v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __90__NPKPaymentWebServiceCompanionTargetDevice_paymentSetupFeaturesForConfigurationResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v26 = v11;
-    v27 = v4;
+    v26 = incomingResponseIdentifier;
+    v27 = responseCopy;
     v28 = buf;
     v29 = &v30;
-    dispatch_sync(v12, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -43900,26 +43900,26 @@ id __90__NPKPaymentWebServiceCompanionTargetDevice_paymentSetupFeaturesForConfig
   return v4;
 }
 
-- (void)paymentSetupFeaturesForConfiguration:(id)a3 completion:(id)a4
+- (void)paymentSetupFeaturesForConfiguration:(id)configuration completion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  configurationCopy = configuration;
+  completionCopy = completion;
   v8 = NPKPairedOrPairingDevice();
   v9 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"C990FB84-055B-467E-B7AD-EB88FCE19825"];
   v10 = [v8 supportsCapability:v9];
 
   if (v10)
   {
-    v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __93__NPKPaymentWebServiceCompanionTargetDevice_paymentSetupFeaturesForConfiguration_completion___block_invoke;
     block[3] = &unk_279945A48;
     block[4] = self;
-    v17 = v6;
-    v18 = v7;
-    dispatch_sync(v11, block);
+    v17 = configurationCopy;
+    v18 = completionCopy;
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -43933,14 +43933,14 @@ id __90__NPKPaymentWebServiceCompanionTargetDevice_paymentSetupFeaturesForConfig
       if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v20 = v6;
+        v20 = configurationCopy;
         _os_log_impl(&dword_25B300000, v14, OS_LOG_TYPE_DEFAULT, "Notice: Target device does not support the message. Not sending message to get payment setup features for configuration %@.", buf, 0xCu);
       }
     }
 
-    if (v7)
+    if (completionCopy)
     {
-      (*(v7 + 2))(v7, 0);
+      (*(completionCopy + 2))(completionCopy, 0);
     }
   }
 
@@ -44105,10 +44105,10 @@ void __93__NPKPaymentWebServiceCompanionTargetDevice_paymentSetupFeaturesForConf
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hasActiveExternallySharedPassesResponse:(id)a3
+- (void)hasActiveExternallySharedPassesResponse:(id)response
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -44117,18 +44117,18 @@ void __93__NPKPaymentWebServiceCompanionTargetDevice_paymentSetupFeaturesForConf
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
-      v9 = [v4 data];
+      npkDescription = [responseCopy npkDescription];
+      data = [responseCopy data];
       *buf = 138412546;
-      *&buf[4] = v8;
+      *&buf[4] = npkDescription;
       *&buf[12] = 2048;
-      *&buf[14] = [v9 length];
+      *&buf[14] = [data length];
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target hasActiveExternallySharedPassesResponse: incoming protobuf %@. Data size: %lu", buf, 0x16u);
     }
   }
 
-  v10 = [v4 context];
-  v11 = [v10 incomingResponseIdentifier];
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   *buf = 0;
   *&buf[8] = buf;
@@ -44146,20 +44146,20 @@ void __93__NPKPaymentWebServiceCompanionTargetDevice_paymentSetupFeaturesForConf
   v35 = __Block_byref_object_copy__22;
   v36 = __Block_byref_object_dispose__22;
   v37 = 0;
-  if (v11)
+  if (incomingResponseIdentifier)
   {
-    v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __85__NPKPaymentWebServiceCompanionTargetDevice_hasActiveExternallySharedPassesResponse___block_invoke;
     v26[3] = &unk_279949C48;
     v26[4] = self;
-    v27 = v11;
-    v28 = v4;
+    v27 = incomingResponseIdentifier;
+    v28 = responseCopy;
     v29 = buf;
     v30 = &v38;
     v31 = &v32;
-    dispatch_sync(v12, v26);
+    dispatch_sync(internalQueue, v26);
   }
 
   else
@@ -44278,15 +44278,15 @@ void __85__NPKPaymentWebServiceCompanionTargetDevice_hasActiveExternallySharedPa
   }
 }
 
-- (void)hasActiveExternallySharedPasses:(id)a3
+- (void)hasActiveExternallySharedPasses:(id)passes
 {
-  v4 = a3;
+  passesCopy = passes;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __77__NPKPaymentWebServiceCompanionTargetDevice_hasActiveExternallySharedPasses___block_invoke;
   v6[3] = &unk_279944F48;
-  v7 = v4;
-  v5 = v4;
+  v7 = passesCopy;
+  v5 = passesCopy;
   [(NPKPaymentWebServiceCompanionTargetDevice *)self hasActiveExternallySharedPassesWithCompletion:v6];
 }
 
@@ -44301,22 +44301,22 @@ uint64_t __77__NPKPaymentWebServiceCompanionTargetDevice_hasActiveExternallyShar
   return result;
 }
 
-- (void)currentSecureElementSnapshot:(id)a3
+- (void)currentSecureElementSnapshot:(id)snapshot
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (v4)
+  snapshotCopy = snapshot;
+  if (snapshotCopy)
   {
     if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isParallelProvisioningSupported])
     {
-      v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+      internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
       v13[0] = MEMORY[0x277D85DD0];
       v13[1] = 3221225472;
       v13[2] = __74__NPKPaymentWebServiceCompanionTargetDevice_currentSecureElementSnapshot___block_invoke;
       v13[3] = &unk_279945530;
       v13[4] = self;
-      v14 = v4;
-      dispatch_sync(v5, v13);
+      v14 = snapshotCopy;
+      dispatch_sync(internalQueue, v13);
     }
 
     else
@@ -44335,7 +44335,7 @@ uint64_t __77__NPKPaymentWebServiceCompanionTargetDevice_hasActiveExternallyShar
         }
       }
 
-      (*(v4 + 2))(v4, 0, 0);
+      (*(snapshotCopy + 2))(snapshotCopy, 0, 0);
     }
   }
 
@@ -44434,12 +44434,12 @@ void __74__NPKPaymentWebServiceCompanionTargetDevice_currentSecureElementSnapsho
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)currentSecureElementSnapshotResponse:(id)a3
+- (void)currentSecureElementSnapshotResponse:(id)response
 {
   v42 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [v5 incomingResponseIdentifier];
+  responseCopy = response;
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   v34 = 0;
   v35 = &v34;
@@ -44459,20 +44459,20 @@ void __74__NPKPaymentWebServiceCompanionTargetDevice_currentSecureElementSnapsho
   v25 = __Block_byref_object_copy__22;
   v26 = __Block_byref_object_dispose__22;
   v27 = 0;
-  if (v6)
+  if (incomingResponseIdentifier)
   {
-    v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __82__NPKPaymentWebServiceCompanionTargetDevice_currentSecureElementSnapshotResponse___block_invoke;
     v16[3] = &unk_279949C48;
     v16[4] = self;
-    v17 = v6;
-    v18 = v4;
+    v17 = incomingResponseIdentifier;
+    v18 = responseCopy;
     v19 = &v34;
     v20 = &v28;
     v21 = &v22;
-    dispatch_sync(v7, v16);
+    dispatch_sync(internalQueue, v16);
   }
 
   else
@@ -44588,31 +44588,31 @@ void __82__NPKPaymentWebServiceCompanionTargetDevice_currentSecureElementSnapsho
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reserveStorageForAppletTypes:(id)a3 metadata:(id)a4 completion:(id)a5
+- (void)reserveStorageForAppletTypes:(id)types metadata:(id)metadata completion:(id)completion
 {
   v23 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  typesCopy = types;
+  metadataCopy = metadata;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isParallelProvisioningSupported])
     {
-      v11 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+      internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
       v16[0] = MEMORY[0x277D85DD0];
       v16[1] = 3221225472;
       v16[2] = __94__NPKPaymentWebServiceCompanionTargetDevice_reserveStorageForAppletTypes_metadata_completion___block_invoke;
       v16[3] = &unk_279945BB0;
-      v17 = v8;
-      v18 = v9;
-      v19 = self;
-      v20 = v10;
-      dispatch_sync(v11, v16);
+      v17 = typesCopy;
+      v18 = metadataCopy;
+      selfCopy = self;
+      v20 = completionCopy;
+      dispatch_sync(internalQueue, v16);
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0, 0, 0);
+      (*(completionCopy + 2))(completionCopy, 0, 0, 0);
     }
   }
 
@@ -44717,12 +44717,12 @@ void __94__NPKPaymentWebServiceCompanionTargetDevice_reserveStorageForAppletType
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reserveStorageForAppletTypesResponse:(id)a3
+- (void)reserveStorageForAppletTypesResponse:(id)response
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [v5 incomingResponseIdentifier];
+  responseCopy = response;
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   v40 = 0;
   v41 = &v40;
@@ -44746,21 +44746,21 @@ void __94__NPKPaymentWebServiceCompanionTargetDevice_reserveStorageForAppletType
   v27 = __Block_byref_object_copy__22;
   v28 = __Block_byref_object_dispose__22;
   v29 = 0;
-  if (v6)
+  if (incomingResponseIdentifier)
   {
-    v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __82__NPKPaymentWebServiceCompanionTargetDevice_reserveStorageForAppletTypesResponse___block_invoke;
     block[3] = &unk_279949BA8;
     block[4] = self;
-    v18 = v6;
-    v19 = v4;
+    v18 = incomingResponseIdentifier;
+    v19 = responseCopy;
     v20 = &v40;
     v21 = &v34;
     v22 = &v30;
     v23 = &v24;
-    dispatch_sync(v7, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -44922,24 +44922,24 @@ LABEL_18:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteReservation:(id)a3 completion:(id)a4
+- (void)deleteReservation:(id)reservation completion:(id)completion
 {
   v22 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  reservationCopy = reservation;
+  completionCopy = completion;
+  if (completionCopy)
   {
     if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isParallelProvisioningSupported])
     {
-      v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+      internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __74__NPKPaymentWebServiceCompanionTargetDevice_deleteReservation_completion___block_invoke;
       block[3] = &unk_279945A48;
-      v17 = v6;
-      v18 = self;
-      v19 = v7;
-      dispatch_sync(v8, block);
+      v17 = reservationCopy;
+      selfCopy = self;
+      v19 = completionCopy;
+      dispatch_sync(internalQueue, block);
     }
 
     else
@@ -44958,7 +44958,7 @@ LABEL_18:
         }
       }
 
-      v7[2](v7);
+      completionCopy[2](completionCopy);
     }
   }
 
@@ -45086,12 +45086,12 @@ void __74__NPKPaymentWebServiceCompanionTargetDevice_deleteReservation_completio
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteReservationResponse:(id)a3
+- (void)deleteReservationResponse:(id)response
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [v5 incomingResponseIdentifier];
+  responseCopy = response;
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   v19 = 0;
   v20 = &v19;
@@ -45099,17 +45099,17 @@ void __74__NPKPaymentWebServiceCompanionTargetDevice_deleteReservation_completio
   v22 = __Block_byref_object_copy__384;
   v23 = __Block_byref_object_dispose__385;
   v24 = 0;
-  if (v6)
+  if (incomingResponseIdentifier)
   {
-    v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __71__NPKPaymentWebServiceCompanionTargetDevice_deleteReservationResponse___block_invoke;
     block[3] = &unk_279948090;
     block[4] = self;
-    v17 = v6;
+    v17 = incomingResponseIdentifier;
     v18 = &v19;
-    dispatch_sync(v7, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -45193,10 +45193,10 @@ void __71__NPKPaymentWebServiceCompanionTargetDevice_deleteReservationResponse__
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)allPaymentApplicationUsageSummariesWithCompletion:(id)a3
+- (void)allPaymentApplicationUsageSummariesWithCompletion:(id)completion
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  completionCopy = completion;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -45205,7 +45205,7 @@ void __71__NPKPaymentWebServiceCompanionTargetDevice_deleteReservationResponse__
     v7 = pk_General_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = _Block_copy(v4);
+      v8 = _Block_copy(completionCopy);
       *buf = 136315394;
       v18 = "[NPKPaymentWebServiceCompanionTargetDevice allPaymentApplicationUsageSummariesWithCompletion:]";
       v19 = 2112;
@@ -45230,18 +45230,18 @@ void __71__NPKPaymentWebServiceCompanionTargetDevice_deleteReservationResponse__
       }
     }
 
-    (*(v4 + 2))(v4, 0);
+    (*(completionCopy + 2))(completionCopy, 0);
   }
 
-  v12 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __95__NPKPaymentWebServiceCompanionTargetDevice_allPaymentApplicationUsageSummariesWithCompletion___block_invoke;
   v15[3] = &unk_279945530;
   v15[4] = self;
-  v16 = v4;
-  v13 = v4;
-  dispatch_sync(v12, v15);
+  v16 = completionCopy;
+  v13 = completionCopy;
+  dispatch_sync(internalQueue, v15);
 
   v14 = *MEMORY[0x277D85DE8];
 }
@@ -45313,14 +45313,14 @@ void __95__NPKPaymentWebServiceCompanionTargetDevice_allPaymentApplicationUsageS
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)paymentApplicationUsageSummariesResponse:(id)a3
+- (void)paymentApplicationUsageSummariesResponse:(id)response
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [v5 incomingResponseIdentifier];
+  responseCopy = response;
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  if (v6)
+  if (incomingResponseIdentifier)
   {
     *buf = 0;
     v28 = buf;
@@ -45334,17 +45334,17 @@ void __95__NPKPaymentWebServiceCompanionTargetDevice_allPaymentApplicationUsageS
     v24 = __Block_byref_object_copy__22;
     v25 = __Block_byref_object_dispose__22;
     v26 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __86__NPKPaymentWebServiceCompanionTargetDevice_paymentApplicationUsageSummariesResponse___block_invoke;
     block[3] = &unk_279949F68;
     block[4] = self;
-    v17 = v6;
+    v17 = incomingResponseIdentifier;
     v19 = buf;
-    v18 = v4;
+    v18 = responseCopy;
     v20 = &v21;
-    dispatch_sync(v7, block);
+    dispatch_sync(internalQueue, block);
 
     v8 = *(v28 + 5);
     if (v8)
@@ -45487,10 +45487,10 @@ LABEL_17:
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reclaimUnusedSEMemory:(id)a3
+- (void)reclaimUnusedSEMemory:(id)memory
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  memoryCopy = memory;
   v5 = pk_General_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -45499,7 +45499,7 @@ LABEL_17:
     v7 = pk_General_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = _Block_copy(v4);
+      v8 = _Block_copy(memoryCopy);
       *buf = 136315394;
       v19 = "[NPKPaymentWebServiceCompanionTargetDevice reclaimUnusedSEMemory:]";
       v20 = 2112;
@@ -45525,18 +45525,18 @@ LABEL_17:
     }
 
     v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-    (*(v4 + 2))(v4, 0, v12);
+    (*(memoryCopy + 2))(memoryCopy, 0, v12);
   }
 
-  v13 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+  internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __67__NPKPaymentWebServiceCompanionTargetDevice_reclaimUnusedSEMemory___block_invoke;
   v16[3] = &unk_279945530;
   v16[4] = self;
-  v17 = v4;
-  v14 = v4;
-  dispatch_sync(v13, v16);
+  v17 = memoryCopy;
+  v14 = memoryCopy;
+  dispatch_sync(internalQueue, v16);
 
   v15 = *MEMORY[0x277D85DE8];
 }
@@ -45586,14 +45586,14 @@ void __67__NPKPaymentWebServiceCompanionTargetDevice_reclaimUnusedSEMemory___blo
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)reclaimUnusedSEMemoryResponse:(id)a3
+- (void)reclaimUnusedSEMemoryResponse:(id)response
 {
   v43 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [v5 incomingResponseIdentifier];
+  responseCopy = response;
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
-  if (v6)
+  if (incomingResponseIdentifier)
   {
     *buf = 0;
     v36 = buf;
@@ -45613,18 +45613,18 @@ void __67__NPKPaymentWebServiceCompanionTargetDevice_reclaimUnusedSEMemory___blo
     v26 = __Block_byref_object_copy__22;
     v27 = __Block_byref_object_dispose__22;
     v28 = 0;
-    v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __75__NPKPaymentWebServiceCompanionTargetDevice_reclaimUnusedSEMemoryResponse___block_invoke;
     v16[3] = &unk_279949C48;
-    v17 = v4;
-    v18 = self;
-    v19 = v6;
+    v17 = responseCopy;
+    selfCopy = self;
+    v19 = incomingResponseIdentifier;
     v20 = buf;
     v21 = &v29;
     v22 = &v23;
-    dispatch_sync(v7, v16);
+    dispatch_sync(internalQueue, v16);
 
     v8 = *(v36 + 5);
     if (v8)
@@ -45768,22 +45768,22 @@ void __75__NPKPaymentWebServiceCompanionTargetDevice_reclaimUnusedSEMemoryRespon
   return v3;
 }
 
-- (void)addPendingProvisionings:(id)a3 completion:(id)a4
+- (void)addPendingProvisionings:(id)provisionings completion:(id)completion
 {
   v18[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  provisioningsCopy = provisionings;
+  completionCopy = completion;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isParallelProvisioningSupported])
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __80__NPKPaymentWebServiceCompanionTargetDevice_addPendingProvisionings_completion___block_invoke;
     v13[3] = &unk_279945A48;
-    v14 = v6;
-    v15 = self;
-    v16 = v7;
-    dispatch_sync(v8, v13);
+    v14 = provisioningsCopy;
+    selfCopy = self;
+    v16 = completionCopy;
+    dispatch_sync(internalQueue, v13);
 
     v9 = v14;
   }
@@ -45796,7 +45796,7 @@ void __75__NPKPaymentWebServiceCompanionTargetDevice_reclaimUnusedSEMemoryRespon
     v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:&v17 count:1];
     v9 = [v10 errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:v11];
 
-    (*(v7 + 2))(v7, v9);
+    (*(completionCopy + 2))(completionCopy, v9);
   }
 
   v12 = *MEMORY[0x277D85DE8];
@@ -45879,12 +45879,12 @@ void __80__NPKPaymentWebServiceCompanionTargetDevice_addPendingProvisionings_com
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPendingProvisioningsResponse:(id)a3
+- (void)addPendingProvisioningsResponse:(id)response
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 context];
-  v6 = [v5 incomingResponseIdentifier];
+  responseCopy = response;
+  context = [responseCopy context];
+  incomingResponseIdentifier = [context incomingResponseIdentifier];
 
   v27 = 0;
   v28 = &v27;
@@ -45898,19 +45898,19 @@ void __80__NPKPaymentWebServiceCompanionTargetDevice_addPendingProvisionings_com
   v24 = __Block_byref_object_copy__22;
   v25 = __Block_byref_object_dispose__22;
   v26 = 0;
-  if (v6)
+  if (incomingResponseIdentifier)
   {
-    v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __77__NPKPaymentWebServiceCompanionTargetDevice_addPendingProvisioningsResponse___block_invoke;
     block[3] = &unk_279949CC0;
     block[4] = self;
-    v17 = v6;
-    v18 = v4;
+    v17 = incomingResponseIdentifier;
+    v18 = responseCopy;
     v19 = &v21;
     v20 = &v27;
-    dispatch_sync(v7, block);
+    dispatch_sync(internalQueue, block);
   }
 
   else
@@ -46017,10 +46017,10 @@ void __77__NPKPaymentWebServiceCompanionTargetDevice_addPendingProvisioningsResp
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addPendingProvisioningsRequest:(id)a3
+- (void)addPendingProvisioningsRequest:(id)request
 {
   v43 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  requestCopy = request;
   v4 = pk_Payment_log();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
 
@@ -46029,17 +46029,17 @@ void __77__NPKPaymentWebServiceCompanionTargetDevice_addPendingProvisioningsResp
     v6 = pk_Payment_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v3 npkDescription];
+      npkDescription = [requestCopy npkDescription];
       *buf = 138412290;
-      v42 = v7;
+      v42 = npkDescription;
       _os_log_impl(&dword_25B300000, v6, OS_LOG_TYPE_DEFAULT, "Notice: Target device - received add pending provisionings request: %@", buf, 0xCu);
     }
   }
 
   v8 = [NPKProtoAddPendingProvisioningRequest alloc];
-  v29 = v3;
-  v9 = [v3 data];
-  v10 = [(NPKProtoAddPendingProvisioningRequest *)v8 initWithData:v9];
+  v29 = requestCopy;
+  data = [requestCopy data];
+  v10 = [(NPKProtoAddPendingProvisioningRequest *)v8 initWithData:data];
 
   v32 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{-[NPKProtoAddPendingProvisioningRequest pendingProvisioningsCount](v10, "pendingProvisioningsCount")}];
   v36 = 0u;
@@ -46161,10 +46161,10 @@ LABEL_9:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)pendingProvisioningReceiptRequest:(id)a3
+- (void)pendingProvisioningReceiptRequest:(id)request
 {
   v30 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  requestCopy = request;
   v5 = pk_Payment_log();
   v6 = os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT);
 
@@ -46173,23 +46173,23 @@ LABEL_9:
     v7 = pk_Payment_log();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [v4 npkDescription];
+      npkDescription = [requestCopy npkDescription];
       v28 = 138412290;
-      v29 = v8;
+      v29 = npkDescription;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Target device - received  pending provisionings receipt request: %@", &v28, 0xCu);
     }
   }
 
   v9 = [NPKProtoPendingProvisioningReceiptRequest alloc];
-  v10 = [v4 data];
-  v11 = [(NPKProtoPendingProvisioningReceiptRequest *)v9 initWithData:v10];
+  data = [requestCopy data];
+  v11 = [(NPKProtoPendingProvisioningReceiptRequest *)v9 initWithData:data];
 
-  v12 = [(NPKProtoPendingProvisioningReceiptRequest *)v11 identifier];
-  v13 = [(NPKProtoPendingProvisioningReceiptRequest *)v11 receiptData];
+  identifier = [(NPKProtoPendingProvisioningReceiptRequest *)v11 identifier];
+  receiptData = [(NPKProtoPendingProvisioningReceiptRequest *)v11 receiptData];
   v14 = objc_opt_class();
-  v15 = NPKSecureUnarchiveObject(v13, v14);
+  v15 = NPKSecureUnarchiveObject(receiptData, v14);
 
-  if (v12 && v15)
+  if (identifier && v15)
   {
     v16 = pk_Payment_log();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
@@ -46211,10 +46211,10 @@ LABEL_9:
     }
 
     v20 = objc_alloc_init(NPKProtoPendingProvisioningReceiptResponse);
-    [(NPKProtoPendingProvisioningReceiptResponse *)v20 setIdentifier:v12];
+    [(NPKProtoPendingProvisioningReceiptResponse *)v20 setIdentifier:identifier];
     v21 = objc_alloc(MEMORY[0x277D189F0]);
-    v22 = [(NPKProtoPendingProvisioningReceiptResponse *)v20 data];
-    v23 = [v21 initWithProtobufData:v22 type:156 isResponse:1];
+    data2 = [(NPKProtoPendingProvisioningReceiptResponse *)v20 data];
+    v23 = [v21 initWithProtobufData:data2 type:156 isResponse:1];
 
     v24 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _sendProtobuf:v23 responseExpected:0];
   }
@@ -46242,23 +46242,23 @@ LABEL_18:
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)hasActiveExternallySharedPassesWithCompletion:(id)a3
+- (void)hasActiveExternallySharedPassesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v5 = NPKPairedOrPairingDevice();
   v6 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:@"FD975695-3B94-465A-86E1-26276C5835A8"];
   v7 = [v5 supportsCapability:v6];
 
   if (v7)
   {
-    v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
+    internalQueue = [(NPKPaymentWebServiceCompanionTargetDevice *)self internalQueue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __91__NPKPaymentWebServiceCompanionTargetDevice_hasActiveExternallySharedPassesWithCompletion___block_invoke;
     v13[3] = &unk_279945530;
     v13[4] = self;
-    v14 = v4;
-    dispatch_sync(v8, v13);
+    v14 = completionCopy;
+    dispatch_sync(internalQueue, v13);
   }
 
   else
@@ -46276,10 +46276,10 @@ LABEL_18:
       }
     }
 
-    if (v4)
+    if (completionCopy)
     {
       v12 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.NPKErrorDomain" code:-1006 userInfo:0];
-      (*(v4 + 2))(v4, 0, v12);
+      (*(completionCopy + 2))(completionCopy, 0, v12);
     }
   }
 }
@@ -46438,10 +46438,10 @@ void __91__NPKPaymentWebServiceCompanionTargetDevice_hasActiveExternallySharedPa
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)expressModeEnabledForPassIdentifier:(id)a3 completion:(id)a4
+- (void)expressModeEnabledForPassIdentifier:(id)identifier completion:(id)completion
 {
-  v5 = a3;
-  v6 = a4;
+  identifierCopy = identifier;
+  completionCopy = completion;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -46451,13 +46451,13 @@ void __91__NPKPaymentWebServiceCompanionTargetDevice_hasActiveExternallySharedPa
   v9[1] = 3221225472;
   v9[2] = __92__NPKPaymentWebServiceCompanionTargetDevice_expressModeEnabledForPassIdentifier_completion___block_invoke;
   v9[3] = &unk_279948878;
-  v8 = v5;
+  v8 = identifierCopy;
   v10 = v8;
   v11 = &v12;
   [v7 enumerateObjectsUsingBlock:v9];
-  if (v6)
+  if (completionCopy)
   {
-    v6[2](v6, *(v13 + 24));
+    completionCopy[2](completionCopy, *(v13 + 24));
   }
 
   _Block_object_dispose(&v12, 8);
@@ -46475,17 +46475,17 @@ void __92__NPKPaymentWebServiceCompanionTargetDevice_expressModeEnabledForPassId
   }
 }
 
-- (void)passcodeChangeCoordinator:(id)a3 remoteDeviceShouldInitiatePasscodeChangeForType:(unint64_t)a4 completion:(id)a5
+- (void)passcodeChangeCoordinator:(id)coordinator remoteDeviceShouldInitiatePasscodeChangeForType:(unint64_t)type completion:(id)completion
 {
-  v7 = a5;
+  completionCopy = completion;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __130__NPKPaymentWebServiceCompanionTargetDevice_passcodeChangeCoordinator_remoteDeviceShouldInitiatePasscodeChangeForType_completion___block_invoke;
   v9[3] = &unk_27994A8B8;
-  v10 = v7;
-  v11 = a4;
-  v8 = v7;
-  [(NPKPaymentWebServiceCompanionTargetDevice *)self presentRemoteDevicePasscodeUpgradePromptForChangeType:a4 completion:v9];
+  v10 = completionCopy;
+  typeCopy = type;
+  v8 = completionCopy;
+  [(NPKPaymentWebServiceCompanionTargetDevice *)self presentRemoteDevicePasscodeUpgradePromptForChangeType:type completion:v9];
 }
 
 void __130__NPKPaymentWebServiceCompanionTargetDevice_passcodeChangeCoordinator_remoteDeviceShouldInitiatePasscodeChangeForType_completion___block_invoke(uint64_t a1, uint64_t a2, void *a3)
@@ -46526,15 +46526,15 @@ void __130__NPKPaymentWebServiceCompanionTargetDevice_passcodeChangeCoordinator_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)passcodeChangeCoordinator:(id)a3 remoteDeviceShouldCancelPasscodeChangeWithCompletion:(id)a4
+- (void)passcodeChangeCoordinator:(id)coordinator remoteDeviceShouldCancelPasscodeChangeWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __124__NPKPaymentWebServiceCompanionTargetDevice_passcodeChangeCoordinator_remoteDeviceShouldCancelPasscodeChangeWithCompletion___block_invoke;
   v7[3] = &unk_279944F48;
-  v8 = v5;
-  v6 = v5;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(NPKPaymentWebServiceCompanionTargetDevice *)self dismissRemoteDevicePasscodeUpgradePromptWithCompletion:v7];
 }
 
@@ -46573,15 +46573,15 @@ void __124__NPKPaymentWebServiceCompanionTargetDevice_passcodeChangeCoordinator_
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)passcodeChangeCoordinator:(id)a3 checkRemoteDeviceLockStateWithCompletion:(id)a4
+- (void)passcodeChangeCoordinator:(id)coordinator checkRemoteDeviceLockStateWithCompletion:(id)completion
 {
-  v5 = a4;
+  completionCopy = completion;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __112__NPKPaymentWebServiceCompanionTargetDevice_passcodeChangeCoordinator_checkRemoteDeviceLockStateWithCompletion___block_invoke;
   v7[3] = &unk_279946BA8;
-  v8 = v5;
-  v6 = v5;
+  v8 = completionCopy;
+  v6 = completionCopy;
   [(NPKPaymentWebServiceCompanionTargetDevice *)self fetchRemoteDevicePasscodeStateWithCompletion:v7];
 }
 
@@ -46620,10 +46620,10 @@ void __112__NPKPaymentWebServiceCompanionTargetDevice_passcodeChangeCoordinator_
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_addCompanionDevicePhoneNumberDataIfNeededWithFields:(unint64_t)a3 toDeviceMetadata:(id)a4
+- (void)_addCompanionDevicePhoneNumberDataIfNeededWithFields:(unint64_t)fields toDeviceMetadata:(id)metadata
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  metadataCopy = metadata;
   v6 = pk_Payment_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
 
@@ -46633,12 +46633,12 @@ void __112__NPKPaymentWebServiceCompanionTargetDevice_passcodeChangeCoordinator_
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v24 = 134217984;
-      v25 = a3;
+      fieldsCopy = fields;
       _os_log_impl(&dword_25B300000, v8, OS_LOG_TYPE_DEFAULT, "Notice: Device Metadata: Verifying whether phone number data needs to be added for fields: %lu", &v24, 0xCu);
     }
   }
 
-  if (v5)
+  if (metadataCopy)
   {
     if (NPKPairedOrPairingDeviceIsTinker())
     {
@@ -46660,12 +46660,12 @@ LABEL_27:
 
     else
     {
-      if ((a3 & 0x20) != 0)
+      if ((fields & 0x20) != 0)
       {
         v12 = PKDevicePhoneNumber();
         if ([v12 length])
         {
-          [v5 setPhoneNumber:v12];
+          [metadataCopy setPhoneNumber:v12];
         }
 
         v13 = pk_Payment_log();
@@ -46677,13 +46677,13 @@ LABEL_27:
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
           {
             v24 = 138412290;
-            v25 = v12;
+            fieldsCopy = v12;
             _os_log_impl(&dword_25B300000, v15, OS_LOG_TYPE_DEFAULT, "Notice: Device Metadata: Phone number %@ to be added", &v24, 0xCu);
           }
         }
       }
 
-      if ((a3 & 0x40) != 0)
+      if ((fields & 0x40) != 0)
       {
         v16 = PKDevicePhoneNumberSignature();
         v11 = v16;
@@ -46691,8 +46691,8 @@ LABEL_27:
         {
           v17 = [v16 objectForKeyedSubscript:*MEMORY[0x277CC4398]];
           v18 = [v11 objectForKeyedSubscript:*MEMORY[0x277CC43A0]];
-          [v5 setSignedPhoneNumber:v17];
-          [v5 setSignedPhoneNumberVersion:v18];
+          [metadataCopy setSignedPhoneNumber:v17];
+          [metadataCopy setSignedPhoneNumberVersion:v18];
         }
 
         else
@@ -46711,7 +46711,7 @@ LABEL_27:
           {
             v22 = [v17 length];
             v24 = 134218242;
-            v25 = v22;
+            fieldsCopy = v22;
             v26 = 2112;
             v27 = v18;
             _os_log_impl(&dword_25B300000, v21, OS_LOG_TYPE_DEFAULT, "Notice: Device Metadata: Phone number signature (%lu characters long) and version %@ to be added", &v24, 0x16u);
@@ -46726,7 +46726,7 @@ LABEL_27:
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_acquireAssertionOfType:(unint64_t)a3
+- (void)_acquireAssertionOfType:(unint64_t)type
 {
   v13 = *MEMORY[0x277D85DE8];
   v5 = pk_Payment_log();
@@ -46738,23 +46738,23 @@ LABEL_27:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134217984;
-      v12 = a3;
+      typeCopy = type;
       _os_log_impl(&dword_25B300000, v7, OS_LOG_TYPE_DEFAULT, "Notice: Acquiring assertion of type:%lu", &v11, 0xCu);
     }
   }
 
-  v8 = [(NPKPaymentWebServiceCompanionTargetDevice *)self remoteDeviceAssertionManager];
-  v9 = [v8 acquireAssertionOfType:a3];
+  remoteDeviceAssertionManager = [(NPKPaymentWebServiceCompanionTargetDevice *)self remoteDeviceAssertionManager];
+  v9 = [remoteDeviceAssertionManager acquireAssertionOfType:type];
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_invalidateAssertionOfType:(unint64_t)a3
+- (void)_invalidateAssertionOfType:(unint64_t)type
 {
   v18 = *MEMORY[0x277D85DE8];
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self remoteDeviceAssertionManager];
-  v6 = [v5 assertionsUUIDsOfType:a3];
-  v7 = [v6 lastObject];
+  remoteDeviceAssertionManager = [(NPKPaymentWebServiceCompanionTargetDevice *)self remoteDeviceAssertionManager];
+  v6 = [remoteDeviceAssertionManager assertionsUUIDsOfType:type];
+  lastObject = [v6 lastObject];
 
   v8 = pk_Payment_log();
   LODWORD(v6) = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
@@ -46765,17 +46765,17 @@ LABEL_27:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v14 = 134218242;
-      v15 = a3;
+      typeCopy = type;
       v16 = 2112;
-      v17 = v7;
+      v17 = lastObject;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_DEFAULT, "Notice: Invalidating assertion of type:%lu UUID:%@", &v14, 0x16u);
     }
   }
 
-  if (v7)
+  if (lastObject)
   {
-    v10 = [(NPKPaymentWebServiceCompanionTargetDevice *)self remoteDeviceAssertionManager];
-    [v10 invalidateAssertionWithUUID:v7];
+    remoteDeviceAssertionManager2 = [(NPKPaymentWebServiceCompanionTargetDevice *)self remoteDeviceAssertionManager];
+    [remoteDeviceAssertionManager2 invalidateAssertionWithUUID:lastObject];
   }
 
   else
@@ -46788,11 +46788,11 @@ LABEL_27:
       goto LABEL_8;
     }
 
-    v10 = pk_Payment_log();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+    remoteDeviceAssertionManager2 = pk_Payment_log();
+    if (os_log_type_enabled(remoteDeviceAssertionManager2, OS_LOG_TYPE_DEFAULT))
     {
       LOWORD(v14) = 0;
-      _os_log_impl(&dword_25B300000, v10, OS_LOG_TYPE_DEFAULT, "Warning: We don't have any assertion to invalidate", &v14, 2u);
+      _os_log_impl(&dword_25B300000, remoteDeviceAssertionManager2, OS_LOG_TYPE_DEFAULT, "Warning: We don't have any assertion to invalidate", &v14, 2u);
     }
   }
 
@@ -46800,29 +46800,29 @@ LABEL_8:
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_trackOutstandingRequestWithMessageIdentifier:(id)a3 completionHandler:(id)a4 errorHandler:(id)a5
+- (void)_trackOutstandingRequestWithMessageIdentifier:(id)identifier completionHandler:(id)handler errorHandler:(id)errorHandler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  errorHandlerCopy = errorHandler;
   v11 = objc_alloc_init(NPKProvisioningServiceOutstandingRequest);
-  [(NPKProvisioningServiceOutstandingRequest *)v11 setCompletionHandler:v9];
-  [(NPKProvisioningServiceOutstandingRequest *)v11 setErrorHandler:v10];
-  [(NPKProvisioningServiceOutstandingRequest *)v11 setMessageIdentifier:v8];
+  [(NPKProvisioningServiceOutstandingRequest *)v11 setCompletionHandler:handlerCopy];
+  [(NPKProvisioningServiceOutstandingRequest *)v11 setErrorHandler:errorHandlerCopy];
+  [(NPKProvisioningServiceOutstandingRequest *)v11 setMessageIdentifier:identifierCopy];
   objc_initWeak(&location, self);
   v15 = MEMORY[0x277D85DD0];
   v16 = 3221225472;
   v17 = __122__NPKPaymentWebServiceCompanionTargetDevice__trackOutstandingRequestWithMessageIdentifier_completionHandler_errorHandler___block_invoke;
   v18 = &unk_279945A98;
   objc_copyWeak(&v21, &location);
-  v12 = v8;
+  v12 = identifierCopy;
   v19 = v12;
-  v13 = v10;
+  v13 = errorHandlerCopy;
   v20 = v13;
   [(NPKProvisioningServiceOutstandingRequest *)v11 setTimeoutHandler:&v15];
   [(NPKProvisioningServiceOutstandingRequest *)v11 setTimeoutQueue:self->_internalQueue, v15, v16, v17, v18];
-  v14 = [(NPKPaymentWebServiceCompanionTargetDevice *)self outstandingRequests];
-  [v14 setObject:v11 forKey:v12];
+  outstandingRequests = [(NPKPaymentWebServiceCompanionTargetDevice *)self outstandingRequests];
+  [outstandingRequests setObject:v11 forKey:v12];
 
   [(NPKProvisioningServiceOutstandingRequest *)v11 setOrResetCleanupTimer];
   objc_destroyWeak(&v21);
@@ -46876,20 +46876,20 @@ void __122__NPKPaymentWebServiceCompanionTargetDevice__trackOutstandingRequestWi
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_sendProtobuf:(id)a3 responseIdentifier:(id)a4
+- (id)_sendProtobuf:(id)protobuf responseIdentifier:(id)identifier
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  protobufCopy = protobuf;
+  if (identifier)
   {
     v12 = *MEMORY[0x277D18610];
-    v13[0] = a4;
+    v13[0] = identifier;
     v7 = MEMORY[0x277CBEAC0];
-    v8 = a4;
-    a4 = [v7 dictionaryWithObjects:v13 forKeys:&v12 count:1];
+    identifierCopy = identifier;
+    identifier = [v7 dictionaryWithObjects:v13 forKeys:&v12 count:1];
   }
 
-  v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _sendProtobuf:v6 responseExpected:0 extraOptions:a4];
+  v9 = [(NPKPaymentWebServiceCompanionTargetDevice *)self _sendProtobuf:protobufCopy responseExpected:0 extraOptions:identifier];
 
   v10 = *MEMORY[0x277D85DE8];
 
@@ -46919,16 +46919,16 @@ void __98__NPKPaymentWebServiceCompanionTargetDevice__sendProtobuf_responseExpec
 
 - (id)_serialNumbersOfAllPairedDevices
 {
-  v2 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [v2 getAllDevices];
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  array = [MEMORY[0x277CBEB18] array];
+  getAllDevices = [mEMORY[0x277D2BCF8] getAllDevices];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __77__NPKPaymentWebServiceCompanionTargetDevice__serialNumbersOfAllPairedDevices__block_invoke;
   v7[3] = &unk_279946A48;
-  v5 = v3;
+  v5 = array;
   v8 = v5;
-  [v4 enumerateObjectsUsingBlock:v7];
+  [getAllDevices enumerateObjectsUsingBlock:v7];
 
   return v5;
 }
@@ -46972,8 +46972,8 @@ void __77__NPKPaymentWebServiceCompanionTargetDevice__serialNumbersOfAllPairedDe
 
 - (BOOL)_deviceIsConnected
 {
-  v2 = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
-  v3 = NPKIsConnectedToPairedOrPairingDeviceFromService(v2);
+  provisioningService = [(NPKPaymentWebServiceCompanionTargetDevice *)self provisioningService];
+  v3 = NPKIsConnectedToPairedOrPairingDeviceFromService(provisioningService);
 
   return v3;
 }
@@ -46993,12 +46993,12 @@ void __77__NPKPaymentWebServiceCompanionTargetDevice__serialNumbersOfAllPairedDe
   return companionAgentConnection;
 }
 
-- (id)_expressPassesInformationFromDataArray:(id)a3
+- (id)_expressPassesInformationFromDataArray:(id)array
 {
-  if (a3)
+  if (array)
   {
     v3 = MEMORY[0x277CBEB58];
-    v4 = a3;
+    arrayCopy = array;
     v5 = [v3 set];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -47006,7 +47006,7 @@ void __77__NPKPaymentWebServiceCompanionTargetDevice__serialNumbersOfAllPairedDe
     v8[3] = &unk_279949C70;
     v6 = v5;
     v9 = v6;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [arrayCopy enumerateObjectsUsingBlock:v8];
   }
 
   else
@@ -47031,12 +47031,12 @@ void __84__NPKPaymentWebServiceCompanionTargetDevice__expressPassesInformationFr
   }
 }
 
-- (id)_expressPassesConfigurationFromDataArray:(id)a3
+- (id)_expressPassesConfigurationFromDataArray:(id)array
 {
-  if (a3)
+  if (array)
   {
     v3 = MEMORY[0x277CBEB58];
-    v4 = a3;
+    arrayCopy = array;
     v5 = [v3 set];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
@@ -47044,7 +47044,7 @@ void __84__NPKPaymentWebServiceCompanionTargetDevice__expressPassesInformationFr
     v8[3] = &unk_279949C70;
     v6 = v5;
     v9 = v6;
-    [v4 enumerateObjectsUsingBlock:v8];
+    [arrayCopy enumerateObjectsUsingBlock:v8];
   }
 
   else
@@ -47067,10 +47067,10 @@ void __86__NPKPaymentWebServiceCompanionTargetDevice__expressPassesConfiguration
   }
 }
 
-- (id)_expressModesFromExpressPassConfigurations:(id)a3
+- (id)_expressModesFromExpressPassConfigurations:(id)configurations
 {
   v3 = MEMORY[0x277CBEB58];
-  v4 = a3;
+  configurationsCopy = configurations;
   v5 = [v3 set];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
@@ -47078,7 +47078,7 @@ void __86__NPKPaymentWebServiceCompanionTargetDevice__expressPassesConfiguration
   v8[3] = &unk_27994A008;
   v6 = v5;
   v9 = v6;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [configurationsCopy enumerateObjectsUsingBlock:v8];
 
   return v6;
 }
@@ -47158,8 +47158,8 @@ void __88__NPKPaymentWebServiceCompanionTargetDevice__expressModesFromExpressPas
     v6 = self->_passcodeChangeCoordinator;
     self->_passcodeChangeCoordinator = v5;
 
-    v7 = [(NPKPaymentWebServiceCompanionTargetDevice *)self passcodeUpgradeFlowController];
-    [(NPKCompanionPasscodeChangeCoordinatorProtocol *)self->_passcodeChangeCoordinator setFlowController:v7];
+    passcodeUpgradeFlowController = [(NPKPaymentWebServiceCompanionTargetDevice *)self passcodeUpgradeFlowController];
+    [(NPKCompanionPasscodeChangeCoordinatorProtocol *)self->_passcodeChangeCoordinator setFlowController:passcodeUpgradeFlowController];
 
     [(NPKCompanionPasscodeChangeCoordinatorProtocol *)self->_passcodeChangeCoordinator setDelegate:self];
     passcodeChangeCoordinator = self->_passcodeChangeCoordinator;
@@ -47168,12 +47168,12 @@ void __88__NPKPaymentWebServiceCompanionTargetDevice__expressModesFromExpressPas
   return passcodeChangeCoordinator;
 }
 
-- (void)setPasscodeUpgradeFlowController:(id)a3
+- (void)setPasscodeUpgradeFlowController:(id)controller
 {
-  v4 = a3;
-  objc_storeWeak(&self->_passcodeUpgradeFlowController, v4);
-  v5 = [(NPKPaymentWebServiceCompanionTargetDevice *)self passcodeChangeCoordinator];
-  [v5 setFlowController:v4];
+  controllerCopy = controller;
+  objc_storeWeak(&self->_passcodeUpgradeFlowController, controllerCopy);
+  passcodeChangeCoordinator = [(NPKPaymentWebServiceCompanionTargetDevice *)self passcodeChangeCoordinator];
+  [passcodeChangeCoordinator setFlowController:controllerCopy];
 }
 
 - (NPKSubcredentialInvitationCoordinator)subcredentialInvitationCoordinator
@@ -47224,21 +47224,21 @@ void __88__NPKPaymentWebServiceCompanionTargetDevice__expressModesFromExpressPas
   return passcodeConnection;
 }
 
-- (void)_updateDataAccessorForPass:(id)a3
+- (void)_updateDataAccessorForPass:(id)pass
 {
   v27 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 uniqueID];
-  if ([v4 length])
+  passCopy = pass;
+  uniqueID = [passCopy uniqueID];
+  if ([uniqueID length])
   {
     v5 = MEMORY[0x277CBEBC0];
-    v6 = NPKStorePathForPaymentPassWithUniqueID(v4);
+    v6 = NPKStorePathForPaymentPassWithUniqueID(uniqueID);
     v7 = [v5 fileURLWithPath:v6];
 
     v22 = 0;
     v8 = [objc_alloc(MEMORY[0x277D37EE8]) initWithFileURL:v7 error:&v22];
     v9 = v22;
-    [v3 setDataAccessor:v8];
+    [passCopy setDataAccessor:v8];
 
     v10 = pk_General_log();
     v11 = v10;
@@ -47252,7 +47252,7 @@ void __88__NPKPaymentWebServiceCompanionTargetDevice__expressModesFromExpressPas
         if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v24 = v4;
+          v24 = uniqueID;
           v25 = 2112;
           v26 = v9;
           v14 = "Error: Error updating data accessor for pass: %@. Error: %@";
@@ -47278,7 +47278,7 @@ LABEL_12:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *buf = 138412290;
-          v24 = v4;
+          v24 = uniqueID;
           v14 = "Notice: Successfully updated data accessor for pass: %@";
           v15 = v13;
           v16 = OS_LOG_TYPE_DEFAULT;
@@ -47303,9 +47303,9 @@ LABEL_15:
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412546;
-      v24 = v4;
+      v24 = uniqueID;
       v25 = 2112;
-      v26 = v3;
+      v26 = passCopy;
       _os_log_impl(&dword_25B300000, v9, OS_LOG_TYPE_ERROR, "Error: Unable to update data accessor; no pass unique ID found: %@ for pass: %@", buf, 0x16u);
     }
 
@@ -47317,13 +47317,13 @@ LABEL_16:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_secureArchiveSubcredential:(id)a3
+- (id)_secureArchiveSubcredential:(id)subcredential
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  subcredentialCopy = subcredential;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialArchivingWithRenamedConfigurationSupported])
   {
-    v5 = NPKSecureArchiveObject(v4);
+    v5 = NPKSecureArchiveObject(subcredentialCopy);
   }
 
   else
@@ -47333,7 +47333,7 @@ LABEL_16:
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
     v8 = [v6 initWithObjects:v7 forKeys:&unk_286CE7570];
 
-    v5 = NPKSecureArchiveObjectWithClassNameForClass(v4, v8);
+    v5 = NPKSecureArchiveObjectWithClassNameForClass(subcredentialCopy, v8);
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -47341,14 +47341,14 @@ LABEL_16:
   return v5;
 }
 
-- (id)_secureUnarchiveSubcredential:(id)a3
+- (id)_secureUnarchiveSubcredential:(id)subcredential
 {
   v13[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  subcredentialCopy = subcredential;
   if ([(NPKPaymentWebServiceCompanionTargetDevice *)self _isSubcredentialArchivingWithRenamedConfigurationSupported])
   {
     v5 = objc_opt_class();
-    v6 = NPKSecureUnarchiveObject(v4, v5);
+    v6 = NPKSecureUnarchiveObject(subcredentialCopy, v5);
   }
 
   else
@@ -47359,7 +47359,7 @@ LABEL_16:
     v9 = [v7 initWithObjects:v8 forKeys:&unk_286CE7588];
 
     v10 = objc_opt_class();
-    v6 = NPKSecureUnarchiveObjectWithClassNameForClass(v4, v10, v9);
+    v6 = NPKSecureUnarchiveObjectWithClassNameForClass(subcredentialCopy, v10, v9);
   }
 
   v11 = *MEMORY[0x277D85DE8];

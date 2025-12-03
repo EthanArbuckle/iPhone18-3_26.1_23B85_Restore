@@ -1,22 +1,22 @@
 @interface _PXScoreLabGraphView
-- (_PXScoreLabGraphView)initWithFrame:(CGRect)a3;
+- (_PXScoreLabGraphView)initWithFrame:(CGRect)frame;
 - (_PXScoreLabGraphViewDelegate)delegate;
 - (void)cancelGesture;
-- (void)drawAxisInContext:(CGContext *)a3 minXValue:(double)a4 maxXValue:(double)a5 minYValue:(double)a6 maxYValue:(double)a7;
-- (void)drawCorrelationInContext:(CGContext *)a3;
-- (void)drawDistributionInContext:(CGContext *)a3;
-- (void)drawRect:(CGRect)a3;
-- (void)drawTextPanelWithNumberOfAssets:(int64_t)a3 numberOfIgnoredAssets:(unint64_t)a4 rho:(double)a5 inContext:(CGContext *)a6;
-- (void)drawXMean:(double)a3 andStddev:(double)a4 inContext:(CGContext *)a5;
-- (void)drawYMean:(double)a3 andStddev:(double)a4 inContext:(CGContext *)a5;
-- (void)enumerateAssetsUsingBlock:(id)a3;
+- (void)drawAxisInContext:(CGContext *)context minXValue:(double)value maxXValue:(double)xValue minYValue:(double)yValue maxYValue:(double)maxYValue;
+- (void)drawCorrelationInContext:(CGContext *)context;
+- (void)drawDistributionInContext:(CGContext *)context;
+- (void)drawRect:(CGRect)rect;
+- (void)drawTextPanelWithNumberOfAssets:(int64_t)assets numberOfIgnoredAssets:(unint64_t)ignoredAssets rho:(double)rho inContext:(CGContext *)context;
+- (void)drawXMean:(double)mean andStddev:(double)stddev inContext:(CGContext *)context;
+- (void)drawYMean:(double)mean andStddev:(double)stddev inContext:(CGContext *)context;
+- (void)enumerateAssetsUsingBlock:(id)block;
 - (void)loadCorrelationData;
 - (void)loadDistributionData;
-- (void)panned:(id)a3;
-- (void)pinched:(id)a3;
+- (void)panned:(id)panned;
+- (void)pinched:(id)pinched;
 - (void)reloadData;
-- (void)startGestureAtLocation:(CGPoint)a3;
-- (void)updateGestureWithLocation:(CGPoint)a3 scale:(double)a4;
+- (void)startGestureAtLocation:(CGPoint)location;
+- (void)updateGestureWithLocation:(CGPoint)location scale:(double)scale;
 @end
 
 @implementation _PXScoreLabGraphView
@@ -28,7 +28,7 @@
   return WeakRetained;
 }
 
-- (void)drawCorrelationInContext:(CGContext *)a3
+- (void)drawCorrelationInContext:(CGContext *)context
 {
   v80 = *MEMORY[0x1E69E9840];
   v4 = vcvtmd_u64_f64(self->_graphWidth);
@@ -141,7 +141,7 @@
     v13 = 0.0;
   }
 
-  [(_PXScoreLabGraphView *)self drawAxisInContext:a3 minXValue:self->_minXValue maxXValue:self->_maxXValue minYValue:self->_minYValue maxYValue:self->_maxYValue];
+  [(_PXScoreLabGraphView *)self drawAxisInContext:context minXValue:self->_minXValue maxXValue:self->_maxXValue minYValue:self->_minYValue maxYValue:self->_maxYValue];
   DeviceRGB = CGColorSpaceCreateDeviceRGB();
   v39 = v4;
   v40 = CGBitmapContextCreate(0, v4, v67, 8uLL, 0, DeviceRGB, 1u);
@@ -197,40 +197,40 @@
   v81.origin.y = self->_topMargin;
   v81.size.width = v39;
   v81.size.height = v67;
-  CGContextDrawImage(a3, v81, Image);
+  CGContextDrawImage(context, v81, Image);
   CGImageRelease(Image);
   CGContextRelease(context);
   free(v69);
-  [(_PXScoreLabGraphView *)self drawXMean:a3 andStddev:self->_Ex inContext:sqrt(self->_Ex2 - self->_Ex * self->_Ex)];
-  [(_PXScoreLabGraphView *)self drawYMean:a3 andStddev:self->_Ey inContext:sqrt(self->_Ey2 - self->_Ey * self->_Ey)];
+  [(_PXScoreLabGraphView *)self drawXMean:context andStddev:self->_Ex inContext:sqrt(self->_Ex2 - self->_Ex * self->_Ex)];
+  [(_PXScoreLabGraphView *)self drawYMean:context andStddev:self->_Ey inContext:sqrt(self->_Ey2 - self->_Ey * self->_Ey)];
   v70 = [MEMORY[0x1E69DC888] colorWithHue:0.6 saturation:1.0 brightness:1.0 alpha:1.0];
   Components = CGColorGetComponents([v70 CGColor]);
-  CGContextSetStrokeColor(a3, Components);
+  CGContextSetStrokeColor(context, Components);
   Ex = self->_Ex;
   Ey = self->_Ey;
   v55 = sqrt(self->_Ex2 - Ex * Ex);
   v56 = sqrt(self->_Ey2 - Ey * Ey);
   v57 = (self->_Exy - Ex * Ey) / (v55 * v56);
-  [(_PXScoreLabGraphView *)self drawTextPanelWithNumberOfAssets:[(NSArray *)self->_allXValues count] numberOfIgnoredAssets:self->_numberOfIgnoredAssets rho:a3 inContext:v57];
-  CGContextBeginPath(a3);
+  [(_PXScoreLabGraphView *)self drawTextPanelWithNumberOfAssets:[(NSArray *)self->_allXValues count] numberOfIgnoredAssets:self->_numberOfIgnoredAssets rho:context inContext:v57];
+  CGContextBeginPath(context);
   v58 = v56 * v57 / v55;
   v59 = self->_minXValue;
-  CGContextMoveToPoint(a3, self->_leftMargin + (v59 - v59) * self->_graphWidth / (self->_maxXValue - v59), self->_topMargin + self->_graphHeight * (1.0 - (self->_Ey + v58 * (v59 - self->_Ex) - self->_minYValue) / (self->_maxYValue - self->_minYValue)));
+  CGContextMoveToPoint(context, self->_leftMargin + (v59 - v59) * self->_graphWidth / (self->_maxXValue - v59), self->_topMargin + self->_graphHeight * (1.0 - (self->_Ey + v58 * (v59 - self->_Ex) - self->_minYValue) / (self->_maxYValue - self->_minYValue)));
   v60 = self->_maxXValue;
-  CGContextAddLineToPoint(a3, self->_leftMargin + self->_graphWidth * (v60 - self->_minXValue) / (v60 - self->_minXValue), self->_topMargin + self->_graphHeight * (1.0 - (self->_Ey + v58 * (v60 - self->_Ex) - self->_minYValue) / (self->_maxYValue - self->_minYValue)));
-  CGContextClosePath(a3);
-  CGContextDrawPath(a3, kCGPathStroke);
-  CGContextBeginPath(a3);
+  CGContextAddLineToPoint(context, self->_leftMargin + self->_graphWidth * (v60 - self->_minXValue) / (v60 - self->_minXValue), self->_topMargin + self->_graphHeight * (1.0 - (self->_Ey + v58 * (v60 - self->_Ex) - self->_minYValue) / (self->_maxYValue - self->_minYValue)));
+  CGContextClosePath(context);
+  CGContextDrawPath(context, kCGPathStroke);
+  CGContextBeginPath(context);
   v61 = v55 * v57 / v56;
   v62 = self->_minYValue;
-  CGContextMoveToPoint(a3, self->_leftMargin + self->_graphWidth * (self->_Ex + v61 * (v62 - self->_Ey) - self->_minXValue) / (self->_maxXValue - self->_minXValue), self->_topMargin + self->_graphHeight * (1.0 - (v62 - v62) / (self->_maxYValue - v62)));
+  CGContextMoveToPoint(context, self->_leftMargin + self->_graphWidth * (self->_Ex + v61 * (v62 - self->_Ey) - self->_minXValue) / (self->_maxXValue - self->_minXValue), self->_topMargin + self->_graphHeight * (1.0 - (v62 - v62) / (self->_maxYValue - v62)));
   v63 = self->_maxYValue;
-  CGContextAddLineToPoint(a3, self->_leftMargin + self->_graphWidth * (self->_Ex + v61 * (v63 - self->_Ey) - self->_minXValue) / (self->_maxXValue - self->_minXValue), self->_topMargin + self->_graphHeight * (1.0 - (v63 - self->_minYValue) / (v63 - self->_minYValue)));
-  CGContextClosePath(a3);
-  CGContextDrawPath(a3, kCGPathStroke);
+  CGContextAddLineToPoint(context, self->_leftMargin + self->_graphWidth * (self->_Ex + v61 * (v63 - self->_Ey) - self->_minXValue) / (self->_maxXValue - self->_minXValue), self->_topMargin + self->_graphHeight * (1.0 - (v63 - self->_minYValue) / (v63 - self->_minYValue)));
+  CGContextClosePath(context);
+  CGContextDrawPath(context, kCGPathStroke);
 }
 
-- (void)drawDistributionInContext:(CGContext *)a3
+- (void)drawDistributionInContext:(CGContext *)context
 {
   v30 = *MEMORY[0x1E69E9840];
   v5 = vcvtmd_u64_f64(self->_graphWidth);
@@ -298,38 +298,38 @@
 
   self->_minYValue = 0.0;
   self->_maxYValue = v11;
-  [(_PXScoreLabGraphView *)self drawAxisInContext:a3 minXValue:self->_minXValue maxXValue:self->_maxXValue minYValue:0.0 maxYValue:0.0];
+  [(_PXScoreLabGraphView *)self drawAxisInContext:context minXValue:self->_minXValue maxXValue:self->_maxXValue minYValue:0.0 maxYValue:0.0];
   if (v5)
   {
     for (j = 0; j != v5; ++j)
     {
-      CGContextBeginPath(a3);
+      CGContextBeginPath(context);
       v22 = self->_leftMargin + j;
-      CGContextMoveToPoint(a3, v22, self->_topMargin + self->_graphHeight);
-      CGContextAddLineToPoint(a3, v22, self->_topMargin + self->_graphHeight * (1.0 - (v6[j] - self->_minYValue) / (self->_maxYValue - self->_minYValue)));
-      CGContextClosePath(a3);
+      CGContextMoveToPoint(context, v22, self->_topMargin + self->_graphHeight);
+      CGContextAddLineToPoint(context, v22, self->_topMargin + self->_graphHeight * (1.0 - (v6[j] - self->_minYValue) / (self->_maxYValue - self->_minYValue)));
+      CGContextClosePath(context);
       v23 = [MEMORY[0x1E69DC888] colorWithHue:(1.0 - v6[j] / v11) * 0.5 saturation:1.0 brightness:(v6[j] / v11 + 1.0) * 0.5 alpha:1.0];
       Components = CGColorGetComponents([v23 CGColor]);
-      CGContextSetStrokeColor(a3, Components);
-      CGContextDrawPath(a3, kCGPathStroke);
+      CGContextSetStrokeColor(context, Components);
+      CGContextDrawPath(context, kCGPathStroke);
     }
   }
 
   free(v6);
-  [(_PXScoreLabGraphView *)self drawXMean:a3 andStddev:self->_Ex inContext:sqrt(self->_Ex2 - self->_Ex * self->_Ex)];
-  [(_PXScoreLabGraphView *)self drawTextPanelWithNumberOfAssets:[(NSArray *)self->_allXValues count] numberOfIgnoredAssets:self->_numberOfIgnoredAssets rho:a3 inContext:-1.79769313e308];
+  [(_PXScoreLabGraphView *)self drawXMean:context andStddev:self->_Ex inContext:sqrt(self->_Ex2 - self->_Ex * self->_Ex)];
+  [(_PXScoreLabGraphView *)self drawTextPanelWithNumberOfAssets:[(NSArray *)self->_allXValues count] numberOfIgnoredAssets:self->_numberOfIgnoredAssets rho:context inContext:-1.79769313e308];
 }
 
-- (void)drawTextPanelWithNumberOfAssets:(int64_t)a3 numberOfIgnoredAssets:(unint64_t)a4 rho:(double)a5 inContext:(CGContext *)a6
+- (void)drawTextPanelWithNumberOfAssets:(int64_t)assets numberOfIgnoredAssets:(unint64_t)ignoredAssets rho:(double)rho inContext:(CGContext *)context
 {
   v32 = *MEMORY[0x1E69E9840];
   *components = xmmword_1A5381E18;
   v31 = unk_1A5381E28;
-  CGContextSetStrokeColor(a6, components);
-  CGContextSetLineWidth(a6, 1.0);
-  CGContextSetTextDrawingMode(a6, kCGTextStroke);
+  CGContextSetStrokeColor(context, components);
+  CGContextSetLineWidth(context, 1.0);
+  CGContextSetTextDrawingMode(context, kCGTextStroke);
   CGAffineTransformMakeScale(&v27, 1.0, -1.0);
-  CGContextSetTextMatrix(a6, &v27);
+  CGContextSetTextMatrix(context, &v27);
   v11 = self->_leftMargin + 20.0;
   v12 = self->_topMargin + 20.0;
   v28 = *MEMORY[0x1E69DB648];
@@ -337,70 +337,70 @@
   v29 = v13;
   v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
 
-  if ((a3 & 0x8000000000000000) == 0)
+  if ((assets & 0x8000000000000000) == 0)
   {
     v15 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v16 = [MEMORY[0x1E696AEC0] stringWithFormat:@"N=%lu", a3];
-    v17 = [v15 initWithString:v16 attributes:v14];
+    assets = [MEMORY[0x1E696AEC0] stringWithFormat:@"N=%lu", assets];
+    v17 = [v15 initWithString:assets attributes:v14];
     v18 = CTLineCreateWithAttributedString(v17);
 
-    CGContextSetTextPosition(a6, v11, v12);
-    CTLineDraw(v18, a6);
+    CGContextSetTextPosition(context, v11, v12);
+    CTLineDraw(v18, context);
     CFRelease(v18);
     v12 = v12 + 12.0;
   }
 
   v19 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v20 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Ñ=%lu", a4];
-  v21 = [v19 initWithString:v20 attributes:v14];
+  ignoredAssets = [MEMORY[0x1E696AEC0] stringWithFormat:@"Ñ=%lu", ignoredAssets];
+  v21 = [v19 initWithString:ignoredAssets attributes:v14];
   v22 = CTLineCreateWithAttributedString(v21);
 
-  CGContextSetTextPosition(a6, v11, v12);
-  CTLineDraw(v22, a6);
+  CGContextSetTextPosition(context, v11, v12);
+  CTLineDraw(v22, context);
   CFRelease(v22);
-  if (a5 > -1.79769313e308)
+  if (rho > -1.79769313e308)
   {
     v23 = objc_alloc(MEMORY[0x1E696AAB0]);
-    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"R²=%.3f", a5 * a5];
+    v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"R²=%.3f", rho * rho];
     v25 = [v23 initWithString:v24 attributes:v14];
     v26 = CTLineCreateWithAttributedString(v25);
 
-    CGContextSetTextPosition(a6, v11, v12 + 12.0);
-    CTLineDraw(v26, a6);
+    CGContextSetTextPosition(context, v11, v12 + 12.0);
+    CTLineDraw(v26, context);
     CFRelease(v26);
   }
 }
 
-- (void)drawYMean:(double)a3 andStddev:(double)a4 inContext:(CGContext *)a5
+- (void)drawYMean:(double)mean andStddev:(double)stddev inContext:(CGContext *)context
 {
   v32 = *MEMORY[0x1E69E9840];
   v9 = [MEMORY[0x1E69DC888] colorWithHue:0.6 saturation:1.0 brightness:1.0 alpha:1.0];
   v10 = CGColorGetComponents([v9 CGColor]);
-  CGContextSetStrokeColor(a5, v10);
-  CGContextBeginPath(a5);
+  CGContextSetStrokeColor(context, v10);
+  CGContextBeginPath(context);
   v11 = self->_leftMargin + self->_graphWidth + 6.0;
-  v12 = self->_topMargin + self->_graphHeight * (1.0 - (a3 - self->_minYValue) / (self->_maxYValue - self->_minYValue));
-  CGContextMoveToPoint(a5, v11 + -6.0, v12);
-  CGContextAddLineToPoint(a5, v11 + 6.0, v12);
-  v13 = self->_topMargin + self->_graphHeight * (1.0 - (a3 - a4 - self->_minYValue) / (self->_maxYValue - self->_minYValue));
-  CGContextMoveToPoint(a5, v11 + 3.0, v13);
-  CGContextAddLineToPoint(a5, v11 + -3.0, v13);
-  v14 = self->_topMargin + self->_graphHeight * (1.0 - (a3 + a4 - self->_minYValue) / (self->_maxYValue - self->_minYValue));
-  CGContextMoveToPoint(a5, v11 + 3.0, v14);
-  CGContextAddLineToPoint(a5, v11 + -3.0, v14);
-  CGContextMoveToPoint(a5, v11, v13);
-  CGContextAddLineToPoint(a5, v11, v14);
-  CGContextClosePath(a5);
-  CGContextDrawPath(a5, kCGPathStroke);
+  v12 = self->_topMargin + self->_graphHeight * (1.0 - (mean - self->_minYValue) / (self->_maxYValue - self->_minYValue));
+  CGContextMoveToPoint(context, v11 + -6.0, v12);
+  CGContextAddLineToPoint(context, v11 + 6.0, v12);
+  v13 = self->_topMargin + self->_graphHeight * (1.0 - (mean - stddev - self->_minYValue) / (self->_maxYValue - self->_minYValue));
+  CGContextMoveToPoint(context, v11 + 3.0, v13);
+  CGContextAddLineToPoint(context, v11 + -3.0, v13);
+  v14 = self->_topMargin + self->_graphHeight * (1.0 - (mean + stddev - self->_minYValue) / (self->_maxYValue - self->_minYValue));
+  CGContextMoveToPoint(context, v11 + 3.0, v14);
+  CGContextAddLineToPoint(context, v11 + -3.0, v14);
+  CGContextMoveToPoint(context, v11, v13);
+  CGContextAddLineToPoint(context, v11, v14);
+  CGContextClosePath(context);
+  CGContextDrawPath(context, kCGPathStroke);
   *components = xmmword_1A5381E18;
   v31 = unk_1A5381E28;
-  CGContextSetStrokeColor(a5, components);
-  CGContextSetLineWidth(a5, 1.0);
-  CGContextSetTextDrawingMode(a5, kCGTextStroke);
+  CGContextSetStrokeColor(context, components);
+  CGContextSetLineWidth(context, 1.0);
+  CGContextSetTextDrawingMode(context, kCGTextStroke);
   CGAffineTransformMakeScale(&v27, 1.0, -1.0);
-  CGContextSetTextMatrix(a5, &v27);
+  CGContextSetTextMatrix(context, &v27);
   memset(&v27, 0, sizeof(v27));
-  CGContextGetCTM(&v27, a5);
+  CGContextGetCTM(&v27, context);
   v25 = v27;
   CGAffineTransformRotate(&v26, &v25, 1.57079633);
   CGContextSetCTM();
@@ -410,154 +410,154 @@
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
 
   v17 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", *&a3];
+  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", *&mean];
   v19 = [v17 initWithString:v18 attributes:v16];
   v20 = CTLineCreateWithAttributedString(v19);
 
-  ImageBounds = CTLineGetImageBounds(v20, a5);
-  CGContextSetTextPosition(a5, v12 + ImageBounds.size.width * -0.5, -(v11 - ImageBounds.size.height + -6.0));
-  CTLineDraw(v20, a5);
+  ImageBounds = CTLineGetImageBounds(v20, context);
+  CGContextSetTextPosition(context, v12 + ImageBounds.size.width * -0.5, -(v11 - ImageBounds.size.height + -6.0));
+  CTLineDraw(v20, context);
   CFRelease(v20);
   v21 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", *&a4];
+  v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", *&stddev];
   v23 = [v21 initWithString:v22 attributes:v16];
   v24 = CTLineCreateWithAttributedString(v23);
 
-  v34 = CTLineGetImageBounds(v24, a5);
-  CGContextSetTextPosition(a5, v34.size.width * -0.5 + (v12 + v13) * 0.5, -(v11 - v34.size.height + -6.0));
-  CTLineDraw(v24, a5);
+  v34 = CTLineGetImageBounds(v24, context);
+  CGContextSetTextPosition(context, v34.size.width * -0.5 + (v12 + v13) * 0.5, -(v11 - v34.size.height + -6.0));
+  CTLineDraw(v24, context);
   CFRelease(v24);
   v26 = v27;
   CGContextSetCTM();
 }
 
-- (void)drawXMean:(double)a3 andStddev:(double)a4 inContext:(CGContext *)a5
+- (void)drawXMean:(double)mean andStddev:(double)stddev inContext:(CGContext *)context
 {
   v30 = *MEMORY[0x1E69E9840];
   v9 = [MEMORY[0x1E69DC888] colorWithHue:0.6 saturation:1.0 brightness:1.0 alpha:1.0];
   v10 = CGColorGetComponents([v9 CGColor]);
-  CGContextSetStrokeColor(a5, v10);
-  CGContextBeginPath(a5);
-  v11 = self->_leftMargin + self->_graphWidth * (a3 - self->_minXValue) / (self->_maxXValue - self->_minXValue);
+  CGContextSetStrokeColor(context, v10);
+  CGContextBeginPath(context);
+  v11 = self->_leftMargin + self->_graphWidth * (mean - self->_minXValue) / (self->_maxXValue - self->_minXValue);
   v12 = self->_topMargin + -6.0;
-  CGContextMoveToPoint(a5, v11, v12 + -6.0);
-  CGContextAddLineToPoint(a5, v11, v12 + 6.0);
-  v13 = self->_leftMargin + self->_graphWidth * (a3 - a4 - self->_minXValue) / (self->_maxXValue - self->_minXValue);
-  CGContextMoveToPoint(a5, v13, v12 + -3.0);
-  CGContextAddLineToPoint(a5, v13, v12 + 3.0);
-  v14 = self->_leftMargin + self->_graphWidth * (a3 + a4 - self->_minXValue) / (self->_maxXValue - self->_minXValue);
-  CGContextMoveToPoint(a5, v14, v12 + -3.0);
-  CGContextAddLineToPoint(a5, v14, v12 + 3.0);
-  CGContextMoveToPoint(a5, v13, v12);
-  CGContextAddLineToPoint(a5, v14, v12);
-  CGContextClosePath(a5);
-  CGContextDrawPath(a5, kCGPathStroke);
+  CGContextMoveToPoint(context, v11, v12 + -6.0);
+  CGContextAddLineToPoint(context, v11, v12 + 6.0);
+  v13 = self->_leftMargin + self->_graphWidth * (mean - stddev - self->_minXValue) / (self->_maxXValue - self->_minXValue);
+  CGContextMoveToPoint(context, v13, v12 + -3.0);
+  CGContextAddLineToPoint(context, v13, v12 + 3.0);
+  v14 = self->_leftMargin + self->_graphWidth * (mean + stddev - self->_minXValue) / (self->_maxXValue - self->_minXValue);
+  CGContextMoveToPoint(context, v14, v12 + -3.0);
+  CGContextAddLineToPoint(context, v14, v12 + 3.0);
+  CGContextMoveToPoint(context, v13, v12);
+  CGContextAddLineToPoint(context, v14, v12);
+  CGContextClosePath(context);
+  CGContextDrawPath(context, kCGPathStroke);
   *components = xmmword_1A5381E18;
   v29 = unk_1A5381E28;
-  CGContextSetStrokeColor(a5, components);
-  CGContextSetLineWidth(a5, 1.0);
-  CGContextSetTextDrawingMode(a5, kCGTextStroke);
+  CGContextSetStrokeColor(context, components);
+  CGContextSetLineWidth(context, 1.0);
+  CGContextSetTextDrawingMode(context, kCGTextStroke);
   CGAffineTransformMakeScale(&v25, 1.0, -1.0);
-  CGContextSetTextMatrix(a5, &v25);
+  CGContextSetTextMatrix(context, &v25);
   v26 = *MEMORY[0x1E69DB648];
   v15 = [MEMORY[0x1E69DB878] systemFontOfSize:8.0 weight:*MEMORY[0x1E69DB998]];
   v27 = v15;
   v16 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v27 forKeys:&v26 count:1];
 
   v17 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", *&a3];
+  v18 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", *&mean];
   v19 = [v17 initWithString:v18 attributes:v16];
   v20 = CTLineCreateWithAttributedString(v19);
 
-  ImageBounds = CTLineGetImageBounds(v20, a5);
-  CGContextSetTextPosition(a5, v11 + ImageBounds.size.width * -0.5, v12 + ImageBounds.size.height + 6.0);
-  CTLineDraw(v20, a5);
+  ImageBounds = CTLineGetImageBounds(v20, context);
+  CGContextSetTextPosition(context, v11 + ImageBounds.size.width * -0.5, v12 + ImageBounds.size.height + 6.0);
+  CTLineDraw(v20, context);
   CFRelease(v20);
   v21 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", *&a4];
+  v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", *&stddev];
   v23 = [v21 initWithString:v22 attributes:v16];
   v24 = CTLineCreateWithAttributedString(v23);
 
-  v32 = CTLineGetImageBounds(v24, a5);
-  CGContextSetTextPosition(a5, v14, v12 + v32.size.height + 6.0);
-  CTLineDraw(v24, a5);
+  v32 = CTLineGetImageBounds(v24, context);
+  CGContextSetTextPosition(context, v14, v12 + v32.size.height + 6.0);
+  CTLineDraw(v24, context);
   CFRelease(v24);
 }
 
-- (void)drawAxisInContext:(CGContext *)a3 minXValue:(double)a4 maxXValue:(double)a5 minYValue:(double)a6 maxYValue:(double)a7
+- (void)drawAxisInContext:(CGContext *)context minXValue:(double)value maxXValue:(double)xValue minYValue:(double)yValue maxYValue:(double)maxYValue
 {
   v32 = *MEMORY[0x1E69E9840];
   *components = xmmword_1A5381E18;
   v31 = unk_1A5381E28;
-  CGContextSetStrokeColor(a3, components);
-  CGContextSetLineWidth(a3, 1.0);
-  CGContextSetTextDrawingMode(a3, kCGTextStroke);
+  CGContextSetStrokeColor(context, components);
+  CGContextSetLineWidth(context, 1.0);
+  CGContextSetTextDrawingMode(context, kCGTextStroke);
   CGAffineTransformMakeScale(&v27, 1.0, -1.0);
-  CGContextSetTextMatrix(a3, &v27);
+  CGContextSetTextMatrix(context, &v27);
   v28 = *MEMORY[0x1E69DB648];
   v12 = [MEMORY[0x1E69DB878] systemFontOfSize:5.0 weight:*MEMORY[0x1E69DB998]];
   v29 = v12;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v29 forKeys:&v28 count:1];
 
-  if (a4 < a5)
+  if (value < xValue)
   {
     do
     {
-      CGContextBeginPath(a3);
-      v14 = self->_leftMargin + self->_graphWidth * (a4 - self->_minXValue) / (self->_maxXValue - self->_minXValue);
+      CGContextBeginPath(context);
+      v14 = self->_leftMargin + self->_graphWidth * (value - self->_minXValue) / (self->_maxXValue - self->_minXValue);
       v15 = self->_topMargin + self->_graphHeight;
-      CGContextMoveToPoint(a3, v14, v15);
-      CGContextAddLineToPoint(a3, v14, v15 + 4.0);
-      CGContextClosePath(a3);
-      CGContextDrawPath(a3, kCGPathStroke);
+      CGContextMoveToPoint(context, v14, v15);
+      CGContextAddLineToPoint(context, v14, v15 + 4.0);
+      CGContextClosePath(context);
+      CGContextDrawPath(context, kCGPathStroke);
       v16 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", *&a4];
+      v17 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", *&value];
       v18 = [v16 initWithString:v17 attributes:v13];
       v19 = CTLineCreateWithAttributedString(v18);
 
-      ImageBounds = CTLineGetImageBounds(v19, a3);
-      CGContextSetTextPosition(a3, v14 + ImageBounds.size.width * -0.5, v15 + ImageBounds.size.height + 6.0);
-      CTLineDraw(v19, a3);
+      ImageBounds = CTLineGetImageBounds(v19, context);
+      CGContextSetTextPosition(context, v14 + ImageBounds.size.width * -0.5, v15 + ImageBounds.size.height + 6.0);
+      CTLineDraw(v19, context);
       CFRelease(v19);
-      a4 = a4 + 0.25;
+      value = value + 0.25;
     }
 
-    while (a4 <= a5);
+    while (value <= xValue);
   }
 
-  if (a6 < a7)
+  if (yValue < maxYValue)
   {
     do
     {
-      CGContextBeginPath(a3);
+      CGContextBeginPath(context);
       leftMargin = self->_leftMargin;
-      v21 = self->_topMargin + self->_graphHeight * (1.0 - (a6 - self->_minYValue) / (self->_maxYValue - self->_minYValue));
-      CGContextMoveToPoint(a3, leftMargin + -4.0, v21);
-      CGContextAddLineToPoint(a3, leftMargin, v21);
-      CGContextClosePath(a3);
-      CGContextDrawPath(a3, kCGPathStroke);
+      v21 = self->_topMargin + self->_graphHeight * (1.0 - (yValue - self->_minYValue) / (self->_maxYValue - self->_minYValue));
+      CGContextMoveToPoint(context, leftMargin + -4.0, v21);
+      CGContextAddLineToPoint(context, leftMargin, v21);
+      CGContextClosePath(context);
+      CGContextDrawPath(context, kCGPathStroke);
       v22 = objc_alloc(MEMORY[0x1E696AAB0]);
-      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", *&a6];
+      v23 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%.2f", *&yValue];
       v24 = [v22 initWithString:v23 attributes:v13];
       v25 = CTLineCreateWithAttributedString(v24);
 
-      v34 = CTLineGetImageBounds(v25, a3);
-      CGContextSetTextPosition(a3, leftMargin + -6.0 - v34.size.width, v21 + v34.size.height * 0.5);
-      CTLineDraw(v25, a3);
+      v34 = CTLineGetImageBounds(v25, context);
+      CGContextSetTextPosition(context, leftMargin + -6.0 - v34.size.width, v21 + v34.size.height * 0.5);
+      CTLineDraw(v25, context);
       CFRelease(v25);
-      a6 = a6 + 0.25;
+      yValue = yValue + 0.25;
     }
 
-    while (a6 <= a7);
+    while (yValue <= maxYValue);
   }
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v13 = *MEMORY[0x1E69E9840];
   CurrentContext = UIGraphicsGetCurrentContext();
   v12[0] = xmmword_1A5381DF8;
@@ -711,26 +711,26 @@
   objc_destroyWeak(&location);
 }
 
-- (void)enumerateAssetsUsingBlock:(id)a3
+- (void)enumerateAssetsUsingBlock:(id)block
 {
   v33[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  blockCopy = block;
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  librarySpecificFetchOptions = [px_deprecated_appPhotoLibrary librarySpecificFetchOptions];
 
-  [v6 setChunkSizeForFetch:1000];
+  [librarySpecificFetchOptions setChunkSizeForFetch:1000];
   v7 = *MEMORY[0x1E6978C90];
   v33[0] = *MEMORY[0x1E6978BE0];
   v33[1] = v7;
   v33[2] = *MEMORY[0x1E6978CF0];
   v8 = [MEMORY[0x1E695DEC8] arrayWithObjects:v33 count:3];
-  [v6 setFetchPropertySets:v8];
+  [librarySpecificFetchOptions setFetchPropertySets:v8];
 
-  v9 = [(_PXScoreLabGraphView *)self assetPredicate];
-  [v6 setPredicate:v9];
+  assetPredicate = [(_PXScoreLabGraphView *)self assetPredicate];
+  [librarySpecificFetchOptions setPredicate:assetPredicate];
 
-  v26 = v6;
-  v10 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:v6];
+  v26 = librarySpecificFetchOptions;
+  v10 = [MEMORY[0x1E6978630] fetchAssetsWithOptions:librarySpecificFetchOptions];
   v11 = [v10 count];
   v28 = 0u;
   v29 = 0u;
@@ -761,7 +761,7 @@
 
         v22 = *(*(&v28 + 1) + 8 * v20);
         v23 = objc_autoreleasePoolPush();
-        v4[2](v4, v22);
+        blockCopy[2](blockCopy, v22);
         Current = CFAbsoluteTimeGetCurrent();
         if (Current - v19 > 1.0 || v15 / v17 - v18 >= 1.0 || v15 - v14 >= 0x64)
         {
@@ -786,66 +786,66 @@
   }
 }
 
-- (void)pinched:(id)a3
+- (void)pinched:(id)pinched
 {
-  v12 = a3;
-  v4 = [v12 state];
-  if (v4 == 4)
+  pinchedCopy = pinched;
+  state = [pinchedCopy state];
+  if (state == 4)
   {
     [(_PXScoreLabGraphView *)self cancelGesture];
     goto LABEL_8;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
-    [v12 locationInView:self];
+    [pinchedCopy locationInView:self];
     v8 = v7;
     v10 = v9;
-    [v12 scale];
+    [pinchedCopy scale];
     [(_PXScoreLabGraphView *)self updateGestureWithLocation:v8 scale:v10, v11];
     goto LABEL_8;
   }
 
-  v5 = v4 == 1;
-  v6 = v12;
+  v5 = state == 1;
+  v6 = pinchedCopy;
   if (v5)
   {
-    [v12 locationInView:self];
+    [pinchedCopy locationInView:self];
     [(_PXScoreLabGraphView *)self startGestureAtLocation:?];
 LABEL_8:
-    v6 = v12;
+    v6 = pinchedCopy;
   }
 }
 
-- (void)panned:(id)a3
+- (void)panned:(id)panned
 {
-  v7 = a3;
-  v4 = [v7 state];
-  if (v4 == 4)
+  pannedCopy = panned;
+  state = [pannedCopy state];
+  if (state == 4)
   {
     [(_PXScoreLabGraphView *)self cancelGesture];
     goto LABEL_8;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
-    [v7 locationInView:self];
+    [pannedCopy locationInView:self];
     [_PXScoreLabGraphView updateGestureWithLocation:"updateGestureWithLocation:scale:" scale:?];
     goto LABEL_8;
   }
 
-  v5 = v4 == 1;
-  v6 = v7;
+  v5 = state == 1;
+  v6 = pannedCopy;
   if (v5)
   {
-    [v7 locationInView:self];
+    [pannedCopy locationInView:self];
     [(_PXScoreLabGraphView *)self startGestureAtLocation:?];
 LABEL_8:
-    v6 = v7;
+    v6 = pannedCopy;
   }
 }
 
-- (void)updateGestureWithLocation:(CGPoint)a3 scale:(double)a4
+- (void)updateGestureWithLocation:(CGPoint)location scale:(double)scale
 {
   minXValueAtBeginningOfGesture = self->_minXValueAtBeginningOfGesture;
   v5 = self->_maxXValueAtBeginningOfGesture - minXValueAtBeginningOfGesture;
@@ -857,10 +857,10 @@ LABEL_8:
   v11 = 1.0 - (self->_locationAtBeginningOfGesture.y - self->_topMargin) / self->_graphHeight;
   v12 = self->_baseMaxXValue - self->_baseMinXValue;
   v13 = v5 / v12;
-  v14 = v5 / a4 <= v12;
-  if (v5 / a4 <= v12)
+  v14 = v5 / scale <= v12;
+  if (v5 / scale <= v12)
   {
-    v15 = v5 / a4;
+    v15 = v5 / scale;
   }
 
   else
@@ -870,15 +870,15 @@ LABEL_8:
 
   if (v14)
   {
-    v16 = a4;
+    scaleCopy = scale;
   }
 
   else
   {
-    v16 = v13;
+    scaleCopy = v13;
   }
 
-  v17 = v8 - (a3.x - leftMargin) * v15 / graphWidth;
+  v17 = v8 - (location.x - leftMargin) * v15 / graphWidth;
   self->_minXValue = v17;
   baseMinXValue = self->_baseMinXValue;
   if (v17 < baseMinXValue)
@@ -888,7 +888,7 @@ LABEL_8:
   }
 
   v19 = minYValueAtBeginningOfGesture + v10 * v11;
-  v20 = v10 / v16;
+  v20 = v10 / scaleCopy;
   self->_maxXValue = v15 + v17;
   baseMaxXValue = self->_baseMaxXValue;
   if (v15 + v17 > baseMaxXValue)
@@ -897,7 +897,7 @@ LABEL_8:
     self->_minXValue = baseMaxXValue - v15;
   }
 
-  v22 = v19 - v20 * (1.0 - (a3.y - self->_topMargin) / self->_graphHeight);
+  v22 = v19 - v20 * (1.0 - (location.y - self->_topMargin) / self->_graphHeight);
   self->_minYValue = v22;
   baseMinYValue = self->_baseMinYValue;
   if (v22 < baseMinYValue)
@@ -926,20 +926,20 @@ LABEL_8:
   self->_maxYValue = self->_maxYValueAtBeginningOfGesture;
 }
 
-- (void)startGestureAtLocation:(CGPoint)a3
+- (void)startGestureAtLocation:(CGPoint)location
 {
-  self->_locationAtBeginningOfGesture = a3;
+  self->_locationAtBeginningOfGesture = location;
   self->_minXValueAtBeginningOfGesture = self->_minXValue;
   self->_maxXValueAtBeginningOfGesture = self->_maxXValue;
   self->_minYValueAtBeginningOfGesture = self->_minYValue;
   self->_maxYValueAtBeginningOfGesture = self->_maxYValue;
 }
 
-- (_PXScoreLabGraphView)initWithFrame:(CGRect)a3
+- (_PXScoreLabGraphView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = _PXScoreLabGraphView;
-  v3 = [(_PXScoreLabGraphView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(_PXScoreLabGraphView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {

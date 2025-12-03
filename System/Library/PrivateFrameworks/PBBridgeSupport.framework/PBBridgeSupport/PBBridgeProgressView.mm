@@ -1,13 +1,13 @@
 @interface PBBridgeProgressView
 - (CGSize)_size;
-- (PBBridgeProgressView)initWithStyle:(unint64_t)a3 andVersion:(unint64_t)a4 overrideSize:(unint64_t)a5;
+- (PBBridgeProgressView)initWithStyle:(unint64_t)style andVersion:(unint64_t)version overrideSize:(unint64_t)size;
 - (double)_tickLength;
-- (void)drawRect:(CGRect)a3;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation PBBridgeProgressView
 
-- (PBBridgeProgressView)initWithStyle:(unint64_t)a3 andVersion:(unint64_t)a4 overrideSize:(unint64_t)a5
+- (PBBridgeProgressView)initWithStyle:(unint64_t)style andVersion:(unint64_t)version overrideSize:(unint64_t)size
 {
   v35[2] = *MEMORY[0x277D85DE8];
   v34.receiver = self;
@@ -16,12 +16,12 @@
   v9 = v8;
   if (v8)
   {
-    v8->_style = a3;
-    v8->_version = a4;
+    v8->_style = style;
+    v8->_version = version;
     v8->_tickCount = 100;
-    if (a5)
+    if (size)
     {
-      v8->_watchSize = a5;
+      v8->_watchSize = size;
     }
 
     else
@@ -30,7 +30,7 @@
       v9->_watchSize = [v10 size];
     }
 
-    if (a4 == 1)
+    if (version == 1)
     {
       v11 = [@"syncLogo" stringByAppendingString:@"-v2"];
     }
@@ -66,13 +66,13 @@
       v33 = v11;
       v20 = v13;
       v21 = MEMORY[0x277CCAAD0];
-      v22 = [(UIImageView *)v9->_appleLogo centerXAnchor];
-      v23 = [(PBBridgeProgressView *)v9 centerXAnchor];
-      v24 = [v22 constraintEqualToAnchor:v23];
+      centerXAnchor = [(UIImageView *)v9->_appleLogo centerXAnchor];
+      centerXAnchor2 = [(PBBridgeProgressView *)v9 centerXAnchor];
+      v24 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
       v35[0] = v24;
-      v25 = [(UIImageView *)v9->_appleLogo centerYAnchor];
-      v26 = [(PBBridgeProgressView *)v9 centerYAnchor];
-      v27 = [v25 constraintEqualToAnchor:v26];
+      centerYAnchor = [(UIImageView *)v9->_appleLogo centerYAnchor];
+      centerYAnchor2 = [(PBBridgeProgressView *)v9 centerYAnchor];
+      v27 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
       v35[1] = v27;
       v28 = [MEMORY[0x277CBEA60] arrayWithObjects:v35 count:2];
       v29 = v21;
@@ -81,8 +81,8 @@
       [v29 activateConstraints:v28];
     }
 
-    v30 = [MEMORY[0x277D75348] greenColor];
-    [(PBBridgeProgressView *)v9 setBackgroundColor:v30];
+    greenColor = [MEMORY[0x277D75348] greenColor];
+    [(PBBridgeProgressView *)v9 setBackgroundColor:greenColor];
   }
 
   v31 = *MEMORY[0x277D85DE8];
@@ -97,8 +97,8 @@
   }
 
   watchSize = self->_watchSize;
-  v3 = [MEMORY[0x277D759A0] mainScreen];
-  [v3 scale];
+  mainScreen = [MEMORY[0x277D759A0] mainScreen];
+  [mainScreen scale];
   v5 = v4;
 
   v6 = watchSize - 1;
@@ -127,7 +127,7 @@
   return v8[v6];
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   v32 = *MEMORY[0x277D85DE8];
   CurrentContext = UIGraphicsGetCurrentContext();
@@ -135,8 +135,8 @@
   [(PBBridgeProgressView *)self _size];
   v7 = v6;
   v9 = v8;
-  v10 = [MEMORY[0x277D75348] blackColor];
-  [v10 setFill];
+  blackColor = [MEMORY[0x277D75348] blackColor];
+  [blackColor setFill];
 
   v33.origin.x = 0.0;
   v33.origin.y = 0.0;
@@ -146,8 +146,8 @@
   v11 = 2.0;
   if (style != 1)
   {
-    v12 = [MEMORY[0x277D759A0] mainScreen];
-    [v12 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v11 = 2.0 / v13;
   }
 
@@ -187,8 +187,8 @@
 
   else
   {
-    v20 = [MEMORY[0x277D759A0] mainScreen];
-    [v20 scale];
+    mainScreen2 = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen2 scale];
     CGContextSetLineWidth(CurrentContext, v19 * (2.0 / v21));
   }
 
@@ -241,8 +241,8 @@
 
   if (!style)
   {
-    v4 = [MEMORY[0x277D759A0] mainScreen];
-    [v4 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v6 = v5;
 
     if (v6 <= 2.0)

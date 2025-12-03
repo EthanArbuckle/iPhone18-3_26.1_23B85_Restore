@@ -1,18 +1,18 @@
 @interface TLVibrationPersistenceUtilities
-+ (BOOL)_objectIsValidUserGeneratedVibrationPattern:(id)a3 error:(id *)a4;
-+ (BOOL)_validateObjectWithError:(id *)a3 validationBlock:(id)a4;
-+ (BOOL)objectIsValidUserGeneratedVibrationPatternsDictionary:(id)a3 error:(id *)a4;
++ (BOOL)_objectIsValidUserGeneratedVibrationPattern:(id)pattern error:(id *)error;
++ (BOOL)_validateObjectWithError:(id *)error validationBlock:(id)block;
++ (BOOL)objectIsValidUserGeneratedVibrationPatternsDictionary:(id)dictionary error:(id *)error;
 + (NSURL)userGeneratedVibrationStoreFileURL;
 @end
 
 @implementation TLVibrationPersistenceUtilities
 
-+ (BOOL)_validateObjectWithError:(id *)a3 validationBlock:(id)a4
++ (BOOL)_validateObjectWithError:(id *)error validationBlock:(id)block
 {
   v16 = 0;
   v17 = 0;
   v15 = 0;
-  (*(a4 + 2))(a4, &v17, &v16, &v15);
+  (*(block + 2))(block, &v17, &v16, &v15);
   v5 = v17;
   v6 = v16;
   v7 = v15;
@@ -25,18 +25,18 @@
       goto LABEL_9;
     }
 
-    if (a3)
+    if (error)
     {
       v11 = MEMORY[0x1E696ABC0];
       v12 = objc_opt_class();
       v13 = NSStringFromClass(v12);
-      *a3 = [v11 tl_errorWithDomain:@"TLServiceValidationErrorDomain" description:{@"Unexpected type for %@: %@ (%@)", v8, v13, v6}];
+      *error = [v11 tl_errorWithDomain:@"TLServiceValidationErrorDomain" description:{@"Unexpected type for %@: %@ (%@)", v8, v13, v6}];
     }
 
     goto LABEL_7;
   }
 
-  if (!a3)
+  if (!error)
   {
 LABEL_7:
     v10 = 0;
@@ -45,24 +45,24 @@ LABEL_7:
 
   v9 = v5;
   v10 = 0;
-  *a3 = v5;
+  *error = v5;
 LABEL_9:
 
   return v10;
 }
 
-+ (BOOL)_objectIsValidUserGeneratedVibrationPattern:(id)a3 error:(id *)a4
++ (BOOL)_objectIsValidUserGeneratedVibrationPattern:(id)pattern error:(id *)error
 {
-  v6 = a3;
+  patternCopy = pattern;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __85__TLVibrationPersistenceUtilities__objectIsValidUserGeneratedVibrationPattern_error___block_invoke;
   v9[3] = &unk_1E8578EB0;
-  v10 = v6;
-  v7 = v6;
-  LOBYTE(a4) = [a1 _validateObjectWithError:a4 validationBlock:v9];
+  v10 = patternCopy;
+  v7 = patternCopy;
+  LOBYTE(error) = [self _validateObjectWithError:error validationBlock:v9];
 
-  return a4;
+  return error;
 }
 
 void __85__TLVibrationPersistenceUtilities__objectIsValidUserGeneratedVibrationPattern_error___block_invoke(uint64_t a1, void *a2, void *a3, __CFString **a4)
@@ -190,19 +190,19 @@ LABEL_29:
   v26 = *MEMORY[0x1E69E9840];
 }
 
-+ (BOOL)objectIsValidUserGeneratedVibrationPatternsDictionary:(id)a3 error:(id *)a4
++ (BOOL)objectIsValidUserGeneratedVibrationPatternsDictionary:(id)dictionary error:(id *)error
 {
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __95__TLVibrationPersistenceUtilities_objectIsValidUserGeneratedVibrationPatternsDictionary_error___block_invoke;
   v9[3] = &unk_1E8578ED8;
-  v10 = v6;
-  v11 = a1;
-  v7 = v6;
-  LOBYTE(a4) = [a1 _validateObjectWithError:a4 validationBlock:v9];
+  v10 = dictionaryCopy;
+  selfCopy = self;
+  v7 = dictionaryCopy;
+  LOBYTE(error) = [self _validateObjectWithError:error validationBlock:v9];
 
-  return a4;
+  return error;
 }
 
 void __95__TLVibrationPersistenceUtilities_objectIsValidUserGeneratedVibrationPatternsDictionary_error___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)

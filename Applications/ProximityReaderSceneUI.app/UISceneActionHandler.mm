@@ -1,20 +1,20 @@
 @interface UISceneActionHandler
 - (_TtC22ProximityReaderSceneUI20UISceneActionHandler)init;
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6;
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context;
 @end
 
 @implementation UISceneActionHandler
 
-- (id)_respondToActions:(id)a3 forFBSScene:(id)a4 inUIScene:(id)a5 fromTransitionContext:(id)a6
+- (id)_respondToActions:(id)actions forFBSScene:(id)scene inUIScene:(id)iScene fromTransitionContext:(id)context
 {
   sub_10000D6F4();
   sub_10000D740();
   v10 = static Set._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = self;
-  sub_10000D264(v10, v11, v12);
+  sceneCopy = scene;
+  iSceneCopy = iScene;
+  contextCopy = context;
+  selfCopy = self;
+  sub_10000D264(v10, sceneCopy, iSceneCopy);
 
   v15.super.isa = Set._bridgeToObjectiveC()().super.isa;
 

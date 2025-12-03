@@ -7,67 +7,67 @@
 
 - (__CFString)_intents_encodeWithJSONEncoder:()INJSONSerialization codableDescription:
 {
-  v1 = [a1 calendarIdentifier];
-  if ([v1 isEqualToString:*MEMORY[0x1E695D850]])
+  calendarIdentifier = [self calendarIdentifier];
+  if ([calendarIdentifier isEqualToString:*MEMORY[0x1E695D850]])
   {
     v2 = @"GREGORIAN";
   }
 
-  else if ([v1 isEqualToString:*MEMORY[0x1E695D820]])
+  else if ([calendarIdentifier isEqualToString:*MEMORY[0x1E695D820]])
   {
     v2 = @"BUDDHIST";
   }
 
-  else if ([v1 isEqualToString:*MEMORY[0x1E695D828]])
+  else if ([calendarIdentifier isEqualToString:*MEMORY[0x1E695D828]])
   {
     v2 = @"CHINESE";
   }
 
   else
   {
-    if (([v1 isEqualToString:*MEMORY[0x1E695D830]] & 1) == 0 && (objc_msgSend(v1, "isEqualToString:", *MEMORY[0x1E695D848]) & 1) == 0 && (objc_msgSend(v1, "isEqualToString:", *MEMORY[0x1E695D840]) & 1) == 0)
+    if (([calendarIdentifier isEqualToString:*MEMORY[0x1E695D830]] & 1) == 0 && (objc_msgSend(calendarIdentifier, "isEqualToString:", *MEMORY[0x1E695D848]) & 1) == 0 && (objc_msgSend(calendarIdentifier, "isEqualToString:", *MEMORY[0x1E695D840]) & 1) == 0)
     {
-      if ([v1 isEqualToString:*MEMORY[0x1E695D860]])
+      if ([calendarIdentifier isEqualToString:*MEMORY[0x1E695D860]])
       {
         v2 = @"HEBREW";
         goto LABEL_11;
       }
 
-      if (([v1 isEqualToString:*MEMORY[0x1E695D868]] & 1) == 0)
+      if (([calendarIdentifier isEqualToString:*MEMORY[0x1E695D868]] & 1) == 0)
       {
-        if ([v1 isEqualToString:*MEMORY[0x1E695D870]])
+        if ([calendarIdentifier isEqualToString:*MEMORY[0x1E695D870]])
         {
           v2 = @"HINDU";
           goto LABEL_11;
         }
 
-        if ([v1 isEqualToString:*MEMORY[0x1E695D878]])
+        if ([calendarIdentifier isEqualToString:*MEMORY[0x1E695D878]])
         {
           v2 = @"ISLAMIC";
           goto LABEL_11;
         }
 
-        if (([v1 isEqualToString:*MEMORY[0x1E695D880]] & 1) == 0)
+        if (([calendarIdentifier isEqualToString:*MEMORY[0x1E695D880]] & 1) == 0)
         {
-          if ([v1 isEqualToString:*MEMORY[0x1E695D898]])
+          if ([calendarIdentifier isEqualToString:*MEMORY[0x1E695D898]])
           {
             v2 = @"JAPANESE";
             goto LABEL_11;
           }
 
-          if ([v1 isEqualToString:*MEMORY[0x1E695D8C0]])
+          if ([calendarIdentifier isEqualToString:*MEMORY[0x1E695D8C0]])
           {
             v2 = @"PERSIAN";
             goto LABEL_11;
           }
 
-          if ([v1 isEqualToString:*MEMORY[0x1E695D8C8]])
+          if ([calendarIdentifier isEqualToString:*MEMORY[0x1E695D8C8]])
           {
             v2 = @"REPUBLIC_OF_CHINA";
             goto LABEL_11;
           }
 
-          if (([v1 isEqualToString:*MEMORY[0x1E695D888]] & 1) == 0 && objc_msgSend(v1, "isEqualToString:", *MEMORY[0x1E695D890]))
+          if (([calendarIdentifier isEqualToString:*MEMORY[0x1E695D888]] & 1) == 0 && objc_msgSend(calendarIdentifier, "isEqualToString:", *MEMORY[0x1E695D890]))
           {
             v2 = @"ISLAMIC_UMALQURA";
             goto LABEL_11;

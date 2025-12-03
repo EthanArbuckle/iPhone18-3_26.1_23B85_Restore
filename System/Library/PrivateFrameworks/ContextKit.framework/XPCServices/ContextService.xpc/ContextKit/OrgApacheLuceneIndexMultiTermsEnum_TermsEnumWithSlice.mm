@@ -1,24 +1,24 @@
 @interface OrgApacheLuceneIndexMultiTermsEnum_TermsEnumWithSlice
-- (OrgApacheLuceneIndexMultiTermsEnum_TermsEnumWithSlice)initWithInt:(int)a3 withOrgApacheLuceneIndexReaderSlice:(id)a4;
+- (OrgApacheLuceneIndexMultiTermsEnum_TermsEnumWithSlice)initWithInt:(int)int withOrgApacheLuceneIndexReaderSlice:(id)slice;
 - (id)description;
 - (void)dealloc;
-- (void)resetWithOrgApacheLuceneIndexTermsEnum:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4;
+- (void)resetWithOrgApacheLuceneIndexTermsEnum:(id)enum withOrgApacheLuceneUtilBytesRef:(id)ref;
 @end
 
 @implementation OrgApacheLuceneIndexMultiTermsEnum_TermsEnumWithSlice
 
-- (OrgApacheLuceneIndexMultiTermsEnum_TermsEnumWithSlice)initWithInt:(int)a3 withOrgApacheLuceneIndexReaderSlice:(id)a4
+- (OrgApacheLuceneIndexMultiTermsEnum_TermsEnumWithSlice)initWithInt:(int)int withOrgApacheLuceneIndexReaderSlice:(id)slice
 {
-  JreStrongAssign(&self->subSlice_, a4);
-  self->index_ = a3;
+  JreStrongAssign(&self->subSlice_, slice);
+  self->index_ = int;
   return self;
 }
 
-- (void)resetWithOrgApacheLuceneIndexTermsEnum:(id)a3 withOrgApacheLuceneUtilBytesRef:(id)a4
+- (void)resetWithOrgApacheLuceneIndexTermsEnum:(id)enum withOrgApacheLuceneUtilBytesRef:(id)ref
 {
-  JreStrongAssign(&self->terms_, a3);
+  JreStrongAssign(&self->terms_, enum);
 
-  JreStrongAssign(&self->current_, a4);
+  JreStrongAssign(&self->current_, ref);
 }
 
 - (id)description

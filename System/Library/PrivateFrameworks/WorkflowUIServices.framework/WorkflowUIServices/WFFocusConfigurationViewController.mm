@@ -1,19 +1,19 @@
 @interface WFFocusConfigurationViewController
-- (WFFocusConfigurationViewController)initWithContextualActionOptions:(id)a3;
-- (WFFocusConfigurationViewController)initWithOptions:(id)a3;
-- (WFFocusConfigurationViewController)initWithRequest:(id)a3;
+- (WFFocusConfigurationViewController)initWithContextualActionOptions:(id)options;
+- (WFFocusConfigurationViewController)initWithOptions:(id)options;
+- (WFFocusConfigurationViewController)initWithRequest:(id)request;
 - (WFFocusConfigurationViewControllerDelegate)delegate;
 - (void)clearAllViews;
 - (void)dealloc;
-- (void)embedRemoteViewController:(id)a3 withExtension:(id)a4 extensionRequest:(id)a5;
-- (void)installRemoteViewController:(id)a3;
+- (void)embedRemoteViewController:(id)controller withExtension:(id)extension extensionRequest:(id)request;
+- (void)installRemoteViewController:(id)controller;
 - (void)loadFocusConfigurationRemoteViewController;
 - (void)loadFocusConfigurationUI;
 - (void)loadView;
-- (void)notifyDelegateWithPressedButtonIdentifier:(id)a3 cellFrame:(CGRect)a4;
-- (void)notifyDelegateWithUIState:(id)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
-- (void)showErrorMessage:(id)a3;
+- (void)notifyDelegateWithPressedButtonIdentifier:(id)identifier cellFrame:(CGRect)frame;
+- (void)notifyDelegateWithUIState:(id)state;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
+- (void)showErrorMessage:(id)message;
 - (void)viewDidLoad;
 @end
 
@@ -26,16 +26,16 @@
   return WeakRetained;
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
-  v16 = a3;
-  v4 = [(WFFocusConfigurationViewController *)self remoteViewController];
-  if (v4 == v16)
+  containerCopy = container;
+  remoteViewController = [(WFFocusConfigurationViewController *)self remoteViewController];
+  if (remoteViewController == containerCopy)
   {
     [(WFFocusConfigurationViewController *)self preferredContentSize];
     v6 = v5;
     v8 = v7;
-    [v16 preferredContentSize];
+    [containerCopy preferredContentSize];
     v10 = v9;
     v12 = v11;
 
@@ -44,9 +44,9 @@
       goto LABEL_9;
     }
 
-    [v16 preferredContentSize];
+    [containerCopy preferredContentSize];
     [(WFFocusConfigurationViewController *)self setPreferredContentSize:?];
-    v14 = [(WFFocusConfigurationViewController *)self delegate];
+    delegate = [(WFFocusConfigurationViewController *)self delegate];
     v15 = objc_opt_respondsToSelector();
 
     if ((v15 & 1) == 0)
@@ -54,54 +54,54 @@
       goto LABEL_9;
     }
 
-    v4 = [(WFFocusConfigurationViewController *)self delegate];
-    [v16 preferredContentSize];
-    [v4 focusConfigurationViewController:self preferredContentSizeDidChange:?];
+    remoteViewController = [(WFFocusConfigurationViewController *)self delegate];
+    [containerCopy preferredContentSize];
+    [remoteViewController focusConfigurationViewController:self preferredContentSizeDidChange:?];
   }
 
 LABEL_9:
 }
 
-- (void)notifyDelegateWithPressedButtonIdentifier:(id)a3 cellFrame:(CGRect)a4
+- (void)notifyDelegateWithPressedButtonIdentifier:(id)identifier cellFrame:(CGRect)frame
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = a3;
-  v9 = [(WFFocusConfigurationViewController *)self delegate];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  identifierCopy = identifier;
+  delegate = [(WFFocusConfigurationViewController *)self delegate];
   v10 = objc_opt_respondsToSelector();
 
   if (v10)
   {
-    v11 = [(WFFocusConfigurationViewController *)self delegate];
-    [v11 focusConfigurationViewController:self didPressButtonWithIdentifier:v12 cellFrame:{x, y, width, height}];
+    delegate2 = [(WFFocusConfigurationViewController *)self delegate];
+    [delegate2 focusConfigurationViewController:self didPressButtonWithIdentifier:identifierCopy cellFrame:{x, y, width, height}];
   }
 }
 
-- (void)notifyDelegateWithUIState:(id)a3
+- (void)notifyDelegateWithUIState:(id)state
 {
-  v12 = a3;
-  v4 = [(WFFocusConfigurationViewController *)self delegate];
+  stateCopy = state;
+  delegate = [(WFFocusConfigurationViewController *)self delegate];
   v5 = objc_opt_respondsToSelector();
 
-  v6 = [(WFFocusConfigurationViewController *)self delegate];
-  v7 = v6;
+  delegate2 = [(WFFocusConfigurationViewController *)self delegate];
+  delegate3 = delegate2;
   if (v5)
   {
-    [v6 focusConfigurationViewController:self configurationUIStateDidChange:v12];
+    [delegate2 focusConfigurationViewController:self configurationUIStateDidChange:stateCopy];
   }
 
   else
   {
     v8 = objc_opt_respondsToSelector();
 
-    v7 = [(WFFocusConfigurationViewController *)self delegate];
+    delegate3 = [(WFFocusConfigurationViewController *)self delegate];
     if (v8)
     {
-      v9 = [v12 action];
-      v10 = [v12 displayRepresentation];
-      [v7 focusConfigurationViewController:self didUpdateConfigurationWithAction:v9 displayRepresentation:v10];
+      action = [stateCopy action];
+      displayRepresentation = [stateCopy displayRepresentation];
+      [delegate3 focusConfigurationViewController:self didUpdateConfigurationWithAction:action displayRepresentation:displayRepresentation];
     }
 
     else
@@ -113,22 +113,22 @@ LABEL_9:
         goto LABEL_9;
       }
 
-      v7 = [(WFFocusConfigurationViewController *)self delegate];
-      v9 = [v12 action];
-      [v7 focusConfigurationViewController:self didUpdateConfigurationWithAction:v9];
+      delegate3 = [(WFFocusConfigurationViewController *)self delegate];
+      action = [stateCopy action];
+      [delegate3 focusConfigurationViewController:self didUpdateConfigurationWithAction:action];
     }
   }
 
 LABEL_9:
 }
 
-- (void)installRemoteViewController:(id)a3
+- (void)installRemoteViewController:(id)controller
 {
   v47 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  controllerCopy = controller;
+  if (controllerCopy)
   {
-    [(WFFocusConfigurationViewController *)self addChildViewController:v4];
+    [(WFFocusConfigurationViewController *)self addChildViewController:controllerCopy];
     [(WFFocusConfigurationViewController *)self clearAllViews];
   }
 
@@ -138,123 +138,123 @@ LABEL_9:
     *buf = 136315394;
     v44 = "[WFFocusConfigurationViewController installRemoteViewController:]";
     v45 = 2112;
-    v46 = v4;
+    v46 = controllerCopy;
     _os_log_impl(&dword_1C830A000, v5, OS_LOG_TYPE_DEBUG, "%s Installing Focus Filter Remote View Controller: %@", buf, 0x16u);
   }
 
-  v6 = [(WFFocusConfigurationViewController *)self view];
-  [v6 bounds];
+  view = [(WFFocusConfigurationViewController *)self view];
+  [view bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [v4 view];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  view2 = [controllerCopy view];
+  [view2 setFrame:{v8, v10, v12, v14}];
 
-  v16 = [v4 view];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  view3 = [controllerCopy view];
+  [view3 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v17 = [(WFFocusConfigurationViewController *)self view];
-  v18 = [v4 view];
-  [v17 addSubview:v18];
+  view4 = [(WFFocusConfigurationViewController *)self view];
+  view5 = [controllerCopy view];
+  [view4 addSubview:view5];
 
   v32 = MEMORY[0x1E696ACD8];
-  v41 = [v4 view];
-  v39 = [v41 topAnchor];
-  v40 = [(WFFocusConfigurationViewController *)self view];
-  v38 = [v40 topAnchor];
-  v37 = [v39 constraintEqualToAnchor:v38];
+  view6 = [controllerCopy view];
+  topAnchor = [view6 topAnchor];
+  view7 = [(WFFocusConfigurationViewController *)self view];
+  topAnchor2 = [view7 topAnchor];
+  v37 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v42[0] = v37;
-  v36 = [v4 view];
-  v34 = [v36 bottomAnchor];
-  v35 = [(WFFocusConfigurationViewController *)self view];
-  v33 = [v35 bottomAnchor];
-  v31 = [v34 constraintEqualToAnchor:v33];
+  view8 = [controllerCopy view];
+  bottomAnchor = [view8 bottomAnchor];
+  view9 = [(WFFocusConfigurationViewController *)self view];
+  bottomAnchor2 = [view9 bottomAnchor];
+  v31 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v42[1] = v31;
-  v30 = [v4 view];
-  v28 = [v30 leadingAnchor];
-  v19 = [(WFFocusConfigurationViewController *)self view];
-  v20 = [v19 leadingAnchor];
-  v21 = [v28 constraintEqualToAnchor:v20];
+  view10 = [controllerCopy view];
+  leadingAnchor = [view10 leadingAnchor];
+  view11 = [(WFFocusConfigurationViewController *)self view];
+  leadingAnchor2 = [view11 leadingAnchor];
+  v21 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v42[2] = v21;
-  v22 = [v4 view];
-  v23 = [v22 trailingAnchor];
-  v24 = [(WFFocusConfigurationViewController *)self view];
-  v25 = [v24 trailingAnchor];
-  v26 = [v23 constraintEqualToAnchor:v25];
+  view12 = [controllerCopy view];
+  trailingAnchor = [view12 trailingAnchor];
+  view13 = [(WFFocusConfigurationViewController *)self view];
+  trailingAnchor2 = [view13 trailingAnchor];
+  v26 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v42[3] = v26;
   [MEMORY[0x1E695DEC8] arrayWithObjects:v42 count:4];
   v27 = v29 = self;
   [v32 activateConstraints:v27];
 
-  [v4 didMoveToParentViewController:v29];
+  [controllerCopy didMoveToParentViewController:v29];
 }
 
-- (void)embedRemoteViewController:(id)a3 withExtension:(id)a4 extensionRequest:(id)a5
+- (void)embedRemoteViewController:(id)controller withExtension:(id)extension extensionRequest:(id)request
 {
-  v19 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(WFFocusConfigurationViewController *)self remoteViewController];
+  controllerCopy = controller;
+  extensionCopy = extension;
+  requestCopy = request;
+  remoteViewController = [(WFFocusConfigurationViewController *)self remoteViewController];
 
-  if (v10 == v19)
+  if (remoteViewController == controllerCopy)
   {
     goto LABEL_9;
   }
 
-  v11 = [(WFFocusConfigurationViewController *)self remoteViewController];
-  [v11 willMoveToParentViewController:0];
-  v12 = [(WFFocusConfigurationViewController *)self extension];
-  v13 = v12;
-  if (v12 != v8)
+  remoteViewController2 = [(WFFocusConfigurationViewController *)self remoteViewController];
+  [remoteViewController2 willMoveToParentViewController:0];
+  extension = [(WFFocusConfigurationViewController *)self extension];
+  v13 = extension;
+  if (extension != extensionCopy)
   {
 
 LABEL_5:
-    v15 = [(WFFocusConfigurationViewController *)self extension];
-    v16 = [(WFFocusConfigurationViewController *)self extensionRequest];
-    [v15 cancelExtensionRequestWithIdentifier:v16];
+    extension2 = [(WFFocusConfigurationViewController *)self extension];
+    extensionRequest = [(WFFocusConfigurationViewController *)self extensionRequest];
+    [extension2 cancelExtensionRequestWithIdentifier:extensionRequest];
 
     goto LABEL_6;
   }
 
-  v14 = [(WFFocusConfigurationViewController *)self extensionRequest];
+  extensionRequest2 = [(WFFocusConfigurationViewController *)self extensionRequest];
 
-  if (v14 != v9)
+  if (extensionRequest2 != requestCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_6:
-  v17 = [(WFFocusConfigurationViewController *)self remoteViewController];
-  [v17 setDelegate:0];
+  remoteViewController3 = [(WFFocusConfigurationViewController *)self remoteViewController];
+  [remoteViewController3 setDelegate:0];
 
-  [(WFFocusConfigurationViewController *)self setExtension:v8];
-  [(WFFocusConfigurationViewController *)self setExtensionRequest:v9];
-  [(WFFocusConfigurationViewController *)self setRemoteViewController:v19];
-  v18 = [(WFFocusConfigurationViewController *)self remoteViewController];
-  [v18 setDelegate:self];
+  [(WFFocusConfigurationViewController *)self setExtension:extensionCopy];
+  [(WFFocusConfigurationViewController *)self setExtensionRequest:requestCopy];
+  [(WFFocusConfigurationViewController *)self setRemoteViewController:controllerCopy];
+  remoteViewController4 = [(WFFocusConfigurationViewController *)self remoteViewController];
+  [remoteViewController4 setDelegate:self];
 
   if ([(WFFocusConfigurationViewController *)self isViewLoaded])
   {
-    [(WFFocusConfigurationViewController *)self installRemoteViewController:v19];
+    [(WFFocusConfigurationViewController *)self installRemoteViewController:controllerCopy];
   }
 
-  [v11 removeFromParentViewController];
+  [remoteViewController2 removeFromParentViewController];
 
 LABEL_9:
 }
 
-- (void)showErrorMessage:(id)a3
+- (void)showErrorMessage:(id)message
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  messageCopy = message;
   v5 = getWFFocusConfigurationLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     *buf = 136315394;
     v8 = "[WFFocusConfigurationViewController showErrorMessage:]";
     v9 = 2114;
-    v10 = v4;
+    v10 = messageCopy;
     _os_log_impl(&dword_1C830A000, v5, OS_LOG_TYPE_ERROR, "%s Failing with error %{public}@", buf, 0x16u);
   }
 
@@ -325,8 +325,8 @@ void __55__WFFocusConfigurationViewController_showErrorMessage___block_invoke(ui
 
 - (void)clearAllViews
 {
-  v3 = [(WFFocusConfigurationViewController *)self activityIndicator];
-  [v3 removeFromSuperview];
+  activityIndicator = [(WFFocusConfigurationViewController *)self activityIndicator];
+  [activityIndicator removeFromSuperview];
 
   [(WFFocusConfigurationViewController *)self setActivityIndicator:0];
 }
@@ -500,9 +500,9 @@ void __80__WFFocusConfigurationViewController_loadFocusConfigurationRemoteViewCo
 
 - (void)loadFocusConfigurationUI
 {
-  v3 = [(WFFocusConfigurationViewController *)self request];
-  v4 = [v3 action];
-  v5 = v4 == 0;
+  request = [(WFFocusConfigurationViewController *)self request];
+  action = [request action];
+  v5 = action == 0;
 
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -511,28 +511,28 @@ void __80__WFFocusConfigurationViewController_loadFocusConfigurationRemoteViewCo
   aBlock[4] = self;
   v15 = v5;
   v6 = _Block_copy(aBlock);
-  v7 = [(WFFocusConfigurationViewController *)self request];
-  v8 = [v7 actionIdentifier];
-  v9 = [v8 bundleIdentifier];
+  request2 = [(WFFocusConfigurationViewController *)self request];
+  actionIdentifier = [request2 actionIdentifier];
+  bundleIdentifier = [actionIdentifier bundleIdentifier];
 
-  if (!v9)
+  if (!bundleIdentifier)
   {
     goto LABEL_8;
   }
 
-  v10 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:v9];
+  v10 = [MEMORY[0x1E698B0D0] applicationWithBundleIdentifier:bundleIdentifier];
   if (![v10 isHidden])
   {
     if ([v10 isLocked])
     {
-      v11 = [MEMORY[0x1E698B0D8] sharedGuard];
+      mEMORY[0x1E698B0D8] = [MEMORY[0x1E698B0D8] sharedGuard];
       v12[0] = MEMORY[0x1E69E9820];
       v12[1] = 3221225472;
       v12[2] = __62__WFFocusConfigurationViewController_loadFocusConfigurationUI__block_invoke_3;
       v12[3] = &unk_1E8307B28;
       v12[4] = self;
       v13 = v6;
-      [v11 authenticateForSubject:v10 completion:v12];
+      [mEMORY[0x1E698B0D8] authenticateForSubject:v10 completion:v12];
 
       goto LABEL_6;
     }
@@ -603,30 +603,30 @@ void __62__WFFocusConfigurationViewController_loadFocusConfigurationUI__block_in
   v20.receiver = self;
   v20.super_class = WFFocusConfigurationViewController;
   [(WFFocusConfigurationViewController *)&v20 viewDidLoad];
-  v3 = [(WFFocusConfigurationViewController *)self view];
-  [v3 setClipsToBounds:1];
+  view = [(WFFocusConfigurationViewController *)self view];
+  [view setClipsToBounds:1];
 
   v4 = [objc_alloc(MEMORY[0x1E69DC638]) initWithActivityIndicatorStyle:100];
   [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v5 = [(WFFocusConfigurationViewController *)self view];
-  [v5 addSubview:v4];
+  view2 = [(WFFocusConfigurationViewController *)self view];
+  [view2 addSubview:v4];
 
   [v4 startAnimating];
   [(WFFocusConfigurationViewController *)self setActivityIndicator:v4];
   v15 = MEMORY[0x1E696ACD8];
-  v19 = [(WFFocusConfigurationViewController *)self activityIndicator];
-  v17 = [v19 centerXAnchor];
-  v18 = [(WFFocusConfigurationViewController *)self view];
-  v16 = [v18 layoutMarginsGuide];
-  v6 = [v16 centerXAnchor];
-  v7 = [v17 constraintEqualToAnchor:v6];
+  activityIndicator = [(WFFocusConfigurationViewController *)self activityIndicator];
+  centerXAnchor = [activityIndicator centerXAnchor];
+  view3 = [(WFFocusConfigurationViewController *)self view];
+  layoutMarginsGuide = [view3 layoutMarginsGuide];
+  centerXAnchor2 = [layoutMarginsGuide centerXAnchor];
+  v7 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2];
   v21[0] = v7;
-  v8 = [(WFFocusConfigurationViewController *)self activityIndicator];
-  v9 = [v8 centerYAnchor];
-  v10 = [(WFFocusConfigurationViewController *)self view];
-  v11 = [v10 layoutMarginsGuide];
-  v12 = [v11 centerYAnchor];
-  v13 = [v9 constraintEqualToAnchor:v12];
+  activityIndicator2 = [(WFFocusConfigurationViewController *)self activityIndicator];
+  centerYAnchor = [activityIndicator2 centerYAnchor];
+  view4 = [(WFFocusConfigurationViewController *)self view];
+  layoutMarginsGuide2 = [view4 layoutMarginsGuide];
+  centerYAnchor2 = [layoutMarginsGuide2 centerYAnchor];
+  v13 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   v21[1] = v13;
   v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v21 count:2];
   [v15 activateConstraints:v14];
@@ -637,32 +637,32 @@ void __62__WFFocusConfigurationViewController_loadFocusConfigurationUI__block_in
   v5.receiver = self;
   v5.super_class = WFFocusConfigurationViewController;
   [(WFFocusConfigurationViewController *)&v5 loadView];
-  v3 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-  v4 = [(WFFocusConfigurationViewController *)self view];
-  [v4 setBackgroundColor:v3];
+  systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+  view = [(WFFocusConfigurationViewController *)self view];
+  [view setBackgroundColor:systemGroupedBackgroundColor];
 }
 
 - (void)dealloc
 {
-  v3 = [(WFFocusConfigurationViewController *)self extension];
-  v4 = [(WFFocusConfigurationViewController *)self extensionRequest];
-  [v3 cancelExtensionRequestWithIdentifier:v4];
+  extension = [(WFFocusConfigurationViewController *)self extension];
+  extensionRequest = [(WFFocusConfigurationViewController *)self extensionRequest];
+  [extension cancelExtensionRequestWithIdentifier:extensionRequest];
 
   v5.receiver = self;
   v5.super_class = WFFocusConfigurationViewController;
   [(WFFocusConfigurationViewController *)&v5 dealloc];
 }
 
-- (WFFocusConfigurationViewController)initWithRequest:(id)a3
+- (WFFocusConfigurationViewController)initWithRequest:(id)request
 {
-  v5 = a3;
+  requestCopy = request;
   v10.receiver = self;
   v10.super_class = WFFocusConfigurationViewController;
   v6 = [(WFFocusConfigurationViewController *)&v10 initWithNibName:0 bundle:0];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_request, a3);
+    objc_storeStrong(&v6->_request, request);
     [(WFFocusConfigurationViewController *)v7 loadFocusConfigurationUI];
     v8 = v7;
   }
@@ -670,19 +670,19 @@ void __62__WFFocusConfigurationViewController_loadFocusConfigurationUI__block_in
   return v7;
 }
 
-- (WFFocusConfigurationViewController)initWithContextualActionOptions:(id)a3
+- (WFFocusConfigurationViewController)initWithContextualActionOptions:(id)options
 {
-  v4 = a3;
-  v5 = [[WFFocusConfigurationRequest alloc] initWithContextualActionOptions:v4];
+  optionsCopy = options;
+  v5 = [[WFFocusConfigurationRequest alloc] initWithContextualActionOptions:optionsCopy];
 
   v6 = [(WFFocusConfigurationViewController *)self initWithRequest:v5];
   return v6;
 }
 
-- (WFFocusConfigurationViewController)initWithOptions:(id)a3
+- (WFFocusConfigurationViewController)initWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [[WFFocusConfigurationRequest alloc] initWithOptions:v4];
+  optionsCopy = options;
+  v5 = [[WFFocusConfigurationRequest alloc] initWithOptions:optionsCopy];
 
   v6 = [(WFFocusConfigurationViewController *)self initWithRequest:v5];
   return v6;

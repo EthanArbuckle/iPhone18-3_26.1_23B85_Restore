@@ -1,37 +1,37 @@
 @interface _SFPBFillToolPersonParameterCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBFillToolPersonParameterCommand)initWithDictionary:(id)a3;
-- (_SFPBFillToolPersonParameterCommand)initWithFacade:(id)a3;
-- (_SFPBFillToolPersonParameterCommand)initWithJSON:(id)a3;
+- (_SFPBFillToolPersonParameterCommand)initWithDictionary:(id)dictionary;
+- (_SFPBFillToolPersonParameterCommand)initWithFacade:(id)facade;
+- (_SFPBFillToolPersonParameterCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setEncodedTypedValue:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setEncodedTypedValue:(id)value;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBFillToolPersonParameterCommand
 
-- (_SFPBFillToolPersonParameterCommand)initWithFacade:(id)a3
+- (_SFPBFillToolPersonParameterCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBFillToolPersonParameterCommand *)self init];
   if (v5)
   {
-    v6 = [v4 encodedTypedValue];
+    encodedTypedValue = [facadeCopy encodedTypedValue];
 
-    if (v6)
+    if (encodedTypedValue)
     {
-      v7 = [v4 encodedTypedValue];
-      [(_SFPBFillToolPersonParameterCommand *)v5 setEncodedTypedValue:v7];
+      encodedTypedValue2 = [facadeCopy encodedTypedValue];
+      [(_SFPBFillToolPersonParameterCommand *)v5 setEncodedTypedValue:encodedTypedValue2];
     }
 
-    v8 = [v4 person];
+    person = [facadeCopy person];
 
-    if (v8)
+    if (person)
     {
       v9 = [_SFPBPerson alloc];
-      v10 = [v4 person];
-      v11 = [(_SFPBPerson *)v9 initWithFacade:v10];
+      person2 = [facadeCopy person];
+      v11 = [(_SFPBPerson *)v9 initWithFacade:person2];
       [(_SFPBFillToolPersonParameterCommand *)v5 setPerson:v11];
     }
 
@@ -41,15 +41,15 @@
   return v5;
 }
 
-- (_SFPBFillToolPersonParameterCommand)initWithDictionary:(id)a3
+- (_SFPBFillToolPersonParameterCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = _SFPBFillToolPersonParameterCommand;
   v5 = [(_SFPBFillToolPersonParameterCommand *)&v12 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"encodedTypedValue"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"encodedTypedValue"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -57,7 +57,7 @@
       [(_SFPBFillToolPersonParameterCommand *)v5 setEncodedTypedValue:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"person"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"person"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -71,30 +71,30 @@
   return v5;
 }
 
-- (_SFPBFillToolPersonParameterCommand)initWithJSON:(id)a3
+- (_SFPBFillToolPersonParameterCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBFillToolPersonParameterCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBFillToolPersonParameterCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBFillToolPersonParameterCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -107,64 +107,64 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_encodedTypedValue)
   {
-    v4 = [(_SFPBFillToolPersonParameterCommand *)self encodedTypedValue];
-    v5 = [v4 base64EncodedStringWithOptions:0];
+    encodedTypedValue = [(_SFPBFillToolPersonParameterCommand *)self encodedTypedValue];
+    v5 = [encodedTypedValue base64EncodedStringWithOptions:0];
     if (v5)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"encodedTypedValue"];
+      [dictionary setObject:v5 forKeyedSubscript:@"encodedTypedValue"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"encodedTypedValue"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"encodedTypedValue"];
     }
   }
 
   if (self->_person)
   {
-    v7 = [(_SFPBFillToolPersonParameterCommand *)self person];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    person = [(_SFPBFillToolPersonParameterCommand *)self person];
+    dictionaryRepresentation = [person dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"person"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"person"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"person"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"person"];
     }
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBFillToolPersonParameterCommand *)self encodedTypedValue];
-  v6 = [v4 encodedTypedValue];
-  if ((v5 != 0) == (v6 == 0))
+  encodedTypedValue = [(_SFPBFillToolPersonParameterCommand *)self encodedTypedValue];
+  encodedTypedValue2 = [equalCopy encodedTypedValue];
+  if ((encodedTypedValue != 0) == (encodedTypedValue2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBFillToolPersonParameterCommand *)self encodedTypedValue];
-  if (v7)
+  encodedTypedValue3 = [(_SFPBFillToolPersonParameterCommand *)self encodedTypedValue];
+  if (encodedTypedValue3)
   {
-    v8 = v7;
-    v9 = [(_SFPBFillToolPersonParameterCommand *)self encodedTypedValue];
-    v10 = [v4 encodedTypedValue];
-    v11 = [v9 isEqual:v10];
+    v8 = encodedTypedValue3;
+    encodedTypedValue4 = [(_SFPBFillToolPersonParameterCommand *)self encodedTypedValue];
+    encodedTypedValue5 = [equalCopy encodedTypedValue];
+    v11 = [encodedTypedValue4 isEqual:encodedTypedValue5];
 
     if (!v11)
     {
@@ -176,12 +176,12 @@
   {
   }
 
-  v5 = [(_SFPBFillToolPersonParameterCommand *)self person];
-  v6 = [v4 person];
-  if ((v5 != 0) != (v6 == 0))
+  encodedTypedValue = [(_SFPBFillToolPersonParameterCommand *)self person];
+  encodedTypedValue2 = [equalCopy person];
+  if ((encodedTypedValue != 0) != (encodedTypedValue2 == 0))
   {
-    v12 = [(_SFPBFillToolPersonParameterCommand *)self person];
-    if (!v12)
+    person = [(_SFPBFillToolPersonParameterCommand *)self person];
+    if (!person)
     {
 
 LABEL_15:
@@ -189,10 +189,10 @@ LABEL_15:
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBFillToolPersonParameterCommand *)self person];
-    v15 = [v4 person];
-    v16 = [v14 isEqual:v15];
+    v13 = person;
+    person2 = [(_SFPBFillToolPersonParameterCommand *)self person];
+    person3 = [equalCopy person];
+    v16 = [person2 isEqual:person3];
 
     if (v16)
     {
@@ -212,25 +212,25 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBFillToolPersonParameterCommand *)self encodedTypedValue];
-  if (v4)
+  toCopy = to;
+  encodedTypedValue = [(_SFPBFillToolPersonParameterCommand *)self encodedTypedValue];
+  if (encodedTypedValue)
   {
     PBDataWriterWriteDataField();
   }
 
-  v5 = [(_SFPBFillToolPersonParameterCommand *)self person];
-  if (v5)
+  person = [(_SFPBFillToolPersonParameterCommand *)self person];
+  if (person)
   {
     PBDataWriterWriteSubmessage();
   }
 }
 
-- (void)setEncodedTypedValue:(id)a3
+- (void)setEncodedTypedValue:(id)value
 {
-  v4 = [a3 copy];
+  v4 = [value copy];
   encodedTypedValue = self->_encodedTypedValue;
   self->_encodedTypedValue = v4;
 

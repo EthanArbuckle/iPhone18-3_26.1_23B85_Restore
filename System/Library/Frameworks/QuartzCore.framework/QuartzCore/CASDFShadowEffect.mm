@@ -1,8 +1,8 @@
 @interface CASDFShadowEffect
 + (id)defaultValues;
 - (CGSize)offset;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)configureLayer:(void *)a3 transaction:(void *)a4;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)configureLayer:(void *)layer transaction:(void *)transaction;
 - (void)dealloc;
 @end
 
@@ -59,16 +59,16 @@ id __34__CASDFShadowEffect_defaultValues__block_invoke()
   return result;
 }
 
-- (void)configureLayer:(void *)a3 transaction:(void *)a4
+- (void)configureLayer:(void *)layer transaction:(void *)transaction
 {
   v22 = *MEMORY[0x1E69E9840];
   v20 = 0uLL;
   v21 = 0;
-  v7 = [(CASDFShadowEffect *)self color];
-  if (v7)
+  color = [(CASDFShadowEffect *)self color];
+  if (color)
   {
-    v9 = v7;
-    v10 = CA::Context::current_colorspace(a4, v8);
+    v9 = color;
+    v10 = CA::Context::current_colorspace(transaction, v8);
     CA::Render::convert_cgcolor(v9, v10, &v20, 0, v11);
   }
 
@@ -78,7 +78,7 @@ id __34__CASDFShadowEffect_defaultValues__block_invoke()
   v15 = v14;
   [(CASDFShadowEffect *)self offset];
   v17 = v16;
-  v18 = [(CASDFShadowEffect *)self punchout];
+  punchout = [(CASDFShadowEffect *)self punchout];
   if ([(CASDFShadowEffect *)self invert])
   {
     v19 = 2;
@@ -89,26 +89,26 @@ id __34__CASDFShadowEffect_defaultValues__block_invoke()
     v19 = 0;
   }
 
-  *(a3 + 136) = 5;
-  *(a3 + 6) = v13;
-  *(a3 + 7) = v15;
-  *(a3 + 8) = v17;
-  *(a3 + 36) = v20;
-  *(a3 + 13) = v21;
-  *(a3 + 56) = v19 | v18;
-  *(a3 + 57) = 0u;
-  *(a3 + 73) = 0u;
-  *(a3 + 89) = 0u;
-  *(a3 + 105) = 0u;
-  *(a3 + 120) = 0u;
+  *(layer + 136) = 5;
+  *(layer + 6) = v13;
+  *(layer + 7) = v15;
+  *(layer + 8) = v17;
+  *(layer + 36) = v20;
+  *(layer + 13) = v21;
+  *(layer + 56) = v19 | punchout;
+  *(layer + 57) = 0u;
+  *(layer + 73) = 0u;
+  *(layer + 89) = 0u;
+  *(layer + 105) = 0u;
+  *(layer + 120) = 0u;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7 = *MEMORY[0x1E69E9840];
   v6.receiver = self;
   v6.super_class = CASDFShadowEffect;
-  v4 = [(CASDFEffect *)&v6 copyWithZone:a3];
+  v4 = [(CASDFEffect *)&v6 copyWithZone:zone];
   if (v4)
   {
     v4[2] = CGColorRetain(self->_color);

@@ -1,14 +1,14 @@
 @interface AudioRecordingLiveActivityViewController
-- (_TtC7NotesUI40AudioRecordingLiveActivityViewController)initWithCoder:(id)a3;
-- (_TtC7NotesUI40AudioRecordingLiveActivityViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC7NotesUI40AudioRecordingLiveActivityViewController)initWithCoder:(id)coder;
+- (_TtC7NotesUI40AudioRecordingLiveActivityViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
-- (void)viewIsAppearing:(BOOL)a3;
+- (void)viewIsAppearing:(BOOL)appearing;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AudioRecordingLiveActivityViewController
 
-- (_TtC7NotesUI40AudioRecordingLiveActivityViewController)initWithCoder:(id)a3
+- (_TtC7NotesUI40AudioRecordingLiveActivityViewController)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7NotesUI40AudioRecordingLiveActivityViewController_recordingFinishedTask) = 0;
   *(&self->super.super.super.isa + OBJC_IVAR____TtC7NotesUI40AudioRecordingLiveActivityViewController____lazy_storage___timeLabel) = 0;
@@ -24,11 +24,11 @@
   v5.super_class = type metadata accessor for AudioRecordingLiveActivityViewController();
   v2 = v5.receiver;
   [(AudioRecordingLiveActivityViewController *)&v5 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    [v3 setTranslatesAutoresizingMaskIntoConstraints_];
+    v4 = view;
+    [view setTranslatesAutoresizingMaskIntoConstraints_];
   }
 
   else
@@ -37,13 +37,13 @@
   }
 }
 
-- (void)viewIsAppearing:(BOOL)a3
+- (void)viewIsAppearing:(BOOL)appearing
 {
-  v3 = a3;
+  appearingCopy = appearing;
   v5.receiver = self;
   v5.super_class = type metadata accessor for AudioRecordingLiveActivityViewController();
   v4 = v5.receiver;
-  [(AudioRecordingLiveActivityViewController *)&v5 viewIsAppearing:v3];
+  [(AudioRecordingLiveActivityViewController *)&v5 viewIsAppearing:appearingCopy];
   sub_1D4417DB4();
 }
 
@@ -56,7 +56,7 @@
   sub_1D4417DB4();
 }
 
-- (_TtC7NotesUI40AudioRecordingLiveActivityViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC7NotesUI40AudioRecordingLiveActivityViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

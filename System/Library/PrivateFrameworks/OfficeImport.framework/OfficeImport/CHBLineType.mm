@@ -1,19 +1,19 @@
 @interface CHBLineType
-+ (void)readWithState:(id)a3 chartType:(id)a4;
++ (void)readWithState:(id)state chartType:(id)type;
 @end
 
 @implementation CHBLineType
 
-+ (void)readWithState:(id)a3 chartType:(id)a4
++ (void)readWithState:(id)state chartType:(id)type
 {
-  v9 = a3;
-  v5 = a4;
-  v6 = [v9 xlCurrentPlot];
-  v7 = v6;
-  if (v6)
+  stateCopy = state;
+  typeCopy = type;
+  xlCurrentPlot = [stateCopy xlCurrentPlot];
+  v7 = xlCurrentPlot;
+  if (xlCurrentPlot)
   {
-    isStacked = XlChartArea::isStacked((v6 + 144));
-    [CHBChartTypeWithGrouping setGrouping:v5 stacked:isStacked categoryPercentage:XlChartArea::isCategoryPercentage((v7 + 144))];
+    isStacked = XlChartArea::isStacked((xlCurrentPlot + 144));
+    [CHBChartTypeWithGrouping setGrouping:typeCopy stacked:isStacked categoryPercentage:XlChartArea::isCategoryPercentage((v7 + 144))];
   }
 }
 

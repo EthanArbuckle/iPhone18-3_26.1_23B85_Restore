@@ -1,11 +1,11 @@
 @interface PXExpectation
-- (PXExpectation)initWithLabelFormat:(id)a3;
-- (PXExpectation)initWithQueue:(id)a3 label:(id)a4;
-- (PXExpectation)initWithQueue:(id)a3 labelFormat:(id)a4;
+- (PXExpectation)initWithLabelFormat:(id)format;
+- (PXExpectation)initWithQueue:(id)queue label:(id)label;
+- (PXExpectation)initWithQueue:(id)queue labelFormat:(id)format;
 - (id)description;
-- (void)_performHandlerWithSuccess:(BOOL)a3 error:(id)a4;
+- (void)_performHandlerWithSuccess:(BOOL)success error:(id)error;
 - (void)fulfill;
-- (void)performWhenFulfilled:(id)a3 timeout:(double)a4;
+- (void)performWhenFulfilled:(id)fulfilled timeout:(double)timeout;
 @end
 
 @implementation PXExpectation
@@ -15,21 +15,21 @@
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PXExpectation *)self label];
-  v7 = [v3 initWithFormat:@"<%@: %p, label=%@>", v5, self, v6];
+  label = [(PXExpectation *)self label];
+  v7 = [v3 initWithFormat:@"<%@: %p, label=%@>", v5, self, label];
 
   return v7;
 }
 
-- (void)_performHandlerWithSuccess:(BOOL)a3 error:(id)a4
+- (void)_performHandlerWithSuccess:(BOOL)success error:(id)error
 {
-  v4 = a3;
-  v7 = a4;
-  v6 = [(PXExpectation *)self handler];
-  if (v6)
+  successCopy = success;
+  errorCopy = error;
+  handler = [(PXExpectation *)self handler];
+  if (handler)
   {
     [(PXExpectation *)self setHandler:0];
-    (v6)[2](v6, v4, v7);
+    (handler)[2](handler, successCopy, errorCopy);
   }
 }
 
@@ -40,21 +40,21 @@
   [(PXExpectation *)self _performHandlerWithSuccess:1 error:0];
 }
 
-- (void)performWhenFulfilled:(id)a3 timeout:(double)a4
+- (void)performWhenFulfilled:(id)fulfilled timeout:(double)timeout
 {
-  v7 = a3;
+  fulfilledCopy = fulfilled;
   dispatch_assert_queue_V2(self->_queue);
-  v8 = [(PXExpectation *)self handler];
+  handler = [(PXExpectation *)self handler];
 
-  if (v8)
+  if (handler)
   {
-    v11 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v11 handleFailureInMethod:a2 object:self file:@"PXExpectation.m" lineNumber:68 description:@"multiple handlers not supported yet"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXExpectation.m" lineNumber:68 description:@"multiple handlers not supported yet"];
   }
 
-  [(PXExpectation *)self setHandler:v7];
+  [(PXExpectation *)self setHandler:fulfilledCopy];
   objc_initWeak(&location, self);
-  v9 = dispatch_time(0, (a4 * 1000000000.0));
+  v9 = dispatch_time(0, (timeout * 1000000000.0));
   queue = self->_queue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -74,18 +74,18 @@ void __46__PXExpectation_performWhenFulfilled_timeout___block_invoke(uint64_t a1
   [WeakRetained _performHandlerWithSuccess:0 error:v2];
 }
 
-- (PXExpectation)initWithQueue:(id)a3 label:(id)a4
+- (PXExpectation)initWithQueue:(id)queue label:(id)label
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  labelCopy = label;
   v18.receiver = self;
   v18.super_class = PXExpectation;
   v8 = [(PXExpectation *)&v18 init];
   if (v8)
   {
-    if (v6)
+    if (queueCopy)
     {
-      v9 = v6;
+      v9 = queueCopy;
       queue = v8->_queue;
       v8->_queue = v9;
     }
@@ -98,11 +98,11 @@ void __46__PXExpectation_performWhenFulfilled_timeout___block_invoke(uint64_t a1
       v8->_queue = v11;
     }
 
-    v13 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     creationDate = v8->_creationDate;
-    v8->_creationDate = v13;
+    v8->_creationDate = date;
 
-    v15 = [v7 copy];
+    v15 = [labelCopy copy];
     label = v8->_label;
     v8->_label = v15;
   }
@@ -110,28 +110,28 @@ void __46__PXExpectation_performWhenFulfilled_timeout___block_invoke(uint64_t a1
   return v8;
 }
 
-- (PXExpectation)initWithQueue:(id)a3 labelFormat:(id)a4
+- (PXExpectation)initWithQueue:(id)queue labelFormat:(id)format
 {
-  v6 = a3;
-  if (a4)
+  queueCopy = queue;
+  if (format)
   {
     v7 = MEMORY[0x1E696AEC0];
-    v8 = a4;
-    a4 = [[v7 alloc] initWithFormat:v8 arguments:&v11];
+    formatCopy = format;
+    format = [[v7 alloc] initWithFormat:formatCopy arguments:&v11];
   }
 
-  v9 = [(PXExpectation *)self initWithQueue:v6 label:a4];
+  v9 = [(PXExpectation *)self initWithQueue:queueCopy label:format];
 
   return v9;
 }
 
-- (PXExpectation)initWithLabelFormat:(id)a3
+- (PXExpectation)initWithLabelFormat:(id)format
 {
-  if (a3)
+  if (format)
   {
     v4 = MEMORY[0x1E696AEC0];
-    v5 = a3;
-    v6 = [[v4 alloc] initWithFormat:v5 arguments:&v9];
+    formatCopy = format;
+    v6 = [[v4 alloc] initWithFormat:formatCopy arguments:&v9];
   }
 
   else

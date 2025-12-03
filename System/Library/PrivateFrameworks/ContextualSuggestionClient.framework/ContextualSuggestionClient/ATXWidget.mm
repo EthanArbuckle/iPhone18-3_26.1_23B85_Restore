@@ -1,13 +1,13 @@
 @interface ATXWidget
-- (ATXWidget)initWithCoder:(id)a3;
-- (ATXWidget)initWithIdentifier:(id)a3 chsWidget:(id)a4 suggestedWidget:(BOOL)a5 source:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToATXWidget:(id)a3;
+- (ATXWidget)initWithCoder:(id)coder;
+- (ATXWidget)initWithIdentifier:(id)identifier chsWidget:(id)widget suggestedWidget:(BOOL)suggestedWidget source:(id)source;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToATXWidget:(id)widget;
 - (NSDictionary)dictionaryRepresentation;
-- (id)copyWithSource:(id)a3;
+- (id)copyWithSource:(id)source;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ATXWidget
@@ -15,8 +15,8 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x277CCACA8]);
-  v4 = [(ATXWidget *)self identifier];
-  v5 = [(ATXWidget *)self chsWidget];
+  identifier = [(ATXWidget *)self identifier];
+  chsWidget = [(ATXWidget *)self chsWidget];
   if ([(ATXWidget *)self isSuggestedWidget])
   {
     v6 = @"YES";
@@ -27,29 +27,29 @@
     v6 = @"NO";
   }
 
-  v7 = [(ATXWidget *)self source];
-  v8 = [v3 initWithFormat:@"<ATXWidget: (identifier: %@, chsWidget: %@, isSuggestedWidget: %@, source: %@)>", v4, v5, v6, v7];
+  source = [(ATXWidget *)self source];
+  v8 = [v3 initWithFormat:@"<ATXWidget: (identifier: %@, chsWidget: %@, isSuggestedWidget: %@, source: %@)>", identifier, chsWidget, v6, source];
 
   return v8;
 }
 
-- (ATXWidget)initWithIdentifier:(id)a3 chsWidget:(id)a4 suggestedWidget:(BOOL)a5 source:(id)a6
+- (ATXWidget)initWithIdentifier:(id)identifier chsWidget:(id)widget suggestedWidget:(BOOL)suggestedWidget source:(id)source
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  identifierCopy = identifier;
+  widgetCopy = widget;
+  sourceCopy = source;
   v19.receiver = self;
   v19.super_class = ATXWidget;
   v13 = [(ATXWidget *)&v19 init];
   if (v13)
   {
-    v14 = [v10 copy];
+    v14 = [identifierCopy copy];
     identifier = v13->_identifier;
     v13->_identifier = v14;
 
-    objc_storeStrong(&v13->_chsWidget, a4);
-    v13->_suggestedWidget = a5;
-    v16 = [v12 copy];
+    objc_storeStrong(&v13->_chsWidget, widget);
+    v13->_suggestedWidget = suggestedWidget;
+    v16 = [sourceCopy copy];
     source = v13->_source;
     v13->_source = v16;
   }
@@ -57,68 +57,68 @@
   return v13;
 }
 
-- (ATXWidget)initWithCoder:(id)a3
+- (ATXWidget)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"widget"];
-  v7 = [v4 decodeBoolForKey:@"suggestedWidget"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"source"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"widget"];
+  v7 = [coderCopy decodeBoolForKey:@"suggestedWidget"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"source"];
 
   v9 = [(ATXWidget *)self initWithIdentifier:v5 chsWidget:v6 suggestedWidget:v7 source:v8];
   return v9;
 }
 
-- (id)copyWithSource:(id)a3
+- (id)copyWithSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   v5 = objc_alloc(objc_opt_class());
-  v6 = [(ATXWidget *)self identifier];
-  v7 = [(ATXWidget *)self chsWidget];
-  v8 = [(ATXWidget *)self isSuggestedWidget];
-  v9 = [v4 copy];
+  identifier = [(ATXWidget *)self identifier];
+  chsWidget = [(ATXWidget *)self chsWidget];
+  isSuggestedWidget = [(ATXWidget *)self isSuggestedWidget];
+  v9 = [sourceCopy copy];
 
-  v10 = [v5 initWithIdentifier:v6 chsWidget:v7 suggestedWidget:v8 source:v9];
+  v10 = [v5 initWithIdentifier:identifier chsWidget:chsWidget suggestedWidget:isSuggestedWidget source:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ATXWidget *)self identifier];
-  [v4 encodeObject:v5 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(ATXWidget *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  v6 = [(ATXWidget *)self chsWidget];
-  [v4 encodeObject:v6 forKey:@"widget"];
+  chsWidget = [(ATXWidget *)self chsWidget];
+  [coderCopy encodeObject:chsWidget forKey:@"widget"];
 
-  [v4 encodeBool:-[ATXWidget isSuggestedWidget](self forKey:{"isSuggestedWidget"), @"suggestedWidget"}];
-  v7 = [(ATXWidget *)self source];
-  [v4 encodeObject:v7 forKey:@"source"];
+  [coderCopy encodeBool:-[ATXWidget isSuggestedWidget](self forKey:{"isSuggestedWidget"), @"suggestedWidget"}];
+  source = [(ATXWidget *)self source];
+  [coderCopy encodeObject:source forKey:@"source"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXWidget *)self isEqualToATXWidget:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(ATXWidget *)self isEqualToATXWidget:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToATXWidget:(id)a3
+- (BOOL)isEqualToATXWidget:(id)widget
 {
-  v4 = a3;
+  widgetCopy = widget;
   v5 = self->_identifier;
   v6 = v5;
-  if (v5 == v4[2])
+  if (v5 == widgetCopy[2])
   {
   }
 
@@ -134,7 +134,7 @@
 
   v8 = self->_chsWidget;
   v9 = v8;
-  if (v8 == v4[3])
+  if (v8 == widgetCopy[3])
   {
   }
 
@@ -148,7 +148,7 @@
     }
   }
 
-  if (self->_suggestedWidget != *(v4 + 8))
+  if (self->_suggestedWidget != *(widgetCopy + 8))
   {
 LABEL_12:
     v13 = 0;
@@ -157,7 +157,7 @@ LABEL_12:
 
   v11 = self->_source;
   v12 = v11;
-  if (v11 == v4[5])
+  if (v11 == widgetCopy[5])
   {
     v13 = 1;
   }
@@ -173,15 +173,15 @@ LABEL_15:
 
 - (unint64_t)hash
 {
-  v3 = [(ATXWidget *)self identifier];
-  v4 = [v3 hash];
+  identifier = [(ATXWidget *)self identifier];
+  v4 = [identifier hash];
 
-  v5 = [(ATXWidget *)self chsWidget];
-  v6 = [v5 hash] - v4 + 32 * v4;
+  chsWidget = [(ATXWidget *)self chsWidget];
+  v6 = [chsWidget hash] - v4 + 32 * v4;
 
   v7 = 31 * v6 + [(ATXWidget *)self isSuggestedWidget];
-  v8 = [(ATXWidget *)self source];
-  v9 = [v8 hash] - v7 + 32 * v7;
+  source = [(ATXWidget *)self source];
+  v9 = [source hash] - v7 + 32 * v7;
 
   return v9;
 }
@@ -190,38 +190,38 @@ LABEL_15:
 {
   v18[5] = *MEMORY[0x277D85DE8];
   v17[0] = @"identifier";
-  v16 = [(ATXWidget *)self identifier];
-  v18[0] = v16;
+  identifier = [(ATXWidget *)self identifier];
+  v18[0] = identifier;
   v17[1] = @"chsWidget";
-  v15 = [(ATXWidget *)self chsWidget];
-  v3 = [v15 description];
+  chsWidget = [(ATXWidget *)self chsWidget];
+  v3 = [chsWidget description];
   v18[1] = v3;
   v17[2] = @"intent";
-  v4 = [(ATXWidget *)self chsWidget];
-  v5 = [v4 intentReference];
-  v6 = [v5 intent];
-  v7 = [v6 debugDescription];
-  v8 = v7;
+  chsWidget2 = [(ATXWidget *)self chsWidget];
+  intentReference = [chsWidget2 intentReference];
+  intent = [intentReference intent];
+  v7 = [intent debugDescription];
+  null = v7;
   if (!v7)
   {
-    v8 = [MEMORY[0x277CBEB68] null];
+    null = [MEMORY[0x277CBEB68] null];
   }
 
-  v18[2] = v8;
+  v18[2] = null;
   v17[3] = @"isSuggestedWidget";
   v9 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXWidget isSuggestedWidget](self, "isSuggestedWidget")}];
   v18[3] = v9;
   v17[4] = @"source";
-  v10 = [(ATXWidget *)self source];
-  v11 = v10;
-  if (!v10)
+  source = [(ATXWidget *)self source];
+  null2 = source;
+  if (!source)
   {
-    v11 = [MEMORY[0x277CBEB68] null];
+    null2 = [MEMORY[0x277CBEB68] null];
   }
 
-  v18[4] = v11;
+  v18[4] = null2;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v18 forKeys:v17 count:5];
-  if (!v10)
+  if (!source)
   {
   }
 

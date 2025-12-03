@@ -6,10 +6,10 @@
 
 + (BOOL)canProvidePreviewControllerForMessages
 {
-  v2 = [MEMORY[0x277D75418] currentDevice];
-  v3 = [v2 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  return v3 != 1 && v3 != 6;
+  return userInterfaceIdiom != 1 && userInterfaceIdiom != 6;
 }
 
 @end

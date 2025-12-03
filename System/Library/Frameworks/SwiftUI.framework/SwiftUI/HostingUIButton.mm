@@ -1,24 +1,24 @@
 @interface HostingUIButton
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3;
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size;
 - (BOOL)isHighlighted;
 - (CGSize)intrinsicContentSize;
 - (NSArray)automationElements;
-- (_TtC7SwiftUI15HostingUIButton)initWithFrame:(CGRect)a3;
+- (_TtC7SwiftUI15HostingUIButton)initWithFrame:(CGRect)frame;
 - (_UIGestureRecognizerContainer)_parentGestureRecognizerContainer;
-- (id)contextMenuInteraction:(void *)a1 configuration:highlightPreviewForItemWithIdentifier:;
-- (id)focusItemsInRect:(CGRect)a3;
+- (id)contextMenuInteraction:(void *)interaction configuration:highlightPreviewForItemWithIdentifier:;
+- (id)focusItemsInRect:(CGRect)rect;
 - (id)swiftUI_accessibilityActivateBlock;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setHighlighted:(BOOL)highlighted;
 @end
 
 @implementation HostingUIButton
 
-- (_TtC7SwiftUI15HostingUIButton)initWithFrame:(CGRect)a3
+- (_TtC7SwiftUI15HostingUIButton)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   v9 = self + OBJC_IVAR____TtC7SwiftUI15HostingUIButton_isPressed;
   *v9 = 0;
@@ -40,23 +40,23 @@
   return [(HostingUIButton *)&v3 isHighlighted];
 }
 
-- (id)contextMenuInteraction:(void *)a1 configuration:highlightPreviewForItemWithIdentifier:
+- (id)contextMenuInteraction:(void *)interaction configuration:highlightPreviewForItemWithIdentifier:
 {
-  v1 = a1;
+  interactionCopy = interaction;
   v2 = HostingUIButton.makePreview()();
 
   return v2;
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v4 = self;
-  HostingUIButton.isHighlighted.setter(a3);
+  selfCopy = self;
+  HostingUIButton.isHighlighted.setter(highlighted);
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   HostingUIButton.intrinsicContentSize.getter();
   v4 = v3;
   v6 = v5;
@@ -68,11 +68,11 @@
   return result;
 }
 
-- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)a3
+- ($F24F406B2B787EFB06265DBA3D28CBD5)_baselineOffsetsAtSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   v6 = HostingUIButton._baselineOffsets(at:)(width, height);
   v8 = v7;
 
@@ -85,9 +85,9 @@
 
 - (NSArray)automationElements
 {
-  v2 = self;
-  v3 = [v2 accessibilityNodeForPlatformElement];
-  if (v3 && (v4 = v3, v5 = [(AccessibilityNode *)v3 automationElements], v4, v5))
+  selfCopy = self;
+  accessibilityNodeForPlatformElement = [selfCopy accessibilityNodeForPlatformElement];
+  if (accessibilityNodeForPlatformElement && (v4 = accessibilityNodeForPlatformElement, v5 = [(AccessibilityNode *)accessibilityNodeForPlatformElement automationElements], v4, v5))
   {
     static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -120,10 +120,10 @@
   return v3;
 }
 
-- (id)focusItemsInRect:(CGRect)a3
+- (id)focusItemsInRect:(CGRect)rect
 {
   type metadata accessor for [UIFocusItem]();
-  v4 = self;
+  selfCopy = self;
   static Update.ensure<A>(_:)();
 
   type metadata accessor for UIFocusItem();
@@ -134,7 +134,7 @@
 
 - (_UIGestureRecognizerContainer)_parentGestureRecognizerContainer
 {
-  v2 = self;
+  selfCopy = self;
   v3 = HostingUIButton._parentContainer.getter();
 
   return v3;

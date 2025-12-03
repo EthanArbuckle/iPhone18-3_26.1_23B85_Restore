@@ -1,14 +1,14 @@
 @interface CKKSAESSIVKey
-+ (id)randomKey:(id *)a3;
-- (BOOL)doSIV:(const ccmode_siv *)a3 nonce:(id)a4 text:(id)a5 buffer:(char *)a6 bufferLength:(unint64_t)a7 authenticatedData:(id)a8 error:(id *)a9;
++ (id)randomKey:(id *)key;
+- (BOOL)doSIV:(const ccmode_siv *)v nonce:(id)nonce text:(id)text buffer:(char *)buffer bufferLength:(unint64_t)length authenticatedData:(id)data error:(id *)error;
 - (CKKSAESSIVKey)init;
-- (CKKSAESSIVKey)initWithBase64:(id)a3;
-- (CKKSAESSIVKey)initWithBytes:(char *)a3 len:(unint64_t)a4;
-- (id)decryptData:(id)a3 authenticatedData:(id)a4 error:(id *)a5;
-- (id)encryptData:(id)a3 authenticatedData:(id)a4 error:(id *)a5;
+- (CKKSAESSIVKey)initWithBase64:(id)base64;
+- (CKKSAESSIVKey)initWithBytes:(char *)bytes len:(unint64_t)len;
+- (id)decryptData:(id)data authenticatedData:(id)authenticatedData error:(id *)error;
+- (id)encryptData:(id)data authenticatedData:(id)authenticatedData error:(id *)error;
 - (id)keyMaterial;
-- (id)unwrapAESKey:(id)a3 error:(id *)a4;
-- (id)wrapAESKey:(id)a3 error:(id *)a4;
+- (id)unwrapAESKey:(id)key error:(id *)error;
+- (id)wrapAESKey:(id)key error:(id *)error;
 @end
 
 @implementation CKKSAESSIVKey
@@ -20,13 +20,13 @@
   return v2;
 }
 
-- (BOOL)doSIV:(const ccmode_siv *)a3 nonce:(id)a4 text:(id)a5 buffer:(char *)a6 bufferLength:(unint64_t)a7 authenticatedData:(id)a8 error:(id *)a9
+- (BOOL)doSIV:(const ccmode_siv *)v nonce:(id)nonce text:(id)text buffer:(char *)buffer bufferLength:(unint64_t)length authenticatedData:(id)data error:(id *)error
 {
-  v14 = a9;
-  v15 = a4;
-  v16 = a5;
-  v17 = a8;
-  v18 = a3->var0 + 15;
+  errorCopy = error;
+  nonceCopy = nonce;
+  textCopy = text;
+  dataCopy = data;
+  v18 = v->var0 + 15;
   v19 = v18 & 0xFFFFFFFFFFFFFFF0;
   if (v18 >= 0x10)
   {
@@ -59,10 +59,10 @@ LABEL_26:
     goto LABEL_19;
   }
 
-  if (v15)
+  if (nonceCopy)
   {
-    [v15 length];
-    [v15 bytes];
+    [nonceCopy length];
+    [nonceCopy bytes];
     v23 = ccsiv_set_nonce();
     if (v23)
     {
@@ -75,12 +75,12 @@ LABEL_26:
     }
   }
 
-  v45[1] = a6;
-  v46 = a9;
-  v47 = v16;
-  v48 = v15;
-  v24 = [v17 allKeys];
-  v25 = [v24 sortedArrayUsingSelector:"compare:"];
+  v45[1] = buffer;
+  errorCopy2 = error;
+  v47 = textCopy;
+  v48 = nonceCopy;
+  allKeys = [dataCopy allKeys];
+  v25 = [allKeys sortedArrayUsingSelector:"compare:"];
 
   v52 = 0u;
   v53 = 0u;
@@ -101,7 +101,7 @@ LABEL_26:
           objc_enumerationMutation(v26);
         }
 
-        v31 = [v17 objectForKey:*(*(&v50 + 1) + 8 * i)];
+        v31 = [dataCopy objectForKey:*(*(&v50 + 1) + 8 * i)];
         [v31 length];
         [v31 bytes];
         v32 = ccsiv_aad();
@@ -114,8 +114,8 @@ LABEL_26:
           v34 = [NSError errorWithDomain:@"corecrypto" code:v35 userInfo:v36];
 
           v37 = v26;
-          v16 = v47;
-          v15 = v48;
+          textCopy = v47;
+          nonceCopy = v48;
           goto LABEL_18;
         }
       }
@@ -130,15 +130,15 @@ LABEL_26:
     }
   }
 
-  v16 = v47;
+  textCopy = v47;
   [v47 length];
-  [v16 bytes];
+  [textCopy bytes];
   v33 = ccsiv_crypt();
   if (!v33)
   {
     v34 = 0;
-    v15 = v48;
-    v14 = v46;
+    nonceCopy = v48;
+    errorCopy = errorCopy2;
     goto LABEL_20;
   }
 
@@ -147,56 +147,56 @@ LABEL_26:
   v55 = @"could not ccsiv_crypt";
   v37 = [NSDictionary dictionaryWithObjects:&v55 forKeys:&v54 count:1];
   v34 = [NSError errorWithDomain:@"corecrypto" code:v44 userInfo:v37];
-  v15 = v48;
+  nonceCopy = v48;
 LABEL_18:
-  v14 = v46;
+  errorCopy = errorCopy2;
 LABEL_19:
 
 LABEL_20:
-  var0 = a3->var0;
+  var0 = v->var0;
   cc_clear();
-  if (v14)
+  if (errorCopy)
   {
     v39 = v34;
-    *v14 = v34;
+    *errorCopy = v34;
   }
 
   return v34 == 0;
 }
 
-- (id)decryptData:(id)a3 authenticatedData:(id)a4 error:(id *)a5
+- (id)decryptData:(id)data authenticatedData:(id)authenticatedData error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  authenticatedDataCopy = authenticatedData;
   v10 = ccaes_siv_decrypt_mode();
-  if ([v8 length] > 0x10)
+  if ([dataCopy length] > 0x10)
   {
-    v15 = [v8 length] - 16;
-    v13 = [[NSData alloc] initWithBytesNoCopy:objc_msgSend(v8 length:"bytes") freeWhenDone:{16, 0}];
-    v14 = [[NSData alloc] initWithBytesNoCopy:objc_msgSend(v8 length:"bytes") + 16 freeWhenDone:{v15, 0}];
+    v15 = [dataCopy length] - 16;
+    v13 = [[NSData alloc] initWithBytesNoCopy:objc_msgSend(dataCopy length:"bytes") freeWhenDone:{16, 0}];
+    v14 = [[NSData alloc] initWithBytesNoCopy:objc_msgSend(dataCopy length:"bytes") + 16 freeWhenDone:{v15, 0}];
     v12 = [[NSMutableData alloc] initWithLength:ccsiv_plaintext_size()];
-    if (-[CKKSAESSIVKey doSIV:nonce:text:buffer:bufferLength:authenticatedData:error:](self, "doSIV:nonce:text:buffer:bufferLength:authenticatedData:error:", v10, v13, v14, [v12 mutableBytes], objc_msgSend(v12, "length"), v9, a5))
+    if (-[CKKSAESSIVKey doSIV:nonce:text:buffer:bufferLength:authenticatedData:error:](self, "doSIV:nonce:text:buffer:bufferLength:authenticatedData:error:", v10, v13, v14, [v12 mutableBytes], objc_msgSend(v12, "length"), authenticatedDataCopy, error))
     {
       v12 = v12;
-      a5 = v12;
+      error = v12;
       goto LABEL_8;
     }
 
     goto LABEL_6;
   }
 
-  if (a5)
+  if (error)
   {
     v17 = NSLocalizedDescriptionKey;
     v18 = @"ciphertext too short";
     v11 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    *a5 = [NSError errorWithDomain:NSOSStatusErrorDomain code:4 userInfo:v11];
+    *error = [NSError errorWithDomain:NSOSStatusErrorDomain code:4 userInfo:v11];
 
     v12 = 0;
     v13 = 0;
     v14 = 0;
 LABEL_6:
-    a5 = 0;
+    error = 0;
     goto LABEL_8;
   }
 
@@ -205,61 +205,61 @@ LABEL_6:
   v14 = 0;
 LABEL_8:
 
-  return a5;
+  return error;
 }
 
-- (id)encryptData:(id)a3 authenticatedData:(id)a4 error:(id *)a5
+- (id)encryptData:(id)data authenticatedData:(id)authenticatedData error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dataCopy = data;
+  authenticatedDataCopy = authenticatedData;
   v10 = ccaes_siv_encrypt_mode();
   v11 = [[NSMutableData alloc] initWithLength:16];
   Bytes = CCRandomGenerateBytes([v11 mutableBytes], objc_msgSend(v11, "length"));
   if (!Bytes)
   {
-    [v8 length];
+    [dataCopy length];
     v15 = [[NSMutableData alloc] initWithLength:ccsiv_ciphertext_size()];
-    if (-[CKKSAESSIVKey doSIV:nonce:text:buffer:bufferLength:authenticatedData:error:](self, "doSIV:nonce:text:buffer:bufferLength:authenticatedData:error:", v10, v11, v8, [v15 mutableBytes], objc_msgSend(v15, "length"), v9, a5))
+    if (-[CKKSAESSIVKey doSIV:nonce:text:buffer:bufferLength:authenticatedData:error:](self, "doSIV:nonce:text:buffer:bufferLength:authenticatedData:error:", v10, v11, dataCopy, [v15 mutableBytes], objc_msgSend(v15, "length"), authenticatedDataCopy, error))
     {
-      a5 = objc_alloc_init(NSMutableData);
-      [a5 appendData:v11];
-      [a5 appendData:v15];
+      error = objc_alloc_init(NSMutableData);
+      [error appendData:v11];
+      [error appendData:v15];
       goto LABEL_8;
     }
 
     goto LABEL_6;
   }
 
-  if (a5)
+  if (error)
   {
     v13 = Bytes;
     v17 = NSLocalizedDescriptionKey;
     v18 = @"IV generation failed";
     v14 = [NSDictionary dictionaryWithObjects:&v18 forKeys:&v17 count:1];
-    *a5 = [NSError errorWithDomain:@"CommonCrypto" code:v13 userInfo:v14];
+    *error = [NSError errorWithDomain:@"CommonCrypto" code:v13 userInfo:v14];
 
     v15 = 0;
 LABEL_6:
-    a5 = 0;
+    error = 0;
     goto LABEL_8;
   }
 
   v15 = 0;
 LABEL_8:
 
-  return a5;
+  return error;
 }
 
-- (id)unwrapAESKey:(id)a3 error:(id *)a4
+- (id)unwrapAESKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   memset(__s, 0, sizeof(__s));
   ccaes_siv_decrypt_mode();
   if (ccsiv_plaintext_size() == 64)
   {
     v7 = ccaes_siv_decrypt_mode();
-    v8 = [[NSData alloc] initWithBytesNoCopy:v6 + 1 length:v6[11] freeWhenDone:0];
-    v9 = [(CKKSAESSIVKey *)self doSIV:v7 nonce:0 text:v8 buffer:__s bufferLength:64 authenticatedData:0 error:a4];
+    v8 = [[NSData alloc] initWithBytesNoCopy:keyCopy + 1 length:keyCopy[11] freeWhenDone:0];
+    v9 = [(CKKSAESSIVKey *)self doSIV:v7 nonce:0 text:v8 buffer:__s bufferLength:64 authenticatedData:0 error:error];
 
     if (v9)
     {
@@ -285,27 +285,27 @@ LABEL_8:
   }
 
   memset_s(__s, 0x40uLL, 0, 0x40uLL);
-  if (a4 && v11)
+  if (error && v11)
   {
     v12 = v11;
-    *a4 = v11;
+    *error = v11;
   }
 
   return v10;
 }
 
-- (id)wrapAESKey:(id)a3 error:(id *)a4
+- (id)wrapAESKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  if (v6)
+  keyCopy = key;
+  if (keyCopy)
   {
     memset(__s, 0, sizeof(__s));
     ccaes_siv_encrypt_mode();
     if (ccsiv_ciphertext_size() == 80)
     {
       v7 = ccaes_siv_encrypt_mode();
-      v8 = [NSData _newZeroingDataWithBytes:v6 + 1 length:v6[11]];
-      v9 = [(CKKSAESSIVKey *)self doSIV:v7 nonce:0 text:v8 buffer:__s bufferLength:80 authenticatedData:0 error:a4];
+      v8 = [NSData _newZeroingDataWithBytes:keyCopy + 1 length:keyCopy[11]];
+      v9 = [(CKKSAESSIVKey *)self doSIV:v7 nonce:0 text:v8 buffer:__s bufferLength:80 authenticatedData:0 error:error];
 
       if (v9)
       {
@@ -313,11 +313,11 @@ LABEL_8:
         v11 = 0;
 LABEL_5:
         memset_s(__s, 0x50uLL, 0, 0x40uLL);
-        if (a4 && v11)
+        if (error && v11)
         {
           v12 = v11;
 LABEL_10:
-          *a4 = v11;
+          *error = v11;
           goto LABEL_12;
         }
 
@@ -341,7 +341,7 @@ LABEL_10:
 
   v13 = [NSError errorWithDomain:NSOSStatusErrorDomain code:-50 description:@"No key given"];
   v11 = v13;
-  if (a4)
+  if (error)
   {
     v14 = v13;
     v10 = 0;
@@ -354,12 +354,12 @@ LABEL_12:
   return v10;
 }
 
-- (CKKSAESSIVKey)initWithBase64:(id)a3
+- (CKKSAESSIVKey)initWithBase64:(id)base64
 {
-  v4 = a3;
+  base64Copy = base64;
   v11.receiver = self;
   v11.super_class = CKKSAESSIVKey;
-  v5 = [(CKKSBaseAESSIVKey *)&v11 initWithBase64:v4];
+  v5 = [(CKKSBaseAESSIVKey *)&v11 initWithBase64:base64Copy];
   v6 = v5;
   if (v5 && v5->super.size != 64)
   {
@@ -373,11 +373,11 @@ LABEL_12:
   return v6;
 }
 
-- (CKKSAESSIVKey)initWithBytes:(char *)a3 len:(unint64_t)a4
+- (CKKSAESSIVKey)initWithBytes:(char *)bytes len:(unint64_t)len
 {
-  if (a4 != 64)
+  if (len != 64)
   {
-    v5 = [NSString stringWithFormat:@"length (%lu) was not %d", a4, 64];
+    v5 = [NSString stringWithFormat:@"length (%lu) was not %d", len, 64];
     v6 = [NSException exceptionWithName:@"WrongKeySizeException" reason:v5 userInfo:0];
     v7 = v6;
 
@@ -386,7 +386,7 @@ LABEL_12:
 
   v8.receiver = self;
   v8.super_class = CKKSAESSIVKey;
-  return [(CKKSBaseAESSIVKey *)&v8 initWithBytes:a3 len:?];
+  return [(CKKSBaseAESSIVKey *)&v8 initWithBytes:bytes len:?];
 }
 
 - (CKKSAESSIVKey)init
@@ -402,28 +402,28 @@ LABEL_12:
   return result;
 }
 
-+ (id)randomKey:(id *)a3
++ (id)randomKey:(id *)key
 {
   v4 = objc_alloc_init(CKKSAESSIVKey);
   Bytes = CCRandomGenerateBytes(v4->super.key, v4->super.size);
   if (Bytes)
   {
-    if (a3)
+    if (key)
     {
       v6 = Bytes;
-      v7 = [NSString stringWithFormat:@"CCRandomGenerateBytes failed with %d", Bytes];
-      *a3 = [NSError errorWithDomain:@"corecrypto" code:v6 description:v7];
+      bytes = [NSString stringWithFormat:@"CCRandomGenerateBytes failed with %d", Bytes];
+      *key = [NSError errorWithDomain:@"corecrypto" code:v6 description:bytes];
 
-      a3 = 0;
+      key = 0;
     }
   }
 
   else
   {
-    a3 = v4;
+    key = v4;
   }
 
-  return a3;
+  return key;
 }
 
 @end

@@ -11,27 +11,27 @@
   v14.super_class = NBSelectAudiobookController;
   [(NBSelectAudiobookController *)&v14 viewDidLoad];
   v3 = objc_alloc_init(NBSelectAudiobookViewController);
-  v4 = [(NBSelectAudiobookController *)self delegate];
-  [(NBSelectAudiobookViewController *)v3 setDelegate:v4];
+  delegate = [(NBSelectAudiobookController *)self delegate];
+  [(NBSelectAudiobookViewController *)v3 setDelegate:delegate];
 
   v5 = v3;
   v6 = [[UINavigationController alloc] initWithRootViewController:v5];
 
   [(NBSelectAudiobookController *)self setNavigationController:v6];
-  v7 = [(NBSelectAudiobookController *)self navigationController];
-  v8 = [v7 navigationBar];
+  navigationController = [(NBSelectAudiobookController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
   BPSApplyStyleToNavBarOptions();
 
-  v9 = [(NBSelectAudiobookController *)self navigationController];
-  [(NBSelectAudiobookController *)self addChildViewController:v9];
+  navigationController2 = [(NBSelectAudiobookController *)self navigationController];
+  [(NBSelectAudiobookController *)self addChildViewController:navigationController2];
 
-  v10 = [(NBSelectAudiobookController *)self view];
-  v11 = [(NBSelectAudiobookController *)self navigationController];
-  v12 = [v11 view];
-  [v10 addSubview:v12];
+  view = [(NBSelectAudiobookController *)self view];
+  navigationController3 = [(NBSelectAudiobookController *)self navigationController];
+  view2 = [navigationController3 view];
+  [view addSubview:view2];
 
-  v13 = [(NBSelectAudiobookController *)self navigationController];
-  [v13 didMoveToParentViewController:self];
+  navigationController4 = [(NBSelectAudiobookController *)self navigationController];
+  [navigationController4 didMoveToParentViewController:self];
 }
 
 - (NBSelectAudiobookDelegate)delegate

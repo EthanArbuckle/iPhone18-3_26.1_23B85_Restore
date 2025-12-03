@@ -1,12 +1,12 @@
 @interface TPSPairedAirTagValidation
-- (void)validateWithCompletion:(id)a3;
+- (void)validateWithCompletion:(id)completion;
 @end
 
 @implementation TPSPairedAirTagValidation
 
-- (void)validateWithCompletion:(id)a3
+- (void)validateWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -17,7 +17,7 @@
   if (!v5)
   {
     v6 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA5B8] code:22 userInfo:0];
-    v4[2](v4, 0, v6);
+    completionCopy[2](completionCopy, 0, v6);
 
     v5 = v13[5];
   }
@@ -28,7 +28,7 @@
   v9[2] = __52__TPSPairedAirTagValidation_validateWithCompletion___block_invoke;
   v9[3] = &unk_2789B0A18;
   v9[4] = self;
-  v8 = v4;
+  v8 = completionCopy;
   v10 = v8;
   v11 = &v12;
   [v5 allBeaconsOfTypes:v7 completion:v9];

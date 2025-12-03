@@ -1,54 +1,54 @@
 @interface POMutableTokenConfigJWTBody
-- (void)addCustomClaims:(id)a3;
-- (void)setIdpTokenId:(id)a3;
-- (void)setLoginUserName:(id)a3;
-- (void)setUnlockData:(id)a3;
-- (void)setUnlockHash:(id)a3;
-- (void)setUserName:(id)a3;
+- (void)addCustomClaims:(id)claims;
+- (void)setIdpTokenId:(id)id;
+- (void)setLoginUserName:(id)name;
+- (void)setUnlockData:(id)data;
+- (void)setUnlockHash:(id)hash;
+- (void)setUserName:(id)name;
 @end
 
 @implementation POMutableTokenConfigJWTBody
 
-- (void)setUserName:(id)a3
+- (void)setUserName:(id)name
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"userName"];
+  nameCopy = name;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:nameCopy forKeyedSubscript:@"userName"];
 }
 
-- (void)setLoginUserName:(id)a3
+- (void)setLoginUserName:(id)name
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"loginUserName"];
+  nameCopy = name;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:nameCopy forKeyedSubscript:@"loginUserName"];
 }
 
-- (void)setUnlockData:(id)a3
+- (void)setUnlockData:(id)data
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"unlockData"];
+  dataCopy = data;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:dataCopy forKeyedSubscript:@"unlockData"];
 }
 
-- (void)setUnlockHash:(id)a3
+- (void)setUnlockHash:(id)hash
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"unlockHash"];
+  hashCopy = hash;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:hashCopy forKeyedSubscript:@"unlockHash"];
 }
 
-- (void)setIdpTokenId:(id)a3
+- (void)setIdpTokenId:(id)id
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 setObject:v4 forKeyedSubscript:@"idpTokenId"];
+  idCopy = id;
+  data = [(_POJWTBodyBase *)self data];
+  [data setObject:idCopy forKeyedSubscript:@"idpTokenId"];
 }
 
-- (void)addCustomClaims:(id)a3
+- (void)addCustomClaims:(id)claims
 {
-  v4 = a3;
-  v5 = [(_POJWTBodyBase *)self data];
-  [v5 addEntriesFromDictionary:v4];
+  claimsCopy = claims;
+  data = [(_POJWTBodyBase *)self data];
+  [data addEntriesFromDictionary:claimsCopy];
 }
 
 @end

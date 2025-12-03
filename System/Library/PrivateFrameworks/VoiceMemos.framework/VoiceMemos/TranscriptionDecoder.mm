@@ -1,18 +1,18 @@
 @interface TranscriptionDecoder
-+ (id)decodeAttributedStringRuns:(id)a3 error:(id *)a4;
-+ (id)decodeDictionary:(id)a3 error:(id *)a4;
-+ (id)decodeString:(id)a3 error:(id *)a4;
-+ (id)decodeTransciptionData:(id)a3 error:(id *)a4;
++ (id)decodeAttributedStringRuns:(id)runs error:(id *)error;
++ (id)decodeDictionary:(id)dictionary error:(id *)error;
++ (id)decodeString:(id)string error:(id *)error;
++ (id)decodeTransciptionData:(id)data error:(id *)error;
 @end
 
 @implementation TranscriptionDecoder
 
-+ (id)decodeTransciptionData:(id)a3 error:(id *)a4
++ (id)decodeTransciptionData:(id)data error:(id *)error
 {
-  v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:a3 options:0 error:a4];
+  v6 = [MEMORY[0x277CCAAA0] JSONObjectWithData:data options:0 error:error];
   if (v6)
   {
-    v7 = [a1 decodeDictionary:v6 error:a4];
+    v7 = [self decodeDictionary:v6 error:error];
     v8 = v7;
     if (v7)
     {
@@ -25,7 +25,7 @@
 
       else
       {
-        v11 = [a1 decodeAttributedStringRuns:v9 error:a4];
+        v11 = [self decodeAttributedStringRuns:v9 error:error];
         if (v11)
         {
           v12 = objc_alloc_init(MEMORY[0x277CCAB68]);
@@ -41,7 +41,7 @@ LABEL_12:
             while (1)
             {
               v14 = [v11 objectAtIndexedSubscript:v13];
-              v15 = [a1 decodeString:v14 error:a4];
+              v15 = [self decodeString:v14 error:error];
 
               if (!v15)
               {
@@ -84,18 +84,18 @@ LABEL_12:
   return v10;
 }
 
-+ (id)decodeDictionary:(id)a3 error:(id *)a4
++ (id)decodeDictionary:(id)dictionary error:(id *)error
 {
-  v5 = a3;
+  dictionaryCopy = dictionary;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = dictionaryCopy;
   }
 
   else
   {
-    v6 = RCDecodeFail(1, a4);
+    v6 = RCDecodeFail(1, error);
   }
 
   v7 = v6;
@@ -103,18 +103,18 @@ LABEL_12:
   return v7;
 }
 
-+ (id)decodeAttributedStringRuns:(id)a3 error:(id *)a4
++ (id)decodeAttributedStringRuns:(id)runs error:(id *)error
 {
-  v5 = a3;
-  if (!v5)
+  runsCopy = runs;
+  if (!runsCopy)
   {
     v9 = 2;
 LABEL_8:
-    v6 = RCDecodeFail(v9, a4);
+    v6 = RCDecodeFail(v9, error);
     goto LABEL_9;
   }
 
-  v6 = v5;
+  v6 = runsCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -131,7 +131,7 @@ LABEL_8:
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = RCDecodeFail(3, a4);
+    v8 = RCDecodeFail(3, error);
 
     v6 = v8;
   }
@@ -141,18 +141,18 @@ LABEL_9:
   return v6;
 }
 
-+ (id)decodeString:(id)a3 error:(id *)a4
++ (id)decodeString:(id)string error:(id *)error
 {
-  v5 = a3;
+  stringCopy = string;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = stringCopy;
   }
 
   else
   {
-    v6 = RCDecodeFail(4, a4);
+    v6 = RCDecodeFail(4, error);
   }
 
   v7 = v6;

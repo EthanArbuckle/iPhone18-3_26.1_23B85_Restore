@@ -1,24 +1,24 @@
 @interface ENGroup
-+ (id)sortedGroupsFromGroups:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (ENGroup)initWithCoder:(id)a3;
-- (ENGroup)initWithGroupInfo:(id)a3 groupID:(id)a4 cypher:(id)a5;
++ (id)sortedGroupsFromGroups:(id)groups;
+- (BOOL)isEqual:(id)equal;
+- (ENGroup)initWithCoder:(id)coder;
+- (ENGroup)initWithGroupInfo:(id)info groupID:(id)d cypher:(id)cypher;
 - (NSArray)participants;
 - (NSData)sharedApplicationData;
 - (NSSet)destinations;
 - (id)accountIdentity;
 - (id)description;
-- (id)signAndConcealData:(id)a3 cypherIdentifier:(id *)a4 error:(id *)a5;
-- (id)verifyAndRevealData:(id)a3 sendingDevice:(id)a4 cypherIdentifier:(id)a5 error:(id *)a6;
+- (id)signAndConcealData:(id)data cypherIdentifier:(id *)identifier error:(id *)error;
+- (id)verifyAndRevealData:(id)data sendingDevice:(id)device cypherIdentifier:(id)identifier error:(id *)error;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ENGroup
 
-+ (id)sortedGroupsFromGroups:(id)a3
++ (id)sortedGroupsFromGroups:(id)groups
 {
-  v3 = a3;
+  groupsCopy = groups;
   v9 = 0;
   v10 = &v9;
   v11 = 0x2020000000;
@@ -28,7 +28,7 @@
   v8[2] = sub_24A0565C4;
   v8[3] = &unk_278FC37F8;
   v8[4] = &v9;
-  v4 = [v3 sortedArrayUsingComparator:v8];
+  v4 = [groupsCopy sortedArrayUsingComparator:v8];
   v5 = v4;
   if (*(v10 + 24) == 1)
   {
@@ -45,67 +45,67 @@
   return v6;
 }
 
-- (ENGroup)initWithGroupInfo:(id)a3 groupID:(id)a4 cypher:(id)a5
+- (ENGroup)initWithGroupInfo:(id)info groupID:(id)d cypher:(id)cypher
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  infoCopy = info;
+  dCopy = d;
+  cypherCopy = cypher;
   v15.receiver = self;
   v15.super_class = ENGroup;
   v12 = [(ENGroup *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_groupInfo, a3);
-    objc_storeStrong(&v13->_groupID, a4);
-    objc_storeStrong(&v13->_cypher, a5);
+    objc_storeStrong(&v12->_groupInfo, info);
+    objc_storeStrong(&v13->_groupID, d);
+    objc_storeStrong(&v13->_cypher, cypher);
   }
 
   return v13;
 }
 
-- (ENGroup)initWithCoder:(id)a3
+- (ENGroup)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kENGroupGroupInfoKey"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"kENGroupGroupIDKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kENGroupGroupInfoKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"kENGroupGroupIDKey"];
 
   return 0;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(ENGroup *)self groupInfo];
-  [v4 encodeObject:v5 forKey:@"kENGroupGroupInfoKey"];
+  coderCopy = coder;
+  groupInfo = [(ENGroup *)self groupInfo];
+  [coderCopy encodeObject:groupInfo forKey:@"kENGroupGroupInfoKey"];
 
-  v6 = [(ENGroup *)self groupID];
-  [v4 encodeObject:v6 forKey:@"kENGroupGroupIDKey"];
+  groupID = [(ENGroup *)self groupID];
+  [coderCopy encodeObject:groupID forKey:@"kENGroupGroupIDKey"];
 
-  v7 = [(ENGroup *)self cypher];
-  [v4 encodeObject:v7 forKey:@"kENGroupCypherKey"];
+  cypher = [(ENGroup *)self cypher];
+  [coderCopy encodeObject:cypher forKey:@"kENGroupCypherKey"];
 }
 
-- (id)signAndConcealData:(id)a3 cypherIdentifier:(id *)a4 error:(id *)a5
+- (id)signAndConcealData:(id)data cypherIdentifier:(id *)identifier error:(id *)error
 {
-  v8 = a3;
-  v9 = [(ENGroup *)self cypher];
-  v10 = [(ENGroup *)self accountIdentity];
-  v11 = [v9 cypherData:v8 withAccountIdentity:v10 identifier:a4 error:a5];
+  dataCopy = data;
+  cypher = [(ENGroup *)self cypher];
+  accountIdentity = [(ENGroup *)self accountIdentity];
+  v11 = [cypher cypherData:dataCopy withAccountIdentity:accountIdentity identifier:identifier error:error];
 
   return v11;
 }
 
-- (id)verifyAndRevealData:(id)a3 sendingDevice:(id)a4 cypherIdentifier:(id)a5 error:(id *)a6
+- (id)verifyAndRevealData:(id)data sendingDevice:(id)device cypherIdentifier:(id)identifier error:(id *)error
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(ENGroup *)self cypher];
-  v14 = [(ENGroup *)self accountIdentity];
-  v15 = [v11 devicePublicKey];
+  identifierCopy = identifier;
+  deviceCopy = device;
+  dataCopy = data;
+  cypher = [(ENGroup *)self cypher];
+  accountIdentity = [(ENGroup *)self accountIdentity];
+  devicePublicKey = [deviceCopy devicePublicKey];
 
-  v16 = [v13 decypherData:v12 withAccountIdentity:v14 signingDevicePublicKey:v15 identifier:v10 error:a6];
+  v16 = [cypher decypherData:dataCopy withAccountIdentity:accountIdentity signingDevicePublicKey:devicePublicKey identifier:identifierCopy error:error];
 
   return v16;
 }
@@ -118,8 +118,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(ENGroup *)self participants];
-  v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+  participants = [(ENGroup *)self participants];
+  v5 = [participants countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
     v6 = v5;
@@ -130,14 +130,14 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(participants);
         }
 
-        v9 = [*(*(&v12 + 1) + 8 * i) aliases];
-        [v3 unionSet:v9];
+        aliases = [*(*(&v12 + 1) + 8 * i) aliases];
+        [v3 unionSet:aliases];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
+      v6 = [participants countByEnumeratingWithState:&v12 objects:v16 count:16];
     }
 
     while (v6);
@@ -152,46 +152,46 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ENGroup *)self groupID];
-  v6 = [(ENGroup *)self participants];
-  v7 = [v3 stringWithFormat:@"<%@: %p groupID: %@ participants: %@>", v4, self, v5, v6];
+  groupID = [(ENGroup *)self groupID];
+  participants = [(ENGroup *)self participants];
+  v7 = [v3 stringWithFormat:@"<%@: %p groupID: %@ participants: %@>", v4, self, groupID, participants];
 
   return v7;
 }
 
 - (id)accountIdentity
 {
-  v2 = [(ENGroup *)self groupInfo];
-  v3 = [v2 accountIdentity];
+  groupInfo = [(ENGroup *)self groupInfo];
+  accountIdentity = [groupInfo accountIdentity];
 
-  return v3;
+  return accountIdentity;
 }
 
 - (NSArray)participants
 {
-  v2 = [(ENGroup *)self groupInfo];
-  v3 = [v2 participants];
+  groupInfo = [(ENGroup *)self groupInfo];
+  participants = [groupInfo participants];
 
-  return v3;
+  return participants;
 }
 
 - (NSData)sharedApplicationData
 {
-  v2 = [(ENGroup *)self groupInfo];
-  v3 = [v2 sharedApplicationData];
+  groupInfo = [(ENGroup *)self groupInfo];
+  sharedApplicationData = [groupInfo sharedApplicationData];
 
-  return v3;
+  return sharedApplicationData;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 groupID];
-    v6 = [(ENGroup *)self groupID];
-    v7 = [v5 isEqual:v6];
+    groupID = [equalCopy groupID];
+    groupID2 = [(ENGroup *)self groupID];
+    v7 = [groupID isEqual:groupID2];
   }
 
   else
@@ -205,8 +205,8 @@
 - (unint64_t)hash
 {
   v3 = [objc_opt_class() hash];
-  v4 = [(ENGroup *)self groupID];
-  v5 = [v4 hash];
+  groupID = [(ENGroup *)self groupID];
+  v5 = [groupID hash];
 
   return v5 ^ v3;
 }

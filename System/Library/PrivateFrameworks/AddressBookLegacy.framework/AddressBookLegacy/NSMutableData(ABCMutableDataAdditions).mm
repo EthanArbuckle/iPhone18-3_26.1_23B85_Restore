@@ -8,7 +8,7 @@
 {
   v4 = [a3 dataUsingEncoding:1];
 
-  return [a1 appendData:v4];
+  return [self appendData:v4];
 }
 
 @end

@@ -1,17 +1,17 @@
 @interface SleepScoreComponentYAxis
-- (_TtC20SleepHealthAppPlugin24SleepScoreComponentYAxis)initWithConfiguration:(id)a3;
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4;
+- (_TtC20SleepHealthAppPlugin24SleepScoreComponentYAxis)initWithConfiguration:(id)configuration;
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale;
 @end
 
 @implementation SleepScoreComponentYAxis
 
-- (id)findAxisLabelsInModelRange:(id)a3 zoomScale:(double)a4
+- (id)findAxisLabelsInModelRange:(id)range zoomScale:(double)scale
 {
   v4 = *(self + OBJC_IVAR____TtC20SleepHealthAppPlugin24SleepScoreComponentYAxis_increment);
   if (v4)
   {
     v5 = *(self + OBJC_IVAR____TtC20SleepHealthAppPlugin24SleepScoreComponentYAxis_maxValue);
-    v6 = self;
+    selfCopy = self;
     sub_29E70588C(0, v5, v4);
 
     sub_29E705BFC();
@@ -28,7 +28,7 @@
   return self;
 }
 
-- (_TtC20SleepHealthAppPlugin24SleepScoreComponentYAxis)initWithConfiguration:(id)a3
+- (_TtC20SleepHealthAppPlugin24SleepScoreComponentYAxis)initWithConfiguration:(id)configuration
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

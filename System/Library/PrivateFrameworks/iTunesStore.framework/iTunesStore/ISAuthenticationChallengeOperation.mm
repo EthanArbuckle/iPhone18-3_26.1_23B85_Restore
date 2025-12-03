@@ -1,8 +1,8 @@
 @interface ISAuthenticationChallengeOperation
-+ (id)operationWithChallenge:(id)a3;
-- (id)_copyCredentialForSignInResponseDictionary:(id)a3;
++ (id)operationWithChallenge:(id)challenge;
+- (id)_copyCredentialForSignInResponseDictionary:(id)dictionary;
 - (void)dealloc;
-- (void)handleButtonSelected:(int64_t)a3 withResponseDictionary:(id)a4;
+- (void)handleButtonSelected:(int64_t)selected withResponseDictionary:(id)dictionary;
 - (void)run;
 @end
 
@@ -17,19 +17,19 @@
   [(ISDialogOperation *)&v3 dealloc];
 }
 
-+ (id)operationWithChallenge:(id)a3
++ (id)operationWithChallenge:(id)challenge
 {
   v4 = objc_alloc_init(objc_opt_class());
-  [v4 setChallenge:a3];
+  [v4 setChallenge:challenge];
 
   return v4;
 }
 
-- (void)handleButtonSelected:(int64_t)a3 withResponseDictionary:(id)a4
+- (void)handleButtonSelected:(int64_t)selected withResponseDictionary:(id)dictionary
 {
-  if (a3 == 1)
+  if (selected == 1)
   {
-    v7 = [(ISAuthenticationChallengeOperation *)self _copyCredentialForSignInResponseDictionary:a4];
+    v7 = [(ISAuthenticationChallengeOperation *)self _copyCredentialForSignInResponseDictionary:dictionary];
   }
 
   else
@@ -41,7 +41,7 @@
 
   v8.receiver = self;
   v8.super_class = ISAuthenticationChallengeOperation;
-  [(ISDialogOperation *)&v8 handleButtonSelected:a3 withResponseDictionary:a4];
+  [(ISDialogOperation *)&v8 handleButtonSelected:selected withResponseDictionary:dictionary];
 }
 
 - (void)run
@@ -55,9 +55,9 @@
   [(ISDialogOperation *)&v4 run];
 }
 
-- (id)_copyCredentialForSignInResponseDictionary:(id)a3
+- (id)_copyCredentialForSignInResponseDictionary:(id)dictionary
 {
-  Value = CFDictionaryGetValue(a3, *MEMORY[0x277CBF238]);
+  Value = CFDictionaryGetValue(dictionary, *MEMORY[0x277CBF238]);
   v5 = Value;
   if (!Value)
   {

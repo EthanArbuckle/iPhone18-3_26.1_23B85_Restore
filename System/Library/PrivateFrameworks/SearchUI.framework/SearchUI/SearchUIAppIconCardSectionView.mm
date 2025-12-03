@@ -1,22 +1,22 @@
 @interface SearchUIAppIconCardSectionView
 - (BOOL)setupManualFocus;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)setupContentView;
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5;
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason;
 - (void)dealloc;
-- (void)didUpdateKeyboardFocusToResult:(id)a3 cardSection:(id)a4;
+- (void)didUpdateKeyboardFocusToResult:(id)result cardSection:(id)section;
 - (void)removeManualFocus;
 - (void)returnKeyPressed;
-- (void)updateWithRowModel:(id)a3;
-- (void)willRemoveIcon:(id)a3;
+- (void)updateWithRowModel:(id)model;
+- (void)willRemoveIcon:(id)icon;
 @end
 
 @implementation SearchUIAppIconCardSectionView
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = SearchUIAppIconCardSectionView;
@@ -26,15 +26,15 @@
 - (id)setupContentView
 {
   v12[2] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel_willRemoveIcon_ name:*MEMORY[0x1E69D4170] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel_willRemoveIcon_ name:*MEMORY[0x1E69D4170] object:0];
 
   v4 = objc_opt_new();
   [v4 setHidden:1];
   [(SearchUIAppIconCardSectionView *)self setFolderLabelView:v4];
   v5 = objc_opt_new();
-  v6 = [(SearchUICardSectionView *)self feedbackDelegate];
-  [v5 setFeedbackDelegate:v6];
+  feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
+  [v5 setFeedbackDelegate:feedbackDelegate];
 
   [v5 setEngagementDelegate:self];
   if (+[SearchUIUtilities isIpad])
@@ -67,58 +67,58 @@
   return v10;
 }
 
-- (void)updateWithRowModel:(id)a3
+- (void)updateWithRowModel:(id)model
 {
-  v4 = a3;
+  modelCopy = model;
   v15.receiver = self;
   v15.super_class = SearchUIAppIconCardSectionView;
-  [(SearchUICardSectionView *)&v15 updateWithRowModel:v4];
-  v5 = [v4 identifyingResult];
-  v6 = [v5 auxiliaryTopText];
-  if (![v6 length])
+  [(SearchUICardSectionView *)&v15 updateWithRowModel:modelCopy];
+  identifyingResult = [modelCopy identifyingResult];
+  auxiliaryTopText = [identifyingResult auxiliaryTopText];
+  if (![auxiliaryTopText length])
   {
 
     goto LABEL_5;
   }
 
-  v7 = [v4 shouldFillAvailableSpace];
+  shouldFillAvailableSpace = [modelCopy shouldFillAvailableSpace];
 
-  if (!v7)
+  if (!shouldFillAvailableSpace)
   {
 LABEL_5:
-    v9 = [(SearchUIAppIconCardSectionView *)self folderLabelView];
-    [v9 setTopText:0];
+    folderLabelView = [(SearchUIAppIconCardSectionView *)self folderLabelView];
+    [folderLabelView setTopText:0];
     goto LABEL_6;
   }
 
   v8 = MEMORY[0x1E69D91D0];
-  v9 = [v4 identifyingResult];
-  v10 = [v9 auxiliaryTopText];
-  v11 = [v8 textWithString:v10];
-  v12 = [(SearchUIAppIconCardSectionView *)self folderLabelView];
-  [v12 setTopText:v11];
+  folderLabelView = [modelCopy identifyingResult];
+  auxiliaryTopText2 = [folderLabelView auxiliaryTopText];
+  v11 = [v8 textWithString:auxiliaryTopText2];
+  folderLabelView2 = [(SearchUIAppIconCardSectionView *)self folderLabelView];
+  [folderLabelView2 setTopText:v11];
 
 LABEL_6:
-  v13 = [(SearchUIAppIconCardSectionView *)self appIconView];
-  [v13 updateWithRowModel:v4];
+  appIconView = [(SearchUIAppIconCardSectionView *)self appIconView];
+  [appIconView updateWithRowModel:modelCopy];
 
-  v14 = [(SearchUICardSectionView *)self contentView];
-  [v14 layoutBelowIfNeeded];
+  contentView = [(SearchUICardSectionView *)self contentView];
+  [contentView layoutBelowIfNeeded];
 }
 
-- (void)willRemoveIcon:(id)a3
+- (void)willRemoveIcon:(id)icon
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x1E69D4178]];
-  v12 = [v5 nodeIdentifier];
+  userInfo = [icon userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x1E69D4178]];
+  nodeIdentifier = [v5 nodeIdentifier];
 
-  v6 = [(SearchUICardSectionView *)self rowModel];
-  v7 = [v6 cardSection];
+  rowModel = [(SearchUICardSectionView *)self rowModel];
+  cardSection = [rowModel cardSection];
 
-  v8 = [v7 applicationBundleIdentifier];
-  if ([v8 isEqualToString:v12])
+  applicationBundleIdentifier = [cardSection applicationBundleIdentifier];
+  if ([applicationBundleIdentifier isEqualToString:nodeIdentifier])
   {
-    v9 = [(SearchUICardSectionView *)self feedbackDelegate];
+    feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
     v10 = objc_opt_respondsToSelector();
 
     if ((v10 & 1) == 0)
@@ -126,9 +126,9 @@ LABEL_6:
       goto LABEL_5;
     }
 
-    v8 = [(SearchUICardSectionView *)self feedbackDelegate];
-    v11 = [(SearchUICardSectionView *)self rowModel];
-    [v8 removeRowModel:v11 completion:0];
+    applicationBundleIdentifier = [(SearchUICardSectionView *)self feedbackDelegate];
+    rowModel2 = [(SearchUICardSectionView *)self rowModel];
+    [applicationBundleIdentifier removeRowModel:rowModel2 completion:0];
   }
 
 LABEL_5:
@@ -136,61 +136,61 @@ LABEL_5:
 
 - (BOOL)setupManualFocus
 {
-  v2 = [(SearchUIAppIconCardSectionView *)self appIconView];
-  [v2 setAddRoundedKeyboardHighlight:1];
+  appIconView = [(SearchUIAppIconCardSectionView *)self appIconView];
+  [appIconView setAddRoundedKeyboardHighlight:1];
 
   return 1;
 }
 
 - (void)removeManualFocus
 {
-  v2 = [(SearchUIAppIconCardSectionView *)self appIconView];
-  [v2 setAddRoundedKeyboardHighlight:0];
+  appIconView = [(SearchUIAppIconCardSectionView *)self appIconView];
+  [appIconView setAddRoundedKeyboardHighlight:0];
 }
 
 - (void)returnKeyPressed
 {
-  v2 = [(SearchUIAppIconCardSectionView *)self appIconView];
-  [v2 launchIcon];
+  appIconView = [(SearchUIAppIconCardSectionView *)self appIconView];
+  [appIconView launchIcon];
 }
 
-- (void)didUpdateKeyboardFocusToResult:(id)a3 cardSection:(id)a4
+- (void)didUpdateKeyboardFocusToResult:(id)result cardSection:(id)section
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(SearchUICardSectionView *)self feedbackDelegate];
+  resultCopy = result;
+  sectionCopy = section;
+  feedbackDelegate = [(SearchUICardSectionView *)self feedbackDelegate];
   v8 = objc_opt_respondsToSelector();
 
   if (v8)
   {
-    v9 = [(SearchUICardSectionView *)self feedbackDelegate];
-    [v9 didUpdateKeyboardFocusToResult:v10 cardSection:v6];
+    feedbackDelegate2 = [(SearchUICardSectionView *)self feedbackDelegate];
+    [feedbackDelegate2 didUpdateKeyboardFocusToResult:resultCopy cardSection:sectionCopy];
   }
 }
 
-- (void)containerView:(id)a3 willMeasureArrangedSubviewsFittingSize:(CGSize)a4 forReason:(int64_t)a5
+- (void)containerView:(id)view willMeasureArrangedSubviewsFittingSize:(CGSize)size forReason:(int64_t)reason
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  if (self == v9)
+  height = size.height;
+  width = size.width;
+  viewCopy = view;
+  if (self == viewCopy)
   {
-    v10 = [(SearchUICardSectionView *)self rowModel];
-    v11 = [v10 sectionType];
+    rowModel = [(SearchUICardSectionView *)self rowModel];
+    sectionType = [rowModel sectionType];
 
-    if (v11 == 1)
+    if (sectionType == 1)
     {
       v12 = width / +[SearchUIAppIconUtilities numberOfAppIconsPerRow];
-      v13 = [(SearchUIAppIconCardSectionView *)self appIconView];
-      [v13 intrinsicContentSize];
+      appIconView = [(SearchUIAppIconCardSectionView *)self appIconView];
+      [appIconView intrinsicContentSize];
       v15 = (v12 - v14) * 0.5;
 
       +[SearchUIAppIconUtilities distanceToTopOfAppIconsForMultiResultCell];
       v17 = v16;
       +[SearchUIAppIconUtilities distanceToBottomOfAppIconsForMultiResultCell];
       v19 = v18;
-      v20 = [(SearchUICardSectionView *)self contentView];
-      v21 = v20;
+      contentView = [(SearchUICardSectionView *)self contentView];
+      v21 = contentView;
       if (v15 >= 0.0)
       {
         v22 = v15;
@@ -211,42 +211,42 @@ LABEL_5:
         v23 = 3;
       }
 
-      [v20 setDirectionalLayoutMargins:{v17, v22, v19, v22}];
+      [contentView setDirectionalLayoutMargins:{v17, v22, v19, v22}];
 
-      v24 = [(SearchUIAppIconCardSectionView *)self folderLabelView];
-      [v24 setHidden:v15 <= 0.0];
+      folderLabelView = [(SearchUIAppIconCardSectionView *)self folderLabelView];
+      [folderLabelView setHidden:v15 <= 0.0];
 
-      v25 = [(SearchUICardSectionView *)self contentView];
-      v26 = [(SearchUIAppIconCardSectionView *)self folderLabelView];
-      [v25 setAlignment:4 forView:v26 inAxis:0];
+      contentView2 = [(SearchUICardSectionView *)self contentView];
+      folderLabelView2 = [(SearchUIAppIconCardSectionView *)self folderLabelView];
+      [contentView2 setAlignment:4 forView:folderLabelView2 inAxis:0];
 
-      v27 = [(SearchUICardSectionView *)self contentView];
-      v28 = [(SearchUIAppIconCardSectionView *)self appIconView];
-      [v27 setAlignment:v23 forView:v28 inAxis:0];
+      contentView3 = [(SearchUICardSectionView *)self contentView];
+      appIconView2 = [(SearchUIAppIconCardSectionView *)self appIconView];
+      [contentView3 setAlignment:v23 forView:appIconView2 inAxis:0];
     }
   }
 
   v29.receiver = self;
   v29.super_class = SearchUIAppIconCardSectionView;
-  [(SearchUICardSectionView *)&v29 containerView:v9 willMeasureArrangedSubviewsFittingSize:a5 forReason:width, height];
+  [(SearchUICardSectionView *)&v29 containerView:viewCopy willMeasureArrangedSubviewsFittingSize:reason forReason:width, height];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v9.receiver = self;
   v9.super_class = SearchUIAppIconCardSectionView;
-  v5 = [(SearchUIAppIconCardSectionView *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(SearchUIAppIconCardSectionView *)&v9 hitTest:event withEvent:test.x, test.y];
   if ([v5 isDescendantOfView:self])
   {
-    v6 = [(SearchUIAppIconCardSectionView *)self appIconView];
+    appIconView = [(SearchUIAppIconCardSectionView *)self appIconView];
   }
 
   else
   {
-    v6 = v5;
+    appIconView = v5;
   }
 
-  v7 = v6;
+  v7 = appIconView;
 
   return v7;
 }

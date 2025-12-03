@@ -1,7 +1,7 @@
 @interface VUIConfirmationTransitioningDelegate
 + (id)sharedInstance;
 - (id)_init;
-- (void)confirmationAnimatedTransitioningAnimationDidEnd:(id)a3;
+- (void)confirmationAnimatedTransitioningAnimationDidEnd:(id)end;
 @end
 
 @implementation VUIConfirmationTransitioningDelegate
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = __54__VUIConfirmationTransitioningDelegate_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_25 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_25, block);
@@ -52,38 +52,38 @@ void __54__VUIConfirmationTransitioningDelegate_sharedInstance__block_invoke(uin
   return v2;
 }
 
-- (void)confirmationAnimatedTransitioningAnimationDidEnd:(id)a3
+- (void)confirmationAnimatedTransitioningAnimationDidEnd:(id)end
 {
-  v4 = a3;
-  if (self->_presentTransition == v4)
+  endCopy = end;
+  if (self->_presentTransition == endCopy)
   {
-    v9 = v4;
-    v7 = [(VUIConfirmationTransitioningDelegate *)self presentedHandlerBlock];
+    v9 = endCopy;
+    presentedHandlerBlock = [(VUIConfirmationTransitioningDelegate *)self presentedHandlerBlock];
 
-    v4 = v9;
-    if (!v7)
+    endCopy = v9;
+    if (!presentedHandlerBlock)
     {
       goto LABEL_8;
     }
 
-    v6 = [(VUIConfirmationTransitioningDelegate *)self presentedHandlerBlock];
+    presentedHandlerBlock2 = [(VUIConfirmationTransitioningDelegate *)self presentedHandlerBlock];
     goto LABEL_7;
   }
 
-  if (self->_dismissTransition == v4)
+  if (self->_dismissTransition == endCopy)
   {
-    v9 = v4;
-    v5 = [(VUIConfirmationTransitioningDelegate *)self dismissedHandlerBlock];
+    v9 = endCopy;
+    dismissedHandlerBlock = [(VUIConfirmationTransitioningDelegate *)self dismissedHandlerBlock];
 
-    v4 = v9;
-    if (v5)
+    endCopy = v9;
+    if (dismissedHandlerBlock)
     {
-      v6 = [(VUIConfirmationTransitioningDelegate *)self dismissedHandlerBlock];
+      presentedHandlerBlock2 = [(VUIConfirmationTransitioningDelegate *)self dismissedHandlerBlock];
 LABEL_7:
-      v8 = v6;
-      (*(v6 + 16))();
+      v8 = presentedHandlerBlock2;
+      (*(presentedHandlerBlock2 + 16))();
 
-      v4 = v9;
+      endCopy = v9;
     }
   }
 

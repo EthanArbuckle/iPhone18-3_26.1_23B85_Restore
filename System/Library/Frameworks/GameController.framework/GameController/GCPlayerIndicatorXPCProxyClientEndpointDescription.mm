@@ -1,76 +1,76 @@
 @interface GCPlayerIndicatorXPCProxyClientEndpointDescription
-- (GCPlayerIndicatorXPCProxyClientEndpointDescription)initWithCoder:(id)a3;
-- (GCPlayerIndicatorXPCProxyClientEndpointDescription)initWithIdentifier:(id)a3 initialPlayerIndex:(int64_t)a4;
-- (id)materializeWithContext:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (GCPlayerIndicatorXPCProxyClientEndpointDescription)initWithCoder:(id)coder;
+- (GCPlayerIndicatorXPCProxyClientEndpointDescription)initWithIdentifier:(id)identifier initialPlayerIndex:(int64_t)index;
+- (id)materializeWithContext:(id)context;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation GCPlayerIndicatorXPCProxyClientEndpointDescription
 
-- (GCPlayerIndicatorXPCProxyClientEndpointDescription)initWithIdentifier:(id)a3 initialPlayerIndex:(int64_t)a4
+- (GCPlayerIndicatorXPCProxyClientEndpointDescription)initWithIdentifier:(id)identifier initialPlayerIndex:(int64_t)index
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v11.receiver = self;
   v11.super_class = GCPlayerIndicatorXPCProxyClientEndpointDescription;
   v7 = [(GCPlayerIndicatorXPCProxyClientEndpointDescription *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copyWithZone:0];
+    v8 = [identifierCopy copyWithZone:0];
     identifier = v7->_identifier;
     v7->_identifier = v8;
 
-    v7->_initialPlayerIndex = a4;
+    v7->_initialPlayerIndex = index;
   }
 
   return v7;
 }
 
-- (GCPlayerIndicatorXPCProxyClientEndpointDescription)initWithCoder:(id)a3
+- (GCPlayerIndicatorXPCProxyClientEndpointDescription)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = GCPlayerIndicatorXPCProxyClientEndpointDescription;
   v5 = [(GCPlayerIndicatorXPCProxyClientEndpointDescription *)&v10 init];
   if (v5)
   {
     v6 = GCIPCObjectIdentifier_Classes();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"identifier"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"identifier"];
     identifier = v5->_identifier;
     v5->_identifier = v7;
 
-    v5->_initialPlayerIndex = [v4 decodeIntegerForKey:@"initialPlayerIndex"];
+    v5->_initialPlayerIndex = [coderCopy decodeIntegerForKey:@"initialPlayerIndex"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   initialPlayerIndex = self->_initialPlayerIndex;
-  v5 = a3;
-  [v5 encodeInteger:initialPlayerIndex forKey:@"initialPlayerIndex"];
-  [v5 encodeObject:self->_identifier forKey:@"identifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:initialPlayerIndex forKey:@"initialPlayerIndex"];
+  [coderCopy encodeObject:self->_identifier forKey:@"identifier"];
 }
 
-- (id)materializeWithContext:(id)a3
+- (id)materializeWithContext:(id)context
 {
-  v4 = a3;
-  v5 = v4;
+  contextCopy = context;
+  v5 = contextCopy;
   materializedObject = self->_materializedObject;
   if (materializedObject)
   {
     goto LABEL_4;
   }
 
-  v7 = [v4 IPCServiceRegistry];
-  v8 = [v7 serviceClientForIPCService:&unk_1F4EB38E8];
+  iPCServiceRegistry = [contextCopy IPCServiceRegistry];
+  v8 = [iPCServiceRegistry serviceClientForIPCService:&unk_1F4EB38E8];
 
   if (v8)
   {
-    v9 = [v8 playerIndicatorXPCProxyServiceRemoteServer];
+    playerIndicatorXPCProxyServiceRemoteServer = [v8 playerIndicatorXPCProxyServiceRemoteServer];
     v10 = [[GCPlayerIndicatorXPCProxyClientEndpoint alloc] initWithIdentifier:self->_identifier initialPlayerIndex:self->_initialPlayerIndex];
-    v11 = [v5 IPCObjectRegistry];
-    [v11 registerIPCObject:v10];
+    iPCObjectRegistry = [v5 IPCObjectRegistry];
+    [iPCObjectRegistry registerIPCObject:v10];
 
     v12 = dispatch_semaphore_create(0);
     v21[0] = MEMORY[0x1E69E9820];
@@ -83,7 +83,7 @@
     v24 = v12;
     v14 = v12;
     v15 = v8;
-    [v9 playerIndicatorXPCProxyServiceClientEndpointConnect:v13 reply:v21];
+    [playerIndicatorXPCProxyServiceRemoteServer playerIndicatorXPCProxyServiceClientEndpointConnect:v13 reply:v21];
     v16 = dispatch_time(0, 1000000000);
     dispatch_semaphore_wait(v14, v16);
     v17 = self->_materializedObject;

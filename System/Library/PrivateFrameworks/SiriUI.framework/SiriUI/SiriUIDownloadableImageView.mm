@@ -1,28 +1,28 @@
 @interface SiriUIDownloadableImageView
-- (SiriUIDownloadableImageView)initWithImageURL:(id)a3 placeHolderImageName:(id)a4 placeHolderImageBundle:(id)a5;
-- (void)_setImage:(id)a3 isPlaceHolder:(BOOL)a4;
+- (SiriUIDownloadableImageView)initWithImageURL:(id)l placeHolderImageName:(id)name placeHolderImageBundle:(id)bundle;
+- (void)_setImage:(id)image isPlaceHolder:(BOOL)holder;
 - (void)layoutSubviews;
-- (void)setImageURL:(id)a3;
-- (void)setPlaceHolderImageName:(id)a3;
-- (void)setPlaceHolderVerticalOffset:(double)a3;
+- (void)setImageURL:(id)l;
+- (void)setPlaceHolderImageName:(id)name;
+- (void)setPlaceHolderVerticalOffset:(double)offset;
 - (void)showPlaceHolderImage;
 @end
 
 @implementation SiriUIDownloadableImageView
 
-- (SiriUIDownloadableImageView)initWithImageURL:(id)a3 placeHolderImageName:(id)a4 placeHolderImageBundle:(id)a5
+- (SiriUIDownloadableImageView)initWithImageURL:(id)l placeHolderImageName:(id)name placeHolderImageBundle:(id)bundle
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  lCopy = l;
+  nameCopy = name;
+  bundleCopy = bundle;
   v16.receiver = self;
   v16.super_class = SiriUIDownloadableImageView;
   v11 = [(SiriUIDownloadableImageView *)&v16 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_placeHolderImageName, a4);
-    objc_storeStrong(&v12->_placeHolderImageBundle, a5);
+    objc_storeStrong(&v11->_placeHolderImageName, name);
+    objc_storeStrong(&v12->_placeHolderImageBundle, bundle);
     v12->_placeHolderVerticalOffset = 0.0;
     v13 = objc_alloc_init(MEMORY[0x277D755E8]);
     imageView = v12->_imageView;
@@ -30,18 +30,18 @@
 
     [(SiriUIDownloadableImageView *)v12 addSubview:v12->_imageView];
     [(SiriUIDownloadableImageView *)v12 showPlaceHolderImage];
-    [(SiriUIDownloadableImageView *)v12 setImageURL:v8];
+    [(SiriUIDownloadableImageView *)v12 setImageURL:lCopy];
   }
 
   return v12;
 }
 
-- (void)setPlaceHolderImageName:(id)a3
+- (void)setPlaceHolderImageName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   if (![(NSString *)self->_placeHolderImageName isEqualToString:?])
   {
-    objc_storeStrong(&self->_placeHolderImageName, a3);
+    objc_storeStrong(&self->_placeHolderImageName, name);
     if (self->_showingPlaceHolderImage)
     {
       [(SiriUIDownloadableImageView *)self showPlaceHolderImage];
@@ -49,11 +49,11 @@
   }
 }
 
-- (void)setPlaceHolderVerticalOffset:(double)a3
+- (void)setPlaceHolderVerticalOffset:(double)offset
 {
-  if (self->_placeHolderVerticalOffset != a3)
+  if (self->_placeHolderVerticalOffset != offset)
   {
-    self->_placeHolderVerticalOffset = a3;
+    self->_placeHolderVerticalOffset = offset;
     [(SiriUIDownloadableImageView *)self setNeedsLayout];
   }
 }
@@ -64,16 +64,16 @@
   if (placeHolderImageName)
   {
     v6 = [MEMORY[0x277D755B8] imageNamed:placeHolderImageName inBundle:self->_placeHolderImageBundle];
-    v4 = [MEMORY[0x277D75348] siriui_maskingColor];
-    v5 = [v6 _flatImageWithColor:v4];
+    siriui_maskingColor = [MEMORY[0x277D75348] siriui_maskingColor];
+    v5 = [v6 _flatImageWithColor:siriui_maskingColor];
     [(SiriUIDownloadableImageView *)self _setImage:v5 isPlaceHolder:1];
   }
 }
 
-- (void)setImageURL:(id)a3
+- (void)setImageURL:(id)l
 {
-  v5 = a3;
-  if (([(NSURL *)self->_imageURL isEqual:v5]& 1) == 0)
+  lCopy = l;
+  if (([(NSURL *)self->_imageURL isEqual:lCopy]& 1) == 0)
   {
     v6 = +[SiriUIURLSession sharedURLSession];
     v8[0] = MEMORY[0x277D85DD0];
@@ -81,9 +81,9 @@
     v8[2] = __43__SiriUIDownloadableImageView_setImageURL___block_invoke;
     v8[3] = &unk_279C5A1D8;
     v8[4] = self;
-    v7 = [v6 imageTaskWithHTTPGetRequest:v5 client:self completionHandler:v8];
+    v7 = [v6 imageTaskWithHTTPGetRequest:lCopy client:self completionHandler:v8];
 
-    objc_storeStrong(&self->_imageURL, a3);
+    objc_storeStrong(&self->_imageURL, l);
   }
 }
 
@@ -97,20 +97,20 @@ uint64_t __43__SiriUIDownloadableImageView_setImageURL___block_invoke(uint64_t r
   return result;
 }
 
-- (void)_setImage:(id)a3 isPlaceHolder:(BOOL)a4
+- (void)_setImage:(id)image isPlaceHolder:(BOOL)holder
 {
-  v4 = a4;
-  v6 = a3;
-  self->_showingPlaceHolderImage = v4;
-  if (v6)
+  holderCopy = holder;
+  imageCopy = image;
+  self->_showingPlaceHolderImage = holderCopy;
+  if (imageCopy)
   {
-    if (v4)
+    if (holderCopy)
     {
       v7 = [MEMORY[0x277D75348] colorWithWhite:1.0 alpha:0.3];
       [(SiriUIDownloadableImageView *)self setBackgroundColor:v7];
 
       [(UIImageView *)self->_imageView setContentMode:4];
-      [(UIImageView *)self->_imageView setImage:v6];
+      [(UIImageView *)self->_imageView setImage:imageCopy];
     }
 
     else
@@ -122,12 +122,12 @@ uint64_t __43__SiriUIDownloadableImageView_setImageURL___block_invoke(uint64_t r
       v10 = 3221225472;
       v11 = __55__SiriUIDownloadableImageView__setImage_isPlaceHolder___block_invoke;
       v12 = &unk_279C5A018;
-      v13 = self;
-      v14 = v6;
+      selfCopy = self;
+      v14 = imageCopy;
       [v8 transitionWithView:self duration:5242882 options:&v9 animations:0 completion:0.2];
     }
 
-    [(SiriUIDownloadableImageView *)self bringSubviewToFront:self->_imageView, v9, v10, v11, v12, v13];
+    [(SiriUIDownloadableImageView *)self bringSubviewToFront:self->_imageView, v9, v10, v11, v12, selfCopy];
     [(SiriUIDownloadableImageView *)self setNeedsLayout];
   }
 }

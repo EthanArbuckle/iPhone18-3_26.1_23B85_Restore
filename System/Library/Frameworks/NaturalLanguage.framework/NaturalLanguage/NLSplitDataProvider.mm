@@ -1,22 +1,22 @@
 @interface NLSplitDataProvider
-- (NLSplitDataProvider)initWithDataProvider:(id)a3 indexes:(id)a4;
-- (id)instanceAtIndex:(unint64_t)a3;
+- (NLSplitDataProvider)initWithDataProvider:(id)provider indexes:(id)indexes;
+- (id)instanceAtIndex:(unint64_t)index;
 @end
 
 @implementation NLSplitDataProvider
 
-- (NLSplitDataProvider)initWithDataProvider:(id)a3 indexes:(id)a4
+- (NLSplitDataProvider)initWithDataProvider:(id)provider indexes:(id)indexes
 {
-  v7 = a3;
-  v8 = a4;
+  providerCopy = provider;
+  indexesCopy = indexes;
   v14.receiver = self;
   v14.super_class = NLSplitDataProvider;
   v9 = [(NLSplitDataProvider *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dataProvider, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_dataProvider, provider);
+    v11 = [indexesCopy copy];
     indexes = v10->_indexes;
     v10->_indexes = v11;
   }
@@ -24,10 +24,10 @@
   return v10;
 }
 
-- (id)instanceAtIndex:(unint64_t)a3
+- (id)instanceAtIndex:(unint64_t)index
 {
   dataProvider = self->_dataProvider;
-  v4 = [(NSArray *)self->_indexes objectAtIndex:a3];
+  v4 = [(NSArray *)self->_indexes objectAtIndex:index];
   v5 = -[NLDataProvider instanceAtIndex:](dataProvider, "instanceAtIndex:", [v4 unsignedIntegerValue]);
 
   return v5;

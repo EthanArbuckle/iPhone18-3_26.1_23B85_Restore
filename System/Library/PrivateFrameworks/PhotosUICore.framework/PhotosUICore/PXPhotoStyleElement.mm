@@ -1,6 +1,6 @@
 @interface PXPhotoStyleElement
 - (BOOL)hasNonDefaultValues;
-- (BOOL)updateWithTone:(double)a3 color:(double)a4 intensity:(double)a5;
+- (BOOL)updateWithTone:(double)tone color:(double)color intensity:(double)intensity;
 - (NSString)cast;
 - (NSString)defaultName;
 - (PXPhotoStyleElement)init;
@@ -10,13 +10,13 @@
 - (double)defaultTone;
 - (double)intensity;
 - (double)tone;
-- (id)copyWithZone:(void *)a3;
+- (id)copyWithZone:(void *)zone;
 - (void)resetToDefaultValues;
 @end
 
 @implementation PXPhotoStyleElement
 
-- (id)copyWithZone:(void *)a3
+- (id)copyWithZone:(void *)zone
 {
   ObjectType = swift_getObjectType();
   swift_beginAccess();
@@ -27,7 +27,7 @@
 
 - (BOOL)hasNonDefaultValues
 {
-  v2 = self;
+  selfCopy = self;
   v3 = PhotoStyleElement.hasNonDefaultValues.getter();
 
   return v3 & 1;
@@ -35,7 +35,7 @@
 
 - (void)resetToDefaultValues
 {
-  v2 = self;
+  selfCopy = self;
   PhotoStyleElement.resetToDefaultValues()();
 }
 
@@ -124,7 +124,7 @@
 
 - (double)defaultTone
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A40D61C8();
 
   return v3;
@@ -132,7 +132,7 @@
 
 - (double)defaultColor
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A40D6360();
 
   return v3;
@@ -140,16 +140,16 @@
 
 - (double)defaultIntensity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1A40D64FC();
 
   return v3;
 }
 
-- (BOOL)updateWithTone:(double)a3 color:(double)a4 intensity:(double)a5
+- (BOOL)updateWithTone:(double)tone color:(double)color intensity:(double)intensity
 {
-  v8 = self;
-  v9 = sub_1A40D665C(a3, a4, a5);
+  selfCopy = self;
+  v9 = sub_1A40D665C(tone, color, intensity);
 
   return v9 & 1;
 }

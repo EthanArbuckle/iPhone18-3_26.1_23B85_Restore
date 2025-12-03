@@ -1,50 +1,50 @@
 @interface SBMedusaWindowDragGestureRootSwitcherModifier
-- (SBMedusaWindowDragGestureRootSwitcherModifier)initWithSelectedLeafAppLayout:(id)a3 currentMainAppLayout:(id)a4 currentFloatingAppLayout:(id)a5 currentFloatingConfiguration:(int64_t)a6;
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4;
-- (id)handleGestureEvent:(id)a3;
-- (id)handleTransitionEvent:(id)a3;
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4;
+- (SBMedusaWindowDragGestureRootSwitcherModifier)initWithSelectedLeafAppLayout:(id)layout currentMainAppLayout:(id)appLayout currentFloatingAppLayout:(id)floatingAppLayout currentFloatingConfiguration:(int64_t)configuration;
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier;
+- (id)handleGestureEvent:(id)event;
+- (id)handleTransitionEvent:(id)event;
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier;
 @end
 
 @implementation SBMedusaWindowDragGestureRootSwitcherModifier
 
-- (SBMedusaWindowDragGestureRootSwitcherModifier)initWithSelectedLeafAppLayout:(id)a3 currentMainAppLayout:(id)a4 currentFloatingAppLayout:(id)a5 currentFloatingConfiguration:(int64_t)a6
+- (SBMedusaWindowDragGestureRootSwitcherModifier)initWithSelectedLeafAppLayout:(id)layout currentMainAppLayout:(id)appLayout currentFloatingAppLayout:(id)floatingAppLayout currentFloatingConfiguration:(int64_t)configuration
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
+  layoutCopy = layout;
+  appLayoutCopy = appLayout;
+  floatingAppLayoutCopy = floatingAppLayout;
   v17.receiver = self;
   v17.super_class = SBMedusaWindowDragGestureRootSwitcherModifier;
   v14 = [(SBGestureRootSwitcherModifier *)&v17 initWithStartingEnvironmentMode:3];
   v15 = v14;
   if (v14)
   {
-    objc_storeStrong(&v14->_selectedLeafAppLayout, a3);
-    objc_storeStrong(&v15->_currentMainAppLayout, a4);
-    objc_storeStrong(&v15->_currentFloatingAppLayout, a5);
-    v15->_currentFloatingConfiguration = a6;
+    objc_storeStrong(&v14->_selectedLeafAppLayout, layout);
+    objc_storeStrong(&v15->_currentMainAppLayout, appLayout);
+    objc_storeStrong(&v15->_currentFloatingAppLayout, floatingAppLayout);
+    v15->_currentFloatingConfiguration = configuration;
   }
 
   return v15;
 }
 
-- (id)gestureChildModifierForGestureEvent:(id)a3 activeTransitionModifier:(id)a4
+- (id)gestureChildModifierForGestureEvent:(id)event activeTransitionModifier:(id)modifier
 {
-  v5 = a3;
+  eventCopy = event;
   v6 = [SBMedusaWindowDragGestureSwitcherModifier alloc];
-  v7 = [v5 gestureID];
+  gestureID = [eventCopy gestureID];
 
-  v8 = [(SBMedusaWindowDragGestureSwitcherModifier *)v6 initWithGestureID:v7 selectedLeafAppLayout:self->_selectedLeafAppLayout initialMainAppLayout:self->_currentMainAppLayout initialFloatingAppLayout:self->_currentFloatingAppLayout initialFloatingConfiguration:self->_currentFloatingConfiguration];
+  v8 = [(SBMedusaWindowDragGestureSwitcherModifier *)v6 initWithGestureID:gestureID selectedLeafAppLayout:self->_selectedLeafAppLayout initialMainAppLayout:self->_currentMainAppLayout initialFloatingAppLayout:self->_currentFloatingAppLayout initialFloatingConfiguration:self->_currentFloatingConfiguration];
 
   return v8;
 }
 
-- (id)transitionChildModifierForMainTransitionEvent:(id)a3 activeGestureModifier:(id)a4
+- (id)transitionChildModifierForMainTransitionEvent:(id)event activeGestureModifier:(id)modifier
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  modifierCopy = modifier;
   v8 = objc_opt_class();
-  v9 = v7;
+  v9 = modifierCopy;
   if (v8)
   {
     if (objc_opt_isKindOfClass())
@@ -68,67 +68,67 @@
 
   v12 = [MEMORY[0x277CBEB58] set];
   v13 = [MEMORY[0x277CBEB58] set];
-  v14 = [v6 fromAppLayout];
-  v15 = [v14 allItems];
-  [v13 addObjectsFromArray:v15];
+  fromAppLayout = [eventCopy fromAppLayout];
+  allItems = [fromAppLayout allItems];
+  [v13 addObjectsFromArray:allItems];
 
-  v16 = [v6 fromFloatingAppLayout];
-  v17 = [v16 allItems];
-  [v13 addObjectsFromArray:v17];
+  fromFloatingAppLayout = [eventCopy fromFloatingAppLayout];
+  allItems2 = [fromFloatingAppLayout allItems];
+  [v13 addObjectsFromArray:allItems2];
 
-  v18 = [(SBMedusaWindowDragGestureRootSwitcherModifier *)self appLayouts];
+  appLayouts = [(SBMedusaWindowDragGestureRootSwitcherModifier *)self appLayouts];
   v52[0] = MEMORY[0x277D85DD0];
   v52[1] = 3221225472;
   v52[2] = __117__SBMedusaWindowDragGestureRootSwitcherModifier_transitionChildModifierForMainTransitionEvent_activeGestureModifier___block_invoke;
   v52[3] = &unk_2783B0C68;
-  v48 = v18;
+  v48 = appLayouts;
   v53 = v48;
-  v54 = self;
+  selfCopy = self;
   v51 = v12;
   v55 = v51;
   v49 = v13;
   [v13 bs_each:v52];
-  if ([v6 isEnteringSlideOverPeekEvent])
+  if ([eventCopy isEnteringSlideOverPeekEvent])
   {
-    v19 = 1;
+    isEnteringSplitViewPeekEvent = 1;
   }
 
   else
   {
-    v19 = [v6 isEnteringSplitViewPeekEvent];
+    isEnteringSplitViewPeekEvent = [eventCopy isEnteringSplitViewPeekEvent];
   }
 
   v20 = [SBMedusaWindowDragTransitionSwitcherModifier alloc];
-  v21 = [v6 transitionID];
+  transitionID = [eventCopy transitionID];
   selectedLeafAppLayout = self->_selectedLeafAppLayout;
-  [v6 fromAppLayout];
+  [eventCopy fromAppLayout];
   v23 = v47 = self;
-  v24 = [v6 toAppLayout];
-  v25 = [v6 toFloatingAppLayout];
-  v26 = [v6 toAppExposeBundleID];
-  v27 = [v11 currentDestination];
+  toAppLayout = [eventCopy toAppLayout];
+  toFloatingAppLayout = [eventCopy toFloatingAppLayout];
+  toAppExposeBundleID = [eventCopy toAppExposeBundleID];
+  currentDestination = [v11 currentDestination];
   v28 = v11;
-  v29 = v27;
+  v29 = currentDestination;
 
-  v30 = [(SBMedusaWindowDragTransitionSwitcherModifier *)v20 initWithTransitionID:v21 selectedAppLayout:selectedLeafAppLayout fromAppLayout:v23 toAppLayout:v24 toFloatingAppLayout:v25 toHomeScreenPeek:v19 toAppExposeBundleIdentifier:v26 initiallyBlurredDisplayItems:v51 windowDragDestination:v29];
-  if (SBPeekConfigurationIsValid([v6 toPeekConfiguration]))
+  v30 = [(SBMedusaWindowDragTransitionSwitcherModifier *)v20 initWithTransitionID:transitionID selectedAppLayout:selectedLeafAppLayout fromAppLayout:v23 toAppLayout:toAppLayout toFloatingAppLayout:toFloatingAppLayout toHomeScreenPeek:isEnteringSplitViewPeekEvent toAppExposeBundleIdentifier:toAppExposeBundleID initiallyBlurredDisplayItems:v51 windowDragDestination:v29];
+  if (SBPeekConfigurationIsValid([eventCopy toPeekConfiguration]))
   {
-    v31 = [(SBGestureRootSwitcherModifier *)v47 selectedAppLayout];
-    if ([v31 environment] == 1)
+    selectedAppLayout = [(SBGestureRootSwitcherModifier *)v47 selectedAppLayout];
+    if ([selectedAppLayout environment] == 1)
     {
-      v32 = [v6 toFloatingAppLayout];
-      v33 = [v31 itemForLayoutRole:1];
-      v34 = [v32 containsItem:v33];
+      toFloatingAppLayout2 = [eventCopy toFloatingAppLayout];
+      v33 = [selectedAppLayout itemForLayoutRole:1];
+      v34 = [toFloatingAppLayout2 containsItem:v33];
 
       if (v34)
       {
-        v35 = [v6 toFloatingAppLayout];
+        toFloatingAppLayout3 = [eventCopy toFloatingAppLayout];
 
-        v31 = v35;
+        selectedAppLayout = toFloatingAppLayout3;
       }
     }
 
-    if ([v6 isIconZoomDisabled])
+    if ([eventCopy isIconZoomDisabled])
     {
       v36 = *MEMORY[0x277CBF398];
       v37 = *(MEMORY[0x277CBF398] + 8);
@@ -138,19 +138,19 @@
 
     else
     {
-      [(SBMedusaWindowDragGestureRootSwitcherModifier *)v47 homeScreenIconFrameForAppLayout:v31];
+      [(SBMedusaWindowDragGestureRootSwitcherModifier *)v47 homeScreenIconFrameForAppLayout:selectedAppLayout];
     }
 
     if (!CGRectIsNull(*&v36) && ([(SBMedusaWindowDragGestureRootSwitcherModifier *)v47 isReduceMotionEnabled]& 1) == 0)
     {
       v40 = [(SBAppLayout *)v47->_selectedLeafAppLayout itemForLayoutRole:1];
-      v41 = [v6 toAppLayout];
-      v42 = [v41 containsItem:v40];
+      toAppLayout2 = [eventCopy toAppLayout];
+      v42 = [toAppLayout2 containsItem:v40];
 
       if (v42)
       {
-        v43 = [v6 toAppLayout];
-        v44 = [v43 leafAppLayoutForItem:v40];
+        toAppLayout3 = [eventCopy toAppLayout];
+        v44 = [toAppLayout3 leafAppLayoutForItem:v40];
 
         if (v44)
         {
@@ -211,39 +211,39 @@ void __117__SBMedusaWindowDragGestureRootSwitcherModifier_transitionChildModifie
   }
 }
 
-- (id)handleTransitionEvent:(id)a3
+- (id)handleTransitionEvent:(id)event
 {
-  v4 = a3;
-  if ([v4 phase] == 1)
+  eventCopy = event;
+  if ([eventCopy phase] == 1)
   {
-    v5 = [v4 toAppLayout];
+    toAppLayout = [eventCopy toAppLayout];
     currentMainAppLayout = self->_currentMainAppLayout;
-    self->_currentMainAppLayout = v5;
+    self->_currentMainAppLayout = toAppLayout;
 
-    v7 = [v4 toFloatingAppLayout];
+    toFloatingAppLayout = [eventCopy toFloatingAppLayout];
     currentFloatingAppLayout = self->_currentFloatingAppLayout;
-    self->_currentFloatingAppLayout = v7;
+    self->_currentFloatingAppLayout = toFloatingAppLayout;
 
-    self->_currentFloatingConfiguration = [v4 toFloatingConfiguration];
+    self->_currentFloatingConfiguration = [eventCopy toFloatingConfiguration];
   }
 
   v11.receiver = self;
   v11.super_class = SBMedusaWindowDragGestureRootSwitcherModifier;
-  v9 = [(SBGestureRootSwitcherModifier *)&v11 handleTransitionEvent:v4];
+  v9 = [(SBGestureRootSwitcherModifier *)&v11 handleTransitionEvent:eventCopy];
 
   return v9;
 }
 
-- (id)handleGestureEvent:(id)a3
+- (id)handleGestureEvent:(id)event
 {
   p_gestureVelocity = &self->_gestureVelocity;
-  v5 = a3;
-  [v5 velocityInContainerView];
+  eventCopy = event;
+  [eventCopy velocityInContainerView];
   p_gestureVelocity->x = v6;
   p_gestureVelocity->y = v7;
   v10.receiver = self;
   v10.super_class = SBMedusaWindowDragGestureRootSwitcherModifier;
-  v8 = [(SBGestureRootSwitcherModifier *)&v10 handleGestureEvent:v5];
+  v8 = [(SBGestureRootSwitcherModifier *)&v10 handleGestureEvent:eventCopy];
 
   return v8;
 }

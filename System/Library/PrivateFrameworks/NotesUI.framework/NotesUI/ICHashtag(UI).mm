@@ -6,10 +6,10 @@
 
 - (uint64_t)removeUsage
 {
-  [MEMORY[0x1E69B7760] removeUsageOfHashtag:a1];
+  [MEMORY[0x1E69B7760] removeUsageOfHashtag:self];
   v2 = MEMORY[0x1E69B77F0];
 
-  return [v2 removeUsageOfHashtag:a1];
+  return [v2 removeUsageOfHashtag:self];
 }
 
 @end

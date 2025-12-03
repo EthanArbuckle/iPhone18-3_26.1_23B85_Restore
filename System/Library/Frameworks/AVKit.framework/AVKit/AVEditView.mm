@@ -2,26 +2,26 @@
 - (AVEditViewDataSource)dataSource;
 - (AVEditViewDelegate)delegate;
 - (CGSize)intrinsicContentSize;
-- (double)movieScrubberDuration:(id)a3;
-- (double)movieScrubberThumbnailAspectRatio:(id)a3;
+- (double)movieScrubberDuration:(id)duration;
+- (double)movieScrubberThumbnailAspectRatio:(id)ratio;
 - (double)trimEndTime;
 - (double)trimStartTime;
-- (id)movieScrubber:(id)a3 evenlySpacedTimestamps:(int)a4 startingAt:(id)a5 endingAt:(id)a6;
+- (id)movieScrubber:(id)scrubber evenlySpacedTimestamps:(int)timestamps startingAt:(id)at endingAt:(id)endingAt;
 - (void)layoutSubviews;
-- (void)movieScrubber:(id)a3 editingEndValueDidChange:(double)a4;
-- (void)movieScrubber:(id)a3 editingStartValueDidChange:(double)a4;
-- (void)movieScrubber:(id)a3 requestThumbnailImageForTimestamp:(id)a4;
-- (void)movieScrubber:(id)a3 valueDidChange:(double)a4;
-- (void)movieScrubberDidFinishRequestingThumbnails:(id)a3;
-- (void)movieScrubberWillBeginRequestingThumbnails:(id)a3;
+- (void)movieScrubber:(id)scrubber editingEndValueDidChange:(double)change;
+- (void)movieScrubber:(id)scrubber editingStartValueDidChange:(double)change;
+- (void)movieScrubber:(id)scrubber requestThumbnailImageForTimestamp:(id)timestamp;
+- (void)movieScrubber:(id)scrubber valueDidChange:(double)change;
+- (void)movieScrubberDidFinishRequestingThumbnails:(id)thumbnails;
+- (void)movieScrubberWillBeginRequestingThumbnails:(id)thumbnails;
 - (void)reloadData;
-- (void)setCurrentTime:(double)a3;
-- (void)setDataSource:(id)a3;
-- (void)setPrefersThumbVisible:(BOOL)a3;
-- (void)setScrubbing:(BOOL)a3;
-- (void)setThumbnailImage:(CGImage *)a3 forTimestamp:(id)a4;
-- (void)setTrimming:(BOOL)a3;
-- (void)userObservationGestureRecognizerFired:(id)a3;
+- (void)setCurrentTime:(double)time;
+- (void)setDataSource:(id)source;
+- (void)setPrefersThumbVisible:(BOOL)visible;
+- (void)setScrubbing:(BOOL)scrubbing;
+- (void)setThumbnailImage:(CGImage *)image forTimestamp:(id)timestamp;
+- (void)setTrimming:(BOOL)trimming;
+- (void)userObservationGestureRecognizerFired:(id)fired;
 @end
 
 @implementation AVEditView
@@ -40,76 +40,76 @@
   return WeakRetained;
 }
 
-- (void)movieScrubberDidFinishRequestingThumbnails:(id)a3
+- (void)movieScrubberDidFinishRequestingThumbnails:(id)thumbnails
 {
-  v4 = [(AVEditView *)self delegate];
-  [v4 editViewDidFinishRequestingThumbnails:self];
+  delegate = [(AVEditView *)self delegate];
+  [delegate editViewDidFinishRequestingThumbnails:self];
 }
 
-- (void)movieScrubberWillBeginRequestingThumbnails:(id)a3
+- (void)movieScrubberWillBeginRequestingThumbnails:(id)thumbnails
 {
-  v4 = [(AVEditView *)self delegate];
-  [v4 editViewWillBeginRequestingThumbnails:self];
+  delegate = [(AVEditView *)self delegate];
+  [delegate editViewWillBeginRequestingThumbnails:self];
 }
 
-- (void)movieScrubber:(id)a3 editingEndValueDidChange:(double)a4
+- (void)movieScrubber:(id)scrubber editingEndValueDidChange:(double)change
 {
   [(AVEditView *)self setTrimming:1];
   [(AVEditView *)self setScrubbing:1];
-  v6 = [(AVEditView *)self delegate];
-  [v6 editView:self trimEndTimeDidChange:a4];
+  delegate = [(AVEditView *)self delegate];
+  [delegate editView:self trimEndTimeDidChange:change];
 }
 
-- (void)movieScrubber:(id)a3 editingStartValueDidChange:(double)a4
+- (void)movieScrubber:(id)scrubber editingStartValueDidChange:(double)change
 {
   [(AVEditView *)self setTrimming:1];
   [(AVEditView *)self setScrubbing:1];
-  v6 = [(AVEditView *)self delegate];
-  [v6 editView:self trimStartTimeDidChange:a4];
+  delegate = [(AVEditView *)self delegate];
+  [delegate editView:self trimStartTimeDidChange:change];
 }
 
-- (void)movieScrubber:(id)a3 valueDidChange:(double)a4
+- (void)movieScrubber:(id)scrubber valueDidChange:(double)change
 {
-  v6 = [(AVEditView *)self delegate];
-  [v6 editView:self currentTimeDidChange:a4];
+  delegate = [(AVEditView *)self delegate];
+  [delegate editView:self currentTimeDidChange:change];
 }
 
-- (void)movieScrubber:(id)a3 requestThumbnailImageForTimestamp:(id)a4
+- (void)movieScrubber:(id)scrubber requestThumbnailImageForTimestamp:(id)timestamp
 {
-  v5 = a4;
-  v6 = [(AVEditView *)self dataSource];
-  [v6 editView:self requestThumbnailImageForTimestamp:v5];
+  timestampCopy = timestamp;
+  dataSource = [(AVEditView *)self dataSource];
+  [dataSource editView:self requestThumbnailImageForTimestamp:timestampCopy];
 }
 
-- (double)movieScrubberThumbnailAspectRatio:(id)a3
+- (double)movieScrubberThumbnailAspectRatio:(id)ratio
 {
-  v4 = [(AVEditView *)self dataSource];
-  [v4 editViewThumbnailAspectRatio:self];
+  dataSource = [(AVEditView *)self dataSource];
+  [dataSource editViewThumbnailAspectRatio:self];
   v6 = v5;
 
   return v6;
 }
 
-- (id)movieScrubber:(id)a3 evenlySpacedTimestamps:(int)a4 startingAt:(id)a5 endingAt:(id)a6
+- (id)movieScrubber:(id)scrubber evenlySpacedTimestamps:(int)timestamps startingAt:(id)at endingAt:(id)endingAt
 {
-  v8 = a5;
-  v9 = a6;
-  v10 = [MEMORY[0x1E695DF70] array];
-  if (a4 >= 1)
+  atCopy = at;
+  endingAtCopy = endingAt;
+  array = [MEMORY[0x1E695DF70] array];
+  if (timestamps >= 1)
   {
-    [v8 doubleValue];
+    [atCopy doubleValue];
     v12 = v11;
-    [v9 doubleValue];
+    [endingAtCopy doubleValue];
     v14 = v13;
-    v15 = a4 - 1;
-    if (a4 != 1)
+    v15 = timestamps - 1;
+    if (timestamps != 1)
     {
-      v16 = (v13 - v12) / a4;
+      v16 = (v13 - v12) / timestamps;
       v17 = 0.0;
       do
       {
         v18 = [MEMORY[0x1E696AD98] numberWithDouble:v12 + v17 * v16];
-        [v10 addObject:v18];
+        [array addObject:v18];
 
         v17 = v17 + 1.0;
         --v15;
@@ -119,16 +119,16 @@
     }
 
     v19 = [MEMORY[0x1E696AD98] numberWithDouble:v14];
-    [v10 addObject:v19];
+    [array addObject:v19];
   }
 
-  return v10;
+  return array;
 }
 
-- (double)movieScrubberDuration:(id)a3
+- (double)movieScrubberDuration:(id)duration
 {
-  v4 = [(AVEditView *)self dataSource];
-  [v4 editViewDuration:self];
+  dataSource = [(AVEditView *)self dataSource];
+  [dataSource editViewDuration:self];
   v6 = v5;
   v7 = v5;
 
@@ -141,64 +141,64 @@
   return result;
 }
 
-- (void)setCurrentTime:(double)a3
+- (void)setCurrentTime:(double)time
 {
-  if ((*&a3 & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
+  if ((*&time & 0x7FFFFFFFFFFFFFFFuLL) >= 0x7FF0000000000000)
   {
-    v3 = 0.0;
+    timeCopy = 0.0;
   }
 
   else
   {
-    v3 = a3;
+    timeCopy = time;
   }
 
-  v4 = [(AVEditView *)self movieScrubber];
-  [v4 setValue:v3];
+  movieScrubber = [(AVEditView *)self movieScrubber];
+  [movieScrubber setValue:timeCopy];
 }
 
-- (void)setTrimming:(BOOL)a3
+- (void)setTrimming:(BOOL)trimming
 {
-  self->_trimming = a3;
-  if (a3)
+  self->_trimming = trimming;
+  if (trimming)
   {
     [(AVEditView *)self setPrefersThumbVisible:0];
   }
 }
 
-- (void)setPrefersThumbVisible:(BOOL)a3
+- (void)setPrefersThumbVisible:(BOOL)visible
 {
-  v3 = a3;
-  self->_prefersThumbVisible = a3;
-  v4 = [(AVEditView *)self movieScrubber];
-  [v4 setThumbIsVisible:v3];
+  visibleCopy = visible;
+  self->_prefersThumbVisible = visible;
+  movieScrubber = [(AVEditView *)self movieScrubber];
+  [movieScrubber setThumbIsVisible:visibleCopy];
 }
 
-- (void)setScrubbing:(BOOL)a3
+- (void)setScrubbing:(BOOL)scrubbing
 {
-  if (self->_scrubbing != a3)
+  if (self->_scrubbing != scrubbing)
   {
-    v3 = a3;
-    self->_scrubbing = a3;
-    v5 = [(AVEditView *)self delegate];
-    v6 = v5;
-    if (v3)
+    scrubbingCopy = scrubbing;
+    self->_scrubbing = scrubbing;
+    delegate = [(AVEditView *)self delegate];
+    v6 = delegate;
+    if (scrubbingCopy)
     {
-      [v5 editViewDidBeginScrubbing:self];
+      [delegate editViewDidBeginScrubbing:self];
     }
 
     else
     {
-      [v5 editViewDidEndScrubbing:self];
+      [delegate editViewDidEndScrubbing:self];
 
       [(AVEditView *)self setTrimming:0];
     }
   }
 }
 
-- (void)setDataSource:(id)a3
+- (void)setDataSource:(id)source
 {
-  obj = a3;
+  obj = source;
   WeakRetained = objc_loadWeakRetained(&self->_dataSource);
 
   v5 = obj;
@@ -210,17 +210,17 @@
   }
 }
 
-- (void)setThumbnailImage:(CGImage *)a3 forTimestamp:(id)a4
+- (void)setThumbnailImage:(CGImage *)image forTimestamp:(id)timestamp
 {
-  v6 = a4;
-  v7 = [(AVEditView *)self movieScrubber];
-  [v7 setThumbnailImage:a3 forTimestamp:v6];
+  timestampCopy = timestamp;
+  movieScrubber = [(AVEditView *)self movieScrubber];
+  [movieScrubber setThumbnailImage:image forTimestamp:timestampCopy];
 }
 
-- (void)userObservationGestureRecognizerFired:(id)a3
+- (void)userObservationGestureRecognizerFired:(id)fired
 {
-  v4 = a3;
-  if ([v4 state] == 4 || objc_msgSend(v4, "state") == 3 || objc_msgSend(v4, "state") == 5)
+  firedCopy = fired;
+  if ([firedCopy state] == 4 || objc_msgSend(firedCopy, "state") == 3 || objc_msgSend(firedCopy, "state") == 5)
   {
     [(AVEditView *)self setScrubbing:0];
   }
@@ -228,18 +228,18 @@
 
 - (void)reloadData
 {
-  v3 = [(AVEditView *)self movieScrubber];
+  movieScrubber = [(AVEditView *)self movieScrubber];
 
-  if (v3)
+  if (movieScrubber)
   {
-    v17 = [(AVEditView *)self movieScrubber];
-    [(AVUserInteractionObserverGestureRecognizer *)v17 reloadData];
+    movieScrubber2 = [(AVEditView *)self movieScrubber];
+    [(AVUserInteractionObserverGestureRecognizer *)movieScrubber2 reloadData];
   }
 
   else
   {
-    v4 = [(AVEditView *)self dataSource];
-    [v4 editViewDuration:self];
+    dataSource = [(AVEditView *)self dataSource];
+    [dataSource editViewDuration:self];
     v6 = v5;
 
     if (v6 <= 0.0)
@@ -252,33 +252,33 @@
     v11 = [v7 initWithFrame:{v8 + 15.0, v9 + 0.0, v10 + -30.0}];
     [(AVEditView *)self setMovieScrubber:v11];
 
-    v12 = [(AVEditView *)self movieScrubber];
-    [v12 setDataSource:self];
+    movieScrubber3 = [(AVEditView *)self movieScrubber];
+    [movieScrubber3 setDataSource:self];
 
-    v13 = [(AVEditView *)self movieScrubber];
-    [v13 setDelegate:self];
+    movieScrubber4 = [(AVEditView *)self movieScrubber];
+    [movieScrubber4 setDelegate:self];
 
     [(AVEditView *)self setPrefersThumbVisible:1];
-    v14 = [(AVEditView *)self movieScrubber];
-    [(AVEditView *)self addSubview:v14];
+    movieScrubber5 = [(AVEditView *)self movieScrubber];
+    [(AVEditView *)self addSubview:movieScrubber5];
 
-    v17 = [[AVUserInteractionObserverGestureRecognizer alloc] initWithTarget:self action:sel_userObservationGestureRecognizerFired_];
-    v15 = [(AVEditView *)self movieScrubber];
-    [v15 addGestureRecognizer:v17];
+    movieScrubber2 = [[AVUserInteractionObserverGestureRecognizer alloc] initWithTarget:self action:sel_userObservationGestureRecognizerFired_];
+    movieScrubber6 = [(AVEditView *)self movieScrubber];
+    [movieScrubber6 addGestureRecognizer:movieScrubber2];
 
-    v16 = [(AVEditView *)self movieScrubber];
-    [v16 setEditable:1];
+    movieScrubber7 = [(AVEditView *)self movieScrubber];
+    [movieScrubber7 setEditable:1];
   }
 }
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(AVEditView *)self movieScrubber];
+  movieScrubber = [(AVEditView *)self movieScrubber];
 
-  if (v3)
+  if (movieScrubber)
   {
-    v4 = [(AVEditView *)self movieScrubber];
-    [v4 intrinsicContentSize];
+    movieScrubber2 = [(AVEditView *)self movieScrubber];
+    [movieScrubber2 intrinsicContentSize];
     v6 = v5;
     v8 = v7;
 
@@ -307,17 +307,17 @@
   v6 = v5 + 15.0;
   v8 = v7 + 0.0;
   v10 = v9 + -30.0;
-  v11 = [(AVEditView *)self movieScrubber];
-  [v11 setFrame:{v6, v8, v10, v4}];
+  movieScrubber = [(AVEditView *)self movieScrubber];
+  [movieScrubber setFrame:{v6, v8, v10, v4}];
 
-  v12 = [(AVEditView *)self movieScrubber];
-  [v12 setEdgeInset:15.0];
+  movieScrubber2 = [(AVEditView *)self movieScrubber];
+  [movieScrubber2 setEdgeInset:15.0];
 }
 
 - (double)trimEndTime
 {
-  v2 = [(AVEditView *)self movieScrubber];
-  [v2 trimEndValue];
+  movieScrubber = [(AVEditView *)self movieScrubber];
+  [movieScrubber trimEndValue];
   v4 = v3;
 
   return v4;
@@ -325,8 +325,8 @@
 
 - (double)trimStartTime
 {
-  v2 = [(AVEditView *)self movieScrubber];
-  [v2 trimStartValue];
+  movieScrubber = [(AVEditView *)self movieScrubber];
+  [movieScrubber trimStartValue];
   v4 = v3;
 
   return v4;

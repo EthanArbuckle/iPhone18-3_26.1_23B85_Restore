@@ -1,16 +1,16 @@
 @interface COSiMessageFaceTimeAuthController
-+ (id)DSIDForIDSAccount:(id)a3;
++ (id)DSIDForIDSAccount:(id)account;
 + (id)faceTimeAccountInAccountStore;
 + (id)iMessageAccountInAccountStore;
 @end
 
 @implementation COSiMessageFaceTimeAuthController
 
-+ (id)DSIDForIDSAccount:(id)a3
++ (id)DSIDForIDSAccount:(id)account
 {
-  v3 = a3;
+  accountCopy = account;
   v4 = sub_10002C8C8();
-  v5 = [v4 DSIDForAccount:v3 service:AIDAServiceTypeMessages];
+  v5 = [v4 DSIDForAccount:accountCopy service:AIDAServiceTypeMessages];
 
   return v5;
 }

@@ -1,59 +1,59 @@
 @interface MTCallerSuppliedFields
-- (MTCallerSuppliedFields)initWithEventData:(id)a3;
-- (MTCallerSuppliedFields)initWithPageId:(id)a3 pageType:(id)a4 pageContext:(id)a5 eventData:(id)a6;
+- (MTCallerSuppliedFields)initWithEventData:(id)data;
+- (MTCallerSuppliedFields)initWithPageId:(id)id pageType:(id)type pageContext:(id)context eventData:(id)data;
 - (id)mergedFields;
-- (id)valueForCallerSuppliedField:(id)a3;
+- (id)valueForCallerSuppliedField:(id)field;
 @end
 
 @implementation MTCallerSuppliedFields
 
-- (MTCallerSuppliedFields)initWithEventData:(id)a3
+- (MTCallerSuppliedFields)initWithEventData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v8.receiver = self;
   v8.super_class = MTCallerSuppliedFields;
   v5 = [(MTCallerSuppliedFields *)&v8 init];
   if (v5)
   {
-    [v4 mt_verifyEventData];
-    v6 = [v4 mt_deepCopy];
-    [(MTCallerSuppliedFields *)v5 setEventData:v6];
+    [dataCopy mt_verifyEventData];
+    mt_deepCopy = [dataCopy mt_deepCopy];
+    [(MTCallerSuppliedFields *)v5 setEventData:mt_deepCopy];
   }
 
   return v5;
 }
 
-- (MTCallerSuppliedFields)initWithPageId:(id)a3 pageType:(id)a4 pageContext:(id)a5 eventData:(id)a6
+- (MTCallerSuppliedFields)initWithPageId:(id)id pageType:(id)type pageContext:(id)context eventData:(id)data
 {
   v21[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277CBEB38] dictionary];
-  v15 = v14;
-  if (v10)
+  idCopy = id;
+  typeCopy = type;
+  contextCopy = context;
+  dataCopy = data;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v15 = dictionary;
+  if (idCopy)
   {
-    [v14 setObject:v10 forKeyedSubscript:@"pageId"];
+    [dictionary setObject:idCopy forKeyedSubscript:@"pageId"];
   }
 
-  if (v11)
+  if (typeCopy)
   {
-    [v15 setObject:v11 forKeyedSubscript:@"pageType"];
+    [v15 setObject:typeCopy forKeyedSubscript:@"pageType"];
   }
 
-  if (v12)
+  if (contextCopy)
   {
-    [v15 setObject:v12 forKeyedSubscript:@"pageContext"];
+    [v15 setObject:contextCopy forKeyedSubscript:@"pageContext"];
   }
 
   if ([v15 count])
   {
     v21[0] = v15;
     v16 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-    if ([v13 count])
+    if ([dataCopy count])
     {
-      v17 = [v16 arrayByAddingObjectsFromArray:v13];
+      v17 = [v16 arrayByAddingObjectsFromArray:dataCopy];
 
       v16 = v17;
     }
@@ -61,7 +61,7 @@
 
   else
   {
-    v16 = v13;
+    v16 = dataCopy;
   }
 
   v18 = [(MTCallerSuppliedFields *)self initWithEventData:v16];
@@ -70,11 +70,11 @@
   return v18;
 }
 
-- (id)valueForCallerSuppliedField:(id)a3
+- (id)valueForCallerSuppliedField:(id)field
 {
-  v4 = a3;
-  v5 = [(MTCallerSuppliedFields *)self eventData];
-  v6 = [v5 count];
+  fieldCopy = field;
+  eventData = [(MTCallerSuppliedFields *)self eventData];
+  v6 = [eventData count];
 
   if (v6 - 1 < 0)
   {
@@ -86,8 +86,8 @@ LABEL_7:
   while (1)
   {
     --v6;
-    v7 = [(MTCallerSuppliedFields *)self eventData];
-    v8 = [v7 objectAtIndexedSubscript:v6];
+    eventData2 = [(MTCallerSuppliedFields *)self eventData];
+    v8 = [eventData2 objectAtIndexedSubscript:v6];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -103,7 +103,7 @@ LABEL_6:
     }
   }
 
-  v9 = [v8 objectForKeyedSubscript:v4];
+  v9 = [v8 objectForKeyedSubscript:fieldCopy];
   if (!v9 || ([MEMORY[0x277CBEB68] null], v10 = objc_claimAutoreleasedReturnValue(), v10, v9 == v10))
   {
 
@@ -117,22 +117,22 @@ LABEL_8:
 
 - (id)mergedFields
 {
-  v3 = [(MTCallerSuppliedFields *)self cachedMergedFields];
+  cachedMergedFields = [(MTCallerSuppliedFields *)self cachedMergedFields];
 
-  if (v3)
+  if (cachedMergedFields)
   {
-    v4 = [(MTCallerSuppliedFields *)self cachedMergedFields];
-    v5 = [MTPromise promiseWithResult:v4];
+    cachedMergedFields2 = [(MTCallerSuppliedFields *)self cachedMergedFields];
+    v5 = [MTPromise promiseWithResult:cachedMergedFields2];
   }
 
   else
   {
-    v6 = [(MTCallerSuppliedFields *)self eventData];
-    v7 = v6;
+    eventData = [(MTCallerSuppliedFields *)self eventData];
+    v7 = eventData;
     v8 = MEMORY[0x277CBEBF8];
-    if (v6)
+    if (eventData)
     {
-      v8 = v6;
+      v8 = eventData;
     }
 
     v9 = v8;

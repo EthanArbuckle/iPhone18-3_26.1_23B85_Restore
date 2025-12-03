@@ -27,9 +27,9 @@
 
 - (CGSize)showSize
 {
-  v2 = [(THWKeynoteShowLayout *)self kpfDocument];
+  kpfDocument = [(THWKeynoteShowLayout *)self kpfDocument];
 
-  [(KPFDocumentProtocol *)v2 showSize];
+  [(KPFDocumentProtocol *)kpfDocument showSize];
   result.height = v4;
   result.width = v3;
   return result;

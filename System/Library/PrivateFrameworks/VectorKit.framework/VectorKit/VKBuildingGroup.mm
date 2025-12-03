@@ -1,22 +1,22 @@
 @interface VKBuildingGroup
-- (BOOL)addPointyRoofForBuilding:(void *)a3 buildingModel:(unsigned __int8)a4 scaleThreshold:(float)a5 styleIndex:(float)a6;
-- (BOOL)canConstructPointyRoofForPolygon:(void *)a3 building:(void *)a4 buildingModel:(unsigned __int8)a5 scaleThreshold:(float)a6;
-- (VKBuildingGroup)initWithStyleQuery:(void *)a3 tileZoom:(float)a4 fixedAroundCentroid:(const void *)a5 contentScale:(float)a6;
+- (BOOL)addPointyRoofForBuilding:(void *)building buildingModel:(unsigned __int8)model scaleThreshold:(float)threshold styleIndex:(float)index;
+- (BOOL)canConstructPointyRoofForPolygon:(void *)polygon building:(void *)building buildingModel:(unsigned __int8)model scaleThreshold:(float)threshold;
+- (VKBuildingGroup)initWithStyleQuery:(void *)query tileZoom:(float)zoom fixedAroundCentroid:(const void *)centroid contentScale:(float)scale;
 - (__n128)addBuilding:index:ofTotal:accessor:triangulator:prepareExtrusion:forRoofStyle:scaleThreshold:;
-- (const)commitRangesToExtrusionFillRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long;
-- (const)commitRangesToExtrusionStrokeRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long;
-- (const)commitRangesToPointyRoofFillRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long;
-- (const)commitRangesToPointyRoofStrokeRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long;
-- (const)commitRangesToPointyRoofTopRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long;
+- (const)commitRangesToExtrusionFillRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long;
+- (const)commitRangesToExtrusionStrokeRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long;
+- (const)commitRangesToPointyRoofFillRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long;
+- (const)commitRangesToPointyRoofStrokeRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long;
+- (const)commitRangesToPointyRoofTopRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long;
 - (id).cxx_construct;
-- (void)addBuilding:(void *)a3 index:(unint64_t)a4 ofTotal:(unint64_t)a5 accessor:(ResourceAccessor *)a6 triangulator:(void *)a7 prepareExtrusion:(BOOL)a8 forRoofStyle:(unsigned __int8)a9 scaleThreshold:(float)a10;
+- (void)addBuilding:(void *)building index:(unint64_t)index ofTotal:(unint64_t)total accessor:(ResourceAccessor *)accessor triangulator:(void *)triangulator prepareExtrusion:(BOOL)extrusion forRoofStyle:(unsigned __int8)style scaleThreshold:(float)self0;
 - (void)addBuilding:index:ofTotal:accessor:triangulator:prepareExtrusion:forRoofStyle:scaleThreshold:;
-- (void)addExtrusionForBuilding:(void *)a3 index:(unint64_t)a4 ofTotal:(unint64_t)a5;
+- (void)addExtrusionForBuilding:(void *)building index:(unint64_t)index ofTotal:(unint64_t)total;
 - (void)didFinishAddingData;
-- (void)prepareForBuilding:(void *)a3 forRoofStyle:(unsigned __int8)a4 scaleThreshold:(float)a5;
-- (void)styleQueriesForPointyRoofs:(BOOL)a3 selected:(BOOL)a4;
-- (void)updateWithStyleManager:(const void *)a3;
-- (void)willAddDataWithAccessor:(ResourceAccessor *)a3;
+- (void)prepareForBuilding:(void *)building forRoofStyle:(unsigned __int8)style scaleThreshold:(float)threshold;
+- (void)styleQueriesForPointyRoofs:(BOOL)roofs selected:(BOOL)selected;
+- (void)updateWithStyleManager:(const void *)manager;
+- (void)willAddDataWithAccessor:(ResourceAccessor *)accessor;
 @end
 
 @implementation VKBuildingGroup
@@ -172,11 +172,11 @@
   return self;
 }
 
-- (void)updateWithStyleManager:(const void *)a3
+- (void)updateWithStyleManager:(const void *)manager
 {
   v17[4] = *MEMORY[0x1E69E9840];
-  v5 = [(VKPolygonalItemGroup *)self attributeSets];
-  v6 = (v5[4] - v5[3]) >> 4;
+  attributeSets = [(VKPolygonalItemGroup *)self attributeSets];
+  v6 = (attributeSets[4] - attributeSets[3]) >> 4;
   std::vector<std::shared_ptr<ggl::VertexData>,geo::allocator_adapter<std::shared_ptr<ggl::VertexData>,ggl::zone_mallocator>>::clear[abi:nn200100](&self->_styleQueries);
   std::vector<std::shared_ptr<ggl::VertexData>,geo::allocator_adapter<std::shared_ptr<ggl::VertexData>,ggl::zone_mallocator>>::clear[abi:nn200100](&self->_flatRoofStyleQueries);
   std::vector<std::shared_ptr<ggl::VertexData>,geo::allocator_adapter<std::shared_ptr<ggl::VertexData>,ggl::zone_mallocator>>::clear[abi:nn200100](&self->_selectedStyleQueries);
@@ -185,8 +185,8 @@
   std::vector<std::shared_ptr<md::GEOVectorTileResource>>::reserve(&self->_flatRoofStyleQueries.__begin_, v6);
   std::vector<std::shared_ptr<md::GEOVectorTileResource>>::reserve(&self->_selectedStyleQueries.__begin_, v6);
   std::vector<std::shared_ptr<md::GEOVectorTileResource>>::reserve(&self->_selectedFlatRoofStyleQueries.__begin_, v6);
-  v7 = v5[3];
-  if (v5[4] != v7)
+  v7 = attributeSets[3];
+  if (attributeSets[4] != v7)
   {
     v8 = 0;
     v9 = 0;
@@ -197,14 +197,14 @@
       v11 = 256;
       *geo::intern_linear_map<gss::StyleAttribute,unsigned short,unsigned short,geo::allocator_adapter<unsigned char,gss::zone_mallocator>,30ul>::operator[](v10, 0x10002u) = 1;
       md::createFeatureAttributeSet(v17, (v7 + v8));
-      gss::StylesheetManager<gss::PropertyID>::styleQueryForFeatureAttributes(&v15, *a3, v17);
+      gss::StylesheetManager<gss::PropertyID>::styleQueryForFeatureAttributes(&v15, *manager, v17);
       std::vector<std::shared_ptr<gdc::Resource>>::push_back[abi:nn200100](&self->_styleQueries.__begin_, &v15);
       if (v16)
       {
         std::__shared_weak_count::__release_shared[abi:nn200100](v16);
       }
 
-      gss::StylesheetManager<gss::PropertyID>::styleQueryForFeatureAttributes(&v15, *a3, v17, v10);
+      gss::StylesheetManager<gss::PropertyID>::styleQueryForFeatureAttributes(&v15, *manager, v17, v10);
       std::vector<std::shared_ptr<gdc::Resource>>::push_back[abi:nn200100](&self->_selectedStyleQueries.__begin_, &v15);
       if (v16)
       {
@@ -216,14 +216,14 @@
       std::vector<std::pair<gss::StyleAttribute,unsigned short>,geo::allocator_adapter<std::pair<gss::StyleAttribute,unsigned short>,gss::zone_mallocator>>::vector[abi:nn200100](&v13, &v12, 1uLL);
       gss::FeatureAttributeSet::setByReplacingAttributes(&v15, v17, v13, v14);
       std::vector<std::pair<gss::StyleAttribute,unsigned short>,geo::allocator_adapter<std::pair<gss::StyleAttribute,unsigned short>,gss::zone_mallocator>>::__destroy_vector::operator()[abi:nn200100](&v13);
-      gss::StylesheetManager<gss::PropertyID>::styleQueryForFeatureAttributes(&v13, *a3, &v15);
+      gss::StylesheetManager<gss::PropertyID>::styleQueryForFeatureAttributes(&v13, *manager, &v15);
       std::vector<std::shared_ptr<gdc::Resource>>::push_back[abi:nn200100](&self->_flatRoofStyleQueries.__begin_, &v13);
       if (v14)
       {
         std::__shared_weak_count::__release_shared[abi:nn200100](v14);
       }
 
-      gss::StylesheetManager<gss::PropertyID>::styleQueryForFeatureAttributes(&v13, *a3, &v15, v10);
+      gss::StylesheetManager<gss::PropertyID>::styleQueryForFeatureAttributes(&v13, *manager, &v15, v10);
       std::vector<std::shared_ptr<gdc::Resource>>::push_back[abi:nn200100](&self->_selectedFlatRoofStyleQueries.__begin_, &v13);
       if (v14)
       {
@@ -234,24 +234,24 @@
       std::vector<std::pair<gss::StyleAttribute,unsigned short>,geo::allocator_adapter<std::pair<gss::StyleAttribute,unsigned short>,gss::zone_mallocator>>::__destroy_vector::operator()[abi:nn200100](v17);
       geo::intern_linear_map<gss::StyleAttribute,unsigned short,unsigned short,geo::allocator_adapter<unsigned char,gss::zone_mallocator>,30ul>::deallocateStorage(v10);
       ++v9;
-      v7 = v5[3];
+      v7 = attributeSets[3];
       v8 += 16;
     }
 
-    while (v9 < (v5[4] - v7) >> 4);
+    while (v9 < (attributeSets[4] - v7) >> 4);
   }
 }
 
-- (BOOL)addPointyRoofForBuilding:(void *)a3 buildingModel:(unsigned __int8)a4 scaleThreshold:(float)a5 styleIndex:(float)a6
+- (BOOL)addPointyRoofForBuilding:(void *)building buildingModel:(unsigned __int8)model scaleThreshold:(float)threshold styleIndex:(float)index
 {
-  v8 = a4;
+  modelCopy = model;
   v102 = *MEMORY[0x1E69E9840];
-  v77 = *(a3 + 24);
-  v71 = *(a3 + 5);
+  v77 = *(building + 24);
+  v71 = *(building + 5);
   v10 = +[VKPlatform sharedPlatform];
   if ([v10 supports3DBuildingStrokes])
   {
-    v11 = *(a3 + 3);
+    v11 = *(building + 3);
     v12 = *(v11 + 33);
     if (*(v11 + 33))
     {
@@ -297,17 +297,17 @@ LABEL_6:
 
   v18 = 0;
   v19 = 0;
-  v70 = (&g_gglBuildingBoundingBoxes + 24 * v8);
-  v66 = (&g_gglEdgeRanges + 16 * v8);
+  v70 = (&g_gglBuildingBoundingBoxes + 24 * modelCopy);
+  v66 = (&g_gglEdgeRanges + 16 * modelCopy);
   v20 = vdupq_n_s64(0x100000000000000uLL);
-  v20.i64[0] = a6 << 48;
+  v20.i64[0] = index << 48;
   v76 = v20;
-  v68 = a6;
+  indexCopy = index;
   p_boundingBox = &self->super._boundingBox;
   do
   {
     v84 = 0;
-    v21 = geo::codec::multiSectionFeaturePoints(a3, v19, &v84);
+    v21 = geo::codec::multiSectionFeaturePoints(building, v19, &v84);
     if (v21)
     {
       if (v84 >= 2)
@@ -318,14 +318,14 @@ LABEL_6:
         if (*(&v83 + 1) != 0.0 && *&v83 != 0.0)
         {
           v22 = (*&v83 / *(&v83 + 1)) > 2.0 || (*&v83 / *(&v83 + 1)) < 0.5;
-          v23 = !v22 && *&v83 <= a5;
-          if (v23 && *(&v83 + 1) <= a5)
+          v23 = !v22 && *&v83 <= threshold;
+          if (v23 && *(&v83 + 1) <= threshold)
           {
             v79 = v83;
             v80 = fminf(*&v83, *(&v83 + 1));
             v25 = v82;
-            _transformAndAddMesh(&g_gglBaseVertices + 28 * g_gglBaseRanges[4 * v8], 40, &g_gglBaseIndices[g_gglBaseRanges[4 * v8 + 2]], 60, v70, self->_pointyRoofFillMeshVendor.__ptr_, &self->_pointyRoofFillCullingGroups, v68, v82, v71, &v79, &v81, p_boundingBox);
-            _transformAndAddMesh(&g_gglRoofVertices + 28 * g_gglRoofRanges[4 * v8], g_gglRoofRanges[4 * v8 + 1], &g_gglRoofIndices[g_gglRoofRanges[4 * v8 + 2]], g_gglRoofRanges[4 * v8 + 3], v70, self->_pointyRoofFillMeshVendor.__ptr_, &self->_pointyRoofFillCullingGroups, v68, v25, v71, &v79, &v81, p_boundingBox);
+            _transformAndAddMesh(&g_gglBaseVertices + 28 * g_gglBaseRanges[4 * modelCopy], 40, &g_gglBaseIndices[g_gglBaseRanges[4 * modelCopy + 2]], 60, v70, self->_pointyRoofFillMeshVendor.__ptr_, &self->_pointyRoofFillCullingGroups, indexCopy, v82, v71, &v79, &v81, p_boundingBox);
+            _transformAndAddMesh(&g_gglRoofVertices + 28 * g_gglRoofRanges[4 * modelCopy], g_gglRoofRanges[4 * modelCopy + 1], &g_gglRoofIndices[g_gglRoofRanges[4 * modelCopy + 2]], g_gglRoofRanges[4 * modelCopy + 3], v70, self->_pointyRoofFillMeshVendor.__ptr_, &self->_pointyRoofFillCullingGroups, indexCopy, v25, v71, &v79, &v81, p_boundingBox);
             if (v67)
             {
               v26 = v66[1];
@@ -477,9 +477,9 @@ LABEL_6:
   return v18;
 }
 
-- (BOOL)canConstructPointyRoofForPolygon:(void *)a3 building:(void *)a4 buildingModel:(unsigned __int8)a5 scaleThreshold:(float)a6
+- (BOOL)canConstructPointyRoofForPolygon:(void *)polygon building:(void *)building buildingModel:(unsigned __int8)model scaleThreshold:(float)threshold
 {
-  v6 = *(a3 + 24);
+  v6 = *(polygon + 24);
   if (v6)
   {
     v9 = 0;
@@ -487,7 +487,7 @@ LABEL_6:
     do
     {
       v19 = 0;
-      v11 = geo::codec::multiSectionFeaturePoints(a3, v9, &v19);
+      v11 = geo::codec::multiSectionFeaturePoints(polygon, v9, &v19);
       if (v11)
       {
         if (v19 >= 2)
@@ -497,8 +497,8 @@ LABEL_6:
           if (*(&v18 + 1) != 0.0 && *&v18 != 0.0)
           {
             v12 = (*&v18 / *(&v18 + 1)) > 2.0 || (*&v18 / *(&v18 + 1)) < 0.5;
-            v13 = !v12 && *&v18 <= a6;
-            if (v13 && *(&v18 + 1) <= a6)
+            v13 = !v12 && *&v18 <= threshold;
+            if (v13 && *(&v18 + 1) <= threshold)
             {
               break;
             }
@@ -520,20 +520,20 @@ LABEL_6:
   return v10;
 }
 
-- (void)addExtrusionForBuilding:(void *)a3 index:(unint64_t)a4 ofTotal:(unint64_t)a5
+- (void)addExtrusionForBuilding:(void *)building index:(unint64_t)index ofTotal:(unint64_t)total
 {
-  v5 = a3;
+  buildingCopy = building;
   memset(&v180, 0, sizeof(v180));
-  v7 = *(a3 + 24);
+  v7 = *(building + 24);
   std::vector<unsigned int>::reserve(&v180, v7);
-  shared_weak_owners = v5[1].__shared_weak_owners_;
-  v8 = [(VKPolygonalItemGroup *)self indexForGeoFeatureAttributes:&v5[1]];
+  shared_weak_owners = buildingCopy[1].__shared_weak_owners_;
+  v8 = [(VKPolygonalItemGroup *)self indexForGeoFeatureAttributes:&buildingCopy[1]];
   v177 = &v177;
   v178 = &v177;
   v179 = 0;
-  v155 = v5;
+  v155 = buildingCopy;
   v156 = v7;
-  v148 = self;
+  selfCopy = self;
   if (v7)
   {
     v9 = 0;
@@ -545,7 +545,7 @@ LABEL_6:
     {
       v152 = v9;
       v181[0] = 0;
-      v13 = geo::codec::multiSectionFeaturePoints(v5, v10, v181);
+      v13 = geo::codec::multiSectionFeaturePoints(buildingCopy, v10, v181);
       v14 = v181[0];
       v15 = ggl::CullingGrid::intersectedCellsForRibbon(v181[0], v13, 1);
       v157 = v15;
@@ -599,8 +599,8 @@ LABEL_6:
         *&__src[16] = value;
       }
 
-      geo::codec::buildingFootprintExtrusionHeight(v5, v10);
-      geo::codec::buildingFootprintBaseHeight(v5, v10);
+      geo::codec::buildingFootprintExtrusionHeight(buildingCopy, v10);
+      geo::codec::buildingFootprintBaseHeight(buildingCopy, v10);
       if (v14)
       {
         operator new();
@@ -608,7 +608,7 @@ LABEL_6:
 
       v9 = v157 | v152;
       ++v10;
-      v5 = v155;
+      buildingCopy = v155;
       end = *&__src[8];
       value = *&__src[16];
     }
@@ -660,7 +660,7 @@ LABEL_6:
 
     while (v156 != v28);
     v29 = v179;
-    self = v148;
+    self = selfCopy;
   }
 
   else
@@ -713,7 +713,7 @@ LABEL_55:
 
 LABEL_58:
     v171 = 0;
-    v49 = ggl::MeshVendor<ggl::PrefilteredLine::PrefilteredLineMesh>::meshWithVertexCount(v148->_extrusionStrokeMeshVendor.__ptr_, 4 * v29, &v171);
+    v49 = ggl::MeshVendor<ggl::PrefilteredLine::PrefilteredLineMesh>::meshWithVertexCount(selfCopy->_extrusionStrokeMeshVendor.__ptr_, 4 * v29, &v171);
     v50 = **(v49 + 64);
     v51 = (*(v50 + 6) - *(v50 + 5)) / *(v50 + 1);
     ggl::BufferData::resize(v50, v51 + 4 * v29);
@@ -726,10 +726,10 @@ LABEL_58:
     *&v163 = v53;
     *(&v163 + 1) = v54;
     v164 = shared_weak_owners;
-    _addRangeToList(&v148->_extrusionStrokeCullingGroups, v153, v171, &v163);
-    e = v148->super._boundingBox._minimum._e;
-    v161 = *v148->super._boundingBox._minimum._e;
-    v162 = v148->super._boundingBox._minimum._e[2];
+    _addRangeToList(&selfCopy->_extrusionStrokeCullingGroups, v153, v171, &v163);
+    e = selfCopy->super._boundingBox._minimum._e;
+    v161 = *selfCopy->super._boundingBox._minimum._e;
+    v162 = selfCopy->super._boundingBox._minimum._e[2];
     for (i = 2636; i != 2648; i += 4)
     {
       v57 = e[3];
@@ -868,14 +868,14 @@ LABEL_70:
     while (v27);
   }
 
-  [(VKPolygonalItemGroup *)v148 size];
+  [(VKPolygonalItemGroup *)selfCopy size];
   if (v41)
   {
     v91 = 0;
     v92 = 0;
     v158 = 0;
     v154 = ((v31 - v150) >> 3) - 1;
-    p_boundingBox = &v148->super._boundingBox;
+    p_boundingBox = &selfCopy->super._boundingBox;
     v94 = *(v40 + 473);
     v95 = (1.0 / v88) * v94;
     v96 = (1.0 / v89) * v94;
@@ -931,7 +931,7 @@ LABEL_70:
       *&v168 = v158 + v151;
       *(&v168 + 1) = v158 + v151 + 6 * v163;
       v169 = shared_weak_owners;
-      _addRangeToList(&v148->_extrusionFillCullingGroups, v112, v154, &v168);
+      _addRangeToList(&selfCopy->_extrusionFillCullingGroups, v112, v154, &v168);
       if (v110)
       {
         v113 = 0;
@@ -1088,24 +1088,24 @@ LABEL_70:
   }
 }
 
-- (void)addBuilding:(void *)a3 index:(unint64_t)a4 ofTotal:(unint64_t)a5 accessor:(ResourceAccessor *)a6 triangulator:(void *)a7 prepareExtrusion:(BOOL)a8 forRoofStyle:(unsigned __int8)a9 scaleThreshold:(float)a10
+- (void)addBuilding:(void *)building index:(unint64_t)index ofTotal:(unint64_t)total accessor:(ResourceAccessor *)accessor triangulator:(void *)triangulator prepareExtrusion:(BOOL)extrusion forRoofStyle:(unsigned __int8)style scaleThreshold:(float)self0
 {
   v39 = *MEMORY[0x1E69E9840];
-  v14 = *(a3 + 24);
-  v36 = *(a3 + 5);
-  v37 = self;
-  v15 = [(VKPolygonalItemGroup *)self indexForGeoFeatureAttributes:a3 + 24];
+  v14 = *(building + 24);
+  v36 = *(building + 5);
+  selfCopy = self;
+  v15 = [(VKPolygonalItemGroup *)self indexForGeoFeatureAttributes:building + 24];
   v35 = v15;
-  if (a9 == 1)
+  if (style == 1)
   {
     v16 = v15;
-    PointyRoofForBuilding = _shouldMakePointyRoofForBuilding(a3);
+    PointyRoofForBuilding = _shouldMakePointyRoofForBuilding(building);
     v34 = PointyRoofForBuilding;
     if (PointyRoofForBuilding)
     {
       *&v19 = v16;
-      *&v18 = a10;
-      v34 = [(VKBuildingGroup *)self addPointyRoofForBuilding:a3 buildingModel:*(a3 + 10) & 1 scaleThreshold:v18 styleIndex:v19];
+      *&v18 = threshold;
+      v34 = [(VKBuildingGroup *)self addPointyRoofForBuilding:building buildingModel:*(building + 10) & 1 scaleThreshold:v18 styleIndex:v19];
     }
   }
 
@@ -1123,17 +1123,17 @@ LABEL_70:
     for (i = 0; i != v14; ++i)
     {
       v30 = 0;
-      v29 = geo::codec::multiSectionFeaturePoints(a3, i, &v30);
-      if (geo::codec::multiSectionFeaturePrecision(a3) <= 0x10)
+      v29 = geo::codec::multiSectionFeaturePoints(building, i, &v30);
+      if (geo::codec::multiSectionFeaturePrecision(building) <= 0x10)
       {
-        geo::codec::buildingFootprintExtrusionHeight(a3, i);
+        geo::codec::buildingFootprintExtrusionHeight(building, i);
         v24 = v30;
         if (v30 >= 3)
         {
           v28 = ggl::CullingGrid::intersectedCellsForRibbon(v30, v29, 1);
-          v37->super._cullingMask |= v28;
-          md::Triangulator<float>::triangulate(a7, v29, v24);
-          if (*(a7 + 12) != *(a7 + 11))
+          selfCopy->super._cullingMask |= v28;
+          md::Triangulator<float>::triangulate(triangulator, v29, v24);
+          if (*(triangulator + 12) != *(triangulator + 11))
           {
             v38 = 0;
             operator new();
@@ -1143,26 +1143,26 @@ LABEL_70:
     }
   }
 
-  if (a8 && !v34)
+  if (extrusion && !v34)
   {
-    [(VKBuildingGroup *)v37 addExtrusionForBuilding:a3 index:a4 ofTotal:a5];
+    [(VKBuildingGroup *)selfCopy addExtrusionForBuilding:building index:index ofTotal:total];
   }
 }
 
 - (void)addBuilding:index:ofTotal:accessor:triangulator:prepareExtrusion:forRoofStyle:scaleThreshold:
 {
-  v5 = **(a1 + 8);
+  v5 = **(self + 8);
   if (v5)
   {
     v6 = 0;
-    v7 = **(a1 + 16);
-    v8 = **(a1 + 24);
-    v9 = *(a1 + 32);
-    v10 = *(a1 + 40);
+    v7 = **(self + 16);
+    v8 = **(self + 24);
+    v9 = *(self + 32);
+    v10 = *(self + 40);
     v11 = *v10;
     v12 = v10[1];
     v13 = v10[2];
-    v14 = *(a1 + 48);
+    v14 = *(self + 48);
     v15 = *a2;
     v16 = *(a4 + 40);
     v17 = 1.0 / v11;
@@ -1194,8 +1194,8 @@ LABEL_70:
     while (v6 != v5);
   }
 
-  v25 = *(*(a1 + 56) + 88);
-  v26 = *(*(a1 + 56) + 96) - v25;
+  v25 = *(*(self + 56) + 88);
+  v26 = *(*(self + 56) + 96) - v25;
   if (v26)
   {
     v27 = v26 >> 1;
@@ -1216,8 +1216,8 @@ LABEL_70:
     while (v27);
   }
 
-  v31 = **(a1 + 72);
-  if (**(a1 + 64))
+  v31 = **(self + 72);
+  if (**(self + 64))
   {
     v32 = &OBJC_IVAR___VKBuildingGroup__fillCullingGroupsForPointyRoofs;
   }
@@ -1228,23 +1228,23 @@ LABEL_70:
   }
 
   v33 = *v32;
-  v34 = **(a1 + 80);
-  v35 = *(*(a1 + 88) + 144);
+  v34 = **(self + 80);
+  v35 = *(*(self + 88) + 144);
   v36 = *a3;
-  v37 = **(a1 + 96);
+  v37 = **(self + 96);
   _addRangeToList(v31 + v33, v34, v35, &v36);
 }
 
 - (__n128)addBuilding:index:ofTotal:accessor:triangulator:prepareExtrusion:forRoofStyle:scaleThreshold:
 {
   *a2 = &unk_1F2A31020;
-  v2 = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  v2 = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = v2;
-  result = *(a1 + 40);
-  v4 = *(a1 + 56);
-  v5 = *(a1 + 72);
-  *(a2 + 88) = *(a1 + 88);
+  result = *(self + 40);
+  v4 = *(self + 56);
+  v5 = *(self + 72);
+  *(a2 + 88) = *(self + 88);
   *(a2 + 72) = v5;
   *(a2 + 56) = v4;
   *(a2 + 40) = result;
@@ -1337,18 +1337,18 @@ LABEL_70:
   }
 }
 
-- (void)willAddDataWithAccessor:(ResourceAccessor *)a3
+- (void)willAddDataWithAccessor:(ResourceAccessor *)accessor
 {
   v15 = *MEMORY[0x1E69E9840];
   v11.receiver = self;
   v11.super_class = VKBuildingGroup;
   [(VKPolygonalItemGroup *)&v11 willAddDataWithAccessor:?];
-  v10 = self;
+  selfCopy = self;
   p_strokeMeshInfo = &self->_strokeMeshInfo;
   ptr = self->_strokeMeshInfo.var0.__val_._internalStorage.__ptr_;
   if (ptr)
   {
-    md::MeshSetStorage::prepareStorage(ptr, a3);
+    md::MeshSetStorage::prepareStorage(ptr, accessor);
   }
 
   begin = p_strokeMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_;
@@ -1378,31 +1378,31 @@ LABEL_70:
   v9 = p_strokeMeshInfo->var0.__val_._meshes.__begin_;
   if (v9 != p_strokeMeshInfo->var0.__val_._meshes.__end_)
   {
-    ggl::DataAccess<ggl::TrafficBase::DefaultVbo>::DataAccess(v14, **(*v9 + 64), 0, *p_strokeMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_, a3);
+    ggl::DataAccess<ggl::TrafficBase::DefaultVbo>::DataAccess(v14, **(*v9 + 64), 0, *p_strokeMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_, accessor);
     ggl::BufferMemory::operator=(&p_strokeMeshInfo->var0.__val_._vertexDataWrite, v14);
     ggl::BufferMemory::~BufferMemory(v14);
-    ggl::DataAccess<ggl::DaVinci::TexturedCompressedVbo>::DataAccess(v14, *(*p_strokeMeshInfo->var0.__val_._meshes.__begin_ + 96), 0, *(p_strokeMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_ + 1), 1, 1, a3);
+    ggl::DataAccess<ggl::DaVinci::TexturedCompressedVbo>::DataAccess(v14, *(*p_strokeMeshInfo->var0.__val_._meshes.__begin_ + 96), 0, *(p_strokeMeshInfo->var0.__val_._vertexAndIndexCounts.__begin_ + 1), 1, 1, accessor);
     ggl::BufferMemory::operator=(&p_strokeMeshInfo->var0.__val_._indexDataWrite, v14);
     ggl::BufferMemory::~BufferMemory(v14);
   }
 
-  md::MeshSet<ggl::PolygonBase::CompressedMeshMesh,ggl::PolygonBase::CompressedVbo>::createMeshes(&v10->_fillMeshInfoForPointyRoofs, "Flat Building Roof Mesh", "Flat Building Roof Vertex Data", "Flat Building Roof Index Data", a3);
+  md::MeshSet<ggl::PolygonBase::CompressedMeshMesh,ggl::PolygonBase::CompressedVbo>::createMeshes(&selfCopy->_fillMeshInfoForPointyRoofs, "Flat Building Roof Mesh", "Flat Building Roof Vertex Data", "Flat Building Roof Index Data", accessor);
 }
 
-- (void)prepareForBuilding:(void *)a3 forRoofStyle:(unsigned __int8)a4 scaleThreshold:(float)a5
+- (void)prepareForBuilding:(void *)building forRoofStyle:(unsigned __int8)style scaleThreshold:(float)threshold
 {
-  v6 = a4;
-  v7 = a3;
+  styleCopy = style;
+  buildingCopy = building;
   v147 = *MEMORY[0x1E69E9840];
-  v8 = *(a3 + 24);
-  [(VKPolygonalItemGroup *)self indexForGeoFeatureAttributes:a3 + 24];
+  v8 = *(building + 24);
+  [(VKPolygonalItemGroup *)self indexForGeoFeatureAttributes:building + 24];
   v104 = 0;
-  if (v7 && v6 == 1)
+  if (buildingCopy && styleCopy == 1)
   {
-    if (_shouldMakePointyRoofForBuilding(v7))
+    if (_shouldMakePointyRoofForBuilding(buildingCopy))
     {
-      *&v9 = a5;
-      v104 = [(VKBuildingGroup *)self canConstructPointyRoofForPolygon:v7 building:v7 buildingModel:v7[1].__shared_weak_owners_ & 1 scaleThreshold:v9];
+      *&v9 = threshold;
+      v104 = [(VKBuildingGroup *)self canConstructPointyRoofForPolygon:buildingCopy building:buildingCopy buildingModel:buildingCopy[1].__shared_weak_owners_ & 1 scaleThreshold:v9];
     }
 
     else
@@ -1420,19 +1420,19 @@ LABEL_70:
   if (v8)
   {
     v10 = 0;
-    v107 = v7;
+    v107 = buildingCopy;
     do
     {
       v134 = 0;
-      geo::codec::multiSectionFeaturePoints(v7, v10, &v134);
-      geo::codec::buildingFootprintExtrusionHeight(v7, v10);
+      geo::codec::multiSectionFeaturePoints(buildingCopy, v10, &v134);
+      geo::codec::buildingFootprintExtrusionHeight(buildingCopy, v10);
       if (v134)
       {
         operator new();
       }
 
       ++v10;
-      v7 = v107;
+      buildingCopy = v107;
     }
 
     while (v10 != v8);
@@ -1479,13 +1479,13 @@ LABEL_70:
     do
     {
       v136 = 0;
-      v22 = geo::codec::multiSectionFeaturePoints(v7, v18, &v136);
+      v22 = geo::codec::multiSectionFeaturePoints(buildingCopy, v18, &v136);
       v23 = v136;
       if (v136 >= 3)
       {
         v24 = v22;
-        v25 = geo::codec::buildingFootprintExtrusionHeight(v7, v18);
-        v26 = geo::codec::buildingFootprintBaseHeight(v7, v18);
+        v25 = geo::codec::buildingFootprintExtrusionHeight(buildingCopy, v18);
+        v26 = geo::codec::buildingFootprintBaseHeight(buildingCopy, v18);
         v27 = 0;
         do
         {
@@ -1517,7 +1517,7 @@ LABEL_70:
           v32 = (v32 + 4);
         }
 
-        md::PolygonSection::PolygonSection(&v134, v7, v18);
+        md::PolygonSection::PolygonSection(&v134, buildingCopy, v18);
         md::MeshSet<ggl::PolygonBase::CompressedMeshMesh,ggl::PolygonBase::CompressedVbo>::prepareSpaceForPoints(self + *v103, v23, 3 * v23 - 6);
         if (v104)
         {
@@ -1532,8 +1532,8 @@ LABEL_70:
             if (*&v133 != 0.0)
             {
               v38 = (*&v133 / *(&v133 + 1)) > v20 || (*&v133 / *(&v133 + 1)) < v21;
-              v39 = !v38 && *&v133 <= a5;
-              if (v39 && *(&v133 + 1) <= a5)
+              v39 = !v38 && *&v133 <= threshold;
+              if (v39 && *(&v133 + 1) <= threshold)
               {
                 v143 = 0;
                 LODWORD(v144) = 1065353216;
@@ -1595,7 +1595,7 @@ LABEL_70:
                 *&v110 = v36;
                 DWORD1(v111) = fminf(v37, v36);
                 gm::operator*<float,4,4,4>(buf, &v143, &v108);
-                v51 = (&g_gglBuildingBoundingBoxes + 24 * (v7[1].__shared_weak_owners_ & 1));
+                v51 = (&g_gglBuildingBoundingBoxes + 24 * (buildingCopy[1].__shared_weak_owners_ & 1));
                 v122[0] = xmmword_1B33AFF10;
                 *&v122[1] = 0x80000000800000;
                 v143 = &unk_1F2A572F0;
@@ -1618,10 +1618,10 @@ LABEL_70:
           }
         }
 
-        *buf = v7;
+        *buf = buildingCopy;
         *&buf[8] = v18;
         v143 = buf;
-        v54 = std::__hash_table<std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::__unordered_map_hasher<std::pair<void const*,unsigned long>,std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::hash<std::pair<void const*,unsigned long>>,std::equal_to<std::pair<void const*,unsigned long>>,true>,std::__unordered_map_equal<std::pair<void const*,unsigned long>,std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::equal_to<std::pair<void const*,unsigned long>>,std::hash<std::pair<void const*,unsigned long>>,true>,std::allocator<std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>>>::__emplace_unique_key_args<std::pair<void const*,unsigned long>,std::piecewise_construct_t const&,std::tuple<std::pair<void const*,unsigned long>&&>,std::tuple<>>(&self->super._polygonEdges.__table_.__bucket_list_.__ptr_, v7, v18);
+        v54 = std::__hash_table<std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::__unordered_map_hasher<std::pair<void const*,unsigned long>,std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::hash<std::pair<void const*,unsigned long>>,std::equal_to<std::pair<void const*,unsigned long>>,true>,std::__unordered_map_equal<std::pair<void const*,unsigned long>,std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>,std::equal_to<std::pair<void const*,unsigned long>>,std::hash<std::pair<void const*,unsigned long>>,true>,std::allocator<std::__hash_value_type<std::pair<void const*,unsigned long>,std::vector<md::Edge>>>>::__emplace_unique_key_args<std::pair<void const*,unsigned long>,std::piecewise_construct_t const&,std::tuple<std::pair<void const*,unsigned long>&&>,std::tuple<>>(&self->super._polygonEdges.__table_.__bucket_list_.__ptr_, buildingCopy, v18);
         std::vector<md::Edge>::reserve(v54 + 4, v23);
         v55 = 0;
         do
@@ -1875,7 +1875,7 @@ LABEL_112:
         }
 
         md::PolygonSection::~PolygonSection(&v134);
-        v7 = v107;
+        buildingCopy = v107;
       }
 
       ++v18;
@@ -1888,55 +1888,55 @@ LABEL_112:
   std::__list_imp<std::pair<unsigned long long,unsigned char>>::clear(&v140);
 }
 
-- (const)commitRangesToPointyRoofStrokeRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long
+- (const)commitRangesToPointyRoofStrokeRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long
 {
   v13 = *MEMORY[0x1E69E9840];
   std::__function::__value_func<BOOL ()(unsigned long long)>::__value_func[abi:nn200100](v12, a6);
-  _setupRenderItemBatcherForCullingMask(a3, a4, &self->_pointyRoofStrokeCullingGroups, a5, v12);
+  _setupRenderItemBatcherForCullingMask(batcher, index, &self->_pointyRoofStrokeCullingGroups, mask, v12);
   std::__function::__value_func<BOOL ()(unsigned long long)>::~__value_func[abi:nn200100](v12);
-  return ggl::Batcher::commit(a3, 0, v10);
+  return ggl::Batcher::commit(batcher, 0, v10);
 }
 
-- (const)commitRangesToPointyRoofFillRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long
+- (const)commitRangesToPointyRoofFillRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long
 {
   v13 = *MEMORY[0x1E69E9840];
   std::__function::__value_func<BOOL ()(unsigned long long)>::__value_func[abi:nn200100](v12, a6);
-  _setupRenderItemBatcherForCullingMask(a3, a4, &self->_pointyRoofFillCullingGroups, a5, v12);
+  _setupRenderItemBatcherForCullingMask(batcher, index, &self->_pointyRoofFillCullingGroups, mask, v12);
   std::__function::__value_func<BOOL ()(unsigned long long)>::~__value_func[abi:nn200100](v12);
-  return ggl::Batcher::commit(a3, 0, v10);
+  return ggl::Batcher::commit(batcher, 0, v10);
 }
 
-- (const)commitRangesToPointyRoofTopRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long
+- (const)commitRangesToPointyRoofTopRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long
 {
   v13 = *MEMORY[0x1E69E9840];
   std::__function::__value_func<BOOL ()(unsigned long long)>::__value_func[abi:nn200100](v12, a6);
-  _setupRenderItemBatcherForCullingMask(a3, a4, &self->_fillCullingGroupsForPointyRoofs, a5, v12);
+  _setupRenderItemBatcherForCullingMask(batcher, index, &self->_fillCullingGroupsForPointyRoofs, mask, v12);
   std::__function::__value_func<BOOL ()(unsigned long long)>::~__value_func[abi:nn200100](v12);
-  return ggl::Batcher::commit(a3, 0, v10);
+  return ggl::Batcher::commit(batcher, 0, v10);
 }
 
-- (const)commitRangesToExtrusionStrokeRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long
+- (const)commitRangesToExtrusionStrokeRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long
 {
   v13 = *MEMORY[0x1E69E9840];
   std::__function::__value_func<BOOL ()(unsigned long long)>::__value_func[abi:nn200100](v12, a6);
-  _setupRenderItemBatcherForCullingMask(a3, a4, &self->_extrusionStrokeCullingGroups, a5, v12);
+  _setupRenderItemBatcherForCullingMask(batcher, index, &self->_extrusionStrokeCullingGroups, mask, v12);
   std::__function::__value_func<BOOL ()(unsigned long long)>::~__value_func[abi:nn200100](v12);
-  return ggl::Batcher::commit(a3, 0, v10);
+  return ggl::Batcher::commit(batcher, 0, v10);
 }
 
-- (const)commitRangesToExtrusionFillRenderItemBatcher:(void *)a3 forMeshAtIndex:(unint64_t)a4 cullingMask:(unsigned int)a5 featureIdPredicate:(function<BOOL (unsigned long)long
+- (const)commitRangesToExtrusionFillRenderItemBatcher:(void *)batcher forMeshAtIndex:(unint64_t)index cullingMask:(unsigned int)mask featureIdPredicate:(function<BOOL (unsigned long)long
 {
   v13 = *MEMORY[0x1E69E9840];
   std::__function::__value_func<BOOL ()(unsigned long long)>::__value_func[abi:nn200100](v12, a6);
-  _setupRenderItemBatcherForCullingMask(a3, a4, &self->_extrusionFillCullingGroups, a5, v12);
+  _setupRenderItemBatcherForCullingMask(batcher, index, &self->_extrusionFillCullingGroups, mask, v12);
   std::__function::__value_func<BOOL ()(unsigned long long)>::~__value_func[abi:nn200100](v12);
-  return ggl::Batcher::commit(a3, 0, v10);
+  return ggl::Batcher::commit(batcher, 0, v10);
 }
 
-- (void)styleQueriesForPointyRoofs:(BOOL)a3 selected:(BOOL)a4
+- (void)styleQueriesForPointyRoofs:(BOOL)roofs selected:(BOOL)selected
 {
   v4 = &OBJC_IVAR___VKBuildingGroup__selectedFlatRoofStyleQueries;
-  if (a3)
+  if (roofs)
   {
     v4 = &OBJC_IVAR___VKBuildingGroup__selectedStyleQueries;
     v5 = &OBJC_IVAR___VKBuildingGroup__styleQueries;
@@ -1947,7 +1947,7 @@ LABEL_112:
     v5 = &OBJC_IVAR___VKBuildingGroup__flatRoofStyleQueries;
   }
 
-  if (!a4)
+  if (!selected)
   {
     v4 = v5;
   }
@@ -1955,12 +1955,12 @@ LABEL_112:
   return self + *v4;
 }
 
-- (VKBuildingGroup)initWithStyleQuery:(void *)a3 tileZoom:(float)a4 fixedAroundCentroid:(const void *)a5 contentScale:(float)a6
+- (VKBuildingGroup)initWithStyleQuery:(void *)query tileZoom:(float)zoom fixedAroundCentroid:(const void *)centroid contentScale:(float)scale
 {
   v8 = *MEMORY[0x1E69E9840];
   v7.receiver = self;
   v7.super_class = VKBuildingGroup;
-  if ([VKPolygonalItemGroup initWithStyleQuery:sel_initWithStyleQuery_tileZoom_fixedAroundCentroid_contentScale_ tileZoom:a3 fixedAroundCentroid:a5 contentScale:?])
+  if ([VKPolygonalItemGroup initWithStyleQuery:sel_initWithStyleQuery_tileZoom_fixedAroundCentroid_contentScale_ tileZoom:query fixedAroundCentroid:centroid contentScale:?])
   {
     operator new();
   }

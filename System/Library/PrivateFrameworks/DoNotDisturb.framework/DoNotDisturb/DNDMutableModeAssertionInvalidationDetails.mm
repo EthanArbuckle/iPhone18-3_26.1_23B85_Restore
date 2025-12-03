@@ -1,20 +1,20 @@
 @interface DNDMutableModeAssertionInvalidationDetails
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)setIdentifier:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation DNDMutableModeAssertionInvalidationDetails
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   identifier = self->super._identifier;
   self->super._identifier = v4;
 
   MEMORY[0x2821F96F8](v4, identifier);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [DNDModeAssertionInvalidationDetails alloc];
 

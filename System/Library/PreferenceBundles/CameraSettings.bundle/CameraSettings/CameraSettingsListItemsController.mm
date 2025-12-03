@@ -8,8 +8,8 @@
 {
   v5.receiver = self;
   v5.super_class = CameraSettingsListItemsController;
-  v2 = [(CameraSettingsListItemsController *)&v5 itemsFromParent];
-  v3 = [NSMutableArray arrayWithArray:v2];
+  itemsFromParent = [(CameraSettingsListItemsController *)&v5 itemsFromParent];
+  v3 = [NSMutableArray arrayWithArray:itemsFromParent];
 
   [v3 enumerateObjectsUsingBlock:&stru_2CBF0];
 

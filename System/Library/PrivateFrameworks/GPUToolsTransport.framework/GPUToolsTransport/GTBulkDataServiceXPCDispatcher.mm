@@ -1,47 +1,47 @@
 @interface GTBulkDataServiceXPCDispatcher
-- (GTBulkDataServiceXPCDispatcher)initWithService:(id)a3 properties:(id)a4;
-- (void)downloadData_usingTransferOptions_chunkHandler_:(id)a3 replyConnection:(id)a4;
-- (void)newUploadWithDescriptor_error_:(id)a3 replyConnection:(id)a4;
-- (void)uploadChunk_forHandle_isFinalChunk_error_:(id)a3 replyConnection:(id)a4;
+- (GTBulkDataServiceXPCDispatcher)initWithService:(id)service properties:(id)properties;
+- (void)downloadData_usingTransferOptions_chunkHandler_:(id)handler_ replyConnection:(id)connection;
+- (void)newUploadWithDescriptor_error_:(id)descriptor_error_ replyConnection:(id)connection;
+- (void)uploadChunk_forHandle_isFinalChunk_error_:(id)chunk_error_ replyConnection:(id)connection;
 @end
 
 @implementation GTBulkDataServiceXPCDispatcher
 
-- (GTBulkDataServiceXPCDispatcher)initWithService:(id)a3 properties:(id)a4
+- (GTBulkDataServiceXPCDispatcher)initWithService:(id)service properties:(id)properties
 {
-  v7 = a3;
-  v8 = [a4 protocolMethods];
+  serviceCopy = service;
+  protocolMethods = [properties protocolMethods];
   v11.receiver = self;
   v11.super_class = GTBulkDataServiceXPCDispatcher;
-  v9 = [(GTXPCDispatcher *)&v11 initWithProtocolMethods:v8];
+  v9 = [(GTXPCDispatcher *)&v11 initWithProtocolMethods:protocolMethods];
 
   if (v9)
   {
-    objc_storeStrong(&v9->_service, a3);
+    objc_storeStrong(&v9->_service, service);
   }
 
   return v9;
 }
 
-- (void)downloadData_usingTransferOptions_chunkHandler_:(id)a3 replyConnection:(id)a4
+- (void)downloadData_usingTransferOptions_chunkHandler_:(id)handler_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  uint64 = xpc_dictionary_get_uint64(v7, "handle");
+  connectionCopy = connection;
+  handler_Copy = handler_;
+  uint64 = xpc_dictionary_get_uint64(handler_Copy, "handle");
   v9 = objc_opt_class();
-  nsobject = xpc_dictionary_get_nsobject(v7, "transferOptions", v9);
-  v11 = xpc_dictionary_get_uint64(v7, "_replyStreamId");
-  v12 = xpc_dictionary_get_array(v7, "_pathHistory");
+  nsobject = xpc_dictionary_get_nsobject(handler_Copy, "transferOptions", v9);
+  v11 = xpc_dictionary_get_uint64(handler_Copy, "_replyStreamId");
+  v12 = xpc_dictionary_get_array(handler_Copy, "_pathHistory");
 
   service = self->_service;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __98__GTBulkDataServiceXPCDispatcher_downloadData_usingTransferOptions_chunkHandler__replyConnection___block_invoke;
   v16[3] = &unk_2796613C8;
-  v18 = v6;
+  v18 = connectionCopy;
   v19 = v11;
   v17 = v12;
-  v14 = v6;
+  v14 = connectionCopy;
   v15 = v12;
   [(GTBulkDataService *)service downloadData:uint64 usingTransferOptions:nsobject chunkHandler:v16];
 }
@@ -62,13 +62,13 @@ void __98__GTBulkDataServiceXPCDispatcher_downloadData_usingTransferOptions_chun
   v9 = [*(a1 + 40) sendMessageWithReplySync:xdict error:0];
 }
 
-- (void)newUploadWithDescriptor_error_:(id)a3 replyConnection:(id)a4
+- (void)newUploadWithDescriptor_error_:(id)descriptor_error_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = gt_xpc_dictionary_create_reply(v7);
+  connectionCopy = connection;
+  descriptor_error_Copy = descriptor_error_;
+  v8 = gt_xpc_dictionary_create_reply(descriptor_error_Copy);
   v9 = objc_opt_class();
-  nsobject = xpc_dictionary_get_nsobject(v7, "descriptor", v9);
+  nsobject = xpc_dictionary_get_nsobject(descriptor_error_Copy, "descriptor", v9);
 
   service = self->_service;
   v14 = 0;
@@ -77,17 +77,17 @@ void __98__GTBulkDataServiceXPCDispatcher_downloadData_usingTransferOptions_chun
   xpc_dictionary_set_uint64(v8, "result", v12);
   xpc_dictionary_set_nserror(v8, "error", v13);
 
-  [v6 sendMessage:v8];
+  [connectionCopy sendMessage:v8];
 }
 
-- (void)uploadChunk_forHandle_isFinalChunk_error_:(id)a3 replyConnection:(id)a4
+- (void)uploadChunk_forHandle_isFinalChunk_error_:(id)chunk_error_ replyConnection:(id)connection
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = gt_xpc_dictionary_create_reply(v7);
-  nsdata = xpc_dictionary_get_nsdata(v7, "chunk");
-  uint64 = xpc_dictionary_get_uint64(v7, "handle");
-  v11 = xpc_dictionary_get_BOOL(v7, "isFinalChunk");
+  connectionCopy = connection;
+  chunk_error_Copy = chunk_error_;
+  v8 = gt_xpc_dictionary_create_reply(chunk_error_Copy);
+  nsdata = xpc_dictionary_get_nsdata(chunk_error_Copy, "chunk");
+  uint64 = xpc_dictionary_get_uint64(chunk_error_Copy, "handle");
+  v11 = xpc_dictionary_get_BOOL(chunk_error_Copy, "isFinalChunk");
 
   service = self->_service;
   v14 = 0;
@@ -96,7 +96,7 @@ void __98__GTBulkDataServiceXPCDispatcher_downloadData_usingTransferOptions_chun
   xpc_dictionary_set_BOOL(v8, "result", self);
   xpc_dictionary_set_nserror(v8, "error", v13);
 
-  [v6 sendMessage:v8];
+  [connectionCopy sendMessage:v8];
 }
 
 @end

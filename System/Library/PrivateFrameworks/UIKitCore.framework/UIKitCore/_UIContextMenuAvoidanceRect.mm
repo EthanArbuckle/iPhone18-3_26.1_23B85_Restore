@@ -1,30 +1,30 @@
 @interface _UIContextMenuAvoidanceRect
 - (CGRect)frame;
 - (UICoordinateSpace)coordinateSpace;
-- (_UIContextMenuAvoidanceRect)initWithEdge:(unint64_t)a3 frame:(CGRect)a4 coordinateSpace:(id)a5;
+- (_UIContextMenuAvoidanceRect)initWithEdge:(unint64_t)edge frame:(CGRect)frame coordinateSpace:(id)space;
 @end
 
 @implementation _UIContextMenuAvoidanceRect
 
-- (_UIContextMenuAvoidanceRect)initWithEdge:(unint64_t)a3 frame:(CGRect)a4 coordinateSpace:(id)a5
+- (_UIContextMenuAvoidanceRect)initWithEdge:(unint64_t)edge frame:(CGRect)frame coordinateSpace:(id)space
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v11 = a5;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  spaceCopy = space;
   v15.receiver = self;
   v15.super_class = _UIContextMenuAvoidanceRect;
   v12 = [(_UIContextMenuAvoidanceRect *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_edge = a3;
+    v12->_edge = edge;
     v12->_frame.origin.x = x;
     v12->_frame.origin.y = y;
     v12->_frame.size.width = width;
     v12->_frame.size.height = height;
-    objc_storeWeak(&v12->_coordinateSpace, v11);
+    objc_storeWeak(&v12->_coordinateSpace, spaceCopy);
   }
 
   return v13;

@@ -1,10 +1,10 @@
 @interface CNContactProviderSupportModerator
 + (CNContactProviderSupportModerator)sharedInstance;
 + (OS_os_log)log;
-+ (id)synchronizeAllUsingSession:(id)a3;
++ (id)synchronizeAllUsingSession:(id)session;
 - (CNContactProviderSupportModerator)init;
-- (id)synchronizeProviderDomainUsingSession:(id)a3 bundleIdentifier:(id)a4 providerHost:(id)a5;
-- (void)evictPromiseForBundleIdentifier:(id)a3;
+- (id)synchronizeProviderDomainUsingSession:(id)session bundleIdentifier:(id)identifier providerHost:(id)host;
+- (void)evictPromiseForBundleIdentifier:(id)identifier;
 @end
 
 @implementation CNContactProviderSupportModerator
@@ -59,8 +59,8 @@ uint64_t __51__CNContactProviderSupportModerator_sharedInstance__block_invoke()
   if (v2)
   {
     v3 = objc_alloc(MEMORY[0x1E6996660]);
-    v4 = [MEMORY[0x1E6996660] nonatomicCacheScheduler];
-    v5 = [v3 initWithResourceScheduler:v4];
+    nonatomicCacheScheduler = [MEMORY[0x1E6996660] nonatomicCacheScheduler];
+    v5 = [v3 initWithResourceScheduler:nonatomicCacheScheduler];
     cache = v2->_cache;
     v2->_cache = v5;
 
@@ -68,9 +68,9 @@ uint64_t __51__CNContactProviderSupportModerator_sharedInstance__block_invoke()
     lock = v2->_lock;
     v2->_lock = v7;
 
-    v9 = [MEMORY[0x1E69966E8] currentEnvironment];
-    v10 = [v9 schedulerProvider];
-    v11 = [v10 newSerialSchedulerWithName:@"com.apple.contacts.provider.moderator"];
+    currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+    schedulerProvider = [currentEnvironment schedulerProvider];
+    v11 = [schedulerProvider newSerialSchedulerWithName:@"com.apple.contacts.provider.moderator"];
     workQueue = v2->_workQueue;
     v2->_workQueue = v11;
 
@@ -84,23 +84,23 @@ uint64_t __51__CNContactProviderSupportModerator_sharedInstance__block_invoke()
   return v2;
 }
 
-- (id)synchronizeProviderDomainUsingSession:(id)a3 bundleIdentifier:(id)a4 providerHost:(id)a5
+- (id)synchronizeProviderDomainUsingSession:(id)session bundleIdentifier:(id)identifier providerHost:(id)host
 {
   v33 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  sessionCopy = session;
+  identifierCopy = identifier;
+  hostCopy = host;
   v11 = [objc_opt_class() log];
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138543618;
-    v30 = v9;
+    v30 = identifierCopy;
     v31 = 2114;
-    v32 = v8;
+    v32 = sessionCopy;
     _os_log_impl(&dword_1954A0000, v11, OS_LOG_TYPE_INFO, "Sync session requested for %{public}@ (%{public}@)", buf, 0x16u);
   }
 
-  if (!v9)
+  if (!identifierCopy)
   {
     if (CNGuardOSLog_cn_once_token_0_5 != -1)
     {
@@ -115,7 +115,7 @@ uint64_t __51__CNContactProviderSupportModerator_sharedInstance__block_invoke()
   }
 
   objc_opt_class();
-  v13 = v10;
+  v13 = hostCopy;
   if (objc_opt_isKindOfClass())
   {
     v14 = v13;
@@ -142,20 +142,20 @@ uint64_t __51__CNContactProviderSupportModerator_sharedInstance__block_invoke()
     }
   }
 
-  v17 = [(CNContactProviderSupportModerator *)self lock];
-  v25 = v9;
+  lock = [(CNContactProviderSupportModerator *)self lock];
+  v25 = identifierCopy;
   v26 = v11;
   v27 = v15;
-  v28 = v8;
-  v18 = v8;
+  v28 = sessionCopy;
+  v18 = sessionCopy;
   v19 = v15;
   v20 = v11;
-  v21 = v9;
+  v21 = identifierCopy;
   v22 = CNResultWithLock();
 
-  v23 = [v22 future];
+  future = [v22 future];
 
-  return v23;
+  return future;
 }
 
 id __105__CNContactProviderSupportModerator_synchronizeProviderDomainUsingSession_bundleIdentifier_providerHost___block_invoke(id *a1)
@@ -326,11 +326,11 @@ void __105__CNContactProviderSupportModerator_synchronizeProviderDomainUsingSess
   [WeakRetained evictPromiseForBundleIdentifier:*(a1 + 40)];
 }
 
-- (void)evictPromiseForBundleIdentifier:(id)a3
+- (void)evictPromiseForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CNContactProviderSupportModerator *)self lock];
-  v6 = v4;
+  identifierCopy = identifier;
+  lock = [(CNContactProviderSupportModerator *)self lock];
+  v6 = identifierCopy;
   CNRunWithLock();
 }
 
@@ -350,17 +350,17 @@ void __69__CNContactProviderSupportModerator_evictPromiseForBundleIdentifier___b
   [v4 setObject:0 forKeyedSubscript:*(a1 + 40)];
 }
 
-+ (id)synchronizeAllUsingSession:(id)a3
++ (id)synchronizeAllUsingSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = MEMORY[0x1E6996720];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __64__CNContactProviderSupportModerator_synchronizeAllUsingSession___block_invoke;
   v9[3] = &unk_1E7415E90;
-  v10 = v4;
-  v11 = a1;
-  v6 = v4;
+  v10 = sessionCopy;
+  selfCopy = self;
+  v6 = sessionCopy;
   v7 = [v5 futureWithBlock:v9];
 
   return v7;

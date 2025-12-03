@@ -1,36 +1,36 @@
 @interface HDCloudSyncSession
-- (BOOL)requiresSyncForChangesFromAnchorRangeMap:(id)a3;
+- (BOOL)requiresSyncForChangesFromAnchorRangeMap:(id)map;
 - (id)syncPredicate;
-- (int64_t)maxEncodedBytesPerChangeSetForSyncEntityClass:(Class)a3;
-- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)a3;
-- (void)setExcludedSyncStores:(id)a3;
+- (int64_t)maxEncodedBytesPerChangeSetForSyncEntityClass:(Class)class;
+- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)class;
+- (void)setExcludedSyncStores:(id)stores;
 @end
 
 @implementation HDCloudSyncSession
 
-- (void)setExcludedSyncStores:(id)a3
+- (void)setExcludedSyncStores:(id)stores
 {
-  v4 = a3;
-  v7 = [(HDSyncSession *)self syncStore];
-  v5 = [v4 setByAddingObject:v7];
+  storesCopy = stores;
+  syncStore = [(HDSyncSession *)self syncStore];
+  v5 = [storesCopy setByAddingObject:syncStore];
 
   excludedSyncStores = self->_excludedSyncStores;
   self->_excludedSyncStores = v5;
 }
 
-- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)a3
+- (int64_t)maxEncodedBytesPerCodableChangeForSyncEntityClass:(Class)class
 {
-  if (([(objc_class *)a3 isSubclassOfClass:objc_opt_class()]& 1) != 0)
+  if (([(objc_class *)class isSubclassOfClass:objc_opt_class()]& 1) != 0)
   {
     return 0x20000;
   }
 
-  return [(HDCloudSyncSession *)self maxEncodedBytesPerChangeSetForSyncEntityClass:a3];
+  return [(HDCloudSyncSession *)self maxEncodedBytesPerChangeSetForSyncEntityClass:class];
 }
 
-- (int64_t)maxEncodedBytesPerChangeSetForSyncEntityClass:(Class)a3
+- (int64_t)maxEncodedBytesPerChangeSetForSyncEntityClass:(Class)class
 {
-  if (objc_opt_class() == a3)
+  if (objc_opt_class() == class)
   {
     return 3145728;
   }
@@ -45,50 +45,50 @@
 {
   v29.receiver = self;
   v29.super_class = HDCloudSyncSession;
-  v3 = [(HDSyncSession *)&v29 syncPredicate];
-  v4 = [(HDSyncSession *)self syncStore];
-  v5 = [v3 dateInterval];
-  v6 = [v5 startDate];
-  v7 = [v4 shardPredicate];
-  v8 = [v7 startDate];
+  syncPredicate = [(HDSyncSession *)&v29 syncPredicate];
+  syncStore = [(HDSyncSession *)self syncStore];
+  dateInterval = [syncPredicate dateInterval];
+  startDate = [dateInterval startDate];
+  shardPredicate = [syncStore shardPredicate];
+  startDate2 = [shardPredicate startDate];
   v9 = HKDateMin();
 
-  v10 = [v3 dateInterval];
-  v11 = [v10 endDate];
-  v12 = [v4 shardPredicate];
-  v13 = [v12 endDate];
+  dateInterval2 = [syncPredicate dateInterval];
+  endDate = [dateInterval2 endDate];
+  shardPredicate2 = [syncStore shardPredicate];
+  endDate2 = [shardPredicate2 endDate];
   v14 = HKDateMax();
 
   v27 = v14;
   v28 = v9;
   v15 = [HDCloudSyncStore shardIntervalWithStartDate:v9 endDate:v14];
-  v16 = [v4 shardPredicate];
+  shardPredicate3 = [syncStore shardPredicate];
 
-  if (v16)
+  if (shardPredicate3)
   {
-    v17 = [v4 shardPredicate];
-    v18 = [v17 type];
+    shardPredicate4 = [syncStore shardPredicate];
+    type = [shardPredicate4 type];
 
-    v16 = v18 == 0;
+    shardPredicate3 = type == 0;
   }
 
   v19 = [HDSyncPredicate alloc];
-  v20 = [v3 excludedSyncProvenances];
-  v21 = [v3 includedObjectTypes];
-  v22 = [v3 defaultMaximumObjectAge];
-  v23 = [v3 defaultMaximumTombstoneAge];
-  v24 = [v3 maximumObjectAgeByType];
-  v25 = [(HDSyncPredicate *)v19 initWithExcludedSyncProvenances:v20 dateInterval:v15 shouldIncludeDatelessObjects:v16 includedObjectTypes:v21 defaultMaximumObjectAge:v22 defaultMaximumTombstoneAge:v23 maximumObjectAgeByType:v24];
+  excludedSyncProvenances = [syncPredicate excludedSyncProvenances];
+  includedObjectTypes = [syncPredicate includedObjectTypes];
+  defaultMaximumObjectAge = [syncPredicate defaultMaximumObjectAge];
+  defaultMaximumTombstoneAge = [syncPredicate defaultMaximumTombstoneAge];
+  maximumObjectAgeByType = [syncPredicate maximumObjectAgeByType];
+  v25 = [(HDSyncPredicate *)v19 initWithExcludedSyncProvenances:excludedSyncProvenances dateInterval:v15 shouldIncludeDatelessObjects:shardPredicate3 includedObjectTypes:includedObjectTypes defaultMaximumObjectAge:defaultMaximumObjectAge defaultMaximumTombstoneAge:defaultMaximumTombstoneAge maximumObjectAgeByType:maximumObjectAgeByType];
 
   return v25;
 }
 
-- (BOOL)requiresSyncForChangesFromAnchorRangeMap:(id)a3
+- (BOOL)requiresSyncForChangesFromAnchorRangeMap:(id)map
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HDSyncSession *)self syncStore];
-  [v5 primaryOrderedSyncEntities];
+  mapCopy = map;
+  syncStore = [(HDSyncSession *)self syncStore];
+  [syncStore primaryOrderedSyncEntities];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -111,8 +111,8 @@
         v17 = 0;
         v16 = HDSyncAnchorRangeMake(-1, -1);
         v17 = v11;
-        v12 = [v10 syncEntityIdentifier];
-        v13 = [v4 getAnchorRange:&v16 forSyncEntityIdentifier:v12];
+        syncEntityIdentifier = [v10 syncEntityIdentifier];
+        v13 = [mapCopy getAnchorRange:&v16 forSyncEntityIdentifier:syncEntityIdentifier];
 
         if (v13 && v17 > v16)
         {

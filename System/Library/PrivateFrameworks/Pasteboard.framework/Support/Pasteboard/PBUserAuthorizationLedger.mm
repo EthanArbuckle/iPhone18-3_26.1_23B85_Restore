@@ -1,6 +1,6 @@
 @interface PBUserAuthorizationLedger
 - (PBUserAuthorizationLedger)init;
-- (unint64_t)authorizationDecisionForAuditTokenInfo:(id)a3 timestamp:(unint64_t)a4;
+- (unint64_t)authorizationDecisionForAuditTokenInfo:(id)info timestamp:(unint64_t)timestamp;
 @end
 
 @implementation PBUserAuthorizationLedger
@@ -20,28 +20,28 @@
   return v2;
 }
 
-- (unint64_t)authorizationDecisionForAuditTokenInfo:(id)a3 timestamp:(unint64_t)a4
+- (unint64_t)authorizationDecisionForAuditTokenInfo:(id)info timestamp:(unint64_t)timestamp
 {
-  v6 = a3;
+  infoCopy = info;
   PBAssertIsOnCallbackQueue();
-  v7 = [v6 persistentIdentifier];
-  if (v7)
+  persistentIdentifier = [infoCopy persistentIdentifier];
+  if (persistentIdentifier)
   {
-    v8 = v7;
+    bundleID = persistentIdentifier;
   }
 
   else
   {
-    v8 = [v6 bundleID];
-    if (!v8)
+    bundleID = [infoCopy bundleID];
+    if (!bundleID)
     {
       v10 = 0;
       goto LABEL_12;
     }
   }
 
-  v9 = [(PBUserAuthorizationLedger *)self authorizationRecords];
-  v10 = [v9 objectForKeyedSubscript:v8];
+  authorizationRecords = [(PBUserAuthorizationLedger *)self authorizationRecords];
+  v10 = [authorizationRecords objectForKeyedSubscript:bundleID];
 
   if (!v10)
   {
@@ -54,7 +54,7 @@
     goto LABEL_13;
   }
 
-  if ([v10 timestamp] >= a4)
+  if ([v10 timestamp] >= timestamp)
   {
 LABEL_12:
     v11 = 42;
@@ -65,7 +65,7 @@ LABEL_12:
   mach_timebase_info(&info);
   LODWORD(v12) = info.denom;
   LODWORD(v13) = info.numer;
-  if (a4 - (v12 * 1000000000.0 / v13) <= [v10 timestamp])
+  if (timestamp - (v12 * 1000000000.0 / v13) <= [v10 timestamp])
   {
     v11 = 39;
   }

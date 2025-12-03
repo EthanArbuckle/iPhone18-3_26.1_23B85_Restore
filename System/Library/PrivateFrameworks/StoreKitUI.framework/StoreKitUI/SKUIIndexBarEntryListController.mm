@@ -1,18 +1,18 @@
 @interface SKUIIndexBarEntryListController
-+ (id)entryListControllerForEntryListViewElement:(id)a3;
-+ (id)entryListControllerForEntryViewElement:(id)a3;
++ (id)entryListControllerForEntryListViewElement:(id)element;
++ (id)entryListControllerForEntryViewElement:(id)element;
 - (SKUIIndexBarEntryListControllerDelegate)delegate;
-- (id)entryDescriptorAtIndex:(int64_t)a3;
-- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)a3 returningRelativeSectionIndex:(int64_t *)a4;
+- (id)entryDescriptorAtIndex:(int64_t)index;
+- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)index returningRelativeSectionIndex:(int64_t *)sectionIndex;
 - (void)_didInvalidate;
 - (void)reloadViewElementData;
 @end
 
 @implementation SKUIIndexBarEntryListController
 
-+ (id)entryListControllerForEntryViewElement:(id)a3
++ (id)entryListControllerForEntryViewElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -25,14 +25,14 @@
     }
   }
 
-  v12 = [[SKUIIndexBarSingleEntryListController alloc] initWithEntryViewElement:v3];
+  v12 = [[SKUIIndexBarSingleEntryListController alloc] initWithEntryViewElement:elementCopy];
 
   return v12;
 }
 
-+ (id)entryListControllerForEntryListViewElement:(id)a3
++ (id)entryListControllerForEntryListViewElement:(id)element
 {
-  v3 = a3;
+  elementCopy = element;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -45,16 +45,16 @@
     }
   }
 
-  v12 = [v3 entryListElementType];
-  if (v12 == 2)
+  entryListElementType = [elementCopy entryListElementType];
+  if (entryListElementType == 2)
   {
-    v13 = [[SKUIIndexBarLocaleStandardEntryListController alloc] initWithSKUIIndexBarEntryListViewElement:v3];
+    v13 = [[SKUIIndexBarLocaleStandardEntryListController alloc] initWithSKUIIndexBarEntryListViewElement:elementCopy];
     goto LABEL_9;
   }
 
-  if (v12 == 1)
+  if (entryListElementType == 1)
   {
-    v13 = [[SKUIIndexBarDynamicElementEntryListController alloc] initWithEntryListViewElement:v3];
+    v13 = [[SKUIIndexBarDynamicElementEntryListController alloc] initWithEntryListViewElement:elementCopy];
 LABEL_9:
     v14 = v13;
     goto LABEL_11;
@@ -66,7 +66,7 @@ LABEL_11:
   return v14;
 }
 
-- (id)entryDescriptorAtIndex:(int64_t)a3
+- (id)entryDescriptorAtIndex:(int64_t)index
 {
   if (os_variant_has_internal_content())
   {
@@ -95,7 +95,7 @@ LABEL_11:
   }
 }
 
-- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)a3 returningRelativeSectionIndex:(int64_t *)a4
+- (id)targetIndexBarEntryIDForEntryDescriptorAtIndex:(int64_t)index returningRelativeSectionIndex:(int64_t *)sectionIndex
 {
   if (os_variant_has_internal_content())
   {
@@ -114,10 +114,10 @@ LABEL_11:
 
 - (void)_didInvalidate
 {
-  v3 = [(SKUIIndexBarEntryListController *)self delegate];
+  delegate = [(SKUIIndexBarEntryListController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 indexBarEntryListControllerDidInvalidate:self];
+    [delegate indexBarEntryListControllerDidInvalidate:self];
   }
 }
 

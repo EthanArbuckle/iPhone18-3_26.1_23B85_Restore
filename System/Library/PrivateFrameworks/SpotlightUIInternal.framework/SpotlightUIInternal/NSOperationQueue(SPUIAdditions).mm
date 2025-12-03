@@ -10,9 +10,9 @@
   v4[1] = 3221225472;
   v4[2] = __69__NSOperationQueue_SPUIAdditions__logStateOperationCountGreaterThan___block_invoke;
   v4[3] = &unk_279D06E18;
-  v4[4] = a1;
+  v4[4] = self;
   v4[5] = a3;
-  return [a1 addOperationWithBlock:v4];
+  return [self addOperationWithBlock:v4];
 }
 
 @end

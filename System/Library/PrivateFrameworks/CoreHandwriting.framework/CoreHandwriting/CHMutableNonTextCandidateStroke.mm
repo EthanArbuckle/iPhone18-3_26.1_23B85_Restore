@@ -1,27 +1,27 @@
 @interface CHMutableNonTextCandidateStroke
-- (BOOL)adjustSupportByAddingStroke:(id)a3 consistingOfSubstrokes:(id)a4 strokeClassification:(int64_t)a5;
-- (BOOL)canBeSupportedByStrokeAtYPosition:(double)a3;
+- (BOOL)adjustSupportByAddingStroke:(id)stroke consistingOfSubstrokes:(id)substrokes strokeClassification:(int64_t)classification;
+- (BOOL)canBeSupportedByStrokeAtYPosition:(double)position;
 - (id)description;
-- (void)setSupportByStrokeIdentifier:(id)a3;
+- (void)setSupportByStrokeIdentifier:(id)identifier;
 @end
 
 @implementation CHMutableNonTextCandidateStroke
 
-- (void)setSupportByStrokeIdentifier:(id)a3
+- (void)setSupportByStrokeIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (self->super._supportByStrokeIdentifier != v4)
+  identifierCopy = identifier;
+  if (self->super._supportByStrokeIdentifier != identifierCopy)
   {
-    v12 = v4;
-    v10 = objc_msgSend_mutableCopy(v4, v5, v6, v7, v8, v9);
+    v12 = identifierCopy;
+    v10 = objc_msgSend_mutableCopy(identifierCopy, v5, v6, v7, v8, v9);
     supportByStrokeIdentifier = self->super._supportByStrokeIdentifier;
     self->super._supportByStrokeIdentifier = v10;
 
-    v4 = v12;
+    identifierCopy = v12;
   }
 }
 
-- (BOOL)canBeSupportedByStrokeAtYPosition:(double)a3
+- (BOOL)canBeSupportedByStrokeAtYPosition:(double)position
 {
   if (self)
   {
@@ -39,7 +39,7 @@
     x = 0.0;
   }
 
-  if (CGRectGetMinY(*&x) + -300.0 > a3)
+  if (CGRectGetMinY(*&x) + -300.0 > position)
   {
     return 0;
   }
@@ -60,35 +60,35 @@
     v10 = 0.0;
   }
 
-  return CGRectGetMaxY(*&v10) + 300.0 >= a3;
+  return CGRectGetMaxY(*&v10) + 300.0 >= position;
 }
 
-- (BOOL)adjustSupportByAddingStroke:(id)a3 consistingOfSubstrokes:(id)a4 strokeClassification:(int64_t)a5
+- (BOOL)adjustSupportByAddingStroke:(id)stroke consistingOfSubstrokes:(id)substrokes strokeClassification:(int64_t)classification
 {
   v331 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = v8;
-  v318 = v9;
+  strokeCopy = stroke;
+  substrokesCopy = substrokes;
+  v10 = strokeCopy;
+  v318 = substrokesCopy;
   supportByStrokeIdentifier = self->super._supportByStrokeIdentifier;
-  v17 = objc_msgSend_encodedStrokeIdentifier(v8, v12, v13, v14, v15, v16);
+  v17 = objc_msgSend_encodedStrokeIdentifier(strokeCopy, v12, v13, v14, v15, v16);
   v22 = objc_msgSend_objectForKey_(supportByStrokeIdentifier, v18, v17, v19, v20, v21);
 
   if (v22)
   {
     v28 = self->super._supportByStrokeIdentifier;
-    v29 = objc_msgSend_encodedStrokeIdentifier(v8, v23, v24, v25, v26, v27);
+    v29 = objc_msgSend_encodedStrokeIdentifier(strokeCopy, v23, v24, v25, v26, v27);
     v34 = objc_msgSend_objectForKey_(v28, v30, v29, v31, v32, v33);
     objc_msgSend_doubleValue(v34, v35, v36, v37, v38, v39);
     v319 = v40;
 
-    v41 = a5 == 5;
-    if (a5 == 5 && v319 > 0.0)
+    v41 = classification == 5;
+    if (classification == 5 && v319 > 0.0)
     {
       v41 = 1;
     }
 
-    else if ((v319 >= 0.0 || (objc_msgSend_isStrokeClassificationText_(CHStrokeUtilities, v23, a5, v25, v26, v27, v319) & 1) == 0) && (v319 <= 0.0 || self->super._classificationAsNonText != 6 || (objc_msgSend_isStrokeClassificationMath_(CHStrokeUtilities, v23, a5, v25, v26, v27, v319) & 1) == 0) && (v319 == 0.0 || self->super._classificationAsNonText != 7 || (objc_msgSend_isStrokeClassificationMath_(CHStrokeUtilities, v23, a5, v25, v26, v27, v319) & 1) == 0))
+    else if ((v319 >= 0.0 || (objc_msgSend_isStrokeClassificationText_(CHStrokeUtilities, v23, classification, v25, v26, v27, v319) & 1) == 0) && (v319 <= 0.0 || self->super._classificationAsNonText != 6 || (objc_msgSend_isStrokeClassificationMath_(CHStrokeUtilities, v23, classification, v25, v26, v27, v319) & 1) == 0) && (v319 == 0.0 || self->super._classificationAsNonText != 7 || (objc_msgSend_isStrokeClassificationMath_(CHStrokeUtilities, v23, classification, v25, v26, v27, v319) & 1) == 0))
     {
 LABEL_13:
       v42 = 0;
@@ -98,7 +98,7 @@ LABEL_13:
 
   else
   {
-    v41 = a5 == 5;
+    v41 = classification == 5;
     v319 = 0.0;
   }
 
@@ -134,8 +134,8 @@ LABEL_8:
 
   if (classificationAsNonText == 7)
   {
-    v317 = v8;
-    v165 = v8;
+    v317 = strokeCopy;
+    v165 = strokeCopy;
     v166 = v318;
     x = self->super._bounds.origin.x;
     y = self->super._bounds.origin.y;
@@ -300,7 +300,7 @@ LABEL_8:
     goto LABEL_14;
   }
 
-  v315 = v8;
+  v315 = strokeCopy;
   v316 = v318;
   v76 = self->super._enlargedBounds.origin.x;
   v77 = self->super._enlargedBounds.origin.y;
@@ -330,7 +330,7 @@ LABEL_8:
   v94 = v316;
   v102 = objc_msgSend_countByEnumeratingWithState_objects_count_(v94, v95, &v322, buf, 16, v96);
   v312 = v41;
-  v314 = a5;
+  classificationCopy = classification;
   v103 = 0;
   if (!v102)
   {
@@ -498,8 +498,8 @@ LABEL_35:
   while (v102);
 LABEL_87:
 
-  v10 = v8;
-  a5 = v314;
+  v10 = strokeCopy;
+  classification = classificationCopy;
   v41 = v312;
 LABEL_88:
   v326 = @"support";
@@ -527,13 +527,13 @@ LABEL_14:
   v69 = v52;
   if (v52 != 0.0)
   {
-    if (objc_msgSend_isStrokeClassificationText_(CHStrokeUtilities, v65, a5, v66, v67, v68))
+    if (objc_msgSend_isStrokeClassificationText_(CHStrokeUtilities, v65, classification, v66, v67, v68))
     {
       v75 = objc_msgSend_encodedStrokeIdentifier(v10, v70, v71, v72, v73, v74);
       sub_1837321E0(self, v75, v69, v64);
     }
 
-    else if (v41 || objc_msgSend_isStrokeClassificationMath_(CHStrokeUtilities, v70, a5, v72, v73, v74) && self->super._classificationAsNonText == 6)
+    else if (v41 || objc_msgSend_isStrokeClassificationMath_(CHStrokeUtilities, v70, classification, v72, v73, v74) && self->super._classificationAsNonText == 6)
     {
       v75 = objc_msgSend_encodedStrokeIdentifier(v10, v70, v71, v72, v73, v74);
       v69 = -v69;

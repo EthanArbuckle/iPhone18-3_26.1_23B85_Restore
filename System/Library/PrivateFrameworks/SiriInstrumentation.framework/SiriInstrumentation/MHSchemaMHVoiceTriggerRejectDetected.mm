@@ -1,51 +1,51 @@
 @interface MHSchemaMHVoiceTriggerRejectDetected
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHVoiceTriggerRejectDetected)initWithDictionary:(id)a3;
-- (MHSchemaMHVoiceTriggerRejectDetected)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHVoiceTriggerRejectDetected)initWithDictionary:(id)dictionary;
+- (MHSchemaMHVoiceTriggerRejectDetected)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (float)checkerHSRejectBeforeActivationScoresAtIndex:(unint64_t)a3;
-- (float)checkerJSRejectBeforeActivationScoresAtIndex:(unint64_t)a3;
-- (float)phsRejectBeforeActivationScoresAtIndex:(unint64_t)a3;
+- (float)checkerHSRejectBeforeActivationScoresAtIndex:(unint64_t)index;
+- (float)checkerJSRejectBeforeActivationScoresAtIndex:(unint64_t)index;
+- (float)phsRejectBeforeActivationScoresAtIndex:(unint64_t)index;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
-- (unint64_t)checkerHSRejectBeforeActivationTimeDiffInNsAtIndex:(unint64_t)a3;
-- (unint64_t)checkerJSRejectBeforeActivationTimeDiffInNsAtIndex:(unint64_t)a3;
+- (unint64_t)checkerHSRejectBeforeActivationTimeDiffInNsAtIndex:(unint64_t)index;
+- (unint64_t)checkerJSRejectBeforeActivationTimeDiffInNsAtIndex:(unint64_t)index;
 - (unint64_t)hash;
-- (unint64_t)phsRejectBeforeActivationTimeDiffInNsAtIndex:(unint64_t)a3;
-- (void)addCheckerHSRejectBeforeActivationScores:(float)a3;
-- (void)addCheckerHSRejectBeforeActivationTimeDiffInNs:(unint64_t)a3;
-- (void)addCheckerJSRejectBeforeActivationScores:(float)a3;
-- (void)addCheckerJSRejectBeforeActivationTimeDiffInNs:(unint64_t)a3;
-- (void)addPhsRejectBeforeActivationScores:(float)a3;
-- (void)addPhsRejectBeforeActivationTimeDiffInNs:(unint64_t)a3;
-- (void)setHasCheckerHSRejectBeforeActivationCount:(BOOL)a3;
-- (void)setHasCheckerHSThreshold:(BOOL)a3;
-- (void)setHasCheckerJSRejectBeforeActivationCount:(BOOL)a3;
-- (void)setHasCheckerJSThreshold:(BOOL)a3;
-- (void)setHasPhsThreshold:(BOOL)a3;
-- (void)setHasPjsThreshold:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (unint64_t)phsRejectBeforeActivationTimeDiffInNsAtIndex:(unint64_t)index;
+- (void)addCheckerHSRejectBeforeActivationScores:(float)scores;
+- (void)addCheckerHSRejectBeforeActivationTimeDiffInNs:(unint64_t)ns;
+- (void)addCheckerJSRejectBeforeActivationScores:(float)scores;
+- (void)addCheckerJSRejectBeforeActivationTimeDiffInNs:(unint64_t)ns;
+- (void)addPhsRejectBeforeActivationScores:(float)scores;
+- (void)addPhsRejectBeforeActivationTimeDiffInNs:(unint64_t)ns;
+- (void)setHasCheckerHSRejectBeforeActivationCount:(BOOL)count;
+- (void)setHasCheckerHSThreshold:(BOOL)threshold;
+- (void)setHasCheckerJSRejectBeforeActivationCount:(BOOL)count;
+- (void)setHasCheckerJSThreshold:(BOOL)threshold;
+- (void)setHasPhsThreshold:(BOOL)threshold;
+- (void)setHasPjsThreshold:(BOOL)threshold;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHVoiceTriggerRejectDetected
 
-- (MHSchemaMHVoiceTriggerRejectDetected)initWithDictionary:(id)a3
+- (MHSchemaMHVoiceTriggerRejectDetected)initWithDictionary:(id)dictionary
 {
   v95 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v88.receiver = self;
   v88.super_class = MHSchemaMHVoiceTriggerRejectDetected;
   v5 = [(MHSchemaMHVoiceTriggerRejectDetected *)&v88 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"phsRejectBeforeActivationCount"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"phsRejectBeforeActivationCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHVoiceTriggerRejectDetected setPhsRejectBeforeActivationCount:](v5, "setPhsRejectBeforeActivationCount:", [v6 unsignedIntValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"checkerHSRejectBeforeActivationCount"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"checkerHSRejectBeforeActivationCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -54,7 +54,7 @@
 
     v61 = v7;
     v62 = v6;
-    v8 = [v4 objectForKeyedSubscript:@"checkerJSRejectBeforeActivationCount"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"checkerJSRejectBeforeActivationCount"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
     }
 
     v60 = v8;
-    v9 = [v4 objectForKeyedSubscript:@"phsRejectBeforeActivationScores"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"phsRejectBeforeActivationScores"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,7 +101,7 @@
       }
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"checkerHSRejectBeforeActivationScores"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"checkerHSRejectBeforeActivationScores"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -140,7 +140,7 @@
       }
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"checkerJSRejectBeforeActivationScores"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"checkerJSRejectBeforeActivationScores"];
     objc_opt_class();
     v57 = v23;
     if (objc_opt_isKindOfClass())
@@ -184,7 +184,7 @@
 
     v58 = v16;
     v59 = v9;
-    v30 = [v4 objectForKeyedSubscript:@"phsRejectBeforeActivationTimeDiffInNs"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"phsRejectBeforeActivationTimeDiffInNs"];
     objc_opt_class();
     v63 = v30;
     if (objc_opt_isKindOfClass())
@@ -223,7 +223,7 @@
       }
     }
 
-    v37 = [v4 objectForKeyedSubscript:@"checkerHSRejectBeforeActivationTimeDiffInNs"];
+    v37 = [dictionaryCopy objectForKeyedSubscript:@"checkerHSRejectBeforeActivationTimeDiffInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -261,7 +261,7 @@
       }
     }
 
-    v44 = [v4 objectForKeyedSubscript:@"checkerJSRejectBeforeActivationTimeDiffInNs"];
+    v44 = [dictionaryCopy objectForKeyedSubscript:@"checkerJSRejectBeforeActivationTimeDiffInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -301,7 +301,7 @@
       v23 = v57;
     }
 
-    v51 = [v4 objectForKeyedSubscript:@"phsThreshold"];
+    v51 = [dictionaryCopy objectForKeyedSubscript:@"phsThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -309,7 +309,7 @@
       [(MHSchemaMHVoiceTriggerRejectDetected *)v5 setPhsThreshold:?];
     }
 
-    v52 = [v4 objectForKeyedSubscript:@"pjsThreshold"];
+    v52 = [dictionaryCopy objectForKeyedSubscript:@"pjsThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -317,7 +317,7 @@
       [(MHSchemaMHVoiceTriggerRejectDetected *)v5 setPjsThreshold:?];
     }
 
-    v53 = [v4 objectForKeyedSubscript:@"checkerHSThreshold"];
+    v53 = [dictionaryCopy objectForKeyedSubscript:@"checkerHSThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -325,7 +325,7 @@
       [(MHSchemaMHVoiceTriggerRejectDetected *)v5 setCheckerHSThreshold:?];
     }
 
-    v54 = [v4 objectForKeyedSubscript:@"checkerJSThreshold"];
+    v54 = [dictionaryCopy objectForKeyedSubscript:@"checkerJSThreshold"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -339,30 +339,30 @@
   return v5;
 }
 
-- (MHSchemaMHVoiceTriggerRejectDetected)initWithJSON:(id)a3
+- (MHSchemaMHVoiceTriggerRejectDetected)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHVoiceTriggerRejectDetected *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHVoiceTriggerRejectDetected *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHVoiceTriggerRejectDetected *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -375,25 +375,25 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHVoiceTriggerRejectDetected checkerHSRejectBeforeActivationCount](self, "checkerHSRejectBeforeActivationCount")}];
-    [v3 setObject:v4 forKeyedSubscript:@"checkerHSRejectBeforeActivationCount"];
+    [dictionary setObject:v4 forKeyedSubscript:@"checkerHSRejectBeforeActivationCount"];
   }
 
   if ([(NSArray *)self->_checkerHSRejectBeforeActivationScores count])
   {
-    v5 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationScores];
-    v6 = [v5 copy];
-    [v3 setObject:v6 forKeyedSubscript:@"checkerHSRejectBeforeActivationScores"];
+    checkerHSRejectBeforeActivationScores = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationScores];
+    v6 = [checkerHSRejectBeforeActivationScores copy];
+    [dictionary setObject:v6 forKeyedSubscript:@"checkerHSRejectBeforeActivationScores"];
   }
 
   if ([(NSArray *)self->_checkerHSRejectBeforeActivationTimeDiffInNs count])
   {
-    v7 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationTimeDiffInNs];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"checkerHSRejectBeforeActivationTimeDiffInNs"];
+    checkerHSRejectBeforeActivationTimeDiffInNs = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationTimeDiffInNs];
+    v8 = [checkerHSRejectBeforeActivationTimeDiffInNs copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"checkerHSRejectBeforeActivationTimeDiffInNs"];
   }
 
   has = self->_has;
@@ -402,7 +402,7 @@
     v10 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSThreshold];
     v11 = [v10 numberWithFloat:?];
-    [v3 setObject:v11 forKeyedSubscript:@"checkerHSThreshold"];
+    [dictionary setObject:v11 forKeyedSubscript:@"checkerHSThreshold"];
 
     has = self->_has;
   }
@@ -410,21 +410,21 @@
   if ((has & 4) != 0)
   {
     v12 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHVoiceTriggerRejectDetected checkerJSRejectBeforeActivationCount](self, "checkerJSRejectBeforeActivationCount")}];
-    [v3 setObject:v12 forKeyedSubscript:@"checkerJSRejectBeforeActivationCount"];
+    [dictionary setObject:v12 forKeyedSubscript:@"checkerJSRejectBeforeActivationCount"];
   }
 
   if ([(NSArray *)self->_checkerJSRejectBeforeActivationScores count])
   {
-    v13 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationScores];
-    v14 = [v13 copy];
-    [v3 setObject:v14 forKeyedSubscript:@"checkerJSRejectBeforeActivationScores"];
+    checkerJSRejectBeforeActivationScores = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationScores];
+    v14 = [checkerJSRejectBeforeActivationScores copy];
+    [dictionary setObject:v14 forKeyedSubscript:@"checkerJSRejectBeforeActivationScores"];
   }
 
   if ([(NSArray *)self->_checkerJSRejectBeforeActivationTimeDiffInNs count])
   {
-    v15 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationTimeDiffInNs];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"checkerJSRejectBeforeActivationTimeDiffInNs"];
+    checkerJSRejectBeforeActivationTimeDiffInNs = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationTimeDiffInNs];
+    v16 = [checkerJSRejectBeforeActivationTimeDiffInNs copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"checkerJSRejectBeforeActivationTimeDiffInNs"];
   }
 
   v17 = self->_has;
@@ -433,7 +433,7 @@
     v18 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSThreshold];
     v19 = [v18 numberWithFloat:?];
-    [v3 setObject:v19 forKeyedSubscript:@"checkerJSThreshold"];
+    [dictionary setObject:v19 forKeyedSubscript:@"checkerJSThreshold"];
 
     v17 = self->_has;
   }
@@ -441,21 +441,21 @@
   if (v17)
   {
     v20 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MHSchemaMHVoiceTriggerRejectDetected phsRejectBeforeActivationCount](self, "phsRejectBeforeActivationCount")}];
-    [v3 setObject:v20 forKeyedSubscript:@"phsRejectBeforeActivationCount"];
+    [dictionary setObject:v20 forKeyedSubscript:@"phsRejectBeforeActivationCount"];
   }
 
   if ([(NSArray *)self->_phsRejectBeforeActivationScores count])
   {
-    v21 = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationScores];
-    v22 = [v21 copy];
-    [v3 setObject:v22 forKeyedSubscript:@"phsRejectBeforeActivationScores"];
+    phsRejectBeforeActivationScores = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationScores];
+    v22 = [phsRejectBeforeActivationScores copy];
+    [dictionary setObject:v22 forKeyedSubscript:@"phsRejectBeforeActivationScores"];
   }
 
   if ([(NSArray *)self->_phsRejectBeforeActivationTimeDiffInNs count])
   {
-    v23 = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationTimeDiffInNs];
-    v24 = [v23 copy];
-    [v3 setObject:v24 forKeyedSubscript:@"phsRejectBeforeActivationTimeDiffInNs"];
+    phsRejectBeforeActivationTimeDiffInNs = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationTimeDiffInNs];
+    v24 = [phsRejectBeforeActivationTimeDiffInNs copy];
+    [dictionary setObject:v24 forKeyedSubscript:@"phsRejectBeforeActivationTimeDiffInNs"];
   }
 
   v25 = self->_has;
@@ -464,7 +464,7 @@
     v26 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerRejectDetected *)self phsThreshold];
     v27 = [v26 numberWithFloat:?];
-    [v3 setObject:v27 forKeyedSubscript:@"phsThreshold"];
+    [dictionary setObject:v27 forKeyedSubscript:@"phsThreshold"];
 
     v25 = self->_has;
   }
@@ -474,12 +474,12 @@
     v28 = MEMORY[0x1E696AD98];
     [(MHSchemaMHVoiceTriggerRejectDetected *)self pjsThreshold];
     v29 = [v28 numberWithFloat:?];
-    [v3 setObject:v29 forKeyedSubscript:@"pjsThreshold"];
+    [dictionary setObject:v29 forKeyedSubscript:@"pjsThreshold"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -684,16 +684,16 @@ LABEL_8:
   return v3 ^ v34 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v13 ^ v18 ^ v23 ^ v28;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_43;
   }
 
   has = self->_has;
-  v6 = v4[88];
+  v6 = equalCopy[88];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_43;
@@ -702,13 +702,13 @@ LABEL_8:
   if (*&has)
   {
     phsRejectBeforeActivationCount = self->_phsRejectBeforeActivationCount;
-    if (phsRejectBeforeActivationCount != [v4 phsRejectBeforeActivationCount])
+    if (phsRejectBeforeActivationCount != [equalCopy phsRejectBeforeActivationCount])
     {
       goto LABEL_43;
     }
 
     has = self->_has;
-    v6 = v4[88];
+    v6 = equalCopy[88];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -717,13 +717,13 @@ LABEL_8:
     if (v8)
     {
       checkerHSRejectBeforeActivationCount = self->_checkerHSRejectBeforeActivationCount;
-      if (checkerHSRejectBeforeActivationCount != [v4 checkerHSRejectBeforeActivationCount])
+      if (checkerHSRejectBeforeActivationCount != [equalCopy checkerHSRejectBeforeActivationCount])
       {
         goto LABEL_43;
       }
 
       has = self->_has;
-      v6 = v4[88];
+      v6 = equalCopy[88];
     }
 
     v10 = (*&has >> 2) & 1;
@@ -735,26 +735,26 @@ LABEL_8:
     if (v10)
     {
       checkerJSRejectBeforeActivationCount = self->_checkerJSRejectBeforeActivationCount;
-      if (checkerJSRejectBeforeActivationCount != [v4 checkerJSRejectBeforeActivationCount])
+      if (checkerJSRejectBeforeActivationCount != [equalCopy checkerJSRejectBeforeActivationCount])
       {
         goto LABEL_43;
       }
     }
 
-    v12 = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationScores];
-    v13 = [v4 phsRejectBeforeActivationScores];
-    if ((v12 != 0) == (v13 == 0))
+    phsRejectBeforeActivationScores = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationScores];
+    phsRejectBeforeActivationScores2 = [equalCopy phsRejectBeforeActivationScores];
+    if ((phsRejectBeforeActivationScores != 0) == (phsRejectBeforeActivationScores2 == 0))
     {
       goto LABEL_42;
     }
 
-    v14 = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationScores];
-    if (v14)
+    phsRejectBeforeActivationScores3 = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationScores];
+    if (phsRejectBeforeActivationScores3)
     {
-      v15 = v14;
-      v16 = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationScores];
-      v17 = [v4 phsRejectBeforeActivationScores];
-      v18 = [v16 isEqual:v17];
+      v15 = phsRejectBeforeActivationScores3;
+      phsRejectBeforeActivationScores4 = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationScores];
+      phsRejectBeforeActivationScores5 = [equalCopy phsRejectBeforeActivationScores];
+      v18 = [phsRejectBeforeActivationScores4 isEqual:phsRejectBeforeActivationScores5];
 
       if (!v18)
       {
@@ -766,20 +766,20 @@ LABEL_8:
     {
     }
 
-    v12 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationScores];
-    v13 = [v4 checkerHSRejectBeforeActivationScores];
-    if ((v12 != 0) == (v13 == 0))
+    phsRejectBeforeActivationScores = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationScores];
+    phsRejectBeforeActivationScores2 = [equalCopy checkerHSRejectBeforeActivationScores];
+    if ((phsRejectBeforeActivationScores != 0) == (phsRejectBeforeActivationScores2 == 0))
     {
       goto LABEL_42;
     }
 
-    v19 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationScores];
-    if (v19)
+    checkerHSRejectBeforeActivationScores = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationScores];
+    if (checkerHSRejectBeforeActivationScores)
     {
-      v20 = v19;
-      v21 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationScores];
-      v22 = [v4 checkerHSRejectBeforeActivationScores];
-      v23 = [v21 isEqual:v22];
+      v20 = checkerHSRejectBeforeActivationScores;
+      checkerHSRejectBeforeActivationScores2 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationScores];
+      checkerHSRejectBeforeActivationScores3 = [equalCopy checkerHSRejectBeforeActivationScores];
+      v23 = [checkerHSRejectBeforeActivationScores2 isEqual:checkerHSRejectBeforeActivationScores3];
 
       if (!v23)
       {
@@ -791,20 +791,20 @@ LABEL_8:
     {
     }
 
-    v12 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationScores];
-    v13 = [v4 checkerJSRejectBeforeActivationScores];
-    if ((v12 != 0) == (v13 == 0))
+    phsRejectBeforeActivationScores = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationScores];
+    phsRejectBeforeActivationScores2 = [equalCopy checkerJSRejectBeforeActivationScores];
+    if ((phsRejectBeforeActivationScores != 0) == (phsRejectBeforeActivationScores2 == 0))
     {
       goto LABEL_42;
     }
 
-    v24 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationScores];
-    if (v24)
+    checkerJSRejectBeforeActivationScores = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationScores];
+    if (checkerJSRejectBeforeActivationScores)
     {
-      v25 = v24;
-      v26 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationScores];
-      v27 = [v4 checkerJSRejectBeforeActivationScores];
-      v28 = [v26 isEqual:v27];
+      v25 = checkerJSRejectBeforeActivationScores;
+      checkerJSRejectBeforeActivationScores2 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationScores];
+      checkerJSRejectBeforeActivationScores3 = [equalCopy checkerJSRejectBeforeActivationScores];
+      v28 = [checkerJSRejectBeforeActivationScores2 isEqual:checkerJSRejectBeforeActivationScores3];
 
       if (!v28)
       {
@@ -816,20 +816,20 @@ LABEL_8:
     {
     }
 
-    v12 = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationTimeDiffInNs];
-    v13 = [v4 phsRejectBeforeActivationTimeDiffInNs];
-    if ((v12 != 0) == (v13 == 0))
+    phsRejectBeforeActivationScores = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationTimeDiffInNs];
+    phsRejectBeforeActivationScores2 = [equalCopy phsRejectBeforeActivationTimeDiffInNs];
+    if ((phsRejectBeforeActivationScores != 0) == (phsRejectBeforeActivationScores2 == 0))
     {
       goto LABEL_42;
     }
 
-    v29 = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationTimeDiffInNs];
-    if (v29)
+    phsRejectBeforeActivationTimeDiffInNs = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationTimeDiffInNs];
+    if (phsRejectBeforeActivationTimeDiffInNs)
     {
-      v30 = v29;
-      v31 = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationTimeDiffInNs];
-      v32 = [v4 phsRejectBeforeActivationTimeDiffInNs];
-      v33 = [v31 isEqual:v32];
+      v30 = phsRejectBeforeActivationTimeDiffInNs;
+      phsRejectBeforeActivationTimeDiffInNs2 = [(MHSchemaMHVoiceTriggerRejectDetected *)self phsRejectBeforeActivationTimeDiffInNs];
+      phsRejectBeforeActivationTimeDiffInNs3 = [equalCopy phsRejectBeforeActivationTimeDiffInNs];
+      v33 = [phsRejectBeforeActivationTimeDiffInNs2 isEqual:phsRejectBeforeActivationTimeDiffInNs3];
 
       if (!v33)
       {
@@ -841,20 +841,20 @@ LABEL_8:
     {
     }
 
-    v12 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationTimeDiffInNs];
-    v13 = [v4 checkerHSRejectBeforeActivationTimeDiffInNs];
-    if ((v12 != 0) == (v13 == 0))
+    phsRejectBeforeActivationScores = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationTimeDiffInNs];
+    phsRejectBeforeActivationScores2 = [equalCopy checkerHSRejectBeforeActivationTimeDiffInNs];
+    if ((phsRejectBeforeActivationScores != 0) == (phsRejectBeforeActivationScores2 == 0))
     {
       goto LABEL_42;
     }
 
-    v34 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationTimeDiffInNs];
-    if (v34)
+    checkerHSRejectBeforeActivationTimeDiffInNs = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationTimeDiffInNs];
+    if (checkerHSRejectBeforeActivationTimeDiffInNs)
     {
-      v35 = v34;
-      v36 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationTimeDiffInNs];
-      v37 = [v4 checkerHSRejectBeforeActivationTimeDiffInNs];
-      v38 = [v36 isEqual:v37];
+      v35 = checkerHSRejectBeforeActivationTimeDiffInNs;
+      checkerHSRejectBeforeActivationTimeDiffInNs2 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerHSRejectBeforeActivationTimeDiffInNs];
+      checkerHSRejectBeforeActivationTimeDiffInNs3 = [equalCopy checkerHSRejectBeforeActivationTimeDiffInNs];
+      v38 = [checkerHSRejectBeforeActivationTimeDiffInNs2 isEqual:checkerHSRejectBeforeActivationTimeDiffInNs3];
 
       if (!v38)
       {
@@ -866,22 +866,22 @@ LABEL_8:
     {
     }
 
-    v12 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationTimeDiffInNs];
-    v13 = [v4 checkerJSRejectBeforeActivationTimeDiffInNs];
-    if ((v12 != 0) == (v13 == 0))
+    phsRejectBeforeActivationScores = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationTimeDiffInNs];
+    phsRejectBeforeActivationScores2 = [equalCopy checkerJSRejectBeforeActivationTimeDiffInNs];
+    if ((phsRejectBeforeActivationScores != 0) == (phsRejectBeforeActivationScores2 == 0))
     {
 LABEL_42:
 
       goto LABEL_43;
     }
 
-    v39 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationTimeDiffInNs];
-    if (v39)
+    checkerJSRejectBeforeActivationTimeDiffInNs = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationTimeDiffInNs];
+    if (checkerJSRejectBeforeActivationTimeDiffInNs)
     {
-      v40 = v39;
-      v41 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationTimeDiffInNs];
-      v42 = [v4 checkerJSRejectBeforeActivationTimeDiffInNs];
-      v43 = [v41 isEqual:v42];
+      v40 = checkerJSRejectBeforeActivationTimeDiffInNs;
+      checkerJSRejectBeforeActivationTimeDiffInNs2 = [(MHSchemaMHVoiceTriggerRejectDetected *)self checkerJSRejectBeforeActivationTimeDiffInNs];
+      checkerJSRejectBeforeActivationTimeDiffInNs3 = [equalCopy checkerJSRejectBeforeActivationTimeDiffInNs];
+      v43 = [checkerJSRejectBeforeActivationTimeDiffInNs2 isEqual:checkerJSRejectBeforeActivationTimeDiffInNs3];
 
       if (!v43)
       {
@@ -895,20 +895,20 @@ LABEL_42:
 
     v46 = self->_has;
     v47 = (*&v46 >> 3) & 1;
-    v48 = v4[88];
+    v48 = equalCopy[88];
     if (v47 == ((v48 >> 3) & 1))
     {
       if (v47)
       {
         phsThreshold = self->_phsThreshold;
-        [v4 phsThreshold];
+        [equalCopy phsThreshold];
         if (phsThreshold != v50)
         {
           goto LABEL_43;
         }
 
         v46 = self->_has;
-        v48 = v4[88];
+        v48 = equalCopy[88];
       }
 
       v51 = (*&v46 >> 4) & 1;
@@ -917,14 +917,14 @@ LABEL_42:
         if (v51)
         {
           pjsThreshold = self->_pjsThreshold;
-          [v4 pjsThreshold];
+          [equalCopy pjsThreshold];
           if (pjsThreshold != v53)
           {
             goto LABEL_43;
           }
 
           v46 = self->_has;
-          v48 = v4[88];
+          v48 = equalCopy[88];
         }
 
         v54 = (*&v46 >> 5) & 1;
@@ -933,20 +933,20 @@ LABEL_42:
           if (v54)
           {
             checkerHSThreshold = self->_checkerHSThreshold;
-            [v4 checkerHSThreshold];
+            [equalCopy checkerHSThreshold];
             if (checkerHSThreshold != v56)
             {
               goto LABEL_43;
             }
 
             v46 = self->_has;
-            v48 = v4[88];
+            v48 = equalCopy[88];
           }
 
           v57 = (*&v46 >> 6) & 1;
           if (v57 == ((v48 >> 6) & 1))
           {
-            if (!v57 || (checkerJSThreshold = self->_checkerJSThreshold, [v4 checkerJSThreshold], checkerJSThreshold == v59))
+            if (!v57 || (checkerJSThreshold = self->_checkerJSThreshold, [equalCopy checkerJSThreshold], checkerJSThreshold == v59))
             {
               v44 = 1;
               goto LABEL_44;
@@ -964,10 +964,10 @@ LABEL_44:
   return v44;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v67 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -1218,9 +1218,9 @@ LABEL_51:
 LABEL_52:
 }
 
-- (void)setHasCheckerJSThreshold:(BOOL)a3
+- (void)setHasCheckerJSThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 64;
   }
@@ -1233,9 +1233,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setHasCheckerHSThreshold:(BOOL)a3
+- (void)setHasCheckerHSThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 32;
   }
@@ -1248,9 +1248,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasPjsThreshold:(BOOL)a3
+- (void)setHasPjsThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 16;
   }
@@ -1263,9 +1263,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasPhsThreshold:(BOOL)a3
+- (void)setHasPhsThreshold:(BOOL)threshold
 {
-  if (a3)
+  if (threshold)
   {
     v3 = 8;
   }
@@ -1278,159 +1278,159 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (unint64_t)checkerJSRejectBeforeActivationTimeDiffInNsAtIndex:(unint64_t)a3
+- (unint64_t)checkerJSRejectBeforeActivationTimeDiffInNsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_checkerJSRejectBeforeActivationTimeDiffInNs objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedLongLongValue];
+  v3 = [(NSArray *)self->_checkerJSRejectBeforeActivationTimeDiffInNs objectAtIndexedSubscript:index];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)addCheckerJSRejectBeforeActivationTimeDiffInNs:(unint64_t)a3
+- (void)addCheckerJSRejectBeforeActivationTimeDiffInNs:(unint64_t)ns
 {
   checkerJSRejectBeforeActivationTimeDiffInNs = self->_checkerJSRejectBeforeActivationTimeDiffInNs;
   if (!checkerJSRejectBeforeActivationTimeDiffInNs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_checkerJSRejectBeforeActivationTimeDiffInNs;
-    self->_checkerJSRejectBeforeActivationTimeDiffInNs = v6;
+    self->_checkerJSRejectBeforeActivationTimeDiffInNs = array;
 
     checkerJSRejectBeforeActivationTimeDiffInNs = self->_checkerJSRejectBeforeActivationTimeDiffInNs;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:ns];
   [(NSArray *)checkerJSRejectBeforeActivationTimeDiffInNs addObject:v8];
 }
 
-- (unint64_t)checkerHSRejectBeforeActivationTimeDiffInNsAtIndex:(unint64_t)a3
+- (unint64_t)checkerHSRejectBeforeActivationTimeDiffInNsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_checkerHSRejectBeforeActivationTimeDiffInNs objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedLongLongValue];
+  v3 = [(NSArray *)self->_checkerHSRejectBeforeActivationTimeDiffInNs objectAtIndexedSubscript:index];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)addCheckerHSRejectBeforeActivationTimeDiffInNs:(unint64_t)a3
+- (void)addCheckerHSRejectBeforeActivationTimeDiffInNs:(unint64_t)ns
 {
   checkerHSRejectBeforeActivationTimeDiffInNs = self->_checkerHSRejectBeforeActivationTimeDiffInNs;
   if (!checkerHSRejectBeforeActivationTimeDiffInNs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_checkerHSRejectBeforeActivationTimeDiffInNs;
-    self->_checkerHSRejectBeforeActivationTimeDiffInNs = v6;
+    self->_checkerHSRejectBeforeActivationTimeDiffInNs = array;
 
     checkerHSRejectBeforeActivationTimeDiffInNs = self->_checkerHSRejectBeforeActivationTimeDiffInNs;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:ns];
   [(NSArray *)checkerHSRejectBeforeActivationTimeDiffInNs addObject:v8];
 }
 
-- (unint64_t)phsRejectBeforeActivationTimeDiffInNsAtIndex:(unint64_t)a3
+- (unint64_t)phsRejectBeforeActivationTimeDiffInNsAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_phsRejectBeforeActivationTimeDiffInNs objectAtIndexedSubscript:a3];
-  v4 = [v3 unsignedLongLongValue];
+  v3 = [(NSArray *)self->_phsRejectBeforeActivationTimeDiffInNs objectAtIndexedSubscript:index];
+  unsignedLongLongValue = [v3 unsignedLongLongValue];
 
-  return v4;
+  return unsignedLongLongValue;
 }
 
-- (void)addPhsRejectBeforeActivationTimeDiffInNs:(unint64_t)a3
+- (void)addPhsRejectBeforeActivationTimeDiffInNs:(unint64_t)ns
 {
   phsRejectBeforeActivationTimeDiffInNs = self->_phsRejectBeforeActivationTimeDiffInNs;
   if (!phsRejectBeforeActivationTimeDiffInNs)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_phsRejectBeforeActivationTimeDiffInNs;
-    self->_phsRejectBeforeActivationTimeDiffInNs = v6;
+    self->_phsRejectBeforeActivationTimeDiffInNs = array;
 
     phsRejectBeforeActivationTimeDiffInNs = self->_phsRejectBeforeActivationTimeDiffInNs;
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:ns];
   [(NSArray *)phsRejectBeforeActivationTimeDiffInNs addObject:v8];
 }
 
-- (float)checkerJSRejectBeforeActivationScoresAtIndex:(unint64_t)a3
+- (float)checkerJSRejectBeforeActivationScoresAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_checkerJSRejectBeforeActivationScores objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_checkerJSRejectBeforeActivationScores objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addCheckerJSRejectBeforeActivationScores:(float)a3
+- (void)addCheckerJSRejectBeforeActivationScores:(float)scores
 {
   checkerJSRejectBeforeActivationScores = self->_checkerJSRejectBeforeActivationScores;
   if (!checkerJSRejectBeforeActivationScores)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_checkerJSRejectBeforeActivationScores;
-    self->_checkerJSRejectBeforeActivationScores = v6;
+    self->_checkerJSRejectBeforeActivationScores = array;
 
     checkerJSRejectBeforeActivationScores = self->_checkerJSRejectBeforeActivationScores;
   }
 
-  *&v8 = a3;
+  *&v8 = scores;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)checkerJSRejectBeforeActivationScores addObject:v9];
 }
 
-- (float)checkerHSRejectBeforeActivationScoresAtIndex:(unint64_t)a3
+- (float)checkerHSRejectBeforeActivationScoresAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_checkerHSRejectBeforeActivationScores objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_checkerHSRejectBeforeActivationScores objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addCheckerHSRejectBeforeActivationScores:(float)a3
+- (void)addCheckerHSRejectBeforeActivationScores:(float)scores
 {
   checkerHSRejectBeforeActivationScores = self->_checkerHSRejectBeforeActivationScores;
   if (!checkerHSRejectBeforeActivationScores)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_checkerHSRejectBeforeActivationScores;
-    self->_checkerHSRejectBeforeActivationScores = v6;
+    self->_checkerHSRejectBeforeActivationScores = array;
 
     checkerHSRejectBeforeActivationScores = self->_checkerHSRejectBeforeActivationScores;
   }
 
-  *&v8 = a3;
+  *&v8 = scores;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)checkerHSRejectBeforeActivationScores addObject:v9];
 }
 
-- (float)phsRejectBeforeActivationScoresAtIndex:(unint64_t)a3
+- (float)phsRejectBeforeActivationScoresAtIndex:(unint64_t)index
 {
-  v3 = [(NSArray *)self->_phsRejectBeforeActivationScores objectAtIndexedSubscript:a3];
+  v3 = [(NSArray *)self->_phsRejectBeforeActivationScores objectAtIndexedSubscript:index];
   [v3 floatValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)addPhsRejectBeforeActivationScores:(float)a3
+- (void)addPhsRejectBeforeActivationScores:(float)scores
 {
   phsRejectBeforeActivationScores = self->_phsRejectBeforeActivationScores;
   if (!phsRejectBeforeActivationScores)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_phsRejectBeforeActivationScores;
-    self->_phsRejectBeforeActivationScores = v6;
+    self->_phsRejectBeforeActivationScores = array;
 
     phsRejectBeforeActivationScores = self->_phsRejectBeforeActivationScores;
   }
 
-  *&v8 = a3;
+  *&v8 = scores;
   v9 = [MEMORY[0x1E696AD98] numberWithFloat:v8];
   [(NSArray *)phsRejectBeforeActivationScores addObject:v9];
 }
 
-- (void)setHasCheckerJSRejectBeforeActivationCount:(BOOL)a3
+- (void)setHasCheckerJSRejectBeforeActivationCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -1443,9 +1443,9 @@ LABEL_52:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasCheckerHSRejectBeforeActivationCount:(BOOL)a3
+- (void)setHasCheckerHSRejectBeforeActivationCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 2;
   }

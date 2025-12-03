@@ -1,24 +1,24 @@
 @interface FCPersonalizationURLDomainMapping
-- (FCPersonalizationURLDomainMapping)initWithPBURLMappingDomain:(id)a3;
-- (id)tagsForPath:(id)a3;
+- (FCPersonalizationURLDomainMapping)initWithPBURLMappingDomain:(id)domain;
+- (id)tagsForPath:(id)path;
 @end
 
 @implementation FCPersonalizationURLDomainMapping
 
-- (FCPersonalizationURLDomainMapping)initWithPBURLMappingDomain:(id)a3
+- (FCPersonalizationURLDomainMapping)initWithPBURLMappingDomain:(id)domain
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  domainCopy = domain;
   v16.receiver = self;
   v16.super_class = FCPersonalizationURLDomainMapping;
   v5 = [(FCPersonalizationURLDomainMapping *)&v16 init];
   if (v5)
   {
-    [v4 averageSafariVisitsPerDay];
+    [domainCopy averageSafariVisitsPerDay];
     v5->_averageSafariVisitsPerDay = v6;
-    v7 = [v4 domain];
+    domain = [domainCopy domain];
 
-    if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+    if (!domain && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
     {
       v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"invalid nil value for '%s'", "domain.domain"];
       *buf = 136315906;
@@ -37,7 +37,7 @@
     v14[1] = 3221225472;
     v14[2] = __64__FCPersonalizationURLDomainMapping_initWithPBURLMappingDomain___block_invoke;
     v14[3] = &unk_1E7C36EC8;
-    v15 = v4;
+    v15 = domainCopy;
     v9 = [v8 fc_dictionary:v14];
     paths = v5->_paths;
     v5->_paths = v9;
@@ -175,11 +175,11 @@ void __64__FCPersonalizationURLDomainMapping_initWithPBURLMappingDomain___block_
   [v4 setObject:v16 forKeyedSubscript:@"sections"];
 }
 
-- (id)tagsForPath:(id)a3
+- (id)tagsForPath:(id)path
 {
-  v4 = a3;
-  v5 = [(FCPersonalizationURLDomainMapping *)self paths];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  pathCopy = path;
+  paths = [(FCPersonalizationURLDomainMapping *)self paths];
+  v6 = [paths objectForKeyedSubscript:pathCopy];
 
   return v6;
 }

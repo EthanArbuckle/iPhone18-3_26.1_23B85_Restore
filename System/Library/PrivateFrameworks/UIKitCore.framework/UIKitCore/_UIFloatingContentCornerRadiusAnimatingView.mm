@@ -1,13 +1,13 @@
 @interface _UIFloatingContentCornerRadiusAnimatingView
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3;
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key;
 @end
 
 @implementation _UIFloatingContentCornerRadiusAnimatingView
 
-- (BOOL)_shouldAnimatePropertyWithKey:(id)a3
+- (BOOL)_shouldAnimatePropertyWithKey:(id)key
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"cornerRadius"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"cornerRadius"])
   {
     v5 = 1;
   }
@@ -16,7 +16,7 @@
   {
     v7.receiver = self;
     v7.super_class = _UIFloatingContentCornerRadiusAnimatingView;
-    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:v4];
+    v5 = [(UIView *)&v7 _shouldAnimatePropertyWithKey:keyCopy];
   }
 
   return v5;

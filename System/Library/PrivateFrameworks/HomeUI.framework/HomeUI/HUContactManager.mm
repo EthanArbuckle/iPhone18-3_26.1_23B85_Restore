@@ -2,11 +2,11 @@
 + (id)sharedManager;
 - (CNMonogrammer)monogrammer;
 - (HUContactManager)init;
-- (id)contactForEmailAddress:(id)a3 keysToFetch:(id)a4;
-- (id)userDataFromEmail:(id)a3 monogramDiameter:(double)a4;
-- (void)contactStoreDidChange:(id)a3;
+- (id)contactForEmailAddress:(id)address keysToFetch:(id)fetch;
+- (id)userDataFromEmail:(id)email monogramDiameter:(double)diameter;
+- (void)contactStoreDidChange:(id)change;
 - (void)dealloc;
-- (void)setMonogramDiameter:(double)a3;
+- (void)setMonogramDiameter:(double)diameter;
 @end
 
 @implementation HUContactManager
@@ -45,8 +45,8 @@ void __33__HUContactManager_sharedManager__block_invoke()
     contactStore = v3->_contactStore;
     v3->_contactStore = v5;
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 addObserver:v3 selector:sel_contactStoreDidChange_ name:*MEMORY[0x277CBD140] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_contactStoreDidChange_ name:*MEMORY[0x277CBD140] object:0];
   }
 
   return v3;
@@ -54,15 +54,15 @@ void __33__HUContactManager_sharedManager__block_invoke()
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = HUContactManager;
   [(HUContactManager *)&v4 dealloc];
 }
 
-- (void)contactStoreDidChange:(id)a3
+- (void)contactStoreDidChange:(id)change
 {
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
@@ -72,28 +72,28 @@ void __33__HUContactManager_sharedManager__block_invoke()
   dispatch_async(MEMORY[0x277D85CD0], block);
 }
 
-- (id)contactForEmailAddress:(id)a3 keysToFetch:(id)a4
+- (id)contactForEmailAddress:(id)address keysToFetch:(id)fetch
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  addressCopy = address;
+  fetchCopy = fetch;
+  if (addressCopy)
   {
-    v8 = [(HUContactManager *)self cachedContactByEmails];
-    v9 = [v8 objectForKeyedSubscript:v6];
+    cachedContactByEmails = [(HUContactManager *)self cachedContactByEmails];
+    v9 = [cachedContactByEmails objectForKeyedSubscript:addressCopy];
 
-    if (v9 && [v9 areKeysAvailable:v7])
+    if (v9 && [v9 areKeysAvailable:fetchCopy])
     {
       v10 = v9;
     }
 
     else
     {
-      v11 = [v7 arrayByAddingObject:*MEMORY[0x277CBCFC0]];
-      v12 = [(HUContactManager *)self contactStore];
-      v13 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:v6];
+      v11 = [fetchCopy arrayByAddingObject:*MEMORY[0x277CBCFC0]];
+      contactStore = [(HUContactManager *)self contactStore];
+      v13 = [MEMORY[0x277CBDA58] predicateForContactsMatchingEmailAddress:addressCopy];
       v25 = 0;
-      v14 = [v12 unifiedContactsMatchingPredicate:v13 keysToFetch:v11 error:&v25];
+      v14 = [contactStore unifiedContactsMatchingPredicate:v13 keysToFetch:v11 error:&v25];
       v15 = v25;
 
       if (v14)
@@ -108,15 +108,15 @@ void __33__HUContactManager_sharedManager__block_invoke()
         v22[1] = 3221225472;
         v22[2] = __55__HUContactManager_contactForEmailAddress_keysToFetch___block_invoke;
         v22[3] = &unk_277DC4860;
-        v16 = v6;
+        v16 = addressCopy;
         v23 = v16;
         v24 = buf;
         [v14 enumerateObjectsUsingBlock:v22];
         v17 = *(*&buf[8] + 40);
         if (v17)
         {
-          v18 = [(HUContactManager *)self cachedContactByEmails];
-          v19 = [v18 mutableCopy];
+          cachedContactByEmails2 = [(HUContactManager *)self cachedContactByEmails];
+          v19 = [cachedContactByEmails2 mutableCopy];
 
           [v19 setObject:*(*&buf[8] + 40) forKey:v16];
           [(HUContactManager *)self setCachedContactByEmails:v19];
@@ -135,7 +135,7 @@ void __33__HUContactManager_sharedManager__block_invoke()
         if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          *&buf[4] = v6;
+          *&buf[4] = addressCopy;
           *&buf[12] = 2112;
           *&buf[14] = v15;
           _os_log_error_impl(&dword_20CEB6000, v20, OS_LOG_TYPE_ERROR, "unifiedContactsMatching email %@ error: %@", buf, 0x16u);
@@ -179,15 +179,15 @@ uint64_t __55__HUContactManager_contactForEmailAddress_keysToFetch___block_invok
   return v4;
 }
 
-- (id)userDataFromEmail:(id)a3 monogramDiameter:(double)a4
+- (id)userDataFromEmail:(id)email monogramDiameter:(double)diameter
 {
   v26[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  [(HUContactManager *)self setMonogramDiameter:a4];
-  if (!v6)
+  emailCopy = email;
+  [(HUContactManager *)self setMonogramDiameter:diameter];
+  if (!emailCopy)
   {
-    v6 = _HULocalizedStringWithDefaultValue(@"HUUnknownUser", @"HUUnknownUser", 1);
-    v12 = 0;
+    emailCopy = _HULocalizedStringWithDefaultValue(@"HUUnknownUser", @"HUUnknownUser", 1);
+    givenName = 0;
     v14 = 0;
     v9 = 0;
     goto LABEL_7;
@@ -196,50 +196,50 @@ uint64_t __55__HUContactManager_contactForEmailAddress_keysToFetch___block_invok
   v7 = [MEMORY[0x277CBDC70] descriptorForRequiredKeysIncludingImage:1];
   v26[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v26 count:1];
-  v9 = [(HUContactManager *)self contactForEmailAddress:v6 keysToFetch:v8];
+  v9 = [(HUContactManager *)self contactForEmailAddress:emailCopy keysToFetch:v8];
 
-  v10 = [(HUContactManager *)self monogrammer];
-  v11 = [v10 monogramForContact:v9];
+  monogrammer = [(HUContactManager *)self monogrammer];
+  v11 = [monogrammer monogramForContact:v9];
 
-  v12 = [v9 givenName];
-  v13 = [v9 familyName];
-  v14 = v13;
+  givenName = [v9 givenName];
+  familyName = [v9 familyName];
+  v14 = familyName;
   if (!v11)
   {
-    if (v12 && v13)
+    if (givenName && familyName)
     {
-      v15 = [(HUContactManager *)self monogrammer];
-      v16 = [v15 monogramForPersonWithFirstName:v12 lastName:v14];
+      monogrammer2 = [(HUContactManager *)self monogrammer];
+      silhouetteMonogram = [monogrammer2 monogramForPersonWithFirstName:givenName lastName:v14];
 LABEL_8:
-      v11 = v16;
+      v11 = silhouetteMonogram;
 
       goto LABEL_9;
     }
 
 LABEL_7:
-    v15 = [(HUContactManager *)self monogrammer];
-    v16 = [v15 silhouetteMonogram];
+    monogrammer2 = [(HUContactManager *)self monogrammer];
+    silhouetteMonogram = [monogrammer2 silhouetteMonogram];
     goto LABEL_8;
   }
 
 LABEL_9:
   v24[0] = @"kHUUserDataEmailNameKey";
   v24[1] = @"kHUUserDataImageKey";
-  v25[0] = v6;
+  v25[0] = emailCopy;
   v25[1] = v11;
   v17 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v25 forKeys:v24 count:2];
   v18 = [v17 mutableCopy];
 
-  v19 = v6;
+  v19 = emailCopy;
   v20 = v19;
-  if (v12 && v14)
+  if (givenName && v14)
   {
-    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", v12, v14];
+    v21 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %@", givenName, v14];
   }
 
-  else if (v12)
+  else if (givenName)
   {
-    v21 = v12;
+    v21 = givenName;
   }
 
   else
@@ -280,15 +280,15 @@ LABEL_17:
   return monogrammer;
 }
 
-- (void)setMonogramDiameter:(double)a3
+- (void)setMonogramDiameter:(double)diameter
 {
-  if (self->_monogramDiameter != a3 || !self->_monogrammer)
+  if (self->_monogramDiameter != diameter || !self->_monogrammer)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBDC70]) initWithStyle:0 diameter:a3];
+    v5 = [objc_alloc(MEMORY[0x277CBDC70]) initWithStyle:0 diameter:diameter];
     monogrammer = self->_monogrammer;
     self->_monogrammer = v5;
 
-    self->_monogramDiameter = a3;
+    self->_monogramDiameter = diameter;
   }
 }
 

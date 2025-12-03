@@ -1,19 +1,19 @@
 @interface CALNUNNotificationPresentationOptionsMapper
-+ (unint64_t)unNotificationPresentationOptionsFromCALNNotificationPresentationOptions:(unint64_t)a3;
++ (unint64_t)unNotificationPresentationOptionsFromCALNNotificationPresentationOptions:(unint64_t)options;
 @end
 
 @implementation CALNUNNotificationPresentationOptionsMapper
 
-+ (unint64_t)unNotificationPresentationOptionsFromCALNNotificationPresentationOptions:(unint64_t)a3
++ (unint64_t)unNotificationPresentationOptionsFromCALNNotificationPresentationOptions:(unint64_t)options
 {
-  if ((a3 & 4) != 0)
+  if ((options & 4) != 0)
   {
-    return a3 & 3 | 0x18;
+    return options & 3 | 0x18;
   }
 
   else
   {
-    return a3 & 3;
+    return options & 3;
   }
 }
 

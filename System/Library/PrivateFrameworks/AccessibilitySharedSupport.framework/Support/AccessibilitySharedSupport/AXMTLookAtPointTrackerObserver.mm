@@ -2,19 +2,19 @@
 - (AXMTLookAtPointTrackerObserver)init;
 - (AXMTLookAtPointTrackerObserverDelegate)delegate;
 - (CGPoint)_lookAtPoint;
-- (void)_initializationTimerFired:(id)a3;
+- (void)_initializationTimerFired:(id)fired;
 - (void)_stateUpdated;
-- (void)_updateError:(id)a3;
-- (void)_updateExpressions:(id)a3;
-- (void)_updateLookAtPoint:(CGPoint)a3;
-- (void)lookAtPointTracker:(id)a3 didFailToTrackFaceWithError:(id)a4;
-- (void)lookAtPointTracker:(id)a3 expressionEnded:(unint64_t)a4;
-- (void)lookAtPointTracker:(id)a3 expressionStarted:(unint64_t)a4;
-- (void)lookAtPointTracker:(id)a3 trackedOnScreenPoint:(CGPoint)a4;
-- (void)lookAtPointTracker:(id)a3 trackedOnScreenPoint:(CGPoint)a4 error:(id)a5;
-- (void)lookAtPointTrackerFoundFace:(id)a3;
-- (void)lookAtPointTrackerLostFace:(id)a3 error:(id)a4;
-- (void)lookAtPointTrackerWasInterrupted:(id)a3;
+- (void)_updateError:(id)error;
+- (void)_updateExpressions:(id)expressions;
+- (void)_updateLookAtPoint:(CGPoint)point;
+- (void)lookAtPointTracker:(id)tracker didFailToTrackFaceWithError:(id)error;
+- (void)lookAtPointTracker:(id)tracker expressionEnded:(unint64_t)ended;
+- (void)lookAtPointTracker:(id)tracker expressionStarted:(unint64_t)started;
+- (void)lookAtPointTracker:(id)tracker trackedOnScreenPoint:(CGPoint)point;
+- (void)lookAtPointTracker:(id)tracker trackedOnScreenPoint:(CGPoint)point error:(id)error;
+- (void)lookAtPointTrackerFoundFace:(id)face;
+- (void)lookAtPointTrackerLostFace:(id)face error:(id)error;
+- (void)lookAtPointTrackerWasInterrupted:(id)interrupted;
 @end
 
 @implementation AXMTLookAtPointTrackerObserver
@@ -39,38 +39,38 @@
   return v2;
 }
 
-- (void)lookAtPointTracker:(id)a3 trackedOnScreenPoint:(CGPoint)a4
+- (void)lookAtPointTracker:(id)tracker trackedOnScreenPoint:(CGPoint)point
 {
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1000171D4;
   block[3] = &unk_1000489E8;
   block[4] = self;
-  v5 = a4;
+  pointCopy = point;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)lookAtPointTracker:(id)a3 trackedOnScreenPoint:(CGPoint)a4 error:(id)a5
+- (void)lookAtPointTracker:(id)tracker trackedOnScreenPoint:(CGPoint)point error:(id)error
 {
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = sub_1000172C0;
   v6[3] = &unk_100048F28;
-  v8 = a4;
+  pointCopy = point;
   v6[4] = self;
-  v7 = a5;
-  v5 = v7;
+  errorCopy = error;
+  v5 = errorCopy;
   dispatch_async(&_dispatch_main_q, v6);
 }
 
-- (void)lookAtPointTracker:(id)a3 expressionStarted:(unint64_t)a4
+- (void)lookAtPointTracker:(id)tracker expressionStarted:(unint64_t)started
 {
   v6 = AXSSLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = AXSSHumanReadableDescriptionForMotionTrackingFacialExpression();
     *buf = 134218242;
-    v10 = a4;
+    startedCopy = started;
     v11 = 2112;
     v12 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "AXMTLookAtPointTrackerObserver: expressionStarted %lu %@", buf, 0x16u);
@@ -81,18 +81,18 @@
   v8[2] = sub_10001746C;
   v8[3] = &unk_1000489C0;
   v8[4] = self;
-  v8[5] = a4;
+  v8[5] = started;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
-- (void)lookAtPointTracker:(id)a3 expressionEnded:(unint64_t)a4
+- (void)lookAtPointTracker:(id)tracker expressionEnded:(unint64_t)ended
 {
   v6 = AXSSLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
     v7 = AXSSHumanReadableDescriptionForMotionTrackingFacialExpression();
     *buf = 134218242;
-    v10 = a4;
+    endedCopy = ended;
     v11 = 2112;
     v12 = v7;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "AXMTLookAtPointTrackerObserver: expressionEnded %lu %@", buf, 0x16u);
@@ -103,11 +103,11 @@
   v8[2] = sub_100017648;
   v8[3] = &unk_1000489C0;
   v8[4] = self;
-  v8[5] = a4;
+  v8[5] = ended;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
-- (void)lookAtPointTrackerFoundFace:(id)a3
+- (void)lookAtPointTrackerFoundFace:(id)face
 {
   v3 = AXSSLogForCategory();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEBUG))
@@ -116,9 +116,9 @@
   }
 }
 
-- (void)lookAtPointTrackerLostFace:(id)a3 error:(id)a4
+- (void)lookAtPointTrackerLostFace:(id)face error:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = AXSSLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -129,15 +129,15 @@
   v8[1] = 3221225472;
   v8[2] = sub_100017814;
   v8[3] = &unk_100048948;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
+  v9 = errorCopy;
+  selfCopy = self;
+  v7 = errorCopy;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
-- (void)lookAtPointTracker:(id)a3 didFailToTrackFaceWithError:(id)a4
+- (void)lookAtPointTracker:(id)tracker didFailToTrackFaceWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   v6 = AXSSLogForCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -149,12 +149,12 @@
   v8[2] = sub_1000179CC;
   v8[3] = &unk_100048948;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
+  v9 = errorCopy;
+  v7 = errorCopy;
   dispatch_async(&_dispatch_main_q, v8);
 }
 
-- (void)lookAtPointTrackerWasInterrupted:(id)a3
+- (void)lookAtPointTrackerWasInterrupted:(id)interrupted
 {
   v4 = AXSSLogForCategory();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
@@ -175,43 +175,43 @@
   v16 = objc_alloc_init(AXSSMotionTrackingState);
   [(AXMTLookAtPointTrackerObserver *)self _lookAtPoint];
   [v16 setLookAtPoint:?];
-  v3 = [(AXMTLookAtPointTrackerObserver *)self _expressions];
-  v4 = [v3 copy];
+  _expressions = [(AXMTLookAtPointTrackerObserver *)self _expressions];
+  v4 = [_expressions copy];
   [v16 setExpressions:v4];
 
-  v5 = [(AXMTLookAtPointTrackerObserver *)self _error];
-  [v16 setError:v5];
+  _error = [(AXMTLookAtPointTrackerObserver *)self _error];
+  [v16 setError:_error];
 
   [(AXMTLookAtPointTrackerObserver *)self setState:v16];
-  v6 = [(AXMTLookAtPointTrackerObserver *)self delegate];
+  delegate = [(AXMTLookAtPointTrackerObserver *)self delegate];
   LOBYTE(v4) = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v7 = [(AXMTLookAtPointTrackerObserver *)self delegate];
-    [v7 lookAtPointTrackerObserver:self updatedState:v16];
+    delegate2 = [(AXMTLookAtPointTrackerObserver *)self delegate];
+    [delegate2 lookAtPointTrackerObserver:self updatedState:v16];
   }
 
-  v8 = [(AXMTLookAtPointTrackerObserver *)self state];
-  v9 = [v8 error];
-  v10 = [v9 domain];
-  if (![v10 isEqualToString:AXSSMotionTrackingErrorDomain])
+  state = [(AXMTLookAtPointTrackerObserver *)self state];
+  error = [state error];
+  domain = [error domain];
+  if (![domain isEqualToString:AXSSMotionTrackingErrorDomain])
   {
     goto LABEL_8;
   }
 
-  v11 = [(AXMTLookAtPointTrackerObserver *)self state];
-  v12 = [v11 error];
-  if ([v12 code] != 11)
+  state2 = [(AXMTLookAtPointTrackerObserver *)self state];
+  error2 = [state2 error];
+  if ([error2 code] != 11)
   {
 
 LABEL_8:
     goto LABEL_9;
   }
 
-  v13 = [(AXMTLookAtPointTrackerObserver *)self _initializationTimer];
+  _initializationTimer = [(AXMTLookAtPointTrackerObserver *)self _initializationTimer];
 
-  if (!v13)
+  if (!_initializationTimer)
   {
     v14 = [NSTimer scheduledTimerWithTimeInterval:self target:"_initializationTimerFired:" selector:0 userInfo:0 repeats:7.0];
     [(AXMTLookAtPointTrackerObserver *)self set_initializationTimer:v14];
@@ -220,32 +220,32 @@ LABEL_8:
   }
 
 LABEL_9:
-  v15 = [(AXMTLookAtPointTrackerObserver *)self _initializationTimer];
-  [v15 invalidate];
+  _initializationTimer2 = [(AXMTLookAtPointTrackerObserver *)self _initializationTimer];
+  [_initializationTimer2 invalidate];
 
   [(AXMTLookAtPointTrackerObserver *)self set_initializationTimer:0];
 LABEL_10:
 }
 
-- (void)_initializationTimerFired:(id)a3
+- (void)_initializationTimerFired:(id)fired
 {
-  v4 = [(AXMTLookAtPointTrackerObserver *)self state];
-  v5 = [v4 error];
-  v6 = [v5 domain];
+  state = [(AXMTLookAtPointTrackerObserver *)self state];
+  error = [state error];
+  domain = [error domain];
   v7 = AXSSMotionTrackingErrorDomain;
-  if ([v6 isEqualToString:AXSSMotionTrackingErrorDomain])
+  if ([domain isEqualToString:AXSSMotionTrackingErrorDomain])
   {
-    v8 = [(AXMTLookAtPointTrackerObserver *)self state];
-    v9 = [v8 error];
-    v10 = [v9 code];
+    state2 = [(AXMTLookAtPointTrackerObserver *)self state];
+    error2 = [state2 error];
+    code = [error2 code];
 
-    if (v10 != 11)
+    if (code != 11)
     {
       goto LABEL_6;
     }
 
-    v4 = [[NSError alloc] initWithDomain:v7 code:12 userInfo:0];
-    [(AXMTLookAtPointTrackerObserver *)self _updateError:v4];
+    state = [[NSError alloc] initWithDomain:v7 code:12 userInfo:0];
+    [(AXMTLookAtPointTrackerObserver *)self _updateError:state];
     [(AXMTLookAtPointTrackerObserver *)self _stateUpdated];
   }
 
@@ -254,60 +254,60 @@ LABEL_10:
   }
 
 LABEL_6:
-  v11 = [(AXMTLookAtPointTrackerObserver *)self _initializationTimer];
-  [v11 invalidate];
+  _initializationTimer = [(AXMTLookAtPointTrackerObserver *)self _initializationTimer];
+  [_initializationTimer invalidate];
 
   [(AXMTLookAtPointTrackerObserver *)self set_initializationTimer:0];
 }
 
-- (void)_updateError:(id)a3
+- (void)_updateError:(id)error
 {
-  v8 = a3;
-  v4 = [(AXMTLookAtPointTrackerObserver *)self _error];
-  v5 = [v8 isEqual:v4];
+  errorCopy = error;
+  _error = [(AXMTLookAtPointTrackerObserver *)self _error];
+  v5 = [errorCopy isEqual:_error];
 
   if ((v5 & 1) == 0)
   {
-    v6 = v8;
-    if (v8)
+    v6 = errorCopy;
+    if (errorCopy)
     {
       [(AXMTLookAtPointTrackerObserver *)self set_lookAtPoint:AXSSMotionTrackingInvalidPoint[0], AXSSMotionTrackingInvalidPoint[1]];
-      v7 = [(AXMTLookAtPointTrackerObserver *)self _expressions];
-      [v7 removeAllObjects];
+      _expressions = [(AXMTLookAtPointTrackerObserver *)self _expressions];
+      [_expressions removeAllObjects];
 
-      v6 = v8;
+      v6 = errorCopy;
     }
 
     [(AXMTLookAtPointTrackerObserver *)self set_error:v6];
   }
 }
 
-- (void)_updateExpressions:(id)a3
+- (void)_updateExpressions:(id)expressions
 {
-  v9 = a3;
-  v4 = [(AXMTLookAtPointTrackerObserver *)self _expressions];
-  v5 = [v9 isEqual:v4];
+  expressionsCopy = expressions;
+  _expressions = [(AXMTLookAtPointTrackerObserver *)self _expressions];
+  v5 = [expressionsCopy isEqual:_expressions];
 
   if ((v5 & 1) == 0)
   {
-    v6 = [(AXMTLookAtPointTrackerObserver *)self _expressions];
-    [v6 removeAllObjects];
+    _expressions2 = [(AXMTLookAtPointTrackerObserver *)self _expressions];
+    [_expressions2 removeAllObjects];
 
-    v7 = [(AXMTLookAtPointTrackerObserver *)self _expressions];
-    v8 = [v9 allObjects];
-    [v7 addObjectsFromArray:v8];
+    _expressions3 = [(AXMTLookAtPointTrackerObserver *)self _expressions];
+    allObjects = [expressionsCopy allObjects];
+    [_expressions3 addObjectsFromArray:allObjects];
 
-    if ([v9 count])
+    if ([expressionsCopy count])
     {
       [(AXMTLookAtPointTrackerObserver *)self set_error:0];
     }
   }
 }
 
-- (void)_updateLookAtPoint:(CGPoint)a3
+- (void)_updateLookAtPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   [(AXMTLookAtPointTrackerObserver *)self _lookAtPoint];
   v9.x = x;
   v9.y = y;

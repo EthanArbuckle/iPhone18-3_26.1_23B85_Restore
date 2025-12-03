@@ -1,9 +1,9 @@
 @interface SVMediaPlaybackController
 - (AVPlayer)currentlyPlaying;
 - (SVMediaPlaybackController)init;
-- (void)registerPlayer:(id)a3;
-- (void)unregisterPlayer:(id)a3;
-- (void)updateCurrentlyPlaying:(id)a3;
+- (void)registerPlayer:(id)player;
+- (void)unregisterPlayer:(id)player;
+- (void)updateCurrentlyPlaying:(id)playing;
 @end
 
 @implementation SVMediaPlaybackController
@@ -15,26 +15,26 @@
   v2 = [(SVMediaPlaybackController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+    weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
     timeControlStatusObservers = v2->_timeControlStatusObservers;
-    v2->_timeControlStatusObservers = v3;
+    v2->_timeControlStatusObservers = weakToStrongObjectsMapTable;
   }
 
   return v2;
 }
 
-- (void)updateCurrentlyPlaying:(id)a3
+- (void)updateCurrentlyPlaying:(id)playing
 {
-  v5 = a3;
+  playingCopy = playing;
   WeakRetained = objc_loadWeakRetained(&self->_currentlyPlaying);
   [WeakRetained pause];
 
-  [(SVMediaPlaybackController *)self setCurrentlyPlaying:v5];
+  [(SVMediaPlaybackController *)self setCurrentlyPlaying:playingCopy];
 }
 
-- (void)registerPlayer:(id)a3
+- (void)registerPlayer:(id)player
 {
-  v4 = a3;
+  playerCopy = player;
   objc_initWeak(&location, self);
   v5 = [SVKeyValueObserver alloc];
   v8 = MEMORY[0x277D85DD0];
@@ -42,9 +42,9 @@
   v10 = __44__SVMediaPlaybackController_registerPlayer___block_invoke;
   v11 = &unk_279BC5D60;
   objc_copyWeak(&v12, &location);
-  v6 = [(SVKeyValueObserver *)v5 initWithKeyPath:@"timeControlStatus" ofObject:v4 withOptions:1 change:&v8];
+  v6 = [(SVKeyValueObserver *)v5 initWithKeyPath:@"timeControlStatus" ofObject:playerCopy withOptions:1 change:&v8];
   v7 = [(SVMediaPlaybackController *)self timeControlStatusObservers:v8];
-  [v7 setObject:v6 forKey:v4];
+  [v7 setObject:v6 forKey:playerCopy];
 
   objc_destroyWeak(&v12);
   objc_destroyWeak(&location);
@@ -89,11 +89,11 @@ void __44__SVMediaPlaybackController_registerPlayer___block_invoke(uint64_t a1, 
 LABEL_9:
 }
 
-- (void)unregisterPlayer:(id)a3
+- (void)unregisterPlayer:(id)player
 {
-  v4 = a3;
-  v5 = [(SVMediaPlaybackController *)self timeControlStatusObservers];
-  [v5 removeObjectForKey:v4];
+  playerCopy = player;
+  timeControlStatusObservers = [(SVMediaPlaybackController *)self timeControlStatusObservers];
+  [timeControlStatusObservers removeObjectForKey:playerCopy];
 }
 
 - (AVPlayer)currentlyPlaying

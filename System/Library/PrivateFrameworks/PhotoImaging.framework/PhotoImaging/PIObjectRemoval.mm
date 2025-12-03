@@ -1,47 +1,47 @@
 @interface PIObjectRemoval
-+ ($721907E0E1CDE8B6CD3FA271A8B25860)_tightImageSpaceBoundsForOperation:(SEL)a3 composition:(id)a4 error:(id)a5;
-+ (BOOL)_loadAndRegisterModelForKey:(id)a3 error:(id *)a4;
-+ (BOOL)_operationIsBrushStroke:(id)a3;
-+ (BOOL)brushStrokeExceedsSizeLimit:(id)a3 imageSize:(CGSize)a4 closeAndFillStroke:(BOOL)a5;
-+ (BOOL)loadAndRegisterModelForKey:(id)a3 error:(id *)a4;
-+ (BOOL)mask:(id)a3 containsPoint:(CGPoint)a4;
-+ (BOOL)mask:(id)a3 intersectsDiskWithOrigin:(CGPoint)a4 radius:(double)a5;
-+ (BOOL)maskIsMostlyWithinFace:(id)a3 imageSize:(id)a4 imageOrientation:(int64_t)a5 intAreaOverMaskAreaThreshold:(double)a6 intAreaOverFaceAreaThreshold:(double)a7 detectedFaces:(id)a8;
-+ (BOOL)objectMasksExceedSizeLimit:(id)a3 imageSize:(CGSize)a4;
-+ (BOOL)strokeIsEntirelyWithinFace:(id)a3 imageSize:(id)a4 imageOrientation:(int64_t)a5 detectedFaces:(id)a6;
-+ (CGRect)inflatedFaceRect:(CGRect)result imageOrientation:(int64_t)a4;
-+ (id)_instancesForOperation:(id)a3;
-+ (id)_instancesFromMaskIdentifier:(id)a3;
-+ (id)_maskSourceWithIdentifier:(id)a3 composition:(id)a4;
-+ (id)_newMaskForInstance:(unint64_t)a3 context:(id)a4 maskIdentifier:(id)a5 error:(id *)a6;
-+ (id)_newMaskForInstances:(id)a3 context:(id)a4 maskIdentifier:(id)a5 error:(id *)a6;
-+ (id)_newMaskImageForOperation:(id)a3 composition:(id)a4 error:(id *)a5;
-+ (id)_nonInstancedOperationsFromComposition:(id)a3;
-+ (id)createMaskForInstance:(unint64_t)a3 context:(id)a4 maskIdentifierPrefix:(id)a5 error:(id *)a6;
-+ (id)maskIdentifierForSegmentIndex:(unint64_t)a3;
-+ (id)maskIdentifierForSegmentIndices:(id)a3;
-+ (id)removeGatedInstances:(id)a3 context:(id)a4;
-+ (id)removeInstancesOccludedByOperations:(id)a3 fromInstances:(id)a4 composition:(id)a5 maskContext:(id)a6;
-+ (id)removeOperationsFromInstances:(id)a3 composition:(id)a4 context:(id)a5;
-+ (void)_warmUpOperation:(id)a3 context:(id)a4;
-+ (void)createAvailableObjectsMaskForContext:(id)a3 composition:(id)a4 completion:(id)a5;
-+ (void)createDeclutterMaskForContext:(id)a3 composition:(id)a4 completion:(id)a5;
-+ (void)createMaskContextForComposition:(id)a3 requestID:(id)a4 completionQueue:(id)a5 completion:(id)a6;
-+ (void)createSubjectMaskForContext:(id)a3 composition:(id)a4 completion:(id)a5;
++ ($721907E0E1CDE8B6CD3FA271A8B25860)_tightImageSpaceBoundsForOperation:(SEL)operation composition:(id)composition error:(id)error;
++ (BOOL)_loadAndRegisterModelForKey:(id)key error:(id *)error;
++ (BOOL)_operationIsBrushStroke:(id)stroke;
++ (BOOL)brushStrokeExceedsSizeLimit:(id)limit imageSize:(CGSize)size closeAndFillStroke:(BOOL)stroke;
++ (BOOL)loadAndRegisterModelForKey:(id)key error:(id *)error;
++ (BOOL)mask:(id)mask containsPoint:(CGPoint)point;
++ (BOOL)mask:(id)mask intersectsDiskWithOrigin:(CGPoint)origin radius:(double)radius;
++ (BOOL)maskIsMostlyWithinFace:(id)face imageSize:(id)size imageOrientation:(int64_t)orientation intAreaOverMaskAreaThreshold:(double)threshold intAreaOverFaceAreaThreshold:(double)areaThreshold detectedFaces:(id)faces;
++ (BOOL)objectMasksExceedSizeLimit:(id)limit imageSize:(CGSize)size;
++ (BOOL)strokeIsEntirelyWithinFace:(id)face imageSize:(id)size imageOrientation:(int64_t)orientation detectedFaces:(id)faces;
++ (CGRect)inflatedFaceRect:(CGRect)result imageOrientation:(int64_t)orientation;
++ (id)_instancesForOperation:(id)operation;
++ (id)_instancesFromMaskIdentifier:(id)identifier;
++ (id)_maskSourceWithIdentifier:(id)identifier composition:(id)composition;
++ (id)_newMaskForInstance:(unint64_t)instance context:(id)context maskIdentifier:(id)identifier error:(id *)error;
++ (id)_newMaskForInstances:(id)instances context:(id)context maskIdentifier:(id)identifier error:(id *)error;
++ (id)_newMaskImageForOperation:(id)operation composition:(id)composition error:(id *)error;
++ (id)_nonInstancedOperationsFromComposition:(id)composition;
++ (id)createMaskForInstance:(unint64_t)instance context:(id)context maskIdentifierPrefix:(id)prefix error:(id *)error;
++ (id)maskIdentifierForSegmentIndex:(unint64_t)index;
++ (id)maskIdentifierForSegmentIndices:(id)indices;
++ (id)removeGatedInstances:(id)instances context:(id)context;
++ (id)removeInstancesOccludedByOperations:(id)operations fromInstances:(id)instances composition:(id)composition maskContext:(id)context;
++ (id)removeOperationsFromInstances:(id)instances composition:(id)composition context:(id)context;
++ (void)_warmUpOperation:(id)operation context:(id)context;
++ (void)createAvailableObjectsMaskForContext:(id)context composition:(id)composition completion:(id)completion;
++ (void)createDeclutterMaskForContext:(id)context composition:(id)composition completion:(id)completion;
++ (void)createMaskContextForComposition:(id)composition requestID:(id)d completionQueue:(id)queue completion:(id)completion;
++ (void)createSubjectMaskForContext:(id)context composition:(id)composition completion:(id)completion;
 + (void)initialize;
-+ (void)updateMaskContext:(id)a3 forComposition:(id)a4 requestID:(id)a5 completionQueue:(id)a6 completion:(id)a7;
++ (void)updateMaskContext:(id)context forComposition:(id)composition requestID:(id)d completionQueue:(id)queue completion:(id)completion;
 + (void)warmUpResources;
 @end
 
 @implementation PIObjectRemoval
 
-+ (BOOL)brushStrokeExceedsSizeLimit:(id)a3 imageSize:(CGSize)a4 closeAndFillStroke:(BOOL)a5
++ (BOOL)brushStrokeExceedsSizeLimit:(id)limit imageSize:(CGSize)size closeAndFillStroke:(BOOL)stroke
 {
-  v9 = a5;
-  height = a4.height;
-  width = a4.width;
+  strokeCopy = stroke;
+  height = size.height;
+  width = size.width;
   v59 = *MEMORY[0x1E69E9840];
-  v12 = a3;
+  limitCopy = limit;
   if (width == 0.0 || height == 0.0 || (width == *MEMORY[0x1E69BDDB0] ? (v13 = height == *(MEMORY[0x1E69BDDB0] + 8)) : (v13 = 0), v13))
   {
     v40 = NUAssertLogger_13001();
@@ -65,8 +65,8 @@
         v47 = dispatch_get_specific(*v42);
         v48 = MEMORY[0x1E696AF00];
         v49 = v47;
-        v50 = [v48 callStackSymbols];
-        v5 = [v50 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v48 callStackSymbols];
+        v5 = [callStackSymbols componentsJoinedByString:@"\n"];
         *v58 = 138543618;
         *&v58[4] = v47;
         *&v58[12] = 2114;
@@ -77,8 +77,8 @@
 
     else if (v44)
     {
-      v45 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v46 = [v45 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v46 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *v58 = 138543362;
       *&v58[4] = v46;
       _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", v58, 0xCu);
@@ -90,7 +90,7 @@ LABEL_35:
     goto LABEL_15;
   }
 
-  v14 = v12;
+  v14 = limitCopy;
   v15 = +[PIGlobalSettings globalSettings];
   [v15 inpaintMaxAreaPercentage];
   v17 = v16;
@@ -112,10 +112,10 @@ LABEL_35:
     goto LABEL_25;
   }
 
-  v19 = [v14 ciImageTiled:0 closed:1 pressureMode:2 filled:v9];
+  v19 = [v14 ciImageTiled:0 closed:1 pressureMode:2 filled:strokeCopy];
   v20 = MEMORY[0x1E695F658];
-  v21 = [MEMORY[0x1E695F610] blackColor];
-  v22 = [v20 imageWithColor:v21];
+  blackColor = [MEMORY[0x1E695F610] blackColor];
+  v22 = [v20 imageWithColor:blackColor];
 
   v52 = v22;
   v53 = v19;
@@ -198,12 +198,12 @@ LABEL_25:
   return v32;
 }
 
-+ (BOOL)objectMasksExceedSizeLimit:(id)a3 imageSize:(CGSize)a4
++ (BOOL)objectMasksExceedSizeLimit:(id)limit imageSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
+  height = size.height;
+  width = size.width;
   v66 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  limitCopy = limit;
   if (width == 0.0 || height == 0.0 || (width == *MEMORY[0x1E69BDDB0] ? (v7 = height == *(MEMORY[0x1E69BDDB0] + 8)) : (v7 = 0), v7))
   {
     v34 = NUAssertLogger_13001();
@@ -226,8 +226,8 @@ LABEL_25:
         v42 = dispatch_get_specific(*v36);
         v43 = MEMORY[0x1E696AF00];
         v44 = v42;
-        v45 = [v43 callStackSymbols];
-        v46 = [v45 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v43 callStackSymbols];
+        v46 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v42;
         *&buf[12] = 2114;
@@ -238,8 +238,8 @@ LABEL_25:
 
     else if (v39)
     {
-      v40 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v41 = [v40 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v41 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v41;
       _os_log_error_impl(&dword_1C7694000, v38, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -248,7 +248,7 @@ LABEL_25:
     _NUAssertFailHandler();
   }
 
-  v8 = v6;
+  v8 = limitCopy;
   v9 = +[PIGlobalSettings globalSettings];
   [v9 inpaintMaxAreaPercentage];
   v11 = v10;
@@ -313,7 +313,7 @@ LABEL_25:
     goto LABEL_28;
   }
 
-  v21 = [MEMORY[0x1E695F620] context];
+  context = [MEMORY[0x1E695F620] context];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -335,8 +335,8 @@ LABEL_25:
         }
 
         v28 = MEMORY[0x1E69B3B68];
-        v29 = [*(*(&v47 + 1) + 8 * j) buffer];
-        v30 = [v28 propertiesForMask:v29 context:v21];
+        buffer = [*(*(&v47 + 1) + 8 * j) buffer];
+        v30 = [v28 propertiesForMask:buffer context:context];
 
         [v30 density];
         v26 = v26 + v31;
@@ -367,32 +367,32 @@ LABEL_28:
   return v32;
 }
 
-+ (CGRect)inflatedFaceRect:(CGRect)result imageOrientation:(int64_t)a4
++ (CGRect)inflatedFaceRect:(CGRect)result imageOrientation:(int64_t)orientation
 {
-  if (a4 <= 8)
+  if (orientation <= 8)
   {
-    if (((1 << a4) & 0x18) != 0)
+    if (((1 << orientation) & 0x18) != 0)
     {
       result.origin.y = result.origin.y - (result.size.height * 1.33 - result.size.height);
       result.size.height = result.size.height * 1.33;
       return result;
     }
 
-    if (((1 << a4) & 0x60) != 0)
+    if (((1 << orientation) & 0x60) != 0)
     {
       result.origin.x = result.origin.x - (result.size.width * 1.33 - result.size.width);
       result.size.width = result.size.width * 1.33;
       return result;
     }
 
-    if (((1 << a4) & 0x180) != 0)
+    if (((1 << orientation) & 0x180) != 0)
     {
       result.size.width = result.size.width * 1.33;
       return result;
     }
   }
 
-  if ((a4 - 1) < 2)
+  if ((orientation - 1) < 2)
   {
     result.size.height = result.size.height * 1.33;
   }
@@ -400,14 +400,14 @@ LABEL_28:
   return result;
 }
 
-+ (BOOL)strokeIsEntirelyWithinFace:(id)a3 imageSize:(id)a4 imageOrientation:(int64_t)a5 detectedFaces:(id)a6
++ (BOOL)strokeIsEntirelyWithinFace:(id)face imageSize:(id)size imageOrientation:(int64_t)orientation detectedFaces:(id)faces
 {
   v33 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a6;
-  if (v9)
+  faceCopy = face;
+  facesCopy = faces;
+  if (faceCopy)
   {
-    [v9 extent];
+    [faceCopy extent];
   }
 
   else
@@ -425,7 +425,7 @@ LABEL_28:
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v19 = v10;
+  v19 = facesCopy;
   v20 = [v19 countByEnumeratingWithState:&v26 objects:v32 count:16];
   if (v20)
   {
@@ -441,7 +441,7 @@ LABEL_28:
         }
 
         [*(*(&v26 + 1) + 8 * i) boundingBox];
-        [a1 inflatedFaceRect:a5 imageOrientation:?];
+        [self inflatedFaceRect:orientation imageOrientation:?];
         NURectDenormalize();
         v35.origin.x = v12;
         v35.origin.y = v14;
@@ -470,13 +470,13 @@ LABEL_14:
   return v24;
 }
 
-+ (BOOL)maskIsMostlyWithinFace:(id)a3 imageSize:(id)a4 imageOrientation:(int64_t)a5 intAreaOverMaskAreaThreshold:(double)a6 intAreaOverFaceAreaThreshold:(double)a7 detectedFaces:(id)a8
++ (BOOL)maskIsMostlyWithinFace:(id)face imageSize:(id)size imageOrientation:(int64_t)orientation intAreaOverMaskAreaThreshold:(double)threshold intAreaOverFaceAreaThreshold:(double)areaThreshold detectedFaces:(id)faces
 {
-  var1 = a4.var1;
-  var0 = a4.var0;
+  var1 = size.var1;
+  var0 = size.var0;
   v139 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a8;
+  faceCopy = face;
+  facesCopy = faces;
   if (NUPixelSizeIsEmpty())
   {
     v77 = NUAssertLogger_13001();
@@ -499,8 +499,8 @@ LABEL_14:
         v90 = dispatch_get_specific(*v79);
         v91 = MEMORY[0x1E696AF00];
         v92 = v90;
-        v93 = [v91 callStackSymbols];
-        v94 = [v93 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v91 callStackSymbols];
+        v94 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v90;
         *&buf[12] = 2114;
@@ -512,8 +512,8 @@ LABEL_14:
     else if (v82)
     {
 LABEL_69:
-      v88 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v89 = [v88 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v89 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v89;
       _os_log_error_impl(&dword_1C7694000, v81, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -525,7 +525,7 @@ LABEL_75:
     __break(1u);
   }
 
-  [v15 extent];
+  [faceCopy extent];
   if (CGRectIsEmpty(v142))
   {
     v83 = NUAssertLogger_13001();
@@ -556,8 +556,8 @@ LABEL_75:
       v95 = dispatch_get_specific(*v85);
       v96 = MEMORY[0x1E696AF00];
       v97 = v95;
-      v98 = [v96 callStackSymbols];
-      v99 = [v98 componentsJoinedByString:@"\n"];
+      callStackSymbols3 = [v96 callStackSymbols];
+      v99 = [callStackSymbols3 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *&buf[4] = v95;
       *&buf[12] = 2114;
@@ -568,7 +568,7 @@ LABEL_75:
     goto LABEL_75;
   }
 
-  [v15 extent];
+  [faceCopy extent];
   if (v17 == 0.0 || v18 == 0.0 || (v18 == *(MEMORY[0x1E69BDDB0] + 8) ? (v19 = v17 == *MEMORY[0x1E69BDDB0]) : (v19 = 0), v19))
   {
     v20 = 0.0;
@@ -589,20 +589,20 @@ LABEL_75:
   v123[1] = 3221225472;
   v123[2] = __141__PIObjectRemoval_maskIsMostlyWithinFace_imageSize_imageOrientation_intAreaOverMaskAreaThreshold_intAreaOverFaceAreaThreshold_detectedFaces___block_invoke;
   v123[3] = &unk_1E82AB030;
-  v126 = a1;
-  v127 = a5;
+  selfCopy = self;
+  orientationCopy = orientation;
   v128 = v20;
-  v129 = a6;
-  v105 = v15;
+  thresholdCopy = threshold;
+  v105 = faceCopy;
   v124 = v105;
   v125 = buf;
-  v130 = a7;
+  areaThresholdCopy = areaThreshold;
   v21 = MEMORY[0x1CCA61740](v123);
   v121 = 0u;
   v122 = 0u;
   v119 = 0u;
   v120 = 0u;
-  obj = v16;
+  obj = facesCopy;
   v22 = [obj countByEnumeratingWithState:&v119 objects:v134 count:16];
   if (v22)
   {
@@ -629,13 +629,13 @@ LABEL_75:
           goto LABEL_59;
         }
 
-        v24 = [v23 landmarks];
+        landmarks = [v23 landmarks];
         v25 = +[PIGlobalSettings globalSettings];
-        v26 = [v25 inpaintApplySafetyFilterOnFaceLandmarks];
-        v109 = v24;
-        if (v24)
+        inpaintApplySafetyFilterOnFaceLandmarks = [v25 inpaintApplySafetyFilterOnFaceLandmarks];
+        v109 = landmarks;
+        if (landmarks)
         {
-          v27 = v26;
+          v27 = inpaintApplySafetyFilterOnFaceLandmarks;
         }
 
         else
@@ -646,11 +646,11 @@ LABEL_75:
         if (v27)
         {
           v132[0] = @"leftEye";
-          v28 = [v109 leftEye];
+          leftEye = [v109 leftEye];
           v132[1] = @"rightEye";
-          v133[0] = v28;
-          v29 = [v109 rightEye];
-          v133[1] = v29;
+          v133[0] = leftEye;
+          rightEye = [v109 rightEye];
+          v133[1] = rightEye;
           v30 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v133 forKeys:v132 count:2];
 
           v31 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v30, "count")}];
@@ -918,12 +918,12 @@ BOOL __141__PIObjectRemoval_maskIsMostlyWithinFace_imageSize_imageOrientation_in
   return v35;
 }
 
-+ (BOOL)mask:(id)a3 intersectsDiskWithOrigin:(CGPoint)a4 radius:(double)a5
++ (BOOL)mask:(id)mask intersectsDiskWithOrigin:(CGPoint)origin radius:(double)radius
 {
-  y = a4.y;
-  x = a4.x;
+  y = origin.y;
+  x = origin.x;
   v65 = *MEMORY[0x1E69E9840];
-  v9 = a3;
+  maskCopy = mask;
   v10 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -934,9 +934,9 @@ BOOL __141__PIObjectRemoval_maskIsMostlyWithinFace_imageSize_imageOrientation_in
   v12 = *MEMORY[0x1E69B3D80];
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
-    if (v9)
+    if (maskCopy)
     {
-      [v9 extent];
+      [maskCopy extent];
     }
 
     else
@@ -951,13 +951,13 @@ BOOL __141__PIObjectRemoval_maskIsMostlyWithinFace_imageSize_imageOrientation_in
     *&buf[12] = 2048;
     *&buf[14] = y;
     *&buf[22] = 2048;
-    *&buf[24] = a5;
+    *&buf[24] = radius;
     v63 = 2112;
     v64 = v13;
     _os_log_impl(&dword_1C7694000, v12, OS_LOG_TYPE_INFO, "Cleanup: exclusion mask disk sampling with origin (%.1f, %.1f) and radius %.1f in mask extent: %@", buf, 0x2Au);
   }
 
-  if (a5 <= 0.5)
+  if (radius <= 0.5)
   {
     if (*v10 != -1)
     {
@@ -973,14 +973,14 @@ BOOL __141__PIObjectRemoval_maskIsMostlyWithinFace_imageSize_imageOrientation_in
     }
 
 LABEL_26:
-    v22 = [a1 mask:v9 containsPoint:{x, y}];
+    v22 = [self mask:maskCopy containsPoint:{x, y}];
     goto LABEL_32;
   }
 
   NUPixelRectFromCGRect();
-  if (v9)
+  if (maskCopy)
   {
-    [v9 extent];
+    [maskCopy extent];
   }
 
   else
@@ -1009,10 +1009,10 @@ LABEL_26:
     goto LABEL_31;
   }
 
-  v16 = [v9 buffer];
-  v17 = [v16 CVPixelBuffer];
+  buffer = [maskCopy buffer];
+  cVPixelBuffer = [buffer CVPixelBuffer];
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(v17);
+  PixelFormatType = CVPixelBufferGetPixelFormatType(cVPixelBuffer);
   v19 = PixelFormatType;
   if (PixelFormatType != 1278226488 && PixelFormatType != 1278226534)
   {
@@ -1038,8 +1038,8 @@ LABEL_26:
         v52 = dispatch_get_specific(*v46);
         v53 = MEMORY[0x1E696AF00];
         v54 = v52;
-        v55 = [v53 callStackSymbols];
-        v56 = [v55 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v53 callStackSymbols];
+        v56 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         *&buf[4] = v52;
         *&buf[12] = 2114;
@@ -1050,8 +1050,8 @@ LABEL_26:
 
     else if (v49)
     {
-      v50 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v51 = [v50 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v51 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       *&buf[4] = v51;
       _os_log_error_impl(&dword_1C7694000, v48, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1063,25 +1063,25 @@ LABEL_26:
     return [(PIObjectRemoval *)v57 mask:v58 containsPoint:v59, v66];
   }
 
-  CVPixelBufferLockBaseAddress(v17, 1uLL);
-  BaseAddress = CVPixelBufferGetBaseAddress(v17);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(v17);
-  if (a5 < 0.0)
+  CVPixelBufferLockBaseAddress(cVPixelBuffer, 1uLL);
+  BaseAddress = CVPixelBufferGetBaseAddress(cVPixelBuffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(cVPixelBuffer);
+  if (radius < 0.0)
   {
-    CVPixelBufferUnlockBaseAddress(v17, 1uLL);
+    CVPixelBufferUnlockBaseAddress(cVPixelBuffer, 1uLL);
     goto LABEL_21;
   }
 
   v27 = BytesPerRow;
-  v60 = a1;
+  selfCopy = self;
   v61 = y;
   v28 = 0;
-  v29 = -a5;
+  v29 = -radius;
   while (1)
   {
     v30 = 0.0;
     v31 = 1.0;
-    if (a5 >= 5.0)
+    if (radius >= 5.0)
     {
       v30 = 1.0;
       if ((vcvtmd_s64_f64(v29) & 1) == 0)
@@ -1092,19 +1092,19 @@ LABEL_26:
       v31 = 2.0;
     }
 
-    v32 = v30 - a5;
-    if (v30 - a5 <= a5)
+    v32 = v30 - radius;
+    if (v30 - radius <= radius)
     {
       break;
     }
 
 LABEL_55:
     v29 = v29 + 1.0;
-    if (v29 > a5)
+    if (v29 > radius)
     {
-      CVPixelBufferUnlockBaseAddress(v17, 1uLL);
+      CVPixelBufferUnlockBaseAddress(cVPixelBuffer, 1uLL);
       y = v61;
-      a1 = v60;
+      self = selfCopy;
       v11 = MEMORY[0x1E69B3D80];
       v10 = MEMORY[0x1E69B3D78];
       if (v28)
@@ -1149,14 +1149,14 @@ LABEL_25:
   while (1)
   {
     v34 = v29 * v29 + v32 * v32;
-    if (a5 > 2.0 && v34 > a5 * a5)
+    if (radius > 2.0 && v34 > radius * radius)
     {
       goto LABEL_54;
     }
 
-    if (v9)
+    if (maskCopy)
     {
-      [v9 extent];
+      [maskCopy extent];
     }
 
     else
@@ -1170,7 +1170,7 @@ LABEL_25:
       goto LABEL_54;
     }
 
-    v37 = BaseAddress + (CVPixelBufferGetHeight(v17) + ~v33) * v27;
+    v37 = BaseAddress + (CVPixelBufferGetHeight(cVPixelBuffer) + ~v33) * v27;
     if (v19 == 1278226488)
     {
       break;
@@ -1186,7 +1186,7 @@ LABEL_53:
     v28 = 1;
 LABEL_54:
     v32 = v31 + v32;
-    if (v32 > a5)
+    if (v32 > radius)
     {
       goto LABEL_55;
     }
@@ -1200,7 +1200,7 @@ LABEL_52:
     goto LABEL_53;
   }
 
-  CVPixelBufferUnlockBaseAddress(v17, 1uLL);
+  CVPixelBufferUnlockBaseAddress(cVPixelBuffer, 1uLL);
   if (*MEMORY[0x1E69B3D78] != -1)
   {
     dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_309_13016);
@@ -1226,16 +1226,16 @@ LABEL_32:
   return v22;
 }
 
-+ (BOOL)mask:(id)a3 containsPoint:(CGPoint)a4
++ (BOOL)mask:(id)mask containsPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v37 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  maskCopy = mask;
   NUPixelPointFromCGPoint();
-  if (v6)
+  if (maskCopy)
   {
-    [v6 extent];
+    [maskCopy extent];
   }
 
   else
@@ -1251,14 +1251,14 @@ LABEL_15:
     return v15;
   }
 
-  v7 = [v6 buffer];
-  v8 = [v7 CVPixelBuffer];
+  buffer = [maskCopy buffer];
+  cVPixelBuffer = [buffer CVPixelBuffer];
 
-  PixelFormatType = CVPixelBufferGetPixelFormatType(v8);
-  CVPixelBufferLockBaseAddress(v8, 1uLL);
-  BaseAddress = CVPixelBufferGetBaseAddress(v8);
-  BytesPerRow = CVPixelBufferGetBytesPerRow(v8);
-  v12 = BaseAddress + (CVPixelBufferGetHeight(v8) + ~vcvtmd_u64_f64(y)) * BytesPerRow;
+  PixelFormatType = CVPixelBufferGetPixelFormatType(cVPixelBuffer);
+  CVPixelBufferLockBaseAddress(cVPixelBuffer, 1uLL);
+  BaseAddress = CVPixelBufferGetBaseAddress(cVPixelBuffer);
+  BytesPerRow = CVPixelBufferGetBytesPerRow(cVPixelBuffer);
+  v12 = BaseAddress + (CVPixelBufferGetHeight(cVPixelBuffer) + ~vcvtmd_u64_f64(y)) * BytesPerRow;
   if (PixelFormatType == 1278226488)
   {
     LOBYTE(v13) = *(v12 + vcvtmd_s64_f64(x));
@@ -1270,7 +1270,7 @@ LABEL_15:
   {
     v14 = *(v12 + 4 * vcvtmd_s64_f64(x));
 LABEL_10:
-    CVPixelBufferUnlockBaseAddress(v8, 1uLL);
+    CVPixelBufferUnlockBaseAddress(cVPixelBuffer, 1uLL);
     if (*MEMORY[0x1E69B3D78] != -1)
     {
       dispatch_once(MEMORY[0x1E69B3D78], &__block_literal_global_309_13016);
@@ -1314,8 +1314,8 @@ LABEL_10:
       v28 = dispatch_get_specific(*v22);
       v29 = MEMORY[0x1E696AF00];
       v30 = v28;
-      v31 = [v29 callStackSymbols];
-      v32 = [v31 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v29 callStackSymbols];
+      v32 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       *&buf[4] = v28;
       *&buf[12] = 2114;
@@ -1326,8 +1326,8 @@ LABEL_10:
 
   else if (v25)
   {
-    v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v27 = [v26 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543362;
     *&buf[4] = v27;
     _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1339,15 +1339,15 @@ LABEL_10:
   return [(PIObjectRemoval *)v33 _instancesFromMaskIdentifier:v34, v35];
 }
 
-+ (id)_instancesFromMaskIdentifier:(id)a3
++ (id)_instancesFromMaskIdentifier:(id)identifier
 {
   v26 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E696AC90] indexSet];
-  v5 = [v3 rangeOfString:@"instances:"];
+  identifierCopy = identifier;
+  indexSet = [MEMORY[0x1E696AC90] indexSet];
+  v5 = [identifierCopy rangeOfString:@"instances:"];
   if (v5 != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v3 substringFromIndex:v5 + v6];
+    v7 = [identifierCopy substringFromIndex:v5 + v6];
     v8 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:@"[]"];
     v9 = [MEMORY[0x1E696AB08] characterSetWithCharactersInString:{@", "}];
     v20 = v7;
@@ -1383,53 +1383,53 @@ LABEL_10:
     }
 
     v18 = [v12 copy];
-    v4 = v18;
+    indexSet = v18;
   }
 
-  return v4;
+  return indexSet;
 }
 
-+ (id)maskIdentifierForSegmentIndex:(unint64_t)a3
++ (id)maskIdentifierForSegmentIndex:(unint64_t)index
 {
-  v4 = [MEMORY[0x1E696AC90] indexSetWithIndex:a3];
-  v5 = [a1 maskIdentifierForSegmentIndices:v4];
+  v4 = [MEMORY[0x1E696AC90] indexSetWithIndex:index];
+  v5 = [self maskIdentifierForSegmentIndices:v4];
 
   return v5;
 }
 
-+ (id)maskIdentifierForSegmentIndices:(id)a3
++ (id)maskIdentifierForSegmentIndices:(id)indices
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = PIStringFromIndexSet(a3);
+  v4 = PIStringFromIndexSet(indices);
   v5 = [v3 stringWithFormat:@"groupSelect-instances:%@", v4];
 
   return v5;
 }
 
-+ (void)createSubjectMaskForContext:(id)a3 composition:(id)a4 completion:(id)a5
++ (void)createSubjectMaskForContext:(id)context composition:(id)composition completion:(id)completion
 {
-  v9 = a3;
-  v6 = a5;
-  v7 = [v9 subjectMask];
+  contextCopy = context;
+  completionCopy = completion;
+  subjectMask = [contextCopy subjectMask];
 
-  if (v7)
+  if (subjectMask)
   {
-    v8 = [v9 subjectMask];
-    v6[2](v6, v8, 0);
+    subjectMask2 = [contextCopy subjectMask];
+    completionCopy[2](completionCopy, subjectMask2, 0);
   }
 
   else
   {
-    v8 = [MEMORY[0x1E69B3A48] missingError:@"No subject buffer" object:0];
-    (v6)[2](v6, 0, v8);
+    subjectMask2 = [MEMORY[0x1E69B3A48] missingError:@"No subject buffer" object:0];
+    (completionCopy)[2](completionCopy, 0, subjectMask2);
   }
 }
 
-+ (void)createDeclutterMaskForContext:(id)a3 composition:(id)a4 completion:(id)a5
++ (void)createDeclutterMaskForContext:(id)context composition:(id)composition completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  compositionCopy = composition;
+  completionCopy = completion;
   v11 = s_log_13100;
   v12 = v11;
   v13 = &unk_1EC25E000;
@@ -1440,15 +1440,15 @@ LABEL_10:
     _os_signpost_emit_with_name_impl(&dword_1C7694000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v14, "PIObjectRemoval.declutterMask", "", buf, 2u);
   }
 
-  v15 = [v8 segmentationResult];
-  v16 = [v15 backgroundInstances];
+  segmentationResult = [contextCopy segmentationResult];
+  backgroundInstances = [segmentationResult backgroundInstances];
 
-  v17 = [a1 removeOperationsFromInstances:v16 composition:v9 context:v8];
+  v17 = [self removeOperationsFromInstances:backgroundInstances composition:compositionCopy context:contextCopy];
 
-  v18 = [a1 removeGatedInstances:v17 context:v8];
+  v18 = [self removeGatedInstances:v17 context:contextCopy];
 
-  v19 = [a1 _nonInstancedOperationsFromComposition:v9];
-  v20 = [a1 removeInstancesOccludedByOperations:v19 fromInstances:v18 composition:v9 maskContext:v8];
+  v19 = [self _nonInstancedOperationsFromComposition:compositionCopy];
+  v20 = [self removeInstancesOccludedByOperations:v19 fromInstances:v18 composition:compositionCopy maskContext:contextCopy];
 
   if ([v20 count])
   {
@@ -1457,7 +1457,7 @@ LABEL_10:
     v23 = [v21 stringWithFormat:@"declutter-instances:%@", v22];
 
     v30 = 0;
-    v24 = [a1 _newMaskForInstances:v20 context:v8 maskIdentifier:v23 error:&v30];
+    v24 = [self _newMaskForInstances:v20 context:contextCopy maskIdentifier:v23 error:&v30];
     v25 = v30;
 
     v13 = &unk_1EC25E000;
@@ -1478,14 +1478,14 @@ LABEL_10:
     _os_signpost_emit_with_name_impl(&dword_1C7694000, v27, OS_SIGNPOST_INTERVAL_END, v28, "PIObjectRemoval.declutterMask", "", v29, 2u);
   }
 
-  v10[2](v10, v24, v25);
+  completionCopy[2](completionCopy, v24, v25);
 }
 
-+ (void)createAvailableObjectsMaskForContext:(id)a3 composition:(id)a4 completion:(id)a5
++ (void)createAvailableObjectsMaskForContext:(id)context composition:(id)composition completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  compositionCopy = composition;
+  completionCopy = completion;
   v11 = s_log_13100;
   v12 = v11;
   v13 = s_signpost_13101;
@@ -1495,12 +1495,12 @@ LABEL_10:
     _os_signpost_emit_with_name_impl(&dword_1C7694000, v12, OS_SIGNPOST_INTERVAL_BEGIN, v13, "PIObjectRemoval.instancesMask", "", buf, 2u);
   }
 
-  v14 = [v8 segmentationResult];
-  v15 = [v14 instances];
+  segmentationResult = [contextCopy segmentationResult];
+  instances = [segmentationResult instances];
 
-  v16 = [a1 removeOperationsFromInstances:v15 composition:v9 context:v8];
+  v16 = [self removeOperationsFromInstances:instances composition:compositionCopy context:contextCopy];
 
-  v17 = [a1 removeGatedInstances:v16 context:v8];
+  v17 = [self removeGatedInstances:v16 context:contextCopy];
 
   if ([v17 count])
   {
@@ -1509,7 +1509,7 @@ LABEL_10:
     v20 = [v18 stringWithFormat:@"available-instances:%@", v19];
 
     v27 = 0;
-    v21 = [a1 _newMaskForInstances:v17 context:v8 maskIdentifier:v20 error:&v27];
+    v21 = [self _newMaskForInstances:v17 context:contextCopy maskIdentifier:v20 error:&v27];
     v22 = v27;
   }
 
@@ -1528,16 +1528,16 @@ LABEL_10:
     _os_signpost_emit_with_name_impl(&dword_1C7694000, v24, OS_SIGNPOST_INTERVAL_END, v25, "PIObjectRemoval.instancesMask", "", v26, 2u);
   }
 
-  v10[2](v10, v21, v22);
+  completionCopy[2](completionCopy, v21, v22);
 }
 
-+ (id)createMaskForInstance:(unint64_t)a3 context:(id)a4 maskIdentifierPrefix:(id)a5 error:(id *)a6
++ (id)createMaskForInstance:(unint64_t)instance context:(id)context maskIdentifierPrefix:(id)prefix error:(id *)error
 {
   v10 = MEMORY[0x1E696AEC0];
-  v11 = a4;
-  v12 = [v10 stringWithFormat:@"%@-instance:%ld", a5, a3];
-  v13 = [MEMORY[0x1E696AC90] indexSetWithIndex:a3];
-  v14 = [a1 _newMaskForInstances:v13 context:v11 maskIdentifier:v12 error:a6];
+  contextCopy = context;
+  instance = [v10 stringWithFormat:@"%@-instance:%ld", prefix, instance];
+  v13 = [MEMORY[0x1E696AC90] indexSetWithIndex:instance];
+  v14 = [self _newMaskForInstances:v13 context:contextCopy maskIdentifier:instance error:error];
 
   return v14;
 }
@@ -1553,33 +1553,33 @@ LABEL_10:
   v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v9 forKeys:&v8 count:1];
   v7 = [(PIInpaintOperation *)v4 initWithDictionary:v6];
 
-  [a1 _warmUpOperation:v7 context:v3];
+  [self _warmUpOperation:v7 context:v3];
 }
 
-+ (void)_warmUpOperation:(id)a3 context:(id)a4
++ (void)_warmUpOperation:(id)operation context:(id)context
 {
   v5 = MEMORY[0x1E695F658];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 blackImage];
+  contextCopy = context;
+  operationCopy = operation;
+  blackImage = [v5 blackImage];
   v9 = *MEMORY[0x1E69BDDA8];
   v10 = *(MEMORY[0x1E69BDDA8] + 8);
   v11 = *(MEMORY[0x1E69BDDA8] + 16);
   v12 = *(MEMORY[0x1E69BDDA8] + 24);
-  v17 = [v8 imageByCroppingToRect:{*MEMORY[0x1E69BDDA8], v10, v11, v12}];
+  v17 = [blackImage imageByCroppingToRect:{*MEMORY[0x1E69BDDA8], v10, v11, v12}];
 
-  v13 = [MEMORY[0x1E695F658] whiteImage];
-  v14 = [v13 imageByCroppingToRect:{v9, v10, v11, v12}];
+  whiteImage = [MEMORY[0x1E695F658] whiteImage];
+  v14 = [whiteImage imageByCroppingToRect:{v9, v10, v11, v12}];
 
-  v15 = [PIInpaintRendering inpaintedImageWithInputImage:v17 maskImage:v14 exclusionMaskImage:0 headroom:v7 operation:0.0];
+  v15 = [PIInpaintRendering inpaintedImageWithInputImage:v17 maskImage:v14 exclusionMaskImage:0 headroom:operationCopy operation:0.0];
 
-  v16 = [v6 createCGImage:v15 fromRect:{v9, v10, v11, v12}];
+  v16 = [contextCopy createCGImage:v15 fromRect:{v9, v10, v11, v12}];
   CGImageRelease(v16);
 }
 
-+ (BOOL)loadAndRegisterModelForKey:(id)a3 error:(id *)a4
++ (BOOL)loadAndRegisterModelForKey:(id)key error:(id *)error
 {
-  v6 = a3;
+  keyCopy = key;
   if (loadAndRegisterModelForKey_error__once != -1)
   {
     dispatch_once(&loadAndRegisterModelForKey_error__once, &__block_literal_global_196);
@@ -1600,13 +1600,13 @@ LABEL_10:
   v11[1] = 3221225472;
   v11[2] = __52__PIObjectRemoval_loadAndRegisterModelForKey_error___block_invoke_2;
   v11[3] = &unk_1E82AB008;
-  v12 = v6;
+  v12 = keyCopy;
   v13 = &v22;
   v14 = &v16;
-  v15 = a1;
-  v8 = v6;
+  selfCopy = self;
+  v8 = keyCopy;
   dispatch_sync(v7, v11);
-  *a4 = v17[5];
+  *error = v17[5];
   v9 = *(v23 + 24);
 
   _Block_object_dispose(&v16, 8);
@@ -1633,19 +1633,19 @@ void __52__PIObjectRemoval_loadAndRegisterModelForKey_error___block_invoke()
   loadAndRegisterModelForKey_error__queue = v0;
 }
 
-+ (BOOL)_loadAndRegisterModelForKey:(id)a3 error:(id *)a4
++ (BOOL)_loadAndRegisterModelForKey:(id)key error:(id *)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = [MEMORY[0x1E69B3A58] sharedFactory];
-  v7 = [v6 modelRegistry];
+  keyCopy = key;
+  mEMORY[0x1E69B3A58] = [MEMORY[0x1E69B3A58] sharedFactory];
+  modelRegistry = [mEMORY[0x1E69B3A58] modelRegistry];
 
-  v8 = [v7 modelForKey:v5];
+  v8 = [modelRegistry modelForKey:keyCopy];
 
   if (!v8)
   {
-    v10 = [v5 isEqualToString:PIModelKeyInpaint];
-    v11 = [v5 isEqualToString:PIModelKeyRefinement];
+    v10 = [keyCopy isEqualToString:PIModelKeyInpaint];
+    v11 = [keyCopy isEqualToString:PIModelKeyRefinement];
     if ((v10 & 1) == 0 && (v11 & 1) == 0)
     {
       v20 = NUAssertLogger_13001();
@@ -1668,8 +1668,8 @@ void __52__PIObjectRemoval_loadAndRegisterModelForKey_error___block_invoke()
           v28 = dispatch_get_specific(*v22);
           v29 = MEMORY[0x1E696AF00];
           v30 = v28;
-          v31 = [v29 callStackSymbols];
-          v32 = [v31 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v29 callStackSymbols];
+          v32 = [callStackSymbols componentsJoinedByString:@"\n"];
           v33 = 138543618;
           v34 = v28;
           v35 = 2114;
@@ -1680,8 +1680,8 @@ void __52__PIObjectRemoval_loadAndRegisterModelForKey_error___block_invoke()
 
       else if (v25)
       {
-        v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v27 = [callStackSymbols2 componentsJoinedByString:@"\n"];
         v33 = 138543362;
         v34 = v27;
         _os_log_error_impl(&dword_1C7694000, v24, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", &v33, 0xCu);
@@ -1694,23 +1694,23 @@ void __52__PIObjectRemoval_loadAndRegisterModelForKey_error___block_invoke()
     v13 = v12;
     if (v10)
     {
-      v14 = [v12 inpaintModelURL:a4];
+      v14 = [v12 inpaintModelURL:error];
       if (v14)
       {
         v15 = v14;
         v16 = @"inpaintModelLoadOptions";
         v17 = 6;
 LABEL_10:
-        v18 = [v7 loadModelAtURL:v15 options:PIModelLoadingOptions(v14 error:{v16, v17), a4}];
+        v18 = [modelRegistry loadModelAtURL:v15 options:PIModelLoadingOptions(v14 error:{v16, v17), error}];
         v9 = v18 != 0;
         if (v18)
         {
-          [v7 registerModel:v18 forKey:v5];
+          [modelRegistry registerModel:v18 forKey:keyCopy];
         }
 
         else
         {
-          *a4 = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Can't load model" object:v15 underlyingError:*a4];
+          *error = [MEMORY[0x1E69B3A48] errorWithCode:1 reason:@"Can't load model" object:v15 underlyingError:*error];
         }
 
         goto LABEL_15;
@@ -1719,7 +1719,7 @@ LABEL_10:
 
     else
     {
-      v14 = [v12 refinementModelURL:a4];
+      v14 = [v12 refinementModelURL:error];
       if (v14)
       {
         v15 = v14;
@@ -1729,8 +1729,8 @@ LABEL_10:
       }
     }
 
-    [MEMORY[0x1E69B3A48] errorWithCode:3 reason:@"Can't find model" object:0 underlyingError:*a4];
-    *a4 = v9 = 0;
+    [MEMORY[0x1E69B3A48] errorWithCode:3 reason:@"Can't find model" object:0 underlyingError:*error];
+    *error = v9 = 0;
 LABEL_15:
 
     goto LABEL_16;
@@ -1742,20 +1742,20 @@ LABEL_16:
   return v9;
 }
 
-+ (id)removeInstancesOccludedByOperations:(id)a3 fromInstances:(id)a4 composition:(id)a5 maskContext:(id)a6
++ (id)removeInstancesOccludedByOperations:(id)operations fromInstances:(id)instances composition:(id)composition maskContext:(id)context
 {
   v41 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v24 = a6;
-  v26 = v11;
-  v25 = [v11 mutableCopy];
+  operationsCopy = operations;
+  instancesCopy = instances;
+  compositionCopy = composition;
+  contextCopy = context;
+  v26 = instancesCopy;
+  v25 = [instancesCopy mutableCopy];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
-  v13 = v10;
+  v13 = operationsCopy;
   v14 = [v13 countByEnumeratingWithState:&v35 objects:v40 count:16];
   if (v14)
   {
@@ -1777,7 +1777,7 @@ LABEL_16:
         v33 = 0u;
         v34 = 0u;
         v32 = 0;
-        [a1 _tightImageSpaceBoundsForOperation:v19 composition:v12 error:{&v32, v23}];
+        [self _tightImageSpaceBoundsForOperation:v19 composition:compositionCopy error:{&v32, v23}];
         v20 = v32;
         buf[0] = v33;
         buf[1] = v34;
@@ -1803,7 +1803,7 @@ LABEL_16:
           v27[1] = 3221225472;
           v27[2] = __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_composition_maskContext___block_invoke;
           v27[3] = &unk_1E82AAFE0;
-          v28 = v24;
+          v28 = contextCopy;
           v30 = v33;
           v31 = v34;
           v29 = v25;
@@ -1857,13 +1857,13 @@ void __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_com
   }
 }
 
-+ (id)removeOperationsFromInstances:(id)a3 composition:(id)a4 context:(id)a5
++ (id)removeOperationsFromInstances:(id)instances composition:(id)composition context:(id)context
 {
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = [a3 mutableCopy];
+  compositionCopy = composition;
+  v8 = [instances mutableCopy];
   [v8 removeIndex:0];
-  v9 = [v7 objectForKeyedSubscript:@"inpaint"];
+  v9 = [compositionCopy objectForKeyedSubscript:@"inpaint"];
   v10 = [v9 objectForKeyedSubscript:@"operations"];
   v17 = 0u;
   v18 = 0u;
@@ -1883,7 +1883,7 @@ void __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_com
           objc_enumerationMutation(v10);
         }
 
-        v15 = [a1 _instancesForOperation:*(*(&v17 + 1) + 8 * i)];
+        v15 = [self _instancesForOperation:*(*(&v17 + 1) + 8 * i)];
         [v8 removeIndexes:v15];
       }
 
@@ -1896,24 +1896,24 @@ void __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_com
   return v8;
 }
 
-+ (id)removeGatedInstances:(id)a3 context:(id)a4
++ (id)removeGatedInstances:(id)instances context:(id)context
 {
-  v5 = a4;
-  v6 = [a3 mutableCopy];
-  v7 = [v5 segmentationResult];
+  contextCopy = context;
+  v6 = [instances mutableCopy];
+  segmentationResult = [contextCopy segmentationResult];
 
-  v8 = [v7 gatedInstances];
-  [v6 removeIndexes:v8];
+  gatedInstances = [segmentationResult gatedInstances];
+  [v6 removeIndexes:gatedInstances];
 
   return v6;
 }
 
-+ (id)_instancesForOperation:(id)a3
++ (id)_instancesForOperation:(id)operation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [MEMORY[0x1E696AD50] indexSet];
-  v6 = [v4 objectForKeyedSubscript:@"maskIdentifiers"];
+  operationCopy = operation;
+  indexSet = [MEMORY[0x1E696AD50] indexSet];
+  v6 = [operationCopy objectForKeyedSubscript:@"maskIdentifiers"];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
@@ -1932,8 +1932,8 @@ void __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_com
           objc_enumerationMutation(v6);
         }
 
-        v11 = [a1 _instancesFromMaskIdentifier:*(*(&v13 + 1) + 8 * i)];
-        [v5 addIndexes:v11];
+        v11 = [self _instancesFromMaskIdentifier:*(*(&v13 + 1) + 8 * i)];
+        [indexSet addIndexes:v11];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -1942,28 +1942,28 @@ void __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_com
     while (v8);
   }
 
-  return v5;
+  return indexSet;
 }
 
-+ (void)updateMaskContext:(id)a3 forComposition:(id)a4 requestID:(id)a5 completionQueue:(id)a6 completion:(id)a7
++ (void)updateMaskContext:(id)context forComposition:(id)composition requestID:(id)d completionQueue:(id)queue completion:(id)completion
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  v16 = [[PICompositionController alloc] initWithComposition:v12];
-  v17 = [(PICompositionController *)v16 livePhotoKeyFrameAdjustmentController];
-  v18 = v17;
+  contextCopy = context;
+  compositionCopy = composition;
+  dCopy = d;
+  queueCopy = queue;
+  completionCopy = completion;
+  v16 = [[PICompositionController alloc] initWithComposition:compositionCopy];
+  livePhotoKeyFrameAdjustmentController = [(PICompositionController *)v16 livePhotoKeyFrameAdjustmentController];
+  v18 = livePhotoKeyFrameAdjustmentController;
   v24 = **&MEMORY[0x1E6960C70];
-  if (v17)
+  if (livePhotoKeyFrameAdjustmentController)
   {
-    [v17 keyFrameTime];
+    [livePhotoKeyFrameAdjustmentController keyFrameTime];
   }
 
-  if (v11)
+  if (contextCopy)
   {
-    [v11 livePhotoKeyFrameTime];
+    [contextCopy livePhotoKeyFrameTime];
   }
 
   else
@@ -1974,25 +1974,25 @@ void __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_com
   v22 = v24;
   if (CMTimeCompare(&v22, &time2))
   {
-    [v11 _resetForComposition:v12 requestID:v13 completionQueue:v14 completion:v15];
+    [contextCopy _resetForComposition:compositionCopy requestID:dCopy completionQueue:queueCopy completion:completionCopy];
   }
 
   else
   {
-    v19 = [v11 subjectMask];
-    v20 = [v19 buffer];
-    v21 = [v11 subjectMaskDigestForComposition:v12 subjectMaskBuffer:v20];
+    subjectMask = [contextCopy subjectMask];
+    buffer = [subjectMask buffer];
+    v21 = [contextCopy subjectMaskDigestForComposition:compositionCopy subjectMaskBuffer:buffer];
 
-    [v11 updateSubjectMaskBufferIfNeededForComposition:v12 digest:v21 completionQueue:v14 completion:v15];
+    [contextCopy updateSubjectMaskBufferIfNeededForComposition:compositionCopy digest:v21 completionQueue:queueCopy completion:completionCopy];
   }
 }
 
-+ (void)createMaskContextForComposition:(id)a3 requestID:(id)a4 completionQueue:(id)a5 completion:(id)a6
++ (void)createMaskContextForComposition:(id)composition requestID:(id)d completionQueue:(id)queue completion:(id)completion
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  compositionCopy = composition;
+  dCopy = d;
+  queueCopy = queue;
+  completionCopy = completion;
   v13 = [PIPerfPowerService alloc];
   v14 = +[PIPerfPowerServiceIdentifier genEditIdentifier];
   v15 = [(PIPerfPowerService *)v13 initWithIdentifier:v14 operation:5];
@@ -2021,9 +2021,9 @@ void __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_com
   v63[3] = __Block_byref_object_copy__13039;
   v63[4] = __Block_byref_object_dispose__13040;
   v64 = 0;
-  v34 = [objc_alloc(MEMORY[0x1E69B3D50]) initWithComposition:v9];
+  v34 = [objc_alloc(MEMORY[0x1E69B3D50]) initWithComposition:compositionCopy];
   [v34 setPipelineFilters:v19];
-  [v34 setResponseQueue:v11];
+  [v34 setResponseQueue:queueCopy];
   v62[0] = MEMORY[0x1E69E9820];
   v62[1] = 3221225472;
   v62[2] = __88__PIObjectRemoval_createMaskContextForComposition_requestID_completionQueue_completion___block_invoke;
@@ -2045,7 +2045,7 @@ void __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_com
   v59 = 0;
   v20 = [PIFaceObservationCache faceRequestWithRequest:v34];
   [v20 setPipelineFilters:v19];
-  [v20 setResponseQueue:v11];
+  [v20 setResponseQueue:queueCopy];
   v57[0] = MEMORY[0x1E69E9820];
   v57[1] = 3221225472;
   v57[2] = __88__PIObjectRemoval_createMaskContextForComposition_requestID_completionQueue_completion___block_invoke_168;
@@ -2066,9 +2066,9 @@ void __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_com
   v53[3] = __Block_byref_object_copy__13039;
   v53[4] = __Block_byref_object_dispose__13040;
   v54 = 0;
-  v21 = [objc_alloc(MEMORY[0x1E69B3AA8]) initWithComposition:v9];
+  v21 = [objc_alloc(MEMORY[0x1E69B3AA8]) initWithComposition:compositionCopy];
   [v21 setPipelineFilters:v19];
-  [v21 setResponseQueue:v11];
+  [v21 setResponseQueue:queueCopy];
   v52[0] = MEMORY[0x1E69E9820];
   v52[1] = 3221225472;
   v52[2] = __88__PIObjectRemoval_createMaskContextForComposition_requestID_completionQueue_completion___block_invoke_2;
@@ -2077,7 +2077,7 @@ void __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_com
   v52[5] = v53;
   [v21 submit:v52];
   v33 = v19;
-  v22 = v11;
+  v22 = queueCopy;
   v50[0] = 0;
   v50[1] = v50;
   v50[2] = 0x3032000000;
@@ -2090,9 +2090,9 @@ void __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_com
   v48[3] = __Block_byref_object_copy__13039;
   v48[4] = __Block_byref_object_dispose__13040;
   v49 = 0;
-  v23 = [(NURenderRequest *)[PISensitiveContentAnalysisRequest alloc] initWithComposition:v9];
+  v23 = [(NURenderRequest *)[PISensitiveContentAnalysisRequest alloc] initWithComposition:compositionCopy];
   [(NURenderRequest *)v23 setPipelineFilters:v33];
-  [(NURenderRequest *)v23 setResponseQueue:v11];
+  [(NURenderRequest *)v23 setResponseQueue:queueCopy];
   [(PISensitiveContentAnalysisRequest *)v23 setPerformRegionSpecificChecks:1];
   v47[0] = MEMORY[0x1E69E9820];
   v47[1] = 3221225472;
@@ -2101,8 +2101,8 @@ void __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_com
   v47[4] = v50;
   v47[5] = v48;
   [(PISensitiveContentAnalysisRequest *)v23 submit:v47];
-  v24 = [v9 objectForKeyedSubscript:@"source"];
-  v25 = [v24 assetIdentifier];
+  v24 = [compositionCopy objectForKeyedSubscript:@"source"];
+  assetIdentifier = [v24 assetIdentifier];
   v26 = MEMORY[0x1E69B3C60];
   v35[0] = MEMORY[0x1E69E9820];
   v35[1] = 3221225472;
@@ -2115,13 +2115,13 @@ void __93__PIObjectRemoval_removeInstancesOccludedByOperations_fromInstances_com
   v43 = v63;
   v44 = v60;
   v45 = v50;
-  v28 = v9;
+  v28 = compositionCopy;
   v37 = v28;
-  v29 = v25;
+  v29 = assetIdentifier;
   v38 = v29;
-  v30 = v10;
+  v30 = dCopy;
   v39 = v30;
-  v31 = v12;
+  v31 = completionCopy;
   v40 = v31;
   v46 = v53;
   [v26 commitAndNotifyOnQueue:v22 withBlock:v35];
@@ -2349,18 +2349,18 @@ void __88__PIObjectRemoval_createMaskContextForComposition_requestID_completionQ
   }
 }
 
-+ ($721907E0E1CDE8B6CD3FA271A8B25860)_tightImageSpaceBoundsForOperation:(SEL)a3 composition:(id)a4 error:(id)a5
++ ($721907E0E1CDE8B6CD3FA271A8B25860)_tightImageSpaceBoundsForOperation:(SEL)operation composition:(id)composition error:(id)error
 {
   v37 = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a5;
+  compositionCopy = composition;
+  errorCopy = error;
   v24 = *(MEMORY[0x1E69B3900] + 16);
   v25 = *MEMORY[0x1E69B3900];
   v34 = *MEMORY[0x1E69B3900];
   v35 = v24;
-  if ([a2 _operationIsBrushStroke:v10])
+  if ([a2 _operationIsBrushStroke:compositionCopy])
   {
-    v12 = [PIRepairUtilities brushStrokeFromRetouchStrokeDictionary:v10];
+    v12 = [PIRepairUtilities brushStrokeFromRetouchStrokeDictionary:compositionCopy];
     v13 = v12;
     if (v12)
     {
@@ -2380,7 +2380,7 @@ void __88__PIObjectRemoval_createMaskContextForComposition_requestID_completionQ
   else
   {
     v23 = a6;
-    [v10 objectForKeyedSubscript:@"maskIdentifiers"];
+    [compositionCopy objectForKeyedSubscript:@"maskIdentifiers"];
     v28 = 0u;
     v29 = 0u;
     v30 = 0u;
@@ -2400,7 +2400,7 @@ void __88__PIObjectRemoval_createMaskContextForComposition_requestID_completionQ
           }
 
           v18 = *(*(&v28 + 1) + 8 * i);
-          v19 = [a2 _maskSourceWithIdentifier:v18 composition:v11];
+          v19 = [a2 _maskSourceWithIdentifier:v18 composition:errorCopy];
           if (!v19)
           {
             *v23 = [MEMORY[0x1E69B3A48] missingError:@"Can't find source for mask" object:v18];
@@ -2442,20 +2442,20 @@ LABEL_17:
   return result;
 }
 
-+ (id)_newMaskImageForOperation:(id)a3 composition:(id)a4 error:(id *)a5
++ (id)_newMaskImageForOperation:(id)operation composition:(id)composition error:(id *)error
 {
   v31 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  if ([a1 _operationIsBrushStroke:v8])
+  operationCopy = operation;
+  compositionCopy = composition;
+  if ([self _operationIsBrushStroke:operationCopy])
   {
-    v10 = [PIRepairUtilities brushStrokeFromRetouchStrokeDictionary:v8];
+    v10 = [PIRepairUtilities brushStrokeFromRetouchStrokeDictionary:operationCopy];
     v11 = [v10 ciImageTiled:0 closed:1 pressureMode:1];
 
     goto LABEL_15;
   }
 
-  [v8 objectForKeyedSubscript:@"maskIdentifiers"];
+  [operationCopy objectForKeyedSubscript:@"maskIdentifiers"];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
@@ -2470,7 +2470,7 @@ LABEL_17:
   v13 = v12;
   v11 = 0;
   v14 = *v27;
-  v24 = v8;
+  v24 = operationCopy;
   while (2)
   {
     v15 = 0;
@@ -2483,19 +2483,19 @@ LABEL_17:
       }
 
       v17 = *(*(&v26 + 1) + 8 * v15);
-      v18 = [a1 _maskSourceWithIdentifier:v17 composition:{v9, v24}];
+      v18 = [self _maskSourceWithIdentifier:v17 composition:{compositionCopy, v24}];
       if (!v18)
       {
-        *a5 = [MEMORY[0x1E69B3A48] missingError:@"Can't find source for mask" object:v17];
+        *error = [MEMORY[0x1E69B3A48] missingError:@"Can't find source for mask" object:v17];
 LABEL_18:
 
         v22 = 0;
-        v8 = v24;
+        operationCopy = v24;
         goto LABEL_19;
       }
 
       v19 = v18;
-      v20 = [v18 sourceImage:a5];
+      v20 = [v18 sourceImage:error];
       if (!v20)
       {
 
@@ -2511,7 +2511,7 @@ LABEL_18:
 
     while (v13 != v15);
     v13 = [obj countByEnumeratingWithState:&v26 objects:v30 count:16];
-    v8 = v24;
+    operationCopy = v24;
     if (v13)
     {
       continue;
@@ -2530,22 +2530,22 @@ LABEL_19:
   return v22;
 }
 
-+ (id)_newMaskForInstance:(unint64_t)a3 context:(id)a4 maskIdentifier:(id)a5 error:(id *)a6
++ (id)_newMaskForInstance:(unint64_t)instance context:(id)context maskIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a4;
-  v10 = a5;
-  v11 = [v9 segmentationResult];
-  v12 = [v11 newMaskForInstance:a3 error:a6];
+  contextCopy = context;
+  identifierCopy = identifier;
+  segmentationResult = [contextCopy segmentationResult];
+  v12 = [segmentationResult newMaskForInstance:instance error:error];
 
   if (v12)
   {
     v22 = 0u;
     v23 = 0u;
-    v13 = [v9 segmentationResult];
-    v14 = v13;
-    if (v13)
+    segmentationResult2 = [contextCopy segmentationResult];
+    v14 = segmentationResult2;
+    if (segmentationResult2)
     {
-      [v13 tightBoundsForInstance:a3];
+      [segmentationResult2 tightBoundsForInstance:instance];
     }
 
     else
@@ -2554,9 +2554,9 @@ LABEL_19:
       v23 = 0u;
     }
 
-    if (v9)
+    if (contextCopy)
     {
-      [v9 fullImageExtent];
+      [contextCopy fullImageExtent];
     }
 
     else
@@ -2570,7 +2570,7 @@ LABEL_19:
     v19 = [PIInpaintMask alloc];
     v21[0] = v22;
     v21[1] = v23;
-    v15 = [(PIInpaintMask *)v19 initWithBuffer:v12 identifier:v10 extent:v21 scale:v16, v18];
+    v15 = [(PIInpaintMask *)v19 initWithBuffer:v12 identifier:identifierCopy extent:v21 scale:v16, v18];
   }
 
   else
@@ -2581,23 +2581,23 @@ LABEL_19:
   return v15;
 }
 
-+ (id)_newMaskForInstances:(id)a3 context:(id)a4 maskIdentifier:(id)a5 error:(id *)a6
++ (id)_newMaskForInstances:(id)instances context:(id)context maskIdentifier:(id)identifier error:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v10 segmentationResult];
-  v13 = [v12 newMaskForInstances:v9 error:a6];
+  instancesCopy = instances;
+  contextCopy = context;
+  identifierCopy = identifier;
+  segmentationResult = [contextCopy segmentationResult];
+  v13 = [segmentationResult newMaskForInstances:instancesCopy error:error];
 
   if (v13)
   {
     v23 = 0u;
     v24 = 0u;
-    v14 = [v10 segmentationResult];
-    v15 = v14;
-    if (v14)
+    segmentationResult2 = [contextCopy segmentationResult];
+    v15 = segmentationResult2;
+    if (segmentationResult2)
     {
-      [v14 tightBoundsForInstances:v9];
+      [segmentationResult2 tightBoundsForInstances:instancesCopy];
     }
 
     else
@@ -2606,9 +2606,9 @@ LABEL_19:
       v24 = 0u;
     }
 
-    if (v10)
+    if (contextCopy)
     {
-      [v10 fullImageExtent];
+      [contextCopy fullImageExtent];
     }
 
     else
@@ -2622,7 +2622,7 @@ LABEL_19:
     v20 = [PIInpaintMask alloc];
     v22[0] = v23;
     v22[1] = v24;
-    v16 = [(PIInpaintMask *)v20 initWithBuffer:v13 identifier:v11 extent:v22 scale:v17, v19];
+    v16 = [(PIInpaintMask *)v20 initWithBuffer:v13 identifier:identifierCopy extent:v22 scale:v17, v19];
   }
 
   else
@@ -2633,9 +2633,9 @@ LABEL_19:
   return v16;
 }
 
-+ (id)_nonInstancedOperationsFromComposition:(id)a3
++ (id)_nonInstancedOperationsFromComposition:(id)composition
 {
-  v3 = [a3 objectForKeyedSubscript:@"inpaint"];
+  v3 = [composition objectForKeyedSubscript:@"inpaint"];
   v4 = [v3 objectForKeyedSubscript:@"operations"];
   v5 = PFFilter();
 
@@ -2651,12 +2651,12 @@ uint64_t __58__PIObjectRemoval__nonInstancedOperationsFromComposition___block_in
   return v4;
 }
 
-+ (id)_maskSourceWithIdentifier:(id)a3 composition:(id)a4
++ (id)_maskSourceWithIdentifier:(id)identifier composition:(id)composition
 {
-  v5 = a3;
-  v6 = [a4 objectForKeyedSubscript:@"inpaintMasks"];
-  v10 = v5;
-  v7 = v5;
+  identifierCopy = identifier;
+  v6 = [composition objectForKeyedSubscript:@"inpaintMasks"];
+  v10 = identifierCopy;
+  v7 = identifierCopy;
   v8 = PFFind();
 
   return v8;
@@ -2670,9 +2670,9 @@ uint64_t __57__PIObjectRemoval__maskSourceWithIdentifier_composition___block_inv
   return v4;
 }
 
-+ (BOOL)_operationIsBrushStroke:(id)a3
++ (BOOL)_operationIsBrushStroke:(id)stroke
 {
-  v3 = [a3 objectForKeyedSubscript:@"mode"];
+  v3 = [stroke objectForKeyedSubscript:@"mode"];
   v4 = PIRetouchModeFromString(v3);
 
   return v4 == 2;
@@ -2684,7 +2684,7 @@ uint64_t __57__PIObjectRemoval__maskSourceWithIdentifier_composition___block_inv
   block[1] = 3221225472;
   block[2] = __29__PIObjectRemoval_initialize__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (initialize_onceToken_13285 != -1)
   {
     dispatch_once(&initialize_onceToken_13285, block);

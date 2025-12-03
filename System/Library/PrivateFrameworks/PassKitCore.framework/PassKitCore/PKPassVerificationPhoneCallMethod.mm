@@ -1,32 +1,32 @@
 @interface PKPassVerificationPhoneCallMethod
-- (PKPassVerificationPhoneCallMethod)initWithCoder:(id)a3;
-- (PKPassVerificationPhoneCallMethod)initWithDictionary:(id)a3;
-- (id)_initWithChannel:(id)a3;
+- (PKPassVerificationPhoneCallMethod)initWithCoder:(id)coder;
+- (PKPassVerificationPhoneCallMethod)initWithDictionary:(id)dictionary;
+- (id)_initWithChannel:(id)channel;
 - (id)legacyChannelRepresentation;
 - (id)supplementalTypeDescription;
 - (id)typeDescription;
-- (void)_appendDescription:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)_appendDescription:(id)description;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPassVerificationPhoneCallMethod
 
-- (PKPassVerificationPhoneCallMethod)initWithDictionary:(id)a3
+- (PKPassVerificationPhoneCallMethod)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
-  v5 = [v4 PKStringForKey:@"direction"];
+  dictionaryCopy = dictionary;
+  v5 = [dictionaryCopy PKStringForKey:@"direction"];
   v6 = PKPassVerificationPhoneCallDirectionFromString(v5);
 
   if (v6)
   {
     v11.receiver = self;
     v11.super_class = PKPassVerificationPhoneCallMethod;
-    v7 = [(PKPassVerificationMethod *)&v11 _initWithType:2 dictionary:v4];
+    v7 = [(PKPassVerificationMethod *)&v11 _initWithType:2 dictionary:dictionaryCopy];
     v8 = v7;
     if (v7)
     {
       v7->_direction = v6;
-      v9 = [v4 PKStringForKey:@"phoneNumber"];
+      v9 = [dictionaryCopy PKStringForKey:@"phoneNumber"];
       if ([v9 length])
       {
         objc_storeStrong(&v8->_phoneNumber, v9);
@@ -43,25 +43,25 @@
   return v8;
 }
 
-- (id)_initWithChannel:(id)a3
+- (id)_initWithChannel:(id)channel
 {
-  v4 = a3;
+  channelCopy = channel;
   v11.receiver = self;
   v11.super_class = PKPassVerificationPhoneCallMethod;
-  v5 = [(PKPassVerificationMethod *)&v11 _initWithType:2 channel:v4];
+  v5 = [(PKPassVerificationMethod *)&v11 _initWithType:2 channel:channelCopy];
   if (v5)
   {
-    v6 = [v4 type];
+    type = [channelCopy type];
     v7 = 1;
-    if (v6 != 4)
+    if (type != 4)
     {
       v7 = 2;
     }
 
     v5[5] = v7;
-    v8 = [v4 contactPoint];
+    contactPoint = [channelCopy contactPoint];
     v9 = v5[6];
-    v5[6] = v8;
+    v5[6] = contactPoint;
   }
 
   return v5;
@@ -69,8 +69,8 @@
 
 - (id)legacyChannelRepresentation
 {
-  v3 = [(PKPassVerificationMethod *)self _legacyChannelRepresentation];
-  v4 = v3;
+  _legacyChannelRepresentation = [(PKPassVerificationMethod *)self _legacyChannelRepresentation];
+  v4 = _legacyChannelRepresentation;
   direction = self->_direction;
   if (direction)
   {
@@ -92,7 +92,7 @@ LABEL_7:
       v6 = 3;
     }
 
-    [v3 setType:v6];
+    [_legacyChannelRepresentation setType:v6];
     goto LABEL_7;
   }
 
@@ -114,11 +114,11 @@ LABEL_9:
   {
     if (direction == 1)
     {
-      v4 = [(PKPassVerificationMethod *)self organizationName];
-      if (v4)
+      organizationName = [(PKPassVerificationMethod *)self organizationName];
+      if (organizationName)
       {
-        v5 = [(PKPassVerificationMethod *)self organizationName];
-        v6 = PKLocalizedPaymentString(&cfstr_VerificationCh_3.isa, &stru_1F2281668.isa, v5);
+        organizationName2 = [(PKPassVerificationMethod *)self organizationName];
+        v6 = PKLocalizedPaymentString(&cfstr_VerificationCh_3.isa, &stru_1F2281668.isa, organizationName2);
       }
 
       else
@@ -169,18 +169,18 @@ LABEL_13:
   return v5;
 }
 
-- (PKPassVerificationPhoneCallMethod)initWithCoder:(id)a3
+- (PKPassVerificationPhoneCallMethod)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = PKPassVerificationPhoneCallMethod;
-  v5 = [(PKPassVerificationMethod *)&v10 initWithCoder:v4];
+  v5 = [(PKPassVerificationMethod *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"direction"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"direction"];
     v5->_direction = PKPassVerificationPhoneCallDirectionFromString(v6);
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"phoneNumber"];
     phoneNumber = v5->_phoneNumber;
     v5->_phoneNumber = v7;
   }
@@ -188,12 +188,12 @@ LABEL_13:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = PKPassVerificationPhoneCallMethod;
-  v4 = a3;
-  [(PKPassVerificationMethod *)&v7 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(PKPassVerificationMethod *)&v7 encodeWithCoder:coderCopy];
   direction = self->_direction;
   if (direction > 2)
   {
@@ -205,16 +205,16 @@ LABEL_13:
     v6 = off_1E79D88D0[direction];
   }
 
-  [v4 encodeObject:v6 forKey:{@"direction", v7.receiver, v7.super_class}];
-  [v4 encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
+  [coderCopy encodeObject:v6 forKey:{@"direction", v7.receiver, v7.super_class}];
+  [coderCopy encodeObject:self->_phoneNumber forKey:@"phoneNumber"];
 }
 
-- (void)_appendDescription:(id)a3
+- (void)_appendDescription:(id)description
 {
   v7.receiver = self;
   v7.super_class = PKPassVerificationPhoneCallMethod;
-  v4 = a3;
-  [(PKPassVerificationMethod *)&v7 _appendDescription:v4];
+  descriptionCopy = description;
+  [(PKPassVerificationMethod *)&v7 _appendDescription:descriptionCopy];
   direction = self->_direction;
   if (direction > 2)
   {
@@ -226,8 +226,8 @@ LABEL_13:
     v6 = off_1E79D88D0[direction];
   }
 
-  [v4 appendFormat:@"direction: '%@'; ", v6];
-  [v4 appendFormat:@"phoneNumber: '%@'; ", self->_phoneNumber];
+  [descriptionCopy appendFormat:@"direction: '%@'; ", v6];
+  [descriptionCopy appendFormat:@"phoneNumber: '%@'; ", self->_phoneNumber];
 }
 
 @end

@@ -1,5 +1,5 @@
 @interface APSPowerAssertion
-- (APSPowerAssertion)initWithName:(id)a3 category:(int)a4 holdDuration:(double)a5;
+- (APSPowerAssertion)initWithName:(id)name category:(int)category holdDuration:(double)duration;
 - (void)_clear;
 - (void)_hold;
 - (void)_onQueue_clear;
@@ -9,24 +9,24 @@
 
 @implementation APSPowerAssertion
 
-- (APSPowerAssertion)initWithName:(id)a3 category:(int)a4 holdDuration:(double)a5
+- (APSPowerAssertion)initWithName:(id)name category:(int)category holdDuration:(double)duration
 {
-  v9 = a3;
+  nameCopy = name;
   v24.receiver = self;
   v24.super_class = APSPowerAssertion;
   v10 = [(APSPowerAssertion *)&v24 init];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_name, a3);
-    v11->_timeout = a5;
+    objc_storeStrong(&v10->_name, name);
+    v11->_timeout = duration;
     v11->_powerAssertion = 0;
-    v12 = dispatch_queue_create([v9 UTF8String], 0);
+    v12 = dispatch_queue_create([nameCopy UTF8String], 0);
     queue = v11->_queue;
     v11->_queue = v12;
 
-    v11->_category = a4;
-    if (a5 > 0.0)
+    v11->_category = category;
+    if (duration > 0.0)
     {
       v14 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
       timer = v11->_timer;
@@ -121,7 +121,7 @@
       {
         v16 = self->_name;
         v17 = 138412802;
-        v18 = self;
+        selfCopy = self;
         v19 = 2112;
         v20 = v16;
         v21 = 1024;

@@ -1,16 +1,16 @@
 @interface SUUIContentInsetScrollView
-- (void)setScrollIndicatorInsets:(UIEdgeInsets)a3;
+- (void)setScrollIndicatorInsets:(UIEdgeInsets)insets;
 @end
 
 @implementation SUUIContentInsetScrollView
 
-- (void)setScrollIndicatorInsets:(UIEdgeInsets)a3
+- (void)setScrollIndicatorInsets:(UIEdgeInsets)insets
 {
   v5.receiver = self;
   v5.super_class = SUUIContentInsetScrollView;
-  [(SUUIContentInsetScrollView *)&v5 setScrollIndicatorInsets:a3.top, a3.left, a3.bottom, a3.right];
-  v4 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v4 postNotificationName:@"SUUIScrollViewContentInsetDidChangeNotification" object:self];
+  [(SUUIContentInsetScrollView *)&v5 setScrollIndicatorInsets:insets.top, insets.left, insets.bottom, insets.right];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter postNotificationName:@"SUUIScrollViewContentInsetDidChangeNotification" object:self];
 }
 
 @end

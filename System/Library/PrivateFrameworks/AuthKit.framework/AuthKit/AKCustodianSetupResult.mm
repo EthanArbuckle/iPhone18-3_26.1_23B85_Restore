@@ -1,63 +1,63 @@
 @interface AKCustodianSetupResult
-- (AKCustodianSetupResult)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (AKCustodianSetupResult)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)debugDescription;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AKCustodianSetupResult
 
-- (AKCustodianSetupResult)initWithCoder:(id)a3
+- (AKCustodianSetupResult)initWithCoder:(id)coder
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v12;
-  v12 = 0;
+  objc_storeStrong(location, coder);
+  v3 = selfCopy;
+  selfCopy = 0;
   v10 = [(AKCustodianSetupResult *)v3 init];
-  v12 = v10;
-  objc_storeStrong(&v12, v10);
+  selfCopy = v10;
+  objc_storeStrong(&selfCopy, v10);
   if (v10)
   {
     v4 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_encryptedPRKC"];
-    encryptedPRKC = v12->_encryptedPRKC;
-    v12->_encryptedPRKC = v4;
+    encryptedPRKC = selfCopy->_encryptedPRKC;
+    selfCopy->_encryptedPRKC = v4;
     MEMORY[0x1E69E5920](encryptedPRKC);
     v6 = [location[0] decodeObjectOfClass:objc_opt_class() forKey:@"_ownerCustodianAltDSID"];
-    ownerCustodianAltDSID = v12->_ownerCustodianAltDSID;
-    v12->_ownerCustodianAltDSID = v6;
+    ownerCustodianAltDSID = selfCopy->_ownerCustodianAltDSID;
+    selfCopy->_ownerCustodianAltDSID = v6;
     MEMORY[0x1E69E5920](ownerCustodianAltDSID);
   }
 
-  v9 = MEMORY[0x1E69E5928](v12);
+  v9 = MEMORY[0x1E69E5928](selfCopy);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v12, 0);
+  objc_storeStrong(&selfCopy, 0);
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [location[0] encodeObject:v4->_encryptedPRKC forKey:@"_encryptedPRKC"];
-  [location[0] encodeObject:v4->_ownerCustodianAltDSID forKey:@"_ownerCustodianAltDSID"];
+  objc_storeStrong(location, coder);
+  [location[0] encodeObject:selfCopy->_encryptedPRKC forKey:@"_encryptedPRKC"];
+  [location[0] encodeObject:selfCopy->_ownerCustodianAltDSID forKey:@"_ownerCustodianAltDSID"];
   objc_storeStrong(location, 0);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v10 = self;
+  selfCopy = self;
   v9[2] = a2;
-  v9[1] = a3;
-  v9[0] = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v3 = [(NSData *)v10->_encryptedPRKC copy];
+  v9[1] = zone;
+  v9[0] = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v3 = [(NSData *)selfCopy->_encryptedPRKC copy];
   v4 = *(v9[0] + 1);
   *(v9[0] + 1) = v3;
   MEMORY[0x1E69E5920](v4);
-  v5 = [(NSString *)v10->_ownerCustodianAltDSID copy];
+  v5 = [(NSString *)selfCopy->_ownerCustodianAltDSID copy];
   v6 = *(v9[0] + 2);
   *(v9[0] + 2) = v5;
   MEMORY[0x1E69E5920](v6);
@@ -68,7 +68,7 @@
 
 - (id)debugDescription
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
   v10[0] = [objc_alloc(MEMORY[0x1E696AEC0]) initWithData:self->_encryptedPRKC encoding:4];
   v9 = MEMORY[0x1E69E5928](v10[0]);
@@ -83,7 +83,7 @@
   v6 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v7 = NSStringFromClass(v4);
-  v8 = [v6 stringWithFormat:@"<%@: %p {\nencryptedPRKC: %@...\nownerCustodianAltDSID: %@\n}>", v7, v11, v9, v11->_ownerCustodianAltDSID];
+  v8 = [v6 stringWithFormat:@"<%@: %p {\nencryptedPRKC: %@...\nownerCustodianAltDSID: %@\n}>", v7, selfCopy, v9, selfCopy->_ownerCustodianAltDSID];
   MEMORY[0x1E69E5920](v7);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(v10, 0);

@@ -1,36 +1,36 @@
 @interface RoundedBorderView
-- (RoundedBorderView)initWithFrame:(CGRect)a3 color:(id)a4;
-- (void)drawRect:(CGRect)a3;
+- (RoundedBorderView)initWithFrame:(CGRect)frame color:(id)color;
+- (void)drawRect:(CGRect)rect;
 @end
 
 @implementation RoundedBorderView
 
-- (RoundedBorderView)initWithFrame:(CGRect)a3 color:(id)a4
+- (RoundedBorderView)initWithFrame:(CGRect)frame color:(id)color
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  colorCopy = color;
   v14.receiver = self;
   v14.super_class = RoundedBorderView;
-  v11 = [(RoundedBorderView *)&v14 initWithFrame:x, y, width, height];
-  v12 = v11;
-  if (v11)
+  height = [(RoundedBorderView *)&v14 initWithFrame:x, y, width, height];
+  v12 = height;
+  if (height)
   {
-    [(RoundedBorderView *)v11 setOpaque:0];
-    objc_storeStrong(&v12->_color, a4);
+    [(RoundedBorderView *)height setOpaque:0];
+    objc_storeStrong(&v12->_color, color);
   }
 
   return v12;
 }
 
-- (void)drawRect:(CGRect)a3
+- (void)drawRect:(CGRect)rect
 {
   color = self->_color;
   if (color)
   {
-    [(UIColor *)color set:a3.origin.x];
+    [(UIColor *)color set:rect.origin.x];
     [(RoundedBorderView *)self bounds];
     v5 = [UIBezierPath roundedRectBezierPath:"roundedRectBezierPath:withRoundedCorners:withCornerRadius:" withRoundedCorners:-1 withCornerRadius:?];
     [v5 fill];

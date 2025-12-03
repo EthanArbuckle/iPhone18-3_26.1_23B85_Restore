@@ -1,9 +1,9 @@
 @interface MADEmbeddingSearchOptions
 + (id)defaultOptions;
 - (MADEmbeddingSearchOptions)init;
-- (MADEmbeddingSearchOptions)initWithCoder:(id)a3;
+- (MADEmbeddingSearchOptions)initWithCoder:(id)coder;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MADEmbeddingSearchOptions
@@ -24,15 +24,15 @@
 
 + (id)defaultOptions
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (MADEmbeddingSearchOptions)initWithCoder:(id)a3
+- (MADEmbeddingSearchOptions)initWithCoder:(id)coder
 {
   v19[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v18.receiver = self;
   v18.super_class = MADEmbeddingSearchOptions;
   v5 = [(MADEmbeddingSearchOptions *)&v18 init];
@@ -44,22 +44,22 @@
     v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v19 count:2];
     v8 = [v6 setWithArray:v7];
 
-    v9 = [v4 decodeObjectOfClasses:v8 forKey:@"AssetUUIDs"];
+    v9 = [coderCopy decodeObjectOfClasses:v8 forKey:@"AssetUUIDs"];
     assetUUIDs = v5->_assetUUIDs;
     v5->_assetUUIDs = v9;
 
-    v5->_resultLimit = [v4 decodeIntForKey:@"ResultLimit"];
-    v5->_fullScan = [v4 decodeBoolForKey:@"FullScan"];
-    v5->_includePayload = [v4 decodeBoolForKey:@"IncludePayload"];
-    v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NumberOfProbes"];
+    v5->_resultLimit = [coderCopy decodeIntForKey:@"ResultLimit"];
+    v5->_fullScan = [coderCopy decodeBoolForKey:@"FullScan"];
+    v5->_includePayload = [coderCopy decodeBoolForKey:@"IncludePayload"];
+    v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NumberOfProbes"];
     numberOfProbes = v5->_numberOfProbes;
     v5->_numberOfProbes = v11;
 
-    v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"BatchSize"];
+    v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"BatchSize"];
     batchSize = v5->_batchSize;
     v5->_batchSize = v13;
 
-    v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NumConcurrentReaders"];
+    v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NumConcurrentReaders"];
     numConcurrentReaders = v5->_numConcurrentReaders;
     v5->_numConcurrentReaders = v15;
   }
@@ -67,28 +67,28 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   assetUUIDs = self->_assetUUIDs;
-  v5 = a3;
-  [v5 encodeObject:assetUUIDs forKey:@"AssetUUIDs"];
-  [v5 encodeInt:self->_resultLimit forKey:@"ResultLimit"];
-  [v5 encodeBool:self->_fullScan forKey:@"FullScan"];
-  [v5 encodeBool:self->_includePayload forKey:@"IncludePayload"];
-  [v5 encodeObject:self->_numberOfProbes forKey:@"NumberOfProbes"];
-  [v5 encodeObject:self->_batchSize forKey:@"BatchSize"];
-  [v5 encodeObject:self->_numConcurrentReaders forKey:@"NumConcurrentReaders"];
+  coderCopy = coder;
+  [coderCopy encodeObject:assetUUIDs forKey:@"AssetUUIDs"];
+  [coderCopy encodeInt:self->_resultLimit forKey:@"ResultLimit"];
+  [coderCopy encodeBool:self->_fullScan forKey:@"FullScan"];
+  [coderCopy encodeBool:self->_includePayload forKey:@"IncludePayload"];
+  [coderCopy encodeObject:self->_numberOfProbes forKey:@"NumberOfProbes"];
+  [coderCopy encodeObject:self->_batchSize forKey:@"BatchSize"];
+  [coderCopy encodeObject:self->_numConcurrentReaders forKey:@"NumConcurrentReaders"];
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E696AD60] string];
+  string = [MEMORY[0x1E696AD60] string];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  [v3 appendFormat:@"<%@ %p, ", v5, self];
+  [string appendFormat:@"<%@ %p, ", v5, self];
 
-  [v3 appendFormat:@"%@: %@, ", @"AssetUUIDs", self->_assetUUIDs];
-  [v3 appendFormat:@"%@: %d, ", @"ResultLimit", self->_resultLimit];
+  [string appendFormat:@"%@: %@, ", @"AssetUUIDs", self->_assetUUIDs];
+  [string appendFormat:@"%@: %d, ", @"ResultLimit", self->_resultLimit];
   if (self->_fullScan)
   {
     v6 = @"YES";
@@ -99,7 +99,7 @@
     v6 = @"NO";
   }
 
-  [v3 appendFormat:@"%@: %@, ", @"FullScan", v6];
+  [string appendFormat:@"%@: %@, ", @"FullScan", v6];
   if (self->_includePayload)
   {
     v7 = @"YES";
@@ -110,12 +110,12 @@
     v7 = @"NO";
   }
 
-  [v3 appendFormat:@"%@: %@, ", @"IncludePayload", v7];
-  [v3 appendFormat:@"%@: %@, ", @"NumberOfProbes", self->_numberOfProbes];
-  [v3 appendFormat:@"%@: %@, ", @"BatchSize", self->_batchSize];
-  [v3 appendFormat:@"%@: %@>", @"NumConcurrentReaders", self->_numConcurrentReaders];
+  [string appendFormat:@"%@: %@, ", @"IncludePayload", v7];
+  [string appendFormat:@"%@: %@, ", @"NumberOfProbes", self->_numberOfProbes];
+  [string appendFormat:@"%@: %@, ", @"BatchSize", self->_batchSize];
+  [string appendFormat:@"%@: %@>", @"NumConcurrentReaders", self->_numConcurrentReaders];
 
-  return v3;
+  return string;
 }
 
 @end

@@ -13,14 +13,14 @@
   if ([(NTKVictoryDigitalColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKVictoryDigitalColorPalette *)self paletteAtIndex:0];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v5 = [(NTKVictoryDigitalColorPalette *)self pigmentEditOption];
-    v6 = [v5 fullname];
-    v7 = [v6 isEqualToString:ntk_victory_fall2025_voltSplash];
+    pigmentEditOption = [(NTKVictoryDigitalColorPalette *)self pigmentEditOption];
+    fullname = [pigmentEditOption fullname];
+    v7 = [fullname isEqualToString:ntk_victory_fall2025_voltSplash];
 
     if (v7)
     {
@@ -31,10 +31,10 @@
     {
       [(NTKVictoryDigitalColorPalette *)self primaryColor];
     }
-    v4 = ;
+    primaryColor = ;
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)_complication
@@ -42,14 +42,14 @@
   if ([(NTKVictoryDigitalColorPalette *)self isCompositePalette])
   {
     v3 = [(NTKVictoryDigitalColorPalette *)self paletteAtIndex:1];
-    v4 = [v3 primaryColor];
+    primaryColor = [v3 primaryColor];
   }
 
   else
   {
-    v5 = [(NTKVictoryDigitalColorPalette *)self pigmentEditOption];
-    v6 = [v5 fullname];
-    v7 = [v6 isEqualToString:ntk_victory_fall2025_voltSplash];
+    pigmentEditOption = [(NTKVictoryDigitalColorPalette *)self pigmentEditOption];
+    fullname = [pigmentEditOption fullname];
+    v7 = [fullname isEqualToString:ntk_victory_fall2025_voltSplash];
 
     if (v7)
     {
@@ -60,24 +60,24 @@
     {
       [(NTKVictoryDigitalColorPalette *)self primaryColor];
     }
-    v4 = ;
+    primaryColor = ;
   }
 
-  return v4;
+  return primaryColor;
 }
 
 - (id)_complicationPlatter
 {
-  v3 = [(NTKVictoryDigitalColorPalette *)self complication];
-  v4 = [(NTKVictoryDigitalColorPalette *)self pigmentEditOption];
-  v5 = [v4 fullname];
-  v6 = [v5 isEqualToString:ntk_victory_fall2025_voltSplash];
+  complication = [(NTKVictoryDigitalColorPalette *)self complication];
+  pigmentEditOption = [(NTKVictoryDigitalColorPalette *)self pigmentEditOption];
+  fullname = [pigmentEditOption fullname];
+  v6 = [fullname isEqualToString:ntk_victory_fall2025_voltSplash];
 
   if (v6)
   {
-    v7 = [(NTKVictoryDigitalColorPalette *)self primaryColor];
+    primaryColor = [(NTKVictoryDigitalColorPalette *)self primaryColor];
 
-    v3 = v7;
+    complication = primaryColor;
   }
 
   v8 = NTKColorByPremultiplyingAlpha();
@@ -87,9 +87,9 @@
 
 - (id)_background
 {
-  v3 = [(NTKVictoryDigitalColorPalette *)self pigmentEditOption];
-  v4 = [v3 fullname];
-  v5 = [v4 isEqualToString:ntk_victory_fall2025_voltSplash];
+  pigmentEditOption = [(NTKVictoryDigitalColorPalette *)self pigmentEditOption];
+  fullname = [pigmentEditOption fullname];
+  v5 = [fullname isEqualToString:ntk_victory_fall2025_voltSplash];
 
   if (v5)
   {
@@ -107,9 +107,9 @@
 
 - (id)_digitsOutlineBackground
 {
-  v3 = [(NTKVictoryDigitalColorPalette *)self pigmentEditOption];
-  v4 = [v3 fullname];
-  v5 = [v4 isEqualToString:ntk_victory_fall2025_voltSplash];
+  pigmentEditOption = [(NTKVictoryDigitalColorPalette *)self pigmentEditOption];
+  fullname = [pigmentEditOption fullname];
+  v5 = [fullname isEqualToString:ntk_victory_fall2025_voltSplash];
 
   if (v5)
   {

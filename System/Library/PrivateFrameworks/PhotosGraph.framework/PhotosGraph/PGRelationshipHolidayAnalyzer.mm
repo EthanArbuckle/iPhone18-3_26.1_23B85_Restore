@@ -1,40 +1,40 @@
 @interface PGRelationshipHolidayAnalyzer
-- (PGRelationshipHolidayAnalyzer)initWithRelationshipProcessor:(id)a3;
-- (id)_familyHolidayMomentsFromMomentNodes:(id)a3 inGraph:(id)a4;
-- (void)runAnalysisWithProgressBlock:(id)a3;
+- (PGRelationshipHolidayAnalyzer)initWithRelationshipProcessor:(id)processor;
+- (id)_familyHolidayMomentsFromMomentNodes:(id)nodes inGraph:(id)graph;
+- (void)runAnalysisWithProgressBlock:(id)block;
 @end
 
 @implementation PGRelationshipHolidayAnalyzer
 
-- (id)_familyHolidayMomentsFromMomentNodes:(id)a3 inGraph:(id)a4
+- (id)_familyHolidayMomentsFromMomentNodes:(id)nodes inGraph:(id)graph
 {
-  v5 = a3;
-  v6 = [PGGraphHolidayNodeCollection holidayNodesWithCategory:2 inGraph:a4];
-  v7 = [v6 celebratingMomentNodes];
-  v8 = [v7 collectionByIntersecting:v5];
+  nodesCopy = nodes;
+  v6 = [PGGraphHolidayNodeCollection holidayNodesWithCategory:2 inGraph:graph];
+  celebratingMomentNodes = [v6 celebratingMomentNodes];
+  v8 = [celebratingMomentNodes collectionByIntersecting:nodesCopy];
 
   return v8;
 }
 
-- (void)runAnalysisWithProgressBlock:(id)a3
+- (void)runAnalysisWithProgressBlock:(id)block
 {
   v37 = *MEMORY[0x277D85DE8];
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(block);
   v5 = 0.0;
   if (!v4 || (v6 = CFAbsoluteTimeGetCurrent(), v6 < 0.01))
   {
 LABEL_7:
     WeakRetained = objc_loadWeakRetained(&self->_processor);
-    v8 = [WeakRetained momentNodes];
-    v9 = [WeakRetained graph];
-    v10 = [(PGRelationshipHolidayAnalyzer *)self _familyHolidayMomentsFromMomentNodes:v8 inGraph:v9];
+    momentNodes = [WeakRetained momentNodes];
+    graph = [WeakRetained graph];
+    v10 = [(PGRelationshipHolidayAnalyzer *)self _familyHolidayMomentsFromMomentNodes:momentNodes inGraph:graph];
 
     v11 = [v10 count];
     if (v11)
     {
       v12 = v11;
-      v13 = [WeakRetained personNodes];
-      v14 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:v10 amongPersonNodes:v13];
+      personNodes = [WeakRetained personNodes];
+      v14 = [PGPeopleInferencesConveniences countedPersonNodesFromMomentNodes:v10 amongPersonNodes:personNodes];
 
       if (v4)
       {
@@ -84,8 +84,8 @@ LABEL_30:
 
             v21 = *(*(&v27 + 1) + 8 * i);
             v22 = [v16 countForObject:v21];
-            v23 = [v21 localIdentifier];
-            v24 = [WeakRetained relationshipAnalyzerPropertiesForPersonLocalIdentifier:v23];
+            localIdentifier = [v21 localIdentifier];
+            v24 = [WeakRetained relationshipAnalyzerPropertiesForPersonLocalIdentifier:localIdentifier];
 
             if (v24)
             {
@@ -147,16 +147,16 @@ LABEL_31:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (PGRelationshipHolidayAnalyzer)initWithRelationshipProcessor:(id)a3
+- (PGRelationshipHolidayAnalyzer)initWithRelationshipProcessor:(id)processor
 {
-  v4 = a3;
+  processorCopy = processor;
   v8.receiver = self;
   v8.super_class = PGRelationshipHolidayAnalyzer;
   v5 = [(PGRelationshipHolidayAnalyzer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_processor, v4);
+    objc_storeWeak(&v5->_processor, processorCopy);
   }
 
   return v6;

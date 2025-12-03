@@ -1,9 +1,9 @@
 @interface SBContinuitySessionService
 - (SBContinuitySessionFactory)sessionFactory;
 - (SBContinuitySessionService)init;
-- (SBContinuitySessionService)initWithServiceListenerFactory:(id)a3;
-- (void)clientDidConnect:(id)a3;
-- (void)clientDidDisconnect:(id)a3;
+- (SBContinuitySessionService)initWithServiceListenerFactory:(id)factory;
+- (void)clientDidConnect:(id)connect;
+- (void)clientDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBContinuitySessionService
@@ -16,31 +16,31 @@
   return v4;
 }
 
-- (SBContinuitySessionService)initWithServiceListenerFactory:(id)a3
+- (SBContinuitySessionService)initWithServiceListenerFactory:(id)factory
 {
-  v4 = a3;
+  factoryCopy = factory;
   v12.receiver = self;
   v12.super_class = SBContinuitySessionService;
   v5 = [(SBContinuitySessionService *)&v12 init];
   if (v5)
   {
     v6 = BSDispatchQueueCreateWithQualityOfService();
-    v7 = [v4 newContinuitySessionServiceListenerForDelegate:v5 serviceQueue:v6];
+    v7 = [factoryCopy newContinuitySessionServiceListenerForDelegate:v5 serviceQueue:v6];
     serviceConnectionListener = v5->_serviceConnectionListener;
     v5->_serviceConnectionListener = v7;
 
-    v9 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     sessions = v5->_sessions;
-    v5->_sessions = v9;
+    v5->_sessions = strongToStrongObjectsMapTable;
   }
 
   return v5;
 }
 
-- (void)clientDidConnect:(id)a3
+- (void)clientDidConnect:(id)connect
 {
-  v4 = a3;
-  v3 = v4;
+  connectCopy = connect;
+  v3 = connectCopy;
   BSDispatchMain();
 }
 
@@ -86,10 +86,10 @@ LABEL_5:
   [*(a1 + 32) continuitySessionDidUpdateState:v6];
 }
 
-- (void)clientDidDisconnect:(id)a3
+- (void)clientDidDisconnect:(id)disconnect
 {
-  v4 = a3;
-  v3 = v4;
+  disconnectCopy = disconnect;
+  v3 = disconnectCopy;
   BSDispatchMain();
 }
 

@@ -1,7 +1,7 @@
 @interface PRAstCompositeNode
 - (id)description;
 - (id)toDictionary;
-- (void)addChild:(id)a3;
+- (void)addChild:(id)child;
 - (void)dealloc;
 @end
 
@@ -17,13 +17,13 @@
 - (id)toDictionary
 {
   v19 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(PRAstCompositeNode *)self children];
-  v5 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+  children = [(PRAstCompositeNode *)self children];
+  v5 = [(NSMutableArray *)children countByEnumeratingWithState:&v12 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -35,36 +35,36 @@
       {
         if (*v13 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(children);
         }
 
-        [v3 addObject:{objc_msgSend(*(*(&v12 + 1) + 8 * v8++), "toDictionary")}];
+        [array addObject:{objc_msgSend(*(*(&v12 + 1) + 8 * v8++), "toDictionary")}];
       }
 
       while (v6 != v8);
-      v6 = [(NSMutableArray *)v4 countByEnumeratingWithState:&v12 objects:v18 count:16];
+      v6 = [(NSMutableArray *)children countByEnumeratingWithState:&v12 objects:v18 count:16];
     }
 
     while (v6);
   }
 
   v16[0] = @"type";
-  v9 = [(PRAstCompositeNode *)self nodeType];
+  nodeType = [(PRAstCompositeNode *)self nodeType];
   v16[1] = @"children";
-  v17[0] = v9;
-  v17[1] = [v3 copy];
+  v17[0] = nodeType;
+  v17[1] = [array copy];
   result = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
   v11 = *MEMORY[0x1E69E9840];
   return result;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  if (a3)
+  if (child)
   {
-    v4 = [(PRAstCompositeNode *)self children];
+    children = [(PRAstCompositeNode *)self children];
 
-    [(NSMutableArray *)v4 addObject:a3];
+    [(NSMutableArray *)children addObject:child];
   }
 }
 

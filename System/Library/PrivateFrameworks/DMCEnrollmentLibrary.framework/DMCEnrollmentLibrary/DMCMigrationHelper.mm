@@ -1,37 +1,37 @@
 @interface DMCMigrationHelper
 + (BOOL)currentEnrollmentStateSupportsMigration;
-+ (BOOL)hasPendingEnrollmentWithExistingCloudConfig:(id)a3;
-+ (BOOL)isDeviceEligibleForMigrationWithExistingCloudConfig:(id)a3 outReason:(id *)a4;
-+ (BOOL)isMigrationMandatoryWithPendingCloudConfig:(id)a3;
-+ (BOOL)isMigrationNeededWithExistingCloudConfig:(id)a3 newCloudConfig:(id)a4;
-+ (BOOL)isMigrationSupportedWithExistingCloudConfig:(id)a3 outReason:(id *)a4;
-+ (BOOL)launchMigrationApplicationWithError:(id *)a3;
++ (BOOL)hasPendingEnrollmentWithExistingCloudConfig:(id)config;
++ (BOOL)isDeviceEligibleForMigrationWithExistingCloudConfig:(id)config outReason:(id *)reason;
++ (BOOL)isMigrationMandatoryWithPendingCloudConfig:(id)config;
++ (BOOL)isMigrationNeededWithExistingCloudConfig:(id)config newCloudConfig:(id)cloudConfig;
++ (BOOL)isMigrationSupportedWithExistingCloudConfig:(id)config outReason:(id *)reason;
++ (BOOL)launchMigrationApplicationWithError:(id *)error;
 + (BOOL)userInititiatedMigration;
-+ (id)_createStartMigrationRequestFailedErrorWithDEPResponse:(id)a3;
++ (id)_createStartMigrationRequestFailedErrorWithDEPResponse:(id)response;
 + (id)readPendingCloudConfigDetails;
-+ (void)makeEndMigrationRequestIfNeededWithCloudConfig:(id)a3 success:(BOOL)a4 completionHandler:(id)a5;
-+ (void)makeStartMigrationRequestWithCloudConfig:(id)a3 completionHandler:(id)a4;
-+ (void)setMigrationIncomplete:(BOOL)a3;
-+ (void)setUserInititiatedMigration:(BOOL)a3;
++ (void)makeEndMigrationRequestIfNeededWithCloudConfig:(id)config success:(BOOL)success completionHandler:(id)handler;
++ (void)makeStartMigrationRequestWithCloudConfig:(id)config completionHandler:(id)handler;
++ (void)setMigrationIncomplete:(BOOL)incomplete;
++ (void)setUserInititiatedMigration:(BOOL)migration;
 @end
 
 @implementation DMCMigrationHelper
 
-+ (BOOL)isDeviceEligibleForMigrationWithExistingCloudConfig:(id)a3 outReason:(id *)a4
++ (BOOL)isDeviceEligibleForMigrationWithExistingCloudConfig:(id)config outReason:(id *)reason
 {
-  v6 = a3;
-  if (![DMCMigrationHelper isMigrationSupportedWithExistingCloudConfig:v6 outReason:a4])
+  configCopy = config;
+  if (![DMCMigrationHelper isMigrationSupportedWithExistingCloudConfig:configCopy outReason:reason])
   {
     goto LABEL_12;
   }
 
-  if (([a1 currentEnrollmentStateSupportsMigration] & 1) == 0)
+  if (([self currentEnrollmentStateSupportsMigration] & 1) == 0)
   {
-    if ([DMCMigrationHelper hasPendingEnrollmentWithExistingCloudConfig:v6])
+    if ([DMCMigrationHelper hasPendingEnrollmentWithExistingCloudConfig:configCopy])
     {
-      if (a4 && *MEMORY[0x277D03408])
+      if (reason && *MEMORY[0x277D03408])
       {
-        *a4 = *MEMORY[0x277D03408];
+        *reason = *MEMORY[0x277D03408];
       }
 
       v8 = *(DMCLogObjects() + 8);
@@ -63,9 +63,9 @@ LABEL_13:
   return v7;
 }
 
-+ (BOOL)hasPendingEnrollmentWithExistingCloudConfig:(id)a3
++ (BOOL)hasPendingEnrollmentWithExistingCloudConfig:(id)config
 {
-  v3 = a3;
+  configCopy = config;
   if (+[DMCMigrationHelper hasIncompleteMigration])
   {
     v4 = *(DMCLogObjects() + 8);
@@ -82,10 +82,10 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v7 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:v3];
-  v8 = [v7 isStoredProfileInstalled];
+  v7 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:configCopy];
+  isStoredProfileInstalled = [v7 isStoredProfileInstalled];
 
-  if ((v8 & 1) == 0)
+  if ((isStoredProfileInstalled & 1) == 0)
   {
     v4 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -107,19 +107,19 @@ LABEL_10:
   return v9;
 }
 
-+ (BOOL)isMigrationSupportedWithExistingCloudConfig:(id)a3 outReason:(id *)a4
++ (BOOL)isMigrationSupportedWithExistingCloudConfig:(id)config outReason:(id *)reason
 {
   v5 = MEMORY[0x277D24640];
-  v6 = a3;
-  v7 = [[v5 alloc] initWithCloudConfigDetails:v6];
+  configCopy = config;
+  v7 = [[v5 alloc] initWithCloudConfigDetails:configCopy];
 
   if ([v7 isSupervised])
   {
     if ([v7 isTeslaEnrolled])
     {
-      v8 = [v7 enrollmentServerInfo];
+      enrollmentServerInfo = [v7 enrollmentServerInfo];
 
-      if (v8)
+      if (enrollmentServerInfo)
       {
         v9 = *(DMCLogObjects() + 8);
         if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -128,7 +128,7 @@ LABEL_10:
           _os_log_impl(&dword_247E39000, v9, OS_LOG_TYPE_DEFAULT, "DMCMigrationHelper: Migration of ABE devices is not supported", buf, 2u);
         }
 
-        if (!a4)
+        if (!reason)
         {
           goto LABEL_29;
         }
@@ -145,7 +145,7 @@ LABEL_10:
           _os_log_impl(&dword_247E39000, v15, OS_LOG_TYPE_DEFAULT, "DMCMigrationHelper: Migration of Shared iPad devices is not supported", v19, 2u);
         }
 
-        if (!a4)
+        if (!reason)
         {
           goto LABEL_29;
         }
@@ -157,7 +157,7 @@ LABEL_10:
       {
         if (![v7 isRapidReturnToService])
         {
-          if (!a4 || !*MEMORY[0x277D033E8])
+          if (!reason || !*MEMORY[0x277D033E8])
           {
             v14 = 1;
             goto LABEL_30;
@@ -175,7 +175,7 @@ LABEL_10:
           _os_log_impl(&dword_247E39000, v16, OS_LOG_TYPE_DEFAULT, "DMCMigrationHelper: Migration of RRTS devices is not supported", v18, 2u);
         }
 
-        if (!a4)
+        if (!reason)
         {
 LABEL_29:
           v14 = 0;
@@ -195,7 +195,7 @@ LABEL_29:
         _os_log_impl(&dword_247E39000, v12, OS_LOG_TYPE_DEFAULT, "DMCMigrationHelper: Migration of non DEP enrolled devices is not supported", v21, 2u);
       }
 
-      if (!a4)
+      if (!reason)
       {
         goto LABEL_29;
       }
@@ -213,7 +213,7 @@ LABEL_29:
       _os_log_impl(&dword_247E39000, v11, OS_LOG_TYPE_DEFAULT, "DMCMigrationHelper: Device is not supervised", v22, 2u);
     }
 
-    if (!a4)
+    if (!reason)
     {
       goto LABEL_29;
     }
@@ -229,23 +229,23 @@ LABEL_29:
   v13 = *v10;
   v14 = 0;
 LABEL_18:
-  *a4 = v13;
+  *reason = v13;
 LABEL_30:
 
   return v14;
 }
 
-+ (BOOL)isMigrationNeededWithExistingCloudConfig:(id)a3 newCloudConfig:(id)a4
++ (BOOL)isMigrationNeededWithExistingCloudConfig:(id)config newCloudConfig:(id)cloudConfig
 {
   v29 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v6)
+  configCopy = config;
+  cloudConfigCopy = cloudConfig;
+  if (cloudConfigCopy)
   {
-    v7 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:v6];
-    v8 = [v7 migrationDeadline];
+    v7 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:cloudConfigCopy];
+    migrationDeadline = [v7 migrationDeadline];
 
-    if (!v8)
+    if (!migrationDeadline)
     {
       v19 = *(DMCLogObjects() + 8);
       v18 = 0;
@@ -259,22 +259,22 @@ LABEL_30:
       goto LABEL_17;
     }
 
-    v9 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:v5];
-    v10 = [v9 mdmServerUID];
-    v11 = [v7 mdmServerUID];
-    v12 = v11;
-    if (v11 && ![v11 isEqualToString:v10])
+    v9 = [objc_alloc(MEMORY[0x277D24640]) initWithCloudConfigDetails:configCopy];
+    mdmServerUID = [v9 mdmServerUID];
+    mdmServerUID2 = [v7 mdmServerUID];
+    v12 = mdmServerUID2;
+    if (mdmServerUID2 && ![mdmServerUID2 isEqualToString:mdmServerUID])
     {
-      v20 = [v7 enrollmentServerInfo];
+      enrollmentServerInfo = [v7 enrollmentServerInfo];
 
       v21 = *(DMCLogObjects() + 8);
       v22 = os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT);
-      if (!v20)
+      if (!enrollmentServerInfo)
       {
         if (v22)
         {
           v25 = 138543618;
-          v26 = v10;
+          v26 = mdmServerUID;
           v27 = 2114;
           v28 = v12;
           _os_log_impl(&dword_247E39000, v21, OS_LOG_TYPE_DEFAULT, "DMCMigrationHelper: server UID has changed from %{public}@ to %{public}@.", &v25, 0x16u);
@@ -331,16 +331,16 @@ LABEL_18:
   return v18;
 }
 
-+ (BOOL)isMigrationMandatoryWithPendingCloudConfig:(id)a3
++ (BOOL)isMigrationMandatoryWithPendingCloudConfig:(id)config
 {
   v18 = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277D24640];
-  v4 = a3;
-  v5 = [[v3 alloc] initWithCloudConfigDetails:v4];
+  configCopy = config;
+  v5 = [[v3 alloc] initWithCloudConfigDetails:configCopy];
 
-  v6 = [v5 migrationDeadline];
+  migrationDeadline = [v5 migrationDeadline];
   v7 = [MEMORY[0x277CBEAA8] now];
-  v8 = [v7 compare:v6];
+  v8 = [v7 compare:migrationDeadline];
 
   v9 = *(DMCLogObjects() + 8);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
@@ -350,7 +350,7 @@ LABEL_18:
     v14 = 1024;
     v15 = v8 != -1;
     v16 = 2114;
-    v17 = v6;
+    v17 = migrationDeadline;
     _os_log_impl(&dword_247E39000, v9, OS_LOG_TYPE_DEFAULT, "%s is migration mandatory: %d. Deadline: %{public}@.", &v12, 0x1Cu);
   }
 
@@ -360,11 +360,11 @@ LABEL_18:
 
 + (BOOL)currentEnrollmentStateSupportsMigration
 {
-  v2 = [MEMORY[0x277D24648] sharedConfiguration];
-  [v2 refreshDetailsFromDisk];
-  v3 = [v2 managingProfileIdentifier];
+  mEMORY[0x277D24648] = [MEMORY[0x277D24648] sharedConfiguration];
+  [mEMORY[0x277D24648] refreshDetailsFromDisk];
+  managingProfileIdentifier = [mEMORY[0x277D24648] managingProfileIdentifier];
 
-  if (!v3)
+  if (!managingProfileIdentifier)
   {
     v5 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -380,9 +380,9 @@ LABEL_12:
     goto LABEL_13;
   }
 
-  v4 = [v2 personaID];
+  personaID = [mEMORY[0x277D24648] personaID];
 
-  if (v4)
+  if (personaID)
   {
     v5 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -398,7 +398,7 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (([v2 isADEProfile] & 1) == 0)
+  if (([mEMORY[0x277D24648] isADEProfile] & 1) == 0)
   {
     v5 = *(DMCLogObjects() + 8);
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -418,15 +418,15 @@ LABEL_13:
   return v8;
 }
 
-+ (void)setMigrationIncomplete:(BOOL)a3
++ (void)setMigrationIncomplete:(BOOL)incomplete
 {
-  v3 = a3;
+  incompleteCopy = incomplete;
   v16 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc(MEMORY[0x277D03568]);
-  v6 = [a1 _migrationConfigFilePath];
-  v7 = [v5 initWithFilePath:v6];
+  _migrationConfigFilePath = [self _migrationConfigFilePath];
+  v7 = [v5 initWithFilePath:_migrationConfigFilePath];
 
-  if (v3)
+  if (incompleteCopy)
   {
     v8 = MEMORY[0x277CBEC38];
   }
@@ -454,12 +454,12 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (BOOL)launchMigrationApplicationWithError:(id *)a3
++ (BOOL)launchMigrationApplicationWithError:(id *)error
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc(MEMORY[0x277D03568]);
-  v6 = [a1 _migrationConfigFilePath];
-  v7 = [v5 initWithFilePath:v6];
+  _migrationConfigFilePath = [self _migrationConfigFilePath];
+  v7 = [v5 initWithFilePath:_migrationConfigFilePath];
 
   v8 = *MEMORY[0x277D03420];
   v16 = 0;
@@ -475,10 +475,10 @@ LABEL_13:
       _os_log_impl(&dword_247E39000, v10, OS_LOG_TYPE_ERROR, "Failed to save UserInitiatedMigration info with error: %{public}@", buf, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
       v11 = v9;
-      *a3 = v9;
+      *error = v9;
     }
   }
 
@@ -492,8 +492,8 @@ LABEL_13:
 
     v12 = [objc_alloc(MEMORY[0x277D0AE10]) initWithReason:@"MDM Migration restarting device"];
     [v12 setRebootType:1];
-    v13 = [MEMORY[0x277D0AE18] sharedService];
-    [v13 shutdownWithOptions:v12];
+    mEMORY[0x277D0AE18] = [MEMORY[0x277D0AE18] sharedService];
+    [mEMORY[0x277D0AE18] shutdownWithOptions:v12];
   }
 
   v14 = *MEMORY[0x277D85DE8];
@@ -504,8 +504,8 @@ LABEL_13:
 {
   v16 = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D03568]);
-  v4 = [a1 _migrationConfigFilePath];
-  v5 = [v3 initWithFilePath:v4];
+  _migrationConfigFilePath = [self _migrationConfigFilePath];
+  v5 = [v3 initWithFilePath:_migrationConfigFilePath];
 
   v6 = *MEMORY[0x277D03420];
   v13 = 0;
@@ -521,27 +521,27 @@ LABEL_13:
       _os_log_impl(&dword_247E39000, v9, OS_LOG_TYPE_ERROR, "Failed to retrieve UserInitiatedMigration info with error: %{public}@", buf, 0xCu);
     }
 
-    v10 = 0;
+    bOOLValue = 0;
   }
 
   else
   {
-    v10 = [v7 BOOLValue];
+    bOOLValue = [v7 BOOLValue];
   }
 
   v11 = *MEMORY[0x277D85DE8];
-  return v10;
+  return bOOLValue;
 }
 
-+ (void)setUserInititiatedMigration:(BOOL)a3
++ (void)setUserInititiatedMigration:(BOOL)migration
 {
-  v3 = a3;
+  migrationCopy = migration;
   v16 = *MEMORY[0x277D85DE8];
   v5 = objc_alloc(MEMORY[0x277D03568]);
-  v6 = [a1 _migrationConfigFilePath];
-  v7 = [v5 initWithFilePath:v6];
+  _migrationConfigFilePath = [self _migrationConfigFilePath];
+  v7 = [v5 initWithFilePath:_migrationConfigFilePath];
 
-  if (v3)
+  if (migrationCopy)
   {
     v8 = MEMORY[0x277CBEC38];
   }
@@ -569,17 +569,17 @@ LABEL_13:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)makeStartMigrationRequestWithCloudConfig:(id)a3 completionHandler:(id)a4
++ (void)makeStartMigrationRequestWithCloudConfig:(id)config completionHandler:(id)handler
 {
-  v5 = a4;
+  handlerCopy = handler;
   v6 = objc_opt_new();
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __81__DMCMigrationHelper_makeStartMigrationRequestWithCloudConfig_completionHandler___block_invoke;
   v8[3] = &unk_278EE4038;
-  v9 = v5;
-  v10 = a1;
-  v7 = v5;
+  v9 = handlerCopy;
+  selfCopy = self;
+  v7 = handlerCopy;
   [v6 makeStartMDMMigrationRequestWithCompletionBlock:v8];
 }
 
@@ -637,20 +637,20 @@ LABEL_10:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)makeEndMigrationRequestIfNeededWithCloudConfig:(id)a3 success:(BOOL)a4 completionHandler:(id)a5
++ (void)makeEndMigrationRequestIfNeededWithCloudConfig:(id)config success:(BOOL)success completionHandler:(id)handler
 {
-  v7 = a3;
-  v8 = a5;
+  configCopy = config;
+  handlerCopy = handler;
   v9 = dispatch_get_global_queue(0, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __95__DMCMigrationHelper_makeEndMigrationRequestIfNeededWithCloudConfig_success_completionHandler___block_invoke;
   block[3] = &unk_278EE4088;
-  v13 = v7;
-  v14 = v8;
-  v15 = a4;
-  v10 = v8;
-  v11 = v7;
+  v13 = configCopy;
+  v14 = handlerCopy;
+  successCopy = success;
+  v10 = handlerCopy;
+  v11 = configCopy;
   dispatch_async(v9, block);
 }
 
@@ -751,12 +751,12 @@ void __95__DMCMigrationHelper_makeEndMigrationRequestIfNeededWithCloudConfig_suc
   return v5;
 }
 
-+ (id)_createStartMigrationRequestFailedErrorWithDEPResponse:(id)a3
++ (id)_createStartMigrationRequestFailedErrorWithDEPResponse:(id)response
 {
   v3 = MEMORY[0x277CCA9B8];
   v4 = *MEMORY[0x277D03410];
   v5 = DMCErrorArray();
-  v6 = [v3 DMCErrorWithDomain:v4 code:67001 descriptionArray:v5 errorType:{*MEMORY[0x277D032F8], a3, 0}];
+  v6 = [v3 DMCErrorWithDomain:v4 code:67001 descriptionArray:v5 errorType:{*MEMORY[0x277D032F8], response, 0}];
 
   return v6;
 }

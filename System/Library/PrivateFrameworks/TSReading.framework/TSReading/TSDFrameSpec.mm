@@ -1,12 +1,12 @@
 @interface TSDFrameSpec
-+ (TSDFrameSpec)frameSpecWithName:(id)a3;
++ (TSDFrameSpec)frameSpecWithName:(id)name;
 + (id)frameSpecs;
 + (id)p_imageKeys;
 - (CGPoint)i_adornmentPosition;
 - (CGSize)i_adornmentSize;
-- (TSDFrameSpec)initWithBundle:(id)a3 isVolatile:(BOOL)a4;
-- (id)i_providerForIndex:(int)a3 mask:(BOOL)a4;
-- (id)p_imageDataForKey:(id)a3;
+- (TSDFrameSpec)initWithBundle:(id)bundle isVolatile:(BOOL)volatile;
+- (id)i_providerForIndex:(int)index mask:(BOOL)mask;
+- (id)p_imageDataForKey:(id)key;
 - (id)p_infoDictionary;
 - (void)dealloc;
 - (void)i_removeInterestInProviders;
@@ -21,7 +21,7 @@
   result = frameSpecs_sFrameSpecs;
   if (!frameSpecs_sFrameSpecs)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!frameSpecs_sFrameSpecs)
     {
       v4 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -65,37 +65,37 @@
       frameSpecs_sFrameSpecs = v4;
       if (!v4)
       {
-        v11 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDFrameSpec frameSpecs]"];
-        [v11 handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameSpec.m"), 66, @"Couldn't initialize lazy variable %s", "sFrameSpecs"}];
+        [currentHandler handleFailureInFunction:v12 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameSpec.m"), 66, @"Couldn't initialize lazy variable %s", "sFrameSpecs"}];
       }
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return frameSpecs_sFrameSpecs;
   }
 
   return result;
 }
 
-+ (TSDFrameSpec)frameSpecWithName:(id)a3
++ (TSDFrameSpec)frameSpecWithName:(id)name
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = frameSpecWithName__sReadableNameToSpecMap;
   if (!frameSpecWithName__sReadableNameToSpecMap)
   {
-    obj = a1;
-    objc_sync_enter(a1);
+    obj = self;
+    objc_sync_enter(self);
     if (!frameSpecWithName__sReadableNameToSpecMap)
     {
       v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
-      v17 = a3;
+      nameCopy = name;
       v21 = 0u;
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v7 = [obj frameSpecs];
-      v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      frameSpecs = [obj frameSpecs];
+      v8 = [frameSpecs countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v8)
       {
         v9 = *v20;
@@ -105,21 +105,21 @@
           {
             if (*v20 != v9)
             {
-              objc_enumerationMutation(v7);
+              objc_enumerationMutation(frameSpecs);
             }
 
             v11 = *(*(&v19 + 1) + 8 * i);
-            v12 = [v11 frameName];
-            if ([v6 objectForKey:v12])
+            frameName = [v11 frameName];
+            if ([v6 objectForKey:frameName])
             {
-              v16 = v12;
+              v16 = frameName;
               TSULogErrorInFunction();
             }
 
-            [v6 setObject:v11 forKey:{v12, v16}];
+            [v6 setObject:v11 forKey:{frameName, v16}];
           }
 
-          v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v8 = [frameSpecs countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v8);
@@ -127,12 +127,12 @@
 
       __dmb(0xBu);
       frameSpecWithName__sReadableNameToSpecMap = v6;
-      a3 = v17;
+      name = nameCopy;
       if (!v6)
       {
-        v13 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v14 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDFrameSpec frameSpecWithName:]"];
-        [v13 handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameSpec.m"), 90, @"Couldn't initialize lazy variable %s", "sReadableNameToSpecMap"}];
+        [currentHandler handleFailureInFunction:v14 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameSpec.m"), 90, @"Couldn't initialize lazy variable %s", "sReadableNameToSpecMap"}];
       }
     }
 
@@ -140,7 +140,7 @@
     v5 = frameSpecWithName__sReadableNameToSpecMap;
   }
 
-  result = [v5 objectForKey:a3];
+  result = [v5 objectForKey:name];
   if (!result)
   {
     return [frameSpecWithName__sReadableNameToSpecMap objectForKey:@"None"];
@@ -149,13 +149,13 @@
   return result;
 }
 
-- (TSDFrameSpec)initWithBundle:(id)a3 isVolatile:(BOOL)a4
+- (TSDFrameSpec)initWithBundle:(id)bundle isVolatile:(BOOL)volatile
 {
-  if (!a3)
+  if (!bundle)
   {
-    v6 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v7 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameSpec initWithBundle:isVolatile:]"];
-    [v6 handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameSpec.m"), 103, @"invalid nil value for '%s'", "bundle"}];
+    [currentHandler handleFailureInFunction:v7 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameSpec.m"), 103, @"invalid nil value for '%s'", "bundle"}];
   }
 
   v15.receiver = self;
@@ -163,26 +163,26 @@
   v8 = [(TSDFrameSpec *)&v15 init];
   if (v8)
   {
-    v8->mBundle = a3;
-    v9 = [(TSDFrameSpec *)v8 p_infoDictionary];
+    v8->mBundle = bundle;
+    p_infoDictionary = [(TSDFrameSpec *)v8 p_infoDictionary];
     objc_opt_class();
-    [v9 objectForKey:@"name"];
+    [p_infoDictionary objectForKey:@"name"];
     v10 = TSUDynamicCast();
     if (!v10)
     {
-      v10 = [objc_msgSend(objc_msgSend(a3 "bundlePath")];
+      v10 = [objc_msgSend(objc_msgSend(bundle "bundlePath")];
     }
 
     v8->mFrameName = [v10 copy];
-    v8->mDisplayInPicker = [objc_msgSend(v9 objectForKey:{@"Display", "BOOLValue"}];
-    v8->mLeftInset = [objc_msgSend(v9 objectForKey:{@"Left Frame Inset", "intValue"}];
-    v8->mRightInset = [objc_msgSend(v9 objectForKey:{@"Right Frame Inset", "intValue"}];
-    v8->mTopInset = [objc_msgSend(v9 objectForKey:{@"Top Frame Inset", "intValue"}];
-    v8->mBottomInset = [objc_msgSend(v9 objectForKey:{@"Bottom Frame Inset", "intValue"}];
-    v8->mTilingMode = [objc_msgSend(v9 objectForKey:{@"Stretch Tiles", "intValue"}];
-    if ([v9 objectForKey:@"Minimum Asset Scale"])
+    v8->mDisplayInPicker = [objc_msgSend(p_infoDictionary objectForKey:{@"Display", "BOOLValue"}];
+    v8->mLeftInset = [objc_msgSend(p_infoDictionary objectForKey:{@"Left Frame Inset", "intValue"}];
+    v8->mRightInset = [objc_msgSend(p_infoDictionary objectForKey:{@"Right Frame Inset", "intValue"}];
+    v8->mTopInset = [objc_msgSend(p_infoDictionary objectForKey:{@"Top Frame Inset", "intValue"}];
+    v8->mBottomInset = [objc_msgSend(p_infoDictionary objectForKey:{@"Bottom Frame Inset", "intValue"}];
+    v8->mTilingMode = [objc_msgSend(p_infoDictionary objectForKey:{@"Stretch Tiles", "intValue"}];
+    if ([p_infoDictionary objectForKey:@"Minimum Asset Scale"])
     {
-      [objc_msgSend(v9 objectForKey:{@"Minimum Asset Scale", "floatValue"}];
+      [objc_msgSend(p_infoDictionary objectForKey:{@"Minimum Asset Scale", "floatValue"}];
       TSUClamp();
     }
 
@@ -192,17 +192,17 @@
     }
 
     v8->mMinimumAssetScale = v11;
-    if ([v9 objectForKey:@"Adornment Location Relative"])
+    if ([p_infoDictionary objectForKey:@"Adornment Location Relative"])
     {
-      [objc_msgSend(v9 objectForKey:{@"Adornment Location Relative", "floatValue"}];
+      [objc_msgSend(p_infoDictionary objectForKey:{@"Adornment Location Relative", "floatValue"}];
       v8->mAdornmentPosition.x = v12;
-      [objc_msgSend(v9 objectForKey:{@"Adornment Location Absolute", "floatValue"}];
+      [objc_msgSend(p_infoDictionary objectForKey:{@"Adornment Location Absolute", "floatValue"}];
       v8->mAdornmentPosition.y = v13;
     }
 
-    v8->mHasImages = [v9 objectForKey:@"Top Left"] != 0;
-    v8->mHasMask = [v9 objectForKey:@"Top Left Mask"] != 0;
-    v8->mHasAdornment = [v9 objectForKey:@"Adornment"] != 0;
+    v8->mHasImages = [p_infoDictionary objectForKey:@"Top Left"] != 0;
+    v8->mHasMask = [p_infoDictionary objectForKey:@"Top Left Mask"] != 0;
+    v8->mHasAdornment = [p_infoDictionary objectForKey:@"Adornment"] != 0;
   }
 
   return v8;
@@ -228,7 +228,7 @@
   result = p_imageKeys_sImageKeys;
   if (!p_imageKeys_sImageKeys)
   {
-    objc_sync_enter(a1);
+    objc_sync_enter(self);
     if (!p_imageKeys_sImageKeys)
     {
       v4 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{@"Top Left", @"Top", @"Top Right", @"Right", @"Bottom Right", @"Bottom", @"Bottom Left", @"Left", @"Adornment", 0}];
@@ -236,20 +236,20 @@
       p_imageKeys_sImageKeys = v4;
       if (!v4)
       {
-        v5 = [MEMORY[0x277D6C290] currentHandler];
+        currentHandler = [MEMORY[0x277D6C290] currentHandler];
         v6 = [MEMORY[0x277CCACA8] stringWithUTF8String:"+[TSDFrameSpec p_imageKeys]"];
-        [v5 handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameSpec.m"), 173, @"Couldn't initialize lazy variable %s", "sImageKeys"}];
+        [currentHandler handleFailureInFunction:v6 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameSpec.m"), 173, @"Couldn't initialize lazy variable %s", "sImageKeys"}];
       }
     }
 
-    objc_sync_exit(a1);
+    objc_sync_exit(self);
     return p_imageKeys_sImageKeys;
   }
 
   return result;
 }
 
-- (id)p_imageDataForKey:(id)a3
+- (id)p_imageDataForKey:(id)key
 {
   result = [-[TSDFrameSpec p_infoDictionary](self "p_infoDictionary")];
   if (result)
@@ -283,10 +283,10 @@
         v13 = TSUDynamicCast();
         if (v13)
         {
-          v14 = [v13 imageDPI];
-          if (v14 >= 0x49)
+          imageDPI = [v13 imageDPI];
+          if (imageDPI >= 0x49)
           {
-            v15 = 72.0 / v14;
+            v15 = 72.0 / imageDPI;
             v6 = TSDMultiplySizeScalar(v6, v8, v15);
             v8 = v16;
             v10 = TSDMultiplySizeScalar(v10, v12, v15);
@@ -309,10 +309,10 @@
         v22 = TSUDynamicCast();
         if (v22)
         {
-          v23 = [v22 imageDPI];
-          if (v23 >= 0x49)
+          imageDPI2 = [v22 imageDPI];
+          if (imageDPI2 >= 0x49)
           {
-            v19 = TSDMultiplySizeScalar(v19, v21, 72.0 / v23);
+            v19 = TSDMultiplySizeScalar(v19, v21, 72.0 / imageDPI2);
             v21 = v24;
           }
         }
@@ -340,8 +340,8 @@
     v8 = 0u;
     v9 = 0u;
     v10 = 0u;
-    v3 = [(NSMutableDictionary *)self->mProvidersByKey allValues];
-    v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+    allValues = [(NSMutableDictionary *)self->mProvidersByKey allValues];
+    v4 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
     if (v4)
     {
       v5 = *v8;
@@ -352,14 +352,14 @@
         {
           if (*v8 != v5)
           {
-            objc_enumerationMutation(v3);
+            objc_enumerationMutation(allValues);
           }
 
           [*(*(&v7 + 1) + 8 * v6++) flush];
         }
 
         while (v4 != v6);
-        v4 = [v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
+        v4 = [allValues countByEnumeratingWithState:&v7 objects:v11 count:16];
       }
 
       while (v4);
@@ -370,19 +370,19 @@
   }
 }
 
-- (id)i_providerForIndex:(int)a3 mask:(BOOL)a4
+- (id)i_providerForIndex:(int)index mask:(BOOL)mask
 {
-  v4 = a4;
-  if (a3 == 8 && a4)
+  maskCopy = mask;
+  if (index == 8 && mask)
   {
-    v7 = [MEMORY[0x277D6C290] currentHandler];
+    currentHandler = [MEMORY[0x277D6C290] currentHandler];
     v8 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDFrameSpec(Internal) i_providerForIndex:mask:]"];
-    [v7 handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameSpec.m"), 296, @"Masks for adornments are unsupported."}];
+    [currentHandler handleFailureInFunction:v8 file:objc_msgSend(MEMORY[0x277CCACA8] lineNumber:"stringWithUTF8String:" description:{"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDFrameSpec.m"), 296, @"Masks for adornments are unsupported."}];
   }
 
   v9 = [objc_msgSend(objc_opt_class() "p_imageKeys")];
   v10 = v9;
-  if (v4)
+  if (maskCopy)
   {
     v10 = [v9 stringByAppendingString:@" Mask"];
   }

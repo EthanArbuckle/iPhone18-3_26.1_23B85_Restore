@@ -1,8 +1,8 @@
 @interface FCPuzzleDownloadService
-- (BOOL)isPuzzleDownloadedEnoughToUse:(id)a3;
+- (BOOL)isPuzzleDownloadedEnoughToUse:(id)use;
 - (FCPuzzleDownloadService)init;
-- (FCPuzzleDownloadService)initWithContext:(id)a3;
-- (id)fetchCachedPuzzleWithID:(id)a3 completionHandler:(id)a4;
+- (FCPuzzleDownloadService)initWithContext:(id)context;
+- (id)fetchCachedPuzzleWithID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation FCPuzzleDownloadService
@@ -33,29 +33,29 @@
   objc_exception_throw(v6);
 }
 
-- (FCPuzzleDownloadService)initWithContext:(id)a3
+- (FCPuzzleDownloadService)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = FCPuzzleDownloadService;
   v6 = [(FCPuzzleDownloadService *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;
 }
 
-- (id)fetchCachedPuzzleWithID:(id)a3 completionHandler:(id)a4
+- (id)fetchCachedPuzzleWithID:(id)d completionHandler:(id)handler
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   v8 = [FCOfflinePuzzleFetchOperation alloc];
-  v9 = [(FCPuzzleDownloadService *)self context];
-  v10 = [(FCOfflinePuzzleFetchOperation *)v8 initWithContext:v9 puzzleID:v6];
+  context = [(FCPuzzleDownloadService *)self context];
+  v10 = [(FCOfflinePuzzleFetchOperation *)v8 initWithContext:context puzzleID:dCopy];
 
   [(FCOperation *)v10 setQualityOfService:9];
   [(FCOfflinePuzzleFetchOperation *)v10 setCachedOnly:1];
@@ -75,9 +75,9 @@
   v20 = 3221225472;
   v21 = __69__FCPuzzleDownloadService_fetchCachedPuzzleWithID_completionHandler___block_invoke_2;
   v22 = &unk_1E7C36F18;
-  v11 = v6;
+  v11 = dCopy;
   v23 = v11;
-  v12 = v7;
+  v12 = handlerCopy;
   v24 = v12;
   v25 = v27;
   [(FCOfflinePuzzleFetchOperation *)v10 setFetchCompletionHandler:&v19];
@@ -146,23 +146,23 @@ void __69__FCPuzzleDownloadService_fetchCachedPuzzleWithID_completionHandler___b
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)isPuzzleDownloadedEnoughToUse:(id)a3
+- (BOOL)isPuzzleDownloadedEnoughToUse:(id)use
 {
   v51 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(FCPuzzleDownloadService *)self context];
-  v6 = [v5 internalContentContext];
-  v7 = [v6 puzzleRecordSource];
-  v8 = [v7 cachedRecordWithID:v4];
+  useCopy = use;
+  context = [(FCPuzzleDownloadService *)self context];
+  internalContentContext = [context internalContentContext];
+  puzzleRecordSource = [internalContentContext puzzleRecordSource];
+  v8 = [puzzleRecordSource cachedRecordWithID:useCopy];
 
   if (v8)
   {
     v9 = v8;
-    v10 = [(FCPuzzleDownloadService *)self context];
-    v11 = [v10 internalContentContext];
-    v12 = [v11 puzzleTypeRecordSource];
-    v13 = [v9 puzzleTypeID];
-    v14 = [v12 cachedRecordWithID:v13];
+    context2 = [(FCPuzzleDownloadService *)self context];
+    internalContentContext2 = [context2 internalContentContext];
+    puzzleTypeRecordSource = [internalContentContext2 puzzleTypeRecordSource];
+    puzzleTypeID = [v9 puzzleTypeID];
+    v14 = [puzzleTypeRecordSource cachedRecordWithID:puzzleTypeID];
 
     if (!v14)
     {
@@ -170,7 +170,7 @@ void __69__FCPuzzleDownloadService_fetchCachedPuzzleWithID_completionHandler___b
       v44[1] = 3221225472;
       v44[2] = __57__FCPuzzleDownloadService_isPuzzleDownloadedEnoughToUse___block_invoke_19;
       v44[3] = &unk_1E7C36F68;
-      v45 = v4;
+      v45 = useCopy;
       v46 = v9;
       v27 = __57__FCPuzzleDownloadService_isPuzzleDownloadedEnoughToUse___block_invoke_19(v44);
 
@@ -181,10 +181,10 @@ LABEL_19:
     }
 
     v15 = v14;
-    v16 = [(FCPuzzleDownloadService *)self context];
-    v17 = [v16 flintResourceManager];
-    v18 = [v9 dataResourceID];
-    v19 = [v17 cachedResourceWithIdentifier:v18];
+    context3 = [(FCPuzzleDownloadService *)self context];
+    flintResourceManager = [context3 flintResourceManager];
+    dataResourceID = [v9 dataResourceID];
+    v19 = [flintResourceManager cachedResourceWithIdentifier:dataResourceID];
 
     v31 = v19;
     if (!v19)
@@ -193,7 +193,7 @@ LABEL_19:
       v41[1] = 3221225472;
       v41[2] = __57__FCPuzzleDownloadService_isPuzzleDownloadedEnoughToUse___block_invoke_20;
       v41[3] = &unk_1E7C36F68;
-      v42 = v4;
+      v42 = useCopy;
       v43 = v9;
       v27 = __57__FCPuzzleDownloadService_isPuzzleDownloadedEnoughToUse___block_invoke_20(v41);
 
@@ -204,10 +204,10 @@ LABEL_18:
     }
 
     v20 = v19;
-    v21 = [(FCPuzzleDownloadService *)self context];
-    v22 = [v21 flintResourceManager];
-    v23 = [v15 engineResourceID];
-    v24 = [v22 cachedResourceWithIdentifier:v23];
+    context4 = [(FCPuzzleDownloadService *)self context];
+    flintResourceManager2 = [context4 flintResourceManager];
+    engineResourceID = [v15 engineResourceID];
+    v24 = [flintResourceManager2 cachedResourceWithIdentifier:engineResourceID];
 
     if (v24)
     {
@@ -220,7 +220,7 @@ LABEL_18:
           if (os_log_type_enabled(FCOfflineDownloadsLog, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138543362;
-            v50 = v4;
+            v50 = useCopy;
             _os_log_impl(&dword_1B63EF000, v26, OS_LOG_TYPE_DEFAULT, "Puzzle %{public}@ is usable", buf, 0xCu);
           }
 
@@ -232,7 +232,7 @@ LABEL_18:
         v32[1] = 3221225472;
         v32[2] = __57__FCPuzzleDownloadService_isPuzzleDownloadedEnoughToUse___block_invoke_23;
         v32[3] = &unk_1E7C36F68;
-        v33 = v4;
+        v33 = useCopy;
         v34 = v25;
         v27 = __57__FCPuzzleDownloadService_isPuzzleDownloadedEnoughToUse___block_invoke_23(v32);
 
@@ -245,7 +245,7 @@ LABEL_18:
         v35[1] = 3221225472;
         v35[2] = __57__FCPuzzleDownloadService_isPuzzleDownloadedEnoughToUse___block_invoke_22;
         v35[3] = &unk_1E7C36F68;
-        v36 = v4;
+        v36 = useCopy;
         v37 = v20;
         v27 = __57__FCPuzzleDownloadService_isPuzzleDownloadedEnoughToUse___block_invoke_22(v35);
 
@@ -259,7 +259,7 @@ LABEL_18:
       v38[1] = 3221225472;
       v38[2] = __57__FCPuzzleDownloadService_isPuzzleDownloadedEnoughToUse___block_invoke_21;
       v38[3] = &unk_1E7C36F68;
-      v39 = v4;
+      v39 = useCopy;
       v40 = v15;
       v27 = __57__FCPuzzleDownloadService_isPuzzleDownloadedEnoughToUse___block_invoke_21(v38);
 
@@ -275,7 +275,7 @@ LABEL_17:
   v47[1] = 3221225472;
   v47[2] = __57__FCPuzzleDownloadService_isPuzzleDownloadedEnoughToUse___block_invoke;
   v47[3] = &unk_1E7C36F40;
-  v48 = v4;
+  v48 = useCopy;
   __57__FCPuzzleDownloadService_isPuzzleDownloadedEnoughToUse___block_invoke(v47);
   v27 = 0;
   v9 = v48;

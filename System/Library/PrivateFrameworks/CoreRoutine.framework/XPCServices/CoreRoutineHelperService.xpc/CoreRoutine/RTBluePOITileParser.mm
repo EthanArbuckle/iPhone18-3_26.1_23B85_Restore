@@ -1,28 +1,28 @@
 @interface RTBluePOITileParser
-- (BOOL)validateTile:(id)a3 outError:(id *)a4;
-- (RTBluePOITileParser)initWithFileManager:(id)a3 wkbParser:(id)a4;
-- (id)loadProtobufMetadataAtPath:(id)a3 cacheInfo:(id)a4 outError:(id *)a5;
-- (id)loadProtobufPOIMetadata:(id)a3 outError:(id *)a4;
-- (id)loadProtobufTile:(id)a3 cacheInfo:(id)a4 outError:(id *)a5;
-- (id)loadProtobufTileAtPath:(id)a3 cacheInfo:(id)a4 outError:(id *)a5;
-- (void)loadProtobufTileAtPath:(id)a3 handler:(id)a4;
+- (BOOL)validateTile:(id)tile outError:(id *)error;
+- (RTBluePOITileParser)initWithFileManager:(id)manager wkbParser:(id)parser;
+- (id)loadProtobufMetadataAtPath:(id)path cacheInfo:(id)info outError:(id *)error;
+- (id)loadProtobufPOIMetadata:(id)metadata outError:(id *)error;
+- (id)loadProtobufTile:(id)tile cacheInfo:(id)info outError:(id *)error;
+- (id)loadProtobufTileAtPath:(id)path cacheInfo:(id)info outError:(id *)error;
+- (void)loadProtobufTileAtPath:(id)path handler:(id)handler;
 @end
 
 @implementation RTBluePOITileParser
 
-- (RTBluePOITileParser)initWithFileManager:(id)a3 wkbParser:(id)a4
+- (RTBluePOITileParser)initWithFileManager:(id)manager wkbParser:(id)parser
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (!v7)
+  managerCopy = manager;
+  parserCopy = parser;
+  v9 = parserCopy;
+  if (!managerCopy)
   {
     v13 = sub_1000011A0(&qword_1000B2958);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
 LABEL_9:
 
-      v12 = 0;
+      selfCopy = 0;
       goto LABEL_10;
     }
 
@@ -33,7 +33,7 @@ LABEL_12:
     goto LABEL_9;
   }
 
-  if (!v8)
+  if (!parserCopy)
   {
     v13 = sub_1000011A0(&qword_1000B2958);
     if (!os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -52,90 +52,90 @@ LABEL_12:
   p_isa = &v10->super.isa;
   if (v10)
   {
-    objc_storeStrong(&v10->_fileManager, a3);
-    objc_storeStrong(p_isa + 2, a4);
+    objc_storeStrong(&v10->_fileManager, manager);
+    objc_storeStrong(p_isa + 2, parser);
   }
 
   self = p_isa;
-  v12 = self;
+  selfCopy = self;
 LABEL_10:
 
-  return v12;
+  return selfCopy;
 }
 
-- (id)loadProtobufPOIMetadata:(id)a3 outError:(id *)a4
+- (id)loadProtobufPOIMetadata:(id)metadata outError:(id *)error
 {
-  v5 = a3;
-  v6 = [[PBDataReader alloc] initWithData:v5];
+  metadataCopy = metadata;
+  v6 = [[PBDataReader alloc] initWithData:metadataCopy];
 
   v7 = objc_opt_new();
   v37 = v6;
   [v7 readFrom:v6];
   if ([v7 hasMuid])
   {
-    v8 = [v7 muid];
+    muid = [v7 muid];
   }
 
   else
   {
-    v8 = 0;
+    muid = 0;
   }
 
   if ([v7 hasPoiGeometry])
   {
-    v9 = [(RTBluePOITileParser *)self wkbParser];
-    v10 = [v7 poiGeometry];
-    v11 = [v9 parsePolygonsFromData:v10];
-    v12 = [v11 firstObject];
+    wkbParser = [(RTBluePOITileParser *)self wkbParser];
+    poiGeometry = [v7 poiGeometry];
+    v11 = [wkbParser parsePolygonsFromData:poiGeometry];
+    firstObject = [v11 firstObject];
   }
 
   else
   {
-    v12 = 0;
+    firstObject = 0;
   }
 
   v13 = 0.0;
   v14 = 0.0;
   if ([v7 hasLocation])
   {
-    v15 = [v7 location];
-    [v15 lat];
+    location = [v7 location];
+    [location lat];
     v14 = v16;
 
-    v17 = [v7 location];
-    [v17 lng];
+    location2 = [v7 location];
+    [location2 lng];
     v13 = v18;
   }
 
   v19 = [[RTLocation alloc] initWithLatitude:0 longitude:v14 horizontalUncertainty:v13 date:-1.0];
   if ([v7 hasIsCategoryFiltered])
   {
-    v20 = [v7 isCategoryFiltered];
+    isCategoryFiltered = [v7 isCategoryFiltered];
   }
 
   else
   {
-    v20 = 0;
+    isCategoryFiltered = 0;
   }
 
   if ([v7 hasIsApplePaySupported])
   {
-    v21 = [v7 isApplePaySupported];
+    isApplePaySupported = [v7 isApplePaySupported];
   }
 
   else
   {
-    v21 = 0;
+    isApplePaySupported = 0;
   }
 
   if ([v7 hasFullyCoversTile])
   {
-    v22 = [v7 fullyCoversTile];
+    fullyCoversTile = [v7 fullyCoversTile];
   }
 
   else
   {
-    v22 = 0;
+    fullyCoversTile = 0;
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -144,13 +144,13 @@ LABEL_10:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_INFO))
     {
       v24 = NSStringFromSelector(a2);
-      v25 = [NSNumber numberWithUnsignedLongLong:v8];
+      v25 = [NSNumber numberWithUnsignedLongLong:muid];
       v26 = v25;
       v27 = @"NO";
       *buf = 138413827;
       v40 = v24;
       v41 = 2112;
-      if (v21)
+      if (isApplePaySupported)
       {
         v28 = @"YES";
       }
@@ -161,7 +161,7 @@ LABEL_10:
       }
 
       v42 = v25;
-      if (v20)
+      if (isCategoryFiltered)
       {
         v29 = @"YES";
       }
@@ -171,7 +171,7 @@ LABEL_10:
         v29 = @"NO";
       }
 
-      if (v22)
+      if (fullyCoversTile)
       {
         v27 = @"YES";
       }
@@ -181,7 +181,7 @@ LABEL_10:
       v45 = 2112;
       v46 = v28;
       v47 = 2117;
-      v48 = v12;
+      v48 = firstObject;
       v49 = 2112;
       v50 = v29;
       v51 = 2112;
@@ -192,7 +192,7 @@ LABEL_10:
 
   v30 = [RTPointOfInterest alloc];
   v31 = +[NSUUID UUID];
-  v32 = [v30 initWithIdentifier:v31 applePaySupport:v21 filtered:v20 fullyCoversTile:v22 location:v19 muid:v8 polygon:v12];
+  v32 = [v30 initWithIdentifier:v31 applePaySupport:isApplePaySupported filtered:isCategoryFiltered fullyCoversTile:fullyCoversTile location:v19 muid:muid polygon:firstObject];
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
@@ -208,18 +208,18 @@ LABEL_10:
     }
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   return v32;
 }
 
-- (BOOL)validateTile:(id)a3 outError:(id *)a4
+- (BOOL)validateTile:(id)tile outError:(id *)error
 {
-  v5 = a3;
-  if (![v5 geoTileKey])
+  tileCopy = tile;
+  if (![tileCopy geoTileKey])
   {
     v21 = [NSError alloc];
     v54 = NSLocalizedDescriptionKey;
@@ -229,12 +229,12 @@ LABEL_10:
     v24 = v21;
     v25 = 103;
 LABEL_21:
-    v11 = [v24 initWithDomain:@"RTBluePOIErrorDomain" code:v25 userInfo:v23];
+    models = [v24 initWithDomain:@"RTBluePOIErrorDomain" code:v25 userInfo:v23];
 
-    if (a4)
+    if (error)
     {
-      v29 = v11;
-      *a4 = v11;
+      v29 = models;
+      *error = models;
     }
 
 LABEL_23:
@@ -243,9 +243,9 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  v6 = [v5 hashSalt];
+  hashSalt = [tileCopy hashSalt];
 
-  if (!v6)
+  if (!hashSalt)
   {
     v26 = [NSError alloc];
     v52 = NSLocalizedDescriptionKey;
@@ -257,8 +257,8 @@ LABEL_23:
     goto LABEL_21;
   }
 
-  v7 = [v5 pointsOfInterest];
-  v8 = [v7 count];
+  pointsOfInterest = [tileCopy pointsOfInterest];
+  v8 = [pointsOfInterest count];
 
   if (!v8)
   {
@@ -272,8 +272,8 @@ LABEL_23:
     goto LABEL_21;
   }
 
-  v9 = [v5 hashedApToModelMapping];
-  v10 = [v9 count];
+  hashedApToModelMapping = [tileCopy hashedApToModelMapping];
+  v10 = [hashedApToModelMapping count];
 
   if (!v10)
   {
@@ -291,8 +291,8 @@ LABEL_23:
   v42 = 0u;
   v39 = 0u;
   v40 = 0u;
-  v11 = [v5 models];
-  v12 = [v11 countByEnumeratingWithState:&v39 objects:v47 count:16];
+  models = [tileCopy models];
+  v12 = [models countByEnumeratingWithState:&v39 objects:v47 count:16];
   if (!v12)
   {
     goto LABEL_14;
@@ -306,12 +306,12 @@ LABEL_23:
     {
       if (*v40 != v14)
       {
-        objc_enumerationMutation(v11);
+        objc_enumerationMutation(models);
       }
 
       v16 = *(*(&v39 + 1) + 8 * i);
-      v17 = [v16 featureToHashedApMapping];
-      v18 = [v17 count];
+      featureToHashedApMapping = [v16 featureToHashedApMapping];
+      v18 = [featureToHashedApMapping count];
 
       if (!v18)
       {
@@ -325,10 +325,10 @@ LABEL_23:
 LABEL_27:
         v37 = [v34 initWithDomain:@"RTBluePOIErrorDomain" code:v35 userInfo:v33];
 
-        if (a4)
+        if (error)
         {
           v38 = v37;
-          *a4 = v37;
+          *error = v37;
         }
 
         goto LABEL_23;
@@ -349,7 +349,7 @@ LABEL_27:
       }
     }
 
-    v13 = [v11 countByEnumeratingWithState:&v39 objects:v47 count:16];
+    v13 = [models countByEnumeratingWithState:&v39 objects:v47 count:16];
     if (v13)
     {
       continue;
@@ -360,9 +360,9 @@ LABEL_27:
 
 LABEL_14:
 
-  if (a4)
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
   v20 = 1;
@@ -371,22 +371,22 @@ LABEL_24:
   return v20;
 }
 
-- (id)loadProtobufTile:(id)a3 cacheInfo:(id)a4 outError:(id *)a5
+- (id)loadProtobufTile:(id)tile cacheInfo:(id)info outError:(id *)error
 {
-  v7 = a3;
-  v219 = a4;
-  v8 = [[PBDataReader alloc] initWithData:v7];
+  tileCopy = tile;
+  infoCopy = info;
+  v8 = [[PBDataReader alloc] initWithData:tileCopy];
   v9 = objc_opt_new();
   v214 = v8;
   [v9 readFrom:v8];
   if ([v9 hasTileKey])
   {
-    v222 = [v9 tileKey];
+    tileKey = [v9 tileKey];
   }
 
   else
   {
-    v222 = 0;
+    tileKey = 0;
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -395,8 +395,8 @@ LABEL_24:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_INFO))
     {
       v11 = NSStringFromSelector(a2);
-      v12 = [NSNumber numberWithUnsignedLongLong:v222];
-      v13 = vcvtd_n_f64_u64([v7 length], 0xAuLL);
+      v12 = [NSNumber numberWithUnsignedLongLong:tileKey];
+      v13 = vcvtd_n_f64_u64([tileCopy length], 0xAuLL);
       +[RTRuntime footprint];
       *buf = 138413315;
       v310 = v11;
@@ -407,13 +407,13 @@ LABEL_24:
       v315 = 2048;
       v316 = v14;
       v317 = 2112;
-      v318 = v219;
+      v318 = infoCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "%@, geoTileKey, %{sensitive}@, size, %.1f (kB), memory footprint, %.1f, cacheInfo, %@", buf, 0x34u);
     }
   }
 
-  v231 = self;
-  v215 = v7;
+  selfCopy = self;
+  v215 = tileCopy;
   v223 = [NSFileManager pathInCacheDirectory:@"BluePOIModels"];
   v257 = objc_opt_new();
   v15 = objc_opt_new();
@@ -423,18 +423,18 @@ LABEL_24:
   v221 = v16;
   if ([v9 hasModelTile])
   {
-    v17 = [v9 modelTile];
+    modelTile = [v9 modelTile];
     v18 = [NSMutableArray alloc];
-    v19 = [v17 models];
-    v256 = [v18 initWithCapacity:{objc_msgSend(v19, "count")}];
+    models = [modelTile models];
+    v256 = [v18 initWithCapacity:{objc_msgSend(models, "count")}];
 
     v20 = objc_opt_new();
     v304 = 0u;
     v305 = 0u;
     v306 = 0u;
     v307 = 0u;
-    v238 = v17;
-    obj = [v17 models];
+    v238 = modelTile;
+    obj = [modelTile models];
     v228 = [obj countByEnumeratingWithState:&v304 objects:v336 count:16];
     if (v228)
     {
@@ -457,7 +457,7 @@ LABEL_24:
             if (os_log_type_enabled(v99, OS_LOG_TYPE_ERROR))
             {
               v211 = NSStringFromSelector(a2);
-              v212 = [NSNumber numberWithUnsignedLongLong:v222];
+              v212 = [NSNumber numberWithUnsignedLongLong:tileKey];
               *buf = 138412547;
               v310 = v211;
               v311 = 2117;
@@ -472,11 +472,11 @@ LABEL_24:
             v102 = [NSDictionary dictionaryWithObjects:&v334 forKeys:&v333 count:1];
             v103 = [v100 initWithDomain:@"RTBluePOIErrorDomain" code:102 userInfo:v102];
 
-            if (a5)
+            if (error)
             {
               v104 = v103;
               v105 = 0;
-              *a5 = v103;
+              *error = v103;
             }
 
             else
@@ -489,14 +489,14 @@ LABEL_24:
           }
 
           v239 = v22;
-          v24 = [NSNumber numberWithUnsignedLongLong:v222];
+          v24 = [NSNumber numberWithUnsignedLongLong:tileKey];
           v25 = [NSString stringWithFormat:@"%@-%lu.mlmodel", v24, v21];
           v26 = [v223 stringByAppendingPathComponent:v25];
 
           v249 = v23;
-          v27 = [v23 coremlModel];
+          coremlModel = [v23 coremlModel];
           v303 = 0;
-          [v27 writeToFile:v26 options:1 error:&v303];
+          [coremlModel writeToFile:v26 options:1 error:&v303];
           v28 = v303;
 
           if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -505,8 +505,8 @@ LABEL_24:
             if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
             {
               v30 = NSStringFromSelector(a2);
-              v31 = [v23 coremlModel];
-              v32 = [v31 length];
+              coremlModel2 = [v23 coremlModel];
+              v32 = [coremlModel2 length];
               *buf = 138413058;
               v310 = v30;
               v311 = 2112;
@@ -535,8 +535,8 @@ LABEL_24:
           v302 = 0u;
           v299 = 0u;
           v300 = 0u;
-          v33 = [v249 labels];
-          v34 = [v33 countByEnumeratingWithState:&v299 objects:v335 count:16];
+          labels = [v249 labels];
+          v34 = [labels countByEnumeratingWithState:&v299 objects:v335 count:16];
           if (v34)
           {
             v35 = v34;
@@ -547,7 +547,7 @@ LABEL_24:
               {
                 if (*v300 != v36)
                 {
-                  objc_enumerationMutation(v33);
+                  objc_enumerationMutation(labels);
                 }
 
                 v38 = +[NSNumber numberWithUnsignedLongLong:](NSNumber, "numberWithUnsignedLongLong:", [*(*(&v299 + 1) + 8 * i) longLongValue]);
@@ -555,15 +555,15 @@ LABEL_24:
                 [v20 setObject:v39 forKeyedSubscript:v38];
               }
 
-              v35 = [v33 countByEnumeratingWithState:&v299 objects:v335 count:16];
+              v35 = [labels countByEnumeratingWithState:&v299 objects:v335 count:16];
             }
 
             while (v35);
           }
 
           v40 = objc_opt_new();
-          v41 = [v249 featuresCount];
-          if (v41 == [v249 hashedFeaturesCount])
+          featuresCount = [v249 featuresCount];
+          if (featuresCount == [v249 hashedFeaturesCount])
           {
             if ([v249 featuresCount])
             {
@@ -591,12 +591,12 @@ LABEL_24:
             if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
             {
               v53 = NSStringFromSelector(a2);
-              v54 = [v249 featuresCount];
+              featuresCount2 = [v249 featuresCount];
               v55 = COERCE_DOUBLE([v249 hashedFeaturesCount]);
               *buf = 138412802;
               v310 = v53;
               v311 = 2048;
-              v312 = v54;
+              v312 = featuresCount2;
               v313 = 2048;
               v314 = v55;
               _os_log_error_impl(&_mh_execute_header, v46, OS_LOG_TYPE_ERROR, "%@, features and hashed features are not aligned, feature count, %lu, hashed feature count, %lu", buf, 0x20u);
@@ -650,8 +650,8 @@ LABEL_24:
     v296 = 0u;
     v297 = 0u;
     v298 = 0u;
-    v240 = [v17 apMappings];
-    v56 = [v240 countByEnumeratingWithState:&v295 objects:v332 count:16];
+    apMappings = [modelTile apMappings];
+    v56 = [apMappings countByEnumeratingWithState:&v295 objects:v332 count:16];
     if (v56)
     {
       v57 = v56;
@@ -662,7 +662,7 @@ LABEL_24:
         {
           if (*v296 != v246)
           {
-            objc_enumerationMutation(v240);
+            objc_enumerationMutation(apMappings);
           }
 
           v59 = *(*(&v295 + 1) + 8 * j);
@@ -681,11 +681,11 @@ LABEL_24:
             while ([v59 muidsCount] > v61);
           }
 
-          v63 = [v59 accessPoint];
-          [v250 setObject:v60 forKeyedSubscript:v63];
+          accessPoint = [v59 accessPoint];
+          [v250 setObject:v60 forKeyedSubscript:accessPoint];
         }
 
-        v57 = [v240 countByEnumeratingWithState:&v295 objects:v332 count:16];
+        v57 = [apMappings countByEnumeratingWithState:&v295 objects:v332 count:16];
       }
 
       while (v57);
@@ -771,8 +771,8 @@ LABEL_24:
     v284 = 0u;
     v285 = 0u;
     v286 = 0u;
-    v234 = [v238 hashedApMappings];
-    v77 = [v234 countByEnumeratingWithState:&v283 objects:v329 count:16];
+    hashedApMappings = [v238 hashedApMappings];
+    v77 = [hashedApMappings countByEnumeratingWithState:&v283 objects:v329 count:16];
     if (v77)
     {
       v78 = v77;
@@ -783,7 +783,7 @@ LABEL_24:
         {
           if (*v284 != v242)
           {
-            objc_enumerationMutation(v234);
+            objc_enumerationMutation(hashedApMappings);
           }
 
           v80 = *(*(&v283 + 1) + 8 * m);
@@ -802,11 +802,11 @@ LABEL_24:
             while ([v80 muidsCount] > v82);
           }
 
-          v84 = [v80 hashedAccessPoint];
-          [v252 setObject:v81 forKeyedSubscript:v84];
+          hashedAccessPoint = [v80 hashedAccessPoint];
+          [v252 setObject:v81 forKeyedSubscript:hashedAccessPoint];
         }
 
-        v78 = [v234 countByEnumeratingWithState:&v283 objects:v329 count:16];
+        v78 = [hashedApMappings countByEnumeratingWithState:&v283 objects:v329 count:16];
       }
 
       while (v78);
@@ -887,15 +887,15 @@ LABEL_24:
       while (v235);
     }
 
-    v216 = [v238 singlePoiMuid];
+    singlePoiMuid = [v238 singlePoiMuid];
     if ([v238 hasHashSalt])
     {
-      v217 = [v238 hashSalt];
+      hashSalt = [v238 hashSalt];
     }
 
     else
     {
-      v217 = 0;
+      hashSalt = 0;
     }
 
     v273 = 0u;
@@ -919,8 +919,8 @@ LABEL_24:
 
           v112 = *(*(&v271 + 1) + 8 * ii);
           v113 = [v107 objectForKeyedSubscript:v112];
-          v114 = [v113 allObjects];
-          [v221 setObject:v114 forKeyedSubscript:v112];
+          allObjects = [v113 allObjects];
+          [v221 setObject:allObjects forKeyedSubscript:v112];
         }
 
         v109 = [v107 countByEnumeratingWithState:&v271 objects:v326 count:16];
@@ -974,12 +974,12 @@ LABEL_24:
                   objc_enumerationMutation(v121);
                 }
 
-                v126 = [*(*(&v263 + 1) + 8 * kk) unsignedIntegerValue];
-                if (v126 < [v98 count])
+                unsignedIntegerValue = [*(*(&v263 + 1) + 8 * kk) unsignedIntegerValue];
+                if (unsignedIntegerValue < [v98 count])
                 {
-                  v127 = [v98 objectAtIndexedSubscript:v126];
-                  v128 = [v127 identifier];
-                  [v120 addObject:v128];
+                  v127 = [v98 objectAtIndexedSubscript:unsignedIntegerValue];
+                  identifier = [v127 identifier];
+                  [v120 addObject:identifier];
 
                   v98 = v256;
                 }
@@ -1006,8 +1006,8 @@ LABEL_24:
 
   else
   {
-    v217 = 0;
-    v216 = 0;
+    hashSalt = 0;
+    singlePoiMuid = 0;
     v98 = 0;
   }
 
@@ -1017,8 +1017,8 @@ LABEL_24:
   v260 = 0u;
   v261 = 0u;
   v262 = 0u;
-  v237 = [v9 poiMetadatas];
-  v129 = [v237 countByEnumeratingWithState:&v259 objects:v323 count:16];
+  poiMetadatas = [v9 poiMetadatas];
+  v129 = [poiMetadatas countByEnumeratingWithState:&v259 objects:v323 count:16];
   if (v129)
   {
     v130 = v129;
@@ -1029,75 +1029,75 @@ LABEL_24:
       {
         if (*v260 != v244)
         {
-          objc_enumerationMutation(v237);
+          objc_enumerationMutation(poiMetadatas);
         }
 
         v132 = *(*(&v259 + 1) + 8 * mm);
         if ([v132 hasMuid])
         {
-          v248 = [v132 muid];
+          muid = [v132 muid];
         }
 
         else
         {
-          v248 = 0;
+          muid = 0;
         }
 
         if ([v132 hasPoiGeometry])
         {
-          v133 = [(RTBluePOITileParser *)v231 wkbParser];
-          v134 = [v132 poiGeometry];
-          v135 = [v133 parsePolygonsFromData:v134];
-          v255 = [v135 firstObject];
+          wkbParser = [(RTBluePOITileParser *)selfCopy wkbParser];
+          poiGeometry = [v132 poiGeometry];
+          v135 = [wkbParser parsePolygonsFromData:poiGeometry];
+          firstObject = [v135 firstObject];
         }
 
         else
         {
-          v255 = 0;
+          firstObject = 0;
         }
 
         v136 = 0.0;
         v137 = 0.0;
         if ([v132 hasLocation])
         {
-          v138 = [v132 location];
-          [v138 lat];
+          location = [v132 location];
+          [location lat];
           v136 = v139;
 
-          v140 = [v132 location];
-          [v140 lng];
+          location2 = [v132 location];
+          [location2 lng];
           v137 = v141;
         }
 
         v142 = COERCE_DOUBLE([[RTLocation alloc] initWithLatitude:0 longitude:v136 horizontalUncertainty:v137 date:-1.0]);
         if ([v132 hasIsCategoryFiltered])
         {
-          v143 = [v132 isCategoryFiltered];
+          isCategoryFiltered = [v132 isCategoryFiltered];
         }
 
         else
         {
-          v143 = 0;
+          isCategoryFiltered = 0;
         }
 
         if ([v132 hasIsApplePaySupported])
         {
-          v144 = [v132 isApplePaySupported];
+          isApplePaySupported = [v132 isApplePaySupported];
         }
 
         else
         {
-          v144 = 0;
+          isApplePaySupported = 0;
         }
 
         if ([v132 hasFullyCoversTile])
         {
-          v145 = [v132 fullyCoversTile];
+          fullyCoversTile = [v132 fullyCoversTile];
         }
 
         else
         {
-          v145 = 0;
+          fullyCoversTile = 0;
         }
 
         if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -1106,11 +1106,11 @@ LABEL_24:
           if (os_log_type_enabled(v146, OS_LOG_TYPE_INFO))
           {
             v147 = NSStringFromSelector(a2);
-            v148 = [NSNumber numberWithUnsignedLongLong:v248];
+            v148 = [NSNumber numberWithUnsignedLongLong:muid];
             v149 = v148;
             *buf = 138413827;
             v150 = @"NO";
-            if (v144)
+            if (isApplePaySupported)
             {
               v151 = @"YES";
             }
@@ -1121,7 +1121,7 @@ LABEL_24:
             }
 
             v310 = v147;
-            if (v143)
+            if (isCategoryFiltered)
             {
               v152 = @"YES";
             }
@@ -1132,7 +1132,7 @@ LABEL_24:
             }
 
             v311 = 2112;
-            if (v145)
+            if (fullyCoversTile)
             {
               v150 = @"YES";
             }
@@ -1143,7 +1143,7 @@ LABEL_24:
             v315 = 2112;
             v316 = v151;
             v317 = 2117;
-            v318 = v255;
+            v318 = firstObject;
             v319 = 2112;
             v320 = v152;
             v321 = 2112;
@@ -1154,7 +1154,7 @@ LABEL_24:
 
         v153 = [RTPointOfInterest alloc];
         v154 = +[NSUUID UUID];
-        v155 = [v153 initWithIdentifier:v154 applePaySupport:v144 filtered:v143 fullyCoversTile:v145 location:*&v142 muid:v248 polygon:v255];
+        v155 = [v153 initWithIdentifier:v154 applePaySupport:isApplePaySupported filtered:isCategoryFiltered fullyCoversTile:fullyCoversTile location:*&v142 muid:muid polygon:firstObject];
 
         if (v155)
         {
@@ -1162,7 +1162,7 @@ LABEL_24:
         }
       }
 
-      v130 = [v237 countByEnumeratingWithState:&v259 objects:v323 count:16];
+      v130 = [poiMetadatas countByEnumeratingWithState:&v259 objects:v323 count:16];
     }
 
     while (v130);
@@ -1171,129 +1171,129 @@ LABEL_24:
   v20 = objc_opt_new();
   if ([v218 hasApplePayCalibration])
   {
-    v156 = [v218 applePayCalibration];
-    v157 = [v156 hasLowThresholdBeforeCalibration];
+    applePayCalibration = [v218 applePayCalibration];
+    hasLowThresholdBeforeCalibration = [applePayCalibration hasLowThresholdBeforeCalibration];
 
-    if (v157)
+    if (hasLowThresholdBeforeCalibration)
     {
-      v158 = [v218 applePayCalibration];
-      [v158 lowThresholdBeforeCalibration];
+      applePayCalibration2 = [v218 applePayCalibration];
+      [applePayCalibration2 lowThresholdBeforeCalibration];
       v159 = [NSNumber numberWithDouble:?];
       [v20 setObject:v159 forKeyedSubscript:kRTBluePOITileModelCalibrationLowThresholdBeforeCalibrationApplePay];
     }
 
-    v160 = [v218 applePayCalibration];
-    v161 = [v160 hasHighThresholdBeforeCalibration];
+    applePayCalibration3 = [v218 applePayCalibration];
+    hasHighThresholdBeforeCalibration = [applePayCalibration3 hasHighThresholdBeforeCalibration];
 
-    if (v161)
+    if (hasHighThresholdBeforeCalibration)
     {
-      v162 = [v218 applePayCalibration];
-      [v162 highThresholdBeforeCalibration];
+      applePayCalibration4 = [v218 applePayCalibration];
+      [applePayCalibration4 highThresholdBeforeCalibration];
       v163 = [NSNumber numberWithDouble:?];
       [v20 setObject:v163 forKeyedSubscript:kRTBluePOITileModelCalibrationHighThresholdBeforeCalibrationApplePay];
     }
 
-    v164 = [v218 applePayCalibration];
-    v165 = [v164 hasLowThresholdAfterCalibration];
+    applePayCalibration5 = [v218 applePayCalibration];
+    hasLowThresholdAfterCalibration = [applePayCalibration5 hasLowThresholdAfterCalibration];
 
-    if (v165)
+    if (hasLowThresholdAfterCalibration)
     {
-      v166 = [v218 applePayCalibration];
-      [v166 lowThresholdAfterCalibration];
+      applePayCalibration6 = [v218 applePayCalibration];
+      [applePayCalibration6 lowThresholdAfterCalibration];
       v167 = [NSNumber numberWithDouble:?];
       [v20 setObject:v167 forKeyedSubscript:kRTBluePOITileModelCalibrationLowThresholdAfterCalibrationApplePay];
     }
 
-    v168 = [v218 applePayCalibration];
-    v169 = [v168 hasHighThresholdAfterCalibration];
+    applePayCalibration7 = [v218 applePayCalibration];
+    hasHighThresholdAfterCalibration = [applePayCalibration7 hasHighThresholdAfterCalibration];
 
-    if (v169)
+    if (hasHighThresholdAfterCalibration)
     {
-      v170 = [v218 applePayCalibration];
-      [v170 highThresholdAfterCalibration];
+      applePayCalibration8 = [v218 applePayCalibration];
+      [applePayCalibration8 highThresholdAfterCalibration];
       v171 = [NSNumber numberWithDouble:?];
       [v20 setObject:v171 forKeyedSubscript:kRTBluePOITileModelCalibrationHighThresholdAfterCalibrationApplePay];
     }
 
-    v172 = [v218 applePayCalibration];
-    v173 = [v172 hasHighestScore];
+    applePayCalibration9 = [v218 applePayCalibration];
+    hasHighestScore = [applePayCalibration9 hasHighestScore];
 
-    if (v173)
+    if (hasHighestScore)
     {
-      v174 = [v218 applePayCalibration];
-      [v174 highestScore];
+      applePayCalibration10 = [v218 applePayCalibration];
+      [applePayCalibration10 highestScore];
       v175 = [NSNumber numberWithDouble:?];
       [v20 setObject:v175 forKeyedSubscript:kRTBluePOITileModelCalibrationHighestScoreApplePay];
     }
   }
 
   v16 = v221;
-  v103 = v217;
+  v103 = hashSalt;
   if ([v218 hasNonApplePayCalibration])
   {
-    v176 = [v218 nonApplePayCalibration];
-    v177 = [v176 hasLowThresholdBeforeCalibration];
+    nonApplePayCalibration = [v218 nonApplePayCalibration];
+    hasLowThresholdBeforeCalibration2 = [nonApplePayCalibration hasLowThresholdBeforeCalibration];
 
-    if (v177)
+    if (hasLowThresholdBeforeCalibration2)
     {
-      v178 = [v218 nonApplePayCalibration];
-      [v178 lowThresholdBeforeCalibration];
+      nonApplePayCalibration2 = [v218 nonApplePayCalibration];
+      [nonApplePayCalibration2 lowThresholdBeforeCalibration];
       v179 = [NSNumber numberWithDouble:?];
       [v20 setObject:v179 forKeyedSubscript:kRTBluePOITileModelCalibrationLowThresholdBeforeCalibrationNonApplePay];
     }
 
-    v180 = [v218 nonApplePayCalibration];
-    v181 = [v180 hasHighThresholdBeforeCalibration];
+    nonApplePayCalibration3 = [v218 nonApplePayCalibration];
+    hasHighThresholdBeforeCalibration2 = [nonApplePayCalibration3 hasHighThresholdBeforeCalibration];
 
-    if (v181)
+    if (hasHighThresholdBeforeCalibration2)
     {
-      v182 = [v218 nonApplePayCalibration];
-      [v182 highThresholdBeforeCalibration];
+      nonApplePayCalibration4 = [v218 nonApplePayCalibration];
+      [nonApplePayCalibration4 highThresholdBeforeCalibration];
       v183 = [NSNumber numberWithDouble:?];
       [v20 setObject:v183 forKeyedSubscript:kRTBluePOITileModelCalibrationHighThresholdBeforeCalibrationNonApplePay];
     }
 
-    v184 = [v218 nonApplePayCalibration];
-    v185 = [v184 hasLowThresholdAfterCalibration];
+    nonApplePayCalibration5 = [v218 nonApplePayCalibration];
+    hasLowThresholdAfterCalibration2 = [nonApplePayCalibration5 hasLowThresholdAfterCalibration];
 
-    if (v185)
+    if (hasLowThresholdAfterCalibration2)
     {
-      v186 = [v218 nonApplePayCalibration];
-      [v186 lowThresholdAfterCalibration];
+      nonApplePayCalibration6 = [v218 nonApplePayCalibration];
+      [nonApplePayCalibration6 lowThresholdAfterCalibration];
       v187 = [NSNumber numberWithDouble:?];
       [v20 setObject:v187 forKeyedSubscript:kRTBluePOITileModelCalibrationLowThresholdAfterCalibrationNonApplePay];
     }
 
-    v188 = [v218 nonApplePayCalibration];
-    v189 = [v188 hasHighThresholdAfterCalibration];
+    nonApplePayCalibration7 = [v218 nonApplePayCalibration];
+    hasHighThresholdAfterCalibration2 = [nonApplePayCalibration7 hasHighThresholdAfterCalibration];
 
-    if (v189)
+    if (hasHighThresholdAfterCalibration2)
     {
-      v190 = [v218 nonApplePayCalibration];
-      [v190 highThresholdAfterCalibration];
+      nonApplePayCalibration8 = [v218 nonApplePayCalibration];
+      [nonApplePayCalibration8 highThresholdAfterCalibration];
       v191 = [NSNumber numberWithDouble:?];
       [v20 setObject:v191 forKeyedSubscript:kRTBluePOITileModelCalibrationHighThresholdAfterCalibrationNonApplePay];
     }
 
-    v192 = [v218 nonApplePayCalibration];
-    v193 = [v192 hasHighestScore];
+    nonApplePayCalibration9 = [v218 nonApplePayCalibration];
+    hasHighestScore2 = [nonApplePayCalibration9 hasHighestScore];
 
-    if (v193)
+    if (hasHighestScore2)
     {
-      v194 = [v218 nonApplePayCalibration];
-      [v194 highestScore];
+      nonApplePayCalibration10 = [v218 nonApplePayCalibration];
+      [nonApplePayCalibration10 highestScore];
       v195 = [NSNumber numberWithDouble:?];
       [v20 setObject:v195 forKeyedSubscript:kRTBluePOITileModelCalibrationHighestScoreNonApplePay];
     }
   }
 
-  v308[0] = [v219 externalKey];
+  v308[0] = [infoCopy externalKey];
   v308[1] = v196;
   obj = [NSData dataWithBytes:v308 length:16];
   v197 = [RTBluePOITile alloc];
   v198 = objc_opt_new();
   v199 = +[NSDate now];
-  v200 = [v219 data];
+  data = [infoCopy data];
   if ([v256 count])
   {
     v201 = [NSSet setWithArray:v256];
@@ -1305,7 +1305,7 @@ LABEL_24:
   }
 
   v202 = v201;
-  v203 = [v197 initWithIdentifier:v198 apToModelMapping:v221 date:v199 downloadKey:obj geoCacheInfo:v200 geoTileKey:v222 hashedApToModelMapping:-1.0 hashSalt:v227 modelCalibrationParameters:v217 models:v20 modelURLs:v201 pointsOfInterest:0 singlePOIMuid:v238 size:v216];
+  v203 = [v197 initWithIdentifier:v198 apToModelMapping:v221 date:v199 downloadKey:obj geoCacheInfo:data geoTileKey:tileKey hashedApToModelMapping:-1.0 hashSalt:v227 modelCalibrationParameters:hashSalt models:v20 modelURLs:v201 pointsOfInterest:0 singlePOIMuid:v238 size:singlePoiMuid];
 
   v106 = v214;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -1323,24 +1323,24 @@ LABEL_24:
   }
 
   v258 = 0;
-  v206 = [(RTBluePOITileParser *)v231 validateTile:v203 outError:&v258];
+  v206 = [(RTBluePOITileParser *)selfCopy validateTile:v203 outError:&v258];
   v207 = v258;
   v208 = v207;
   if (v206)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = 0;
+      *error = 0;
     }
 
     v105 = v203;
   }
 
-  else if (a5)
+  else if (error)
   {
     v209 = v207;
     v105 = 0;
-    *a5 = v208;
+    *error = v208;
   }
 
   else
@@ -1353,13 +1353,13 @@ LABEL_213:
   return v105;
 }
 
-- (id)loadProtobufTileAtPath:(id)a3 cacheInfo:(id)a4 outError:(id *)a5
+- (id)loadProtobufTileAtPath:(id)path cacheInfo:(id)info outError:(id *)error
 {
-  v9 = a3;
-  v10 = a4;
+  pathCopy = path;
+  infoCopy = info;
   v32 = 1;
-  v11 = [(RTBluePOITileParser *)self fileManager];
-  v12 = [v11 fileExistsAtPath:v9 isDirectory:&v32];
+  fileManager = [(RTBluePOITileParser *)self fileManager];
+  v12 = [fileManager fileExistsAtPath:pathCopy isDirectory:&v32];
   v13 = v32;
 
   if (!v12 || (v13 & 1) != 0)
@@ -1371,11 +1371,11 @@ LABEL_213:
     v20 = [NSDictionary dictionaryWithObjects:&v42 forKeys:&v41 count:1];
     v21 = [v18 initWithDomain:@"RTBluePOIErrorDomain" code:101 userInfo:v20];
 
-    if (a5)
+    if (error)
     {
       v22 = v21;
       v23 = 0;
-      *a5 = v21;
+      *error = v21;
     }
 
     else
@@ -1386,9 +1386,9 @@ LABEL_213:
 
   else
   {
-    v14 = [(RTBluePOITileParser *)self fileManager];
+    fileManager2 = [(RTBluePOITileParser *)self fileManager];
     v31 = 0;
-    v15 = [v14 attributesOfItemAtPath:v9 error:&v31];
+    v15 = [fileManager2 attributesOfItemAtPath:pathCopy error:&v31];
     v16 = v31;
 
     if (v15)
@@ -1407,50 +1407,50 @@ LABEL_213:
       if (os_log_type_enabled(v24, OS_LOG_TYPE_INFO))
       {
         v25 = NSStringFromSelector(a2);
-        v26 = [v17 unsignedIntegerValue];
+        unsignedIntegerValue = [v17 unsignedIntegerValue];
         *buf = 138413058;
         v34 = v25;
         v35 = 2112;
-        v36 = v9;
+        v36 = pathCopy;
         v37 = 2048;
-        v38 = vcvtd_n_f64_u64(v26, 0xAuLL);
+        v38 = vcvtd_n_f64_u64(unsignedIntegerValue, 0xAuLL);
         v39 = 2112;
         v40 = v16;
         _os_log_impl(&_mh_execute_header, v24, OS_LOG_TYPE_INFO, "%@, path, %@, size, %.1f (kB), error, %@", buf, 0x2Au);
       }
     }
 
-    v27 = [NSData dataWithContentsOfFile:v9];
+    v27 = [NSData dataWithContentsOfFile:pathCopy];
     v30 = v16;
-    v23 = [(RTBluePOITileParser *)self loadProtobufTile:v27 cacheInfo:v10 outError:&v30];
+    v23 = [(RTBluePOITileParser *)self loadProtobufTile:v27 cacheInfo:infoCopy outError:&v30];
     v21 = v30;
 
-    if (a5)
+    if (error)
     {
       v28 = v21;
-      *a5 = v21;
+      *error = v21;
     }
   }
 
   return v23;
 }
 
-- (void)loadProtobufTileAtPath:(id)a3 handler:(id)a4
+- (void)loadProtobufTileAtPath:(id)path handler:(id)handler
 {
   v9 = 0;
-  v6 = a4;
-  v7 = [(RTBluePOITileParser *)self loadProtobufTileAtPath:a3 cacheInfo:0 outError:&v9];
+  handlerCopy = handler;
+  v7 = [(RTBluePOITileParser *)self loadProtobufTileAtPath:path cacheInfo:0 outError:&v9];
   v8 = v9;
-  v6[2](v6, v7, v8);
+  handlerCopy[2](handlerCopy, v7, v8);
 }
 
-- (id)loadProtobufMetadataAtPath:(id)a3 cacheInfo:(id)a4 outError:(id *)a5
+- (id)loadProtobufMetadataAtPath:(id)path cacheInfo:(id)info outError:(id *)error
 {
-  v9 = a3;
-  v67 = a4;
-  v10 = [(RTBluePOITileParser *)self fileManager];
+  pathCopy = path;
+  infoCopy = info;
+  fileManager = [(RTBluePOITileParser *)self fileManager];
   v68 = 0;
-  v11 = [v10 attributesOfItemAtPath:v9 error:&v68];
+  v11 = [fileManager attributesOfItemAtPath:pathCopy error:&v68];
   v66 = v68;
 
   if (v11)
@@ -1463,18 +1463,18 @@ LABEL_213:
     v12 = 0;
   }
 
-  v13 = [NSData dataWithContentsOfFile:v9];
+  v13 = [NSData dataWithContentsOfFile:pathCopy];
   v14 = [[PBDataReader alloc] initWithData:v13];
   v15 = objc_opt_new();
   [v15 readFrom:v14];
   if ([v15 hasTileKey])
   {
-    v16 = [v15 tileKey];
+    tileKey = [v15 tileKey];
   }
 
   else
   {
-    v16 = 0;
+    tileKey = 0;
   }
 
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
@@ -1486,15 +1486,15 @@ LABEL_213:
       v61 = v14;
       v63 = v11;
       v18 = v13;
-      v20 = v19 = a5;
-      [NSNumber numberWithUnsignedLongLong:v16];
+      v20 = v19 = error;
+      [NSNumber numberWithUnsignedLongLong:tileKey];
       v22 = v21 = a2;
       v23 = vcvtd_n_f64_u64([v12 unsignedIntegerValue], 0xAuLL);
       +[RTRuntime footprint];
       *buf = 138413315;
       v72 = v20;
       v73 = 2112;
-      v74 = v9;
+      v74 = pathCopy;
       v75 = 2117;
       v76 = v22;
       v77 = 2048;
@@ -1504,14 +1504,14 @@ LABEL_213:
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "%@, file, %@, geoTileKey, %{sensitive}@, size, %.1f (kB), memory footprint, %.1f", buf, 0x34u);
 
       a2 = v21;
-      a5 = v19;
+      error = v19;
       v13 = v18;
       v14 = v61;
       v11 = v63;
     }
   }
 
-  if (v16)
+  if (tileKey)
   {
     v64 = v11;
     v25 = v14;
@@ -1523,7 +1523,7 @@ LABEL_213:
     v30 = [NSString stringWithFormat:@"invalid metadata"];
     v70 = v30;
     [NSDictionary dictionaryWithObjects:&v70 forKeys:&v69 count:1];
-    v32 = v31 = a5;
+    v32 = v31 = error;
     v33 = [v28 initWithDomain:v29 code:0 userInfo:v32];
 
     if (v31)
@@ -1550,52 +1550,52 @@ LABEL_213:
     v65 = objc_opt_new();
     if ([v15 hasGlobalConfig])
     {
-      v36 = [v15 globalConfig];
-      v37 = [v36 hasXgboostLowThreshold];
+      globalConfig = [v15 globalConfig];
+      hasXgboostLowThreshold = [globalConfig hasXgboostLowThreshold];
 
-      if (v37)
+      if (hasXgboostLowThreshold)
       {
-        v38 = [v15 globalConfig];
-        [v38 xgboostLowThreshold];
+        globalConfig2 = [v15 globalConfig];
+        [globalConfig2 xgboostLowThreshold];
         v39 = [NSNumber numberWithDouble:?];
         [v65 setObject:v39 forKeyedSubscript:kRTBluePOIMetadataModelCalibrationLowThreshold];
       }
 
-      v40 = [v15 globalConfig];
-      v41 = [v40 hasXgboostHighThreshold];
+      globalConfig3 = [v15 globalConfig];
+      hasXgboostHighThreshold = [globalConfig3 hasXgboostHighThreshold];
 
-      if (v41)
+      if (hasXgboostHighThreshold)
       {
-        v42 = [v15 globalConfig];
-        [v42 xgboostHighThreshold];
+        globalConfig4 = [v15 globalConfig];
+        [globalConfig4 xgboostHighThreshold];
         v43 = [NSNumber numberWithDouble:?];
         [v65 setObject:v43 forKeyedSubscript:kRTBluePOIMetadataModelCalibrationHighThreshold];
       }
 
-      v44 = [v15 globalConfig];
-      v45 = [v44 hasLowConfidenceJurassic];
+      globalConfig5 = [v15 globalConfig];
+      hasLowConfidenceJurassic = [globalConfig5 hasLowConfidenceJurassic];
 
-      if (v45)
+      if (hasLowConfidenceJurassic)
       {
-        v46 = [v15 globalConfig];
-        [v46 lowConfidenceJurassic];
+        globalConfig6 = [v15 globalConfig];
+        [globalConfig6 lowConfidenceJurassic];
         v47 = [NSNumber numberWithDouble:?];
         [v65 setObject:v47 forKeyedSubscript:kRTBluePOIMetadataModelCalibrationLowConfidence];
       }
 
-      v48 = [v15 globalConfig];
-      v49 = [v48 hasHigConfidenceJurassic];
+      globalConfig7 = [v15 globalConfig];
+      hasHigConfidenceJurassic = [globalConfig7 hasHigConfidenceJurassic];
 
-      if (v49)
+      if (hasHigConfidenceJurassic)
       {
-        v50 = [v15 globalConfig];
-        [v50 higConfidenceJurassic];
+        globalConfig8 = [v15 globalConfig];
+        [globalConfig8 higConfidenceJurassic];
         v51 = [NSNumber numberWithDouble:?];
         [v65 setObject:v51 forKeyedSubscript:kRTBluePOIMetadataModelCalibrationHighConfidence];
       }
     }
 
-    v62 = a5;
+    errorCopy = error;
     v52 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v15, "deniedMuidCategorysCount")}];
     if ([v15 deniedMuidCategorysCount] && objc_msgSend(v15, "deniedMuidCategorysCount"))
     {
@@ -1613,7 +1613,7 @@ LABEL_213:
 
     v55 = [RTBluePOIMetadata alloc];
     v56 = +[NSUUID UUID];
-    v35 = [v55 initWithIdentifier:v56 categoryDenyList:v52 geoCacheInfo:v67 modelCalibrationParameters:v65];
+    v35 = [v55 initWithIdentifier:v56 categoryDenyList:v52 geoCacheInfo:infoCopy modelCalibrationParameters:v65];
 
     if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
     {
@@ -1629,9 +1629,9 @@ LABEL_213:
       }
     }
 
-    if (v62)
+    if (errorCopy)
     {
-      *v62 = 0;
+      *errorCopy = 0;
     }
 
     v33 = v66;

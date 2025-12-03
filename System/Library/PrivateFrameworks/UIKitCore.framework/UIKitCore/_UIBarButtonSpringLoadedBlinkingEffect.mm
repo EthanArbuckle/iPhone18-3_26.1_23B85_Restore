@@ -1,33 +1,33 @@
 @interface _UIBarButtonSpringLoadedBlinkingEffect
-- (void)_prepareLayer:(id)a3 forView:(id)a4;
+- (void)_prepareLayer:(id)layer forView:(id)view;
 @end
 
 @implementation _UIBarButtonSpringLoadedBlinkingEffect
 
-- (void)_prepareLayer:(id)a3 forView:(id)a4
+- (void)_prepareLayer:(id)layer forView:(id)view
 {
-  v6 = a3;
-  v7 = a4;
+  layerCopy = layer;
+  viewCopy = view;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [v7 visualProvider];
-    v9 = [v8 pointerShapeInContainer:v7];
+    visualProvider = [viewCopy visualProvider];
+    v9 = [visualProvider pointerShapeInContainer:viewCopy];
 
     [v9 rect];
-    [v6 setFrame:?];
-    v10 = [v9 cornerCurve];
-    [v6 setCornerCurve:v10];
+    [layerCopy setFrame:?];
+    cornerCurve = [v9 cornerCurve];
+    [layerCopy setCornerCurve:cornerCurve];
 
     [v9 cornerRadius];
-    [v6 setCornerRadius:?];
+    [layerCopy setCornerRadius:?];
   }
 
   else
   {
     v11.receiver = self;
     v11.super_class = _UIBarButtonSpringLoadedBlinkingEffect;
-    [(_UISpringLoadedBlinkingEffect *)&v11 _prepareLayer:v6 forView:v7];
+    [(_UISpringLoadedBlinkingEffect *)&v11 _prepareLayer:layerCopy forView:viewCopy];
   }
 }
 

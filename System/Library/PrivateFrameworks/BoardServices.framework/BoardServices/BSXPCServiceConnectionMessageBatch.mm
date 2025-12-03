@@ -1,10 +1,10 @@
 @interface BSXPCServiceConnectionMessageBatch
-- (BOOL)appendMessage:(id)a3;
-- (BOOL)containsMessage:(SEL)a3;
+- (BOOL)appendMessage:(id)message;
+- (BOOL)containsMessage:(SEL)message;
 - (BOOL)didCommit;
 - (BOOL)sendSynchronously;
-- (BSXPCServiceConnectionMessageBatch)initWithMessage:(id)a3;
-- (unint64_t)commitWithReason:(id)a3;
+- (BSXPCServiceConnectionMessageBatch)initWithMessage:(id)message;
+- (unint64_t)commitWithReason:(id)reason;
 - (unint64_t)messageCount;
 - (void)invalidate;
 @end
@@ -47,12 +47,12 @@
   [(BSXPCServiceConnectionMessage *)&v6 invalidate];
 }
 
-- (BSXPCServiceConnectionMessageBatch)initWithMessage:(id)a3
+- (BSXPCServiceConnectionMessageBatch)initWithMessage:(id)message
 {
-  v4 = a3;
+  messageCopy = message;
   v14.receiver = self;
   v14.super_class = BSXPCServiceConnectionMessageBatch;
-  v5 = [(BSXPCServiceConnectionMessage *)&v14 initWithMessage:v4];
+  v5 = [(BSXPCServiceConnectionMessage *)&v14 initWithMessage:messageCopy];
   v6 = v5;
   if (v5)
   {
@@ -61,35 +61,35 @@
     lock_messages = v6->_lock_messages;
     v6->_lock_messages = v7;
 
-    v9 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     lock_completions = v6->_lock_completions;
-    v6->_lock_completions = v9;
+    v6->_lock_completions = array;
 
-    v11 = [MEMORY[0x1E695DF00] date];
+    date = [MEMORY[0x1E695DF00] date];
     date = v6->_date;
-    v6->_date = v11;
+    v6->_date = date;
   }
 
   return v6;
 }
 
-- (BOOL)appendMessage:(id)a3
+- (BOOL)appendMessage:(id)message
 {
   v54 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  messageCopy = message;
   os_unfair_lock_lock(&self->_lock);
   lock_messages = self->_lock_messages;
   if (lock_messages && self->_lock_batchHandler)
   {
     v7 = lock_messages;
     v8 = MEMORY[0x19A908200](self->_lock_batchHandler);
-    v9 = [v5 createMessage];
-    xpc_array_append_value(v7, v9);
+    createMessage = [messageCopy createMessage];
+    xpc_array_append_value(v7, createMessage);
 
     count = xpc_array_get_count(v7);
-    if (v5)
+    if (messageCopy)
     {
-      v11 = v5[10];
+      v11 = messageCopy[10];
       v12 = v11;
       if (v11)
       {
@@ -104,15 +104,15 @@
       v12 = 0;
     }
 
-    v15 = self;
+    selfCopy = self;
     os_unfair_lock_unlock(&self->_lock);
     if (count == 1)
     {
-      (v8)[2](v8, v15);
+      (v8)[2](v8, selfCopy);
     }
 
-    [v5 invalidate];
-    v16 = v15->super._targetQueue;
+    [messageCopy invalidate];
+    v16 = selfCopy->super._targetQueue;
     if (!v16)
     {
       v21 = MEMORY[0x1E696AEC0];
@@ -130,7 +130,7 @@
         v44 = 2114;
         v45 = v27;
         v46 = 2048;
-        v47 = v15;
+        v47 = selfCopy;
         v48 = 2114;
         v49 = @"BSXPCServiceConnectionMessage.m";
         v50 = 1024;
@@ -151,13 +151,13 @@
     if ((objc_opt_isKindOfClass() & 1) == 0)
     {
       v29 = MEMORY[0x1E696AEC0];
-      v30 = [(BSServiceDispatchQueue *)v16 classForCoder];
-      if (!v30)
+      classForCoder = [(BSServiceDispatchQueue *)v16 classForCoder];
+      if (!classForCoder)
       {
-        v30 = objc_opt_class();
+        classForCoder = objc_opt_class();
       }
 
-      v31 = NSStringFromClass(v30);
+      v31 = NSStringFromClass(classForCoder);
       v32 = objc_opt_class();
       v33 = NSStringFromClass(v32);
       v34 = [v29 stringWithFormat:@"Value for '%@' was of unexpected class %@. Expected %@.", @"targetQueue", v31, v33];
@@ -172,7 +172,7 @@
         v44 = 2114;
         v45 = v37;
         v46 = 2048;
-        v47 = v15;
+        v47 = selfCopy;
         v48 = 2114;
         v49 = @"BSXPCServiceConnectionMessage.m";
         v50 = 1024;
@@ -194,7 +194,7 @@
     v39[2] = __52__BSXPCServiceConnectionMessageBatch_appendMessage___block_invoke;
     v39[3] = &unk_1E7520FC0;
     v41 = count;
-    v17 = v15;
+    v17 = selfCopy;
     v40 = v17;
     [(BSServiceDispatchQueue *)v16 performAfter:v39 withBlock:0.1];
 
@@ -239,7 +239,7 @@ uint64_t __52__BSXPCServiceConnectionMessageBatch_appendMessage___block_invoke(u
     v12 = 2114;
     v13 = v7;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"BSXPCServiceConnectionMessage.m";
     v18 = 1024;
@@ -264,10 +264,10 @@ uint64_t __52__BSXPCServiceConnectionMessageBatch_appendMessage___block_invoke(u
   return v3;
 }
 
-- (unint64_t)commitWithReason:(id)a3
+- (unint64_t)commitWithReason:(id)reason
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  reasonCopy = reason;
   os_unfair_lock_lock(&self->_lock);
   v5 = self->_lock_messages;
   v6 = self->_lock_completions;
@@ -292,8 +292,8 @@ uint64_t __52__BSXPCServiceConnectionMessageBatch_appendMessage___block_invoke(u
       v14 = *(&self->super.super.super.isa + v13);
       *(&self->super.super.super.isa + v13) = v12;
 
-      v15 = [(NSMutableArray *)v6 firstObject];
-      objc_setProperty_nonatomic_copy(self, v16, v15, 80);
+      firstObject = [(NSMutableArray *)v6 firstObject];
+      objc_setProperty_nonatomic_copy(self, v16, firstObject, 80);
     }
 
     else
@@ -305,9 +305,9 @@ uint64_t __52__BSXPCServiceConnectionMessageBatch_appendMessage___block_invoke(u
         v18 = @"(reason unspecified)";
         *buf = 134218498;
         v28 = -v19;
-        if (v4)
+        if (reasonCopy)
         {
-          v18 = v4;
+          v18 = reasonCopy;
         }
 
         v29 = 2048;
@@ -385,7 +385,7 @@ void __55__BSXPCServiceConnectionMessageBatch_commitWithReason___block_invoke(ui
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)containsMessage:(SEL)a3
+- (BOOL)containsMessage:(SEL)message
 {
   v12 = 0;
   v13 = &v12;
@@ -394,9 +394,9 @@ void __55__BSXPCServiceConnectionMessageBatch_commitWithReason___block_invoke(ui
   os_unfair_lock_lock(&self->_lock);
   if (self->_lock_messages)
   {
-    v5 = [@"bsxpc_SEL" UTF8String];
-    v6 = NSStringFromSelector(a3);
-    v7 = [v6 UTF8String];
+    uTF8String = [@"bsxpc_SEL" UTF8String];
+    v6 = NSStringFromSelector(message);
+    uTF8String2 = [v6 UTF8String];
 
     lock_messages = self->_lock_messages;
     applier[0] = MEMORY[0x1E69E9820];
@@ -404,8 +404,8 @@ void __55__BSXPCServiceConnectionMessageBatch_commitWithReason___block_invoke(ui
     applier[2] = __54__BSXPCServiceConnectionMessageBatch_containsMessage___block_invoke;
     applier[3] = &unk_1E7521260;
     applier[4] = &v12;
-    applier[5] = v5;
-    applier[6] = v7;
+    applier[5] = uTF8String;
+    applier[6] = uTF8String2;
     xpc_array_apply(lock_messages, applier);
     os_unfair_lock_unlock(&self->_lock);
   }

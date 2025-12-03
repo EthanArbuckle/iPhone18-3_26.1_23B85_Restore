@@ -1,11 +1,11 @@
 @interface LAPSPasscodeChangeControllerProvider
-- (id)_authorizerWithUseCase:(int64_t)a3 options:(id)a4;
-- (id)_uiWithOptions:(id)a3;
-- (id)passcodeChangeControllerWithOptions:(id)a3;
-- (id)passcodeRecoveryControllerWithOptions:(id)a3;
+- (id)_authorizerWithUseCase:(int64_t)case options:(id)options;
+- (id)_uiWithOptions:(id)options;
+- (id)passcodeChangeControllerWithOptions:(id)options;
+- (id)passcodeRecoveryControllerWithOptions:(id)options;
 - (id)passcodeRecoveryPreflightController;
-- (id)passcodeRemovalControllerWithOptions:(id)a3;
-- (id)passcodeVerificationControllerWithOptions:(id)a3;
+- (id)passcodeRemovalControllerWithOptions:(id)options;
+- (id)passcodeVerificationControllerWithOptions:(id)options;
 @end
 
 @implementation LAPSPasscodeChangeControllerProvider
@@ -19,14 +19,14 @@
   return v4;
 }
 
-- (id)passcodeChangeControllerWithOptions:(id)a3
+- (id)passcodeChangeControllerWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __76__LAPSPasscodeChangeControllerProvider_passcodeChangeControllerWithOptions___block_invoke;
   v19[3] = &unk_278A65E98;
-  v5 = v4;
+  v5 = optionsCopy;
   v20 = v5;
   v6 = __76__LAPSPasscodeChangeControllerProvider_passcodeChangeControllerWithOptions___block_invoke(v19);
   v7 = [LAPSPasscodeChangeSystemBuilder passcodeChangeSystemWithOptions:v6];
@@ -73,33 +73,33 @@ LAPSPasscodeChangeControllerOptions *__76__LAPSPasscodeChangeControllerProvider_
   return v2;
 }
 
-- (id)passcodeRecoveryControllerWithOptions:(id)a3
+- (id)passcodeRecoveryControllerWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[LAPSPasscodeChangeSystemBuilder passcodeRecoverySystem];
-  v6 = [(LAPSPasscodeChangeControllerProvider *)self _authorizerWithUseCase:2 options:v4];
-  v7 = [(LAPSPasscodeChangeControllerProvider *)self _uiWithOptions:v4];
+  v6 = [(LAPSPasscodeChangeControllerProvider *)self _authorizerWithUseCase:2 options:optionsCopy];
+  v7 = [(LAPSPasscodeChangeControllerProvider *)self _uiWithOptions:optionsCopy];
 
   v8 = [[LAPSPasscodeChangeController alloc] initWithSystem:v5 authorizer:v6 ui:v7];
 
   return v8;
 }
 
-- (id)passcodeRemovalControllerWithOptions:(id)a3
+- (id)passcodeRemovalControllerWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[LAPSPasscodeChangeSystemBuilder passcodeRemovalSystem];
-  v6 = [(LAPSPasscodeChangeControllerProvider *)self _authorizerWithUseCase:1 options:v4];
-  v7 = [(LAPSPasscodeChangeControllerProvider *)self _uiWithOptions:v4];
+  v6 = [(LAPSPasscodeChangeControllerProvider *)self _authorizerWithUseCase:1 options:optionsCopy];
+  v7 = [(LAPSPasscodeChangeControllerProvider *)self _uiWithOptions:optionsCopy];
   v8 = [LAPSPasscodeChangeController alloc];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __77__LAPSPasscodeChangeControllerProvider_passcodeRemovalControllerWithOptions___block_invoke;
   v17 = &unk_278A65EC0;
-  v18 = v4;
+  v18 = optionsCopy;
   v19 = v5;
   v9 = v5;
-  v10 = v4;
+  v10 = optionsCopy;
   v11 = __77__LAPSPasscodeChangeControllerProvider_passcodeRemovalControllerWithOptions___block_invoke(&v14);
   v12 = [(LAPSPasscodeChangeController *)v8 initWithSystem:v9 authorizer:v6 ui:v7 options:v11, v14, v15, v16, v17];
 
@@ -116,21 +116,21 @@ LAPSPasscodeChangeControllerOptions *__77__LAPSPasscodeChangeControllerProvider_
   return v2;
 }
 
-- (id)passcodeVerificationControllerWithOptions:(id)a3
+- (id)passcodeVerificationControllerWithOptions:(id)options
 {
-  v4 = a3;
+  optionsCopy = options;
   v5 = +[LAPSPasscodeChangeSystemBuilder passcodeVerificationSystem];
-  v6 = [(LAPSPasscodeChangeControllerProvider *)self _authorizerWithUseCase:3 options:v4];
-  v7 = [(LAPSPasscodeChangeControllerProvider *)self _uiWithOptions:v4];
+  v6 = [(LAPSPasscodeChangeControllerProvider *)self _authorizerWithUseCase:3 options:optionsCopy];
+  v7 = [(LAPSPasscodeChangeControllerProvider *)self _uiWithOptions:optionsCopy];
   v8 = [LAPSPasscodeChangeController alloc];
   v14 = MEMORY[0x277D85DD0];
   v15 = 3221225472;
   v16 = __82__LAPSPasscodeChangeControllerProvider_passcodeVerificationControllerWithOptions___block_invoke;
   v17 = &unk_278A65EC0;
-  v18 = v4;
+  v18 = optionsCopy;
   v19 = v5;
   v9 = v5;
-  v10 = v4;
+  v10 = optionsCopy;
   v11 = __82__LAPSPasscodeChangeControllerProvider_passcodeVerificationControllerWithOptions___block_invoke(&v14);
   v12 = [(LAPSPasscodeChangeController *)v8 initWithSystem:v9 authorizer:v6 ui:v7 options:v11, v14, v15, v16, v17];
 
@@ -147,19 +147,19 @@ LAPSPasscodeChangeControllerOptions *__82__LAPSPasscodeChangeControllerProvider_
   return v2;
 }
 
-- (id)_uiWithOptions:(id)a3
+- (id)_uiWithOptions:(id)options
 {
-  v3 = a3;
+  optionsCopy = options;
   v4 = [LAPSPasscodeChangeUICoordinator alloc];
-  v5 = [v3 parentVC];
+  parentVC = [optionsCopy parentVC];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __55__LAPSPasscodeChangeControllerProvider__uiWithOptions___block_invoke;
   v10[3] = &unk_278A65EE8;
-  v11 = v3;
-  v6 = v3;
+  v11 = optionsCopy;
+  v6 = optionsCopy;
   v7 = __55__LAPSPasscodeChangeControllerProvider__uiWithOptions___block_invoke(v10);
-  v8 = [(LAPSPasscodeChangeUICoordinator *)v4 initWithParentVC:v5 options:v7];
+  v8 = [(LAPSPasscodeChangeUICoordinator *)v4 initWithParentVC:parentVC options:v7];
 
   return v8;
 }
@@ -187,16 +187,16 @@ LAPSPasscodeChangeUICoordinatorOptions *__55__LAPSPasscodeChangeControllerProvid
   return v2;
 }
 
-- (id)_authorizerWithUseCase:(int64_t)a3 options:(id)a4
+- (id)_authorizerWithUseCase:(int64_t)case options:(id)options
 {
-  v5 = a4;
+  optionsCopy = options;
   v10 = MEMORY[0x277D85DD0];
   v11 = 3221225472;
   v12 = __71__LAPSPasscodeChangeControllerProvider__authorizerWithUseCase_options___block_invoke;
   v13 = &unk_278A65F10;
-  v14 = v5;
-  v15 = a3;
-  v6 = v5;
+  v14 = optionsCopy;
+  caseCopy = case;
+  v6 = optionsCopy;
   v7 = __71__LAPSPasscodeChangeControllerProvider__authorizerWithUseCase_options___block_invoke(&v10);
   v8 = [LAPSPasscodeChangeAuthorizerBuilder authorizerWithOptions:v7, v10, v11, v12, v13];
 

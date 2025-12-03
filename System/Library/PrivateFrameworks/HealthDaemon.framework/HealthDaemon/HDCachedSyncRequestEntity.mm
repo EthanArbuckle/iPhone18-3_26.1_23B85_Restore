@@ -1,37 +1,37 @@
 @interface HDCachedSyncRequestEntity
-+ (BOOL)clearInProgressSyncRequests:(id)a3 error:(id *)a4;
-+ (BOOL)fetchCoalescedSyncRequest:(id *)a3 transaction:(id)a4 error:(id *)a5;
-+ (BOOL)insertSyncRequest:(id)a3 reason:(id)a4 date:(id)a5 profile:(id)a6 error:(id *)a7;
-+ (BOOL)markInProgressRequestsAsPending:(id)a3 error:(id *)a4;
-+ (BOOL)markPendingRequestsAsInProgress:(id)a3 error:(id *)a4;
++ (BOOL)clearInProgressSyncRequests:(id)requests error:(id *)error;
++ (BOOL)fetchCoalescedSyncRequest:(id *)request transaction:(id)transaction error:(id *)error;
++ (BOOL)insertSyncRequest:(id)request reason:(id)reason date:(id)date profile:(id)profile error:(id *)error;
++ (BOOL)markInProgressRequestsAsPending:(id)pending error:(id *)error;
++ (BOOL)markPendingRequestsAsInProgress:(id)progress error:(id *)error;
 + (id)_extractRequest:;
-+ (id)fetchAllInProgressSyncRequests:(id)a3 error:(id *)a4;
-+ (id)fetchAllSyncRequests:(id)a3 error:(id *)a4;
-+ (uint64_t)_enumerateOverAllSyncRequests:(uint64_t)a3 error:(void *)a4 enumerationHandler:;
++ (id)fetchAllInProgressSyncRequests:(id)requests error:(id *)error;
++ (id)fetchAllSyncRequests:(id)requests error:(id *)error;
++ (uint64_t)_enumerateOverAllSyncRequests:(uint64_t)requests error:(void *)error enumerationHandler:;
 @end
 
 @implementation HDCachedSyncRequestEntity
 
-+ (BOOL)insertSyncRequest:(id)a3 reason:(id)a4 date:(id)a5 profile:(id)a6 error:(id *)a7
++ (BOOL)insertSyncRequest:(id)request reason:(id)reason date:(id)date profile:(id)profile error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = [a6 database];
+  requestCopy = request;
+  reasonCopy = reason;
+  dateCopy = date;
+  database = [profile database];
   v20[0] = MEMORY[0x277D85DD0];
   v20[1] = 3221225472;
   v20[2] = __73__HDCachedSyncRequestEntity_insertSyncRequest_reason_date_profile_error___block_invoke;
   v20[3] = &unk_278613550;
-  v21 = v12;
-  v22 = v13;
-  v23 = v14;
-  v24 = a1;
-  v16 = v14;
-  v17 = v13;
-  v18 = v12;
-  LOBYTE(a7) = [(HDHealthEntity *)HDCachedSyncRequestEntity performWriteTransactionWithHealthDatabase:v15 error:a7 block:v20];
+  v21 = requestCopy;
+  v22 = reasonCopy;
+  v23 = dateCopy;
+  selfCopy = self;
+  v16 = dateCopy;
+  v17 = reasonCopy;
+  v18 = requestCopy;
+  LOBYTE(error) = [(HDHealthEntity *)HDCachedSyncRequestEntity performWriteTransactionWithHealthDatabase:database error:error block:v20];
 
-  return a7;
+  return error;
 }
 
 uint64_t __73__HDCachedSyncRequestEntity_insertSyncRequest_reason_date_profile_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -169,17 +169,17 @@ uint64_t __73__HDCachedSyncRequestEntity_insertSyncRequest_reason_date_profile_e
   return HDSQLiteBindFoundationValueToStatement();
 }
 
-+ (BOOL)markPendingRequestsAsInProgress:(id)a3 error:(id *)a4
++ (BOOL)markPendingRequestsAsInProgress:(id)progress error:(id *)error
 {
-  v6 = [a3 databaseForEntityClass:a1];
+  v6 = [progress databaseForEntityClass:self];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__HDCachedSyncRequestEntity_markPendingRequestsAsInProgress_error___block_invoke;
   v8[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v8[4] = a1;
-  LOBYTE(a4) = [v6 executeCachedStatementForKey:&markPendingRequestsAsInProgress_error__lookupKey error:a4 SQLGenerator:v8 bindingHandler:&__block_literal_global_0 enumerationHandler:0];
+  v8[4] = self;
+  LOBYTE(error) = [v6 executeCachedStatementForKey:&markPendingRequestsAsInProgress_error__lookupKey error:error SQLGenerator:v8 bindingHandler:&__block_literal_global_0 enumerationHandler:0];
 
-  return a4;
+  return error;
 }
 
 id __67__HDCachedSyncRequestEntity_markPendingRequestsAsInProgress_error___block_invoke(uint64_t a1)
@@ -198,17 +198,17 @@ uint64_t __67__HDCachedSyncRequestEntity_markPendingRequestsAsInProgress_error__
   return sqlite3_bind_int64(a2, 2, 0);
 }
 
-+ (BOOL)markInProgressRequestsAsPending:(id)a3 error:(id *)a4
++ (BOOL)markInProgressRequestsAsPending:(id)pending error:(id *)error
 {
-  v6 = [a3 database];
+  database = [pending database];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __67__HDCachedSyncRequestEntity_markInProgressRequestsAsPending_error___block_invoke;
   v8[3] = &__block_descriptor_40_e35_B24__0__HDDatabaseTransaction_8__16l;
-  v8[4] = a1;
-  LOBYTE(a4) = [(HDHealthEntity *)HDCachedSyncRequestEntity performWriteTransactionWithHealthDatabase:v6 error:a4 block:v8];
+  v8[4] = self;
+  LOBYTE(error) = [(HDHealthEntity *)HDCachedSyncRequestEntity performWriteTransactionWithHealthDatabase:database error:error block:v8];
 
-  return a4;
+  return error;
 }
 
 uint64_t __67__HDCachedSyncRequestEntity_markInProgressRequestsAsPending_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)
@@ -240,26 +240,26 @@ uint64_t __67__HDCachedSyncRequestEntity_markInProgressRequestsAsPending_error__
   return sqlite3_bind_int64(a2, 2, 1);
 }
 
-+ (BOOL)fetchCoalescedSyncRequest:(id *)a3 transaction:(id)a4 error:(id *)a5
++ (BOOL)fetchCoalescedSyncRequest:(id *)request transaction:(id)transaction error:(id *)error
 {
   v30 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  transactionCopy = transaction;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
   v25 = __Block_byref_object_copy__0;
   v26 = __Block_byref_object_dispose__0;
-  v27 = [MEMORY[0x277CCD140] emptySyncRequest];
+  emptySyncRequest = [MEMORY[0x277CCD140] emptySyncRequest];
   v9 = objc_alloc_init(MEMORY[0x277CBEB38]);
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __73__HDCachedSyncRequestEntity_fetchCoalescedSyncRequest_transaction_error___block_invoke;
   v18[3] = &unk_2786135B8;
   v20 = &v22;
-  v21 = a1;
+  selfCopy = self;
   v10 = v9;
   v19 = v10;
-  v11 = [(HDCachedSyncRequestEntity *)a1 _enumerateOverAllSyncRequests:v8 error:a5 enumerationHandler:v18];
+  v11 = [(HDCachedSyncRequestEntity *)self _enumerateOverAllSyncRequests:transactionCopy error:error enumerationHandler:v18];
   _HKInitializeLogging();
   v12 = MEMORY[0x277CCC2B0];
   v13 = *MEMORY[0x277CCC2B0];
@@ -280,9 +280,9 @@ uint64_t __67__HDCachedSyncRequestEntity_markInProgressRequestsAsPending_error__
     _os_log_impl(&dword_228986000, v15, OS_LOG_TYPE_DEFAULT, "List of Requests: %{public}@", buf, 0xCu);
   }
 
-  if (a3)
+  if (request)
   {
-    *a3 = v23[5];
+    *request = v23[5];
   }
 
   _Block_object_dispose(&v22, 8);
@@ -396,9 +396,9 @@ LABEL_16:
   return v15;
 }
 
-+ (uint64_t)_enumerateOverAllSyncRequests:(uint64_t)a3 error:(void *)a4 enumerationHandler:
++ (uint64_t)_enumerateOverAllSyncRequests:(uint64_t)requests error:(void *)error enumerationHandler:
 {
-  v6 = a4;
+  errorCopy = error;
   v7 = a2;
   v8 = objc_opt_self();
   v9 = [v7 databaseForEntityClass:v8];
@@ -408,27 +408,27 @@ LABEL_16:
   v12[2] = __84__HDCachedSyncRequestEntity__enumerateOverAllSyncRequests_error_enumerationHandler___block_invoke;
   v12[3] = &__block_descriptor_40_e15___NSString_8__0l;
   v12[4] = v8;
-  v10 = [v9 executeCachedStatementForKey:&_enumerateOverAllSyncRequests_error_enumerationHandler__lookupKey error:a3 SQLGenerator:v12 bindingHandler:0 enumerationHandler:v6];
+  v10 = [v9 executeCachedStatementForKey:&_enumerateOverAllSyncRequests_error_enumerationHandler__lookupKey error:requests SQLGenerator:v12 bindingHandler:0 enumerationHandler:errorCopy];
 
   return v10;
 }
 
-+ (id)fetchAllSyncRequests:(id)a3 error:(id *)a4
++ (id)fetchAllSyncRequests:(id)requests error:(id *)error
 {
-  v6 = a3;
+  requestsCopy = requests;
   v11 = 0;
   v12 = &v11;
   v13 = 0x3032000000;
   v14 = __Block_byref_object_copy__0;
   v15 = __Block_byref_object_dispose__0;
-  v16 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__HDCachedSyncRequestEntity_fetchAllSyncRequests_error___block_invoke;
   v10[3] = &unk_2786135E0;
   v10[4] = &v11;
-  v10[5] = a1;
-  if ([(HDCachedSyncRequestEntity *)a1 _enumerateOverAllSyncRequests:v6 error:a4 enumerationHandler:v10])
+  v10[5] = self;
+  if ([(HDCachedSyncRequestEntity *)self _enumerateOverAllSyncRequests:requestsCopy error:error enumerationHandler:v10])
   {
     v7 = v12[5];
   }
@@ -455,28 +455,28 @@ uint64_t __56__HDCachedSyncRequestEntity_fetchAllSyncRequests_error___block_invo
   return 1;
 }
 
-+ (id)fetchAllInProgressSyncRequests:(id)a3 error:(id *)a4
++ (id)fetchAllInProgressSyncRequests:(id)requests error:(id *)error
 {
-  v6 = a3;
+  requestsCopy = requests;
   v13 = 0;
   v14 = &v13;
   v15 = 0x3032000000;
   v16 = __Block_byref_object_copy__0;
   v17 = __Block_byref_object_dispose__0;
-  v18 = [MEMORY[0x277CBEB18] array];
-  v7 = [v6 databaseForEntityClass:a1];
+  array = [MEMORY[0x277CBEB18] array];
+  v7 = [requestsCopy databaseForEntityClass:self];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __66__HDCachedSyncRequestEntity_fetchAllInProgressSyncRequests_error___block_invoke;
   v12[3] = &__block_descriptor_40_e15___NSString_8__0l;
-  v12[4] = a1;
+  v12[4] = self;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__HDCachedSyncRequestEntity_fetchAllInProgressSyncRequests_error___block_invoke_3;
   v11[3] = &unk_2786135E0;
   v11[4] = &v13;
-  v11[5] = a1;
-  if ([v7 executeCachedStatementForKey:&fetchAllInProgressSyncRequests_error__lookupKey error:a4 SQLGenerator:v12 bindingHandler:&__block_literal_global_376 enumerationHandler:v11])
+  v11[5] = self;
+  if ([v7 executeCachedStatementForKey:&fetchAllInProgressSyncRequests_error__lookupKey error:error SQLGenerator:v12 bindingHandler:&__block_literal_global_376 enumerationHandler:v11])
   {
     v8 = v14[5];
   }
@@ -513,17 +513,17 @@ uint64_t __66__HDCachedSyncRequestEntity_fetchAllInProgressSyncRequests_error___
   return 1;
 }
 
-+ (BOOL)clearInProgressSyncRequests:(id)a3 error:(id *)a4
++ (BOOL)clearInProgressSyncRequests:(id)requests error:(id *)error
 {
-  v6 = [a3 database];
+  database = [requests database];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __63__HDCachedSyncRequestEntity_clearInProgressSyncRequests_error___block_invoke;
   v8[3] = &__block_descriptor_40_e35_B24__0__HDDatabaseTransaction_8__16l;
-  v8[4] = a1;
-  LOBYTE(a4) = [(HDHealthEntity *)HDCachedSyncRequestEntity performWriteTransactionWithHealthDatabase:v6 error:a4 block:v8];
+  v8[4] = self;
+  LOBYTE(error) = [(HDHealthEntity *)HDCachedSyncRequestEntity performWriteTransactionWithHealthDatabase:database error:error block:v8];
 
-  return a4;
+  return error;
 }
 
 uint64_t __63__HDCachedSyncRequestEntity_clearInProgressSyncRequests_error___block_invoke(uint64_t a1, void *a2, uint64_t a3)

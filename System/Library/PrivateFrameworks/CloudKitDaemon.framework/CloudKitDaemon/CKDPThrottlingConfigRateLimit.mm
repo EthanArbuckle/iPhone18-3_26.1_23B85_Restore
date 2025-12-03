@@ -1,23 +1,23 @@
 @interface CKDPThrottlingConfigRateLimit
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasAllowedRequestCount:(BOOL)a3;
-- (void)setHasIntervalLengthSec:(BOOL)a3;
-- (void)setHasRepeatEverySec:(BOOL)a3;
-- (void)setHasStartTimeSecondsAfterUnixEpoch:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasAllowedRequestCount:(BOOL)count;
+- (void)setHasIntervalLengthSec:(BOOL)sec;
+- (void)setHasRepeatEverySec:(BOOL)sec;
+- (void)setHasStartTimeSecondsAfterUnixEpoch:(BOOL)epoch;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPThrottlingConfigRateLimit
 
-- (void)setHasIntervalLengthSec:(BOOL)a3
+- (void)setHasIntervalLengthSec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 8;
   }
@@ -30,9 +30,9 @@
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasAllowedRequestCount:(BOOL)a3
+- (void)setHasAllowedRequestCount:(BOOL)count
 {
-  if (a3)
+  if (count)
   {
     v3 = 4;
   }
@@ -45,9 +45,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRepeatEverySec:(BOOL)a3
+- (void)setHasRepeatEverySec:(BOOL)sec
 {
-  if (a3)
+  if (sec)
   {
     v3 = 16;
   }
@@ -60,9 +60,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasStartTimeSecondsAfterUnixEpoch:(BOOL)a3
+- (void)setHasStartTimeSecondsAfterUnixEpoch:(BOOL)epoch
 {
-  if (a3)
+  if (epoch)
   {
     v3 = 2;
   }
@@ -161,9 +161,9 @@ LABEL_7:
   return v5;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v10 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
@@ -229,14 +229,14 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 8) != 0)
   {
-    v4[7] = self->_intervalLengthSec;
-    *(v4 + 36) |= 8u;
+    toCopy[7] = self->_intervalLengthSec;
+    *(toCopy + 36) |= 8u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -255,8 +255,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[6] = self->_allowedRequestCount;
-  *(v4 + 36) |= 4u;
+  toCopy[6] = self->_allowedRequestCount;
+  *(toCopy + 36) |= 4u;
   has = self->_has;
   if ((has & 0x10) == 0)
   {
@@ -270,8 +270,8 @@ LABEL_4:
   }
 
 LABEL_12:
-  v4[8] = self->_repeatEverySec;
-  *(v4 + 36) |= 0x10u;
+  toCopy[8] = self->_repeatEverySec;
+  *(toCopy + 36) |= 0x10u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -285,22 +285,22 @@ LABEL_5:
   }
 
 LABEL_13:
-  *(v4 + 2) = self->_startTimeSecondsAfterUnixEpoch;
-  *(v4 + 36) |= 2u;
+  *(toCopy + 2) = self->_startTimeSecondsAfterUnixEpoch;
+  *(toCopy + 36) |= 2u;
   if (*&self->_has)
   {
 LABEL_6:
-    *(v4 + 1) = self->_startTimeSecondsAfterLocalMidnight;
-    *(v4 + 36) |= 1u;
+    *(toCopy + 1) = self->_startTimeSecondsAfterLocalMidnight;
+    *(toCopy + 36) |= 1u;
   }
 
 LABEL_7:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   result = objc_msgSend_init(v7, v8, v9);
   has = self->_has;
   if ((has & 8) != 0)
@@ -368,24 +368,24 @@ LABEL_6:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 36) & 8) == 0 || self->_intervalLengthSec != *(v4 + 7))
+    if ((*(equalCopy + 36) & 8) == 0 || self->_intervalLengthSec != *(equalCopy + 7))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 36) & 8) != 0)
+  else if ((*(equalCopy + 36) & 8) != 0)
   {
 LABEL_26:
     v7 = 0;
@@ -394,47 +394,47 @@ LABEL_26:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 36) & 4) == 0 || self->_allowedRequestCount != *(v4 + 6))
+    if ((*(equalCopy + 36) & 4) == 0 || self->_allowedRequestCount != *(equalCopy + 6))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 36) & 4) != 0)
+  else if ((*(equalCopy + 36) & 4) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 0x10) != 0)
   {
-    if ((*(v4 + 36) & 0x10) == 0 || self->_repeatEverySec != *(v4 + 8))
+    if ((*(equalCopy + 36) & 0x10) == 0 || self->_repeatEverySec != *(equalCopy + 8))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 36) & 0x10) != 0)
+  else if ((*(equalCopy + 36) & 0x10) != 0)
   {
     goto LABEL_26;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 36) & 2) == 0 || self->_startTimeSecondsAfterUnixEpoch != *(v4 + 2))
+    if ((*(equalCopy + 36) & 2) == 0 || self->_startTimeSecondsAfterUnixEpoch != *(equalCopy + 2))
     {
       goto LABEL_26;
     }
   }
 
-  else if ((*(v4 + 36) & 2) != 0)
+  else if ((*(equalCopy + 36) & 2) != 0)
   {
     goto LABEL_26;
   }
 
-  v7 = (*(v4 + 36) & 1) == 0;
+  v7 = (*(equalCopy + 36) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 36) & 1) == 0 || self->_startTimeSecondsAfterLocalMidnight != *(v4 + 1))
+    if ((*(equalCopy + 36) & 1) == 0 || self->_startTimeSecondsAfterLocalMidnight != *(equalCopy + 1))
     {
       goto LABEL_26;
     }
@@ -515,15 +515,15 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 36);
+  fromCopy = from;
+  v5 = *(fromCopy + 36);
   if ((v5 & 8) != 0)
   {
-    self->_intervalLengthSec = *(v4 + 7);
+    self->_intervalLengthSec = *(fromCopy + 7);
     *&self->_has |= 8u;
-    v5 = *(v4 + 36);
+    v5 = *(fromCopy + 36);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -536,14 +536,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 36) & 4) == 0)
+  else if ((*(fromCopy + 36) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_allowedRequestCount = *(v4 + 6);
+  self->_allowedRequestCount = *(fromCopy + 6);
   *&self->_has |= 4u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 0x10) == 0)
   {
 LABEL_4:
@@ -556,9 +556,9 @@ LABEL_4:
   }
 
 LABEL_12:
-  self->_repeatEverySec = *(v4 + 8);
+  self->_repeatEverySec = *(fromCopy + 8);
   *&self->_has |= 0x10u;
-  v5 = *(v4 + 36);
+  v5 = *(fromCopy + 36);
   if ((v5 & 2) == 0)
   {
 LABEL_5:
@@ -571,12 +571,12 @@ LABEL_5:
   }
 
 LABEL_13:
-  self->_startTimeSecondsAfterUnixEpoch = *(v4 + 2);
+  self->_startTimeSecondsAfterUnixEpoch = *(fromCopy + 2);
   *&self->_has |= 2u;
-  if (*(v4 + 36))
+  if (*(fromCopy + 36))
   {
 LABEL_6:
-    self->_startTimeSecondsAfterLocalMidnight = *(v4 + 1);
+    self->_startTimeSecondsAfterLocalMidnight = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

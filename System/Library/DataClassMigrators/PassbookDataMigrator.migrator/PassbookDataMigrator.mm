@@ -6,7 +6,7 @@
 
 - (BOOL)performMigration
 {
-  v3 = [(PassbookDataMigrator *)self userDataDisposition];
+  userDataDisposition = [(PassbookDataMigrator *)self userDataDisposition];
   v4 = PKLogFacilityTypeGetObject();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
@@ -20,7 +20,7 @@
       v5 = @"NO";
     }
 
-    if ((v3 & 4) != 0)
+    if ((userDataDisposition & 4) != 0)
     {
       v6 = @"YES";
     }
@@ -62,7 +62,7 @@
   }
 
   v9 = +[PKPassLibrary sharedInstance];
-  [v9 migrateDataWithDidRestoreFromBackup:(v3 >> 2) & 1];
+  [v9 migrateDataWithDidRestoreFromBackup:(userDataDisposition >> 2) & 1];
 
   return 1;
 }

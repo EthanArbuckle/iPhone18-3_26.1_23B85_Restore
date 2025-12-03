@@ -1,21 +1,21 @@
 @interface PXAssetCollectionReference
-- (PXAssetCollectionReference)initWithAssetCollection:(id)a3 keyAssetReference:(id)a4 indexPath:(PXSimpleIndexPath *)a5;
+- (PXAssetCollectionReference)initWithAssetCollection:(id)collection keyAssetReference:(id)reference indexPath:(PXSimpleIndexPath *)path;
 - (PXDisplayAssetCollection)assetCollection;
 @end
 
 @implementation PXAssetCollectionReference
 
-- (PXAssetCollectionReference)initWithAssetCollection:(id)a3 keyAssetReference:(id)a4 indexPath:(PXSimpleIndexPath *)a5
+- (PXAssetCollectionReference)initWithAssetCollection:(id)collection keyAssetReference:(id)reference indexPath:(PXSimpleIndexPath *)path
 {
-  v9 = a4;
-  v10 = *&a5->item;
-  v14[0] = *&a5->dataSourceIdentifier;
+  referenceCopy = reference;
+  v10 = *&path->item;
+  v14[0] = *&path->dataSourceIdentifier;
   v14[1] = v10;
-  v11 = [(PXSectionedObjectReference *)self initWithSectionObject:a3 itemObject:0 subitemObject:0 indexPath:v14];
+  v11 = [(PXSectionedObjectReference *)self initWithSectionObject:collection itemObject:0 subitemObject:0 indexPath:v14];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_keyAssetReference, a4);
+    objc_storeStrong(&v11->_keyAssetReference, reference);
   }
 
   return v12;
@@ -23,24 +23,24 @@
 
 - (PXDisplayAssetCollection)assetCollection
 {
-  v4 = [(PXSectionedObjectReference *)self sectionObject];
-  v5 = v4;
-  if (v4)
+  sectionObject = [(PXSectionedObjectReference *)self sectionObject];
+  v5 = sectionObject;
+  if (sectionObject)
   {
-    if ([v4 conformsToProtocol:&unk_1F2BCBC20])
+    if ([sectionObject conformsToProtocol:&unk_1F2BCBC20])
     {
       goto LABEL_3;
     }
 
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    v8 = [v5 px_descriptionForAssertionMessage];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXAssetCollectionReference.m" lineNumber:15 description:{@"%@ should conform to protocol %@, but %@ doesn't", @"self.sectionObject", @"PXDisplayAssetCollection", v8}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    px_descriptionForAssertionMessage = [v5 px_descriptionForAssertionMessage];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetCollectionReference.m" lineNumber:15 description:{@"%@ should conform to protocol %@, but %@ doesn't", @"self.sectionObject", @"PXDisplayAssetCollection", px_descriptionForAssertionMessage}];
   }
 
   else
   {
-    v7 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v7 handleFailureInMethod:a2 object:self file:@"PXAssetCollectionReference.m" lineNumber:15 description:{@"%@ should conform to protocol %@, but it is nil", @"self.sectionObject", @"PXDisplayAssetCollection"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetCollectionReference.m" lineNumber:15 description:{@"%@ should conform to protocol %@, but it is nil", @"self.sectionObject", @"PXDisplayAssetCollection"}];
   }
 
 LABEL_3:

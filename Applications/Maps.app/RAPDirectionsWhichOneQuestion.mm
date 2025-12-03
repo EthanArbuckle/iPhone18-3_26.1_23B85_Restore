@@ -1,5 +1,5 @@
 @interface RAPDirectionsWhichOneQuestion
-+ (BOOL)_canDisplayForContext:(id)a3 transportMode:(unint64_t)a4;
++ (BOOL)_canDisplayForContext:(id)context transportMode:(unint64_t)mode;
 + (id)localizedTransitTitle;
 - (BOOL)_followupQuestionsAreDirectionsRelated;
 - (BOOL)_isRecursivelyComplete;
@@ -9,107 +9,107 @@
 - (NSString)localizedSelectDirectionsRequestPrompt;
 - (NSString)localizedTitle;
 - (RAPDirectionsCategoryQuestion)followUpQuestion;
-- (RAPDirectionsWhichOneQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 transportType:(unint64_t)a5 selectableRequests:(id)a6;
+- (RAPDirectionsWhichOneQuestion)initWithReport:(id)report parentQuestion:(id)question transportType:(unint64_t)type selectableRequests:(id)requests;
 - (id)_alternateAuxiliaryControlsRecording;
-- (void)_fillSubmissionParameters:(id)a3;
-- (void)setSelectedValue:(id)a3;
+- (void)_fillSubmissionParameters:(id)parameters;
+- (void)setSelectedValue:(id)value;
 @end
 
 @implementation RAPDirectionsWhichOneQuestion
 
 - (BOOL)_followupQuestionsAreDirectionsRelated
 {
-  v2 = [(RAPMenuQuestion *)self->_followUpQuestion selectedMenuItem];
-  v3 = [v2 questionCategory];
+  selectedMenuItem = [(RAPMenuQuestion *)self->_followUpQuestion selectedMenuItem];
+  questionCategory = [selectedMenuItem questionCategory];
 
-  return (v3 - 1) < 7;
+  return (questionCategory - 1) < 7;
 }
 
-- (void)_fillSubmissionParameters:(id)a3
+- (void)_fillSubmissionParameters:(id)parameters
 {
-  v30 = a3;
-  v4 = [v30 commonContext];
-  if (!v4)
+  parametersCopy = parameters;
+  commonContext = [parametersCopy commonContext];
+  if (!commonContext)
   {
-    v4 = objc_alloc_init(GEORPFeedbackCommonContext);
-    [v30 setCommonContext:v4];
+    commonContext = objc_alloc_init(GEORPFeedbackCommonContext);
+    [parametersCopy setCommonContext:commonContext];
   }
 
   if (self->_isInitialQuestion)
   {
-    v5 = [(RAPQuestion *)self _context];
-    v6 = [v5 displayedDirectionsPlan];
+    _context = [(RAPQuestion *)self _context];
+    displayedDirectionsPlan = [_context displayedDirectionsPlan];
 
-    if (v6)
+    if (displayedDirectionsPlan)
     {
-      [v4 addUserPath:55];
+      [commonContext addUserPath:55];
     }
   }
 
-  [v4 addUserPath:14];
-  v7 = [v30 details];
+  [commonContext addUserPath:14];
+  details = [parametersCopy details];
 
-  if (!v7)
+  if (!details)
   {
     v8 = objc_alloc_init(GEORPFeedbackDetails);
-    [v30 setDetails:v8];
+    [parametersCopy setDetails:v8];
   }
 
   if ([(RAPDirectionsWhichOneQuestion *)self _followupQuestionsAreDirectionsRelated])
   {
-    [v30 setType:8];
-    v9 = [(RAPQuestion *)self report];
-    v10 = [(RAPDirectionsWhichOneQuestion *)self selectedValue];
-    v11 = [v10 recording];
-    [v30 addDirectionsContextWithReport:v9 recording:v11];
+    [parametersCopy setType:8];
+    report = [(RAPQuestion *)self report];
+    selectedValue = [(RAPDirectionsWhichOneQuestion *)self selectedValue];
+    recording = [selectedValue recording];
+    [parametersCopy addDirectionsContextWithReport:report recording:recording];
 
-    v12 = [v30 details];
-    v13 = [v12 directionsFeedback];
+    details2 = [parametersCopy details];
+    directionsFeedback = [details2 directionsFeedback];
 
-    if (!v13)
+    if (!directionsFeedback)
     {
       v14 = objc_alloc_init(GEORPDirectionsFeedback);
-      v15 = [v30 details];
-      [v15 setDirectionsFeedback:v14];
+      details3 = [parametersCopy details];
+      [details3 setDirectionsFeedback:v14];
     }
 
-    v16 = [v30 details];
-    v17 = [v16 directionsFeedback];
-    [v17 setCorrectionType:3];
+    details4 = [parametersCopy details];
+    directionsFeedback2 = [details4 directionsFeedback];
+    [directionsFeedback2 setCorrectionType:3];
   }
 
   else
   {
     v18 = objc_alloc_init(GEORPTransitPoiFeedback);
-    v19 = [v30 details];
-    [v19 setTransitPoiFeedback:v18];
+    details5 = [parametersCopy details];
+    [details5 setTransitPoiFeedback:v18];
 
-    v20 = [(RAPDirectionsWhichOneQuestion *)self selectedValue];
-    v21 = [v20 recording];
-    v22 = [v21 directionsRequests];
-    v23 = [v30 details];
-    v24 = [v23 transitPoiFeedback];
-    [v24 setDirectionsRequests:v22];
+    selectedValue2 = [(RAPDirectionsWhichOneQuestion *)self selectedValue];
+    recording2 = [selectedValue2 recording];
+    directionsRequests = [recording2 directionsRequests];
+    details6 = [parametersCopy details];
+    transitPoiFeedback = [details6 transitPoiFeedback];
+    [transitPoiFeedback setDirectionsRequests:directionsRequests];
 
-    v25 = [(RAPDirectionsWhichOneQuestion *)self selectedValue];
-    v26 = [v25 recording];
-    v27 = [v26 directionsResponses];
-    v28 = [v30 details];
-    v29 = [v28 transitPoiFeedback];
-    [v29 setDirectionsResponses:v27];
+    selectedValue3 = [(RAPDirectionsWhichOneQuestion *)self selectedValue];
+    recording3 = [selectedValue3 recording];
+    directionsResponses = [recording3 directionsResponses];
+    details7 = [parametersCopy details];
+    transitPoiFeedback2 = [details7 transitPoiFeedback];
+    [transitPoiFeedback2 setDirectionsResponses:directionsResponses];
 
-    [v30 setType:3];
+    [parametersCopy setType:3];
   }
 
-  [(RAPMenuQuestion *)self->_followUpQuestion _fillSubmissionParameters:v30];
+  [(RAPMenuQuestion *)self->_followUpQuestion _fillSubmissionParameters:parametersCopy];
 }
 
 - (id)_alternateAuxiliaryControlsRecording
 {
-  v2 = [(RAPDirectionsWhichOneQuestion *)self selectedValue];
-  v3 = [v2 recording];
+  selectedValue = [(RAPDirectionsWhichOneQuestion *)self selectedValue];
+  recording = [selectedValue recording];
 
-  return v3;
+  return recording;
 }
 
 - (RAPDirectionsCategoryQuestion)followUpQuestion
@@ -118,8 +118,8 @@
   if (!followUpQuestion)
   {
     v4 = [RAPDirectionsCategoryQuestion alloc];
-    v5 = [(RAPQuestion *)self report];
-    v6 = [(RAPDirectionsCategoryQuestion *)v4 initWithReport:v5 parentQuestion:self directions:self->_selectedValue];
+    report = [(RAPQuestion *)self report];
+    v6 = [(RAPDirectionsCategoryQuestion *)v4 initWithReport:report parentQuestion:self directions:self->_selectedValue];
     v7 = self->_followUpQuestion;
     self->_followUpQuestion = v6;
 
@@ -131,15 +131,15 @@
 
 - (BOOL)_isRecursivelyComplete
 {
-  v3 = [(RAPMenuQuestion *)self->_followUpQuestion _isRecursivelyComplete];
-  if (v3)
+  _isRecursivelyComplete = [(RAPMenuQuestion *)self->_followUpQuestion _isRecursivelyComplete];
+  if (_isRecursivelyComplete)
   {
     v5.receiver = self;
     v5.super_class = RAPDirectionsWhichOneQuestion;
-    LOBYTE(v3) = [(RAPQuestion *)&v5 _isRecursivelyComplete];
+    LOBYTE(_isRecursivelyComplete) = [(RAPQuestion *)&v5 _isRecursivelyComplete];
   }
 
-  return v3;
+  return _isRecursivelyComplete;
 }
 
 - (GEOComposedRoute)routeFromRecording
@@ -157,13 +157,13 @@
   return v3;
 }
 
-- (void)setSelectedValue:(id)a3
+- (void)setSelectedValue:(id)value
 {
-  v5 = a3;
-  if (self->_selectedValue != v5)
+  valueCopy = value;
+  if (self->_selectedValue != valueCopy)
   {
-    v8 = v5;
-    objc_storeStrong(&self->_selectedValue, a3);
+    v8 = valueCopy;
+    objc_storeStrong(&self->_selectedValue, value);
     followUpQuestion = self->_followUpQuestion;
     self->_followUpQuestion = 0;
 
@@ -171,7 +171,7 @@
     self->_route = 0;
 
     [(RAPQuestion *)self _didChange];
-    v5 = v8;
+    valueCopy = v8;
   }
 }
 
@@ -180,16 +180,16 @@
   selectableDirectionsRequests = self->_selectableDirectionsRequests;
   if (!selectableDirectionsRequests)
   {
-    v4 = [(RAPQuestion *)self report];
-    v5 = [v4 _context];
+    report = [(RAPQuestion *)self report];
+    _context = [report _context];
 
     v6 = +[NSMutableArray array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v7 = [v5 directionsHistory];
-    v8 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    directionsHistory = [_context directionsHistory];
+    v8 = [directionsHistory countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v8)
     {
       v9 = v8;
@@ -200,24 +200,24 @@ LABEL_4:
       {
         if (*v21 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(directionsHistory);
         }
 
         v12 = *(*(&v20 + 1) + 8 * v11);
-        v13 = [v12 recording];
+        recording = [v12 recording];
 
-        if (v13)
+        if (recording)
         {
           transportType = self->_transportType;
-          v15 = [v12 requestedTransportType];
-          if (v15 > 5)
+          requestedTransportType = [v12 requestedTransportType];
+          if (requestedTransportType > 5)
           {
             v16 = 1;
           }
 
           else
           {
-            v16 = qword_1012160D0[v15];
+            v16 = qword_1012160D0[requestedTransportType];
           }
 
           if ((v16 & transportType) != 0)
@@ -233,7 +233,7 @@ LABEL_4:
 
         if (v9 == ++v11)
         {
-          v9 = [v7 countByEnumeratingWithState:&v20 objects:v24 count:16];
+          v9 = [directionsHistory countByEnumeratingWithState:&v20 objects:v24 count:16];
           if (v9)
           {
             goto LABEL_4;
@@ -262,19 +262,19 @@ LABEL_4:
   return v3;
 }
 
-- (RAPDirectionsWhichOneQuestion)initWithReport:(id)a3 parentQuestion:(id)a4 transportType:(unint64_t)a5 selectableRequests:(id)a6
+- (RAPDirectionsWhichOneQuestion)initWithReport:(id)report parentQuestion:(id)question transportType:(unint64_t)type selectableRequests:(id)requests
 {
-  v10 = a4;
-  v11 = a6;
+  questionCopy = question;
+  requestsCopy = requests;
   v15.receiver = self;
   v15.super_class = RAPDirectionsWhichOneQuestion;
-  v12 = [(RAPQuestion *)&v15 initWithReport:a3 parentQuestion:v10];
+  v12 = [(RAPQuestion *)&v15 initWithReport:report parentQuestion:questionCopy];
   v13 = v12;
   if (v12)
   {
-    v12->_isInitialQuestion = v10 == 0;
-    v12->_transportType = a5;
-    objc_storeStrong(&v12->_selectableDirectionsRequests, a6);
+    v12->_isInitialQuestion = questionCopy == 0;
+    v12->_transportType = type;
+    objc_storeStrong(&v12->_selectableDirectionsRequests, requests);
   }
 
   return v13;
@@ -296,14 +296,14 @@ LABEL_4:
   return v3;
 }
 
-+ (BOOL)_canDisplayForContext:(id)a3 transportMode:(unint64_t)a4
++ (BOOL)_canDisplayForContext:(id)context transportMode:(unint64_t)mode
 {
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [a3 directionsHistory];
-  v6 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  directionsHistory = [context directionsHistory];
+  v6 = [directionsHistory countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v6)
   {
     v7 = v6;
@@ -314,17 +314,17 @@ LABEL_4:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(directionsHistory);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 recording];
-        if (v11)
+        recording = [v10 recording];
+        if (recording)
         {
-          v12 = v11;
-          v13 = [v10 requestedTransportType];
-          v14 = v13 > 5 ? 1 : qword_1012160D0[v13];
-          v15 = v14 & a4;
+          v12 = recording;
+          requestedTransportType = [v10 requestedTransportType];
+          v14 = requestedTransportType > 5 ? 1 : qword_1012160D0[requestedTransportType];
+          v15 = v14 & mode;
 
           if (v15)
           {
@@ -334,7 +334,7 @@ LABEL_4:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v7 = [directionsHistory countByEnumeratingWithState:&v18 objects:v22 count:16];
       if (v7)
       {
         continue;

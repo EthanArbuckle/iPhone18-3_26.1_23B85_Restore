@@ -1,31 +1,31 @@
 @interface WebBookmarkChangeSet
-- (BOOL)folderHasReplaceChange:(int)a3;
-- (BOOL)isBookmarkDeleted:(int)a3;
+- (BOOL)folderHasReplaceChange:(int)change;
+- (BOOL)isBookmarkDeleted:(int)deleted;
 - (BOOL)shouldSync;
 - (NSArray)changes;
-- (WebBookmarkChangeSet)initWithCoder:(id)a3;
-- (WebBookmarkChangeSet)initWithFileURL:(id)a3 readPersistedChanges:(BOOL)a4;
-- (id)addedBookmarksInBookmarkFolder:(int)a3;
-- (id)bookmarksAfterReplayingChangesToBookmarks:(id)a3 inFolderWithID:(int)a4;
-- (id)deletedBookmarkIDsInBookmarkFolder:(int)a3;
-- (id)modifiedBookmarksInBookmarkFolder:(int)a3;
+- (WebBookmarkChangeSet)initWithCoder:(id)coder;
+- (WebBookmarkChangeSet)initWithFileURL:(id)l readPersistedChanges:(BOOL)changes;
+- (id)addedBookmarksInBookmarkFolder:(int)folder;
+- (id)bookmarksAfterReplayingChangesToBookmarks:(id)bookmarks inFolderWithID:(int)d;
+- (id)deletedBookmarkIDsInBookmarkFolder:(int)folder;
+- (id)modifiedBookmarksInBookmarkFolder:(int)folder;
 - (int)nextBookmarkIDForAddingBookmarkInMemory;
-- (int64_t)replayChangesOnBookmark:(id)a3;
-- (unint64_t)numberOfAddedBookmarksInBookmarkFolder:(int)a3;
-- (unint64_t)numberOfReorderedBookmarksInBookmarkFolder:(int)a3;
-- (void)_addChange:(id)a3;
-- (void)_coalesceChangesForChangeIfNeeded:(id)a3;
+- (int64_t)replayChangesOnBookmark:(id)bookmark;
+- (unint64_t)numberOfAddedBookmarksInBookmarkFolder:(int)folder;
+- (unint64_t)numberOfReorderedBookmarksInBookmarkFolder:(int)folder;
+- (void)_addChange:(id)change;
+- (void)_coalesceChangesForChangeIfNeeded:(id)needed;
 - (void)_readPersistedChanges;
 - (void)_removeAllChanges;
-- (void)_removeChange:(id)a3;
-- (void)addChange:(id)a3;
-- (void)addChanges:(id)a3;
-- (void)applyModificationsToBookmarks:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)persistChangesWithCompletion:(id)a3;
+- (void)_removeChange:(id)change;
+- (void)addChange:(id)change;
+- (void)addChanges:(id)changes;
+- (void)applyModificationsToBookmarks:(id)bookmarks;
+- (void)encodeWithCoder:(id)coder;
+- (void)persistChangesWithCompletion:(id)completion;
 - (void)removeAllChanges;
-- (void)removeChange:(id)a3;
-- (void)updateAddChangesWithInMemoryBookmarkID:(int)a3 toDatabaseGeneratedID:(int)a4;
+- (void)removeChange:(id)change;
+- (void)updateAddChangesWithInMemoryBookmarkID:(int)d toDatabaseGeneratedID:(int)iD;
 @end
 
 @implementation WebBookmarkChangeSet
@@ -33,8 +33,8 @@
 - (void)_readPersistedChanges
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 wb_privacyPreservingDescription];
+  selfCopy = self;
+  wb_privacyPreservingDescription = [a2 wb_privacyPreservingDescription];
   OUTLINED_FUNCTION_0_3(&dword_272C20000, v5, v6, "Error converting plist data to dictionary: %{public}@", v7, v8, v9, v10, 2u);
 
   v11 = *MEMORY[0x277D85DE8];
@@ -71,61 +71,61 @@ void __31__WebBookmarkChangeSet_changes__block_invoke(uint64_t a1)
   *(v3 + 40) = v2;
 }
 
-- (WebBookmarkChangeSet)initWithFileURL:(id)a3 readPersistedChanges:(BOOL)a4
+- (WebBookmarkChangeSet)initWithFileURL:(id)l readPersistedChanges:(BOOL)changes
 {
-  v7 = a3;
+  lCopy = l;
   v37.receiver = self;
   v37.super_class = WebBookmarkChangeSet;
   v8 = [(WebBookmarkChangeSet *)&v37 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_fileURL, a3);
+    objc_storeStrong(&v8->_fileURL, l);
     v10 = [MEMORY[0x277CCACA8] stringWithFormat:@"com.apple.WebBookmarks.WebBookmarkChangeSet.%p", v9];
-    v11 = [v10 UTF8String];
-    v12 = dispatch_queue_create(v11, MEMORY[0x277D85CD8]);
+    uTF8String = [v10 UTF8String];
+    v12 = dispatch_queue_create(uTF8String, MEMORY[0x277D85CD8]);
     queue = v9->_queue;
     v9->_queue = v12;
 
     v9->_lastBookmarkIDForAddingInMemoryBookmark = -99;
-    v14 = [MEMORY[0x277CBEB40] orderedSet];
+    orderedSet = [MEMORY[0x277CBEB40] orderedSet];
     changes = v9->_changes;
-    v9->_changes = v14;
+    v9->_changes = orderedSet;
 
-    v16 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     bookmarkIDToChanges = v9->_bookmarkIDToChanges;
-    v9->_bookmarkIDToChanges = v16;
+    v9->_bookmarkIDToChanges = dictionary;
 
-    v18 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     associatedIDToChanges = v9->_associatedIDToChanges;
-    v9->_associatedIDToChanges = v18;
+    v9->_associatedIDToChanges = dictionary2;
 
-    v20 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     folderIDToChildrenChanges = v9->_folderIDToChildrenChanges;
-    v9->_folderIDToChildrenChanges = v20;
+    v9->_folderIDToChildrenChanges = dictionary3;
 
-    v22 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     folderIDToDeletedChildrenChanges = v9->_folderIDToDeletedChildrenChanges;
-    v9->_folderIDToDeletedChildrenChanges = v22;
+    v9->_folderIDToDeletedChildrenChanges = dictionary4;
 
-    v24 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary5 = [MEMORY[0x277CBEB38] dictionary];
     folderIDToAddedChildrenChanges = v9->_folderIDToAddedChildrenChanges;
-    v9->_folderIDToAddedChildrenChanges = v24;
+    v9->_folderIDToAddedChildrenChanges = dictionary5;
 
-    v26 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary6 = [MEMORY[0x277CBEB38] dictionary];
     folderIDToModifiedChildrenChanges = v9->_folderIDToModifiedChildrenChanges;
-    v9->_folderIDToModifiedChildrenChanges = v26;
+    v9->_folderIDToModifiedChildrenChanges = dictionary6;
 
-    v28 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary7 = [MEMORY[0x277CBEB38] dictionary];
     folderIDToReorderedChildrenChanges = v9->_folderIDToReorderedChildrenChanges;
-    v9->_folderIDToReorderedChildrenChanges = v28;
+    v9->_folderIDToReorderedChildrenChanges = dictionary7;
 
     v30 = v9->_queue;
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __61__WebBookmarkChangeSet_initWithFileURL_readPersistedChanges___block_invoke;
     block[3] = &unk_279E75AB0;
-    v36 = a4;
+    changesCopy = changes;
     v31 = v9;
     v35 = v31;
     dispatch_barrier_sync(v30, block);
@@ -145,17 +145,17 @@ uint64_t __61__WebBookmarkChangeSet_initWithFileURL_readPersistedChanges___block
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __40__WebBookmarkChangeSet_encodeWithCoder___block_invoke;
   v7[3] = &unk_279E753F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = coderCopy;
+  selfCopy = self;
+  v6 = coderCopy;
   dispatch_barrier_sync(queue, v7);
 }
 
@@ -171,18 +171,18 @@ uint64_t __40__WebBookmarkChangeSet_encodeWithCoder___block_invoke(uint64_t a1)
   return [v4 encodeObject:v5 forKey:@"FileURL"];
 }
 
-- (WebBookmarkChangeSet)initWithCoder:(id)a3
+- (WebBookmarkChangeSet)initWithCoder:(id)coder
 {
   v15[2] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277CBEB98];
-  v5 = a3;
+  coderCopy = coder;
   v15[0] = objc_opt_class();
   v15[1] = objc_opt_class();
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:2];
   v7 = [v4 setWithArray:v6];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"Changes"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"Changes"];
 
-  v9 = [v5 decodeObjectOfClass:objc_opt_class() forKey:@"FileURL"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"FileURL"];
 
   v10 = [(WebBookmarkChangeSet *)self initWithFileURL:v9 readPersistedChanges:0];
   v11 = v10;
@@ -241,17 +241,17 @@ uint64_t __34__WebBookmarkChangeSet_shouldSync__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (void)addChanges:(id)a3
+- (void)addChanges:(id)changes
 {
-  v4 = a3;
+  changesCopy = changes;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__WebBookmarkChangeSet_addChanges___block_invoke;
   v7[3] = &unk_279E753F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changesCopy;
+  selfCopy = self;
+  v6 = changesCopy;
   dispatch_barrier_async(queue, v7);
 }
 
@@ -291,83 +291,83 @@ void __35__WebBookmarkChangeSet_addChanges___block_invoke(uint64_t a1)
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addChange:(id)a3
+- (void)addChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __34__WebBookmarkChangeSet_addChange___block_invoke;
   v7[3] = &unk_279E753F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_barrier_async(queue, v7);
 }
 
-- (void)_addChange:(id)a3
+- (void)_addChange:(id)change
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(WebBookmarkChangeSet *)self _coalesceChangesForChangeIfNeeded:v4];
-  [(NSMutableOrderedSet *)self->_changes addObject:v4];
+  changeCopy = change;
+  [(WebBookmarkChangeSet *)self _coalesceChangesForChangeIfNeeded:changeCopy];
+  [(NSMutableOrderedSet *)self->_changes addObject:changeCopy];
   v25[0] = MEMORY[0x277D85DD0];
   v25[1] = 3221225472;
   v25[2] = __35__WebBookmarkChangeSet__addChange___block_invoke;
   v25[3] = &unk_279E75AF8;
-  v5 = v4;
+  v5 = changeCopy;
   v26 = v5;
   v6 = MEMORY[0x2743D6830](v25);
-  v7 = [v5 bookmarkID];
-  v8 = v7;
-  if (v7 < self->_lastBookmarkIDForAddingInMemoryBookmark)
+  bookmarkID = [v5 bookmarkID];
+  v8 = bookmarkID;
+  if (bookmarkID < self->_lastBookmarkIDForAddingInMemoryBookmark)
   {
-    self->_lastBookmarkIDForAddingInMemoryBookmark = v7;
+    self->_lastBookmarkIDForAddingInMemoryBookmark = bookmarkID;
   }
 
-  if (v7 && v7 != 0x7FFFFFFF)
+  if (bookmarkID && bookmarkID != 0x7FFFFFFF)
   {
-    (v6)[2](v6, self->_bookmarkIDToChanges, v7);
+    (v6)[2](v6, self->_bookmarkIDToChanges, bookmarkID);
   }
 
-  v9 = [v5 bookmark];
-  v10 = [v9 lastSelectedChildID];
+  bookmark = [v5 bookmark];
+  lastSelectedChildID = [bookmark lastSelectedChildID];
 
-  if (v10 && v10 != 0x7FFFFFFF)
+  if (lastSelectedChildID && lastSelectedChildID != 0x7FFFFFFF)
   {
-    (v6)[2](v6, self->_bookmarkIDToChanges, v10);
+    (v6)[2](v6, self->_bookmarkIDToChanges, lastSelectedChildID);
   }
 
-  v11 = [v5 specialFolderID];
-  if (!v11)
+  specialFolderID = [v5 specialFolderID];
+  if (!specialFolderID)
   {
-    v11 = [v5 parentID];
+    specialFolderID = [v5 parentID];
   }
 
-  (v6)[2](v6, self->_folderIDToChildrenChanges, v11);
-  v12 = [v5 associatedBookmarkID];
-  v13 = [v5 changeType];
-  if (v13 > 3)
+  (v6)[2](v6, self->_folderIDToChildrenChanges, specialFolderID);
+  associatedBookmarkID = [v5 associatedBookmarkID];
+  changeType = [v5 changeType];
+  if (changeType > 3)
   {
-    if (v13 == 4)
+    if (changeType == 4)
     {
-      (v6)[2](v6, self->_folderIDToDeletedChildrenChanges, v11);
-      (v6)[2](v6, self->_folderIDToAddedChildrenChanges, v12);
-      (v6)[2](v6, self->_folderIDToChildrenChanges, v12);
+      (v6)[2](v6, self->_folderIDToDeletedChildrenChanges, specialFolderID);
+      (v6)[2](v6, self->_folderIDToAddedChildrenChanges, associatedBookmarkID);
+      (v6)[2](v6, self->_folderIDToChildrenChanges, associatedBookmarkID);
     }
 
     else
     {
-      if (v13 != 5)
+      if (changeType != 5)
       {
-        if (v13 == 6)
+        if (changeType == 6)
         {
           v23 = 0u;
           v24 = 0u;
           v21 = 0u;
           v22 = 0u;
-          v15 = [v5 bookmarks];
-          v16 = [v15 countByEnumeratingWithState:&v21 objects:v27 count:16];
+          bookmarks = [v5 bookmarks];
+          v16 = [bookmarks countByEnumeratingWithState:&v21 objects:v27 count:16];
           if (v16)
           {
             v17 = v16;
@@ -378,13 +378,13 @@ void __35__WebBookmarkChangeSet_addChanges___block_invoke(uint64_t a1)
               {
                 if (*v22 != v18)
                 {
-                  objc_enumerationMutation(v15);
+                  objc_enumerationMutation(bookmarks);
                 }
 
                 (v6)[2](v6, self->_bookmarkIDToChanges, [*(*(&v21 + 1) + 8 * i) identifier]);
               }
 
-              v17 = [v15 countByEnumeratingWithState:&v21 objects:v27 count:16];
+              v17 = [bookmarks countByEnumeratingWithState:&v21 objects:v27 count:16];
             }
 
             while (v17);
@@ -394,30 +394,30 @@ void __35__WebBookmarkChangeSet_addChanges___block_invoke(uint64_t a1)
         goto LABEL_33;
       }
 
-      (v6)[2](v6, self->_folderIDToReorderedChildrenChanges, v11);
+      (v6)[2](v6, self->_folderIDToReorderedChildrenChanges, specialFolderID);
     }
 
-    (v6)[2](v6, self->_associatedIDToChanges, v12);
+    (v6)[2](v6, self->_associatedIDToChanges, associatedBookmarkID);
     goto LABEL_33;
   }
 
-  if (v13 < 2)
+  if (changeType < 2)
   {
     folderIDToDeletedChildrenChanges = self->_folderIDToDeletedChildrenChanges;
     goto LABEL_30;
   }
 
-  if (v13 == 2)
+  if (changeType == 2)
   {
     folderIDToDeletedChildrenChanges = self->_folderIDToAddedChildrenChanges;
     goto LABEL_30;
   }
 
-  if (v13 == 3)
+  if (changeType == 3)
   {
     folderIDToDeletedChildrenChanges = self->_folderIDToModifiedChildrenChanges;
 LABEL_30:
-    (v6)[2](v6, folderIDToDeletedChildrenChanges, v11);
+    (v6)[2](v6, folderIDToDeletedChildrenChanges, specialFolderID);
   }
 
 LABEL_33:
@@ -439,11 +439,11 @@ void __35__WebBookmarkChangeSet__addChange___block_invoke(uint64_t a1, void *a2,
   [v6 addObject:*(a1 + 32)];
 }
 
-- (void)_coalesceChangesForChangeIfNeeded:(id)a3
+- (void)_coalesceChangesForChangeIfNeeded:(id)needed
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([v4 changeType] == 3)
+  neededCopy = needed;
+  if ([neededCopy changeType] == 3)
   {
     v15 = 0u;
     v16 = 0u;
@@ -467,8 +467,8 @@ void __35__WebBookmarkChangeSet__addChange___block_invoke(uint64_t a1, void *a2,
           v10 = *(*(&v13 + 1) + 8 * i);
           if ([v10 changeType] == 3)
           {
-            v11 = [v10 bookmarkID];
-            if (v11 == [v4 bookmarkID])
+            bookmarkID = [v10 bookmarkID];
+            if (bookmarkID == [neededCopy bookmarkID])
             {
               [(WebBookmarkChangeSet *)self _removeChange:v10];
             }
@@ -485,45 +485,45 @@ void __35__WebBookmarkChangeSet__addChange___block_invoke(uint64_t a1, void *a2,
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeChange:(id)a3
+- (void)removeChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __37__WebBookmarkChangeSet_removeChange___block_invoke;
   v7[3] = &unk_279E753F0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = changeCopy;
+  v6 = changeCopy;
   dispatch_barrier_async(queue, v7);
 }
 
-- (void)_removeChange:(id)a3
+- (void)_removeChange:(id)change
 {
   v27 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [(NSMutableOrderedSet *)self->_changes removeObject:v4];
+  changeCopy = change;
+  [(NSMutableOrderedSet *)self->_changes removeObject:changeCopy];
   v24[0] = MEMORY[0x277D85DD0];
   v24[1] = 3221225472;
   v24[2] = __38__WebBookmarkChangeSet__removeChange___block_invoke;
   v24[3] = &unk_279E75AF8;
-  v5 = v4;
+  v5 = changeCopy;
   v25 = v5;
   v6 = MEMORY[0x2743D6830](v24);
-  v7 = [v5 parentID];
-  v19 = [v5 associatedBookmarkID];
+  parentID = [v5 parentID];
+  associatedBookmarkID = [v5 associatedBookmarkID];
   (v6)[2](v6, self->_bookmarkIDToChanges, [v5 bookmarkID]);
   bookmarkIDToChanges = self->_bookmarkIDToChanges;
-  v9 = [v5 bookmark];
-  (v6)[2](v6, bookmarkIDToChanges, [v9 lastSelectedChildID]);
+  bookmark = [v5 bookmark];
+  (v6)[2](v6, bookmarkIDToChanges, [bookmark lastSelectedChildID]);
 
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v10 = [v5 bookmarks];
-  v11 = [v10 countByEnumeratingWithState:&v20 objects:v26 count:16];
+  bookmarks = [v5 bookmarks];
+  v11 = [bookmarks countByEnumeratingWithState:&v20 objects:v26 count:16];
   if (v11)
   {
     v12 = v11;
@@ -534,38 +534,38 @@ void __35__WebBookmarkChangeSet__addChange___block_invoke(uint64_t a1, void *a2,
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v10);
+          objc_enumerationMutation(bookmarks);
         }
 
         (v6)[2](v6, self->_bookmarkIDToChanges, [*(*(&v20 + 1) + 8 * i) identifier]);
       }
 
-      v12 = [v10 countByEnumeratingWithState:&v20 objects:v26 count:16];
+      v12 = [bookmarks countByEnumeratingWithState:&v20 objects:v26 count:16];
     }
 
     while (v12);
   }
 
-  (v6)[2](v6, self->_associatedIDToChanges, v19);
+  (v6)[2](v6, self->_associatedIDToChanges, associatedBookmarkID);
   folderIDToChildrenChanges = self->_folderIDToChildrenChanges;
-  v16 = [v5 specialFolderID];
-  if (v16)
+  specialFolderID = [v5 specialFolderID];
+  if (specialFolderID)
   {
-    v17 = v16;
+    v17 = specialFolderID;
   }
 
   else
   {
-    v17 = v7;
+    v17 = parentID;
   }
 
   (v6)[2](v6, folderIDToChildrenChanges, v17);
-  (v6)[2](v6, self->_folderIDToChildrenChanges, v19);
-  (v6)[2](v6, self->_folderIDToDeletedChildrenChanges, v7);
-  (v6)[2](v6, self->_folderIDToAddedChildrenChanges, v7);
-  (v6)[2](v6, self->_folderIDToAddedChildrenChanges, v19);
-  (v6)[2](v6, self->_folderIDToModifiedChildrenChanges, v7);
-  (v6)[2](v6, self->_folderIDToReorderedChildrenChanges, v7);
+  (v6)[2](v6, self->_folderIDToChildrenChanges, associatedBookmarkID);
+  (v6)[2](v6, self->_folderIDToDeletedChildrenChanges, parentID);
+  (v6)[2](v6, self->_folderIDToAddedChildrenChanges, parentID);
+  (v6)[2](v6, self->_folderIDToAddedChildrenChanges, associatedBookmarkID);
+  (v6)[2](v6, self->_folderIDToModifiedChildrenChanges, parentID);
+  (v6)[2](v6, self->_folderIDToReorderedChildrenChanges, parentID);
 
   v18 = *MEMORY[0x277D85DE8];
 }
@@ -603,13 +603,13 @@ void __38__WebBookmarkChangeSet__removeChange___block_invoke(uint64_t a1, void *
   [(NSMutableDictionary *)self->_folderIDToAddedChildrenChanges removeAllObjects];
   [(NSMutableDictionary *)self->_folderIDToModifiedChildrenChanges removeAllObjects];
   [(NSMutableDictionary *)self->_folderIDToReorderedChildrenChanges removeAllObjects];
-  v3 = [MEMORY[0x277CCAA00] defaultManager];
-  [v3 removeItemAtURL:self->_fileURL error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager removeItemAtURL:self->_fileURL error:0];
 }
 
-- (int64_t)replayChangesOnBookmark:(id)a3
+- (int64_t)replayChangesOnBookmark:(id)bookmark
 {
-  v4 = a3;
+  bookmarkCopy = bookmark;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
@@ -620,9 +620,9 @@ void __38__WebBookmarkChangeSet__removeChange___block_invoke(uint64_t a1, void *
   block[2] = __48__WebBookmarkChangeSet_replayChangesOnBookmark___block_invoke;
   block[3] = &unk_279E75B20;
   block[4] = self;
-  v10 = v4;
+  v10 = bookmarkCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = bookmarkCopy;
   dispatch_sync(queue, block);
   v7 = v13[3];
 
@@ -699,16 +699,16 @@ LABEL_14:
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (id)bookmarksAfterReplayingChangesToBookmarks:(id)a3 inFolderWithID:(int)a4
+- (id)bookmarksAfterReplayingChangesToBookmarks:(id)bookmarks inFolderWithID:(int)d
 {
-  v6 = [a3 mutableCopy];
+  v6 = [bookmarks mutableCopy];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __81__WebBookmarkChangeSet_bookmarksAfterReplayingChangesToBookmarks_inFolderWithID___block_invoke;
   block[3] = &unk_279E75B70;
   block[4] = self;
-  v14 = a4;
+  dCopy = d;
   v8 = v6;
   v13 = v8;
   dispatch_sync(queue, block);
@@ -818,7 +818,7 @@ LABEL_22:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)isBookmarkDeleted:(int)a3
+- (BOOL)isBookmarkDeleted:(int)deleted
 {
   v8 = 0;
   v9 = &v8;
@@ -829,7 +829,7 @@ LABEL_22:
   block[1] = 3221225472;
   block[2] = __42__WebBookmarkChangeSet_isBookmarkDeleted___block_invoke;
   block[3] = &unk_279E75B98;
-  v7 = a3;
+  deletedCopy = deleted;
   block[4] = self;
   block[5] = &v8;
   dispatch_sync(queue, block);
@@ -887,7 +887,7 @@ LABEL_14:
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)deletedBookmarkIDsInBookmarkFolder:(int)a3
+- (id)deletedBookmarkIDsInBookmarkFolder:(int)folder
 {
   v5 = [MEMORY[0x277CBEB58] set];
   queue = self->_queue;
@@ -896,7 +896,7 @@ LABEL_14:
   block[2] = __59__WebBookmarkChangeSet_deletedBookmarkIDsInBookmarkFolder___block_invoke;
   block[3] = &unk_279E75B70;
   block[4] = self;
-  v13 = a3;
+  folderCopy = folder;
   v7 = v5;
   v12 = v7;
   dispatch_sync(queue, block);
@@ -950,17 +950,17 @@ void __59__WebBookmarkChangeSet_deletedBookmarkIDsInBookmarkFolder___block_invok
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (id)addedBookmarksInBookmarkFolder:(int)a3
+- (id)addedBookmarksInBookmarkFolder:(int)folder
 {
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__WebBookmarkChangeSet_addedBookmarksInBookmarkFolder___block_invoke;
   block[3] = &unk_279E75B70;
   block[4] = self;
-  v13 = a3;
-  v7 = v5;
+  folderCopy = folder;
+  v7 = array;
   v12 = v7;
   dispatch_sync(queue, block);
   v8 = v12;
@@ -1015,17 +1015,17 @@ void __55__WebBookmarkChangeSet_addedBookmarksInBookmarkFolder___block_invoke(ui
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)modifiedBookmarksInBookmarkFolder:(int)a3
+- (id)modifiedBookmarksInBookmarkFolder:(int)folder
 {
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __58__WebBookmarkChangeSet_modifiedBookmarksInBookmarkFolder___block_invoke;
   block[3] = &unk_279E75B70;
   block[4] = self;
-  v13 = a3;
-  v7 = v5;
+  folderCopy = folder;
+  v7 = array;
   v12 = v7;
   dispatch_sync(queue, block);
   v8 = v12;
@@ -1083,7 +1083,7 @@ void __58__WebBookmarkChangeSet_modifiedBookmarksInBookmarkFolder___block_invoke
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (unint64_t)numberOfAddedBookmarksInBookmarkFolder:(int)a3
+- (unint64_t)numberOfAddedBookmarksInBookmarkFolder:(int)folder
 {
   v8 = 0;
   v9 = &v8;
@@ -1096,7 +1096,7 @@ void __58__WebBookmarkChangeSet_modifiedBookmarksInBookmarkFolder___block_invoke
   block[3] = &unk_279E75BC0;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  folderCopy = folder;
   dispatch_sync(queue, block);
   v4 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -1111,7 +1111,7 @@ void __63__WebBookmarkChangeSet_numberOfAddedBookmarksInBookmarkFolder___block_i
   *(*(*(a1 + 40) + 8) + 24) = [v3 count];
 }
 
-- (unint64_t)numberOfReorderedBookmarksInBookmarkFolder:(int)a3
+- (unint64_t)numberOfReorderedBookmarksInBookmarkFolder:(int)folder
 {
   v8 = 0;
   v9 = &v8;
@@ -1124,7 +1124,7 @@ void __63__WebBookmarkChangeSet_numberOfAddedBookmarksInBookmarkFolder___block_i
   block[3] = &unk_279E75BC0;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  folderCopy = folder;
   dispatch_sync(queue, block);
   v4 = v9[3];
   _Block_object_dispose(&v8, 8);
@@ -1139,7 +1139,7 @@ void __67__WebBookmarkChangeSet_numberOfReorderedBookmarksInBookmarkFolder___blo
   *(*(*(a1 + 40) + 8) + 24) = [v3 count];
 }
 
-- (BOOL)folderHasReplaceChange:(int)a3
+- (BOOL)folderHasReplaceChange:(int)change
 {
   v8 = 0;
   v9 = &v8;
@@ -1152,7 +1152,7 @@ void __67__WebBookmarkChangeSet_numberOfReorderedBookmarksInBookmarkFolder___blo
   block[3] = &unk_279E75BC0;
   block[4] = self;
   block[5] = &v8;
-  v7 = a3;
+  changeCopy = change;
   dispatch_sync(queue, block);
   v4 = *(v9 + 24);
   _Block_object_dispose(&v8, 8);
@@ -1167,18 +1167,18 @@ void __47__WebBookmarkChangeSet_folderHasReplaceChange___block_invoke(uint64_t a
   *(*(*(a1 + 40) + 8) + 24) = [v3 safari_containsObjectPassingTest:&__block_literal_global_22];
 }
 
-- (void)updateAddChangesWithInMemoryBookmarkID:(int)a3 toDatabaseGeneratedID:(int)a4
+- (void)updateAddChangesWithInMemoryBookmarkID:(int)d toDatabaseGeneratedID:(int)iD
 {
   v17 = *MEMORY[0x277D85DE8];
-  if (a3 != a4)
+  if (d != iD)
   {
     v7 = WBS_LOG_CHANNEL_PREFIXBookmarks();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       *buf = 134218240;
-      v14 = a3;
+      dCopy = d;
       v15 = 2048;
-      v16 = a4;
+      iDCopy = iD;
       _os_log_impl(&dword_272C20000, v7, OS_LOG_TYPE_INFO, "Updating changes from in memory identifier %ld to database identifier %ld", buf, 0x16u);
     }
 
@@ -1187,8 +1187,8 @@ void __47__WebBookmarkChangeSet_folderHasReplaceChange___block_invoke(uint64_t a
     v10[1] = 3221225472;
     v10[2] = __85__WebBookmarkChangeSet_updateAddChangesWithInMemoryBookmarkID_toDatabaseGeneratedID___block_invoke;
     v10[3] = &unk_279E75C10;
-    v11 = a3;
-    v12 = a4;
+    dCopy2 = d;
+    iDCopy2 = iD;
     v10[4] = self;
     dispatch_barrier_sync(queue, v10);
   }
@@ -1309,17 +1309,17 @@ void __85__WebBookmarkChangeSet_updateAddChangesWithInMemoryBookmarkID_toDatabas
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applyModificationsToBookmarks:(id)a3
+- (void)applyModificationsToBookmarks:(id)bookmarks
 {
-  v4 = a3;
+  bookmarksCopy = bookmarks;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __54__WebBookmarkChangeSet_applyModificationsToBookmarks___block_invoke;
   v7[3] = &unk_279E753F0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = bookmarksCopy;
+  selfCopy = self;
+  v6 = bookmarksCopy;
   dispatch_barrier_sync(queue, v7);
 }
 
@@ -1391,15 +1391,15 @@ void __54__WebBookmarkChangeSet_applyModificationsToBookmarks___block_invoke(uin
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)persistChangesWithCompletion:(id)a3
+- (void)persistChangesWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __53__WebBookmarkChangeSet_persistChangesWithCompletion___block_invoke;
   v11[3] = &unk_279E75478;
-  v12 = v4;
-  v5 = v4;
+  v12 = completionCopy;
+  v5 = completionCopy;
   v6 = MEMORY[0x2743D6830](v11);
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];

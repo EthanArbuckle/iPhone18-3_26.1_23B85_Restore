@@ -1,9 +1,9 @@
 @interface PSCustomControlTableCell
 - (id)controlValue;
 - (id)newControl;
-- (void)refreshCellContentsWithSpecifier:(id)a3 inRange:(_NSRange)a4 withAttributedString:(id)a5;
-- (void)setupSwitchConstraints:(id)a3;
-- (void)switchValueChanged:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier inRange:(_NSRange)range withAttributedString:(id)string;
+- (void)setupSwitchConstraints:(id)constraints;
+- (void)switchValueChanged:(id)changed;
 @end
 
 @implementation PSCustomControlTableCell
@@ -17,16 +17,16 @@
   return v3;
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3 inRange:(_NSRange)a4 withAttributedString:(id)a5
+- (void)refreshCellContentsWithSpecifier:(id)specifier inRange:(_NSRange)range withAttributedString:(id)string
 {
   v13.receiver = self;
   v13.super_class = PSCustomControlTableCell;
-  [(PSCustomControlTableCell *)&v13 refreshCellContentsWithSpecifier:a3, a4.location, a4.length];
-  v8 = [a3 name];
-  v9 = [v8 rangeOfString:@"<globe>"];
+  [(PSCustomControlTableCell *)&v13 refreshCellContentsWithSpecifier:specifier, range.location, range.length];
+  name = [specifier name];
+  v9 = [name rangeOfString:@"<globe>"];
   v11 = v10;
-  v12 = [[NSMutableAttributedString alloc] initWithString:v8];
-  [v12 replaceCharactersInRange:v9 withAttributedString:{v11, a5}];
+  v12 = [[NSMutableAttributedString alloc] initWithString:name];
+  [v12 replaceCharactersInRange:v9 withAttributedString:{v11, string}];
   [-[PSCustomControlTableCell titleLabel](self "titleLabel")];
 
   [-[PSCustomControlTableCell control](self "control")];
@@ -44,24 +44,24 @@
   return result;
 }
 
-- (void)switchValueChanged:(id)a3
+- (void)switchValueChanged:(id)changed
 {
-  v4 = [(PSCustomControlTableCell *)self specifier];
-  if (v4)
+  specifier = [(PSCustomControlTableCell *)self specifier];
+  if (specifier)
   {
-    v5 = v4;
-    v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [a3 isOn]);
+    v5 = specifier;
+    v6 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [changed isOn]);
 
     [v5 performSetterWithValue:v6];
   }
 }
 
-- (void)setupSwitchConstraints:(id)a3
+- (void)setupSwitchConstraints:(id)constraints
 {
-  v5 = [(PSCustomControlTableCell *)self contentView];
-  [v5 addSubview:a3];
-  v7[0] = [objc_msgSend(a3 "centerYAnchor")];
-  v7[1] = [objc_msgSend(a3 "trailingAnchor")];
+  contentView = [(PSCustomControlTableCell *)self contentView];
+  [contentView addSubview:constraints];
+  v7[0] = [objc_msgSend(constraints "centerYAnchor")];
+  v7[1] = [objc_msgSend(constraints "trailingAnchor")];
   [NSLayoutConstraint activateConstraints:[NSArray arrayWithObjects:v7 count:2]];
   [-[PSCustomControlTableCell titleLabel](self "titleLabel")];
   v6[1] = [objc_msgSend(-[PSCustomControlTableCell titleLabel](self titleLabel];

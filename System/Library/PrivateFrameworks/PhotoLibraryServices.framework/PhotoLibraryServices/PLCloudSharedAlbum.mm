@@ -1,10 +1,10 @@
 @interface PLCloudSharedAlbum
-+ (id)allCloudSharedAlbumsInLibrary:(id)a3;
-+ (id)cloudOwnerDisplayNameWithFirstName:(id)a3 lastName:(id)a4 fullName:(id)a5 emailKey:(id)a6 includingEmail:(BOOL)a7 allowsEmail:(BOOL)a8 emailAddressManager:(id)a9;
-+ (id)cloudSharedAlbumWithGUID:(id)a3 inLibrary:(id)a4;
-+ (id)cloudSharedAlbumWithObjectID:(id)a3 managedObjectContext:(id)a4;
-+ (id)lightweightReimportDirectoryNameWithGUID:(id)a3 cloudPersonID:(id)a4;
-+ (id)localizedSharedByLabelWithFirstName:(id)a3 lastName:(id)a4 fullName:(id)a5 emailKey:(id)a6 isOwned:(BOOL)a7 allowsEmail:(BOOL)a8 emailAddressManager:(id)a9;
++ (id)allCloudSharedAlbumsInLibrary:(id)library;
++ (id)cloudOwnerDisplayNameWithFirstName:(id)name lastName:(id)lastName fullName:(id)fullName emailKey:(id)key includingEmail:(BOOL)email allowsEmail:(BOOL)allowsEmail emailAddressManager:(id)manager;
++ (id)cloudSharedAlbumWithGUID:(id)d inLibrary:(id)library;
++ (id)cloudSharedAlbumWithObjectID:(id)d managedObjectContext:(id)context;
++ (id)lightweightReimportDirectoryNameWithGUID:(id)d cloudPersonID:(id)iD;
++ (id)localizedSharedByLabelWithFirstName:(id)name lastName:(id)lastName fullName:(id)fullName emailKey:(id)key isOwned:(BOOL)owned allowsEmail:(BOOL)email emailAddressManager:(id)manager;
 - (BOOL)canContributeToCloudSharedAlbum;
 - (BOOL)hasUnseenContentBoolValue;
 - (BOOL)isMultipleContributorCloudSharedAlbum;
@@ -13,9 +13,9 @@
 - (NSString)cloudOwnerEmail;
 - (NSString)localizedSharedWithLabel;
 - (id)albumDirectoryPath;
-- (id)cloudOwnerDisplayNameIncludingEmail:(BOOL)a3 allowsEmail:(BOOL)a4;
+- (id)cloudOwnerDisplayNameIncludingEmail:(BOOL)email allowsEmail:(BOOL)allowsEmail;
 - (id)emailAddressManager;
-- (id)localizedSharedByLabelAllowsEmail:(BOOL)a3;
+- (id)localizedSharedByLabelAllowsEmail:(BOOL)email;
 - (id)sortDescriptorsForKeyAssetsCandidates;
 - (id)sortingComparator;
 - (int)cloudRelationshipStateLocalValue;
@@ -24,15 +24,15 @@
 - (void)awakeFromInsert;
 - (void)delete;
 - (void)deleteFromDatabaseOnly;
-- (void)getUnseenStartMarkerIndex:(unint64_t *)a3 count:(unint64_t *)a4 showsProgress:(BOOL *)a5;
+- (void)getUnseenStartMarkerIndex:(unint64_t *)index count:(unint64_t *)count showsProgress:(BOOL *)progress;
 - (void)persistRecoveryMetadata;
 - (void)prepareForDeletion;
-- (void)setCloudOwnerEmail:(id)a3;
-- (void)setHasUnseenContentBoolValue:(BOOL)a3;
-- (void)setUnseenAssetsCountIntegerValue:(unint64_t)a3;
-- (void)updateCloudLastContributionDateWithDate:(id)a3;
-- (void)updateCloudLastInterestingChangeDateWithDate:(id)a3;
-- (void)userDeleteSubscriberRecord:(id)a3;
+- (void)setCloudOwnerEmail:(id)email;
+- (void)setHasUnseenContentBoolValue:(BOOL)value;
+- (void)setUnseenAssetsCountIntegerValue:(unint64_t)value;
+- (void)updateCloudLastContributionDateWithDate:(id)date;
+- (void)updateCloudLastInterestingChangeDateWithDate:(id)date;
+- (void)userDeleteSubscriberRecord:(id)record;
 - (void)willSave;
 @end
 
@@ -42,96 +42,96 @@
 {
   v36 = *MEMORY[0x1E69E9840];
   v3 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:7];
-  v4 = [(PLCloudSharedAlbum *)self cloudRelationshipState];
+  cloudRelationshipState = [(PLCloudSharedAlbum *)self cloudRelationshipState];
 
-  if (v4)
+  if (cloudRelationshipState)
   {
-    v5 = [(PLCloudSharedAlbum *)self cloudRelationshipState];
-    [v3 setObject:v5 forKey:@"cloudRelationshipState"];
+    cloudRelationshipState2 = [(PLCloudSharedAlbum *)self cloudRelationshipState];
+    [v3 setObject:cloudRelationshipState2 forKey:@"cloudRelationshipState"];
   }
 
-  v6 = [(PLCloudSharedAlbum *)self cloudOwnerFirstName];
+  cloudOwnerFirstName = [(PLCloudSharedAlbum *)self cloudOwnerFirstName];
 
-  if (v6)
+  if (cloudOwnerFirstName)
   {
-    v7 = [(PLCloudSharedAlbum *)self cloudOwnerFirstName];
-    [v3 setObject:v7 forKey:@"cloudOwnerFirstName"];
+    cloudOwnerFirstName2 = [(PLCloudSharedAlbum *)self cloudOwnerFirstName];
+    [v3 setObject:cloudOwnerFirstName2 forKey:@"cloudOwnerFirstName"];
   }
 
-  v8 = [(PLCloudSharedAlbum *)self cloudOwnerLastName];
+  cloudOwnerLastName = [(PLCloudSharedAlbum *)self cloudOwnerLastName];
 
-  if (v8)
+  if (cloudOwnerLastName)
   {
-    v9 = [(PLCloudSharedAlbum *)self cloudOwnerLastName];
-    [v3 setObject:v9 forKey:@"cloudOwnerLastName"];
+    cloudOwnerLastName2 = [(PLCloudSharedAlbum *)self cloudOwnerLastName];
+    [v3 setObject:cloudOwnerLastName2 forKey:@"cloudOwnerLastName"];
   }
 
-  v10 = [(PLCloudSharedAlbum *)self cloudOwnerEmail];
+  cloudOwnerEmail = [(PLCloudSharedAlbum *)self cloudOwnerEmail];
 
-  if (v10)
+  if (cloudOwnerEmail)
   {
-    v11 = [(PLCloudSharedAlbum *)self cloudOwnerEmail];
-    [v3 setObject:v11 forKey:@"cloudOwnerEmail"];
+    cloudOwnerEmail2 = [(PLCloudSharedAlbum *)self cloudOwnerEmail];
+    [v3 setObject:cloudOwnerEmail2 forKey:@"cloudOwnerEmail"];
   }
 
-  v12 = [(PLCloudSharedAlbum *)self cloudOwnerHashedPersonID];
+  cloudOwnerHashedPersonID = [(PLCloudSharedAlbum *)self cloudOwnerHashedPersonID];
 
-  if (v12)
+  if (cloudOwnerHashedPersonID)
   {
-    v13 = [(PLCloudSharedAlbum *)self cloudOwnerHashedPersonID];
-    [v3 setObject:v13 forKey:@"cloudOwnerHashedPersonID"];
+    cloudOwnerHashedPersonID2 = [(PLCloudSharedAlbum *)self cloudOwnerHashedPersonID];
+    [v3 setObject:cloudOwnerHashedPersonID2 forKey:@"cloudOwnerHashedPersonID"];
   }
 
-  v14 = [(PLCloudSharedAlbum *)self cloudSubscriptionDate];
+  cloudSubscriptionDate = [(PLCloudSharedAlbum *)self cloudSubscriptionDate];
 
-  if (v14)
+  if (cloudSubscriptionDate)
   {
-    v15 = [(PLCloudSharedAlbum *)self cloudSubscriptionDate];
-    [v3 setObject:v15 forKey:@"cloudSubscriptionDate"];
+    cloudSubscriptionDate2 = [(PLCloudSharedAlbum *)self cloudSubscriptionDate];
+    [v3 setObject:cloudSubscriptionDate2 forKey:@"cloudSubscriptionDate"];
   }
 
-  v16 = [(PLCloudSharedAlbum *)self title];
+  title = [(PLCloudSharedAlbum *)self title];
 
-  if (v16)
+  if (title)
   {
-    v17 = [(PLCloudSharedAlbum *)self title];
-    [v3 setObject:v17 forKey:@"title"];
+    title2 = [(PLCloudSharedAlbum *)self title];
+    [v3 setObject:title2 forKey:@"title"];
   }
 
-  v18 = [(PLCloudSharedAlbum *)self cloudPublicURLEnabled];
+  cloudPublicURLEnabled = [(PLCloudSharedAlbum *)self cloudPublicURLEnabled];
 
-  if (v18)
+  if (cloudPublicURLEnabled)
   {
-    v19 = [(PLCloudSharedAlbum *)self cloudPublicURLEnabled];
-    [v3 setObject:v19 forKey:@"cloudPublicURLEnabled"];
+    cloudPublicURLEnabled2 = [(PLCloudSharedAlbum *)self cloudPublicURLEnabled];
+    [v3 setObject:cloudPublicURLEnabled2 forKey:@"cloudPublicURLEnabled"];
   }
 
-  v20 = [(PLCloudSharedAlbum *)self publicURL];
+  publicURL = [(PLCloudSharedAlbum *)self publicURL];
 
-  if (v20)
+  if (publicURL)
   {
-    v21 = [(PLCloudSharedAlbum *)self publicURL];
-    [v3 setObject:v21 forKey:@"publicURL"];
+    publicURL2 = [(PLCloudSharedAlbum *)self publicURL];
+    [v3 setObject:publicURL2 forKey:@"publicURL"];
   }
 
   if ([v3 count])
   {
-    v22 = [(PLCloudSharedAlbum *)self albumDirectoryPath];
-    v23 = [v22 stringByAppendingPathComponent:@"Info.plist"];
+    albumDirectoryPath = [(PLCloudSharedAlbum *)self albumDirectoryPath];
+    v23 = [albumDirectoryPath stringByAppendingPathComponent:@"Info.plist"];
 
     if (v23)
     {
       v24 = [MEMORY[0x1E696AE40] dataWithPropertyList:v3 format:100 options:0 error:0];
       if (([v24 writeToFile:v23 options:1073741825 error:0]& 1) == 0)
       {
-        v25 = [MEMORY[0x1E696AC08] defaultManager];
-        v26 = [(PLCloudSharedAlbum *)self albumDirectoryPath];
-        [v25 createDirectoryAtPath:v26 withIntermediateDirectories:1 attributes:0 error:0];
+        defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+        albumDirectoryPath2 = [(PLCloudSharedAlbum *)self albumDirectoryPath];
+        [defaultManager createDirectoryAtPath:albumDirectoryPath2 withIntermediateDirectories:1 attributes:0 error:0];
 
         v29 = 0;
-        LOBYTE(v25) = [v24 writeToFile:v23 options:1073741825 error:&v29];
+        LOBYTE(defaultManager) = [v24 writeToFile:v23 options:1073741825 error:&v29];
         v27 = v29;
-        if ((v25 & 1) == 0)
+        if ((defaultManager & 1) == 0)
         {
           v28 = PLPhotoSharingGetLog();
           if (os_log_type_enabled(v28, OS_LOG_TYPE_ERROR))
@@ -161,55 +161,55 @@
   }
 }
 
-- (void)userDeleteSubscriberRecord:(id)a3
+- (void)userDeleteSubscriberRecord:(id)record
 {
-  v4 = a3;
-  if (v4)
+  recordCopy = record;
+  if (recordCopy)
   {
-    v9 = v4;
-    v5 = [(PLCloudSharedAlbum *)self isOwned];
-    v6 = [v5 BOOLValue];
+    v9 = recordCopy;
+    isOwned = [(PLCloudSharedAlbum *)self isOwned];
+    bOOLValue = [isOwned BOOLValue];
 
-    if (v6)
+    if (bOOLValue)
     {
       v7 = [MEMORY[0x1E695DEC8] arrayWithObject:v9];
       [PLPhotoSharingHelper removeSubscribers:v7 fromOwnedAlbum:self];
 
-      v8 = v9;
+      selfCopy = v9;
     }
 
     else
     {
       [PLPhotoSharingHelper unsubscribeFromAlbum:self];
-      v8 = self;
+      selfCopy = self;
     }
 
-    [(PLCloudSharedAlbum *)v8 delete];
-    v4 = v9;
+    [(PLCloudSharedAlbum *)selfCopy delete];
+    recordCopy = v9;
   }
 }
 
-- (void)setCloudOwnerEmail:(id)a3
+- (void)setCloudOwnerEmail:(id)email
 {
-  v4 = a3;
-  v5 = [(PLCloudSharedAlbum *)self emailAddressManager];
-  v6 = [v5 keyForEmailAddress:v4];
+  emailCopy = email;
+  emailAddressManager = [(PLCloudSharedAlbum *)self emailAddressManager];
+  v6 = [emailAddressManager keyForEmailAddress:emailCopy];
 
   [(PLCloudSharedAlbum *)self setCloudOwnerEmailKey:v6];
 }
 
 - (NSString)cloudOwnerEmail
 {
-  v3 = [(PLCloudSharedAlbum *)self emailAddressManager];
-  v4 = [(PLCloudSharedAlbum *)self cloudOwnerEmailKey];
-  v5 = [v3 emailAddressForKey:v4];
+  emailAddressManager = [(PLCloudSharedAlbum *)self emailAddressManager];
+  cloudOwnerEmailKey = [(PLCloudSharedAlbum *)self cloudOwnerEmailKey];
+  v5 = [emailAddressManager emailAddressForKey:cloudOwnerEmailKey];
 
   if (!v5)
   {
-    v6 = [(PLGenericAlbum *)self photoLibrary];
-    v7 = [v6 personInfoManager];
-    v8 = [(PLCloudSharedAlbum *)self cloudOwnerHashedPersonID];
-    v5 = [v7 emailForPersonID:v8];
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+    personInfoManager = [photoLibrary personInfoManager];
+    cloudOwnerHashedPersonID = [(PLCloudSharedAlbum *)self cloudOwnerHashedPersonID];
+    v5 = [personInfoManager emailForPersonID:cloudOwnerHashedPersonID];
 
     if (!v5)
     {
@@ -225,55 +225,55 @@
   return v5;
 }
 
-- (void)updateCloudLastContributionDateWithDate:(id)a3
+- (void)updateCloudLastContributionDateWithDate:(id)date
 {
   v13 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLCloudSharedAlbum *)self cloudLastContributionDate];
-  v6 = v5;
-  if (v4 && (!v5 || [v4 compare:v5] == 1))
+  dateCopy = date;
+  cloudLastContributionDate = [(PLCloudSharedAlbum *)self cloudLastContributionDate];
+  v6 = cloudLastContributionDate;
+  if (dateCopy && (!cloudLastContributionDate || [dateCopy compare:cloudLastContributionDate] == 1))
   {
     v7 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(PLGenericAlbum *)self localizedTitle];
+      localizedTitle = [(PLGenericAlbum *)self localizedTitle];
       v9 = 138412546;
-      v10 = v8;
+      v10 = localizedTitle;
       v11 = 2112;
-      v12 = v4;
+      v12 = dateCopy;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "Updating album last contribution date: %@ %@", &v9, 0x16u);
     }
 
-    [(PLCloudSharedAlbum *)self setCloudLastContributionDate:v4];
+    [(PLCloudSharedAlbum *)self setCloudLastContributionDate:dateCopy];
   }
 }
 
-- (void)updateCloudLastInterestingChangeDateWithDate:(id)a3
+- (void)updateCloudLastInterestingChangeDateWithDate:(id)date
 {
   v23 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PLCloudSharedAlbum *)self cloudLastInterestingChangeDate];
-  v6 = v5;
-  if (v4 && (!v5 || [v4 compare:v5] == 1))
+  dateCopy = date;
+  cloudLastInterestingChangeDate = [(PLCloudSharedAlbum *)self cloudLastInterestingChangeDate];
+  v6 = cloudLastInterestingChangeDate;
+  if (dateCopy && (!cloudLastInterestingChangeDate || [dateCopy compare:cloudLastInterestingChangeDate] == 1))
   {
     v7 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
-      v8 = [(PLGenericAlbum *)self localizedTitle];
+      localizedTitle = [(PLGenericAlbum *)self localizedTitle];
       *buf = 138412546;
-      v20 = v8;
+      v20 = localizedTitle;
       v21 = 2112;
-      v22 = v4;
+      v22 = dateCopy;
       _os_log_impl(&dword_19BF1F000, v7, OS_LOG_TYPE_DEFAULT, "Updating album updated date: %@ %@", buf, 0x16u);
     }
 
-    [(PLCloudSharedAlbum *)self setCloudLastInterestingChangeDate:v4];
+    [(PLCloudSharedAlbum *)self setCloudLastInterestingChangeDate:dateCopy];
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v9 = [(PLCloudSharedAlbum *)self albumLists];
-    v10 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    albumLists = [(PLCloudSharedAlbum *)self albumLists];
+    v10 = [albumLists countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v10)
     {
       v11 = v10;
@@ -284,13 +284,13 @@
         {
           if (*v15 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(albumLists);
           }
 
           [*(*(&v14 + 1) + 8 * i) setNeedsReordering];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v11 = [albumLists countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v11);
@@ -298,16 +298,16 @@
   }
 }
 
-- (id)cloudOwnerDisplayNameIncludingEmail:(BOOL)a3 allowsEmail:(BOOL)a4
+- (id)cloudOwnerDisplayNameIncludingEmail:(BOOL)email allowsEmail:(BOOL)allowsEmail
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(PLCloudSharedAlbum *)self cloudOwnerFirstName];
-  v8 = [(PLCloudSharedAlbum *)self cloudOwnerLastName];
-  v9 = [(PLCloudSharedAlbum *)self cloudOwnerFullName];
-  v10 = [(PLCloudSharedAlbum *)self cloudOwnerEmailKey];
-  v11 = [(PLCloudSharedAlbum *)self emailAddressManager];
-  v12 = [PLCloudSharedAlbum cloudOwnerDisplayNameWithFirstName:v7 lastName:v8 fullName:v9 emailKey:v10 includingEmail:v5 allowsEmail:v4 emailAddressManager:v11];
+  allowsEmailCopy = allowsEmail;
+  emailCopy = email;
+  cloudOwnerFirstName = [(PLCloudSharedAlbum *)self cloudOwnerFirstName];
+  cloudOwnerLastName = [(PLCloudSharedAlbum *)self cloudOwnerLastName];
+  cloudOwnerFullName = [(PLCloudSharedAlbum *)self cloudOwnerFullName];
+  cloudOwnerEmailKey = [(PLCloudSharedAlbum *)self cloudOwnerEmailKey];
+  emailAddressManager = [(PLCloudSharedAlbum *)self emailAddressManager];
+  v12 = [PLCloudSharedAlbum cloudOwnerDisplayNameWithFirstName:cloudOwnerFirstName lastName:cloudOwnerLastName fullName:cloudOwnerFullName emailKey:cloudOwnerEmailKey includingEmail:emailCopy allowsEmail:allowsEmailCopy emailAddressManager:emailAddressManager];
 
   return v12;
 }
@@ -316,65 +316,65 @@
 {
   v8 = 0;
   [(PLCloudSharedAlbum *)self getUnseenStartMarkerIndex:&v8 count:0 showsProgress:0];
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL || (-[PLCloudSharedAlbum assets](self, "assets"), v3 = objc_claimAutoreleasedReturnValue(), [v3 objectAtIndex:v8], v4 = objc_claimAutoreleasedReturnValue(), v3, !v4))
+  if (v8 == 0x7FFFFFFFFFFFFFFFLL || (-[PLCloudSharedAlbum assets](self, "assets"), v3 = objc_claimAutoreleasedReturnValue(), [v3 objectAtIndex:v8], lastObject = objc_claimAutoreleasedReturnValue(), v3, !lastObject))
   {
-    v5 = [(PLCloudSharedAlbum *)self assets];
-    v4 = [v5 lastObject];
+    assets = [(PLCloudSharedAlbum *)self assets];
+    lastObject = [assets lastObject];
   }
 
-  v6 = [v4 cloudBatchPublishDate];
-  if (!v6)
+  cloudBatchPublishDate = [lastObject cloudBatchPublishDate];
+  if (!cloudBatchPublishDate)
   {
-    v6 = [MEMORY[0x1E695DF00] distantPast];
+    cloudBatchPublishDate = [MEMORY[0x1E695DF00] distantPast];
   }
 
-  return v6;
+  return cloudBatchPublishDate;
 }
 
 - (BOOL)canContributeToCloudSharedAlbum
 {
-  v3 = [(PLCloudSharedAlbum *)self isOwned];
-  if ([v3 BOOLValue])
+  isOwned = [(PLCloudSharedAlbum *)self isOwned];
+  if ([isOwned BOOLValue])
   {
-    v4 = 1;
+    bOOLValue = 1;
   }
 
   else
   {
-    v5 = [(PLCloudSharedAlbum *)self cloudMultipleContributorsEnabled];
-    v4 = [v5 BOOLValue];
+    cloudMultipleContributorsEnabled = [(PLCloudSharedAlbum *)self cloudMultipleContributorsEnabled];
+    bOOLValue = [cloudMultipleContributorsEnabled BOOLValue];
   }
 
-  return v4;
+  return bOOLValue;
 }
 
 - (BOOL)isMultipleContributorCloudSharedAlbum
 {
-  v2 = [(PLCloudSharedAlbum *)self cloudMultipleContributorsEnabled];
-  v3 = [v2 BOOLValue];
+  cloudMultipleContributorsEnabled = [(PLCloudSharedAlbum *)self cloudMultipleContributorsEnabled];
+  bOOLValue = [cloudMultipleContributorsEnabled BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (BOOL)isOwnedCloudSharedAlbum
 {
-  v2 = [(PLCloudSharedAlbum *)self isOwned];
-  v3 = [v2 BOOLValue];
+  isOwned = [(PLCloudSharedAlbum *)self isOwned];
+  bOOLValue = [isOwned BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (NSString)localizedSharedWithLabel
 {
-  v3 = [(PLCloudSharedAlbum *)self cloudAlbumSubscriberRecords];
-  v4 = [v3 count];
+  cloudAlbumSubscriberRecords = [(PLCloudSharedAlbum *)self cloudAlbumSubscriberRecords];
+  v4 = [cloudAlbumSubscriberRecords count];
   if ([(PLCloudSharedAlbum *)self isOwnedCloudSharedAlbum])
   {
     if (v4 == 1)
     {
       v8 = PLServicesLocalizedFrameworkString();
-      v9 = [v3 firstObject];
-      v10 = [v9 inviteeDisplayNameIncludingEmail:0];
+      firstObject = [cloudAlbumSubscriberRecords firstObject];
+      v10 = [firstObject inviteeDisplayNameIncludingEmail:0];
 
       v5 = PFStringWithValidatedFormat();
     }
@@ -404,43 +404,43 @@ LABEL_9:
   return v5;
 }
 
-- (id)localizedSharedByLabelAllowsEmail:(BOOL)a3
+- (id)localizedSharedByLabelAllowsEmail:(BOOL)email
 {
-  v3 = a3;
-  v5 = [(PLCloudSharedAlbum *)self isOwnedCloudSharedAlbum];
-  v6 = [(PLCloudSharedAlbum *)self cloudOwnerFirstName];
-  v7 = [(PLCloudSharedAlbum *)self cloudOwnerLastName];
-  v8 = [(PLCloudSharedAlbum *)self cloudOwnerFullName];
-  v9 = [(PLCloudSharedAlbum *)self cloudOwnerEmailKey];
-  v10 = [(PLCloudSharedAlbum *)self emailAddressManager];
-  v11 = [PLCloudSharedAlbum localizedSharedByLabelWithFirstName:v6 lastName:v7 fullName:v8 emailKey:v9 isOwned:v5 allowsEmail:v3 emailAddressManager:v10];
+  emailCopy = email;
+  isOwnedCloudSharedAlbum = [(PLCloudSharedAlbum *)self isOwnedCloudSharedAlbum];
+  cloudOwnerFirstName = [(PLCloudSharedAlbum *)self cloudOwnerFirstName];
+  cloudOwnerLastName = [(PLCloudSharedAlbum *)self cloudOwnerLastName];
+  cloudOwnerFullName = [(PLCloudSharedAlbum *)self cloudOwnerFullName];
+  cloudOwnerEmailKey = [(PLCloudSharedAlbum *)self cloudOwnerEmailKey];
+  emailAddressManager = [(PLCloudSharedAlbum *)self emailAddressManager];
+  v11 = [PLCloudSharedAlbum localizedSharedByLabelWithFirstName:cloudOwnerFirstName lastName:cloudOwnerLastName fullName:cloudOwnerFullName emailKey:cloudOwnerEmailKey isOwned:isOwnedCloudSharedAlbum allowsEmail:emailCopy emailAddressManager:emailAddressManager];
 
   return v11;
 }
 
 - (id)emailAddressManager
 {
-  v2 = [(PLGenericAlbum *)self photoLibrary];
-  v3 = [v2 libraryBundle];
-  v4 = [v3 emailAddressManager];
+  photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+  libraryBundle = [photoLibrary libraryBundle];
+  emailAddressManager = [libraryBundle emailAddressManager];
 
-  return v4;
+  return emailAddressManager;
 }
 
 - (int)cloudRelationshipStateLocalValue
 {
-  v2 = [(PLCloudSharedAlbum *)self cloudRelationshipState];
-  v3 = [v2 intValue];
+  cloudRelationshipState = [(PLCloudSharedAlbum *)self cloudRelationshipState];
+  intValue = [cloudRelationshipState intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (int)cloudRelationshipStateValue
 {
-  v2 = [(PLCloudSharedAlbum *)self cloudRelationshipState];
-  v3 = [v2 intValue];
+  cloudRelationshipState = [(PLCloudSharedAlbum *)self cloudRelationshipState];
+  intValue = [cloudRelationshipState intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (id)sortingComparator
@@ -508,28 +508,28 @@ LABEL_9:
   v27 = *MEMORY[0x1E69E9840];
   if (*(&self->super.super.didRegisteredWithUserInterfaceContext + 3))
   {
-    v3 = 0;
+    albumDirectoryPath = 0;
   }
 
   else
   {
-    v3 = [(PLCloudSharedAlbum *)self albumDirectoryPath];
-    v4 = [(PLGenericAlbum *)self photoLibrary];
-    v5 = [v4 pathManager];
-    [(PLManagedAlbum *)self removePersistedFileSystemDataWithPathManager:v5];
+    albumDirectoryPath = [(PLCloudSharedAlbum *)self albumDirectoryPath];
+    photoLibrary = [(PLGenericAlbum *)self photoLibrary];
+    pathManager = [photoLibrary pathManager];
+    [(PLManagedAlbum *)self removePersistedFileSystemDataWithPathManager:pathManager];
   }
 
-  v6 = [(PLCloudSharedAlbum *)self assets];
-  v7 = [v6 copy];
+  assets = [(PLCloudSharedAlbum *)self assets];
+  v7 = [assets copy];
 
   v24.receiver = self;
   v24.super_class = PLCloudSharedAlbum;
   [(PLGenericAlbum *)&v24 delete];
-  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Shared Streams]The shared album %@ was deleted, removing all of its assets.", v3];
+  v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[Shared Streams]The shared album %@ was deleted, removing all of its assets.", albumDirectoryPath];
   v9 = [PLAssetTransactionReason transactionReason:v8];
 
-  v10 = [(PLCloudSharedAlbum *)self managedObjectContext];
-  v11 = [v7 array];
+  managedObjectContext = [(PLCloudSharedAlbum *)self managedObjectContext];
+  array = [v7 array];
   v22[0] = MEMORY[0x1E69E9820];
   v22[1] = 3221225472;
   v22[2] = __28__PLCloudSharedAlbum_delete__block_invoke;
@@ -537,7 +537,7 @@ LABEL_9:
   v22[4] = self;
   v12 = v9;
   v23 = v12;
-  v13 = [v10 enumerateWithIncrementalSaveUsingObjects:v11 withBlock:v22];
+  v13 = [managedObjectContext enumerateWithIncrementalSaveUsingObjects:array withBlock:v22];
 
   if (v13)
   {
@@ -550,19 +550,19 @@ LABEL_9:
     }
   }
 
-  if (v3)
+  if (albumDirectoryPath)
   {
     v15 = PLPhotoSharingGetLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v26 = v3;
+      v26 = albumDirectoryPath;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "deleting album directory path %@", buf, 0xCu);
     }
 
-    v16 = [MEMORY[0x1E696AC08] defaultManager];
+    defaultManager = [MEMORY[0x1E696AC08] defaultManager];
     v21 = 0;
-    v17 = [v16 removeItemAtPath:v3 error:&v21];
+    v17 = [defaultManager removeItemAtPath:albumDirectoryPath error:&v21];
     v18 = v21;
 
     if ((v17 & 1) == 0)
@@ -579,8 +579,8 @@ LABEL_9:
 
   if (!*(&self->super.super.didRegisteredWithUserInterfaceContext + 3))
   {
-    v20 = [(PLCloudSharedAlbum *)self cloudGUID];
-    [PLPhotoSharingHelper deleteDebugBreadcrumbsForAlbumGUID:v20];
+    cloudGUID = [(PLCloudSharedAlbum *)self cloudGUID];
+    [PLPhotoSharingHelper deleteDebugBreadcrumbsForAlbumGUID:cloudGUID];
   }
 }
 
@@ -615,8 +615,8 @@ void __28__PLCloudSharedAlbum_delete__block_invoke(uint64_t a1, void *a2)
 {
   if ((PLIsAssetsd() & 1) == 0 && (MEMORY[0x19EAEE520]() & 1) == 0)
   {
-    v4 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v4 handleFailureInMethod:a2 object:self file:@"PLCloudSharedAlbum.m" lineNumber:176 description:@"deleteFromDatabaseOnly is only safe from inside of assetsd!"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLCloudSharedAlbum.m" lineNumber:176 description:@"deleteFromDatabaseOnly is only safe from inside of assetsd!"];
   }
 
   *(&self->super.super.didRegisteredWithUserInterfaceContext + 3) = 1;
@@ -627,27 +627,27 @@ void __28__PLCloudSharedAlbum_delete__block_invoke(uint64_t a1, void *a2)
 - (id)albumDirectoryPath
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [(PLCloudSharedAlbum *)self cloudGUID];
-  if (([v3 hasPrefix:@"FS-"] & 1) != 0 || (v4 = v3, objc_msgSend(v3, "hasPrefix:", @"fs-")))
+  cloudGUID = [(PLCloudSharedAlbum *)self cloudGUID];
+  if (([cloudGUID hasPrefix:@"FS-"] & 1) != 0 || (v4 = cloudGUID, objc_msgSend(cloudGUID, "hasPrefix:", @"fs-")))
   {
-    v4 = [v3 substringFromIndex:3];
+    v4 = [cloudGUID substringFromIndex:3];
   }
 
   v5 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDString:v4];
   if (v5)
   {
-    v6 = [(PLCloudSharedAlbum *)self cloudPersonID];
-    v7 = [(PLCloudSharedAlbum *)self managedObjectContext];
-    v8 = [v7 pathManager];
-    v9 = [v8 photoDirectoryWithType:23];
+    cloudPersonID = [(PLCloudSharedAlbum *)self cloudPersonID];
+    managedObjectContext = [(PLCloudSharedAlbum *)self managedObjectContext];
+    pathManager = [managedObjectContext pathManager];
+    v9 = [pathManager photoDirectoryWithType:23];
 
-    if ([v6 length])
+    if ([cloudPersonID length])
     {
-      if (v6)
+      if (cloudPersonID)
       {
 LABEL_7:
-        v10 = [v9 stringByAppendingPathComponent:v6];
-        v11 = [v10 stringByAppendingPathComponent:v3];
+        v10 = [v9 stringByAppendingPathComponent:cloudPersonID];
+        v11 = [v10 stringByAppendingPathComponent:cloudGUID];
 
 LABEL_13:
         goto LABEL_14;
@@ -659,7 +659,7 @@ LABEL_13:
       v14 = [v9 stringByAppendingPathComponent:@"personID"];
       v15 = [MEMORY[0x1E696AEC0] stringWithContentsOfFile:v14 encoding:4 error:0];
 
-      v6 = v15;
+      cloudPersonID = v15;
       if (v15)
       {
         goto LABEL_7;
@@ -673,11 +673,11 @@ LABEL_13:
   v12 = PLPhotoSharingGetLog();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
-    v13 = [(PLCloudSharedAlbum *)self uuid];
+    uuid = [(PLCloudSharedAlbum *)self uuid];
     v17 = 138412546;
-    v18 = v3;
+    v18 = cloudGUID;
     v19 = 2112;
-    v20 = v13;
+    v20 = uuid;
     _os_log_impl(&dword_19BF1F000, v12, OS_LOG_TYPE_ERROR, "Invalid cloudGIUD (%@) for album (uuid: %@)", &v17, 0x16u);
   }
 
@@ -692,12 +692,12 @@ LABEL_14:
   v5.receiver = self;
   v5.super_class = PLCloudSharedAlbum;
   [(PLManagedAlbum *)&v5 prepareForDeletion];
-  v3 = [(PLCloudSharedAlbum *)self managedObjectContext];
+  managedObjectContext = [(PLCloudSharedAlbum *)self managedObjectContext];
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && ([v3 mergingChanges] & 1) == 0)
+  if ((objc_opt_isKindOfClass() & 1) != 0 && ([managedObjectContext mergingChanges] & 1) == 0)
   {
-    v4 = [v3 delayedSaveActions];
-    [v4 recordAlbumForCloudFeedUpdate:self];
+    delayedSaveActions = [managedObjectContext delayedSaveActions];
+    [delayedSaveActions recordAlbumForCloudFeedUpdate:self];
   }
 }
 
@@ -706,12 +706,12 @@ LABEL_14:
   v5.receiver = self;
   v5.super_class = PLCloudSharedAlbum;
   [(PLManagedAlbum *)&v5 willSave];
-  v3 = [(PLCloudSharedAlbum *)self managedObjectContext];
+  managedObjectContext = [(PLCloudSharedAlbum *)self managedObjectContext];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [v3 delayedSaveActions];
-    [v4 recordAlbumForCloudFeedUpdate:self];
+    delayedSaveActions = [managedObjectContext delayedSaveActions];
+    [delayedSaveActions recordAlbumForCloudFeedUpdate:self];
   }
 }
 
@@ -721,20 +721,20 @@ LABEL_14:
   v4.super_class = PLCloudSharedAlbum;
   [(PLGenericAlbum *)&v4 awakeFromInsert];
   [(PLGenericAlbum *)self setKindValue:1505];
-  v3 = [MEMORY[0x1E69BF320] UUIDString];
-  [(PLCloudSharedAlbum *)self setCloudGUID:v3];
+  uUIDString = [MEMORY[0x1E69BF320] UUIDString];
+  [(PLCloudSharedAlbum *)self setCloudGUID:uUIDString];
 }
 
-- (void)getUnseenStartMarkerIndex:(unint64_t *)a3 count:(unint64_t *)a4 showsProgress:(BOOL *)a5
+- (void)getUnseenStartMarkerIndex:(unint64_t *)index count:(unint64_t *)count showsProgress:(BOOL *)progress
 {
-  v9 = [(PLCloudSharedAlbum *)self unseenAssetsCountIntegerValue];
-  if (v9)
+  unseenAssetsCountIntegerValue = [(PLCloudSharedAlbum *)self unseenAssetsCountIntegerValue];
+  if (unseenAssetsCountIntegerValue)
   {
-    v10 = [(PLCloudSharedAlbum *)self assets];
-    v11 = [v10 count];
+    assets = [(PLCloudSharedAlbum *)self assets];
+    v11 = [assets count];
 
-    v12 = v11 - v9;
-    if (!a3)
+    v12 = v11 - unseenAssetsCountIntegerValue;
+    if (!index)
     {
       goto LABEL_6;
     }
@@ -743,7 +743,7 @@ LABEL_14:
   else
   {
     v12 = -1;
-    if (!a3)
+    if (!index)
     {
       goto LABEL_6;
     }
@@ -754,80 +754,80 @@ LABEL_14:
     v12 = 0x7FFFFFFFFFFFFFFFLL;
   }
 
-  *a3 = v12;
+  *index = v12;
 LABEL_6:
-  if (a4)
+  if (count)
   {
-    *a4 = v9;
+    *count = unseenAssetsCountIntegerValue;
   }
 
-  if (a5)
+  if (progress)
   {
-    *a5 = 0;
+    *progress = 0;
   }
 }
 
-- (void)setUnseenAssetsCountIntegerValue:(unint64_t)a3
+- (void)setUnseenAssetsCountIntegerValue:(unint64_t)value
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:value];
   [(PLCloudSharedAlbum *)self setUnseenAssetsCount:v4];
 }
 
 - (unint64_t)unseenAssetsCountIntegerValue
 {
-  v2 = [(PLCloudSharedAlbum *)self unseenAssetsCount];
-  v3 = [v2 integerValue];
+  unseenAssetsCount = [(PLCloudSharedAlbum *)self unseenAssetsCount];
+  integerValue = [unseenAssetsCount integerValue];
 
-  return v3;
+  return integerValue;
 }
 
-- (void)setHasUnseenContentBoolValue:(BOOL)a3
+- (void)setHasUnseenContentBoolValue:(BOOL)value
 {
-  v4 = [MEMORY[0x1E696AD98] numberWithBool:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithBool:value];
   [(PLCloudSharedAlbum *)self setHasUnseenContent:v4];
 }
 
 - (BOOL)hasUnseenContentBoolValue
 {
-  v2 = [(PLCloudSharedAlbum *)self hasUnseenContent];
-  v3 = [v2 BOOLValue];
+  hasUnseenContent = [(PLCloudSharedAlbum *)self hasUnseenContent];
+  bOOLValue = [hasUnseenContent BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-+ (id)lightweightReimportDirectoryNameWithGUID:(id)a3 cloudPersonID:(id)a4
++ (id)lightweightReimportDirectoryNameWithGUID:(id)d cloudPersonID:(id)iD
 {
   v4 = 0;
-  if (a3 && a4)
+  if (d && iD)
   {
-    v6 = a3;
-    v7 = [a4 stringByAppendingString:@"_"];
-    v4 = [v7 stringByAppendingString:v6];
+    dCopy = d;
+    v7 = [iD stringByAppendingString:@"_"];
+    v4 = [v7 stringByAppendingString:dCopy];
   }
 
   return v4;
 }
 
-+ (id)cloudOwnerDisplayNameWithFirstName:(id)a3 lastName:(id)a4 fullName:(id)a5 emailKey:(id)a6 includingEmail:(BOOL)a7 allowsEmail:(BOOL)a8 emailAddressManager:(id)a9
++ (id)cloudOwnerDisplayNameWithFirstName:(id)name lastName:(id)lastName fullName:(id)fullName emailKey:(id)key includingEmail:(BOOL)email allowsEmail:(BOOL)allowsEmail emailAddressManager:(id)manager
 {
-  v9 = a8;
-  v10 = a7;
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a9;
-  v19 = v18;
+  allowsEmailCopy = allowsEmail;
+  emailCopy = email;
+  nameCopy = name;
+  lastNameCopy = lastName;
+  fullNameCopy = fullName;
+  keyCopy = key;
+  managerCopy = manager;
+  v19 = managerCopy;
   v20 = &stru_1F0F06D80;
-  if (v9)
+  if (allowsEmailCopy)
   {
-    v20 = [v18 emailAddressForKey:v17];
+    v20 = [managerCopy emailAddressForKey:keyCopy];
   }
 
-  if ([v16 length] && !objc_msgSend(v16, "isEqualToString:", @"(null) (null)"))
+  if ([fullNameCopy length] && !objc_msgSend(fullNameCopy, "isEqualToString:", @"(null) (null)"))
   {
-    v21 = v16;
-    if (!v10)
+    v21 = fullNameCopy;
+    if (!emailCopy)
     {
       goto LABEL_13;
     }
@@ -844,14 +844,14 @@ LABEL_10:
     goto LABEL_13;
   }
 
-  if (![v14 length] && !objc_msgSend(v15, "length"))
+  if (![nameCopy length] && !objc_msgSend(lastNameCopy, "length"))
   {
     v21 = v20;
     goto LABEL_13;
   }
 
   v21 = PLLocalizedNameWithFirstAndLastName();
-  if (v10)
+  if (emailCopy)
   {
     goto LABEL_10;
   }
@@ -870,16 +870,16 @@ LABEL_13:
   return v24;
 }
 
-+ (id)localizedSharedByLabelWithFirstName:(id)a3 lastName:(id)a4 fullName:(id)a5 emailKey:(id)a6 isOwned:(BOOL)a7 allowsEmail:(BOOL)a8 emailAddressManager:(id)a9
++ (id)localizedSharedByLabelWithFirstName:(id)name lastName:(id)lastName fullName:(id)fullName emailKey:(id)key isOwned:(BOOL)owned allowsEmail:(BOOL)email emailAddressManager:(id)manager
 {
-  if (a7)
+  if (owned)
   {
     v9 = PLServicesLocalizedFrameworkString();
   }
 
   else
   {
-    v10 = [PLCloudSharedAlbum cloudOwnerDisplayNameWithFirstName:a3 lastName:a4 fullName:a5 emailKey:a6 includingEmail:a7 allowsEmail:a8 emailAddressManager:a9];
+    v10 = [PLCloudSharedAlbum cloudOwnerDisplayNameWithFirstName:name lastName:lastName fullName:fullName emailKey:key includingEmail:owned allowsEmail:email emailAddressManager:manager];
     if ([v10 length])
     {
       v11 = PLServicesLocalizedFrameworkString();
@@ -895,55 +895,55 @@ LABEL_13:
   return v9;
 }
 
-+ (id)allCloudSharedAlbumsInLibrary:(id)a3
++ (id)allCloudSharedAlbumsInLibrary:(id)library
 {
-  v3 = [a3 managedObjectContext];
-  v4 = [PLGenericAlbum albumsWithKind:1505 inManagedObjectContext:v3];
+  managedObjectContext = [library managedObjectContext];
+  v4 = [PLGenericAlbum albumsWithKind:1505 inManagedObjectContext:managedObjectContext];
 
   return v4;
 }
 
-+ (id)cloudSharedAlbumWithObjectID:(id)a3 managedObjectContext:(id)a4
++ (id)cloudSharedAlbumWithObjectID:(id)d managedObjectContext:(id)context
 {
   v17[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  contextCopy = context;
   v8 = objc_autoreleasePoolPush();
   v9 = objc_alloc_init(MEMORY[0x1E695D5E0]);
-  v10 = [a1 entityInManagedObjectContext:v7];
+  v10 = [self entityInManagedObjectContext:contextCopy];
   [v9 setEntity:v10];
 
   v17[0] = @"invitationRecords";
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v17 count:1];
   [v9 setRelationshipKeyPathsForPrefetching:v11];
 
-  v12 = [MEMORY[0x1E696AE18] predicateWithFormat:@"self == %@", v6];
-  [v9 setPredicate:v12];
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"self == %@", dCopy];
+  [v9 setPredicate:dCopy];
 
   v16 = 0;
-  v13 = [v7 executeFetchRequest:v9 error:&v16];
-  v14 = [v13 lastObject];
+  v13 = [contextCopy executeFetchRequest:v9 error:&v16];
+  lastObject = [v13 lastObject];
 
   objc_autoreleasePoolPop(v8);
 
-  return v14;
+  return lastObject;
 }
 
-+ (id)cloudSharedAlbumWithGUID:(id)a3 inLibrary:(id)a4
++ (id)cloudSharedAlbumWithGUID:(id)d inLibrary:(id)library
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  libraryCopy = library;
   v8 = objc_autoreleasePoolPush();
-  v9 = [v7 managedObjectContext];
-  v10 = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d AND (uuid = %@ OR cloudGUID == %@)", 1505, v6, v6];
+  managedObjectContext = [libraryCopy managedObjectContext];
+  dCopy = [MEMORY[0x1E696AE18] predicateWithFormat:@"kind == %d AND (uuid = %@ OR cloudGUID == %@)", 1505, dCopy, dCopy];
   v11 = objc_alloc_init(MEMORY[0x1E695D5E0]);
-  v12 = [a1 entityInManagedObjectContext:v9];
+  v12 = [self entityInManagedObjectContext:managedObjectContext];
   [v11 setEntity:v12];
 
-  [v11 setPredicate:v10];
+  [v11 setPredicate:dCopy];
   v18 = 0;
-  v13 = [v9 executeFetchRequest:v11 error:&v18];
+  v13 = [managedObjectContext executeFetchRequest:v11 error:&v18];
   v14 = v18;
   if ([v13 count] >= 2)
   {
@@ -951,18 +951,18 @@ LABEL_13:
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v20 = v6;
+      v20 = dCopy;
       v21 = 2112;
       v22 = v13;
       _os_log_impl(&dword_19BF1F000, v15, OS_LOG_TYPE_DEFAULT, "WARNING: Found more than one album with cloudGUID %@, returning last one in array %@", buf, 0x16u);
     }
   }
 
-  v16 = [v13 lastObject];
+  lastObject = [v13 lastObject];
 
   objc_autoreleasePoolPop(v8);
 
-  return v16;
+  return lastObject;
 }
 
 @end

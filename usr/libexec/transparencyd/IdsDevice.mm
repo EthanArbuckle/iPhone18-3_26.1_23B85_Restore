@@ -1,6 +1,6 @@
 @interface IdsDevice
-+ (id)parseFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (IdsDevice)init;
 - (id)data;
 - (id)debugDescription;
@@ -31,8 +31,8 @@
 - (id)data
 {
   v3 = +[NSMutableData data];
-  v4 = [(IdsDevice *)self deviceIdHash];
-  v5 = [(TLSMessageClass *)self encodeHashValue:v4 buffer:v3];
+  deviceIdHash = [(IdsDevice *)self deviceIdHash];
+  v5 = [(TLSMessageClass *)self encodeHashValue:deviceIdHash buffer:v3];
 
   if (v5 && (-[IdsDevice clientDataArray](self, "clientDataArray"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 count], v6, v7))
   {
@@ -41,8 +41,8 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v9 = [(IdsDevice *)self clientDataArray];
-    v10 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+    clientDataArray = [(IdsDevice *)self clientDataArray];
+    v10 = [clientDataArray countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v10)
     {
       v11 = v10;
@@ -53,21 +53,21 @@
         {
           if (*v21 != v12)
           {
-            objc_enumerationMutation(v9);
+            objc_enumerationMutation(clientDataArray);
           }
 
-          v14 = [*(*(&v20 + 1) + 8 * i) data];
-          if (!v14)
+          data = [*(*(&v20 + 1) + 8 * i) data];
+          if (!data)
           {
 
             goto LABEL_16;
           }
 
-          v15 = v14;
-          [v8 appendData:v14];
+          v15 = data;
+          [v8 appendData:data];
         }
 
-        v11 = [v9 countByEnumeratingWithState:&v20 objects:v24 count:16];
+        v11 = [clientDataArray countByEnumeratingWithState:&v20 objects:v24 count:16];
         if (v11)
         {
           continue;
@@ -97,48 +97,48 @@ LABEL_16:
   return v18;
 }
 
-+ (id)parseFromData:(id)a3 error:(id *)a4
++ (id)parseFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  v7 = [v5 bytes];
-  v8 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  bytes2 = [dataCopy bytes];
+  v8 = [dataCopy length];
   v9 = objc_alloc_init(IdsDevice);
   v32 = 0;
-  v10 = [(TLSMessageClass *)v9 parseHashValue:v6 end:&v8[v7] result:&v32];
+  v10 = [(TLSMessageClass *)v9 parseHashValue:bytes end:&v8[bytes2] result:&v32];
   v11 = v32;
   if (v10)
   {
     [(IdsDevice *)v9 setDeviceIdHash:v11];
     v31 = 0;
-    v12 = [(TLSMessageClass *)v9 parseByteArray:v10 end:&v8[v7] minLength:1 maxLength:0xFFFFLL result:&v31];
+    v12 = [(TLSMessageClass *)v9 parseByteArray:v10 end:&v8[bytes2] minLength:1 maxLength:0xFFFFLL result:&v31];
     v13 = v31;
     v14 = v13;
     if (v12)
     {
       v27 = v12;
       v28 = v11;
-      v26 = a4;
+      errorCopy = error;
       if (![v13 length])
       {
         v19 = v14;
 LABEL_12:
         v29 = 0;
-        v21 = [(TLSMessageClass *)v9 parseExtensions:v27 end:&v8[v7] result:&v29];
+        v21 = [(TLSMessageClass *)v9 parseExtensions:v27 end:&v8[bytes2] result:&v29];
         v22 = v29;
         if (v21)
         {
           v23 = [NSMutableArray arrayWithArray:v22];
           [(IdsDevice *)v9 setExtensions:v23];
 
-          -[IdsDevice setParsedLength:](v9, "setParsedLength:", v21 - [v5 bytes]);
+          -[IdsDevice setParsedLength:](v9, "setParsedLength:", v21 - [dataCopy bytes]);
           v20 = v9;
         }
 
-        else if (v26)
+        else if (errorCopy)
         {
           [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-259 description:@"failed to parse extensions from IdsDevice"];
-          *v26 = v20 = 0;
+          *errorCopy = v20 = 0;
         }
 
         else
@@ -163,8 +163,8 @@ LABEL_12:
           break;
         }
 
-        v18 = [(IdsDevice *)v9 clientDataArray];
-        [v18 addObject:v15];
+        clientDataArray = [(IdsDevice *)v9 clientDataArray];
+        [clientDataArray addObject:v15];
 
         v19 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v15 parsedLength] + objc_msgSend(v14, "bytes"), objc_msgSend(v14, "length") - objc_msgSend(v15, "parsedLength"));
 
@@ -175,17 +175,17 @@ LABEL_12:
         }
       }
 
-      if (a4 && v16)
+      if (error && v16)
       {
         v24 = v16;
-        *a4 = v17;
+        *error = v17;
       }
     }
 
-    else if (a4)
+    else if (error)
     {
       [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-258 description:@"failed to parse client datas from IdsDevice"];
-      *a4 = v20 = 0;
+      *error = v20 = 0;
 LABEL_24:
 
       goto LABEL_25;
@@ -195,10 +195,10 @@ LABEL_24:
     goto LABEL_24;
   }
 
-  if (a4)
+  if (error)
   {
     [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-257 description:@"failed to parse device ID from IdsDevice"];
-    *a4 = v20 = 0;
+    *error = v20 = 0;
   }
 
   else
@@ -218,7 +218,7 @@ LABEL_25:
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v14 = self;
+  selfCopy = self;
   obj = self->_clientDataArray;
   v4 = [(NSMutableArray *)obj countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v4)
@@ -236,9 +236,9 @@ LABEL_25:
 
         v8 = *(*(&v16 + 1) + 8 * i);
         [v3 appendFormat:@"   {\n"];
-        v9 = [v8 clientDataHash];
-        v10 = [v9 kt_hexString];
-        [v3 appendFormat:@"    clientDataHash:%@\n", v10];
+        clientDataHash = [v8 clientDataHash];
+        kt_hexString = [clientDataHash kt_hexString];
+        [v3 appendFormat:@"    clientDataHash:%@\n", kt_hexString];
 
         [v3 appendFormat:@"    appVersion:%lu\n", objc_msgSend(v8, "appVersion")];
         [v3 appendFormat:@"        addedMs:%llu markMs:%llu; expiryMs:%llu; escrowMs:%llu\n", objc_msgSend(v8, "addedMs"), objc_msgSend(v8, "markedForDeletionMs"), objc_msgSend(v8, "expiryMs"), objc_msgSend(v8, "escrowExpiryMs")];
@@ -252,16 +252,16 @@ LABEL_25:
   }
 
   [v3 appendFormat:@"  ]"];
-  v11 = [(NSData *)v14->_deviceIdHash kt_hexString];
-  v12 = [NSString stringWithFormat:@"{\n  deviceIdHash:%@\n  clientDatas: %@\n}", v11, v3];
+  kt_hexString2 = [(NSData *)selfCopy->_deviceIdHash kt_hexString];
+  v12 = [NSString stringWithFormat:@"{\n  deviceIdHash:%@\n  clientDatas: %@\n}", kt_hexString2, v3];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -271,11 +271,11 @@ LABEL_25:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(IdsDevice *)self data];
-      v7 = [(IdsDevice *)v5 data];
+      v5 = equalCopy;
+      data = [(IdsDevice *)self data];
+      data2 = [(IdsDevice *)v5 data];
 
-      v8 = [v6 isEqualToData:v7];
+      v8 = [data isEqualToData:data2];
     }
 
     else
@@ -290,17 +290,17 @@ LABEL_25:
 - (id)diagnosticsJsonDictionary
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(IdsDevice *)self deviceIdHash];
-  v5 = [v4 kt_hexString];
-  [v3 setObject:v5 forKeyedSubscript:@"deviceIdHash"];
+  deviceIdHash = [(IdsDevice *)self deviceIdHash];
+  kt_hexString = [deviceIdHash kt_hexString];
+  [v3 setObject:kt_hexString forKeyedSubscript:@"deviceIdHash"];
 
   v6 = +[NSMutableArray array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [(IdsDevice *)self clientDataArray];
-  v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  clientDataArray = [(IdsDevice *)self clientDataArray];
+  v8 = [clientDataArray countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v8)
   {
     v9 = v8;
@@ -311,14 +311,14 @@ LABEL_25:
       {
         if (*v15 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(clientDataArray);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * i) diagnosticsJsonDictionary];
-        [v6 addObject:v12];
+        diagnosticsJsonDictionary = [*(*(&v14 + 1) + 8 * i) diagnosticsJsonDictionary];
+        [v6 addObject:diagnosticsJsonDictionary];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v9 = [clientDataArray countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v9);

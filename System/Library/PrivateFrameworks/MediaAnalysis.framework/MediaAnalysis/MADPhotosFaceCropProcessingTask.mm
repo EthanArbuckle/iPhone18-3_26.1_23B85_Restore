@@ -1,27 +1,27 @@
 @interface MADPhotosFaceCropProcessingTask
-+ (id)taskWithPhotoLibrary:(id)a3 gallery:(id)a4;
-+ (id)taskWithPhotoLibrary:(id)a3 gallery:(id)a4 verifiedType:(int64_t)a5 limitPerPerson:(int)a6 ignoreRejections:(BOOL)a7;
-- (MADPhotosFaceCropProcessingTask)initWithPhotoLibrary:(id)a3 gallery:(id)a4;
-- (MADPhotosFaceCropProcessingTask)initWithPhotoLibrary:(id)a3 gallery:(id)a4 verifiedType:(int64_t)a5 limitPerPerson:(int)a6 ignoreRejections:(BOOL)a7;
++ (id)taskWithPhotoLibrary:(id)library gallery:(id)gallery;
++ (id)taskWithPhotoLibrary:(id)library gallery:(id)gallery verifiedType:(int64_t)type limitPerPerson:(int)person ignoreRejections:(BOOL)rejections;
+- (MADPhotosFaceCropProcessingTask)initWithPhotoLibrary:(id)library gallery:(id)gallery;
+- (MADPhotosFaceCropProcessingTask)initWithPhotoLibrary:(id)library gallery:(id)gallery verifiedType:(int64_t)type limitPerPerson:(int)person ignoreRejections:(BOOL)rejections;
 - (void)_processEntries;
-- (void)addFaceCrop:(id)a3;
+- (void)addFaceCrop:(id)crop;
 - (void)process;
 @end
 
 @implementation MADPhotosFaceCropProcessingTask
 
-- (MADPhotosFaceCropProcessingTask)initWithPhotoLibrary:(id)a3 gallery:(id)a4
+- (MADPhotosFaceCropProcessingTask)initWithPhotoLibrary:(id)library gallery:(id)gallery
 {
-  v7 = a3;
-  v8 = a4;
+  libraryCopy = library;
+  galleryCopy = gallery;
   v14.receiver = self;
   v14.super_class = MADPhotosFaceCropProcessingTask;
   v9 = [(MADProcessingTask *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_photoLibrary, a3);
-    objc_storeStrong(&v10->_gallery, a4);
+    objc_storeStrong(&v9->_photoLibrary, library);
+    objc_storeStrong(&v10->_gallery, gallery);
     v11 = +[NSMutableArray array];
     faceCropEntries = v10->_faceCropEntries;
     v10->_faceCropEntries = v11;
@@ -30,25 +30,25 @@
   return v10;
 }
 
-- (MADPhotosFaceCropProcessingTask)initWithPhotoLibrary:(id)a3 gallery:(id)a4 verifiedType:(int64_t)a5 limitPerPerson:(int)a6 ignoreRejections:(BOOL)a7
+- (MADPhotosFaceCropProcessingTask)initWithPhotoLibrary:(id)library gallery:(id)gallery verifiedType:(int64_t)type limitPerPerson:(int)person ignoreRejections:(BOOL)rejections
 {
-  v13 = a3;
-  v14 = a4;
+  libraryCopy = library;
+  galleryCopy = gallery;
   v22.receiver = self;
   v22.super_class = MADPhotosFaceCropProcessingTask;
   v15 = [(MADProcessingTask *)&v22 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_photoLibrary, a3);
-    objc_storeStrong(&v16->_gallery, a4);
-    v16->_verifiedType = a5;
-    v16->_limitPerPerson = a6;
+    objc_storeStrong(&v15->_photoLibrary, library);
+    objc_storeStrong(&v16->_gallery, gallery);
+    v16->_verifiedType = type;
+    v16->_limitPerPerson = person;
     v17 = +[NSMutableArray array];
     faceCropEntries = v16->_faceCropEntries;
     v16->_faceCropEntries = v17;
 
-    v16->_ignoreRejections = a7;
+    v16->_ignoreRejections = rejections;
     if (v16->_limitPerPerson)
     {
       v19 = +[NSCountedSet set];
@@ -60,35 +60,35 @@
   return v16;
 }
 
-+ (id)taskWithPhotoLibrary:(id)a3 gallery:(id)a4
++ (id)taskWithPhotoLibrary:(id)library gallery:(id)gallery
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithPhotoLibrary:v7 gallery:v6];
+  galleryCopy = gallery;
+  libraryCopy = library;
+  v8 = [[self alloc] initWithPhotoLibrary:libraryCopy gallery:galleryCopy];
 
   return v8;
 }
 
-+ (id)taskWithPhotoLibrary:(id)a3 gallery:(id)a4 verifiedType:(int64_t)a5 limitPerPerson:(int)a6 ignoreRejections:(BOOL)a7
++ (id)taskWithPhotoLibrary:(id)library gallery:(id)gallery verifiedType:(int64_t)type limitPerPerson:(int)person ignoreRejections:(BOOL)rejections
 {
-  v7 = a7;
-  v8 = *&a6;
-  v12 = a4;
-  v13 = a3;
-  v14 = [[a1 alloc] initWithPhotoLibrary:v13 gallery:v12 verifiedType:a5 limitPerPerson:v8 ignoreRejections:v7];
+  rejectionsCopy = rejections;
+  v8 = *&person;
+  galleryCopy = gallery;
+  libraryCopy = library;
+  v14 = [[self alloc] initWithPhotoLibrary:libraryCopy gallery:galleryCopy verifiedType:type limitPerPerson:v8 ignoreRejections:rejectionsCopy];
 
   return v14;
 }
 
-- (void)addFaceCrop:(id)a3
+- (void)addFaceCrop:(id)crop
 {
-  v4 = a3;
+  cropCopy = crop;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v5 = self->_faceCropEntries;
-  v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v42 objects:v52 count:16];
+  librarySpecificFetchOptions = self->_faceCropEntries;
+  v6 = [(NSMutableArray *)librarySpecificFetchOptions countByEnumeratingWithState:&v42 objects:v52 count:16];
   if (v6)
   {
     v7 = v6;
@@ -99,13 +99,13 @@ LABEL_3:
     {
       if (*v43 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(librarySpecificFetchOptions);
       }
 
-      v10 = [*(*(&v42 + 1) + 8 * v9) faceCrop];
-      v11 = [v10 localIdentifier];
-      v12 = [v4 localIdentifier];
-      v13 = [v11 isEqualToString:v12];
+      faceCrop = [*(*(&v42 + 1) + 8 * v9) faceCrop];
+      localIdentifier = [faceCrop localIdentifier];
+      localIdentifier2 = [cropCopy localIdentifier];
+      v13 = [localIdentifier isEqualToString:localIdentifier2];
 
       if (v13)
       {
@@ -114,7 +114,7 @@ LABEL_3:
 
       if (v7 == ++v9)
       {
-        v7 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v42 objects:v52 count:16];
+        v7 = [(NSMutableArray *)librarySpecificFetchOptions countByEnumeratingWithState:&v42 objects:v52 count:16];
         if (v7)
         {
           goto LABEL_3;
@@ -129,9 +129,9 @@ LABEL_3:
       v15 = VCPLogToOSLogType[4];
       if (os_log_type_enabled(&_os_log_default, v15))
       {
-        v16 = [v4 localIdentifier];
+        localIdentifier3 = [cropCopy localIdentifier];
         *buf = 138412290;
-        v47 = v16;
+        v47 = localIdentifier3;
         _os_log_impl(&_mh_execute_header, &_os_log_default, v15, "[FaceCrop][%@] Batch already contains facecrop; ignoring", buf, 0xCu);
         goto LABEL_37;
       }
@@ -142,18 +142,18 @@ LABEL_3:
 
 LABEL_9:
 
-  if (!self->_ignoreRejections || [v4 type] != 2 && objc_msgSend(v4, "type") != 4)
+  if (!self->_ignoreRejections || [cropCopy type] != 2 && objc_msgSend(cropCopy, "type") != 4)
   {
-    v17 = [v4 photoLibrary];
-    v5 = [v17 librarySpecificFetchOptions];
+    photoLibrary = [cropCopy photoLibrary];
+    librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-    [(NSMutableArray *)v5 setMinimumVerifiedFaceCount:1];
-    v18 = [PHPerson fetchPersonForFaceCrop:v4 options:v5];
-    v16 = [v18 firstObject];
+    [(NSMutableArray *)librarySpecificFetchOptions setMinimumVerifiedFaceCount:1];
+    v18 = [PHPerson fetchPersonForFaceCrop:cropCopy options:librarySpecificFetchOptions];
+    localIdentifier3 = [v18 firstObject];
 
     if (self->_verifiedType)
     {
-      v19 = v16 == 0;
+      v19 = localIdentifier3 == 0;
     }
 
     else
@@ -161,19 +161,19 @@ LABEL_9:
       v19 = 1;
     }
 
-    if (!v19 && [(NSMutableArray *)v16 verifiedType]!= self->_verifiedType)
+    if (!v19 && [(NSMutableArray *)localIdentifier3 verifiedType]!= self->_verifiedType)
     {
       if (MediaAnalysisLogLevel() >= 7)
       {
         v34 = VCPLogToOSLogType[7];
         if (os_log_type_enabled(&_os_log_default, v34))
         {
-          v35 = [(NSMutableArray *)v16 localIdentifier];
-          v36 = [(NSMutableArray *)v16 verifiedType];
+          v16LocalIdentifier = [(NSMutableArray *)localIdentifier3 localIdentifier];
+          verifiedType = [(NSMutableArray *)localIdentifier3 verifiedType];
           *buf = 138412546;
-          v47 = v35;
+          v47 = v16LocalIdentifier;
           v48 = 2048;
-          v49 = v36;
+          v49 = verifiedType;
           _os_log_impl(&_mh_execute_header, &_os_log_default, v34, "[FaceCrop] Ignoring person (%@) of different verified type (%ld)", buf, 0x16u);
         }
       }
@@ -182,7 +182,7 @@ LABEL_9:
     }
 
     processLimitTracker = self->_processLimitTracker;
-    if (processLimitTracker && ([(NSMutableArray *)v16 localIdentifier], v21 = objc_claimAutoreleasedReturnValue(), v22 = [(NSCountedSet *)processLimitTracker countForObject:v21], v23 = self->_limitPerPerson, v21, v22 >= v23))
+    if (processLimitTracker && ([(NSMutableArray *)localIdentifier3 localIdentifier], v21 = objc_claimAutoreleasedReturnValue(), v22 = [(NSCountedSet *)processLimitTracker countForObject:v21], v23 = self->_limitPerPerson, v21, v22 >= v23))
     {
       if (MediaAnalysisLogLevel() < 7)
       {
@@ -195,13 +195,13 @@ LABEL_9:
         goto LABEL_37;
       }
 
-      v31 = [(NSMutableArray *)v16 localIdentifier];
+      v16LocalIdentifier2 = [(NSMutableArray *)localIdentifier3 localIdentifier];
       v38 = self->_processLimitTracker;
-      v39 = [(NSMutableArray *)v16 localIdentifier];
-      v40 = [(NSCountedSet *)v38 countForObject:v39];
+      v16LocalIdentifier3 = [(NSMutableArray *)localIdentifier3 localIdentifier];
+      v40 = [(NSCountedSet *)v38 countForObject:v16LocalIdentifier3];
       limitPerPerson = self->_limitPerPerson;
       *buf = 138412802;
-      v47 = v31;
+      v47 = v16LocalIdentifier2;
       v48 = 2048;
       v49 = v40;
       v50 = 1024;
@@ -212,7 +212,7 @@ LABEL_9:
     else
     {
       faceCropEntries = self->_faceCropEntries;
-      v25 = [[MADPhotosFaceCropProcessingEntry alloc] initWithFaceCrop:v4];
+      v25 = [[MADPhotosFaceCropProcessingEntry alloc] initWithFaceCrop:cropCopy];
       [(NSMutableArray *)faceCropEntries addObject:v25];
 
       if (!self->_processLimitTracker)
@@ -220,16 +220,16 @@ LABEL_9:
         goto LABEL_37;
       }
 
-      v26 = [(NSMutableArray *)v16 localIdentifier];
+      v16LocalIdentifier4 = [(NSMutableArray *)localIdentifier3 localIdentifier];
 
-      if (!v26)
+      if (!v16LocalIdentifier4)
       {
         goto LABEL_37;
       }
 
       v27 = self->_processLimitTracker;
-      v28 = [(NSMutableArray *)v16 localIdentifier];
-      [(NSCountedSet *)v27 addObject:v28];
+      v16LocalIdentifier5 = [(NSMutableArray *)localIdentifier3 localIdentifier];
+      [(NSCountedSet *)v27 addObject:v16LocalIdentifier5];
 
       if (MediaAnalysisLogLevel() < 7)
       {
@@ -243,13 +243,13 @@ LABEL_9:
       }
 
       v30 = self->_processLimitTracker;
-      v31 = [(NSMutableArray *)v16 localIdentifier];
-      v32 = [(NSCountedSet *)v30 countForObject:v31];
-      v33 = [(NSMutableArray *)v16 localIdentifier];
+      v16LocalIdentifier2 = [(NSMutableArray *)localIdentifier3 localIdentifier];
+      v32 = [(NSCountedSet *)v30 countForObject:v16LocalIdentifier2];
+      v16LocalIdentifier6 = [(NSMutableArray *)localIdentifier3 localIdentifier];
       *buf = 134218242;
       v47 = v32;
       v48 = 2112;
-      v49 = v33;
+      v49 = v16LocalIdentifier6;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v29, "[FaceCrop] Enrolled %lu facecrops for person (%@)", buf, 0x16u);
     }
 
@@ -262,9 +262,9 @@ LABEL_37:
     v14 = VCPLogToOSLogType[7];
     if (os_log_type_enabled(&_os_log_default, v14))
     {
-      v5 = [v4 localIdentifier];
+      librarySpecificFetchOptions = [cropCopy localIdentifier];
       *buf = 138412290;
-      v47 = v5;
+      v47 = librarySpecificFetchOptions;
       _os_log_impl(&_mh_execute_header, &_os_log_default, v14, "[FaceCrop] Ignoring rejection type facecrop %@", buf, 0xCu);
 LABEL_38:
     }
@@ -285,13 +285,13 @@ LABEL_38:
     }
   }
 
-  v5 = [(NSMutableArray *)self->_faceCropEntries firstObject];
-  v6 = [v5 faceCrop];
-  v7 = [v6 photoLibrary];
+  firstObject = [(NSMutableArray *)self->_faceCropEntries firstObject];
+  faceCrop = [firstObject faceCrop];
+  photoLibrary = [faceCrop photoLibrary];
 
-  v42 = [VCPPhotosFaceProcessingContext contextWithPhotoLibrary:v7];
-  v43 = v7;
-  v8 = [[VCPFaceCropManager alloc] initWithPhotoLibrary:v7 andContext:v42];
+  v42 = [VCPPhotosFaceProcessingContext contextWithPhotoLibrary:photoLibrary];
+  v43 = photoLibrary;
+  v8 = [[VCPFaceCropManager alloc] initWithPhotoLibrary:photoLibrary andContext:v42];
   v45 = +[NSMutableSet set];
   if ([(NSMutableArray *)self->_faceCropEntries count])
   {
@@ -305,12 +305,12 @@ LABEL_38:
       v12 = +[VCPWatchdog sharedWatchdog];
       [v12 pet];
 
-      v13 = [(MADProcessingTask *)self cancelBlock];
-      if (v13)
+      cancelBlock = [(MADProcessingTask *)self cancelBlock];
+      if (cancelBlock)
       {
-        v14 = v13;
-        v15 = [(MADProcessingTask *)self cancelBlock];
-        v16 = v15[2]();
+        v14 = cancelBlock;
+        cancelBlock2 = [(MADProcessingTask *)self cancelBlock];
+        v16 = cancelBlock2[2]();
 
         if (v16)
         {
@@ -319,22 +319,22 @@ LABEL_38:
       }
 
       v17 = [(NSMutableArray *)self->_faceCropEntries objectAtIndexedSubscript:v10, v41];
-      v18 = [v17 faceCrop];
+      faceCrop2 = [v17 faceCrop];
 
-      v19 = [v18 localIdentifier];
+      localIdentifier = [faceCrop2 localIdentifier];
 
-      if (v19)
+      if (localIdentifier)
       {
         v48 = 0;
         v49 = 0;
-        v20 = [v8 _processDirtyFaceCrop:v18 faceCropFaceLocalIdentifier:&v49 error:&v48];
+        v20 = [v8 _processDirtyFaceCrop:faceCrop2 faceCropFaceLocalIdentifier:&v49 error:&v48];
         v21 = v49;
         v22 = v48;
         if ((v20 & 1) == 0 && MediaAnalysisLogLevel() >= 3 && os_log_type_enabled(&_os_log_default, type))
         {
-          v23 = [v18 localIdentifier];
+          localIdentifier2 = [faceCrop2 localIdentifier];
           *buf = v41;
-          v51 = v23;
+          v51 = localIdentifier2;
           v52 = 2112;
           v53 = v22;
           _os_log_impl(&_mh_execute_header, &_os_log_default, type, "[FaceCrop] Failed to process dirty facecrop %@ - %@", buf, 0x16u);
@@ -367,9 +367,9 @@ LABEL_38:
   }
 
 LABEL_22:
-  v25 = [v43 mad_unclusteredFacesFetchOptions];
-  v26 = [v45 allObjects];
-  v27 = [PHFace fetchFacesWithLocalIdentifiers:v26 options:v25];
+  mad_unclusteredFacesFetchOptions = [v43 mad_unclusteredFacesFetchOptions];
+  allObjects = [v45 allObjects];
+  v27 = [PHFace fetchFacesWithLocalIdentifiers:allObjects options:mad_unclusteredFacesFetchOptions];
 
   v47[0] = _NSConcreteStackBlock;
   v47[1] = 3221225472;
@@ -380,11 +380,11 @@ LABEL_22:
   v29 = +[MADVUUtilities sharedInstance];
   gallery = self->_gallery;
   v46 = 0;
-  LODWORD(v26) = [v29 prepareClusteringWithFaces:v27 gallery:gallery cancelOrExtendTimeoutBlock:v28 error:&v46];
+  LODWORD(allObjects) = [v29 prepareClusteringWithFaces:v27 gallery:gallery cancelOrExtendTimeoutBlock:v28 error:&v46];
   v31 = v46;
 
   v32 = MediaAnalysisLogLevel();
-  if (v26)
+  if (allObjects)
   {
     if (v32 >= 7)
     {
@@ -441,16 +441,16 @@ LABEL_29:
     _os_signpost_emit_with_name_impl(&_mh_execute_header, v7, OS_SIGNPOST_INTERVAL_BEGIN, v5, "MADPhotosFaceCropProcessingTask_Process", "", v18, 2u);
   }
 
-  v8 = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
+  librarySpecificFetchOptions = [(PHPhotoLibrary *)self->_photoLibrary librarySpecificFetchOptions];
   if (self->_limitPerPerson)
   {
     v9 = [NSSortDescriptor sortDescriptorWithKey:@"objectID" ascending:0];
     v19 = v9;
     v10 = [NSArray arrayWithObjects:&v19 count:1];
-    [v8 setInternalSortDescriptors:v10];
+    [librarySpecificFetchOptions setInternalSortDescriptors:v10];
   }
 
-  v11 = [PHFaceCrop fetchFaceCropsNeedingFaceDetectionWithOptions:v8];
+  v11 = [PHFaceCrop fetchFaceCropsNeedingFaceDetectionWithOptions:librarySpecificFetchOptions];
   if ([v11 count])
   {
     v12 = 0;

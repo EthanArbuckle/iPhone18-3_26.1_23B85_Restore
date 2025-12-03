@@ -1,23 +1,23 @@
 @interface ICDServerNotificationsManager
-- (ICDServerNotificationsManager)initWithDelegate:(id)a3;
+- (ICDServerNotificationsManager)initWithDelegate:(id)delegate;
 - (ICDServerNotificationsManagerDelegate)delegate;
-- (void)_didReceiveDarwinNotification:(id)a3;
-- (void)_didReceiveDistributedNotification:(id)a3 withStreamEvent:(id)a4;
-- (void)_didReceiveTelephonyCenterNotification:(id)a3;
-- (void)_handleActiveUserIdentityDidChangeNotification:(id)a3;
-- (void)_handleAllowsExplicitContentChangedNotification:(id)a3;
-- (void)_handleAllowsMusicVideosChangedNotification:(id)a3;
-- (void)_handleApplicationRegistration:(BOOL)a3 notificationName:(id)a4 streamEvent:(id)a5;
+- (void)_didReceiveDarwinNotification:(id)notification;
+- (void)_didReceiveDistributedNotification:(id)notification withStreamEvent:(id)event;
+- (void)_didReceiveTelephonyCenterNotification:(id)notification;
+- (void)_handleActiveUserIdentityDidChangeNotification:(id)notification;
+- (void)_handleAllowsExplicitContentChangedNotification:(id)notification;
+- (void)_handleAllowsMusicVideosChangedNotification:(id)notification;
+- (void)_handleApplicationRegistration:(BOOL)registration notificationName:(id)name streamEvent:(id)event;
 - (void)_handleCloudAuthenticationDidChangeNotification;
 - (void)_handleFamilyCircleChangedNotification;
-- (void)_handleFamilyContentDeletionNotification:(id)a3 streamEvent:(id)a4;
-- (void)_handleFirstUnlockNotification:(id)a3;
-- (void)_handleHandlerCoordinatorDidFinishInitialization:(id)a3;
-- (void)_handleLibraryAuthServiceTokenDidChangeNotification:(id)a3;
+- (void)_handleFamilyContentDeletionNotification:(id)notification streamEvent:(id)event;
+- (void)_handleFirstUnlockNotification:(id)notification;
+- (void)_handleHandlerCoordinatorDidFinishInitialization:(id)initialization;
+- (void)_handleLibraryAuthServiceTokenDidChangeNotification:(id)notification;
 - (void)_handleMusicSettingsChangedNotification;
-- (void)_handleMusicSubscriptionStatusDidChangeNotification:(id)a3;
+- (void)_handleMusicSubscriptionStatusDidChangeNotification:(id)notification;
 - (void)_handlePlayActivityFlushInternalTestRequestNotification;
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3;
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification;
 - (void)_setupNotifications;
 - (void)_tearDownNotifications;
 - (void)dealloc;
@@ -41,8 +41,8 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Received family circle changed notification", v5, 2u);
   }
 
-  v4 = [(ICDServerNotificationsManager *)self delegate];
-  [v4 notificationsManagerDidReceiveFamilyCircleChangedNotification:self];
+  delegate = [(ICDServerNotificationsManager *)self delegate];
+  [delegate notificationsManagerDidReceiveFamilyCircleChangedNotification:self];
 }
 
 - (void)_handleMusicSettingsChangedNotification
@@ -54,22 +54,22 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Received music settings changed notification", v5, 2u);
   }
 
-  v4 = [(ICDServerNotificationsManager *)self delegate];
-  [v4 notificationsManagerDidReceiveMusicSettingsChangedNotification:self];
+  delegate = [(ICDServerNotificationsManager *)self delegate];
+  [delegate notificationsManagerDidReceiveMusicSettingsChangedNotification:self];
 }
 
 - (void)_handlePlayActivityFlushInternalTestRequestNotification
 {
-  v3 = [(ICDServerNotificationsManager *)self delegate];
-  [v3 notificationsManagerDidRecieveICPlayActivityFlushInternalTestRequestNotification:self];
+  delegate = [(ICDServerNotificationsManager *)self delegate];
+  [delegate notificationsManagerDidRecieveICPlayActivityFlushInternalTestRequestNotification:self];
 }
 
-- (void)_handleFamilyContentDeletionNotification:(id)a3 streamEvent:(id)a4
+- (void)_handleFamilyContentDeletionNotification:(id)notification streamEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7 && xpc_get_type(v7) == &_xpc_type_dictionary)
+  notificationCopy = notification;
+  eventCopy = event;
+  v8 = eventCopy;
+  if (eventCopy && xpc_get_type(eventCopy) == &_xpc_type_dictionary)
   {
     v9 = objc_alloc_init(NSMutableArray);
     v10 = xpc_dictionary_get_value(v8, "UserInfo");
@@ -92,21 +92,21 @@
     v22 = @"ICDServerNotificationsManagerFamilyEventKey";
     v23 = v9;
     v14 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1, v17, v18, v19, v20];
-    v15 = [NSNotification notificationWithName:v6 object:0 userInfo:v14];
+    v15 = [NSNotification notificationWithName:notificationCopy object:0 userInfo:v14];
 
-    v16 = [(ICDServerNotificationsManager *)self delegate];
-    [v16 notificationsManager:self didReceiveFamilyDeletionEventNotification:v15];
+    delegate = [(ICDServerNotificationsManager *)self delegate];
+    [delegate notificationsManager:self didReceiveFamilyDeletionEventNotification:v15];
   }
 }
 
-- (void)_handleApplicationRegistration:(BOOL)a3 notificationName:(id)a4 streamEvent:(id)a5
+- (void)_handleApplicationRegistration:(BOOL)registration notificationName:(id)name streamEvent:(id)event
 {
-  v6 = a3;
-  v8 = a4;
-  v9 = a5;
+  registrationCopy = registration;
+  nameCopy = name;
+  eventCopy = event;
   v10 = objc_alloc_init(NSMutableSet);
-  v11 = xpc_dictionary_get_value(v9, "UserInfo");
-  if (v11 && (!xpc_dictionary_get_BOOL(v11, [@"isPlaceholder" UTF8String]) || !v6))
+  v11 = xpc_dictionary_get_value(eventCopy, "UserInfo");
+  if (v11 && (!xpc_dictionary_get_BOOL(v11, [@"isPlaceholder" UTF8String]) || !registrationCopy))
   {
     v12 = xpc_dictionary_get_array(v11, [@"bundleIDs" UTF8String]);
     v13 = v12;
@@ -136,7 +136,7 @@
 
   if ([v10 count])
   {
-    if (v6)
+    if (registrationCopy)
     {
       v19 = &off_1001ED168;
     }
@@ -152,10 +152,10 @@
     v20 = [v10 copy];
     v26[1] = v20;
     v21 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:2];
-    v22 = [NSNotification notificationWithName:v8 object:0 userInfo:v21];
+    v22 = [NSNotification notificationWithName:nameCopy object:0 userInfo:v21];
 
-    v23 = [(ICDServerNotificationsManager *)self delegate];
-    [v23 notificationsManager:self didReceiveApplicationInstallationNotification:v22];
+    delegate = [(ICDServerNotificationsManager *)self delegate];
+    [delegate notificationsManager:self didReceiveApplicationInstallationNotification:v22];
   }
 }
 
@@ -168,13 +168,13 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "Cloud authentication status has changed - updating client status", v5, 2u);
   }
 
-  v4 = [(ICDServerNotificationsManager *)self delegate];
-  [v4 notificationsManagerDidReceiveCloudAuthenticationDidChangeDarwinNotification:self];
+  delegate = [(ICDServerNotificationsManager *)self delegate];
+  [delegate notificationsManagerDidReceiveCloudAuthenticationDidChangeDarwinNotification:self];
 }
 
-- (void)_handleLibraryAuthServiceTokenDidChangeNotification:(id)a3
+- (void)_handleLibraryAuthServiceTokenDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.itunescloudd", "Accounts");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -182,27 +182,27 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "handleLibraryAuthServiceTokenDidChangeNotification - posting dynamite state change", v7, 2u);
   }
 
-  v6 = [(ICDServerNotificationsManager *)self delegate];
-  [v6 notificationsManager:self didReceiveAuthServiceTokenDidChangeNotification:v4];
+  delegate = [(ICDServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveAuthServiceTokenDidChangeNotification:notificationCopy];
 }
 
-- (void)_handleAllowsMusicVideosChangedNotification:(id)a3
+- (void)_handleAllowsMusicVideosChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(ICDServerNotificationsManager *)self delegate];
-  [v5 notificationsManager:self didReceiveAllowsMusicVideosDidChangeNotification:v4];
+  notificationCopy = notification;
+  delegate = [(ICDServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveAllowsMusicVideosDidChangeNotification:notificationCopy];
 }
 
-- (void)_handleAllowsExplicitContentChangedNotification:(id)a3
+- (void)_handleAllowsExplicitContentChangedNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(ICDServerNotificationsManager *)self delegate];
-  [v5 notificationsManager:self didReceiveAllowsExplicitContentDidChangeNotification:v4];
+  notificationCopy = notification;
+  delegate = [(ICDServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveAllowsExplicitContentDidChangeNotification:notificationCopy];
 }
 
-- (void)_handleHandlerCoordinatorDidFinishInitialization:(id)a3
+- (void)_handleHandlerCoordinatorDidFinishInitialization:(id)initialization
 {
-  v4 = a3;
+  initializationCopy = initialization;
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -210,13 +210,13 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Handler Coordinator did finish initialization.", v7, 2u);
   }
 
-  v6 = [(ICDServerNotificationsManager *)self delegate];
-  [v6 notificationsManager:self didReceiveHandlerCoordinatorFinishedInitializationNotification:v4];
+  delegate = [(ICDServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveHandlerCoordinatorFinishedInitializationNotification:initializationCopy];
 }
 
-- (void)_handleUserIdentityStoreDidChangeNotification:(id)a3
+- (void)_handleUserIdentityStoreDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -224,13 +224,13 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "User identity store has changed.", v7, 2u);
   }
 
-  v6 = [(ICDServerNotificationsManager *)self delegate];
-  [v6 notificationsManager:self didReceiveUserIdentityStoreDidChangeNotification:v4];
+  delegate = [(ICDServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveUserIdentityStoreDidChangeNotification:notificationCopy];
 }
 
-- (void)_handleActiveUserIdentityDidChangeNotification:(id)a3
+- (void)_handleActiveUserIdentityDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -238,13 +238,13 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Active user identity has changed.", v7, 2u);
   }
 
-  v6 = [(ICDServerNotificationsManager *)self delegate];
-  [v6 notificationsManager:self didReceiveActiveUserIdentityDidChangeNotification:v4];
+  delegate = [(ICDServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveActiveUserIdentityDidChangeNotification:notificationCopy];
 }
 
-- (void)_handleMusicSubscriptionStatusDidChangeNotification:(id)a3
+- (void)_handleMusicSubscriptionStatusDidChangeNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
@@ -252,11 +252,11 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Subscription status has changed - updating client status", v7, 2u);
   }
 
-  v6 = [(ICDServerNotificationsManager *)self delegate];
-  [v6 notificationsManager:self didReceiveSubscriptionStatusDidChangeNotification:v4];
+  delegate = [(ICDServerNotificationsManager *)self delegate];
+  [delegate notificationsManager:self didReceiveSubscriptionStatusDidChangeNotification:notificationCopy];
 }
 
-- (void)_handleFirstUnlockNotification:(id)a3
+- (void)_handleFirstUnlockNotification:(id)notification
 {
   v4 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -265,73 +265,73 @@
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "First unlock has occured", v6, 2u);
   }
 
-  v5 = [(ICDServerNotificationsManager *)self delegate];
-  [v5 notificationsManagerDidReceiveFirstUnlockNotification:self];
+  delegate = [(ICDServerNotificationsManager *)self delegate];
+  [delegate notificationsManagerDidReceiveFirstUnlockNotification:self];
 }
 
-- (void)_didReceiveTelephonyCenterNotification:(id)a3
+- (void)_didReceiveTelephonyCenterNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138543362;
-    v10 = v4;
+    v10 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received telephony center notification %{public}@", &v9, 0xCu);
   }
 
-  if ([v4 isEqualToString:kCTSettingPhoneNumberChangedNotification])
+  if ([notificationCopy isEqualToString:kCTSettingPhoneNumberChangedNotification])
   {
     v6 = +[ICDeviceInfo currentDeviceInfo];
-    v7 = [v6 isPhoneNumberAccessRestricted];
+    isPhoneNumberAccessRestricted = [v6 isPhoneNumberAccessRestricted];
 
-    if (v7)
+    if (isPhoneNumberAccessRestricted)
     {
-      v8 = os_log_create("com.apple.amp.itunescloudd", "XPC");
-      if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
+      delegate = os_log_create("com.apple.amp.itunescloudd", "XPC");
+      if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
       {
         v9 = 138543362;
-        v10 = v4;
-        _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Ignoring telephony center notification %{public}@ because phone number access is restricted.", &v9, 0xCu);
+        v10 = notificationCopy;
+        _os_log_impl(&_mh_execute_header, delegate, OS_LOG_TYPE_DEFAULT, "Ignoring telephony center notification %{public}@ because phone number access is restricted.", &v9, 0xCu);
       }
     }
 
     else
     {
-      v8 = [(ICDServerNotificationsManager *)self delegate];
-      [v8 notificationsManagerDidReceivePhoneNumberChangedNotification:self];
+      delegate = [(ICDServerNotificationsManager *)self delegate];
+      [delegate notificationsManagerDidReceivePhoneNumberChangedNotification:self];
     }
   }
 }
 
-- (void)_didReceiveDarwinNotification:(id)a3
+- (void)_didReceiveDarwinNotification:(id)notification
 {
-  v4 = a3;
+  notificationCopy = notification;
   v5 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v8 = 138543362;
-    v9 = v4;
+    v9 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Received darwin notification %{public}@", &v8, 0xCu);
   }
 
-  v6 = [(ICDServerNotificationsManager *)self delegate];
-  if ([v4 isEqualToString:@"com.apple.mobileipod.libraryimportdidfinish"])
+  delegate = [(ICDServerNotificationsManager *)self delegate];
+  if ([notificationCopy isEqualToString:@"com.apple.mobileipod.libraryimportdidfinish"])
   {
-    [v6 notificationsManagerDidReceiveLibraryImportDidFinishDarwinNotification:self];
+    [delegate notificationsManagerDidReceiveLibraryImportDidFinishDarwinNotification:self];
   }
 
-  else if ([v4 isEqualToString:@"com.apple.itunesstored.autodownloaddefaultschange"])
+  else if ([notificationCopy isEqualToString:@"com.apple.itunesstored.autodownloaddefaultschange"])
   {
-    [v6 notificationsManagerDidReceiveCellularDataRestrictionDidChangeDarwinNotification:self];
+    [delegate notificationsManagerDidReceiveCellularDataRestrictionDidChangeDarwinNotification:self];
   }
 
-  else if ([v4 isEqualToString:@"com.apple.purplebuddy.setupdone"])
+  else if ([notificationCopy isEqualToString:@"com.apple.purplebuddy.setupdone"])
   {
-    [v6 notificationsManagerDidReceiveBuddySetupDoneDarwinNotification:self];
+    [delegate notificationsManagerDidReceiveBuddySetupDoneDarwinNotification:self];
   }
 
-  else if ([v4 isEqualToString:@"com.apple.family.family_updated"])
+  else if ([notificationCopy isEqualToString:@"com.apple.family.family_updated"])
   {
     [(ICDServerNotificationsManager *)self _handleFamilyCircleChangedNotification];
   }
@@ -342,47 +342,47 @@
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
       v8 = 138543362;
-      v9 = v4;
+      v9 = notificationCopy;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Received unsupported darwin notification %{public}@", &v8, 0xCu);
     }
   }
 }
 
-- (void)_didReceiveDistributedNotification:(id)a3 withStreamEvent:(id)a4
+- (void)_didReceiveDistributedNotification:(id)notification withStreamEvent:(id)event
 {
-  v6 = a3;
-  v7 = a4;
+  notificationCopy = notification;
+  eventCopy = event;
   v8 = os_log_create("com.apple.amp.itunescloudd", "XPC");
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 138543362;
-    v12 = v6;
+    v12 = notificationCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received distributed notification: %{public}@", &v11, 0xCu);
   }
 
-  if ([v6 isEqualToString:AMSFamilyContentDeletionNotification])
+  if ([notificationCopy isEqualToString:AMSFamilyContentDeletionNotification])
   {
-    [(ICDServerNotificationsManager *)self _handleFamilyContentDeletionNotification:v6 streamEvent:v7];
+    [(ICDServerNotificationsManager *)self _handleFamilyContentDeletionNotification:notificationCopy streamEvent:eventCopy];
     goto LABEL_10;
   }
 
-  if ([v6 isEqualToString:@"com.apple.LaunchServices.applicationRegistered"])
+  if ([notificationCopy isEqualToString:@"com.apple.LaunchServices.applicationRegistered"])
   {
-    v9 = self;
+    selfCopy2 = self;
     v10 = 1;
 LABEL_9:
-    [(ICDServerNotificationsManager *)v9 _handleApplicationRegistration:v10 notificationName:v6 streamEvent:v7];
+    [(ICDServerNotificationsManager *)selfCopy2 _handleApplicationRegistration:v10 notificationName:notificationCopy streamEvent:eventCopy];
     goto LABEL_10;
   }
 
-  if ([v6 isEqualToString:@"com.apple.LaunchServices.applicationUnregistered"])
+  if ([notificationCopy isEqualToString:@"com.apple.LaunchServices.applicationUnregistered"])
   {
-    v9 = self;
+    selfCopy2 = self;
     v10 = 0;
     goto LABEL_9;
   }
 
-  if ([v6 isEqualToString:@"com.apple.itunescloud.ICPlayActivityFlushInternalTestRequestNotification"])
+  if ([notificationCopy isEqualToString:@"com.apple.itunescloud.ICPlayActivityFlushInternalTestRequestNotification"])
   {
     [(ICDServerNotificationsManager *)self _handlePlayActivityFlushInternalTestRequestNotification];
   }
@@ -530,16 +530,16 @@ LABEL_10:
   [(ICDServerNotificationsManager *)&v3 dealloc];
 }
 
-- (ICDServerNotificationsManager)initWithDelegate:(id)a3
+- (ICDServerNotificationsManager)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = ICDServerNotificationsManager;
   v5 = [(ICDServerNotificationsManager *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
     v8 = dispatch_queue_create("com.apple.itunescloudd.ICDServerNotificationsManager", v7);
     xpcStreamHandlerQueue = v6->_xpcStreamHandlerQueue;

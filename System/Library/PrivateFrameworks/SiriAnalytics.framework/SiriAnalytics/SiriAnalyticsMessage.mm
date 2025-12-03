@@ -1,5 +1,5 @@
 @interface SiriAnalyticsMessage
-- (SiriAnalyticsMessage)initWithMessageUUID:(id)a3 logicalTimestamp:(id)a4 underlying:(id)a5;
+- (SiriAnalyticsMessage)initWithMessageUUID:(id)d logicalTimestamp:(id)timestamp underlying:(id)underlying;
 - (id)storageRepresentation;
 @end
 
@@ -7,54 +7,54 @@
 
 - (id)storageRepresentation
 {
-  v3 = [(SiriAnalyticsMessage *)self underlyingMessage];
-  v4 = [v3 wrapAsAnyEvent];
+  underlyingMessage = [(SiriAnalyticsMessage *)self underlyingMessage];
+  wrapAsAnyEvent = [underlyingMessage wrapAsAnyEvent];
 
-  v5 = [(SiriAnalyticsMessage *)self logicalTimestamp];
+  logicalTimestamp = [(SiriAnalyticsMessage *)self logicalTimestamp];
 
-  if (v5)
+  if (logicalTimestamp)
   {
     v6 = objc_alloc_init(MEMORY[0x1E69CF5C0]);
     v7 = objc_alloc_init(MEMORY[0x1E69CF598]);
     [v6 setMetadata:v7];
 
-    v8 = [v6 metadata];
-    v9 = [(SiriAnalyticsMessage *)self logicalTimestamp];
-    v10 = [v9 loggingRepresentation];
-    [v8 setTimestamp:v10];
+    metadata = [v6 metadata];
+    logicalTimestamp2 = [(SiriAnalyticsMessage *)self logicalTimestamp];
+    loggingRepresentation = [logicalTimestamp2 loggingRepresentation];
+    [metadata setTimestamp:loggingRepresentation];
 
-    v11 = [v6 metadata];
+    metadata2 = [v6 metadata];
     v12 = objc_alloc(MEMORY[0x1E69CF640]);
-    v13 = [(SiriAnalyticsMessage *)self messageUUID];
-    v14 = [v12 initWithNSUUID:v13];
-    [v11 setEventId:v14];
+    messageUUID = [(SiriAnalyticsMessage *)self messageUUID];
+    v14 = [v12 initWithNSUUID:messageUUID];
+    [metadata2 setEventId:v14];
 
-    [v6 setEvent:v4];
-    v15 = [v6 wrapAsAnyEvent];
+    [v6 setEvent:wrapAsAnyEvent];
+    wrapAsAnyEvent2 = [v6 wrapAsAnyEvent];
   }
 
   else
   {
-    v15 = v4;
+    wrapAsAnyEvent2 = wrapAsAnyEvent;
   }
 
-  return v15;
+  return wrapAsAnyEvent2;
 }
 
-- (SiriAnalyticsMessage)initWithMessageUUID:(id)a3 logicalTimestamp:(id)a4 underlying:(id)a5
+- (SiriAnalyticsMessage)initWithMessageUUID:(id)d logicalTimestamp:(id)timestamp underlying:(id)underlying
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  timestampCopy = timestamp;
+  underlyingCopy = underlying;
   v15.receiver = self;
   v15.super_class = SiriAnalyticsMessage;
   v12 = [(SiriAnalyticsMessage *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_messageUUID, a3);
-    objc_storeStrong(&v13->_logicalTimestamp, a4);
-    objc_storeStrong(&v13->_underlyingMessage, a5);
+    objc_storeStrong(&v12->_messageUUID, d);
+    objc_storeStrong(&v13->_logicalTimestamp, timestamp);
+    objc_storeStrong(&v13->_underlyingMessage, underlying);
   }
 
   return v13;

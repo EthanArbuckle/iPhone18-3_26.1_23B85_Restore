@@ -1,19 +1,19 @@
 @interface _MLCANEWeightOps
-+ (id)hexStringForData:(id)a3;
-- (BOOL)convertAndComputHashWithWeightData:(id)a3 weightDataType:(int)a4 hash:(id *)a5 convertedData:(id *)a6;
++ (id)hexStringForData:(id)data;
+- (BOOL)convertAndComputHashWithWeightData:(id)data weightDataType:(int)type hash:(id *)hash convertedData:(id *)convertedData;
 - (_MLCANEWeightOps)init;
-- (id)queryConstantTensor:(id)a3;
-- (unint64_t)addWeightData:(id)a3 hash:(id)a4;
+- (id)queryConstantTensor:(id)tensor;
+- (unint64_t)addWeightData:(id)data hash:(id)hash;
 - (void)reset;
 @end
 
 @implementation _MLCANEWeightOps
 
-+ (id)hexStringForData:(id)a3
++ (id)hexStringForData:(id)data
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  CC_SHA256([v3 bytes], objc_msgSend(v3, "length"), md);
+  dataCopy = data;
+  CC_SHA256([dataCopy bytes], objc_msgSend(dataCopy, "length"), md);
   v4 = objc_autoreleasePoolPush();
   v5 = [&stru_284B8AA80 mutableCopy];
   for (i = 0; i != 32; ++i)
@@ -52,8 +52,8 @@
     v10 = [(NSMutableDictionary *)v2->_weights count];
     v11 = [kMLCANEWeightFileNamePrefix stringByAppendingFormat:@"%lu", v10];
     v21 = v11;
-    v12 = [MEMORY[0x277CBEA90] data];
-    v22[0] = v12;
+    data = [MEMORY[0x277CBEA90] data];
+    v22[0] = data;
     v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v14 = v2->_weights;
     v15 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v10];
@@ -69,29 +69,29 @@
   return v2;
 }
 
-- (BOOL)convertAndComputHashWithWeightData:(id)a3 weightDataType:(int)a4 hash:(id *)a5 convertedData:(id *)a6
+- (BOOL)convertAndComputHashWithWeightData:(id)data weightDataType:(int)type hash:(id *)hash convertedData:(id *)convertedData
 {
-  v10 = a3;
-  v11 = v10;
-  if (a4 > 9)
+  dataCopy = data;
+  v11 = dataCopy;
+  if (type > 9)
   {
     goto LABEL_10;
   }
 
-  v12 = v10;
-  if (((1 << a4) & 0x348) != 0)
+  v12 = dataCopy;
+  if (((1 << type) & 0x348) != 0)
   {
 LABEL_3:
-    *a5 = [objc_opt_class() hexStringForData:v12];
+    *hash = [objc_opt_class() hexStringForData:v12];
     v13 = v12;
-    *a6 = v12;
+    *convertedData = v12;
     v14 = 1;
     goto LABEL_4;
   }
 
-  if (a4 == 1)
+  if (type == 1)
   {
-    v16 = [v10 length] >> 1;
+    v16 = [dataCopy length] >> 1;
     v12 = [MEMORY[0x277CBEA90] dataWithBytesNoCopy:malloc_type_malloc(v16 length:0x77827D73uLL) freeWhenDone:{v16, 1}];
 
     if (+[MLCDataHelper convertFp32toFp16:fp32Values:fp16Values:](MLCDataHelper, "convertFp32toFp16:fp32Values:fp16Values:", [v11 length] >> 2, objc_msgSend(v11, "bytes"), objc_msgSend(v12, "bytes")))
@@ -126,91 +126,91 @@ LABEL_4:
   return v14;
 }
 
-- (unint64_t)addWeightData:(id)a3 hash:(id)a4
+- (unint64_t)addWeightData:(id)data hash:(id)hash
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v25[0] = v7;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "length")}];
+  dataCopy = data;
+  hashCopy = hash;
+  v25[0] = hashCopy;
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(dataCopy, "length")}];
   v25[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
 
-  v10 = [(_MLCANEWeightOps *)self weightFileIndexMap];
-  v11 = [v10 objectForKeyedSubscript:v9];
+  weightFileIndexMap = [(_MLCANEWeightOps *)self weightFileIndexMap];
+  v11 = [weightFileIndexMap objectForKeyedSubscript:v9];
 
   if (v11)
   {
-    v12 = [(_MLCANEWeightOps *)self weightFileIndexMap];
-    v13 = [v12 objectForKeyedSubscript:v9];
-    v14 = [v13 unsignedIntegerValue];
+    weightFileIndexMap2 = [(_MLCANEWeightOps *)self weightFileIndexMap];
+    weightFiles = [weightFileIndexMap2 objectForKeyedSubscript:v9];
+    unsignedIntegerValue = [weightFiles unsignedIntegerValue];
   }
 
   else
   {
-    v15 = [(_MLCANEWeightOps *)self weights];
-    v14 = [v15 count];
+    weights = [(_MLCANEWeightOps *)self weights];
+    unsignedIntegerValue = [weights count];
 
-    v12 = [kMLCANEWeightFileNamePrefix stringByAppendingFormat:@"%lu", v14];
-    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
-    v17 = [(_MLCANEWeightOps *)self weightFileIndexMap];
-    [v17 setObject:v16 forKeyedSubscript:v9];
+    weightFileIndexMap2 = [kMLCANEWeightFileNamePrefix stringByAppendingFormat:@"%lu", unsignedIntegerValue];
+    v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+    weightFileIndexMap3 = [(_MLCANEWeightOps *)self weightFileIndexMap];
+    [weightFileIndexMap3 setObject:v16 forKeyedSubscript:v9];
 
-    v23 = v12;
-    v24 = v6;
+    v23 = weightFileIndexMap2;
+    v24 = dataCopy;
     v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v24 forKeys:&v23 count:1];
-    v19 = [(_MLCANEWeightOps *)self weights];
-    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v14];
-    [v19 setObject:v18 forKeyedSubscript:v20];
+    weights2 = [(_MLCANEWeightOps *)self weights];
+    v20 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:unsignedIntegerValue];
+    [weights2 setObject:v18 forKeyedSubscript:v20];
 
-    v13 = [(_MLCANEWeightOps *)self weightFiles];
-    [v13 addObject:v12];
+    weightFiles = [(_MLCANEWeightOps *)self weightFiles];
+    [weightFiles addObject:weightFileIndexMap2];
   }
 
   v21 = *MEMORY[0x277D85DE8];
-  return v14;
+  return unsignedIntegerValue;
 }
 
-- (id)queryConstantTensor:(id)a3
+- (id)queryConstantTensor:(id)tensor
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [v5 data];
-  v7 = [v5 descriptor];
+  tensorCopy = tensor;
+  data = [tensorCopy data];
+  descriptor = [tensorCopy descriptor];
   v22 = 0;
   v23 = 0;
-  v8 = -[_MLCANEWeightOps convertAndComputHashWithWeightData:weightDataType:hash:convertedData:](self, "convertAndComputHashWithWeightData:weightDataType:hash:convertedData:", v6, [v7 dataType], &v23, &v22);
+  v8 = -[_MLCANEWeightOps convertAndComputHashWithWeightData:weightDataType:hash:convertedData:](self, "convertAndComputHashWithWeightData:weightDataType:hash:convertedData:", data, [descriptor dataType], &v23, &v22);
   v9 = v23;
   v10 = v22;
 
   if (v8)
   {
     v25[0] = v9;
-    v11 = [v5 descriptor];
-    v25[1] = v11;
+    descriptor2 = [tensorCopy descriptor];
+    v25[1] = descriptor2;
     v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
 
-    v13 = [(_MLCANEWeightOps *)self constantTensorMap];
-    v14 = [v13 objectForKeyedSubscript:v12];
+    constantTensorMap = [(_MLCANEWeightOps *)self constantTensorMap];
+    v14 = [constantTensorMap objectForKeyedSubscript:v12];
 
-    v15 = [(_MLCANEWeightOps *)self constantTensorMap];
-    v16 = v15;
+    constantTensorMap2 = [(_MLCANEWeightOps *)self constantTensorMap];
+    v16 = constantTensorMap2;
     if (v14)
     {
-      v17 = [v15 objectForKeyedSubscript:v12];
+      v17 = [constantTensorMap2 objectForKeyedSubscript:v12];
     }
 
     else
     {
-      [v15 setObject:v5 forKeyedSubscript:v12];
+      [constantTensorMap2 setObject:tensorCopy forKeyedSubscript:v12];
 
       v24[0] = v9;
       v24[1] = v10;
       v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:2];
-      v19 = [v5 deviceMemory];
-      [v19 setObject:v18 atIndexedSubscript:{objc_msgSend(v5, "deviceIndex")}];
+      deviceMemory = [tensorCopy deviceMemory];
+      [deviceMemory setObject:v18 atIndexedSubscript:{objc_msgSend(tensorCopy, "deviceIndex")}];
 
-      v17 = v5;
+      v17 = tensorCopy;
     }
   }
 
@@ -233,17 +233,17 @@ LABEL_4:
 - (void)reset
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [(_MLCANEWeightOps *)self weights];
-  [v4 removeAllObjects];
+  weights = [(_MLCANEWeightOps *)self weights];
+  [weights removeAllObjects];
 
-  v5 = [(_MLCANEWeightOps *)self weightFiles];
-  [v5 removeAllObjects];
+  weightFiles = [(_MLCANEWeightOps *)self weightFiles];
+  [weightFiles removeAllObjects];
 
-  v6 = [(_MLCANEWeightOps *)self weightFileIndexMap];
-  [v6 removeAllObjects];
+  weightFileIndexMap = [(_MLCANEWeightOps *)self weightFileIndexMap];
+  [weightFileIndexMap removeAllObjects];
 
-  v7 = [(_MLCANEWeightOps *)self constantTensorMap];
-  [v7 removeAllObjects];
+  constantTensorMap = [(_MLCANEWeightOps *)self constantTensorMap];
+  [constantTensorMap removeAllObjects];
 
   objc_autoreleasePoolPop(v3);
 }

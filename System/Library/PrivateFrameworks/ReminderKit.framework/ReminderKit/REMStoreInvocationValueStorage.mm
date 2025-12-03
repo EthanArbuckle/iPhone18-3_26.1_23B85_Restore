@@ -1,13 +1,13 @@
 @interface REMStoreInvocationValueStorage
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (REMStoreInvocationValueStorage)init;
-- (REMStoreInvocationValueStorage)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (REMStoreInvocationValueStorage)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)storedPropertyForKey:(id)a3;
+- (id)storedPropertyForKey:(id)key;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)storeProperty:(id)a3 forKey:(id)a4;
+- (void)encodeWithCoder:(id)coder;
+- (void)storeProperty:(id)property forKey:(id)key;
 @end
 
 @implementation REMStoreInvocationValueStorage
@@ -27,9 +27,9 @@
   return v2;
 }
 
-- (REMStoreInvocationValueStorage)initWithCoder:(id)a3
+- (REMStoreInvocationValueStorage)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = REMStoreInvocationValueStorage;
   v5 = [(REMStoreInvocationValueStorage *)&v9 init];
@@ -40,7 +40,7 @@
       [REMStoreInvocationValueStorage initWithCoder:];
     }
 
-    v6 = [v4 decodeObjectOfClasses:initWithCoder____sClasses forKey:@"valueStorage"];
+    v6 = [coderCopy decodeObjectOfClasses:initWithCoder____sClasses forKey:@"valueStorage"];
     valueStorage = v5->_valueStorage;
     v5->_valueStorage = v6;
   }
@@ -72,58 +72,58 @@ uint64_t __48__REMStoreInvocationValueStorage_initWithCoder___block_invoke()
   return MEMORY[0x1EEE66BB8]();
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMStoreInvocationValueStorage *)self valueStorage];
-  [v4 encodeObject:v5 forKey:@"valueStorage"];
+  coderCopy = coder;
+  valueStorage = [(REMStoreInvocationValueStorage *)self valueStorage];
+  [coderCopy encodeObject:valueStorage forKey:@"valueStorage"];
 }
 
-- (void)storeProperty:(id)a3 forKey:(id)a4
+- (void)storeProperty:(id)property forKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(REMStoreInvocationValueStorage *)self valueStorage];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  keyCopy = key;
+  propertyCopy = property;
+  valueStorage = [(REMStoreInvocationValueStorage *)self valueStorage];
+  [valueStorage setObject:propertyCopy forKeyedSubscript:keyCopy];
 }
 
-- (id)storedPropertyForKey:(id)a3
+- (id)storedPropertyForKey:(id)key
 {
-  v4 = a3;
-  v5 = [(REMStoreInvocationValueStorage *)self valueStorage];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  keyCopy = key;
+  valueStorage = [(REMStoreInvocationValueStorage *)self valueStorage];
+  v6 = [valueStorage objectForKeyedSubscript:keyCopy];
 
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_alloc_init(objc_opt_class());
-  v6 = [(REMStoreInvocationValueStorage *)self valueStorage];
-  v7 = [v6 copyWithZone:a3];
+  valueStorage = [(REMStoreInvocationValueStorage *)self valueStorage];
+  v7 = [valueStorage copyWithZone:zone];
   [v5 setValueStorage:v7];
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [v4 valueStorage];
-    v6 = [(REMStoreInvocationValueStorage *)self valueStorage];
-    if (v5 == v6)
+    valueStorage = [equalCopy valueStorage];
+    valueStorage2 = [(REMStoreInvocationValueStorage *)self valueStorage];
+    if (valueStorage == valueStorage2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [v4 valueStorage];
-      v8 = [(REMStoreInvocationValueStorage *)self valueStorage];
-      v9 = [v7 isEqual:v8];
+      valueStorage3 = [equalCopy valueStorage];
+      valueStorage4 = [(REMStoreInvocationValueStorage *)self valueStorage];
+      v9 = [valueStorage3 isEqual:valueStorage4];
     }
   }
 
@@ -138,8 +138,8 @@ uint64_t __48__REMStoreInvocationValueStorage_initWithCoder___block_invoke()
 - (unint64_t)hash
 {
   v3 = [objc_opt_class() hash];
-  v4 = [(REMStoreInvocationValueStorage *)self valueStorage];
-  v5 = v3 ^ [v4 hash];
+  valueStorage = [(REMStoreInvocationValueStorage *)self valueStorage];
+  v5 = v3 ^ [valueStorage hash];
 
   return v5 ^ 0x1F;
 }
@@ -148,8 +148,8 @@ uint64_t __48__REMStoreInvocationValueStorage_initWithCoder___block_invoke()
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(REMStoreInvocationValueStorage *)self valueStorage];
-  v6 = [v3 stringWithFormat:@"<%@: %p valueStorage: %@>", v4, self, v5];
+  valueStorage = [(REMStoreInvocationValueStorage *)self valueStorage];
+  v6 = [v3 stringWithFormat:@"<%@: %p valueStorage: %@>", v4, self, valueStorage];
 
   return v6;
 }

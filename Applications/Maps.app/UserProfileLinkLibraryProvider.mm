@@ -3,7 +3,7 @@
 - (_TtC4Maps30UserProfileLinkLibraryProvider)init;
 - (id)createUserProfileLink;
 - (id)retrieveSubtitleText;
-- (void)libraryItemsCountManager:(id)a3 didUpdateCounts:(id)a4;
+- (void)libraryItemsCountManager:(id)manager didUpdateCounts:(id)counts;
 - (void)notifyObservers;
 @end
 
@@ -23,7 +23,7 @@
 
 - (id)createUserProfileLink
 {
-  v2 = self;
+  selfCopy = self;
   UserProfileLinkLibraryProvider.createUserProfileLink()(v3);
   v5 = v4;
 
@@ -32,7 +32,7 @@
 
 - (void)notifyObservers
 {
-  v2 = self;
+  selfCopy = self;
   sub_10047DE88();
 }
 
@@ -47,7 +47,7 @@
     *(v4 + 56) = &type metadata for Int;
     *(v4 + 64) = &protocol witness table for Int;
     *(v4 + 32) = v3;
-    v5 = self;
+    selfCopy = self;
     static String.localizedStringWithFormat(_:_:)();
   }
 
@@ -63,11 +63,11 @@
   return result;
 }
 
-- (void)libraryItemsCountManager:(id)a3 didUpdateCounts:(id)a4
+- (void)libraryItemsCountManager:(id)manager didUpdateCounts:(id)counts
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
+  managerCopy = manager;
+  countsCopy = counts;
+  selfCopy = self;
   _s4Maps30UserProfileLinkLibraryProviderC24libraryItemsCountManager_15didUpdateCountsyAA0ehiJ0C_AA0ehI0CtF_0();
 }
 

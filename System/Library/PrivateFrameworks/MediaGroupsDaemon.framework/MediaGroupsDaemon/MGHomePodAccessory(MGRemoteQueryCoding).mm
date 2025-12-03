@@ -7,22 +7,22 @@
 
 - (id)rq_codedProperties
 {
-  v12.receiver = a1;
+  v12.receiver = self;
   v12.super_class = &off_2869B0F28;
   v2 = objc_msgSendSuper2(&v12, sel_rq_codedProperties);
   v3 = [v2 mutableCopy];
 
-  v4 = [a1 deviceIdentifier];
-  v5 = [v4 rq_coded];
-  [v3 setObject:v5 forKey:@"deviceIdentifier"];
+  deviceIdentifier = [self deviceIdentifier];
+  rq_coded = [deviceIdentifier rq_coded];
+  [v3 setObject:rq_coded forKey:@"deviceIdentifier"];
 
-  v6 = [a1 productColor];
-  v7 = [v6 rq_coded];
-  [v3 setObject:v7 forKey:@"productColor"];
+  productColor = [self productColor];
+  rq_coded2 = [productColor rq_coded];
+  [v3 setObject:rq_coded2 forKey:@"productColor"];
 
-  v8 = [a1 HomePodVariant];
-  v9 = [v8 rq_coded];
-  [v3 setObject:v9 forKey:@"HomePodVariant"];
+  homePodVariant = [self HomePodVariant];
+  rq_coded3 = [homePodVariant rq_coded];
+  [v3 setObject:rq_coded3 forKey:@"HomePodVariant"];
 
   v10 = [v3 copy];
 
@@ -38,7 +38,7 @@
   v8 = 0;
   if ([v5 length] && v6 && v7)
   {
-    v11.receiver = a1;
+    v11.receiver = self;
     v11.super_class = &off_2869B0E18;
     v9 = objc_msgSendSuper2(&v11, sel_rq_decodedProperties_, v4);
     v8 = [v9 mutableCopy];

@@ -1,34 +1,34 @@
 @interface HAPOperatingStateResponse
-+ (id)parsedFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)parseFromData:(id)a3 error:(id *)a4;
++ (id)parsedFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)parseFromData:(id)data error:(id *)error;
 - (HAPOperatingStateResponse)init;
-- (HAPOperatingStateResponse)initWithState:(id)a3 abnormalReasons:(id)a4;
+- (HAPOperatingStateResponse)initWithState:(id)state abnormalReasons:(id)reasons;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (id)serializeWithError:(id *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (id)serializeWithError:(id *)error;
 @end
 
 @implementation HAPOperatingStateResponse
 
-+ (id)parsedFromData:(id)a3 error:(id *)a4
++ (id)parsedFromData:(id)data error:(id *)error
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_alloc_init(HAPOperatingStateResponse);
   v7 = v6;
   if (v6)
   {
     v11 = 0;
-    [(HAPOperatingStateResponse *)v6 parseFromData:v5 error:&v11];
+    [(HAPOperatingStateResponse *)v6 parseFromData:dataCopy error:&v11];
     v8 = v11;
     if (v8)
     {
 
-      if (a4)
+      if (error)
       {
         v9 = v8;
         v7 = 0;
-        *a4 = v8;
+        *error = v8;
       }
 
       else
@@ -48,28 +48,28 @@
   return [(HAPOperatingStateResponse *)&v3 init];
 }
 
-- (HAPOperatingStateResponse)initWithState:(id)a3 abnormalReasons:(id)a4
+- (HAPOperatingStateResponse)initWithState:(id)state abnormalReasons:(id)reasons
 {
-  v7 = a3;
-  v8 = a4;
+  stateCopy = state;
+  reasonsCopy = reasons;
   v12.receiver = self;
   v12.super_class = HAPOperatingStateResponse;
   v9 = [(HAPOperatingStateResponse *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_state, a3);
-    objc_storeStrong(&v10->_abnormalReasons, a4);
+    objc_storeStrong(&v9->_state, state);
+    objc_storeStrong(&v10->_abnormalReasons, reasons);
   }
 
   return v10;
 }
 
-- (BOOL)parseFromData:(id)a3 error:(id *)a4
+- (BOOL)parseFromData:(id)data error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 bytes];
-  v8 = [v6 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  v8 = [dataCopy length];
   if (v8 < 1)
   {
     v9 = 0;
@@ -82,11 +82,11 @@ LABEL_14:
     goto LABEL_21;
   }
 
-  v22 = a4;
+  errorCopy = error;
   v9 = 0;
   v10 = 0;
   v11 = 0;
-  v12 = &v7[v8];
+  v12 = &bytes[v8];
   while (1)
   {
     v28 = 0;
@@ -96,10 +96,10 @@ LABEL_14:
     Next = TLV8GetNext();
     if (Next)
     {
-      if (v22)
+      if (errorCopy)
       {
         sub_100041618(Next);
-        *v22 = v18 = 0;
+        *errorCopy = v18 = 0;
         goto LABEL_21;
       }
 
@@ -154,11 +154,11 @@ LABEL_9:
   }
 
 LABEL_18:
-  if (v22)
+  if (errorCopy)
   {
     v20 = v11;
     v18 = 0;
-    *v22 = v11;
+    *errorCopy = v11;
     goto LABEL_21;
   }
 
@@ -169,7 +169,7 @@ LABEL_21:
   return v18;
 }
 
-- (id)serializeWithError:(id *)a3
+- (id)serializeWithError:(id *)error
 {
   v37 = 0u;
   v38 = 0u;
@@ -193,16 +193,16 @@ LABEL_21:
   v20 = 0u;
   v18 = 0u;
   TLV8BufferInit();
-  v5 = [(HAPOperatingStateResponse *)self state];
+  state = [(HAPOperatingStateResponse *)self state];
 
-  if (!v5)
+  if (!state)
   {
     goto LABEL_5;
   }
 
-  v6 = [(HAPOperatingStateResponse *)self state];
+  state2 = [(HAPOperatingStateResponse *)self state];
   v17 = 0;
-  v7 = [v6 serializeWithError:&v17];
+  v7 = [state2 serializeWithError:&v17];
   v8 = v17;
 
   if (v8)
@@ -219,16 +219,16 @@ LABEL_7:
   {
 
 LABEL_5:
-    v10 = [(HAPOperatingStateResponse *)self abnormalReasons];
+    abnormalReasons = [(HAPOperatingStateResponse *)self abnormalReasons];
 
-    if (!v10)
+    if (!abnormalReasons)
     {
       goto LABEL_16;
     }
 
-    v11 = [(HAPOperatingStateResponse *)self abnormalReasons];
+    abnormalReasons2 = [(HAPOperatingStateResponse *)self abnormalReasons];
     v16 = 0;
-    v7 = [v11 serializeWithError:&v16];
+    v7 = [abnormalReasons2 serializeWithError:&v16];
     v8 = v16;
 
     if (v8)
@@ -248,11 +248,11 @@ LABEL_10:
   {
     if (v12)
     {
-      if (a3)
+      if (error)
       {
         sub_100041618(v12);
         v8 = 0;
-        *a3 = v14 = 0;
+        *error = v14 = 0;
         goto LABEL_19;
       }
 
@@ -266,11 +266,11 @@ LABEL_16:
     goto LABEL_19;
   }
 
-  if (a3)
+  if (error)
   {
     v13 = v8;
     v14 = 0;
-    *a3 = v8;
+    *error = v8;
     goto LABEL_19;
   }
 
@@ -282,20 +282,20 @@ LABEL_19:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [HAPOperatingStateResponse allocWithZone:a3];
-  v5 = [(HAPOperatingStateResponse *)self state];
-  v6 = [(HAPOperatingStateResponse *)self abnormalReasons];
-  v7 = [(HAPOperatingStateResponse *)v4 initWithState:v5 abnormalReasons:v6];
+  v4 = [HAPOperatingStateResponse allocWithZone:zone];
+  state = [(HAPOperatingStateResponse *)self state];
+  abnormalReasons = [(HAPOperatingStateResponse *)self abnormalReasons];
+  v7 = [(HAPOperatingStateResponse *)v4 initWithState:state abnormalReasons:abnormalReasons];
 
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v10 = 1;
   }
@@ -305,14 +305,14 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v6 = v5;
-      v7 = [(HAPOperatingStateResponse *)self state];
-      v8 = [(HAPOperatingStateResponse *)v6 state];
-      if (v7 != v8)
+      v6 = equalCopy;
+      state = [(HAPOperatingStateResponse *)self state];
+      state2 = [(HAPOperatingStateResponse *)v6 state];
+      if (state != state2)
       {
-        v9 = [(HAPOperatingStateResponse *)self state];
-        v3 = [(HAPOperatingStateResponse *)v6 state];
-        if (![v9 isEqual:v3])
+        state3 = [(HAPOperatingStateResponse *)self state];
+        state4 = [(HAPOperatingStateResponse *)v6 state];
+        if (![state3 isEqual:state4])
         {
           v10 = 0;
 LABEL_13:
@@ -321,25 +321,25 @@ LABEL_14:
           goto LABEL_15;
         }
 
-        v16 = v9;
+        v16 = state3;
       }
 
-      v11 = [(HAPOperatingStateResponse *)self abnormalReasons];
-      v12 = [(HAPOperatingStateResponse *)v6 abnormalReasons];
-      if (v11 == v12)
+      abnormalReasons = [(HAPOperatingStateResponse *)self abnormalReasons];
+      abnormalReasons2 = [(HAPOperatingStateResponse *)v6 abnormalReasons];
+      if (abnormalReasons == abnormalReasons2)
       {
         v10 = 1;
       }
 
       else
       {
-        v13 = [(HAPOperatingStateResponse *)self abnormalReasons];
-        v14 = [(HAPOperatingStateResponse *)v6 abnormalReasons];
-        v10 = [v13 isEqual:v14];
+        abnormalReasons3 = [(HAPOperatingStateResponse *)self abnormalReasons];
+        abnormalReasons4 = [(HAPOperatingStateResponse *)v6 abnormalReasons];
+        v10 = [abnormalReasons3 isEqual:abnormalReasons4];
       }
 
-      v9 = v16;
-      if (v7 == v8)
+      state3 = v16;
+      if (state == state2)
       {
         goto LABEL_14;
       }
@@ -357,9 +357,9 @@ LABEL_15:
 
 - (NSString)description
 {
-  v3 = [(HAPOperatingStateResponse *)self state];
-  v4 = [(HAPOperatingStateResponse *)self abnormalReasons];
-  v5 = [NSString stringWithFormat:@"<HAPOperatingStateResponse state=%@, abnormalReasons=%@>", v3, v4];
+  state = [(HAPOperatingStateResponse *)self state];
+  abnormalReasons = [(HAPOperatingStateResponse *)self abnormalReasons];
+  v5 = [NSString stringWithFormat:@"<HAPOperatingStateResponse state=%@, abnormalReasons=%@>", state, abnormalReasons];
 
   return v5;
 }

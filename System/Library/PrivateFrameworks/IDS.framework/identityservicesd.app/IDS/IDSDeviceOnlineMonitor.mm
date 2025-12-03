@@ -1,15 +1,15 @@
 @interface IDSDeviceOnlineMonitor
-- (IDSDeviceOnlineMonitor)initWithDelegate:(id)a3 uniqueIdentifier:(id)a4 queue:(id)a5;
+- (IDSDeviceOnlineMonitor)initWithDelegate:(id)delegate uniqueIdentifier:(id)identifier queue:(id)queue;
 - (void)_assertPresence;
 - (void)_releasePresence;
 - (void)_subscribe;
 - (void)_unsubscribe;
 - (void)assertPresence;
 - (void)initSKPresenceObject;
-- (void)invitedHandlesChangedForPresence:(id)a3;
-- (void)presenceAssertionForPresence:(id)a3 completedSuccessfully:(BOOL)a4 error:(id)a5;
-- (void)presenceDaemonDisconnected:(id)a3;
-- (void)presentDevicesChangedForPresence:(id)a3;
+- (void)invitedHandlesChangedForPresence:(id)presence;
+- (void)presenceAssertionForPresence:(id)presence completedSuccessfully:(BOOL)successfully error:(id)error;
+- (void)presenceDaemonDisconnected:(id)disconnected;
+- (void)presentDevicesChangedForPresence:(id)presence;
 - (void)releasePresence;
 - (void)releaseSKPresenceObjectIfPossible;
 - (void)startMonitoring;
@@ -18,11 +18,11 @@
 
 @implementation IDSDeviceOnlineMonitor
 
-- (IDSDeviceOnlineMonitor)initWithDelegate:(id)a3 uniqueIdentifier:(id)a4 queue:(id)a5
+- (IDSDeviceOnlineMonitor)initWithDelegate:(id)delegate uniqueIdentifier:(id)identifier queue:(id)queue
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  delegateCopy = delegate;
+  identifierCopy = identifier;
+  queueCopy = queue;
   v25.receiver = self;
   v25.super_class = IDSDeviceOnlineMonitor;
   v12 = [(IDSDeviceOnlineMonitor *)&v25 init];
@@ -32,9 +32,9 @@
     v14 = IMWeakLinkClass();
     if (v13 && (v15 = v14) != 0)
     {
-      v16 = [NSString stringWithFormat:@"%@.%@", @"com.apple.ids.OnlineMonitor", v10];
+      identifierCopy = [NSString stringWithFormat:@"%@.%@", @"com.apple.ids.OnlineMonitor", identifierCopy];
       presenceID = v12->_presenceID;
-      v12->_presenceID = v16;
+      v12->_presenceID = identifierCopy;
 
       v18 = [[v15 alloc] initWithServiceIdentifier:@"com.apple.ids.OnlineMonitor"];
       [v18 setIsPersonal:1];
@@ -42,7 +42,7 @@
       presence = v12->_presence;
       v12->_presence = v19;
 
-      [(SKPresence *)v12->_presence addDelegate:v12 queue:v11];
+      [(SKPresence *)v12->_presence addDelegate:v12 queue:queueCopy];
       v12->_isMonitoring = 0;
       v12->_status = 1;
     }
@@ -63,8 +63,8 @@
       v12->_status = 1;
     }
 
-    objc_storeStrong(&v12->_delegate, a3);
-    objc_storeStrong(&v12->_queue, a5);
+    objc_storeStrong(&v12->_delegate, delegate);
+    objc_storeStrong(&v12->_queue, queue);
   }
 
   return v12;
@@ -72,52 +72,52 @@
 
 - (void)startMonitoring
 {
-  v3 = [(IDSDeviceOnlineMonitor *)self queue];
+  queue = [(IDSDeviceOnlineMonitor *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10050AADC;
   block[3] = &unk_100BD6ED0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)stopMonitoring
 {
-  v3 = [(IDSDeviceOnlineMonitor *)self queue];
+  queue = [(IDSDeviceOnlineMonitor *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10050ABCC;
   block[3] = &unk_100BD6ED0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)assertPresence
 {
-  v3 = [(IDSDeviceOnlineMonitor *)self queue];
+  queue = [(IDSDeviceOnlineMonitor *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10050ACBC;
   block[3] = &unk_100BD6ED0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)releasePresence
 {
-  v3 = [(IDSDeviceOnlineMonitor *)self queue];
+  queue = [(IDSDeviceOnlineMonitor *)self queue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_10050ADAC;
   block[3] = &unk_100BD6ED0;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(queue, block);
 }
 
 - (void)initSKPresenceObject
 {
-  v3 = [(IDSDeviceOnlineMonitor *)self queue];
-  dispatch_assert_queue_V2(v3);
+  queue = [(IDSDeviceOnlineMonitor *)self queue];
+  dispatch_assert_queue_V2(queue);
 
   v4 = IMWeakLinkClass();
   v5 = IMWeakLinkClass();
@@ -164,9 +164,9 @@
 
     else
     {
-      v4 = [(IDSDeviceOnlineMonitor *)self isAssertingPresence];
+      isAssertingPresence = [(IDSDeviceOnlineMonitor *)self isAssertingPresence];
 
-      if (v4)
+      if (isAssertingPresence)
       {
         return;
       }
@@ -196,14 +196,14 @@
   presence = self->_presence;
   if (presence)
   {
-    v4 = [(SKPresence *)presence presenceIdentifier];
+    presenceIdentifier = [(SKPresence *)presence presenceIdentifier];
     v5 = self->_presence;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10050B340;
     v7[3] = &unk_100BD9F28;
-    v8 = v4;
-    v6 = v4;
+    v8 = presenceIdentifier;
+    v6 = presenceIdentifier;
     [(SKPresence *)v5 releasePresenceWithCompletion:v7];
   }
 }
@@ -227,33 +227,33 @@
   presence = self->_presence;
   if (presence)
   {
-    v4 = [(SKPresence *)presence presenceIdentifier];
+    presenceIdentifier = [(SKPresence *)presence presenceIdentifier];
     v5 = self->_presence;
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_10050B7A0;
     v7[3] = &unk_100BD9F28;
-    v8 = v4;
-    v6 = v4;
+    v8 = presenceIdentifier;
+    v6 = presenceIdentifier;
     [(SKPresence *)v5 releaseTransientSubscriptionAssertionWithCompletion:v7];
   }
 }
 
-- (void)presentDevicesChangedForPresence:(id)a3
+- (void)presentDevicesChangedForPresence:(id)presence
 {
-  v4 = a3;
+  presenceCopy = presence;
   v5 = +[IDSFoundationLog IPsecLink];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 presentDevices];
+    presentDevices = [presenceCopy presentDevices];
     v13 = 138412290;
-    v14 = v6;
+    v14 = presentDevices;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "presence: list of present devices changed: %@", &v13, 0xCu);
   }
 
   self->_status = 1;
-  v7 = [v4 presentDevices];
-  v8 = [v7 count];
+  presentDevices2 = [presenceCopy presentDevices];
+  v8 = [presentDevices2 count];
 
   if (v8 == 2)
   {
@@ -262,8 +262,8 @@
 
   else
   {
-    v10 = [v4 presentDevices];
-    v11 = [v10 count];
+    presentDevices3 = [presenceCopy presentDevices];
+    v11 = [presentDevices3 count];
 
     if (v11 == 1)
     {
@@ -277,18 +277,18 @@
   }
 
   self->_status = v9;
-  v12 = [(IDSDeviceOnlineMonitor *)self delegate];
-  [v12 idsDeviceOnlineMonitor:self statusChanged:self->_status];
+  delegate = [(IDSDeviceOnlineMonitor *)self delegate];
+  [delegate idsDeviceOnlineMonitor:self statusChanged:self->_status];
 }
 
-- (void)presenceDaemonDisconnected:(id)a3
+- (void)presenceDaemonDisconnected:(id)disconnected
 {
-  v4 = a3;
+  disconnectedCopy = disconnected;
   v5 = +[IDSFoundationLog IPsecLink];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = disconnectedCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "presence: daemon disconnected for %@", &v6, 0xCu);
   }
 
@@ -296,26 +296,26 @@
   *&self->_isMonitoring = 0;
 }
 
-- (void)invitedHandlesChangedForPresence:(id)a3
+- (void)invitedHandlesChangedForPresence:(id)presence
 {
-  v3 = a3;
+  presenceCopy = presence;
   v4 = +[IDSFoundationLog IPsecLink];
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     v5 = 138412290;
-    v6 = v3;
+    v6 = presenceCopy;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "presence: invitedHandlesChangedForPresence called for %@", &v5, 0xCu);
   }
 }
 
-- (void)presenceAssertionForPresence:(id)a3 completedSuccessfully:(BOOL)a4 error:(id)a5
+- (void)presenceAssertionForPresence:(id)presence completedSuccessfully:(BOOL)successfully error:(id)error
 {
-  v5 = a3;
+  presenceCopy = presence;
   v6 = +[IDSFoundationLog IPsecLink];
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v5;
+    v8 = presenceCopy;
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "presenceAssertionForPresence called for %@", &v7, 0xCu);
   }
 }

@@ -1,8 +1,8 @@
 @interface SBSALayoutModeLayoutProvider
 - (NSString)description;
-- (SBSALayoutModeLayoutProvider)initWithLayoutMode:(int64_t)a3;
+- (SBSALayoutModeLayoutProvider)initWithLayoutMode:(int64_t)mode;
 - (id)defaultTransitionSettings;
-- (id)preferencesFromContext:(id)a3;
+- (id)preferencesFromContext:(id)context;
 @end
 
 @implementation SBSALayoutModeLayoutProvider
@@ -13,38 +13,38 @@
   switch(supportedElementLayoutMode)
   {
     case 3:
-      v3 = [objc_opt_class() settings];
-      v4 = [v3 customInterfaceElementTransitionSettings];
+      settings = [objc_opt_class() settings];
+      customInterfaceElementTransitionSettings = [settings customInterfaceElementTransitionSettings];
 LABEL_7:
-      v5 = v4;
+      defaultInterfaceElementTransitionSettings = customInterfaceElementTransitionSettings;
 
-      if (v5)
+      if (defaultInterfaceElementTransitionSettings)
       {
         goto LABEL_9;
       }
 
       break;
     case 2:
-      v3 = [objc_opt_class() settings];
-      v4 = [v3 compactInterfaceElementTransitionSettings];
+      settings = [objc_opt_class() settings];
+      customInterfaceElementTransitionSettings = [settings compactInterfaceElementTransitionSettings];
       goto LABEL_7;
     case 1:
-      v3 = [objc_opt_class() settings];
-      v4 = [v3 minimalInterfaceElementTransitionSettings];
+      settings = [objc_opt_class() settings];
+      customInterfaceElementTransitionSettings = [settings minimalInterfaceElementTransitionSettings];
       goto LABEL_7;
   }
 
-  v6 = [objc_opt_class() settings];
-  v5 = [v6 defaultInterfaceElementTransitionSettings];
+  settings2 = [objc_opt_class() settings];
+  defaultInterfaceElementTransitionSettings = [settings2 defaultInterfaceElementTransitionSettings];
 
 LABEL_9:
 
-  return v5;
+  return defaultInterfaceElementTransitionSettings;
 }
 
-- (SBSALayoutModeLayoutProvider)initWithLayoutMode:(int64_t)a3
+- (SBSALayoutModeLayoutProvider)initWithLayoutMode:(int64_t)mode
 {
-  if ((a3 - 4) <= 0xFFFFFFFFFFFFFFFCLL)
+  if ((mode - 4) <= 0xFFFFFFFFFFFFFFFCLL)
   {
     [SBSALayoutModeLayoutProvider initWithLayoutMode:];
   }
@@ -54,7 +54,7 @@ LABEL_9:
   result = [(SBSABasePreferencesProvider *)&v6 init];
   if (result)
   {
-    result->_supportedElementLayoutMode = a3;
+    result->_supportedElementLayoutMode = mode;
   }
 
   return result;
@@ -70,13 +70,13 @@ LABEL_9:
   return v6;
 }
 
-- (id)preferencesFromContext:(id)a3
+- (id)preferencesFromContext:(id)context
 {
-  v3 = a3;
-  if (v3)
+  contextCopy = context;
+  if (contextCopy)
   {
     v4 = objc_opt_self();
-    v5 = v3;
+    v5 = contextCopy;
     if (v4)
     {
       if (objc_opt_isKindOfClass())
@@ -108,12 +108,12 @@ LABEL_9:
     v7 = 0;
   }
 
-  v55 = v3;
+  v55 = contextCopy;
 
-  v8 = [v7 elementContexts];
-  v9 = [v7 preferences];
+  elementContexts = [v7 elementContexts];
+  preferences = [v7 preferences];
   v10 = objc_opt_class();
-  v11 = v9;
+  v11 = preferences;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -134,15 +134,15 @@ LABEL_9:
 
   v13 = v12;
 
-  v14 = [v13 elementDescriptions];
-  v60 = [v14 mutableCopy];
+  elementDescriptions = [v13 elementDescriptions];
+  v60 = [elementDescriptions mutableCopy];
 
-  v15 = [v13 containerViewDescriptions];
-  v59 = [v15 mutableCopy];
+  containerViewDescriptions = [v13 containerViewDescriptions];
+  v59 = [containerViewDescriptions mutableCopy];
 
   if (self->_supportedElementLayoutMode == 3)
   {
-    v16 = [v8 bs_firstObjectPassingTest:&__block_literal_global_266];
+    v16 = [elementContexts bs_firstObjectPassingTest:&__block_literal_global_266];
     v17 = SBSABehavesLikeCustom([v16 layoutMode], objc_msgSend(v16, "systemApertureCustomLayout"));
   }
 
@@ -154,14 +154,14 @@ LABEL_9:
   v58 = v7;
   v57 = v17 & ~self->_performedInitialLayoutIfNecessary & 1;
   self->_performedInitialLayoutIfNecessary = 1;
-  if ([v8 count])
+  if ([elementContexts count])
   {
     v18 = 0;
     v19 = v59;
-    v56 = v8;
+    v56 = elementContexts;
     while (1)
     {
-      v20 = [v8 objectAtIndex:v18];
+      v20 = [elementContexts objectAtIndex:v18];
       v106 = 0x7FFFFFFFFFFFFFFFLL;
       v21 = SBSAElementDescriptionAssociatedWithElementIdentity(v20, v60, &v106);
       if (!SBSALayoutModeAndCustomLayoutOptionBehavesLikeTargetLayoutMode([v20 layoutMode], objc_msgSend(v20, "systemApertureCustomLayout"), self->_supportedElementLayoutMode))
@@ -184,7 +184,7 @@ LABEL_9:
       v103[3] = &unk_21F9DA6A3;
       v104 = 0u;
       v105 = 0u;
-      *&v104 = SBSAFrameForElementInCollection(v18, v8, v58);
+      *&v104 = SBSAFrameForElementInCollection(v18, elementContexts, v58);
       *(&v104 + 1) = v24;
       *&v105 = v25;
       *(&v105 + 1) = v26;
@@ -236,22 +236,22 @@ LABEL_9:
         goto LABEL_33;
       }
 
-      v36 = [v32 elementSnapshotContexts];
+      elementSnapshotContexts = [v32 elementSnapshotContexts];
       v83[0] = MEMORY[0x277D85DD0];
       v83[1] = 3221225472;
       v83[2] = __55__SBSALayoutModeLayoutProvider_preferencesFromContext___block_invoke_35;
       v83[3] = &unk_2783AD728;
       v37 = v31;
       v84 = v37;
-      v38 = [v36 bs_firstObjectPassingTest:v83];
+      v38 = [elementSnapshotContexts bs_firstObjectPassingTest:v83];
 
-      v39 = [v38 snapshotReason];
-      v40 = [v34 elementLayoutTransition];
-      v41 = [v40 isSingleElementExpansion];
+      snapshotReason = [v38 snapshotReason];
+      elementLayoutTransition = [v34 elementLayoutTransition];
+      isSingleElementExpansion = [elementLayoutTransition isSingleElementExpansion];
 
       v42 = BSEqualStrings();
-      v43 = v41 | v42;
-      if ((v41 | v42))
+      v43 = isSingleElementExpansion | v42;
+      if ((isSingleElementExpansion | v42))
       {
         v81[0] = MEMORY[0x277D85DD0];
         v81[1] = 3221225472;
@@ -314,7 +314,7 @@ LABEL_33:
       _Block_object_dispose(v103, 8);
 
       ++v18;
-      v8 = v56;
+      elementContexts = v56;
       v13 = v48;
       v19 = v59;
       if (v18 >= [v56 count])

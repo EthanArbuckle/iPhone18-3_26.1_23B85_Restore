@@ -1,26 +1,26 @@
 @interface PLAssetsdResourceInternalService
-- (PLAssetsdResourceInternalService)initWithLibraryServicesManager:(id)a3 trustedCallerBundleID:(id)a4;
-- (void)asynchronousMasterThumbnailForAssetUUID:(id)a3 reply:(id)a4;
-- (void)batchSaveAssetJobs:(id)a3 reply:(id)a4;
-- (void)cancelAllPrewarmingWithReply:(id)a3;
-- (void)prewarmWithCapturePhotoSettings:(id)a3 reply:(id)a4;
+- (PLAssetsdResourceInternalService)initWithLibraryServicesManager:(id)manager trustedCallerBundleID:(id)d;
+- (void)asynchronousMasterThumbnailForAssetUUID:(id)d reply:(id)reply;
+- (void)batchSaveAssetJobs:(id)jobs reply:(id)reply;
+- (void)cancelAllPrewarmingWithReply:(id)reply;
+- (void)prewarmWithCapturePhotoSettings:(id)settings reply:(id)reply;
 @end
 
 @implementation PLAssetsdResourceInternalService
 
-- (void)cancelAllPrewarmingWithReply:(id)a3
+- (void)cancelAllPrewarmingWithReply:(id)reply
 {
-  v4 = a3;
-  v5 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v6 = [v5 deferredProcessingServicerHandler];
+  replyCopy = reply;
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  deferredProcessingServicerHandler = [libraryServicesManager deferredProcessingServicerHandler];
 
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __65__PLAssetsdResourceInternalService_cancelAllPrewarmingWithReply___block_invoke;
   v8[3] = &unk_1E7571990;
-  v9 = v4;
-  v7 = v4;
-  [v6 cancelAllPrewarmingWithCompletion:v8];
+  v9 = replyCopy;
+  v7 = replyCopy;
+  [deferredProcessingServicerHandler cancelAllPrewarmingWithCompletion:v8];
 }
 
 void __65__PLAssetsdResourceInternalService_cancelAllPrewarmingWithReply___block_invoke(uint64_t a1, void *a2)
@@ -33,20 +33,20 @@ void __65__PLAssetsdResourceInternalService_cancelAllPrewarmingWithReply___block
   (*(v2 + 16))(v2, v4, v5);
 }
 
-- (void)prewarmWithCapturePhotoSettings:(id)a3 reply:(id)a4
+- (void)prewarmWithCapturePhotoSettings:(id)settings reply:(id)reply
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v9 = [v8 deferredProcessingServicerHandler];
+  replyCopy = reply;
+  settingsCopy = settings;
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  deferredProcessingServicerHandler = [libraryServicesManager deferredProcessingServicerHandler];
 
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __74__PLAssetsdResourceInternalService_prewarmWithCapturePhotoSettings_reply___block_invoke;
   v11[3] = &unk_1E7571990;
-  v12 = v6;
-  v10 = v6;
-  [v9 prewarmWithCapturePhotoSettings:v7 completionHandler:v11];
+  v12 = replyCopy;
+  v10 = replyCopy;
+  [deferredProcessingServicerHandler prewarmWithCapturePhotoSettings:settingsCopy completionHandler:v11];
 }
 
 void __74__PLAssetsdResourceInternalService_prewarmWithCapturePhotoSettings_reply___block_invoke(uint64_t a1, void *a2)
@@ -59,17 +59,17 @@ void __74__PLAssetsdResourceInternalService_prewarmWithCapturePhotoSettings_repl
   (*(v2 + 16))(v2, v4, v5);
 }
 
-- (void)asynchronousMasterThumbnailForAssetUUID:(id)a3 reply:(id)a4
+- (void)asynchronousMasterThumbnailForAssetUUID:(id)d reply:(id)reply
 {
   v33 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  replyCopy = reply;
   v29 = 0u;
   *sel = 0u;
   v28 = 0u;
-  v8 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v28) = v8;
-  if (v8)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v28) = enabled;
+  if (enabled)
   {
     v9 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: asynchronousMasterThumbnailForAssetUUID:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v10 = *(&v28 + 1);
@@ -78,22 +78,22 @@ void __74__PLAssetsdResourceInternalService_prewarmWithCapturePhotoSettings_repl
     os_activity_scope_enter(v9, (&v29 + 8));
   }
 
-  v11 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v12 = [v11 databaseContext];
-  v13 = [v12 newShortLivedLibraryWithName:"-[PLAssetsdResourceInternalService asynchronousMasterThumbnailForAssetUUID:reply:]"];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  databaseContext = [libraryServicesManager databaseContext];
+  v13 = [databaseContext newShortLivedLibraryWithName:"-[PLAssetsdResourceInternalService asynchronousMasterThumbnailForAssetUUID:reply:]"];
 
-  v14 = [v13 thumbnailManager];
+  thumbnailManager = [v13 thumbnailManager];
   v23[0] = MEMORY[0x1E69E9820];
   v23[1] = 3221225472;
   v23[2] = __82__PLAssetsdResourceInternalService_asynchronousMasterThumbnailForAssetUUID_reply___block_invoke;
   v23[3] = &unk_1E7573C00;
-  v15 = v6;
+  v15 = dCopy;
   v24 = v15;
   v16 = v13;
   v25 = v16;
-  v17 = v14;
+  v17 = thumbnailManager;
   v26 = v17;
-  v18 = v7;
+  v18 = replyCopy;
   v27 = v18;
   [v16 performBlockAndWait:v23];
 
@@ -142,17 +142,17 @@ void __82__PLAssetsdResourceInternalService_asynchronousMasterThumbnailForAssetU
   (*(a1[7] + 16))();
 }
 
-- (void)batchSaveAssetJobs:(id)a3 reply:(id)a4
+- (void)batchSaveAssetJobs:(id)jobs reply:(id)reply
 {
   v64 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v45 = a4;
+  jobsCopy = jobs;
+  replyCopy = reply;
   v59 = 0u;
   v60 = 0u;
   v58 = 0u;
-  v6 = [MEMORY[0x1E69BF350] enabled];
-  LOBYTE(v58) = v6;
-  if (v6)
+  enabled = [MEMORY[0x1E69BF350] enabled];
+  LOBYTE(v58) = enabled;
+  if (enabled)
   {
     v7 = _os_activity_create(&dword_19BF1F000, "PLXPC Service: batchSaveAssetJobs:reply:", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v8 = *(&v58 + 1);
@@ -164,7 +164,7 @@ void __82__PLAssetsdResourceInternalService_asynchronousMasterThumbnailForAssetU
   v9 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [v5 count];
+    v10 = [jobsCopy count];
     *buf = 67109120;
     *v62 = v10;
     _os_log_impl(&dword_19BF1F000, v9, OS_LOG_TYPE_DEFAULT, "Received batchSaveAssets:reply: with %d jobs", buf, 8u);
@@ -174,7 +174,7 @@ void __82__PLAssetsdResourceInternalService_asynchronousMasterThumbnailForAssetU
   v57 = 0u;
   v54 = 0u;
   v55 = 0u;
-  obj = v5;
+  obj = jobsCopy;
   v11 = [obj countByEnumeratingWithState:&v54 objects:v63 count:16];
   if (v11)
   {
@@ -242,8 +242,8 @@ LABEL_19:
     _os_log_impl(&dword_19BF1F000, v23, OS_LOG_TYPE_DEBUG, "Begin batchSaveAssetJobs", buf, 2u);
   }
 
-  v24 = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
-  v25 = [v24 imageWriter];
+  libraryServicesManager = [(PLAbstractLibraryServicesManagerService *)self libraryServicesManager];
+  imageWriter = [libraryServicesManager imageWriter];
 
   v26 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(obj, "count")}];
   v51[0] = MEMORY[0x1E69E9820];
@@ -251,27 +251,27 @@ LABEL_19:
   v51[2] = __61__PLAssetsdResourceInternalService_batchSaveAssetJobs_reply___block_invoke;
   v51[3] = &unk_1E7566140;
   v51[4] = self;
-  v27 = v25;
+  v27 = imageWriter;
   v52 = v27;
   v28 = v26;
   v53 = v28;
   [obj enumerateObjectsUsingBlock:v51];
-  v29 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v30 = *MEMORY[0x1E69C0430];
-  [v29 setObject:*MEMORY[0x1E69C0430] forKey:*MEMORY[0x1E69C0410]];
-  [v29 setObject:v28 forKey:*MEMORY[0x1E69C0348]];
+  [dictionary setObject:*MEMORY[0x1E69C0430] forKey:*MEMORY[0x1E69C0410]];
+  [dictionary setObject:v28 forKey:*MEMORY[0x1E69C0348]];
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __61__PLAssetsdResourceInternalService_batchSaveAssetJobs_reply___block_invoke_2;
   aBlock[3] = &unk_1E7566170;
   v31 = v28;
   v49 = v31;
-  v32 = v45;
+  v32 = replyCopy;
   v50 = v32;
   v33 = _Block_copy(aBlock);
   v34 = [v33 copy];
   v35 = _Block_copy(v34);
-  [v29 setObject:v35 forKey:@"completionBlock"];
+  [dictionary setObject:v35 forKey:@"completionBlock"];
 
   v36 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_DEFAULT))
@@ -287,7 +287,7 @@ LABEL_19:
     _os_log_impl(&dword_19BF1F000, v36, OS_LOG_TYPE_DEFAULT, "[%@] enqueuing batch save job %@ with %d jobs", buf, 0x1Cu);
   }
 
-  [v27 enqueueJob:v29];
+  [v27 enqueueJob:dictionary];
   v39 = PLGatekeeperXPCGetLog();
   if (os_log_type_enabled(v39, OS_LOG_TYPE_DEBUG))
   {
@@ -422,16 +422,16 @@ void __61__PLAssetsdResourceInternalService_batchSaveAssetJobs_reply___block_inv
   (*(*(a1 + 40) + 16))();
 }
 
-- (PLAssetsdResourceInternalService)initWithLibraryServicesManager:(id)a3 trustedCallerBundleID:(id)a4
+- (PLAssetsdResourceInternalService)initWithLibraryServicesManager:(id)manager trustedCallerBundleID:(id)d
 {
-  v7 = a4;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = PLAssetsdResourceInternalService;
-  v8 = [(PLAbstractLibraryServicesManagerService *)&v11 initWithLibraryServicesManager:a3];
+  v8 = [(PLAbstractLibraryServicesManagerService *)&v11 initWithLibraryServicesManager:manager];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_trustedCallerBundleID, a4);
+    objc_storeStrong(&v8->_trustedCallerBundleID, d);
   }
 
   return v9;

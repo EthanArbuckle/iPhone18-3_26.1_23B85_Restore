@@ -1,14 +1,14 @@
 @interface UGCPOIEnrichmentHeaderViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation UGCPOIEnrichmentHeaderViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"UGCPOIEnrichmentHeaderView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"UGCPOIEnrichmentHeaderView" hasInstanceVariable:@"_secondaryLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"UGCPOIEnrichmentHeaderView" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"UGCPOIEnrichmentHeaderView" hasInstanceVariable:@"_secondaryLabel" withType:"UILabel"];
 }
 
 @end

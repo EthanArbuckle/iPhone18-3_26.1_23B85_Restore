@@ -1,61 +1,61 @@
 @interface CALNNotificationCategory
-+ (id)categoryWithIdentifier:(id)a3 actions:(id)a4 hiddenPreviewsBodyPlaceholder:(id)a5 options:(unint64_t)a6;
-+ (id)categoryWithIdentifier:(id)a3 actions:(id)a4 hiddenPreviewsBodyPlaceholder:(id)a5 options:(unint64_t)a6 categorySummaryFormat:(id)a7;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToCategory:(id)a3;
-- (CALNNotificationCategory)initWithIdentifier:(id)a3 actions:(id)a4 hiddenPreviewsBodyPlaceholder:(id)a5 options:(unint64_t)a6 categorySummaryFormat:(id)a7;
++ (id)categoryWithIdentifier:(id)identifier actions:(id)actions hiddenPreviewsBodyPlaceholder:(id)placeholder options:(unint64_t)options;
++ (id)categoryWithIdentifier:(id)identifier actions:(id)actions hiddenPreviewsBodyPlaceholder:(id)placeholder options:(unint64_t)options categorySummaryFormat:(id)format;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToCategory:(id)category;
+- (CALNNotificationCategory)initWithIdentifier:(id)identifier actions:(id)actions hiddenPreviewsBodyPlaceholder:(id)placeholder options:(unint64_t)options categorySummaryFormat:(id)format;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation CALNNotificationCategory
 
-+ (id)categoryWithIdentifier:(id)a3 actions:(id)a4 hiddenPreviewsBodyPlaceholder:(id)a5 options:(unint64_t)a6
++ (id)categoryWithIdentifier:(id)identifier actions:(id)actions hiddenPreviewsBodyPlaceholder:(id)placeholder options:(unint64_t)options
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[a1 alloc] initWithIdentifier:v12 actions:v11 hiddenPreviewsBodyPlaceholder:v10 options:a6 categorySummaryFormat:0];
+  placeholderCopy = placeholder;
+  actionsCopy = actions;
+  identifierCopy = identifier;
+  v13 = [[self alloc] initWithIdentifier:identifierCopy actions:actionsCopy hiddenPreviewsBodyPlaceholder:placeholderCopy options:options categorySummaryFormat:0];
 
   return v13;
 }
 
-+ (id)categoryWithIdentifier:(id)a3 actions:(id)a4 hiddenPreviewsBodyPlaceholder:(id)a5 options:(unint64_t)a6 categorySummaryFormat:(id)a7
++ (id)categoryWithIdentifier:(id)identifier actions:(id)actions hiddenPreviewsBodyPlaceholder:(id)placeholder options:(unint64_t)options categorySummaryFormat:(id)format
 {
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [[a1 alloc] initWithIdentifier:v15 actions:v14 hiddenPreviewsBodyPlaceholder:v13 options:a6 categorySummaryFormat:v12];
+  formatCopy = format;
+  placeholderCopy = placeholder;
+  actionsCopy = actions;
+  identifierCopy = identifier;
+  v16 = [[self alloc] initWithIdentifier:identifierCopy actions:actionsCopy hiddenPreviewsBodyPlaceholder:placeholderCopy options:options categorySummaryFormat:formatCopy];
 
   return v16;
 }
 
-- (CALNNotificationCategory)initWithIdentifier:(id)a3 actions:(id)a4 hiddenPreviewsBodyPlaceholder:(id)a5 options:(unint64_t)a6 categorySummaryFormat:(id)a7
+- (CALNNotificationCategory)initWithIdentifier:(id)identifier actions:(id)actions hiddenPreviewsBodyPlaceholder:(id)placeholder options:(unint64_t)options categorySummaryFormat:(id)format
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  identifierCopy = identifier;
+  actionsCopy = actions;
+  placeholderCopy = placeholder;
+  formatCopy = format;
   v26.receiver = self;
   v26.super_class = CALNNotificationCategory;
   v16 = [(CALNNotificationCategory *)&v26 init];
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [identifierCopy copy];
     identifier = v16->_identifier;
     v16->_identifier = v17;
 
-    v19 = [v13 copy];
+    v19 = [actionsCopy copy];
     actions = v16->_actions;
     v16->_actions = v19;
 
-    v21 = [v14 copy];
+    v21 = [placeholderCopy copy];
     hiddenPreviewsBodyPlaceholder = v16->_hiddenPreviewsBodyPlaceholder;
     v16->_hiddenPreviewsBodyPlaceholder = v21;
 
-    v16->_options = a6;
-    v23 = [v15 copy];
+    v16->_options = options;
+    v23 = [formatCopy copy];
     categorySummaryFormat = v16->_categorySummaryFormat;
     v16->_categorySummaryFormat = v23;
   }
@@ -65,42 +65,42 @@
 
 - (unint64_t)hash
 {
-  v3 = [(CALNNotificationCategory *)self actions];
-  v4 = [v3 hash];
+  actions = [(CALNNotificationCategory *)self actions];
+  v4 = [actions hash];
 
-  v5 = [(CALNNotificationCategory *)self identifier];
-  v6 = [v5 hash] ^ v4;
+  identifier = [(CALNNotificationCategory *)self identifier];
+  v6 = [identifier hash] ^ v4;
 
-  v7 = [(CALNNotificationCategory *)self options];
-  v8 = [(CALNNotificationCategory *)self hiddenPreviewsBodyPlaceholder];
-  v9 = v6 ^ v7 ^ [v8 hash];
+  options = [(CALNNotificationCategory *)self options];
+  hiddenPreviewsBodyPlaceholder = [(CALNNotificationCategory *)self hiddenPreviewsBodyPlaceholder];
+  v9 = v6 ^ options ^ [hiddenPreviewsBodyPlaceholder hash];
 
-  v10 = [(CALNNotificationCategory *)self categorySummaryFormat];
-  v11 = [v10 hash];
+  categorySummaryFormat = [(CALNNotificationCategory *)self categorySummaryFormat];
+  v11 = [categorySummaryFormat hash];
 
   return v9 ^ v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CALNNotificationCategory *)self isEqualToCategory:v4];
+  equalCopy = equal;
+  v5 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(CALNNotificationCategory *)self isEqualToCategory:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToCategory:(id)a3
+- (BOOL)isEqualToCategory:(id)category
 {
-  v4 = a3;
-  if (self == v4)
+  categoryCopy = category;
+  if (self == categoryCopy)
   {
     v17 = 1;
   }
 
   else
   {
-    v5 = [(CALNNotificationCategory *)self actions];
-    v6 = [(CALNNotificationCategory *)v4 actions];
+    actions = [(CALNNotificationCategory *)self actions];
+    actions2 = [(CALNNotificationCategory *)categoryCopy actions];
     v7 = CalEqualObjects();
 
     if (!v7)
@@ -108,8 +108,8 @@
       goto LABEL_7;
     }
 
-    v8 = [(CALNNotificationCategory *)self identifier];
-    v9 = [(CALNNotificationCategory *)v4 identifier];
+    identifier = [(CALNNotificationCategory *)self identifier];
+    identifier2 = [(CALNNotificationCategory *)categoryCopy identifier];
     v10 = CalEqualStrings();
 
     if (!v10)
@@ -117,20 +117,20 @@
       goto LABEL_7;
     }
 
-    v11 = [(CALNNotificationCategory *)self options];
-    if (v11 != [(CALNNotificationCategory *)v4 options])
+    options = [(CALNNotificationCategory *)self options];
+    if (options != [(CALNNotificationCategory *)categoryCopy options])
     {
       goto LABEL_7;
     }
 
-    v12 = [(CALNNotificationCategory *)self hiddenPreviewsBodyPlaceholder];
-    v13 = [(CALNNotificationCategory *)v4 hiddenPreviewsBodyPlaceholder];
+    hiddenPreviewsBodyPlaceholder = [(CALNNotificationCategory *)self hiddenPreviewsBodyPlaceholder];
+    hiddenPreviewsBodyPlaceholder2 = [(CALNNotificationCategory *)categoryCopy hiddenPreviewsBodyPlaceholder];
     v14 = CalEqualStrings();
 
     if (v14)
     {
-      v15 = [(CALNNotificationCategory *)self categorySummaryFormat];
-      v16 = [(CALNNotificationCategory *)v4 categorySummaryFormat];
+      categorySummaryFormat = [(CALNNotificationCategory *)self categorySummaryFormat];
+      categorySummaryFormat2 = [(CALNNotificationCategory *)categoryCopy categorySummaryFormat];
       v17 = CalEqualStrings();
     }
 
@@ -149,12 +149,12 @@ LABEL_7:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(CALNNotificationCategory *)self identifier];
-  v7 = [(CALNNotificationCategory *)self actions];
+  identifier = [(CALNNotificationCategory *)self identifier];
+  actions = [(CALNNotificationCategory *)self actions];
   v8 = CALNStringFromNotificationCategoryOptions([(CALNNotificationCategory *)self options]);
-  v9 = [(CALNNotificationCategory *)self hiddenPreviewsBodyPlaceholder];
-  v10 = [(CALNNotificationCategory *)self categorySummaryFormat];
-  v11 = [v3 stringWithFormat:@"<%@: %p>(identifier = %@, actions = %@, options = %@, hiddenPreviewsBodyPlaceholder = %@, categorySummaryFormat = %@)", v5, self, v6, v7, v8, v9, v10];
+  hiddenPreviewsBodyPlaceholder = [(CALNNotificationCategory *)self hiddenPreviewsBodyPlaceholder];
+  categorySummaryFormat = [(CALNNotificationCategory *)self categorySummaryFormat];
+  v11 = [v3 stringWithFormat:@"<%@: %p>(identifier = %@, actions = %@, options = %@, hiddenPreviewsBodyPlaceholder = %@, categorySummaryFormat = %@)", v5, self, identifier, actions, v8, hiddenPreviewsBodyPlaceholder, categorySummaryFormat];
 
   return v11;
 }

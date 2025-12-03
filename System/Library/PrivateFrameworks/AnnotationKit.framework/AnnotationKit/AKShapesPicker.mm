@@ -1,58 +1,58 @@
 @interface AKShapesPicker
-- (AKShapesPicker)initWithFrame:(CGRect)a3 shapeTags:(id)a4;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (void)_shapeButtonPressed:(id)a3;
+- (AKShapesPicker)initWithFrame:(CGRect)frame shapeTags:(id)tags;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (void)_shapeButtonPressed:(id)pressed;
 - (void)_updateCurrentAppearanceIfNeeded;
 - (void)layoutSubviews;
-- (void)setShapes:(id)a3;
+- (void)setShapes:(id)shapes;
 @end
 
 @implementation AKShapesPicker
 
-- (AKShapesPicker)initWithFrame:(CGRect)a3 shapeTags:(id)a4
+- (AKShapesPicker)initWithFrame:(CGRect)frame shapeTags:(id)tags
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  tagsCopy = tags;
   v16.receiver = self;
   v16.super_class = AKShapesPicker;
-  v10 = [(AKModernToolbarPicker *)&v16 initWithFrame:0 controller:x, y, width, height];
-  if (v10)
+  height = [(AKModernToolbarPicker *)&v16 initWithFrame:0 controller:x, y, width, height];
+  if (height)
   {
-    if ([v9 count])
+    if ([tagsCopy count])
     {
-      v11 = v10;
-      v12 = v9;
+      v11 = height;
+      v12 = tagsCopy;
     }
 
     else
     {
       v12 = &unk_2851BAAA0;
-      v11 = v10;
+      v11 = height;
     }
 
     [(AKShapesPicker *)v11 setShapes:v12];
-    v13 = [(AKShapesPicker *)v10 traitCollection];
-    v10->_style = [v13 userInterfaceStyle];
+    traitCollection = [(AKShapesPicker *)height traitCollection];
+    height->_style = [traitCollection userInterfaceStyle];
 
-    v14 = [MEMORY[0x277D75348] labelColor];
-    [(AKShapesPicker *)v10 setTintColor:v14];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(AKShapesPicker *)height setTintColor:labelColor];
   }
 
-  return v10;
+  return height;
 }
 
-- (void)setShapes:(id)a3
+- (void)setShapes:(id)shapes
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(AKModernToolbarPicker *)self stackview];
-  v6 = [v5 subviews];
-  [v6 makeObjectsPerformSelector:sel_removeFromSuperview];
+  shapesCopy = shapes;
+  stackview = [(AKModernToolbarPicker *)self stackview];
+  subviews = [stackview subviews];
+  [subviews makeObjectsPerformSelector:sel_removeFromSuperview];
 
-  v7 = [v4 copy];
+  v7 = [shapesCopy copy];
   shapes = self->_shapes;
   self->_shapes = v7;
 
@@ -60,7 +60,7 @@
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  obj = v4;
+  obj = shapesCopy;
   v9 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v9)
   {
@@ -75,35 +75,35 @@ LABEL_3:
         objc_enumerationMutation(obj);
       }
 
-      v12 = [*(*(&v28 + 1) + 8 * v11) longValue];
-      v13 = v12 - 764000;
-      if ((v12 - 764000) > 7 || ((0xA5u >> v13) & 1) == 0)
+      longValue = [*(*(&v28 + 1) + 8 * v11) longValue];
+      v13 = longValue - 764000;
+      if ((longValue - 764000) > 7 || ((0xA5u >> v13) & 1) == 0)
       {
         break;
       }
 
-      v14 = v12;
+      v14 = longValue;
       v15 = *(&off_278C7BA08 + v13);
       v16 = [MEMORY[0x277D755B8] systemImageNamed:*(&off_278C7BA48 + v13)];
       v17 = [MEMORY[0x277D755D0] configurationWithScale:3];
       v18 = [v16 imageByApplyingSymbolConfiguration:v17];
 
-      v19 = [v18 configuration];
-      v20 = [v19 _configurationIgnoringDynamicType];
-      v21 = [v18 imageWithConfiguration:v20];
+      configuration = [v18 configuration];
+      _configurationIgnoringDynamicType = [configuration _configurationIgnoringDynamicType];
+      v21 = [v18 imageWithConfiguration:_configurationIgnoringDynamicType];
 
       v22 = [MEMORY[0x277D75220] buttonWithType:1];
       [v22 setTranslatesAutoresizingMaskIntoConstraints:0];
-      v23 = [v22 widthAnchor];
-      v24 = [v23 constraintEqualToConstant:36.0];
+      widthAnchor = [v22 widthAnchor];
+      v24 = [widthAnchor constraintEqualToConstant:36.0];
       [v24 setActive:1];
 
       [v22 addTarget:self action:sel__shapeButtonPressed_ forControlEvents:64];
       [v22 setImage:v21 forState:0];
       [v22 setTag:v14];
       [v22 setAccessibilityIdentifier:v15];
-      v25 = [(AKModernToolbarPicker *)self stackview];
-      [v25 addArrangedSubview:v22];
+      stackview2 = [(AKModernToolbarPicker *)self stackview];
+      [stackview2 addArrangedSubview:v22];
 
       if (v10 == ++v11)
       {
@@ -119,11 +119,11 @@ LABEL_3:
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  v4 = [(AKShapesPicker *)self shapes];
-  v5 = [v4 count] * 45.0 + -9.0;
+  height = fits.height;
+  shapes = [(AKShapesPicker *)self shapes];
+  v5 = [shapes count] * 45.0 + -9.0;
 
   v6 = v5;
   v7 = height;
@@ -132,21 +132,21 @@ LABEL_3:
   return result;
 }
 
-- (void)_shapeButtonPressed:(id)a3
+- (void)_shapeButtonPressed:(id)pressed
 {
-  [a3 tag];
+  [pressed tag];
 
   MEMORY[0x2821F9670](self, sel_setCurrentTag_);
 }
 
 - (void)_updateCurrentAppearanceIfNeeded
 {
-  v3 = [(AKShapesPicker *)self traitCollection];
-  v4 = [v3 userInterfaceStyle];
+  traitCollection = [(AKShapesPicker *)self traitCollection];
+  userInterfaceStyle = [traitCollection userInterfaceStyle];
 
-  if (v4 != self->_style)
+  if (userInterfaceStyle != self->_style)
   {
-    self->_style = v4;
+    self->_style = userInterfaceStyle;
     shapes = self->_shapes;
 
     [(AKShapesPicker *)self setShapes:shapes];

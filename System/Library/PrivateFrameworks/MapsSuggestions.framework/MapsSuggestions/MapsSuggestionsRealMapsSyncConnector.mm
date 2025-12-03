@@ -1,15 +1,15 @@
 @interface MapsSuggestionsRealMapsSyncConnector
-- (BOOL)allContentOfType:(int64_t)a3 handler:(id)a4;
-- (BOOL)allContentOfType:(int64_t)a3 withPredicate:(id)a4 handler:(id)a5;
-- (BOOL)queryMapsSyncWithRTMapItemMuid:(unint64_t)a3 name:(id)a4 address:(id)a5 completion:(id)a6;
+- (BOOL)allContentOfType:(int64_t)type handler:(id)handler;
+- (BOOL)allContentOfType:(int64_t)type withPredicate:(id)predicate handler:(id)handler;
+- (BOOL)queryMapsSyncWithRTMapItemMuid:(unint64_t)muid name:(id)name address:(id)address completion:(id)completion;
 - (MapsSuggestionsMapsSyncConnectorDelegate)delegate;
 - (MapsSuggestionsRealMapsSyncConnector)init;
 - (NSString)uniqueName;
-- (id)MapsSyncReviewedPlace_fetchWithMuids:(id)a3;
-- (id)_predicateForRTMapItemQueryWithMuid:(void *)a3 name:(void *)a4 address:;
-- (id)saveNewReviewedPlaceWithMuid:(unint64_t)a3 lastSuggestedReviewDate:(id)a4;
-- (void)deleteObjects:(id)a3 completion:(id)a4;
-- (void)storeDidChange:(id)a3;
+- (id)MapsSyncReviewedPlace_fetchWithMuids:(id)muids;
+- (id)_predicateForRTMapItemQueryWithMuid:(void *)muid name:(void *)name address:;
+- (id)saveNewReviewedPlaceWithMuid:(unint64_t)muid lastSuggestedReviewDate:(id)date;
+- (void)deleteObjects:(id)objects completion:(id)completion;
+- (void)storeDidChange:(id)change;
 @end
 
 @implementation MapsSuggestionsRealMapsSyncConnector
@@ -32,8 +32,8 @@
     storeSubscriptionTypes = v2->storeSubscriptionTypes;
     v2->storeSubscriptionTypes = v3;
 
-    v5 = [MEMORY[0x1E69AE100] sharedStore];
-    [v5 subscribe:v2];
+    mEMORY[0x1E69AE100] = [MEMORY[0x1E69AE100] sharedStore];
+    [mEMORY[0x1E69AE100] subscribe:v2];
   }
 
   return v2;
@@ -46,14 +46,14 @@
   return WeakRetained;
 }
 
-- (id)MapsSyncReviewedPlace_fetchWithMuids:(id)a3
+- (id)MapsSyncReviewedPlace_fetchWithMuids:(id)muids
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v3 = MEMORY[0x1E69AE0F8];
-  v4 = a3;
+  muidsCopy = muids;
   v5 = [[v3 alloc] initWithOffset:0 limit:1];
   v6 = MEMORY[0x1E69AE110];
-  v15[0] = v4;
+  v15[0] = muidsCopy;
   v7 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
   v8 = [v6 queryPredicateWithFormat:@"muid IN %@" argumentArray:v7];
 
@@ -61,21 +61,21 @@
   v10 = objc_alloc_init(MEMORY[0x1E69AE0F0]);
   v14 = 0;
   v11 = [v10 fetchSyncWithOptions:v9 error:&v14];
-  v12 = [v11 firstObject];
+  firstObject = [v11 firstObject];
 
-  return v12;
+  return firstObject;
 }
 
-- (id)saveNewReviewedPlaceWithMuid:(unint64_t)a3 lastSuggestedReviewDate:(id)a4
+- (id)saveNewReviewedPlaceWithMuid:(unint64_t)muid lastSuggestedReviewDate:(id)date
 {
   v5 = MEMORY[0x1E69AE0E8];
-  v6 = a4;
+  dateCopy = date;
   v7 = objc_alloc_init(v5);
   v8 = objc_alloc_init(MEMORY[0x1E69AE090]);
   [v7 setAnonymousCredential:v8];
 
-  [v7 setMuid:a3];
-  [v7 setLastSuggestedReviewDate:v6];
+  [v7 setMuid:muid];
+  [v7 setLastSuggestedReviewDate:dateCopy];
 
   if (v7)
   {
@@ -85,12 +85,12 @@
   return v7;
 }
 
-- (BOOL)allContentOfType:(int64_t)a3 withPredicate:(id)a4 handler:(id)a5
+- (BOOL)allContentOfType:(int64_t)type withPredicate:(id)predicate handler:(id)handler
 {
   v34 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = a5;
-  if (!v8)
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  if (!handlerCopy)
   {
     v11 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -113,9 +113,9 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a3 <= 1)
+  if (type <= 1)
   {
-    if (!a3)
+    if (!type)
     {
       v11 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
@@ -135,14 +135,14 @@ LABEL_19:
       goto LABEL_19;
     }
 
-    if (a3 == 1)
+    if (type == 1)
     {
       v9 = objc_alloc_init(MEMORY[0x1E69AE0D0]);
       v23[0] = MEMORY[0x1E69E9820];
       v23[1] = 3221225472;
       v23[2] = __79__MapsSuggestionsRealMapsSyncConnector_allContentOfType_withPredicate_handler___block_invoke;
       v23[3] = &unk_1E81F5230;
-      v24 = v8;
+      v24 = handlerCopy;
       [v9 fetchWithCompletionHandler:v23];
 
       v10 = 1;
@@ -153,14 +153,14 @@ LABEL_19:
     goto LABEL_14;
   }
 
-  if (a3 == 2)
+  if (type == 2)
   {
     v17 = objc_alloc_init(MEMORY[0x1E69AE0A0]);
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __79__MapsSuggestionsRealMapsSyncConnector_allContentOfType_withPredicate_handler___block_invoke_2;
     v21[3] = &unk_1E81F5230;
-    v22 = v8;
+    v22 = handlerCopy;
     [v17 fetchWithCompletionHandler:v21];
 
     v10 = 1;
@@ -168,7 +168,7 @@ LABEL_19:
     goto LABEL_20;
   }
 
-  if (a3 != 3)
+  if (type != 3)
   {
 LABEL_14:
     v11 = GEOFindOrCreateLog();
@@ -200,7 +200,7 @@ LABEL_14:
     v14 = objc_alloc(MEMORY[0x1E69AE108]);
     v25 = v13;
     v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v25 count:1];
-    v11 = [v14 initWithPredicate:v7 sortDescriptors:v15 range:0];
+    v11 = [v14 initWithPredicate:predicateCopy sortDescriptors:v15 range:0];
   }
 
   else
@@ -213,7 +213,7 @@ LABEL_14:
   v19[1] = 3221225472;
   v19[2] = __79__MapsSuggestionsRealMapsSyncConnector_allContentOfType_withPredicate_handler___block_invoke_3;
   v19[3] = &unk_1E81F5230;
-  v20 = v8;
+  v20 = handlerCopy;
   [v18 fetchWithOptions:v11 completionHandler:v19];
 
   v10 = 1;
@@ -279,10 +279,10 @@ void __79__MapsSuggestionsRealMapsSyncConnector_allContentOfType_withPredicate_h
   }
 }
 
-- (BOOL)allContentOfType:(int64_t)a3 handler:(id)a4
+- (BOOL)allContentOfType:(int64_t)type handler:(id)handler
 {
-  v6 = a4;
-  if (a3 == 3)
+  handlerCopy = handler;
+  if (type == 3)
   {
     v7 = [MEMORY[0x1E69AE110] mapsFavoritesPredicateWithHidden:0 includeNearbyTransit:0];
   }
@@ -292,18 +292,18 @@ void __79__MapsSuggestionsRealMapsSyncConnector_allContentOfType_withPredicate_h
     v7 = 0;
   }
 
-  v8 = [(MapsSuggestionsRealMapsSyncConnector *)self allContentOfType:a3 withPredicate:v7 handler:v6];
+  v8 = [(MapsSuggestionsRealMapsSyncConnector *)self allContentOfType:type withPredicate:v7 handler:handlerCopy];
 
   return v8;
 }
 
-- (void)deleteObjects:(id)a3 completion:(id)a4
+- (void)deleteObjects:(id)objects completion:(id)completion
 {
   v5 = MEMORY[0x1E69AE100];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedStore];
-  [v8 deleteWithObjects:v7 completionHandler:v6];
+  completionCopy = completion;
+  objectsCopy = objects;
+  sharedStore = [v5 sharedStore];
+  [sharedStore deleteWithObjects:objectsCopy completionHandler:completionCopy];
 }
 
 - (NSString)uniqueName
@@ -313,15 +313,15 @@ void __79__MapsSuggestionsRealMapsSyncConnector_allContentOfType_withPredicate_h
   return [v2 description];
 }
 
-- (void)storeDidChange:(id)a3
+- (void)storeDidChange:(id)change
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  changeCopy = change;
   v5 = GEOFindOrCreateLog();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v21 = v4;
+    v21 = changeCopy;
     _os_log_impl(&dword_1C5126000, v5, OS_LOG_TYPE_DEBUG, "queryContentsDidChangeWithTypes: %@", buf, 0xCu);
   }
 
@@ -335,7 +335,7 @@ void __79__MapsSuggestionsRealMapsSyncConnector_allContentOfType_withPredicate_h
       v18 = 0u;
       v15 = 0u;
       v16 = 0u;
-      v8 = v4;
+      v8 = changeCopy;
       v9 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
       if (!v9)
       {
@@ -420,13 +420,13 @@ void __95__MapsSuggestionsRealMapsSyncConnector_queryMapsSyncWithRTMapItemMuid_n
   }
 }
 
-- (id)_predicateForRTMapItemQueryWithMuid:(void *)a3 name:(void *)a4 address:
+- (id)_predicateForRTMapItemQueryWithMuid:(void *)muid name:(void *)name address:
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (a1)
+  muidCopy = muid;
+  nameCopy = name;
+  v9 = nameCopy;
+  if (self)
   {
     if (a2)
     {
@@ -434,37 +434,37 @@ void __95__MapsSuggestionsRealMapsSyncConnector_queryMapsSyncWithRTMapItemMuid_n
       v11 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a2];
       v16[0] = v11;
       v12 = [MEMORY[0x1E695DEC8] arrayWithObjects:v16 count:1];
-      a1 = [v10 queryPredicateWithFormat:@"muid == %@" argumentArray:v12];
+      self = [v10 queryPredicateWithFormat:@"muid == %@" argumentArray:v12];
 
 LABEL_7:
       goto LABEL_8;
     }
 
-    a1 = 0;
-    if (v7 && v8)
+    self = 0;
+    if (muidCopy && nameCopy)
     {
       v13 = MEMORY[0x1E69AE110];
-      v15[0] = v7;
-      v15[1] = v8;
+      v15[0] = muidCopy;
+      v15[1] = nameCopy;
       v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:2];
-      a1 = [v13 queryPredicateWithFormat:@"mapItemName == %@ AND mapItemAddress == %@" argumentArray:v11];
+      self = [v13 queryPredicateWithFormat:@"mapItemName == %@ AND mapItemAddress == %@" argumentArray:v11];
       goto LABEL_7;
     }
   }
 
 LABEL_8:
 
-  return a1;
+  return self;
 }
 
-- (BOOL)queryMapsSyncWithRTMapItemMuid:(unint64_t)a3 name:(id)a4 address:(id)a5 completion:(id)a6
+- (BOOL)queryMapsSyncWithRTMapItemMuid:(unint64_t)muid name:(id)name address:(id)address completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v11 = MEMORY[0x1E69AE0F8];
-  v12 = a5;
-  v13 = a4;
+  addressCopy = address;
+  nameCopy = name;
   v14 = [[v11 alloc] initWithOffset:0 limit:1];
-  v15 = [(MapsSuggestionsRealMapsSyncConnector *)self _predicateForRTMapItemQueryWithMuid:a3 name:v13 address:v12];
+  v15 = [(MapsSuggestionsRealMapsSyncConnector *)self _predicateForRTMapItemQueryWithMuid:muid name:nameCopy address:addressCopy];
 
   if (v15)
   {
@@ -474,7 +474,7 @@ LABEL_8:
     v19[1] = 3221225472;
     v19[2] = __95__MapsSuggestionsRealMapsSyncConnector_queryMapsSyncWithRTMapItemMuid_name_address_completion___block_invoke;
     v19[3] = &unk_1E81F5230;
-    v20 = v10;
+    v20 = completionCopy;
     [v17 fetchWithOptions:v16 completionHandler:v19];
   }
 

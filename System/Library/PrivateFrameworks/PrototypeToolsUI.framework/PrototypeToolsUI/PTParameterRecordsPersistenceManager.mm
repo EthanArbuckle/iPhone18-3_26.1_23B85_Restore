@@ -1,8 +1,8 @@
 @interface PTParameterRecordsPersistenceManager
 - (PTParameterRecordsPersistenceManager)init;
 - (id)createParameterRecordsFromArchiveDictionary;
-- (void)_writeToDiskWithParameterRecords:(id)a3;
-- (void)writeToDisk:(id)a3;
+- (void)_writeToDiskWithParameterRecords:(id)records;
+- (void)writeToDisk:(id)disk;
 @end
 
 @implementation PTParameterRecordsPersistenceManager
@@ -27,9 +27,9 @@
 
 - (id)createParameterRecordsFromArchiveDictionary
 {
-  v2 = [(PTParameterRecordsPersistenceManager *)self path];
+  path = [(PTParameterRecordsPersistenceManager *)self path];
   v15 = 0;
-  v3 = [NSData dataWithContentsOfFile:v2 options:0 error:&v15];
+  v3 = [NSData dataWithContentsOfFile:path options:0 error:&v15];
   v4 = v15;
 
   if (v4)
@@ -73,29 +73,29 @@
   return v12;
 }
 
-- (void)_writeToDiskWithParameterRecords:(id)a3
+- (void)_writeToDiskWithParameterRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   parameterRecordsArchiveQueue = self->_parameterRecordsArchiveQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100003448;
   v7[3] = &unk_1000188E0;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = recordsCopy;
+  selfCopy = self;
+  v6 = recordsCopy;
   dispatch_async(parameterRecordsArchiveQueue, v7);
 }
 
-- (void)writeToDisk:(id)a3
+- (void)writeToDisk:(id)disk
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100003678;
   v4[3] = &unk_1000188E0;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  diskCopy = disk;
+  v3 = diskCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 

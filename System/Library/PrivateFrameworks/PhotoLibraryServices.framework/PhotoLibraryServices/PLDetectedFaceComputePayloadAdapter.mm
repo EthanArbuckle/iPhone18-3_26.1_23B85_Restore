@@ -1,26 +1,26 @@
 @interface PLDetectedFaceComputePayloadAdapter
 - (BOOL)isValidForJournalPersistence;
-- (id)payloadForChangedKeys:(id)a3;
+- (id)payloadForChangedKeys:(id)keys;
 - (id)payloadID;
-- (id)payloadIDForTombstone:(id)a3;
+- (id)payloadIDForTombstone:(id)tombstone;
 @end
 
 @implementation PLDetectedFaceComputePayloadAdapter
 
-- (id)payloadIDForTombstone:(id)a3
+- (id)payloadIDForTombstone:(id)tombstone
 {
-  v3 = [a3 objectForKeyedSubscript:@"uuid"];
+  v3 = [tombstone objectForKeyedSubscript:@"uuid"];
   v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
 
   return v4;
 }
 
-- (id)payloadForChangedKeys:(id)a3
+- (id)payloadForChangedKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   if ([(PLDetectedFaceComputePayloadAdapter *)self isValidForJournalPersistence])
   {
-    v5 = [(PLManagedObjectJournalEntryPayload *)[PLDetectedFaceComputeJournalEntryPayload alloc] initWithInsertAdapter:self changedKeys:v4];
+    v5 = [(PLManagedObjectJournalEntryPayload *)[PLDetectedFaceComputeJournalEntryPayload alloc] initWithInsertAdapter:self changedKeys:keysCopy];
   }
 
   else
@@ -33,18 +33,18 @@
 
 - (id)payloadID
 {
-  v2 = [(PLDetectedFaceComputePayloadAdapter *)self face];
-  v3 = [v2 uuid];
-  v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:v3];
+  face = [(PLDetectedFaceComputePayloadAdapter *)self face];
+  uuid = [face uuid];
+  v4 = [PLJournalEntryPayloadIDFactory payloadIDWithUUIDString:uuid];
 
   return v4;
 }
 
 - (BOOL)isValidForJournalPersistence
 {
-  v3 = [(PLDetectedFaceComputePayloadAdapter *)self face];
-  v4 = [v3 assetForFace];
-  if (!v4)
+  face = [(PLDetectedFaceComputePayloadAdapter *)self face];
+  assetForFace = [face assetForFace];
+  if (!assetForFace)
   {
     v9 = 0;
 LABEL_9:
@@ -52,20 +52,20 @@ LABEL_9:
     return v9;
   }
 
-  v5 = v4;
-  v6 = [(PLDetectedFaceComputePayloadAdapter *)self face];
-  v7 = [v6 assetForFace];
-  v8 = [v7 trashedState];
+  v5 = assetForFace;
+  face2 = [(PLDetectedFaceComputePayloadAdapter *)self face];
+  assetForFace2 = [face2 assetForFace];
+  trashedState = [assetForFace2 trashedState];
 
-  if (!v8)
+  if (!trashedState)
   {
-    v3 = [(PLDetectedFaceComputePayloadAdapter *)self face];
-    v10 = [v3 personForFace];
-    if (v10)
+    face = [(PLDetectedFaceComputePayloadAdapter *)self face];
+    personForFace = [face personForFace];
+    if (personForFace)
     {
-      v11 = [(PLDetectedFaceComputePayloadAdapter *)self face];
-      v12 = [v11 personForFace];
-      v9 = [v12 verifiedType] != 0;
+      face3 = [(PLDetectedFaceComputePayloadAdapter *)self face];
+      personForFace2 = [face3 personForFace];
+      v9 = [personForFace2 verifiedType] != 0;
     }
 
     else

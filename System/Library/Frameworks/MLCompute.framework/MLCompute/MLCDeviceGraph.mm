@@ -1,33 +1,33 @@
 @interface MLCDeviceGraph
-+ (id)deviceGraphWithLayers:(id)a3 device:(id)a4;
++ (id)deviceGraphWithLayers:(id)layers device:(id)device;
 - (NSMutableSet)liveInputs;
 - (NSMutableSet)liveOutputs;
-- (id)initDeviceGraphWithLayers:(id)a3 device:(id)a4;
+- (id)initDeviceGraphWithLayers:(id)layers device:(id)device;
 @end
 
 @implementation MLCDeviceGraph
 
-+ (id)deviceGraphWithLayers:(id)a3 device:(id)a4
++ (id)deviceGraphWithLayers:(id)layers device:(id)device
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initDeviceGraphWithLayers:v7 device:v6];
+  deviceCopy = device;
+  layersCopy = layers;
+  v8 = [[self alloc] initDeviceGraphWithLayers:layersCopy device:deviceCopy];
 
   return v8;
 }
 
-- (id)initDeviceGraphWithLayers:(id)a3 device:(id)a4
+- (id)initDeviceGraphWithLayers:(id)layers device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  layersCopy = layers;
+  deviceCopy = device;
   v15.receiver = self;
   v15.super_class = MLCDeviceGraph;
   v8 = [(MLCDeviceGraph *)&v15 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_device, a4);
-    v10 = [v6 mutableCopy];
+    objc_storeStrong(&v8->_device, device);
+    v10 = [layersCopy mutableCopy];
     graphLayerList = v9->_graphLayerList;
     v9->_graphLayerList = v10;
 

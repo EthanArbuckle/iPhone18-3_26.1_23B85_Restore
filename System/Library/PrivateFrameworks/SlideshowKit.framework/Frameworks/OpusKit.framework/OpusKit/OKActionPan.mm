@@ -1,26 +1,26 @@
 @interface OKActionPan
-+ (id)panActionWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 translation:(CGPoint)a6 velocity:(CGPoint)a7 direction:(unint64_t)a8 context:(id)a9;
-+ (void)setupJavascriptContext:(id)a3;
++ (id)panActionWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count translation:(CGPoint)translation velocity:(CGPoint)velocity direction:(unint64_t)direction context:(id)context;
++ (void)setupJavascriptContext:(id)context;
 - (CGPoint)translation;
 - (CGPoint)velocity;
 - (OKActionPan)init;
-- (OKActionPan)initWithCoder:(id)a3;
+- (OKActionPan)initWithCoder:(id)coder;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation OKActionPan
 
-+ (id)panActionWithState:(unint64_t)a3 location:(CGPoint)a4 touchCount:(unint64_t)a5 translation:(CGPoint)a6 velocity:(CGPoint)a7 direction:(unint64_t)a8 context:(id)a9
++ (id)panActionWithState:(unint64_t)state location:(CGPoint)location touchCount:(unint64_t)count translation:(CGPoint)translation velocity:(CGPoint)velocity direction:(unint64_t)direction context:(id)context
 {
-  y = a7.y;
-  x = a7.x;
-  v12 = a6.y;
-  v13 = a6.x;
-  v14 = [[OKActionPan alloc] initWithState:a3 location:a5 touchCount:a9 context:a4.x, a4.y];
+  y = velocity.y;
+  x = velocity.x;
+  v12 = translation.y;
+  v13 = translation.x;
+  v14 = [[OKActionPan alloc] initWithState:state location:count touchCount:context context:location.x, location.y];
   [(OKActionPan *)v14 setTranslation:v13, v12];
   [(OKActionPan *)v14 setVelocity:x, y];
-  [(OKActionPan *)v14 setDirection:a8];
+  [(OKActionPan *)v14 setDirection:direction];
 
   return v14;
 }
@@ -48,7 +48,7 @@
   [(OKAction *)&v2 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = OKActionPan;
@@ -57,25 +57,25 @@
   v6 = *(MEMORY[0x277CBF348] + 8);
   if (self->_translation.x != *MEMORY[0x277CBF348] || self->_translation.y != v6)
   {
-    [a3 encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGPoint:"), @"translation"}];
+    [coder encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGPoint:"), @"translation"}];
   }
 
   if (self->_velocity.x != v5 || self->_velocity.y != v6)
   {
-    [a3 encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGPoint:"), @"velocity"}];
+    [coder encodeObject:objc_msgSend(MEMORY[0x277CCAE60] forKey:{"valueWithCGPoint:"), @"velocity"}];
   }
 
-  [a3 encodeInt32:LODWORD(self->_direction) forKey:@"direction"];
+  [coder encodeInt32:LODWORD(self->_direction) forKey:@"direction"];
 }
 
-- (OKActionPan)initWithCoder:(id)a3
+- (OKActionPan)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = OKActionPan;
   v4 = [(OKAction *)&v12 initWithCoder:?];
   if (v4)
   {
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"translation"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"translation"];
     if (v5)
     {
       [v5 CGPointValue];
@@ -83,7 +83,7 @@
       v4->_translation.y = v7;
     }
 
-    v8 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"velocity"];
+    v8 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"velocity"];
     if (v8)
     {
       [v8 CGPointValue];
@@ -91,17 +91,17 @@
       v4->_velocity.y = v10;
     }
 
-    v4->_direction = [a3 decodeInt32ForKey:@"direction"];
+    v4->_direction = [coder decodeInt32ForKey:@"direction"];
   }
 
   return v4;
 }
 
-+ (void)setupJavascriptContext:(id)a3
++ (void)setupJavascriptContext:(id)context
 {
   v4 = objc_opt_class();
 
-  [a3 setObject:v4 forKeyedSubscript:@"OKActionPan"];
+  [context setObject:v4 forKeyedSubscript:@"OKActionPan"];
 }
 
 - (CGPoint)translation

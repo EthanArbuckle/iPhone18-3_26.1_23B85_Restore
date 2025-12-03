@@ -1,16 +1,16 @@
 @interface PKPrinter
-+ (BOOL)printerLookupWithName:(id)a3 andTimeout:(double)a4;
-+ (PKPrinter)printerWithBonjourEndpoint:(id)a3 discoveryTimeout:(double)a4 completionHandler:(id)a5;
-+ (PKPrinter)printerWithEndpointData:(id)a3 discoveryTime:(double)a4 completionHandler:(id)a5;
-+ (PKPrinter)printerWithName:(id)a3;
-+ (PKPrinter)printerWithName:(id)a3 discoveryTimeout:(double)a4;
-+ (PKPrinter)printerWithName:(id)a3 discoveryTimeout:(double)a4 completionHandler:(id)a5;
-+ (PKPrinter)printerWithURL:(id)a3 discoveryTimeout:(double)a4 completionHandler:(id)a5;
-+ (PKPrinter)printerWithiCloudPrinter:(id)a3 discoveryTime:(double)a4 completionHandler:(id)a5;
++ (BOOL)printerLookupWithName:(id)name andTimeout:(double)timeout;
++ (PKPrinter)printerWithBonjourEndpoint:(id)endpoint discoveryTimeout:(double)timeout completionHandler:(id)handler;
++ (PKPrinter)printerWithEndpointData:(id)data discoveryTime:(double)time completionHandler:(id)handler;
++ (PKPrinter)printerWithName:(id)name;
++ (PKPrinter)printerWithName:(id)name discoveryTimeout:(double)timeout;
++ (PKPrinter)printerWithName:(id)name discoveryTimeout:(double)timeout completionHandler:(id)handler;
++ (PKPrinter)printerWithURL:(id)l discoveryTimeout:(double)timeout completionHandler:(id)handler;
++ (PKPrinter)printerWithiCloudPrinter:(id)printer discoveryTime:(double)time completionHandler:(id)handler;
 - (BOOL)_allowedToPrintToThisPrinter;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFromMCProfile;
-- (BOOL)isPaperReady:(id)a3;
+- (BOOL)isPaperReady:(id)ready;
 - (BOOL)knowsReadyPaperList;
 - (NSDictionary)printInfoSupported;
 - (NSString)bonjourDisplayName;
@@ -20,51 +20,51 @@
 - (NSString)uuid;
 - (NSURL)nearbyURL;
 - (NSURL)printerURL;
-- (id)availableRollPapersPreferBorderless:(BOOL)a3;
+- (id)availableRollPapersPreferBorderless:(BOOL)borderless;
 - (id)debugDescription;
-- (id)initPKPrinterWithBrowseInfo:(id)a3;
-- (id)matchedPaper:(id)a3 preferBorderless:(BOOL)a4 withDuplexMode:(id)a5 didMatch:(BOOL *)a6;
-- (id)paperListForDuplexMode:(id)a3;
-- (id)papersForDocumentWithSize:(CGSize)a3 scaleUpOnRoll:(BOOL)a4 andDuplex:(BOOL)a5;
-- (id)papersForPhotoWithSize:(CGSize)a3;
+- (id)initPKPrinterWithBrowseInfo:(id)info;
+- (id)matchedPaper:(id)paper preferBorderless:(BOOL)borderless withDuplexMode:(id)mode didMatch:(BOOL *)match;
+- (id)paperListForDuplexMode:(id)mode;
+- (id)papersForDocumentWithSize:(CGSize)size scaleUpOnRoll:(BOOL)roll andDuplex:(BOOL)duplex;
+- (id)papersForPhotoWithSize:(CGSize)size;
 - (int64_t)jobAccountIDSupport;
 - (int64_t)kind;
-- (int64_t)sendData:(const char *)a3 ofLength:(int64_t)a4;
-- (int64_t)startJob:(id)a3 ofType:(id)a4;
+- (int64_t)sendData:(const char *)data ofLength:(int64_t)length;
+- (int64_t)startJob:(id)job ofType:(id)type;
 - (unint64_t)jobTypesSupported;
-- (void)_checkAvailable:(double)a3 queue:(id)a4 completionHandler:(id)a5;
-- (void)_identifySelf:(id)a3;
+- (void)_checkAvailable:(double)available queue:(id)queue completionHandler:(id)handler;
+- (void)_identifySelf:(id)self;
 - (void)_setInitialAccessStateFromBrowseInfo;
-- (void)_updateAccessState:(int64_t)a3;
-- (void)_updateDescription:(id)a3 browseInfo:(id)a4;
-- (void)abortJobCompletionHandler:(id)a3;
+- (void)_updateAccessState:(int64_t)state;
+- (void)_updateDescription:(id)description browseInfo:(id)info;
+- (void)abortJobCompletionHandler:(id)handler;
 - (void)cancelUnlock;
-- (void)finalizeJob:(BOOL)a3 completionHandler:(id)a4;
-- (void)finishJobCompletionHandler:(id)a3;
-- (void)getSupplyLevels:(id)a3;
+- (void)finalizeJob:(BOOL)job completionHandler:(id)handler;
+- (void)finishJobCompletionHandler:(id)handler;
+- (void)getSupplyLevels:(id)levels;
 - (void)identifySelf;
-- (void)pollForPrinterAttributes:(id)a3 completionHandler:(id)a4;
-- (void)pollForPrinterStatusQueue:(id)a3 completionHandler:(id)a4;
-- (void)printURL:(id)a3 ofType:(id)a4 printSettings:(id)a5 completionHandler:(id)a6;
-- (void)printURL:(id)a3 ofType:(id)a4 printSettings:(id)a5 completionHandlerWithLocalJobNumber:(id)a6;
+- (void)pollForPrinterAttributes:(id)attributes completionHandler:(id)handler;
+- (void)pollForPrinterStatusQueue:(id)queue completionHandler:(id)handler;
+- (void)printURL:(id)l ofType:(id)type printSettings:(id)settings completionHandler:(id)handler;
+- (void)printURL:(id)l ofType:(id)type printSettings:(id)settings completionHandlerWithLocalJobNumber:(id)number;
 - (void)removeCredentialsFromKeychain;
-- (void)unlockWithCompletionHandler:(id)a3;
+- (void)unlockWithCompletionHandler:(id)handler;
 - (void)updateiCloudPrinterInfo;
-- (void)withDescriptionAsync:(id)a3;
+- (void)withDescriptionAsync:(id)async;
 @end
 
 @implementation PKPrinter
 
-- (id)initPKPrinterWithBrowseInfo:(id)a3
+- (id)initPKPrinterWithBrowseInfo:(id)info
 {
-  v5 = a3;
+  infoCopy = info;
   v10.receiver = self;
   v10.super_class = PKPrinter;
   v6 = [(PKPrinter *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_browseInfo, a3);
+    objc_storeStrong(&v6->_browseInfo, info);
     printerDescription = v7->_printerDescription;
     v7->_printerDescription = 0;
 
@@ -85,9 +85,9 @@
       return 1;
     }
 
-    v5 = [(PKPrinter *)self printerURL];
-    v6 = [v5 absoluteString];
-    v7 = [PKDefaults uriMatchesMCProfileAdded:v6];
+    printerURL = [(PKPrinter *)self printerURL];
+    absoluteString = [printerURL absoluteString];
+    v7 = [PKDefaults uriMatchesMCProfileAdded:absoluteString];
 
     if (v7)
     {
@@ -98,7 +98,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 2080;
       v12 = "";
       v4 = "%@: managed configuration requires only known printers%s";
@@ -112,7 +112,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 138412546;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 2080;
       v12 = "";
       v4 = "%@: ipps is required for this printer%s";
@@ -124,23 +124,23 @@ LABEL_10:
   return 0;
 }
 
-+ (PKPrinter)printerWithURL:(id)a3 discoveryTimeout:(double)a4 completionHandler:(id)a5
++ (PKPrinter)printerWithURL:(id)l discoveryTimeout:(double)timeout completionHandler:(id)handler
 {
-  v10 = a5;
-  v8 = [PKPrinterBonjourEndpoint endpointWithURL:a3];
-  [a1 printerWithBonjourEndpoint:v8 discoveryTimeout:v10 completionHandler:a4];
+  handlerCopy = handler;
+  v8 = [PKPrinterBonjourEndpoint endpointWithURL:l];
+  [self printerWithBonjourEndpoint:v8 discoveryTimeout:handlerCopy completionHandler:timeout];
 
   return result;
 }
 
-+ (PKPrinter)printerWithName:(id)a3 discoveryTimeout:(double)a4 completionHandler:(id)a5
++ (PKPrinter)printerWithName:(id)name discoveryTimeout:(double)timeout completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if ([v8 hasPrefix:@"ipp:"] & 1) != 0 || (objc_msgSend(v8, "hasPrefix:", @"ipps:"))
+  nameCopy = name;
+  handlerCopy = handler;
+  if ([nameCopy hasPrefix:@"ipp:"] & 1) != 0 || (objc_msgSend(nameCopy, "hasPrefix:", @"ipps:"))
   {
-    v10 = PKURLWithString(v8);
+    v10 = PKURLWithString(nameCopy);
     if (v10)
     {
       v11 = [PKPrinterBonjourEndpoint endpointWithURL:v10];
@@ -159,11 +159,11 @@ LABEL_10:
 
   else
   {
-    v11 = [PKPrinterBonjourEndpoint endpointWithBonjourString:v8];
+    v11 = [PKPrinterBonjourEndpoint endpointWithBonjourString:nameCopy];
     if (v11)
     {
 LABEL_7:
-      [a1 printerWithBonjourEndpoint:v11 discoveryTimeout:v9 completionHandler:a4];
+      [self printerWithBonjourEndpoint:v11 discoveryTimeout:handlerCopy completionHandler:timeout];
       goto LABEL_12;
     }
   }
@@ -172,34 +172,34 @@ LABEL_7:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     v14 = 138412802;
-    v15 = a1;
+    selfCopy = self;
     v16 = 2112;
-    v17 = v8;
+    v17 = nameCopy;
     v18 = 2080;
     v19 = "";
     _os_log_impl(&dword_25F5FC000, v12, OS_LOG_TYPE_DEFAULT, "%@: Couldn't create a bonjour endpoint from '%@'%s", &v14, 0x20u);
   }
 
-  v9[2](v9, 0);
+  handlerCopy[2](handlerCopy, 0);
 LABEL_12:
 
   return result;
 }
 
-+ (PKPrinter)printerWithBonjourEndpoint:(id)a3 discoveryTimeout:(double)a4 completionHandler:(id)a5
++ (PKPrinter)printerWithBonjourEndpoint:(id)endpoint discoveryTimeout:(double)timeout completionHandler:(id)handler
 {
-  v7 = a5;
+  handlerCopy = handler;
   v8 = dispatch_get_global_queue(0, 0);
-  v9 = a3;
+  endpointCopy = endpoint;
   dispatch_async(v8, &__block_literal_global_10);
 
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __75__PKPrinter_printerWithBonjourEndpoint_discoveryTimeout_completionHandler___block_invoke_2;
   v12[3] = &unk_279A92A98;
-  v13 = v7;
-  v10 = v7;
-  [PKPrinterBrowseInfo findPrinterWithBonjourEndpoint:v9 withTimeout:v12 completionHandler:a4];
+  v13 = handlerCopy;
+  v10 = handlerCopy;
+  [PKPrinterBrowseInfo findPrinterWithBonjourEndpoint:endpointCopy withTimeout:v12 completionHandler:timeout];
 
   return result;
 }
@@ -219,37 +219,37 @@ void __75__PKPrinter_printerWithBonjourEndpoint_discoveryTimeout_completionHandl
   }
 }
 
-+ (PKPrinter)printerWithEndpointData:(id)a3 discoveryTime:(double)a4 completionHandler:(id)a5
++ (PKPrinter)printerWithEndpointData:(id)data discoveryTime:(double)time completionHandler:(id)handler
 {
-  v10 = a5;
-  v8 = [PKPrinterBonjourEndpoint endpointWithData:a3];
+  handlerCopy = handler;
+  v8 = [PKPrinterBonjourEndpoint endpointWithData:data];
   if (v8)
   {
-    [a1 printerWithBonjourEndpoint:v8 discoveryTimeout:v10 completionHandler:a4];
+    [self printerWithBonjourEndpoint:v8 discoveryTimeout:handlerCopy completionHandler:time];
   }
 
   else
   {
-    v10[2](v10, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
   return result;
 }
 
-+ (PKPrinter)printerWithiCloudPrinter:(id)a3 discoveryTime:(double)a4 completionHandler:(id)a5
++ (PKPrinter)printerWithiCloudPrinter:(id)printer discoveryTime:(double)time completionHandler:(id)handler
 {
   v17 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a5;
-  v9 = [[PKCloudResolveContext alloc] initWithPKCloudPrinter:v7 timeout:v8 completionHandler:a4];
+  printerCopy = printer;
+  handlerCopy = handler;
+  v9 = [[PKCloudResolveContext alloc] initWithPKCloudPrinter:printerCopy timeout:handlerCopy completionHandler:time];
   v10 = _PKLogCategory(PKLogCategoryDiscovery[0]);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
-    v11 = [v7 displayName];
+    displayName = [printerCopy displayName];
     v13 = 138412546;
     v14 = v9;
     v15 = 2112;
-    v16 = v11;
+    v16 = displayName;
     _os_log_impl(&dword_25F5FC000, v10, OS_LOG_TYPE_DEFAULT, "Created icloud resolution context %@ for %@", &v13, 0x16u);
   }
 
@@ -257,14 +257,14 @@ void __75__PKPrinter_printerWithBonjourEndpoint_discoveryTimeout_completionHandl
   return result;
 }
 
-+ (PKPrinter)printerWithName:(id)a3
++ (PKPrinter)printerWithName:(id)name
 {
-  v3 = [a1 printerWithName:a3 discoveryTimeout:2.0];
+  v3 = [self printerWithName:name discoveryTimeout:2.0];
 
   return v3;
 }
 
-+ (PKPrinter)printerWithName:(id)a3 discoveryTimeout:(double)a4
++ (PKPrinter)printerWithName:(id)name discoveryTimeout:(double)timeout
 {
   v15 = 0;
   v16 = &v15;
@@ -272,7 +272,7 @@ void __75__PKPrinter_printerWithBonjourEndpoint_discoveryTimeout_completionHandl
   v18 = __Block_byref_object_copy__6;
   v19 = __Block_byref_object_dispose__6;
   v20 = 0;
-  v6 = a3;
+  nameCopy = name;
   v7 = dispatch_semaphore_create(0);
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
@@ -281,9 +281,9 @@ void __75__PKPrinter_printerWithBonjourEndpoint_discoveryTimeout_completionHandl
   v13 = v7;
   v14 = &v15;
   v8 = v7;
-  [a1 printerWithName:v6 discoveryTimeout:v12 completionHandler:a4];
+  [self printerWithName:nameCopy discoveryTimeout:v12 completionHandler:timeout];
 
-  v9 = dispatch_time(0, (a4 * 1000000000.0));
+  v9 = dispatch_time(0, (timeout * 1000000000.0));
   dispatch_semaphore_wait(v8, v9);
   v10 = v16[5];
 
@@ -299,24 +299,24 @@ void __46__PKPrinter_printerWithName_discoveryTimeout___block_invoke(uint64_t a1
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-+ (BOOL)printerLookupWithName:(id)a3 andTimeout:(double)a4
++ (BOOL)printerLookupWithName:(id)name andTimeout:(double)timeout
 {
-  v4 = [a1 printerWithName:a3 discoveryTimeout:a4];
+  v4 = [self printerWithName:name discoveryTimeout:timeout];
   v5 = v4 != 0;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v5 = v4;
-    v6 = [(PKPrinter *)self uuid];
-    v7 = [v5 uuid];
-    v8 = [v6 isEqualToString:v7];
+    v5 = equalCopy;
+    uuid = [(PKPrinter *)self uuid];
+    uuid2 = [v5 uuid];
+    v8 = [uuid isEqualToString:uuid2];
   }
 
   else
@@ -327,23 +327,23 @@ void __46__PKPrinter_printerWithName_discoveryTimeout___block_invoke(uint64_t a1
   return v8;
 }
 
-- (void)_updateDescription:(id)a3 browseInfo:(id)a4
+- (void)_updateDescription:(id)description browseInfo:(id)info
 {
-  v10 = a3;
-  v7 = a4;
-  if (v10)
+  descriptionCopy = description;
+  infoCopy = info;
+  if (descriptionCopy)
   {
-    objc_storeStrong(&self->_printerDescription, a3);
+    objc_storeStrong(&self->_printerDescription, description);
   }
 
-  if (v7)
+  if (infoCopy)
   {
-    objc_storeStrong(&self->_browseInfo, a4);
+    objc_storeStrong(&self->_browseInfo, info);
   }
 
-  v8 = [MEMORY[0x277CBEAA8] date];
+  date = [MEMORY[0x277CBEAA8] date];
   printerDescriptionTime = self->_printerDescriptionTime;
-  self->_printerDescriptionTime = v8;
+  self->_printerDescriptionTime = date;
 }
 
 - (void)updateiCloudPrinterInfo
@@ -373,14 +373,14 @@ void __46__PKPrinter_printerWithName_discoveryTimeout___block_invoke(uint64_t a1
   }
 }
 
-- (void)withDescriptionAsync:(id)a3
+- (void)withDescriptionAsync:(id)async
 {
-  v4 = a3;
+  asyncCopy = async;
   v5 = self->_printerDescription;
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEAA8] date];
-    [v6 timeIntervalSinceDate:self->_printerDescriptionTime];
+    date = [MEMORY[0x277CBEAA8] date];
+    [date timeIntervalSinceDate:self->_printerDescriptionTime];
     if (v7 > 5.0)
     {
       v8 = _PKLogCategory(PKLogCategoryFramework);
@@ -390,32 +390,32 @@ void __46__PKPrinter_printerWithName_discoveryTimeout___block_invoke(uint64_t a1
         _os_log_impl(&dword_25F5FC000, v8, OS_LOG_TYPE_DEFAULT, "refreshing printer description after timeout", buf, 2u);
       }
 
-      v9 = [v6 addTimeInterval:60.0];
+      v9 = [date addTimeInterval:60.0];
       printerDescriptionTime = self->_printerDescriptionTime;
       self->_printerDescriptionTime = v9;
 
-      v11 = [(PKPrinter *)self bonjourName];
+      bonjourName = [(PKPrinter *)self bonjourName];
       v15[0] = MEMORY[0x277D85DD0];
       v15[1] = 3221225472;
       v15[2] = __34__PKPrinter_withDescriptionAsync___block_invoke;
       v15[3] = &unk_279A92AE8;
       v15[4] = self;
-      PrintdRPC::GetPrinterDescription(v11, 0, v15);
+      PrintdRPC::GetPrinterDescription(bonjourName, 0, v15);
     }
 
-    v4[2](v4, v5);
+    asyncCopy[2](asyncCopy, v5);
   }
 
   else
   {
-    v12 = [(PKPrinter *)self bonjourName];
+    bonjourName2 = [(PKPrinter *)self bonjourName];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __34__PKPrinter_withDescriptionAsync___block_invoke_2;
     v13[3] = &unk_279A92B10;
     v13[4] = self;
-    v14 = v4;
-    PrintdRPC::GetPrinterDescription(v12, 0, v13);
+    v14 = asyncCopy;
+    PrintdRPC::GetPrinterDescription(bonjourName2, 0, v13);
   }
 }
 
@@ -449,16 +449,16 @@ void __34__PKPrinter_withDescriptionAsync___block_invoke_2(uint64_t a1, void *a2
 
 - (NSURL)printerURL
 {
-  v3 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
-  v4 = self;
-  if (object_isClass(v4))
+  bonjourName = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+  selfCopy = self;
+  if (object_isClass(selfCopy))
   {
     [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PKPrinter printerURL]"];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), v4, "-[PKPrinter printerURL]"];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), selfCopy, "-[PKPrinter printerURL]"];
   }
   v5 = ;
 
@@ -466,7 +466,7 @@ void __34__PKPrinter_withDescriptionAsync___block_invoke_2(uint64_t a1, void *a2
   v9[1] = 3221225472;
   v9[2] = __23__PKPrinter_printerURL__block_invoke;
   v9[3] = &unk_279A91E38;
-  v6 = v3;
+  v6 = bonjourName;
   v10 = v6;
   v7 = withDebuggableSemaphore<NSURL * {__strong}>(v5, v9, 5.0);
 
@@ -475,14 +475,14 @@ void __34__PKPrinter_withDescriptionAsync___block_invoke_2(uint64_t a1, void *a2
 
 - (NSURL)nearbyURL
 {
-  v5 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
-  v6 = [v5 provenance];
+  bonjourName = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+  provenance = [bonjourName provenance];
 
-  if (v6 == 4)
+  if (provenance == 4)
   {
-    v7 = [(PKPrinter *)self bonjourDisplayName];
-    v8 = [MEMORY[0x277CCA900] URLHostAllowedCharacterSet];
-    v9 = [v7 stringByAddingPercentEncodingWithAllowedCharacters:v8];
+    bonjourDisplayName = [(PKPrinter *)self bonjourDisplayName];
+    uRLHostAllowedCharacterSet = [MEMORY[0x277CCA900] URLHostAllowedCharacterSet];
+    v9 = [bonjourDisplayName stringByAddingPercentEncodingWithAllowedCharacters:uRLHostAllowedCharacterSet];
 
     v10 = objc_alloc_init(MEMORY[0x277CCACE0]);
     [v10 setScheme:@"dnssd"];
@@ -500,13 +500,13 @@ void __34__PKPrinter_withDescriptionAsync___block_invoke_2(uint64_t a1, void *a2
     v12 = [v9 stringByAppendingString:v11];
     [v10 setHost:v12];
 
-    v13 = [(PKPrinter *)self uuid];
-    if (v13)
+    uuid = [(PKPrinter *)self uuid];
+    if (uuid)
     {
       v14 = MEMORY[0x277CCACA8];
-      v2 = [(PKPrinter *)self uuid];
-      v3 = [v2 lowercaseString];
-      v15 = [v14 stringWithFormat:@"uuid=%@", v3];
+      uuid2 = [(PKPrinter *)self uuid];
+      lowercaseString = [uuid2 lowercaseString];
+      v15 = [v14 stringWithFormat:@"uuid=%@", lowercaseString];
     }
 
     else
@@ -515,12 +515,12 @@ void __34__PKPrinter_withDescriptionAsync___block_invoke_2(uint64_t a1, void *a2
     }
 
     [v10 setQuery:v15];
-    if (v13)
+    if (uuid)
     {
     }
 
-    v16 = [v10 URL];
-    if (v16)
+    printerURL = [v10 URL];
+    if (printerURL)
     {
 
       goto LABEL_16;
@@ -534,28 +534,28 @@ void __34__PKPrinter_withDescriptionAsync___block_invoke_2(uint64_t a1, void *a2
     }
   }
 
-  v16 = [(PKPrinter *)self printerURL];
+  printerURL = [(PKPrinter *)self printerURL];
 LABEL_16:
 
-  return v16;
+  return printerURL;
 }
 
 - (NSString)name
 {
-  v2 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
-  v3 = [v2 persistentNameRepresentationForPrintKitUI];
+  bonjourName = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+  persistentNameRepresentationForPrintKitUI = [bonjourName persistentNameRepresentationForPrintKitUI];
 
-  return v3;
+  return persistentNameRepresentationForPrintKitUI;
 }
 
 - (NSString)bonjourDisplayName
 {
-  v2 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
-  v3 = [v2 displayNameForPrintKitUI];
+  bonjourName = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+  displayNameForPrintKitUI = [bonjourName displayNameForPrintKitUI];
 
-  if (v3)
+  if (displayNameForPrintKitUI)
   {
-    v4 = v3;
+    v4 = displayNameForPrintKitUI;
   }
 
   else
@@ -568,82 +568,82 @@ LABEL_16:
 
 - (NSString)displayName
 {
-  v3 = [(PKiCloudPrinter *)self->_iCloudPrinter customName];
-  if (!v3)
+  customName = [(PKiCloudPrinter *)self->_iCloudPrinter customName];
+  if (!customName)
   {
-    v5 = [(PKPrinter *)self bonjourDisplayName];
-    if (v5)
+    bonjourDisplayName = [(PKPrinter *)self bonjourDisplayName];
+    if (bonjourDisplayName)
     {
-      v3 = v5;
-      v7 = [(__CFString *)v5 rangeOfString:@" @ "];
+      customName = bonjourDisplayName;
+      v7 = [(__CFString *)bonjourDisplayName rangeOfString:@" @ "];
       if (v7 != 0x7FFFFFFFFFFFFFFFLL && v6)
       {
-        v8 = [(__CFString *)v3 substringToIndex:v7];
+        v8 = [(__CFString *)customName substringToIndex:v7];
 
-        v3 = v8;
+        customName = v8;
       }
     }
 
     else
     {
-      v9 = [(PKiCloudPrinter *)self->_iCloudPrinter displayName];
-      if (v9)
+      displayName = [(PKiCloudPrinter *)self->_iCloudPrinter displayName];
+      if (displayName)
       {
-        v3 = v9;
+        customName = displayName;
       }
 
       else
       {
-        v3 = &stru_28719ACE8;
+        customName = &stru_28719ACE8;
       }
     }
   }
 
-  return v3;
+  return customName;
 }
 
 - (NSString)location
 {
-  v3 = [(PKiCloudPrinter *)self->_iCloudPrinter customLocation];
-  if (v3 || ([(PKPrinterBrowseInfo *)self->_browseInfo location], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  customLocation = [(PKiCloudPrinter *)self->_iCloudPrinter customLocation];
+  if (customLocation || ([(PKPrinterBrowseInfo *)self->_browseInfo location], (customLocation = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = v3;
+    location = customLocation;
   }
 
   else
   {
-    v6 = [(PKPrinter *)self bonjourDisplayName];
-    v7 = [v6 rangeOfString:@" @ "];
-    if (v7 == 0x7FFFFFFFFFFFFFFFLL || !v8 || ([v6 substringFromIndex:v7 + v8], (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+    bonjourDisplayName = [(PKPrinter *)self bonjourDisplayName];
+    v7 = [bonjourDisplayName rangeOfString:@" @ "];
+    if (v7 == 0x7FFFFFFFFFFFFFFFLL || !v8 || ([bonjourDisplayName substringFromIndex:v7 + v8], (location = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v4 = [(PKiCloudPrinter *)self->_iCloudPrinter location];
+      location = [(PKiCloudPrinter *)self->_iCloudPrinter location];
     }
   }
 
-  return v4;
+  return location;
 }
 
 - (NSString)uuid
 {
-  v2 = [(PKPrinterBrowseInfo *)self->_browseInfo uuid];
-  v3 = [v2 UUIDString];
+  uuid = [(PKPrinterBrowseInfo *)self->_browseInfo uuid];
+  uUIDString = [uuid UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (BOOL)isFromMCProfile
 {
-  v3 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
-  if ([v3 provenance] == 1)
+  bonjourName = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+  if ([bonjourName provenance] == 1)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(PKPrinter *)self printerURL];
-    v6 = [v5 absoluteString];
-    v4 = [PKDefaults uriMatchesMCProfileAdded:v6];
+    printerURL = [(PKPrinter *)self printerURL];
+    absoluteString = [printerURL absoluteString];
+    v4 = [PKDefaults uriMatchesMCProfileAdded:absoluteString];
   }
 
   return v4;
@@ -651,8 +651,8 @@ LABEL_16:
 
 - (int64_t)kind
 {
-  v2 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
-  if ([v2 provenance] == 8)
+  bonjourName = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+  if ([bonjourName provenance] == 8)
   {
     v3 = 3;
   }
@@ -679,13 +679,13 @@ LABEL_16:
 - (unint64_t)jobTypesSupported
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(PKPrinterBrowseInfo *)self->_browseInfo txtRecord];
-  v3 = [v2 objectForKey:@"kind"];
+  txtRecord = [(PKPrinterBrowseInfo *)self->_browseInfo txtRecord];
+  v3 = [txtRecord objectForKey:@"kind"];
 
   if (v3)
   {
-    v4 = [v3 lowercaseString];
-    v5 = [v4 componentsSeparatedByString:{@", "}];
+    lowercaseString = [v3 lowercaseString];
+    v5 = [lowercaseString componentsSeparatedByString:{@", "}];
 
     v16 = 0u;
     v17 = 0u;
@@ -735,15 +735,15 @@ LABEL_16:
 
 - (NSDictionary)printInfoSupported
 {
-  v2 = self;
-  if (object_isClass(v2))
+  selfCopy = self;
+  if (object_isClass(selfCopy))
   {
     [MEMORY[0x277CCACA8] stringWithUTF8String:"-[PKPrinter printInfoSupported]"];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), v2, "-[PKPrinter printInfoSupported]"];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@<%p>: %s", objc_opt_class(), selfCopy, "-[PKPrinter printInfoSupported]"];
   }
   v3 = ;
 
@@ -751,7 +751,7 @@ LABEL_16:
   v6[1] = 3221225472;
   v6[2] = __31__PKPrinter_printInfoSupported__block_invoke;
   v6[3] = &unk_279A92B60;
-  v6[4] = v2;
+  v6[4] = selfCopy;
   v4 = withDebuggableSemaphore<NSDictionary * {__strong}>(v3, v6, 5.0);
 
   return v4;
@@ -803,11 +803,11 @@ void __25__PKPrinter_identifySelf__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (void)_identifySelf:(id)a3
+- (void)_identifySelf:(id)self
 {
-  v9 = a3;
+  selfCopy = self;
   v4 = objc_opt_new();
-  if (([v9 identifyActions] & 1) != 0 && (PKLocalizedString(&cfstr_AirprintReady.isa, "AirPrint ready message to be shown on printer"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
+  if (([selfCopy identifyActions] & 1) != 0 && (PKLocalizedString(&cfstr_AirprintReady.isa, "AirPrint ready message to be shown on printer"), (v5 = objc_claimAutoreleasedReturnValue()) != 0))
   {
     v6 = v5;
     [v4 addObject:@"display"];
@@ -818,22 +818,22 @@ void __25__PKPrinter_identifySelf__block_invoke(uint64_t a1, void *a2)
     v6 = 0;
   }
 
-  if (([v9 identifyActions] & 2) != 0)
+  if (([selfCopy identifyActions] & 2) != 0)
   {
     [v4 addObject:@"flash"];
   }
 
-  if (([v9 identifyActions] & 4) != 0)
+  if (([selfCopy identifyActions] & 4) != 0)
   {
     [v4 addObject:@"sound"];
   }
 
-  v7 = [(PKPrinter *)self browseInfo];
-  v8 = [v7 bonjourName];
-  PrintdRPC::IdentifyPrinter(v8, v6, v4);
+  browseInfo = [(PKPrinter *)self browseInfo];
+  bonjourName = [browseInfo bonjourName];
+  PrintdRPC::IdentifyPrinter(bonjourName, v6, v4);
 }
 
-- (void)_updateAccessState:(int64_t)a3
+- (void)_updateAccessState:(int64_t)state
 {
   v15 = *MEMORY[0x277D85DE8];
   v5 = _PKLogCategory(PKLogCategoryFramework);
@@ -841,29 +841,29 @@ void __25__PKPrinter_identifySelf__block_invoke(uint64_t a1, void *a2)
   {
     accessState = self->_accessState;
     v7 = 138413058;
-    v8 = self;
+    selfCopy = self;
     v9 = 1024;
     v10 = accessState;
     v11 = 1024;
-    v12 = a3;
+    stateCopy = state;
     v13 = 2080;
     v14 = "";
     _os_log_impl(&dword_25F5FC000, v5, OS_LOG_TYPE_DEFAULT, "%@: _accessState %d to %d%s", &v7, 0x22u);
   }
 
-  self->_accessState = a3;
+  self->_accessState = state;
 }
 
-- (void)unlockWithCompletionHandler:(id)a3
+- (void)unlockWithCompletionHandler:(id)handler
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = _PKLogCategory(PKLogCategoryFramework);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     accessState = self->_accessState;
     *buf = 138412802;
-    v17 = self;
+    selfCopy = self;
     v18 = 1024;
     v19 = accessState;
     v20 = 2080;
@@ -875,7 +875,7 @@ void __25__PKPrinter_identifySelf__block_invoke(uint64_t a1, void *a2)
   v14[1] = 3221225472;
   v14[2] = __41__PKPrinter_unlockWithCompletionHandler___block_invoke;
   v14[3] = &unk_279A92BB0;
-  v7 = v4;
+  v7 = handlerCopy;
   v15 = v7;
   v8 = MEMORY[0x25F8E4580](v14);
   v9 = v8;
@@ -887,14 +887,14 @@ void __25__PKPrinter_identifySelf__block_invoke(uint64_t a1, void *a2)
   else
   {
     objc_initWeak(buf, self);
-    v10 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+    bonjourName = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __41__PKPrinter_unlockWithCompletionHandler___block_invoke_3;
     v11[3] = &unk_279A92BD8;
     objc_copyWeak(&v13, buf);
     v12 = v9;
-    PrintdRPC::CheckAccessStateAsync(v10, v11);
+    PrintdRPC::CheckAccessStateAsync(bonjourName, v11);
 
     objc_destroyWeak(&v13);
     objc_destroyWeak(buf);
@@ -934,7 +934,7 @@ uint64_t __41__PKPrinter_unlockWithCompletionHandler___block_invoke_3(uint64_t a
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     v4 = 138412546;
-    v5 = self;
+    selfCopy = self;
     v6 = 2080;
     v7 = "";
     _os_log_impl(&dword_25F5FC000, v3, OS_LOG_TYPE_DEFAULT, "%@: cancelUnlock%s", &v4, 0x16u);
@@ -945,16 +945,16 @@ uint64_t __41__PKPrinter_unlockWithCompletionHandler___block_invoke_3(uint64_t a
 
 - (void)removeCredentialsFromKeychain
 {
-  v3 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
-  PrintdRPC::RemoveKeychainItem(v3, v4);
+  bonjourName = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+  PrintdRPC::RemoveKeychainItem(bonjourName, v4);
 
   [(PKPrinter *)self _setInitialAccessStateFromBrowseInfo];
 }
 
 - (void)_setInitialAccessStateFromBrowseInfo
 {
-  v3 = [(PKPrinterBrowseInfo *)self->_browseInfo txtRecord];
-  v6 = [v3 objectForKeyedSubscript:@"air"];
+  txtRecord = [(PKPrinterBrowseInfo *)self->_browseInfo txtRecord];
+  v6 = [txtRecord objectForKeyedSubscript:@"air"];
 
   v4 = v6;
   if (v6)
@@ -971,25 +971,25 @@ uint64_t __41__PKPrinter_unlockWithCompletionHandler___block_invoke_3(uint64_t a
   self->_accessState = v5;
 }
 
-- (void)_checkAvailable:(double)a3 queue:(id)a4 completionHandler:(id)a5
+- (void)_checkAvailable:(double)available queue:(id)queue completionHandler:(id)handler
 {
   v29 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
-  v11 = [v10 provenance];
+  queueCopy = queue;
+  handlerCopy = handler;
+  bonjourName = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+  provenance = [bonjourName provenance];
 
-  if (v11 == 2)
+  if (provenance == 2)
   {
     v12 = _PKLogCategory(PKLogCategoryFramework);
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
-      v14 = [v13 provenanceIdentifier];
+      bonjourName2 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+      provenanceIdentifier = [bonjourName2 provenanceIdentifier];
       *buf = 138412802;
       *&buf[4] = self;
       *&buf[12] = 2114;
-      *&buf[14] = v14;
+      *&buf[14] = provenanceIdentifier;
       *&buf[22] = 2080;
       v26 = "";
       _os_log_impl(&dword_25F5FC000, v12, OS_LOG_TYPE_DEFAULT, "%@: extension printer (%{public}@) always available%s", buf, 0x20u);
@@ -999,8 +999,8 @@ uint64_t __41__PKPrinter_unlockWithCompletionHandler___block_invoke_3(uint64_t a
     block[1] = 3221225472;
     block[2] = __53__PKPrinter__checkAvailable_queue_completionHandler___block_invoke;
     block[3] = &unk_279A92C00;
-    v24 = v9;
-    dispatch_async(v8, block);
+    v24 = handlerCopy;
+    dispatch_async(queueCopy, block);
   }
 
   else
@@ -1010,9 +1010,9 @@ uint64_t __41__PKPrinter_unlockWithCompletionHandler___block_invoke_3(uint64_t a
     *&buf[16] = 0x3032000000;
     v26 = __Block_byref_object_copy__127;
     v27 = __Block_byref_object_dispose__128;
-    v28 = MEMORY[0x25F8E4580](v9);
-    v15 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v8);
-    v16 = dispatch_time(0, (a3 * 1000000000.0));
+    v28 = MEMORY[0x25F8E4580](handlerCopy);
+    v15 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, queueCopy);
+    v16 = dispatch_time(0, (available * 1000000000.0));
     dispatch_source_set_timer(v15, v16, 0xFFFFFFFFFFFFFFFFLL, 0x3B9ACA00uLL);
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
@@ -1026,7 +1026,7 @@ uint64_t __41__PKPrinter_unlockWithCompletionHandler___block_invoke_3(uint64_t a
     v21[3] = &unk_279A92C28;
     v21[4] = buf;
     dispatch_source_set_cancel_handler(v15, v21);
-    v17 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+    bonjourName3 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __53__PKPrinter__checkAvailable_queue_completionHandler___block_invoke_3;
@@ -1034,7 +1034,7 @@ uint64_t __41__PKPrinter_unlockWithCompletionHandler___block_invoke_3(uint64_t a
     v19[4] = self;
     v18 = v15;
     v20 = v18;
-    PrintdRPC::GetPrinterDescription(v17, 1, v19);
+    PrintdRPC::GetPrinterDescription(bonjourName3, 1, v19);
 
     dispatch_resume(v18);
     _Block_object_dispose(buf, 8);
@@ -1073,25 +1073,25 @@ void __53__PKPrinter__checkAvailable_queue_completionHandler___block_invoke_3(ui
   dispatch_source_cancel(v4);
 }
 
-- (void)pollForPrinterAttributes:(id)a3 completionHandler:(id)a4
+- (void)pollForPrinterAttributes:(id)attributes completionHandler:(id)handler
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = [(PKPrinter *)self bonjourName];
-  PrintdRPC::QueryPrinterWithAttributess(v7, v8, v6);
+  attributesCopy = attributes;
+  handlerCopy = handler;
+  bonjourName = [(PKPrinter *)self bonjourName];
+  PrintdRPC::QueryPrinterWithAttributess(bonjourName, attributesCopy, handlerCopy);
 }
 
-- (void)pollForPrinterStatusQueue:(id)a3 completionHandler:(id)a4
+- (void)pollForPrinterStatusQueue:(id)queue completionHandler:(id)handler
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   Current = CFAbsoluteTimeGetCurrent();
   v9 = _PKLogCategory(PKLogCategoryFramework);
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v19 = self;
+    selfCopy = self;
     _os_log_impl(&dword_25F5FC000, v9, OS_LOG_TYPE_DEFAULT, "PKPrinter<%p>: pollForPrinterStatusQueue: start", buf, 0xCu);
   }
 
@@ -1102,9 +1102,9 @@ void __53__PKPrinter__checkAvailable_queue_completionHandler___block_invoke_3(ui
   v14[3] = &unk_279A92C78;
   v14[4] = self;
   v17 = Current;
-  v12 = v6;
+  v12 = queueCopy;
   v15 = v12;
-  v13 = v7;
+  v13 = handlerCopy;
   v16 = v13;
   [(PKPrinter *)self pollForPrinterAttributes:v11 completionHandler:v14];
 }
@@ -1225,15 +1225,15 @@ void __57__PKPrinter_pollForPrinterStatusQueue_completionHandler___block_invoke(
   dispatch_async(v23, block);
 }
 
-- (void)getSupplyLevels:(id)a3
+- (void)getSupplyLevels:(id)levels
 {
-  v4 = a3;
-  v5 = SuppliesPoll::requestedAttributess(v4);
+  levelsCopy = levels;
+  v5 = SuppliesPoll::requestedAttributess(levelsCopy);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __29__PKPrinter_getSupplyLevels___block_invoke;
   v7[3] = &unk_279A92CA0;
-  v6 = v4;
+  v6 = levelsCopy;
   v8 = v6;
   [(PKPrinter *)self pollForPrinterAttributes:v5 completionHandler:v7];
 }
@@ -1264,99 +1264,99 @@ void __29__PKPrinter_getSupplyLevels___block_invoke(uint64_t a1, void **a2)
 
 - (BOOL)knowsReadyPaperList
 {
-  v2 = [(PKPrinterDescription *)self->_printerDescription paperList];
-  v3 = [v2 hasMediaReady];
+  paperList = [(PKPrinterDescription *)self->_printerDescription paperList];
+  hasMediaReady = [paperList hasMediaReady];
 
-  return v3;
+  return hasMediaReady;
 }
 
-- (BOOL)isPaperReady:(id)a3
+- (BOOL)isPaperReady:(id)ready
 {
-  v4 = a3;
-  v5 = [(PKPrinterDescription *)self->_printerDescription paperList];
-  v6 = [v5 isPaperReady:v4];
+  readyCopy = ready;
+  paperList = [(PKPrinterDescription *)self->_printerDescription paperList];
+  v6 = [paperList isPaperReady:readyCopy];
 
   return v6;
 }
 
-- (id)availableRollPapersPreferBorderless:(BOOL)a3
+- (id)availableRollPapersPreferBorderless:(BOOL)borderless
 {
-  v3 = a3;
-  v4 = [(PKPrinterDescription *)self->_printerDescription paperList];
-  v5 = [v4 availableRollPapersPreferBorderless:v3];
+  borderlessCopy = borderless;
+  paperList = [(PKPrinterDescription *)self->_printerDescription paperList];
+  v5 = [paperList availableRollPapersPreferBorderless:borderlessCopy];
 
   return v5;
 }
 
-- (id)papersForPhotoWithSize:(CGSize)a3
+- (id)papersForPhotoWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = [(PKPrinterDescription *)self->_printerDescription paperList];
-  v6 = [v5 papersForPhotoWithSize:{width, height}];
+  height = size.height;
+  width = size.width;
+  paperList = [(PKPrinterDescription *)self->_printerDescription paperList];
+  v6 = [paperList papersForPhotoWithSize:{width, height}];
 
   return v6;
 }
 
-- (id)paperListForDuplexMode:(id)a3
+- (id)paperListForDuplexMode:(id)mode
 {
-  v4 = a3;
-  v5 = [(PKPrinterDescription *)self->_printerDescription paperList];
-  v6 = [v5 paperListForDuplexMode:v4];
+  modeCopy = mode;
+  paperList = [(PKPrinterDescription *)self->_printerDescription paperList];
+  v6 = [paperList paperListForDuplexMode:modeCopy];
 
   return v6;
 }
 
-- (id)papersForDocumentWithSize:(CGSize)a3 scaleUpOnRoll:(BOOL)a4 andDuplex:(BOOL)a5
+- (id)papersForDocumentWithSize:(CGSize)size scaleUpOnRoll:(BOOL)roll andDuplex:(BOOL)duplex
 {
-  v5 = a5;
-  v6 = a4;
-  height = a3.height;
-  width = a3.width;
-  v9 = [(PKPrinterDescription *)self->_printerDescription paperList];
-  v10 = [v9 papersForDocumentWithSize:v6 scaleUpOnRoll:v5 andDuplex:{width, height}];
+  duplexCopy = duplex;
+  rollCopy = roll;
+  height = size.height;
+  width = size.width;
+  paperList = [(PKPrinterDescription *)self->_printerDescription paperList];
+  v10 = [paperList papersForDocumentWithSize:rollCopy scaleUpOnRoll:duplexCopy andDuplex:{width, height}];
 
   return v10;
 }
 
-- (id)matchedPaper:(id)a3 preferBorderless:(BOOL)a4 withDuplexMode:(id)a5 didMatch:(BOOL *)a6
+- (id)matchedPaper:(id)paper preferBorderless:(BOOL)borderless withDuplexMode:(id)mode didMatch:(BOOL *)match
 {
-  v8 = a4;
-  v10 = a3;
-  v11 = a5;
-  v12 = [(PKPrinterDescription *)self->_printerDescription paperList];
-  v13 = [v12 matchedPaper:v10 preferBorderless:v8 withDuplexMode:v11 didMatch:a6];
+  borderlessCopy = borderless;
+  paperCopy = paper;
+  modeCopy = mode;
+  paperList = [(PKPrinterDescription *)self->_printerDescription paperList];
+  v13 = [paperList matchedPaper:paperCopy preferBorderless:borderlessCopy withDuplexMode:modeCopy didMatch:match];
 
   return v13;
 }
 
-- (void)printURL:(id)a3 ofType:(id)a4 printSettings:(id)a5 completionHandlerWithLocalJobNumber:(id)a6
+- (void)printURL:(id)l ofType:(id)type printSettings:(id)settings completionHandlerWithLocalJobNumber:(id)number
 {
   v42 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  lCopy = l;
+  typeCopy = type;
+  settingsCopy = settings;
+  numberCopy = number;
   v14 = _PKLogCategory(PKLogCategoryFramework);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413314;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
-    v35 = v10;
+    v35 = lCopy;
     v36 = 2112;
-    v37 = v11;
+    v37 = typeCopy;
     v38 = 2112;
-    v39 = v12;
+    v39 = settingsCopy;
     v40 = 2080;
     v41 = "";
     _os_log_impl(&dword_25F5FC000, v14, OS_LOG_TYPE_DEFAULT, "%@: printURL:%@ ofType:%@ printSettings:%@%s", buf, 0x34u);
   }
 
-  v15 = [(PKPrinter *)self _allowedToPrintToThisPrinter];
-  if (v10)
+  _allowedToPrintToThisPrinter = [(PKPrinter *)self _allowedToPrintToThisPrinter];
+  if (lCopy)
   {
-    v16 = v15;
+    v16 = _allowedToPrintToThisPrinter;
   }
 
   else
@@ -1366,47 +1366,47 @@ void __29__PKPrinter_getSupplyLevels___block_invoke(uint64_t a1, void **a2)
 
   if (v16)
   {
-    if ([(__CFString *)v11 isEqual:@"image/heic"])
+    if ([(__CFString *)typeCopy isEqual:@"image/heic"])
     {
       v17 = @"image/jpeg";
     }
 
     else
     {
-      v18 = [(__CFString *)v11 isEqual:@"image/png"];
+      v18 = [(__CFString *)typeCopy isEqual:@"image/png"];
       v17 = @"image/jpeg";
       if (!v18)
       {
-        v17 = v11;
+        v17 = typeCopy;
       }
     }
 
     v19 = v17;
-    v20 = [(PKPrinterDescription *)self->_printerDescription jpegFeatures];
-    v21 = [v20 containsObject:@"icc"];
+    jpegFeatures = [(PKPrinterDescription *)self->_printerDescription jpegFeatures];
+    v21 = [jpegFeatures containsObject:@"icc"];
 
     v22 = [PKPrintJobRequest alloc];
-    v23 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
-    v24 = [(PKPrintJobRequest *)v22 initWithPrinterName:v23];
+    bonjourName = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+    v24 = [(PKPrintJobRequest *)v22 initWithPrinterName:bonjourName];
 
-    [(PKPrintJobRequest *)v24 setPrintSettings:v12];
+    [(PKPrintJobRequest *)v24 setPrintSettings:settingsCopy];
     [(PKPrintJobRequest *)v24 setFileType:v19];
     v26[0] = MEMORY[0x277D85DD0];
     v26[1] = 3221225472;
     v26[2] = __89__PKPrinter_Printing__printURL_ofType_printSettings_completionHandlerWithLocalJobNumber___block_invoke;
     v26[3] = &unk_279A92CC8;
-    v30 = v13;
-    v27 = v10;
+    v30 = numberCopy;
+    v27 = lCopy;
     v25 = v24;
     v28 = v25;
-    v29 = v11;
+    v29 = typeCopy;
     v31 = v21;
     [(PKPrintJobRequest *)v25 startRequestCompletionHandler:v26];
   }
 
   else
   {
-    (*(v13 + 2))(v13, 0);
+    (*(numberCopy + 2))(numberCopy, 0);
   }
 }
 
@@ -1609,16 +1609,16 @@ void __89__PKPrinter_Printing__printURL_ofType_printSettings_completionHandlerWi
   }
 }
 
-- (void)printURL:(id)a3 ofType:(id)a4 printSettings:(id)a5 completionHandler:(id)a6
+- (void)printURL:(id)l ofType:(id)type printSettings:(id)settings completionHandler:(id)handler
 {
-  v10 = a6;
+  handlerCopy = handler;
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __71__PKPrinter_Printing__printURL_ofType_printSettings_completionHandler___block_invoke;
   v12[3] = &unk_279A92CF0;
-  v13 = v10;
-  v11 = v10;
-  [(PKPrinter *)self printURL:a3 ofType:a4 printSettings:a5 completionHandlerWithLocalJobNumber:v12];
+  v13 = handlerCopy;
+  v11 = handlerCopy;
+  [(PKPrinter *)self printURL:l ofType:type printSettings:settings completionHandlerWithLocalJobNumber:v12];
 }
 
 uint64_t __71__PKPrinter_Printing__printURL_ofType_printSettings_completionHandler___block_invoke(uint64_t a1, uint64_t a2)
@@ -1637,20 +1637,20 @@ uint64_t __71__PKPrinter_Printing__printURL_ofType_printSettings_completionHandl
   return (*(v2 + 16))(v2, v3);
 }
 
-- (int64_t)startJob:(id)a3 ofType:(id)a4
+- (int64_t)startJob:(id)job ofType:(id)type
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  jobCopy = job;
+  typeCopy = type;
   v8 = _PKLogCategory(PKLogCategoryFramework);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138413058;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2112;
-    v24 = v7;
+    v24 = typeCopy;
     v25 = 2112;
-    v26 = v6;
+    v26 = jobCopy;
     v27 = 2080;
     v28 = "";
     _os_log_impl(&dword_25F5FC000, v8, OS_LOG_TYPE_DEFAULT, "%@: startJob ofType:%@ printSettings:%@%s", buf, 0x2Au);
@@ -1659,11 +1659,11 @@ uint64_t __71__PKPrinter_Printing__printURL_ofType_printSettings_completionHandl
   if ([(PKPrinter *)self _allowedToPrintToThisPrinter])
   {
     v9 = [PKPrintJobRequest alloc];
-    v10 = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
-    v11 = [(PKPrintJobRequest *)v9 initWithPrinterName:v10];
+    bonjourName = [(PKPrinterBrowseInfo *)self->_browseInfo bonjourName];
+    v11 = [(PKPrintJobRequest *)v9 initWithPrinterName:bonjourName];
 
-    [(PKPrintJobRequest *)v11 setPrintSettings:v6];
-    [(PKPrintJobRequest *)v11 setFileType:v7];
+    [(PKPrintJobRequest *)v11 setPrintSettings:jobCopy];
+    [(PKPrintJobRequest *)v11 setFileType:typeCopy];
     if (v11)
     {
       v19[0] = MEMORY[0x277D85DD0];
@@ -1708,7 +1708,7 @@ uint64_t __71__PKPrinter_Printing__printURL_ofType_printSettings_completionHandl
       if (os_log_type_enabled(v17, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
-        v22 = self;
+        selfCopy2 = self;
         v23 = 2080;
         v24 = "";
         _os_log_impl(&dword_25F5FC000, v17, OS_LOG_TYPE_DEFAULT, "%@: unable to create ipp request%s", buf, 0x16u);
@@ -1726,12 +1726,12 @@ uint64_t __71__PKPrinter_Printing__printURL_ofType_printSettings_completionHandl
   return v15;
 }
 
-- (int64_t)sendData:(const char *)a3 ofLength:(int64_t)a4
+- (int64_t)sendData:(const char *)data ofLength:(int64_t)length
 {
   v18 = *MEMORY[0x277D85DE8];
   if (self->_job_request)
   {
-    v5 = [MEMORY[0x277CBEA90] dataWithBytes:a3 length:a4];
+    v5 = [MEMORY[0x277CBEA90] dataWithBytes:data length:length];
     v6 = self->_job_request;
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
@@ -1758,7 +1758,7 @@ uint64_t __71__PKPrinter_Printing__printURL_ofType_printSettings_completionHandl
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v15 = self;
+      selfCopy = self;
       v16 = 2080;
       v17 = "";
       _os_log_impl(&dword_25F5FC000, v7, OS_LOG_TYPE_DEFAULT, "%@: sendData called outside startJob/finishJob%s", buf, 0x16u);
@@ -1770,15 +1770,15 @@ uint64_t __71__PKPrinter_Printing__printURL_ofType_printSettings_completionHandl
   return v9;
 }
 
-- (void)abortJobCompletionHandler:(id)a3
+- (void)abortJobCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __49__PKPrinter_Printing__abortJobCompletionHandler___block_invoke;
   v6[3] = &unk_279A92CF0;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(PKPrinter *)self finalizeJob:1 completionHandler:v6];
 }
 
@@ -1793,15 +1793,15 @@ uint64_t __49__PKPrinter_Printing__abortJobCompletionHandler___block_invoke(uint
   return result;
 }
 
-- (void)finishJobCompletionHandler:(id)a3
+- (void)finishJobCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __50__PKPrinter_Printing__finishJobCompletionHandler___block_invoke;
   v6[3] = &unk_279A92CF0;
-  v7 = v4;
-  v5 = v4;
+  v7 = handlerCopy;
+  v5 = handlerCopy;
   [(PKPrinter *)self finalizeJob:0 completionHandler:v6];
 }
 
@@ -1826,18 +1826,18 @@ uint64_t __50__PKPrinter_Printing__finishJobCompletionHandler___block_invoke(uin
   return result;
 }
 
-- (void)finalizeJob:(BOOL)a3 completionHandler:(id)a4
+- (void)finalizeJob:(BOOL)job completionHandler:(id)handler
 {
-  v4 = a3;
+  jobCopy = job;
   v14 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  handlerCopy = handler;
   job_request = self->_job_request;
   if (job_request)
   {
     self->_job_request = 0;
     v8 = job_request;
 
-    [(PKPrintJobRequest *)v8 finishRequest:v4 completionHandler:v6];
+    [(PKPrintJobRequest *)v8 finishRequest:jobCopy completionHandler:handlerCopy];
   }
 
   else
@@ -1846,15 +1846,15 @@ uint64_t __50__PKPrinter_Printing__finishJobCompletionHandler___block_invoke(uin
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = 138412546;
-      v11 = self;
+      selfCopy = self;
       v12 = 2080;
       v13 = "";
       _os_log_impl(&dword_25F5FC000, v9, OS_LOG_TYPE_DEFAULT, "%@: -finishJob called without -startJob%s", &v10, 0x16u);
     }
 
-    if (v6)
+    if (handlerCopy)
     {
-      v6[2](v6, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 }

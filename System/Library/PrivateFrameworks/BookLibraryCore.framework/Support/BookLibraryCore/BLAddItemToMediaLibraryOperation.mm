@@ -1,23 +1,23 @@
 @interface BLAddItemToMediaLibraryOperation
-- (BLAddItemToMediaLibraryOperation)initWithIPodLibraryItem:(id)a3;
+- (BLAddItemToMediaLibraryOperation)initWithIPodLibraryItem:(id)item;
 - (BLMLImporterItem)IPodLibraryItem;
 - (NSNumber)insertedItemPersistentIdentifier;
 - (id)_libraryItem;
-- (void)_setInsertedItemPersistentIdentifier:(int64_t)a3;
+- (void)_setInsertedItemPersistentIdentifier:(int64_t)identifier;
 - (void)run;
 @end
 
 @implementation BLAddItemToMediaLibraryOperation
 
-- (BLAddItemToMediaLibraryOperation)initWithIPodLibraryItem:(id)a3
+- (BLAddItemToMediaLibraryOperation)initWithIPodLibraryItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v9.receiver = self;
   v9.super_class = BLAddItemToMediaLibraryOperation;
   v5 = [(BLOperation *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [itemCopy copy];
     libraryItem = v5->_libraryItem;
     v5->_libraryItem = v6;
   }
@@ -45,23 +45,23 @@
 
 - (void)run
 {
-  v3 = [(BLAddItemToMediaLibraryOperation *)self _libraryItem];
+  _libraryItem = [(BLAddItemToMediaLibraryOperation *)self _libraryItem];
   v4 = BLServiceMediaLibraryManagerLog();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_INFO))
   {
     v5 = objc_opt_class();
     v6 = v5;
-    v7 = [v3 itemMediaPath];
+    itemMediaPath = [_libraryItem itemMediaPath];
     *buf = 138412546;
     v18 = v5;
     v19 = 2112;
-    v20 = v7;
+    v20 = itemMediaPath;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_INFO, "%@: Adding media item to iPod library: %@", buf, 0x16u);
   }
 
   v8 = +[BLMLImporter deviceMLImporter];
   v16 = 0;
-  v9 = [v8 addLibraryItem:v3 error:&v16];
+  v9 = [v8 addLibraryItem:_libraryItem error:&v16];
   v10 = v16;
 
   v11 = BLServiceMediaLibraryManagerLog();
@@ -73,7 +73,7 @@
       *buf = 134218242;
       v18 = v9;
       v19 = 2112;
-      v20 = v3;
+      v20 = _libraryItem;
       v13 = "Item added. Persistent id %lld Item: %@";
       v14 = v12;
       v15 = OS_LOG_TYPE_DEFAULT;
@@ -85,7 +85,7 @@ LABEL_8:
   else if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v18 = v3;
+    v18 = _libraryItem;
     v19 = 2112;
     v20 = v10;
     v13 = "Adding failed for item %@. Error  %@";
@@ -108,10 +108,10 @@ LABEL_8:
   return v3;
 }
 
-- (void)_setInsertedItemPersistentIdentifier:(int64_t)a3
+- (void)_setInsertedItemPersistentIdentifier:(int64_t)identifier
 {
   [(BLOperation *)self lock];
-  v5 = [[NSNumber alloc] initWithLongLong:a3];
+  v5 = [[NSNumber alloc] initWithLongLong:identifier];
   insertedItemPersistentIdentifier = self->_insertedItemPersistentIdentifier;
   self->_insertedItemPersistentIdentifier = v5;
 

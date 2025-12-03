@@ -1,25 +1,25 @@
 @interface FCPurchaseOfferableConfiguration
-- (FCPurchaseOfferableConfiguration)initWithPurchaseID:(id)a3 allowsPublisherPhoneApp:(BOOL)a4 allowsPublisherPadApp:(BOOL)a5 allowsPublisherWebsite:(BOOL)a6 preferredOffer:(BOOL)a7;
+- (FCPurchaseOfferableConfiguration)initWithPurchaseID:(id)d allowsPublisherPhoneApp:(BOOL)app allowsPublisherPadApp:(BOOL)padApp allowsPublisherWebsite:(BOOL)website preferredOffer:(BOOL)offer;
 @end
 
 @implementation FCPurchaseOfferableConfiguration
 
-- (FCPurchaseOfferableConfiguration)initWithPurchaseID:(id)a3 allowsPublisherPhoneApp:(BOOL)a4 allowsPublisherPadApp:(BOOL)a5 allowsPublisherWebsite:(BOOL)a6 preferredOffer:(BOOL)a7
+- (FCPurchaseOfferableConfiguration)initWithPurchaseID:(id)d allowsPublisherPhoneApp:(BOOL)app allowsPublisherPadApp:(BOOL)padApp allowsPublisherWebsite:(BOOL)website preferredOffer:(BOOL)offer
 {
-  v12 = a3;
+  dCopy = d;
   v17.receiver = self;
   v17.super_class = FCPurchaseOfferableConfiguration;
   v13 = [(FCPurchaseOfferableConfiguration *)&v17 init];
   if (v13)
   {
-    v14 = [v12 copy];
+    v14 = [dCopy copy];
     purchaseID = v13->_purchaseID;
     v13->_purchaseID = v14;
 
-    v13->_allowsPublisherPhoneApp = a4;
-    v13->_allowsPublisherPadApp = a5;
-    v13->_allowsPublisherWebsite = a6;
-    v13->_preferredOffer = a7;
+    v13->_allowsPublisherPhoneApp = app;
+    v13->_allowsPublisherPadApp = padApp;
+    v13->_allowsPublisherWebsite = website;
+    v13->_preferredOffer = offer;
   }
 
   return v13;

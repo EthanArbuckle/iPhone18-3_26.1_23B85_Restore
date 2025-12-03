@@ -2,10 +2,10 @@
 + (id)_archiveFileURL;
 - (SBSystemStatusStatusBarOverridesArchiver)init;
 - (id)_queue_readStatusBarOverridesArchiveRecord;
-- (void)_queue_persistUpdatedArchiveRecord:(id)a3;
+- (void)_queue_persistUpdatedArchiveRecord:(id)record;
 - (void)_queue_readStatusBarOverridesArchiveRecord;
 - (void)_queue_setupObservingAndReconcileInitialState;
-- (void)_queue_writeOutArchiveRecord:(id)a3;
+- (void)_queue_writeOutArchiveRecord:(id)record;
 - (void)dealloc;
 - (void)init;
 @end
@@ -42,8 +42,8 @@ void __59__SBSystemStatusStatusBarOverridesArchiver__archiveFileURL__block_invok
   v3 = [(SBSystemStatusStatusBarOverridesArchiver *)&v15 init];
   if (v3)
   {
-    v4 = [SBApp systemStatusServer];
-    if (!v4)
+    systemStatusServer = [SBApp systemStatusServer];
+    if (!systemStatusServer)
     {
       [(SBSystemStatusStatusBarOverridesArchiver *)v3 init];
     }
@@ -52,11 +52,11 @@ void __59__SBSystemStatusStatusBarOverridesArchiver__archiveFileURL__block_invok
     queue = v3->_queue;
     v3->_queue = Serial;
 
-    v7 = [objc_alloc(MEMORY[0x277D6BB28]) initWithServerHandle:v4];
+    v7 = [objc_alloc(MEMORY[0x277D6BB28]) initWithServerHandle:systemStatusServer];
     overridesDomain = v3->_overridesDomain;
     v3->_overridesDomain = v7;
 
-    v9 = [objc_alloc(MEMORY[0x277D6BB30]) initWithServerHandle:v4];
+    v9 = [objc_alloc(MEMORY[0x277D6BB30]) initWithServerHandle:systemStatusServer];
     overridesPublisher = v3->_overridesPublisher;
     v3->_overridesPublisher = v9;
 
@@ -82,16 +82,16 @@ void __59__SBSystemStatusStatusBarOverridesArchiver__archiveFileURL__block_invok
   v14[3] = &unk_2783BC938;
   v14[4] = self;
   [(STStatusBarOverridesStatusDomain *)overridesDomain observeDataWithBlock:v14];
-  v4 = [(STStatusBarOverridesStatusDomain *)self->_overridesDomain data];
-  v5 = [v4 _sbSystemStatusStatusBarOverridesArchiveRecord];
+  data = [(STStatusBarOverridesStatusDomain *)self->_overridesDomain data];
+  _sbSystemStatusStatusBarOverridesArchiveRecord = [data _sbSystemStatusStatusBarOverridesArchiveRecord];
 
-  v6 = [(SBSystemStatusStatusBarOverridesArchiver *)self _queue_readStatusBarOverridesArchiveRecord];
-  v7 = v6;
-  if (v5 | v6)
+  _queue_readStatusBarOverridesArchiveRecord = [(SBSystemStatusStatusBarOverridesArchiver *)self _queue_readStatusBarOverridesArchiveRecord];
+  v7 = _queue_readStatusBarOverridesArchiveRecord;
+  if (_sbSystemStatusStatusBarOverridesArchiveRecord | _queue_readStatusBarOverridesArchiveRecord)
   {
-    if (v5)
+    if (_sbSystemStatusStatusBarOverridesArchiveRecord)
     {
-      v8 = v6 == 0;
+      v8 = _queue_readStatusBarOverridesArchiveRecord == 0;
     }
 
     else
@@ -101,24 +101,24 @@ void __59__SBSystemStatusStatusBarOverridesArchiver__archiveFileURL__block_invok
 
     if (v8)
     {
-      if (v5)
+      if (_sbSystemStatusStatusBarOverridesArchiveRecord)
       {
-        [(SBSystemStatusStatusBarOverridesArchiver *)self _queue_writeOutArchiveRecord:v5];
+        [(SBSystemStatusStatusBarOverridesArchiver *)self _queue_writeOutArchiveRecord:_sbSystemStatusStatusBarOverridesArchiveRecord];
         goto LABEL_14;
       }
 
-      if (!v6)
+      if (!_queue_readStatusBarOverridesArchiveRecord)
       {
         goto LABEL_14;
       }
 
-      objc_storeStrong(&self->_queue_archiveRecord, v6);
+      objc_storeStrong(&self->_queue_archiveRecord, _queue_readStatusBarOverridesArchiveRecord);
       v9 = v7;
     }
 
     else
     {
-      v9 = [v6 recordByApplyingRecord:v5];
+      v9 = [_queue_readStatusBarOverridesArchiveRecord recordByApplyingRecord:_sbSystemStatusStatusBarOverridesArchiveRecord];
       [(SBSystemStatusStatusBarOverridesArchiver *)self _queue_writeOutArchiveRecord:v9];
       if (!v9)
       {
@@ -154,15 +154,15 @@ void __89__SBSystemStatusStatusBarOverridesArchiver__queue_setupObservingAndReco
   dispatch_async(v5, v7);
 }
 
-- (void)_queue_persistUpdatedArchiveRecord:(id)a3
+- (void)_queue_persistUpdatedArchiveRecord:(id)record
 {
-  v4 = a3;
+  recordCopy = record;
   BSDispatchQueueAssert();
   if (!BSEqualObjects())
   {
     v6 = SBLogStatusBarish();
     v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-    if (v4)
+    if (recordCopy)
     {
       if (v7)
       {
@@ -182,7 +182,7 @@ LABEL_10:
       goto LABEL_10;
     }
 
-    [(SBSystemStatusStatusBarOverridesArchiver *)self _queue_writeOutArchiveRecord:v4];
+    [(SBSystemStatusStatusBarOverridesArchiver *)self _queue_writeOutArchiveRecord:recordCopy];
     goto LABEL_12;
   }
 
@@ -196,24 +196,24 @@ LABEL_10:
 LABEL_12:
 }
 
-- (void)_queue_writeOutArchiveRecord:(id)a3
+- (void)_queue_writeOutArchiveRecord:(id)record
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   BSDispatchQueueAssert();
   if ((BSEqualObjects() & 1) == 0)
   {
-    v5 = [objc_opt_class() _archiveFileURL];
-    if (v4 && ([v4 isEmpty] & 1) == 0)
+    _archiveFileURL = [objc_opt_class() _archiveFileURL];
+    if (recordCopy && ([recordCopy isEmpty] & 1) == 0)
     {
       v21 = 0;
-      v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:v4 requiringSecureCoding:1 error:&v21];
+      v10 = [MEMORY[0x277CCAAB0] archivedDataWithRootObject:recordCopy requiringSecureCoding:1 error:&v21];
       v11 = v21;
       v12 = v11;
       if (v10)
       {
         v20 = v11;
-        v13 = [v10 writeToURL:v5 options:1 error:&v20];
+        v13 = [v10 writeToURL:_archiveFileURL options:1 error:&v20];
         v8 = v20;
 
         v14 = SBLogStatusBarish();
@@ -226,7 +226,7 @@ LABEL_12:
             _os_log_impl(&dword_21ED4E000, p_super, OS_LOG_TYPE_DEFAULT, "Saved the status bar overrides archive.", buf, 2u);
           }
 
-          v16 = v4;
+          v16 = recordCopy;
           p_super = &self->_queue_archiveRecord->super;
           self->_queue_archiveRecord = v16;
         }
@@ -234,13 +234,13 @@ LABEL_12:
         else if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           v17 = [v10 length];
-          v18 = [v8 localizedDescription];
+          localizedDescription = [v8 localizedDescription];
           *buf = 134218498;
           v23 = v17;
           v24 = 2112;
-          v25 = v5;
+          v25 = _archiveFileURL;
           v26 = 2112;
-          v27 = v18;
+          v27 = localizedDescription;
           _os_log_error_impl(&dword_21ED4E000, p_super, OS_LOG_TYPE_ERROR, "Error writing status bar overrides archive (len=%lu) to %@: %@", buf, 0x20u);
         }
       }
@@ -259,9 +259,9 @@ LABEL_12:
 
     else
     {
-      v6 = [MEMORY[0x277CCAA00] defaultManager];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
       v19 = 0;
-      v7 = [v6 removeItemAtURL:v5 error:&v19];
+      v7 = [defaultManager removeItemAtURL:_archiveFileURL error:&v19];
       v8 = v19;
 
       v9 = SBLogStatusBarish();
@@ -280,7 +280,7 @@ LABEL_12:
 
       else if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
-        [(SBSystemStatusStatusBarOverridesArchiver *)v5 _queue_writeOutArchiveRecord:v8];
+        [(SBSystemStatusStatusBarOverridesArchiver *)_archiveFileURL _queue_writeOutArchiveRecord:v8];
       }
     }
   }
@@ -290,15 +290,15 @@ LABEL_12:
 {
   v25 = *MEMORY[0x277D85DE8];
   BSDispatchQueueAssert();
-  v2 = [objc_opt_class() _archiveFileURL];
+  _archiveFileURL = [objc_opt_class() _archiveFileURL];
   v18 = 0;
-  v3 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v2 options:1 error:&v18];
+  v3 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:_archiveFileURL options:1 error:&v18];
   v4 = v18;
   if (!v3)
   {
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    v10 = [v2 path];
-    v11 = [v9 fileExistsAtPath:v10];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [_archiveFileURL path];
+    v11 = [defaultManager fileExistsAtPath:path];
 
     v12 = SBLogStatusBarish();
     v8 = v12;
@@ -306,14 +306,14 @@ LABEL_12:
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        [(SBSystemStatusStatusBarOverridesArchiver *)v2 _queue_readStatusBarOverridesArchiveRecord];
+        [(SBSystemStatusStatusBarOverridesArchiver *)_archiveFileURL _queue_readStatusBarOverridesArchiveRecord];
       }
     }
 
     else if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v20 = v2;
+      v20 = _archiveFileURL;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "Couldn't read archived status bar overrides because none exist at: %@", buf, 0xCu);
     }
 
@@ -333,7 +333,7 @@ LABEL_12:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v20 = v2;
+    v20 = _archiveFileURL;
     _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "Unable to read status bar overrides archive, Falling back to the legacy format: %@", buf, 0xCu);
   }
 
@@ -347,13 +347,13 @@ LABEL_12:
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
       v14 = [v3 length];
-      v15 = [v4 localizedDescription];
+      localizedDescription = [v4 localizedDescription];
       *buf = 134218498;
       v20 = v14;
       v21 = 2112;
-      v22 = v2;
+      v22 = _archiveFileURL;
       v23 = 2112;
-      v24 = v15;
+      v24 = localizedDescription;
       _os_log_error_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_ERROR, "Error unarchiving status bar overrides from data (len=%lu) at %@: %@", buf, 0x20u);
     }
 
@@ -382,8 +382,8 @@ LABEL_16:
 
 - (void)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
-  [v4 handleFailureInMethod:a2 object:a1 file:@"SBSystemStatusStatusBarOverridesArchiver.m" lineNumber:61 description:{@"don't initialize %@ before the server handle exists!", objc_opt_class()}];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBSystemStatusStatusBarOverridesArchiver.m" lineNumber:61 description:{@"don't initialize %@ before the server handle exists!", objc_opt_class()}];
 }
 
 - (void)_queue_writeOutArchiveRecord:(void *)a1 .cold.1(void *a1)
@@ -401,7 +401,7 @@ LABEL_16:
 
 - (void)_queue_readStatusBarOverridesArchiveRecord
 {
-  v2 = [a2 localizedDescription];
+  localizedDescription = [a2 localizedDescription];
   OUTLINED_FUNCTION_1_22();
   OUTLINED_FUNCTION_8(&dword_21ED4E000, v3, v4, "Error reading status bar overrides data at %@: %@", v5, v6, v7, v8, v9);
 }

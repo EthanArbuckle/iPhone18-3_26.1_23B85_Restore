@@ -11,8 +11,8 @@
   [v6 setObject:v5 forKeyedSubscript:@"CTAdaptiveImageProvider"];
 
   v7 = objc_alloc(objc_opt_class());
-  v8 = [MEMORY[0x1E696AAB0] _sharedAttachmentString];
-  v9 = [v7 initWithString:v8 attributes:v6];
+  _sharedAttachmentString = [MEMORY[0x1E696AAB0] _sharedAttachmentString];
+  v9 = [v7 initWithString:_sharedAttachmentString attributes:v6];
 
   return v9;
 }

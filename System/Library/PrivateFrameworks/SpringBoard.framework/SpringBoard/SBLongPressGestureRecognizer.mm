@@ -1,16 +1,16 @@
 @interface SBLongPressGestureRecognizer
-- (SBLongPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4;
-- (id)gestureStateInfoForUnbalancedPressBeganCount:(int64_t)a3 previousCount:(int64_t)a4;
+- (SBLongPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action;
+- (id)gestureStateInfoForUnbalancedPressBeganCount:(int64_t)count previousCount:(int64_t)previousCount;
 - (void)reset;
 @end
 
 @implementation SBLongPressGestureRecognizer
 
-- (SBLongPressGestureRecognizer)initWithTarget:(id)a3 action:(SEL)a4
+- (SBLongPressGestureRecognizer)initWithTarget:(id)target action:(SEL)action
 {
   v7.receiver = self;
   v7.super_class = SBLongPressGestureRecognizer;
-  v4 = [(SBClickGestureRecognizer *)&v7 initWithTarget:a3 action:a4];
+  v4 = [(SBClickGestureRecognizer *)&v7 initWithTarget:target action:action];
   v5 = v4;
   if (v4)
   {
@@ -30,7 +30,7 @@
   self->_firstEventAfterClicksWasReceived = 0;
 }
 
-- (id)gestureStateInfoForUnbalancedPressBeganCount:(int64_t)a3 previousCount:(int64_t)a4
+- (id)gestureStateInfoForUnbalancedPressBeganCount:(int64_t)count previousCount:(int64_t)previousCount
 {
   v13.receiver = self;
   v13.super_class = SBLongPressGestureRecognizer;
@@ -39,29 +39,29 @@
   {
     if ([(SBPressGestureRecognizer *)self requiredPressTypesCount]< 2 || self->_firstEventAfterClicksWasReceived)
     {
-      if (a4 >= a3)
+      if (previousCount >= count)
       {
-        if (a4 > a3)
+        if (previousCount > count)
         {
           if ([(SBLongPressGestureRecognizer *)self state]< 1)
           {
             v8 = v7;
-            v9 = 5;
+            state = 5;
             goto LABEL_17;
           }
 
           if ([(SBClickGestureRecognizer *)self didReceiveRequiredPressEndedCount])
           {
             v8 = v7;
-            v9 = 3;
+            state = 3;
             goto LABEL_17;
           }
 
 LABEL_6:
           v8 = v7;
-          v9 = 2;
+          state = 2;
 LABEL_17:
-          [v8 setState:v9];
+          [v8 setState:state];
           goto LABEL_18;
         }
       }
@@ -85,7 +85,7 @@ LABEL_17:
       }
 
       [v7 setIsCoalescing:1];
-      v9 = [(SBLongPressGestureRecognizer *)self state];
+      state = [(SBLongPressGestureRecognizer *)self state];
       v8 = v7;
       goto LABEL_17;
     }

@@ -2,17 +2,17 @@
 - (BOOL)_wantsAutomaticFirstResponderWhenPresentingRemoteViewController;
 - (CGRect)frameOfPresentedViewInContainerView;
 - (CGSize)platterContentSize;
-- (UIEdgeInsets)_baseContentInsetsWithLeftMargin:(double *)a3 rightMargin:(double *)a4;
+- (UIEdgeInsets)_baseContentInsetsWithLeftMargin:(double *)margin rightMargin:(double *)rightMargin;
 - (_UIContextMenuPreviewPresentationControllerDelegate)menuPresentationDelegate;
-- (id)_traitCollectionForChildEnvironment:(id)a3;
+- (id)_traitCollectionForChildEnvironment:(id)environment;
 - (id)_viewForRemoteTextEffectsWindowMatchAnimation;
 - (id)preferredFocusEnvironments;
-- (void)_updatePlatterContentSizeWithPreferredContentSize:(CGSize)a3;
+- (void)_updatePlatterContentSizeWithPreferredContentSize:(CGSize)size;
 - (void)dismissalTransitionWillBegin;
-- (void)menuLayoutDidProducePreviewSize:(CGSize)a3;
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3;
+- (void)menuLayoutDidProducePreviewSize:(CGSize)size;
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container;
 - (void)presentationTransitionWillBegin;
-- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)a3;
+- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)container;
 @end
 
 @implementation _UIContextMenuPreviewPresentationController
@@ -38,38 +38,38 @@
   v17.receiver = self;
   v17.super_class = _UIContextMenuPreviewPresentationController;
   [(UIPresentationController *)&v17 presentationTransitionWillBegin];
-  v3 = [(UIPresentationController *)self presentedView];
-  v4 = [(UIPresentationController *)self containerView];
-  [v4 setUserInteractionEnabled:0];
-  [v4 frame];
+  presentedView = [(UIPresentationController *)self presentedView];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView setUserInteractionEnabled:0];
+  [containerView frame];
   Width = CGRectGetWidth(v18);
   CATransform3DMakeTranslation(&v16, -Width, 0.0, 0.0);
-  v6 = [v4 layer];
+  layer = [containerView layer];
   v15 = v16;
-  [v6 setSublayerTransform:&v15];
+  [layer setSublayerTransform:&v15];
 
-  [v4 setAlpha:0.0];
-  [v4 addSubview:v3];
-  v7 = [(UIPresentationController *)self presentedViewController];
-  [v7 preferredContentSize];
+  [containerView setAlpha:0.0];
+  [containerView addSubview:presentedView];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  [presentedViewController preferredContentSize];
   [(_UIContextMenuPreviewPresentationController *)self _updatePlatterContentSizeWithPreferredContentSize:?];
 
   [(_UIContextMenuPreviewPresentationController *)self platterContentSize];
-  [v3 setFrame:{0.0, 0.0, v8, v9}];
-  [v3 _continuousCornerRadius];
+  [presentedView setFrame:{0.0, 0.0, v8, v9}];
+  [presentedView _continuousCornerRadius];
   if (v10 == 0.0)
   {
-    v11 = [v4 traitCollection];
-    v12 = _UIContextMenuGetPlatformMetrics([v11 userInterfaceIdiom]);
+    traitCollection = [containerView traitCollection];
+    v12 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
     [v12 previewPlatterCornerRadius];
     v13 = [UICornerRadius fixedRadius:?];
     v14 = [UICornerConfiguration configurationWithRadius:v13];
-    [v3 setCornerConfiguration:v14];
+    [presentedView setCornerConfiguration:v14];
   }
 
-  [v4 setNeedsLayout];
-  [v4 layoutIfNeeded];
+  [containerView setNeedsLayout];
+  [containerView layoutIfNeeded];
 }
 
 - (CGRect)frameOfPresentedViewInContainerView
@@ -93,10 +93,10 @@
 
 - (BOOL)_wantsAutomaticFirstResponderWhenPresentingRemoteViewController
 {
-  v3 = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
-  v4 = [v3 inputViewVisibility];
+  menuStyle = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
+  inputViewVisibility = [menuStyle inputViewVisibility];
 
-  if (v4 != 1)
+  if (inputViewVisibility != 1)
   {
     return 0;
   }
@@ -106,11 +106,11 @@
   return [(UIPresentationController *)&v6 _wantsAutomaticFirstResponderWhenPresentingRemoteViewController];
 }
 
-- (UIEdgeInsets)_baseContentInsetsWithLeftMargin:(double *)a3 rightMargin:(double *)a4
+- (UIEdgeInsets)_baseContentInsetsWithLeftMargin:(double *)margin rightMargin:(double *)rightMargin
 {
   v8.receiver = self;
   v8.super_class = _UIContextMenuPreviewPresentationController;
-  [(UIPresentationController *)&v8 _baseContentInsetsWithLeftMargin:a3 rightMargin:a4];
+  [(UIPresentationController *)&v8 _baseContentInsetsWithLeftMargin:margin rightMargin:rightMargin];
   v4 = 0.0;
   v5 = 0.0;
   v6 = 0.0;
@@ -124,8 +124,8 @@
 
 - (void)dismissalTransitionWillBegin
 {
-  v3 = [(UIPresentationController *)self containerView];
-  [v3 setUserInteractionEnabled:0];
+  containerView = [(UIPresentationController *)self containerView];
+  [containerView setUserInteractionEnabled:0];
 
   v4.receiver = self;
   v4.super_class = _UIContextMenuPreviewPresentationController;
@@ -134,37 +134,37 @@
 
 - (id)preferredFocusEnvironments
 {
-  v3 = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
-  v4 = [v3 hasInteractivePreview];
+  menuStyle = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
+  hasInteractivePreview = [menuStyle hasInteractivePreview];
 
-  v5 = [(_UIContextMenuPreviewPresentationController *)self menuPresentationDelegate];
-  v6 = [v5 preferredFocusEnvironmentsForContextMenuPreviewPresentationController:self];
+  menuPresentationDelegate = [(_UIContextMenuPreviewPresentationController *)self menuPresentationDelegate];
+  v6 = [menuPresentationDelegate preferredFocusEnvironmentsForContextMenuPreviewPresentationController:self];
   v7 = [v6 mutableCopy];
 
-  if (v4)
+  if (hasInteractivePreview)
   {
     v10.receiver = self;
     v10.super_class = _UIContextMenuPreviewPresentationController;
-    v8 = [(UIPresentationController *)&v10 preferredFocusEnvironments];
-    if ([v8 count])
+    preferredFocusEnvironments = [(UIPresentationController *)&v10 preferredFocusEnvironments];
+    if ([preferredFocusEnvironments count])
     {
-      [v7 addObjectsFromArray:v8];
+      [v7 addObjectsFromArray:preferredFocusEnvironments];
     }
   }
 
   return v7;
 }
 
-- (void)menuLayoutDidProducePreviewSize:(CGSize)a3
+- (void)menuLayoutDidProducePreviewSize:(CGSize)size
 {
-  width = a3.width;
+  width = size.width;
   [(_UIContextMenuPreviewPresentationController *)self platterContentSize];
   v6 = v5;
   v8 = v7;
-  v9 = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
-  v10 = [v9 ignoresDefaultSizingRules];
+  menuStyle = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
+  ignoresDefaultSizingRules = [menuStyle ignoresDefaultSizingRules];
 
-  if (v10)
+  if (ignoresDefaultSizingRules)
   {
     [(_UIContextMenuPreviewPresentationController *)self platterContentSize];
     v12 = v11 / width;
@@ -174,39 +174,39 @@
     }
 
     CGAffineTransformMakeScale(&v18, v12, v12);
-    v13 = [(UIPresentationController *)self containerView];
-    UIRoundToViewScale(v13);
+    containerView = [(UIPresentationController *)self containerView];
+    UIRoundToViewScale(containerView);
     v6 = v14;
-    v15 = [(UIPresentationController *)self containerView];
-    UIRoundToViewScale(v15);
+    containerView2 = [(UIPresentationController *)self containerView];
+    UIRoundToViewScale(containerView2);
     v8 = v16;
   }
 
-  v17 = [(UIPresentationController *)self presentedView];
-  [v17 setFrame:{0.0, 0.0, v6, v8}];
+  presentedView = [(UIPresentationController *)self presentedView];
+  [presentedView setFrame:{0.0, 0.0, v6, v8}];
 }
 
-- (void)preferredContentSizeDidChangeForChildContentContainer:(id)a3
+- (void)preferredContentSizeDidChangeForChildContentContainer:(id)container
 {
   v9.receiver = self;
   v9.super_class = _UIContextMenuPreviewPresentationController;
-  v4 = a3;
-  [(UIPresentationController *)&v9 preferredContentSizeDidChangeForChildContentContainer:v4];
-  [v4 preferredContentSize];
+  containerCopy = container;
+  [(UIPresentationController *)&v9 preferredContentSizeDidChangeForChildContentContainer:containerCopy];
+  [containerCopy preferredContentSize];
   v6 = v5;
   v8 = v7;
 
   [(_UIContextMenuPreviewPresentationController *)self _updatePlatterContentSizeWithPreferredContentSize:v6, v8];
 }
 
-- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)a3
+- (void)systemLayoutFittingSizeDidChangeForChildContentContainer:(id)container
 {
   v14.receiver = self;
   v14.super_class = _UIContextMenuPreviewPresentationController;
-  v4 = a3;
-  [(UIPresentationController *)&v14 systemLayoutFittingSizeDidChangeForChildContentContainer:v4];
+  containerCopy = container;
+  [(UIPresentationController *)&v14 systemLayoutFittingSizeDidChangeForChildContentContainer:containerCopy];
   v5 = [(UIPresentationController *)self presentedView:v14.receiver];
-  [v4 preferredContentSize];
+  [containerCopy preferredContentSize];
   v7 = v6;
   v9 = v8;
 
@@ -217,74 +217,74 @@
   [(_UIContextMenuPreviewPresentationController *)self _updatePlatterContentSizeWithPreferredContentSize:v11, v13];
 }
 
-- (void)_updatePlatterContentSizeWithPreferredContentSize:(CGSize)a3
+- (void)_updatePlatterContentSizeWithPreferredContentSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v81 = [(UIPresentationController *)self containerView];
-  v6 = [v81 traitCollection];
-  v7 = _UIContextMenuGetPlatformMetrics([v6 userInterfaceIdiom]);
+  height = size.height;
+  width = size.width;
+  containerView = [(UIPresentationController *)self containerView];
+  traitCollection = [containerView traitCollection];
+  v7 = _UIContextMenuGetPlatformMetrics([traitCollection userInterfaceIdiom]);
 
   [v7 previewPlatterMaximumSize];
   v9 = v8;
   [v7 previewPlatterMaximumSize];
   v11 = v10;
-  v12 = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
-  if ([v12 preferredLayout] == 1)
+  menuStyle = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
+  if ([menuStyle preferredLayout] == 1)
   {
 
 LABEL_3:
-    v13 = v81;
+    v13 = containerView;
     goto LABEL_39;
   }
 
-  v14 = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
-  v15 = [v14 preferredLayout];
+  menuStyle2 = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
+  preferredLayout = [menuStyle2 preferredLayout];
 
-  v13 = v81;
-  if (v15 != 3)
+  v13 = containerView;
+  if (preferredLayout != 3)
   {
-    if (v81)
+    if (containerView)
     {
-      v16 = [v81 traitCollection];
-      v17 = [v16 verticalSizeClass];
+      traitCollection2 = [containerView traitCollection];
+      verticalSizeClass = [traitCollection2 verticalSizeClass];
 
-      if (v17 == 1)
+      if (verticalSizeClass == 1)
       {
         v18 = v9 / v11;
-        [v81 bounds];
+        [containerView bounds];
         v11 = CGRectGetHeight(v83);
         v9 = v18 * v11;
       }
 
       else
       {
-        [v81 bounds];
+        [containerView bounds];
         v20 = v19;
         v22 = v21;
-        v23 = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
-        v24 = [v23 preferredLayout];
+        menuStyle3 = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
+        preferredLayout2 = [menuStyle3 preferredLayout];
 
-        if (!v24)
+        if (!preferredLayout2)
         {
           v80 = v20;
-          v25 = v81;
+          v25 = containerView;
           [v25 safeAreaInsets];
           v27 = v26;
           v29 = v28;
           v31 = v30;
           v33 = v32;
-          v34 = [v25 traitCollection];
-          v35 = [v34 verticalSizeClass];
+          traitCollection3 = [v25 traitCollection];
+          verticalSizeClass2 = [traitCollection3 verticalSizeClass];
 
           v36 = v33 + 0.0;
-          if (v35 == 1)
+          if (verticalSizeClass2 == 1)
           {
             v36 = v33;
           }
 
           v79 = v36;
-          if (v35 == 1)
+          if (verticalSizeClass2 == 1)
           {
             v37 = v27;
           }
@@ -297,23 +297,23 @@ LABEL_3:
           }
 
           v38 = v25;
-          v39 = [v38 traitCollection];
-          v40 = [v39 userInterfaceIdiom];
+          traitCollection4 = [v38 traitCollection];
+          userInterfaceIdiom = [traitCollection4 userInterfaceIdiom];
 
-          v41 = _UIContextMenuGetPlatformMetrics(v40);
+          v41 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom);
           [UIViewController _horizontalContentMarginForView:v38];
           v43 = v42;
-          v44 = [v41 contentSpacingForContainer];
-          v45 = v44;
-          if (v44)
+          contentSpacingForContainer = [v41 contentSpacingForContainer];
+          v45 = contentSpacingForContainer;
+          if (contentSpacingForContainer)
           {
-            v43 = (*(v44 + 16))(v44, v38);
+            v43 = (*(contentSpacingForContainer + 16))(contentSpacingForContainer, v38);
           }
 
-          v46 = [v38 traitCollection];
-          v47 = [v46 userInterfaceIdiom];
+          traitCollection5 = [v38 traitCollection];
+          userInterfaceIdiom2 = [traitCollection5 userInterfaceIdiom];
 
-          v48 = _UIContextMenuGetPlatformMetrics(v47);
+          v48 = _UIContextMenuGetPlatformMetrics(userInterfaceIdiom2);
           [v48 preferredDefaultContentInsets];
           v50 = fmax(fmax(v37, 20.0), v49);
           v52 = fmax(fmax(v29, v43), v51);
@@ -329,12 +329,12 @@ LABEL_3:
           v22 = CGRectGetHeight(v84) * (v80 / v84.size.width);
         }
 
-        v61 = [v81 traitCollection];
-        v62 = [v61 userInterfaceIdiom];
+        traitCollection6 = [containerView traitCollection];
+        userInterfaceIdiom3 = [traitCollection6 userInterfaceIdiom];
 
-        if (!v62)
+        if (!userInterfaceIdiom3)
         {
-          [v81 bounds];
+          [containerView bounds];
           v63 = CGRectGetWidth(v85);
           v11 = v11 * (v63 / v9);
           v9 = v63;
@@ -372,17 +372,17 @@ LABEL_3:
       v65 = height;
     }
 
-    v66 = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
-    v67 = [v66 ignoresDefaultSizingRules];
+    menuStyle4 = [(_UIContextMenuPreviewPresentationController *)self menuStyle];
+    ignoresDefaultSizingRules = [menuStyle4 ignoresDefaultSizingRules];
 
-    if (v67)
+    if (ignoresDefaultSizingRules)
     {
       height = v65;
       goto LABEL_3;
     }
 
     v68 = fmin(v9 / v64, 1.0);
-    v13 = v81;
+    v13 = containerView;
     if (width == *MEMORY[0x1E695F060] && height == *(MEMORY[0x1E695F060] + 8))
     {
       if (v65 * v68 >= v11)
@@ -420,8 +420,8 @@ LABEL_39:
     v71 = 1.0;
   }
 
-  v72 = [v81 _screen];
-  [v72 scale];
+  _screen = [containerView _screen];
+  [_screen scale];
   UIFloorToScale(height, v73);
   v75 = v74;
 
@@ -434,19 +434,19 @@ LABEL_39:
   if (v71 != v77 || v75 != v76)
   {
     [(_UIContextMenuPreviewPresentationController *)self setPlatterContentSize:v71, v75];
-    v78 = [(_UIContextMenuPreviewPresentationController *)self menuPresentationDelegate];
-    [v78 contextMenuPreviewPresentationController:self didChangePreviewContentSize:{v71, v75}];
+    menuPresentationDelegate = [(_UIContextMenuPreviewPresentationController *)self menuPresentationDelegate];
+    [menuPresentationDelegate contextMenuPreviewPresentationController:self didChangePreviewContentSize:{v71, v75}];
   }
 }
 
-- (id)_traitCollectionForChildEnvironment:(id)a3
+- (id)_traitCollectionForChildEnvironment:(id)environment
 {
   v15.receiver = self;
   v15.super_class = _UIContextMenuPreviewPresentationController;
-  v4 = a3;
-  v5 = [(UIPresentationController *)&v15 _traitCollectionForChildEnvironment:v4];
-  v6 = [(UIPresentationController *)self presentedViewController];
-  v7 = [v4 isEqual:v6];
+  environmentCopy = environment;
+  v5 = [(UIPresentationController *)&v15 _traitCollectionForChildEnvironment:environmentCopy];
+  presentedViewController = [(UIPresentationController *)self presentedViewController];
+  v7 = [environmentCopy isEqual:presentedViewController];
 
   if (v7)
   {

@@ -1,22 +1,22 @@
 @interface SHSheetMutableSceneSettings
 - (NSString)sessionIdentifier;
 - (SHSheetUIServiceClientContext)sessionContext;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)sheetConfiguration;
 - (int64_t)applicationState;
 - (int64_t)hostProcessType;
 - (int64_t)presentationStyle;
-- (void)setApplicationState:(int64_t)a3;
-- (void)setHostProcessType:(int64_t)a3;
-- (void)setPresentationStyle:(int64_t)a3;
-- (void)setSessionContext:(id)a3;
-- (void)setSessionIdentifier:(id)a3;
-- (void)setSheetConfiguration:(id)a3;
+- (void)setApplicationState:(int64_t)state;
+- (void)setHostProcessType:(int64_t)type;
+- (void)setPresentationStyle:(int64_t)style;
+- (void)setSessionContext:(id)context;
+- (void)setSessionIdentifier:(id)identifier;
+- (void)setSheetConfiguration:(id)configuration;
 @end
 
 @implementation SHSheetMutableSceneSettings
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SHSheetSceneSettings alloc];
 
@@ -25,95 +25,95 @@
 
 - (NSString)sessionIdentifier
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:42897489];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:42897489];
 
   return v3;
 }
 
-- (void)setSessionIdentifier:(id)a3
+- (void)setSessionIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:42897489];
+  identifierCopy = identifier;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:identifierCopy forSetting:42897489];
 }
 
 - (SHSheetUIServiceClientContext)sessionContext
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:42897490];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:42897490];
 
   return v3;
 }
 
-- (void)setSessionContext:(id)a3
+- (void)setSessionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:42897490];
+  contextCopy = context;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:contextCopy forSetting:42897490];
 }
 
 - (id)sheetConfiguration
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:42897491];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:42897491];
 
   return v3;
 }
 
-- (void)setSheetConfiguration:(id)a3
+- (void)setSheetConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:42897491];
+  configurationCopy = configuration;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:configurationCopy forSetting:42897491];
 }
 
 - (int64_t)presentationStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:42897492];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:42897492];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
-- (void)setPresentationStyle:(int64_t)a3
+- (void)setPresentationStyle:(int64_t)style
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:42897492];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:style];
+  [otherSettings setObject:v4 forSetting:42897492];
 }
 
 - (int64_t)applicationState
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:42897493];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:42897493];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
-- (void)setApplicationState:(int64_t)a3
+- (void)setApplicationState:(int64_t)state
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:42897493];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+  [otherSettings setObject:v4 forSetting:42897493];
 }
 
 - (int64_t)hostProcessType
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:42897494];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:42897494];
 
-  v4 = [v3 integerValue];
-  return v4;
+  integerValue = [v3 integerValue];
+  return integerValue;
 }
 
-- (void)setHostProcessType:(int64_t)a3
+- (void)setHostProcessType:(int64_t)type
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:42897494];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  [otherSettings setObject:v4 forSetting:42897494];
 }
 
 @end

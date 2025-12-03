@@ -1,45 +1,45 @@
 @interface MFAttachmentLibraryDataProvider
-- (MFAttachmentLibraryDataProvider)initWithLibrary:(id)a3;
+- (MFAttachmentLibraryDataProvider)initWithLibrary:(id)library;
 - (MFMessageLibrary)messageLibrary;
-- (id)fetchLocalDataForAttachment:(id)a3;
-- (id)messageForAttachment:(id)a3;
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4;
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6;
+- (id)fetchLocalDataForAttachment:(id)attachment;
+- (id)messageForAttachment:(id)attachment;
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message;
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion;
 @end
 
 @implementation MFAttachmentLibraryDataProvider
 
-- (MFAttachmentLibraryDataProvider)initWithLibrary:(id)a3
+- (MFAttachmentLibraryDataProvider)initWithLibrary:(id)library
 {
-  v4 = a3;
+  libraryCopy = library;
   v8.receiver = self;
   v8.super_class = MFAttachmentLibraryDataProvider;
   v5 = [(MFAttachmentLibraryDataProvider *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MFAttachmentLibraryDataProvider *)v5 setMessageLibrary:v4];
+    [(MFAttachmentLibraryDataProvider *)v5 setMessageLibrary:libraryCopy];
   }
 
   return v6;
 }
 
-- (id)fetchLocalDataForAttachment:(id)a3
+- (id)fetchLocalDataForAttachment:(id)attachment
 {
-  v4 = a3;
-  v5 = [v4 readFromDisk];
-  if (v5)
+  attachmentCopy = attachment;
+  readFromDisk = [attachmentCopy readFromDisk];
+  if (readFromDisk)
   {
-    v6 = v5;
-    v7 = [v4 url];
-    v8 = [(MFAttachmentLibraryDataProvider *)self messageForAttachment:v4];
-    v9 = [v8 messageStore];
-    v10 = [v7 mf_lastPartNumber];
-    v11 = [v8 messageBody];
-    v12 = [v11 partWithNumber:v10];
+    v6 = readFromDisk;
+    v7 = [attachmentCopy url];
+    v8 = [(MFAttachmentLibraryDataProvider *)self messageForAttachment:attachmentCopy];
+    messageStore = [v8 messageStore];
+    mf_lastPartNumber = [v7 mf_lastPartNumber];
+    messageBody = [v8 messageBody];
+    v12 = [messageBody partWithNumber:mf_lastPartNumber];
 
-    v13 = [v12 range];
-    v15 = [v9 dataForMimePart:v12 inRange:v13 isComplete:v14 downloadIfNecessary:0 didDownload:{0, 0}];
+    range = [v12 range];
+    v15 = [messageStore dataForMimePart:v12 inRange:range isComplete:v14 downloadIfNecessary:0 didDownload:{0, 0}];
   }
 
   else
@@ -50,59 +50,59 @@
   return v15;
 }
 
-- (void)fetchDataForAttachment:(id)a3 consumer:(id)a4 progress:(id)a5 completion:(id)a6
+- (void)fetchDataForAttachment:(id)attachment consumer:(id)consumer progress:(id)progress completion:(id)completion
 {
   v39[1] = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  attachmentCopy = attachment;
+  consumerCopy = consumer;
+  progressCopy = progress;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __87__MFAttachmentLibraryDataProvider_fetchDataForAttachment_consumer_progress_completion___block_invoke;
   aBlock[3] = &unk_2798B6FF0;
-  v32 = v12;
+  v32 = progressCopy;
   v37 = v32;
-  v13 = a6;
+  completionCopy = completion;
   v35 = _Block_copy(aBlock);
-  v14 = [v10 url];
-  v15 = [(MFAttachmentLibraryDataProvider *)self messageForAttachment:v10];
-  v34 = [v15 messageStore];
-  v16 = [v14 mf_lastPartNumber];
-  v33 = v11;
-  if (v16)
+  v14 = [attachmentCopy url];
+  v15 = [(MFAttachmentLibraryDataProvider *)self messageForAttachment:attachmentCopy];
+  messageStore = [v15 messageStore];
+  mf_lastPartNumber = [v14 mf_lastPartNumber];
+  v33 = consumerCopy;
+  if (mf_lastPartNumber)
   {
-    v17 = [v10 readFromDisk];
-    if (v17)
+    readFromDisk = [attachmentCopy readFromDisk];
+    if (readFromDisk)
     {
       v18 = objc_alloc(MEMORY[0x277D24F88]);
-      v39[0] = v11;
+      v39[0] = consumerCopy;
       v19 = 1;
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v39 count:1];
-      v21 = [v18 initWithConsumers:v20 expectedSize:{objc_msgSend(v10, "encodedFileSize")}];
+      v21 = [v18 initWithConsumers:v20 expectedSize:{objc_msgSend(attachmentCopy, "encodedFileSize")}];
 
       [v21 setProgressBlock:v35];
-      [v21 appendData:v17];
+      [v21 appendData:readFromDisk];
       v22 = 0;
       v23 = 0;
     }
 
     else
     {
-      v31 = [v10 decodeFilterWithDataConsumer:v11];
+      v31 = [attachmentCopy decodeFilterWithDataConsumer:consumerCopy];
       v24 = objc_alloc(MEMORY[0x277D24F88]);
       v38 = v31;
       v22 = 1;
       v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
-      v21 = [v24 initWithConsumers:v25 expectedSize:{objc_msgSend(v10, "encodedFileSize")}];
+      v21 = [v24 initWithConsumers:v25 expectedSize:{objc_msgSend(attachmentCopy, "encodedFileSize")}];
 
       [v21 setProgressBlock:v35];
-      v26 = [v15 messageBody];
-      v27 = [v26 partWithNumber:v16];
+      messageBody = [v15 messageBody];
+      v27 = [messageBody partWithNumber:mf_lastPartNumber];
 
-      v28 = [v27 range];
-      LOBYTE(v26) = [v34 dataForMimePart:v27 inRange:v28 withConsumer:v29 downloadIfNecessary:{v21, 1}];
+      range = [v27 range];
+      LOBYTE(messageBody) = [messageStore dataForMimePart:v27 inRange:range withConsumer:v29 downloadIfNecessary:{v21, 1}];
 
-      if (v26)
+      if (messageBody)
       {
         v23 = 0;
         v19 = 1;
@@ -127,7 +127,7 @@
 
   [v21 done];
   [v33 done];
-  v13[2](v13, v19, v23, v22);
+  completionCopy[2](completionCopy, v19, v23, v22);
 
   v30 = *MEMORY[0x277D85DE8];
 }
@@ -140,35 +140,35 @@ uint64_t __87__MFAttachmentLibraryDataProvider_fetchDataForAttachment_consumer_p
   return [v6 setCompletedUnitCount:a2];
 }
 
-- (id)messageForAttachment:(id)a3
+- (id)messageForAttachment:(id)attachment
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 part];
-  v6 = [v5 mimeBody];
-  v7 = [v6 message];
+  attachmentCopy = attachment;
+  part = [attachmentCopy part];
+  mimeBody = [part mimeBody];
+  message = [mimeBody message];
 
-  if (!v7)
+  if (!message)
   {
-    v8 = [v4 url];
-    v9 = [v8 mf_rowID];
+    v8 = [attachmentCopy url];
+    mf_rowID = [v8 mf_rowID];
 
-    if (v9 == -1)
+    if (mf_rowID == -1)
     {
-      v7 = 0;
+      message = 0;
     }
 
     else
     {
-      v10 = [(MFAttachmentLibraryDataProvider *)self messageLibrary];
-      v7 = [v10 messageWithLibraryID:v9 options:4111 inMailbox:0];
+      messageLibrary = [(MFAttachmentLibraryDataProvider *)self messageLibrary];
+      message = [messageLibrary messageWithLibraryID:mf_rowID options:4111 inMailbox:0];
 
-      v11 = [v7 mailbox];
-      v12 = [v11 account];
-      v13 = [v12 storeForMailboxUid:v11];
+      mailbox = [message mailbox];
+      account = [mailbox account];
+      v13 = [account storeForMailboxUid:mailbox];
       if (v13)
       {
-        [v7 setMessageStore:v13];
+        [message setMessageStore:v13];
       }
 
       else
@@ -176,9 +176,9 @@ uint64_t __87__MFAttachmentLibraryDataProvider_fetchDataForAttachment_consumer_p
         v14 = MFLogGeneral();
         if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
         {
-          v15 = [v7 ef_publicDescription];
+          ef_publicDescription = [message ef_publicDescription];
           v18 = 138543362;
-          v19 = v15;
+          v19 = ef_publicDescription;
           _os_log_impl(&dword_258BDA000, v14, OS_LOG_TYPE_INFO, "#Attachments failed to find a store for message %{public}@, things may behave unexpectedly", &v18, 0xCu);
         }
       }
@@ -187,24 +187,24 @@ uint64_t __87__MFAttachmentLibraryDataProvider_fetchDataForAttachment_consumer_p
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v7;
+  return message;
 }
 
-- (id)storageLocationForAttachment:(id)a3 withMessage:(id)a4
+- (id)storageLocationForAttachment:(id)attachment withMessage:(id)message
 {
-  v5 = a3;
-  v6 = [a4 attachmentStorageLocation];
-  if (v6)
+  attachmentCopy = attachment;
+  attachmentStorageLocation = [message attachmentStorageLocation];
+  if (attachmentStorageLocation)
   {
-    v7 = [v5 part];
-    v8 = [v7 partNumber];
-    v9 = [v6 stringByAppendingPathComponent:v8];
+    part = [attachmentCopy part];
+    partNumber = [part partNumber];
+    v9 = [attachmentStorageLocation stringByAppendingPathComponent:partNumber];
 
-    v10 = [v5 fileName];
-    v6 = [v9 stringByAppendingPathComponent:v10];
+    fileName = [attachmentCopy fileName];
+    attachmentStorageLocation = [v9 stringByAppendingPathComponent:fileName];
   }
 
-  return v6;
+  return attachmentStorageLocation;
 }
 
 - (MFMessageLibrary)messageLibrary

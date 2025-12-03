@@ -1,91 +1,91 @@
 @interface HUMediaServiceItemManager
 - (BOOL)_hasAuthFatalError;
 - (BOOL)_isAppleMusicService;
-- (HUMediaServiceItemManager)initWithDelegate:(id)a3;
-- (HUMediaServiceItemManager)initWithHome:(id)a3 mediaServiceItem:(id)a4 delegate:(id)a5;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
+- (HUMediaServiceItemManager)initWithDelegate:(id)delegate;
+- (HUMediaServiceItemManager)initWithHome:(id)home mediaServiceItem:(id)item delegate:(id)delegate;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
 @end
 
 @implementation HUMediaServiceItemManager
 
-- (HUMediaServiceItemManager)initWithHome:(id)a3 mediaServiceItem:(id)a4 delegate:(id)a5
+- (HUMediaServiceItemManager)initWithHome:(id)home mediaServiceItem:(id)item delegate:(id)delegate
 {
-  v8 = a3;
-  v9 = a4;
+  homeCopy = home;
+  itemCopy = item;
   v16.receiver = self;
   v16.super_class = HUMediaServiceItemManager;
-  v10 = [(HFItemManager *)&v16 initWithDelegate:a5];
+  v10 = [(HFItemManager *)&v16 initWithDelegate:delegate];
   v11 = v10;
   if (v10)
   {
-    [(HUMediaServiceItemManager *)v10 setHomeForUser:v8];
-    [(HUMediaServiceItemManager *)v11 setMediaServiceItem:v9];
+    [(HUMediaServiceItemManager *)v10 setHomeForUser:homeCopy];
+    [(HUMediaServiceItemManager *)v11 setMediaServiceItem:itemCopy];
     v12 = objc_alloc(MEMORY[0x277D14C98]);
-    v13 = [v8 currentUser];
-    v14 = [v12 initWithHome:v8 user:v13 nameStyle:0];
+    currentUser = [homeCopy currentUser];
+    v14 = [v12 initWithHome:homeCopy user:currentUser nameStyle:0];
     [(HUMediaServiceItemManager *)v11 setUserItem:v14];
   }
 
   return v11;
 }
 
-- (HUMediaServiceItemManager)initWithDelegate:(id)a3
+- (HUMediaServiceItemManager)initWithDelegate:(id)delegate
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithHome_mediaServiceItem_delegate_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUMediaServiceItemManager.m" lineNumber:56 description:{@"%s is unavailable; use %@ instead", "-[HUMediaServiceItemManager initWithDelegate:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUMediaServiceItemManager.m" lineNumber:56 description:{@"%s is unavailable; use %@ instead", "-[HUMediaServiceItemManager initWithDelegate:]", v6}];
 
   return 0;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v72[1] = *MEMORY[0x277D85DE8];
-  v5 = [(HUMediaServiceItemManager *)self userItem];
-  v6 = [v5 user];
-  v7 = [(HUMediaServiceItemManager *)self homeForUser];
-  v8 = [v7 currentUser];
-  v9 = [v6 isEqual:v8];
+  userItem = [(HUMediaServiceItemManager *)self userItem];
+  user = [userItem user];
+  homeForUser = [(HUMediaServiceItemManager *)self homeForUser];
+  currentUser = [homeForUser currentUser];
+  v9 = [user isEqual:currentUser];
 
   if (v9)
   {
-    v10 = [(HUMediaServiceItemManager *)self userItem];
-    v11 = [v10 hasValidSettings];
+    userItem2 = [(HUMediaServiceItemManager *)self userItem];
+    hasValidSettings = [userItem2 hasValidSettings];
 
-    if (v11)
+    if (hasValidSettings)
     {
       v12 = [HUAccessorySettingsItemModule alloc];
-      v13 = [(HUMediaServiceItemManager *)self userItem];
+      userItem3 = [(HUMediaServiceItemManager *)self userItem];
       v71 = *MEMORY[0x277D14258];
       v72[0] = MEMORY[0x277CBEC38];
       v14 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v72 forKeys:&v71 count:1];
-      v15 = [(HUAccessorySettingsItemModule *)v12 initWithItemUpdater:self homeKitSettingsVendor:v13 usageOptions:v14];
+      v15 = [(HUAccessorySettingsItemModule *)v12 initWithItemUpdater:self homeKitSettingsVendor:userItem3 usageOptions:v14];
       [(HUMediaServiceItemManager *)self setUserSettingsItemModule:v15];
     }
 
     else
     {
-      v13 = HFLogForCategory();
-      if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
+      userItem3 = HFLogForCategory();
+      if (os_log_type_enabled(userItem3, OS_LOG_TYPE_ERROR))
       {
         *buf = 0;
-        _os_log_error_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_ERROR, "CAN'T ACCESS USER BASED SETTINGS: The user's settings can't be accessed because hasValidSettings == NO", buf, 2u);
+        _os_log_error_impl(&dword_20CEB6000, userItem3, OS_LOG_TYPE_ERROR, "CAN'T ACCESS USER BASED SETTINGS: The user's settings can't be accessed because hasValidSettings == NO", buf, 2u);
       }
     }
   }
 
   else
   {
-    v13 = HFLogForCategory();
-    if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
+    userItem3 = HFLogForCategory();
+    if (os_log_type_enabled(userItem3, OS_LOG_TYPE_DEBUG))
     {
       v16 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v68 = self;
+      selfCopy = self;
       v69 = 2112;
       v70 = v16;
-      _os_log_debug_impl(&dword_20CEB6000, v13, OS_LOG_TYPE_DEBUG, "%@:%@  Not Displaying HMSettings based controls because current user is not permitted", buf, 0x16u);
+      _os_log_debug_impl(&dword_20CEB6000, userItem3, OS_LOG_TYPE_DEBUG, "%@:%@  Not Displaying HMSettings based controls because current user is not permitted", buf, 0x16u);
     }
   }
 
@@ -129,13 +129,13 @@
   v25 = [v24 initWithResultsBlock:v58];
   [(HUMediaServiceItemManager *)self setReconnectItem:v25];
 
-  v26 = [(HUMediaServiceItemManager *)self mediaServiceItem];
-  v27 = [v26 mediaService];
-  v28 = [v27 serviceName];
+  mediaServiceItem = [(HUMediaServiceItemManager *)self mediaServiceItem];
+  mediaService = [mediaServiceItem mediaService];
+  serviceName = [mediaService serviceName];
 
   v29 = objc_alloc(MEMORY[0x277D14B38]);
   v65[0] = *MEMORY[0x277D13F60];
-  v36 = HULocalizedStringWithFormat(@"HUMediaServiceReconnectServiceHeader", @"%@%@", v30, v31, v32, v33, v34, v35, v28);
+  v36 = HULocalizedStringWithFormat(@"HUMediaServiceReconnectServiceHeader", @"%@%@", v30, v31, v32, v33, v34, v35, serviceName);
   v66[0] = v36;
   v65[1] = *MEMORY[0x277D13FB8];
   v37 = [MEMORY[0x277CCABB0] numberWithBool:v23];
@@ -145,28 +145,28 @@
   [(HUMediaServiceItemManager *)self setReconnectTitleItem:v39];
 
   v40 = objc_alloc(MEMORY[0x277CBEB58]);
-  v41 = [(HUMediaServiceItemManager *)self mediaServiceItem];
-  v64[0] = v41;
-  v42 = [(HUMediaServiceItemManager *)self updateListeningHistoryItem];
-  v64[1] = v42;
-  v43 = [(HUMediaServiceItemManager *)self updateListeningHistoryFooterItem];
-  v64[2] = v43;
-  v44 = [(HUMediaServiceItemManager *)self removeItem];
-  v64[3] = v44;
-  v45 = [(HUMediaServiceItemManager *)self reconnectItem];
-  v64[4] = v45;
-  v46 = [(HUMediaServiceItemManager *)self reconnectTitleItem];
-  v64[5] = v46;
+  mediaServiceItem2 = [(HUMediaServiceItemManager *)self mediaServiceItem];
+  v64[0] = mediaServiceItem2;
+  updateListeningHistoryItem = [(HUMediaServiceItemManager *)self updateListeningHistoryItem];
+  v64[1] = updateListeningHistoryItem;
+  updateListeningHistoryFooterItem = [(HUMediaServiceItemManager *)self updateListeningHistoryFooterItem];
+  v64[2] = updateListeningHistoryFooterItem;
+  removeItem = [(HUMediaServiceItemManager *)self removeItem];
+  v64[3] = removeItem;
+  reconnectItem = [(HUMediaServiceItemManager *)self reconnectItem];
+  v64[4] = reconnectItem;
+  reconnectTitleItem = [(HUMediaServiceItemManager *)self reconnectTitleItem];
+  v64[5] = reconnectTitleItem;
   v47 = [MEMORY[0x277CBEA60] arrayWithObjects:v64 count:6];
   v48 = [v40 initWithArray:v47];
 
   if ([(HUMediaServiceItemManager *)self _isAppleMusicService])
   {
-    v49 = [(HUMediaServiceItemManager *)self updateListeningHistoryItem];
-    [v48 removeObject:v49];
+    updateListeningHistoryItem2 = [(HUMediaServiceItemManager *)self updateListeningHistoryItem];
+    [v48 removeObject:updateListeningHistoryItem2];
 
-    v50 = [(HUMediaServiceItemManager *)self updateListeningHistoryFooterItem];
-    [v48 removeObject:v50];
+    updateListeningHistoryFooterItem2 = [(HUMediaServiceItemManager *)self updateListeningHistoryFooterItem];
+    [v48 removeObject:updateListeningHistoryFooterItem2];
   }
 
   v51 = MEMORY[0x277CBEB58];
@@ -175,14 +175,14 @@
 
   if ([(HUMediaServiceItemManager *)self _isAppleMusicService])
   {
-    v54 = [(HUMediaServiceItemManager *)self userSettingsItemModule];
-    v55 = [v54 itemProviders];
-    [v53 unionSet:v55];
+    userSettingsItemModule = [(HUMediaServiceItemManager *)self userSettingsItemModule];
+    itemProviders = [userSettingsItemModule itemProviders];
+    [v53 unionSet:itemProviders];
   }
 
-  v56 = [v53 allObjects];
+  allObjects = [v53 allObjects];
 
-  return v56;
+  return allObjects;
 }
 
 id __56__HUMediaServiceItemManager__buildItemProvidersForHome___block_invoke(uint64_t a1)
@@ -282,88 +282,88 @@ id __56__HUMediaServiceItemManager__buildItemProvidersForHome___block_invoke_2(u
   return v15;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v169[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v136 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v5 = objc_alloc(MEMORY[0x277CBEB98]);
-  v140 = [(HUMediaServiceItemManager *)self mediaServiceItem];
-  v167[0] = v140;
-  v6 = [(HUMediaServiceItemManager *)self updateListeningHistoryItem];
-  v167[1] = v6;
-  v7 = [(HUMediaServiceItemManager *)self updateListeningHistoryFooterItem];
-  v167[2] = v7;
-  v8 = [(HUMediaServiceItemManager *)self removeItem];
-  v167[3] = v8;
-  v9 = [(HUMediaServiceItemManager *)self reconnectItem];
-  v167[4] = v9;
-  v10 = [(HUMediaServiceItemManager *)self reconnectTitleItem];
-  v167[5] = v10;
+  mediaServiceItem = [(HUMediaServiceItemManager *)self mediaServiceItem];
+  v167[0] = mediaServiceItem;
+  updateListeningHistoryItem = [(HUMediaServiceItemManager *)self updateListeningHistoryItem];
+  v167[1] = updateListeningHistoryItem;
+  updateListeningHistoryFooterItem = [(HUMediaServiceItemManager *)self updateListeningHistoryFooterItem];
+  v167[2] = updateListeningHistoryFooterItem;
+  removeItem = [(HUMediaServiceItemManager *)self removeItem];
+  v167[3] = removeItem;
+  reconnectItem = [(HUMediaServiceItemManager *)self reconnectItem];
+  v167[4] = reconnectItem;
+  reconnectTitleItem = [(HUMediaServiceItemManager *)self reconnectTitleItem];
+  v167[5] = reconnectTitleItem;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v167 count:6];
   v12 = [v5 initWithArray:v11];
-  v13 = [v4 intersectsSet:v12];
+  v13 = [itemsCopy intersectsSet:v12];
 
-  v14 = v4;
+  v14 = itemsCopy;
   v15 = v136;
 
   if (v13)
   {
-    v16 = [(HUMediaServiceItemManager *)self _hasAuthFatalError];
-    v17 = [(HUMediaServiceItemManager *)self mediaServiceItem];
-    v18 = [v14 containsObject:v17];
-    v19 = !v16;
+    _hasAuthFatalError = [(HUMediaServiceItemManager *)self _hasAuthFatalError];
+    mediaServiceItem2 = [(HUMediaServiceItemManager *)self mediaServiceItem];
+    v18 = [v14 containsObject:mediaServiceItem2];
+    v19 = !_hasAuthFatalError;
 
     if (v18 && v19)
     {
       v20 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUMediaServiceAccountInfoSectionIdentifier"];
       v21 = MEMORY[0x277CBEA60];
-      v22 = [(HUMediaServiceItemManager *)self mediaServiceItem];
-      v23 = [v21 arrayWithObject:v22];
+      mediaServiceItem3 = [(HUMediaServiceItemManager *)self mediaServiceItem];
+      v23 = [v21 arrayWithObject:mediaServiceItem3];
       [v20 setItems:v23];
 
       [v136 addObject:v20];
     }
 
-    v24 = [(HUMediaServiceItemManager *)self updateListeningHistoryItem];
-    v25 = [v14 containsObject:v24] & v19;
+    updateListeningHistoryItem2 = [(HUMediaServiceItemManager *)self updateListeningHistoryItem];
+    v25 = [v14 containsObject:updateListeningHistoryItem2] & v19;
 
     if (v25 == 1)
     {
       v26 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUMediaServiceUpdateListeningHistorySectionIdentifier"];
       v27 = MEMORY[0x277CBEA60];
-      v28 = [(HUMediaServiceItemManager *)self updateListeningHistoryItem];
-      v29 = [v27 arrayWithObject:v28];
+      updateListeningHistoryItem3 = [(HUMediaServiceItemManager *)self updateListeningHistoryItem];
+      v29 = [v27 arrayWithObject:updateListeningHistoryItem3];
       [v26 setItems:v29];
 
       [v136 addObject:v26];
     }
 
-    v30 = [(HUMediaServiceItemManager *)self updateListeningHistoryFooterItem];
-    v31 = [v14 containsObject:v30] & v19;
+    updateListeningHistoryFooterItem2 = [(HUMediaServiceItemManager *)self updateListeningHistoryFooterItem];
+    v31 = [v14 containsObject:updateListeningHistoryFooterItem2] & v19;
 
     v15 = v136;
     if (v31 == 1)
     {
       v32 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUMediaServiceUpdateListeningHistoryFooterSectionIdentifier"];
       v33 = MEMORY[0x277CBEA60];
-      v34 = [(HUMediaServiceItemManager *)self updateListeningHistoryFooterItem];
-      v35 = [v33 arrayWithObject:v34];
+      updateListeningHistoryFooterItem3 = [(HUMediaServiceItemManager *)self updateListeningHistoryFooterItem];
+      v35 = [v33 arrayWithObject:updateListeningHistoryFooterItem3];
       [v32 setItems:v35];
 
       [v136 addObject:v32];
     }
 
-    v36 = [(HUMediaServiceItemManager *)self removeItem];
-    v37 = [v14 containsObject:v36];
+    removeItem2 = [(HUMediaServiceItemManager *)self removeItem];
+    v37 = [v14 containsObject:removeItem2];
 
     if (v37)
     {
-      if (v16)
+      if (_hasAuthFatalError)
       {
         v38 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUMediaServiceReconnectServiceTitleSectionIdentifier"];
-        v39 = [(HUMediaServiceItemManager *)self reconnectTitleItem];
-        v166 = v39;
+        reconnectTitleItem2 = [(HUMediaServiceItemManager *)self reconnectTitleItem];
+        v166 = reconnectTitleItem2;
         v40 = [MEMORY[0x277CBEA60] arrayWithObjects:&v166 count:1];
         [v38 setItems:v40];
 
@@ -372,14 +372,14 @@ id __56__HUMediaServiceItemManager__buildItemProvidersForHome___block_invoke_2(u
 
       v41 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUMediaServiceRemoveServiceSectionIdentifier"];
       v42 = objc_opt_new();
-      if (v16)
+      if (_hasAuthFatalError)
       {
-        v43 = [(HUMediaServiceItemManager *)self reconnectItem];
-        [v42 addObject:v43];
+        reconnectItem2 = [(HUMediaServiceItemManager *)self reconnectItem];
+        [v42 addObject:reconnectItem2];
       }
 
-      v44 = [(HUMediaServiceItemManager *)self removeItem];
-      [v42 addObject:v44];
+      removeItem3 = [(HUMediaServiceItemManager *)self removeItem];
+      [v42 addObject:removeItem3];
 
       [v41 setItems:v42];
       [v136 addObject:v41];
@@ -388,10 +388,10 @@ id __56__HUMediaServiceItemManager__buildItemProvidersForHome___block_invoke_2(u
 
   if ([(HUMediaServiceItemManager *)self _isAppleMusicService])
   {
-    v134 = self;
-    v45 = [(HUMediaServiceItemManager *)self userSettingsItemModule];
+    selfCopy = self;
+    userSettingsItemModule = [(HUMediaServiceItemManager *)self userSettingsItemModule];
     v135 = v14;
-    v46 = [v45 buildSectionsWithDisplayedItems:v14];
+    v46 = [userSettingsItemModule buildSectionsWithDisplayedItems:v14];
 
     v138 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"allowiTunesAccountSection"];
     v155 = 0u;
@@ -415,14 +415,14 @@ id __56__HUMediaServiceItemManager__buildItemProvidersForHome___block_invoke_2(u
           }
 
           v52 = *(*(&v155 + 1) + 8 * i);
-          v53 = [v52 headerTitle];
+          headerTitle = [v52 headerTitle];
           v54 = HFLocalizedString();
-          v55 = [v53 isEqualToString:v54];
+          v55 = [headerTitle isEqualToString:v54];
 
           if (v55)
           {
-            v56 = [v52 items];
-            v57 = [v56 na_firstObjectPassingTest:&__block_literal_global_103];
+            items = [v52 items];
+            v57 = [items na_firstObjectPassingTest:&__block_literal_global_103];
 
             if (v57)
             {
@@ -430,11 +430,11 @@ id __56__HUMediaServiceItemManager__buildItemProvidersForHome___block_invoke_2(u
               v58 = [MEMORY[0x277CBEA60] arrayWithObjects:&v164 count:1];
               [v138 setItems:v58];
 
-              v59 = [v57 latestResults];
-              v60 = [v59 objectForKeyedSubscript:v141];
-              v61 = [v60 integerValue];
+              latestResults = [v57 latestResults];
+              v60 = [latestResults objectForKeyedSubscript:v141];
+              integerValue = [v60 integerValue];
 
-              if (v61 == 2)
+              if (integerValue == 2)
               {
                 v62 = @"HUUserSettingsAllowiTunesAccountEnabled_Footer";
               }
@@ -477,14 +477,14 @@ id __56__HUMediaServiceItemManager__buildItemProvidersForHome___block_invoke_2(u
           }
 
           v69 = *(*(&v151 + 1) + 8 * j);
-          v70 = [v69 headerTitle];
+          headerTitle2 = [v69 headerTitle];
           v71 = HFLocalizedString();
-          v72 = [v70 isEqualToString:v71];
+          v72 = [headerTitle2 isEqualToString:v71];
 
           if (v72)
           {
-            v73 = [v69 items];
-            v74 = [v73 na_firstObjectPassingTest:&__block_literal_global_79_0];
+            items2 = [v69 items];
+            v74 = [items2 na_firstObjectPassingTest:&__block_literal_global_79_0];
 
             if (v74)
             {
@@ -509,8 +509,8 @@ id __56__HUMediaServiceItemManager__buildItemProvidersForHome___block_invoke_2(u
 
     v81 = objc_alloc(MEMORY[0x277CCA898]);
     v168 = *MEMORY[0x277D740E8];
-    v82 = [MEMORY[0x277CBEBC0] hf_losslessURL];
-    v169[0] = v82;
+    hf_losslessURL = [MEMORY[0x277CBEBC0] hf_losslessURL];
+    v169[0] = hf_losslessURL;
     v83 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v169 forKeys:&v168 count:1];
     v84 = [v81 initWithString:v77 attributes:v83];
     [v80 appendAttributedString:v84];
@@ -537,14 +537,14 @@ id __56__HUMediaServiceItemManager__buildItemProvidersForHome___block_invoke_2(u
           }
 
           v90 = *(*(&v147 + 1) + 8 * k);
-          v91 = [v90 headerTitle];
+          headerTitle3 = [v90 headerTitle];
           v92 = HFLocalizedString();
-          v93 = [v91 isEqualToString:v92];
+          v93 = [headerTitle3 isEqualToString:v92];
 
           if (v93)
           {
-            v94 = [v90 items];
-            v95 = [v94 na_firstObjectPassingTest:&__block_literal_global_99_0];
+            items3 = [v90 items];
+            v95 = [items3 na_firstObjectPassingTest:&__block_literal_global_99_0];
 
             if (v95)
             {
@@ -587,17 +587,17 @@ id __56__HUMediaServiceItemManager__buildItemProvidersForHome___block_invoke_2(u
             }
 
             v103 = *(*(&v143 + 1) + 8 * m);
-            v104 = [v103 headerTitle];
+            headerTitle4 = [v103 headerTitle];
             v105 = HFLocalizedString();
-            v106 = [v104 isEqualToString:v105];
+            v106 = [headerTitle4 isEqualToString:v105];
 
             if (v106)
             {
-              v107 = [v103 items];
-              v108 = [v107 na_firstObjectPassingTest:&__block_literal_global_109];
+              items4 = [v103 items];
+              v108 = [items4 na_firstObjectPassingTest:&__block_literal_global_109];
 
-              v109 = [v103 items];
-              v110 = [v109 na_firstObjectPassingTest:&__block_literal_global_111_1];
+              items5 = [v103 items];
+              v110 = [items5 na_firstObjectPassingTest:&__block_literal_global_111_1];
 
               v111 = objc_alloc_init(MEMORY[0x277CBEB18]);
               v112 = v111;
@@ -636,8 +636,8 @@ id __56__HUMediaServiceItemManager__buildItemProvidersForHome___block_invoke_2(u
 
     if (v138)
     {
-      v118 = [v138 items];
-      v119 = [v118 count];
+      items6 = [v138 items];
+      v119 = [items6 count];
 
       if (v119)
       {
@@ -645,14 +645,14 @@ id __56__HUMediaServiceItemManager__buildItemProvidersForHome___block_invoke_2(u
       }
     }
 
-    v120 = [(HUMediaServiceItemManager *)v134 homeForUser];
-    if ([v120 hf_currentUserIsOwner])
+    homeForUser = [(HUMediaServiceItemManager *)selfCopy homeForUser];
+    if ([homeForUser hf_currentUserIsOwner])
     {
-      v121 = [(HUMediaServiceItemManager *)v134 homeForUser];
-      if ([v121 hf_hasAtLeastOneOasisEnabledDevice] && v142)
+      homeForUser2 = [(HUMediaServiceItemManager *)selfCopy homeForUser];
+      if ([homeForUser2 hf_hasAtLeastOneOasisEnabledDevice] && v142)
       {
-        v122 = [v142 items];
-        v123 = [v122 count];
+        items7 = [v142 items];
+        v123 = [items7 count];
 
         if (v123)
         {
@@ -660,14 +660,14 @@ id __56__HUMediaServiceItemManager__buildItemProvidersForHome___block_invoke_2(u
         }
 
 LABEL_78:
-        v124 = [(HUMediaServiceItemManager *)v134 homeForUser];
-        if ([v124 hf_currentUserIsOwner])
+        homeForUser3 = [(HUMediaServiceItemManager *)selfCopy homeForUser];
+        if ([homeForUser3 hf_currentUserIsOwner])
         {
-          v125 = [(HUMediaServiceItemManager *)v134 homeForUser];
-          if ([v125 hf_hasAtLeastOneOasisEnabledDevice] && v139)
+          homeForUser4 = [(HUMediaServiceItemManager *)selfCopy homeForUser];
+          if ([homeForUser4 hf_hasAtLeastOneOasisEnabledDevice] && v139)
           {
-            v126 = [v139 items];
-            v127 = [v126 count];
+            items8 = [v139 items];
+            v127 = [items8 count];
 
             if (v127)
             {
@@ -677,14 +677,14 @@ LABEL_78:
 LABEL_85:
             if (_os_feature_enabled_impl())
             {
-              v128 = [(HUMediaServiceItemManager *)v134 homeForUser];
-              if ([v128 hf_currentUserIsOwner])
+              homeForUser5 = [(HUMediaServiceItemManager *)selfCopy homeForUser];
+              if ([homeForUser5 hf_currentUserIsOwner])
               {
-                v129 = [(HUMediaServiceItemManager *)v134 homeForUser];
-                if ([v129 hf_hasAtLeastOneCrossfadeEnabledDevice] && v137)
+                homeForUser6 = [(HUMediaServiceItemManager *)selfCopy homeForUser];
+                if ([homeForUser6 hf_hasAtLeastOneCrossfadeEnabledDevice] && v137)
                 {
-                  v130 = [v137 items];
-                  v131 = [v130 count];
+                  items9 = [v137 items];
+                  v131 = [items9 count];
 
                   if (v131)
                   {
@@ -1047,20 +1047,20 @@ uint64_t __62__HUMediaServiceItemManager__buildSectionsWithDisplayedItems___bloc
 
 - (BOOL)_isAppleMusicService
 {
-  v2 = [(HUMediaServiceItemManager *)self mediaServiceItem];
-  v3 = [v2 mediaService];
-  v4 = [v3 isServiceRemovable];
+  mediaServiceItem = [(HUMediaServiceItemManager *)self mediaServiceItem];
+  mediaService = [mediaServiceItem mediaService];
+  isServiceRemovable = [mediaService isServiceRemovable];
 
-  return v4 ^ 1;
+  return isServiceRemovable ^ 1;
 }
 
 - (BOOL)_hasAuthFatalError
 {
-  v2 = [(HUMediaServiceItemManager *)self mediaServiceItem];
-  v3 = [v2 mediaService];
-  v4 = [v3 authFatalError];
+  mediaServiceItem = [(HUMediaServiceItemManager *)self mediaServiceItem];
+  mediaService = [mediaServiceItem mediaService];
+  authFatalError = [mediaService authFatalError];
 
-  return v4;
+  return authFatalError;
 }
 
 @end

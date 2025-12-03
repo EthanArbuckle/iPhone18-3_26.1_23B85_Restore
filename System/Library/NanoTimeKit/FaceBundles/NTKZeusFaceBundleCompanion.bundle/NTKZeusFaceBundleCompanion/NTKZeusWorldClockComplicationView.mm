@@ -1,34 +1,34 @@
 @interface NTKZeusWorldClockComplicationView
 - (CGRect)contentFrame;
-- (CGRect)padContentFrame:(CGRect)a3;
-- (NTKZeusWorldClockComplicationView)initWithBackgroundView:(id)a3;
+- (CGRect)padContentFrame:(CGRect)frame;
+- (NTKZeusWorldClockComplicationView)initWithBackgroundView:(id)view;
 - (void)_updateLabels;
-- (void)applyPalette:(id)a3;
-- (void)applyTransitionFraction:(double)a3 fromMode:(int64_t)a4 toMode:(int64_t)a5;
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5;
-- (void)blancEditModeApplyPalette:(id)a3;
+- (void)applyPalette:(id)palette;
+- (void)applyTransitionFraction:(double)fraction fromMode:(int64_t)mode toMode:(int64_t)toMode;
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette;
+- (void)blancEditModeApplyPalette:(id)palette;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setShortCity:(id)a3;
-- (void)timeFormatterTextDidChange:(id)a3;
+- (void)setShortCity:(id)city;
+- (void)timeFormatterTextDidChange:(id)change;
 @end
 
 @implementation NTKZeusWorldClockComplicationView
 
-- (NTKZeusWorldClockComplicationView)initWithBackgroundView:(id)a3
+- (NTKZeusWorldClockComplicationView)initWithBackgroundView:(id)view
 {
-  v4 = a3;
-  if (!v4)
+  viewCopy = view;
+  if (!viewCopy)
   {
     v5 = [NTKZeusComplicationBackgroundView alloc];
     v6 = +[NTKFaceViewRenderingContext sharedRenderingContext];
-    v7 = [v6 device];
-    v4 = [(NTKZeusComplicationBackgroundView *)v5 initWithDevice:v7];
+    device = [v6 device];
+    viewCopy = [(NTKZeusComplicationBackgroundView *)v5 initWithDevice:device];
   }
 
   v24.receiver = self;
   v24.super_class = NTKZeusWorldClockComplicationView;
-  v8 = [(NTKZeusComplicationView *)&v24 initWithBackgroundView:v4];
+  v8 = [(NTKZeusComplicationView *)&v24 initWithBackgroundView:viewCopy];
   if (v8)
   {
     v9 = objc_opt_new();
@@ -36,8 +36,8 @@
     v8->_timeLabel = v9;
 
     v11 = v8->_timeLabel;
-    v12 = [(NTKZeusComplicationView *)v8 device];
-    sub_C038(v12, v22);
+    device2 = [(NTKZeusComplicationView *)v8 device];
+    sub_C038(device2, v22);
     v13 = [CLKFont systemFontOfSize:v23 weight:UIFontWeightMedium];
     [(UILabel *)v11 setFont:v13];
 
@@ -48,8 +48,8 @@
     v8->_cityLabel = v14;
 
     v16 = v8->_cityLabel;
-    v17 = [(UILabel *)v8->_timeLabel font];
-    [(UILabel *)v16 setFont:v17];
+    font = [(UILabel *)v8->_timeLabel font];
+    [(UILabel *)v16 setFont:font];
 
     v18 = v8->_cityLabel;
     [(UILabel *)v8->_timeLabel alpha];
@@ -77,7 +77,7 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(NTKZeusComplicationView *)self device];
+  device = [(NTKZeusComplicationView *)self device];
   v28 = 0u;
   v29 = 0u;
   v26 = 0u;
@@ -90,7 +90,7 @@
   v21 = 0u;
   v19 = 0u;
   memset(v18, 0, sizeof(v18));
-  sub_C038(v3, v18);
+  sub_C038(device, v18);
   height = CGSizeZero.height;
   [(UILabel *)self->_timeLabel sizeThatFits:CGSizeZero.width, height];
   [(UILabel *)self->_cityLabel sizeThatFits:CGSizeZero.width, height];
@@ -104,15 +104,15 @@
   [(NTKZeusWorldClockComplicationView *)self contentFrame];
   v8 = v7;
   v9 = self->_timeLabel;
-  v10 = [(UILabel *)v9 font];
-  [v10 capHeight];
+  font = [(UILabel *)v9 font];
+  [font capHeight];
   [(UILabel *)v9 _setFirstLineBaselineFrameOriginY:v8 + v11];
 
   v12 = self->_cityLabel;
   [(UILabel *)self->_timeLabel _firstLineBaselineFrameOriginY];
   v14 = v13 + *&v19;
-  v15 = [(UILabel *)self->_cityLabel font];
-  [v15 capHeight];
+  font2 = [(UILabel *)self->_cityLabel font];
+  [font2 capHeight];
   [(UILabel *)v12 _setFirstLineBaselineFrameOriginY:v14 + v16];
 
   v17.receiver = self;
@@ -125,13 +125,13 @@
   height = CGSizeZero.height;
   [(UILabel *)self->_timeLabel sizeThatFits:CGSizeZero.width, height];
   [(UILabel *)self->_cityLabel sizeThatFits:CGSizeZero.width, height];
-  v4 = [(UILabel *)self->_timeLabel font];
-  [v4 capHeight];
-  v5 = [(NTKZeusComplicationView *)self device];
-  sub_C038(v5, &v19);
+  font = [(UILabel *)self->_timeLabel font];
+  [font capHeight];
+  device = [(NTKZeusComplicationView *)self device];
+  sub_C038(device, &v19);
 
   [(NTKZeusWorldClockComplicationView *)self bounds];
-  v6 = [(NTKZeusComplicationView *)self device];
+  device2 = [(NTKZeusComplicationView *)self device];
   CLKRectCenteredIntegralRectForDevice();
   v8 = v7;
   v10 = v9;
@@ -149,12 +149,12 @@
   return result;
 }
 
-- (CGRect)padContentFrame:(CGRect)a3
+- (CGRect)padContentFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
@@ -180,18 +180,18 @@
   return CGRectInset(*&v10, v8, v9);
 }
 
-- (void)setShortCity:(id)a3
+- (void)setShortCity:(id)city
 {
-  [(UILabel *)self->_cityLabel setText:a3];
+  [(UILabel *)self->_cityLabel setText:city];
 
   [(NTKZeusWorldClockComplicationView *)self setNeedsLayout];
 }
 
-- (void)timeFormatterTextDidChange:(id)a3
+- (void)timeFormatterTextDidChange:(id)change
 {
   timeLabel = self->_timeLabel;
-  v5 = [a3 timeText];
-  [(UILabel *)timeLabel setText:v5];
+  timeText = [change timeText];
+  [(UILabel *)timeLabel setText:timeText];
 
   [(NTKZeusWorldClockComplicationView *)self setNeedsLayout];
 }
@@ -199,50 +199,50 @@
 - (void)_updateLabels
 {
   timeLabel = self->_timeLabel;
-  v4 = [(NTKZeusComplicationView *)self palette];
-  v5 = [v4 bottomComplication];
-  [(UILabel *)timeLabel setTextColor:v5];
+  palette = [(NTKZeusComplicationView *)self palette];
+  bottomComplication = [palette bottomComplication];
+  [(UILabel *)timeLabel setTextColor:bottomComplication];
 
   cityLabel = self->_cityLabel;
-  v8 = [(NTKZeusComplicationView *)self palette];
-  v7 = [v8 bottomComplication];
-  [(UILabel *)cityLabel setTextColor:v7];
+  palette2 = [(NTKZeusComplicationView *)self palette];
+  bottomComplication2 = [palette2 bottomComplication];
+  [(UILabel *)cityLabel setTextColor:bottomComplication2];
 }
 
-- (void)applyPalette:(id)a3
+- (void)applyPalette:(id)palette
 {
   v4.receiver = self;
   v4.super_class = NTKZeusWorldClockComplicationView;
-  [(NTKZeusComplicationView *)&v4 applyPalette:a3];
+  [(NTKZeusComplicationView *)&v4 applyPalette:palette];
   [(NTKZeusWorldClockComplicationView *)self _updateLabels];
 }
 
-- (void)blancEditModeApplyPalette:(id)a3
+- (void)blancEditModeApplyPalette:(id)palette
 {
   v10.receiver = self;
   v10.super_class = NTKZeusWorldClockComplicationView;
-  [(NTKZeusComplicationView *)&v10 blancEditModeApplyPalette:a3];
+  [(NTKZeusComplicationView *)&v10 blancEditModeApplyPalette:palette];
   timeLabel = self->_timeLabel;
-  v5 = [(NTKZeusComplicationView *)self palette];
-  v6 = [v5 editMode];
-  [(UILabel *)timeLabel setTextColor:v6];
+  palette = [(NTKZeusComplicationView *)self palette];
+  editMode = [palette editMode];
+  [(UILabel *)timeLabel setTextColor:editMode];
 
   cityLabel = self->_cityLabel;
-  v8 = [(NTKZeusComplicationView *)self palette];
-  v9 = [v8 editMode];
-  [(UILabel *)cityLabel setTextColor:v9];
+  palette2 = [(NTKZeusComplicationView *)self palette];
+  editMode2 = [palette2 editMode];
+  [(UILabel *)cityLabel setTextColor:editMode2];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromPalette:(id)a4 toPalette:(id)a5
+- (void)applyTransitionFraction:(double)fraction fromPalette:(id)palette toPalette:(id)toPalette
 {
   v13.receiver = self;
   v13.super_class = NTKZeusWorldClockComplicationView;
-  v8 = a5;
-  v9 = a4;
-  [(NTKZeusComplicationView *)&v13 applyTransitionFraction:v9 fromPalette:v8 toPalette:a3];
-  v10 = [v9 bottomComplication];
+  toPaletteCopy = toPalette;
+  paletteCopy = palette;
+  [(NTKZeusComplicationView *)&v13 applyTransitionFraction:paletteCopy fromPalette:toPaletteCopy toPalette:fraction];
+  bottomComplication = [paletteCopy bottomComplication];
 
-  v11 = [v8 bottomComplication];
+  bottomComplication2 = [toPaletteCopy bottomComplication];
 
   v12 = NTKInterpolateBetweenColors();
 
@@ -250,17 +250,17 @@
   [(UILabel *)self->_cityLabel setTextColor:v12];
 }
 
-- (void)applyTransitionFraction:(double)a3 fromMode:(int64_t)a4 toMode:(int64_t)a5
+- (void)applyTransitionFraction:(double)fraction fromMode:(int64_t)mode toMode:(int64_t)toMode
 {
   v13.receiver = self;
   v13.super_class = NTKZeusWorldClockComplicationView;
   [NTKZeusComplicationView applyTransitionFraction:"applyTransitionFraction:fromMode:toMode:" fromMode:? toMode:?];
   v12.receiver = self;
   v12.super_class = NTKZeusWorldClockComplicationView;
-  v8 = [(NTKZeusComplicationView *)&v12 complicationColorForBlancEditMode:a4];
+  v8 = [(NTKZeusComplicationView *)&v12 complicationColorForBlancEditMode:mode];
   v11.receiver = self;
   v11.super_class = NTKZeusWorldClockComplicationView;
-  v9 = [(NTKZeusComplicationView *)&v11 complicationColorForBlancEditMode:a5];
+  v9 = [(NTKZeusComplicationView *)&v11 complicationColorForBlancEditMode:toMode];
   v10 = NTKInterpolateBetweenColors();
 
   [(UILabel *)self->_timeLabel setTextColor:v10];

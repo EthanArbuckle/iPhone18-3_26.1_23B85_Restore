@@ -1,13 +1,13 @@
 @interface MPRemotePlayerServiceConnection
 - (BOOL)_shouldPreventSuspensionForBackgroundPlayback;
-- (MPRemotePlayerServiceConnection)initWithConnection:(id)a3 bundleID:(id)a4 pid:(int)a5 playbackEngine:(id)a6;
+- (MPRemotePlayerServiceConnection)initWithConnection:(id)connection bundleID:(id)d pid:(int)pid playbackEngine:(id)engine;
 - (NSXPCConnection)connection;
-- (void)_cancelAssertionInvalidationTimerWithReason:(id)a3;
-- (void)_startAssertionInvalidationTimerWithEventHandler:(id)a3;
+- (void)_cancelAssertionInvalidationTimerWithReason:(id)reason;
+- (void)_startAssertionInvalidationTimerWithEventHandler:(id)handler;
 - (void)_updateProcessAssertion;
 - (void)dealloc;
-- (void)getServerEndpointWithReply:(id)a3;
-- (void)setWantsReverseProcessAssertion:(BOOL)a3;
+- (void)getServerEndpointWithReply:(id)reply;
+- (void)setWantsReverseProcessAssertion:(BOOL)assertion;
 @end
 
 @implementation MPRemotePlayerServiceConnection
@@ -19,10 +19,10 @@
   return WeakRetained;
 }
 
-- (void)_cancelAssertionInvalidationTimerWithReason:(id)a3
+- (void)_cancelAssertionInvalidationTimerWithReason:(id)reason
 {
-  v5 = a3;
-  if (![v5 length])
+  reasonCopy = reason;
+  if (![reasonCopy length])
   {
     v9 = +[NSAssertionHandler currentHandler];
     [v9 handleFailureInMethod:a2 object:self file:@"MPRemotePlayerService.m" lineNumber:253 description:@"Must provide a reason for logging."];
@@ -35,11 +35,11 @@
     {
       assertionInvalidationTimer = self->_assertionInvalidationTimer;
       v10 = 134218498;
-      v11 = self;
+      selfCopy = self;
       v12 = 2048;
       v13 = assertionInvalidationTimer;
       v14 = 2114;
-      v15 = v5;
+      v15 = reasonCopy;
       _os_log_error_impl(&_mh_execute_header, v6, OS_LOG_TYPE_ERROR, "MPRemotePlayerService: %p: canceled assertion invalidation timer %p [%{public}@]", &v10, 0x20u);
     }
 
@@ -49,9 +49,9 @@
   }
 }
 
-- (void)_startAssertionInvalidationTimerWithEventHandler:(id)a3
+- (void)_startAssertionInvalidationTimerWithEventHandler:(id)handler
 {
-  v5 = a3;
+  handlerCopy = handler;
   if (self->_assertionInvalidationTimer)
   {
     v12 = +[NSAssertionHandler currentHandler];
@@ -65,14 +65,14 @@
   v8 = self->_assertionInvalidationTimer;
   v9 = dispatch_time(0, 3000000000);
   dispatch_source_set_timer(v8, v9, 0xFFFFFFFFFFFFFFFFLL, 0x1DCD6500uLL);
-  dispatch_source_set_event_handler(self->_assertionInvalidationTimer, v5);
+  dispatch_source_set_event_handler(self->_assertionInvalidationTimer, handlerCopy);
   dispatch_resume(self->_assertionInvalidationTimer);
   v10 = sub_1000012BC();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v11 = self->_assertionInvalidationTimer;
     v13 = 134218240;
-    v14 = self;
+    selfCopy = self;
     v15 = 2048;
     v16 = v11;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "MPRemotePlayerService: %p: started assertion invalidation timer %p", &v13, 0x16u);
@@ -108,7 +108,7 @@
         processAssertion = self->_processAssertion;
         pid = self->_pid;
         *buf = 134218496;
-        v13 = self;
+        selfCopy = self;
         v14 = 2048;
         v15 = processAssertion;
         v16 = 1024;
@@ -160,7 +160,7 @@ LABEL_9:
   }
 }
 
-- (void)setWantsReverseProcessAssertion:(BOOL)a3
+- (void)setWantsReverseProcessAssertion:(BOOL)assertion
 {
   v5 = sub_100001A28();
   v6 = [v5 beginTaskWithName:@"setWantsReverseProcessAssertion" expirationHandler:0];
@@ -169,15 +169,15 @@ LABEL_9:
   block[1] = 3221225472;
   block[2] = sub_100001B90;
   block[3] = &unk_1000082F8;
-  v8 = a3;
+  assertionCopy = assertion;
   block[4] = self;
   block[5] = v6;
   dispatch_async(&_dispatch_main_q, block);
 }
 
-- (void)getServerEndpointWithReply:(id)a3
+- (void)getServerEndpointWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   v5 = sub_100001A28();
   v6 = [v5 beginTaskWithName:@"getServerEndpointWithReply" expirationHandler:0];
 
@@ -186,9 +186,9 @@ LABEL_9:
   block[2] = sub_100001F58;
   block[3] = &unk_1000082D0;
   block[4] = self;
-  v9 = v4;
+  v9 = replyCopy;
   v10 = v6;
-  v7 = v4;
+  v7 = replyCopy;
   dispatch_sync(&_dispatch_main_q, block);
 }
 
@@ -200,37 +200,37 @@ LABEL_9:
   [(MPRemotePlayerServiceConnection *)&v3 dealloc];
 }
 
-- (MPRemotePlayerServiceConnection)initWithConnection:(id)a3 bundleID:(id)a4 pid:(int)a5 playbackEngine:(id)a6
+- (MPRemotePlayerServiceConnection)initWithConnection:(id)connection bundleID:(id)d pid:(int)pid playbackEngine:(id)engine
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  connectionCopy = connection;
+  dCopy = d;
+  engineCopy = engine;
   v28.receiver = self;
   v28.super_class = MPRemotePlayerServiceConnection;
   v13 = [(MPRemotePlayerServiceConnection *)&v28 init];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong(&v13->_bundleID, a4);
-    v14->_pid = a5;
-    objc_storeStrong(&v14->_playbackEngine, a6);
+    objc_storeStrong(&v13->_bundleID, d);
+    v14->_pid = pid;
+    objc_storeStrong(&v14->_playbackEngine, engine);
     [(MPCPlaybackEngine *)v14->_playbackEngine addEngineObserver:v14];
-    objc_storeWeak(&v14->_connection, v10);
+    objc_storeWeak(&v14->_connection, connectionCopy);
     v25[0] = _NSConcreteStackBlock;
     v25[1] = 3221225472;
     v25[2] = sub_100002360;
     v25[3] = &unk_100008258;
     v15 = v14;
     v26 = v15;
-    v16 = v12;
+    v16 = engineCopy;
     v27 = v16;
-    [v10 setInvalidationHandler:v25];
+    [connectionCopy setInvalidationHandler:v25];
     v17 = +[NSNotificationCenter defaultCenter];
     [v17 addObserver:v15 selector:"_mediaServicesReset:" name:AVAudioSessionMediaServicesWereResetNotification object:0];
 
     [(MPRemotePlayerServiceConnection *)v15 _mediaServicesReset:0];
     v18 = [BKSApplicationStateMonitor alloc];
-    v29 = v11;
+    v29 = dCopy;
     v19 = [NSArray arrayWithObjects:&v29 count:1];
     v20 = [v18 initWithBundleIDs:v19 states:BKSApplicationStateAll];
 

@@ -7,10 +7,10 @@
 + (id)crk_macOSProfileURL
 {
   v7[4] = *MEMORY[0x277D85DE8];
-  v0 = [MEMORY[0x277CCAA00] crk_nonContainerizedHomeDirectoryURL];
+  crk_nonContainerizedHomeDirectoryURL = [MEMORY[0x277CCAA00] crk_nonContainerizedHomeDirectoryURL];
   v1 = MEMORY[0x277CCACA8];
-  v2 = [v0 path];
-  v7[0] = v2;
+  path = [crk_nonContainerizedHomeDirectoryURL path];
+  v7[0] = path;
   v7[1] = @"Library";
   v7[2] = @"Apple Education Configuration";
   v7[3] = @"Configuration.plist";

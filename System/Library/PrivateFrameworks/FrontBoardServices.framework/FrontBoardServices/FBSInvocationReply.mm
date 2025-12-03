@@ -1,6 +1,6 @@
 @interface FBSInvocationReply
 + (void)initialize;
-+ (void)replyWithParameters:(uint64_t)a1;
++ (void)replyWithParameters:(uint64_t)parameters;
 - (id)membersForCoder;
 @end
 
@@ -20,7 +20,7 @@ void __32__FBSInvocationReply_initialize__block_invoke(uint64_t a1, void *a2)
   BSXPCSecureCoding();
 }
 
-+ (void)replyWithParameters:(uint64_t)a1
++ (void)replyWithParameters:(uint64_t)parameters
 {
   v2 = a2;
   objc_opt_self();

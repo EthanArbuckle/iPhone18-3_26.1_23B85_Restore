@@ -2,15 +2,15 @@
 - (SBFolderContainerView)view;
 - (SBFolderController)presentedFolderController;
 - (SBFolderPresentingViewControllerDelegate)folderPresentationDelegate;
-- (double)minimumHomeScreenScaleForFolderControllerBackgroundView:(id)a3;
-- (id)nestingViewController:(id)a3 animationControllerForOperation:(int64_t)a4 onViewController:(id)a5 animated:(BOOL)a6;
-- (id)nestingViewController:(id)a3 interactionControllerForAnimationController:(id)a4;
-- (id)nestingViewController:(id)a3 sourceViewForPresentingViewController:(id)a4;
-- (void)dismissPresentedFolderControllerAnimated:(BOOL)a3 completion:(id)a4;
+- (double)minimumHomeScreenScaleForFolderControllerBackgroundView:(id)view;
+- (id)nestingViewController:(id)controller animationControllerForOperation:(int64_t)operation onViewController:(id)viewController animated:(BOOL)animated;
+- (id)nestingViewController:(id)controller interactionControllerForAnimationController:(id)animationController;
+- (id)nestingViewController:(id)controller sourceViewForPresentingViewController:(id)viewController;
+- (void)dismissPresentedFolderControllerAnimated:(BOOL)animated completion:(id)completion;
 - (void)loadView;
-- (void)nestingViewController:(id)a3 willPerformOperation:(int64_t)a4 onViewController:(id)a5 withTransitionCoordinator:(id)a6;
-- (void)presentFolderController:(id)a3 animated:(BOOL)a4 completion:(id)a5;
-- (void)setBackgroundEffect:(unint64_t)a3;
+- (void)nestingViewController:(id)controller willPerformOperation:(int64_t)operation onViewController:(id)viewController withTransitionCoordinator:(id)coordinator;
+- (void)presentFolderController:(id)controller animated:(BOOL)animated completion:(id)completion;
+- (void)setBackgroundEffect:(unint64_t)effect;
 @end
 
 @implementation SBFolderPresentingViewController
@@ -19,9 +19,9 @@
 {
   v4.receiver = self;
   v4.super_class = SBFolderPresentingViewController;
-  v2 = [(SBFolderPresentingViewController *)&v4 view];
+  view = [(SBFolderPresentingViewController *)&v4 view];
 
-  return v2;
+  return view;
 }
 
 - (void)loadView
@@ -32,16 +32,16 @@
 
 - (SBFolderController)presentedFolderController
 {
-  v3 = [(SBNestingViewController *)self nestedViewController];
-  if (!v3)
+  nestedViewController = [(SBNestingViewController *)self nestedViewController];
+  if (!nestedViewController)
   {
-    v3 = [(SBFolderPresentingViewController *)self presentedViewController];
+    nestedViewController = [(SBFolderPresentingViewController *)self presentedViewController];
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = nestedViewController;
   }
 
   else
@@ -52,40 +52,40 @@
   return v4;
 }
 
-- (void)presentFolderController:(id)a3 animated:(BOOL)a4 completion:(id)a5
+- (void)presentFolderController:(id)controller animated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
-  v10 = a3;
-  v8 = a5;
-  v9 = [(SBFolderPresentingViewController *)self presentedFolderController];
-  if (v9)
+  animatedCopy = animated;
+  controllerCopy = controller;
+  completionCopy = completion;
+  presentedFolderController = [(SBFolderPresentingViewController *)self presentedFolderController];
+  if (presentedFolderController)
   {
-    if (v8)
+    if (completionCopy)
     {
-      v8[2](v8, 0);
+      completionCopy[2](completionCopy, 0);
     }
   }
 
   else
   {
-    [(SBNestingViewController *)self pushNestedViewController:v10 animated:v6 withCompletion:v8];
+    [(SBNestingViewController *)self pushNestedViewController:controllerCopy animated:animatedCopy withCompletion:completionCopy];
   }
 }
 
-- (void)dismissPresentedFolderControllerAnimated:(BOOL)a3 completion:(id)a4
+- (void)dismissPresentedFolderControllerAnimated:(BOOL)animated completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__SBFolderPresentingViewController_dismissPresentedFolderControllerAnimated_completion___block_invoke;
   aBlock[3] = &unk_1E8091408;
   aBlock[4] = self;
-  v16 = a3;
-  v7 = v6;
+  animatedCopy = animated;
+  v7 = completionCopy;
   v15 = v7;
   v8 = _Block_copy(aBlock);
   v9 = v8;
-  if (a3)
+  if (animated)
   {
     v10 = +[SBHIconViewContextMenuStateController sharedInstance];
     [v10 dismissAppIconForceTouchControllers:v9];
@@ -137,36 +137,36 @@ void __88__SBFolderPresentingViewController_dismissPresentedFolderControllerAnim
   [v2 dismissAppIconForceTouchControllers:*(a1 + 32)];
 }
 
-- (void)setBackgroundEffect:(unint64_t)a3
+- (void)setBackgroundEffect:(unint64_t)effect
 {
-  if ([(SBFolderPresentingViewController *)self backgroundEffect]!= a3)
+  if ([(SBFolderPresentingViewController *)self backgroundEffect]!= effect)
   {
-    self->_backgroundEffect = a3;
+    self->_backgroundEffect = effect;
     if ([(SBFolderPresentingViewController *)self isViewLoaded])
     {
-      v5 = [(SBFolderPresentingViewController *)self view];
-      v6 = [v5 backgroundView];
+      view = [(SBFolderPresentingViewController *)self view];
+      backgroundView = [view backgroundView];
 
-      [v6 setEffect:a3];
+      [backgroundView setEffect:effect];
     }
   }
 }
 
-- (id)nestingViewController:(id)a3 animationControllerForOperation:(int64_t)a4 onViewController:(id)a5 animated:(BOOL)a6
+- (id)nestingViewController:(id)controller animationControllerForOperation:(int64_t)operation onViewController:(id)viewController animated:(BOOL)animated
 {
-  v6 = a6;
-  v10 = a3;
-  v11 = a5;
+  animatedCopy = animated;
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v12 = v11;
+    v12 = viewControllerCopy;
     if (v12)
     {
-      v13 = [(SBFolderPresentingViewController *)self folderPresentationDelegate];
+      folderPresentationDelegate = [(SBFolderPresentingViewController *)self folderPresentationDelegate];
       if (objc_opt_respondsToSelector())
       {
-        v14 = [v13 folderPresentationController:self animationControllerForTransitionWithFolder:v12 presenting:a4 == 1 animated:v6];
+        v14 = [folderPresentationDelegate folderPresentationController:self animationControllerForTransitionWithFolder:v12 presenting:operation == 1 animated:animatedCopy];
         [(SBFolderPresentingViewController *)self setCurrentFolderAnimator:v14];
 
         goto LABEL_8;
@@ -181,24 +181,24 @@ void __88__SBFolderPresentingViewController_dismissPresentedFolderControllerAnim
 
   v16.receiver = self;
   v16.super_class = SBFolderPresentingViewController;
-  v14 = [(SBNestingViewController *)&v16 nestingViewController:v10 animationControllerForOperation:a4 onViewController:v11 animated:v6];
+  v14 = [(SBNestingViewController *)&v16 nestingViewController:controllerCopy animationControllerForOperation:operation onViewController:viewControllerCopy animated:animatedCopy];
 LABEL_8:
 
   return v14;
 }
 
-- (id)nestingViewController:(id)a3 interactionControllerForAnimationController:(id)a4
+- (id)nestingViewController:(id)controller interactionControllerForAnimationController:(id)animationController
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SBFolderPresentingViewController *)self currentFolderAnimator];
+  controllerCopy = controller;
+  animationControllerCopy = animationController;
+  currentFolderAnimator = [(SBFolderPresentingViewController *)self currentFolderAnimator];
 
-  if (v8 == v7)
+  if (currentFolderAnimator == animationControllerCopy)
   {
-    v9 = [(SBFolderPresentingViewController *)self folderPresentationDelegate];
+    folderPresentationDelegate = [(SBFolderPresentingViewController *)self folderPresentationDelegate];
     if (objc_opt_respondsToSelector())
     {
-      v10 = [v9 folderPresentationController:self interactionControllerForAnimationController:v7];
+      v10 = [folderPresentationDelegate folderPresentationController:self interactionControllerForAnimationController:animationControllerCopy];
 
       goto LABEL_6;
     }
@@ -206,84 +206,84 @@ LABEL_8:
 
   v12.receiver = self;
   v12.super_class = SBFolderPresentingViewController;
-  v10 = [(SBNestingViewController *)&v12 nestingViewController:v6 interactionControllerForAnimationController:v7];
+  v10 = [(SBNestingViewController *)&v12 nestingViewController:controllerCopy interactionControllerForAnimationController:animationControllerCopy];
 LABEL_6:
 
   return v10;
 }
 
-- (void)nestingViewController:(id)a3 willPerformOperation:(int64_t)a4 onViewController:(id)a5 withTransitionCoordinator:(id)a6
+- (void)nestingViewController:(id)controller willPerformOperation:(int64_t)operation onViewController:(id)viewController withTransitionCoordinator:(id)coordinator
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v10 == self)
+  controllerCopy = controller;
+  viewControllerCopy = viewController;
+  coordinatorCopy = coordinator;
+  if (controllerCopy == self)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v13 = v11;
-      v14 = [(SBFolderPresentingViewController *)self folderPresentationDelegate];
-      v15 = [(SBFolderPresentingViewController *)self view];
-      v16 = [v15 backgroundView];
+      v13 = viewControllerCopy;
+      folderPresentationDelegate = [(SBFolderPresentingViewController *)self folderPresentationDelegate];
+      view = [(SBFolderPresentingViewController *)self view];
+      backgroundView = [view backgroundView];
 
-      if (a4 == 1)
+      if (operation == 1)
       {
-        v26 = v14;
+        v26 = folderPresentationDelegate;
         v17 = v13;
-        if (v16)
+        if (backgroundView)
         {
-          [v16 removeFromSuperview];
+          [backgroundView removeFromSuperview];
         }
 
         v18 = [SBFolderControllerBackgroundView alloc];
-        v19 = [(SBFolderPresentingViewController *)self view];
-        [v19 bounds];
+        view2 = [(SBFolderPresentingViewController *)self view];
+        [view2 bounds];
         v20 = [(SBFolderControllerBackgroundView *)v18 initWithFrame:?];
 
         [(SBFolderControllerBackgroundView *)v20 setDelegate:self];
         [(SBFolderControllerBackgroundView *)v20 setEffect:[(SBFolderPresentingViewController *)self backgroundEffect]];
-        v21 = [(SBFolderPresentingViewController *)self view];
-        [v21 setBackgroundView:v20];
+        view3 = [(SBFolderPresentingViewController *)self view];
+        [view3 setBackgroundView:v20];
 
-        v22 = [(SBFolderPresentingViewController *)self view];
-        [v22 addSubview:v20];
+        view4 = [(SBFolderPresentingViewController *)self view];
+        [view4 addSubview:v20];
 
-        v23 = [(SBFolderPresentingViewController *)self view];
-        v24 = [v17 folderContainerView];
-        [v23 setChildFolderContainerView:v24];
+        view5 = [(SBFolderPresentingViewController *)self view];
+        folderContainerView = [v17 folderContainerView];
+        [view5 setChildFolderContainerView:folderContainerView];
 
         v13 = v17;
-        v16 = v20;
-        v14 = v26;
+        backgroundView = v20;
+        folderPresentationDelegate = v26;
       }
 
       v31[0] = MEMORY[0x1E69E9820];
       v31[1] = 3221225472;
       v31[2] = __122__SBFolderPresentingViewController_nestingViewController_willPerformOperation_onViewController_withTransitionCoordinator___block_invoke;
       v31[3] = &unk_1E808D418;
-      v32 = v16;
-      v33 = a4 == 1;
+      v32 = backgroundView;
+      v33 = operation == 1;
       v28[0] = MEMORY[0x1E69E9820];
       v28[1] = 3221225472;
       v28[2] = __122__SBFolderPresentingViewController_nestingViewController_willPerformOperation_onViewController_withTransitionCoordinator___block_invoke_2;
       v28[3] = &unk_1E808D468;
-      v30 = a4 == 1;
+      v30 = operation == 1;
       v28[4] = self;
       v25 = v32;
       v29 = v25;
-      [v12 animateAlongsideTransition:v31 completion:v28];
-      [v25 setExpanding:a4 == 1];
+      [coordinatorCopy animateAlongsideTransition:v31 completion:v28];
+      [v25 setExpanding:operation == 1];
       if (objc_opt_respondsToSelector())
       {
-        [v14 folderPresentationController:self willPerformTransitionWithFolder:v13 presenting:a4 == 1 withTransitionCoordinator:v12];
+        [folderPresentationDelegate folderPresentationController:self willPerformTransitionWithFolder:v13 presenting:operation == 1 withTransitionCoordinator:coordinatorCopy];
       }
     }
   }
 
   v27.receiver = self;
   v27.super_class = SBFolderPresentingViewController;
-  [(SBNestingViewController *)&v27 nestingViewController:v10 willPerformOperation:a4 onViewController:v11 withTransitionCoordinator:v12, v26];
+  [(SBNestingViewController *)&v27 nestingViewController:controllerCopy willPerformOperation:operation onViewController:viewControllerCopy withTransitionCoordinator:coordinatorCopy, v26];
 }
 
 void __122__SBFolderPresentingViewController_nestingViewController_willPerformOperation_onViewController_withTransitionCoordinator___block_invoke(uint64_t a1, void *a2)
@@ -328,13 +328,13 @@ uint64_t __122__SBFolderPresentingViewController_nestingViewController_willPerfo
   return [v5 setCurrentFolderAnimator:0];
 }
 
-- (id)nestingViewController:(id)a3 sourceViewForPresentingViewController:(id)a4
+- (id)nestingViewController:(id)controller sourceViewForPresentingViewController:(id)viewController
 {
-  v5 = a4;
-  v6 = [(SBFolderPresentingViewController *)self folderPresentationDelegate];
+  viewControllerCopy = viewController;
+  folderPresentationDelegate = [(SBFolderPresentingViewController *)self folderPresentationDelegate];
   if (objc_opt_respondsToSelector())
   {
-    [v6 folderPresentationController:self sourceViewForPresentingViewController:v5];
+    [folderPresentationDelegate folderPresentationController:self sourceViewForPresentingViewController:viewControllerCopy];
   }
 
   else
@@ -346,13 +346,13 @@ uint64_t __122__SBFolderPresentingViewController_nestingViewController_willPerfo
   return v7;
 }
 
-- (double)minimumHomeScreenScaleForFolderControllerBackgroundView:(id)a3
+- (double)minimumHomeScreenScaleForFolderControllerBackgroundView:(id)view
 {
-  v4 = [(SBFolderPresentingViewController *)self folderPresentationDelegate];
+  folderPresentationDelegate = [(SBFolderPresentingViewController *)self folderPresentationDelegate];
   v5 = 1.0;
   if (objc_opt_respondsToSelector())
   {
-    [v4 minimumHomeScreenScaleForFolderPresentationController:self];
+    [folderPresentationDelegate minimumHomeScreenScaleForFolderPresentationController:self];
     v5 = v6;
   }
 

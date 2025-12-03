@@ -1,43 +1,43 @@
 @interface NCNotificationStructuredSectionListAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)axStringForRequest:(id)a3 label:(id)a4;
-- (int64_t)insertNotificationRequest:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)axStringForRequest:(id)request label:(id)label;
+- (int64_t)insertNotificationRequest:(id)request;
 @end
 
 @implementation NCNotificationStructuredSectionListAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"NCNotificationRootList" hasInstanceMethod:@"incomingSectionList" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"insertNotificationRequest:" withFullSignature:{"q", "@", 0}];
-  [v3 validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"_existingIndexOfGroupForNotificationRequest:" withFullSignature:{"Q", "@", 0}];
-  [v3 validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"_toggleHiddenNotificationsOnAuthenticationChange:" withFullSignature:{"v", "B", 0}];
-  [v3 validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"removeNotificationGroupListsForMigrationPassingTest:filterRequestsPassingTest:animate:" withFullSignature:{"@", "@?", "@?", "B", 0}];
-  [v3 validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"mergeNotificationGroups:reorderGroupNotifications:" withFullSignature:{"v", "@", "B", 0}];
-  [v3 validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"notificationGroups" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"deviceAuthenticated" withFullSignature:{"B", 0}];
-  [v3 validateClass:@"NCNotificationListPresentableGroup" hasInstanceMethod:@"listView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationListView" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
-  [v3 validateProtocol:@"NCNotificationListViewDataSource" hasRequiredInstanceMethod:@"notificationListView:viewForItemAtIndex:"];
-  [v3 validateClass:@"NCNotificationListCell" hasInstanceMethod:@"contentViewController" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"NCNotificationViewController" hasInstanceMethod:@"_setupStaticContentProvider" withFullSignature:{"v", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"NCNotificationRootList" hasInstanceMethod:@"incomingSectionList" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"insertNotificationRequest:" withFullSignature:{"q", "@", 0}];
+  [validationsCopy validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"_existingIndexOfGroupForNotificationRequest:" withFullSignature:{"Q", "@", 0}];
+  [validationsCopy validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"_toggleHiddenNotificationsOnAuthenticationChange:" withFullSignature:{"v", "B", 0}];
+  [validationsCopy validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"removeNotificationGroupListsForMigrationPassingTest:filterRequestsPassingTest:animate:" withFullSignature:{"@", "@?", "@?", "B", 0}];
+  [validationsCopy validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"mergeNotificationGroups:reorderGroupNotifications:" withFullSignature:{"v", "@", "B", 0}];
+  [validationsCopy validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"notificationGroups" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"delegate" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationStructuredSectionList" hasInstanceMethod:@"deviceAuthenticated" withFullSignature:{"B", 0}];
+  [validationsCopy validateClass:@"NCNotificationListPresentableGroup" hasInstanceMethod:@"listView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationListView" hasInstanceMethod:@"dataSource" withFullSignature:{"@", 0}];
+  [validationsCopy validateProtocol:@"NCNotificationListViewDataSource" hasRequiredInstanceMethod:@"notificationListView:viewForItemAtIndex:"];
+  [validationsCopy validateClass:@"NCNotificationListCell" hasInstanceMethod:@"contentViewController" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"NCNotificationViewController" hasInstanceMethod:@"_setupStaticContentProvider" withFullSignature:{"v", 0}];
   if (AXProcessIsSpringBoard())
   {
-    [v3 validateClass:@"SpringBoard" hasInstanceMethod:@"notificationDispatcher" withFullSignature:{"@", 0}];
-    [v3 validateClass:@"SBNCNotificationDispatcher" hasInstanceVariable:@"_dispatcher" withType:"NCNotificationDispatcher"];
-    [v3 validateClass:@"SBNCAlertingController" hasInstanceMethod:@"screenController" withFullSignature:{"@", 0}];
-    [v3 validateClass:@"SBNCScreenController" hasInstanceMethod:@"canTurnOnScreenForNotificationRequest:" withFullSignature:{"B", "@", 0}];
+    [validationsCopy validateClass:@"SpringBoard" hasInstanceMethod:@"notificationDispatcher" withFullSignature:{"@", 0}];
+    [validationsCopy validateClass:@"SBNCNotificationDispatcher" hasInstanceVariable:@"_dispatcher" withType:"NCNotificationDispatcher"];
+    [validationsCopy validateClass:@"SBNCAlertingController" hasInstanceMethod:@"screenController" withFullSignature:{"@", 0}];
+    [validationsCopy validateClass:@"SBNCScreenController" hasInstanceMethod:@"canTurnOnScreenForNotificationRequest:" withFullSignature:{"B", "@", 0}];
   }
 }
 
-- (int64_t)insertNotificationRequest:(id)a3
+- (int64_t)insertNotificationRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v26.receiver = self;
   v26.super_class = NCNotificationStructuredSectionListAccessibility;
-  v5 = [(NCNotificationStructuredSectionListAccessibility *)&v26 insertNotificationRequest:v4];
+  v5 = [(NCNotificationStructuredSectionListAccessibility *)&v26 insertNotificationRequest:requestCopy];
   if (![(NCNotificationStructuredSectionListAccessibility *)self _axIgnoreNotification]&& ([(NCNotificationStructuredSectionListAccessibility *)self safeBoolForKey:@"deviceAuthenticated"]& 1) == 0)
   {
     v6 = [(NCNotificationStructuredSectionListAccessibility *)self safeValueForKey:@"delegate"];
@@ -45,7 +45,7 @@
 
     if (v7 == self)
     {
-      v8 = [(NCNotificationStructuredSectionListAccessibility *)self _existingIndexOfGroupForNotificationRequest:v4];
+      v8 = [(NCNotificationStructuredSectionListAccessibility *)self _existingIndexOfGroupForNotificationRequest:requestCopy];
       if (v8 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v9 = v8;
@@ -67,8 +67,8 @@
         v18 = v13;
         v14 = v13;
         AXPerformSafeBlock();
-        v15 = [v14 accessibilityLabel];
-        v16 = [(NCNotificationStructuredSectionListAccessibility *)self axStringForRequest:v4 label:v15];
+        accessibilityLabel = [v14 accessibilityLabel];
+        v16 = [(NCNotificationStructuredSectionListAccessibility *)self axStringForRequest:requestCopy label:accessibilityLabel];
 
         UIAccessibilityPostNotification(*MEMORY[0x29EDC7EA8], v16);
       }
@@ -93,10 +93,10 @@ void __78__NCNotificationStructuredSectionListAccessibility_insertNotificationRe
   [v1 _setupStaticContentProvider];
 }
 
-- (id)axStringForRequest:(id)a3 label:(id)a4
+- (id)axStringForRequest:(id)request label:(id)label
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  labelCopy = label;
   LOBYTE(v26) = 0;
   v30 = 0;
   v7 = *MEMORY[0x29EDC8008];
@@ -125,14 +125,14 @@ void __78__NCNotificationStructuredSectionListAccessibility_insertNotificationRe
   v29 = 0;
   v25 = MEMORY[0x29EDCA5F8];
   v18 = v17;
-  v19 = v5;
+  v19 = requestCopy;
   AXPerformSafeBlock();
-  v20 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:{v6, v25, 3221225472, __77__NCNotificationStructuredSectionListAccessibility_axStringForRequest_label___block_invoke, &unk_29F3170B8}];
+  v20 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:{labelCopy, v25, 3221225472, __77__NCNotificationStructuredSectionListAccessibility_axStringForRequest_label___block_invoke, &unk_29F3170B8}];
   [v20 setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBDA00]];
-  v21 = [v19 options];
-  v22 = [v21 lockScreenPersistence];
+  options = [v19 options];
+  lockScreenPersistence = [options lockScreenPersistence];
 
-  if (v22 == 2)
+  if (lockScreenPersistence == 2)
   {
     [v20 setAttribute:MEMORY[0x29EDB8EB0] forKey:*MEMORY[0x29EDBD978]];
   }

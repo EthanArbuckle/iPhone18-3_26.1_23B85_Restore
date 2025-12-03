@@ -1,16 +1,16 @@
 @interface PCTestingRig
-+ (void)invokeTestingRigHandlerForMessage:(id)a3 payload:(id)a4 completionHandler:(id)a5;
++ (void)invokeTestingRigHandlerForMessage:(id)message payload:(id)payload completionHandler:(id)handler;
 @end
 
 @implementation PCTestingRig
 
-+ (void)invokeTestingRigHandlerForMessage:(id)a3 payload:(id)a4 completionHandler:(id)a5
++ (void)invokeTestingRigHandlerForMessage:(id)message payload:(id)payload completionHandler:(id)handler
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  handlerCopy = handler;
+  payloadCopy = payload;
+  messageCopy = message;
   v10 = objc_alloc_init(PCSupportRequester);
-  [(PCSupportRequester *)v10 invokeTestingRigHandlerForMessage:v9 payload:v8 completionHandler:v7];
+  [(PCSupportRequester *)v10 invokeTestingRigHandlerForMessage:messageCopy payload:payloadCopy completionHandler:handlerCopy];
 }
 
 @end

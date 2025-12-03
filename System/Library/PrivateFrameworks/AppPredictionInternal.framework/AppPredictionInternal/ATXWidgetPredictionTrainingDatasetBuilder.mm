@@ -1,54 +1,54 @@
 @interface ATXWidgetPredictionTrainingDatasetBuilder
-- (ATXWidgetPredictionTrainingDatasetBuilder)initWithDistinctScoreCounts:(id)a3;
-- (id)createMLArrayBatchProviderFromTrainingArray:(id)a3;
-- (id)featureDictionaryWithWidgetEngagementRecord:(id)a3;
+- (ATXWidgetPredictionTrainingDatasetBuilder)initWithDistinctScoreCounts:(id)counts;
+- (id)createMLArrayBatchProviderFromTrainingArray:(id)array;
+- (id)featureDictionaryWithWidgetEngagementRecord:(id)record;
 - (id)mlFeatureKeyMapping;
-- (id)mlFeatureValueForFeatureName:(id)a3 withWidgetEngagementRecord:(id)a4 withFeatureMapping:(id)a5;
-- (id)propertyNameForInputFeatureName:(id)a3;
-- (void)populateAdditionalFeaturesWithMultiArray:(id)a3 forWidgetEngagementRecord:(id)a4;
+- (id)mlFeatureValueForFeatureName:(id)name withWidgetEngagementRecord:(id)record withFeatureMapping:(id)mapping;
+- (id)propertyNameForInputFeatureName:(id)name;
+- (void)populateAdditionalFeaturesWithMultiArray:(id)array forWidgetEngagementRecord:(id)record;
 @end
 
 @implementation ATXWidgetPredictionTrainingDatasetBuilder
 
-- (ATXWidgetPredictionTrainingDatasetBuilder)initWithDistinctScoreCounts:(id)a3
+- (ATXWidgetPredictionTrainingDatasetBuilder)initWithDistinctScoreCounts:(id)counts
 {
-  v5 = a3;
+  countsCopy = counts;
   v9.receiver = self;
   v9.super_class = ATXWidgetPredictionTrainingDatasetBuilder;
   v6 = [(ATXWidgetPredictionTrainingDatasetBuilder *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_distinctScoreCounts, a3);
+    objc_storeStrong(&v6->_distinctScoreCounts, counts);
   }
 
   return v7;
 }
 
-- (void)populateAdditionalFeaturesWithMultiArray:(id)a3 forWidgetEngagementRecord:(id)a4
+- (void)populateAdditionalFeaturesWithMultiArray:(id)array forWidgetEngagementRecord:(id)record
 {
   v6 = MEMORY[0x277D42648];
-  v7 = a4;
-  v8 = a3;
-  v9 = [v7 widgetBundleId];
-  v10 = [v7 widgetKind];
+  recordCopy = record;
+  arrayCopy = array;
+  widgetBundleId = [recordCopy widgetBundleId];
+  widgetKind = [recordCopy widgetKind];
 
-  v12 = [v6 tupleWithFirst:v9 second:v10];
+  v12 = [v6 tupleWithFirst:widgetBundleId second:widgetKind];
 
   v11 = [(NSDictionary *)self->_distinctScoreCounts objectForKeyedSubscript:v12];
-  [v8 setObject:v11 atIndexedSubscript:0];
+  [arrayCopy setObject:v11 atIndexedSubscript:0];
 }
 
-- (id)createMLArrayBatchProviderFromTrainingArray:(id)a3
+- (id)createMLArrayBatchProviderFromTrainingArray:(id)array
 {
   v41 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] array];
+  arrayCopy = array;
+  array = [MEMORY[0x277CBEB18] array];
   v36 = 0u;
   v37 = 0u;
   v38 = 0u;
   v39 = 0u;
-  v6 = v4;
+  v6 = arrayCopy;
   v7 = [v6 countByEnumeratingWithState:&v36 objects:v40 count:16];
   if (v7)
   {
@@ -69,9 +69,9 @@
         v12 = *(*(&v36 + 1) + 8 * v11);
         context = objc_autoreleasePoolPush();
         v13 = [(ATXWidgetPredictionTrainingDatasetBuilder *)self featureDictionaryWithWidgetEngagementRecord:v12];
-        v14 = [v12 type];
+        type = [v12 type];
         v15 = v10;
-        if (v14 != 1)
+        if (type != 1)
         {
           if ([v12 type] == 2)
           {
@@ -106,18 +106,18 @@
         {
           v22 = v10;
           v23 = v9;
-          v24 = self;
+          selfCopy = self;
           v25 = v6;
-          v26 = v5;
+          v26 = array;
           v27 = __atxlog_handle_timeline();
           if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
           {
             [(ATXWidgetPredictionTrainingDatasetBuilder *)&buf createMLArrayBatchProviderFromTrainingArray:v34, v27];
           }
 
-          v5 = v26;
+          array = v26;
           v6 = v25;
-          self = v24;
+          self = selfCopy;
           v9 = v23;
           v10 = v22;
           v8 = v31;
@@ -125,7 +125,7 @@
 
         else
         {
-          [v5 addObject:v18];
+          [array addObject:v18];
         }
 
         objc_autoreleasePoolPop(context);
@@ -150,7 +150,7 @@
     }
   }
 
-  v28 = [objc_alloc(MEMORY[0x277CBFEB0]) initWithFeatureProviderArray:v5];
+  v28 = [objc_alloc(MEMORY[0x277CBFEB0]) initWithFeatureProviderArray:array];
 LABEL_26:
 
   v29 = *MEMORY[0x277D85DE8];
@@ -158,18 +158,18 @@ LABEL_26:
   return v28;
 }
 
-- (id)featureDictionaryWithWidgetEngagementRecord:(id)a3
+- (id)featureDictionaryWithWidgetEngagementRecord:(id)record
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recordCopy = record;
   v5 = objc_opt_new();
-  v6 = [(ATXWidgetPredictionTrainingDatasetBuilder *)self mlFeatureKeyMapping];
+  mlFeatureKeyMapping = [(ATXWidgetPredictionTrainingDatasetBuilder *)self mlFeatureKeyMapping];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v7 = [v6 allKeys];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+  allKeys = [mlFeatureKeyMapping allKeys];
+  v8 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v8)
   {
     v9 = v8;
@@ -180,15 +180,15 @@ LABEL_26:
       {
         if (*v17 != v10)
         {
-          objc_enumerationMutation(v7);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v16 + 1) + 8 * i);
-        v13 = [(ATXWidgetPredictionTrainingDatasetBuilder *)self mlFeatureValueForFeatureName:v12 withWidgetEngagementRecord:v4 withFeatureMapping:v6];
+        v13 = [(ATXWidgetPredictionTrainingDatasetBuilder *)self mlFeatureValueForFeatureName:v12 withWidgetEngagementRecord:recordCopy withFeatureMapping:mlFeatureKeyMapping];
         [v5 setObject:v13 forKeyedSubscript:v12];
       }
 
-      v9 = [v7 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v16 objects:v20 count:16];
     }
 
     while (v9);
@@ -199,11 +199,11 @@ LABEL_26:
   return v5;
 }
 
-- (id)mlFeatureValueForFeatureName:(id)a3 withWidgetEngagementRecord:(id)a4 withFeatureMapping:(id)a5
+- (id)mlFeatureValueForFeatureName:(id)name withWidgetEngagementRecord:(id)record withFeatureMapping:(id)mapping
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  recordCopy = record;
+  mappingCopy = mapping;
   v20 = 0;
   v11 = [objc_alloc(MEMORY[0x277CBFF48]) initWithShape:&unk_283A57D10 dataType:65568 error:&v20];
   v12 = v20;
@@ -212,7 +212,7 @@ LABEL_26:
     v13 = __atxlog_handle_timeline();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
-      [ATXWidgetPredictionTrainingDatasetBuilder mlFeatureValueForFeatureName:v8 withWidgetEngagementRecord:v13 withFeatureMapping:?];
+      [ATXWidgetPredictionTrainingDatasetBuilder mlFeatureValueForFeatureName:nameCopy withWidgetEngagementRecord:v13 withFeatureMapping:?];
     }
 
     v14 = 0;
@@ -220,19 +220,19 @@ LABEL_26:
 
   else
   {
-    v15 = [v10 objectForKeyedSubscript:v8];
-    v16 = [v15 BOOLValue];
+    v15 = [mappingCopy objectForKeyedSubscript:nameCopy];
+    bOOLValue = [v15 BOOLValue];
 
-    if (v16)
+    if (bOOLValue)
     {
-      v17 = [(ATXWidgetPredictionTrainingDatasetBuilder *)self propertyNameForInputFeatureName:v8];
-      v18 = [v9 valueForKey:v17];
+      v17 = [(ATXWidgetPredictionTrainingDatasetBuilder *)self propertyNameForInputFeatureName:nameCopy];
+      v18 = [recordCopy valueForKey:v17];
       [v11 setObject:v18 atIndexedSubscript:0];
     }
 
     else
     {
-      [(ATXWidgetPredictionTrainingDatasetBuilder *)self populateAdditionalFeaturesWithMultiArray:v11 forWidgetEngagementRecord:v9];
+      [(ATXWidgetPredictionTrainingDatasetBuilder *)self populateAdditionalFeaturesWithMultiArray:v11 forWidgetEngagementRecord:recordCopy];
     }
 
     v14 = [MEMORY[0x277CBFEF8] featureValueWithMultiArray:v11];
@@ -257,25 +257,25 @@ LABEL_26:
   return v4;
 }
 
-- (id)propertyNameForInputFeatureName:(id)a3
+- (id)propertyNameForInputFeatureName:(id)name
 {
   v11[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  nameCopy = name;
   v10 = @"input_widget_family";
   v11[0] = @"widgetFamily";
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v11 forKeys:&v10 count:1];
-  v5 = [v4 objectForKeyedSubscript:v3];
+  v5 = [v4 objectForKeyedSubscript:nameCopy];
 
   if (!v5)
   {
     v6 = __atxlog_handle_timeline();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_FAULT))
     {
-      [(ATXWidgetPredictionTrainingDatasetBuilder *)v3 propertyNameForInputFeatureName:v6];
+      [(ATXWidgetPredictionTrainingDatasetBuilder *)nameCopy propertyNameForInputFeatureName:v6];
     }
   }
 
-  v7 = [v4 objectForKeyedSubscript:v3];
+  v7 = [v4 objectForKeyedSubscript:nameCopy];
 
   v8 = *MEMORY[0x277D85DE8];
 

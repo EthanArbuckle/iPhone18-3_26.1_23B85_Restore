@@ -3,41 +3,41 @@
 - (CGRect)parentFrame;
 - (NSString)description;
 - (SXTextTangierRepAccessibilityElement)rep;
-- (SXTextView)initWithCoder:(id)a3;
-- (SXTextView)initWithFrame:(CGRect)a3;
+- (SXTextView)initWithCoder:(id)coder;
+- (SXTextView)initWithFrame:(CGRect)frame;
 - (SXTextViewDelegate)delegate;
 - (TSDCanvas)canvas;
-- (id)accessibilityCustomRotorMembershipForRep:(id)a3;
+- (id)accessibilityCustomRotorMembershipForRep:(id)rep;
 - (id)accessibilityElements;
 - (id)accessibilityLabel;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (id)infoGeometry;
 - (int64_t)accessibilityContainerType;
 - (void)_updateOverlayTransform;
-- (void)directLayerHostRemoveIfMatchingContainerLayer:(id)a3 forRep:(id)a4;
-- (void)directLayerHostUpdateOverlayLayers:(id)a3 forRep:(id)a4;
-- (void)directLayerHostUpdateWithContainerLayer:(id)a3 forRep:(id)a4;
-- (void)directLayerhostUpdateTopLevelTilingLayers:(id)a3 forRep:(id)a4;
+- (void)directLayerHostRemoveIfMatchingContainerLayer:(id)layer forRep:(id)rep;
+- (void)directLayerHostUpdateOverlayLayers:(id)layers forRep:(id)rep;
+- (void)directLayerHostUpdateWithContainerLayer:(id)layer forRep:(id)rep;
+- (void)directLayerhostUpdateTopLevelTilingLayers:(id)layers forRep:(id)rep;
 - (void)invalidate;
-- (void)provideInfosLayoutTo:(id)a3;
-- (void)setFrame:(CGRect)a3;
-- (void)setFrameInCanvas:(CGRect)a3;
-- (void)setIsSelectable:(BOOL)a3;
-- (void)setMightBeVisuallyMisplaced:(BOOL)a3;
-- (void)setShouldHyphenate:(BOOL)a3;
+- (void)provideInfosLayoutTo:(id)to;
+- (void)setFrame:(CGRect)frame;
+- (void)setFrameInCanvas:(CGRect)canvas;
+- (void)setIsSelectable:(BOOL)selectable;
+- (void)setMightBeVisuallyMisplaced:(BOOL)misplaced;
+- (void)setShouldHyphenate:(BOOL)hyphenate;
 @end
 
 @implementation SXTextView
 
-- (SXTextView)initWithFrame:(CGRect)a3
+- (SXTextView)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = SXTextView;
-  v3 = [(SXTextView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SXTextView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(SXTextView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SXTextView *)v3 setBackgroundColor:clearColor];
 
     [(SXTextView *)v3 setIsSelectable:1];
   }
@@ -45,16 +45,16 @@
   return v3;
 }
 
-- (SXTextView)initWithCoder:(id)a3
+- (SXTextView)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = SXTextView;
-  v5 = [(SXTextView *)&v8 initWithCoder:v4];
+  v5 = [(SXTextView *)&v8 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [MEMORY[0x1E69DC888] clearColor];
-    [(SXTextView *)v5 setBackgroundColor:v6];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(SXTextView *)v5 setBackgroundColor:clearColor];
 
     [(SXTextView *)v5 setIsSelectable:1];
   }
@@ -62,17 +62,17 @@
   return v5;
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
-  v7 = a4;
+  y = test.y;
+  x = test.x;
+  eventCopy = event;
   if ([(SXTextView *)self mightBeVisuallyMisplaced])
   {
     v8 = [(SXTextView *)self rep];
-    v9 = [v8 updateFromVisualPosition];
+    updateFromVisualPosition = [v8 updateFromVisualPosition];
 
-    if (v9)
+    if (updateFromVisualPosition)
     {
       v10 = [(SXTextView *)self rep];
       v11 = [v10 icc];
@@ -80,47 +80,47 @@
     }
   }
 
-  if ([(SXTextView *)self pointInside:v7 withEvent:x, y])
+  if ([(SXTextView *)self pointInside:eventCopy withEvent:x, y])
   {
-    v12 = [(SXTextView *)self canvas];
-    v13 = [v12 canvasController];
-    v14 = [v13 canvasView];
+    canvas = [(SXTextView *)self canvas];
+    canvasController = [canvas canvasController];
+    canvasView = [canvasController canvasView];
   }
 
   else
   {
-    v14 = 0;
+    canvasView = 0;
   }
 
-  return v14;
+  return canvasView;
 }
 
 - (void)invalidate
 {
-  v6 = [(SXTextView *)self infoGeometry];
-  v3 = [(SXTextView *)self textInfo];
-  [v3 setGeometry:v6];
+  infoGeometry = [(SXTextView *)self infoGeometry];
+  textInfo = [(SXTextView *)self textInfo];
+  [textInfo setGeometry:infoGeometry];
 
-  v7 = [(SXTextView *)self layoutController];
-  v4 = [(SXTextView *)self textInfo];
-  v5 = [v7 layoutForInfo:v4];
+  layoutController = [(SXTextView *)self layoutController];
+  textInfo2 = [(SXTextView *)self textInfo];
+  v5 = [layoutController layoutForInfo:textInfo2];
   [v5 invalidate];
 }
 
-- (void)directLayerHostRemoveIfMatchingContainerLayer:(id)a3 forRep:(id)a4
+- (void)directLayerHostRemoveIfMatchingContainerLayer:(id)layer forRep:(id)rep
 {
-  v6 = a4;
-  if (self->_repContainerLayer == a3)
+  repCopy = rep;
+  if (self->_repContainerLayer == layer)
   {
-    [(SXTextView *)self directLayerHostUpdateWithContainerLayer:0 forRep:v6];
+    [(SXTextView *)self directLayerHostUpdateWithContainerLayer:0 forRep:repCopy];
   }
 }
 
-- (void)directLayerHostUpdateWithContainerLayer:(id)a3 forRep:(id)a4
+- (void)directLayerHostUpdateWithContainerLayer:(id)layer forRep:(id)rep
 {
-  v7 = a3;
-  v8 = a4;
-  [(SXTextView *)self setRep:v8];
+  layerCopy = layer;
+  repCopy = rep;
+  [(SXTextView *)self setRep:repCopy];
   v9 = [(SXTextView *)self rep];
   v10 = +[SXAXCustomRotorDefinition linksRotor];
   v11 = [SXAXCustomRotor rotorWithName:v10];
@@ -135,30 +135,30 @@
   [(SXTextView *)self frameInCanvas];
   [v15 setFrameInCanvas:?];
 
-  v16 = [v8 canvas];
-  v17 = [v16 canvasController];
+  canvas = [repCopy canvas];
+  canvasController = [canvas canvasController];
   v18 = [(SXTextView *)self rep];
-  [v18 setIcc:v17];
+  [v18 setIcc:canvasController];
 
-  v19 = [v8 canvas];
-  [(SXTextView *)self setCanvas:v19];
+  canvas2 = [repCopy canvas];
+  [(SXTextView *)self setCanvas:canvas2];
 
   v20 = [(SXTextView *)self rep];
   [v20 setAccessibilityDataSource:self];
 
   repContainerLayer = self->_repContainerLayer;
-  v22 = v7;
-  if (repContainerLayer != v7)
+  v22 = layerCopy;
+  if (repContainerLayer != layerCopy)
   {
     [(CALayer *)repContainerLayer removeFromSuperlayer];
-    objc_storeStrong(&self->_repContainerLayer, a3);
+    objc_storeStrong(&self->_repContainerLayer, layer);
     if (!self->_repContainerLayer)
     {
       goto LABEL_6;
     }
 
-    v23 = [(SXTextView *)self layer];
-    [v23 insertSublayer:self->_repContainerLayer atIndex:0];
+    layer = [(SXTextView *)self layer];
+    [layer insertSublayer:self->_repContainerLayer atIndex:0];
 
     v22 = self->_repContainerLayer;
   }
@@ -177,12 +177,12 @@
 LABEL_6:
 }
 
-- (void)directLayerhostUpdateTopLevelTilingLayers:(id)a3 forRep:(id)a4
+- (void)directLayerhostUpdateTopLevelTilingLayers:(id)layers forRep:(id)rep
 {
-  v5 = a3;
+  layersCopy = layers;
   if (self->_repContainerLayer)
   {
-    [v5 addObject:?];
+    [layersCopy addObject:?];
   }
 }
 
@@ -196,11 +196,11 @@ LABEL_6:
     v11 = 0u;
     v9 = 0u;
     v4 = [(SXTextView *)self rep];
-    v5 = [v4 layout];
-    v6 = v5;
-    if (v5)
+    layout = [v4 layout];
+    v6 = layout;
+    if (layout)
     {
-      [v5 transformInRoot];
+      [layout transformInRoot];
     }
 
     else
@@ -216,39 +216,39 @@ LABEL_6:
   }
 }
 
-- (void)directLayerHostUpdateOverlayLayers:(id)a3 forRep:(id)a4
+- (void)directLayerHostUpdateOverlayLayers:(id)layers forRep:(id)rep
 {
-  v13 = a3;
-  v5 = [v13 count];
+  layersCopy = layers;
+  v5 = [layersCopy count];
   overlayContainerLayer = self->_overlayContainerLayer;
   if (v5)
   {
     if (!overlayContainerLayer)
     {
-      v7 = [MEMORY[0x1E69D5670] layer];
+      layer = [MEMORY[0x1E69D5670] layer];
       v8 = self->_overlayContainerLayer;
-      self->_overlayContainerLayer = v7;
+      self->_overlayContainerLayer = layer;
 
       if (self->_repContainerLayer)
       {
-        v9 = [(SXTextView *)self layer];
-        [v9 insertSublayer:self->_overlayContainerLayer above:self->_repContainerLayer];
+        layer2 = [(SXTextView *)self layer];
+        [layer2 insertSublayer:self->_overlayContainerLayer above:self->_repContainerLayer];
       }
 
       else
       {
-        v9 = [(SXTextView *)self layer];
-        [v9 insertSublayer:self->_overlayContainerLayer atIndex:0];
+        layer2 = [(SXTextView *)self layer];
+        [layer2 insertSublayer:self->_overlayContainerLayer atIndex:0];
       }
     }
 
     [(SXTextView *)self _updateOverlayTransform];
-    v11 = [(CALayer *)self->_overlayContainerLayer sublayers];
-    v12 = [v11 isEqual:v13];
+    sublayers = [(CALayer *)self->_overlayContainerLayer sublayers];
+    v12 = [sublayers isEqual:layersCopy];
 
     if ((v12 & 1) == 0)
     {
-      [(CALayer *)self->_overlayContainerLayer setSublayers:v13];
+      [(CALayer *)self->_overlayContainerLayer setSublayers:layersCopy];
     }
   }
 
@@ -260,11 +260,11 @@ LABEL_6:
   }
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
   v5.receiver = self;
   v5.super_class = SXTextView;
-  [(SXTextView *)&v5 setFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  [(SXTextView *)&v5 setFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = [(SXTextView *)self rep];
   [(SXTextView *)self frameInCanvas];
   [v4 setFrameInCanvas:?];
@@ -293,31 +293,31 @@ LABEL_6:
   return result;
 }
 
-- (void)setFrameInCanvas:(CGRect)a3
+- (void)setFrameInCanvas:(CGRect)canvas
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  self->_frameInCanvas = a3;
+  height = canvas.size.height;
+  width = canvas.size.width;
+  y = canvas.origin.y;
+  x = canvas.origin.x;
+  self->_frameInCanvas = canvas;
   v7 = [(SXTextView *)self rep];
   [v7 setFrameInCanvas:{x, y, width, height}];
 }
 
-- (void)setShouldHyphenate:(BOOL)a3
+- (void)setShouldHyphenate:(BOOL)hyphenate
 {
-  self->_shouldHyphenate = a3;
-  v4 = [(SXTextView *)self shouldHyphenate];
-  v5 = [(SXTextView *)self textInfo];
-  [v5 setShouldHyphenate:v4];
+  self->_shouldHyphenate = hyphenate;
+  shouldHyphenate = [(SXTextView *)self shouldHyphenate];
+  textInfo = [(SXTextView *)self textInfo];
+  [textInfo setShouldHyphenate:shouldHyphenate];
 }
 
-- (void)setIsSelectable:(BOOL)a3
+- (void)setIsSelectable:(BOOL)selectable
 {
-  self->_isSelectable = a3;
-  v4 = [(SXTextView *)self isSelectable];
-  v5 = [(SXTextView *)self textInfo];
-  [v5 setIsSelectable:v4];
+  self->_isSelectable = selectable;
+  isSelectable = [(SXTextView *)self isSelectable];
+  textInfo = [(SXTextView *)self textInfo];
+  [textInfo setIsSelectable:isSelectable];
 }
 
 - (id)infoGeometry
@@ -327,13 +327,13 @@ LABEL_6:
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SXTextView *)self canvas];
-  v12 = [v11 canvasController];
-  v13 = [v12 canvasView];
+  canvas = [(SXTextView *)self canvas];
+  canvasController = [canvas canvasController];
+  canvasView = [canvasController canvasView];
 
-  if (v13)
+  if (canvasView)
   {
-    [(SXTextView *)self convertRect:v13 toView:v4, v6, v8, v10];
+    [(SXTextView *)self convertRect:canvasView toView:v4, v6, v8, v10];
     v4 = v14;
     v6 = v15;
     v8 = v16;
@@ -345,20 +345,20 @@ LABEL_6:
   return v18;
 }
 
-- (void)setMightBeVisuallyMisplaced:(BOOL)a3
+- (void)setMightBeVisuallyMisplaced:(BOOL)misplaced
 {
   if (self->_mightBeVisuallyMisplaced)
   {
     v5 = [(SXTextView *)self rep];
-    v6 = [v5 updateFromVisualPosition];
+    updateFromVisualPosition = [v5 updateFromVisualPosition];
 
-    if (v6)
+    if (updateFromVisualPosition)
     {
       v7 = [(SXTextView *)self rep];
       v8 = [v7 icc];
-      v9 = [v8 currentlyScrolling];
+      currentlyScrolling = [v8 currentlyScrolling];
 
-      if ((v9 & 1) == 0)
+      if ((currentlyScrolling & 1) == 0)
       {
         v10 = [(SXTextView *)self rep];
         v11 = [v10 icc];
@@ -367,17 +367,17 @@ LABEL_6:
     }
   }
 
-  self->_mightBeVisuallyMisplaced = a3;
+  self->_mightBeVisuallyMisplaced = misplaced;
 }
 
-- (void)provideInfosLayoutTo:(id)a3
+- (void)provideInfosLayoutTo:(id)to
 {
-  v13 = a3;
-  v4 = [(SXTextView *)self delegate];
-  v5 = [v4 textRulesForTextView:self];
+  toCopy = to;
+  delegate = [(SXTextView *)self delegate];
+  v5 = [delegate textRulesForTextView:self];
 
-  v6 = [(SXTextView *)self delegate];
-  v7 = [v6 componentIdentifierForTextView:self];
+  delegate2 = [(SXTextView *)self delegate];
+  v7 = [delegate2 componentIdentifierForTextView:self];
 
   if ([v5 textFlow] == 1)
   {
@@ -389,33 +389,33 @@ LABEL_6:
     v8 = v7;
   }
 
-  v9 = [(SXTextView *)self textLayouter];
-  v10 = [v9 wpStorage];
-  v11 = [(SXTextView *)self textLayouter];
-  v12 = [v11 wpLayout];
-  [v13 addTextStorage:v10 withLayout:v12 forNamedFlow:v8 directLayerHostView:self selectable:-[SXTextView isSelectable](self componentIdentifier:{"isSelectable"), v7}];
+  textLayouter = [(SXTextView *)self textLayouter];
+  wpStorage = [textLayouter wpStorage];
+  textLayouter2 = [(SXTextView *)self textLayouter];
+  wpLayout = [textLayouter2 wpLayout];
+  [toCopy addTextStorage:wpStorage withLayout:wpLayout forNamedFlow:v8 directLayerHostView:self selectable:-[SXTextView isSelectable](self componentIdentifier:{"isSelectable"), v7}];
 }
 
-- (id)accessibilityCustomRotorMembershipForRep:(id)a3
+- (id)accessibilityCustomRotorMembershipForRep:(id)rep
 {
-  v4 = [(SXTextView *)self delegate];
-  v5 = [v4 accessibilityCustomRotorMembershipForTextView:self];
+  delegate = [(SXTextView *)self delegate];
+  v5 = [delegate accessibilityCustomRotorMembershipForTextView:self];
 
   return v5;
 }
 
 - (id)accessibilityLabel
 {
-  v3 = [(SXTextView *)self delegate];
-  v4 = [v3 accessibilityContextualLabelForTextView:self];
+  delegate = [(SXTextView *)self delegate];
+  v4 = [delegate accessibilityContextualLabelForTextView:self];
 
   return v4;
 }
 
 - (int64_t)accessibilityContainerType
 {
-  v3 = [(SXTextView *)self accessibilityLabel];
-  v4 = [v3 length];
+  accessibilityLabel = [(SXTextView *)self accessibilityLabel];
+  v4 = [accessibilityLabel length];
 
   if (v4)
   {
@@ -447,11 +447,11 @@ LABEL_6:
   if (_AXSCommandAndControlEnabled() && !UIAccessibilityIsVoiceOverRunning())
   {
     v6 = [v4 valueForKey:@"sxaxLinkElements"];
-    v7 = [v6 array];
+    array = [v6 array];
 
-    if ([v7 count])
+    if ([array count])
     {
-      v8 = [v7 arrayByAddingObject:v4];
+      v8 = [array arrayByAddingObject:v4];
 
       v5 = v8;
     }
@@ -462,13 +462,13 @@ LABEL_6:
 
 - (NSString)description
 {
-  v3 = [(SXTextView *)self textInfo];
-  v4 = [v3 storage];
-  v5 = [v4 string];
-  v6 = [(SXTextView *)self textInfo];
-  v7 = [v6 storage];
-  v8 = [v7 string];
-  v9 = [v8 length];
+  textInfo = [(SXTextView *)self textInfo];
+  storage = [textInfo storage];
+  string = [storage string];
+  textInfo2 = [(SXTextView *)self textInfo];
+  storage2 = [textInfo2 storage];
+  string2 = [storage2 string];
+  v9 = [string2 length];
 
   if (v9 >= 0xF)
   {
@@ -480,7 +480,7 @@ LABEL_6:
     v10 = v9;
   }
 
-  v11 = [v5 substringWithRange:{0, v10}];
+  v11 = [string substringWithRange:{0, v10}];
 
   v12 = MEMORY[0x1E696AEC0];
   v13 = objc_opt_class();

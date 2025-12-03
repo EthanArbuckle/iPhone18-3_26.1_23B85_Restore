@@ -1,18 +1,18 @@
 @interface AMSLRUCacheItem
-- (AMSLRUCacheItem)initWithKey:(id)a3 object:(id)a4;
+- (AMSLRUCacheItem)initWithKey:(id)key object:(id)object;
 @end
 
 @implementation AMSLRUCacheItem
 
-- (AMSLRUCacheItem)initWithKey:(id)a3 object:(id)a4
+- (AMSLRUCacheItem)initWithKey:(id)key object:(id)object
 {
-  v6 = a3;
+  keyCopy = key;
   v11.receiver = self;
   v11.super_class = AMSLRUCacheItem;
-  v7 = [(AMSDoubleLinkedListNode *)&v11 initWithObject:a4];
+  v7 = [(AMSDoubleLinkedListNode *)&v11 initWithObject:object];
   if (v7)
   {
-    v8 = [v6 copyWithZone:0];
+    v8 = [keyCopy copyWithZone:0];
     key = v7->_key;
     v7->_key = v8;
   }

@@ -1,7 +1,7 @@
 @interface PXToastConfiguration
 - (PXToastConfiguration)init;
 - (UIView)sourceView;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation PXToastConfiguration
@@ -13,23 +13,23 @@
   return WeakRetained;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PXToastConfiguration *)self message];
-  [v4 setMessage:v5];
+  message = [(PXToastConfiguration *)self message];
+  [v4 setMessage:message];
 
-  v6 = [(PXToastConfiguration *)self iconSystemImageName];
-  [v4 setIconSystemImageName:v6];
+  iconSystemImageName = [(PXToastConfiguration *)self iconSystemImageName];
+  [v4 setIconSystemImageName:iconSystemImageName];
 
   [(PXToastConfiguration *)self autoDismissalDelay];
   [v4 setAutoDismissalDelay:?];
   [v4 setCanSwipeToDismiss:{-[PXToastConfiguration canSwipeToDismiss](self, "canSwipeToDismiss")}];
-  v7 = [(PXToastConfiguration *)self contentView];
-  [v4 setContentView:v7];
+  contentView = [(PXToastConfiguration *)self contentView];
+  [v4 setContentView:contentView];
 
-  v8 = [(PXToastConfiguration *)self sourceView];
-  [v4 setSourceView:v8];
+  sourceView = [(PXToastConfiguration *)self sourceView];
+  [v4 setSourceView:sourceView];
 
   [(PXToastConfiguration *)self bottomMargin];
   [v4 setBottomMargin:?];

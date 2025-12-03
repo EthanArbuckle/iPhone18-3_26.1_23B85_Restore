@@ -1,48 +1,48 @@
 @interface FUAirport
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CLLocationCoordinate2D)location;
-- (FUAirport)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (FUAirport)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
-- (void)fetchPlacemarkWithCompletionHandler:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)fetchPlacemarkWithCompletionHandler:(id)handler;
 @end
 
 @implementation FUAirport
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v7 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v8 = [(FUAirport *)self IATACode];
-    v9 = [v7 IATACode];
-    if (v8 != v9)
+    iATACode = [(FUAirport *)self IATACode];
+    iATACode2 = [equalCopy IATACode];
+    if (iATACode != iATACode2)
     {
-      v3 = [(FUAirport *)self IATACode];
-      v5 = [v7 IATACode];
-      if (![v3 isEqual:v5])
+      iATACode3 = [(FUAirport *)self IATACode];
+      iATACode4 = [equalCopy IATACode];
+      if (![iATACode3 isEqual:iATACode4])
       {
         v10 = 0;
         goto LABEL_35;
       }
     }
 
-    v11 = [(FUAirport *)self name];
-    v12 = [v7 name];
-    v44 = v11;
-    if (v11 != v12)
+    name = [(FUAirport *)self name];
+    name2 = [equalCopy name];
+    v44 = name;
+    if (name != name2)
     {
-      v13 = [(FUAirport *)self name];
-      v14 = [v7 name];
-      if (![v13 isEqual:v14])
+      name3 = [(FUAirport *)self name];
+      name4 = [equalCopy name];
+      if (![name3 isEqual:name4])
       {
         v10 = 0;
 LABEL_33:
 
 LABEL_34:
-        if (v8 == v9)
+        if (iATACode == iATACode2)
         {
 LABEL_36:
 
@@ -54,35 +54,35 @@ LABEL_35:
         goto LABEL_36;
       }
 
-      v41 = v14;
-      v42 = v13;
+      v41 = name4;
+      v42 = name3;
     }
 
-    v15 = [(FUAirport *)self city];
-    v16 = [v7 city];
-    v17 = v16;
-    v43 = v5;
-    if (v15 == v16)
+    city = [(FUAirport *)self city];
+    city2 = [equalCopy city];
+    v17 = city2;
+    v43 = iATACode4;
+    if (city == city2)
     {
-      v40 = v15;
+      v40 = city;
     }
 
     else
     {
-      v4 = v16;
-      v18 = [(FUAirport *)self city];
-      v37 = [v7 city];
-      v38 = v18;
-      if (![v18 isEqual:?])
+      timeZone3 = city2;
+      city3 = [(FUAirport *)self city];
+      city4 = [equalCopy city];
+      v38 = city3;
+      if (![city3 isEqual:?])
       {
         v10 = 0;
-        v17 = v4;
+        v17 = timeZone3;
 LABEL_31:
 
 LABEL_32:
-        v14 = v41;
-        v13 = v42;
-        if (v44 == v12)
+        name4 = v41;
+        name3 = v42;
+        if (v44 == name2)
         {
           goto LABEL_34;
         }
@@ -90,33 +90,33 @@ LABEL_32:
         goto LABEL_33;
       }
 
-      v40 = v15;
-      v17 = v4;
+      v40 = city;
+      v17 = timeZone3;
     }
 
-    v19 = [(FUAirport *)self timeZone];
-    v20 = [v7 timeZone];
-    v39 = v19;
-    v21 = v19 == v20;
-    v22 = v20;
+    timeZone = [(FUAirport *)self timeZone];
+    timeZone2 = [equalCopy timeZone];
+    v39 = timeZone;
+    v21 = timeZone == timeZone2;
+    v22 = timeZone2;
     if (v21)
     {
-      v36 = v3;
+      v36 = iATACode3;
     }
 
     else
     {
-      v4 = [(FUAirport *)self timeZone];
-      v34 = [v7 timeZone];
-      v35 = v4;
-      if (![v4 isEqual:?])
+      timeZone3 = [(FUAirport *)self timeZone];
+      timeZone4 = [equalCopy timeZone];
+      v35 = timeZone3;
+      if (![timeZone3 isEqual:?])
       {
         v10 = 0;
         v25 = v39;
 LABEL_29:
 
 LABEL_30:
-        v15 = v40;
+        city = v40;
         if (v40 == v17)
         {
           goto LABEL_32;
@@ -125,21 +125,21 @@ LABEL_30:
         goto LABEL_31;
       }
 
-      v36 = v3;
+      v36 = iATACode3;
     }
 
-    v23 = [(FUAirport *)self placemark];
-    v24 = [v7 placemark];
-    if (v23 == v24 || (-[FUAirport placemark](self, "placemark"), v4 = objc_claimAutoreleasedReturnValue(), [v7 placemark], v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v4, "isEqual:")))
+    placemark = [(FUAirport *)self placemark];
+    placemark2 = [equalCopy placemark];
+    if (placemark == placemark2 || (-[FUAirport placemark](self, "placemark"), timeZone3 = objc_claimAutoreleasedReturnValue(), [equalCopy placemark], v33 = objc_claimAutoreleasedReturnValue(), objc_msgSend(timeZone3, "isEqual:")))
     {
       [(FUAirport *)self location];
       v27 = v26;
-      [v7 location];
+      [equalCopy location];
       if (v27 == v28)
       {
         [(FUAirport *)self location];
         v30 = v29;
-        [v7 location];
+        [equalCopy location];
         v10 = v30 == v31;
       }
 
@@ -148,13 +148,13 @@ LABEL_30:
         v10 = 0;
       }
 
-      if (v23 == v24)
+      if (placemark == placemark2)
       {
 LABEL_28:
 
         v25 = v39;
-        v3 = v36;
-        v5 = v43;
+        iATACode3 = v36;
+        iATACode4 = v43;
         if (v39 == v22)
         {
           goto LABEL_30;
@@ -178,29 +178,29 @@ LABEL_37:
   return v10;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(FUAirport *)self IATACode];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  iATACode = [(FUAirport *)self IATACode];
+  v6 = [iATACode copy];
   [v4 setIATACode:v6];
 
-  v7 = [(FUAirport *)self name];
-  v8 = [v7 copy];
+  name = [(FUAirport *)self name];
+  v8 = [name copy];
   [v4 setName:v8];
 
-  v9 = [(FUAirport *)self city];
-  v10 = [v9 copy];
+  city = [(FUAirport *)self city];
+  v10 = [city copy];
   [v4 setCity:v10];
 
-  v11 = [(FUAirport *)self timeZone];
-  v12 = [v11 copy];
+  timeZone = [(FUAirport *)self timeZone];
+  v12 = [timeZone copy];
   [v4 setTimeZone:v12];
 
   [(FUAirport *)self location];
   [v4 setLocation:?];
-  v13 = [(FUAirport *)self placemark];
-  v14 = [v13 copy];
+  placemark = [(FUAirport *)self placemark];
+  v14 = [placemark copy];
   [v4 setPlacemark:v14];
 
   return v4;
@@ -209,30 +209,30 @@ LABEL_37:
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(FUAirport *)self IATACode];
-  v5 = [(FUAirport *)self name];
+  iATACode = [(FUAirport *)self IATACode];
+  name = [(FUAirport *)self name];
   [(FUAirport *)self location];
   v7 = v6;
   [(FUAirport *)self location];
-  v9 = [v3 stringWithFormat:@"Airport: %@ (%@) [%f, %f]", v4, v5, v7, v8];
+  v9 = [v3 stringWithFormat:@"Airport: %@ (%@) [%f, %f]", iATACode, name, v7, v8];
 
   return v9;
 }
 
-- (void)fetchPlacemarkWithCompletionHandler:(id)a3
+- (void)fetchPlacemarkWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FUAirport *)self placemark];
+  handlerCopy = handler;
+  placemark = [(FUAirport *)self placemark];
 
-  if (v5)
+  if (placemark)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __49__FUAirport_fetchPlacemarkWithCompletionHandler___block_invoke;
     block[3] = &unk_279012C58;
     block[4] = self;
-    v15 = v4;
-    v6 = v4;
+    v15 = handlerCopy;
+    v6 = handlerCopy;
     dispatch_async(MEMORY[0x277D85CD0], block);
     v7 = v15;
   }
@@ -250,8 +250,8 @@ LABEL_37:
     v12[2] = __49__FUAirport_fetchPlacemarkWithCompletionHandler___block_invoke_2;
     v12[3] = &unk_279012C30;
     v12[4] = self;
-    v13 = v4;
-    v11 = v4;
+    v13 = handlerCopy;
+    v11 = handlerCopy;
     [v6 reverseGeocodeLocation:v7 completionHandler:v12];
   }
 }
@@ -277,93 +277,93 @@ void __49__FUAirport_fetchPlacemarkWithCompletionHandler___block_invoke_2(uint64
   (*(v6 + 16))(v6, v7);
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v19 = a3;
-  v4 = [(FUAirport *)self IATACode];
+  coderCopy = coder;
+  iATACode = [(FUAirport *)self IATACode];
 
-  if (v4)
+  if (iATACode)
   {
-    v5 = [(FUAirport *)self IATACode];
-    [v19 encodeObject:v5 forKey:@"IATACode"];
+    iATACode2 = [(FUAirport *)self IATACode];
+    [coderCopy encodeObject:iATACode2 forKey:@"IATACode"];
   }
 
-  v6 = [(FUAirport *)self name];
+  name = [(FUAirport *)self name];
 
-  if (v6)
+  if (name)
   {
-    v7 = [(FUAirport *)self name];
-    [v19 encodeObject:v7 forKey:@"name"];
+    name2 = [(FUAirport *)self name];
+    [coderCopy encodeObject:name2 forKey:@"name"];
   }
 
-  v8 = [(FUAirport *)self city];
+  city = [(FUAirport *)self city];
 
-  if (v8)
+  if (city)
   {
-    v9 = [(FUAirport *)self city];
-    [v19 encodeObject:v9 forKey:@"city"];
+    city2 = [(FUAirport *)self city];
+    [coderCopy encodeObject:city2 forKey:@"city"];
   }
 
-  v10 = [(FUAirport *)self timeZone];
+  timeZone = [(FUAirport *)self timeZone];
 
-  if (v10)
+  if (timeZone)
   {
-    v11 = [(FUAirport *)self timeZone];
-    [v19 encodeObject:v11 forKey:@"timeZone"];
+    timeZone2 = [(FUAirport *)self timeZone];
+    [coderCopy encodeObject:timeZone2 forKey:@"timeZone"];
   }
 
-  v12 = [(FUAirport *)self placemark];
+  placemark = [(FUAirport *)self placemark];
 
-  if (v12)
+  if (placemark)
   {
-    v13 = [(FUAirport *)self placemark];
-    [v19 encodeObject:v13 forKey:@"placemark"];
+    placemark2 = [(FUAirport *)self placemark];
+    [coderCopy encodeObject:placemark2 forKey:@"placemark"];
   }
 
   v14 = MEMORY[0x277CCABB0];
   [(FUAirport *)self location];
   v15 = [v14 numberWithDouble:?];
-  [v19 encodeObject:v15 forKey:@"location.latitude"];
+  [coderCopy encodeObject:v15 forKey:@"location.latitude"];
 
   v16 = MEMORY[0x277CCABB0];
   [(FUAirport *)self location];
   v18 = [v16 numberWithDouble:v17];
-  [v19 encodeObject:v18 forKey:@"location.longitude"];
+  [coderCopy encodeObject:v18 forKey:@"location.longitude"];
 }
 
-- (FUAirport)initWithCoder:(id)a3
+- (FUAirport)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v22.receiver = self;
   v22.super_class = FUAirport;
   v5 = [(FUAirport *)&v22 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"IATACode"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"IATACode"];
     IATACode = v5->_IATACode;
     v5->_IATACode = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"city"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"city"];
     city = v5->_city;
     v5->_city = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeZone"];
     timeZone = v5->_timeZone;
     v5->_timeZone = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"placemark"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"placemark"];
     placemark = v5->_placemark;
     v5->_placemark = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location.latitude"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location.latitude"];
     [v16 doubleValue];
     v5->_location.latitude = v17;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"location.longitude"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"location.longitude"];
     [v18 doubleValue];
     v5->_location.longitude = v19;
 

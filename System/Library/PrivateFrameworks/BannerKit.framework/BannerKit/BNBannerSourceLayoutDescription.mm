@@ -1,28 +1,28 @@
 @interface BNBannerSourceLayoutDescription
-+ (id)bannerSourceLayoutDescriptionWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4 offsetFromPresentationEdge:(double)a5;
-- (BNBannerSourceLayoutDescription)initWithBSXPCCoder:(id)a3;
++ (id)bannerSourceLayoutDescriptionWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize offsetFromPresentationEdge:(double)edge;
+- (BNBannerSourceLayoutDescription)initWithBSXPCCoder:(id)coder;
 - (CGSize)containerSize;
 - (CGSize)presentationSize;
 - (NSString)description;
-- (id)_initWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4 offsetFromPresentationEdge:(double)a5;
-- (void)encodeWithBSXPCCoder:(id)a3;
+- (id)_initWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize offsetFromPresentationEdge:(double)edge;
+- (void)encodeWithBSXPCCoder:(id)coder;
 @end
 
 @implementation BNBannerSourceLayoutDescription
 
-+ (id)bannerSourceLayoutDescriptionWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4 offsetFromPresentationEdge:(double)a5
++ (id)bannerSourceLayoutDescriptionWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize offsetFromPresentationEdge:(double)edge
 {
-  v5 = [[BNBannerSourceLayoutDescription alloc] _initWithPresentationSize:a3.width containerSize:a3.height offsetFromPresentationEdge:a4.width, a4.height, a5];
+  edge = [[BNBannerSourceLayoutDescription alloc] _initWithPresentationSize:size.width containerSize:size.height offsetFromPresentationEdge:containerSize.width, containerSize.height, edge];
 
-  return v5;
+  return edge;
 }
 
-- (id)_initWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4 offsetFromPresentationEdge:(double)a5
+- (id)_initWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize offsetFromPresentationEdge:(double)edge
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3.height;
-  v9 = a3.width;
+  height = containerSize.height;
+  width = containerSize.width;
+  v8 = size.height;
+  v9 = size.width;
   v11.receiver = self;
   v11.super_class = BNBannerSourceLayoutDescription;
   result = [(BNBannerSourceLayoutDescription *)&v11 init];
@@ -32,7 +32,7 @@
     *(result + 5) = v8;
     *(result + 2) = width;
     *(result + 3) = height;
-    *(result + 1) = a5;
+    *(result + 1) = edge;
   }
 
   return result;
@@ -49,31 +49,31 @@
   return v7;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
   width = self->_presentationSize.width;
   height = self->_presentationSize.height;
-  v6 = a3;
-  [v6 encodeCGSize:@"presentationSize" forKey:{width, height}];
-  [v6 encodeCGSize:@"containerSize" forKey:{self->_containerSize.width, self->_containerSize.height}];
-  [v6 encodeDouble:@"offsetFromPresentationEdge" forKey:self->_offsetFromPresentationEdge];
+  coderCopy = coder;
+  [coderCopy encodeCGSize:@"presentationSize" forKey:{width, height}];
+  [coderCopy encodeCGSize:@"containerSize" forKey:{self->_containerSize.width, self->_containerSize.height}];
+  [coderCopy encodeDouble:@"offsetFromPresentationEdge" forKey:self->_offsetFromPresentationEdge];
 }
 
-- (BNBannerSourceLayoutDescription)initWithBSXPCCoder:(id)a3
+- (BNBannerSourceLayoutDescription)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = BNBannerSourceLayoutDescription;
   v5 = [(BNBannerSourceLayoutDescription *)&v12 init];
   if (v5)
   {
-    [v4 decodeCGSizeForKey:@"presentationSize"];
+    [coderCopy decodeCGSizeForKey:@"presentationSize"];
     v5->_presentationSize.width = v6;
     v5->_presentationSize.height = v7;
-    [v4 decodeCGSizeForKey:@"containerSize"];
+    [coderCopy decodeCGSizeForKey:@"containerSize"];
     v5->_containerSize.width = v8;
     v5->_containerSize.height = v9;
-    [v4 decodeDoubleForKey:@"offsetFromPresentationEdge"];
+    [coderCopy decodeDoubleForKey:@"offsetFromPresentationEdge"];
     v5->_offsetFromPresentationEdge = v10;
   }
 

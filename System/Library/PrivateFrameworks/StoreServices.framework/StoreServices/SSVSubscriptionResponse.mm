@@ -1,28 +1,28 @@
 @interface SSVSubscriptionResponse
-- (SSVSubscriptionResponse)initWithXPCEncoding:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SSVSubscriptionResponse)initWithXPCEncoding:(id)encoding;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
-- (id)subscriptionStatusForAccountUniqueIdentifier:(unint64_t)a3;
-- (void)setSubscriptionStatus:(id)a3 forAccountUniqueIdentifier:(unint64_t)a4;
+- (id)subscriptionStatusForAccountUniqueIdentifier:(unint64_t)identifier;
+- (void)setSubscriptionStatus:(id)status forAccountUniqueIdentifier:(unint64_t)identifier;
 @end
 
 @implementation SSVSubscriptionResponse
 
-- (id)subscriptionStatusForAccountUniqueIdentifier:(unint64_t)a3
+- (id)subscriptionStatusForAccountUniqueIdentifier:(unint64_t)identifier
 {
   accountUniqueIdentifierToSubscriptionStatus = self->_accountUniqueIdentifierToSubscriptionStatus;
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:identifier];
   v5 = [(NSMutableDictionary *)accountUniqueIdentifierToSubscriptionStatus objectForKey:v4];
 
   return v5;
 }
 
-- (void)setSubscriptionStatus:(id)a3 forAccountUniqueIdentifier:(unint64_t)a4
+- (void)setSubscriptionStatus:(id)status forAccountUniqueIdentifier:(unint64_t)identifier
 {
-  v6 = a3;
+  statusCopy = status;
   accountUniqueIdentifierToSubscriptionStatus = self->_accountUniqueIdentifierToSubscriptionStatus;
-  v12 = v6;
-  if (v6)
+  v12 = statusCopy;
+  if (statusCopy)
   {
     if (!accountUniqueIdentifierToSubscriptionStatus)
     {
@@ -33,12 +33,12 @@
       accountUniqueIdentifierToSubscriptionStatus = self->_accountUniqueIdentifierToSubscriptionStatus;
     }
 
-    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+    v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:identifier];
     [(NSMutableDictionary *)accountUniqueIdentifierToSubscriptionStatus setObject:v12 forKey:v10];
     goto LABEL_5;
   }
 
-  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a4];
+  v11 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:identifier];
   [(NSMutableDictionary *)accountUniqueIdentifierToSubscriptionStatus removeObjectForKey:v11];
 
   if (![(NSMutableDictionary *)self->_accountUniqueIdentifierToSubscriptionStatus count])
@@ -49,9 +49,9 @@ LABEL_5:
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSMutableDictionary *)self->_accountUniqueIdentifierToSubscriptionStatus mutableCopy];
   v6 = v4[1];
   v4[1] = v5;
@@ -59,11 +59,11 @@ LABEL_5:
   return v4;
 }
 
-- (SSVSubscriptionResponse)initWithXPCEncoding:(id)a3
+- (SSVSubscriptionResponse)initWithXPCEncoding:(id)encoding
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (v6 = MEMORY[0x1DA6E0380](v4), v7 = MEMORY[0x1E69E9E80], v6 == MEMORY[0x1E69E9E80]))
+  encodingCopy = encoding;
+  v5 = encodingCopy;
+  if (encodingCopy && (v6 = MEMORY[0x1DA6E0380](encodingCopy), v7 = MEMORY[0x1E69E9E80], v6 == MEMORY[0x1E69E9E80]))
   {
     v14.receiver = self;
     v14.super_class = SSVSubscriptionResponse;

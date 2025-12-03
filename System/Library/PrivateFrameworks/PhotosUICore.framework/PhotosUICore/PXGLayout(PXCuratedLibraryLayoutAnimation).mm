@@ -8,13 +8,13 @@
 
 - (id)createCuratedLibraryLayoutTransitionIfNeededWithContext:()PXCuratedLibraryLayoutAnimation
 {
-  v4 = [a1 superlayout];
-  if (!v4)
+  superlayout = [self superlayout];
+  if (!superlayout)
   {
     PXAssertGetLog();
   }
 
-  v5 = [v4 createCuratedLibraryLayoutTransitionIfNeededWithContext:a3];
+  v5 = [superlayout createCuratedLibraryLayoutTransitionIfNeededWithContext:a3];
 
   return v5;
 }
@@ -30,7 +30,7 @@
   v14[1] = v9;
   v10 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:v13 count:2];
 
-  v11 = [a1 createCuratedLibraryLayoutAnimationIfNeededWithContext:a5 userData:v10];
+  v11 = [self createCuratedLibraryLayoutAnimationIfNeededWithContext:a5 userData:v10];
 
   return v11;
 }
@@ -38,13 +38,13 @@
 - (id)createCuratedLibraryLayoutAnimationIfNeededWithContext:()PXCuratedLibraryLayoutAnimation userData:
 {
   v6 = a4;
-  v7 = [a1 superlayout];
-  if (!v7)
+  superlayout = [self superlayout];
+  if (!superlayout)
   {
     PXAssertGetLog();
   }
 
-  v8 = [v7 createCuratedLibraryLayoutAnimationIfNeededWithContext:a3 userData:v6];
+  v8 = [superlayout createCuratedLibraryLayoutAnimationIfNeededWithContext:a3 userData:v6];
 
   return v8;
 }

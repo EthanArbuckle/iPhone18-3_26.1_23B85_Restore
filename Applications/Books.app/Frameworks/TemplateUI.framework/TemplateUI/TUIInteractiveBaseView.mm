@@ -2,70 +2,70 @@
 - (BOOL)_updateFromState;
 - (TUIViewFactory)factory;
 - (UIEdgeInsets)outsets;
-- (id)descendentViewWithIdentifier:(id)a3;
-- (id)descendentViewWithRefId:(id)a3;
+- (id)descendentViewWithIdentifier:(id)identifier;
+- (id)descendentViewWithRefId:(id)id;
 - (void)_updateSubviews;
-- (void)appendRenderOverrideObservers:(id)a3;
-- (void)applyLayoutAttributes:(id)a3;
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4;
+- (void)appendRenderOverrideObservers:(id)observers;
+- (void)applyLayoutAttributes:(id)attributes;
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets;
 - (void)invalidateShowContents;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFactory:(id)a3;
-- (void)setHighlighted:(BOOL)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFactory:(id)factory;
+- (void)setHighlighted:(BOOL)highlighted;
 - (void)updateFromState;
 - (void)viewDidEndDisplay;
 @end
 
 @implementation TUIInteractiveBaseView
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v4 = self->_control;
-  if ([(TUIControlView *)v4 isEnabled]!= v3)
+  if ([(TUIControlView *)v4 isEnabled]!= enabledCopy)
   {
-    [(TUIInteractiveBaseView *)v4 setEnabled:v3];
+    [(TUIInteractiveBaseView *)v4 setEnabled:enabledCopy];
   }
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   v4 = self->_control;
-  if ([(TUIControlView *)v4 isHighlighted]!= v3)
+  if ([(TUIControlView *)v4 isHighlighted]!= highlightedCopy)
   {
-    [(TUIInteractiveBaseView *)v4 setHighlighted:v3];
+    [(TUIInteractiveBaseView *)v4 setHighlighted:highlightedCopy];
   }
 }
 
-- (void)applyLayoutAttributes:(id)a3
+- (void)applyLayoutAttributes:(id)attributes
 {
   v18.receiver = self;
   v18.super_class = TUIInteractiveBaseView;
-  v4 = a3;
-  [(TUIReusableBaseView *)&v18 applyLayoutAttributes:v4];
+  attributesCopy = attributes;
+  [(TUIReusableBaseView *)&v18 applyLayoutAttributes:attributesCopy];
   v5 = [(TUIRenderModelInteractive *)self->_renderModel style:v18.receiver];
-  v6 = [v4 renderModel];
-  [v4 outsets];
+  renderModel = [attributesCopy renderModel];
+  [attributesCopy outsets];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  [(TUIInteractiveBaseView *)self configureWithModel:v6 outsets:v8, v10, v12, v14];
-  v15 = [(TUIInteractiveBaseView *)self control];
-  [v5 removeStylingFromView:v15];
+  [(TUIInteractiveBaseView *)self configureWithModel:renderModel outsets:v8, v10, v12, v14];
+  control = [(TUIInteractiveBaseView *)self control];
+  [v5 removeStylingFromView:control];
 
-  v16 = [v6 style];
-  v17 = [(TUIInteractiveBaseView *)self control];
-  [v16 applyStylingToView:v17];
+  style = [renderModel style];
+  control2 = [(TUIInteractiveBaseView *)self control];
+  [style applyStylingToView:control2];
 }
 
-- (void)setFactory:(id)a3
+- (void)setFactory:(id)factory
 {
-  obj = a3;
+  obj = factory;
   WeakRetained = objc_loadWeakRetained(&self->_factory);
 
   v5 = obj;
@@ -78,52 +78,52 @@
   }
 }
 
-- (void)appendRenderOverrideObservers:(id)a3
+- (void)appendRenderOverrideObservers:(id)observers
 {
-  v4 = a3;
-  [v4 addObject:self];
-  v5 = [(TUIInteractiveBaseView *)self control];
-  v6 = [v5 tui_hostedSubviewsMap];
+  observersCopy = observers;
+  [observersCopy addObject:self];
+  control = [(TUIInteractiveBaseView *)self control];
+  tui_hostedSubviewsMap = [control tui_hostedSubviewsMap];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_B9288;
   v8[3] = &unk_25F068;
-  v9 = v4;
-  v7 = v4;
-  [v6 enumerateKeysAndObjectsUsingBlock:v8];
+  v9 = observersCopy;
+  v7 = observersCopy;
+  [tui_hostedSubviewsMap enumerateKeysAndObjectsUsingBlock:v8];
 }
 
-- (void)configureWithModel:(id)a3 outsets:(UIEdgeInsets)a4
+- (void)configureWithModel:(id)model outsets:(UIEdgeInsets)outsets
 {
-  bottom = a4.bottom;
-  right = a4.right;
-  top = a4.top;
-  left = a4.left;
-  v6 = a3;
-  v17 = v6;
-  if (self->_renderModel != v6 || (v7.f64[0] = top, v7.f64[1] = left, v8.f64[0] = bottom, v8.f64[1] = right, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_outsets.top, v7), vceqq_f64(*&self->_outsets.bottom, v8)))) & 1) == 0))
+  bottom = outsets.bottom;
+  right = outsets.right;
+  top = outsets.top;
+  left = outsets.left;
+  modelCopy = model;
+  v17 = modelCopy;
+  if (self->_renderModel != modelCopy || (v7.f64[0] = top, v7.f64[1] = left, v8.f64[0] = bottom, v8.f64[1] = right, (vminv_u16(vmovn_s32(vuzp1q_s32(vceqq_f64(*&self->_outsets.top, v7), vceqq_f64(*&self->_outsets.bottom, v8)))) & 1) == 0))
   {
-    objc_storeStrong(&self->_renderModel, a3);
+    objc_storeStrong(&self->_renderModel, model);
     self->_outsets.top = top;
     self->_outsets.left = left;
     self->_outsets.bottom = bottom;
     self->_outsets.right = right;
     [(TUIInteractiveBaseView *)self loadControlIfNeeded];
     [(TUIInteractiveBaseView *)self setEnabled:[(TUIInteractiveBaseView *)self isEnabledWithRenderModel:v17]];
-    v9 = [(TUIInteractiveBaseView *)self clipsToBounds];
-    v10 = [(TUIInteractiveBaseView *)self control];
-    [v10 setClipsToBounds:v9];
+    clipsToBounds = [(TUIInteractiveBaseView *)self clipsToBounds];
+    control = [(TUIInteractiveBaseView *)self control];
+    [control setClipsToBounds:clipsToBounds];
 
-    v11 = [(TUIRenderModelInteractive *)v17 name];
-    [(TUIInteractiveBaseView *)self setName:v11];
+    name = [(TUIRenderModelInteractive *)v17 name];
+    [(TUIInteractiveBaseView *)self setName:name];
 
-    v12 = [(TUIInteractiveBaseView *)self currentState];
-    [(TUIInteractiveBaseView *)self setPreviousState:v12];
+    currentState = [(TUIInteractiveBaseView *)self currentState];
+    [(TUIInteractiveBaseView *)self setPreviousState:currentState];
 
     [(TUIInteractiveBaseView *)self updateFromState];
     [(TUIInteractiveBaseView *)self renderModelUpdated];
 LABEL_4:
-    v6 = v17;
+    modelCopy = v17;
     goto LABEL_5;
   }
 
@@ -142,7 +142,7 @@ LABEL_5:
   v15.receiver = self;
   v15.super_class = TUIInteractiveBaseView;
   [(TUIReusableBaseView *)&v15 prepareForReuse];
-  v3 = [(TUIInteractiveBaseView *)self layer];
+  layer = [(TUIInteractiveBaseView *)self layer];
   v4 = *&CATransform3DIdentity.m33;
   v14[4] = *&CATransform3DIdentity.m31;
   v14[5] = v4;
@@ -155,7 +155,7 @@ LABEL_5:
   v7 = *&CATransform3DIdentity.m23;
   v14[2] = *&CATransform3DIdentity.m21;
   v14[3] = v7;
-  [v3 setSublayerTransform:v14];
+  [layer setSublayerTransform:v14];
 
   animatingTargetState = self->_animatingTargetState;
   self->_animatingTargetState = 0;
@@ -163,9 +163,9 @@ LABEL_5:
   savedCurrentState = self->_savedCurrentState;
   self->_savedCurrentState = 0;
 
-  v10 = [(TUIRenderModelInteractive *)self->_renderModel style];
-  v11 = [(TUIInteractiveBaseView *)self control];
-  [v10 removeStylingFromView:v11];
+  style = [(TUIRenderModelInteractive *)self->_renderModel style];
+  control = [(TUIInteractiveBaseView *)self control];
+  [style removeStylingFromView:control];
 
   renderModel = self->_renderModel;
   self->_renderModel = 0;
@@ -182,9 +182,9 @@ LABEL_5:
   if ((*&self->_flags & 1) == 0)
   {
     *&self->_flags |= 1u;
-    v4 = [(TUIInteractiveBaseView *)self currentState];
+    currentState = [(TUIInteractiveBaseView *)self currentState];
     savedCurrentState = self->_savedCurrentState;
-    self->_savedCurrentState = v4;
+    self->_savedCurrentState = currentState;
 
     [(TUIInteractiveBaseView *)self setNeedsLayout];
   }
@@ -197,26 +197,26 @@ LABEL_5:
     savedCurrentState = self->_savedCurrentState;
     if (savedCurrentState)
     {
-      v5 = savedCurrentState;
+      currentState = savedCurrentState;
     }
 
     else
     {
-      v5 = [(TUIInteractiveBaseView *)self currentState];
+      currentState = [(TUIInteractiveBaseView *)self currentState];
     }
 
-    v6 = v5;
+    v6 = currentState;
     v7 = self->_savedCurrentState;
     self->_savedCurrentState = 0;
 
-    v8 = [(TUIInteractiveBaseView *)self renderModel];
-    [v8 pressScale];
+    renderModel = [(TUIInteractiveBaseView *)self renderModel];
+    [renderModel pressScale];
     v10 = v9;
 
     if (v6 == @"highlighted")
     {
-      v12 = [(TUIInteractiveBaseView *)self previousState];
-      v11 = v12 == @"default";
+      previousState = [(TUIInteractiveBaseView *)self previousState];
+      v11 = previousState == @"default";
     }
 
     else
@@ -226,8 +226,8 @@ LABEL_5:
 
     if (v6 == @"default")
     {
-      v14 = [(TUIInteractiveBaseView *)self previousState];
-      v13 = v14 == @"highlighted";
+      previousState2 = [(TUIInteractiveBaseView *)self previousState];
+      v13 = previousState2 == @"highlighted";
     }
 
     else
@@ -238,17 +238,17 @@ LABEL_5:
     v65 = v13;
     v67 = v11;
     v15 = v11 || v13;
-    v70 = [(TUIInteractiveBaseView *)self control];
-    v16 = [v70 tui_hostingView];
-    v17 = [(TUIRenderModelInteractive *)self->_renderModel stateToModel];
-    v18 = [(TUIInteractiveBaseView *)self currentState];
-    v19 = [v17 objectForKeyedSubscript:v18];
+    control = [(TUIInteractiveBaseView *)self control];
+    tui_hostingView = [control tui_hostingView];
+    stateToModel = [(TUIRenderModelInteractive *)self->_renderModel stateToModel];
+    currentState2 = [(TUIInteractiveBaseView *)self currentState];
+    v19 = [stateToModel objectForKeyedSubscript:currentState2];
 
     v20 = v19;
     if (!v19)
     {
-      v21 = [(TUIRenderModelInteractive *)self->_renderModel stateToModel];
-      v22 = [v21 objectForKeyedSubscript:@"default"];
+      stateToModel2 = [(TUIRenderModelInteractive *)self->_renderModel stateToModel];
+      v22 = [stateToModel2 objectForKeyedSubscript:@"default"];
 
       v20 = v22;
     }
@@ -277,7 +277,7 @@ LABEL_5:
       v26 = 0;
     }
 
-    v27 = v16;
+    v27 = tui_hostingView;
     objc_storeStrong(v78 + 5, v26);
     v28 = v6;
     if (v25)
@@ -296,8 +296,8 @@ LABEL_5:
       [v30 setTimingFunction:v31];
 
       [v30 setDelegate:v78[5]];
-      v32 = [v27 layer];
-      [v32 addAnimation:v30 forKey:@"crossfade"];
+      layer = [v27 layer];
+      [layer addAnimation:v30 forKey:@"crossfade"];
 
       v20 = v29;
     }
@@ -353,13 +353,13 @@ LABEL_30:
       *&v74.m23 = v51;
       CATransform3DTranslate(&v75, &v74, v33, v34, 0.0);
       memset(&v74, 0, sizeof(v74));
-      v36 = [(TUIInteractiveBaseView *)self control];
-      v37 = [v36 layer];
-      v38 = [v37 presentationLayer];
-      v39 = v38;
-      if (v38)
+      control2 = [(TUIInteractiveBaseView *)self control];
+      layer2 = [control2 layer];
+      presentationLayer = [layer2 presentationLayer];
+      v39 = presentationLayer;
+      if (presentationLayer)
       {
-        [v38 sublayerTransform];
+        [presentationLayer sublayerTransform];
       }
 
       else
@@ -389,13 +389,13 @@ LABEL_30:
       [v42 setToValue:v41];
       [v42 setDuration:0.15];
       [v42 setDelegate:v78[5]];
-      v43 = [(TUIInteractiveBaseView *)self layer];
-      [v43 addAnimation:v42 forKey:@"pressed"];
+      layer3 = [(TUIInteractiveBaseView *)self layer];
+      [layer3 addAnimation:v42 forKey:@"pressed"];
 
       v71 = b;
-      v44 = [(TUIInteractiveBaseView *)self layer];
+      layer4 = [(TUIInteractiveBaseView *)self layer];
       a = v71;
-      [v44 setSublayerTransform:&a];
+      [layer4 setSublayerTransform:&a];
 
       v20 = v64;
     }
@@ -436,10 +436,10 @@ LABEL_30:
       [v47 setToValue:v46];
       [v47 setDuration:0.15];
       [v47 setDelegate:v78[5]];
-      v48 = [(TUIInteractiveBaseView *)self layer];
-      [v48 addAnimation:v47 forKey:@"reversed"];
+      layer5 = [(TUIInteractiveBaseView *)self layer];
+      [layer5 addAnimation:v47 forKey:@"reversed"];
 
-      v49 = [(TUIInteractiveBaseView *)self layer];
+      layer6 = [(TUIInteractiveBaseView *)self layer];
       *&v74.m31 = v69;
       *&v74.m33 = v66;
       *&v74.m41 = v63;
@@ -448,7 +448,7 @@ LABEL_30:
       *&v74.m13 = v57;
       *&v74.m21 = v55;
       *&v74.m23 = v53;
-      [v49 setSublayerTransform:&v74];
+      [layer6 setSublayerTransform:&v74];
 
       v20 = v64;
     }
@@ -474,11 +474,11 @@ LABEL_30:
   if (flags)
   {
     *&self->_flags = flags & 0xFE;
-    v4 = [(TUIInteractiveBaseView *)self _updateFromState];
+    _updateFromState = [(TUIInteractiveBaseView *)self _updateFromState];
     flags = self->_flags;
     if ((flags & 2) == 0)
     {
-      if (!v4)
+      if (!_updateFromState)
       {
         goto LABEL_8;
       }
@@ -514,23 +514,23 @@ LABEL_8:
   }
 }
 
-- (id)descendentViewWithIdentifier:(id)a3
+- (id)descendentViewWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = TUIInteractiveBaseView;
-  v5 = [(TUIReusableBaseView *)&v19 descendentViewWithIdentifier:v4];
+  v5 = [(TUIReusableBaseView *)&v19 descendentViewWithIdentifier:identifierCopy];
   if (!v5)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(TUIInteractiveBaseView *)self control];
-    v7 = [v6 tui_hostedSubviewsMap];
-    v8 = [v7 allValues];
+    control = [(TUIInteractiveBaseView *)self control];
+    tui_hostedSubviewsMap = [control tui_hostedSubviewsMap];
+    allValues = [tui_hostedSubviewsMap allValues];
 
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    v9 = [allValues countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -541,10 +541,10 @@ LABEL_8:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * i) descendentViewWithIdentifier:v4];
+          v13 = [*(*(&v15 + 1) + 8 * i) descendentViewWithIdentifier:identifierCopy];
           if (v13)
           {
             v5 = v13;
@@ -552,7 +552,7 @@ LABEL_8:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v15 objects:v20 count:16];
         if (v10)
         {
           continue;
@@ -569,23 +569,23 @@ LABEL_12:
   return v5;
 }
 
-- (id)descendentViewWithRefId:(id)a3
+- (id)descendentViewWithRefId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   v19.receiver = self;
   v19.super_class = TUIInteractiveBaseView;
-  v5 = [(TUIReusableBaseView *)&v19 descendentViewWithRefId:v4];
+  v5 = [(TUIReusableBaseView *)&v19 descendentViewWithRefId:idCopy];
   if (!v5)
   {
     v17 = 0u;
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [(TUIInteractiveBaseView *)self control];
-    v7 = [v6 tui_hostedSubviewsMap];
-    v8 = [v7 allValues];
+    control = [(TUIInteractiveBaseView *)self control];
+    tui_hostedSubviewsMap = [control tui_hostedSubviewsMap];
+    allValues = [tui_hostedSubviewsMap allValues];
 
-    v9 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+    v9 = [allValues countByEnumeratingWithState:&v15 objects:v20 count:16];
     if (v9)
     {
       v10 = v9;
@@ -596,10 +596,10 @@ LABEL_12:
         {
           if (*v16 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(allValues);
           }
 
-          v13 = [*(*(&v15 + 1) + 8 * i) descendentViewWithRefId:v4];
+          v13 = [*(*(&v15 + 1) + 8 * i) descendentViewWithRefId:idCopy];
           if (v13)
           {
             v5 = v13;
@@ -607,7 +607,7 @@ LABEL_12:
           }
         }
 
-        v10 = [v8 countByEnumeratingWithState:&v15 objects:v20 count:16];
+        v10 = [allValues countByEnumeratingWithState:&v15 objects:v20 count:16];
         if (v10)
         {
           continue;
@@ -626,30 +626,30 @@ LABEL_12:
 
 - (void)_updateSubviews
 {
-  v3 = [(TUIInteractiveBaseView *)self control];
+  control = [(TUIInteractiveBaseView *)self control];
   v25 = 0;
   if (self->_currentSubviewsModel && (v4 = objc_loadWeakRetained(&self->_factory)) != 0 && (v5 = v4, v6 = [(TUIInteractiveBaseView *)self showContents], v5, v6))
   {
     [(TUIRenderModelSubviews *)self->_currentSubviewsModel prepare];
-    v7 = [(TUIReusableBaseView *)self feedControllerHost];
-    v8 = [v7 renderOverrideProvider];
-    v9 = [v8 renderOverrides];
+    feedControllerHost = [(TUIReusableBaseView *)self feedControllerHost];
+    renderOverrideProvider = [feedControllerHost renderOverrideProvider];
+    renderOverrides = [renderOverrideProvider renderOverrides];
 
-    if (v9)
+    if (renderOverrides)
     {
-      v10 = [(TUIReusableBaseView *)self tui_querySectionUUID];
-      v11 = [(TUIReusableBaseView *)self tui_querySectionUID];
+      tui_querySectionUUID = [(TUIReusableBaseView *)self tui_querySectionUUID];
+      tui_querySectionUID = [(TUIReusableBaseView *)self tui_querySectionUID];
     }
 
     else
     {
-      v11 = 0;
-      v10 = 0;
+      tui_querySectionUID = 0;
+      tui_querySectionUUID = 0;
     }
 
     currentSubviewsModel = self->_currentSubviewsModel;
     WeakRetained = objc_loadWeakRetained(&self->_factory);
-    v16 = [(TUIRenderModelSubviews *)currentSubviewsModel configureSubviewsWithFactory:WeakRetained outsets:v3 host:v9 overrides:&v25 usedOverrides:v10 UUID:v11 uid:self->_outsets.top, self->_outsets.left, self->_outsets.bottom, self->_outsets.right];
+    v16 = [(TUIRenderModelSubviews *)currentSubviewsModel configureSubviewsWithFactory:WeakRetained outsets:control host:renderOverrides overrides:&v25 usedOverrides:tui_querySectionUUID UUID:tui_querySectionUID uid:self->_outsets.top, self->_outsets.left, self->_outsets.bottom, self->_outsets.right];
 
     v23 = 0u;
     v24 = 0u;
@@ -685,7 +685,7 @@ LABEL_12:
   else
   {
     v12 = objc_loadWeakRetained(&self->_factory);
-    [v12 viewFactoryPrepareToReuseHost:v3];
+    [v12 viewFactoryPrepareToReuseHost:control];
 
     v13 = 0;
   }

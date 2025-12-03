@@ -1,20 +1,20 @@
 @interface UITableCellAccessoryLayout
-- (CGRect)_frameForAccessoryAtIndex:(unint64_t)a3 inAccessories:(id)a4 containerSize:(CGSize)a5 withXOrigin:(double *)a6;
+- (CGRect)_frameForAccessoryAtIndex:(unint64_t)index inAccessories:(id)accessories containerSize:(CGSize)size withXOrigin:(double *)origin;
 - (CGRect)endLayout;
-- (CGRect)finalFrameForAccessory:(id)a3;
-- (CGRect)initialFrameForAccessory:(id)a3;
+- (CGRect)finalFrameForAccessory:(id)accessory;
+- (CGRect)initialFrameForAccessory:(id)accessory;
 - (CGRect)totalFrame;
 - (UICellAccessoryManager)manager;
 - (UITableCellAccessoryLayout)init;
 - (double)_disclosureLayoutWidth;
-- (double)_layoutWidthForAccessory:(id)a3 withItemWidth:(double)a4;
+- (double)_layoutWidthForAccessory:(id)accessory withItemWidth:(double)width;
 - (double)_standardLayoutWidth;
-- (double)_totalWidthForAccessories:(id)a3 withContainerSize:(CGSize)a4;
-- (double)finalAlphaForAccessory:(id)a3;
-- (double)initialAlphaForAccessory:(id)a3;
-- (id)_framesForAccessories:(id)a3 withContainerSize:(CGSize)a4 outTotalFrame:(CGRect *)a5;
-- (void)prepareLayoutForAccessories:(id)a3 previousAccessories:(id)a4 configurationIdentifier:(id)a5 animated:(BOOL)a6;
-- (void)setSpacingBlock:(id)a3;
+- (double)_totalWidthForAccessories:(id)accessories withContainerSize:(CGSize)size;
+- (double)finalAlphaForAccessory:(id)accessory;
+- (double)initialAlphaForAccessory:(id)accessory;
+- (id)_framesForAccessories:(id)accessories withContainerSize:(CGSize)size outTotalFrame:(CGRect *)frame;
+- (void)prepareLayoutForAccessories:(id)accessories previousAccessories:(id)previousAccessories configurationIdentifier:(id)identifier animated:(BOOL)animated;
+- (void)setSpacingBlock:(id)block;
 @end
 
 @implementation UITableCellAccessoryLayout
@@ -27,13 +27,13 @@
   v3 = *(MEMORY[0x1E695F050] + 16);
   *(v2 + 88) = *MEMORY[0x1E695F050];
   *(v2 + 104) = v3;
-  v4 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v5 = *(v2 + 9);
-  *(v2 + 9) = v4;
+  *(v2 + 9) = dictionary;
 
-  v6 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v7 = *(v2 + 10);
-  *(v2 + 10) = v6;
+  *(v2 + 10) = dictionary2;
 
   return v2;
 }
@@ -78,11 +78,11 @@
   return result;
 }
 
-- (void)setSpacingBlock:(id)a3
+- (void)setSpacingBlock:(id)block
 {
-  if (self->_spacingBlock != a3)
+  if (self->_spacingBlock != block)
   {
-    v5 = _Block_copy(a3);
+    v5 = _Block_copy(block);
     spacingBlock = self->_spacingBlock;
     self->_spacingBlock = v5;
 
@@ -103,10 +103,10 @@
   return result;
 }
 
-- (double)_layoutWidthForAccessory:(id)a3 withItemWidth:(double)a4
+- (double)_layoutWidthForAccessory:(id)accessory withItemWidth:(double)width
 {
-  v6 = a3;
-  [v6 reservedLayoutWidth];
+  accessoryCopy = accessory;
+  [accessoryCopy reservedLayoutWidth];
   if (v7 == 1.79769313e308)
   {
     goto LABEL_8;
@@ -121,13 +121,13 @@
   {
     if (v7 != 0.0)
     {
-      a4 = v7;
+      width = v7;
       goto LABEL_8;
     }
 
     v12 = 0;
-    v10 = [v6 view];
-    v11 = _AccessoryFontForLineHeightAlignment(v10, &v12);
+    view = [accessoryCopy view];
+    v11 = _AccessoryFontForLineHeightAlignment(view, &v12);
 
     if (v12 != 1)
     {
@@ -143,20 +143,20 @@ LABEL_3:
 LABEL_6:
   if (v8 > 0.0)
   {
-    a4 = v8;
+    width = v8;
   }
 
 LABEL_8:
 
-  return a4;
+  return width;
 }
 
-- (double)_totalWidthForAccessories:(id)a3 withContainerSize:(CGSize)a4
+- (double)_totalWidthForAccessories:(id)accessories withContainerSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  v7 = a3;
-  if ([v7 count])
+  height = size.height;
+  width = size.width;
+  accessoriesCopy = accessories;
+  if ([accessoriesCopy count])
   {
     v15 = 0;
     v16 = &v15;
@@ -170,7 +170,7 @@ LABEL_8:
     v14 = height;
     v10[4] = self;
     v12 = &v15;
-    v11 = v7;
+    v11 = accessoriesCopy;
     [v11 enumerateObjectsUsingBlock:v10];
     v8 = v16[3];
 
@@ -201,25 +201,25 @@ void __74__UITableCellAccessoryLayout__totalWidthForAccessories_withContainerSiz
   }
 }
 
-- (CGRect)_frameForAccessoryAtIndex:(unint64_t)a3 inAccessories:(id)a4 containerSize:(CGSize)a5 withXOrigin:(double *)a6
+- (CGRect)_frameForAccessoryAtIndex:(unint64_t)index inAccessories:(id)accessories containerSize:(CGSize)size withXOrigin:(double *)origin
 {
-  height = a5.height;
-  width = a5.width;
-  v11 = a4;
-  v12 = [v11 objectAtIndexedSubscript:a3];
+  height = size.height;
+  width = size.width;
+  accessoriesCopy = accessories;
+  v12 = [accessoriesCopy objectAtIndexedSubscript:index];
   [v12 sizeThatFits:{width, height}];
   v14 = v13;
   v16 = v15;
-  v17 = [v12 view];
+  view = [v12 view];
   v44 = 0;
-  v18 = _AccessoryFontForLineHeightAlignment(v17, &v44);
+  v18 = _AccessoryFontForLineHeightAlignment(view, &v44);
   if (v18)
   {
     v37 = MEMORY[0x1E69E9820];
     v38 = 3221225472;
     v39 = __96__UITableCellAccessoryLayout__frameForAccessoryAtIndex_inAccessories_containerSize_withXOrigin___block_invoke;
     v40 = &unk_1E70F6848;
-    v19 = v17;
+    v19 = view;
     v41 = v19;
     v42 = v14;
     v43 = v16;
@@ -230,32 +230,32 @@ void __74__UITableCellAccessoryLayout__totalWidthForAccessories_withContainerSiz
 
   else
   {
-    UIRoundToViewScale(v17);
+    UIRoundToViewScale(view);
     v21 = v22;
   }
 
   [(UITableCellAccessoryLayout *)self _layoutWidthForAccessory:v12 withItemWidth:v14, v37, v38, v39, v40];
   v24 = v23;
   v25 = 0.0;
-  if ([v11 count] - 1 > a3)
+  if ([accessoriesCopy count] - 1 > index)
   {
-    v26 = [v11 objectAtIndexedSubscript:a3 + 1];
+    v26 = [accessoriesCopy objectAtIndexedSubscript:index + 1];
     spacingBlock = self->_spacingBlock;
-    v28 = [v12 identifier];
-    v29 = [v26 identifier];
-    v25 = spacingBlock[2](spacingBlock, v28, v29);
+    identifier = [v12 identifier];
+    identifier2 = [v26 identifier];
+    v25 = spacingBlock[2](spacingBlock, identifier, identifier2);
   }
 
-  v30 = *a6;
-  v31 = v24 + v25 + *a6;
+  v30 = *origin;
+  v31 = v24 + v25 + *origin;
   if (self->_edge != 8)
   {
-    v31 = *a6 - (v24 + v25);
-    v30 = *a6 - v24;
+    v31 = *origin - (v24 + v25);
+    v30 = *origin - v24;
   }
 
   v32 = (v24 - v14) * 0.5 + v30;
-  *a6 = v31;
+  *origin = v31;
 
   v33 = v32;
   v34 = v21;
@@ -277,17 +277,17 @@ uint64_t __96__UITableCellAccessoryLayout__frameForAccessoryAtIndex_inAccessorie
   return [v2 layoutIfNeeded];
 }
 
-- (id)_framesForAccessories:(id)a3 withContainerSize:(CGSize)a4 outTotalFrame:(CGRect *)a5
+- (id)_framesForAccessories:(id)accessories withContainerSize:(CGSize)size outTotalFrame:(CGRect *)frame
 {
-  height = a4.height;
-  width = a4.width;
-  v9 = a3;
-  v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v9, "count")}];
-  [(UITableCellAccessoryLayout *)self _totalWidthForAccessories:v9 withContainerSize:width, height];
+  height = size.height;
+  width = size.width;
+  accessoriesCopy = accessories;
+  v10 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(accessoriesCopy, "count")}];
+  [(UITableCellAccessoryLayout *)self _totalWidthForAccessories:accessoriesCopy withContainerSize:width, height];
   if (v11 <= 0.0)
   {
     safeAreaInset = self->_safeAreaInset;
-    if (!a5)
+    if (!frame)
     {
       goto LABEL_11;
     }
@@ -297,14 +297,14 @@ uint64_t __96__UITableCellAccessoryLayout__frameForAccessoryAtIndex_inAccessorie
 
   v12 = v11;
   spacingBlock = self->_spacingBlock;
-  v14 = [v9 firstObject];
-  v15 = [v14 identifier];
-  v16 = spacingBlock[2](spacingBlock, 0, v15);
+  firstObject = [accessoriesCopy firstObject];
+  identifier = [firstObject identifier];
+  v16 = spacingBlock[2](spacingBlock, 0, identifier);
 
   v17 = self->_spacingBlock;
-  v18 = [v9 lastObject];
-  v19 = [v18 identifier];
-  v20 = v17[2](v17, v19, 0);
+  lastObject = [accessoriesCopy lastObject];
+  identifier2 = [lastObject identifier];
+  v20 = v17[2](v17, identifier2, 0);
 
   if (v20 < self->_safeAreaInset)
   {
@@ -328,27 +328,27 @@ uint64_t __96__UITableCellAccessoryLayout__frameForAccessoryAtIndex_inAccessorie
   v24[4] = self;
   v28 = width;
   v29 = height;
-  v25 = v9;
+  v25 = accessoriesCopy;
   v27 = v30;
   v26 = v10;
   [v25 enumerateObjectsUsingBlock:v24];
   safeAreaInset = v12 + v16 + v20;
 
   _Block_object_dispose(v30, 8);
-  if (a5)
+  if (frame)
   {
 LABEL_9:
-    a5->origin.x = 0.0;
-    a5->origin.y = 0.0;
-    a5->size.width = safeAreaInset;
-    a5->size.height = height;
+    frame->origin.x = 0.0;
+    frame->origin.y = 0.0;
+    frame->size.width = safeAreaInset;
+    frame->size.height = height;
     if (self->_edge == 8)
     {
       v32.origin.x = 0.0;
       v32.origin.y = 0.0;
       v32.size.width = safeAreaInset;
       v32.size.height = height;
-      a5->origin.x = width - CGRectGetWidth(v32);
+      frame->origin.x = width - CGRectGetWidth(v32);
     }
   }
 
@@ -373,19 +373,19 @@ void __84__UITableCellAccessoryLayout__framesForAccessories_withContainerSize_ou
   [v11 setObject:v13 forKeyedSubscript:v12];
 }
 
-- (void)prepareLayoutForAccessories:(id)a3 previousAccessories:(id)a4 configurationIdentifier:(id)a5 animated:(BOOL)a6
+- (void)prepareLayoutForAccessories:(id)accessories previousAccessories:(id)previousAccessories configurationIdentifier:(id)identifier animated:(BOOL)animated
 {
   v126 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v67 = a5;
-  v74 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v8, "count")}];
-  v73 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v8, "count")}];
+  accessoriesCopy = accessories;
+  previousAccessoriesCopy = previousAccessories;
+  identifierCopy = identifier;
+  v74 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(accessoriesCopy, "count")}];
+  v73 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(accessoriesCopy, "count")}];
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
-  v10 = v8;
+  v10 = accessoriesCopy;
   v11 = [v10 countByEnumeratingWithState:&v119 objects:v125 count:16];
   if (v11)
   {
@@ -400,11 +400,11 @@ void __84__UITableCellAccessoryLayout__framesForAccessories_withContainerSize_ou
         }
 
         v14 = *(*(&v119 + 1) + 8 * i);
-        v15 = [v14 identifier];
-        [v74 addObject:v15];
+        identifier = [v14 identifier];
+        [v74 addObject:identifier];
 
-        v16 = [v14 view];
-        [v73 addObject:v16];
+        view = [v14 view];
+        [v73 addObject:view];
       }
 
       v11 = [v10 countByEnumeratingWithState:&v119 objects:v125 count:16];
@@ -413,13 +413,13 @@ void __84__UITableCellAccessoryLayout__framesForAccessories_withContainerSize_ou
     while (v11);
   }
 
-  v17 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v9, "count")}];
-  v18 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(v9, "count")}];
+  v17 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(previousAccessoriesCopy, "count")}];
+  v18 = [objc_alloc(MEMORY[0x1E695DFA8]) initWithCapacity:{objc_msgSend(previousAccessoriesCopy, "count")}];
   v117 = 0u;
   v118 = 0u;
   v115 = 0u;
   v116 = 0u;
-  obj = v9;
+  obj = previousAccessoriesCopy;
   v19 = [obj countByEnumeratingWithState:&v115 objects:v124 count:16];
   if (v19)
   {
@@ -434,11 +434,11 @@ void __84__UITableCellAccessoryLayout__framesForAccessories_withContainerSize_ou
         }
 
         v22 = *(*(&v115 + 1) + 8 * j);
-        v23 = [v22 identifier];
-        [v17 addObject:v23];
+        identifier2 = [v22 identifier];
+        [v17 addObject:identifier2];
 
-        v24 = [v22 view];
-        [v18 addObject:v24];
+        view2 = [v22 view];
+        [v18 addObject:view2];
       }
 
       v19 = [obj countByEnumeratingWithState:&v115 objects:v124 count:16];
@@ -483,13 +483,13 @@ void __84__UITableCellAccessoryLayout__framesForAccessories_withContainerSize_ou
           objc_enumerationMutation(v32);
         }
 
-        v36 = [*(*(&v107 + 1) + 8 * k) identifier];
-        if ([v25 containsObject:v36])
+        identifier3 = [*(*(&v107 + 1) + 8 * k) identifier];
+        if ([v25 containsObject:identifier3])
         {
-          v37 = [v71 objectForKeyedSubscript:v36];
+          v37 = [v71 objectForKeyedSubscript:identifier3];
           [v37 CGRectValue];
           MinX = CGRectGetMinX(v127);
-          v39 = [v70 objectForKeyedSubscript:v36];
+          v39 = [v70 objectForKeyedSubscript:identifier3];
           [v39 CGRectValue];
           v40 = CGRectGetMinX(v128);
 
@@ -533,7 +533,7 @@ void __84__UITableCellAccessoryLayout__framesForAccessories_withContainerSize_ou
   v103[3] = &unk_1E71231D0;
   v65 = v25;
   v104 = v65;
-  v45 = v67;
+  v45 = identifierCopy;
   v46 = v45;
   if (v45 == @"editing")
   {
@@ -562,7 +562,7 @@ void __84__UITableCellAccessoryLayout__framesForAccessories_withContainerSize_ou
   v101 = v103;
   v48 = v32;
   v92 = v48;
-  v93 = self;
+  selfCopy = self;
   v97 = v106;
   v49 = v66;
   v94 = v49;
@@ -602,7 +602,7 @@ void __84__UITableCellAccessoryLayout__framesForAccessories_withContainerSize_ou
   v78 = v56;
   v57 = v49;
   v79 = v57;
-  v80 = self;
+  selfCopy2 = self;
   v87 = v28;
   v88 = v30;
   v84 = v105;
@@ -775,11 +775,11 @@ void __111__UITableCellAccessoryLayout_prepareLayoutForAccessories_previousAcces
   }
 }
 
-- (CGRect)initialFrameForAccessory:(id)a3
+- (CGRect)initialFrameForAccessory:(id)accessory
 {
   initialFrames = self->_initialFrames;
-  v4 = [a3 identifier];
-  v5 = [(NSDictionary *)initialFrames objectForKeyedSubscript:v4];
+  identifier = [accessory identifier];
+  v5 = [(NSDictionary *)initialFrames objectForKeyedSubscript:identifier];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
@@ -797,11 +797,11 @@ void __111__UITableCellAccessoryLayout_prepareLayoutForAccessories_previousAcces
   return result;
 }
 
-- (CGRect)finalFrameForAccessory:(id)a3
+- (CGRect)finalFrameForAccessory:(id)accessory
 {
   finalFrames = self->_finalFrames;
-  v4 = [a3 identifier];
-  v5 = [(NSDictionary *)finalFrames objectForKeyedSubscript:v4];
+  identifier = [accessory identifier];
+  v5 = [(NSDictionary *)finalFrames objectForKeyedSubscript:identifier];
   [v5 CGRectValue];
   v7 = v6;
   v9 = v8;
@@ -819,22 +819,22 @@ void __111__UITableCellAccessoryLayout_prepareLayoutForAccessories_previousAcces
   return result;
 }
 
-- (double)initialAlphaForAccessory:(id)a3
+- (double)initialAlphaForAccessory:(id)accessory
 {
   initialAlphas = self->_initialAlphas;
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)initialAlphas objectForKeyedSubscript:v4];
+  identifier = [accessory identifier];
+  v5 = [(NSMutableDictionary *)initialAlphas objectForKeyedSubscript:identifier];
   [v5 doubleValue];
   v7 = v6;
 
   return v7;
 }
 
-- (double)finalAlphaForAccessory:(id)a3
+- (double)finalAlphaForAccessory:(id)accessory
 {
   finalAlphas = self->_finalAlphas;
-  v4 = [a3 identifier];
-  v5 = [(NSMutableDictionary *)finalAlphas objectForKeyedSubscript:v4];
+  identifier = [accessory identifier];
+  v5 = [(NSMutableDictionary *)finalAlphas objectForKeyedSubscript:identifier];
   [v5 doubleValue];
   v7 = v6;
 

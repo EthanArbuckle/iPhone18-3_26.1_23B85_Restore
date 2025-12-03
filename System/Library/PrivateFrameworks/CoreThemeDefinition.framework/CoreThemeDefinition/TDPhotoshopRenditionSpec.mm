@@ -1,14 +1,14 @@
 @interface TDPhotoshopRenditionSpec
-- ($56AE26BFB60993BDE24C7578AE3A2D7B)_subtractThrowawaySliceFromMetricsIfNeeded:(SEL)a3 metrics:(CGRect)a4 renditionRect:(id *)a5;
-- (BOOL)_sliceRectanglesForPSDImage:(id)a3 rowsPerRendition:(int *)a4 columnsPerRendition:(int *)a5 originalColumnWidth:(int *)a6 newColumnWidth:(int *)a7 originalRowHeight:(int *)a8 newRowHeight:(int *)a9 originalColumnX:(int *)a10 originalRowY:(int *)a11 newRenditionSize:(id *)a12 newSliceCount:(int *)a13 renditionRect:(CGRect *)a14 throwawaySliceRect:(CGRect *)a15;
-- (BOOL)updatePackingPropertiesWithDocument:(id)a3;
+- ($56AE26BFB60993BDE24C7578AE3A2D7B)_subtractThrowawaySliceFromMetricsIfNeeded:(SEL)needed metrics:(CGRect)metrics renditionRect:(id *)rect;
+- (BOOL)_sliceRectanglesForPSDImage:(id)image rowsPerRendition:(int *)rendition columnsPerRendition:(int *)perRendition originalColumnWidth:(int *)width newColumnWidth:(int *)columnWidth originalRowHeight:(int *)height newRowHeight:(int *)rowHeight originalColumnX:(int *)self0 originalRowY:(int *)self1 newRenditionSize:(id *)self2 newSliceCount:(int *)self3 renditionRect:(CGRect *)self4 throwawaySliceRect:(CGRect *)self5;
+- (BOOL)updatePackingPropertiesWithDocument:(id)document;
 - (id)copyDataFromAttributes;
-- (id)createCSIRepresentationFromPSDImage:(id)a3 withCompression:(BOOL)a4 edgeMetricsMask:(id)a5 textMetricsMask:(id)a6 baselineMetricsMask:(id)a7 auxiliary1MetricsMask:(id)a8 auxiliary2MetricsMask:(id)a9 colorSpaceID:(unint64_t)a10 allowsPaletteImageCompression:(BOOL)a11 allowsHevcCompression:(BOOL)a12 allowsDeepmapImageCompression:(BOOL)a13 allowsDeepmap2ImageCompression:(BOOL)a14;
-- (int)_layerIndexInPSDImage:(id)a3;
-- (void)copyAttributesInto:(id)a3;
+- (id)createCSIRepresentationFromPSDImage:(id)image withCompression:(BOOL)compression edgeMetricsMask:(id)mask textMetricsMask:(id)metricsMask baselineMetricsMask:(id)baselineMetricsMask auxiliary1MetricsMask:(id)auxiliary1MetricsMask auxiliary2MetricsMask:(id)auxiliary2MetricsMask colorSpaceID:(unint64_t)self0 allowsPaletteImageCompression:(BOOL)self1 allowsHevcCompression:(BOOL)self2 allowsDeepmapImageCompression:(BOOL)self3 allowsDeepmap2ImageCompression:(BOOL)self4;
+- (int)_layerIndexInPSDImage:(id)image;
+- (void)copyAttributesInto:(id)into;
 - (void)dealloc;
-- (void)drawPackableRenditionInContext:(CGContext *)a3 withDocument:(id)a4;
-- (void)setAttributesFromCopyData:(id)a3;
+- (void)drawPackableRenditionInContext:(CGContext *)context withDocument:(id)document;
+- (void)setAttributesFromCopyData:(id)data;
 @end
 
 @implementation TDPhotoshopRenditionSpec
@@ -21,28 +21,28 @@
   [(TDPhotoshopRenditionSpec *)&v3 dealloc];
 }
 
-- (BOOL)_sliceRectanglesForPSDImage:(id)a3 rowsPerRendition:(int *)a4 columnsPerRendition:(int *)a5 originalColumnWidth:(int *)a6 newColumnWidth:(int *)a7 originalRowHeight:(int *)a8 newRowHeight:(int *)a9 originalColumnX:(int *)a10 originalRowY:(int *)a11 newRenditionSize:(id *)a12 newSliceCount:(int *)a13 renditionRect:(CGRect *)a14 throwawaySliceRect:(CGRect *)a15
+- (BOOL)_sliceRectanglesForPSDImage:(id)image rowsPerRendition:(int *)rendition columnsPerRendition:(int *)perRendition originalColumnWidth:(int *)width newColumnWidth:(int *)columnWidth originalRowHeight:(int *)height newRowHeight:(int *)rowHeight originalColumnX:(int *)self0 originalRowY:(int *)self1 newRenditionSize:(id *)self2 newSliceCount:(int *)self3 renditionRect:(CGRect *)self4 throwawaySliceRect:(CGRect *)self5
 {
-  v19 = self;
-  v20 = [(TDPhotoshopRenditionSpec *)self production];
-  v21 = [(TDThemeConstant *)[(TDRenditionSpec *)v19 renditionType] identifier];
-  v104 = v21;
-  v95 = [(TDPhotoshopRenditionSpec *)v19 _layerIndexInPSDImage:a3];
-  v98 = [objc_msgSend(v20 "columnCount")];
-  v103 = [-[TDPhotoshopRenditionSpec valueForKey:](v19 valueForKey:{@"row", "intValue"}];
-  v102 = [-[TDPhotoshopRenditionSpec valueForKey:](v19 valueForKey:{@"column", "intValue"}];
-  [a3 size];
+  selfCopy = self;
+  production = [(TDPhotoshopRenditionSpec *)self production];
+  identifier = [(TDThemeConstant *)[(TDRenditionSpec *)selfCopy renditionType] identifier];
+  v104 = identifier;
+  v95 = [(TDPhotoshopRenditionSpec *)selfCopy _layerIndexInPSDImage:image];
+  v98 = [objc_msgSend(production "columnCount")];
+  v103 = [-[TDPhotoshopRenditionSpec valueForKey:](selfCopy valueForKey:{@"row", "intValue"}];
+  v102 = [-[TDPhotoshopRenditionSpec valueForKey:](selfCopy valueForKey:{@"column", "intValue"}];
+  [image size];
   v23 = v22;
-  v101 = v19;
-  v105 = a3;
-  if (v21 <= 2)
+  v101 = selfCopy;
+  imageCopy = image;
+  if (identifier <= 2)
   {
-    switch(v21)
+    switch(identifier)
     {
       case 0:
-        if ([v20 renditionSubtype])
+        if ([production renditionSubtype])
         {
-          v94 = [objc_msgSend(v20 "renditionSubtype")];
+          v94 = [objc_msgSend(production "renditionSubtype")];
         }
 
         else
@@ -50,11 +50,11 @@
           v94 = 10;
         }
 
-        v38 = a7;
-        v35 = a4;
-        if ([a3 numberOfSlices] == 10)
+        columnWidthCopy3 = columnWidth;
+        renditionCopy4 = rendition;
+        if ([image numberOfSlices] == 10)
         {
-          v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"One part rendition is being distilled with artwork that has more than one slice (%d). Either the rendition is cataloged incorrectly, or the artwork has the wrong number of slices %@", 9, -[TDPhotoshopRenditionSpec debugDescription](v19, "debugDescription"), v88, v89, v92];
+          v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"One part rendition is being distilled with artwork that has more than one slice (%d). Either the rendition is cataloged incorrectly, or the artwork has the wrong number of slices %@", 9, -[TDPhotoshopRenditionSpec debugDescription](selfCopy, "debugDescription"), v88, v89, v92];
           goto LABEL_137;
         }
 
@@ -72,19 +72,19 @@ LABEL_14:
     goto LABEL_33;
   }
 
-  switch(v21)
+  switch(identifier)
   {
     case 3:
-      if ([v20 renditionSubtype])
+      if ([production renditionSubtype])
       {
-        v94 = [objc_msgSend(v20 "renditionSubtype")];
+        v94 = [objc_msgSend(production "renditionSubtype")];
 LABEL_34:
-        v38 = a7;
-        v35 = a4;
+        columnWidthCopy3 = columnWidth;
+        renditionCopy4 = rendition;
 LABEL_35:
-        *a5 = [TDPhotoshopElementProduction sliceColumnsPerRendition:v21];
-        *v35 = [TDPhotoshopElementProduction sliceRowsPerRendition:v21];
-        LODWORD(v29) = *a5;
+        *perRendition = [TDPhotoshopElementProduction sliceColumnsPerRendition:identifier];
+        *renditionCopy4 = [TDPhotoshopElementProduction sliceRowsPerRendition:identifier];
+        LODWORD(v29) = *perRendition;
         goto LABEL_36;
       }
 
@@ -103,34 +103,34 @@ LABEL_33:
   }
 
   v94 = v25;
-  v26 = [objc_msgSend(v20 "columnCount")];
-  v27 = [objc_msgSend(v20 "rowCount")];
-  v28 = [a3 numberOfSlices] - 1;
+  v26 = [objc_msgSend(production "columnCount")];
+  v27 = [objc_msgSend(production "rowCount")];
+  v28 = [image numberOfSlices] - 1;
   v29 = (v28 / (v27 * v26));
   if (v28 != v27 * v26 * v29)
   {
-    -[TDPhotoshopRenditionSpec _logError:](v19, "_logError:", [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Number of slices per rendition %f is not a whole number!", v28 / (v27 * v26)]);
-    v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"Slice count %d rendition rows %d rendition columns %d in %@", v28, v27, v26, -[TDPhotoshopRenditionSpec debugDescription](v19, "debugDescription"), v92];
+    -[TDPhotoshopRenditionSpec _logError:](selfCopy, "_logError:", [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Number of slices per rendition %f is not a whole number!", v28 / (v27 * v26)]);
+    v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"Slice count %d rendition rows %d rendition columns %d in %@", v28, v27, v26, -[TDPhotoshopRenditionSpec debugDescription](selfCopy, "debugDescription"), v92];
     goto LABEL_137;
   }
 
   if (v28 < 1)
   {
     v31 = 0;
-    v35 = a4;
+    renditionCopy4 = rendition;
   }
 
   else
   {
-    v30 = a8;
+    heightCopy = height;
     v31 = 0;
     v32 = 0;
     v33 = v28;
     v34 = v28 - 1;
-    v35 = a4;
+    renditionCopy4 = rendition;
     while (1)
     {
-      [v105 boundsForSlice:(v31 + 1)];
+      [imageCopy boundsForSlice:(v31 + 1)];
       if (v31)
       {
         if (v36 != v32)
@@ -154,8 +154,8 @@ LABEL_33:
 
     v31 = v33;
 LABEL_28:
-    v19 = v101;
-    a8 = v30;
+    selfCopy = v101;
+    height = heightCopy;
   }
 
   if (v31 == v26)
@@ -168,51 +168,51 @@ LABEL_28:
   {
     if (v31 != v29 * v26)
     {
-      v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Inconsistent many part structure. Found %ld actual slice columns, %d slices per rendition and %d rendition column count in %@", v31, v29, v26, -[TDPhotoshopRenditionSpec debugDescription](v19, "debugDescription"), v92];
+      v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Inconsistent many part structure. Found %ld actual slice columns, %d slices per rendition and %d rendition column count in %@", v31, v29, v26, -[TDPhotoshopRenditionSpec debugDescription](selfCopy, "debugDescription"), v92];
       goto LABEL_137;
     }
 
     v86 = 1;
   }
 
-  *v35 = v86;
-  *a5 = v29;
-  v38 = a7;
+  *renditionCopy4 = v86;
+  *perRendition = v29;
+  columnWidthCopy3 = columnWidth;
 LABEL_36:
   if (v29 >= 1)
   {
     v39 = 0;
     do
     {
-      a6[v39] = -1;
-      v38[v39++] = -1;
+      width[v39] = -1;
+      columnWidthCopy3[v39++] = -1;
     }
 
-    while (v39 < *a5);
+    while (v39 < *perRendition);
   }
 
-  v40 = v105;
-  if (*v35 >= 1)
+  v40 = imageCopy;
+  if (*renditionCopy4 >= 1)
   {
     v41 = 0;
     do
     {
-      a8[v41] = -1;
-      a9[v41++] = -1;
+      height[v41] = -1;
+      rowHeight[v41++] = -1;
     }
 
-    while (v41 < *v35);
+    while (v41 < *renditionCopy4);
   }
 
-  *a13 = 0;
+  *count = 0;
   v42 = *MEMORY[0x277CCA868];
   v43 = *(MEMORY[0x277CCA868] + 16);
-  a14->origin = *MEMORY[0x277CCA868];
-  a14->size = v43;
-  a15->origin = v42;
-  a15->size = v43;
-  v44 = *a5;
-  if (*a5 < 1)
+  rect->origin = *MEMORY[0x277CCA868];
+  rect->size = v43;
+  sliceRect->origin = v42;
+  sliceRect->size = v43;
+  v44 = *perRendition;
+  if (*perRendition < 1)
   {
     return 1;
   }
@@ -226,8 +226,8 @@ LABEL_36:
   }
 
   v93 = v47;
-  LODWORD(v49) = *v35;
-  v97 = a5;
+  LODWORD(v49) = *renditionCopy4;
+  perRenditionCopy = perRendition;
   while (v49 < 1)
   {
 LABEL_124:
@@ -244,13 +244,13 @@ LABEL_124:
   v99 = v52;
   while (1)
   {
-    v53 = a6;
-    v54 = *v97;
+    widthCopy = width;
+    v54 = *perRenditionCopy;
     LODWORD(v87) = v98;
-    v55 = [TDPhotoshopRenditionSpec psdSliceNumberForRenditionRow:v19 sliceRow:"psdSliceNumberForRenditionRow:sliceRow:renditionColumn:sliceColumn:rowsPerRendition:columnsPerRendition:renditionColumnCount:" renditionColumn:v103 sliceColumn:v50 rowsPerRendition:v102 columnsPerRendition:v45 renditionColumnCount:v87];
+    v55 = [TDPhotoshopRenditionSpec psdSliceNumberForRenditionRow:selfCopy sliceRow:"psdSliceNumberForRenditionRow:sliceRow:renditionColumn:sliceColumn:rowsPerRendition:columnsPerRendition:renditionColumnCount:" renditionColumn:v103 sliceColumn:v50 rowsPerRendition:v102 columnsPerRendition:v45 renditionColumnCount:v87];
     if ((v55 & 0x80000000) != 0 || v55 >= [v40 numberOfSlices])
     {
-      v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Rendition slice number %d for row %d column %d is greater than or equal to slice count %d in %@", v55, v50, v45, objc_msgSend(v40, "numberOfSlices"), -[TDPhotoshopRenditionSpec debugDescription](v19, "debugDescription")];
+      v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Rendition slice number %d for row %d column %d is greater than or equal to slice count %d in %@", v55, v50, v45, objc_msgSend(v40, "numberOfSlices"), -[TDPhotoshopRenditionSpec debugDescription](selfCopy, "debugDescription")];
       goto LABEL_137;
     }
 
@@ -263,10 +263,10 @@ LABEL_124:
     v106.origin.y = v58;
     v106.size.width = v60;
     v106.size.height = v62;
-    *a14 = NSUnionRect(*a14, v106);
+    *rect = NSUnionRect(*rect, v106);
     if ((v57 & 0x80000000) != 0 || (v59 & 0x80000000) != 0)
     {
-      v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Slice at row %d column %d has negative x origin %f and/or y origin %f in %@", v50, v45, *&v57, *&v59, -[TDPhotoshopRenditionSpec debugDescription](v19, "debugDescription")];
+      v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Slice at row %d column %d has negative x origin %f and/or y origin %f in %@", v50, v45, *&v57, *&v59, -[TDPhotoshopRenditionSpec debugDescription](selfCopy, "debugDescription")];
       goto LABEL_137;
     }
 
@@ -275,7 +275,7 @@ LABEL_124:
       break;
     }
 
-    v64 = a8;
+    heightCopy2 = height;
     v65 = rint(v61);
     v66 = v65;
     v67 = rint(v63);
@@ -283,7 +283,7 @@ LABEL_124:
     v69 = v68;
     if (v65 != v66 || v67 != v69)
     {
-      -[TDPhotoshopRenditionSpec _logWarning:](v19, "_logWarning:", [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: Slice image size w:%d h:%d does not match slice bounds w:%f h:%f in %@", v66, v68, *&v61, *&v63, -[TDPhotoshopRenditionSpec debugDescription](v19, "debugDescription")]);
+      -[TDPhotoshopRenditionSpec _logWarning:](selfCopy, "_logWarning:", [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: Slice image size w:%d h:%d does not match slice bounds w:%f h:%f in %@", v66, v68, *&v61, *&v63, -[TDPhotoshopRenditionSpec debugDescription](selfCopy, "debugDescription")]);
     }
 
     if (v66)
@@ -298,7 +298,7 @@ LABEL_124:
 
     if (v71)
     {
-      -[TDPhotoshopRenditionSpec _logWarning:](v19, "_logWarning:", [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: Zero width or height slice at row %d column %d within rendition row %d column %d in %@", v50, v45, v103, v102, -[TDPhotoshopRenditionSpec debugDescription](v19, "debugDescription")]);
+      -[TDPhotoshopRenditionSpec _logWarning:](selfCopy, "_logWarning:", [MEMORY[0x277CCACA8] stringWithFormat:@"WARNING: Zero width or height slice at row %d column %d within rendition row %d column %d in %@", v50, v45, v103, v102, -[TDPhotoshopRenditionSpec debugDescription](selfCopy, "debugDescription")]);
     }
 
     v72 = v104 == 2 && v50 == 2;
@@ -309,28 +309,28 @@ LABEL_124:
       v74 = 1;
     }
 
-    a6 = v53;
+    width = widthCopy;
     if (v74)
     {
-      a15->origin.x = v57;
-      a15->origin.y = v59;
-      a15->size.width = v61;
-      a15->size.height = v63;
+      sliceRect->origin.x = v57;
+      sliceRect->origin.y = v59;
+      sliceRect->size.width = v61;
+      sliceRect->size.height = v63;
     }
 
     else
     {
-      ++*a13;
+      ++*count;
     }
 
-    v75 = v53[v45];
+    v75 = widthCopy[v45];
     if (v75 == -1)
     {
-      v53[v45] = v66;
-      a10[v45] = v57;
+      widthCopy[v45] = v66;
+      x[v45] = v57;
       if (v99)
       {
-        a7[v45] = 0;
+        columnWidth[v45] = 0;
       }
 
       else
@@ -350,8 +350,8 @@ LABEL_124:
           v78 = v66;
         }
 
-        a7[v45] = v78;
-        a12->var0 += v78;
+        columnWidth[v45] = v78;
+        size->var0 += v78;
       }
     }
 
@@ -360,19 +360,19 @@ LABEL_124:
       v76 = MEMORY[0x277CCACA8];
       v90 = [(TDPhotoshopRenditionSpec *)v101 debugDescription];
       v77 = v76;
-      a6 = v53;
+      width = widthCopy;
       -[TDPhotoshopRenditionSpec _logWarning:](v101, "_logWarning:", [v77 stringWithFormat:@"WARNING: Slice geometry inconsistency. Column width for slice at row:%d column:%d layer:%d does not match previous slices in column in %@", v50, v45, v95, v90]);
     }
 
-    a8 = v64;
-    v79 = v64[v50];
+    height = heightCopy2;
+    v79 = heightCopy2[v50];
     if (v79 == -1)
     {
-      v64[v50] = v68;
-      a11[v50] = (v23 - v59 - v69);
+      heightCopy2[v50] = v68;
+      y[v50] = (v23 - v59 - v69);
       if (v73)
       {
-        a9[2] = 0;
+        rowHeight[2] = 0;
       }
 
       else
@@ -392,59 +392,59 @@ LABEL_124:
           v82 = v68;
         }
 
-        a12->var1 += v82;
-        a9[v50] = v82;
+        size->var1 += v82;
+        rowHeight[v50] = v82;
       }
 
-      v19 = v101;
-      v40 = v105;
+      selfCopy = v101;
+      v40 = imageCopy;
     }
 
     else
     {
       v46 = v79 == v68;
-      v19 = v101;
-      v40 = v105;
+      selfCopy = v101;
+      v40 = imageCopy;
       if (!v46)
       {
         v80 = MEMORY[0x277CCACA8];
         v91 = [(TDPhotoshopRenditionSpec *)v101 debugDescription];
         v81 = v80;
-        a6 = v53;
+        width = widthCopy;
         -[TDPhotoshopRenditionSpec _logWarning:](v101, "_logWarning:", [v81 stringWithFormat:@"WARNING: Slice geometry inconsistency. Row height for slice at row:%d column:%d layer:%d does not match previous slices in row in %@", v50, v45, v95, v91]);
       }
     }
 
     ++v50;
-    v49 = *a4;
+    v49 = *rendition;
     if (v50 >= v49)
     {
-      v44 = *v97;
+      v44 = *perRenditionCopy;
       goto LABEL_124;
     }
   }
 
-  v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Slice bounds height %f or width %f is zero in %@", *&v61, *&v63, -[TDPhotoshopRenditionSpec debugDescription](v19, "debugDescription"), v89, v92];
+  v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Slice bounds height %f or width %f is zero in %@", *&v61, *&v63, -[TDPhotoshopRenditionSpec debugDescription](selfCopy, "debugDescription"), v89, v92];
 LABEL_137:
-  [(TDPhotoshopRenditionSpec *)v19 _logError:v37];
+  [(TDPhotoshopRenditionSpec *)selfCopy _logError:v37];
   return 0;
 }
 
-- ($56AE26BFB60993BDE24C7578AE3A2D7B)_subtractThrowawaySliceFromMetricsIfNeeded:(SEL)a3 metrics:(CGRect)a4 renditionRect:(id *)a5
+- ($56AE26BFB60993BDE24C7578AE3A2D7B)_subtractThrowawaySliceFromMetricsIfNeeded:(SEL)needed metrics:(CGRect)metrics renditionRect:(id *)rect
 {
   height = a6.size.height;
   width = a6.size.width;
-  v9 = a4.size.height;
-  v10 = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  result = NSEqualRects(a4, *MEMORY[0x277CCA868]);
+  v9 = metrics.size.height;
+  v10 = metrics.size.width;
+  y = metrics.origin.y;
+  x = metrics.origin.x;
+  result = NSEqualRects(metrics, *MEMORY[0x277CCA868]);
   if ((result & 1) == 0)
   {
-    v15 = a5->var0.width;
-    v16 = a5->var0.height;
-    v17 = a5->var1.width;
-    v18 = a5->var1.height;
+    v15 = rect->var0.width;
+    v16 = rect->var0.height;
+    v17 = rect->var1.width;
+    v18 = rect->var1.height;
     if (v9 == height)
     {
       if (v15 >= x + v10)
@@ -471,22 +471,22 @@ LABEL_137:
       }
     }
 
-    a5->var0.width = v15;
-    a5->var0.height = v16;
-    a5->var1.width = v17;
-    a5->var1.height = v18;
+    rect->var0.width = v15;
+    rect->var0.height = v16;
+    rect->var1.width = v17;
+    rect->var1.height = v18;
   }
 
-  var1 = a5->var1;
-  retstr->var0 = a5->var0;
+  var1 = rect->var1;
+  retstr->var0 = rect->var0;
   retstr->var1 = var1;
-  retstr->var2 = a5->var2;
+  retstr->var2 = rect->var2;
   return result;
 }
 
-- (id)createCSIRepresentationFromPSDImage:(id)a3 withCompression:(BOOL)a4 edgeMetricsMask:(id)a5 textMetricsMask:(id)a6 baselineMetricsMask:(id)a7 auxiliary1MetricsMask:(id)a8 auxiliary2MetricsMask:(id)a9 colorSpaceID:(unint64_t)a10 allowsPaletteImageCompression:(BOOL)a11 allowsHevcCompression:(BOOL)a12 allowsDeepmapImageCompression:(BOOL)a13 allowsDeepmap2ImageCompression:(BOOL)a14
+- (id)createCSIRepresentationFromPSDImage:(id)image withCompression:(BOOL)compression edgeMetricsMask:(id)mask textMetricsMask:(id)metricsMask baselineMetricsMask:(id)baselineMetricsMask auxiliary1MetricsMask:(id)auxiliary1MetricsMask auxiliary2MetricsMask:(id)auxiliary2MetricsMask colorSpaceID:(unint64_t)self0 allowsPaletteImageCompression:(BOOL)self1 allowsHevcCompression:(BOOL)self2 allowsDeepmapImageCompression:(BOOL)self3 allowsDeepmap2ImageCompression:(BOOL)self4
 {
-  v17 = a4;
+  compressionCopy = compression;
   v107 = *MEMORY[0x277D85DE8];
   v99 = 0;
   v100 = 0;
@@ -495,29 +495,29 @@ LABEL_137:
   v97 = 0u;
   v94 = 0u;
   v95 = 0u;
-  v20 = [(TDPhotoshopRenditionSpec *)self production];
-  v21 = [(TDThemeConstant *)[(TDRenditionSpec *)self renditionType] identifier];
-  v22 = [(TDPhotoshopRenditionSpec *)self _layerIndexInPSDImage:a3];
-  v81 = [objc_msgSend(v20 "columnCount")];
+  production = [(TDPhotoshopRenditionSpec *)self production];
+  identifier = [(TDThemeConstant *)[(TDRenditionSpec *)self renditionType] identifier];
+  v22 = [(TDPhotoshopRenditionSpec *)self _layerIndexInPSDImage:image];
+  v81 = [objc_msgSend(production "columnCount")];
   v80 = [-[TDPhotoshopRenditionSpec valueForKey:](self valueForKey:{@"row", "intValue"}];
   v79 = [-[TDPhotoshopRenditionSpec valueForKey:](self valueForKey:{@"column", "intValue"}];
-  [a3 size];
+  [image size];
   v23 = 0;
-  if (![(TDPhotoshopRenditionSpec *)self _sliceRectanglesForPSDImage:a3 rowsPerRendition:&v99 columnsPerRendition:&v99 + 4 originalColumnWidth:v106 newColumnWidth:v105 originalRowHeight:v104 newRowHeight:v103 originalColumnX:v102 originalRowY:v101 newRenditionSize:&v100 newSliceCount:&v98 renditionRect:&v96 throwawaySliceRect:&v94])
+  if (![(TDPhotoshopRenditionSpec *)self _sliceRectanglesForPSDImage:image rowsPerRendition:&v99 columnsPerRendition:&v99 + 4 originalColumnWidth:v106 newColumnWidth:v105 originalRowHeight:v104 newRowHeight:v103 originalColumnX:v102 originalRowY:v101 newRenditionSize:&v100 newSliceCount:&v98 renditionRect:&v96 throwawaySliceRect:&v94])
   {
     goto LABEL_65;
   }
 
-  v75 = a7;
-  v82 = a3;
-  v24 = v17;
-  if ([v20 renditionSubtype])
+  baselineMetricsMaskCopy = baselineMetricsMask;
+  imageCopy = image;
+  v24 = compressionCopy;
+  if ([production renditionSubtype])
   {
-    v21 = [objc_msgSend(v20 "renditionSubtype")];
+    identifier = [objc_msgSend(production "renditionSubtype")];
   }
 
-  v25 = a8;
-  v26 = v21;
+  auxiliary1MetricsMaskCopy = auxiliary1MetricsMask;
+  v26 = identifier;
   if ([(TDPhotoshopRenditionSpec *)self parentRendition])
   {
     [(TDRenditionSpec *)self packedPoint];
@@ -537,33 +537,33 @@ LABEL_137:
     v32 = [v35 initWithCanvasSize:v98 sliceCount:v26 layout:{v100, SHIDWORD(v100)}];
   }
 
-  [v32 setName:{objc_msgSend(objc_msgSend(v20, "asset"), "name")}];
-  [v32 setColorSpaceID:a10];
-  if ([objc_msgSend(objc_msgSend(v20 "asset")])
+  [v32 setName:{objc_msgSend(objc_msgSend(production, "asset"), "name")}];
+  [v32 setColorSpaceID:d];
+  if ([objc_msgSend(objc_msgSend(production "asset")])
   {
     [v32 setPixelFormat:1195456544];
   }
 
   [v32 setIsTintable:{-[TDPhotoshopRenditionSpec isTintable](self, "isTintable")}];
-  [v32 setAllowsDeepmapImageCompression:a13];
-  [v32 setAllowsDeepmap2ImageCompression:a14];
+  [v32 setAllowsDeepmapImageCompression:deepmapImageCompression];
+  [v32 setAllowsDeepmap2ImageCompression:deepmap2ImageCompression];
   [v32 setRenditionProperties:{-[TDRenditionSpec propertiesAsDictionary](self, "propertiesAsDictionary")}];
-  v72 = v20;
-  [v32 setScaleFactor:{objc_msgSend(objc_msgSend(v20, "asset"), "scaleFactor")}];
+  v72 = production;
+  [v32 setScaleFactor:{objc_msgSend(objc_msgSend(production, "asset"), "scaleFactor")}];
   v36 = MEMORY[0x277D02650];
   v37 = *MEMORY[0x277D02650];
   v38 = *(MEMORY[0x277D02650] + 16);
   v92 = *MEMORY[0x277D02650];
   v93 = v38;
-  v39 = v25;
-  if (a5)
+  v39 = auxiliary1MetricsMaskCopy;
+  if (mask)
   {
     v40 = v24;
-    if (a3)
+    if (image)
     {
       v73 = v37;
       v70 = v38;
-      [a3 metricsInMask:a5 forRect:{v96, v97}];
+      [image metricsInMask:mask forRect:{v96, v97}];
       v38 = v70;
       v37 = v73;
       v41 = *(&v91 + 1);
@@ -579,8 +579,8 @@ LABEL_137:
       v42 = 0;
     }
 
-    v43 = v75;
-    v44 = a6;
+    v43 = baselineMetricsMaskCopy;
+    metricsMaskCopy2 = metricsMask;
     v92 = v89;
     v93 = v90;
   }
@@ -590,8 +590,8 @@ LABEL_137:
     v42 = *(MEMORY[0x277D02650] + 32);
     v41 = *(MEMORY[0x277D02650] + 40);
     v40 = v24;
-    v43 = v75;
-    v44 = a6;
+    v43 = baselineMetricsMaskCopy;
+    metricsMaskCopy2 = metricsMask;
   }
 
   v89 = v92;
@@ -614,14 +614,14 @@ LABEL_137:
   *&v91 = v42;
   *(&v91 + 1) = v41;
   [v32 addMetrics:&v89];
-  if (v44)
+  if (metricsMaskCopy2)
   {
     v90 = 0u;
     v91 = 0u;
     v89 = 0u;
-    if (a3)
+    if (image)
     {
-      [a3 metricsInMask:v44 forRect:{v96, v97}];
+      [image metricsInMask:metricsMaskCopy2 forRect:{v96, v97}];
     }
 
     v86 = v89;
@@ -635,9 +635,9 @@ LABEL_137:
     v90 = 0u;
     v91 = 0u;
     v89 = 0u;
-    if (a3)
+    if (image)
     {
-      [a3 metricsInMask:v43 forRect:{v96, v97}];
+      [image metricsInMask:v43 forRect:{v96, v97}];
     }
 
     v86 = v89;
@@ -651,9 +651,9 @@ LABEL_137:
     v90 = 0u;
     v91 = 0u;
     v89 = 0u;
-    if (a3)
+    if (image)
     {
-      [a3 metricsInMask:v39 forRect:{v96, v97}];
+      [image metricsInMask:v39 forRect:{v96, v97}];
     }
 
     if (self)
@@ -677,14 +677,14 @@ LABEL_137:
     [v32 addMetrics:&v86];
   }
 
-  if (a9)
+  if (auxiliary2MetricsMask)
   {
     v90 = 0u;
     v91 = 0u;
     v89 = 0u;
-    if (a3)
+    if (image)
     {
-      [a3 metricsInMask:a9 forRect:{v96, v97}];
+      [image metricsInMask:auxiliary2MetricsMask forRect:{v96, v97}];
     }
 
     if (self)
@@ -708,16 +708,16 @@ LABEL_137:
     [v32 addMetrics:&v86];
   }
 
-  v45 = [a3 layerRefAtIndex:v22];
+  v45 = [image layerRefAtIndex:v22];
   [v32 setBlendMode:{objc_msgSend(v45, "blendMode")}];
   [v45 opacity];
   [v32 setOpacity:?];
-  v76 = [(TDPhotoshopRenditionSpec *)self parentRendition];
-  if (v76)
+  parentRendition = [(TDPhotoshopRenditionSpec *)self parentRendition];
+  if (parentRendition)
   {
     v78 = v32;
     v71 = v40;
-    [a3 boundsAtLayer:v22];
+    [image boundsAtLayer:v22];
     v46 = 0;
     v74 = 0;
   }
@@ -728,8 +728,8 @@ LABEL_137:
     v48 = [v47 initWithPixelWidth:v100 pixelHeight:HIDWORD(v100)];
     [v32 addBitmap:v48];
     [v48 setPixelFormat:objc_msgSend(v32, "pixelFormat")];
-    v49 = [v48 bitmapContext];
-    if (!v49)
+    bitmapContext = [v48 bitmapContext];
+    if (!bitmapContext)
     {
 
       [(TDPhotoshopRenditionSpec *)self _logError:@"ERROR: Could not create bitmap context"];
@@ -738,11 +738,11 @@ LABEL_64:
       goto LABEL_65;
     }
 
-    v46 = v49;
+    v46 = bitmapContext;
     v74 = v48;
     v78 = v32;
     v71 = v40;
-    [a3 boundsAtLayer:v22];
+    [image boundsAtLayer:v22];
     CGContextSetCompositeOperation();
     CGContextSetAlpha(v46, 1.0);
   }
@@ -770,7 +770,7 @@ LABEL_64:
               LODWORD(v69) = v81;
               v58 = [(TDPhotoshopRenditionSpec *)self psdSliceNumberForRenditionRow:v80 sliceRow:v54 - 1 renditionColumn:v79 sliceColumn:v51 rowsPerRendition:v99 columnsPerRendition:HIDWORD(v99) renditionColumnCount:v69];
               LOBYTE(v89) = 0;
-              v59 = [v82 imageFromSlice:v58 atLayer:v22 isEmptyImage:&v89];
+              v59 = [imageCopy imageFromSlice:v58 atLayer:v22 isEmptyImage:&v89];
               if (!v59)
               {
                 -[TDPhotoshopRenditionSpec _logError:](self, "_logError:", [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Unable to extract Photoshop image: %@\nThings to check:\n1. Are any Photoshop layers missing when compared to the reference file?\n2. Are any of the layer names not matching the layer names in the reference file (case sensitive)?\n3. Are there the same number of slices as in the reference file?\n", objc_msgSend(objc_msgSend(v72, "asset"), "name")]);
@@ -779,7 +779,7 @@ LABEL_64:
               }
 
               v60 = v56;
-              if (!v76)
+              if (!parentRendition)
               {
                 v61 = v59;
                 CGContextSaveGState(v46);
@@ -795,12 +795,12 @@ LABEL_64:
                   v64 = v52;
                   do
                   {
-                    v65 = [v61 image];
+                    image = [v61 image];
                     v109.origin.x = v64;
                     v109.origin.y = v55;
                     v109.size.width = v62;
                     v109.size.height = v60;
-                    CGContextDrawImage(v46, v109, v65);
+                    CGContextDrawImage(v46, v109, image);
                     v64 = v64 + v62;
                     --v63;
                   }
@@ -834,10 +834,10 @@ LABEL_64:
   }
 
   [v78 setExcludedFromContrastFilter:{objc_msgSend(objc_msgSend(-[TDPhotoshopRenditionSpec production](self, "production"), "valueForKey:", @"isExcludedFromFilter", "BOOLValue")}];
-  [v78 setAllowsPaletteImageCompression:a11];
-  [v78 setAllowsHevcCompression:a12];
-  [v78 setAllowsDeepmapImageCompression:a13];
-  [v78 setAllowsDeepmap2ImageCompression:a14];
+  [v78 setAllowsPaletteImageCompression:imageCompression];
+  [v78 setAllowsHevcCompression:hevcCompression];
+  [v78 setAllowsDeepmapImageCompression:deepmapImageCompression];
+  [v78 setAllowsDeepmap2ImageCompression:deepmap2ImageCompression];
   v23 = [v78 CSIRepresentationWithCompression:v71];
 
 LABEL_65:
@@ -845,7 +845,7 @@ LABEL_65:
   return v23;
 }
 
-- (int)_layerIndexInPSDImage:(id)a3
+- (int)_layerIndexInPSDImage:(id)image
 {
   if (_layerIndexInPSDImage__pred != -1)
   {
@@ -856,7 +856,7 @@ LABEL_65:
   {
     v7 = [-[TDPhotoshopRenditionSpec photoshopLayer](self "photoshopLayer")];
 
-    return [a3 absoluteLayerIndexFromLayerNames:v7];
+    return [image absoluteLayerIndexFromLayerNames:v7];
   }
 
   else
@@ -874,15 +874,15 @@ uint64_t __50__TDPhotoshopRenditionSpec__layerIndexInPSDImage___block_invoke()
   return result;
 }
 
-- (void)copyAttributesInto:(id)a3
+- (void)copyAttributesInto:(id)into
 {
-  [a3 setValue:-[TDPhotoshopRenditionSpec valueForKey:](self forKey:{"valueForKey:", @"row", @"row"}];
-  [a3 setValue:-[TDPhotoshopRenditionSpec valueForKey:](self forKey:{"valueForKey:", @"column", @"column"}];
-  [a3 setValue:-[TDPhotoshopRenditionSpec valueForKey:](self forKey:{"valueForKey:", @"layer", @"layer"}];
-  [a3 setValue:-[TDPhotoshopRenditionSpec valueForKey:](self forKey:{"valueForKey:", @"isTintable", @"isTintable"}];
-  v5 = [(TDPhotoshopRenditionSpec *)self preserveForArchiveOnly];
+  [into setValue:-[TDPhotoshopRenditionSpec valueForKey:](self forKey:{"valueForKey:", @"row", @"row"}];
+  [into setValue:-[TDPhotoshopRenditionSpec valueForKey:](self forKey:{"valueForKey:", @"column", @"column"}];
+  [into setValue:-[TDPhotoshopRenditionSpec valueForKey:](self forKey:{"valueForKey:", @"layer", @"layer"}];
+  [into setValue:-[TDPhotoshopRenditionSpec valueForKey:](self forKey:{"valueForKey:", @"isTintable", @"isTintable"}];
+  preserveForArchiveOnly = [(TDPhotoshopRenditionSpec *)self preserveForArchiveOnly];
 
-  [a3 setPreserveForArchiveOnly:v5];
+  [into setPreserveForArchiveOnly:preserveForArchiveOnly];
 }
 
 - (id)copyDataFromAttributes
@@ -906,10 +906,10 @@ uint64_t __50__TDPhotoshopRenditionSpec__layerIndexInPSDImage___block_invoke()
     [v3 setObject:v6 forKey:@"layer"];
   }
 
-  v7 = [(TDPhotoshopRenditionSpec *)self keySpec];
-  if (v7)
+  keySpec = [(TDPhotoshopRenditionSpec *)self keySpec];
+  if (keySpec)
   {
-    [v3 setObject:objc_msgSend(v7 forKey:{"copyDataFromAttributes"), @"keySpec"}];
+    [v3 setObject:objc_msgSend(keySpec forKey:{"copyDataFromAttributes"), @"keySpec"}];
   }
 
   v8 = [MEMORY[0x277CCAC58] dataWithPropertyList:v3 format:200 options:0 error:0];
@@ -917,9 +917,9 @@ uint64_t __50__TDPhotoshopRenditionSpec__layerIndexInPSDImage___block_invoke()
   return [v8 copy];
 }
 
-- (void)setAttributesFromCopyData:(id)a3
+- (void)setAttributesFromCopyData:(id)data
 {
-  v4 = [MEMORY[0x277CCAC58] propertyListWithData:a3 options:0 format:0 error:0];
+  v4 = [MEMORY[0x277CCAC58] propertyListWithData:data options:0 format:0 error:0];
   v5 = [v4 objectForKey:@"row"];
   if (v5)
   {
@@ -940,9 +940,9 @@ uint64_t __50__TDPhotoshopRenditionSpec__layerIndexInPSDImage___block_invoke()
   }
 }
 
-- (BOOL)updatePackingPropertiesWithDocument:(id)a3
+- (BOOL)updatePackingPropertiesWithDocument:(id)document
 {
-  v4 = self;
+  selfCopy = self;
   v80 = *MEMORY[0x277D85DE8];
   v73.receiver = self;
   v73.super_class = TDPhotoshopRenditionSpec;
@@ -953,56 +953,56 @@ uint64_t __50__TDPhotoshopRenditionSpec__layerIndexInPSDImage___block_invoke()
   v68 = 0u;
   v69 = 0u;
   memset(v67, 0, sizeof(v67));
-  v5 = [(TDPhotoshopRenditionSpec *)v4 production];
-  v6 = [v5 psdImageRefWithDocument:a3];
-  if ([(TDThemeConstant *)[(TDRenditionSpec *)v4 renditionType] identifier]!= 6)
+  production = [(TDPhotoshopRenditionSpec *)selfCopy production];
+  v6 = [production psdImageRefWithDocument:document];
+  if ([(TDThemeConstant *)[(TDRenditionSpec *)selfCopy renditionType] identifier]!= 6)
   {
-    if (![(TDPhotoshopRenditionSpec *)v4 _sliceRectanglesForPSDImage:v6 rowsPerRendition:&v71 columnsPerRendition:&v71 + 4 originalColumnWidth:v79 newColumnWidth:v78 originalRowHeight:v77 newRowHeight:v76 originalColumnX:v75 originalRowY:v74 newRenditionSize:&v72 newSliceCount:&v70 renditionRect:&v68 throwawaySliceRect:v67])
+    if (![(TDPhotoshopRenditionSpec *)selfCopy _sliceRectanglesForPSDImage:v6 rowsPerRendition:&v71 columnsPerRendition:&v71 + 4 originalColumnWidth:v79 newColumnWidth:v78 originalRowHeight:v77 newRowHeight:v76 originalColumnX:v75 originalRowY:v74 newRenditionSize:&v72 newSliceCount:&v70 renditionRect:&v68 throwawaySliceRect:v67])
     {
       if (!v6)
       {
-        NSLog(&cfstr_CouldnTReadPsd.isa, [objc_msgSend(objc_msgSend(v5 "asset")]);
+        NSLog(&cfstr_CouldnTReadPsd.isa, [objc_msgSend(objc_msgSend(production "asset")]);
         goto LABEL_47;
       }
 
       goto LABEL_45;
     }
 
-    [(TDPhotoshopRenditionSpec *)v4 setWidth:v72];
-    [(TDPhotoshopRenditionSpec *)v4 setHeight:HIDWORD(v72)];
+    [(TDPhotoshopRenditionSpec *)selfCopy setWidth:v72];
+    [(TDPhotoshopRenditionSpec *)selfCopy setHeight:HIDWORD(v72)];
   }
 
-  if (![a3 shouldPerformHistogramBasedPacking])
+  if (![document shouldPerformHistogramBasedPacking])
   {
 LABEL_45:
     result = 1;
     goto LABEL_48;
   }
 
-  v7 = [(TDThemeConstant *)[(TDRenditionSpec *)v4 renditionType] identifier];
-  v8 = [(TDPhotoshopRenditionSpec *)v4 _layerIndexInPSDImage:v6];
-  v59 = [objc_msgSend(v5 "columnCount")];
-  v58 = [-[TDPhotoshopRenditionSpec valueForKey:](v4 valueForKey:{@"row", "intValue"}];
-  v57 = [-[TDPhotoshopRenditionSpec valueForKey:](v4 valueForKey:{@"column", "intValue"}];
+  identifier = [(TDThemeConstant *)[(TDRenditionSpec *)selfCopy renditionType] identifier];
+  v8 = [(TDPhotoshopRenditionSpec *)selfCopy _layerIndexInPSDImage:v6];
+  v59 = [objc_msgSend(production "columnCount")];
+  v58 = [-[TDPhotoshopRenditionSpec valueForKey:](selfCopy valueForKey:{@"row", "intValue"}];
+  v57 = [-[TDPhotoshopRenditionSpec valueForKey:](selfCopy valueForKey:{@"column", "intValue"}];
   [v6 size];
-  if ([v5 renditionSubtype])
+  if ([production renditionSubtype])
   {
-    v7 = [objc_msgSend(v5 "renditionSubtype")];
+    identifier = [objc_msgSend(production "renditionSubtype")];
   }
 
   result = 1;
   if (v72 && HIDWORD(v72))
   {
-    v10 = v7;
-    if ([(TDPhotoshopRenditionSpec *)v4 parentRendition])
+    v10 = identifier;
+    if ([(TDPhotoshopRenditionSpec *)selfCopy parentRendition])
     {
-      [(TDRenditionSpec *)v4 packedPoint];
+      [(TDRenditionSpec *)selfCopy packedPoint];
       v12 = v11;
       v14 = v13;
       v15 = objc_alloc(MEMORY[0x277D02668]);
       v16 = [v15 initWithInternalReferenceRect:v10 layout:{v12, v14, v72, SHIDWORD(v72)}];
       v17 = objc_alloc_init(MEMORY[0x277D026D0]);
-      v18 = [objc_alloc(MEMORY[0x277D026C8]) initWithKeyList:{objc_msgSend(objc_msgSend(-[TDPhotoshopRenditionSpec parentRendition](v4, "parentRendition"), "keySpec"), "key")}];
+      v18 = [objc_alloc(MEMORY[0x277D026C8]) initWithKeyList:{objc_msgSend(objc_msgSend(-[TDPhotoshopRenditionSpec parentRendition](selfCopy, "parentRendition"), "keySpec"), "key")}];
       [v17 setReferenceKey:v18];
       [v16 addLayerReference:v17];
     }
@@ -1013,12 +1013,12 @@ LABEL_45:
       v16 = [v19 initWithCanvasSize:v70 sliceCount:v10 layout:{v72, SHIDWORD(v72)}];
     }
 
-    [v16 setName:{objc_msgSend(objc_msgSend(v5, "asset"), "name")}];
-    [v16 setIsTintable:{-[TDPhotoshopRenditionSpec isTintable](v4, "isTintable")}];
-    [v16 setAllowsDeepmapImageCompression:{objc_msgSend(a3, "shouldAllowDeepmapCompression")}];
-    [v16 setAllowsDeepmap2ImageCompression:{objc_msgSend(a3, "shouldAllowDeepmap2Compression")}];
-    [v16 setRenditionProperties:{-[TDRenditionSpec propertiesAsDictionary](v4, "propertiesAsDictionary")}];
-    [v16 setScaleFactor:{objc_msgSend(objc_msgSend(v5, "asset"), "scaleFactor")}];
+    [v16 setName:{objc_msgSend(objc_msgSend(production, "asset"), "name")}];
+    [v16 setIsTintable:{-[TDPhotoshopRenditionSpec isTintable](selfCopy, "isTintable")}];
+    [v16 setAllowsDeepmapImageCompression:{objc_msgSend(document, "shouldAllowDeepmapCompression")}];
+    [v16 setAllowsDeepmap2ImageCompression:{objc_msgSend(document, "shouldAllowDeepmap2Compression")}];
+    [v16 setRenditionProperties:{-[TDRenditionSpec propertiesAsDictionary](selfCopy, "propertiesAsDictionary")}];
+    [v16 setScaleFactor:{objc_msgSend(objc_msgSend(production, "asset"), "scaleFactor")}];
     v20 = *(MEMORY[0x277D02650] + 16);
     v65 = *MEMORY[0x277D02650];
     v66 = v20;
@@ -1046,10 +1046,10 @@ LABEL_45:
     [v16 setBlendMode:{objc_msgSend(v23, "blendMode")}];
     [v23 opacity];
     [v16 setOpacity:?];
-    v55 = [(TDPhotoshopRenditionSpec *)v4 parentRendition];
-    if (v55)
+    parentRendition = [(TDPhotoshopRenditionSpec *)selfCopy parentRendition];
+    if (parentRendition)
     {
-      v54 = v5;
+      v54 = production;
       [v6 boundsAtLayer:v8];
       v24 = 0;
       v53 = 0;
@@ -1059,12 +1059,12 @@ LABEL_45:
     v25 = objc_alloc(MEMORY[0x277D02660]);
     v26 = [v25 initWithPixelWidth:v72 pixelHeight:HIDWORD(v72)];
     [v16 addBitmap:v26];
-    v27 = [v26 bitmapContext];
-    if (v27)
+    bitmapContext = [v26 bitmapContext];
+    if (bitmapContext)
     {
-      v24 = v27;
+      v24 = bitmapContext;
       v53 = v26;
-      v54 = v5;
+      v54 = production;
       [v6 boundsAtLayer:v8];
       CGContextSetCompositeOperation();
       CGContextSetAlpha(v24, 1.0);
@@ -1074,7 +1074,7 @@ LABEL_20:
       {
         v29 = 0;
         v30 = 0.0;
-        v56 = v4;
+        v56 = selfCopy;
         do
         {
           v31 = v78[v29];
@@ -1107,7 +1107,7 @@ LABEL_20:
                   v41 = v37;
                   v42 = v35;
                   v16 = v36;
-                  if (!v55)
+                  if (!parentRendition)
                   {
                     v43 = v40;
                     CGContextSaveGState(v24);
@@ -1123,12 +1123,12 @@ LABEL_20:
                       v46 = v30;
                       do
                       {
-                        v47 = [v43 image];
+                        image = [v43 image];
                         v82.origin.x = v46;
                         v82.origin.y = v34;
                         v82.size.width = v44;
                         v82.size.height = v42;
-                        CGContextDrawImage(v24, v82, v47);
+                        CGContextDrawImage(v24, v82, image);
                         v46 = v46 + v44;
                         --v45;
                       }
@@ -1149,7 +1149,7 @@ LABEL_20:
                   v31 = v78[v29];
                   v28 = HIDWORD(v71);
                   v8 = v33;
-                  v4 = v56;
+                  selfCopy = v56;
                   break;
                 }
               }
@@ -1183,11 +1183,11 @@ LABEL_44:
         IsMonochrome = CUIImageIsMonochrome();
       }
 
-      [(TDPhotoshopRenditionSpec *)v4 setMonochrome:IsMonochrome];
+      [(TDPhotoshopRenditionSpec *)selfCopy setMonochrome:IsMonochrome];
       goto LABEL_44;
     }
 
-    [(TDPhotoshopRenditionSpec *)v4 _logError:@"ERROR: Could not create bitmap context"];
+    [(TDPhotoshopRenditionSpec *)selfCopy _logError:@"ERROR: Could not create bitmap context"];
 LABEL_47:
     result = 0;
   }
@@ -1197,7 +1197,7 @@ LABEL_48:
   return result;
 }
 
-- (void)drawPackableRenditionInContext:(CGContext *)a3 withDocument:(id)a4
+- (void)drawPackableRenditionInContext:(CGContext *)context withDocument:(id)document
 {
   v49 = *MEMORY[0x277D85DE8];
   if ([(TDThemeConstant *)[(TDRenditionSpec *)self renditionType] identifier]!= 6)
@@ -1210,11 +1210,11 @@ LABEL_48:
     [(TDRenditionSpec *)self packedPoint];
     v8 = v7;
     v10 = v9;
-    v11 = [(TDPhotoshopRenditionSpec *)self production];
-    v12 = [v11 psdImageRefWithDocument:a4];
+    production = [(TDPhotoshopRenditionSpec *)self production];
+    v12 = [production psdImageRefWithDocument:document];
     v35 = [(TDPhotoshopRenditionSpec *)self _layerIndexInPSDImage:v12];
-    v31 = v11;
-    v34 = [objc_msgSend(v11 "columnCount")];
+    v31 = production;
+    v34 = [objc_msgSend(production "columnCount")];
     v33 = [-[TDPhotoshopRenditionSpec valueForKey:](self valueForKey:{@"row", "intValue"}];
     v32 = [-[TDPhotoshopRenditionSpec valueForKey:](self valueForKey:{@"column", "intValue"}];
     [v12 size];
@@ -1253,13 +1253,13 @@ LABEL_48:
                   }
 
                   v23 = v22;
-                  CGContextSaveGState(a3);
-                  CGContextTranslateCTM(a3, v8, v10);
+                  CGContextSaveGState(context);
+                  CGContextTranslateCTM(context, v8, v10);
                   v50.origin.x = v15;
                   v50.origin.y = v18;
                   v50.size.width = v20;
                   v50.size.height = v19;
-                  CGContextClipToRect(a3, v50);
+                  CGContextClipToRect(context, v50);
                   v24 = v48[v14];
                   v25 = vcvtpd_s64_f64(v47[v14] / v24);
                   if (v25 >= 1)
@@ -1267,12 +1267,12 @@ LABEL_48:
                     v26 = v15;
                     do
                     {
-                      v27 = [v23 image];
+                      image = [v23 image];
                       v51.origin.x = v26;
                       v51.origin.y = v18;
                       v51.size.width = v24;
                       v51.size.height = v19;
-                      CGContextDrawImage(a3, v51, v27);
+                      CGContextDrawImage(context, v51, image);
                       v26 = v26 + v24;
                       --v25;
                     }
@@ -1280,7 +1280,7 @@ LABEL_48:
                     while (v25);
                   }
 
-                  CGContextRestoreGState(a3);
+                  CGContextRestoreGState(context);
                   v18 = v18 + v45[v17 - 1];
                 }
 

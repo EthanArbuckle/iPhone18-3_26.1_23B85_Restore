@@ -1,54 +1,54 @@
 @interface HMDIDSMessageTransport
 + (_HMFRate)sendMessageRate;
 + (id)logCategory;
-+ (id)queueOneIdentifierWithMessageName:(id)a3 target:(id)a4 collapseID:(id)a5 timeToLive:(double)a6 now:(id)a7;
-+ (id)stringFromHMDIDSResidentInfo:(int64_t)a3;
++ (id)queueOneIdentifierWithMessageName:(id)name target:(id)target collapseID:(id)d timeToLive:(double)live now:(id)now;
++ (id)stringFromHMDIDSResidentInfo:(int64_t)info;
 + (unint64_t)sendMessageLimit;
-- (BOOL)_shouldAddLocalHandleToDevice:(id)a3;
-- (BOOL)_shouldProcessLegacyIDSMessageFromID:(id)a3 context:(id)a4 message:(id *)a5 service:(id)a6;
-- (BOOL)canSendMessage:(id)a3;
+- (BOOL)_shouldAddLocalHandleToDevice:(id)device;
+- (BOOL)_shouldProcessLegacyIDSMessageFromID:(id)d context:(id)context message:(id *)message service:(id)service;
+- (BOOL)canSendMessage:(id)message;
 - (BOOL)isSecure;
-- (BOOL)isValidMessage:(id)a3;
-- (BOOL)shouldAcceptLegacyIDSMessage:(id)a3;
-- (HMDIDSMessageTransport)initWithAccountRegistry:(id)a3 forServiceName:(id)a4;
-- (HMDIDSMessageTransport)initWithAccountRegistry:(id)a3 service:(id)a4 serviceName:(id)a5 appleAccountManager:(id)a6 remoteAccountManager:(id)a7 featuresDataSource:(id)a8;
+- (BOOL)isValidMessage:(id)message;
+- (BOOL)shouldAcceptLegacyIDSMessage:(id)message;
+- (HMDIDSMessageTransport)initWithAccountRegistry:(id)registry forServiceName:(id)name;
+- (HMDIDSMessageTransport)initWithAccountRegistry:(id)registry service:(id)service serviceName:(id)name appleAccountManager:(id)manager remoteAccountManager:(id)accountManager featuresDataSource:(id)source;
 - (double)defaultTimeout;
-- (id)_identifierFromSerializedMessage:(void *)a1;
-- (id)deviceForSenderContext:(id)a3;
+- (id)_identifierFromSerializedMessage:(void *)message;
+- (id)deviceForSenderContext:(id)context;
 - (id)logIdentifier;
-- (id)sendMessage:(id)a3 fromHandle:(id)a4 destination:(id)a5 priority:(int64_t)a6 timeout:(double)a7 options:(unint64_t)a8 queueOneID:(id)a9 senderResidentInfo:(int64_t)a10 destinationResidentInfo:(int64_t)a11 error:(id *)a12;
+- (id)sendMessage:(id)message fromHandle:(id)handle destination:(id)destination priority:(int64_t)priority timeout:(double)timeout options:(unint64_t)options queueOneID:(id)d senderResidentInfo:(int64_t)self0 destinationResidentInfo:(int64_t)self1 error:(id *)self2;
 - (id)start;
 - (unint64_t)maximumNumberOfRetries;
-- (void)_pendingResponseTimeoutFor:(id)a3;
-- (void)_removePendingResponseTimerForTransaction:(id)a3;
-- (void)_removePendingResponseTransaction:(id)a3;
-- (void)_restartPendingResponseTimerFor:(id)a3 withReducedFactor:(unint64_t)a4;
-- (void)_startPendingResponseTimer:(id)a3 responseTimeout:(double)a4 identifier:(id)a5;
-- (void)legacyHandleIncomingRemoteMessage:(id)a3 sourceDevice:(id)a4 senderDeviceHandle:(id)a5 isSecure:(BOOL)a6 incomingMessage:(id)a7 fromID:(id)a8 context:(id)a9;
-- (void)sendMessage:(id)a3 senderResidentInfo:(int64_t)a4 destinationResidentInfo:(int64_t)a5 completionHandler:(id)a6;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8;
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6;
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7;
+- (void)_pendingResponseTimeoutFor:(id)for;
+- (void)_removePendingResponseTimerForTransaction:(id)transaction;
+- (void)_removePendingResponseTransaction:(id)transaction;
+- (void)_restartPendingResponseTimerFor:(id)for withReducedFactor:(unint64_t)factor;
+- (void)_startPendingResponseTimer:(id)timer responseTimeout:(double)timeout identifier:(id)identifier;
+- (void)legacyHandleIncomingRemoteMessage:(id)message sourceDevice:(id)device senderDeviceHandle:(id)handle isSecure:(BOOL)secure incomingMessage:(id)incomingMessage fromID:(id)d context:(id)context;
+- (void)sendMessage:(id)message senderResidentInfo:(int64_t)info destinationResidentInfo:(int64_t)residentInfo completionHandler:(id)handler;
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context;
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context;
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context;
 @end
 
 @implementation HMDIDSMessageTransport
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 hasBeenDeliveredWithContext:(id)a6
+- (void)service:(id)service account:(id)account identifier:(id)identifier hasBeenDeliveredWithContext:(id)context
 {
   v36 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v12)
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  contextCopy = context;
+  if (identifierCopy)
   {
-    v14 = [(HMDIDSMessageTransport *)self featuresDataSource];
-    v15 = [v14 isTransportRetryEnabled];
+    featuresDataSource = [(HMDIDSMessageTransport *)self featuresDataSource];
+    isTransportRetryEnabled = [featuresDataSource isTransportRetryEnabled];
 
-    if (v15)
+    if (isTransportRetryEnabled)
     {
       v16 = objc_autoreleasePoolPush();
-      v17 = self;
+      selfCopy = self;
       v18 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
       {
@@ -56,25 +56,25 @@
         *buf = 138543875;
         v31 = v19;
         v32 = 2114;
-        v33 = v12;
+        v33 = identifierCopy;
         v34 = 2113;
-        v35 = v11;
+        v35 = accountCopy;
         _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_DEFAULT, "%{public}@Receipt of message with IDS GUID %{public}@ from account: %{private}@ confirmed.", buf, 0x20u);
       }
 
       objc_autoreleasePoolPop(v16);
-      v20 = [(HMDIDSMessageTransport *)v17 messageContexts];
+      messageContexts = [(HMDIDSMessageTransport *)selfCopy messageContexts];
       v28[0] = MEMORY[0x277D85DD0];
       v28[1] = 3221225472;
       v28[2] = __81__HMDIDSMessageTransport_service_account_identifier_hasBeenDeliveredWithContext___block_invoke;
       v28[3] = &unk_278674018;
-      v29 = v12;
-      v21 = [v20 hmf_objectPassingTest:v28];
+      v29 = identifierCopy;
+      v21 = [messageContexts hmf_objectPassingTest:v28];
 
       if (v21)
       {
-        v22 = [v21 userInfo];
-        v23 = [v22 objectForKeyedSubscript:@"HMDIDSMessageTransportCompletionHandlerKey"];
+        userInfo = [v21 userInfo];
+        v23 = [userInfo objectForKeyedSubscript:@"HMDIDSMessageTransportCompletionHandlerKey"];
 
         v24 = _Block_copy(v23);
         v25 = v24;
@@ -83,8 +83,8 @@
           (*(v24 + 2))(v24, 0);
         }
 
-        v26 = [(HMDIDSMessageTransport *)v17 messageContexts];
-        [v26 removeObject:v21];
+        messageContexts2 = [(HMDIDSMessageTransport *)selfCopy messageContexts];
+        [messageContexts2 removeObject:v21];
       }
     }
   }
@@ -100,32 +100,32 @@ uint64_t __81__HMDIDSMessageTransport_service_account_identifier_hasBeenDelivere
   return v4;
 }
 
-- (void)service:(id)a3 account:(id)a4 identifier:(id)a5 didSendWithSuccess:(BOOL)a6 error:(id)a7 context:(id)a8
+- (void)service:(id)service account:(id)account identifier:(id)identifier didSendWithSuccess:(BOOL)success error:(id)error context:(id)context
 {
   v71 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a7;
-  v18 = a8;
-  if (v16)
+  serviceCopy = service;
+  accountCopy = account;
+  identifierCopy = identifier;
+  errorCopy = error;
+  contextCopy = context;
+  if (identifierCopy)
   {
-    v19 = [(HMDIDSMessageTransport *)self messageContexts];
+    messageContexts = [(HMDIDSMessageTransport *)self messageContexts];
     v61[0] = MEMORY[0x277D85DD0];
     v61[1] = 3221225472;
     v61[2] = __86__HMDIDSMessageTransport_service_account_identifier_didSendWithSuccess_error_context___block_invoke;
     v61[3] = &unk_278674018;
-    v20 = v16;
+    v20 = identifierCopy;
     v62 = v20;
-    v21 = [v19 hmf_objectPassingTest:v61];
+    v21 = [messageContexts hmf_objectPassingTest:v61];
 
     if (v21)
     {
-      v55 = v14;
-      if (v17)
+      v55 = serviceCopy;
+      if (errorCopy)
       {
         v22 = MEMORY[0x277CCA9B8];
-        v23 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3203 underlyingError:v17];
+        v23 = [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3203 underlyingError:errorCopy];
         v58 = [v22 hmErrorWithCode:54 description:@"Communication failure." reason:0 suggestion:0 underlyingError:v23];
       }
 
@@ -134,13 +134,13 @@ uint64_t __81__HMDIDSMessageTransport_service_account_identifier_hasBeenDelivere
         v58 = 0;
       }
 
-      v24 = [(HMDIDSMessageTransport *)self featuresDataSource];
-      v25 = [v24 isTransportRetryEnabled];
+      featuresDataSource = [(HMDIDSMessageTransport *)self featuresDataSource];
+      isTransportRetryEnabled = [featuresDataSource isTransportRetryEnabled];
 
-      if ((v25 & 1) == 0)
+      if ((isTransportRetryEnabled & 1) == 0)
       {
-        v26 = [v21 userInfo];
-        v27 = [v26 objectForKeyedSubscript:@"HMDIDSMessageTransportCompletionHandlerKey"];
+        userInfo = [v21 userInfo];
+        v27 = [userInfo objectForKeyedSubscript:@"HMDIDSMessageTransportCompletionHandlerKey"];
 
         v28 = _Block_copy(v27);
         v29 = v28;
@@ -150,16 +150,16 @@ uint64_t __81__HMDIDSMessageTransport_service_account_identifier_hasBeenDelivere
         }
       }
 
-      v57 = v15;
-      if (!a6)
+      v57 = accountCopy;
+      if (!success)
       {
-        v30 = [(HMDIDSMessageTransport *)self featuresDataSource];
-        v31 = [v30 isTransportRetryEnabled];
+        featuresDataSource2 = [(HMDIDSMessageTransport *)self featuresDataSource];
+        isTransportRetryEnabled2 = [featuresDataSource2 isTransportRetryEnabled];
 
-        if (v31)
+        if (isTransportRetryEnabled2)
         {
-          v32 = [v21 userInfo];
-          v33 = [v32 objectForKeyedSubscript:@"HMDIDSMessageTransportCompletionHandlerKey"];
+          userInfo2 = [v21 userInfo];
+          v33 = [userInfo2 objectForKeyedSubscript:@"HMDIDSMessageTransportCompletionHandlerKey"];
 
           v34 = _Block_copy(v33);
           v35 = v34;
@@ -170,7 +170,7 @@ uint64_t __81__HMDIDSMessageTransport_service_account_identifier_hasBeenDelivere
         }
 
         v36 = objc_autoreleasePoolPush();
-        v37 = self;
+        selfCopy = self;
         v38 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
         {
@@ -182,16 +182,16 @@ uint64_t __81__HMDIDSMessageTransport_service_account_identifier_hasBeenDelivere
           v67 = 2113;
           v68 = v57;
           v69 = 2112;
-          v70 = v17;
+          v70 = errorCopy;
           _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_DEFAULT, "%{public}@Failed to send message with IDS GUID %{public}@ from account: %{private}@ with error: %@", buf, 0x2Au);
         }
 
         objc_autoreleasePoolPop(v36);
-        v40 = [v21 destination];
+        destination = [v21 destination];
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v41 = v40;
+          v41 = destination;
         }
 
         else
@@ -201,55 +201,55 @@ uint64_t __81__HMDIDSMessageTransport_service_account_identifier_hasBeenDelivere
 
         v42 = v41;
 
-        if (v17 && v42)
+        if (errorCopy && v42)
         {
-          v43 = [v42 allRemoteDestinationStrings];
+          allRemoteDestinationStrings = [v42 allRemoteDestinationStrings];
           v59[0] = MEMORY[0x277D85DD0];
           v59[1] = 3221225472;
           v59[2] = __86__HMDIDSMessageTransport_service_account_identifier_didSendWithSuccess_error_context___block_invoke_140;
           v59[3] = &unk_278686270;
-          v59[4] = v37;
-          v60 = v17;
-          [v43 na_each:v59];
+          v59[4] = selfCopy;
+          v60 = errorCopy;
+          [allRemoteDestinationStrings na_each:v59];
         }
 
-        v44 = [v21 userInfo];
-        v45 = [v44 objectForKeyedSubscript:@"HMDIDSMessageTransportTransactionIdentifierKey"];
+        userInfo3 = [v21 userInfo];
+        v45 = [userInfo3 objectForKeyedSubscript:@"HMDIDSMessageTransportTransactionIdentifierKey"];
 
         if (v45)
         {
-          v46 = [(HMDIDSMessageTransport *)v37 pendingResponses];
-          v47 = [v46 objectForKeyedSubscript:v45];
+          pendingResponses = [(HMDIDSMessageTransport *)selfCopy pendingResponses];
+          v47 = [pendingResponses objectForKeyedSubscript:v45];
 
           if (v47)
           {
             (v47)[2](v47, v58, 0);
           }
 
-          [(HMDIDSMessageTransport *)v37 _removePendingResponseTransaction:v45];
+          [(HMDIDSMessageTransport *)selfCopy _removePendingResponseTransaction:v45];
         }
 
-        v48 = [(HMDIDSMessageTransport *)v37 featuresDataSource];
-        v49 = [v48 isTransportRetryEnabled];
+        featuresDataSource3 = [(HMDIDSMessageTransport *)selfCopy featuresDataSource];
+        isTransportRetryEnabled3 = [featuresDataSource3 isTransportRetryEnabled];
 
-        if (v49)
+        if (isTransportRetryEnabled3)
         {
-          v50 = [(HMDIDSMessageTransport *)v37 messageContexts];
-          [v50 removeObject:v21];
+          messageContexts2 = [(HMDIDSMessageTransport *)selfCopy messageContexts];
+          [messageContexts2 removeObject:v21];
         }
       }
 
-      v51 = [(HMDIDSMessageTransport *)self featuresDataSource];
-      v52 = [v51 isTransportRetryEnabled];
+      featuresDataSource4 = [(HMDIDSMessageTransport *)self featuresDataSource];
+      isTransportRetryEnabled4 = [featuresDataSource4 isTransportRetryEnabled];
 
-      if ((v52 & 1) == 0)
+      if ((isTransportRetryEnabled4 & 1) == 0)
       {
-        v53 = [(HMDIDSMessageTransport *)self messageContexts];
-        [v53 removeObject:v21];
+        messageContexts3 = [(HMDIDSMessageTransport *)self messageContexts];
+        [messageContexts3 removeObject:v21];
       }
 
-      v14 = v56;
-      v15 = v57;
+      serviceCopy = v56;
+      accountCopy = v57;
     }
   }
 
@@ -272,20 +272,20 @@ void __86__HMDIDSMessageTransport_service_account_identifier_didSendWithSuccess_
   [v5 __handleSendMessageFailureWithError:*(a1 + 40) destination:v4];
 }
 
-- (void)legacyHandleIncomingRemoteMessage:(id)a3 sourceDevice:(id)a4 senderDeviceHandle:(id)a5 isSecure:(BOOL)a6 incomingMessage:(id)a7 fromID:(id)a8 context:(id)a9
+- (void)legacyHandleIncomingRemoteMessage:(id)message sourceDevice:(id)device senderDeviceHandle:(id)handle isSecure:(BOOL)secure incomingMessage:(id)incomingMessage fromID:(id)d context:(id)context
 {
   v102 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v83 = a4;
-  v79 = a5;
-  v82 = a7;
-  v78 = a8;
-  v80 = a9;
-  v16 = [v15 name];
-  v81 = [v15 destination];
-  v17 = [v15 transactionIdentifier];
+  messageCopy = message;
+  deviceCopy = device;
+  handleCopy = handle;
+  incomingMessageCopy = incomingMessage;
+  dCopy = d;
+  contextCopy = context;
+  name = [messageCopy name];
+  destination = [messageCopy destination];
+  transactionIdentifier = [messageCopy transactionIdentifier];
   objc_initWeak(&location, self);
-  if (![v15 type])
+  if (![messageCopy type])
   {
     v36 = aBlock;
     aBlock[0] = MEMORY[0x277D85DD0];
@@ -294,26 +294,26 @@ void __86__HMDIDSMessageTransport_service_account_identifier_didSendWithSuccess_
     aBlock[3] = &unk_278674068;
     v37 = &v93;
     objc_copyWeak(&v93, &location);
-    aBlock[4] = v16;
-    v88 = v81;
-    v94 = a6;
-    v89 = v17;
-    v90 = v80;
-    v91 = v83;
-    v92 = v79;
+    aBlock[4] = name;
+    v88 = destination;
+    secureCopy = secure;
+    v89 = transactionIdentifier;
+    v90 = contextCopy;
+    v91 = deviceCopy;
+    v92 = handleCopy;
     v24 = _Block_copy(aBlock);
 
 LABEL_14:
     objc_destroyWeak(v37);
-    [v15 setInternalResponseHandler:v24];
-    v27 = [(HMFMessageTransport *)self delegate];
-    [v27 messageTransport:self didReceiveMessage:v15];
+    [messageCopy setInternalResponseHandler:v24];
+    delegate = [(HMFMessageTransport *)self delegate];
+    [delegate messageTransport:self didReceiveMessage:messageCopy];
 LABEL_45:
 
     goto LABEL_46;
   }
 
-  if ([v15 type] != 1)
+  if ([messageCopy type] != 1)
   {
     v36 = v84;
     v84[0] = MEMORY[0x277D85DD0];
@@ -322,37 +322,37 @@ LABEL_45:
     v84[3] = &unk_278687F40;
     v37 = &v85;
     objc_copyWeak(&v85, &location);
-    v84[4] = v16;
+    v84[4] = name;
     v24 = _Block_copy(v84);
     goto LABEL_14;
   }
 
   v18 = objc_autoreleasePoolPush();
-  v19 = self;
+  selfCopy = self;
   v20 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
   {
     v21 = HMFGetLogIdentifier();
-    v22 = [v17 UUIDString];
+    uUIDString = [transactionIdentifier UUIDString];
     *buf = 138543618;
     v97 = v21;
     v98 = 2114;
-    v99 = v22;
+    v99 = uUIDString;
     _os_log_impl(&dword_229538000, v20, OS_LOG_TYPE_INFO, "%{public}@Received response to IDS message with transaction ID: %{public}@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v18);
-  v23 = [(HMDIDSMessageTransport *)v19 pendingResponses];
-  v24 = [v23 objectForKeyedSubscript:v17];
+  pendingResponses = [(HMDIDSMessageTransport *)selfCopy pendingResponses];
+  v24 = [pendingResponses objectForKeyedSubscript:transactionIdentifier];
 
   if (v24)
   {
     v25 = MEMORY[0x277CBEB38];
-    v26 = [v82 hmf_dictionaryForKey:@"kIDSMessagePayloadKey"];
-    v27 = [v25 dictionaryWithDictionary:v26];
+    v26 = [incomingMessageCopy hmf_dictionaryForKey:@"kIDSMessagePayloadKey"];
+    delegate = [v25 dictionaryWithDictionary:v26];
 
-    [v27 setObject:v78 forKeyedSubscript:@"kIDSMessageSourceIDKey"];
-    v28 = [v82 hmf_dataForKey:@"kIDSMessageResponseErrorDataKey"];
+    [delegate setObject:dCopy forKeyedSubscript:@"kIDSMessageSourceIDKey"];
+    v28 = [incomingMessageCopy hmf_dataForKey:@"kIDSMessageResponseErrorDataKey"];
     if (v28)
     {
       v29 = MEMORY[0x277CCAAC8];
@@ -364,7 +364,7 @@ LABEL_45:
       if (!v31)
       {
         context = objc_autoreleasePoolPush();
-        v33 = v19;
+        v33 = selfCopy;
         v34 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
         {
@@ -381,7 +381,7 @@ LABEL_45:
         v31 = [MEMORY[0x277CCA9B8] hmErrorWithCode:52 description:@"Generic error." reason:@"Failed to deserialize remote error." suggestion:0 underlyingError:v32];
       }
 
-      [v27 setObject:v31 forKeyedSubscript:{@"kIDSMessageResponseErrorDataKey", v74}];
+      [delegate setObject:v31 forKeyedSubscript:{@"kIDSMessageResponseErrorDataKey", v74}];
 
       v75 = v31;
     }
@@ -391,8 +391,8 @@ LABEL_45:
       v75 = 0;
     }
 
-    v42 = [(HMDIDSMessageTransport *)v19 requestedCapabilities];
-    v43 = [v42 objectForKeyedSubscript:v17];
+    requestedCapabilities = [(HMDIDSMessageTransport *)selfCopy requestedCapabilities];
+    v43 = [requestedCapabilities objectForKeyedSubscript:transactionIdentifier];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -409,14 +409,14 @@ LABEL_45:
 
     if ([contexta count])
     {
-      v45 = [(HMDIDSMessageTransport *)v19 destinationAddress];
-      v46 = [v45 objectForKeyedSubscript:v17];
-      v47 = [v46 isEqualToString:v78];
+      destinationAddress = [(HMDIDSMessageTransport *)selfCopy destinationAddress];
+      v46 = [destinationAddress objectForKeyedSubscript:transactionIdentifier];
+      v47 = [v46 isEqualToString:dCopy];
 
       if (!v47)
       {
-        v54 = [(HMDIDSMessageTransport *)v19 receivedResponses];
-        v55 = [v54 objectForKeyedSubscript:v17];
+        receivedResponses = [(HMDIDSMessageTransport *)selfCopy receivedResponses];
+        v55 = [receivedResponses objectForKeyedSubscript:transactionIdentifier];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())
@@ -434,16 +434,16 @@ LABEL_45:
         if (!v57)
         {
           v55 = objc_alloc_init(MEMORY[0x277CBEB18]);
-          v58 = [(HMDIDSMessageTransport *)v19 receivedResponses];
-          [v58 setObject:v55 forKeyedSubscript:v17];
+          receivedResponses2 = [(HMDIDSMessageTransport *)selfCopy receivedResponses];
+          [receivedResponses2 setObject:v55 forKeyedSubscript:transactionIdentifier];
         }
 
-        [v55 addObject:{v27, v75}];
+        [v55 addObject:{delegate, v75}];
         v59 = [v55 count];
-        if ([(HMDRemoteMessageTransport *)v19 doesResponse:v27 matchAllCapabilities:contexta])
+        if ([(HMDRemoteMessageTransport *)selfCopy doesResponse:delegate matchAllCapabilities:contexta])
         {
           v60 = objc_autoreleasePoolPush();
-          v61 = v19;
+          v61 = selfCopy;
           v62 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v62, OS_LOG_TYPE_INFO))
           {
@@ -454,15 +454,15 @@ LABEL_45:
           }
 
           objc_autoreleasePoolPop(v60);
-          [(HMDIDSMessageTransport *)v61 _removePendingResponseTimerForTransaction:v17];
-          [(HMDIDSMessageTransport *)v61 _pendingResponseTimeoutFor:v17];
+          [(HMDIDSMessageTransport *)v61 _removePendingResponseTimerForTransaction:transactionIdentifier];
+          [(HMDIDSMessageTransport *)v61 _pendingResponseTimeoutFor:transactionIdentifier];
         }
 
         else
         {
-          [(HMDIDSMessageTransport *)v19 _restartPendingResponseTimerFor:v17 withReducedFactor:v59 + 1];
+          [(HMDIDSMessageTransport *)selfCopy _restartPendingResponseTimerFor:transactionIdentifier withReducedFactor:v59 + 1];
           v64 = objc_autoreleasePoolPush();
-          v65 = v19;
+          v65 = selfCopy;
           v66 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v66, OS_LOG_TYPE_INFO))
           {
@@ -470,7 +470,7 @@ LABEL_45:
             *buf = 138543618;
             v97 = v67;
             v98 = 2112;
-            v99 = v27;
+            v99 = delegate;
             _os_log_impl(&dword_229538000, v66, OS_LOG_TYPE_INFO, "%{public}@Not Calling response handler with response %@", buf, 0x16u);
           }
 
@@ -496,7 +496,7 @@ LABEL_45:
       }
 
       v48 = objc_autoreleasePoolPush();
-      v49 = v19;
+      v49 = selfCopy;
       v50 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
       {
@@ -506,7 +506,7 @@ LABEL_45:
         v98 = 2160;
         v99 = 1752392040;
         v100 = 2112;
-        v101 = v78;
+        v101 = dCopy;
         _os_log_impl(&dword_229538000, v50, OS_LOG_TYPE_INFO, "%{public}@Received response to directed message - selecting response from %{mask.hash}@", buf, 0x20u);
       }
     }
@@ -514,7 +514,7 @@ LABEL_45:
     else
     {
       v48 = objc_autoreleasePoolPush();
-      v52 = v19;
+      v52 = selfCopy;
       v50 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v50, OS_LOG_TYPE_INFO))
       {
@@ -526,15 +526,15 @@ LABEL_45:
     }
 
     objc_autoreleasePoolPop(v48);
-    (v24)[2](v24, v75, v27);
-    [(HMDIDSMessageTransport *)v19 _removePendingResponseTransaction:v17];
+    (v24)[2](v24, v75, delegate);
+    [(HMDIDSMessageTransport *)selfCopy _removePendingResponseTransaction:transactionIdentifier];
 LABEL_44:
 
     goto LABEL_45;
   }
 
   v38 = objc_autoreleasePoolPush();
-  v39 = v19;
+  v39 = selfCopy;
   v40 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v40, OS_LOG_TYPE_INFO))
   {
@@ -542,12 +542,12 @@ LABEL_44:
     *buf = 138543618;
     v97 = v41;
     v98 = 2112;
-    v99 = v15;
+    v99 = messageCopy;
     _os_log_impl(&dword_229538000, v40, OS_LOG_TYPE_INFO, "%{public}@No response handler, dropping message: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v38);
-  [(HMDRemoteMessageTransport *)v39 postDidReceiveRemoteMessageWithNoListenerFromDevice:v83];
+  [(HMDRemoteMessageTransport *)v39 postDidReceiveRemoteMessageWithNoListenerFromDevice:deviceCopy];
   v24 = 0;
 LABEL_46:
 
@@ -741,23 +741,23 @@ LABEL_14:
   v39 = *MEMORY[0x277D85DE8];
 }
 
-- (void)service:(id)a3 account:(id)a4 incomingMessage:(id)a5 fromID:(id)a6 context:(id)a7
+- (void)service:(id)service account:(id)account incomingMessage:(id)message fromID:(id)d context:(id)context
 {
   v161 = *MEMORY[0x277D85DE8];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  v16 = a7;
-  v17 = [v16 originalGUID];
-  if (!v17)
+  serviceCopy = service;
+  accountCopy = account;
+  messageCopy = message;
+  dCopy = d;
+  contextCopy = context;
+  originalGUID = [contextCopy originalGUID];
+  if (!originalGUID)
   {
 LABEL_12:
-    v146 = v12;
+    v146 = serviceCopy;
     if (self && ![(HMDIDSMessageTransport *)self isLegacyTransport])
     {
       v36 = objc_autoreleasePoolPush();
-      v37 = self;
+      selfCopy2 = self;
       v38 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v38, OS_LOG_TYPE_DEBUG))
       {
@@ -765,9 +765,9 @@ LABEL_12:
       }
 
       v39 = HMFGetLogIdentifier();
-      [v14 shortDescription];
-      v44 = v16;
-      v46 = v45 = v13;
+      [messageCopy shortDescription];
+      v44 = contextCopy;
+      v46 = v45 = accountCopy;
       *buf = 138544130;
       v152 = v39;
       v153 = 2112;
@@ -775,17 +775,17 @@ LABEL_12:
       v155 = 2160;
       v156 = 1752392040;
       v157 = 2112;
-      v158 = v15;
+      v158 = dCopy;
       _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_DEBUG, "%{public}@Received incoming IDS message: %@, from: %{mask.hash}@", buf, 0x2Au);
 
-      v13 = v45;
-      v16 = v44;
+      accountCopy = v45;
+      contextCopy = v44;
     }
 
     else
     {
       v36 = objc_autoreleasePoolPush();
-      v37 = self;
+      selfCopy2 = self;
       v38 = HMFGetOSLogHandle();
       if (!os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
       {
@@ -793,10 +793,10 @@ LABEL_12:
       }
 
       v39 = HMFGetLogIdentifier();
-      [v14 shortDescription];
-      v40 = v15;
-      v41 = v16;
-      v43 = v42 = v13;
+      [messageCopy shortDescription];
+      v40 = dCopy;
+      v41 = contextCopy;
+      v43 = v42 = accountCopy;
       *buf = 138544130;
       v152 = v39;
       v153 = 2112;
@@ -807,35 +807,35 @@ LABEL_12:
       v158 = v40;
       _os_log_impl(&dword_229538000, v38, OS_LOG_TYPE_INFO, "%{public}@Received incoming IDS message: %@, from: %{mask.hash}@", buf, 0x2Au);
 
-      v13 = v42;
-      v16 = v41;
-      v15 = v40;
+      accountCopy = v42;
+      contextCopy = v41;
+      dCopy = v40;
     }
 
 LABEL_19:
     objc_autoreleasePoolPop(v36);
-    v47 = [v14 objectForKeyedSubscript:@"kIDSMessageNameKey"];
-    v48 = [MEMORY[0x277D0F8C0] sharedPowerLogger];
+    v47 = [messageCopy objectForKeyedSubscript:@"kIDSMessageNameKey"];
+    mEMORY[0x277D0F8C0] = [MEMORY[0x277D0F8C0] sharedPowerLogger];
     v144 = v47;
-    [v48 reportIncomingIDSPush:v47 fromToken:v15];
+    [mEMORY[0x277D0F8C0] reportIncomingIDSPush:v47 fromToken:dCopy];
 
-    if (!v15)
+    if (!dCopy)
     {
       v120 = objc_autoreleasePoolPush();
-      v121 = self;
+      selfCopy3 = self;
       v122 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v122, OS_LOG_TYPE_FAULT))
       {
         HMFGetLogIdentifier();
-        v123 = v16;
-        v125 = v124 = v13;
+        v123 = contextCopy;
+        v125 = v124 = accountCopy;
         *buf = 138543362;
         v152 = v125;
         _os_log_impl(&dword_229538000, v122, OS_LOG_TYPE_FAULT, "%{public}@Submitting ABC event for failure: Received incoming message with nil fromID", buf, 0xCu);
 
-        v13 = v124;
-        v16 = v123;
-        v15 = 0;
+        accountCopy = v124;
+        contextCopy = v123;
+        dCopy = 0;
       }
 
       objc_autoreleasePoolPop(v120);
@@ -844,33 +844,33 @@ LABEL_19:
       [v127 submitLogEvent:v126];
 
       v128 = objc_autoreleasePoolPush();
-      v129 = v121;
+      v129 = selfCopy3;
       v130 = HMFGetOSLogHandle();
-      v12 = v146;
+      serviceCopy = v146;
       if (os_log_type_enabled(v130, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v131 = v139 = v13;
-        v132 = [v16 originalGUID];
+        v131 = v139 = accountCopy;
+        originalGUID2 = [contextCopy originalGUID];
         *buf = 138543618;
         v152 = v131;
         v153 = 2114;
-        v154 = v132;
+        v154 = originalGUID2;
         _os_log_impl(&dword_229538000, v130, OS_LOG_TYPE_ERROR, "%{public}@Received incoming message, %{public}@, with nil fromID", buf, 0x16u);
 
-        v12 = v146;
-        v13 = v139;
+        serviceCopy = v146;
+        accountCopy = v139;
       }
 
       objc_autoreleasePoolPop(v128);
       goto LABEL_71;
     }
 
-    v49 = [HMDDeviceHandle deviceHandleForDestination:v15];
-    v50 = [HMDAccountHandle accountHandleForDestination:v15];
-    v51 = [HMDAccountIdentifier accountIdentifierForMessageContext:v16];
-    v150 = v14;
-    v52 = [(HMDIDSMessageTransport *)self _shouldProcessLegacyIDSMessageFromID:v15 context:v16 message:&v150 service:v146];
+    v49 = [HMDDeviceHandle deviceHandleForDestination:dCopy];
+    v50 = [HMDAccountHandle accountHandleForDestination:dCopy];
+    v51 = [HMDAccountIdentifier accountIdentifierForMessageContext:contextCopy];
+    v150 = messageCopy;
+    v52 = [(HMDIDSMessageTransport *)self _shouldProcessLegacyIDSMessageFromID:dCopy context:contextCopy message:&v150 service:v146];
     v145 = v150;
 
     v143 = v50;
@@ -878,22 +878,22 @@ LABEL_19:
     {
       v56 = v49;
       v57 = objc_autoreleasePoolPush();
-      v58 = self;
+      selfCopy4 = self;
       v59 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v59, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v61 = v60 = v13;
-        v62 = [v16 senderCorrelationIdentifier];
+        v61 = v60 = accountCopy;
+        senderCorrelationIdentifier = [contextCopy senderCorrelationIdentifier];
         *buf = 138543874;
         v152 = v61;
         v153 = 2114;
         v154 = v144;
         v155 = 2112;
-        v156 = v62;
+        v156 = senderCorrelationIdentifier;
         _os_log_impl(&dword_229538000, v59, OS_LOG_TYPE_ERROR, "%{public}@Dropping incoming message %{public}@ from unknown mergeID %@", buf, 0x20u);
 
-        v13 = v60;
+        accountCopy = v60;
       }
 
       objc_autoreleasePoolPop(v57);
@@ -917,13 +917,13 @@ LABEL_19:
     if (!v54)
     {
       v63 = objc_autoreleasePoolPush();
-      v64 = self;
+      selfCopy5 = self;
       v65 = HMFGetOSLogHandle();
       v66 = v141;
       if (os_log_type_enabled(v65, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v68 = v67 = v13;
+        v68 = v67 = accountCopy;
         *buf = 138544386;
         v152 = v68;
         v153 = 2112;
@@ -931,12 +931,12 @@ LABEL_19:
         v155 = 2160;
         v156 = 1752392040;
         v157 = 2112;
-        v158 = v15;
+        v158 = dCopy;
         v159 = 2112;
         v160 = v141;
         _os_log_impl(&dword_229538000, v65, OS_LOG_TYPE_ERROR, "%{public}@Dropping invalid IDS message payload, %@, from: %{mask.hash}@, error: %@", buf, 0x34u);
 
-        v13 = v67;
+        accountCopy = v67;
       }
 
       objc_autoreleasePoolPop(v63);
@@ -952,23 +952,23 @@ LABEL_19:
 
       if (v49)
       {
-        v138 = v13;
+        v138 = accountCopy;
         if ([v54 isSecure])
         {
-          v55 = [v54 sourceVersion];
+          sourceVersion = [v54 sourceVersion];
 
-          if (v55)
+          if (sourceVersion)
           {
-            v55 = [v54 sourceVersion];
+            sourceVersion = [v54 sourceVersion];
           }
         }
 
         else
         {
-          v55 = 0;
+          sourceVersion = 0;
         }
 
-        v140 = [[HMDRemoteMessageSenderContext alloc] initWithDeviceHandle:v49 accountHandle:v50 accountIdentifier:v51 deviceVersion:v55 pairingIdentityIdentifier:0];
+        v140 = [[HMDRemoteMessageSenderContext alloc] initWithDeviceHandle:v49 accountHandle:v50 accountIdentifier:v51 deviceVersion:sourceVersion pairingIdentityIdentifier:0];
         v80 = objc_alloc(MEMORY[0x277CCAD78]);
         v81 = [v145 hmf_stringForKey:@"idsId"];
         v82 = [v80 initWithUUIDString:v81];
@@ -986,7 +986,7 @@ LABEL_19:
         if (!v84)
         {
           v102 = objc_autoreleasePoolPush();
-          v103 = self;
+          selfCopy6 = self;
           v104 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v104, OS_LOG_TYPE_ERROR))
           {
@@ -999,87 +999,87 @@ LABEL_19:
           }
 
           objc_autoreleasePoolPop(v102);
-          v13 = v138;
+          accountCopy = v138;
           goto LABEL_68;
         }
 
         v85 = v84;
 
         v86 = MEMORY[0x277CBEB38];
-        v87 = [v54 messagePayload];
-        v88 = [v86 dictionaryWithDictionary:v87];
+        messagePayload = [v54 messagePayload];
+        v88 = [v86 dictionaryWithDictionary:messagePayload];
 
-        [v88 setObject:v15 forKeyedSubscript:@"kIDSMessageSourceIDKey"];
+        [v88 setObject:dCopy forKeyedSubscript:@"kIDSMessageSourceIDKey"];
         v134 = v88;
         [v54 setMessagePayload:v88];
         [v54 setRestriction:{objc_msgSend(objc_opt_class(), "restriction")}];
-        v89 = [v54 isSecure];
+        isSecure = [v54 isSecure];
         v90 = [HMDRemoteDeviceMessageDestination alloc];
-        v91 = [v54 destination];
-        v92 = [v91 target];
+        destination = [v54 destination];
+        target = [destination target];
         v136 = v85;
-        v93 = [(HMDRemoteDeviceMessageDestination *)v90 initWithTarget:v92 device:v85];
+        v93 = [(HMDRemoteDeviceMessageDestination *)v90 initWithTarget:target device:v85];
 
         v135 = v93;
         [v54 setDestination:v93];
-        if ((v89 & 1) != 0 || ![HMDSecureRemoteSession isSecureRemoteSessionMessage:v54])
+        if ((isSecure & 1) != 0 || ![HMDSecureRemoteSession isSecureRemoteSessionMessage:v54])
         {
           v94 = +[HMDMetricsManager sharedLogEventSubmitter];
           v95 = [HMDRemoteMessageLogEvent receivedRemoteMessage:v54 transportType:[(HMDIDSMessageTransport *)self transportType]];
           [v94 submitLogEvent:v95];
         }
 
-        v96 = [v54 userInfo];
-        v97 = [v96 mutableCopy];
+        userInfo = [v54 userInfo];
+        v97 = [userInfo mutableCopy];
 
         v98 = [MEMORY[0x277CCABB0] numberWithInt:{-[HMDIDSMessageTransport transportType](self, "transportType")}];
         [v97 setObject:v98 forKeyedSubscript:@"kRemoteMessageTransportAttributionKey"];
 
-        v13 = v138;
+        accountCopy = v138;
         v99 = v140;
         v133 = v97;
         if (self && ![(HMDIDSMessageTransport *)self isLegacyTransport])
         {
-          v105 = [(HMDRemoteMessageSenderContext *)v140 deviceHandle];
-          [v135 setPreferredHandle:v105];
+          deviceHandle = [(HMDRemoteMessageSenderContext *)v140 deviceHandle];
+          [v135 setPreferredHandle:deviceHandle];
 
-          [v97 setObject:v15 forKeyedSubscript:@"kIDSMessageSourceIDKey"];
-          v106 = [v16 toID];
-          [v97 setObject:v106 forKeyedSubscript:@"kRemoteMessageIDSToIDKey"];
+          [v97 setObject:dCopy forKeyedSubscript:@"kIDSMessageSourceIDKey"];
+          toID = [contextCopy toID];
+          [v97 setObject:toID forKeyedSubscript:@"kRemoteMessageIDSToIDKey"];
 
           v107 = [v145 hmf_dataForKey:@"kIDSMessageResponseErrorDataKey"];
           [v97 setObject:v107 forKeyedSubscript:@"kIDSMessageResponseErrorDataKey"];
 
-          v108 = [v54 internal];
-          [v108 setUserInfo:v97];
+          internal = [v54 internal];
+          [internal setUserInfo:v97];
 
           [v54 setSenderContext:v140];
-          v109 = [(HMFMessageTransport *)self delegate];
-          [v109 messageTransport:self didReceiveMessage:v54];
+          delegate = [(HMFMessageTransport *)self delegate];
+          [delegate messageTransport:self didReceiveMessage:v54];
 
-          v110 = [(HMDIDSMessageTransport *)self featuresDataSource];
-          v111 = [v110 isTransportRetryEnabled];
+          featuresDataSource = [(HMDIDSMessageTransport *)self featuresDataSource];
+          isTransportRetryEnabled = [featuresDataSource isTransportRetryEnabled];
 
           v99 = v140;
-          if (!v111)
+          if (!isTransportRetryEnabled)
           {
 LABEL_67:
 
             goto LABEL_68;
           }
 
-          v112 = [(HMDIDSMessageTransport *)self messageContexts];
+          messageContexts = [(HMDIDSMessageTransport *)self messageContexts];
           v147[0] = MEMORY[0x277D85DD0];
           v147[1] = 3221225472;
           v147[2] = __73__HMDIDSMessageTransport_service_account_incomingMessage_fromID_context___block_invoke;
           v147[3] = &unk_278674018;
-          v148 = v16;
-          v113 = [v112 hmf_objectPassingTest:v147];
+          v148 = contextCopy;
+          v113 = [messageContexts hmf_objectPassingTest:v147];
 
           if (v113)
           {
-            v114 = [v113 userInfo];
-            v115 = [v114 objectForKeyedSubscript:@"HMDIDSMessageTransportCompletionHandlerKey"];
+            userInfo2 = [v113 userInfo];
+            v115 = [userInfo2 objectForKeyedSubscript:@"HMDIDSMessageTransportCompletionHandlerKey"];
 
             v116 = _Block_copy(v115);
             v117 = v116;
@@ -1088,38 +1088,38 @@ LABEL_67:
               (*(v116 + 2))(v116, 0);
             }
 
-            v118 = [(HMDIDSMessageTransport *)self messageContexts];
-            [v118 removeObject:v113];
+            messageContexts2 = [(HMDIDSMessageTransport *)self messageContexts];
+            [messageContexts2 removeObject:v113];
 
-            v13 = v138;
+            accountCopy = v138;
           }
 
-          v101 = v148;
+          deviceHandle2 = v148;
           v99 = v140;
         }
 
         else
         {
-          v100 = [v54 internal];
-          [v100 setUserInfo:v97];
+          internal2 = [v54 internal];
+          [internal2 setUserInfo:v97];
 
           [v54 setSenderContext:v140];
-          v101 = [(HMDRemoteMessageSenderContext *)v140 deviceHandle];
-          [(HMDIDSMessageTransport *)self legacyHandleIncomingRemoteMessage:v54 sourceDevice:v136 senderDeviceHandle:v101 isSecure:v89 incomingMessage:v145 fromID:v15 context:v16];
+          deviceHandle2 = [(HMDRemoteMessageSenderContext *)v140 deviceHandle];
+          [(HMDIDSMessageTransport *)self legacyHandleIncomingRemoteMessage:v54 sourceDevice:v136 senderDeviceHandle:deviceHandle2 isSecure:isSecure incomingMessage:v145 fromID:dCopy context:contextCopy];
         }
 
         goto LABEL_67;
       }
 
       v69 = objc_autoreleasePoolPush();
-      v70 = self;
+      selfCopy8 = self;
       v71 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_ERROR))
       {
         HMFGetLogIdentifier();
-        v72 = v15;
-        v73 = v16;
-        v75 = v74 = v13;
+        v72 = dCopy;
+        v73 = contextCopy;
+        v75 = v74 = accountCopy;
         *buf = 138543874;
         v152 = v75;
         v153 = 2160;
@@ -1133,23 +1133,23 @@ LABEL_67:
 LABEL_43:
         _os_log_impl(&dword_229538000, v77, v78, v76, buf, v79);
 
-        v13 = v74;
-        v16 = v73;
-        v15 = v72;
+        accountCopy = v74;
+        contextCopy = v73;
+        dCopy = v72;
       }
     }
 
     else
     {
       v69 = objc_autoreleasePoolPush();
-      v70 = self;
+      selfCopy8 = self;
       v71 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v71, OS_LOG_TYPE_INFO))
       {
         HMFGetLogIdentifier();
-        v72 = v15;
-        v73 = v16;
-        v75 = v74 = v13;
+        v72 = dCopy;
+        v73 = contextCopy;
+        v75 = v74 = accountCopy;
         *buf = 138543618;
         v152 = v75;
         v153 = 2112;
@@ -1170,64 +1170,64 @@ LABEL_69:
     v56 = v142;
 LABEL_70:
 
-    v14 = v145;
-    v12 = v146;
+    messageCopy = v145;
+    serviceCopy = v146;
 LABEL_71:
 
     goto LABEL_72;
   }
 
-  v18 = v17;
-  v19 = [v16 originalGUID];
-  v20 = v19;
-  if (!self || !v19)
+  v18 = originalGUID;
+  originalGUID3 = [contextCopy originalGUID];
+  v20 = originalGUID3;
+  if (!self || !originalGUID3)
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v21 = [(HMDIDSMessageTransport *)self messageDedupBuffer];
-  v22 = [v21 containsObject:v20];
+  messageDedupBuffer = [(HMDIDSMessageTransport *)self messageDedupBuffer];
+  v22 = [messageDedupBuffer containsObject:v20];
 
   if ((v22 & 1) == 0)
   {
-    v32 = [(HMDIDSMessageTransport *)self messageDedupBuffer];
-    v33 = [v32 count];
+    messageDedupBuffer2 = [(HMDIDSMessageTransport *)self messageDedupBuffer];
+    v33 = [messageDedupBuffer2 count];
 
     if (v33 >= 0x1E)
     {
-      v34 = [(HMDIDSMessageTransport *)self messageDedupBuffer];
-      [v34 removeObjectAtIndex:0];
+      messageDedupBuffer3 = [(HMDIDSMessageTransport *)self messageDedupBuffer];
+      [messageDedupBuffer3 removeObjectAtIndex:0];
     }
 
-    v35 = [(HMDIDSMessageTransport *)self messageDedupBuffer];
-    [v35 addObject:v20];
+    messageDedupBuffer4 = [(HMDIDSMessageTransport *)self messageDedupBuffer];
+    [messageDedupBuffer4 addObject:v20];
 
     goto LABEL_11;
   }
 
   v23 = objc_autoreleasePoolPush();
-  v24 = self;
+  selfCopy9 = self;
   v25 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
   {
     v26 = HMFGetLogIdentifier();
-    [v16 originalGUID];
-    v27 = v12;
-    v28 = v15;
-    v29 = v16;
-    v31 = v30 = v13;
+    [contextCopy originalGUID];
+    v27 = serviceCopy;
+    v28 = dCopy;
+    v29 = contextCopy;
+    v31 = v30 = accountCopy;
     *buf = 138543618;
     v152 = v26;
     v153 = 2114;
     v154 = v31;
     _os_log_impl(&dword_229538000, v25, OS_LOG_TYPE_INFO, "%{public}@Received duplicate message with GUID: %{public}@", buf, 0x16u);
 
-    v13 = v30;
-    v16 = v29;
-    v15 = v28;
-    v12 = v27;
+    accountCopy = v30;
+    contextCopy = v29;
+    dCopy = v28;
+    serviceCopy = v27;
   }
 
   objc_autoreleasePoolPop(v23);
@@ -1245,100 +1245,100 @@ uint64_t __73__HMDIDSMessageTransport_service_account_incomingMessage_fromID_con
   return v5;
 }
 
-- (BOOL)_shouldProcessLegacyIDSMessageFromID:(id)a3 context:(id)a4 message:(id *)a5 service:(id)a6
+- (BOOL)_shouldProcessLegacyIDSMessageFromID:(id)d context:(id)context message:(id *)message service:(id)service
 {
   v80 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
+  dCopy = d;
+  contextCopy = context;
+  serviceCopy = service;
   if ([(HMDIDSMessageTransport *)self transportType]== 4)
   {
-    v13 = [v12 deviceForFromID:v10];
+    v13 = [serviceCopy deviceForFromID:dCopy];
     v14 = v13;
     if (v13)
     {
-      v15 = [v13 isDefaultPairedDevice];
+      isDefaultPairedDevice = [v13 isDefaultPairedDevice];
     }
 
     else
     {
-      v15 = 0;
+      isDefaultPairedDevice = 0;
     }
   }
 
   else if (self && ![(HMDIDSMessageTransport *)self isLegacyTransport])
   {
-    v15 = 1;
+    isDefaultPairedDevice = 1;
   }
 
   else
   {
-    v16 = [(HMDIDSMessageTransport *)self appleAccountManager];
-    v17 = [v16 account];
+    appleAccountManager = [(HMDIDSMessageTransport *)self appleAccountManager];
+    account = [appleAccountManager account];
 
-    v18 = [v11 senderCorrelationIdentifier];
-    v19 = *a5;
+    senderCorrelationIdentifier = [contextCopy senderCorrelationIdentifier];
+    v19 = *message;
     v20 = [v19 objectForKeyedSubscript:@"kIDSMessagePayloadKey"];
     v71 = v19;
     v68 = [v19 objectForKeyedSubscript:@"kIDSMessageNameKey"];
-    v70 = [(HMDRemoteMessageTransport *)self homeMembershipVerifier];
-    v69 = [HMDDeviceHandle deviceHandleForDestination:v10];
-    v21 = [HMDAccountHandle accountHandleForDestination:v10];
-    v22 = [v17 senderCorrelationIdentifier];
-    if ([v22 isEqual:v18])
+    homeMembershipVerifier = [(HMDRemoteMessageTransport *)self homeMembershipVerifier];
+    v69 = [HMDDeviceHandle deviceHandleForDestination:dCopy];
+    v21 = [HMDAccountHandle accountHandleForDestination:dCopy];
+    senderCorrelationIdentifier2 = [account senderCorrelationIdentifier];
+    if ([senderCorrelationIdentifier2 isEqual:senderCorrelationIdentifier])
     {
 
-      v15 = 1;
+      isDefaultPairedDevice = 1;
     }
 
     else
     {
       v65 = v20;
-      v66 = v18;
-      v64 = v17;
-      v23 = [v17 handles];
+      v66 = senderCorrelationIdentifier;
+      v64 = account;
+      handles = [account handles];
       v67 = v21;
-      v24 = [v23 containsObject:v21];
+      v24 = [handles containsObject:v21];
 
       if (v24)
       {
         goto LABEL_13;
       }
 
-      v25 = [(HMDIDSMessageTransport *)self pendingResponses];
+      pendingResponses = [(HMDIDSMessageTransport *)self pendingResponses];
       v26 = [v71 hmf_UUIDForKey:@"kIDSMessageRequestTransactionIDKey"];
-      v27 = [v25 objectForKey:v26];
+      v27 = [pendingResponses objectForKey:v26];
 
       if (v27)
       {
 LABEL_13:
-        v15 = 1;
+        isDefaultPairedDevice = 1;
         v20 = v65;
-        v18 = v66;
+        senderCorrelationIdentifier = v66;
       }
 
       else
       {
-        v63 = [HMDAccountIdentifier accountIdentifierForMessageContext:v11];
+        v63 = [HMDAccountIdentifier accountIdentifierForMessageContext:contextCopy];
         v30 = [[HMDRemoteMessageSenderContext alloc] initWithDeviceHandle:v69 accountHandle:v21 accountIdentifier:v63 deviceVersion:0 pairingIdentityIdentifier:0];
-        v31 = [(HMDIDSMessageTransport *)self remoteAccountManager];
+        remoteAccountManager = [(HMDIDSMessageTransport *)self remoteAccountManager];
         v62 = v30;
-        v32 = [v31 deviceForSenderContext:v30];
+        v32 = [remoteAccountManager deviceForSenderContext:v30];
 
-        v18 = v66;
+        senderCorrelationIdentifier = v66;
         v20 = v65;
-        if ([v70 userWithMergeIdIsMemberOfAHome:v66])
+        if ([homeMembershipVerifier userWithMergeIdIsMemberOfAHome:v66])
         {
-          v15 = 1;
+          isDefaultPairedDevice = 1;
           v21 = v67;
         }
 
         else
         {
           v61 = [v65 hmf_UUIDForKey:@"kInvitationIdentifierKey"];
-          if ([v70 expectingInvitationResponseForIdentifier:?])
+          if ([homeMembershipVerifier expectingInvitationResponseForIdentifier:?])
           {
-            v15 = 1;
+            isDefaultPairedDevice = 1;
           }
 
           else if ([v68 isEqual:@"kAccessHomeInviteRequestKey"])
@@ -1346,18 +1346,18 @@ LABEL_13:
             v33 = *MEMORY[0x277CD23D0];
             v34 = [v65 objectForKeyedSubscript:*MEMORY[0x277CD23D0]];
             v35 = [HMDNameValidator alloc];
-            v36 = [MEMORY[0x277CCAD78] UUID];
-            v37 = [(HMDNameValidator *)v35 initWithUUID:v36];
+            uUID = [MEMORY[0x277CCAD78] UUID];
+            v37 = [(HMDNameValidator *)v35 initWithUUID:uUID];
 
             v59 = v34;
             v38 = [(HMDNameValidator *)v37 validateName:v34];
-            v15 = v38 == 0;
+            isDefaultPairedDevice = v38 == 0;
             v60 = v38;
             if (v38)
             {
               v39 = v38;
               v40 = objc_autoreleasePoolPush();
-              v41 = self;
+              selfCopy = self;
               v42 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v42, OS_LOG_TYPE_ERROR))
               {
@@ -1381,36 +1381,36 @@ LABEL_13:
             {
               v57 = v33;
               v58 = v37;
-              v46 = [MEMORY[0x277CCAD78] UUID];
+              uUID2 = [MEMORY[0x277CCAD78] UUID];
               v47 = objc_autoreleasePoolPush();
-              v48 = self;
+              selfCopy2 = self;
               v49 = HMFGetOSLogHandle();
               if (os_log_type_enabled(v49, OS_LOG_TYPE_INFO))
               {
                 HMFGetLogIdentifier();
-                v51 = v50 = v48;
+                v51 = v50 = selfCopy2;
                 *buf = 138543618;
                 v77 = v51;
                 v78 = 2112;
-                v79 = v46;
+                v79 = uUID2;
                 _os_log_impl(&dword_229538000, v49, OS_LOG_TYPE_INFO, "%{public}@Replacing incoming HH1 invite with message id %@", buf, 0x16u);
 
-                v48 = v50;
+                selfCopy2 = v50;
               }
 
               objc_autoreleasePoolPop(v47);
               v75[0] = @"kAccessHomeInviteRequestKey";
               v74[0] = @"kIDSMessageNameKey";
               v74[1] = @"kIDSMessageIdentifierKey";
-              v56 = [v46 UUIDString];
-              v75[1] = v56;
+              uUIDString = [uUID2 UUIDString];
+              v75[1] = uUIDString;
               v75[2] = MEMORY[0x277CBEC38];
               v74[2] = @"kIDSMessageRequiresResponseKey";
               v74[3] = @"kIDSMessageRequestTransactionIDKey";
-              v52 = [MEMORY[0x277CCAD78] UUID];
-              v53 = [v52 UUIDString];
+              uUID3 = [MEMORY[0x277CCAD78] UUID];
+              uUIDString2 = [uUID3 UUIDString];
               v54 = *MEMORY[0x277CD23C8];
-              v75[3] = v53;
+              v75[3] = uUIDString2;
               v75[4] = v54;
               v74[4] = @"kIDSMessageTargetKey";
               v74[5] = @"kIDSMessagePayloadKey";
@@ -1419,76 +1419,76 @@ LABEL_13:
               v73 = v59;
               v55 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v73 forKeys:&v72 count:1];
               v75[5] = v55;
-              *a5 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v75 forKeys:v74 count:6];
+              *message = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v75 forKeys:v74 count:6];
 
               v20 = v65;
               v37 = v58;
             }
 
-            v18 = v66;
+            senderCorrelationIdentifier = v66;
           }
 
           else
           {
-            v15 = 0;
+            isDefaultPairedDevice = 0;
           }
 
           v21 = v67;
-          v17 = v64;
+          account = v64;
         }
       }
     }
   }
 
   v28 = *MEMORY[0x277D85DE8];
-  return v15;
+  return isDefaultPairedDevice;
 }
 
-- (BOOL)shouldAcceptLegacyIDSMessage:(id)a3
+- (BOOL)shouldAcceptLegacyIDSMessage:(id)message
 {
-  v3 = a3;
-  if (![v3 type] && (objc_msgSend(v3, "name"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", @"kAccessHomeInviteRequestKey"), v4, (v5 & 1) != 0) || objc_msgSend(v3, "type") == 1)
+  messageCopy = message;
+  if (![messageCopy type] && (objc_msgSend(messageCopy, "name"), v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "isEqualToString:", @"kAccessHomeInviteRequestKey"), v4, (v5 & 1) != 0) || objc_msgSend(messageCopy, "type") == 1)
   {
     v6 = 1;
   }
 
   else
   {
-    v7 = [v3 name];
-    v6 = [v7 isEqualToString:@"kSecureServerIDSMessageRequestKey"];
+    name = [messageCopy name];
+    v6 = [name isEqualToString:@"kSecureServerIDSMessageRequestKey"];
   }
 
   return v6;
 }
 
-- (void)_removePendingResponseTransaction:(id)a3
+- (void)_removePendingResponseTransaction:(id)transaction
 {
-  v4 = a3;
-  v5 = [(HMDIDSMessageTransport *)self pendingResponses];
-  [v5 removeObjectForKey:v4];
+  transactionCopy = transaction;
+  pendingResponses = [(HMDIDSMessageTransport *)self pendingResponses];
+  [pendingResponses removeObjectForKey:transactionCopy];
 
-  v6 = [(HMDIDSMessageTransport *)self requestedCapabilities];
-  [v6 removeObjectForKey:v4];
+  requestedCapabilities = [(HMDIDSMessageTransport *)self requestedCapabilities];
+  [requestedCapabilities removeObjectForKey:transactionCopy];
 
-  v7 = [(HMDIDSMessageTransport *)self destinationAddress];
-  [v7 removeObjectForKey:v4];
+  destinationAddress = [(HMDIDSMessageTransport *)self destinationAddress];
+  [destinationAddress removeObjectForKey:transactionCopy];
 
-  [(HMDIDSMessageTransport *)self _removePendingResponseTimerForTransaction:v4];
-  v8 = [(HMDIDSMessageTransport *)self featuresDataSource];
-  v9 = [v8 isTransportRetryEnabled];
+  [(HMDIDSMessageTransport *)self _removePendingResponseTimerForTransaction:transactionCopy];
+  featuresDataSource = [(HMDIDSMessageTransport *)self featuresDataSource];
+  isTransportRetryEnabled = [featuresDataSource isTransportRetryEnabled];
 
-  if (v9)
+  if (isTransportRetryEnabled)
   {
-    v10 = [(HMDIDSMessageTransport *)self messageContexts];
+    messageContexts = [(HMDIDSMessageTransport *)self messageContexts];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __60__HMDIDSMessageTransport__removePendingResponseTransaction___block_invoke;
     v13[3] = &unk_278674018;
-    v14 = v4;
-    v11 = [v10 hmf_objectPassingTest:v13];
+    v14 = transactionCopy;
+    v11 = [messageContexts hmf_objectPassingTest:v13];
 
-    v12 = [(HMDIDSMessageTransport *)self messageContexts];
-    [v12 removeObject:v11];
+    messageContexts2 = [(HMDIDSMessageTransport *)self messageContexts];
+    [messageContexts2 removeObject:v11];
   }
 }
 
@@ -1500,12 +1500,12 @@ uint64_t __60__HMDIDSMessageTransport__removePendingResponseTransaction___block_
   return v4;
 }
 
-- (void)_removePendingResponseTimerForTransaction:(id)a3
+- (void)_removePendingResponseTimerForTransaction:(id)transaction
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -1513,42 +1513,42 @@ uint64_t __60__HMDIDSMessageTransport__removePendingResponseTransaction___block_
     v13 = 138543618;
     v14 = v8;
     v15 = 2114;
-    v16 = v4;
+    v16 = transactionCopy;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Cancelling timer for transaction: %{public}@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDIDSMessageTransport *)v6 pendingResponseTimers];
-  v10 = [v9 objectForKeyedSubscript:v4];
+  pendingResponseTimers = [(HMDIDSMessageTransport *)selfCopy pendingResponseTimers];
+  v10 = [pendingResponseTimers objectForKeyedSubscript:transactionCopy];
 
   if (v10)
   {
     dispatch_source_cancel(v10);
   }
 
-  v11 = [(HMDIDSMessageTransport *)v6 pendingResponseTimers];
-  [v11 removeObjectForKey:v4];
+  pendingResponseTimers2 = [(HMDIDSMessageTransport *)selfCopy pendingResponseTimers];
+  [pendingResponseTimers2 removeObjectForKey:transactionCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_startPendingResponseTimer:(id)a3 responseTimeout:(double)a4 identifier:(id)a5
+- (void)_startPendingResponseTimer:(id)timer responseTimeout:(double)timeout identifier:(id)identifier
 {
   v33 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a5;
-  if (a4 < 2.22044605e-16 || a4 <= 0.0)
+  timerCopy = timer;
+  identifierCopy = identifier;
+  if (timeout < 2.22044605e-16 || timeout <= 0.0)
   {
     v11 = remotePendingResponseTimerNanoseconds;
   }
 
   else
   {
-    v11 = (a4 * 1000000000.0);
+    v11 = (timeout * 1000000000.0);
   }
 
-  v12 = [(HMDIDSMessageTransport *)self workQueue];
-  v13 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, v12);
+  workQueue = [(HMDIDSMessageTransport *)self workQueue];
+  v13 = dispatch_source_create(MEMORY[0x277D85D38], 0, 0, workQueue);
 
   v14 = dispatch_time(0, v11);
   dispatch_source_set_timer(v13, v14, 0xFFFFFFFFFFFFFFFFLL, remotePendingResponseLeewayNanoseconds);
@@ -1558,29 +1558,29 @@ uint64_t __60__HMDIDSMessageTransport__removePendingResponseTransaction___block_
   handler[2] = __80__HMDIDSMessageTransport__startPendingResponseTimer_responseTimeout_identifier___block_invoke;
   handler[3] = &unk_278686B48;
   objc_copyWeak(&v25, &location);
-  v15 = v8;
+  v15 = timerCopy;
   v24 = v15;
   dispatch_source_set_event_handler(v13, handler);
   dispatch_resume(v13);
   v16 = objc_autoreleasePoolPush();
-  v17 = self;
+  selfCopy = self;
   v18 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
   {
     v19 = HMFGetLogIdentifier();
-    v20 = [v15 UUIDString];
+    uUIDString = [v15 UUIDString];
     *buf = 138543874;
     v28 = v19;
     v29 = 2114;
-    v30 = v20;
+    v30 = uUIDString;
     v31 = 2048;
     v32 = v11 / 0x3B9ACA00;
     _os_log_impl(&dword_229538000, v18, OS_LOG_TYPE_INFO, "%{public}@Starting poll to track response for message with transaction %{public}@ for %lld secs", buf, 0x20u);
   }
 
   objc_autoreleasePoolPop(v16);
-  v21 = [(HMDIDSMessageTransport *)v17 pendingResponseTimers];
-  [v21 setObject:v13 forKeyedSubscript:v15];
+  pendingResponseTimers = [(HMDIDSMessageTransport *)selfCopy pendingResponseTimers];
+  [pendingResponseTimers setObject:v13 forKeyedSubscript:v15];
 
   objc_destroyWeak(&v25);
   objc_destroyWeak(&location);
@@ -1594,32 +1594,32 @@ void __80__HMDIDSMessageTransport__startPendingResponseTimer_responseTimeout_ide
   [WeakRetained _pendingResponseTimeoutFor:*(a1 + 32)];
 }
 
-- (void)_pendingResponseTimeoutFor:(id)a3
+- (void)_pendingResponseTimeoutFor:(id)for
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  forCopy = for;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
     v8 = HMFGetLogIdentifier();
-    v9 = [v4 UUIDString];
+    uUIDString = [forCopy UUIDString];
     v27 = 138543618;
     v28 = v8;
     v29 = 2114;
-    v30 = v9;
+    v30 = uUIDString;
     _os_log_impl(&dword_229538000, v7, OS_LOG_TYPE_INFO, "%{public}@Pending Response timeout for transaction: %{public}@", &v27, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v10 = [(HMDIDSMessageTransport *)v6 pendingResponses];
-  v11 = [v10 objectForKeyedSubscript:v4];
+  pendingResponses = [(HMDIDSMessageTransport *)selfCopy pendingResponses];
+  v11 = [pendingResponses objectForKeyedSubscript:forCopy];
 
   if (v11)
   {
-    v12 = [(HMDIDSMessageTransport *)v6 receivedResponses];
-    v13 = [v12 objectForKeyedSubscript:v4];
+    receivedResponses = [(HMDIDSMessageTransport *)selfCopy receivedResponses];
+    v13 = [receivedResponses objectForKeyedSubscript:forCopy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1634,8 +1634,8 @@ void __80__HMDIDSMessageTransport__startPendingResponseTimer_responseTimeout_ide
 
     v15 = v14;
 
-    v16 = [(HMDIDSMessageTransport *)v6 requestedCapabilities];
-    v17 = [v16 objectForKeyedSubscript:v4];
+    requestedCapabilities = [(HMDIDSMessageTransport *)selfCopy requestedCapabilities];
+    v17 = [requestedCapabilities objectForKeyedSubscript:forCopy];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
@@ -1653,7 +1653,7 @@ void __80__HMDIDSMessageTransport__startPendingResponseTimer_responseTimeout_ide
     if ([v15 count])
     {
       v20 = objc_autoreleasePoolPush();
-      v21 = v6;
+      v21 = selfCopy;
       v22 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
@@ -1676,39 +1676,39 @@ void __80__HMDIDSMessageTransport__startPendingResponseTimer_responseTimeout_ide
     }
   }
 
-  [(HMDIDSMessageTransport *)v6 _removePendingResponseTransaction:v4];
+  [(HMDIDSMessageTransport *)selfCopy _removePendingResponseTransaction:forCopy];
 
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_restartPendingResponseTimerFor:(id)a3 withReducedFactor:(unint64_t)a4
+- (void)_restartPendingResponseTimerFor:(id)for withReducedFactor:(unint64_t)factor
 {
   v29 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  forCopy = for;
   v7 = remotePendingResponseTimerNanoseconds;
   v8 = remotePendingResponseDecayScale;
-  v9 = [(HMDIDSMessageTransport *)self pendingResponseTimers];
-  v10 = [v9 objectForKeyedSubscript:v6];
+  pendingResponseTimers = [(HMDIDSMessageTransport *)self pendingResponseTimers];
+  v10 = [pendingResponseTimers objectForKeyedSubscript:forCopy];
 
   if (v10)
   {
-    v11 = v7 / (v8 * a4);
+    v11 = v7 / (v8 * factor);
     v12 = dispatch_time(0, v11);
     dispatch_source_set_timer(v10, v12, 0xFFFFFFFFFFFFFFFFLL, remotePendingResponseLeewayNanoseconds);
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v16 = HMFGetLogIdentifier();
       v17 = v11 / 0x3B9ACA00;
-      v18 = [v6 UUIDString];
+      uUIDString = [forCopy UUIDString];
       v23 = 138543874;
       v24 = v16;
       v25 = 2048;
       v26 = v17;
       v27 = 2114;
-      v28 = v18;
+      v28 = uUIDString;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Restarted Pending response timer for %lld sec, for transaction: %{public}@", &v23, 0x20u);
     }
   }
@@ -1716,16 +1716,16 @@ void __80__HMDIDSMessageTransport__startPendingResponseTimer_responseTimeout_ide
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v19 = self;
+    selfCopy2 = self;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [v6 UUIDString];
+      uUIDString2 = [forCopy UUIDString];
       v23 = 138543618;
       v24 = v20;
       v25 = 2114;
-      v26 = v21;
+      v26 = uUIDString2;
       _os_log_impl(&dword_229538000, v15, OS_LOG_TYPE_INFO, "%{public}@Timer already expired for transaction: %{public}@", &v23, 0x16u);
     }
   }
@@ -1734,22 +1734,22 @@ void __80__HMDIDSMessageTransport__startPendingResponseTimer_responseTimeout_ide
   v22 = *MEMORY[0x277D85DE8];
 }
 
-- (id)sendMessage:(id)a3 fromHandle:(id)a4 destination:(id)a5 priority:(int64_t)a6 timeout:(double)a7 options:(unint64_t)a8 queueOneID:(id)a9 senderResidentInfo:(int64_t)a10 destinationResidentInfo:(int64_t)a11 error:(id *)a12
+- (id)sendMessage:(id)message fromHandle:(id)handle destination:(id)destination priority:(int64_t)priority timeout:(double)timeout options:(unint64_t)options queueOneID:(id)d senderResidentInfo:(int64_t)self0 destinationResidentInfo:(int64_t)self1 error:(id *)self2
 {
-  v13 = a8;
-  v19 = a12;
+  optionsCopy = options;
+  errorCopy3 = error;
   v134[1] = *MEMORY[0x277D85DE8];
-  v20 = a3;
-  v21 = a4;
-  v22 = a5;
-  v23 = a9;
-  if (v22)
+  messageCopy = message;
+  handleCopy = handle;
+  destinationCopy = destination;
+  dCopy = d;
+  if (destinationCopy)
   {
-    v112 = [v22 allRemoteDestinationStrings];
-    if (![(__CFString *)v112 count])
+    allRemoteDestinationStrings = [destinationCopy allRemoteDestinationStrings];
+    if (![(__CFString *)allRemoteDestinationStrings count])
     {
       v34 = objc_autoreleasePoolPush();
-      v35 = self;
+      selfCopy = self;
       v36 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
@@ -1757,14 +1757,14 @@ void __80__HMDIDSMessageTransport__startPendingResponseTimer_responseTimeout_ide
         *buf = 138543618;
         v119 = v37;
         v120 = 2112;
-        v121 = v22;
+        v121 = destinationCopy;
         _os_log_impl(&dword_229538000, v36, OS_LOG_TYPE_ERROR, "%{public}@No valid destination strings for destination: %@", buf, 0x16u);
 
-        v19 = a12;
+        errorCopy3 = error;
       }
 
       objc_autoreleasePoolPop(v34);
-      if (!v19)
+      if (!errorCopy3)
       {
         v33 = 0;
 LABEL_95:
@@ -1775,7 +1775,7 @@ LABEL_95:
       v38 = MEMORY[0x277CCA9B8];
       v133 = *MEMORY[0x277CCA7E8];
       [MEMORY[0x277CCA9B8] hmInternalErrorWithCode:3214];
-      v24 = v39 = v19;
+      v24 = v39 = errorCopy3;
       v40 = [v38 hmInternalErrorWithCode:3203 underlyingError:v24];
       v134[0] = v40;
       v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v134 forKeys:&v133 count:1];
@@ -1783,18 +1783,18 @@ LABEL_95:
       goto LABEL_93;
     }
 
-    v109 = a6;
+    priorityCopy = priority;
     v24 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-    v25 = [(HMDIDSMessageTransport *)self featuresDataSource];
-    v26 = [v25 isTransportRetryEnabled];
+    featuresDataSource = [(HMDIDSMessageTransport *)self featuresDataSource];
+    isTransportRetryEnabled = [featuresDataSource isTransportRetryEnabled];
 
-    if (v26)
+    if (isTransportRetryEnabled)
     {
       [v24 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D18678]];
-      if ((v13 & 1) == 0)
+      if ((optionsCopy & 1) == 0)
       {
 LABEL_5:
-        if ((v13 & 2) == 0)
+        if ((optionsCopy & 2) == 0)
         {
           goto LABEL_6;
         }
@@ -1803,7 +1803,7 @@ LABEL_5:
       }
     }
 
-    else if ((v13 & 1) == 0)
+    else if ((optionsCopy & 1) == 0)
     {
       goto LABEL_5;
     }
@@ -1811,10 +1811,10 @@ LABEL_5:
     v41 = MEMORY[0x277CBEC38];
     [v24 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D185C0]];
     [v24 setObject:v41 forKeyedSubscript:*MEMORY[0x277D185E8]];
-    if ((v13 & 2) == 0)
+    if ((optionsCopy & 2) == 0)
     {
 LABEL_6:
-      if ((v13 & 8) == 0)
+      if ((optionsCopy & 8) == 0)
       {
         goto LABEL_7;
       }
@@ -1824,10 +1824,10 @@ LABEL_6:
 
 LABEL_21:
     [v24 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D18600]];
-    if ((v13 & 8) == 0)
+    if ((optionsCopy & 8) == 0)
     {
 LABEL_7:
-      if ((v13 & 4) == 0)
+      if ((optionsCopy & 4) == 0)
       {
         goto LABEL_9;
       }
@@ -1837,12 +1837,12 @@ LABEL_7:
 
 LABEL_22:
     [v24 setObject:&unk_283E721E8 forKeyedSubscript:*MEMORY[0x277D18620]];
-    if ((v13 & 4) == 0)
+    if ((optionsCopy & 4) == 0)
     {
 LABEL_9:
-      if (a7 <= 0.0)
+      if (timeout <= 0.0)
       {
-        if ((v13 & 2) == 0)
+        if ((optionsCopy & 2) == 0)
         {
           [v24 setObject:&unk_283E75E98 forKeyedSubscript:*MEMORY[0x277D18650]];
         }
@@ -1850,20 +1850,20 @@ LABEL_9:
 
       else
       {
-        v28 = [MEMORY[0x277CCABB0] numberWithDouble:a7];
+        v28 = [MEMORY[0x277CCABB0] numberWithDouble:timeout];
         [v24 setObject:v28 forKeyedSubscript:*MEMORY[0x277D18650]];
       }
 
-      [v24 setObject:v23 forKeyedSubscript:*MEMORY[0x277D18630]];
+      [v24 setObject:dCopy forKeyedSubscript:*MEMORY[0x277D18630]];
       [v24 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D18570]];
-      v110 = v20;
-      v108 = v23;
+      v110 = messageCopy;
+      v108 = dCopy;
       if (isInternalBuild())
       {
-        v42 = [v20 objectForKeyedSubscript:@"kRemoteMessageQoSKey"];
-        v43 = [v42 integerValue];
+        v42 = [messageCopy objectForKeyedSubscript:@"kRemoteMessageQoSKey"];
+        integerValue = [v42 integerValue];
 
-        v44 = v22;
+        v44 = destinationCopy;
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
         if (isKindOfClass)
@@ -1881,14 +1881,14 @@ LABEL_9:
         if (isKindOfClass)
         {
           v47 = objc_autoreleasePoolPush();
-          v48 = self;
+          selfCopy2 = self;
           v49 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v49, OS_LOG_TYPE_DEFAULT))
           {
             HMFGetLogIdentifier();
-            v50 = v105 = v43;
-            v104 = [v44 device];
-            [v104 productInfo];
+            v50 = v105 = integerValue;
+            device = [v44 device];
+            [device productInfo];
             v51 = v106 = v47;
             [v51 productPlatform];
             v52 = HMFProductPlatformToString();
@@ -1899,29 +1899,29 @@ LABEL_9:
             _os_log_impl(&dword_229538000, v49, OS_LOG_TYPE_DEFAULT, "%{public}@destination device's platform: %@", buf, 0x16u);
 
             v47 = v106;
-            v43 = v105;
+            integerValue = v105;
           }
 
           objc_autoreleasePoolPop(v47);
-          v20 = v110;
+          messageCopy = v110;
         }
 
-        v53 = (v43 > 24) << 31;
-        v54 = [v20 objectForKeyedSubscript:@"kIDSMessageRequiresResponseKey"];
+        v53 = (integerValue > 24) << 31;
+        v54 = [messageCopy objectForKeyedSubscript:@"kIDSMessageRequiresResponseKey"];
         v55 = [v54 isEqual:MEMORY[0x277CBEC38]];
 
         if (v55)
         {
           v56 = 100;
-          v57 = a10;
+          infoCopy2 = info;
         }
 
         else
         {
-          v58 = [v20 objectForKeyedSubscript:@"kIDSMessageIsResponseToRequest"];
+          v58 = [messageCopy objectForKeyedSubscript:@"kIDSMessageIsResponseToRequest"];
           v59 = [v58 isEqual:MEMORY[0x277CBEC38]];
 
-          v57 = a10;
+          infoCopy2 = info;
           if (v59)
           {
             v56 = 200;
@@ -1929,7 +1929,7 @@ LABEL_9:
 
           else
           {
-            v60 = [v20 objectForKeyedSubscript:@"kIDSMessageIsNotificationKey"];
+            v60 = [messageCopy objectForKeyedSubscript:@"kIDSMessageIsNotificationKey"];
             v61 = [v60 isEqual:MEMORY[0x277CBEC38]];
 
             v56 = 400;
@@ -1940,24 +1940,24 @@ LABEL_9:
           }
         }
 
-        v62 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(a11 + 10 * v57 + v53 + v56)];
+        v62 = [MEMORY[0x277CCABB0] numberWithUnsignedInt:(residentInfo + 10 * infoCopy2 + v53 + v56)];
         [v24 setObject:v62 forKeyedSubscript:*MEMORY[0x277D18618]];
       }
 
-      if (v21)
+      if (handleCopy)
       {
         v116 = 0u;
         v117 = 0u;
         v114 = 0u;
         v115 = 0u;
-        v63 = [(HMDIDSMessageTransport *)self service];
-        v64 = [v63 accounts];
+        service = [(HMDIDSMessageTransport *)self service];
+        accounts = [service accounts];
 
-        v65 = [v64 countByEnumeratingWithState:&v114 objects:v132 count:16];
+        v65 = [accounts countByEnumeratingWithState:&v114 objects:v132 count:16];
         if (v65)
         {
           v66 = v65;
-          v111 = v22;
+          v111 = destinationCopy;
           v67 = *v115;
           while (2)
           {
@@ -1965,25 +1965,25 @@ LABEL_9:
             {
               if (*v115 != v67)
               {
-                objc_enumerationMutation(v64);
+                objc_enumerationMutation(accounts);
               }
 
               v69 = *(*(&v114 + 1) + 8 * i);
-              v70 = [v69 hmd_handles];
-              v71 = [v70 containsObject:v21];
+              hmd_handles = [v69 hmd_handles];
+              v71 = [hmd_handles containsObject:handleCopy];
 
               if (v71)
               {
-                v72 = [v21 URI];
-                v73 = [v72 prefixedURI];
-                [v24 setObject:v73 forKeyedSubscript:*MEMORY[0x277D185E0]];
+                v72 = [handleCopy URI];
+                prefixedURI = [v72 prefixedURI];
+                [v24 setObject:prefixedURI forKeyedSubscript:*MEMORY[0x277D185E0]];
 
                 v40 = v69;
                 goto LABEL_54;
               }
             }
 
-            v66 = [v64 countByEnumeratingWithState:&v114 objects:v132 count:16];
+            v66 = [accounts countByEnumeratingWithState:&v114 objects:v132 count:16];
             if (v66)
             {
               continue;
@@ -1994,8 +1994,8 @@ LABEL_9:
 
           v40 = 0;
 LABEL_54:
-          v20 = v110;
-          v22 = v111;
+          messageCopy = v110;
+          destinationCopy = v111;
         }
 
         else
@@ -2011,15 +2011,15 @@ LABEL_54:
 
       if (self && ![(HMDIDSMessageTransport *)self isLegacyTransport])
       {
-        v74 = [(HMDIDSMessageTransport *)self _identifierFromSerializedMessage:v20];
+        shortDescription = [(HMDIDSMessageTransport *)self _identifierFromSerializedMessage:messageCopy];
       }
 
       else
       {
-        v74 = [v20 shortDescription];
+        shortDescription = [messageCopy shortDescription];
       }
 
-      v75 = v74;
+      v75 = shortDescription;
       if (shouldLogPrivateInformation())
       {
         v76 = v24;
@@ -2036,7 +2036,7 @@ LABEL_54:
 
       v79 = isInternalBuild();
       v80 = objc_autoreleasePoolPush();
-      v81 = self;
+      selfCopy3 = self;
       v82 = HMFGetOSLogHandle();
       v83 = os_log_type_enabled(v82, OS_LOG_TYPE_INFO);
       if (v79)
@@ -2045,7 +2045,7 @@ LABEL_54:
         {
           v84 = HMFGetLogIdentifier();
           v85 = v84;
-          switch(v109)
+          switch(priorityCopy)
           {
             case 100:
               v86 = @"Sync";
@@ -2068,7 +2068,7 @@ LABEL_54:
           v122 = 2160;
           v123 = 1752392040;
           v124 = 2112;
-          v125 = v112;
+          v125 = allRemoteDestinationStrings;
           v126 = 2113;
           v127 = v40;
           v128 = 2114;
@@ -2087,7 +2087,7 @@ LABEL_84:
       {
         v87 = HMFGetLogIdentifier();
         v85 = v87;
-        switch(v109)
+        switch(priorityCopy)
         {
           case 100:
             v88 = @"Sync";
@@ -2108,7 +2108,7 @@ LABEL_84:
         v120 = 2114;
         v121 = v75;
         v122 = 2117;
-        v123 = v112;
+        v123 = allRemoteDestinationStrings;
         v124 = 2113;
         v125 = v40;
         v126 = 2114;
@@ -2122,32 +2122,32 @@ LABEL_84:
       }
 
       objc_autoreleasePoolPop(v80);
-      v92 = [(HMDIDSMessageTransport *)v81 service];
-      v93 = [MEMORY[0x277CBEB98] setWithArray:v112];
+      service2 = [(HMDIDSMessageTransport *)selfCopy3 service];
+      v93 = [MEMORY[0x277CBEB98] setWithArray:allRemoteDestinationStrings];
       v113 = 0;
-      v20 = v110;
-      v94 = [v92 sendMessage:v110 fromAccount:v40 toDestinations:v93 priority:v109 options:v24 identifier:&v113 error:a12];
+      messageCopy = v110;
+      v94 = [service2 sendMessage:v110 fromAccount:v40 toDestinations:v93 priority:priorityCopy options:v24 identifier:&v113 error:error];
       v33 = v113;
 
       if (v94)
       {
-        v23 = v108;
+        dCopy = v108;
 LABEL_94:
 
         goto LABEL_95;
       }
 
       v95 = objc_autoreleasePoolPush();
-      v96 = v81;
+      v96 = selfCopy3;
       v97 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v97, OS_LOG_TYPE_INFO))
       {
         v98 = HMFGetLogIdentifier();
         v99 = [(HMDIDSMessageTransport *)v96 _identifierFromSerializedMessage:v110];
         v100 = v99;
-        if (a12)
+        if (error)
         {
-          v101 = *a12;
+          v101 = *error;
         }
 
         else
@@ -2163,11 +2163,11 @@ LABEL_94:
         v123 = v101;
         _os_log_impl(&dword_229538000, v97, OS_LOG_TYPE_INFO, "%{public}@Failed to send IDS message %{public}@ due to error: %@", buf, 0x20u);
 
-        v20 = v110;
+        messageCopy = v110;
       }
 
       objc_autoreleasePoolPop(v95);
-      v23 = v108;
+      dCopy = v108;
 LABEL_93:
 
       v33 = 0;
@@ -2182,7 +2182,7 @@ LABEL_8:
   }
 
   v29 = objc_autoreleasePoolPush();
-  v30 = self;
+  selfCopy4 = self;
   v31 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
   {
@@ -2191,14 +2191,14 @@ LABEL_8:
     v119 = v32;
     _os_log_impl(&dword_229538000, v31, OS_LOG_TYPE_ERROR, "%{public}@Destination is required", buf, 0xCu);
 
-    v19 = a12;
+    errorCopy3 = error;
   }
 
   objc_autoreleasePoolPop(v29);
-  if (v19)
+  if (errorCopy3)
   {
     [MEMORY[0x277CCA9B8] hmErrorWithCode:20];
-    *v19 = v33 = 0;
+    *errorCopy3 = v33 = 0;
   }
 
   else
@@ -2213,12 +2213,12 @@ LABEL_96:
   return v33;
 }
 
-- (id)_identifierFromSerializedMessage:(void *)a1
+- (id)_identifierFromSerializedMessage:(void *)message
 {
   v3 = a2;
-  if (a1)
+  if (message)
   {
-    if ([a1 isLegacyTransport])
+    if ([message isLegacyTransport])
     {
       v4 = @"kIDSMessageIdentifierKey";
     }
@@ -2228,29 +2228,29 @@ LABEL_96:
       v4 = @"id";
     }
 
-    a1 = [v3 hmf_stringForKey:v4];
+    message = [v3 hmf_stringForKey:v4];
   }
 
-  return a1;
+  return message;
 }
 
-- (void)sendMessage:(id)a3 senderResidentInfo:(int64_t)a4 destinationResidentInfo:(int64_t)a5 completionHandler:(id)a6
+- (void)sendMessage:(id)message senderResidentInfo:(int64_t)info destinationResidentInfo:(int64_t)residentInfo completionHandler:(id)handler
 {
-  v10 = a3;
-  v11 = a6;
-  v12 = [(HMDIDSMessageTransport *)self workQueue];
+  messageCopy = message;
+  handlerCopy = handler;
+  workQueue = [(HMDIDSMessageTransport *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __99__HMDIDSMessageTransport_sendMessage_senderResidentInfo_destinationResidentInfo_completionHandler___block_invoke;
   block[3] = &unk_27867C1E0;
-  v16 = v10;
-  v17 = self;
-  v18 = v11;
-  v19 = a4;
-  v20 = a5;
-  v13 = v10;
-  v14 = v11;
-  dispatch_async(v12, block);
+  v16 = messageCopy;
+  selfCopy = self;
+  v18 = handlerCopy;
+  infoCopy = info;
+  residentInfoCopy = residentInfo;
+  v13 = messageCopy;
+  v14 = handlerCopy;
+  dispatch_async(workQueue, block);
 }
 
 void __99__HMDIDSMessageTransport_sendMessage_senderResidentInfo_destinationResidentInfo_completionHandler___block_invoke(uint64_t a1)
@@ -2855,17 +2855,17 @@ void __99__HMDIDSMessageTransport_sendMessage_senderResidentInfo_destinationResi
   [*(a1 + 32) respondWithPayload:0 error:v5];
 }
 
-- (BOOL)isValidMessage:(id)a3
+- (BOOL)isValidMessage:(id)message
 {
-  v4 = a3;
-  v5 = [v4 destination];
+  messageCopy = message;
+  destination = [messageCopy destination];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     goto LABEL_4;
   }
 
-  v6 = [v4 destination];
+  destination2 = [messageCopy destination];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2874,7 +2874,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v8 = [v4 destination];
+  destination3 = [messageCopy destination];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
@@ -2886,7 +2886,7 @@ LABEL_12:
   }
 
 LABEL_5:
-  if (([v4 restriction] & 1) == 0 || (!self || -[HMDIDSMessageTransport isLegacyTransport](self, "isLegacyTransport")) && (objc_msgSend(v4, "restriction") == -1 || (objc_msgSend(v4, "restriction") & 0x10) == 0))
+  if (([messageCopy restriction] & 1) == 0 || (!self || -[HMDIDSMessageTransport isLegacyTransport](self, "isLegacyTransport")) && (objc_msgSend(messageCopy, "restriction") == -1 || (objc_msgSend(messageCopy, "restriction") & 0x10) == 0))
   {
     goto LABEL_12;
   }
@@ -2897,11 +2897,11 @@ LABEL_13:
   return v7;
 }
 
-- (BOOL)canSendMessage:(id)a3
+- (BOOL)canSendMessage:(id)message
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (![(HMDIDSMessageTransport *)self isValidMessage:v4])
+  messageCopy = message;
+  if (![(HMDIDSMessageTransport *)self isValidMessage:messageCopy])
   {
     goto LABEL_13;
   }
@@ -2911,13 +2911,13 @@ LABEL_13:
     goto LABEL_6;
   }
 
-  v5 = [(HMDIDSMessageTransport *)self appleAccountManager];
-  v6 = [v5 device];
+  appleAccountManager = [(HMDIDSMessageTransport *)self appleAccountManager];
+  device = [appleAccountManager device];
 
-  if (!v6)
+  if (!device)
   {
     v10 = objc_autoreleasePoolPush();
-    v11 = self;
+    selfCopy = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -2937,13 +2937,13 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v7 = [(HMDIDSMessageTransport *)self service];
-  v8 = [v7 hmd_isActive];
+  service = [(HMDIDSMessageTransport *)self service];
+  hmd_isActive = [service hmd_isActive];
 
-  if ((v8 & 1) == 0)
+  if ((hmd_isActive & 1) == 0)
   {
     v10 = objc_autoreleasePoolPush();
-    v15 = self;
+    selfCopy2 = self;
     v12 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
     {
@@ -2977,28 +2977,28 @@ LABEL_14:
   return [(HMDRemoteMessageTransport *)&v4 isSecure];
 }
 
-- (id)deviceForSenderContext:(id)a3
+- (id)deviceForSenderContext:(id)context
 {
   v55 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDIDSMessageTransport *)self appleAccountManager];
-  v6 = [v5 account];
+  contextCopy = context;
+  appleAccountManager = [(HMDIDSMessageTransport *)self appleAccountManager];
+  account = [appleAccountManager account];
 
-  if (v6)
+  if (account)
   {
-    v7 = [v6 handles];
-    v8 = [v4 accountHandle];
-    v9 = [v7 containsObject:v8];
+    handles = [account handles];
+    accountHandle = [contextCopy accountHandle];
+    v9 = [handles containsObject:accountHandle];
 
     if (!v9)
     {
-      v18 = [(HMDIDSMessageTransport *)self remoteAccountManager];
-      v11 = [v18 deviceForSenderContext:v4];
+      remoteAccountManager = [(HMDIDSMessageTransport *)self remoteAccountManager];
+      v11 = [remoteAccountManager deviceForSenderContext:contextCopy];
       goto LABEL_11;
     }
 
-    v10 = [v4 deviceHandle];
-    v11 = [v6 deviceForHandle:v10];
+    deviceHandle = [contextCopy deviceHandle];
+    v11 = [account deviceForHandle:deviceHandle];
 
     if (v11)
     {
@@ -3007,21 +3007,21 @@ LABEL_14:
         goto LABEL_18;
       }
 
-      v12 = [v4 localDeviceHandle];
+      localDeviceHandle = [contextCopy localDeviceHandle];
 
-      if (!v12)
+      if (!localDeviceHandle)
       {
         goto LABEL_18;
       }
 
-      v13 = [v4 localDeviceHandle];
-      [(HMDDevice *)v11 addHandle:v13];
+      localDeviceHandle2 = [contextCopy localDeviceHandle];
+      [(HMDDevice *)v11 addHandle:localDeviceHandle2];
     }
 
     else
     {
       v19 = objc_autoreleasePoolPush();
-      v20 = self;
+      selfCopy = self;
       v21 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_INFO))
       {
@@ -3033,30 +3033,30 @@ LABEL_14:
 
       objc_autoreleasePoolPop(v19);
       v23 = MEMORY[0x277CBEB18];
-      v24 = [v4 deviceHandle];
-      v13 = [v23 arrayWithObject:v24];
+      deviceHandle2 = [contextCopy deviceHandle];
+      localDeviceHandle2 = [v23 arrayWithObject:deviceHandle2];
 
-      v25 = [v4 localDeviceHandle];
+      localDeviceHandle3 = [contextCopy localDeviceHandle];
 
-      if (v25)
+      if (localDeviceHandle3)
       {
-        v26 = [v4 localDeviceHandle];
-        [v13 addObject:v26];
+        localDeviceHandle4 = [contextCopy localDeviceHandle];
+        [localDeviceHandle2 addObject:localDeviceHandle4];
       }
 
       v27 = [HMDDevice alloc];
-      v28 = [v4 deviceHandle];
-      v29 = [v28 identifier];
-      v30 = [v13 copy];
-      v31 = [v4 deviceVersion];
-      v11 = [(HMDDevice *)v27 initWithIdentifier:v29 handles:v30 name:0 productInfo:0 version:v31 capabilities:0 account:v6];
+      deviceHandle3 = [contextCopy deviceHandle];
+      identifier = [deviceHandle3 identifier];
+      v30 = [localDeviceHandle2 copy];
+      deviceVersion = [contextCopy deviceVersion];
+      v11 = [(HMDDevice *)v27 initWithIdentifier:identifier handles:v30 name:0 productInfo:0 version:deviceVersion capabilities:0 account:account];
 
-      [v6 addDevice:v11];
+      [account addDevice:v11];
     }
 
 LABEL_18:
     v32 = objc_autoreleasePoolPush();
-    v33 = self;
+    selfCopy2 = self;
     v34 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
     {
@@ -3069,40 +3069,40 @@ LABEL_18:
     }
 
     objc_autoreleasePoolPop(v32);
-    v36 = [v6 senderCorrelationIdentifier];
+    senderCorrelationIdentifier = [account senderCorrelationIdentifier];
 
-    if (v36)
+    if (senderCorrelationIdentifier)
     {
       goto LABEL_21;
     }
 
-    v39 = [v4 accountIdentifier];
-    v18 = [v39 senderCorrelationIdentifier];
+    accountIdentifier = [contextCopy accountIdentifier];
+    remoteAccountManager = [accountIdentifier senderCorrelationIdentifier];
 
-    if (v18)
+    if (remoteAccountManager)
     {
       v40 = objc_autoreleasePoolPush();
-      v41 = v33;
+      v41 = selfCopy2;
       v42 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v42, OS_LOG_TYPE_DEFAULT))
       {
         v43 = HMFGetLogIdentifier();
-        v44 = [v6 identifier];
-        v45 = [v44 shortDescription];
+        identifier2 = [account identifier];
+        shortDescription = [identifier2 shortDescription];
         *buf = 138544130;
         v48 = v43;
         v49 = 2114;
-        v50 = v45;
+        v50 = shortDescription;
         v51 = 2160;
         v52 = 1752392040;
         v53 = 2112;
-        v54 = v18;
+        v54 = remoteAccountManager;
         _os_log_impl(&dword_229538000, v42, OS_LOG_TYPE_DEFAULT, "%{public}@Updating account %{public}@ with inferred mergeID %{mask.hash}@", buf, 0x2Au);
       }
 
       objc_autoreleasePoolPop(v40);
-      v46 = [(HMDIDSMessageTransport *)v41 appleAccountManager];
-      [v46 updateSenderCorrelationIdentifier:v18];
+      appleAccountManager2 = [(HMDIDSMessageTransport *)v41 appleAccountManager];
+      [appleAccountManager2 updateSenderCorrelationIdentifier:remoteAccountManager];
     }
 
 LABEL_11:
@@ -3111,7 +3111,7 @@ LABEL_11:
   }
 
   v14 = objc_autoreleasePoolPush();
-  v15 = self;
+  selfCopy3 = self;
   v16 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
   {
@@ -3130,16 +3130,16 @@ LABEL_21:
   return v11;
 }
 
-- (BOOL)_shouldAddLocalHandleToDevice:(id)a3
+- (BOOL)_shouldAddLocalHandleToDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 localHandles];
-  v5 = [v4 hmf_isEmpty];
+  deviceCopy = device;
+  localHandles = [deviceCopy localHandles];
+  hmf_isEmpty = [localHandles hmf_isEmpty];
 
-  if (v5)
+  if (hmf_isEmpty)
   {
-    v6 = [v3 globalHandles];
-    v7 = [v6 count] == 1;
+    globalHandles = [deviceCopy globalHandles];
+    v7 = [globalHandles count] == 1;
   }
 
   else
@@ -3152,10 +3152,10 @@ LABEL_21:
 
 - (id)logIdentifier
 {
-  v2 = [(HMDIDSMessageTransport *)self service];
-  v3 = [v2 serviceIdentifier];
+  service = [(HMDIDSMessageTransport *)self service];
+  serviceIdentifier = [service serviceIdentifier];
 
-  return v3;
+  return serviceIdentifier;
 }
 
 - (id)start
@@ -3164,7 +3164,7 @@ LABEL_21:
   if (self && ![(HMDIDSMessageTransport *)self isLegacyTransport])
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy2 = self;
     v5 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -3180,7 +3180,7 @@ LABEL_21:
   else
   {
     v3 = objc_autoreleasePoolPush();
-    v4 = self;
+    selfCopy2 = self;
     v5 = HMFGetOSLogHandle();
     if (!os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
@@ -3197,149 +3197,149 @@ LABEL_21:
 
 LABEL_8:
   objc_autoreleasePoolPop(v3);
-  v8 = [(HMDIDSMessageTransport *)self service];
-  v9 = [(HMDIDSMessageTransport *)self workQueue];
-  [v8 addDelegate:self queue:v9];
+  service = [(HMDIDSMessageTransport *)self service];
+  workQueue = [(HMDIDSMessageTransport *)self workQueue];
+  [service addDelegate:self queue:workQueue];
 
-  v10 = [(HMDRemoteMessageTransport *)self startPromise];
-  [v10 fulfillWithValue:0];
+  startPromise = [(HMDRemoteMessageTransport *)self startPromise];
+  [startPromise fulfillWithValue:0];
 
-  v11 = [(HMDRemoteMessageTransport *)self startFuture];
+  startFuture = [(HMDRemoteMessageTransport *)self startFuture];
   v12 = *MEMORY[0x277D85DE8];
 
-  return v11;
+  return startFuture;
 }
 
-- (HMDIDSMessageTransport)initWithAccountRegistry:(id)a3 service:(id)a4 serviceName:(id)a5 appleAccountManager:(id)a6 remoteAccountManager:(id)a7 featuresDataSource:(id)a8
+- (HMDIDSMessageTransport)initWithAccountRegistry:(id)registry service:(id)service serviceName:(id)name appleAccountManager:(id)manager remoteAccountManager:(id)accountManager featuresDataSource:(id)source
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v49 = a7;
-  v18 = a8;
+  serviceCopy = service;
+  nameCopy = name;
+  managerCopy = manager;
+  accountManagerCopy = accountManager;
+  sourceCopy = source;
   v50.receiver = self;
   v50.super_class = HMDIDSMessageTransport;
-  v19 = [(HMDRemoteMessageTransport *)&v50 initWithAccountRegistry:a3];
+  v19 = [(HMDRemoteMessageTransport *)&v50 initWithAccountRegistry:registry];
   v20 = v19;
   if (v19)
   {
-    v47 = v17;
-    v48 = v15;
-    if (v16 == @"com.apple.private.alloy.willow")
+    v47 = managerCopy;
+    v48 = serviceCopy;
+    if (nameCopy == @"com.apple.private.alloy.willow")
     {
       v19->_legacyTransport = 1;
     }
 
     v21 = HMDispatchQueueNameString();
-    v22 = [v21 UTF8String];
+    uTF8String = [v21 UTF8String];
     v23 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
-    v24 = dispatch_queue_create(v22, v23);
+    v24 = dispatch_queue_create(uTF8String, v23);
     workQueue = v20->_workQueue;
     v20->_workQueue = v24;
 
-    objc_storeStrong(&v20->_service, a4);
-    objc_storeStrong(&v20->_appleAccountManager, a6);
-    objc_storeStrong(&v20->_remoteAccountManager, a7);
-    objc_storeStrong(&v20->_featuresDataSource, a8);
+    objc_storeStrong(&v20->_service, service);
+    objc_storeStrong(&v20->_appleAccountManager, manager);
+    objc_storeStrong(&v20->_remoteAccountManager, accountManager);
+    objc_storeStrong(&v20->_featuresDataSource, source);
     v26 = objc_alloc(MEMORY[0x277D0F8A0]);
-    v27 = [objc_opt_class() sendMessageLimit];
-    v28 = [objc_opt_class() sendMessageRate];
-    v30 = [v26 initWithLimit:v27 rate:{v28, v29}];
+    sendMessageLimit = [objc_opt_class() sendMessageLimit];
+    sendMessageRate = [objc_opt_class() sendMessageRate];
+    v30 = [v26 initWithLimit:sendMessageLimit rate:{sendMessageRate, v29}];
     sendMessageBudget = v20->_sendMessageBudget;
     v20->_sendMessageBudget = v30;
 
-    v32 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     messageContexts = v20->_messageContexts;
-    v20->_messageContexts = v32;
+    v20->_messageContexts = array;
 
-    v34 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     pendingResponses = v20->_pendingResponses;
-    v20->_pendingResponses = v34;
+    v20->_pendingResponses = dictionary;
 
-    v36 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     receivedResponses = v20->_receivedResponses;
-    v20->_receivedResponses = v36;
+    v20->_receivedResponses = dictionary2;
 
-    v38 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary3 = [MEMORY[0x277CBEB38] dictionary];
     requestedCapabilities = v20->_requestedCapabilities;
-    v20->_requestedCapabilities = v38;
+    v20->_requestedCapabilities = dictionary3;
 
-    v40 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary4 = [MEMORY[0x277CBEB38] dictionary];
     destinationAddress = v20->_destinationAddress;
-    v20->_destinationAddress = v40;
+    v20->_destinationAddress = dictionary4;
 
-    v42 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary5 = [MEMORY[0x277CBEB38] dictionary];
     pendingResponseTimers = v20->_pendingResponseTimers;
-    v20->_pendingResponseTimers = v42;
+    v20->_pendingResponseTimers = dictionary5;
 
     v44 = [objc_alloc(MEMORY[0x277CBEB40]) initWithCapacity:30];
     messageDedupBuffer = v20->_messageDedupBuffer;
     v20->_messageDedupBuffer = v44;
 
-    v17 = v47;
-    v15 = v48;
+    managerCopy = v47;
+    serviceCopy = v48;
   }
 
   return v20;
 }
 
-- (HMDIDSMessageTransport)initWithAccountRegistry:(id)a3 forServiceName:(id)a4
+- (HMDIDSMessageTransport)initWithAccountRegistry:(id)registry forServiceName:(id)name
 {
-  v6 = a4;
-  v7 = a3;
+  nameCopy = name;
+  registryCopy = registry;
   v8 = +[HMDIDSServiceManager sharedManager];
-  v9 = [v8 serviceWithName:v6];
+  v9 = [v8 serviceWithName:nameCopy];
   v10 = +[HMDAppleAccountManager sharedManager];
   v11 = +[HMDRemoteAccountManager sharedManager];
   v12 = +[HMDFeaturesDataSource defaultDataSource];
-  v13 = [(HMDIDSMessageTransport *)self initWithAccountRegistry:v7 service:v9 serviceName:v6 appleAccountManager:v10 remoteAccountManager:v11 featuresDataSource:v12];
+  v13 = [(HMDIDSMessageTransport *)self initWithAccountRegistry:registryCopy service:v9 serviceName:nameCopy appleAccountManager:v10 remoteAccountManager:v11 featuresDataSource:v12];
 
   return v13;
 }
 
 - (unint64_t)maximumNumberOfRetries
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"HMDIDSMessageTransportSendMessageNumberOfRetriesKey"];
-  v4 = [v3 numberValue];
-  v5 = [v4 unsignedIntegerValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HMDIDSMessageTransportSendMessageNumberOfRetriesKey"];
+  numberValue = [v3 numberValue];
+  unsignedIntegerValue = [numberValue unsignedIntegerValue];
 
-  return v5;
+  return unsignedIntegerValue;
 }
 
 - (double)defaultTimeout
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"HMDIDSMessageTransportSendMessageDefaultTimeoutKey"];
-  v4 = [v3 numberValue];
-  [v4 doubleValue];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"HMDIDSMessageTransportSendMessageDefaultTimeoutKey"];
+  numberValue = [v3 numberValue];
+  [numberValue doubleValue];
   v6 = v5;
 
   return v6;
 }
 
-+ (id)queueOneIdentifierWithMessageName:(id)a3 target:(id)a4 collapseID:(id)a5 timeToLive:(double)a6 now:(id)a7
++ (id)queueOneIdentifierWithMessageName:(id)name target:(id)target collapseID:(id)d timeToLive:(double)live now:(id)now
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (!v11)
+  nameCopy = name;
+  targetCopy = target;
+  dCopy = d;
+  nowCopy = now;
+  if (!nameCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v13)
+  if (!dCopy)
   {
 LABEL_9:
     v40 = _HMFPreconditionFailure();
     return sha256(v40, v41, v42, v43, v44, v45, v46, v47, v51);
   }
 
-  v15 = v14;
+  v15 = nowCopy;
   v23 = objc_autoreleasePoolPush();
-  v24 = fmax(a6 * 3.0, 28800.0);
+  v24 = fmax(live * 3.0, 28800.0);
   if (v24 > 604800.0)
   {
     v24 = 604800.0;
@@ -3347,7 +3347,7 @@ LABEL_9:
 
   v25 = v24;
   v49 = 0;
-  v26 = sha256(@"Q1Offset", v16, v17, v18, v19, v20, v21, v22, v11);
+  v26 = sha256(@"Q1Offset", v16, v17, v18, v19, v20, v21, v22, nameCopy);
   [v26 getBytes:&v49 length:8];
 
   v27 = v49 % v25;
@@ -3355,11 +3355,11 @@ LABEL_9:
   v48 = (v27 + v28) / v25;
   v29 = [MEMORY[0x277CBEA90] dataWithBytes:&v48 length:8];
   v37 = sha256(@"Q1Id", v30, v31, v32, v33, v34, v35, v36, v29);
-  v38 = [v37 hmf_hexadecimalRepresentation];
+  hmf_hexadecimalRepresentation = [v37 hmf_hexadecimalRepresentation];
 
   objc_autoreleasePoolPop(v23);
 
-  return v38;
+  return hmf_hexadecimalRepresentation;
 }
 
 + (id)logCategory
@@ -3384,11 +3384,11 @@ void __37__HMDIDSMessageTransport_logCategory__block_invoke()
 
 + (_HMFRate)sendMessageRate
 {
-  v3 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v4 = [v3 preferenceForKey:@"remoteSendMessageRate"];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v4 = [mEMORY[0x277D0F8D0] preferenceForKey:@"remoteSendMessageRate"];
 
-  v5 = [v4 numberValue];
-  [v5 doubleValue];
+  numberValue = [v4 numberValue];
+  [numberValue doubleValue];
   v7 = v6;
 
   if (v7 <= 0.0)
@@ -3398,12 +3398,12 @@ void __37__HMDIDSMessageTransport_logCategory__block_invoke()
 
   else
   {
-    v8 = [v4 numberValue];
-    [v8 doubleValue];
+    numberValue2 = [v4 numberValue];
+    [numberValue2 doubleValue];
     v10 = v9;
   }
 
-  v11 = ([a1 sendMessageLimit] / v10);
+  v11 = ([self sendMessageLimit] / v10);
 
   v12 = v11;
   v13 = v10;
@@ -3414,39 +3414,39 @@ void __37__HMDIDSMessageTransport_logCategory__block_invoke()
 
 + (unint64_t)sendMessageLimit
 {
-  v2 = [MEMORY[0x277D0F8D0] sharedPreferences];
-  v3 = [v2 preferenceForKey:@"remoteSendMessageLimit"];
+  mEMORY[0x277D0F8D0] = [MEMORY[0x277D0F8D0] sharedPreferences];
+  v3 = [mEMORY[0x277D0F8D0] preferenceForKey:@"remoteSendMessageLimit"];
 
-  v4 = [v3 numberValue];
-  v5 = [v4 unsignedIntegerValue];
+  numberValue = [v3 numberValue];
+  unsignedIntegerValue = [numberValue unsignedIntegerValue];
 
-  if (v5)
+  if (unsignedIntegerValue)
   {
-    v6 = [v3 numberValue];
-    v7 = [v6 unsignedIntegerValue];
+    numberValue2 = [v3 numberValue];
+    unsignedIntegerValue2 = [numberValue2 unsignedIntegerValue];
   }
 
   else
   {
-    v7 = 1800;
+    unsignedIntegerValue2 = 1800;
   }
 
-  return v7;
+  return unsignedIntegerValue2;
 }
 
-+ (id)stringFromHMDIDSResidentInfo:(int64_t)a3
++ (id)stringFromHMDIDSResidentInfo:(int64_t)info
 {
-  if (a3 >= 4)
+  if (info >= 4)
   {
-    v4 = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown residentInfo: %lu", a3];
+    info = [MEMORY[0x277CCACA8] stringWithFormat:@"Unknown residentInfo: %lu", info];
   }
 
   else
   {
-    v4 = off_278674088[a3];
+    info = off_278674088[info];
   }
 
-  return v4;
+  return info;
 }
 
 @end

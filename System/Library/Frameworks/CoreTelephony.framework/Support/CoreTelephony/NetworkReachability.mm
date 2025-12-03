@@ -1,20 +1,20 @@
 @interface NetworkReachability
-- (NetworkReachability)initWithRegistry:(shared_ptr<const Registry>)a3 andQueue:(queue)a4 andLogger:(void *)a5;
+- (NetworkReachability)initWithRegistry:(shared_ptr<const Registry>)registry andQueue:(queue)queue andLogger:(void *)logger;
 - (id).cxx_construct;
 - (void)bootstrap;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation NetworkReachability
 
-- (NetworkReachability)initWithRegistry:(shared_ptr<const Registry>)a3 andQueue:(queue)a4 andLogger:(void *)a5
+- (NetworkReachability)initWithRegistry:(shared_ptr<const Registry>)registry andQueue:(queue)queue andLogger:(void *)logger
 {
-  cntrl = a3.__cntrl_;
-  ptr = a3.__ptr_;
+  cntrl = registry.__cntrl_;
+  ptr = registry.__ptr_;
   v27.receiver = self;
   v27.super_class = NetworkReachability;
-  v8 = [(NetworkReachability *)&v27 init:a3.__ptr_];
+  v8 = [(NetworkReachability *)&v27 init:registry.__ptr_];
   if (v8)
   {
     v9 = *cntrl;
@@ -102,7 +102,7 @@
       (*(*v21 + 48))(v21);
     }
 
-    *(v8 + 27) = a4;
+    *(v8 + 27) = queue;
   }
 
   return v8;
@@ -286,7 +286,7 @@
   [(NetworkReachability *)&v4 dealloc];
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   objc_initWeak(&location, self);
   fObj = self->fQueue.fObj.fObj;

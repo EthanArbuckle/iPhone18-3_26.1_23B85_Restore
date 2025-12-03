@@ -1,19 +1,19 @@
 @interface SGTextProcessingServiceWrapper
-- (void)suggestionsFrom:(CSSearchableItem *)a3 persistResults:(BOOL)a4 completionHandler:(id)a5;
+- (void)suggestionsFrom:(CSSearchableItem *)from persistResults:(BOOL)results completionHandler:(id)handler;
 @end
 
 @implementation SGTextProcessingServiceWrapper
 
-- (void)suggestionsFrom:(CSSearchableItem *)a3 persistResults:(BOOL)a4 completionHandler:(id)a5
+- (void)suggestionsFrom:(CSSearchableItem *)from persistResults:(BOOL)results completionHandler:(id)handler
 {
-  v8 = _Block_copy(a5);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
-  *(v9 + 16) = a3;
-  *(v9 + 24) = a4;
+  *(v9 + 16) = from;
+  *(v9 + 24) = results;
   *(v9 + 32) = v8;
   *(v9 + 40) = self;
-  v10 = a3;
-  v11 = self;
+  fromCopy = from;
+  selfCopy = self;
 
   sub_1B81E3968(&unk_1B8200458, v9);
 }

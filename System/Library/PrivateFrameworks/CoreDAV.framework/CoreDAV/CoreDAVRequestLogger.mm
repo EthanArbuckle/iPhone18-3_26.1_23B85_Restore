@@ -1,25 +1,25 @@
 @interface CoreDAVRequestLogger
-+ (id)_redactedHeadersFromHeaders:(id)a3;
-- (CoreDAVRequestLogger)initWithProvider:(id)a3;
-- (id)_inflateRequestBody:(id)a3;
++ (id)_redactedHeadersFromHeaders:(id)headers;
+- (CoreDAVRequestLogger)initWithProvider:(id)provider;
+- (id)_inflateRequestBody:(id)body;
 - (void)finishCoreDAVResponse;
-- (void)logCoreDAVRequest:(id)a3 withTaskIdentifier:(id)a4;
-- (void)logCoreDAVResponseHeaders:(id)a3 andStatusCode:(int64_t)a4 withTaskIdentifier:(id)a5;
-- (void)logCoreDAVResponseSnippet:(id)a3 withTaskIdentifier:(id)a4 isBody:(BOOL)a5;
+- (void)logCoreDAVRequest:(id)request withTaskIdentifier:(id)identifier;
+- (void)logCoreDAVResponseHeaders:(id)headers andStatusCode:(int64_t)code withTaskIdentifier:(id)identifier;
+- (void)logCoreDAVResponseSnippet:(id)snippet withTaskIdentifier:(id)identifier isBody:(BOOL)body;
 @end
 
 @implementation CoreDAVRequestLogger
 
-- (CoreDAVRequestLogger)initWithProvider:(id)a3
+- (CoreDAVRequestLogger)initWithProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v11.receiver = self;
   v11.super_class = CoreDAVRequestLogger;
   v6 = [(CoreDAVRequestLogger *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_provider, a3);
+    objc_storeStrong(&v6->_provider, provider);
     v8 = [objc_alloc(MEMORY[0x277CCAC98]) initWithKey:@"self" ascending:1 selector:sel_caseInsensitiveCompare_];
     v9 = [objc_alloc(MEMORY[0x277CBEA60]) initWithObjects:{v8, 0}];
     [(CoreDAVRequestLogger *)v7 setHeaderSortDescriptors:v9];
@@ -28,13 +28,13 @@
   return v7;
 }
 
-- (id)_inflateRequestBody:(id)a3
+- (id)_inflateRequestBody:(id)body
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB28] data];
+  bodyCopy = body;
+  data = [MEMORY[0x277CBEB28] data];
   v5 = [@"[compression: gzip]\n" dataUsingEncoding:4];
-  [v4 appendData:v5];
+  [data appendData:v5];
 
   memset(&v11, 0, sizeof(v11));
   bzero(v12, 0x2000uLL);
@@ -45,8 +45,8 @@
 
   else
   {
-    v7 = v3;
-    v11.avail_in = [v3 length];
+    v7 = bodyCopy;
+    v11.avail_in = [bodyCopy length];
     v11.total_in = v11.avail_in;
     while (1)
     {
@@ -55,7 +55,7 @@
       v8 = inflate(&v11, 0);
       if ((0x2000 - v11.avail_out) >= 1)
       {
-        [v4 appendBytes:v12 length:?];
+        [data appendBytes:v12 length:?];
       }
 
       if (v8)
@@ -72,13 +72,13 @@
     if (v8 != 1)
     {
 
-      v4 = 0;
+      data = 0;
     }
 
 LABEL_11:
     inflateEnd(&v11);
-    v4 = v4;
-    v6 = v4;
+    data = data;
+    v6 = data;
   }
 
   v9 = *MEMORY[0x277D85DE8];
@@ -86,27 +86,27 @@ LABEL_11:
   return v6;
 }
 
-- (void)logCoreDAVRequest:(id)a3 withTaskIdentifier:(id)a4
+- (void)logCoreDAVRequest:(id)request withTaskIdentifier:(id)identifier
 {
   v90 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v72 = a4;
+  requestCopy = request;
+  identifierCopy = identifier;
   v7 = +[CoreDAVLogging sharedLogging];
   v8 = [v7 delegatesToLogTransmittedDataForAccountInfoProvider:self->_provider];
 
   v9 = [MEMORY[0x277CBEB58] set];
   if ([v8 count])
   {
-    v10 = [v6 HTTPBody];
-    v11 = [v6 allHTTPHeaderFields];
-    v12 = [v11 CDVObjectForKeyCaseInsensitive:@"Content-Encoding"];
+    hTTPBody = [requestCopy HTTPBody];
+    allHTTPHeaderFields = [requestCopy allHTTPHeaderFields];
+    v12 = [allHTTPHeaderFields CDVObjectForKeyCaseInsensitive:@"Content-Encoding"];
     v13 = [v12 isEqualToString:@"gzip"];
 
     if (v13)
     {
-      v14 = [(CoreDAVRequestLogger *)self _inflateRequestBody:v10];
+      v14 = [(CoreDAVRequestLogger *)self _inflateRequestBody:hTTPBody];
 
-      v10 = v14;
+      hTTPBody = v14;
     }
 
     v82 = 0u;
@@ -121,9 +121,9 @@ LABEL_11:
       v17 = v16;
       v18 = *v81;
       allocator = *MEMORY[0x277CBECE8];
-      v70 = self;
-      v71 = v6;
-      v68 = v10;
+      selfCopy = self;
+      v71 = requestCopy;
+      v68 = hTTPBody;
       v69 = v9;
       v67 = v15;
       v73 = *v81;
@@ -144,8 +144,8 @@ LABEL_11:
             if (objc_opt_respondsToSelector())
             {
               v75 = v19;
-              v21 = [v20 logHandle];
-              if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+              logHandle = [v20 logHandle];
+              if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
               {
                 v22 = objc_opt_class();
                 *buf = 138543618;
@@ -153,7 +153,7 @@ LABEL_11:
                 v87 = 2112;
                 v88 = v20;
                 v23 = v22;
-                _os_log_error_impl(&dword_2452FB000, v21, OS_LOG_TYPE_ERROR, "A delegate of similar class [%{public}@] has already logged this message. Skipping this delegate %@", buf, 0x16u);
+                _os_log_error_impl(&dword_2452FB000, logHandle, OS_LOG_TYPE_ERROR, "A delegate of similar class [%{public}@] has already logged this message. Skipping this delegate %@", buf, 0x16u);
 
                 v18 = v73;
               }
@@ -179,12 +179,12 @@ LABEL_11:
             }
 
             v75 = v19;
-            v24 = [v6 URL];
+            v24 = [requestCopy URL];
 
             if (v24)
             {
-              v25 = [MEMORY[0x277CCACA8] stringWithFormat:@"\nTask %@\n", v72];
-              v26 = [v25 dataUsingEncoding:4];
+              identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"\nTask %@\n", identifierCopy];
+              v26 = [identifierCopy dataUsingEncoding:4];
               [v20 coreDAVLogTransmittedDataPartial:v26];
 
               Current = CFAbsoluteTimeGetCurrent();
@@ -204,8 +204,8 @@ LABEL_11:
                 StringWithDate = 0;
               }
 
-              v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n>>>>> %@\n", StringWithDate];
-              v31 = [v30 dataUsingEncoding:4];
+              stringWithDate = [MEMORY[0x277CCACA8] stringWithFormat:@"\n>>>>> %@\n", StringWithDate];
+              v31 = [stringWithDate dataUsingEncoding:4];
               [v20 coreDAVLogTransmittedDataPartial:v31];
 
               if (StringWithDate)
@@ -219,60 +219,60 @@ LABEL_11:
               }
 
               v32 = MEMORY[0x277CCACA8];
-              v33 = [v6 HTTPMethod];
-              v34 = [v6 URL];
-              v35 = [v32 stringWithFormat:@"%@ %@\n", v33, v34];
+              hTTPMethod = [requestCopy HTTPMethod];
+              v34 = [requestCopy URL];
+              v35 = [v32 stringWithFormat:@"%@ %@\n", hTTPMethod, v34];
               v36 = [v35 dataUsingEncoding:4];
               [v20 coreDAVLogTransmittedDataPartial:v36];
 
-              v37 = [v6 allHTTPHeaderFields];
+              allHTTPHeaderFields2 = [requestCopy allHTTPHeaderFields];
               provider = self->_provider;
               if (objc_opt_respondsToSelector())
               {
                 v39 = self->_provider;
-                v40 = [v6 URL];
+                v40 = [requestCopy URL];
                 LODWORD(v39) = [(CoreDAVAccountInfoProvider *)v39 shouldHandleHTTPCookiesForURL:v40];
 
                 if (v39)
                 {
-                  [v6 _CFURLRequest];
+                  [requestCopy _CFURLRequest];
                   v41 = CFURLRequestCopyHTTPCookieStorage();
                   if (v41)
                   {
                     v42 = v41;
-                    [v6 URL];
+                    [requestCopy URL];
                     v43 = _CFHTTPCookieStorageCopyRequestHeaderFieldsForURL();
                     CFRelease(v42);
                   }
 
                   else
                   {
-                    v44 = [MEMORY[0x277CBAB38] sharedHTTPCookieStorage];
-                    v45 = [v6 URL];
-                    v46 = [v44 cookiesForURL:v45];
+                    mEMORY[0x277CBAB38] = [MEMORY[0x277CBAB38] sharedHTTPCookieStorage];
+                    v45 = [requestCopy URL];
+                    v46 = [mEMORY[0x277CBAB38] cookiesForURL:v45];
 
                     v43 = [MEMORY[0x277CBAB30] requestHeaderFieldsWithCookies:v46];
                   }
 
                   if ([v43 count])
                   {
-                    v47 = [v37 mutableCopy];
+                    v47 = [allHTTPHeaderFields2 mutableCopy];
                     [v47 addEntriesFromDictionary:v43];
 
-                    v37 = v47;
+                    allHTTPHeaderFields2 = v47;
                   }
                 }
               }
 
-              v21 = [objc_opt_class() _redactedHeadersFromHeaders:v37];
+              logHandle = [objc_opt_class() _redactedHeadersFromHeaders:allHTTPHeaderFields2];
 
               v78 = 0u;
               v79 = 0u;
               v76 = 0u;
               v77 = 0u;
-              v48 = [v21 allKeys];
-              v49 = [(CoreDAVRequestLogger *)self headerSortDescriptors];
-              v50 = [v48 sortedArrayUsingDescriptors:v49];
+              allKeys = [logHandle allKeys];
+              headerSortDescriptors = [(CoreDAVRequestLogger *)self headerSortDescriptors];
+              v50 = [allKeys sortedArrayUsingDescriptors:headerSortDescriptors];
 
               v51 = [v50 countByEnumeratingWithState:&v76 objects:v84 count:16];
               if (v51)
@@ -290,7 +290,7 @@ LABEL_11:
 
                     v55 = *(*(&v76 + 1) + 8 * i);
                     v56 = MEMORY[0x277CCACA8];
-                    v57 = [v21 objectForKey:v55];
+                    v57 = [logHandle objectForKey:v55];
                     v58 = [v56 stringWithFormat:@"%@: %@\n", v55, v57];
                     v59 = [v58 dataUsingEncoding:4];
                     [v20 coreDAVLogTransmittedDataPartial:v59];
@@ -305,7 +305,7 @@ LABEL_11:
               v60 = [@"\n" dataUsingEncoding:4];
               [v20 coreDAVLogTransmittedDataPartial:v60];
 
-              v10 = v68;
+              hTTPBody = v68;
               if (objc_opt_respondsToSelector())
               {
                 [v20 coreDAVLogRequestBody:v68];
@@ -316,8 +316,8 @@ LABEL_11:
                 [v20 coreDAVLogTransmittedDataPartial:v68];
               }
 
-              self = v70;
-              v6 = v71;
+              self = selfCopy;
+              requestCopy = v71;
               v9 = v69;
               v17 = v74;
               v18 = v73;
@@ -334,12 +334,12 @@ LABEL_11:
 
             if (objc_opt_respondsToSelector())
             {
-              v21 = [v20 logHandle];
-              if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+              logHandle = [v20 logHandle];
+              if (os_log_type_enabled(logHandle, OS_LOG_TYPE_ERROR))
               {
                 *buf = 138412290;
-                v86 = v6;
-                _os_log_error_impl(&dword_2452FB000, v21, OS_LOG_TYPE_ERROR, "ERROR: Nil URL for Request %@. Skipping rest of Log", buf, 0xCu);
+                v86 = requestCopy;
+                _os_log_error_impl(&dword_2452FB000, logHandle, OS_LOG_TYPE_ERROR, "ERROR: Nil URL for Request %@. Skipping rest of Log", buf, 0xCu);
               }
 
               goto LABEL_51;
@@ -351,10 +351,10 @@ LABEL_11:
               goto LABEL_52;
             }
 
-            [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Nil URL for Request %@. Skipping rest of Log", v6, v64];
+            [MEMORY[0x277CCACA8] stringWithFormat:@"ERROR: Nil URL for Request %@. Skipping rest of Log", requestCopy, v64];
           }
-          v21 = ;
-          [v20 coreDAVLogDiagnosticMessage:v21 atLevel:3];
+          logHandle = ;
+          [v20 coreDAVLogDiagnosticMessage:logHandle atLevel:3];
 LABEL_51:
 
           v19 = v75;
@@ -375,22 +375,22 @@ LABEL_52:
   v63 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_redactedHeadersFromHeaders:(id)a3
++ (id)_redactedHeadersFromHeaders:(id)headers
 {
   v20 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  headersCopy = headers;
   if (_redactedHeadersFromHeaders__onceToken != -1)
   {
     +[CoreDAVRequestLogger _redactedHeadersFromHeaders:];
   }
 
-  v4 = v3;
+  v4 = headersCopy;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
-  v5 = [v4 allKeys];
-  v6 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  allKeys = [v4 allKeys];
+  v6 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
   if (v6)
   {
     v7 = v6;
@@ -403,7 +403,7 @@ LABEL_52:
       {
         if (*v16 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allKeys);
         }
 
         v12 = *(*(&v15 + 1) + 8 * i);
@@ -420,7 +420,7 @@ LABEL_52:
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      v7 = [allKeys countByEnumeratingWithState:&v15 objects:v19 count:16];
     }
 
     while (v7);
@@ -446,13 +446,13 @@ uint64_t __52__CoreDAVRequestLogger__redactedHeadersFromHeaders___block_invoke()
   return MEMORY[0x2821F96F8](v0, v1);
 }
 
-- (void)logCoreDAVResponseHeaders:(id)a3 andStatusCode:(int64_t)a4 withTaskIdentifier:(id)a5
+- (void)logCoreDAVResponseHeaders:(id)headers andStatusCode:(int64_t)code withTaskIdentifier:(id)identifier
 {
   v63 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v47 = a5;
+  headersCopy = headers;
+  identifierCopy = identifier;
   v8 = +[CoreDAVLogging sharedLogging];
-  v45 = self;
+  selfCopy = self;
   v9 = [v8 delegatesToLogTransmittedDataForAccountInfoProvider:self->_provider];
 
   if ([v9 count])
@@ -484,8 +484,8 @@ uint64_t __52__CoreDAVRequestLogger__redactedHeadersFromHeaders___block_invoke()
           v14 = *(*(&v57 + 1) + 8 * v13);
           if ([v14 shouldLogTransmittedData])
           {
-            v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"\nTask %@\n", v47];
-            v16 = [v15 dataUsingEncoding:4];
+            identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"\nTask %@\n", identifierCopy];
+            v16 = [identifierCopy dataUsingEncoding:4];
             [v14 coreDAVLogTransmittedDataPartial:v16];
 
             Current = CFAbsoluteTimeGetCurrent();
@@ -506,8 +506,8 @@ uint64_t __52__CoreDAVRequestLogger__redactedHeadersFromHeaders___block_invoke()
               StringWithDate = 0;
             }
 
-            v20 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n<<<<< %@\n", StringWithDate];
-            v21 = [v20 dataUsingEncoding:4];
+            stringWithDate = [MEMORY[0x277CCACA8] stringWithFormat:@"\n<<<<< %@\n", StringWithDate];
+            v21 = [stringWithDate dataUsingEncoding:4];
             [v14 coreDAVLogTransmittedDataPartial:v21];
 
             if (StringWithDate)
@@ -520,7 +520,7 @@ uint64_t __52__CoreDAVRequestLogger__redactedHeadersFromHeaders___block_invoke()
               CFRelease(v18);
             }
 
-            v22 = CDVHTTPStatusCodeAsStatusString(a4);
+            v22 = CDVHTTPStatusCodeAsStatusString(code);
             v23 = v22;
             if (v22)
             {
@@ -540,7 +540,7 @@ uint64_t __52__CoreDAVRequestLogger__redactedHeadersFromHeaders___block_invoke()
             v26 = v25;
 
             v51 = v26;
-            v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"HTTP/1.1 %d (%@)\n\n", a4, v26];
+            v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"HTTP/1.1 %d (%@)\n\n", code, v26];
             v27 = [v50 dataUsingEncoding:4];
             [v14 coreDAVLogTransmittedDataPartial:v27];
 
@@ -548,9 +548,9 @@ uint64_t __52__CoreDAVRequestLogger__redactedHeadersFromHeaders___block_invoke()
             v56 = 0u;
             v53 = 0u;
             v54 = 0u;
-            v28 = [v7 allKeys];
-            v29 = [(CoreDAVRequestLogger *)v45 headerSortDescriptors];
-            v30 = [v28 sortedArrayUsingDescriptors:v29];
+            allKeys = [headersCopy allKeys];
+            headerSortDescriptors = [(CoreDAVRequestLogger *)selfCopy headerSortDescriptors];
+            v30 = [allKeys sortedArrayUsingDescriptors:headerSortDescriptors];
 
             v31 = [v30 countByEnumeratingWithState:&v53 objects:v61 count:16];
             if (v31)
@@ -568,7 +568,7 @@ uint64_t __52__CoreDAVRequestLogger__redactedHeadersFromHeaders___block_invoke()
 
                   v35 = *(*(&v53 + 1) + 8 * i);
                   v36 = MEMORY[0x277CCACA8];
-                  v37 = [v7 objectForKey:v35];
+                  v37 = [headersCopy objectForKey:v35];
                   v38 = [v36 stringWithFormat:@"%@: %@\n", v35, v37];
                   v39 = [v38 dataUsingEncoding:4];
                   [v14 coreDAVLogTransmittedDataPartial:v39];
@@ -604,14 +604,14 @@ uint64_t __52__CoreDAVRequestLogger__redactedHeadersFromHeaders___block_invoke()
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (void)logCoreDAVResponseSnippet:(id)a3 withTaskIdentifier:(id)a4 isBody:(BOOL)a5
+- (void)logCoreDAVResponseSnippet:(id)snippet withTaskIdentifier:(id)identifier isBody:(BOOL)body
 {
-  v22 = a5;
+  bodyCopy = body;
   v28 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
-  if ([v7 length])
+  snippetCopy = snippet;
+  identifierCopy = identifier;
+  v9 = snippetCopy;
+  if ([snippetCopy length])
   {
     v10 = +[CoreDAVLogging sharedLogging];
     v11 = [v10 delegatesToLogTransmittedDataForAccountInfoProvider:self->_provider];
@@ -642,14 +642,14 @@ uint64_t __52__CoreDAVRequestLogger__redactedHeadersFromHeaders___block_invoke()
             v17 = *(*(&v23 + 1) + 8 * i);
             if ([v17 shouldLogTransmittedData])
             {
-              if (v8)
+              if (identifierCopy)
               {
-                v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"\nTask %@\n", v8];
-                v19 = [v18 dataUsingEncoding:4];
+                identifierCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"\nTask %@\n", identifierCopy];
+                v19 = [identifierCopy dataUsingEncoding:4];
                 [v17 coreDAVLogTransmittedDataPartial:v19];
               }
 
-              if (v22 && (objc_opt_respondsToSelector() & 1) != 0)
+              if (bodyCopy && (objc_opt_respondsToSelector() & 1) != 0)
               {
                 [v17 coreDAVLogResponseBody:v9];
               }

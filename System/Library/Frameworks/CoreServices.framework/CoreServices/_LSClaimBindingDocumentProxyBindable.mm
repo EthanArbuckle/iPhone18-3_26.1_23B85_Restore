@@ -1,37 +1,37 @@
 @interface _LSClaimBindingDocumentProxyBindable
-- (BOOL)isEqual:(id)a3;
-- (_LSClaimBindingDocumentProxyBindable)initWithCoder:(id)a3;
-- (id)initWithProxy:(id *)a1;
-- (id)typeRecordWithError:(id *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_LSClaimBindingDocumentProxyBindable)initWithCoder:(id)coder;
+- (id)initWithProxy:(id *)proxy;
+- (id)typeRecordWithError:(id *)error;
 @end
 
 @implementation _LSClaimBindingDocumentProxyBindable
 
-- (id)initWithProxy:(id *)a1
+- (id)initWithProxy:(id *)proxy
 {
   v4 = a2;
-  if (a1)
+  if (proxy)
   {
-    v7.receiver = a1;
+    v7.receiver = proxy;
     v7.super_class = _LSClaimBindingDocumentProxyBindable;
     v5 = objc_msgSendSuper2(&v7, sel__initProtected);
-    a1 = v5;
+    proxy = v5;
     if (v5)
     {
       objc_storeStrong(v5 + 1, a2);
     }
   }
 
-  return a1;
+  return proxy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(LSDocumentProxy *)self->_documentProxy isEqual:v4[1]];
+    v5 = [(LSDocumentProxy *)self->_documentProxy isEqual:equalCopy[1]];
   }
 
   else
@@ -42,10 +42,10 @@
   return v5;
 }
 
-- (_LSClaimBindingDocumentProxyBindable)initWithCoder:(id)a3
+- (_LSClaimBindingDocumentProxyBindable)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"documentProxy"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"documentProxy"];
   if (v5)
   {
     v6 = [(_LSClaimBindingDocumentProxyBindable *)&self->super.super.isa initWithProxy:v5];
@@ -60,7 +60,7 @@
   return v6;
 }
 
-- (id)typeRecordWithError:(id *)a3
+- (id)typeRecordWithError:(id *)error
 {
   v30 = 0;
   v27 = 0;
@@ -121,28 +121,28 @@
 
   else
   {
-    v14 = [(LSDocumentProxy *)self->_documentProxy typeIdentifier];
-    if (v14)
+    typeIdentifier = [(LSDocumentProxy *)self->_documentProxy typeIdentifier];
+    if (typeIdentifier)
     {
-      v12 = [UTTypeRecord typeRecordWithIdentifier:v14];
+      v12 = [UTTypeRecord typeRecordWithIdentifier:typeIdentifier];
     }
 
     else
     {
-      v17 = [(LSDocumentProxy *)self->_documentProxy name];
-      v18 = [v17 pathExtension];
+      name = [(LSDocumentProxy *)self->_documentProxy name];
+      pathExtension = [name pathExtension];
 
-      if (v18)
+      if (pathExtension)
       {
-        v12 = [UTTypeRecord typeRecordWithTag:v18 ofClass:@"public.filename-extension" conformingToIdentifier:@"public.data"];
+        v12 = [UTTypeRecord typeRecordWithTag:pathExtension ofClass:@"public.filename-extension" conformingToIdentifier:@"public.data"];
       }
 
       else
       {
-        v19 = [(LSDocumentProxy *)self->_documentProxy MIMEType];
-        if (v19)
+        mIMEType = [(LSDocumentProxy *)self->_documentProxy MIMEType];
+        if (mIMEType)
         {
-          v12 = [UTTypeRecord typeRecordWithTag:v19 ofClass:@"public.mime-type" conformingToIdentifier:@"public.data"];
+          v12 = [UTTypeRecord typeRecordWithTag:mIMEType ofClass:@"public.mime-type" conformingToIdentifier:@"public.data"];
         }
 
         else
@@ -160,10 +160,10 @@
     v12 = [UTTypeRecord typeRecordWithIdentifier:v7];
   }
 
-  if (a3 && !v12)
+  if (error && !v12)
   {
     v20 = v9;
-    *a3 = v9;
+    *error = v9;
   }
 
   if (v27 && v29 == 1)

@@ -1,42 +1,42 @@
 @interface _SFPBSearchInAppCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBSearchInAppCommand)initWithDictionary:(id)a3;
-- (_SFPBSearchInAppCommand)initWithFacade:(id)a3;
-- (_SFPBSearchInAppCommand)initWithJSON:(id)a3;
+- (_SFPBSearchInAppCommand)initWithDictionary:(id)dictionary;
+- (_SFPBSearchInAppCommand)initWithFacade:(id)facade;
+- (_SFPBSearchInAppCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
-- (void)setApplicationBundleIdentifier:(id)a3;
-- (void)setSearchString:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setApplicationBundleIdentifier:(id)identifier;
+- (void)setSearchString:(id)string;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBSearchInAppCommand
 
-- (_SFPBSearchInAppCommand)initWithFacade:(id)a3
+- (_SFPBSearchInAppCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBSearchInAppCommand *)self init];
   if (v5)
   {
-    v6 = [v4 searchString];
+    searchString = [facadeCopy searchString];
 
-    if (v6)
+    if (searchString)
     {
-      v7 = [v4 searchString];
-      [(_SFPBSearchInAppCommand *)v5 setSearchString:v7];
+      searchString2 = [facadeCopy searchString];
+      [(_SFPBSearchInAppCommand *)v5 setSearchString:searchString2];
     }
 
-    v8 = [v4 applicationBundleIdentifier];
+    applicationBundleIdentifier = [facadeCopy applicationBundleIdentifier];
 
-    if (v8)
+    if (applicationBundleIdentifier)
     {
-      v9 = [v4 applicationBundleIdentifier];
-      [(_SFPBSearchInAppCommand *)v5 setApplicationBundleIdentifier:v9];
+      applicationBundleIdentifier2 = [facadeCopy applicationBundleIdentifier];
+      [(_SFPBSearchInAppCommand *)v5 setApplicationBundleIdentifier:applicationBundleIdentifier2];
     }
 
-    if ([v4 hasSearchInAppType])
+    if ([facadeCopy hasSearchInAppType])
     {
-      -[_SFPBSearchInAppCommand setSearchInAppType:](v5, "setSearchInAppType:", [v4 searchInAppType]);
+      -[_SFPBSearchInAppCommand setSearchInAppType:](v5, "setSearchInAppType:", [facadeCopy searchInAppType]);
     }
 
     v10 = v5;
@@ -45,15 +45,15 @@
   return v5;
 }
 
-- (_SFPBSearchInAppCommand)initWithDictionary:(id)a3
+- (_SFPBSearchInAppCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = _SFPBSearchInAppCommand;
   v5 = [(_SFPBSearchInAppCommand *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"searchString"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"searchString"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -61,7 +61,7 @@
       [(_SFPBSearchInAppCommand *)v5 setSearchString:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"applicationBundleIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"applicationBundleIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -69,7 +69,7 @@
       [(_SFPBSearchInAppCommand *)v5 setApplicationBundleIdentifier:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"searchInAppType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"searchInAppType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -82,30 +82,30 @@
   return v5;
 }
 
-- (_SFPBSearchInAppCommand)initWithJSON:(id)a3
+- (_SFPBSearchInAppCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBSearchInAppCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBSearchInAppCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBSearchInAppCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -118,27 +118,27 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_applicationBundleIdentifier)
   {
-    v4 = [(_SFPBSearchInAppCommand *)self applicationBundleIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
+    applicationBundleIdentifier = [(_SFPBSearchInAppCommand *)self applicationBundleIdentifier];
+    v5 = [applicationBundleIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"applicationBundleIdentifier"];
   }
 
   if (self->_searchInAppType)
   {
-    v6 = [(_SFPBSearchInAppCommand *)self searchInAppType];
-    if (v6)
+    searchInAppType = [(_SFPBSearchInAppCommand *)self searchInAppType];
+    if (searchInAppType)
     {
-      if (v6 == 1)
+      if (searchInAppType == 1)
       {
         v7 = @"1";
       }
 
       else
       {
-        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+        v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", searchInAppType];
       }
     }
 
@@ -147,41 +147,41 @@
       v7 = @"0";
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"searchInAppType"];
+    [dictionary setObject:v7 forKeyedSubscript:@"searchInAppType"];
   }
 
   if (self->_searchString)
   {
-    v8 = [(_SFPBSearchInAppCommand *)self searchString];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"searchString"];
+    searchString = [(_SFPBSearchInAppCommand *)self searchString];
+    v9 = [searchString copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"searchString"];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBSearchInAppCommand *)self searchString];
-  v6 = [v4 searchString];
-  if ((v5 != 0) == (v6 == 0))
+  searchString = [(_SFPBSearchInAppCommand *)self searchString];
+  searchString2 = [equalCopy searchString];
+  if ((searchString != 0) == (searchString2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBSearchInAppCommand *)self searchString];
-  if (v7)
+  searchString3 = [(_SFPBSearchInAppCommand *)self searchString];
+  if (searchString3)
   {
-    v8 = v7;
-    v9 = [(_SFPBSearchInAppCommand *)self searchString];
-    v10 = [v4 searchString];
-    v11 = [v9 isEqual:v10];
+    v8 = searchString3;
+    searchString4 = [(_SFPBSearchInAppCommand *)self searchString];
+    searchString5 = [equalCopy searchString];
+    v11 = [searchString4 isEqual:searchString5];
 
     if (!v11)
     {
@@ -193,24 +193,24 @@
   {
   }
 
-  v5 = [(_SFPBSearchInAppCommand *)self applicationBundleIdentifier];
-  v6 = [v4 applicationBundleIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  searchString = [(_SFPBSearchInAppCommand *)self applicationBundleIdentifier];
+  searchString2 = [equalCopy applicationBundleIdentifier];
+  if ((searchString != 0) != (searchString2 == 0))
   {
-    v12 = [(_SFPBSearchInAppCommand *)self applicationBundleIdentifier];
-    if (!v12)
+    applicationBundleIdentifier = [(_SFPBSearchInAppCommand *)self applicationBundleIdentifier];
+    if (!applicationBundleIdentifier)
     {
 
 LABEL_15:
       searchInAppType = self->_searchInAppType;
-      v17 = searchInAppType == [v4 searchInAppType];
+      v17 = searchInAppType == [equalCopy searchInAppType];
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBSearchInAppCommand *)self applicationBundleIdentifier];
-    v15 = [v4 applicationBundleIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = applicationBundleIdentifier;
+    applicationBundleIdentifier2 = [(_SFPBSearchInAppCommand *)self applicationBundleIdentifier];
+    applicationBundleIdentifier3 = [equalCopy applicationBundleIdentifier];
+    v16 = [applicationBundleIdentifier2 isEqual:applicationBundleIdentifier3];
 
     if (v16)
     {
@@ -230,42 +230,42 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v8 = a3;
-  v4 = [(_SFPBSearchInAppCommand *)self searchString];
-  if (v4)
+  toCopy = to;
+  searchString = [(_SFPBSearchInAppCommand *)self searchString];
+  if (searchString)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBSearchInAppCommand *)self applicationBundleIdentifier];
-  if (v5)
+  applicationBundleIdentifier = [(_SFPBSearchInAppCommand *)self applicationBundleIdentifier];
+  if (applicationBundleIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v6 = [(_SFPBSearchInAppCommand *)self searchInAppType];
-  v7 = v8;
-  if (v6)
+  searchInAppType = [(_SFPBSearchInAppCommand *)self searchInAppType];
+  v7 = toCopy;
+  if (searchInAppType)
   {
     PBDataWriterWriteInt32Field();
-    v7 = v8;
+    v7 = toCopy;
   }
 }
 
-- (void)setApplicationBundleIdentifier:(id)a3
+- (void)setApplicationBundleIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   applicationBundleIdentifier = self->_applicationBundleIdentifier;
   self->_applicationBundleIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setSearchString:(id)a3
+- (void)setSearchString:(id)string
 {
-  v4 = [a3 copy];
+  v4 = [string copy];
   searchString = self->_searchString;
   self->_searchString = v4;
 

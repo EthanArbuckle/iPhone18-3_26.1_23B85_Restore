@@ -3,7 +3,7 @@
 + (double)distanceToBottomOfAppIconsForMultiResultCell;
 + (double)distanceToTopOfAppIconsForMultiResultCell;
 + (double)idealHorizontalSpacingBetweenAppIcons;
-+ (double)idealHorizontalSpacingBetweenAppIconsForContainerWidth:(double)a3 insets:(UIEdgeInsets)a4;
++ (double)idealHorizontalSpacingBetweenAppIconsForContainerWidth:(double)width insets:(UIEdgeInsets)insets;
 + (int64_t)numberOfAppIconsPerRow;
 @end
 
@@ -59,14 +59,14 @@
     result = 22.0;
     if (!v4)
     {
-      v5 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v5 _referenceBounds];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen _referenceBounds];
       v7 = v6;
 
-      [a1 preferredHorizontalPlatterInsetForAppIcons];
+      [self preferredHorizontalPlatterInsetForAppIcons];
       v9 = v8;
       +[SearchUIUtilities standardTableCellContentInset];
-      [a1 idealHorizontalSpacingBetweenAppIconsForContainerWidth:v7 insets:{0.0, v9 + v10, 0.0, v9 + v10}];
+      [self idealHorizontalSpacingBetweenAppIconsForContainerWidth:v7 insets:{0.0, v9 + v10, 0.0, v9 + v10}];
       idealHorizontalSpacingBetweenAppIcons_spacing = *&result;
     }
   }
@@ -74,13 +74,13 @@
   return result;
 }
 
-+ (double)idealHorizontalSpacingBetweenAppIconsForContainerWidth:(double)a3 insets:(UIEdgeInsets)a4
++ (double)idealHorizontalSpacingBetweenAppIconsForContainerWidth:(double)width insets:(UIEdgeInsets)insets
 {
-  v5 = a3 - a4.left - a4.right;
-  [a1 appIconItemSize];
-  v7 = v5 - v6 * [a1 numberOfAppIconsPerRow];
+  v5 = width - insets.left - insets.right;
+  [self appIconItemSize];
+  v7 = v5 - v6 * [self numberOfAppIconsPerRow];
   v8 = MEMORY[0x1E69D91A8];
-  v9 = v7 / ([a1 numberOfAppIconsPerRow] - 1);
+  v9 = v7 / ([self numberOfAppIconsPerRow] - 1);
 
   [v8 deviceScaledRoundedValue:0 forView:v9];
   return result;
@@ -91,7 +91,7 @@
   v3 = 0.0;
   if (_UISolariumEnabled())
   {
-    [a1 distanceToTopOfAppIconsForMultiResultCell];
+    [self distanceToTopOfAppIconsForMultiResultCell];
     return v4 + 4.0;
   }
 

@@ -1,11 +1,11 @@
 @interface OKTransitionParallaxPush
 + (id)supportedSettings;
 - (OKTransitionParallaxPush)init;
-- (OKTransitionParallaxPush)initWithSettings:(id)a3;
-- (void)_transitionInView:(id)a3 fromSubview:(id)a4 toSubview:(id)a5 wasInteractive:(BOOL)a6 duration:(double)a7 doEaseIn:(BOOL)a8 doEaseOut:(BOOL)a9 isCompleting:(BOOL)a10 wasCancelled:(BOOL)a11 fromProgress:(double)a12 completionHandler:(id)a13;
-- (void)makeCurrentTransitionInteractiveWithContext:(id)a3 andProgress:(double)a4;
-- (void)startInteractiveTransitionWithContext:(id)a3;
-- (void)updateInteractiveTransitionWithContext:(id)a3 andProgress:(double)a4;
+- (OKTransitionParallaxPush)initWithSettings:(id)settings;
+- (void)_transitionInView:(id)view fromSubview:(id)subview toSubview:(id)toSubview wasInteractive:(BOOL)interactive duration:(double)duration doEaseIn:(BOOL)in doEaseOut:(BOOL)out isCompleting:(BOOL)self0 wasCancelled:(BOOL)self1 fromProgress:(double)self2 completionHandler:(id)self3;
+- (void)makeCurrentTransitionInteractiveWithContext:(id)context andProgress:(double)progress;
+- (void)startInteractiveTransitionWithContext:(id)context;
+- (void)updateInteractiveTransitionWithContext:(id)context andProgress:(double)progress;
 @end
 
 @implementation OKTransitionParallaxPush
@@ -26,34 +26,34 @@
   return result;
 }
 
-- (OKTransitionParallaxPush)initWithSettings:(id)a3
+- (OKTransitionParallaxPush)initWithSettings:(id)settings
 {
   v13.receiver = self;
   v13.super_class = OKTransitionParallaxPush;
   v4 = [(OKTransition *)&v13 initWithSettings:?];
   if (v4)
   {
-    v5 = [a3 objectForKey:@"direction"];
+    v5 = [settings objectForKey:@"direction"];
     if (v5)
     {
       v4->_direction = [v5 intValue];
     }
 
-    v6 = [a3 objectForKey:@"parallaxAmount"];
+    v6 = [settings objectForKey:@"parallaxAmount"];
     if (v6)
     {
       [v6 floatValue];
       v4->_parallaxAmount = v7;
     }
 
-    v8 = [a3 objectForKey:@"fadeFromAlpha"];
+    v8 = [settings objectForKey:@"fadeFromAlpha"];
     if (v8)
     {
       [v8 floatValue];
       v4->_fadeFromAlpha = v9;
     }
 
-    v10 = [a3 objectForKey:@"fadeToAlpha"];
+    v10 = [settings objectForKey:@"fadeToAlpha"];
     if (v10)
     {
       [v10 floatValue];
@@ -67,7 +67,7 @@
 + (id)supportedSettings
 {
   v14[4] = *MEMORY[0x277D85DE8];
-  v4.receiver = a1;
+  v4.receiver = self;
   v4.super_class = &OBJC_METACLASS___OKTransitionParallaxPush;
   v2 = [MEMORY[0x277CBEB38] dictionaryWithDictionary:{objc_msgSendSuper2(&v4, sel_supportedSettings)}];
   v13[0] = @"direction";
@@ -108,20 +108,20 @@
   return v2;
 }
 
-- (void)_transitionInView:(id)a3 fromSubview:(id)a4 toSubview:(id)a5 wasInteractive:(BOOL)a6 duration:(double)a7 doEaseIn:(BOOL)a8 doEaseOut:(BOOL)a9 isCompleting:(BOOL)a10 wasCancelled:(BOOL)a11 fromProgress:(double)a12 completionHandler:(id)a13
+- (void)_transitionInView:(id)view fromSubview:(id)subview toSubview:(id)toSubview wasInteractive:(BOOL)interactive duration:(double)duration doEaseIn:(BOOL)in doEaseOut:(BOOL)out isCompleting:(BOOL)self0 wasCancelled:(BOOL)self1 fromProgress:(double)self2 completionHandler:(id)self3
 {
-  v14 = a9;
-  v15 = a8;
+  outCopy = out;
+  inCopy = in;
   v47[10] = *MEMORY[0x277D85DE8];
-  [a3 bounds];
+  [view bounds];
   Width = CGRectGetWidth(v48);
-  [a3 bounds];
+  [view bounds];
   Height = CGRectGetHeight(v49);
-  v24 = [(OKTransition *)self isForward];
+  isForward = [(OKTransition *)self isForward];
   direction = self->_direction;
   if ([(OKTransition *)self reversed])
   {
-    v24 ^= 1u;
+    isForward ^= 1u;
     if (direction > 2)
     {
       if (direction == 3)
@@ -176,11 +176,11 @@ LABEL_12:
   *&v47[9] = -Height;
   v27 = *&v47[2 * v26];
   v34 = v27;
-  if (a6)
+  if (interactive)
   {
-    if (!v24)
+    if (!isForward)
     {
-      if (a11)
+      if (cancelled)
       {
 LABEL_15:
         fadeToAlpha = self->_fadeToAlpha;
@@ -196,12 +196,12 @@ LABEL_15:
 
   else
   {
-    if (!v24)
+    if (!isForward)
     {
-      [a5 setFrame:{-self->_parallaxAmount * v27.f64[0], vmuld_lane_f64(-self->_parallaxAmount, v27, 1), Width, Height}];
-      [a5 setAlpha:self->_fadeToAlpha];
-      [a3 insertSubview:a5 belowSubview:a4];
-      if (a11)
+      [toSubview setFrame:{-self->_parallaxAmount * v27.f64[0], vmuld_lane_f64(-self->_parallaxAmount, v27, 1), Width, Height}];
+      [toSubview setAlpha:self->_fadeToAlpha];
+      [view insertSubview:toSubview belowSubview:subview];
+      if (cancelled)
       {
         goto LABEL_15;
       }
@@ -214,12 +214,12 @@ LABEL_21:
       goto LABEL_23;
     }
 
-    [a5 setFrame:{*&v27, Width, Height}];
-    [a5 setAlpha:self->_fadeFromAlpha];
-    [a3 insertSubview:a5 aboveSubview:a4];
+    [toSubview setFrame:{*&v27, Width, Height}];
+    [toSubview setAlpha:self->_fadeFromAlpha];
+    [view insertSubview:toSubview aboveSubview:subview];
   }
 
-  if (a11)
+  if (cancelled)
   {
     fadeToAlpha = self->_fadeFromAlpha;
     fadeFromAlpha = 1.0;
@@ -242,39 +242,39 @@ LABEL_23:
   v37[3] = &unk_279C8E588;
   v32 = 131074;
   v38 = v29;
-  if (v15)
+  if (inCopy)
   {
     v32 = 2;
   }
 
   v33 = 0x10000;
-  if (v14)
+  if (outCopy)
   {
     v33 = 0;
   }
 
-  v37[4] = a5;
-  v37[5] = a4;
+  v37[4] = toSubview;
+  v37[5] = subview;
   v40 = v30;
   v39 = fadeToAlpha;
   v41 = fadeFromAlpha;
-  v42 = a12;
-  v44 = a11;
-  v43 = a7;
-  v45 = v15;
-  v46 = v14;
-  v37[6] = a3;
+  progressCopy = progress;
+  cancelledCopy = cancelled;
+  durationCopy = duration;
+  v45 = inCopy;
+  v46 = outCopy;
+  v37[6] = view;
   v37[7] = &__block_literal_global_0;
   v35[0] = MEMORY[0x277D85DD0];
   v35[1] = 3221225472;
   v35[2] = __168__OKTransitionParallaxPush__transitionInView_fromSubview_toSubview_wasInteractive_duration_doEaseIn_doEaseOut_isCompleting_wasCancelled_fromProgress_completionHandler___block_invoke_46;
   v35[3] = &unk_279C8E5D8;
-  v36 = a11;
+  cancelledCopy2 = cancelled;
   v35[4] = self;
-  v35[5] = a5;
-  v35[6] = a4;
-  v35[7] = a13;
-  [MEMORY[0x277D75D18] animateWithDuration:v33 | v32 delay:v37 options:v35 animations:a7 completion:{0.0, *&v34}];
+  v35[5] = toSubview;
+  v35[6] = subview;
+  v35[7] = handler;
+  [MEMORY[0x277D75D18] animateWithDuration:v33 | v32 delay:v37 options:v35 animations:duration completion:{0.0, *&v34}];
 }
 
 uint64_t __168__OKTransitionParallaxPush__transitionInView_fromSubview_toSubview_wasInteractive_duration_doEaseIn_doEaseOut_isCompleting_wasCancelled_fromProgress_completionHandler___block_invoke(double a1, double a2, double a3, uint64_t a4, void *a5)
@@ -367,19 +367,19 @@ uint64_t __168__OKTransitionParallaxPush__transitionInView_fromSubview_toSubview
   return result;
 }
 
-- (void)startInteractiveTransitionWithContext:(id)a3
+- (void)startInteractiveTransitionWithContext:(id)context
 {
   v16[10] = *MEMORY[0x277D85DE8];
   v15.receiver = self;
   v15.super_class = OKTransitionParallaxPush;
   [(OKTransition *)&v15 startInteractiveTransitionWithContext:?];
-  v5 = [a3 fromViewController];
-  v6 = [a3 toViewController];
-  v7 = [(OKTransition *)self isForward];
+  fromViewController = [context fromViewController];
+  toViewController = [context toViewController];
+  isForward = [(OKTransition *)self isForward];
   direction = self->_direction;
   if ([(OKTransition *)self reversed])
   {
-    v7 ^= 1u;
+    isForward ^= 1u;
     if (direction > 2)
     {
       if (direction == 3)
@@ -417,9 +417,9 @@ uint64_t __168__OKTransitionParallaxPush__transitionInView_fromSubview_toSubview
   }
 
 LABEL_11:
-  [objc_msgSend(a3 "containerView")];
+  [objc_msgSend(context "containerView")];
   Width = CGRectGetWidth(v17);
-  [objc_msgSend(a3 "containerView")];
+  [objc_msgSend(context "containerView")];
   Height = CGRectGetHeight(v18);
   v16[0] = 0;
   v16[1] = 0;
@@ -434,43 +434,43 @@ LABEL_11:
   v11 = &v16[2 * direction];
   v13 = *v11;
   v12 = v11[1];
-  if (v7)
+  if (isForward)
   {
-    [objc_msgSend(v6 "view")];
-    [objc_msgSend(v6 "view")];
-    if (v6)
+    [objc_msgSend(toViewController "view")];
+    [objc_msgSend(toViewController "view")];
+    if (toViewController)
     {
-      [objc_msgSend(a3 "containerView")];
+      [objc_msgSend(context "containerView")];
     }
   }
 
   else
   {
     parallaxAmount = self->_parallaxAmount;
-    [objc_msgSend(v6 "view")];
-    [objc_msgSend(v6 "view")];
-    if (v6)
+    [objc_msgSend(toViewController "view")];
+    [objc_msgSend(toViewController "view")];
+    if (toViewController)
     {
-      [objc_msgSend(a3 "containerView")];
+      [objc_msgSend(context "containerView")];
     }
   }
 }
 
-- (void)updateInteractiveTransitionWithContext:(id)a3 andProgress:(double)a4
+- (void)updateInteractiveTransitionWithContext:(id)context andProgress:(double)progress
 {
   v22[10] = *MEMORY[0x277D85DE8];
   v21.receiver = self;
   v21.super_class = OKTransitionParallaxPush;
   [OKTransition updateInteractiveTransitionWithContext:sel_updateInteractiveTransitionWithContext_andProgress_ andProgress:?];
-  v7 = 0.0;
-  if (a4 >= 0.0)
+  progressCopy = 0.0;
+  if (progress >= 0.0)
   {
-    v7 = a4;
+    progressCopy = progress;
   }
 
-  if (v7 <= 1.0)
+  if (progressCopy <= 1.0)
   {
-    v8 = v7;
+    v8 = progressCopy;
   }
 
   else
@@ -478,13 +478,13 @@ LABEL_11:
     v8 = 1.0;
   }
 
-  v9 = [a3 fromViewController];
-  v10 = [a3 toViewController];
-  v11 = [(OKTransition *)self isForward];
+  fromViewController = [context fromViewController];
+  toViewController = [context toViewController];
+  isForward = [(OKTransition *)self isForward];
   direction = self->_direction;
   if ([(OKTransition *)self reversed])
   {
-    v11 ^= 1u;
+    isForward ^= 1u;
     if (direction > 2)
     {
       if (direction == 3)
@@ -522,9 +522,9 @@ LABEL_11:
   }
 
 LABEL_16:
-  [objc_msgSend(a3 "containerView")];
+  [objc_msgSend(context "containerView")];
   Width = CGRectGetWidth(v23);
-  [objc_msgSend(a3 "containerView")];
+  [objc_msgSend(context "containerView")];
   Height = CGRectGetHeight(v24);
   v22[0] = 0;
   v22[1] = 0;
@@ -539,11 +539,11 @@ LABEL_16:
   v15 = &v22[2 * direction];
   v17 = *v15;
   v16 = v15[1];
-  if (v11)
+  if (isForward)
   {
-    [objc_msgSend(v10 "view")];
-    [objc_msgSend(v9 "view")];
-    [objc_msgSend(v10 "view")];
+    [objc_msgSend(toViewController "view")];
+    [objc_msgSend(fromViewController "view")];
+    [objc_msgSend(toViewController "view")];
     parallaxAmount = self->_parallaxAmount;
     v19 = -(parallaxAmount * v17) * v8 + 0.0;
     v16 = -(parallaxAmount * v16);
@@ -551,30 +551,30 @@ LABEL_16:
 
   else
   {
-    [objc_msgSend(v10 "view")];
-    [objc_msgSend(v9 "view")];
+    [objc_msgSend(toViewController "view")];
+    [objc_msgSend(fromViewController "view")];
     v20 = self->_parallaxAmount;
-    [objc_msgSend(v10 "view")];
+    [objc_msgSend(toViewController "view")];
     v19 = v17 * v8 + 0.0;
   }
 
-  [objc_msgSend(v9 "view")];
+  [objc_msgSend(fromViewController "view")];
 }
 
-- (void)makeCurrentTransitionInteractiveWithContext:(id)a3 andProgress:(double)a4
+- (void)makeCurrentTransitionInteractiveWithContext:(id)context andProgress:(double)progress
 {
   v8.receiver = self;
   v8.super_class = OKTransitionParallaxPush;
-  [(OKTransition *)&v8 makeCurrentTransitionInteractiveWithContext:a4 andProgress:?];
-  v5 = [objc_msgSend(a3 "fromViewController")];
-  v6 = [objc_msgSend(a3 "toViewController")];
+  [(OKTransition *)&v8 makeCurrentTransitionInteractiveWithContext:progress andProgress:?];
+  v5 = [objc_msgSend(context "fromViewController")];
+  v6 = [objc_msgSend(context "toViewController")];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __84__OKTransitionParallaxPush_makeCurrentTransitionInteractiveWithContext_andProgress___block_invoke;
   v7[3] = &unk_279C8E600;
   v7[4] = v5;
   v7[5] = v6;
-  v7[6] = a3;
+  v7[6] = context;
   [MEMORY[0x277D75D18] animateWithDuration:v7 animations:0 completion:0.0];
 }
 

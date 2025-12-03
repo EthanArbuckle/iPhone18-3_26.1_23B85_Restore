@@ -1,54 +1,54 @@
 @interface UBProcessInfo
-- (UBProcessInfo)initWithCoder:(id)a3;
-- (UBProcessInfo)initWithPid:(int)a3 name:(id)a4 is3P:(BOOL)a5;
+- (UBProcessInfo)initWithCoder:(id)coder;
+- (UBProcessInfo)initWithPid:(int)pid name:(id)name is3P:(BOOL)p;
 - (id)description;
 - (id)telemetryName;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UBProcessInfo
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pid = self->_pid;
-  v5 = a3;
-  [v5 encodeInt32:pid forKey:@"_pid"];
-  [v5 encodeObject:self->_name forKey:@"_name"];
-  [v5 encodeBool:self->_is3P forKey:@"_is3P"];
+  coderCopy = coder;
+  [coderCopy encodeInt32:pid forKey:@"_pid"];
+  [coderCopy encodeObject:self->_name forKey:@"_name"];
+  [coderCopy encodeBool:self->_is3P forKey:@"_is3P"];
 }
 
-- (UBProcessInfo)initWithCoder:(id)a3
+- (UBProcessInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = UBProcessInfo;
   v5 = [(UBProcessInfo *)&v10 init];
   if (v5)
   {
-    v5->_pid = [v4 decodeInt32ForKey:@"_pid"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
+    v5->_pid = [coderCopy decodeInt32ForKey:@"_pid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v5->_is3P = [v4 decodeBoolForKey:@"_is3P"];
+    v5->_is3P = [coderCopy decodeBoolForKey:@"_is3P"];
     v8 = v5;
   }
 
   return v5;
 }
 
-- (UBProcessInfo)initWithPid:(int)a3 name:(id)a4 is3P:(BOOL)a5
+- (UBProcessInfo)initWithPid:(int)pid name:(id)name is3P:(BOOL)p
 {
-  v9 = a4;
+  nameCopy = name;
   v14.receiver = self;
   v14.super_class = UBProcessInfo;
   v10 = [(UBProcessInfo *)&v14 init];
   v11 = v10;
   if (v10)
   {
-    v10->_pid = a3;
-    objc_storeStrong(&v10->_name, a4);
-    v11->_is3P = a5;
+    v10->_pid = pid;
+    objc_storeStrong(&v10->_name, name);
+    v11->_is3P = p;
     v12 = v11;
   }
 

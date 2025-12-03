@@ -3,16 +3,16 @@
 - (CMDeviceOrientationManager)init;
 - (id)deviceOrientationBlocking;
 - (id)initPrivate;
-- (id)stringForOrientation:(int)a3;
+- (id)stringForOrientation:(int)orientation;
 - (void)dealloc;
 - (void)deallocPrivate;
-- (void)onDeviceOrientation:(const Sample *)a3;
+- (void)onDeviceOrientation:(const Sample *)orientation;
 - (void)onMotionPreferencesUpdated;
-- (void)onNotification:(id)a3;
-- (void)setDeviceOrientationCallbackModePrivate:(int)a3;
+- (void)onNotification:(id)notification;
+- (void)setDeviceOrientationCallbackModePrivate:(int)private;
 - (void)signalAndReleaseSemaphoreIfNecessaryPrivate;
-- (void)startDeviceOrientationUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4;
-- (void)startDeviceOrientationUpdatesToQueue:(id)a3 withHandler:(id)a4;
+- (void)startDeviceOrientationUpdatesPrivateToQueue:(id)queue withHandler:(id)handler;
+- (void)startDeviceOrientationUpdatesToQueue:(id)queue withHandler:(id)handler;
 - (void)stopDeviceOrientationUpdates;
 - (void)stopDeviceOrientationUpdatesPrivate;
 - (void)updateAggregateDictionaryPrivate;
@@ -417,12 +417,12 @@ LABEL_33:
 + (void)initialize
 {
   v17 = *MEMORY[0x1E69E9840];
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v5 = objc_msgSend_currentThread(MEMORY[0x1E696AF00], v3, v4);
     if (objc_msgSend_isMainThread(v5, v6, v7) && (objc_msgSend_isMultiThreaded(MEMORY[0x1E696AF00], v8, v9) & 1) == 0)
     {
-      objc_msgSend_detachNewThreadSelector_toTarget_withObject_(MEMORY[0x1E696AF00], v10, sel_dummySelector_, a1, 0);
+      objc_msgSend_detachNewThreadSelector_toTarget_withObject_(MEMORY[0x1E696AF00], v10, sel_dummySelector_, self, 0);
     }
 
     if (!qword_1ED71C900)
@@ -633,19 +633,19 @@ LABEL_16:
   v23 = *MEMORY[0x1E69E9840];
 }
 
-- (void)onNotification:(id)a3
+- (void)onNotification:(id)notification
 {
   v5 = sub_19B420D84();
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = sub_19B71EE18;
   v6[3] = &unk_1E7532A00;
-  v6[4] = a3;
+  v6[4] = notification;
   v6[5] = self;
   sub_19B420C9C(v5, v6);
 }
 
-- (void)startDeviceOrientationUpdatesToQueue:(id)a3 withHandler:(id)a4
+- (void)startDeviceOrientationUpdatesToQueue:(id)queue withHandler:(id)handler
 {
   v26 = *MEMORY[0x1E69E9840];
   internal = self->_internal;
@@ -696,29 +696,29 @@ LABEL_16:
   v17[2] = sub_19B71F2F4;
   v17[3] = &unk_1E7532C08;
   v17[4] = self;
-  v17[5] = a3;
-  v17[6] = a4;
+  v17[5] = queue;
+  v17[6] = handler;
   sub_19B420C9C(v15, v17);
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startDeviceOrientationUpdatesPrivateToQueue:(id)a3 withHandler:(id)a4
+- (void)startDeviceOrientationUpdatesPrivateToQueue:(id)queue withHandler:(id)handler
 {
   internal = self->_internal;
-  if (objc_msgSend_isDeviceOrientationAvailable(self, a2, a3))
+  if (objc_msgSend_isDeviceOrientationAvailable(self, a2, queue))
   {
     v8 = internal[4];
-    if (v8 != a3)
+    if (v8 != queue)
     {
 
-      internal[4] = a3;
+      internal[4] = queue;
     }
 
     v9 = internal[3];
-    if (v9 != a4)
+    if (v9 != handler)
     {
 
-      internal[3] = objc_msgSend_copy(a4, v10, v11);
+      internal[3] = objc_msgSend_copy(handler, v10, v11);
     }
 
     if (!internal[2])
@@ -740,9 +740,9 @@ LABEL_16:
   }
 }
 
-- (void)setDeviceOrientationCallbackModePrivate:(int)a3
+- (void)setDeviceOrientationCallbackModePrivate:(int)private
 {
-  *(self->_internal + 13) = a3;
+  *(self->_internal + 13) = private;
   v4 = sub_19B420D84();
   v5 = *(v4 + 24);
   v6 = *(v4 + 32);
@@ -751,18 +751,18 @@ LABEL_16:
     atomic_fetch_add_explicit(&v6->__shared_owners_, 1uLL, memory_order_relaxed);
   }
 
-  v7 = a3;
-  sub_19B5EF4EC(v5, "OrientationCallbackMode", &v7);
+  privateCopy = private;
+  sub_19B5EF4EC(v5, "OrientationCallbackMode", &privateCopy);
   if (v6)
   {
     sub_19B41FFEC(v6);
   }
 }
 
-- (void)onDeviceOrientation:(const Sample *)a3
+- (void)onDeviceOrientation:(const Sample *)orientation
 {
   v59 = *MEMORY[0x1E69E9840];
-  if (objc_msgSend_orientationNotificationsDisabled(self, a2, a3))
+  if (objc_msgSend_orientationNotificationsDisabled(self, a2, orientation))
   {
     if (qword_1ED71C7B0 != -1)
     {
@@ -807,8 +807,8 @@ LABEL_16:
     if (os_log_type_enabled(off_1ED71C7C0, OS_LOG_TYPE_DEFAULT))
     {
       v11 = objc_msgSend_stringForOrientation_(self, v10, internal[18]);
-      v13 = objc_msgSend_stringForOrientation_(self, v12, LODWORD(a3->acceleration.x));
-      timestamp = a3->timestamp;
+      v13 = objc_msgSend_stringForOrientation_(self, v12, LODWORD(orientation->acceleration.x));
+      timestamp = orientation->timestamp;
       *buf = 138543874;
       v54 = v11;
       v55 = 2114;
@@ -828,8 +828,8 @@ LABEL_16:
       }
 
       v17 = objc_msgSend_stringForOrientation_(self, v16, internal[18]);
-      v19 = objc_msgSend_stringForOrientation_(self, v18, LODWORD(a3->acceleration.x));
-      v20 = a3->timestamp;
+      v19 = objc_msgSend_stringForOrientation_(self, v18, LODWORD(orientation->acceleration.x));
+      v20 = orientation->timestamp;
       v47 = 138543874;
       v48 = v17;
       v49 = 2114;
@@ -846,10 +846,10 @@ LABEL_16:
 
     *(internal + 5) = *(internal + 4);
     os_unfair_lock_lock(internal + 2);
-    *(internal + 4) = *&a3->timestamp;
+    *(internal + 4) = *&orientation->timestamp;
     os_unfair_lock_unlock(internal + 2);
-    p_acceleration = &a3->acceleration;
-    x_low = LODWORD(a3->acceleration.x);
+    p_acceleration = &orientation->acceleration;
+    x_low = LODWORD(orientation->acceleration.x);
     kdebug_trace();
     if ((internal[12] & 1) == 0)
     {
@@ -866,7 +866,7 @@ LABEL_16:
       v29 = [CMDeviceOrientation alloc];
       if (v27 == -1)
       {
-        v31 = &a3->acceleration;
+        v31 = &orientation->acceleration;
       }
 
       else
@@ -874,7 +874,7 @@ LABEL_16:
         v31 = (internal + 13);
       }
 
-      v32 = objc_msgSend_initWithOrientation_andTimestamp_(v29, v30, LODWORD(v31->x), a3->timestamp);
+      v32 = objc_msgSend_initWithOrientation_andTimestamp_(v29, v30, LODWORD(v31->x), orientation->timestamp);
       if (qword_1ED71C7B0 != -1)
       {
         dispatch_once(&qword_1ED71C7B0, &unk_1F0E29FA0);
@@ -932,10 +932,10 @@ LABEL_16:
   v45 = *MEMORY[0x1E69E9840];
 }
 
-- (id)stringForOrientation:(int)a3
+- (id)stringForOrientation:(int)orientation
 {
   v3 = MEMORY[0x1E696AEC0];
-  v5 = sub_19B449494(a3);
+  v5 = sub_19B449494(orientation);
 
   return objc_msgSend_stringWithUTF8String_(v3, v4, v5);
 }

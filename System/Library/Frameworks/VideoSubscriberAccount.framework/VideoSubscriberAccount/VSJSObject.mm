@@ -1,20 +1,20 @@
 @interface VSJSObject
 - (VSJSObject)init;
-- (VSJSObject)initWithContext:(id)a3;
+- (VSJSObject)initWithContext:(id)context;
 @end
 
 @implementation VSJSObject
 
-- (VSJSObject)initWithContext:(id)a3
+- (VSJSObject)initWithContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = VSJSObject;
   v6 = [(VSJSObject *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_context, a3);
+    objc_storeStrong(&v6->_context, context);
   }
 
   return v7;

@@ -3,30 +3,30 @@
 - (TKTonePickerTableViewSeparatorObserver)separatorObserver;
 - (UIEdgeInsets)tk_rawSectionContentInset;
 - (void)_handleSeparatorColorDidChange;
-- (void)_setSectionContentInset:(UIEdgeInsets)a3;
+- (void)_setSectionContentInset:(UIEdgeInsets)inset;
 - (void)layoutMarginsDidChange;
 - (void)layoutSubviews;
-- (void)performBlockEnsuringContentOffsetRemainsUnchanged:(id)a3;
-- (void)setSeparatorColor:(id)a3;
+- (void)performBlockEnsuringContentOffsetRemainsUnchanged:(id)unchanged;
+- (void)setSeparatorColor:(id)color;
 @end
 
 @implementation TKTonePickerTableView
 
-- (void)_setSectionContentInset:(UIEdgeInsets)a3
+- (void)_setSectionContentInset:(UIEdgeInsets)inset
 {
-  self->_tk_rawSectionContentInset = a3;
+  self->_tk_rawSectionContentInset = inset;
   v3.receiver = self;
   v3.super_class = TKTonePickerTableView;
   [(TKTonePickerTableView *)&v3 _setSectionContentInset:?];
 }
 
-- (void)performBlockEnsuringContentOffsetRemainsUnchanged:(id)a3
+- (void)performBlockEnsuringContentOffsetRemainsUnchanged:(id)unchanged
 {
-  v4 = a3;
+  unchangedCopy = unchanged;
   [(TKTonePickerTableView *)self contentOffset];
   v6 = v5;
   v8 = v7;
-  v4[2](v4);
+  unchangedCopy[2](unchangedCopy);
 
   [(TKTonePickerTableView *)self contentOffset];
   if (!TKPointEqualToPoint(v6, v8, v9, v10))
@@ -41,27 +41,27 @@
   v4.receiver = self;
   v4.super_class = TKTonePickerTableView;
   [(TKTonePickerTableView *)&v4 layoutMarginsDidChange];
-  v3 = [(TKTonePickerTableView *)self layoutMarginsObserver];
+  layoutMarginsObserver = [(TKTonePickerTableView *)self layoutMarginsObserver];
   if (objc_opt_respondsToSelector())
   {
-    [v3 layoutMarginsDidChangeInTonePickerTableView:self];
+    [layoutMarginsObserver layoutMarginsDidChangeInTonePickerTableView:self];
   }
 }
 
 - (void)_handleSeparatorColorDidChange
 {
-  v3 = [(TKTonePickerTableView *)self separatorObserver];
+  separatorObserver = [(TKTonePickerTableView *)self separatorObserver];
   if (objc_opt_respondsToSelector())
   {
-    [v3 separatorColorDidChangeInTonePickerTableView:self];
+    [separatorObserver separatorColorDidChangeInTonePickerTableView:self];
   }
 }
 
-- (void)setSeparatorColor:(id)a3
+- (void)setSeparatorColor:(id)color
 {
   v4.receiver = self;
   v4.super_class = TKTonePickerTableView;
-  [(TKTonePickerTableView *)&v4 setSeparatorColor:a3];
+  [(TKTonePickerTableView *)&v4 setSeparatorColor:color];
   [(TKTonePickerTableView *)self _handleSeparatorColorDidChange];
 }
 

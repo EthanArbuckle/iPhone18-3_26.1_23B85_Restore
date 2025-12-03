@@ -1,5 +1,5 @@
 @interface SingleShowEpisodeCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)_accessibilitySupplementaryFooterViews;
 - (id)_axPlayPauseButton;
 - (id)accessibilityCustomActions;
@@ -11,33 +11,33 @@
 
 @implementation SingleShowEpisodeCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"ShelfKitCollectionViews.SingleShowEpisodeCell" hasInstanceMethod:@"accessibilityEpisodeInfoView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.SingleShowEpisodeCell" hasInstanceMethod:@"accessibilityPlayControlsView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.EpisodeInfoView" hasInstanceMethod:@"accessibilityDescriptionLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.EpisodeInfoView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.PlayControlsStackView" hasInstanceMethod:@"accessibilityNewPlayPauseButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.PlayControlsStackView" hasInstanceMethod:@"accessibilityEpisodeStateControls" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"ShelfKitCollectionViews.EpisodeStateControlsStackView" hasInstanceMethod:@"accessibilityMoreButton" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.SingleShowEpisodeCell" hasInstanceMethod:@"accessibilityEpisodeInfoView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.SingleShowEpisodeCell" hasInstanceMethod:@"accessibilityPlayControlsView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.EpisodeInfoView" hasInstanceMethod:@"accessibilityDescriptionLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.EpisodeInfoView" hasInstanceMethod:@"accessibilityTitleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.PlayControlsStackView" hasInstanceMethod:@"accessibilityNewPlayPauseButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.PlayControlsStackView" hasInstanceMethod:@"accessibilityEpisodeStateControls" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"ShelfKitCollectionViews.EpisodeStateControlsStackView" hasInstanceMethod:@"accessibilityMoreButton" withFullSignature:{"@", 0}];
 }
 
 - (id)accessibilityUserInputLabels
 {
   v3 = [(SingleShowEpisodeCellAccessibility *)self safeValueForKeyPath:@"accessibilityEpisodeInfoView.accessibilityTitleLabel"];
-  v4 = [v3 accessibilityLabel];
+  accessibilityLabel = [v3 accessibilityLabel];
 
-  if ([v4 length])
+  if ([accessibilityLabel length])
   {
-    v5 = MEMORY[0x29C2E7860](v4);
+    v5 = MEMORY[0x29C2E7860](accessibilityLabel);
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = SingleShowEpisodeCellAccessibility;
-    v6 = [(SingleShowEpisodeCellAccessibility *)&v8 accessibilityLabel];
+    accessibilityLabel2 = [(SingleShowEpisodeCellAccessibility *)&v8 accessibilityLabel];
     v5 = MEMORY[0x29C2E7860]();
   }
 
@@ -53,20 +53,20 @@
 
 - (id)accessibilityCustomContent
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(SingleShowEpisodeCellAccessibility *)self safeValueForKeyPath:@"accessibilityEpisodeInfoView.accessibilityDescriptionLabel"];
-  v5 = [v4 accessibilityLabel];
+  accessibilityLabel = [v4 accessibilityLabel];
 
-  if ([v5 length])
+  if ([accessibilityLabel length])
   {
     v6 = MEMORY[0x29EDB8058];
     v7 = accessibilityLocalizedString(@"summary.title");
-    v8 = [v6 customContentWithLabel:v7 value:v5];
+    v8 = [v6 customContentWithLabel:v7 value:accessibilityLabel];
 
-    [v3 axSafelyAddObject:v8];
+    [array axSafelyAddObject:v8];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)_axPlayPauseButton
@@ -96,19 +96,19 @@ id __56__SingleShowEpisodeCellAccessibility__axPlayPauseButton__block_invoke(uin
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v7.receiver = self;
   v7.super_class = SingleShowEpisodeCellAccessibility;
-  v4 = [(SingleShowEpisodeCellAccessibility *)&v7 _accessibilitySupplementaryFooterViews];
-  [v3 axSafelyAddObjectsFromArray:v4];
+  _accessibilitySupplementaryFooterViews = [(SingleShowEpisodeCellAccessibility *)&v7 _accessibilitySupplementaryFooterViews];
+  [array axSafelyAddObjectsFromArray:_accessibilitySupplementaryFooterViews];
 
-  v5 = [(SingleShowEpisodeCellAccessibility *)self _axPlayPauseButton];
-  if ([v5 _accessibilityViewIsVisible])
+  _axPlayPauseButton = [(SingleShowEpisodeCellAccessibility *)self _axPlayPauseButton];
+  if ([_axPlayPauseButton _accessibilityViewIsVisible])
   {
-    [v3 axSafelyAddObject:v5];
+    [array axSafelyAddObject:_axPlayPauseButton];
   }
 
-  return v3;
+  return array;
 }
 
 - (id)accessibilityCustomActions
@@ -118,9 +118,9 @@ id __56__SingleShowEpisodeCellAccessibility__axPlayPauseButton__block_invoke(uin
   objc_initWeak(&location, v2);
 
   v3 = objc_loadWeakRetained(&location);
-  v4 = [v3 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v3 _accessibilityViewIsVisible];
 
-  if (v4)
+  if (_accessibilityViewIsVisible)
   {
     v5 = objc_alloc(MEMORY[0x29EDC78E0]);
     v6 = accessibilityLocalizedString(@"more.button");
@@ -159,23 +159,23 @@ uint64_t __64__SingleShowEpisodeCellAccessibility_accessibilityCustomActions__bl
 {
   v11.receiver = self;
   v11.super_class = SingleShowEpisodeCellAccessibility;
-  v3 = [(SingleShowEpisodeCellAccessibility *)&v11 automationElements];
-  v4 = [v3 mutableCopy];
+  automationElements = [(SingleShowEpisodeCellAccessibility *)&v11 automationElements];
+  v4 = [automationElements mutableCopy];
   v5 = v4;
   if (v4)
   {
-    v6 = v4;
+    array = v4;
   }
 
   else
   {
-    v6 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
   }
 
-  v7 = v6;
+  v7 = array;
 
-  v8 = [(SingleShowEpisodeCellAccessibility *)self _axPlayPauseButton];
-  [v7 axSafelyAddObject:v8];
+  _axPlayPauseButton = [(SingleShowEpisodeCellAccessibility *)self _axPlayPauseButton];
+  [v7 axSafelyAddObject:_axPlayPauseButton];
 
   v9 = [(SingleShowEpisodeCellAccessibility *)self safeValueForKeyPath:@"accessibilityPlayControlsView.accessibilityEpisodeStateControls.accessibilityMoreButton"];
   [v7 axSafelyAddObject:v9];

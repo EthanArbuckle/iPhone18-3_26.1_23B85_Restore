@@ -1,30 +1,30 @@
 @interface PKPaymentOfferInstallmentInterestDetails
-- (BOOL)isEqual:(id)a3;
-- (PKPaymentOfferInstallmentInterestDetails)initWithCoder:(id)a3;
-- (PKPaymentOfferInstallmentInterestDetails)initWithDictionary:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (PKPaymentOfferInstallmentInterestDetails)initWithCoder:(id)coder;
+- (PKPaymentOfferInstallmentInterestDetails)initWithDictionary:(id)dictionary;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKPaymentOfferInstallmentInterestDetails
 
-- (PKPaymentOfferInstallmentInterestDetails)initWithDictionary:(id)a3
+- (PKPaymentOfferInstallmentInterestDetails)initWithDictionary:(id)dictionary
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v25.receiver = self;
   v25.super_class = PKPaymentOfferInstallmentInterestDetails;
   v5 = [(PKPaymentOfferInstallmentInterestDetails *)&v25 init];
   if (v5)
   {
-    v6 = [v4 PKCurrencyAmountForKey:@"totalInterestAmount"];
+    v6 = [dictionaryCopy PKCurrencyAmountForKey:@"totalInterestAmount"];
     totalInterestAmount = v5->_totalInterestAmount;
     v5->_totalInterestAmount = v6;
 
-    v8 = [v4 PKArrayContaining:objc_opt_class() forKey:@"interest"];
+    v8 = [dictionaryCopy PKArrayContaining:objc_opt_class() forKey:@"interest"];
     v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v21 = 0u;
     v22 = 0u;
@@ -77,8 +77,8 @@
 - (id)dictionaryRepresentation
 {
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [(PKCurrencyAmount *)self->_totalInterestAmount dictionaryRepresentation];
-  [v3 setObject:v4 forKeyedSubscript:@"totalInterestAmount"];
+  dictionaryRepresentation = [(PKCurrencyAmount *)self->_totalInterestAmount dictionaryRepresentation];
+  [v3 setObject:dictionaryRepresentation forKeyedSubscript:@"totalInterestAmount"];
 
   v5 = [(NSArray *)self->_interestItems pk_createArrayBySafelyApplyingBlock:&__block_literal_global_26];
   [v3 setObject:v5 forKeyedSubscript:@"interest"];
@@ -88,18 +88,18 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if (v4)
+    if (equalCopy)
     {
       objc_opt_class();
       if (objc_opt_isKindOfClass())
@@ -169,22 +169,22 @@ LABEL_16:
   return v3;
 }
 
-- (PKPaymentOfferInstallmentInterestDetails)initWithCoder:(id)a3
+- (PKPaymentOfferInstallmentInterestDetails)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v14.receiver = self;
   v14.super_class = PKPaymentOfferInstallmentInterestDetails;
   v5 = [(PKPaymentOfferInstallmentInterestDetails *)&v14 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"totalInterestAmount"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"totalInterestAmount"];
     totalInterestAmount = v5->_totalInterestAmount;
     v5->_totalInterestAmount = v6;
 
     v8 = MEMORY[0x1E695DFD8];
     v9 = objc_opt_class();
     v10 = [v8 setWithObjects:{v9, objc_opt_class(), 0}];
-    v11 = [v4 decodeObjectOfClasses:v10 forKey:@"interest"];
+    v11 = [coderCopy decodeObjectOfClasses:v10 forKey:@"interest"];
     interestItems = v5->_interestItems;
     v5->_interestItems = v11;
   }
@@ -192,22 +192,22 @@ LABEL_16:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   totalInterestAmount = self->_totalInterestAmount;
-  v5 = a3;
-  [v5 encodeObject:totalInterestAmount forKey:@"totalInterestAmount"];
-  [v5 encodeObject:self->_interestItems forKey:@"interest"];
+  coderCopy = coder;
+  [coderCopy encodeObject:totalInterestAmount forKey:@"totalInterestAmount"];
+  [coderCopy encodeObject:self->_interestItems forKey:@"interest"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[PKPaymentOfferInstallmentInterestDetails allocWithZone:](PKPaymentOfferInstallmentInterestDetails init];
-  v6 = [(PKCurrencyAmount *)self->_totalInterestAmount copyWithZone:a3];
+  v6 = [(PKCurrencyAmount *)self->_totalInterestAmount copyWithZone:zone];
   totalInterestAmount = v5->_totalInterestAmount;
   v5->_totalInterestAmount = v6;
 
-  v8 = [(NSArray *)self->_interestItems copyWithZone:a3];
+  v8 = [(NSArray *)self->_interestItems copyWithZone:zone];
   interestItems = v5->_interestItems;
   v5->_interestItems = v8;
 

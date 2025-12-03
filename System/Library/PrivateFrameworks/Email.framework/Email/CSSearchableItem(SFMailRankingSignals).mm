@@ -27,31 +27,31 @@
   v3 = v2;
   _Block_object_dispose(&v60, 8);
   v53 = objc_alloc_init(v2);
-  v52 = [a1 attributeSet];
-  v4 = [v52 attributeDictionary];
-  v50 = [v4 valueForKey:*MEMORY[0x1E6964DB0]];
+  attributeSet = [self attributeSet];
+  attributeDictionary = [attributeSet attributeDictionary];
+  v50 = [attributeDictionary valueForKey:*MEMORY[0x1E6964DB0]];
 
   [v53 setIsSemanticMatch:{(objc_msgSend(v50, "integerValue") >> 1) & 1}];
   [v53 setIsSyntacticMatch:{objc_msgSend(v50, "integerValue") & 1}];
   if ([v53 isSemanticMatch])
   {
-    v5 = [a1 attributeSet];
-    v6 = [v5 attributeDictionary];
-    v7 = [v6 valueForKey:*MEMORY[0x1E6964D78]];
+    attributeSet2 = [self attributeSet];
+    attributeDictionary2 = [attributeSet2 attributeDictionary];
+    v7 = [attributeDictionary2 valueForKey:*MEMORY[0x1E6964D78]];
 
     if ([v7 count] == 3)
     {
-      v8 = [v7 firstObject];
-      if (v8)
+      firstObject = [v7 firstObject];
+      if (firstObject)
       {
-        v9 = [v7 firstObject];
+        firstObject2 = [v7 firstObject];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
         if (isKindOfClass)
         {
-          v11 = [v7 firstObject];
-          [v11 floatValue];
+          firstObject3 = [v7 firstObject];
+          [firstObject3 floatValue];
           v13 = v12;
 
           if (v13 >= 0.0 && v13 <= 4.0)
@@ -66,45 +66,45 @@
   }
 
   v16 = MEMORY[0x1E696AD98];
-  v17 = [v52 mailResultScoreL1];
-  [v17 doubleValue];
+  mailResultScoreL1 = [attributeSet mailResultScoreL1];
+  [mailResultScoreL1 doubleValue];
   v18 = [v16 numberWithDouble:?];
   [v53 setSyntacticScore:v18];
 
-  v19 = [v52 mailFlagged];
-  [v53 setIsFlagged:{objc_msgSend(v19, "BOOLValue")}];
+  mailFlagged = [attributeSet mailFlagged];
+  [v53 setIsFlagged:{objc_msgSend(mailFlagged, "BOOLValue")}];
 
-  v20 = [v52 mailRepliedTo];
-  [v53 setIsRepliedTo:{objc_msgSend(v20, "BOOLValue")}];
+  mailRepliedTo = [attributeSet mailRepliedTo];
+  [v53 setIsRepliedTo:{objc_msgSend(mailRepliedTo, "BOOLValue")}];
 
   v21 = MEMORY[0x1E696AD98];
-  v22 = [v52 mailResultScoreL1];
-  [v22 doubleValue];
+  mailResultScoreL12 = [attributeSet mailResultScoreL1];
+  [mailResultScoreL12 doubleValue];
   v23 = [v21 numberWithDouble:?];
   [v53 setL1Score:v23];
 
   v24 = MEMORY[0x1E696AD98];
-  v25 = [v52 mailResultScoreL2];
-  [v25 doubleValue];
+  mailResultScoreL2 = [attributeSet mailResultScoreL2];
+  [mailResultScoreL2 doubleValue];
   v26 = [v24 numberWithDouble:?];
   [v53 setL2Score:v26];
 
-  v27 = [v52 mailUseCount];
-  [v53 setNumEngagements:{objc_msgSend(v27, "unsignedLongLongValue")}];
+  mailUseCount = [attributeSet mailUseCount];
+  [v53 setNumEngagements:{objc_msgSend(mailUseCount, "unsignedLongLongValue")}];
 
-  v28 = [v52 mailDateReceived];
-  [v53 setDaysSinceReceipt:{objc_msgSend(a1, "_daysSinceDate:", v28)}];
+  mailDateReceived = [attributeSet mailDateReceived];
+  [v53 setDaysSinceReceipt:{objc_msgSend(self, "_daysSinceDate:", mailDateReceived)}];
 
   v29 = objc_alloc(MEMORY[0x1E695DFA8]);
-  v30 = [v52 mailUsedDates];
-  v31 = [v29 initWithCapacity:{objc_msgSend(v30, "count")}];
+  mailUsedDates = [attributeSet mailUsedDates];
+  v31 = [v29 initWithCapacity:{objc_msgSend(mailUsedDates, "count")}];
 
   v57 = 0u;
   v58 = 0u;
   v55 = 0u;
   v56 = 0u;
-  v32 = [v52 mailUsedDates];
-  v33 = [v32 countByEnumeratingWithState:&v55 objects:v64 count:16];
+  mailUsedDates2 = [attributeSet mailUsedDates];
+  v33 = [mailUsedDates2 countByEnumeratingWithState:&v55 objects:v64 count:16];
   if (v33)
   {
     v34 = 0;
@@ -121,10 +121,10 @@
       {
         if (*v56 != v36)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(mailUsedDates2);
         }
 
-        v42 = [a1 _daysSinceDate:*(*(&v55 + 1) + 8 * i)];
+        v42 = [self _daysSinceDate:*(*(&v55 + 1) + 8 * i)];
         if (v42 <= 0x1E)
         {
           v43 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:v42];
@@ -165,7 +165,7 @@
         }
       }
 
-      v33 = [v32 countByEnumeratingWithState:&v55 objects:v64 count:16];
+      v33 = [mailUsedDates2 countByEnumeratingWithState:&v55 objects:v64 count:16];
     }
 
     while (v33);
@@ -223,11 +223,11 @@
   v3 = a3;
   if (v3)
   {
-    v4 = [MEMORY[0x1E695DFE8] localTimeZone];
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-    [v5 setTimeZone:v4];
-    v6 = [MEMORY[0x1E695DF00] date];
-    v7 = [v5 components:16 fromDate:v3 toDate:v6 options:0];
+    localTimeZone = [MEMORY[0x1E695DFE8] localTimeZone];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    [currentCalendar setTimeZone:localTimeZone];
+    date = [MEMORY[0x1E695DF00] date];
+    v7 = [currentCalendar components:16 fromDate:v3 toDate:date options:0];
     if ([v7 day] < 0)
     {
       v8 = 0;

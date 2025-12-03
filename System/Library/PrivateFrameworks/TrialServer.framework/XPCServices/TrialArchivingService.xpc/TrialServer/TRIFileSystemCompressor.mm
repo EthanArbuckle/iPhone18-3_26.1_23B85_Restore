@@ -1,21 +1,21 @@
 @interface TRIFileSystemCompressor
-+ (BOOL)_enumerateFilesInDirectory:(id)a3 block:(id)a4;
-- ($A5A652246548B43F8BC05201A1C72A70)_compressContentsOfSourceHandle:(id)a3 toDestinationFd:(int)a4 shouldDefer:(id)a5;
-- ($A5A652246548B43F8BC05201A1C72A70)compressContentsOfFileHandle:(id)a3 toDestinationFile:(id)a4 shouldDefer:(id)a5;
-- ($A5A652246548B43F8BC05201A1C72A70)inPlaceCompressDirectory:(id)a3 shouldDefer:(id)a4;
-- ($A5A652246548B43F8BC05201A1C72A70)inPlaceCompressFile:(id)a3 shouldDefer:(id)a4;
-- (BOOL)_isCompressibleFile:(id)a3;
-- (id)_temporaryCompressionFileForFile:(id)a3;
++ (BOOL)_enumerateFilesInDirectory:(id)directory block:(id)block;
+- ($A5A652246548B43F8BC05201A1C72A70)_compressContentsOfSourceHandle:(id)handle toDestinationFd:(int)fd shouldDefer:(id)defer;
+- ($A5A652246548B43F8BC05201A1C72A70)compressContentsOfFileHandle:(id)handle toDestinationFile:(id)file shouldDefer:(id)defer;
+- ($A5A652246548B43F8BC05201A1C72A70)inPlaceCompressDirectory:(id)directory shouldDefer:(id)defer;
+- ($A5A652246548B43F8BC05201A1C72A70)inPlaceCompressFile:(id)file shouldDefer:(id)defer;
+- (BOOL)_isCompressibleFile:(id)file;
+- (id)_temporaryCompressionFileForFile:(id)file;
 @end
 
 @implementation TRIFileSystemCompressor
 
-- (id)_temporaryCompressionFileForFile:(id)a3
+- (id)_temporaryCompressionFileForFile:(id)file
 {
-  v5 = [a3 stringByDeletingLastPathComponent];
+  stringByDeletingLastPathComponent = [file stringByDeletingLastPathComponent];
   v6 = objc_opt_new();
-  v7 = [v6 UUIDString];
-  v8 = [v5 stringByAppendingPathComponent:v7];
+  uUIDString = [v6 UUIDString];
+  v8 = [stringByDeletingLastPathComponent stringByAppendingPathComponent:uUIDString];
 
   v9 = [v8 stringByAppendingPathExtension:@"trial-afsc-compressed"];
   if (!v9)
@@ -27,21 +27,21 @@
   return v9;
 }
 
-- ($A5A652246548B43F8BC05201A1C72A70)inPlaceCompressFile:(id)a3 shouldDefer:(id)a4
+- ($A5A652246548B43F8BC05201A1C72A70)inPlaceCompressFile:(id)file shouldDefer:(id)defer
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  fileCopy = file;
+  deferCopy = defer;
+  if (!fileCopy)
   {
     v33 = +[NSAssertionHandler currentHandler];
     [v33 handleFailureInMethod:a2 object:self file:@"TRIFileSystemCompressor.m" lineNumber:49 description:{@"Invalid parameter not satisfying: %@", @"filePath"}];
   }
 
-  if ([(TRIFileSystemCompressor *)self _isCompressibleFile:v7])
+  if ([(TRIFileSystemCompressor *)self _isCompressibleFile:fileCopy])
   {
-    if (v8)
+    if (deferCopy)
     {
-      v9 = v8;
+      v9 = deferCopy;
     }
 
     else
@@ -51,7 +51,7 @@
 
     v10 = objc_retainBlock(v9);
 
-    v11 = [NSURL fileURLWithPath:v7];
+    v11 = [NSURL fileURLWithPath:fileCopy];
     v34 = 0;
     v12 = [NSFileHandle fileHandleForReadingFromURL:v11 error:&v34];
     v13 = v34;
@@ -62,7 +62,7 @@
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412546;
-        v36 = v7;
+        v36 = fileCopy;
         v37 = 2112;
         v38 = v13;
         _os_log_error_impl(&_mh_execute_header, v14, OS_LOG_TYPE_ERROR, "Unable to open file %@ for AFSC compression: %@", buf, 0x16u);
@@ -72,7 +72,7 @@
       goto LABEL_25;
     }
 
-    v14 = [(TRIFileSystemCompressor *)self _temporaryCompressionFileForFile:v7];
+    v14 = [(TRIFileSystemCompressor *)self _temporaryCompressionFileForFile:fileCopy];
     v15 = open_dprotected_np([v14 fileSystemRepresentation], 514, 4, 0, 384);
     if ((v15 & 0x80000000) != 0)
     {
@@ -112,9 +112,9 @@
 
       if (v18)
       {
-        v22 = [v14 fileSystemRepresentation];
-        v23 = [v7 fileSystemRepresentation];
-        rename(v22, v23, v24);
+        fileSystemRepresentation = [v14 fileSystemRepresentation];
+        fileSystemRepresentation2 = [fileCopy fileSystemRepresentation];
+        rename(fileSystemRepresentation, fileSystemRepresentation2, v24);
         if (!v25)
         {
           v18 = 1;
@@ -130,7 +130,7 @@
           *buf = 138413058;
           v36 = v14;
           v37 = 2112;
-          v38 = v7;
+          v38 = fileCopy;
           v39 = 2080;
           v40 = v31;
           v41 = 1024;
@@ -144,7 +144,7 @@
 LABEL_24:
 
 LABEL_25:
-        v8 = v10;
+        deferCopy = v10;
         goto LABEL_26;
       }
 
@@ -169,12 +169,12 @@ LABEL_26:
   return v18;
 }
 
-- (BOOL)_isCompressibleFile:(id)a3
+- (BOOL)_isCompressibleFile:(id)file
 {
-  v3 = a3;
+  fileCopy = file;
   v9 = 0;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v4 fileExistsAtPath:v3 isDirectory:&v9];
+  v5 = [v4 fileExistsAtPath:fileCopy isDirectory:&v9];
 
   v6 = 0;
   if (v5)
@@ -185,7 +185,7 @@ LABEL_26:
       if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v11 = v3;
+        v11 = fileCopy;
         _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Unexpectedly requested to AFSC compress a directory %@", buf, 0xCu);
       }
 
@@ -201,14 +201,14 @@ LABEL_26:
   return v6;
 }
 
-- ($A5A652246548B43F8BC05201A1C72A70)compressContentsOfFileHandle:(id)a3 toDestinationFile:(id)a4 shouldDefer:(id)a5
+- ($A5A652246548B43F8BC05201A1C72A70)compressContentsOfFileHandle:(id)handle toDestinationFile:(id)file shouldDefer:(id)defer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (v9)
+  handleCopy = handle;
+  fileCopy = file;
+  deferCopy = defer;
+  if (handleCopy)
   {
-    if (v10)
+    if (fileCopy)
     {
       goto LABEL_3;
     }
@@ -219,7 +219,7 @@ LABEL_26:
     v23 = +[NSAssertionHandler currentHandler];
     [v23 handleFailureInMethod:a2 object:self file:@"TRIFileSystemCompressor.m" lineNumber:118 description:{@"Invalid parameter not satisfying: %@", @"handle"}];
 
-    if (v10)
+    if (fileCopy)
     {
       goto LABEL_3;
     }
@@ -229,9 +229,9 @@ LABEL_26:
   [v24 handleFailureInMethod:a2 object:self file:@"TRIFileSystemCompressor.m" lineNumber:119 description:{@"Invalid parameter not satisfying: %@", @"filePath"}];
 
 LABEL_3:
-  if (v11)
+  if (deferCopy)
   {
-    v12 = v11;
+    v12 = deferCopy;
   }
 
   else
@@ -241,7 +241,7 @@ LABEL_3:
 
   v13 = objc_retainBlock(v12);
 
-  v14 = open_dprotected_np([v10 fileSystemRepresentation], 514, 4, 0, 384);
+  v14 = open_dprotected_np([fileCopy fileSystemRepresentation], 514, 4, 0, 384);
   if ((v14 & 0x80000000) != 0)
   {
     v17 = TRILogCategory_Archiving();
@@ -251,7 +251,7 @@ LABEL_3:
       v21 = strerror(*v20);
       v22 = *__error();
       *buf = 138412802;
-      v26 = v10;
+      v26 = fileCopy;
       v27 = 2080;
       v28 = v21;
       v29 = 1024;
@@ -265,7 +265,7 @@ LABEL_3:
   else
   {
     v15 = v14;
-    v16 = [(TRIFileSystemCompressor *)self _compressContentsOfSourceHandle:v9 toDestinationFd:v14 shouldDefer:v13];
+    v16 = [(TRIFileSystemCompressor *)self _compressContentsOfSourceHandle:handleCopy toDestinationFd:v14 shouldDefer:v13];
     close(v15);
     if (v16 == 1)
     {
@@ -275,19 +275,19 @@ LABEL_3:
     else
     {
       v18 = +[NSFileManager defaultManager];
-      [v18 removeItemAtPath:v10 error:0];
+      [v18 removeItemAtPath:fileCopy error:0];
     }
   }
 
   return v16;
 }
 
-- ($A5A652246548B43F8BC05201A1C72A70)_compressContentsOfSourceHandle:(id)a3 toDestinationFd:(int)a4 shouldDefer:(id)a5
+- ($A5A652246548B43F8BC05201A1C72A70)_compressContentsOfSourceHandle:(id)handle toDestinationFd:(int)fd shouldDefer:(id)defer
 {
-  v6 = a3;
-  v7 = a5;
+  handleCopy = handle;
+  deferCopy = defer;
   memset(&v42, 0, sizeof(v42));
-  if (fstat([v6 fileDescriptor], &v42))
+  if (fstat([handleCopy fileDescriptor], &v42))
   {
     v8 = TRILogCategory_Archiving();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -364,7 +364,7 @@ LABEL_21:
         v46 = sub_100006ED0;
         v47 = sub_100006EE0;
         v37 = 0;
-        v16 = [v6 readDataUpToLength:0x20000 error:&v37];
+        v16 = [handleCopy readDataUpToLength:0x20000 error:&v37];
         v17 = v37;
         v48 = v16;
         v18 = *(*&v45[8] + 40);
@@ -385,7 +385,7 @@ LABEL_21:
         v34 = &v38;
         v35 = v45;
         v32 = v13;
-        v33 = v7;
+        v33 = deferCopy;
         v36 = v30;
         dispatch_async(v8, block);
 
@@ -434,11 +434,11 @@ LABEL_5:
   return v9;
 }
 
-- ($A5A652246548B43F8BC05201A1C72A70)inPlaceCompressDirectory:(id)a3 shouldDefer:(id)a4
+- ($A5A652246548B43F8BC05201A1C72A70)inPlaceCompressDirectory:(id)directory shouldDefer:(id)defer
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  directoryCopy = directory;
+  deferCopy = defer;
+  if (!directoryCopy)
   {
     v19 = +[NSAssertionHandler currentHandler];
     [v19 handleFailureInMethod:a2 object:self file:@"TRIFileSystemCompressor.m" lineNumber:243 description:{@"Invalid parameter not satisfying: %@", @"dirPath"}];
@@ -446,7 +446,7 @@ LABEL_5:
 
   v24 = 0;
   v9 = +[NSFileManager defaultManager];
-  v10 = [v9 fileExistsAtPath:v7 isDirectory:&v24];
+  v10 = [v9 fileExistsAtPath:directoryCopy isDirectory:&v24];
 
   if (!v10)
   {
@@ -459,7 +459,7 @@ LABEL_5:
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
     {
       LODWORD(buf) = 138412290;
-      *(&buf + 4) = v7;
+      *(&buf + 4) = directoryCopy;
       _os_log_error_impl(&_mh_execute_header, v17, OS_LOG_TYPE_ERROR, "Unexpectedly requested to AFSC compress a file %@", &buf, 0xCu);
     }
 
@@ -468,9 +468,9 @@ LABEL_18:
     goto LABEL_19;
   }
 
-  if (v8)
+  if (deferCopy)
   {
-    v11 = v8;
+    v11 = deferCopy;
   }
 
   else
@@ -484,7 +484,7 @@ LABEL_18:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(buf) = 138412290;
-    *(&buf + 4) = v7;
+    *(&buf + 4) = directoryCopy;
     _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "Compressing files in %@", &buf, 0xCu);
   }
 
@@ -498,11 +498,11 @@ LABEL_18:
   v21[1] = 3221225472;
   v21[2] = sub_1000073FC;
   v21[3] = &unk_1000106C0;
-  v8 = v12;
-  v22 = v8;
+  deferCopy = v12;
+  v22 = deferCopy;
   p_buf = &buf;
   v21[4] = self;
-  if (([v14 _enumerateFilesInDirectory:v7 block:v21] & 1) == 0)
+  if (([v14 _enumerateFilesInDirectory:directoryCopy block:v21] & 1) == 0)
   {
     v15 = TRILogCategory_Archiving();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -520,29 +520,29 @@ LABEL_19:
   return v16;
 }
 
-+ (BOOL)_enumerateFilesInDirectory:(id)a3 block:(id)a4
++ (BOOL)_enumerateFilesInDirectory:(id)directory block:(id)block
 {
-  v5 = a3;
-  v6 = a4;
+  directoryCopy = directory;
+  blockCopy = block;
   v7 = objc_opt_new();
   if (v7)
   {
     v8 = +[NSFileManager defaultManager];
-    v9 = [v8 enumeratorAtPath:v5];
+    v9 = [v8 enumeratorAtPath:directoryCopy];
 
     v10 = objc_autoreleasePoolPush();
-    v11 = [v9 nextObject];
-    if (v11)
+    nextObject = [v9 nextObject];
+    if (nextObject)
     {
-      v12 = v11;
+      nextObject2 = nextObject;
       while (1)
       {
-        v13 = [v9 fileAttributes];
-        v14 = [v13 objectForKeyedSubscript:NSFileType];
+        fileAttributes = [v9 fileAttributes];
+        v14 = [fileAttributes objectForKeyedSubscript:NSFileType];
 
         if (v14 != NSFileTypeDirectory)
         {
-          v15 = [v5 stringByAppendingPathComponent:v12];
+          v15 = [directoryCopy stringByAppendingPathComponent:nextObject2];
           v16 = [v7 addString:v15];
 
           if ((v16 & 1) == 0)
@@ -553,8 +553,8 @@ LABEL_19:
 
         objc_autoreleasePoolPop(v10);
         v10 = objc_autoreleasePoolPush();
-        v12 = [v9 nextObject];
-        if (!v12)
+        nextObject2 = [v9 nextObject];
+        if (!nextObject2)
         {
           goto LABEL_7;
         }
@@ -572,7 +572,7 @@ LABEL_7:
       v19[1] = 3221225472;
       v19[2] = sub_100007800;
       v19[3] = &unk_1000106E8;
-      v20 = v6;
+      v20 = blockCopy;
       v17 = [v7 enumerateStringsWithBlock:v19];
     }
   }

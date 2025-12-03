@@ -1,6 +1,6 @@
 @interface MTREcosystemInformationClusterDeviceTypeStruct
 - (MTREcosystemInformationClusterDeviceTypeStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -24,14 +24,14 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTREcosystemInformationClusterDeviceTypeStruct);
-  v5 = [(MTREcosystemInformationClusterDeviceTypeStruct *)self deviceType];
-  [(MTREcosystemInformationClusterDeviceTypeStruct *)v4 setDeviceType:v5];
+  deviceType = [(MTREcosystemInformationClusterDeviceTypeStruct *)self deviceType];
+  [(MTREcosystemInformationClusterDeviceTypeStruct *)v4 setDeviceType:deviceType];
 
-  v6 = [(MTREcosystemInformationClusterDeviceTypeStruct *)self revision];
-  [(MTREcosystemInformationClusterDeviceTypeStruct *)v4 setRevision:v6];
+  revision = [(MTREcosystemInformationClusterDeviceTypeStruct *)self revision];
+  [(MTREcosystemInformationClusterDeviceTypeStruct *)v4 setRevision:revision];
 
   return v4;
 }

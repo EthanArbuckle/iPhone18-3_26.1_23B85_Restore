@@ -1,112 +1,112 @@
 @interface MTLToolsResourceStateCommandEncoder
-- (MTLToolsResourceStateCommandEncoder)initWithResourceStateCommandEncoder:(id)a3 parent:(id)a4 descriptor:(id)a5;
+- (MTLToolsResourceStateCommandEncoder)initWithResourceStateCommandEncoder:(id)encoder parent:(id)parent descriptor:(id)descriptor;
 - (id)endEncodingAndRetrieveProgramAddressTable;
-- (void)copyMappingStateFromTexture:(id)a3 mipLevel:(unint64_t)a4 slice:(unint64_t)a5 toBuffer:(id)a6 offset:(unint64_t)a7 numTiles:(unint64_t)a8;
-- (void)moveTextureMappingsFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11;
-- (void)updateFence:(id)a3;
-- (void)updateTextureMapping:(id)a3 mode:(unint64_t)a4 indirectBuffer:(id)a5 indirectBufferOffset:(unint64_t)a6;
-- (void)updateTextureMapping:(id)a3 mode:(unint64_t)a4 region:(id *)a5 mipLevel:(unint64_t)a6 slice:(unint64_t)a7;
-- (void)updateTextureMappings:(id)a3 mode:(unint64_t)a4 regions:(id *)a5 mipLevels:(const unint64_t *)a6 slices:(const unint64_t *)a7 numRegions:(unint64_t)a8;
-- (void)waitForFence:(id)a3;
+- (void)copyMappingStateFromTexture:(id)texture mipLevel:(unint64_t)level slice:(unint64_t)slice toBuffer:(id)buffer offset:(unint64_t)offset numTiles:(unint64_t)tiles;
+- (void)moveTextureMappingsFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1;
+- (void)updateFence:(id)fence;
+- (void)updateTextureMapping:(id)mapping mode:(unint64_t)mode indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset;
+- (void)updateTextureMapping:(id)mapping mode:(unint64_t)mode region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice;
+- (void)updateTextureMappings:(id)mappings mode:(unint64_t)mode regions:(id *)regions mipLevels:(const unint64_t *)levels slices:(const unint64_t *)slices numRegions:(unint64_t)numRegions;
+- (void)waitForFence:(id)fence;
 @end
 
 @implementation MTLToolsResourceStateCommandEncoder
 
-- (MTLToolsResourceStateCommandEncoder)initWithResourceStateCommandEncoder:(id)a3 parent:(id)a4 descriptor:(id)a5
+- (MTLToolsResourceStateCommandEncoder)initWithResourceStateCommandEncoder:(id)encoder parent:(id)parent descriptor:(id)descriptor
 {
   v10.receiver = self;
   v10.super_class = MTLToolsResourceStateCommandEncoder;
-  v6 = [(MTLToolsCommandEncoder *)&v10 initWithBaseObject:a3 parent:a4];
+  v6 = [(MTLToolsCommandEncoder *)&v10 initWithBaseObject:encoder parent:parent];
   v7 = v6;
-  if (a5 && v6)
+  if (descriptor && v6)
   {
     for (i = 0; i != 4; ++i)
     {
-      -[MTLToolsCommandEncoder addRetainedObject:](v7, "addRetainedObject:", [objc_msgSend(objc_msgSend(a5 "sampleBufferAttachments")]);
+      -[MTLToolsCommandEncoder addRetainedObject:](v7, "addRetainedObject:", [objc_msgSend(objc_msgSend(descriptor "sampleBufferAttachments")]);
     }
   }
 
   return v7;
 }
 
-- (void)updateTextureMappings:(id)a3 mode:(unint64_t)a4 regions:(id *)a5 mipLevels:(const unint64_t *)a6 slices:(const unint64_t *)a7 numRegions:(unint64_t)a8
+- (void)updateTextureMappings:(id)mappings mode:(unint64_t)mode regions:(id *)regions mipLevels:(const unint64_t *)levels slices:(const unint64_t *)slices numRegions:(unint64_t)numRegions
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v15 = [(MTLToolsObject *)self baseObject];
-  v16 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [mappings baseObject];
 
-  [v15 updateTextureMappings:v16 mode:a4 regions:a5 mipLevels:a6 slices:a7 numRegions:a8];
+  [baseObject updateTextureMappings:baseObject2 mode:mode regions:regions mipLevels:levels slices:slices numRegions:numRegions];
 }
 
-- (void)updateTextureMapping:(id)a3 mode:(unint64_t)a4 region:(id *)a5 mipLevel:(unint64_t)a6 slice:(unint64_t)a7
+- (void)updateTextureMapping:(id)mapping mode:(unint64_t)mode region:(id *)region mipLevel:(unint64_t)level slice:(unint64_t)slice
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v13 = [(MTLToolsObject *)self baseObject];
-  v14 = [a3 baseObject];
-  v15 = *&a5->var0.var2;
-  v16[0] = *&a5->var0.var0;
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [mapping baseObject];
+  v15 = *&region->var0.var2;
+  v16[0] = *&region->var0.var0;
   v16[1] = v15;
-  v16[2] = *&a5->var1.var1;
-  [v13 updateTextureMapping:v14 mode:a4 region:v16 mipLevel:a6 slice:a7];
+  v16[2] = *&region->var1.var1;
+  [baseObject updateTextureMapping:baseObject2 mode:mode region:v16 mipLevel:level slice:slice];
 }
 
-- (void)updateTextureMapping:(id)a3 mode:(unint64_t)a4 indirectBuffer:(id)a5 indirectBufferOffset:(unint64_t)a6
+- (void)updateTextureMapping:(id)mapping mode:(unint64_t)mode indirectBuffer:(id)buffer indirectBufferOffset:(unint64_t)offset
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v11 = [(MTLToolsObject *)self baseObject];
-  v12 = [a3 baseObject];
-  v13 = [a5 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [mapping baseObject];
+  baseObject3 = [buffer baseObject];
 
-  [v11 updateTextureMapping:v12 mode:a4 indirectBuffer:v13 indirectBufferOffset:a6];
+  [baseObject updateTextureMapping:baseObject2 mode:mode indirectBuffer:baseObject3 indirectBufferOffset:offset];
 }
 
-- (void)moveTextureMappingsFromTexture:(id)a3 sourceSlice:(unint64_t)a4 sourceLevel:(unint64_t)a5 sourceOrigin:(id *)a6 sourceSize:(id *)a7 toTexture:(id)a8 destinationSlice:(unint64_t)a9 destinationLevel:(unint64_t)a10 destinationOrigin:(id *)a11
+- (void)moveTextureMappingsFromTexture:(id)texture sourceSlice:(unint64_t)slice sourceLevel:(unint64_t)level sourceOrigin:(id *)origin sourceSize:(id *)size toTexture:(id)toTexture destinationSlice:(unint64_t)destinationSlice destinationLevel:(unint64_t)self0 destinationOrigin:(id *)self1
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a8];
-  v18 = [(MTLToolsObject *)self baseObject];
-  v19 = [a3 baseObject];
-  v23 = *a6;
-  v22 = *a7;
-  v20 = [a8 baseObject];
-  v21 = *a11;
-  [v18 moveTextureMappingsFromTexture:v19 sourceSlice:a4 sourceLevel:a5 sourceOrigin:&v23 sourceSize:&v22 toTexture:v20 destinationSlice:a9 destinationLevel:a10 destinationOrigin:&v21];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:toTexture];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  v23 = *origin;
+  v22 = *size;
+  baseObject3 = [toTexture baseObject];
+  v21 = *destinationOrigin;
+  [baseObject moveTextureMappingsFromTexture:baseObject2 sourceSlice:slice sourceLevel:level sourceOrigin:&v23 sourceSize:&v22 toTexture:baseObject3 destinationSlice:destinationSlice destinationLevel:destinationLevel destinationOrigin:&v21];
 }
 
-- (void)copyMappingStateFromTexture:(id)a3 mipLevel:(unint64_t)a4 slice:(unint64_t)a5 toBuffer:(id)a6 offset:(unint64_t)a7 numTiles:(unint64_t)a8
+- (void)copyMappingStateFromTexture:(id)texture mipLevel:(unint64_t)level slice:(unint64_t)slice toBuffer:(id)buffer offset:(unint64_t)offset numTiles:(unint64_t)tiles
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  [(MTLToolsCommandEncoder *)self addRetainedObject:a6];
-  v15 = [(MTLToolsObject *)self baseObject];
-  v16 = [a3 baseObject];
-  v17 = [a6 baseObject];
+  [(MTLToolsCommandEncoder *)self addRetainedObject:buffer];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [texture baseObject];
+  baseObject3 = [buffer baseObject];
 
-  [v15 copyMappingStateFromTexture:v16 mipLevel:a4 slice:a5 toBuffer:v17 offset:a7 numTiles:a8];
+  [baseObject copyMappingStateFromTexture:baseObject2 mipLevel:level slice:slice toBuffer:baseObject3 offset:offset numTiles:tiles];
 }
 
-- (void)updateFence:(id)a3
+- (void)updateFence:(id)fence
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [fence baseObject];
 
-  [v5 updateFence:v6];
+  [baseObject updateFence:baseObject2];
 }
 
-- (void)waitForFence:(id)a3
+- (void)waitForFence:(id)fence
 {
   [(MTLToolsCommandEncoder *)self addRetainedObject:?];
-  v5 = [(MTLToolsObject *)self baseObject];
-  v6 = [a3 baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
+  baseObject2 = [fence baseObject];
 
-  [v5 waitForFence:v6];
+  [baseObject waitForFence:baseObject2];
 }
 
 - (id)endEncodingAndRetrieveProgramAddressTable
 {
-  v2 = [(MTLToolsObject *)self baseObject];
+  baseObject = [(MTLToolsObject *)self baseObject];
 
-  return [v2 endEncodingAndRetrieveProgramAddressTable];
+  return [baseObject endEncodingAndRetrieveProgramAddressTable];
 }
 
 @end

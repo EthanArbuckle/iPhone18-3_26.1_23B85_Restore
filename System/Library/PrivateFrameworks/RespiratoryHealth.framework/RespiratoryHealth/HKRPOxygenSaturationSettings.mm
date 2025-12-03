@@ -2,7 +2,7 @@
 + (id)standardSettings;
 - (BOOL)isCompanionAnalysisEnabled;
 - (BOOL)overrideIsRemoteDisabled;
-- (HKRPOxygenSaturationSettings)initWithUserDefaults:(id)a3 userDefaultsSyncProvider:(id)a4 companionAnalysisFeatureStatusManager:(id)a5;
+- (HKRPOxygenSaturationSettings)initWithUserDefaults:(id)defaults userDefaultsSyncProvider:(id)provider companionAnalysisFeatureStatusManager:(id)manager;
 - (NSString)aboutBloodOxygenFooter;
 - (NSString)aboutBloodOxygenFooterWithLearnMore;
 - (NSString)backgroundRecordingsDetailOptionsFooter;
@@ -30,23 +30,23 @@
 - (void)_startObservingDefaults;
 - (void)_stopObservingAllDefaults;
 - (void)activateDefaultValuesIfNeeded;
-- (void)addObserver:(id)a3 queue:(id)a4;
+- (void)addObserver:(id)observer queue:(id)queue;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)reset;
-- (void)setBackgroundRecordingsDuringSleepMode:(BOOL)a3;
-- (void)setBackgroundRecordingsDuringTheaterMode:(BOOL)a3;
-- (void)setBackgroundRecordingsEnabled:(BOOL)a3;
-- (void)setOxygenSaturationDisabled:(BOOL)a3;
+- (void)setBackgroundRecordingsDuringSleepMode:(BOOL)mode;
+- (void)setBackgroundRecordingsDuringTheaterMode:(BOOL)mode;
+- (void)setBackgroundRecordingsEnabled:(BOOL)enabled;
+- (void)setOxygenSaturationDisabled:(BOOL)disabled;
 @end
 
 @implementation HKRPOxygenSaturationSettings
 
-- (HKRPOxygenSaturationSettings)initWithUserDefaults:(id)a3 userDefaultsSyncProvider:(id)a4 companionAnalysisFeatureStatusManager:(id)a5
+- (HKRPOxygenSaturationSettings)initWithUserDefaults:(id)defaults userDefaultsSyncProvider:(id)provider companionAnalysisFeatureStatusManager:(id)manager
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  defaultsCopy = defaults;
+  providerCopy = provider;
+  managerCopy = manager;
   v18.receiver = self;
   v18.super_class = HKRPOxygenSaturationSettings;
   v12 = [(HKRPOxygenSaturationSettings *)&v18 init];
@@ -54,14 +54,14 @@
   if (v12)
   {
     v12->_lock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v12->_companionAnalysisFeatureStatusManager, a5);
-    objc_storeStrong(&v13->_userDefaults, a3);
+    objc_storeStrong(&v12->_companionAnalysisFeatureStatusManager, manager);
+    objc_storeStrong(&v13->_userDefaults, defaults);
     v15 = objc_alloc(MEMORY[0x277CCD738]);
     v16 = [v15 initWithName:@"HKRPOxygenSaturationSettingsObservers" loggingCategory:*MEMORY[0x277CCC310]];
     observers = v13->_observers;
     v13->_observers = v16;
 
-    objc_storeStrong(&v13->_userDefaultsSyncProvider, a4);
+    objc_storeStrong(&v13->_userDefaultsSyncProvider, provider);
     [(HKRPOxygenSaturationSettings *)v13 _startObservingDefaults];
     [(HKRPOxygenSaturationSettings *)v13 _loadFeatureStatus];
   }
@@ -79,18 +79,18 @@
 
 + (id)standardSettings
 {
-  v2 = [MEMORY[0x277CBEBD0] hkrp_respiratoryDefaults];
+  hkrp_respiratoryDefaults = [MEMORY[0x277CBEBD0] hkrp_respiratoryDefaults];
   v3 = [HKRPUserDefaultsSyncProvider alloc];
   v4 = [(HKRPUserDefaultsSyncProvider *)v3 initWithUserDefaultsDomain:*MEMORY[0x277CCCD20]];
   v5 = objc_alloc_init(MEMORY[0x277CCD4D8]);
   v6 = objc_alloc(MEMORY[0x277CCD460]);
   v7 = [v6 initWithFeatureIdentifier:*MEMORY[0x277CCC0B8] healthStore:v5];
-  v8 = [[HKRPOxygenSaturationSettings alloc] initWithUserDefaults:v2 userDefaultsSyncProvider:v4 companionAnalysisFeatureStatusManager:v7];
+  v8 = [[HKRPOxygenSaturationSettings alloc] initWithUserDefaults:hkrp_respiratoryDefaults userDefaultsSyncProvider:v4 companionAnalysisFeatureStatusManager:v7];
 
   return v8;
 }
 
-- (void)setOxygenSaturationDisabled:(BOOL)a3
+- (void)setOxygenSaturationDisabled:(BOOL)disabled
 {
   [HKRPOxygenSaturationSettings _setOxygenSaturationDisabled:?];
   userDefaultsSyncProvider = self->_userDefaultsSyncProvider;
@@ -98,7 +98,7 @@
   [(HKRPUserDefaultsSyncProviding *)userDefaultsSyncProvider synchronizeKeys:v5];
 }
 
-- (void)setBackgroundRecordingsEnabled:(BOOL)a3
+- (void)setBackgroundRecordingsEnabled:(BOOL)enabled
 {
   [HKRPOxygenSaturationSettings _setBackgroundRecordingsEnabled:?];
   userDefaultsSyncProvider = self->_userDefaultsSyncProvider;
@@ -106,7 +106,7 @@
   [(HKRPUserDefaultsSyncProviding *)userDefaultsSyncProvider synchronizeKeys:v5];
 }
 
-- (void)setBackgroundRecordingsDuringSleepMode:(BOOL)a3
+- (void)setBackgroundRecordingsDuringSleepMode:(BOOL)mode
 {
   [HKRPOxygenSaturationSettings _setBackgroundRecordingsDuringSleepMode:?];
   userDefaultsSyncProvider = self->_userDefaultsSyncProvider;
@@ -114,7 +114,7 @@
   [(HKRPUserDefaultsSyncProviding *)userDefaultsSyncProvider synchronizeKeys:v5];
 }
 
-- (void)setBackgroundRecordingsDuringTheaterMode:(BOOL)a3
+- (void)setBackgroundRecordingsDuringTheaterMode:(BOOL)mode
 {
   [HKRPOxygenSaturationSettings _setBackgroundRecordingsDuringTheaterMode:?];
   userDefaultsSyncProvider = self->_userDefaultsSyncProvider;
@@ -126,10 +126,10 @@
 {
   os_unfair_lock_lock(&self->_lock);
   v3 = [(HKFeatureStatus *)self->_lock_companionAnalysisFeatureStatus objectForKeyedSubscript:*MEMORY[0x277CCBEA0]];
-  v4 = [v3 areAllRequirementsSatisfied];
+  areAllRequirementsSatisfied = [v3 areAllRequirementsSatisfied];
 
   os_unfair_lock_unlock(&self->_lock);
-  return v4;
+  return areAllRequirementsSatisfied;
 }
 
 - (void)activateDefaultValuesIfNeeded
@@ -239,22 +239,22 @@ LABEL_12:
 - (BOOL)overrideIsRemoteDisabled
 {
   v2 = [(NSUserDefaults *)self->_userDefaults objectForKey:@"OverrideIsRemoteDisabled"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
-- (void)addObserver:(id)a3 queue:(id)a4
+- (void)addObserver:(id)observer queue:(id)queue
 {
   observers = self->_observers;
-  if (a4)
+  if (queue)
   {
-    [(HKObserverSet *)observers registerObserver:a3 queue:?];
+    [(HKObserverSet *)observers registerObserver:observer queue:?];
   }
 
   else
   {
-    [(HKObserverSet *)observers registerObserver:a3];
+    [(HKObserverSet *)observers registerObserver:observer];
   }
 }
 
@@ -477,11 +477,11 @@ void __56__HKRPOxygenSaturationSettings__notifySettingsDidChange__block_invoke(u
 
 - (NSString)backgroundRecordingsDetailOptionsFooter
 {
-  v3 = [MEMORY[0x277CCDCF8] isWristDetectEnabled];
-  v4 = [(HKRPOxygenSaturationSettings *)self isCompanionAnalysisEnabled];
-  if (v3)
+  isWristDetectEnabled = [MEMORY[0x277CCDCF8] isWristDetectEnabled];
+  isCompanionAnalysisEnabled = [(HKRPOxygenSaturationSettings *)self isCompanionAnalysisEnabled];
+  if (isWristDetectEnabled)
   {
-    if (v4)
+    if (isCompanionAnalysisEnabled)
     {
       HKRPCompanionAnalysisLocalizedString(@"COMPANION_ANALYSIS_BACKGROUND_RECORDING_OPTION_FOOTER");
     }
@@ -496,7 +496,7 @@ void __56__HKRPOxygenSaturationSettings__notifySettingsDidChange__block_invoke(u
   else
   {
     v5 = MEMORY[0x277CCACA8];
-    if (v4)
+    if (isCompanionAnalysisEnabled)
     {
       HKRPCompanionAnalysisLocalizedString(@"COMPANION_ANALYSIS_BACKGROUND_RECORDING_OPTION_FOOTER_WRIST_DETECT_TURNED_OFF_%@");
     }
@@ -548,10 +548,10 @@ void __56__HKRPOxygenSaturationSettings__notifySettingsDidChange__block_invoke(u
 - (void)_startObservingDefaults
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [(HKRPOxygenSaturationSettings *)a1 _settingsToObserve];
-    v4 = OUTLINED_FUNCTION_3(v2, v3);
+    _settingsToObserve = [(HKRPOxygenSaturationSettings *)self _settingsToObserve];
+    v4 = OUTLINED_FUNCTION_3(_settingsToObserve, v3);
     if (v4)
     {
       v12 = v4;
@@ -585,32 +585,32 @@ void __56__HKRPOxygenSaturationSettings__notifySettingsDidChange__block_invoke(u
 - (void)_loadFeatureStatus
 {
   v14 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    os_unfair_lock_lock((a1 + 32));
-    v2 = *(a1 + 40);
+    os_unfair_lock_lock((self + 32));
+    v2 = *(self + 40);
     v9 = 0;
     v3 = [v2 featureStatusWithError:&v9];
     v4 = v9;
-    v5 = *(a1 + 48);
-    *(a1 + 48) = v3;
+    v5 = *(self + 48);
+    *(self + 48) = v3;
 
-    if (!*(a1 + 48))
+    if (!*(self + 48))
     {
       _HKInitializeLogging();
       v6 = HKLogRespiratoryCategory();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
-        v8 = [v4 localizedDescription];
+        localizedDescription = [v4 localizedDescription];
         *buf = 138543618;
-        v11 = a1;
+        selfCopy = self;
         v12 = 2114;
-        v13 = v8;
+        v13 = localizedDescription;
         _os_log_error_impl(&dword_262078000, v6, OS_LOG_TYPE_ERROR, "[%{public}@] Failed to load feature status with error: %{public}@", buf, 0x16u);
       }
     }
 
-    os_unfair_lock_unlock((a1 + 32));
+    os_unfair_lock_unlock((self + 32));
   }
 
   v7 = *MEMORY[0x277D85DE8];
@@ -619,10 +619,10 @@ void __56__HKRPOxygenSaturationSettings__notifySettingsDidChange__block_invoke(u
 - (void)_stopObservingAllDefaults
 {
   v26 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = [(HKRPOxygenSaturationSettings *)a1 _settingsToObserve];
-    v4 = OUTLINED_FUNCTION_3(v2, v3);
+    _settingsToObserve = [(HKRPOxygenSaturationSettings *)self _settingsToObserve];
+    v4 = OUTLINED_FUNCTION_3(_settingsToObserve, v3);
     if (v4)
     {
       v12 = v4;
@@ -760,27 +760,27 @@ void __56__HKRPOxygenSaturationSettings__notifySettingsDidChange__block_invoke(u
 - (id)_settingsToObserve
 {
   v3[5] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
     v3[0] = @"OxygenSaturationDisabled";
     v3[1] = @"BackgroundMeasurementsEnabled";
     v3[2] = @"BackgroundMeasurementsDuringSleepMode";
     v3[3] = @"BackgroundMeasurementsDuringTheaterMode";
     v3[4] = @"OverrideIsRemoteDisabled";
-    a1 = [MEMORY[0x277CBEA60] arrayWithObjects:v3 count:5];
+    self = [MEMORY[0x277CBEA60] arrayWithObjects:v3 count:5];
   }
 
   v1 = *MEMORY[0x277D85DE8];
 
-  return a1;
+  return self;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
   v31 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
   _HKInitializeLogging();
   v13 = HKLogRespiratoryCategory();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
@@ -788,12 +788,12 @@ void __56__HKRPOxygenSaturationSettings__notifySettingsDidChange__block_invoke(u
     v14 = objc_opt_class();
     v15 = *MEMORY[0x277CCA300];
     v16 = v14;
-    v17 = [v12 objectForKeyedSubscript:v15];
-    v18 = [v12 objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
+    v17 = [changeCopy objectForKeyedSubscript:v15];
+    v18 = [changeCopy objectForKeyedSubscript:*MEMORY[0x277CCA2F0]];
     *buf = 138544130;
     v24 = v14;
     v25 = 2114;
-    v26 = v10;
+    v26 = pathCopy;
     v27 = 2114;
     v28 = v17;
     v29 = 2114;
@@ -801,8 +801,8 @@ void __56__HKRPOxygenSaturationSettings__notifySettingsDidChange__block_invoke(u
     _os_log_impl(&dword_262078000, v13, OS_LOG_TYPE_DEFAULT, "[%{public}@] %{public}@ change to: %{public}@ -> %{public}@", buf, 0x2Au);
   }
 
-  v19 = [(HKRPOxygenSaturationSettings *)self _settingsToObserve];
-  v20 = [v19 containsObject:v10];
+  _settingsToObserve = [(HKRPOxygenSaturationSettings *)self _settingsToObserve];
+  v20 = [_settingsToObserve containsObject:pathCopy];
 
   if (v20)
   {
@@ -813,7 +813,7 @@ void __56__HKRPOxygenSaturationSettings__notifySettingsDidChange__block_invoke(u
   {
     v22.receiver = self;
     v22.super_class = HKRPOxygenSaturationSettings;
-    [(HKRPOxygenSaturationSettings *)&v22 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(HKRPOxygenSaturationSettings *)&v22 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 
   v21 = *MEMORY[0x277D85DE8];
@@ -821,7 +821,7 @@ void __56__HKRPOxygenSaturationSettings__notifySettingsDidChange__block_invoke(u
 
 - (uint64_t)activateDefaultValuesIfNeeded
 {
-  [HKRPOxygenSaturationSettings _setBackgroundRecordingsDuringTheaterMode:a1];
+  [HKRPOxygenSaturationSettings _setBackgroundRecordingsDuringTheaterMode:self];
 
   return [a2 addObject:@"BackgroundMeasurementsDuringTheaterMode"];
 }

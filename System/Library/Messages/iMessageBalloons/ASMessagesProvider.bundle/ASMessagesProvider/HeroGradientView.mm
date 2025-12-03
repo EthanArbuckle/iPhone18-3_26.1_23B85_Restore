@@ -1,11 +1,11 @@
 @interface HeroGradientView
-- (_TtC18ASMessagesProvider16HeroGradientView)initWithCoder:(id)a3;
+- (_TtC18ASMessagesProvider16HeroGradientView)initWithCoder:(id)coder;
 - (void)layoutSubviews;
 @end
 
 @implementation HeroGradientView
 
-- (_TtC18ASMessagesProvider16HeroGradientView)initWithCoder:(id)a3
+- (_TtC18ASMessagesProvider16HeroGradientView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC18ASMessagesProvider16HeroGradientView_gradient;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(CAGradientLayer) init];

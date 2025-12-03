@@ -1,16 +1,16 @@
 @interface HMCoreAnalyticsMetricEventDispatcher
-- (HMCoreAnalyticsMetricEventDispatcher)initWithSendEventHandler:(id)a3;
-- (void)sendEvent:(id)a3;
+- (HMCoreAnalyticsMetricEventDispatcher)initWithSendEventHandler:(id)handler;
+- (void)sendEvent:(id)event;
 @end
 
 @implementation HMCoreAnalyticsMetricEventDispatcher
 
-- (void)sendEvent:(id)a3
+- (void)sendEvent:(id)event
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventCopy = event;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -18,25 +18,25 @@
     v13 = 138543618;
     v14 = v8;
     v15 = 2112;
-    v16 = v4;
+    v16 = eventCopy;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@Sending event: %@", &v13, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  sendEventHandler = v6->_sendEventHandler;
-  v10 = [v4 name];
-  v11 = [v4 eventPayload];
-  sendEventHandler[2](sendEventHandler, v10, v11);
+  sendEventHandler = selfCopy->_sendEventHandler;
+  name = [eventCopy name];
+  eventPayload = [eventCopy eventPayload];
+  sendEventHandler[2](sendEventHandler, name, eventPayload);
 
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (HMCoreAnalyticsMetricEventDispatcher)initWithSendEventHandler:(id)a3
+- (HMCoreAnalyticsMetricEventDispatcher)initWithSendEventHandler:(id)handler
 {
-  v4 = a3;
-  if (v4)
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v5 = v4;
+    v5 = handlerCopy;
     v11.receiver = self;
     v11.super_class = HMCoreAnalyticsMetricEventDispatcher;
     v6 = [(HMCoreAnalyticsMetricEventDispatcher *)&v11 init];

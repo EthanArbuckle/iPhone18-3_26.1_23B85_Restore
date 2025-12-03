@@ -1,10 +1,10 @@
 @interface DetailsTabBarViewRepresentable.Coordinator
-- (void)selectedTabDidChange:(id)a3;
+- (void)selectedTabDidChange:(id)change;
 @end
 
 @implementation DetailsTabBarViewRepresentable.Coordinator
 
-- (void)selectedTabDidChange:(id)a3
+- (void)selectedTabDidChange:(id)change
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
@@ -14,8 +14,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v5 = *((*MEMORY[0x1E69E7D40] & *a3) + 0x100);
-  v6 = a3;
+  v5 = *((*MEMORY[0x1E69E7D40] & *change) + 0x100);
+  changeCopy = change;
 
   v5(v10, v7);
   v8 = v10[0];

@@ -7,9 +7,9 @@
 - (uint64_t)validateQuantityForManualEntry:()ManualEntryValidation
 {
   v4 = a3;
-  v5 = [a1 code];
+  code = [self code];
   v6 = 2;
-  switch(v5)
+  switch(code)
   {
     case 0:
       v7 = @"count";
@@ -611,7 +611,7 @@ LABEL_131:
 
       return v6;
     default:
-      switch(v5)
+      switch(code)
       {
         case 248:
         case 249:

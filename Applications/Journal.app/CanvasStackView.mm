@@ -1,12 +1,12 @@
 @interface CanvasStackView
 - (BOOL)accessibilityElementsHidden;
 - (BOOL)isAccessibilityElement;
-- (_TtC7Journal15CanvasStackView)initWithCoder:(id)a3;
+- (_TtC7Journal15CanvasStackView)initWithCoder:(id)coder;
 @end
 
 @implementation CanvasStackView
 
-- (_TtC7Journal15CanvasStackView)initWithCoder:(id)a3
+- (_TtC7Journal15CanvasStackView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal15CanvasStackView_reflectionPromptView) = 0;
   *(&self->super.super.super.super.isa + OBJC_IVAR____TtC7Journal15CanvasStackView_journalEntry) = 0;
@@ -25,7 +25,7 @@
   v2 = v7.receiver;
   if ([(CanvasStackView *)&v7 isAccessibilityElement])
   {
-    v3 = [v2 arrangedSubviews];
+    arrangedSubviews = [v2 arrangedSubviews];
     sub_10021DE14();
     v4 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 
@@ -62,7 +62,7 @@
 
   else
   {
-    v4 = [v2 arrangedSubviews];
+    arrangedSubviews = [v2 arrangedSubviews];
     sub_10021DE14();
     v5 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
 

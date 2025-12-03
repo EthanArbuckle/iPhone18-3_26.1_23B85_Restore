@@ -1,46 +1,46 @@
 @interface HKMonthWeekView
 - (BOOL)containsMonthTitle;
 - (CGRect)_frameForTopBorderLine;
-- (HKMonthWeekView)initWithDateCache:(id)a3 displaysMonthTitle:(BOOL)a4 displaysTopBorderLine:(BOOL)a5;
+- (HKMonthWeekView)initWithDateCache:(id)cache displaysMonthTitle:(BOOL)title displaysTopBorderLine:(BOOL)line;
 - (NSArray)accessoryViews;
-- (id)cellMatchingDate:(id)a3;
+- (id)cellMatchingDate:(id)date;
 - (void)clearAccessoryViews;
 - (void)layoutSubviews;
-- (void)selectedCalendarDay:(id)a3;
-- (void)setMonthWeekStart:(id)a3;
-- (void)setTitleHighlighted:(BOOL)a3;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)selectedCalendarDay:(id)day;
+- (void)setMonthWeekStart:(id)start;
+- (void)setTitleHighlighted:(BOOL)highlighted;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HKMonthWeekView
 
-- (HKMonthWeekView)initWithDateCache:(id)a3 displaysMonthTitle:(BOOL)a4 displaysTopBorderLine:(BOOL)a5
+- (HKMonthWeekView)initWithDateCache:(id)cache displaysMonthTitle:(BOOL)title displaysTopBorderLine:(BOOL)line
 {
-  v5 = a5;
+  lineCopy = line;
   v15.receiver = self;
   v15.super_class = HKMonthWeekView;
-  v7 = [(HKCalendarWeekView *)&v15 initWithDateCache:a3];
+  v7 = [(HKCalendarWeekView *)&v15 initWithDateCache:cache];
   if (v7)
   {
     v7->_isRTL = HKUICalendarLocaleIsRightToLeft();
-    v7->_displaysMonthTitle = a4;
-    v8 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(HKMonthWeekView *)v7 setBackgroundColor:v8];
+    v7->_displaysMonthTitle = title;
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(HKMonthWeekView *)v7 setBackgroundColor:systemBackgroundColor];
 
-    v7->_displaysTopBorderLine = v5;
-    if (v5)
+    v7->_displaysTopBorderLine = lineCopy;
+    if (lineCopy)
     {
-      v9 = [MEMORY[0x1E6979398] layer];
+      layer = [MEMORY[0x1E6979398] layer];
       topBorderLine = v7->_topBorderLine;
-      v7->_topBorderLine = v9;
+      v7->_topBorderLine = layer;
 
       v11 = v7->_topBorderLine;
-      v12 = [MEMORY[0x1E69DCEB0] mainScreen];
-      [v12 scale];
+      mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+      [mainScreen scale];
       [(CALayer *)v11 setContentsScale:?];
 
-      v13 = [(HKMonthWeekView *)v7 layer];
-      [v13 addSublayer:v7->_topBorderLine];
+      layer2 = [(HKMonthWeekView *)v7 layer];
+      [layer2 addSublayer:v7->_topBorderLine];
     }
 
     [(HKCalendarWeekView *)v7 setLeadingMargin:5.0];
@@ -61,8 +61,8 @@
   if (!accessoryViews)
   {
     v4 = MEMORY[0x1E695DF70];
-    v5 = [(HKCalendarWeekView *)self dayCells];
-    v6 = [v4 arrayWithCapacity:{objc_msgSend(v5, "count")}];
+    dayCells = [(HKCalendarWeekView *)self dayCells];
+    v6 = [v4 arrayWithCapacity:{objc_msgSend(dayCells, "count")}];
 
     v33 = 0u;
     v34 = 0u;
@@ -92,26 +92,26 @@
           [(HKMonthWeekViewAccessoryView *)v16 setTranslatesAutoresizingMaskIntoConstraints:0];
           [(NSArray *)v6 addObject:v16];
           [(HKMonthWeekView *)self addSubview:v16];
-          v17 = [(HKMonthWeekViewAccessoryView *)v16 centerXAnchor];
-          v18 = [(HKMonthWeekView *)self leadingAnchor];
+          centerXAnchor = [(HKMonthWeekViewAccessoryView *)v16 centerXAnchor];
+          leadingAnchor = [(HKMonthWeekView *)self leadingAnchor];
           [v15 frame];
-          v19 = [v17 constraintEqualToAnchor:v18 constant:CGRectGetMidX(v38)];
+          v19 = [centerXAnchor constraintEqualToAnchor:leadingAnchor constant:CGRectGetMidX(v38)];
           [v19 setActive:1];
 
-          v20 = [(HKMonthWeekViewAccessoryView *)v16 widthAnchor];
+          widthAnchor = [(HKMonthWeekViewAccessoryView *)v16 widthAnchor];
           [v15 frame];
-          v21 = [v20 constraintEqualToConstant:CGRectGetWidth(v39) * 0.5];
+          v21 = [widthAnchor constraintEqualToConstant:CGRectGetWidth(v39) * 0.5];
           [v21 setActive:1];
 
-          v22 = [(HKMonthWeekViewAccessoryView *)v16 heightAnchor];
-          v23 = [(HKMonthWeekViewAccessoryView *)v16 widthAnchor];
-          v24 = [v22 constraintEqualToAnchor:v23];
+          heightAnchor = [(HKMonthWeekViewAccessoryView *)v16 heightAnchor];
+          widthAnchor2 = [(HKMonthWeekViewAccessoryView *)v16 widthAnchor];
+          v24 = [heightAnchor constraintEqualToAnchor:widthAnchor2];
           [v24 setActive:1];
 
-          v25 = [(HKMonthWeekViewAccessoryView *)v16 topAnchor];
-          v26 = [(HKMonthWeekView *)self topAnchor];
+          topAnchor = [(HKMonthWeekViewAccessoryView *)v16 topAnchor];
+          topAnchor2 = [(HKMonthWeekView *)self topAnchor];
           [v15 frame];
-          v27 = [v25 constraintEqualToAnchor:v26 constant:CGRectGetMaxY(v40) + -2.0];
+          v27 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:CGRectGetMaxY(v40) + -2.0];
           [v27 setActive:1];
         }
 
@@ -152,29 +152,29 @@
   return [(HKCalendarWeekView *)&v5 containsMonthTitle];
 }
 
-- (void)selectedCalendarDay:(id)a3
+- (void)selectedCalendarDay:(id)day
 {
-  v4 = a3;
-  v5 = [(HKCalendarWeekView *)self delegate];
-  [v5 week:self cellSelected:v4];
+  dayCopy = day;
+  delegate = [(HKCalendarWeekView *)self delegate];
+  [delegate week:self cellSelected:dayCopy];
 }
 
-- (id)cellMatchingDate:(id)a3
+- (id)cellMatchingDate:(id)date
 {
-  v4 = a3;
-  if ([(HKCalendarWeekView *)self containsDate:v4])
+  dateCopy = date;
+  if ([(HKCalendarWeekView *)self containsDate:dateCopy])
   {
-    v5 = [MEMORY[0x1E695DEE8] currentCalendar];
-    v6 = [v5 component:512 fromDate:v4];
-    v7 = [v5 firstWeekday];
-    v8 = (v6 - v7 + *MEMORY[0x1E696B760]) % *MEMORY[0x1E696B760];
+    currentCalendar = [MEMORY[0x1E695DEE8] currentCalendar];
+    v6 = [currentCalendar component:512 fromDate:dateCopy];
+    firstWeekday = [currentCalendar firstWeekday];
+    v8 = (v6 - firstWeekday + *MEMORY[0x1E696B760]) % *MEMORY[0x1E696B760];
     if (HKUICalendarLocaleIsRightToLeft())
     {
       v8 = 6 - v8;
     }
 
-    v9 = [(HKCalendarWeekView *)self dayCells];
-    v10 = [v9 objectAtIndexedSubscript:v8];
+    dayCells = [(HKCalendarWeekView *)self dayCells];
+    v10 = [dayCells objectAtIndexedSubscript:v8];
   }
 
   else
@@ -185,33 +185,33 @@
   return v10;
 }
 
-- (void)setTitleHighlighted:(BOOL)a3
+- (void)setTitleHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   if ([(HKMonthWeekView *)self containsMonthTitle])
   {
-    v5 = [(HKCalendarWeekView *)self monthTitleView];
-    [v5 setHighlighted:v3];
+    monthTitleView = [(HKCalendarWeekView *)self monthTitleView];
+    [monthTitleView setHighlighted:highlightedCopy];
   }
 }
 
-- (void)setMonthWeekStart:(id)a3
+- (void)setMonthWeekStart:(id)start
 {
   v8.receiver = self;
   v8.super_class = HKMonthWeekView;
-  [(HKCalendarWeekView *)&v8 setMonthWeekStart:a3];
+  [(HKCalendarWeekView *)&v8 setMonthWeekStart:start];
   isRTL = self->_isRTL;
-  v5 = [(HKCalendarWeekView *)self firstDayOfMonthCellIndex];
-  v6 = v5;
+  firstDayOfMonthCellIndex = [(HKCalendarWeekView *)self firstDayOfMonthCellIndex];
+  v6 = firstDayOfMonthCellIndex;
   if (isRTL)
   {
-    v7 = [(HKCalendarWeekView *)self dayCells];
-    -[CALayer setHidden:](self->_topBorderLine, "setHidden:", v6 == [v7 count] - 1);
+    dayCells = [(HKCalendarWeekView *)self dayCells];
+    -[CALayer setHidden:](self->_topBorderLine, "setHidden:", v6 == [dayCells count] - 1);
   }
 
   else
   {
-    [(CALayer *)self->_topBorderLine setHidden:v5 == 0];
+    [(CALayer *)self->_topBorderLine setHidden:firstDayOfMonthCellIndex == 0];
   }
 
   [(HKMonthWeekView *)self clearAccessoryViews];
@@ -226,9 +226,9 @@
   [(HKCalendarWeekView *)self leadingMargin];
   v6 = *MEMORY[0x1E696B760];
   v7 = (v4 + v5 * -2.0) / *MEMORY[0x1E696B760];
-  v8 = [(HKCalendarWeekView *)self monthTitleView];
+  monthTitleView = [(HKCalendarWeekView *)self monthTitleView];
   [(HKMonthWeekView *)self bounds];
-  [v8 sizeThatFits:{v9, v10}];
+  [monthTitleView sizeThatFits:{v9, v10}];
   v12 = v11;
   v14 = v13;
 
@@ -237,11 +237,11 @@
     goto LABEL_17;
   }
 
-  v15 = [(HKCalendarWeekView *)self monthTitleView];
-  [v15 sizeToFit];
+  monthTitleView2 = [(HKCalendarWeekView *)self monthTitleView];
+  [monthTitleView2 sizeToFit];
 
-  v16 = [(HKCalendarWeekView *)self monthTitleView];
-  [v16 frame];
+  monthTitleView3 = [(HKCalendarWeekView *)self monthTitleView];
+  [monthTitleView3 frame];
   v18 = v17;
 
   [(HKCalendarWeekView *)self leadingMargin];
@@ -268,12 +268,12 @@
   [(HKCalendarWeekView *)self monthTitleTopMargin];
   v29 = v27 + v28;
   isRTL = self->_isRTL;
-  v31 = [(HKCalendarWeekView *)self firstDayOfMonthCellIndex];
-  v32 = v31;
+  firstDayOfMonthCellIndex = [(HKCalendarWeekView *)self firstDayOfMonthCellIndex];
+  v32 = firstDayOfMonthCellIndex;
   if (isRTL)
   {
-    v33 = [(HKCalendarWeekView *)self dayCells];
-    v34 = [v33 count] - 1;
+    dayCells = [(HKCalendarWeekView *)self dayCells];
+    v34 = [dayCells count] - 1;
 
     if (v32 >= v34)
     {
@@ -283,7 +283,7 @@
     goto LABEL_10;
   }
 
-  if (v31 >= 1)
+  if (firstDayOfMonthCellIndex >= 1)
   {
 LABEL_10:
     [(HKCalendarWeekView *)self dateBottomMargin];
@@ -293,37 +293,37 @@ LABEL_10:
   }
 
 LABEL_11:
-  v38 = [(HKCalendarWeekView *)self monthTitleView];
+  monthTitleView4 = [(HKCalendarWeekView *)self monthTitleView];
   [(HKMonthWeekView *)self bounds];
-  [v38 setFrame:{v20, v29}];
+  [monthTitleView4 setFrame:{v20, v29}];
 
-  v39 = [(HKCalendarWeekView *)self monthTitleView];
-  v40 = v39;
+  monthTitleView5 = [(HKCalendarWeekView *)self monthTitleView];
+  v40 = monthTitleView5;
   v41 = -v20;
   if (!self->_isRTL)
   {
     v41 = -17.0;
   }
 
-  [v39 setDividerOriginX:v41];
+  [monthTitleView5 setDividerOriginX:v41];
   v42 = self->_isRTL;
-  v43 = [(HKCalendarWeekView *)self firstDayOfMonthCellIndex];
+  firstDayOfMonthCellIndex2 = [(HKCalendarWeekView *)self firstDayOfMonthCellIndex];
   if (v42)
   {
-    v44 = (v43 + 1);
+    v44 = (firstDayOfMonthCellIndex2 + 1);
     [(HKCalendarWeekView *)self leadingMargin];
     v46 = v45 + v7 * v44;
   }
 
   else
   {
-    v46 = v7 * (v6 - v43 + 1);
+    v46 = v7 * (v6 - firstDayOfMonthCellIndex2 + 1);
   }
 
   [v40 setDividerWidth:v46];
 
 LABEL_17:
-  v47 = [(HKCalendarWeekView *)self dayCells];
+  dayCells2 = [(HKCalendarWeekView *)self dayCells];
   v51[0] = MEMORY[0x1E69E9820];
   v51[1] = 3221225472;
   v51[2] = __33__HKMonthWeekView_layoutSubviews__block_invoke;
@@ -332,14 +332,14 @@ LABEL_17:
   *&v51[5] = v7;
   v51[6] = v12;
   v51[7] = v14;
-  [v47 enumerateObjectsUsingBlock:v51];
+  [dayCells2 enumerateObjectsUsingBlock:v51];
 
   topBorderLine = self->_topBorderLine;
   [(HKMonthWeekView *)self _frameForTopBorderLine];
   [(CALayer *)topBorderLine setFrame:?];
   v49 = self->_topBorderLine;
-  v50 = [MEMORY[0x1E69DC888] tableSeparatorColor];
-  -[CALayer setBackgroundColor:](v49, "setBackgroundColor:", [v50 CGColor]);
+  tableSeparatorColor = [MEMORY[0x1E69DC888] tableSeparatorColor];
+  -[CALayer setBackgroundColor:](v49, "setBackgroundColor:", [tableSeparatorColor CGColor]);
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -432,11 +432,11 @@ LABEL_12:
   v10 = *MEMORY[0x1E696B760];
   v11 = (v6 + v8 * -2.0) / *MEMORY[0x1E696B760];
   isRTL = self->_isRTL;
-  v13 = [(HKCalendarWeekView *)self firstDayOfMonthCellIndex];
-  v14 = v13;
+  firstDayOfMonthCellIndex = [(HKCalendarWeekView *)self firstDayOfMonthCellIndex];
+  v14 = firstDayOfMonthCellIndex;
   if (!isRTL)
   {
-    if (v13 == 1)
+    if (firstDayOfMonthCellIndex == 1)
     {
       goto LABEL_4;
     }
@@ -457,11 +457,11 @@ LABEL_8:
 
 LABEL_4:
   v17 = self->_isRTL;
-  v18 = [(HKCalendarWeekView *)self firstDayOfMonthCellIndex];
-  v19 = v10 + ~v18;
+  firstDayOfMonthCellIndex2 = [(HKCalendarWeekView *)self firstDayOfMonthCellIndex];
+  v19 = v10 + ~firstDayOfMonthCellIndex2;
   if (!v17)
   {
-    v19 = v18;
+    v19 = firstDayOfMonthCellIndex2;
   }
 
   v20 = v4 + v11 * v19;
@@ -477,18 +477,18 @@ LABEL_9:
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   v9.receiver = self;
   v9.super_class = HKMonthWeekView;
-  [(HKMonthWeekView *)&v9 traitCollectionDidChange:v4];
-  if (v4)
+  [(HKMonthWeekView *)&v9 traitCollectionDidChange:changeCopy];
+  if (changeCopy)
   {
-    v5 = [(HKMonthWeekView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = [v4 preferredContentSizeCategory];
-    v8 = [v6 isEqualToString:v7];
+    traitCollection = [(HKMonthWeekView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    preferredContentSizeCategory2 = [changeCopy preferredContentSizeCategory];
+    v8 = [preferredContentSizeCategory isEqualToString:preferredContentSizeCategory2];
 
     if ((v8 & 1) == 0)
     {

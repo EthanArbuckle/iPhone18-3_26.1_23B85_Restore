@@ -33,21 +33,21 @@
 
 - (void)startDisplayLink
 {
-  v2 = self;
+  selfCopy = self;
   sub_10123661C();
 }
 
 - (void)endDisplayLink
 {
-  v2 = self;
+  selfCopy = self;
   sub_101236F30();
 }
 
 - (void)dealloc
 {
-  v2 = self;
+  selfCopy = self;
   sub_101236F30();
-  v3.receiver = v2;
+  v3.receiver = selfCopy;
   v3.super_class = type metadata accessor for CRLLayerAnimationDisplayLink();
   [(CRLLayerAnimationDisplayLink *)&v3 dealloc];
 }

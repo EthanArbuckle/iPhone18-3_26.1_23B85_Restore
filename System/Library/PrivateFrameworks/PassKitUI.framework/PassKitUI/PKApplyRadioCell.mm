@@ -1,23 +1,23 @@
 @interface PKApplyRadioCell
-- (CGSize)_layoutWithBounds:(CGRect)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (PKApplyRadioCell)initWithFrame:(CGRect)a3;
+- (CGSize)_layoutWithBounds:(CGRect)bounds;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (PKApplyRadioCell)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setRadioButtonSelected:(BOOL)a3;
-- (void)setTitle:(id)a3;
+- (void)setRadioButtonSelected:(BOOL)selected;
+- (void)setTitle:(id)title;
 @end
 
 @implementation PKApplyRadioCell
 
-- (PKApplyRadioCell)initWithFrame:(CGRect)a3
+- (PKApplyRadioCell)initWithFrame:(CGRect)frame
 {
   v29.receiver = self;
   v29.super_class = PKApplyRadioCell;
-  v3 = [(PKApplyRadioCell *)&v29 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PKApplyRadioCell *)&v29 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
-    v5 = [(PKApplyRadioCell *)v3 contentView];
+    contentView = [(PKApplyRadioCell *)v3 contentView];
     v6 = objc_alloc_init(MEMORY[0x1E69DCC10]);
     titleLabel = v4->_titleLabel;
     v4->_titleLabel = v6;
@@ -30,7 +30,7 @@
     [(UILabel *)v8 setFont:v10];
 
     [(UILabel *)v4->_titleLabel setAccessibilityIdentifier:*MEMORY[0x1E69B9D20]];
-    [v5 addSubview:v4->_titleLabel];
+    [contentView addSubview:v4->_titleLabel];
     objc_initWeak(&location, v4);
     v11 = MEMORY[0x1E69DC628];
     v23 = MEMORY[0x1E69E9820];
@@ -39,26 +39,26 @@
     v26 = &unk_1E8010A60;
     objc_copyWeak(&v27, &location);
     v12 = [v11 actionWithHandler:&v23];
-    v13 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
     v14 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"circle"];
-    [v13 setImage:v14];
+    [plainButtonConfiguration setImage:v14];
 
-    v15 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-    [v13 setBackground:v15];
-    [v13 setContentInsets:{0.0, 0.0, 0.0, 0.0}];
+    clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+    [plainButtonConfiguration setBackground:clearConfiguration];
+    [plainButtonConfiguration setContentInsets:{0.0, 0.0, 0.0, 0.0}];
     v16 = MEMORY[0x1E69DCAD8];
     v17 = PKFontForDefaultDesign(v9, 0, *MEMORY[0x1E69DB978]);
     v18 = [v16 configurationWithFont:v17];
 
-    [v13 setPreferredSymbolConfigurationForImage:v18];
-    v19 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v13 primaryAction:v12];
+    [plainButtonConfiguration setPreferredSymbolConfigurationForImage:v18];
+    v19 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:v12];
     button = v4->_button;
     v4->_button = v19;
 
     [(UIButton *)v4->_button setAccessibilityIdentifier:*MEMORY[0x1E69B9AE0]];
-    [v5 addSubview:v4->_button];
+    [contentView addSubview:v4->_button];
     v21 = PKProvisioningSecondaryBackgroundColor();
-    [v5 setBackgroundColor:v21];
+    [contentView setBackgroundColor:v21];
 
     objc_destroyWeak(&v27);
     objc_destroyWeak(&location);
@@ -78,30 +78,30 @@ void __34__PKApplyRadioCell_initWithFrame___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   title = self->_title;
-  v9 = v5;
-  v7 = title;
-  if (v7 == v9)
+  v9 = titleCopy;
+  titleCopy2 = title;
+  if (titleCopy2 == v9)
   {
 
     goto LABEL_9;
   }
 
-  if (!v9 || !v7)
+  if (!v9 || !titleCopy2)
   {
 
     goto LABEL_8;
   }
 
-  v8 = [(NSString *)v9 isEqualToString:v7];
+  v8 = [(NSString *)v9 isEqualToString:titleCopy2];
 
   if (!v8)
   {
 LABEL_8:
-    objc_storeStrong(&self->_title, a3);
+    objc_storeStrong(&self->_title, title);
     [(UILabel *)self->_titleLabel setText:self->_title];
     [(PKApplyRadioCell *)self setNeedsLayout];
   }
@@ -109,12 +109,12 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)setRadioButtonSelected:(BOOL)a3
+- (void)setRadioButtonSelected:(BOOL)selected
 {
-  if (self->_radioButtonSelected == !a3)
+  if (self->_radioButtonSelected == !selected)
   {
-    self->_radioButtonSelected = a3;
-    if (a3)
+    self->_radioButtonSelected = selected;
+    if (selected)
     {
       v5 = @"checkmark.circle.fill";
     }
@@ -139,22 +139,22 @@ LABEL_9:
   [(PKApplyRadioCell *)self _layoutWithBounds:?];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
   self->_isTemplateLayout = 1;
-  [(PKApplyRadioCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a3.width, a3.height];
+  [(PKApplyRadioCell *)self _layoutWithBounds:*MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), fits.width, fits.height];
   self->_isTemplateLayout = 0;
   result.height = v5;
   result.width = v4;
   return result;
 }
 
-- (CGSize)_layoutWithBounds:(CGRect)a3
+- (CGSize)_layoutWithBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v8 = PKTableViewCellTextInset();
   v9 = x + v8;
   v21 = width;

@@ -1,22 +1,22 @@
 @interface _UITabBarControllerVisualStyle_iOS
-- (id)defaultAnimatorForFromViewController:(id)a3 toViewController:(id)a4;
+- (id)defaultAnimatorForFromViewController:(id)controller toViewController:(id)viewController;
 - (unint64_t)defaultMaxItems;
 - (void)loadViews;
-- (void)tabContentDidChange:(id)a3;
-- (void)updateViewControllers:(BOOL)a3;
+- (void)tabContentDidChange:(id)change;
+- (void)updateViewControllers:(BOOL)controllers;
 @end
 
 @implementation _UITabBarControllerVisualStyle_iOS
 
 - (unint64_t)defaultMaxItems
 {
-  v2 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v3 = [v2 traitCollection];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  traitCollection = [tabBarController traitCollection];
 
-  v4 = [v3 horizontalSizeClass];
-  v5 = [v3 userInterfaceIdiom];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
   v6 = 5;
-  if (v5 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v7 = 8;
   }
@@ -26,12 +26,12 @@
     v7 = 5;
   }
 
-  if (v4 != 1)
+  if (horizontalSizeClass != 1)
   {
     v6 = 8;
   }
 
-  if (v4)
+  if (horizontalSizeClass)
   {
     v8 = v6;
   }
@@ -46,27 +46,27 @@
 
 - (void)loadViews
 {
-  v3 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v4 = [(UITabBarController *)v3 _internalTabBar];
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _internalTabBar = [(UITabBarController *)tabBarController _internalTabBar];
 
-  if (!v4)
+  if (!_internalTabBar)
   {
-    v5 = [v3 view];
-    [v5 bounds];
+    view = [tabBarController view];
+    [view bounds];
     v7 = v6;
     v9 = v8;
     v11 = v10;
     v13 = v12;
 
     v14 = [[UITabBar alloc] initWithFrame:v7, v9, v11, v13];
-    [v3 setTabBar:v14];
+    [tabBarController setTabBar:v14];
   }
 
   if (dyld_program_sdk_at_least())
   {
     v15 = +[UIColor systemBackgroundColor];
-    v16 = [v3 view];
-    [v16 setBackgroundColor:v15];
+    view2 = [tabBarController view];
+    [view2 setBackgroundColor:v15];
   }
 
   v17.receiver = self;
@@ -74,35 +74,35 @@
   [(_UITabBarControllerVisualStyle *)&v17 loadViews];
 }
 
-- (void)updateViewControllers:(BOOL)a3
+- (void)updateViewControllers:(BOOL)controllers
 {
-  v3 = a3;
-  v4 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  [v4 _rebuildTabBarItemsAnimated:v3];
+  controllersCopy = controllers;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  [tabBarController _rebuildTabBarItemsAnimated:controllersCopy];
 }
 
-- (void)tabContentDidChange:(id)a3
+- (void)tabContentDidChange:(id)change
 {
-  v4 = a3;
-  v5 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-  v7 = [(UITabBarController *)v5 _internalTabBar];
+  changeCopy = change;
+  tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+  _internalTabBar = [(UITabBarController *)tabBarController _internalTabBar];
 
-  v6 = [v7 isLocked];
-  [v7 setLocked:0];
-  [v4 _updateView];
+  isLocked = [_internalTabBar isLocked];
+  [_internalTabBar setLocked:0];
+  [changeCopy _updateView];
 
-  [v7 setLocked:v6];
+  [_internalTabBar setLocked:isLocked];
 }
 
-- (id)defaultAnimatorForFromViewController:(id)a3 toViewController:(id)a4
+- (id)defaultAnimatorForFromViewController:(id)controller toViewController:(id)viewController
 {
   if (+[UIView _uip_transitionEnabled]&& !_AXSReduceMotionEnabled())
   {
-    v7 = [(_UITabBarControllerVisualStyle *)self tabBarController];
-    v8 = [v7 view];
-    v9 = [v8 backgroundColor];
+    tabBarController = [(_UITabBarControllerVisualStyle *)self tabBarController];
+    view = [tabBarController view];
+    backgroundColor = [view backgroundColor];
 
-    v5 = [[_UITabCrossFadeTransition alloc] initWithBackgroundColor:v9];
+    v5 = [[_UITabCrossFadeTransition alloc] initWithBackgroundColor:backgroundColor];
   }
 
   else

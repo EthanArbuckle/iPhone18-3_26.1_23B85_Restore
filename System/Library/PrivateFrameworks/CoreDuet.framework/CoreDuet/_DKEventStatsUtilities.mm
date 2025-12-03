@@ -1,19 +1,19 @@
 @interface _DKEventStatsUtilities
-+ (id)componentsPrunedOfLeadingBlanksFromComponents:(uint64_t)a1;
-+ (id)safeStringWithString:(id)a3;
-+ (id)safeStringsWithStrings:(id)a3;
++ (id)componentsPrunedOfLeadingBlanksFromComponents:(uint64_t)components;
++ (id)safeStringWithString:(id)string;
++ (id)safeStringsWithStrings:(id)strings;
 @end
 
 @implementation _DKEventStatsUtilities
 
-+ (id)componentsPrunedOfLeadingBlanksFromComponents:(uint64_t)a1
++ (id)componentsPrunedOfLeadingBlanksFromComponents:(uint64_t)components
 {
   v2 = a2;
   objc_opt_self();
   while ([v2 count])
   {
-    v3 = [v2 firstObject];
-    if ([v3 length])
+    firstObject = [v2 firstObject];
+    if ([firstObject length])
     {
 
       break;
@@ -25,33 +25,33 @@
   return v2;
 }
 
-+ (id)safeStringWithString:(id)a3
++ (id)safeStringWithString:(id)string
 {
   v4 = safeStringWithString__initialized;
-  v5 = a3;
+  stringCopy = string;
   if (v4 != -1)
   {
     +[_DKEventStatsUtilities safeStringWithString:];
   }
 
-  v6 = [v5 componentsSeparatedByCharactersInSet:safeStringWithString__nonPermittedCharacterSet];
+  v6 = [stringCopy componentsSeparatedByCharactersInSet:safeStringWithString__nonPermittedCharacterSet];
 
   v7 = [v6 mutableCopy];
-  [(_DKEventStatsUtilities *)a1 componentsPrunedOfLeadingBlanksFromComponents:v7];
+  [(_DKEventStatsUtilities *)self componentsPrunedOfLeadingBlanksFromComponents:v7];
   objc_claimAutoreleasedReturnValue();
   v8 = [v7 componentsJoinedByString:@"_"];
 
   return v8;
 }
 
-+ (id)safeStringsWithStrings:(id)a3
++ (id)safeStringsWithStrings:(id)strings
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  stringsCopy = strings;
+  v5 = stringsCopy;
+  if (stringsCopy)
   {
-    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(stringsCopy, "count")}];
     v16 = 0u;
     v17 = 0u;
     v18 = 0u;
@@ -71,7 +71,7 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [a1 safeStringWithString:{*(*(&v16 + 1) + 8 * i), v16}];
+          v12 = [self safeStringWithString:{*(*(&v16 + 1) + 8 * i), v16}];
           [v6 addObject:v12];
         }
 

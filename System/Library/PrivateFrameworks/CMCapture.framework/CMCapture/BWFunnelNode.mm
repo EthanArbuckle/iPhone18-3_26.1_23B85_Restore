@@ -1,12 +1,12 @@
 @interface BWFunnelNode
-- (BWFunnelNode)initWithNumberOfInputs:(int)a3 mediaType:(unsigned int)a4 holdMessages:(BOOL)a5;
+- (BWFunnelNode)initWithNumberOfInputs:(int)inputs mediaType:(unsigned int)type holdMessages:(BOOL)messages;
 - (id)addExtendedInput;
 - (void)_deliverQueuedMessages;
-- (void)_handleMessage:(id)a3 fromInput:(id)a4;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)_handleMessage:(id)message fromInput:(id)input;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
 - (void)prepareForCurrentConfigurationToBecomeLive;
 @end
 
@@ -18,8 +18,8 @@
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(BWNode *)self inputs];
-  v4 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+  inputs = [(BWNode *)self inputs];
+  v4 = [(NSArray *)inputs countByEnumeratingWithState:&v11 objects:v10 count:16];
   if (v4)
   {
     v5 = v4;
@@ -30,7 +30,7 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(inputs);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
@@ -40,7 +40,7 @@
         }
       }
 
-      v5 = [(NSArray *)v3 countByEnumeratingWithState:&v11 objects:v10 count:16];
+      v5 = [(NSArray *)inputs countByEnumeratingWithState:&v11 objects:v10 count:16];
     }
 
     while (v5);
@@ -51,16 +51,16 @@
   [(BWNode *)&v9 prepareForCurrentConfigurationToBecomeLive];
 }
 
-- (BWFunnelNode)initWithNumberOfInputs:(int)a3 mediaType:(unsigned int)a4 holdMessages:(BOOL)a5
+- (BWFunnelNode)initWithNumberOfInputs:(int)inputs mediaType:(unsigned int)type holdMessages:(BOOL)messages
 {
-  if (a3 <= 0)
+  if (inputs <= 0)
   {
     objc_exception_throw([MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"Non-positive fan in count" userInfo:0]);
   }
 
-  v5 = a5;
-  v6 = *&a4;
-  v7 = a3;
+  messagesCopy = messages;
+  v6 = *&type;
+  inputsCopy = inputs;
   v15.receiver = self;
   v15.super_class = BWFunnelNode;
   v8 = [(BWNode *)&v15 init];
@@ -68,8 +68,8 @@
   if (v8)
   {
     [(BWNode *)v8 setSupportsConcurrentLiveInputCallbacks:0];
-    v9->_holdMessagesUntilAllInputsAreLive = v5;
-    if (v5)
+    v9->_holdMessagesUntilAllInputsAreLive = messagesCopy;
+    if (messagesCopy)
     {
       v9->_queuedMessages = objc_alloc_init(MEMORY[0x1E695DF70]);
       v9->_inputsForQueuedMessages = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -87,10 +87,10 @@
       [(BWNodeInput *)v10 setPassthroughMode:1];
       [(BWNode *)v9 addInput:v10];
 
-      --v7;
+      --inputsCopy;
     }
 
-    while (v7);
+    while (inputsCopy);
     v12 = [[BWNodeOutput alloc] initWithMediaType:v6 node:v9];
     if (v6 == 1986618469)
     {
@@ -116,16 +116,16 @@
   [(BWNode *)&v3 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  v8 = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:a5, a4];
-  if (!v8)
+  input = [(BWNodeOutput *)self->super._output mediaPropertiesForAttachedMediaKey:key, input];
+  if (!input)
   {
-    v8 = objc_alloc_init(BWNodeOutputMediaProperties);
-    [(BWNodeOutput *)self->super._output _setMediaProperties:v8 forAttachedMediaKey:a5];
+    input = objc_alloc_init(BWNodeOutputMediaProperties);
+    [(BWNodeOutput *)self->super._output _setMediaProperties:input forAttachedMediaKey:key];
   }
 
-  [(BWNodeOutputMediaProperties *)v8 setResolvedFormat:a3];
+  [(BWNodeOutputMediaProperties *)input setResolvedFormat:format];
 }
 
 - (id)addExtendedInput
@@ -137,7 +137,7 @@
   return v3;
 }
 
-- (void)_handleMessage:(id)a3 fromInput:(id)a4
+- (void)_handleMessage:(id)message fromInput:(id)input
 {
   if (!self->_holdMessagesUntilAllInputsAreLive)
   {
@@ -150,19 +150,19 @@
 LABEL_7:
     v8.receiver = self;
     v8.super_class = BWFunnelNode;
-    [(BWNode *)&v8 _handleMessage:a3 fromInput:a4];
+    [(BWNode *)&v8 _handleMessage:message fromInput:input];
     return;
   }
 
-  [(NSMutableArray *)self->_queuedMessages addObject:a3];
+  [(NSMutableArray *)self->_queuedMessages addObject:message];
   inputsForQueuedMessages = self->_inputsForQueuedMessages;
 
-  [(NSMutableArray *)inputsForQueuedMessages addObject:a4];
+  [(NSMutableArray *)inputsForQueuedMessages addObject:input];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
-  if ([(BWNode *)self allInputsHaveReachedState:1, a4, a5])
+  if ([(BWNode *)self allInputsHaveReachedState:1, format, input])
   {
     if (![(BWNodeOutput *)self->super._output liveFormat])
     {
@@ -172,7 +172,7 @@ LABEL_7:
   }
 }
 
-- (void)didReachEndOfDataForConfigurationID:(id)a3 input:(id)a4
+- (void)didReachEndOfDataForConfigurationID:(id)d input:(id)input
 {
   os_unfair_lock_lock(&self->_stateLock);
   if ([(BWNode *)self allInputsHaveReachedState:0]&& self->_running)
@@ -181,7 +181,7 @@ LABEL_7:
     os_unfair_lock_unlock(&self->_stateLock);
     output = self->super._output;
 
-    [(BWNodeOutput *)output markEndOfLiveOutputForConfigurationID:a3];
+    [(BWNodeOutput *)output markEndOfLiveOutputForConfigurationID:d];
   }
 
   else
@@ -193,31 +193,31 @@ LABEL_7:
 
 - (void)_deliverQueuedMessages
 {
-  if (a1)
+  if (self)
   {
-    if ([*(a1 + 136) count])
+    if ([*(self + 136) count])
     {
       v2 = 0;
       do
       {
-        v3 = [*(a1 + 136) objectAtIndexedSubscript:v2];
-        v4 = [*(a1 + 144) objectAtIndexedSubscript:v2];
-        v5.receiver = a1;
+        v3 = [*(self + 136) objectAtIndexedSubscript:v2];
+        v4 = [*(self + 144) objectAtIndexedSubscript:v2];
+        v5.receiver = self;
         v5.super_class = BWFunnelNode;
         objc_msgSendSuper2(&v5, sel__handleMessage_fromInput_, v3, v4);
         ++v2;
       }
 
-      while (v2 < [*(a1 + 136) count]);
+      while (v2 < [*(self + 136) count]);
     }
 
-    [*(a1 + 136) removeAllObjects];
+    [*(self + 136) removeAllObjects];
 
-    *(a1 + 136) = 0;
-    [*(a1 + 144) removeAllObjects];
+    *(self + 136) = 0;
+    [*(self + 144) removeAllObjects];
 
-    *(a1 + 144) = 0;
-    *(a1 + 128) = 0;
+    *(self + 144) = 0;
+    *(self + 128) = 0;
   }
 }
 

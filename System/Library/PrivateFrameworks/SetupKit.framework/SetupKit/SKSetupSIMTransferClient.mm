@@ -29,9 +29,9 @@
         goto LABEL_13;
       }
 
-      v5 = [(SKConnection *)self->super._skCnx state];
+      state = [(SKConnection *)self->super._skCnx state];
       v4 = self->super._runState;
-      if (v5 == 1)
+      if (state == 1)
       {
         ++v4;
 LABEL_12:

@@ -1,13 +1,13 @@
 @interface _INPBOpenFileIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBOpenFileIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBOpenFileIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addEntities:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setEntities:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addEntities:(id)entities;
+- (void)encodeWithCoder:(id)coder;
+- (void)setEntities:(id)entities;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBOpenFileIntentResponse
@@ -15,10 +15,10 @@
 - (id)dictionaryRepresentation
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(NSArray *)self->_entities count])
   {
-    v4 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v18 = 0u;
     v19 = 0u;
     v20 = 0u;
@@ -38,8 +38,8 @@
             objc_enumerationMutation(v5);
           }
 
-          v10 = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
-          [v4 addObject:v10];
+          dictionaryRepresentation = [*(*(&v18 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation];
         }
 
         v7 = [(NSArray *)v5 countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -48,26 +48,26 @@
       while (v7);
     }
 
-    [v3 setObject:v4 forKeyedSubscript:@"entities"];
+    [dictionary setObject:array forKeyedSubscript:@"entities"];
   }
 
-  v11 = [(_INPBOpenFileIntentResponse *)self numResults];
-  v12 = [v11 dictionaryRepresentation];
-  [v3 setObject:v12 forKeyedSubscript:@"numResults"];
+  numResults = [(_INPBOpenFileIntentResponse *)self numResults];
+  dictionaryRepresentation2 = [numResults dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"numResults"];
 
-  v13 = [(_INPBOpenFileIntentResponse *)self query];
-  v14 = [v13 dictionaryRepresentation];
-  [v3 setObject:v14 forKeyedSubscript:@"query"];
+  query = [(_INPBOpenFileIntentResponse *)self query];
+  dictionaryRepresentation3 = [query dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"query"];
 
   if ([(_INPBOpenFileIntentResponse *)self hasSuccess])
   {
     v15 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBOpenFileIntentResponse success](self, "success")}];
-    [v3 setObject:v15 forKeyedSubscript:@"success"];
+    [dictionary setObject:v15 forKeyedSubscript:@"success"];
   }
 
   v16 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -88,28 +88,28 @@
   return v4 ^ v3 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_17;
   }
 
-  v5 = [(_INPBOpenFileIntentResponse *)self entities];
-  v6 = [v4 entities];
-  if ((v5 != 0) == (v6 == 0))
+  entities = [(_INPBOpenFileIntentResponse *)self entities];
+  entities2 = [equalCopy entities];
+  if ((entities != 0) == (entities2 == 0))
   {
     goto LABEL_16;
   }
 
-  v7 = [(_INPBOpenFileIntentResponse *)self entities];
-  if (v7)
+  entities3 = [(_INPBOpenFileIntentResponse *)self entities];
+  if (entities3)
   {
-    v8 = v7;
-    v9 = [(_INPBOpenFileIntentResponse *)self entities];
-    v10 = [v4 entities];
-    v11 = [v9 isEqual:v10];
+    v8 = entities3;
+    entities4 = [(_INPBOpenFileIntentResponse *)self entities];
+    entities5 = [equalCopy entities];
+    v11 = [entities4 isEqual:entities5];
 
     if (!v11)
     {
@@ -121,20 +121,20 @@
   {
   }
 
-  v5 = [(_INPBOpenFileIntentResponse *)self numResults];
-  v6 = [v4 numResults];
-  if ((v5 != 0) == (v6 == 0))
+  entities = [(_INPBOpenFileIntentResponse *)self numResults];
+  entities2 = [equalCopy numResults];
+  if ((entities != 0) == (entities2 == 0))
   {
     goto LABEL_16;
   }
 
-  v12 = [(_INPBOpenFileIntentResponse *)self numResults];
-  if (v12)
+  numResults = [(_INPBOpenFileIntentResponse *)self numResults];
+  if (numResults)
   {
-    v13 = v12;
-    v14 = [(_INPBOpenFileIntentResponse *)self numResults];
-    v15 = [v4 numResults];
-    v16 = [v14 isEqual:v15];
+    v13 = numResults;
+    numResults2 = [(_INPBOpenFileIntentResponse *)self numResults];
+    numResults3 = [equalCopy numResults];
+    v16 = [numResults2 isEqual:numResults3];
 
     if (!v16)
     {
@@ -146,22 +146,22 @@
   {
   }
 
-  v5 = [(_INPBOpenFileIntentResponse *)self query];
-  v6 = [v4 query];
-  if ((v5 != 0) == (v6 == 0))
+  entities = [(_INPBOpenFileIntentResponse *)self query];
+  entities2 = [equalCopy query];
+  if ((entities != 0) == (entities2 == 0))
   {
 LABEL_16:
 
     goto LABEL_17;
   }
 
-  v17 = [(_INPBOpenFileIntentResponse *)self query];
-  if (v17)
+  query = [(_INPBOpenFileIntentResponse *)self query];
+  if (query)
   {
-    v18 = v17;
-    v19 = [(_INPBOpenFileIntentResponse *)self query];
-    v20 = [v4 query];
-    v21 = [v19 isEqual:v20];
+    v18 = query;
+    query2 = [(_INPBOpenFileIntentResponse *)self query];
+    query3 = [equalCopy query];
+    v21 = [query2 isEqual:query3];
 
     if (!v21)
     {
@@ -173,10 +173,10 @@ LABEL_16:
   {
   }
 
-  v24 = [(_INPBOpenFileIntentResponse *)self hasSuccess];
-  if (v24 == [v4 hasSuccess])
+  hasSuccess = [(_INPBOpenFileIntentResponse *)self hasSuccess];
+  if (hasSuccess == [equalCopy hasSuccess])
   {
-    if (!-[_INPBOpenFileIntentResponse hasSuccess](self, "hasSuccess") || ![v4 hasSuccess] || (success = self->_success, success == objc_msgSend(v4, "success")))
+    if (!-[_INPBOpenFileIntentResponse hasSuccess](self, "hasSuccess") || ![equalCopy hasSuccess] || (success = self->_success, success == objc_msgSend(equalCopy, "success")))
     {
       v22 = 1;
       goto LABEL_18;
@@ -190,16 +190,16 @@ LABEL_18:
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBOpenFileIntentResponse allocWithZone:](_INPBOpenFileIntentResponse init];
-  v6 = [(NSArray *)self->_entities copyWithZone:a3];
+  v6 = [(NSArray *)self->_entities copyWithZone:zone];
   [(_INPBOpenFileIntentResponse *)v5 setEntities:v6];
 
-  v7 = [(_INPBInteger *)self->_numResults copyWithZone:a3];
+  v7 = [(_INPBInteger *)self->_numResults copyWithZone:zone];
   [(_INPBOpenFileIntentResponse *)v5 setNumResults:v7];
 
-  v8 = [(_INPBString *)self->_query copyWithZone:a3];
+  v8 = [(_INPBString *)self->_query copyWithZone:zone];
   [(_INPBOpenFileIntentResponse *)v5 setQuery:v8];
 
   if ([(_INPBOpenFileIntentResponse *)self hasSuccess])
@@ -210,34 +210,34 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBOpenFileIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBOpenFileIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBOpenFileIntentResponse)initWithCoder:(id)a3
+- (_INPBOpenFileIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBOpenFileIntentResponse *)self initWithData:v6];
+    self = [(_INPBOpenFileIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
@@ -270,19 +270,19 @@ LABEL_18:
     while (v7);
   }
 
-  v11 = [(_INPBOpenFileIntentResponse *)self numResults];
+  numResults = [(_INPBOpenFileIntentResponse *)self numResults];
 
-  if (v11)
+  if (numResults)
   {
-    v12 = [(_INPBOpenFileIntentResponse *)self numResults];
+    numResults2 = [(_INPBOpenFileIntentResponse *)self numResults];
     PBDataWriterWriteSubmessage();
   }
 
-  v13 = [(_INPBOpenFileIntentResponse *)self query];
+  query = [(_INPBOpenFileIntentResponse *)self query];
 
-  if (v13)
+  if (query)
   {
-    v14 = [(_INPBOpenFileIntentResponse *)self query];
+    query2 = [(_INPBOpenFileIntentResponse *)self query];
     PBDataWriterWriteSubmessage();
   }
 
@@ -295,27 +295,27 @@ LABEL_18:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)addEntities:(id)a3
+- (void)addEntities:(id)entities
 {
-  v4 = a3;
+  entitiesCopy = entities;
   entities = self->_entities;
-  v8 = v4;
+  v8 = entitiesCopy;
   if (!entities)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_entities;
-    self->_entities = v6;
+    self->_entities = array;
 
-    v4 = v8;
+    entitiesCopy = v8;
     entities = self->_entities;
   }
 
-  [(NSArray *)entities addObject:v4];
+  [(NSArray *)entities addObject:entitiesCopy];
 }
 
-- (void)setEntities:(id)a3
+- (void)setEntities:(id)entities
 {
-  v4 = [a3 mutableCopy];
+  v4 = [entities mutableCopy];
   entities = self->_entities;
   self->_entities = v4;
 

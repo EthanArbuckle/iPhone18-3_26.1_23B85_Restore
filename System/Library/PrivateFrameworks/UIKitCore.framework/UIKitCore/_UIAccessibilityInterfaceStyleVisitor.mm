@@ -1,28 +1,28 @@
 @interface _UIAccessibilityInterfaceStyleVisitor
-- (BOOL)_prepareToVisitView:(id)a3 changedSubview:(id)a4 previousWindow:(id)a5 previousSuperview:(id)a6;
-- (BOOL)_visitView:(id)a3;
+- (BOOL)_prepareToVisitView:(id)view changedSubview:(id)subview previousWindow:(id)window previousSuperview:(id)superview;
+- (BOOL)_visitView:(id)view;
 @end
 
 @implementation _UIAccessibilityInterfaceStyleVisitor
 
-- (BOOL)_visitView:(id)a3
+- (BOOL)_visitView:(id)view
 {
-  v5 = [a3 superview];
-  if ([a3 _accessibilityInterfaceStyleIntent] == 1 && objc_msgSend(a3, "_accessibilityResolvedInterfaceStyle") != 1)
+  superview = [view superview];
+  if ([view _accessibilityInterfaceStyleIntent] == 1 && objc_msgSend(view, "_accessibilityResolvedInterfaceStyle") != 1)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = [a3 _accessibilityInterfaceStyleIntent] == 2 && objc_msgSend(a3, "_accessibilityResolvedInterfaceStyle") != 2;
+    v6 = [view _accessibilityInterfaceStyleIntent] == 2 && objc_msgSend(view, "_accessibilityResolvedInterfaceStyle") != 2;
   }
 
   objc_opt_class();
-  v7 = (objc_opt_isKindOfClass() & 1) != 0 && [a3 _accessibilityInterfaceStyleIntent] != 2 && objc_msgSend(a3, "_accessibilityResolvedInterfaceStyle") == 2;
+  v7 = (objc_opt_isKindOfClass() & 1) != 0 && [view _accessibilityInterfaceStyleIntent] != 2 && objc_msgSend(view, "_accessibilityResolvedInterfaceStyle") == 2;
   if (v6 || v7)
   {
-    if ([a3 _accessibilityInterfaceStyleIntent] == 2)
+    if ([view _accessibilityInterfaceStyleIntent] == 2)
     {
       v8 = 2;
     }
@@ -35,33 +35,33 @@
     goto LABEL_15;
   }
 
-  if (v5)
+  if (superview)
   {
-    if (![a3 _accessibilityInterfaceStyleIntent])
+    if (![view _accessibilityInterfaceStyleIntent])
     {
-      v10 = [v5 _accessibilityResolvedInterfaceStyle];
-      if (v10 != [a3 _accessibilityResolvedInterfaceStyle])
+      _accessibilityResolvedInterfaceStyle = [superview _accessibilityResolvedInterfaceStyle];
+      if (_accessibilityResolvedInterfaceStyle != [view _accessibilityResolvedInterfaceStyle])
       {
-        v8 = [objc_msgSend(a3 "superview")];
+        v8 = [objc_msgSend(view "superview")];
 LABEL_15:
-        [a3 _accessibilitySetResolvedInterfaceStyle:v8];
-        [a3 _tintColorDidChange];
+        [view _accessibilitySetResolvedInterfaceStyle:v8];
+        [view _tintColorDidChange];
         return 1;
       }
     }
   }
 
-  return self->_originalVisitedView == a3;
+  return self->_originalVisitedView == view;
 }
 
-- (BOOL)_prepareToVisitView:(id)a3 changedSubview:(id)a4 previousWindow:(id)a5 previousSuperview:(id)a6
+- (BOOL)_prepareToVisitView:(id)view changedSubview:(id)subview previousWindow:(id)window previousSuperview:(id)superview
 {
-  if (-[_UIViewVisitor tracksHierarchy](self, "tracksHierarchy", a3, a4, a5, a6) && [a4 superview] != a3)
+  if (-[_UIViewVisitor tracksHierarchy](self, "tracksHierarchy", view, subview, window, superview) && [subview superview] != view)
   {
     return 0;
   }
 
-  self->_originalVisitedView = a3;
+  self->_originalVisitedView = view;
   return 1;
 }
 

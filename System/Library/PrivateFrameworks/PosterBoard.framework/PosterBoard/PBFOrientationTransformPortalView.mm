@@ -1,22 +1,22 @@
 @interface PBFOrientationTransformPortalView
-- (void)setPortalView:(id)a3;
+- (void)setPortalView:(id)view;
 @end
 
 @implementation PBFOrientationTransformPortalView
 
-- (void)setPortalView:(id)a3
+- (void)setPortalView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   portalView = self->_portalView;
-  if (portalView != v5)
+  if (portalView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(_UIPortalView *)portalView removeFromSuperview];
-    objc_storeStrong(&self->_portalView, a3);
+    objc_storeStrong(&self->_portalView, view);
     [(BSUIOrientationTransformWrapperView *)self addContentView:v7];
     [(PBFOrientationTransformPortalView *)self invalidateIntrinsicContentSize];
     [(PBFOrientationTransformPortalView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 

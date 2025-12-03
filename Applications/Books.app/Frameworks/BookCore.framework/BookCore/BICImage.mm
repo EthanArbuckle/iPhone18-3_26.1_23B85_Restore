@@ -1,15 +1,15 @@
 @interface BICImage
-+ (id)imageWithCGImage:(CGImage *)a3;
++ (id)imageWithCGImage:(CGImage *)image;
 - (CGImage)CGImage;
 - (void)dealloc;
 @end
 
 @implementation BICImage
 
-+ (id)imageWithCGImage:(CGImage *)a3
++ (id)imageWithCGImage:(CGImage *)image
 {
   v4 = objc_alloc_init(BICImage);
-  [(BICImage *)v4 setCGImage:a3];
+  [(BICImage *)v4 setCGImage:image];
 
   return v4;
 }

@@ -1,37 +1,37 @@
 @interface _UIDynamicValueAnimation
-+ (id)_dynamicValueAnimationMatchingCASpringAnimationWithMass:(double)a3 stiffness:(double)a4 damping:(float)a5 velocity:(float)a6 fromValue:(double)a7 toValue:(double)a8;
-- (BOOL)_animateForInterval:(double)a3;
-- (_UIDynamicValueAnimation)initWithValue:(double)a3 velocity:(double)a4 unitSize:(double)a5;
++ (id)_dynamicValueAnimationMatchingCASpringAnimationWithMass:(double)mass stiffness:(double)stiffness damping:(float)damping velocity:(float)velocity fromValue:(double)value toValue:(double)toValue;
+- (BOOL)_animateForInterval:(double)interval;
+- (_UIDynamicValueAnimation)initWithValue:(double)value velocity:(double)velocity unitSize:(double)size;
 - (double)settlingDuration;
-- (void)_appendSubclassDescription:(id)a3 atLevel:(int)a4;
-- (void)_setDecelerationFactor:(double)a3;
+- (void)_appendSubclassDescription:(id)description atLevel:(int)level;
+- (void)_setDecelerationFactor:(double)factor;
 - (void)_stopAnimation;
 - (void)_updateStepFunction;
-- (void)addActiveValue:(id)a3;
+- (void)addActiveValue:(id)value;
 - (void)dealloc;
-- (void)removeActiveValue:(id)a3;
-- (void)runWithCompletion:(id)a3;
-- (void)runWithValueApplier:(id)a3 completion:(id)a4 forScreen:(id)a5 runLoopMode:(id)a6;
-- (void)setActiveValues:(id)a3;
-- (void)setFriction:(double)a3;
+- (void)removeActiveValue:(id)value;
+- (void)runWithCompletion:(id)completion;
+- (void)runWithValueApplier:(id)applier completion:(id)completion forScreen:(id)screen runLoopMode:(id)mode;
+- (void)setActiveValues:(id)values;
+- (void)setFriction:(double)friction;
 @end
 
 @implementation _UIDynamicValueAnimation
 
-+ (id)_dynamicValueAnimationMatchingCASpringAnimationWithMass:(double)a3 stiffness:(double)a4 damping:(float)a5 velocity:(float)a6 fromValue:(double)a7 toValue:(double)a8
++ (id)_dynamicValueAnimationMatchingCASpringAnimationWithMass:(double)mass stiffness:(double)stiffness damping:(float)damping velocity:(float)velocity fromValue:(double)value toValue:(double)toValue
 {
-  v12 = [[_UIDynamicValueAnimation alloc] initWithValue:a7 velocity:(a8 - a7) * a6 unitSize:0.001];
-  v13 = [_UIDynamicAnimationActiveValue activeValue:0 ofType:a8];
-  [v13 _setBoundaryPull:a4 / 1000.0 / a3];
-  [(_UIDynamicValueAnimation *)v12 _setDecelerationFactor:1.0 - a5 / a3 * 0.001];
+  v12 = [[_UIDynamicValueAnimation alloc] initWithValue:value velocity:(toValue - value) * velocity unitSize:0.001];
+  v13 = [_UIDynamicAnimationActiveValue activeValue:0 ofType:toValue];
+  [v13 _setBoundaryPull:stiffness / 1000.0 / mass];
+  [(_UIDynamicValueAnimation *)v12 _setDecelerationFactor:1.0 - damping / mass * 0.001];
   [(_UIDynamicValueAnimation *)v12 addActiveValue:v13];
 
   return v12;
 }
 
-- (_UIDynamicValueAnimation)initWithValue:(double)a3 velocity:(double)a4 unitSize:(double)a5
+- (_UIDynamicValueAnimation)initWithValue:(double)value velocity:(double)velocity unitSize:(double)size
 {
-  if (a5 <= 0.0)
+  if (size <= 0.0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"unit size must be > 0"];
   }
@@ -41,9 +41,9 @@
   result = [(_UIDynamicAnimation *)&v10 init];
   if (result)
   {
-    result->_value = a3;
-    result->_velocity = a4 / 1000.0;
-    result->_unitSize = a5;
+    result->_value = value;
+    result->_velocity = velocity / 1000.0;
+    result->_unitSize = size;
     result->_friction = 0.08;
     result->_decelerationFactor = 0.998;
     result->_decelerationLnFactor = -0.00200200267;
@@ -168,9 +168,9 @@
 
         else
         {
-          v12 = [v11 _isUpperBoundary];
-          v6 += v12;
-          v8 |= v12 ^ 1;
+          _isUpperBoundary = [v11 _isUpperBoundary];
+          v6 += _isUpperBoundary;
+          v8 |= _isUpperBoundary ^ 1;
         }
       }
 
@@ -207,9 +207,9 @@ LABEL_25:
   self->_stepFunction = v16;
 }
 
-- (void)addActiveValue:(id)a3
+- (void)addActiveValue:(id)value
 {
-  if (a3)
+  if (value)
   {
     activeValues = self->_activeValues;
     if (!activeValues)
@@ -218,29 +218,29 @@ LABEL_25:
       self->_activeValues = activeValues;
     }
 
-    [(NSMutableArray *)activeValues addObject:a3];
-    [a3 addObserver:self forKeyPath:@"type" options:0 context:0];
+    [(NSMutableArray *)activeValues addObject:value];
+    [value addObserver:self forKeyPath:@"type" options:0 context:0];
 
     [(_UIDynamicValueAnimation *)self _updateStepFunction];
   }
 }
 
-- (void)removeActiveValue:(id)a3
+- (void)removeActiveValue:(id)value
 {
   if ([(NSMutableArray *)self->_activeValues containsObject:?])
   {
-    [a3 removeObserver:self forKeyPath:@"type"];
-    [(NSMutableArray *)self->_activeValues removeObject:a3];
+    [value removeObserver:self forKeyPath:@"type"];
+    [(NSMutableArray *)self->_activeValues removeObject:value];
 
     [(_UIDynamicValueAnimation *)self _updateStepFunction];
   }
 }
 
-- (void)setActiveValues:(id)a3
+- (void)setActiveValues:(id)values
 {
   v25 = *MEMORY[0x1E69E9840];
   activeValues = self->_activeValues;
-  if (activeValues != a3)
+  if (activeValues != values)
   {
     v21 = 0u;
     v22 = 0u;
@@ -271,7 +271,7 @@ LABEL_25:
       while (v7);
     }
 
-    v10 = [a3 mutableCopy];
+    v10 = [values mutableCopy];
     self->_activeValues = v10;
     v15 = 0u;
     v16 = 0u;
@@ -306,9 +306,9 @@ LABEL_25:
   }
 }
 
-- (BOOL)_animateForInterval:(double)a3
+- (BOOL)_animateForInterval:(double)interval
 {
-  if ((a3 * 1000.0) < 1)
+  if ((interval * 1000.0) < 1)
   {
     LOBYTE(v5) = 0;
   }
@@ -335,22 +335,22 @@ LABEL_25:
   return v5;
 }
 
-- (void)runWithValueApplier:(id)a3 completion:(id)a4 forScreen:(id)a5 runLoopMode:(id)a6
+- (void)runWithValueApplier:(id)applier completion:(id)completion forScreen:(id)screen runLoopMode:(id)mode
 {
-  if (a3)
+  if (applier)
   {
     if ((*(&self->super + 20) & 2) != 0)
     {
       return;
     }
 
-    self->_applier = [a3 copy];
+    self->_applier = [applier copy];
     goto LABEL_8;
   }
 
   if (!self->_applier && !self->_viewApplier)
   {
-    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"valueApplier must be non-nil", a5, a6}];
+    [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:{@"valueApplier must be non-nil", screen, mode}];
   }
 
   if ((*(&self->super + 20) & 2) == 0)
@@ -358,64 +358,64 @@ LABEL_25:
 LABEL_8:
     v9.receiver = self;
     v9.super_class = _UIDynamicValueAnimation;
-    [(_UIDynamicAnimation *)&v9 runWithCompletion:a4];
+    [(_UIDynamicAnimation *)&v9 runWithCompletion:completion];
   }
 }
 
-- (void)runWithCompletion:(id)a3
+- (void)runWithCompletion:(id)completion
 {
   if (*&self->_applier == 0)
   {
     [MEMORY[0x1E695DF30] raise:*MEMORY[0x1E695D940] format:@"Dynamic animations without pre-set appliers must be run with an explicit applier. Use runWithValueApplier:completion:"];
   }
 
-  [(_UIDynamicValueAnimation *)self runWithValueApplier:0 completion:a3];
+  [(_UIDynamicValueAnimation *)self runWithValueApplier:0 completion:completion];
 }
 
-- (void)setFriction:(double)a3
+- (void)setFriction:(double)friction
 {
-  if (a3 > 1.0)
+  if (friction > 1.0)
   {
-    a3 = 1.0;
+    friction = 1.0;
   }
 
-  v3 = fmax(a3, 0.0);
+  v3 = fmax(friction, 0.0);
   self->_friction = v3;
   v4 = v3 * -0.025 + 1.0;
   self->_decelerationFactor = v4;
   self->_decelerationLnFactor = log(v4);
 }
 
-- (void)_setDecelerationFactor:(double)a3
+- (void)_setDecelerationFactor:(double)factor
 {
   v3 = 1.0;
-  if ((1.0 - a3) / 0.025 <= 1.0)
+  if ((1.0 - factor) / 0.025 <= 1.0)
   {
-    v3 = (1.0 - a3) / 0.025;
+    v3 = (1.0 - factor) / 0.025;
   }
 
   self->_friction = fmax(v3, 0.0);
-  self->_decelerationFactor = a3;
-  self->_decelerationLnFactor = log(a3);
+  self->_decelerationFactor = factor;
+  self->_decelerationLnFactor = log(factor);
 }
 
-- (void)_appendSubclassDescription:(id)a3 atLevel:(int)a4
+- (void)_appendSubclassDescription:(id)description atLevel:(int)level
 {
   v24 = *MEMORY[0x1E69E9840];
   [(_UIDynamicValueAnimation *)self value];
-  [a3 appendFormat:@"; value = %f", v7];
+  [description appendFormat:@"; value = %f", v7];
   [(_UIDynamicValueAnimation *)self velocity];
-  [a3 appendFormat:@"; velocity = %f", v8];
+  [description appendFormat:@"; velocity = %f", v8];
   [(_UIDynamicValueAnimation *)self friction];
   if (v9 != 0.002)
   {
     [(_UIDynamicValueAnimation *)self friction];
-    [a3 appendFormat:@"; friction = %f", v10];
+    [description appendFormat:@"; friction = %f", v10];
   }
 
   if ([(NSMutableArray *)self->_activeValues count])
   {
-    [a3 appendString:@"; active values = {"];
+    [description appendString:@"; active values = {"];
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
@@ -439,10 +439,10 @@ LABEL_8:
           v17 = *(*(&v19 + 1) + 8 * i);
           if ((v15 & 1) == 0)
           {
-            [a3 appendString:{@", "}];
+            [description appendString:{@", "}];
           }
 
-          [v17 _appendDescriptionToString:a3 atLevel:(a4 + 1)];
+          [v17 _appendDescriptionToString:description atLevel:(level + 1)];
           v15 = 0;
         }
 
@@ -453,20 +453,20 @@ LABEL_8:
       while (v13);
     }
 
-    [a3 appendString:@"\n"];
-    if (a4)
+    [description appendString:@"\n"];
+    if (level)
     {
       v18 = 1;
       do
       {
-        [a3 appendString:@"    "];
+        [description appendString:@"    "];
         ++v18;
       }
 
-      while (v18 <= a4);
+      while (v18 <= level);
     }
 
-    [a3 appendString:@"}"];
+    [description appendString:@"}"];
   }
 }
 

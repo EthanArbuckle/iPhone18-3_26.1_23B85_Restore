@@ -1,27 +1,27 @@
 @interface RTPredictedLocationOfInterestProviderCalendar
-+ (BOOL)reasonableDistanceBetweenEventLocation:(id)a3 andLocation:(id)a4;
-- (RTPredictedLocationOfInterestProviderCalendar)initWithEventManager:(id)a3 eventModelProvider:(id)a4 learnedLocationManager:(id)a5 mapServiceManager:(id)a6;
-- (void)_fetchLocationOfInterestForEvent:(id)a3 clientIdentifier:(id)a4 handler:(id)a5;
-- (void)_fetchPredictedLocationOfInterestAtEvent:(id)a3 clientIdentifier:(id)a4 handler:(id)a5;
-- (void)_fetchPredictedLocationsOfInterestBetweenStartDate:(id)a3 endDate:(id)a4 clientIdentifier:(id)a5 handler:(id)a6;
-- (void)_fetchPredictedLocationsOfInterestOnDate:(id)a3 clientIdentifier:(id)a4 handler:(id)a5;
-- (void)fetchNextPredictedLocationsOfInterestFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5 clientIdentifier:(id)a6 filterLocationsByDistance:(BOOL)a7 handler:(id)a8;
-- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)a3 handler:(id)a4;
-- (void)fetchPredictedLocationsOfInterestBetweenStartDate:(id)a3 endDate:(id)a4 clientIdentifier:(id)a5 handler:(id)a6;
-- (void)fetchPredictedLocationsOfInterestOnDate:(id)a3 clientIdentifier:(id)a4 handler:(id)a5;
-- (void)fetchPredictedLocationsOfInterestWithCriteria:(id)a3 handler:(id)a4;
++ (BOOL)reasonableDistanceBetweenEventLocation:(id)location andLocation:(id)andLocation;
+- (RTPredictedLocationOfInterestProviderCalendar)initWithEventManager:(id)manager eventModelProvider:(id)provider learnedLocationManager:(id)locationManager mapServiceManager:(id)serviceManager;
+- (void)_fetchLocationOfInterestForEvent:(id)event clientIdentifier:(id)identifier handler:(id)handler;
+- (void)_fetchPredictedLocationOfInterestAtEvent:(id)event clientIdentifier:(id)identifier handler:(id)handler;
+- (void)_fetchPredictedLocationsOfInterestBetweenStartDate:(id)date endDate:(id)endDate clientIdentifier:(id)identifier handler:(id)handler;
+- (void)_fetchPredictedLocationsOfInterestOnDate:(id)date clientIdentifier:(id)identifier handler:(id)handler;
+- (void)fetchNextPredictedLocationsOfInterestFromLocation:(id)location startDate:(id)date timeInterval:(double)interval clientIdentifier:(id)identifier filterLocationsByDistance:(BOOL)distance handler:(id)handler;
+- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)criteria handler:(id)handler;
+- (void)fetchPredictedLocationsOfInterestBetweenStartDate:(id)date endDate:(id)endDate clientIdentifier:(id)identifier handler:(id)handler;
+- (void)fetchPredictedLocationsOfInterestOnDate:(id)date clientIdentifier:(id)identifier handler:(id)handler;
+- (void)fetchPredictedLocationsOfInterestWithCriteria:(id)criteria handler:(id)handler;
 @end
 
 @implementation RTPredictedLocationOfInterestProviderCalendar
 
-- (RTPredictedLocationOfInterestProviderCalendar)initWithEventManager:(id)a3 eventModelProvider:(id)a4 learnedLocationManager:(id)a5 mapServiceManager:(id)a6
+- (RTPredictedLocationOfInterestProviderCalendar)initWithEventManager:(id)manager eventModelProvider:(id)provider learnedLocationManager:(id)locationManager mapServiceManager:(id)serviceManager
 {
   v34 = *MEMORY[0x277D85DE8];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (!v11)
+  managerCopy = manager;
+  providerCopy = provider;
+  locationManagerCopy = locationManager;
+  serviceManagerCopy = serviceManager;
+  if (!managerCopy)
   {
     v19 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@
       _os_log_error_impl(&dword_2304B3000, v19, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: eventManager (in %s:%d)", buf, 0x12u);
     }
 
-    if (v12)
+    if (providerCopy)
     {
       goto LABEL_12;
     }
@@ -41,7 +41,7 @@
     goto LABEL_9;
   }
 
-  if (!v12)
+  if (!providerCopy)
   {
 LABEL_9:
     v20 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
@@ -55,7 +55,7 @@ LABEL_9:
     }
 
 LABEL_12:
-    v21 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
@@ -65,78 +65,78 @@ LABEL_12:
   v16 = v15;
   if (v15)
   {
-    v27 = v14;
-    v28 = v13;
+    v27 = serviceManagerCopy;
+    v28 = locationManagerCopy;
     v17 = v15;
     attr = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v18 = [(RTPredictedLocationOfInterestProviderCalendar *)v17 UTF8String];
+      uTF8String = [(RTPredictedLocationOfInterestProviderCalendar *)v17 UTF8String];
     }
 
     else
     {
       v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@-%p", objc_opt_class(), v17];
-      v18 = [v22 UTF8String];
+      uTF8String = [v22 UTF8String];
     }
 
-    v23 = dispatch_queue_create(v18, attr);
+    v23 = dispatch_queue_create(uTF8String, attr);
 
     queue = v17->_queue;
     v17->_queue = v23;
 
-    objc_storeStrong(&v17->_eventManager, a3);
-    objc_storeStrong(&v17->_eventModelProvider, a4);
-    objc_storeStrong(&v17->_learnedLocationManager, a5);
-    objc_storeStrong(&v17->_mapServiceManager, a6);
-    v14 = v27;
-    v13 = v28;
+    objc_storeStrong(&v17->_eventManager, manager);
+    objc_storeStrong(&v17->_eventModelProvider, provider);
+    objc_storeStrong(&v17->_learnedLocationManager, locationManager);
+    objc_storeStrong(&v17->_mapServiceManager, serviceManager);
+    serviceManagerCopy = v27;
+    locationManagerCopy = v28;
   }
 
   self = v16;
-  v21 = self;
+  selfCopy = self;
 LABEL_16:
 
-  return v21;
+  return selfCopy;
 }
 
-+ (BOOL)reasonableDistanceBetweenEventLocation:(id)a3 andLocation:(id)a4
++ (BOOL)reasonableDistanceBetweenEventLocation:(id)location andLocation:(id)andLocation
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 latitude];
-  [v6 longitude];
+  andLocationCopy = andLocation;
+  locationCopy = location;
+  [locationCopy latitude];
+  [locationCopy longitude];
 
-  [v5 latitude];
-  [v5 longitude];
+  [andLocationCopy latitude];
+  [andLocationCopy longitude];
 
   RTCommonCalculateDistance();
   return v7 < 321868.0 && v7 > 700.0;
 }
 
-- (void)fetchNextPredictedLocationsOfInterestFromLocation:(id)a3 startDate:(id)a4 timeInterval:(double)a5 clientIdentifier:(id)a6 filterLocationsByDistance:(BOOL)a7 handler:(id)a8
+- (void)fetchNextPredictedLocationsOfInterestFromLocation:(id)location startDate:(id)date timeInterval:(double)interval clientIdentifier:(id)identifier filterLocationsByDistance:(BOOL)distance handler:(id)handler
 {
   v32 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
-  v17 = a8;
-  if (v17)
+  locationCopy = location;
+  dateCopy = date;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v18 = [(RTPredictedLocationOfInterestProviderCalendar *)self queue];
+    queue = [(RTPredictedLocationOfInterestProviderCalendar *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __173__RTPredictedLocationOfInterestProviderCalendar_fetchNextPredictedLocationsOfInterestFromLocation_startDate_timeInterval_clientIdentifier_filterLocationsByDistance_handler___block_invoke;
     block[3] = &unk_2788D0670;
-    v26 = a5;
-    v21 = v15;
-    v22 = self;
-    v25 = v17;
-    v23 = v16;
-    v27 = a7;
-    v24 = v14;
-    dispatch_async(v18, block);
+    intervalCopy = interval;
+    v21 = dateCopy;
+    selfCopy = self;
+    v25 = handlerCopy;
+    v23 = identifierCopy;
+    distanceCopy = distance;
+    v24 = locationCopy;
+    dispatch_async(queue, block);
 
     v19 = v21;
   }
@@ -452,35 +452,35 @@ uint64_t __173__RTPredictedLocationOfInterestProviderCalendar_fetchNextPredicted
   return (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchPredictedLocationsOfInterestOnDate:(id)a3 clientIdentifier:(id)a4 handler:(id)a5
+- (void)_fetchPredictedLocationsOfInterestOnDate:(id)date clientIdentifier:(id)identifier handler:(id)handler
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v12 = [v10 dateByAddingTimeInterval:-7200.0];
-  v11 = [v10 dateByAddingTimeInterval:7200.0];
+  handlerCopy = handler;
+  identifierCopy = identifier;
+  dateCopy = date;
+  v12 = [dateCopy dateByAddingTimeInterval:-7200.0];
+  v11 = [dateCopy dateByAddingTimeInterval:7200.0];
 
-  [(RTPredictedLocationOfInterestProviderCalendar *)self _fetchPredictedLocationsOfInterestBetweenStartDate:v12 endDate:v11 clientIdentifier:v9 handler:v8];
+  [(RTPredictedLocationOfInterestProviderCalendar *)self _fetchPredictedLocationsOfInterestBetweenStartDate:v12 endDate:v11 clientIdentifier:identifierCopy handler:handlerCopy];
 }
 
-- (void)fetchPredictedLocationsOfInterestOnDate:(id)a3 clientIdentifier:(id)a4 handler:(id)a5
+- (void)fetchPredictedLocationsOfInterestOnDate:(id)date clientIdentifier:(id)identifier handler:(id)handler
 {
   v21 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dateCopy = date;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = [(RTPredictedLocationOfInterestProviderCalendar *)self queue];
+    queue = [(RTPredictedLocationOfInterestProviderCalendar *)self queue];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __114__RTPredictedLocationOfInterestProviderCalendar_fetchPredictedLocationsOfInterestOnDate_clientIdentifier_handler___block_invoke;
     v13[3] = &unk_2788C5530;
     v13[4] = self;
-    v14 = v8;
-    v15 = v9;
-    v16 = v10;
-    dispatch_async(v11, v13);
+    v14 = dateCopy;
+    v15 = identifierCopy;
+    v16 = handlerCopy;
+    dispatch_async(queue, v13);
   }
 
   else
@@ -497,12 +497,12 @@ uint64_t __173__RTPredictedLocationOfInterestProviderCalendar_fetchNextPredicted
   }
 }
 
-- (void)_fetchLocationOfInterestForEvent:(id)a3 clientIdentifier:(id)a4 handler:(id)a5
+- (void)_fetchLocationOfInterestForEvent:(id)event clientIdentifier:(id)identifier handler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  eventCopy = event;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v58[0] = 0;
     v58[1] = v58;
@@ -523,18 +523,18 @@ uint64_t __173__RTPredictedLocationOfInterestProviderCalendar_fetchNextPredicted
     v54[4] = __Block_byref_object_dispose__156;
     v55 = 0;
     v11 = dispatch_group_create();
-    v12 = [v8 structuredLocation];
-    v13 = [v12 geoLocation];
+    structuredLocation = [eventCopy structuredLocation];
+    geoLocation = [structuredLocation geoLocation];
 
-    if (v13)
+    if (geoLocation)
     {
       if (self->_learnedLocationManager)
       {
         dispatch_group_enter(v11);
         v14 = objc_alloc(MEMORY[0x277D01160]);
-        v15 = [v8 structuredLocation];
-        v16 = [v15 geoLocation];
-        v17 = [v14 initWithCLLocation:v16];
+        structuredLocation2 = [eventCopy structuredLocation];
+        geoLocation2 = [structuredLocation2 geoLocation];
+        v17 = [v14 initWithCLLocation:geoLocation2];
 
         learnedLocationManager = self->_learnedLocationManager;
         v50[0] = MEMORY[0x277D85DD0];
@@ -542,7 +542,7 @@ uint64_t __173__RTPredictedLocationOfInterestProviderCalendar_fetchNextPredicted
         v50[2] = __107__RTPredictedLocationOfInterestProviderCalendar__fetchLocationOfInterestForEvent_clientIdentifier_handler___block_invoke;
         v50[3] = &unk_2788D0698;
         v53 = v58;
-        v51 = v8;
+        v51 = eventCopy;
         v52 = v11;
         [(RTLearnedLocationManager *)learnedLocationManager fetchLocationOfInterestAtLocation:v17 handler:v50];
 
@@ -570,18 +570,18 @@ uint64_t __173__RTPredictedLocationOfInterestProviderCalendar_fetchNextPredicted
       {
         dispatch_group_enter(v11);
         eventModelProvider = self->_eventModelProvider;
-        v20 = [v8 title];
-        v21 = [v8 location];
-        v22 = [v8 calendar];
-        v23 = [v22 calendarIdentifier];
+        title = [eventCopy title];
+        location = [eventCopy location];
+        calendar = [eventCopy calendar];
+        calendarIdentifier = [calendar calendarIdentifier];
         v45[0] = MEMORY[0x277D85DD0];
         v45[1] = 3221225472;
         v45[2] = __107__RTPredictedLocationOfInterestProviderCalendar__fetchLocationOfInterestForEvent_clientIdentifier_handler___block_invoke_43;
         v45[3] = &unk_2788C9568;
         v48 = v58;
-        v46 = v8;
+        v46 = eventCopy;
         v47 = v11;
-        [(RTEventLocationAssociationProtocol *)eventModelProvider fetchLocationsOfInterestAssociatedToTitle:v20 location:v21 calendarIdentifier:v23 withHandler:v45];
+        [(RTEventLocationAssociationProtocol *)eventModelProvider fetchLocationsOfInterestAssociatedToTitle:title location:location calendarIdentifier:calendarIdentifier withHandler:v45];
 
         v17 = v46;
         goto LABEL_14;
@@ -598,25 +598,25 @@ uint64_t __173__RTPredictedLocationOfInterestProviderCalendar_fetchNextPredicted
 LABEL_14:
 
 LABEL_15:
-        v25 = [v8 structuredLocation];
-        v26 = [v25 mapKitHandle];
-        if (v26)
+        structuredLocation3 = [eventCopy structuredLocation];
+        mapKitHandle = [structuredLocation3 mapKitHandle];
+        if (mapKitHandle)
         {
           mapServiceManager = self->_mapServiceManager;
 
           if (!mapServiceManager)
           {
 LABEL_19:
-            v34 = [(RTPredictedLocationOfInterestProviderCalendar *)self queue];
+            queue = [(RTPredictedLocationOfInterestProviderCalendar *)self queue];
             block[0] = MEMORY[0x277D85DD0];
             block[1] = 3221225472;
             block[2] = __107__RTPredictedLocationOfInterestProviderCalendar__fetchLocationOfInterestForEvent_clientIdentifier_handler___block_invoke_48;
             block[3] = &unk_2788D0710;
-            v36 = v8;
+            v36 = eventCopy;
             v38 = v58;
             v39 = v56;
-            v37 = v10;
-            dispatch_group_notify(v11, v34, block);
+            v37 = handlerCopy;
+            dispatch_group_notify(v11, queue, block);
 
             _Block_object_dispose(v54, 8);
             _Block_object_dispose(v56, 8);
@@ -629,20 +629,20 @@ LABEL_19:
           v28 = objc_alloc(MEMORY[0x277D011B0]);
           v29 = objc_opt_class();
           v30 = NSStringFromClass(v29);
-          v25 = [v28 initWithUseBackgroundTraits:1 analyticsIdentifier:v30 clientIdentifier:v9];
+          structuredLocation3 = [v28 initWithUseBackgroundTraits:1 analyticsIdentifier:v30 clientIdentifier:identifierCopy];
 
           v31 = self->_mapServiceManager;
-          v32 = [v8 structuredLocation];
-          v33 = [v32 mapKitHandle];
+          structuredLocation4 = [eventCopy structuredLocation];
+          mapKitHandle2 = [structuredLocation4 mapKitHandle];
           v40[0] = MEMORY[0x277D85DD0];
           v40[1] = 3221225472;
           v40[2] = __107__RTPredictedLocationOfInterestProviderCalendar__fetchLocationOfInterestForEvent_clientIdentifier_handler___block_invoke_46;
           v40[3] = &unk_2788D06E8;
-          v41 = v8;
+          v41 = eventCopy;
           v43 = v56;
           v44 = v54;
           v42 = v11;
-          [(RTMapServiceManager *)v31 fetchMapItemFromHandle:v33 options:v25 handler:v40];
+          [(RTMapServiceManager *)v31 fetchMapItemFromHandle:mapKitHandle2 options:structuredLocation3 handler:v40];
         }
 
         goto LABEL_19;
@@ -921,19 +921,19 @@ LABEL_33:
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchPredictedLocationOfInterestAtEvent:(id)a3 clientIdentifier:(id)a4 handler:(id)a5
+- (void)_fetchPredictedLocationOfInterestAtEvent:(id)event clientIdentifier:(id)identifier handler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
-  if (v9)
+  eventCopy = event;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __115__RTPredictedLocationOfInterestProviderCalendar__fetchPredictedLocationOfInterestAtEvent_clientIdentifier_handler___block_invoke;
     v10[3] = &unk_2788D0738;
-    v11 = v8;
-    v12 = v9;
-    [(RTPredictedLocationOfInterestProviderCalendar *)self _fetchLocationOfInterestForEvent:v11 clientIdentifier:a4 handler:v10];
+    v11 = eventCopy;
+    v12 = handlerCopy;
+    [(RTPredictedLocationOfInterestProviderCalendar *)self _fetchLocationOfInterestForEvent:v11 clientIdentifier:identifier handler:v10];
   }
 }
 
@@ -961,13 +961,13 @@ void __115__RTPredictedLocationOfInterestProviderCalendar__fetchPredictedLocatio
   (*(*(a1 + 40) + 16))();
 }
 
-- (void)_fetchPredictedLocationsOfInterestBetweenStartDate:(id)a3 endDate:(id)a4 clientIdentifier:(id)a5 handler:(id)a6
+- (void)_fetchPredictedLocationsOfInterestBetweenStartDate:(id)date endDate:(id)endDate clientIdentifier:(id)identifier handler:(id)handler
 {
   v70 = *MEMORY[0x277D85DE8];
-  v39 = a3;
-  v40 = a4;
-  v37 = a5;
-  v10 = a6;
+  dateCopy = date;
+  endDateCopy = endDate;
+  identifierCopy = identifier;
+  handlerCopy = handler;
   v38 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v62 = 0;
   v63 = &v62;
@@ -997,7 +997,7 @@ void __115__RTPredictedLocationOfInterestProviderCalendar__fetchPredictedLocatio
   v55 = &v62;
   v14 = v12;
   v53 = v14;
-  [(RTEventManager *)eventManager fetchEventsBetweenStartDate:v39 andEndDate:v40 withHandler:v52, v37, v38];
+  [(RTEventManager *)eventManager fetchEventsBetweenStartDate:dateCopy andEndDate:endDateCopy withHandler:v52, identifierCopy, v38];
   v15 = v14;
   v16 = [MEMORY[0x277CBEAA8] now];
   v17 = dispatch_time(0, 3600000000000);
@@ -1008,11 +1008,11 @@ void __115__RTPredictedLocationOfInterestProviderCalendar__fetchPredictedLocatio
     v20 = v19;
     v21 = objc_opt_new();
     v22 = [MEMORY[0x277CCAC30] predicateWithBlock:&__block_literal_global_128];
-    v23 = [MEMORY[0x277CCACC8] callStackSymbols];
-    v24 = [v23 filteredArrayUsingPredicate:v22];
-    v25 = [v24 firstObject];
+    callStackSymbols = [MEMORY[0x277CCACC8] callStackSymbols];
+    v24 = [callStackSymbols filteredArrayUsingPredicate:v22];
+    firstObject = [v24 firstObject];
 
-    [v21 submitToCoreAnalytics:v25 type:1 duration:v20];
+    [v21 submitToCoreAnalytics:firstObject type:1 duration:v20];
     v26 = _rt_log_facility_get_os_log(RTLogFacilityGeneral);
     if (os_log_type_enabled(v26, OS_LOG_TYPE_FAULT))
     {
@@ -1035,9 +1035,9 @@ void __115__RTPredictedLocationOfInterestProviderCalendar__fetchPredictedLocatio
   v11 = &off_230AFD000;
   if (v63[5])
   {
-    if (v10)
+    if (handlerCopy)
     {
-      v10[2](v10, 0);
+      handlerCopy[2](handlerCopy, 0);
     }
   }
 
@@ -1053,19 +1053,19 @@ LABEL_10:
     v47 = &unk_2788CE668;
     v34 = v31;
     v48 = v34;
-    v49 = self;
-    v50 = v37;
+    selfCopy = self;
+    v50 = identifierCopy;
     v35 = v38;
     v51 = v35;
     [v32 enumerateObjectsUsingBlock:&v44];
-    v36 = [(RTPredictedLocationOfInterestProviderCalendar *)self queue];
+    queue = [(RTPredictedLocationOfInterestProviderCalendar *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = v33;
     block[2] = __133__RTPredictedLocationOfInterestProviderCalendar__fetchPredictedLocationsOfInterestBetweenStartDate_endDate_clientIdentifier_handler___block_invoke_4;
     block[3] = &unk_2788C4D38;
-    v43 = v10;
+    v43 = handlerCopy;
     v42 = v35;
-    dispatch_group_notify(v34, v36, block);
+    dispatch_group_notify(v34, queue, block);
   }
 
   _Block_object_dispose(&v56, 8);
@@ -1180,26 +1180,26 @@ LABEL_9:
   return v12;
 }
 
-- (void)fetchPredictedLocationsOfInterestBetweenStartDate:(id)a3 endDate:(id)a4 clientIdentifier:(id)a5 handler:(id)a6
+- (void)fetchPredictedLocationsOfInterestBetweenStartDate:(id)date endDate:(id)endDate clientIdentifier:(id)identifier handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  if (v13)
+  dateCopy = date;
+  endDateCopy = endDate;
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v14 = [(RTPredictedLocationOfInterestProviderCalendar *)self queue];
+    queue = [(RTPredictedLocationOfInterestProviderCalendar *)self queue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __132__RTPredictedLocationOfInterestProviderCalendar_fetchPredictedLocationsOfInterestBetweenStartDate_endDate_clientIdentifier_handler___block_invoke;
     block[3] = &unk_2788C5580;
     block[4] = self;
-    v17 = v10;
-    v18 = v11;
-    v19 = v12;
-    v20 = v13;
-    dispatch_async(v14, block);
+    v17 = dateCopy;
+    v18 = endDateCopy;
+    v19 = identifierCopy;
+    v20 = handlerCopy;
+    dispatch_async(queue, block);
   }
 
   else
@@ -1216,30 +1216,30 @@ LABEL_9:
   }
 }
 
-- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)a3 handler:(id)a4
+- (void)fetchNextPredictedLocationsOfInterestWithCriteria:(id)criteria handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v12 = [v7 referenceLocation];
-  v8 = [v7 referenceDate];
-  [v7 windowDuration];
+  handlerCopy = handler;
+  criteriaCopy = criteria;
+  referenceLocation = [criteriaCopy referenceLocation];
+  referenceDate = [criteriaCopy referenceDate];
+  [criteriaCopy windowDuration];
   v10 = v9;
-  v11 = [v7 clientIdentifier];
+  clientIdentifier = [criteriaCopy clientIdentifier];
 
-  [(RTPredictedLocationOfInterestProviderCalendar *)self fetchNextPredictedLocationsOfInterestFromLocation:v12 startDate:v8 timeInterval:v11 clientIdentifier:v6 handler:v10];
+  [(RTPredictedLocationOfInterestProviderCalendar *)self fetchNextPredictedLocationsOfInterestFromLocation:referenceLocation startDate:referenceDate timeInterval:clientIdentifier clientIdentifier:handlerCopy handler:v10];
 }
 
-- (void)fetchPredictedLocationsOfInterestWithCriteria:(id)a3 handler:(id)a4
+- (void)fetchPredictedLocationsOfInterestWithCriteria:(id)criteria handler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v11 = [v7 referenceDate];
-  [v7 windowDuration];
-  v8 = [v11 dateByAddingTimeInterval:?];
-  v9 = [v7 referenceDate];
-  v10 = [v7 clientIdentifier];
+  handlerCopy = handler;
+  criteriaCopy = criteria;
+  referenceDate = [criteriaCopy referenceDate];
+  [criteriaCopy windowDuration];
+  v8 = [referenceDate dateByAddingTimeInterval:?];
+  referenceDate2 = [criteriaCopy referenceDate];
+  clientIdentifier = [criteriaCopy clientIdentifier];
 
-  [(RTPredictedLocationOfInterestProviderCalendar *)self fetchPredictedLocationsOfInterestBetweenStartDate:v9 endDate:v8 clientIdentifier:v10 handler:v6];
+  [(RTPredictedLocationOfInterestProviderCalendar *)self fetchPredictedLocationsOfInterestBetweenStartDate:referenceDate2 endDate:v8 clientIdentifier:clientIdentifier handler:handlerCopy];
 }
 
 @end

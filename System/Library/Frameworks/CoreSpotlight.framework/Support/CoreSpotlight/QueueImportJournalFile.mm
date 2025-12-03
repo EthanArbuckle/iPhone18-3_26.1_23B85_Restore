@@ -1,10 +1,10 @@
 @interface QueueImportJournalFile
-- (QueueImportJournalFile)initWithType:(int)a3 partialPath:(const char *)a4 andSerialNumber:(unint64_t)a5;
+- (QueueImportJournalFile)initWithType:(int)type partialPath:(const char *)path andSerialNumber:(unint64_t)number;
 @end
 
 @implementation QueueImportJournalFile
 
-- (QueueImportJournalFile)initWithType:(int)a3 partialPath:(const char *)a4 andSerialNumber:(unint64_t)a5
+- (QueueImportJournalFile)initWithType:(int)type partialPath:(const char *)path andSerialNumber:(unint64_t)number
 {
   v11.receiver = self;
   v11.super_class = QueueImportJournalFile;
@@ -12,9 +12,9 @@
   v9 = v8;
   if (v8)
   {
-    v8->_type = a3;
-    strlcpy(v8->_partialPath, a4, 0x400uLL);
-    v9->_serialNumber = a5;
+    v8->_type = type;
+    strlcpy(v8->_partialPath, path, 0x400uLL);
+    v9->_serialNumber = number;
   }
 
   return v9;

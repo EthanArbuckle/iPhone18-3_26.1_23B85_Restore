@@ -1,8 +1,8 @@
 @interface PXPeoplePetsHomeVisibilitySource
 - (PXPeoplePetsHomeVisibilitySource)init;
 - (unint64_t)visibility;
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3;
-- (void)setVisibility:(unint64_t)a3;
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue;
+- (void)setVisibility:(unint64_t)visibility;
 @end
 
 @implementation PXPeoplePetsHomeVisibilitySource
@@ -14,11 +14,11 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setVisibility:(unint64_t)a3
+- (void)setVisibility:(unint64_t)visibility
 {
   v5 = OBJC_IVAR___PXPeoplePetsHomeVisibilitySource_visibility;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = visibility;
 }
 
 - (PXPeoplePetsHomeVisibilitySource)init
@@ -28,11 +28,11 @@
   return result;
 }
 
-- (void)photoLibraryDidChangeOnMainQueue:(id)a3
+- (void)photoLibraryDidChangeOnMainQueue:(id)queue
 {
-  v4 = a3;
-  v5 = self;
-  PeoplePetsHomeVisibilitySource.photoLibraryDidChange(onMainQueue:)(v4);
+  queueCopy = queue;
+  selfCopy = self;
+  PeoplePetsHomeVisibilitySource.photoLibraryDidChange(onMainQueue:)(queueCopy);
 }
 
 @end

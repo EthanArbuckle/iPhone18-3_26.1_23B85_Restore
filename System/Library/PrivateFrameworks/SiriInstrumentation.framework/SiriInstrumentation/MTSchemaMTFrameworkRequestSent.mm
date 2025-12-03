@@ -1,28 +1,28 @@
 @interface MTSchemaMTFrameworkRequestSent
-- (BOOL)isEqual:(id)a3;
-- (MTSchemaMTFrameworkRequestSent)initWithDictionary:(id)a3;
-- (MTSchemaMTFrameworkRequestSent)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTSchemaMTFrameworkRequestSent)initWithDictionary:(id)dictionary;
+- (MTSchemaMTFrameworkRequestSent)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasRequestRoute:(BOOL)a3;
-- (void)setHasRequestSize:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasRequestRoute:(BOOL)route;
+- (void)setHasRequestSize:(BOOL)size;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MTSchemaMTFrameworkRequestSent
 
-- (MTSchemaMTFrameworkRequestSent)initWithDictionary:(id)a3
+- (MTSchemaMTFrameworkRequestSent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v15.receiver = self;
   v15.super_class = MTSchemaMTFrameworkRequestSent;
   v5 = [(MTSchemaMTFrameworkRequestSent *)&v15 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"frameworkRequestId"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"frameworkRequestId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -30,7 +30,7 @@
       [(MTSchemaMTFrameworkRequestSent *)v5 setFrameworkRequestId:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"qssSessionId"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"qssSessionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -38,21 +38,21 @@
       [(MTSchemaMTFrameworkRequestSent *)v5 setQssSessionId:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"requestType"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"requestType"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTFrameworkRequestSent setRequestType:](v5, "setRequestType:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"requestRoute"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"requestRoute"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MTSchemaMTFrameworkRequestSent setRequestRoute:](v5, "setRequestRoute:", [v11 intValue]);
     }
 
-    v12 = [v4 objectForKeyedSubscript:@"requestSize"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"requestSize"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -65,30 +65,30 @@
   return v5;
 }
 
-- (MTSchemaMTFrameworkRequestSent)initWithJSON:(id)a3
+- (MTSchemaMTFrameworkRequestSent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MTSchemaMTFrameworkRequestSent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MTSchemaMTFrameworkRequestSent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MTSchemaMTFrameworkRequestSent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -101,28 +101,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_frameworkRequestId)
   {
-    v4 = [(MTSchemaMTFrameworkRequestSent *)self frameworkRequestId];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    frameworkRequestId = [(MTSchemaMTFrameworkRequestSent *)self frameworkRequestId];
+    dictionaryRepresentation = [frameworkRequestId dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"frameworkRequestId"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"frameworkRequestId"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"frameworkRequestId"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"frameworkRequestId"];
     }
   }
 
   if (self->_qssSessionId)
   {
-    v7 = [(MTSchemaMTFrameworkRequestSent *)self qssSessionId];
-    v8 = [v7 copy];
-    [v3 setObject:v8 forKeyedSubscript:@"qssSessionId"];
+    qssSessionId = [(MTSchemaMTFrameworkRequestSent *)self qssSessionId];
+    v8 = [qssSessionId copy];
+    [dictionary setObject:v8 forKeyedSubscript:@"qssSessionId"];
   }
 
   has = self->_has;
@@ -135,7 +135,7 @@
 
 LABEL_18:
     v13 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[MTSchemaMTFrameworkRequestSent requestSize](self, "requestSize")}];
-    [v3 setObject:v13 forKeyedSubscript:@"requestSize"];
+    [dictionary setObject:v13 forKeyedSubscript:@"requestSize"];
 
     if ((*&self->_has & 1) == 0)
     {
@@ -154,18 +154,18 @@ LABEL_19:
       v15 = off_1E78D9CB8[v14];
     }
 
-    [v3 setObject:v15 forKeyedSubscript:@"requestType"];
+    [dictionary setObject:v15 forKeyedSubscript:@"requestType"];
     goto LABEL_23;
   }
 
-  v10 = [(MTSchemaMTFrameworkRequestSent *)self requestRoute];
+  requestRoute = [(MTSchemaMTFrameworkRequestSent *)self requestRoute];
   v11 = @"MTFRAMEWORKREQUESTROUTE_UNKNOWN";
-  if (v10 == 1)
+  if (requestRoute == 1)
   {
     v11 = @"MTFRAMEWORKREQUESTROUTE_NETWORK";
   }
 
-  if (v10 == 2)
+  if (requestRoute == 2)
   {
     v12 = @"MTFRAMEWORKREQUESTROUTE_ON_DEVICE";
   }
@@ -175,7 +175,7 @@ LABEL_19:
     v12 = v11;
   }
 
-  [v3 setObject:v12 forKeyedSubscript:@"requestRoute"];
+  [dictionary setObject:v12 forKeyedSubscript:@"requestRoute"];
   has = self->_has;
   if ((has & 4) != 0)
   {
@@ -189,9 +189,9 @@ LABEL_10:
   }
 
 LABEL_23:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -236,28 +236,28 @@ LABEL_4:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(MTSchemaMTFrameworkRequestSent *)self frameworkRequestId];
-  v6 = [v4 frameworkRequestId];
-  if ((v5 != 0) == (v6 == 0))
+  frameworkRequestId = [(MTSchemaMTFrameworkRequestSent *)self frameworkRequestId];
+  frameworkRequestId2 = [equalCopy frameworkRequestId];
+  if ((frameworkRequestId != 0) == (frameworkRequestId2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(MTSchemaMTFrameworkRequestSent *)self frameworkRequestId];
-  if (v7)
+  frameworkRequestId3 = [(MTSchemaMTFrameworkRequestSent *)self frameworkRequestId];
+  if (frameworkRequestId3)
   {
-    v8 = v7;
-    v9 = [(MTSchemaMTFrameworkRequestSent *)self frameworkRequestId];
-    v10 = [v4 frameworkRequestId];
-    v11 = [v9 isEqual:v10];
+    v8 = frameworkRequestId3;
+    frameworkRequestId4 = [(MTSchemaMTFrameworkRequestSent *)self frameworkRequestId];
+    frameworkRequestId5 = [equalCopy frameworkRequestId];
+    v11 = [frameworkRequestId4 isEqual:frameworkRequestId5];
 
     if (!v11)
     {
@@ -269,22 +269,22 @@ LABEL_4:
   {
   }
 
-  v5 = [(MTSchemaMTFrameworkRequestSent *)self qssSessionId];
-  v6 = [v4 qssSessionId];
-  if ((v5 != 0) == (v6 == 0))
+  frameworkRequestId = [(MTSchemaMTFrameworkRequestSent *)self qssSessionId];
+  frameworkRequestId2 = [equalCopy qssSessionId];
+  if ((frameworkRequestId != 0) == (frameworkRequestId2 == 0))
   {
 LABEL_11:
 
     goto LABEL_12;
   }
 
-  v12 = [(MTSchemaMTFrameworkRequestSent *)self qssSessionId];
-  if (v12)
+  qssSessionId = [(MTSchemaMTFrameworkRequestSent *)self qssSessionId];
+  if (qssSessionId)
   {
-    v13 = v12;
-    v14 = [(MTSchemaMTFrameworkRequestSent *)self qssSessionId];
-    v15 = [v4 qssSessionId];
-    v16 = [v14 isEqual:v15];
+    v13 = qssSessionId;
+    qssSessionId2 = [(MTSchemaMTFrameworkRequestSent *)self qssSessionId];
+    qssSessionId3 = [equalCopy qssSessionId];
+    v16 = [qssSessionId2 isEqual:qssSessionId3];
 
     if (!v16)
     {
@@ -297,19 +297,19 @@ LABEL_11:
   }
 
   has = self->_has;
-  v20 = v4[36];
+  v20 = equalCopy[36];
   if ((*&has & 1) == (v20 & 1))
   {
     if (*&has)
     {
       requestType = self->_requestType;
-      if (requestType != [v4 requestType])
+      if (requestType != [equalCopy requestType])
       {
         goto LABEL_12;
       }
 
       has = self->_has;
-      v20 = v4[36];
+      v20 = equalCopy[36];
     }
 
     v22 = (*&has >> 1) & 1;
@@ -318,19 +318,19 @@ LABEL_11:
       if (v22)
       {
         requestRoute = self->_requestRoute;
-        if (requestRoute != [v4 requestRoute])
+        if (requestRoute != [equalCopy requestRoute])
         {
           goto LABEL_12;
         }
 
         has = self->_has;
-        v20 = v4[36];
+        v20 = equalCopy[36];
       }
 
       v24 = (*&has >> 2) & 1;
       if (v24 == ((v20 >> 2) & 1))
       {
-        if (!v24 || (requestSize = self->_requestSize, requestSize == [v4 requestSize]))
+        if (!v24 || (requestSize = self->_requestSize, requestSize == [equalCopy requestSize]))
         {
           v17 = 1;
           goto LABEL_13;
@@ -346,30 +346,30 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v9 = a3;
-  v4 = [(MTSchemaMTFrameworkRequestSent *)self frameworkRequestId];
+  toCopy = to;
+  frameworkRequestId = [(MTSchemaMTFrameworkRequestSent *)self frameworkRequestId];
 
-  if (v4)
+  if (frameworkRequestId)
   {
-    v5 = [(MTSchemaMTFrameworkRequestSent *)self frameworkRequestId];
+    frameworkRequestId2 = [(MTSchemaMTFrameworkRequestSent *)self frameworkRequestId];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(MTSchemaMTFrameworkRequestSent *)self qssSessionId];
+  qssSessionId = [(MTSchemaMTFrameworkRequestSent *)self qssSessionId];
 
-  if (v6)
+  if (qssSessionId)
   {
     PBDataWriterWriteStringField();
   }
 
   has = self->_has;
-  v8 = v9;
+  v8 = toCopy;
   if (has)
   {
     PBDataWriterWriteInt32Field();
-    v8 = v9;
+    v8 = toCopy;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -389,20 +389,20 @@ LABEL_7:
   }
 
   PBDataWriterWriteInt32Field();
-  v8 = v9;
+  v8 = toCopy;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_8:
     PBDataWriterWriteUint32Field();
-    v8 = v9;
+    v8 = toCopy;
   }
 
 LABEL_9:
 }
 
-- (void)setHasRequestSize:(BOOL)a3
+- (void)setHasRequestSize:(BOOL)size
 {
-  if (a3)
+  if (size)
   {
     v3 = 4;
   }
@@ -415,9 +415,9 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasRequestRoute:(BOOL)a3
+- (void)setHasRequestRoute:(BOOL)route
 {
-  if (a3)
+  if (route)
   {
     v3 = 2;
   }
@@ -430,17 +430,17 @@ LABEL_9:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v9.receiver = self;
   v9.super_class = MTSchemaMTFrameworkRequestSent;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v9 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(MTSchemaMTFrameworkRequestSent *)self frameworkRequestId:v9.receiver];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
+  v7 = [v6 applySensitiveConditionsPolicy:policyCopy];
 
-  LODWORD(v4) = [v7 suppressMessage];
-  if (v4)
+  LODWORD(policyCopy) = [v7 suppressMessage];
+  if (policyCopy)
   {
     [(MTSchemaMTFrameworkRequestSent *)self deleteFrameworkRequestId];
   }

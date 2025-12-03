@@ -1,23 +1,23 @@
 @interface _WKModalContainerInfo
-- (_WKModalContainerInfo)initWithTypes:(OptionSet<WebCore::ModalContainerControlType>)a3;
+- (_WKModalContainerInfo)initWithTypes:(OptionSet<WebCore::ModalContainerControlType>)types;
 @end
 
 @implementation _WKModalContainerInfo
 
-- (_WKModalContainerInfo)initWithTypes:(OptionSet<WebCore::ModalContainerControlType>)a3
+- (_WKModalContainerInfo)initWithTypes:(OptionSet<WebCore::ModalContainerControlType>)types
 {
   v5.receiver = self;
   v5.super_class = _WKModalContainerInfo;
   result = [(_WKModalContainerInfo *)&v5 init];
   if (result)
   {
-    if ((a3.var0 & 2) != 0)
+    if ((types.var0 & 2) != 0)
     {
       result->_availableTypes |= 2uLL;
-      if ((a3.var0 & 4) == 0)
+      if ((types.var0 & 4) == 0)
       {
 LABEL_4:
-        if ((a3.var0 & 1) == 0)
+        if ((types.var0 & 1) == 0)
         {
           return result;
         }
@@ -26,13 +26,13 @@ LABEL_4:
       }
     }
 
-    else if ((a3.var0 & 4) == 0)
+    else if ((types.var0 & 4) == 0)
     {
       goto LABEL_4;
     }
 
     result->_availableTypes |= 4uLL;
-    if ((a3.var0 & 1) == 0)
+    if ((types.var0 & 1) == 0)
     {
       return result;
     }

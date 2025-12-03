@@ -1,25 +1,25 @@
 @interface CARDisplayPanel
-- (CARDisplayPanel)initWithPanelController:(id)a3;
+- (CARDisplayPanel)initWithPanelController:(id)controller;
 - (id)cellSpecifier;
 - (id)specifierSections;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CARDisplayPanel
 
-- (CARDisplayPanel)initWithPanelController:(id)a3
+- (CARDisplayPanel)initWithPanelController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v17.receiver = self;
   v17.super_class = CARDisplayPanel;
-  v5 = [(CARSettingsPanel *)&v17 initWithPanelController:v4];
+  v5 = [(CARSettingsPanel *)&v17 initWithPanelController:controllerCopy];
   if (v5)
   {
     if (+[CARNowPlayingAlbumArtSpecifier userSettingControlAvailable])
     {
       v6 = [CARNowPlayingAlbumArtSpecifier alloc];
-      v7 = [(CARSettingsPanel *)v5 panelController];
-      v8 = [(CARNowPlayingAlbumArtSpecifier *)v6 initWithPanelController:v7];
+      panelController = [(CARSettingsPanel *)v5 panelController];
+      v8 = [(CARNowPlayingAlbumArtSpecifier *)v6 initWithPanelController:panelController];
       albumArtSpecifier = v5->_albumArtSpecifier;
       v5->_albumArtSpecifier = v8;
     }
@@ -34,17 +34,17 @@
     v15[1] = 3221225472;
     v15[2] = sub_100006C5C;
     v15[3] = &unk_1000DAE90;
-    v16 = v4;
+    v16 = controllerCopy;
     [(CARSettingsCellSpecifier *)v5->_smartZoomCellSpecifier setActionBlock:v15];
   }
 
   return v5;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = [(CARSettingsPanel *)self panelController];
-  v5 = [NSNumber numberWithBool:[CARDisplayScalePanel switchValue:v4]];
+  panelController = [(CARSettingsPanel *)self panelController];
+  v5 = [NSNumber numberWithBool:[CARDisplayScalePanel switchValue:panelController]];
   [(CARSettingsCellSpecifier *)self->_smartZoomCellSpecifier setCellValue:v5];
 
   smartZoomCellSpecifier = self->_smartZoomCellSpecifier;
@@ -86,11 +86,11 @@
   v3 = +[NSMutableArray array];
   if (_os_feature_enabled_impl())
   {
-    v4 = [(CARSettingsPanel *)self panelController];
-    v5 = [v4 carSession];
-    v6 = [v5 configuration];
-    v7 = [v6 screens];
-    v8 = [v7 bs_containsObjectPassingTest:&stru_1000DAEB0];
+    panelController = [(CARSettingsPanel *)self panelController];
+    carSession = [panelController carSession];
+    configuration = [carSession configuration];
+    screens = [configuration screens];
+    v8 = [screens bs_containsObjectPassingTest:&stru_1000DAEB0];
 
     v9 = sub_10001C784();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG);
@@ -103,8 +103,8 @@
 
       v11 = [CARSettingsCellSpecifierSection alloc];
       v9 = sub_10001C80C(@"SMART_DISPLAY_ZOOM_FOOTER");
-      v12 = [(CARDisplayPanel *)self smartZoomCellSpecifier];
-      v20 = v12;
+      smartZoomCellSpecifier = [(CARDisplayPanel *)self smartZoomCellSpecifier];
+      v20 = smartZoomCellSpecifier;
       v13 = [NSArray arrayWithObjects:&v20 count:1];
       v14 = [(CARSettingsCellSpecifierSection *)v11 initWithFooter:v9 specifiers:v13];
       [v3 addObject:v14];

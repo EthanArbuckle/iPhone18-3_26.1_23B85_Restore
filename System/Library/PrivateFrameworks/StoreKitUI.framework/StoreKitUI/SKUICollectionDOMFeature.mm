@@ -1,17 +1,17 @@
 @interface SKUICollectionDOMFeature
-+ (id)makeFeatureJSObjectForFeature:(id)a3;
++ (id)makeFeatureJSObjectForFeature:(id)feature;
 - (IKAppContext)appContext;
-- (SKUICollectionDOMFeature)initWithDOMNode:(id)a3 featureName:(id)a4;
+- (SKUICollectionDOMFeature)initWithDOMNode:(id)node featureName:(id)name;
 - (SKUICollectionDOMFeatureTargetting)collectionTarget;
-- (void)setEditing:(BOOL)a3 options:(id)a4;
+- (void)setEditing:(BOOL)editing options:(id)options;
 @end
 
 @implementation SKUICollectionDOMFeature
 
-- (SKUICollectionDOMFeature)initWithDOMNode:(id)a3 featureName:(id)a4
+- (SKUICollectionDOMFeature)initWithDOMNode:(id)node featureName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  nodeCopy = node;
+  nameCopy = name;
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     [SKUICollectionDOMFeature initWithDOMNode:featureName:];
@@ -22,10 +22,10 @@
   v8 = [(SKUICollectionDOMFeature *)&v13 init];
   if (v8)
   {
-    v9 = [v6 appContext];
-    objc_storeWeak(&v8->_appContext, v9);
+    appContext = [nodeCopy appContext];
+    objc_storeWeak(&v8->_appContext, appContext);
 
-    v10 = [v7 copy];
+    v10 = [nameCopy copy];
     featureName = v8->_featureName;
     v8->_featureName = v10;
   }
@@ -33,30 +33,30 @@
   return v8;
 }
 
-+ (id)makeFeatureJSObjectForFeature:(id)a3
++ (id)makeFeatureJSObjectForFeature:(id)feature
 {
-  v3 = a3;
+  featureCopy = feature;
   v4 = [SKUIJSDOMFeatureCollection alloc];
-  v5 = [v3 appContext];
-  v6 = [(IKJSObject *)v4 initWithAppContext:v5];
+  appContext = [featureCopy appContext];
+  v6 = [(IKJSObject *)v4 initWithAppContext:appContext];
 
-  [(SKUIJSDOMFeatureCollection *)v6 setAppBridge:v3];
+  [(SKUIJSDOMFeatureCollection *)v6 setAppBridge:featureCopy];
 
   return v6;
 }
 
-- (void)setEditing:(BOOL)a3 options:(id)a4
+- (void)setEditing:(BOOL)editing options:(id)options
 {
-  v6 = a4;
+  optionsCopy = options;
   WeakRetained = objc_loadWeakRetained(&self->_appContext);
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __47__SKUICollectionDOMFeature_setEditing_options___block_invoke;
   v9[3] = &unk_2781FB6C8;
-  v11 = a3;
+  editingCopy = editing;
   v9[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = optionsCopy;
+  v8 = optionsCopy;
   [WeakRetained evaluateDelegateBlockSync:v9];
 }
 

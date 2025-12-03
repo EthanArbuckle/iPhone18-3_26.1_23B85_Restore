@@ -1,11 +1,11 @@
 @interface CarSearchItemCellModel
-+ (id)modelWithUpdateBlock:(id)a3;
++ (id)modelWithUpdateBlock:(id)block;
 - (BOOL)shouldShowChargerlabel;
 - (id)evChargerLabelText;
 - (void)dealloc;
 - (void)markAsUpdated;
-- (void)observeObject:(id)a3 forKeyPaths:(id)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeObject:(id)object forKeyPaths:(id)paths;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 @end
 
 @implementation CarSearchItemCellModel
@@ -14,10 +14,10 @@
 {
   if (MapsFeature_IsEnabled_RealTimeEVCharger() && (-[CarSearchItemCellModel mapItem](self, "mapItem"), v3 = objc_claimAutoreleasedReturnValue(), [v3 _geoMapItem], v4 = objc_claimAutoreleasedReturnValue(), v5 = objc_msgSend(v4, "_hasEVCharger"), v4, v3, v5))
   {
-    v6 = [(CarSearchItemCellModel *)self mapItem];
-    v7 = [v6 _realTimeAvailableEVCharger];
+    mapItem = [(CarSearchItemCellModel *)self mapItem];
+    _realTimeAvailableEVCharger = [mapItem _realTimeAvailableEVCharger];
 
-    v8 = [_TtC4Maps16EVChargerUtility realTimeEVChargerDisplayStringWithEvCharger:v7 mapDisplay:0];
+    v8 = [_TtC4Maps16EVChargerUtility realTimeEVChargerDisplayStringWithEvCharger:_realTimeAvailableEVCharger mapDisplay:0];
   }
 
   else
@@ -30,17 +30,17 @@
 
 - (BOOL)shouldShowChargerlabel
 {
-  v3 = [(CarSearchItemCellModel *)self mapItem];
-  v4 = [v3 _geoMapItem];
-  if ([v4 _hasEVCharger])
+  mapItem = [(CarSearchItemCellModel *)self mapItem];
+  _geoMapItem = [mapItem _geoMapItem];
+  if ([_geoMapItem _hasEVCharger])
   {
     v5 = 1;
   }
 
   else
   {
-    v6 = [(CarSearchItemCellModel *)self chargerNumberString];
-    v5 = [v6 length] != 0;
+    chargerNumberString = [(CarSearchItemCellModel *)self chargerNumberString];
+    v5 = [chargerNumberString length] != 0;
   }
 
   return v5;
@@ -48,8 +48,8 @@
 
 - (void)markAsUpdated
 {
-  v3 = [(CarSearchItemCellModel *)self updateBlock];
-  if (v3)
+  updateBlock = [(CarSearchItemCellModel *)self updateBlock];
+  if (updateBlock)
   {
     markedAsUpdatedOperation = self->_markedAsUpdatedOperation;
 
@@ -74,11 +74,11 @@
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
-  v8 = [(CarSearchItemCellModel *)self observedKeyPaths];
-  v9 = [v8 containsObject:v7];
+  pathCopy = path;
+  observedKeyPaths = [(CarSearchItemCellModel *)self observedKeyPaths];
+  v9 = [observedKeyPaths containsObject:pathCopy];
 
   if (v9)
   {
@@ -87,10 +87,10 @@
   }
 }
 
-- (void)observeObject:(id)a3 forKeyPaths:(id)a4
+- (void)observeObject:(id)object forKeyPaths:(id)paths
 {
-  v7 = a3;
-  v8 = a4;
+  objectCopy = object;
+  pathsCopy = paths;
   if (self->_observedObject)
   {
     v29 = 0u;
@@ -131,10 +131,10 @@
     self->_observedKeyPaths = 0;
   }
 
-  if (v7 && [v8 count])
+  if (objectCopy && [pathsCopy count])
   {
-    objc_storeStrong(&self->_observedObject, a3);
-    v16 = [v8 copy];
+    objc_storeStrong(&self->_observedObject, object);
+    v16 = [pathsCopy copy];
     v17 = self->_observedKeyPaths;
     self->_observedKeyPaths = v16;
 
@@ -142,7 +142,7 @@
     v26 = 0u;
     v23 = 0u;
     v24 = 0u;
-    v18 = v8;
+    v18 = pathsCopy;
     v19 = [v18 countByEnumeratingWithState:&v23 objects:v31 count:16];
     if (v19)
     {
@@ -158,7 +158,7 @@
             objc_enumerationMutation(v18);
           }
 
-          [v7 addObserver:self forKeyPath:*(*(&v23 + 1) + 8 * v22) options:0 context:{0, v23}];
+          [objectCopy addObserver:self forKeyPath:*(*(&v23 + 1) + 8 * v22) options:0 context:{0, v23}];
           v22 = v22 + 1;
         }
 
@@ -179,11 +179,11 @@
   [(CarSearchItemCellModel *)&v3 dealloc];
 }
 
-+ (id)modelWithUpdateBlock:(id)a3
++ (id)modelWithUpdateBlock:(id)block
 {
-  v4 = a3;
-  v5 = objc_alloc_init(a1);
-  [v5 setUpdateBlock:v4];
+  blockCopy = block;
+  v5 = objc_alloc_init(self);
+  [v5 setUpdateBlock:blockCopy];
 
   return v5;
 }

@@ -1,24 +1,24 @@
 @interface PlaceholderWaypointRequest
 - (BOOL)isCurrentLocation;
-- (BOOL)isEquivalentToOtherRequest:(id)a3;
+- (BOOL)isEquivalentToOtherRequest:(id)request;
 - (CLLocationCoordinate2D)coordinate;
 - (NSString)debugDescription;
 - (NSString)description;
-- (PlaceholderWaypointRequest)initWithCLPlacemark:(id)a3;
-- (PlaceholderWaypointRequest)initWithName:(id)a3 icon:(id)a4;
-- (id)waypointIconWithScale:(double)a3;
-- (void)_maps_buildDescriptionWithBlock:(id)a3;
+- (PlaceholderWaypointRequest)initWithCLPlacemark:(id)placemark;
+- (PlaceholderWaypointRequest)initWithName:(id)name icon:(id)icon;
+- (id)waypointIconWithScale:(double)scale;
+- (void)_maps_buildDescriptionWithBlock:(id)block;
 @end
 
 @implementation PlaceholderWaypointRequest
 
-- (BOOL)isEquivalentToOtherRequest:(id)a3
+- (BOOL)isEquivalentToOtherRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = requestCopy;
     mapItem = self->_mapItem;
     if (mapItem && v5[2])
     {
@@ -27,9 +27,9 @@
 
     else
     {
-      v8 = [(PlaceholderWaypointRequest *)self waypointName];
-      v9 = [v5 waypointName];
-      v7 = [v8 isEqualToString:v9];
+      waypointName = [(PlaceholderWaypointRequest *)self waypointName];
+      waypointName2 = [v5 waypointName];
+      v7 = [waypointName isEqualToString:waypointName2];
     }
   }
 
@@ -55,12 +55,12 @@
   return v4;
 }
 
-- (id)waypointIconWithScale:(double)a3
+- (id)waypointIconWithScale:(double)scale
 {
   mapItem = self->_mapItem;
   if (mapItem)
   {
-    v4 = [MKMapItem _maps_markerImageForMapItem:mapItem scale:2 size:0 useMarkerFallback:a3];
+    v4 = [MKMapItem _maps_markerImageForMapItem:mapItem scale:2 size:0 useMarkerFallback:scale];
   }
 
   else
@@ -80,19 +80,19 @@
   return result;
 }
 
-- (void)_maps_buildDescriptionWithBlock:(id)a3
+- (void)_maps_buildDescriptionWithBlock:(id)block
 {
-  v4 = (a3 + 16);
-  v5 = *(a3 + 2);
-  v6 = a3;
+  v4 = (block + 16);
+  v5 = *(block + 2);
+  blockCopy = block;
   v5();
-  (*v4)(v6, @"icon", self->_icon);
-  (*v4)(v6, @"mapItem", self->_mapItem);
+  (*v4)(blockCopy, @"icon", self->_icon);
+  (*v4)(blockCopy, @"mapItem", self->_mapItem);
 }
 
 - (NSString)debugDescription
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100623FBC;
@@ -100,8 +100,8 @@
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(PlaceholderWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(PlaceholderWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -135,7 +135,7 @@ LABEL_9:
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100044848;
@@ -143,8 +143,8 @@ LABEL_9:
   v3 = objc_alloc_init(NSMutableArray);
   v18 = v3;
   v4 = objc_retainBlock(&v14);
-  [(PlaceholderWaypointRequest *)v2 _maps_buildDescriptionWithBlock:v4];
-  v5 = v2;
+  [(PlaceholderWaypointRequest *)selfCopy _maps_buildDescriptionWithBlock:v4];
+  v5 = selfCopy;
   if (v5)
   {
     v6 = objc_opt_class();
@@ -176,20 +176,20 @@ LABEL_9:
   return v12;
 }
 
-- (PlaceholderWaypointRequest)initWithCLPlacemark:(id)a3
+- (PlaceholderWaypointRequest)initWithCLPlacemark:(id)placemark
 {
-  v4 = a3;
+  placemarkCopy = placemark;
   v13.receiver = self;
   v13.super_class = PlaceholderWaypointRequest;
   v5 = [(PlaceholderWaypointRequest *)&v13 init];
   if (v5)
   {
-    v6 = [v4 name];
-    v7 = [v6 copy];
+    name = [placemarkCopy name];
+    v7 = [name copy];
     name = v5->_name;
     v5->_name = v7;
 
-    v9 = [[MKPlacemark alloc] initWithPlacemark:v4];
+    v9 = [[MKPlacemark alloc] initWithPlacemark:placemarkCopy];
     v10 = [[MKMapItem alloc] initWithPlacemark:v9];
     mapItem = v5->_mapItem;
     v5->_mapItem = v10;
@@ -198,20 +198,20 @@ LABEL_9:
   return v5;
 }
 
-- (PlaceholderWaypointRequest)initWithName:(id)a3 icon:(id)a4
+- (PlaceholderWaypointRequest)initWithName:(id)name icon:(id)icon
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  iconCopy = icon;
   v12.receiver = self;
   v12.super_class = PlaceholderWaypointRequest;
   v8 = [(PlaceholderWaypointRequest *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [nameCopy copy];
     name = v8->_name;
     v8->_name = v9;
 
-    objc_storeStrong(&v8->_icon, a4);
+    objc_storeStrong(&v8->_icon, icon);
   }
 
   return v8;

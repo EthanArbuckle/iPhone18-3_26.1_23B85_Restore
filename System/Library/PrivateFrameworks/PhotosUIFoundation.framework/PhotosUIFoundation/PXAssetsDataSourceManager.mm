@@ -1,32 +1,32 @@
 @interface PXAssetsDataSourceManager
 - (BOOL)forceAccurateAllSectionsIfNeeded;
 - (BOOL)isLoadingInitialDataSource;
-- (id)pauseChangeDeliveryWithTimeout:(double)a3 identifier:(id)a4;
-- (void)_performIfStartingSectionIsEmpty:(id)a3;
+- (id)pauseChangeDeliveryWithTimeout:(double)timeout identifier:(id)identifier;
+- (void)_performIfStartingSectionIsEmpty:(id)empty;
 - (void)ensureLastSectionHasContent;
 - (void)ensureStartingSectionHasContent;
-- (void)registerChangeObserver:(id)a3 context:(void *)a4;
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3;
-- (void)setCurationEnabled:(BOOL)a3 forAssetCollection:(id)a4;
-- (void)setCurationEnabledForAllCollections:(BOOL)a3 curationLength:(int64_t)a4 collectionsToDiff:(id)a5;
-- (void)setFilterPredicate:(id)a3;
-- (void)setIncludeOthersInSocialGroupAssets:(BOOL)a3;
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4;
-- (void)waitForAvailabilityOfAsset:(id)a3 timeout:(double)a4 completionHandler:(id)a5;
+- (void)registerChangeObserver:(id)observer context:(void *)context;
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading;
+- (void)setCurationEnabled:(BOOL)enabled forAssetCollection:(id)collection;
+- (void)setCurationEnabledForAllCollections:(BOOL)collections curationLength:(int64_t)length collectionsToDiff:(id)diff;
+- (void)setFilterPredicate:(id)predicate;
+- (void)setIncludeOthersInSocialGroupAssets:(BOOL)assets;
+- (void)unregisterChangeObserver:(id)observer context:(void *)context;
+- (void)waitForAvailabilityOfAsset:(id)asset timeout:(double)timeout completionHandler:(id)handler;
 @end
 
 @implementation PXAssetsDataSourceManager
 
 - (void)ensureLastSectionHasContent
 {
-  v3 = [(PXSectionedDataSourceManager *)self dataSource];
-  v4 = [v3 numberOfSections];
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  numberOfSections = [dataSource numberOfSections];
 
-  v5 = v4 - 1;
-  if (v4 >= 1)
+  v5 = numberOfSections - 1;
+  if (numberOfSections >= 1)
   {
-    v6 = [(PXSectionedDataSourceManager *)self dataSource];
-    v7 = [v6 numberOfItemsInSection:v5];
+    dataSource2 = [(PXSectionedDataSourceManager *)self dataSource];
+    v7 = [dataSource2 numberOfItemsInSection:v5];
 
     if (!v7)
     {
@@ -40,61 +40,61 @@
   }
 }
 
-- (void)resumeChangeDeliveryAndBackgroundLoading:(id)a3
+- (void)resumeChangeDeliveryAndBackgroundLoading:(id)loading
 {
   v3.receiver = self;
   v3.super_class = PXAssetsDataSourceManager;
-  [(PXSectionedDataSourceManager *)&v3 resumeChangeDeliveryAndBackgroundLoading:a3];
+  [(PXSectionedDataSourceManager *)&v3 resumeChangeDeliveryAndBackgroundLoading:loading];
 }
 
-- (id)pauseChangeDeliveryWithTimeout:(double)a3 identifier:(id)a4
+- (id)pauseChangeDeliveryWithTimeout:(double)timeout identifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = PXAssetsDataSourceManager;
-  v4 = [(PXSectionedDataSourceManager *)&v6 pauseChangeDeliveryWithTimeout:a4 identifier:a3];
+  v4 = [(PXSectionedDataSourceManager *)&v6 pauseChangeDeliveryWithTimeout:identifier identifier:timeout];
 
   return v4;
 }
 
-- (void)setIncludeOthersInSocialGroupAssets:(BOOL)a3
+- (void)setIncludeOthersInSocialGroupAssets:(BOOL)assets
 {
-  if (self->_includeOthersInSocialGroupAssets != a3)
+  if (self->_includeOthersInSocialGroupAssets != assets)
   {
-    self->_includeOthersInSocialGroupAssets = a3;
+    self->_includeOthersInSocialGroupAssets = assets;
   }
 }
 
-- (void)setFilterPredicate:(id)a3
+- (void)setFilterPredicate:(id)predicate
 {
-  v9 = a3;
+  predicateCopy = predicate;
   v4 = self->_filterPredicate;
   filterPredicate = v4;
-  if (v4 != v9)
+  if (v4 != predicateCopy)
   {
-    v6 = [(NSPredicate *)v4 isEqual:v9];
+    v6 = [(NSPredicate *)v4 isEqual:predicateCopy];
 
-    v7 = v9;
+    v7 = predicateCopy;
     if (v6)
     {
       goto LABEL_5;
     }
 
-    v8 = v9;
+    v8 = predicateCopy;
     filterPredicate = self->_filterPredicate;
     self->_filterPredicate = v8;
   }
 
-  v7 = v9;
+  v7 = predicateCopy;
 LABEL_5:
 }
 
-- (void)waitForAvailabilityOfAsset:(id)a3 timeout:(double)a4 completionHandler:(id)a5
+- (void)waitForAvailabilityOfAsset:(id)asset timeout:(double)timeout completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a5;
+  assetCopy = asset;
+  handlerCopy = handler;
   v19 = *PXSimpleIndexPathNull;
   v20 = *&PXSimpleIndexPathNull[16];
-  v10 = [(PXSectionedObjectReference *)[PXAssetReference alloc] initWithSectionObject:0 itemObject:v8 subitemObject:0 indexPath:&v19];
+  v10 = [(PXSectionedObjectReference *)[PXAssetReference alloc] initWithSectionObject:0 itemObject:assetCopy subitemObject:0 indexPath:&v19];
   *&v19 = 0;
   *(&v19 + 1) = &v19;
   *&v20 = 0x3032000000;
@@ -112,10 +112,10 @@ LABEL_5:
   v13[1] = 3221225472;
   v13[2] = __82__PXAssetsDataSourceManager_waitForAvailabilityOfAsset_timeout_completionHandler___block_invoke_2;
   v13[3] = &unk_1E7BB75E8;
-  v12 = v9;
+  v12 = handlerCopy;
   v14 = v12;
   v15 = &v19;
-  [(PXSectionedDataSourceManager *)self waitForCondition:v16 timeout:v13 completionHandler:a4];
+  [(PXSectionedDataSourceManager *)self waitForCondition:v16 timeout:v13 completionHandler:timeout];
 
   _Block_object_dispose(&v19, 8);
 }
@@ -130,17 +130,17 @@ BOOL __82__PXAssetsDataSourceManager_waitForAvailabilityOfAsset_timeout_completi
   return *(*(*(a1 + 40) + 8) + 40) != 0;
 }
 
-- (void)_performIfStartingSectionIsEmpty:(id)a3
+- (void)_performIfStartingSectionIsEmpty:(id)empty
 {
-  v7 = a3;
-  v4 = [(PXSectionedDataSourceManager *)self dataSource];
-  v5 = [v4 startingSection];
-  if (v5 != 0x7FFFFFFFFFFFFFFFLL)
+  emptyCopy = empty;
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  startingSection = [dataSource startingSection];
+  if (startingSection != 0x7FFFFFFFFFFFFFFFLL)
   {
-    v6 = v5;
-    if (![v4 numberOfItemsInSection:v5])
+    v6 = startingSection;
+    if (![dataSource numberOfItemsInSection:startingSection])
     {
-      v7[2](v7, v4, v6);
+      emptyCopy[2](emptyCopy, dataSource, v6);
     }
   }
 }
@@ -196,49 +196,49 @@ uint64_t __55__PXAssetsDataSourceManager_isLoadingInitialDataSource__block_invok
 
 - (BOOL)forceAccurateAllSectionsIfNeeded
 {
-  v2 = self;
+  selfCopy = self;
   v3 = MEMORY[0x1E696AC90];
-  v4 = [(PXSectionedDataSourceManager *)self dataSource];
-  v5 = [v3 indexSetWithIndexesInRange:{0, objc_msgSend(v4, "numberOfSections")}];
+  dataSource = [(PXSectionedDataSourceManager *)self dataSource];
+  v5 = [v3 indexSetWithIndexesInRange:{0, objc_msgSend(dataSource, "numberOfSections")}];
 
-  LOBYTE(v2) = [(PXAssetsDataSourceManager *)v2 forceAccurateSectionsIfNeeded:v5];
-  return v2;
+  LOBYTE(selfCopy) = [(PXAssetsDataSourceManager *)selfCopy forceAccurateSectionsIfNeeded:v5];
+  return selfCopy;
 }
 
-- (void)setCurationEnabled:(BOOL)a3 forAssetCollection:(id)a4
+- (void)setCurationEnabled:(BOOL)enabled forAssetCollection:(id)collection
 {
-  v6 = a4;
-  v7 = [MEMORY[0x1E696AAA8] currentHandler];
+  collectionCopy = collection;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v8 = objc_opt_class();
   v9 = NSStringFromClass(v8);
-  [v7 handleFailureInMethod:a2 object:self file:@"PXAssetsDataSourceManager.m" lineNumber:36 description:{@"Method %s is a responsibility of subclass %@", "-[PXAssetsDataSourceManager setCurationEnabled:forAssetCollection:]", v9}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsDataSourceManager.m" lineNumber:36 description:{@"Method %s is a responsibility of subclass %@", "-[PXAssetsDataSourceManager setCurationEnabled:forAssetCollection:]", v9}];
 
   abort();
 }
 
-- (void)setCurationEnabledForAllCollections:(BOOL)a3 curationLength:(int64_t)a4 collectionsToDiff:(id)a5
+- (void)setCurationEnabledForAllCollections:(BOOL)collections curationLength:(int64_t)length collectionsToDiff:(id)diff
 {
-  v7 = a5;
-  v8 = [MEMORY[0x1E696AAA8] currentHandler];
+  diffCopy = diff;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v9 = objc_opt_class();
   v10 = NSStringFromClass(v9);
-  [v8 handleFailureInMethod:a2 object:self file:@"PXAssetsDataSourceManager.m" lineNumber:32 description:{@"Method %s is a responsibility of subclass %@", "-[PXAssetsDataSourceManager setCurationEnabledForAllCollections:curationLength:collectionsToDiff:]", v10}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXAssetsDataSourceManager.m" lineNumber:32 description:{@"Method %s is a responsibility of subclass %@", "-[PXAssetsDataSourceManager setCurationEnabledForAllCollections:curationLength:collectionsToDiff:]", v10}];
 
   abort();
 }
 
-- (void)unregisterChangeObserver:(id)a3 context:(void *)a4
+- (void)unregisterChangeObserver:(id)observer context:(void *)context
 {
   v4.receiver = self;
   v4.super_class = PXAssetsDataSourceManager;
-  [(PXSectionedDataSourceManager *)&v4 unregisterChangeObserver:a3 context:a4];
+  [(PXSectionedDataSourceManager *)&v4 unregisterChangeObserver:observer context:context];
 }
 
-- (void)registerChangeObserver:(id)a3 context:(void *)a4
+- (void)registerChangeObserver:(id)observer context:(void *)context
 {
   v4.receiver = self;
   v4.super_class = PXAssetsDataSourceManager;
-  [(PXSectionedDataSourceManager *)&v4 registerChangeObserver:a3 context:a4];
+  [(PXSectionedDataSourceManager *)&v4 registerChangeObserver:observer context:context];
 }
 
 @end

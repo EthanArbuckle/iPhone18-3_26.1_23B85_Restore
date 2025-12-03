@@ -1,24 +1,24 @@
 @interface UIStatusBarServer
 + ($38BCDC8E708A2560E43DD4D455FC8F47)getStatusBarOverrideData;
 + ($6C45178016D353444451090973A2A97F)_statusBarData;
-+ (id)_cachedTimeStringFromData:(id *)a3;
-+ (id)getDoubleHeightStatusStringForStyle:(int64_t)a3;
++ (id)_cachedTimeStringFromData:(id *)data;
++ (id)getDoubleHeightStatusStringForStyle:(int64_t)style;
 + (unint64_t)getStyleOverrides;
-+ (void)_updateStatusBarDataAnimated:(BOOL)a3;
-+ (void)addStatusBarItem:(int)a3;
-+ (void)addStyleOverrides:(unint64_t)a3;
++ (void)_updateStatusBarDataAnimated:(BOOL)animated;
++ (void)addStatusBarItem:(int)item;
++ (void)addStyleOverrides:(unint64_t)overrides;
 + (void)permanentizeStatusBarOverrideData;
-+ (void)postDoubleHeightStatusString:(id)a3 forStyle:(int64_t)a4;
-+ (void)postStatusBarData:(id *)a3 withActions:(int)a4;
-+ (void)postStatusBarOverrideData:(id *)a3;
-+ (void)removeStatusBarItem:(int)a3;
-+ (void)removeStyleOverrides:(unint64_t)a3;
++ (void)postDoubleHeightStatusString:(id)string forStyle:(int64_t)style;
++ (void)postStatusBarData:(id *)data withActions:(int)actions;
++ (void)postStatusBarOverrideData:(id *)data;
++ (void)removeStatusBarItem:(int)item;
++ (void)removeStyleOverrides:(unint64_t)overrides;
 + (void)runServer;
-- (UIStatusBarServer)initWithStatusBar:(id)a3;
-- (void)_receivedStatusBarData:(id *)a3 actions:(int)a4 animated:(BOOL)a5;
-- (void)_receivedStyleOverrides:(unint64_t)a3;
+- (UIStatusBarServer)initWithStatusBar:(id)bar;
+- (void)_receivedStatusBarData:(id *)data actions:(int)actions animated:(BOOL)animated;
+- (void)_receivedStyleOverrides:(unint64_t)overrides;
 - (void)dealloc;
-- (void)setStatusBar:(id)a3;
+- (void)setStatusBar:(id)bar;
 @end
 
 @implementation UIStatusBarServer
@@ -111,9 +111,9 @@
     qword_1ED4A10A8 = v3;
 
     qword_1ED4A10B0 = 0;
-    v5 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v6 = qword_1ED4A10B8;
-    qword_1ED4A10B8 = v5;
+    qword_1ED4A10B8 = dictionary;
 
     v7 = [MEMORY[0x1E695DFA8] set];
     v8 = qword_1ED4A10C0;
@@ -136,12 +136,12 @@
   }
 }
 
-+ (void)_updateStatusBarDataAnimated:(BOOL)a3
++ (void)_updateStatusBarDataAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v15 = *MEMORY[0x1E69E9840];
   _MergedGlobals_1310[0] = 0;
-  v4 = [a1 _statusBarData];
+  _statusBarData = [self _statusBarData];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
@@ -162,7 +162,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) _receivedStatusBarData:v4 actions:0 animated:{v3, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) _receivedStatusBarData:_statusBarData actions:0 animated:{animatedCopy, v10}];
       }
 
       while (v7 != v9);
@@ -173,14 +173,14 @@
   }
 }
 
-+ (void)postStatusBarData:(id *)a3 withActions:(int)a4
++ (void)postStatusBarData:(id *)data withActions:(int)actions
 {
-  v4 = *&a4;
+  v4 = *&actions;
   v19 = *MEMORY[0x1E69E9840];
   v7 = +[UIView areAnimationsEnabled];
-  memcpy(&statusBarData, a3, 0xF28uLL);
+  memcpy(&statusBarData, data, 0xF28uLL);
   _MergedGlobals_1310[0] = 0;
-  v8 = [a1 _statusBarData];
+  _statusBarData = [self _statusBarData];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -201,7 +201,7 @@
           objc_enumerationMutation(v9);
         }
 
-        [*(*(&v14 + 1) + 8 * v13++) _receivedStatusBarData:v8 actions:v4 animated:{v7, v14}];
+        [*(*(&v14 + 1) + 8 * v13++) _receivedStatusBarData:_statusBarData actions:v4 animated:{v7, v14}];
       }
 
       while (v11 != v13);
@@ -212,7 +212,7 @@
   }
 }
 
-+ (void)addStyleOverrides:(unint64_t)a3
++ (void)addStyleOverrides:(unint64_t)overrides
 {
   v17 = *MEMORY[0x1E69E9840];
   if (([UIApp _isSpringBoard] & 1) == 0 && (_UIApplicationProcessIsControlCenterHostApp() & 1) == 0)
@@ -238,7 +238,7 @@
     }
   }
 
-  qword_1ED4A10B0 |= a3;
+  qword_1ED4A10B0 |= overrides;
   _MergedGlobals_1310[0] = 0;
   v11 = 0u;
   v12 = 0u;
@@ -271,7 +271,7 @@
   }
 }
 
-+ (void)removeStyleOverrides:(unint64_t)a3
++ (void)removeStyleOverrides:(unint64_t)overrides
 {
   v17 = *MEMORY[0x1E69E9840];
   if (([UIApp _isSpringBoard] & 1) == 0 && (_UIApplicationProcessIsControlCenterHostApp() & 1) == 0)
@@ -297,7 +297,7 @@
     }
   }
 
-  qword_1ED4A10B0 &= ~a3;
+  qword_1ED4A10B0 &= ~overrides;
   _MergedGlobals_1310[0] = 0;
   v11 = 0u;
   v12 = 0u;
@@ -330,12 +330,12 @@
   }
 }
 
-+ (void)postDoubleHeightStatusString:(id)a3 forStyle:(int64_t)a4
++ (void)postDoubleHeightStatusString:(id)string forStyle:(int64_t)style
 {
   v20 = *MEMORY[0x1E69E9840];
-  v5 = [a3 copy];
+  v5 = [string copy];
   v6 = qword_1ED4A10B8;
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:style];
   [v6 setObject:v5 forKeyedSubscript:v7];
 
   v17 = 0u;
@@ -358,8 +358,8 @@
         }
 
         v13 = *(*(&v15 + 1) + 8 * i);
-        v14 = [v13 statusBar];
-        [v14 statusBarServer:v13 didReceiveDoubleHeightStatusString:v5 forStyle:a4];
+        statusBar = [v13 statusBar];
+        [statusBar statusBarServer:v13 didReceiveDoubleHeightStatusString:v5 forStyle:style];
       }
 
       v10 = [v8 countByEnumeratingWithState:&v15 objects:v19 count:16];
@@ -369,9 +369,9 @@
   }
 }
 
-+ (void)addStatusBarItem:(int)a3
++ (void)addStatusBarItem:(int)item
 {
-  v3 = *&a3;
+  v3 = *&item;
   if (([UIApp _isSpringBoard] & 1) == 0 && (_UIApplicationProcessIsControlCenterHostApp() & 1) == 0)
   {
     if (os_variant_has_internal_diagnostics())
@@ -399,12 +399,12 @@
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
   [v5 addObject:v6];
 
-  [a1 _updateStatusBarDataAnimated:1];
+  [self _updateStatusBarDataAnimated:1];
 }
 
-+ (void)removeStatusBarItem:(int)a3
++ (void)removeStatusBarItem:(int)item
 {
-  v3 = *&a3;
+  v3 = *&item;
   if (([UIApp _isSpringBoard] & 1) == 0 && (_UIApplicationProcessIsControlCenterHostApp() & 1) == 0)
   {
     if (os_variant_has_internal_diagnostics())
@@ -432,10 +432,10 @@
   v6 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:v3];
   [v5 removeObject:v6];
 
-  [a1 _updateStatusBarDataAnimated:1];
+  [self _updateStatusBarDataAnimated:1];
 }
 
-+ (void)postStatusBarOverrideData:(id *)a3
++ (void)postStatusBarOverrideData:(id *)data
 {
   if (([UIApp _isSpringBoard] & 1) == 0 && (_UIApplicationProcessIsControlCenterHostApp() & 1) == 0)
   {
@@ -460,8 +460,8 @@
     }
   }
 
-  memcpy(&statusBarOverrides, a3, 0xF68uLL);
-  [a1 _updateStatusBarDataAnimated:1];
+  memcpy(&statusBarOverrides, data, 0xF68uLL);
+  [self _updateStatusBarDataAnimated:1];
 }
 
 + (void)permanentizeStatusBarOverrideData
@@ -496,25 +496,25 @@
   [v4 writeToFile:v3 atomically:0];
 }
 
-- (UIStatusBarServer)initWithStatusBar:(id)a3
+- (UIStatusBarServer)initWithStatusBar:(id)bar
 {
-  v4 = a3;
+  barCopy = bar;
   v8.receiver = self;
   v8.super_class = UIStatusBarServer;
   v5 = [(UIStatusBarServer *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(UIStatusBarServer *)v5 setStatusBar:v4];
+    [(UIStatusBarServer *)v5 setStatusBar:barCopy];
     [qword_1ED4A10A8 addObject:v6];
   }
 
   return v6;
 }
 
-- (void)setStatusBar:(id)a3
+- (void)setStatusBar:(id)bar
 {
-  v4 = a3;
+  barCopy = bar;
   if (self->_source)
   {
     v5 = CPGetMachPortForMIGServerSource();
@@ -525,23 +525,23 @@
   }
 
   statusBar = self->_statusBar;
-  self->_statusBar = v4;
+  self->_statusBar = barCopy;
 }
 
-+ (id)_cachedTimeStringFromData:(id *)a3
++ (id)_cachedTimeStringFromData:(id *)data
 {
   if (_UIDeviceNativeUserInterfaceIdiom() == 1)
   {
     v4 = _UIKitUserDefaults();
     if ([v4 BOOLForKey:0x1EFB9AA50])
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3->var2];
+      v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:data->var2];
 
       goto LABEL_6;
     }
   }
 
-  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:a3->var1];
+  v5 = [MEMORY[0x1E696AEC0] stringWithUTF8String:data->var1];
 LABEL_6:
 
   return v5;
@@ -575,47 +575,47 @@ LABEL_6:
   return &statusBarOverrides;
 }
 
-+ (id)getDoubleHeightStatusStringForStyle:(int64_t)a3
++ (id)getDoubleHeightStatusStringForStyle:(int64_t)style
 {
   v3 = qword_1ED4A10B8;
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:style];
   v5 = [v3 objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)_receivedStatusBarData:(id *)a3 actions:(int)a4 animated:(BOOL)a5
+- (void)_receivedStatusBarData:(id *)data actions:(int)actions animated:(BOOL)animated
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __61__UIStatusBarServer__receivedStatusBarData_actions_animated___block_invoke;
   v5[3] = &unk_1E7116B98;
   v5[4] = self;
-  v5[5] = a3;
-  v6 = a4;
-  if (a5)
+  v5[5] = data;
+  actionsCopy = actions;
+  if (animated)
   {
-    [(UIStatusBarServerClient *)self->_statusBar statusBarServer:self didReceiveStatusBarData:a3 withActions:*&a4];
+    [(UIStatusBarServerClient *)self->_statusBar statusBarServer:self didReceiveStatusBarData:data withActions:*&actions];
   }
 
   else
   {
-    [UIView performWithoutAnimation:v5, a3];
+    [UIView performWithoutAnimation:v5, data];
   }
 }
 
-- (void)_receivedStyleOverrides:(unint64_t)a3
+- (void)_receivedStyleOverrides:(unint64_t)overrides
 {
   v8 = *MEMORY[0x1E69E9840];
   v5 = _UIStatusBar_Log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 134217984;
-    v7 = a3;
+    overridesCopy = overrides;
     _os_log_impl(&dword_188A29000, v5, OS_LOG_TYPE_DEFAULT, "StatusBar received style overrides: %llu", &v6, 0xCu);
   }
 
-  [(UIStatusBarServerClient *)self->_statusBar statusBarServer:self didReceiveStyleOverrides:a3];
+  [(UIStatusBarServerClient *)self->_statusBar statusBarServer:self didReceiveStyleOverrides:overrides];
 }
 
 @end

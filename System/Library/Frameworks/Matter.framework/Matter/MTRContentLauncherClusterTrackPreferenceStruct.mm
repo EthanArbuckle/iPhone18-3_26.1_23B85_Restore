@@ -1,6 +1,6 @@
 @interface MTRContentLauncherClusterTrackPreferenceStruct
 - (MTRContentLauncherClusterTrackPreferenceStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRContentLauncherClusterTrackPreferenceStruct);
-  v5 = [(MTRContentLauncherClusterTrackPreferenceStruct *)self languageCode];
-  [(MTRContentLauncherClusterTrackPreferenceStruct *)v4 setLanguageCode:v5];
+  languageCode = [(MTRContentLauncherClusterTrackPreferenceStruct *)self languageCode];
+  [(MTRContentLauncherClusterTrackPreferenceStruct *)v4 setLanguageCode:languageCode];
 
-  v6 = [(MTRContentLauncherClusterTrackPreferenceStruct *)self characteristics];
-  [(MTRContentLauncherClusterTrackPreferenceStruct *)v4 setCharacteristics:v6];
+  characteristics = [(MTRContentLauncherClusterTrackPreferenceStruct *)self characteristics];
+  [(MTRContentLauncherClusterTrackPreferenceStruct *)v4 setCharacteristics:characteristics];
 
-  v7 = [(MTRContentLauncherClusterTrackPreferenceStruct *)self audioOutputIndex];
-  [(MTRContentLauncherClusterTrackPreferenceStruct *)v4 setAudioOutputIndex:v7];
+  audioOutputIndex = [(MTRContentLauncherClusterTrackPreferenceStruct *)self audioOutputIndex];
+  [(MTRContentLauncherClusterTrackPreferenceStruct *)v4 setAudioOutputIndex:audioOutputIndex];
 
   return v4;
 }

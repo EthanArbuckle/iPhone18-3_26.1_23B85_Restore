@@ -1,9 +1,9 @@
 @interface ParticipantListViewController
-- (_TtC15ConversationKit29ParticipantListViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC15ConversationKit29ParticipantListViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (id)accessibilityParticipantCollectionView;
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 @end
@@ -12,19 +12,19 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   ParticipantListViewController.viewDidLoad()();
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  ParticipantListViewController.viewDidAppear(_:)(a3);
+  selfCopy = self;
+  ParticipantListViewController.viewDidAppear(_:)(appear);
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ParticipantListViewController.viewDidLayoutSubviews()();
 }
 
@@ -35,42 +35,42 @@
   return v2;
 }
 
-- (_TtC15ConversationKit29ParticipantListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit29ParticipantListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   ParticipantListViewController.init(nibName:bundle:)();
 }
 
-- (void)collectionView:(id)a3 willDisplayCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view willDisplayCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   ParticipantListViewController.collectionView(_:willDisplay:forItemAt:)();
 
   (*(v9 + 8))(v11, v8);
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingCell:(id)a4 forItemAtIndexPath:(id)a5
+- (void)collectionView:(id)view didEndDisplayingCell:(id)cell forItemAtIndexPath:(id)path
 {
   v8 = type metadata accessor for IndexPath();
   v9 = *(v8 - 8);
   MEMORY[0x1EEE9AC00](v8);
   v11 = &v15 - ((v10 + 15) & 0xFFFFFFFFFFFFFFF0);
   static IndexPath._unconditionallyBridgeFromObjectiveC(_:)();
-  v12 = a3;
-  v13 = a4;
-  v14 = self;
+  viewCopy = view;
+  cellCopy = cell;
+  selfCopy = self;
   ParticipantListViewController.collectionView(_:didEndDisplaying:forItemAt:)();
 
   (*(v9 + 8))(v11, v8);

@@ -1,13 +1,13 @@
 @interface FlowRedirectionWrapperViewController
 - (CGSize)preferredContentSize;
-- (_TtC23ShelfKitCollectionViews36FlowRedirectionWrapperViewController)initWithCoder:(id)a3;
-- (_TtC23ShelfKitCollectionViews36FlowRedirectionWrapperViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC23ShelfKitCollectionViews36FlowRedirectionWrapperViewController)initWithCoder:(id)coder;
+- (_TtC23ShelfKitCollectionViews36FlowRedirectionWrapperViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation FlowRedirectionWrapperViewController
 
-- (_TtC23ShelfKitCollectionViews36FlowRedirectionWrapperViewController)initWithCoder:(id)a3
+- (_TtC23ShelfKitCollectionViews36FlowRedirectionWrapperViewController)initWithCoder:(id)coder
 {
   result = sub_30D648();
   __break(1u);
@@ -16,7 +16,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   FlowRedirectionWrapperViewController.viewDidLoad()();
 }
 
@@ -28,7 +28,7 @@
   return result;
 }
 
-- (_TtC23ShelfKitCollectionViews36FlowRedirectionWrapperViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23ShelfKitCollectionViews36FlowRedirectionWrapperViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

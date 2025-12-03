@@ -1,8 +1,8 @@
 @interface TSUserInPurchaseFlowAssertion
 + (id)sharedInstance;
 - (TSUserInPurchaseFlowAssertion)init;
-- (void)assertUserInPurchaseFlowStartOver:(BOOL)a3 caller:(id)a4;
-- (void)deassertUserInPurchaseFlowWithForce:(BOOL)a3 caller:(id)a4;
+- (void)assertUserInPurchaseFlowStartOver:(BOOL)over caller:(id)caller;
+- (void)deassertUserInPurchaseFlowWithForce:(BOOL)force caller:(id)caller;
 @end
 
 @implementation TSUserInPurchaseFlowAssertion
@@ -39,11 +39,11 @@ uint64_t __47__TSUserInPurchaseFlowAssertion_sharedInstance__block_invoke()
   return result;
 }
 
-- (void)assertUserInPurchaseFlowStartOver:(BOOL)a3 caller:(id)a4
+- (void)assertUserInPurchaseFlowStartOver:(BOOL)over caller:(id)caller
 {
   v17 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  if (a3)
+  callerCopy = caller;
+  if (over)
   {
     v7 = 1;
   }
@@ -61,7 +61,7 @@ uint64_t __47__TSUserInPurchaseFlowAssertion_sharedInstance__block_invoke()
     v12[0] = 67109634;
     v12[1] = assertionCounter;
     v13 = 2112;
-    v14 = v6;
+    v14 = callerCopy;
     v15 = 2080;
     v16 = "[TSUserInPurchaseFlowAssertion assertUserInPurchaseFlowStartOver:caller:]";
     _os_log_impl(&dword_262AA8000, v8, OS_LOG_TYPE_DEFAULT, "_assertionCounter: %d, caller:%@ @%s", v12, 0x1Cu);
@@ -69,18 +69,18 @@ uint64_t __47__TSUserInPurchaseFlowAssertion_sharedInstance__block_invoke()
 
   if (self->_assertionCounter >= 1)
   {
-    v10 = [MEMORY[0x277CF96D8] sharedManager];
-    [v10 setUserInPurchaseFlow:1];
+    mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+    [mEMORY[0x277CF96D8] setUserInPurchaseFlow:1];
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deassertUserInPurchaseFlowWithForce:(BOOL)a3 caller:(id)a4
+- (void)deassertUserInPurchaseFlowWithForce:(BOOL)force caller:(id)caller
 {
-  v4 = a3;
+  forceCopy = force;
   v18 = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  callerCopy = caller;
   v7 = _TSLogDomain();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
@@ -88,7 +88,7 @@ uint64_t __47__TSUserInPurchaseFlowAssertion_sharedInstance__block_invoke()
     v13[0] = 67109634;
     v13[1] = assertionCounter;
     v14 = 2112;
-    v15 = v6;
+    v15 = callerCopy;
     v16 = 2080;
     v17 = "[TSUserInPurchaseFlowAssertion deassertUserInPurchaseFlowWithForce:caller:]";
     _os_log_impl(&dword_262AA8000, v7, OS_LOG_TYPE_DEFAULT, "_assertionCounter: %d, caller:%@ @%s", v13, 0x1Cu);
@@ -99,10 +99,10 @@ uint64_t __47__TSUserInPurchaseFlowAssertion_sharedInstance__block_invoke()
   {
     v10 = v9 - 1;
     self->_assertionCounter = v10;
-    if (!v10 || v4)
+    if (!v10 || forceCopy)
     {
-      v11 = [MEMORY[0x277CF96D8] sharedManager];
-      [v11 setUserInPurchaseFlow:0];
+      mEMORY[0x277CF96D8] = [MEMORY[0x277CF96D8] sharedManager];
+      [mEMORY[0x277CF96D8] setUserInPurchaseFlow:0];
     }
   }
 

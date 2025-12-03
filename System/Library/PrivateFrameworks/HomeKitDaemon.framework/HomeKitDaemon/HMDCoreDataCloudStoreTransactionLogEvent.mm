@@ -1,47 +1,47 @@
 @interface HMDCoreDataCloudStoreTransactionLogEvent
-+ (id)eventForUpdates:(id)a3 inserts:(id)a4 deletes:(id)a5 transactionAuthor:(id)a6;
-+ (void)countMKFCKEntitiesInChangeSet:(id)a3 entitiesCount:(id)a4;
-+ (void)trimChangeSetForUnchangedValues:(id)a3;
-- (HMDCoreDataCloudStoreTransactionLogEvent)initWithChangeSet:(id)a3 transactionAuthor:(id)a4;
++ (id)eventForUpdates:(id)updates inserts:(id)inserts deletes:(id)deletes transactionAuthor:(id)author;
++ (void)countMKFCKEntitiesInChangeSet:(id)set entitiesCount:(id)count;
++ (void)trimChangeSetForUnchangedValues:(id)values;
+- (HMDCoreDataCloudStoreTransactionLogEvent)initWithChangeSet:(id)set transactionAuthor:(id)author;
 @end
 
 @implementation HMDCoreDataCloudStoreTransactionLogEvent
 
-- (HMDCoreDataCloudStoreTransactionLogEvent)initWithChangeSet:(id)a3 transactionAuthor:(id)a4
+- (HMDCoreDataCloudStoreTransactionLogEvent)initWithChangeSet:(id)set transactionAuthor:(id)author
 {
-  v7 = a3;
-  v8 = a4;
+  setCopy = set;
+  authorCopy = author;
   v12.receiver = self;
   v12.super_class = HMDCoreDataCloudStoreTransactionLogEvent;
   v9 = [(HMMLogEvent *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_reasons, a3);
-    objc_storeStrong(&v10->_transactionAuthor, a4);
+    objc_storeStrong(&v9->_reasons, set);
+    objc_storeStrong(&v10->_transactionAuthor, author);
   }
 
   return v10;
 }
 
-+ (id)eventForUpdates:(id)a3 inserts:(id)a4 deletes:(id)a5 transactionAuthor:(id)a6
++ (id)eventForUpdates:(id)updates inserts:(id)inserts deletes:(id)deletes transactionAuthor:(id)author
 {
-  v9 = a6;
+  authorCopy = author;
   v10 = MEMORY[0x277CCA940];
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
+  deletesCopy = deletes;
+  insertsCopy = inserts;
+  updatesCopy = updates;
   v14 = objc_alloc_init(v10);
-  v15 = [v13 mutableCopy];
+  v15 = [updatesCopy mutableCopy];
 
   [objc_opt_class() trimChangeSetForUnchangedValues:v15];
   [objc_opt_class() countMKFCKEntitiesInChangeSet:v15 entitiesCount:v14];
-  [objc_opt_class() countMKFCKEntitiesInChangeSet:v12 entitiesCount:v14];
+  [objc_opt_class() countMKFCKEntitiesInChangeSet:insertsCopy entitiesCount:v14];
 
-  [objc_opt_class() countMKFCKEntitiesInChangeSet:v11 entitiesCount:v14];
+  [objc_opt_class() countMKFCKEntitiesInChangeSet:deletesCopy entitiesCount:v14];
   if ([v14 count])
   {
-    v16 = [[HMDCoreDataCloudStoreTransactionLogEvent alloc] initWithChangeSet:v14 transactionAuthor:v9];
+    v16 = [[HMDCoreDataCloudStoreTransactionLogEvent alloc] initWithChangeSet:v14 transactionAuthor:authorCopy];
   }
 
   else
@@ -52,16 +52,16 @@
   return v16;
 }
 
-+ (void)countMKFCKEntitiesInChangeSet:(id)a3 entitiesCount:(id)a4
++ (void)countMKFCKEntitiesInChangeSet:(id)set entitiesCount:(id)count
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v27 = a4;
+  setCopy = set;
+  countCopy = count;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v7 = v6;
+  v7 = setCopy;
   v8 = [v7 countByEnumeratingWithState:&v28 objects:v36 count:16];
   if (v8)
   {
@@ -69,7 +69,7 @@
     v11 = *v29;
     *&v9 = 138543618;
     v25 = v9;
-    v26 = a1;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v10; ++i)
@@ -79,20 +79,20 @@
           objc_enumerationMutation(v7);
         }
 
-        v13 = [*(*(&v28 + 1) + 8 * i) entity];
-        v14 = [v13 name];
+        entity = [*(*(&v28 + 1) + 8 * i) entity];
+        name = [entity name];
 
         objc_opt_class();
-        if ((objc_opt_isKindOfClass() & 1) != 0 && v14)
+        if ((objc_opt_isKindOfClass() & 1) != 0 && name)
         {
-          [v27 addObject:v14];
+          [countCopy addObject:name];
           goto LABEL_17;
         }
 
-        if (v14)
+        if (name)
         {
           v15 = +[MKFCloudSyncMetadata entityName];
-          v16 = [v14 isEqualToString:v15];
+          v16 = [name isEqualToString:v15];
 
           if (v16)
           {
@@ -100,7 +100,7 @@
           }
 
           v17 = objc_autoreleasePoolPush();
-          v18 = a1;
+          selfCopy3 = self;
           v19 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
@@ -108,21 +108,21 @@
             *buf = v25;
             v33 = v20;
             v34 = 2112;
-            v35 = v14;
+            v35 = name;
             v21 = v19;
             v22 = "%{public}@NSManagedObject not of type MKFCKModel, name: %@";
             v23 = 22;
 LABEL_15:
             _os_log_impl(&dword_229538000, v21, OS_LOG_TYPE_ERROR, v22, buf, v23);
 
-            a1 = v26;
+            self = selfCopy;
           }
         }
 
         else
         {
           v17 = objc_autoreleasePoolPush();
-          v18 = a1;
+          selfCopy3 = self;
           v19 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
           {
@@ -149,16 +149,16 @@ LABEL_17:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-+ (void)trimChangeSetForUnchangedValues:(id)a3
++ (void)trimChangeSetForUnchangedValues:(id)values
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  valuesCopy = values;
   v5 = [MEMORY[0x277CBEB58] set];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v6 = v4;
+  v6 = valuesCopy;
   v7 = [v6 countByEnumeratingWithState:&v26 objects:v34 count:16];
   if (v7)
   {
@@ -166,7 +166,7 @@ LABEL_17:
     v10 = *v27;
     *&v8 = 138543618;
     v23 = v8;
-    v24 = a1;
+    selfCopy = self;
     v25 = *v27;
     do
     {
@@ -182,13 +182,13 @@ LABEL_17:
         {
           [v5 addObject:v12];
           v13 = objc_autoreleasePoolPush();
-          v14 = a1;
+          selfCopy2 = self;
           v15 = HMFGetOSLogHandle();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
           {
             v16 = HMFGetLogIdentifier();
-            v17 = [v12 entity];
-            [v17 name];
+            entity = [v12 entity];
+            [entity name];
             v18 = v9;
             v19 = v6;
             v21 = v20 = v5;
@@ -202,7 +202,7 @@ LABEL_17:
             v6 = v19;
             v9 = v18;
 
-            a1 = v24;
+            self = selfCopy;
             v10 = v25;
           }
 

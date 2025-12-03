@@ -1,7 +1,7 @@
 @interface TSPObjectContextObserver
 - (SEL)action;
 - (TSPObjectContextObserver)init;
-- (TSPObjectContextObserver)initWithTarget:(id)a3 action:(SEL)a4;
+- (TSPObjectContextObserver)initWithTarget:(id)target action:(SEL)action;
 - (id)target;
 @end
 
@@ -9,10 +9,10 @@
 
 - (TSPObjectContextObserver)init
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSPObjectContextObserver init]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/persistence/src/TSPObjectContext.mm"];
-  [v2 handleFailureInFunction:v3 file:v4 lineNumber:2746 description:@"Do not call method"];
+  [currentHandler handleFailureInFunction:v3 file:v4 lineNumber:2746 description:@"Do not call method"];
 
   v5 = MEMORY[0x277CBEAD8];
   v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@: %s", @"Do not call method", "-[TSPObjectContextObserver init]"];
@@ -22,27 +22,27 @@
   objc_exception_throw(v7);
 }
 
-- (TSPObjectContextObserver)initWithTarget:(id)a3 action:(SEL)a4
+- (TSPObjectContextObserver)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v11.receiver = self;
   v11.super_class = TSPObjectContextObserver;
   v7 = [(TSPObjectContextObserver *)&v11 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_target, v6);
-    if (a4)
+    objc_storeWeak(&v7->_target, targetCopy);
+    if (action)
     {
-      v9 = a4;
+      actionCopy = action;
     }
 
     else
     {
-      v9 = 0;
+      actionCopy = 0;
     }
 
-    v8->_action = v9;
+    v8->_action = actionCopy;
   }
 
   return v8;

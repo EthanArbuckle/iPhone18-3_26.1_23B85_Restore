@@ -1,9 +1,9 @@
 @interface JavaUtilRandom
 - (JavaUtilRandom)init;
 - (double)nextGaussian;
-- (int)nextWithInt:(int)a3;
-- (void)nextBytesWithByteArray:(id)a3;
-- (void)setSeedWithLong:(int64_t)a3;
+- (int)nextWithInt:(int)int;
+- (void)nextBytesWithByteArray:(id)array;
+- (void)setSeedWithLong:(int64_t)long;
 @end
 
 @implementation JavaUtilRandom
@@ -17,31 +17,31 @@
   return self;
 }
 
-- (int)nextWithInt:(int)a3
+- (int)nextWithInt:(int)int
 {
-  v3 = a3;
+  intCopy = int;
   objc_sync_enter(self);
   v5 = (0x5DEECE66DLL * self->seed_ + 11) & 0xFFFFFFFFFFFFLL;
   self->seed_ = v5;
-  v6 = v5 >> (48 - v3);
+  v6 = v5 >> (48 - intCopy);
   objc_sync_exit(self);
   return v6;
 }
 
-- (void)nextBytesWithByteArray:(id)a3
+- (void)nextBytesWithByteArray:(id)array
 {
-  if (!a3)
+  if (!array)
   {
     JreThrowNullPointerException();
   }
 
-  v4 = *(a3 + 2);
+  v4 = *(array + 2);
   if (v4 >= 1)
   {
-    v6 = 0;
+    nextInt = 0;
     v7 = 0;
     v8 = 0;
-    v9 = *(a3 + 2);
+    v9 = *(array + 2);
     do
     {
       if (v7)
@@ -51,8 +51,8 @@
 
       else
       {
-        v6 = [(JavaUtilRandom *)self nextInt];
-        v9 = *(a3 + 2);
+        nextInt = [(JavaUtilRandom *)self nextInt];
+        v9 = *(array + 2);
         v4 = v9;
         v7 = 3;
       }
@@ -62,9 +62,9 @@
         IOSArray_throwOutOfBoundsWithMsg(v9, v8);
       }
 
-      *(a3 + v8++ + 12) = v6;
-      v6 >>= 8;
-      v9 = *(a3 + 2);
+      *(array + v8++ + 12) = nextInt;
+      nextInt >>= 8;
+      v9 = *(array + 2);
       v4 = v9;
     }
 
@@ -110,10 +110,10 @@
   return nextNextGaussian;
 }
 
-- (void)setSeedWithLong:(int64_t)a3
+- (void)setSeedWithLong:(int64_t)long
 {
   objc_sync_enter(self);
-  self->seed_ = a3 & 0xFFFFFFFFFFFFLL ^ 0x5DEECE66DLL;
+  self->seed_ = long & 0xFFFFFFFFFFFFLL ^ 0x5DEECE66DLL;
   self->haveNextNextGaussian_ = 0;
 
   objc_sync_exit(self);

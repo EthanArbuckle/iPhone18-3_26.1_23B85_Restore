@@ -1,43 +1,43 @@
 @interface DNDBypassSettings
-- (BOOL)isEqual:(id)a3;
-- (DNDBypassSettings)initWithCoder:(id)a3;
-- (id)_initWithImmediateBypassEventSourceType:(unint64_t)a3 immediateBypassCNGroupIdentifier:(id)a4 repeatEventSourceBehaviorEnabledSetting:(unint64_t)a5;
-- (id)_initWithSettings:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DNDBypassSettings)initWithCoder:(id)coder;
+- (id)_initWithImmediateBypassEventSourceType:(unint64_t)type immediateBypassCNGroupIdentifier:(id)identifier repeatEventSourceBehaviorEnabledSetting:(unint64_t)setting;
+- (id)_initWithSettings:(id)settings;
 - (id)description;
 - (id)diffDescription;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation DNDBypassSettings
 
-- (id)_initWithSettings:(id)a3
+- (id)_initWithSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [v4 immediateBypassEventSourceType];
-  v6 = [v4 immediateBypassCNGroupIdentifier];
-  v7 = [v4 repeatEventSourceBehaviorEnabledSetting];
+  settingsCopy = settings;
+  immediateBypassEventSourceType = [settingsCopy immediateBypassEventSourceType];
+  immediateBypassCNGroupIdentifier = [settingsCopy immediateBypassCNGroupIdentifier];
+  repeatEventSourceBehaviorEnabledSetting = [settingsCopy repeatEventSourceBehaviorEnabledSetting];
 
-  v8 = [(DNDBypassSettings *)self _initWithImmediateBypassEventSourceType:v5 immediateBypassCNGroupIdentifier:v6 repeatEventSourceBehaviorEnabledSetting:v7];
+  v8 = [(DNDBypassSettings *)self _initWithImmediateBypassEventSourceType:immediateBypassEventSourceType immediateBypassCNGroupIdentifier:immediateBypassCNGroupIdentifier repeatEventSourceBehaviorEnabledSetting:repeatEventSourceBehaviorEnabledSetting];
   return v8;
 }
 
-- (id)_initWithImmediateBypassEventSourceType:(unint64_t)a3 immediateBypassCNGroupIdentifier:(id)a4 repeatEventSourceBehaviorEnabledSetting:(unint64_t)a5
+- (id)_initWithImmediateBypassEventSourceType:(unint64_t)type immediateBypassCNGroupIdentifier:(id)identifier repeatEventSourceBehaviorEnabledSetting:(unint64_t)setting
 {
-  v8 = a4;
+  identifierCopy = identifier;
   v14.receiver = self;
   v14.super_class = DNDBypassSettings;
   v9 = [(DNDBypassSettings *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    v9->_immediateBypassEventSourceType = a3;
-    v11 = [v8 copy];
+    v9->_immediateBypassEventSourceType = type;
+    v11 = [identifierCopy copy];
     immediateBypassCNGroupIdentifier = v10->_immediateBypassCNGroupIdentifier;
     v10->_immediateBypassCNGroupIdentifier = v11;
 
-    v10->_repeatEventSourceBehaviorEnabledSetting = a5;
+    v10->_repeatEventSourceBehaviorEnabledSetting = setting;
   }
 
   return v10;
@@ -45,18 +45,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(DNDBypassSettings *)self immediateBypassEventSourceType];
-  v4 = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
-  v5 = [v4 hash];
-  v6 = v3 ^ [(DNDBypassSettings *)self repeatEventSourceBehaviorEnabledSetting];
+  immediateBypassEventSourceType = [(DNDBypassSettings *)self immediateBypassEventSourceType];
+  immediateBypassCNGroupIdentifier = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
+  v5 = [immediateBypassCNGroupIdentifier hash];
+  v6 = immediateBypassEventSourceType ^ [(DNDBypassSettings *)self repeatEventSourceBehaviorEnabledSetting];
 
   return v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v8 = a3;
-  if (self == v8)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v15 = 1;
   }
@@ -66,9 +66,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = v8;
-      v10 = [(DNDBypassSettings *)self immediateBypassEventSourceType];
-      if (v10 != [(DNDBypassSettings *)v9 immediateBypassEventSourceType])
+      v9 = equalCopy;
+      immediateBypassEventSourceType = [(DNDBypassSettings *)self immediateBypassEventSourceType];
+      if (immediateBypassEventSourceType != [(DNDBypassSettings *)v9 immediateBypassEventSourceType])
       {
         v15 = 0;
 LABEL_18:
@@ -76,29 +76,29 @@ LABEL_18:
         goto LABEL_19;
       }
 
-      v11 = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
-      v12 = [(DNDBypassSettings *)v9 immediateBypassCNGroupIdentifier];
-      if (v11 != v12)
+      immediateBypassCNGroupIdentifier = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
+      immediateBypassCNGroupIdentifier2 = [(DNDBypassSettings *)v9 immediateBypassCNGroupIdentifier];
+      if (immediateBypassCNGroupIdentifier != immediateBypassCNGroupIdentifier2)
       {
-        v13 = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
-        if (!v13)
+        immediateBypassCNGroupIdentifier3 = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
+        if (!immediateBypassCNGroupIdentifier3)
         {
           v15 = 0;
           goto LABEL_17;
         }
 
-        v3 = v13;
-        v14 = [(DNDBypassSettings *)v9 immediateBypassCNGroupIdentifier];
-        if (!v14)
+        v3 = immediateBypassCNGroupIdentifier3;
+        immediateBypassCNGroupIdentifier4 = [(DNDBypassSettings *)v9 immediateBypassCNGroupIdentifier];
+        if (!immediateBypassCNGroupIdentifier4)
         {
           v15 = 0;
           goto LABEL_16;
         }
 
-        v4 = v14;
-        v5 = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
-        v6 = [(DNDBypassSettings *)v9 immediateBypassCNGroupIdentifier];
-        if (![v5 isEqual:v6])
+        v4 = immediateBypassCNGroupIdentifier4;
+        immediateBypassCNGroupIdentifier5 = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
+        immediateBypassCNGroupIdentifier6 = [(DNDBypassSettings *)v9 immediateBypassCNGroupIdentifier];
+        if (![immediateBypassCNGroupIdentifier5 isEqual:immediateBypassCNGroupIdentifier6])
         {
           v15 = 0;
 LABEL_13:
@@ -108,9 +108,9 @@ LABEL_16:
         }
       }
 
-      v16 = [(DNDBypassSettings *)self repeatEventSourceBehaviorEnabledSetting];
-      v15 = v16 == [(DNDBypassSettings *)v9 repeatEventSourceBehaviorEnabledSetting];
-      if (v11 != v12)
+      repeatEventSourceBehaviorEnabledSetting = [(DNDBypassSettings *)self repeatEventSourceBehaviorEnabledSetting];
+      v15 = repeatEventSourceBehaviorEnabledSetting == [(DNDBypassSettings *)v9 repeatEventSourceBehaviorEnabledSetting];
+      if (immediateBypassCNGroupIdentifier != immediateBypassCNGroupIdentifier2)
       {
         goto LABEL_13;
       }
@@ -133,9 +133,9 @@ LABEL_19:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = DNDEventSourceTypeToString([(DNDBypassSettings *)self immediateBypassEventSourceType]);
-  v6 = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
+  immediateBypassCNGroupIdentifier = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
   v7 = DNDEnabledSettingToString([(DNDBypassSettings *)self repeatEventSourceBehaviorEnabledSetting]);
-  v8 = [v3 stringWithFormat:@"<%@: %p immediateBypassEventSourceType: %@; immediateBypassCNGroupIdentifier: '%@'; repeatEventSourceBehaviorEnabledSetting: %@>", v4, self, v5, v6, v7];;
+  v8 = [v3 stringWithFormat:@"<%@: %p immediateBypassEventSourceType: %@; immediateBypassCNGroupIdentifier: '%@'; repeatEventSourceBehaviorEnabledSetting: %@>", v4, self, v5, immediateBypassCNGroupIdentifier, v7];;
 
   return v8;
 }
@@ -144,39 +144,39 @@ LABEL_19:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = DNDEventSourceTypeToString([(DNDBypassSettings *)self immediateBypassEventSourceType]);
-  v5 = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
+  immediateBypassCNGroupIdentifier = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
   v6 = DNDEnabledSettingToString([(DNDBypassSettings *)self repeatEventSourceBehaviorEnabledSetting]);
-  v7 = [v3 stringWithFormat:@"immediateBypassEventSourceType:%@immediateBypassCNGroupIdentifier:%@;repeatEventSourceBehaviorEnabledSetting:%@", v4, v5, v6];;
+  v7 = [v3 stringWithFormat:@"immediateBypassEventSourceType:%@immediateBypassCNGroupIdentifier:%@;repeatEventSourceBehaviorEnabledSetting:%@", v4, immediateBypassCNGroupIdentifier, v6];;
 
   return v7;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = [DNDMutableBypassSettings alloc];
 
   return [(DNDBypassSettings *)v4 _initWithSettings:self];
 }
 
-- (DNDBypassSettings)initWithCoder:(id)a3
+- (DNDBypassSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"immediateBypassEventSourceType"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"immediateBypassCNGroupIdentifier"];
-  v7 = [v4 decodeIntegerForKey:@"repeatEventSourceBehaviorEnabledSetting"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"immediateBypassEventSourceType"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"immediateBypassCNGroupIdentifier"];
+  v7 = [coderCopy decodeIntegerForKey:@"repeatEventSourceBehaviorEnabledSetting"];
 
   v8 = [(DNDBypassSettings *)self _initWithImmediateBypassEventSourceType:v5 immediateBypassCNGroupIdentifier:v6 repeatEventSourceBehaviorEnabledSetting:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  [v5 encodeInteger:-[DNDBypassSettings immediateBypassEventSourceType](self forKey:{"immediateBypassEventSourceType"), @"immediateBypassEventSourceType"}];
-  v4 = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
-  [v5 encodeObject:v4 forKey:@"immediateBypassCNGroupIdentifier"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[DNDBypassSettings immediateBypassEventSourceType](self forKey:{"immediateBypassEventSourceType"), @"immediateBypassEventSourceType"}];
+  immediateBypassCNGroupIdentifier = [(DNDBypassSettings *)self immediateBypassCNGroupIdentifier];
+  [coderCopy encodeObject:immediateBypassCNGroupIdentifier forKey:@"immediateBypassCNGroupIdentifier"];
 
-  [v5 encodeInteger:-[DNDBypassSettings repeatEventSourceBehaviorEnabledSetting](self forKey:{"repeatEventSourceBehaviorEnabledSetting"), @"repeatEventSourceBehaviorEnabledSetting"}];
+  [coderCopy encodeInteger:-[DNDBypassSettings repeatEventSourceBehaviorEnabledSetting](self forKey:{"repeatEventSourceBehaviorEnabledSetting"), @"repeatEventSourceBehaviorEnabledSetting"}];
 }
 
 @end

@@ -1,45 +1,45 @@
 @interface DBGSnapshotGroup
-+ (id)strongObjectsGroupWithIdentifier:(id)a3;
-+ (id)weakObjectsGroupWithIdentifier:(id)a3;
++ (id)strongObjectsGroupWithIdentifier:(id)identifier;
++ (id)weakObjectsGroupWithIdentifier:(id)identifier;
 - (DBGSnapshot)snapshot;
-- (DBGSnapshotGroup)initWithIdentifier:(id)a3 usingStrongChildNodeReferences:(BOOL)a4;
+- (DBGSnapshotGroup)initWithIdentifier:(id)identifier usingStrongChildNodeReferences:(BOOL)references;
 - (DBGSnapshotNode)parentNode;
 - (NSArray)allObjects;
 - (id)debugDescription;
 - (id)displayName;
 - (id)rootLevelGroup;
-- (void)addObject:(id)a3;
+- (void)addObject:(id)object;
 @end
 
 @implementation DBGSnapshotGroup
 
-+ (id)strongObjectsGroupWithIdentifier:(id)a3
++ (id)strongObjectsGroupWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4 usingStrongChildNodeReferences:1];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy usingStrongChildNodeReferences:1];
 
   return v5;
 }
 
-+ (id)weakObjectsGroupWithIdentifier:(id)a3
++ (id)weakObjectsGroupWithIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithIdentifier:v4 usingStrongChildNodeReferences:0];
+  identifierCopy = identifier;
+  v5 = [[self alloc] initWithIdentifier:identifierCopy usingStrongChildNodeReferences:0];
 
   return v5;
 }
 
-- (DBGSnapshotGroup)initWithIdentifier:(id)a3 usingStrongChildNodeReferences:(BOOL)a4
+- (DBGSnapshotGroup)initWithIdentifier:(id)identifier usingStrongChildNodeReferences:(BOOL)references
 {
-  v7 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = DBGSnapshotGroup;
   v8 = [(DBGSnapshotGroup *)&v13 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_groupingIdentifier, a3);
-    if (a4)
+    objc_storeStrong(&v8->_groupingIdentifier, identifier);
+    if (references)
     {
       +[NSPointerArray strongObjectsPointerArray];
     }
@@ -56,79 +56,79 @@
   return v9;
 }
 
-- (void)addObject:(id)a3
+- (void)addObject:(id)object
 {
-  v12 = a3;
+  objectCopy = object;
   [(DBGSnapshotGroup *)self willChangeValueForKey:@"allObjects"];
-  v4 = [(DBGSnapshotGroup *)self snapshot];
-  v5 = [v4 identifierToNodeMap];
-  v6 = [v12 identifier];
-  [v5 setObject:v12 forKey:v6];
+  snapshot = [(DBGSnapshotGroup *)self snapshot];
+  identifierToNodeMap = [snapshot identifierToNodeMap];
+  identifier = [objectCopy identifier];
+  [identifierToNodeMap setObject:objectCopy forKey:identifier];
 
-  v7 = [(DBGSnapshotGroup *)self snapshot];
-  [v12 setSnapshot:v7];
+  snapshot2 = [(DBGSnapshotGroup *)self snapshot];
+  [objectCopy setSnapshot:snapshot2];
 
-  v8 = [(DBGSnapshotGroup *)self parentNode];
-  v9 = [v8 childGroup];
+  parentNode = [(DBGSnapshotGroup *)self parentNode];
+  childGroup = [parentNode childGroup];
 
-  if (v9 == self)
+  if (childGroup == self)
   {
-    v10 = [(DBGSnapshotGroup *)self parentNode];
-    [v12 setParentNode:v10];
+    parentNode2 = [(DBGSnapshotGroup *)self parentNode];
+    [objectCopy setParentNode:parentNode2];
   }
 
-  v11 = [(DBGSnapshotGroup *)self objects];
-  [v11 dbg_addObject:v12];
+  objects = [(DBGSnapshotGroup *)self objects];
+  [objects dbg_addObject:objectCopy];
 
   [(DBGSnapshotGroup *)self didChangeValueForKey:@"allObjects"];
 }
 
 - (NSArray)allObjects
 {
-  v2 = [(DBGSnapshotGroup *)self objects];
-  v3 = [v2 allObjects];
+  objects = [(DBGSnapshotGroup *)self objects];
+  allObjects = [objects allObjects];
 
-  return v3;
+  return allObjects;
 }
 
 - (id)displayName
 {
-  v3 = [(DBGSnapshotGroup *)self defaultDisplayName];
-  if (!v3)
+  defaultDisplayName = [(DBGSnapshotGroup *)self defaultDisplayName];
+  if (!defaultDisplayName)
   {
-    v4 = [(DBGSnapshotGroup *)self groupingIdentifier];
-    v5 = [v4 componentsSeparatedByString:@"."];
-    v3 = [v5 lastObject];
+    groupingIdentifier = [(DBGSnapshotGroup *)self groupingIdentifier];
+    v5 = [groupingIdentifier componentsSeparatedByString:@"."];
+    defaultDisplayName = [v5 lastObject];
   }
 
-  return v3;
+  return defaultDisplayName;
 }
 
 - (id)debugDescription
 {
   v3 = [(DBGSnapshotGroup *)self description];
-  v4 = [(DBGSnapshotGroup *)self groupingIdentifier];
-  v5 = [NSString stringWithFormat:@"%@ – %@", v3, v4];
+  groupingIdentifier = [(DBGSnapshotGroup *)self groupingIdentifier];
+  v5 = [NSString stringWithFormat:@"%@ – %@", v3, groupingIdentifier];
 
   return v5;
 }
 
 - (id)rootLevelGroup
 {
-  v3 = [(DBGSnapshotGroup *)self parentNode];
+  parentNode = [(DBGSnapshotGroup *)self parentNode];
 
-  if (v3)
+  if (parentNode)
   {
-    v4 = [(DBGSnapshotGroup *)self parentNode];
-    v5 = [v4 rootLevelGroup];
+    parentNode2 = [(DBGSnapshotGroup *)self parentNode];
+    selfCopy = [parentNode2 rootLevelGroup];
   }
 
   else
   {
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (DBGSnapshot)snapshot

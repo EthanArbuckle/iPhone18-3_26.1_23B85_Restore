@@ -1,17 +1,17 @@
 @interface PKPeerPaymentRecipientsRequest
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5;
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier;
 @end
 
 @implementation PKPeerPaymentRecipientsRequest
 
-- (id)_urlRequestWithServiceURL:(id)a3 appleAccountInformation:(id)a4 deviceIdentifier:(id)a5
+- (id)_urlRequestWithServiceURL:(id)l appleAccountInformation:(id)information deviceIdentifier:(id)identifier
 {
   v45 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v10;
-  if (!v8)
+  lCopy = l;
+  informationCopy = information;
+  identifierCopy = identifier;
+  v11 = identifierCopy;
+  if (!lCopy)
   {
     v12 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -31,7 +31,7 @@ LABEL_33:
     goto LABEL_34;
   }
 
-  if (!v9)
+  if (!informationCopy)
   {
     v12 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -48,7 +48,7 @@ LABEL_33:
     goto LABEL_33;
   }
 
-  if (!v10)
+  if (!identifierCopy)
   {
     v12 = PKLogFacilityTypeGetObject(0xCuLL);
     if (!os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -101,15 +101,15 @@ LABEL_34:
     goto LABEL_35;
   }
 
-  v12 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:v8 endpointComponents:&unk_1F23B4700 queryParameters:0 appleAccountInformation:v9];
+  v12 = [(PKPeerPaymentWebServiceRequest *)self _murlRequestWithServiceURL:lCopy endpointComponents:&unk_1F23B4700 queryParameters:0 appleAccountInformation:informationCopy];
   [v12 setHTTPMethod:@"POST"];
   [v12 setValue:@"application/json" forHTTPHeaderField:@"Content-Type"];
   [v12 setTimeoutInterval:15.0];
-  v13 = [MEMORY[0x1E695DF90] dictionary];
-  [v13 setObject:v11 forKey:@"deviceIdentifier"];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:v11 forKey:@"deviceIdentifier"];
   if ([(NSArray *)self->_recipientAddresses count])
   {
-    v34 = v13;
+    v34 = dictionary;
     v35 = v11;
     v14 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v36 = 0u;
@@ -141,7 +141,7 @@ LABEL_34:
       while (v17);
     }
 
-    v13 = v34;
+    dictionary = v34;
     if ([v14 count])
     {
       [v34 setObject:v14 forKey:@"recipientAddresses"];
@@ -156,7 +156,7 @@ LABEL_34:
     v22 = PKIDSNormalizedAddress(senderAddress);
     if (v22)
     {
-      [v13 setObject:v22 forKey:@"senderAddress"];
+      [dictionary setObject:v22 forKey:@"senderAddress"];
     }
   }
 
@@ -171,8 +171,8 @@ LABEL_34:
     v24 = off_1E79E2E80[v23];
   }
 
-  [v13 setObject:v24 forKey:@"recipientSource"];
-  v33 = [objc_opt_class() _HTTPBodyWithDictionary:v13];
+  [dictionary setObject:v24 forKey:@"recipientSource"];
+  v33 = [objc_opt_class() _HTTPBodyWithDictionary:dictionary];
   [v12 setHTTPBody:v33];
 
   v31 = [v12 copy];

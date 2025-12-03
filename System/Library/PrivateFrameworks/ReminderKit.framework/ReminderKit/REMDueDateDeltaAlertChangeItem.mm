@@ -1,20 +1,20 @@
 @interface REMDueDateDeltaAlertChangeItem
-- (REMDueDateDeltaAlertChangeItem)initWithReminderDueDateDeltaAlertContextChangeItem:(id)a3 dueDateDeltaAlert:(id)a4;
-- (id)_setMinimumSupportedAppVersion:(int64_t)a3;
-- (id)setAcknowledgedDate:(id)a3;
-- (id)setDueDateDelta:(id)a3;
+- (REMDueDateDeltaAlertChangeItem)initWithReminderDueDateDeltaAlertContextChangeItem:(id)item dueDateDeltaAlert:(id)alert;
+- (id)_setMinimumSupportedAppVersion:(int64_t)version;
+- (id)setAcknowledgedDate:(id)date;
+- (id)setDueDateDelta:(id)delta;
 @end
 
 @implementation REMDueDateDeltaAlertChangeItem
 
-- (REMDueDateDeltaAlertChangeItem)initWithReminderDueDateDeltaAlertContextChangeItem:(id)a3 dueDateDeltaAlert:(id)a4
+- (REMDueDateDeltaAlertChangeItem)initWithReminderDueDateDeltaAlertContextChangeItem:(id)item dueDateDeltaAlert:(id)alert
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v8;
-  if (v7)
+  itemCopy = item;
+  alertCopy = alert;
+  v9 = alertCopy;
+  if (itemCopy)
   {
-    if (v8)
+    if (alertCopy)
     {
       goto LABEL_3;
     }
@@ -37,66 +37,66 @@ LABEL_3:
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_reminderDueDateDeltaAlertContextChangeItem, a3);
-    objc_storeStrong(&v11->_dueDateDeltaAlert, a4);
+    objc_storeStrong(&v10->_reminderDueDateDeltaAlertContextChangeItem, item);
+    objc_storeStrong(&v11->_dueDateDeltaAlert, alert);
   }
 
   return v11;
 }
 
-- (id)setDueDateDelta:(id)a3
+- (id)setDueDateDelta:(id)delta
 {
-  v4 = a3;
-  v5 = [(REMDueDateDeltaAlertChangeItem *)self dueDateDeltaAlert];
+  deltaCopy = delta;
+  dueDateDeltaAlert = [(REMDueDateDeltaAlertChangeItem *)self dueDateDeltaAlert];
   v6 = [REMDueDateDeltaAlert alloc];
-  v7 = [v5 identifier];
-  v8 = [v5 reminderID];
-  v9 = [v5 accountID];
-  v10 = [v5 creationDate];
-  v11 = [v5 acknowledgedDate];
-  v12 = -[REMDueDateDeltaAlert initWithIdentifier:reminderID:accountID:dueDateDelta:creationDate:acknowledgedDate:minimumSupportedAppVersion:](v6, "initWithIdentifier:reminderID:accountID:dueDateDelta:creationDate:acknowledgedDate:minimumSupportedAppVersion:", v7, v8, v9, v4, v10, v11, [v5 minimumSupportedAppVersion]);
+  identifier = [dueDateDeltaAlert identifier];
+  reminderID = [dueDateDeltaAlert reminderID];
+  accountID = [dueDateDeltaAlert accountID];
+  creationDate = [dueDateDeltaAlert creationDate];
+  acknowledgedDate = [dueDateDeltaAlert acknowledgedDate];
+  v12 = -[REMDueDateDeltaAlert initWithIdentifier:reminderID:accountID:dueDateDelta:creationDate:acknowledgedDate:minimumSupportedAppVersion:](v6, "initWithIdentifier:reminderID:accountID:dueDateDelta:creationDate:acknowledgedDate:minimumSupportedAppVersion:", identifier, reminderID, accountID, deltaCopy, creationDate, acknowledgedDate, [dueDateDeltaAlert minimumSupportedAppVersion]);
 
   [(REMDueDateDeltaAlertChangeItem *)self setDueDateDeltaAlert:v12];
-  v13 = [(REMDueDateDeltaAlertChangeItem *)self reminderDueDateDeltaAlertContextChangeItem];
-  [v13 _addOrUpdateDueDateDeltaAlert:v12];
+  reminderDueDateDeltaAlertContextChangeItem = [(REMDueDateDeltaAlertChangeItem *)self reminderDueDateDeltaAlertContextChangeItem];
+  [reminderDueDateDeltaAlertContextChangeItem _addOrUpdateDueDateDeltaAlert:v12];
 
   return v12;
 }
 
-- (id)setAcknowledgedDate:(id)a3
+- (id)setAcknowledgedDate:(id)date
 {
-  v4 = a3;
-  v5 = [(REMDueDateDeltaAlertChangeItem *)self dueDateDeltaAlert];
+  dateCopy = date;
+  dueDateDeltaAlert = [(REMDueDateDeltaAlertChangeItem *)self dueDateDeltaAlert];
   v6 = [REMDueDateDeltaAlert alloc];
-  v7 = [v5 identifier];
-  v8 = [v5 reminderID];
-  v9 = [v5 accountID];
-  v10 = [v5 dueDateDelta];
-  v11 = [v5 creationDate];
-  v12 = -[REMDueDateDeltaAlert initWithIdentifier:reminderID:accountID:dueDateDelta:creationDate:acknowledgedDate:minimumSupportedAppVersion:](v6, "initWithIdentifier:reminderID:accountID:dueDateDelta:creationDate:acknowledgedDate:minimumSupportedAppVersion:", v7, v8, v9, v10, v11, v4, [v5 minimumSupportedAppVersion]);
+  identifier = [dueDateDeltaAlert identifier];
+  reminderID = [dueDateDeltaAlert reminderID];
+  accountID = [dueDateDeltaAlert accountID];
+  dueDateDelta = [dueDateDeltaAlert dueDateDelta];
+  creationDate = [dueDateDeltaAlert creationDate];
+  v12 = -[REMDueDateDeltaAlert initWithIdentifier:reminderID:accountID:dueDateDelta:creationDate:acknowledgedDate:minimumSupportedAppVersion:](v6, "initWithIdentifier:reminderID:accountID:dueDateDelta:creationDate:acknowledgedDate:minimumSupportedAppVersion:", identifier, reminderID, accountID, dueDateDelta, creationDate, dateCopy, [dueDateDeltaAlert minimumSupportedAppVersion]);
 
   [(REMDueDateDeltaAlertChangeItem *)self setDueDateDeltaAlert:v12];
-  v13 = [(REMDueDateDeltaAlertChangeItem *)self reminderDueDateDeltaAlertContextChangeItem];
-  [v13 _addOrUpdateDueDateDeltaAlert:v12];
+  reminderDueDateDeltaAlertContextChangeItem = [(REMDueDateDeltaAlertChangeItem *)self reminderDueDateDeltaAlertContextChangeItem];
+  [reminderDueDateDeltaAlertContextChangeItem _addOrUpdateDueDateDeltaAlert:v12];
 
   return v12;
 }
 
-- (id)_setMinimumSupportedAppVersion:(int64_t)a3
+- (id)_setMinimumSupportedAppVersion:(int64_t)version
 {
-  v5 = [(REMDueDateDeltaAlertChangeItem *)self dueDateDeltaAlert];
+  dueDateDeltaAlert = [(REMDueDateDeltaAlertChangeItem *)self dueDateDeltaAlert];
   v6 = [REMDueDateDeltaAlert alloc];
-  v7 = [v5 identifier];
-  v8 = [v5 reminderID];
-  v9 = [v5 accountID];
-  v10 = [v5 dueDateDelta];
-  v11 = [v5 creationDate];
-  v12 = [v5 acknowledgedDate];
-  v13 = [(REMDueDateDeltaAlert *)v6 initWithIdentifier:v7 reminderID:v8 accountID:v9 dueDateDelta:v10 creationDate:v11 acknowledgedDate:v12 minimumSupportedAppVersion:a3];
+  identifier = [dueDateDeltaAlert identifier];
+  reminderID = [dueDateDeltaAlert reminderID];
+  accountID = [dueDateDeltaAlert accountID];
+  dueDateDelta = [dueDateDeltaAlert dueDateDelta];
+  creationDate = [dueDateDeltaAlert creationDate];
+  acknowledgedDate = [dueDateDeltaAlert acknowledgedDate];
+  v13 = [(REMDueDateDeltaAlert *)v6 initWithIdentifier:identifier reminderID:reminderID accountID:accountID dueDateDelta:dueDateDelta creationDate:creationDate acknowledgedDate:acknowledgedDate minimumSupportedAppVersion:version];
 
   [(REMDueDateDeltaAlertChangeItem *)self setDueDateDeltaAlert:v13];
-  v14 = [(REMDueDateDeltaAlertChangeItem *)self reminderDueDateDeltaAlertContextChangeItem];
-  [v14 _addOrUpdateDueDateDeltaAlert:v13];
+  reminderDueDateDeltaAlertContextChangeItem = [(REMDueDateDeltaAlertChangeItem *)self reminderDueDateDeltaAlertContextChangeItem];
+  [reminderDueDateDeltaAlertContextChangeItem _addOrUpdateDueDateDeltaAlert:v13];
 
   return v13;
 }

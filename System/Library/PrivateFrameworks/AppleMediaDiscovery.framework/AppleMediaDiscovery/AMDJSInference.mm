@@ -1,24 +1,24 @@
 @interface AMDJSInference
-+ (BOOL)areValidInputs:(id)a3 domainOut:(int64_t *)a4 useCaseIdsArray:(id)a5 useCaseIdsSetOut:(id *)a6 storeFrontIdString:(id)a7 storeFrontIdOut:(id *)a8 dsId:(id)a9 error:(id *)a10;
-+ (id)getDataForBizLogicForWorkflow:(id)a3 useCaseId:(id)a4 domainName:(id)a5;
-+ (id)getIdAndScoresFrom:(id)a3 useCaseId:(id)a4 summary:(id)a5 bigGummary:(id)a6 errorKey:(id)a7;
-+ (id)getPredictionForUseCase:(id)a3 treatmentId:(id)a4 UsingWorkflow:(id)a5 domainName:(id)a6 summary:(id)a7 bigSummary:(id)a8 errorKey:(id)a9;
-+ (id)getWorkflowForUseCase:(id)a3 treatmentId:(id)a4 domain:(int64_t)a5 summary:(id)a6 bigSummary:(id)a7 errorKey:(id)a8;
-+ (id)persist:(id)a3 withUsecase:(id)a4 withConfig:(id)a5 domainName:(id)a6;
-+ (id)runInference:(id)a3 error:(id *)a4;
-+ (void)appendInAppEventDataTo:(id)a3 forDsId:(id)a4 withInferencePayload:(id)a5;
++ (BOOL)areValidInputs:(id)inputs domainOut:(int64_t *)out useCaseIdsArray:(id)array useCaseIdsSetOut:(id *)setOut storeFrontIdString:(id)string storeFrontIdOut:(id *)idOut dsId:(id)id error:(id *)self0;
++ (id)getDataForBizLogicForWorkflow:(id)workflow useCaseId:(id)id domainName:(id)name;
++ (id)getIdAndScoresFrom:(id)from useCaseId:(id)id summary:(id)summary bigGummary:(id)gummary errorKey:(id)key;
++ (id)getPredictionForUseCase:(id)case treatmentId:(id)id UsingWorkflow:(id)workflow domainName:(id)name summary:(id)summary bigSummary:(id)bigSummary errorKey:(id)key;
++ (id)getWorkflowForUseCase:(id)case treatmentId:(id)id domain:(int64_t)domain summary:(id)summary bigSummary:(id)bigSummary errorKey:(id)key;
++ (id)persist:(id)persist withUsecase:(id)usecase withConfig:(id)config domainName:(id)name;
++ (id)runInference:(id)inference error:(id *)error;
++ (void)appendInAppEventDataTo:(id)to forDsId:(id)id withInferencePayload:(id)payload;
 @end
 
 @implementation AMDJSInference
 
-+ (id)runInference:(id)a3 error:(id *)a4
++ (id)runInference:(id)inference error:(id *)error
 {
   v80 = *MEMORY[0x277D85DE8];
-  v73 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v71 = a4;
+  objc_storeStrong(location, inference);
+  errorCopy = error;
   v70 = [location[0] objectForKey:0x2852A86A8];
   v69 = [location[0] objectForKey:0x2852B1B68];
   v68 = [location[0] objectForKey:0x2852AB2C8];
@@ -28,16 +28,16 @@
   v64 = 0;
   obj = 0;
   v62 = 0;
-  v35 = [v73 areValidInputs:v70 domainOut:&v66 useCaseIdsArray:v69 useCaseIdsSetOut:&obj storeFrontIdString:v68 storeFrontIdOut:&v62 dsId:v67 error:a4];
+  v35 = [selfCopy areValidInputs:v70 domainOut:&v66 useCaseIdsArray:v69 useCaseIdsSetOut:&obj storeFrontIdString:v68 storeFrontIdOut:&v62 dsId:v67 error:error];
   objc_storeStrong(&v65, obj);
   objc_storeStrong(&v64, v62);
   if (v35)
   {
     v60 = [location[0] objectForKey:@"inferenceInputData"];
-    if (!v60 || ((v59 = +[AMDFeatureProvider getProviderForSource:WithDomain:](AMDFeatureProvider, "getProviderForSource:WithDomain:", 0x2852AB488, 0), [v59 storeFeatureData:v60 error:v71], !*v71) ? (v61 = 0) : (v74 = 0, v61 = 1), objc_storeStrong(&v59, 0), !v61))
+    if (!v60 || ((v59 = +[AMDFeatureProvider getProviderForSource:WithDomain:](AMDFeatureProvider, "getProviderForSource:WithDomain:", 0x2852AB488, 0), [v59 storeFeatureData:v60 error:errorCopy], !*errorCopy) ? (v61 = 0) : (v74 = 0, v61 = 1), objc_storeStrong(&v59, 0), !v61))
     {
       v58 = [location[0] objectForKey:@"auxillaryData"];
-      if (!v58 || ((v57 = +[AMDFeatureProvider getProviderForSource:WithDomain:](AMDFeatureProvider, "getProviderForSource:WithDomain:", 0x2852AB488, 0), [v57 storeOutputRemapData:v58 error:v71], !*v71) ? (v61 = 0) : (v74 = 0, v61 = 1), objc_storeStrong(&v57, 0), !v61))
+      if (!v58 || ((v57 = +[AMDFeatureProvider getProviderForSource:WithDomain:](AMDFeatureProvider, "getProviderForSource:WithDomain:", 0x2852AB488, 0), [v57 storeOutputRemapData:v58 error:errorCopy], !*errorCopy) ? (v61 = 0) : (v74 = 0, v61 = 1), objc_storeStrong(&v57, 0), !v61))
       {
         v56 = [location[0] objectForKey:0x2852B19C8];
         if (v56)
@@ -89,26 +89,26 @@
             v47 = [@"inferenceUseCase:" stringByAppendingString:v50];
             v46 = [@"inferenceError" stringByAppendingString:v47];
             [AMDPerf startMonitoringEvent:v47];
-            v45 = [v73 getWorkflowForUseCase:v50 treatmentId:v54 domain:v66 summary:v48 bigSummary:v52 errorKey:v46];
+            v45 = [selfCopy getWorkflowForUseCase:v50 treatmentId:v54 domain:v66 summary:v48 bigSummary:v52 errorKey:v46];
             if (v45)
             {
-              v24 = v73;
+              v24 = selfCopy;
               v22 = v50;
               v23 = v54;
-              v25 = [v45 first];
+              first = [v45 first];
               v44 = [v24 getPredictionForUseCase:v22 treatmentId:v23 UsingWorkflow:v46 domainName:? summary:? bigSummary:? errorKey:?];
-              MEMORY[0x277D82BD8](v25);
+              MEMORY[0x277D82BD8](first);
               if (v44)
               {
                 v43 = [v56 objectForKey:v50];
                 if (v43)
                 {
-                  v42 = [v73 persist:v44 withUsecase:v50 withConfig:v43 domainName:v70];
+                  v42 = [selfCopy persist:v44 withUsecase:v50 withConfig:v43 domainName:v70];
                   [v48 setObject:v42 forKey:@"resultPersistanceSummary"];
                   objc_storeStrong(&v42, 0);
                 }
 
-                v41 = [v73 getIdAndScoresFrom:v44 useCaseId:v50 summary:v48 bigGummary:v52 errorKey:v46];
+                v41 = [selfCopy getIdAndScoresFrom:v44 useCaseId:v50 summary:v48 bigGummary:v52 errorKey:v46];
                 v40 = MEMORY[0x277D82BE0](MEMORY[0x277CBEC10]);
                 v21 = [v44 objectForKey:@"results"];
                 MEMORY[0x277D82BD8](v21);
@@ -116,8 +116,8 @@
                 {
                   v77[0] = @"reco_id";
                   v20 = objc_alloc_init(MEMORY[0x277CCAD78]);
-                  v19 = [v20 UUIDString];
-                  v78[0] = v19;
+                  uUIDString = [v20 UUIDString];
+                  v78[0] = uUIDString;
                   v77[1] = @"reco_eligible";
                   v78[1] = &unk_2852BA650;
                   v77[2] = @"reco_useCase";
@@ -126,18 +126,18 @@
                   v5 = v40;
                   v40 = v4;
                   MEMORY[0x277D82BD8](v5);
-                  MEMORY[0x277D82BD8](v19);
+                  MEMORY[0x277D82BD8](uUIDString);
                   MEMORY[0x277D82BD8](v20);
                 }
 
-                v39 = 1;
+                bOOLValue = 1;
                 v38 = [v55 objectForKey:v50];
                 if (v38)
                 {
-                  v39 = [v38 BOOLValue];
+                  bOOLValue = [v38 BOOLValue];
                 }
 
-                if ((v39 & 1) == 0)
+                if ((bOOLValue & 1) == 0)
                 {
                   objc_storeStrong(&v44, MEMORY[0x277CBEC10]);
                 }
@@ -149,24 +149,24 @@
                 v9 = MEMORY[0x277CBEC38];
                 v76[1] = MEMORY[0x277CBEC38];
                 v75[2] = @"contentIds";
-                v10 = [v41 first];
-                v76[2] = v10;
+                first2 = [v41 first];
+                v76[2] = first2;
                 v75[3] = @"scoresProvided";
                 v76[3] = v9;
                 v75[4] = @"scores";
-                v11 = [v41 second];
-                v76[4] = v11;
+                second = [v41 second];
+                v76[4] = second;
                 v75[5] = @"maxItemsToDisplay";
-                v12 = [v45 first];
-                v13 = [v12 getMaxItemsToDisplay];
-                v76[5] = v13;
+                first3 = [v45 first];
+                getMaxItemsToDisplay = [first3 getMaxItemsToDisplay];
+                v76[5] = getMaxItemsToDisplay;
                 v75[6] = @"workflowUsed";
-                v14 = [v45 second];
-                v76[6] = v14;
+                second2 = [v45 second];
+                v76[6] = second2;
                 v75[7] = @"outputFeatures";
-                v16 = v73;
-                v15 = [v45 first];
-                v17 = [v15 getOutputFeatureIds];
+                v16 = selfCopy;
+                first4 = [v45 first];
+                getOutputFeatureIds = [first4 getOutputFeatureIds];
                 v18 = [v16 getDataForBizLogicForWorkflow:? useCaseId:? domainName:?];
                 v76[7] = v18;
                 v75[8] = @"metrics";
@@ -185,13 +185,13 @@
                 v76[9] = v8;
                 v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v76 forKeys:v75 count:10];
                 MEMORY[0x277D82BD8](v18);
-                MEMORY[0x277D82BD8](v17);
-                MEMORY[0x277D82BD8](v15);
-                MEMORY[0x277D82BD8](v14);
-                MEMORY[0x277D82BD8](v13);
-                MEMORY[0x277D82BD8](v12);
-                MEMORY[0x277D82BD8](v11);
-                MEMORY[0x277D82BD8](v10);
+                MEMORY[0x277D82BD8](getOutputFeatureIds);
+                MEMORY[0x277D82BD8](first4);
+                MEMORY[0x277D82BD8](second2);
+                MEMORY[0x277D82BD8](getMaxItemsToDisplay);
+                MEMORY[0x277D82BD8](first3);
+                MEMORY[0x277D82BD8](second);
+                MEMORY[0x277D82BD8](first2);
                 [v53 setValue:v36 forKey:v50];
                 [v52 setObject:v48 forKey:v50];
                 [AMDPerf endMonitoringEvent:v47];
@@ -236,7 +236,7 @@
 
         MEMORY[0x277D82BD8](v32);
         [AMDFrameworkMetrics log:v52 withKey:@"recommendationSummary" atVerbosity:0];
-        [v73 appendInAppEventDataTo:v53 forDsId:v67 withInferencePayload:location[0]];
+        [selfCopy appendInAppEventDataTo:v53 forDsId:v67 withInferencePayload:location[0]];
         v74 = MEMORY[0x277D82BE0](v53);
         v61 = 1;
         objc_storeStrong(&v51, 0);
@@ -272,22 +272,22 @@
   return v6;
 }
 
-+ (BOOL)areValidInputs:(id)a3 domainOut:(int64_t *)a4 useCaseIdsArray:(id)a5 useCaseIdsSetOut:(id *)a6 storeFrontIdString:(id)a7 storeFrontIdOut:(id *)a8 dsId:(id)a9 error:(id *)a10
++ (BOOL)areValidInputs:(id)inputs domainOut:(int64_t *)out useCaseIdsArray:(id)array useCaseIdsSetOut:(id *)setOut storeFrontIdString:(id)string storeFrontIdOut:(id *)idOut dsId:(id)id error:(id *)self0
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v37 = a4;
+  objc_storeStrong(location, inputs);
+  outCopy = out;
   v36 = 0;
-  objc_storeStrong(&v36, a5);
-  v35 = a6;
+  objc_storeStrong(&v36, array);
+  setOutCopy = setOut;
   v34 = 0;
-  objc_storeStrong(&v34, a7);
-  v33 = a8;
+  objc_storeStrong(&v34, string);
+  idOutCopy = idOut;
   v32 = 0;
-  objc_storeStrong(&v32, a9);
-  v31 = a10;
+  objc_storeStrong(&v32, id);
+  errorCopy = error;
   v30 = 0;
   v29 = 0;
   if (location[0])
@@ -295,35 +295,35 @@
     v27 = [AMDDomains getCodeForDomain:location[0]];
     if (v27)
     {
-      *v37 = v27;
+      *outCopy = v27;
       if (v36 && [v36 count])
       {
         v19 = [MEMORY[0x277CBEB98] setWithArray:v36];
         v11 = v19;
-        *v35 = v19;
+        *setOutCopy = v19;
         if (v34)
         {
           v18 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v34, "intValue")}];
           v12 = v18;
-          *v33 = v18;
+          *idOutCopy = v18;
           if (v32)
           {
             if ([AMDMiscHelpers isValidDSID:v32])
             {
               v26 = [AMDTasteProfile getStorefrontIdForDomain:location[0]];
               v25 = [AMDTasteProfile getUserIdForDomain:location[0]];
-              if (*v33 && v25)
+              if (*idOutCopy && v25)
               {
                 if ([v32 isEqualToString:v25])
                 {
-                  if ([*v33 isEqualToNumber:v26])
+                  if ([*idOutCopy isEqualToNumber:v26])
                   {
                     v28 = 0;
                   }
 
                   else
                   {
-                    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"SfId mismatch: payload:%@ TP:%@", *v33, v26];
+                    v13 = [MEMORY[0x277CCACA8] stringWithFormat:@"SfId mismatch: payload:%@ TP:%@", *idOutCopy, v26];
                     v14 = v30;
                     v30 = v13;
                     MEMORY[0x277D82BD8](v14);
@@ -407,7 +407,7 @@
   {
     v16 = [AMDError allocError:15 withMessage:v30];
     v15 = v16;
-    *v31 = v16;
+    *errorCopy = v16;
     result = [AMDFrameworkMetrics log:v30 withKey:@"inferenceError" atVerbosity:0];
   }
 
@@ -439,25 +439,25 @@ LABEL_32:
   return result;
 }
 
-+ (id)getWorkflowForUseCase:(id)a3 treatmentId:(id)a4 domain:(int64_t)a5 summary:(id)a6 bigSummary:(id)a7 errorKey:(id)a8
++ (id)getWorkflowForUseCase:(id)case treatmentId:(id)id domain:(int64_t)domain summary:(id)summary bigSummary:(id)bigSummary errorKey:(id)key
 {
   v52 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, case);
   v45 = 0;
-  objc_storeStrong(&v45, a4);
-  v44 = a5;
+  objc_storeStrong(&v45, id);
+  domainCopy = domain;
   v43 = 0;
-  objc_storeStrong(&v43, a6);
+  objc_storeStrong(&v43, summary);
   v42 = 0;
-  objc_storeStrong(&v42, a7);
+  objc_storeStrong(&v42, bigSummary);
   v41 = 0;
-  objc_storeStrong(&v41, a8);
+  objc_storeStrong(&v41, key);
   v40 = 0;
   v38 = 0;
-  v25 = [AMDWorkflow getCurrentWorkflowForDomain:v44 andTreatmentId:v45 andUseCaseId:location[0] error:&v38];
+  v25 = [AMDWorkflow getCurrentWorkflowForDomain:domainCopy andTreatmentId:v45 andUseCaseId:location[0] error:&v38];
   objc_storeStrong(&v40, v38);
   v39 = v25;
   if (v40)
@@ -468,18 +468,18 @@ LABEL_32:
     {
       v17 = location[0];
       v18 = v45;
-      v19 = [v40 localizedDescription];
-      __os_log_helper_16_2_3_8_64_8_64_8_64(v51, v17, v18, v19);
+      localizedDescription = [v40 localizedDescription];
+      __os_log_helper_16_2_3_8_64_8_64_8_64(v51, v17, v18, localizedDescription);
       _os_log_impl(&dword_240CB9000, oslog, type, "error fetching workflow for use case %@, treatment %@: %@", v51, 0x20u);
-      MEMORY[0x277D82BD8](v19);
+      MEMORY[0x277D82BD8](localizedDescription);
     }
 
     objc_storeStrong(&oslog, 0);
     [v43 setObject:@"Error getting workflow" forKey:@"error"];
     v15 = v43;
-    v16 = [v40 localizedDescription];
+    localizedDescription2 = [v40 localizedDescription];
     [v15 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v16);
+    MEMORY[0x277D82BD8](localizedDescription2);
     [v42 setObject:v43 forKey:location[0]];
     [AMDFrameworkMetrics log:@"Error fetching workflow" withKey:v41 atVerbosity:0];
     v47 = 0;
@@ -488,26 +488,26 @@ LABEL_32:
 
   else if (v39)
   {
-    v32 = [v39 second];
+    second = [v39 second];
     if (!v45)
     {
-      v8 = [v39 first];
+      first = [v39 first];
       v9 = v45;
-      v45 = v8;
+      v45 = first;
       MEMORY[0x277D82BD8](v9);
     }
 
-    if (v32 && [v32 count])
+    if (second && [second count])
     {
       if (v45)
       {
         [v43 setObject:v45 forKey:0x2852AAB08];
       }
 
-      v27 = [[AMDUseCaseWorkflow alloc] initWithDictionary:v32];
+      v27 = [[AMDUseCaseWorkflow alloc] initWithDictionary:second];
       if ([v27 isValid])
       {
-        v47 = [[AMDPair alloc] initWith:v27 and:v32];
+        v47 = [[AMDPair alloc] initWith:v27 and:second];
         v35 = 1;
       }
 
@@ -562,7 +562,7 @@ LABEL_32:
       objc_storeStrong(&v29, 0);
     }
 
-    objc_storeStrong(&v32, 0);
+    objc_storeStrong(&second, 0);
   }
 
   else
@@ -595,37 +595,37 @@ LABEL_32:
   return v10;
 }
 
-+ (id)getPredictionForUseCase:(id)a3 treatmentId:(id)a4 UsingWorkflow:(id)a5 domainName:(id)a6 summary:(id)a7 bigSummary:(id)a8 errorKey:(id)a9
++ (id)getPredictionForUseCase:(id)case treatmentId:(id)id UsingWorkflow:(id)workflow domainName:(id)name summary:(id)summary bigSummary:(id)bigSummary errorKey:(id)key
 {
   v47 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, case);
   v42 = 0;
-  objc_storeStrong(&v42, a4);
+  objc_storeStrong(&v42, id);
   v41 = 0;
-  objc_storeStrong(&v41, a5);
+  objc_storeStrong(&v41, workflow);
   v40 = 0;
-  objc_storeStrong(&v40, a6);
+  objc_storeStrong(&v40, name);
   v39 = 0;
-  objc_storeStrong(&v39, a7);
+  objc_storeStrong(&v39, summary);
   v38 = 0;
-  objc_storeStrong(&v38, a8);
+  objc_storeStrong(&v38, bigSummary);
   v37 = 0;
-  objc_storeStrong(&v37, a9);
+  objc_storeStrong(&v37, key);
   v36 = 0;
   v35 = 0;
   v25 = v41;
-  v27 = [v41 getMaxItemsToDisplay];
-  v9 = [v27 unsignedIntValue];
+  getMaxItemsToDisplay = [v41 getMaxItemsToDisplay];
+  unsignedIntValue = [getMaxItemsToDisplay unsignedIntValue];
   v34 = v36;
-  v26 = [v25 getPredictions:(v9 * 1.5) forDomain:v40 error:&v34];
+  v26 = [v25 getPredictions:(unsignedIntValue * 1.5) forDomain:v40 error:&v34];
   objc_storeStrong(&v36, v34);
   v10 = v35;
   v35 = v26;
   MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v27);
+  MEMORY[0x277D82BD8](getMaxItemsToDisplay);
   if (v36)
   {
     v33 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
@@ -636,20 +636,20 @@ LABEL_32:
       type = v32;
       v15 = location[0];
       v16 = v42;
-      v19 = [v36 localizedDescription];
-      v31 = MEMORY[0x277D82BE0](v19);
+      localizedDescription = [v36 localizedDescription];
+      v31 = MEMORY[0x277D82BE0](localizedDescription);
       __os_log_helper_16_2_3_8_64_8_64_8_64(v46, v15, v16, v31);
       _os_log_impl(&dword_240CB9000, log, type, "error running inference for use case %@, treatment %@: %@", v46, 0x20u);
-      MEMORY[0x277D82BD8](v19);
+      MEMORY[0x277D82BD8](localizedDescription);
       objc_storeStrong(&v31, 0);
     }
 
     objc_storeStrong(&v33, 0);
     [v39 setObject:? forKey:?];
     v13 = v39;
-    v14 = [v36 localizedDescription];
+    localizedDescription2 = [v36 localizedDescription];
     [v13 setObject:? forKey:?];
-    MEMORY[0x277D82BD8](v14);
+    MEMORY[0x277D82BD8](localizedDescription2);
     [v38 setObject:v39 forKey:location[0]];
     [AMDFrameworkMetrics log:@"Error running inference" withKey:v37 atVerbosity:0];
     v44 = 0;
@@ -696,19 +696,19 @@ LABEL_32:
   return v11;
 }
 
-+ (id)persist:(id)a3 withUsecase:(id)a4 withConfig:(id)a5 domainName:(id)a6
++ (id)persist:(id)persist withUsecase:(id)usecase withConfig:(id)config domainName:(id)name
 {
   v57 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, persist);
   v48 = 0;
-  objc_storeStrong(&v48, a4);
+  objc_storeStrong(&v48, usecase);
   v47 = 0;
-  objc_storeStrong(&v47, a5);
+  objc_storeStrong(&v47, config);
   v46 = 0;
-  objc_storeStrong(&v46, a6);
+  objc_storeStrong(&v46, name);
   v45 = objc_alloc_init(MEMORY[0x277CBEB38]);
   oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   type = OS_LOG_TYPE_DEBUG;
@@ -821,17 +821,17 @@ LABEL_32:
           {
             v11 = v32;
             v12 = v31;
-            v13 = [v35 localizedDescription];
-            __os_log_helper_16_2_1_8_64(v52, v13);
+            localizedDescription = [v35 localizedDescription];
+            __os_log_helper_16_2_1_8_64(v52, localizedDescription);
             _os_log_impl(&dword_240CB9000, v11, v12, "Error persisting inference result: %@", v52, 0xCu);
-            MEMORY[0x277D82BD8](v13);
+            MEMORY[0x277D82BD8](localizedDescription);
           }
 
           objc_storeStrong(&v32, 0);
           v9 = v45;
-          v10 = [v35 localizedDescription];
+          localizedDescription2 = [v35 localizedDescription];
           [v9 setObject:? forKey:?];
-          MEMORY[0x277D82BD8](v10);
+          MEMORY[0x277D82BD8](localizedDescription2);
           v39 = 3;
         }
 
@@ -882,21 +882,21 @@ LABEL_30:
   return v7;
 }
 
-+ (id)getIdAndScoresFrom:(id)a3 useCaseId:(id)a4 summary:(id)a5 bigGummary:(id)a6 errorKey:(id)a7
++ (id)getIdAndScoresFrom:(id)from useCaseId:(id)id summary:(id)summary bigGummary:(id)gummary errorKey:(id)key
 {
   v39 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, from);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, id);
   v33 = 0;
-  objc_storeStrong(&v33, a5);
+  objc_storeStrong(&v33, summary);
   v32 = 0;
-  objc_storeStrong(&v32, a6);
+  objc_storeStrong(&v32, gummary);
   v31 = 0;
-  objc_storeStrong(&v31, a7);
+  objc_storeStrong(&v31, key);
   v30 = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
   v29 = OS_LOG_TYPE_DEBUG;
   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEBUG))
@@ -906,13 +906,13 @@ LABEL_30:
   }
 
   objc_storeStrong(&v30, 0);
-  v14 = [location[0] allValues];
-  v28 = [v14 firstObject];
-  MEMORY[0x277D82BD8](v14);
+  allValues = [location[0] allValues];
+  firstObject = [allValues firstObject];
+  MEMORY[0x277D82BD8](allValues);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v23 = MEMORY[0x277D82BE0](v28);
+    v23 = MEMORY[0x277D82BE0](firstObject);
     v22 = [v23 objectForKey:@"ids"];
     v21 = [v23 objectForKey:@"scores"];
     if (!v22 || ![v22 count] || !v21 || !objc_msgSend(v21, "count"))
@@ -961,7 +961,7 @@ LABEL_30:
     v24 = 1;
   }
 
-  objc_storeStrong(&v28, 0);
+  objc_storeStrong(&firstObject, 0);
   objc_storeStrong(&v31, 0);
   objc_storeStrong(&v32, 0);
   objc_storeStrong(&v33, 0);
@@ -973,17 +973,17 @@ LABEL_30:
   return v9;
 }
 
-+ (id)getDataForBizLogicForWorkflow:(id)a3 useCaseId:(id)a4 domainName:(id)a5
++ (id)getDataForBizLogicForWorkflow:(id)workflow useCaseId:(id)id domainName:(id)name
 {
   v37 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, workflow);
   v33 = 0;
-  objc_storeStrong(&v33, a4);
+  objc_storeStrong(&v33, id);
   v32 = 0;
-  objc_storeStrong(&v32, a5);
+  objc_storeStrong(&v32, name);
   v31 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(location[0], "count")}];
   memset(__b, 0, sizeof(__b));
   v20 = MEMORY[0x277D82BE0](location[0]);
@@ -1009,13 +1009,13 @@ LABEL_30:
       v27 = v13;
       if (!v28 && v27)
       {
-        v22 = [v27 getValue];
-        if (v22)
+        getValue = [v27 getValue];
+        if (getValue)
         {
-          [v31 setObject:v22 forKey:v30];
+          [v31 setObject:getValue forKey:v30];
         }
 
-        objc_storeStrong(&v22, 0);
+        objc_storeStrong(&getValue, 0);
         v23 = 0;
       }
 
@@ -1030,10 +1030,10 @@ LABEL_30:
           v7 = v30;
           v8 = v32;
           v9 = v33;
-          v12 = [v28 localizedDescription];
-          __os_log_helper_16_2_4_8_64_8_64_8_64_8_64(v35, v7, v8, v9, v12);
+          localizedDescription = [v28 localizedDescription];
+          __os_log_helper_16_2_4_8_64_8_64_8_64_8_64(v35, v7, v8, v9, localizedDescription);
           _os_log_impl(&dword_240CB9000, log, v11, "Error fetching feature '%@' for domain: %@, useCaseId: %@: %@", v35, 0x2Au);
-          MEMORY[0x277D82BD8](v12);
+          MEMORY[0x277D82BD8](localizedDescription);
         }
 
         objc_storeStrong(&oslog, 0);
@@ -1067,17 +1067,17 @@ LABEL_30:
   return v6;
 }
 
-+ (void)appendInAppEventDataTo:(id)a3 forDsId:(id)a4 withInferencePayload:(id)a5
++ (void)appendInAppEventDataTo:(id)to forDsId:(id)id withInferencePayload:(id)payload
 {
   v26 = *MEMORY[0x277D85DE8];
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, to);
   v23 = 0;
-  objc_storeStrong(&v23, a4);
+  objc_storeStrong(&v23, id);
   v22 = 0;
-  objc_storeStrong(&v22, a5);
+  objc_storeStrong(&v22, payload);
   v21 = [v22 objectForKey:0x2852B1C68];
   if (v21 && [v21 intValue])
   {
@@ -1103,10 +1103,10 @@ LABEL_30:
       oslog = MEMORY[0x277D82BE0](MEMORY[0x277D86220]);
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        v5 = [v14 localizedDescription];
-        __os_log_helper_16_2_1_8_64(v25, v5);
+        localizedDescription = [v14 localizedDescription];
+        __os_log_helper_16_2_1_8_64(v25, localizedDescription);
         _os_log_error_impl(&dword_240CB9000, oslog, OS_LOG_TYPE_ERROR, "Error while retrieving AppStore Events: %@", v25, 0xCu);
-        MEMORY[0x277D82BD8](v5);
+        MEMORY[0x277D82BD8](localizedDescription);
       }
 
       objc_storeStrong(&oslog, 0);

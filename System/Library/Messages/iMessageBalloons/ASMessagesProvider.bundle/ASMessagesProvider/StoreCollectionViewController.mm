@@ -1,24 +1,24 @@
 @interface StoreCollectionViewController
 - (UICollectionView)collectionView;
-- (_TtC18ASMessagesProvider29StoreCollectionViewController)initWithCollectionViewLayout:(id)a3;
-- (_TtC18ASMessagesProvider29StoreCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC18ASMessagesProvider29StoreCollectionViewController)initWithCollectionViewLayout:(id)layout;
+- (_TtC18ASMessagesProvider29StoreCollectionViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (unint64_t)supportedInterfaceOrientations;
 - (void)appEnteredWhileAppeared;
 - (void)appExitedWhileAppeared;
-- (void)applicationDidBecomeActive:(id)a3;
+- (void)applicationDidBecomeActive:(id)active;
 - (void)as_viewDidBecomeFullyVisible;
 - (void)as_viewDidBecomePartiallyVisible;
 - (void)as_viewWillBecomeFullyVisible;
 - (void)as_viewWillBecomePartiallyVisible;
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6;
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path;
 - (void)loadView;
-- (void)setCollectionView:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)setCollectionView:(id)view;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)viewWillLayoutSubviews;
 @end
 
@@ -28,26 +28,26 @@
 {
   v4.receiver = self;
   v4.super_class = type metadata accessor for StoreCollectionViewController();
-  v2 = [(StoreCollectionViewController *)&v4 collectionView];
+  collectionView = [(StoreCollectionViewController *)&v4 collectionView];
 
-  return v2;
+  return collectionView;
 }
 
-- (void)setCollectionView:(id)a3
+- (void)setCollectionView:(id)view
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for StoreCollectionViewController();
   v4 = v9.receiver;
-  v5 = a3;
-  [(StoreCollectionViewController *)&v9 setCollectionView:v5];
-  v6 = [v4 view];
-  if (v6)
+  viewCopy = view;
+  [(StoreCollectionViewController *)&v9 setCollectionView:viewCopy];
+  view = [v4 view];
+  if (view)
   {
-    v7 = v6;
+    v7 = view;
     type metadata accessor for InsetCollectionViewControllerContentView();
     if (swift_dynamicCastClass())
     {
-      v8 = [v4 collectionView];
+      collectionView = [v4 collectionView];
 
       swift_unknownObjectWeakAssign();
       return;
@@ -59,62 +59,62 @@
 
 - (void)loadView
 {
-  v2 = self;
+  selfCopy = self;
   sub_71F23C();
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_71F63C();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_7208E0(a3, &selRef_viewWillAppear_, &enum case for StoreViewControllerLifecycleEvent.willAppear(_:));
+  selfCopy = self;
+  sub_7208E0(appear, &selRef_viewWillAppear_, &enum case for StoreViewControllerLifecycleEvent.willAppear(_:));
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_71FB2C(a3);
+  selfCopy = self;
+  sub_71FB2C(appear);
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_71FDE0(a3);
+  selfCopy = self;
+  sub_71FDE0(disappear);
 }
 
 - (void)as_viewWillBecomeFullyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_7201F4();
 }
 
 - (void)as_viewDidBecomeFullyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_72064C(&selRef_as_viewDidBecomeFullyVisible, &enum case for StoreViewControllerLifecycleEvent.didBecomeFullyVisible(_:));
 }
 
 - (void)as_viewWillBecomePartiallyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_72064C(&selRef_as_viewWillBecomePartiallyVisible, &enum case for StoreViewControllerLifecycleEvent.willBecomePartiallyVisible(_:));
 }
 
 - (void)as_viewDidBecomePartiallyVisible
 {
-  v2 = self;
+  selfCopy = self;
   sub_72064C(&selRef_as_viewDidBecomePartiallyVisible, &enum case for StoreViewControllerLifecycleEvent.didBecomePartiallyVisible(_:));
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v4 = self;
-  sub_7208E0(a3, &selRef_viewDidDisappear_, &enum case for StoreViewControllerLifecycleEvent.didDisappear(_:));
+  selfCopy = self;
+  sub_7208E0(disappear, &selRef_viewDidDisappear_, &enum case for StoreViewControllerLifecycleEvent.didDisappear(_:));
 }
 
 - (void)viewWillLayoutSubviews
@@ -122,22 +122,22 @@
   v7.receiver = self;
   v7.super_class = type metadata accessor for StoreCollectionViewController();
   v2 = v7.receiver;
-  v3 = [(StoreCollectionViewController *)&v7 viewWillLayoutSubviews];
-  v4 = (*&stru_158.segname[(swift_isaMask & *v2) - 8])(v3);
+  viewWillLayoutSubviews = [(StoreCollectionViewController *)&v7 viewWillLayoutSubviews];
+  v4 = (*&stru_158.segname[(swift_isaMask & *v2) - 8])(viewWillLayoutSubviews);
   if (!v4)
   {
     goto LABEL_4;
   }
 
   v5 = v4;
-  v6 = [v4 view];
+  view = [v4 view];
 
-  if (v6)
+  if (view)
   {
     (*&stru_158.segname[(swift_isaMask & *v2) + 16])();
-    [v6 setFrame:?];
+    [view setFrame:?];
 
-    v2 = v6;
+    v2 = view;
 LABEL_4:
 
     return;
@@ -148,11 +148,11 @@ LABEL_4:
 
 - (unint64_t)supportedInterfaceOrientations
 {
-  v2 = self;
-  v3 = [(StoreCollectionViewController *)v2 traitCollection];
-  v4 = [v3 userInterfaceIdiom];
+  selfCopy = self;
+  traitCollection = [(StoreCollectionViewController *)selfCopy traitCollection];
+  userInterfaceIdiom = [traitCollection userInterfaceIdiom];
 
-  if (v4 == &dword_0 + 1)
+  if (userInterfaceIdiom == &dword_0 + 1)
   {
     return 30;
   }
@@ -165,13 +165,13 @@ LABEL_4:
 
 - (void)appEnteredWhileAppeared
 {
-  v2 = self;
+  selfCopy = self;
   sub_71EEFC();
 }
 
 - (void)appExitedWhileAppeared
 {
-  v2 = self;
+  selfCopy = self;
   sub_71EF08();
 }
 
@@ -180,22 +180,22 @@ LABEL_4:
   v4.receiver = self;
   v4.super_class = type metadata accessor for StoreCollectionViewController();
   v2 = v4.receiver;
-  v3 = [(StoreCollectionViewController *)&v4 viewSafeAreaInsetsDidChange];
-  (*&stru_108.segname[(swift_isaMask & *v2) + 16])(v3);
+  viewSafeAreaInsetsDidChange = [(StoreCollectionViewController *)&v4 viewSafeAreaInsetsDidChange];
+  (*&stru_108.segname[(swift_isaMask & *v2) + 16])(viewSafeAreaInsetsDidChange);
 }
 
-- (void)applicationDidBecomeActive:(id)a3
+- (void)applicationDidBecomeActive:(id)active
 {
-  v5 = self;
-  v3 = [(StoreCollectionViewController *)v5 collectionView];
-  if (v3)
+  selfCopy = self;
+  collectionView = [(StoreCollectionViewController *)selfCopy collectionView];
+  if (collectionView)
   {
-    v4 = v3;
-    [(UICollectionView *)v3 selectItemAtIndexPath:0 animated:1 scrollPosition:0];
+    v4 = collectionView;
+    [(UICollectionView *)collectionView selectItemAtIndexPath:0 animated:1 scrollPosition:0];
   }
 }
 
-- (void)collectionView:(id)a3 didEndDisplayingSupplementaryView:(id)a4 forElementOfKind:(id)a5 atIndexPath:(id)a6
+- (void)collectionView:(id)view didEndDisplayingSupplementaryView:(id)supplementaryView forElementOfKind:(id)kind atIndexPath:(id)path
 {
   v6 = sub_757640();
   v7 = *(v6 - 8);
@@ -205,14 +205,14 @@ LABEL_4:
   (*(v7 + 8))(v9, v6);
 }
 
-- (_TtC18ASMessagesProvider29StoreCollectionViewController)initWithCollectionViewLayout:(id)a3
+- (_TtC18ASMessagesProvider29StoreCollectionViewController)initWithCollectionViewLayout:(id)layout
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (_TtC18ASMessagesProvider29StoreCollectionViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC18ASMessagesProvider29StoreCollectionViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

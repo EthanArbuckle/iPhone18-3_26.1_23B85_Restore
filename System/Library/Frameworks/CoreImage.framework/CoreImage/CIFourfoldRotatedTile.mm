@@ -55,7 +55,7 @@
   affine::inverse(&v43, v42);
   v30 = [CIVector vectorWithX:v42[0] Y:v42[2] Z:v42[1] W:v42[3]];
   v31 = [CIVector vectorWithX:v43.f64[0] Y:v44 Z:v43.f64[1] W:v45];
-  v32 = [(CIFourfoldRotatedTile *)self _kernel];
+  _kernel = [(CIFourfoldRotatedTile *)self _kernel];
   v33 = *MEMORY[0x1E695F040];
   v34 = *(MEMORY[0x1E695F040] + 8);
   v36 = *(MEMORY[0x1E695F040] + 16);
@@ -72,7 +72,7 @@
   v46[0] = [CIVector vectorWithX:v38 Y:v40];
   v46[1] = v30;
   v46[2] = v31;
-  return [v32 applyWithExtent:v41 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v46, 3), v33, v34, v36, v35}];
+  return [_kernel applyWithExtent:v41 roiCallback:inputImage inputImage:objc_msgSend(MEMORY[0x1E695DEC8] arguments:{"arrayWithObjects:count:", v46, 3), v33, v34, v36, v35}];
 }
 
 @end

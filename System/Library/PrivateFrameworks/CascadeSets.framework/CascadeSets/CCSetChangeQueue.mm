@@ -1,8 +1,8 @@
 @interface CCSetChangeQueue
-+ (void)groupSetsByPersonaIdentifier:(id)a3 enumerateGroupsUsingBlock:(id)a4;
++ (void)groupSetsByPersonaIdentifier:(id)identifier enumerateGroupsUsingBlock:(id)block;
 - (CCSetChangeQueue)init;
 - (id)dequeueAll;
-- (void)enqueue:(id)a3;
+- (void)enqueue:(id)enqueue;
 @end
 
 @implementation CCSetChangeQueue
@@ -27,19 +27,19 @@
   return v2;
 }
 
-+ (void)groupSetsByPersonaIdentifier:(id)a3 enumerateGroupsUsingBlock:(id)a4
++ (void)groupSetsByPersonaIdentifier:(id)identifier enumerateGroupsUsingBlock:(id)block
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  identifierCopy = identifier;
+  blockCopy = block;
+  if ([identifierCopy count])
   {
-    if ([v5 count] == 1)
+    if ([identifierCopy count] == 1)
     {
-      v7 = [v5 anyObject];
-      v8 = [v7 personaIdentifier];
-      v9 = [MEMORY[0x1E695DFD8] setWithObject:v7];
-      v6[2](v6, v8, v9);
+      anyObject = [identifierCopy anyObject];
+      personaIdentifier = [anyObject personaIdentifier];
+      v9 = [MEMORY[0x1E695DFD8] setWithObject:anyObject];
+      blockCopy[2](blockCopy, personaIdentifier, v9);
     }
 
     else
@@ -48,8 +48,8 @@
       v22 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v10 = [v5 allObjects];
-      v11 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      allObjects = [identifierCopy allObjects];
+      v11 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v11)
       {
         v12 = v11;
@@ -61,12 +61,12 @@
           {
             if (*v20 != v14)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(allObjects);
             }
 
             v16 = *(*(&v19 + 1) + 8 * i);
-            v17 = [v16 personaIdentifier];
-            if (!v17)
+            personaIdentifier2 = [v16 personaIdentifier];
+            if (!personaIdentifier2)
             {
               if (!v13)
               {
@@ -77,7 +77,7 @@
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v19 objects:v23 count:16];
+          v12 = [allObjects countByEnumeratingWithState:&v19 objects:v23 count:16];
         }
 
         while (v12);
@@ -90,7 +90,7 @@
 
       if ([v13 count])
       {
-        v6[2](v6, 0, v13);
+        blockCopy[2](blockCopy, 0, v13);
       }
     }
   }
@@ -132,17 +132,17 @@ uint64_t __30__CCSetChangeQueue_dequeueAll__block_invoke(uint64_t a1)
   return [v5 removeAllObjects];
 }
 
-- (void)enqueue:(id)a3
+- (void)enqueue:(id)enqueue
 {
-  v4 = a3;
+  enqueueCopy = enqueue;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __28__CCSetChangeQueue_enqueue___block_invoke;
   v7[3] = &unk_1E7C8B0D0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = enqueueCopy;
+  v6 = enqueueCopy;
   dispatch_sync(queue, v7);
 }
 

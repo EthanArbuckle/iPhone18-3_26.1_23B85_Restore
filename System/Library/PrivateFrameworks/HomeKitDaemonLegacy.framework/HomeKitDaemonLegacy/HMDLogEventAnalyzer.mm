@@ -1,7 +1,7 @@
 @interface HMDLogEventAnalyzer
 + (id)logCategory;
 + (id)managedEventCounterRequestGroups;
-- (void)observeEvent:(id)a3;
+- (void)observeEvent:(id)event;
 @end
 
 @implementation HMDLogEventAnalyzer
@@ -41,9 +41,9 @@ uint64_t __34__HMDLogEventAnalyzer_logCategory__block_invoke()
   objc_exception_throw(v7);
 }
 
-- (void)observeEvent:(id)a3
+- (void)observeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE658];
   v7 = MEMORY[0x277CCACA8];

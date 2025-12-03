@@ -1,15 +1,15 @@
 @interface BMPBSiriExecutionEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsTaskStep:(id)a3;
+- (int)StringAsTaskStep:(id)step;
 - (int)taskStep;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasTaskStep:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasTaskStep:(BOOL)step;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMPBSiriExecutionEvent
@@ -27,9 +27,9 @@
   }
 }
 
-- (void)setHasTaskStep:(BOOL)a3
+- (void)setHasTaskStep:(BOOL)step
 {
-  if (a3)
+  if (step)
   {
     v3 = 2;
   }
@@ -42,475 +42,475 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsTaskStep:(id)a3
+- (int)StringAsTaskStep:(id)step
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"Start"])
+  stepCopy = step;
+  if ([stepCopy isEqualToString:@"Start"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"Authentication"])
+  else if ([stepCopy isEqualToString:@"Authentication"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"Wait"])
+  else if ([stepCopy isEqualToString:@"Wait"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"Resume"])
+  else if ([stepCopy isEqualToString:@"Resume"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"Canceled"])
+  else if ([stepCopy isEqualToString:@"Canceled"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"Failed"])
+  else if ([stepCopy isEqualToString:@"Failed"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"Completed"])
+  else if ([stepCopy isEqualToString:@"Completed"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"None"])
+  else if ([stepCopy isEqualToString:@"None"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"HandoffToCompanion"])
+  else if ([stepCopy isEqualToString:@"HandoffToCompanion"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"SiriExecutionTaskStepTypeSaved"])
+  else if ([stepCopy isEqualToString:@"SiriExecutionTaskStepTypeSaved"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"UserAuthenticated"])
+  else if ([stepCopy isEqualToString:@"UserAuthenticated"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"ResolveConfirmStart"])
+  else if ([stepCopy isEqualToString:@"ResolveConfirmStart"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"ResolveConfirmFinish"])
+  else if ([stepCopy isEqualToString:@"ResolveConfirmFinish"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"HandleIntentStart"])
+  else if ([stepCopy isEqualToString:@"HandleIntentStart"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"HandleIntentFinish"])
+  else if ([stepCopy isEqualToString:@"HandleIntentFinish"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"Disambiguation"])
+  else if ([stepCopy isEqualToString:@"Disambiguation"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"PromptForData"])
+  else if ([stepCopy isEqualToString:@"PromptForData"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"Confirmation"])
+  else if ([stepCopy isEqualToString:@"Confirmation"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"TapToEditCorrection"])
+  else if ([stepCopy isEqualToString:@"TapToEditCorrection"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"FetchData"])
+  else if ([stepCopy isEqualToString:@"FetchData"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"ResolveApp"])
+  else if ([stepCopy isEqualToString:@"ResolveApp"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"SuggestApp"])
+  else if ([stepCopy isEqualToString:@"SuggestApp"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"DisambiguateApp"])
+  else if ([stepCopy isEqualToString:@"DisambiguateApp"])
   {
     v4 = 22;
   }
 
-  else if ([v3 isEqualToString:@"ConfirmApp"])
+  else if ([stepCopy isEqualToString:@"ConfirmApp"])
   {
     v4 = 23;
   }
 
-  else if ([v3 isEqualToString:@"SearchCompleted"])
+  else if ([stepCopy isEqualToString:@"SearchCompleted"])
   {
     v4 = 24;
   }
 
-  else if ([v3 isEqualToString:@"Generic"])
+  else if ([stepCopy isEqualToString:@"Generic"])
   {
     v4 = 25;
   }
 
-  else if ([v3 isEqualToString:@"PromptUnlock"])
+  else if ([stepCopy isEqualToString:@"PromptUnlock"])
   {
     v4 = 26;
   }
 
-  else if ([v3 isEqualToString:@"ShowInterstitial"])
+  else if ([stepCopy isEqualToString:@"ShowInterstitial"])
   {
     v4 = 27;
   }
 
-  else if ([v3 isEqualToString:@"ContactResolution"])
+  else if ([stepCopy isEqualToString:@"ContactResolution"])
   {
     v4 = 28;
   }
 
-  else if ([v3 isEqualToString:@"DeviceSearch"])
+  else if ([stepCopy isEqualToString:@"DeviceSearch"])
   {
     v4 = 29;
   }
 
-  else if ([v3 isEqualToString:@"IntentAutoConfirm"])
+  else if ([stepCopy isEqualToString:@"IntentAutoConfirm"])
   {
     v4 = 30;
   }
 
-  else if ([v3 isEqualToString:@"CheckUnsetRelationship"])
+  else if ([stepCopy isEqualToString:@"CheckUnsetRelationship"])
   {
     v4 = 31;
   }
 
-  else if ([v3 isEqualToString:@"ConfirmIntent"])
+  else if ([stepCopy isEqualToString:@"ConfirmIntent"])
   {
     v4 = 32;
   }
 
-  else if ([v3 isEqualToString:@"ModifySlotValue"])
+  else if ([stepCopy isEqualToString:@"ModifySlotValue"])
   {
     v4 = 33;
   }
 
-  else if ([v3 isEqualToString:@"ReadingStart"])
+  else if ([stepCopy isEqualToString:@"ReadingStart"])
   {
     v4 = 34;
   }
 
-  else if ([v3 isEqualToString:@"RememberUnsetRelationship"])
+  else if ([stepCopy isEqualToString:@"RememberUnsetRelationship"])
   {
     v4 = 35;
   }
 
-  else if ([v3 isEqualToString:@"ResolveSlotAuthenticationRequired"])
+  else if ([stepCopy isEqualToString:@"ResolveSlotAuthenticationRequired"])
   {
     v4 = 36;
   }
 
-  else if ([v3 isEqualToString:@"ResolveSlotConfirm"])
+  else if ([stepCopy isEqualToString:@"ResolveSlotConfirm"])
   {
     v4 = 37;
   }
 
-  else if ([v3 isEqualToString:@"ConfirmationAccepted"])
+  else if ([stepCopy isEqualToString:@"ConfirmationAccepted"])
   {
     v4 = 38;
   }
 
-  else if ([v3 isEqualToString:@"ConfirmationRejected"])
+  else if ([stepCopy isEqualToString:@"ConfirmationRejected"])
   {
     v4 = 39;
   }
 
-  else if ([v3 isEqualToString:@"ResolveSlotDisambiguate"])
+  else if ([stepCopy isEqualToString:@"ResolveSlotDisambiguate"])
   {
     v4 = 40;
   }
 
-  else if ([v3 isEqualToString:@"DisambiguationResponseReceived"])
+  else if ([stepCopy isEqualToString:@"DisambiguationResponseReceived"])
   {
     v4 = 41;
   }
 
-  else if ([v3 isEqualToString:@"DisambiguationManualOverride"])
+  else if ([stepCopy isEqualToString:@"DisambiguationManualOverride"])
   {
     v4 = 42;
   }
 
-  else if ([v3 isEqualToString:@"ResolveSlotNeedsValue"])
+  else if ([stepCopy isEqualToString:@"ResolveSlotNeedsValue"])
   {
     v4 = 43;
   }
 
-  else if ([v3 isEqualToString:@"ResolveSlotNotRequired"])
+  else if ([stepCopy isEqualToString:@"ResolveSlotNotRequired"])
   {
     v4 = 44;
   }
 
-  else if ([v3 isEqualToString:@"ResolveSlotSuccess"])
+  else if ([stepCopy isEqualToString:@"ResolveSlotSuccess"])
   {
     v4 = 45;
   }
 
-  else if ([v3 isEqualToString:@"ResolveSlotUnsupported"])
+  else if ([stepCopy isEqualToString:@"ResolveSlotUnsupported"])
   {
     v4 = 46;
   }
 
-  else if ([v3 isEqualToString:@"SetUnsetRelationship"])
+  else if ([stepCopy isEqualToString:@"SetUnsetRelationship"])
   {
     v4 = 47;
   }
 
-  else if ([v3 isEqualToString:@"SubtaskCompleted"])
+  else if ([stepCopy isEqualToString:@"SubtaskCompleted"])
   {
     v4 = 48;
   }
 
-  else if ([v3 isEqualToString:@"TermConditionCheck"])
+  else if ([stepCopy isEqualToString:@"TermConditionCheck"])
   {
     v4 = 49;
   }
 
-  else if ([v3 isEqualToString:@"DirectExecution"])
+  else if ([stepCopy isEqualToString:@"DirectExecution"])
   {
     v4 = 50;
   }
 
-  else if ([v3 isEqualToString:@"SearchKnowledgeFromSports"])
+  else if ([stepCopy isEqualToString:@"SearchKnowledgeFromSports"])
   {
     v4 = 51;
   }
 
-  else if ([v3 isEqualToString:@"SearchLocalEventsFromSports"])
+  else if ([stepCopy isEqualToString:@"SearchLocalEventsFromSports"])
   {
     v4 = 52;
   }
 
-  else if ([v3 isEqualToString:@"SearchWebFromSports"])
+  else if ([stepCopy isEqualToString:@"SearchWebFromSports"])
   {
     v4 = 53;
   }
 
-  else if ([v3 isEqualToString:@"IntentReformation"])
+  else if ([stepCopy isEqualToString:@"IntentReformation"])
   {
     v4 = 54;
   }
 
-  else if ([v3 isEqualToString:@"DialogCompleted"])
+  else if ([stepCopy isEqualToString:@"DialogCompleted"])
   {
     v4 = 55;
   }
 
-  else if ([v3 isEqualToString:@"DialogFailed"])
+  else if ([stepCopy isEqualToString:@"DialogFailed"])
   {
     v4 = 56;
   }
 
-  else if ([v3 isEqualToString:@"SportsProbeStarted"])
+  else if ([stepCopy isEqualToString:@"SportsProbeStarted"])
   {
     v4 = 57;
   }
 
-  else if ([v3 isEqualToString:@"SportsProbeNoResultsOrUnsupported"])
+  else if ([stepCopy isEqualToString:@"SportsProbeNoResultsOrUnsupported"])
   {
     v4 = 58;
   }
 
-  else if ([v3 isEqualToString:@"SportsProbeFailed"])
+  else if ([stepCopy isEqualToString:@"SportsProbeFailed"])
   {
     v4 = 59;
   }
 
-  else if ([v3 isEqualToString:@"SportsProbeSuccessful"])
+  else if ([stepCopy isEqualToString:@"SportsProbeSuccessful"])
   {
     v4 = 60;
   }
 
-  else if ([v3 isEqualToString:@"Preprocess"])
+  else if ([stepCopy isEqualToString:@"Preprocess"])
   {
     v4 = 61;
   }
 
-  else if ([v3 isEqualToString:@"Render"])
+  else if ([stepCopy isEqualToString:@"Render"])
   {
     v4 = 62;
   }
 
-  else if ([v3 isEqualToString:@"FlowReplan"])
+  else if ([stepCopy isEqualToString:@"FlowReplan"])
   {
     v4 = 63;
   }
 
-  else if ([v3 isEqualToString:@"SendViaSnippet"])
+  else if ([stepCopy isEqualToString:@"SendViaSnippet"])
   {
     v4 = 64;
   }
 
-  else if ([v3 isEqualToString:@"ContentChangedViaSnippet"])
+  else if ([stepCopy isEqualToString:@"ContentChangedViaSnippet"])
   {
     v4 = 65;
   }
 
-  else if ([v3 isEqualToString:@"GateKeeperNewCall"])
+  else if ([stepCopy isEqualToString:@"GateKeeperNewCall"])
   {
     v4 = 66;
   }
 
-  else if ([v3 isEqualToString:@"GateKeeperNewMessage"])
+  else if ([stepCopy isEqualToString:@"GateKeeperNewMessage"])
   {
     v4 = 67;
   }
 
-  else if ([v3 isEqualToString:@"GateKeeperReadMessage"])
+  else if ([stepCopy isEqualToString:@"GateKeeperReadMessage"])
   {
     v4 = 68;
   }
 
-  else if ([v3 isEqualToString:@"Skip"])
+  else if ([stepCopy isEqualToString:@"Skip"])
   {
     v4 = 69;
   }
 
-  else if ([v3 isEqualToString:@"Stop"])
+  else if ([stepCopy isEqualToString:@"Stop"])
   {
     v4 = 70;
   }
 
-  else if ([v3 isEqualToString:@"Reply"])
+  else if ([stepCopy isEqualToString:@"Reply"])
   {
     v4 = 71;
   }
 
-  else if ([v3 isEqualToString:@"AudioReply"])
+  else if ([stepCopy isEqualToString:@"AudioReply"])
   {
     v4 = 72;
   }
 
-  else if ([v3 isEqualToString:@"ReadAgain"])
+  else if ([stepCopy isEqualToString:@"ReadAgain"])
   {
     v4 = 73;
   }
 
-  else if ([v3 isEqualToString:@"ModifyMessage"])
+  else if ([stepCopy isEqualToString:@"ModifyMessage"])
   {
     v4 = 74;
   }
 
-  else if ([v3 isEqualToString:@"ReplyWithCall"])
+  else if ([stepCopy isEqualToString:@"ReplyWithCall"])
   {
     v4 = 75;
   }
 
-  else if ([v3 isEqualToString:@"TCCAccepted"])
+  else if ([stepCopy isEqualToString:@"TCCAccepted"])
   {
     v4 = 76;
   }
 
-  else if ([v3 isEqualToString:@"TCCDeclined"])
+  else if ([stepCopy isEqualToString:@"TCCDeclined"])
   {
     v4 = 77;
   }
 
-  else if ([v3 isEqualToString:@"GetCallBackgroundState"])
+  else if ([stepCopy isEqualToString:@"GetCallBackgroundState"])
   {
     v4 = 78;
   }
 
-  else if ([v3 isEqualToString:@"SearchFailed"])
+  else if ([stepCopy isEqualToString:@"SearchFailed"])
   {
     v4 = 79;
   }
 
-  else if ([v3 isEqualToString:@"Fallback"])
+  else if ([stepCopy isEqualToString:@"Fallback"])
   {
     v4 = 80;
   }
 
-  else if ([v3 isEqualToString:@"PartialFailure"])
+  else if ([stepCopy isEqualToString:@"PartialFailure"])
   {
     v4 = 81;
   }
 
-  else if ([v3 isEqualToString:@"Correction"])
+  else if ([stepCopy isEqualToString:@"Correction"])
   {
     v4 = 82;
   }
 
-  else if ([v3 isEqualToString:@"AutoSend"])
+  else if ([stepCopy isEqualToString:@"AutoSend"])
   {
     v4 = 83;
   }
 
-  else if ([v3 isEqualToString:@"AutoSendStarted"])
+  else if ([stepCopy isEqualToString:@"AutoSendStarted"])
   {
     v4 = 84;
   }
 
-  else if ([v3 isEqualToString:@"CheckSharingPolicy"])
+  else if ([stepCopy isEqualToString:@"CheckSharingPolicy"])
   {
     v4 = 85;
   }
 
-  else if ([v3 isEqualToString:@"PostNotificationToCompanion"])
+  else if ([stepCopy isEqualToString:@"PostNotificationToCompanion"])
   {
     v4 = 86;
   }
 
-  else if ([v3 isEqualToString:@"ExecuteOnRemote"])
+  else if ([stepCopy isEqualToString:@"ExecuteOnRemote"])
   {
     v4 = 87;
   }
 
-  else if ([v3 isEqualToString:@"NeedsServerExecution"])
+  else if ([stepCopy isEqualToString:@"NeedsServerExecution"])
   {
     v4 = 88;
   }
 
-  else if ([v3 isEqualToString:@"CheckPersonalDomainSetting"])
+  else if ([stepCopy isEqualToString:@"CheckPersonalDomainSetting"])
   {
     v4 = 89;
   }
 
-  else if ([v3 isEqualToString:@"CheckPersonalDomainSettingResponse"])
+  else if ([stepCopy isEqualToString:@"CheckPersonalDomainSettingResponse"])
   {
     v4 = 90;
   }
 
-  else if ([v3 isEqualToString:@"RequestIdentity"])
+  else if ([stepCopy isEqualToString:@"RequestIdentity"])
   {
     v4 = 91;
   }
 
-  else if ([v3 isEqualToString:@"ConfirmIdentity"])
+  else if ([stepCopy isEqualToString:@"ConfirmIdentity"])
   {
     v4 = 92;
   }
 
-  else if ([v3 isEqualToString:@"CheckCompanionCompatibility"])
+  else if ([stepCopy isEqualToString:@"CheckCompanionCompatibility"])
   {
     v4 = 93;
   }
@@ -529,20 +529,20 @@
   v8.receiver = self;
   v8.super_class = BMPBSiriExecutionEvent;
   v4 = [(BMPBSiriExecutionEvent *)&v8 description];
-  v5 = [(BMPBSiriExecutionEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(BMPBSiriExecutionEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   taskId = self->_taskId;
   if (taskId)
   {
-    [v3 setObject:taskId forKey:@"taskId"];
+    [dictionary setObject:taskId forKey:@"taskId"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -600,118 +600,118 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v7 = v4;
+  toCopy = to;
+  v7 = toCopy;
   if (self->_taskId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     taskStep = self->_taskStep;
     PBDataWriterWriteInt32Field();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_statusReason)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_slotValue)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_intentName)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_appBundleId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (self->_interactionId)
   {
     PBDataWriterWriteStringField();
-    v4 = v7;
+    toCopy = v7;
   }
 
   if (*&self->_has)
   {
     absoluteTimestamp = self->_absoluteTimestamp;
     PBDataWriterWriteDoubleField();
-    v4 = v7;
+    toCopy = v7;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  v5 = v4;
+  toCopy = to;
+  v5 = toCopy;
   if (self->_taskId)
   {
-    [v4 setTaskId:?];
-    v4 = v5;
+    [toCopy setTaskId:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 16) = self->_taskStep;
-    *(v4 + 68) |= 2u;
+    *(toCopy + 16) = self->_taskStep;
+    *(toCopy + 68) |= 2u;
   }
 
   if (self->_statusReason)
   {
     [v5 setStatusReason:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_slotValue)
   {
     [v5 setSlotValue:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_intentName)
   {
     [v5 setIntentName:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_appBundleId)
   {
     [v5 setAppBundleId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_interactionId)
   {
     [v5 setInteractionId:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (*&self->_has)
   {
-    *(v4 + 1) = *&self->_absoluteTimestamp;
-    *(v4 + 68) |= 1u;
+    *(toCopy + 1) = *&self->_absoluteTimestamp;
+    *(toCopy + 68) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_taskId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_taskId copyWithZone:zone];
   v7 = *(v5 + 56);
   *(v5 + 56) = v6;
 
@@ -721,23 +721,23 @@
     *(v5 + 68) |= 2u;
   }
 
-  v8 = [(NSString *)self->_statusReason copyWithZone:a3];
+  v8 = [(NSString *)self->_statusReason copyWithZone:zone];
   v9 = *(v5 + 48);
   *(v5 + 48) = v8;
 
-  v10 = [(NSString *)self->_slotValue copyWithZone:a3];
+  v10 = [(NSString *)self->_slotValue copyWithZone:zone];
   v11 = *(v5 + 40);
   *(v5 + 40) = v10;
 
-  v12 = [(NSString *)self->_intentName copyWithZone:a3];
+  v12 = [(NSString *)self->_intentName copyWithZone:zone];
   v13 = *(v5 + 24);
   *(v5 + 24) = v12;
 
-  v14 = [(NSString *)self->_appBundleId copyWithZone:a3];
+  v14 = [(NSString *)self->_appBundleId copyWithZone:zone];
   v15 = *(v5 + 16);
   *(v5 + 16) = v14;
 
-  v16 = [(NSString *)self->_interactionId copyWithZone:a3];
+  v16 = [(NSString *)self->_interactionId copyWithZone:zone];
   v17 = *(v5 + 32);
   *(v5 + 32) = v16;
 
@@ -750,16 +750,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   taskId = self->_taskId;
-  if (taskId | *(v4 + 7))
+  if (taskId | *(equalCopy + 7))
   {
     if (![(NSString *)taskId isEqual:?])
     {
@@ -767,16 +767,16 @@
     }
   }
 
-  v6 = *(v4 + 68);
+  v6 = *(equalCopy + 68);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 68) & 2) == 0 || self->_taskStep != *(v4 + 16))
+    if ((*(equalCopy + 68) & 2) == 0 || self->_taskStep != *(equalCopy + 16))
     {
       goto LABEL_23;
     }
   }
 
-  else if ((*(v4 + 68) & 2) != 0)
+  else if ((*(equalCopy + 68) & 2) != 0)
   {
 LABEL_23:
     v12 = 0;
@@ -784,13 +784,13 @@ LABEL_23:
   }
 
   statusReason = self->_statusReason;
-  if (statusReason | *(v4 + 6) && ![(NSString *)statusReason isEqual:?])
+  if (statusReason | *(equalCopy + 6) && ![(NSString *)statusReason isEqual:?])
   {
     goto LABEL_23;
   }
 
   slotValue = self->_slotValue;
-  if (slotValue | *(v4 + 5))
+  if (slotValue | *(equalCopy + 5))
   {
     if (![(NSString *)slotValue isEqual:?])
     {
@@ -799,7 +799,7 @@ LABEL_23:
   }
 
   intentName = self->_intentName;
-  if (intentName | *(v4 + 3))
+  if (intentName | *(equalCopy + 3))
   {
     if (![(NSString *)intentName isEqual:?])
     {
@@ -808,7 +808,7 @@ LABEL_23:
   }
 
   appBundleId = self->_appBundleId;
-  if (appBundleId | *(v4 + 2))
+  if (appBundleId | *(equalCopy + 2))
   {
     if (![(NSString *)appBundleId isEqual:?])
     {
@@ -817,7 +817,7 @@ LABEL_23:
   }
 
   interactionId = self->_interactionId;
-  if (interactionId | *(v4 + 4))
+  if (interactionId | *(equalCopy + 4))
   {
     if (![(NSString *)interactionId isEqual:?])
     {
@@ -825,10 +825,10 @@ LABEL_23:
     }
   }
 
-  v12 = (*(v4 + 68) & 1) == 0;
+  v12 = (*(equalCopy + 68) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_absoluteTimestamp != *(v4 + 1))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_absoluteTimestamp != *(equalCopy + 1))
     {
       goto LABEL_23;
     }
@@ -895,55 +895,55 @@ LABEL_24:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v12;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 7))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 7))
   {
     [(BMPBSiriExecutionEvent *)self setTaskId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if ((*(v4 + 68) & 2) != 0)
+  if ((*(fromCopy + 68) & 2) != 0)
   {
-    self->_taskStep = *(v4 + 16);
+    self->_taskStep = *(fromCopy + 16);
     *&self->_has |= 2u;
   }
 
-  if (*(v4 + 6))
+  if (*(fromCopy + 6))
   {
     [(BMPBSiriExecutionEvent *)self setStatusReason:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 5))
+  if (*(fromCopy + 5))
   {
     [(BMPBSiriExecutionEvent *)self setSlotValue:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 3))
+  if (*(fromCopy + 3))
   {
     [(BMPBSiriExecutionEvent *)self setIntentName:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 2))
+  if (*(fromCopy + 2))
   {
     [(BMPBSiriExecutionEvent *)self setAppBundleId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 4))
+  if (*(fromCopy + 4))
   {
     [(BMPBSiriExecutionEvent *)self setInteractionId:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (*(v4 + 68))
+  if (*(fromCopy + 68))
   {
-    self->_absoluteTimestamp = *(v4 + 1);
+    self->_absoluteTimestamp = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 }

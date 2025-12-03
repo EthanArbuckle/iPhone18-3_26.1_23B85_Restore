@@ -1,11 +1,11 @@
 @interface SBFAnalyticsBackend
 + (id)sharedInstance;
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4;
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context;
 - (SBFAnalyticsBackend)init;
-- (void)registerEventHandler:(id)a3;
-- (void)registerForQueryName:(unint64_t)a3 handler:(id)a4;
-- (void)registerSynchronousEventHandler:(id)a3;
-- (void)stateForQueryName:(unint64_t)a3 completion:(id)a4;
+- (void)registerEventHandler:(id)handler;
+- (void)registerForQueryName:(unint64_t)name handler:(id)handler;
+- (void)registerSynchronousEventHandler:(id)handler;
+- (void)stateForQueryName:(unint64_t)name completion:(id)completion;
 @end
 
 @implementation SBFAnalyticsBackend
@@ -60,10 +60,10 @@ uint64_t __37__SBFAnalyticsBackend_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)registerEventHandler:(id)a3
+- (void)registerEventHandler:(id)handler
 {
-  v4 = a3;
-  if (v4 == self)
+  handlerCopy = handler;
+  if (handlerCopy == self)
   {
     v7 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"don't be a jerk" userInfo:0];
     objc_exception_throw(v7);
@@ -75,28 +75,28 @@ uint64_t __37__SBFAnalyticsBackend_sharedInstance__block_invoke()
   v8[2] = __44__SBFAnalyticsBackend_registerEventHandler___block_invoke;
   v8[3] = &unk_1E807F290;
   v8[4] = self;
-  v9 = v4;
-  v6 = v4;
+  v9 = handlerCopy;
+  v6 = handlerCopy;
   dispatch_async(asyncHandlerQueue, v8);
 }
 
-- (void)registerSynchronousEventHandler:(id)a3
+- (void)registerSynchronousEventHandler:(id)handler
 {
-  v4 = a3;
-  if (v4 == self)
+  handlerCopy = handler;
+  if (handlerCopy == self)
   {
     v5 = [MEMORY[0x1E695DF30] exceptionWithName:*MEMORY[0x1E695D940] reason:@"don't be a jerk" userInfo:0];
     objc_exception_throw(v5);
   }
 
-  v6 = v4;
-  [(NSMutableArray *)self->_syncEventHandlers addObject:v4];
+  v6 = handlerCopy;
+  [(NSMutableArray *)self->_syncEventHandlers addObject:handlerCopy];
 }
 
-- (BOOL)handleEvent:(unint64_t)a3 withContext:(id)a4
+- (BOOL)handleEvent:(unint64_t)event withContext:(id)context
 {
   v23 = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  contextCopy = context;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
@@ -117,7 +117,7 @@ uint64_t __37__SBFAnalyticsBackend_sharedInstance__block_invoke()
           objc_enumerationMutation(v7);
         }
 
-        [*(*(&v18 + 1) + 8 * v11++) handleEvent:a3 withContext:v6];
+        [*(*(&v18 + 1) + 8 * v11++) handleEvent:event withContext:contextCopy];
       }
 
       while (v9 != v11);
@@ -132,10 +132,10 @@ uint64_t __37__SBFAnalyticsBackend_sharedInstance__block_invoke()
   block[1] = 3221225472;
   block[2] = __47__SBFAnalyticsBackend_handleEvent_withContext___block_invoke;
   block[3] = &unk_1E807F510;
-  v16 = v6;
-  v17 = a3;
+  v16 = contextCopy;
+  eventCopy = event;
   block[4] = self;
-  v13 = v6;
+  v13 = contextCopy;
   dispatch_async(asyncHandlerQueue, block);
 
   return 1;
@@ -175,18 +175,18 @@ void __47__SBFAnalyticsBackend_handleEvent_withContext___block_invoke(void *a1)
   }
 }
 
-- (void)registerForQueryName:(unint64_t)a3 handler:(id)a4
+- (void)registerForQueryName:(unint64_t)name handler:(id)handler
 {
-  v6 = a4;
+  handlerCopy = handler;
   queryHandlerQueue = self->_queryHandlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__SBFAnalyticsBackend_registerForQueryName_handler___block_invoke;
   block[3] = &unk_1E807F538;
-  v11 = v6;
-  v12 = a3;
+  v11 = handlerCopy;
+  nameCopy = name;
   block[4] = self;
-  v8 = v6;
+  v8 = handlerCopy;
   dispatch_async(queryHandlerQueue, block);
   v9 = NSStringFromAnalyticsQueryName();
   AnalyticsSetCallbackForQueriedEventWithQueue();
@@ -210,18 +210,18 @@ void __52__SBFAnalyticsBackend_registerForQueryName_handler___block_invoke(void 
   [v5 setObject:v8 forKey:v6];
 }
 
-- (void)stateForQueryName:(unint64_t)a3 completion:(id)a4
+- (void)stateForQueryName:(unint64_t)name completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   queryHandlerQueue = self->_queryHandlerQueue;
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __52__SBFAnalyticsBackend_stateForQueryName_completion___block_invoke;
   block[3] = &unk_1E807F538;
-  v10 = v6;
-  v11 = a3;
+  v10 = completionCopy;
+  nameCopy = name;
   block[4] = self;
-  v8 = v6;
+  v8 = completionCopy;
   dispatch_async(queryHandlerQueue, block);
 }
 

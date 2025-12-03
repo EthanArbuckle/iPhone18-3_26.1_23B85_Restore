@@ -1,21 +1,21 @@
 @interface CNWatchWallpaperImageDataDescription
-- (BOOL)abPropertyID:(int *)a3;
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4;
-- (id)posterDataChangeRequestsForValue:(id)a3 contactIdentifier:(id)a4;
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4;
+- (BOOL)abPropertyID:(int *)d;
+- (BOOL)isEqualForContact:(id)contact other:(id)other;
+- (id)posterDataChangeRequestsForValue:(id)value contactIdentifier:(id)identifier;
+- (void)decodeUsingCoder:(id)coder contact:(id)contact;
 @end
 
 @implementation CNWatchWallpaperImageDataDescription
 
-- (BOOL)isEqualForContact:(id)a3 other:(id)a4
+- (BOOL)isEqualForContact:(id)contact other:(id)other
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 watchWallpaperImageData];
-  if (!v8)
+  contactCopy = contact;
+  otherCopy = other;
+  watchWallpaperImageData = [contactCopy watchWallpaperImageData];
+  if (!watchWallpaperImageData)
   {
-    v4 = [v7 watchWallpaperImageData];
-    if (!v4)
+    watchWallpaperImageData2 = [otherCopy watchWallpaperImageData];
+    if (!watchWallpaperImageData2)
     {
       v11 = 1;
 LABEL_6:
@@ -24,11 +24,11 @@ LABEL_6:
     }
   }
 
-  v9 = [v6 watchWallpaperImageData];
-  v10 = [v7 watchWallpaperImageData];
-  v11 = [v9 isEqual:v10];
+  watchWallpaperImageData3 = [contactCopy watchWallpaperImageData];
+  watchWallpaperImageData4 = [otherCopy watchWallpaperImageData];
+  v11 = [watchWallpaperImageData3 isEqual:watchWallpaperImageData4];
 
-  if (!v8)
+  if (!watchWallpaperImageData)
   {
     goto LABEL_6;
   }
@@ -38,24 +38,24 @@ LABEL_7:
   return v11;
 }
 
-- (void)decodeUsingCoder:(id)a3 contact:(id)a4
+- (void)decodeUsingCoder:(id)coder contact:(id)contact
 {
-  v5 = a4;
-  v6 = a3;
-  v9 = [v6 decodeObjectOfClass:objc_opt_class() forKey:@"_watchWallpaperImageData"];
+  contactCopy = contact;
+  coderCopy = coder;
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_watchWallpaperImageData"];
 
   v7 = [v9 copy];
-  v8 = v5[83];
-  v5[83] = v7;
+  v8 = contactCopy[83];
+  contactCopy[83] = v7;
 }
 
-- (id)posterDataChangeRequestsForValue:(id)a3 contactIdentifier:(id)a4
+- (id)posterDataChangeRequestsForValue:(id)value contactIdentifier:(id)identifier
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  valueCopy = value;
+  identifierCopy = identifier;
   objc_opt_class();
-  v7 = v5;
+  v7 = valueCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -70,7 +70,7 @@ LABEL_7:
 
   if (v9)
   {
-    v10 = [CNContactPosterUpdateRequest requestToUpdateWatchWallpaper:v9 forContactIdentifier:v6];
+    v10 = [CNContactPosterUpdateRequest requestToUpdateWatchWallpaper:v9 forContactIdentifier:identifierCopy];
     v13[0] = v10;
     v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   }
@@ -83,14 +83,14 @@ LABEL_7:
   return v11;
 }
 
-- (BOOL)abPropertyID:(int *)a3
+- (BOOL)abPropertyID:(int *)d
 {
-  if (a3)
+  if (d)
   {
-    *a3 = *MEMORY[0x1E698A658];
+    *d = *MEMORY[0x1E698A658];
   }
 
-  return a3 != 0;
+  return d != 0;
 }
 
 @end

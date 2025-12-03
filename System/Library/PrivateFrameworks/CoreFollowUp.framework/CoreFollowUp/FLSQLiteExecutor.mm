@@ -1,27 +1,27 @@
 @interface FLSQLiteExecutor
 + (id)_databaseQueue;
-+ (void)performBlock:(id)a3;
-+ (void)performBlockAndWait:(id)a3;
-- (BOOL)_finalizeStatement:(sqlite3_stmt *)a3 error:(id *)a4;
-- (BOOL)_handleDatabaseFailureError:(id *)a3;
-- (BOOL)_unsafe_openDatabase:(id *)a3;
-- (BOOL)openDatabase:(id *)a3;
-- (BOOL)performQuery:(id)a3 error:(id *)a4;
-- (BOOL)performQuery:(id)a3 rowHandler:(id)a4;
-- (FLSQLiteExecutor)initWithDatabasePath:(id)a3;
++ (void)performBlock:(id)block;
++ (void)performBlockAndWait:(id)wait;
+- (BOOL)_finalizeStatement:(sqlite3_stmt *)statement error:(id *)error;
+- (BOOL)_handleDatabaseFailureError:(id *)error;
+- (BOOL)_unsafe_openDatabase:(id *)database;
+- (BOOL)openDatabase:(id *)database;
+- (BOOL)performQuery:(id)query error:(id *)error;
+- (BOOL)performQuery:(id)query rowHandler:(id)handler;
+- (FLSQLiteExecutor)initWithDatabasePath:(id)path;
 - (id)_currentDataBaseError;
-- (int)_executeQuery:(id)a3;
+- (int)_executeQuery:(id)query;
 - (int)_unsafe_createDataBase;
-- (int64_t)performInsertQuery:(id)a3;
-- (int64_t)performInsertQuery:(id)a3 error:(id *)a4;
-- (sqlite3_stmt)_prepareStatementForQuery:(id)a3 error:(id *)a4;
-- (void)_printStatement:(sqlite3_stmt *)a3;
-- (void)_stepThroughRowsWithQuery:(id)a3 statement:(sqlite3_stmt *)a4;
+- (int64_t)performInsertQuery:(id)query;
+- (int64_t)performInsertQuery:(id)query error:(id *)error;
+- (sqlite3_stmt)_prepareStatementForQuery:(id)query error:(id *)error;
+- (void)_printStatement:(sqlite3_stmt *)statement;
+- (void)_stepThroughRowsWithQuery:(id)query statement:(sqlite3_stmt *)statement;
 - (void)_unsafe_closeDatabase;
 - (void)_unsafe_wipeDatabase;
 - (void)closeDatabase;
 - (void)commitTransaction;
-- (void)performTransactionBlockAndWait:(id)a3;
+- (void)performTransactionBlockAndWait:(id)wait;
 - (void)wipeDatabase;
 @end
 
@@ -41,23 +41,23 @@
 
 - (int)_unsafe_createDataBase
 {
-  v3 = [objc_opt_class() _databaseQueue];
-  dispatch_assert_queue_V2(v3);
+  _databaseQueue = [objc_opt_class() _databaseQueue];
+  dispatch_assert_queue_V2(_databaseQueue);
 
   v4 = _FLLogSystemQuery();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
   {
     databasePath = self->_databasePath;
     v20 = 138412290;
-    v21 = databasePath;
+    selfCopy = databasePath;
     _os_log_impl(&_mh_execute_header, v4, OS_LOG_TYPE_DEFAULT, "Attempting to open database at path: %@", &v20, 0xCu);
   }
 
-  v6 = [(NSString *)self->_databasePath stringByDeletingLastPathComponent];
-  if (v6)
+  stringByDeletingLastPathComponent = [(NSString *)self->_databasePath stringByDeletingLastPathComponent];
+  if (stringByDeletingLastPathComponent)
   {
     v7 = +[NSFileManager defaultManager];
-    v8 = [v7 fileExistsAtPath:v6];
+    v8 = [v7 fileExistsAtPath:stringByDeletingLastPathComponent];
 
     if ((v8 & 1) == 0)
     {
@@ -68,7 +68,7 @@
       }
 
       v10 = +[NSFileManager defaultManager];
-      [v10 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:0 error:0];
+      [v10 createDirectoryAtPath:stringByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:0];
     }
   }
 
@@ -81,7 +81,7 @@
     {
       v14 = self->_databasePath;
       v20 = 138412546;
-      v21 = self;
+      selfCopy = self;
       v22 = 2112;
       v23 = v14;
       v15 = "%@: Failed to open file at path %@";
@@ -96,7 +96,7 @@ LABEL_13:
   {
     v18 = self->_databasePath;
     v20 = 138412290;
-    v21 = v18;
+    selfCopy = v18;
     v15 = "Database opened at path: %@";
     v16 = v12;
     v17 = 12;
@@ -106,57 +106,57 @@ LABEL_13:
   return v11;
 }
 
-- (FLSQLiteExecutor)initWithDatabasePath:(id)a3
+- (FLSQLiteExecutor)initWithDatabasePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v6 = [(FLSQLiteExecutor *)self init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_databasePath, a3);
+    objc_storeStrong(&v6->_databasePath, path);
     v7->_shouldAutomaticallyMigrate = 1;
   }
 
   return v7;
 }
 
-+ (void)performBlock:(id)a3
++ (void)performBlock:(id)block
 {
-  v3 = a3;
+  blockCopy = block;
   v4 = os_transaction_create();
-  v5 = [objc_opt_class() _databaseQueue];
+  _databaseQueue = [objc_opt_class() _databaseQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100008BB4;
   v8[3] = &unk_100020B28;
   v9 = v4;
-  v10 = v3;
+  v10 = blockCopy;
   v6 = v4;
-  v7 = v3;
-  dispatch_async(v5, v8);
+  v7 = blockCopy;
+  dispatch_async(_databaseQueue, v8);
 }
 
-+ (void)performBlockAndWait:(id)a3
++ (void)performBlockAndWait:(id)wait
 {
-  v3 = a3;
+  waitCopy = wait;
   v4 = os_transaction_create();
-  v5 = [objc_opt_class() _databaseQueue];
+  _databaseQueue = [objc_opt_class() _databaseQueue];
   v8[0] = _NSConcreteStackBlock;
   v8[1] = 3221225472;
   v8[2] = sub_100008CA8;
   v8[3] = &unk_100020B28;
   v9 = v4;
-  v10 = v3;
+  v10 = waitCopy;
   v6 = v4;
-  v7 = v3;
-  dispatch_sync(v5, v8);
+  v7 = waitCopy;
+  dispatch_sync(_databaseQueue, v8);
 }
 
-- (void)performTransactionBlockAndWait:(id)a3
+- (void)performTransactionBlockAndWait:(id)wait
 {
-  v4 = a3;
+  waitCopy = wait;
   [(FLSQLiteExecutor *)self openTransaction];
-  v4[2](v4);
+  waitCopy[2](waitCopy);
 
   [(FLSQLiteExecutor *)self commitTransaction];
 }
@@ -170,26 +170,26 @@ LABEL_13:
   }
 }
 
-- (int)_executeQuery:(id)a3
+- (int)_executeQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = _FLLogSystemQuery();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v11 = v4;
+    v11 = queryCopy;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Executing query: %@", buf, 0xCu);
   }
 
   errmsg = 0;
-  v6 = sqlite3_exec(self->_database, [v4 UTF8String], 0, 0, &errmsg);
+  v6 = sqlite3_exec(self->_database, [queryCopy UTF8String], 0, 0, &errmsg);
   if (errmsg)
   {
     v7 = _FLLogSystemQuery();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v11 = v4;
+      v11 = queryCopy;
       v12 = 2080;
       v13 = errmsg;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "SQL Exec %@ failed with error %s.", buf, 0x16u);
@@ -201,48 +201,48 @@ LABEL_13:
   return v6;
 }
 
-- (int64_t)performInsertQuery:(id)a3
+- (int64_t)performInsertQuery:(id)query
 {
-  v4 = [FLSQLiteQuery queryWithString:a3];
+  v4 = [FLSQLiteQuery queryWithString:query];
   v5 = [(FLSQLiteExecutor *)self performInsertQuery:v4 error:0];
 
   return v5;
 }
 
-- (BOOL)performQuery:(id)a3 rowHandler:(id)a4
+- (BOOL)performQuery:(id)query rowHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [FLSQLiteQuery queryWithString:a3];
+  handlerCopy = handler;
+  v7 = [FLSQLiteQuery queryWithString:query];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_10000900C;
   v10[3] = &unk_100020B70;
-  v11 = v6;
-  v8 = v6;
+  v11 = handlerCopy;
+  v8 = handlerCopy;
   [v7 setRowHandler:v10];
   LOBYTE(self) = [(FLSQLiteExecutor *)self performQuery:v7 error:0];
 
   return self;
 }
 
-- (BOOL)performQuery:(id)a3 error:(id *)a4
+- (BOOL)performQuery:(id)query error:(id *)error
 {
-  v6 = a3;
+  queryCopy = query;
   v13 = 0;
-  if ([(FLSQLiteExecutor *)self _unsafe_openDatabase:&v13]&& (v7 = [(FLSQLiteExecutor *)self _prepareStatementForQuery:v6 error:a4]) != 0)
+  if ([(FLSQLiteExecutor *)self _unsafe_openDatabase:&v13]&& (v7 = [(FLSQLiteExecutor *)self _prepareStatementForQuery:queryCopy error:error]) != 0)
   {
     v8 = v7;
-    v9 = [v6 bindHandler];
+    bindHandler = [queryCopy bindHandler];
 
-    if (v9)
+    if (bindHandler)
     {
-      v10 = [v6 bindHandler];
-      (v10)[2](v10, v8);
+      bindHandler2 = [queryCopy bindHandler];
+      (bindHandler2)[2](bindHandler2, v8);
     }
 
     [(FLSQLiteExecutor *)self _printStatement:v8];
-    [(FLSQLiteExecutor *)self _stepThroughRowsWithQuery:v6 statement:v8];
-    v11 = [(FLSQLiteExecutor *)self _finalizeStatement:v8 error:a4];
+    [(FLSQLiteExecutor *)self _stepThroughRowsWithQuery:queryCopy statement:v8];
+    v11 = [(FLSQLiteExecutor *)self _finalizeStatement:v8 error:error];
   }
 
   else
@@ -253,32 +253,32 @@ LABEL_13:
   return v11;
 }
 
-- (int64_t)performInsertQuery:(id)a3 error:(id *)a4
+- (int64_t)performInsertQuery:(id)query error:(id *)error
 {
-  v6 = a3;
-  if (![(FLSQLiteExecutor *)self _unsafe_openDatabase:a4])
+  queryCopy = query;
+  if (![(FLSQLiteExecutor *)self _unsafe_openDatabase:error])
   {
     goto LABEL_9;
   }
 
-  v7 = [(FLSQLiteExecutor *)self _prepareStatementForQuery:v6 error:a4];
+  v7 = [(FLSQLiteExecutor *)self _prepareStatementForQuery:queryCopy error:error];
   if (!v7)
   {
     goto LABEL_9;
   }
 
   v8 = v7;
-  v9 = [v6 bindHandler];
+  bindHandler = [queryCopy bindHandler];
 
-  if (v9)
+  if (bindHandler)
   {
-    v10 = [v6 bindHandler];
-    (v10)[2](v10, v8);
+    bindHandler2 = [queryCopy bindHandler];
+    (bindHandler2)[2](bindHandler2, v8);
   }
 
   [(FLSQLiteExecutor *)self _printStatement:v8];
   v11 = sqlite3_step(v8) == 101 ? sqlite3_last_insert_rowid(self->_database) : -1;
-  if (![(FLSQLiteExecutor *)self _finalizeStatement:v8 error:a4])
+  if (![(FLSQLiteExecutor *)self _finalizeStatement:v8 error:error])
   {
 LABEL_9:
     v11 = -1;
@@ -287,9 +287,9 @@ LABEL_9:
   return v11;
 }
 
-- (void)_printStatement:(sqlite3_stmt *)a3
+- (void)_printStatement:(sqlite3_stmt *)statement
 {
-  v3 = sqlite3_expanded_sql(a3);
+  v3 = sqlite3_expanded_sql(statement);
   if (v3)
   {
     v4 = v3;
@@ -305,18 +305,18 @@ LABEL_9:
   }
 }
 
-- (void)_stepThroughRowsWithQuery:(id)a3 statement:(sqlite3_stmt *)a4
+- (void)_stepThroughRowsWithQuery:(id)query statement:(sqlite3_stmt *)statement
 {
-  v5 = a3;
-  while (sqlite3_step(a4) == 100)
+  queryCopy = query;
+  while (sqlite3_step(statement) == 100)
   {
-    v6 = [v5 rowHandler];
+    rowHandler = [queryCopy rowHandler];
 
-    if (v6)
+    if (rowHandler)
     {
       v8 = 0;
-      v7 = [v5 rowHandler];
-      (v7)[2](v7, a4, &v8);
+      rowHandler2 = [queryCopy rowHandler];
+      (rowHandler2)[2](rowHandler2, statement, &v8);
 
       if (v8)
       {
@@ -326,28 +326,28 @@ LABEL_9:
   }
 }
 
-- (sqlite3_stmt)_prepareStatementForQuery:(id)a3 error:(id *)a4
+- (sqlite3_stmt)_prepareStatementForQuery:(id)query error:(id *)error
 {
   ppStmt = 0;
   database = self->_database;
-  v7 = [a3 queryString];
-  LODWORD(database) = sqlite3_prepare_v2(database, [v7 UTF8String], -1, &ppStmt, 0);
+  queryString = [query queryString];
+  LODWORD(database) = sqlite3_prepare_v2(database, [queryString UTF8String], -1, &ppStmt, 0);
 
   if (!database)
   {
     return ppStmt;
   }
 
-  [(FLSQLiteExecutor *)self _handleDatabaseFailureError:a4];
+  [(FLSQLiteExecutor *)self _handleDatabaseFailureError:error];
   return 0;
 }
 
-- (BOOL)_finalizeStatement:(sqlite3_stmt *)a3 error:(id *)a4
+- (BOOL)_finalizeStatement:(sqlite3_stmt *)statement error:(id *)error
 {
-  v6 = sqlite3_finalize(a3);
+  v6 = sqlite3_finalize(statement);
   if (v6)
   {
-    [(FLSQLiteExecutor *)self _handleDatabaseFailureError:a4];
+    [(FLSQLiteExecutor *)self _handleDatabaseFailureError:error];
   }
 
   else
@@ -365,39 +365,39 @@ LABEL_9:
   return v6 == 0;
 }
 
-- (BOOL)_handleDatabaseFailureError:(id *)a3
+- (BOOL)_handleDatabaseFailureError:(id *)error
 {
-  v5 = [(FLSQLiteExecutor *)self _currentDataBaseError];
-  if (v5)
+  _currentDataBaseError = [(FLSQLiteExecutor *)self _currentDataBaseError];
+  if (_currentDataBaseError)
   {
     v6 = _FLLogSystemQuery();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v13 = 138412290;
-      v14 = v5;
+      v14 = _currentDataBaseError;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Database error detected: %@", &v13, 0xCu);
     }
 
-    if (a3)
+    if (error)
     {
-      v7 = v5;
-      *a3 = v5;
+      v7 = _currentDataBaseError;
+      *error = _currentDataBaseError;
     }
   }
 
-  v8 = [v5 userInfo];
-  v9 = [v8 objectForKeyedSubscript:@"FLSQLErrorCode"];
-  v10 = [v9 integerValue];
+  userInfo = [_currentDataBaseError userInfo];
+  v9 = [userInfo objectForKeyedSubscript:@"FLSQLErrorCode"];
+  integerValue = [v9 integerValue];
 
-  if (v10 <= 0x1A)
+  if (integerValue <= 0x1A)
   {
-    if (((1 << v10) & 0x5000800) != 0)
+    if (((1 << integerValue) & 0x5000800) != 0)
     {
       v11 = _FLLogSystemQuery();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v13 = 138412290;
-        v14 = v5;
+        v14 = _currentDataBaseError;
         _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Database corruption detected: %@", &v13, 0xCu);
       }
 
@@ -405,13 +405,13 @@ LABEL_9:
       [(FLSQLiteExecutor *)self _unsafe_wipeDatabase];
     }
 
-    else if (((1 << v10) & 0x4400) != 0)
+    else if (((1 << integerValue) & 0x4400) != 0)
     {
       [(FLSQLiteExecutor *)self _unsafe_closeDatabase];
     }
   }
 
-  return v5 != 0;
+  return _currentDataBaseError != 0;
 }
 
 - (id)_currentDataBaseError
@@ -439,7 +439,7 @@ LABEL_9:
   return v10;
 }
 
-- (BOOL)openDatabase:(id *)a3
+- (BOOL)openDatabase:(id *)database
 {
   v13 = 0;
   v14 = &v13;
@@ -459,9 +459,9 @@ LABEL_9:
   v6[5] = &v13;
   v6[6] = &v7;
   [FLSQLiteExecutor performBlockAndWait:v6];
-  if (a3)
+  if (database)
   {
-    *a3 = v8[5];
+    *database = v8[5];
   }
 
   v4 = *(v14 + 24);
@@ -471,18 +471,18 @@ LABEL_9:
   return v4;
 }
 
-- (BOOL)_unsafe_openDatabase:(id *)a3
+- (BOOL)_unsafe_openDatabase:(id *)database
 {
-  v5 = [objc_opt_class() _databaseQueue];
-  dispatch_assert_queue_V2(v5);
+  _databaseQueue = [objc_opt_class() _databaseQueue];
+  dispatch_assert_queue_V2(_databaseQueue);
 
   if (self->_database)
   {
     return 1;
   }
 
-  v7 = [(FLSQLiteExecutor *)self _unsafe_createDataBase];
-  if (!v7)
+  _unsafe_createDataBase = [(FLSQLiteExecutor *)self _unsafe_createDataBase];
+  if (!_unsafe_createDataBase)
   {
     [(FLSQLiteExecutor *)self performQuery:@"pragma foreign_keys=on" rowHandler:0];
     if ([(FLSQLiteExecutor *)self shouldAutomaticallyMigrate])
@@ -504,14 +504,14 @@ LABEL_9:
     return 1;
   }
 
-  if (a3)
+  if (database)
   {
     v8 = FLErrorDomain;
     v13 = @"FLSQLErrorCode";
-    v9 = [NSNumber numberWithInt:v7];
+    v9 = [NSNumber numberWithInt:_unsafe_createDataBase];
     v14 = v9;
     v10 = [NSDictionary dictionaryWithObjects:&v14 forKeys:&v13 count:1];
-    *a3 = [NSError errorWithDomain:v8 code:1664 userInfo:v10];
+    *database = [NSError errorWithDomain:v8 code:1664 userInfo:v10];
   }
 
   return 0;
@@ -579,8 +579,8 @@ LABEL_9:
 
 - (void)_unsafe_closeDatabase
 {
-  v3 = [objc_opt_class() _databaseQueue];
-  dispatch_assert_queue_V2(v3);
+  _databaseQueue = [objc_opt_class() _databaseQueue];
+  dispatch_assert_queue_V2(_databaseQueue);
 
   if (self->_database)
   {

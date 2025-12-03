@@ -1,16 +1,16 @@
 @interface GEOLocationShifter
-- (void)navdShiftLocation:(id)a3 withCompletionHandler:(id)a4;
+- (void)navdShiftLocation:(id)location withCompletionHandler:(id)handler;
 @end
 
 @implementation GEOLocationShifter
 
-- (void)navdShiftLocation:(id)a3 withCompletionHandler:(id)a4
+- (void)navdShiftLocation:(id)location withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[GEOLocation alloc] initWithCLLocation:v6];
-  v9 = [v8 latLng];
-  [v9 coordinate];
+  locationCopy = location;
+  handlerCopy = handler;
+  v8 = [[GEOLocation alloc] initWithCLLocation:locationCopy];
+  latLng = [v8 latLng];
+  [latLng coordinate];
   v11 = v10;
   v13 = v12;
   v14 = [GEOLocationShifter isLocationShiftRequiredForCoordinate:?];
@@ -33,14 +33,14 @@
     _os_log_impl(&_mh_execute_header, v15, OS_LOG_TYPE_DEBUG, "Location shifting is enabled", buf, 2u);
   }
 
-  v17 = [v6 matchInfo];
-  if (v17)
+  matchInfo = [locationCopy matchInfo];
+  if (matchInfo)
   {
-    v18 = v17;
-    v19 = [v6 matchInfo];
-    v20 = [v19 isMatchShifted];
+    v18 = matchInfo;
+    matchInfo2 = [locationCopy matchInfo];
+    isMatchShifted = [matchInfo2 isMatchShifted];
 
-    if (v20)
+    if (isMatchShifted)
     {
       v21 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v21, OS_LOG_TYPE_DEBUG))
@@ -50,8 +50,8 @@
       }
 
 LABEL_12:
-      [v6 horizontalAccuracy];
-      v7[2](v7, v11, v13, v22);
+      [locationCopy horizontalAccuracy];
+      handlerCopy[2](handlerCopy, v11, v13, v22);
       goto LABEL_16;
     }
   }
@@ -63,8 +63,8 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v23, OS_LOG_TYPE_DEBUG, "Location shifting is enabled. Performing the shift.", v26, 2u);
   }
 
-  [v6 horizontalAccuracy];
-  [(GEOLocationShifter *)self shiftLatLng:v9 accuracy:v7 withCompletionHandler:0 mustGoToNetworkCallback:0 errorHandler:&_dispatch_main_q callbackQueue:?];
+  [locationCopy horizontalAccuracy];
+  [(GEOLocationShifter *)self shiftLatLng:latLng accuracy:handlerCopy withCompletionHandler:0 mustGoToNetworkCallback:0 errorHandler:&_dispatch_main_q callbackQueue:?];
 LABEL_16:
 }
 

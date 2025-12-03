@@ -1,18 +1,18 @@
 @interface HMIHTMLReportBox
 - (CGRect)boundingBox;
-- (HMIHTMLReportBox)initWithBoundingBox:(CGRect)a3 text:(id)a4 color:(id)a5 opacity:(float)a6 value:(float)a7;
+- (HMIHTMLReportBox)initWithBoundingBox:(CGRect)box text:(id)text color:(id)color opacity:(float)opacity value:(float)value;
 @end
 
 @implementation HMIHTMLReportBox
 
-- (HMIHTMLReportBox)initWithBoundingBox:(CGRect)a3 text:(id)a4 color:(id)a5 opacity:(float)a6 value:(float)a7
+- (HMIHTMLReportBox)initWithBoundingBox:(CGRect)box text:(id)text color:(id)color opacity:(float)opacity value:(float)value
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v16 = a4;
-  v17 = a5;
+  height = box.size.height;
+  width = box.size.width;
+  y = box.origin.y;
+  x = box.origin.x;
+  textCopy = text;
+  colorCopy = color;
   v21.receiver = self;
   v21.super_class = HMIHTMLReportBox;
   v18 = [(HMIHTMLReportBox *)&v21 init];
@@ -23,10 +23,10 @@
     v18->_boundingBox.origin.y = y;
     v18->_boundingBox.size.width = width;
     v18->_boundingBox.size.height = height;
-    objc_storeStrong(&v18->_text, a4);
-    objc_storeStrong(&v19->_color, a5);
-    v19->_opacity = a6;
-    v19->_value = a7;
+    objc_storeStrong(&v18->_text, text);
+    objc_storeStrong(&v19->_color, color);
+    v19->_opacity = opacity;
+    v19->_value = value;
   }
 
   return v19;

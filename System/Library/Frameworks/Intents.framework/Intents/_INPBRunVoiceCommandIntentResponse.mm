@@ -1,27 +1,27 @@
 @interface _INPBRunVoiceCommandIntentResponse
-- (BOOL)isEqual:(id)a3;
-- (_INPBRunVoiceCommandIntentResponse)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBRunVoiceCommandIntentResponse)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsIntentCategory:(id)a3;
-- (int)StringAsToggleState:(id)a3;
+- (int)StringAsIntentCategory:(id)category;
+- (int)StringAsToggleState:(id)state;
 - (unint64_t)hash;
-- (void)addStep:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAppBundleId:(id)a3;
-- (void)setHasCustomResponsesDisabled:(BOOL)a3;
-- (void)setHasIntentCategory:(BOOL)a3;
-- (void)setHasInterstitialDisabled:(BOOL)a3;
-- (void)setHasPrefersExecutionOnCompanion:(BOOL)a3;
-- (void)setHasToggleState:(BOOL)a3;
-- (void)setIntentCategory:(int)a3;
-- (void)setLocalizedAppName:(id)a3;
-- (void)setResponseTemplate:(id)a3;
-- (void)setSteps:(id)a3;
-- (void)setToggleState:(int)a3;
-- (void)setUnderlyingIntentTitle:(id)a3;
-- (void)setVerb:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addStep:(id)step;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAppBundleId:(id)id;
+- (void)setHasCustomResponsesDisabled:(BOOL)disabled;
+- (void)setHasIntentCategory:(BOOL)category;
+- (void)setHasInterstitialDisabled:(BOOL)disabled;
+- (void)setHasPrefersExecutionOnCompanion:(BOOL)companion;
+- (void)setHasToggleState:(BOOL)state;
+- (void)setIntentCategory:(int)category;
+- (void)setLocalizedAppName:(id)name;
+- (void)setResponseTemplate:(id)template;
+- (void)setSteps:(id)steps;
+- (void)setToggleState:(int)state;
+- (void)setUnderlyingIntentTitle:(id)title;
+- (void)setVerb:(id)verb;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBRunVoiceCommandIntentResponse
@@ -29,76 +29,76 @@
 - (id)dictionaryRepresentation
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_appBundleId)
   {
-    v4 = [(_INPBRunVoiceCommandIntentResponse *)self appBundleId];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"appBundleId"];
+    appBundleId = [(_INPBRunVoiceCommandIntentResponse *)self appBundleId];
+    v5 = [appBundleId copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"appBundleId"];
   }
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasContinueRunning])
   {
     v6 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBRunVoiceCommandIntentResponse continueRunning](self, "continueRunning")}];
-    [v3 setObject:v6 forKeyedSubscript:@"continueRunning"];
+    [dictionary setObject:v6 forKeyedSubscript:@"continueRunning"];
   }
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasCustomResponsesDisabled])
   {
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBRunVoiceCommandIntentResponse customResponsesDisabled](self, "customResponsesDisabled")}];
-    [v3 setObject:v7 forKeyedSubscript:@"customResponsesDisabled"];
+    [dictionary setObject:v7 forKeyedSubscript:@"customResponsesDisabled"];
   }
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasIntentCategory])
   {
-    v8 = [(_INPBRunVoiceCommandIntentResponse *)self intentCategory];
-    v9 = v8 - 1;
-    if (v8 - 1) < 0x15 && ((0x1FFDFFu >> v9))
+    intentCategory = [(_INPBRunVoiceCommandIntentResponse *)self intentCategory];
+    v9 = intentCategory - 1;
+    if (intentCategory - 1) < 0x15 && ((0x1FFDFFu >> v9))
     {
       v10 = off_1E7283110[v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", intentCategory];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"intentCategory"];
+    [dictionary setObject:v10 forKeyedSubscript:@"intentCategory"];
   }
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasInterstitialDisabled])
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBRunVoiceCommandIntentResponse interstitialDisabled](self, "interstitialDisabled")}];
-    [v3 setObject:v11 forKeyedSubscript:@"interstitialDisabled"];
+    [dictionary setObject:v11 forKeyedSubscript:@"interstitialDisabled"];
   }
 
   if (self->_localizedAppName)
   {
-    v12 = [(_INPBRunVoiceCommandIntentResponse *)self localizedAppName];
-    v13 = [v12 copy];
-    [v3 setObject:v13 forKeyedSubscript:@"localizedAppName"];
+    localizedAppName = [(_INPBRunVoiceCommandIntentResponse *)self localizedAppName];
+    v13 = [localizedAppName copy];
+    [dictionary setObject:v13 forKeyedSubscript:@"localizedAppName"];
   }
 
-  v14 = [(_INPBRunVoiceCommandIntentResponse *)self parameters];
-  v15 = [v14 dictionaryRepresentation];
-  [v3 setObject:v15 forKeyedSubscript:@"parameters"];
+  parameters = [(_INPBRunVoiceCommandIntentResponse *)self parameters];
+  dictionaryRepresentation = [parameters dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"parameters"];
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasPrefersExecutionOnCompanion])
   {
     v16 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBRunVoiceCommandIntentResponse prefersExecutionOnCompanion](self, "prefersExecutionOnCompanion")}];
-    [v3 setObject:v16 forKeyedSubscript:@"prefersExecutionOnCompanion"];
+    [dictionary setObject:v16 forKeyedSubscript:@"prefersExecutionOnCompanion"];
   }
 
   if (self->_responseTemplate)
   {
-    v17 = [(_INPBRunVoiceCommandIntentResponse *)self responseTemplate];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"responseTemplate"];
+    responseTemplate = [(_INPBRunVoiceCommandIntentResponse *)self responseTemplate];
+    v18 = [responseTemplate copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"responseTemplate"];
   }
 
   if ([(NSArray *)self->_steps count])
   {
-    v19 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v38 = 0u;
     v39 = 0u;
     v40 = 0u;
@@ -118,8 +118,8 @@
             objc_enumerationMutation(v20);
           }
 
-          v25 = [*(*(&v38 + 1) + 8 * i) dictionaryRepresentation];
-          [v19 addObject:v25];
+          dictionaryRepresentation2 = [*(*(&v38 + 1) + 8 * i) dictionaryRepresentation];
+          [array addObject:dictionaryRepresentation2];
         }
 
         v22 = [(NSArray *)v20 countByEnumeratingWithState:&v38 objects:v42 count:16];
@@ -128,55 +128,55 @@
       while (v22);
     }
 
-    [v3 setObject:v19 forKeyedSubscript:@"step"];
+    [dictionary setObject:array forKeyedSubscript:@"step"];
   }
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasToggleState])
   {
-    v26 = [(_INPBRunVoiceCommandIntentResponse *)self toggleState];
-    if (v26 == 1)
+    toggleState = [(_INPBRunVoiceCommandIntentResponse *)self toggleState];
+    if (toggleState == 1)
     {
       v27 = @"ON";
     }
 
-    else if (v26 == 2)
+    else if (toggleState == 2)
     {
       v27 = @"OFF";
     }
 
     else
     {
-      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v26];
+      v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", toggleState];
     }
 
-    [v3 setObject:v27 forKeyedSubscript:@"toggleState"];
+    [dictionary setObject:v27 forKeyedSubscript:@"toggleState"];
   }
 
-  v28 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntent];
-  v29 = [v28 dictionaryRepresentation];
-  [v3 setObject:v29 forKeyedSubscript:@"underlyingIntent"];
+  underlyingIntent = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntent];
+  dictionaryRepresentation3 = [underlyingIntent dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"underlyingIntent"];
 
-  v30 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentResponse];
-  v31 = [v30 dictionaryRepresentation];
-  [v3 setObject:v31 forKeyedSubscript:@"underlyingIntentResponse"];
+  underlyingIntentResponse = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentResponse];
+  dictionaryRepresentation4 = [underlyingIntentResponse dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"underlyingIntentResponse"];
 
   if (self->_underlyingIntentTitle)
   {
-    v32 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentTitle];
-    v33 = [v32 copy];
-    [v3 setObject:v33 forKeyedSubscript:@"underlyingIntentTitle"];
+    underlyingIntentTitle = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentTitle];
+    v33 = [underlyingIntentTitle copy];
+    [dictionary setObject:v33 forKeyedSubscript:@"underlyingIntentTitle"];
   }
 
   if (self->_verb)
   {
-    v34 = [(_INPBRunVoiceCommandIntentResponse *)self verb];
-    v35 = [v34 copy];
-    [v3 setObject:v35 forKeyedSubscript:@"verb"];
+    verb = [(_INPBRunVoiceCommandIntentResponse *)self verb];
+    v35 = [verb copy];
+    [dictionary setObject:v35 forKeyedSubscript:@"verb"];
   }
 
   v36 = *MEMORY[0x1E69E9840];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -184,15 +184,15 @@
   v19 = [(NSString *)self->_appBundleId hash];
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasContinueRunning])
   {
-    v3 = [(_INPBRunVoiceCommandIntentResponse *)self hasCustomResponsesDisabled];
+    hasCustomResponsesDisabled = [(_INPBRunVoiceCommandIntentResponse *)self hasCustomResponsesDisabled];
   }
 
   else
   {
-    v3 = [(_INPBRunVoiceCommandIntentResponse *)self hasCustomResponsesDisabled];
+    hasCustomResponsesDisabled = [(_INPBRunVoiceCommandIntentResponse *)self hasCustomResponsesDisabled];
   }
 
-  if (v3)
+  if (hasCustomResponsesDisabled)
   {
     v4 = 2654435761 * self->_customResponsesDisabled;
   }
@@ -253,28 +253,28 @@
   return v15 ^ v16 ^ [(NSString *)self->_verb hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_71;
   }
 
-  v5 = [(_INPBRunVoiceCommandIntentResponse *)self appBundleId];
-  v6 = [v4 appBundleId];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleId = [(_INPBRunVoiceCommandIntentResponse *)self appBundleId];
+  appBundleId2 = [equalCopy appBundleId];
+  if ((appBundleId != 0) == (appBundleId2 == 0))
   {
     goto LABEL_70;
   }
 
-  v7 = [(_INPBRunVoiceCommandIntentResponse *)self appBundleId];
-  if (v7)
+  appBundleId3 = [(_INPBRunVoiceCommandIntentResponse *)self appBundleId];
+  if (appBundleId3)
   {
-    v8 = v7;
-    v9 = [(_INPBRunVoiceCommandIntentResponse *)self appBundleId];
-    v10 = [v4 appBundleId];
-    v11 = [v9 isEqual:v10];
+    v8 = appBundleId3;
+    appBundleId4 = [(_INPBRunVoiceCommandIntentResponse *)self appBundleId];
+    appBundleId5 = [equalCopy appBundleId];
+    v11 = [appBundleId4 isEqual:appBundleId5];
 
     if (!v11)
     {
@@ -286,92 +286,92 @@
   {
   }
 
-  v12 = [(_INPBRunVoiceCommandIntentResponse *)self hasContinueRunning];
-  if (v12 != [v4 hasContinueRunning])
+  hasContinueRunning = [(_INPBRunVoiceCommandIntentResponse *)self hasContinueRunning];
+  if (hasContinueRunning != [equalCopy hasContinueRunning])
   {
     goto LABEL_71;
   }
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasContinueRunning])
   {
-    if ([v4 hasContinueRunning])
+    if ([equalCopy hasContinueRunning])
     {
       continueRunning = self->_continueRunning;
-      if (continueRunning != [v4 continueRunning])
+      if (continueRunning != [equalCopy continueRunning])
       {
         goto LABEL_71;
       }
     }
   }
 
-  v14 = [(_INPBRunVoiceCommandIntentResponse *)self hasCustomResponsesDisabled];
-  if (v14 != [v4 hasCustomResponsesDisabled])
+  hasCustomResponsesDisabled = [(_INPBRunVoiceCommandIntentResponse *)self hasCustomResponsesDisabled];
+  if (hasCustomResponsesDisabled != [equalCopy hasCustomResponsesDisabled])
   {
     goto LABEL_71;
   }
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasCustomResponsesDisabled])
   {
-    if ([v4 hasCustomResponsesDisabled])
+    if ([equalCopy hasCustomResponsesDisabled])
     {
       customResponsesDisabled = self->_customResponsesDisabled;
-      if (customResponsesDisabled != [v4 customResponsesDisabled])
+      if (customResponsesDisabled != [equalCopy customResponsesDisabled])
       {
         goto LABEL_71;
       }
     }
   }
 
-  v16 = [(_INPBRunVoiceCommandIntentResponse *)self hasIntentCategory];
-  if (v16 != [v4 hasIntentCategory])
+  hasIntentCategory = [(_INPBRunVoiceCommandIntentResponse *)self hasIntentCategory];
+  if (hasIntentCategory != [equalCopy hasIntentCategory])
   {
     goto LABEL_71;
   }
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasIntentCategory])
   {
-    if ([v4 hasIntentCategory])
+    if ([equalCopy hasIntentCategory])
     {
       intentCategory = self->_intentCategory;
-      if (intentCategory != [v4 intentCategory])
+      if (intentCategory != [equalCopy intentCategory])
       {
         goto LABEL_71;
       }
     }
   }
 
-  v18 = [(_INPBRunVoiceCommandIntentResponse *)self hasInterstitialDisabled];
-  if (v18 != [v4 hasInterstitialDisabled])
+  hasInterstitialDisabled = [(_INPBRunVoiceCommandIntentResponse *)self hasInterstitialDisabled];
+  if (hasInterstitialDisabled != [equalCopy hasInterstitialDisabled])
   {
     goto LABEL_71;
   }
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasInterstitialDisabled])
   {
-    if ([v4 hasInterstitialDisabled])
+    if ([equalCopy hasInterstitialDisabled])
     {
       interstitialDisabled = self->_interstitialDisabled;
-      if (interstitialDisabled != [v4 interstitialDisabled])
+      if (interstitialDisabled != [equalCopy interstitialDisabled])
       {
         goto LABEL_71;
       }
     }
   }
 
-  v5 = [(_INPBRunVoiceCommandIntentResponse *)self localizedAppName];
-  v6 = [v4 localizedAppName];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleId = [(_INPBRunVoiceCommandIntentResponse *)self localizedAppName];
+  appBundleId2 = [equalCopy localizedAppName];
+  if ((appBundleId != 0) == (appBundleId2 == 0))
   {
     goto LABEL_70;
   }
 
-  v20 = [(_INPBRunVoiceCommandIntentResponse *)self localizedAppName];
-  if (v20)
+  localizedAppName = [(_INPBRunVoiceCommandIntentResponse *)self localizedAppName];
+  if (localizedAppName)
   {
-    v21 = v20;
-    v22 = [(_INPBRunVoiceCommandIntentResponse *)self localizedAppName];
-    v23 = [v4 localizedAppName];
-    v24 = [v22 isEqual:v23];
+    v21 = localizedAppName;
+    localizedAppName2 = [(_INPBRunVoiceCommandIntentResponse *)self localizedAppName];
+    localizedAppName3 = [equalCopy localizedAppName];
+    v24 = [localizedAppName2 isEqual:localizedAppName3];
 
     if (!v24)
     {
@@ -383,20 +383,20 @@
   {
   }
 
-  v5 = [(_INPBRunVoiceCommandIntentResponse *)self parameters];
-  v6 = [v4 parameters];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleId = [(_INPBRunVoiceCommandIntentResponse *)self parameters];
+  appBundleId2 = [equalCopy parameters];
+  if ((appBundleId != 0) == (appBundleId2 == 0))
   {
     goto LABEL_70;
   }
 
-  v25 = [(_INPBRunVoiceCommandIntentResponse *)self parameters];
-  if (v25)
+  parameters = [(_INPBRunVoiceCommandIntentResponse *)self parameters];
+  if (parameters)
   {
-    v26 = v25;
-    v27 = [(_INPBRunVoiceCommandIntentResponse *)self parameters];
-    v28 = [v4 parameters];
-    v29 = [v27 isEqual:v28];
+    v26 = parameters;
+    parameters2 = [(_INPBRunVoiceCommandIntentResponse *)self parameters];
+    parameters3 = [equalCopy parameters];
+    v29 = [parameters2 isEqual:parameters3];
 
     if (!v29)
     {
@@ -408,38 +408,38 @@
   {
   }
 
-  v30 = [(_INPBRunVoiceCommandIntentResponse *)self hasPrefersExecutionOnCompanion];
-  if (v30 != [v4 hasPrefersExecutionOnCompanion])
+  hasPrefersExecutionOnCompanion = [(_INPBRunVoiceCommandIntentResponse *)self hasPrefersExecutionOnCompanion];
+  if (hasPrefersExecutionOnCompanion != [equalCopy hasPrefersExecutionOnCompanion])
   {
     goto LABEL_71;
   }
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasPrefersExecutionOnCompanion])
   {
-    if ([v4 hasPrefersExecutionOnCompanion])
+    if ([equalCopy hasPrefersExecutionOnCompanion])
     {
       prefersExecutionOnCompanion = self->_prefersExecutionOnCompanion;
-      if (prefersExecutionOnCompanion != [v4 prefersExecutionOnCompanion])
+      if (prefersExecutionOnCompanion != [equalCopy prefersExecutionOnCompanion])
       {
         goto LABEL_71;
       }
     }
   }
 
-  v5 = [(_INPBRunVoiceCommandIntentResponse *)self responseTemplate];
-  v6 = [v4 responseTemplate];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleId = [(_INPBRunVoiceCommandIntentResponse *)self responseTemplate];
+  appBundleId2 = [equalCopy responseTemplate];
+  if ((appBundleId != 0) == (appBundleId2 == 0))
   {
     goto LABEL_70;
   }
 
-  v32 = [(_INPBRunVoiceCommandIntentResponse *)self responseTemplate];
-  if (v32)
+  responseTemplate = [(_INPBRunVoiceCommandIntentResponse *)self responseTemplate];
+  if (responseTemplate)
   {
-    v33 = v32;
-    v34 = [(_INPBRunVoiceCommandIntentResponse *)self responseTemplate];
-    v35 = [v4 responseTemplate];
-    v36 = [v34 isEqual:v35];
+    v33 = responseTemplate;
+    responseTemplate2 = [(_INPBRunVoiceCommandIntentResponse *)self responseTemplate];
+    responseTemplate3 = [equalCopy responseTemplate];
+    v36 = [responseTemplate2 isEqual:responseTemplate3];
 
     if (!v36)
     {
@@ -451,20 +451,20 @@
   {
   }
 
-  v5 = [(_INPBRunVoiceCommandIntentResponse *)self steps];
-  v6 = [v4 steps];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleId = [(_INPBRunVoiceCommandIntentResponse *)self steps];
+  appBundleId2 = [equalCopy steps];
+  if ((appBundleId != 0) == (appBundleId2 == 0))
   {
     goto LABEL_70;
   }
 
-  v37 = [(_INPBRunVoiceCommandIntentResponse *)self steps];
-  if (v37)
+  steps = [(_INPBRunVoiceCommandIntentResponse *)self steps];
+  if (steps)
   {
-    v38 = v37;
-    v39 = [(_INPBRunVoiceCommandIntentResponse *)self steps];
-    v40 = [v4 steps];
-    v41 = [v39 isEqual:v40];
+    v38 = steps;
+    steps2 = [(_INPBRunVoiceCommandIntentResponse *)self steps];
+    steps3 = [equalCopy steps];
+    v41 = [steps2 isEqual:steps3];
 
     if (!v41)
     {
@@ -476,38 +476,38 @@
   {
   }
 
-  v42 = [(_INPBRunVoiceCommandIntentResponse *)self hasToggleState];
-  if (v42 != [v4 hasToggleState])
+  hasToggleState = [(_INPBRunVoiceCommandIntentResponse *)self hasToggleState];
+  if (hasToggleState != [equalCopy hasToggleState])
   {
     goto LABEL_71;
   }
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasToggleState])
   {
-    if ([v4 hasToggleState])
+    if ([equalCopy hasToggleState])
     {
       toggleState = self->_toggleState;
-      if (toggleState != [v4 toggleState])
+      if (toggleState != [equalCopy toggleState])
       {
         goto LABEL_71;
       }
     }
   }
 
-  v5 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntent];
-  v6 = [v4 underlyingIntent];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleId = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntent];
+  appBundleId2 = [equalCopy underlyingIntent];
+  if ((appBundleId != 0) == (appBundleId2 == 0))
   {
     goto LABEL_70;
   }
 
-  v44 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntent];
-  if (v44)
+  underlyingIntent = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntent];
+  if (underlyingIntent)
   {
-    v45 = v44;
-    v46 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntent];
-    v47 = [v4 underlyingIntent];
-    v48 = [v46 isEqual:v47];
+    v45 = underlyingIntent;
+    underlyingIntent2 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntent];
+    underlyingIntent3 = [equalCopy underlyingIntent];
+    v48 = [underlyingIntent2 isEqual:underlyingIntent3];
 
     if (!v48)
     {
@@ -519,20 +519,20 @@
   {
   }
 
-  v5 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentResponse];
-  v6 = [v4 underlyingIntentResponse];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleId = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentResponse];
+  appBundleId2 = [equalCopy underlyingIntentResponse];
+  if ((appBundleId != 0) == (appBundleId2 == 0))
   {
     goto LABEL_70;
   }
 
-  v49 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentResponse];
-  if (v49)
+  underlyingIntentResponse = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentResponse];
+  if (underlyingIntentResponse)
   {
-    v50 = v49;
-    v51 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentResponse];
-    v52 = [v4 underlyingIntentResponse];
-    v53 = [v51 isEqual:v52];
+    v50 = underlyingIntentResponse;
+    underlyingIntentResponse2 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentResponse];
+    underlyingIntentResponse3 = [equalCopy underlyingIntentResponse];
+    v53 = [underlyingIntentResponse2 isEqual:underlyingIntentResponse3];
 
     if (!v53)
     {
@@ -544,20 +544,20 @@
   {
   }
 
-  v5 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentTitle];
-  v6 = [v4 underlyingIntentTitle];
-  if ((v5 != 0) == (v6 == 0))
+  appBundleId = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentTitle];
+  appBundleId2 = [equalCopy underlyingIntentTitle];
+  if ((appBundleId != 0) == (appBundleId2 == 0))
   {
     goto LABEL_70;
   }
 
-  v54 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentTitle];
-  if (v54)
+  underlyingIntentTitle = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentTitle];
+  if (underlyingIntentTitle)
   {
-    v55 = v54;
-    v56 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentTitle];
-    v57 = [v4 underlyingIntentTitle];
-    v58 = [v56 isEqual:v57];
+    v55 = underlyingIntentTitle;
+    underlyingIntentTitle2 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentTitle];
+    underlyingIntentTitle3 = [equalCopy underlyingIntentTitle];
+    v58 = [underlyingIntentTitle2 isEqual:underlyingIntentTitle3];
 
     if (!v58)
     {
@@ -569,12 +569,12 @@
   {
   }
 
-  v5 = [(_INPBRunVoiceCommandIntentResponse *)self verb];
-  v6 = [v4 verb];
-  if ((v5 != 0) != (v6 == 0))
+  appBundleId = [(_INPBRunVoiceCommandIntentResponse *)self verb];
+  appBundleId2 = [equalCopy verb];
+  if ((appBundleId != 0) != (appBundleId2 == 0))
   {
-    v59 = [(_INPBRunVoiceCommandIntentResponse *)self verb];
-    if (!v59)
+    verb = [(_INPBRunVoiceCommandIntentResponse *)self verb];
+    if (!verb)
     {
 
 LABEL_74:
@@ -582,10 +582,10 @@ LABEL_74:
       goto LABEL_72;
     }
 
-    v60 = v59;
-    v61 = [(_INPBRunVoiceCommandIntentResponse *)self verb];
-    v62 = [v4 verb];
-    v63 = [v61 isEqual:v62];
+    v60 = verb;
+    verb2 = [(_INPBRunVoiceCommandIntentResponse *)self verb];
+    verb3 = [equalCopy verb];
+    v63 = [verb2 isEqual:verb3];
 
     if (v63)
     {
@@ -605,10 +605,10 @@ LABEL_72:
   return v64;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBRunVoiceCommandIntentResponse allocWithZone:](_INPBRunVoiceCommandIntentResponse init];
-  v6 = [(NSString *)self->_appBundleId copyWithZone:a3];
+  v6 = [(NSString *)self->_appBundleId copyWithZone:zone];
   [(_INPBRunVoiceCommandIntentResponse *)v5 setAppBundleId:v6];
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasContinueRunning])
@@ -631,10 +631,10 @@ LABEL_72:
     [(_INPBRunVoiceCommandIntentResponse *)v5 setInterstitialDisabled:[(_INPBRunVoiceCommandIntentResponse *)self interstitialDisabled]];
   }
 
-  v7 = [(NSString *)self->_localizedAppName copyWithZone:a3];
+  v7 = [(NSString *)self->_localizedAppName copyWithZone:zone];
   [(_INPBRunVoiceCommandIntentResponse *)v5 setLocalizedAppName:v7];
 
-  v8 = [(_INPBDictionary *)self->_parameters copyWithZone:a3];
+  v8 = [(_INPBDictionary *)self->_parameters copyWithZone:zone];
   [(_INPBRunVoiceCommandIntentResponse *)v5 setParameters:v8];
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasPrefersExecutionOnCompanion])
@@ -642,10 +642,10 @@ LABEL_72:
     [(_INPBRunVoiceCommandIntentResponse *)v5 setPrefersExecutionOnCompanion:[(_INPBRunVoiceCommandIntentResponse *)self prefersExecutionOnCompanion]];
   }
 
-  v9 = [(NSString *)self->_responseTemplate copyWithZone:a3];
+  v9 = [(NSString *)self->_responseTemplate copyWithZone:zone];
   [(_INPBRunVoiceCommandIntentResponse *)v5 setResponseTemplate:v9];
 
-  v10 = [(NSArray *)self->_steps copyWithZone:a3];
+  v10 = [(NSArray *)self->_steps copyWithZone:zone];
   [(_INPBRunVoiceCommandIntentResponse *)v5 setSteps:v10];
 
   if ([(_INPBRunVoiceCommandIntentResponse *)self hasToggleState])
@@ -653,52 +653,52 @@ LABEL_72:
     [(_INPBRunVoiceCommandIntentResponse *)v5 setToggleState:[(_INPBRunVoiceCommandIntentResponse *)self toggleState]];
   }
 
-  v11 = [(_INPBArchivedObject *)self->_underlyingIntent copyWithZone:a3];
+  v11 = [(_INPBArchivedObject *)self->_underlyingIntent copyWithZone:zone];
   [(_INPBRunVoiceCommandIntentResponse *)v5 setUnderlyingIntent:v11];
 
-  v12 = [(_INPBArchivedObject *)self->_underlyingIntentResponse copyWithZone:a3];
+  v12 = [(_INPBArchivedObject *)self->_underlyingIntentResponse copyWithZone:zone];
   [(_INPBRunVoiceCommandIntentResponse *)v5 setUnderlyingIntentResponse:v12];
 
-  v13 = [(NSString *)self->_underlyingIntentTitle copyWithZone:a3];
+  v13 = [(NSString *)self->_underlyingIntentTitle copyWithZone:zone];
   [(_INPBRunVoiceCommandIntentResponse *)v5 setUnderlyingIntentTitle:v13];
 
-  v14 = [(NSString *)self->_verb copyWithZone:a3];
+  v14 = [(NSString *)self->_verb copyWithZone:zone];
   [(_INPBRunVoiceCommandIntentResponse *)v5 setVerb:v14];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBRunVoiceCommandIntentResponse *)self data];
+  coderCopy = coder;
+  data = [(_INPBRunVoiceCommandIntentResponse *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBRunVoiceCommandIntentResponse)initWithCoder:(id)a3
+- (_INPBRunVoiceCommandIntentResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBRunVoiceCommandIntentResponse *)self initWithData:v6];
+    self = [(_INPBRunVoiceCommandIntentResponse *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v39 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_INPBRunVoiceCommandIntentResponse *)self appBundleId];
+  toCopy = to;
+  appBundleId = [(_INPBRunVoiceCommandIntentResponse *)self appBundleId];
 
-  if (v5)
+  if (appBundleId)
   {
     appBundleId = self->_appBundleId;
     PBDataWriterWriteStringField();
@@ -728,19 +728,19 @@ LABEL_72:
     PBDataWriterWriteBOOLField();
   }
 
-  v11 = [(_INPBRunVoiceCommandIntentResponse *)self localizedAppName];
+  localizedAppName = [(_INPBRunVoiceCommandIntentResponse *)self localizedAppName];
 
-  if (v11)
+  if (localizedAppName)
   {
     localizedAppName = self->_localizedAppName;
     PBDataWriterWriteStringField();
   }
 
-  v13 = [(_INPBRunVoiceCommandIntentResponse *)self parameters];
+  parameters = [(_INPBRunVoiceCommandIntentResponse *)self parameters];
 
-  if (v13)
+  if (parameters)
   {
-    v14 = [(_INPBRunVoiceCommandIntentResponse *)self parameters];
+    parameters2 = [(_INPBRunVoiceCommandIntentResponse *)self parameters];
     PBDataWriterWriteSubmessage();
   }
 
@@ -750,9 +750,9 @@ LABEL_72:
     PBDataWriterWriteBOOLField();
   }
 
-  v16 = [(_INPBRunVoiceCommandIntentResponse *)self responseTemplate];
+  responseTemplate = [(_INPBRunVoiceCommandIntentResponse *)self responseTemplate];
 
-  if (v16)
+  if (responseTemplate)
   {
     responseTemplate = self->_responseTemplate;
     PBDataWriterWriteStringField();
@@ -796,33 +796,33 @@ LABEL_72:
     PBDataWriterWriteInt32Field();
   }
 
-  v25 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntent];
+  underlyingIntent = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntent];
 
-  if (v25)
+  if (underlyingIntent)
   {
-    v26 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntent];
+    underlyingIntent2 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntent];
     PBDataWriterWriteSubmessage();
   }
 
-  v27 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentResponse];
+  underlyingIntentResponse = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentResponse];
 
-  if (v27)
+  if (underlyingIntentResponse)
   {
-    v28 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentResponse];
+    underlyingIntentResponse2 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentResponse];
     PBDataWriterWriteSubmessage();
   }
 
-  v29 = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentTitle];
+  underlyingIntentTitle = [(_INPBRunVoiceCommandIntentResponse *)self underlyingIntentTitle];
 
-  if (v29)
+  if (underlyingIntentTitle)
   {
     underlyingIntentTitle = self->_underlyingIntentTitle;
     PBDataWriterWriteStringField();
   }
 
-  v31 = [(_INPBRunVoiceCommandIntentResponse *)self verb];
+  verb = [(_INPBRunVoiceCommandIntentResponse *)self verb];
 
-  if (v31)
+  if (verb)
   {
     verb = self->_verb;
     PBDataWriterWriteStringField();
@@ -831,31 +831,31 @@ LABEL_72:
   v33 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setVerb:(id)a3
+- (void)setVerb:(id)verb
 {
-  v4 = [a3 copy];
+  v4 = [verb copy];
   verb = self->_verb;
   self->_verb = v4;
 
   MEMORY[0x1EEE66BB8](v4, verb);
 }
 
-- (void)setUnderlyingIntentTitle:(id)a3
+- (void)setUnderlyingIntentTitle:(id)title
 {
-  v4 = [a3 copy];
+  v4 = [title copy];
   underlyingIntentTitle = self->_underlyingIntentTitle;
   self->_underlyingIntentTitle = v4;
 
   MEMORY[0x1EEE66BB8](v4, underlyingIntentTitle);
 }
 
-- (int)StringAsToggleState:(id)a3
+- (int)StringAsToggleState:(id)state
 {
-  v3 = a3;
+  stateCopy = state;
   v4 = 1;
-  if (([v3 isEqualToString:@"ON"] & 1) == 0)
+  if (([stateCopy isEqualToString:@"ON"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"OFF"])
+    if ([stateCopy isEqualToString:@"OFF"])
     {
       v4 = 2;
     }
@@ -869,9 +869,9 @@ LABEL_72:
   return v4;
 }
 
-- (void)setHasToggleState:(BOOL)a3
+- (void)setHasToggleState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 32;
   }
@@ -884,10 +884,10 @@ LABEL_72:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setToggleState:(int)a3
+- (void)setToggleState:(int)state
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (state == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xDF;
   }
@@ -895,49 +895,49 @@ LABEL_72:
   else
   {
     *&self->_has = has | 0x20;
-    self->_toggleState = a3;
+    self->_toggleState = state;
   }
 }
 
-- (void)addStep:(id)a3
+- (void)addStep:(id)step
 {
-  v4 = a3;
+  stepCopy = step;
   steps = self->_steps;
-  v8 = v4;
+  v8 = stepCopy;
   if (!steps)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_steps;
-    self->_steps = v6;
+    self->_steps = array;
 
-    v4 = v8;
+    stepCopy = v8;
     steps = self->_steps;
   }
 
-  [(NSArray *)steps addObject:v4];
+  [(NSArray *)steps addObject:stepCopy];
 }
 
-- (void)setSteps:(id)a3
+- (void)setSteps:(id)steps
 {
-  v4 = [a3 mutableCopy];
+  v4 = [steps mutableCopy];
   steps = self->_steps;
   self->_steps = v4;
 
   MEMORY[0x1EEE66BB8](v4, steps);
 }
 
-- (void)setResponseTemplate:(id)a3
+- (void)setResponseTemplate:(id)template
 {
-  v4 = [a3 copy];
+  v4 = [template copy];
   responseTemplate = self->_responseTemplate;
   self->_responseTemplate = v4;
 
   MEMORY[0x1EEE66BB8](v4, responseTemplate);
 }
 
-- (void)setHasPrefersExecutionOnCompanion:(BOOL)a3
+- (void)setHasPrefersExecutionOnCompanion:(BOOL)companion
 {
-  if (a3)
+  if (companion)
   {
     v3 = 16;
   }
@@ -950,18 +950,18 @@ LABEL_72:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setLocalizedAppName:(id)a3
+- (void)setLocalizedAppName:(id)name
 {
-  v4 = [a3 copy];
+  v4 = [name copy];
   localizedAppName = self->_localizedAppName;
   self->_localizedAppName = v4;
 
   MEMORY[0x1EEE66BB8](v4, localizedAppName);
 }
 
-- (void)setHasInterstitialDisabled:(BOOL)a3
+- (void)setHasInterstitialDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 8;
   }
@@ -974,105 +974,105 @@ LABEL_72:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (int)StringAsIntentCategory:(id)a3
+- (int)StringAsIntentCategory:(id)category
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"CATEGORY_INFORMATION"])
+  categoryCopy = category;
+  if ([categoryCopy isEqualToString:@"CATEGORY_INFORMATION"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_PLAY_AUDIO"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_PLAY_AUDIO"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_PLAY_VIDEO"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_PLAY_VIDEO"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_ORDER"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_ORDER"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_NAVIGATION"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_NAVIGATION"])
   {
     v4 = 5;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_START"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_START"])
   {
     v4 = 6;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_SHARE"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_SHARE"])
   {
     v4 = 7;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_CREATE"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_CREATE"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_SEARCH"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_SEARCH"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_TOGGLE"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_TOGGLE"])
   {
     v4 = 11;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_DOWNLOAD"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_DOWNLOAD"])
   {
     v4 = 12;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_LOG"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_LOG"])
   {
     v4 = 13;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_CHECK_IN"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_CHECK_IN"])
   {
     v4 = 14;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_WORKFLOW"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_WORKFLOW"])
   {
     v4 = 15;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_REQUEST"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_REQUEST"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_SET"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_SET"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_CALL_AUDIO"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_CALL_AUDIO"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_CALL_VIDEO"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_CALL_VIDEO"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_PLAY_SOUND"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_PLAY_SOUND"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"CATEGORY_USER_ACTIVITY"])
+  else if ([categoryCopy isEqualToString:@"CATEGORY_USER_ACTIVITY"])
   {
     v4 = 21;
   }
@@ -1085,9 +1085,9 @@ LABEL_72:
   return v4;
 }
 
-- (void)setHasIntentCategory:(BOOL)a3
+- (void)setHasIntentCategory:(BOOL)category
 {
-  if (a3)
+  if (category)
   {
     v3 = 4;
   }
@@ -1100,10 +1100,10 @@ LABEL_72:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setIntentCategory:(int)a3
+- (void)setIntentCategory:(int)category
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (category == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFB;
   }
@@ -1111,13 +1111,13 @@ LABEL_72:
   else
   {
     *&self->_has = has | 4;
-    self->_intentCategory = a3;
+    self->_intentCategory = category;
   }
 }
 
-- (void)setHasCustomResponsesDisabled:(BOOL)a3
+- (void)setHasCustomResponsesDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 2;
   }
@@ -1130,9 +1130,9 @@ LABEL_72:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setAppBundleId:(id)a3
+- (void)setAppBundleId:(id)id
 {
-  v4 = [a3 copy];
+  v4 = [id copy];
   appBundleId = self->_appBundleId;
   self->_appBundleId = v4;
 

@@ -1,18 +1,18 @@
 @interface _UIUCBKBSelectionBackground
 - (CGSize)intrinsicContentSize;
-- (_UIUCBKBSelectionBackground)initWithFrame:(CGRect)a3;
+- (_UIUCBKBSelectionBackground)initWithFrame:(CGRect)frame;
 - (void)_updateBackgroundProvidingView;
 - (void)layoutSubviews;
-- (void)setShowButtonShape:(BOOL)a3;
+- (void)setShowButtonShape:(BOOL)shape;
 @end
 
 @implementation _UIUCBKBSelectionBackground
 
-- (_UIUCBKBSelectionBackground)initWithFrame:(CGRect)a3
+- (_UIUCBKBSelectionBackground)initWithFrame:(CGRect)frame
 {
   v6.receiver = self;
   v6.super_class = _UIUCBKBSelectionBackground;
-  v3 = [(UIView *)&v6 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIView *)&v6 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -22,11 +22,11 @@
   return v4;
 }
 
-- (void)setShowButtonShape:(BOOL)a3
+- (void)setShowButtonShape:(BOOL)shape
 {
-  if (self->_showButtonShape != a3)
+  if (self->_showButtonShape != shape)
   {
-    self->_showButtonShape = a3;
+    self->_showButtonShape = shape;
     [(_UIUCBKBSelectionBackground *)self _updateBackgroundProvidingView];
   }
 }
@@ -45,8 +45,8 @@
       self->_backgroundProvidingView = v7;
 
       [(UIView *)self->_backgroundProvidingView _setContinuousCornerRadius:4.0];
-      v9 = [(UIView *)self layer];
-      [v9 setAllowsGroupBlending:0];
+      layer = [(UIView *)self layer];
+      [layer setAllowsGroupBlending:0];
 
       v10 = self->_backgroundProvidingView;
 
@@ -67,17 +67,17 @@
   [(UIView *)self bounds];
   [(UIView *)self->_backgroundProvidingView setFrame:?];
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 _inheritedRenderConfig];
-  v5 = [v4 lightKeyboard];
+  _inheritedRenderConfig = [v3 _inheritedRenderConfig];
+  lightKeyboard = [_inheritedRenderConfig lightKeyboard];
 
-  if (v5)
+  if (lightKeyboard)
   {
     v6 = [UIColor colorWithCGColor:UIKBGetNamedColor(@"UIKBColorGray_Percent55")];
     [(UIView *)self->_backgroundProvidingView setBackgroundColor:v6];
 
-    v9 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979850]];
-    v7 = [(UIView *)self->_backgroundProvidingView layer];
-    [v7 setCompositingFilter:v9];
+    layer2 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E6979850]];
+    layer = [(UIView *)self->_backgroundProvidingView layer];
+    [layer setCompositingFilter:layer2];
   }
 
   else
@@ -85,8 +85,8 @@
     v8 = [UIColor colorWithCGColor:UIKBGetNamedColor(@"UIKBColorKeyGrayKeyDarkBackground")];
     [(UIView *)self->_backgroundProvidingView setBackgroundColor:v8];
 
-    v9 = [(UIView *)self->_backgroundProvidingView layer];
-    [v9 setCompositingFilter:0];
+    layer2 = [(UIView *)self->_backgroundProvidingView layer];
+    [layer2 setCompositingFilter:0];
   }
 }
 

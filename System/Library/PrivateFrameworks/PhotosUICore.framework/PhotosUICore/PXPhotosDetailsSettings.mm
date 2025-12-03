@@ -2,7 +2,7 @@
 + (PXPhotosDetailsSettings)sharedInstance;
 + (id)settingsControllerModule;
 + (id)transientProperties;
-+ (void)_fillLibraryWithFakeAssets:(id)a3;
++ (void)_fillLibraryWithFakeAssets:(id)assets;
 - (PXAssetBadgeInfo)debugBadgeInfo;
 - (void)setDefaultValues;
 @end
@@ -108,15 +108,15 @@ void __41__PXPhotosDetailsSettings_sharedInstance__block_invoke()
   return result;
 }
 
-+ (void)_fillLibraryWithFakeAssets:(id)a3
++ (void)_fillLibraryWithFakeAssets:(id)assets
 {
-  v3 = a3;
+  assetsCopy = assets;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __58__PXPhotosDetailsSettings_UI___fillLibraryWithFakeAssets___block_invoke;
   v6[3] = &unk_1E7741CB8;
-  v7 = v3;
-  v4 = v3;
+  v7 = assetsCopy;
+  v4 = assetsCopy;
   v5 = [off_1E7721438 show:v6];
 }
 
@@ -171,14 +171,14 @@ void __58__PXPhotosDetailsSettings_UI___fillLibraryWithFakeAssets___block_invoke
 + (id)settingsControllerModule
 {
   v230[1] = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
   v4 = MEMORY[0x1E69C6638];
   v5 = MEMORY[0x1E69C65E8];
   v220[0] = MEMORY[0x1E69E9820];
   v220[1] = 3221225472;
   v220[2] = __55__PXPhotosDetailsSettings_UI__settingsControllerModule__block_invoke;
   v220[3] = &unk_1E773B578;
-  v6 = v3;
+  v6 = px_deprecated_appPhotoLibrary;
   v221 = v6;
   v7 = [v5 px_rowWithTitle:@"Test Photos Details" action:v220];
   v230[0] = v7;
@@ -204,7 +204,7 @@ void __58__PXPhotosDetailsSettings_UI___fillLibraryWithFakeAssets___block_invoke
   v217[2] = __55__PXPhotosDetailsSettings_UI__settingsControllerModule__block_invoke_3;
   v217[3] = &unk_1E7747050;
   v218 = v6;
-  v219 = a1;
+  selfCopy = self;
   v215 = v6;
   v178 = [v13 actionWithHandler:v217];
   v168 = [v12 rowWithTitle:@"Fill Library with Fake Assets" action:v178];
@@ -451,7 +451,7 @@ void __58__PXPhotosDetailsSettings_UI___fillLibraryWithFakeAssets___block_invoke
   v119 = [MEMORY[0x1E695DEC8] arrayWithObjects:v223 count:5];
   v120 = [v172 sectionWithRows:v119 title:@"Caption Widget" conditionFormat:@"showCaptionHashtagsWidget != 0"];
 
-  v121 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
   v122 = MEMORY[0x1E69C6638];
   v222[0] = v216;
   v222[1] = v214;
@@ -461,7 +461,7 @@ void __58__PXPhotosDetailsSettings_UI___fillLibraryWithFakeAssets___block_invoke
   v222[5] = v120;
   v222[6] = v197;
   v222[7] = v202;
-  v222[8] = v121;
+  v222[8] = px_restoreDefaultsSection;
   v123 = [MEMORY[0x1E695DEC8] arrayWithObjects:v222 count:9];
   v124 = [v122 moduleWithTitle:@"Photos Details" contents:v123];
 
@@ -496,7 +496,7 @@ __CFString *__55__PXPhotosDetailsSettings_UI__settingsControllerModule__block_in
   block[1] = 3221225472;
   block[2] = __46__PXPhotosDetailsSettings_transientProperties__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (transientProperties_onceToken_184895 != -1)
   {
     dispatch_once(&transientProperties_onceToken_184895, block);

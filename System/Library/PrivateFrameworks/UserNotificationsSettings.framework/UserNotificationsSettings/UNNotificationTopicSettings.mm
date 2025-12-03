@@ -1,31 +1,31 @@
 @interface UNNotificationTopicSettings
-- (UNNotificationTopicSettings)initWithCoder:(id)a3;
-- (UNNotificationTopicSettings)initWithTopic:(id)a3 settings:(id)a4 muteAssertion:(id)a5;
+- (UNNotificationTopicSettings)initWithCoder:(id)coder;
+- (UNNotificationTopicSettings)initWithTopic:(id)topic settings:(id)settings muteAssertion:(id)assertion;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UNNotificationTopicSettings
 
-- (UNNotificationTopicSettings)initWithTopic:(id)a3 settings:(id)a4 muteAssertion:(id)a5
+- (UNNotificationTopicSettings)initWithTopic:(id)topic settings:(id)settings muteAssertion:(id)assertion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  topicCopy = topic;
+  settingsCopy = settings;
+  assertionCopy = assertion;
   v19.receiver = self;
   v19.super_class = UNNotificationTopicSettings;
   v11 = [(UNNotificationTopicSettings *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [topicCopy copy];
     topic = v11->_topic;
     v11->_topic = v12;
 
-    v14 = [v9 copy];
+    v14 = [settingsCopy copy];
     topicSettings = v11->_topicSettings;
     v11->_topicSettings = v14;
 
-    v16 = [v10 copy];
+    v16 = [assertionCopy copy];
     muteAssertion = v11->_muteAssertion;
     v11->_muteAssertion = v16;
   }
@@ -37,33 +37,33 @@
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(UNNotificationTopicSettings *)self topic];
-  v6 = [(UNNotificationTopicSettings *)self topicSettings];
-  v7 = [(UNNotificationTopicSettings *)self muteAssertion];
-  v8 = [v3 stringWithFormat:@"<%@: %p topic: %@, settings: %@, muteAssertion: %@>", v4, self, v5, v6, v7];;
+  topic = [(UNNotificationTopicSettings *)self topic];
+  topicSettings = [(UNNotificationTopicSettings *)self topicSettings];
+  muteAssertion = [(UNNotificationTopicSettings *)self muteAssertion];
+  v8 = [v3 stringWithFormat:@"<%@: %p topic: %@, settings: %@, muteAssertion: %@>", v4, self, topic, topicSettings, muteAssertion];;
 
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(UNNotificationTopicSettings *)self topic];
-  [v4 encodeObject:v5 forKey:@"topic"];
+  coderCopy = coder;
+  topic = [(UNNotificationTopicSettings *)self topic];
+  [coderCopy encodeObject:topic forKey:@"topic"];
 
-  v6 = [(UNNotificationTopicSettings *)self topicSettings];
-  [v4 encodeObject:v6 forKey:@"topicSettings"];
+  topicSettings = [(UNNotificationTopicSettings *)self topicSettings];
+  [coderCopy encodeObject:topicSettings forKey:@"topicSettings"];
 
-  v7 = [(UNNotificationTopicSettings *)self muteAssertion];
-  [v4 encodeObject:v7 forKey:@"muteAssertion"];
+  muteAssertion = [(UNNotificationTopicSettings *)self muteAssertion];
+  [coderCopy encodeObject:muteAssertion forKey:@"muteAssertion"];
 }
 
-- (UNNotificationTopicSettings)initWithCoder:(id)a3
+- (UNNotificationTopicSettings)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"topicSettings"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"muteAssertion"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"topic"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"topicSettings"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"muteAssertion"];
 
   v8 = [(UNNotificationTopicSettings *)self initWithTopic:v5 settings:v6 muteAssertion:v7];
   return v8;

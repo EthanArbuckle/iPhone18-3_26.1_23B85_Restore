@@ -1,17 +1,17 @@
 @interface AppDelegate
 - (_TtC21TDGSharingViewService11AppDelegate)init;
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5;
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options;
 @end
 
 @implementation AppDelegate
 
-- (id)application:(id)a3 configurationForConnectingSceneSession:(id)a4 options:(id)a5
+- (id)application:(id)application configurationForConnectingSceneSession:(id)session options:(id)options
 {
-  v5 = a4;
-  v6 = [v5 role];
+  sessionCopy = session;
+  role = [sessionCopy role];
   v7 = objc_allocWithZone(UISceneConfiguration);
   v8 = String._bridgeToObjectiveC()();
-  v9 = [v7 initWithName:v8 sessionRole:v6];
+  v9 = [v7 initWithName:v8 sessionRole:role];
 
   return v9;
 }

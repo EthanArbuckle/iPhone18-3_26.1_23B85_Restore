@@ -1,21 +1,21 @@
 @interface PKTransactionReceiptSummaryItem
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToTransactionReceiptSummaryItem:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToTransactionReceiptSummaryItem:(id)item;
 - (PKCurrencyAmount)currencyAmount;
-- (PKTransactionReceiptSummaryItem)initWithCoder:(id)a3;
-- (PKTransactionReceiptSummaryItem)initWithDictionary:(id)a3 bundle:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PKTransactionReceiptSummaryItem)initWithCoder:(id)coder;
+- (PKTransactionReceiptSummaryItem)initWithDictionary:(id)dictionary bundle:(id)bundle;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PKTransactionReceiptSummaryItem
 
-- (PKTransactionReceiptSummaryItem)initWithDictionary:(id)a3 bundle:(id)a4
+- (PKTransactionReceiptSummaryItem)initWithDictionary:(id)dictionary bundle:(id)bundle
 {
-  v6 = a3;
-  v7 = a4;
+  dictionaryCopy = dictionary;
+  bundleCopy = bundle;
   v31.receiver = self;
   v31.super_class = PKTransactionReceiptSummaryItem;
   v8 = [(PKTransactionReceiptSummaryItem *)&v31 init];
@@ -24,7 +24,7 @@
     goto LABEL_19;
   }
 
-  v9 = [v6 PKStringForKey:@"type"];
+  v9 = [dictionaryCopy PKStringForKey:@"type"];
   v10 = v9;
   if (v9 == @"tax")
   {
@@ -71,20 +71,20 @@ LABEL_5:
 LABEL_16:
 
   v8->_type = v12;
-  v22 = [v6 PKStringForKey:@"itemDescription"];
+  v22 = [dictionaryCopy PKStringForKey:@"itemDescription"];
   v23 = v22;
   if (v22)
   {
-    v24 = PKLocalizedReceiptStringForReceiptBundle(v22, v7);
+    v24 = PKLocalizedReceiptStringForReceiptBundle(v22, bundleCopy);
     label = v8->_label;
     v8->_label = v24;
   }
 
-  v26 = [v6 PKDecimalNumberFromStringForKey:@"amount"];
+  v26 = [dictionaryCopy PKDecimalNumberFromStringForKey:@"amount"];
   amount = v8->_amount;
   v8->_amount = v26;
 
-  v28 = [v6 PKStringForKey:@"currencyCode"];
+  v28 = [dictionaryCopy PKStringForKey:@"currencyCode"];
   currencyCode = v8->_currencyCode;
   v8->_currencyCode = v28;
 
@@ -107,30 +107,30 @@ LABEL_19:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self == v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self == equalCopy)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionReceiptSummaryItem *)self isEqualToTransactionReceiptSummaryItem:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKTransactionReceiptSummaryItem *)self isEqualToTransactionReceiptSummaryItem:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToTransactionReceiptSummaryItem:(id)a3
+- (BOOL)isEqualToTransactionReceiptSummaryItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_type == v4[1])
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy && self->_type == itemCopy[1])
   {
-    v6 = v4[2];
+    v6 = itemCopy[2];
     v7 = self->_label;
     v8 = v6;
     v9 = v8;
@@ -210,24 +210,24 @@ LABEL_18:
   return v5;
 }
 
-- (PKTransactionReceiptSummaryItem)initWithCoder:(id)a3
+- (PKTransactionReceiptSummaryItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = PKTransactionReceiptSummaryItem;
   v5 = [(PKTransactionReceiptSummaryItem *)&v13 init];
   if (v5)
   {
-    v5->_type = [v4 decodeIntegerForKey:@"type"];
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"itemDescription"];
+    v5->_type = [coderCopy decodeIntegerForKey:@"type"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"itemDescription"];
     label = v5->_label;
     v5->_label = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"amount"];
     amount = v5->_amount;
     v5->_amount = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v10;
   }
@@ -235,29 +235,29 @@ LABEL_18:
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeObject:self->_label forKey:@"itemDescription"];
-  [v5 encodeObject:self->_amount forKey:@"amount"];
-  [v5 encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeObject:self->_label forKey:@"itemDescription"];
+  [coderCopy encodeObject:self->_amount forKey:@"amount"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5[1] = self->_type;
-  v6 = [(NSString *)self->_label copyWithZone:a3];
+  v6 = [(NSString *)self->_label copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
-  v8 = [(NSDecimalNumber *)self->_amount copyWithZone:a3];
+  v8 = [(NSDecimalNumber *)self->_amount copyWithZone:zone];
   v9 = v5[3];
   v5[3] = v8;
 
-  v10 = [(NSString *)self->_currencyCode copyWithZone:a3];
+  v10 = [(NSString *)self->_currencyCode copyWithZone:zone];
   v11 = v5[4];
   v5[4] = v10;
 

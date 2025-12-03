@@ -1,63 +1,63 @@
 @interface UIViewController
 - (BKRootBarCoordinating)bk_rootBarCoordinator;
 - (id)_bk_sceneController;
-- (void)_bk_setSceneController:(id)a3;
-- (void)bk_presentCollectionWithID:(id)a3 replaceExistingPresentedCollection:(BOOL)a4;
+- (void)_bk_setSceneController:(id)controller;
+- (void)bk_presentCollectionWithID:(id)d replaceExistingPresentedCollection:(BOOL)collection;
 @end
 
 @implementation UIViewController
 
-- (void)bk_presentCollectionWithID:(id)a3 replaceExistingPresentedCollection:(BOOL)a4
+- (void)bk_presentCollectionWithID:(id)d replaceExistingPresentedCollection:(BOOL)collection
 {
-  v4 = a4;
-  v6 = a3;
-  v37 = v6;
-  v35 = v4;
-  if ([v6 isEqualToString:kBKCollectionDefaultIDFinished])
+  collectionCopy = collection;
+  dCopy = d;
+  v37 = dCopy;
+  v35 = collectionCopy;
+  if ([dCopy isEqualToString:kBKCollectionDefaultIDFinished])
   {
     v7 = BKLibraryBookshelfLibraryFinishedViewConfiguration;
 LABEL_7:
     v8 = objc_alloc_init(v7);
     v9 = [BKLibraryBookshelfController setupBookshelfWithConfig:v8];
-    v10 = [BCCollection titleForDefaultCollectionID:v6];
+    v10 = [BCCollection titleForDefaultCollectionID:dCopy];
     [v9 setTitle:v10];
     goto LABEL_8;
   }
 
-  if ([v6 isEqualToString:kBKCollectionDefaultIDWantToRead])
+  if ([dCopy isEqualToString:kBKCollectionDefaultIDWantToRead])
   {
     v7 = BKLibraryBookshelfLibraryWantToReadViewConfiguration;
     goto LABEL_7;
   }
 
-  if ([v6 isEqualToString:kBKCollectionDefaultIDSamples])
+  if ([dCopy isEqualToString:kBKCollectionDefaultIDSamples])
   {
     v7 = BKLibraryBookshelfLibrarySamplesViewConfiguration;
     goto LABEL_7;
   }
 
   v30 = +[BKLibraryManager defaultManager];
-  v31 = [v30 collectionController];
+  collectionController = [v30 collectionController];
   v32 = +[BKLibraryManager defaultManager];
-  v33 = [v32 uiChildContext];
-  v8 = [v31 mutableCollectionWithCollectionID:v6 inManagedObjectContext:v33 error:0];
+  uiChildContext = [v32 uiChildContext];
+  v8 = [collectionController mutableCollectionWithCollectionID:dCopy inManagedObjectContext:uiChildContext error:0];
 
   v10 = [[BKLibraryBookshelfLibraryCollectionViewConfiguration alloc] initWithCollection:v8];
   v9 = [BKLibraryBookshelfController setupBookshelfWithConfig:v10];
-  v34 = [v8 localizedTitle];
-  [v9 setTitle:v34];
+  localizedTitle = [v8 localizedTitle];
+  [v9 setTitle:localizedTitle];
 
 LABEL_8:
   objc_opt_class();
   v11 = [(UIViewController *)self im_ancestorFlowControllerConformingToProtocol:&OBJC_PROTOCOL___BKPrimaryScenePresenting];
   v12 = BUDynamicCast();
 
-  v13 = [v12 rootBarCoordinator];
-  v14 = [v13 selectedNavigationController];
+  rootBarCoordinator = [v12 rootBarCoordinator];
+  selectedNavigationController = [rootBarCoordinator selectedNavigationController];
 
-  v15 = [v14 viewControllers];
+  viewControllers = [selectedNavigationController viewControllers];
   v36 = v12;
-  if ([v15 count] < 2)
+  if ([viewControllers count] < 2)
   {
     v17 = 0;
   }
@@ -65,7 +65,7 @@ LABEL_8:
   else
   {
     objc_opt_class();
-    v16 = [v15 lastObject];
+    lastObject = [viewControllers lastObject];
     v17 = BUDynamicCast();
   }
 
@@ -75,7 +75,7 @@ LABEL_8:
   v39 = 0u;
   v40 = 0u;
   v41 = 0u;
-  v19 = v15;
+  v19 = viewControllers;
   v20 = [v19 countByEnumeratingWithState:&v38 objects:v42 count:16];
   if (v20)
   {
@@ -101,9 +101,9 @@ LABEL_8:
     while (v21);
   }
 
-  v25 = [v17 collectionID];
-  v26 = [v18 collectionID];
-  v27 = [v25 isEqualToString:v26];
+  collectionID = [v17 collectionID];
+  collectionID2 = [v18 collectionID];
+  v27 = [collectionID isEqualToString:collectionID2];
 
   if ((v27 & 1) == 0)
   {
@@ -113,12 +113,12 @@ LABEL_8:
       [v28 removeLastObject];
       [v28 addObject:v9];
       v29 = [v28 copy];
-      [v14 setViewControllers:v29 animated:1];
+      [selectedNavigationController setViewControllers:v29 animated:1];
     }
 
     else
     {
-      [v14 pushViewController:v9 animated:1];
+      [selectedNavigationController pushViewController:v9 animated:1];
     }
   }
 }
@@ -126,32 +126,32 @@ LABEL_8:
 - (id)_bk_sceneController
 {
   v2 = objc_getAssociatedObject(self, &off_100A09750);
-  v3 = [v2 sceneController];
+  sceneController = [v2 sceneController];
 
-  return v3;
+  return sceneController;
 }
 
-- (void)_bk_setSceneController:(id)a3
+- (void)_bk_setSceneController:(id)controller
 {
-  v4 = a3;
-  value = [[_BKSceneControllerWrapper alloc] initWithSceneController:v4];
+  controllerCopy = controller;
+  value = [[_BKSceneControllerWrapper alloc] initWithSceneController:controllerCopy];
 
   objc_setAssociatedObject(self, &off_100A09750, value, 1);
 }
 
 - (BKRootBarCoordinating)bk_rootBarCoordinator
 {
-  v2 = self;
-  v3 = [(UIViewController *)v2 splitViewController];
-  if (!v3)
+  selfCopy = self;
+  splitViewController = [(UIViewController *)selfCopy splitViewController];
+  if (!splitViewController)
   {
-    v3 = [(UIViewController *)v2 tabBarController];
+    splitViewController = [(UIViewController *)selfCopy tabBarController];
   }
 
-  v4 = v3;
-  v5 = [(UISplitViewController *)v3 bk_rootBarCoordinator];
+  v4 = splitViewController;
+  bk_rootBarCoordinator = [(UISplitViewController *)splitViewController bk_rootBarCoordinator];
 
-  return v5;
+  return bk_rootBarCoordinator;
 }
 
 @end

@@ -1,6 +1,6 @@
 @interface FindMyAccountOverviewViewController
-- (FindMyAccountOverviewViewController)initWithCoder:(id)a3;
-- (FindMyAccountOverviewViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (FindMyAccountOverviewViewController)initWithCoder:(id)coder;
+- (FindMyAccountOverviewViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
@@ -16,11 +16,11 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v3 = self;
+  selfCopy = self;
   FindMyAccountOverviewViewController.viewDidLoad()();
 }
 
-- (FindMyAccountOverviewViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (FindMyAccountOverviewViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   sub_24B2D5694();
   sub_24B2D5684();
@@ -30,26 +30,26 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  if (a3)
+  if (name)
   {
     sub_24B2D5394();
-    v7 = a4;
-    a3 = sub_24B2D5374();
+    bundleCopy = bundle;
+    name = sub_24B2D5374();
   }
 
   else
   {
-    v8 = a4;
+    bundleCopy2 = bundle;
   }
 
   v11.receiver = self;
   v11.super_class = FindMyAccountOverviewViewController;
-  v9 = [(FindMyAccountOverviewViewController *)&v11 initWithNibName:a3 bundle:a4];
+  v9 = [(FindMyAccountOverviewViewController *)&v11 initWithNibName:name bundle:bundle];
 
   return v9;
 }
 
-- (FindMyAccountOverviewViewController)initWithCoder:(id)a3
+- (FindMyAccountOverviewViewController)initWithCoder:(id)coder
 {
   sub_24B2D5694();
   sub_24B2D5684();
@@ -61,8 +61,8 @@
 
   v8.receiver = self;
   v8.super_class = FindMyAccountOverviewViewController;
-  v5 = a3;
-  v6 = [(FindMyAccountOverviewViewController *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(FindMyAccountOverviewViewController *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

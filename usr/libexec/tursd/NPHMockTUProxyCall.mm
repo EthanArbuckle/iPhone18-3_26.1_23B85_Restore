@@ -18,63 +18,63 @@
 
 - (id)displayName
 {
-  v3 = [(NPHMockTUProxyCall *)self mockDisplayName];
-  v4 = v3;
-  if (v3)
+  mockDisplayName = [(NPHMockTUProxyCall *)self mockDisplayName];
+  v4 = mockDisplayName;
+  if (mockDisplayName)
   {
-    v5 = v3;
+    displayName = mockDisplayName;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NPHMockTUProxyCall;
-    v5 = [(NPHMockTUProxyCall *)&v8 displayName];
+    displayName = [(NPHMockTUProxyCall *)&v8 displayName];
   }
 
-  v6 = v5;
+  v6 = displayName;
 
   return v6;
 }
 
 - (id)localizedLabel
 {
-  v3 = [(NPHMockTUProxyCall *)self mockLocalizedLabel];
-  v4 = v3;
-  if (v3)
+  mockLocalizedLabel = [(NPHMockTUProxyCall *)self mockLocalizedLabel];
+  v4 = mockLocalizedLabel;
+  if (mockLocalizedLabel)
   {
-    v5 = v3;
+    localizedLabel = mockLocalizedLabel;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NPHMockTUProxyCall;
-    v5 = [(NPHMockTUProxyCall *)&v8 localizedLabel];
+    localizedLabel = [(NPHMockTUProxyCall *)&v8 localizedLabel];
   }
 
-  v6 = v5;
+  v6 = localizedLabel;
 
   return v6;
 }
 
 - (id)localSenderIdentity
 {
-  v3 = [(NPHMockTUProxyCall *)self mockLocalSenderIdentity];
-  v4 = v3;
-  if (v3)
+  mockLocalSenderIdentity = [(NPHMockTUProxyCall *)self mockLocalSenderIdentity];
+  v4 = mockLocalSenderIdentity;
+  if (mockLocalSenderIdentity)
   {
-    v5 = v3;
+    localSenderIdentity = mockLocalSenderIdentity;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NPHMockTUProxyCall;
-    v5 = [(NPHMockTUProxyCall *)&v8 localSenderIdentity];
+    localSenderIdentity = [(NPHMockTUProxyCall *)&v8 localSenderIdentity];
   }
 
-  v6 = v5;
+  v6 = localSenderIdentity;
 
   return v6;
 }
@@ -110,30 +110,30 @@
   if ([(NPHMockTUProxyCall *)self mockService]== 1)
   {
     v3 = +[TUCallCenter sharedInstance];
-    v4 = [v3 providerManager];
-    v5 = [v4 telephonyProvider];
+    providerManager = [v3 providerManager];
+    telephonyProvider = [providerManager telephonyProvider];
   }
 
   else
   {
-    v6 = [(NPHMockTUProxyCall *)self mockProvider];
-    v3 = v6;
-    if (v6)
+    mockProvider = [(NPHMockTUProxyCall *)self mockProvider];
+    v3 = mockProvider;
+    if (mockProvider)
     {
-      v7 = v6;
+      provider = mockProvider;
     }
 
     else
     {
       v9.receiver = self;
       v9.super_class = NPHMockTUProxyCall;
-      v7 = [(NPHMockTUProxyCall *)&v9 provider];
+      provider = [(NPHMockTUProxyCall *)&v9 provider];
     }
 
-    v5 = v7;
+    telephonyProvider = provider;
   }
 
-  return v5;
+  return telephonyProvider;
 }
 
 - (int)disconnectedReason
@@ -187,21 +187,21 @@
 
 - (id)dialRequestForRedial
 {
-  v3 = [(NPHMockTUProxyCall *)self mockDialRequestForRedial];
-  v4 = v3;
-  if (v3)
+  mockDialRequestForRedial = [(NPHMockTUProxyCall *)self mockDialRequestForRedial];
+  v4 = mockDialRequestForRedial;
+  if (mockDialRequestForRedial)
   {
-    v5 = v3;
+    dialRequestForRedial = mockDialRequestForRedial;
   }
 
   else
   {
     v8.receiver = self;
     v8.super_class = NPHMockTUProxyCall;
-    v5 = [(NPHMockTUProxyCall *)&v8 dialRequestForRedial];
+    dialRequestForRedial = [(NPHMockTUProxyCall *)&v8 dialRequestForRedial];
   }
 
-  v6 = v5;
+  v6 = dialRequestForRedial;
 
   return v6;
 }
@@ -215,8 +215,8 @@
 
 - (id)remoteParticipantHandles
 {
-  v2 = [(NPHMockTUProxyCall *)self handle];
-  v3 = [NSSet setWithObject:v2];
+  handle = [(NPHMockTUProxyCall *)self handle];
+  v3 = [NSSet setWithObject:handle];
 
   return v3;
 }

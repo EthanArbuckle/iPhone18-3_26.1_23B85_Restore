@@ -2,10 +2,10 @@
 + (BOOL)collectionViewCanClipToBounds;
 + (Class)layoutAttributesClass;
 + (double)snapToBoundariesDecelerationRate;
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4;
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity;
 - (CGSize)collectionViewContentSize;
-- (id)layoutAttributesForElementsInRect:(CGRect)a3;
-- (id)layoutAttributesForItemAtIndexPath:(id)a3;
+- (id)layoutAttributesForElementsInRect:(CGRect)rect;
+- (id)layoutAttributesForItemAtIndexPath:(id)path;
 @end
 
 @implementation SKUIShelfCollectionViewLayout
@@ -83,12 +83,12 @@
   return result;
 }
 
-- (id)layoutAttributesForElementsInRect:(CGRect)a3
+- (id)layoutAttributesForElementsInRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -101,7 +101,7 @@
     }
   }
 
-  v49 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   [(SKUIShelfLayoutData *)self->_layoutData contentInset];
   v17 = v16;
   v19 = v18;
@@ -173,22 +173,22 @@
   v50[4] = v51;
   v50[5] = &v52;
   [(SKUIShelfLayoutData *)v35 enumerateRowsUsingBlock:v50];
-  v36 = [(SKUIShelfCollectionViewLayout *)self collectionView];
-  v37 = [v36 delegate];
+  collectionView = [(SKUIShelfCollectionViewLayout *)self collectionView];
+  delegate = [collectionView delegate];
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
 
-    v37 = 0;
+    delegate = 0;
   }
 
-  v38 = [v36 numberOfItemsInSection:0];
-  v48 = [(SKUIShelfLayoutData *)self->_layoutData numberOfRows];
+  v38 = [collectionView numberOfItemsInSection:0];
+  numberOfRows = [(SKUIShelfLayoutData *)self->_layoutData numberOfRows];
   v39 = v62;
   v40 = v62[4];
   if (v40 < v62[5] + v40)
   {
     v41 = v53;
-    v42 = v40 * v48;
+    v42 = v40 * numberOfRows;
     do
     {
       v43 = v41[4];
@@ -201,8 +201,8 @@
             v44 = [MEMORY[0x277CCAA70] indexPathForItem:? inSection:?];
             v45 = [(SKUIShelfCollectionViewLayout *)self layoutAttributesForItemAtIndexPath:v44];
 
-            [v37 collectionView:v36 layout:self willApplyLayoutAttributes:v45];
-            [v49 addObject:v45];
+            [delegate collectionView:collectionView layout:self willApplyLayoutAttributes:v45];
+            [array addObject:v45];
 
             v41 = v53;
           }
@@ -215,7 +215,7 @@
       }
 
       ++v40;
-      v42 += v48;
+      v42 += numberOfRows;
     }
 
     while (v40 < v39[5] + v39[4]);
@@ -226,7 +226,7 @@
   _Block_object_dispose(v60, 8);
   _Block_object_dispose(&v61, 8);
 
-  return v49;
+  return array;
 }
 
 double __67__SKUIShelfCollectionViewLayout_layoutAttributesForElementsInRect___block_invoke(uint64_t a1, uint64_t a2, BOOL *a3, double a4)
@@ -293,9 +293,9 @@ double __67__SKUIShelfCollectionViewLayout_layoutAttributesForElementsInRect___b
   return result;
 }
 
-- (id)layoutAttributesForItemAtIndexPath:(id)a3
+- (id)layoutAttributesForItemAtIndexPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())
@@ -309,16 +309,16 @@ double __67__SKUIShelfCollectionViewLayout_layoutAttributesForElementsInRect___b
   }
 
   v13 = [objc_msgSend(objc_opt_class() "layoutAttributesClass")];
-  v14 = [(SKUIShelfCollectionViewLayout *)self collectionView];
-  v15 = [v14 backgroundColor];
-  [v13 setBackgroundColor:v15];
+  collectionView = [(SKUIShelfCollectionViewLayout *)self collectionView];
+  backgroundColor = [collectionView backgroundColor];
+  [v13 setBackgroundColor:backgroundColor];
 
   [(SKUIShelfLayoutData *)self->_layoutData contentInset];
   v17 = v16;
   v19 = v18;
-  v20 = [v4 item];
-  v21 = [(SKUIShelfLayoutData *)self->_layoutData numberOfRows];
-  v22 = v20 / v21;
+  item = [pathCopy item];
+  numberOfRows = [(SKUIShelfLayoutData *)self->_layoutData numberOfRows];
+  v22 = item / numberOfRows;
   if (storeShouldReverseLayoutDirection())
   {
     for (i = [(SKUIShelfLayoutData *)self->_layoutData numberOfColumns]- 1; i > v22; --i)
@@ -341,7 +341,7 @@ double __67__SKUIShelfCollectionViewLayout_layoutAttributesForElementsInRect___b
     }
   }
 
-  v31 = v20 % v21;
+  v31 = item % numberOfRows;
   if (v31 >= 1)
   {
     for (k = 0; k != v31; ++k)
@@ -359,12 +359,12 @@ double __67__SKUIShelfCollectionViewLayout_layoutAttributesForElementsInRect___b
   return v13;
 }
 
-- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)a3 withScrollingVelocity:(CGPoint)a4
+- (CGPoint)targetContentOffsetForProposedContentOffset:(CGPoint)offset withScrollingVelocity:(CGPoint)velocity
 {
-  y = a4.y;
-  x = a4.x;
-  v6 = a3.y;
-  v7 = a3.x;
+  y = velocity.y;
+  x = velocity.x;
+  v6 = offset.y;
+  v7 = offset.x;
   if (os_variant_has_internal_content())
   {
     if (_os_feature_enabled_impl())

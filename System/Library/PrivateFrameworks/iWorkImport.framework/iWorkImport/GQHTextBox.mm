@@ -1,24 +1,24 @@
 @interface GQHTextBox
-+ (BOOL)outputWrapSandbagsForFrame:(CGRect)a3 columnCount:(int)a4 drawable:(id)a5 state:(id)a6 isPageFrame:(BOOL)a7;
-+ (BOOL)styleNeedsImageFillMapping:(id)a3;
-+ (int)handleLayoutStorage:(id)a3 state:(id)a4;
-+ (int)handleShapeText:(id)a3 boundsRect:(CGRect)a4 floating:(BOOL)a5 state:(id)a6;
-+ (int)outputInnerSandbagsForFrame:(CGRect)a3 drawable:(id)a4 state:(id)a5;
-+ (int)outputInnerSandbagsForShape:(id)a3 layoutStyle:(id)a4 state:(id)a5;
-+ (int)outputWrapSandbagsForShape:(id)a3 layoutStyle:(id)a4 state:(id)a5;
-+ (void)createExternalWrapSandbagStyles:(id)a3;
-+ (void)mapLayout:(id)a3 style:(id)a4 state:(id)a5;
-+ (void)mapScaledImageFill:(id)a3 style:(id)a4 size:(CGSize)a5;
-+ (void)mapStyle:(id)a3 style:(id)a4 state:(id)a5;
-+ (void)outputSandbag:(id)a3 state:(id)a4;
++ (BOOL)outputWrapSandbagsForFrame:(CGRect)frame columnCount:(int)count drawable:(id)drawable state:(id)state isPageFrame:(BOOL)pageFrame;
++ (BOOL)styleNeedsImageFillMapping:(id)mapping;
++ (int)handleLayoutStorage:(id)storage state:(id)state;
++ (int)handleShapeText:(id)text boundsRect:(CGRect)rect floating:(BOOL)floating state:(id)state;
++ (int)outputInnerSandbagsForFrame:(CGRect)frame drawable:(id)drawable state:(id)state;
++ (int)outputInnerSandbagsForShape:(id)shape layoutStyle:(id)style state:(id)state;
++ (int)outputWrapSandbagsForShape:(id)shape layoutStyle:(id)style state:(id)state;
++ (void)createExternalWrapSandbagStyles:(id)styles;
++ (void)mapLayout:(id)layout style:(id)style state:(id)state;
++ (void)mapScaledImageFill:(id)fill style:(id)style size:(CGSize)size;
++ (void)mapStyle:(id)style style:(id)a4 state:(id)state;
++ (void)outputSandbag:(id)sandbag state:(id)state;
 @end
 
 @implementation GQHTextBox
 
-+ (void)mapStyle:(id)a3 style:(id)a4 state:(id)a5
++ (void)mapStyle:(id)style style:(id)a4 state:(id)state
 {
   v7 = 0;
-  if ([a3 overridesIntProperty:50 value:&v7] && (objc_msgSend(a5, "multiColumned") & 1) == 0)
+  if ([style overridesIntProperty:50 value:&v7] && (objc_msgSend(state, "multiColumned") & 1) == 0)
   {
     [a4 addAttribute:off_9CE60 value:@"table-cell"];
     if (v7 <= 3)
@@ -28,31 +28,31 @@
   }
 }
 
-+ (int)handleShapeText:(id)a3 boundsRect:(CGRect)a4 floating:(BOOL)a5 state:(id)a6
++ (int)handleShapeText:(id)text boundsRect:(CGRect)rect floating:(BOOL)floating state:(id)state
 {
-  v7 = a5;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v12 = [a6 htmlDoc];
-  v13 = [a3 geometry];
-  v14 = [a3 layoutFrame];
-  v15 = [v14 layoutStyle];
-  if (!v15)
+  floatingCopy = floating;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  htmlDoc = [state htmlDoc];
+  geometry = [text geometry];
+  layoutFrame = [text layoutFrame];
+  layoutStyle = [layoutFrame layoutStyle];
+  if (!layoutStyle)
   {
-    v16 = [objc_msgSend(v14 "storage")];
+    v16 = [objc_msgSend(layoutFrame "storage")];
     if (v16 && (v17 = v16, CFArrayGetCount(v16) == 1) && (ValueAtIndex = CFArrayGetValueAtIndex(v17, 0), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      v15 = [ValueAtIndex layoutStyle];
+      layoutStyle = [ValueAtIndex layoutStyle];
     }
 
     else
     {
-      v15 = 0;
+      layoutStyle = 0;
     }
   }
 
-  v51 = v12;
-  [v12 startElement:{"div", v14}];
+  v51 = htmlDoc;
+  [htmlDoc startElement:{"div", layoutFrame}];
   v19 = objc_alloc_init(GQHStyle);
   [(GQHStyle *)v19 addAttribute:off_9CF18 value:off_9CFA0];
   objc_opt_class();
@@ -62,55 +62,55 @@
     [(GQHStyle *)v19 addAttribute:off_9CF70 value:off_9CFB8];
   }
 
-  if (v7)
+  if (floatingCopy)
   {
-    [v13 position];
+    [geometry position];
     v21 = x + v20;
-    [v13 position];
-    +[GQHBounds mapPosition:srcGraphicStyle:style:state:](GQHBounds, "mapPosition:srcGraphicStyle:style:state:", [a3 graphicStyle], v19, a6, v21, y + v22);
-    [v13 size];
+    [geometry position];
+    +[GQHBounds mapPosition:srcGraphicStyle:style:state:](GQHBounds, "mapPosition:srcGraphicStyle:style:state:", [text graphicStyle], v19, state, v21, y + v22);
+    [geometry size];
     v24 = v23;
     v26 = v25;
-    [v13 angle];
+    [geometry angle];
     LODWORD(v28) = v27;
-    [GQHBounds mapSize:0 angle:v19 srcGraphicStyle:a6 style:v24 state:v26, v28];
+    [GQHBounds mapSize:0 angle:v19 srcGraphicStyle:state style:v24 state:v26, v28];
     [GQHBounds setTransformOriginToZeroInStyle:v19];
   }
 
   else
   {
-    [v13 size];
+    [geometry size];
     v30 = v29;
     v32 = v31;
-    [v13 angle];
+    [geometry angle];
     LODWORD(v34) = v33;
-    [GQHBounds mapSize:0 angle:v19 srcGraphicStyle:a6 style:v30 state:v32, v34];
+    [GQHBounds mapSize:0 angle:v19 srcGraphicStyle:state style:v30 state:v32, v34];
   }
 
-  [a1 mapStyle:v15 style:v19 state:a6];
-  [a1 mapLayout:v15 style:v19 state:a6];
-  if (v7)
+  [self mapStyle:layoutStyle style:v19 state:state];
+  [self mapLayout:layoutStyle style:v19 state:state];
+  if (floatingCopy)
   {
-    if (([a3 hasPagesOrder] & 1) != 0 || objc_msgSend(a6, "drawablesNeedCssZOrdering"))
+    if (([text hasPagesOrder] & 1) != 0 || objc_msgSend(state, "drawablesNeedCssZOrdering"))
     {
-      -[GQHStyle addClass:](v19, "addClass:", [a6 cssZOrderClassForDrawable:a3]);
+      -[GQHStyle addClass:](v19, "addClass:", [state cssZOrderClassForDrawable:text]);
     }
 
-    [(GQHStyle *)v19 setStyleOnCurrentNode:a6 mappingBaseStyleClass:v15 baseClassType:objc_opt_class()];
+    [(GQHStyle *)v19 setStyleOnCurrentNode:state mappingBaseStyleClass:layoutStyle baseClassType:objc_opt_class()];
 
     v53 = 0;
     v35 = 0;
     v36 = v51;
-    if ([v15 hasValueForIntProperty:50 value:&v53])
+    if ([layoutStyle hasValueForIntProperty:50 value:&v53])
     {
       v37 = objc_alloc_init(GQHStyle);
       [v51 startElement:"div"];
-      [v13 size];
+      [geometry size];
       v39 = v38;
-      [v13 size];
+      [geometry size];
       v41 = v40;
       v52 = 0;
-      if ([v15 hasValueForObjectProperty:47 value:&v52])
+      if ([layoutStyle hasValueForObjectProperty:47 value:&v52])
       {
         [v52 left];
         v43 = v42;
@@ -130,7 +130,7 @@
         [(GQHStyle *)v37 addAttribute:off_9CF58 value:*off_80828[v53]];
       }
 
-      [(GQHStyle *)v37 setStyleOnCurrentNode:a6];
+      [(GQHStyle *)v37 setStyleOnCurrentNode:state];
 
       v35 = 1;
     }
@@ -138,18 +138,18 @@
 
   else
   {
-    [(GQHStyle *)v19 setStyleOnCurrentNode:a6 mappingBaseStyleClass:v15 baseClassType:objc_opt_class()];
+    [(GQHStyle *)v19 setStyleOnCurrentNode:state mappingBaseStyleClass:layoutStyle baseClassType:objc_opt_class()];
 
     v35 = 0;
     v53 = 0;
     v36 = v51;
   }
 
-  [a1 outputInnerSandbagsForShape:a3 layoutStyle:v15 state:a6];
-  v48 = [a1 outputWrapSandbagsForShape:a3 layoutStyle:v15 state:a6];
+  [self outputInnerSandbagsForShape:text layoutStyle:layoutStyle state:state];
+  v48 = [self outputWrapSandbagsForShape:text layoutStyle:layoutStyle state:state];
   if (v48 == 1)
   {
-    v48 = [a1 handleLayoutStorage:objc_msgSend(v50 state:{"storage"), a6}];
+    v48 = [self handleLayoutStorage:objc_msgSend(v50 state:{"storage"), state}];
   }
 
   if (v35)
@@ -161,18 +161,18 @@
   return v48;
 }
 
-+ (int)handleLayoutStorage:(id)a3 state:(id)a4
++ (int)handleLayoutStorage:(id)storage state:(id)state
 {
   Mutable = CFDictionaryCreateMutable(kCFAllocatorDefault, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
-  v7 = [a3 body];
-  if (!v7 || (v8 = v7, CFArrayGetCount(v7) == 1) && (ValueAtIndex = CFArrayGetValueAtIndex(v8, 0), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v8 = [ValueAtIndex children]) == 0)
+  body = [storage body];
+  if (!body || (v8 = body, CFArrayGetCount(body) == 1) && (ValueAtIndex = CFArrayGetValueAtIndex(v8, 0), objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && (v8 = [ValueAtIndex children]) == 0)
   {
-    [a4 setParagraphCount:0];
+    [state setParagraphCount:0];
     goto LABEL_16;
   }
 
   Count = CFArrayGetCount(v8);
-  [a4 setParagraphCount:Count];
+  [state setParagraphCount:Count];
   if (!Count)
   {
 LABEL_16:
@@ -184,7 +184,7 @@ LABEL_16:
   v12 = Count;
   while (1)
   {
-    [a4 setParagraphIndex:v11];
+    [state setParagraphIndex:v11];
     v13 = CFArrayGetValueAtIndex(v8, v11);
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -192,14 +192,14 @@ LABEL_16:
       break;
     }
 
-    if ([a4 useOutline] && (objc_msgSend(v13, "isHidden") & 1) != 0)
+    if ([state useOutline] && (objc_msgSend(v13, "isHidden") & 1) != 0)
     {
       v14 = 1;
     }
 
     else
     {
-      v14 = +[GQHParagraph handleParagraph:state:bulletStates:isMultiColumn:](GQHParagraph, "handleParagraph:state:bulletStates:isMultiColumn:", v13, a4, Mutable, [a4 multiColumned]);
+      v14 = +[GQHParagraph handleParagraph:state:bulletStates:isMultiColumn:](GQHParagraph, "handleParagraph:state:bulletStates:isMultiColumn:", v13, state, Mutable, [state multiColumned]);
     }
 
     if (++v11 >= v12 || v14 != 1)
@@ -210,29 +210,29 @@ LABEL_16:
 
   v14 = 3;
 LABEL_18:
-  [a4 setParagraphCount:0];
-  [a4 setParagraphIndex:0];
+  [state setParagraphCount:0];
+  [state setParagraphIndex:0];
   CFRelease(Mutable);
   return v14;
 }
 
-+ (void)mapLayout:(id)a3 style:(id)a4 state:(id)a5
++ (void)mapLayout:(id)layout style:(id)style state:(id)state
 {
   v43 = 0;
   v44 = 0;
-  if ([a4 getAttribute:off_9CF68 intValue:&v43 + 4] && objc_msgSend(a4, "getAttribute:intValue:", off_9CE98, &v43))
+  if ([style getAttribute:off_9CF68 intValue:&v43 + 4] && objc_msgSend(style, "getAttribute:intValue:", off_9CE98, &v43))
   {
-    if ([a3 hasValueForObjectProperty:49 value:&v44])
+    if ([layout hasValueForObjectProperty:49 value:&v44])
     {
-      v8 = [v44 columns];
-      v9 = [v44 equalColumns];
-      Count = CFArrayGetCount(v8);
+      columns = [v44 columns];
+      equalColumns = [v44 equalColumns];
+      Count = CFArrayGetCount(columns);
       v11 = Count;
       if (Count >= 2)
       {
-        if (v9)
+        if (equalColumns)
         {
-          ValueAtIndex = CFArrayGetValueAtIndex(v8, 0);
+          ValueAtIndex = CFArrayGetValueAtIndex(columns, 0);
           v13 = 1.0;
           if ([ValueAtIndex hasSpacing])
           {
@@ -250,7 +250,7 @@ LABEL_18:
           v18 = Count & 0x7FFFFFFF;
           do
           {
-            v19 = CFArrayGetValueAtIndex(v8, v15);
+            v19 = CFArrayGetValueAtIndex(columns, v15);
             if ([v19 hasSpacing])
             {
               ++v16;
@@ -275,31 +275,31 @@ LABEL_18:
           v11 = v39;
         }
 
-        [a5 setMultiColumned:{1, v39}];
-        [a4 addAttribute:@"-webkit-column-count" intValue:v11];
-        [a4 addAttribute:@"-webkit-column-gap" pxValue:llroundf(v13 * SHIDWORD(v43))];
-        [a4 addAttribute:off_9CEE8 value:off_9CFE8];
+        [state setMultiColumned:{1, v39}];
+        [style addAttribute:@"-webkit-column-count" intValue:v11];
+        [style addAttribute:@"-webkit-column-gap" pxValue:llroundf(v13 * SHIDWORD(v43))];
+        [style addAttribute:off_9CEE8 value:off_9CFE8];
       }
     }
 
     v42 = 0;
-    if ([a3 hasValueForObjectProperty:47 value:&v42])
+    if ([layout hasValueForObjectProperty:47 value:&v42])
     {
       [v42 top];
       v22 = v21;
-      [a5 scale];
+      [state scale];
       v24 = v23 * v22;
       [v42 bottom];
       v26 = v25;
-      [a5 scale];
+      [state scale];
       v28 = v27 * v26;
       [v42 left];
       v30 = v29;
-      [a5 scale];
+      [state scale];
       v32 = v31 * v30;
       [v42 right];
       v34 = v33;
-      [a5 scale];
+      [state scale];
       v36 = v35 * v34;
       if (v32 > 2.0)
       {
@@ -328,23 +328,23 @@ LABEL_18:
 
       v38 = objc_alloc_init(GQHTrbl);
       [(GQHTrbl *)v38 setTop:v24 right:v37 bottom:v28 left:v32];
-      [a4 addAttribute:off_9CEF0 trblValue:v38];
+      [style addAttribute:off_9CEF0 trblValue:v38];
 
-      [a4 addAttribute:off_9CF68 pxValue:((SHIDWORD(v43) - v32) - v37)];
+      [style addAttribute:off_9CF68 pxValue:((SHIDWORD(v43) - v32) - v37)];
       theString1 = 0;
       v40 = 0;
-      if (![a3 hasValueForIntProperty:50 value:&v40] || (objc_msgSend(a5, "multiColumned") & 1) != 0 || objc_msgSend(a4, "getAttribute:value:", off_9CF18, &theString1) && CFStringCompare(theString1, off_9CFA0, 1uLL) == kCFCompareEqualTo)
+      if (![layout hasValueForIntProperty:50 value:&v40] || (objc_msgSend(state, "multiColumned") & 1) != 0 || objc_msgSend(style, "getAttribute:value:", off_9CF18, &theString1) && CFStringCompare(theString1, off_9CFA0, 1uLL) == kCFCompareEqualTo)
       {
-        [a4 addAttribute:off_9CE98 pxValue:((v43 - v24) - v28)];
+        [style addAttribute:off_9CE98 pxValue:((v43 - v24) - v28)];
       }
     }
   }
 }
 
-+ (BOOL)styleNeedsImageFillMapping:(id)a3
++ (BOOL)styleNeedsImageFillMapping:(id)mapping
 {
   v5 = 0;
-  v3 = [a3 hasValueForObjectProperty:67 value:&v5];
+  v3 = [mapping hasValueForObjectProperty:67 value:&v5];
   if (v3)
   {
     objc_opt_class();
@@ -354,22 +354,22 @@ LABEL_18:
   return v3 & 1;
 }
 
-+ (void)mapScaledImageFill:(id)a3 style:(id)a4 size:(CGSize)a5
++ (void)mapScaledImageFill:(id)fill style:(id)style size:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v22 = 0;
-  if ([a3 hasValueForObjectProperty:67 value:&v22])
+  if ([fill hasValueForObjectProperty:67 value:&v22])
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v22 technique];
-      v9 = [v22 imageBinary];
-      if (v9)
+      technique = [v22 technique];
+      imageBinary = [v22 imageBinary];
+      if (imageBinary)
       {
-        [v9 size];
-        if (v8 == 3)
+        [imageBinary size];
+        if (technique == 3)
         {
           v15 = width / v10;
           v16 = height / v11;
@@ -378,7 +378,7 @@ LABEL_18:
 
         else
         {
-          if (v8 != 4)
+          if (technique != 4)
           {
             return;
           }
@@ -395,8 +395,8 @@ LABEL_18:
           v19 = llroundf(v18);
           v20 = v11 * v17;
           v21 = CFStringCreateWithFormat(kCFAllocatorDefault, 0, @"%ldpx %ldpx", v19, llroundf(v20));
-          [a4 addAttribute:off_9CF78 value:v21];
-          [a4 addAttribute:off_9CF80 value:v21];
+          [style addAttribute:off_9CF78 value:v21];
+          [style addAttribute:off_9CF80 value:v21];
           CFRelease(v21);
         }
       }
@@ -404,38 +404,38 @@ LABEL_18:
   }
 }
 
-+ (void)createExternalWrapSandbagStyles:(id)a3
++ (void)createExternalWrapSandbagStyles:(id)styles
 {
   v4 = CFStringCreateWithFormat(0, 0, @".%@ {float: %s; clear: %s; padding: 0; width: 0px; height: 10px;}\n\n", off_9D2B0[0], "left", "left");
-  [a3 addStyleClass:v4];
+  [styles addStyleClass:v4];
   CFRelease(v4);
   v5 = CFStringCreateWithFormat(0, 0, @".%@ {float: %s; clear: %s; padding: 0; width: 0px; height: 10px;}\n\n", off_9D2B8[0], "right", "right");
-  [a3 addStyleClass:v5];
+  [styles addStyleClass:v5];
 
   CFRelease(v5);
 }
 
-+ (BOOL)outputWrapSandbagsForFrame:(CGRect)a3 columnCount:(int)a4 drawable:(id)a5 state:(id)a6 isPageFrame:(BOOL)a7
++ (BOOL)outputWrapSandbagsForFrame:(CGRect)frame columnCount:(int)count drawable:(id)drawable state:(id)state isPageFrame:(BOOL)pageFrame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   Mutable = CFArrayCreateMutable(0, 0, &kCFTypeArrayCallBacks);
-  v13 = [a6 processorState];
-  if ([a5 hasPagesOrder])
+  processorState = [state processorState];
+  if ([drawable hasPagesOrder])
   {
-    v14 = [a5 pagesOrder];
+    pagesOrder = [drawable pagesOrder];
   }
 
   else
   {
-    v14 = 0;
+    pagesOrder = 0;
   }
 
-  if (a4 >= 1)
+  if (count >= 1)
   {
-    v15 = width / a4;
+    v15 = width / count;
     v16 = (10 * ((y + 9.0) / 10)) + 10.0;
     v17 = 1;
     do
@@ -445,11 +445,11 @@ LABEL_18:
       {
         v18 = x + (v15 * (v17 - 1));
         v19 = x + (v15 * v17);
-        v20 = [v13 currentWrapPointGenerator];
+        currentWrapPointGenerator = [processorState currentWrapPointGenerator];
         *&v21 = v16;
         *&v22 = v18;
         *&v23 = v19;
-        v24 = [v20 createListOfWrapPointsAlongY:v14 minX:v21 maxX:v22 zIndex:v23];
+        v24 = [currentWrapPointGenerator createListOfWrapPointsAlongY:pagesOrder minX:v21 maxX:v22 zIndex:v23];
         v25 = *v24;
         v26 = v24[1];
         if (*v24 == v26)
@@ -466,7 +466,7 @@ LABEL_18:
         while (1)
         {
           v29 = *v25;
-          if (*(*v25 + 32) != a5)
+          if (*(*v25 + 32) != drawable)
           {
             v30 = *(v29 + 40);
             if (v30)
@@ -591,25 +591,25 @@ LABEL_40:
       v16 = (10 * ((y + 9.0) / 10)) + 10.0;
     }
 
-    while (v57 != a4);
+    while (v57 != count);
   }
 
   CFRelease(Mutable);
   return 0;
 }
 
-+ (int)outputInnerSandbagsForFrame:(CGRect)a3 drawable:(id)a4 state:(id)a5
++ (int)outputInnerSandbagsForFrame:(CGRect)frame drawable:(id)drawable state:(id)state
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   Mutable = CFArrayCreateMutable(0, 0, &kCFTypeArrayCallBacks);
   v13 = (10 * ((y + 9.0) / 10));
   v40 = (10 * ((y + height) / 10));
-  if ([a4 hasPagesOrder])
+  if ([drawable hasPagesOrder])
   {
-    v15 = [a4 pagesOrder] - 1;
+    v15 = [drawable pagesOrder] - 1;
   }
 
   else
@@ -631,7 +631,7 @@ LABEL_40:
     *&v20 = v13 + 10.0;
     *&v14 = v38;
     *&v19 = v39;
-    v21 = [a4 createListOfWrapPointsAlongY:v15 minX:v20 maxX:v19 zIndex:{v14, a1, a5}];
+    v21 = [drawable createListOfWrapPointsAlongY:v15 minX:v20 maxX:v19 zIndex:{v14, self, state}];
     v22 = *v21;
     v23 = v21[1];
     if (*v21 == v23)
@@ -646,7 +646,7 @@ LABEL_40:
     while (1)
     {
       v26 = *v22;
-      if (*(*v22 + 32) == a4)
+      if (*(*v22 + 32) == drawable)
       {
         v27 = *(v26 + 40);
         if (v27)
@@ -700,18 +700,18 @@ LABEL_24:
   return 1;
 }
 
-+ (void)outputSandbag:(id)a3 state:(id)a4
++ (void)outputSandbag:(id)sandbag state:(id)state
 {
-  v6 = *(a3 + 1);
+  v6 = *(sandbag + 1);
   v7 = llroundf(v6);
-  v8 = *(a3 + 2);
+  v8 = *(sandbag + 2);
   v9 = llroundf(v8);
-  v10 = [a4 htmlDoc];
-  [v10 startElement:"div"];
+  htmlDoc = [state htmlDoc];
+  [htmlDoc startElement:"div"];
   v11 = objc_alloc_init(GQHStyle);
   v12 = v11;
   v13 = off_9D2B0;
-  if (!*(a3 + 24))
+  if (!*(sandbag + 24))
   {
     v13 = off_9D2B8;
   }
@@ -740,45 +740,45 @@ LABEL_24:
     }
   }
 
-  [(GQHStyle *)v12 setStyleOnCurrentNode:a4];
+  [(GQHStyle *)v12 setStyleOnCurrentNode:state];
 
-  [v10 endElement];
+  [htmlDoc endElement];
 }
 
-+ (int)outputInnerSandbagsForShape:(id)a3 layoutStyle:(id)a4 state:(id)a5
++ (int)outputInnerSandbagsForShape:(id)shape layoutStyle:(id)style state:(id)state
 {
-  if ([objc_msgSend(a3 "layoutFrame")])
+  if ([objc_msgSend(shape "layoutFrame")])
   {
     return 1;
   }
 
-  v9 = [a3 geometry];
-  [v9 position];
+  geometry = [shape geometry];
+  [geometry position];
   v11 = v10;
   v13 = v12;
-  [v9 size];
+  [geometry size];
 
-  return [a1 outputInnerSandbagsForFrame:a3 drawable:a5 state:{v11, v13, v14, v15}];
+  return [self outputInnerSandbagsForFrame:shape drawable:state state:{v11, v13, v14, v15}];
 }
 
-+ (int)outputWrapSandbagsForShape:(id)a3 layoutStyle:(id)a4 state:(id)a5
++ (int)outputWrapSandbagsForShape:(id)shape layoutStyle:(id)style state:(id)state
 {
-  v9 = [a3 layoutFrame];
-  v10 = [objc_msgSend(objc_msgSend(a5 "processorState")];
-  if (!v10 || !v10[2] || ([v9 isBlank] & 1) != 0)
+  layoutFrame = [shape layoutFrame];
+  v10 = [objc_msgSend(objc_msgSend(state "processorState")];
+  if (!v10 || !v10[2] || ([layoutFrame isBlank] & 1) != 0)
   {
     return 1;
   }
 
-  v12 = [a3 geometry];
-  [v12 position];
+  geometry = [shape geometry];
+  [geometry position];
   v14 = v13;
   v16 = v15;
-  [v12 size];
+  [geometry size];
   v18 = v17;
   v20 = v19;
   v23 = 0;
-  v21 = [a4 hasValueForObjectProperty:49 value:&v23];
+  v21 = [style hasValueForObjectProperty:49 value:&v23];
   Count = 1;
   if (v21)
   {
@@ -788,7 +788,7 @@ LABEL_24:
     }
   }
 
-  return [a1 outputWrapSandbagsForFrame:Count columnCount:a3 drawable:a5 state:{v14, v16, v18, v20}];
+  return [self outputWrapSandbagsForFrame:Count columnCount:shape drawable:state state:{v14, v16, v18, v20}];
 }
 
 @end

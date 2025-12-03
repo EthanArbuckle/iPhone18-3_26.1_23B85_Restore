@@ -1,13 +1,13 @@
 @interface TapToRadarBannerViewController
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4;
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize;
 - (NSString)requestIdentifier;
 - (NSString)requesterIdentifier;
 - (UIEdgeInsets)bannerContentOutsets;
 - (UIViewController)viewController;
-- (_TtC15ConversationKit30TapToRadarBannerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)handleTap:(id)a3;
-- (void)presentableWillAppearAsBanner:(id)a3;
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4;
+- (_TtC15ConversationKit30TapToRadarBannerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)handleTap:(id)tap;
+- (void)presentableWillAppearAsBanner:(id)banner;
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason;
 - (void)viewDidLoad;
 @end
 
@@ -15,42 +15,42 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   TapToRadarBannerViewController.viewDidLoad()();
 }
 
-- (void)handleTap:(id)a3
+- (void)handleTap:(id)tap
 {
-  v4 = a3;
-  v5 = self;
-  TapToRadarBannerViewController.handleTap(_:)(v5);
+  tapCopy = tap;
+  selfCopy = self;
+  TapToRadarBannerViewController.handleTap(_:)(selfCopy);
 }
 
-- (void)presentableWillAppearAsBanner:(id)a3
+- (void)presentableWillAppearAsBanner:(id)banner
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   TapToRadarBannerViewController.presentableWillAppear(asBanner:)();
   swift_unknownObjectRelease();
 }
 
-- (void)presentableWillDisappearAsBanner:(id)a3 withReason:(id)a4
+- (void)presentableWillDisappearAsBanner:(id)banner withReason:(id)reason
 {
   swift_unknownObjectRetain();
-  v6 = a4;
-  v7 = self;
+  reasonCopy = reason;
+  selfCopy = self;
   TapToRadarBannerViewController.presentableWillDisappear(asBanner:withReason:)();
   swift_unknownObjectRelease();
 }
 
-- (_TtC15ConversationKit30TapToRadarBannerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC15ConversationKit30TapToRadarBannerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   TapToRadarBannerViewController.init(nibName:bundle:)();
 }
 
@@ -79,7 +79,7 @@
 
 - (NSString)requesterIdentifier
 {
-  v2 = self;
+  selfCopy = self;
   v3 = TapToRadarBannerViewController.requesterIdentifier.getter();
   v5 = v4;
 
@@ -96,11 +96,11 @@
   return v6;
 }
 
-- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)a3 containerSize:(CGSize)a4
+- (CGSize)preferredContentSizeWithPresentationSize:(CGSize)size containerSize:(CGSize)containerSize
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = self;
+  height = size.height;
+  width = size.width;
+  selfCopy = self;
   v9 = TapToRadarBannerViewController.preferredContentSize(withPresentationSize:containerSize:)(__PAIR128__(*&height, *&width), __PAIR128__(v8, v7));
 
   v10 = v9.width;
@@ -112,7 +112,7 @@
 
 - (UIEdgeInsets)bannerContentOutsets
 {
-  v2 = self;
+  selfCopy = self;
   TapToRadarBannerViewController.bannerContentOutsets.getter();
   v4 = v3;
   v6 = v5;

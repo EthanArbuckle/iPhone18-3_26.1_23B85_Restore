@@ -1,47 +1,47 @@
 @interface ICAttachment
-- (void)undoablySetTitle:(id)a3 isUserDefined:(BOOL)a4;
+- (void)undoablySetTitle:(id)title isUserDefined:(BOOL)defined;
 @end
 
 @implementation ICAttachment
 
-- (void)undoablySetTitle:(id)a3 isUserDefined:(BOOL)a4
+- (void)undoablySetTitle:(id)title isUserDefined:(BOOL)defined
 {
-  v4 = a4;
-  v18 = a3;
+  definedCopy = defined;
+  titleCopy = title;
   v6 = +[NSUndoManager shared];
   v7 = [v6 prepareWithInvocationTarget:self];
-  v8 = [(ICAttachment *)self title];
-  [v7 undoablySetTitle:v8 isUserDefined:v4];
+  title = [(ICAttachment *)self title];
+  [v7 undoablySetTitle:title isUserDefined:definedCopy];
 
   v9 = +[NSUndoManager shared];
   v10 = +[NSBundle mainBundle];
   v11 = [v10 localizedStringForKey:@"Set Attachment Name" value:&stru_100661CF0 table:0];
   [v9 setActionName:v11];
 
-  [(ICAttachment *)self setTitle:v18];
-  if (v4)
+  [(ICAttachment *)self setTitle:titleCopy];
+  if (definedCopy)
   {
-    [(ICAttachment *)self setUserTitle:v18];
+    [(ICAttachment *)self setUserTitle:titleCopy];
   }
 
   [(ICAttachment *)self updateChangeCountWithReason:@"Set attachment title"];
-  v12 = [(ICAttachment *)self note];
-  [v12 updateModificationDateAndChangeCount];
+  note = [(ICAttachment *)self note];
+  [note updateModificationDateAndChangeCount];
 
-  v13 = [(ICAttachment *)self note];
-  v14 = [v13 regenerateTitle:1 snippet:0];
+  note2 = [(ICAttachment *)self note];
+  v14 = [note2 regenerateTitle:1 snippet:0];
 
   if (v14)
   {
-    v15 = [(ICAttachment *)self note];
-    [v15 markShareDirtyIfNeededWithReason:@"Set attachment title"];
+    note3 = [(ICAttachment *)self note];
+    [note3 markShareDirtyIfNeededWithReason:@"Set attachment title"];
 
-    v16 = [(ICAttachment *)self note];
-    [v16 updateChangeCountWithReason:@"Set attachment title"];
+    note4 = [(ICAttachment *)self note];
+    [note4 updateChangeCountWithReason:@"Set attachment title"];
   }
 
-  v17 = [(ICAttachment *)self managedObjectContext];
-  [v17 ic_saveWithLogDescription:{@"%@", @"Set attachment title"}];
+  managedObjectContext = [(ICAttachment *)self managedObjectContext];
+  [managedObjectContext ic_saveWithLogDescription:{@"%@", @"Set attachment title"}];
 }
 
 @end

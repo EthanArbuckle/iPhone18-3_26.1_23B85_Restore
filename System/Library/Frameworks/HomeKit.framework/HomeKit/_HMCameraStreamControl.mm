@@ -2,79 +2,79 @@
 + (id)logCategory;
 - (HMCameraStream)cameraStream;
 - (NSString)sessionID;
-- (_HMCameraStreamControl)initWithCameraProfile:(id)a3 profileUniqueIdentifier:(id)a4;
+- (_HMCameraStreamControl)initWithCameraProfile:(id)profile profileUniqueIdentifier:(id)identifier;
 - (_HMCameraStreamControlDelegate)delegate;
 - (unint64_t)streamState;
-- (void)__configureWithContext:(id)a3;
+- (void)__configureWithContext:(id)context;
 - (void)_callVideoStartedDelegate;
-- (void)_callVideoStoppedDelegateWithError:(id)a3;
-- (void)_handleStreamStartedWithResponse:(id)a3 sessionID:(id)a4 error:(id)a5;
-- (void)_handleVideoStopResponse:(id)a3 sessionID:(id)a4 error:(id)a5;
-- (void)_handleVideoStreamStopped:(id)a3;
-- (void)_resetStateWithError:(id)a3;
+- (void)_callVideoStoppedDelegateWithError:(id)error;
+- (void)_handleStreamStartedWithResponse:(id)response sessionID:(id)d error:(id)error;
+- (void)_handleVideoStopResponse:(id)response sessionID:(id)d error:(id)error;
+- (void)_handleVideoStreamStopped:(id)stopped;
+- (void)_resetStateWithError:(id)error;
 - (void)dealloc;
-- (void)setCameraStream:(id)a3;
-- (void)setDelegate:(id)a3;
-- (void)setSessionID:(id)a3;
-- (void)setStreamState:(unint64_t)a3;
-- (void)startStreamWithPreferences:(id)a3;
+- (void)setCameraStream:(id)stream;
+- (void)setDelegate:(id)delegate;
+- (void)setSessionID:(id)d;
+- (void)setStreamState:(unint64_t)state;
+- (void)startStreamWithPreferences:(id)preferences;
 - (void)stopStream;
 @end
 
 @implementation _HMCameraStreamControl
 
-- (void)_callVideoStoppedDelegateWithError:(id)a3
+- (void)_callVideoStoppedDelegateWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(_HMCameraStreamControl *)self delegate];
+  errorCopy = error;
+  delegate = [(_HMCameraStreamControl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v6 = [(_HMCameraControl *)self context];
-    v7 = [v6 delegateCaller];
+    context = [(_HMCameraControl *)self context];
+    delegateCaller = [context delegateCaller];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __61___HMCameraStreamControl__callVideoStoppedDelegateWithError___block_invoke;
     v8[3] = &unk_1E754E5E8;
-    v9 = v5;
-    v10 = self;
-    v11 = v4;
-    [v7 invokeBlock:v8];
+    v9 = delegate;
+    selfCopy = self;
+    v11 = errorCopy;
+    [delegateCaller invokeBlock:v8];
   }
 }
 
 - (void)_callVideoStartedDelegate
 {
-  v3 = [(_HMCameraStreamControl *)self delegate];
+  delegate = [(_HMCameraStreamControl *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    v4 = [(_HMCameraControl *)self context];
-    v5 = [v4 delegateCaller];
+    context = [(_HMCameraControl *)self context];
+    delegateCaller = [context delegateCaller];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __51___HMCameraStreamControl__callVideoStartedDelegate__block_invoke;
     v6[3] = &unk_1E754E5C0;
-    v7 = v3;
-    v8 = self;
-    [v5 invokeBlock:v6];
+    v7 = delegate;
+    selfCopy = self;
+    [delegateCaller invokeBlock:v6];
   }
 }
 
-- (void)_handleVideoStopResponse:(id)a3 sessionID:(id)a4 error:(id)a5
+- (void)_handleVideoStopResponse:(id)response sessionID:(id)d error:(id)error
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_HMCameraStreamControl *)self sessionID];
+  responseCopy = response;
+  dCopy = d;
+  errorCopy = error;
+  sessionID = [(_HMCameraStreamControl *)self sessionID];
   v12 = HMFEqualObjects();
 
   if (v12)
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = self;
+    selfCopy = self;
     v15 = HMFGetOSLogHandle();
     v16 = v15;
-    if (v10)
+    if (errorCopy)
     {
       if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
       {
@@ -82,9 +82,9 @@
         v28 = 138543874;
         v29 = v17;
         v30 = 2112;
-        v31 = v9;
+        v31 = dCopy;
         v32 = 2112;
-        v33 = v10;
+        v33 = errorCopy;
         v18 = "%{public}@Failed to stop stream for session ID %@: %@";
         v19 = v16;
         v20 = OS_LOG_TYPE_ERROR;
@@ -100,7 +100,7 @@ LABEL_10:
       v28 = 138543618;
       v29 = v17;
       v30 = 2112;
-      v31 = v9;
+      v31 = dCopy;
       v18 = "%{public}@Successfully stopped stream for session ID: %@";
       v19 = v16;
       v20 = OS_LOG_TYPE_INFO;
@@ -109,23 +109,23 @@ LABEL_10:
     }
 
     objc_autoreleasePoolPop(v13);
-    [(_HMCameraStreamControl *)v14 _resetStateWithError:v10];
+    [(_HMCameraStreamControl *)selfCopy _resetStateWithError:errorCopy];
     goto LABEL_12;
   }
 
   v22 = objc_autoreleasePoolPush();
-  v23 = self;
+  selfCopy2 = self;
   v24 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     v25 = HMFGetLogIdentifier();
-    v26 = [(_HMCameraStreamControl *)v23 sessionID];
+    sessionID2 = [(_HMCameraStreamControl *)selfCopy2 sessionID];
     v28 = 138543874;
     v29 = v25;
     v30 = 2112;
-    v31 = v9;
+    v31 = dCopy;
     v32 = 2112;
-    v33 = v26;
+    v33 = sessionID2;
     _os_log_impl(&dword_19BB39000, v24, OS_LOG_TYPE_DEFAULT, "%{public}@Not handling stop stream response: Received session ID %@ does not match the current one %@", &v28, 0x20u);
   }
 
@@ -138,12 +138,12 @@ LABEL_12:
 - (void)stopStream
 {
   v43 = *MEMORY[0x1E69E9840];
-  v3 = [(_HMCameraControl *)self context];
+  context = [(_HMCameraControl *)self context];
   v4 = objc_autoreleasePoolPush();
-  v5 = self;
+  selfCopy = self;
   v6 = HMFGetOSLogHandle();
   v7 = v6;
-  if (v3)
+  if (context)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
@@ -154,18 +154,18 @@ LABEL_12:
     }
 
     objc_autoreleasePoolPop(v4);
-    v9 = [(_HMCameraStreamControl *)v5 sessionID];
-    if (v9)
+    sessionID = [(_HMCameraStreamControl *)selfCopy sessionID];
+    if (sessionID)
     {
-      if ([(_HMCameraStreamControl *)v5 streamState]!= 3)
+      if ([(_HMCameraStreamControl *)selfCopy streamState]!= 3)
       {
-        [(_HMCameraStreamControl *)v5 setStreamState:3];
+        [(_HMCameraStreamControl *)selfCopy setStreamState:3];
         v18 = MEMORY[0x1E69A2A10];
         v19 = objc_alloc(MEMORY[0x1E69A2A00]);
-        v20 = [(_HMCameraControl *)v5 profileUniqueIdentifier];
-        v21 = [v19 initWithTarget:v20];
+        profileUniqueIdentifier = [(_HMCameraControl *)selfCopy profileUniqueIdentifier];
+        v21 = [v19 initWithTarget:profileUniqueIdentifier];
         v37 = @"kCameraSessionID";
-        v38 = v9;
+        v38 = sessionID;
         v22 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v38 forKeys:&v37 count:1];
         v23 = [v18 messageWithName:@"HMCameraStreamStopStreamMessage" destination:v21 payload:v22];
 
@@ -173,12 +173,12 @@ LABEL_12:
         v32 = 3221225472;
         v33 = __36___HMCameraStreamControl_stopStream__block_invoke;
         v34 = &unk_1E754E570;
-        v35 = v5;
-        v24 = v9;
+        v35 = selfCopy;
+        v24 = sessionID;
         v36 = v24;
         [v23 setResponseHandler:&v31];
         v25 = objc_autoreleasePoolPush();
-        v26 = v5;
+        v26 = selfCopy;
         v27 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v27, OS_LOG_TYPE_INFO))
         {
@@ -191,14 +191,14 @@ LABEL_12:
         }
 
         objc_autoreleasePoolPop(v25);
-        v29 = [v3 messageDispatcher];
-        [v29 sendMessage:v23];
+        messageDispatcher = [context messageDispatcher];
+        [messageDispatcher sendMessage:v23];
 
         goto LABEL_18;
       }
 
       v10 = objc_autoreleasePoolPush();
-      v11 = v5;
+      v11 = selfCopy;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
@@ -216,7 +216,7 @@ LABEL_13:
     else
     {
       v10 = objc_autoreleasePoolPush();
-      v11 = v5;
+      v11 = selfCopy;
       v12 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
@@ -252,21 +252,21 @@ LABEL_19:
   v30 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleStreamStartedWithResponse:(id)a3 sessionID:(id)a4 error:(id)a5
+- (void)_handleStreamStartedWithResponse:(id)response sessionID:(id)d error:(id)error
 {
   v63 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(_HMCameraStreamControl *)self sessionID];
+  responseCopy = response;
+  dCopy = d;
+  errorCopy = error;
+  sessionID = [(_HMCameraStreamControl *)self sessionID];
   v12 = HMFEqualObjects();
 
   if (v12)
   {
-    if (v10)
+    if (errorCopy)
     {
       v13 = objc_autoreleasePoolPush();
-      v14 = self;
+      selfCopy = self;
       v15 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
       {
@@ -274,46 +274,46 @@ LABEL_19:
         *buf = 138543618;
         v58 = v16;
         v59 = 2112;
-        v60 = v10;
+        v60 = errorCopy;
         _os_log_impl(&dword_19BB39000, v15, OS_LOG_TYPE_DEFAULT, "%{public}@Failed to start video stream: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v13);
-      [(_HMCameraStreamControl *)v14 _resetStateWithError:v10];
+      [(_HMCameraStreamControl *)selfCopy _resetStateWithError:errorCopy];
     }
 
     else
     {
-      v22 = [v8 hmf_stringForKey:@"kCameraSessionID"];
+      v22 = [responseCopy hmf_stringForKey:@"kCameraSessionID"];
       [(_HMCameraStreamControl *)self setSessionID:v22];
 
       v23 = objc_autoreleasePoolPush();
-      v24 = self;
+      selfCopy2 = self;
       v25 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v25, OS_LOG_TYPE_INFO))
       {
         v26 = HMFGetLogIdentifier();
-        v27 = [(_HMCameraStreamControl *)v24 sessionID];
+        sessionID2 = [(_HMCameraStreamControl *)selfCopy2 sessionID];
         *buf = 138543618;
         v58 = v26;
         v59 = 2112;
-        v60 = v27;
+        v60 = sessionID2;
         _os_log_impl(&dword_19BB39000, v25, OS_LOG_TYPE_INFO, "%{public}@Successfully started video stream for session ID: %@", buf, 0x16u);
       }
 
       objc_autoreleasePoolPop(v23);
-      v54 = [v8 hmf_numberForKey:@"kSlotIdentifierKey"];
-      v28 = [v8 hmf_numberForKey:@"kAudioStreamSetting"];
-      v29 = [v8 hmf_numberForKey:@"kSourceAspectRatioKey"];
+      v54 = [responseCopy hmf_numberForKey:@"kSlotIdentifierKey"];
+      v28 = [responseCopy hmf_numberForKey:@"kAudioStreamSetting"];
+      v29 = [responseCopy hmf_numberForKey:@"kSourceAspectRatioKey"];
       v56 = 0;
-      v30 = [v8 hmf_integerForKey:@"HMCameraStreamAudioDownlinkTokenMessageKey" error:&v56];
+      v30 = [responseCopy hmf_integerForKey:@"HMCameraStreamAudioDownlinkTokenMessageKey" error:&v56];
       v31 = v56;
       v53 = v30;
       if (!v30)
       {
         v32 = v28;
         v33 = objc_autoreleasePoolPush();
-        v34 = v24;
+        v34 = selfCopy2;
         v35 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
         {
@@ -333,13 +333,13 @@ LABEL_19:
       }
 
       v55 = v31;
-      v37 = [v8 hmf_integerForKey:@"HMCameraStreamAudioUplinkTokenMessageKey" error:&v55];
+      v37 = [responseCopy hmf_integerForKey:@"HMCameraStreamAudioUplinkTokenMessageKey" error:&v55];
       v38 = v55;
 
       if (!v37)
       {
         v39 = objc_autoreleasePoolPush();
-        v40 = v24;
+        v40 = selfCopy2;
         v41 = HMFGetOSLogHandle();
         if (os_log_type_enabled(v41, OS_LOG_TYPE_ERROR))
         {
@@ -358,38 +358,38 @@ LABEL_19:
       }
 
       v43 = [HMCameraStream alloc];
-      v44 = [(_HMCameraControl *)v24 profileUniqueIdentifier];
+      profileUniqueIdentifier = [(_HMCameraControl *)selfCopy2 profileUniqueIdentifier];
       [v29 doubleValue];
       v46 = v45;
-      v47 = [(_HMCameraStreamControl *)v24 sessionID];
-      v48 = -[HMCameraStream initWithProfileUniqueIdentifier:slotIdentifier:aspectRatio:sessionID:audioStreamSetting:audioDownlinkToken:audioUplinkToken:](v43, "initWithProfileUniqueIdentifier:slotIdentifier:aspectRatio:sessionID:audioStreamSetting:audioDownlinkToken:audioUplinkToken:", v44, v54, v47, [v28 unsignedIntegerValue], v53, v37, v46);
+      sessionID3 = [(_HMCameraStreamControl *)selfCopy2 sessionID];
+      v48 = -[HMCameraStream initWithProfileUniqueIdentifier:slotIdentifier:aspectRatio:sessionID:audioStreamSetting:audioDownlinkToken:audioUplinkToken:](v43, "initWithProfileUniqueIdentifier:slotIdentifier:aspectRatio:sessionID:audioStreamSetting:audioDownlinkToken:audioUplinkToken:", profileUniqueIdentifier, v54, sessionID3, [v28 unsignedIntegerValue], v53, v37, v46);
 
-      v49 = [(_HMCameraControl *)v24 context];
-      [(HMCameraSource *)v48 setContext:v49];
+      context = [(_HMCameraControl *)selfCopy2 context];
+      [(HMCameraSource *)v48 setContext:context];
 
-      [(_HMCameraStreamControl *)v24 setCameraStream:v48];
-      [(_HMCameraStreamControl *)v24 setStreamState:2];
-      [(_HMCameraStreamControl *)v24 _callVideoStartedDelegate];
+      [(_HMCameraStreamControl *)selfCopy2 setCameraStream:v48];
+      [(_HMCameraStreamControl *)selfCopy2 setStreamState:2];
+      [(_HMCameraStreamControl *)selfCopy2 _callVideoStartedDelegate];
 
-      v10 = 0;
+      errorCopy = 0;
     }
   }
 
   else
   {
     v17 = objc_autoreleasePoolPush();
-    v18 = self;
+    selfCopy3 = self;
     v19 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
     {
       v20 = HMFGetLogIdentifier();
-      v21 = [(_HMCameraStreamControl *)v18 sessionID];
+      sessionID4 = [(_HMCameraStreamControl *)selfCopy3 sessionID];
       *buf = 138543874;
       v58 = v20;
       v59 = 2112;
-      v60 = v9;
+      v60 = dCopy;
       v61 = 2112;
-      v62 = v21;
+      v62 = sessionID4;
       _os_log_impl(&dword_19BB39000, v19, OS_LOG_TYPE_DEFAULT, "%{public}@Not handling start stream response: Received session ID %@ does not match the current one %@", buf, 0x20u);
     }
 
@@ -399,16 +399,16 @@ LABEL_19:
   v50 = *MEMORY[0x1E69E9840];
 }
 
-- (void)startStreamWithPreferences:(id)a3
+- (void)startStreamWithPreferences:(id)preferences
 {
   v42 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_HMCameraControl *)self context];
+  preferencesCopy = preferences;
+  context = [(_HMCameraControl *)self context];
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   v9 = v8;
-  if (!v5)
+  if (!context)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -436,15 +436,15 @@ LABEL_11:
     *buf = 138543618;
     v39 = v10;
     v40 = 2112;
-    v41 = v4;
+    v41 = preferencesCopy;
     _os_log_impl(&dword_19BB39000, v9, OS_LOG_TYPE_INFO, "%{public}@Starting stream with preferences: %@", buf, 0x16u);
   }
 
   objc_autoreleasePoolPop(v6);
-  if ([(_HMCameraStreamControl *)v7 streamState]== 1 || [(_HMCameraStreamControl *)v7 streamState]== 2)
+  if ([(_HMCameraStreamControl *)selfCopy streamState]== 1 || [(_HMCameraStreamControl *)selfCopy streamState]== 2)
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = v7;
+    selfCopy = selfCopy;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -464,35 +464,35 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  [(_HMCameraStreamControl *)v7 setStreamState:1];
-  v17 = [MEMORY[0x1E696AFB0] UUID];
-  v18 = [v17 UUIDString];
+  [(_HMCameraStreamControl *)selfCopy setStreamState:1];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
 
-  [(_HMCameraStreamControl *)v7 setSessionID:v18];
-  v19 = [MEMORY[0x1E695DF90] dictionary];
-  [v19 setObject:v18 forKeyedSubscript:@"kCameraSessionID"];
-  if (v4)
+  [(_HMCameraStreamControl *)selfCopy setSessionID:uUIDString];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  [dictionary setObject:uUIDString forKeyedSubscript:@"kCameraSessionID"];
+  if (preferencesCopy)
   {
-    v20 = encodeRootObject(v4);
-    [v19 setObject:v20 forKeyedSubscript:@"kCameraSessionPreference"];
+    v20 = encodeRootObject(preferencesCopy);
+    [dictionary setObject:v20 forKeyedSubscript:@"kCameraSessionPreference"];
   }
 
   v21 = objc_alloc(MEMORY[0x1E69A2A10]);
   v22 = objc_alloc(MEMORY[0x1E69A2A00]);
-  v23 = [(_HMCameraControl *)v7 profileUniqueIdentifier];
-  v24 = [v22 initWithTarget:v23];
-  v25 = [v21 initWithName:@"HMCameraStreamNegotiateStreamMessage" destination:v24 payload:v19];
+  profileUniqueIdentifier = [(_HMCameraControl *)selfCopy profileUniqueIdentifier];
+  v24 = [v22 initWithTarget:profileUniqueIdentifier];
+  v25 = [v21 initWithName:@"HMCameraStreamNegotiateStreamMessage" destination:v24 payload:dictionary];
 
   v32 = MEMORY[0x1E69E9820];
   v33 = 3221225472;
   v34 = __53___HMCameraStreamControl_startStreamWithPreferences___block_invoke;
   v35 = &unk_1E754E570;
-  v36 = v7;
-  v26 = v18;
+  v36 = selfCopy;
+  v26 = uUIDString;
   v37 = v26;
   [v25 setResponseHandler:&v32];
   v27 = objc_autoreleasePoolPush();
-  v28 = v7;
+  v28 = selfCopy;
   v29 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v29, OS_LOG_TYPE_INFO))
   {
@@ -505,25 +505,25 @@ LABEL_10:
   }
 
   objc_autoreleasePoolPop(v27);
-  v31 = [v5 messageDispatcher];
-  [v31 sendMessage:v25];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher sendMessage:v25];
 
 LABEL_12:
   v16 = *MEMORY[0x1E69E9840];
 }
 
-- (void)_handleVideoStreamStopped:(id)a3
+- (void)_handleVideoStreamStopped:(id)stopped
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(_HMCameraStreamControl *)self sessionID];
-  if (v5)
+  stoppedCopy = stopped;
+  sessionID = [(_HMCameraStreamControl *)self sessionID];
+  if (sessionID)
   {
-    v6 = [v4 stringForKey:@"kCameraSessionID"];
-    if (([v5 isEqualToString:v6] & 1) == 0)
+    v6 = [stoppedCopy stringForKey:@"kCameraSessionID"];
+    if (([sessionID isEqualToString:v6] & 1) == 0)
     {
       v21 = objc_autoreleasePoolPush();
-      v22 = self;
+      selfCopy = self;
       v23 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
       {
@@ -533,7 +533,7 @@ LABEL_12:
         v28 = 2112;
         v29 = v6;
         v30 = 2112;
-        v31 = v5;
+        v31 = sessionID;
         _os_log_impl(&dword_19BB39000, v23, OS_LOG_TYPE_DEFAULT, "%{public}@Not handling video stream stopped message: Received session ID %@ does not match the current one %@", &v26, 0x20u);
       }
 
@@ -541,9 +541,9 @@ LABEL_12:
       goto LABEL_16;
     }
 
-    v7 = [v4 errorForKey:@"kCameraSessionError"];
+    v7 = [stoppedCopy errorForKey:@"kCameraSessionError"];
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy2 = self;
     v10 = HMFGetOSLogHandle();
     v11 = v10;
     if (v7)
@@ -554,7 +554,7 @@ LABEL_12:
         v26 = 138543874;
         v27 = v12;
         v28 = 2112;
-        v29 = v5;
+        v29 = sessionID;
         v30 = 2112;
         v31 = v7;
         v13 = "%{public}@Video stream has failed for the session ID %@: %@";
@@ -572,7 +572,7 @@ LABEL_14:
       v26 = 138543618;
       v27 = v12;
       v28 = 2112;
-      v29 = v5;
+      v29 = sessionID;
       v13 = "%{public}@Video stream has stopped for the session ID: %@";
       v14 = v11;
       v15 = OS_LOG_TYPE_INFO;
@@ -581,14 +581,14 @@ LABEL_14:
     }
 
     objc_autoreleasePoolPop(v8);
-    [(_HMCameraStreamControl *)v9 _resetStateWithError:v7];
+    [(_HMCameraStreamControl *)selfCopy2 _resetStateWithError:v7];
 
 LABEL_16:
     goto LABEL_17;
   }
 
   v17 = objc_autoreleasePoolPush();
-  v18 = self;
+  selfCopy3 = self;
   v19 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
   {
@@ -604,36 +604,36 @@ LABEL_17:
   v25 = *MEMORY[0x1E69E9840];
 }
 
-- (void)__configureWithContext:(id)a3
+- (void)__configureWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   v12.receiver = self;
   v12.super_class = _HMCameraStreamControl;
-  [(_HMCameraControl *)&v12 __configureWithContext:v4];
-  v5 = [(_HMCameraControl *)self context];
-  v6 = [v5 messageDispatcher];
-  [v6 registerForMessage:@"HMCameraStreamStoppedMessage" receiver:self selector:sel__handleVideoStreamStopped_];
+  [(_HMCameraControl *)&v12 __configureWithContext:contextCopy];
+  context = [(_HMCameraControl *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher registerForMessage:@"HMCameraStreamStoppedMessage" receiver:self selector:sel__handleVideoStreamStopped_];
 
   objc_initWeak(&location, self);
-  v7 = [(_HMCameraControl *)self context];
-  v8 = [v7 xpcClient];
+  context2 = [(_HMCameraControl *)self context];
+  xpcClient = [context2 xpcClient];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __49___HMCameraStreamControl___configureWithContext___block_invoke;
   v9[3] = &unk_1E754E540;
   objc_copyWeak(&v10, &location);
-  [v8 registerReconnectionHandler:v9];
+  [xpcClient registerReconnectionHandler:v9];
 
   objc_destroyWeak(&v10);
   objc_destroyWeak(&location);
 }
 
-- (void)_resetStateWithError:(id)a3
+- (void)_resetStateWithError:(id)error
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  errorCopy = error;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -641,24 +641,24 @@ LABEL_17:
     v10 = 138543618;
     v11 = v8;
     v12 = 2112;
-    v13 = v4;
+    v13 = errorCopy;
     _os_log_impl(&dword_19BB39000, v7, OS_LOG_TYPE_INFO, "%{public}@Resetting all the stream control state with error: %@", &v10, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  [(_HMCameraStreamControl *)v6 setCameraStream:0];
-  [(_HMCameraStreamControl *)v6 setSessionID:0];
-  [(_HMCameraStreamControl *)v6 setStreamState:4];
-  [(_HMCameraStreamControl *)v6 _callVideoStoppedDelegateWithError:v4];
+  [(_HMCameraStreamControl *)selfCopy setCameraStream:0];
+  [(_HMCameraStreamControl *)selfCopy setSessionID:0];
+  [(_HMCameraStreamControl *)selfCopy setStreamState:4];
+  [(_HMCameraStreamControl *)selfCopy _callVideoStoppedDelegateWithError:errorCopy];
 
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)setSessionID:(id)a3
+- (void)setSessionID:(id)d
 {
-  v6 = a3;
+  dCopy = d;
   os_unfair_lock_lock_with_options();
-  v4 = [v6 copy];
+  v4 = [dCopy copy];
   sessionID = self->_sessionID;
   self->_sessionID = v4;
 
@@ -674,10 +674,10 @@ LABEL_17:
   return v3;
 }
 
-- (void)setStreamState:(unint64_t)a3
+- (void)setStreamState:(unint64_t)state
 {
   os_unfair_lock_lock_with_options();
-  self->_streamState = a3;
+  self->_streamState = state;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -690,12 +690,12 @@ LABEL_17:
   return streamState;
 }
 
-- (void)setCameraStream:(id)a3
+- (void)setCameraStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   os_unfair_lock_lock_with_options();
   cameraStream = self->_cameraStream;
-  self->_cameraStream = v4;
+  self->_cameraStream = streamCopy;
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -709,11 +709,11 @@ LABEL_17:
   return v3;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   os_unfair_lock_lock_with_options();
-  objc_storeWeak(&self->_delegate, v4);
+  objc_storeWeak(&self->_delegate, delegateCopy);
 
   os_unfair_lock_unlock(&self->super._lock);
 }
@@ -729,20 +729,20 @@ LABEL_17:
 
 - (void)dealloc
 {
-  v3 = [(_HMCameraControl *)self context];
-  v4 = [v3 messageDispatcher];
-  [v4 deregisterReceiver:self];
+  context = [(_HMCameraControl *)self context];
+  messageDispatcher = [context messageDispatcher];
+  [messageDispatcher deregisterReceiver:self];
 
   v5.receiver = self;
   v5.super_class = _HMCameraStreamControl;
   [(_HMCameraStreamControl *)&v5 dealloc];
 }
 
-- (_HMCameraStreamControl)initWithCameraProfile:(id)a3 profileUniqueIdentifier:(id)a4
+- (_HMCameraStreamControl)initWithCameraProfile:(id)profile profileUniqueIdentifier:(id)identifier
 {
   v5.receiver = self;
   v5.super_class = _HMCameraStreamControl;
-  result = [(_HMCameraControl *)&v5 initWithCameraProfile:a3 profileUniqueIdentifier:a4];
+  result = [(_HMCameraControl *)&v5 initWithCameraProfile:profile profileUniqueIdentifier:identifier];
   if (result)
   {
     result->_streamState = 4;

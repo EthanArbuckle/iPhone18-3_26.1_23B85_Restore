@@ -7,8 +7,8 @@
 
 - (id)cl_deepCopy
 {
-  v2 = [(NSDictionary *)self cl_deepMutableCopy];
-  v3 = [[NSDictionary alloc] initWithDictionary:v2];
+  cl_deepMutableCopy = [(NSDictionary *)self cl_deepMutableCopy];
+  v3 = [[NSDictionary alloc] initWithDictionary:cl_deepMutableCopy];
 
   return v3;
 }
@@ -35,9 +35,9 @@
           objc_enumerationMutation(self);
         }
 
-        v8 = [*(*(&v11 + 1) + 8 * v7) cl_deepCopy];
-        v9 = [-[NSDictionary objectForKeyedSubscript:](self objectForKeyedSubscript:{v8), "cl_deepCopy"}];
-        [v3 setObject:v9 forKeyedSubscript:v8];
+        cl_deepCopy = [*(*(&v11 + 1) + 8 * v7) cl_deepCopy];
+        v9 = [-[NSDictionary objectForKeyedSubscript:](self objectForKeyedSubscript:{cl_deepCopy), "cl_deepCopy"}];
+        [v3 setObject:v9 forKeyedSubscript:cl_deepCopy];
 
         ++v7;
       }

@@ -11,16 +11,16 @@
 
 - (id)if_compactMap:()IntentsFoundation
 {
-  v5 = [a1 count];
+  v5 = [self count];
   if (!v5)
   {
-    return a1;
+    return self;
   }
 
   v6 = v5;
   v7 = malloc_type_calloc(v5, 8uLL, 0x80040B8603338uLL);
   v8 = malloc_type_calloc(v6, 8uLL, 0x80040B8603338uLL);
-  [a1 getObjects:v8 andKeys:v7 count:v6];
+  [self getObjects:v8 andKeys:v7 count:v6];
   v9 = 0;
   v10 = 0;
   do
@@ -65,7 +65,7 @@
 - (id)if_dictionaryByAddingEntriesFromDictionary:()IntentsFoundation
 {
   v4 = a3;
-  v5 = [a1 mutableCopy];
+  v5 = [self mutableCopy];
   [v5 addEntriesFromDictionary:v4];
 
   v6 = [v5 copy];
@@ -75,16 +75,16 @@
 
 - (id)if_dictionaryWithNonEmptyValues
 {
-  v2 = [a1 keysOfEntriesPassingTest:&__block_literal_global_41];
-  v3 = [v2 allObjects];
-  v4 = [a1 dictionaryWithValuesForKeys:v3];
+  v2 = [self keysOfEntriesPassingTest:&__block_literal_global_41];
+  allObjects = [v2 allObjects];
+  v4 = [self dictionaryWithValuesForKeys:allObjects];
 
   return v4;
 }
 
 - (__CFString)if_JSONStringRepresentation
 {
-  v1 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a1 options:2 error:0];
+  v1 = [MEMORY[0x277CCAAA0] dataWithJSONObject:self options:2 error:0];
   if (v1)
   {
     v2 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v1 encoding:4];
@@ -121,7 +121,7 @@
     ++a4;
   }
 
-  v15 = [a1 dictionaryWithDictionary:i];
+  v15 = [self dictionaryWithDictionary:i];
 
   return v15;
 }
@@ -138,7 +138,7 @@
   [v9 getObjects:v13 range:{0, v11}];
 
   v14 = [v10 count];
-  v15 = [a1 if_dictionaryWithObjects:v12 forKeys:v13 count:v14 uniquingKeysWith:v8];
+  v15 = [self if_dictionaryWithObjects:v12 forKeys:v13 count:v14 uniquingKeysWith:v8];
 
   free(v12);
   free(v13);

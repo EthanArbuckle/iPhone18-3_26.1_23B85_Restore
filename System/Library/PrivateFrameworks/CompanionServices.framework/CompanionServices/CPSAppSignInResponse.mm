@@ -1,117 +1,117 @@
 @interface CPSAppSignInResponse
 - (ASAuthorizationCredential)credential;
-- (CPSAppSignInResponse)initWithAppleIDAuthorization:(id)a3;
-- (CPSAppSignInResponse)initWithCoder:(id)a3;
-- (CPSAppSignInResponse)initWithPasswordCredential:(id)a3;
-- (CPSAppSignInResponse)initWithPlatformKeyCredentialAssertion:(id)a3;
-- (CPSAppSignInResponse)initWithPlatformKeyCredentialRegistration:(id)a3;
-- (CPSAppSignInResponse)initWithWebCallbackURL:(id)a3;
+- (CPSAppSignInResponse)initWithAppleIDAuthorization:(id)authorization;
+- (CPSAppSignInResponse)initWithCoder:(id)coder;
+- (CPSAppSignInResponse)initWithPasswordCredential:(id)credential;
+- (CPSAppSignInResponse)initWithPlatformKeyCredentialAssertion:(id)assertion;
+- (CPSAppSignInResponse)initWithPlatformKeyCredentialRegistration:(id)registration;
+- (CPSAppSignInResponse)initWithWebCallbackURL:(id)l;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPSAppSignInResponse
 
-- (CPSAppSignInResponse)initWithAppleIDAuthorization:(id)a3
+- (CPSAppSignInResponse)initWithAppleIDAuthorization:(id)authorization
 {
-  v6 = a3;
-  if (!v6)
+  authorizationCopy = authorization;
+  if (!authorizationCopy)
   {
     [CPSAppSignInResponse initWithAppleIDAuthorization:a2];
   }
 
-  v7 = v6;
+  v7 = authorizationCopy;
   v11.receiver = self;
   v11.super_class = CPSAppSignInResponse;
   v8 = [(CPSAppSignInResponse *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_appleIDAuthorization, a3);
+    objc_storeStrong(&v8->_appleIDAuthorization, authorization);
   }
 
   return v9;
 }
 
-- (CPSAppSignInResponse)initWithPasswordCredential:(id)a3
+- (CPSAppSignInResponse)initWithPasswordCredential:(id)credential
 {
-  v6 = a3;
-  if (!v6)
+  credentialCopy = credential;
+  if (!credentialCopy)
   {
     [CPSAppSignInResponse initWithPasswordCredential:a2];
   }
 
-  v7 = v6;
+  v7 = credentialCopy;
   v11.receiver = self;
   v11.super_class = CPSAppSignInResponse;
   v8 = [(CPSAppSignInResponse *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_passwordCredential, a3);
+    objc_storeStrong(&v8->_passwordCredential, credential);
   }
 
   return v9;
 }
 
-- (CPSAppSignInResponse)initWithWebCallbackURL:(id)a3
+- (CPSAppSignInResponse)initWithWebCallbackURL:(id)l
 {
-  v6 = a3;
-  if (!v6)
+  lCopy = l;
+  if (!lCopy)
   {
     [CPSAppSignInResponse initWithWebCallbackURL:a2];
   }
 
-  v7 = v6;
+  v7 = lCopy;
   v11.receiver = self;
   v11.super_class = CPSAppSignInResponse;
   v8 = [(CPSAppSignInResponse *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_webCallbackURL, a3);
+    objc_storeStrong(&v8->_webCallbackURL, l);
   }
 
   return v9;
 }
 
-- (CPSAppSignInResponse)initWithPlatformKeyCredentialAssertion:(id)a3
+- (CPSAppSignInResponse)initWithPlatformKeyCredentialAssertion:(id)assertion
 {
-  v6 = a3;
-  if (!v6)
+  assertionCopy = assertion;
+  if (!assertionCopy)
   {
     [CPSAppSignInResponse initWithPlatformKeyCredentialAssertion:a2];
   }
 
-  v7 = v6;
+  v7 = assertionCopy;
   v11.receiver = self;
   v11.super_class = CPSAppSignInResponse;
   v8 = [(CPSAppSignInResponse *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_platformKeyCredentialAssertion, a3);
+    objc_storeStrong(&v8->_platformKeyCredentialAssertion, assertion);
   }
 
   return v9;
 }
 
-- (CPSAppSignInResponse)initWithPlatformKeyCredentialRegistration:(id)a3
+- (CPSAppSignInResponse)initWithPlatformKeyCredentialRegistration:(id)registration
 {
-  v6 = a3;
-  if (!v6)
+  registrationCopy = registration;
+  if (!registrationCopy)
   {
     [CPSAppSignInResponse initWithPlatformKeyCredentialRegistration:a2];
   }
 
-  v7 = v6;
+  v7 = registrationCopy;
   v11.receiver = self;
   v11.super_class = CPSAppSignInResponse;
   v8 = [(CPSAppSignInResponse *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_platformKeyCredentialRegistration, a3);
+    objc_storeStrong(&v8->_platformKeyCredentialRegistration, registration);
   }
 
   return v9;
@@ -130,9 +130,9 @@
 
   v7 = [v3 appendObject:self->_platformKeyCredentialAssertion withName:@"platformKeyCredentialAssertion" skipIfNil:1];
   v8 = [v3 appendObject:self->_platformKeyCredentialRegistration withName:@"platformKeyCredentialRegistration" skipIfNil:1];
-  v9 = [v3 build];
+  build = [v3 build];
 
-  return v9;
+  return build;
 }
 
 - (ASAuthorizationCredential)credential
@@ -140,9 +140,9 @@
   if (self->_passwordCredential)
   {
     ASPasswordCredentialClass = getASPasswordCredentialClass();
-    v4 = [(CASPasswordCredential *)self->_passwordCredential user];
-    v5 = [(CASPasswordCredential *)self->_passwordCredential password];
-    v6 = [ASPasswordCredentialClass credentialWithUser:v4 password:v5];
+    user = [(CASPasswordCredential *)self->_passwordCredential user];
+    password = [(CASPasswordCredential *)self->_passwordCredential password];
+    v6 = [ASPasswordCredentialClass credentialWithUser:user password:password];
   }
 
   else
@@ -153,61 +153,61 @@
   return v6;
 }
 
-- (CPSAppSignInResponse)initWithCoder:(id)a3
+- (CPSAppSignInResponse)initWithCoder:(id)coder
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_self();
-  v6 = [v4 decodeObjectOfClass:v5 forKey:@"appleIDAuthorization"];
+  v6 = [coderCopy decodeObjectOfClass:v5 forKey:@"appleIDAuthorization"];
 
   if (v6)
   {
     self = [(CPSAppSignInResponse *)self initWithAppleIDAuthorization:v6];
-    v7 = self;
+    selfCopy5 = self;
   }
 
   else
   {
     v8 = objc_opt_self();
-    v9 = [v4 decodeObjectOfClass:v8 forKey:@"passwordCredential"];
+    v9 = [coderCopy decodeObjectOfClass:v8 forKey:@"passwordCredential"];
 
     if (v9)
     {
       self = [(CPSAppSignInResponse *)self initWithPasswordCredential:v9];
-      v7 = self;
+      selfCopy5 = self;
     }
 
     else
     {
       v10 = objc_opt_self();
-      v11 = [v4 decodeObjectOfClass:v10 forKey:@"webCallbackURL"];
+      v11 = [coderCopy decodeObjectOfClass:v10 forKey:@"webCallbackURL"];
 
       if (v11)
       {
         self = [(CPSAppSignInResponse *)self initWithWebCallbackURL:v11];
-        v7 = self;
+        selfCopy5 = self;
       }
 
       else
       {
         v12 = objc_opt_self();
-        v13 = [v4 decodeObjectOfClass:v12 forKey:@"platformKeyCredentialAssertion"];
+        v13 = [coderCopy decodeObjectOfClass:v12 forKey:@"platformKeyCredentialAssertion"];
 
         if (v13)
         {
           self = [(CPSAppSignInResponse *)self initWithPlatformKeyCredentialAssertion:v13];
-          v7 = self;
+          selfCopy5 = self;
         }
 
         else
         {
           v14 = objc_opt_self();
-          v15 = [v4 decodeObjectOfClass:v14 forKey:@"platformKeyCredentialRegistration"];
+          v15 = [coderCopy decodeObjectOfClass:v14 forKey:@"platformKeyCredentialRegistration"];
 
           if (v15)
           {
             self = [(CPSAppSignInResponse *)self initWithPlatformKeyCredentialRegistration:v15];
-            v7 = self;
+            selfCopy5 = self;
           }
 
           else
@@ -218,9 +218,9 @@
             v23[0] = @"Failed to decode CPSAppSignInResponse: missing credential values";
             v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v23 forKeys:&v22 count:1];
             v19 = [v16 errorWithDomain:v17 code:4865 userInfo:v18];
-            [v4 failWithError:v19];
+            [coderCopy failWithError:v19];
 
-            v7 = 0;
+            selfCopy5 = 0;
           }
         }
       }
@@ -228,18 +228,18 @@
   }
 
   v20 = *MEMORY[0x277D85DE8];
-  return v7;
+  return selfCopy5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   appleIDAuthorization = self->_appleIDAuthorization;
-  v5 = a3;
-  [v5 encodeObject:appleIDAuthorization forKey:@"appleIDAuthorization"];
-  [v5 encodeObject:self->_passwordCredential forKey:@"passwordCredential"];
-  [v5 encodeObject:self->_webCallbackURL forKey:@"webCallbackURL"];
-  [v5 encodeObject:self->_platformKeyCredentialAssertion forKey:@"platformKeyCredentialAssertion"];
-  [v5 encodeObject:self->_platformKeyCredentialRegistration forKey:@"platformKeyCredentialRegistration"];
+  coderCopy = coder;
+  [coderCopy encodeObject:appleIDAuthorization forKey:@"appleIDAuthorization"];
+  [coderCopy encodeObject:self->_passwordCredential forKey:@"passwordCredential"];
+  [coderCopy encodeObject:self->_webCallbackURL forKey:@"webCallbackURL"];
+  [coderCopy encodeObject:self->_platformKeyCredentialAssertion forKey:@"platformKeyCredentialAssertion"];
+  [coderCopy encodeObject:self->_platformKeyCredentialRegistration forKey:@"platformKeyCredentialRegistration"];
 }
 
 - (void)initWithAppleIDAuthorization:(char *)a1 .cold.1(char *a1)

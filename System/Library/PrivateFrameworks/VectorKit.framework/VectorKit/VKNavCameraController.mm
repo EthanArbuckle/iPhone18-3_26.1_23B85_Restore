@@ -1,19 +1,19 @@
 @interface VKNavCameraController
 - ($F24F406B2B787EFB06265DBA3D28CBD5)centerCoordinate;
-- (BOOL)_addStepToFraming:(unint64_t)a3 forRoute:(id)a4;
-- (BOOL)_addStepToFraming:(unint64_t)a3 forRoute:(id)a4 untilDistance:(float)a5 fromRouteCoordinate:(PolylineCoordinate)a6;
+- (BOOL)_addStepToFraming:(unint64_t)framing forRoute:(id)route;
+- (BOOL)_addStepToFraming:(unint64_t)framing forRoute:(id)route untilDistance:(float)distance fromRouteCoordinate:(PolylineCoordinate)coordinate;
 - (BOOL)_hasRunningAnimation;
 - (BOOL)_isAnalyticalFramingEnabled;
 - (BOOL)_isDynamicFrameRateActive;
 - (BOOL)_isNavCameraInOverviewMode;
 - (BOOL)_isOverviewFramingEnabled;
 - (BOOL)isAnimating;
-- (BOOL)snapMapIfNecessary:(BOOL)a3;
+- (BOOL)snapMapIfNecessary:(BOOL)necessary;
 - (BOOL)testManeuverIsInsideViewableRegion;
 - (BOOL)testPuckIsInsideViewableRegion;
 - (Box<double,)_calculateCoordinatesToFrameBounds;
 - (Box<double,)calculateViewableScreenRect;
-- (Box<double,)calculateViewableScreenRectForEdgeInsets:(VKEdgeInsets)a3;
+- (Box<double,)calculateViewableScreenRectForEdgeInsets:(VKEdgeInsets)insets;
 - (Box<double,)viewableScreenRect;
 - (CameraFrame<geo::Radians,)_calculateReferenceFrameForMotion;
 - (CameraFrame<geo::Radians,)cameraFrame;
@@ -21,16 +21,16 @@
 - (CameraFrame<geo::Radians,)restingCameraFrameWithZoomScale:(VKNavCameraController *)self;
 - (Coordinate3D<geo::Radians,)_coordinateForGeoLocation:()Coordinate3D<geo:(double>)result :Radians;
 - (Coordinate3D<geo::Radians,)puckCoordinate;
-- (Coordinate3D<geo::Radians,)routeCoordinateAtDistance:(double)a3;
-- (Coordinate3D<geo::Radians,)routeLocationAtDistance:(double)a3 fromManeuver:(unint64_t)a4;
+- (Coordinate3D<geo::Radians,)routeCoordinateAtDistance:(double)distance;
+- (Coordinate3D<geo::Radians,)routeLocationAtDistance:(double)distance fromManeuver:(unint64_t)maneuver;
 - (DebugTreeNode)_createDynamicFrameRateDebugNode;
 - (DebugTreeNode)_createMainDebugNode;
 - (DebugTreeNode)_createStyleDebugNode;
-- (Matrix<double,)_calculateMovementVector:(const void *)a3 fromFrame:(const void *)a4;
-- (Matrix<double,)_frameCoordinates:(const void *)a3 targetingPuckOnBothAxes:(const void *)a4 viewRot:(Quaternion<double>)a5;
-- (Matrix<double,)_frameCoordinates:(const void *)a3 viewRot:(Quaternion<double>)a4;
+- (Matrix<double,)_calculateMovementVector:(const void *)vector fromFrame:(const void *)frame;
+- (Matrix<double,)_frameCoordinates:(const void *)coordinates targetingPuckOnBothAxes:(const void *)axes viewRot:(Quaternion<double>)rot;
+- (Matrix<double,)_frameCoordinates:(const void *)coordinates viewRot:(Quaternion<double>)rot;
 - (Matrix<double,)_puckScreenPoint;
-- (Matrix<double,)_viewCoordinatesForCoordinates:(const void *)a3 rotation:(Quaternion<double>)a4;
+- (Matrix<double,)_viewCoordinatesForCoordinates:(const void *)coordinates rotation:(Quaternion<double>)rotation;
 - (Matrix<double,)puckScreenPoint;
 - (Unit<geo::RadianUnitDescription,)calculateHeading;
 - (Unit<geo::RadianUnitDescription,)maxCameraPitch;
@@ -38,56 +38,56 @@
 - (VKEdgeInsets)clientFramingInsets;
 - (VKInteractiveMap)screenCanvas;
 - (VKNavCameraController)init;
-- (VKNavCameraController)initWithTaskContext:(shared_ptr<md:(void *)a4 :(void *)a5 TaskContext>)a3 device:(AnimationRunner *)a6 mapDataAccess:(RunLoopController *)a7 animationRunner:(id)a8 runLoopController:cameraDelegate:;
+- (VKNavCameraController)initWithTaskContext:(shared_ptr<md:(void *)context :(void *)a5 TaskContext>)a3 device:(AnimationRunner *)device mapDataAccess:(RunLoopController *)access animationRunner:(id)runner runLoopController:cameraDelegate:;
 - (VKNavCameraFrameTestResult)runValidations;
 - (VKSceneConfiguration)sceneConfiguration;
 - (__n128)_addWaypointToFramingAtStep:forRoute:;
-- (array<unsigned)_findPeripheralPoints:(const void *)a3 rotation:(Quaternion<double>)a4;
+- (array<unsigned)_findPeripheralPoints:(const void *)points rotation:(Quaternion<double>)rotation;
 - (double)_calculateMaxPixelChangeAndUpdateCorners;
 - (double)_calculatePuckPointChange;
 - (double)_calculateTargetPointChange;
-- (double)_frameCameraWithViewRotation:(double)a3 firstWorldPoint:(double)a4 firstTargetScreenX:(uint64_t)a5 secondWorldPoint:(double *)a6 secondTargetScreenY:(double *)a7 thirdWorldPoint:(double *)a8 thirdTargetScreenXorY:(double *)a9 frameThirdXAxis:(int)a10;
+- (double)_frameCameraWithViewRotation:(double)rotation firstWorldPoint:(double)point firstTargetScreenX:(uint64_t)x secondWorldPoint:(double *)worldPoint secondTargetScreenY:(double *)y thirdWorldPoint:(double *)thirdWorldPoint thirdTargetScreenXorY:(double *)xorY frameThirdXAxis:(int)self0;
 - (double)_movementKernelDelta;
-- (double)_normalizedZoomLevelForDisplayZoomLevel:(double)a3;
+- (double)_normalizedZoomLevelForDisplayZoomLevel:(double)level;
 - (double)currentZoomLevel;
-- (double)distanceToManeuver:(unint64_t)a3 fromRouteCoordinate:(PolylineCoordinate)a4;
+- (double)distanceToManeuver:(unint64_t)maneuver fromRouteCoordinate:(PolylineCoordinate)coordinate;
 - (double)maxZoomHeight;
 - (double)maximumZoomLevel;
 - (double)minZoomHeight;
 - (double)minimumZoomLevel;
 - (double)topDownMinimumZoomLevel;
 - (float)_currentRoadSignOffset;
-- (float)idealPitchForNormalizedZoomLevel:(float)a3;
-- (float)maxPitchForNormalizedZoomLevel:(float)a3;
+- (float)idealPitchForNormalizedZoomLevel:(float)level;
+- (float)maxPitchForNormalizedZoomLevel:(float)level;
 - (float)maximumNormalizedZoomLevel;
-- (float)minPitchForNormalizedZoomLevel:(float)a3;
+- (float)minPitchForNormalizedZoomLevel:(float)level;
 - (float)minimumNormalizedZoomLevel;
 - (id).cxx_construct;
-- (id)_debugTextForPage:(unint64_t)a3;
+- (id)_debugTextForPage:(unint64_t)page;
 - (id)_detachedGestureController;
 - (int64_t)defaultDisplayRate;
 - (int64_t)displayRate;
 - (int64_t)tileSize;
-- (optional<double>)puckAnimator:(id)a3 getElevationWithCoordinate:(const void *)a4;
-- (pair<double,)_solveEyeTargetingPoints:(const void *)a3 targetScreenCoords:(const void *)a4 projection:(const ProjectionConfig *)a5 axis:(unsigned int)a6;
+- (optional<double>)puckAnimator:(id)animator getElevationWithCoordinate:(const void *)coordinate;
+- (pair<double,)_solveEyeTargetingPoints:(const void *)points targetScreenCoords:(const void *)coords projection:(const ProjectionConfig *)projection axis:(unsigned int)axis;
 - (shared_ptr<gss::StylesheetManager<gss::ScenePropertyID>>)_getActiveSceneManager;
 - (unsigned)cameraHeadingType;
-- (void)HandleFrequencyReset:(id)a3;
-- (void)_addAdditionalRoutePointsToFrameToList:(void *)a3;
-- (void)_addWaypointToFramingAtStep:(unint64_t)a3 forRoute:(id)a4;
+- (void)HandleFrequencyReset:(id)reset;
+- (void)_addAdditionalRoutePointsToFrameToList:(void *)list;
+- (void)_addWaypointToFramingAtStep:(unint64_t)step forRoute:(id)route;
 - (void)_addWaypointToFramingAtStep:forRoute:;
-- (void)_clearDebugConsole:(int)a3;
-- (void)_convertCameraOrigin:()Matrix<double andForward:()3 toDistance:(1>)a3 andTarget:()Matrix<double;
-- (void)_endUpdateWithTimestamp:(double)a3 frameStamp:(unint64_t)a4;
-- (void)_frameCameraWithHeading:(double)a3 pitch:(double)a4 targetPuckOnBothAxes:(BOOL)a5;
-- (void)_populateDebugNode:(void *)a3 forFrame:()CameraFrame<geo:(double> *)a4 :Radians;
-- (void)_recordTrackingSpeedAtTimestamp:(double)a3;
-- (void)_setDetached:(BOOL)a3;
-- (void)_setNavCameraIsDetached:(BOOL)a3;
-- (void)_setNavCameraTransitionComplete:(BOOL)a3;
+- (void)_clearDebugConsole:(int)console;
+- (void)_convertCameraOrigin:()Matrix<double andForward:()3 toDistance:(1>)distance andTarget:()Matrix<double;
+- (void)_endUpdateWithTimestamp:(double)timestamp frameStamp:(unint64_t)stamp;
+- (void)_frameCameraWithHeading:(double)heading pitch:(double)pitch targetPuckOnBothAxes:(BOOL)axes;
+- (void)_populateDebugNode:(void *)node forFrame:()CameraFrame<geo:(double> *)geo :Radians;
+- (void)_recordTrackingSpeedAtTimestamp:(double)timestamp;
+- (void)_setDetached:(BOOL)detached;
+- (void)_setNavCameraIsDetached:(BOOL)detached;
+- (void)_setNavCameraTransitionComplete:(BOOL)complete;
 - (void)_setNeedsUpdate;
 - (void)_setupMovementSamplePoints;
-- (void)_showMotionVectorsWithDebugConsole:(void *)a3;
+- (void)_showMotionVectorsWithDebugConsole:(void *)console;
 - (void)_snapHeading;
 - (void)_snapPitch;
 - (void)_updateCameraLimits;
@@ -98,63 +98,63 @@
 - (void)_updateForAnimatedEdgeInsets;
 - (void)_updateLabelMetrics;
 - (void)_updateNavCameraState;
-- (void)_updateObserverCouldZoomIn:(BOOL)a3 couldZoomOut:(BOOL)a4;
+- (void)_updateObserverCouldZoomIn:(BOOL)in couldZoomOut:(BOOL)out;
 - (void)_updateRouteSinuosity;
 - (void)_updateSceneQuery;
-- (void)_updateSceneStyles:(BOOL)a3 updatePitchLimitOnly:(BOOL)a4;
-- (void)_updateSprings:(double)a3;
+- (void)_updateSceneStyles:(BOOL)styles updatePitchLimitOnly:(BOOL)only;
+- (void)_updateSprings:(double)springs;
 - (void)_updateStyles;
 - (void)_updateZoomScaleLimts;
-- (void)animateCameraWithDuration:(float)a3 fromFrame:(const void *)a4 completionHandler:(id)a5;
-- (void)animateSelectiveReframingCameraWithDuration:(float)a3 fromFrame:(const void *)a4 completionHandler:(id)a5;
+- (void)animateCameraWithDuration:(float)duration fromFrame:(const void *)frame completionHandler:(id)handler;
+- (void)animateSelectiveReframingCameraWithDuration:(float)duration fromFrame:(const void *)frame completionHandler:(id)handler;
 - (void)canvasDidLayout;
 - (void)dealloc;
-- (void)navContextCameraHeadingOverrideDidChange:(id)a3;
-- (void)pitchTo:(double)a3 animated:(BOOL)a4;
-- (void)populateDebugNode:(void *)a3 withOptions:(const void *)a4;
-- (void)projectCoordinate:(id)a3 toPoint:(CGPoint *)a4;
-- (void)puckAnimator:(id)a3 runAnimation:(id)a4;
-- (void)puckAnimator:(id)a3 updatedPosition:(const void *)a4 course:(const void *)a5 polylineCoordinate:(PolylineCoordinate)a6;
+- (void)navContextCameraHeadingOverrideDidChange:(id)change;
+- (void)pitchTo:(double)to animated:(BOOL)animated;
+- (void)populateDebugNode:(void *)node withOptions:(const void *)options;
+- (void)projectCoordinate:(id)coordinate toPoint:(CGPoint *)point;
+- (void)puckAnimator:(id)animator runAnimation:(id)animation;
+- (void)puckAnimator:(id)animator updatedPosition:(const void *)position course:(const void *)course polylineCoordinate:(PolylineCoordinate)coordinate;
 - (void)resetSpringsToResting;
-- (void)returnToTrackingWithDelay:(double)a3 resetZoom:(BOOL)a4;
-- (void)rotateTo:(double)a3 animated:(BOOL)a4;
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3;
-- (void)setCameraFrame:()CameraFrame<geo:(double> *)a3 :Radians;
-- (void)setEdgeInsets:(VKEdgeInsets)a3;
-- (void)setEdgeInsetsAnimating:(BOOL)a3;
+- (void)returnToTrackingWithDelay:(double)delay resetZoom:(BOOL)zoom;
+- (void)rotateTo:(double)to animated:(BOOL)animated;
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera;
+- (void)setCameraFrame:()CameraFrame<geo:(double> *)geo :Radians;
+- (void)setEdgeInsets:(VKEdgeInsets)insets;
+- (void)setEdgeInsetsAnimating:(BOOL)animating;
 - (void)setEnableDynamicFrameRate:(BOOL)BOOL;
-- (void)setNavContext:(id)a3;
+- (void)setNavContext:(id)context;
 - (void)setViewableScreenRect:()Box<double;
-- (void)setVkCamera:(id)a3;
-- (void)setZoomScale:(double)a3;
+- (void)setVkCamera:(id)camera;
+- (void)setZoomScale:(double)scale;
 - (void)startIgnoreStyleChangeTimer;
-- (void)startPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4;
-- (void)startPinchingWithFocusPoint:(CGPoint)a3;
-- (void)startPitchingWithFocusPoint:(CGPoint)a3;
-- (void)startRotatingWithFocusPoint:(CGPoint)a3;
-- (void)startWithPounce:(BOOL)a3 startLocation:(id)a4 startCourse:(double)a5 pounceCompletionHandler:(id)a6;
+- (void)startPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint;
+- (void)startPinchingWithFocusPoint:(CGPoint)point;
+- (void)startPitchingWithFocusPoint:(CGPoint)point;
+- (void)startRotatingWithFocusPoint:(CGPoint)point;
+- (void)startWithPounce:(BOOL)pounce startLocation:(id)location startCourse:(double)course pounceCompletionHandler:(id)handler;
 - (void)stop;
 - (void)stopAnimations;
-- (void)stopPanningAtPoint:(CGPoint)a3;
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3;
-- (void)stopPitchingWithFocusPoint:(CGPoint)a3;
-- (void)stopRotatingWithFocusPoint:(CGPoint)a3;
+- (void)stopPanningAtPoint:(CGPoint)point;
+- (void)stopPinchingWithFocusPoint:(CGPoint)point;
+- (void)stopPitchingWithFocusPoint:(CGPoint)point;
+- (void)stopRotatingWithFocusPoint:(CGPoint)point;
 - (void)stopSnappingAnimations;
 - (void)updateCameraState;
 - (void)updateDistanceFromTargetAndScreenPositionSpring;
-- (void)updateLocation:(const void *)a3 andCourse:(const void *)a4;
+- (void)updateLocation:(const void *)location andCourse:(const void *)course;
 - (void)updateManeuversToFrame;
-- (void)updatePanWithTranslation:(CGPoint)a3;
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5;
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 degrees:(double)a4;
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 translation:(double)a4;
+- (void)updatePanWithTranslation:(CGPoint)translation;
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor;
+- (void)updatePitchWithFocusPoint:(CGPoint)point degrees:(double)degrees;
+- (void)updatePitchWithFocusPoint:(CGPoint)point translation:(double)translation;
 - (void)updatePointsToFrame;
-- (void)updatePuckOffset:(BOOL)a3;
-- (void)updateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4;
+- (void)updatePuckOffset:(BOOL)offset;
+- (void)updateRotationWithFocusPoint:(CGPoint)point newValue:(double)value;
 - (void)updateSpringsForFramingCamera;
 - (void)updateSpringsForTrackingCamera;
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4;
-- (void)zoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5;
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context;
+- (void)zoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler;
 @end
 
 @implementation VKNavCameraController
@@ -177,9 +177,9 @@
     self->_didNavCameraTransition = 0;
     cameraMode = self->_cameraMode;
     WeakRetained = objc_loadWeakRetained(&self->_sceneConfiguration);
-    v4 = [WeakRetained navCameraMode];
+    navCameraMode = [WeakRetained navCameraMode];
 
-    if (cameraMode != v4)
+    if (cameraMode != navCameraMode)
     {
       self->_didNavCameraTransition = 1;
       v6 = objc_loadWeakRetained(&self->_sceneConfiguration);
@@ -213,28 +213,28 @@
       std::__shared_weak_count::__release_shared[abi:nn200100](v50);
     }
 
-    v6 = [(VKNavCameraController *)self tileSize];
+    tileSize = [(VKNavCameraController *)self tileSize];
     [(VKCameraController *)self camera];
-    v7 = gdc::Camera::viewSize(v53);
-    gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v49, v5, v6, *v7);
+    v7 = gdc::Camera::viewSize(minDistanceToGroundRestriction);
+    gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v49, v5, tileSize, *v7);
     if (v54)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v54);
     }
 
     WeakRetained = objc_loadWeakRetained(&self->_screenCanvas);
-    v9 = [WeakRetained mapEngine];
-    pitchForZ((*(v9 + 42024) + 464), *&v49);
+    mapEngine = [WeakRetained mapEngine];
+    pitchForZ((*(mapEngine + 42024) + 464), *&v49);
     v11 = v10;
 
     v12 = objc_loadWeakRetained(&self->_screenCanvas);
-    v13 = [v12 mapEngine];
-    pitchForZ((*(v13 + 42024) + 488), *&v49);
+    mapEngine2 = [v12 mapEngine];
+    pitchForZ((*(mapEngine2 + 42024) + 488), *&v49);
     v15 = v14;
     v16 = v14;
 
     [(VKCameraController *)self camera];
-    v17 = grl::IconMetricsRenderResult::getLabelingPoint(v53);
+    v17 = grl::IconMetricsRenderResult::getLabelingPoint(minDistanceToGroundRestriction);
     v18 = *gdc::Camera::cameraFrame(v17);
     if (v54)
     {
@@ -244,16 +244,16 @@
     v59 = v16;
     if (v18 > v11 != v15 > v11)
     {
-      v19 = [(VKCameraController *)self cameraDelegate];
-      [v19 mapLayerCanEnter3DModeDidChange:v15 > v11];
+      cameraDelegate = [(VKCameraController *)self cameraDelegate];
+      [cameraDelegate mapLayerCanEnter3DModeDidChange:v15 > v11];
     }
 
     [(VKNavCameraController *)self minimumNormalizedZoomLevel];
     v21 = v20;
-    v22 = [(VKNavCameraController *)self tileSize];
+    tileSize2 = [(VKNavCameraController *)self tileSize];
     [(VKCameraController *)self camera];
-    v23 = gdc::Camera::viewSize(v53);
-    gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v49, v21, v22, *v23);
+    v23 = gdc::Camera::viewSize(minDistanceToGroundRestriction);
+    gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v49, v21, tileSize2, *v23);
     gdc::DisplayZoomLevel::DisplayZoomLevel(&v58, &v49);
     if (v54)
     {
@@ -262,10 +262,10 @@
 
     [(VKNavCameraController *)self maximumNormalizedZoomLevel];
     v25 = v24;
-    v26 = [(VKNavCameraController *)self tileSize];
+    tileSize3 = [(VKNavCameraController *)self tileSize];
     [(VKCameraController *)self camera];
-    v27 = gdc::Camera::viewSize(v53);
-    gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v49, v25, v26, *v27);
+    v27 = gdc::Camera::viewSize(minDistanceToGroundRestriction);
+    gdc::NormalizedZoomLevel::NormalizedZoomLevel(&v49, v25, tileSize3, *v27);
     gdc::DisplayZoomLevel::DisplayZoomLevel(&v57, &v49);
     if (v54)
     {
@@ -274,29 +274,29 @@
 
     v28 = v57;
     v29 = v58;
-    v30 = [(VKCameraController *)self vkCamera];
-    v53 = [v30 minDistanceToGroundRestriction];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    minDistanceToGroundRestriction = [vkCamera minDistanceToGroundRestriction];
     LOBYTE(v54) = v31;
 
-    v32 = [(VKCameraController *)self vkCamera];
-    v55 = [v32 maxDistanceToGroundRestriction];
+    vkCamera2 = [(VKCameraController *)self vkCamera];
+    maxDistanceToGroundRestriction = [vkCamera2 maxDistanceToGroundRestriction];
     v56 = v33;
 
     grl::IconRequestOptions::setContentScale(v51, v29);
-    v34 = [(VKNavCameraController *)self tileSize];
+    tileSize4 = [(VKNavCameraController *)self tileSize];
     [(VKCameraController *)self camera];
     v35 = gdc::Camera::viewSize(v49);
-    gdc::NormalizedZoomLevel::NormalizedZoomLevel(v52, v51[0], v34, *v35);
+    gdc::NormalizedZoomLevel::NormalizedZoomLevel(v52, v51[0], tileSize4, *v35);
     if (v50)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v50);
     }
 
     grl::IconRequestOptions::setContentScale(&v47, v28);
-    v36 = [(VKNavCameraController *)self tileSize];
+    tileSize5 = [(VKNavCameraController *)self tileSize];
     [(VKCameraController *)self camera];
     v37 = gdc::Camera::viewSize(v49);
-    gdc::NormalizedZoomLevel::NormalizedZoomLevel(v51, *&v47, v36, *v37);
+    gdc::NormalizedZoomLevel::NormalizedZoomLevel(v51, *&v47, tileSize5, *v37);
     if (v50)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v50);
@@ -311,7 +311,7 @@
     [(VKCameraController *)self camera];
     v39 = gdc::Camera::pitch(*&v40[1]);
     v40[0] = 0.0;
-    gdc::CameraLimits::CameraLimits(&v49, v38, &v46, v44, v39, &v59, v40, v52, v16, v51, &v53);
+    gdc::CameraLimits::CameraLimits(&v49, v38, &v46, v44, v39, &v59, v40, v52, v16, v51, &minDistanceToGroundRestriction);
     if (v41)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v41);
@@ -437,17 +437,17 @@ LABEL_7:
     v13[1] = 0;
     v14 = 256;
     v5 = +[VKDebugSettings sharedSettings];
-    v6 = [v5 navCameraForceComplexIntersection];
+    navCameraForceComplexIntersection = [v5 navCameraForceComplexIntersection];
 
-    if (v6)
+    if (navCameraForceComplexIntersection)
     {
       *geo::intern_linear_map<gss::StyleAttribute,unsigned short,unsigned short,geo::allocator_adapter<unsigned char,gss::zone_mallocator>,30ul>::operator[](v13, 0x10055u) = 1;
     }
 
     v7 = +[VKDebugSettings sharedSettings];
-    v8 = [v7 shouldForceWindshieldMode];
+    shouldForceWindshieldMode = [v7 shouldForceWindshieldMode];
 
-    if (v8)
+    if (shouldForceWindshieldMode)
     {
       *geo::intern_linear_map<gss::StyleAttribute,unsigned short,unsigned short,geo::allocator_adapter<unsigned char,gss::zone_mallocator>,30ul>::operator[](v13, 0x10064u) = 1;
       *geo::intern_linear_map<gss::StyleAttribute,unsigned short,unsigned short,geo::allocator_adapter<unsigned char,gss::zone_mallocator>,30ul>::operator[](v13, 0x1006Bu) = 1;
@@ -494,10 +494,10 @@ LABEL_7:
 - (shared_ptr<gss::StylesheetManager<gss::ScenePropertyID>>)_getActiveSceneManager
 {
   v3 = v2;
-  v4 = [(VKNavCameraController *)self screenCanvas];
-  v5 = [v4 mapEngine];
+  screenCanvas = [(VKNavCameraController *)self screenCanvas];
+  mapEngine = [screenCanvas mapEngine];
 
-  if (v5 && (v8 = *(v5 + 41928)) != 0 && (v6 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((v8 + 16), 0x2FED70A4459DFCA1uLL)) != 0 && (v9 = v6[5]) != 0)
+  if (mapEngine && (v8 = *(mapEngine + 41928)) != 0 && (v6 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((v8 + 16), 0x2FED70A4459DFCA1uLL)) != 0 && (v9 = v6[5]) != 0)
   {
     v10 = *(v9 + 272);
     if (!v10)
@@ -535,20 +535,20 @@ LABEL_7:
 
 - (double)currentZoomLevel
 {
-  v3 = [(VKCameraController *)self vkCamera];
-  v4 = [v3 footprint];
-  [v4 nearestGroundPoint];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  footprint = [vkCamera footprint];
+  [footprint nearestGroundPoint];
   v25[0] = v5;
   v25[1] = v6;
   v25[2] = v7;
 
-  v8 = [(VKCameraController *)self vkCamera];
-  v9 = [v8 position];
-  v23 = *v9;
-  v24 = *(v9 + 16);
+  vkCamera2 = [(VKCameraController *)self vkCamera];
+  position = [vkCamera2 position];
+  v23 = *position;
+  v24 = *(position + 16);
 
-  v10 = [(VKCameraController *)self vkCamera];
-  [v10 forwardVector];
+  vkCamera3 = [(VKCameraController *)self vkCamera];
+  [vkCamera3 forwardVector];
   v22[0] = v11;
   v22[1] = v12;
   v22[2] = v13;
@@ -567,8 +567,8 @@ LABEL_7:
   }
 
   while (v15 != 3);
-  v17 = [(VKCameraController *)self vkCamera];
-  [v17 widthOfViewAtDepth:v16];
+  vkCamera4 = [(VKCameraController *)self vkCamera];
+  [vkCamera4 widthOfViewAtDepth:v16];
   v19 = v18;
 
   if (v19 <= 0.0)
@@ -591,11 +591,11 @@ LABEL_7:
   std::vector<std::pair<gss::StyleAttribute,unsigned short>,geo::allocator_adapter<std::pair<gss::StyleAttribute,unsigned short>,gss::zone_mallocator>>::vector[abi:nn200100](v43, &v36);
   gss::FeatureAttributeSet::sort(v43[0], v43[1]);
   std::vector<std::pair<gss::StyleAttribute,unsigned short>,geo::allocator_adapter<std::pair<gss::StyleAttribute,unsigned short>,gss::zone_mallocator>>::__destroy_vector::operator()[abi:nn200100](&v36);
-  v3 = [(VKNavCameraController *)self sceneConfiguration];
-  v4 = v3;
-  if (v3)
+  sceneConfiguration = [(VKNavCameraController *)self sceneConfiguration];
+  v4 = sceneConfiguration;
+  if (sceneConfiguration)
   {
-    [v3 styleManager];
+    [sceneConfiguration styleManager];
   }
 
   else
@@ -629,8 +629,8 @@ LABEL_7:
     std::__shared_weak_count::__release_shared[abi:nn200100](v7);
   }
 
-  v8 = [(VKCameraController *)self vkCamera];
-  [v8 displayZoomLevel];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera displayZoomLevel];
   v10 = v9;
 
   if (v40 != 1)
@@ -786,26 +786,26 @@ LABEL_48:
 
 - (void)_updateZoomScaleLimts
 {
-  v3 = [(VKNavCameraController *)self _canZoomIn];
-  v4 = [(VKNavCameraController *)self _canZoomOut];
+  _canZoomIn = [(VKNavCameraController *)self _canZoomIn];
+  _canZoomOut = [(VKNavCameraController *)self _canZoomOut];
   restingPosition = self->_distanceFromTargetSpring._restingPosition;
   v6 = cos(self->_pitchSpring._restingPosition) * restingPosition;
   [(VKNavCameraController *)self minZoomHeight];
   self->_minZoomScale = fmin(v7 / v6, 1.0);
   [(VKNavCameraController *)self maxZoomHeight];
   self->_maxZoomScale = fmax(v8 / v6, 1.0);
-  v9 = [(VKNavCameraController *)self _canZoomIn];
-  v10 = [(VKNavCameraController *)self _canZoomOut];
-  if (v3 != v9)
+  _canZoomIn2 = [(VKNavCameraController *)self _canZoomIn];
+  _canZoomOut2 = [(VKNavCameraController *)self _canZoomOut];
+  if (_canZoomIn != _canZoomIn2)
   {
-    v11 = [(VKCameraController *)self cameraDelegate];
-    [v11 mapLayerCanZoomInDidChange:v9];
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate mapLayerCanZoomInDidChange:_canZoomIn2];
   }
 
-  if (v4 != v10)
+  if (_canZoomOut != _canZoomOut2)
   {
-    v12 = [(VKCameraController *)self cameraDelegate];
-    [v12 mapLayerCanZoomOutDidChange:v10];
+    cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate2 mapLayerCanZoomOutDidChange:_canZoomOut2];
   }
 }
 
@@ -860,11 +860,11 @@ LABEL_48:
 - (void)_updateNavCameraState
 {
   WeakRetained = objc_loadWeakRetained(&self->_screenCanvas);
-  v4 = [WeakRetained mapEngine];
+  mapEngine = [WeakRetained mapEngine];
 
-  if (v4)
+  if (mapEngine)
   {
-    v5 = *(v4 + 41928);
+    v5 = *(mapEngine + 41928);
     if (v5)
     {
       v6 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((v5 + 16), 0xBEC1A12372CEEC00);
@@ -875,15 +875,15 @@ LABEL_48:
         {
           if ([(VKNavCameraController *)self isGesturing])
           {
-            v8 = 2;
+            isAnimating = 2;
           }
 
           else
           {
-            v8 = [(VKNavCameraController *)self isAnimating];
+            isAnimating = [(VKNavCameraController *)self isAnimating];
           }
 
-          *(v7 + 288) = v8;
+          *(v7 + 288) = isAnimating;
         }
       }
     }
@@ -922,16 +922,16 @@ LABEL_48:
 - (int64_t)displayRate
 {
   v3 = +[VKDebugSettings sharedSettings];
-  v4 = [v3 navDisplayRate];
+  navDisplayRate = [v3 navDisplayRate];
 
-  if (v4)
+  if (navDisplayRate)
   {
-    if (v4 == 2)
+    if (navDisplayRate == 2)
     {
       return 30;
     }
 
-    else if (v4 == 3)
+    else if (navDisplayRate == 3)
     {
       return 60;
     }
@@ -987,13 +987,13 @@ LABEL_2:
     }
 
     v8 = *(&self->_measurement.speed + v7);
-    v9 = [(VKCameraController *)self maxDisplayRate];
+    maxDisplayRate = [(VKCameraController *)self maxDisplayRate];
     for (i = self->_speedFrameRate.__begin_; i != self->_speedFrameRate.__end_; i = (i + 16))
     {
       if (v8 > *i)
       {
         v6 = *(i + 1);
-        if ((v9 + 1) < 2)
+        if ((maxDisplayRate + 1) < 2)
         {
           return v6;
         }
@@ -1026,28 +1026,28 @@ LABEL_2:
 
   if (self->_enableNavCameraOverviewFraming)
   {
-    v4 = [(VKNavCameraController *)self _isNavCameraInOverviewMode];
-    if (v4)
+    _isNavCameraInOverviewMode = [(VKNavCameraController *)self _isNavCameraInOverviewMode];
+    if (_isNavCameraInOverviewMode)
     {
       [(VKNavCameraController *)self currentZoomLevel];
-      LOBYTE(v4) = (v5 < 11.0) & v3;
+      LOBYTE(_isNavCameraInOverviewMode) = (v5 < 11.0) & v3;
     }
   }
 
   else
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(_isNavCameraInOverviewMode) = 0;
   }
 
-  return v4;
+  return _isNavCameraInOverviewMode;
 }
 
 - (BOOL)_isNavCameraInOverviewMode
 {
   WeakRetained = objc_loadWeakRetained(&self->_sceneConfiguration);
-  v3 = [WeakRetained navCameraMode];
+  navCameraMode = [WeakRetained navCameraMode];
 
-  return (v3 & 0xFFFFFFFFFFFFFFFDLL) == 1;
+  return (navCameraMode & 0xFFFFFFFFFFFFFFFDLL) == 1;
 }
 
 - (BOOL)_isDynamicFrameRateActive
@@ -1173,19 +1173,19 @@ LABEL_2:
 
 - (void)_updateDebugOverlay
 {
-  v3 = [(VKCameraController *)self canvas];
-  if (v3)
+  canvas = [(VKCameraController *)self canvas];
+  if (canvas)
   {
-    v4 = v3;
-    v5 = [(VKCameraController *)self canvas];
+    v4 = canvas;
+    canvas2 = [(VKCameraController *)self canvas];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
       if (self->_showOverlay._value || ([(VKNavContext *)self->_navContext debugFlags]& 1) != 0 || self->_showMotionVectors._value)
       {
-        v7 = [(VKCameraController *)self canvas];
-        v8 = [v7 debugConsoleForId:8];
+        canvas3 = [(VKCameraController *)self canvas];
+        v8 = [canvas3 debugConsoleForId:8];
 
         if (v8)
         {
@@ -1205,19 +1205,19 @@ LABEL_2:
 
 - (void)_updateDebugText
 {
-  v3 = [(VKCameraController *)self canvas];
-  if (v3)
+  canvas = [(VKCameraController *)self canvas];
+  if (canvas)
   {
-    v4 = v3;
-    v5 = [(VKCameraController *)self canvas];
+    v4 = canvas;
+    canvas2 = [(VKCameraController *)self canvas];
     v6 = objc_opt_respondsToSelector();
 
     if (v6)
     {
       if (self->_debugPage._value)
       {
-        v7 = [(VKCameraController *)self canvas];
-        v8 = [v7 debugConsoleForId:7];
+        canvas3 = [(VKCameraController *)self canvas];
+        v8 = [canvas3 debugConsoleForId:7];
 
         if (v8)
         {
@@ -1365,14 +1365,14 @@ LABEL_15:
 - (float)_currentRoadSignOffset
 {
   WeakRetained = objc_loadWeakRetained(&self->_screenCanvas);
-  v3 = [WeakRetained mapEngine];
+  mapEngine = [WeakRetained mapEngine];
 
-  if (!v3)
+  if (!mapEngine)
   {
     return 0.0;
   }
 
-  v4 = *(v3 + 41928);
+  v4 = *(mapEngine + 41928);
   if (!v4)
   {
     return 0.0;
@@ -1412,10 +1412,10 @@ LABEL_15:
   *&self->_headingSpring._restingPosition = v9[0];
   begin = self->_coordinatesToFrame.__begin_;
   end = self->_coordinatesToFrame.__end_;
-  v5 = [(VKNavCameraController *)self _isAnalyticalFramingEnabled];
+  _isAnalyticalFramingEnabled = [(VKNavCameraController *)self _isAnalyticalFramingEnabled];
   if (begin == end)
   {
-    if (v5)
+    if (_isAnalyticalFramingEnabled)
     {
       if (GEOGetVectorKitVKNavCameraLog_onceToken != -1)
       {
@@ -1442,7 +1442,7 @@ LABEL_15:
     }
   }
 
-  else if (v5)
+  else if (_isAnalyticalFramingEnabled)
   {
     [(VKNavCameraController *)self _frameCameraWithHeading:[(VKNavCameraController *)self _shouldLockPuckScreenCoords] pitch:self->_headingSpring._restingPosition targetPuckOnBothAxes:self->_pitchSpring._restingPosition];
   }
@@ -1459,9 +1459,9 @@ LABEL_15:
   self->_maneuversToFrame = styleManeuversToFrame;
   if (self->_frameAllGroupedManeuvers)
   {
-    v4 = [(VKNavContext *)self->_navContext groupedManeuverCount];
-    styleManeuversToFrame = v4;
-    if ((v4 & 0xFE) == 0)
+    groupedManeuverCount = [(VKNavContext *)self->_navContext groupedManeuverCount];
+    styleManeuversToFrame = groupedManeuverCount;
+    if ((groupedManeuverCount & 0xFE) == 0)
     {
       styleManeuversToFrame = 1;
     }
@@ -1481,37 +1481,37 @@ LABEL_15:
 {
   p_coordinatesToFrame = &self->_coordinatesToFrame;
   self->_coordinatesToFrame.__end_ = self->_coordinatesToFrame.__begin_;
-  v4 = [(VKNavContext *)self->_navContext currentStepIndex];
-  v5 = [(VKNavContext *)self->_navContext routeMatch];
-  if (v5)
+  currentStepIndex = [(VKNavContext *)self->_navContext currentStepIndex];
+  routeMatch = [(VKNavContext *)self->_navContext routeMatch];
+  if (routeMatch)
   {
-    v6 = v5;
-    v7 = [(VKNavContext *)self->_navContext routeMatch];
-    v8 = [v7 isGoodMatch];
+    v6 = routeMatch;
+    routeMatch2 = [(VKNavContext *)self->_navContext routeMatch];
+    isGoodMatch = [routeMatch2 isGoodMatch];
 
-    if (v8)
+    if (isGoodMatch)
     {
-      v9 = [(VKNavContext *)self->_navContext routeMatch];
-      v4 = [v9 stepIndex];
+      routeMatch3 = [(VKNavContext *)self->_navContext routeMatch];
+      currentStepIndex = [routeMatch3 stepIndex];
     }
   }
 
   navContext = self->_navContext;
   if (navContext)
   {
-    v11 = [(VKNavContext *)navContext route];
+    route = [(VKNavContext *)navContext route];
 
-    if (v11)
+    if (route)
     {
-      v12 = [(VKNavContext *)self->_navContext route];
-      v13 = v12;
+      route2 = [(VKNavContext *)self->_navContext route];
+      v13 = route2;
       if (self->_segmentsToFrame)
       {
-        v14 = [v12 segmentIndexForStepIndex:v4];
+        v14 = [route2 segmentIndexForStepIndex:currentStepIndex];
         for (i = v14; ; ++i)
         {
-          v16 = [v13 segments];
-          if (i >= [v16 count])
+          segments = [v13 segments];
+          if (i >= [segments count])
           {
             break;
           }
@@ -1523,26 +1523,26 @@ LABEL_15:
             goto LABEL_18;
           }
 
-          v18 = [v13 segments];
-          v19 = [v18 objectAtIndex:i];
+          segments2 = [v13 segments];
+          v19 = [segments2 objectAtIndex:i];
 
           if (v19)
           {
-            v20 = v4;
-            if ([v19 startStepIndex] > v4)
+            startStepIndex = currentStepIndex;
+            if ([v19 startStepIndex] > currentStepIndex)
             {
-              v20 = [v19 startStepIndex];
+              startStepIndex = [v19 startStepIndex];
             }
 
             do
             {
-              if (v20 > [v19 endStepIndex])
+              if (startStepIndex > [v19 endStepIndex])
               {
                 break;
               }
             }
 
-            while (![(VKNavCameraController *)self _addStepToFraming:v20++ forRoute:v13]);
+            while (![(VKNavCameraController *)self _addStepToFraming:startStepIndex++ forRoute:v13]);
           }
         }
       }
@@ -1550,31 +1550,31 @@ LABEL_15:
 LABEL_18:
       if (self->_styleLegsToFrame)
       {
-        v22 = [v13 legIndexForStepIndex:v4];
+        v22 = [v13 legIndexForStepIndex:currentStepIndex];
         if (v22 != 0x7FFFFFFFFFFFFFFFLL)
         {
-          v23 = [v13 legs];
-          for (j = v22; j < [v23 count] && j < v22 + self->_styleLegsToFrame; ++j)
+          legs = [v13 legs];
+          for (j = v22; j < [legs count] && j < v22 + self->_styleLegsToFrame; ++j)
           {
-            v25 = [v23 objectAtIndex:j];
+            v25 = [legs objectAtIndex:j];
             v26 = v25;
             if (v25)
             {
-              v27 = v4;
-              if ([v25 startStepIndex] > v4)
+              startStepIndex2 = currentStepIndex;
+              if ([v25 startStepIndex] > currentStepIndex)
               {
-                v27 = [v26 startStepIndex];
+                startStepIndex2 = [v26 startStepIndex];
               }
 
               do
               {
-                if (v27 > [v26 endStepIndex])
+                if (startStepIndex2 > [v26 endStepIndex])
                 {
                   break;
                 }
               }
 
-              while (![(VKNavCameraController *)self _addStepToFraming:v27++ forRoute:v13]);
+              while (![(VKNavCameraController *)self _addStepToFraming:startStepIndex2++ forRoute:v13]);
             }
           }
         }
@@ -1586,15 +1586,15 @@ LABEL_18:
       }
 
       WeakRetained = objc_loadWeakRetained(&self->_sceneConfiguration);
-      v30 = [WeakRetained navigationState];
+      navigationState = [WeakRetained navigationState];
 
-      if (v30 == 6 || v30 == 1)
+      if (navigationState == 6 || navigationState == 1)
       {
-        v32 = [(VKNavContext *)self->_navContext routeMatch];
-        v33 = v32;
-        if (v32)
+        routeMatch4 = [(VKNavContext *)self->_navContext routeMatch];
+        v33 = routeMatch4;
+        if (routeMatch4)
         {
-          [v32 locationCoordinate3D];
+          [routeMatch4 locationCoordinate3D];
           [(VKNavCameraController *)self _coordinateForGeoLocation:?];
           v35 = p_coordinatesToFrame[1];
           v34 = p_coordinatesToFrame[2];
@@ -1654,10 +1654,10 @@ LABEL_18:
           p_coordinatesToFrame[1] = v36;
         }
 
-        if (v30 == 1)
+        if (navigationState == 1)
         {
           v42 = 0;
-          v4 = 0;
+          currentStepIndex = 0;
         }
 
         else if ([v13 pointCount])
@@ -1730,8 +1730,8 @@ LABEL_18:
         p_coordinatesToFrame[1] = v45;
       }
 
-      v51 = v4;
-      while (v51 < [v13 stepsCount] && v51 < v4 + self->_maneuversToFrame)
+      v51 = currentStepIndex;
+      while (v51 < [v13 stepsCount] && v51 < currentStepIndex + self->_maneuversToFrame)
       {
         if ([(VKNavCameraController *)self _addStepToFraming:v51++ forRoute:v13])
         {
@@ -1756,52 +1756,52 @@ LABEL_74:
         self->_routeFocusCoordinate.altitude._value = v55;
       }
 
-      v56 = [v13 stepsCount];
-      if (v30 != 6)
+      stepsCount = [v13 stepsCount];
+      if (navigationState != 6)
       {
-        if (v4 != v56 - 1 || ([(VKNavCameraController *)self distanceToManeuver:v4 fromRouteCoordinate:*&self->_routeCoordinate], v67 = v66, v66 >= self->_maxFramingDistance))
+        if (currentStepIndex != stepsCount - 1 || ([(VKNavCameraController *)self distanceToManeuver:currentStepIndex fromRouteCoordinate:*&self->_routeCoordinate], v67 = v66, v66 >= self->_maxFramingDistance))
         {
 LABEL_98:
           if ((v53 & 1) == 0 && self->_framingDistanceAfterManeuver > 0.0)
           {
             maneuversToFrame = self->_maneuversToFrame;
-            v79 = v4 + maneuversToFrame;
-            if (v4 + maneuversToFrame < [v13 stepsCount])
+            v79 = currentStepIndex + maneuversToFrame;
+            if (currentStepIndex + maneuversToFrame < [v13 stepsCount])
             {
-              v80 = [v13 stepAtIndex:v4 + maneuversToFrame];
-              v81 = [v80 startRouteCoordinate];
+              maneuversToFrame = [v13 stepAtIndex:currentStepIndex + maneuversToFrame];
+              startRouteCoordinate = [maneuversToFrame startRouteCoordinate];
               framingDistanceAfterManeuver = self->_framingDistanceAfterManeuver;
               *&framingDistanceAfterManeuver = framingDistanceAfterManeuver;
-              [(VKNavCameraController *)self _addStepToFraming:v79 forRoute:v13 untilDistance:v81 fromRouteCoordinate:framingDistanceAfterManeuver];
+              [(VKNavCameraController *)self _addStepToFraming:v79 forRoute:v13 untilDistance:startRouteCoordinate fromRouteCoordinate:framingDistanceAfterManeuver];
             }
           }
 
 LABEL_102:
           v83 = objc_loadWeakRetained(&self->_sceneConfiguration);
-          v84 = [v83 navCameraMode];
+          navCameraMode = [v83 navCameraMode];
 
-          if ((v84 | 2) == 3)
+          if ((navCameraMode | 2) == 3)
           {
-            [(VKNavCameraController *)self _addWaypointToFramingAtStep:v4 forRoute:v13];
+            [(VKNavCameraController *)self _addWaypointToFramingAtStep:currentStepIndex forRoute:v13];
           }
 
           goto LABEL_105;
         }
 
-        v57 = [v13 destination];
-        if (![v57 hasLatLng])
+        destination = [v13 destination];
+        if (![destination hasLatLng])
         {
 LABEL_97:
 
           goto LABEL_98;
         }
 
-        v123 = [v13 stepAtIndex:v4];
+        v123 = [v13 stepAtIndex:currentStepIndex];
         [v13 pointAtRouteCoordinate:{objc_msgSend(v123, "endRouteCoordinate")}];
-        v121 = [v57 latLng];
-        [v121 lat];
-        v68 = [v57 latLng];
-        [v68 lng];
+        latLng = [destination latLng];
+        [latLng lat];
+        latLng2 = [destination latLng];
+        [latLng2 lng];
         GEOCalculateDistance();
         v70 = v69;
 
@@ -1814,13 +1814,13 @@ LABEL_97:
         }
       }
 
-      v57 = [v13 destination];
-      if ([v57 hasLatLng])
+      destination = [v13 destination];
+      if ([destination hasLatLng])
       {
-        v58 = [v57 latLng];
-        [v58 lat];
+        latLng3 = [destination latLng];
+        [latLng3 lat];
         v122 = v59;
-        [v58 lng];
+        [latLng3 lng];
         v60.f64[0] = v122;
         v60.f64[1] = v61;
         v62 = vmulq_f64(v60, vdupq_n_s64(0x3F91DF46A2529D39uLL));
@@ -1963,9 +1963,9 @@ LABEL_105:
     }
 
     v95 = objc_loadWeakRetained(&self->_sceneConfiguration);
-    v96 = [v95 styleAttributeCoordinateRanges];
+    styleAttributeCoordinateRanges = [v95 styleAttributeCoordinateRanges];
 
-    v97 = v96[1];
+    v97 = styleAttributeCoordinateRanges[1];
     if (v97)
     {
       v98 = vcnt_s8(v97);
@@ -1984,7 +1984,7 @@ LABEL_105:
         v99 = (v97.i32[0] - 1) & 0x1006CLL;
       }
 
-      v101 = *(*v96 + 8 * v99);
+      v101 = *(*styleAttributeCoordinateRanges + 8 * v99);
       if (v101)
       {
         for (k = *v101; k; k = *k)
@@ -1999,8 +1999,8 @@ LABEL_105:
                 break;
               }
 
-              v105 = [(VKNavContext *)self->_navContext route];
-              [v105 pointAtRouteCoordinate:*(k + 28)];
+              route3 = [(VKNavContext *)self->_navContext route];
+              [route3 pointAtRouteCoordinate:*(k + 28)];
               v107 = v106;
               v109 = v108;
               v111 = v110;
@@ -2108,11 +2108,11 @@ LABEL_123:
   p_routeFocusCoordinate = &self->_routeFocusCoordinate;
   if (self->_routeFocusCoordinate.latitude._value != -3.14159265 || self->_routeFocusCoordinate.longitude._value != -3.14159265 || self->_routeFocusCoordinate.altitude._value != 0.0)
   {
-    v24 = [(VKNavContext *)self->_navContext route];
-    v4 = [v24 closestPointOnRoute:{p_routeFocusCoordinate->latitude._value * 57.2957795, p_routeFocusCoordinate->longitude._value * 57.2957795}];
+    route = [(VKNavContext *)self->_navContext route];
+    v4 = [route closestPointOnRoute:{p_routeFocusCoordinate->latitude._value * 57.2957795, p_routeFocusCoordinate->longitude._value * 57.2957795}];
 
-    v25 = [(VKNavContext *)self->_navContext route];
-    [v25 distanceBetweenRouteCoordinate:*&self->_routeCoordinate andRouteCoordinate:v4];
+    route2 = [(VKNavContext *)self->_navContext route];
+    [route2 distanceBetweenRouteCoordinate:*&self->_routeCoordinate andRouteCoordinate:v4];
     v23 = v5;
 
     value = p_routeFocusCoordinate->longitude._value;
@@ -2163,15 +2163,15 @@ LABEL_123:
 - (Unit<geo::RadianUnitDescription,)calculateHeading
 {
   v4 = v2;
-  v5 = [(VKNavCameraController *)self cameraHeadingType];
-  if (v5 == 3)
+  cameraHeadingType = [(VKNavCameraController *)self cameraHeadingType];
+  if (cameraHeadingType == 3)
   {
-    v14 = [(VKNavContext *)self->_navContext route];
-    if (v14)
+    route = [(VKNavContext *)self->_navContext route];
+    if (route)
     {
-      v33 = [v14 stepAtIndex:{-[VKNavContext currentStepIndex](self->_navContext, "currentStepIndex")}];
-      [v14 pointAtRouteCoordinate:{objc_msgSend(v33, "startRouteCoordinate")}];
-      [v14 pointAt:{objc_msgSend(v14, "pointCount") - 1}];
+      v33 = [route stepAtIndex:{-[VKNavContext currentStepIndex](self->_navContext, "currentStepIndex")}];
+      [route pointAtRouteCoordinate:{objc_msgSend(v33, "startRouteCoordinate")}];
+      [route pointAt:{objc_msgSend(route, "pointCount") - 1}];
       GEOBearingFromCoordinateToCoordinate();
       v35 = fmod(v34, 360.0);
       v6 = fmod(v35 + 360.0, 360.0) * -0.0174532925;
@@ -2187,7 +2187,7 @@ LABEL_26:
     goto LABEL_27;
   }
 
-  if (v5 == 2)
+  if (cameraHeadingType == 2)
   {
     if (self->_routeFocusCoordinate.latitude._value != -3.14159265 || self->_routeFocusCoordinate.longitude._value != -3.14159265 || self->_routeFocusCoordinate.altitude._value != 0.0)
     {
@@ -2198,30 +2198,30 @@ LABEL_9:
       v10 = fmod(self->_puckCourse._value, 6.28318531);
       v6 = fmod(v10 + 6.28318531, 6.28318531);
       WeakRetained = objc_loadWeakRetained(&self->_sceneConfiguration);
-      v12 = [WeakRetained navigationState];
+      navigationState = [WeakRetained navigationState];
 
-      v13 = [(VKNavContext *)self->_navContext routeMatch];
-      v14 = v13;
-      if (v12 == 2)
+      routeMatch = [(VKNavContext *)self->_navContext routeMatch];
+      route = routeMatch;
+      if (navigationState == 2)
       {
-        if (v13)
+        if (routeMatch)
         {
-          if ([v13 isGoodMatch])
+          if ([routeMatch isGoodMatch])
           {
             p_routeCoordinate = &self->_routeCoordinate;
             if (self->_routeCoordinate.offset >= 0.0)
             {
               index = p_routeCoordinate->index;
-              v17 = [(VKNavContext *)self->_navContext route];
-              v18 = [v17 pointCount];
+              route2 = [(VKNavContext *)self->_navContext route];
+              pointCount = [route2 pointCount];
 
-              if (index < v18)
+              if (index < pointCount)
               {
-                v19 = [(VKNavContext *)self->_navContext route];
-                v20 = [v19 coordinateAtOffset:*p_routeCoordinate fromRouteCoordinate:5.0];
+                route3 = [(VKNavContext *)self->_navContext route];
+                v20 = [route3 coordinateAtOffset:*p_routeCoordinate fromRouteCoordinate:5.0];
 
-                v21 = [(VKNavContext *)self->_navContext route];
-                [v21 pointAtRouteCoordinate:v20];
+                route4 = [(VKNavContext *)self->_navContext route];
+                [route4 pointAtRouteCoordinate:v20];
                 v23 = v22;
                 v25 = v24;
 
@@ -2255,7 +2255,7 @@ LABEL_4:
   }
 
   v6 = 0.0;
-  if (v5 == 1)
+  if (cameraHeadingType == 1)
   {
     goto LABEL_4;
   }
@@ -2512,10 +2512,10 @@ LABEL_36:
 
 - (unsigned)cameraHeadingType
 {
-  v3 = [(VKNavContext *)self->_navContext navigationCameraHeadingOverride];
-  if (v3 <= 1)
+  navigationCameraHeadingOverride = [(VKNavContext *)self->_navContext navigationCameraHeadingOverride];
+  if (navigationCameraHeadingOverride <= 1)
   {
-    if (v3 == 1)
+    if (navigationCameraHeadingOverride == 1)
     {
       return 0;
     }
@@ -2523,14 +2523,14 @@ LABEL_36:
     return self->_headingType;
   }
 
-  if (v3 == 2)
+  if (navigationCameraHeadingOverride == 2)
   {
     return 1;
   }
 
-  if (v3 != 3)
+  if (navigationCameraHeadingOverride != 3)
   {
-    if (v3 == 4)
+    if (navigationCameraHeadingOverride == 4)
     {
       return 3;
     }
@@ -2552,12 +2552,12 @@ LABEL_36:
 
 - (void)_updateLabelMetrics
 {
-  v3 = [(VKNavCameraController *)self screenCanvas];
-  v4 = [v3 mapEngine];
+  screenCanvas = [(VKNavCameraController *)self screenCanvas];
+  mapEngine = [screenCanvas mapEngine];
 
-  if (v4)
+  if (mapEngine)
   {
-    v5 = *(v4 + 41928);
+    v5 = *(mapEngine + 41928);
     if (v5)
     {
       v6 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((v5 + 16), 0x2FED70A4459DFCA1uLL);
@@ -2662,11 +2662,11 @@ LABEL_36:
   }
 
   std::string::basic_string[abi:nn200100]<0>(__p, "Heading Type");
-  v6 = [v2 cameraHeadingType];
+  cameraHeadingType = [v2 cameraHeadingType];
   v7 = "";
-  if (v6 <= 3)
+  if (cameraHeadingType <= 3)
   {
-    v7 = off_1E7B33C48[v6];
+    v7 = off_1E7B33C48[cameraHeadingType];
   }
 
   std::string::basic_string[abi:nn200100]<0>(&v22, v7);
@@ -2768,7 +2768,7 @@ LABEL_36:
   std::vector<gdc::DebugTreeValue>::__init_with_size[abi:nn200100]<gdc::DebugTreeValue const*,gdc::DebugTreeValue const*>(&v22, __p, v36, 2uLL);
 }
 
-- (void)_updateSceneStyles:(BOOL)a3 updatePitchLimitOnly:(BOOL)a4
+- (void)_updateSceneStyles:(BOOL)styles updatePitchLimitOnly:(BOOL)only
 {
   [(VKNavCameraController *)self _getActiveSceneManager];
   ptr = self->_sceneQuery.__ptr_;
@@ -2817,7 +2817,7 @@ LABEL_36:
         self->_minCameraPitch._value = v13 * 0.0174532925;
       }
 
-      if (a4)
+      if (only)
       {
         goto LABEL_143;
       }
@@ -3146,7 +3146,7 @@ LABEL_143:
               {
                 gss::RenderStyleHelper<gss::ScenePropertyID,float>::valueForKey(67, *(v91[0] + 24));
                 v85 = v84;
-                if (a3)
+                if (styles)
                 {
                   if (v84 > 0.0)
                   {
@@ -3169,7 +3169,7 @@ LABEL_139:
               else
               {
                 v85 = -1.0;
-                if (a3)
+                if (styles)
                 {
                   goto LABEL_139;
                 }
@@ -3288,10 +3288,10 @@ LABEL_144:
   }
 }
 
-- (void)_showMotionVectorsWithDebugConsole:(void *)a3
+- (void)_showMotionVectorsWithDebugConsole:(void *)console
 {
-  *(a3 + 24) = -16777216;
-  *(a3 + 26) = 1065353216;
+  *(console + 24) = -16777216;
+  *(console + 26) = 1065353216;
   p_movementSamples = &self->_movementSamples;
   begin = self->_movementSamples.__begin_;
   if (self->_movementSamples.__end_ != begin)
@@ -3302,8 +3302,8 @@ LABEL_144:
     {
       v8 = *(self->_movementSamplePoints.__begin_ + 8 * v7);
       v10 = vadd_f32(v8, vcvt_f32_f64(vmulq_f64(begin[v7], v9)));
-      *(a3 + 1) = v8;
-      ggl::DebugConsole::drawLine(a3, &v10, v8.f32[0]);
+      *(console + 1) = v8;
+      ggl::DebugConsole::drawLine(console, &v10, v8.f32[0]);
       ++v7;
       begin = p_movementSamples->__begin_;
     }
@@ -3311,7 +3311,7 @@ LABEL_144:
     while (v7 < (p_movementSamples->__end_ - p_movementSamples->__begin_) >> 4);
   }
 
-  *(a3 + 26) = 1056964608;
+  *(console + 26) = 1056964608;
 }
 
 uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(uint64_t a1, double a2, double a3, double a4)
@@ -3346,11 +3346,11 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   return ggl::DebugConsole::drawCircleWithFill(v15, 6.0);
 }
 
-- (void)_clearDebugConsole:(int)a3
+- (void)_clearDebugConsole:(int)console
 {
-  v3 = *&a3;
-  v4 = [(VKCameraController *)self canvas];
-  v5 = [v4 debugConsoleForId:v3];
+  v3 = *&console;
+  canvas = [(VKCameraController *)self canvas];
+  v5 = [canvas debugConsoleForId:v3];
 
   if (v5)
   {
@@ -3358,18 +3358,18 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   }
 }
 
-- (id)_debugTextForPage:(unint64_t)a3
+- (id)_debugTextForPage:(unint64_t)page
 {
   v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  if (a3 <= 2)
+  if (page <= 2)
   {
-    if (a3 == 1)
+    if (page == 1)
     {
       [(VKNavCameraController *)self _createMainDebugNode];
       gdc::DebugTreeNode::toString(&__p);
     }
 
-    if (a3 == 2)
+    if (page == 2)
     {
       [(VKNavCameraController *)self _createStyleDebugNode];
       gdc::DebugTreeNode::toString(&__p);
@@ -3378,7 +3378,7 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
 
   else
   {
-    switch(a3)
+    switch(page)
     {
       case 3uLL:
         WeakRetained = objc_loadWeakRetained(&self->_sceneConfiguration);
@@ -3485,11 +3485,11 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   return v6;
 }
 
-- (void)_populateDebugNode:(void *)a3 forFrame:()CameraFrame<geo:(double> *)a4 :Radians
+- (void)_populateDebugNode:(void *)node forFrame:()CameraFrame<geo:(double> *)geo :Radians
 {
   std::string::basic_string[abi:nn200100]<0>(&v24, "Target Latitude");
-  gdc::DebugTreeValue::DebugTreeValue(v21, a4->_target.latitude._value * 57.2957795);
-  gdc::DebugTreeNode::addProperty(a3, &v24, v21);
+  gdc::DebugTreeValue::DebugTreeValue(v21, geo->_target.latitude._value * 57.2957795);
+  gdc::DebugTreeNode::addProperty(node, &v24, v21);
   if (v23 < 0)
   {
     operator delete(v22);
@@ -3501,8 +3501,8 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   }
 
   std::string::basic_string[abi:nn200100]<0>(&v24, "Target Longitude");
-  gdc::DebugTreeValue::DebugTreeValue(v18, a4->_target.longitude._value * 57.2957795);
-  gdc::DebugTreeNode::addProperty(a3, &v24, v18);
+  gdc::DebugTreeValue::DebugTreeValue(v18, geo->_target.longitude._value * 57.2957795);
+  gdc::DebugTreeNode::addProperty(node, &v24, v18);
   if (v20 < 0)
   {
     operator delete(v19);
@@ -3514,8 +3514,8 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   }
 
   std::string::basic_string[abi:nn200100]<0>(&v24, "Target Altitude");
-  gdc::DebugTreeValue::DebugTreeValue(v15, a4->_target.altitude._value);
-  gdc::DebugTreeNode::addProperty(a3, &v24, v15);
+  gdc::DebugTreeValue::DebugTreeValue(v15, geo->_target.altitude._value);
+  gdc::DebugTreeNode::addProperty(node, &v24, v15);
   if (v17 < 0)
   {
     operator delete(__p);
@@ -3527,8 +3527,8 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   }
 
   std::string::basic_string[abi:nn200100]<0>(&v24, "Distance From Target");
-  gdc::DebugTreeValue::DebugTreeValue(v12, a4->_distanceFromTarget._value);
-  gdc::DebugTreeNode::addProperty(a3, &v24, v12);
+  gdc::DebugTreeValue::DebugTreeValue(v12, geo->_distanceFromTarget._value);
+  gdc::DebugTreeNode::addProperty(node, &v24, v12);
   if (v14 < 0)
   {
     operator delete(v13);
@@ -3540,8 +3540,8 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   }
 
   std::string::basic_string[abi:nn200100]<0>(&v24, "Pitch");
-  gdc::DebugTreeValue::DebugTreeValue(v9, a4->_pitch._value * 57.2957795);
-  gdc::DebugTreeNode::addProperty(a3, &v24, v9);
+  gdc::DebugTreeValue::DebugTreeValue(v9, geo->_pitch._value * 57.2957795);
+  gdc::DebugTreeNode::addProperty(node, &v24, v9);
   if (v11 < 0)
   {
     operator delete(v10);
@@ -3553,8 +3553,8 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   }
 
   std::string::basic_string[abi:nn200100]<0>(&v24, "Heading");
-  gdc::DebugTreeValue::DebugTreeValue(v6, a4->_heading._value * 57.2957795);
-  gdc::DebugTreeNode::addProperty(a3, &v24, v6);
+  gdc::DebugTreeValue::DebugTreeValue(v6, geo->_heading._value * 57.2957795);
+  gdc::DebugTreeNode::addProperty(node, &v24, v6);
   if (v8 < 0)
   {
     operator delete(v7);
@@ -3823,13 +3823,13 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   std::vector<gdc::DebugTreeValue>::__init_with_size[abi:nn200100]<gdc::DebugTreeValue const*,gdc::DebugTreeValue const*>(v21, &__p, v32, 4uLL);
 }
 
-- (void)populateDebugNode:(void *)a3 withOptions:(const void *)a4
+- (void)populateDebugNode:(void *)node withOptions:(const void *)options
 {
   v11.receiver = self;
   v11.super_class = VKNavCameraController;
-  [(VKCameraController *)&v11 populateDebugNode:a3 withOptions:a4];
+  [(VKCameraController *)&v11 populateDebugNode:node withOptions:options];
   [(VKNavCameraController *)self _createMainDebugNode];
-  gdc::DebugTreeNode::addChildNode(a3, v7);
+  gdc::DebugTreeNode::addChildNode(node, v7);
   p_super_class = &v10[1].super_class;
   std::vector<gdc::DebugTreeProperty>::__destroy_vector::operator()[abi:nn200100](&p_super_class);
   p_super_class = v10;
@@ -3845,7 +3845,7 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   }
 
   [(VKNavCameraController *)self _createStyleDebugNode];
-  gdc::DebugTreeNode::addChildNode(a3, v7);
+  gdc::DebugTreeNode::addChildNode(node, v7);
   p_super_class = &v10[1].super_class;
   std::vector<gdc::DebugTreeProperty>::__destroy_vector::operator()[abi:nn200100](&p_super_class);
   p_super_class = v10;
@@ -3861,7 +3861,7 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   }
 
   [(VKNavCameraController *)self _createDynamicFrameRateDebugNode];
-  gdc::DebugTreeNode::addChildNode(a3, v7);
+  gdc::DebugTreeNode::addChildNode(node, v7);
   p_super_class = &v10[1].super_class;
   std::vector<gdc::DebugTreeProperty>::__destroy_vector::operator()[abi:nn200100](&p_super_class);
   p_super_class = v10;
@@ -3890,7 +3890,7 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
     v8 = 0u;
   }
 
-  gdc::DebugTreeNode::addChildNode(a3, v7);
+  gdc::DebugTreeNode::addChildNode(node, v7);
   p_super_class = &v10[1].super_class;
   std::vector<gdc::DebugTreeProperty>::__destroy_vector::operator()[abi:nn200100](&p_super_class);
   p_super_class = v10;
@@ -4037,12 +4037,12 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   return v2;
 }
 
-- (float)maxPitchForNormalizedZoomLevel:(float)a3
+- (float)maxPitchForNormalizedZoomLevel:(float)level
 {
   v5 = +[VKDebugSettings sharedSettings];
-  v6 = [v5 relaxTiltLimits];
+  relaxTiltLimits = [v5 relaxTiltLimits];
 
-  if (v6)
+  if (relaxTiltLimits)
   {
     return 1.4835;
   }
@@ -4056,13 +4056,13 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   }
 
   v10 = objc_loadWeakRetained(&self->_screenCanvas);
-  pitchForZ((*([v10 mapEngine] + 42024) + 488), a3);
+  pitchForZ((*([v10 mapEngine] + 42024) + 488), level);
   v12 = v11;
 
   return v12;
 }
 
-- (float)idealPitchForNormalizedZoomLevel:(float)a3
+- (float)idealPitchForNormalizedZoomLevel:(float)level
 {
   WeakRetained = objc_loadWeakRetained(&self->_screenCanvas);
   v6 = *([WeakRetained mapEngine] + 42024);
@@ -4073,13 +4073,13 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   }
 
   v7 = objc_loadWeakRetained(&self->_screenCanvas);
-  pitchForZ((*([v7 mapEngine] + 42024) + 512), a3);
+  pitchForZ((*([v7 mapEngine] + 42024) + 512), level);
   v9 = v8;
 
   return v9;
 }
 
-- (float)minPitchForNormalizedZoomLevel:(float)a3
+- (float)minPitchForNormalizedZoomLevel:(float)level
 {
   WeakRetained = objc_loadWeakRetained(&self->_screenCanvas);
   v6 = *([WeakRetained mapEngine] + 42024);
@@ -4090,20 +4090,20 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   }
 
   v7 = objc_loadWeakRetained(&self->_screenCanvas);
-  pitchForZ((*([v7 mapEngine] + 42024) + 464), a3);
+  pitchForZ((*([v7 mapEngine] + 42024) + 464), level);
   v9 = v8;
 
   return v9;
 }
 
-- (void)pitchTo:(double)a3 animated:(BOOL)a4
+- (void)pitchTo:(double)to animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(VKAnimation *)self->_snapPitchAnimation stop];
   snapPitchAnimation = self->_snapPitchAnimation;
   self->_snapPitchAnimation = 0;
 
-  if (v4)
+  if (animatedCopy)
   {
     v8 = [[VKTimedAnimation alloc] initWithDuration:0.3];
     v9 = self->_snapPitchAnimation;
@@ -4124,7 +4124,7 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
     v13[3] = &unk_1E7B3D550;
     objc_copyWeak(v14, &location);
     v14[1] = v10;
-    v14[2] = *&a3;
+    v14[2] = *&to;
     [(VKTimedAnimation *)self->_snapPitchAnimation setStepHandler:v13];
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -4141,7 +4141,7 @@ uint64_t __51__VKNavCameraController_Debug___updateDebugOverlay__block_invoke(ui
   else
   {
     [(VKCameraController *)self camera];
-    gdc::Camera::setPitch(v15, *&a3);
+    gdc::Camera::setPitch(v15, *&to);
     if (v16)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v16);
@@ -4181,14 +4181,14 @@ void __42__VKNavCameraController_pitchTo_animated___block_invoke_2(uint64_t a1, 
   }
 }
 
-- (void)rotateTo:(double)a3 animated:(BOOL)a4
+- (void)rotateTo:(double)to animated:(BOOL)animated
 {
-  v4 = a4;
+  animatedCopy = animated;
   [(VKAnimation *)self->_snapHeadingAnimation stop];
   snapHeadingAnimation = self->_snapHeadingAnimation;
   self->_snapHeadingAnimation = 0;
 
-  if (v4)
+  if (animatedCopy)
   {
     v8 = [[VKTimedAnimation alloc] initWithDuration:0.3];
     v9 = self->_snapHeadingAnimation;
@@ -4203,7 +4203,7 @@ void __42__VKNavCameraController_pitchTo_animated___block_invoke_2(uint64_t a1, 
     v15[3] = &unk_1E7B3D550;
     objc_copyWeak(v16, &v11);
     v16[1] = *&value;
-    v16[2] = *&a3;
+    v16[2] = *&to;
     [(VKTimedAnimation *)self->_snapHeadingAnimation setStepHandler:v15];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
@@ -4220,7 +4220,7 @@ void __42__VKNavCameraController_pitchTo_animated___block_invoke_2(uint64_t a1, 
   else
   {
     [(VKCameraController *)self camera];
-    gdc::Camera::setHeading(v11, *&a3);
+    gdc::Camera::setHeading(v11, *&to);
     if (v12)
     {
       std::__shared_weak_count::__release_shared[abi:nn200100](v12);
@@ -4264,11 +4264,11 @@ void __43__VKNavCameraController_rotateTo_animated___block_invoke_2(uint64_t a1,
   }
 }
 
-- (BOOL)snapMapIfNecessary:(BOOL)a3
+- (BOOL)snapMapIfNecessary:(BOOL)necessary
 {
   if (self->_isDetached)
   {
-    v3 = a3;
+    necessaryCopy = necessary;
     [(VKCameraController *)self camera];
     if (v13)
     {
@@ -4288,7 +4288,7 @@ void __43__VKNavCameraController_rotateTo_animated___block_invoke_2(uint64_t a1,
       [(VKNavCameraController *)self minCameraPitch];
       if (v5 < *&v12 && v5 > 0.0001 || (v6 = *&v12, v5 > *&v12))
       {
-        [(VKNavCameraController *)self pitchTo:v3 animated:?];
+        [(VKNavCameraController *)self pitchTo:necessaryCopy animated:?];
       }
 
       [(VKCameraController *)self camera];
@@ -4311,7 +4311,7 @@ void __43__VKNavCameraController_rotateTo_animated___block_invoke_2(uint64_t a1,
         [(VKNavCameraController *)self currentZoomLevel];
         if (!v9 && v10 <= 6.0)
         {
-          [(VKNavCameraController *)self rotateTo:v3 animated:0.0];
+          [(VKNavCameraController *)self rotateTo:necessaryCopy animated:0.0];
         }
       }
     }
@@ -4320,14 +4320,14 @@ void __43__VKNavCameraController_rotateTo_animated___block_invoke_2(uint64_t a1,
   return 0;
 }
 
-- (void)_setNavCameraTransitionComplete:(BOOL)a3
+- (void)_setNavCameraTransitionComplete:(BOOL)complete
 {
   WeakRetained = objc_loadWeakRetained(&self->_screenCanvas);
-  v5 = [WeakRetained mapEngine];
+  mapEngine = [WeakRetained mapEngine];
 
-  if (v5)
+  if (mapEngine)
   {
-    v6 = *(v5 + 41928);
+    v6 = *(mapEngine + 41928);
     if (v6)
     {
       v7 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((v6 + 16), 0x2FED70A4459DFCA1uLL);
@@ -4336,24 +4336,24 @@ void __43__VKNavCameraController_rotateTo_animated___block_invoke_2(uint64_t a1,
         v8 = v7[5];
         if (v8)
         {
-          *(v8 + 1117) = a3;
+          *(v8 + 1117) = complete;
         }
       }
     }
   }
 }
 
-- (void)_setNavCameraIsDetached:(BOOL)a3
+- (void)_setNavCameraIsDetached:(BOOL)detached
 {
-  v3 = a3;
+  detachedCopy = detached;
   v17[2] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_screenCanvas);
-  v5 = [WeakRetained mapEngine];
+  mapEngine = [WeakRetained mapEngine];
 
-  if (v5)
+  if (mapEngine)
   {
-    v6 = v5 + 40960;
-    v7 = *(v5 + 41928);
+    v6 = mapEngine + 40960;
+    v7 = *(mapEngine + 41928);
     if (v7)
     {
       v8 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((v7 + 16), 0xBEC1A12372CEEC00);
@@ -4362,13 +4362,13 @@ void __43__VKNavCameraController_rotateTo_animated___block_invoke_2(uint64_t a1,
         v9 = v8[5];
         if (v9)
         {
-          if (*(v9 + 240) != !v3)
+          if (*(v9 + 240) != !detachedCopy)
           {
             LODWORD(v16[0]) = 0;
             std::__hash_table<md::NavigationLogicEvent,std::hash<md::NavigationLogicEvent>,std::equal_to<md::NavigationLogicEvent>,std::allocator<md::NavigationLogicEvent>>::__emplace_unique_key_args<md::NavigationLogicEvent,md::NavigationLogicEvent const&>((v9 + 248), 0);
           }
 
-          *(v9 + 240) = !v3;
+          *(v9 + 240) = !detachedCopy;
         }
       }
 
@@ -4384,18 +4384,18 @@ void __43__VKNavCameraController_rotateTo_animated___block_invoke_2(uint64_t a1,
             v13 = v12[5];
             if (v13)
             {
-              *(v11 + 1116) = v3;
+              *(v11 + 1116) = detachedCopy;
               v14 = *(*(*(v13 + 144) + 8) + 24);
               v16[0] = &unk_1F2A12110;
               v16[1] = v14;
-              LOBYTE(v17[0]) = v3;
+              LOBYTE(v17[0]) = detachedCopy;
               v17[1] = v16;
               memset(v17 + 1, 0, 7);
               md::LabelManager::queueCommand(v14, 22, 1, v16);
               std::__function::__value_func<void ()(void)>::~__value_func[abi:nn200100](v16);
               v15 = *(v6 + 976);
               LOBYTE(v16[0]) = 38;
-              md::MapEngineSettings::set(v15, v16, v3);
+              md::MapEngineSettings::set(v15, v16, detachedCopy);
             }
           }
         }
@@ -4417,11 +4417,11 @@ void __43__VKNavCameraController_rotateTo_animated___block_invoke_2(uint64_t a1,
   }
 }
 
-- (void)setCamera:(shared_ptr<gdc::Camera>)a3
+- (void)setCamera:(shared_ptr<gdc::Camera>)camera
 {
-  ptr = a3.__ptr_;
-  v5 = *a3.__ptr_;
-  if (!*a3.__ptr_)
+  ptr = camera.__ptr_;
+  v5 = *camera.__ptr_;
+  if (!*camera.__ptr_)
   {
     [(VKNavCameraController *)self stopAnimations];
     v5 = *ptr;
@@ -4437,7 +4437,7 @@ void __43__VKNavCameraController_rotateTo_animated___block_invoke_2(uint64_t a1,
 
   v7.receiver = self;
   v7.super_class = VKNavCameraController;
-  [(VKCameraController *)&v7 setCamera:&v8, a3.__cntrl_];
+  [(VKCameraController *)&v7 setCamera:&v8, camera.__cntrl_];
   if (v9)
   {
     std::__shared_weak_count::__release_shared[abi:nn200100](v9);
@@ -4446,18 +4446,18 @@ void __43__VKNavCameraController_rotateTo_animated___block_invoke_2(uint64_t a1,
   [(VKNavCameraController *)self _setNeedsUpdate];
 }
 
-- (void)setVkCamera:(id)a3
+- (void)setVkCamera:(id)camera
 {
-  v4 = a3;
-  if (!v4)
+  cameraCopy = camera;
+  if (!cameraCopy)
   {
     [(VKNavCameraController *)self stopAnimations];
   }
 
   v5.receiver = self;
   v5.super_class = VKNavCameraController;
-  [(VKCameraController *)&v5 setVkCamera:v4];
-  if (v4)
+  [(VKCameraController *)&v5 setVkCamera:cameraCopy];
+  if (cameraCopy)
   {
     [(VKNavCameraController *)self _setNeedsUpdate];
   }
@@ -4482,12 +4482,12 @@ void __43__VKNavCameraController_rotateTo_animated___block_invoke_2(uint64_t a1,
   self->_selectiveFramingAnimation = 0;
 }
 
-- (void)setCameraFrame:()CameraFrame<geo:(double> *)a3 :Radians
+- (void)setCameraFrame:()CameraFrame<geo:(double> *)geo :Radians
 {
-  v4 = *&a3->_target.altitude._value;
-  v3 = *&a3->_pitch._value;
-  v5 = *&a3->_target.latitude._value;
-  self->_cameraFrame._roll._value = a3->_roll._value;
+  v4 = *&geo->_target.altitude._value;
+  v3 = *&geo->_pitch._value;
+  v5 = *&geo->_target.latitude._value;
+  self->_cameraFrame._roll._value = geo->_roll._value;
   *&self->_cameraFrame._target.altitude._value = v4;
   *&self->_cameraFrame._pitch._value = v3;
   *&self->_cameraFrame._target.latitude._value = v5;
@@ -4643,19 +4643,19 @@ void __35__VKNavCameraController__snapPitch__block_invoke_2(uint64_t a1, int a2)
   }
 }
 
-- (void)setEdgeInsets:(VKEdgeInsets)a3
+- (void)setEdgeInsets:(VKEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v14 = a3;
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  insetsCopy = insets;
   [(VKCameraController *)self edgeInsets];
   self->_previousMapEdgeInsets.top = *&v8;
   self->_previousMapEdgeInsets.left = *&v9;
   self->_previousMapEdgeInsets.bottom = *&v10;
   self->_previousMapEdgeInsets.right = *&v11;
-  if (*&self->_previousMapEdgeInsets.top != *&v14.top || *&self->_previousMapEdgeInsets.bottom != *&v14.bottom)
+  if (*&self->_previousMapEdgeInsets.top != *&insetsCopy.top || *&self->_previousMapEdgeInsets.bottom != *&insetsCopy.bottom)
   {
     v13.receiver = self;
     v13.super_class = VKNavCameraController;
@@ -4668,14 +4668,14 @@ void __35__VKNavCameraController__snapPitch__block_invoke_2(uint64_t a1, int a2)
   }
 }
 
-- (void)setEdgeInsetsAnimating:(BOOL)a3
+- (void)setEdgeInsetsAnimating:(BOOL)animating
 {
-  v3 = a3;
-  if (a3)
+  animatingCopy = animating;
+  if (animating)
   {
-    v5 = [(VKCameraController *)self runLoopController];
-    v5->var1 = [(VKCameraController *)self maxDisplayRate];
-    md::RunLoopController::_updateDisplayRate(v5, v6, v7, v8);
+    runLoopController = [(VKCameraController *)self runLoopController];
+    runLoopController->var1 = [(VKCameraController *)self maxDisplayRate];
+    md::RunLoopController::_updateDisplayRate(runLoopController, v6, v7, v8);
     [(VKNavCameraController *)self _setNeedsUpdate];
   }
 
@@ -4686,7 +4686,7 @@ void __35__VKNavCameraController__snapPitch__block_invoke_2(uint64_t a1, int a2)
   self->_previousMapEdgeInsets.right = v12;
   v13.receiver = self;
   v13.super_class = VKNavCameraController;
-  [(VKCameraController *)&v13 setEdgeInsetsAnimating:v3];
+  [(VKCameraController *)&v13 setEdgeInsetsAnimating:animatingCopy];
 }
 
 - (Unit<geo::RadianUnitDescription,)maxCameraPitch
@@ -4703,7 +4703,7 @@ void __35__VKNavCameraController__snapPitch__block_invoke_2(uint64_t a1, int a2)
   return v3;
 }
 
-- (void)navContextCameraHeadingOverrideDidChange:(id)a3
+- (void)navContextCameraHeadingOverrideDidChange:(id)change
 {
   if (![(VKAnimation *)self->_transitionAnimation running])
   {
@@ -4741,11 +4741,11 @@ void __35__VKNavCameraController__snapPitch__block_invoke_2(uint64_t a1, int a2)
   gdc::ViewDataAccess::screenPointForCoordinate(*([(VKCameraController *)self mapDataAccess]+ 16), &self->_puckCoordinate, v112);
   v106 = v4;
   v108 = v5;
-  v6 = [(VKCameraController *)self mapDataAccess];
-  v7 = [(VKCameraController *)self canvas];
-  [v7 size];
+  mapDataAccess = [(VKCameraController *)self mapDataAccess];
+  canvas = [(VKCameraController *)self canvas];
+  [canvas size];
   ignorePointsBehind = self->_ignorePointsBehind;
-  v9 = v6[2];
+  v9 = mapDataAccess[2];
   gdc::ViewDataAccess::worldViewProjectionMatrix(buf, v9, v112);
   begin = self->_coordinatesToFrame.__begin_;
   v11 = self->_coordinatesToFrame.__end_ - begin;
@@ -4808,10 +4808,10 @@ void __35__VKNavCameraController__snapPitch__block_invoke_2(uint64_t a1, int a2)
     v27 = vmulq_f64(vsubq_f64(v21, vdupq_lane_s64(COERCE__INT64(fmin(v21.f64[1], v21.f64[0]) * 0.200000003), 0)), _Q3);
     *buf = vsubq_f64(v26, v27);
     *&buf[16] = vaddq_f64(v26, v27);
-    v28 = [(VKCameraController *)self mapDataAccess];
+    mapDataAccess2 = [(VKCameraController *)self mapDataAccess];
     [(VKCameraController *)self camera];
     v29 = gdc::Camera::cameraFrame(v110);
-    gdc::ViewDataAccess::screenPointForCoordinate(v28[2], &self->_puckCoordinate, v29);
+    gdc::ViewDataAccess::screenPointForCoordinate(mapDataAccess2[2], &self->_puckCoordinate, v29);
     v31 = v30;
     v33 = v32;
     if (v111)
@@ -5066,11 +5066,11 @@ LABEL_26:
   }
 }
 
-- (double)_frameCameraWithViewRotation:(double)a3 firstWorldPoint:(double)a4 firstTargetScreenX:(uint64_t)a5 secondWorldPoint:(double *)a6 secondTargetScreenY:(double *)a7 thirdWorldPoint:(double *)a8 thirdTargetScreenXorY:(double *)a9 frameThirdXAxis:(int)a10
+- (double)_frameCameraWithViewRotation:(double)rotation firstWorldPoint:(double)point firstTargetScreenX:(uint64_t)x secondWorldPoint:(double *)worldPoint secondTargetScreenY:(double *)y thirdWorldPoint:(double *)thirdWorldPoint thirdTargetScreenXorY:(double *)xorY frameThirdXAxis:(int)self0
 {
-  v101 = a7[1];
-  v18 = a7[2];
-  v19 = tan(*a7 * 0.5 + 0.785398163);
+  v101 = y[1];
+  v18 = y[2];
+  v19 = tan(*y * 0.5 + 0.785398163);
   v20 = log(v19);
   v21.f64[0] = v101;
   v21.f64[1] = v20;
@@ -5080,26 +5080,26 @@ LABEL_26:
   v102 = _Q0;
   v121 = vmlaq_f64(_Q0, v99, v21);
   v122 = v18 * 0.0000000249532021;
-  v96 = a8[1];
-  v27 = a8[2];
-  v28 = tan(*a8 * 0.5 + 0.785398163);
+  v96 = thirdWorldPoint[1];
+  v27 = thirdWorldPoint[2];
+  v28 = tan(*thirdWorldPoint * 0.5 + 0.785398163);
   v29 = log(v28);
   v30.f64[0] = v96;
   v30.f64[1] = v29;
   v119 = vmlaq_f64(v102, v99, v30);
   v120 = v27 * 0.0000000249532021;
-  v97 = a9[1];
-  v31 = a9[2];
-  v32 = tan(*a9 * 0.5 + 0.785398163);
+  v97 = xorY[1];
+  v31 = xorY[2];
+  v32 = tan(*xorY * 0.5 + 0.785398163);
   v33 = log(v32);
   v34.f64[0] = v97;
   v34.f64[1] = v33;
   v117 = vmlaq_f64(v102, v99, v34);
   v118 = v31 * 0.0000000249532021;
-  v35 = *a6;
-  v36 = a6[1];
-  v37 = a6[2];
-  v34.f64[0] = a6[3];
+  v35 = *worldPoint;
+  v36 = worldPoint[1];
+  v37 = worldPoint[2];
+  v34.f64[0] = worldPoint[3];
   v38 = v36 + v36;
   v39 = (v36 + v36) * v36;
   v40 = (v37 + v37) * v37;
@@ -5123,13 +5123,13 @@ LABEL_26:
   v116[4] = v49 - v40;
   v116[5] = v34.f64[0] + v50;
   v116[8] = v49 - v39;
-  v51 = a1;
-  v52 = [v51 canvas];
-  [v52 size];
+  selfCopy = self;
+  canvas = [selfCopy canvas];
+  [canvas size];
   v54 = v53;
 
-  v55 = [v51 canvas];
-  [v55 size];
+  canvas2 = [selfCopy canvas];
+  [canvas2 size];
   v57 = v56;
 
   gm::inverse<double>(v115, v116);
@@ -5141,30 +5141,30 @@ LABEL_26:
   v61 = gm::operator*<double,3,3,1>(v115, &v117);
   v90 = v62;
   v91 = v63;
-  v64 = [v51 canvas];
-  [v64 size];
-  if (a10)
+  canvas3 = [selfCopy canvas];
+  [canvas3 size];
+  if (axis)
   {
-    v67 = (a4 + a4) / v65 + -1.0;
+    v67 = (point + point) / v65 + -1.0;
     v68 = 0.0;
   }
 
   else
   {
-    v68 = 1.0 - (a4 + a4) / v66;
+    v68 = 1.0 - (point + point) / v66;
     v67 = 0.0;
   }
 
   v89 = v61;
 
-  [v51 camera];
+  [selfCopy camera];
   v100 = v57;
   gdc::Camera::verticalFieldOfView(&v114, *buf);
   v69 = v114;
   v70 = v54;
-  v71 = gdc::Camera::aspectRatio([v51 camera], *(v110 + 368), *(v110 + 376));
-  [v51 camera];
-  v103 = gdc::Camera::horizontalOffset([v51 camera], *(v108 + 488));
+  v71 = gdc::Camera::aspectRatio([selfCopy camera], *(v110 + 368), *(v110 + 376));
+  [selfCopy camera];
+  v103 = gdc::Camera::horizontalOffset([selfCopy camera], *(v108 + 488));
   v98 = gdc::Camera::horizontalOffset(v72, *(v106 + 492));
   v73 = tan(v69 * 0.5);
   if (v107)
@@ -5177,7 +5177,7 @@ LABEL_26:
     std::__shared_weak_count::__release_shared[abi:nn200100](v109);
   }
 
-  v74 = a3 + a3;
+  v74 = rotation + rotation;
   v75.f64[0] = v103;
   v75.f64[1] = v98;
   if (v111)
@@ -5200,13 +5200,13 @@ LABEL_26:
   v79 = v77 * (v76 - v78.f64[0]);
   v80 = v73 - (v74 / v100 + v78.f64[1]) * v73;
   v81 = v77 * (v67 - v78.f64[0]);
-  if (!a10)
+  if (!axis)
   {
     v81 = v67;
   }
 
   v82 = v73 * (v68 - v78.f64[1]);
-  if (a10)
+  if (axis)
   {
     if (v79 != v81)
     {
@@ -5276,43 +5276,43 @@ LABEL_27:
   return v84;
 }
 
-- (pair<double,)_solveEyeTargetingPoints:(const void *)a3 targetScreenCoords:(const void *)a4 projection:(const ProjectionConfig *)a5 axis:(unsigned int)a6
+- (pair<double,)_solveEyeTargetingPoints:(const void *)points targetScreenCoords:(const void *)coords projection:(const ProjectionConfig *)projection axis:(unsigned int)axis
 {
-  v10 = self;
+  selfCopy = self;
   v11 = 0;
   v12 = &v32;
   v13 = 1;
   do
   {
     v14 = v13;
-    if (a6 == 1)
+    if (axis == 1)
     {
-      v21 = *(a4 + v11);
-      v22 = [(VKCameraController *)v10 canvas];
-      [v22 size];
+      v21 = *(coords + v11);
+      canvas = [(VKCameraController *)selfCopy canvas];
+      [canvas size];
       v24 = v23;
 
-      v19 = v21 * -2.0 / v24 + 1.0 - a5->var1[1];
-      v20 = &a5->var0[1];
+      v19 = v21 * -2.0 / v24 + 1.0 - projection->var1[1];
+      projectionCopy = &projection->var0[1];
     }
 
     else
     {
-      if (a6)
+      if (axis)
       {
         goto LABEL_7;
       }
 
-      v15 = *(a4 + v11);
-      v16 = [(VKCameraController *)v10 canvas];
-      [v16 size];
+      v15 = *(coords + v11);
+      canvas2 = [(VKCameraController *)selfCopy canvas];
+      [canvas2 size];
       v18 = (v15 + v15) / v17 + -1.0;
 
-      v19 = v18 - a5->var1[0];
-      v20 = a5;
+      v19 = v18 - projection->var1[0];
+      projectionCopy = projection;
     }
 
-    *v12 = v19 / v20->var0[0];
+    *v12 = v19 / projectionCopy->var0[0];
 LABEL_7:
     v13 = 0;
     v12 = &v31;
@@ -5320,9 +5320,9 @@ LABEL_7:
   }
 
   while ((v14 & 1) != 0);
-  v25 = (a3 + 8 * a6);
-  v26 = *(a3 + 2);
-  v27 = (*v25 + v32 * v26 - (v25[3] + v31 * *(a3 + 5))) / (v32 - v31);
+  v25 = (points + 8 * axis);
+  v26 = *(points + 2);
+  v27 = (*v25 + v32 * v26 - (v25[3] + v31 * *(points + 5))) / (v32 - v31);
   v28 = *v25 + (v26 - v27) * v32;
 
   v29 = v28;
@@ -5332,11 +5332,11 @@ LABEL_7:
   return result;
 }
 
-- (Matrix<double,)_viewCoordinatesForCoordinates:(const void *)a3 rotation:(Quaternion<double>)a4
+- (Matrix<double,)_viewCoordinatesForCoordinates:(const void *)coordinates rotation:(Quaternion<double>)rotation
 {
   v5 = v4;
-  v32 = *(a3 + 8);
-  v6 = tan(*a3 * 0.5 + 0.785398163);
+  v32 = *(coordinates + 8);
+  v6 = tan(*coordinates * 0.5 + 0.785398163);
   v7 = log(v6);
   v8.f64[0] = v32.f64[0];
   v8.f64[1] = v7;
@@ -5380,7 +5380,7 @@ LABEL_7:
   return result;
 }
 
-- (array<unsigned)_findPeripheralPoints:(const void *)a3 rotation:(Quaternion<double>)a4
+- (array<unsigned)_findPeripheralPoints:(const void *)points rotation:(Quaternion<double>)rotation
 {
   v5 = v4;
   v81 = *MEMORY[0x1E69E9840];
@@ -5478,8 +5478,8 @@ LABEL_7:
   *v74 = v47;
   *&v74[24] = v49;
   *&v74[8] = v48;
-  v30 = *a3;
-  if (*(a3 + 1) != *a3)
+  v30 = *points;
+  if (*(points + 1) != *points)
   {
     v31 = 0;
     v32 = 0;
@@ -5515,11 +5515,11 @@ LABEL_7:
       }
 
       while (v33 != 4);
-      v30 = *a3;
+      v30 = *points;
       v31 = ++v32;
     }
 
-    while (0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3) > v32);
+    while (0xAAAAAAAAAAAAAAABLL * ((*(points + 1) - *points) >> 3) > v32);
   }
 
   if (v55)
@@ -5534,21 +5534,21 @@ LABEL_7:
   return result;
 }
 
-- (Matrix<double,)_frameCoordinates:(const void *)a3 viewRot:(Quaternion<double>)a4
+- (Matrix<double,)_frameCoordinates:(const void *)coordinates viewRot:(Quaternion<double>)rot
 {
   v201 = *MEMORY[0x1E69E9840];
   *buf = *v4;
   *&buf[16] = *(v4 + 16);
   v181 = v4;
   *&v194 = *(v4 + 24);
-  v7 = [(VKNavCameraController *)self _findPeripheralPoints:a3 rotation:buf];
+  v7 = [(VKNavCameraController *)self _findPeripheralPoints:coordinates rotation:buf];
   v8 = 0;
   v191 = v7;
   v192 = v9;
   v10 = 2168;
   do
   {
-    v11 = *a3 + 24 * *(&v191 + v8);
+    v11 = *coordinates + 24 * *(&v191 + v8);
     v12 = self + v10;
     v13 = *(v11 + 16);
     *v12 = *v11;
@@ -5562,10 +5562,10 @@ LABEL_7:
   v188 = 0;
   v189 = 0;
   v190 = 0;
-  std::vector<gm::Matrix<double,3,1>>::reserve(&v188, 0xAAAAAAAAAAAAAAABLL * ((*(a3 + 1) - *a3) >> 3));
-  v14 = *a3;
-  v15 = *(a3 + 1);
-  if (*a3 != v15)
+  std::vector<gm::Matrix<double,3,1>>::reserve(&v188, 0xAAAAAAAAAAAAAAABLL * ((*(coordinates + 1) - *coordinates) >> 3));
+  v14 = *coordinates;
+  v15 = *(coordinates + 1);
+  if (*coordinates != v15)
   {
     do
     {
@@ -5728,13 +5728,13 @@ LABEL_7:
           }
 
           self->_framingDebug._targetConstraints.__end_ = self->_framingDebug._targetConstraints.__begin_;
-          v60 = *a3 + 24 * v38;
+          v60 = *coordinates + 24 * v38;
           *v182 = *v60;
           *&v182[8] = *(v60 + 8);
           v61 = v183;
           CameraFramingDebug::addTargetConstraint(p_framingDebug, v182, 0, v61);
-          v62 = *a3;
-          *v182 = *(*a3 + 264);
+          v62 = *coordinates;
+          *v182 = *(*coordinates + 264);
           *&v182[16] = *(v62 + 35);
           v63 = *&v184;
           CameraFramingDebug::addTargetConstraint(p_framingDebug, v182, 0, v63);
@@ -5771,12 +5771,12 @@ LABEL_7:
         [(VKNavCameraController *)self _solveEyeTargetingPoints:buf targetScreenCoords:&v183 projection:&v186 axis:1];
         v41 = v48;
         v42 = v49;
-        v50 = *a3 + 24 * v40;
+        v50 = *coordinates + 24 * v40;
         *v182 = *v50;
         *&v182[8] = *(v50 + 8);
         *&v48 = v183;
         CameraFramingDebug::addTargetConstraint(p_framingDebug, v182, 1, *&v48);
-        v51 = *a3 + 24 * v39;
+        v51 = *coordinates + 24 * v39;
         *v182 = *v51;
         *&v182[8] = *(v51 + 8);
         v52 = *&v184;
@@ -5820,7 +5820,7 @@ LABEL_7:
       v77 = v40;
     }
 
-    v78 = *(*a3 + 24 * v77);
+    v78 = *(*coordinates + 24 * v77);
     v79 = cos(v78 + v78) * -559.82 + 111132.92;
     v80 = v79 + cos(v78 * 4.0) * 1.175;
     v81 = v80 + cos(v78 * 6.0) * -0.0023;
@@ -5869,12 +5869,12 @@ LABEL_7:
   *&v182[8 * v37] = v41;
   *&v182[16] = v42;
   v64 = (1 - v37);
-  v65 = self;
+  selfCopy = self;
   __asm { FMOV            V2.2D, #0.5 }
 
-  *buf = vmlaq_f64(v65->_viewableScreenRect._minimum, _Q2, vsubq_f64(v65->_viewableScreenRect._maximum, v65->_viewableScreenRect._minimum));
+  *buf = vmlaq_f64(selfCopy->_viewableScreenRect._minimum, _Q2, vsubq_f64(selfCopy->_viewableScreenRect._maximum, selfCopy->_viewableScreenRect._minimum));
   v70 = *(buf | (8 * v64));
-  [(VKCameraController *)v65 canvas];
+  [(VKCameraController *)selfCopy canvas];
   v72 = v71 = v172;
   [v72 size];
   if (v37 == 1)
@@ -6108,7 +6108,7 @@ LABEL_98:
   return result;
 }
 
-- (Matrix<double,)_frameCoordinates:(const void *)a3 targetingPuckOnBothAxes:(const void *)a4 viewRot:(Quaternion<double>)a5
+- (Matrix<double,)_frameCoordinates:(const void *)coordinates targetingPuckOnBothAxes:(const void *)axes viewRot:(Quaternion<double>)rot
 {
   v6 = v5;
   v95 = *MEMORY[0x1E69E9840];
@@ -6137,7 +6137,7 @@ LABEL_98:
   *buf = *v5;
   v93 = v5[2];
   v94 = v12;
-  v90[0] = [(VKNavCameraController *)self _findPeripheralPoints:a3 rotation:buf];
+  v90[0] = [(VKNavCameraController *)self _findPeripheralPoints:coordinates rotation:buf];
   v90[1] = v22;
   *buf = *v6;
   v93 = v6[2];
@@ -6159,7 +6159,7 @@ LABEL_98:
   {
     while (1)
     {
-      v33 = *a3 + 24 * *(v90 + v27);
+      v33 = *coordinates + 24 * *(v90 + v27);
       *v85 = *v33;
       *&v85[8] = *(v33 + 8);
       if (v27 > 1)
@@ -6208,8 +6208,8 @@ LABEL_98:
       v82[0] = v83[0];
       *&v82[1] = value;
       *&v82[2] = v84;
-      v43 = *a4;
-      v44 = *(a4 + 1);
+      v43 = *axes;
+      v44 = *(axes + 1);
       v80 = *v85;
       if (!v34)
       {
@@ -6263,17 +6263,17 @@ LABEL_98:
 LABEL_24:
     *buf = *&p_puckCoordinate->latitude._value;
     v93 = self->_puckCoordinate.altitude._value;
-    v54 = *a4;
+    v54 = *axes;
     CameraFramingDebug::addTargetConstraint(p_framingDebug, buf, 0, v54);
     *buf = *&p_puckCoordinate->latitude._value;
     v93 = self->_puckCoordinate.altitude._value;
-    v55 = *(a4 + 1);
+    v55 = *(axes + 1);
     CameraFramingDebug::addTargetConstraint(p_framingDebug, buf, 1, v55);
     v56 = 0;
     v57 = p_framingDebug + 4;
     do
     {
-      v58 = *a3 + 24 * *(v90 + v56);
+      v58 = *coordinates + 24 * *(v90 + v56);
       v59 = *(v58 + 16);
       *v57 = *v58;
       v57[2] = v59;
@@ -6328,13 +6328,13 @@ LABEL_34:
   return result;
 }
 
-- (void)_frameCameraWithHeading:(double)a3 pitch:(double)a4 targetPuckOnBothAxes:(BOOL)a5
+- (void)_frameCameraWithHeading:(double)heading pitch:(double)pitch targetPuckOnBothAxes:(BOOL)axes
 {
-  v5 = a5;
+  axesCopy = axes;
   v32 = 0;
   memset(v29, 0, sizeof(v29));
-  v30 = a4;
-  v31 = a3;
+  pitchCopy = pitch;
+  headingCopy = heading;
   gdc::CameraFrame<geo::Radians,double>::toRigidTransformMercator(v24, v29, 1);
   v8 = v25;
   v7 = v26;
@@ -6365,7 +6365,7 @@ LABEL_34:
   v19[1] = v7;
   v19[2] = v10;
   v19[3] = v9;
-  if (v5)
+  if (axesCopy)
   {
     [(VKNavCameraController *)self _frameCoordinates:&__p targetingPuckOnBothAxes:v20 viewRot:v19];
   }
@@ -6385,7 +6385,7 @@ LABEL_34:
   }
 }
 
-- (void)_addAdditionalRoutePointsToFrameToList:(void *)a3
+- (void)_addAdditionalRoutePointsToFrameToList:(void *)list
 {
   navContext = self->_navContext;
   v4[0] = MEMORY[0x1E69E9820];
@@ -6393,7 +6393,7 @@ LABEL_34:
   v4[2] = __64__VKNavCameraController__addAdditionalRoutePointsToFrameToList___block_invoke;
   v4[3] = &unk_1E7B3C738;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = list;
   [(VKNavContext *)navContext enumerateAdditionalRoutesToFrameUsingBlock:v4];
 }
 
@@ -6739,26 +6739,26 @@ void __44__VKNavCameraController_updatePointsToFrame__block_invoke_3(uint64_t a1
   v2[1] = v5;
 }
 
-- (void)_addWaypointToFramingAtStep:(unint64_t)a3 forRoute:(id)a4
+- (void)_addWaypointToFramingAtStep:(unint64_t)step forRoute:(id)route
 {
   v61 = *MEMORY[0x1E69E9840];
-  v56 = self;
-  v6 = a4;
-  v7 = v6;
+  selfCopy = self;
+  routeCopy = route;
+  v7 = routeCopy;
   if (self->_labelMetrics.__ptr_)
   {
-    v8 = [v6 legIndexForStepIndex:a3];
+    v8 = [routeCopy legIndexForStepIndex:step];
     if (v8 != 0x7FFFFFFFFFFFFFFFLL)
     {
-      v9 = [v7 legs];
-      v10 = [v9 objectAtIndex:v8];
+      legs = [v7 legs];
+      v10 = [legs objectAtIndex:v8];
 
-      v11 = [v10 destination];
-      v12 = [v11 name];
-      v13 = [v12 UTF8String];
-      v14 = [MEMORY[0x1E695DF58] currentLocale];
-      v15 = [v14 localeIdentifier];
-      md::StringWithLocaleImp<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>::StringWithLocaleImp(v57, v13, [v15 UTF8String]);
+      destination = [v10 destination];
+      name = [destination name];
+      uTF8String = [name UTF8String];
+      currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+      localeIdentifier = [currentLocale localeIdentifier];
+      md::StringWithLocaleImp<std::basic_string<char,std::char_traits<char>,geo::allocator_adapter<char,mdm::zone_mallocator>>>::StringWithLocaleImp(v57, uTF8String, [localeIdentifier UTF8String]);
 
       md::LabelMetrics::boundingRectForItem(v54, self->_labelMetrics.__ptr_, 1, v57);
       if (v55 == 1 && (self->_viewableScreenRect._maximum._e[0] - self->_viewableScreenRect._minimum._e[0]) * 0.75 >= (v54[2] - v54[0]))
@@ -6770,20 +6770,20 @@ void __44__VKNavCameraController_updatePointsToFrame__block_invoke_3(uint64_t a1
           v19 = v18;
           v21 = v20;
           v23 = v22;
-          v24 = [v11 location];
-          [v24 coordinate];
+          location = [destination location];
+          [location coordinate];
           v26 = v25;
-          v27 = [v11 location];
-          [v27 coordinate];
+          location2 = [destination location];
+          [location2 coordinate];
           v29 = v28;
-          v30 = [v11 location];
+          location3 = [destination location];
           v31 = 0.0;
-          if ([v30 hasAltitude])
+          if ([location3 hasAltitude])
           {
-            v32 = [v11 location];
-            v33 = [v32 altitude];
+            location4 = [destination location];
+            altitude = [location4 altitude];
 
-            v31 = v33;
+            v31 = altitude;
           }
 
           GEOCalculateDistance();
@@ -6861,12 +6861,12 @@ void __44__VKNavCameraController_updatePointsToFrame__block_invoke_3(uint64_t a1
 - (void)_addWaypointToFramingAtStep:forRoute:
 {
   v15 = *a2;
-  v3 = **(a1 + 8);
+  v3 = **(self + 8);
   v4 = v3 + 99;
-  v5 = [v3 mapDataAccess];
+  mapDataAccess = [v3 mapDataAccess];
   v6.i32[0] = v15.i32[0];
   v6.i32[1] = vneg_f32(v15).i32[1];
-  md::MapDataAccess::groundCoordinateForScreenPoint(&v16, v5, *(a1 + 24), 0, 0, vaddq_f64(**(a1 + 16), vcvtq_f64_f32(v6)));
+  md::MapDataAccess::groundCoordinateForScreenPoint(&v16, mapDataAccess, *(self + 24), 0, 0, vaddq_f64(**(self + 16), vcvtq_f64_f32(v6)));
   v8 = v4[1];
   v7 = v4[2];
   if (v8 >= v7)
@@ -6928,35 +6928,35 @@ void __44__VKNavCameraController_updatePointsToFrame__block_invoke_3(uint64_t a1
 - (__n128)_addWaypointToFramingAtStep:forRoute:
 {
   *a2 = &unk_1F2A43F50;
-  result = *(a1 + 8);
-  *(a2 + 24) = *(a1 + 24);
+  result = *(self + 8);
+  *(a2 + 24) = *(self + 24);
   *(a2 + 8) = result;
   return result;
 }
 
-- (BOOL)_addStepToFraming:(unint64_t)a3 forRoute:(id)a4 untilDistance:(float)a5 fromRouteCoordinate:(PolylineCoordinate)a6
+- (BOOL)_addStepToFraming:(unint64_t)framing forRoute:(id)route untilDistance:(float)distance fromRouteCoordinate:(PolylineCoordinate)coordinate
 {
-  v10 = a4;
-  v56 = [v10 stepAtIndex:a3];
-  v11 = [v56 endRouteCoordinate];
+  routeCopy = route;
+  v56 = [routeCopy stepAtIndex:framing];
+  endRouteCoordinate = [v56 endRouteCoordinate];
   p_routeCoordinate = &self->_routeCoordinate;
   index = self->_routeCoordinate.index;
-  if (index > v11 || index == v11 && self->_routeCoordinate.offset >= *(&v11 + 1))
+  if (index > endRouteCoordinate || index == endRouteCoordinate && self->_routeCoordinate.offset >= *(&endRouteCoordinate + 1))
   {
 LABEL_2:
     v14 = 0;
     goto LABEL_3;
   }
 
-  v16 = [v56 startRouteCoordinate];
-  v17 = [v56 startRouteCoordinate];
+  startRouteCoordinate = [v56 startRouteCoordinate];
+  startRouteCoordinate2 = [v56 startRouteCoordinate];
   p_coordinatesToFrame = &self->_coordinatesToFrame;
   v19 = p_routeCoordinate->index;
-  if (p_routeCoordinate->index < v17 || v19 == v17 && self->_routeCoordinate.offset < *(&v17 + 1))
+  if (p_routeCoordinate->index < startRouteCoordinate2 || v19 == startRouteCoordinate2 && self->_routeCoordinate.offset < *(&startRouteCoordinate2 + 1))
   {
     if (([v56 startRouteCoordinate] & 0x7FFFFFFF00000000) != 0)
     {
-      [v10 pointWithAltitudeCorrectionAtRouteCoordinate:{objc_msgSend(v56, "startRouteCoordinate")}];
+      [routeCopy pointWithAltitudeCorrectionAtRouteCoordinate:{objc_msgSend(v56, "startRouteCoordinate")}];
       [(VKNavCameraController *)self _coordinateForGeoLocation:?];
       end = self->_coordinatesToFrame.__end_;
       cap = self->_coordinatesToFrame.__cap_;
@@ -7014,21 +7014,21 @@ LABEL_2:
       }
 
       self->_coordinatesToFrame.__end_ = v22;
-      ++v16;
+      ++startRouteCoordinate;
     }
   }
 
   else
   {
-    v16 = v19 + 1;
+    startRouteCoordinate = v19 + 1;
   }
 
-  v28 = [v56 endRouteCoordinate];
-  if (a5 <= 0.0 || ([(VKNavCameraController *)self distanceToManeuver:a3 fromRouteCoordinate:a6], v29 = a5, v30 <= v29))
+  endRouteCoordinate2 = [v56 endRouteCoordinate];
+  if (distance <= 0.0 || ([(VKNavCameraController *)self distanceToManeuver:framing fromRouteCoordinate:coordinate], v29 = distance, v30 <= v29))
   {
-    for (; v16 <= v28; ++v16)
+    for (; startRouteCoordinate <= endRouteCoordinate2; ++startRouteCoordinate)
     {
-      [v10 pointWithAltitudeCorrectionAtIndex:v16];
+      [routeCopy pointWithAltitudeCorrectionAtIndex:startRouteCoordinate];
       [(VKNavCameraController *)self _coordinateForGeoLocation:?];
       v32 = self->_coordinatesToFrame.__end_;
       v31 = self->_coordinatesToFrame.__cap_;
@@ -7090,7 +7090,7 @@ LABEL_2:
 
     if (([v56 endRouteCoordinate] & 0x7FFFFFFF00000000) != 0)
     {
-      [v10 pointWithAltitudeCorrectionAtRouteCoordinate:{objc_msgSend(v56, "endRouteCoordinate")}];
+      [routeCopy pointWithAltitudeCorrectionAtRouteCoordinate:{objc_msgSend(v56, "endRouteCoordinate")}];
       [(VKNavCameraController *)self _coordinateForGeoLocation:?];
       v40 = self->_coordinatesToFrame.__end_;
       v39 = self->_coordinatesToFrame.__cap_;
@@ -7155,15 +7155,15 @@ LABEL_74:
     goto LABEL_2;
   }
 
-  for (; v16 <= v28; ++v16)
+  for (; startRouteCoordinate <= endRouteCoordinate2; ++startRouteCoordinate)
   {
-    [v10 stepDistanceFromPoint:a6 toPoint:v16];
+    [routeCopy stepDistanceFromPoint:coordinate toPoint:startRouteCoordinate];
     if (v42 > v29)
     {
       break;
     }
 
-    [v10 pointWithAltitudeCorrectionAtIndex:v16];
+    [routeCopy pointWithAltitudeCorrectionAtIndex:startRouteCoordinate];
     [(VKNavCameraController *)self _coordinateForGeoLocation:?];
     v44 = self->_coordinatesToFrame.__end_;
     v43 = self->_coordinatesToFrame.__cap_;
@@ -7235,34 +7235,34 @@ LABEL_3:
   return v14;
 }
 
-- (BOOL)_addStepToFraming:(unint64_t)a3 forRoute:(id)a4
+- (BOOL)_addStepToFraming:(unint64_t)framing forRoute:(id)route
 {
   maxFramingDistance = self->_maxFramingDistance;
   *&maxFramingDistance = maxFramingDistance;
-  return [(VKNavCameraController *)self _addStepToFraming:a3 forRoute:a4 untilDistance:*&self->_routeCoordinate fromRouteCoordinate:maxFramingDistance];
+  return [(VKNavCameraController *)self _addStepToFraming:framing forRoute:route untilDistance:*&self->_routeCoordinate fromRouteCoordinate:maxFramingDistance];
 }
 
-- (Coordinate3D<geo::Radians,)routeCoordinateAtDistance:(double)a3
+- (Coordinate3D<geo::Radians,)routeCoordinateAtDistance:(double)distance
 {
   v6 = v3;
   p_routeCoordinate = &self->_routeCoordinate;
   offset = self->_routeCoordinate.offset;
-  v9 = [(VKNavContext *)self->_navContext route];
-  v10 = v9;
+  route = [(VKNavContext *)self->_navContext route];
+  v10 = route;
   if (offset >= 0.0)
   {
-    v11 = [v9 coordinateAtOffset:*p_routeCoordinate fromRouteCoordinate:a3];
+    v11 = [route coordinateAtOffset:*p_routeCoordinate fromRouteCoordinate:distance];
   }
 
   else
   {
-    v11 = [v9 coordinateAtOffset:a3];
+    v11 = [route coordinateAtOffset:distance];
   }
 
   v12 = v11;
 
-  v13 = [(VKNavContext *)self->_navContext route];
-  [v13 pointAtRouteCoordinate:v12];
+  route2 = [(VKNavContext *)self->_navContext route];
+  [route2 pointAtRouteCoordinate:v12];
   v15 = v14;
   v17 = v16;
   v19 = v18;
@@ -7287,39 +7287,39 @@ LABEL_3:
   return result;
 }
 
-- (Coordinate3D<geo::Radians,)routeLocationAtDistance:(double)a3 fromManeuver:(unint64_t)a4
+- (Coordinate3D<geo::Radians,)routeLocationAtDistance:(double)distance fromManeuver:(unint64_t)maneuver
 {
   v8 = v4;
-  v36 = [(VKNavContext *)self->_navContext route];
-  v9 = [v36 stepsCount];
+  route = [(VKNavContext *)self->_navContext route];
+  stepsCount = [route stepsCount];
 
-  if (v9 <= a4)
+  if (stepsCount <= maneuver)
   {
-    v37 = [(VKNavContext *)self->_navContext route];
-    a4 = [v37 stepsCount] - 1;
+    route2 = [(VKNavContext *)self->_navContext route];
+    maneuver = [route2 stepsCount] - 1;
   }
 
-  v10 = [(VKNavContext *)self->_navContext route];
-  v38 = [v10 stepAtIndex:a4];
+  route3 = [(VKNavContext *)self->_navContext route];
+  v38 = [route3 stepAtIndex:maneuver];
 
-  v11 = [v38 endRouteCoordinate];
-  v12 = [(VKNavContext *)self->_navContext route];
-  [v12 pointAtRouteCoordinate:v11];
+  endRouteCoordinate = [v38 endRouteCoordinate];
+  route4 = [(VKNavContext *)self->_navContext route];
+  [route4 pointAtRouteCoordinate:endRouteCoordinate];
   v14 = v13;
   v16 = v15;
   v18 = v17;
 
   v19 = objc_alloc(MEMORY[0x1E69A2540]);
-  v20 = [(VKNavContext *)self->_navContext route];
-  v21 = [(VKNavContext *)self->_navContext route];
-  [v21 courseAtRouteCoordinateIndex:v11];
+  route5 = [(VKNavContext *)self->_navContext route];
+  route6 = [(VKNavContext *)self->_navContext route];
+  [route6 courseAtRouteCoordinateIndex:endRouteCoordinate];
   v23 = v22;
-  v24 = [MEMORY[0x1E695DF00] date];
-  v25 = [v19 initWithRoute:v20 routeCoordinate:v11 locationCoordinate:a4 stepIndex:v24 matchedCourse:v14 timestamp:{v16, v18, v23}];
+  date = [MEMORY[0x1E695DF00] date];
+  v25 = [v19 initWithRoute:route5 routeCoordinate:endRouteCoordinate locationCoordinate:maneuver stepIndex:date matchedCourse:v14 timestamp:{v16, v18, v23}];
 
   [v25 setIsGoodMatch:0];
-  v26 = [(VKNavContext *)self->_navContext route];
-  [v26 locationAtDistance:v25 from:a3];
+  route7 = [(VKNavContext *)self->_navContext route];
+  [route7 locationAtDistance:v25 from:distance];
   v28 = v27;
   v30 = v29;
   v32 = v31;
@@ -7341,23 +7341,23 @@ LABEL_3:
   return result;
 }
 
-- (double)distanceToManeuver:(unint64_t)a3 fromRouteCoordinate:(PolylineCoordinate)a4
+- (double)distanceToManeuver:(unint64_t)maneuver fromRouteCoordinate:(PolylineCoordinate)coordinate
 {
-  v7 = [(VKNavContext *)self->_navContext route];
-  v8 = [v7 stepsCount];
+  route = [(VKNavContext *)self->_navContext route];
+  stepsCount = [route stepsCount];
 
-  if (v8 <= a3)
+  if (stepsCount <= maneuver)
   {
-    v9 = [(VKNavContext *)self->_navContext route];
-    a3 = [v9 stepsCount] - 1;
+    route2 = [(VKNavContext *)self->_navContext route];
+    maneuver = [route2 stepsCount] - 1;
   }
 
-  v10 = [(VKNavContext *)self->_navContext route];
-  v11 = [v10 stepAtIndex:a3];
+  route3 = [(VKNavContext *)self->_navContext route];
+  v11 = [route3 stepAtIndex:maneuver];
 
-  v12 = [v11 endRouteCoordinate];
-  v13 = [(VKNavContext *)self->_navContext route];
-  [v13 stepDistanceFromPoint:a4 toPoint:v12];
+  endRouteCoordinate = [v11 endRouteCoordinate];
+  route4 = [(VKNavContext *)self->_navContext route];
+  [route4 stepDistanceFromPoint:coordinate toPoint:endRouteCoordinate];
   v15 = v14;
 
   return v15;
@@ -7378,14 +7378,14 @@ LABEL_3:
   [(VKNavCameraController *)self _updateForAnimatedEdgeInsets];
 }
 
-- (Box<double,)calculateViewableScreenRectForEdgeInsets:(VKEdgeInsets)a3
+- (Box<double,)calculateViewableScreenRectForEdgeInsets:(VKEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v8 = [(VKCameraController *)self canvas];
-  [v8 size];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  canvas = [(VKCameraController *)self canvas];
+  [canvas size];
   v10 = v9;
   v12 = v11;
 
@@ -7556,29 +7556,29 @@ LABEL_3:
 
 - (void)stop
 {
-  v3 = [(VKCameraController *)self runLoopController];
-  v3->var1 = -1;
-  md::RunLoopController::_updateDisplayRate(v3, v4, v5, v6);
+  runLoopController = [(VKCameraController *)self runLoopController];
+  runLoopController->var1 = -1;
+  md::RunLoopController::_updateDisplayRate(runLoopController, v4, v5, v6);
   [(VKNavContext *)self->_navContext removeObserver:self];
   self->_isTracking = 0;
   [(VKNavCameraController *)self _setDetached:1];
   [(VKNavCameraController *)self updatePuckOffset:1];
-  v7 = [(VKCameraController *)self cameraDelegate];
-  [v7 didEndAnimatingAccess];
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate didEndAnimatingAccess];
 
-  v8 = [(VKCameraController *)self canvas];
-  if (v8)
+  canvas = [(VKCameraController *)self canvas];
+  if (canvas)
   {
-    v9 = v8;
-    v10 = [(VKCameraController *)self canvas];
+    v9 = canvas;
+    canvas2 = [(VKCameraController *)self canvas];
     v11 = objc_opt_respondsToSelector();
 
     if (v11)
     {
       if (self->_debugPage._value)
       {
-        v12 = [(VKCameraController *)self canvas];
-        v13 = [v12 debugConsoleForId:7];
+        canvas3 = [(VKCameraController *)self canvas];
+        v13 = [canvas3 debugConsoleForId:7];
 
         if (v13)
         {
@@ -7588,8 +7588,8 @@ LABEL_3:
 
       if (self->_showOverlay._value || self->_showMotionVectors._value)
       {
-        v14 = [(VKCameraController *)self canvas];
-        v15 = [v14 debugConsoleForId:8];
+        canvas4 = [(VKCameraController *)self canvas];
+        v15 = [canvas4 debugConsoleForId:8];
 
         if (v15)
         {
@@ -7631,12 +7631,12 @@ LABEL_3:
 
 - (double)topDownMinimumZoomLevel
 {
-  v3 = [(VKCameraController *)self vkCamera];
-  [v3 maxHeightNoPitch];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera maxHeightNoPitch];
   v5 = v4;
 
-  v6 = [(VKCameraController *)self vkCamera];
-  [v6 widthOfViewAtDepth:v5];
+  vkCamera2 = [(VKCameraController *)self vkCamera];
+  [vkCamera2 widthOfViewAtDepth:v5];
   v8 = v7;
 
   result = 0.0;
@@ -7651,12 +7651,12 @@ LABEL_3:
 
 - (double)maximumZoomLevel
 {
-  v3 = [(VKCameraController *)self vkCamera];
-  [v3 minHeight];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera minHeight];
   v5 = v4;
 
-  v6 = [(VKCameraController *)self vkCamera];
-  [v6 widthOfViewAtDepth:v5];
+  vkCamera2 = [(VKCameraController *)self vkCamera];
+  [vkCamera2 widthOfViewAtDepth:v5];
   v8 = v7;
 
   result = 0.0;
@@ -7671,12 +7671,12 @@ LABEL_3:
 
 - (double)minimumZoomLevel
 {
-  v3 = [(VKCameraController *)self vkCamera];
-  [v3 maxHeight];
+  vkCamera = [(VKCameraController *)self vkCamera];
+  [vkCamera maxHeight];
   v5 = v4;
 
-  v6 = [(VKCameraController *)self vkCamera];
-  [v6 widthOfViewAtDepth:v5];
+  vkCamera2 = [(VKCameraController *)self vkCamera];
+  [vkCamera2 widthOfViewAtDepth:v5];
   v8 = v7;
 
   result = 0.0;
@@ -7689,53 +7689,53 @@ LABEL_3:
   return result;
 }
 
-- (double)_normalizedZoomLevelForDisplayZoomLevel:(double)a3
+- (double)_normalizedZoomLevelForDisplayZoomLevel:(double)level
 {
-  v5 = [(VKCameraController *)self canvas];
-  [v5 size];
+  canvas = [(VKCameraController *)self canvas];
+  [canvas size];
   v7 = v6;
 
   v8 = 0.0;
   if (v7 > 0.0)
   {
-    v9 = [(VKCameraController *)self canvas];
-    [v9 size];
+    canvas2 = [(VKCameraController *)self canvas];
+    [canvas2 size];
     v11 = v10;
     WeakRetained = objc_loadWeakRetained(&self->_screenCanvas);
     v8 = log2(v11 / [WeakRetained tileSize]);
   }
 
-  return v8 + a3;
+  return v8 + level;
 }
 
-- (void)setNavContext:(id)a3
+- (void)setNavContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   navContext = self->_navContext;
-  v7 = v5;
-  if (navContext != v5)
+  v7 = contextCopy;
+  if (navContext != contextCopy)
   {
     [(VKNavContext *)navContext removeObserver:self];
-    objc_storeStrong(&self->_navContext, a3);
+    objc_storeStrong(&self->_navContext, context);
     [(VKNavContext *)self->_navContext addObserver:self];
     [(VKNavCameraController *)self navContextStateDidChange:v7];
   }
 }
 
-- (void)animateSelectiveReframingCameraWithDuration:(float)a3 fromFrame:(const void *)a4 completionHandler:(id)a5
+- (void)animateSelectiveReframingCameraWithDuration:(float)duration fromFrame:(const void *)frame completionHandler:(id)handler
 {
   v25[11] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  handlerCopy = handler;
   [(VKNavCameraController *)self stopSnappingAnimations];
-  v9 = [[VKTimedAnimation alloc] initWithDuration:a3];
+  v9 = [[VKTimedAnimation alloc] initWithDuration:duration];
   selectiveFramingAnimation = self->_selectiveFramingAnimation;
   self->_selectiveFramingAnimation = v9;
 
   [(VKTimedAnimation *)self->_selectiveFramingAnimation setTimingFunction:VKAnimationCurveEaseInOut];
-  v12 = *(a4 + 1);
-  v11 = *(a4 + 2);
-  v13 = *a4;
-  self->_transitionFrame._roll._value = *(a4 + 6);
+  v12 = *(frame + 1);
+  v11 = *(frame + 2);
+  v13 = *frame;
+  self->_transitionFrame._roll._value = *(frame + 6);
   *&self->_transitionFrame._target.altitude._value = v12;
   *&self->_transitionFrame._pitch._value = v11;
   *&self->_transitionFrame._target.latitude._value = v13;
@@ -7766,14 +7766,14 @@ LABEL_3:
   v18[2] = __97__VKNavCameraController_animateSelectiveReframingCameraWithDuration_fromFrame_completionHandler___block_invoke_2;
   v18[3] = &unk_1E7B3DE58;
   objc_copyWeak(&v20, &location);
-  v14 = v8;
+  v14 = handlerCopy;
   v19 = v14;
   [(VKAnimation *)self->_selectiveFramingAnimation setCompletionHandler:v18];
-  v15 = [(VKCameraController *)self cameraDelegate];
-  v16 = v15;
-  if (v15)
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  v16 = cameraDelegate;
+  if (cameraDelegate)
   {
-    [v15 willBeginRegionChangeAccess:1];
+    [cameraDelegate willBeginRegionChangeAccess:1];
   }
 
   else
@@ -7782,8 +7782,8 @@ LABEL_3:
   }
 
   md::AnimationRunner::runAnimation([(VKCameraController *)self animationRunner], &self->_selectiveFramingAnimation->super);
-  v17 = [(VKCameraController *)self cameraDelegate];
-  [v17 didEndRegionChangeAccess:v25];
+  cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate2 didEndRegionChangeAccess:v25];
 
   gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(v25);
   objc_destroyWeak(&v20);
@@ -7868,13 +7868,13 @@ void __97__VKNavCameraController_animateSelectiveReframingCameraWithDuration_fro
   }
 }
 
-- (void)returnToTrackingWithDelay:(double)a3 resetZoom:(BOOL)a4
+- (void)returnToTrackingWithDelay:(double)delay resetZoom:(BOOL)zoom
 {
-  v4 = a4;
+  zoomCopy = zoom;
   v48 = *MEMORY[0x1E69E9840];
   if (![(VKAnimation *)self->_transitionAnimation running])
   {
-    if (self->_isDetached || v4 && (([(VKNavCameraController *)self zoomScale], v25 = fabs(v24 + -1.0), v25 > fabs(v24 + 1.0) * 2.22044605e-14) ? (v26 = v25 < 2.22507386e-308) : (v26 = 1), !v26))
+    if (self->_isDetached || zoomCopy && (([(VKNavCameraController *)self zoomScale], v25 = fabs(v24 + -1.0), v25 > fabs(v24 + 1.0) * 2.22044605e-14) ? (v26 = v25 < 2.22507386e-308) : (v26 = 1), !v26))
     {
       [(VKNavCameraController *)self stopSnappingAnimations];
       v7 = [[VKTimedAnimation alloc] initWithDuration:1.0];
@@ -7896,8 +7896,8 @@ void __97__VKNavCameraController_animateSelectiveReframingCameraWithDuration_fro
       self->_transitionFrame._pitch._value = v14;
       self->_transitionFrame._heading._value = v13;
       self->_transitionFrame._roll._value = v15;
-      v16 = [(VKNavCameraController *)self _canZoomIn];
-      v17 = [(VKNavCameraController *)self _canZoomOut];
+      _canZoomIn = [(VKNavCameraController *)self _canZoomIn];
+      _canZoomOut = [(VKNavCameraController *)self _canZoomOut];
       objc_initWeak(&location, self);
       [(VKNavCameraController *)self zoomScale];
       v19 = v18;
@@ -7912,7 +7912,7 @@ void __97__VKNavCameraController_animateSelectiveReframingCameraWithDuration_fro
       v44[4] = *&v12;
       v44[5] = *&v14;
       v44[6] = *&v13;
-      v45 = v4;
+      v45 = zoomCopy;
       v44[7] = *&v15;
       v44[8] = v19;
       [(VKTimedAnimation *)self->_transitionAnimation setStepHandler:v43];
@@ -7921,8 +7921,8 @@ void __97__VKNavCameraController_animateSelectiveReframingCameraWithDuration_fro
       v39[2] = __61__VKNavCameraController_returnToTrackingWithDelay_resetZoom___block_invoke_34;
       v39[3] = &unk_1E7B3C6E8;
       objc_copyWeak(&v40, &location);
-      v41 = v16;
-      v42 = v17;
+      v41 = _canZoomIn;
+      v42 = _canZoomOut;
       [(VKAnimation *)self->_transitionAnimation setCompletionHandler:v39];
       if (v35 <= 0.0)
       {
@@ -7940,11 +7940,11 @@ void __97__VKNavCameraController_animateSelectiveReframingCameraWithDuration_fro
 
         [(VKNavCameraController *)self _setDetached:0];
         [(VKNavCameraController *)self _setNavCameraTransitionComplete:0];
-        v28 = [(VKCameraController *)self cameraDelegate];
-        v29 = v28;
-        if (v28)
+        cameraDelegate = [(VKCameraController *)self cameraDelegate];
+        v29 = cameraDelegate;
+        if (cameraDelegate)
         {
-          [v28 willBeginRegionChangeAccess:1];
+          [cameraDelegate willBeginRegionChangeAccess:1];
         }
 
         else
@@ -7953,12 +7953,12 @@ void __97__VKNavCameraController_animateSelectiveReframingCameraWithDuration_fro
         }
 
         md::AnimationRunner::runAnimation([(VKCameraController *)self animationRunner], &self->_transitionAnimation->super);
-        v30 = [(VKCameraController *)self cameraDelegate];
-        [v30 didEndRegionChangeAccess:buf];
+        cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+        [cameraDelegate2 didEndRegionChangeAccess:buf];
 
-        v31 = [(VKCameraController *)self runLoopController];
-        v31->var1 = [(VKCameraController *)self maxDisplayRate];
-        md::RunLoopController::_updateDisplayRate(v31, v32, v33, v34);
+        runLoopController = [(VKCameraController *)self runLoopController];
+        runLoopController->var1 = [(VKCameraController *)self maxDisplayRate];
+        md::RunLoopController::_updateDisplayRate(runLoopController, v32, v33, v34);
         [(VKNavCameraController *)self stopIgnoreStyleChange];
         gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(buf);
       }
@@ -7973,7 +7973,7 @@ void __97__VKNavCameraController_animateSelectiveReframingCameraWithDuration_fro
         block[2] = __61__VKNavCameraController_returnToTrackingWithDelay_resetZoom___block_invoke_35;
         block[3] = &unk_1E7B3F110;
         v37 = v20;
-        v38 = self;
+        selfCopy = self;
         v23 = v20;
         dispatch_after(v21, v22, block);
       }
@@ -8100,20 +8100,20 @@ void *__61__VKNavCameraController_returnToTrackingWithDelay_resetZoom___block_in
   return result;
 }
 
-- (void)animateCameraWithDuration:(float)a3 fromFrame:(const void *)a4 completionHandler:(id)a5
+- (void)animateCameraWithDuration:(float)duration fromFrame:(const void *)frame completionHandler:(id)handler
 {
   v30[11] = *MEMORY[0x1E69E9840];
-  v8 = a5;
+  handlerCopy = handler;
   [(VKNavCameraController *)self stopSnappingAnimations];
-  v9 = [[VKTimedAnimation alloc] initWithDuration:a3];
+  v9 = [[VKTimedAnimation alloc] initWithDuration:duration];
   transitionAnimation = self->_transitionAnimation;
   self->_transitionAnimation = v9;
 
   [(VKTimedAnimation *)self->_transitionAnimation setTimingFunction:VKAnimationCurveEaseInOut];
-  v12 = *(a4 + 1);
-  v11 = *(a4 + 2);
-  v13 = *a4;
-  self->_transitionFrame._roll._value = *(a4 + 6);
+  v12 = *(frame + 1);
+  v11 = *(frame + 2);
+  v13 = *frame;
+  self->_transitionFrame._roll._value = *(frame + 6);
   *&self->_transitionFrame._target.altitude._value = v12;
   *&self->_transitionFrame._pitch._value = v11;
   *&self->_transitionFrame._target.latitude._value = v13;
@@ -8145,16 +8145,16 @@ void *__61__VKNavCameraController_returnToTrackingWithDelay_resetZoom___block_in
   v23[2] = __79__VKNavCameraController_animateCameraWithDuration_fromFrame_completionHandler___block_invoke_2;
   v23[3] = &unk_1E7B3DE58;
   objc_copyWeak(&v25, &location);
-  v15 = v8;
+  v15 = handlerCopy;
   v24 = v15;
   [(VKAnimation *)self->_transitionAnimation setCompletionHandler:v23];
   [(VKNavCameraController *)self _setDetached:0];
   [(VKNavCameraController *)self _setNavCameraTransitionComplete:!self->_didNavCameraTransition];
-  v16 = [(VKCameraController *)self cameraDelegate];
-  v17 = v16;
-  if (v16)
+  cameraDelegate = [(VKCameraController *)self cameraDelegate];
+  v17 = cameraDelegate;
+  if (cameraDelegate)
   {
-    [v16 willBeginRegionChangeAccess:1];
+    [cameraDelegate willBeginRegionChangeAccess:1];
   }
 
   else
@@ -8163,12 +8163,12 @@ void *__61__VKNavCameraController_returnToTrackingWithDelay_resetZoom___block_in
   }
 
   md::AnimationRunner::runAnimation([(VKCameraController *)self animationRunner], &self->_transitionAnimation->super);
-  v18 = [(VKCameraController *)self cameraDelegate];
-  [v18 didEndRegionChangeAccess:v30];
+  cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+  [cameraDelegate2 didEndRegionChangeAccess:v30];
 
-  v19 = [(VKCameraController *)self runLoopController];
-  v19->var1 = [(VKCameraController *)self maxDisplayRate];
-  md::RunLoopController::_updateDisplayRate(v19, v20, v21, v22);
+  runLoopController = [(VKCameraController *)self runLoopController];
+  runLoopController->var1 = [(VKCameraController *)self maxDisplayRate];
+  md::RunLoopController::_updateDisplayRate(runLoopController, v20, v21, v22);
   gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(v30);
 
   objc_destroyWeak(&v25);
@@ -8335,14 +8335,14 @@ void __79__VKNavCameraController_animateCameraWithDuration_fromFrame_completionH
   return result;
 }
 
-- (void)_convertCameraOrigin:()Matrix<double andForward:()3 toDistance:(1>)a3 andTarget:()Matrix<double
+- (void)_convertCameraOrigin:()Matrix<double andForward:()3 toDistance:(1>)distance andTarget:()Matrix<double
 {
   value = self->_puckCoordinate.altitude._value;
   v23[0] = 0;
   v23[1] = 0;
   v23[2] = 0x3FF0000000000000;
   *&v23[3] = value * -0.0000000249532021;
-  v22[0] = a3;
+  v22[0] = distance;
   v22[1] = a4;
   v21 = 0.0;
   if (gm::Plane3<double>::intersect(v23, v22, &v21))
@@ -8385,10 +8385,10 @@ void __79__VKNavCameraController_animateCameraWithDuration_fromFrame_completionH
   }
 }
 
-- (void)_updateSprings:(double)a3
+- (void)_updateSprings:(double)springs
 {
   previousUpdateTime = self->_previousUpdateTime;
-  v5 = fmax(previousUpdateTime, a3) - previousUpdateTime;
+  v5 = fmax(previousUpdateTime, springs) - previousUpdateTime;
   if (previousUpdateTime >= 0.0 && v5 <= 1.0)
   {
     v73 = v5;
@@ -8756,12 +8756,12 @@ void __79__VKNavCameraController_animateCameraWithDuration_fromFrame_completionH
   return result;
 }
 
-- (Matrix<double,)_calculateMovementVector:(const void *)a3 fromFrame:(const void *)a4
+- (Matrix<double,)_calculateMovementVector:(const void *)vector fromFrame:(const void *)frame
 {
   v6 = [(VKCameraController *)self mapDataAccess:md::MapDataAccess::groundCoordinateForScreenPoint(v11];
-  gdc::ViewDataAccess::screenPointForCoordinate(v6[2], v11, a4);
-  v8 = *a3 - v7;
-  v10 = *(a3 + 1) - v9;
+  gdc::ViewDataAccess::screenPointForCoordinate(v6[2], v11, frame);
+  v8 = *vector - v7;
+  v10 = *(vector + 1) - v9;
   result._e[1] = v10;
   result._e[0] = v8;
   return result;
@@ -8769,17 +8769,17 @@ void __79__VKNavCameraController_animateCameraWithDuration_fromFrame_completionH
 
 - (double)_calculateTargetPointChange
 {
-  v2 = self;
+  selfCopy = self;
   p_cameraFrame = &self->_cameraFrame;
   gdc::ViewDataAccess::screenPointForCoordinate(*([(VKCameraController *)self mapDataAccess]+ 16), p_cameraFrame, p_cameraFrame);
   v5 = v4;
   v7 = v6;
-  v8 = [(VKCameraController *)v2 mapDataAccess];
-  v2 = (v2 + 1416);
-  gdc::ViewDataAccess::screenPointForCoordinate(*(v8 + 16), v2, p_cameraFrame);
+  mapDataAccess = [(VKCameraController *)selfCopy mapDataAccess];
+  selfCopy = (selfCopy + 1416);
+  gdc::ViewDataAccess::screenPointForCoordinate(*(mapDataAccess + 16), selfCopy, p_cameraFrame);
   v9 = p_cameraFrame[2];
-  *&v2->super.super.isa = *p_cameraFrame;
-  v2->super._camera.__ptr_ = v9;
+  *&selfCopy->super.super.isa = *p_cameraFrame;
+  selfCopy->super._camera.__ptr_ = v9;
   return sqrt((v10 - v5) * (v10 - v5) + (v11 - v7) * (v11 - v7));
 }
 
@@ -8829,13 +8829,13 @@ void __79__VKNavCameraController_animateCameraWithDuration_fromFrame_completionH
   return v6;
 }
 
-- (void)_endUpdateWithTimestamp:(double)a3 frameStamp:(unint64_t)a4
+- (void)_endUpdateWithTimestamp:(double)timestamp frameStamp:(unint64_t)stamp
 {
   v23 = *MEMORY[0x1E69E9840];
-  v7 = [(VKNavCameraController *)self displayRate];
-  if (v7 != self->_requestedDisplayRate)
+  displayRate = [(VKNavCameraController *)self displayRate];
+  if (displayRate != self->_requestedDisplayRate)
   {
-    self->_requestedDisplayRate = v7;
+    self->_requestedDisplayRate = displayRate;
     if (GEOGetVectorKitVKNavCameraLog_onceToken != -1)
     {
       dispatch_once(&GEOGetVectorKitVKNavCameraLog_onceToken, &__block_literal_global_45);
@@ -8851,16 +8851,16 @@ void __79__VKNavCameraController_animateCameraWithDuration_fromFrame_completionH
     }
   }
 
-  v10 = [(VKCameraController *)self runLoopController];
-  v10->var1 = self->_requestedDisplayRate;
-  md::RunLoopController::_updateDisplayRate(v10, v11, v12, v13);
+  runLoopController = [(VKCameraController *)self runLoopController];
+  runLoopController->var1 = self->_requestedDisplayRate;
+  md::RunLoopController::_updateDisplayRate(runLoopController, v11, v12, v13);
   [(VKCameraController *)self edgeInsets];
   self->_previousMapEdgeInsets.top = v14;
   self->_previousMapEdgeInsets.left = v15;
   self->_previousMapEdgeInsets.bottom = v16;
   self->_previousMapEdgeInsets.right = v17;
-  self->_previousUpdateTime = a3;
-  self->_previousUpdateFrameStamp = a4;
+  self->_previousUpdateTime = timestamp;
+  self->_previousUpdateFrameStamp = stamp;
   v19 = *&self->_cameraFrame._target.altitude._value;
   v18 = *&self->_cameraFrame._pitch._value;
   v20 = *&self->_cameraFrame._target.latitude._value;
@@ -8870,7 +8870,7 @@ void __79__VKNavCameraController_animateCameraWithDuration_fromFrame_completionH
   *&self->_previousCameraFrame._pitch._value = v18;
 }
 
-- (void)updateWithTimestamp:(double)a3 withContext:(void *)a4
+- (void)updateWithTimestamp:(double)timestamp withContext:(void *)context
 {
   v50[11] = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_screenCanvas);
@@ -8901,20 +8901,20 @@ void __79__VKNavCameraController_animateCameraWithDuration_fromFrame_completionH
   [(VKNavCameraController *)self _updateStyles];
   [(VKNavCameraController *)self _updateZoomScaleLimts];
   [(VKNavCameraController *)self _updateNavCameraState];
-  v10 = md::LayoutContext::get<md::ElevationContext>(*(a4 + 1));
+  v10 = md::LayoutContext::get<md::ElevationContext>(*(context + 1));
   if (v10)
   {
     self->_isElevatedRoute = *v10;
   }
 
-  [(VKNavCameraController *)self _updateSprings:a3];
+  [(VKNavCameraController *)self _updateSprings:timestamp];
   if (self->_needsUpdate || self->_isDetached || [(VKCameraController *)self edgeInsetsAnimating]|| [(VKNavCameraController *)self _hasRunningAnimation])
   {
-    v11 = [(VKCameraController *)self cameraDelegate];
-    v12 = v11;
-    if (v11)
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    v12 = cameraDelegate;
+    if (cameraDelegate)
     {
-      [v11 willBeginRegionChangeAccess:0];
+      [cameraDelegate willBeginRegionChangeAccess:0];
     }
 
     else
@@ -8923,7 +8923,7 @@ void __79__VKNavCameraController_animateCameraWithDuration_fromFrame_completionH
     }
 
     v13 = objc_loadWeakRetained(&self->_gestureBehavior);
-    [v13 updateWithTimestamp:a4 withContext:a3];
+    [v13 updateWithTimestamp:context withContext:timestamp];
 
     v46 = vdupq_n_s64(0xC00921FB54442D18);
     v47 = 0u;
@@ -9029,20 +9029,20 @@ void __79__VKNavCameraController_animateCameraWithDuration_fromFrame_completionH
       std::__shared_weak_count::__release_shared[abi:nn200100](v41);
     }
 
-    v27 = [(VKCameraController *)self vkCamera];
-    [v27 setPosition:v42];
+    vkCamera = [(VKCameraController *)self vkCamera];
+    [vkCamera setPosition:v42];
 
-    v28 = [(VKCameraController *)self vkCamera];
-    [v28 setOrientation:&v43 + 8];
+    vkCamera2 = [(VKCameraController *)self vkCamera];
+    [vkCamera2 setOrientation:&v43 + 8];
 
     [(VKNavCameraController *)self _updateClipPlanes];
     [(VKNavCameraController *)self _updateDebugOverlay];
     [(VKNavCameraController *)self _updateDebugText];
-    v29 = [(VKCameraController *)self cameraDelegate];
-    [v29 mapLayerDidChangeVisibleRegion];
+    cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate2 mapLayerDidChangeVisibleRegion];
 
-    v30 = [(VKCameraController *)self cameraDelegate];
-    [v30 didEndRegionChangeAccess:v50];
+    cameraDelegate3 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate3 didEndRegionChangeAccess:v50];
 
     v31 = v47;
     *&self->_cameraFrame._target.latitude._value = v46;
@@ -9051,7 +9051,7 @@ void __79__VKNavCameraController_animateCameraWithDuration_fromFrame_completionH
     self->_cameraFrame._roll._value = value;
     if ([(VKNavCameraController *)self _isDynamicFrameRateActive])
     {
-      [(VKNavCameraController *)self _recordTrackingSpeedAtTimestamp:a3];
+      [(VKNavCameraController *)self _recordTrackingSpeedAtTimestamp:timestamp];
     }
 
     if ([(VKNavCameraController *)self _springsNeedUpdate])
@@ -9064,23 +9064,23 @@ void __79__VKNavCameraController_animateCameraWithDuration_fromFrame_completionH
       self->_needsUpdate = 0;
     }
 
-    md::LayoutContext::frameState(a4);
-    [(VKNavCameraController *)self _endUpdateWithTimestamp:*(v32 + 96) frameStamp:a3];
+    md::LayoutContext::frameState(context);
+    [(VKNavCameraController *)self _endUpdateWithTimestamp:*(v32 + 96) frameStamp:timestamp];
     gdc::ReferenceCountedAccess<md::VKCameraRegionChange>::~ReferenceCountedAccess(v50);
   }
 
   else
   {
-    md::LayoutContext::frameState(a4);
+    md::LayoutContext::frameState(context);
     v36 = *(v35 + 96);
 
-    [(VKNavCameraController *)self _endUpdateWithTimestamp:v36 frameStamp:a3];
+    [(VKNavCameraController *)self _endUpdateWithTimestamp:v36 frameStamp:timestamp];
   }
 }
 
-- (void)_recordTrackingSpeedAtTimestamp:(double)a3
+- (void)_recordTrackingSpeedAtTimestamp:(double)timestamp
 {
-  v4 = fmax(self->_previousUpdateTime, a3) - self->_previousUpdateTime;
+  v4 = fmax(self->_previousUpdateTime, timestamp) - self->_previousUpdateTime;
   if (v4 <= 0.0)
   {
     v5 = 0.0;
@@ -9177,38 +9177,38 @@ LABEL_15:
   self->_cameraOriginSpring._velocity._e[0] = 0.0;
 }
 
-- (void)projectCoordinate:(id)a3 toPoint:(CGPoint *)a4
+- (void)projectCoordinate:(id)coordinate toPoint:(CGPoint *)point
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   WeakRetained = objc_loadWeakRetained(&self->_screenCanvas);
   [WeakRetained convertCoordinateToPoint:{var0, var1}];
-  a4->x = v7;
-  a4->y = v8;
+  point->x = v7;
+  point->y = v8;
 }
 
-- (void)updateLocation:(const void *)a3 andCourse:(const void *)a4
+- (void)updateLocation:(const void *)location andCourse:(const void *)course
 {
   p_puckCoordinate = &self->_puckCoordinate;
-  if (*a3 != self->_puckCoordinate.latitude._value || *(a3 + 1) != self->_puckCoordinate.longitude._value || *(a3 + 2) != self->_puckCoordinate.altitude._value || self->_routeCoordinate.offset < 0.0 && ([(VKNavContext *)self->_navContext routeMatch], v49 = objc_claimAutoreleasedReturnValue(), v49, v49))
+  if (*location != self->_puckCoordinate.latitude._value || *(location + 1) != self->_puckCoordinate.longitude._value || *(location + 2) != self->_puckCoordinate.altitude._value || self->_routeCoordinate.offset < 0.0 && ([(VKNavContext *)self->_navContext routeMatch], v49 = objc_claimAutoreleasedReturnValue(), v49, v49))
   {
-    v8 = *a3;
-    p_puckCoordinate->altitude._value = *(a3 + 2);
+    v8 = *location;
+    p_puckCoordinate->altitude._value = *(location + 2);
     *&p_puckCoordinate->latitude._value = v8;
-    v9 = [(VKNavContext *)self->_navContext routeMatch];
+    routeMatch = [(VKNavContext *)self->_navContext routeMatch];
 
-    if (v9)
+    if (routeMatch)
     {
       v54 = *&p_puckCoordinate->latitude._value;
-      v10 = [(VKNavContext *)self->_navContext route];
-      v11 = [(VKNavContext *)self->_navContext routeMatch];
-      v12 = [v11 routeCoordinate];
+      route = [(VKNavContext *)self->_navContext route];
+      routeMatch2 = [(VKNavContext *)self->_navContext routeMatch];
+      routeCoordinate = [routeMatch2 routeCoordinate];
 
-      v13 = [v10 routeCoordinateForDistance:v12 beforeRouteCoordinate:50.0];
-      v14 = [v10 routeCoordinateForDistance:v12 afterRouteCoordinate:50.0];
+      v13 = [route routeCoordinateForDistance:routeCoordinate beforeRouteCoordinate:50.0];
+      v14 = [route routeCoordinateForDistance:routeCoordinate afterRouteCoordinate:50.0];
       v15 = [MEMORY[0x1E69A23A0] iteratorWithRange:{v13, v14}];
       [v15 advance];
-      [v10 pointAtRouteCoordinate:{objc_msgSend(v15, "previous")}];
+      [route pointAtRouteCoordinate:{objc_msgSend(v15, "previous")}];
       v16 = vmulq_f64(v54, vdupq_n_s64(0x404CA5DC1A63C1F8uLL));
       v18.f64[0] = v17;
       v18.f64[1] = v19;
@@ -9219,7 +9219,7 @@ LABEL_15:
       v22 = MEMORY[0x1E69A1918];
       while ([v15 isCurrentValid])
       {
-        [v10 pointAtRouteCoordinate:{objc_msgSend(v15, "current")}];
+        [route pointAtRouteCoordinate:{objc_msgSend(v15, "current")}];
         v24.f64[1] = v23;
         v51 = v24;
         v52 = vsubq_f64(v24, v55);
@@ -9231,12 +9231,12 @@ LABEL_15:
           v53 = fmin(fmax(vdivq_f64(vaddq_f64(vdupq_laneq_s64(v26, 1), v26), vaddq_f64(vdupq_laneq_s64(v25, 1), v25)).f64[0], 0.0), 1.0);
         }
 
-        v27 = [v15 currentSegmentRange];
-        if (v28 == v27 || v28 - 1 == v27 && fabsf(v29) <= 0.01)
+        currentSegmentRange = [v15 currentSegmentRange];
+        if (v28 == currentSegmentRange || v28 - 1 == currentSegmentRange && fabsf(v29) <= 0.01)
         {
           v30 = v53;
-          v31 = *(&v27 + 1) + (((v29 + (v28 - v27)) - *(&v27 + 1)) * v30);
-          v32 = vcvtms_u32_f32(v31) + v27;
+          v31 = *(&currentSegmentRange + 1) + (((v29 + (v28 - currentSegmentRange)) - *(&currentSegmentRange + 1)) * v30);
+          v32 = vcvtms_u32_f32(v31) + currentSegmentRange;
           v33 = v31 - floorf(v31);
           if (v31 >= 1.0)
           {
@@ -9245,7 +9245,7 @@ LABEL_15:
 
           else
           {
-            v32 = v27;
+            v32 = currentSegmentRange;
           }
         }
 
@@ -9262,7 +9262,7 @@ LABEL_15:
         }
 
         v34 = v32 | (LODWORD(v31) << 32);
-        [v10 distanceBetweenRouteCoordinate:v12 andRouteCoordinate:v34];
+        [route distanceBetweenRouteCoordinate:routeCoordinate andRouteCoordinate:v34];
         v35 = vsubq_f64(v50, vmlaq_n_f64(v55, v52, v53));
         v37 = vaddvq_f64(vmulq_f64(v35, v35)) + v20 * fabs(v36);
         if (v37 < v21)
@@ -9275,8 +9275,8 @@ LABEL_15:
         v55 = v51;
       }
 
-      v38 = [(VKNavContext *)self->_navContext route];
-      [v38 pointWithAltitudeCorrectionAtRouteCoordinate:*&self->_routeCoordinate];
+      route2 = [(VKNavContext *)self->_navContext route];
+      [route2 pointWithAltitudeCorrectionAtRouteCoordinate:*&self->_routeCoordinate];
       v40 = v39;
       v42 = v41;
       v44 = v43;
@@ -9300,7 +9300,7 @@ LABEL_15:
     [(VKNavCameraController *)self _setNeedsUpdate];
   }
 
-  v47 = fmod(-*a4, 6.28318531);
+  v47 = fmod(-*course, 6.28318531);
   v48 = fmod(v47 + 6.28318531, 6.28318531);
   if (self->_puckCourse._value != v48)
   {
@@ -9309,13 +9309,13 @@ LABEL_15:
   }
 }
 
-- (optional<double>)puckAnimator:(id)a3 getElevationWithCoordinate:(const void *)a4
+- (optional<double>)puckAnimator:(id)animator getElevationWithCoordinate:(const void *)coordinate
 {
-  v6 = [(VKCameraController *)self mapDataAccess];
-  if (v6)
+  mapDataAccess = [(VKCameraController *)self mapDataAccess];
+  if (mapDataAccess)
   {
-    v7 = md::MapDataAccess::heightAtCoordinate([(VKCameraController *)self mapDataAccess], a4);
-    v6 = (v7 & (v8 << 55 >> 63));
+    v7 = md::MapDataAccess::heightAtCoordinate([(VKCameraController *)self mapDataAccess], coordinate);
+    mapDataAccess = (v7 & (v8 << 55 >> 63));
     v9 = 1;
   }
 
@@ -9325,32 +9325,32 @@ LABEL_15:
   }
 
   result.__engaged_ = v9;
-  result.var0 = v6;
+  result.var0 = mapDataAccess;
   return result;
 }
 
-- (void)puckAnimator:(id)a3 updatedPosition:(const void *)a4 course:(const void *)a5 polylineCoordinate:(PolylineCoordinate)a6
+- (void)puckAnimator:(id)animator updatedPosition:(const void *)position course:(const void *)course polylineCoordinate:(PolylineCoordinate)coordinate
 {
-  v12 = a3;
-  [(VKNavCameraController *)self updateLocation:a4 andCourse:a5];
-  [v12 lastProjectedPosition];
+  animatorCopy = animator;
+  [(VKNavCameraController *)self updateLocation:position andCourse:course];
+  [animatorCopy lastProjectedPosition];
   self->_lastProjectedPosition._e[0] = v9;
   self->_lastProjectedPosition._e[1] = v10;
   self->_lastProjectedPosition._e[2] = v11;
 }
 
-- (void)puckAnimator:(id)a3 runAnimation:(id)a4
+- (void)puckAnimator:(id)animator runAnimation:(id)animation
 {
-  v5 = a4;
-  md::AnimationRunner::runAnimation([(VKCameraController *)self animationRunner], v5);
+  animationCopy = animation;
+  md::AnimationRunner::runAnimation([(VKCameraController *)self animationRunner], animationCopy);
 }
 
-- (void)stopPitchingWithFocusPoint:(CGPoint)a3
+- (void)stopPitchingWithFocusPoint:(CGPoint)point
 {
   if (self->_pitching)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     WeakRetained = objc_loadWeakRetained(&self->_gestureBehavior);
     [WeakRetained stopPitchingWithFocusPoint:{x, y}];
 
@@ -9370,38 +9370,38 @@ LABEL_15:
   }
 }
 
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 degrees:(double)a4
+- (void)updatePitchWithFocusPoint:(CGPoint)point degrees:(double)degrees
 {
   if (self->_pitching)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     WeakRetained = objc_loadWeakRetained(&self->_gestureBehavior);
-    [WeakRetained updatePitchWithFocusPoint:x degrees:{y, a4}];
+    [WeakRetained updatePitchWithFocusPoint:x degrees:{y, degrees}];
 
     [(VKNavCameraController *)self _setNeedsUpdate];
   }
 }
 
-- (void)updatePitchWithFocusPoint:(CGPoint)a3 translation:(double)a4
+- (void)updatePitchWithFocusPoint:(CGPoint)point translation:(double)translation
 {
   if (self->_pitching)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     WeakRetained = objc_loadWeakRetained(&self->_gestureBehavior);
-    [WeakRetained updatePitchWithFocusPoint:x translation:{y, a4}];
+    [WeakRetained updatePitchWithFocusPoint:x translation:{y, translation}];
 
     [(VKNavCameraController *)self _setNeedsUpdate];
   }
 }
 
-- (void)startPitchingWithFocusPoint:(CGPoint)a3
+- (void)startPitchingWithFocusPoint:(CGPoint)point
 {
   if (self->_enablePitch)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     [(VKNavCameraController *)self stopAnimations];
     self->_pitching = 1;
     [(VKNavCameraController *)self _setDetached:1];
@@ -9412,12 +9412,12 @@ LABEL_15:
   }
 }
 
-- (void)stopRotatingWithFocusPoint:(CGPoint)a3
+- (void)stopRotatingWithFocusPoint:(CGPoint)point
 {
   if (self->_rotating)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     WeakRetained = objc_loadWeakRetained(&self->_gestureBehavior);
     [WeakRetained stopRotatingWithFocusPoint:{x, y}];
 
@@ -9438,25 +9438,25 @@ LABEL_15:
   }
 }
 
-- (void)updateRotationWithFocusPoint:(CGPoint)a3 newValue:(double)a4
+- (void)updateRotationWithFocusPoint:(CGPoint)point newValue:(double)value
 {
   if (self->_rotating)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     WeakRetained = objc_loadWeakRetained(&self->_gestureBehavior);
-    [WeakRetained updateRotationWithFocusPoint:x newValue:{y, a4}];
+    [WeakRetained updateRotationWithFocusPoint:x newValue:{y, value}];
 
     [(VKNavCameraController *)self _setNeedsUpdate];
   }
 }
 
-- (void)startRotatingWithFocusPoint:(CGPoint)a3
+- (void)startRotatingWithFocusPoint:(CGPoint)point
 {
   if (self->_enableRotate)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     [(VKNavCameraController *)self stopAnimations];
     self->_rotating = 1;
     [(VKNavCameraController *)self _setDetached:1];
@@ -9467,12 +9467,12 @@ LABEL_15:
   }
 }
 
-- (void)stopPanningAtPoint:(CGPoint)a3
+- (void)stopPanningAtPoint:(CGPoint)point
 {
   if (self->_panning)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     WeakRetained = objc_loadWeakRetained(&self->_gestureBehavior);
     [WeakRetained stopPanningAtPoint:{x, y}];
 
@@ -9484,12 +9484,12 @@ LABEL_15:
   }
 }
 
-- (void)updatePanWithTranslation:(CGPoint)a3
+- (void)updatePanWithTranslation:(CGPoint)translation
 {
   if (self->_panning)
   {
-    y = a3.y;
-    x = a3.x;
+    y = translation.y;
+    x = translation.x;
     WeakRetained = objc_loadWeakRetained(&self->_gestureBehavior);
     [WeakRetained updatePanWithTranslation:{x, y}];
 
@@ -9497,46 +9497,46 @@ LABEL_15:
   }
 }
 
-- (void)startPanningAtPoint:(CGPoint)a3 panAtStartPoint:(BOOL)a4
+- (void)startPanningAtPoint:(CGPoint)point panAtStartPoint:(BOOL)startPoint
 {
   if (self->_enablePan)
   {
-    v4 = a4;
-    y = a3.y;
-    x = a3.x;
+    startPointCopy = startPoint;
+    y = point.y;
+    x = point.x;
     if (!self->_zooming || self->_panning)
     {
       [(VKNavCameraController *)self stopAnimations];
       self->_panning = 1;
       [(VKNavCameraController *)self _setDetached:1];
       WeakRetained = objc_loadWeakRetained(&self->_gestureBehavior);
-      [WeakRetained startPanningAtPoint:v4 panAtStartPoint:{x, y}];
+      [WeakRetained startPanningAtPoint:startPointCopy panAtStartPoint:{x, y}];
 
       [(VKNavCameraController *)self _setNeedsUpdate];
     }
   }
 }
 
-- (void)_updateObserverCouldZoomIn:(BOOL)a3 couldZoomOut:(BOOL)a4
+- (void)_updateObserverCouldZoomIn:(BOOL)in couldZoomOut:(BOOL)out
 {
-  v4 = a4;
-  v5 = a3;
-  v7 = [(VKNavCameraController *)self _canZoomIn];
-  v8 = [(VKNavCameraController *)self _canZoomOut];
+  outCopy = out;
+  inCopy = in;
+  _canZoomIn = [(VKNavCameraController *)self _canZoomIn];
+  _canZoomOut = [(VKNavCameraController *)self _canZoomOut];
   desiredZoomScale = self->_desiredZoomScale;
   v10 = fabs(desiredZoomScale + -1.0);
   v11 = v10 <= fabs(desiredZoomScale + 1.0) * 2.22044605e-14;
   v12 = v10 < 2.22507386e-308;
-  if (v7 != v5)
+  if (_canZoomIn != inCopy)
   {
-    v13 = [(VKCameraController *)self cameraDelegate];
-    [v13 mapLayerCanZoomInDidChange:v7];
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate mapLayerCanZoomInDidChange:_canZoomIn];
   }
 
-  if (v8 != v4)
+  if (_canZoomOut != outCopy)
   {
-    v14 = [(VKCameraController *)self cameraDelegate];
-    [v14 mapLayerCanZoomOutDidChange:v8];
+    cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate2 mapLayerCanZoomOutDidChange:_canZoomOut];
   }
 
   if (v11 || v12)
@@ -9546,8 +9546,8 @@ LABEL_15:
       return;
     }
 
-    v15 = [(VKCameraController *)self cameraDelegate];
-    [v15 mapLayerNavigationCameraDidReturnToDefaultZoom];
+    cameraDelegate3 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate3 mapLayerNavigationCameraDidReturnToDefaultZoom];
     v16 = 0;
   }
 
@@ -9558,21 +9558,21 @@ LABEL_15:
       return;
     }
 
-    v15 = [(VKCameraController *)self cameraDelegate];
-    [v15 mapLayerNavigationCameraDidLeaveDefaultZoom];
+    cameraDelegate3 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate3 mapLayerNavigationCameraDidLeaveDefaultZoom];
     v16 = 1;
   }
 
   self->_sentZoomNotification = v16;
 }
 
-- (void)setZoomScale:(double)a3
+- (void)setZoomScale:(double)scale
 {
-  if (self->_desiredZoomScale != a3)
+  if (self->_desiredZoomScale != scale)
   {
-    v5 = [(VKNavCameraController *)self _canZoomIn];
-    v6 = [(VKNavCameraController *)self _canZoomOut];
-    self->_desiredZoomScale = a3;
+    _canZoomIn = [(VKNavCameraController *)self _canZoomIn];
+    _canZoomOut = [(VKNavCameraController *)self _canZoomOut];
+    self->_desiredZoomScale = scale;
     GEOConfigGetDouble();
     v8 = fmin(fmax(v7, 10.0), 100000.0);
     if (self->_desiredZoomScale > v8)
@@ -9581,18 +9581,18 @@ LABEL_15:
       [(VKNavCameraController *)self _setDetached:1];
     }
 
-    [(VKNavCameraController *)self _updateObserverCouldZoomIn:v5 couldZoomOut:v6];
+    [(VKNavCameraController *)self _updateObserverCouldZoomIn:_canZoomIn couldZoomOut:_canZoomOut];
 
     [(VKNavCameraController *)self _setNeedsUpdate];
   }
 }
 
-- (void)stopPinchingWithFocusPoint:(CGPoint)a3
+- (void)stopPinchingWithFocusPoint:(CGPoint)point
 {
   if (self->_zooming)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     WeakRetained = objc_loadWeakRetained(&self->_gestureBehavior);
     [WeakRetained stopPinchingWithFocusPoint:{x, y}];
 
@@ -9614,25 +9614,25 @@ LABEL_15:
   }
 }
 
-- (void)updatePinchWithFocusPoint:(CGPoint)a3 oldFactor:(double)a4 newFactor:(double)a5
+- (void)updatePinchWithFocusPoint:(CGPoint)point oldFactor:(double)factor newFactor:(double)newFactor
 {
   if (self->_zooming)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     WeakRetained = objc_loadWeakRetained(&self->_gestureBehavior);
-    [WeakRetained updatePinchWithFocusPoint:x oldFactor:y newFactor:{a4, a5}];
+    [WeakRetained updatePinchWithFocusPoint:x oldFactor:y newFactor:{factor, newFactor}];
 
     [(VKNavCameraController *)self _setNeedsUpdate];
   }
 }
 
-- (void)startPinchingWithFocusPoint:(CGPoint)a3
+- (void)startPinchingWithFocusPoint:(CGPoint)point
 {
   if (self->_enableZoom)
   {
-    y = a3.y;
-    x = a3.x;
+    y = point.y;
+    x = point.x;
     [(VKNavCameraController *)self stopAnimations];
     self->_zooming = 1;
     WeakRetained = objc_loadWeakRetained(&self->_gestureBehavior);
@@ -9660,11 +9660,11 @@ LABEL_15:
   self->_isIgnoringStyleChange = 1;
 }
 
-- (void)zoom:(double)a3 withFocusPoint:(CGPoint)a4 completionHandler:(id)a5
+- (void)zoom:(double)zoom withFocusPoint:(CGPoint)point completionHandler:(id)handler
 {
-  y = a4.y;
-  x = a4.x;
-  v9 = a5;
+  y = point.y;
+  x = point.x;
+  handlerCopy = handler;
   if (self->_enableZoom)
   {
     self->_tapZooming = 1;
@@ -9675,8 +9675,8 @@ LABEL_15:
     v11[2] = __63__VKNavCameraController_zoom_withFocusPoint_completionHandler___block_invoke;
     v11[3] = &unk_1E7B3C688;
     v11[4] = self;
-    v12 = v9;
-    [WeakRetained zoom:v11 withFocusPoint:a3 completionHandler:{x, y}];
+    v12 = handlerCopy;
+    [WeakRetained zoom:v11 withFocusPoint:zoom completionHandler:{x, y}];
   }
 }
 
@@ -9707,36 +9707,36 @@ uint64_t __63__VKNavCameraController_zoom_withFocusPoint_completionHandler___blo
   return result;
 }
 
-- (void)_setDetached:(BOOL)a3
+- (void)_setDetached:(BOOL)detached
 {
-  if (self->_isDetached == a3)
+  if (self->_isDetached == detached)
   {
     obj = 0;
   }
 
   else
   {
-    self->_isDetached = a3;
-    if (a3)
+    self->_isDetached = detached;
+    if (detached)
     {
-      v4 = [(VKCameraController *)self cameraDelegate];
-      [v4 mapLayerNavigationCameraHasStartedPanning];
+      cameraDelegate = [(VKCameraController *)self cameraDelegate];
+      [cameraDelegate mapLayerNavigationCameraHasStartedPanning];
 
       [(VKNavCameraController *)self _setNavCameraIsDetached:1];
-      v5 = [(VKNavCameraController *)self _detachedGestureController];
+      _detachedGestureController = [(VKNavCameraController *)self _detachedGestureController];
     }
 
     else
     {
-      v6 = [(VKCameraController *)self cameraDelegate];
-      [v6 mapLayerNavigationCameraHasStoppedPanning];
+      cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+      [cameraDelegate2 mapLayerNavigationCameraHasStoppedPanning];
 
       [(VKNavCameraController *)self resetSpringsToResting];
       [(VKNavCameraController *)self _setNavCameraIsDetached:0];
-      v5 = self->_attachedGestureBehavior;
+      _detachedGestureController = self->_attachedGestureBehavior;
     }
 
-    obj = v5;
+    obj = _detachedGestureController;
     WeakRetained = objc_loadWeakRetained(&self->_gestureBehavior);
 
     if (obj != WeakRetained)
@@ -9777,13 +9777,13 @@ uint64_t __63__VKNavCameraController_zoom_withFocusPoint_completionHandler___blo
   return detachedGestureBehavior;
 }
 
-- (void)startWithPounce:(BOOL)a3 startLocation:(id)a4 startCourse:(double)a5 pounceCompletionHandler:(id)a6
+- (void)startWithPounce:(BOOL)pounce startLocation:(id)location startCourse:(double)course pounceCompletionHandler:(id)handler
 {
-  var0 = a4.var0;
-  var1 = a4.var1;
-  v7 = a3;
+  var0 = location.var0;
+  var1 = location.var1;
+  pounceCopy = pounce;
   v67 = *MEMORY[0x1E69E9840];
-  v9 = a6;
+  handlerCopy = handler;
   if (self->_isTracking)
   {
     if (GEOGetVectorKitVKNavCameraLog_onceToken != -1)
@@ -9798,9 +9798,9 @@ uint64_t __63__VKNavCameraController_zoom_withFocusPoint_completionHandler___blo
       _os_log_impl(&dword_1B2754000, v10, OS_LOG_TYPE_INFO, "Nav Camera Started With Pounce but is already tracking", buf, 2u);
     }
 
-    if (v9)
+    if (handlerCopy)
     {
-      v9[2](v9, 1);
+      handlerCopy[2](handlerCopy, 1);
     }
   }
 
@@ -9816,7 +9816,7 @@ uint64_t __63__VKNavCameraController_zoom_withFocusPoint_completionHandler___blo
     {
       v12 = "NO";
       *buf = 136315907;
-      if (v7)
+      if (pounceCopy)
       {
         v12 = "YES";
       }
@@ -9827,7 +9827,7 @@ uint64_t __63__VKNavCameraController_zoom_withFocusPoint_completionHandler___blo
       *&buf[22] = 2049;
       *&buf[24] = var1;
       *&buf[32] = 2048;
-      *&buf[34] = a5;
+      *&buf[34] = course;
       _os_log_impl(&dword_1B2754000, v11, OS_LOG_TYPE_INFO, "Nav Camera Started With Pounce:%s to lat:%{private}f lon:%{private}f with course:%f", buf, 0x2Au);
     }
 
@@ -9846,7 +9846,7 @@ uint64_t __63__VKNavCameraController_zoom_withFocusPoint_completionHandler___blo
       v17.f64[1] = var1;
       *buf = vmulq_f64(v17, vdupq_n_s64(0x3F91DF46A2529D39uLL));
       *&buf[16] = 0;
-      *&v64 = a5 * 0.0174532925;
+      *&v64 = course * 0.0174532925;
       [(VKNavCameraController *)self updateLocation:buf andCourse:&v64];
     }
 
@@ -9866,22 +9866,22 @@ uint64_t __63__VKNavCameraController_zoom_withFocusPoint_completionHandler___blo
       objc_storeWeak(&self->_gestureBehavior, self->_attachedGestureBehavior);
     }
 
-    v22 = [(VKCameraController *)self cameraDelegate];
-    [v22 mapLayerNavigationCameraHasStoppedPanning];
+    cameraDelegate = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate mapLayerNavigationCameraHasStoppedPanning];
 
     self->_desiredZoomScale = 1.0;
     self->_isTracking = 1;
     [(VKNavContext *)self->_navContext addObserver:self];
     [(VKNavCameraController *)self _updateSceneQuery];
     [(VKNavCameraController *)self _updateSceneStyles:0 updatePitchLimitOnly:0];
-    v23 = [(VKCameraController *)self cameraDelegate];
-    [v23 willBeginAnimatingAccess];
+    cameraDelegate2 = [(VKCameraController *)self cameraDelegate];
+    [cameraDelegate2 willBeginAnimatingAccess];
 
-    if (v7)
+    if (pounceCopy)
     {
       memset(&buf[24], 0, 32);
-      v24 = [(VKCameraController *)self vkCamera];
-      [v24 groundPlaneIntersectionPoint];
+      vkCamera = [(VKCameraController *)self vkCamera];
+      [vkCamera groundPlaneIntersectionPoint];
       v26 = v25;
       v28 = v27;
 
@@ -9892,20 +9892,20 @@ uint64_t __63__VKNavCameraController_zoom_withFocusPoint_completionHandler___blo
       *buf = v30;
       *&buf[8] = v32 + -3.14159265;
       *&buf[16] = 0;
-      v33 = [(VKCameraController *)self vkCamera];
-      [v33 pitch];
+      vkCamera2 = [(VKCameraController *)self vkCamera];
+      [vkCamera2 pitch];
       v35 = v34;
       *&buf[32] = v34;
 
-      v36 = [(VKCameraController *)self vkCamera];
-      [v36 yaw];
+      vkCamera3 = [(VKCameraController *)self vkCamera];
+      [vkCamera3 yaw];
       v38 = -v37;
       *&buf[40] = -v37;
 
-      v39 = [(VKCameraController *)self vkCamera];
-      v40 = *([v39 position] + 16);
-      v41 = [(VKCameraController *)self vkCamera];
-      [v41 pitch];
+      vkCamera4 = [(VKCameraController *)self vkCamera];
+      v40 = *([vkCamera4 position] + 16);
+      vkCamera5 = [(VKCameraController *)self vkCamera];
+      [vkCamera5 pitch];
       v43 = v40 * 40075017.0 / cos(v42);
       *&buf[24] = v43;
 
@@ -9973,7 +9973,7 @@ uint64_t __63__VKNavCameraController_zoom_withFocusPoint_completionHandler___blo
       *&self->_cameraFrame._pitch._value = *&buf[32];
       self->_cameraFrame._roll._value = *&buf[48];
       LODWORD(v54) = 1.5;
-      [(VKNavCameraController *)self animateCameraWithDuration:buf fromFrame:v9 completionHandler:v54];
+      [(VKNavCameraController *)self animateCameraWithDuration:buf fromFrame:handlerCopy completionHandler:v54];
     }
 
     else
@@ -10002,9 +10002,9 @@ uint64_t __63__VKNavCameraController_zoom_withFocusPoint_completionHandler___blo
       *&self->_lastCalculatedCameraFrame._target.altitude._value = v60;
       *&self->_lastCalculatedCameraFrame._pitch._value = v59;
       *&self->_lastCalculatedCameraFrame._target.latitude._value = v61;
-      if (v9)
+      if (handlerCopy)
       {
-        v9[2](v9, 1);
+        handlerCopy[2](handlerCopy, 1);
       }
     }
 
@@ -10012,22 +10012,22 @@ uint64_t __63__VKNavCameraController_zoom_withFocusPoint_completionHandler___blo
   }
 }
 
-- (void)updatePuckOffset:(BOOL)a3
+- (void)updatePuckOffset:(BOOL)offset
 {
-  v3 = a3;
+  offsetCopy = offset;
   v65 = *MEMORY[0x1E69E9840];
   WeakRetained = objc_loadWeakRetained(&self->_screenCanvas);
-  v6 = [WeakRetained mapEngine];
+  mapEngine = [WeakRetained mapEngine];
 
-  if (v6)
+  if (mapEngine)
   {
-    v7 = *(v6 + 41928);
+    v7 = *(mapEngine + 41928);
     if (v7)
     {
       v8 = std::unordered_map<gdc::TypeInfo,std::unique_ptr<gdc::BaseObjectHolder>>::find[abi:nn200100]((v7 + 16), 0x7173CF8D2BE8FE53uLL);
       if (v8 && (v9 = v8[5]) != 0)
       {
-        if (v3)
+        if (offsetCopy)
         {
           if (GEOGetVectorKitVKNavCameraLog_onceToken != -1)
           {
@@ -10296,8 +10296,8 @@ LABEL_35:
   self->_selectiveFramingAnimation = 0;
 
   objc_storeWeak(&self->_sceneConfiguration, 0);
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v13.receiver = self;
   v13.super_class = VKNavCameraController;
@@ -10321,27 +10321,27 @@ LABEL_35:
   }
 }
 
-- (void)HandleFrequencyReset:(id)a3
+- (void)HandleFrequencyReset:(id)reset
 {
   if ([(VKCameraController *)self runLoopController])
   {
-    v4 = [(VKCameraController *)self runLoopController];
-    if (v4->var0)
+    runLoopController = [(VKCameraController *)self runLoopController];
+    if (runLoopController->var0)
     {
-      *(v4->var0 + 5264) = 0;
+      *(runLoopController->var0 + 5264) = 0;
     }
   }
 }
 
-- (VKNavCameraController)initWithTaskContext:(shared_ptr<md:(void *)a4 :(void *)a5 TaskContext>)a3 device:(AnimationRunner *)a6 mapDataAccess:(RunLoopController *)a7 animationRunner:(id)a8 runLoopController:cameraDelegate:
+- (VKNavCameraController)initWithTaskContext:(shared_ptr<md:(void *)context :(void *)a5 TaskContext>)a3 device:(AnimationRunner *)device mapDataAccess:(RunLoopController *)access animationRunner:(id)runner runLoopController:cameraDelegate:
 {
   cntrl = a3.__cntrl_;
   ptr = a3.__ptr_;
   v27 = *MEMORY[0x1E69E9840];
   v24.receiver = self;
   v24.super_class = VKNavCameraController;
-  v22 = a7;
-  v13 = [(VKCameraController *)&v24 initWithMapDataAccess:a4 animationRunner:a5 runLoopController:a6 cameraDelegate:?];
+  accessCopy = access;
+  v13 = [(VKCameraController *)&v24 initWithMapDataAccess:context animationRunner:a5 runLoopController:device cameraDelegate:?];
   v14 = v13;
   v23 = v13;
   if (v13)
@@ -10400,26 +10400,26 @@ void __115__VKNavCameraController_initWithTaskContext_device_mapDataAccess_anima
   v35 = v4;
   v36[0] = v5;
   v36[1] = v6;
-  v7 = [(VKNavContext *)self->_navContext route];
+  route = [(VKNavContext *)self->_navContext route];
   if (self->_maneuversToFrame && ([(VKNavCameraController *)self _puckScreenPoint], v9 = v8, v10 = [(VKNavContext *)self->_navContext currentStepIndex], v11 = v10, v10 < v10 + self->_maneuversToFrame))
   {
     v31 = vdupq_n_s64(0x3F91DF46A2529D39uLL);
     v12 = v10;
     while (1)
     {
-      v13 = [v7 stepAtIndex:v12];
-      [v7 distanceBetweenRouteCoordinate:*&self->_routeCoordinate andRouteCoordinate:{objc_msgSend(v13, "endRouteCoordinate")}];
+      v13 = [route stepAtIndex:v12];
+      [route distanceBetweenRouteCoordinate:*&self->_routeCoordinate andRouteCoordinate:{objc_msgSend(v13, "endRouteCoordinate")}];
       if (v14 <= self->_maxFramingDistance)
       {
-        [v7 pointWithAltitudeCorrectionAtRouteCoordinate:{objc_msgSend(v13, "endRouteCoordinate")}];
+        [route pointWithAltitudeCorrectionAtRouteCoordinate:{objc_msgSend(v13, "endRouteCoordinate")}];
         v29 = v15.f64[0];
         v30 = v16;
         v15.f64[1] = v16;
         v32 = vmulq_f64(v15, v31);
         v33 = v17;
-        v18 = [(VKCameraController *)self mapDataAccess];
+        mapDataAccess = [(VKCameraController *)self mapDataAccess];
         [(VKNavCameraController *)self _testingCameraFrame];
-        gdc::ViewDataAccess::screenPointForCoordinate(v18[2], &v32, buf);
+        gdc::ViewDataAccess::screenPointForCoordinate(mapDataAccess[2], &v32, buf);
         if (!self->_ignorePointsBehind || v20 < v9)
         {
           break;
@@ -10523,9 +10523,9 @@ LABEL_15:
 
 - (Matrix<double,)_puckScreenPoint
 {
-  v3 = [(VKCameraController *)self mapDataAccess];
+  mapDataAccess = [(VKCameraController *)self mapDataAccess];
   [(VKNavCameraController *)self _testingCameraFrame];
-  gdc::ViewDataAccess::screenPointForCoordinate(v3[2], &self->_puckCoordinate, v6);
+  gdc::ViewDataAccess::screenPointForCoordinate(mapDataAccess[2], &self->_puckCoordinate, v6);
   result._e[1] = v5;
   result._e[0] = v4;
   return result;
@@ -10533,7 +10533,7 @@ LABEL_15:
 
 - (VKNavCameraFrameTestResult)runValidations
 {
-  v3 = [(VKNavCameraController *)self testPuckIsInsideViewableRegion];
+  testPuckIsInsideViewableRegion = [(VKNavCameraController *)self testPuckIsInsideViewableRegion];
   if ([(VKNavCameraController *)self testManeuverIsInsideViewableRegion])
   {
     v4 = 256;
@@ -10544,7 +10544,7 @@ LABEL_15:
     v4 = 0;
   }
 
-  return (v4 | v3);
+  return (v4 | testPuckIsInsideViewableRegion);
 }
 
 @end

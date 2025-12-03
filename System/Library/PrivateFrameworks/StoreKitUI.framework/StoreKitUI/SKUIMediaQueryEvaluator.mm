@@ -1,11 +1,11 @@
 @interface SKUIMediaQueryEvaluator
 + (void)initialize;
-+ (void)registerFeatureClass:(Class)a3;
-- (BOOL)evaluateMediaQuery:(id)a3;
++ (void)registerFeatureClass:(Class)class;
+- (BOOL)evaluateMediaQuery:(id)query;
 - (SKUIMediaQueryDelegate)delegate;
 - (SKUIMediaQueryEvaluator)init;
-- (id)_delegateValuesForKeys:(id)a3;
-- (void)_featureDidChangeNotification:(id)a3;
+- (id)_delegateValuesForKeys:(id)keys;
+- (void)_featureDidChangeNotification:(id)notification;
 - (void)dealloc;
 - (void)init;
 - (void)reloadData;
@@ -40,7 +40,7 @@
 - (void)dealloc
 {
   v16 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
@@ -61,7 +61,7 @@
           objc_enumerationMutation(v4);
         }
 
-        [v3 removeObserver:self name:*(*(&v11 + 1) + 8 * v8++) object:0];
+        [defaultCenter removeObserver:self name:*(*(&v11 + 1) + 8 * v8++) object:0];
       }
 
       while (v6 != v8);
@@ -82,7 +82,7 @@
   [(SKUIMediaQueryEvaluator *)&v10 dealloc];
 }
 
-+ (void)registerFeatureClass:(Class)a3
++ (void)registerFeatureClass:(Class)class
 {
   v4 = sClassSet;
   if (!sClassSet)
@@ -94,17 +94,17 @@
     v4 = sClassSet;
   }
 
-  [v4 addObject:a3];
+  [v4 addObject:class];
 }
 
-- (BOOL)evaluateMediaQuery:(id)a3
+- (BOOL)evaluateMediaQuery:(id)query
 {
   v39 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  queryCopy = query;
   v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v6 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  v8 = [v4 featureValues];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  featureValues = [queryCopy featureValues];
   v33[0] = MEMORY[0x277D85DD0];
   v33[1] = 3221225472;
   v33[2] = __46__SKUIMediaQueryEvaluator_evaluateMediaQuery___block_invoke;
@@ -113,17 +113,17 @@
   v34 = v9;
   v10 = v6;
   v35 = v10;
-  v36 = self;
-  v11 = self;
-  v12 = v7;
+  selfCopy = self;
+  selfCopy2 = self;
+  v12 = defaultCenter;
   v37 = v12;
-  [v8 enumerateKeysAndObjectsUsingBlock:v33];
+  [featureValues enumerateKeysAndObjectsUsingBlock:v33];
 
   if ([v9 count])
   {
     if ([v10 count])
     {
-      v13 = [(SKUIMediaQueryEvaluator *)v11 _delegateValuesForKeys:v10];
+      v13 = [(SKUIMediaQueryEvaluator *)selfCopy2 _delegateValuesForKeys:v10];
     }
 
     else
@@ -134,7 +134,7 @@
     v24 = v12;
     v25 = v10;
     v26 = v9;
-    v27 = v4;
+    v27 = queryCopy;
     v31 = 0u;
     v32 = 0u;
     v29 = 0u;
@@ -157,7 +157,7 @@
 
           v19 = *(*(&v29 + 1) + 8 * i);
           v20 = [v19 evaluateWithValues:v13];
-          cachedFeatureResults = v11->_cachedFeatureResults;
+          cachedFeatureResults = selfCopy2->_cachedFeatureResults;
           v22 = [MEMORY[0x277CCABB0] numberWithBool:v20];
           [(NSMapTable *)cachedFeatureResults setObject:v22 forKey:v19];
 
@@ -176,7 +176,7 @@
     }
 
     v9 = v26;
-    v4 = v27;
+    queryCopy = v27;
     v12 = v24;
     v10 = v25;
   }
@@ -294,10 +294,10 @@ void __46__SKUIMediaQueryEvaluator_evaluateMediaQuery___block_invoke_2(uint64_t 
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v33 + 1) + 8 * i) requiredKeys];
-        if (v12)
+        requiredKeys = [*(*(&v33 + 1) + 8 * i) requiredKeys];
+        if (requiredKeys)
         {
-          [v6 addObjectsFromArray:v12];
+          [v6 addObjectsFromArray:requiredKeys];
         }
       }
 
@@ -331,7 +331,7 @@ void __46__SKUIMediaQueryEvaluator_evaluateMediaQuery___block_invoke_2(uint64_t 
 
   v16 = v14;
   v27 = v6;
-  v17 = self;
+  selfCopy = self;
   v18 = 0;
   v19 = *v30;
   do
@@ -349,7 +349,7 @@ void __46__SKUIMediaQueryEvaluator_evaluateMediaQuery___block_invoke_2(uint64_t 
       v24 = v22 ^ [v23 BOOLValue];
 
       v18 |= v24;
-      cachedFeatureResults = v17->_cachedFeatureResults;
+      cachedFeatureResults = selfCopy->_cachedFeatureResults;
       v26 = [MEMORY[0x277CCABB0] numberWithBool:v22];
       [(NSMapTable *)cachedFeatureResults setObject:v26 forKey:v21];
     }
@@ -362,17 +362,17 @@ void __46__SKUIMediaQueryEvaluator_evaluateMediaQuery___block_invoke_2(uint64_t 
   v6 = v27;
   if (v18)
   {
-    WeakRetained = objc_loadWeakRetained(&v17->_delegate);
+    WeakRetained = objc_loadWeakRetained(&selfCopy->_delegate);
     if (objc_opt_respondsToSelector())
     {
-      [WeakRetained mediaQueryEvaluatorDidChange:v17];
+      [WeakRetained mediaQueryEvaluatorDidChange:selfCopy];
     }
 
 LABEL_25:
   }
 }
 
-- (void)_featureDidChangeNotification:(id)a3
+- (void)_featureDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x277D85CD0];
   v5 = MEMORY[0x277D85CD0];
@@ -419,11 +419,11 @@ void __57__SKUIMediaQueryEvaluator__featureDidChangeNotification___block_invoke_
   [WeakRetained reloadData];
 }
 
-- (id)_delegateValuesForKeys:(id)a3
+- (id)_delegateValuesForKeys:(id)keys
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  keysCopy = keys;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   if (objc_opt_respondsToSelector())
   {
@@ -431,7 +431,7 @@ void __57__SKUIMediaQueryEvaluator__featureDidChangeNotification___block_invoke_
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v7 = v4;
+    v7 = keysCopy;
     v8 = [v7 countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v8)
     {
@@ -450,7 +450,7 @@ void __57__SKUIMediaQueryEvaluator__featureDidChangeNotification___block_invoke_
           v13 = [WeakRetained mediaQueryEvaluator:self valueForKey:{v12, v15}];
           if (v13)
           {
-            [v5 setObject:v13 forKey:v12];
+            [dictionary setObject:v13 forKey:v12];
           }
         }
 
@@ -461,17 +461,17 @@ void __57__SKUIMediaQueryEvaluator__featureDidChangeNotification___block_invoke_
     }
   }
 
-  return v5;
+  return dictionary;
 }
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
-    [a1 registerFeatureClass:objc_opt_class()];
+    [self registerFeatureClass:objc_opt_class()];
     v3 = objc_opt_class();
 
-    [a1 registerFeatureClass:v3];
+    [self registerFeatureClass:v3];
   }
 }
 

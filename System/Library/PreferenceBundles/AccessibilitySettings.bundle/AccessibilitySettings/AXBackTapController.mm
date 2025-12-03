@@ -1,17 +1,17 @@
 @interface AXBackTapController
 - (AXBackTapController)init;
-- (id)actionForActionPickerController:(id)a3;
-- (id)backTapConfirmationBannerEnabled:(id)a3;
-- (id)backTapFalsePositiveAlertsEnabled:(id)a3;
-- (id)backTapRNNModelEnabled:(id)a3;
-- (id)doubleTapAction:(id)a3;
-- (id)selectSpecifier:(id)a3;
+- (id)actionForActionPickerController:(id)controller;
+- (id)backTapConfirmationBannerEnabled:(id)enabled;
+- (id)backTapFalsePositiveAlertsEnabled:(id)enabled;
+- (id)backTapRNNModelEnabled:(id)enabled;
+- (id)doubleTapAction:(id)action;
+- (id)selectSpecifier:(id)specifier;
 - (id)specifiers;
-- (id)tripleTapAction:(id)a3;
-- (void)actionPickerController:(id)a3 didSelectAction:(id)a4;
-- (void)setBackTapConfirmationBannerEnabled:(id)a3 specifier:(id)a4;
-- (void)setBackTapFalsePositiveAlertsEnabled:(id)a3 specifier:(id)a4;
-- (void)setBackTapRNNModelEnabled:(id)a3 specifier:(id)a4;
+- (id)tripleTapAction:(id)action;
+- (void)actionPickerController:(id)controller didSelectAction:(id)action;
+- (void)setBackTapConfirmationBannerEnabled:(id)enabled specifier:(id)specifier;
+- (void)setBackTapFalsePositiveAlertsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setBackTapRNNModelEnabled:(id)enabled specifier:(id)specifier;
 - (void)updateBackTapEnabled;
 @end
 
@@ -126,29 +126,29 @@ void __27__AXBackTapController_init__block_invoke_2(uint64_t a1)
   return v4;
 }
 
-- (id)selectSpecifier:(id)a3
+- (id)selectSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v8.receiver = self;
   v8.super_class = AXBackTapController;
-  v5 = [(AXBackTapController *)&v8 selectSpecifier:v4];
+  v5 = [(AXBackTapController *)&v8 selectSpecifier:specifierCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     [v5 setDelegate:self];
-    v6 = [v4 identifier];
-    [v5 setIdentifier:v6];
+    identifier = [specifierCopy identifier];
+    [v5 setIdentifier:identifier];
   }
 
   return v5;
 }
 
-- (id)doubleTapAction:(id)a3
+- (id)doubleTapAction:(id)action
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 backTapDoubleTapAction];
+  backTapDoubleTapAction = [v3 backTapDoubleTapAction];
 
-  if (v4)
+  if (backTapDoubleTapAction)
   {
     AXUIAssistiveTouchStringForName();
   }
@@ -162,12 +162,12 @@ void __27__AXBackTapController_init__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (id)tripleTapAction:(id)a3
+- (id)tripleTapAction:(id)action
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 backTapTripleTapAction];
+  backTapTripleTapAction = [v3 backTapTripleTapAction];
 
-  if (v4)
+  if (backTapTripleTapAction)
   {
     AXUIAssistiveTouchStringForName();
   }
@@ -181,29 +181,29 @@ void __27__AXBackTapController_init__block_invoke_2(uint64_t a1)
   return v5;
 }
 
-- (id)actionForActionPickerController:(id)a3
+- (id)actionForActionPickerController:(id)controller
 {
-  v3 = a3;
-  v4 = [v3 identifier];
-  v5 = [v4 isEqualToString:@"DoubleTap"];
+  controllerCopy = controller;
+  identifier = [controllerCopy identifier];
+  v5 = [identifier isEqualToString:@"DoubleTap"];
 
   if (v5)
   {
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 backTapDoubleTapAction];
+    backTapDoubleTapAction = [v6 backTapDoubleTapAction];
 LABEL_5:
-    v10 = v7;
+    v10 = backTapDoubleTapAction;
 
     goto LABEL_7;
   }
 
-  v8 = [v3 identifier];
-  v9 = [v8 isEqualToString:@"TripleTap"];
+  identifier2 = [controllerCopy identifier];
+  v9 = [identifier2 isEqualToString:@"TripleTap"];
 
   if (v9)
   {
     v6 = +[AXSettings sharedInstance];
-    v7 = [v6 backTapTripleTapAction];
+    backTapDoubleTapAction = [v6 backTapTripleTapAction];
     goto LABEL_5;
   }
 
@@ -213,23 +213,23 @@ LABEL_7:
   return v10;
 }
 
-- (void)actionPickerController:(id)a3 didSelectAction:(id)a4
+- (void)actionPickerController:(id)controller didSelectAction:(id)action
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [v13 identifier];
-  v8 = [v7 isEqualToString:@"DoubleTap"];
+  controllerCopy = controller;
+  actionCopy = action;
+  identifier = [controllerCopy identifier];
+  v8 = [identifier isEqualToString:@"DoubleTap"];
 
   if (v8)
   {
     v9 = +[AXSettings sharedInstance];
-    [v9 setBackTapDoubleTapAction:v6];
+    [v9 setBackTapDoubleTapAction:actionCopy];
   }
 
   else
   {
-    v10 = [v13 identifier];
-    v11 = [v10 isEqualToString:@"TripleTap"];
+    identifier2 = [controllerCopy identifier];
+    v11 = [identifier2 isEqualToString:@"TripleTap"];
 
     if (!v11)
     {
@@ -237,12 +237,12 @@ LABEL_7:
     }
 
     v9 = +[AXSettings sharedInstance];
-    [v9 setBackTapTripleTapAction:v6];
+    [v9 setBackTapTripleTapAction:actionCopy];
   }
 
 LABEL_6:
-  v12 = [v13 identifier];
-  [(AXBackTapController *)self reloadSpecifierID:v12];
+  identifier3 = [controllerCopy identifier];
+  [(AXBackTapController *)self reloadSpecifierID:identifier3];
 
   [(AXBackTapController *)self updateBackTapEnabled];
 }
@@ -250,8 +250,8 @@ LABEL_6:
 - (void)updateBackTapEnabled
 {
   v2 = +[AXSettings sharedInstance];
-  v3 = [v2 backTapDoubleTapAction];
-  if (v3)
+  backTapDoubleTapAction = [v2 backTapDoubleTapAction];
+  if (backTapDoubleTapAction)
   {
     v4 = 1;
   }
@@ -259,15 +259,15 @@ LABEL_6:
   else
   {
     v5 = +[AXSettings sharedInstance];
-    v6 = [v5 backTapTripleTapAction];
-    v4 = v6 != 0;
+    backTapTripleTapAction = [v5 backTapTripleTapAction];
+    v4 = backTapTripleTapAction != 0;
   }
 
   v7 = +[AXSettings sharedInstance];
   [v7 setBackTapEnabled:v4];
 }
 
-- (id)backTapConfirmationBannerEnabled:(id)a3
+- (id)backTapConfirmationBannerEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 backTapConfirmationBannerEnabled]);
@@ -275,14 +275,14 @@ LABEL_6:
   return v4;
 }
 
-- (void)setBackTapConfirmationBannerEnabled:(id)a3 specifier:(id)a4
+- (void)setBackTapConfirmationBannerEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setBackTapConfirmationBannerEnabled:v4];
+  [v5 setBackTapConfirmationBannerEnabled:bOOLValue];
 }
 
-- (id)backTapFalsePositiveAlertsEnabled:(id)a3
+- (id)backTapFalsePositiveAlertsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 backTapFalsePositiveAlertsEnabled]);
@@ -290,14 +290,14 @@ LABEL_6:
   return v4;
 }
 
-- (void)setBackTapFalsePositiveAlertsEnabled:(id)a3 specifier:(id)a4
+- (void)setBackTapFalsePositiveAlertsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setBackTapFalsePositiveAlertsEnabled:v4];
+  [v5 setBackTapFalsePositiveAlertsEnabled:bOOLValue];
 }
 
-- (id)backTapRNNModelEnabled:(id)a3
+- (id)backTapRNNModelEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 backTapRNNModelEnabled]);
@@ -305,11 +305,11 @@ LABEL_6:
   return v4;
 }
 
-- (void)setBackTapRNNModelEnabled:(id)a3 specifier:(id)a4
+- (void)setBackTapRNNModelEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setBackTapRNNModelEnabled:v4];
+  [v5 setBackTapRNNModelEnabled:bOOLValue];
 }
 
 @end

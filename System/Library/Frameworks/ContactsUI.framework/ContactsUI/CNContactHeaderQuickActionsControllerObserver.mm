@@ -7,7 +7,7 @@
 
 - (void)quickActionsControllerDidUpdateActionModels
 {
-  v2 = self;
+  selfCopy = self;
   sub_199B4A558();
 }
 

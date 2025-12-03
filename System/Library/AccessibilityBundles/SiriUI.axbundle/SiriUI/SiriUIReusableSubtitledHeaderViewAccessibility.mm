@@ -8,7 +8,7 @@
 {
   v7.receiver = self;
   v7.super_class = SiriUIReusableSubtitledHeaderViewAccessibility;
-  v3 = [(SiriUIReusableSubtitledHeaderViewAccessibility *)&v7 accessibilityLabel];
+  accessibilityLabel = [(SiriUIReusableSubtitledHeaderViewAccessibility *)&v7 accessibilityLabel];
   v6 = [(SiriUIReusableSubtitledHeaderViewAccessibility *)self safeValueForKey:@"subtitleText"];
   v4 = __UIAXStringForVariables();
 

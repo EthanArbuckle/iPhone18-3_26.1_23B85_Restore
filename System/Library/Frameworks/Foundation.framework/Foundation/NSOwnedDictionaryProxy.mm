@@ -1,5 +1,5 @@
 @interface NSOwnedDictionaryProxy
-- (NSOwnedDictionaryProxy)initWithOwner:(id)a3;
+- (NSOwnedDictionaryProxy)initWithOwner:(id)owner;
 - (NSOwnedDictionaryProxy)retain;
 - (void)release;
 - (void)superRelease;
@@ -33,7 +33,7 @@
   [(NSOwnedDictionaryProxy *)&v2 release];
 }
 
-- (NSOwnedDictionaryProxy)initWithOwner:(id)a3
+- (NSOwnedDictionaryProxy)initWithOwner:(id)owner
 {
   v6 = *MEMORY[0x1E69E9840];
   v5.receiver = self;
@@ -41,7 +41,7 @@
   result = [(NSOwnedDictionaryProxy *)&v5 init];
   if (result)
   {
-    result->_owner = a3;
+    result->_owner = owner;
   }
 
   return result;

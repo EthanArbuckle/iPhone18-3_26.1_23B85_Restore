@@ -1,56 +1,56 @@
 @interface TUISystemInputAssistantLayoutCompact
-- (id)_buttonBarGroupSetForApplicationAssistantItem:(id)a3 withSystemInputAssistantItem:(id)a4 forAssistantView:(id)a5;
-- (void)_layoutViewSet:(id)a3 forFixedCenterViewWidth:(double)a4 inBounds:(CGRect)a5 forAssistantView:(id)a6;
-- (void)configureButtonBarsInViewSet:(id)a3 forApplicationAssistantItem:(id)a4 withSystemAssistantItem:(id)a5 withAssistantView:(id)a6;
-- (void)invalidate:(id)a3;
+- (id)_buttonBarGroupSetForApplicationAssistantItem:(id)item withSystemInputAssistantItem:(id)assistantItem forAssistantView:(id)view;
+- (void)_layoutViewSet:(id)set forFixedCenterViewWidth:(double)width inBounds:(CGRect)bounds forAssistantView:(id)view;
+- (void)configureButtonBarsInViewSet:(id)set forApplicationAssistantItem:(id)item withSystemAssistantItem:(id)assistantItem withAssistantView:(id)view;
+- (void)invalidate:(id)invalidate;
 @end
 
 @implementation TUISystemInputAssistantLayoutCompact
 
-- (void)invalidate:(id)a3
+- (void)invalidate:(id)invalidate
 {
   v16.receiver = self;
   v16.super_class = TUISystemInputAssistantLayoutCompact;
-  v3 = a3;
-  [(TUISystemInputAssistantLayout *)&v16 invalidate:v3];
-  v4 = [v3 leftButtonBar];
-  [v4 minimumInterItemSpace];
+  invalidateCopy = invalidate;
+  [(TUISystemInputAssistantLayout *)&v16 invalidate:invalidateCopy];
+  leftButtonBar = [invalidateCopy leftButtonBar];
+  [leftButtonBar minimumInterItemSpace];
   v6 = v5;
-  v7 = [v3 leftButtonBar];
-  [v7 setEffectiveInterItemSpacing:v6];
+  leftButtonBar2 = [invalidateCopy leftButtonBar];
+  [leftButtonBar2 setEffectiveInterItemSpacing:v6];
 
-  v8 = [v3 leftButtonBar];
-  [v8 setButtonAlignment:0];
+  leftButtonBar3 = [invalidateCopy leftButtonBar];
+  [leftButtonBar3 setButtonAlignment:0];
 
-  v9 = [v3 rightButtonBar];
-  [v9 minimumInterItemSpace];
+  rightButtonBar = [invalidateCopy rightButtonBar];
+  [rightButtonBar minimumInterItemSpace];
   v11 = v10;
-  v12 = [v3 rightButtonBar];
-  [v12 setEffectiveInterItemSpacing:v11];
+  rightButtonBar2 = [invalidateCopy rightButtonBar];
+  [rightButtonBar2 setEffectiveInterItemSpacing:v11];
 
-  v13 = [v3 rightButtonBar];
-  [v13 setButtonAlignment:2];
+  rightButtonBar3 = [invalidateCopy rightButtonBar];
+  [rightButtonBar3 setButtonAlignment:2];
 
-  v14 = [v3 rightButtonBar];
-  [v14 setAlpha:1.0];
+  rightButtonBar4 = [invalidateCopy rightButtonBar];
+  [rightButtonBar4 setAlpha:1.0];
 
-  v15 = [v3 centerView];
+  centerView = [invalidateCopy centerView];
 
-  [v15 setAlpha:1.0];
+  [centerView setAlpha:1.0];
 }
 
-- (id)_buttonBarGroupSetForApplicationAssistantItem:(id)a3 withSystemInputAssistantItem:(id)a4 forAssistantView:(id)a5
+- (id)_buttonBarGroupSetForApplicationAssistantItem:(id)item withSystemInputAssistantItem:(id)assistantItem forAssistantView:(id)view
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v5 = a4;
-  v6 = [v5 leadingBarButtonGroups];
-  v7 = [v6 count];
+  assistantItemCopy = assistantItem;
+  leadingBarButtonGroups = [assistantItemCopy leadingBarButtonGroups];
+  v7 = [leadingBarButtonGroups count];
 
   if (v7)
   {
-    v8 = [v5 leadingBarButtonGroups];
-    v9 = [v8 firstObject];
-    v13[0] = v9;
+    leadingBarButtonGroups2 = [assistantItemCopy leadingBarButtonGroups];
+    firstObject = [leadingBarButtonGroups2 firstObject];
+    v13[0] = firstObject;
     v10 = [MEMORY[0x1E695DEC8] arrayWithObjects:v13 count:1];
   }
 
@@ -66,65 +66,65 @@
   return v11;
 }
 
-- (void)configureButtonBarsInViewSet:(id)a3 forApplicationAssistantItem:(id)a4 withSystemAssistantItem:(id)a5 withAssistantView:(id)a6
+- (void)configureButtonBarsInViewSet:(id)set forApplicationAssistantItem:(id)item withSystemAssistantItem:(id)assistantItem withAssistantView:(id)view
 {
-  v10 = a6;
-  v11 = a3;
-  v16 = [(TUISystemInputAssistantLayoutCompact *)self _buttonBarGroupSetForApplicationAssistantItem:a4 withSystemInputAssistantItem:a5 forAssistantView:v10];
-  v12 = [v11 leftButtonBar];
-  v13 = [v16 unifiedButtonGroups];
-  [v12 setButtonGroups:v13 animated:{objc_msgSend(v10, "isTransitioning")}];
+  viewCopy = view;
+  setCopy = set;
+  v16 = [(TUISystemInputAssistantLayoutCompact *)self _buttonBarGroupSetForApplicationAssistantItem:item withSystemInputAssistantItem:assistantItem forAssistantView:viewCopy];
+  leftButtonBar = [setCopy leftButtonBar];
+  unifiedButtonGroups = [v16 unifiedButtonGroups];
+  [leftButtonBar setButtonGroups:unifiedButtonGroups animated:{objc_msgSend(viewCopy, "isTransitioning")}];
 
-  v14 = [v11 rightButtonBar];
+  rightButtonBar = [setCopy rightButtonBar];
 
-  v15 = [v10 isTransitioning];
-  [v14 setButtonGroups:MEMORY[0x1E695E0F0] animated:v15];
+  isTransitioning = [viewCopy isTransitioning];
+  [rightButtonBar setButtonGroups:MEMORY[0x1E695E0F0] animated:isTransitioning];
 }
 
-- (void)_layoutViewSet:(id)a3 forFixedCenterViewWidth:(double)a4 inBounds:(CGRect)a5 forAssistantView:(id)a6
+- (void)_layoutViewSet:(id)set forFixedCenterViewWidth:(double)width inBounds:(CGRect)bounds forAssistantView:(id)view
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  v25 = a3;
-  v9 = a6;
-  v10 = [v25 viewSetContainer];
-  v11 = [v10 translatesAutoresizingMaskIntoConstraints];
+  height = bounds.size.height;
+  width = bounds.size.width;
+  setCopy = set;
+  viewCopy = view;
+  viewSetContainer = [setCopy viewSetContainer];
+  translatesAutoresizingMaskIntoConstraints = [viewSetContainer translatesAutoresizingMaskIntoConstraints];
 
-  if (v11)
+  if (translatesAutoresizingMaskIntoConstraints)
   {
-    v12 = [v25 viewSetContainer];
-    [v9 bounds];
-    [v12 setFrame:?];
+    viewSetContainer2 = [setCopy viewSetContainer];
+    [viewCopy bounds];
+    [viewSetContainer2 setFrame:?];
   }
 
   else
   {
-    [v9 resetContainerConstraints];
+    [viewCopy resetContainerConstraints];
   }
 
-  v13 = [v25 leftButtonBar];
-  [v13 effectiveInterItemSpacing];
+  leftButtonBar = [setCopy leftButtonBar];
+  [leftButtonBar effectiveInterItemSpacing];
   v15 = v14;
-  v16 = [v25 leftButtonBar];
-  [v16 setEffectiveInterItemSpacing:v15];
+  leftButtonBar2 = [setCopy leftButtonBar];
+  [leftButtonBar2 setEffectiveInterItemSpacing:v15];
 
-  v17 = [v25 leftButtonBar];
-  [v17 setButtonAlignment:1];
+  leftButtonBar3 = [setCopy leftButtonBar];
+  [leftButtonBar3 setButtonAlignment:1];
 
   v18 = width * 0.5 + -32.5;
   v19 = height + -50.0;
-  v20 = [v25 leftButtonBar];
-  [v20 setFrame:{v18, v19, 65.0, 50.0}];
-  v21 = [v25 rightButtonBar];
-  [v21 setFrame:{v18, v19, 65.0, 50.0}];
-  v22 = [v25 centerView];
-  [v22 setFrame:{v18, v19, 65.0, 50.0}];
+  leftButtonBar4 = [setCopy leftButtonBar];
+  [leftButtonBar4 setFrame:{v18, v19, 65.0, 50.0}];
+  rightButtonBar = [setCopy rightButtonBar];
+  [rightButtonBar setFrame:{v18, v19, 65.0, 50.0}];
+  centerView = [setCopy centerView];
+  [centerView setFrame:{v18, v19, 65.0, 50.0}];
 
-  v23 = [v25 centerView];
-  [v23 setAlpha:0.0];
+  centerView2 = [setCopy centerView];
+  [centerView2 setAlpha:0.0];
 
-  v24 = [v25 rightButtonBar];
-  [v24 setAlpha:0.0];
+  rightButtonBar2 = [setCopy rightButtonBar];
+  [rightButtonBar2 setAlpha:0.0];
 }
 
 @end

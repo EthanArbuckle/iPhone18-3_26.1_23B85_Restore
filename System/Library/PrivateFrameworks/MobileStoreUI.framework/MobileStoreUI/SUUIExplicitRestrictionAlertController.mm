@@ -1,56 +1,56 @@
 @interface SUUIExplicitRestrictionAlertController
-- (SUUIExplicitRestrictionAlertController)initWithClientContext:(id)a3;
-- (SUUIExplicitRestrictionAlertController)initWithClientContext:(id)a3 presentingViewController:(id)a4;
-- (void)presentExplicitRestrictionAlertIfNeededOfType:(int64_t)a3 completionBlock:(id)a4;
+- (SUUIExplicitRestrictionAlertController)initWithClientContext:(id)context;
+- (SUUIExplicitRestrictionAlertController)initWithClientContext:(id)context presentingViewController:(id)controller;
+- (void)presentExplicitRestrictionAlertIfNeededOfType:(int64_t)type completionBlock:(id)block;
 @end
 
 @implementation SUUIExplicitRestrictionAlertController
 
-- (SUUIExplicitRestrictionAlertController)initWithClientContext:(id)a3
+- (SUUIExplicitRestrictionAlertController)initWithClientContext:(id)context
 {
-  v5 = a3;
+  contextCopy = context;
   v9.receiver = self;
   v9.super_class = SUUIExplicitRestrictionAlertController;
   v6 = [(SUUIExplicitRestrictionAlertController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_clientContext, a3);
+    objc_storeStrong(&v6->_clientContext, context);
   }
 
   return v7;
 }
 
-- (SUUIExplicitRestrictionAlertController)initWithClientContext:(id)a3 presentingViewController:(id)a4
+- (SUUIExplicitRestrictionAlertController)initWithClientContext:(id)context presentingViewController:(id)controller
 {
-  v7 = a3;
-  v8 = a4;
+  contextCopy = context;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = SUUIExplicitRestrictionAlertController;
   v9 = [(SUUIExplicitRestrictionAlertController *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_clientContext, a3);
-    objc_storeStrong(&v10->_presentingViewController, a4);
+    objc_storeStrong(&v9->_clientContext, context);
+    objc_storeStrong(&v10->_presentingViewController, controller);
   }
 
   return v10;
 }
 
-- (void)presentExplicitRestrictionAlertIfNeededOfType:(int64_t)a3 completionBlock:(id)a4
+- (void)presentExplicitRestrictionAlertIfNeededOfType:(int64_t)type completionBlock:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v7 = MEMORY[0x277D69C38];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __104__SUUIExplicitRestrictionAlertController_presentExplicitRestrictionAlertIfNeededOfType_completionBlock___block_invoke;
   v9[3] = &unk_2798FCAB8;
-  v10 = v6;
-  v11 = a3;
+  v10 = blockCopy;
+  typeCopy = type;
   v9[4] = self;
-  v8 = v6;
-  [v7 shouldDisplayExplicitRestrictionAlertOfType:a3 completionBlock:v9];
+  v8 = blockCopy;
+  [v7 shouldDisplayExplicitRestrictionAlertOfType:type completionBlock:v9];
 }
 
 void __104__SUUIExplicitRestrictionAlertController_presentExplicitRestrictionAlertIfNeededOfType_completionBlock___block_invoke(void *a1, int a2, void *a3)

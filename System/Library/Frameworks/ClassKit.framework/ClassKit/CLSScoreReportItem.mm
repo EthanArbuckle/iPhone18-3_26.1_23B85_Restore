@@ -1,22 +1,22 @@
 @interface CLSScoreReportItem
-- (CLSScoreReportItem)initWithCoder:(id)a3;
+- (CLSScoreReportItem)initWithCoder:(id)coder;
 - (double)normalized;
-- (id)convertToItemCompatibleWithItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)convertToItemCompatibleWithItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int64_t)compare:(id)a3;
-- (void)add:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)add:(id)add;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLSScoreReportItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = CLSScoreReportItem;
-  v4 = [(CLSActivityReportItem *)&v14 copyWithZone:a3];
+  v4 = [(CLSActivityReportItem *)&v14 copyWithZone:zone];
   objc_msgSend_value(self, v5, v6);
   objc_msgSend_setValue_(v4, v7, v8);
   objc_msgSend_maxValue(self, v9, v10);
@@ -24,9 +24,9 @@
   return v4;
 }
 
-- (id)convertToItemCompatibleWithItem:(id)a3
+- (id)convertToItemCompatibleWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -57,38 +57,38 @@
     {
       v12.receiver = self;
       v12.super_class = CLSScoreReportItem;
-      v7 = [(CLSReportItem *)&v12 convertToItemCompatibleWithItem:v4];
+      v7 = [(CLSReportItem *)&v12 convertToItemCompatibleWithItem:itemCopy];
     }
   }
 
   return v7;
 }
 
-- (CLSScoreReportItem)initWithCoder:(id)a3
+- (CLSScoreReportItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v11.receiver = self;
   v11.super_class = CLSScoreReportItem;
-  v6 = [(CLSActivityReportItem *)&v11 initWithCoder:v4];
+  v6 = [(CLSActivityReportItem *)&v11 initWithCoder:coderCopy];
   if (v6)
   {
-    objc_msgSend_decodeDoubleForKey_(v4, v5, @"value");
+    objc_msgSend_decodeDoubleForKey_(coderCopy, v5, @"value");
     v6->_value = v7;
-    objc_msgSend_decodeDoubleForKey_(v4, v8, @"maxValue");
+    objc_msgSend_decodeDoubleForKey_(coderCopy, v8, @"maxValue");
     v6->_maxValue = v9;
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CLSScoreReportItem;
-  v4 = a3;
-  [(CLSActivityReportItem *)&v7 encodeWithCoder:v4];
-  objc_msgSend_encodeDouble_forKey_(v4, v5, @"value", self->_value, v7.receiver, v7.super_class);
-  objc_msgSend_encodeDouble_forKey_(v4, v6, @"maxValue", self->_maxValue);
+  coderCopy = coder;
+  [(CLSActivityReportItem *)&v7 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeDouble_forKey_(coderCopy, v5, @"value", self->_value, v7.receiver, v7.super_class);
+  objc_msgSend_encodeDouble_forKey_(coderCopy, v6, @"maxValue", self->_maxValue);
 }
 
 - (double)normalized
@@ -102,9 +102,9 @@
   return self->_value / maxValue;
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = objc_msgSend_convertToItemCompatibleWithItem_copyIfSameType_(a3, a2, self, 0);
+  v4 = objc_msgSend_convertToItemCompatibleWithItem_copyIfSameType_(compare, a2, self, 0);
   v7 = v4;
   maxValue = self->_maxValue;
   if (maxValue == 0.0)
@@ -154,9 +154,9 @@ LABEL_12:
   return v10;
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  v12 = objc_msgSend_convertToItemCompatibleWithItem_(a3, a2, self);
+  v12 = objc_msgSend_convertToItemCompatibleWithItem_(add, a2, self);
   value = self->_value;
   objc_msgSend_value(v12, v5, v6);
   self->_value = value + v7;
@@ -189,18 +189,18 @@ LABEL_12:
 {
   v19.receiver = self;
   v19.super_class = CLSScoreReportItem;
-  v3 = [(CLSActivityReportItem *)&v19 dictionaryRepresentation];
+  dictionaryRepresentation = [(CLSActivityReportItem *)&v19 dictionaryRepresentation];
   v4 = MEMORY[0x277CCABB0];
   objc_msgSend_value(self, v5, v6);
   v9 = objc_msgSend_numberWithDouble_(v4, v7, v8);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v10, v9, @"value");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v10, v9, @"value");
 
   v11 = MEMORY[0x277CCABB0];
   objc_msgSend_maxValue(self, v12, v13);
   v16 = objc_msgSend_numberWithDouble_(v11, v14, v15);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v17, v16, @"maxValue");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v17, v16, @"maxValue");
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 @end

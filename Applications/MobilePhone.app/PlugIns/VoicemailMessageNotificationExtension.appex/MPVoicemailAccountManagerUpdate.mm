@@ -1,6 +1,6 @@
 @interface MPVoicemailAccountManagerUpdate
 + (NSArray)allCases;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (MPVoicemailAccountManagerUpdate)init;
 - (NSString)description;
 @end
@@ -20,11 +20,11 @@
   return v2.super.isa;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
-    v4 = self;
+    selfCopy = self;
     swift_unknownObjectRetain();
     sub_100060B0C();
     swift_unknownObjectRelease();
@@ -33,7 +33,7 @@
   else
   {
     memset(v8, 0, sizeof(v8));
-    v5 = self;
+    selfCopy2 = self;
   }
 
   v6 = sub_100020EDC(v8);
@@ -51,7 +51,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000221AC();
 
   v3 = sub_1000607EC();

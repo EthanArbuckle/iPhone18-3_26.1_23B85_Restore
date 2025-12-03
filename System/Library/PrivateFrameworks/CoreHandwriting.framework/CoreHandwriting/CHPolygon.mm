@@ -1,19 +1,19 @@
 @interface CHPolygon
-- (CHPolygon)initWithRect:(CGRect)a3;
-- (CHPolygon)initWithVertices:(CGPoint *)a3 vertexCount:(int64_t)a4;
+- (CHPolygon)initWithRect:(CGRect)rect;
+- (CHPolygon)initWithVertices:(CGPoint *)vertices vertexCount:(int64_t)count;
 - (double)area;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)polygonByIntersectingWithClipPolygon:(id)a3;
+- (id)polygonByIntersectingWithClipPolygon:(id)polygon;
 - (id)polygonDrawing;
-- (int64_t)edgeCountIntersectingLineSegment:(CHLineSegment)a3;
+- (int64_t)edgeCountIntersectingLineSegment:(CHLineSegment)segment;
 - (void)dealloc;
-- (void)enumerateEdgesWithBlock:(id)a3;
+- (void)enumerateEdgesWithBlock:(id)block;
 @end
 
 @implementation CHPolygon
 
-- (CHPolygon)initWithVertices:(CGPoint *)a3 vertexCount:(int64_t)a4
+- (CHPolygon)initWithVertices:(CGPoint *)vertices vertexCount:(int64_t)count
 {
   v10.receiver = self;
   v10.super_class = CHPolygon;
@@ -21,23 +21,23 @@
   v7 = v6;
   if (v6)
   {
-    v6->_vertexCount = a4;
-    v6->_vertices = a3;
+    v6->_vertexCount = count;
+    v6->_vertices = vertices;
     Mutable = CGPathCreateMutable();
     v7->_path = Mutable;
-    CGPathAddLines(Mutable, 0, a3, a4);
+    CGPathAddLines(Mutable, 0, vertices, count);
     CGPathCloseSubpath(v7->_path);
   }
 
   return v7;
 }
 
-- (CHPolygon)initWithRect:(CGRect)a3
+- (CHPolygon)initWithRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v8 = malloc_type_calloc(4uLL, 0x10uLL, 0x1000040451B5BE8uLL);
   v21.origin.x = x;
   v21.origin.y = y;
@@ -134,7 +134,7 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = malloc_type_calloc(self->_vertexCount, 0x10uLL, 0x1000040451B5BE8uLL);
   v5 = v4;
@@ -257,31 +257,31 @@
   return v8;
 }
 
-- (id)polygonByIntersectingWithClipPolygon:(id)a3
+- (id)polygonByIntersectingWithClipPolygon:(id)polygon
 {
-  v4 = self;
-  v5 = a3;
+  selfCopy = self;
+  polygonCopy = polygon;
   objc_opt_self();
   v14 = 0;
   v15 = &v14;
   v16 = 0x3032000000;
   v17 = sub_18389F9E0;
   v18 = sub_18389F9F0;
-  v6 = v4;
+  v6 = selfCopy;
   v19 = v6;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = sub_18389F9F8;
   v13[3] = &unk_1E6DDF640;
   v13[4] = &v14;
-  objc_msgSend_enumerateEdgesWithBlock_(v5, v7, v13, v8, v9, v10);
+  objc_msgSend_enumerateEdgesWithBlock_(polygonCopy, v7, v13, v8, v9, v10);
   v11 = v15[5];
   _Block_object_dispose(&v14, 8);
 
   return v11;
 }
 
-- (int64_t)edgeCountIntersectingLineSegment:(CHLineSegment)a3
+- (int64_t)edgeCountIntersectingLineSegment:(CHLineSegment)segment
 {
   v10 = 0;
   v11 = &v10;
@@ -291,7 +291,7 @@
   v8[1] = 3221225472;
   v8[2] = sub_18389F76C;
   v8[3] = &unk_1E6DDF618;
-  v9 = a3;
+  segmentCopy = segment;
   v8[4] = &v10;
   objc_msgSend_enumerateEdgesWithBlock_(self, a2, v8, v3, v4, v5);
   v6 = v11[3];
@@ -299,9 +299,9 @@
   return v6;
 }
 
-- (void)enumerateEdgesWithBlock:(id)a3
+- (void)enumerateEdgesWithBlock:(id)block
 {
-  v9 = a3;
+  blockCopy = block;
   v10 = 0;
   v11 = 0;
   do
@@ -319,7 +319,7 @@
     v32 = *v31;
     v33 = v31[1];
     v34 = 0;
-    v9[2](v9, v11, &v34, v24, v25, v32, v33);
+    blockCopy[2](blockCopy, v11, &v34, v24, v25, v32, v33);
     v10 += 16;
     ++v11;
   }

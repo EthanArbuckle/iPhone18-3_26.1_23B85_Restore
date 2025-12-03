@@ -1,16 +1,16 @@
 @interface CLAccessoryObserverHelper
-+ (BOOL)isDenyListAccessory:(id)a3 name:(id)a4 model:(id)a5 serialNumber:(id)a6 firmware:(id)a7 hardwareRevision:(id)a8;
-+ (BOOL)isString:(id)a3 prefixedBy:(id)a4;
++ (BOOL)isDenyListAccessory:(id)accessory name:(id)name model:(id)model serialNumber:(id)number firmware:(id)firmware hardwareRevision:(id)revision;
++ (BOOL)isString:(id)string prefixedBy:(id)by;
 @end
 
 @implementation CLAccessoryObserverHelper
 
-+ (BOOL)isString:(id)a3 prefixedBy:(id)a4
++ (BOOL)isString:(id)string prefixedBy:(id)by
 {
   result = 0;
-  if (a3 && a4)
+  if (string && by)
   {
-    if ([a3 rangeOfString:a4 options:9])
+    if ([string rangeOfString:by options:9])
     {
       v6 = 1;
     }
@@ -26,28 +26,28 @@
   return result;
 }
 
-+ (BOOL)isDenyListAccessory:(id)a3 name:(id)a4 model:(id)a5 serialNumber:(id)a6 firmware:(id)a7 hardwareRevision:(id)a8
++ (BOOL)isDenyListAccessory:(id)accessory name:(id)name model:(id)model serialNumber:(id)number firmware:(id)firmware hardwareRevision:(id)revision
 {
-  v13 = a3;
-  if (a3)
+  accessoryCopy = accessory;
+  if (accessory)
   {
-    v13 = [a3 stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
+    accessoryCopy = [accessory stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
   }
 
-  if (a4)
+  if (name)
   {
-    a4 = [a4 stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
+    name = [name stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
   }
 
-  if (a5)
+  if (model)
   {
-    a5 = [a5 stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
+    model = [model stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
   }
 
-  if (a6)
+  if (number)
   {
-    v14 = [a6 stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
-    if (!a7)
+    v14 = [number stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
+    if (!firmware)
     {
       goto LABEL_10;
     }
@@ -56,16 +56,16 @@
   }
 
   v14 = 0;
-  if (a7)
+  if (firmware)
   {
 LABEL_9:
-    a7 = [a7 stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
+    firmware = [firmware stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
   }
 
 LABEL_10:
-  if (a8)
+  if (revision)
   {
-    v15 = [a8 stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
+    v15 = [revision stringByTrimmingCharactersInSet:{+[NSCharacterSet whitespaceCharacterSet](NSCharacterSet, "whitespaceCharacterSet")}];
   }
 
   else
@@ -73,9 +73,9 @@ LABEL_10:
     v15 = 0;
   }
 
-  if ([v13 length])
+  if ([accessoryCopy length])
   {
-    v16 = v13;
+    v16 = accessoryCopy;
   }
 
   else
@@ -83,24 +83,24 @@ LABEL_10:
     v16 = 0;
   }
 
-  if ([a4 length])
+  if ([name length])
   {
-    v17 = a4;
+    nameCopy = name;
   }
 
   else
   {
-    v17 = 0;
+    nameCopy = 0;
   }
 
-  if ([a5 length])
+  if ([model length])
   {
-    v18 = a5;
+    modelCopy = model;
   }
 
   else
   {
-    v18 = 0;
+    modelCopy = 0;
   }
 
   if ([v14 length])
@@ -113,9 +113,9 @@ LABEL_10:
     v19 = 0;
   }
 
-  if (![a7 length])
+  if (![firmware length])
   {
-    a7 = 0;
+    firmware = 0;
   }
 
   if ([v15 length])
@@ -128,9 +128,9 @@ LABEL_10:
     v20 = 0;
   }
 
-  if (v16 && v18 && a7)
+  if (v16 && modelCopy && firmware)
   {
-    if (![v16 caseInsensitiveCompare:@"HARMAN"] && !objc_msgSend(v18, "caseInsensitiveCompare:", @"MIB2") && (+[CLAccessoryObserverHelper isString:prefixedBy:](CLAccessoryObserverHelper, "isString:prefixedBy:", a7, @"CLU4_MMX2_VW") || +[CLAccessoryObserverHelper isString:prefixedBy:](CLAccessoryObserverHelper, "isString:prefixedBy:", a7, @"CLU4_MMX2_SK") || +[CLAccessoryObserverHelper isString:prefixedBy:](CLAccessoryObserverHelper, "isString:prefixedBy:", a7, @"CLU4_MMX2_SE")))
+    if (![v16 caseInsensitiveCompare:@"HARMAN"] && !objc_msgSend(modelCopy, "caseInsensitiveCompare:", @"MIB2") && (+[CLAccessoryObserverHelper isString:prefixedBy:](CLAccessoryObserverHelper, "isString:prefixedBy:", firmware, @"CLU4_MMX2_VW") || +[CLAccessoryObserverHelper isString:prefixedBy:](CLAccessoryObserverHelper, "isString:prefixedBy:", firmware, @"CLU4_MMX2_SK") || +[CLAccessoryObserverHelper isString:prefixedBy:](CLAccessoryObserverHelper, "isString:prefixedBy:", firmware, @"CLU4_MMX2_SE")))
     {
       if (qword_1025D45E0 != -1)
       {
@@ -154,7 +154,7 @@ LABEL_79:
       return v21;
     }
 
-    if (![v16 caseInsensitiveCompare:@"VOLKSWAGEN AG"] && !objc_msgSend(v18, "caseInsensitiveCompare:", @"MIB STD") && !objc_msgSend(a7, "caseInsensitiveCompare:", @"1.0.0") && v19 && !objc_msgSend(v19, "caseInsensitiveCompare:", @"EP.2015.1"))
+    if (![v16 caseInsensitiveCompare:@"VOLKSWAGEN AG"] && !objc_msgSend(modelCopy, "caseInsensitiveCompare:", @"MIB STD") && !objc_msgSend(firmware, "caseInsensitiveCompare:", @"1.0.0") && v19 && !objc_msgSend(v19, "caseInsensitiveCompare:", @"EP.2015.1"))
     {
       if (qword_1025D45E0 != -1)
       {
@@ -176,7 +176,7 @@ LABEL_79:
       goto LABEL_79;
     }
 
-    if ((![v16 caseInsensitiveCompare:@"VOLKSWAGEN AG"] || !objc_msgSend(v16, "caseInsensitiveCompare:", @"SKODA AUTO a.s.") || !objc_msgSend(v16, "caseInsensitiveCompare:", @"SEAT S.A.")) && !objc_msgSend(v18, "caseInsensitiveCompare:", @"MIB STD") && (!objc_msgSend(a7, "caseInsensitiveCompare:", @"2.0.0") || +[CLAccessoryObserverHelper isString:prefixedBy:](CLAccessoryObserverHelper, "isString:prefixedBy:", a7, @"035") || +[CLAccessoryObserverHelper isString:prefixedBy:](CLAccessoryObserverHelper, "isString:prefixedBy:", a7, @"X35")))
+    if ((![v16 caseInsensitiveCompare:@"VOLKSWAGEN AG"] || !objc_msgSend(v16, "caseInsensitiveCompare:", @"SKODA AUTO a.s.") || !objc_msgSend(v16, "caseInsensitiveCompare:", @"SEAT S.A.")) && !objc_msgSend(modelCopy, "caseInsensitiveCompare:", @"MIB STD") && (!objc_msgSend(firmware, "caseInsensitiveCompare:", @"2.0.0") || +[CLAccessoryObserverHelper isString:prefixedBy:](CLAccessoryObserverHelper, "isString:prefixedBy:", firmware, @"035") || +[CLAccessoryObserverHelper isString:prefixedBy:](CLAccessoryObserverHelper, "isString:prefixedBy:", firmware, @"X35")))
     {
       if (qword_1025D45E0 != -1)
       {
@@ -200,11 +200,11 @@ LABEL_79:
   }
 
   LOBYTE(v21) = 0;
-  if (v16 && v17 && v18 && a7 && v20)
+  if (v16 && nameCopy && modelCopy && firmware && v20)
   {
-    if (![v17 caseInsensitiveCompare:@"BENTLEY"] && (!objc_msgSend(v16, "caseInsensitiveCompare:", @"HARMAN") || !objc_msgSend(v16, "caseInsensitiveCompare:", @"AISIN")) && !objc_msgSend(v18, "caseInsensitiveCompare:", @"MIB2"))
+    if (![nameCopy caseInsensitiveCompare:@"BENTLEY"] && (!objc_msgSend(v16, "caseInsensitiveCompare:", @"HARMAN") || !objc_msgSend(v16, "caseInsensitiveCompare:", @"AISIN")) && !objc_msgSend(modelCopy, "caseInsensitiveCompare:", @"MIB2"))
     {
-      v21 = [CLAccessoryObserverHelper isString:a7 prefixedBy:@"CLU5_"];
+      v21 = [CLAccessoryObserverHelper isString:firmware prefixedBy:@"CLU5_"];
       if (!v21)
       {
         return v21;

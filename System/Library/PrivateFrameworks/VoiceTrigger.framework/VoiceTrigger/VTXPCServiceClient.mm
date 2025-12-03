@@ -11,16 +11,16 @@
 - (unsigned)getLastTriggerType;
 - (void)clearVoiceTriggerCount;
 - (void)dealloc;
-- (void)enableVoiceTrigger:(BOOL)a3 withAssertion:(id)a4;
+- (void)enableVoiceTrigger:(BOOL)trigger withAssertion:(id)assertion;
 - (void)notifySecondChanceRequest;
 - (void)notifyTriggerEventRequest;
-- (void)notifyVoiceTriggeredSiriSessionCancelled:(id)a3;
-- (void)requestAudioCapture:(double)a3;
-- (void)requestCurrentVoiceTriggerAssetDictionaryWithReply:(id)a3;
+- (void)notifyVoiceTriggeredSiriSessionCancelled:(id)cancelled;
+- (void)requestAudioCapture:(double)capture;
+- (void)requestCurrentVoiceTriggerAssetDictionaryWithReply:(id)reply;
 - (void)resetAssertions;
-- (void)setCurrentBuiltInRTModelDictionary:(id)a3;
-- (void)setPhraseSpotterBypassing:(BOOL)a3 timeout:(double)a4;
-- (void)setRaiseToSpeakBypassing:(BOOL)a3 timeout:(double)a4;
+- (void)setCurrentBuiltInRTModelDictionary:(id)dictionary;
+- (void)setPhraseSpotterBypassing:(BOOL)bypassing timeout:(double)timeout;
+- (void)setRaiseToSpeakBypassing:(BOOL)bypassing timeout:(double)timeout;
 @end
 
 @implementation VTXPCServiceClient
@@ -142,17 +142,17 @@ void __30__VTXPCServiceClient__service__block_invoke_82()
   }
 }
 
-- (void)setCurrentBuiltInRTModelDictionary:(id)a3
+- (void)setCurrentBuiltInRTModelDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __57__VTXPCServiceClient_setCurrentBuiltInRTModelDictionary___block_invoke;
   v7[3] = &unk_2784ED118;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = dictionaryCopy;
+  v6 = dictionaryCopy;
   dispatch_async(queue, v7);
 }
 
@@ -162,17 +162,17 @@ void __57__VTXPCServiceClient_setCurrentBuiltInRTModelDictionary___block_invoke(
   [v2 setCurrentBuiltInRTModelDictionary:*(a1 + 40)];
 }
 
-- (void)requestCurrentVoiceTriggerAssetDictionaryWithReply:(id)a3
+- (void)requestCurrentVoiceTriggerAssetDictionaryWithReply:(id)reply
 {
-  v4 = a3;
+  replyCopy = reply;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__VTXPCServiceClient_requestCurrentVoiceTriggerAssetDictionaryWithReply___block_invoke;
   v7[3] = &unk_2784ECD30;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = replyCopy;
+  v6 = replyCopy;
   dispatch_async(queue, v7);
 }
 
@@ -244,7 +244,7 @@ void __63__VTXPCServiceClient_requestCurrentVoiceTriggerAssetDictionary__block_i
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)requestAudioCapture:(double)a3
+- (void)requestAudioCapture:(double)capture
 {
   queue = self->_queue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -252,7 +252,7 @@ void __63__VTXPCServiceClient_requestCurrentVoiceTriggerAssetDictionary__block_i
   v4[2] = __42__VTXPCServiceClient_requestAudioCapture___block_invoke;
   v4[3] = &unk_2784ED0C8;
   v4[4] = self;
-  *&v4[5] = a3;
+  *&v4[5] = capture;
   dispatch_async(queue, v4);
 }
 
@@ -642,17 +642,17 @@ void __47__VTXPCServiceClient_notifySecondChanceRequest__block_invoke(uint64_t a
   [v1 notifySecondChanceRequest];
 }
 
-- (void)notifyVoiceTriggeredSiriSessionCancelled:(id)a3
+- (void)notifyVoiceTriggeredSiriSessionCancelled:(id)cancelled
 {
-  v4 = a3;
+  cancelledCopy = cancelled;
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __63__VTXPCServiceClient_notifyVoiceTriggeredSiriSessionCancelled___block_invoke;
   v7[3] = &unk_2784ED118;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = cancelledCopy;
+  v6 = cancelledCopy;
   dispatch_async(queue, v7);
 }
 
@@ -662,7 +662,7 @@ void __63__VTXPCServiceClient_notifyVoiceTriggeredSiriSessionCancelled___block_i
   [v2 notifyVoiceTriggeredSiriSessionCancelled:*(a1 + 40)];
 }
 
-- (void)setRaiseToSpeakBypassing:(BOOL)a3 timeout:(double)a4
+- (void)setRaiseToSpeakBypassing:(BOOL)bypassing timeout:(double)timeout
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -670,8 +670,8 @@ void __63__VTXPCServiceClient_notifyVoiceTriggeredSiriSessionCancelled___block_i
   block[2] = __55__VTXPCServiceClient_setRaiseToSpeakBypassing_timeout___block_invoke;
   block[3] = &unk_2784EC628;
   block[4] = self;
-  v6 = a3;
-  *&block[5] = a4;
+  bypassingCopy = bypassing;
+  *&block[5] = timeout;
   dispatch_async(queue, block);
 }
 
@@ -685,7 +685,7 @@ void __55__VTXPCServiceClient_setRaiseToSpeakBypassing_timeout___block_invoke(ui
   [v6 setRaiseToSpeakBypassing:v2 timeout:v3 timestamp:v5];
 }
 
-- (void)setPhraseSpotterBypassing:(BOOL)a3 timeout:(double)a4
+- (void)setPhraseSpotterBypassing:(BOOL)bypassing timeout:(double)timeout
 {
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
@@ -693,8 +693,8 @@ void __55__VTXPCServiceClient_setRaiseToSpeakBypassing_timeout___block_invoke(ui
   block[2] = __56__VTXPCServiceClient_setPhraseSpotterBypassing_timeout___block_invoke;
   block[3] = &unk_2784EC628;
   block[4] = self;
-  v6 = a3;
-  *&block[5] = a4;
+  bypassingCopy = bypassing;
+  *&block[5] = timeout;
   dispatch_async(queue, block);
 }
 
@@ -708,18 +708,18 @@ void __56__VTXPCServiceClient_setPhraseSpotterBypassing_timeout___block_invoke(u
   [v6 setPhraseSpotterBypassing:v2 timeout:v3 timestamp:v5];
 }
 
-- (void)enableVoiceTrigger:(BOOL)a3 withAssertion:(id)a4
+- (void)enableVoiceTrigger:(BOOL)trigger withAssertion:(id)assertion
 {
-  v6 = a4;
+  assertionCopy = assertion;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __55__VTXPCServiceClient_enableVoiceTrigger_withAssertion___block_invoke;
   block[3] = &unk_2784EC600;
-  v11 = a3;
+  triggerCopy = trigger;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = assertionCopy;
+  v8 = assertionCopy;
   dispatch_async(queue, block);
 }
 

@@ -1,24 +1,24 @@
 @interface MAFile
 - (BOOL)releaseSandboxExtension;
-- (MAFile)initWithPath:(id)a3 attributes:(id)a4 extensionHandle:(int64_t)a5;
+- (MAFile)initWithPath:(id)path attributes:(id)attributes extensionHandle:(int64_t)handle;
 - (void)dealloc;
 @end
 
 @implementation MAFile
 
-- (MAFile)initWithPath:(id)a3 attributes:(id)a4 extensionHandle:(int64_t)a5
+- (MAFile)initWithPath:(id)path attributes:(id)attributes extensionHandle:(int64_t)handle
 {
-  v9 = a3;
-  v10 = a4;
+  pathCopy = path;
+  attributesCopy = attributes;
   v14.receiver = self;
   v14.super_class = MAFile;
   v11 = [(MAFile *)&v14 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_attributes, a4);
-    objc_storeStrong(&v12->_pathname, a3);
-    v12->_extHandle = a5;
+    objc_storeStrong(&v11->_attributes, attributes);
+    objc_storeStrong(&v12->_pathname, path);
+    v12->_extHandle = handle;
     *&v12->_released = 256;
   }
 

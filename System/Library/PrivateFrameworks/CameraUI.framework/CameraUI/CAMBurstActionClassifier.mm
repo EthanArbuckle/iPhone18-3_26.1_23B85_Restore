@@ -1,8 +1,8 @@
 @interface CAMBurstActionClassifier
 - (BOOL)isBurstAction;
 - (CAMBurstActionClassifier)init;
-- (CAMBurstActionClassifier)initWithVersion:(int)a3;
-- (double)computeKernelValueWithSupportVector:(const CAMBurstSupportVector *)a3;
+- (CAMBurstActionClassifier)initWithVersion:(int)version;
+- (double)computeKernelValueWithSupportVector:(const CAMBurstSupportVector *)vector;
 - (float)predictResult;
 - (void)scaleVector;
 @end
@@ -25,7 +25,7 @@
   return result;
 }
 
-- (CAMBurstActionClassifier)initWithVersion:(int)a3
+- (CAMBurstActionClassifier)initWithVersion:(int)version
 {
   v8.receiver = self;
   v8.super_class = CAMBurstActionClassifier;
@@ -33,7 +33,7 @@
   v5 = v4;
   if (v4)
   {
-    if (a3 <= 1)
+    if (version <= 1)
     {
       v6 = &g_svmParameters_v1;
     }
@@ -53,7 +53,7 @@
 {
   if (!self->hasBeenScaled)
   {
-    v3 = [(CAMBurstActionClassifier *)self svmParameters];
+    svmParameters = [(CAMBurstActionClassifier *)self svmParameters];
     v4 = log((self->testAverageCameraTravelDistance + 1.0));
     v5 = 0;
     *&v4 = v4;
@@ -65,7 +65,7 @@
     v7 = *&self->testMaxInnerDistance;
     *&self->testVector[3] = vcvtq_f64_f32(*&self->testBeginningVsEndAEMatrixVsAverageAdjacentAEMatrix);
     *&self->testVector[5] = vcvtq_f64_f32(v7);
-    p_var1 = &v3->var0[0].var1;
+    p_var1 = &svmParameters->var0[0].var1;
     do
     {
       self->testVector[v5] = (self->testVector[v5] - *p_var1) / *(p_var1 - 1);
@@ -85,7 +85,7 @@
   }
 }
 
-- (double)computeKernelValueWithSupportVector:(const CAMBurstSupportVector *)a3
+- (double)computeKernelValueWithSupportVector:(const CAMBurstSupportVector *)vector
 {
   result = 0.0;
   if (self->hasBeenScaled)
@@ -94,13 +94,13 @@
     v5 = 0.0;
     do
     {
-      v6 = a3->var1[v4] - self->testVector[v4];
+      v6 = vector->var1[v4] - self->testVector[v4];
       v5 = v5 + v6 * v6;
       ++v4;
     }
 
     while (v4 != 7);
-    var0 = a3->var0;
+    var0 = vector->var0;
     return var0 * exp(-([(CAMBurstActionClassifier *)self svmParameters][56] * v5));
   }
 

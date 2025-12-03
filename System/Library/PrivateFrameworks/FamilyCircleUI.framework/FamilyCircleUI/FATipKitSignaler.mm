@@ -1,19 +1,19 @@
 @interface FATipKitSignaler
-+ (void)_sendSignalForEventIdentifier:(id)a3 context:(id)a4;
++ (void)_sendSignalForEventIdentifier:(id)identifier context:(id)context;
 @end
 
 @implementation FATipKitSignaler
 
-+ (void)_sendSignalForEventIdentifier:(id)a3 context:(id)a4
++ (void)_sendSignalForEventIdentifier:(id)identifier context:(id)context
 {
   v5 = MEMORY[0x277CF1938];
-  v6 = a4;
-  v7 = a3;
-  v10 = [[v5 alloc] initWithIdentifier:v7 bundleID:@"com.apple.Preferences" context:v6 userInfo:0];
+  contextCopy = context;
+  identifierCopy = identifier;
+  v10 = [[v5 alloc] initWithIdentifier:identifierCopy bundleID:@"com.apple.Preferences" context:contextCopy userInfo:0];
 
-  v8 = [MEMORY[0x277CF1B58] discoverabilitySignal];
-  v9 = [v8 source];
-  [v9 sendEvent:v10];
+  discoverabilitySignal = [MEMORY[0x277CF1B58] discoverabilitySignal];
+  source = [discoverabilitySignal source];
+  [source sendEvent:v10];
 }
 
 @end

@@ -1,16 +1,16 @@
 @interface HUQuickControlContainerViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation HUQuickControlContainerViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"HUQuickControlContainerView" hasInstanceMethod:@"detailsButton" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"HUQuickControlContainerView" isKindOfClass:@"UIView"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"HUQuickControlContainerView" hasInstanceMethod:@"detailsButton" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"HUQuickControlContainerView" isKindOfClass:@"UIView"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation

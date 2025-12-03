@@ -1,5 +1,5 @@
 @interface GKColorPalette
-+ (id)paletteFromImage:(id)a3;
++ (id)paletteFromImage:(id)image;
 + (id)sharedPalette;
 - (UIColor)selectedCellBackgroundColor;
 @end
@@ -35,18 +35,18 @@ uint64_t __31__GKColorPalette_sharedPalette__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-+ (id)paletteFromImage:(id)a3
++ (id)paletteFromImage:(id)image
 {
-  v3 = a3;
-  v4 = [[GKImageColorPalette alloc] initWithImage:v3];
+  imageCopy = image;
+  v4 = [[GKImageColorPalette alloc] initWithImage:imageCopy];
 
   return v4;
 }
 
 - (UIColor)selectedCellBackgroundColor
 {
-  v2 = [MEMORY[0x277D75348] labelColor];
-  v3 = [v2 colorWithAlphaComponent:0.1];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v3 = [labelColor colorWithAlphaComponent:0.1];
 
   return v3;
 }

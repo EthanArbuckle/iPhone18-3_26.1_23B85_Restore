@@ -1,18 +1,18 @@
 @interface AWDProactiveModelFittingLogRegGradient
 - (BOOL)hasGradient;
-- (BOOL)isEqual:(id)a3;
-- (float)gradientValueAtIndex:(unint64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (float)gradientValueAtIndex:(unint64_t)index;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)gradientLength;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasGradientL2norm:(BOOL)a3;
-- (void)setHasGradientScaleFactor:(BOOL)a3;
-- (void)setHasTimestamp:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasGradientL2norm:(BOOL)l2norm;
+- (void)setHasGradientScaleFactor:(BOOL)factor;
+- (void)setHasTimestamp:(BOOL)timestamp;
+- (void)writeTo:(id)to;
 @end
 
 @implementation AWDProactiveModelFittingLogRegGradient
@@ -21,16 +21,16 @@
 {
   if ([(AWDProactiveModelFittingLogRegGradient *)self hasSparseFloatGradient])
   {
-    v3 = [(AWDProactiveModelFittingLogRegGradient *)self sparseFloatGradient];
-    v4 = [v3 length];
+    sparseFloatGradient = [(AWDProactiveModelFittingLogRegGradient *)self sparseFloatGradient];
+    valuesCount = [sparseFloatGradient length];
   }
 
   else
   {
     if ([(AWDProactiveModelFittingLogRegGradient *)self hasSparseQuantizedGradient])
     {
-      v3 = [(AWDProactiveModelFittingLogRegGradient *)self sparseQuantizedGradient];
-      v5 = [v3 length];
+      sparseFloatGradient = [(AWDProactiveModelFittingLogRegGradient *)self sparseQuantizedGradient];
+      v5 = [sparseFloatGradient length];
       goto LABEL_6;
     }
 
@@ -39,22 +39,22 @@
       return 0;
     }
 
-    v3 = [(AWDProactiveModelFittingLogRegGradient *)self denseQuantizedGradient];
-    v4 = [v3 valuesCount];
+    sparseFloatGradient = [(AWDProactiveModelFittingLogRegGradient *)self denseQuantizedGradient];
+    valuesCount = [sparseFloatGradient valuesCount];
   }
 
-  v5 = v4;
+  v5 = valuesCount;
 LABEL_6:
 
   return v5;
 }
 
-- (float)gradientValueAtIndex:(unint64_t)a3
+- (float)gradientValueAtIndex:(unint64_t)index
 {
   if ([(AWDProactiveModelFittingLogRegGradient *)self hasSparseFloatGradient])
   {
-    v5 = [(AWDProactiveModelFittingLogRegGradient *)self sparseFloatGradient];
-    [v5 valueAtIndex:a3];
+    sparseFloatGradient = [(AWDProactiveModelFittingLogRegGradient *)self sparseFloatGradient];
+    [sparseFloatGradient valueAtIndex:index];
 LABEL_8:
     v8 = v6;
 
@@ -63,17 +63,17 @@ LABEL_8:
 
   if ([(AWDProactiveModelFittingLogRegGradient *)self hasSparseQuantizedGradient])
   {
-    v7 = [(AWDProactiveModelFittingLogRegGradient *)self sparseQuantizedGradient];
+    sparseQuantizedGradient = [(AWDProactiveModelFittingLogRegGradient *)self sparseQuantizedGradient];
 LABEL_7:
-    v5 = v7;
-    [v7 originalValueAtIndex:a3];
+    sparseFloatGradient = sparseQuantizedGradient;
+    [sparseQuantizedGradient originalValueAtIndex:index];
     goto LABEL_8;
   }
 
   v8 = 0.0;
   if ([(AWDProactiveModelFittingLogRegGradient *)self hasDenseQuantizedGradient])
   {
-    v7 = [(AWDProactiveModelFittingLogRegGradient *)self denseQuantizedGradient];
+    sparseQuantizedGradient = [(AWDProactiveModelFittingLogRegGradient *)self denseQuantizedGradient];
     goto LABEL_7;
   }
 
@@ -90,13 +90,13 @@ LABEL_7:
   return [(AWDProactiveModelFittingLogRegGradient *)self hasDenseQuantizedGradient];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if ((v4[10] & 2) != 0)
+  fromCopy = from;
+  v5 = fromCopy;
+  if ((fromCopy[10] & 2) != 0)
   {
-    self->_timestamp = v4[2];
+    self->_timestamp = fromCopy[2];
     *&self->_has |= 2u;
   }
 
@@ -366,36 +366,36 @@ LABEL_35:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v12 ^ v17 ^ [(AWDProactiveModelFittingQuantizedDenseVector *)self->_denseQuantizedGradient hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_35;
   }
 
-  v5 = *(v4 + 80);
+  v5 = *(equalCopy + 80);
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 80) & 2) == 0 || self->_timestamp != *(v4 + 2))
+    if ((*(equalCopy + 80) & 2) == 0 || self->_timestamp != *(equalCopy + 2))
     {
       goto LABEL_35;
     }
   }
 
-  else if ((*(v4 + 80) & 2) != 0)
+  else if ((*(equalCopy + 80) & 2) != 0)
   {
     goto LABEL_35;
   }
 
   modelInfo = self->_modelInfo;
-  if (modelInfo | *(v4 + 7) && ![(AWDProactiveModelFittingModelInfo *)modelInfo isEqual:?])
+  if (modelInfo | *(equalCopy + 7) && ![(AWDProactiveModelFittingModelInfo *)modelInfo isEqual:?])
   {
     goto LABEL_35;
   }
 
   sparseFloatGradient = self->_sparseFloatGradient;
-  if (sparseFloatGradient | *(v4 + 8))
+  if (sparseFloatGradient | *(equalCopy + 8))
   {
     if (![(AWDProactiveModelFittingSparseFloatVector *)sparseFloatGradient isEqual:?])
     {
@@ -404,7 +404,7 @@ LABEL_35:
   }
 
   minibatchStats = self->_minibatchStats;
-  if (minibatchStats | *(v4 + 6))
+  if (minibatchStats | *(equalCopy + 6))
   {
     if (![(AWDProactiveModelFittingMinibatchStats *)minibatchStats isEqual:?])
     {
@@ -413,7 +413,7 @@ LABEL_35:
   }
 
   evaluationMetrics = self->_evaluationMetrics;
-  if (evaluationMetrics | *(v4 + 4))
+  if (evaluationMetrics | *(equalCopy + 4))
   {
     if (![(AWDProactiveModelFittingEvalMetrics *)evaluationMetrics isEqual:?])
     {
@@ -422,22 +422,22 @@ LABEL_35:
   }
 
   has = self->_has;
-  v11 = *(v4 + 80);
+  v11 = *(equalCopy + 80);
   if (has)
   {
-    if ((*(v4 + 80) & 1) == 0 || self->_iteration != *(v4 + 1))
+    if ((*(equalCopy + 80) & 1) == 0 || self->_iteration != *(equalCopy + 1))
     {
       goto LABEL_35;
     }
   }
 
-  else if (*(v4 + 80))
+  else if (*(equalCopy + 80))
   {
     goto LABEL_35;
   }
 
   sparseQuantizedGradient = self->_sparseQuantizedGradient;
-  if (sparseQuantizedGradient | *(v4 + 9))
+  if (sparseQuantizedGradient | *(equalCopy + 9))
   {
     if (![(AWDProactiveModelFittingQuantizedSparseVector *)sparseQuantizedGradient isEqual:?])
     {
@@ -447,12 +447,12 @@ LABEL_35:
     }
 
     has = self->_has;
-    v11 = *(v4 + 80);
+    v11 = *(equalCopy + 80);
   }
 
   if ((has & 8) != 0)
   {
-    if ((v11 & 8) == 0 || self->_gradientScaleFactor != *(v4 + 11))
+    if ((v11 & 8) == 0 || self->_gradientScaleFactor != *(equalCopy + 11))
     {
       goto LABEL_35;
     }
@@ -465,7 +465,7 @@ LABEL_35:
 
   if ((has & 4) != 0)
   {
-    if ((v11 & 4) == 0 || self->_gradientL2norm != *(v4 + 10))
+    if ((v11 & 4) == 0 || self->_gradientL2norm != *(equalCopy + 10))
     {
       goto LABEL_35;
     }
@@ -477,7 +477,7 @@ LABEL_35:
   }
 
   denseQuantizedGradient = self->_denseQuantizedGradient;
-  if (denseQuantizedGradient | *(v4 + 3))
+  if (denseQuantizedGradient | *(equalCopy + 3))
   {
     v14 = [(AWDProactiveModelFittingQuantizedDenseVector *)denseQuantizedGradient isEqual:?];
   }
@@ -492,9 +492,9 @@ LABEL_36:
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if ((*&self->_has & 2) != 0)
   {
@@ -502,19 +502,19 @@ LABEL_36:
     *(v5 + 80) |= 2u;
   }
 
-  v7 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copyWithZone:a3];
+  v7 = [(AWDProactiveModelFittingModelInfo *)self->_modelInfo copyWithZone:zone];
   v8 = *(v6 + 56);
   *(v6 + 56) = v7;
 
-  v9 = [(AWDProactiveModelFittingSparseFloatVector *)self->_sparseFloatGradient copyWithZone:a3];
+  v9 = [(AWDProactiveModelFittingSparseFloatVector *)self->_sparseFloatGradient copyWithZone:zone];
   v10 = *(v6 + 64);
   *(v6 + 64) = v9;
 
-  v11 = [(AWDProactiveModelFittingMinibatchStats *)self->_minibatchStats copyWithZone:a3];
+  v11 = [(AWDProactiveModelFittingMinibatchStats *)self->_minibatchStats copyWithZone:zone];
   v12 = *(v6 + 48);
   *(v6 + 48) = v11;
 
-  v13 = [(AWDProactiveModelFittingEvalMetrics *)self->_evaluationMetrics copyWithZone:a3];
+  v13 = [(AWDProactiveModelFittingEvalMetrics *)self->_evaluationMetrics copyWithZone:zone];
   v14 = *(v6 + 32);
   *(v6 + 32) = v13;
 
@@ -524,7 +524,7 @@ LABEL_36:
     *(v6 + 80) |= 1u;
   }
 
-  v15 = [(AWDProactiveModelFittingQuantizedSparseVector *)self->_sparseQuantizedGradient copyWithZone:a3];
+  v15 = [(AWDProactiveModelFittingQuantizedSparseVector *)self->_sparseQuantizedGradient copyWithZone:zone];
   v16 = *(v6 + 72);
   *(v6 + 72) = v15;
 
@@ -542,126 +542,126 @@ LABEL_36:
     *(v6 + 80) |= 4u;
   }
 
-  v18 = [(AWDProactiveModelFittingQuantizedDenseVector *)self->_denseQuantizedGradient copyWithZone:a3];
+  v18 = [(AWDProactiveModelFittingQuantizedDenseVector *)self->_denseQuantizedGradient copyWithZone:zone];
   v19 = *(v6 + 24);
   *(v6 + 24) = v18;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if ((*&self->_has & 2) != 0)
   {
-    v4[2] = self->_timestamp;
-    *(v4 + 80) |= 2u;
+    toCopy[2] = self->_timestamp;
+    *(toCopy + 80) |= 2u;
   }
 
-  v6 = v4;
+  v6 = toCopy;
   if (self->_modelInfo)
   {
-    [v4 setModelInfo:?];
-    v4 = v6;
+    [toCopy setModelInfo:?];
+    toCopy = v6;
   }
 
   if (self->_sparseFloatGradient)
   {
     [v6 setSparseFloatGradient:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_minibatchStats)
   {
     [v6 setMinibatchStats:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_evaluationMetrics)
   {
     [v6 setEvaluationMetrics:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (*&self->_has)
   {
-    v4[1] = self->_iteration;
-    *(v4 + 80) |= 1u;
+    toCopy[1] = self->_iteration;
+    *(toCopy + 80) |= 1u;
   }
 
   if (self->_sparseQuantizedGradient)
   {
     [v6 setSparseQuantizedGradient:?];
-    v4 = v6;
+    toCopy = v6;
   }
 
   has = self->_has;
   if ((has & 8) != 0)
   {
-    *(v4 + 11) = LODWORD(self->_gradientScaleFactor);
-    *(v4 + 80) |= 8u;
+    *(toCopy + 11) = LODWORD(self->_gradientScaleFactor);
+    *(toCopy + 80) |= 8u;
     has = self->_has;
   }
 
   if ((has & 4) != 0)
   {
-    *(v4 + 10) = LODWORD(self->_gradientL2norm);
-    *(v4 + 80) |= 4u;
+    *(toCopy + 10) = LODWORD(self->_gradientL2norm);
+    *(toCopy + 80) |= 4u;
   }
 
   if (self->_denseQuantizedGradient)
   {
     [v6 setDenseQuantizedGradient:?];
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if ((*&self->_has & 2) != 0)
   {
     timestamp = self->_timestamp;
     PBDataWriterWriteUint64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_modelInfo)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_sparseFloatGradient)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_minibatchStats)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_evaluationMetrics)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (*&self->_has)
   {
     iteration = self->_iteration;
     PBDataWriterWriteUint64Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_sparseQuantizedGradient)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -669,7 +669,7 @@ LABEL_36:
   {
     gradientScaleFactor = self->_gradientScaleFactor;
     PBDataWriterWriteFloatField();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
   }
 
@@ -677,64 +677,64 @@ LABEL_36:
   {
     gradientL2norm = self->_gradientL2norm;
     PBDataWriterWriteFloatField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_denseQuantizedGradient)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   if ((*&self->_has & 2) != 0)
   {
     v5 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_timestamp];
-    [v3 setObject:v5 forKey:@"timestamp"];
+    [dictionary setObject:v5 forKey:@"timestamp"];
   }
 
   modelInfo = self->_modelInfo;
   if (modelInfo)
   {
-    v7 = [(AWDProactiveModelFittingModelInfo *)modelInfo dictionaryRepresentation];
-    [v3 setObject:v7 forKey:@"modelInfo"];
+    dictionaryRepresentation = [(AWDProactiveModelFittingModelInfo *)modelInfo dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation forKey:@"modelInfo"];
   }
 
   sparseFloatGradient = self->_sparseFloatGradient;
   if (sparseFloatGradient)
   {
-    v9 = [(AWDProactiveModelFittingSparseFloatVector *)sparseFloatGradient dictionaryRepresentation];
-    [v3 setObject:v9 forKey:@"sparseFloatGradient"];
+    dictionaryRepresentation2 = [(AWDProactiveModelFittingSparseFloatVector *)sparseFloatGradient dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation2 forKey:@"sparseFloatGradient"];
   }
 
   minibatchStats = self->_minibatchStats;
   if (minibatchStats)
   {
-    v11 = [(AWDProactiveModelFittingMinibatchStats *)minibatchStats dictionaryRepresentation];
-    [v3 setObject:v11 forKey:@"minibatchStats"];
+    dictionaryRepresentation3 = [(AWDProactiveModelFittingMinibatchStats *)minibatchStats dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation3 forKey:@"minibatchStats"];
   }
 
   evaluationMetrics = self->_evaluationMetrics;
   if (evaluationMetrics)
   {
-    v13 = [(AWDProactiveModelFittingEvalMetrics *)evaluationMetrics dictionaryRepresentation];
-    [v3 setObject:v13 forKey:@"evaluationMetrics"];
+    dictionaryRepresentation4 = [(AWDProactiveModelFittingEvalMetrics *)evaluationMetrics dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation4 forKey:@"evaluationMetrics"];
   }
 
   if (*&self->_has)
   {
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:self->_iteration];
-    [v3 setObject:v14 forKey:@"iteration"];
+    [dictionary setObject:v14 forKey:@"iteration"];
   }
 
   sparseQuantizedGradient = self->_sparseQuantizedGradient;
   if (sparseQuantizedGradient)
   {
-    v16 = [(AWDProactiveModelFittingQuantizedSparseVector *)sparseQuantizedGradient dictionaryRepresentation];
-    [v3 setObject:v16 forKey:@"sparseQuantizedGradient"];
+    dictionaryRepresentation5 = [(AWDProactiveModelFittingQuantizedSparseVector *)sparseQuantizedGradient dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation5 forKey:@"sparseQuantizedGradient"];
   }
 
   has = self->_has;
@@ -742,7 +742,7 @@ LABEL_36:
   {
     *&v4 = self->_gradientScaleFactor;
     v18 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v18 forKey:@"gradientScaleFactor"];
+    [dictionary setObject:v18 forKey:@"gradientScaleFactor"];
 
     has = self->_has;
   }
@@ -751,17 +751,17 @@ LABEL_36:
   {
     *&v4 = self->_gradientL2norm;
     v19 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
-    [v3 setObject:v19 forKey:@"gradientL2norm"];
+    [dictionary setObject:v19 forKey:@"gradientL2norm"];
   }
 
   denseQuantizedGradient = self->_denseQuantizedGradient;
   if (denseQuantizedGradient)
   {
-    v21 = [(AWDProactiveModelFittingQuantizedDenseVector *)denseQuantizedGradient dictionaryRepresentation];
-    [v3 setObject:v21 forKey:@"denseQuantizedGradient"];
+    dictionaryRepresentation6 = [(AWDProactiveModelFittingQuantizedDenseVector *)denseQuantizedGradient dictionaryRepresentation];
+    [dictionary setObject:dictionaryRepresentation6 forKey:@"denseQuantizedGradient"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (id)description
@@ -770,15 +770,15 @@ LABEL_36:
   v8.receiver = self;
   v8.super_class = AWDProactiveModelFittingLogRegGradient;
   v4 = [(AWDProactiveModelFittingLogRegGradient *)&v8 description];
-  v5 = [(AWDProactiveModelFittingLogRegGradient *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(AWDProactiveModelFittingLogRegGradient *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
-- (void)setHasGradientL2norm:(BOOL)a3
+- (void)setHasGradientL2norm:(BOOL)l2norm
 {
-  if (a3)
+  if (l2norm)
   {
     v3 = 4;
   }
@@ -791,9 +791,9 @@ LABEL_36:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasGradientScaleFactor:(BOOL)a3
+- (void)setHasGradientScaleFactor:(BOOL)factor
 {
-  if (a3)
+  if (factor)
   {
     v3 = 8;
   }
@@ -806,9 +806,9 @@ LABEL_36:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasTimestamp:(BOOL)a3
+- (void)setHasTimestamp:(BOOL)timestamp
 {
-  if (a3)
+  if (timestamp)
   {
     v3 = 2;
   }

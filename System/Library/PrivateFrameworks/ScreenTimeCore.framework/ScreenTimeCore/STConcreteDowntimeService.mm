@@ -1,25 +1,25 @@
 @interface STConcreteDowntimeService
 - (STDowntimeServiceDelegate)delegate;
-- (void)isDowntimeEnabledForUserID:(id)a3 completionHandler:(id)a4;
-- (void)toggleOnDemandDowntimeForUserID:(id)a3 completionHandler:(id)a4;
+- (void)isDowntimeEnabledForUserID:(id)d completionHandler:(id)handler;
+- (void)toggleOnDemandDowntimeForUserID:(id)d completionHandler:(id)handler;
 @end
 
 @implementation STConcreteDowntimeService
 
-- (void)isDowntimeEnabledForUserID:(id)a3 completionHandler:(id)a4
+- (void)isDowntimeEnabledForUserID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcreteDowntimeService *)self delegate];
-  [v8 isDowntimeEnabledForUserID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(STConcreteDowntimeService *)self delegate];
+  [delegate isDowntimeEnabledForUserID:dCopy completionHandler:handlerCopy];
 }
 
-- (void)toggleOnDemandDowntimeForUserID:(id)a3 completionHandler:(id)a4
+- (void)toggleOnDemandDowntimeForUserID:(id)d completionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(STConcreteDowntimeService *)self delegate];
-  [v8 toggleOnDemandDowntimeForUserID:v7 completionHandler:v6];
+  handlerCopy = handler;
+  dCopy = d;
+  delegate = [(STConcreteDowntimeService *)self delegate];
+  [delegate toggleOnDemandDowntimeForUserID:dCopy completionHandler:handlerCopy];
 }
 
 - (STDowntimeServiceDelegate)delegate

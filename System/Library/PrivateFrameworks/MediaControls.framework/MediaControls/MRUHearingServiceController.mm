@@ -1,15 +1,15 @@
 @interface MRUHearingServiceController
-- (MRUHearingServiceController)initWithOutputDeviceRouteController:(id)a3;
-- (id)fetchRecordWithID:(id)a3 fromRecords:(id)a4;
+- (MRUHearingServiceController)initWithOutputDeviceRouteController:(id)controller;
+- (id)fetchRecordWithID:(id)d fromRecords:(id)records;
 - (id)primaryOutputDeviceUID;
 - (id)secondaryOutputDeviceUID;
 - (void)dealloc;
 - (void)reset;
-- (void)setPrimaryAmplification:(float)a3;
-- (void)setPrimaryHealthRecord:(id)a3;
-- (void)setSecondaryAmplification:(float)a3;
-- (void)setSecondaryHealthRecord:(id)a3;
-- (void)systemOutputDeviceRouteControllerDidUpdateOutputDevices:(id)a3;
+- (void)setPrimaryAmplification:(float)amplification;
+- (void)setPrimaryHealthRecord:(id)record;
+- (void)setSecondaryAmplification:(float)amplification;
+- (void)setSecondaryHealthRecord:(id)record;
+- (void)systemOutputDeviceRouteControllerDidUpdateOutputDevices:(id)devices;
 - (void)updateClient;
 - (void)updateHealthRecord;
 - (void)updatePrimaryAmplification;
@@ -30,25 +30,25 @@
 
   [(MRUHearingServiceController *)self setPrimaryHealthRecord:0];
   [(MRUHearingServiceController *)self setSecondaryHealthRecord:0];
-  v4 = [(MRUHearingServiceController *)self records];
-  [v4 removeAllObjects];
+  records = [(MRUHearingServiceController *)self records];
+  [records removeAllObjects];
 }
 
 - (void)updateSecondaryListeningModeOffAllowed
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(HMDeviceRecord *)self->_secondaryHealthRecord listeningModeOffAllowed];
-  v4 = v3 < 2;
+  listeningModeOffAllowed = [(HMDeviceRecord *)self->_secondaryHealthRecord listeningModeOffAllowed];
+  v4 = listeningModeOffAllowed < 2;
   if (self->_secondaryListeningModeOffAllowed != v4)
   {
-    v5 = v3;
+    v5 = listeningModeOffAllowed;
     self->_secondaryListeningModeOffAllowed = v4;
     v6 = MCLogCategoryVolume();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
-      v8 = [(HMDeviceRecord *)self->_secondaryHealthRecord bluetoothAddress];
-      v9 = v8;
+      bluetoothAddress = [(HMDeviceRecord *)self->_secondaryHealthRecord bluetoothAddress];
+      v9 = bluetoothAddress;
       if (v5 > 2)
       {
         v10 = "?";
@@ -62,7 +62,7 @@
       *buf = 138543874;
       v23 = v7;
       v24 = 2114;
-      v25 = v8;
+      v25 = bluetoothAddress;
       v26 = 2080;
       v27 = v10;
       _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ update secondary listeningModeOffAllowed for device: %{public}@ | listeningModeOffAllowed: %s", buf, 0x20u);
@@ -109,18 +109,18 @@
 - (void)updatePrimaryListeningModeOffAllowed
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(HMDeviceRecord *)self->_primaryHealthRecord listeningModeOffAllowed];
-  v4 = v3 < 2;
+  listeningModeOffAllowed = [(HMDeviceRecord *)self->_primaryHealthRecord listeningModeOffAllowed];
+  v4 = listeningModeOffAllowed < 2;
   if (self->_primaryListeningModeOffAllowed != v4)
   {
-    v5 = v3;
+    v5 = listeningModeOffAllowed;
     self->_primaryListeningModeOffAllowed = v4;
     v6 = MCLogCategoryVolume();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
-      v8 = [(HMDeviceRecord *)self->_primaryHealthRecord bluetoothAddress];
-      v9 = v8;
+      bluetoothAddress = [(HMDeviceRecord *)self->_primaryHealthRecord bluetoothAddress];
+      v9 = bluetoothAddress;
       if (v5 > 2)
       {
         v10 = "?";
@@ -134,7 +134,7 @@
       *buf = 138543874;
       v23 = v7;
       v24 = 2114;
-      v25 = v8;
+      v25 = bluetoothAddress;
       v26 = 2080;
       v27 = v10;
       _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ update primary listeningModeOffAllowed for device: %{public}@ | listeningModeOffAllowed: %s", buf, 0x20u);
@@ -181,9 +181,9 @@
 - (void)updateClient
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
-  v4 = [v3 logicalLeaderOutputDevice];
-  if ([v4 deviceType] == 2 && !self->_client)
+  primaryOutputDeviceRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
+  logicalLeaderOutputDevice = [primaryOutputDeviceRoute logicalLeaderOutputDevice];
+  if ([logicalLeaderOutputDevice deviceType] == 2 && !self->_client)
   {
     objc_initWeak(buf, self);
     v6 = objc_alloc_init(MEMORY[0x1E69A4590]);
@@ -215,7 +215,7 @@
     objc_destroyWeak(buf);
   }
 
-  else if ([v4 deviceType] != 2)
+  else if ([logicalLeaderOutputDevice deviceType] != 2)
   {
     v5 = MCLogCategoryVolume();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -232,18 +232,18 @@
 - (void)updatePrimaryHearingAidEnabled
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(HMDeviceRecord *)self->_primaryHealthRecord hearingAidEnabled];
-  v4 = v3 == 1;
+  hearingAidEnabled = [(HMDeviceRecord *)self->_primaryHealthRecord hearingAidEnabled];
+  v4 = hearingAidEnabled == 1;
   if (self->_primaryHearingAidEnabled != v4)
   {
-    v5 = v3;
+    v5 = hearingAidEnabled;
     self->_primaryHearingAidEnabled = v4;
     v6 = MCLogCategoryVolume();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
-      v8 = [(HMDeviceRecord *)self->_primaryHealthRecord bluetoothAddress];
-      v9 = v8;
+      bluetoothAddress = [(HMDeviceRecord *)self->_primaryHealthRecord bluetoothAddress];
+      v9 = bluetoothAddress;
       if (v5 > 2)
       {
         v10 = "?";
@@ -257,7 +257,7 @@
       *buf = 138543874;
       v23 = v7;
       v24 = 2114;
-      v25 = v8;
+      v25 = bluetoothAddress;
       v26 = 2080;
       v27 = v10;
       _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ update primary hearingAidEnabled for device: %{public}@ | hearingAidEnabled: %s", buf, 0x20u);
@@ -304,8 +304,8 @@
 - (void)updateSecondaryAmplification
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(HMDeviceRecord *)self->_secondaryHealthRecord amplification];
-  [v3 floatValue];
+  amplification = [(HMDeviceRecord *)self->_secondaryHealthRecord amplification];
+  [amplification floatValue];
   v5 = v4;
 
   if (v5 != self->_secondaryAmplification)
@@ -315,14 +315,14 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
-      v8 = [(HMDeviceRecord *)self->_secondaryHealthRecord bluetoothAddress];
-      v9 = [(HMDeviceRecord *)self->_secondaryHealthRecord amplification];
+      bluetoothAddress = [(HMDeviceRecord *)self->_secondaryHealthRecord bluetoothAddress];
+      amplification2 = [(HMDeviceRecord *)self->_secondaryHealthRecord amplification];
       *buf = 138543874;
       v23 = v7;
       v24 = 2114;
-      v25 = v8;
+      v25 = bluetoothAddress;
       v26 = 2114;
-      v27 = v9;
+      v27 = amplification2;
       _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ update secondary amplification for device: %{public}@ | amplification: %{public}@", buf, 0x20u);
     }
 
@@ -368,18 +368,18 @@
 - (void)updateSecondaryHearingAidEnabled
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(HMDeviceRecord *)self->_secondaryHealthRecord hearingAidEnabled];
-  v4 = v3 == 1;
+  hearingAidEnabled = [(HMDeviceRecord *)self->_secondaryHealthRecord hearingAidEnabled];
+  v4 = hearingAidEnabled == 1;
   if (self->_secondaryHearingAidEnabled != v4)
   {
-    v5 = v3;
+    v5 = hearingAidEnabled;
     self->_secondaryHearingAidEnabled = v4;
     v6 = MCLogCategoryVolume();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
-      v8 = [(HMDeviceRecord *)self->_secondaryHealthRecord bluetoothAddress];
-      v9 = v8;
+      bluetoothAddress = [(HMDeviceRecord *)self->_secondaryHealthRecord bluetoothAddress];
+      v9 = bluetoothAddress;
       if (v5 > 2)
       {
         v10 = "?";
@@ -393,7 +393,7 @@
       *buf = 138543874;
       v23 = v7;
       v24 = 2114;
-      v25 = v8;
+      v25 = bluetoothAddress;
       v26 = 2080;
       v27 = v10;
       _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ update secondary hearingAidEnabled for device: %{public}@ | hearingAidEnabled: %s", buf, 0x20u);
@@ -440,8 +440,8 @@
 - (void)updatePrimaryAmplification
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = [(HMDeviceRecord *)self->_primaryHealthRecord amplification];
-  [v3 floatValue];
+  amplification = [(HMDeviceRecord *)self->_primaryHealthRecord amplification];
+  [amplification floatValue];
   v5 = v4;
 
   if (v5 != self->_primaryAmplification)
@@ -451,14 +451,14 @@
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7 = objc_opt_class();
-      v8 = [(HMDeviceRecord *)self->_primaryHealthRecord bluetoothAddress];
-      v9 = [(HMDeviceRecord *)self->_primaryHealthRecord amplification];
+      bluetoothAddress = [(HMDeviceRecord *)self->_primaryHealthRecord bluetoothAddress];
+      amplification2 = [(HMDeviceRecord *)self->_primaryHealthRecord amplification];
       *buf = 138543874;
       v23 = v7;
       v24 = 2114;
-      v25 = v8;
+      v25 = bluetoothAddress;
       v26 = 2114;
-      v27 = v9;
+      v27 = amplification2;
       _os_log_impl(&dword_1A20FC000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@ update primary amplification for device: %{public}@ | amplification: %{public}@", buf, 0x20u);
     }
 
@@ -503,27 +503,27 @@
 
 - (void)updateHealthRecord
 {
-  v3 = [(MRUHearingServiceController *)self primaryOutputDeviceUID];
-  v4 = [(MRUHearingServiceController *)self records];
-  v5 = [v4 allValues];
-  v6 = [(MRUHearingServiceController *)self fetchRecordWithID:v3 fromRecords:v5];
+  primaryOutputDeviceUID = [(MRUHearingServiceController *)self primaryOutputDeviceUID];
+  records = [(MRUHearingServiceController *)self records];
+  allValues = [records allValues];
+  v6 = [(MRUHearingServiceController *)self fetchRecordWithID:primaryOutputDeviceUID fromRecords:allValues];
   [(MRUHearingServiceController *)self setPrimaryHealthRecord:v6];
 
-  v10 = [(MRUHearingServiceController *)self secondaryOutputDeviceUID];
-  v7 = [(MRUHearingServiceController *)self records];
-  v8 = [v7 allValues];
-  v9 = [(MRUHearingServiceController *)self fetchRecordWithID:v10 fromRecords:v8];
+  secondaryOutputDeviceUID = [(MRUHearingServiceController *)self secondaryOutputDeviceUID];
+  records2 = [(MRUHearingServiceController *)self records];
+  allValues2 = [records2 allValues];
+  v9 = [(MRUHearingServiceController *)self fetchRecordWithID:secondaryOutputDeviceUID fromRecords:allValues2];
   [(MRUHearingServiceController *)self setSecondaryHealthRecord:v9];
 }
 
 - (id)secondaryOutputDeviceUID
 {
-  v2 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController secondaryOutputDeviceRoute];
-  v3 = [v2 logicalLeaderOutputDevice];
+  secondaryOutputDeviceRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController secondaryOutputDeviceRoute];
+  logicalLeaderOutputDevice = [secondaryOutputDeviceRoute logicalLeaderOutputDevice];
 
-  if ([v3 deviceType] == 2)
+  if ([logicalLeaderOutputDevice deviceType] == 2)
   {
-    v4 = [v3 uid];
+    v4 = [logicalLeaderOutputDevice uid];
   }
 
   else
@@ -536,12 +536,12 @@
 
 - (id)primaryOutputDeviceUID
 {
-  v2 = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
-  v3 = [v2 logicalLeaderOutputDevice];
+  primaryOutputDeviceRoute = [(MRUSystemOutputDeviceRouteController *)self->_outputDeviceRouteController primaryOutputDeviceRoute];
+  logicalLeaderOutputDevice = [primaryOutputDeviceRoute logicalLeaderOutputDevice];
 
-  if ([v3 deviceType] == 2)
+  if ([logicalLeaderOutputDevice deviceType] == 2)
   {
-    v4 = [v3 uid];
+    v4 = [logicalLeaderOutputDevice uid];
   }
 
   else
@@ -552,23 +552,23 @@
   return v4;
 }
 
-- (MRUHearingServiceController)initWithOutputDeviceRouteController:(id)a3
+- (MRUHearingServiceController)initWithOutputDeviceRouteController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = MRUHearingServiceController;
   v6 = [(MRUHearingServiceController *)&v12 init];
   if (v6)
   {
-    v7 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     observers = v6->_observers;
-    v6->_observers = v7;
+    v6->_observers = weakObjectsHashTable;
 
-    v9 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     records = v6->_records;
-    v6->_records = v9;
+    v6->_records = dictionary;
 
-    objc_storeStrong(&v6->_outputDeviceRouteController, a3);
+    objc_storeStrong(&v6->_outputDeviceRouteController, controller);
     [(MRUSystemOutputDeviceRouteController *)v6->_outputDeviceRouteController add:v6];
     [(MRUHearingServiceController *)v6 updatePrimaryHearingAidEnabled];
     [(MRUHearingServiceController *)v6 updateSecondaryHearingAidEnabled];
@@ -589,12 +589,12 @@
   [(MRUHearingServiceController *)&v3 dealloc];
 }
 
-- (void)setPrimaryAmplification:(float)a3
+- (void)setPrimaryAmplification:(float)amplification
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [(HMDeviceRecord *)self->_primaryHealthRecord bluetoothUUID];
+  bluetoothUUID = [(HMDeviceRecord *)self->_primaryHealthRecord bluetoothUUID];
   v6 = objc_alloc_init(MEMORY[0x1E69A4578]);
-  *&v7 = a3;
+  *&v7 = amplification;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
   [v6 setAmplification:v8];
 
@@ -602,13 +602,13 @@
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
-    v11 = [v6 amplification];
+    amplification = [v6 amplification];
     *buf = 138543874;
     v19 = v10;
     v20 = 2114;
-    v21 = v5;
+    v21 = bluetoothUUID;
     v22 = 2112;
-    v23 = v11;
+    v23 = amplification;
     _os_log_impl(&dword_1A20FC000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ setting primary amplification for device: %{public}@ | amplification: %@", buf, 0x20u);
   }
 
@@ -618,10 +618,10 @@
   v15[2] = __55__MRUHearingServiceController_setPrimaryAmplification___block_invoke;
   v15[3] = &unk_1E7664380;
   v15[4] = self;
-  v16 = v5;
+  v16 = bluetoothUUID;
   v17 = v6;
   v13 = v6;
-  v14 = v5;
+  v14 = bluetoothUUID;
   [(HMServiceClient *)client modifyDeviceConfig:v13 identifier:v14 completion:v15];
 }
 
@@ -650,12 +650,12 @@ void __55__MRUHearingServiceController_setPrimaryAmplification___block_invoke(ui
   }
 }
 
-- (void)setSecondaryAmplification:(float)a3
+- (void)setSecondaryAmplification:(float)amplification
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = [(HMDeviceRecord *)self->_secondaryHealthRecord bluetoothUUID];
+  bluetoothUUID = [(HMDeviceRecord *)self->_secondaryHealthRecord bluetoothUUID];
   v6 = objc_alloc_init(MEMORY[0x1E69A4578]);
-  *&v7 = a3;
+  *&v7 = amplification;
   v8 = [MEMORY[0x1E696AD98] numberWithFloat:v7];
   [v6 setAmplification:v8];
 
@@ -663,13 +663,13 @@ void __55__MRUHearingServiceController_setPrimaryAmplification___block_invoke(ui
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
     v10 = objc_opt_class();
-    v11 = [v6 amplification];
+    amplification = [v6 amplification];
     *buf = 138543874;
     v19 = v10;
     v20 = 2114;
-    v21 = v5;
+    v21 = bluetoothUUID;
     v22 = 2112;
-    v23 = v11;
+    v23 = amplification;
     _os_log_impl(&dword_1A20FC000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@ setting secondary amplification for device: %{public}@ | amplification: %@", buf, 0x20u);
   }
 
@@ -679,10 +679,10 @@ void __55__MRUHearingServiceController_setPrimaryAmplification___block_invoke(ui
   v15[2] = __57__MRUHearingServiceController_setSecondaryAmplification___block_invoke;
   v15[3] = &unk_1E7664380;
   v15[4] = self;
-  v16 = v5;
+  v16 = bluetoothUUID;
   v17 = v6;
   v13 = v6;
-  v14 = v5;
+  v14 = bluetoothUUID;
   [(HMServiceClient *)client modifyDeviceConfig:v13 identifier:v14 completion:v15];
 }
 
@@ -711,25 +711,25 @@ void __57__MRUHearingServiceController_setSecondaryAmplification___block_invoke(
   }
 }
 
-- (void)setPrimaryHealthRecord:(id)a3
+- (void)setPrimaryHealthRecord:(id)record
 {
-  objc_storeStrong(&self->_primaryHealthRecord, a3);
+  objc_storeStrong(&self->_primaryHealthRecord, record);
   [(MRUHearingServiceController *)self updatePrimaryHearingAidEnabled];
   [(MRUHearingServiceController *)self updatePrimaryAmplification];
 
   [(MRUHearingServiceController *)self updatePrimaryListeningModeOffAllowed];
 }
 
-- (void)setSecondaryHealthRecord:(id)a3
+- (void)setSecondaryHealthRecord:(id)record
 {
-  objc_storeStrong(&self->_secondaryHealthRecord, a3);
+  objc_storeStrong(&self->_secondaryHealthRecord, record);
   [(MRUHearingServiceController *)self updateSecondaryHearingAidEnabled];
   [(MRUHearingServiceController *)self updateSecondaryAmplification];
 
   [(MRUHearingServiceController *)self updateSecondaryListeningModeOffAllowed];
 }
 
-- (void)systemOutputDeviceRouteControllerDidUpdateOutputDevices:(id)a3
+- (void)systemOutputDeviceRouteControllerDidUpdateOutputDevices:(id)devices
 {
   [(MRUHearingServiceController *)self updateHealthRecord];
 
@@ -786,19 +786,19 @@ void __43__MRUHearingServiceController_updateClient__block_invoke_2(uint64_t a1,
   }
 }
 
-- (id)fetchRecordWithID:(id)a3 fromRecords:(id)a4
+- (id)fetchRecordWithID:(id)d fromRecords:(id)records
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (v5)
+  dCopy = d;
+  recordsCopy = records;
+  v7 = recordsCopy;
+  if (dCopy)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v8 = v6;
+    v8 = recordsCopy;
     v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
     if (v9)
     {
@@ -813,8 +813,8 @@ void __43__MRUHearingServiceController_updateClient__block_invoke_2(uint64_t a1,
           }
 
           v12 = *(*(&v16 + 1) + 8 * i);
-          v13 = [v12 bluetoothAddress];
-          v14 = [v5 containsString:v13];
+          bluetoothAddress = [v12 bluetoothAddress];
+          v14 = [dCopy containsString:bluetoothAddress];
 
           if (v14)
           {

@@ -30,8 +30,8 @@
 - (id)hf_localizedAge
 {
   v2 = objc_opt_class();
-  v3 = [a1 captureDate];
-  v4 = [v2 hf_localizedAgeForCaptureDate:v3];
+  captureDate = [self captureDate];
+  v4 = [v2 hf_localizedAgeForCaptureDate:captureDate];
 
   return v4;
 }

@@ -1,7 +1,7 @@
 @interface FairPlaySAPSession
-+ (FairPlaySAPSession)sessionWithDelegate:(id)a3;
++ (FairPlaySAPSession)sessionWithDelegate:(id)delegate;
 - (FairPlaySAPSession)init;
-- (FairPlaySAPSession)initWithDelegate:(id)a3;
+- (FairPlaySAPSession)initWithDelegate:(id)delegate;
 - (FairPlaySAPSessionDelegate)delegate;
 - (double)TTL;
 - (id)description;
@@ -10,26 +10,26 @@
 - (void)_close;
 - (void)close;
 - (void)dealloc;
-- (void)openWithCompletionHandler:(id)a3;
-- (void)setHwInfo:(FairPlayHWInfo_ *)a3;
-- (void)setState_int:(unint64_t)a3;
-- (void)setTTL:(double)a3;
-- (void)signatureForData:(id)a3 completionHandler:(id)a4;
-- (void)verifySignature:(id)a3 forData:(id)a4 completionHandler:(id)a5;
+- (void)openWithCompletionHandler:(id)handler;
+- (void)setHwInfo:(FairPlayHWInfo_ *)info;
+- (void)setState_int:(unint64_t)state_int;
+- (void)setTTL:(double)l;
+- (void)signatureForData:(id)data completionHandler:(id)handler;
+- (void)verifySignature:(id)signature forData:(id)data completionHandler:(id)handler;
 @end
 
 @implementation FairPlaySAPSession
 
-- (FairPlaySAPSession)initWithDelegate:(id)a3
+- (FairPlaySAPSession)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v27.receiver = self;
   v27.super_class = FairPlaySAPSession;
   v5 = [(FairPlaySAPSession *)&v27 init];
   v6 = v5;
   if (v5 == self)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v6->_state_int = 0;
     v7 = +[NSUUID UUID];
     UUID = v6->_UUID;
@@ -89,18 +89,18 @@
   [(FairPlaySAPSession *)&v3 dealloc];
 }
 
-- (void)openWithCompletionHandler:(id)a3
+- (void)openWithCompletionHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(FairPlaySAPSession *)self internalQueue];
+  handlerCopy = handler;
+  internalQueue = [(FairPlaySAPSession *)self internalQueue];
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = __48__FairPlaySAPSession_openWithCompletionHandler___block_invoke;
   v7[3] = &unk_100080A40;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 void __48__FairPlaySAPSession_openWithCompletionHandler___block_invoke(uint64_t a1)
@@ -526,30 +526,30 @@ void __48__FairPlaySAPSession_openWithCompletionHandler___block_invoke_2_38(uint
 
 - (void)close
 {
-  v3 = [(FairPlaySAPSession *)self internalQueue];
+  internalQueue = [(FairPlaySAPSession *)self internalQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __27__FairPlaySAPSession_close__block_invoke;
   block[3] = &unk_100080A68;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(internalQueue, block);
 }
 
-- (void)signatureForData:(id)a3 completionHandler:(id)a4
+- (void)signatureForData:(id)data completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  dataCopy = data;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v8 = [(FairPlaySAPSession *)self internalQueue];
+    internalQueue = [(FairPlaySAPSession *)self internalQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = __57__FairPlaySAPSession_signatureForData_completionHandler___block_invoke;
     block[3] = &unk_100080A18;
     block[4] = self;
-    v10 = v6;
-    v11 = v7;
-    dispatch_async(v8, block);
+    v10 = dataCopy;
+    v11 = handlerCopy;
+    dispatch_async(internalQueue, block);
   }
 }
 
@@ -680,23 +680,23 @@ void __57__FairPlaySAPSession_signatureForData_completionHandler___block_invoke_
   (*(v1 + 16))(v1, 0, v2);
 }
 
-- (void)verifySignature:(id)a3 forData:(id)a4 completionHandler:(id)a5
+- (void)verifySignature:(id)signature forData:(id)data completionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  signatureCopy = signature;
+  dataCopy = data;
+  handlerCopy = handler;
+  if (handlerCopy)
   {
-    v11 = [(FairPlaySAPSession *)self internalQueue];
+    internalQueue = [(FairPlaySAPSession *)self internalQueue];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = __64__FairPlaySAPSession_verifySignature_forData_completionHandler___block_invoke;
     v12[3] = &unk_100080AB8;
-    v13 = v8;
-    v14 = v9;
-    v15 = self;
-    v16 = v10;
-    dispatch_async(v11, v12);
+    v13 = signatureCopy;
+    v14 = dataCopy;
+    selfCopy = self;
+    v16 = handlerCopy;
+    dispatch_async(internalQueue, v12);
   }
 }
 
@@ -853,9 +853,9 @@ void __64__FairPlaySAPSession_verifySignature_forData_completionHandler___block_
 
 - (void)_checkExpiration
 {
-  v1 = [a1 expiration];
+  expiration = [self expiration];
   v2 = 138412290;
-  v3 = v1;
+  v3 = expiration;
   _os_log_debug_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEBUG, "[#FairPlaySAPSession] Checking expiration for session (expiration: %@)...", &v2, 0xCu);
 }
 
@@ -863,15 +863,15 @@ void __64__FairPlaySAPSession_verifySignature_forData_completionHandler___block_
 {
   v3 = objc_opt_class();
   v4 = NSStringFromClass(v3);
-  v5 = [(FairPlaySAPSession *)self state];
-  if (v5 > 2)
+  state = [(FairPlaySAPSession *)self state];
+  if (state > 2)
   {
     v6 = 0;
   }
 
   else
   {
-    v6 = off_100080B28[v5];
+    v6 = off_100080B28[state];
   }
 
   [(FairPlaySAPSession *)self TTL];
@@ -886,14 +886,14 @@ void __64__FairPlaySAPSession_verifySignature_forData_completionHandler___block_
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(FairPlaySAPSession *)self internalQueue];
+  internalQueue = [(FairPlaySAPSession *)self internalQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __27__FairPlaySAPSession_state__block_invoke;
   v6[3] = &unk_100080AE0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_barrier_sync(v3, v6);
+  dispatch_barrier_sync(internalQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -918,14 +918,14 @@ char *__27__FairPlaySAPSession_state__block_invoke(uint64_t a1)
   v8 = &v7;
   v9 = 0x2020000000;
   v10 = 0;
-  v3 = [(FairPlaySAPSession *)self internalQueue];
+  internalQueue = [(FairPlaySAPSession *)self internalQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __25__FairPlaySAPSession_TTL__block_invoke;
   v6[3] = &unk_100080AE0;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_barrier_sync(v3, v6);
+  dispatch_barrier_sync(internalQueue, v6);
 
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -942,16 +942,16 @@ void __25__FairPlaySAPSession_TTL__block_invoke(uint64_t a1)
   }
 }
 
-- (void)setTTL:(double)a3
+- (void)setTTL:(double)l
 {
-  v5 = [(FairPlaySAPSession *)self internalQueue];
+  internalQueue = [(FairPlaySAPSession *)self internalQueue];
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
   v6[2] = __29__FairPlaySAPSession_setTTL___block_invoke;
   v6[3] = &unk_100080B08;
   v6[4] = self;
-  *&v6[5] = a3;
-  dispatch_barrier_sync(v5, v6);
+  *&v6[5] = l;
+  dispatch_barrier_sync(internalQueue, v6);
 }
 
 void __29__FairPlaySAPSession_setTTL___block_invoke(uint64_t a1)
@@ -968,9 +968,9 @@ void __29__FairPlaySAPSession_setTTL___block_invoke(uint64_t a1)
   }
 }
 
-- (void)setState_int:(unint64_t)a3
+- (void)setState_int:(unint64_t)state_int
 {
-  self->_state_int = a3;
+  self->_state_int = state_int;
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_INFO))
   {
     state_int = self->_state_int;
@@ -990,10 +990,10 @@ void __29__FairPlaySAPSession_setTTL___block_invoke(uint64_t a1)
   }
 }
 
-+ (FairPlaySAPSession)sessionWithDelegate:(id)a3
++ (FairPlaySAPSession)sessionWithDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithDelegate:v4];
+  delegateCopy = delegate;
+  v5 = [[self alloc] initWithDelegate:delegateCopy];
 
   return v5;
 }
@@ -1005,10 +1005,10 @@ void __29__FairPlaySAPSession_setTTL___block_invoke(uint64_t a1)
   return WeakRetained;
 }
 
-- (void)setHwInfo:(FairPlayHWInfo_ *)a3
+- (void)setHwInfo:(FairPlayHWInfo_ *)info
 {
-  v3 = *&a3->IDLength;
-  *&self->_hwInfo.ID[12] = *&a3->ID[12];
+  v3 = *&info->IDLength;
+  *&self->_hwInfo.ID[12] = *&info->ID[12];
   *&self->_hwInfo.IDLength = v3;
 }
 

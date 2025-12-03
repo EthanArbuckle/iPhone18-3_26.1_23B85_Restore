@@ -1,33 +1,33 @@
 @interface PLAssetsdCPLResourceDownloader
-- (PLAssetsdCPLResourceDownloader)initWithPhotoLibrary:(id)a3 trustedCallerBundleID:(id)a4 clientConnection:(id)a5;
-- (id)startCPLDownloadForAsset:(id)a3 resourceType:(unint64_t)a4 masterResourceOnly:(BOOL)a5 highPriority:(BOOL)a6 track:(BOOL)a7 notify:(BOOL)a8 transient:(BOOL)a9 proposedTaskIdentifier:(id)a10 doneToken:(id)a11 error:(id *)a12;
+- (PLAssetsdCPLResourceDownloader)initWithPhotoLibrary:(id)library trustedCallerBundleID:(id)d clientConnection:(id)connection;
+- (id)startCPLDownloadForAsset:(id)asset resourceType:(unint64_t)type masterResourceOnly:(BOOL)only highPriority:(BOOL)priority track:(BOOL)track notify:(BOOL)notify transient:(BOOL)transient proposedTaskIdentifier:(id)self0 doneToken:(id)self1 error:(id *)self2;
 - (void)_handleInvalidation;
-- (void)cancelCPLDownloadTaskWithIdentifier:(id)a3 completionHandler:(id)a4;
-- (void)cancelCPLDownloadTasks:(id)a3 completionHandler:(id)a4;
+- (void)cancelCPLDownloadTaskWithIdentifier:(id)identifier completionHandler:(id)handler;
+- (void)cancelCPLDownloadTasks:(id)tasks completionHandler:(id)handler;
 - (void)handleInvalidation;
-- (void)sendClientCPLStatusWithVirtualTaskIdentifier:(id)a3 downloadContext:(id)a4;
+- (void)sendClientCPLStatusWithVirtualTaskIdentifier:(id)identifier downloadContext:(id)context;
 @end
 
 @implementation PLAssetsdCPLResourceDownloader
 
-- (void)sendClientCPLStatusWithVirtualTaskIdentifier:(id)a3 downloadContext:(id)a4
+- (void)sendClientCPLStatusWithVirtualTaskIdentifier:(id)identifier downloadContext:(id)context
 {
-  v25 = a4;
-  v6 = a3;
-  v7 = [v25 objectForKeyedSubscript:@"taskIdentifier"];
-  v8 = [v25 objectForKeyedSubscript:@"pending"];
-  v9 = [v8 BOOLValue];
+  contextCopy = context;
+  identifierCopy = identifier;
+  v7 = [contextCopy objectForKeyedSubscript:@"taskIdentifier"];
+  v8 = [contextCopy objectForKeyedSubscript:@"pending"];
+  bOOLValue = [v8 BOOLValue];
 
-  if (v9)
+  if (bOOLValue)
   {
     v10 = 0;
   }
 
   else if (v7)
   {
-    v11 = [(PLPhotoLibrary *)self->_photoLibrary libraryServicesManager];
-    v12 = [v11 cloudPhotoLibraryManager];
-    v13 = [v12 isResourceTransferTaskAliveWithTaskWithIdentifier:v7];
+    libraryServicesManager = [(PLPhotoLibrary *)self->_photoLibrary libraryServicesManager];
+    cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
+    v13 = [cloudPhotoLibraryManager isResourceTransferTaskAliveWithTaskWithIdentifier:v7];
 
     v10 = v13 ^ 1;
   }
@@ -37,10 +37,10 @@
     v10 = 1;
   }
 
-  v14 = [v25 objectForKeyedSubscript:@"progress"];
+  v14 = [contextCopy objectForKeyedSubscript:@"progress"];
   if (v14)
   {
-    v15 = [v25 objectForKeyedSubscript:@"progress"];
+    v15 = [contextCopy objectForKeyedSubscript:@"progress"];
     [v15 doubleValue];
     v17 = v16;
   }
@@ -52,29 +52,29 @@
 
   if (v10)
   {
-    v18 = 1;
+    bOOLValue2 = 1;
   }
 
   else
   {
-    v19 = [v25 objectForKeyedSubscript:@"completed"];
+    v19 = [contextCopy objectForKeyedSubscript:@"completed"];
     if (v19)
     {
-      v20 = [v25 objectForKeyedSubscript:@"completed"];
-      v18 = [v20 BOOLValue];
+      v20 = [contextCopy objectForKeyedSubscript:@"completed"];
+      bOOLValue2 = [v20 BOOLValue];
     }
 
     else
     {
-      v18 = 0;
+      bOOLValue2 = 0;
     }
   }
 
-  v21 = [v25 objectForKeyedSubscript:@"error"];
-  v22 = [v25 objectForKeyedSubscript:@"data"];
+  v21 = [contextCopy objectForKeyedSubscript:@"error"];
+  v22 = [contextCopy objectForKeyedSubscript:@"data"];
   WeakRetained = objc_loadWeakRetained(&self->_clientConnection);
   v24 = [WeakRetained remoteObjectProxyWithErrorHandler:&__block_literal_global_90647];
-  [v24 downloadStatusForIdentifier:v6 progress:v18 completed:v22 data:v21 error:v17];
+  [v24 downloadStatusForIdentifier:identifierCopy progress:bOOLValue2 completed:v22 data:v21 error:v17];
 }
 
 void __95__PLAssetsdCPLResourceDownloader_sendClientCPLStatusWithVirtualTaskIdentifier_downloadContext___block_invoke(uint64_t a1, void *a2)
@@ -92,30 +92,30 @@ void __95__PLAssetsdCPLResourceDownloader_sendClientCPLStatusWithVirtualTaskIden
   }
 }
 
-- (void)cancelCPLDownloadTasks:(id)a3 completionHandler:(id)a4
+- (void)cancelCPLDownloadTasks:(id)tasks completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLPhotoLibrary *)self->_photoLibrary libraryServicesManager];
-  v9 = [v8 cloudPhotoLibraryManager];
+  tasksCopy = tasks;
+  handlerCopy = handler;
+  libraryServicesManager = [(PLPhotoLibrary *)self->_photoLibrary libraryServicesManager];
+  cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-  if (v6 && v9)
+  if (tasksCopy && cloudPhotoLibraryManager)
   {
     pendingCPLDownloadsIsolationQueue = self->_pendingCPLDownloadsIsolationQueue;
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __75__PLAssetsdCPLResourceDownloader_cancelCPLDownloadTasks_completionHandler___block_invoke;
     v11[3] = &unk_1E7573C00;
-    v12 = v6;
-    v13 = self;
-    v14 = v9;
-    v15 = v7;
+    v12 = tasksCopy;
+    selfCopy = self;
+    v14 = cloudPhotoLibraryManager;
+    v15 = handlerCopy;
     dispatch_async(pendingCPLDownloadsIsolationQueue, v11);
   }
 
   else
   {
-    (*(v7 + 2))(v7, 0);
+    (*(handlerCopy + 2))(handlerCopy, 0);
   }
 }
 
@@ -207,14 +207,14 @@ uint64_t __75__PLAssetsdCPLResourceDownloader_cancelCPLDownloadTasks_completionH
   return result;
 }
 
-- (void)cancelCPLDownloadTaskWithIdentifier:(id)a3 completionHandler:(id)a4
+- (void)cancelCPLDownloadTaskWithIdentifier:(id)identifier completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PLPhotoLibrary *)self->_photoLibrary libraryServicesManager];
-  v9 = [v8 cloudPhotoLibraryManager];
+  identifierCopy = identifier;
+  handlerCopy = handler;
+  libraryServicesManager = [(PLPhotoLibrary *)self->_photoLibrary libraryServicesManager];
+  cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-  if (v6 && v9)
+  if (identifierCopy && cloudPhotoLibraryManager)
   {
     pendingCPLDownloadsIsolationQueue = self->_pendingCPLDownloadsIsolationQueue;
     v11[0] = MEMORY[0x1E69E9820];
@@ -222,15 +222,15 @@ uint64_t __75__PLAssetsdCPLResourceDownloader_cancelCPLDownloadTasks_completionH
     v11[2] = __88__PLAssetsdCPLResourceDownloader_cancelCPLDownloadTaskWithIdentifier_completionHandler___block_invoke;
     v11[3] = &unk_1E7573C00;
     v11[4] = self;
-    v12 = v6;
-    v13 = v9;
-    v14 = v7;
+    v12 = identifierCopy;
+    v13 = cloudPhotoLibraryManager;
+    v14 = handlerCopy;
     dispatch_async(pendingCPLDownloadsIsolationQueue, v11);
   }
 
   else
   {
-    v7[2](v7);
+    handlerCopy[2](handlerCopy);
   }
 }
 
@@ -286,19 +286,19 @@ uint64_t __88__PLAssetsdCPLResourceDownloader_cancelCPLDownloadTaskWithIdentifie
   return (*(a1[6] + 16))(a1[6], a2, a3, a4, a5);
 }
 
-- (id)startCPLDownloadForAsset:(id)a3 resourceType:(unint64_t)a4 masterResourceOnly:(BOOL)a5 highPriority:(BOOL)a6 track:(BOOL)a7 notify:(BOOL)a8 transient:(BOOL)a9 proposedTaskIdentifier:(id)a10 doneToken:(id)a11 error:(id *)a12
+- (id)startCPLDownloadForAsset:(id)asset resourceType:(unint64_t)type masterResourceOnly:(BOOL)only highPriority:(BOOL)priority track:(BOOL)track notify:(BOOL)notify transient:(BOOL)transient proposedTaskIdentifier:(id)self0 doneToken:(id)self1 error:(id *)self2
 {
-  v12 = a8;
-  v14 = a6;
-  v15 = a5;
+  notifyCopy = notify;
+  priorityCopy = priority;
+  onlyCopy = only;
   v83[1] = *MEMORY[0x1E69E9840];
-  v46 = a3;
-  v44 = a10;
-  v45 = a11;
-  v18 = [(PLPhotoLibrary *)self->_photoLibrary libraryServicesManager];
-  v47 = [v18 cloudPhotoLibraryManager];
+  assetCopy = asset;
+  identifierCopy = identifier;
+  tokenCopy = token;
+  libraryServicesManager = [(PLPhotoLibrary *)self->_photoLibrary libraryServicesManager];
+  cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
-  if (v47)
+  if (cloudPhotoLibraryManager)
   {
     v74 = 0;
     v75 = &v74;
@@ -306,15 +306,15 @@ uint64_t __88__PLAssetsdCPLResourceDownloader_cancelCPLDownloadTaskWithIdentifie
     v77 = __Block_byref_object_copy__90668;
     v78 = __Block_byref_object_dispose__90669;
     v79 = 0;
-    v19 = [v46 photoLibrary];
+    photoLibrary = [assetCopy photoLibrary];
     v71[0] = MEMORY[0x1E69E9820];
     v71[1] = 3221225472;
     v71[2] = __166__PLAssetsdCPLResourceDownloader_startCPLDownloadForAsset_resourceType_masterResourceOnly_highPriority_track_notify_transient_proposedTaskIdentifier_doneToken_error___block_invoke;
     v71[3] = &unk_1E7578910;
     v73 = &v74;
-    v43 = v46;
+    v43 = assetCopy;
     v72 = v43;
-    [v19 performBlockAndWait:v71];
+    [photoLibrary performBlockAndWait:v71];
 
     v20 = PLImageManagerGetLog();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
@@ -326,17 +326,17 @@ uint64_t __88__PLAssetsdCPLResourceDownloader_cancelCPLDownloadTaskWithIdentifie
     }
 
     v22 = [MEMORY[0x1E69BF360] transaction:"-[PLAssetsdCPLResourceDownloader startCPLDownloadForAsset:resourceType:masterResourceOnly:highPriority:track:notify:transient:proposedTaskIdentifier:doneToken:error:]"];
-    if (a7 || v12)
+    if (track || notifyCopy)
     {
-      if ([v44 length])
+      if ([identifierCopy length])
       {
-        v27 = v44;
+        uUIDString = identifierCopy;
       }
 
       else
       {
-        v28 = [MEMORY[0x1E696AFB0] UUID];
-        v27 = [v28 UUIDString];
+        uUID = [MEMORY[0x1E696AFB0] UUID];
+        uUIDString = [uUID UUIDString];
       }
 
       pendingCPLDownloadsIsolationQueue = self->_pendingCPLDownloadsIsolationQueue;
@@ -344,9 +344,9 @@ uint64_t __88__PLAssetsdCPLResourceDownloader_cancelCPLDownloadTaskWithIdentifie
       block[1] = 3221225472;
       block[2] = __166__PLAssetsdCPLResourceDownloader_startCPLDownloadForAsset_resourceType_masterResourceOnly_highPriority_track_notify_transient_proposedTaskIdentifier_doneToken_error___block_invoke_44;
       block[3] = &unk_1E7576168;
-      v70 = a4;
+      typeCopy = type;
       block[4] = self;
-      v23 = v27;
+      v23 = uUIDString;
       v68 = v23;
       v69 = v22;
       dispatch_async(pendingCPLDownloadsIsolationQueue, block);
@@ -363,14 +363,14 @@ uint64_t __88__PLAssetsdCPLResourceDownloader_cancelCPLDownloadTaskWithIdentifie
     aBlock[3] = &unk_1E7573AC0;
     v30 = v23;
     v63 = v30;
-    v64 = self;
-    v66 = v12;
+    selfCopy = self;
+    v66 = notifyCopy;
     v31 = v22;
     v65 = v31;
     v32 = _Block_copy(aBlock);
-    if (a9)
+    if (transient)
     {
-      if (v14)
+      if (priorityCopy)
       {
         v33 = PLBackendGetLog();
         if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
@@ -386,14 +386,14 @@ uint64_t __88__PLAssetsdCPLResourceDownloader_cancelCPLDownloadTaskWithIdentifie
       v57[2] = __166__PLAssetsdCPLResourceDownloader_startCPLDownloadForAsset_resourceType_masterResourceOnly_highPriority_track_notify_transient_proposedTaskIdentifier_doneToken_error___block_invoke_59;
       v57[3] = &unk_1E7573B10;
       v35 = v30;
-      v36 = v12;
+      v36 = notifyCopy;
       v37 = v35;
       v58[0] = v35;
       v58[1] = self;
       v61 = v36;
-      v59 = v45;
+      v59 = tokenCopy;
       v60 = v31;
-      [v47 downloadResourceInMemoryForAsset:v43 resourceType:a4 masterResourceOnly:v15 clientBundleID:trustedCallerBundleID proposedTaskIdentifier:v37 taskDidBeginHandler:v32 completionHandler:v57];
+      [cloudPhotoLibraryManager downloadResourceInMemoryForAsset:v43 resourceType:type masterResourceOnly:onlyCopy clientBundleID:trustedCallerBundleID proposedTaskIdentifier:v37 taskDidBeginHandler:v32 completionHandler:v57];
       v38 = v58;
       v39 = &v59;
       v40 = &v60;
@@ -408,7 +408,7 @@ uint64_t __88__PLAssetsdCPLResourceDownloader_cancelCPLDownloadTaskWithIdentifie
       v53[3] = &unk_1E7573B60;
       v54[0] = v30;
       v54[1] = self;
-      v56 = v12;
+      v56 = notifyCopy;
       v55 = v31;
       v48[0] = MEMORY[0x1E69E9820];
       v48[1] = 3221225472;
@@ -416,10 +416,10 @@ uint64_t __88__PLAssetsdCPLResourceDownloader_cancelCPLDownloadTaskWithIdentifie
       v48[3] = &unk_1E7573BB0;
       v49[0] = v54[0];
       v49[1] = self;
-      v52 = v12;
-      v50 = v45;
+      v52 = notifyCopy;
+      v50 = tokenCopy;
       v51 = v55;
-      [v47 downloadAsset:v43 resourceType:a4 masterResourceOnly:v15 highPriority:v14 clientBundleID:v42 proposedTaskIdentifier:v49[0] taskDidBeginHandler:v32 progressBlock:v53 completionHandler:v48];
+      [cloudPhotoLibraryManager downloadAsset:v43 resourceType:type masterResourceOnly:onlyCopy highPriority:priorityCopy clientBundleID:v42 proposedTaskIdentifier:v49[0] taskDidBeginHandler:v32 progressBlock:v53 completionHandler:v48];
 
       v38 = v54;
       v39 = &v55;
@@ -432,13 +432,13 @@ uint64_t __88__PLAssetsdCPLResourceDownloader_cancelCPLDownloadTaskWithIdentifie
 
   else
   {
-    if (a12)
+    if (error)
     {
       v24 = MEMORY[0x1E696ABC0];
       v82 = *MEMORY[0x1E696A578];
       v83[0] = @"PLCloudPhotoLibraryManager is not available";
       v25 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v83 forKeys:&v82 count:1];
-      *a12 = [v24 errorWithDomain:*MEMORY[0x1E69BFF48] code:41004 userInfo:v25];
+      *error = [v24 errorWithDomain:*MEMORY[0x1E69BFF48] code:41004 userInfo:v25];
     }
 
     v26 = 0;
@@ -729,15 +729,15 @@ void __52__PLAssetsdCPLResourceDownloader_handleInvalidation__block_invoke(uint6
   dispatch_assert_queue_V2(self->_pendingCPLDownloadsIsolationQueue);
   if ([(NSMutableDictionary *)self->_pendingCPLDownloads count])
   {
-    v3 = [(PLPhotoLibrary *)self->_photoLibrary libraryServicesManager];
-    v4 = [v3 cloudPhotoLibraryManager];
+    libraryServicesManager = [(PLPhotoLibrary *)self->_photoLibrary libraryServicesManager];
+    cloudPhotoLibraryManager = [libraryServicesManager cloudPhotoLibraryManager];
 
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v5 = [(NSMutableDictionary *)self->_pendingCPLDownloads allKeys];
-    v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+    allKeys = [(NSMutableDictionary *)self->_pendingCPLDownloads allKeys];
+    v6 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v6)
     {
       v7 = v6;
@@ -749,14 +749,14 @@ void __52__PLAssetsdCPLResourceDownloader_handleInvalidation__block_invoke(uint6
         {
           if (*v11 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(allKeys);
           }
 
-          [v4 cancelResourceTransferTaskWithIdentifier:*(*(&v10 + 1) + 8 * v9++) completion:0];
+          [cloudPhotoLibraryManager cancelResourceTransferTaskWithIdentifier:*(*(&v10 + 1) + 8 * v9++) completion:0];
         }
 
         while (v7 != v9);
-        v7 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+        v7 = [allKeys countByEnumeratingWithState:&v10 objects:v14 count:16];
       }
 
       while (v7);
@@ -766,15 +766,15 @@ void __52__PLAssetsdCPLResourceDownloader_handleInvalidation__block_invoke(uint6
   }
 }
 
-- (PLAssetsdCPLResourceDownloader)initWithPhotoLibrary:(id)a3 trustedCallerBundleID:(id)a4 clientConnection:(id)a5
+- (PLAssetsdCPLResourceDownloader)initWithPhotoLibrary:(id)library trustedCallerBundleID:(id)d clientConnection:(id)connection
 {
-  v10 = a3;
-  v11 = a4;
-  objc_initWeak(&location, a5);
-  if (!v10)
+  libraryCopy = library;
+  dCopy = d;
+  objc_initWeak(&location, connection);
+  if (!libraryCopy)
   {
-    v21 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v21 handleFailureInMethod:a2 object:self file:@"PLAssetsdCPLResourceDownloader.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PLAssetsdCPLResourceDownloader.m" lineNumber:44 description:{@"Invalid parameter not satisfying: %@", @"photoLibrary"}];
   }
 
   v22.receiver = self;
@@ -783,8 +783,8 @@ void __52__PLAssetsdCPLResourceDownloader_handleInvalidation__block_invoke(uint6
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_photoLibrary, a3);
-    objc_storeStrong(&v13->_trustedCallerBundleID, a4);
+    objc_storeStrong(&v12->_photoLibrary, library);
+    objc_storeStrong(&v13->_trustedCallerBundleID, d);
     v14 = objc_loadWeakRetained(&location);
     objc_storeWeak(&v13->_clientConnection, v14);
 

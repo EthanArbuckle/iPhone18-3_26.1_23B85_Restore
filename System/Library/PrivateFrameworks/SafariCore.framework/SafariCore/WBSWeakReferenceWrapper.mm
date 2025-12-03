@@ -1,29 +1,29 @@
 @interface WBSWeakReferenceWrapper
-+ (id)wrapperWithObject:(id)a3;
-- (WBSWeakReferenceWrapper)initWithObject:(id)a3;
++ (id)wrapperWithObject:(id)object;
+- (WBSWeakReferenceWrapper)initWithObject:(id)object;
 - (id)object;
 @end
 
 @implementation WBSWeakReferenceWrapper
 
-+ (id)wrapperWithObject:(id)a3
++ (id)wrapperWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithObject:v4];
+  objectCopy = object;
+  v5 = [[self alloc] initWithObject:objectCopy];
 
   return v5;
 }
 
-- (WBSWeakReferenceWrapper)initWithObject:(id)a3
+- (WBSWeakReferenceWrapper)initWithObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   v9.receiver = self;
   v9.super_class = WBSWeakReferenceWrapper;
   v5 = [(WBSWeakReferenceWrapper *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_object, v4);
+    objc_storeWeak(&v5->_object, objectCopy);
     v7 = v6;
   }
 

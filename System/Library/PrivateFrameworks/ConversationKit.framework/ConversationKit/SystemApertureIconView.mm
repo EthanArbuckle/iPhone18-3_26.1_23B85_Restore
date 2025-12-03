@@ -1,6 +1,6 @@
 @interface SystemApertureIconView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode;
 - (void)layoutSubviews;
 @end
 
@@ -8,15 +8,15 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SystemApertureIconView.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v5 = self;
+  height = fits.height;
+  width = fits.width;
+  selfCopy = self;
   v6 = SystemApertureIconView.sizeThatFits(_:)(__PAIR128__(*&height, *&width));
 
   v7 = v6.width;
@@ -26,9 +26,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3 forLayoutMode:(int64_t)a4
+- (CGSize)sizeThatFits:(CGSize)fits forLayoutMode:(int64_t)mode
 {
-  v4 = self;
+  selfCopy = self;
   SystemApertureIconView.sizeThatFits(_:for:)();
   v6 = v5;
   v8 = v7;

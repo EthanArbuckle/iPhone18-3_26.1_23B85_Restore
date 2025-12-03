@@ -34,8 +34,8 @@
 
 - (BOOL)hasAccountsConfigured
 {
-  v2 = [MEMORY[0x277D28280] activeNonLocalAccounts];
-  v3 = [v2 count] != 0;
+  activeNonLocalAccounts = [MEMORY[0x277D28280] activeNonLocalAccounts];
+  v3 = [activeNonLocalAccounts count] != 0;
 
   return v3;
 }

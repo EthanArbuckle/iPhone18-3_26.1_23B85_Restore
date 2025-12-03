@@ -1,13 +1,13 @@
 @interface PIParallaxStyle
-+ (PIParallaxStyle)styleWithBakedStyle:(id)a3;
-+ (PIParallaxStyle)styleWithColorAnalysis:(id)a3;
-+ (PIParallaxStyle)styleWithParameters:(id)a3 colorSuggestions:(id)a4;
-+ (id)_filterForRecipeIdentifier:(id)a3;
-+ (id)colorPaletteWithStyleKind:(id)a3;
++ (PIParallaxStyle)styleWithBakedStyle:(id)style;
++ (PIParallaxStyle)styleWithColorAnalysis:(id)analysis;
++ (PIParallaxStyle)styleWithParameters:(id)parameters colorSuggestions:(id)suggestions;
++ (id)_filterForRecipeIdentifier:(id)identifier;
++ (id)colorPaletteWithStyleKind:(id)kind;
 + (id)defaultOriginalStyle;
-+ (id)defaultStyleForKind:(id)a3 colorAnalysis:(id)a4;
-- (BOOL)configureForCategory:(id)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)defaultStyleForKind:(id)kind colorAnalysis:(id)analysis;
+- (BOOL)configureForCategory:(id)category;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isSegmented;
 - (NSDictionary)parameters;
 - (NSString)clockFont;
@@ -15,12 +15,12 @@
 - (NSString)kind;
 - (NSString)recipeIdentifier;
 - (PIParallaxStyle)init;
-- (PIParallaxStyle)initWithClockColor:(id)a3 colorSuggestions:(id)a4;
-- (PIParallaxStyle)initWithClockColor:(id)a3 vibrancy:(double)a4 colorSuggestions:(id)a5;
+- (PIParallaxStyle)initWithClockColor:(id)color colorSuggestions:(id)suggestions;
+- (PIParallaxStyle)initWithClockColor:(id)color vibrancy:(double)vibrancy colorSuggestions:(id)suggestions;
 - (PIParallaxStyleRecipe)recipe;
 - (id)bakedStyle;
-- (id)colorSuggestionForCategory:(id)a3;
-- (id)defaultDominantColorWithAnalysis:(id)a3;
+- (id)colorSuggestionForCategory:(id)category;
+- (id)defaultDominantColorWithAnalysis:(id)analysis;
 - (id)description;
 - (id)filter;
 - (id)inactiveFilter;
@@ -29,18 +29,18 @@
 
 @implementation PIParallaxStyle
 
-- (id)defaultDominantColorWithAnalysis:(id)a3
+- (id)defaultDominantColorWithAnalysis:(id)analysis
 {
-  v3 = [a3 colors];
-  v4 = [v3 firstObject];
+  colors = [analysis colors];
+  firstObject = [colors firstObject];
 
-  return v4;
+  return firstObject;
 }
 
-- (BOOL)configureForCategory:(id)a3
+- (BOOL)configureForCategory:(id)category
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  categoryCopy = category;
   v4 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -78,8 +78,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v4 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v4 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v26 = specific;
           v27 = 2114;
@@ -106,8 +106,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -123,12 +123,12 @@ LABEL_14:
   }
 }
 
-- (id)colorSuggestionForCategory:(id)a3
+- (id)colorSuggestionForCategory:(id)category
 {
-  v4 = a3;
-  if (([v4 isEqualToString:*MEMORY[0x1E69C0BF0]] & 1) != 0 || objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69C0BD8]))
+  categoryCopy = category;
+  if (([categoryCopy isEqualToString:*MEMORY[0x1E69C0BF0]] & 1) != 0 || objc_msgSend(categoryCopy, "isEqualToString:", *MEMORY[0x1E69C0BD8]))
   {
-    v5 = [(PIParallaxStyle *)self colorSuggestions];
+    colorSuggestions = [(PIParallaxStyle *)self colorSuggestions];
     v6 = PFFind();
   }
 
@@ -158,8 +158,8 @@ uint64_t __46__PIParallaxStyle_colorSuggestionForCategory___block_invoke(uint64_
 
 - (PIParallaxStyleRecipe)recipe
 {
-  v2 = [(PIParallaxStyle *)self recipeIdentifier];
-  v3 = [PIParallaxStyleRecipeRegistry recipeForIdentifier:v2];
+  recipeIdentifier = [(PIParallaxStyle *)self recipeIdentifier];
+  v3 = [PIParallaxStyleRecipeRegistry recipeForIdentifier:recipeIdentifier];
 
   if (!v3)
   {
@@ -171,22 +171,22 @@ uint64_t __46__PIParallaxStyle_colorSuggestionForCategory___block_invoke(uint64_
 
 - (id)inactiveFilter
 {
-  v3 = [(PIParallaxStyle *)self inactiveRecipeIdentifier];
-  v4 = [PIParallaxStyle _filterForRecipeIdentifier:v3];
+  inactiveRecipeIdentifier = [(PIParallaxStyle *)self inactiveRecipeIdentifier];
+  v4 = [PIParallaxStyle _filterForRecipeIdentifier:inactiveRecipeIdentifier];
 
-  v5 = [(PIParallaxStyle *)self parameters];
-  [v4 setParameters:v5];
+  parameters = [(PIParallaxStyle *)self parameters];
+  [v4 setParameters:parameters];
 
   return v4;
 }
 
 - (id)filter
 {
-  v3 = [(PIParallaxStyle *)self recipeIdentifier];
-  v4 = [PIParallaxStyle _filterForRecipeIdentifier:v3];
+  recipeIdentifier = [(PIParallaxStyle *)self recipeIdentifier];
+  v4 = [PIParallaxStyle _filterForRecipeIdentifier:recipeIdentifier];
 
-  v5 = [(PIParallaxStyle *)self parameters];
-  [v4 setParameters:v5];
+  parameters = [(PIParallaxStyle *)self parameters];
+  [v4 setParameters:parameters];
 
   return v4;
 }
@@ -194,24 +194,24 @@ uint64_t __46__PIParallaxStyle_colorSuggestionForCategory___block_invoke(uint64_
 - (BOOL)isSegmented
 {
   v2 = MEMORY[0x1E69C0788];
-  v3 = [(PIParallaxStyle *)self kind];
-  LOBYTE(v2) = [v2 isSegmentedStyle:v3];
+  kind = [(PIParallaxStyle *)self kind];
+  LOBYTE(v2) = [v2 isSegmentedStyle:kind];
 
   return v2;
 }
 
 - (NSString)clockFont
 {
-  v2 = [(PIParallaxStyle *)self kind];
-  v3 = PIParallaxStyleClockFontForKind(v2);
+  kind = [(PIParallaxStyle *)self kind];
+  v3 = PIParallaxStyleClockFontForKind(kind);
 
   return v3;
 }
 
 - (NSString)inactiveRecipeIdentifier
 {
-  v2 = [(PIParallaxStyle *)self recipeIdentifier];
-  v3 = [v2 stringByAppendingString:@"-Inactive"];
+  recipeIdentifier = [(PIParallaxStyle *)self recipeIdentifier];
+  v3 = [recipeIdentifier stringByAppendingString:@"-Inactive"];
 
   return v3;
 }
@@ -256,8 +256,8 @@ LABEL_11:
           v18 = MEMORY[0x1E696AF00];
           v19 = specific;
           v20 = v16;
-          v21 = [v18 callStackSymbols];
-          v2 = [v21 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v2 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v24 = specific;
           v25 = 2114;
@@ -284,8 +284,8 @@ LABEL_11:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v12 callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v15;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -341,8 +341,8 @@ LABEL_11:
           v18 = MEMORY[0x1E696AF00];
           v19 = specific;
           v20 = v16;
-          v21 = [v18 callStackSymbols];
-          v2 = [v21 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v2 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v24 = specific;
           v25 = 2114;
@@ -369,8 +369,8 @@ LABEL_11:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v12 callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v15;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -426,8 +426,8 @@ LABEL_11:
           v18 = MEMORY[0x1E696AF00];
           v19 = specific;
           v20 = v16;
-          v21 = [v18 callStackSymbols];
-          v2 = [v21 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v2 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v24 = specific;
           v25 = 2114;
@@ -454,8 +454,8 @@ LABEL_11:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v12 callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v15;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -474,26 +474,26 @@ LABEL_14:
 - (id)bakedStyle
 {
   v3 = objc_alloc(MEMORY[0x1E69C0788]);
-  v4 = [(PIParallaxStyle *)self kind];
-  v5 = [(PIParallaxStyle *)self parameters];
-  v6 = [(PIParallaxStyle *)self colorSuggestions];
-  v7 = [v3 initWithKind:v4 parameters:v5 colorSuggestions:v6];
+  kind = [(PIParallaxStyle *)self kind];
+  parameters = [(PIParallaxStyle *)self parameters];
+  colorSuggestions = [(PIParallaxStyle *)self colorSuggestions];
+  v7 = [v3 initWithKind:kind parameters:parameters colorSuggestions:colorSuggestions];
 
   return v7;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(PIParallaxStyle *)self kind];
-  v3 = [v2 hash];
+  kind = [(PIParallaxStyle *)self kind];
+  v3 = [kind hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
@@ -503,16 +503,16 @@ LABEL_14:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PIParallaxStyle *)self kind];
-      v7 = [(PIParallaxStyle *)v5 kind];
-      v8 = [v6 isEqualToString:v7];
+      v5 = equalCopy;
+      kind = [(PIParallaxStyle *)self kind];
+      kind2 = [(PIParallaxStyle *)v5 kind];
+      v8 = [kind isEqualToString:kind2];
 
       if (v8)
       {
-        v9 = [(PIParallaxStyle *)self bakedStyle];
-        v10 = [(PIParallaxStyle *)v5 bakedStyle];
-        v11 = [v9 isEqual:v10];
+        bakedStyle = [(PIParallaxStyle *)self bakedStyle];
+        bakedStyle2 = [(PIParallaxStyle *)v5 bakedStyle];
+        v11 = [bakedStyle isEqual:bakedStyle2];
       }
 
       else
@@ -534,25 +534,25 @@ LABEL_14:
 {
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
-  v5 = [(PIParallaxStyle *)self parameters];
-  v6 = [v3 stringWithFormat:@"<%@: %p parameters = %@>", v4, self, v5];;
+  parameters = [(PIParallaxStyle *)self parameters];
+  v6 = [v3 stringWithFormat:@"<%@: %p parameters = %@>", v4, self, parameters];;
 
   return v6;
 }
 
-- (PIParallaxStyle)initWithClockColor:(id)a3 vibrancy:(double)a4 colorSuggestions:(id)a5
+- (PIParallaxStyle)initWithClockColor:(id)color vibrancy:(double)vibrancy colorSuggestions:(id)suggestions
 {
-  result = [(PIParallaxStyle *)self initWithClockColor:a3 colorSuggestions:a5];
-  result->_clockVibrancy = a4;
+  result = [(PIParallaxStyle *)self initWithClockColor:color colorSuggestions:suggestions];
+  result->_clockVibrancy = vibrancy;
   return result;
 }
 
-- (PIParallaxStyle)initWithClockColor:(id)a3 colorSuggestions:(id)a4
+- (PIParallaxStyle)initWithClockColor:(id)color colorSuggestions:(id)suggestions
 {
   v42 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  colorCopy = color;
+  suggestionsCopy = suggestions;
+  if (!colorCopy)
   {
     v15 = NUAssertLogger_4208();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -563,7 +563,7 @@ LABEL_14:
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v17 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v19 = NUAssertLogger_4208();
     v20 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -571,11 +571,11 @@ LABEL_14:
     {
       if (v20)
       {
-        v28 = dispatch_get_specific(*v17);
+        v28 = dispatch_get_specific(*callStackSymbols);
         v29 = MEMORY[0x1E696AF00];
         v30 = v28;
-        v17 = [v29 callStackSymbols];
-        v31 = [v17 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v29 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v39 = v28;
         v40 = 2114;
@@ -586,10 +586,10 @@ LABEL_14:
 
     else if (v20)
     {
-      v21 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v17 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v39 = v17;
+      v39 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -597,8 +597,8 @@ LABEL_14:
     goto LABEL_17;
   }
 
-  v8 = v7;
-  if (!v7)
+  v8 = suggestionsCopy;
+  if (!suggestionsCopy)
   {
     v22 = NUAssertLogger_4208();
     if (os_log_type_enabled(v22, OS_LOG_TYPE_ERROR))
@@ -609,7 +609,7 @@ LABEL_14:
       _os_log_error_impl(&dword_1C7694000, v22, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v17 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v24 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v19 = NUAssertLogger_4208();
     v25 = os_log_type_enabled(v19, OS_LOG_TYPE_ERROR);
@@ -617,8 +617,8 @@ LABEL_14:
     {
       if (v25)
       {
-        v26 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v27 = [v26 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v27 = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v39 = v27;
         _os_log_error_impl(&dword_1C7694000, v19, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -630,11 +630,11 @@ LABEL_14:
 LABEL_17:
     if (v25)
     {
-      v32 = dispatch_get_specific(*v17);
+      v32 = dispatch_get_specific(*callStackSymbols);
       v33 = MEMORY[0x1E696AF00];
       v34 = v32;
-      v35 = [v33 callStackSymbols];
-      v36 = [v35 componentsJoinedByString:@"\n"];
+      callStackSymbols4 = [v33 callStackSymbols];
+      v36 = [callStackSymbols4 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v39 = v32;
       v40 = 2114;
@@ -651,8 +651,8 @@ LABEL_19:
   v37.super_class = PIParallaxStyle;
   v9 = [(PIParallaxStyle *)&v37 init];
   clockColor = v9->_clockColor;
-  v9->_clockColor = v6;
-  v11 = v6;
+  v9->_clockColor = colorCopy;
+  v11 = colorCopy;
 
   v12 = [v8 copy];
   colorSuggestions = v9->_colorSuggestions;
@@ -664,48 +664,48 @@ LABEL_19:
 
 - (PIParallaxStyle)init
 {
-  v3 = [MEMORY[0x1E69C0750] whiteColor];
-  v4 = [(PIParallaxStyle *)self initWithClockColor:v3 colorSuggestions:MEMORY[0x1E695E0F0]];
+  whiteColor = [MEMORY[0x1E69C0750] whiteColor];
+  v4 = [(PIParallaxStyle *)self initWithClockColor:whiteColor colorSuggestions:MEMORY[0x1E695E0F0]];
 
   return v4;
 }
 
 + (id)defaultOriginalStyle
 {
-  v2 = [a1 alloc];
-  v3 = [MEMORY[0x1E69C0750] whiteColor];
-  v4 = [v2 initWithClockColor:v3 colorSuggestions:MEMORY[0x1E695E0F0]];
+  v2 = [self alloc];
+  whiteColor = [MEMORY[0x1E69C0750] whiteColor];
+  v4 = [v2 initWithClockColor:whiteColor colorSuggestions:MEMORY[0x1E695E0F0]];
 
   return v4;
 }
 
-+ (id)colorPaletteWithStyleKind:(id)a3
++ (id)colorPaletteWithStyleKind:(id)kind
 {
-  v3 = a3;
-  if ([v3 isEqualToString:*MEMORY[0x1E69C0AF0]])
+  kindCopy = kind;
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0AF0]])
   {
     goto LABEL_2;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C0B00]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0B00]])
   {
     v4 = +[PIParallaxColorPalette colorWashSinglePalette];
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C0AF8]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0AF8]])
   {
     v4 = +[PIParallaxColorPalette colorWashDuotonePalette];
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C0B08]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0B08]])
   {
     v4 = +[PIParallaxColorPalette greenScreenMutedPalette];
     goto LABEL_9;
   }
 
-  if ([v3 isEqualToString:*MEMORY[0x1E69C0B20]] || objc_msgSend(v3, "isEqualToString:", *MEMORY[0x1E69C0B18]))
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0B20]] || objc_msgSend(kindCopy, "isEqualToString:", *MEMORY[0x1E69C0B18]))
   {
 LABEL_2:
     v4 = +[PIParallaxColorPalette greenScreenVibrantPalette];
@@ -720,88 +720,88 @@ LABEL_10:
   return v5;
 }
 
-+ (PIParallaxStyle)styleWithBakedStyle:(id)a3
++ (PIParallaxStyle)styleWithBakedStyle:(id)style
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 kind];
-  v5 = [v3 parameters];
-  v6 = [v3 colorSuggestions];
-  if ([v4 isEqualToString:*MEMORY[0x1E69C0B28]])
+  styleCopy = style;
+  kind = [styleCopy kind];
+  parameters = [styleCopy parameters];
+  colorSuggestions = [styleCopy colorSuggestions];
+  if ([kind isEqualToString:*MEMORY[0x1E69C0B28]])
   {
     v7 = off_1E82A8238;
 LABEL_12:
-    v8 = [(__objc2_class *)*v7 styleWithParameters:v5 colorSuggestions:v6];
+    v8 = [(__objc2_class *)*v7 styleWithParameters:parameters colorSuggestions:colorSuggestions];
 
     return v8;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69C0B30]])
+  if ([kind isEqualToString:*MEMORY[0x1E69C0B30]])
   {
 LABEL_4:
     v7 = off_1E82A8258;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69C0AE0]])
+  if ([kind isEqualToString:*MEMORY[0x1E69C0AE0]])
   {
     goto LABEL_6;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69C0AD8]])
+  if ([kind isEqualToString:*MEMORY[0x1E69C0AD8]])
   {
     v7 = off_1E82A8178;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69C0AF0]] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", *MEMORY[0x1E69C0AE8]))
+  if ([kind isEqualToString:*MEMORY[0x1E69C0AF0]] & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", *MEMORY[0x1E69C0AE8]))
   {
     v7 = off_1E82A81A8;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69C0B00]])
+  if ([kind isEqualToString:*MEMORY[0x1E69C0B00]])
   {
     v7 = off_1E82A81C8;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69C0AF8]])
+  if ([kind isEqualToString:*MEMORY[0x1E69C0AF8]])
   {
     v7 = off_1E82A81C0;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69C0B08]])
+  if ([kind isEqualToString:*MEMORY[0x1E69C0B08]])
   {
     v7 = off_1E82A81F0;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69C0B20]])
+  if ([kind isEqualToString:*MEMORY[0x1E69C0B20]])
   {
     v7 = off_1E82A81E8;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69C0B10]])
+  if ([kind isEqualToString:*MEMORY[0x1E69C0B10]])
   {
     v7 = off_1E82A81D8;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:*MEMORY[0x1E69C0B18]])
+  if ([kind isEqualToString:*MEMORY[0x1E69C0B18]])
   {
     v7 = off_1E82A81E0;
     goto LABEL_12;
   }
 
-  if ([v4 isEqualToString:@"StudioBright"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"StudioDark"))
+  if ([kind isEqualToString:@"StudioBright"] & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", @"StudioDark"))
   {
     goto LABEL_4;
   }
 
-  if ([v4 isEqualToString:@"BlackWhiteHighKey"] & 1) != 0 || (objc_msgSend(v4, "isEqualToString:", @"BlackWhiteStage"))
+  if ([kind isEqualToString:@"BlackWhiteHighKey"] & 1) != 0 || (objc_msgSend(kind, "isEqualToString:", @"BlackWhiteStage"))
   {
 LABEL_6:
     v7 = off_1E82A8180;
@@ -811,7 +811,7 @@ LABEL_6:
   v10 = NUAssertLogger_4208();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown style kind: %@", v4];
+    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown style kind: %@", kind];
     *buf = 138543362;
     v26 = v11;
     _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
@@ -828,8 +828,8 @@ LABEL_6:
       v18 = dispatch_get_specific(*v12);
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v19 callStackSymbols];
+      v22 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v26 = v18;
       v27 = 2114;
@@ -840,8 +840,8 @@ LABEL_6:
 
   else if (v15)
   {
-    v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v17 = [v16 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543362;
     v26 = v17;
     _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -852,11 +852,11 @@ LABEL_6:
   return result;
 }
 
-+ (PIParallaxStyle)styleWithParameters:(id)a3 colorSuggestions:(id)a4
++ (PIParallaxStyle)styleWithParameters:(id)parameters colorSuggestions:(id)suggestions
 {
   v32 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  parametersCopy = parameters;
+  suggestionsCopy = suggestions;
   v7 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -894,8 +894,8 @@ LABEL_11:
           v23 = MEMORY[0x1E696AF00];
           v24 = specific;
           v25 = v21;
-          v26 = [v23 callStackSymbols];
-          v7 = [v26 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v23 callStackSymbols];
+          v7 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v29 = specific;
           v30 = 2114;
@@ -922,8 +922,8 @@ LABEL_11:
     {
       v17 = MEMORY[0x1E696AF00];
       v18 = v16;
-      v19 = [v17 callStackSymbols];
-      v20 = [v19 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v17 callStackSymbols];
+      v20 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v29 = v20;
       _os_log_error_impl(&dword_1C7694000, v18, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -939,75 +939,75 @@ LABEL_14:
   }
 }
 
-+ (id)defaultStyleForKind:(id)a3 colorAnalysis:(id)a4
++ (id)defaultStyleForKind:(id)kind colorAnalysis:(id)analysis
 {
   v30 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:*MEMORY[0x1E69C0B28]])
+  kindCopy = kind;
+  analysisCopy = analysis;
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0B28]])
   {
     v7 = off_1E82A8238;
 LABEL_12:
-    v8 = [(__objc2_class *)*v7 styleWithColorAnalysis:v6];
+    v8 = [(__objc2_class *)*v7 styleWithColorAnalysis:analysisCopy];
 
     return v8;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69C0B30]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0B30]])
   {
     v7 = off_1E82A8258;
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69C0AE0]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0AE0]])
   {
     v7 = off_1E82A8180;
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69C0AD8]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0AD8]])
   {
     v7 = off_1E82A8178;
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69C0AF0]] & 1) != 0 || (objc_msgSend(v5, "isEqualToString:", *MEMORY[0x1E69C0AE8]))
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0AF0]] & 1) != 0 || (objc_msgSend(kindCopy, "isEqualToString:", *MEMORY[0x1E69C0AE8]))
   {
     v7 = off_1E82A81A8;
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69C0B00]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0B00]])
   {
     v7 = off_1E82A81C8;
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69C0AF8]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0AF8]])
   {
     v7 = off_1E82A81C0;
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69C0B08]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0B08]])
   {
     v7 = off_1E82A81F0;
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69C0B20]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0B20]])
   {
     v7 = off_1E82A81E8;
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69C0B10]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0B10]])
   {
     v7 = off_1E82A81D8;
     goto LABEL_12;
   }
 
-  if ([v5 isEqualToString:*MEMORY[0x1E69C0B18]])
+  if ([kindCopy isEqualToString:*MEMORY[0x1E69C0B18]])
   {
     v7 = off_1E82A81E0;
     goto LABEL_12;
@@ -1016,9 +1016,9 @@ LABEL_12:
   v10 = NUAssertLogger_4208();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    v11 = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown style kind: %@", v5];
+    kindCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"Unknown style kind: %@", kindCopy];
     *buf = 138543362;
-    v27 = v11;
+    v27 = kindCopy;
     _os_log_error_impl(&dword_1C7694000, v10, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
   }
 
@@ -1033,8 +1033,8 @@ LABEL_12:
       v18 = dispatch_get_specific(*v12);
       v19 = MEMORY[0x1E696AF00];
       v20 = v18;
-      v21 = [v19 callStackSymbols];
-      v22 = [v21 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v19 callStackSymbols];
+      v22 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v27 = v18;
       v28 = 2114;
@@ -1045,8 +1045,8 @@ LABEL_12:
 
   else if (v15)
   {
-    v16 = [MEMORY[0x1E696AF00] callStackSymbols];
-    v17 = [v16 componentsJoinedByString:@"\n"];
+    callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+    v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
     *buf = 138543362;
     v27 = v17;
     _os_log_error_impl(&dword_1C7694000, v14, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -1056,9 +1056,9 @@ LABEL_12:
   return [(PIParallaxStyle *)v23 _filterForRecipeIdentifier:v24, v25];
 }
 
-+ (id)_filterForRecipeIdentifier:(id)a3
++ (id)_filterForRecipeIdentifier:(id)identifier
 {
-  v3 = [PIParallaxStyleRecipeRegistry recipeForIdentifier:a3];
+  v3 = [PIParallaxStyleRecipeRegistry recipeForIdentifier:identifier];
   if (v3)
   {
     v4 = [[PIParallaxRecipeFilter alloc] initWithRecipe:v3];
@@ -1072,10 +1072,10 @@ LABEL_12:
   return v4;
 }
 
-+ (PIParallaxStyle)styleWithColorAnalysis:(id)a3
++ (PIParallaxStyle)styleWithColorAnalysis:(id)analysis
 {
   v29 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  analysisCopy = analysis;
   v4 = MEMORY[0x1E69B3D78];
   if (*MEMORY[0x1E69B3D78] != -1)
   {
@@ -1113,8 +1113,8 @@ LABEL_11:
           v20 = MEMORY[0x1E696AF00];
           v21 = specific;
           v22 = v18;
-          v23 = [v20 callStackSymbols];
-          v4 = [v23 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v20 callStackSymbols];
+          v4 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v26 = specific;
           v27 = 2114;
@@ -1141,8 +1141,8 @@ LABEL_11:
     {
       v14 = MEMORY[0x1E696AF00];
       v15 = v13;
-      v16 = [v14 callStackSymbols];
-      v17 = [v16 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v14 callStackSymbols];
+      v17 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v26 = v17;
       _os_log_error_impl(&dword_1C7694000, v15, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);

@@ -1,27 +1,27 @@
 @interface QueryExtrinsicsDiagnostic
-- (int)getCalibResults:(QueryExtrinsicsDiagnostic *)self focalPoint:(SEL)a2;
+- (int)getCalibResults:(QueryExtrinsicsDiagnostic *)self focalPoint:(SEL)point;
 - (int)initDevice;
-- (void)log:(const void *)a3;
+- (void)log:(const void *)log;
 @end
 
 @implementation QueryExtrinsicsDiagnostic
 
-- (void)log:(const void *)a3
+- (void)log:(const void *)log
 {
   if (os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_DEFAULT))
   {
-    if (*(a3 + 23) >= 0)
+    if (*(log + 23) >= 0)
     {
-      v4 = a3;
+      logCopy = log;
     }
 
     else
     {
-      v4 = *a3;
+      logCopy = *log;
     }
 
     v5 = 136315138;
-    v6 = v4;
+    v6 = logCopy;
     _os_log_impl(&_mh_execute_header, &_os_log_default, OS_LOG_TYPE_DEFAULT, "QueryExtrinsicsDiagnostic %s", &v5, 0xCu);
   }
 }
@@ -39,7 +39,7 @@
   DeviceCMInterface::initAndActivateCaptureDeviceController(self->_diagnosticCMInterface);
 }
 
-- (int)getCalibResults:(QueryExtrinsicsDiagnostic *)self focalPoint:(SEL)a2
+- (int)getCalibResults:(QueryExtrinsicsDiagnostic *)self focalPoint:(SEL)point
 {
   v4 = v3;
   v5 = v2;

@@ -1,13 +1,13 @@
 @interface RemoteAlertHandler
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
 @end
 
 @implementation RemoteAlertHandler
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
-  v5 = self;
+  deactivateCopy = deactivate;
+  selfCopy = self;
   sub_1001EE294();
 }
 

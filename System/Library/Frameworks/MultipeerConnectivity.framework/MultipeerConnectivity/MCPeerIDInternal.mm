@@ -1,20 +1,20 @@
 @interface MCPeerIDInternal
-- (MCPeerIDInternal)initWithIDString:(id)a3 pid64:(unint64_t)a4 displayName:(id)a5;
+- (MCPeerIDInternal)initWithIDString:(id)string pid64:(unint64_t)pid64 displayName:(id)name;
 - (void)dealloc;
 @end
 
 @implementation MCPeerIDInternal
 
-- (MCPeerIDInternal)initWithIDString:(id)a3 pid64:(unint64_t)a4 displayName:(id)a5
+- (MCPeerIDInternal)initWithIDString:(id)string pid64:(unint64_t)pid64 displayName:(id)name
 {
   v10.receiver = self;
   v10.super_class = MCPeerIDInternal;
   v8 = [(MCPeerIDInternal *)&v10 init];
   if (v8)
   {
-    v8->_idString = [a3 copy];
-    v8->_pid64 = a4;
-    v8->_displayName = [a5 copy];
+    v8->_idString = [string copy];
+    v8->_pid64 = pid64;
+    v8->_displayName = [name copy];
   }
 
   return v8;

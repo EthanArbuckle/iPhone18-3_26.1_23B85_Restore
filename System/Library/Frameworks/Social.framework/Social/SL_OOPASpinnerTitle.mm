@@ -1,5 +1,5 @@
 @interface SL_OOPASpinnerTitle
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (SL_OOPASpinnerTitle)init;
 - (void)dealloc;
 - (void)layoutSubviews;
@@ -41,9 +41,9 @@
   [(SL_OOPASpinnerTitle *)&v3 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_titleView sizeToFit:a3.width];
+  [(UILabel *)self->_titleView sizeToFit:fits.width];
   [(UIActivityIndicatorView *)self->_spinner sizeToFit];
   [(UILabel *)self->_titleView frame];
   v5 = v4;

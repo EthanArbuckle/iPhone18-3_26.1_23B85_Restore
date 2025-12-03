@@ -1,14 +1,14 @@
 @interface NRUnixProcessSignaler
-+ (BOOL)signalProcessNamed:(id)a3 withSignal:(int)a4;
-+ (int)_findProcessNamed:(id)a3;
-+ (int)findProcessNamed:(id)a3;
++ (BOOL)signalProcessNamed:(id)named withSignal:(int)signal;
++ (int)_findProcessNamed:(id)named;
++ (int)findProcessNamed:(id)named;
 @end
 
 @implementation NRUnixProcessSignaler
 
-+ (int)_findProcessNamed:(id)a3
++ (int)_findProcessNamed:(id)named
 {
-  v3 = a3;
+  namedCopy = named;
   for (i = 0; ; i = 0)
   {
     *size = 0;
@@ -77,7 +77,7 @@ LABEL_14:
       while (1)
       {
         v10 = *(v9 - 203);
-        if (!strcmp(v9, [v3 UTF8String]))
+        if (!strcmp(v9, [namedCopy UTF8String]))
         {
           break;
         }
@@ -104,7 +104,7 @@ LABEL_14:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *size = 138412546;
-          *&size[4] = v3;
+          *&size[4] = namedCopy;
           v20 = 2048;
           v21 = v10;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "NRUnixProcessSignaler: Found process %@ PID %ld", size, 0x16u);
@@ -123,7 +123,7 @@ LABEL_30:
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
           *size = 138412290;
-          *&size[4] = v3;
+          *&size[4] = namedCopy;
           _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_DEFAULT, "NRUnixProcessSignaler: Did not find process %@", size, 0xCu);
         }
 
@@ -163,12 +163,12 @@ LABEL_39:
   return v10;
 }
 
-+ (int)findProcessNamed:(id)a3
++ (int)findProcessNamed:(id)named
 {
   v5 = 0;
   do
   {
-    result = [a1 _findProcessNamed:a3];
+    result = [self _findProcessNamed:named];
     if (v5 > 3)
     {
       break;
@@ -181,10 +181,10 @@ LABEL_39:
   return result;
 }
 
-+ (BOOL)signalProcessNamed:(id)a3 withSignal:(int)a4
++ (BOOL)signalProcessNamed:(id)named withSignal:(int)signal
 {
-  v6 = a3;
-  v7 = [a1 findProcessNamed:v6];
+  namedCopy = named;
+  v7 = [self findProcessNamed:namedCopy];
   if (v7 == -1)
   {
     v10 = nr_daemon_log();
@@ -195,7 +195,7 @@ LABEL_39:
       v12 = nr_daemon_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_1001006E0(v6, v12);
+        sub_1001006E0(namedCopy, v12);
       }
 
       goto LABEL_10;
@@ -207,7 +207,7 @@ LABEL_11:
   }
 
   v8 = v7;
-  if (kill(v7, a4) == -1)
+  if (kill(v7, signal) == -1)
   {
     v13 = nr_daemon_log();
     v14 = os_log_type_enabled(v13, OS_LOG_TYPE_ERROR);
@@ -217,7 +217,7 @@ LABEL_11:
       v12 = nr_daemon_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
-        sub_100100628(v8, v6, v12);
+        sub_100100628(v8, namedCopy, v12);
       }
 
 LABEL_10:

@@ -1,24 +1,24 @@
 @interface BCManagedObjectIDMonitor
-- (BCManagedObjectIDMonitor)initWithContext:(id)a3 coordinator:(id)a4 entityName:(id)a5 predicate:(id)a6 mapProperty:(id)a7 propertiesOfInterest:(id)a8 observer:(id)a9;
+- (BCManagedObjectIDMonitor)initWithContext:(id)context coordinator:(id)coordinator entityName:(id)name predicate:(id)predicate mapProperty:(id)property propertiesOfInterest:(id)interest observer:(id)observer;
 - (BCManagedObjectIDMonitorObserver)observer;
-- (BOOL)_objectHasChangesOfInterest:(id)a3;
+- (BOOL)_objectHasChangesOfInterest:(id)interest;
 - (NSSet)currentIdentifiers;
-- (void)_managedObjectContextDidSave:(id)a3;
-- (void)_managedObjectContextWillSave:(id)a3;
+- (void)_managedObjectContextDidSave:(id)save;
+- (void)_managedObjectContextWillSave:(id)save;
 - (void)dealloc;
 @end
 
 @implementation BCManagedObjectIDMonitor
 
-- (BCManagedObjectIDMonitor)initWithContext:(id)a3 coordinator:(id)a4 entityName:(id)a5 predicate:(id)a6 mapProperty:(id)a7 propertiesOfInterest:(id)a8 observer:(id)a9
+- (BCManagedObjectIDMonitor)initWithContext:(id)context coordinator:(id)coordinator entityName:(id)name predicate:(id)predicate mapProperty:(id)property propertiesOfInterest:(id)interest observer:(id)observer
 {
-  v16 = a3;
-  v48 = a4;
-  v49 = a5;
-  v47 = a6;
-  v17 = a7;
-  v18 = a8;
-  v19 = a9;
+  contextCopy = context;
+  coordinatorCopy = coordinator;
+  nameCopy = name;
+  predicateCopy = predicate;
+  propertyCopy = property;
+  interestCopy = interest;
+  observerCopy = observer;
   v20 = BCSignpostLibrary();
   v21 = os_signpost_id_generate(v20);
 
@@ -29,7 +29,7 @@
   if (v24 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v22))
   {
     *buf = 138412290;
-    v55 = v49;
+    v55 = nameCopy;
     _os_signpost_emit_with_name_impl(&dword_0, v23, OS_SIGNPOST_INTERVAL_BEGIN, spid, "BCManagedObjectIDMonitor initial fetch", "%@", buf, 0xCu);
   }
 
@@ -39,24 +39,24 @@
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_context, a3);
-    objc_storeStrong(&v26->_coordinator, a4);
-    v27 = [v49 copy];
+    objc_storeStrong(&v25->_context, context);
+    objc_storeStrong(&v26->_coordinator, coordinator);
+    v27 = [nameCopy copy];
     entityName = v26->_entityName;
     v26->_entityName = v27;
 
-    objc_storeStrong(&v26->_predicate, a6);
-    v29 = v17;
-    v30 = [v17 copy];
+    objc_storeStrong(&v26->_predicate, predicate);
+    v29 = propertyCopy;
+    v30 = [propertyCopy copy];
     mapProperty = v26->_mapProperty;
     v26->_mapProperty = v30;
 
-    v32 = v18;
-    v33 = [v18 copy];
+    v32 = interestCopy;
+    v33 = [interestCopy copy];
     propertiesOfInterest = v26->_propertiesOfInterest;
     v26->_propertiesOfInterest = v33;
 
-    objc_storeWeak(&v26->_observer, v19);
+    objc_storeWeak(&v26->_observer, observerCopy);
     v35 = dispatch_queue_create("BCManagedObjectIDMonitor.sync", 0);
     sync = v26->_sync;
     v26->_sync = v35;
@@ -76,12 +76,12 @@
     v42 = +[NSNotificationCenter defaultCenter];
     [v42 addObserver:v26 selector:"_managedObjectContextDidSave:" name:NSManagedObjectContextDidSaveNotification object:0];
 
-    if (!v16)
+    if (!contextCopy)
     {
-      v16 = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
-      [v16 setPersistentStoreCoordinator:v26->_coordinator];
-      [v16 setUndoManager:0];
-      [v16 setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
+      contextCopy = [[NSManagedObjectContext alloc] initWithConcurrencyType:1];
+      [contextCopy setPersistentStoreCoordinator:v26->_coordinator];
+      [contextCopy setUndoManager:0];
+      [contextCopy setMergePolicy:NSMergeByPropertyObjectTrumpMergePolicy];
     }
 
     v50[0] = _NSConcreteStackBlock;
@@ -89,15 +89,15 @@
     v50[2] = sub_178084;
     v50[3] = &unk_2C7BE8;
     v51 = v26;
-    v16 = v16;
-    v52 = v16;
-    [v16 performBlockAndWait:v50];
+    contextCopy = contextCopy;
+    v52 = contextCopy;
+    [contextCopy performBlockAndWait:v50];
   }
 
   else
   {
-    v29 = v17;
-    v32 = v18;
+    v29 = propertyCopy;
+    v32 = interestCopy;
   }
 
   v43 = BCSignpostLibrary();
@@ -105,7 +105,7 @@
   if (v24 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v43))
   {
     *buf = 138412290;
-    v55 = v49;
+    v55 = nameCopy;
     _os_signpost_emit_with_name_impl(&dword_0, v44, OS_SIGNPOST_INTERVAL_BEGIN, spid, "BCManagedObjectIDMonitor initial fetch", "%@", buf, 0xCu);
   }
 
@@ -125,24 +125,24 @@
   [(BCManagedObjectIDMonitor *)&v5 dealloc];
 }
 
-- (BOOL)_objectHasChangesOfInterest:(id)a3
+- (BOOL)_objectHasChangesOfInterest:(id)interest
 {
-  v4 = [a3 changedValues];
-  v5 = [v4 allKeys];
-  v6 = [NSSet setWithArray:v5];
+  changedValues = [interest changedValues];
+  allKeys = [changedValues allKeys];
+  v6 = [NSSet setWithArray:allKeys];
 
   LOBYTE(self) = [v6 intersectsSet:self->_propertiesOfInterest];
   return self;
 }
 
-- (void)_managedObjectContextWillSave:(id)a3
+- (void)_managedObjectContextWillSave:(id)save
 {
-  v49 = a3;
-  v4 = [v49 object];
-  v50 = v4;
+  saveCopy = save;
+  object = [saveCopy object];
+  v50 = object;
   context = self->_context;
-  v6 = v4;
-  if (context == v4 || !context && self->_coordinator && (-[NSManagedObjectContext persistentStoreCoordinator](v4, "persistentStoreCoordinator"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 hasStoreInCommonWith:self->_coordinator], v7, v6 = v50, v8))
+  v6 = object;
+  if (context == object || !context && self->_coordinator && (-[NSManagedObjectContext persistentStoreCoordinator](object, "persistentStoreCoordinator"), v7 = objc_claimAutoreleasedReturnValue(), v8 = [v7 hasStoreInCommonWith:self->_coordinator], v7, v6 = v50, v8))
   {
     v70 = 0;
     v71 = &v70;
@@ -172,8 +172,8 @@
     v66 = 0u;
     v67 = 0u;
     v68 = 0u;
-    v12 = [(NSManagedObjectContext *)v6 deletedObjects];
-    v13 = [v12 countByEnumeratingWithState:&v65 objects:v78 count:16];
+    deletedObjects = [(NSManagedObjectContext *)v6 deletedObjects];
+    v13 = [deletedObjects countByEnumeratingWithState:&v65 objects:v78 count:16];
     if (v13)
     {
       v14 = *v66;
@@ -183,13 +183,13 @@
         {
           if (*v66 != v14)
           {
-            objc_enumerationMutation(v12);
+            objc_enumerationMutation(deletedObjects);
           }
 
           v16 = *(*(&v65 + 1) + 8 * i);
-          v17 = [v16 entity];
-          v18 = [v17 name];
-          v19 = [v18 isEqualToString:self->_entityName];
+          entity = [v16 entity];
+          name = [entity name];
+          v19 = [name isEqualToString:self->_entityName];
 
           if (v19)
           {
@@ -201,7 +201,7 @@
           }
         }
 
-        v13 = [v12 countByEnumeratingWithState:&v65 objects:v78 count:16];
+        v13 = [deletedObjects countByEnumeratingWithState:&v65 objects:v78 count:16];
       }
 
       while (v13);
@@ -211,8 +211,8 @@
     v64 = 0u;
     v62 = 0u;
     v61 = 0u;
-    v21 = [(NSManagedObjectContext *)v50 insertedObjects];
-    v22 = [v21 countByEnumeratingWithState:&v61 objects:v77 count:16];
+    insertedObjects = [(NSManagedObjectContext *)v50 insertedObjects];
+    v22 = [insertedObjects countByEnumeratingWithState:&v61 objects:v77 count:16];
     if (v22)
     {
       v23 = *v62;
@@ -222,13 +222,13 @@
         {
           if (*v62 != v23)
           {
-            objc_enumerationMutation(v21);
+            objc_enumerationMutation(insertedObjects);
           }
 
           v25 = *(*(&v61 + 1) + 8 * j);
-          v26 = [v25 entity];
-          v27 = [v26 name];
-          v28 = [v27 isEqualToString:self->_entityName];
+          entity2 = [v25 entity];
+          name2 = [entity2 name];
+          v28 = [name2 isEqualToString:self->_entityName];
 
           if (v28)
           {
@@ -244,7 +244,7 @@
           }
         }
 
-        v22 = [v21 countByEnumeratingWithState:&v61 objects:v77 count:16];
+        v22 = [insertedObjects countByEnumeratingWithState:&v61 objects:v77 count:16];
       }
 
       while (v22);
@@ -254,8 +254,8 @@
     v60 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v31 = [(NSManagedObjectContext *)v50 updatedObjects];
-    v32 = [v31 countByEnumeratingWithState:&v57 objects:v76 count:16];
+    updatedObjects = [(NSManagedObjectContext *)v50 updatedObjects];
+    v32 = [updatedObjects countByEnumeratingWithState:&v57 objects:v76 count:16];
     if (v32)
     {
       v33 = *v58;
@@ -265,13 +265,13 @@
         {
           if (*v58 != v33)
           {
-            objc_enumerationMutation(v31);
+            objc_enumerationMutation(updatedObjects);
           }
 
           v35 = *(*(&v57 + 1) + 8 * k);
-          v36 = [v35 entity];
-          v37 = [v36 name];
-          v38 = [v37 isEqualToString:self->_entityName];
+          entity3 = [v35 entity];
+          name3 = [entity3 name];
+          v38 = [name3 isEqualToString:self->_entityName];
 
           if (v38)
           {
@@ -290,7 +290,7 @@
           }
         }
 
-        v32 = [v31 countByEnumeratingWithState:&v57 objects:v76 count:16];
+        v32 = [updatedObjects countByEnumeratingWithState:&v57 objects:v76 count:16];
       }
 
       while (v32);
@@ -321,13 +321,13 @@
   }
 }
 
-- (void)_managedObjectContextDidSave:(id)a3
+- (void)_managedObjectContextDidSave:(id)save
 {
-  v4 = a3;
-  v5 = [v4 object];
-  v6 = v5;
+  saveCopy = save;
+  object = [saveCopy object];
+  v6 = object;
   context = self->_context;
-  if (context == v5 || !context && self->_coordinator && (-[NSManagedObjectContext persistentStoreCoordinator](v5, "persistentStoreCoordinator"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 hasStoreInCommonWith:self->_coordinator], v8, v9))
+  if (context == object || !context && self->_coordinator && (-[NSManagedObjectContext persistentStoreCoordinator](object, "persistentStoreCoordinator"), v8 = objc_claimAutoreleasedReturnValue(), v9 = [v8 hasStoreInCommonWith:self->_coordinator], v8, v9))
   {
     v19 = 0;
     v20 = &v19;
@@ -344,14 +344,14 @@
     block[4] = self;
     v17 = v6;
     dispatch_sync(sync, block);
-    v11 = [v20[5] addedObjects];
-    if (![v11 count])
+    addedObjects = [v20[5] addedObjects];
+    if (![addedObjects count])
     {
-      v12 = [v20[5] deletedObjects];
-      if (![v12 count])
+      deletedObjects = [v20[5] deletedObjects];
+      if (![deletedObjects count])
       {
-        v14 = [v20[5] updatedObjects];
-        v15 = [v14 count];
+        updatedObjects = [v20[5] updatedObjects];
+        v15 = [updatedObjects count];
 
         if (!v15)
         {

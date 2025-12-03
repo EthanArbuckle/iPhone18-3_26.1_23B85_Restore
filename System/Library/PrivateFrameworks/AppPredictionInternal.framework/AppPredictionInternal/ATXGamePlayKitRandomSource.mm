@@ -1,9 +1,9 @@
 @interface ATXGamePlayKitRandomSource
 + (id)sharedRandom;
 - (ATXGamePlayKitRandomSource)init;
-- (ATXGamePlayKitRandomSource)initWithCoder:(id)a3;
-- (id)arrayByShufflingObjectsInArray:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (ATXGamePlayKitRandomSource)initWithCoder:(id)coder;
+- (id)arrayByShufflingObjectsInArray:(id)array;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ATXGamePlayKitRandomSource
@@ -29,14 +29,14 @@
   return p_super;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   objc_opt_class();
 
   return objc_opt_new();
 }
 
-- (ATXGamePlayKitRandomSource)initWithCoder:(id)a3
+- (ATXGamePlayKitRandomSource)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = ATXGamePlayKitRandomSource;
@@ -62,18 +62,18 @@ uint64_t __42__ATXGamePlayKitRandomSource_sharedRandom__block_invoke()
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)arrayByShufflingObjectsInArray:(id)a3
+- (id)arrayByShufflingObjectsInArray:(id)array
 {
   v23 = *MEMORY[0x277D85DE8];
-  v17 = a3;
-  if ([v17 count] > 1)
+  arrayCopy = array;
+  if ([arrayCopy count] > 1)
   {
-    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v17, "count")}];
+    v5 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(arrayCopy, "count")}];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    v6 = v17;
+    v6 = arrayCopy;
     v7 = [v6 countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v7)
     {
@@ -122,7 +122,7 @@ uint64_t __42__ATXGamePlayKitRandomSource_sharedRandom__block_invoke()
 
   else
   {
-    v4 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:v17];
+    v4 = [objc_alloc(MEMORY[0x277CBEA60]) initWithArray:arrayCopy];
   }
 
   v15 = *MEMORY[0x277D85DE8];

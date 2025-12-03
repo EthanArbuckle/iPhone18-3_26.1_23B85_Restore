@@ -1,20 +1,20 @@
 @interface PromotionalParallaxContentStackView
 - (CGSize)intrinsicContentSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC16MusicApplication35PromotionalParallaxContentStackView)initWithCoder:(id)a3;
-- (_TtC16MusicApplication35PromotionalParallaxContentStackView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC16MusicApplication35PromotionalParallaxContentStackView)initWithCoder:(id)coder;
+- (_TtC16MusicApplication35PromotionalParallaxContentStackView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation PromotionalParallaxContentStackView
 
-- (_TtC16MusicApplication35PromotionalParallaxContentStackView)initWithFrame:(CGRect)a3
+- (_TtC16MusicApplication35PromotionalParallaxContentStackView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication35PromotionalParallaxContentStackView_layoutInvalidationHandler);
   *v7 = 0;
   v7[1] = 0;
@@ -26,7 +26,7 @@
   return [(PromotionalParallaxContentStackView *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC16MusicApplication35PromotionalParallaxContentStackView)initWithCoder:(id)a3
+- (_TtC16MusicApplication35PromotionalParallaxContentStackView)initWithCoder:(id)coder
 {
   v3 = (&self->super.super.super.isa + OBJC_IVAR____TtC16MusicApplication35PromotionalParallaxContentStackView_layoutInvalidationHandler);
   *v3 = 0;
@@ -41,14 +41,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_34AF78();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = self;
+  width = fits.width;
+  selfCopy = self;
   sub_34B68C(width);
   v6 = v5;
   v8 = v7;
@@ -62,7 +62,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   sub_34B68C(0.0);
   v4 = v3;
   v6 = v5;
@@ -74,13 +74,13 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
   v6.receiver = self;
   v6.super_class = type metadata accessor for PromotionalParallaxContentStackView();
-  v4 = a3;
+  changeCopy = change;
   v5 = v6.receiver;
-  [(PromotionalParallaxContentStackView *)&v6 traitCollectionDidChange:v4];
+  [(PromotionalParallaxContentStackView *)&v6 traitCollectionDidChange:changeCopy];
   sub_34AEA0(0);
 }
 

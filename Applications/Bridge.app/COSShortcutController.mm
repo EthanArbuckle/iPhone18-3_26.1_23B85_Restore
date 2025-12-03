@@ -1,6 +1,6 @@
 @interface COSShortcutController
 + (id)sharedController;
-- (BOOL)issueActionForShortcut:(id)a3;
+- (BOOL)issueActionForShortcut:(id)shortcut;
 - (id)shortcutItems;
 @end
 
@@ -56,10 +56,10 @@
   return v2;
 }
 
-- (BOOL)issueActionForShortcut:(id)a3
+- (BOOL)issueActionForShortcut:(id)shortcut
 {
-  v3 = [a3 type];
-  if ([v3 isEqualToString:@"com.apple.Bridge.PairWatchShortcut"])
+  type = [shortcut type];
+  if ([type isEqualToString:@"com.apple.Bridge.PairWatchShortcut"])
   {
     [PBBridgeCAReporter incrementSuccessType:19];
     [UIApp presentNewPairingFlowIfPossible];
@@ -68,7 +68,7 @@ LABEL_3:
     goto LABEL_10;
   }
 
-  if (PBIsInternalInstall() && [v3 isEqualToString:@"com.apple.Bridge.InternalPingShortcut"])
+  if (PBIsInternalInstall() && [type isEqualToString:@"com.apple.Bridge.InternalPingShortcut"])
   {
     [UIApp pingWatch];
     goto LABEL_3;
@@ -78,7 +78,7 @@ LABEL_3:
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v7 = 138412290;
-    v8 = v3;
+    v8 = type;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Unsupported Shortcut action! %@", &v7, 0xCu);
   }
 

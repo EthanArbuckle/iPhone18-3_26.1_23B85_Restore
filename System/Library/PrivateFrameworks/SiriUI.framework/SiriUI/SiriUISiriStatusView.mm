@@ -1,64 +1,64 @@
 @interface SiriUISiriStatusView
-+ (CGRect)activeFrameForScreen:(id)a3 frame:(CGRect)a4 safeAreaInsets:(UIEdgeInsets)a5;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
++ (CGRect)activeFrameForScreen:(id)screen frame:(CGRect)frame safeAreaInsets:(UIEdgeInsets)insets;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_flamesFrame;
 - (CGRect)_flamesViewFrame;
 - (CGRect)_siriGlyphTappableRect;
 - (CGSize)sizeThatFits:(CGSize)result;
-- (SiriUISiriStatusView)initWithFrame:(CGRect)a3 screen:(id)a4 textInputEnabled:(BOOL)a5 configuration:(id)a6;
+- (SiriUISiriStatusView)initWithFrame:(CGRect)frame screen:(id)screen textInputEnabled:(BOOL)enabled configuration:(id)configuration;
 - (SiriUISiriStatusViewAnimationDelegate)animationDelegate;
 - (SiriUISiriStatusViewDelegate)delegate;
 - (UIEdgeInsets)safeAreaInsets;
-- (float)audioLevelForFlamesView:(id)a3;
+- (float)audioLevelForFlamesView:(id)view;
 - (id)_flamesView;
-- (void)_animateSiriGlyphHidden:(BOOL)a3;
+- (void)_animateSiriGlyphHidden:(BOOL)hidden;
 - (void)_attachFlamesViewIfNeeded;
-- (void)_handleKeyboardDidShowNotification:(id)a3;
-- (void)_handleKeyboardWillHideNotification:(id)a3;
+- (void)_handleKeyboardDidShowNotification:(id)notification;
+- (void)_handleKeyboardWillHideNotification:(id)notification;
 - (void)_layoutFlamesViewIfNeeded;
-- (void)_micButtonHeld:(id)a3;
-- (void)_micButtonTapped:(id)a3;
-- (void)_setupOrbIfNeeded:(id)a3;
+- (void)_micButtonHeld:(id)held;
+- (void)_micButtonTapped:(id)tapped;
+- (void)_setupOrbIfNeeded:(id)needed;
 - (void)dealloc;
-- (void)forceMicVisible:(BOOL)a3;
+- (void)forceMicVisible:(BOOL)visible;
 - (void)layoutSubviews;
-- (void)setFlamesViewDeferred:(BOOL)a3;
-- (void)setInUITrackingMode:(BOOL)a3;
-- (void)setMode:(int64_t)a3;
-- (void)setPaused:(BOOL)a3;
+- (void)setFlamesViewDeferred:(BOOL)deferred;
+- (void)setInUITrackingMode:(BOOL)mode;
+- (void)setMode:(int64_t)mode;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation SiriUISiriStatusView
 
-- (SiriUISiriStatusView)initWithFrame:(CGRect)a3 screen:(id)a4 textInputEnabled:(BOOL)a5 configuration:(id)a6
+- (SiriUISiriStatusView)initWithFrame:(CGRect)frame screen:(id)screen textInputEnabled:(BOOL)enabled configuration:(id)configuration
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v14 = a4;
-  v15 = a6;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  screenCopy = screen;
+  configurationCopy = configuration;
   v40.receiver = self;
   v40.super_class = SiriUISiriStatusView;
-  v16 = [(SiriUISiriStatusView *)&v40 initWithFrame:x, y, width, height];
-  v17 = v16;
-  if (v16)
+  height = [(SiriUISiriStatusView *)&v40 initWithFrame:x, y, width, height];
+  v17 = height;
+  if (height)
   {
-    objc_storeStrong(&v16->_screen, a4);
-    objc_storeStrong(&v17->_configuration, a6);
-    v17->_textInputEnabled = a5;
+    objc_storeStrong(&height->_screen, screen);
+    objc_storeStrong(&v17->_configuration, configuration);
+    v17->_textInputEnabled = enabled;
     v18 = objc_alloc(MEMORY[0x277D75D18]);
     v19 = [v18 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
     touchInputView = v17->_touchInputView;
     v17->_touchInputView = v19;
 
     v21 = v17->_touchInputView;
-    v22 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v21 setBackgroundColor:v22];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v21 setBackgroundColor:clearColor];
 
-    v23 = [(UIView *)v17->_touchInputView layer];
-    [v23 setHitTestsAsOpaque:1];
+    layer = [(UIView *)v17->_touchInputView layer];
+    [layer setHitTestsAsOpaque:1];
 
     [(SiriUISiriStatusView *)v17 addSubview:v17->_touchInputView];
     v24 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{0.0, 0.0, 85.0, 85.0}];
@@ -68,11 +68,11 @@
     [(UIView *)v17->_glyphView setAlpha:0.0];
     [(UIView *)v17->_glyphView setHidden:v17->_textInputEnabled];
     v26 = v17->_glyphView;
-    v27 = [MEMORY[0x277D75348] clearColor];
-    [(UIView *)v26 setBackgroundColor:v27];
+    clearColor2 = [MEMORY[0x277D75348] clearColor];
+    [(UIView *)v26 setBackgroundColor:clearColor2];
 
-    v28 = [(UIView *)v17->_glyphView layer];
-    [v28 setAllowsGroupBlending:0];
+    layer2 = [(UIView *)v17->_glyphView layer];
+    [layer2 setAllowsGroupBlending:0];
 
     [(SiriUISiriStatusView *)v17 insertSubview:v17->_glyphView below:v17->_touchInputView];
     v29 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INITIATED, 0);
@@ -98,25 +98,25 @@
 
     [(SiriUISiriStatusView *)v17 insertSubview:v17->_flamesContainerView above:v17->_touchInputView];
     [(UIView *)v17->_flamesContainerView setUserInteractionEnabled:0];
-    v38 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v38 addObserver:v17 selector:sel__handleKeyboardDidShowNotification_ name:*MEMORY[0x277D76BA8] object:0];
-    [v38 addObserver:v17 selector:sel__handleKeyboardWillHideNotification_ name:*MEMORY[0x277D76C50] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v17 selector:sel__handleKeyboardDidShowNotification_ name:*MEMORY[0x277D76BA8] object:0];
+    [defaultCenter addObserver:v17 selector:sel__handleKeyboardWillHideNotification_ name:*MEMORY[0x277D76C50] object:0];
     [(SiriUISiriStatusView *)v17 setNeedsLayout];
   }
 
   return v17;
 }
 
-+ (CGRect)activeFrameForScreen:(id)a3 frame:(CGRect)a4 safeAreaInsets:(UIEdgeInsets)a5
++ (CGRect)activeFrameForScreen:(id)screen frame:(CGRect)frame safeAreaInsets:(UIEdgeInsets)insets
 {
-  y = a4.origin.y;
-  v9 = a4.origin.x + a5.left;
+  y = frame.origin.y;
+  v9 = frame.origin.x + insets.left;
   v6 = v9;
-  v10 = a4.size.width - (a5.left + a5.right);
+  v10 = frame.size.width - (insets.left + insets.right);
   v7 = v10;
-  v11 = a4.size.height - a5.bottom;
+  v11 = frame.size.height - insets.bottom;
   v8 = v11;
-  CGRectGetHeight(a4);
+  CGRectGetHeight(frame);
   v17.origin.x = v6;
   v17.origin.y = y;
   v17.size.width = v7;
@@ -146,10 +146,10 @@
   return result;
 }
 
-- (void)forceMicVisible:(BOOL)a3
+- (void)forceMicVisible:(BOOL)visible
 {
   v7 = *MEMORY[0x277D85DE8];
-  if (a3 && (self->_mode - 1) <= 1)
+  if (visible && (self->_mode - 1) <= 1)
   {
     v3 = *MEMORY[0x277CEF098];
     if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
@@ -162,7 +162,7 @@
 
   else
   {
-    v4 = !a3;
+    v4 = !visible;
 
     [(SiriUISiriStatusView *)self _animateSiriGlyphHidden:v4];
   }
@@ -200,8 +200,8 @@
   v30.size.width = width;
   v30.size.height = height;
   [(UIView *)self->_glyphView setFrame:x, v22 - CGRectGetHeight(v30), width, height];
-  v23 = [(SiriUISiriStatusView *)self layer];
-  [v23 setAllowsGroupBlending:0];
+  layer = [(SiriUISiriStatusView *)self layer];
+  [layer setAllowsGroupBlending:0];
 
   flamesView = self->_flamesView;
   [(SiriUISiriStatusView *)self _flamesFrame];
@@ -241,7 +241,7 @@
   return result;
 }
 
-- (void)setMode:(int64_t)a3
+- (void)setMode:(int64_t)mode
 {
   v19 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
@@ -249,7 +249,7 @@
   {
     v6 = MEMORY[0x277CCABB0];
     v7 = v5;
-    v8 = [v6 numberWithInteger:a3];
+    v8 = [v6 numberWithInteger:mode];
     v15 = 136315394;
     v16 = "[SiriUISiriStatusView setMode:]";
     v17 = 2112;
@@ -257,48 +257,48 @@
     _os_log_impl(&dword_26948D000, v7, OS_LOG_TYPE_DEFAULT, "%s setMode: %@", &v15, 0x16u);
   }
 
-  if (self->_mode != a3)
+  if (self->_mode != mode)
   {
-    self->_mode = a3;
-    v9 = [MEMORY[0x277CCAC38] processInfo];
-    [v9 systemUptime];
+    self->_mode = mode;
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    [processInfo systemUptime];
     self->_lastStateChangeTime = v10;
 
-    if (a3 > 2)
+    if (mode > 2)
     {
-      if (a3 == 3)
+      if (mode == 3)
       {
         [(SUICFlamesView *)self->_flamesView setState:3];
         goto LABEL_15;
       }
 
-      if (a3 == 4)
+      if (mode == 4)
       {
         [(SiriUISiriStatusView *)self _setFlamesViewState:0];
-        v13 = self;
+        selfCopy4 = self;
         v14 = 1;
 LABEL_16:
-        [(SiriUISiriStatusView *)v13 _animateSiriGlyphHidden:v14];
+        [(SiriUISiriStatusView *)selfCopy4 _animateSiriGlyphHidden:v14];
         return;
       }
     }
 
     else
     {
-      if (a3 == 1)
+      if (mode == 1)
       {
         [(SiriUISiriStatusView *)self _attachFlamesViewIfNeeded];
-        v11 = self;
+        selfCopy3 = self;
         v12 = 1;
         goto LABEL_13;
       }
 
-      if (a3 == 2)
+      if (mode == 2)
       {
-        v11 = self;
+        selfCopy3 = self;
         v12 = 2;
 LABEL_13:
-        [(SiriUISiriStatusView *)v11 _setFlamesViewState:v12];
+        [(SiriUISiriStatusView *)selfCopy3 _setFlamesViewState:v12];
         [(SiriUISiriStatusView *)self _animateSiriGlyphHidden:1];
         [(SUICFlamesView *)self->_flamesView setRenderingEnabled:1 forReason:*MEMORY[0x277D77228]];
         return;
@@ -307,41 +307,41 @@ LABEL_13:
 
     [(SiriUISiriStatusView *)self _setFlamesViewState:0];
 LABEL_15:
-    v13 = self;
+    selfCopy4 = self;
     v14 = 0;
     goto LABEL_16;
   }
 }
 
-- (void)setFlamesViewDeferred:(BOOL)a3
+- (void)setFlamesViewDeferred:(BOOL)deferred
 {
-  self->_flamesViewDeferred = a3;
-  if (!a3)
+  self->_flamesViewDeferred = deferred;
+  if (!deferred)
   {
     [(SiriUISiriStatusView *)self _attachFlamesViewIfNeeded];
   }
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  if (self->_paused != a3)
+  if (self->_paused != paused)
   {
-    self->_paused = a3;
+    self->_paused = paused;
     [(SUICFlamesView *)self->_flamesView setPaused:?];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v9 = (self->_mode != 2 || ([MEMORY[0x277CCAC38] processInfo], v5 = v4 = a3;
+  v9 = (self->_mode != 2 || ([MEMORY[0x277CCAC38] processInfo], v5 = v4 = begin;
 
   return v9;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(UIView *)self->_flamesContainerView frame];
   v10 = x;
   v11 = y;
@@ -349,16 +349,16 @@ LABEL_15:
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (void)_micButtonTapped:(id)a3
+- (void)_micButtonTapped:(id)tapped
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tappedCopy = tapped;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v6 = MEMORY[0x277CCABB0];
     v7 = v5;
-    v8 = [v6 numberWithInteger:{objc_msgSend(v4, "state")}];
+    v8 = [v6 numberWithInteger:{objc_msgSend(tappedCopy, "state")}];
     v10 = 136315394;
     v11 = "[SiriUISiriStatusView _micButtonTapped:]";
     v12 = 2112;
@@ -366,23 +366,23 @@ LABEL_15:
     _os_log_impl(&dword_26948D000, v7, OS_LOG_TYPE_DEFAULT, "%s Mic Button Tapped State %@", &v10, 0x16u);
   }
 
-  if ([v4 state] == 3)
+  if ([tappedCopy state] == 3)
   {
-    v9 = [(SiriUISiriStatusView *)self delegate];
-    [v9 siriStatusViewWasTapped:self];
+    delegate = [(SiriUISiriStatusView *)self delegate];
+    [delegate siriStatusViewWasTapped:self];
   }
 }
 
-- (void)_micButtonHeld:(id)a3
+- (void)_micButtonHeld:(id)held
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = [a3 state];
+  state = [held state];
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v6 = MEMORY[0x277CCABB0];
     v7 = v5;
-    v8 = [v6 numberWithInteger:v4];
+    v8 = [v6 numberWithInteger:state];
     v10 = 136315394;
     v11 = "[SiriUISiriStatusView _micButtonHeld:]";
     v12 = 2112;
@@ -390,21 +390,21 @@ LABEL_15:
     _os_log_impl(&dword_26948D000, v7, OS_LOG_TYPE_DEFAULT, "%s Mic Button Held State %@", &v10, 0x16u);
   }
 
-  if (v4 == 1)
+  if (state == 1)
   {
-    v9 = [(SiriUISiriStatusView *)self delegate];
-    [v9 siriStatusViewHoldDidBegin:self];
+    delegate = [(SiriUISiriStatusView *)self delegate];
+    [delegate siriStatusViewHoldDidBegin:self];
   }
 
   else
   {
-    if ((v4 - 3) > 1)
+    if ((state - 3) > 1)
     {
       return;
     }
 
-    v9 = [(SiriUISiriStatusView *)self delegate];
-    [v9 siriStatusViewHoldDidEnd:self];
+    delegate = [(SiriUISiriStatusView *)self delegate];
+    [delegate siriStatusViewHoldDidEnd:self];
   }
 }
 
@@ -465,17 +465,17 @@ LABEL_15:
   return flamesView;
 }
 
-- (void)setInUITrackingMode:(BOOL)a3
+- (void)setInUITrackingMode:(BOOL)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   kdebug_trace();
-  self->_inUITrackingMode = v3;
+  self->_inUITrackingMode = modeCopy;
   mode = self->_mode;
   if (mode <= 4)
   {
     flamesView = self->_flamesView;
     v7 = *MEMORY[0x277D77228];
-    v8 = ((1 << mode) & 0x19) == 0 || !v3;
+    v8 = ((1 << mode) & 0x19) == 0 || !modeCopy;
 
     [(SUICFlamesView *)flamesView setRenderingEnabled:v8 forReason:v7];
   }
@@ -483,28 +483,28 @@ LABEL_15:
 
 - (void)_attachFlamesViewIfNeeded
 {
-  v3 = [(SiriUISiriStatusView *)self _flamesView];
-  if (v3)
+  _flamesView = [(SiriUISiriStatusView *)self _flamesView];
+  if (_flamesView)
   {
-    v5 = v3;
-    v4 = [v3 superview];
+    v5 = _flamesView;
+    superview = [_flamesView superview];
 
-    v3 = v5;
-    if (!v4)
+    _flamesView = v5;
+    if (!superview)
     {
       [(UIView *)self->_flamesContainerView addSubview:v5];
       [(SiriUISiriStatusView *)self setNeedsLayout];
-      v3 = v5;
+      _flamesView = v5;
     }
   }
 }
 
 - (void)_layoutFlamesViewIfNeeded
 {
-  v3 = [(SUICFlamesView *)self->_flamesView superview];
+  superview = [(SUICFlamesView *)self->_flamesView superview];
   flamesContainerView = self->_flamesContainerView;
 
-  if (v3 == flamesContainerView)
+  if (superview == flamesContainerView)
   {
     flamesView = self->_flamesView;
     [(UIView *)self->_flamesContainerView bounds];
@@ -513,10 +513,10 @@ LABEL_15:
   }
 }
 
-- (void)_setupOrbIfNeeded:(id)a3
+- (void)_setupOrbIfNeeded:(id)needed
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  neededCopy = needed;
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
@@ -535,9 +535,9 @@ LABEL_15:
   if (self->_glyphPlayerItem)
   {
     (*(v6 + 16))(v6);
-    if (v4)
+    if (neededCopy)
     {
-      v4[2](v4);
+      neededCopy[2](neededCopy);
     }
   }
 
@@ -563,7 +563,7 @@ LABEL_15:
     v14 = v8;
     v15 = v9;
     v16 = v7;
-    v17 = v4;
+    v17 = neededCopy;
     v11 = v9;
     v12 = v8;
     dispatch_async(glyphConfigurationQueue, block);
@@ -799,16 +799,16 @@ uint64_t __42__SiriUISiriStatusView__setupOrbIfNeeded___block_invoke_2_36(uint64
   return result;
 }
 
-- (void)_animateSiriGlyphHidden:(BOOL)a3
+- (void)_animateSiriGlyphHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   v16 = *MEMORY[0x277D85DE8];
   v5 = *MEMORY[0x277CEF098];
   if (os_log_type_enabled(*MEMORY[0x277CEF098], OS_LOG_TYPE_DEFAULT))
   {
     v6 = MEMORY[0x277CCABB0];
     v7 = v5;
-    v8 = [v6 numberWithBool:v3];
+    v8 = [v6 numberWithBool:hiddenCopy];
     *buf = 136315394;
     v13 = "[SiriUISiriStatusView _animateSiriGlyphHidden:]";
     v14 = 2112;
@@ -816,8 +816,8 @@ uint64_t __42__SiriUISiriStatusView__setupOrbIfNeeded___block_invoke_2_36(uint64
     _os_log_impl(&dword_26948D000, v7, OS_LOG_TYPE_DEFAULT, "%s animateSiriGlyphHidden: %@", buf, 0x16u);
   }
 
-  self->_siriGlyphHidden = v3;
-  if (v3)
+  self->_siriGlyphHidden = hiddenCopy;
+  if (hiddenCopy)
   {
     [(UIView *)self->_glyphView alpha];
     if (v9 < 2.22044605e-16)
@@ -1004,8 +1004,8 @@ void __48__SiriUISiriStatusView__animateSiriGlyphHidden___block_invoke_3(uint64_
 
 - (UIEdgeInsets)safeAreaInsets
 {
-  v3 = [(SiriUISiriStatusView *)self delegate];
-  [v3 safeAreaInsetsForSiriStatusView:self];
+  delegate = [(SiriUISiriStatusView *)self delegate];
+  [delegate safeAreaInsetsForSiriStatusView:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -1022,21 +1022,21 @@ void __48__SiriUISiriStatusView__animateSiriGlyphHidden___block_invoke_3(uint64_
   return result;
 }
 
-- (void)_handleKeyboardDidShowNotification:(id)a3
+- (void)_handleKeyboardDidShowNotification:(id)notification
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D76BD8]];
-  v6 = [v5 BOOLValue];
+  userInfo = [notification userInfo];
+  v5 = [userInfo objectForKeyedSubscript:*MEMORY[0x277D76BD8]];
+  bOOLValue = [v5 BOOLValue];
 
-  if (v6)
+  if (bOOLValue)
   {
     v18 = 0u;
     v19 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [(UIView *)self->_touchInputView gestureRecognizers];
-    v8 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+    gestureRecognizers = [(UIView *)self->_touchInputView gestureRecognizers];
+    v8 = [gestureRecognizers countByEnumeratingWithState:&v16 objects:v24 count:16];
     if (v8)
     {
       v9 = v8;
@@ -1048,7 +1048,7 @@ void __48__SiriUISiriStatusView__animateSiriGlyphHidden___block_invoke_3(uint64_
         {
           if (*v17 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(gestureRecognizers);
           }
 
           v13 = *(*(&v16 + 1) + 8 * i);
@@ -1065,7 +1065,7 @@ void __48__SiriUISiriStatusView__animateSiriGlyphHidden___block_invoke_3(uint64_
           [v13 setEnabled:0];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v16 objects:v24 count:16];
+        v9 = [gestureRecognizers countByEnumeratingWithState:&v16 objects:v24 count:16];
       }
 
       while (v9);
@@ -1084,15 +1084,15 @@ void __48__SiriUISiriStatusView__animateSiriGlyphHidden___block_invoke_3(uint64_
   }
 }
 
-- (void)_handleKeyboardWillHideNotification:(id)a3
+- (void)_handleKeyboardWillHideNotification:(id)notification
 {
   v22 = *MEMORY[0x277D85DE8];
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v3 = [(UIView *)self->_touchInputView gestureRecognizers];
-  v4 = [v3 countByEnumeratingWithState:&v13 objects:v21 count:16];
+  gestureRecognizers = [(UIView *)self->_touchInputView gestureRecognizers];
+  v4 = [gestureRecognizers countByEnumeratingWithState:&v13 objects:v21 count:16];
   if (v4)
   {
     v6 = v4;
@@ -1107,7 +1107,7 @@ void __48__SiriUISiriStatusView__animateSiriGlyphHidden___block_invoke_3(uint64_
       {
         if (*v14 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(gestureRecognizers);
         }
 
         v10 = *(*(&v13 + 1) + 8 * v9);
@@ -1126,17 +1126,17 @@ void __48__SiriUISiriStatusView__animateSiriGlyphHidden___block_invoke_3(uint64_
       }
 
       while (v6 != v9);
-      v6 = [v3 countByEnumeratingWithState:&v13 objects:v21 count:16];
+      v6 = [gestureRecognizers countByEnumeratingWithState:&v13 objects:v21 count:16];
     }
 
     while (v6);
   }
 }
 
-- (float)audioLevelForFlamesView:(id)a3
+- (float)audioLevelForFlamesView:(id)view
 {
-  v4 = [(SiriUISiriStatusView *)self delegate];
-  [v4 audioLevelForSiriStatusView:self];
+  delegate = [(SiriUISiriStatusView *)self delegate];
+  [delegate audioLevelForSiriStatusView:self];
   v6 = v5;
 
   return v6;

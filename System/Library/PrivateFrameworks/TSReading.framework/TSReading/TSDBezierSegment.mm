@@ -1,23 +1,23 @@
 @interface TSDBezierSegment
-+ (id)segmentFromPoint:(CGPoint)a3 outPoint:(CGPoint)a4 inPoint:(CGPoint)a5 toPoint:(CGPoint)a6;
++ (id)segmentFromPoint:(CGPoint)point outPoint:(CGPoint)outPoint inPoint:(CGPoint)inPoint toPoint:(CGPoint)toPoint;
 - (BOOL)bogusSegment;
-- (CGPoint)closestPointToPoint:(CGPoint)a3;
+- (CGPoint)closestPointToPoint:(CGPoint)point;
 - (CGPoint)fromPoint;
 - (CGPoint)inPoint;
 - (CGPoint)outPoint;
-- (CGPoint)pointAtParametricValue:(double)a3;
+- (CGPoint)pointAtParametricValue:(double)value;
 - (CGPoint)toPoint;
-- (double)parametricValueForPoint:(CGPoint)a3;
+- (double)parametricValueForPoint:(CGPoint)point;
 - (id)description;
-- (id)initFromPoint:(CGPoint)a3 outPoint:(CGPoint)a4 inPoint:(CGPoint)a5 toPoint:(CGPoint)a6;
-- (void)splitAtParametricValue:(double)a3 left:(id *)a4 right:(id *)a5;
+- (id)initFromPoint:(CGPoint)point outPoint:(CGPoint)outPoint inPoint:(CGPoint)inPoint toPoint:(CGPoint)toPoint;
+- (void)splitAtParametricValue:(double)value left:(id *)left right:(id *)right;
 @end
 
 @implementation TSDBezierSegment
 
-+ (id)segmentFromPoint:(CGPoint)a3 outPoint:(CGPoint)a4 inPoint:(CGPoint)a5 toPoint:(CGPoint)a6
++ (id)segmentFromPoint:(CGPoint)point outPoint:(CGPoint)outPoint inPoint:(CGPoint)inPoint toPoint:(CGPoint)toPoint
 {
-  v6 = [[TSDBezierSegment alloc] initFromPoint:a3.x outPoint:a3.y inPoint:a4.x toPoint:a4.y, a5.x, a5.y, a6.x, a6.y];
+  v6 = [[TSDBezierSegment alloc] initFromPoint:point.x outPoint:point.y inPoint:outPoint.x toPoint:outPoint.y, inPoint.x, inPoint.y, toPoint.x, toPoint.y];
 
   return v6;
 }
@@ -49,16 +49,16 @@
   return result;
 }
 
-- (id)initFromPoint:(CGPoint)a3 outPoint:(CGPoint)a4 inPoint:(CGPoint)a5 toPoint:(CGPoint)a6
+- (id)initFromPoint:(CGPoint)point outPoint:(CGPoint)outPoint inPoint:(CGPoint)inPoint toPoint:(CGPoint)toPoint
 {
-  y = a6.y;
-  x = a6.x;
-  v8 = a5.y;
-  v9 = a5.x;
-  v10 = a4.y;
-  v11 = a4.x;
-  v12 = a3.y;
-  v13 = a3.x;
+  y = toPoint.y;
+  x = toPoint.x;
+  v8 = inPoint.y;
+  v9 = inPoint.x;
+  v10 = outPoint.y;
+  v11 = outPoint.x;
+  v12 = point.y;
+  v13 = point.x;
   v15.receiver = self;
   v15.super_class = TSDBezierSegment;
   result = [(TSDBezierSegment *)&v15 init];
@@ -143,10 +143,10 @@
   return result;
 }
 
-- (double)parametricValueForPoint:(CGPoint)a3
+- (double)parametricValueForPoint:(CGPoint)point
 {
-  y = a3.y;
-  x = a3.x;
+  y = point.y;
+  x = point.x;
   mOut = self->mOut;
   mA = self->mA;
   mB = self->mB;
@@ -173,7 +173,7 @@
   return v5;
 }
 
-- (void)splitAtParametricValue:(double)a3 left:(id *)a4 right:(id *)a5
+- (void)splitAtParametricValue:(double)value left:(id *)left right:(id *)right
 {
   x = self->mOut.x;
   y = self->mOut.y;
@@ -182,36 +182,36 @@
   v50 = v12;
   v51 = v11;
   v13 = TSDSubtractPoints(x, y, v11);
-  v15 = TSDMultiplyPointScalar(v13, v14, a3);
+  v15 = TSDMultiplyPointScalar(v13, v14, value);
   v52 = TSDAddPoints(v11, v12, v15);
   v17 = v16;
   v19 = self->mIn.x;
   v18 = self->mIn.y;
   v20 = TSDSubtractPoints(v19, v18, x);
-  v22 = TSDMultiplyPointScalar(v20, v21, a3);
+  v22 = TSDMultiplyPointScalar(v20, v21, value);
   v23 = TSDAddPoints(x, y, v22);
   v25 = v24;
   v26 = TSDSubtractPoints(self->mB.x, self->mB.y, v19);
-  v28 = TSDMultiplyPointScalar(v26, v27, a3);
+  v28 = TSDMultiplyPointScalar(v26, v27, value);
   v49 = TSDAddPoints(v19, v18, v28);
   v30 = v29;
   v31 = TSDSubtractPoints(v23, v25, v52);
-  v33 = TSDMultiplyPointScalar(v31, v32, a3);
+  v33 = TSDMultiplyPointScalar(v31, v32, value);
   v34 = TSDAddPoints(v52, v17, v33);
   v36 = v35;
   v37 = TSDSubtractPoints(v49, v30, v23);
-  v39 = TSDMultiplyPointScalar(v37, v38, a3);
+  v39 = TSDMultiplyPointScalar(v37, v38, value);
   v40 = TSDAddPoints(v23, v25, v39);
   v42 = v41;
   v43 = TSDSubtractPoints(v40, v41, v34);
-  v45 = TSDMultiplyPointScalar(v43, v44, a3);
+  v45 = TSDMultiplyPointScalar(v43, v44, value);
   v46 = TSDAddPoints(v34, v36, v45);
   v48 = v47;
-  *a4 = [TSDBezierSegment segmentFromPoint:v51 outPoint:v50 inPoint:v52 toPoint:v17, v34, v36, v46, v47];
-  *a5 = [TSDBezierSegment segmentFromPoint:v46 outPoint:v48 inPoint:v40 toPoint:v42, v49, v30, self->mB.x, self->mB.y];
+  *left = [TSDBezierSegment segmentFromPoint:v51 outPoint:v50 inPoint:v52 toPoint:v17, v34, v36, v46, v47];
+  *right = [TSDBezierSegment segmentFromPoint:v46 outPoint:v48 inPoint:v40 toPoint:v42, v49, v30, self->mB.x, self->mB.y];
 }
 
-- (CGPoint)pointAtParametricValue:(double)a3
+- (CGPoint)pointAtParametricValue:(double)value
 {
   v8 = *MEMORY[0x277D85DE8];
   mOut = self->mOut;
@@ -220,15 +220,15 @@
   mB = self->mB;
   v7[2] = self->mIn;
   v7[3] = mB;
-  v5 = TSDPointOnCurve(v7, a3);
+  v5 = TSDPointOnCurve(v7, value);
   result.y = v6;
   result.x = v5;
   return result;
 }
 
-- (CGPoint)closestPointToPoint:(CGPoint)a3
+- (CGPoint)closestPointToPoint:(CGPoint)point
 {
-  [(TSDBezierSegment *)self parametricValueForPoint:a3.x, a3.y];
+  [(TSDBezierSegment *)self parametricValueForPoint:point.x, point.y];
 
   [(TSDBezierSegment *)self pointAtParametricValue:?];
   result.y = v5;

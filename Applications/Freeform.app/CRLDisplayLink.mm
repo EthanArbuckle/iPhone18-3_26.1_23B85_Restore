@@ -1,44 +1,44 @@
 @interface CRLDisplayLink
-- (CRLDisplayLink)initWithHandler:(id)a3;
-- (id)p_initWithHandler:(id)a3 manager:(id)a4;
+- (CRLDisplayLink)initWithHandler:(id)handler;
+- (id)p_initWithHandler:(id)handler manager:(id)manager;
 - (void)invalidate;
-- (void)setPaused:(BOOL)a3;
+- (void)setPaused:(BOOL)paused;
 @end
 
 @implementation CRLDisplayLink
 
-- (id)p_initWithHandler:(id)a3 manager:(id)a4
+- (id)p_initWithHandler:(id)handler manager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  managerCopy = manager;
   v12.receiver = self;
   v12.super_class = CRLDisplayLink;
   v8 = [(CRLDisplayLink *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [handlerCopy copy];
     handler = v8->_handler;
     v8->_handler = v9;
 
     *&v8->_paused = 257;
-    [v7 addLink:v8];
+    [managerCopy addLink:v8];
   }
 
   return v8;
 }
 
-- (CRLDisplayLink)initWithHandler:(id)a3
+- (CRLDisplayLink)initWithHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = +[CRLDisplayLinkManager sharedManager];
-  v6 = [(CRLDisplayLink *)self p_initWithHandler:v4 manager:v5];
+  v6 = [(CRLDisplayLink *)self p_initWithHandler:handlerCopy manager:v5];
 
   return v6;
 }
 
-- (void)setPaused:(BOOL)a3
+- (void)setPaused:(BOOL)paused
 {
-  v3 = a3;
+  pausedCopy = paused;
   if (self->_valid)
   {
     goto LABEL_11;
@@ -73,19 +73,19 @@
   if (self->_valid)
   {
 LABEL_11:
-    if (self->_paused != v3)
+    if (self->_paused != pausedCopy)
     {
-      self->_paused = v3;
-      v8 = [(CRLDisplayLink *)self p_manager];
-      [v8 updatePausedForLink:self];
+      self->_paused = pausedCopy;
+      p_manager = [(CRLDisplayLink *)self p_manager];
+      [p_manager updatePausedForLink:self];
     }
   }
 }
 
 - (void)invalidate
 {
-  v3 = [(CRLDisplayLink *)self p_manager];
-  [v3 removeLink:self];
+  p_manager = [(CRLDisplayLink *)self p_manager];
+  [p_manager removeLink:self];
 
   self->_valid = 0;
 }

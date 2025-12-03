@@ -1,62 +1,62 @@
 @interface KNBuildAttributeTuple
-+ (id)tupleForBuild:(id)a3 property:(id)a4 value:(id)a5;
-+ (id)tupleWithChunk:(id)a3 property:(id)a4 value:(id)a5;
-+ (id)tupleWithChunk:(id)a3 referent:(unint64_t)a4;
-- (BOOL)isValidForSlide:(id)a3;
++ (id)tupleForBuild:(id)build property:(id)property value:(id)value;
++ (id)tupleWithChunk:(id)chunk property:(id)property value:(id)value;
++ (id)tupleWithChunk:(id)chunk referent:(unint64_t)referent;
+- (BOOL)isValidForSlide:(id)slide;
 - (KNBuild)build;
-- (KNBuildAttributeTuple)initWithBuild:(id)a3 chunk:(id)a4 property:(id)a5 value:(id)a6;
+- (KNBuildAttributeTuple)initWithBuild:(id)build chunk:(id)chunk property:(id)property value:(id)value;
 - (KNBuildChunk)chunk;
 - (id)description;
 @end
 
 @implementation KNBuildAttributeTuple
 
-+ (id)tupleWithChunk:(id)a3 property:(id)a4 value:(id)a5
++ (id)tupleWithChunk:(id)chunk property:(id)property value:(id)value
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 alloc];
-  v13 = objc_msgSend_initWithChunk_property_value_(v11, v12, v10, v9, v8);
+  valueCopy = value;
+  propertyCopy = property;
+  chunkCopy = chunk;
+  v11 = [self alloc];
+  v13 = objc_msgSend_initWithChunk_property_value_(v11, v12, chunkCopy, propertyCopy, valueCopy);
 
   return v13;
 }
 
-+ (id)tupleForBuild:(id)a3 property:(id)a4 value:(id)a5
++ (id)tupleForBuild:(id)build property:(id)property value:(id)value
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [a1 alloc];
-  v13 = objc_msgSend_initWithBuild_property_value_(v11, v12, v10, v9, v8);
+  valueCopy = value;
+  propertyCopy = property;
+  buildCopy = build;
+  v11 = [self alloc];
+  v13 = objc_msgSend_initWithBuild_property_value_(v11, v12, buildCopy, propertyCopy, valueCopy);
 
   return v13;
 }
 
-+ (id)tupleWithChunk:(id)a3 referent:(unint64_t)a4
++ (id)tupleWithChunk:(id)chunk referent:(unint64_t)referent
 {
-  v6 = a3;
-  v7 = [a1 alloc];
-  v9 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v8, a4);
-  v11 = objc_msgSend_initWithChunk_property_value_(v7, v10, v6, @"KNBuildChunkReferentProperty", v9);
+  chunkCopy = chunk;
+  v7 = [self alloc];
+  v9 = objc_msgSend_numberWithUnsignedInteger_(MEMORY[0x277CCABB0], v8, referent);
+  v11 = objc_msgSend_initWithChunk_property_value_(v7, v10, chunkCopy, @"KNBuildChunkReferentProperty", v9);
 
   return v11;
 }
 
-- (KNBuildAttributeTuple)initWithBuild:(id)a3 chunk:(id)a4 property:(id)a5 value:(id)a6
+- (KNBuildAttributeTuple)initWithBuild:(id)build chunk:(id)chunk property:(id)property value:(id)value
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v15 = a6;
-  if (v11)
+  buildCopy = build;
+  chunkCopy = chunk;
+  propertyCopy = property;
+  valueCopy = value;
+  if (chunkCopy)
   {
-    objc_msgSend_context(v11, v13, v14);
+    objc_msgSend_context(chunkCopy, v13, v14);
   }
 
   else
   {
-    objc_msgSend_context(v10, v13, v14);
+    objc_msgSend_context(buildCopy, v13, v14);
   }
   v16 = ;
   if (!v16)
@@ -69,7 +69,7 @@
   v19 = [(KNBuildAttributeTuple *)&v71 initWithContext:v16];
   if (v19)
   {
-    if (!v12)
+    if (!propertyCopy)
     {
       v20 = MEMORY[0x277D81150];
       v21 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v17, "[KNBuildAttributeTuple initWithBuild:chunk:property:value:]");
@@ -79,13 +79,13 @@
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v25, v26);
     }
 
-    v27 = objc_msgSend_copy(v12, v17, v18);
+    v27 = objc_msgSend_copy(propertyCopy, v17, v18);
     property = v19->_property;
     v19->_property = v27;
 
-    if (v10)
+    if (buildCopy)
     {
-      if (v11)
+      if (chunkCopy)
       {
         v31 = MEMORY[0x277D81150];
         v32 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v29, "[KNBuildAttributeTuple initWithBuild:chunk:property:value:]");
@@ -95,7 +95,7 @@
         objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v36, v37);
       }
 
-      v39 = objc_msgSend_objectUUID(v10, v29, v30);
+      v39 = objc_msgSend_objectUUID(buildCopy, v29, v30);
       if (!v39)
       {
         v40 = MEMORY[0x277D81150];
@@ -110,10 +110,10 @@
       v19->_buildId = v39;
 
       v19->_definedBuildId = 1;
-      if (!v11)
+      if (!chunkCopy)
       {
 LABEL_19:
-        if (!v15)
+        if (!valueCopy)
         {
           goto LABEL_24;
         }
@@ -122,7 +122,7 @@ LABEL_19:
       }
     }
 
-    else if (!v11)
+    else if (!chunkCopy)
     {
       v63 = MEMORY[0x277D81150];
       v64 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v29, "[KNBuildAttributeTuple initWithBuild:chunk:property:value:]");
@@ -130,7 +130,7 @@ LABEL_19:
       objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v63, v67, v64, v66, 66, 0, "Tried to initialize an instance of KNBuildAttributeTuple without a build or a chunk. This doesn't make sense.'");
 
       objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v68, v69);
-      if (!v15)
+      if (!valueCopy)
       {
         goto LABEL_24;
       }
@@ -139,12 +139,12 @@ LABEL_20:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v60 = v15;
+        v60 = valueCopy;
       }
 
       else
       {
-        v60 = objc_msgSend_attributeValueForProperty_value_(KNBuildAttributes, v59, v12, v15);
+        v60 = objc_msgSend_attributeValueForProperty_value_(KNBuildAttributes, v59, propertyCopy, valueCopy);
       }
 
       attributeValue = v19->_attributeValue;
@@ -154,7 +154,7 @@ LABEL_20:
       goto LABEL_24;
     }
 
-    v48 = objc_msgSend_chunkIdentifier(v11, v29, v30);
+    v48 = objc_msgSend_chunkIdentifier(chunkCopy, v29, v30);
     if ((objc_msgSend_isValid(v48, v49, v50) & 1) == 0)
     {
       v70 = MEMORY[0x277D81150];
@@ -197,12 +197,12 @@ LABEL_24:
   return v7;
 }
 
-- (BOOL)isValidForSlide:(id)a3
+- (BOOL)isValidForSlide:(id)slide
 {
-  v4 = a3;
+  slideCopy = slide;
   if (objc_msgSend_isChunkTuple(self, v5, v6))
   {
-    v9 = objc_msgSend_buildChunks(v4, v7, v8);
+    v9 = objc_msgSend_buildChunks(slideCopy, v7, v8);
     v12 = objc_msgSend_chunk(self, v10, v11);
   }
 
@@ -214,7 +214,7 @@ LABEL_24:
       goto LABEL_7;
     }
 
-    v9 = objc_msgSend_builds(v4, v14, v15);
+    v9 = objc_msgSend_builds(slideCopy, v14, v15);
     v12 = objc_msgSend_build(self, v16, v17);
   }
 

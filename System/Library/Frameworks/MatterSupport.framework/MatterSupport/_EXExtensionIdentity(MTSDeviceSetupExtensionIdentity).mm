@@ -6,8 +6,8 @@
 
 - (id)containingAppBundleURL
 {
-  v1 = [a1 containingBundleRecord];
-  v2 = [v1 URL];
+  containingBundleRecord = [self containingBundleRecord];
+  v2 = [containingBundleRecord URL];
 
   return v2;
 }

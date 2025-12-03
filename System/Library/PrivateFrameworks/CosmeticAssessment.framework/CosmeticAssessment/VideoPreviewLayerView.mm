@@ -1,9 +1,9 @@
 @interface VideoPreviewLayerView
 + (Class)layerClass;
 - (BOOL)isHidden;
-- (_TtC18CosmeticAssessment21VideoPreviewLayerView)initWithCoder:(id)a3;
-- (_TtC18CosmeticAssessment21VideoPreviewLayerView)initWithFrame:(CGRect)a3;
-- (void)setHidden:(BOOL)a3;
+- (_TtC18CosmeticAssessment21VideoPreviewLayerView)initWithCoder:(id)coder;
+- (_TtC18CosmeticAssessment21VideoPreviewLayerView)initWithFrame:(CGRect)frame;
+- (void)setHidden:(BOOL)hidden;
 @end
 
 @implementation VideoPreviewLayerView
@@ -19,8 +19,8 @@
     swift_task_reportUnexpectedExecutor();
   }
 
-  v4 = self;
-  [(VideoPreviewLayerView *)v4 alpha];
+  selfCopy = self;
+  [(VideoPreviewLayerView *)selfCopy alpha];
   if (v5 == 0.0)
   {
 
@@ -29,17 +29,17 @@
 
   else
   {
-    v8.receiver = v4;
+    v8.receiver = selfCopy;
     v8.super_class = ObjectType;
-    v7 = [(VideoPreviewLayerView *)&v8 isHidden];
+    isHidden = [(VideoPreviewLayerView *)&v8 isHidden];
 
-    return v7;
+    return isHidden;
   }
 }
 
-- (void)setHidden:(BOOL)a3
+- (void)setHidden:(BOOL)hidden
 {
-  v3 = a3;
+  hiddenCopy = hidden;
   ObjectType = swift_getObjectType();
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -51,7 +51,7 @@
 
   v6.receiver = self;
   v6.super_class = ObjectType;
-  [(VideoPreviewLayerView *)&v6 setHidden:v3];
+  [(VideoPreviewLayerView *)&v6 setHidden:hiddenCopy];
 }
 
 + (Class)layerClass
@@ -69,12 +69,12 @@
   return swift_getObjCClassFromMetadata();
 }
 
-- (_TtC18CosmeticAssessment21VideoPreviewLayerView)initWithFrame:(CGRect)a3
+- (_TtC18CosmeticAssessment21VideoPreviewLayerView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   ObjectType = swift_getObjectType();
   sub_247D1FEA8();
   sub_247D1FE98();
@@ -86,12 +86,12 @@
 
   v11.receiver = self;
   v11.super_class = ObjectType;
-  v9 = [(VideoPreviewLayerView *)&v11 initWithFrame:x, y, width, height];
+  height = [(VideoPreviewLayerView *)&v11 initWithFrame:x, y, width, height];
 
-  return v9;
+  return height;
 }
 
-- (_TtC18CosmeticAssessment21VideoPreviewLayerView)initWithCoder:(id)a3
+- (_TtC18CosmeticAssessment21VideoPreviewLayerView)initWithCoder:(id)coder
 {
   ObjectType = swift_getObjectType();
   sub_247D1FEA8();
@@ -104,8 +104,8 @@
 
   v9.receiver = self;
   v9.super_class = ObjectType;
-  v6 = a3;
-  v7 = [(VideoPreviewLayerView *)&v9 initWithCoder:v6];
+  coderCopy = coder;
+  v7 = [(VideoPreviewLayerView *)&v9 initWithCoder:coderCopy];
 
   if (v7)
   {

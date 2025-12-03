@@ -1,10 +1,10 @@
 @interface TSTColumnRowMetadata
 + (id)metadata;
-+ (id)metadataWithUid:(const TSKUIDStruct *)a3;
-- (BOOL)migrateStylesToDocument:(id)a3;
++ (id)metadataWithUid:(const TSKUIDStruct *)uid;
+- (BOOL)migrateStylesToDocument:(id)document;
 - (TSKUIDStruct)columnRowUID;
-- (TSTColumnRowMetadata)initWithSize:(double)a3 hidingAction:(unsigned __int8)a4 cellStyle:(id)a5 textStyle:(id)a6 columnRowUID:(TSKUIDStruct)a7;
-- (TSTColumnRowMetadata)metadataWithUid:(const TSKUIDStruct *)a3;
+- (TSTColumnRowMetadata)initWithSize:(double)size hidingAction:(unsigned __int8)action cellStyle:(id)style textStyle:(id)textStyle columnRowUID:(TSKUIDStruct)d;
+- (TSTColumnRowMetadata)metadataWithUid:(const TSKUIDStruct *)uid;
 @end
 
 @implementation TSTColumnRowMetadata
@@ -16,28 +16,28 @@
   return v2;
 }
 
-+ (id)metadataWithUid:(const TSKUIDStruct *)a3
++ (id)metadataWithUid:(const TSKUIDStruct *)uid
 {
   v4 = objc_opt_class();
   result = objc_msgSend_metadata(v4, v5, v6, v7, v8);
-  *(result + 8) = *a3;
+  *(result + 8) = *uid;
   return result;
 }
 
-- (TSTColumnRowMetadata)metadataWithUid:(const TSKUIDStruct *)a3
+- (TSTColumnRowMetadata)metadataWithUid:(const TSKUIDStruct *)uid
 {
   v5 = objc_alloc(objc_opt_class());
-  v7 = objc_msgSend_initWithSize_hidingAction_cellStyle_textStyle_columnRowUID_(v5, v6, self->_hidingAction, self->_cellStyle, self->_textStyle, a3->_lower, a3->_upper, self->_size);
+  v7 = objc_msgSend_initWithSize_hidingAction_cellStyle_textStyle_columnRowUID_(v5, v6, self->_hidingAction, self->_cellStyle, self->_textStyle, uid->_lower, uid->_upper, self->_size);
 
   return v7;
 }
 
-- (TSTColumnRowMetadata)initWithSize:(double)a3 hidingAction:(unsigned __int8)a4 cellStyle:(id)a5 textStyle:(id)a6 columnRowUID:(TSKUIDStruct)a7
+- (TSTColumnRowMetadata)initWithSize:(double)size hidingAction:(unsigned __int8)action cellStyle:(id)style textStyle:(id)textStyle columnRowUID:(TSKUIDStruct)d
 {
-  upper = a7._upper;
-  lower = a7._lower;
-  v14 = a5;
-  v15 = a6;
+  upper = d._upper;
+  lower = d._lower;
+  styleCopy = style;
+  textStyleCopy = textStyle;
   v19.receiver = self;
   v19.super_class = TSTColumnRowMetadata;
   v16 = [(TSTColumnRowMetadata *)&v19 init];
@@ -46,25 +46,25 @@
   {
     v16->_columnRowUID.var0.var0._lower = lower;
     v16->_columnRowUID.var0.var0._upper = upper;
-    v16->_size = a3;
-    v16->_hidingAction = a4;
-    objc_storeStrong(&v16->_cellStyle, a5);
-    v17->_definedCellStyle = v14 != 0;
-    objc_storeStrong(&v17->_textStyle, a6);
-    v17->_definedTextStyle = v15 != 0;
+    v16->_size = size;
+    v16->_hidingAction = action;
+    objc_storeStrong(&v16->_cellStyle, style);
+    v17->_definedCellStyle = styleCopy != 0;
+    objc_storeStrong(&v17->_textStyle, textStyle);
+    v17->_definedTextStyle = textStyleCopy != 0;
   }
 
   return v17;
 }
 
-- (BOOL)migrateStylesToDocument:(id)a3
+- (BOOL)migrateStylesToDocument:(id)document
 {
-  v4 = a3;
-  v8 = v4;
+  documentCopy = document;
+  v8 = documentCopy;
   cellStyle = self->_cellStyle;
   if (cellStyle)
   {
-    v10 = objc_msgSend_migratedStyleForStyle_(v4, v5, cellStyle, v6, v7);
+    v10 = objc_msgSend_migratedStyleForStyle_(documentCopy, v5, cellStyle, v6, v7);
     v11 = self->_cellStyle;
     v12 = v10 != v11;
     if (v10 != v11)

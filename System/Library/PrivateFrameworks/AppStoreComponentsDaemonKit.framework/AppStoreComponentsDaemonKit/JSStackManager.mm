@@ -1,10 +1,10 @@
 @interface JSStackManager
-- (void)didReceiveMemoryWarning:(id)a3;
+- (void)didReceiveMemoryWarning:(id)warning;
 @end
 
 @implementation JSStackManager
 
-- (void)didReceiveMemoryWarning:(id)a3
+- (void)didReceiveMemoryWarning:(id)warning
 {
   v3 = sub_22273707C();
   v4 = *(v3 - 8);

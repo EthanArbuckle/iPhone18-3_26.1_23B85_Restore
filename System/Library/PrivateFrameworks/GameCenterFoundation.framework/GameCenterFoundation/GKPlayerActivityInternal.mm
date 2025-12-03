@@ -1,22 +1,22 @@
 @interface GKPlayerActivityInternal
 + (id)secureCodedPropertyKeys;
-- (GKPlayerActivityInternal)initWithServerResponse:(id)a3;
+- (GKPlayerActivityInternal)initWithServerResponse:(id)response;
 - (id)description;
 @end
 
 @implementation GKPlayerActivityInternal
 
-- (GKPlayerActivityInternal)initWithServerResponse:(id)a3
+- (GKPlayerActivityInternal)initWithServerResponse:(id)response
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  responseCopy = response;
   v21.receiver = self;
   v21.super_class = GKPlayerActivityInternal;
   v5 = [(GKPlayerActivityInternal *)&v21 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB18] array];
-    v7 = [v4 objectForKeyedSubscript:@"sections"];
+    array = [MEMORY[0x277CBEB18] array];
+    v7 = [responseCopy objectForKeyedSubscript:@"sections"];
     v8 = v7;
     if (v7)
     {
@@ -40,7 +40,7 @@
             }
 
             v13 = [[GKPlayerActivitySectionInternal alloc] initWithDictionary:*(*(&v17 + 1) + 8 * v12)];
-            [v6 addObject:v13];
+            [array addObject:v13];
 
             ++v12;
           }
@@ -53,8 +53,8 @@
       }
     }
 
-    [(GKPlayerActivityInternal *)v5 setSections:v6];
-    v14 = [v4 objectForKeyedSubscript:@"continuation-key"];
+    [(GKPlayerActivityInternal *)v5 setSections:array];
+    v14 = [responseCopy objectForKeyedSubscript:@"continuation-key"];
     [(GKPlayerActivityInternal *)v5 setContinuationToken:v14];
   }
 
@@ -65,9 +65,9 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(GKPlayerActivityInternal *)self sections];
-  v5 = [(GKPlayerActivityInternal *)self continuationToken];
-  v6 = [v3 stringWithFormat:@"sections: %@, continuationKey: %@", v4, v5];
+  sections = [(GKPlayerActivityInternal *)self sections];
+  continuationToken = [(GKPlayerActivityInternal *)self continuationToken];
+  v6 = [v3 stringWithFormat:@"sections: %@, continuationKey: %@", sections, continuationToken];
 
   return v6;
 }

@@ -15,7 +15,7 @@
   v15 = v6;
   v8 = v6;
   v9 = [v7 actionWithHandler:v14];
-  v10 = [a1 initWithFrame:v9 primaryAction:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
+  v10 = [self initWithFrame:v9 primaryAction:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
   v11 = v10;
   if (v10)
   {

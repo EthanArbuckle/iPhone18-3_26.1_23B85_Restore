@@ -2,7 +2,7 @@
 - (CGPoint)lastLocation;
 - (UIEventSessionHeatMapTouch)init;
 - (double)touchDownDuration;
-- (void)setLastVisitedCoordinate:(id *)a3;
+- (void)setLastVisitedCoordinate:(id *)coordinate;
 @end
 
 @implementation UIEventSessionHeatMapTouch
@@ -48,10 +48,10 @@
   return result;
 }
 
-- (void)setLastVisitedCoordinate:(id *)a3
+- (void)setLastVisitedCoordinate:(id *)coordinate
 {
-  v3 = *&a3->var0;
-  *&self->_lastVisitedCoordinate.isValid = *&a3->var2;
+  v3 = *&coordinate->var0;
+  *&self->_lastVisitedCoordinate.isValid = *&coordinate->var2;
   *&self->_lastVisitedCoordinate.row = v3;
 }
 

@@ -1,6 +1,6 @@
 @interface NRDataCollector
 + (id)createSharedInstance;
-- (id)incrementCounterForKey:(id)a3;
+- (id)incrementCounterForKey:(id)key;
 - (void)reset;
 @end
 
@@ -12,7 +12,7 @@
   block[1] = 3221225472;
   block[2] = sub_10009F898;
   block[3] = &unk_1001756A8;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1001B3970 != -1)
   {
     dispatch_once(&qword_1001B3970, block);
@@ -23,11 +23,11 @@
   return v2;
 }
 
-- (id)incrementCounterForKey:(id)a3
+- (id)incrementCounterForKey:(id)key
 {
   data = self->_data;
-  v5 = a3;
-  v6 = [(NSMutableDictionary *)data objectForKey:v5];
+  keyCopy = key;
+  v6 = [(NSMutableDictionary *)data objectForKey:keyCopy];
   if (!v6)
   {
     v6 = [[NSNumber alloc] initWithInt:0];
@@ -35,7 +35,7 @@
 
   v7 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", [v6 intValue] + 1);
 
-  [(NSMutableDictionary *)self->_data setObject:v7 forKey:v5];
+  [(NSMutableDictionary *)self->_data setObject:v7 forKey:keyCopy];
 
   return v7;
 }

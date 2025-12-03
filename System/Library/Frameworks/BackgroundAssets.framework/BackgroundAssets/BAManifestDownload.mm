@@ -1,14 +1,14 @@
 @interface BAManifestDownload
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation BAManifestDownload
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4.receiver = self;
   v4.super_class = BAManifestDownload;
-  return [(BAURLDownload *)&v4 copyWithZone:a3];
+  return [(BAURLDownload *)&v4 copyWithZone:zone];
 }
 
 @end

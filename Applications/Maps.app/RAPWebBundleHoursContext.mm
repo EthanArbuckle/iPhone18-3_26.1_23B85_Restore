@@ -7,8 +7,8 @@
 
 - (id)debugDescription
 {
-  v2 = [(RAPWebBundleHoursContext *)self context];
-  v3 = [v2 debugDescription];
+  context = [(RAPWebBundleHoursContext *)self context];
+  v3 = [context debugDescription];
 
   return v3;
 }
@@ -16,18 +16,18 @@
 - (NSDictionary)context
 {
   v3 = objc_alloc_init(NSMutableDictionary);
-  v4 = [(RAPWebBundleHoursContext *)self from];
-  if (v4)
+  from = [(RAPWebBundleHoursContext *)self from];
+  if (from)
   {
-    v5 = v4;
+    v5 = from;
     v6 = [(RAPWebBundleHoursContext *)self to];
 
     if (v6)
     {
       v15[0] = @"from";
-      v7 = [(RAPWebBundleHoursContext *)self from];
+      from2 = [(RAPWebBundleHoursContext *)self from];
       v15[1] = @"to";
-      v16[0] = v7;
+      v16[0] = from2;
       v8 = [(RAPWebBundleHoursContext *)self to];
       v16[1] = v8;
       v9 = [NSDictionary dictionaryWithObjects:v16 forKeys:v15 count:2];
@@ -35,13 +35,13 @@
     }
   }
 
-  v10 = [(RAPWebBundleHoursContext *)self days];
-  v11 = [v10 count];
+  days = [(RAPWebBundleHoursContext *)self days];
+  v11 = [days count];
 
   if (v11)
   {
-    v12 = [(RAPWebBundleHoursContext *)self days];
-    [v3 setObject:v12 forKeyedSubscript:@"days"];
+    days2 = [(RAPWebBundleHoursContext *)self days];
+    [v3 setObject:days2 forKeyedSubscript:@"days"];
   }
 
   v13 = [v3 copy];

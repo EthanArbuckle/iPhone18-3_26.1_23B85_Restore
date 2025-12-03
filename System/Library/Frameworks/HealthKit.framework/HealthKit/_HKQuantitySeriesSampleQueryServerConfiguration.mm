@@ -1,16 +1,16 @@
 @interface _HKQuantitySeriesSampleQueryServerConfiguration
-- (_HKQuantitySeriesSampleQueryServerConfiguration)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (_HKQuantitySeriesSampleQueryServerConfiguration)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation _HKQuantitySeriesSampleQueryServerConfiguration
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = _HKQuantitySeriesSampleQueryServerConfiguration;
-  v4 = [(HKQueryServerConfiguration *)&v10 copyWithZone:a3];
+  v4 = [(HKQueryServerConfiguration *)&v10 copyWithZone:zone];
   v5 = [(HKQuantitySample *)self->_quantitySample copy];
   [v4 setQuantitySample:v5];
 
@@ -29,22 +29,22 @@
   return v4;
 }
 
-- (_HKQuantitySeriesSampleQueryServerConfiguration)initWithCoder:(id)a3
+- (_HKQuantitySeriesSampleQueryServerConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v17.receiver = self;
   v17.super_class = _HKQuantitySeriesSampleQueryServerConfiguration;
-  v5 = [(HKQueryServerConfiguration *)&v17 initWithCoder:v4];
+  v5 = [(HKQueryServerConfiguration *)&v17 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sample"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sample"];
     quantitySample = v5->_quantitySample;
     v5->_quantitySample = v6;
 
-    v5->_seriesAnchor = [v4 decodeIntegerForKey:@"anchor"];
-    if ([v4 containsValueForKey:@"mode"])
+    v5->_seriesAnchor = [coderCopy decodeIntegerForKey:@"anchor"];
+    if ([coderCopy containsValueForKey:@"mode"])
     {
-      v8 = [v4 decodeIntegerForKey:@"mode"];
+      v8 = [coderCopy decodeIntegerForKey:@"mode"];
     }
 
     else
@@ -53,9 +53,9 @@
     }
 
     v5->_mode = v8;
-    if ([v4 containsValueForKey:@"options"])
+    if ([coderCopy containsValueForKey:@"options"])
     {
-      v9 = [v4 decodeIntegerForKey:@"options"];
+      v9 = [coderCopy decodeIntegerForKey:@"options"];
     }
 
     else
@@ -64,10 +64,10 @@
     }
 
     v5->_options = v9;
-    v10 = [v4 containsValueForKey:@"maxStart"];
+    v10 = [coderCopy containsValueForKey:@"maxStart"];
     if (v10)
     {
-      v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"maxStart"];
+      v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"maxStart"];
     }
 
     else
@@ -80,10 +80,10 @@
     {
     }
 
-    v12 = [v4 containsValueForKey:@"latestUUID"];
+    v12 = [coderCopy containsValueForKey:@"latestUUID"];
     if (v12)
     {
-      v13 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"latestUUID"];
+      v13 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"latestUUID"];
     }
 
     else
@@ -96,10 +96,10 @@
     {
     }
 
-    v14 = [v4 containsValueForKey:@"latestStart"];
+    v14 = [coderCopy containsValueForKey:@"latestStart"];
     if (v14)
     {
-      v15 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"latestStart"];
+      v15 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"latestStart"];
     }
 
     else
@@ -116,32 +116,32 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v8.receiver = self;
   v8.super_class = _HKQuantitySeriesSampleQueryServerConfiguration;
-  [(HKQueryServerConfiguration *)&v8 encodeWithCoder:v4];
-  [v4 encodeObject:self->_quantitySample forKey:@"sample"];
-  [v4 encodeInteger:self->_seriesAnchor forKey:@"anchor"];
-  [v4 encodeInteger:self->_mode forKey:@"mode"];
-  [v4 encodeInteger:self->_options forKey:@"options"];
+  [(HKQueryServerConfiguration *)&v8 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_quantitySample forKey:@"sample"];
+  [coderCopy encodeInteger:self->_seriesAnchor forKey:@"anchor"];
+  [coderCopy encodeInteger:self->_mode forKey:@"mode"];
+  [coderCopy encodeInteger:self->_options forKey:@"options"];
   maximumStartDate = self->_maximumStartDate;
   if (maximumStartDate)
   {
-    [v4 encodeObject:maximumStartDate forKey:@"maxStart"];
+    [coderCopy encodeObject:maximumStartDate forKey:@"maxStart"];
   }
 
   latestUUID = self->_latestUUID;
   if (latestUUID)
   {
-    [v4 encodeObject:latestUUID forKey:@"latestUUID"];
+    [coderCopy encodeObject:latestUUID forKey:@"latestUUID"];
   }
 
   latestSampleStartDate = self->_latestSampleStartDate;
   if (latestSampleStartDate)
   {
-    [v4 encodeObject:latestSampleStartDate forKey:@"latestStart"];
+    [coderCopy encodeObject:latestSampleStartDate forKey:@"latestStart"];
   }
 }
 

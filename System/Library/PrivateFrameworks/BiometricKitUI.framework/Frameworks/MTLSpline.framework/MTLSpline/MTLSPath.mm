@@ -1,17 +1,17 @@
 @interface MTLSPath
 - (MTLSPath)init;
-- (MTLSPath)initWithPoints:(MTLSPath *)self colors:(SEL)a2 count:strokeWeight:pattern:rotation:scale:translation:;
-- (MTLSPath)initWithPoints:(MTLSPath *)self count:(SEL)a2 strokeWeight:pattern:rotation:scale:translation:;
-- (double)interpolateTangentWithPoints:(uint64_t)a3 t:(float32x4_t *)a4;
-- (double)interpolateWithPoints:(uint64_t)a3 t:(float32x4_t *)a4;
+- (MTLSPath)initWithPoints:(MTLSPath *)self colors:(SEL)colors count:strokeWeight:pattern:rotation:scale:translation:;
+- (MTLSPath)initWithPoints:(MTLSPath *)self count:(SEL)count strokeWeight:pattern:rotation:scale:translation:;
+- (double)interpolateTangentWithPoints:(uint64_t)points t:(float32x4_t *)t;
+- (double)interpolateWithPoints:(uint64_t)points t:(float32x4_t *)t;
 - (id).cxx_construct;
-- (void)appendControlPoints:(ControlPoint *)a3 count:(unint64_t)a4;
-- (void)appendIndices:(unsigned __int16 *)a3 count:(unint64_t)a4;
-- (void)appendInstances:(InstanceInfo *)a3 count:(unint64_t)a4;
-- (void)appendPatchInfo:(PatchInfo *)a3 count:(unint64_t)a4;
-- (void)collapseTransform:(float32x4_t)a3;
-- (void)genIndicesWithPattern:(unint64_t)a3;
-- (void)genRightCapWithWidth:(float)a3;
+- (void)appendControlPoints:(ControlPoint *)points count:(unint64_t)count;
+- (void)appendIndices:(unsigned __int16 *)indices count:(unint64_t)count;
+- (void)appendInstances:(InstanceInfo *)instances count:(unint64_t)count;
+- (void)appendPatchInfo:(PatchInfo *)info count:(unint64_t)count;
+- (void)collapseTransform:(float32x4_t)transform;
+- (void)genIndicesWithPattern:(unint64_t)pattern;
+- (void)genRightCapWithWidth:(float)width;
 @end
 
 @implementation MTLSPath
@@ -99,7 +99,7 @@
   return v3;
 }
 
-- (MTLSPath)initWithPoints:(MTLSPath *)self count:(SEL)a2 strokeWeight:pattern:rotation:scale:translation:
+- (MTLSPath)initWithPoints:(MTLSPath *)self count:(SEL)count strokeWeight:pattern:rotation:scale:translation:
 {
   v23 = v7;
   v24 = v8;
@@ -125,7 +125,7 @@
   return v21;
 }
 
-- (MTLSPath)initWithPoints:(MTLSPath *)self colors:(SEL)a2 count:strokeWeight:pattern:rotation:scale:translation:
+- (MTLSPath)initWithPoints:(MTLSPath *)self colors:(SEL)colors count:strokeWeight:pattern:rotation:scale:translation:
 {
   v87 = v8;
   v9 = v6;
@@ -362,18 +362,18 @@
   return v17;
 }
 
-- (void)genRightCapWithWidth:(float)a3
+- (void)genRightCapWithWidth:(float)width
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = [(MTLSPath *)self controlPointsVectorCount];
-  v5 = [(MTLSPath *)self controlPointsVectorCount];
-  v6 = [(MTLSPath *)self controlPointsVectorCount];
-  v7 = [(MTLSPath *)self controlPointsVectorCount];
+  controlPointsVectorCount = [(MTLSPath *)self controlPointsVectorCount];
+  controlPointsVectorCount2 = [(MTLSPath *)self controlPointsVectorCount];
+  controlPointsVectorCount3 = [(MTLSPath *)self controlPointsVectorCount];
+  controlPointsVectorCount4 = [(MTLSPath *)self controlPointsVectorCount];
   begin = self->_controlPointsVector.__begin_;
-  v49[0] = *&begin[12 * v4 - 48].var0;
-  v49[1] = *&begin[12 * v5 - 36].var0;
-  v49[2] = *&begin[12 * v6 - 24].var0;
-  v9 = &begin[12 * v7];
+  v49[0] = *&begin[12 * controlPointsVectorCount - 48].var0;
+  v49[1] = *&begin[12 * controlPointsVectorCount2 - 36].var0;
+  v49[2] = *&begin[12 * controlPointsVectorCount3 - 24].var0;
+  v9 = &begin[12 * controlPointsVectorCount4];
   v49[3] = *&v9[-12].var0;
   v10 = *&v9[-8].var0;
   v25 = v10;
@@ -387,7 +387,7 @@
   v13.i32[0] = vadd_f32(*v13.i8, vdup_lane_s32(*v13.i8, 1)).u32[0];
   v14 = vrsqrte_f32(v13.u32[0]);
   v15 = vmul_f32(v14, vrsqrts_f32(v13.u32[0], vmul_f32(v14, v14)));
-  v16 = vmulq_n_f32(vmulq_n_f32(v12, vmul_f32(v15, vrsqrts_f32(v13.u32[0], vmul_f32(v15, v15))).f32[0]), a3);
+  v16 = vmulq_n_f32(vmulq_n_f32(v12, vmul_f32(v15, vrsqrts_f32(v13.u32[0], vmul_f32(v15, v15))).f32[0]), width);
   __asm { FMOV            V1.4S, #-0.25 }
 
   v38[0] = vmlaq_f32(v24, _Q1, v16);
@@ -443,11 +443,11 @@
   v23 = *MEMORY[0x277D85DE8];
 }
 
-- (void)genIndicesWithPattern:(unint64_t)a3
+- (void)genIndicesWithPattern:(unint64_t)pattern
 {
-  if (a3)
+  if (pattern)
   {
-    if (a3 == 1)
+    if (pattern == 1)
     {
       LOWORD(v14) = 0;
       std::vector<unsigned short>::push_back[abi:ne200100](&self->_indicesVector.__begin_, &v14);
@@ -494,7 +494,7 @@
       std::vector<PatchInfo>::push_back[abi:ne200100](&self->_patchInfoVector, &v14);
     }
 
-    else if (a3 == 2 && [(MTLSPath *)self controlPointsVectorCount])
+    else if (pattern == 2 && [(MTLSPath *)self controlPointsVectorCount])
     {
       v4 = 0;
       __asm { FMOV            V8.2S, #1.0 }
@@ -542,72 +542,72 @@
   }
 }
 
-- (double)interpolateWithPoints:(uint64_t)a3 t:(float32x4_t *)a4
+- (double)interpolateWithPoints:(uint64_t)points t:(float32x4_t *)t
 {
-  v4 = a4[2];
+  v4 = t[2];
   __asm { FMOV            V3.4S, #3.0 }
 
-  v10 = a4[1];
-  v11 = vsubq_f32(vmlaq_f32(vmlsq_f32(a4[3], _Q3, v4), _Q3, v10), *a4);
+  v10 = t[1];
+  v11 = vsubq_f32(vmlaq_f32(vmlsq_f32(t[3], _Q3, v4), _Q3, v10), *t);
   __asm { FMOV            V6.4S, #-6.0 }
 
-  v13 = vmlaq_f32(vmlaq_f32(vmulq_f32(v10, _Q6), _Q3, v4), _Q3, *a4);
+  v13 = vmlaq_f32(vmlaq_f32(vmulq_f32(v10, _Q6), _Q3, v4), _Q3, *t);
   __asm { FMOV            V7.4S, #-3.0 }
 
-  v15 = vmlaq_f32(vmulq_f32(*a4, _Q7), _Q3, v4);
+  v15 = vmlaq_f32(vmulq_f32(*t, _Q7), _Q3, v4);
   __asm { FMOV            V3.4S, #4.0 }
 
-  v17 = vmlaq_n_f32(vaddq_f32(vmlaq_f32(v4, _Q3, v10), *a4), vmlaq_n_f32(v15, vmlaq_n_f32(v13, v11, a1), a1), a1);
+  v17 = vmlaq_n_f32(vaddq_f32(vmlaq_f32(v4, _Q3, v10), *t), vmlaq_n_f32(v15, vmlaq_n_f32(v13, v11, self), self), self);
   __asm { FMOV            V0.4S, #6.0 }
 
   *&result = vdivq_f32(v17, _Q0).u64[0];
   return result;
 }
 
-- (double)interpolateTangentWithPoints:(uint64_t)a3 t:(float32x4_t *)a4
+- (double)interpolateTangentWithPoints:(uint64_t)points t:(float32x4_t *)t
 {
-  v4 = a4[2];
+  v4 = t[2];
   __asm { FMOV            V3.4S, #3.0 }
 
-  v10 = a4[1];
-  v11 = vsubq_f32(vmlaq_f32(vmlsq_f32(a4[3], _Q3, v4), _Q3, v10), *a4);
+  v10 = t[1];
+  v11 = vsubq_f32(vmlaq_f32(vmlsq_f32(t[3], _Q3, v4), _Q3, v10), *t);
   __asm { FMOV            V6.4S, #-6.0 }
 
-  v13 = vmlaq_f32(vmlaq_f32(vmulq_f32(v10, _Q6), _Q3, v4), _Q3, *a4);
+  v13 = vmlaq_f32(vmlaq_f32(vmulq_f32(v10, _Q6), _Q3, v4), _Q3, *t);
   __asm { FMOV            V6.4S, #-3.0 }
 
-  v15 = vaddq_f32(vmlaq_f32(vmulq_f32(*a4, _Q6), _Q3, v4), vmlaq_n_f32(vmulq_n_f32(vmlaq_n_f32(v13, v11, a1), a1), vmlaq_n_f32(v13, vaddq_f32(v11, v11), a1), a1));
+  v15 = vaddq_f32(vmlaq_f32(vmulq_f32(*t, _Q6), _Q3, v4), vmlaq_n_f32(vmulq_n_f32(vmlaq_n_f32(v13, v11, self), self), vmlaq_n_f32(v13, vaddq_f32(v11, v11), self), self));
   __asm { FMOV            V1.4S, #6.0 }
 
   *&result = vdivq_f32(v15, _Q1).u64[0];
   return result;
 }
 
-- (void)collapseTransform:(float32x4_t)a3
+- (void)collapseTransform:(float32x4_t)transform
 {
-  v6 = a1[2];
-  if (a1[3] != v6)
+  v6 = self[2];
+  if (self[3] != v6)
   {
     v7 = 0;
     v8 = 0;
     do
     {
-      v9 = vaddq_f32(a5, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(v6 + v7))), a3, *(v6 + v7), 1), a4, *(v6 + v7), 2));
+      v9 = vaddq_f32(a5, vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*(v6 + v7))), transform, *(v6 + v7), 1), a4, *(v6 + v7), 2));
       v9.i32[3] = 1.0;
       *(v6 + v7) = v9;
       ++v8;
-      v6 = a1[2];
+      v6 = self[2];
       v7 += 48;
     }
 
-    while (0xAAAAAAAAAAAAAAABLL * ((a1[3] - v6) >> 4) > v8);
+    while (0xAAAAAAAAAAAAAAABLL * ((self[3] - v6) >> 4) > v8);
   }
 
-  v10 = a1[15];
-  v11 = a1[16];
+  v10 = self[15];
+  v11 = self[16];
   if (v10 >= v11)
   {
-    v13 = a1[14];
+    v13 = self[14];
     v14 = (v10 - v13) >> 6;
     v15 = v14 + 1;
     if ((v14 + 1) >> 58)
@@ -633,23 +633,23 @@
 
     if (v17)
     {
-      std::__allocate_at_least[abi:ne200100]<std::allocator<simd_float4x4>>((a1 + 14), v17);
+      std::__allocate_at_least[abi:ne200100]<std::allocator<simd_float4x4>>((self + 14), v17);
     }
 
     v18 = (v14 << 6);
     *v18 = a2;
-    v18[1] = a3;
+    v18[1] = transform;
     v18[2] = a4;
     v18[3] = a5;
     v12 = (v14 << 6) + 64;
-    v19 = a1[14];
-    v20 = a1[15] - v19;
+    v19 = self[14];
+    v20 = self[15] - v19;
     v21 = (v14 << 6) - v20;
     memcpy(v18 - v20, v19, v20);
-    v22 = a1[14];
-    a1[14] = v21;
-    a1[15] = v12;
-    a1[16] = 0;
+    v22 = self[14];
+    self[14] = v21;
+    self[15] = v12;
+    self[16] = 0;
     if (v22)
     {
       operator delete(v22);
@@ -659,21 +659,21 @@
   else
   {
     *v10 = a2;
-    v10[1] = a3;
+    v10[1] = transform;
     v12 = &v10[4];
     v10[2] = a4;
     v10[3] = a5;
   }
 
-  a1[15] = v12;
+  self[15] = v12;
 }
 
-- (void)appendControlPoints:(ControlPoint *)a3 count:(unint64_t)a4
+- (void)appendControlPoints:(ControlPoint *)points count:(unint64_t)count
 {
   __p = 0;
   v6 = 0;
   v7 = 0;
-  std::vector<ControlPoint>::__init_with_size[abi:ne200100]<ControlPoint*,ControlPoint*>(&__p, a3, &a3[12 * a4], a4);
+  std::vector<ControlPoint>::__init_with_size[abi:ne200100]<ControlPoint*,ControlPoint*>(&__p, points, &points[12 * count], count);
   std::vector<ControlPoint>::__insert_with_size[abi:ne200100]<std::__wrap_iter<ControlPoint*>,std::__wrap_iter<ControlPoint*>>(&self->_controlPointsVector, self->_controlPointsVector.__end_, __p, v6, 0xAAAAAAAAAAAAAAABLL * ((v6 - __p) >> 4));
   if (__p)
   {
@@ -682,12 +682,12 @@
   }
 }
 
-- (void)appendPatchInfo:(PatchInfo *)a3 count:(unint64_t)a4
+- (void)appendPatchInfo:(PatchInfo *)info count:(unint64_t)count
 {
   __p = 0;
   v6 = 0;
   v7 = 0;
-  std::vector<PatchInfo>::__init_with_size[abi:ne200100]<PatchInfo*,PatchInfo*>(&__p, a3, a3 + 8 * a4, a4);
+  std::vector<PatchInfo>::__init_with_size[abi:ne200100]<PatchInfo*,PatchInfo*>(&__p, info, info + 8 * count, count);
   std::vector<PatchInfo>::__insert_with_size[abi:ne200100]<std::__wrap_iter<PatchInfo*>,std::__wrap_iter<PatchInfo*>>(&self->_patchInfoVector, self->_patchInfoVector.__end_, __p, v6, (v6 - __p) >> 3);
   if (__p)
   {
@@ -696,12 +696,12 @@
   }
 }
 
-- (void)appendIndices:(unsigned __int16 *)a3 count:(unint64_t)a4
+- (void)appendIndices:(unsigned __int16 *)indices count:(unint64_t)count
 {
   __p = 0;
   v6 = 0;
   v7 = 0;
-  std::vector<unsigned short>::__init_with_size[abi:ne200100]<unsigned short *,unsigned short *>(&__p, a3, &a3[a4], a4);
+  std::vector<unsigned short>::__init_with_size[abi:ne200100]<unsigned short *,unsigned short *>(&__p, indices, &indices[count], count);
   std::vector<unsigned short>::__insert_with_size[abi:ne200100]<std::__wrap_iter<unsigned short *>,std::__wrap_iter<unsigned short *>>(&self->_indicesVector, self->_indicesVector.__end_, __p, v6, (v6 - __p) >> 1);
   if (__p)
   {
@@ -710,12 +710,12 @@
   }
 }
 
-- (void)appendInstances:(InstanceInfo *)a3 count:(unint64_t)a4
+- (void)appendInstances:(InstanceInfo *)instances count:(unint64_t)count
 {
   __p = 0;
   v6 = 0;
   v7 = 0;
-  std::vector<InstanceInfo>::__init_with_size[abi:ne200100]<InstanceInfo*,InstanceInfo*>(&__p, a3, a3 + 80 * a4, a4);
+  std::vector<InstanceInfo>::__init_with_size[abi:ne200100]<InstanceInfo*,InstanceInfo*>(&__p, instances, instances + 80 * count, count);
   std::vector<InstanceInfo>::__insert_with_size[abi:ne200100]<std::__wrap_iter<InstanceInfo*>,std::__wrap_iter<InstanceInfo*>>(&self->_instancesVector, self->_instancesVector.__end_, __p, v6, 0xCCCCCCCCCCCCCCCDLL * ((v6 - __p) >> 4));
   if (__p)
   {

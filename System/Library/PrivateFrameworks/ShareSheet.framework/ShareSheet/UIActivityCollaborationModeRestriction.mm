@@ -1,63 +1,63 @@
 @interface UIActivityCollaborationModeRestriction
-- (UIActivityCollaborationModeRestriction)initWithCoder:(id)a3;
-- (UIActivityCollaborationModeRestriction)initWithDisabledMode:(int64_t)a3 alertTitle:(id)a4 alertMessage:(id)a5;
-- (id)_initWithDisabledMode:(int64_t)a3 alertTitle:(id)a4 alertMessage:(id)a5 alertDismissButtonTitle:(id)a6 alertRecoverySuggestionButtonTitle:(id)a7 alertRecoverySuggestionButtonLaunchURL:(id)a8 allowContinueToMode:(BOOL)a9;
-- (id)copyWithZone:(_NSZone *)a3;
+- (UIActivityCollaborationModeRestriction)initWithCoder:(id)coder;
+- (UIActivityCollaborationModeRestriction)initWithDisabledMode:(int64_t)mode alertTitle:(id)title alertMessage:(id)message;
+- (id)_initWithDisabledMode:(int64_t)mode alertTitle:(id)title alertMessage:(id)message alertDismissButtonTitle:(id)buttonTitle alertRecoverySuggestionButtonTitle:(id)suggestionButtonTitle alertRecoverySuggestionButtonLaunchURL:(id)l allowContinueToMode:(BOOL)toMode;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)descriptionForMode:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)descriptionForMode:(int64_t)mode;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation UIActivityCollaborationModeRestriction
 
-- (UIActivityCollaborationModeRestriction)initWithDisabledMode:(int64_t)a3 alertTitle:(id)a4 alertMessage:(id)a5
+- (UIActivityCollaborationModeRestriction)initWithDisabledMode:(int64_t)mode alertTitle:(id)title alertMessage:(id)message
 {
-  v8 = a5;
-  v9 = a4;
+  messageCopy = message;
+  titleCopy = title;
   v10 = _ShareSheetBundle();
   v11 = [v10 localizedStringForKey:@"Move to iCloud OK" value:@"OK" table:@"Localizable"];
 
   LOBYTE(v14) = 0;
-  v12 = [(UIActivityCollaborationModeRestriction *)self _initWithDisabledMode:a3 alertTitle:v9 alertMessage:v8 alertDismissButtonTitle:v11 alertRecoverySuggestionButtonTitle:0 alertRecoverySuggestionButtonLaunchURL:0 allowContinueToMode:v14];
+  v12 = [(UIActivityCollaborationModeRestriction *)self _initWithDisabledMode:mode alertTitle:titleCopy alertMessage:messageCopy alertDismissButtonTitle:v11 alertRecoverySuggestionButtonTitle:0 alertRecoverySuggestionButtonLaunchURL:0 allowContinueToMode:v14];
 
   return v12;
 }
 
-- (id)_initWithDisabledMode:(int64_t)a3 alertTitle:(id)a4 alertMessage:(id)a5 alertDismissButtonTitle:(id)a6 alertRecoverySuggestionButtonTitle:(id)a7 alertRecoverySuggestionButtonLaunchURL:(id)a8 allowContinueToMode:(BOOL)a9
+- (id)_initWithDisabledMode:(int64_t)mode alertTitle:(id)title alertMessage:(id)message alertDismissButtonTitle:(id)buttonTitle alertRecoverySuggestionButtonTitle:(id)suggestionButtonTitle alertRecoverySuggestionButtonLaunchURL:(id)l allowContinueToMode:(BOOL)toMode
 {
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
+  titleCopy = title;
+  messageCopy = message;
+  buttonTitleCopy = buttonTitle;
+  suggestionButtonTitleCopy = suggestionButtonTitle;
+  lCopy = l;
   v33.receiver = self;
   v33.super_class = UIActivityCollaborationModeRestriction;
   v20 = [(UIActivityCollaborationModeRestriction *)&v33 init];
   v21 = v20;
   if (v20)
   {
-    v20->_disabledMode = a3;
-    v22 = [v15 copy];
+    v20->_disabledMode = mode;
+    v22 = [titleCopy copy];
     alertTitle = v21->_alertTitle;
     v21->_alertTitle = v22;
 
-    v24 = [v16 copy];
+    v24 = [messageCopy copy];
     alertMessage = v21->_alertMessage;
     v21->_alertMessage = v24;
 
-    v26 = [v17 copy];
+    v26 = [buttonTitleCopy copy];
     alertDismissButtonTitle = v21->_alertDismissButtonTitle;
     v21->_alertDismissButtonTitle = v26;
 
-    v28 = [v18 copy];
+    v28 = [suggestionButtonTitleCopy copy];
     alertRecoverySuggestionButtonTitle = v21->_alertRecoverySuggestionButtonTitle;
     v21->_alertRecoverySuggestionButtonTitle = v28;
 
-    v30 = [v19 copy];
+    v30 = [lCopy copy];
     alertRecoverySuggestionButtonLaunchURL = v21->_alertRecoverySuggestionButtonLaunchURL;
     v21->_alertRecoverySuggestionButtonLaunchURL = v30;
 
-    v21->_allowContinueToMode = a9;
+    v21->_allowContinueToMode = toMode;
   }
 
   return v21;
@@ -70,32 +70,32 @@
   v15.super_class = UIActivityCollaborationModeRestriction;
   v4 = [(UIActivityCollaborationModeRestriction *)&v15 description];
   v5 = [(UIActivityCollaborationModeRestriction *)self descriptionForMode:[(UIActivityCollaborationModeRestriction *)self disabledMode]];
-  v6 = [(UIActivityCollaborationModeRestriction *)self alertTitle];
-  v7 = [(UIActivityCollaborationModeRestriction *)self alertMessage];
-  v8 = [(UIActivityCollaborationModeRestriction *)self alertDismissButtonTitle];
-  v9 = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonTitle];
-  v10 = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonLaunchURL];
-  v11 = [(UIActivityCollaborationModeRestriction *)self allowContinueToMode];
+  alertTitle = [(UIActivityCollaborationModeRestriction *)self alertTitle];
+  alertMessage = [(UIActivityCollaborationModeRestriction *)self alertMessage];
+  alertDismissButtonTitle = [(UIActivityCollaborationModeRestriction *)self alertDismissButtonTitle];
+  alertRecoverySuggestionButtonTitle = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonTitle];
+  alertRecoverySuggestionButtonLaunchURL = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonLaunchURL];
+  allowContinueToMode = [(UIActivityCollaborationModeRestriction *)self allowContinueToMode];
   v12 = "no";
-  if (v11)
+  if (allowContinueToMode)
   {
     v12 = "yes";
   }
 
-  v13 = [v3 stringWithFormat:@"%@: disabledMode:%@ alertTitle:%@ alertMessage:%@ alertDismissButtonTitle:%@ alertRecoverySuggestionButtonTitle:%@ alertRecoverySuggestionButtonLaunchURL:%@ allowContinueToMode:%s", v4, v5, v6, v7, v8, v9, v10, v12];
+  v13 = [v3 stringWithFormat:@"%@: disabledMode:%@ alertTitle:%@ alertMessage:%@ alertDismissButtonTitle:%@ alertRecoverySuggestionButtonTitle:%@ alertRecoverySuggestionButtonLaunchURL:%@ allowContinueToMode:%s", v4, v5, alertTitle, alertMessage, alertDismissButtonTitle, alertRecoverySuggestionButtonTitle, alertRecoverySuggestionButtonLaunchURL, v12];
 
   return v13;
 }
 
-- (id)descriptionForMode:(int64_t)a3
+- (id)descriptionForMode:(int64_t)mode
 {
   v3 = @"unknown";
-  if (a3 == 1)
+  if (mode == 1)
   {
     v3 = @"collaborate";
   }
 
-  if (a3)
+  if (mode)
   {
     return v3;
   }
@@ -106,99 +106,99 @@
   }
 }
 
-- (UIActivityCollaborationModeRestriction)initWithCoder:(id)a3
+- (UIActivityCollaborationModeRestriction)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"disabledMode"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertTitle"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"disabledMode"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertTitle"];
   v7 = [v6 copy];
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertMessage"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertMessage"];
   v9 = [v8 copy];
 
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertDismissButtonTitle"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertDismissButtonTitle"];
   v11 = [v10 copy];
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertRecoverySuggestionButtonTitle"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertRecoverySuggestionButtonTitle"];
   v13 = [v12 copy];
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"alertRecoverySuggestionButtonLaunchURL"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"alertRecoverySuggestionButtonLaunchURL"];
   v15 = [v14 copy];
 
-  LOBYTE(v14) = [v4 decodeBoolForKey:@"allowContinueToMode"];
+  LOBYTE(v14) = [coderCopy decodeBoolForKey:@"allowContinueToMode"];
   LOBYTE(v18) = v14;
   v16 = [(UIActivityCollaborationModeRestriction *)self _initWithDisabledMode:v5 alertTitle:v7 alertMessage:v9 alertDismissButtonTitle:v11 alertRecoverySuggestionButtonTitle:v13 alertRecoverySuggestionButtonLaunchURL:v15 allowContinueToMode:v18];
 
   return v16;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v14 = a3;
-  [v14 encodeInteger:-[UIActivityCollaborationModeRestriction disabledMode](self forKey:{"disabledMode"), @"disabledMode"}];
-  v4 = [(UIActivityCollaborationModeRestriction *)self alertTitle];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[UIActivityCollaborationModeRestriction disabledMode](self forKey:{"disabledMode"), @"disabledMode"}];
+  alertTitle = [(UIActivityCollaborationModeRestriction *)self alertTitle];
 
-  if (v4)
+  if (alertTitle)
   {
-    v5 = [(UIActivityCollaborationModeRestriction *)self alertTitle];
-    [v14 encodeObject:v5 forKey:@"alertTitle"];
+    alertTitle2 = [(UIActivityCollaborationModeRestriction *)self alertTitle];
+    [coderCopy encodeObject:alertTitle2 forKey:@"alertTitle"];
   }
 
-  v6 = [(UIActivityCollaborationModeRestriction *)self alertMessage];
+  alertMessage = [(UIActivityCollaborationModeRestriction *)self alertMessage];
 
-  if (v6)
+  if (alertMessage)
   {
-    v7 = [(UIActivityCollaborationModeRestriction *)self alertMessage];
-    [v14 encodeObject:v7 forKey:@"alertMessage"];
+    alertMessage2 = [(UIActivityCollaborationModeRestriction *)self alertMessage];
+    [coderCopy encodeObject:alertMessage2 forKey:@"alertMessage"];
   }
 
-  v8 = [(UIActivityCollaborationModeRestriction *)self alertDismissButtonTitle];
+  alertDismissButtonTitle = [(UIActivityCollaborationModeRestriction *)self alertDismissButtonTitle];
 
-  if (v8)
+  if (alertDismissButtonTitle)
   {
-    v9 = [(UIActivityCollaborationModeRestriction *)self alertDismissButtonTitle];
-    [v14 encodeObject:v9 forKey:@"alertDismissButtonTitle"];
+    alertDismissButtonTitle2 = [(UIActivityCollaborationModeRestriction *)self alertDismissButtonTitle];
+    [coderCopy encodeObject:alertDismissButtonTitle2 forKey:@"alertDismissButtonTitle"];
   }
 
-  v10 = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonTitle];
+  alertRecoverySuggestionButtonTitle = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonTitle];
 
-  if (v10)
+  if (alertRecoverySuggestionButtonTitle)
   {
-    v11 = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonTitle];
-    [v14 encodeObject:v11 forKey:@"alertRecoverySuggestionButtonTitle"];
+    alertRecoverySuggestionButtonTitle2 = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonTitle];
+    [coderCopy encodeObject:alertRecoverySuggestionButtonTitle2 forKey:@"alertRecoverySuggestionButtonTitle"];
   }
 
-  v12 = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonLaunchURL];
+  alertRecoverySuggestionButtonLaunchURL = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonLaunchURL];
 
-  if (v12)
+  if (alertRecoverySuggestionButtonLaunchURL)
   {
-    v13 = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonLaunchURL];
-    [v14 encodeObject:v13 forKey:@"alertRecoverySuggestionButtonLaunchURL"];
+    alertRecoverySuggestionButtonLaunchURL2 = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonLaunchURL];
+    [coderCopy encodeObject:alertRecoverySuggestionButtonLaunchURL2 forKey:@"alertRecoverySuggestionButtonLaunchURL"];
   }
 
-  [v14 encodeBool:-[UIActivityCollaborationModeRestriction allowContinueToMode](self forKey:{"allowContinueToMode"), @"allowContinueToMode"}];
+  [coderCopy encodeBool:-[UIActivityCollaborationModeRestriction allowContinueToMode](self forKey:{"allowContinueToMode"), @"allowContinueToMode"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [(UIActivityCollaborationModeRestriction *)self disabledMode];
-  v6 = [(UIActivityCollaborationModeRestriction *)self alertTitle];
-  v7 = [v6 copyWithZone:a3];
+  disabledMode = [(UIActivityCollaborationModeRestriction *)self disabledMode];
+  alertTitle = [(UIActivityCollaborationModeRestriction *)self alertTitle];
+  v7 = [alertTitle copyWithZone:zone];
 
-  v8 = [(UIActivityCollaborationModeRestriction *)self alertMessage];
-  v9 = [v8 copyWithZone:a3];
+  alertMessage = [(UIActivityCollaborationModeRestriction *)self alertMessage];
+  v9 = [alertMessage copyWithZone:zone];
 
-  v10 = [(UIActivityCollaborationModeRestriction *)self alertDismissButtonTitle];
-  v11 = [v10 copyWithZone:a3];
+  alertDismissButtonTitle = [(UIActivityCollaborationModeRestriction *)self alertDismissButtonTitle];
+  v11 = [alertDismissButtonTitle copyWithZone:zone];
 
-  v12 = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonTitle];
-  v13 = [v12 copyWithZone:a3];
+  alertRecoverySuggestionButtonTitle = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonTitle];
+  v13 = [alertRecoverySuggestionButtonTitle copyWithZone:zone];
 
-  v14 = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonLaunchURL];
-  v15 = [v14 copyWithZone:a3];
+  alertRecoverySuggestionButtonLaunchURL = [(UIActivityCollaborationModeRestriction *)self alertRecoverySuggestionButtonLaunchURL];
+  v15 = [alertRecoverySuggestionButtonLaunchURL copyWithZone:zone];
 
   LOBYTE(v18) = [(UIActivityCollaborationModeRestriction *)self allowContinueToMode];
-  v16 = [objc_alloc(objc_opt_class()) _initWithDisabledMode:v5 alertTitle:v7 alertMessage:v9 alertDismissButtonTitle:v11 alertRecoverySuggestionButtonTitle:v13 alertRecoverySuggestionButtonLaunchURL:v15 allowContinueToMode:v18];
+  v16 = [objc_alloc(objc_opt_class()) _initWithDisabledMode:disabledMode alertTitle:v7 alertMessage:v9 alertDismissButtonTitle:v11 alertRecoverySuggestionButtonTitle:v13 alertRecoverySuggestionButtonLaunchURL:v15 allowContinueToMode:v18];
 
   return v16;
 }

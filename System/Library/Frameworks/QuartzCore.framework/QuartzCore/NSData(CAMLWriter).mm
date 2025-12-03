@@ -6,7 +6,7 @@
 
 - (uint64_t)encodeWithCAMLWriter:()CAMLWriter
 {
-  v4 = [a1 base64EncodedStringWithOptions:0];
+  v4 = [self base64EncodedStringWithOptions:0];
 
   return [a3 setElementContent:v4];
 }

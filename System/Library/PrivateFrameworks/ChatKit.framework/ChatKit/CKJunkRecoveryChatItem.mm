@@ -1,14 +1,14 @@
 @interface CKJunkRecoveryChatItem
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (id)loadTranscriptText;
 @end
 
 @implementation CKJunkRecoveryChatItem
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  height = a3.height;
-  width = a3.width;
+  height = fits.height;
+  width = fits.width;
   sizingCell = self->_sizingCell;
   if (!sizingCell)
   {
@@ -19,8 +19,8 @@
     sizingCell = self->_sizingCell;
   }
 
-  v10 = [(CKJunkRecoveryChatItem *)self earliestMessageDate];
-  [(CKJunkRecoveryTranscriptCell *)sizingCell updateRecoverConversationLabelContentForDate:v10];
+  earliestMessageDate = [(CKJunkRecoveryChatItem *)self earliestMessageDate];
+  [(CKJunkRecoveryTranscriptCell *)sizingCell updateRecoverConversationLabelContentForDate:earliestMessageDate];
 
   v11 = self->_sizingCell;
 
@@ -32,8 +32,8 @@
 
 - (id)loadTranscriptText
 {
-  v2 = [(CKJunkRecoveryChatItem *)self earliestMessageDate];
-  v3 = [CKJunkRecoveryTranscriptCell attributedRecoverConversationStringWithDeletionDate:v2];
+  earliestMessageDate = [(CKJunkRecoveryChatItem *)self earliestMessageDate];
+  v3 = [CKJunkRecoveryTranscriptCell attributedRecoverConversationStringWithDeletionDate:earliestMessageDate];
 
   return v3;
 }

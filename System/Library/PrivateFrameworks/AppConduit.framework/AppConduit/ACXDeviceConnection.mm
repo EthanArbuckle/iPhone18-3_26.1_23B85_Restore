@@ -1,121 +1,121 @@
 @interface ACXDeviceConnection
 + (id)sharedDeviceConnection;
-+ (void)_removeFilesAtURL:(id)a3;
++ (void)_removeFilesAtURL:(id)l;
 + (void)performUninstallationCleanup;
 - (ACXDeviceConnection)init;
 - (ACXDeviceConnectionDelegate)delegate;
-- (BOOL)_companionAppWithoutCounterparts:(id)a3;
-- (BOOL)_onQueue_createXPCConnectionIfNecessary:(id *)a3;
+- (BOOL)_companionAppWithoutCounterparts:(id)counterparts;
+- (BOOL)_onQueue_createXPCConnectionIfNecessary:(id *)necessary;
 - (BOOL)_onQueue_enableObserversIfNeededForAValidXPCConnection;
-- (BOOL)acknowledgeTestFlightInstallBegunForApp:(id)a3 onDeviceWithPairingID:(id)a4 error:(id *)a5;
-- (BOOL)cancelUpdatePendingForCompanionApp:(id)a3 error:(id *)a4;
-- (BOOL)fetchApplicationDatabaseSyncInformationForDeviceWithPairingID:(id)a3 returningDatabaseUUID:(id *)a4 lastSequenceNumber:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)fetchApplicationDatabaseSyncInformationForPairedDevice:(id)a3 returningDatabaseUUID:(id *)a4 lastSequenceNumber:(unint64_t *)a5 error:(id *)a6;
-- (BOOL)getAlwaysInstall:(BOOL *)a3 forPairedDevice:(id)a4 error:(id *)a5;
-- (BOOL)getApplicationIsInstalled:(BOOL *)a3 onAnyPairedDeviceWithBundleID:(id)a4 error:(id *)a5;
-- (BOOL)getApplicationIsInstalled:(BOOL *)a3 onAnyPairedDeviceWithCompanionBundleID:(id)a4 error:(id *)a5;
-- (BOOL)getApplicationIsInstalled:(BOOL *)a3 onDeviceWithPairingID:(id)a4 withCompanionBundleID:(id)a5 error:(id *)a6;
-- (BOOL)getApplicationIsInstalled:(BOOL *)a3 onPairedDevice:(id)a4 withCompanionBundleID:(id)a5 error:(id *)a6;
-- (BOOL)getApplicationIsInstalled:(BOOL *)a3 withBundleID:(id)a4 onDeviceWithPairingID:(id)a5 error:(id *)a6;
-- (BOOL)getApplicationIsInstalled:(BOOL *)a3 withBundleID:(id)a4 onPairedDevice:(id)a5 error:(id *)a6;
-- (BOOL)getApplicationWithBundleID:(id)a3 willInstallAfterPairing:(BOOL *)a4 onDevice:(id)a5 error:(id *)a6;
-- (BOOL)getSystemAppInstallability:(BOOL *)a3 onDeviceWithPairingID:(id)a4 withBundleID:(id)a5 error:(id *)a6;
-- (BOOL)getSystemAppInstallability:(BOOL *)a3 onPairedDevice:(id)a4 withBundleID:(id)a5 error:(id *)a6;
-- (BOOL)installApplication:(id)a3 onPairedDevice:(id)a4 installationStatus:(int64_t *)a5 error:(id *)a6;
-- (BOOL)installApplication:(id)a3 withProvisioningProfiles:(id)a4 onPairedDevice:(id)a5 installationStatus:(int64_t *)a6 error:(id *)a7;
-- (BOOL)installApplicationAtURL:(id)a3 onDeviceWithPairingID:(id)a4 installOptions:(id)a5 size:(int64_t)a6 installationStatus:(int64_t *)a7 error:(id *)a8;
-- (BOOL)installApplicationAtURL:(id)a3 onPairedDevice:(id)a4 installOptions:(id)a5 size:(int64_t)a6 installationStatus:(int64_t *)a7 error:(id *)a8;
-- (BOOL)installProvisioningProfileWithURL:(id)a3 onPairedDevice:(id)a4 error:(id *)a5;
-- (BOOL)killDaemonForTestingWithError:(id *)a3;
-- (BOOL)removeApplication:(id)a3 fromPairedDevice:(id)a4 removalStatus:(int64_t *)a5 error:(id *)a6;
-- (BOOL)removeProvisioningProfileWithID:(id)a3 fromPairedDevice:(id)a4 error:(id *)a5;
-- (BOOL)setUpdatePendingForCompanionApp:(id)a3 error:(id *)a4;
-- (BOOL)updatePreferencesForApplicationWithIdentifier:(id)a3 preferences:(id)a4 writingToPreferencesLocation:(unint64_t)a5 forPairedDevice:(id)a6 options:(unint64_t)a7 error:(id *)a8;
-- (id)_locallyAvailableApplicationWithBundleID:(id)a3 forDeviceWithPairingID:(id)a4 options:(unint64_t)a5 error:(id *)a6;
-- (id)_proxyWithErrorHandler:(id)a3;
-- (id)_synchronousProxyWithErrorHandler:(id)a3;
-- (id)_validateAndExtractProfiles:(id)a3 error:(id *)a4;
-- (id)applicationOnDeviceWithPairingID:(id)a3 withBundleID:(id)a4 error:(id *)a5;
-- (id)applicationOnPairedDevice:(id)a3 withBundleID:(id)a4 error:(id *)a5;
-- (id)applicationRemovabilityForPairedDevice:(id)a3 error:(id *)a4;
-- (id)copyLocalizedValuesFromAllDevicesForInfoPlistKeys:(id)a3 forAppWithBundleID:(id)a4 fetchingFirstMatchingLocalizationInList:(id)a5 error:(id *)a6;
-- (id)copyRemoteDuplicatedClassInfoWithError:(id *)a3;
-- (id)installableSystemAppWithBundleID:(id)a3 onDeviceWithPairingID:(id)a4 error:(id *)a5;
-- (id)installableSystemAppWithBundleID:(id)a3 onPairedDevice:(id)a4 error:(id *)a5;
-- (id)locallyAvailableApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 error:(id *)a5;
-- (id)locallyAvailableApplicationWithContainingApplicationBundleID:(id)a3 forDeviceWithPairingID:(id)a4 error:(id *)a5;
-- (id)locallyAvailableApplicationWithContainingApplicationBundleID:(id)a3 forPairedDevice:(id)a4 error:(id *)a5;
-- (id)provisioningProfilesForApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 error:(id *)a5;
-- (id)provisioningProfilesForPairedDevice:(id)a3 error:(id *)a4;
-- (id)watchAppBundleIDForCompanionAppBundleID:(id)a3 error:(id *)a4;
-- (id)watchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:(id)a3 error:(id *)a4;
-- (void)_deviceDidBecomeActiveNotification:(id)a3;
-- (void)_deviceDidPairNotification:(id)a3;
-- (void)_fetchLocallyAvailableApplicationWithBundleID:(id)a3 forDeviceWithPairingID:(id)a4 options:(unint64_t)a5 completion:(id)a6;
+- (BOOL)acknowledgeTestFlightInstallBegunForApp:(id)app onDeviceWithPairingID:(id)d error:(id *)error;
+- (BOOL)cancelUpdatePendingForCompanionApp:(id)app error:(id *)error;
+- (BOOL)fetchApplicationDatabaseSyncInformationForDeviceWithPairingID:(id)d returningDatabaseUUID:(id *)iD lastSequenceNumber:(unint64_t *)number error:(id *)error;
+- (BOOL)fetchApplicationDatabaseSyncInformationForPairedDevice:(id)device returningDatabaseUUID:(id *)d lastSequenceNumber:(unint64_t *)number error:(id *)error;
+- (BOOL)getAlwaysInstall:(BOOL *)install forPairedDevice:(id)device error:(id *)error;
+- (BOOL)getApplicationIsInstalled:(BOOL *)installed onAnyPairedDeviceWithBundleID:(id)d error:(id *)error;
+- (BOOL)getApplicationIsInstalled:(BOOL *)installed onAnyPairedDeviceWithCompanionBundleID:(id)d error:(id *)error;
+- (BOOL)getApplicationIsInstalled:(BOOL *)installed onDeviceWithPairingID:(id)d withCompanionBundleID:(id)iD error:(id *)error;
+- (BOOL)getApplicationIsInstalled:(BOOL *)installed onPairedDevice:(id)device withCompanionBundleID:(id)d error:(id *)error;
+- (BOOL)getApplicationIsInstalled:(BOOL *)installed withBundleID:(id)d onDeviceWithPairingID:(id)iD error:(id *)error;
+- (BOOL)getApplicationIsInstalled:(BOOL *)installed withBundleID:(id)d onPairedDevice:(id)device error:(id *)error;
+- (BOOL)getApplicationWithBundleID:(id)d willInstallAfterPairing:(BOOL *)pairing onDevice:(id)device error:(id *)error;
+- (BOOL)getSystemAppInstallability:(BOOL *)installability onDeviceWithPairingID:(id)d withBundleID:(id)iD error:(id *)error;
+- (BOOL)getSystemAppInstallability:(BOOL *)installability onPairedDevice:(id)device withBundleID:(id)d error:(id *)error;
+- (BOOL)installApplication:(id)application onPairedDevice:(id)device installationStatus:(int64_t *)status error:(id *)error;
+- (BOOL)installApplication:(id)application withProvisioningProfiles:(id)profiles onPairedDevice:(id)device installationStatus:(int64_t *)status error:(id *)error;
+- (BOOL)installApplicationAtURL:(id)l onDeviceWithPairingID:(id)d installOptions:(id)options size:(int64_t)size installationStatus:(int64_t *)status error:(id *)error;
+- (BOOL)installApplicationAtURL:(id)l onPairedDevice:(id)device installOptions:(id)options size:(int64_t)size installationStatus:(int64_t *)status error:(id *)error;
+- (BOOL)installProvisioningProfileWithURL:(id)l onPairedDevice:(id)device error:(id *)error;
+- (BOOL)killDaemonForTestingWithError:(id *)error;
+- (BOOL)removeApplication:(id)application fromPairedDevice:(id)device removalStatus:(int64_t *)status error:(id *)error;
+- (BOOL)removeProvisioningProfileWithID:(id)d fromPairedDevice:(id)device error:(id *)error;
+- (BOOL)setUpdatePendingForCompanionApp:(id)app error:(id *)error;
+- (BOOL)updatePreferencesForApplicationWithIdentifier:(id)identifier preferences:(id)preferences writingToPreferencesLocation:(unint64_t)location forPairedDevice:(id)device options:(unint64_t)options error:(id *)error;
+- (id)_locallyAvailableApplicationWithBundleID:(id)d forDeviceWithPairingID:(id)iD options:(unint64_t)options error:(id *)error;
+- (id)_proxyWithErrorHandler:(id)handler;
+- (id)_synchronousProxyWithErrorHandler:(id)handler;
+- (id)_validateAndExtractProfiles:(id)profiles error:(id *)error;
+- (id)applicationOnDeviceWithPairingID:(id)d withBundleID:(id)iD error:(id *)error;
+- (id)applicationOnPairedDevice:(id)device withBundleID:(id)d error:(id *)error;
+- (id)applicationRemovabilityForPairedDevice:(id)device error:(id *)error;
+- (id)copyLocalizedValuesFromAllDevicesForInfoPlistKeys:(id)keys forAppWithBundleID:(id)d fetchingFirstMatchingLocalizationInList:(id)list error:(id *)error;
+- (id)copyRemoteDuplicatedClassInfoWithError:(id *)error;
+- (id)installableSystemAppWithBundleID:(id)d onDeviceWithPairingID:(id)iD error:(id *)error;
+- (id)installableSystemAppWithBundleID:(id)d onPairedDevice:(id)device error:(id *)error;
+- (id)locallyAvailableApplicationWithBundleID:(id)d forPairedDevice:(id)device error:(id *)error;
+- (id)locallyAvailableApplicationWithContainingApplicationBundleID:(id)d forDeviceWithPairingID:(id)iD error:(id *)error;
+- (id)locallyAvailableApplicationWithContainingApplicationBundleID:(id)d forPairedDevice:(id)device error:(id *)error;
+- (id)provisioningProfilesForApplicationWithBundleID:(id)d forPairedDevice:(id)device error:(id *)error;
+- (id)provisioningProfilesForPairedDevice:(id)device error:(id *)error;
+- (id)watchAppBundleIDForCompanionAppBundleID:(id)d error:(id *)error;
+- (id)watchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:(id)identifier error:(id *)error;
+- (void)_deviceDidBecomeActiveNotification:(id)notification;
+- (void)_deviceDidPairNotification:(id)notification;
+- (void)_fetchLocallyAvailableApplicationWithBundleID:(id)d forDeviceWithPairingID:(id)iD options:(unint64_t)options completion:(id)completion;
 - (void)_invalidateXPCConnection;
 - (void)_onQueue_beginMonitoringNanoRegistryDeviceState;
 - (void)_onQueue_endMonitoringNanoRegistryDeviceState;
 - (void)_onQueue_reEstablishObserverConnectionIfNeeded;
-- (void)activeComplicationsForPairedDevice:(id)a3 completion:(id)a4;
-- (void)addObserver:(id)a3;
-- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)a3;
-- (void)applicationIsInstalledOnAnyPairedDeviceWithBundleID:(id)a3 completion:(id)a4;
-- (void)applicationIsInstalledOnAnyPairedDeviceWithCompanionBundleID:(id)a3 completion:(id)a4;
-- (void)applicationIsInstalledOnDeviceWithPairingID:(id)a3 withBundleID:(id)a4 completion:(id)a5;
-- (void)applicationIsInstalledOnDeviceWithPairingID:(id)a3 withCompanionBundleID:(id)a4 completion:(id)a5;
-- (void)applicationIsInstalledOnPairedDevice:(id)a3 withBundleID:(id)a4 completion:(id)a5;
-- (void)applicationIsInstalledOnPairedDevice:(id)a3 withCompanionBundleID:(id)a4 completion:(id)a5;
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)applicationsUpdated:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)applictionRemovabilityForPairedDevice:(id)a3 completion:(id)a4;
+- (void)activeComplicationsForPairedDevice:(id)device completion:(id)completion;
+- (void)addObserver:(id)observer;
+- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)d;
+- (void)applicationIsInstalledOnAnyPairedDeviceWithBundleID:(id)d completion:(id)completion;
+- (void)applicationIsInstalledOnAnyPairedDeviceWithCompanionBundleID:(id)d completion:(id)completion;
+- (void)applicationIsInstalledOnDeviceWithPairingID:(id)d withBundleID:(id)iD completion:(id)completion;
+- (void)applicationIsInstalledOnDeviceWithPairingID:(id)d withCompanionBundleID:(id)iD completion:(id)completion;
+- (void)applicationIsInstalledOnPairedDevice:(id)device withBundleID:(id)d completion:(id)completion;
+- (void)applicationIsInstalledOnPairedDevice:(id)device withCompanionBundleID:(id)d completion:(id)completion;
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d;
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d;
+- (void)applicationsUpdated:(id)updated onDeviceWithPairingID:(id)d;
+- (void)applictionRemovabilityForPairedDevice:(id)device completion:(id)completion;
 - (void)cancelPendingInstallations;
-- (void)cancelUpdatePendingForCompanionApp:(id)a3 completion:(id)a4;
-- (void)enumerateInstallableSystemAppsOnDeviceWithPairingID:(id)a3 withBlock:(id)a4;
-- (void)enumerateInstallableSystemAppsOnPairedDevice:(id)a3 withBlock:(id)a4;
-- (void)enumerateInstalledApplicationsOnDeviceWithPairingID:(id)a3 withBlock:(id)a4;
-- (void)enumerateInstalledApplicationsOnPairedDevice:(id)a3 withBlock:(id)a4;
-- (void)enumerateLocallyAvailableApplicationsForDeviceWithPairingID:(id)a3 options:(unint64_t)a4 withBlock:(id)a5;
-- (void)enumerateLocallyAvailableApplicationsForPairedDevice:(id)a3 options:(unint64_t)a4 withBlock:(id)a5;
-- (void)fetchApplicationOnDeviceWithPairingID:(id)a3 withBundleID:(id)a4 completion:(id)a5;
-- (void)fetchApplicationOnPairedDevice:(id)a3 withBundleID:(id)a4 completion:(id)a5;
-- (void)fetchApplicationWithContainingApplicationBundleID:(id)a3 completion:(id)a4;
-- (void)fetchInfoForApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 completion:(id)a5;
-- (void)fetchInstallableSystemAppWithBundleID:(id)a3 onDeviceWithPairingID:(id)a4 completion:(id)a5;
-- (void)fetchInstallableSystemAppWithBundleID:(id)a3 onPairedDevice:(id)a4 completion:(id)a5;
-- (void)fetchInstalledApplicationsForPairedDevice:(id)a3 completion:(id)a4;
-- (void)fetchInstalledCompatibleApplicationsWithDevice:(id)a3 withErrorCompletion:(id)a4;
-- (void)fetchInstalledComplicationsForPairedDevice:(id)a3 completion:(id)a4;
-- (void)fetchLocallyAvailableApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 completion:(id)a5;
-- (void)fetchLocallyAvailableApplicationWithContainingApplicationBundleID:(id)a3 forDeviceWithPairingID:(id)a4 completion:(id)a5;
-- (void)fetchLocallyAvailableApplicationWithContainingApplicationBundleID:(id)a3 forPairedDevice:(id)a4 completion:(id)a5;
-- (void)fetchProvisioningProfilesForApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 completion:(id)a5;
-- (void)fetchProvisioningProfilesForPairedDevice:(id)a3 completion:(id)a4;
-- (void)fetchWatchAppBundleIDForCompanionAppBundleID:(id)a3 completion:(id)a4;
-- (void)fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:(id)a3 completion:(id)a4;
-- (void)getAlwaysInstallForPairedDevice:(id)a3 completion:(id)a4;
-- (void)getApplicationWithBundleID:(id)a3 willInstallAfterPairingOnDevice:(id)a4 completion:(id)a5;
+- (void)cancelUpdatePendingForCompanionApp:(id)app completion:(id)completion;
+- (void)enumerateInstallableSystemAppsOnDeviceWithPairingID:(id)d withBlock:(id)block;
+- (void)enumerateInstallableSystemAppsOnPairedDevice:(id)device withBlock:(id)block;
+- (void)enumerateInstalledApplicationsOnDeviceWithPairingID:(id)d withBlock:(id)block;
+- (void)enumerateInstalledApplicationsOnPairedDevice:(id)device withBlock:(id)block;
+- (void)enumerateLocallyAvailableApplicationsForDeviceWithPairingID:(id)d options:(unint64_t)options withBlock:(id)block;
+- (void)enumerateLocallyAvailableApplicationsForPairedDevice:(id)device options:(unint64_t)options withBlock:(id)block;
+- (void)fetchApplicationOnDeviceWithPairingID:(id)d withBundleID:(id)iD completion:(id)completion;
+- (void)fetchApplicationOnPairedDevice:(id)device withBundleID:(id)d completion:(id)completion;
+- (void)fetchApplicationWithContainingApplicationBundleID:(id)d completion:(id)completion;
+- (void)fetchInfoForApplicationWithBundleID:(id)d forPairedDevice:(id)device completion:(id)completion;
+- (void)fetchInstallableSystemAppWithBundleID:(id)d onDeviceWithPairingID:(id)iD completion:(id)completion;
+- (void)fetchInstallableSystemAppWithBundleID:(id)d onPairedDevice:(id)device completion:(id)completion;
+- (void)fetchInstalledApplicationsForPairedDevice:(id)device completion:(id)completion;
+- (void)fetchInstalledCompatibleApplicationsWithDevice:(id)device withErrorCompletion:(id)completion;
+- (void)fetchInstalledComplicationsForPairedDevice:(id)device completion:(id)completion;
+- (void)fetchLocallyAvailableApplicationWithBundleID:(id)d forPairedDevice:(id)device completion:(id)completion;
+- (void)fetchLocallyAvailableApplicationWithContainingApplicationBundleID:(id)d forDeviceWithPairingID:(id)iD completion:(id)completion;
+- (void)fetchLocallyAvailableApplicationWithContainingApplicationBundleID:(id)d forPairedDevice:(id)device completion:(id)completion;
+- (void)fetchProvisioningProfilesForApplicationWithBundleID:(id)d forPairedDevice:(id)device completion:(id)completion;
+- (void)fetchProvisioningProfilesForPairedDevice:(id)device completion:(id)completion;
+- (void)fetchWatchAppBundleIDForCompanionAppBundleID:(id)d completion:(id)completion;
+- (void)fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:(id)identifier completion:(id)completion;
+- (void)getAlwaysInstallForPairedDevice:(id)device completion:(id)completion;
+- (void)getApplicationWithBundleID:(id)d willInstallAfterPairingOnDevice:(id)device completion:(id)completion;
 - (void)installAllApplications;
-- (void)installApplication:(id)a3 onPairedDevice:(id)a4 completion:(id)a5;
-- (void)installApplication:(id)a3 withProvisioningProfiles:(id)a4 onPairedDevice:(id)a5 completion:(id)a6;
-- (void)installApplicationAtURL:(id)a3 onDeviceWithPairingID:(id)a4 installOptions:(id)a5 size:(int64_t)a6 completion:(id)a7;
-- (void)installApplicationAtURL:(id)a3 onPairedDevice:(id)a4 installOptions:(id)a5 size:(int64_t)a6 completion:(id)a7;
-- (void)installProvisioningProfileWithURL:(id)a3 onPairedDevice:(id)a4 completion:(id)a5;
+- (void)installApplication:(id)application onPairedDevice:(id)device completion:(id)completion;
+- (void)installApplication:(id)application withProvisioningProfiles:(id)profiles onPairedDevice:(id)device completion:(id)completion;
+- (void)installApplicationAtURL:(id)l onDeviceWithPairingID:(id)d installOptions:(id)options size:(int64_t)size completion:(id)completion;
+- (void)installApplicationAtURL:(id)l onPairedDevice:(id)device installOptions:(id)options size:(int64_t)size completion:(id)completion;
+- (void)installProvisioningProfileWithURL:(id)l onPairedDevice:(id)device completion:(id)completion;
 - (void)observerRegistrationSuccessful;
-- (void)removabilityDidChangeForApplications:(id)a3 onDeviceWithPairingID:(id)a4;
-- (void)removeApplication:(id)a3 fromPairedDevice:(id)a4 completion:(id)a5;
-- (void)removeApplication:(id)a3 fromPairedDevice:(id)a4 completionWithError:(id)a5;
-- (void)removeObserver:(id)a3;
-- (void)removeProvisioningProfileWithID:(id)a3 fromPairedDevice:(id)a4 completion:(id)a5;
-- (void)retryPendingAppInstallationsForPairedDevice:(id)a3;
-- (void)setAlwaysInstall:(id)a3;
-- (void)setAlwaysInstall:(id)a3 forDevice:(id)a4;
-- (void)setUpdatePendingForCompanionApp:(id)a3 completion:(id)a4;
-- (void)systemAppIsInstallableOnDeviceWithPairingID:(id)a3 withBundleID:(id)a4 completion:(id)a5;
-- (void)systemAppIsInstallableOnPairedDevice:(id)a3 withBundleID:(id)a4 completion:(id)a5;
-- (void)updateInstallProgressForApplication:(id)a3 progress:(double)a4 phase:(unint64_t)a5;
-- (void)updatePreferencesForApplicationWithIdentifier:(id)a3 preferences:(id)a4 writingToPreferencesLocation:(unint64_t)a5 forPairedDevice:(id)a6 options:(unint64_t)a7 completion:(id)a8;
-- (void)updatedInstallStateForApplicationsWithInfo:(id)a3;
+- (void)removabilityDidChangeForApplications:(id)applications onDeviceWithPairingID:(id)d;
+- (void)removeApplication:(id)application fromPairedDevice:(id)device completion:(id)completion;
+- (void)removeApplication:(id)application fromPairedDevice:(id)device completionWithError:(id)error;
+- (void)removeObserver:(id)observer;
+- (void)removeProvisioningProfileWithID:(id)d fromPairedDevice:(id)device completion:(id)completion;
+- (void)retryPendingAppInstallationsForPairedDevice:(id)device;
+- (void)setAlwaysInstall:(id)install;
+- (void)setAlwaysInstall:(id)install forDevice:(id)device;
+- (void)setUpdatePendingForCompanionApp:(id)app completion:(id)completion;
+- (void)systemAppIsInstallableOnDeviceWithPairingID:(id)d withBundleID:(id)iD completion:(id)completion;
+- (void)systemAppIsInstallableOnPairedDevice:(id)device withBundleID:(id)d completion:(id)completion;
+- (void)updateInstallProgressForApplication:(id)application progress:(double)progress phase:(unint64_t)phase;
+- (void)updatePreferencesForApplicationWithIdentifier:(id)identifier preferences:(id)preferences writingToPreferencesLocation:(unint64_t)location forPairedDevice:(id)device options:(unint64_t)options completion:(id)completion;
+- (void)updatedInstallStateForApplicationsWithInfo:(id)info;
 @end
 
 @implementation ACXDeviceConnection
@@ -126,7 +126,7 @@
   block[1] = 3221225472;
   block[2] = __45__ACXDeviceConnection_sharedDeviceConnection__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedDeviceConnection_onceToken != -1)
   {
     dispatch_once(&sharedDeviceConnection_onceToken, block);
@@ -152,9 +152,9 @@ uint64_t __45__ACXDeviceConnection_sharedDeviceConnection__block_invoke(uint64_t
   v2 = [(ACXDeviceConnection *)&v12 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsHashTable;
 
     v5 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v6 = dispatch_queue_create("com.apple.appconduit.DeviceConnection.internal", v5);
@@ -172,8 +172,8 @@ uint64_t __45__ACXDeviceConnection_sharedDeviceConnection__block_invoke(uint64_t
 
 - (void)_onQueue_beginMonitoringNanoRegistryDeviceState
 {
-  v3 = [(ACXDeviceConnection *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   if (![(ACXDeviceConnection *)self monitoringForDeviceChanges])
   {
@@ -182,17 +182,17 @@ uint64_t __45__ACXDeviceConnection_sharedDeviceConnection__block_invoke(uint64_t
       MOLogWrite();
     }
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 addObserver:self selector:sel__deviceDidBecomeActiveNotification_ name:*MEMORY[0x277D2BC48] object:0];
-    [v4 addObserver:self selector:sel__deviceDidPairNotification_ name:*MEMORY[0x277D2BC68] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__deviceDidBecomeActiveNotification_ name:*MEMORY[0x277D2BC48] object:0];
+    [defaultCenter addObserver:self selector:sel__deviceDidPairNotification_ name:*MEMORY[0x277D2BC68] object:0];
     [(ACXDeviceConnection *)self setMonitoringForDeviceChanges:1];
   }
 }
 
 - (void)_onQueue_endMonitoringNanoRegistryDeviceState
 {
-  v3 = [(ACXDeviceConnection *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   if ([(ACXDeviceConnection *)self monitoringForDeviceChanges])
   {
@@ -201,25 +201,25 @@ uint64_t __45__ACXDeviceConnection_sharedDeviceConnection__block_invoke(uint64_t
       MOLogWrite();
     }
 
-    v4 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v4 removeObserver:self name:*MEMORY[0x277D2BC48] object:0];
-    [v4 removeObserver:self name:*MEMORY[0x277D2BC68] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D2BC48] object:0];
+    [defaultCenter removeObserver:self name:*MEMORY[0x277D2BC68] object:0];
     [(ACXDeviceConnection *)self setMonitoringForDeviceChanges:0];
   }
 }
 
-- (void)_deviceDidBecomeActiveNotification:(id)a3
+- (void)_deviceDidBecomeActiveNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(ACXDeviceConnection *)self internalQueue];
+  notificationCopy = notification;
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __58__ACXDeviceConnection__deviceDidBecomeActiveNotification___block_invoke;
   v7[3] = &unk_278C8D358;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 uint64_t __58__ACXDeviceConnection__deviceDidBecomeActiveNotification___block_invoke(uint64_t a1)
@@ -236,18 +236,18 @@ uint64_t __58__ACXDeviceConnection__deviceDidBecomeActiveNotification___block_in
   return [v3 _onQueue_reEstablishObserverConnectionIfNeeded];
 }
 
-- (void)_deviceDidPairNotification:(id)a3
+- (void)_deviceDidPairNotification:(id)notification
 {
-  v4 = a3;
-  v5 = [(ACXDeviceConnection *)self internalQueue];
+  notificationCopy = notification;
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__ACXDeviceConnection__deviceDidPairNotification___block_invoke;
   v7[3] = &unk_278C8D358;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = notificationCopy;
+  selfCopy = self;
+  v6 = notificationCopy;
+  dispatch_async(internalQueue, v7);
 }
 
 uint64_t __50__ACXDeviceConnection__deviceDidPairNotification___block_invoke(uint64_t a1)
@@ -264,11 +264,11 @@ uint64_t __50__ACXDeviceConnection__deviceDidPairNotification___block_invoke(uin
   return [v3 _onQueue_reEstablishObserverConnectionIfNeeded];
 }
 
-- (BOOL)_onQueue_createXPCConnectionIfNecessary:(id *)a3
+- (BOOL)_onQueue_createXPCConnectionIfNecessary:(id *)necessary
 {
-  v5 = [(ACXDeviceConnection *)self xpcConnection];
+  xpcConnection = [(ACXDeviceConnection *)self xpcConnection];
 
-  if (v5)
+  if (xpcConnection)
   {
     return 1;
   }
@@ -309,21 +309,21 @@ uint64_t __50__ACXDeviceConnection__deviceDidPairNotification___block_invoke(uin
 LABEL_12:
   if ((gTestModeEnabled & 1) == 0)
   {
-    v11 = [MEMORY[0x277D2BCF8] sharedInstance];
-    v12 = [v11 getActivePairedDevice];
+    mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+    getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-    if (!v12)
+    if (!getActivePairedDevice)
     {
       v29 = _CreateAndLogError("[ACXDeviceConnection _onQueue_createXPCConnectionIfNecessary:]", 130, @"ACXErrorDomain", 54, 0, 0, @"There is no active paired watch.", v13, v33);
       v27 = v29;
-      if (a3)
+      if (necessary)
       {
         v30 = v29;
-        *a3 = v27;
+        *necessary = v27;
       }
 
-      v31 = [(ACXDeviceConnection *)self observers];
-      v32 = [v31 count];
+      observers = [(ACXDeviceConnection *)self observers];
+      v32 = [observers count];
 
       if (v32)
       {
@@ -339,20 +339,20 @@ LABEL_12:
   v14 = [objc_alloc(MEMORY[0x277CCAE80]) initWithMachServiceName:@"com.apple.appconduitd.device-connection" options:4096];
   [(ACXDeviceConnection *)self setXpcConnection:v14];
 
-  v15 = [(ACXDeviceConnection *)self xpcConnection];
+  xpcConnection2 = [(ACXDeviceConnection *)self xpcConnection];
 
-  if (v15)
+  if (xpcConnection2)
   {
     v17 = +[ACXDeviceConnectionProtocolInterface interface];
-    v18 = [(ACXDeviceConnection *)self xpcConnection];
-    [v18 setRemoteObjectInterface:v17];
+    xpcConnection3 = [(ACXDeviceConnection *)self xpcConnection];
+    [xpcConnection3 setRemoteObjectInterface:v17];
 
     v19 = +[ACXDeviceConnectionDelegateProtocolInterface interface];
-    v20 = [(ACXDeviceConnection *)self xpcConnection];
-    [v20 setExportedInterface:v19];
+    xpcConnection4 = [(ACXDeviceConnection *)self xpcConnection];
+    [xpcConnection4 setExportedInterface:v19];
 
-    v21 = [(ACXDeviceConnection *)self xpcConnection];
-    [v21 setExportedObject:self];
+    xpcConnection5 = [(ACXDeviceConnection *)self xpcConnection];
+    [xpcConnection5 setExportedObject:self];
 
     objc_initWeak(&location, self);
     v36[0] = MEMORY[0x277D85DD0];
@@ -360,19 +360,19 @@ LABEL_12:
     v36[2] = __63__ACXDeviceConnection__onQueue_createXPCConnectionIfNecessary___block_invoke;
     v36[3] = &unk_278C8D3A8;
     objc_copyWeak(&v37, &location);
-    v22 = [(ACXDeviceConnection *)self xpcConnection];
-    [v22 setInterruptionHandler:v36];
+    xpcConnection6 = [(ACXDeviceConnection *)self xpcConnection];
+    [xpcConnection6 setInterruptionHandler:v36];
 
     v34[0] = MEMORY[0x277D85DD0];
     v34[1] = 3221225472;
     v34[2] = __63__ACXDeviceConnection__onQueue_createXPCConnectionIfNecessary___block_invoke_3;
     v34[3] = &unk_278C8D3A8;
     objc_copyWeak(&v35, &location);
-    v23 = [(ACXDeviceConnection *)self xpcConnection];
-    [v23 setInvalidationHandler:v34];
+    xpcConnection7 = [(ACXDeviceConnection *)self xpcConnection];
+    [xpcConnection7 setInvalidationHandler:v34];
 
-    v24 = [(ACXDeviceConnection *)self xpcConnection];
-    [v24 resume];
+    xpcConnection8 = [(ACXDeviceConnection *)self xpcConnection];
+    [xpcConnection8 resume];
 
     [(ACXDeviceConnection *)self _onQueue_enableObserversIfNeededForAValidXPCConnection];
     objc_destroyWeak(&v35);
@@ -383,10 +383,10 @@ LABEL_12:
 
   v26 = _CreateAndLogError("[ACXDeviceConnection _onQueue_createXPCConnectionIfNecessary:]", 148, @"ACXErrorDomain", 1, 0, 0, @"Failed to create NSXPCConnection for service %@", v16, @"com.apple.appconduitd.device-connection");
   v27 = v26;
-  if (a3)
+  if (necessary)
   {
     v28 = v26;
-    *a3 = v27;
+    *necessary = v27;
   }
 
 LABEL_24:
@@ -431,8 +431,8 @@ void __63__ACXDeviceConnection__onQueue_createXPCConnectionIfNecessary___block_i
 
 - (BOOL)_onQueue_enableObserversIfNeededForAValidXPCConnection
 {
-  v3 = [(ACXDeviceConnection *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v11 = 0;
   v12 = &v11;
@@ -440,19 +440,19 @@ void __63__ACXDeviceConnection__onQueue_createXPCConnectionIfNecessary___block_i
   v14 = __Block_byref_object_copy_;
   v15 = __Block_byref_object_dispose_;
   v16 = 0;
-  v4 = [(ACXDeviceConnection *)self observers];
-  v5 = [v4 count];
+  observers = [(ACXDeviceConnection *)self observers];
+  v5 = [observers count];
 
   if (![(ACXDeviceConnection *)self observersEnabled])
   {
-    v6 = [(ACXDeviceConnection *)self xpcConnection];
+    xpcConnection = [(ACXDeviceConnection *)self xpcConnection];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __77__ACXDeviceConnection__onQueue_enableObserversIfNeededForAValidXPCConnection__block_invoke;
     v10[3] = &unk_278C8D3D0;
     v10[4] = &v11;
     v10[5] = v5;
-    v7 = [v6 synchronousRemoteObjectProxyWithErrorHandler:v10];
+    v7 = [xpcConnection synchronousRemoteObjectProxyWithErrorHandler:v10];
     [v7 enableObservers];
 
     if (!v12[5])
@@ -480,8 +480,8 @@ void __77__ACXDeviceConnection__onQueue_enableObserversIfNeededForAValidXPCConne
 
 - (void)_onQueue_reEstablishObserverConnectionIfNeeded
 {
-  v3 = [(ACXDeviceConnection *)self internalQueue];
-  dispatch_assert_queue_V2(v3);
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
+  dispatch_assert_queue_V2(internalQueue);
 
   v6 = 0;
   v4 = [(ACXDeviceConnection *)self _onQueue_createXPCConnectionIfNecessary:&v6];
@@ -499,13 +499,13 @@ void __77__ACXDeviceConnection__onQueue_enableObserversIfNeededForAValidXPCConne
 
 - (void)_invalidateXPCConnection
 {
-  v3 = [(ACXDeviceConnection *)self internalQueue];
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __47__ACXDeviceConnection__invalidateXPCConnection__block_invoke;
   block[3] = &unk_278C8D380;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(internalQueue, block);
 }
 
 void __47__ACXDeviceConnection__invalidateXPCConnection__block_invoke(uint64_t a1)
@@ -559,9 +559,9 @@ uint64_t __47__ACXDeviceConnection__invalidateXPCConnection__block_invoke_2(uint
   return [v3 setObserverReEstablishTimer:0];
 }
 
-- (id)_proxyWithErrorHandler:(id)a3
+- (id)_proxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -574,7 +574,7 @@ uint64_t __47__ACXDeviceConnection__invalidateXPCConnection__block_invoke_2(uint
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v5 = [(ACXDeviceConnection *)self internalQueue];
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __46__ACXDeviceConnection__proxyWithErrorHandler___block_invoke;
@@ -582,9 +582,9 @@ uint64_t __47__ACXDeviceConnection__invalidateXPCConnection__block_invoke_2(uint
   v9[4] = self;
   v11 = &v13;
   v12 = &v19;
-  v6 = v4;
+  v6 = handlerCopy;
   v10 = v6;
-  dispatch_sync(v5, v9);
+  dispatch_sync(internalQueue, v9);
 
   if (v14[5])
   {
@@ -624,9 +624,9 @@ void __46__ACXDeviceConnection__proxyWithErrorHandler___block_invoke(uint64_t a1
   }
 }
 
-- (id)_synchronousProxyWithErrorHandler:(id)a3
+- (id)_synchronousProxyWithErrorHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -639,7 +639,7 @@ void __46__ACXDeviceConnection__proxyWithErrorHandler___block_invoke(uint64_t a1
   v16 = __Block_byref_object_copy_;
   v17 = __Block_byref_object_dispose_;
   v18 = 0;
-  v5 = [(ACXDeviceConnection *)self internalQueue];
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __57__ACXDeviceConnection__synchronousProxyWithErrorHandler___block_invoke;
@@ -647,9 +647,9 @@ void __46__ACXDeviceConnection__proxyWithErrorHandler___block_invoke(uint64_t a1
   v9[4] = self;
   v11 = &v13;
   v12 = &v19;
-  v6 = v4;
+  v6 = handlerCopy;
   v10 = v6;
-  dispatch_sync(v5, v9);
+  dispatch_sync(internalQueue, v9);
 
   if (v14[5])
   {
@@ -689,18 +689,18 @@ void __57__ACXDeviceConnection__synchronousProxyWithErrorHandler___block_invoke(
   }
 }
 
-- (void)updatedInstallStateForApplicationsWithInfo:(id)a3
+- (void)updatedInstallStateForApplicationsWithInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(ACXDeviceConnection *)self internalQueue];
+  infoCopy = info;
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __66__ACXDeviceConnection_updatedInstallStateForApplicationsWithInfo___block_invoke;
   v7[3] = &unk_278C8D358;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = infoCopy;
+  v6 = infoCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
 void __66__ACXDeviceConnection_updatedInstallStateForApplicationsWithInfo___block_invoke(uint64_t a1)
@@ -809,20 +809,20 @@ uint64_t __66__ACXDeviceConnection_updatedInstallStateForApplicationsWithInfo___
   return [v6 updateInstallStateForApplication:v5 installState:v7];
 }
 
-- (void)updateInstallProgressForApplication:(id)a3 progress:(double)a4 phase:(unint64_t)a5
+- (void)updateInstallProgressForApplication:(id)application progress:(double)progress phase:(unint64_t)phase
 {
-  v8 = a3;
-  v9 = [(ACXDeviceConnection *)self internalQueue];
+  applicationCopy = application;
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __74__ACXDeviceConnection_updateInstallProgressForApplication_progress_phase___block_invoke;
   v11[3] = &unk_278C8D448;
-  v12 = v8;
-  v13 = a5;
-  v14 = a4;
+  v12 = applicationCopy;
+  phaseCopy = phase;
+  progressCopy = progress;
   v11[4] = self;
-  v10 = v8;
-  dispatch_sync(v9, v11);
+  v10 = applicationCopy;
+  dispatch_sync(internalQueue, v11);
 }
 
 void __74__ACXDeviceConnection_updateInstallProgressForApplication_progress_phase___block_invoke(uint64_t a1)
@@ -907,21 +907,21 @@ uint64_t __74__ACXDeviceConnection_updateInstallProgressForApplication_progress_
   return [v6 updateInstallProgressForApplication:v7 progress:v2 installPhase:v8];
 }
 
-- (void)applicationsInstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsInstalled:(id)installed onDeviceWithPairingID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACXDeviceConnection *)self internalQueue];
+  installedCopy = installed;
+  dCopy = d;
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __67__ACXDeviceConnection_applicationsInstalled_onDeviceWithPairingID___block_invoke;
   block[3] = &unk_278C8D420;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = installedCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = installedCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 void __67__ACXDeviceConnection_applicationsInstalled_onDeviceWithPairingID___block_invoke(id *a1)
@@ -994,21 +994,21 @@ uint64_t __67__ACXDeviceConnection_applicationsInstalled_onDeviceWithPairingID__
   return [v6 applicationsInstalled:v7 onDeviceWithPairingID:v8];
 }
 
-- (void)applicationsUpdated:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsUpdated:(id)updated onDeviceWithPairingID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACXDeviceConnection *)self internalQueue];
+  updatedCopy = updated;
+  dCopy = d;
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__ACXDeviceConnection_applicationsUpdated_onDeviceWithPairingID___block_invoke;
   block[3] = &unk_278C8D420;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = updatedCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = updatedCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 void __65__ACXDeviceConnection_applicationsUpdated_onDeviceWithPairingID___block_invoke(id *a1)
@@ -1081,21 +1081,21 @@ uint64_t __65__ACXDeviceConnection_applicationsUpdated_onDeviceWithPairingID___b
   return [v6 applicationsUpdated:v7 onDeviceWithPairingID:v8];
 }
 
-- (void)applicationsUninstalled:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)applicationsUninstalled:(id)uninstalled onDeviceWithPairingID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACXDeviceConnection *)self internalQueue];
+  uninstalledCopy = uninstalled;
+  dCopy = d;
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__ACXDeviceConnection_applicationsUninstalled_onDeviceWithPairingID___block_invoke;
   block[3] = &unk_278C8D420;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = uninstalledCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = uninstalledCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 void __69__ACXDeviceConnection_applicationsUninstalled_onDeviceWithPairingID___block_invoke(id *a1)
@@ -1168,18 +1168,18 @@ uint64_t __69__ACXDeviceConnection_applicationsUninstalled_onDeviceWithPairingID
   return [v6 applicationsUninstalled:v7 onDeviceWithPairingID:v8];
 }
 
-- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)a3
+- (void)applicationDatabaseResyncedForDeviceWithPairingID:(id)d
 {
-  v4 = a3;
-  v5 = [(ACXDeviceConnection *)self internalQueue];
+  dCopy = d;
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __73__ACXDeviceConnection_applicationDatabaseResyncedForDeviceWithPairingID___block_invoke;
   v7[3] = &unk_278C8D358;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = dCopy;
+  v6 = dCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
 void __73__ACXDeviceConnection_applicationDatabaseResyncedForDeviceWithPairingID___block_invoke(uint64_t a1)
@@ -1249,21 +1249,21 @@ uint64_t __73__ACXDeviceConnection_applicationDatabaseResyncedForDeviceWithPairi
   return [v5 applicationDatabaseResyncedForDeviceWithPairingID:v6];
 }
 
-- (void)removabilityDidChangeForApplications:(id)a3 onDeviceWithPairingID:(id)a4
+- (void)removabilityDidChangeForApplications:(id)applications onDeviceWithPairingID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ACXDeviceConnection *)self internalQueue];
+  applicationsCopy = applications;
+  dCopy = d;
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __82__ACXDeviceConnection_removabilityDidChangeForApplications_onDeviceWithPairingID___block_invoke;
   block[3] = &unk_278C8D420;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_sync(v8, block);
+  v12 = applicationsCopy;
+  v13 = dCopy;
+  v9 = dCopy;
+  v10 = applicationsCopy;
+  dispatch_sync(internalQueue, block);
 }
 
 void __82__ACXDeviceConnection_removabilityDidChangeForApplications_onDeviceWithPairingID___block_invoke(id *a1)
@@ -1338,13 +1338,13 @@ uint64_t __82__ACXDeviceConnection_removabilityDidChangeForApplications_onDevice
 
 - (void)observerRegistrationSuccessful
 {
-  v3 = [(ACXDeviceConnection *)self internalQueue];
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__ACXDeviceConnection_observerRegistrationSuccessful__block_invoke;
   block[3] = &unk_278C8D380;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(internalQueue, block);
 }
 
 void __53__ACXDeviceConnection_observerRegistrationSuccessful__block_invoke(uint64_t a1)
@@ -1419,21 +1419,21 @@ uint64_t __53__ACXDeviceConnection_observerRegistrationSuccessful__block_invoke_
   }
 
   v3 = ACXCopyLogDirectory();
-  [a1 _removeFilesAtURL:v3];
+  [self _removeFilesAtURL:v3];
 
   v4 = ACXCopyDataDirectory();
-  [a1 _removeFilesAtURL:v4];
+  [self _removeFilesAtURL:v4];
 
   v5 = ACXCopyStagingDirectoryPath();
-  [a1 _removeFilesAtURL:v5];
+  [self _removeFilesAtURL:v5];
 }
 
-+ (void)_removeFilesAtURL:(id)a3
++ (void)_removeFilesAtURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v8 = 0;
-  v5 = [v4 removeItemAtURL:v3 error:&v8];
+  v5 = [defaultManager removeItemAtURL:lCopy error:&v8];
   v6 = v8;
 
   if (v5)
@@ -1441,7 +1441,7 @@ uint64_t __53__ACXDeviceConnection_observerRegistrationSuccessful__block_invoke_
     if (!gLogHandle || *(gLogHandle + 44) >= 3)
     {
 LABEL_7:
-      v7 = [v3 path];
+      path = [lCopy path];
       MOLogWrite();
     }
   }
@@ -1452,18 +1452,18 @@ LABEL_7:
   }
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ACXDeviceConnection *)self internalQueue];
+  observerCopy = observer;
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __35__ACXDeviceConnection_addObserver___block_invoke;
   v7[3] = &unk_278C8D358;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
 void __35__ACXDeviceConnection_addObserver___block_invoke(uint64_t a1)
@@ -1508,18 +1508,18 @@ uint64_t __35__ACXDeviceConnection_addObserver___block_invoke_2(uint64_t a1, voi
   return MEMORY[0x2821F96F8](v3, v2);
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(ACXDeviceConnection *)self internalQueue];
+  observerCopy = observer;
+  internalQueue = [(ACXDeviceConnection *)self internalQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__ACXDeviceConnection_removeObserver___block_invoke;
   v7[3] = &unk_278C8D358;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_sync(v5, v7);
+  v8 = observerCopy;
+  v6 = observerCopy;
+  dispatch_sync(internalQueue, v7);
 }
 
 void __38__ACXDeviceConnection_removeObserver___block_invoke(uint64_t a1)
@@ -1562,118 +1562,118 @@ uint64_t __38__ACXDeviceConnection_removeObserver___block_invoke_2(uint64_t a1, 
   return MEMORY[0x2821F96F8](v3, v2);
 }
 
-- (void)fetchInstalledApplicationsForPairedDevice:(id)a3 completion:(id)a4
+- (void)fetchInstalledApplicationsForPairedDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __76__ACXDeviceConnection_fetchInstalledApplicationsForPairedDevice_completion___block_invoke;
   v11[3] = &unk_278C8D4B0;
-  v12 = v6;
-  v7 = v6;
-  v8 = a3;
+  v12 = completionCopy;
+  v7 = completionCopy;
+  deviceCopy = device;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v11];
-  v10 = [v8 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v10 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
 
   [v9 fetchInstalledApplicationsForDeviceWithPairingID:v10 completion:v7];
 }
 
-- (void)fetchInstalledComplicationsForPairedDevice:(id)a3 completion:(id)a4
+- (void)fetchInstalledComplicationsForPairedDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __77__ACXDeviceConnection_fetchInstalledComplicationsForPairedDevice_completion___block_invoke;
   v11[3] = &unk_278C8D4B0;
-  v12 = v6;
-  v7 = v6;
-  v8 = a3;
+  v12 = completionCopy;
+  v7 = completionCopy;
+  deviceCopy = device;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v11];
-  v10 = [v8 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v10 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
 
   [v9 fetchInstalledComplicationsForDeviceWithPairingID:v10 completion:v7];
 }
 
-- (void)activeComplicationsForPairedDevice:(id)a3 completion:(id)a4
+- (void)activeComplicationsForPairedDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __69__ACXDeviceConnection_activeComplicationsForPairedDevice_completion___block_invoke;
   v11[3] = &unk_278C8D4B0;
-  v12 = v6;
-  v7 = v6;
-  v8 = a3;
+  v12 = completionCopy;
+  v7 = completionCopy;
+  deviceCopy = device;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v11];
-  v10 = [v8 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v10 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
 
   [v9 activeComplicationsForDeviceWithPairingID:v10 completion:v7];
 }
 
-- (void)fetchInstalledCompatibleApplicationsWithDevice:(id)a3 withErrorCompletion:(id)a4
+- (void)fetchInstalledCompatibleApplicationsWithDevice:(id)device withErrorCompletion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __90__ACXDeviceConnection_fetchInstalledCompatibleApplicationsWithDevice_withErrorCompletion___block_invoke;
   v11[3] = &unk_278C8D4B0;
-  v12 = v6;
-  v7 = v6;
-  v8 = a3;
+  v12 = completionCopy;
+  v7 = completionCopy;
+  deviceCopy = device;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v11];
-  v10 = [v8 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v10 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
 
   [v9 fetchInstalledCompatibleApplicationsForDeviceWithPairingID:v10 completion:v7];
 }
 
-- (void)fetchApplicationWithContainingApplicationBundleID:(id)a3 completion:(id)a4
+- (void)fetchApplicationWithContainingApplicationBundleID:(id)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __84__ACXDeviceConnection_fetchApplicationWithContainingApplicationBundleID_completion___block_invoke;
   v10[3] = &unk_278C8D4B0;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  dCopy = d;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v10];
-  [v9 fetchApplicationWithContainingApplicationBundleID:v8 completion:v7];
+  [v9 fetchApplicationWithContainingApplicationBundleID:dCopy completion:v7];
 }
 
-- (void)fetchInfoForApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 completion:(id)a5
+- (void)fetchInfoForApplicationWithBundleID:(id)d forPairedDevice:(id)device completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __86__ACXDeviceConnection_fetchInfoForApplicationWithBundleID_forPairedDevice_completion___block_invoke;
   v14[3] = &unk_278C8D4B0;
-  v15 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v15 = completionCopy;
+  v9 = completionCopy;
+  deviceCopy = device;
+  dCopy = d;
   v12 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v14];
-  v13 = [v10 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v13 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
 
-  [v12 fetchInfoForApplicationWithBundleID:v11 forDeviceWithPairingID:v13 completion:v9];
+  [v12 fetchInfoForApplicationWithBundleID:dCopy forDeviceWithPairingID:v13 completion:v9];
 }
 
-- (void)fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:(id)a3 completion:(id)a4
+- (void)fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __97__ACXDeviceConnection_fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier_completion___block_invoke;
   v10[3] = &unk_278C8D4B0;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  identifierCopy = identifier;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v10];
-  [v9 fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:v8 completion:v7];
+  [v9 fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:identifierCopy completion:v7];
 }
 
-- (id)watchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:(id)a3 error:(id *)a4
+- (id)watchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:(id)identifier error:(id *)error
 {
-  v6 = a3;
+  identifierCopy = identifier;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1698,12 +1698,12 @@ uint64_t __38__ACXDeviceConnection_removeObserver___block_invoke_2(uint64_t a1, 
   v11[3] = &unk_278C8D500;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v7 fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:v6 completion:v11];
+  [v7 fetchWatchAppBundleURLWithinCompanionAppWithWatchAppIdentifier:identifierCopy completion:v11];
 
   v8 = v20[5];
-  if (a4 && !v8)
+  if (error && !v8)
   {
-    *a4 = v14[5];
+    *error = v14[5];
     v8 = v20[5];
   }
 
@@ -1750,23 +1750,23 @@ void __87__ACXDeviceConnection_watchAppBundleURLWithinCompanionAppWithWatchAppId
   *(v8 + 40) = v9;
 }
 
-- (void)fetchWatchAppBundleIDForCompanionAppBundleID:(id)a3 completion:(id)a4
+- (void)fetchWatchAppBundleIDForCompanionAppBundleID:(id)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __79__ACXDeviceConnection_fetchWatchAppBundleIDForCompanionAppBundleID_completion___block_invoke;
   v10[3] = &unk_278C8D4B0;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  dCopy = d;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v10];
-  [v9 fetchWatchAppBundleIDForCompanionAppBundleID:v8 completion:v7];
+  [v9 fetchWatchAppBundleIDForCompanionAppBundleID:dCopy completion:v7];
 }
 
-- (id)watchAppBundleIDForCompanionAppBundleID:(id)a3 error:(id *)a4
+- (id)watchAppBundleIDForCompanionAppBundleID:(id)d error:(id *)error
 {
-  v6 = a3;
+  dCopy = d;
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
@@ -1791,12 +1791,12 @@ void __87__ACXDeviceConnection_watchAppBundleURLWithinCompanionAppWithWatchAppId
   v11[3] = &unk_278C8D528;
   v11[4] = &v13;
   v11[5] = &v19;
-  [v7 fetchWatchAppBundleIDForCompanionAppBundleID:v6 completion:v11];
+  [v7 fetchWatchAppBundleIDForCompanionAppBundleID:dCopy completion:v11];
 
   v8 = v20[5];
-  if (a4 && !v8)
+  if (error && !v8)
   {
-    *a4 = v14[5];
+    *error = v14[5];
     v8 = v20[5];
   }
 
@@ -1883,11 +1883,11 @@ uint64_t __49__ACXDeviceConnection_cancelPendingInstallations__block_invoke(uint
   return MEMORY[0x2821F96F8](v3, v2);
 }
 
-- (void)retryPendingAppInstallationsForPairedDevice:(id)a3
+- (void)retryPendingAppInstallationsForPairedDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v6 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:&__block_literal_global_109];
-  v5 = [v4 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v5 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
 
   [v6 retryPendingAppInstallationsOnDeviceWithPairingID:v5];
 }
@@ -1906,21 +1906,21 @@ uint64_t __67__ACXDeviceConnection_retryPendingAppInstallationsForPairedDevice__
   return MEMORY[0x2821F96F8](v3, v2);
 }
 
-- (void)installApplication:(id)a3 onPairedDevice:(id)a4 completion:(id)a5
+- (void)installApplication:(id)application onPairedDevice:(id)device completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __68__ACXDeviceConnection_installApplication_onPairedDevice_completion___block_invoke;
   v14[3] = &unk_278C8D4B0;
-  v15 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v15 = completionCopy;
+  v9 = completionCopy;
+  deviceCopy = device;
+  applicationCopy = application;
   v12 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v14];
-  v13 = [v10 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v13 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
 
-  [v12 installApplication:v11 withProvisioningProfileInfo:0 forTestFlight:0 onDeviceWithPairingID:v13 completion:v9];
+  [v12 installApplication:applicationCopy withProvisioningProfileInfo:0 forTestFlight:0 onDeviceWithPairingID:v13 completion:v9];
 }
 
 void __68__ACXDeviceConnection_installApplication_onPairedDevice_completion___block_invoke(uint64_t a1, void *a2)
@@ -1934,10 +1934,10 @@ void __68__ACXDeviceConnection_installApplication_onPairedDevice_completion___bl
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)installApplication:(id)a3 onPairedDevice:(id)a4 installationStatus:(int64_t *)a5 error:(id *)a6
+- (BOOL)installApplication:(id)application onPairedDevice:(id)device installationStatus:(int64_t *)status error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  applicationCopy = application;
+  deviceCopy = device;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -1954,29 +1954,29 @@ void __68__ACXDeviceConnection_installApplication_onPairedDevice_completion___bl
   v19[3] = &unk_278C8D4D8;
   v19[4] = &v20;
   v12 = [(ACXDeviceConnection *)self _synchronousProxyWithErrorHandler:v19];
-  v13 = [v11 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v13 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __82__ACXDeviceConnection_installApplication_onPairedDevice_installationStatus_error___block_invoke_2;
   v18[3] = &unk_278C8D550;
   v18[4] = &v20;
   v18[5] = &v26;
-  [v12 installApplication:v10 withProvisioningProfileInfo:0 forTestFlight:0 onDeviceWithPairingID:v13 completion:v18];
+  [v12 installApplication:applicationCopy withProvisioningProfileInfo:0 forTestFlight:0 onDeviceWithPairingID:v13 completion:v18];
 
   v14 = v21;
   v15 = v21[5];
   if (v15)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = v15;
+      *error = v15;
       v14 = v21;
     }
   }
 
-  else if (a5)
+  else if (status)
   {
-    *a5 = v27[3];
+    *status = v27[3];
   }
 
   v16 = v14[5] == 0;
@@ -2015,11 +2015,11 @@ void __82__ACXDeviceConnection_installApplication_onPairedDevice_installationSta
   }
 }
 
-- (id)_validateAndExtractProfiles:(id)a3 error:(id *)a4
+- (id)_validateAndExtractProfiles:(id)profiles error:(id *)error
 {
   v33 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  profilesCopy = profiles;
+  if (!profilesCopy)
   {
     v17 = objc_opt_new();
     v10 = 0;
@@ -2027,13 +2027,13 @@ void __82__ACXDeviceConnection_installApplication_onPairedDevice_installationSta
   }
 
   objc_opt_class();
-  if ((ACXArrayContainsOnlyClass(v5) & 1) == 0)
+  if ((ACXArrayContainsOnlyClass(profilesCopy) & 1) == 0)
   {
     v10 = _CreateAndLogError("[ACXDeviceConnection _validateAndExtractProfiles:error:]", 693, @"ACXErrorDomain", 20, 0, 0, @"Profiles array did not contain only NSURL objects", v6, v24);
     v17 = 0;
 LABEL_14:
     v7 = 0;
-    if (!a4)
+    if (!error)
     {
       goto LABEL_22;
     }
@@ -2046,8 +2046,8 @@ LABEL_14:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v25 = v5;
-  obj = v5;
+  v25 = profilesCopy;
+  obj = profilesCopy;
   v8 = [obj countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v8)
   {
@@ -2066,22 +2066,22 @@ LABEL_14:
         }
 
         v14 = *(*(&v28 + 1) + 8 * v12);
-        v15 = [v14 lastPathComponent];
+        lastPathComponent = [v14 lastPathComponent];
         v27 = v13;
         v16 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v14 options:3 error:&v27];
         v10 = v27;
 
         if (!v16)
         {
-          v18 = [v14 path];
-          v20 = _CreateAndLogError("[ACXDeviceConnection _validateAndExtractProfiles:error:]", 702, @"ACXErrorDomain", 21, v10, 0, @"Failed to read profile at %@ : %@", v19, v18);
+          path = [v14 path];
+          v20 = _CreateAndLogError("[ACXDeviceConnection _validateAndExtractProfiles:error:]", 702, @"ACXErrorDomain", 21, v10, 0, @"Failed to read profile at %@ : %@", v19, path);
 
           v17 = 0;
           v10 = v20;
           goto LABEL_19;
         }
 
-        [v7 setObject:v16 forKeyedSubscript:v15];
+        [v7 setObject:v16 forKeyedSubscript:lastPathComponent];
 
         ++v12;
         v13 = v10;
@@ -2106,14 +2106,14 @@ LABEL_14:
   v17 = v7;
   v7 = v17;
 LABEL_19:
-  v5 = v25;
-  if (a4)
+  profilesCopy = v25;
+  if (error)
   {
 LABEL_20:
     if (!v17)
     {
       v21 = v10;
-      *a4 = v10;
+      *error = v10;
     }
   }
 
@@ -2124,13 +2124,13 @@ LABEL_22:
   return v17;
 }
 
-- (void)installApplication:(id)a3 withProvisioningProfiles:(id)a4 onPairedDevice:(id)a5 completion:(id)a6
+- (void)installApplication:(id)application withProvisioningProfiles:(id)profiles onPairedDevice:(id)device completion:(id)completion
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
+  applicationCopy = application;
+  deviceCopy = device;
+  completionCopy = completion;
   v23 = 0;
-  v13 = [(ACXDeviceConnection *)self _validateAndExtractProfiles:a4 error:&v23];
+  v13 = [(ACXDeviceConnection *)self _validateAndExtractProfiles:profiles error:&v23];
   v14 = v23;
   if (v13)
   {
@@ -2138,16 +2138,16 @@ LABEL_22:
     v19 = 3221225472;
     v20 = __93__ACXDeviceConnection_installApplication_withProvisioningProfiles_onPairedDevice_completion___block_invoke;
     v21 = &unk_278C8D4B0;
-    v15 = v12;
+    v15 = completionCopy;
     v22 = v15;
     v16 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:&v18];
-    v17 = [v11 valueForProperty:{*MEMORY[0x277D2BBB8], v18, v19, v20, v21}];
-    [v16 installApplication:v10 withProvisioningProfileInfo:v13 forTestFlight:1 onDeviceWithPairingID:v17 completion:v15];
+    v17 = [deviceCopy valueForProperty:{*MEMORY[0x277D2BBB8], v18, v19, v20, v21}];
+    [v16 installApplication:applicationCopy withProvisioningProfileInfo:v13 forTestFlight:1 onDeviceWithPairingID:v17 completion:v15];
   }
 
   else
   {
-    (*(v12 + 2))(v12, 0, v14);
+    (*(completionCopy + 2))(completionCopy, 0, v14);
   }
 }
 
@@ -2162,11 +2162,11 @@ void __93__ACXDeviceConnection_installApplication_withProvisioningProfiles_onPai
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)installApplication:(id)a3 withProvisioningProfiles:(id)a4 onPairedDevice:(id)a5 installationStatus:(int64_t *)a6 error:(id *)a7
+- (BOOL)installApplication:(id)application withProvisioningProfiles:(id)profiles onPairedDevice:(id)device installationStatus:(int64_t *)status error:(id *)error
 {
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
+  applicationCopy = application;
+  profilesCopy = profiles;
+  deviceCopy = device;
   v31 = 0;
   v32 = &v31;
   v33 = 0x2020000000;
@@ -2178,7 +2178,7 @@ void __93__ACXDeviceConnection_installApplication_withProvisioningProfiles_onPai
   v29 = __Block_byref_object_dispose_;
   v30 = 0;
   obj = 0;
-  v15 = [(ACXDeviceConnection *)self _validateAndExtractProfiles:v13 error:&obj];
+  v15 = [(ACXDeviceConnection *)self _validateAndExtractProfiles:profilesCopy error:&obj];
   objc_storeStrong(&v30, obj);
   if (v15)
   {
@@ -2188,30 +2188,30 @@ void __93__ACXDeviceConnection_installApplication_withProvisioningProfiles_onPai
     v23[3] = &unk_278C8D4D8;
     v23[4] = &v25;
     v16 = [(ACXDeviceConnection *)self _synchronousProxyWithErrorHandler:v23];
-    v17 = [v14 valueForProperty:*MEMORY[0x277D2BBB8]];
+    v17 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
     v22[2] = __107__ACXDeviceConnection_installApplication_withProvisioningProfiles_onPairedDevice_installationStatus_error___block_invoke_2;
     v22[3] = &unk_278C8D550;
     v22[4] = &v25;
     v22[5] = &v31;
-    [v16 installApplication:v12 withProvisioningProfileInfo:v15 forTestFlight:1 onDeviceWithPairingID:v17 completion:v22];
+    [v16 installApplication:applicationCopy withProvisioningProfileInfo:v15 forTestFlight:1 onDeviceWithPairingID:v17 completion:v22];
   }
 
   v18 = v26;
   v19 = v26[5];
   if (v19)
   {
-    if (a7)
+    if (error)
     {
-      *a7 = v19;
+      *error = v19;
       v18 = v26;
     }
   }
 
-  else if (a6)
+  else if (status)
   {
-    *a6 = v32[3];
+    *status = v32[3];
   }
 
   v20 = v18[5] == 0;
@@ -2255,30 +2255,30 @@ uint64_t __107__ACXDeviceConnection_installApplication_withProvisioningProfiles_
   return MEMORY[0x2821F96F8](v8, v6);
 }
 
-- (void)installApplicationAtURL:(id)a3 onPairedDevice:(id)a4 installOptions:(id)a5 size:(int64_t)a6 completion:(id)a7
+- (void)installApplicationAtURL:(id)l onPairedDevice:(id)device installOptions:(id)options size:(int64_t)size completion:(id)completion
 {
   v12 = *MEMORY[0x277D2BBB8];
-  v13 = a7;
-  v14 = a5;
-  v15 = a3;
-  v16 = [a4 valueForProperty:v12];
-  [(ACXDeviceConnection *)self installApplicationAtURL:v15 onDeviceWithPairingID:v16 installOptions:v14 size:a6 completion:v13];
+  completionCopy = completion;
+  optionsCopy = options;
+  lCopy = l;
+  v16 = [device valueForProperty:v12];
+  [(ACXDeviceConnection *)self installApplicationAtURL:lCopy onDeviceWithPairingID:v16 installOptions:optionsCopy size:size completion:completionCopy];
 }
 
-- (void)installApplicationAtURL:(id)a3 onDeviceWithPairingID:(id)a4 installOptions:(id)a5 size:(int64_t)a6 completion:(id)a7
+- (void)installApplicationAtURL:(id)l onDeviceWithPairingID:(id)d installOptions:(id)options size:(int64_t)size completion:(id)completion
 {
-  v12 = a7;
+  completionCopy = completion;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __100__ACXDeviceConnection_installApplicationAtURL_onDeviceWithPairingID_installOptions_size_completion___block_invoke;
   v18[3] = &unk_278C8D4B0;
-  v19 = v12;
-  v13 = v12;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  optionsCopy = options;
+  dCopy = d;
+  lCopy = l;
   v17 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v18];
-  [v17 installApplicationAtURL:v16 onDeviceWithPairingID:v15 installOptions:v14 size:a6 completion:v13];
+  [v17 installApplicationAtURL:lCopy onDeviceWithPairingID:dCopy installOptions:optionsCopy size:size completion:v13];
 }
 
 void __100__ACXDeviceConnection_installApplicationAtURL_onDeviceWithPairingID_installOptions_size_completion___block_invoke(uint64_t a1, void *a2)
@@ -2292,22 +2292,22 @@ void __100__ACXDeviceConnection_installApplicationAtURL_onDeviceWithPairingID_in
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)installApplicationAtURL:(id)a3 onPairedDevice:(id)a4 installOptions:(id)a5 size:(int64_t)a6 installationStatus:(int64_t *)a7 error:(id *)a8
+- (BOOL)installApplicationAtURL:(id)l onPairedDevice:(id)device installOptions:(id)options size:(int64_t)size installationStatus:(int64_t *)status error:(id *)error
 {
   v14 = *MEMORY[0x277D2BBB8];
-  v15 = a5;
-  v16 = a3;
-  v17 = [a4 valueForProperty:v14];
-  LOBYTE(a8) = [(ACXDeviceConnection *)self installApplicationAtURL:v16 onDeviceWithPairingID:v17 installOptions:v15 size:a6 installationStatus:a7 error:a8];
+  optionsCopy = options;
+  lCopy = l;
+  v17 = [device valueForProperty:v14];
+  LOBYTE(error) = [(ACXDeviceConnection *)self installApplicationAtURL:lCopy onDeviceWithPairingID:v17 installOptions:optionsCopy size:size installationStatus:status error:error];
 
-  return a8;
+  return error;
 }
 
-- (BOOL)installApplicationAtURL:(id)a3 onDeviceWithPairingID:(id)a4 installOptions:(id)a5 size:(int64_t)a6 installationStatus:(int64_t *)a7 error:(id *)a8
+- (BOOL)installApplicationAtURL:(id)l onDeviceWithPairingID:(id)d installOptions:(id)options size:(int64_t)size installationStatus:(int64_t *)status error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
+  lCopy = l;
+  dCopy = d;
+  optionsCopy = options;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
@@ -2330,22 +2330,22 @@ void __100__ACXDeviceConnection_installApplicationAtURL_onDeviceWithPairingID_in
   v22[3] = &unk_278C8D550;
   v22[4] = &v24;
   v22[5] = &v30;
-  [v17 installApplicationAtURL:v14 onDeviceWithPairingID:v15 installOptions:v16 size:a6 completion:v22];
+  [v17 installApplicationAtURL:lCopy onDeviceWithPairingID:dCopy installOptions:optionsCopy size:size completion:v22];
 
   v18 = v25;
   v19 = v25[5];
   if (v19)
   {
-    if (a8)
+    if (error)
     {
-      *a8 = v19;
+      *error = v19;
       v18 = v25;
     }
   }
 
-  else if (a7)
+  else if (status)
   {
-    *a7 = v31[3];
+    *status = v31[3];
   }
 
   v20 = v18[5] == 0;
@@ -2384,33 +2384,33 @@ void __114__ACXDeviceConnection_installApplicationAtURL_onDeviceWithPairingID_in
   }
 }
 
-- (void)removeApplication:(id)a3 fromPairedDevice:(id)a4 completion:(id)a5
+- (void)removeApplication:(id)application fromPairedDevice:(id)device completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__ACXDeviceConnection_removeApplication_fromPairedDevice_completion___block_invoke;
   v10[3] = &unk_278C8D578;
-  v11 = v8;
-  v9 = v8;
-  [(ACXDeviceConnection *)self removeApplication:a3 fromPairedDevice:a4 completionWithError:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(ACXDeviceConnection *)self removeApplication:application fromPairedDevice:device completionWithError:v10];
 }
 
-- (void)removeApplication:(id)a3 fromPairedDevice:(id)a4 completionWithError:(id)a5
+- (void)removeApplication:(id)application fromPairedDevice:(id)device completionWithError:(id)error
 {
-  v8 = a5;
+  errorCopy = error;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __78__ACXDeviceConnection_removeApplication_fromPairedDevice_completionWithError___block_invoke;
   v14[3] = &unk_278C8D4B0;
-  v15 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v15 = errorCopy;
+  v9 = errorCopy;
+  deviceCopy = device;
+  applicationCopy = application;
   v12 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v14];
-  v13 = [v10 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v13 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
 
-  [v12 removeApplication:v11 fromDeviceWithPairingID:v13 completion:v9];
+  [v12 removeApplication:applicationCopy fromDeviceWithPairingID:v13 completion:v9];
 }
 
 void __78__ACXDeviceConnection_removeApplication_fromPairedDevice_completionWithError___block_invoke(uint64_t a1, void *a2)
@@ -2424,10 +2424,10 @@ void __78__ACXDeviceConnection_removeApplication_fromPairedDevice_completionWith
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)removeApplication:(id)a3 fromPairedDevice:(id)a4 removalStatus:(int64_t *)a5 error:(id *)a6
+- (BOOL)removeApplication:(id)application fromPairedDevice:(id)device removalStatus:(int64_t *)status error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  applicationCopy = application;
+  deviceCopy = device;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
@@ -2444,29 +2444,29 @@ void __78__ACXDeviceConnection_removeApplication_fromPairedDevice_completionWith
   v19[3] = &unk_278C8D4D8;
   v19[4] = &v20;
   v12 = [(ACXDeviceConnection *)self _synchronousProxyWithErrorHandler:v19];
-  v13 = [v11 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v13 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __78__ACXDeviceConnection_removeApplication_fromPairedDevice_removalStatus_error___block_invoke_2;
   v18[3] = &unk_278C8D550;
   v18[4] = &v20;
   v18[5] = &v26;
-  [v12 removeApplication:v10 fromDeviceWithPairingID:v13 completion:v18];
+  [v12 removeApplication:applicationCopy fromDeviceWithPairingID:v13 completion:v18];
 
   v14 = v21;
   v15 = v21[5];
   if (v15)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = v15;
+      *error = v15;
       v14 = v21;
     }
   }
 
-  else if (a5)
+  else if (status)
   {
-    *a5 = v27[3];
+    *status = v27[3];
   }
 
   v16 = v14[5] == 0;
@@ -2505,15 +2505,15 @@ void __78__ACXDeviceConnection_removeApplication_fromPairedDevice_removalStatus_
   }
 }
 
-- (void)setAlwaysInstall:(id)a3
+- (void)setAlwaysInstall:(id)install
 {
-  v6 = a3;
-  v4 = [MEMORY[0x277D2BCF8] sharedInstance];
-  v5 = [v4 getActivePairedDevice];
+  installCopy = install;
+  mEMORY[0x277D2BCF8] = [MEMORY[0x277D2BCF8] sharedInstance];
+  getActivePairedDevice = [mEMORY[0x277D2BCF8] getActivePairedDevice];
 
-  if (v5)
+  if (getActivePairedDevice)
   {
-    [(ACXDeviceConnection *)self setAlwaysInstall:v6 forDevice:v5];
+    [(ACXDeviceConnection *)self setAlwaysInstall:installCopy forDevice:getActivePairedDevice];
   }
 
   else if (!gLogHandle || *(gLogHandle + 44) >= 3)
@@ -2522,54 +2522,54 @@ void __78__ACXDeviceConnection_removeApplication_fromPairedDevice_removalStatus_
   }
 }
 
-- (void)setAlwaysInstall:(id)a3 forDevice:(id)a4
+- (void)setAlwaysInstall:(id)install forDevice:(id)device
 {
-  v16 = a3;
+  installCopy = install;
   v5 = MEMORY[0x277D2BA58];
-  v6 = a4;
-  v7 = [[v5 alloc] initWithDomain:@"com.apple.appconduitd.gizmostate" pairedDevice:v6];
-  v8 = [v6 valueForProperty:*MEMORY[0x277D2BBB8]];
+  deviceCopy = device;
+  v7 = [[v5 alloc] initWithDomain:@"com.apple.appconduitd.gizmostate" pairedDevice:deviceCopy];
+  v8 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
 
   if (v7)
   {
     if (!gLogHandle || *(gLogHandle + 44) >= 5)
     {
-      v9 = [v8 UUIDString];
-      v10 = [v16 BOOLValue];
+      uUIDString = [v8 UUIDString];
+      bOOLValue = [installCopy BOOLValue];
       v11 = @"NO";
-      if (v10)
+      if (bOOLValue)
       {
         v11 = @"YES";
       }
 
-      v13 = v9;
+      v13 = uUIDString;
       v14 = v11;
       MOLogWrite();
     }
 
-    [v7 setObject:v16 forKey:{@"AlwaysInstall", v13, v14}];
-    v12 = [v7 synchronize];
+    [v7 setObject:installCopy forKey:{@"AlwaysInstall", v13, v14}];
+    synchronize = [v7 synchronize];
   }
 
   else if (!gLogHandle || *(gLogHandle + 44) >= 3)
   {
-    v15 = [v8 UUIDString];
+    uUIDString2 = [v8 UUIDString];
     MOLogWrite();
   }
 }
 
-- (void)getAlwaysInstallForPairedDevice:(id)a3 completion:(id)a4
+- (void)getAlwaysInstallForPairedDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __66__ACXDeviceConnection_getAlwaysInstallForPairedDevice_completion___block_invoke;
   v11[3] = &unk_278C8D4B0;
-  v12 = v6;
-  v7 = v6;
-  v8 = a3;
+  v12 = completionCopy;
+  v7 = completionCopy;
+  deviceCopy = device;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v11];
-  v10 = [v8 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v10 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
 
   [v9 getAlwaysInstallForDeviceWithPairingID:v10 completion:v7];
 }
@@ -2585,9 +2585,9 @@ void __66__ACXDeviceConnection_getAlwaysInstallForPairedDevice_completion___bloc
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)getAlwaysInstall:(BOOL *)a3 forPairedDevice:(id)a4 error:(id *)a5
+- (BOOL)getAlwaysInstall:(BOOL *)install forPairedDevice:(id)device error:(id *)error
 {
-  v8 = a4;
+  deviceCopy = device;
   v23 = 0;
   v24 = &v23;
   v25 = 0x2020000000;
@@ -2604,7 +2604,7 @@ void __66__ACXDeviceConnection_getAlwaysInstallForPairedDevice_completion___bloc
   v16[3] = &unk_278C8D4D8;
   v16[4] = &v17;
   v9 = [(ACXDeviceConnection *)self _synchronousProxyWithErrorHandler:v16];
-  v10 = [v8 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v10 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __62__ACXDeviceConnection_getAlwaysInstall_forPairedDevice_error___block_invoke_2;
@@ -2616,16 +2616,16 @@ void __66__ACXDeviceConnection_getAlwaysInstallForPairedDevice_completion___bloc
   v12 = v18[5];
   if (v12)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v12;
+      *error = v12;
       v11 = v18;
     }
   }
 
-  else if (a3)
+  else if (install)
   {
-    *a3 = *(v24 + 24);
+    *install = *(v24 + 24);
   }
 
   v13 = v11[5] == 0;
@@ -2648,14 +2648,14 @@ void __62__ACXDeviceConnection_getAlwaysInstall_forPairedDevice_error___block_in
   *(v4 + 40) = v3;
 }
 
-- (void)installProvisioningProfileWithURL:(id)a3 onPairedDevice:(id)a4 completion:(id)a5
+- (void)installProvisioningProfileWithURL:(id)l onPairedDevice:(id)device completion:(id)completion
 {
-  v8 = a4;
-  v10 = a5;
-  if (a3)
+  deviceCopy = device;
+  completionCopy = completion;
+  if (l)
   {
     v22 = 0;
-    v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:a3 options:3 error:&v22];
+    v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:l options:3 error:&v22];
     v12 = v22;
     if (v11)
     {
@@ -2663,23 +2663,23 @@ void __62__ACXDeviceConnection_getAlwaysInstall_forPairedDevice_error___block_in
       v18 = 3221225472;
       v19 = __83__ACXDeviceConnection_installProvisioningProfileWithURL_onPairedDevice_completion___block_invoke;
       v20 = &unk_278C8D4B0;
-      v13 = v10;
+      v13 = completionCopy;
       v21 = v13;
       v14 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:&v17];
-      v15 = [v8 valueForProperty:{*MEMORY[0x277D2BBB8], v17, v18, v19, v20}];
+      v15 = [deviceCopy valueForProperty:{*MEMORY[0x277D2BBB8], v17, v18, v19, v20}];
       [v14 installProvisioningProfileWithData:v11 onDeviceWithPairingID:v15 completion:v13];
     }
 
     else
     {
-      (*(v10 + 2))(v10, 0, v12);
+      (*(completionCopy + 2))(completionCopy, 0, v12);
     }
   }
 
   else
   {
     v16 = _CreateAndLogError("[ACXDeviceConnection installProvisioningProfileWithURL:onPairedDevice:completion:]", 942, @"ACXErrorDomain", 20, 0, 0, @"profileURL parameter was nil", v9, v17);
-    (*(v10 + 2))(v10, 0, v16);
+    (*(completionCopy + 2))(completionCopy, 0, v16);
   }
 }
 
@@ -2694,10 +2694,10 @@ void __83__ACXDeviceConnection_installProvisioningProfileWithURL_onPairedDevice_
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)installProvisioningProfileWithURL:(id)a3 onPairedDevice:(id)a4 error:(id *)a5
+- (BOOL)installProvisioningProfileWithURL:(id)l onPairedDevice:(id)device error:(id *)error
 {
-  v8 = a3;
-  v10 = a4;
+  lCopy = l;
+  deviceCopy = device;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -2708,7 +2708,7 @@ void __83__ACXDeviceConnection_installProvisioningProfileWithURL_onPairedDevice_
   v21 = &v20;
   v22 = 0x2020000000;
   v23 = 0;
-  if (!v8)
+  if (!lCopy)
   {
     v14 = _CreateAndLogError("[ACXDeviceConnection installProvisioningProfileWithURL:onPairedDevice:error:]", 965, @"ACXErrorDomain", 20, 0, 0, @"profileURL parameter was nil", v9, v17[0]);
     v11 = v25[5];
@@ -2717,7 +2717,7 @@ void __83__ACXDeviceConnection_installProvisioningProfileWithURL_onPairedDevice_
   }
 
   obj = 0;
-  v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v8 options:3 error:&obj];
+  v11 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:lCopy options:3 error:&obj];
   objc_storeStrong(&v29, obj);
   if (v11)
   {
@@ -2727,7 +2727,7 @@ void __83__ACXDeviceConnection_installProvisioningProfileWithURL_onPairedDevice_
     v18[3] = &unk_278C8D4D8;
     v18[4] = &v24;
     v12 = [(ACXDeviceConnection *)self _synchronousProxyWithErrorHandler:v18];
-    v13 = [v10 valueForProperty:*MEMORY[0x277D2BBB8]];
+    v13 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __78__ACXDeviceConnection_installProvisioningProfileWithURL_onPairedDevice_error___block_invoke_2;
@@ -2740,9 +2740,9 @@ LABEL_5:
   }
 
   v15 = *(v21 + 24);
-  if (a5 && (v21[3] & 1) == 0)
+  if (error && (v21[3] & 1) == 0)
   {
-    *a5 = v25[5];
+    *error = v25[5];
     v15 = *(v21 + 24);
   }
 
@@ -2781,23 +2781,23 @@ void __78__ACXDeviceConnection_installProvisioningProfileWithURL_onPairedDevice_
   }
 }
 
-- (void)removeProvisioningProfileWithID:(id)a3 fromPairedDevice:(id)a4 completion:(id)a5
+- (void)removeProvisioningProfileWithID:(id)d fromPairedDevice:(id)device completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v12 = v10;
-  if (v8)
+  dCopy = d;
+  deviceCopy = device;
+  completionCopy = completion;
+  v12 = completionCopy;
+  if (dCopy)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __83__ACXDeviceConnection_removeProvisioningProfileWithID_fromPairedDevice_completion___block_invoke;
     v18[3] = &unk_278C8D4B0;
-    v13 = v10;
+    v13 = completionCopy;
     v19 = v13;
     v14 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v18];
-    v15 = [v9 valueForProperty:*MEMORY[0x277D2BBB8]];
-    [v14 removeProvisioningProfileWithID:v8 fromDeviceWithPairingID:v15 completion:v13];
+    v15 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
+    [v14 removeProvisioningProfileWithID:dCopy fromDeviceWithPairingID:v15 completion:v13];
   }
 
   else
@@ -2818,10 +2818,10 @@ void __83__ACXDeviceConnection_removeProvisioningProfileWithID_fromPairedDevice_
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)removeProvisioningProfileWithID:(id)a3 fromPairedDevice:(id)a4 error:(id *)a5
+- (BOOL)removeProvisioningProfileWithID:(id)d fromPairedDevice:(id)device error:(id *)error
 {
-  v8 = a3;
-  v10 = a4;
+  dCopy = d;
+  deviceCopy = device;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -2832,7 +2832,7 @@ void __83__ACXDeviceConnection_removeProvisioningProfileWithID_fromPairedDevice_
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  if (v8)
+  if (dCopy)
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
@@ -2840,14 +2840,14 @@ void __83__ACXDeviceConnection_removeProvisioningProfileWithID_fromPairedDevice_
     v18[3] = &unk_278C8D4D8;
     v18[4] = &v23;
     v11 = [(ACXDeviceConnection *)self _synchronousProxyWithErrorHandler:v18];
-    v12 = [v10 valueForProperty:*MEMORY[0x277D2BBB8]];
+    v12 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __78__ACXDeviceConnection_removeProvisioningProfileWithID_fromPairedDevice_error___block_invoke_2;
     v17[3] = &unk_278C8D5C8;
     v17[4] = &v23;
     v17[5] = &v19;
-    [v11 removeProvisioningProfileWithID:v8 fromDeviceWithPairingID:v12 completion:v17];
+    [v11 removeProvisioningProfileWithID:dCopy fromDeviceWithPairingID:v12 completion:v17];
   }
 
   else
@@ -2858,9 +2858,9 @@ void __83__ACXDeviceConnection_removeProvisioningProfileWithID_fromPairedDevice_
   }
 
   v14 = *(v20 + 24);
-  if (a5 && (v20[3] & 1) == 0)
+  if (error && (v20[3] & 1) == 0)
   {
-    *a5 = v24[5];
+    *error = v24[5];
     v14 = *(v20 + 24);
   }
 
@@ -2899,18 +2899,18 @@ void __78__ACXDeviceConnection_removeProvisioningProfileWithID_fromPairedDevice_
   }
 }
 
-- (void)fetchProvisioningProfilesForPairedDevice:(id)a3 completion:(id)a4
+- (void)fetchProvisioningProfilesForPairedDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __75__ACXDeviceConnection_fetchProvisioningProfilesForPairedDevice_completion___block_invoke;
   v11[3] = &unk_278C8D4B0;
-  v12 = v6;
-  v7 = v6;
-  v8 = a3;
+  v12 = completionCopy;
+  v7 = completionCopy;
+  deviceCopy = device;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v11];
-  v10 = [v8 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v10 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
 
   [v9 fetchProvisioningProfilesForDeviceWithPairingID:v10 completion:v7];
 }
@@ -2926,9 +2926,9 @@ void __75__ACXDeviceConnection_fetchProvisioningProfilesForPairedDevice_completi
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (id)provisioningProfilesForPairedDevice:(id)a3 error:(id *)a4
+- (id)provisioningProfilesForPairedDevice:(id)device error:(id *)error
 {
-  v6 = a3;
+  deviceCopy = device;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -2947,7 +2947,7 @@ void __75__ACXDeviceConnection_fetchProvisioningProfilesForPairedDevice_completi
   v13[3] = &unk_278C8D4D8;
   v13[4] = &v20;
   v7 = [(ACXDeviceConnection *)self _synchronousProxyWithErrorHandler:v13];
-  v8 = [v6 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v8 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __65__ACXDeviceConnection_provisioningProfilesForPairedDevice_error___block_invoke_2;
@@ -2957,9 +2957,9 @@ void __75__ACXDeviceConnection_fetchProvisioningProfilesForPairedDevice_completi
   [v7 fetchProvisioningProfilesForDeviceWithPairingID:v8 completion:v12];
 
   v9 = v15[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v21[5];
+    *error = v21[5];
     v9 = v15[5];
   }
 
@@ -3006,21 +3006,21 @@ void __65__ACXDeviceConnection_provisioningProfilesForPairedDevice_error___block
   *(v8 + 40) = v9;
 }
 
-- (void)fetchProvisioningProfilesForApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 completion:(id)a5
+- (void)fetchProvisioningProfilesForApplicationWithBundleID:(id)d forPairedDevice:(id)device completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __102__ACXDeviceConnection_fetchProvisioningProfilesForApplicationWithBundleID_forPairedDevice_completion___block_invoke;
   v14[3] = &unk_278C8D4B0;
-  v15 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v15 = completionCopy;
+  v9 = completionCopy;
+  deviceCopy = device;
+  dCopy = d;
   v12 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v14];
-  v13 = [v10 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v13 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
 
-  [v12 fetchProvisioningProfilesForApplicationWithBundleID:v11 forDeviceWithPairingID:v13 completion:v9];
+  [v12 fetchProvisioningProfilesForApplicationWithBundleID:dCopy forDeviceWithPairingID:v13 completion:v9];
 }
 
 void __102__ACXDeviceConnection_fetchProvisioningProfilesForApplicationWithBundleID_forPairedDevice_completion___block_invoke(uint64_t a1, void *a2)
@@ -3034,10 +3034,10 @@ void __102__ACXDeviceConnection_fetchProvisioningProfilesForApplicationWithBundl
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (id)provisioningProfilesForApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 error:(id *)a5
+- (id)provisioningProfilesForApplicationWithBundleID:(id)d forPairedDevice:(id)device error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  deviceCopy = device;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -3056,19 +3056,19 @@ void __102__ACXDeviceConnection_fetchProvisioningProfilesForApplicationWithBundl
   v16[3] = &unk_278C8D4D8;
   v16[4] = &v23;
   v10 = [(ACXDeviceConnection *)self _synchronousProxyWithErrorHandler:v16];
-  v11 = [v9 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v11 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __92__ACXDeviceConnection_provisioningProfilesForApplicationWithBundleID_forPairedDevice_error___block_invoke_2;
   v15[3] = &unk_278C8D5F0;
   v15[4] = &v23;
   v15[5] = &v17;
-  [v10 fetchProvisioningProfilesForApplicationWithBundleID:v8 forDeviceWithPairingID:v11 completion:v15];
+  [v10 fetchProvisioningProfilesForApplicationWithBundleID:dCopy forDeviceWithPairingID:v11 completion:v15];
 
   v12 = v18[5];
-  if (a5 && !v12)
+  if (error && !v12)
   {
-    *a5 = v24[5];
+    *error = v24[5];
     v12 = v18[5];
   }
 
@@ -3115,22 +3115,22 @@ void __92__ACXDeviceConnection_provisioningProfilesForApplicationWithBundleID_fo
   *(v8 + 40) = v9;
 }
 
-- (void)updatePreferencesForApplicationWithIdentifier:(id)a3 preferences:(id)a4 writingToPreferencesLocation:(unint64_t)a5 forPairedDevice:(id)a6 options:(unint64_t)a7 completion:(id)a8
+- (void)updatePreferencesForApplicationWithIdentifier:(id)identifier preferences:(id)preferences writingToPreferencesLocation:(unint64_t)location forPairedDevice:(id)device options:(unint64_t)options completion:(id)completion
 {
-  v14 = a8;
+  completionCopy = completion;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __145__ACXDeviceConnection_updatePreferencesForApplicationWithIdentifier_preferences_writingToPreferencesLocation_forPairedDevice_options_completion___block_invoke;
   v21[3] = &unk_278C8D4B0;
-  v22 = v14;
-  v15 = v14;
-  v16 = a6;
-  v17 = a4;
-  v18 = a3;
+  v22 = completionCopy;
+  v15 = completionCopy;
+  deviceCopy = device;
+  preferencesCopy = preferences;
+  identifierCopy = identifier;
   v19 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v21];
-  v20 = [v16 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v20 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
 
-  [v19 updatePreferencesForApplicationWithIdentifier:v18 preferences:v17 writingToPreferencesLocation:a5 forDeviceWithPairingID:v20 options:a7 completion:v15];
+  [v19 updatePreferencesForApplicationWithIdentifier:identifierCopy preferences:preferencesCopy writingToPreferencesLocation:location forDeviceWithPairingID:v20 options:options completion:v15];
 }
 
 void __145__ACXDeviceConnection_updatePreferencesForApplicationWithIdentifier_preferences_writingToPreferencesLocation_forPairedDevice_options_completion___block_invoke(uint64_t a1, void *a2)
@@ -3144,11 +3144,11 @@ void __145__ACXDeviceConnection_updatePreferencesForApplicationWithIdentifier_pr
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)updatePreferencesForApplicationWithIdentifier:(id)a3 preferences:(id)a4 writingToPreferencesLocation:(unint64_t)a5 forPairedDevice:(id)a6 options:(unint64_t)a7 error:(id *)a8
+- (BOOL)updatePreferencesForApplicationWithIdentifier:(id)identifier preferences:(id)preferences writingToPreferencesLocation:(unint64_t)location forPairedDevice:(id)device options:(unint64_t)options error:(id *)error
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a6;
+  identifierCopy = identifier;
+  preferencesCopy = preferences;
+  deviceCopy = device;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -3161,17 +3161,17 @@ void __145__ACXDeviceConnection_updatePreferencesForApplicationWithIdentifier_pr
   v22[3] = &unk_278C8D4D8;
   v22[4] = &v23;
   v17 = [(ACXDeviceConnection *)self _synchronousProxyWithErrorHandler:v22];
-  v18 = [v16 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v18 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __140__ACXDeviceConnection_updatePreferencesForApplicationWithIdentifier_preferences_writingToPreferencesLocation_forPairedDevice_options_error___block_invoke_2;
   v21[3] = &unk_278C8D4D8;
   v21[4] = &v23;
-  [v17 updatePreferencesForApplicationWithIdentifier:v14 preferences:v15 writingToPreferencesLocation:a5 forDeviceWithPairingID:v18 options:a7 completion:v21];
+  [v17 updatePreferencesForApplicationWithIdentifier:identifierCopy preferences:preferencesCopy writingToPreferencesLocation:location forDeviceWithPairingID:v18 options:options completion:v21];
 
-  if (a8)
+  if (error)
   {
-    *a8 = v24[5];
+    *error = v24[5];
   }
 
   v19 = v24[5] == 0;
@@ -3204,18 +3204,18 @@ void __140__ACXDeviceConnection_updatePreferencesForApplicationWithIdentifier_pr
   }
 }
 
-- (void)setUpdatePendingForCompanionApp:(id)a3 completion:(id)a4
+- (void)setUpdatePendingForCompanionApp:(id)app completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __66__ACXDeviceConnection_setUpdatePendingForCompanionApp_completion___block_invoke;
   v10[3] = &unk_278C8D4B0;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  appCopy = app;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v10];
-  [v9 setUpdatePendingForCompanionApp:v8 completion:v7];
+  [v9 setUpdatePendingForCompanionApp:appCopy completion:v7];
 }
 
 void __66__ACXDeviceConnection_setUpdatePendingForCompanionApp_completion___block_invoke(uint64_t a1, void *a2)
@@ -3229,9 +3229,9 @@ void __66__ACXDeviceConnection_setUpdatePendingForCompanionApp_completion___bloc
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)setUpdatePendingForCompanionApp:(id)a3 error:(id *)a4
+- (BOOL)setUpdatePendingForCompanionApp:(id)app error:(id *)error
 {
-  v6 = a3;
+  appCopy = app;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -3249,11 +3249,11 @@ void __66__ACXDeviceConnection_setUpdatePendingForCompanionApp_completion___bloc
   v10[2] = __61__ACXDeviceConnection_setUpdatePendingForCompanionApp_error___block_invoke_2;
   v10[3] = &unk_278C8D4D8;
   v10[4] = &v12;
-  [v7 setUpdatePendingForCompanionApp:v6 completion:v10];
+  [v7 setUpdatePendingForCompanionApp:appCopy completion:v10];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   v8 = v13[5] == 0;
@@ -3286,18 +3286,18 @@ void __61__ACXDeviceConnection_setUpdatePendingForCompanionApp_error___block_inv
   }
 }
 
-- (void)cancelUpdatePendingForCompanionApp:(id)a3 completion:(id)a4
+- (void)cancelUpdatePendingForCompanionApp:(id)app completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __69__ACXDeviceConnection_cancelUpdatePendingForCompanionApp_completion___block_invoke;
   v10[3] = &unk_278C8D4B0;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  appCopy = app;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v10];
-  [v9 cancelUpdatePendingForCompanionApp:v8 completion:v7];
+  [v9 cancelUpdatePendingForCompanionApp:appCopy completion:v7];
 }
 
 void __69__ACXDeviceConnection_cancelUpdatePendingForCompanionApp_completion___block_invoke(uint64_t a1, void *a2)
@@ -3311,9 +3311,9 @@ void __69__ACXDeviceConnection_cancelUpdatePendingForCompanionApp_completion___b
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)cancelUpdatePendingForCompanionApp:(id)a3 error:(id *)a4
+- (BOOL)cancelUpdatePendingForCompanionApp:(id)app error:(id *)error
 {
-  v6 = a3;
+  appCopy = app;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -3331,11 +3331,11 @@ void __69__ACXDeviceConnection_cancelUpdatePendingForCompanionApp_completion___b
   v10[2] = __64__ACXDeviceConnection_cancelUpdatePendingForCompanionApp_error___block_invoke_2;
   v10[3] = &unk_278C8D4D8;
   v10[4] = &v12;
-  [v7 cancelUpdatePendingForCompanionApp:v6 completion:v10];
+  [v7 cancelUpdatePendingForCompanionApp:appCopy completion:v10];
 
-  if (a4)
+  if (error)
   {
-    *a4 = v13[5];
+    *error = v13[5];
   }
 
   v8 = v13[5] == 0;
@@ -3368,20 +3368,20 @@ void __64__ACXDeviceConnection_cancelUpdatePendingForCompanionApp_error___block_
   }
 }
 
-- (void)getApplicationWithBundleID:(id)a3 willInstallAfterPairingOnDevice:(id)a4 completion:(id)a5
+- (void)getApplicationWithBundleID:(id)d willInstallAfterPairingOnDevice:(id)device completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v9 = *MEMORY[0x277D2BBB8];
-  v10 = a3;
-  v11 = [a4 valueForProperty:v9];
+  dCopy = d;
+  v11 = [device valueForProperty:v9];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __93__ACXDeviceConnection_getApplicationWithBundleID_willInstallAfterPairingOnDevice_completion___block_invoke;
   v14[3] = &unk_278C8D4B0;
-  v15 = v8;
-  v12 = v8;
+  v15 = completionCopy;
+  v12 = completionCopy;
   v13 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v14];
-  [v13 applicationWillInstallAfterPairingOnDeviceWithPairingID:v11 withBundleID:v10 completion:v12];
+  [v13 applicationWillInstallAfterPairingOnDeviceWithPairingID:v11 withBundleID:dCopy completion:v12];
 }
 
 void __93__ACXDeviceConnection_getApplicationWithBundleID_willInstallAfterPairingOnDevice_completion___block_invoke(uint64_t a1, void *a2)
@@ -3395,10 +3395,10 @@ void __93__ACXDeviceConnection_getApplicationWithBundleID_willInstallAfterPairin
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)getApplicationWithBundleID:(id)a3 willInstallAfterPairing:(BOOL *)a4 onDevice:(id)a5 error:(id *)a6
+- (BOOL)getApplicationWithBundleID:(id)d willInstallAfterPairing:(BOOL *)pairing onDevice:(id)device error:(id *)error
 {
-  v10 = a3;
-  v11 = a5;
+  dCopy = d;
+  deviceCopy = device;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -3409,7 +3409,7 @@ void __93__ACXDeviceConnection_getApplicationWithBundleID_willInstallAfterPairin
   v20 = &v19;
   v21 = 0x2020000000;
   v22 = 0;
-  v12 = [v11 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v12 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __89__ACXDeviceConnection_getApplicationWithBundleID_willInstallAfterPairing_onDevice_error___block_invoke;
@@ -3422,21 +3422,21 @@ void __93__ACXDeviceConnection_getApplicationWithBundleID_willInstallAfterPairin
   v17[3] = &unk_278C8D5C8;
   v17[4] = &v23;
   v17[5] = &v19;
-  [v13 applicationWillInstallAfterPairingOnDeviceWithPairingID:v12 withBundleID:v10 completion:v17];
+  [v13 applicationWillInstallAfterPairingOnDeviceWithPairingID:v12 withBundleID:dCopy completion:v17];
 
   v14 = v24[5];
   if (v14)
   {
-    if (a6)
+    if (error)
     {
       v14 = v14;
-      *a6 = v14;
+      *error = v14;
     }
   }
 
-  else if (a4)
+  else if (pairing)
   {
-    *a4 = *(v20 + 24);
+    *pairing = *(v20 + 24);
   }
 
   v15 = v14 == 0;
@@ -3476,33 +3476,33 @@ void __89__ACXDeviceConnection_getApplicationWithBundleID_willInstallAfterPairin
   }
 }
 
-- (void)enumerateInstalledApplicationsOnPairedDevice:(id)a3 withBlock:(id)a4
+- (void)enumerateInstalledApplicationsOnPairedDevice:(id)device withBlock:(id)block
 {
   v6 = *MEMORY[0x277D2BBB8];
-  v7 = a4;
-  v8 = [a3 valueForProperty:v6];
-  [(ACXDeviceConnection *)self enumerateInstalledApplicationsOnDeviceWithPairingID:v8 withBlock:v7];
+  blockCopy = block;
+  v8 = [device valueForProperty:v6];
+  [(ACXDeviceConnection *)self enumerateInstalledApplicationsOnDeviceWithPairingID:v8 withBlock:blockCopy];
 }
 
-- (void)enumerateInstalledApplicationsOnDeviceWithPairingID:(id)a3 withBlock:(id)a4
+- (void)enumerateInstalledApplicationsOnDeviceWithPairingID:(id)d withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __85__ACXDeviceConnection_enumerateInstalledApplicationsOnDeviceWithPairingID_withBlock___block_invoke;
   v16[3] = &unk_278C8D4B0;
-  v8 = v7;
+  v8 = blockCopy;
   v17 = v8;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v16];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __85__ACXDeviceConnection_enumerateInstalledApplicationsOnDeviceWithPairingID_withBlock___block_invoke_2;
   v12[3] = &unk_278C8D690;
-  v14 = self;
+  selfCopy = self;
   v15 = v8;
-  v13 = v6;
-  v10 = v6;
+  v13 = dCopy;
+  v10 = dCopy;
   v11 = v8;
   [v9 fetchInstalledWatchAppBundleIDsForDeviceWithPairingID:v10 completion:v12];
 }
@@ -3727,23 +3727,23 @@ LABEL_26:
   dispatch_async(v13, *(a1 + 72));
 }
 
-- (void)enumerateLocallyAvailableApplicationsForPairedDevice:(id)a3 options:(unint64_t)a4 withBlock:(id)a5
+- (void)enumerateLocallyAvailableApplicationsForPairedDevice:(id)device options:(unint64_t)options withBlock:(id)block
 {
   v8 = *MEMORY[0x277D2BBB8];
-  v9 = a5;
-  v10 = [a3 valueForProperty:v8];
-  [(ACXDeviceConnection *)self enumerateLocallyAvailableApplicationsForDeviceWithPairingID:v10 options:a4 withBlock:v9];
+  blockCopy = block;
+  v10 = [device valueForProperty:v8];
+  [(ACXDeviceConnection *)self enumerateLocallyAvailableApplicationsForDeviceWithPairingID:v10 options:options withBlock:blockCopy];
 }
 
-- (void)enumerateLocallyAvailableApplicationsForDeviceWithPairingID:(id)a3 options:(unint64_t)a4 withBlock:(id)a5
+- (void)enumerateLocallyAvailableApplicationsForDeviceWithPairingID:(id)d options:(unint64_t)options withBlock:(id)block
 {
-  v8 = a3;
-  v9 = a5;
+  dCopy = d;
+  blockCopy = block;
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __101__ACXDeviceConnection_enumerateLocallyAvailableApplicationsForDeviceWithPairingID_options_withBlock___block_invoke;
   v18[3] = &unk_278C8D4B0;
-  v10 = v9;
+  v10 = blockCopy;
   v19 = v10;
   v11 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v18];
   v14[0] = MEMORY[0x277D85DD0];
@@ -3751,10 +3751,10 @@ LABEL_26:
   v14[2] = __101__ACXDeviceConnection_enumerateLocallyAvailableApplicationsForDeviceWithPairingID_options_withBlock___block_invoke_2;
   v14[3] = &unk_278C8D730;
   v14[4] = self;
-  v15 = v8;
+  v15 = dCopy;
   v16 = v10;
-  v17 = a4;
-  v12 = v8;
+  optionsCopy = options;
+  v12 = dCopy;
   v13 = v10;
   [v11 fetchLocallyAvailableWatchAppBundleIDsWithCompletion:v14];
 }
@@ -4018,19 +4018,19 @@ LABEL_36:
   }
 }
 
-- (void)fetchApplicationOnDeviceWithPairingID:(id)a3 withBundleID:(id)a4 completion:(id)a5
+- (void)fetchApplicationOnDeviceWithPairingID:(id)d withBundleID:(id)iD completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __85__ACXDeviceConnection_fetchApplicationOnDeviceWithPairingID_withBundleID_completion___block_invoke;
   v13[3] = &unk_278C8D4B0;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  iDCopy = iD;
+  dCopy = d;
   v12 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v13];
-  [v12 fetchInstalledWatchAppWithBundleID:v10 forDeviceWithPairingID:v11 completion:v9];
+  [v12 fetchInstalledWatchAppWithBundleID:iDCopy forDeviceWithPairingID:dCopy completion:v9];
 }
 
 void __85__ACXDeviceConnection_fetchApplicationOnDeviceWithPairingID_withBundleID_completion___block_invoke(uint64_t a1, void *a2)
@@ -4044,10 +4044,10 @@ void __85__ACXDeviceConnection_fetchApplicationOnDeviceWithPairingID_withBundleI
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (id)applicationOnDeviceWithPairingID:(id)a3 withBundleID:(id)a4 error:(id *)a5
+- (id)applicationOnDeviceWithPairingID:(id)d withBundleID:(id)iD error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -4072,12 +4072,12 @@ void __85__ACXDeviceConnection_fetchApplicationOnDeviceWithPairingID_withBundleI
   v14[3] = &unk_278C8D758;
   v14[4] = &v22;
   v14[5] = &v16;
-  [v10 fetchInstalledWatchAppWithBundleID:v9 forDeviceWithPairingID:v8 completion:v14];
+  [v10 fetchInstalledWatchAppWithBundleID:iDCopy forDeviceWithPairingID:dCopy completion:v14];
 
   v11 = v17[5];
-  if (a5 && !v11)
+  if (error && !v11)
   {
-    *a5 = v23[5];
+    *error = v23[5];
     v11 = v17[5];
   }
 
@@ -4124,38 +4124,38 @@ void __75__ACXDeviceConnection_applicationOnDeviceWithPairingID_withBundleID_err
   *(v8 + 40) = v9;
 }
 
-- (void)fetchApplicationOnPairedDevice:(id)a3 withBundleID:(id)a4 completion:(id)a5
+- (void)fetchApplicationOnPairedDevice:(id)device withBundleID:(id)d completion:(id)completion
 {
   v8 = *MEMORY[0x277D2BBB8];
-  v9 = a5;
-  v10 = a4;
-  v11 = [a3 valueForProperty:v8];
-  [(ACXDeviceConnection *)self fetchApplicationOnDeviceWithPairingID:v11 withBundleID:v10 completion:v9];
+  completionCopy = completion;
+  dCopy = d;
+  v11 = [device valueForProperty:v8];
+  [(ACXDeviceConnection *)self fetchApplicationOnDeviceWithPairingID:v11 withBundleID:dCopy completion:completionCopy];
 }
 
-- (id)applicationOnPairedDevice:(id)a3 withBundleID:(id)a4 error:(id *)a5
+- (id)applicationOnPairedDevice:(id)device withBundleID:(id)d error:(id *)error
 {
   v8 = *MEMORY[0x277D2BBB8];
-  v9 = a4;
-  v10 = [a3 valueForProperty:v8];
-  v11 = [(ACXDeviceConnection *)self applicationOnDeviceWithPairingID:v10 withBundleID:v9 error:a5];
+  dCopy = d;
+  v10 = [device valueForProperty:v8];
+  v11 = [(ACXDeviceConnection *)self applicationOnDeviceWithPairingID:v10 withBundleID:dCopy error:error];
 
   return v11;
 }
 
-- (void)_fetchLocallyAvailableApplicationWithBundleID:(id)a3 forDeviceWithPairingID:(id)a4 options:(unint64_t)a5 completion:(id)a6
+- (void)_fetchLocallyAvailableApplicationWithBundleID:(id)d forDeviceWithPairingID:(id)iD options:(unint64_t)options completion:(id)completion
 {
-  v10 = a6;
+  completionCopy = completion;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __111__ACXDeviceConnection__fetchLocallyAvailableApplicationWithBundleID_forDeviceWithPairingID_options_completion___block_invoke;
   v15[3] = &unk_278C8D4B0;
-  v16 = v10;
-  v11 = v10;
-  v12 = a4;
-  v13 = a3;
+  v16 = completionCopy;
+  v11 = completionCopy;
+  iDCopy = iD;
+  dCopy = d;
   v14 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v15];
-  [v14 fetchLocallyAvailableWatchAppWithBundleID:v13 forDeviceWithPairingID:v12 options:a5 completion:v11];
+  [v14 fetchLocallyAvailableWatchAppWithBundleID:dCopy forDeviceWithPairingID:iDCopy options:options completion:v11];
 }
 
 void __111__ACXDeviceConnection__fetchLocallyAvailableApplicationWithBundleID_forDeviceWithPairingID_options_completion___block_invoke(uint64_t a1, void *a2)
@@ -4169,19 +4169,19 @@ void __111__ACXDeviceConnection__fetchLocallyAvailableApplicationWithBundleID_fo
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (void)fetchLocallyAvailableApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 completion:(id)a5
+- (void)fetchLocallyAvailableApplicationWithBundleID:(id)d forPairedDevice:(id)device completion:(id)completion
 {
   v8 = *MEMORY[0x277D2BBB8];
-  v9 = a5;
-  v10 = a3;
-  v11 = [a4 valueForProperty:v8];
-  [(ACXDeviceConnection *)self _fetchLocallyAvailableApplicationWithBundleID:v10 forDeviceWithPairingID:v11 options:0 completion:v9];
+  completionCopy = completion;
+  dCopy = d;
+  v11 = [device valueForProperty:v8];
+  [(ACXDeviceConnection *)self _fetchLocallyAvailableApplicationWithBundleID:dCopy forDeviceWithPairingID:v11 options:0 completion:completionCopy];
 }
 
-- (id)_locallyAvailableApplicationWithBundleID:(id)a3 forDeviceWithPairingID:(id)a4 options:(unint64_t)a5 error:(id *)a6
+- (id)_locallyAvailableApplicationWithBundleID:(id)d forDeviceWithPairingID:(id)iD options:(unint64_t)options error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v24 = 0;
   v25 = &v24;
   v26 = 0x3032000000;
@@ -4206,12 +4206,12 @@ void __111__ACXDeviceConnection__fetchLocallyAvailableApplicationWithBundleID_fo
   v16[3] = &unk_278C8D780;
   v16[4] = &v24;
   v16[5] = &v18;
-  [v12 fetchLocallyAvailableWatchAppWithBundleID:v10 forDeviceWithPairingID:v11 options:a5 completion:v16];
+  [v12 fetchLocallyAvailableWatchAppWithBundleID:dCopy forDeviceWithPairingID:iDCopy options:options completion:v16];
 
   v13 = v19[5];
-  if (a6 && !v13)
+  if (error && !v13)
   {
-    *a6 = v25[5];
+    *error = v25[5];
     v13 = v19[5];
   }
 
@@ -4258,48 +4258,48 @@ void __101__ACXDeviceConnection__locallyAvailableApplicationWithBundleID_forDevi
   *(v8 + 40) = v9;
 }
 
-- (id)locallyAvailableApplicationWithBundleID:(id)a3 forPairedDevice:(id)a4 error:(id *)a5
+- (id)locallyAvailableApplicationWithBundleID:(id)d forPairedDevice:(id)device error:(id *)error
 {
   v8 = *MEMORY[0x277D2BBB8];
-  v9 = a3;
-  v10 = [a4 valueForProperty:v8];
-  v11 = [(ACXDeviceConnection *)self _locallyAvailableApplicationWithBundleID:v9 forDeviceWithPairingID:v10 options:0 error:a5];
+  dCopy = d;
+  v10 = [device valueForProperty:v8];
+  v11 = [(ACXDeviceConnection *)self _locallyAvailableApplicationWithBundleID:dCopy forDeviceWithPairingID:v10 options:0 error:error];
 
   return v11;
 }
 
-- (id)locallyAvailableApplicationWithContainingApplicationBundleID:(id)a3 forPairedDevice:(id)a4 error:(id *)a5
+- (id)locallyAvailableApplicationWithContainingApplicationBundleID:(id)d forPairedDevice:(id)device error:(id *)error
 {
   v8 = *MEMORY[0x277D2BBB8];
-  v9 = a3;
-  v10 = [a4 valueForProperty:v8];
-  v11 = [(ACXDeviceConnection *)self locallyAvailableApplicationWithContainingApplicationBundleID:v9 forDeviceWithPairingID:v10 error:a5];
+  dCopy = d;
+  v10 = [device valueForProperty:v8];
+  v11 = [(ACXDeviceConnection *)self locallyAvailableApplicationWithContainingApplicationBundleID:dCopy forDeviceWithPairingID:v10 error:error];
 
   return v11;
 }
 
-- (void)fetchLocallyAvailableApplicationWithContainingApplicationBundleID:(id)a3 forPairedDevice:(id)a4 completion:(id)a5
+- (void)fetchLocallyAvailableApplicationWithContainingApplicationBundleID:(id)d forPairedDevice:(id)device completion:(id)completion
 {
   v8 = *MEMORY[0x277D2BBB8];
-  v9 = a5;
-  v10 = a3;
-  v11 = [a4 valueForProperty:v8];
-  [(ACXDeviceConnection *)self fetchLocallyAvailableApplicationWithContainingApplicationBundleID:v10 forDeviceWithPairingID:v11 completion:v9];
+  completionCopy = completion;
+  dCopy = d;
+  v11 = [device valueForProperty:v8];
+  [(ACXDeviceConnection *)self fetchLocallyAvailableApplicationWithContainingApplicationBundleID:dCopy forDeviceWithPairingID:v11 completion:completionCopy];
 }
 
-- (void)fetchLocallyAvailableApplicationWithContainingApplicationBundleID:(id)a3 forDeviceWithPairingID:(id)a4 completion:(id)a5
+- (void)fetchLocallyAvailableApplicationWithContainingApplicationBundleID:(id)d forDeviceWithPairingID:(id)iD completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __123__ACXDeviceConnection_fetchLocallyAvailableApplicationWithContainingApplicationBundleID_forDeviceWithPairingID_completion___block_invoke;
   v13[3] = &unk_278C8D4B0;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  iDCopy = iD;
+  dCopy = d;
   v12 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v13];
-  [v12 fetchLocallyAvailableApplicationWithContainingApplicationBundleID:v11 forDeviceWithPairingID:v10 completion:v9];
+  [v12 fetchLocallyAvailableApplicationWithContainingApplicationBundleID:dCopy forDeviceWithPairingID:iDCopy completion:v9];
 }
 
 void __123__ACXDeviceConnection_fetchLocallyAvailableApplicationWithContainingApplicationBundleID_forDeviceWithPairingID_completion___block_invoke(uint64_t a1, void *a2)
@@ -4313,10 +4313,10 @@ void __123__ACXDeviceConnection_fetchLocallyAvailableApplicationWithContainingAp
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (id)locallyAvailableApplicationWithContainingApplicationBundleID:(id)a3 forDeviceWithPairingID:(id)a4 error:(id *)a5
+- (id)locallyAvailableApplicationWithContainingApplicationBundleID:(id)d forDeviceWithPairingID:(id)iD error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -4341,12 +4341,12 @@ void __123__ACXDeviceConnection_fetchLocallyAvailableApplicationWithContainingAp
   v14[3] = &unk_278C8D780;
   v14[4] = &v22;
   v14[5] = &v16;
-  [v10 fetchLocallyAvailableApplicationWithContainingApplicationBundleID:v8 forDeviceWithPairingID:v9 completion:v14];
+  [v10 fetchLocallyAvailableApplicationWithContainingApplicationBundleID:dCopy forDeviceWithPairingID:iDCopy completion:v14];
 
   v11 = v17[5];
-  if (a5 && !v11)
+  if (error && !v11)
   {
-    *a5 = v23[5];
+    *error = v23[5];
     v11 = v17[5];
   }
 
@@ -4393,29 +4393,29 @@ void __113__ACXDeviceConnection_locallyAvailableApplicationWithContainingApplica
   *(v8 + 40) = v9;
 }
 
-- (void)applicationIsInstalledOnPairedDevice:(id)a3 withBundleID:(id)a4 completion:(id)a5
+- (void)applicationIsInstalledOnPairedDevice:(id)device withBundleID:(id)d completion:(id)completion
 {
   v8 = *MEMORY[0x277D2BBB8];
-  v9 = a5;
-  v10 = a4;
-  v11 = [a3 valueForProperty:v8];
-  [(ACXDeviceConnection *)self applicationIsInstalledOnDeviceWithPairingID:v11 withBundleID:v10 completion:v9];
+  completionCopy = completion;
+  dCopy = d;
+  v11 = [device valueForProperty:v8];
+  [(ACXDeviceConnection *)self applicationIsInstalledOnDeviceWithPairingID:v11 withBundleID:dCopy completion:completionCopy];
 }
 
-- (BOOL)getApplicationIsInstalled:(BOOL *)a3 withBundleID:(id)a4 onPairedDevice:(id)a5 error:(id *)a6
+- (BOOL)getApplicationIsInstalled:(BOOL *)installed withBundleID:(id)d onPairedDevice:(id)device error:(id *)error
 {
   v10 = *MEMORY[0x277D2BBB8];
-  v11 = a4;
-  v12 = [a5 valueForProperty:v10];
-  LOBYTE(a6) = [(ACXDeviceConnection *)self getApplicationIsInstalled:a3 withBundleID:v11 onDeviceWithPairingID:v12 error:a6];
+  dCopy = d;
+  v12 = [device valueForProperty:v10];
+  LOBYTE(error) = [(ACXDeviceConnection *)self getApplicationIsInstalled:installed withBundleID:dCopy onDeviceWithPairingID:v12 error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)getApplicationIsInstalled:(BOOL *)a3 withBundleID:(id)a4 onDeviceWithPairingID:(id)a5 error:(id *)a6
+- (BOOL)getApplicationIsInstalled:(BOOL *)installed withBundleID:(id)d onDeviceWithPairingID:(id)iD error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -4438,22 +4438,22 @@ void __113__ACXDeviceConnection_locallyAvailableApplicationWithContainingApplica
   v17[3] = &unk_278C8D5C8;
   v17[4] = &v23;
   v17[5] = &v19;
-  [v12 applicationIsInstalledOnDeviceWithPairingID:v11 withBundleID:v10 completion:v17];
+  [v12 applicationIsInstalledOnDeviceWithPairingID:iDCopy withBundleID:dCopy completion:v17];
 
   v13 = v24;
   v14 = v24[5];
   if (v14)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = v14;
+      *error = v14;
       v13 = v24;
     }
   }
 
-  else if (a3)
+  else if (installed)
   {
-    *a3 = *(v20 + 24);
+    *installed = *(v20 + 24);
   }
 
   v15 = v13[5] == 0;
@@ -4492,19 +4492,19 @@ void __90__ACXDeviceConnection_getApplicationIsInstalled_withBundleID_onDeviceWi
   }
 }
 
-- (void)applicationIsInstalledOnDeviceWithPairingID:(id)a3 withBundleID:(id)a4 completion:(id)a5
+- (void)applicationIsInstalledOnDeviceWithPairingID:(id)d withBundleID:(id)iD completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __91__ACXDeviceConnection_applicationIsInstalledOnDeviceWithPairingID_withBundleID_completion___block_invoke;
   v13[3] = &unk_278C8D4B0;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  iDCopy = iD;
+  dCopy = d;
   v12 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v13];
-  [v12 applicationIsInstalledOnDeviceWithPairingID:v11 withBundleID:v10 completion:v9];
+  [v12 applicationIsInstalledOnDeviceWithPairingID:dCopy withBundleID:iDCopy completion:v9];
 }
 
 void __91__ACXDeviceConnection_applicationIsInstalledOnDeviceWithPairingID_withBundleID_completion___block_invoke(uint64_t a1, void *a2)
@@ -4518,38 +4518,38 @@ void __91__ACXDeviceConnection_applicationIsInstalledOnDeviceWithPairingID_withB
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (void)applicationIsInstalledOnPairedDevice:(id)a3 withCompanionBundleID:(id)a4 completion:(id)a5
+- (void)applicationIsInstalledOnPairedDevice:(id)device withCompanionBundleID:(id)d completion:(id)completion
 {
   v8 = *MEMORY[0x277D2BBB8];
-  v9 = a5;
-  v10 = a4;
-  v11 = [a3 valueForProperty:v8];
-  [(ACXDeviceConnection *)self applicationIsInstalledOnDeviceWithPairingID:v11 withCompanionBundleID:v10 completion:v9];
+  completionCopy = completion;
+  dCopy = d;
+  v11 = [device valueForProperty:v8];
+  [(ACXDeviceConnection *)self applicationIsInstalledOnDeviceWithPairingID:v11 withCompanionBundleID:dCopy completion:completionCopy];
 }
 
-- (BOOL)getApplicationIsInstalled:(BOOL *)a3 onPairedDevice:(id)a4 withCompanionBundleID:(id)a5 error:(id *)a6
+- (BOOL)getApplicationIsInstalled:(BOOL *)installed onPairedDevice:(id)device withCompanionBundleID:(id)d error:(id *)error
 {
   v10 = *MEMORY[0x277D2BBB8];
-  v11 = a5;
-  v12 = [a4 valueForProperty:v10];
-  LOBYTE(a6) = [(ACXDeviceConnection *)self getApplicationIsInstalled:a3 onDeviceWithPairingID:v12 withCompanionBundleID:v11 error:a6];
+  dCopy = d;
+  v12 = [device valueForProperty:v10];
+  LOBYTE(error) = [(ACXDeviceConnection *)self getApplicationIsInstalled:installed onDeviceWithPairingID:v12 withCompanionBundleID:dCopy error:error];
 
-  return a6;
+  return error;
 }
 
-- (void)applicationIsInstalledOnDeviceWithPairingID:(id)a3 withCompanionBundleID:(id)a4 completion:(id)a5
+- (void)applicationIsInstalledOnDeviceWithPairingID:(id)d withCompanionBundleID:(id)iD completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __100__ACXDeviceConnection_applicationIsInstalledOnDeviceWithPairingID_withCompanionBundleID_completion___block_invoke;
   v13[3] = &unk_278C8D4B0;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  iDCopy = iD;
+  dCopy = d;
   v12 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v13];
-  [v12 applicationIsInstalledOnDeviceWithPairingID:v11 withCompanionBundleID:v10 completion:v9];
+  [v12 applicationIsInstalledOnDeviceWithPairingID:dCopy withCompanionBundleID:iDCopy completion:v9];
 }
 
 void __100__ACXDeviceConnection_applicationIsInstalledOnDeviceWithPairingID_withCompanionBundleID_completion___block_invoke(uint64_t a1, void *a2)
@@ -4563,10 +4563,10 @@ void __100__ACXDeviceConnection_applicationIsInstalledOnDeviceWithPairingID_with
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)getApplicationIsInstalled:(BOOL *)a3 onDeviceWithPairingID:(id)a4 withCompanionBundleID:(id)a5 error:(id *)a6
+- (BOOL)getApplicationIsInstalled:(BOOL *)installed onDeviceWithPairingID:(id)d withCompanionBundleID:(id)iD error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v25 = 0;
   v26 = &v25;
   v27 = 0x2020000000;
@@ -4589,22 +4589,22 @@ void __100__ACXDeviceConnection_applicationIsInstalledOnDeviceWithPairingID_with
   v17[3] = &unk_278C8D5C8;
   v17[4] = &v19;
   v17[5] = &v25;
-  [v12 applicationIsInstalledOnDeviceWithPairingID:v10 withCompanionBundleID:v11 completion:v17];
+  [v12 applicationIsInstalledOnDeviceWithPairingID:dCopy withCompanionBundleID:iDCopy completion:v17];
 
   v13 = v20;
   v14 = v20[5];
   if (v14)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = v14;
+      *error = v14;
       v13 = v20;
     }
   }
 
-  else if (a3)
+  else if (installed)
   {
-    *a3 = *(v26 + 24);
+    *installed = *(v26 + 24);
   }
 
   v15 = v13[5] == 0;
@@ -4643,18 +4643,18 @@ void __99__ACXDeviceConnection_getApplicationIsInstalled_onDeviceWithPairingID_w
   }
 }
 
-- (void)applicationIsInstalledOnAnyPairedDeviceWithBundleID:(id)a3 completion:(id)a4
+- (void)applicationIsInstalledOnAnyPairedDeviceWithBundleID:(id)d completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __86__ACXDeviceConnection_applicationIsInstalledOnAnyPairedDeviceWithBundleID_completion___block_invoke;
   v10[3] = &unk_278C8D4B0;
-  v11 = v6;
-  v7 = v6;
-  v8 = a3;
+  v11 = completionCopy;
+  v7 = completionCopy;
+  dCopy = d;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v10];
-  [v9 applicationIsInstalledOnAnyPairedDeviceWithBundleID:v8 completion:v7];
+  [v9 applicationIsInstalledOnAnyPairedDeviceWithBundleID:dCopy completion:v7];
 }
 
 void __86__ACXDeviceConnection_applicationIsInstalledOnAnyPairedDeviceWithBundleID_completion___block_invoke(uint64_t a1, void *a2)
@@ -4668,9 +4668,9 @@ void __86__ACXDeviceConnection_applicationIsInstalledOnAnyPairedDeviceWithBundle
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)getApplicationIsInstalled:(BOOL *)a3 onAnyPairedDeviceWithBundleID:(id)a4 error:(id *)a5
+- (BOOL)getApplicationIsInstalled:(BOOL *)installed onAnyPairedDeviceWithBundleID:(id)d error:(id *)error
 {
-  v8 = a4;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -4693,22 +4693,22 @@ void __86__ACXDeviceConnection_applicationIsInstalledOnAnyPairedDeviceWithBundle
   v14[3] = &unk_278C8D5C8;
   v14[4] = &v16;
   v14[5] = &v22;
-  [v9 applicationIsInstalledOnAnyPairedDeviceWithBundleID:v8 completion:v14];
+  [v9 applicationIsInstalledOnAnyPairedDeviceWithBundleID:dCopy completion:v14];
 
   v10 = v17;
   v11 = v17[5];
   if (v11)
   {
-    if (a5)
+    if (error)
     {
-      *a5 = v11;
+      *error = v11;
       v10 = v17;
     }
   }
 
-  else if (a3)
+  else if (installed)
   {
-    *a3 = *(v23 + 24);
+    *installed = *(v23 + 24);
   }
 
   v12 = v10[5] == 0;
@@ -4747,17 +4747,17 @@ void __85__ACXDeviceConnection_getApplicationIsInstalled_onAnyPairedDeviceWithBu
   }
 }
 
-- (BOOL)_companionAppWithoutCounterparts:(id)a3
+- (BOOL)_companionAppWithoutCounterparts:(id)counterparts
 {
   v3 = MEMORY[0x277CC1E70];
-  v4 = a3;
+  counterpartsCopy = counterparts;
   v9 = 0;
-  v5 = [[v3 alloc] initWithBundleIdentifier:v4 allowPlaceholder:1 error:&v9];
+  v5 = [[v3 alloc] initWithBundleIdentifier:counterpartsCopy allowPlaceholder:1 error:&v9];
 
   if (v5)
   {
-    v6 = [v5 counterpartIdentifiers];
-    v7 = [v6 count] == 0;
+    counterpartIdentifiers = [v5 counterpartIdentifiers];
+    v7 = [counterpartIdentifiers count] == 0;
   }
 
   else
@@ -4768,13 +4768,13 @@ void __85__ACXDeviceConnection_getApplicationIsInstalled_onAnyPairedDeviceWithBu
   return v7;
 }
 
-- (void)applicationIsInstalledOnAnyPairedDeviceWithCompanionBundleID:(id)a3 completion:(id)a4
+- (void)applicationIsInstalledOnAnyPairedDeviceWithCompanionBundleID:(id)d completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(ACXDeviceConnection *)self _companionAppWithoutCounterparts:v6])
+  dCopy = d;
+  completionCopy = completion;
+  if ([(ACXDeviceConnection *)self _companionAppWithoutCounterparts:dCopy])
   {
-    (*(v7 + 2))(v7, 0, 0);
+    (*(completionCopy + 2))(completionCopy, 0, 0);
   }
 
   else
@@ -4783,10 +4783,10 @@ void __85__ACXDeviceConnection_getApplicationIsInstalled_onAnyPairedDeviceWithBu
     v10[1] = 3221225472;
     v10[2] = __95__ACXDeviceConnection_applicationIsInstalledOnAnyPairedDeviceWithCompanionBundleID_completion___block_invoke;
     v10[3] = &unk_278C8D4B0;
-    v8 = v7;
+    v8 = completionCopy;
     v11 = v8;
     v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v10];
-    [v9 applicationIsInstalledOnAnyPairedDeviceWithCompanionBundleID:v6 completion:v8];
+    [v9 applicationIsInstalledOnAnyPairedDeviceWithCompanionBundleID:dCopy completion:v8];
   }
 }
 
@@ -4801,9 +4801,9 @@ void __95__ACXDeviceConnection_applicationIsInstalledOnAnyPairedDeviceWithCompan
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)getApplicationIsInstalled:(BOOL *)a3 onAnyPairedDeviceWithCompanionBundleID:(id)a4 error:(id *)a5
+- (BOOL)getApplicationIsInstalled:(BOOL *)installed onAnyPairedDeviceWithCompanionBundleID:(id)d error:(id *)error
 {
-  v8 = a4;
+  dCopy = d;
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
@@ -4814,7 +4814,7 @@ void __95__ACXDeviceConnection_applicationIsInstalledOnAnyPairedDeviceWithCompan
   v19 = __Block_byref_object_copy_;
   v20 = __Block_byref_object_dispose_;
   v21 = 0;
-  if ([(ACXDeviceConnection *)self _companionAppWithoutCounterparts:v8])
+  if ([(ACXDeviceConnection *)self _companionAppWithoutCounterparts:dCopy])
   {
     v9 = 0;
   }
@@ -4833,22 +4833,22 @@ void __95__ACXDeviceConnection_applicationIsInstalledOnAnyPairedDeviceWithCompan
     v14[3] = &unk_278C8D5C8;
     v14[4] = &v16;
     v14[5] = &v22;
-    [v10 applicationIsInstalledOnAnyPairedDeviceWithCompanionBundleID:v8 completion:v14];
+    [v10 applicationIsInstalledOnAnyPairedDeviceWithCompanionBundleID:dCopy completion:v14];
 
     v11 = v17;
     v12 = v17[5];
     if (v12)
     {
-      if (a5)
+      if (error)
       {
-        *a5 = v12;
+        *error = v12;
         v11 = v17;
       }
     }
 
-    else if (a3)
+    else if (installed)
     {
-      *a3 = *(v23 + 24);
+      *installed = *(v23 + 24);
     }
 
     v9 = v11[5] == 0;
@@ -4889,17 +4889,17 @@ void __94__ACXDeviceConnection_getApplicationIsInstalled_onAnyPairedDeviceWithCo
   }
 }
 
-- (BOOL)fetchApplicationDatabaseSyncInformationForPairedDevice:(id)a3 returningDatabaseUUID:(id *)a4 lastSequenceNumber:(unint64_t *)a5 error:(id *)a6
+- (BOOL)fetchApplicationDatabaseSyncInformationForPairedDevice:(id)device returningDatabaseUUID:(id *)d lastSequenceNumber:(unint64_t *)number error:(id *)error
 {
-  v10 = [a3 valueForProperty:*MEMORY[0x277D2BBB8]];
-  LOBYTE(a6) = [(ACXDeviceConnection *)self fetchApplicationDatabaseSyncInformationForDeviceWithPairingID:v10 returningDatabaseUUID:a4 lastSequenceNumber:a5 error:a6];
+  v10 = [device valueForProperty:*MEMORY[0x277D2BBB8]];
+  LOBYTE(error) = [(ACXDeviceConnection *)self fetchApplicationDatabaseSyncInformationForDeviceWithPairingID:v10 returningDatabaseUUID:d lastSequenceNumber:number error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)fetchApplicationDatabaseSyncInformationForDeviceWithPairingID:(id)a3 returningDatabaseUUID:(id *)a4 lastSequenceNumber:(unint64_t *)a5 error:(id *)a6
+- (BOOL)fetchApplicationDatabaseSyncInformationForDeviceWithPairingID:(id)d returningDatabaseUUID:(id *)iD lastSequenceNumber:(unint64_t *)number error:(id *)error
 {
-  v10 = a3;
+  dCopy = d;
   v27 = 0;
   v28 = &v27;
   v29 = 0x3032000000;
@@ -4929,28 +4929,28 @@ void __94__ACXDeviceConnection_getApplicationIsInstalled_onAnyPairedDeviceWithCo
   v15[4] = &v17;
   v15[5] = &v27;
   v15[6] = &v23;
-  [v11 fetchApplicationDatabaseSyncInformationForDeviceWithPairingID:v10 completion:v15];
+  [v11 fetchApplicationDatabaseSyncInformationForDeviceWithPairingID:dCopy completion:v15];
 
   v12 = v18[5];
   if (v12)
   {
-    if (a6)
+    if (error)
     {
       v13 = v12;
-      *a6 = v12;
+      *error = v12;
     }
   }
 
   else
   {
-    if (a4)
+    if (iD)
     {
-      *a4 = v28[5];
+      *iD = v28[5];
     }
 
-    if (a5)
+    if (number)
     {
-      *a5 = v24[3];
+      *number = v24[3];
     }
   }
 
@@ -4991,11 +4991,11 @@ void __132__ACXDeviceConnection_fetchApplicationDatabaseSyncInformationForDevice
   }
 }
 
-- (id)copyLocalizedValuesFromAllDevicesForInfoPlistKeys:(id)a3 forAppWithBundleID:(id)a4 fetchingFirstMatchingLocalizationInList:(id)a5 error:(id *)a6
+- (id)copyLocalizedValuesFromAllDevicesForInfoPlistKeys:(id)keys forAppWithBundleID:(id)d fetchingFirstMatchingLocalizationInList:(id)list error:(id *)error
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
+  keysCopy = keys;
+  dCopy = d;
+  listCopy = list;
   v25 = 0;
   v26 = &v25;
   v27 = 0x3032000000;
@@ -5020,12 +5020,12 @@ void __132__ACXDeviceConnection_fetchApplicationDatabaseSyncInformationForDevice
   v17[3] = &unk_278C8D5F0;
   v17[4] = &v19;
   v17[5] = &v25;
-  [v13 fetchLocalizedValuesFromAllDevicesForInfoPlistKeys:v10 forAppWithBundleID:v11 fetchingFirstMatchingLocalizationInList:v12 completion:v17];
+  [v13 fetchLocalizedValuesFromAllDevicesForInfoPlistKeys:keysCopy forAppWithBundleID:dCopy fetchingFirstMatchingLocalizationInList:listCopy completion:v17];
 
   v14 = v26[5];
-  if (a6 && !v14)
+  if (error && !v14)
   {
-    *a6 = v20[5];
+    *error = v20[5];
     v14 = v26[5];
   }
 
@@ -5071,33 +5071,33 @@ void __138__ACXDeviceConnection_copyLocalizedValuesFromAllDevicesForInfoPlistKey
   *(v8 + 40) = v9;
 }
 
-- (void)enumerateInstallableSystemAppsOnPairedDevice:(id)a3 withBlock:(id)a4
+- (void)enumerateInstallableSystemAppsOnPairedDevice:(id)device withBlock:(id)block
 {
   v6 = *MEMORY[0x277D2BBB8];
-  v7 = a4;
-  v8 = [a3 valueForProperty:v6];
-  [(ACXDeviceConnection *)self enumerateInstallableSystemAppsOnDeviceWithPairingID:v8 withBlock:v7];
+  blockCopy = block;
+  v8 = [device valueForProperty:v6];
+  [(ACXDeviceConnection *)self enumerateInstallableSystemAppsOnDeviceWithPairingID:v8 withBlock:blockCopy];
 }
 
-- (void)enumerateInstallableSystemAppsOnDeviceWithPairingID:(id)a3 withBlock:(id)a4
+- (void)enumerateInstallableSystemAppsOnDeviceWithPairingID:(id)d withBlock:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  blockCopy = block;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __85__ACXDeviceConnection_enumerateInstallableSystemAppsOnDeviceWithPairingID_withBlock___block_invoke;
   v16[3] = &unk_278C8D4B0;
-  v8 = v7;
+  v8 = blockCopy;
   v17 = v8;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v16];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __85__ACXDeviceConnection_enumerateInstallableSystemAppsOnDeviceWithPairingID_withBlock___block_invoke_2;
   v12[3] = &unk_278C8D690;
-  v14 = self;
+  selfCopy = self;
   v15 = v8;
-  v13 = v6;
-  v10 = v6;
+  v13 = dCopy;
+  v10 = dCopy;
   v11 = v8;
   [v9 fetchInstallableSystemAppBundleIDsForDeviceWithPairingID:v10 completion:v12];
 }
@@ -5322,28 +5322,28 @@ LABEL_26:
   dispatch_async(v13, *(a1 + 72));
 }
 
-- (void)fetchInstallableSystemAppWithBundleID:(id)a3 onPairedDevice:(id)a4 completion:(id)a5
+- (void)fetchInstallableSystemAppWithBundleID:(id)d onPairedDevice:(id)device completion:(id)completion
 {
   v8 = *MEMORY[0x277D2BBB8];
-  v9 = a5;
-  v10 = a3;
-  v11 = [a4 valueForProperty:v8];
-  [(ACXDeviceConnection *)self fetchInstallableSystemAppWithBundleID:v10 onDeviceWithPairingID:v11 completion:v9];
+  completionCopy = completion;
+  dCopy = d;
+  v11 = [device valueForProperty:v8];
+  [(ACXDeviceConnection *)self fetchInstallableSystemAppWithBundleID:dCopy onDeviceWithPairingID:v11 completion:completionCopy];
 }
 
-- (void)fetchInstallableSystemAppWithBundleID:(id)a3 onDeviceWithPairingID:(id)a4 completion:(id)a5
+- (void)fetchInstallableSystemAppWithBundleID:(id)d onDeviceWithPairingID:(id)iD completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __94__ACXDeviceConnection_fetchInstallableSystemAppWithBundleID_onDeviceWithPairingID_completion___block_invoke;
   v13[3] = &unk_278C8D4B0;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  iDCopy = iD;
+  dCopy = d;
   v12 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v13];
-  [v12 fetchInstallableSystemAppWithBundleID:v11 forDeviceWithPairingID:v10 completion:v9];
+  [v12 fetchInstallableSystemAppWithBundleID:dCopy forDeviceWithPairingID:iDCopy completion:v9];
 }
 
 void __94__ACXDeviceConnection_fetchInstallableSystemAppWithBundleID_onDeviceWithPairingID_completion___block_invoke(uint64_t a1, void *a2)
@@ -5357,20 +5357,20 @@ void __94__ACXDeviceConnection_fetchInstallableSystemAppWithBundleID_onDeviceWit
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (id)installableSystemAppWithBundleID:(id)a3 onPairedDevice:(id)a4 error:(id *)a5
+- (id)installableSystemAppWithBundleID:(id)d onPairedDevice:(id)device error:(id *)error
 {
   v8 = *MEMORY[0x277D2BBB8];
-  v9 = a3;
-  v10 = [a4 valueForProperty:v8];
-  v11 = [(ACXDeviceConnection *)self installableSystemAppWithBundleID:v9 onDeviceWithPairingID:v10 error:a5];
+  dCopy = d;
+  v10 = [device valueForProperty:v8];
+  v11 = [(ACXDeviceConnection *)self installableSystemAppWithBundleID:dCopy onDeviceWithPairingID:v10 error:error];
 
   return v11;
 }
 
-- (id)installableSystemAppWithBundleID:(id)a3 onDeviceWithPairingID:(id)a4 error:(id *)a5
+- (id)installableSystemAppWithBundleID:(id)d onDeviceWithPairingID:(id)iD error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  dCopy = d;
+  iDCopy = iD;
   v22 = 0;
   v23 = &v22;
   v24 = 0x3032000000;
@@ -5395,12 +5395,12 @@ void __94__ACXDeviceConnection_fetchInstallableSystemAppWithBundleID_onDeviceWit
   v14[3] = &unk_278C8D758;
   v14[4] = &v22;
   v14[5] = &v16;
-  [v10 fetchInstallableSystemAppWithBundleID:v8 forDeviceWithPairingID:v9 completion:v14];
+  [v10 fetchInstallableSystemAppWithBundleID:dCopy forDeviceWithPairingID:iDCopy completion:v14];
 
   v11 = v17[5];
-  if (a5 && !v11)
+  if (error && !v11)
   {
-    *a5 = v23[5];
+    *error = v23[5];
     v11 = v17[5];
   }
 
@@ -5447,28 +5447,28 @@ void __84__ACXDeviceConnection_installableSystemAppWithBundleID_onDeviceWithPair
   *(v8 + 40) = v9;
 }
 
-- (void)systemAppIsInstallableOnPairedDevice:(id)a3 withBundleID:(id)a4 completion:(id)a5
+- (void)systemAppIsInstallableOnPairedDevice:(id)device withBundleID:(id)d completion:(id)completion
 {
   v8 = *MEMORY[0x277D2BBB8];
-  v9 = a5;
-  v10 = a4;
-  v11 = [a3 valueForProperty:v8];
-  [(ACXDeviceConnection *)self systemAppIsInstallableOnDeviceWithPairingID:v11 withBundleID:v10 completion:v9];
+  completionCopy = completion;
+  dCopy = d;
+  v11 = [device valueForProperty:v8];
+  [(ACXDeviceConnection *)self systemAppIsInstallableOnDeviceWithPairingID:v11 withBundleID:dCopy completion:completionCopy];
 }
 
-- (void)systemAppIsInstallableOnDeviceWithPairingID:(id)a3 withBundleID:(id)a4 completion:(id)a5
+- (void)systemAppIsInstallableOnDeviceWithPairingID:(id)d withBundleID:(id)iD completion:(id)completion
 {
-  v8 = a5;
+  completionCopy = completion;
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __91__ACXDeviceConnection_systemAppIsInstallableOnDeviceWithPairingID_withBundleID_completion___block_invoke;
   v13[3] = &unk_278C8D4B0;
-  v14 = v8;
-  v9 = v8;
-  v10 = a4;
-  v11 = a3;
+  v14 = completionCopy;
+  v9 = completionCopy;
+  iDCopy = iD;
+  dCopy = d;
   v12 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v13];
-  [v12 systemAppIsInstallableOnDeviceWithPairingID:v11 withBundleID:v10 completion:v9];
+  [v12 systemAppIsInstallableOnDeviceWithPairingID:dCopy withBundleID:iDCopy completion:v9];
 }
 
 void __91__ACXDeviceConnection_systemAppIsInstallableOnDeviceWithPairingID_withBundleID_completion___block_invoke(uint64_t a1, void *a2)
@@ -5482,20 +5482,20 @@ void __91__ACXDeviceConnection_systemAppIsInstallableOnDeviceWithPairingID_withB
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)getSystemAppInstallability:(BOOL *)a3 onPairedDevice:(id)a4 withBundleID:(id)a5 error:(id *)a6
+- (BOOL)getSystemAppInstallability:(BOOL *)installability onPairedDevice:(id)device withBundleID:(id)d error:(id *)error
 {
   v10 = *MEMORY[0x277D2BBB8];
-  v11 = a5;
-  v12 = [a4 valueForProperty:v10];
-  LOBYTE(a6) = [(ACXDeviceConnection *)self getSystemAppInstallability:a3 onDeviceWithPairingID:v12 withBundleID:v11 error:a6];
+  dCopy = d;
+  v12 = [device valueForProperty:v10];
+  LOBYTE(error) = [(ACXDeviceConnection *)self getSystemAppInstallability:installability onDeviceWithPairingID:v12 withBundleID:dCopy error:error];
 
-  return a6;
+  return error;
 }
 
-- (BOOL)getSystemAppInstallability:(BOOL *)a3 onDeviceWithPairingID:(id)a4 withBundleID:(id)a5 error:(id *)a6
+- (BOOL)getSystemAppInstallability:(BOOL *)installability onDeviceWithPairingID:(id)d withBundleID:(id)iD error:(id *)error
 {
-  v10 = a4;
-  v11 = a5;
+  dCopy = d;
+  iDCopy = iD;
   v23 = 0;
   v24 = &v23;
   v25 = 0x3032000000;
@@ -5518,22 +5518,22 @@ void __91__ACXDeviceConnection_systemAppIsInstallableOnDeviceWithPairingID_withB
   v17[3] = &unk_278C8D5C8;
   v17[4] = &v23;
   v17[5] = &v19;
-  [v12 systemAppIsInstallableOnDeviceWithPairingID:v10 withBundleID:v11 completion:v17];
+  [v12 systemAppIsInstallableOnDeviceWithPairingID:dCopy withBundleID:iDCopy completion:v17];
 
   v13 = v24;
   v14 = v24[5];
   if (v14)
   {
-    if (a6)
+    if (error)
     {
-      *a6 = v14;
+      *error = v14;
       v13 = v24;
     }
   }
 
-  else if (a3)
+  else if (installability)
   {
-    *a3 = *(v20 + 24);
+    *installability = *(v20 + 24);
   }
 
   v15 = v13[5] == 0;
@@ -5585,10 +5585,10 @@ void __109__ACXDeviceConnection_installRequestFailedForApp_onDeviceWithPairingID
   *(v4 + 40) = v3;
 }
 
-- (BOOL)acknowledgeTestFlightInstallBegunForApp:(id)a3 onDeviceWithPairingID:(id)a4 error:(id *)a5
+- (BOOL)acknowledgeTestFlightInstallBegunForApp:(id)app onDeviceWithPairingID:(id)d error:(id *)error
 {
-  v8 = a3;
-  v9 = a4;
+  appCopy = app;
+  dCopy = d;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -5606,15 +5606,15 @@ void __109__ACXDeviceConnection_installRequestFailedForApp_onDeviceWithPairingID
   v15[2] = __91__ACXDeviceConnection_acknowledgeTestFlightInstallBegunForApp_onDeviceWithPairingID_error___block_invoke_2;
   v15[3] = &unk_278C8D4D8;
   v15[4] = &v17;
-  [v10 acknowledgeTestFlightInstallBegunForApp:v8 forDeviceWithPairingID:v9 completion:v15];
+  [v10 acknowledgeTestFlightInstallBegunForApp:appCopy forDeviceWithPairingID:dCopy completion:v15];
 
   v11 = v18;
-  if (a5)
+  if (error)
   {
     v12 = v18[5];
     if (v12)
     {
-      *a5 = v12;
+      *error = v12;
       v11 = v18;
     }
   }
@@ -5638,9 +5638,9 @@ void __91__ACXDeviceConnection_acknowledgeTestFlightInstallBegunForApp_onDeviceW
   *(v4 + 40) = v3;
 }
 
-- (id)applicationRemovabilityForPairedDevice:(id)a3 error:(id *)a4
+- (id)applicationRemovabilityForPairedDevice:(id)device error:(id *)error
 {
-  v6 = a3;
+  deviceCopy = device;
   v20 = 0;
   v21 = &v20;
   v22 = 0x3032000000;
@@ -5653,7 +5653,7 @@ void __91__ACXDeviceConnection_acknowledgeTestFlightInstallBegunForApp_onDeviceW
   v17 = __Block_byref_object_copy_;
   v18 = __Block_byref_object_dispose_;
   v19 = 0;
-  v7 = [v6 valueForProperty:*MEMORY[0x277D2BBB8]];
+  v7 = [deviceCopy valueForProperty:*MEMORY[0x277D2BBB8]];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __68__ACXDeviceConnection_applicationRemovabilityForPairedDevice_error___block_invoke;
@@ -5669,9 +5669,9 @@ void __91__ACXDeviceConnection_acknowledgeTestFlightInstallBegunForApp_onDeviceW
   [v8 applicationRemovabilityOnDeviceWithPairingID:v7 completion:v12];
 
   v9 = v15[5];
-  if (a4 && !v9)
+  if (error && !v9)
   {
-    *a4 = v21[5];
+    *error = v21[5];
     v9 = v15[5];
   }
 
@@ -5718,16 +5718,16 @@ void __68__ACXDeviceConnection_applicationRemovabilityForPairedDevice_error___bl
   *(v8 + 40) = v9;
 }
 
-- (void)applictionRemovabilityForPairedDevice:(id)a3 completion:(id)a4
+- (void)applictionRemovabilityForPairedDevice:(id)device completion:(id)completion
 {
-  v6 = a4;
-  v7 = [a3 valueForProperty:*MEMORY[0x277D2BBB8]];
+  completionCopy = completion;
+  v7 = [device valueForProperty:*MEMORY[0x277D2BBB8]];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__ACXDeviceConnection_applictionRemovabilityForPairedDevice_completion___block_invoke;
   v10[3] = &unk_278C8D4B0;
-  v11 = v6;
-  v8 = v6;
+  v11 = completionCopy;
+  v8 = completionCopy;
   v9 = [(ACXDeviceConnection *)self _proxyWithErrorHandler:v10];
   [v9 applicationRemovabilityOnDeviceWithPairingID:v7 completion:v8];
 }
@@ -5743,7 +5743,7 @@ void __72__ACXDeviceConnection_applictionRemovabilityForPairedDevice_completion_
   (*(*(a1 + 32) + 16))(*(a1 + 32));
 }
 
-- (BOOL)killDaemonForTestingWithError:(id *)a3
+- (BOOL)killDaemonForTestingWithError:(id *)error
 {
   v14 = 0;
   v15 = &v14;
@@ -5765,9 +5765,9 @@ void __72__ACXDeviceConnection_applictionRemovabilityForPairedDevice_completion_
   [v4 killDaemonForTesting:&__block_literal_global_207];
 
   v5 = *(v15 + 24);
-  if (a3 && (v15[3] & 1) == 0)
+  if (error && (v15[3] & 1) == 0)
   {
-    *a3 = v9[5];
+    *error = v9[5];
     v5 = *(v15 + 24);
   }
 
@@ -5819,7 +5819,7 @@ uint64_t __53__ACXDeviceConnection_killDaemonForTestingWithError___block_invoke_
   return MEMORY[0x2821F96F8](v3, v2);
 }
 
-- (id)copyRemoteDuplicatedClassInfoWithError:(id *)a3
+- (id)copyRemoteDuplicatedClassInfoWithError:(id *)error
 {
   v16 = 0;
   v17 = &v16;
@@ -5849,9 +5849,9 @@ uint64_t __53__ACXDeviceConnection_killDaemonForTestingWithError___block_invoke_
   [v4 fetchDuplicatedClassInfo:v8];
 
   v5 = v17[5];
-  if (a3 && !v5)
+  if (error && !v5)
   {
-    *a3 = v11[5];
+    *error = v11[5];
     v5 = v17[5];
   }
 

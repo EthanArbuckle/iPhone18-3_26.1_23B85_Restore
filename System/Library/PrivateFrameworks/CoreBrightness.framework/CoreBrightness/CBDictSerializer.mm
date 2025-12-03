@@ -1,20 +1,20 @@
 @interface CBDictSerializer
-+ (id)serialize:(id)a3;
++ (id)serialize:(id)serialize;
 @end
 
 @implementation CBDictSerializer
 
-+ (id)serialize:(id)a3
++ (id)serialize:(id)serialize
 {
   v20 = *MEMORY[0x1E69E9840];
-  v18 = a1;
+  selfCopy = self;
   v17 = a2;
-  v16 = a3;
-  v15 = [a3 codingKeys];
-  v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v15, "count")}];
+  serializeCopy = serialize;
+  codingKeys = [serialize codingKeys];
+  v14 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(codingKeys, "count")}];
   memset(__b, 0, sizeof(__b));
-  obj = v15;
-  v11 = [v15 countByEnumeratingWithState:__b objects:v19 count:16];
+  obj = codingKeys;
+  v11 = [codingKeys countByEnumeratingWithState:__b objects:v19 count:16];
   if (v11)
   {
     v7 = *__b[2];
@@ -30,7 +30,7 @@
 
       v13 = 0;
       v13 = *(__b[1] + 8 * v8);
-      v3 = [v16 valueForKey:{objc_msgSend(v15, "objectForKeyedSubscript:", v13)}];
+      v3 = [serializeCopy valueForKey:{objc_msgSend(codingKeys, "objectForKeyedSubscript:", v13)}];
       [v14 setObject:v3 forKeyedSubscript:v13];
       ++v8;
       if (v6 + 1 >= v9)

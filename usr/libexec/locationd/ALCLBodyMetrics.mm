@@ -1,43 +1,43 @@
 @interface ALCLBodyMetrics
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)genderAsString:(int)a3;
-- (int)StringAsGender:(id)a3;
+- (id)genderAsString:(int)string;
+- (int)StringAsGender:(id)gender;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ALCLBodyMetrics
 
-- (id)genderAsString:(int)a3
+- (id)genderAsString:(int)string
 {
-  if (!a3)
+  if (!string)
   {
     return @"kGenderMale";
   }
 
-  if (a3 == 1)
+  if (string == 1)
   {
     return @"kGenderFemale";
   }
 
-  return [NSString stringWithFormat:@"(unknown: %i)", *&a3];
+  return [NSString stringWithFormat:@"(unknown: %i)", *&string];
 }
 
-- (int)StringAsGender:(id)a3
+- (int)StringAsGender:(id)gender
 {
-  if ([a3 isEqualToString:@"kGenderMale"])
+  if ([gender isEqualToString:@"kGenderMale"])
   {
     return 0;
   }
 
   else
   {
-    return [a3 isEqualToString:@"kGenderFemale"];
+    return [gender isEqualToString:@"kGenderFemale"];
   }
 }
 
@@ -90,7 +90,7 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   PBDataWriterWriteInt32Field();
   PBDataWriterWriteFloatField();
@@ -104,22 +104,22 @@
   PBDataWriterWriteFloatField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  *(a3 + 3) = self->_gender;
-  *(a3 + 4) = LODWORD(self->_heightM);
-  *(a3 + 10) = LODWORD(self->_weightKG);
-  *(a3 + 9) = LODWORD(self->_vo2max);
-  *(a3 + 2) = LODWORD(self->_age);
-  *(a3 + 6) = LODWORD(self->_hrmin);
-  *(a3 + 5) = LODWORD(self->_hrmax);
-  *(a3 + 7) = LODWORD(self->_hronset);
-  *(a3 + 8) = LODWORD(self->_pal);
+  *(to + 3) = self->_gender;
+  *(to + 4) = LODWORD(self->_heightM);
+  *(to + 10) = LODWORD(self->_weightKG);
+  *(to + 9) = LODWORD(self->_vo2max);
+  *(to + 2) = LODWORD(self->_age);
+  *(to + 6) = LODWORD(self->_hrmin);
+  *(to + 5) = LODWORD(self->_hrmax);
+  *(to + 7) = LODWORD(self->_hronset);
+  *(to + 8) = LODWORD(self->_pal);
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(result + 3) = self->_gender;
   *(result + 4) = LODWORD(self->_heightM);
   *(result + 10) = LODWORD(self->_weightKG);
@@ -132,12 +132,12 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
-    LOBYTE(v5) = self->_gender == *(a3 + 3) && self->_heightM == *(a3 + 4) && self->_weightKG == *(a3 + 10) && self->_vo2max == *(a3 + 9) && self->_age == *(a3 + 2) && self->_hrmin == *(a3 + 6) && self->_hrmax == *(a3 + 5) && self->_hronset == *(a3 + 7) && self->_pal == *(a3 + 8);
+    LOBYTE(v5) = self->_gender == *(equal + 3) && self->_heightM == *(equal + 4) && self->_weightKG == *(equal + 10) && self->_vo2max == *(equal + 9) && self->_age == *(equal + 2) && self->_hrmin == *(equal + 6) && self->_hrmax == *(equal + 5) && self->_hronset == *(equal + 7) && self->_pal == *(equal + 8);
   }
 
   return v5;
@@ -339,17 +339,17 @@
   return v13 ^ (2654435761 * gender) ^ v19 ^ v26 ^ v32 ^ v38 ^ v44 ^ v50 ^ v55;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  self->_gender = *(a3 + 3);
-  self->_heightM = *(a3 + 4);
-  self->_weightKG = *(a3 + 10);
-  self->_vo2max = *(a3 + 9);
-  self->_age = *(a3 + 2);
-  self->_hrmin = *(a3 + 6);
-  self->_hrmax = *(a3 + 5);
-  self->_hronset = *(a3 + 7);
-  self->_pal = *(a3 + 8);
+  self->_gender = *(from + 3);
+  self->_heightM = *(from + 4);
+  self->_weightKG = *(from + 10);
+  self->_vo2max = *(from + 9);
+  self->_age = *(from + 2);
+  self->_hrmin = *(from + 6);
+  self->_hrmax = *(from + 5);
+  self->_hronset = *(from + 7);
+  self->_pal = *(from + 8);
 }
 
 @end

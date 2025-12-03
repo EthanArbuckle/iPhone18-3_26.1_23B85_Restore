@@ -1,14 +1,14 @@
 @interface NSTimer
-+ (id)_maps_scheduledTimerWithFireDate:(id)a3 block:(id)a4;
++ (id)_maps_scheduledTimerWithFireDate:(id)date block:(id)block;
 @end
 
 @implementation NSTimer
 
-+ (id)_maps_scheduledTimerWithFireDate:(id)a3 block:(id)a4
++ (id)_maps_scheduledTimerWithFireDate:(id)date block:(id)block
 {
-  v6 = a3;
-  v7 = [a1 scheduledTimerWithTimeInterval:0 repeats:a4 block:1.79769313e308];
-  [v7 setFireDate:v6];
+  dateCopy = date;
+  v7 = [self scheduledTimerWithTimeInterval:0 repeats:block block:1.79769313e308];
+  [v7 setFireDate:dateCopy];
 
   return v7;
 }

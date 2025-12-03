@@ -1,21 +1,21 @@
 @interface PXGShadowTextureProvider
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7;
-- (void)_requestTextureForShadow:(id)a3 cornerRadius:(double)a4 screenScale:(double)a5 targetSize:(CGSize)a6 requestID:(int)a7;
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout;
+- (void)_requestTextureForShadow:(id)shadow cornerRadius:(double)radius screenScale:(double)scale targetSize:(CGSize)size requestID:(int)d;
 @end
 
 @implementation PXGShadowTextureProvider
 
-- (void)_requestTextureForShadow:(id)a3 cornerRadius:(double)a4 screenScale:(double)a5 targetSize:(CGSize)a6 requestID:(int)a7
+- (void)_requestTextureForShadow:(id)shadow cornerRadius:(double)radius screenScale:(double)scale targetSize:(CGSize)size requestID:(int)d
 {
-  v7 = *&a7;
-  height = a6.height;
-  width = a6.width;
+  v7 = *&d;
+  height = size.height;
+  width = size.width;
   v29[4] = *MEMORY[0x277D85DE8];
-  v13 = a3;
+  shadowCopy = shadow;
   if ([(PXGTextureProvider *)self isRequestActive:v7])
   {
     IsZero = PXPixelSizeAreaIsZero();
-    if (!v13 || IsZero)
+    if (!shadowCopy || IsZero)
     {
       [(PXGTextureProvider *)self provideNothingForRequestID:v7];
     }
@@ -23,10 +23,10 @@
     else
     {
       v15 = objc_alloc(MEMORY[0x277D3CE08]);
-      v29[0] = v13;
-      v16 = [MEMORY[0x277CCABB0] numberWithDouble:a4];
+      v29[0] = shadowCopy;
+      v16 = [MEMORY[0x277CCABB0] numberWithDouble:radius];
       v29[1] = v16;
-      v17 = [MEMORY[0x277CCABB0] numberWithDouble:a5];
+      v17 = [MEMORY[0x277CCABB0] numberWithDouble:scale];
       v29[2] = v17;
       v18 = [MEMORY[0x277CCAE60] valueWithCGSize:{width, height}];
       v29[3] = v18;
@@ -37,9 +37,9 @@
       v23[1] = 3221225472;
       v23[2] = __99__PXGShadowTextureProvider__requestTextureForShadow_cornerRadius_screenScale_targetSize_requestID___block_invoke;
       v23[3] = &unk_2782A9EC8;
-      v24 = v13;
-      v25 = a4;
-      v26 = a5;
+      v24 = shadowCopy;
+      radiusCopy = radius;
+      scaleCopy = scale;
       v27 = width;
       v28 = height;
       v21[0] = MEMORY[0x277D85DD0];
@@ -53,30 +53,30 @@
   }
 }
 
-- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)a3 geometries:(id *)a4 styles:(id *)a5 infos:(id *)a6 inLayout:(id)a7
+- (_NSRange)requestTexturesForSpritesInRange:(_PXGSpriteIndexRange)range geometries:(id *)geometries styles:(id *)styles infos:(id *)infos inLayout:(id)layout
 {
-  v12 = a7;
+  layoutCopy = layout;
   v37.receiver = self;
   v37.super_class = PXGShadowTextureProvider;
-  v30 = a6;
-  v13 = [(PXGTextureProvider *)&v37 requestTexturesForSpritesInRange:a3 geometries:a4 styles:a5 infos:a6 inLayout:v12];
+  infosCopy = infos;
+  v13 = [(PXGTextureProvider *)&v37 requestTexturesForSpritesInRange:range geometries:geometries styles:styles infos:infos inLayout:layoutCopy];
   v28 = v14;
   v29 = v13;
-  v15 = [v12 contentSource];
-  v16 = HIDWORD(*&a3);
-  if (HIDWORD(*&a3))
+  contentSource = [layoutCopy contentSource];
+  v16 = HIDWORD(*&range);
+  if (HIDWORD(*&range))
   {
     v17 = v29;
     do
     {
-      v18 = *(&v30->var3 + 5 * a3.location);
-      v19 = [v15 shadowForSpriteAtIndex:a3 inLayout:v12];
-      [v15 cornerRadiusForShadowSpriteAtIndex:a3 inLayout:v12];
+      v18 = *(&infosCopy->var3 + 5 * range.location);
+      v19 = [contentSource shadowForSpriteAtIndex:range inLayout:layoutCopy];
+      [contentSource cornerRadiusForShadowSpriteAtIndex:range inLayout:layoutCopy];
       v21 = v20;
-      [v12 displayScale];
+      [layoutCopy displayScale];
       v23 = v22;
       objc_initWeak(&location, self);
-      v24 = [(PXGTextureProvider *)self requestQueue];
+      requestQueue = [(PXGTextureProvider *)self requestQueue];
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __94__PXGShadowTextureProvider_requestTexturesForSpritesInRange_geometries_styles_infos_inLayout___block_invoke;
@@ -88,12 +88,12 @@
       v34 = vcvtq_f64_f32(v18);
       v35 = v17;
       v25 = v19;
-      dispatch_async(v24, block);
+      dispatch_async(requestQueue, block);
 
       objc_destroyWeak(v33);
       objc_destroyWeak(&location);
       ++v17;
-      a3 = (a3.location + 1);
+      range = (range.location + 1);
       --v16;
     }
 

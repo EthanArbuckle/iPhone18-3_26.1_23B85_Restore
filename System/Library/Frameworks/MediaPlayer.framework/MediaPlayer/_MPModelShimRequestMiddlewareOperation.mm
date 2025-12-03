@@ -1,5 +1,5 @@
 @interface _MPModelShimRequestMiddlewareOperation
-- (_MPModelShimRequestMiddlewareOperation)initWithMiddleware:(id)a3 modelRequest:(id)a4;
+- (_MPModelShimRequestMiddlewareOperation)initWithMiddleware:(id)middleware modelRequest:(id)request;
 - (void)execute;
 @end
 
@@ -19,18 +19,18 @@
   [(MPModelRequest *)modelRequest performWithResponseHandler:v4];
 }
 
-- (_MPModelShimRequestMiddlewareOperation)initWithMiddleware:(id)a3 modelRequest:(id)a4
+- (_MPModelShimRequestMiddlewareOperation)initWithMiddleware:(id)middleware modelRequest:(id)request
 {
-  v7 = a3;
-  v8 = a4;
+  middlewareCopy = middleware;
+  requestCopy = request;
   v12.receiver = self;
   v12.super_class = _MPModelShimRequestMiddlewareOperation;
   v9 = [(MPAsyncOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_middleware, a3);
-    objc_storeStrong(&v10->_modelRequest, a4);
+    objc_storeStrong(&v9->_middleware, middleware);
+    objc_storeStrong(&v10->_modelRequest, request);
   }
 
   return v10;

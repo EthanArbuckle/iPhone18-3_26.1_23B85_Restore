@@ -2,14 +2,14 @@
 - (NSProgress)progress;
 - (NSString)description;
 - (TSPDocumentResourceRequest)init;
-- (TSPDocumentResourceRequest)initWithDocumentResourceInfos:(id)a3 documentResourceCache:(id)a4;
-- (TSPDocumentResourceRequest)initWithDocumentResourceInfos:(id)a3 tags:(id)a4 documentResourceCache:(id)a5;
-- (id)fileURLForResourceInfo:(id)a3;
-- (id)remoteURLForDocumentResourceInfo:(id)a3;
+- (TSPDocumentResourceRequest)initWithDocumentResourceInfos:(id)infos documentResourceCache:(id)cache;
+- (TSPDocumentResourceRequest)initWithDocumentResourceInfos:(id)infos tags:(id)tags documentResourceCache:(id)cache;
+- (id)fileURLForResourceInfo:(id)info;
+- (id)remoteURLForDocumentResourceInfo:(id)info;
 - (unint64_t)estimatedDownloadSize;
-- (void)conditionallyBeginAccessingResourcesWithCompletionQueue:(id)a3 completionHandler:(id)a4;
-- (void)performResourceAccessAsynchronouslyUsingQueue:(id)a3 block:(id)a4;
-- (void)performResourceAccessUsingQueue:(id)a3 block:(id)a4;
+- (void)conditionallyBeginAccessingResourcesWithCompletionQueue:(id)queue completionHandler:(id)handler;
+- (void)performResourceAccessAsynchronouslyUsingQueue:(id)queue block:(id)block;
+- (void)performResourceAccessUsingQueue:(id)queue block:(id)block;
 @end
 
 @implementation TSPDocumentResourceRequest
@@ -31,24 +31,24 @@
   objc_exception_throw(v14);
 }
 
-- (TSPDocumentResourceRequest)initWithDocumentResourceInfos:(id)a3 documentResourceCache:(id)a4
+- (TSPDocumentResourceRequest)initWithDocumentResourceInfos:(id)infos documentResourceCache:(id)cache
 {
   v6 = MEMORY[0x277CBEB98];
-  v7 = a4;
-  v8 = a3;
+  cacheCopy = cache;
+  infosCopy = infos;
   v11 = objc_msgSend_set(v6, v9, v10);
-  v13 = objc_msgSend_initWithDocumentResourceInfos_tags_documentResourceCache_(self, v12, v8, v11, v7);
+  v13 = objc_msgSend_initWithDocumentResourceInfos_tags_documentResourceCache_(self, v12, infosCopy, v11, cacheCopy);
 
   return v13;
 }
 
-- (TSPDocumentResourceRequest)initWithDocumentResourceInfos:(id)a3 tags:(id)a4 documentResourceCache:(id)a5
+- (TSPDocumentResourceRequest)initWithDocumentResourceInfos:(id)infos tags:(id)tags documentResourceCache:(id)cache
 {
   v53 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (objc_msgSend_count(v8, v11, v12))
+  infosCopy = infos;
+  tagsCopy = tags;
+  cacheCopy = cache;
+  if (objc_msgSend_count(infosCopy, v11, v12))
   {
     v51.receiver = self;
     v51.super_class = TSPDocumentResourceRequest;
@@ -56,17 +56,17 @@
     v14 = v13;
     if (v13)
     {
-      objc_storeStrong(&v13->_documentResourceCache, a5);
-      v17 = objc_msgSend_copy(v8, v15, v16);
+      objc_storeStrong(&v13->_documentResourceCache, cache);
+      v17 = objc_msgSend_copy(infosCopy, v15, v16);
       documentResourceInfos = v14->_documentResourceInfos;
       v14->_documentResourceInfos = v17;
 
-      v21 = objc_msgSend_mutableCopy(v9, v19, v20);
+      v21 = objc_msgSend_mutableCopy(tagsCopy, v19, v20);
       v47 = 0u;
       v48 = 0u;
       v49 = 0u;
       v50 = 0u;
-      v22 = v8;
+      v22 = infosCopy;
       v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, &v47, v52, 16);
       if (v24)
       {
@@ -108,22 +108,22 @@
       accessQueue = v14->_accessQueue;
       v14->_accessQueue = v39;
 
-      v42 = objc_msgSend_newBackingResourceRequestForDocumentResourceInfos_documentResourceCache_(v14, v41, v22, v10);
+      v42 = objc_msgSend_newBackingResourceRequestForDocumentResourceInfos_documentResourceCache_(v14, v41, v22, cacheCopy);
       accessQueue_backingResourceRequest = v14->_accessQueue_backingResourceRequest;
       v14->_accessQueue_backingResourceRequest = v42;
     }
 
     self = v14;
-    v44 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v44 = 0;
+    selfCopy = 0;
   }
 
   v45 = *MEMORY[0x277D85DE8];
-  return v44;
+  return selfCopy;
 }
 
 - (NSString)description
@@ -137,11 +137,11 @@
   return v6;
 }
 
-- (id)remoteURLForDocumentResourceInfo:(id)a3
+- (id)remoteURLForDocumentResourceInfo:(id)info
 {
-  v3 = a3;
-  v6 = objc_msgSend_digestString(v3, v4, v5);
-  v9 = objc_msgSend_fileExtension(v3, v7, v8);
+  infoCopy = info;
+  v6 = objc_msgSend_digestString(infoCopy, v4, v5);
+  v9 = objc_msgSend_fileExtension(infoCopy, v7, v8);
 
   v10 = v6;
   v12 = objc_msgSend_substringToIndex_(v10, v11, 2);
@@ -192,9 +192,9 @@
   return v6;
 }
 
-- (id)fileURLForResourceInfo:(id)a3
+- (id)fileURLForResourceInfo:(id)info
 {
-  v4 = a3;
+  infoCopy = info;
   objc_opt_class();
   v5 = TSUDynamicCast();
 
@@ -213,11 +213,11 @@ LABEL_6:
   return v8;
 }
 
-- (void)conditionallyBeginAccessingResourcesWithCompletionQueue:(id)a3 completionHandler:(id)a4
+- (void)conditionallyBeginAccessingResourcesWithCompletionQueue:(id)queue completionHandler:(id)handler
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  handlerCopy = handler;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
@@ -264,48 +264,48 @@ LABEL_6:
   v18 = 1;
 LABEL_11:
 
-  if (v7)
+  if (handlerCopy)
   {
-    if (v6)
+    if (queueCopy)
     {
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = sub_276A86890;
       v20[3] = &unk_27A6E5C68;
-      v21 = v7;
+      v21 = handlerCopy;
       v22 = v18;
-      dispatch_async(v6, v20);
+      dispatch_async(queueCopy, v20);
     }
 
     else
     {
-      (*(v7 + 2))(v7, v18);
+      (*(handlerCopy + 2))(handlerCopy, v18);
     }
   }
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performResourceAccessUsingQueue:(id)a3 block:(id)a4
+- (void)performResourceAccessUsingQueue:(id)queue block:(id)block
 {
-  v6 = a4;
+  blockCopy = block;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = sub_276A8694C;
   v9[3] = &unk_27A6E5C90;
-  v10 = v6;
-  v7 = v6;
-  objc_msgSend_performResourceAccessAsynchronouslyUsingQueue_block_(self, v8, a3, v9);
+  v10 = blockCopy;
+  v7 = blockCopy;
+  objc_msgSend_performResourceAccessAsynchronouslyUsingQueue_block_(self, v8, queue, v9);
 }
 
-- (void)performResourceAccessAsynchronouslyUsingQueue:(id)a3 block:(id)a4
+- (void)performResourceAccessAsynchronouslyUsingQueue:(id)queue block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  queueCopy = queue;
+  blockCopy = block;
   if (UnsafePointer != -1)
   {
     sub_276BD5CC4();
-    if (v6)
+    if (queueCopy)
     {
       goto LABEL_3;
     }
@@ -315,13 +315,13 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (!v6)
+  if (!queueCopy)
   {
     goto LABEL_5;
   }
 
 LABEL_3:
-  v8 = v6;
+  v8 = queueCopy;
 LABEL_6:
   v9 = v8;
   block[0] = MEMORY[0x277D85DD0];
@@ -335,8 +335,8 @@ LABEL_6:
   aBlock[2] = sub_276A86C20;
   aBlock[3] = &unk_27A6E5CB8;
   aBlock[4] = self;
-  v15 = v7;
-  v10 = v7;
+  v15 = blockCopy;
+  v10 = blockCopy;
   v11 = _Block_copy(aBlock);
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;

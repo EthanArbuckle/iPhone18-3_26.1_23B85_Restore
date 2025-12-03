@@ -1,18 +1,18 @@
 @interface WFContentItemRegistry
 + (WFContentItemRegistry)sharedRegistry;
 + (id)allContentItemClassesInContentKit;
-+ (id)inputContentItemClassesMatchingShortcutInputClasses:(id)a3;
-+ (id)shortcutInputClassesMatchingInputContentItemsOfClasses:(id)a3 hostBundleIdentifier:(id)a4;
-- (Class)contentItemClassForType:(id)a3;
++ (id)inputContentItemClassesMatchingShortcutInputClasses:(id)classes;
++ (id)shortcutInputClassesMatchingInputContentItemsOfClasses:(id)classes hostBundleIdentifier:(id)identifier;
+- (Class)contentItemClassForType:(id)type;
 - (NSSet)allOwnedTypes;
 - (NSSet)contentItemClasses;
 - (WFContentItemRegistry)init;
-- (id)contentItemClassesForShareSheetWithExtensionMatchingDictionaries:(id)a3;
-- (id)contentItemClassesForShareSheetWithExtensionMatchingDictionaries:(id)a3 hostBundleIdentifier:(id)a4;
-- (id)contentItemClassesSupportingType:(id)a3;
-- (void)lock_registerContentItemClass:(Class)a3;
+- (id)contentItemClassesForShareSheetWithExtensionMatchingDictionaries:(id)dictionaries;
+- (id)contentItemClassesForShareSheetWithExtensionMatchingDictionaries:(id)dictionaries hostBundleIdentifier:(id)identifier;
+- (id)contentItemClassesSupportingType:(id)type;
+- (void)lock_registerContentItemClass:(Class)class;
 - (void)rediscoverContentItemClassesIfNeeded;
-- (void)registerContentItemClass:(Class)a3;
+- (void)registerContentItemClass:(Class)class;
 @end
 
 @implementation WFContentItemRegistry
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = __39__WFContentItemRegistry_sharedRegistry__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedRegistry_onceToken != -1)
   {
     dispatch_once(&sharedRegistry_onceToken, block);
@@ -34,12 +34,12 @@
   return v2;
 }
 
-- (id)contentItemClassesSupportingType:(id)a3
+- (id)contentItemClassesSupportingType:(id)type
 {
-  v4 = [(objc_class *)[(WFContentItemRegistry *)self contentItemClassForType:a3] ownedTypes];
+  ownedTypes = [(objc_class *)[(WFContentItemRegistry *)self contentItemClassForType:type] ownedTypes];
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(WFContentItemRegistry *)self lock_allItemClasses];
-  v6 = [v5 copy];
+  lock_allItemClasses = [(WFContentItemRegistry *)self lock_allItemClasses];
+  v6 = [lock_allItemClasses copy];
 
   os_unfair_lock_unlock(&self->_lock);
   v7 = MEMORY[0x277CCAC30];
@@ -47,8 +47,8 @@
   v12[1] = 3221225472;
   v12[2] = __58__WFContentItemRegistry_contentItemClassesSupportingType___block_invoke;
   v12[3] = &unk_278344AE8;
-  v13 = v4;
-  v8 = v4;
+  v13 = ownedTypes;
+  v8 = ownedTypes;
   v9 = [v7 predicateWithBlock:v12];
   v10 = [v6 filteredSetUsingPredicate:v9];
 
@@ -63,19 +63,19 @@ uint64_t __58__WFContentItemRegistry_contentItemClassesSupportingType___block_in
   return v4;
 }
 
-- (Class)contentItemClassForType:(id)a3
+- (Class)contentItemClassForType:(id)type
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   [(WFContentItemRegistry *)self rediscoverContentItemClassesIfNeeded];
-  if (v4)
+  if (typeCopy)
   {
     os_unfair_lock_lock(&self->_lock);
-    v5 = [(WFContentItemRegistry *)self lock_contentItemClassesByType];
-    v6 = [v5 copy];
+    lock_contentItemClassesByType = [(WFContentItemRegistry *)self lock_contentItemClassesByType];
+    v6 = [lock_contentItemClassesByType copy];
 
     os_unfair_lock_unlock(&self->_lock);
-    v7 = [v6 objectForKey:v4];
+    v7 = [v6 objectForKey:typeCopy];
     if (v7)
     {
       v8 = v7;
@@ -105,7 +105,7 @@ uint64_t __58__WFContentItemRegistry_contentItemClassesSupportingType___block_in
             }
 
             v16 = *(*(&v19 + 1) + 8 * i);
-            if ([v16 isEqualToUTType:{v13, v19}] & 1) == 0 && (objc_msgSend(v16, "isEqualToUTType:", v14) & 1) == 0 && (objc_msgSend(v4, "conformsToType:", v16))
+            if ([v16 isEqualToUTType:{v13, v19}] & 1) == 0 && (objc_msgSend(v16, "isEqualToUTType:", v14) & 1) == 0 && (objc_msgSend(typeCopy, "conformsToType:", v16))
             {
               v8 = [v9 objectForKey:v16];
 
@@ -124,7 +124,7 @@ uint64_t __58__WFContentItemRegistry_contentItemClassesSupportingType___block_in
       }
 
       objc_opt_class();
-      if ((objc_opt_isKindOfClass() & 1) != 0 && (([v4 isDeclared] & 1) != 0 || objc_msgSend(v4, "isDynamic")))
+      if ((objc_opt_isKindOfClass() & 1) != 0 && (([typeCopy isDeclared] & 1) != 0 || objc_msgSend(typeCopy, "isDynamic")))
       {
         v17 = [MEMORY[0x277D79F68] typeWithUTType:{*MEMORY[0x277CE1D48], v19}];
         v8 = [v9 objectForKey:v17];
@@ -151,8 +151,8 @@ LABEL_21:
 {
   [(WFContentItemRegistry *)self rediscoverContentItemClassesIfNeeded];
   os_unfair_lock_lock(&self->_lock);
-  v3 = [(WFContentItemRegistry *)self lock_allItemClasses];
-  v4 = [v3 copy];
+  lock_allItemClasses = [(WFContentItemRegistry *)self lock_allItemClasses];
+  v4 = [lock_allItemClasses copy];
 
   os_unfair_lock_unlock(&self->_lock);
 
@@ -164,36 +164,36 @@ LABEL_21:
   [(WFContentItemRegistry *)self rediscoverContentItemClassesIfNeeded];
   os_unfair_lock_lock(&self->_lock);
   v3 = objc_alloc(MEMORY[0x277CBEB98]);
-  v4 = [(WFContentItemRegistry *)self lock_contentItemClassesByType];
-  v5 = [v4 allKeys];
-  v6 = [v3 initWithArray:v5];
+  lock_contentItemClassesByType = [(WFContentItemRegistry *)self lock_contentItemClassesByType];
+  allKeys = [lock_contentItemClassesByType allKeys];
+  v6 = [v3 initWithArray:allKeys];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v6;
 }
 
-- (void)lock_registerContentItemClass:(Class)a3
+- (void)lock_registerContentItemClass:(Class)class
 {
   v31 = *MEMORY[0x277D85DE8];
-  if (!a3)
+  if (!class)
   {
-    v20 = [MEMORY[0x277CCA890] currentHandler];
-    [v20 handleFailureInMethod:a2 object:self file:@"WFContentItemRegistry.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"contentItemClass"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItemRegistry.m" lineNumber:115 description:{@"Invalid parameter not satisfying: %@", @"contentItemClass"}];
   }
 
   os_unfair_lock_assert_owner(&self->_lock);
-  if ([(objc_class *)a3 isSubclassOfClass:objc_opt_class()])
+  if ([(objc_class *)class isSubclassOfClass:objc_opt_class()])
   {
-    v5 = [(WFContentItemRegistry *)self lock_contentItemClassesByType];
-    v6 = [(WFContentItemRegistry *)self lock_allItemClasses];
-    [v6 addObject:a3];
+    lock_contentItemClassesByType = [(WFContentItemRegistry *)self lock_contentItemClassesByType];
+    lock_allItemClasses = [(WFContentItemRegistry *)self lock_allItemClasses];
+    [lock_allItemClasses addObject:class];
     v27 = 0u;
     v28 = 0u;
     v25 = 0u;
     v26 = 0u;
-    v7 = [(objc_class *)a3 ownedTypes];
-    v8 = [v7 copy];
+    ownedTypes = [(objc_class *)class ownedTypes];
+    v8 = [ownedTypes copy];
 
     v9 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
     if (v9)
@@ -209,7 +209,7 @@ LABEL_21:
             objc_enumerationMutation(v8);
           }
 
-          WFRegisterTypeForItemClass(*(*(&v25 + 1) + 8 * i), a3, v5);
+          WFRegisterTypeForItemClass(*(*(&v25 + 1) + 8 * i), class, lock_contentItemClassesByType);
         }
 
         v10 = [v8 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -222,8 +222,8 @@ LABEL_21:
     v24 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v13 = [(objc_class *)a3 ownedPasteboardTypes];
-    v14 = [v13 copy];
+    ownedPasteboardTypes = [(objc_class *)class ownedPasteboardTypes];
+    v14 = [ownedPasteboardTypes copy];
 
     v15 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
     if (v15)
@@ -239,7 +239,7 @@ LABEL_21:
             objc_enumerationMutation(v14);
           }
 
-          WFRegisterTypeForItemClass(*(*(&v21 + 1) + 8 * j), a3, v5);
+          WFRegisterTypeForItemClass(*(*(&v21 + 1) + 8 * j), class, lock_contentItemClassesByType);
         }
 
         v16 = [v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -250,10 +250,10 @@ LABEL_21:
   }
 }
 
-- (void)registerContentItemClass:(Class)a3
+- (void)registerContentItemClass:(Class)class
 {
   os_unfair_lock_lock(&self->_lock);
-  [(WFContentItemRegistry *)self lock_registerContentItemClass:a3];
+  [(WFContentItemRegistry *)self lock_registerContentItemClass:class];
 
   os_unfair_lock_unlock(&self->_lock);
 }
@@ -313,25 +313,25 @@ uint64_t __39__WFContentItemRegistry_sharedRegistry__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (id)contentItemClassesForShareSheetWithExtensionMatchingDictionaries:(id)a3 hostBundleIdentifier:(id)a4
+- (id)contentItemClassesForShareSheetWithExtensionMatchingDictionaries:(id)dictionaries hostBundleIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(WFContentItemRegistry *)self contentItemClassesForShareSheetWithExtensionMatchingDictionaries:a3];
-  v8 = [objc_opt_class() shortcutInputClassesMatchingInputContentItemsOfClasses:v7 hostBundleIdentifier:v6];
+  identifierCopy = identifier;
+  v7 = [(WFContentItemRegistry *)self contentItemClassesForShareSheetWithExtensionMatchingDictionaries:dictionaries];
+  v8 = [objc_opt_class() shortcutInputClassesMatchingInputContentItemsOfClasses:v7 hostBundleIdentifier:identifierCopy];
 
   return v8;
 }
 
-- (id)contentItemClassesForShareSheetWithExtensionMatchingDictionaries:(id)a3
+- (id)contentItemClassesForShareSheetWithExtensionMatchingDictionaries:(id)dictionaries
 {
   v62 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  dictionariesCopy = dictionaries;
   v4 = objc_opt_new();
   v55 = 0u;
   v56 = 0u;
   v57 = 0u;
   v58 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v55 objects:v61 count:16];
   if (v6)
   {
@@ -465,10 +465,10 @@ uint64_t __39__WFContentItemRegistry_sharedRegistry__block_invoke(uint64_t a1)
     while (v7);
   }
 
-  v28 = [(WFContentItemRegistry *)self allOwnedTypes];
-  v29 = [v28 if_compactMap:&__block_literal_global_4215];
+  allOwnedTypes = [(WFContentItemRegistry *)self allOwnedTypes];
+  v29 = [allOwnedTypes if_compactMap:&__block_literal_global_4215];
 
-  v30 = [(WFContentItemRegistry *)self contentItemClasses];
+  contentItemClasses = [(WFContentItemRegistry *)self contentItemClasses];
   v44[0] = MEMORY[0x277D85DD0];
   v44[1] = 3221225472;
   v44[2] = __107__WFContentItemRegistry_NSExtensionItem__contentItemClassesForShareSheetWithExtensionMatchingDictionaries___block_invoke_2;
@@ -477,7 +477,7 @@ uint64_t __39__WFContentItemRegistry_sharedRegistry__block_invoke(uint64_t a1)
   v46 = v4;
   v31 = v4;
   v32 = v29;
-  v33 = [v30 objectsPassingTest:v44];
+  v33 = [contentItemClasses objectsPassingTest:v44];
 
   return v33;
 }
@@ -551,14 +551,14 @@ id __107__WFContentItemRegistry_NSExtensionItem__contentItemClassesForShareSheet
   return v3;
 }
 
-+ (id)inputContentItemClassesMatchingShortcutInputClasses:(id)a3
++ (id)inputContentItemClassesMatchingShortcutInputClasses:(id)classes
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  if (!v5)
+  classesCopy = classes;
+  if (!classesCopy)
   {
-    v35 = [MEMORY[0x277CCA890] currentHandler];
-    [v35 handleFailureInMethod:a2 object:a1 file:@"WFContentItemRegistry+ShortcutInput.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"shortcutInputClasses"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItemRegistry+ShortcutInput.m" lineNumber:57 description:{@"Invalid parameter not satisfying: %@", @"shortcutInputClasses"}];
   }
 
   v42 = 0u;
@@ -575,12 +575,12 @@ LABEL_25:
     v21 = *(v8 + 2968);
     v22 = objc_opt_class();
     v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-    LODWORD(v22) = [v5 intersectsSet:v23];
+    LODWORD(v22) = [classesCopy intersectsSet:v23];
 
     if (v22)
     {
-      [v5 setByAddingObject:objc_opt_class()];
-      v5 = v6 = v5;
+      [classesCopy setByAddingObject:objc_opt_class()];
+      classesCopy = v6 = classesCopy;
 LABEL_27:
     }
 
@@ -610,10 +610,10 @@ LABEL_27:
       v37 = 0u;
       v38 = 0u;
       v39 = 0u;
-      v14 = [v13 urlItem_sharingItemClassesByBundleIdentifier];
-      v15 = [v14 allValues];
+      urlItem_sharingItemClassesByBundleIdentifier = [v13 urlItem_sharingItemClassesByBundleIdentifier];
+      allValues = [urlItem_sharingItemClassesByBundleIdentifier allValues];
 
-      v16 = [v15 countByEnumeratingWithState:&v36 objects:v44 count:16];
+      v16 = [allValues countByEnumeratingWithState:&v36 objects:v44 count:16];
       if (v16)
       {
         v17 = v16;
@@ -624,20 +624,20 @@ LABEL_27:
           {
             if (*v37 != v18)
             {
-              objc_enumerationMutation(v15);
+              objc_enumerationMutation(allValues);
             }
 
-            if ([v5 containsObject:*(*(&v36 + 1) + 8 * j)])
+            if ([classesCopy containsObject:*(*(&v36 + 1) + 8 * j)])
             {
-              v20 = [v5 setByAddingObject:objc_opt_class()];
+              v20 = [classesCopy setByAddingObject:objc_opt_class()];
 
               v10 = 1;
-              v5 = v20;
+              classesCopy = v20;
               goto LABEL_19;
             }
           }
 
-          v17 = [v15 countByEnumeratingWithState:&v36 objects:v44 count:16];
+          v17 = [allValues countByEnumeratingWithState:&v36 objects:v44 count:16];
           if (v17)
           {
             continue;
@@ -667,53 +667,53 @@ LABEL_19:
   }
 
 LABEL_28:
-  if ([v5 containsObject:objc_opt_class()])
+  if ([classesCopy containsObject:objc_opt_class()])
   {
-    v24 = [v5 setByAddingObject:objc_opt_class()];
+    v24 = [classesCopy setByAddingObject:objc_opt_class()];
 
-    v5 = v24;
+    classesCopy = v24;
   }
 
   v25 = *(v8 + 2968);
   v26 = objc_opt_class();
   v27 = objc_opt_class();
   v28 = [v25 setWithObjects:{v26, v27, objc_opt_class(), 0}];
-  LODWORD(v26) = [v5 intersectsSet:v28];
+  LODWORD(v26) = [classesCopy intersectsSet:v28];
 
   if (v26)
   {
-    v29 = [v5 setByAddingObject:objc_opt_class()];
+    v29 = [classesCopy setByAddingObject:objc_opt_class()];
 
-    v5 = v29;
+    classesCopy = v29;
   }
 
   v30 = *(v8 + 2968);
   v31 = objc_opt_class();
   v32 = [v30 setWithObjects:{v31, objc_opt_class(), 0}];
-  LODWORD(v31) = [v5 intersectsSet:v32];
+  LODWORD(v31) = [classesCopy intersectsSet:v32];
 
   if (v31)
   {
-    v33 = [v5 setByAddingObject:objc_opt_class()];
+    v33 = [classesCopy setByAddingObject:objc_opt_class()];
 
-    v5 = v33;
+    classesCopy = v33;
   }
 
-  return v5;
+  return classesCopy;
 }
 
-+ (id)shortcutInputClassesMatchingInputContentItemsOfClasses:(id)a3 hostBundleIdentifier:(id)a4
++ (id)shortcutInputClassesMatchingInputContentItemsOfClasses:(id)classes hostBundleIdentifier:(id)identifier
 {
   v33 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  classesCopy = classes;
+  identifierCopy = identifier;
+  if (!classesCopy)
   {
-    v25 = [MEMORY[0x277CCA890] currentHandler];
-    [v25 handleFailureInMethod:a2 object:a1 file:@"WFContentItemRegistry+ShortcutInput.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"itemClasses"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFContentItemRegistry+ShortcutInput.m" lineNumber:16 description:{@"Invalid parameter not satisfying: %@", @"itemClasses"}];
   }
 
-  if ([v7 containsObject:objc_opt_class()])
+  if ([classesCopy containsObject:objc_opt_class()])
   {
     v28 = 0u;
     v29 = 0u;
@@ -734,14 +734,14 @@ LABEL_28:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v26 + 1) + 8 * i) urlItem_sharingItemClassesByBundleIdentifier];
-          v15 = [v14 objectForKey:v8];
+          urlItem_sharingItemClassesByBundleIdentifier = [*(*(&v26 + 1) + 8 * i) urlItem_sharingItemClassesByBundleIdentifier];
+          v15 = [urlItem_sharingItemClassesByBundleIdentifier objectForKey:identifierCopy];
 
           if (v15)
           {
-            v16 = [v7 setByAddingObject:v15];
+            v16 = [classesCopy setByAddingObject:v15];
 
-            v7 = v16;
+            classesCopy = v16;
           }
         }
 
@@ -751,47 +751,47 @@ LABEL_28:
       while (v11);
     }
 
-    v17 = [v7 setByAddingObject:objc_opt_class()];
+    v17 = [classesCopy setByAddingObject:objc_opt_class()];
 
-    v7 = v17;
+    classesCopy = v17;
   }
 
-  if ([v7 containsObject:objc_opt_class()])
+  if ([classesCopy containsObject:objc_opt_class()])
   {
-    v18 = [v7 setByAddingObject:objc_opt_class()];
+    v18 = [classesCopy setByAddingObject:objc_opt_class()];
 
-    v7 = v18;
+    classesCopy = v18;
   }
 
-  if ([v7 containsObject:objc_opt_class()])
+  if ([classesCopy containsObject:objc_opt_class()])
   {
     v31[0] = objc_opt_class();
     v31[1] = objc_opt_class();
     v31[2] = objc_opt_class();
     v19 = [MEMORY[0x277CBEA60] arrayWithObjects:v31 count:3];
-    v20 = [v7 setByAddingObjectsFromArray:v19];
+    v20 = [classesCopy setByAddingObjectsFromArray:v19];
 
-    v7 = v20;
+    classesCopy = v20;
   }
 
-  if ([v7 containsObject:objc_opt_class()])
+  if ([classesCopy containsObject:objc_opt_class()])
   {
-    v21 = [v7 setByAddingObject:objc_opt_class()];
+    v21 = [classesCopy setByAddingObject:objc_opt_class()];
 
-    v7 = v21;
+    classesCopy = v21;
   }
 
-  if ([v7 containsObject:objc_opt_class()])
+  if ([classesCopy containsObject:objc_opt_class()])
   {
     v30[0] = objc_opt_class();
     v30[1] = objc_opt_class();
     v22 = [MEMORY[0x277CBEA60] arrayWithObjects:v30 count:2];
-    v23 = [v7 setByAddingObjectsFromArray:v22];
+    v23 = [classesCopy setByAddingObjectsFromArray:v22];
 
-    v7 = v23;
+    classesCopy = v23;
   }
 
-  return v7;
+  return classesCopy;
 }
 
 + (id)allContentItemClassesInContentKit

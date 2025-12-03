@@ -1,6 +1,6 @@
 @interface OrgApacheLuceneCodecsDocValuesConsumer_$10_$1
 - (BOOL)hasNext;
-- (OrgApacheLuceneCodecsDocValuesConsumer_$10_$1)initWithOrgApacheLuceneCodecsDocValuesConsumer_$10:(id)a3 withJavaUtilIterator:(id)a4 withJavaUtilIterator:(id)a5;
+- (OrgApacheLuceneCodecsDocValuesConsumer_$10_$1)initWithOrgApacheLuceneCodecsDocValuesConsumer_$10:(id)10 withJavaUtilIterator:(id)iterator withJavaUtilIterator:(id)utilIterator;
 - (id)next;
 - (void)dealloc;
 @end
@@ -26,13 +26,13 @@
     goto LABEL_9;
   }
 
-  v4 = [(JavaUtilIterator *)v3 next];
-  if (!v4)
+  next = [(JavaUtilIterator *)v3 next];
+  if (!next)
   {
     goto LABEL_9;
   }
 
-  if (![v4 intValue])
+  if (![next intValue])
   {
     return self->this$0_->val$missingValue_;
   }
@@ -47,11 +47,11 @@ LABEL_9:
   return [(JavaUtilIterator *)v5 next];
 }
 
-- (OrgApacheLuceneCodecsDocValuesConsumer_$10_$1)initWithOrgApacheLuceneCodecsDocValuesConsumer_$10:(id)a3 withJavaUtilIterator:(id)a4 withJavaUtilIterator:(id)a5
+- (OrgApacheLuceneCodecsDocValuesConsumer_$10_$1)initWithOrgApacheLuceneCodecsDocValuesConsumer_$10:(id)10 withJavaUtilIterator:(id)iterator withJavaUtilIterator:(id)utilIterator
 {
-  JreStrongAssign(&self->this$0_, a3);
-  JreStrongAssign(&self->val$countIterator_, a4);
-  JreStrongAssign(&self->val$valuesIterator_, a5);
+  JreStrongAssign(&self->this$0_, 10);
+  JreStrongAssign(&self->val$countIterator_, iterator);
+  JreStrongAssign(&self->val$valuesIterator_, utilIterator);
   return self;
 }
 

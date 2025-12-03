@@ -1,23 +1,23 @@
 @interface WFInterchangeActionProvider
-- (id)actionWithInterchangeAction:(id)a3 serializedParameters:(id)a4;
+- (id)actionWithInterchangeAction:(id)action serializedParameters:(id)parameters;
 - (id)availableActionIdentifiers;
-- (void)createActionsForRequests:(id)a3 forceLocalActionsOnly:(BOOL)a4;
+- (void)createActionsForRequests:(id)requests forceLocalActionsOnly:(BOOL)only;
 @end
 
 @implementation WFInterchangeActionProvider
 
-- (id)actionWithInterchangeAction:(id)a3 serializedParameters:(id)a4
+- (id)actionWithInterchangeAction:(id)action serializedParameters:(id)parameters
 {
-  v6 = a3;
-  v7 = a4;
+  actionCopy = action;
+  parametersCopy = parameters;
   objc_opt_class();
-  if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 createsWFAction])
+  if ((objc_opt_isKindOfClass() & 1) != 0 && [actionCopy createsWFAction])
   {
-    v8 = [v6 wfActionClassName];
-    if (v8)
+    wfActionClassName = [actionCopy wfActionClassName];
+    if (wfActionClassName)
     {
-      v9 = [v6 wfActionClassName];
-      v10 = NSClassFromString(v9);
+      wfActionClassName2 = [actionCopy wfActionClassName];
+      v10 = NSClassFromString(wfActionClassName2);
     }
 
     else
@@ -28,9 +28,9 @@
     if ([(objc_class *)v10 isSubclassOfClass:objc_opt_class()])
     {
       v12 = [v10 alloc];
-      v13 = [v6 identifier];
-      v14 = [(WFActionProvider *)self defaultActionDefinition];
-      v11 = [v12 initWithInterchangeAction:v6 identifier:v13 definition:v14 serializedParameters:v7];
+      identifier = [actionCopy identifier];
+      defaultActionDefinition = [(WFActionProvider *)self defaultActionDefinition];
+      v11 = [v12 initWithInterchangeAction:actionCopy identifier:identifier definition:defaultActionDefinition serializedParameters:parametersCopy];
     }
 
     else
@@ -47,10 +47,10 @@
   return v11;
 }
 
-- (void)createActionsForRequests:(id)a3 forceLocalActionsOnly:(BOOL)a4
+- (void)createActionsForRequests:(id)requests forceLocalActionsOnly:(BOOL)only
 {
-  v5 = a3;
-  v6 = [v5 if_map:&__block_literal_global_164];
+  requestsCopy = requests;
+  v6 = [requestsCopy if_map:&__block_literal_global_164];
   v7 = +[WFInterchangeAppRegistry sharedRegistry];
   v8 = [v7 actionsWithIdentifiers:v6];
 
@@ -59,9 +59,9 @@
   v10[2] = __78__WFInterchangeActionProvider_createActionsForRequests_forceLocalActionsOnly___block_invoke_2;
   v10[3] = &unk_1E8373E88;
   v11 = v8;
-  v12 = self;
+  selfCopy = self;
   v9 = v8;
-  [v5 enumerateObjectsUsingBlock:v10];
+  [requestsCopy enumerateObjectsUsingBlock:v10];
 }
 
 void __78__WFInterchangeActionProvider_createActionsForRequests_forceLocalActionsOnly___block_invoke_2(uint64_t a1, void *a2, uint64_t a3)
@@ -80,8 +80,8 @@ void __78__WFInterchangeActionProvider_createActionsForRequests_forceLocalAction
 {
   v2 = objc_alloc(MEMORY[0x1E695DFD8]);
   v3 = +[WFInterchangeAppRegistry sharedRegistry];
-  v4 = [v3 allActions];
-  v5 = [v4 if_compactMap:&__block_literal_global_4394];
+  allActions = [v3 allActions];
+  v5 = [allActions if_compactMap:&__block_literal_global_4394];
   v6 = [v2 initWithArray:v5];
 
   return v6;

@@ -1,6 +1,6 @@
 @interface AXQuickSpeak
-+ (BOOL)isQuickSpeakSelector:(SEL)a3;
-+ (BOOL)quickSpeakClassIsDenied:(id)a3;
++ (BOOL)isQuickSpeakSelector:(SEL)selector;
++ (BOOL)quickSpeakClassIsDenied:(id)denied;
 + (id)sharedInstance;
 + (void)initialize;
 - (AXLanguageTaggedContent)selectedContent;
@@ -11,33 +11,33 @@
 - (BOOL)selectedContentRequiresUserChoice;
 - (BOOL)spellOutContent;
 - (NSString)content;
-- (_NSRange)_updatedRangeForComposedCharacters:(_NSRange)a3 string:(id)a4 lastKnownWholeCharacterLocation:(unint64_t)a5 lastKnownUnicharLocation:(unint64_t)a6;
-- (_NSRange)modifiedRange:(_NSRange)a3 withString:(id)a4;
+- (_NSRange)_updatedRangeForComposedCharacters:(_NSRange)characters string:(id)string lastKnownWholeCharacterLocation:(unint64_t)location lastKnownUnicharLocation:(unint64_t)unicharLocation;
+- (_NSRange)modifiedRange:(_NSRange)range withString:(id)string;
 - (id)_quickSpeakInputInitiator;
-- (id)_rectsByUnionSamelineRects:(id)a3;
+- (id)_rectsByUnionSamelineRects:(id)rects;
 - (id)_sentenceHighlightOverlapHeightArray;
-- (id)_sentenceRects:(id)a3 speakingRange:(id)a4;
-- (id)_sliceRects:(id)a3 withSentenceRects:(id)a4 wordRects:(id)a5;
+- (id)_sentenceRects:(id)rects speakingRange:(id)range;
+- (id)_sliceRects:(id)rects withSentenceRects:(id)sentenceRects wordRects:(id)wordRects;
 - (id)_textSelectionViews;
-- (id)_viewsWithBlock:(id)a3;
-- (void)_handleAppDidEnterBackground:(id)a3;
+- (id)_viewsWithBlock:(id)block;
+- (void)_handleAppDidEnterBackground:(id)background;
 - (void)_handlePauseCallback;
-- (void)_handleQuickSpeakHighlight:(id)a3 sentenceRects:(id)a4 textRect:(CGRect)a5 initiator:(id)a6;
-- (void)_manipulateOtherTextViews:(BOOL)a3;
-- (void)_quickSpeakTextRects:(id)a3 withRange:(_NSRange)a4 string:(id)a5 highlightRects:(id)a6 sentenceRects:(id)a7 singleTextRect:(CGRect *)a8;
-- (void)_quickSpeakUITextInputTextRects:(id)a3 withRange:(_NSRange)a4 string:(id)a5 highlightRects:(id)a6 sentenceRects:(id)a7 singleTextRect:(CGRect *)a8;
-- (void)_scrollToTextRect:(CGRect)a3 withScrollView:(id)a4;
-- (void)_willSpeakRange:(_NSRange)a3 string:(id)a4;
+- (void)_handleQuickSpeakHighlight:(id)highlight sentenceRects:(id)rects textRect:(CGRect)rect initiator:(id)initiator;
+- (void)_manipulateOtherTextViews:(BOOL)views;
+- (void)_quickSpeakTextRects:(id)rects withRange:(_NSRange)range string:(id)string highlightRects:(id)highlightRects sentenceRects:(id)sentenceRects singleTextRect:(CGRect *)rect;
+- (void)_quickSpeakUITextInputTextRects:(id)rects withRange:(_NSRange)range string:(id)string highlightRects:(id)highlightRects sentenceRects:(id)sentenceRects singleTextRect:(CGRect *)rect;
+- (void)_scrollToTextRect:(CGRect)rect withScrollView:(id)view;
+- (void)_willSpeakRange:(_NSRange)range string:(id)string;
 - (void)dealloc;
-- (void)orator:(id)a3 willSpeakRange:(_NSRange)a4 ofContent:(id)a5;
-- (void)oratorDidFinishSpeaking:(id)a3;
-- (void)oratorDidResumeSpeaking:(id)a3;
-- (void)pauseAction:(id)a3;
-- (void)resumeAction:(id)a3;
-- (void)setContent:(id)a3;
-- (void)speakAction:(id)a3 withPreferredLanguage:(id)a4;
-- (void)speakStatusWithLanguage:(id)a3 rate:(id)a4;
-- (void)stopAction:(id)a3;
+- (void)orator:(id)orator willSpeakRange:(_NSRange)range ofContent:(id)content;
+- (void)oratorDidFinishSpeaking:(id)speaking;
+- (void)oratorDidResumeSpeaking:(id)speaking;
+- (void)pauseAction:(id)action;
+- (void)resumeAction:(id)action;
+- (void)setContent:(id)content;
+- (void)speakAction:(id)action withPreferredLanguage:(id)language;
+- (void)speakStatusWithLanguage:(id)language rate:(id)rate;
+- (void)stopAction:(id)action;
 @end
 
 @implementation AXQuickSpeak
@@ -60,34 +60,34 @@
 
 - (NSString)content
 {
-  v2 = [(AXQuickSpeak *)self orator];
-  v3 = [v2 content];
+  orator = [(AXQuickSpeak *)self orator];
+  content = [orator content];
 
-  return v3;
+  return content;
 }
 
-- (void)setContent:(id)a3
+- (void)setContent:(id)content
 {
-  v4 = a3;
+  contentCopy = content;
   [(AXQuickSpeak *)self setPaused:0];
-  v5 = [(AXQuickSpeak *)self orator];
-  [v5 setContent:v4];
+  orator = [(AXQuickSpeak *)self orator];
+  [orator setContent:contentCopy];
 }
 
 - (AXLanguageTaggedContent)selectedContent
 {
-  v2 = [(AXQuickSpeak *)self orator];
-  v3 = [v2 selectedContent];
+  orator = [(AXQuickSpeak *)self orator];
+  selectedContent = [orator selectedContent];
 
-  return v3;
+  return selectedContent;
 }
 
 - (BOOL)spellOutContent
 {
-  v2 = [(AXQuickSpeak *)self orator];
-  v3 = [v2 spellOutContent];
+  orator = [(AXQuickSpeak *)self orator];
+  spellOutContent = [orator spellOutContent];
 
-  return v3;
+  return spellOutContent;
 }
 
 + (id)sharedInstance
@@ -109,10 +109,10 @@ uint64_t __30__AXQuickSpeak_sharedInstance__block_invoke()
   return MEMORY[0x2A1C71028]();
 }
 
-+ (BOOL)quickSpeakClassIsDenied:(id)a3
++ (BOOL)quickSpeakClassIsDenied:(id)denied
 {
   v28 = *MEMORY[0x29EDCA608];
-  v3 = a3;
+  deniedCopy = denied;
   v4 = quickSpeakClassIsDenied__Denylist;
   if (!quickSpeakClassIsDenied__Denylist)
   {
@@ -166,7 +166,7 @@ uint64_t __30__AXQuickSpeak_sharedInstance__block_invoke()
   v16[1] = 3221225472;
   v16[2] = __40__AXQuickSpeak_quickSpeakClassIsDenied___block_invoke;
   v16[3] = &unk_29F2F00D8;
-  v12 = v3;
+  v12 = deniedCopy;
   v17 = v12;
   v18 = &v19;
   [v4 enumerateObjectsUsingBlock:v16];
@@ -190,14 +190,14 @@ uint64_t __40__AXQuickSpeak_quickSpeakClassIsDenied___block_invoke(uint64_t a1, 
   return result;
 }
 
-+ (BOOL)isQuickSpeakSelector:(SEL)a3
++ (BOOL)isQuickSpeakSelector:(SEL)selector
 {
   if (isQuickSpeakSelector__onceToken != -1)
   {
     +[AXQuickSpeak isQuickSpeakSelector:];
   }
 
-  return isQuickSpeakSelector___axQSSpeakSentence == a3 || isQuickSpeakSelector___axQSSpeakSpellOut == a3 || isQuickSpeakSelector___axQSPauseMethod == a3 || isQuickSpeakSelector___axQSSpeakMethod == a3 || isQuickSpeakSelector___axQSSpeakLangsMethod == a3 || isQuickSpeakSelector___axQSSpeakLangs2Method == a3;
+  return isQuickSpeakSelector___axQSSpeakSentence == selector || isQuickSpeakSelector___axQSSpeakSpellOut == selector || isQuickSpeakSelector___axQSPauseMethod == selector || isQuickSpeakSelector___axQSSpeakMethod == selector || isQuickSpeakSelector___axQSSpeakLangsMethod == selector || isQuickSpeakSelector___axQSSpeakLangs2Method == selector;
 }
 
 void __37__AXQuickSpeak_isQuickSpeakSelector___block_invoke()
@@ -212,7 +212,7 @@ void __37__AXQuickSpeak_isQuickSpeakSelector___block_invoke()
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1 && (MEMORY[0x29C2E9CC0]() & 1) == 0)
+  if (objc_opt_class() == self && (MEMORY[0x29C2E9CC0]() & 1) == 0)
   {
     v2 = +[AXQuickSpeak sharedInstance];
   }
@@ -225,20 +225,20 @@ void __37__AXQuickSpeak_isQuickSpeakSelector___block_invoke()
   v2 = [(AXQuickSpeak *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x29EDBD6E8] sharedInstance];
-    [v3 performValidations:&__block_literal_global_331 withPreValidationHandler:&__block_literal_global_397 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_400];
+    mEMORY[0x29EDBD6E8] = [MEMORY[0x29EDBD6E8] sharedInstance];
+    [mEMORY[0x29EDBD6E8] performValidations:&__block_literal_global_331 withPreValidationHandler:&__block_literal_global_397 postValidationHandler:0 safeCategoryInstallationHandler:&__block_literal_global_400];
 
-    v4 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v4 addHandler:&__block_literal_global_442 forFramework:@"PDFKit"];
+    mEMORY[0x29EDBD690] = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690] addHandler:&__block_literal_global_442 forFramework:@"PDFKit"];
 
-    v5 = [MEMORY[0x29EDBD690] sharedInstance];
-    [v5 addHandler:&__block_literal_global_459 forFramework:@"WebKit"];
+    mEMORY[0x29EDBD690]2 = [MEMORY[0x29EDBD690] sharedInstance];
+    [mEMORY[0x29EDBD690]2 addHandler:&__block_literal_global_459 forFramework:@"WebKit"];
 
     QSInstallSharedSafeCategoriesIfNeeded();
-    v6 = [MEMORY[0x29EDBA068] defaultCenter];
-    [v6 addObserver:v2 selector:sel__handleAppDidEnterBackground_ name:*MEMORY[0x29EDC8018] object:0];
-    [v6 addObserver:v2 selector:sel__handleAppWillResignActive_ name:*MEMORY[0x29EDC8038] object:0];
-    [v6 addObserver:v2 selector:sel__stopSpeakingQuickSpeak_ name:*MEMORY[0x29EDC83A8] object:0];
+    defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel__handleAppDidEnterBackground_ name:*MEMORY[0x29EDC8018] object:0];
+    [defaultCenter addObserver:v2 selector:sel__handleAppWillResignActive_ name:*MEMORY[0x29EDC8038] object:0];
+    [defaultCenter addObserver:v2 selector:sel__stopSpeakingQuickSpeak_ name:*MEMORY[0x29EDC83A8] object:0];
     v7 = v2;
   }
 
@@ -350,14 +350,14 @@ void __20__AXQuickSpeak_init__block_invoke_11(uint64_t a1, void *a2)
 {
   DarwinNotifyCenter = CFNotificationCenterGetDarwinNotifyCenter();
   CFNotificationCenterRemoveEveryObserver(DarwinNotifyCenter, self);
-  v4 = [MEMORY[0x29EDBA068] defaultCenter];
-  [v4 removeObserver:self];
+  defaultCenter = [MEMORY[0x29EDBA068] defaultCenter];
+  [defaultCenter removeObserver:self];
 
-  v5 = [(AXQuickSpeak *)self sentenceHighlightView];
-  [v5 removeFromSuperview];
+  sentenceHighlightView = [(AXQuickSpeak *)self sentenceHighlightView];
+  [sentenceHighlightView removeFromSuperview];
 
-  v6 = [(AXQuickSpeak *)self highlightView];
-  [v6 removeFromSuperview];
+  highlightView = [(AXQuickSpeak *)self highlightView];
+  [highlightView removeFromSuperview];
 
   v7 = CachedSentenceRects;
   CachedSentenceRects = 0;
@@ -370,20 +370,20 @@ void __20__AXQuickSpeak_init__block_invoke_11(uint64_t a1, void *a2)
   [(AXQuickSpeak *)&v9 dealloc];
 }
 
-- (void)_handleAppDidEnterBackground:(id)a3
+- (void)_handleAppDidEnterBackground:(id)background
 {
-  v4 = [(AXQuickSpeak *)self orator];
-  [v4 clearSelectedContent];
+  orator = [(AXQuickSpeak *)self orator];
+  [orator clearSelectedContent];
 
   [(AXQuickSpeak *)self stopAction:0];
 }
 
-- (void)speakAction:(id)a3 withPreferredLanguage:(id)a4
+- (void)speakAction:(id)action withPreferredLanguage:(id)language
 {
   v31 = *MEMORY[0x29EDCA608];
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x29EDBDF80] sharedInstance];
+  actionCopy = action;
+  languageCopy = language;
+  mEMORY[0x29EDBDF80] = [MEMORY[0x29EDBDF80] sharedInstance];
   if (![(AXQuickSpeak *)self isPaused])
   {
     v9 = _AXSAutomationEnabled();
@@ -391,33 +391,33 @@ void __20__AXQuickSpeak_init__block_invoke_11(uint64_t a1, void *a2)
     if (v9)
     {
       v11 = *MEMORY[0x29EDC8008];
-      v12 = [(AXQuickSpeak *)self orator];
-      v13 = [v12 content];
-      [v11 _accessibilitySetRetainedValue:v13 forKey:@"AXSpeakSelectionLastSpokenString"];
+      orator = [(AXQuickSpeak *)self orator];
+      content = [orator content];
+      [v11 _accessibilitySetRetainedValue:content forKey:@"AXSpeakSelectionLastSpokenString"];
     }
 
-    v14 = [(AXQuickSpeak *)self orator];
-    [v14 setSpeakingContext:2];
+    orator2 = [(AXQuickSpeak *)self orator];
+    [orator2 setSpeakingContext:2];
 
-    v15 = [(AXQuickSpeak *)self orator];
+    orator3 = [(AXQuickSpeak *)self orator];
     v28 = 0;
-    v16 = [v15 startSpeakingWithPreferredLanguage:v7 error:&v28];
+    v16 = [orator3 startSpeakingWithPreferredLanguage:languageCopy error:&v28];
     v17 = v28;
 
     if (v16)
     {
       self->_lastWholeCharacterLocation = 0;
       self->_lastUnicharLocation = 0;
-      [(AXQuickSpeak *)self setQuickSpeakInitiator:v6];
-      v18 = [(AXQuickSpeak *)self quickSpeakInitiator];
-      objc_setAssociatedObject(v18, &QSSelectedTextRangeKey, 0, 1);
+      [(AXQuickSpeak *)self setQuickSpeakInitiator:actionCopy];
+      quickSpeakInitiator = [(AXQuickSpeak *)self quickSpeakInitiator];
+      objc_setAssociatedObject(quickSpeakInitiator, &QSSelectedTextRangeKey, 0, 1);
 
-      v19 = [(AXQuickSpeak *)self quickSpeakInitiator];
-      v20 = [v19 _accessibilitySpeakSelectionTextInputResponder];
+      quickSpeakInitiator2 = [(AXQuickSpeak *)self quickSpeakInitiator];
+      _accessibilitySpeakSelectionTextInputResponder = [quickSpeakInitiator2 _accessibilitySpeakSelectionTextInputResponder];
 
       if (objc_opt_respondsToSelector())
       {
-        [v20 _accessibilityStoreSelection];
+        [_accessibilitySpeakSelectionTextInputResponder _accessibilityStoreSelection];
       }
 
       -[AXQuickSpeak setCachedIdleTimerPref:](self, "setCachedIdleTimerPref:", [*v10 isIdleTimerDisabled]);
@@ -426,27 +426,27 @@ void __20__AXQuickSpeak_init__block_invoke_11(uint64_t a1, void *a2)
 
     else
     {
-      v21 = [MEMORY[0x29EDBD6C8] sharedInstance];
-      v22 = [v21 ignoreLogging];
+      mEMORY[0x29EDBD6C8] = [MEMORY[0x29EDBD6C8] sharedInstance];
+      ignoreLogging = [mEMORY[0x29EDBD6C8] ignoreLogging];
 
-      if (v22)
+      if (ignoreLogging)
       {
         goto LABEL_11;
       }
 
-      v24 = [MEMORY[0x29EDBD6C8] identifier];
-      v20 = AXLoggerForFacility();
+      identifier = [MEMORY[0x29EDBD6C8] identifier];
+      _accessibilitySpeakSelectionTextInputResponder = AXLoggerForFacility();
 
       v25 = AXOSLogLevelFromAXLogLevel();
-      if (os_log_type_enabled(v20, v25))
+      if (os_log_type_enabled(_accessibilitySpeakSelectionTextInputResponder, v25))
       {
         v26 = AXColorizeFormatLog();
         v27 = _AXStringForArgs();
-        if (os_log_type_enabled(v20, v25))
+        if (os_log_type_enabled(_accessibilitySpeakSelectionTextInputResponder, v25))
         {
           *buf = 138543362;
           v30 = v27;
-          _os_log_impl(&dword_29C1E5000, v20, v25, "%{public}@", buf, 0xCu);
+          _os_log_impl(&dword_29C1E5000, _accessibilitySpeakSelectionTextInputResponder, v25, "%{public}@", buf, 0xCu);
         }
       }
     }
@@ -461,23 +461,23 @@ LABEL_12:
   v23 = *MEMORY[0x29EDCA608];
 }
 
-- (void)pauseAction:(id)a3
+- (void)pauseAction:(id)action
 {
   v18 = *MEMORY[0x29EDCA608];
   [(AXQuickSpeak *)self setPaused:1];
-  v4 = [(AXQuickSpeak *)self orator];
+  orator = [(AXQuickSpeak *)self orator];
   v15 = 0;
-  v5 = [v4 pauseSpeaking:&v15];
+  v5 = [orator pauseSpeaking:&v15];
   v6 = v15;
 
   if ((v5 & 1) == 0)
   {
-    v7 = [MEMORY[0x29EDBD6C8] sharedInstance];
-    v8 = [v7 ignoreLogging];
+    mEMORY[0x29EDBD6C8] = [MEMORY[0x29EDBD6C8] sharedInstance];
+    ignoreLogging = [mEMORY[0x29EDBD6C8] ignoreLogging];
 
-    if ((v8 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v9 = [MEMORY[0x29EDBD6C8] identifier];
+      identifier = [MEMORY[0x29EDBD6C8] identifier];
       v10 = AXLoggerForFacility();
 
       v11 = AXOSLogLevelFromAXLogLevel();
@@ -498,23 +498,23 @@ LABEL_12:
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (void)resumeAction:(id)a3
+- (void)resumeAction:(id)action
 {
   v18 = *MEMORY[0x29EDCA608];
   [(AXQuickSpeak *)self setPaused:0];
-  v4 = [(AXQuickSpeak *)self orator];
+  orator = [(AXQuickSpeak *)self orator];
   v15 = 0;
-  v5 = [v4 resumeSpeaking:&v15];
+  v5 = [orator resumeSpeaking:&v15];
   v6 = v15;
 
   if ((v5 & 1) == 0)
   {
-    v7 = [MEMORY[0x29EDBD6C8] sharedInstance];
-    v8 = [v7 ignoreLogging];
+    mEMORY[0x29EDBD6C8] = [MEMORY[0x29EDBD6C8] sharedInstance];
+    ignoreLogging = [mEMORY[0x29EDBD6C8] ignoreLogging];
 
-    if ((v8 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v9 = [MEMORY[0x29EDBD6C8] identifier];
+      identifier = [MEMORY[0x29EDBD6C8] identifier];
       v10 = AXLoggerForFacility();
 
       v11 = AXOSLogLevelFromAXLogLevel();
@@ -535,10 +535,10 @@ LABEL_12:
   v14 = *MEMORY[0x29EDCA608];
 }
 
-- (void)stopAction:(id)a3
+- (void)stopAction:(id)action
 {
-  v4 = [(AXQuickSpeak *)self orator];
-  [v4 stopSpeaking:0];
+  orator = [(AXQuickSpeak *)self orator];
+  [orator stopSpeaking:0];
 
   v6[0] = MEMORY[0x29EDCA5F8];
   v6[1] = 3221225472;
@@ -607,27 +607,27 @@ void __27__AXQuickSpeak_stopAction___block_invoke_2(uint64_t a1)
   *(v7 + 48) = 0;
 }
 
-- (void)_manipulateOtherTextViews:(BOOL)a3
+- (void)_manipulateOtherTextViews:(BOOL)views
 {
   v27 = *MEMORY[0x29EDCA608];
   v24[0] = MEMORY[0x29EDCA5F8];
   v24[1] = 3221225472;
   v24[2] = __42__AXQuickSpeak__manipulateOtherTextViews___block_invoke;
   v24[3] = &__block_descriptor_33_e16_v16__0__UIView_8l;
-  v25 = a3;
+  viewsCopy = views;
   v5 = MEMORY[0x29C2EA130](v24, a2);
-  if (!a3)
+  if (!views)
   {
-    v6 = [(AXQuickSpeak *)self _textSelectionViews];
-    [(AXQuickSpeak *)self setHiddenTextSelectionViews:v6];
+    _textSelectionViews = [(AXQuickSpeak *)self _textSelectionViews];
+    [(AXQuickSpeak *)self setHiddenTextSelectionViews:_textSelectionViews];
 
-    v7 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v8 = [(AXQuickSpeak *)self hiddenTextSelectionViews];
-    v9 = [v8 countByEnumeratingWithState:&v20 objects:v26 count:16];
+    hiddenTextSelectionViews = [(AXQuickSpeak *)self hiddenTextSelectionViews];
+    v9 = [hiddenTextSelectionViews countByEnumeratingWithState:&v20 objects:v26 count:16];
     if (v9)
     {
       v10 = v9;
@@ -639,17 +639,17 @@ void __27__AXQuickSpeak_stopAction___block_invoke_2(uint64_t a1)
         {
           if (*v21 != v11)
           {
-            objc_enumerationMutation(v8);
+            objc_enumerationMutation(hiddenTextSelectionViews);
           }
 
           v13 = *(*(&v20 + 1) + 8 * v12);
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [v13 delegate];
-            if (v14)
+            delegate = [v13 delegate];
+            if (delegate)
             {
-              [v7 addObject:v14];
+              [array addObject:delegate];
             }
           }
 
@@ -657,23 +657,23 @@ void __27__AXQuickSpeak_stopAction___block_invoke_2(uint64_t a1)
         }
 
         while (v10 != v12);
-        v10 = [v8 countByEnumeratingWithState:&v20 objects:v26 count:16];
+        v10 = [hiddenTextSelectionViews countByEnumeratingWithState:&v20 objects:v26 count:16];
       }
 
       while (v10);
     }
 
-    [(AXQuickSpeak *)self setHiddenTextSelectionViewDelegates:v7];
+    [(AXQuickSpeak *)self setHiddenTextSelectionViewDelegates:array];
   }
 
-  v15 = [(AXQuickSpeak *)self hiddenTextSelectionViews];
+  hiddenTextSelectionViews2 = [(AXQuickSpeak *)self hiddenTextSelectionViews];
   v18[0] = MEMORY[0x29EDCA5F8];
   v18[1] = 3221225472;
   v18[2] = __42__AXQuickSpeak__manipulateOtherTextViews___block_invoke_3;
   v18[3] = &unk_29F2F01D8;
   v19 = v5;
   v16 = v5;
-  [v15 enumerateObjectsUsingBlock:v18];
+  [hiddenTextSelectionViews2 enumerateObjectsUsingBlock:v18];
 
   v17 = *MEMORY[0x29EDCA608];
 }
@@ -709,58 +709,58 @@ void __42__AXQuickSpeak__manipulateOtherTextViews___block_invoke(uint64_t a1, vo
   }
 }
 
-- (id)_viewsWithBlock:(id)a3
+- (id)_viewsWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(AXQuickSpeak *)self highlightView];
+  blockCopy = block;
+  highlightView = [(AXQuickSpeak *)self highlightView];
 
-  if (!v5)
+  if (!highlightView)
   {
     _AXAssert();
   }
 
-  v6 = [(AXQuickSpeak *)self highlightView];
-  v7 = [v6 window];
+  highlightView2 = [(AXQuickSpeak *)self highlightView];
+  window = [highlightView2 window];
 
   v8 = objc_alloc(MEMORY[0x29EDB8DE8]);
-  v9 = [v7 subviews];
-  v10 = [v8 initWithArray:v9];
+  subviews = [window subviews];
+  v10 = [v8 initWithArray:subviews];
 
   v11 = MEMORY[0x29EDC7D40];
-  v12 = [v7 windowScene];
-  v13 = [v11 activeTextEffectsWindowForWindowScene:v12];
+  windowScene = [window windowScene];
+  v13 = [v11 activeTextEffectsWindowForWindowScene:windowScene];
 
   if (v13)
   {
-    v14 = [v13 subviews];
-    [v10 addObjectsFromArray:v14];
+    subviews2 = [v13 subviews];
+    [v10 addObjectsFromArray:subviews2];
   }
 
-  v15 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   while ([v10 count])
   {
-    v16 = [v10 lastObject];
+    lastObject = [v10 lastObject];
     [v10 removeLastObject];
-    if (v4[2](v4, v16))
+    if (blockCopy[2](blockCopy, lastObject))
     {
-      [v15 addObject:v16];
+      [array addObject:lastObject];
     }
 
-    v17 = [v16 subviews];
-    [v10 addObjectsFromArray:v17];
+    subviews3 = [lastObject subviews];
+    [v10 addObjectsFromArray:subviews3];
   }
 
-  return v15;
+  return array;
 }
 
 - (id)_textSelectionViews
 {
-  v3 = [(AXQuickSpeak *)self highlightView];
-  v4 = [v3 superview];
+  highlightView = [(AXQuickSpeak *)self highlightView];
+  superview = [highlightView superview];
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 safeValueForKey:@"interactionAssistant"];
+    v5 = [superview safeValueForKey:@"interactionAssistant"];
     v6 = [v5 safeValueForKey:@"selectionView"];
   }
 
@@ -769,27 +769,27 @@ void __42__AXQuickSpeak__manipulateOtherTextViews___block_invoke(uint64_t a1, vo
     v6 = 0;
   }
 
-  v7 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v8 = [(AXQuickSpeak *)self _viewsWithBlock:&__block_literal_global_527];
   if (v8)
   {
-    [v7 addObjectsFromArray:v8];
+    [array addObjectsFromArray:v8];
   }
 
-  v9 = [v6 superview];
+  superview2 = [v6 superview];
 
-  if (v9)
+  if (superview2)
   {
-    [v7 addObject:v6];
+    [array addObject:v6];
   }
 
   v10 = [(AXQuickSpeak *)self _viewsWithBlock:&__block_literal_global_532];
   if (![v10 count])
   {
-    v11 = [(AXQuickSpeak *)self _quickSpeakInputInitiator];
+    _quickSpeakInputInitiator = [(AXQuickSpeak *)self _quickSpeakInputInitiator];
     if (objc_opt_respondsToSelector())
     {
-      v12 = [v11 safeValueForKey:@"_accessibilitySpeakTextSelectionViews"];
+      v12 = [_quickSpeakInputInitiator safeValueForKey:@"_accessibilitySpeakTextSelectionViews"];
 
       v10 = v12;
     }
@@ -797,10 +797,10 @@ void __42__AXQuickSpeak__manipulateOtherTextViews___block_invoke(uint64_t a1, vo
 
   if (v10)
   {
-    [v7 addObjectsFromArray:v10];
+    [array addObjectsFromArray:v10];
   }
 
-  return v7;
+  return array;
 }
 
 uint64_t __35__AXQuickSpeak__textSelectionViews__block_invoke(uint64_t a1, void *a2)
@@ -872,22 +872,22 @@ uint64_t __42__AXQuickSpeak__cleanupTextSelectionViews__block_invoke_3(uint64_t 
   [(AXQuickSpeak *)self _cleanupTextSelectionViews];
 }
 
-- (void)_scrollToTextRect:(CGRect)a3 withScrollView:(id)a4
+- (void)_scrollToTextRect:(CGRect)rect withScrollView:(id)view
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  view = a4;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  view = view;
   if (![(UIView *)view isHidden])
   {
-    v9 = [(UIView *)view window];
-    if (v9)
+    window = [(UIView *)view window];
+    if (window)
     {
-      v10 = v9;
-      v11 = [(UIView *)view isScrollEnabled];
+      v10 = window;
+      isScrollEnabled = [(UIView *)view isScrollEnabled];
 
-      if (v11)
+      if (isScrollEnabled)
       {
         [(UIView *)view contentOffset];
         v13 = self->_lastQuickSpeakOffset.x;
@@ -1033,18 +1033,18 @@ uint64_t __42__AXQuickSpeak__cleanupTextSelectionViews__block_invoke_3(uint64_t 
   MEMORY[0x2A1C71028]();
 }
 
-- (_NSRange)_updatedRangeForComposedCharacters:(_NSRange)a3 string:(id)a4 lastKnownWholeCharacterLocation:(unint64_t)a5 lastKnownUnicharLocation:(unint64_t)a6
+- (_NSRange)_updatedRangeForComposedCharacters:(_NSRange)characters string:(id)string lastKnownWholeCharacterLocation:(unint64_t)location lastKnownUnicharLocation:(unint64_t)unicharLocation
 {
-  length = a3.length;
-  location = a3.location;
-  for (i = a4; a6 < location; a6 += v11)
+  length = characters.length;
+  location = characters.location;
+  for (i = string; unicharLocation < location; unicharLocation += v11)
   {
-    ++a5;
-    [i rangeOfComposedCharacterSequenceAtIndex:a6];
+    ++location;
+    [i rangeOfComposedCharacterSequenceAtIndex:unicharLocation];
   }
 
   v12 = location + length;
-  if (a5 >= location + length)
+  if (location >= location + length)
   {
     v13 = 0;
   }
@@ -1052,30 +1052,30 @@ uint64_t __42__AXQuickSpeak__cleanupTextSelectionViews__block_invoke_3(uint64_t 
   else
   {
     v13 = 0;
-    v14 = a5;
+    locationCopy = location;
     do
     {
-      [i rangeOfComposedCharacterSequenceAtIndex:v14];
+      [i rangeOfComposedCharacterSequenceAtIndex:locationCopy];
       ++v13;
-      v14 += v15;
+      locationCopy += v15;
     }
 
-    while (v14 < v12);
+    while (locationCopy < v12);
   }
 
-  v16 = a5;
+  locationCopy2 = location;
   v17 = v13;
   result.length = v17;
-  result.location = v16;
+  result.location = locationCopy2;
   return result;
 }
 
 - (id)_quickSpeakInputInitiator
 {
-  v3 = [(AXQuickSpeak *)self quickSpeakInitiator];
-  if ([v3 conformsToProtocol:&unk_2A22C5028])
+  quickSpeakInitiator = [(AXQuickSpeak *)self quickSpeakInitiator];
+  if ([quickSpeakInitiator conformsToProtocol:&unk_2A22C5028])
   {
-    if (v3)
+    if (quickSpeakInitiator)
     {
       goto LABEL_8;
     }
@@ -1083,23 +1083,23 @@ uint64_t __42__AXQuickSpeak__cleanupTextSelectionViews__block_invoke_3(uint64_t 
     goto LABEL_3;
   }
 
-  v4 = [(AXQuickSpeak *)self quickSpeakInitiator];
-  v5 = [v4 _accessibilitySpeakSelectionTextInputResponder];
+  quickSpeakInitiator2 = [(AXQuickSpeak *)self quickSpeakInitiator];
+  _accessibilitySpeakSelectionTextInputResponder = [quickSpeakInitiator2 _accessibilitySpeakSelectionTextInputResponder];
 
-  if (v5)
+  if (_accessibilitySpeakSelectionTextInputResponder)
   {
-    v3 = v5;
+    quickSpeakInitiator = _accessibilitySpeakSelectionTextInputResponder;
   }
 
   else
   {
-    v6 = [(AXQuickSpeak *)self contentOwner];
-    v3 = [v6 _accessibilitySpeakSelectionTextInputResponder];
+    contentOwner = [(AXQuickSpeak *)self contentOwner];
+    quickSpeakInitiator = [contentOwner _accessibilitySpeakSelectionTextInputResponder];
 
-    if (!v3)
+    if (!quickSpeakInitiator)
     {
-      v3 = [(AXQuickSpeak *)self quickSpeakInitiator];
-      if (!v3)
+      quickSpeakInitiator = [(AXQuickSpeak *)self quickSpeakInitiator];
+      if (!quickSpeakInitiator)
       {
 LABEL_3:
         AXPerformBlockOnMainThreadAfterDelay();
@@ -1109,7 +1109,7 @@ LABEL_3:
 
 LABEL_8:
 
-  return v3;
+  return quickSpeakInitiator;
 }
 
 uint64_t __41__AXQuickSpeak__quickSpeakInputInitiator__block_invoke(uint64_t a1)
@@ -1122,18 +1122,18 @@ uint64_t __41__AXQuickSpeak__quickSpeakInputInitiator__block_invoke(uint64_t a1)
   return [v3 stopAction:0];
 }
 
-- (id)_rectsByUnionSamelineRects:(id)a3
+- (id)_rectsByUnionSamelineRects:(id)rects
 {
   v17 = *MEMORY[0x29EDCA608];
-  v3 = a3;
-  if (v3)
+  rectsCopy = rects;
+  if (rectsCopy)
   {
-    v4 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v12 = 0u;
     v13 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v5 = v3;
+    v5 = rectsCopy;
     v6 = [v5 countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v6)
     {
@@ -1161,38 +1161,38 @@ uint64_t __41__AXQuickSpeak__quickSpeakInputInitiator__block_invoke(uint64_t a1)
 
   else
   {
-    v4 = 0;
+    array = 0;
   }
 
   v10 = *MEMORY[0x29EDCA608];
 
-  return v4;
+  return array;
 }
 
-- (id)_sentenceRects:(id)a3 speakingRange:(id)a4
+- (id)_sentenceRects:(id)rects speakingRange:(id)range
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [MEMORY[0x29EDB8DE8] array];
-  v9 = [v6 safeValueForKey:@"_accessibilityQuickSpeakTokenizer"];
+  rectsCopy = rects;
+  rangeCopy = range;
+  array = [MEMORY[0x29EDB8DE8] array];
+  v9 = [rectsCopy safeValueForKey:@"_accessibilityQuickSpeakTokenizer"];
   v10 = AXUISentenceTextRangeForInput();
   currentSentenceRange = self->_currentSentenceRange;
   p_currentSentenceRange = &self->_currentSentenceRange;
   if (([v10 isEqual:currentSentenceRange] & 1) == 0)
   {
     objc_storeStrong(p_currentSentenceRange, v10);
-    v13 = [v6 _accessibilitySentenceRectsForRange:v7];
+    v13 = [rectsCopy _accessibilitySentenceRectsForRange:rangeCopy];
     v14 = [v13 mutableCopy];
 
-    v8 = v14;
+    array = v14;
   }
 
-  return v8;
+  return array;
 }
 
 - (id)_sentenceHighlightOverlapHeightArray
 {
-  v2 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   if (CachedSentenceRects && [CachedSentenceRects count])
   {
     v3 = [CachedSentenceRects objectAtIndex:0];
@@ -1219,7 +1219,7 @@ uint64_t __41__AXQuickSpeak__quickSpeakInputInitiator__block_invoke(uint64_t a1)
 
         *&v16 = v13;
         v17 = [MEMORY[0x29EDBA070] numberWithFloat:v16];
-        [v2 addObject:v17];
+        [array addObject:v17];
 
         ++v9;
         v8 = v12;
@@ -1229,50 +1229,50 @@ uint64_t __41__AXQuickSpeak__quickSpeakInputInitiator__block_invoke(uint64_t a1)
     }
 
     v18 = [MEMORY[0x29EDBA070] numberWithFloat:0.0];
-    [v2 addObject:v18];
+    [array addObject:v18];
   }
 
-  return v2;
+  return array;
 }
 
-- (void)_willSpeakRange:(_NSRange)a3 string:(id)a4
+- (void)_willSpeakRange:(_NSRange)range string:(id)string
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v32 = *MEMORY[0x29EDCA608];
-  v7 = a4;
-  v8 = [(AXQuickSpeak *)self _quickSpeakInputInitiator];
-  v9 = [MEMORY[0x29EDB8DE8] array];
-  v10 = [MEMORY[0x29EDB8DE8] array];
+  stringCopy = string;
+  _quickSpeakInputInitiator = [(AXQuickSpeak *)self _quickSpeakInputInitiator];
+  array = [MEMORY[0x29EDB8DE8] array];
+  array2 = [MEMORY[0x29EDB8DE8] array];
   v11 = MEMORY[0x29EDB90E0];
   v12 = *(MEMORY[0x29EDB90E0] + 16);
   v29.origin = *MEMORY[0x29EDB90E0];
   v29.size = v12;
   if (objc_opt_respondsToSelector())
   {
-    [(AXQuickSpeak *)self _quickSpeakTextRects:v8 withRange:location string:length highlightRects:v7 sentenceRects:v9 singleTextRect:v10, &v29];
+    [(AXQuickSpeak *)self _quickSpeakTextRects:_quickSpeakInputInitiator withRange:location string:length highlightRects:stringCopy sentenceRects:array singleTextRect:array2, &v29];
   }
 
-  else if ([v8 conformsToProtocol:&unk_2A22C5028])
+  else if ([_quickSpeakInputInitiator conformsToProtocol:&unk_2A22C5028])
   {
-    [(AXQuickSpeak *)self _quickSpeakUITextInputTextRects:v8 withRange:location string:length highlightRects:v7 sentenceRects:v9 singleTextRect:v10, &v29];
+    [(AXQuickSpeak *)self _quickSpeakUITextInputTextRects:_quickSpeakInputInitiator withRange:location string:length highlightRects:stringCopy sentenceRects:array singleTextRect:array2, &v29];
   }
 
   else
   {
-    v13 = [MEMORY[0x29EDBD6C8] sharedInstance];
-    v14 = [v13 ignoreLogging];
+    mEMORY[0x29EDBD6C8] = [MEMORY[0x29EDBD6C8] sharedInstance];
+    ignoreLogging = [mEMORY[0x29EDBD6C8] ignoreLogging];
 
-    if ((v14 & 1) == 0)
+    if ((ignoreLogging & 1) == 0)
     {
-      v15 = [MEMORY[0x29EDBD6C8] identifier];
+      identifier = [MEMORY[0x29EDBD6C8] identifier];
       v16 = AXLoggerForFacility();
 
       v17 = AXOSLogLevelFromAXLogLevel();
       if (os_log_type_enabled(v16, v17))
       {
         AXColorizeFormatLog();
-        v27 = v26 = v8;
+        v27 = v26 = _quickSpeakInputInitiator;
         v28 = _AXStringForArgs();
         if (os_log_type_enabled(v16, v17))
         {
@@ -1283,22 +1283,22 @@ uint64_t __41__AXQuickSpeak__quickSpeakInputInitiator__block_invoke(uint64_t a1)
       }
     }
 
-    [v8 _accessibilityQuickSpeakTextRectsWithRange:location string:length highlightRects:v7 sentenceRects:v9 singleTextRect:{v10, &v29, v26}];
+    [_quickSpeakInputInitiator _accessibilityQuickSpeakTextRectsWithRange:location string:length highlightRects:stringCopy sentenceRects:array singleTextRect:{array2, &v29, v26}];
   }
 
-  if ([v9 count] || !CGRectEqualToRect(*v11, v29))
+  if ([array count] || !CGRectEqualToRect(*v11, v29))
   {
-    [(AXQuickSpeak *)self _handleQuickSpeakHighlight:v9 sentenceRects:v10 textRect:v8 initiator:*&v29.origin, *&v29.size];
+    [(AXQuickSpeak *)self _handleQuickSpeakHighlight:array sentenceRects:array2 textRect:_quickSpeakInputInitiator initiator:*&v29.origin, *&v29.size];
   }
 
   else
   {
-    v18 = [MEMORY[0x29EDBD6C8] sharedInstance];
-    v19 = [v18 ignoreLogging];
+    mEMORY[0x29EDBD6C8]2 = [MEMORY[0x29EDBD6C8] sharedInstance];
+    ignoreLogging2 = [mEMORY[0x29EDBD6C8]2 ignoreLogging];
 
-    if ((v19 & 1) == 0)
+    if ((ignoreLogging2 & 1) == 0)
     {
-      v20 = [MEMORY[0x29EDBD6C8] identifier];
+      identifier2 = [MEMORY[0x29EDBD6C8] identifier];
       v21 = AXLoggerForFacility();
 
       v22 = AXOSLogLevelFromAXLogLevel();
@@ -1319,11 +1319,11 @@ uint64_t __41__AXQuickSpeak__quickSpeakInputInitiator__block_invoke(uint64_t a1)
   v25 = *MEMORY[0x29EDCA608];
 }
 
-- (_NSRange)modifiedRange:(_NSRange)a3 withString:(id)a4
+- (_NSRange)modifiedRange:(_NSRange)range withString:(id)string
 {
-  length = a3.length;
-  location = a3.location;
-  v7 = [(AXQuickSpeak *)self _updatedRangeForComposedCharacters:a3.location string:a3.length lastKnownWholeCharacterLocation:a4 lastKnownUnicharLocation:self->_lastWholeCharacterLocation, self->_lastUnicharLocation];
+  length = range.length;
+  location = range.location;
+  v7 = [(AXQuickSpeak *)self _updatedRangeForComposedCharacters:range.location string:range.length lastKnownWholeCharacterLocation:string lastKnownUnicharLocation:self->_lastWholeCharacterLocation, self->_lastUnicharLocation];
   self->_lastWholeCharacterLocation = v7 + v8;
   self->_lastUnicharLocation = location + length;
   result.length = v8;
@@ -1331,25 +1331,25 @@ uint64_t __41__AXQuickSpeak__quickSpeakInputInitiator__block_invoke(uint64_t a1)
   return result;
 }
 
-- (void)_quickSpeakTextRects:(id)a3 withRange:(_NSRange)a4 string:(id)a5 highlightRects:(id)a6 sentenceRects:(id)a7 singleTextRect:(CGRect *)a8
+- (void)_quickSpeakTextRects:(id)rects withRange:(_NSRange)range string:(id)string highlightRects:(id)highlightRects sentenceRects:(id)sentenceRects singleTextRect:(CGRect *)rect
 {
-  length = a4.length;
-  location = a4.location;
-  v33 = a3;
-  v14 = a7;
-  v15 = a6;
-  v16 = a5;
-  v17 = [(AXQuickSpeak *)self modifiedRange:location withString:length, v16];
-  v19 = [v16 substringWithRange:{v17, v18}];
+  length = range.length;
+  location = range.location;
+  rectsCopy = rects;
+  sentenceRectsCopy = sentenceRects;
+  highlightRectsCopy = highlightRects;
+  stringCopy = string;
+  stringCopy = [(AXQuickSpeak *)self modifiedRange:location withString:length, stringCopy];
+  v19 = [stringCopy substringWithRange:{stringCopy, v18}];
 
-  v20 = [v33 _accessibilityRetrieveRectsForGuanularity:1 atSelectionOffset:v17 wordText:v19];
+  v20 = [rectsCopy _accessibilityRetrieveRectsForGuanularity:1 atSelectionOffset:stringCopy wordText:v19];
   v21 = [(AXQuickSpeak *)self _rectsByUnionSamelineRects:v20];
-  [v15 axSafelyAddObjectsFromArray:v21];
+  [highlightRectsCopy axSafelyAddObjectsFromArray:v21];
 
   if ([v20 count])
   {
-    v22 = [v20 firstObject];
-    [v22 CGRectValue];
+    firstObject = [v20 firstObject];
+    [firstObject CGRectValue];
     v24 = v23;
     v26 = v25;
     v28 = v27;
@@ -1364,87 +1364,87 @@ uint64_t __41__AXQuickSpeak__quickSpeakInputInitiator__block_invoke(uint64_t a1)
     v30 = *(MEMORY[0x29EDB90E0] + 24);
   }
 
-  v31 = [v33 _accessibilityRetrieveRectsForGuanularity:2 atSelectionOffset:v17 wordText:v19];
+  v31 = [rectsCopy _accessibilityRetrieveRectsForGuanularity:2 atSelectionOffset:stringCopy wordText:v19];
   v32 = [(AXQuickSpeak *)self _rectsByUnionSamelineRects:v31];
-  [v14 axSafelyAddObjectsFromArray:v32];
+  [sentenceRectsCopy axSafelyAddObjectsFromArray:v32];
 
-  a8->origin.x = v24;
-  a8->origin.y = v26;
-  a8->size.width = v28;
-  a8->size.height = v30;
+  rect->origin.x = v24;
+  rect->origin.y = v26;
+  rect->size.width = v28;
+  rect->size.height = v30;
 }
 
-- (void)_quickSpeakUITextInputTextRects:(id)a3 withRange:(_NSRange)a4 string:(id)a5 highlightRects:(id)a6 sentenceRects:(id)a7 singleTextRect:(CGRect *)a8
+- (void)_quickSpeakUITextInputTextRects:(id)rects withRange:(_NSRange)range string:(id)string highlightRects:(id)highlightRects sentenceRects:(id)sentenceRects singleTextRect:(CGRect *)rect
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v49 = *MEMORY[0x29EDCA608];
-  v14 = a3;
-  v15 = a5;
-  v46 = a6;
-  v45 = a7;
-  v16 = [(AXQuickSpeak *)self modifiedRange:location withString:length, v15];
+  rectsCopy = rects;
+  stringCopy = string;
+  highlightRectsCopy = highlightRects;
+  sentenceRectsCopy = sentenceRects;
+  stringCopy = [(AXQuickSpeak *)self modifiedRange:location withString:length, stringCopy];
   v18 = v17;
-  v19 = [(AXQuickSpeak *)self quickSpeakInitiator];
-  v20 = objc_getAssociatedObject(v19, &QSSelectedTextRangeKey);
+  quickSpeakInitiator = [(AXQuickSpeak *)self quickSpeakInitiator];
+  v20 = objc_getAssociatedObject(quickSpeakInitiator, &QSSelectedTextRangeKey);
 
   if (!v20)
   {
-    v21 = [(AXQuickSpeak *)self speakingSentenceRange];
+    speakingSentenceRange = [(AXQuickSpeak *)self speakingSentenceRange];
 
-    if (v21)
+    if (speakingSentenceRange)
     {
       [(AXQuickSpeak *)self speakingSentenceRange];
     }
 
     else
     {
-      [v14 selectedTextRange];
+      [rectsCopy selectedTextRange];
     }
     v20 = ;
-    v22 = [(AXQuickSpeak *)self quickSpeakInitiator];
-    objc_setAssociatedObject(v22, &QSSelectedTextRangeKey, v20, 1);
+    quickSpeakInitiator2 = [(AXQuickSpeak *)self quickSpeakInitiator];
+    objc_setAssociatedObject(quickSpeakInitiator2, &QSSelectedTextRangeKey, v20, 1);
   }
 
-  v23 = [v20 start];
-  v24 = [v14 positionFromPosition:v23 offset:v16];
+  start = [v20 start];
+  v24 = [rectsCopy positionFromPosition:start offset:stringCopy];
 
-  v25 = [v14 positionFromPosition:v24 offset:v18];
+  v25 = [rectsCopy positionFromPosition:v24 offset:v18];
   v26 = v25;
   if (v24 && v25)
   {
-    v27 = [v14 textRangeFromPosition:v24 toPosition:v25];
+    v27 = [rectsCopy textRangeFromPosition:v24 toPosition:v25];
     v28 = *(MEMORY[0x29EDB90E0] + 16);
     *buf = *MEMORY[0x29EDB90E0];
     v48 = v28;
     if (objc_opt_respondsToSelector())
     {
-      v29 = [v15 substringWithRange:{v16, v18}];
-      v30 = [v14 _accessibilityTextRectsForRange:v27 singleTextRect:buf selectedRange:v20 string:v29];
+      v29 = [stringCopy substringWithRange:{stringCopy, v18}];
+      v30 = [rectsCopy _accessibilityTextRectsForRange:v27 singleTextRect:buf selectedRange:v20 string:v29];
     }
 
     else
     {
-      v30 = [v14 _accessibilityTextRectsForRange:v27 singleTextRect:buf];
+      v30 = [rectsCopy _accessibilityTextRectsForRange:v27 singleTextRect:buf];
     }
 
-    [v46 axSafelyAddObjectsFromArray:v30];
-    v39 = [(AXQuickSpeak *)self _sentenceRects:v14 speakingRange:v27];
-    [v45 axSafelyAddObjectsFromArray:v39];
+    [highlightRectsCopy axSafelyAddObjectsFromArray:v30];
+    v39 = [(AXQuickSpeak *)self _sentenceRects:rectsCopy speakingRange:v27];
+    [sentenceRectsCopy axSafelyAddObjectsFromArray:v39];
     v40 = v48;
-    a8->origin = *buf;
-    a8->size = v40;
+    rect->origin = *buf;
+    rect->size = v40;
 
 LABEL_17:
     goto LABEL_18;
   }
 
-  v31 = [MEMORY[0x29EDBD6C8] sharedInstance];
-  v32 = [v31 ignoreLogging];
+  mEMORY[0x29EDBD6C8] = [MEMORY[0x29EDBD6C8] sharedInstance];
+  ignoreLogging = [mEMORY[0x29EDBD6C8] ignoreLogging];
 
-  if ((v32 & 1) == 0)
+  if ((ignoreLogging & 1) == 0)
   {
-    v33 = [MEMORY[0x29EDBD6C8] identifier];
+    identifier = [MEMORY[0x29EDBD6C8] identifier];
     v27 = AXLoggerForFacility();
 
     v34 = AXOSLogLevelFromAXLogLevel();
@@ -1453,7 +1453,7 @@ LABEL_17:
       v35 = AXColorizeFormatLog();
       [v20 start];
       v36 = type = v34;
-      v37 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v16];
+      v37 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:stringCopy];
       v42 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:v18];
       v44 = v35;
       v38 = _AXStringForArgs();
@@ -1474,22 +1474,22 @@ LABEL_18:
   v41 = *MEMORY[0x29EDCA608];
 }
 
-- (id)_sliceRects:(id)a3 withSentenceRects:(id)a4 wordRects:(id)a5
+- (id)_sliceRects:(id)rects withSentenceRects:(id)sentenceRects wordRects:(id)wordRects
 {
   v60 = *MEMORY[0x29EDCA608];
-  v49 = a3;
-  v7 = a4;
-  v8 = a5;
-  v9 = v8;
-  if (v7)
+  rectsCopy = rects;
+  sentenceRectsCopy = sentenceRects;
+  wordRectsCopy = wordRects;
+  v9 = wordRectsCopy;
+  if (sentenceRectsCopy)
   {
-    v46 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
-    v45 = v7;
-    obj = v7;
+    v45 = sentenceRectsCopy;
+    obj = sentenceRectsCopy;
     v10 = [obj countByEnumeratingWithState:&v54 objects:v59 count:16];
     if (!v10)
     {
@@ -1520,7 +1520,7 @@ LABEL_18:
         {
 
 LABEL_27:
-          [v49 addObject:v13];
+          [rectsCopy addObject:v13];
           continue;
         }
 
@@ -1601,13 +1601,13 @@ LABEL_27:
         v65.size.height = v37;
         v39 = vabdd_f64(v38 - CGRectGetWidth(v65), v24);
         v40 = [MEMORY[0x29EDBA168] valueWithCGRect:{v34, v23, v36, v37}];
-        [v49 addObject:v40];
+        [rectsCopy addObject:v40];
 
         v41 = [MEMORY[0x29EDBA168] valueWithCGRect:{v24 + v35, v23, v39, v37}];
-        [v49 addObject:v41];
+        [rectsCopy addObject:v41];
 
         v42 = [MEMORY[0x29EDBA168] valueWithRect:{v35, v23, v24, v37}];
-        [v46 addObject:v42];
+        [array addObject:v42];
       }
 
       v11 = [obj countByEnumeratingWithState:&v54 objects:v59 count:16];
@@ -1615,59 +1615,59 @@ LABEL_27:
       {
 LABEL_30:
 
-        v7 = v45;
+        sentenceRectsCopy = v45;
         goto LABEL_32;
       }
     }
   }
 
-  v46 = v8;
+  array = wordRectsCopy;
 LABEL_32:
 
   v43 = *MEMORY[0x29EDCA608];
 
-  return v46;
+  return array;
 }
 
-- (void)_handleQuickSpeakHighlight:(id)a3 sentenceRects:(id)a4 textRect:(CGRect)a5 initiator:(id)a6
+- (void)_handleQuickSpeakHighlight:(id)highlight sentenceRects:(id)rects textRect:(CGRect)rect initiator:(id)initiator
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v127 = *MEMORY[0x29EDCA608];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = [v15 textInputView];
+  highlightCopy = highlight;
+  rectsCopy = rects;
+  initiatorCopy = initiator;
+  textInputView = [initiatorCopy textInputView];
   objc_opt_class();
-  v110 = v15;
-  v111 = v13;
+  v110 = initiatorCopy;
+  v111 = highlightCopy;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v17 = [(AXQuickSpeak *)self quickSpeakInitiator];
+    quickSpeakInitiator = [(AXQuickSpeak *)self quickSpeakInitiator];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v16 = v17;
+      textInputView = quickSpeakInitiator;
     }
 
     else
     {
-      v16 = v15;
+      textInputView = initiatorCopy;
 
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
 
-        v16 = 0;
+        textInputView = 0;
       }
     }
   }
 
-  v18 = [v16 _accessibilitySpeakSelectionAssociatedScrollView];
-  if (v18)
+  _accessibilitySpeakSelectionAssociatedScrollView = [textInputView _accessibilitySpeakSelectionAssociatedScrollView];
+  if (_accessibilitySpeakSelectionAssociatedScrollView)
   {
     do
     {
@@ -1677,30 +1677,30 @@ LABEL_32:
         break;
       }
 
-      v19 = [v18 superview];
+      superview = [_accessibilitySpeakSelectionAssociatedScrollView superview];
 
-      v18 = v19;
+      _accessibilitySpeakSelectionAssociatedScrollView = superview;
     }
 
-    while (v19);
+    while (superview);
   }
 
-  v20 = v18;
-  v115 = v16;
-  [v16 convertRect:v20 toView:{x, y, width, height}];
+  v20 = _accessibilitySpeakSelectionAssociatedScrollView;
+  v115 = textInputView;
+  [textInputView convertRect:v20 toView:{x, y, width, height}];
   v109 = v20;
   [(AXQuickSpeak *)self _scrollToTextRect:v20 withScrollView:?];
-  if (v14 && [v14 count])
+  if (rectsCopy && [rectsCopy count])
   {
-    objc_storeStrong(&CachedSentenceRects, a4);
-    v21 = [(AXQuickSpeak *)self _sentenceHighlightOverlapHeightArray];
+    objc_storeStrong(&CachedSentenceRects, rects);
+    _sentenceHighlightOverlapHeightArray = [(AXQuickSpeak *)self _sentenceHighlightOverlapHeightArray];
     v22 = CachedSentenceHighlightOverlapHeights;
-    CachedSentenceHighlightOverlapHeights = v21;
+    CachedSentenceHighlightOverlapHeights = _sentenceHighlightOverlapHeightArray;
   }
 
-  v113 = self;
-  v114 = v14;
-  v116 = [MEMORY[0x29EDB8DE8] array];
+  selfCopy = self;
+  v114 = rectsCopy;
+  array = [MEMORY[0x29EDB8DE8] array];
   v122 = 0u;
   v123 = 0u;
   v124 = 0u;
@@ -1728,10 +1728,10 @@ LABEL_32:
         v33 = v32;
         v35 = v34;
         v37 = v36;
-        v38 = [*(v25 + 4000) sharedInstance];
-        v39 = [v38 quickSpeakSentenceHighlightOption];
+        sharedInstance = [*(v25 + 4000) sharedInstance];
+        quickSpeakSentenceHighlightOption = [sharedInstance quickSpeakSentenceHighlightOption];
 
-        if (v39 == 2 && [CachedSentenceRects indexOfObject:v29] != 0x7FFFFFFFFFFFFFFFLL)
+        if (quickSpeakSentenceHighlightOption == 2 && [CachedSentenceRects indexOfObject:v29] != 0x7FFFFFFFFFFFFFFFLL)
         {
           v41 = [CachedSentenceRects indexOfObject:v29];
           v25 = 0x29EDBD000;
@@ -1749,7 +1749,7 @@ LABEL_32:
         }
 
         v40 = [MEMORY[0x29EDBA168] valueWithRect:{v31, v33, v35, v37}];
-        [v116 addObject:v40];
+        [array addObject:v40];
 
         ++v28;
       }
@@ -1762,20 +1762,20 @@ LABEL_32:
     while (v44);
   }
 
-  v45 = [MEMORY[0x29EDB8DE8] array];
-  v46 = [*(v25 + 4000) sharedInstance];
-  if ([v46 quickSpeakHighlightOption] == 3)
+  array2 = [MEMORY[0x29EDB8DE8] array];
+  sharedInstance2 = [*(v25 + 4000) sharedInstance];
+  if ([sharedInstance2 quickSpeakHighlightOption] == 3)
   {
-    v47 = [*(v25 + 4000) sharedInstance];
-    v48 = [v47 quickSpeakSentenceHighlightOption];
+    sharedInstance3 = [*(v25 + 4000) sharedInstance];
+    quickSpeakSentenceHighlightOption2 = [sharedInstance3 quickSpeakSentenceHighlightOption];
 
     v50 = v110;
-    v49 = v13;
+    v49 = highlightCopy;
     v51 = v114;
-    if (v48 == 2)
+    if (quickSpeakSentenceHighlightOption2 == 2)
     {
-      v52 = self;
-      v53 = [(AXQuickSpeak *)self _sliceRects:v45 withSentenceRects:v116 wordRects:v111];
+      selfCopy3 = self;
+      v53 = [(AXQuickSpeak *)self _sliceRects:array2 withSentenceRects:array wordRects:v111];
 
       v49 = v53;
       goto LABEL_31;
@@ -1786,12 +1786,12 @@ LABEL_32:
   {
 
     v50 = v110;
-    v49 = v13;
+    v49 = highlightCopy;
     v51 = v114;
   }
 
-  [v45 addObjectsFromArray:v116];
-  v52 = self;
+  [array2 addObjectsFromArray:array];
+  selfCopy3 = self;
 LABEL_31:
   v54 = v115;
   if (!_AXSQuickSpeakHighlightTextEnabled())
@@ -1799,9 +1799,9 @@ LABEL_31:
     goto LABEL_85;
   }
 
-  v55 = [(AXQuickSpeak *)v52 highlightView];
+  highlightView = [(AXQuickSpeak *)selfCopy3 highlightView];
 
-  if (!v55)
+  if (!highlightView)
   {
     v56 = objc_alloc(MEMORY[0x29EDBDE18]);
     v57 = *MEMORY[0x29EDB90E0];
@@ -1810,11 +1810,11 @@ LABEL_31:
     v60 = *(MEMORY[0x29EDB90E0] + 24);
     v61 = [v56 initWithFrame:{*MEMORY[0x29EDB90E0], v58, v59, v60}];
     [v61 setAlpha:0.0];
-    v62 = [MEMORY[0x29EDBDFA0] sharedInstance];
-    v63 = [v62 quickSpeakWordHighlightColor];
+    mEMORY[0x29EDBDFA0] = [MEMORY[0x29EDBDFA0] sharedInstance];
+    quickSpeakWordHighlightColor = [mEMORY[0x29EDBDFA0] quickSpeakWordHighlightColor];
 
     v112 = v61;
-    if (!v63)
+    if (!quickSpeakWordHighlightColor)
     {
       if (objc_opt_respondsToSelector())
       {
@@ -1854,27 +1854,27 @@ LABEL_31:
       goto LABEL_51;
     }
 
-    v64 = [MEMORY[0x29EDBDFA0] sharedInstance];
-    [v64 quickSpeakWordHighlightColor];
+    mEMORY[0x29EDBDFA0]2 = [MEMORY[0x29EDBDFA0] sharedInstance];
+    [mEMORY[0x29EDBDFA0]2 quickSpeakWordHighlightColor];
     v65 = AXSpeakHighlightColor();
 
     v66 = [MEMORY[0x29EDC7A00] colorWithCGColor:v65];
-    v67 = [MEMORY[0x29EDBDFA0] sharedInstance];
-    v68 = [v67 quickSpeakSentenceHighlightColor];
-    v69 = [MEMORY[0x29EDBDFA0] sharedInstance];
-    if (v68 == [v69 quickSpeakWordHighlightColor])
+    mEMORY[0x29EDBDFA0]3 = [MEMORY[0x29EDBDFA0] sharedInstance];
+    quickSpeakSentenceHighlightColor = [mEMORY[0x29EDBDFA0]3 quickSpeakSentenceHighlightColor];
+    mEMORY[0x29EDBDFA0]4 = [MEMORY[0x29EDBDFA0] sharedInstance];
+    if (quickSpeakSentenceHighlightColor == [mEMORY[0x29EDBDFA0]4 quickSpeakWordHighlightColor])
     {
-      v70 = [MEMORY[0x29EDBDFA0] sharedInstance];
-      v71 = [v70 quickSpeakHighlightOption];
+      mEMORY[0x29EDBDFA0]5 = [MEMORY[0x29EDBDFA0] sharedInstance];
+      quickSpeakHighlightOption = [mEMORY[0x29EDBDFA0]5 quickSpeakHighlightOption];
 
-      if (v71 != 3)
+      if (quickSpeakHighlightOption != 3)
       {
         v72 = 0x29EDBD000uLL;
         goto LABEL_50;
       }
 
       AXSlightlyDarkerColorForColor();
-      v66 = v67 = v66;
+      v66 = mEMORY[0x29EDBDFA0]3 = v66;
       v72 = 0x29EDBD000;
     }
 
@@ -1887,8 +1887,8 @@ LABEL_31:
 LABEL_50:
     v77 = [v66 colorWithAlphaComponent:0.5];
 
-    v78 = [*(v72 + 4000) sharedInstance];
-    [v78 quickSpeakSentenceHighlightColor];
+    sharedInstance4 = [*(v72 + 4000) sharedInstance];
+    [sharedInstance4 quickSpeakSentenceHighlightColor];
     v79 = AXSpeakHighlightColor();
 
     v80 = [MEMORY[0x29EDC7A00] colorWithCGColor:v79];
@@ -1897,7 +1897,7 @@ LABEL_50:
     v61 = v112;
 LABEL_51:
     [v61 setSelectionColor:{v77, v77}];
-    if ([v45 count])
+    if ([array2 count])
     {
       v81 = [objc_alloc(MEMORY[0x29EDBDE18]) initWithFrame:{v57, v58, v59, v60}];
       [v81 setSentenceHighlight:1];
@@ -1910,42 +1910,42 @@ LABEL_51:
       v81 = 0;
     }
 
-    v82 = [MEMORY[0x29EDB9F48] mainBundle];
-    v83 = [v82 bundleIdentifier];
-    v84 = [v83 isEqualToString:*MEMORY[0x29EDBD680]];
+    mainBundle = [MEMORY[0x29EDB9F48] mainBundle];
+    bundleIdentifier = [mainBundle bundleIdentifier];
+    v84 = [bundleIdentifier isEqualToString:*MEMORY[0x29EDBD680]];
 
-    v85 = [*(v72 + 4000) sharedInstance];
-    v86 = [v85 quickSpeakSentenceHighlightColor];
+    sharedInstance5 = [*(v72 + 4000) sharedInstance];
+    quickSpeakSentenceHighlightColor2 = [sharedInstance5 quickSpeakSentenceHighlightColor];
 
-    if (v86)
+    if (quickSpeakSentenceHighlightColor2)
     {
-      v87 = [*(v72 + 4000) sharedInstance];
-      [v87 quickSpeakSentenceHighlightColor];
+      sharedInstance6 = [*(v72 + 4000) sharedInstance];
+      [sharedInstance6 quickSpeakSentenceHighlightColor];
       v88 = AXSpeakHighlightColor();
 
-      v89 = [MEMORY[0x29EDC7A00] colorWithCGColor:v88];
+      labelColor = [MEMORY[0x29EDC7A00] colorWithCGColor:v88];
     }
 
     else
     {
-      v89 = [MEMORY[0x29EDC7A00] labelColor];
+      labelColor = [MEMORY[0x29EDC7A00] labelColor];
       if (v84)
       {
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v90 = [v115 backgroundColor];
-          if (v90)
+          backgroundColor = [v115 backgroundColor];
+          if (backgroundColor)
           {
             v91 = AXInvertColorForColor();
 
-            v89 = v91;
+            labelColor = v91;
           }
         }
       }
     }
 
-    [v81 setUnderlineColor:v89];
+    [v81 setUnderlineColor:labelColor];
 
     v92 = objc_opt_class();
     v108 = v73;
@@ -1981,21 +1981,21 @@ LABEL_65:
     v54 = v115;
     isKindOfClass = objc_opt_isKindOfClass();
     NSClassFromString(&cfstr_Tsdcanvasview.isa);
-    v52 = v113;
+    selfCopy3 = selfCopy;
     if ((v95 | objc_opt_isKindOfClass()) & v84)
     {
-      v97 = [v115 superview];
+      superview2 = [v115 superview];
 
-      if (v97)
+      if (superview2)
       {
         if (v81)
         {
-          v98 = [v115 superview];
-          [v98 addSubview:v81];
+          superview3 = [v115 superview];
+          [superview3 addSubview:v81];
         }
 
-        v99 = [v115 superview];
-        [v99 addSubview:v112];
+        superview4 = [v115 superview];
+        [superview4 addSubview:v112];
       }
     }
 
@@ -2022,36 +2022,36 @@ LABEL_65:
     [v112 setFrame:?];
     [v115 bounds];
     [v81 setFrame:?];
-    [(AXQuickSpeak *)v113 setHighlightView:v112];
-    v100 = [(AXQuickSpeak *)v113 highlightView];
-    v101 = [v100 superview];
-    [v101 setAutoresizesSubviews:1];
+    [(AXQuickSpeak *)selfCopy setHighlightView:v112];
+    highlightView2 = [(AXQuickSpeak *)selfCopy highlightView];
+    superview5 = [highlightView2 superview];
+    [superview5 setAutoresizesSubviews:1];
 
-    if (v81 && ![(AXQuickSpeak *)v113 spellOutContent])
+    if (v81 && ![(AXQuickSpeak *)selfCopy spellOutContent])
     {
-      [(AXQuickSpeak *)v113 setSentenceHighlightView:v81];
-      v102 = [(AXQuickSpeak *)v113 sentenceHighlightView];
-      v103 = [v102 superview];
-      [v103 setAutoresizesSubviews:1];
+      [(AXQuickSpeak *)selfCopy setSentenceHighlightView:v81];
+      sentenceHighlightView = [(AXQuickSpeak *)selfCopy sentenceHighlightView];
+      superview6 = [sentenceHighlightView superview];
+      [superview6 setAutoresizesSubviews:1];
     }
 
     v117[0] = MEMORY[0x29EDCA5F8];
     v117[1] = 3221225472;
     v117[2] = __76__AXQuickSpeak__handleQuickSpeakHighlight_sentenceRects_textRect_initiator___block_invoke;
     v117[3] = &unk_29F2F0140;
-    v117[4] = v113;
+    v117[4] = selfCopy;
     [MEMORY[0x29EDC7DA0] animateWithDuration:v117 animations:0.25];
 
     v51 = v114;
   }
 
-  v104 = [(AXQuickSpeak *)v52 highlightView];
-  [v104 setHighlightSelectionRects:v49];
+  highlightView3 = [(AXQuickSpeak *)selfCopy3 highlightView];
+  [highlightView3 setHighlightSelectionRects:v49];
 
-  if ([v45 count] && !-[AXQuickSpeak spellOutContent](v52, "spellOutContent"))
+  if ([array2 count] && !-[AXQuickSpeak spellOutContent](selfCopy3, "spellOutContent"))
   {
-    v105 = [(AXQuickSpeak *)v52 sentenceHighlightView];
-    [v105 setHighlightSelectionRects:v45];
+    sentenceHighlightView2 = [(AXQuickSpeak *)selfCopy3 sentenceHighlightView];
+    [sentenceHighlightView2 setHighlightSelectionRects:array2];
   }
 
 LABEL_85:
@@ -2071,37 +2071,37 @@ void __76__AXQuickSpeak__handleQuickSpeakHighlight_sentenceRects_textRect_initia
 
 - (BOOL)isSpeaking
 {
-  v2 = [(AXQuickSpeak *)self orator];
-  v3 = [v2 isSpeaking];
+  orator = [(AXQuickSpeak *)self orator];
+  isSpeaking = [orator isSpeaking];
 
-  return v3;
+  return isSpeaking;
 }
 
-- (void)speakStatusWithLanguage:(id)a3 rate:(id)a4
+- (void)speakStatusWithLanguage:(id)language rate:(id)rate
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(AXQuickSpeak *)self orator];
-  [v8 speakStatusWithLanguage:v7 rate:v6];
+  rateCopy = rate;
+  languageCopy = language;
+  orator = [(AXQuickSpeak *)self orator];
+  [orator speakStatusWithLanguage:languageCopy rate:rateCopy];
 }
 
 - (BOOL)selectedContentIsSpeakable
 {
-  v2 = [(AXQuickSpeak *)self orator];
-  v3 = [v2 contentIsSpeakable];
+  orator = [(AXQuickSpeak *)self orator];
+  contentIsSpeakable = [orator contentIsSpeakable];
 
-  return v3;
+  return contentIsSpeakable;
 }
 
 - (BOOL)selectedContentRequiresUserChoice
 {
   v38 = *MEMORY[0x29EDCA608];
-  v2 = [(AXQuickSpeak *)self selectedContent];
-  v3 = [MEMORY[0x29EDBDF80] sharedInstance];
-  v4 = [v3 systemLanguageID];
+  selectedContent = [(AXQuickSpeak *)self selectedContent];
+  mEMORY[0x29EDBDF80] = [MEMORY[0x29EDBDF80] sharedInstance];
+  systemLanguageID = [mEMORY[0x29EDBDF80] systemLanguageID];
 
-  v5 = [v2 predictedSecondaryLangMaps];
-  v6 = [v5 count];
+  predictedSecondaryLangMaps = [selectedContent predictedSecondaryLangMaps];
+  v6 = [predictedSecondaryLangMaps count];
 
   if (v6)
   {
@@ -2110,8 +2110,8 @@ void __76__AXQuickSpeak__handleQuickSpeakHighlight_sentenceRects_textRect_initia
 
   else
   {
-    v8 = [v2 unpredictedAmbiguousLangMaps];
-    v9 = [v8 count];
+    unpredictedAmbiguousLangMaps = [selectedContent unpredictedAmbiguousLangMaps];
+    v9 = [unpredictedAmbiguousLangMaps count];
 
     if (v9 >= 2)
     {
@@ -2119,8 +2119,8 @@ void __76__AXQuickSpeak__handleQuickSpeakHighlight_sentenceRects_textRect_initia
       v35 = 0u;
       v32 = 0u;
       v33 = 0u;
-      v10 = [v2 ambiguousLangMaps];
-      v11 = [v10 countByEnumeratingWithState:&v32 objects:v37 count:16];
+      ambiguousLangMaps = [selectedContent ambiguousLangMaps];
+      v11 = [ambiguousLangMaps countByEnumeratingWithState:&v32 objects:v37 count:16];
       if (v11)
       {
         v12 = *v33;
@@ -2130,12 +2130,12 @@ void __76__AXQuickSpeak__handleQuickSpeakHighlight_sentenceRects_textRect_initia
           {
             if (*v33 != v12)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(ambiguousLangMaps);
             }
 
             v14 = *(*(&v32 + 1) + 8 * i);
-            v15 = [v14 generalLanguageID];
-            v16 = [v15 isEqualToString:v4];
+            generalLanguageID = [v14 generalLanguageID];
+            v16 = [generalLanguageID isEqualToString:systemLanguageID];
 
             if (v16)
             {
@@ -2144,7 +2144,7 @@ void __76__AXQuickSpeak__handleQuickSpeakHighlight_sentenceRects_textRect_initia
             }
           }
 
-          v11 = [v10 countByEnumeratingWithState:&v32 objects:v37 count:16];
+          v11 = [ambiguousLangMaps countByEnumeratingWithState:&v32 objects:v37 count:16];
           if (v11)
           {
             continue;
@@ -2160,8 +2160,8 @@ LABEL_15:
       v31 = 0u;
       v28 = 0u;
       v29 = 0u;
-      v17 = [v2 ambiguousLangMaps];
-      v18 = [v17 countByEnumeratingWithState:&v28 objects:v36 count:16];
+      ambiguousLangMaps2 = [selectedContent ambiguousLangMaps];
+      v18 = [ambiguousLangMaps2 countByEnumeratingWithState:&v28 objects:v36 count:16];
       if (v18)
       {
         v19 = v18;
@@ -2172,15 +2172,15 @@ LABEL_15:
           {
             if (*v29 != v20)
             {
-              objc_enumerationMutation(v17);
+              objc_enumerationMutation(ambiguousLangMaps2);
             }
 
             v22 = *(*(&v28 + 1) + 8 * j);
             if (v11 != v22)
             {
-              v23 = [v11 associatedAmbiguousLanguages];
-              v24 = [v22 generalLanguageID];
-              v25 = [v23 containsObject:v24];
+              associatedAmbiguousLanguages = [v11 associatedAmbiguousLanguages];
+              generalLanguageID2 = [v22 generalLanguageID];
+              v25 = [associatedAmbiguousLanguages containsObject:generalLanguageID2];
 
               if (!v25)
               {
@@ -2190,7 +2190,7 @@ LABEL_15:
             }
           }
 
-          v19 = [v17 countByEnumeratingWithState:&v28 objects:v36 count:16];
+          v19 = [ambiguousLangMaps2 countByEnumeratingWithState:&v28 objects:v36 count:16];
           if (v19)
           {
             continue;
@@ -2200,8 +2200,8 @@ LABEL_15:
         }
       }
 
-      v17 = [v2 unpredictedAmbiguousLangMaps];
-      v7 = [v17 count] > 1;
+      ambiguousLangMaps2 = [selectedContent unpredictedAmbiguousLangMaps];
+      v7 = [ambiguousLangMaps2 count] > 1;
 LABEL_26:
     }
 
@@ -2215,20 +2215,20 @@ LABEL_26:
   return v7;
 }
 
-- (void)oratorDidFinishSpeaking:(id)a3
+- (void)oratorDidFinishSpeaking:(id)speaking
 {
-  [*MEMORY[0x29EDC8008] setIdleTimerDisabled:{-[AXQuickSpeak cachedIdleTimerPref](self, "cachedIdleTimerPref", a3)}];
+  [*MEMORY[0x29EDC8008] setIdleTimerDisabled:{-[AXQuickSpeak cachedIdleTimerPref](self, "cachedIdleTimerPref", speaking)}];
   [(AXQuickSpeak *)self stopAction:0];
-  v4 = [(AXQuickSpeak *)self orator];
-  [v4 clearSelectedContent];
+  orator = [(AXQuickSpeak *)self orator];
+  [orator clearSelectedContent];
 
-  v5 = [(AXQuickSpeak *)self quickSpeakInitiator];
-  [v5 _accessibilityHandleFinishSpeaking];
+  quickSpeakInitiator = [(AXQuickSpeak *)self quickSpeakInitiator];
+  [quickSpeakInitiator _accessibilityHandleFinishSpeaking];
 
   [(AXQuickSpeak *)self _cleanupTextSelectionViews];
 }
 
-- (void)oratorDidResumeSpeaking:(id)a3
+- (void)oratorDidResumeSpeaking:(id)speaking
 {
   v3 = MEMORY[0x29EDC8008];
   -[AXQuickSpeak setCachedIdleTimerPref:](self, "setCachedIdleTimerPref:", [*MEMORY[0x29EDC8008] isIdleTimerDisabled]);
@@ -2237,12 +2237,12 @@ LABEL_26:
   [v4 setIdleTimerDisabled:1];
 }
 
-- (void)orator:(id)a3 willSpeakRange:(_NSRange)a4 ofContent:(id)a5
+- (void)orator:(id)orator willSpeakRange:(_NSRange)range ofContent:(id)content
 {
-  v6 = a5;
-  v7 = [(AXQuickSpeak *)self highlightViewDispatcher];
+  contentCopy = content;
+  highlightViewDispatcher = [(AXQuickSpeak *)self highlightViewDispatcher];
 
-  if (!v7)
+  if (!highlightViewDispatcher)
   {
     v8 = objc_alloc(MEMORY[0x29EDBD6A0]);
     v9 = [v8 initWithTargetSerialQueue:MEMORY[0x29EDCA578]];
@@ -2250,7 +2250,7 @@ LABEL_26:
   }
 
   v11 = MEMORY[0x29EDCA5F8];
-  v10 = v6;
+  v10 = contentCopy;
   AXPerformSafeBlock();
   [*MEMORY[0x29EDC8008] setIdleTimerDisabled:{1, v11, 3221225472, __48__AXQuickSpeak_orator_willSpeakRange_ofContent___block_invoke, &unk_29F2F0220, self}];
 }

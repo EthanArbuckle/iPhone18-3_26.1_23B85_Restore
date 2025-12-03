@@ -1,13 +1,13 @@
 @interface TipsManager
 + (TipsManager)shared;
 - (NSString)viewControllerNotificationInfoKey;
-- (id)findViewIn:(id)a3 withAccessibilityIdentifier:(id)a4;
+- (id)findViewIn:(id)in withAccessibilityIdentifier:(id)identifier;
 - (void)cleanUpTips;
-- (void)dismissTipIn:(id)a3;
-- (void)displayTipsIn:(id)a3;
-- (void)handleEnhanceDialogueTipInViewController:(id)a3 sourceViewIdentifier:(id)a4;
+- (void)dismissTipIn:(id)in;
+- (void)displayTipsIn:(id)in;
+- (void)handleEnhanceDialogueTipInViewController:(id)controller sourceViewIdentifier:(id)identifier;
 - (void)handleTipEventDidEnterEnhanceDialogue;
-- (void)handleTipInViewController:(id)a3 tipId:(id)a4 sourceViewIdentifier:(id)a5 arrowDirection:(unint64_t)a6 priority:(int64_t)a7;
+- (void)handleTipInViewController:(id)controller tipId:(id)id sourceViewIdentifier:(id)identifier arrowDirection:(unint64_t)direction priority:(int64_t)priority;
 @end
 
 @implementation TipsManager
@@ -32,7 +32,7 @@
   return v2;
 }
 
-- (void)handleEnhanceDialogueTipInViewController:(id)a3 sourceViewIdentifier:(id)a4
+- (void)handleEnhanceDialogueTipInViewController:(id)controller sourceViewIdentifier:(id)identifier
 {
   v5 = sub_18B6C562C();
   v7 = v6;
@@ -43,17 +43,17 @@
   v14 = v7;
   v15 = 2;
   swift_beginAccess();
-  v8 = self;
+  selfCopy = self;
   sub_18B4F28D0(v9, 0xD000000000000029, 0x800000018B6FDC80);
   swift_endAccess();
 }
 
-- (id)findViewIn:(id)a3 withAccessibilityIdentifier:(id)a4
+- (id)findViewIn:(id)in withAccessibilityIdentifier:(id)identifier
 {
   v5 = sub_18B6C562C();
   v7 = v6;
-  v8 = a3;
-  result = [v8 view];
+  inCopy = in;
+  result = [inCopy view];
   if (result)
   {
     v10 = result;
@@ -70,41 +70,41 @@
   return result;
 }
 
-- (void)handleTipInViewController:(id)a3 tipId:(id)a4 sourceViewIdentifier:(id)a5 arrowDirection:(unint64_t)a6 priority:(int64_t)a7
+- (void)handleTipInViewController:(id)controller tipId:(id)id sourceViewIdentifier:(id)identifier arrowDirection:(unint64_t)direction priority:(int64_t)priority
 {
-  v11 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v12 = a5;
-  v13 = self;
+  identifierCopy = identifier;
+  selfCopy = self;
   sub_18B6C5AAC();
   swift_unknownObjectRelease();
   v14 = sub_18B6C562C();
   v16 = v15;
 
-  sub_18B53D684(v17, v14, v16, a6, a7);
+  sub_18B53D684(v17, v14, v16, direction, priority);
 
   __swift_destroy_boxed_opaque_existential_1(v17);
 }
 
-- (void)displayTipsIn:(id)a3
+- (void)displayTipsIn:(id)in
 {
-  v4 = a3;
-  v5 = self;
-  sub_18B539228(v4);
+  inCopy = in;
+  selfCopy = self;
+  sub_18B539228(inCopy);
 }
 
 - (void)cleanUpTips
 {
   if (*(self + OBJC_IVAR___TipsManager_tipObservationTask))
   {
-    v3 = self;
+    selfCopy = self;
 
     sub_18B6C58AC();
   }
 
   else
   {
-    v4 = self;
+    selfCopy2 = self;
   }
 
   v5 = OBJC_IVAR___TipsManager_tipDictionary;
@@ -124,7 +124,7 @@
   (*(v3 + 8))(v7, v2);
 }
 
-- (void)dismissTipIn:(id)a3
+- (void)dismissTipIn:(id)in
 {
   v4 = __swift_instantiateConcreteTypeFromMangledNameV2(&qword_1EA9C4E70);
   MEMORY[0x1EEE9AC00](v4 - 8, v5);
@@ -132,13 +132,13 @@
   v8 = sub_18B6C584C();
   (*(*(v8 - 8) + 56))(v7, 1, 1, v8);
   sub_18B6C580C();
-  v9 = a3;
+  inCopy = in;
   v10 = sub_18B6C57FC();
   v11 = swift_allocObject();
   v12 = MEMORY[0x1E69E85E0];
   v11[2] = v10;
   v11[3] = v12;
-  v11[4] = v9;
+  v11[4] = inCopy;
   sub_18B5280B4(0, 0, v7, &unk_18B6EBBE0, v11);
 }
 

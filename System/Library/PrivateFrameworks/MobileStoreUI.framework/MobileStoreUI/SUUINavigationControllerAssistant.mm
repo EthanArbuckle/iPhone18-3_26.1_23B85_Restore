@@ -1,35 +1,35 @@
 @interface SUUINavigationControllerAssistant
-+ (id)assistantForNavigationController:(id)a3 clientContext:(id)a4;
-+ (id)existingAssistantForNavigationController:(id)a3;
++ (id)assistantForNavigationController:(id)controller clientContext:(id)context;
++ (id)existingAssistantForNavigationController:(id)controller;
 - (UINavigationController)navigationController;
 - (_UINavigationControllerPalette)paletteBackgroundView;
-- (id)_initWithNavigationController:(id)a3 clientContext:(id)a4;
-- (void)_hideChildPaletteView:(id)a3 animated:(BOOL)a4;
-- (void)_hideOverlayView:(id)a3 animated:(BOOL)a4;
-- (void)_previewDocumentChangeNotification:(id)a3;
-- (void)_setStatusOverlayProvider:(id)a3 animated:(BOOL)a4;
-- (void)_showOverlayView:(id)a3 previousOverlayView:(id)a4 animated:(BOOL)a5;
-- (void)_transitionToPaletteView:(id)a3 animated:(BOOL)a4 operation:(int64_t)a5;
+- (id)_initWithNavigationController:(id)controller clientContext:(id)context;
+- (void)_hideChildPaletteView:(id)view animated:(BOOL)animated;
+- (void)_hideOverlayView:(id)view animated:(BOOL)animated;
+- (void)_previewDocumentChangeNotification:(id)notification;
+- (void)_setStatusOverlayProvider:(id)provider animated:(BOOL)animated;
+- (void)_showOverlayView:(id)view previousOverlayView:(id)overlayView animated:(BOOL)animated;
+- (void)_transitionToPaletteView:(id)view animated:(BOOL)animated operation:(int64_t)operation;
 - (void)dealloc;
-- (void)setHidesShadow:(BOOL)a3;
-- (void)setPalettePinningBarHidden:(BOOL)a3;
-- (void)setStatusOverlayProvider:(id)a3;
-- (void)willShowViewController:(id)a3 animated:(BOOL)a4;
+- (void)setHidesShadow:(BOOL)shadow;
+- (void)setPalettePinningBarHidden:(BOOL)hidden;
+- (void)setStatusOverlayProvider:(id)provider;
+- (void)willShowViewController:(id)controller animated:(BOOL)animated;
 @end
 
 @implementation SUUINavigationControllerAssistant
 
-- (id)_initWithNavigationController:(id)a3 clientContext:(id)a4
+- (id)_initWithNavigationController:(id)controller clientContext:(id)context
 {
-  objc_initWeak(&location, a3);
-  v6 = a4;
+  objc_initWeak(&location, controller);
+  contextCopy = context;
   v18.receiver = self;
   v18.super_class = SUUINavigationControllerAssistant;
   v7 = [(SUUINavigationControllerAssistant *)&v18 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeStrong(&v7->_clientContext, a4);
+    objc_storeStrong(&v7->_clientContext, context);
     v9 = objc_loadWeakRetained(&location);
     objc_storeWeak(&v8->_navigationController, v9);
 
@@ -46,8 +46,8 @@
       v8->_paletteBackgroundView = v14;
     }
 
-    v16 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v16 addObserver:v8 selector:sel__previewDocumentChangeNotification_ name:@"SUUIApplicationControllerPreviewOverlayDidChangeNotification" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v8 selector:sel__previewDocumentChangeNotification_ name:@"SUUIApplicationControllerPreviewOverlayDidChangeNotification" object:0];
   }
 
   objc_destroyWeak(&location);
@@ -56,100 +56,100 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self name:@"SUUIApplicationControllerPreviewOverlayDidChangeNotification" object:0];
-  [v3 removeObserver:self name:0x286AECDA0 object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self name:@"SUUIApplicationControllerPreviewOverlayDidChangeNotification" object:0];
+  [defaultCenter removeObserver:self name:0x286AECDA0 object:0];
 
   v4.receiver = self;
   v4.super_class = SUUINavigationControllerAssistant;
   [(SUUINavigationControllerAssistant *)&v4 dealloc];
 }
 
-+ (id)assistantForNavigationController:(id)a3 clientContext:(id)a4
++ (id)assistantForNavigationController:(id)controller clientContext:(id)context
 {
-  v5 = a3;
-  v6 = a4;
+  controllerCopy = controller;
+  contextCopy = context;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v5 _outermostNavigationController];
+    _outermostNavigationController = [controllerCopy _outermostNavigationController];
 
-    v5 = v7;
+    controllerCopy = _outermostNavigationController;
   }
 
-  v8 = objc_getAssociatedObject(v5, "com.apple.iTunesStoreUI.SUUINavigationControllerAssistant");
+  v8 = objc_getAssociatedObject(controllerCopy, "com.apple.iTunesStoreUI.SUUINavigationControllerAssistant");
   if (!v8)
   {
-    v8 = [[SUUINavigationControllerAssistant alloc] _initWithNavigationController:v5 clientContext:v6];
-    objc_setAssociatedObject(v5, "com.apple.iTunesStoreUI.SUUINavigationControllerAssistant", v8, 1);
+    v8 = [[SUUINavigationControllerAssistant alloc] _initWithNavigationController:controllerCopy clientContext:contextCopy];
+    objc_setAssociatedObject(controllerCopy, "com.apple.iTunesStoreUI.SUUINavigationControllerAssistant", v8, 1);
   }
 
   return v8;
 }
 
-+ (id)existingAssistantForNavigationController:(id)a3
++ (id)existingAssistantForNavigationController:(id)controller
 {
-  v3 = a3;
+  controllerCopy = controller;
   if (objc_opt_respondsToSelector())
   {
-    v4 = [v3 _outermostNavigationController];
+    _outermostNavigationController = [controllerCopy _outermostNavigationController];
 
-    v3 = v4;
+    controllerCopy = _outermostNavigationController;
   }
 
-  v5 = objc_getAssociatedObject(v3, "com.apple.iTunesStoreUI.SUUINavigationControllerAssistant");
+  v5 = objc_getAssociatedObject(controllerCopy, "com.apple.iTunesStoreUI.SUUINavigationControllerAssistant");
 
   return v5;
 }
 
-- (void)setHidesShadow:(BOOL)a3
+- (void)setHidesShadow:(BOOL)shadow
 {
-  if (self->_hidesShadow != a3)
+  if (self->_hidesShadow != shadow)
   {
-    v4 = a3;
-    self->_hidesShadow = a3;
-    v5 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-    v6 = v5;
-    if (v4)
+    shadowCopy = shadow;
+    self->_hidesShadow = shadow;
+    paletteBackgroundView = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+    v6 = paletteBackgroundView;
+    if (shadowCopy)
     {
-      [v5 SUUI_beginHidingPaletteShadow];
+      [paletteBackgroundView SUUI_beginHidingPaletteShadow];
     }
 
     else
     {
-      [v5 SUUI_endHidingPaletteShadow];
+      [paletteBackgroundView SUUI_endHidingPaletteShadow];
     }
   }
 }
 
-- (void)setPalettePinningBarHidden:(BOOL)a3
+- (void)setPalettePinningBarHidden:(BOOL)hidden
 {
-  v3 = a3;
-  v5 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+  hiddenCopy = hidden;
+  paletteBackgroundView = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-    [v7 _setPalettePinningBarHidden:v3];
+    paletteBackgroundView2 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+    [paletteBackgroundView2 _setPalettePinningBarHidden:hiddenCopy];
   }
 }
 
-- (void)setStatusOverlayProvider:(id)a3
+- (void)setStatusOverlayProvider:(id)provider
 {
   v4 = MEMORY[0x277D75D18];
-  v5 = a3;
-  -[SUUINavigationControllerAssistant setStatusOverlayProvider:animated:](self, "setStatusOverlayProvider:animated:", v5, [v4 _isInAnimationBlock]);
+  providerCopy = provider;
+  -[SUUINavigationControllerAssistant setStatusOverlayProvider:animated:](self, "setStatusOverlayProvider:animated:", providerCopy, [v4 _isInAnimationBlock]);
 }
 
-- (void)willShowViewController:(id)a3 animated:(BOOL)a4
+- (void)willShowViewController:(id)controller animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-  if ([v6 conformsToProtocol:&unk_286C81348])
+  animatedCopy = animated;
+  controllerCopy = controller;
+  childPaletteView = [(SUUINavigationControllerAssistant *)self childPaletteView];
+  if ([controllerCopy conformsToProtocol:&unk_286C81348])
   {
-    v8 = [v6 navigationPaletteView];
-    if (!v4)
+    navigationPaletteView = [controllerCopy navigationPaletteView];
+    if (!animatedCopy)
     {
       goto LABEL_6;
     }
@@ -157,32 +157,32 @@
     goto LABEL_5;
   }
 
-  v8 = 0;
-  if (v4)
+  navigationPaletteView = 0;
+  if (animatedCopy)
   {
 LABEL_5:
-    v9 = [v6 navigationController];
-    v10 = [v9 viewControllers];
-    v11 = [v10 firstObject];
-    v4 = v11 != v6;
+    navigationController = [controllerCopy navigationController];
+    viewControllers = [navigationController viewControllers];
+    firstObject = [viewControllers firstObject];
+    animatedCopy = firstObject != controllerCopy;
   }
 
 LABEL_6:
-  v12 = [(SUUINavigationControllerAssistant *)self navigationController];
-  -[SUUINavigationControllerAssistant _transitionToPaletteView:animated:operation:](self, "_transitionToPaletteView:animated:operation:", v8, v4, [v12 lastOperation]);
+  navigationController2 = [(SUUINavigationControllerAssistant *)self navigationController];
+  -[SUUINavigationControllerAssistant _transitionToPaletteView:animated:operation:](self, "_transitionToPaletteView:animated:operation:", navigationPaletteView, animatedCopy, [navigationController2 lastOperation]);
 
-  v13 = [(SUUINavigationControllerAssistant *)self navigationController];
-  v14 = [v13 topViewController];
-  v15 = [v14 transitionCoordinator];
+  navigationController3 = [(SUUINavigationControllerAssistant *)self navigationController];
+  topViewController = [navigationController3 topViewController];
+  transitionCoordinator = [topViewController transitionCoordinator];
 
   v17[0] = MEMORY[0x277D85DD0];
   v17[1] = 3221225472;
   v17[2] = __69__SUUINavigationControllerAssistant_willShowViewController_animated___block_invoke;
   v17[3] = &unk_2798FBAB0;
   v17[4] = self;
-  v18 = v7;
-  v16 = v7;
-  [v15 notifyWhenInteractionEndsUsingBlock:v17];
+  v18 = childPaletteView;
+  v16 = childPaletteView;
+  [transitionCoordinator notifyWhenInteractionEndsUsingBlock:v17];
 }
 
 void __69__SUUINavigationControllerAssistant_willShowViewController_animated___block_invoke(uint64_t a1, void *a2)
@@ -200,8 +200,8 @@ void __69__SUUINavigationControllerAssistant_willShowViewController_animated___b
 {
   if (([(_UINavigationControllerPalette *)self->_paletteBackgroundView isAttached]& 1) == 0)
   {
-    v3 = [(SUUINavigationControllerAssistant *)self navigationController];
-    [v3 attachPalette:self->_paletteBackgroundView isPinned:1];
+    navigationController = [(SUUINavigationControllerAssistant *)self navigationController];
+    [navigationController attachPalette:self->_paletteBackgroundView isPinned:1];
   }
 
   paletteBackgroundView = self->_paletteBackgroundView;
@@ -209,47 +209,47 @@ void __69__SUUINavigationControllerAssistant_willShowViewController_animated___b
   return paletteBackgroundView;
 }
 
-- (void)_previewDocumentChangeNotification:(id)a3
+- (void)_previewDocumentChangeNotification:(id)notification
 {
-  v11 = a3;
-  v4 = [(SUUINavigationControllerAssistant *)self statusOverlayProvider];
+  notificationCopy = notification;
+  statusOverlayProvider = [(SUUINavigationControllerAssistant *)self statusOverlayProvider];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v6 = v11;
+  v6 = notificationCopy;
   if (isKindOfClass)
   {
-    v7 = [v11 object];
-    v8 = [v7 _previewOverlayDocumentController];
-    if (([v8 isPreviewActive] & 1) == 0)
+    object = [notificationCopy object];
+    _previewOverlayDocumentController = [object _previewOverlayDocumentController];
+    if (([_previewOverlayDocumentController isPreviewActive] & 1) == 0)
     {
 
-      v8 = 0;
+      _previewOverlayDocumentController = 0;
     }
 
-    v9 = [(SUUINavigationControllerAssistant *)self navigationController];
-    IsVisible = SUUIViewControllerIsVisible(v9);
+    navigationController = [(SUUINavigationControllerAssistant *)self navigationController];
+    IsVisible = SUUIViewControllerIsVisible(navigationController);
 
-    [(SUUINavigationControllerAssistant *)self _setStatusOverlayProvider:v8 animated:IsVisible];
-    v6 = v11;
+    [(SUUINavigationControllerAssistant *)self _setStatusOverlayProvider:_previewOverlayDocumentController animated:IsVisible];
+    v6 = notificationCopy;
   }
 }
 
-- (void)_hideChildPaletteView:(id)a3 animated:(BOOL)a4
+- (void)_hideChildPaletteView:(id)view animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-  [v7 frame];
+  viewCopy = view;
+  paletteBackgroundView = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+  [paletteBackgroundView frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(SUUINavigationControllerAssistant *)self statusOverlayViewController];
-  v15 = [v14 view];
+  statusOverlayViewController = [(SUUINavigationControllerAssistant *)self statusOverlayViewController];
+  view = [statusOverlayViewController view];
 
-  if (v15)
+  if (view)
   {
-    [v15 frame];
+    [view frame];
     v17 = v16;
     v19 = v18;
     v20 = v18;
@@ -264,20 +264,20 @@ void __69__SUUINavigationControllerAssistant_willShowViewController_animated___b
 
   v22 = *MEMORY[0x277CBF348];
   v21 = *(MEMORY[0x277CBF348] + 8);
-  if (a4)
+  if (animated)
   {
     v23 = MEMORY[0x277D75D18];
     v28[0] = MEMORY[0x277D85DD0];
     v28[1] = 3221225472;
     v28[2] = __68__SUUINavigationControllerAssistant__hideChildPaletteView_animated___block_invoke;
     v28[3] = &unk_2798FBAD8;
-    v29 = v6;
+    v29 = viewCopy;
     v32 = v22;
     v33 = v21;
     v34 = v17;
     v35 = v19;
-    v30 = v15;
-    v31 = self;
+    v30 = view;
+    selfCopy = self;
     v36 = v9;
     v37 = v11;
     v38 = v13;
@@ -293,14 +293,14 @@ void __69__SUUINavigationControllerAssistant_willShowViewController_animated___b
 
   else
   {
-    [v15 setFrame:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v17, v19}];
-    v24 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-    [v24 setFrame:objc_msgSend(MEMORY[0x277D75D18] isAnimating:{"_isInAnimationBlockWithAnimationsEnabled"), v9, v11, v13, v20}];
+    [view setFrame:{*MEMORY[0x277CBF348], *(MEMORY[0x277CBF348] + 8), v17, v19}];
+    paletteBackgroundView2 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+    [paletteBackgroundView2 setFrame:objc_msgSend(MEMORY[0x277D75D18] isAnimating:{"_isInAnimationBlockWithAnimationsEnabled"), v9, v11, v13, v20}];
 
-    v25 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-    [v25 setPinningBarShadowIsHidden:{objc_msgSend(MEMORY[0x277D75D18], "_isInAnimationBlockWithAnimationsEnabled")}];
+    paletteBackgroundView3 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+    [paletteBackgroundView3 setPinningBarShadowIsHidden:{objc_msgSend(MEMORY[0x277D75D18], "_isInAnimationBlockWithAnimationsEnabled")}];
 
-    [v6 removeFromSuperview];
+    [viewCopy removeFromSuperview];
   }
 }
 
@@ -323,21 +323,21 @@ uint64_t __68__SUUINavigationControllerAssistant__hideChildPaletteView_animated_
   return [v3 removeFromSuperview];
 }
 
-- (void)_hideOverlayView:(id)a3 animated:(BOOL)a4
+- (void)_hideOverlayView:(id)view animated:(BOOL)animated
 {
-  v6 = a3;
-  v7 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-  [v7 frame];
+  viewCopy = view;
+  paletteBackgroundView = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+  [paletteBackgroundView frame];
   v9 = v8;
   v11 = v10;
   v13 = v12;
 
-  v14 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+  childPaletteView = [(SUUINavigationControllerAssistant *)self childPaletteView];
 
-  if (v14)
+  if (childPaletteView)
   {
-    v15 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-    [v15 bounds];
+    childPaletteView2 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+    [childPaletteView2 bounds];
     v17 = v16;
   }
 
@@ -346,26 +346,26 @@ uint64_t __68__SUUINavigationControllerAssistant__hideChildPaletteView_animated_
     v17 = 0.0;
   }
 
-  if (a4)
+  if (animated)
   {
-    v18 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+    childPaletteView3 = [(SUUINavigationControllerAssistant *)self childPaletteView];
 
-    if (v18)
+    if (childPaletteView3)
     {
       v19 = objc_alloc(MEMORY[0x277D75D18]);
-      [v6 frame];
-      v18 = [v19 initWithFrame:?];
-      v20 = [MEMORY[0x277D75348] clearColor];
-      [v18 setBackgroundColor:v20];
+      [viewCopy frame];
+      childPaletteView3 = [v19 initWithFrame:?];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [childPaletteView3 setBackgroundColor:clearColor];
 
-      [v18 setClipsToBounds:1];
-      v21 = [v6 superview];
-      v22 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-      [v21 insertSubview:v18 belowSubview:v22];
+      [childPaletteView3 setClipsToBounds:1];
+      superview = [viewCopy superview];
+      childPaletteView4 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+      [superview insertSubview:childPaletteView3 belowSubview:childPaletteView4];
 
-      [v18 bounds];
-      [v6 setFrame:?];
-      [v18 addSubview:v6];
+      [childPaletteView3 bounds];
+      [viewCopy setFrame:?];
+      [childPaletteView3 addSubview:viewCopy];
     }
 
     v23 = MEMORY[0x277D75D18];
@@ -373,8 +373,8 @@ uint64_t __68__SUUINavigationControllerAssistant__hideChildPaletteView_animated_
     v31[1] = 3221225472;
     v31[2] = __63__SUUINavigationControllerAssistant__hideOverlayView_animated___block_invoke;
     v31[3] = &unk_2798F8DB0;
-    v32 = v6;
-    v33 = self;
+    v32 = viewCopy;
+    selfCopy = self;
     v34 = v9;
     v35 = v11;
     v36 = v13;
@@ -385,21 +385,21 @@ uint64_t __68__SUUINavigationControllerAssistant__hideChildPaletteView_animated_
     v28[3] = &unk_2798FAC50;
     v28[4] = self;
     v29 = v32;
-    v30 = v18;
-    v24 = v18;
+    v30 = childPaletteView3;
+    v24 = childPaletteView3;
     [v23 animateWithDuration:0 delay:v31 usingSpringWithDamping:v28 initialSpringVelocity:0.35 options:0.0 animations:0.7 completion:0.0];
   }
 
   else
   {
-    v25 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-    [v25 setFrame:0 isAnimating:{v9, v11, v13, v17}];
+    paletteBackgroundView2 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+    [paletteBackgroundView2 setFrame:0 isAnimating:{v9, v11, v13, v17}];
 
-    v26 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-    v27 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-    [v26 setPinningBarShadowIsHidden:v27 != 0];
+    paletteBackgroundView3 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+    childPaletteView5 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+    [paletteBackgroundView3 setPinningBarShadowIsHidden:childPaletteView5 != 0];
 
-    [v6 removeFromSuperview];
+    [viewCopy removeFromSuperview];
   }
 }
 
@@ -423,24 +423,24 @@ uint64_t __63__SUUINavigationControllerAssistant__hideOverlayView_animated___blo
   return [v4 removeFromSuperview];
 }
 
-- (void)_setStatusOverlayProvider:(id)a3 animated:(BOOL)a4
+- (void)_setStatusOverlayProvider:(id)provider animated:(BOOL)animated
 {
-  v4 = a4;
-  v7 = a3;
-  if (self->_statusOverlayProvider != v7)
+  animatedCopy = animated;
+  providerCopy = provider;
+  if (self->_statusOverlayProvider != providerCopy)
   {
-    v16 = v7;
-    v8 = [(SUUINavigationControllerAssistant *)self statusOverlayViewController];
-    v9 = [v8 view];
+    v16 = providerCopy;
+    statusOverlayViewController = [(SUUINavigationControllerAssistant *)self statusOverlayViewController];
+    view = [statusOverlayViewController view];
 
-    objc_storeStrong(&self->_statusOverlayProvider, a3);
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    v11 = [v10 traitCollection];
+    objc_storeStrong(&self->_statusOverlayProvider, provider);
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
 
-    v12 = [v11 userInterfaceStyle];
+    userInterfaceStyle = [traitCollection userInterfaceStyle];
     if (objc_opt_respondsToSelector())
     {
-      v13 = [(SUUIStatusOverlayProvider *)self->_statusOverlayProvider overlayViewControllerWithBackgroundStyle:v12 != 1];
+      v13 = [(SUUIStatusOverlayProvider *)self->_statusOverlayProvider overlayViewControllerWithBackgroundStyle:userInterfaceStyle != 1];
       [(SUUINavigationControllerAssistant *)self setStatusOverlayViewController:v13];
     }
 
@@ -449,56 +449,56 @@ uint64_t __63__SUUINavigationControllerAssistant__hideOverlayView_animated___blo
       [(SUUINavigationControllerAssistant *)self setStatusOverlayViewController:0];
     }
 
-    v14 = [(SUUINavigationControllerAssistant *)self statusOverlayViewController];
-    v15 = [v14 view];
+    statusOverlayViewController2 = [(SUUINavigationControllerAssistant *)self statusOverlayViewController];
+    view2 = [statusOverlayViewController2 view];
 
-    if (v15)
+    if (view2)
     {
-      [(SUUINavigationControllerAssistant *)self _showOverlayView:v15 previousOverlayView:v9 animated:v4];
+      [(SUUINavigationControllerAssistant *)self _showOverlayView:view2 previousOverlayView:view animated:animatedCopy];
     }
 
-    else if (v9)
+    else if (view)
     {
-      [(SUUINavigationControllerAssistant *)self _hideOverlayView:v9 animated:v4];
+      [(SUUINavigationControllerAssistant *)self _hideOverlayView:view animated:animatedCopy];
     }
 
-    v7 = v16;
+    providerCopy = v16;
   }
 }
 
-- (void)_showOverlayView:(id)a3 previousOverlayView:(id)a4 animated:(BOOL)a5
+- (void)_showOverlayView:(id)view previousOverlayView:(id)overlayView animated:(BOOL)animated
 {
-  v8 = a3;
-  v9 = a4;
+  viewCopy = view;
+  overlayViewCopy = overlayView;
   v62 = 0;
   v63 = &v62;
   v64 = 0x4010000000;
   v65 = "";
   v66 = 0u;
   v67 = 0u;
-  [v8 frame];
+  [viewCopy frame];
   *&v66 = v10;
   *(&v66 + 1) = v11;
   *&v67 = v12;
   *(&v67 + 1) = v13;
   *(v63 + 2) = *MEMORY[0x277CBF348];
-  v14 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-  [v14 bounds];
+  paletteBackgroundView = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+  [paletteBackgroundView bounds];
   v63[6] = v15;
 
-  v16 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-  [v16 frame];
+  paletteBackgroundView2 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+  [paletteBackgroundView2 frame];
   v18 = v17;
   v20 = v19;
   v22 = v21;
 
   v23 = *(v63 + 7);
-  v24 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+  childPaletteView = [(SUUINavigationControllerAssistant *)self childPaletteView];
 
-  if (v24)
+  if (childPaletteView)
   {
-    v25 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-    [v25 frame];
+    childPaletteView2 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+    [childPaletteView2 frame];
     v27 = v26;
     v29 = v28;
     v31 = v30;
@@ -512,53 +512,53 @@ uint64_t __63__SUUINavigationControllerAssistant__hideOverlayView_animated___blo
     v23 = v23 + v33;
   }
 
-  [v8 setAutoresizingMask:2];
-  [v8 setFrame:{*(v63 + 4), *(v63 + 5), *(v63 + 6), *(v63 + 7)}];
-  [v8 layoutIfNeeded];
-  v34 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-  [v34 addSubview:v8];
+  [viewCopy setAutoresizingMask:2];
+  [viewCopy setFrame:{*(v63 + 4), *(v63 + 5), *(v63 + 6), *(v63 + 7)}];
+  [viewCopy layoutIfNeeded];
+  paletteBackgroundView3 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+  [paletteBackgroundView3 addSubview:viewCopy];
 
-  v35 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-  v36 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-  [v35 setPinningBarShadowIsHidden:v36 != 0];
+  paletteBackgroundView4 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+  childPaletteView3 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+  [paletteBackgroundView4 setPinningBarShadowIsHidden:childPaletteView3 != 0];
 
-  [v9 removeFromSuperview];
-  if (a5)
+  [overlayViewCopy removeFromSuperview];
+  if (animated)
   {
-    v37 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+    childPaletteView4 = [(SUUINavigationControllerAssistant *)self childPaletteView];
 
-    if (v37)
+    if (childPaletteView4)
     {
       v38 = objc_alloc(MEMORY[0x277D75D18]);
-      v37 = [v38 initWithFrame:{*(v63 + 4), *(v63 + 5), *(v63 + 6), *(v63 + 7)}];
-      v39 = [MEMORY[0x277D75348] clearColor];
-      [v37 setBackgroundColor:v39];
+      childPaletteView4 = [v38 initWithFrame:{*(v63 + 4), *(v63 + 5), *(v63 + 6), *(v63 + 7)}];
+      clearColor = [MEMORY[0x277D75348] clearColor];
+      [childPaletteView4 setBackgroundColor:clearColor];
 
-      [v37 setClipsToBounds:1];
-      v40 = [v8 superview];
-      v41 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-      [v40 insertSubview:v37 belowSubview:v41];
+      [childPaletteView4 setClipsToBounds:1];
+      superview = [viewCopy superview];
+      childPaletteView5 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+      [superview insertSubview:childPaletteView4 belowSubview:childPaletteView5];
 
-      [v37 bounds];
-      [v8 setFrame:?];
-      [v37 addSubview:v8];
+      [childPaletteView4 bounds];
+      [viewCopy setFrame:?];
+      [childPaletteView4 addSubview:viewCopy];
     }
 
-    [v8 frame];
+    [viewCopy frame];
     v42 = v63;
     v63[6] = v43;
     v42[7] = v44;
     *(v42 + 4) = v46;
     v42[5] = v45 - v44;
-    [v8 setFrame:?];
+    [viewCopy setFrame:?];
     v47 = MEMORY[0x277D75D18];
     v54[0] = MEMORY[0x277D85DD0];
     v54[1] = 3221225472;
     v54[2] = __83__SUUINavigationControllerAssistant__showOverlayView_previousOverlayView_animated___block_invoke;
     v54[3] = &unk_2798FBB28;
     v57 = &v62;
-    v55 = v8;
-    v56 = self;
+    v55 = viewCopy;
+    selfCopy = self;
     v58 = v18;
     v59 = v20;
     v60 = v22;
@@ -567,18 +567,18 @@ uint64_t __63__SUUINavigationControllerAssistant__hideOverlayView_animated___blo
     v49[1] = 3221225472;
     v49[2] = __83__SUUINavigationControllerAssistant__showOverlayView_previousOverlayView_animated___block_invoke_2;
     v49[3] = &unk_2798FBB50;
-    v48 = v37;
-    v50 = v48;
+    paletteBackgroundView5 = childPaletteView4;
+    v50 = paletteBackgroundView5;
     v51 = v55;
-    v52 = self;
+    selfCopy2 = self;
     v53 = &v62;
     [v47 animateWithDuration:0 delay:v54 usingSpringWithDamping:v49 initialSpringVelocity:0.35 options:0.0 animations:0.7 completion:0.0];
   }
 
   else
   {
-    v48 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-    [v48 setFrame:0 isAnimating:{v18, v20, v22, v23}];
+    paletteBackgroundView5 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+    [paletteBackgroundView5 setFrame:0 isAnimating:{v18, v20, v22, v23}];
   }
 
   _Block_object_dispose(&v62, 8);
@@ -613,23 +613,23 @@ uint64_t __83__SUUINavigationControllerAssistant__showOverlayView_previousOverla
   return result;
 }
 
-- (void)_transitionToPaletteView:(id)a3 animated:(BOOL)a4 operation:(int64_t)a5
+- (void)_transitionToPaletteView:(id)view animated:(BOOL)animated operation:(int64_t)operation
 {
-  v6 = a4;
-  v8 = a3;
-  v9 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+  animatedCopy = animated;
+  viewCopy = view;
+  childPaletteView = [(SUUINavigationControllerAssistant *)self childPaletteView];
 
-  v10 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-  v11 = v10;
-  if (v9 != v8)
+  childPaletteView2 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+  paletteBackgroundView8 = childPaletteView2;
+  if (childPaletteView != viewCopy)
   {
-    [(SUUINavigationControllerAssistant *)self setChildPaletteView:v8];
-    v12 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+    [(SUUINavigationControllerAssistant *)self setChildPaletteView:viewCopy];
+    childPaletteView3 = [(SUUINavigationControllerAssistant *)self childPaletteView];
 
-    if (v12)
+    if (childPaletteView3)
     {
-      v13 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-      [v13 bounds];
+      paletteBackgroundView = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+      [paletteBackgroundView bounds];
       v15 = v14;
       v17 = v16;
       v19 = v18;
@@ -641,8 +641,8 @@ uint64_t __83__SUUINavigationControllerAssistant__showOverlayView_previousOverla
       v78 = "";
       v79 = 0u;
       v80 = 0u;
-      v22 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-      [v22 frame];
+      childPaletteView4 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+      [childPaletteView4 frame];
       *&v79 = v23;
       *(&v79 + 1) = v24;
       *&v80 = v25;
@@ -652,19 +652,19 @@ uint64_t __83__SUUINavigationControllerAssistant__showOverlayView_previousOverla
       v76[4] = 0.0;
       v27[5] = v21 - v27[7];
       v27[6] = v19;
-      if (!v11)
+      if (!paletteBackgroundView8)
       {
         goto LABEL_12;
       }
 
-      if (a5 == 2)
+      if (operation == 2)
       {
         MaxX = -v19;
       }
 
       else
       {
-        if (a5 != 1)
+        if (operation != 1)
         {
           goto LABEL_12;
         }
@@ -679,45 +679,45 @@ uint64_t __83__SUUINavigationControllerAssistant__showOverlayView_previousOverla
 
       v27[4] = MaxX;
 LABEL_12:
-      v29 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-      [v29 setAutoresizingMask:2];
+      childPaletteView5 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+      [childPaletteView5 setAutoresizingMask:2];
 
-      v30 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-      [v30 setFrame:{v76[4], v76[5], v76[6], v76[7]}];
+      childPaletteView6 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+      [childPaletteView6 setFrame:{v76[4], v76[5], v76[6], v76[7]}];
 
-      v31 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-      [v31 layoutIfNeeded];
+      childPaletteView7 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+      [childPaletteView7 layoutIfNeeded];
 
-      v32 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-      v33 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-      [v32 addSubview:v33];
+      paletteBackgroundView2 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+      childPaletteView8 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+      [paletteBackgroundView2 addSubview:childPaletteView8];
 
-      v34 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-      [v34 setPinningBarShadowIsHidden:1];
+      paletteBackgroundView3 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+      [paletteBackgroundView3 setPinningBarShadowIsHidden:1];
 
-      v35 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-      [v35 frame];
+      paletteBackgroundView4 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+      [paletteBackgroundView4 frame];
       v37 = v36;
       v39 = v38;
       v41 = v40;
 
-      v42 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-      [v42 bounds];
+      childPaletteView9 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+      [childPaletteView9 bounds];
       MaxY = v43;
 
-      v45 = [(SUUINavigationControllerAssistant *)self statusOverlayViewController];
-      v46 = [v45 view];
+      statusOverlayViewController = [(SUUINavigationControllerAssistant *)self statusOverlayViewController];
+      view = [statusOverlayViewController view];
 
-      if (v46)
+      if (view)
       {
-        [v46 frame];
+        [view frame];
         v82.origin.y = v76[7];
         y = v82.origin.y;
         x = v82.origin.x;
         height = v82.size.height;
         width = v82.size.width;
         MaxY = CGRectGetMaxY(v82);
-        if (v6)
+        if (animatedCopy)
         {
 LABEL_14:
           v47 = MEMORY[0x277D75D18];
@@ -727,8 +727,8 @@ LABEL_14:
           v58[3] = &unk_2798FBB78;
           v61 = &v75;
           v58[4] = self;
-          v59 = v11;
-          v62 = a5;
+          v59 = paletteBackgroundView8;
+          operationCopy = operation;
           v63 = v15;
           v64 = v17;
           v65 = v19;
@@ -737,7 +737,7 @@ LABEL_14:
           v68 = v39;
           v69 = v41;
           v70 = MaxY;
-          v60 = v46;
+          v60 = view;
           v71 = x;
           v72 = y;
           v73 = width;
@@ -761,40 +761,40 @@ LABEL_17:
         x = *MEMORY[0x277CBF3A0];
         height = *(MEMORY[0x277CBF3A0] + 24);
         width = *(MEMORY[0x277CBF3A0] + 16);
-        if (v6)
+        if (animatedCopy)
         {
           goto LABEL_14;
         }
       }
 
       *(v76 + 2) = *MEMORY[0x277CBF348];
-      v48 = [(SUUINavigationControllerAssistant *)self childPaletteView];
-      [v48 setFrame:{v76[4], v76[5], v76[6], v76[7]}];
+      childPaletteView10 = [(SUUINavigationControllerAssistant *)self childPaletteView];
+      [childPaletteView10 setFrame:{v76[4], v76[5], v76[6], v76[7]}];
 
-      [v46 setFrame:{x, y, width, height}];
-      v49 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-      [v49 setFrame:objc_msgSend(MEMORY[0x277D75D18] isAnimating:{"_isInAnimationBlockWithAnimationsEnabled"), v37, v39, v41, MaxY}];
+      [view setFrame:{x, y, width, height}];
+      paletteBackgroundView5 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+      [paletteBackgroundView5 setFrame:objc_msgSend(MEMORY[0x277D75D18] isAnimating:{"_isInAnimationBlockWithAnimationsEnabled"), v37, v39, v41, MaxY}];
 
-      [v11 removeFromSuperview];
-      v50 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-      [v50 setHidden:0];
+      [paletteBackgroundView8 removeFromSuperview];
+      paletteBackgroundView6 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+      [paletteBackgroundView6 setHidden:0];
 
-      v51 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-      [v51 setAlpha:1.0];
+      paletteBackgroundView7 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+      [paletteBackgroundView7 setAlpha:1.0];
 
       goto LABEL_17;
     }
 
-    [(SUUINavigationControllerAssistant *)self _hideChildPaletteView:v11 animated:v6];
+    [(SUUINavigationControllerAssistant *)self _hideChildPaletteView:paletteBackgroundView8 animated:animatedCopy];
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  if (v11)
+  if (paletteBackgroundView8)
   {
-    v11 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
-    [v11 resetBackgroundConstraints];
+    paletteBackgroundView8 = [(SUUINavigationControllerAssistant *)self paletteBackgroundView];
+    [paletteBackgroundView8 resetBackgroundConstraints];
     goto LABEL_18;
   }
 

@@ -2,9 +2,9 @@
 - (BOOL)canPresentOneUp;
 - (PXStoryClipSpriteReferencesProvider)spriteReferencesProvider;
 - (PXStoryOneUpViewModel)init;
-- (PXStoryOneUpViewModel)initWithResourcesDataSourceManager:(id)a3 mediaProvider:(id)a4;
-- (id)spriteReferenceForAssetReference:(id)a3;
-- (int64_t)_clipIdentifierForAssetReference:(id)a3 failureHandler:(id)a4;
+- (PXStoryOneUpViewModel)initWithResourcesDataSourceManager:(id)manager mediaProvider:(id)provider;
+- (id)spriteReferenceForAssetReference:(id)reference;
+- (int64_t)_clipIdentifierForAssetReference:(id)reference failureHandler:(id)handler;
 - (void)_invalidateAssetsDataSourceManager;
 - (void)_invalidateHiddenClipIdentifier;
 - (void)_invalidateInitialAssetReference;
@@ -14,13 +14,13 @@
 - (void)_updateInitialAssetReference;
 - (void)_updateVisibleClipIdentifier;
 - (void)didPerformChanges;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)performChanges:(id)a3;
-- (void)setHiddenAssetReference:(id)a3;
-- (void)setOneUpPresentation:(id)a3;
-- (void)setSpriteReferencesProvider:(id)a3;
-- (void)setTimeline:(id)a3;
-- (void)setVisibleAssetReference:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)performChanges:(id)changes;
+- (void)setHiddenAssetReference:(id)reference;
+- (void)setOneUpPresentation:(id)presentation;
+- (void)setSpriteReferencesProvider:(id)provider;
+- (void)setTimeline:(id)timeline;
+- (void)setVisibleAssetReference:(id)reference;
 @end
 
 @implementation PXStoryOneUpViewModel
@@ -32,15 +32,15 @@
   return WeakRetained;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __54__PXStoryOneUpViewModel_observable_didChange_context___block_invoke;
   v5[3] = &unk_1E7746748;
   v5[4] = self;
-  v5[5] = a5;
-  v5[6] = a4;
+  v5[5] = context;
+  v5[6] = change;
   v5[7] = a2;
   [(PXStoryOneUpViewModel *)self performChanges:v5];
 }
@@ -69,13 +69,13 @@ void __54__PXStoryOneUpViewModel_observable_didChange_context___block_invoke(uin
 
 - (void)_updateHiddenClipIdentifier
 {
-  v3 = [(PXStoryOneUpViewModel *)self hiddenAssetReference];
+  hiddenAssetReference = [(PXStoryOneUpViewModel *)self hiddenAssetReference];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __52__PXStoryOneUpViewModel__updateHiddenClipIdentifier__block_invoke;
   v5[3] = &unk_1E774C648;
-  v6 = v3;
-  v4 = v3;
+  v6 = hiddenAssetReference;
+  v4 = hiddenAssetReference;
   [(PXStoryOneUpViewModel *)self setHiddenClipIdentifier:[(PXStoryOneUpViewModel *)self _clipIdentifierForAssetReference:v4 failureHandler:v5]];
 }
 
@@ -94,19 +94,19 @@ void __52__PXStoryOneUpViewModel__updateHiddenClipIdentifier__block_invoke(uint6
 
 - (void)_invalidateHiddenClipIdentifier
 {
-  v2 = [(PXStoryOneUpViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateHiddenClipIdentifier];
+  updater = [(PXStoryOneUpViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateHiddenClipIdentifier];
 }
 
 - (void)_updateVisibleClipIdentifier
 {
-  v3 = [(PXStoryOneUpViewModel *)self visibleAssetReference];
+  visibleAssetReference = [(PXStoryOneUpViewModel *)self visibleAssetReference];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __53__PXStoryOneUpViewModel__updateVisibleClipIdentifier__block_invoke;
   v5[3] = &unk_1E774C648;
-  v6 = v3;
-  v4 = v3;
+  v6 = visibleAssetReference;
+  v4 = visibleAssetReference;
   [(PXStoryOneUpViewModel *)self setVisibleClipIdentifier:[(PXStoryOneUpViewModel *)self _clipIdentifierForAssetReference:v4 failureHandler:v5]];
 }
 
@@ -125,29 +125,29 @@ void __53__PXStoryOneUpViewModel__updateVisibleClipIdentifier__block_invoke(uint
 
 - (void)_invalidateVisibleClipIdentifier
 {
-  v2 = [(PXStoryOneUpViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateVisibleClipIdentifier];
+  updater = [(PXStoryOneUpViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateVisibleClipIdentifier];
 }
 
 - (void)_updateInitialAssetReference
 {
   v17 = *MEMORY[0x1E69E9840];
-  v3 = [(PXStoryOneUpViewModel *)self initialClipIdentifier];
-  v4 = [(PXStoryOneUpViewModel *)self timeline];
-  v5 = [(PXStoryOneUpViewModel *)self resourcesDataSourceManager];
-  v6 = [v5 dataSource];
+  initialClipIdentifier = [(PXStoryOneUpViewModel *)self initialClipIdentifier];
+  timeline = [(PXStoryOneUpViewModel *)self timeline];
+  resourcesDataSourceManager = [(PXStoryOneUpViewModel *)self resourcesDataSourceManager];
+  dataSource = [resourcesDataSourceManager dataSource];
 
   v7 = 0;
-  if (v3 && v4 && v6)
+  if (initialClipIdentifier && timeline && dataSource)
   {
-    v8 = [v4 indexOfResourceForClipWithIdentifier:v3 inResourcesDataSource:v6 resourceKind:1];
+    v8 = [timeline indexOfResourceForClipWithIdentifier:initialClipIdentifier inResourcesDataSource:dataSource resourceKind:1];
     if (v8 == 0x7FFFFFFFFFFFFFFFLL)
     {
       v9 = PLStoryGetLog();
       if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
       {
         *v15 = 134217984;
-        *&v15[4] = v3;
+        *&v15[4] = initialClipIdentifier;
         _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_ERROR, "Can't resolve an initial asset reference for 1up from resource of clip with id %lu", v15, 0xCu);
       }
 
@@ -157,31 +157,31 @@ void __53__PXStoryOneUpViewModel__updateVisibleClipIdentifier__block_invoke(uint
     else
     {
       v10 = v8;
-      v9 = [v6 displayAssetResourceAtIndex:v8];
+      v9 = [dataSource displayAssetResourceAtIndex:v8];
       if ([v9 px_storyResourceKind]== 1)
       {
-        v11 = [v9 px_storyResourceDisplayAsset];
-        v12 = [(PXStoryOneUpViewModel *)self assetsDataSourceManager];
-        v13 = [v12 dataSource];
-        v14 = [v13 identifier];
+        px_storyResourceDisplayAsset = [v9 px_storyResourceDisplayAsset];
+        assetsDataSourceManager = [(PXStoryOneUpViewModel *)self assetsDataSourceManager];
+        dataSource2 = [assetsDataSourceManager dataSource];
+        identifier = [dataSource2 identifier];
 
-        *v15 = v14;
+        *v15 = identifier;
         *&v15[8] = 0;
         *&v15[16] = v10;
         v16 = 0x7FFFFFFFFFFFFFFFLL;
-        v7 = [[off_1E7721490 alloc] initWithSectionObject:0 itemObject:v11 subitemObject:0 indexPath:v15];
+        v7 = [[off_1E7721490 alloc] initWithSectionObject:0 itemObject:px_storyResourceDisplayAsset subitemObject:0 indexPath:v15];
       }
 
       else
       {
-        v11 = PLStoryGetLog();
-        if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+        px_storyResourceDisplayAsset = PLStoryGetLog();
+        if (os_log_type_enabled(px_storyResourceDisplayAsset, OS_LOG_TYPE_ERROR))
         {
           *v15 = 138412546;
           *&v15[4] = v9;
           *&v15[12] = 2048;
-          *&v15[14] = v3;
-          _os_log_impl(&dword_1A3C1C000, v11, OS_LOG_TYPE_ERROR, "Can't resolve an initial asset reference for 1up from resource %@ of clip with id %lu", v15, 0x16u);
+          *&v15[14] = initialClipIdentifier;
+          _os_log_impl(&dword_1A3C1C000, px_storyResourceDisplayAsset, OS_LOG_TYPE_ERROR, "Can't resolve an initial asset reference for 1up from resource %@ of clip with id %lu", v15, 0x16u);
         }
 
         v7 = 0;
@@ -194,20 +194,20 @@ void __53__PXStoryOneUpViewModel__updateVisibleClipIdentifier__block_invoke(uint
 
 - (void)_invalidateInitialAssetReference
 {
-  v2 = [(PXStoryOneUpViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateInitialAssetReference];
+  updater = [(PXStoryOneUpViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateInitialAssetReference];
 }
 
 - (void)_updateAssetsDataSourceManager
 {
-  v3 = [(PXStoryOneUpViewModel *)self resourcesDataSourceManager];
-  v8 = [v3 dataSource];
+  resourcesDataSourceManager = [(PXStoryOneUpViewModel *)self resourcesDataSourceManager];
+  dataSource = [resourcesDataSourceManager dataSource];
 
-  v4 = [v8 displayAssets];
+  displayAssets = [dataSource displayAssets];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [[PXPhotosDataSourceConfiguration alloc] initWithAssetFetchResult:v4 options:0];
+    v5 = [[PXPhotosDataSourceConfiguration alloc] initWithAssetFetchResult:displayAssets options:0];
     v6 = [[PXPhotosDataSource alloc] initWithPhotosDataSourceConfiguration:v5];
     v7 = [[PXPhotoKitAssetsDataSourceManager alloc] initWithPhotosDataSource:v6];
     [(PXStoryOneUpViewModel *)self setAssetsDataSourceManager:v7];
@@ -216,25 +216,25 @@ void __53__PXStoryOneUpViewModel__updateVisibleClipIdentifier__block_invoke(uint
 
 - (void)_invalidateAssetsDataSourceManager
 {
-  v2 = [(PXStoryOneUpViewModel *)self updater];
-  [v2 setNeedsUpdateOf:sel__updateAssetsDataSourceManager];
+  updater = [(PXStoryOneUpViewModel *)self updater];
+  [updater setNeedsUpdateOf:sel__updateAssetsDataSourceManager];
 }
 
-- (int64_t)_clipIdentifierForAssetReference:(id)a3 failureHandler:(id)a4
+- (int64_t)_clipIdentifierForAssetReference:(id)reference failureHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  referenceCopy = reference;
+  handlerCopy = handler;
+  if (referenceCopy)
   {
-    [v6 indexPath];
-    v8 = [(PXStoryOneUpViewModel *)self timeline];
-    v9 = [(PXStoryOneUpViewModel *)self resourcesDataSourceManager];
-    v10 = [v9 dataSource];
-    v11 = [v8 identifierOfFirstClipContainingResourceAtIndex:v13 inResourcesDataSource:v10 resourceKind:1];
+    [referenceCopy indexPath];
+    timeline = [(PXStoryOneUpViewModel *)self timeline];
+    resourcesDataSourceManager = [(PXStoryOneUpViewModel *)self resourcesDataSourceManager];
+    dataSource = [resourcesDataSourceManager dataSource];
+    v11 = [timeline identifierOfFirstClipContainingResourceAtIndex:v13 inResourcesDataSource:dataSource resourceKind:1];
 
-    if (v7 && !v11)
+    if (handlerCopy && !v11)
     {
-      v7[2](v7);
+      handlerCopy[2](handlerCopy);
     }
   }
 
@@ -246,20 +246,20 @@ void __53__PXStoryOneUpViewModel__updateVisibleClipIdentifier__block_invoke(uint
   return v11;
 }
 
-- (void)setOneUpPresentation:(id)a3
+- (void)setOneUpPresentation:(id)presentation
 {
-  v5 = a3;
-  if (self->_oneUpPresentation != v5)
+  presentationCopy = presentation;
+  if (self->_oneUpPresentation != presentationCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_oneUpPresentation, a3);
-    v5 = v6;
+    v6 = presentationCopy;
+    objc_storeStrong(&self->_oneUpPresentation, presentation);
+    presentationCopy = v6;
   }
 }
 
-- (void)setSpriteReferencesProvider:(id)a3
+- (void)setSpriteReferencesProvider:(id)provider
 {
-  obj = a3;
+  obj = provider;
   WeakRetained = objc_loadWeakRetained(&self->_spriteReferencesProvider);
 
   if (WeakRetained != obj)
@@ -269,54 +269,54 @@ void __53__PXStoryOneUpViewModel__updateVisibleClipIdentifier__block_invoke(uint
   }
 }
 
-- (void)setHiddenAssetReference:(id)a3
+- (void)setHiddenAssetReference:(id)reference
 {
-  objc_storeStrong(&self->_hiddenAssetReference, a3);
+  objc_storeStrong(&self->_hiddenAssetReference, reference);
 
   [(PXStoryOneUpViewModel *)self _invalidateHiddenClipIdentifier];
 }
 
-- (void)setVisibleAssetReference:(id)a3
+- (void)setVisibleAssetReference:(id)reference
 {
-  objc_storeStrong(&self->_visibleAssetReference, a3);
+  objc_storeStrong(&self->_visibleAssetReference, reference);
 
   [(PXStoryOneUpViewModel *)self _invalidateVisibleClipIdentifier];
 }
 
 - (BOOL)canPresentOneUp
 {
-  v3 = [(PXStoryOneUpViewModel *)self assetsDataSourceManager];
-  if (v3)
+  assetsDataSourceManager = [(PXStoryOneUpViewModel *)self assetsDataSourceManager];
+  if (assetsDataSourceManager)
   {
-    v4 = [(PXStoryOneUpViewModel *)self oneUpPresentation];
-    v5 = [v4 canStart];
+    oneUpPresentation = [(PXStoryOneUpViewModel *)self oneUpPresentation];
+    canStart = [oneUpPresentation canStart];
   }
 
   else
   {
-    v5 = 0;
+    canStart = 0;
   }
 
-  return v5;
+  return canStart;
 }
 
-- (id)spriteReferenceForAssetReference:(id)a3
+- (id)spriteReferenceForAssetReference:(id)reference
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  referenceCopy = reference;
+  v5 = referenceCopy;
+  if (referenceCopy)
   {
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
     v11[2] = __58__PXStoryOneUpViewModel_spriteReferenceForAssetReference___block_invoke;
     v11[3] = &unk_1E774C648;
-    v12 = v4;
+    v12 = referenceCopy;
     v6 = [(PXStoryOneUpViewModel *)self _clipIdentifierForAssetReference:v12 failureHandler:v11];
     if (v6 && self->_spriteReferencesProviderRespondsTo.spriteReferenceForClipWithIdentifier)
     {
       v7 = v6;
-      v8 = [(PXStoryOneUpViewModel *)self spriteReferencesProvider];
-      v9 = [v8 spriteReferenceForClipWithIdentifier:v7];
+      spriteReferencesProvider = [(PXStoryOneUpViewModel *)self spriteReferencesProvider];
+      v9 = [spriteReferencesProvider spriteReferenceForClipWithIdentifier:v7];
     }
 
     else
@@ -346,18 +346,18 @@ void __58__PXStoryOneUpViewModel_spriteReferenceForAssetReference___block_invoke
   }
 }
 
-- (void)setTimeline:(id)a3
+- (void)setTimeline:(id)timeline
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_timeline != v5)
+  timelineCopy = timeline;
+  v6 = timelineCopy;
+  if (self->_timeline != timelineCopy)
   {
-    v8 = v5;
-    v7 = [(PXStoryTimeline *)v5 isEqual:?];
+    v8 = timelineCopy;
+    v7 = [(PXStoryTimeline *)timelineCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_timeline, a3);
+      objc_storeStrong(&self->_timeline, timeline);
       [(PXStoryOneUpViewModel *)self _invalidateInitialAssetReference];
       [(PXStoryOneUpViewModel *)self _invalidateVisibleClipIdentifier];
       [(PXStoryOneUpViewModel *)self _invalidateHiddenClipIdentifier];
@@ -371,30 +371,30 @@ void __58__PXStoryOneUpViewModel_spriteReferenceForAssetReference___block_invoke
   v4.receiver = self;
   v4.super_class = PXStoryOneUpViewModel;
   [(PXStoryOneUpViewModel *)&v4 didPerformChanges];
-  v3 = [(PXStoryOneUpViewModel *)self updater];
-  [v3 updateIfNeeded];
+  updater = [(PXStoryOneUpViewModel *)self updater];
+  [updater updateIfNeeded];
 }
 
-- (void)performChanges:(id)a3
+- (void)performChanges:(id)changes
 {
   v3.receiver = self;
   v3.super_class = PXStoryOneUpViewModel;
-  [(PXStoryOneUpViewModel *)&v3 performChanges:a3];
+  [(PXStoryOneUpViewModel *)&v3 performChanges:changes];
 }
 
-- (PXStoryOneUpViewModel)initWithResourcesDataSourceManager:(id)a3 mediaProvider:(id)a4
+- (PXStoryOneUpViewModel)initWithResourcesDataSourceManager:(id)manager mediaProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  providerCopy = provider;
   v16.receiver = self;
   v16.super_class = PXStoryOneUpViewModel;
   v9 = [(PXStoryOneUpViewModel *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_resourcesDataSourceManager, a3);
+    objc_storeStrong(&v9->_resourcesDataSourceManager, manager);
     [(PXStoryResourcesDataSourceManager *)v10->_resourcesDataSourceManager registerChangeObserver:v10 context:ResourcesDataSourceManagerObservationContext_143456];
-    objc_storeStrong(&v10->_mediaProvider, a4);
+    objc_storeStrong(&v10->_mediaProvider, provider);
     v11 = [[off_1E7721940 alloc] initWithTarget:v10 needsUpdateSelector:sel__setNeedsUpdate];
     updater = v10->_updater;
     v10->_updater = v11;
@@ -416,8 +416,8 @@ void __58__PXStoryOneUpViewModel_spriteReferenceForAssetReference___block_invoke
 
 - (PXStoryOneUpViewModel)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PXStoryOneUpViewModel.m" lineNumber:41 description:{@"%s is not available as initializer", "-[PXStoryOneUpViewModel init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXStoryOneUpViewModel.m" lineNumber:41 description:{@"%s is not available as initializer", "-[PXStoryOneUpViewModel init]"}];
 
   abort();
 }

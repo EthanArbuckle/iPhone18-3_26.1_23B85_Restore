@@ -1,14 +1,14 @@
 @interface SDAutoUnlockPairingSession
 - (SDAutoUnlockPairingSession)init;
-- (SDAutoUnlockPairingSession)initWithDevice:(id)a3 sessionID:(id)a4;
+- (SDAutoUnlockPairingSession)initWithDevice:(id)device sessionID:(id)d;
 - (SDAutoUnlockSessionDelegate)delegate;
 - (SDUnlockTransport)transport;
-- (id)dataFromUUID:(id)a3;
+- (id)dataFromUUID:(id)d;
 - (void)handleTimerFired;
-- (void)idsController:(id)a3 didReceiveProtoData:(id)a4 forType:(unsigned __int16)a5 deviceID:(id)a6;
+- (void)idsController:(id)controller didReceiveProtoData:(id)data forType:(unsigned __int16)type deviceID:(id)d;
 - (void)invalidate;
 - (void)invalidateResponseTimer;
-- (void)restartResponseTimer:(unint64_t)a3;
+- (void)restartResponseTimer:(unint64_t)timer;
 @end
 
 @implementation SDAutoUnlockPairingSession
@@ -28,21 +28,21 @@
   return v2;
 }
 
-- (SDAutoUnlockPairingSession)initWithDevice:(id)a3 sessionID:(id)a4
+- (SDAutoUnlockPairingSession)initWithDevice:(id)device sessionID:(id)d
 {
-  v7 = a3;
-  v8 = a4;
+  deviceCopy = device;
+  dCopy = d;
   v9 = [(SDAutoUnlockPairingSession *)self init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_deviceID, a3);
-    objc_storeStrong(&v10->_sessionID, a4);
+    objc_storeStrong(&v9->_deviceID, device);
+    objc_storeStrong(&v10->_sessionID, d);
     if (v10->_sessionID)
     {
       v11 = +[SDAutoUnlockTransport sharedTransport];
-      v12 = [(NSUUID *)v10->_sessionID UUIDString];
-      [v11 addClient:v10 forIdentifer:v12];
+      uUIDString = [(NSUUID *)v10->_sessionID UUIDString];
+      [v11 addClient:v10 forIdentifer:uUIDString];
     }
 
     v13 = +[SDUnlockIDSController sharedController];
@@ -65,14 +65,14 @@
   }
 
   [(SDAutoUnlockPairingSession *)self invalidateResponseTimer];
-  v6 = [(SDAutoUnlockPairingSession *)self sessionID];
+  sessionID = [(SDAutoUnlockPairingSession *)self sessionID];
 
-  if (v6)
+  if (sessionID)
   {
     v7 = +[SDAutoUnlockTransport sharedTransport];
-    v8 = [(SDAutoUnlockPairingSession *)self sessionID];
-    v9 = [v8 UUIDString];
-    [v7 removeClientForIdentifier:v9];
+    sessionID2 = [(SDAutoUnlockPairingSession *)self sessionID];
+    uUIDString = [sessionID2 UUIDString];
+    [v7 removeClientForIdentifier:uUIDString];
   }
 
   v10 = +[SDUnlockIDSController sharedController];
@@ -95,21 +95,21 @@
   return v2;
 }
 
-- (id)dataFromUUID:(id)a3
+- (id)dataFromUUID:(id)d
 {
-  v3 = a3;
-  if (a3)
+  dCopy = d;
+  if (d)
   {
     v5[0] = 0;
     v5[1] = 0;
-    [a3 getUUIDBytes:v5];
-    v3 = [NSData dataWithBytes:v5 length:16];
+    [d getUUIDBytes:v5];
+    dCopy = [NSData dataWithBytes:v5 length:16];
   }
 
-  return v3;
+  return dCopy;
 }
 
-- (void)restartResponseTimer:(unint64_t)a3
+- (void)restartResponseTimer:(unint64_t)timer
 {
   v5 = auto_unlock_log();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -118,9 +118,9 @@
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "Restarting response timer", buf, 2u);
   }
 
-  v6 = [(SDAutoUnlockPairingSession *)self responseTimer];
+  responseTimer = [(SDAutoUnlockPairingSession *)self responseTimer];
 
-  if (!v6)
+  if (!responseTimer)
   {
     objc_initWeak(buf, self);
     v7 = &_dispatch_main_q;
@@ -132,15 +132,15 @@
     v8 = sub_1001F0548(0, &_dispatch_main_q, v11);
     [(SDAutoUnlockPairingSession *)self setResponseTimer:v8];
 
-    v9 = [(SDAutoUnlockPairingSession *)self responseTimer];
-    dispatch_resume(v9);
+    responseTimer2 = [(SDAutoUnlockPairingSession *)self responseTimer];
+    dispatch_resume(responseTimer2);
 
     objc_destroyWeak(&v12);
     objc_destroyWeak(buf);
   }
 
-  v10 = [(SDAutoUnlockPairingSession *)self responseTimer];
-  sub_1001F05F0(v10, a3);
+  responseTimer3 = [(SDAutoUnlockPairingSession *)self responseTimer];
+  sub_1001F05F0(responseTimer3, timer);
 }
 
 - (void)invalidateResponseTimer
@@ -152,12 +152,12 @@
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "invalidateResponseTimer", v6, 2u);
   }
 
-  v4 = [(SDAutoUnlockPairingSession *)self responseTimer];
+  responseTimer = [(SDAutoUnlockPairingSession *)self responseTimer];
 
-  if (v4)
+  if (responseTimer)
   {
-    v5 = [(SDAutoUnlockPairingSession *)self responseTimer];
-    dispatch_source_cancel(v5);
+    responseTimer2 = [(SDAutoUnlockPairingSession *)self responseTimer];
+    dispatch_source_cancel(responseTimer2);
 
     [(SDAutoUnlockPairingSession *)self setResponseTimer:0];
   }
@@ -180,22 +180,22 @@
   [(SDAutoUnlockPairingSession *)self notifyDelegateWithError:v6];
 }
 
-- (void)idsController:(id)a3 didReceiveProtoData:(id)a4 forType:(unsigned __int16)a5 deviceID:(id)a6
+- (void)idsController:(id)controller didReceiveProtoData:(id)data forType:(unsigned __int16)type deviceID:(id)d
 {
-  v9 = a4;
-  v10 = a6;
-  v11 = [(SDAutoUnlockPairingSession *)self sessionQueue];
+  dataCopy = data;
+  dCopy = d;
+  sessionQueue = [(SDAutoUnlockPairingSession *)self sessionQueue];
   v14[0] = _NSConcreteStackBlock;
   v14[1] = 3221225472;
   v14[2] = sub_10005BE40;
   v14[3] = &unk_1008CDDC0;
-  v18 = a5;
-  v15 = v10;
-  v16 = v9;
-  v17 = self;
-  v12 = v9;
-  v13 = v10;
-  dispatch_async(v11, v14);
+  typeCopy = type;
+  v15 = dCopy;
+  v16 = dataCopy;
+  selfCopy = self;
+  v12 = dataCopy;
+  v13 = dCopy;
+  dispatch_async(sessionQueue, v14);
 }
 
 - (SDAutoUnlockSessionDelegate)delegate

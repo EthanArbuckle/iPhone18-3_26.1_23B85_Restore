@@ -32,21 +32,21 @@
 - (NSURL)unremappableDatabaseStoreFileURL;
 - (NSURL)userContainerURL;
 - (_LSDefaults)init;
-- (id)classesWithNameForXCTests:(const char *)a3;
-- (id)darwinNotificationNameForBaseName:(id)a3 optionalSessionKey:(LSSessionKey *)a4;
+- (id)classesWithNameForXCTests:(const char *)tests;
+- (id)darwinNotificationNameForBaseName:(id)name optionalSessionKey:(LSSessionKey *)key;
 - (id)databaseContainerURL;
-- (id)databaseStoreFileURLWithUID:(unsigned int)a3;
-- (id)databaseUpdateNotificationNameForSessionKey:(LSSessionKey)a3;
+- (id)databaseStoreFileURLWithUID:(unsigned int)d;
+- (id)databaseUpdateNotificationNameForSessionKey:(LSSessionKey)key;
 - (id)debugDescription;
-- (id)serviceNameForConnectionType:(unsigned __int16)a3 lightweightSystemService:(BOOL)a4;
-- (id)settingsUpdateNotificationNameForUserID:(unsigned int)a3;
+- (id)serviceNameForConnectionType:(unsigned __int16)type lightweightSystemService:(BOOL)service;
+- (id)settingsUpdateNotificationNameForUserID:(unsigned int)d;
 - (id)simulatorRootURL;
 - (id)simulatorRuntimeBuildVersion;
 - (id)simulatorRuntimeVersion;
 - (id)simulatorSharedResourcesDirectoryURL;
 - (unsigned)currentSchemaVersion;
 - (unsigned)proxyUIDForCurrentEffectiveUID;
-- (unsigned)proxyUIDForUID:(unsigned int)a3;
+- (unsigned)proxyUIDForUID:(unsigned int)d;
 @end
 
 @implementation _LSDefaults
@@ -98,18 +98,18 @@
     [_LSDefaults preferredLocalizations];
   }
 
-  if (![(_LSDefaults *)self isInXCTestRigInsecure]|| (+[_LSStringLocalizer preferredLocalizationsForXCTests], (v3 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (![(_LSDefaults *)self isInXCTestRigInsecure]|| (+[_LSStringLocalizer preferredLocalizationsForXCTests], (preferredLanguages = objc_claimAutoreleasedReturnValue()) == 0))
   {
     if (preferredLocalizations_useUserLangList == 1)
     {
       if ([(_LSDefaults *)self proxyUIDForCurrentEffectiveUID])
       {
-        v3 = [MEMORY[0x1E695DF58] preferredLanguages];
+        preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
       }
 
       else
       {
-        v3 = CFPreferencesCopyValue(@"AppleLanguages", *MEMORY[0x1E695E890], @"mobile", *MEMORY[0x1E695E898]);
+        preferredLanguages = CFPreferencesCopyValue(@"AppleLanguages", *MEMORY[0x1E695E890], @"mobile", *MEMORY[0x1E695E898]);
       }
     }
 
@@ -120,11 +120,11 @@
         [_LSDefaults preferredLocalizations];
       }
 
-      v3 = preferredLocalizations_bundleLocalizations;
+      preferredLanguages = preferredLocalizations_bundleLocalizations;
     }
   }
 
-  return v3;
+  return preferredLanguages;
 }
 
 - (_LSDefaults)init
@@ -182,10 +182,10 @@
     v12 = _CFGetEUID() - 100 <= 0xFFFFFF99 && getenv("LS_NO_PERSISTENT_PREFS") == 0;
     v2->_hasPersistentPreferences = v12;
     v2->_inEducationMode = 0;
-    v13 = [(objc_class *)getUMUserManagerClass_0() sharedManager];
-    v14 = [v13 isSharedIPad];
+    sharedManager = [(objc_class *)getUMUserManagerClass_0() sharedManager];
+    isSharedIPad = [sharedManager isSharedIPad];
 
-    if (v14)
+    if (isSharedIPad)
     {
       v2->_inEducationMode = 1;
     }
@@ -198,8 +198,8 @@
 
 - (NSURL)settingsStoreFileURL
 {
-  v2 = [(_LSDefaults *)self userContainerURL];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.LaunchServices.SettingsStore.sql" isDirectory:0];
+  userContainerURL = [(_LSDefaults *)self userContainerURL];
+  v3 = [userContainerURL URLByAppendingPathComponent:@"com.apple.LaunchServices.SettingsStore.sql" isDirectory:0];
 
   return v3;
 }
@@ -248,7 +248,7 @@
   __LAUNCH_SERVICES_IS_GENERATING_A_SANDBOX_EXCEPTION_BECAUSE_THIS_PROCESS_IS_USING_PRIVATE_SYMBOLS__();
   if (dyld_get_program_sdk_version() >= 0xD0000)
   {
-    [a1 doesNotRecognizeSelector:a2];
+    [self doesNotRecognizeSelector:a2];
   }
 
   if (__LSDefaultsGetSharedInstance_onceToken != -1)
@@ -289,29 +289,29 @@
 
 - (NSURL)databaseContainerDirectoryURL
 {
-  v3 = [(_LSDefaults *)self proxyUIDForCurrentEffectiveUID];
+  proxyUIDForCurrentEffectiveUID = [(_LSDefaults *)self proxyUIDForCurrentEffectiveUID];
 
-  return [(_LSDefaults *)self databaseContainerURLWithUID:v3];
+  return [(_LSDefaults *)self databaseContainerURLWithUID:proxyUIDForCurrentEffectiveUID];
 }
 
 - (NSURL)databaseStoreFileURL
 {
-  v3 = [(_LSDefaults *)self proxyUIDForCurrentEffectiveUID];
+  proxyUIDForCurrentEffectiveUID = [(_LSDefaults *)self proxyUIDForCurrentEffectiveUID];
 
-  return [(_LSDefaults *)self databaseStoreFileURLWithUID:v3];
+  return [(_LSDefaults *)self databaseStoreFileURLWithUID:proxyUIDForCurrentEffectiveUID];
 }
 
 - (NSURL)systemContentDatabaseStoreFileURL
 {
-  v3 = [(_LSDefaults *)self proxyUIDForCurrentEffectiveUID];
+  proxyUIDForCurrentEffectiveUID = [(_LSDefaults *)self proxyUIDForCurrentEffectiveUID];
 
-  return [(_LSDefaults *)self systemContentDatabaseStoreFileURLWithUID:v3];
+  return [(_LSDefaults *)self systemContentDatabaseStoreFileURLWithUID:proxyUIDForCurrentEffectiveUID];
 }
 
 - (NSURL)unremappableDatabaseStoreFileURL
 {
-  v2 = [(_LSDefaults *)self databaseStoreFileURL];
-  v3 = [v2 URLByAppendingPathExtension:@"unremappable"];
+  databaseStoreFileURL = [(_LSDefaults *)self databaseStoreFileURL];
+  v3 = [databaseStoreFileURL URLByAppendingPathExtension:@"unremappable"];
 
   return v3;
 }
@@ -320,18 +320,18 @@
 {
   if ([(_LSDefaults *)self isInEducationMode]|| [(_LSDefaults *)self isLightweightSystemServer])
   {
-    v3 = [(_LSDefaults *)self systemContainerURL];
+    systemContainerURL = [(_LSDefaults *)self systemContainerURL];
   }
 
   else
   {
-    v3 = [(_LSDefaults *)self userContainerURL];
+    systemContainerURL = [(_LSDefaults *)self userContainerURL];
   }
 
-  return v3;
+  return systemContainerURL;
 }
 
-- (id)databaseStoreFileURLWithUID:(unsigned int)a3
+- (id)databaseStoreFileURLWithUID:(unsigned int)d
 {
   v5 = [(_LSDefaults *)self databaseContainerURLWithUID:?];
   if (!v5)
@@ -353,7 +353,7 @@
 
   v8 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s-%03llu-v2.csstore", v7, -[_LSDefaults currentSchemaVersion](self, "currentSchemaVersion")];
   v9 = v8;
-  if (!a3)
+  if (!d)
   {
     v11 = [@"System-" stringByAppendingString:v8];
 
@@ -384,16 +384,16 @@ LABEL_12:
 
 - (NSURL)preferencesFileURL
 {
-  v2 = [(_LSDefaults *)self userContainerURL];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.LaunchServices.plist" isDirectory:0];
+  userContainerURL = [(_LSDefaults *)self userContainerURL];
+  v3 = [userContainerURL URLByAppendingPathComponent:@"com.apple.LaunchServices.plist" isDirectory:0];
 
   return v3;
 }
 
 - (NSURL)preSydroFSecurePreferencesFileURL
 {
-  v2 = [(_LSDefaults *)self userContainerURL];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.launchservices.securepreferences.plist" isDirectory:0];
+  userContainerURL = [(_LSDefaults *)self userContainerURL];
+  v3 = [userContainerURL URLByAppendingPathComponent:@"com.apple.launchservices.securepreferences.plist" isDirectory:0];
 
   return v3;
 }
@@ -417,72 +417,72 @@ LABEL_12:
 
 - (NSURL)appProtectionStoreFileURL
 {
-  v2 = [(_LSDefaults *)self databaseContainerURL];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.LaunchServicesAppProtectionStore.plist" isDirectory:0];
+  databaseContainerURL = [(_LSDefaults *)self databaseContainerURL];
+  v3 = [databaseContainerURL URLByAppendingPathComponent:@"com.apple.LaunchServicesAppProtectionStore.plist" isDirectory:0];
 
   return v3;
 }
 
 - (NSURL)queriedSchemesMapFileURL
 {
-  v2 = [(_LSDefaults *)self userContainerURL];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.lsdschemes.plist" isDirectory:0];
+  userContainerURL = [(_LSDefaults *)self userContainerURL];
+  v3 = [userContainerURL URLByAppendingPathComponent:@"com.apple.lsdschemes.plist" isDirectory:0];
 
   return v3;
 }
 
 - (NSURL)identifiersFileURL
 {
-  v2 = [(_LSDefaults *)self systemGroupContainerURL];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.lsdidentifiers.plist" isDirectory:0];
+  systemGroupContainerURL = [(_LSDefaults *)self systemGroupContainerURL];
+  v3 = [systemGroupContainerURL URLByAppendingPathComponent:@"com.apple.lsdidentifiers.plist" isDirectory:0];
 
   return v3;
 }
 
 - (NSURL)dbRemoveDBOnStartupURL
 {
-  v2 = [(_LSDefaults *)self databaseContainerDirectoryURL];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.launchservices.recreate" isDirectory:0];
+  databaseContainerDirectoryURL = [(_LSDefaults *)self databaseContainerDirectoryURL];
+  v3 = [databaseContainerDirectoryURL URLByAppendingPathComponent:@"com.apple.launchservices.recreate" isDirectory:0];
 
   return v3;
 }
 
 - (NSURL)dbSentinelFileURL
 {
-  v2 = [(_LSDefaults *)self databaseContainerURL];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.LaunchServices.dirty" isDirectory:0];
+  databaseContainerURL = [(_LSDefaults *)self databaseContainerURL];
+  v3 = [databaseContainerURL URLByAppendingPathComponent:@"com.apple.LaunchServices.dirty" isDirectory:0];
 
   return v3;
 }
 
 - (NSURL)installJournalDirectoryURL
 {
-  v2 = [(_LSDefaults *)self databaseContainerURL];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.LaunchServices.InstallJournal" isDirectory:1];
+  databaseContainerURL = [(_LSDefaults *)self databaseContainerURL];
+  v3 = [databaseContainerURL URLByAppendingPathComponent:@"com.apple.LaunchServices.InstallJournal" isDirectory:1];
 
   return v3;
 }
 
 - (NSURL)dbRecoveryFileURL
 {
-  v2 = [(_LSDefaults *)self databaseContainerURL];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.LaunchServices.error" isDirectory:0];
+  databaseContainerURL = [(_LSDefaults *)self databaseContainerURL];
+  v3 = [databaseContainerURL URLByAppendingPathComponent:@"com.apple.LaunchServices.error" isDirectory:0];
 
   return v3;
 }
 
 - (NSURL)dbSyncInterruptedFileURL
 {
-  v2 = [(_LSDefaults *)self databaseContainerURL];
-  v3 = [v2 URLByAppendingPathComponent:@"com.apple.LaunchServices.syncInterrupted"];
+  databaseContainerURL = [(_LSDefaults *)self databaseContainerURL];
+  v3 = [databaseContainerURL URLByAppendingPathComponent:@"com.apple.LaunchServices.syncInterrupted"];
 
   return v3;
 }
 
 - (NSURL)progressProportionsStateURL
 {
-  v2 = [(_LSDefaults *)self userContainerURL];
-  v3 = [v2 URLByAppendingPathComponent:@"ProgressProporitions.plist" isDirectory:0];
+  userContainerURL = [(_LSDefaults *)self userContainerURL];
+  v3 = [userContainerURL URLByAppendingPathComponent:@"ProgressProporitions.plist" isDirectory:0];
 
   return v3;
 }
@@ -586,7 +586,7 @@ LABEL_12:
   return v3;
 }
 
-- (id)classesWithNameForXCTests:(const char *)a3
+- (id)classesWithNameForXCTests:(const char *)tests
 {
   if (__LSDefaultsGetSharedInstance_onceToken != -1)
   {
@@ -601,9 +601,9 @@ LABEL_12:
     v7[2] = __41___LSDefaults_classesWithNameForXCTests___block_invoke;
     v7[3] = &unk_1E6A1BCC8;
     v8 = v4;
-    v9 = a3;
+    testsCopy = tests;
     v5 = v4;
-    objc_enumerateClasses(0, a3, 0, 0, v7);
+    objc_enumerateClasses(0, tests, 0, 0, v7);
   }
 
   return 0;
@@ -611,43 +611,43 @@ LABEL_12:
 
 - (BOOL)isSystemServer
 {
-  v3 = [(_LSDefaults *)self isServer];
-  if (v3)
+  isServer = [(_LSDefaults *)self isServer];
+  if (isServer)
   {
-    LOBYTE(v3) = [(_LSDefaults *)self proxyUIDForCurrentEffectiveUID]== 0;
+    LOBYTE(isServer) = [(_LSDefaults *)self proxyUIDForCurrentEffectiveUID]== 0;
   }
 
-  return v3;
+  return isServer;
 }
 
 - (BOOL)isUserServer
 {
-  v3 = [(_LSDefaults *)self isServer];
-  if (v3)
+  isServer = [(_LSDefaults *)self isServer];
+  if (isServer)
   {
-    LOBYTE(v3) = [(_LSDefaults *)self proxyUIDForCurrentEffectiveUID]!= 0;
+    LOBYTE(isServer) = [(_LSDefaults *)self proxyUIDForCurrentEffectiveUID]!= 0;
   }
 
-  return v3;
+  return isServer;
 }
 
 - (BOOL)abortIfMayNotMapDatabase
 {
-  v2 = [(_LSDefaults *)self isAppleInternal];
-  if (v2)
+  isAppleInternal = [(_LSDefaults *)self isAppleInternal];
+  if (isAppleInternal)
   {
-    LOBYTE(v2) = CFPreferencesGetAppBooleanValue(@"LSAbortIfMayNotMapDatabase", *MEMORY[0x1E695E8A8], 0) != 0;
+    LOBYTE(isAppleInternal) = CFPreferencesGetAppBooleanValue(@"LSAbortIfMayNotMapDatabase", *MEMORY[0x1E695E8A8], 0) != 0;
   }
 
-  return v2;
+  return isAppleInternal;
 }
 
-- (id)serviceNameForConnectionType:(unsigned __int16)a3 lightweightSystemService:(BOOL)a4
+- (id)serviceNameForConnectionType:(unsigned __int16)type lightweightSystemService:(BOOL)service
 {
-  v4 = a4;
-  v5 = a3;
+  serviceCopy = service;
+  typeCopy = type;
   v6 = getenv("LSD_SERVICE_BASE");
-  switch(v5)
+  switch(typeCopy)
   {
     case 0:
       if (!v6 || !*v6)
@@ -659,7 +659,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -676,7 +676,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -693,7 +693,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -710,7 +710,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -727,7 +727,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -744,7 +744,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -761,7 +761,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -778,7 +778,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -795,7 +795,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -812,7 +812,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -829,7 +829,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -846,7 +846,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -863,7 +863,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -880,7 +880,7 @@ LABEL_12:
 
       v7 = MEMORY[0x1E696AEC0];
       v8 = "";
-      if (v4)
+      if (serviceCopy)
       {
         v8 = ".system";
       }
@@ -892,7 +892,7 @@ LABEL_12:
       {
         v7 = MEMORY[0x1E696AEC0];
         v8 = "";
-        if (v4)
+        if (serviceCopy)
         {
           v8 = ".system";
         }
@@ -907,7 +907,7 @@ LABEL_78:
         v11 = @"com.apple.lsd.appprotection";
         v12 = @"com.apple.lsd.system.appprotection";
 LABEL_94:
-        if (v4)
+        if (serviceCopy)
         {
           v11 = v12;
         }
@@ -924,48 +924,48 @@ LABEL_97:
   }
 }
 
-- (unsigned)proxyUIDForUID:(unsigned int)a3
+- (unsigned)proxyUIDForUID:(unsigned int)d
 {
-  if (a3 - 401 >= 0xFFFFFE6D)
+  if (d - 401 >= 0xFFFFFE6D)
   {
     return 0;
   }
 
   else
   {
-    return a3;
+    return d;
   }
 }
 
-- (id)darwinNotificationNameForBaseName:(id)a3 optionalSessionKey:(LSSessionKey *)a4
+- (id)darwinNotificationNameForBaseName:(id)name optionalSessionKey:(LSSessionKey *)key
 {
-  v5 = a3;
-  v6 = v5;
-  v7 = v5;
-  if (a4)
+  nameCopy = name;
+  v6 = nameCopy;
+  v7 = nameCopy;
+  if (key)
   {
-    v7 = v5;
-    if (a4->systemSession)
+    v7 = nameCopy;
+    if (key->systemSession)
     {
-      v7 = [v5 stringByAppendingString:@".system"];
+      v7 = [nameCopy stringByAppendingString:@".system"];
     }
   }
 
   return v7;
 }
 
-- (id)databaseUpdateNotificationNameForSessionKey:(LSSessionKey)a3
+- (id)databaseUpdateNotificationNameForSessionKey:(LSSessionKey)key
 {
-  v5 = a3;
-  v3 = [(_LSDefaults *)self darwinNotificationNameForBaseName:@"com.apple.LaunchServices.database" optionalSessionKey:&v5];
+  keyCopy = key;
+  v3 = [(_LSDefaults *)self darwinNotificationNameForBaseName:@"com.apple.LaunchServices.database" optionalSessionKey:&keyCopy];
 
   return v3;
 }
 
-- (id)settingsUpdateNotificationNameForUserID:(unsigned int)a3
+- (id)settingsUpdateNotificationNameForUserID:(unsigned int)d
 {
-  v5 = a3;
-  v3 = [(_LSDefaults *)self darwinNotificationNameForBaseName:@"com.apple.LaunchServices.settings" optionalSessionKey:&v5];
+  dCopy = d;
+  v3 = [(_LSDefaults *)self darwinNotificationNameForBaseName:@"com.apple.LaunchServices.settings" optionalSessionKey:&dCopy];
 
   return v3;
 }
@@ -997,22 +997,22 @@ LABEL_97:
 
 - (id)debugDescription
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   for (i = 0; i != 15; ++i)
   {
     v5 = [(_LSDefaults *)self serviceNameForConnectionType:i];
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
   v29 = MEMORY[0x1E696AEC0];
   v30.receiver = self;
   v30.super_class = _LSDefaults;
   v28 = [(_LSDefaults *)&v30 debugDescription];
-  v27 = [(_LSDefaults *)self databaseStoreFileURL];
-  v26 = [(_LSDefaults *)self queriedSchemesMapFileURL];
-  v25 = [(_LSDefaults *)self identifiersFileURL];
-  v24 = [(_LSDefaults *)self preferencesFileURL];
-  v6 = [(_LSDefaults *)self securePreferencesFileURL];
+  databaseStoreFileURL = [(_LSDefaults *)self databaseStoreFileURL];
+  queriedSchemesMapFileURL = [(_LSDefaults *)self queriedSchemesMapFileURL];
+  identifiersFileURL = [(_LSDefaults *)self identifiersFileURL];
+  preferencesFileURL = [(_LSDefaults *)self preferencesFileURL];
+  securePreferencesFileURL = [(_LSDefaults *)self securePreferencesFileURL];
   v7 = @"NO";
   if ([(_LSDefaults *)self isServer])
   {
@@ -1105,7 +1105,7 @@ LABEL_97:
   [(_LSDefaults *)self databaseSaveInterval];
   v17 = v16;
   [(_LSDefaults *)self databaseSaveLatency];
-  v19 = [v29 stringWithFormat:@"%@Paths:\n\tdatabaseStoreFileURL: %@\n\tqueriedSchemesMapFileURL: %@\n\tidentifiersFileURL: %@\n\tpreferencesFileURL: %@\n\tsecurePreferencesFileURL: %@\nEnvironment:\n\tisServer: %@\n\thasServer: %@\n\tinEducationMode: %@\n\thasPersistentPreferences: %@\n\tallowsAlternateIcons: %@\n\tabortIfMayNotMapDatabase: %@\n\tinSyncBubble: %@\n\tinXCTestRigInsecure: %@\n\tappleInternal: %@\nTimeing:\n\tdatabaseSaveInterval: %lf\n\tdatabaseSaveLatency: %lf\nService names: %@", v28, v27, v26, v25, v24, v6, v23, v22, v21, v11, v12, v13, v14, v15, v7, v17, v18, v3];
+  v19 = [v29 stringWithFormat:@"%@Paths:\n\tdatabaseStoreFileURL: %@\n\tqueriedSchemesMapFileURL: %@\n\tidentifiersFileURL: %@\n\tpreferencesFileURL: %@\n\tsecurePreferencesFileURL: %@\nEnvironment:\n\tisServer: %@\n\thasServer: %@\n\tinEducationMode: %@\n\thasPersistentPreferences: %@\n\tallowsAlternateIcons: %@\n\tabortIfMayNotMapDatabase: %@\n\tinSyncBubble: %@\n\tinXCTestRigInsecure: %@\n\tappleInternal: %@\nTimeing:\n\tdatabaseSaveInterval: %lf\n\tdatabaseSaveLatency: %lf\nService names: %@", v28, databaseStoreFileURL, queriedSchemesMapFileURL, identifiersFileURL, preferencesFileURL, securePreferencesFileURL, v23, v22, v21, v11, v12, v13, v14, v15, v7, v17, v18, array];
 
   return v19;
 }

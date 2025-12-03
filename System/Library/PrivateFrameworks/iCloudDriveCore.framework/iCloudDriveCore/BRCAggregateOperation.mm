@@ -1,24 +1,24 @@
 @interface BRCAggregateOperation
-- (BRCAggregateOperation)initWithSyncContext:(id)a3 sessionContext:(id)a4 subOperations:(id)a5;
-- (void)finishWithResult:(id)a3 error:(id)a4;
+- (BRCAggregateOperation)initWithSyncContext:(id)context sessionContext:(id)sessionContext subOperations:(id)operations;
+- (void)finishWithResult:(id)result error:(id)error;
 - (void)main;
 @end
 
 @implementation BRCAggregateOperation
 
-- (BRCAggregateOperation)initWithSyncContext:(id)a3 sessionContext:(id)a4 subOperations:(id)a5
+- (BRCAggregateOperation)initWithSyncContext:(id)context sessionContext:(id)sessionContext subOperations:(id)operations
 {
-  v8 = a5;
+  operationsCopy = operations;
   v15.receiver = self;
   v15.super_class = BRCAggregateOperation;
-  v9 = [(_BRCOperation *)&v15 initWithName:@"wrapperOperation" syncContext:a3 sessionContext:a4];
+  v9 = [(_BRCOperation *)&v15 initWithName:@"wrapperOperation" syncContext:context sessionContext:sessionContext];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [operationsCopy copy];
     subOperations = v9->_subOperations;
     v9->_subOperations = v10;
 
-    v12 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v8, "count")}];
+    v12 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(operationsCopy, "count")}];
     resultDictionary = v9->_resultDictionary;
     v9->_resultDictionary = v12;
   }
@@ -59,7 +59,7 @@
         v8 = *(*(&v20 + 1) + 8 * v7);
         dispatch_group_enter(v3);
         [v8 setIgnoreMissingRemoteClientProxy:1];
-        v9 = [v8 finishBlock];
+        finishBlock = [v8 finishBlock];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __29__BRCAggregateOperation_main__block_invoke;
@@ -67,7 +67,7 @@
         v15[4] = self;
         v18 = v24;
         v19 = v5;
-        v10 = v9;
+        v10 = finishBlock;
         v17 = v10;
         v16 = v3;
         [v8 setFinishBlock:v15];
@@ -84,14 +84,14 @@
     while (v4);
   }
 
-  v11 = [(_BRCOperation *)self callbackQueue];
+  callbackQueue = [(_BRCOperation *)self callbackQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __29__BRCAggregateOperation_main__block_invoke_2;
   block[3] = &unk_278502208;
   block[4] = self;
   block[5] = v24;
-  dispatch_group_notify(v3, v11, block);
+  dispatch_group_notify(v3, callbackQueue, block);
 
   _Block_object_dispose(v24, 8);
   v12 = *MEMORY[0x277D85DE8];
@@ -152,21 +152,21 @@ uint64_t __29__BRCAggregateOperation_main__block_invoke_2(uint64_t a1)
   return [v2 completedWithResult:v3 error:?];
 }
 
-- (void)finishWithResult:(id)a3 error:(id)a4
+- (void)finishWithResult:(id)result error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(BRCAggregateOperation *)self wrapperOperationCompletionHandler];
-  v9 = v8;
-  if (v8)
+  resultCopy = result;
+  errorCopy = error;
+  wrapperOperationCompletionHandler = [(BRCAggregateOperation *)self wrapperOperationCompletionHandler];
+  v9 = wrapperOperationCompletionHandler;
+  if (wrapperOperationCompletionHandler)
   {
-    (*(v8 + 16))(v8, v6, v7);
+    (*(wrapperOperationCompletionHandler + 16))(wrapperOperationCompletionHandler, resultCopy, errorCopy);
     [(BRCAggregateOperation *)self setWrapperOperationCompletionHandler:0];
   }
 
   v10.receiver = self;
   v10.super_class = BRCAggregateOperation;
-  [(_BRCFrameworkOperation *)&v10 finishWithResult:v6 error:v7];
+  [(_BRCFrameworkOperation *)&v10 finishWithResult:resultCopy error:errorCopy];
 }
 
 @end

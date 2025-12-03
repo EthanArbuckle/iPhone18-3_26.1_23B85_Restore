@@ -1,19 +1,19 @@
 @interface _CNLazyArrayOperatorTake
-- (_CNLazyArrayOperatorTake)initWithInput:(id)a3 limit:(unint64_t)a4;
+- (_CNLazyArrayOperatorTake)initWithInput:(id)input limit:(unint64_t)limit;
 - (id)nextObject;
 @end
 
 @implementation _CNLazyArrayOperatorTake
 
-- (_CNLazyArrayOperatorTake)initWithInput:(id)a3 limit:(unint64_t)a4
+- (_CNLazyArrayOperatorTake)initWithInput:(id)input limit:(unint64_t)limit
 {
   v9.receiver = self;
   v9.super_class = _CNLazyArrayOperatorTake;
-  v5 = [(_CNLazyArrayOperator *)&v9 initWithInput:a3];
+  v5 = [(_CNLazyArrayOperator *)&v9 initWithInput:input];
   v6 = v5;
   if (v5)
   {
-    v5->_remainingTakeCount = a4;
+    v5->_remainingTakeCount = limit;
     v7 = v5;
   }
 
@@ -26,16 +26,16 @@
   if (remainingTakeCount)
   {
     self->_remainingTakeCount = remainingTakeCount - 1;
-    v3 = [(_CNLazyArrayOperator *)self input];
-    v4 = [v3 nextObject];
+    input = [(_CNLazyArrayOperator *)self input];
+    nextObject = [input nextObject];
   }
 
   else
   {
-    v4 = 0;
+    nextObject = 0;
   }
 
-  return v4;
+  return nextObject;
 }
 
 @end

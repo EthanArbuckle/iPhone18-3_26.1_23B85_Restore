@@ -1,32 +1,32 @@
 @interface TICounterChangeCache
-- (TICounterChangeCache)initWithEventDescriptorRegistry:(id)a3 metricDescriptorRegistry:(id)a4;
-- (void)addCounterReferencesForMetric:(id)a3;
-- (void)addStatisticChanges:(id)a3 withContext:(id)a4;
-- (void)keyboardDidSuspendForDate:(id)a3;
+- (TICounterChangeCache)initWithEventDescriptorRegistry:(id)registry metricDescriptorRegistry:(id)descriptorRegistry;
+- (void)addCounterReferencesForMetric:(id)metric;
+- (void)addStatisticChanges:(id)changes withContext:(id)context;
+- (void)keyboardDidSuspendForDate:(id)date;
 - (void)loadReferencedCounters;
-- (void)persistForDate:(id)a3;
+- (void)persistForDate:(id)date;
 @end
 
 @implementation TICounterChangeCache
 
-- (void)persistForDate:(id)a3
+- (void)persistForDate:(id)date
 {
   v58 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  [v4 timeIntervalSince1970];
-  if (v4)
+  dateCopy = date;
+  [dateCopy timeIntervalSince1970];
+  if (dateCopy)
   {
-    v6 = v4;
+    v6 = dateCopy;
     if (v5 - self->_timeOfLastPersist < *MEMORY[0x277D6FD90] && !self->_userModelRateLimitingDisabled)
     {
-      v39 = v4;
-      v7 = IXADefaultLogFacility();
-      if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
+      v39 = dateCopy;
+      mEMORY[0x277D6F548] = IXADefaultLogFacility();
+      if (os_log_type_enabled(mEMORY[0x277D6F548], OS_LOG_TYPE_INFO))
       {
         v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s Counter change cache persistence not required due to rate limiting.", "-[TICounterChangeCache persistForDate:]"];
         *buf = 138412290;
         v57 = v8;
-        _os_log_impl(&dword_22CA55000, v7, OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
+        _os_log_impl(&dword_22CA55000, mEMORY[0x277D6F548], OS_LOG_TYPE_INFO, "%@", buf, 0xCu);
       }
 
       goto LABEL_40;
@@ -41,8 +41,8 @@
   v39 = v6;
   [v6 timeIntervalSince1970];
   self->_timeOfLastPersist = v9;
-  v7 = [MEMORY[0x277D6F548] sharedUserModelDataStore];
-  if ([v7 isValid])
+  mEMORY[0x277D6F548] = [MEMORY[0x277D6F548] sharedUserModelDataStore];
+  if ([mEMORY[0x277D6F548] isValid])
   {
     v52 = 0u;
     v53 = 0u;
@@ -53,7 +53,7 @@
     if (v36)
     {
       v35 = *v51;
-      v40 = v7;
+      v40 = mEMORY[0x277D6F548];
       do
       {
         v10 = 0;
@@ -91,8 +91,8 @@
           v46 = 0u;
           v47 = 0u;
           v48 = 0u;
-          v44 = [v15 allKeys];
-          v16 = [v44 countByEnumeratingWithState:&v45 objects:v54 count:16];
+          allKeys = [v15 allKeys];
+          v16 = [allKeys countByEnumeratingWithState:&v45 objects:v54 count:16];
           if (v16)
           {
             v17 = v16;
@@ -105,7 +105,7 @@
               {
                 if (*v46 != v18)
                 {
-                  objc_enumerationMutation(v44);
+                  objc_enumerationMutation(allKeys);
                 }
 
                 v20 = *(*(&v45 + 1) + 8 * v19);
@@ -125,8 +125,8 @@
                     v24 = [*MEMORY[0x277D6FDB0] stringByAppendingString:v20];
                     v25 = [MEMORY[0x277CCABB0] numberWithInt:0];
                     v26 = [MEMORY[0x277CCABB0] numberWithDouble:0.0];
-                    v27 = [v41 inputLanguageAndRegion];
-                    [v40 addValue:v21 andSecondaryValue:v25 andRealValue:v26 andProperties:v42 forKey:v24 forInputMode:v27 forDate:v39];
+                    inputLanguageAndRegion = [v41 inputLanguageAndRegion];
+                    [v40 addValue:v21 andSecondaryValue:v25 andRealValue:v26 andProperties:v42 forKey:v24 forInputMode:inputLanguageAndRegion forDate:v39];
 
                     v28 = IXADefaultLogFacility();
                     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEBUG))
@@ -158,14 +158,14 @@
               }
 
               while (v17 != v19);
-              v17 = [v44 countByEnumeratingWithState:&v45 objects:v54 count:16];
+              v17 = [allKeys countByEnumeratingWithState:&v45 objects:v54 count:16];
             }
 
             while (v17);
           }
 
           v10 = v38 + 1;
-          v7 = v40;
+          mEMORY[0x277D6F548] = v40;
         }
 
         while (v38 + 1 != v36);
@@ -194,26 +194,26 @@ LABEL_40:
   v32 = *MEMORY[0x277D85DE8];
 }
 
-- (void)keyboardDidSuspendForDate:(id)a3
+- (void)keyboardDidSuspendForDate:(id)date
 {
-  v4 = a3;
+  dateCopy = date;
   workQueue = self->_workQueue;
-  v7 = v4;
-  v6 = v4;
+  v7 = dateCopy;
+  v6 = dateCopy;
   TIDispatchAsync();
 }
 
-- (void)addStatisticChanges:(id)a3 withContext:(id)a4
+- (void)addStatisticChanges:(id)changes withContext:(id)context
 {
-  v6 = a4;
+  contextCopy = context;
   v7 = MEMORY[0x277CBEA60];
-  v8 = a3;
-  v9 = [[v7 alloc] initWithArray:v8 copyItems:1];
+  changesCopy = changes;
+  v9 = [[v7 alloc] initWithArray:changesCopy copyItems:1];
 
   if ([v9 count])
   {
     workQueue = self->_workQueue;
-    v11 = v6;
+    v11 = contextCopy;
     v12 = v9;
     TIDispatchAsync();
   }
@@ -271,27 +271,27 @@ void __56__TICounterChangeCache_addStatisticChanges_withContext___block_invoke(u
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addCounterReferencesForMetric:(id)a3
+- (void)addCounterReferencesForMetric:(id)metric
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(TIMetricDescriptorRegistry *)self->_metricDescriptorRegistry metricDescriptorWithName:v4];
+  metricCopy = metric;
+  v5 = [(TIMetricDescriptorRegistry *)self->_metricDescriptorRegistry metricDescriptorWithName:metricCopy];
   if (v5)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       v6 = v5;
-      v7 = [v6 calculationExpression];
+      calculationExpression = [v6 calculationExpression];
 
-      if (v7)
+      if (calculationExpression)
       {
         v16 = 0u;
         v17 = 0u;
         v14 = 0u;
         v15 = 0u;
-        v8 = [v6 calculationDependencies];
-        v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        calculationDependencies = [v6 calculationDependencies];
+        v9 = [calculationDependencies countByEnumeratingWithState:&v14 objects:v18 count:16];
         if (v9)
         {
           v10 = v9;
@@ -303,14 +303,14 @@ void __56__TICounterChangeCache_addStatisticChanges_withContext___block_invoke(u
             {
               if (*v15 != v11)
               {
-                objc_enumerationMutation(v8);
+                objc_enumerationMutation(calculationDependencies);
               }
 
               [(TICounterChangeCache *)self addCounterReferencesForMetric:*(*(&v14 + 1) + 8 * v12++)];
             }
 
             while (v10 != v12);
-            v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+            v10 = [calculationDependencies countByEnumeratingWithState:&v14 objects:v18 count:16];
           }
 
           while (v10);
@@ -319,7 +319,7 @@ void __56__TICounterChangeCache_addStatisticChanges_withContext___block_invoke(u
 
       else
       {
-        [(NSMutableSet *)self->_referencedCounters addObject:v4];
+        [(NSMutableSet *)self->_referencedCounters addObject:metricCopy];
       }
     }
   }
@@ -338,8 +338,8 @@ void __56__TICounterChangeCache_addStatisticChanges_withContext___block_invoke(u
   v25 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v5 = [(TIEventDescriptorRegistry *)self->_eventDescriptorRegistry allEventDescriptors];
-  v6 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+  allEventDescriptors = [(TIEventDescriptorRegistry *)self->_eventDescriptorRegistry allEventDescriptors];
+  v6 = [allEventDescriptors countByEnumeratingWithState:&v22 objects:v27 count:16];
   if (v6)
   {
     v7 = v6;
@@ -351,7 +351,7 @@ void __56__TICounterChangeCache_addStatisticChanges_withContext___block_invoke(u
       {
         if (*v23 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(allEventDescriptors);
         }
 
         v10 = *(*(&v22 + 1) + 8 * v9);
@@ -359,8 +359,8 @@ void __56__TICounterChangeCache_addStatisticChanges_withContext___block_invoke(u
         v19 = 0u;
         v20 = 0u;
         v21 = 0u;
-        v11 = [v10 fieldDescriptors];
-        v12 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+        fieldDescriptors = [v10 fieldDescriptors];
+        v12 = [fieldDescriptors countByEnumeratingWithState:&v18 objects:v26 count:16];
         if (v12)
         {
           v13 = v12;
@@ -372,17 +372,17 @@ void __56__TICounterChangeCache_addStatisticChanges_withContext___block_invoke(u
             {
               if (*v19 != v14)
               {
-                objc_enumerationMutation(v11);
+                objc_enumerationMutation(fieldDescriptors);
               }
 
-              v16 = [*(*(&v18 + 1) + 8 * v15) metricName];
-              [(TICounterChangeCache *)self addCounterReferencesForMetric:v16];
+              metricName = [*(*(&v18 + 1) + 8 * v15) metricName];
+              [(TICounterChangeCache *)self addCounterReferencesForMetric:metricName];
 
               ++v15;
             }
 
             while (v13 != v15);
-            v13 = [v11 countByEnumeratingWithState:&v18 objects:v26 count:16];
+            v13 = [fieldDescriptors countByEnumeratingWithState:&v18 objects:v26 count:16];
           }
 
           while (v13);
@@ -392,7 +392,7 @@ void __56__TICounterChangeCache_addStatisticChanges_withContext___block_invoke(u
       }
 
       while (v9 != v7);
-      v7 = [v5 countByEnumeratingWithState:&v22 objects:v27 count:16];
+      v7 = [allEventDescriptors countByEnumeratingWithState:&v22 objects:v27 count:16];
     }
 
     while (v7);
@@ -401,18 +401,18 @@ void __56__TICounterChangeCache_addStatisticChanges_withContext___block_invoke(u
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (TICounterChangeCache)initWithEventDescriptorRegistry:(id)a3 metricDescriptorRegistry:(id)a4
+- (TICounterChangeCache)initWithEventDescriptorRegistry:(id)registry metricDescriptorRegistry:(id)descriptorRegistry
 {
-  v7 = a3;
-  v8 = a4;
+  registryCopy = registry;
+  descriptorRegistryCopy = descriptorRegistry;
   v20.receiver = self;
   v20.super_class = TICounterChangeCache;
   v9 = [(TICounterChangeCache *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_eventDescriptorRegistry, a3);
-    objc_storeStrong(&v10->_metricDescriptorRegistry, a4);
+    objc_storeStrong(&v9->_eventDescriptorRegistry, registry);
+    objc_storeStrong(&v10->_metricDescriptorRegistry, descriptorRegistry);
     v11 = objc_opt_new();
     cache = v10->_cache;
     v10->_cache = v11;

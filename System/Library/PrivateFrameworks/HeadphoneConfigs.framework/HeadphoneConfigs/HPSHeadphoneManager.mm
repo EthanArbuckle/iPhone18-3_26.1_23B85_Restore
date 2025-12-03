@@ -1,15 +1,15 @@
 @interface HPSHeadphoneManager
 + (NSDictionary)allDevicesEverConnected;
 + (id)sharedInstance;
-+ (void)setAllDevicesEverConnected:(id)a3;
++ (void)setAllDevicesEverConnected:(id)connected;
 - (BOOL)allowReplayAccessory;
 - (HPSHeadphoneManager)init;
 - (id)weakHashTblCopy;
-- (void)addDelegate:(id)a3;
-- (void)addTopLevelEntryWithHpDevice:(id)a3;
-- (void)removeTopLevelEntryWithHpDevice:(id)a3;
-- (void)updateHPSDevice:(id)a3;
-- (void)updateTopLevelEntryWithHpDevice:(id)a3;
+- (void)addDelegate:(id)delegate;
+- (void)addTopLevelEntryWithHpDevice:(id)device;
+- (void)removeTopLevelEntryWithHpDevice:(id)device;
+- (void)updateHPSDevice:(id)device;
+- (void)updateTopLevelEntryWithHpDevice:(id)device;
 @end
 
 @implementation HPSHeadphoneManager
@@ -40,12 +40,12 @@ uint64_t __37__HPSHeadphoneManager_sharedInstance__block_invoke()
   v2 = [(HPSHeadphoneManager *)&v9 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D0FC00] shared];
-    [v3 setTopLevelUIHandler:v2];
+    mEMORY[0x277D0FC00] = [MEMORY[0x277D0FC00] shared];
+    [mEMORY[0x277D0FC00] setTopLevelUIHandler:v2];
 
-    v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
     weakHashTbl = v2->_weakHashTbl;
-    v2->_weakHashTbl = v4;
+    v2->_weakHashTbl = weakObjectsHashTable;
 
     v2->_ffValue = _os_feature_enabled_impl();
     v6 = [objc_alloc(MEMORY[0x277CBEBD0]) initWithSuiteName:@"com.apple.settings.headphone.HeadphoneManager.Mock"];
@@ -56,11 +56,11 @@ uint64_t __37__HPSHeadphoneManager_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(HPSHeadphoneManager *)self weakHashTbl];
-  [v5 addObject:v4];
+  delegateCopy = delegate;
+  weakHashTbl = [(HPSHeadphoneManager *)self weakHashTbl];
+  [weakHashTbl addObject:delegateCopy];
 }
 
 - (BOOL)allowReplayAccessory
@@ -76,25 +76,25 @@ uint64_t __37__HPSHeadphoneManager_sharedInstance__block_invoke()
   return v4;
 }
 
-- (void)updateHPSDevice:(id)a3
+- (void)updateHPSDevice:(id)device
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  deviceCopy = device;
   v4 = +[HPSHeadphoneManager allDevicesEverConnected];
-  v5 = [v3 address];
-  v6 = [v5 stringByReplacingOccurrencesOfString:@":" withString:@"-"];
+  address = [deviceCopy address];
+  v6 = [address stringByReplacingOccurrencesOfString:@":" withString:@"-"];
   v7 = [v4 objectForKeyedSubscript:v6];
 
-  if (v7 && [v3 isExclusivelyDeeplink])
+  if (v7 && [deviceCopy isExclusivelyDeeplink])
   {
-    [v3 setIsExclusivelyDeeplink:0];
+    [deviceCopy setIsExclusivelyDeeplink:0];
   }
 
-  if ([v3 isExclusivelyDeeplink])
+  if ([deviceCopy isExclusivelyDeeplink])
   {
-    v8 = [v3 headphoneDevice];
+    headphoneDevice = [deviceCopy headphoneDevice];
 
-    v7 = v8;
+    v7 = headphoneDevice;
   }
 
   else if (([v7 hasBackend] & 1) == 0)
@@ -110,18 +110,18 @@ uint64_t __37__HPSHeadphoneManager_sharedInstance__block_invoke()
     v7 = 0;
   }
 
-  [v3 setHeadphoneDevice:v7];
+  [deviceCopy setHeadphoneDevice:v7];
   if (_os_feature_enabled_impl())
   {
-    v10 = [MEMORY[0x277CF3248] sharedInstance];
-    v11 = [v3 address];
-    v12 = [v11 stringByReplacingOccurrencesOfString:@"-" withString:@":"];
-    v13 = [v10 deviceFromAddressString:v12];
+    mEMORY[0x277CF3248] = [MEMORY[0x277CF3248] sharedInstance];
+    address2 = [deviceCopy address];
+    v12 = [address2 stringByReplacingOccurrencesOfString:@"-" withString:@":"];
+    v13 = [mEMORY[0x277CF3248] deviceFromAddressString:v12];
 
     if (v13)
     {
       v14 = [BTSDeviceClassic deviceWithDevice:v13];
-      [v3 setBtsDevice:v14];
+      [deviceCopy setBtsDevice:v14];
     }
   }
 
@@ -129,13 +129,13 @@ uint64_t __37__HPSHeadphoneManager_sharedInstance__block_invoke()
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
     v16 = +[HPSHeadphoneManager allDevicesEverConnected];
-    v17 = [v3 headphoneDevice];
+    headphoneDevice2 = [deviceCopy headphoneDevice];
     v19 = 138412802;
     v20 = v16;
     v21 = 2112;
     v22 = v7;
     v23 = 2112;
-    v24 = v17;
+    v24 = headphoneDevice2;
     _os_log_impl(&dword_251143000, v15, OS_LOG_TYPE_DEFAULT, "Connected Headphones: updateHPSDevice %@ %@ %@", &v19, 0x20u);
   }
 
@@ -164,7 +164,7 @@ uint64_t __37__HPSHeadphoneManager_sharedInstance__block_invoke()
   return v2;
 }
 
-+ (void)setAllDevicesEverConnected:(id)a3
++ (void)setAllDevicesEverConnected:(id)connected
 {
   sub_25121102C();
   v3 = sub_25121172C();
@@ -177,25 +177,25 @@ uint64_t __37__HPSHeadphoneManager_sharedInstance__block_invoke()
   qword_27F425690 = v3;
 }
 
-- (void)addTopLevelEntryWithHpDevice:(id)a3
+- (void)addTopLevelEntryWithHpDevice:(id)device
 {
-  v4 = a3;
-  v5 = self;
-  HPSHeadphoneManager.addTopLevelEntry(hpDevice:)(v4);
+  deviceCopy = device;
+  selfCopy = self;
+  HPSHeadphoneManager.addTopLevelEntry(hpDevice:)(deviceCopy);
 }
 
-- (void)updateTopLevelEntryWithHpDevice:(id)a3
+- (void)updateTopLevelEntryWithHpDevice:(id)device
 {
-  v4 = a3;
-  v5 = self;
-  HPSHeadphoneManager.updateTopLevelEntry(hpDevice:)(v4);
+  deviceCopy = device;
+  selfCopy = self;
+  HPSHeadphoneManager.updateTopLevelEntry(hpDevice:)(deviceCopy);
 }
 
-- (void)removeTopLevelEntryWithHpDevice:(id)a3
+- (void)removeTopLevelEntryWithHpDevice:(id)device
 {
-  v4 = a3;
-  v5 = self;
-  HPSHeadphoneManager.removeTopLevelEntry(hpDevice:)(v4);
+  deviceCopy = device;
+  selfCopy = self;
+  HPSHeadphoneManager.removeTopLevelEntry(hpDevice:)(deviceCopy);
 }
 
 @end

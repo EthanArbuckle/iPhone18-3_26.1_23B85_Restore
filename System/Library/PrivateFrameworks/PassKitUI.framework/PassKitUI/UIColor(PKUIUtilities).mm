@@ -23,14 +23,14 @@
 + (id)pkui_blendFromColor:()PKUIUtilities toColor:withProgress:
 {
   v5 = a4;
-  v6 = [a3 pkui_extendedLinearColor];
-  v7 = [v5 pkui_extendedLinearColor];
+  pkui_extendedLinearColor = [a3 pkui_extendedLinearColor];
+  pkui_extendedLinearColor2 = [v5 pkui_extendedLinearColor];
 
   v8 = 0;
-  if (v6 && v7)
+  if (pkui_extendedLinearColor && pkui_extendedLinearColor2)
   {
-    [v6 CGColor];
-    [v7 CGColor];
+    [pkui_extendedLinearColor CGColor];
+    [pkui_extendedLinearColor2 CGColor];
     BlendedLinearColor = PKColorCreateBlendedLinearColor();
     if (BlendedLinearColor)
     {
@@ -54,10 +54,10 @@
 
 - (id)pkui_linearColor
 {
-  v2 = objc_getAssociatedObject(a1, &pkui_linearColor_PKUILinearColorKey);
+  v2 = objc_getAssociatedObject(self, &pkui_linearColor_PKUILinearColorKey);
   if (!v2)
   {
-    [a1 CGColor];
+    [self CGColor];
     CopyByMatchingLinearSRGB = PKColorCreateCopyByMatchingLinearSRGB();
     if (CopyByMatchingLinearSRGB)
     {
@@ -83,10 +83,10 @@
 
 - (id)pkui_extendedLinearColor
 {
-  v2 = objc_getAssociatedObject(a1, &PKUIExtendedLinearColorKey);
+  v2 = objc_getAssociatedObject(self, &PKUIExtendedLinearColorKey);
   if (!v2)
   {
-    [a1 CGColor];
+    [self CGColor];
     CopyByMatchingExtendedLinearSRGB = PKColorCreateCopyByMatchingExtendedLinearSRGB();
     if (CopyByMatchingExtendedLinearSRGB)
     {
@@ -114,8 +114,8 @@
 {
   v3 = MEMORY[0x1E696AB08];
   v4 = a3;
-  v5 = [v3 whitespaceCharacterSet];
-  v6 = [v4 stringByTrimmingCharactersInSet:v5];
+  whitespaceCharacterSet = [v3 whitespaceCharacterSet];
+  v6 = [v4 stringByTrimmingCharactersInSet:whitespaceCharacterSet];
 
   v7 = [v6 stringByReplacingOccurrencesOfString:@"#" withString:&stru_1F3BD7330];
 

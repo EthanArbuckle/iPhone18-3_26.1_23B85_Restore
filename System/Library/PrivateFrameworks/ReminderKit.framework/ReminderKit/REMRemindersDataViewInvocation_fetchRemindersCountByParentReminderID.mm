@@ -1,72 +1,72 @@
 @interface REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID
-- (BOOL)isEqual:(id)a3;
-- (REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID)initWithCoder:(id)a3;
-- (REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID)initWithParentReminderID:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID)initWithCoder:(id)coder;
+- (REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID)initWithParentReminderID:(id)d;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID
 
-- (REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID)initWithParentReminderID:(id)a3
+- (REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID)initWithParentReminderID:(id)d
 {
-  v5 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID;
   v6 = [(REMStoreInvocationValueStorage *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_parentReminderID, a3);
+    objc_storeStrong(&v6->_parentReminderID, d);
   }
 
   return v7;
 }
 
-- (REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID)initWithCoder:(id)a3
+- (REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"parentReminderID"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"parentReminderID"];
 
   if (v5)
   {
     self = [(REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID *)self initWithParentReminderID:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID *)self parentReminderID];
-  [v4 encodeObject:v5 forKey:@"parentReminderID"];
+  coderCopy = coder;
+  parentReminderID = [(REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID *)self parentReminderID];
+  [coderCopy encodeObject:parentReminderID forKey:@"parentReminderID"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = [(REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID *)self parentReminderID];
-    v6 = [v4 parentReminderID];
-    if (v5 == v6)
+    parentReminderID = [(REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID *)self parentReminderID];
+    parentReminderID2 = [equalCopy parentReminderID];
+    if (parentReminderID == parentReminderID2)
     {
       v9 = 1;
     }
 
     else
     {
-      v7 = [(REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID *)self parentReminderID];
-      v8 = [v4 parentReminderID];
-      v9 = [v7 isEqual:v8];
+      parentReminderID3 = [(REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID *)self parentReminderID];
+      parentReminderID4 = [equalCopy parentReminderID];
+      v9 = [parentReminderID3 isEqual:parentReminderID4];
     }
   }
 
@@ -80,8 +80,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID *)self parentReminderID];
-  v3 = [v2 hash];
+  parentReminderID = [(REMRemindersDataViewInvocation_fetchRemindersCountByParentReminderID *)self parentReminderID];
+  v3 = [parentReminderID hash];
 
   return v3;
 }

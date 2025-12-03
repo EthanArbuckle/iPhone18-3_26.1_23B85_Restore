@@ -1,25 +1,25 @@
 @interface CLPeopleDensityClassifier
-- (BOOL)ingestBTLEAdvertisement:(const void *)a3;
+- (BOOL)ingestBTLEAdvertisement:(const void *)advertisement;
 - (id).cxx_construct;
-- (id)initAndMarkScanningStarted:(id)a3;
-- (id)isUserAloneAt:(double)a3 withHints:(id)a4;
+- (id)initAndMarkScanningStarted:(id)started;
+- (id)isUserAloneAt:(double)at withHints:(id)hints;
 - (void)dealloc;
 - (void)markScanningStopped;
 @end
 
 @implementation CLPeopleDensityClassifier
 
-- (id)initAndMarkScanningStarted:(id)a3
+- (id)initAndMarkScanningStarted:(id)started
 {
   v8.receiver = self;
   v8.super_class = CLPeopleDensityClassifier;
   v4 = [(CLPeopleDensityClassifier *)&v8 init];
   result = 0;
-  if (a3)
+  if (started)
   {
     if (v4)
     {
-      v4->_classifierConfig = [a3 copy];
+      v4->_classifierConfig = [started copy];
       v4->_scanSessionStartTimestamp = +[NSDate date];
       memset(v6, 0, sizeof(v6));
       v7 = 1065353216;
@@ -32,12 +32,12 @@
   return result;
 }
 
-- (BOOL)ingestBTLEAdvertisement:(const void *)a3
+- (BOOL)ingestBTLEAdvertisement:(const void *)advertisement
 {
-  if (!sub_1005D7C24(&self->_advertisementsByAddress.__table_.__bucket_list_.__ptr_, a3))
+  if (!sub_1005D7C24(&self->_advertisementsByAddress.__table_.__bucket_list_.__ptr_, advertisement))
   {
     memset(v7, 0, sizeof(v7));
-    sub_1005D74D4(__p, a3, v7);
+    sub_1005D74D4(__p, advertisement, v7);
     sub_1005D7D20(&self->_advertisementsByAddress.__table_.__bucket_list_.__ptr_, __p);
     v11 = &v10;
     sub_1005D7594(&v11);
@@ -50,17 +50,17 @@
     sub_1005D7594(&v11);
   }
 
-  v5 = sub_1005D7C24(&self->_advertisementsByAddress.__table_.__bucket_list_.__ptr_, a3);
+  v5 = sub_1005D7C24(&self->_advertisementsByAddress.__table_.__bucket_list_.__ptr_, advertisement);
   if (!v5)
   {
     sub_1000432E8("unordered_map::at: key not found");
   }
 
-  sub_1005D7064((v5 + 5), a3);
+  sub_1005D7064((v5 + 5), advertisement);
   return 1;
 }
 
-- (id)isUserAloneAt:(double)a3 withHints:(id)a4
+- (id)isUserAloneAt:(double)at withHints:(id)hints
 {
   scanSessionStopTimestamp = self->_scanSessionStopTimestamp;
   if (!scanSessionStopTimestamp)
@@ -85,7 +85,7 @@
     return 0;
   }
 
-  if ([(NSDate *)scanSessionStopTimestamp compare:self->_scanSessionStartTimestamp, a3]== NSOrderedAscending)
+  if ([(NSDate *)scanSessionStopTimestamp compare:self->_scanSessionStartTimestamp, at]== NSOrderedAscending)
   {
     if (qword_1025D4840 != -1)
     {

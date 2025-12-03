@@ -1,11 +1,11 @@
 @interface PXGTrackingContainerView
 - (CGRect)clippingRect;
-- (PXGTrackingContainerView)initWithFrame:(CGRect)a3;
+- (PXGTrackingContainerView)initWithFrame:(CGRect)frame;
 - (void)_removeFromSuperviewIfFinished;
 - (void)becomeReusable;
 - (void)prepareForReuse;
-- (void)setIsSpriteRemoved:(BOOL)a3;
-- (void)willRemoveSubview:(id)a3;
+- (void)setIsSpriteRemoved:(BOOL)removed;
+- (void)willRemoveSubview:(id)subview;
 @end
 
 @implementation PXGTrackingContainerView
@@ -25,11 +25,11 @@
 
 - (void)_removeFromSuperviewIfFinished
 {
-  v3 = [(PXGTrackingContainerView *)self superview];
-  if (v3 && (v7 = v3, v4 = [(PXGTrackingContainerView *)self isSpriteRemoved], v3 = v7, v4))
+  superview = [(PXGTrackingContainerView *)self superview];
+  if (superview && (v7 = superview, v4 = [(PXGTrackingContainerView *)self isSpriteRemoved], superview = v7, v4))
   {
-    v5 = [(PXGTrackingContainerView *)self subviews];
-    v6 = [v5 count];
+    subviews = [(PXGTrackingContainerView *)self subviews];
+    v6 = [subviews count];
 
     if (!v6)
     {
@@ -43,17 +43,17 @@
   }
 }
 
-- (void)willRemoveSubview:(id)a3
+- (void)willRemoveSubview:(id)subview
 {
   v9.receiver = self;
   v9.super_class = PXGTrackingContainerView;
-  [(PXGTrackingContainerView *)&v9 willRemoveSubview:a3];
-  v4 = [(PXGTrackingContainerView *)self superview];
-  if (v4)
+  [(PXGTrackingContainerView *)&v9 willRemoveSubview:subview];
+  superview = [(PXGTrackingContainerView *)self superview];
+  if (superview)
   {
-    v5 = v4;
-    v6 = [(PXGTrackingContainerView *)self subviews];
-    v7 = [v6 count];
+    v5 = superview;
+    subviews = [(PXGTrackingContainerView *)self subviews];
+    v7 = [subviews count];
 
     if (v7 == 1)
     {
@@ -67,46 +67,46 @@
   }
 }
 
-- (void)setIsSpriteRemoved:(BOOL)a3
+- (void)setIsSpriteRemoved:(BOOL)removed
 {
-  if (self->_isSpriteRemoved != a3)
+  if (self->_isSpriteRemoved != removed)
   {
-    self->_isSpriteRemoved = a3;
+    self->_isSpriteRemoved = removed;
     [(PXGTrackingContainerView *)self _removeFromSuperviewIfFinished];
   }
 }
 
 - (void)prepareForReuse
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGTrackingContainerView.m" lineNumber:31 description:{@"%@ is not reusable", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGTrackingContainerView.m" lineNumber:31 description:{@"%@ is not reusable", v6}];
 
   abort();
 }
 
 - (void)becomeReusable
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXGTrackingContainerView.m" lineNumber:27 description:{@"%@ is not reusable", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXGTrackingContainerView.m" lineNumber:27 description:{@"%@ is not reusable", v6}];
 
   abort();
 }
 
-- (PXGTrackingContainerView)initWithFrame:(CGRect)a3
+- (PXGTrackingContainerView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = PXGTrackingContainerView;
-  v3 = [(PXGTrackingContainerView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXGTrackingContainerView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PXGTrackingContainerView *)v3 setUserInteractionEnabled:0];
-    v5 = [MEMORY[0x277D75348] clearColor];
-    [(PXGTrackingContainerView *)v4 setBackgroundColor:v5];
+    clearColor = [MEMORY[0x277D75348] clearColor];
+    [(PXGTrackingContainerView *)v4 setBackgroundColor:clearColor];
   }
 
   return v4;

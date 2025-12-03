@@ -1,21 +1,21 @@
 @interface _EARDefaultServerEndpointFeatures
-- (_EARDefaultServerEndpointFeatures)initWithWordCount:(int64_t)a3 trailingSilenceDuration:(int64_t)a4 endOfSentenceLikelihood:(float)a5 acousticEndpointerScore:(float)a6 silencePosterior:(float)a7;
+- (_EARDefaultServerEndpointFeatures)initWithWordCount:(int64_t)count trailingSilenceDuration:(int64_t)duration endOfSentenceLikelihood:(float)likelihood acousticEndpointerScore:(float)score silencePosterior:(float)posterior;
 @end
 
 @implementation _EARDefaultServerEndpointFeatures
 
-- (_EARDefaultServerEndpointFeatures)initWithWordCount:(int64_t)a3 trailingSilenceDuration:(int64_t)a4 endOfSentenceLikelihood:(float)a5 acousticEndpointerScore:(float)a6 silencePosterior:(float)a7
+- (_EARDefaultServerEndpointFeatures)initWithWordCount:(int64_t)count trailingSilenceDuration:(int64_t)duration endOfSentenceLikelihood:(float)likelihood acousticEndpointerScore:(float)score silencePosterior:(float)posterior
 {
   v13.receiver = self;
   v13.super_class = _EARDefaultServerEndpointFeatures;
   result = [(_EARDefaultServerEndpointFeatures *)&v13 init];
   if (result)
   {
-    result->_wordCount = a3;
-    result->_trailingSilenceDuration = a4;
-    result->_endOfSentenceLikelihood = a5;
-    result->_acousticEndpointerScore = a6;
-    result->_silencePosterior = a7;
+    result->_wordCount = count;
+    result->_trailingSilenceDuration = duration;
+    result->_endOfSentenceLikelihood = likelihood;
+    result->_acousticEndpointerScore = score;
+    result->_silencePosterior = posterior;
   }
 
   return result;

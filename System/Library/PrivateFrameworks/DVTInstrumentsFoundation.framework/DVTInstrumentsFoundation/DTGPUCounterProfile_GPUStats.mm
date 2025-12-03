@@ -1,25 +1,25 @@
 @interface DTGPUCounterProfile_GPUStats
-+ (id)create:(id)a3;
-- (BOOL)start:(unint64_t)a3;
-- (DTGPUCounterProfile_GPUStats)initWithProfile:(unint64_t)a3 device:(id)a4;
-- (void)sampleCounters:(unint64_t)a3 callback:(id)a4;
++ (id)create:(id)create;
+- (BOOL)start:(unint64_t)start;
+- (DTGPUCounterProfile_GPUStats)initWithProfile:(unint64_t)profile device:(id)device;
+- (void)sampleCounters:(unint64_t)counters callback:(id)callback;
 @end
 
 @implementation DTGPUCounterProfile_GPUStats
 
-+ (id)create:(id)a3
++ (id)create:(id)create
 {
-  v3 = a3;
-  v4 = [[DTGPUCounterProfile_GPUStats alloc] initWithProfile:0 device:v3];
+  createCopy = create;
+  v4 = [[DTGPUCounterProfile_GPUStats alloc] initWithProfile:0 device:createCopy];
 
   return v4;
 }
 
-- (DTGPUCounterProfile_GPUStats)initWithProfile:(unint64_t)a3 device:(id)a4
+- (DTGPUCounterProfile_GPUStats)initWithProfile:(unint64_t)profile device:(id)device
 {
   v7.receiver = self;
   v7.super_class = DTGPUCounterProfile_GPUStats;
-  v4 = [(DTGPUCounterProfile *)&v7 initWithProfile:0 device:a4];
+  v4 = [(DTGPUCounterProfile *)&v7 initWithProfile:0 device:device];
   if (v4)
   {
     v5 = [[DTGPUCounter alloc] initWithName:@"Utilization %" maxValue:100];
@@ -31,24 +31,24 @@
   return v4;
 }
 
-- (BOOL)start:(unint64_t)a3
+- (BOOL)start:(unint64_t)start
 {
   self->_currentIORegSamplingInterval = 0;
   self->_deviceUtilization.coefficient = 0.095162582;
   return 1;
 }
 
-- (void)sampleCounters:(unint64_t)a3 callback:(id)a4
+- (void)sampleCounters:(unint64_t)counters callback:(id)callback
 {
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = self->_currentIORegSamplingInterval + a3;
+  callbackCopy = callback;
+  v7 = self->_currentIORegSamplingInterval + counters;
   self->_currentIORegSamplingInterval = v7;
   if (v7 > 0x98967F)
   {
-    v8 = [(DTGPUCounterProfile *)self device];
-    v9 = [v8 acceleratorPort];
-    CFProperty = IORegistryEntryCreateCFProperty(v9, @"PerformanceStatistics", *MEMORY[0x277CBECE8], 0);
+    device = [(DTGPUCounterProfile *)self device];
+    acceleratorPort = [device acceleratorPort];
+    CFProperty = IORegistryEntryCreateCFProperty(acceleratorPort, @"PerformanceStatistics", *MEMORY[0x277CBECE8], 0);
 
     v11 = [CFProperty objectForKeyedSubscript:@"Device Utilization %"];
     self->_deviceUtilization.currentValue = (self->_deviceUtilization.coefficient * self->_deviceUtilization.currentValue + (1.0 - self->_deviceUtilization.coefficient) * [v11 unsignedLongValue]);
@@ -63,7 +63,7 @@
   sub_247FF83DC(&__p, &v19, &v20, 1uLL);
   v13 = __p;
   v14 = mach_absolute_time();
-  (*(v6 + 2))(v6, v13, 1, v14, 0, 0, 0);
+  (*(callbackCopy + 2))(callbackCopy, v13, 1, v14, 0, 0, 0);
   if (__p)
   {
     v17 = __p;

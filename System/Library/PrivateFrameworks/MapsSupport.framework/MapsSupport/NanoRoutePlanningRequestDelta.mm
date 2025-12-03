@@ -6,7 +6,7 @@
 
 + (id)everythingChanged
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
   [v2 setWaypointsChanged:1];
   [v2 setTransportTypeChanged:1];
 

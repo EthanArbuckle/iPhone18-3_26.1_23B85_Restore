@@ -10,7 +10,7 @@
   v2 = objc_alloc_init(GEOUserPreferences);
   v3 = +[NSFileManager defaultManager];
   v4 = [v3 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
-  v5 = [v4 path];
+  path = [v4 path];
 
   [v2 setAvoidTolls:_CFPreferencesGetAppBooleanValueWithContainer() != 0];
   [v2 setAvoidHighways:_CFPreferencesGetAppBooleanValueWithContainer() != 0];
@@ -22,7 +22,7 @@
 {
   v2 = +[NSFileManager defaultManager];
   v3 = [v2 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
-  v4 = [v3 path];
+  path = [v3 path];
   v5 = _CFPreferencesCopyAppValueWithContainer();
 
   v6 = [v5 integerValue] & 0xF;

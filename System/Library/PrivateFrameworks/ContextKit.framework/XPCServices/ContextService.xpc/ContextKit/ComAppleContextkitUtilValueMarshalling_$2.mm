@@ -1,13 +1,13 @@
 @interface ComAppleContextkitUtilValueMarshalling_$2
-- (id)readValueWithOrgApacheLuceneStoreIndexInput:(id)a3;
-- (void)writeValueWithId:(id)a3 withOrgApacheLuceneStoreIndexOutput:(id)a4;
+- (id)readValueWithOrgApacheLuceneStoreIndexInput:(id)input;
+- (void)writeValueWithId:(id)id withOrgApacheLuceneStoreIndexOutput:(id)output;
 @end
 
 @implementation ComAppleContextkitUtilValueMarshalling_$2
 
-- (void)writeValueWithId:(id)a3 withOrgApacheLuceneStoreIndexOutput:(id)a4
+- (void)writeValueWithId:(id)id withOrgApacheLuceneStoreIndexOutput:(id)output
 {
-  if (!a4 || (objc_opt_class(), !a3))
+  if (!output || (objc_opt_class(), !id))
   {
     JreThrowNullPointerException();
   }
@@ -17,21 +17,21 @@
     JreThrowClassCastException();
   }
 
-  v6 = [a3 intValue];
+  intValue = [id intValue];
 
-  [a4 writeVIntWithInt:v6];
+  [output writeVIntWithInt:intValue];
 }
 
-- (id)readValueWithOrgApacheLuceneStoreIndexInput:(id)a3
+- (id)readValueWithOrgApacheLuceneStoreIndexInput:(id)input
 {
-  if (!a3)
+  if (!input)
   {
     JreThrowNullPointerException();
   }
 
-  v3 = [a3 readVInt];
+  readVInt = [input readVInt];
 
-  return JavaLangInteger_valueOfWithInt_(v3);
+  return JavaLangInteger_valueOfWithInt_(readVInt);
 }
 
 @end

@@ -1,43 +1,43 @@
 @interface SKANEnvironmentHelper
-+ (BOOL)shouldUseDevelopmentSettingsForEnvironment:(id)a3;
-+ (id)environmentForParams:(id)a3;
-+ (id)pingbackDelayOverrideForEnvironment:(id)a3;
-+ (id)shouldUseProxyOverrideForEnvironment:(id)a3;
-+ (id)windowDurationOverrideForEnvironment:(id)a3;
++ (BOOL)shouldUseDevelopmentSettingsForEnvironment:(id)environment;
++ (id)environmentForParams:(id)params;
++ (id)pingbackDelayOverrideForEnvironment:(id)environment;
++ (id)shouldUseProxyOverrideForEnvironment:(id)environment;
++ (id)windowDurationOverrideForEnvironment:(id)environment;
 - (_TtC9appstored21SKANEnvironmentHelper)init;
 @end
 
 @implementation SKANEnvironmentHelper
 
-+ (id)environmentForParams:(id)a3
++ (id)environmentForParams:(id)params
 {
-  v3 = a3;
-  v4 = sub_100162408(v3);
+  paramsCopy = params;
+  v4 = sub_100162408(paramsCopy);
 
   return v4;
 }
 
-+ (BOOL)shouldUseDevelopmentSettingsForEnvironment:(id)a3
++ (BOOL)shouldUseDevelopmentSettingsForEnvironment:(id)environment
 {
-  v3 = a3;
-  v4 = a3;
-  LOBYTE(v3) = sub_10016268C(v3);
+  environmentCopy = environment;
+  environmentCopy2 = environment;
+  LOBYTE(environmentCopy) = sub_10016268C(environmentCopy);
 
-  return v3 & 1;
+  return environmentCopy & 1;
 }
 
-+ (id)pingbackDelayOverrideForEnvironment:(id)a3
++ (id)pingbackDelayOverrideForEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = sub_1001628D8(a3, sub_1003D5E54);
+  environmentCopy = environment;
+  v5 = sub_1001628D8(environment, sub_1003D5E54);
 
   return v5;
 }
 
-+ (id)windowDurationOverrideForEnvironment:(id)a3
++ (id)windowDurationOverrideForEnvironment:(id)environment
 {
-  v4 = a3;
-  sub_100162794(a3);
+  environmentCopy = environment;
+  sub_100162794(environment);
   v6 = v5;
 
   if (v6)
@@ -53,10 +53,10 @@
   return v7;
 }
 
-+ (id)shouldUseProxyOverrideForEnvironment:(id)a3
++ (id)shouldUseProxyOverrideForEnvironment:(id)environment
 {
-  v4 = a3;
-  v5 = sub_1001628D8(a3, sub_1003D5ECC);
+  environmentCopy = environment;
+  v5 = sub_1001628D8(environment, sub_1003D5ECC);
 
   return v5;
 }

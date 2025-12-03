@@ -9,40 +9,40 @@
   v39.receiver = self;
   v39.super_class = FMTitleViewCenteringNavigationBar;
   [(FMTitleViewCenteringNavigationBar *)&v39 layoutSubviews];
-  v3 = [(FMTitleViewCenteringNavigationBar *)self topItem];
-  v4 = [v3 titleView];
+  topItem = [(FMTitleViewCenteringNavigationBar *)self topItem];
+  titleView = [topItem titleView];
 
-  if (v4)
+  if (titleView)
   {
-    v5 = [(FMTitleViewCenteringNavigationBar *)self currentLeftView];
+    currentLeftView = [(FMTitleViewCenteringNavigationBar *)self currentLeftView];
 
     v6 = 0.0;
     v7 = 0.0;
-    if (v5)
+    if (currentLeftView)
     {
-      v8 = [(FMTitleViewCenteringNavigationBar *)self currentLeftView];
-      [v8 frame];
+      currentLeftView2 = [(FMTitleViewCenteringNavigationBar *)self currentLeftView];
+      [currentLeftView2 frame];
       v10 = v9;
       v12 = v11;
 
       v7 = v10 + v12;
     }
 
-    v13 = [(FMTitleViewCenteringNavigationBar *)self currentRightView];
+    currentRightView = [(FMTitleViewCenteringNavigationBar *)self currentRightView];
 
-    if (v13)
+    if (currentRightView)
     {
-      v14 = [(FMTitleViewCenteringNavigationBar *)self currentRightView];
-      [v14 frame];
+      currentRightView2 = [(FMTitleViewCenteringNavigationBar *)self currentRightView];
+      [currentRightView2 frame];
       v16 = v15;
 
       [(FMTitleViewCenteringNavigationBar *)self frame];
       v6 = v17 - v16;
     }
 
-    v18 = [(FMTitleViewCenteringNavigationBar *)self topItem];
-    v19 = [v18 titleView];
-    [v19 frame];
+    topItem2 = [(FMTitleViewCenteringNavigationBar *)self topItem];
+    titleView2 = [topItem2 titleView];
+    [titleView2 frame];
     v21 = v20;
     v23 = v22;
     v25 = v24;
@@ -74,9 +74,9 @@
     v41.size.height = height;
     if (!CGRectEqualToRect(v40, v41))
     {
-      v37 = [(FMTitleViewCenteringNavigationBar *)self topItem];
-      v38 = [v37 titleView];
-      [v38 setFrame:{x, y, width, height}];
+      topItem3 = [(FMTitleViewCenteringNavigationBar *)self topItem];
+      titleView3 = [topItem3 titleView];
+      [titleView3 setFrame:{x, y, width, height}];
     }
   }
 }

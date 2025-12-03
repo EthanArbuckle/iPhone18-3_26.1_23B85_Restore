@@ -1,6 +1,6 @@
 @interface VSSpinnerTitleView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (VSSpinnerTitleView)initWithTitle:(id)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (VSSpinnerTitleView)initWithTitle:(id)title;
 - (void)dealloc;
 - (void)didMoveToWindow;
 - (void)layoutSubviews;
@@ -8,9 +8,9 @@
 
 @implementation VSSpinnerTitleView
 
-- (VSSpinnerTitleView)initWithTitle:(id)a3
+- (VSSpinnerTitleView)initWithTitle:(id)title
 {
-  v4 = a3;
+  titleCopy = title;
   v13.receiver = self;
   v13.super_class = VSSpinnerTitleView;
   v5 = [(VSSpinnerTitleView *)&v13 initWithFrame:0.0, 0.0, 0.0, 22.0];
@@ -21,7 +21,7 @@
     titleView = v5->_titleView;
     v5->_titleView = v7;
 
-    [(UILabel *)v5->_titleView setText:v4];
+    [(UILabel *)v5->_titleView setText:titleCopy];
     v9 = [MEMORY[0x277D74300] boldSystemFontOfSize:18.0];
     [(UILabel *)v5->_titleView setFont:v9];
 
@@ -44,9 +44,9 @@
   [(VSSpinnerTitleView *)&v3 dealloc];
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(UILabel *)self->_titleView sizeToFit:a3.width];
+  [(UILabel *)self->_titleView sizeToFit:fits.width];
   [(UIActivityIndicatorView *)self->_spinner sizeToFit];
   [(UILabel *)self->_titleView frame];
   v5 = v4;
@@ -89,10 +89,10 @@
 
 - (void)didMoveToWindow
 {
-  v3 = [(VSSpinnerTitleView *)self window];
+  window = [(VSSpinnerTitleView *)self window];
 
   spinner = self->_spinner;
-  if (v3)
+  if (window)
   {
 
     [(UIActivityIndicatorView *)spinner startAnimating];

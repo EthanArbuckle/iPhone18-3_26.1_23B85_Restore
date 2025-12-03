@@ -1,13 +1,13 @@
 @interface IMCrossServiceAssociationMessagePipelineParameter
-- (IMCrossServiceAssociationMessagePipelineParameter)initWithDefusedMessage:(id)a3 idsTrustedData:(id)a4;
+- (IMCrossServiceAssociationMessagePipelineParameter)initWithDefusedMessage:(id)message idsTrustedData:(id)data;
 @end
 
 @implementation IMCrossServiceAssociationMessagePipelineParameter
 
-- (IMCrossServiceAssociationMessagePipelineParameter)initWithDefusedMessage:(id)a3 idsTrustedData:(id)a4
+- (IMCrossServiceAssociationMessagePipelineParameter)initWithDefusedMessage:(id)message idsTrustedData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  messageCopy = message;
+  dataCopy = data;
   v35.receiver = self;
   v35.super_class = IMCrossServiceAssociationMessagePipelineParameter;
   v8 = [(IMCrossServiceAssociationMessagePipelineParameter *)&v35 init];
@@ -17,19 +17,19 @@
     replicationSourceServiceName = v8->_replicationSourceServiceName;
     v8->_replicationSourceServiceName = 0;
 
-    v11 = [v7 toIdentifier];
+    toIdentifier = [dataCopy toIdentifier];
     toIdentifier = v9->_toIdentifier;
-    v9->_toIdentifier = v11;
+    v9->_toIdentifier = toIdentifier;
 
-    v13 = [v7 fromIdentifier];
+    fromIdentifier = [dataCopy fromIdentifier];
     fromIdentifier = v9->_fromIdentifier;
-    v9->_fromIdentifier = v13;
+    v9->_fromIdentifier = fromIdentifier;
 
-    v9->_isFromMe = [v7 isFromMe];
-    v15 = [(IMCrossServiceAssociationMessagePipelineParameter *)v9 fromIdentifier];
-    v16 = [v15 _stripFZIDPrefix];
+    v9->_isFromMe = [dataCopy isFromMe];
+    fromIdentifier2 = [(IMCrossServiceAssociationMessagePipelineParameter *)v9 fromIdentifier];
+    _stripFZIDPrefix = [fromIdentifier2 _stripFZIDPrefix];
     fromDisplayID = v9->_fromDisplayID;
-    v9->_fromDisplayID = v16;
+    v9->_fromDisplayID = _stripFZIDPrefix;
 
     groupID = v9->_groupID;
     v9->_groupID = 0;
@@ -41,28 +41,28 @@
     v9->_participantIdentifiers = 0;
 
     v9->_crossServiceDeduplicationMechanism = 1;
-    v21 = [v6 replacementGUID];
-    v22 = [v21 UUIDString];
+    replacementGUID = [messageCopy replacementGUID];
+    uUIDString = [replacementGUID UUIDString];
     replacementGUID = v9->_replacementGUID;
-    v9->_replacementGUID = v22;
+    v9->_replacementGUID = uUIDString;
 
-    v24 = [v6 metadata];
-    v25 = [v24 messageGUID];
-    v26 = [v25 UUIDString];
+    metadata = [messageCopy metadata];
+    messageGUID = [metadata messageGUID];
+    uUIDString2 = [messageGUID UUIDString];
     GUID = v9->_GUID;
-    v9->_GUID = v26;
+    v9->_GUID = uUIDString2;
 
-    v28 = [v6 metadata];
-    v29 = [v28 storageContext];
-    v9->_isFromStorage = [v29 isFromStorage];
+    metadata2 = [messageCopy metadata];
+    storageContext = [metadata2 storageContext];
+    v9->_isFromStorage = [storageContext isFromStorage];
 
-    v30 = [v6 metadata];
-    v31 = [v30 storageContext];
-    v9->_isLastFromStorage = [v31 isLastFromStorage];
+    metadata3 = [messageCopy metadata];
+    storageContext2 = [metadata3 storageContext];
+    v9->_isLastFromStorage = [storageContext2 isLastFromStorage];
 
-    v32 = [v7 batchContext];
+    batchContext = [dataCopy batchContext];
     batchContext = v9->_batchContext;
-    v9->_batchContext = v32;
+    v9->_batchContext = batchContext;
   }
 
   return v9;

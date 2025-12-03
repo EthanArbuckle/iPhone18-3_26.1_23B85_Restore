@@ -1,6 +1,6 @@
 @interface MTChannel
-+ (id)createOrFindChannelFromFeedChannelItem:(id)a3 personalizedRequest:(BOOL)a4 context:(id)a5;
-+ (id)predicateForChannelWithStoreId:(int64_t)a3;
++ (id)createOrFindChannelFromFeedChannelItem:(id)item personalizedRequest:(BOOL)request context:(id)context;
++ (id)predicateForChannelWithStoreId:(int64_t)id;
 + (id)predicateForFollowedChannel;
 + (id)predicateForLibraryChannel;
 + (id)sortDescriptorsForLibraryChannelsPage;
@@ -61,75 +61,75 @@
   }
 }
 
-+ (id)createOrFindChannelFromFeedChannelItem:(id)a3 personalizedRequest:(BOOL)a4 context:(id)a5
++ (id)createOrFindChannelFromFeedChannelItem:(id)item personalizedRequest:(BOOL)request context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = a5;
-  v9 = [v7 storeId];
-  v10 = [v9 longLongValue];
+  requestCopy = request;
+  itemCopy = item;
+  contextCopy = context;
+  storeId = [itemCopy storeId];
+  longLongValue = [storeId longLongValue];
 
-  v11 = [v8 channelForStoreId:v10];
+  v11 = [contextCopy channelForStoreId:longLongValue];
   if (!v11)
   {
-    v11 = [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:@"MTChannel" inManagedObjectContext:v8];
-    [v11 setStoreId:v10];
+    v11 = [MEMORY[0x1E695D5B8] insertNewObjectForEntityForName:@"MTChannel" inManagedObjectContext:contextCopy];
+    [v11 setStoreId:longLongValue];
   }
 
-  v12 = [v7 name];
-  [v11 setName:v12];
+  name = [itemCopy name];
+  [v11 setName:name];
 
-  v13 = [v7 displayType];
-  [v11 setDisplayType:v13];
+  displayType = [itemCopy displayType];
+  [v11 setDisplayType:displayType];
 
-  v14 = [v7 artworkURL];
-  [v11 setArtworkURL:v14];
+  artworkURL = [itemCopy artworkURL];
+  [v11 setArtworkURL:artworkURL];
 
-  v15 = [v7 logoImageURL];
-  [v11 setLogoImageURL:v15];
+  logoImageURL = [itemCopy logoImageURL];
+  [v11 setLogoImageURL:logoImageURL];
 
-  [v7 logoImageWidth];
+  [itemCopy logoImageWidth];
   [v11 setLogoImageWidth:?];
-  [v7 logoImageHeight];
+  [itemCopy logoImageHeight];
   [v11 setLogoImageHeight:?];
-  v16 = [v7 backgroundColor];
-  [v11 setBackgroundColor:v16];
+  backgroundColor = [itemCopy backgroundColor];
+  [v11 setBackgroundColor:backgroundColor];
 
-  v17 = [v7 uberBackgroundJoeColor];
-  [v11 setUberBackgroundJoeColor:v17];
+  uberBackgroundJoeColor = [itemCopy uberBackgroundJoeColor];
+  [v11 setUberBackgroundJoeColor:uberBackgroundJoeColor];
 
-  v18 = [v7 uberBackgroundImageURL];
-  [v11 setUberBackgroundImageURL:v18];
+  uberBackgroundImageURL = [itemCopy uberBackgroundImageURL];
+  [v11 setUberBackgroundImageURL:uberBackgroundImageURL];
 
-  v19 = [v7 url];
+  v19 = [itemCopy url];
   [v11 setUrl:v19];
 
-  [v11 setShowCount:{objc_msgSend(v7, "showCount")}];
-  if (v6)
+  [v11 setShowCount:{objc_msgSend(itemCopy, "showCount")}];
+  if (requestCopy)
   {
-    [v11 setAvailableShowCount:{objc_msgSend(v7, "availableShowCount")}];
+    [v11 setAvailableShowCount:{objc_msgSend(itemCopy, "availableShowCount")}];
   }
 
-  v20 = [v7 subscriptionName];
-  v21 = v20;
-  if (v20 && [v20 length])
+  subscriptionName = [itemCopy subscriptionName];
+  v21 = subscriptionName;
+  if (subscriptionName && [subscriptionName length])
   {
     [v11 setSubscriptionName:v21];
   }
 
   else if (([v11 subscriptionActive] & 1) == 0)
   {
-    v22 = [v7 fallbackSubscriptionName];
-    [v11 setSubscriptionName:v22];
+    fallbackSubscriptionName = [itemCopy fallbackSubscriptionName];
+    [v11 setSubscriptionName:fallbackSubscriptionName];
   }
 
   return v11;
 }
 
-+ (id)predicateForChannelWithStoreId:(int64_t)a3
++ (id)predicateForChannelWithStoreId:(int64_t)id
 {
   v3 = MEMORY[0x1E696AE18];
-  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:a3];
+  v4 = [MEMORY[0x1E696AD98] numberWithLongLong:id];
   v5 = [v3 predicateWithFormat:@"%K == %@", @"storeId", v4];
 
   return v5;

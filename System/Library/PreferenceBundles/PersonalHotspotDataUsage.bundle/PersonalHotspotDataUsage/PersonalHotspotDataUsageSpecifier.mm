@@ -1,29 +1,29 @@
 @interface PersonalHotspotDataUsageSpecifier
-- (PersonalHotspotDataUsageSpecifier)initWithDeviceID:(id)a3 info:(id)a4 unknownDevicesDataUsage:(unint64_t)a5;
-- (id)_iconURLForDevice:(id)a3;
+- (PersonalHotspotDataUsageSpecifier)initWithDeviceID:(id)d info:(id)info unknownDevicesDataUsage:(unint64_t)usage;
+- (id)_iconURLForDevice:(id)device;
 - (id)dataUsageString;
-- (id)enclosureColorFromUTTypeIdentifier:(id)a3;
-- (id)productClassFromModel:(id)a3 utIdentifier:(id)a4;
+- (id)enclosureColorFromUTTypeIdentifier:(id)identifier;
+- (id)productClassFromModel:(id)model utIdentifier:(id)identifier;
 - (unint64_t)dataUsage;
 @end
 
 @implementation PersonalHotspotDataUsageSpecifier
 
-- (PersonalHotspotDataUsageSpecifier)initWithDeviceID:(id)a3 info:(id)a4 unknownDevicesDataUsage:(unint64_t)a5
+- (PersonalHotspotDataUsageSpecifier)initWithDeviceID:(id)d info:(id)info unknownDevicesDataUsage:(unint64_t)usage
 {
-  v9 = a3;
-  v10 = a4;
+  dCopy = d;
+  infoCopy = info;
   v11 = objc_alloc_init(NSDateFormatter);
   [v11 setDateFormat:@"yyyy-MM-dd HH:mm:ss Z"];
-  v12 = [v10 objectForKeyedSubscript:kWiFiSettingDataUsageInterfacePeerDisplayNameKey];
+  v12 = [infoCopy objectForKeyedSubscript:kWiFiSettingDataUsageInterfacePeerDisplayNameKey];
   if (!v12)
   {
-    v13 = [v10 objectForKeyedSubscript:kWiFiSettingDataUsageMACAddressessKey];
-    v14 = [v13 lastObject];
-    v12 = zeroPaddedMACAddress(v14);
+    v13 = [infoCopy objectForKeyedSubscript:kWiFiSettingDataUsageMACAddressessKey];
+    lastObject = [v13 lastObject];
+    v12 = zeroPaddedMACAddress(lastObject);
   }
 
-  v15 = [v10 objectForKeyedSubscript:kWiFiDataUsageInterfacePeerIDKey];
+  v15 = [infoCopy objectForKeyedSubscript:kWiFiDataUsageInterfacePeerIDKey];
   v16 = [v15 isEqualToString:@"Others"];
 
   v34.receiver = self;
@@ -32,8 +32,8 @@
   v18 = v17;
   if (v17)
   {
-    objc_storeStrong(&v17->_deviceID, a3);
-    v18->_unknownDevicesDataUsage = a5;
+    objc_storeStrong(&v17->_deviceID, d);
+    v18->_unknownDevicesDataUsage = usage;
     [(PersonalHotspotDataUsageSpecifier *)v18 setTarget:v18];
     v33 = 0;
     v19 = [NSRegularExpression regularExpressionWithPattern:@"\\d+ options:\\d+$" error:0, &v33];
@@ -43,14 +43,14 @@
     }
 
     [(PersonalHotspotDataUsageSpecifier *)v18 setProperty:&__kCFBooleanTrue forKey:PSPrioritizeValueTextDisplayKey];
-    v20 = [v10 objectForKeyedSubscript:kWiFiSettingDataUsageProductMarketingNameKey];
-    v21 = [v10 objectForKeyedSubscript:kWiFiSettingDataUsageDateKey];
+    v20 = [infoCopy objectForKeyedSubscript:kWiFiSettingDataUsageProductMarketingNameKey];
+    v21 = [infoCopy objectForKeyedSubscript:kWiFiSettingDataUsageDateKey];
     if (v21)
     {
       v32 = v11;
       v22 = v16;
       v23 = v19;
-      v24 = v9;
+      v24 = dCopy;
       if (v20)
       {
         v25 = [NSString stringWithFormat:@"%@・", v20];
@@ -64,7 +64,7 @@
       v26 = [NSString stringWithFormat:@"%@%@", v25, v21];
 
       v20 = v26;
-      v9 = v24;
+      dCopy = v24;
       v19 = v23;
       v16 = v22;
       v11 = v32;
@@ -77,12 +77,12 @@
 
     [(PersonalHotspotDataUsageSpecifier *)v18 setProperty:v20 forKey:PSTableCellSubtitleTextKey];
     [(PersonalHotspotDataUsageSpecifier *)v18 setProperty:&__kCFBooleanTrue forKey:PSEnabledKey];
-    v28 = [(PersonalHotspotDataUsageSpecifier *)v18 dataUsageString];
-    [(PersonalHotspotDataUsageSpecifier *)v18 setProperty:v28 forKey:PSValueKey];
+    dataUsageString = [(PersonalHotspotDataUsageSpecifier *)v18 dataUsageString];
+    [(PersonalHotspotDataUsageSpecifier *)v18 setProperty:dataUsageString forKey:PSValueKey];
 
     if ((v16 & 1) == 0)
     {
-      v29 = [(PersonalHotspotDataUsageSpecifier *)v18 _iconURLForDevice:v10];
+      v29 = [(PersonalHotspotDataUsageSpecifier *)v18 _iconURLForDevice:infoCopy];
       [(PersonalHotspotDataUsageSpecifier *)v18 setProperty:v29 forKey:PSLazyIconURL];
 
       [(PersonalHotspotDataUsageSpecifier *)v18 setProperty:&__kCFBooleanTrue forKey:PSLazyIconLoading];
@@ -94,23 +94,23 @@
   return v18;
 }
 
-- (id)_iconURLForDevice:(id)a3
+- (id)_iconURLForDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v5 = [NSURL URLWithString:@"https://statici.icloud.com/fmipmobile/deviceImages-9.0"];
-  v6 = [v4 objectForKeyedSubscript:kWiFiSettingDataUsageProductTypeKey];
+  v6 = [deviceCopy objectForKeyedSubscript:kWiFiSettingDataUsageProductTypeKey];
   if (v6)
   {
     v7 = [UTType _typeWithDeviceModelCode:v6];
-    v8 = [v7 identifier];
+    identifier = [v7 identifier];
   }
 
   else
   {
-    v8 = 0;
+    identifier = 0;
   }
 
-  v9 = [(PersonalHotspotDataUsageSpecifier *)self productClassFromModel:v6 utIdentifier:v8];
+  v9 = [(PersonalHotspotDataUsageSpecifier *)self productClassFromModel:v6 utIdentifier:identifier];
   v10 = v9;
   if (v6)
   {
@@ -128,10 +128,10 @@
     goto LABEL_35;
   }
 
-  v13 = [v4 objectForKeyedSubscript:kWiFiSettingDataUsageProductColorKey];
-  if (v8)
+  v13 = [deviceCopy objectForKeyedSubscript:kWiFiSettingDataUsageProductColorKey];
+  if (identifier)
   {
-    v14 = [(PersonalHotspotDataUsageSpecifier *)self enclosureColorFromUTTypeIdentifier:v8];
+    v14 = [(PersonalHotspotDataUsageSpecifier *)self enclosureColorFromUTTypeIdentifier:identifier];
     v15 = v14;
     if (v14)
     {
@@ -155,7 +155,7 @@ LABEL_16:
   }
 
 LABEL_17:
-  v17 = [v4 objectForKeyedSubscript:kWiFiDataUsageRapportPeerIDKey];
+  v17 = [deviceCopy objectForKeyedSubscript:kWiFiDataUsageRapportPeerIDKey];
   if ([v17 isEqualToString:@"Others"])
   {
     v12 = 0;
@@ -215,7 +215,7 @@ LABEL_17:
     v27 = logger();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEBUG))
     {
-      sub_5954(v21, v4, v27);
+      sub_5954(v21, deviceCopy, v27);
     }
 
     v5 = v21;
@@ -227,27 +227,27 @@ LABEL_35:
   return v12;
 }
 
-- (id)enclosureColorFromUTTypeIdentifier:(id)a3
+- (id)enclosureColorFromUTTypeIdentifier:(id)identifier
 {
-  v3 = a3;
-  if ([v3 containsString:@"apple-tv"])
+  identifierCopy = identifier;
+  if ([identifierCopy containsString:@"apple-tv"])
   {
     goto LABEL_2;
   }
 
-  if ([v3 containsString:@"space-gray"])
+  if ([identifierCopy containsString:@"space-gray"])
   {
     v4 = @"spacegray";
     goto LABEL_7;
   }
 
-  if ([v3 containsString:@"space-black"])
+  if ([identifierCopy containsString:@"space-black"])
   {
     v4 = @"spaceblack";
     goto LABEL_7;
   }
 
-  v6 = [v3 rangeOfString:@"-" options:4];
+  v6 = [identifierCopy rangeOfString:@"-" options:4];
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
 LABEL_2:
@@ -255,7 +255,7 @@ LABEL_2:
     goto LABEL_7;
   }
 
-  v7 = [v3 substringFromIndex:v6];
+  v7 = [identifierCopy substringFromIndex:v6];
   v4 = [v7 stringByReplacingOccurrencesOfString:@"-" withString:&stru_C668];
 
   if ([(__CFString *)v4 integerValue]!= 0x7FFFFFFFFFFFFFFFLL)
@@ -269,11 +269,11 @@ LABEL_7:
   return v4;
 }
 
-- (id)productClassFromModel:(id)a3 utIdentifier:(id)a4
+- (id)productClassFromModel:(id)model utIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (![v6 length] || (-[PersonalHotspotDataUsageSpecifier regex](self, "regex"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "rangeOfFirstMatchInString:options:range:", v6, 0, 0, objc_msgSend(v6, "length")), v8, v9 == 0x7FFFFFFFFFFFFFFFLL))
+  modelCopy = model;
+  identifierCopy = identifier;
+  if (![modelCopy length] || (-[PersonalHotspotDataUsageSpecifier regex](self, "regex"), v8 = objc_claimAutoreleasedReturnValue(), v9 = objc_msgSend(v8, "rangeOfFirstMatchInString:options:range:", modelCopy, 0, 0, objc_msgSend(modelCopy, "length")), v8, v9 == 0x7FFFFFFFFFFFFFFFLL))
   {
     v10 = 0;
 LABEL_4:
@@ -282,7 +282,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  v10 = [v6 substringToIndex:v9];
+  v10 = [modelCopy substringToIndex:v9];
   if (([(__CFString *)v10 isEqualToString:@"AudioAccessory"]& 1) != 0)
   {
     v11 = @"HomePod";
@@ -293,48 +293,48 @@ LABEL_4:
     v11 = @"iMac";
     if (([(__CFString *)v10 hasPrefix:@"iMac"]& 1) == 0)
     {
-      if ([&off_CF58 containsObject:v6])
+      if ([&off_CF58 containsObject:modelCopy])
       {
         v11 = @"Vision";
       }
 
       else
       {
-        if (!v7)
+        if (!identifierCopy)
         {
           goto LABEL_4;
         }
 
-        if ([v7 containsString:@"macbookpro"])
+        if ([identifierCopy containsString:@"macbookpro"])
         {
           v11 = @"MacBookPro";
         }
 
-        else if ([v7 containsString:@"macbookair"])
+        else if ([identifierCopy containsString:@"macbookair"])
         {
           v11 = @"MacBookAir";
         }
 
-        else if ([v7 containsString:@"macbook"])
+        else if ([identifierCopy containsString:@"macbook"])
         {
           v11 = @"MacBook";
         }
 
-        else if (([v7 containsString:@"imac"] & 1) == 0)
+        else if (([identifierCopy containsString:@"imac"] & 1) == 0)
         {
-          if ([v7 containsString:@"macmini"])
+          if ([identifierCopy containsString:@"macmini"])
           {
             v11 = @"Macmini";
           }
 
-          else if ([v7 containsString:@"macpro"])
+          else if ([identifierCopy containsString:@"macpro"])
           {
             v11 = @"MacPro";
           }
 
           else
           {
-            if (([v7 containsString:@"macstudio"] & 1) == 0)
+            if (([identifierCopy containsString:@"macstudio"] & 1) == 0)
             {
               goto LABEL_4;
             }
@@ -355,17 +355,17 @@ LABEL_5:
 {
   v3 = +[PersonalHotspotDataUsageCache sharedInstance];
   v4 = [v3 usageForHotspotClientID:self->_deviceID inPeriod:0];
-  v5 = [(PersonalHotspotDataUsageSpecifier *)self unknownDevicesDataUsage];
+  unknownDevicesDataUsage = [(PersonalHotspotDataUsageSpecifier *)self unknownDevicesDataUsage];
 
-  return v4 + v5;
+  return v4 + unknownDevicesDataUsage;
 }
 
 - (id)dataUsageString
 {
-  v2 = [(PersonalHotspotDataUsageSpecifier *)self dataUsage];
-  if (v2)
+  dataUsage = [(PersonalHotspotDataUsageSpecifier *)self dataUsage];
+  if (dataUsage)
   {
-    v3 = usageSizeString(v2);
+    v3 = usageSizeString(dataUsage);
   }
 
   else

@@ -1,46 +1,46 @@
 @interface CRLPKStrokeGenerator
-+ (_CRLPKStrokePoint)outputPointFromInputPoint:(SEL)a3;
-+ (vector<CRLPKInputPoint,)inputPointsFromPath:(id)a2;
++ (_CRLPKStrokePoint)outputPointFromInputPoint:(SEL)point;
++ (vector<CRLPKInputPoint,)inputPointsFromPath:(id)path;
 + (void)initialize;
 - (BOOL)lastPointIsMasked;
-- (BOOL)shouldSnapPointToRuler:(CGPoint)a3;
+- (BOOL)shouldSnapPointToRuler:(CGPoint)ruler;
 - (CGAffineTransform)rulerTransform;
-- (CGPoint)getRulerSnapLineOriginAndTangent:(CGPoint *)a3 andNormal:(CGPoint *)a4;
+- (CGPoint)getRulerSnapLineOriginAndTangent:(CGPoint *)tangent andNormal:(CGPoint *)normal;
 - (CGPoint)lastPoint;
-- (CGPoint)snapPointToRuler:(CGPoint)a3;
+- (CGPoint)snapPointToRuler:(CGPoint)ruler;
 - (CRLPKStrokeGenerator)init;
-- (_CRLPKStrokePoint)outputCurrentStrokePoint:(SEL)a3;
-- (_CRLPKStrokePoint)outputPoint:(SEL)a3 baseValues:(id *)a4;
-- (double)distanceToRulerCenter:(CGPoint)a3;
+- (_CRLPKStrokePoint)outputCurrentStrokePoint:(SEL)point;
+- (_CRLPKStrokePoint)outputPoint:(SEL)point baseValues:(id *)values;
+- (double)distanceToRulerCenter:(CGPoint)center;
 - (id).cxx_construct;
-- (id)strokeFromPath:(CGPath *)a3 inputScale:(double)a4;
-- (int64_t)fetchFilteredPointsFromIndex:(int64_t)a3 intoVector:(void *)a4;
-- (void)_drawingAddPoint:(id *)a3;
-- (void)addPoint:(id *)a3;
+- (id)strokeFromPath:(CGPath *)path inputScale:(double)scale;
+- (int64_t)fetchFilteredPointsFromIndex:(int64_t)index intoVector:(void *)vector;
+- (void)_drawingAddPoint:(id *)point;
+- (void)addPoint:(id *)point;
 - (void)addPoints:()vector<CRLPKInputPoint;
-- (void)allowSnappingToRuler:(CGAffineTransform *)a3 width:(double)a4;
+- (void)allowSnappingToRuler:(CGAffineTransform *)ruler width:(double)width;
 - (void)dealloc;
-- (void)drawingBeganWithStroke:(id)a3 inputType:(int64_t)a4 inputScale:(double)a5 start:(id)a6;
-- (void)drawingCancelledWithCompletion:(id)a3;
-- (void)drawingEndedWithCompletion:(id)a3;
+- (void)drawingBeganWithStroke:(id)stroke inputType:(int64_t)type inputScale:(double)scale start:(id)start;
+- (void)drawingCancelledWithCompletion:(id)completion;
+- (void)drawingEndedWithCompletion:(id)completion;
 - (void)drawingUpdateAllPoints;
-- (void)drawingUpdatePoint:(id *)a3;
-- (void)getUpdatedRangeFromIndex:(unint64_t *)a3;
+- (void)drawingUpdatePoint:(id *)point;
+- (void)getUpdatedRangeFromIndex:(unint64_t *)index;
 - (void)maskToRuler;
 - (void)removePredictedTouches;
 - (void)reset;
-- (void)setRulerTransform:(CGAffineTransform *)a3;
+- (void)setRulerTransform:(CGAffineTransform *)transform;
 - (void)snapToRuler;
 - (void)updateImmutableCount;
 - (void)updateRulerSnapping;
-- (void)whenFinishedProcessingPointsCallCompletion:(id)a3;
+- (void)whenFinishedProcessingPointsCallCompletion:(id)completion;
 @end
 
 @implementation CRLPKStrokeGenerator
 
 + (void)initialize
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___CRLPKStrokeGenerator;
   objc_msgSendSuper2(&v2, "initialize");
   objc_opt_class();
@@ -172,42 +172,42 @@
   [(CRLPKStrokeGenerator *)&v19 dealloc];
 }
 
-- (void)drawingBeganWithStroke:(id)a3 inputType:(int64_t)a4 inputScale:(double)a5 start:(id)a6
+- (void)drawingBeganWithStroke:(id)stroke inputType:(int64_t)type inputScale:(double)scale start:(id)start
 {
-  v10 = a3;
-  v11 = a6;
+  strokeCopy = stroke;
+  startCopy = start;
   inputQueue = self->_inputQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_100223970;
   block[3] = &unk_10184A3C8;
   block[4] = self;
-  v16 = v10;
-  v19 = a5;
-  v17 = v11;
-  v18 = a4;
-  v13 = v11;
-  v14 = v10;
+  v16 = strokeCopy;
+  scaleCopy = scale;
+  v17 = startCopy;
+  typeCopy = type;
+  v13 = startCopy;
+  v14 = strokeCopy;
   dispatch_async(inputQueue, block);
 }
 
-- (void)allowSnappingToRuler:(CGAffineTransform *)a3 width:(double)a4
+- (void)allowSnappingToRuler:(CGAffineTransform *)ruler width:(double)width
 {
   inputQueue = self->_inputQueue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
-  v5 = *&a3->c;
-  v7 = *&a3->a;
+  v5 = *&ruler->c;
+  v7 = *&ruler->a;
   v6[2] = sub_100223BE0;
   v6[3] = &unk_10184A3F0;
   v6[4] = self;
   v8 = v5;
-  v9 = *&a3->tx;
-  v10 = a4;
+  v9 = *&ruler->tx;
+  widthCopy = width;
   dispatch_async(inputQueue, v6);
 }
 
-- (CGPoint)getRulerSnapLineOriginAndTangent:(CGPoint *)a3 andNormal:(CGPoint *)a4
+- (CGPoint)getRulerSnapLineOriginAndTangent:(CGPoint *)tangent andNormal:(CGPoint *)normal
 {
   v31 = 0u;
   v32 = 0u;
@@ -220,9 +220,9 @@
     v8 = v8 + 1.0;
   }
 
-  v9 = [(CRLPKStrokeGenerator *)self isSnappedToRulerTopSide];
+  isSnappedToRulerTopSide = [(CRLPKStrokeGenerator *)self isSnappedToRulerTopSide];
   v10 = -v8;
-  if (v9)
+  if (isSnappedToRulerTopSide)
   {
     v10 = v8;
   }
@@ -230,12 +230,12 @@
   _Q3 = v30;
   v12 = v32;
   v13 = vmulq_n_f64(v31, v10);
-  if (a3)
+  if (tangent)
   {
-    *a3 = vaddq_f64(v32, vmlaq_f64(v13, vdupq_n_s64(0x4059000000000000uLL), v30));
+    *tangent = vaddq_f64(v32, vmlaq_f64(v13, vdupq_n_s64(0x4059000000000000uLL), v30));
   }
 
-  if (a4)
+  if (normal)
   {
     v29[0] = v30;
     v29[1] = v31;
@@ -248,8 +248,8 @@
     v13.f64[0] = v26;
     v12 = v27;
     _Q3 = v28;
-    a4->x = v16;
-    a4->y = v17;
+    normal->x = v16;
+    normal->y = v17;
   }
 
   _D1 = 0xC059000000000000;
@@ -262,10 +262,10 @@
   return result;
 }
 
-- (double)distanceToRulerCenter:(CGPoint)a3
+- (double)distanceToRulerCenter:(CGPoint)center
 {
-  y = a3.y;
-  x = a3.x;
+  y = center.y;
+  x = center.x;
   [(CRLPKStrokeGenerator *)self rulerTransform];
   *&v16 = *&vaddq_f64(0, vmlaq_n_f64(vmulq_n_f64(0, CGPointZero.y), 0, CGPointZero.x));
   [(CRLPKStrokeGenerator *)self rulerWidth];
@@ -277,12 +277,12 @@
   return sub_10011F328(v7, v9, v12, v13);
 }
 
-- (BOOL)shouldSnapPointToRuler:(CGPoint)a3
+- (BOOL)shouldSnapPointToRuler:(CGPoint)ruler
 {
-  y = a3.y;
-  x = a3.x;
-  v6 = [(CRLPKStrokeGenerator *)self useRuler];
-  if (v6)
+  y = ruler.y;
+  x = ruler.x;
+  useRuler = [(CRLPKStrokeGenerator *)self useRuler];
+  if (useRuler)
   {
     if (self->_currentInputType == 1)
     {
@@ -299,10 +299,10 @@
     [(CRLPKStrokeGenerator *)self rulerTransform];
     v10 = v9 * sub_100139A00(&v13);
     [(CRLPKStrokeGenerator *)self distanceToRulerCenter:x, y];
-    LOBYTE(v6) = fabs(v11) < v10;
+    LOBYTE(useRuler) = fabs(v11) < v10;
   }
 
-  return v6;
+  return useRuler;
 }
 
 - (void)snapToRuler
@@ -335,10 +335,10 @@
   [(CRLPKStroke *)self->_currentStroke _setClipNormal:v8[0], v8[1]];
 }
 
-- (CGPoint)snapPointToRuler:(CGPoint)a3
+- (CGPoint)snapPointToRuler:(CGPoint)ruler
 {
-  y = a3.y;
-  x = a3.x;
+  y = ruler.y;
+  x = ruler.x;
   if ([(CRLPKStrokeGenerator *)self isSnappedToRuler])
   {
     [(CRLPKStrokeGenerator *)self getRulerSnapLineOriginAndTangent:v11 andNormal:0];
@@ -430,7 +430,7 @@
   return result;
 }
 
-- (void)getUpdatedRangeFromIndex:(unint64_t *)a3
+- (void)getUpdatedRangeFromIndex:(unint64_t *)index
 {
   v7 = 0;
   v8 = &v7;
@@ -443,7 +443,7 @@
   block[3] = &unk_10184A418;
   block[4] = self;
   block[5] = &v7;
-  block[6] = a3;
+  block[6] = index;
   dispatch_sync(outputQueue, block);
   v4 = v8[3];
   _Block_object_dispose(&v7, 8);
@@ -460,7 +460,7 @@
   self->_inputHasChanged = 0;
 }
 
-+ (_CRLPKStrokePoint)outputPointFromInputPoint:(SEL)a3
++ (_CRLPKStrokePoint)outputPointFromInputPoint:(SEL)point
 {
   v4 = *&a4->var1;
   retstr->location = a4->var0;
@@ -474,7 +474,7 @@
   return result;
 }
 
-- (_CRLPKStrokePoint)outputCurrentStrokePoint:(SEL)a3
+- (_CRLPKStrokePoint)outputCurrentStrokePoint:(SEL)point
 {
   v5 = *&a4->var5;
   v10[2] = *&a4->var3;
@@ -498,28 +498,28 @@
   return [(CRLPKStrokeGenerator *)self outputPoint:v10 baseValues:v9];
 }
 
-- (_CRLPKStrokePoint)outputPoint:(SEL)a3 baseValues:(id *)a4
+- (_CRLPKStrokePoint)outputPoint:(SEL)point baseValues:(id *)values
 {
   strokeMaxForce = self->_strokeMaxForce;
-  if (strokeMaxForce <= a4->var1)
+  if (strokeMaxForce <= values->var1)
   {
-    strokeMaxForce = a4->var1;
+    strokeMaxForce = values->var1;
   }
 
   self->_strokeMaxForce = strokeMaxForce;
   self->_eraserIndicatorAlpha = 1.0;
-  v6 = *&a4->var5;
-  v9[2] = *&a4->var3;
+  v6 = *&values->var5;
+  v9[2] = *&values->var3;
   v9[3] = v6;
-  v9[4] = *&a4->var7;
-  v10 = *&a4->var9;
-  v7 = *&a4->var1;
-  v9[0] = a4->var0;
+  v9[4] = *&values->var7;
+  v10 = *&values->var9;
+  v7 = *&values->var1;
+  v9[0] = values->var0;
   v9[1] = v7;
   return [CRLPKStrokeGenerator outputPointFromInputPoint:v9, a5];
 }
 
-- (int64_t)fetchFilteredPointsFromIndex:(int64_t)a3 intoVector:(void *)a4
+- (int64_t)fetchFilteredPointsFromIndex:(int64_t)index intoVector:(void *)vector
 {
   v8 = 0;
   v9 = &v8;
@@ -530,8 +530,8 @@
   v7[1] = 3221225472;
   v7[2] = sub_100224AEC;
   v7[3] = &unk_10184A480;
-  v7[6] = a4;
-  v7[7] = a3;
+  v7[6] = vector;
+  v7[7] = index;
   v7[4] = self;
   v7[5] = &v8;
   dispatch_sync(outputQueue, v7);
@@ -540,21 +540,21 @@
   return v5;
 }
 
-- (void)drawingUpdatePoint:(id *)a3
+- (void)drawingUpdatePoint:(id *)point
 {
   outputQueue = self->_outputQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
-  v5 = *&a3->var5;
-  v10 = *&a3->var3;
+  v5 = *&point->var5;
+  v10 = *&point->var3;
   v11 = v5;
-  v12 = *&a3->var7;
-  v6 = *&a3->var1;
-  var0 = a3->var0;
+  v12 = *&point->var7;
+  v6 = *&point->var1;
+  var0 = point->var0;
   v7[2] = sub_100224C8C;
   v7[3] = &unk_10184A4A8;
   v7[4] = self;
-  v13 = *&a3->var9;
+  v13 = *&point->var9;
   v9 = v6;
   dispatch_async(outputQueue, v7);
   [(CRLPKStrokeGenerator *)self drawingUpdateAllPoints];
@@ -645,77 +645,77 @@
   }
 }
 
-- (void)addPoint:(id *)a3
+- (void)addPoint:(id *)point
 {
   inputQueue = self->_inputQueue;
   v6[0] = _NSConcreteStackBlock;
   v6[1] = 3221225472;
-  v4 = *&a3->var5;
-  v9 = *&a3->var3;
+  v4 = *&point->var5;
+  v9 = *&point->var3;
   v10 = v4;
-  v11 = *&a3->var7;
-  v5 = *&a3->var1;
-  var0 = a3->var0;
+  v11 = *&point->var7;
+  v5 = *&point->var1;
+  var0 = point->var0;
   v6[2] = sub_10022545C;
   v6[3] = &unk_10184A4A8;
   v6[4] = self;
-  v12 = *&a3->var9;
+  v12 = *&point->var9;
   v8 = v5;
   dispatch_async(inputQueue, v6);
 }
 
-- (void)_drawingAddPoint:(id *)a3
+- (void)_drawingAddPoint:(id *)point
 {
   self->_inputHasChanged = 1;
-  if (!a3->var6)
+  if (!point->var6)
   {
     [(CRLPKStrokeGenerator *)self removePredictedTouches];
   }
 
-  [(CRLPKStrokeGenerator *)self snapPointToRuler:a3->var0.x, a3->var0.y];
-  a3->var0.x = v5;
-  a3->var0.y = v6;
-  sub_100224CAC(&self->_drawPoints, a3);
+  [(CRLPKStrokeGenerator *)self snapPointToRuler:point->var0.x, point->var0.y];
+  point->var0.x = v5;
+  point->var0.y = v6;
+  sub_100224CAC(&self->_drawPoints, point);
   [(CRLPKStrokeGenerator *)self updateRulerSnapping];
   [(CRLPKStrokeGenerator *)self drawingUpdateAllPoints];
   [(CRLPKStrokeGenerator *)self updateImmutableCount];
-  x = a3->var0.x;
-  y = a3->var0.y;
+  x = point->var0.x;
+  y = point->var0.y;
 
   [(CRLPKStrokeGenerator *)self setLastPoint:x, y];
 }
 
-- (void)drawingEndedWithCompletion:(id)a3
+- (void)drawingEndedWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   inputQueue = self->_inputQueue;
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_1002256B8;
   v10 = &unk_10184A530;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(inputQueue, &v7);
-  [(CRLPKStrokeGenerator *)self setLastPoint:INFINITY, INFINITY, v7, v8, v9, v10, v11];
+  [(CRLPKStrokeGenerator *)self setLastPoint:INFINITY, INFINITY, v7, v8, v9, v10, selfCopy];
 }
 
-- (void)drawingCancelledWithCompletion:(id)a3
+- (void)drawingCancelledWithCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   inputQueue = self->_inputQueue;
   v7 = _NSConcreteStackBlock;
   v8 = 3221225472;
   v9 = sub_100225BDC;
   v10 = &unk_10184A558;
-  v11 = self;
-  v12 = v4;
-  v6 = v4;
+  selfCopy = self;
+  v12 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(inputQueue, &v7);
-  [(CRLPKStrokeGenerator *)self setLastPoint:INFINITY, INFINITY, v7, v8, v9, v10, v11];
+  [(CRLPKStrokeGenerator *)self setLastPoint:INFINITY, INFINITY, v7, v8, v9, v10, selfCopy];
 }
 
-+ (vector<CRLPKInputPoint,)inputPointsFromPath:(id)a2
++ (vector<CRLPKInputPoint,)inputPointsFromPath:(id)path
 {
   v54 = 0;
   v55 = 0;
@@ -925,12 +925,12 @@
   return result;
 }
 
-- (id)strokeFromPath:(CGPath *)a3 inputScale:(double)a4
+- (id)strokeFromPath:(CGPath *)path inputScale:(double)scale
 {
   v7 = objc_opt_class();
   if (v7)
   {
-    [v7 inputPointsFromPath:a3];
+    [v7 inputPointsFromPath:path];
   }
 
   else
@@ -947,7 +947,7 @@
   v21 = sub_100226328;
   v22 = sub_100226338;
   v23 = objc_alloc_init(CRLPKStroke);
-  [(CRLPKStrokeGenerator *)self drawingBeganWithStroke:v19[5] inputType:0 inputScale:0 start:a4];
+  [(CRLPKStrokeGenerator *)self drawingBeganWithStroke:v19[5] inputType:0 inputScale:0 start:scale];
   __p = 0;
   v16 = 0;
   v17 = 0;
@@ -980,17 +980,17 @@
   return v10;
 }
 
-- (void)whenFinishedProcessingPointsCallCompletion:(id)a3
+- (void)whenFinishedProcessingPointsCallCompletion:(id)completion
 {
-  v4 = a3;
+  completionCopy = completion;
   inputQueue = self->_inputQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100226438;
   v7[3] = &unk_10184A530;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = completionCopy;
+  v6 = completionCopy;
   dispatch_async(inputQueue, v7);
 }
 
@@ -1003,11 +1003,11 @@
   return self;
 }
 
-- (void)setRulerTransform:(CGAffineTransform *)a3
+- (void)setRulerTransform:(CGAffineTransform *)transform
 {
-  v3 = *&a3->a;
-  v4 = *&a3->tx;
-  *&self->_rulerTransform.c = *&a3->c;
+  v3 = *&transform->a;
+  v4 = *&transform->tx;
+  *&self->_rulerTransform.c = *&transform->c;
   *&self->_rulerTransform.tx = v4;
   *&self->_rulerTransform.a = v3;
 }

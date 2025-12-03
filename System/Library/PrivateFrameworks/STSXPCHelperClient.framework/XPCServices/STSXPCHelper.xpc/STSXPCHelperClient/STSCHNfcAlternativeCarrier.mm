@@ -1,95 +1,95 @@
 @interface STSCHNfcAlternativeCarrier
-+ (id)connectionHandoverAlternativeCarrierWithBundle:(id)a3;
-- (STSCHNfcAlternativeCarrier)initWithCoder:(id)a3;
-- (STSCHNfcAlternativeCarrier)initWithMaxLcField:(int64_t)a3 maxLeField:(int64_t)a4 auxiliaryRecords:(id)a5;
-- (STSCHNfcAlternativeCarrier)initWithNdefRecordBundle:(id)a3;
++ (id)connectionHandoverAlternativeCarrierWithBundle:(id)bundle;
+- (STSCHNfcAlternativeCarrier)initWithCoder:(id)coder;
+- (STSCHNfcAlternativeCarrier)initWithMaxLcField:(int64_t)field maxLeField:(int64_t)leField auxiliaryRecords:(id)records;
+- (STSCHNfcAlternativeCarrier)initWithNdefRecordBundle:(id)bundle;
 - (id)_createCarrierConfigurationRecord;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation STSCHNfcAlternativeCarrier
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = STSCHNfcAlternativeCarrier;
-  v4 = a3;
-  [(STSCHAlternativeCarrier *)&v5 encodeWithCoder:v4];
-  [v4 encodeInteger:self->_maxLc forKey:{@"maxLc", v5.receiver, v5.super_class}];
-  [v4 encodeInteger:self->_maxLe forKey:@"maxLe"];
+  coderCopy = coder;
+  [(STSCHAlternativeCarrier *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeInteger:self->_maxLc forKey:{@"maxLc", v5.receiver, v5.super_class}];
+  [coderCopy encodeInteger:self->_maxLe forKey:@"maxLe"];
 }
 
-- (STSCHNfcAlternativeCarrier)initWithCoder:(id)a3
+- (STSCHNfcAlternativeCarrier)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v7.receiver = self;
   v7.super_class = STSCHNfcAlternativeCarrier;
-  v5 = [(STSCHAlternativeCarrier *)&v7 initWithCoder:v4];
+  v5 = [(STSCHAlternativeCarrier *)&v7 initWithCoder:coderCopy];
   if (v5)
   {
-    v5->_maxLc = [v4 decodeIntegerForKey:@"maxLc"];
-    v5->_maxLe = [v4 decodeIntegerForKey:@"maxLe"];
+    v5->_maxLc = [coderCopy decodeIntegerForKey:@"maxLc"];
+    v5->_maxLe = [coderCopy decodeIntegerForKey:@"maxLe"];
   }
 
   return v5;
 }
 
-- (STSCHNfcAlternativeCarrier)initWithMaxLcField:(int64_t)a3 maxLeField:(int64_t)a4 auxiliaryRecords:(id)a5
+- (STSCHNfcAlternativeCarrier)initWithMaxLcField:(int64_t)field maxLeField:(int64_t)leField auxiliaryRecords:(id)records
 {
-  v8 = a5;
+  recordsCopy = records;
   v15.receiver = self;
   v15.super_class = STSCHNfcAlternativeCarrier;
   v9 = [(STSCHNfcAlternativeCarrier *)&v15 init];
   v10 = v9;
   if (v9)
   {
-    v11 = 4096;
-    if (a3 >= 1)
+    leFieldCopy = 4096;
+    if (field >= 1)
     {
-      v12 = a3;
+      fieldCopy = field;
     }
 
     else
     {
-      v12 = 4096;
+      fieldCopy = 4096;
     }
 
-    v9->_maxLc = v12;
-    if (a4 >= 1)
+    v9->_maxLc = fieldCopy;
+    if (leField >= 1)
     {
-      v11 = a4;
+      leFieldCopy = leField;
     }
 
-    v9->_maxLe = v11;
+    v9->_maxLe = leFieldCopy;
     [(STSCHAlternativeCarrier *)v9 setType:3];
     [(STSCHAlternativeCarrier *)v10 setPowerState:1];
-    [(STSCHAlternativeCarrier *)v10 setAuxiliaryRecords:v8];
-    v13 = [(STSCHNfcAlternativeCarrier *)v10 _createCarrierConfigurationRecord];
-    [(STSCHAlternativeCarrier *)v10 setCarrierRecord:v13];
+    [(STSCHAlternativeCarrier *)v10 setAuxiliaryRecords:recordsCopy];
+    _createCarrierConfigurationRecord = [(STSCHNfcAlternativeCarrier *)v10 _createCarrierConfigurationRecord];
+    [(STSCHAlternativeCarrier *)v10 setCarrierRecord:_createCarrierConfigurationRecord];
   }
 
   return v10;
 }
 
-- (STSCHNfcAlternativeCarrier)initWithNdefRecordBundle:(id)a3
+- (STSCHNfcAlternativeCarrier)initWithNdefRecordBundle:(id)bundle
 {
-  v4 = a3;
+  bundleCopy = bundle;
   v32.receiver = self;
   v32.super_class = STSCHNfcAlternativeCarrier;
-  v5 = [(STSCHAlternativeCarrier *)&v32 initWithNdefRecordBundle:v4];
+  v5 = [(STSCHAlternativeCarrier *)&v32 initWithNdefRecordBundle:bundleCopy];
   if (!v5)
   {
     goto LABEL_19;
   }
 
-  v6 = [v4 configurationRecord];
-  v7 = [v6 payload];
-  v8 = [v7 bytes];
+  configurationRecord = [bundleCopy configurationRecord];
+  payload = [configurationRecord payload];
+  bytes = [payload bytes];
 
-  v9 = [v4 configurationRecord];
-  v10 = [v9 payload];
-  v11 = [v10 length];
+  configurationRecord2 = [bundleCopy configurationRecord];
+  payload2 = [configurationRecord2 payload];
+  v11 = [payload2 length];
 
   v5->_maxLc = -1;
   v5->_maxLe = -1;
@@ -100,7 +100,7 @@
     goto LABEL_23;
   }
 
-  if (*v8 != 1)
+  if (*bytes != 1)
   {
     v28 = @"Invalid version";
     v29 = 72;
@@ -115,8 +115,8 @@ LABEL_19:
     goto LABEL_24;
   }
 
-  v15 = v8 + 1;
-  v16 = v8 + 1;
+  v15 = bytes + 1;
+  v16 = bytes + 1;
   while (1)
   {
     v18 = *v16;
@@ -200,15 +200,15 @@ LABEL_24:
   return v27;
 }
 
-+ (id)connectionHandoverAlternativeCarrierWithBundle:(id)a3
++ (id)connectionHandoverAlternativeCarrierWithBundle:(id)bundle
 {
-  v4 = a3;
-  v5 = [v4 configurationRecord];
-  v6 = [v5 isNfcConfigurationRecord];
+  bundleCopy = bundle;
+  configurationRecord = [bundleCopy configurationRecord];
+  isNfcConfigurationRecord = [configurationRecord isNfcConfigurationRecord];
 
-  if (v6)
+  if (isNfcConfigurationRecord)
   {
-    v7 = [[a1 alloc] initWithNdefRecordBundle:v4];
+    v7 = [[self alloc] initWithNdefRecordBundle:bundleCopy];
   }
 
   else
@@ -226,10 +226,10 @@ LABEL_24:
   v9 = 769;
   v10 = 1;
   v11 = [(STSCHNfcAlternativeCarrier *)self maxLc]>> 8;
-  v12 = [(STSCHNfcAlternativeCarrier *)self maxLc];
+  maxLc = [(STSCHNfcAlternativeCarrier *)self maxLc];
   v13 = 515;
   v14 = [(STSCHNfcAlternativeCarrier *)self maxLe]>> 8;
-  v15 = [(STSCHNfcAlternativeCarrier *)self maxLe];
+  maxLe = [(STSCHNfcAlternativeCarrier *)self maxLe];
   v5 = [STSNDEFRecord alloc];
   v6 = [NSData dataWithBytes:&v9 length:9];
   v7 = [(STSNDEFRecord *)v5 initWithFormat:4 type:v3 identifier:v4 payload:v6];
@@ -239,11 +239,11 @@ LABEL_24:
 
 - (id)description
 {
-  v3 = [(STSCHAlternativeCarrier *)self powerState];
-  v4 = [(STSCHNfcAlternativeCarrier *)self maxLc];
-  v5 = [(STSCHNfcAlternativeCarrier *)self maxLe];
-  v6 = [(STSCHAlternativeCarrier *)self auxiliaryRecords];
-  v7 = [NSString stringWithFormat:@"{ type=nfc, powerState=%lu, maxLc=%ld, maxLe=%ld, aux=%@ }", v3, v4, v5, v6];
+  powerState = [(STSCHAlternativeCarrier *)self powerState];
+  maxLc = [(STSCHNfcAlternativeCarrier *)self maxLc];
+  maxLe = [(STSCHNfcAlternativeCarrier *)self maxLe];
+  auxiliaryRecords = [(STSCHAlternativeCarrier *)self auxiliaryRecords];
+  v7 = [NSString stringWithFormat:@"{ type=nfc, powerState=%lu, maxLc=%ld, maxLe=%ld, aux=%@ }", powerState, maxLc, maxLe, auxiliaryRecords];
 
   return v7;
 }

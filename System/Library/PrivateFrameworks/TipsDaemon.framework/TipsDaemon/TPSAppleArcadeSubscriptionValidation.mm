@@ -1,6 +1,6 @@
 @interface TPSAppleArcadeSubscriptionValidation
 - (TPSAppleArcadeSubscriptionValidation)init;
-- (TPSAppleArcadeSubscriptionValidation)initWithTargetContext:(id)a3;
+- (TPSAppleArcadeSubscriptionValidation)initWithTargetContext:(id)context;
 @end
 
 @implementation TPSAppleArcadeSubscriptionValidation
@@ -14,7 +14,7 @@
   return result;
 }
 
-- (TPSAppleArcadeSubscriptionValidation)initWithTargetContext:(id)a3
+- (TPSAppleArcadeSubscriptionValidation)initWithTargetContext:(id)context
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

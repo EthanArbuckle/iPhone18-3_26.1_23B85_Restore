@@ -1,17 +1,17 @@
 @interface MiniMastheadViewProvider
 - (_TtC7NewsUI224MiniMastheadViewProvider)init;
-- (id)styleTitleText:(id)a3 styleType:(unint64_t)a4 boundingSize:(CGSize)a5;
-- (void)bundleSubscriptionDidSubscribe:(void *)a3;
-- (void)feedTitleViewDidTapOnTitleView:(id)a3;
+- (id)styleTitleText:(id)text styleType:(unint64_t)type boundingSize:(CGSize)size;
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe;
+- (void)feedTitleViewDidTapOnTitleView:(id)view;
 @end
 
 @implementation MiniMastheadViewProvider
 
-- (void)bundleSubscriptionDidSubscribe:(void *)a3
+- (void)bundleSubscriptionDidSubscribe:(void *)subscribe
 {
-  v4 = a3;
-  v5 = a1;
-  sub_21926E848(v4);
+  subscribeCopy = subscribe;
+  selfCopy = self;
+  sub_21926E848(subscribeCopy);
 }
 
 - (_TtC7NewsUI224MiniMastheadViewProvider)init
@@ -21,23 +21,23 @@
   return result;
 }
 
-- (id)styleTitleText:(id)a3 styleType:(unint64_t)a4 boundingSize:(CGSize)a5
+- (id)styleTitleText:(id)text styleType:(unint64_t)type boundingSize:(CGSize)size
 {
   v6 = sub_219BF5414();
   v8 = v7;
   v9 = *(&self->super.isa + OBJC_IVAR____TtC7NewsUI224MiniMastheadViewProvider_compactMiniMastheadView);
-  v10 = self;
-  v11 = [v9 traitCollection];
-  v12 = sub_219AFCDDC(v6, v8, v11);
+  selfCopy = self;
+  traitCollection = [v9 traitCollection];
+  v12 = sub_219AFCDDC(v6, v8, traitCollection);
 
   return v12;
 }
 
-- (void)feedTitleViewDidTapOnTitleView:(id)a3
+- (void)feedTitleViewDidTapOnTitleView:(id)view
 {
-  v4 = a3;
-  v5 = self;
-  sub_21926E69C(v4);
+  viewCopy = view;
+  selfCopy = self;
+  sub_21926E69C(viewCopy);
 }
 
 @end

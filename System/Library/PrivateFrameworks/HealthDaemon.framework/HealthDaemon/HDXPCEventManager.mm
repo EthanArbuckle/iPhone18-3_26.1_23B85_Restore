@@ -1,6 +1,6 @@
 @interface HDXPCEventManager
 - (HDXPCEventManager)init;
-- (void)authorizationChangedForBundleIdentifier:(id)a3;
+- (void)authorizationChangedForBundleIdentifier:(id)identifier;
 @end
 
 @implementation HDXPCEventManager
@@ -21,14 +21,14 @@
   return v2;
 }
 
-- (void)authorizationChangedForBundleIdentifier:(id)a3
+- (void)authorizationChangedForBundleIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   xdict = xpc_dictionary_create(0, 0, 0);
   v5 = *MEMORY[0x277CCB870];
-  v6 = [v4 UTF8String];
+  uTF8String = [identifierCopy UTF8String];
 
-  xpc_dictionary_set_string(xdict, v5, v6);
+  xpc_dictionary_set_string(xdict, v5, uTF8String);
   [(HDXPCEventPublisher *)self->_authorizationPublisher broadcastEvent:xdict];
 }
 

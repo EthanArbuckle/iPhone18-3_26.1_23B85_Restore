@@ -1,39 +1,39 @@
 @interface BMUserFocusStatusChange
 + (id)columns;
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4;
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version;
 + (id)protoFields;
-- (BMUserFocusStatusChange)initWithIdsHandle:(id)a3 statusChangeType:(id)a4 idsHandles:(id)a5;
-- (BMUserFocusStatusChange)initWithJSONDictionary:(id)a3 error:(id *)p_isa;
-- (BOOL)isEqual:(id)a3;
+- (BMUserFocusStatusChange)initWithIdsHandle:(id)handle statusChangeType:(id)type idsHandles:(id)handles;
+- (BMUserFocusStatusChange)initWithJSONDictionary:(id)dictionary error:(id *)p_isa;
+- (BOOL)isEqual:(id)equal;
 - (NSString)description;
 - (id)_idsHandlesJSONArray;
-- (id)initByReadFrom:(id)a3;
+- (id)initByReadFrom:(id)from;
 - (id)jsonDictionary;
 - (id)serialize;
-- (void)writeTo:(id)a3;
+- (void)writeTo:(id)to;
 @end
 
 @implementation BMUserFocusStatusChange
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [(BMUserFocusStatusChange *)self idsHandle];
-    v7 = [v5 idsHandle];
-    v8 = v7;
-    if (v6 == v7)
+    v5 = equalCopy;
+    idsHandle = [(BMUserFocusStatusChange *)self idsHandle];
+    idsHandle2 = [v5 idsHandle];
+    v8 = idsHandle2;
+    if (idsHandle == idsHandle2)
     {
     }
 
     else
     {
-      v9 = [(BMUserFocusStatusChange *)self idsHandle];
-      v10 = [v5 idsHandle];
-      v11 = [v9 isEqual:v10];
+      idsHandle3 = [(BMUserFocusStatusChange *)self idsHandle];
+      idsHandle4 = [v5 idsHandle];
+      v11 = [idsHandle3 isEqual:idsHandle4];
 
       if (!v11)
       {
@@ -41,18 +41,18 @@
       }
     }
 
-    v13 = [(BMUserFocusStatusChange *)self statusChangeType];
-    v14 = [v5 statusChangeType];
-    v15 = v14;
-    if (v13 == v14)
+    statusChangeType = [(BMUserFocusStatusChange *)self statusChangeType];
+    statusChangeType2 = [v5 statusChangeType];
+    v15 = statusChangeType2;
+    if (statusChangeType == statusChangeType2)
     {
     }
 
     else
     {
-      v16 = [(BMUserFocusStatusChange *)self statusChangeType];
-      v17 = [v5 statusChangeType];
-      v18 = [v16 isEqual:v17];
+      statusChangeType3 = [(BMUserFocusStatusChange *)self statusChangeType];
+      statusChangeType4 = [v5 statusChangeType];
+      v18 = [statusChangeType3 isEqual:statusChangeType4];
 
       if (!v18)
       {
@@ -64,18 +64,18 @@ LABEL_15:
       }
     }
 
-    v19 = [(BMUserFocusStatusChange *)self idsHandles];
-    v20 = [v5 idsHandles];
-    if (v19 == v20)
+    idsHandles = [(BMUserFocusStatusChange *)self idsHandles];
+    idsHandles2 = [v5 idsHandles];
+    if (idsHandles == idsHandles2)
     {
       v12 = 1;
     }
 
     else
     {
-      v21 = [(BMUserFocusStatusChange *)self idsHandles];
-      v22 = [v5 idsHandles];
-      v12 = [v21 isEqual:v22];
+      idsHandles3 = [(BMUserFocusStatusChange *)self idsHandles];
+      idsHandles4 = [v5 idsHandles];
+      v12 = [idsHandles3 isEqual:idsHandles4];
     }
 
     goto LABEL_15;
@@ -90,44 +90,44 @@ LABEL_16:
 - (id)jsonDictionary
 {
   v13[3] = *MEMORY[0x1E69E9840];
-  v3 = [(BMUserFocusStatusChange *)self idsHandle];
-  v4 = [(BMUserFocusStatusChange *)self statusChangeType];
-  v5 = [(BMUserFocusStatusChange *)self _idsHandlesJSONArray];
+  idsHandle = [(BMUserFocusStatusChange *)self idsHandle];
+  statusChangeType = [(BMUserFocusStatusChange *)self statusChangeType];
+  _idsHandlesJSONArray = [(BMUserFocusStatusChange *)self _idsHandlesJSONArray];
   v12[0] = @"idsHandle";
-  v6 = v3;
-  if (!v3)
+  null = idsHandle;
+  if (!idsHandle)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[0] = v6;
+  v13[0] = null;
   v12[1] = @"statusChangeType";
-  v7 = v4;
-  if (!v4)
+  null2 = statusChangeType;
+  if (!statusChangeType)
   {
-    v7 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[1] = v7;
+  v13[1] = null2;
   v12[2] = @"idsHandles";
-  v8 = v5;
-  if (!v5)
+  null3 = _idsHandlesJSONArray;
+  if (!_idsHandlesJSONArray)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v13[2] = v8;
+  v13[2] = null3;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:3];
-  if (v5)
+  if (_idsHandlesJSONArray)
   {
-    if (v4)
+    if (statusChangeType)
     {
       goto LABEL_9;
     }
 
 LABEL_14:
 
-    if (v3)
+    if (idsHandle)
     {
       goto LABEL_10;
     }
@@ -135,13 +135,13 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  if (!v4)
+  if (!statusChangeType)
   {
     goto LABEL_14;
   }
 
 LABEL_9:
-  if (v3)
+  if (idsHandle)
   {
     goto LABEL_10;
   }
@@ -162,8 +162,8 @@ LABEL_10:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(BMUserFocusStatusChange *)self idsHandles];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  idsHandles = [(BMUserFocusStatusChange *)self idsHandles];
+  v5 = [idsHandles countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -174,13 +174,13 @@ LABEL_10:
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(idsHandles);
         }
 
         [v3 addObject:*(*(&v11 + 1) + 8 * i)];
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [idsHandles countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v6);
@@ -191,11 +191,11 @@ LABEL_10:
   return v3;
 }
 
-- (BMUserFocusStatusChange)initWithJSONDictionary:(id)a3 error:(id *)p_isa
+- (BMUserFocusStatusChange)initWithJSONDictionary:(id)dictionary error:(id *)p_isa
 {
   v65[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [v6 objectForKeyedSubscript:@"idsHandle"];
+  dictionaryCopy = dictionary;
+  v7 = [dictionaryCopy objectForKeyedSubscript:@"idsHandle"];
   if (v7 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
     objc_opt_class();
@@ -232,7 +232,7 @@ LABEL_10:
     v8 = 0;
   }
 
-  v9 = [v6 objectForKeyedSubscript:@"statusChangeType"];
+  v9 = [dictionaryCopy objectForKeyedSubscript:@"statusChangeType"];
   v49 = p_isa;
   v50 = v7;
   if (!v9 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
@@ -240,14 +240,14 @@ LABEL_10:
     v48 = v8;
     v10 = 0;
 LABEL_7:
-    v11 = [v6 objectForKeyedSubscript:@"idsHandles"];
-    v12 = [MEMORY[0x1E695DFB0] null];
-    v13 = [v11 isEqual:v12];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"idsHandles"];
+    null = [MEMORY[0x1E695DFB0] null];
+    v13 = [v11 isEqual:null];
 
     if (v13)
     {
       v45 = v9;
-      v46 = self;
+      selfCopy2 = self;
 
       v11 = 0;
 LABEL_12:
@@ -266,7 +266,7 @@ LABEL_12:
       v16 = v15;
       v17 = *v52;
 LABEL_14:
-      v18 = v6;
+      v18 = dictionaryCopy;
       v19 = v10;
       v20 = 0;
       while (1)
@@ -287,7 +287,7 @@ LABEL_14:
         if ((objc_opt_isKindOfClass() & 1) == 0)
         {
           v10 = v19;
-          v6 = v18;
+          dictionaryCopy = v18;
           v9 = v45;
           if (v49)
           {
@@ -312,7 +312,7 @@ LABEL_30:
         {
           v16 = [v11 countByEnumeratingWithState:&v51 objects:v59 count:16];
           v10 = v19;
-          v6 = v18;
+          dictionaryCopy = v18;
           if (v16)
           {
             goto LABEL_14;
@@ -321,7 +321,7 @@ LABEL_30:
 LABEL_21:
 
           v8 = v48;
-          self = [(BMUserFocusStatusChange *)v46 initWithIdsHandle:v48 statusChangeType:v10 idsHandles:v14];
+          self = [(BMUserFocusStatusChange *)selfCopy2 initWithIdsHandle:v48 statusChangeType:v10 idsHandles:v14];
           p_isa = &self->super.super.isa;
           v9 = v45;
 LABEL_33:
@@ -331,7 +331,7 @@ LABEL_33:
       }
 
       v10 = v19;
-      v6 = v18;
+      dictionaryCopy = v18;
       v9 = v45;
       if (v49)
       {
@@ -349,14 +349,14 @@ LABEL_33:
 LABEL_31:
 
       p_isa = 0;
-      self = v46;
+      self = selfCopy2;
       goto LABEL_32;
     }
 
     if (!v11 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
       v45 = v9;
-      v46 = self;
+      selfCopy2 = self;
       goto LABEL_12;
     }
 
@@ -422,15 +422,15 @@ LABEL_36:
 {
   v3 = objc_opt_new();
   [(BMUserFocusStatusChange *)self writeTo:v3];
-  v4 = [v3 immutableData];
+  immutableData = [v3 immutableData];
 
-  return v4;
+  return immutableData;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_idsHandle)
   {
     PBDataWriterWriteStringField();
@@ -476,9 +476,9 @@ LABEL_36:
   v11 = *MEMORY[0x1E69E9840];
 }
 
-- (id)initByReadFrom:(id)a3
+- (id)initByReadFrom:(id)from
 {
-  v4 = a3;
+  fromCopy = from;
   v27.receiver = self;
   v27.super_class = BMUserFocusStatusChange;
   v5 = [(BMEventBase *)&v27 init];
@@ -488,12 +488,12 @@ LABEL_36:
   }
 
   v6 = objc_opt_new();
-  v7 = [v4 position];
-  if (v7 < [v4 length])
+  position = [fromCopy position];
+  if (position < [fromCopy length])
   {
     while (1)
     {
-      if ([v4 hasError])
+      if ([fromCopy hasError])
       {
         goto LABEL_29;
       }
@@ -504,18 +504,18 @@ LABEL_36:
       while (1)
       {
         v28 = 0;
-        v11 = [v4 position] + 1;
-        if (v11 >= [v4 position] && (v12 = objc_msgSend(v4, "position") + 1, v12 <= objc_msgSend(v4, "length")))
+        v11 = [fromCopy position] + 1;
+        if (v11 >= [fromCopy position] && (v12 = objc_msgSend(fromCopy, "position") + 1, v12 <= objc_msgSend(fromCopy, "length")))
         {
-          v13 = [v4 data];
-          [v13 getBytes:&v28 range:{objc_msgSend(v4, "position"), 1}];
+          data = [fromCopy data];
+          [data getBytes:&v28 range:{objc_msgSend(fromCopy, "position"), 1}];
 
-          [v4 setPosition:{objc_msgSend(v4, "position") + 1}];
+          [fromCopy setPosition:{objc_msgSend(fromCopy, "position") + 1}];
         }
 
         else
         {
-          [v4 _setError];
+          [fromCopy _setError];
         }
 
         v10 |= (v28 & 0x7F) << v8;
@@ -532,9 +532,9 @@ LABEL_36:
         }
       }
 
-      v15 = [v4 hasError] ? 0 : v10;
+      v15 = [fromCopy hasError] ? 0 : v10;
 LABEL_16:
-      if (([v4 hasError] & 1) != 0 || (v15 & 7) == 4)
+      if (([fromCopy hasError] & 1) != 0 || (v15 & 7) == 4)
       {
         goto LABEL_29;
       }
@@ -572,8 +572,8 @@ LABEL_33:
       }
 
 LABEL_28:
-      v21 = [v4 position];
-      if (v21 >= [v4 length])
+      position2 = [fromCopy position];
+      if (position2 >= [fromCopy length])
       {
         goto LABEL_29;
       }
@@ -595,8 +595,8 @@ LABEL_29:
   idsHandles = v5->_idsHandles;
   v5->_idsHandles = v22;
 
-  v24 = [v4 hasError];
-  if (v24)
+  hasError = [fromCopy hasError];
+  if (hasError)
   {
 LABEL_30:
     v25 = 0;
@@ -614,28 +614,28 @@ LABEL_31:
 - (NSString)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(BMUserFocusStatusChange *)self idsHandle];
-  v5 = [(BMUserFocusStatusChange *)self statusChangeType];
-  v6 = [(BMUserFocusStatusChange *)self idsHandles];
-  v7 = [v3 initWithFormat:@"BMUserFocusStatusChange with idsHandle: %@, statusChangeType: %@, idsHandles: %@", v4, v5, v6];
+  idsHandle = [(BMUserFocusStatusChange *)self idsHandle];
+  statusChangeType = [(BMUserFocusStatusChange *)self statusChangeType];
+  idsHandles = [(BMUserFocusStatusChange *)self idsHandles];
+  v7 = [v3 initWithFormat:@"BMUserFocusStatusChange with idsHandle: %@, statusChangeType: %@, idsHandles: %@", idsHandle, statusChangeType, idsHandles];
 
   return v7;
 }
 
-- (BMUserFocusStatusChange)initWithIdsHandle:(id)a3 statusChangeType:(id)a4 idsHandles:(id)a5
+- (BMUserFocusStatusChange)initWithIdsHandle:(id)handle statusChangeType:(id)type idsHandles:(id)handles
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  handleCopy = handle;
+  typeCopy = type;
+  handlesCopy = handles;
   v14.receiver = self;
   v14.super_class = BMUserFocusStatusChange;
   v12 = [(BMEventBase *)&v14 init];
   if (v12)
   {
     v12->_dataVersion = [objc_opt_class() latestDataVersion];
-    objc_storeStrong(&v12->_idsHandle, a3);
-    objc_storeStrong(&v12->_statusChangeType, a4);
-    objc_storeStrong(&v12->_idsHandles, a5);
+    objc_storeStrong(&v12->_idsHandle, handle);
+    objc_storeStrong(&v12->_statusChangeType, type);
+    objc_storeStrong(&v12->_idsHandles, handles);
   }
 
   return v12;
@@ -681,9 +681,9 @@ id __34__BMUserFocusStatusChange_columns__block_invoke(uint64_t a1, void *a2)
   return v4;
 }
 
-+ (id)eventWithData:(id)a3 dataVersion:(unsigned int)a4
++ (id)eventWithData:(id)data dataVersion:(unsigned int)version
 {
-  if (a4)
+  if (version)
   {
     v4 = 0;
   }
@@ -691,8 +691,8 @@ id __34__BMUserFocusStatusChange_columns__block_invoke(uint64_t a1, void *a2)
   else
   {
     v5 = MEMORY[0x1E69C65B8];
-    v6 = a3;
-    v7 = [[v5 alloc] initWithData:v6];
+    dataCopy = data;
+    v7 = [[v5 alloc] initWithData:dataCopy];
 
     v8 = [[BMUserFocusStatusChange alloc] initByReadFrom:v7];
     v4 = v8;

@@ -1,25 +1,25 @@
 @interface MKStarRatingViewAccessibility_iOS
-+ (id)ratingAsAttributedString:(double)a3 baseFont:(id)a4 style:(int64_t)a5 theme:(id)a6;
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (id)ratingAsAttributedString:(double)string baseFont:(id)font style:(int64_t)style theme:(id)theme;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (id)accessibilityLabel;
 @end
 
 @implementation MKStarRatingViewAccessibility_iOS
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"MKStarRatingView" isKindOfClass:@"UIView"];
-  [v3 validateClass:@"MKStarRatingView" hasInstanceMethod:@"rating" withFullSignature:{"d", 0}];
-  [v3 validateClass:@"MKStarRatingView" hasClassMethod:@"ratingAsAttributedString: baseFont: style:theme:" withFullSignature:{"d", "@", "q", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"MKStarRatingView" isKindOfClass:@"UIView"];
+  [validationsCopy validateClass:@"MKStarRatingView" hasInstanceMethod:@"rating" withFullSignature:{"d", 0}];
+  [validationsCopy validateClass:@"MKStarRatingView" hasClassMethod:@"ratingAsAttributedString: baseFont: style:theme:" withFullSignature:{"d", "@", "q", "@", 0}];
 }
 
-+ (id)ratingAsAttributedString:(double)a3 baseFont:(id)a4 style:(int64_t)a5 theme:(id)a6
++ (id)ratingAsAttributedString:(double)string baseFont:(id)font style:(int64_t)style theme:(id)theme
 {
-  v9.receiver = a1;
+  v9.receiver = self;
   v9.super_class = &OBJC_METACLASS___MKStarRatingViewAccessibility_iOS;
-  v6 = objc_msgSendSuper2(&v9, sel_ratingAsAttributedString_baseFont_style_theme_, a4, a5, a6);
+  v6 = objc_msgSendSuper2(&v9, sel_ratingAsAttributedString_baseFont_style_theme_, font, style, theme);
   v7 = UIAXStarRatingStringForRating();
   [v6 setAccessibilityLabel:v7];
 
@@ -37,9 +37,9 @@
 {
   objc_opt_class();
   v2 = __UIAccessibilityCastAsClass();
-  v3 = [v2 _accessibilityViewIsVisible];
+  _accessibilityViewIsVisible = [v2 _accessibilityViewIsVisible];
 
-  return v3;
+  return _accessibilityViewIsVisible;
 }
 
 @end

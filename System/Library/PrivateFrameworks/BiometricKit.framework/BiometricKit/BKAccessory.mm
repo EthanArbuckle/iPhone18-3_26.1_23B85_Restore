@@ -1,45 +1,45 @@
 @interface BKAccessory
-- (BKAccessory)initWithServerAccessory:(id)a3 device:(id)a4;
-- (BOOL)isAuthorized:(BOOL *)a3 error:(id *)a4;
-- (BOOL)isConnected:(BOOL *)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToAccessory:(id)a3;
-- (BOOL)isEqualToServerAccessory:(id)a3;
+- (BKAccessory)initWithServerAccessory:(id)accessory device:(id)device;
+- (BOOL)isAuthorized:(BOOL *)authorized error:(id *)error;
+- (BOOL)isConnected:(BOOL *)connected error:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToAccessory:(id)accessory;
+- (BOOL)isEqualToServerAccessory:(id)accessory;
 - (NSData)uid;
 - (id)serverAccessory;
 @end
 
 @implementation BKAccessory
 
-- (BKAccessory)initWithServerAccessory:(id)a3 device:(id)a4
+- (BKAccessory)initWithServerAccessory:(id)accessory device:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  accessoryCopy = accessory;
+  deviceCopy = device;
   v19.receiver = self;
   v19.super_class = BKAccessory;
   v8 = [(BKAccessory *)&v19 init];
   v9 = v8;
   if (v8)
   {
-    if (v6)
+    if (accessoryCopy)
     {
-      v8->_type = [v6 type];
-      v10 = [v6 uuid];
+      v8->_type = [accessoryCopy type];
+      uuid = [accessoryCopy uuid];
       uuid = v9->_uuid;
-      v9->_uuid = v10;
+      v9->_uuid = uuid;
 
-      v9->_flags = [v6 flags];
-      v12 = [v6 name];
+      v9->_flags = [accessoryCopy flags];
+      name = [accessoryCopy name];
       name = v9->_name;
-      v9->_name = v12;
+      v9->_name = name;
 
       v14 = [BKAccessoryGroup alloc];
-      v15 = [v6 group];
-      v16 = [(BKAccessoryGroup *)v14 initWithServerAccessoryGroup:v15 device:v7];
+      group = [accessoryCopy group];
+      v16 = [(BKAccessoryGroup *)v14 initWithServerAccessoryGroup:group device:deviceCopy];
       accessoryGroup = v9->_accessoryGroup;
       v9->_accessoryGroup = v16;
 
-      objc_storeStrong(&v9->_device, a4);
+      objc_storeStrong(&v9->_device, device);
     }
 
     else
@@ -59,8 +59,8 @@
   [(BiometricKitAccessory *)v3 setUuid:self->_uuid];
   [(BiometricKitAccessory *)v3 setName:self->_name];
   [(BiometricKitAccessory *)v3 setFlags:self->_flags];
-  v4 = [(BKAccessoryGroup *)self->_accessoryGroup serverAccessoryGroup];
-  [(BiometricKitAccessory *)v3 setGroup:v4];
+  serverAccessoryGroup = [(BKAccessoryGroup *)self->_accessoryGroup serverAccessoryGroup];
+  [(BiometricKitAccessory *)v3 setGroup:serverAccessoryGroup];
 
   return v3;
 }
@@ -86,15 +86,15 @@
   return v2;
 }
 
-- (BOOL)isEqualToServerAccessory:(id)a3
+- (BOOL)isEqualToServerAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && (type = self->_type, type == [v4 type]))
+  accessoryCopy = accessory;
+  v5 = accessoryCopy;
+  if (accessoryCopy && (type = self->_type, type == [accessoryCopy type]))
   {
     uuid = self->_uuid;
-    v8 = [v5 uuid];
-    v9 = [(NSUUID *)uuid isEqual:v8];
+    uuid = [v5 uuid];
+    v9 = [(NSUUID *)uuid isEqual:uuid];
   }
 
   else
@@ -105,13 +105,13 @@
   return v9;
 }
 
-- (BOOL)isEqualToAccessory:(id)a3
+- (BOOL)isEqualToAccessory:(id)accessory
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 && self->_type == *(v4 + 2))
+  accessoryCopy = accessory;
+  v5 = accessoryCopy;
+  if (accessoryCopy && self->_type == *(accessoryCopy + 2))
   {
-    v6 = [(NSUUID *)self->_uuid isEqual:*(v4 + 2)];
+    v6 = [(NSUUID *)self->_uuid isEqual:*(accessoryCopy + 2)];
   }
 
   else
@@ -122,10 +122,10 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -133,13 +133,13 @@
   else
   {
     objc_opt_class();
-    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BKAccessory *)self isEqualToAccessory:v4];
+    v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(BKAccessory *)self isEqualToAccessory:equalCopy];
   }
 
   return v5;
 }
 
-- (BOOL)isConnected:(BOOL *)a3 error:(id *)a4
+- (BOOL)isConnected:(BOOL *)connected error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69E9C10];
@@ -158,15 +158,15 @@
     xpcClient = self->_device->_xpcClient;
     v10 = v8;
     *buf = 134218240;
-    *v35 = a3;
+    *v35 = connected;
     *&v35[8] = 2048;
     v36[0] = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v10, OS_LOG_TYPE_DEFAULT, "BKAccessory:isConnected: %p (_cid:%lu)\n", buf, 0x16u);
   }
 
-  if (!a3)
+  if (!connected)
   {
-    [BKAccessory isConnected:a4 error:?];
+    [BKAccessory isConnected:error error:?];
     v14 = 0;
 LABEL_30:
     if (__osLogTrace)
@@ -181,9 +181,9 @@ LABEL_30:
 
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      if (a3)
+      if (connected)
       {
-        v27 = *a3;
+        v27 = *connected;
       }
 
       else
@@ -191,9 +191,9 @@ LABEL_30:
         v27 = -1;
       }
 
-      if (a4)
+      if (error)
       {
-        v28 = *a4;
+        v28 = *error;
       }
 
       else
@@ -221,7 +221,7 @@ LABEL_30:
   v14 = v13;
   if (v12)
   {
-    [(BKAccessory *)v12 isConnected:v12 error:a4];
+    [(BKAccessory *)v12 isConnected:v12 error:error];
     goto LABEL_30;
   }
 
@@ -247,7 +247,7 @@ LABEL_30:
         v19 = *(*(&v29 + 1) + 8 * i);
         if ([(BKAccessory *)self isEqualToServerAccessory:v19, v29])
         {
-          *a3 = ([v19 flags] & 2) != 0;
+          *connected = ([v19 flags] & 2) != 0;
           goto LABEL_18;
         }
       }
@@ -276,10 +276,10 @@ LABEL_18:
 
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = *a3;
-    if (a4)
+    v21 = *connected;
+    if (error)
     {
-      v22 = *a4;
+      v22 = *error;
     }
 
     else
@@ -308,7 +308,7 @@ LABEL_27:
   return v23;
 }
 
-- (BOOL)isAuthorized:(BOOL *)a3 error:(id *)a4
+- (BOOL)isAuthorized:(BOOL *)authorized error:(id *)error
 {
   v38 = *MEMORY[0x1E69E9840];
   v7 = MEMORY[0x1E69E9C10];
@@ -327,15 +327,15 @@ LABEL_27:
     xpcClient = self->_device->_xpcClient;
     v10 = v8;
     *buf = 134218240;
-    *v35 = a3;
+    *v35 = authorized;
     *&v35[8] = 2048;
     v36[0] = [(BiometricKitXPCClient *)xpcClient connectionId];
     _os_log_impl(&dword_1C82AD000, v10, OS_LOG_TYPE_DEFAULT, "BKAccessory:isAuthorized: %p (_cid:%lu)\n", buf, 0x16u);
   }
 
-  if (!a3)
+  if (!authorized)
   {
-    [BKAccessory isAuthorized:a4 error:?];
+    [BKAccessory isAuthorized:error error:?];
     v14 = 0;
 LABEL_30:
     if (__osLogTrace)
@@ -350,9 +350,9 @@ LABEL_30:
 
     if (os_log_type_enabled(v26, OS_LOG_TYPE_ERROR))
     {
-      if (a3)
+      if (authorized)
       {
-        v27 = *a3;
+        v27 = *authorized;
       }
 
       else
@@ -360,9 +360,9 @@ LABEL_30:
         v27 = -1;
       }
 
-      if (a4)
+      if (error)
       {
-        v28 = *a4;
+        v28 = *error;
       }
 
       else
@@ -390,7 +390,7 @@ LABEL_30:
   v14 = v13;
   if (v12)
   {
-    [(BKAccessory *)v12 isAuthorized:v12 error:a4];
+    [(BKAccessory *)v12 isAuthorized:v12 error:error];
     goto LABEL_30;
   }
 
@@ -416,7 +416,7 @@ LABEL_30:
         v19 = *(*(&v29 + 1) + 8 * i);
         if ([(BKAccessory *)self isEqualToServerAccessory:v19, v29])
         {
-          *a3 = ([v19 flags] & 4) != 0;
+          *authorized = ([v19 flags] & 4) != 0;
           goto LABEL_18;
         }
       }
@@ -445,10 +445,10 @@ LABEL_18:
 
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT))
   {
-    v21 = *a3;
-    if (a4)
+    v21 = *authorized;
+    if (error)
     {
-      v22 = *a4;
+      v22 = *error;
     }
 
     else

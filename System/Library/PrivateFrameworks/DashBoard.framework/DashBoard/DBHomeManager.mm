@@ -2,10 +2,10 @@
 - (DBHomeManager)init;
 - (void)_authorizeHomeManager;
 - (void)_setupHomeManager;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)homeManagerDidUpdateHomes:(id)a3;
-- (void)removeObserver:(id)a3;
+- (void)homeManagerDidUpdateHomes:(id)homes;
+- (void)removeObserver:(id)observer;
 @end
 
 @implementation DBHomeManager
@@ -45,13 +45,13 @@
     v2->_homes = v13;
 
     objc_initWeak(&location, v2);
-    v15 = [(DBHomeManager *)v2 workQueue];
+    workQueue = [(DBHomeManager *)v2 workQueue];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __21__DBHomeManager_init__block_invoke;
     v17[3] = &unk_278F02300;
     objc_copyWeak(&v18, &location);
-    dispatch_async(v15, v17);
+    dispatch_async(workQueue, v17);
 
     objc_destroyWeak(&v18);
     objc_destroyWeak(&location);
@@ -79,32 +79,32 @@ void __21__DBHomeManager_init__block_invoke(uint64_t a1)
   [(DBHomeManager *)&v4 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBHomeManager *)self observers];
-  [v5 addObserver:v4];
+  observerCopy = observer;
+  observers = [(DBHomeManager *)self observers];
+  [observers addObserver:observerCopy];
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(DBHomeManager *)self observers];
-  [v5 removeObserver:v4];
+  observerCopy = observer;
+  observers = [(DBHomeManager *)self observers];
+  [observers removeObserver:observerCopy];
 }
 
 - (void)_authorizeHomeManager
 {
   v3 = objc_alloc(MEMORY[0x277D0F800]);
-  v4 = [(DBHomeManager *)self locationManager];
-  v5 = [v4 bundle];
-  v6 = [v3 initWithBundle:v5];
+  locationManager = [(DBHomeManager *)self locationManager];
+  bundle = [locationManager bundle];
+  v6 = [v3 initWithBundle:bundle];
   [(DBHomeManager *)self setHomeLocationAuthorization:v6];
 
-  v7 = [(DBHomeManager *)self homeLocationAuthorization];
-  LOBYTE(v4) = [v7 isAuthorized];
+  homeLocationAuthorization = [(DBHomeManager *)self homeLocationAuthorization];
+  LOBYTE(locationManager) = [homeLocationAuthorization isAuthorized];
 
-  if (v4)
+  if (locationManager)
   {
 
     [(DBHomeManager *)self _setupHomeManager];
@@ -113,13 +113,13 @@ void __21__DBHomeManager_init__block_invoke(uint64_t a1)
   else
   {
     objc_initWeak(&location, self);
-    v8 = [(DBHomeManager *)self homeLocationAuthorization];
+    homeLocationAuthorization2 = [(DBHomeManager *)self homeLocationAuthorization];
     v9[0] = MEMORY[0x277D85DD0];
     v9[1] = 3221225472;
     v9[2] = __38__DBHomeManager__authorizeHomeManager__block_invoke;
     v9[3] = &unk_278F03148;
     objc_copyWeak(&v10, &location);
-    [v8 requestAuthorization:2 completionHandler:v9];
+    [homeLocationAuthorization2 requestAuthorization:2 completionHandler:v9];
 
     objc_destroyWeak(&v10);
     objc_destroyWeak(&location);
@@ -160,13 +160,13 @@ void __38__DBHomeManager__authorizeHomeManager__block_invoke_2(uint64_t a1)
 
 - (void)_setupHomeManager
 {
-  v3 = [(DBHomeManager *)self workQueue];
+  workQueue = [(DBHomeManager *)self workQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __34__DBHomeManager__setupHomeManager__block_invoke;
   block[3] = &unk_278F01580;
   block[4] = self;
-  dispatch_async(v3, block);
+  dispatch_async(workQueue, block);
 }
 
 void __34__DBHomeManager__setupHomeManager__block_invoke(uint64_t a1)
@@ -190,18 +190,18 @@ void __34__DBHomeManager__setupHomeManager__block_invoke(uint64_t a1)
   [v7 setDelegate:v6];
 }
 
-- (void)homeManagerDidUpdateHomes:(id)a3
+- (void)homeManagerDidUpdateHomes:(id)homes
 {
-  v4 = a3;
-  v5 = [(DBHomeManager *)self workQueue];
+  homesCopy = homes;
+  workQueue = [(DBHomeManager *)self workQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __43__DBHomeManager_homeManagerDidUpdateHomes___block_invoke;
   v7[3] = &unk_278F014B8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = homesCopy;
+  v6 = homesCopy;
+  dispatch_async(workQueue, v7);
 }
 
 void __43__DBHomeManager_homeManagerDidUpdateHomes___block_invoke(uint64_t a1)

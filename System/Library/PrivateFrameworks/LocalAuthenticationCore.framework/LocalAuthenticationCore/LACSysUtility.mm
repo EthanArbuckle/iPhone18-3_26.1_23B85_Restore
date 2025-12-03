@@ -1,6 +1,6 @@
 @interface LACSysUtility
 + (LACSysUtility)sharedInstance;
-- (BOOL)_hasCodeSigningMonitorOfType:(unsigned int)a3;
+- (BOOL)_hasCodeSigningMonitorOfType:(unsigned int)type;
 - (BOOL)hasCodeSigningMonitor;
 - (unint64_t)txmSecurityBootMode;
 - (unsigned)_getCodeSigningConfig;
@@ -72,9 +72,9 @@ uint64_t __31__LACSysUtility_sharedInstance__block_invoke()
   return result;
 }
 
-- (BOOL)_hasCodeSigningMonitorOfType:(unsigned int)a3
+- (BOOL)_hasCodeSigningMonitorOfType:(unsigned int)type
 {
-  if ([(LACSysUtility *)self _getCodeSigningMonitorType]== a3)
+  if ([(LACSysUtility *)self _getCodeSigningMonitorType]== type)
   {
     return [(LACSysUtility *)self _getCodeSigningConfig]>> 31;
   }

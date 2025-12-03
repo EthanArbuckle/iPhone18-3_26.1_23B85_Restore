@@ -1,24 +1,24 @@
 @interface SBLegacyTVRemoteAppLaunchDeniedAlertItem
 - (id)_supportURLString;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 @end
 
 @implementation SBLegacyTVRemoteAppLaunchDeniedAlertItem
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v5 = [(SBAlertItem *)self alertController:a3];
-  v6 = [MEMORY[0x277CCA8D8] mainBundle];
-  v7 = [v6 localizedStringForKey:@"LEGACY_TVREMOTEAPP_LAUNCH_ALERT_TITLE" value:&stru_283094718 table:@"SpringBoard"];
+  v5 = [(SBAlertItem *)self alertController:configure];
+  mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+  v7 = [mainBundle localizedStringForKey:@"LEGACY_TVREMOTEAPP_LAUNCH_ALERT_TITLE" value:&stru_283094718 table:@"SpringBoard"];
   [v5 setTitle:v7];
 
-  v8 = [MEMORY[0x277CCA8D8] mainBundle];
-  v9 = [v8 localizedStringForKey:@"LEGACY_TVREMOTEAPP_LAUNCH_ALERT_MESSAGE" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle2 = [MEMORY[0x277CCA8D8] mainBundle];
+  v9 = [mainBundle2 localizedStringForKey:@"LEGACY_TVREMOTEAPP_LAUNCH_ALERT_MESSAGE" value:&stru_283094718 table:@"SpringBoard"];
   [v5 setMessage:v9];
 
   v10 = MEMORY[0x277D750F8];
-  v11 = [MEMORY[0x277CCA8D8] mainBundle];
-  v12 = [v11 localizedStringForKey:@"LEGACY_TVREMOTEAPP_LAUNCH_BUTTON_LEARN_MORE" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle3 = [MEMORY[0x277CCA8D8] mainBundle];
+  v12 = [mainBundle3 localizedStringForKey:@"LEGACY_TVREMOTEAPP_LAUNCH_BUTTON_LEARN_MORE" value:&stru_283094718 table:@"SpringBoard"];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __80__SBLegacyTVRemoteAppLaunchDeniedAlertItem_configure_requirePasscodeForActions___block_invoke;
@@ -28,8 +28,8 @@
   [v5 addAction:v13];
 
   v14 = MEMORY[0x277D750F8];
-  v15 = [MEMORY[0x277CCA8D8] mainBundle];
-  v16 = [v15 localizedStringForKey:@"OK" value:&stru_283094718 table:@"SpringBoard"];
+  mainBundle4 = [MEMORY[0x277CCA8D8] mainBundle];
+  v16 = [mainBundle4 localizedStringForKey:@"OK" value:&stru_283094718 table:@"SpringBoard"];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __80__SBLegacyTVRemoteAppLaunchDeniedAlertItem_configure_requirePasscodeForActions___block_invoke_2;
@@ -63,10 +63,10 @@ uint64_t __80__SBLegacyTVRemoteAppLaunchDeniedAlertItem_configure_requirePasscod
 
   else
   {
-    v3 = [MEMORY[0x277D75418] currentDevice];
-    v4 = [v3 userInterfaceIdiom];
+    currentDevice = [MEMORY[0x277D75418] currentDevice];
+    userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-    if (v4 == 1)
+    if (userInterfaceIdiom == 1)
     {
       return @"https://support.apple.com/ht201664?cid=mc-ols-appletv-article_ht201664-ipados_ui-10062021";
     }

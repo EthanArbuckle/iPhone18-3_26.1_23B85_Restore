@@ -7,16 +7,16 @@
 
 + (UNCObjectCache)unc_objectCache
 {
-  v1 = a1;
-  objc_sync_enter(v1);
-  v2 = objc_getAssociatedObject(v1, "UNCObjectCacheForClass");
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v2 = objc_getAssociatedObject(selfCopy, "UNCObjectCacheForClass");
   if (!v2)
   {
     v2 = objc_alloc_init(UNCObjectCache);
-    objc_setAssociatedObject(v1, "UNCObjectCacheForClass", v2, 0x301);
+    objc_setAssociatedObject(selfCopy, "UNCObjectCacheForClass", v2, 0x301);
   }
 
-  objc_sync_exit(v1);
+  objc_sync_exit(selfCopy);
 
   return v2;
 }

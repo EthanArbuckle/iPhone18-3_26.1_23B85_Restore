@@ -2,16 +2,16 @@
 - (CGRect)bounds;
 - (CGSize)size;
 - (CHPaletteViewControllerSizingDelegate)init;
-- (void)setView:(id)a3;
+- (void)setView:(id)view;
 @end
 
 @implementation CHPaletteViewControllerSizingDelegate
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
   v4 = *(&self->super.isa + OBJC_IVAR___CHPaletteViewControllerSizingDelegate_view);
-  *(&self->super.isa + OBJC_IVAR___CHPaletteViewControllerSizingDelegate_view) = a3;
-  v3 = a3;
+  *(&self->super.isa + OBJC_IVAR___CHPaletteViewControllerSizingDelegate_view) = view;
+  viewCopy = view;
 }
 
 - (CGRect)bounds

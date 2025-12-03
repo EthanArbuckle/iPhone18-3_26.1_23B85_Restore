@@ -1,21 +1,21 @@
 @interface ECMessageBodyParsingUtils
-+ (id)snippetFromHTMLBody:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5 preservingQuotedForwardedContent:(BOOL)a6;
++ (id)snippetFromHTMLBody:(id)body options:(unint64_t)options maxLength:(unint64_t)length preservingQuotedForwardedContent:(BOOL)content;
 @end
 
 @implementation ECMessageBodyParsingUtils
 
-+ (id)snippetFromHTMLBody:(id)a3 options:(unint64_t)a4 maxLength:(unint64_t)a5 preservingQuotedForwardedContent:(BOOL)a6
++ (id)snippetFromHTMLBody:(id)body options:(unint64_t)options maxLength:(unint64_t)length preservingQuotedForwardedContent:(BOOL)content
 {
-  v9 = a3;
-  v10 = [[ECMessageBodyHTMLParser alloc] initWithHTML:v9];
+  bodyCopy = body;
+  v10 = [[ECMessageBodyHTMLParser alloc] initWithHTML:bodyCopy];
   v11 = objc_alloc_init(ECMessageBodyOriginalTextSubparser);
   [(ECMessageBodyParser *)v10 addSubparser:v11];
-  v12 = [(ECMessageBodyParser *)v10 newStringAccumulatorWithOptions:a4 lengthLimit:a5];
+  v12 = [(ECMessageBodyParser *)v10 newStringAccumulatorWithOptions:options lengthLimit:length];
   v19[0] = MEMORY[0x277D85DD0];
   v19[1] = 3221225472;
   v19[2] = __100__ECMessageBodyParsingUtils_snippetFromHTMLBody_options_maxLength_preservingQuotedForwardedContent___block_invoke;
   v19[3] = &unk_27874BC90;
-  v21 = a6;
+  contentCopy = content;
   v13 = v12;
   v20 = v13;
   [(ECMessageBodyOriginalTextSubparser *)v11 setFoundTextBlock:v19];
@@ -28,15 +28,15 @@
   [(ECMessageBodyOriginalTextSubparser *)v11 setFoundWhitespaceBlock:v17];
   if ([(ECMessageBodyHTMLParser *)v10 parse])
   {
-    v15 = [v14 accumulatedString];
+    accumulatedString = [v14 accumulatedString];
   }
 
   else
   {
-    v15 = &stru_284041D88;
+    accumulatedString = &stru_284041D88;
   }
 
-  return v15;
+  return accumulatedString;
 }
 
 void __100__ECMessageBodyParsingUtils_snippetFromHTMLBody_options_maxLength_preservingQuotedForwardedContent___block_invoke(uint64_t a1, void *a2, uint64_t a3, _BYTE *a4)

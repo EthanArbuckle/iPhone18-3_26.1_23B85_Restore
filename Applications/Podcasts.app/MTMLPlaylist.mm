@@ -1,15 +1,15 @@
 @interface MTMLPlaylist
-+ (id)playlistWithMPPlaylist:(id)a3;
++ (id)playlistWithMPPlaylist:(id)playlist;
 - (BOOL)isEmpty;
 - (id)description;
-- (void)addChild:(id)a3;
+- (void)addChild:(id)child;
 @end
 
 @implementation MTMLPlaylist
 
-+ (id)playlistWithMPPlaylist:(id)a3
++ (id)playlistWithMPPlaylist:(id)playlist
 {
-  v3 = a3;
+  playlistCopy = playlist;
   v4 = objc_opt_new();
   v5 = [NSSet setWithObjects:MPMediaPlaylistPropertyName, MPMediaEntityPropertyPersistentID, MPMediaPlaylistPropertyParentPersistentID, MPMediaPlaylistPropertyIsFolder, MPMediaPlaylistPropertyPlaylistAttributes, MPMediaPlaylistPropertyIsHidden, 0];
   v8[0] = _NSConcreteStackBlock;
@@ -18,29 +18,29 @@
   v8[3] = &unk_1004D9F90;
   v6 = v4;
   v9 = v6;
-  [v3 enumerateValuesForProperties:v5 usingBlock:v8];
+  [playlistCopy enumerateValuesForProperties:v5 usingBlock:v8];
 
-  [v6 setPlaylist:v3];
+  [v6 setPlaylist:playlistCopy];
 
   return v6;
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v4 = a3;
+  childCopy = child;
   children = self->_children;
-  v8 = v4;
+  v8 = childCopy;
   if (!children)
   {
     v6 = +[NSMutableArray array];
     v7 = self->_children;
     self->_children = v6;
 
-    v4 = v8;
+    childCopy = v8;
     children = self->_children;
   }
 
-  [(NSMutableArray *)children addObject:v4];
+  [(NSMutableArray *)children addObject:childCopy];
 }
 
 - (BOOL)isEmpty
@@ -116,10 +116,10 @@ LABEL_17:
 
 - (id)description
 {
-  v3 = [(MTMLPlaylist *)self mediaLibraryId];
-  v4 = [(MTMLPlaylist *)self name];
+  mediaLibraryId = [(MTMLPlaylist *)self mediaLibraryId];
+  name = [(MTMLPlaylist *)self name];
   v5 = [NSNumber numberWithBool:[(MTMLPlaylist *)self isFolder]];
-  v6 = [NSString stringWithFormat:@"[%@] %@ %@", v3, v4, v5];
+  v6 = [NSString stringWithFormat:@"[%@] %@ %@", mediaLibraryId, name, v5];
 
   return v6;
 }

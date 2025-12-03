@@ -12,14 +12,14 @@
 - (id)_defaultDOB;
 - (id)_footnoteFont;
 - (id)_titleFont;
-- (id)ageWithDate:(id)a3;
+- (id)ageWithDate:(id)date;
 - (id)buttonTitleString;
 - (id)combinedFooterString;
 - (id)createHeroView;
 - (id)createLearnMoreExpandedView;
 - (id)deviceNotSupportedBodyString;
 - (id)featureDisabledBodyString;
-- (id)initForOnboarding:(BOOL)a3 provenance:(int64_t)a4;
+- (id)initForOnboarding:(BOOL)onboarding provenance:(int64_t)provenance;
 - (id)locationFeatureIneligiblePromptBodyString;
 - (id)locationFooterString;
 - (id)locationNotFoundPromptBodyString;
@@ -27,34 +27,34 @@
 - (id)watchOSVersionTooLowBodyString;
 - (void)_setUpStackedButtonView;
 - (void)_setupBirthdayEntryView;
-- (void)_trackElectrocardiogramOnboardingStepIfNeeded:(int64_t)a3 countryCode:(id)a4 algorithmVersion:(id)a5;
+- (void)_trackElectrocardiogramOnboardingStepIfNeeded:(int64_t)needed countryCode:(id)code algorithmVersion:(id)version;
 - (void)_updateDateOfBirthDisplay;
-- (void)optionSelectorView:(id)a3 didSelectOptionAtIndex:(int64_t)a4;
-- (void)setDateOfBirth:(id)a3;
-- (void)setIsValidAge:(id)a3;
+- (void)optionSelectorView:(id)view didSelectOptionAtIndex:(int64_t)index;
+- (void)setDateOfBirth:(id)birth;
+- (void)setIsValidAge:(id)age;
 - (void)setUpConstraints;
 - (void)setUpUI;
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4;
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index;
 @end
 
 @implementation HROnboardingElectrocardiogramAvailabilityViewController
 
-- (id)initForOnboarding:(BOOL)a3 provenance:(int64_t)a4
+- (id)initForOnboarding:(BOOL)onboarding provenance:(int64_t)provenance
 {
-  v5 = a3;
+  onboardingCopy = onboarding;
   v6 = *MEMORY[0x277CCDEA8];
   v12.receiver = self;
   v12.super_class = HROnboardingElectrocardiogramAvailabilityViewController;
-  v7 = [(HROnboardingElectrocardiogramAvailabilityViewController *)&v12 initForOnboarding:a3 upgradingFromAlgorithmVersion:v6];
+  v7 = [(HROnboardingElectrocardiogramAvailabilityViewController *)&v12 initForOnboarding:onboarding upgradingFromAlgorithmVersion:v6];
   v8 = v7;
   if (v7)
   {
-    if (v5)
+    if (onboardingCopy)
     {
       [v7 setRightButtonType:2];
     }
 
-    v8[145] = a4;
+    v8[145] = provenance;
     v9 = objc_alloc_init(HRElectrocardiogramWatchAppInstallability);
     v10 = v8[137];
     v8[137] = v9;
@@ -63,35 +63,35 @@
   return v8;
 }
 
-- (void)setDateOfBirth:(id)a3
+- (void)setDateOfBirth:(id)birth
 {
-  v5 = a3;
+  birthCopy = birth;
   if (([(NSDate *)self->_dateOfBirth isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_dateOfBirth, a3);
+    objc_storeStrong(&self->_dateOfBirth, birth);
     [(HROnboardingElectrocardiogramAvailabilityViewController *)self _updateDateOfBirthDisplay];
   }
 }
 
-- (void)setIsValidAge:(id)a3
+- (void)setIsValidAge:(id)age
 {
-  v5 = a3;
+  ageCopy = age;
   if (([(NSNumber *)self->_isValidAge isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_isValidAge, a3);
+    objc_storeStrong(&self->_isValidAge, age);
     [(HROnboardingElectrocardiogramAvailabilityViewController *)self _updateDateOfBirthDisplay];
   }
 }
 
 - (id)_defaultDOB
 {
-  v2 = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithUTCTimeZone];
-  v3 = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithLocalTimeZone];
-  v4 = [MEMORY[0x277CBEAA8] date];
-  v5 = [v3 hk_dateOfBirthDateComponentsWithDate:v4];
+  hk_gregorianCalendarWithUTCTimeZone = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithUTCTimeZone];
+  hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithLocalTimeZone];
+  date = [MEMORY[0x277CBEAA8] date];
+  v5 = [hk_gregorianCalendarWithLocalTimeZone hk_dateOfBirthDateComponentsWithDate:date];
 
-  v6 = [v2 dateFromComponents:v5];
-  v7 = [v2 dateByAddingUnit:4 value:-35 toDate:v6 options:0];
+  v6 = [hk_gregorianCalendarWithUTCTimeZone dateFromComponents:v5];
+  v7 = [hk_gregorianCalendarWithUTCTimeZone dateByAddingUnit:4 value:-35 toDate:v6 options:0];
 
   return v7;
 }
@@ -101,101 +101,101 @@
   v43.receiver = self;
   v43.super_class = HROnboardingElectrocardiogramAvailabilityViewController;
   [(HROnboardingElectrocardiogramAvailabilityViewController *)&v43 setUpUI];
-  v3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self createHeroView];
-  [(HROnboardingElectrocardiogramAvailabilityViewController *)self setHeroView:v3];
+  createHeroView = [(HROnboardingElectrocardiogramAvailabilityViewController *)self createHeroView];
+  [(HROnboardingElectrocardiogramAvailabilityViewController *)self setHeroView:createHeroView];
 
-  v4 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self heroView];
-  [v4 setTranslatesAutoresizingMaskIntoConstraints:0];
+  heroView = [(HROnboardingElectrocardiogramAvailabilityViewController *)self heroView];
+  [heroView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v5 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
-  v6 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self heroView];
-  [v5 addSubview:v6];
+  contentView = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
+  heroView2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self heroView];
+  [contentView addSubview:heroView2];
 
   v7 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HROnboardingElectrocardiogramAvailabilityViewController *)self setTitleLabel:v7];
 
-  v8 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleString];
-  v9 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
-  [v9 setText:v8];
+  titleString = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleString];
+  titleLabel = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
+  [titleLabel setText:titleString];
 
   v10 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:1 suffix:@"Onboarding.PageTitle"];
-  v11 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
-  [v11 setAccessibilityIdentifier:v10];
+  titleLabel2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
+  [titleLabel2 setAccessibilityIdentifier:v10];
 
-  v12 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
-  [v12 setTextAlignment:4];
+  titleLabel3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
+  [titleLabel3 setTextAlignment:4];
 
-  v13 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _titleFont];
-  v14 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
-  [v14 setFont:v13];
+  _titleFont = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _titleFont];
+  titleLabel4 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
+  [titleLabel4 setFont:_titleFont];
 
-  v15 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
-  [v15 setAdjustsFontForContentSizeCategory:1];
+  titleLabel5 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
+  [titleLabel5 setAdjustsFontForContentSizeCategory:1];
 
-  v16 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
-  [v16 setTranslatesAutoresizingMaskIntoConstraints:0];
+  titleLabel6 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
+  [titleLabel6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v17 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
-  [v17 setNumberOfLines:0];
+  titleLabel7 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
+  [titleLabel7 setNumberOfLines:0];
 
-  v18 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
-  v19 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
-  [v18 addSubview:v19];
+  contentView2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
+  titleLabel8 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
+  [contentView2 addSubview:titleLabel8];
 
   v20 = objc_alloc_init(MEMORY[0x277D756B8]);
   [(HROnboardingElectrocardiogramAvailabilityViewController *)self setBodyLabel:v20];
 
-  v21 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyString];
-  v22 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
-  [v22 setText:v21];
+  bodyString = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyString];
+  bodyLabel = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
+  [bodyLabel setText:bodyString];
 
   v23 = [MEMORY[0x277CCACA8] healthAccessibilityIdentifier:1 suffix:@"Onboarding.EcgDescription"];
-  v24 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
-  [v24 setAccessibilityIdentifier:v23];
+  bodyLabel2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
+  [bodyLabel2 setAccessibilityIdentifier:v23];
 
-  v25 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
-  [v25 setTextAlignment:4];
+  bodyLabel3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
+  [bodyLabel3 setTextAlignment:4];
 
-  v26 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
-  v27 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
-  [v27 setFont:v26];
+  _bodyFont = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
+  bodyLabel4 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
+  [bodyLabel4 setFont:_bodyFont];
 
-  v28 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
-  [v28 setAdjustsFontForContentSizeCategory:1];
+  bodyLabel5 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
+  [bodyLabel5 setAdjustsFontForContentSizeCategory:1];
 
-  v29 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
-  [v29 setTranslatesAutoresizingMaskIntoConstraints:0];
+  bodyLabel6 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
+  [bodyLabel6 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v30 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
-  [v30 setNumberOfLines:0];
+  bodyLabel7 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
+  [bodyLabel7 setNumberOfLines:0];
 
-  v31 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
-  v32 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
-  [v31 addSubview:v32];
+  contentView3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
+  bodyLabel8 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
+  [contentView3 addSubview:bodyLabel8];
 
   v33 = objc_alloc_init(HRQuestionSelectionView);
   [(HROnboardingElectrocardiogramAvailabilityViewController *)self setAgeQuestionView:v33];
 
-  v34 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
-  [v34 setTranslatesAutoresizingMaskIntoConstraints:0];
+  ageQuestionView = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
+  [ageQuestionView setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v35 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
-  [v35 setIdentifier:@"ECGAgeQuestionID"];
+  ageQuestionView2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
+  [ageQuestionView2 setIdentifier:@"ECGAgeQuestionID"];
 
-  v36 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
-  [v36 setDelegate:self];
+  ageQuestionView3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
+  [ageQuestionView3 setDelegate:self];
 
   v37 = HRHeartRhythmUIFrameworkBundle();
   v38 = [v37 localizedStringForKey:@"AGE_GATE_PROMPT" value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable"];
-  v39 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
-  [v39 setQuestionText:v38];
+  ageQuestionView4 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
+  [ageQuestionView4 setQuestionText:v38];
 
-  v40 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
-  [v40 reloadOptions];
+  ageQuestionView5 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
+  [ageQuestionView5 reloadOptions];
 
-  v41 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
-  v42 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
-  [v41 addSubview:v42];
+  contentView4 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
+  ageQuestionView6 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
+  [contentView4 addSubview:ageQuestionView6];
 
   [(HROnboardingElectrocardiogramAvailabilityViewController *)self _setUpStackedButtonView];
   [(HROnboardingElectrocardiogramAvailabilityViewController *)self _updateDateOfBirthDisplay];
@@ -206,74 +206,74 @@
   v45.receiver = self;
   v45.super_class = HROnboardingElectrocardiogramAvailabilityViewController;
   [(HROnboardingElectrocardiogramAvailabilityViewController *)&v45 setUpConstraints];
-  v3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self heroView];
-  v4 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
-  [v3 hk_alignHorizontalConstraintsWithView:v4 margin:0.0];
+  heroView = [(HROnboardingElectrocardiogramAvailabilityViewController *)self heroView];
+  contentView = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
+  [heroView hk_alignHorizontalConstraintsWithView:contentView margin:0.0];
 
-  v5 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self heroView];
-  v6 = [v5 topAnchor];
-  v7 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
-  v8 = [v7 topAnchor];
-  v9 = [v6 constraintEqualToAnchor:v8];
+  heroView2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self heroView];
+  topAnchor = [heroView2 topAnchor];
+  contentView2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
+  topAnchor2 = [contentView2 topAnchor];
+  v9 = [topAnchor constraintEqualToAnchor:topAnchor2];
   [v9 setActive:1];
 
-  v10 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
-  v11 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
+  titleLabel = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
+  contentView3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
   HKHealthUIBuddyDirectionalEdgeInsets();
-  [v10 hrui_alignHorizontalConstraintsWithView:v11 insets:?];
+  [titleLabel hrui_alignHorizontalConstraintsWithView:contentView3 insets:?];
 
-  v12 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
-  v13 = [v12 topAnchor];
-  v14 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self heroView];
-  v15 = [v14 bottomAnchor];
-  v16 = [v13 constraintEqualToAnchor:v15 constant:29.0];
+  titleLabel2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
+  topAnchor3 = [titleLabel2 topAnchor];
+  heroView3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self heroView];
+  bottomAnchor = [heroView3 bottomAnchor];
+  v16 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:29.0];
   [v16 setActive:1];
 
-  v17 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
-  v18 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
-  [v17 hk_alignHorizontalConstraintsWithView:v18 margin:0.0];
+  bodyLabel = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
+  titleLabel3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
+  [bodyLabel hk_alignHorizontalConstraintsWithView:titleLabel3 margin:0.0];
 
-  v19 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
-  v20 = [v19 topAnchor];
-  v21 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
-  v22 = [v21 bottomAnchor];
+  bodyLabel2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
+  topAnchor4 = [bodyLabel2 topAnchor];
+  titleLabel4 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
+  bottomAnchor2 = [titleLabel4 bottomAnchor];
   [(HROnboardingElectrocardiogramAvailabilityViewController *)self _titleBottomToBodyTop];
-  v23 = [v20 constraintEqualToAnchor:v22 constant:?];
+  v23 = [topAnchor4 constraintEqualToAnchor:bottomAnchor2 constant:?];
   [v23 setActive:1];
 
-  v24 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
-  v25 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
-  [v24 hk_alignHorizontalConstraintsWithView:v25 margin:0.0];
+  ageQuestionView = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
+  contentView4 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
+  [ageQuestionView hk_alignHorizontalConstraintsWithView:contentView4 margin:0.0];
 
-  v26 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
-  v27 = [v26 topAnchor];
-  v28 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
-  v29 = [v28 bottomAnchor];
+  ageQuestionView2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
+  topAnchor5 = [ageQuestionView2 topAnchor];
+  bodyLabel3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self bodyLabel];
+  bottomAnchor3 = [bodyLabel3 bottomAnchor];
   [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyBottomToAgePromptTop];
-  v30 = [v27 constraintEqualToAnchor:v29 constant:?];
+  v30 = [topAnchor5 constraintEqualToAnchor:bottomAnchor3 constant:?];
   [v30 setActive:1];
 
-  v31 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
-  v32 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
-  [v31 hk_alignHorizontalConstraintsWithView:v32 margin:0.0];
+  stackedButtonView = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
+  titleLabel5 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self titleLabel];
+  [stackedButtonView hk_alignHorizontalConstraintsWithView:titleLabel5 margin:0.0];
 
-  v33 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
-  v34 = [v33 topAnchor];
-  v35 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
-  v36 = [v35 bottomAnchor];
+  stackedButtonView2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
+  topAnchor6 = [stackedButtonView2 topAnchor];
+  ageQuestionView3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageQuestionView];
+  bottomAnchor4 = [ageQuestionView3 bottomAnchor];
   [(HROnboardingElectrocardiogramAvailabilityViewController *)self _birthdayFooterLastBaselineToContinueButton];
-  v37 = [v34 constraintEqualToAnchor:v36 constant:?];
+  v37 = [topAnchor6 constraintEqualToAnchor:bottomAnchor4 constant:?];
   [v37 setActive:1];
 
-  v38 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
-  v39 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
-  [v38 alignBlurViewHorizontalConstraintsWithView:v39];
+  stackedButtonView3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
+  contentView5 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
+  [stackedButtonView3 alignBlurViewHorizontalConstraintsWithView:contentView5];
 
-  v40 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
-  v41 = [v40 bottomAnchor];
-  v42 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
-  v43 = [v42 bottomAnchor];
-  v44 = [v41 constraintEqualToAnchor:v43];
+  contentView6 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
+  bottomAnchor5 = [contentView6 bottomAnchor];
+  stackedButtonView4 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
+  bottomAnchor6 = [stackedButtonView4 bottomAnchor];
+  v44 = [bottomAnchor5 constraintEqualToAnchor:bottomAnchor6];
   [v44 setActive:1];
 }
 
@@ -292,8 +292,8 @@
   v20[2] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc_init(MEMORY[0x277D756B8]);
   [v3 setTranslatesAutoresizingMaskIntoConstraints:0];
-  v4 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _ageEntryTitleFont];
-  [v3 setFont:v4];
+  _ageEntryTitleFont = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _ageEntryTitleFont];
+  [v3 setFont:_ageEntryTitleFont];
 
   v5 = HRHeartRhythmUIFrameworkBundle();
   v6 = [v5 localizedStringForKey:@"AGE_GATE_DATE_OF_BIRTH_TITLE" value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable"];
@@ -307,8 +307,8 @@
   v8 = objc_alloc(MEMORY[0x277D12990]);
   v9 = HRHeartRhythmUIFrameworkBundle();
   v10 = [v9 localizedStringForKey:@"AGE_GATE_FIELD_REQUIRED_PLACEHOLDER" value:&stru_2864680B0 table:@"HeartRhythmUI-Localizable"];
-  v11 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _defaultDOB];
-  v12 = [v8 initWithFrame:v10 initialText:v11 defaultDate:130 maxYears:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
+  _defaultDOB = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _defaultDOB];
+  v12 = [v8 initWithFrame:v10 initialText:_defaultDOB defaultDate:130 maxYears:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
 
   [v12 setDelegate:self];
   [v12 setTranslatesAutoresizingMaskIntoConstraints:0];
@@ -327,41 +327,41 @@
   LODWORD(v17) = 1148846080;
   [v3 setContentHuggingPriority:0 forAxis:v17];
   [(HROnboardingElectrocardiogramAvailabilityViewController *)self setBirthdayEntryView:v16];
-  v18 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
-  v19 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self birthdayEntryView];
-  [v18 addSubview:v19];
+  contentView = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
+  birthdayEntryView = [(HROnboardingElectrocardiogramAvailabilityViewController *)self birthdayEntryView];
+  [contentView addSubview:birthdayEntryView];
 }
 
 - (BOOL)_meetsAgeRequirement
 {
-  v3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self isValidAge];
-  if (v3)
+  isValidAge = [(HROnboardingElectrocardiogramAvailabilityViewController *)self isValidAge];
+  if (isValidAge)
   {
-    v4 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self isValidAge];
-    v5 = [v4 BOOLValue];
+    isValidAge2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self isValidAge];
+    bOOLValue = [isValidAge2 BOOLValue];
   }
 
   else
   {
-    v5 = 0;
+    bOOLValue = 0;
   }
 
-  return v5;
+  return bOOLValue;
 }
 
-- (id)ageWithDate:(id)a3
+- (id)ageWithDate:(id)date
 {
-  if (a3)
+  if (date)
   {
-    v4 = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithUTCTimeZone];
-    v5 = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithLocalTimeZone];
-    v6 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self dateOfBirth];
-    v7 = [v4 hk_dateOfBirthDateComponentsWithDate:v6];
+    hk_gregorianCalendarWithUTCTimeZone = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithUTCTimeZone];
+    hk_gregorianCalendarWithLocalTimeZone = [MEMORY[0x277CBEA80] hk_gregorianCalendarWithLocalTimeZone];
+    dateOfBirth = [(HROnboardingElectrocardiogramAvailabilityViewController *)self dateOfBirth];
+    v7 = [hk_gregorianCalendarWithUTCTimeZone hk_dateOfBirthDateComponentsWithDate:dateOfBirth];
 
-    v8 = [MEMORY[0x277CBEAA8] date];
-    v9 = [v5 hk_dateOfBirthDateComponentsWithDate:v8];
+    date = [MEMORY[0x277CBEAA8] date];
+    v9 = [hk_gregorianCalendarWithLocalTimeZone hk_dateOfBirthDateComponentsWithDate:date];
 
-    v10 = [v5 components:4 fromDateComponents:v7 toDateComponents:v9 options:0];
+    v10 = [hk_gregorianCalendarWithLocalTimeZone components:4 fromDateComponents:v7 toDateComponents:v9 options:0];
     v11 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v10, "year")}];
   }
 
@@ -376,66 +376,66 @@
 - (void)_setUpStackedButtonView
 {
   v12[1] = *MEMORY[0x277D85DE8];
-  v3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self buttonTitleString];
-  v12[0] = v3;
+  buttonTitleString = [(HROnboardingElectrocardiogramAvailabilityViewController *)self buttonTitleString];
+  v12[0] = buttonTitleString;
   v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:1];
-  v5 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self combinedFooterString];
-  v6 = [HRStackedButtonView buddyStackedButtonViewWithTitles:v4 footerText:v5 boldFooterText:0 delegate:self];
+  combinedFooterString = [(HROnboardingElectrocardiogramAvailabilityViewController *)self combinedFooterString];
+  v6 = [HRStackedButtonView buddyStackedButtonViewWithTitles:v4 footerText:combinedFooterString boldFooterText:0 delegate:self];
   [(HROnboardingElectrocardiogramAvailabilityViewController *)self setStackedButtonView:v6];
 
-  v7 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
-  [v7 setFixedBottomButtonSpacing:1];
+  stackedButtonView = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
+  [stackedButtonView setFixedBottomButtonSpacing:1];
 
-  v8 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
-  [v8 setTranslatesAutoresizingMaskIntoConstraints:0];
+  stackedButtonView2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
+  [stackedButtonView2 setTranslatesAutoresizingMaskIntoConstraints:0];
 
-  v9 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
-  [v9 setBlurHidden:1];
+  stackedButtonView3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
+  [stackedButtonView3 setBlurHidden:1];
 
-  v10 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
-  v11 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
-  [v10 addSubview:v11];
+  contentView = [(HROnboardingElectrocardiogramAvailabilityViewController *)self contentView];
+  stackedButtonView4 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
+  [contentView addSubview:stackedButtonView4];
 }
 
-- (void)stackedButtonView:(id)a3 didTapButtonAtIndex:(int64_t)a4
+- (void)stackedButtonView:(id)view didTapButtonAtIndex:(int64_t)index
 {
-  v7 = a3;
-  if (!a4)
+  viewCopy = view;
+  if (!index)
   {
     if ([(HROnboardingElectrocardiogramAvailabilityViewController *)self _meetsAgeRequirement])
     {
       [(HROnboardingElectrocardiogramAvailabilityViewController *)self _trackElectrocardiogramOnboardingStepIfNeeded:3 countryCode:0 algorithmVersion:0];
-      v8 = [v7 buttons];
-      v9 = [v8 objectAtIndexedSubscript:0];
+      buttons = [viewCopy buttons];
+      v9 = [buttons objectAtIndexedSubscript:0];
 
       [v9 setEnabled:0];
-      v10 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self onboardingAvailabilityDeterminer];
+      onboardingAvailabilityDeterminer = [(HROnboardingElectrocardiogramAvailabilityViewController *)self onboardingAvailabilityDeterminer];
 
-      if (!v10)
+      if (!onboardingAvailabilityDeterminer)
       {
         v11 = [HRElectrocardiogramCurrentLocationOnboardingDeterminer alloc];
-        v12 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self delegate];
-        v13 = [v12 healthStore];
-        v14 = [(HRElectrocardiogramCurrentLocationOnboardingDeterminer *)v11 initWithHealthStore:v13];
+        delegate = [(HROnboardingElectrocardiogramAvailabilityViewController *)self delegate];
+        healthStore = [delegate healthStore];
+        v14 = [(HRElectrocardiogramCurrentLocationOnboardingDeterminer *)v11 initWithHealthStore:healthStore];
         [(HROnboardingElectrocardiogramAvailabilityViewController *)self setOnboardingAvailabilityDeterminer:v14];
       }
 
-      v15 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self onboardingAvailabilityDeterminer];
+      onboardingAvailabilityDeterminer2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self onboardingAvailabilityDeterminer];
       v18[0] = MEMORY[0x277D85DD0];
       v18[1] = 3221225472;
       v18[2] = __97__HROnboardingElectrocardiogramAvailabilityViewController_stackedButtonView_didTapButtonAtIndex___block_invoke;
       v18[3] = &unk_2796FB750;
       v19 = v9;
-      v20 = self;
+      selfCopy = self;
       v21 = a2;
       v16 = v9;
-      [v15 isElectrocardiogramOnboardingAvailableInCurrentLocationForActiveWatch:v18];
+      [onboardingAvailabilityDeterminer2 isElectrocardiogramOnboardingAvailableInCurrentLocationForActiveWatch:v18];
     }
 
     else
     {
-      v17 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageIneligiblePromptBodyString];
-      [(HROnboardingElectrocardiogramAvailabilityViewController *)self presentAlertWithMessage:v17];
+      ageIneligiblePromptBodyString = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageIneligiblePromptBodyString];
+      [(HROnboardingElectrocardiogramAvailabilityViewController *)self presentAlertWithMessage:ageIneligiblePromptBodyString];
     }
   }
 }
@@ -622,9 +622,9 @@ void __97__HROnboardingElectrocardiogramAvailabilityViewController_stackedButton
 LABEL_9:
 }
 
-- (void)optionSelectorView:(id)a3 didSelectOptionAtIndex:(int64_t)a4
+- (void)optionSelectorView:(id)view didSelectOptionAtIndex:(int64_t)index
 {
-  if (a4)
+  if (index)
   {
     v4 = MEMORY[0x277CBEC28];
   }
@@ -637,15 +637,15 @@ LABEL_9:
   [(HROnboardingElectrocardiogramAvailabilityViewController *)self setIsValidAge:v4];
 }
 
-- (void)_trackElectrocardiogramOnboardingStepIfNeeded:(int64_t)a3 countryCode:(id)a4 algorithmVersion:(id)a5
+- (void)_trackElectrocardiogramOnboardingStepIfNeeded:(int64_t)needed countryCode:(id)code algorithmVersion:(id)version
 {
-  v11 = a4;
-  v8 = a5;
+  codeCopy = code;
+  versionCopy = version;
   if ([(HROnboardingElectrocardiogramAvailabilityViewController *)self isOnboarding]&& !+[HRElectrocardiogramOnboardingManager hasOverriddenOnboardingSettings])
   {
-    if (v8)
+    if (versionCopy)
     {
-      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(MEMORY[0x277CCD380], "onboardingVersionForKnownAlgorithmVersion:", objc_msgSend(v8, "integerValue"))}];
+      v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(MEMORY[0x277CCD380], "onboardingVersionForKnownAlgorithmVersion:", objc_msgSend(versionCopy, "integerValue"))}];
     }
 
     else
@@ -654,25 +654,25 @@ LABEL_9:
     }
 
     v10 = +[HRUIAnalyticsManager sharedManager];
-    [v10 trackElectrocardiogramOnboardingStep:a3 forOnboardingType:0 onboardingVersion:v9 countryCode:v11 provenance:{-[HROnboardingElectrocardiogramAvailabilityViewController provenance](self, "provenance")}];
+    [v10 trackElectrocardiogramOnboardingStep:needed forOnboardingType:0 onboardingVersion:v9 countryCode:codeCopy provenance:{-[HROnboardingElectrocardiogramAvailabilityViewController provenance](self, "provenance")}];
   }
 }
 
 - (void)_updateDateOfBirthDisplay
 {
   v29 = *MEMORY[0x277D85DE8];
-  v3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self isValidAge];
+  isValidAge = [(HROnboardingElectrocardiogramAvailabilityViewController *)self isValidAge];
 
-  if (v3)
+  if (isValidAge)
   {
     v25 = 0uLL;
     v26 = 0uLL;
     v23 = 0uLL;
     v24 = 0uLL;
-    v4 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
-    v5 = [v4 buttons];
+    stackedButtonView = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
+    buttons = [stackedButtonView buttons];
 
-    v6 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+    v6 = [buttons countByEnumeratingWithState:&v23 objects:v28 count:16];
     if (v6)
     {
       v7 = v6;
@@ -683,7 +683,7 @@ LABEL_9:
         {
           if (*v24 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(buttons);
           }
 
           v10 = *(*(&v23 + 1) + 8 * i);
@@ -692,7 +692,7 @@ LABEL_9:
           [v10 setBackgroundColor:v11];
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v23 objects:v28 count:16];
+        v7 = [buttons countByEnumeratingWithState:&v23 objects:v28 count:16];
       }
 
       while (v7);
@@ -705,10 +705,10 @@ LABEL_9:
     v22 = 0uLL;
     *(&v19 + 1) = 0;
     v20 = 0uLL;
-    v12 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
-    v5 = [v12 buttons];
+    stackedButtonView2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self stackedButtonView];
+    buttons = [stackedButtonView2 buttons];
 
-    v13 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+    v13 = [buttons countByEnumeratingWithState:&v19 objects:v27 count:16];
     if (v13)
     {
       v14 = v13;
@@ -719,16 +719,16 @@ LABEL_9:
         {
           if (*v20 != v15)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(buttons);
           }
 
           v17 = *(*(&v19 + 1) + 8 * j);
           [v17 setEnabled:0];
-          v18 = [MEMORY[0x277D75348] lightGrayColor];
-          [v17 setBackgroundColor:v18];
+          lightGrayColor = [MEMORY[0x277D75348] lightGrayColor];
+          [v17 setBackgroundColor:lightGrayColor];
         }
 
-        v14 = [v5 countByEnumeratingWithState:&v19 objects:v27 count:16];
+        v14 = [buttons countByEnumeratingWithState:&v19 objects:v27 count:16];
       }
 
       while (v14);
@@ -739,8 +739,8 @@ LABEL_9:
 - (id)_titleFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _titleFontTextStyle];
-  v4 = [v2 hk_scalableFontForTextStyle:v3 symbolicTraits:2];
+  _titleFontTextStyle = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _titleFontTextStyle];
+  v4 = [v2 hk_scalableFontForTextStyle:_titleFontTextStyle symbolicTraits:2];
 
   return v4;
 }
@@ -748,8 +748,8 @@ LABEL_9:
 - (id)_bodyFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFontTextStyle];
-  v4 = [v2 preferredFontForTextStyle:v3];
+  _bodyFontTextStyle = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFontTextStyle];
+  v4 = [v2 preferredFontForTextStyle:_bodyFontTextStyle];
 
   return v4;
 }
@@ -757,8 +757,8 @@ LABEL_9:
 - (id)_birthdayPromptFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFontTextStyle];
-  v4 = [v2 hk_preferredFontForTextStyle:v3 symbolicTraits:2];
+  _bodyFontTextStyle = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFontTextStyle];
+  v4 = [v2 hk_preferredFontForTextStyle:_bodyFontTextStyle symbolicTraits:2];
 
   return v4;
 }
@@ -766,16 +766,16 @@ LABEL_9:
 - (id)_footnoteFont
 {
   v2 = MEMORY[0x277D74300];
-  v3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _footnoteTextStyle];
-  v4 = [v2 preferredFontForTextStyle:v3];
+  _footnoteTextStyle = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _footnoteTextStyle];
+  v4 = [v2 preferredFontForTextStyle:_footnoteTextStyle];
 
   return v4;
 }
 
 - (double)_titleBottomToBodyTop
 {
-  v2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
-  [v2 _scaledValueForValue:15.0];
+  _bodyFont = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
+  [_bodyFont _scaledValueForValue:15.0];
   v4 = v3;
 
   return v4;
@@ -783,8 +783,8 @@ LABEL_9:
 
 - (double)_bodyBottomToAgePromptTop
 {
-  v2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
-  [v2 _scaledValueForValue:37.0];
+  _bodyFont = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
+  [_bodyFont _scaledValueForValue:37.0];
   v4 = v3;
 
   return v4;
@@ -792,8 +792,8 @@ LABEL_9:
 
 - (double)_agePromptLastBaselineToAgeEntryTop
 {
-  v2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
-  [v2 _scaledValueForValue:20.0];
+  _bodyFont = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
+  [_bodyFont _scaledValueForValue:20.0];
   v4 = v3;
 
   return v4;
@@ -801,8 +801,8 @@ LABEL_9:
 
 - (double)_ageEntryTopSeparatorToFirstBaseline
 {
-  v2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
-  [v2 _scaledValueForValue:36.0];
+  _bodyFont = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
+  [_bodyFont _scaledValueForValue:36.0];
   v4 = v3;
 
   return v4;
@@ -810,8 +810,8 @@ LABEL_9:
 
 - (double)_ageEntryLastBaselineToBottomSeparator
 {
-  v2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
-  [v2 _scaledValueForValue:24.0];
+  _bodyFont = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
+  [_bodyFont _scaledValueForValue:24.0];
   v4 = v3;
 
   return v4;
@@ -819,8 +819,8 @@ LABEL_9:
 
 - (double)_bottomSeparatorToBirthdayFooterFirstBaseline
 {
-  v2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
-  [v2 _scaledValueForValue:20.0];
+  _bodyFont = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
+  [_bodyFont _scaledValueForValue:20.0];
   v4 = v3;
 
   return v4;
@@ -828,8 +828,8 @@ LABEL_9:
 
 - (double)_birthdayFooterLastBaselineToContinueButton
 {
-  v2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
-  [v2 _scaledValueForValue:6.0];
+  _bodyFont = [(HROnboardingElectrocardiogramAvailabilityViewController *)self _bodyFont];
+  [_bodyFont _scaledValueForValue:6.0];
   v4 = v3;
 
   return v4;
@@ -845,22 +845,22 @@ LABEL_9:
 
 - (id)combinedFooterString
 {
-  v3 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self locationFooterString];
+  locationFooterString = [(HROnboardingElectrocardiogramAvailabilityViewController *)self locationFooterString];
 
-  if (v3)
+  if (locationFooterString)
   {
     v4 = MEMORY[0x277CCACA8];
-    v5 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageGatingFooterString];
-    v6 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self locationFooterString];
-    v7 = [v4 stringWithFormat:@"%@\n\n%@", v5, v6];
+    ageGatingFooterString = [(HROnboardingElectrocardiogramAvailabilityViewController *)self ageGatingFooterString];
+    locationFooterString2 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self locationFooterString];
+    birthdayFooterString = [v4 stringWithFormat:@"%@\n\n%@", ageGatingFooterString, locationFooterString2];
   }
 
   else
   {
-    v7 = [(HROnboardingElectrocardiogramAvailabilityViewController *)self birthdayFooterString];
+    birthdayFooterString = [(HROnboardingElectrocardiogramAvailabilityViewController *)self birthdayFooterString];
   }
 
-  return v7;
+  return birthdayFooterString;
 }
 
 - (id)buttonTitleString

@@ -1,13 +1,13 @@
 @interface CRLInspectorTextFieldNumberFormatter
 + (void)initialize;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation CRLInspectorTextFieldNumberFormatter
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = objc_alloc_init(CRLInspectorTextFieldNumberFormatter);
     v3 = qword_101A35408;
@@ -159,13 +159,13 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v7.receiver = self;
   v7.super_class = CRLInspectorTextFieldNumberFormatter;
-  v4 = [(CRLInspectorTextFieldNumberFormatter *)&v7 copyWithZone:a3];
-  v5 = [(CRLInspectorTextFieldAbstractNumberFormatter *)self crlaxValueFormat];
-  [v4 setCrlaxValueFormat:v5];
+  v4 = [(CRLInspectorTextFieldNumberFormatter *)&v7 copyWithZone:zone];
+  crlaxValueFormat = [(CRLInspectorTextFieldAbstractNumberFormatter *)self crlaxValueFormat];
+  [v4 setCrlaxValueFormat:crlaxValueFormat];
 
   return v4;
 }

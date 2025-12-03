@@ -1,43 +1,43 @@
 @interface _SFPBOpenFileProviderItemCommand
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
-- (_SFPBOpenFileProviderItemCommand)initWithDictionary:(id)a3;
-- (_SFPBOpenFileProviderItemCommand)initWithFacade:(id)a3;
-- (_SFPBOpenFileProviderItemCommand)initWithJSON:(id)a3;
+- (_SFPBOpenFileProviderItemCommand)initWithDictionary:(id)dictionary;
+- (_SFPBOpenFileProviderItemCommand)initWithFacade:(id)facade;
+- (_SFPBOpenFileProviderItemCommand)initWithJSON:(id)n;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)setCoreSpotlightIdentifier:(id)a3;
-- (void)setFileProviderIdentifier:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setCoreSpotlightIdentifier:(id)identifier;
+- (void)setFileProviderIdentifier:(id)identifier;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _SFPBOpenFileProviderItemCommand
 
-- (_SFPBOpenFileProviderItemCommand)initWithFacade:(id)a3
+- (_SFPBOpenFileProviderItemCommand)initWithFacade:(id)facade
 {
-  v4 = a3;
+  facadeCopy = facade;
   v5 = [(_SFPBOpenFileProviderItemCommand *)self init];
   if (v5)
   {
-    v6 = [v4 coreSpotlightIdentifier];
+    coreSpotlightIdentifier = [facadeCopy coreSpotlightIdentifier];
 
-    if (v6)
+    if (coreSpotlightIdentifier)
     {
-      v7 = [v4 coreSpotlightIdentifier];
-      [(_SFPBOpenFileProviderItemCommand *)v5 setCoreSpotlightIdentifier:v7];
+      coreSpotlightIdentifier2 = [facadeCopy coreSpotlightIdentifier];
+      [(_SFPBOpenFileProviderItemCommand *)v5 setCoreSpotlightIdentifier:coreSpotlightIdentifier2];
     }
 
-    v8 = [v4 fileProviderIdentifier];
+    fileProviderIdentifier = [facadeCopy fileProviderIdentifier];
 
-    if (v8)
+    if (fileProviderIdentifier)
     {
-      v9 = [v4 fileProviderIdentifier];
-      [(_SFPBOpenFileProviderItemCommand *)v5 setFileProviderIdentifier:v9];
+      fileProviderIdentifier2 = [facadeCopy fileProviderIdentifier];
+      [(_SFPBOpenFileProviderItemCommand *)v5 setFileProviderIdentifier:fileProviderIdentifier2];
     }
 
-    if ([v4 hasShouldRevealFile])
+    if ([facadeCopy hasShouldRevealFile])
     {
-      -[_SFPBOpenFileProviderItemCommand setShouldRevealFile:](v5, "setShouldRevealFile:", [v4 shouldRevealFile]);
+      -[_SFPBOpenFileProviderItemCommand setShouldRevealFile:](v5, "setShouldRevealFile:", [facadeCopy shouldRevealFile]);
     }
 
     v10 = v5;
@@ -46,15 +46,15 @@
   return v5;
 }
 
-- (_SFPBOpenFileProviderItemCommand)initWithDictionary:(id)a3
+- (_SFPBOpenFileProviderItemCommand)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = _SFPBOpenFileProviderItemCommand;
   v5 = [(_SFPBOpenFileProviderItemCommand *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"coreSpotlightIdentifier"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"coreSpotlightIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -62,7 +62,7 @@
       [(_SFPBOpenFileProviderItemCommand *)v5 setCoreSpotlightIdentifier:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"fileProviderIdentifier"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"fileProviderIdentifier"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -70,7 +70,7 @@
       [(_SFPBOpenFileProviderItemCommand *)v5 setFileProviderIdentifier:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"shouldRevealFile"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"shouldRevealFile"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -83,30 +83,30 @@
   return v5;
 }
 
-- (_SFPBOpenFileProviderItemCommand)initWithJSON:(id)a3
+- (_SFPBOpenFileProviderItemCommand)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(_SFPBOpenFileProviderItemCommand *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(_SFPBOpenFileProviderItemCommand *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(_SFPBOpenFileProviderItemCommand *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -119,28 +119,28 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_coreSpotlightIdentifier)
   {
-    v4 = [(_SFPBOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"coreSpotlightIdentifier"];
+    coreSpotlightIdentifier = [(_SFPBOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
+    v5 = [coreSpotlightIdentifier copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"coreSpotlightIdentifier"];
   }
 
   if (self->_fileProviderIdentifier)
   {
-    v6 = [(_SFPBOpenFileProviderItemCommand *)self fileProviderIdentifier];
-    v7 = [v6 copy];
-    [v3 setObject:v7 forKeyedSubscript:@"fileProviderIdentifier"];
+    fileProviderIdentifier = [(_SFPBOpenFileProviderItemCommand *)self fileProviderIdentifier];
+    v7 = [fileProviderIdentifier copy];
+    [dictionary setObject:v7 forKeyedSubscript:@"fileProviderIdentifier"];
   }
 
   if (self->_shouldRevealFile)
   {
     v8 = [MEMORY[0x1E696AD98] numberWithBool:{-[_SFPBOpenFileProviderItemCommand shouldRevealFile](self, "shouldRevealFile")}];
-    [v3 setObject:v8 forKeyedSubscript:@"shouldRevealFile"];
+    [dictionary setObject:v8 forKeyedSubscript:@"shouldRevealFile"];
   }
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -156,28 +156,28 @@
   return v4 ^ v3 ^ v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_12;
   }
 
-  v5 = [(_SFPBOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
-  v6 = [v4 coreSpotlightIdentifier];
-  if ((v5 != 0) == (v6 == 0))
+  coreSpotlightIdentifier = [(_SFPBOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
+  coreSpotlightIdentifier2 = [equalCopy coreSpotlightIdentifier];
+  if ((coreSpotlightIdentifier != 0) == (coreSpotlightIdentifier2 == 0))
   {
     goto LABEL_11;
   }
 
-  v7 = [(_SFPBOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
-  if (v7)
+  coreSpotlightIdentifier3 = [(_SFPBOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
+  if (coreSpotlightIdentifier3)
   {
-    v8 = v7;
-    v9 = [(_SFPBOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
-    v10 = [v4 coreSpotlightIdentifier];
-    v11 = [v9 isEqual:v10];
+    v8 = coreSpotlightIdentifier3;
+    coreSpotlightIdentifier4 = [(_SFPBOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
+    coreSpotlightIdentifier5 = [equalCopy coreSpotlightIdentifier];
+    v11 = [coreSpotlightIdentifier4 isEqual:coreSpotlightIdentifier5];
 
     if (!v11)
     {
@@ -189,24 +189,24 @@
   {
   }
 
-  v5 = [(_SFPBOpenFileProviderItemCommand *)self fileProviderIdentifier];
-  v6 = [v4 fileProviderIdentifier];
-  if ((v5 != 0) != (v6 == 0))
+  coreSpotlightIdentifier = [(_SFPBOpenFileProviderItemCommand *)self fileProviderIdentifier];
+  coreSpotlightIdentifier2 = [equalCopy fileProviderIdentifier];
+  if ((coreSpotlightIdentifier != 0) != (coreSpotlightIdentifier2 == 0))
   {
-    v12 = [(_SFPBOpenFileProviderItemCommand *)self fileProviderIdentifier];
-    if (!v12)
+    fileProviderIdentifier = [(_SFPBOpenFileProviderItemCommand *)self fileProviderIdentifier];
+    if (!fileProviderIdentifier)
     {
 
 LABEL_15:
       shouldRevealFile = self->_shouldRevealFile;
-      v17 = shouldRevealFile == [v4 shouldRevealFile];
+      v17 = shouldRevealFile == [equalCopy shouldRevealFile];
       goto LABEL_13;
     }
 
-    v13 = v12;
-    v14 = [(_SFPBOpenFileProviderItemCommand *)self fileProviderIdentifier];
-    v15 = [v4 fileProviderIdentifier];
-    v16 = [v14 isEqual:v15];
+    v13 = fileProviderIdentifier;
+    fileProviderIdentifier2 = [(_SFPBOpenFileProviderItemCommand *)self fileProviderIdentifier];
+    fileProviderIdentifier3 = [equalCopy fileProviderIdentifier];
+    v16 = [fileProviderIdentifier2 isEqual:fileProviderIdentifier3];
 
     if (v16)
     {
@@ -226,17 +226,17 @@ LABEL_13:
   return v17;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v6 = a3;
-  v4 = [(_SFPBOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
-  if (v4)
+  toCopy = to;
+  coreSpotlightIdentifier = [(_SFPBOpenFileProviderItemCommand *)self coreSpotlightIdentifier];
+  if (coreSpotlightIdentifier)
   {
     PBDataWriterWriteStringField();
   }
 
-  v5 = [(_SFPBOpenFileProviderItemCommand *)self fileProviderIdentifier];
-  if (v5)
+  fileProviderIdentifier = [(_SFPBOpenFileProviderItemCommand *)self fileProviderIdentifier];
+  if (fileProviderIdentifier)
   {
     PBDataWriterWriteStringField();
   }
@@ -247,18 +247,18 @@ LABEL_13:
   }
 }
 
-- (void)setFileProviderIdentifier:(id)a3
+- (void)setFileProviderIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   fileProviderIdentifier = self->_fileProviderIdentifier;
   self->_fileProviderIdentifier = v4;
 
   MEMORY[0x1EEE66BB8]();
 }
 
-- (void)setCoreSpotlightIdentifier:(id)a3
+- (void)setCoreSpotlightIdentifier:(id)identifier
 {
-  v4 = [a3 copy];
+  v4 = [identifier copy];
   coreSpotlightIdentifier = self->_coreSpotlightIdentifier;
   self->_coreSpotlightIdentifier = v4;
 

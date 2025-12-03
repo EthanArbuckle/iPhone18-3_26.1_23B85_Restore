@@ -1,6 +1,6 @@
 @interface IdsDeviceMutation
-+ (id)parseFromData:(id)a3 error:(id *)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)parseFromData:(id)data error:(id *)error;
+- (BOOL)isEqual:(id)equal;
 - (IdsDeviceMutation)init;
 - (IdsMutation)idsMutation;
 - (id)data;
@@ -21,34 +21,34 @@
 - (id)data
 {
   v3 = +[NSMutableData data];
-  v4 = [(IdsDeviceMutation *)self accountKeyHash];
-  v5 = [(TLSMessageClass *)self encodeHashValue:v4 buffer:v3];
+  accountKeyHash = [(IdsDeviceMutation *)self accountKeyHash];
+  v5 = [(TLSMessageClass *)self encodeHashValue:accountKeyHash buffer:v3];
 
   if (!v5)
   {
     goto LABEL_14;
   }
 
-  v6 = [(IdsDeviceMutation *)self deviceIdHash];
-  v7 = [(TLSMessageClass *)self encodeHashValue:v6 buffer:v3];
+  deviceIdHash = [(IdsDeviceMutation *)self deviceIdHash];
+  v7 = [(TLSMessageClass *)self encodeHashValue:deviceIdHash buffer:v3];
 
   if (!v7)
   {
     goto LABEL_14;
   }
 
-  v8 = [(IdsDeviceMutation *)self clientDataHash];
-  v9 = [(TLSMessageClass *)self encodeHashValue:v8 buffer:v3];
+  clientDataHash = [(IdsDeviceMutation *)self clientDataHash];
+  v9 = [(TLSMessageClass *)self encodeHashValue:clientDataHash buffer:v3];
 
   if (!v9 || ![(TLSMessageClass *)self encodeUint64:[(IdsDeviceMutation *)self appVersion] buffer:v3])
   {
     goto LABEL_14;
   }
 
-  v10 = [(IdsDeviceMutation *)self idsMutation];
-  v11 = [v10 mutationType];
+  idsMutation = [(IdsDeviceMutation *)self idsMutation];
+  mutationType = [idsMutation mutationType];
 
-  v12 = v11 == 1 && [(IdsDeviceMutation *)self accountMismatch];
+  v12 = mutationType == 1 && [(IdsDeviceMutation *)self accountMismatch];
   if (-[TLSMessageClass encodeBool:buffer:](self, "encodeBool:buffer:", v12, v3) && ((-[IdsDeviceMutation idsMutation](self, "idsMutation"), v13 = objc_claimAutoreleasedReturnValue(), v14 = [v13 mutationType], v13, v14 != 1) ? (v15 = 0) : (v15 = -[IdsDeviceMutation expiryMs](self, "expiryMs")), -[TLSMessageClass encodeUint64:buffer:](self, "encodeUint64:buffer:", v15, v3)))
   {
     v16 = v3;
@@ -63,28 +63,28 @@ LABEL_14:
   return v16;
 }
 
-+ (id)parseFromData:(id)a3 error:(id *)a4
++ (id)parseFromData:(id)data error:(id *)error
 {
-  v5 = a3;
-  v6 = [v5 bytes];
-  v7 = [v5 bytes];
-  v8 = [v5 length];
+  dataCopy = data;
+  bytes = [dataCopy bytes];
+  bytes2 = [dataCopy bytes];
+  v8 = [dataCopy length];
   v9 = objc_alloc_init(objc_opt_class());
   v32 = 0;
-  v10 = [v9 parseHashValue:v6 end:&v8[v7] result:&v32];
+  v10 = [v9 parseHashValue:bytes end:&v8[bytes2] result:&v32];
   v11 = v32;
   if (v10)
   {
     [v9 setAccountKeyHash:v11];
     v31 = 0;
-    v12 = [v9 parseHashValue:v10 end:&v8[v7] result:&v31];
+    v12 = [v9 parseHashValue:v10 end:&v8[bytes2] result:&v31];
     v13 = v31;
     if (!v12)
     {
-      if (a4)
+      if (error)
       {
         [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-243 description:@"failed to parse device ID from Mutation"];
-        *a4 = v22 = 0;
+        *error = v22 = 0;
       }
 
       else
@@ -97,31 +97,31 @@ LABEL_14:
 
     [v9 setDeviceIdHash:v13];
     v30 = 0;
-    v14 = [v9 parseHashValue:v12 end:&v8[v7] result:&v30];
+    v14 = [v9 parseHashValue:v12 end:&v8[bytes2] result:&v30];
     v15 = v30;
     if (v14)
     {
       [v9 setClientDataHash:v15];
       v29 = 0;
-      v16 = [v9 parseUint64:v14 end:&v8[v7] result:&v29];
+      v16 = [v9 parseUint64:v14 end:&v8[bytes2] result:&v29];
       if (v16)
       {
         v17 = v16;
         [v9 setAppVersion:v29];
         v28 = 0;
         [v9 setAccountMismatch:0];
-        v18 = [v9 parseBool:v17 end:&v8[v7] result:&v28];
+        v18 = [v9 parseBool:v17 end:&v8[bytes2] result:&v28];
         if (v18)
         {
           v19 = v18;
           [v9 setAccountMismatch:v28];
           v27 = 0;
-          v20 = [v9 parseUint64:v19 end:&v8[v7] result:&v27];
+          v20 = [v9 parseUint64:v19 end:&v8[bytes2] result:&v27];
           if (v20)
           {
             v21 = v20;
             [v9 setExpiryMs:v27];
-            [v9 setParsedLength:{v21 - objc_msgSend(v5, "bytes")}];
+            [v9 setParsedLength:{v21 - objc_msgSend(dataCopy, "bytes")}];
             v22 = v9;
 LABEL_24:
 
@@ -129,7 +129,7 @@ LABEL_25:
             goto LABEL_26;
           }
 
-          if (a4)
+          if (error)
           {
             v23 = kTransparencyErrorDecode;
             v24 = @"failed to parse expiry timestamp from Mutation";
@@ -142,7 +142,7 @@ LABEL_23:
           goto LABEL_24;
         }
 
-        if (!a4)
+        if (!error)
         {
           goto LABEL_23;
         }
@@ -154,7 +154,7 @@ LABEL_23:
 
       else
       {
-        if (!a4)
+        if (!error)
         {
           goto LABEL_23;
         }
@@ -167,7 +167,7 @@ LABEL_23:
 
     else
     {
-      if (!a4)
+      if (!error)
       {
         goto LABEL_23;
       }
@@ -179,14 +179,14 @@ LABEL_23:
 
 LABEL_22:
     [TransparencyError errorWithDomain:v23 code:v25 description:v24];
-    *a4 = v22 = 0;
+    *error = v22 = 0;
     goto LABEL_24;
   }
 
-  if (a4)
+  if (error)
   {
     [TransparencyError errorWithDomain:kTransparencyErrorDecode code:-242 description:@"failed to parse account key from Mutation"];
-    *a4 = v22 = 0;
+    *error = v22 = 0;
   }
 
   else
@@ -201,28 +201,28 @@ LABEL_26:
 
 - (id)debugDescription
 {
-  v3 = [(NSData *)self->_accountKeyHash kt_hexString];
-  v4 = [(NSData *)self->_deviceIdHash kt_hexString];
-  v5 = [(NSData *)self->_clientDataHash kt_hexString];
-  v6 = [NSString stringWithFormat:@"{\t\taccountKeyHash:%@\n\t\tdeviceIdHash:%@\n\t\tclientDataHash:%@\n\t\tapplicationVersion:%llu\n\t\taccountMismatch:%lu\n\t\texpiryMs:%llu\n}", v3, v4, v5, self->_appVersion, self->_accountMismatch, self->_expiryMs];
+  kt_hexString = [(NSData *)self->_accountKeyHash kt_hexString];
+  kt_hexString2 = [(NSData *)self->_deviceIdHash kt_hexString];
+  kt_hexString3 = [(NSData *)self->_clientDataHash kt_hexString];
+  v6 = [NSString stringWithFormat:@"{\t\taccountKeyHash:%@\n\t\tdeviceIdHash:%@\n\t\tclientDataHash:%@\n\t\tapplicationVersion:%llu\n\t\taccountMismatch:%lu\n\t\texpiryMs:%llu\n}", kt_hexString, kt_hexString2, kt_hexString3, self->_appVersion, self->_accountMismatch, self->_expiryMs];
 
   return v6;
 }
 
 - (id)description
 {
-  v3 = [(NSData *)self->_accountKeyHash kt_hexString];
-  v4 = [(NSData *)self->_deviceIdHash kt_hexString];
-  v5 = [(NSData *)self->_clientDataHash kt_hexString];
-  v6 = [NSString stringWithFormat:@"accountKeyHash:%@ deviceIdHash::%@; clientDataHash:%@; applicationVersion:%llu; accountMismatch:%lu; expiryMs:%llu", v3, v4, v5, self->_appVersion, self->_accountMismatch, self->_expiryMs];;
+  kt_hexString = [(NSData *)self->_accountKeyHash kt_hexString];
+  kt_hexString2 = [(NSData *)self->_deviceIdHash kt_hexString];
+  kt_hexString3 = [(NSData *)self->_clientDataHash kt_hexString];
+  v6 = [NSString stringWithFormat:@"accountKeyHash:%@ deviceIdHash::%@; clientDataHash:%@; applicationVersion:%llu; accountMismatch:%lu; expiryMs:%llu", kt_hexString, kt_hexString2, kt_hexString3, self->_appVersion, self->_accountMismatch, self->_expiryMs];;
 
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -232,11 +232,11 @@ LABEL_26:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(IdsDeviceMutation *)self data];
-      v7 = [(IdsDeviceMutation *)v5 data];
+      v5 = equalCopy;
+      data = [(IdsDeviceMutation *)self data];
+      data2 = [(IdsDeviceMutation *)v5 data];
 
-      v8 = [v6 isEqualToData:v7];
+      v8 = [data isEqualToData:data2];
     }
 
     else
@@ -258,17 +258,17 @@ LABEL_26:
 - (id)diagnosticsJsonDictionary
 {
   v3 = +[NSMutableDictionary dictionary];
-  v4 = [(IdsDeviceMutation *)self accountKeyHash];
-  v5 = [v4 kt_hexString];
-  [v3 setObject:v5 forKeyedSubscript:@"accountKeyHash"];
+  accountKeyHash = [(IdsDeviceMutation *)self accountKeyHash];
+  kt_hexString = [accountKeyHash kt_hexString];
+  [v3 setObject:kt_hexString forKeyedSubscript:@"accountKeyHash"];
 
-  v6 = [(IdsDeviceMutation *)self deviceIdHash];
-  v7 = [v6 kt_hexString];
-  [v3 setObject:v7 forKeyedSubscript:@"deviceIdHash"];
+  deviceIdHash = [(IdsDeviceMutation *)self deviceIdHash];
+  kt_hexString2 = [deviceIdHash kt_hexString];
+  [v3 setObject:kt_hexString2 forKeyedSubscript:@"deviceIdHash"];
 
-  v8 = [(IdsDeviceMutation *)self clientDataHash];
-  v9 = [v8 kt_hexString];
-  [v3 setObject:v9 forKeyedSubscript:@"clientDataHash"];
+  clientDataHash = [(IdsDeviceMutation *)self clientDataHash];
+  kt_hexString3 = [clientDataHash kt_hexString];
+  [v3 setObject:kt_hexString3 forKeyedSubscript:@"clientDataHash"];
 
   v10 = [NSNumber numberWithUnsignedLongLong:[(IdsDeviceMutation *)self appVersion]];
   [v3 setObject:v10 forKeyedSubscript:@"appVersion"];
@@ -279,8 +279,8 @@ LABEL_26:
     [v3 setObject:v11 forKeyedSubscript:@"expiryMs"];
 
     v12 = [NSDate dateWithTimeIntervalSince1970:([(IdsDeviceMutation *)self expiryMs]/ 0x3E8)];
-    v13 = [v12 kt_toISO_8601_UTCString];
-    [v3 setObject:v13 forKeyedSubscript:@"expiryDateReadable"];
+    kt_toISO_8601_UTCString = [v12 kt_toISO_8601_UTCString];
+    [v3 setObject:kt_toISO_8601_UTCString forKeyedSubscript:@"expiryDateReadable"];
   }
 
   return v3;

@@ -1,6 +1,6 @@
 @interface CACGestureLivePreviewOverlayManager
-- (void)addPointsToLiveRecordingGesturePreviewByFingerIdentifier:(id)a3 forces:(id)a4 atTime:(double)a5;
-- (void)removeTrackingForFingerIdentifier:(id)a3;
+- (void)addPointsToLiveRecordingGesturePreviewByFingerIdentifier:(id)identifier forces:(id)forces atTime:(double)time;
+- (void)removeTrackingForFingerIdentifier:(id)identifier;
 - (void)showGestureLivePreviewViewer;
 @end
 
@@ -23,19 +23,19 @@ CACGestureLivePreviewViewController *__67__CACGestureLivePreviewOverlayManager_s
   return v0;
 }
 
-- (void)addPointsToLiveRecordingGesturePreviewByFingerIdentifier:(id)a3 forces:(id)a4 atTime:(double)a5
+- (void)addPointsToLiveRecordingGesturePreviewByFingerIdentifier:(id)identifier forces:(id)forces atTime:(double)time
 {
-  v8 = a4;
-  v9 = a3;
-  v10 = [(CACGestureLivePreviewOverlayManager *)self gestureViewController];
-  [v10 addPointsToLiveRecordingGesturePreviewByFingerIdentifier:v9 forces:v8 atTime:a5];
+  forcesCopy = forces;
+  identifierCopy = identifier;
+  gestureViewController = [(CACGestureLivePreviewOverlayManager *)self gestureViewController];
+  [gestureViewController addPointsToLiveRecordingGesturePreviewByFingerIdentifier:identifierCopy forces:forcesCopy atTime:time];
 }
 
-- (void)removeTrackingForFingerIdentifier:(id)a3
+- (void)removeTrackingForFingerIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(CACGestureLivePreviewOverlayManager *)self gestureViewController];
-  [v5 removeTrackingForFingerIdentifier:v4];
+  identifierCopy = identifier;
+  gestureViewController = [(CACGestureLivePreviewOverlayManager *)self gestureViewController];
+  [gestureViewController removeTrackingForFingerIdentifier:identifierCopy];
 }
 
 @end

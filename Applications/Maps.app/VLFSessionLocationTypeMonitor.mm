@@ -2,20 +2,20 @@
 + (BOOL)affectsBannerVisibility;
 + (BOOL)affectsPuckVisibility;
 - (NSString)debugDescription;
-- (VLFSessionLocationTypeMonitor)initWithObserver:(id)a3 locationManager:(id)a4;
+- (VLFSessionLocationTypeMonitor)initWithObserver:(id)observer locationManager:(id)manager;
 - (void)_buildAllowedLocationTypes;
-- (void)_updateStateWithLocation:(id)a3;
+- (void)_updateStateWithLocation:(id)location;
 - (void)dealloc;
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)locationManager:(id)manager didUpdateLocation:(id)location;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation VLFSessionLocationTypeMonitor
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = key.var1;
+  var0 = key.var0;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v7 = dispatch_queue_get_label(0);
   if (label != v7)
@@ -65,9 +65,9 @@
     }
 
     [(VLFSessionLocationTypeMonitor *)self _buildAllowedLocationTypes];
-    v10 = [(VLFSessionLocationTypeMonitor *)self locationManager];
-    v11 = [v10 lastLocation];
-    [(VLFSessionLocationTypeMonitor *)self _updateStateWithLocation:v11];
+    locationManager = [(VLFSessionLocationTypeMonitor *)self locationManager];
+    lastLocation = [locationManager lastLocation];
+    [(VLFSessionLocationTypeMonitor *)self _updateStateWithLocation:lastLocation];
 
 LABEL_18:
     return;
@@ -87,23 +87,23 @@ LABEL_18:
 
   if (sub_100E03634())
   {
-    v10 = sub_10006D178();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    locationManager = sub_10006D178();
+    if (os_log_type_enabled(locationManager, OS_LOG_TYPE_ERROR))
     {
       v13 = +[NSThread callStackSymbols];
       v17 = 138412290;
       v18 = v13;
-      _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%@", &v17, 0xCu);
+      _os_log_impl(&_mh_execute_header, locationManager, OS_LOG_TYPE_ERROR, "%@", &v17, 0xCu);
     }
 
     goto LABEL_18;
   }
 }
 
-- (void)locationManager:(id)a3 didUpdateLocation:(id)a4
+- (void)locationManager:(id)manager didUpdateLocation:(id)location
 {
-  v6 = a3;
-  v7 = a4;
+  managerCopy = manager;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v9 = dispatch_queue_get_label(0);
   if (label != v9)
@@ -143,7 +143,7 @@ LABEL_18:
     }
   }
 
-  [(VLFSessionLocationTypeMonitor *)self _updateStateWithLocation:v7];
+  [(VLFSessionLocationTypeMonitor *)self _updateStateWithLocation:locationCopy];
 }
 
 - (NSString)debugDescription
@@ -183,14 +183,14 @@ LABEL_18:
   }
 
   v7 = v6;
-  v8 = [(VLFSessionMonitor *)self state];
+  state = [(VLFSessionMonitor *)self state];
   v9 = @"Hide";
-  if (v8 == 1)
+  if (state == 1)
   {
     v9 = @"EnablePuck";
   }
 
-  if (v8 == 2)
+  if (state == 2)
   {
     v10 = @"EnablePuckAndBanner";
   }
@@ -200,17 +200,17 @@ LABEL_18:
     v10 = v9;
   }
 
-  v23 = [(VLFSessionLocationTypeMonitor *)self locationManager];
-  v11 = [v23 lastLocation];
-  v12 = [v11 type];
-  if (v12 < 0xF && ((0x5FFFu >> v12) & 1) != 0)
+  locationManager = [(VLFSessionLocationTypeMonitor *)self locationManager];
+  lastLocation = [locationManager lastLocation];
+  type = [lastLocation type];
+  if (type < 0xF && ((0x5FFFu >> type) & 1) != 0)
   {
-    v13 = *(&off_1016323C8 + v12);
+    v13 = *(&off_1016323C8 + type);
   }
 
   else
   {
-    v13 = [NSString stringWithFormat:@"%d", v12];
+    v13 = [NSString stringWithFormat:@"%d", type];
   }
 
   if (GEOConfigGetBOOL())
@@ -370,9 +370,9 @@ LABEL_18:
   [(VLFSessionLocationTypeMonitor *)self setAllowedLocationTypes:v13];
 }
 
-- (void)_updateStateWithLocation:(id)a3
+- (void)_updateStateWithLocation:(id)location
 {
-  v4 = a3;
+  locationCopy = location;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -414,19 +414,19 @@ LABEL_18:
 
   v8 = sub_10006D28C();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG);
-  if (v4)
+  if (locationCopy)
   {
     if (v9)
     {
-      v10 = [v4 type];
-      if (v10 < 0xF && ((0x5FFFu >> v10) & 1) != 0)
+      type = [locationCopy type];
+      if (type < 0xF && ((0x5FFFu >> type) & 1) != 0)
       {
-        v11 = *(&off_1016323C8 + v10);
+        v11 = *(&off_1016323C8 + type);
       }
 
       else
       {
-        v11 = [NSString stringWithFormat:@"%d", v10];
+        v11 = [NSString stringWithFormat:@"%d", type];
       }
 
       *buf = 138412290;
@@ -434,80 +434,80 @@ LABEL_18:
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Got location with type: %@", buf, 0xCu);
     }
 
-    v12 = [(VLFSessionLocationTypeMonitor *)self allowedLocationTypes];
-    v13 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v4 type]);
-    v14 = [v12 containsObject:v13];
+    allowedLocationTypes = [(VLFSessionLocationTypeMonitor *)self allowedLocationTypes];
+    v13 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [locationCopy type]);
+    v14 = [allowedLocationTypes containsObject:v13];
 
-    v15 = [(VLFSessionMonitor *)self state];
+    state = [(VLFSessionMonitor *)self state];
     if (v14)
     {
-      if (v15 != 2)
+      if (state != 2)
       {
         v16 = sub_10006D28C();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
         {
-          v17 = [v4 type];
-          v18 = [v4 type];
-          if (v18 < 0xF && ((0x5FFFu >> v18) & 1) != 0)
+          type2 = [locationCopy type];
+          type3 = [locationCopy type];
+          if (type3 < 0xF && ((0x5FFFu >> type3) & 1) != 0)
           {
-            v19 = *(&off_1016323C8 + v18);
+            v19 = *(&off_1016323C8 + type3);
           }
 
           else
           {
-            v19 = [NSString stringWithFormat:@"%d", v18];
+            v19 = [NSString stringWithFormat:@"%d", type3];
           }
 
-          v27 = [(VLFSessionLocationTypeMonitor *)self allowedLocationTypes];
+          allowedLocationTypes2 = [(VLFSessionLocationTypeMonitor *)self allowedLocationTypes];
           *buf = 67109634;
-          *v32 = v17;
+          *v32 = type2;
           *&v32[4] = 2112;
           *&v32[6] = v19;
           *&v32[14] = 2112;
-          *&v32[16] = v27;
+          *&v32[16] = allowedLocationTypes2;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_INFO, "Location type (%d:%@) is in the allowed set (%@); updating state", buf, 0x1Cu);
         }
       }
 
-      v25 = self;
+      selfCopy2 = self;
       v26 = 2;
     }
 
     else
     {
-      if (v15)
+      if (state)
       {
         v20 = sub_10006D28C();
         if (os_log_type_enabled(v20, OS_LOG_TYPE_INFO))
         {
-          v21 = [v4 type];
-          v22 = [v4 type];
-          if (v22 < 0xF && ((0x5FFFu >> v22) & 1) != 0)
+          type4 = [locationCopy type];
+          type5 = [locationCopy type];
+          if (type5 < 0xF && ((0x5FFFu >> type5) & 1) != 0)
           {
-            v23 = *(&off_1016323C8 + v22);
+            v23 = *(&off_1016323C8 + type5);
           }
 
           else
           {
-            v23 = [NSString stringWithFormat:@"%d", v22];
+            v23 = [NSString stringWithFormat:@"%d", type5];
           }
 
-          v24 = [(VLFSessionLocationTypeMonitor *)self allowedLocationTypes];
+          allowedLocationTypes3 = [(VLFSessionLocationTypeMonitor *)self allowedLocationTypes];
           *buf = 67109634;
-          *v32 = v21;
+          *v32 = type4;
           *&v32[4] = 2112;
           *&v32[6] = v23;
           *&v32[14] = 2112;
-          *&v32[16] = v24;
+          *&v32[16] = allowedLocationTypes3;
           _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_INFO, "Location type (%d:%@) is NOT in the allowed set (%@); updating state", buf, 0x1Cu);
         }
       }
 
-      v25 = self;
+      selfCopy2 = self;
       v26 = 0;
     }
 
-    [(VLFSessionMonitor *)v25 setState:v26];
+    [(VLFSessionMonitor *)selfCopy2 setState:v26];
   }
 
   else
@@ -529,11 +529,11 @@ LABEL_18:
   [(VLFSessionLocationTypeMonitor *)&v3 dealloc];
 }
 
-- (VLFSessionLocationTypeMonitor)initWithObserver:(id)a3 locationManager:(id)a4
+- (VLFSessionLocationTypeMonitor)initWithObserver:(id)observer locationManager:(id)manager
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  observerCopy = observer;
+  managerCopy = manager;
+  if (!observerCopy)
   {
     v12 = sub_10006D178();
     if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
@@ -562,7 +562,7 @@ LABEL_18:
     }
   }
 
-  if (!v7)
+  if (!managerCopy)
   {
     v15 = sub_10006D178();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -593,11 +593,11 @@ LABEL_18:
 
   v18.receiver = self;
   v18.super_class = VLFSessionLocationTypeMonitor;
-  v8 = [(VLFSessionMonitor *)&v18 initWithObserver:v6];
+  v8 = [(VLFSessionMonitor *)&v18 initWithObserver:observerCopy];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_locationManager, a4);
+    objc_storeStrong(&v8->_locationManager, manager);
     [(VLFLocationManager *)v9->_locationManager addObserver:v9];
     _GEOConfigAddDelegateListenerForKey();
     _GEOConfigAddDelegateListenerForKey();
@@ -606,8 +606,8 @@ LABEL_18:
     _GEOConfigAddDelegateListenerForKey();
 
     [(VLFSessionLocationTypeMonitor *)v9 _buildAllowedLocationTypes];
-    v10 = [(VLFLocationManager *)v9->_locationManager lastLocation];
-    [(VLFSessionLocationTypeMonitor *)v9 _updateStateWithLocation:v10];
+    lastLocation = [(VLFLocationManager *)v9->_locationManager lastLocation];
+    [(VLFSessionLocationTypeMonitor *)v9 _updateStateWithLocation:lastLocation];
   }
 
   return v9;

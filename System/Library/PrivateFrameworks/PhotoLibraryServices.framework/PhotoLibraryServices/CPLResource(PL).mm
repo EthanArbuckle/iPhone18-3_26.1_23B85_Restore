@@ -9,16 +9,16 @@
 
 - (uint64_t)deleteAfterUpload
 {
-  v1 = objc_getAssociatedObject(a1, @"deleteAfterUpload");
-  v2 = [v1 BOOLValue];
+  v1 = objc_getAssociatedObject(self, @"deleteAfterUpload");
+  bOOLValue = [v1 BOOLValue];
 
-  return v2;
+  return bOOLValue;
 }
 
 - (void)setDeleteAfterUpload:()PL
 {
   v2 = [MEMORY[0x1E696AD98] numberWithBool:?];
-  objc_setAssociatedObject(a1, @"deleteAfterUpload", v2, 1);
+  objc_setAssociatedObject(self, @"deleteAfterUpload", v2, 1);
 }
 
 + (id)imageDerivativeTypes

@@ -1,91 +1,91 @@
 @interface _UIPhysicalButtonInteractionArbiter
 - (UIScene)_scene;
 - (_UIPhysicalButtonInteractionArbiter)init;
-- (_UIPhysicalButtonInteractionArbiter)initWithScene:(id)a3;
+- (_UIPhysicalButtonInteractionArbiter)initWithScene:(id)scene;
 - (_UIPhysicalButtonInteractionArbiterSystemShellDelegate)systemShellDelegate;
-- (id)_actionRespondersForScene:(id)a3;
-- (id)_gestureViewsForWindow:(uint64_t)a3 physicalButton:;
+- (id)_actionRespondersForScene:(id)scene;
+- (id)_gestureViewsForWindow:(uint64_t)window physicalButton:;
 - (id)_mostActiveViewServiceSessionForScene;
-- (id)_performConfigurationResolutionForRequiredWindow:(uint64_t)a1;
-- (id)_registerPhysicalButtonInteraction:(uint64_t)a1;
-- (id)_registerViewServiceObserver:(id *)a1;
-- (id)configurationResolutionContextForSystemShellWindow:(id)a3;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)localEventDeferringTargetWindowForEnvironment:(id)a3;
+- (id)_performConfigurationResolutionForRequiredWindow:(uint64_t)window;
+- (id)_registerPhysicalButtonInteraction:(uint64_t)interaction;
+- (id)_registerViewServiceObserver:(id *)observer;
+- (id)configurationResolutionContextForSystemShellWindow:(id)window;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)localEventDeferringTargetWindowForEnvironment:(id)environment;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 - (uint64_t)_configureDeferredResolutionDisplayLinkForScreen:(uint64_t)result;
-- (void)_addSystemShellWindowRequiringResolutionIfNeeded:(uint64_t)a1;
+- (void)_addSystemShellWindowRequiringResolutionIfNeeded:(uint64_t)needed;
 - (void)_beginObservingWindowVisibilityChanges;
-- (void)_beginTrackingWindow:(uint64_t)a1;
+- (void)_beginTrackingWindow:(uint64_t)window;
 - (void)_createEvaluatedObjectCacheIfNeeded;
-- (void)_deferredResolutionDisplayLinkTicked:(id)a3;
-- (void)_enumerateAndValidateInteractionsInWindow:(uint64_t)a3 withRequiredBehaviorMask:(uint64_t)a4 configurationAcceptanceEvaluator:(uint64_t)a5 interactionAcceptanceHandler:(uint64_t)a6 shouldStopEvaluator:;
-- (void)_handleBSAction:(uint64_t)a1;
-- (void)_mostActiveViewServiceSessionDidChange:(id)a3;
-- (void)_removeAllSystemShellReferencesForDetachingWindow:(uint64_t)a1;
+- (void)_deferredResolutionDisplayLinkTicked:(id)ticked;
+- (void)_enumerateAndValidateInteractionsInWindow:(uint64_t)window withRequiredBehaviorMask:(uint64_t)mask configurationAcceptanceEvaluator:(uint64_t)evaluator interactionAcceptanceHandler:(uint64_t)handler shouldStopEvaluator:;
+- (void)_handleBSAction:(uint64_t)action;
+- (void)_mostActiveViewServiceSessionDidChange:(id)change;
+- (void)_removeAllSystemShellReferencesForDetachingWindow:(uint64_t)window;
 - (void)_resetWindowLevelObservation;
 - (void)_resolveConfigurations;
-- (void)_sceneWillInvalidate:(id)a3;
+- (void)_sceneWillInvalidate:(id)invalidate;
 - (void)_scheduleDeferredConfigurationResolution;
-- (void)_setNeedsResolutionOfPhysicalButtonConfigurationsInSceneForReason:(uint64_t)a1;
-- (void)_setNeedsResolutionOfPhysicalButtonConfigurationsInWindow:(unint64_t)a3 forReason:;
-- (void)_setResolutionStrategy:(int)a3 forInitialization:;
-- (void)_unregisterAllPhysicalButtonInteractionsForDetachingWindow:(uint64_t)a1;
-- (void)_windowHostingScene:(id)a3 willMoveFromScreen:(id)a4 toScreen:(id)a5;
-- (void)_windowVisibilityDidChange:(id)a3;
+- (void)_setNeedsResolutionOfPhysicalButtonConfigurationsInSceneForReason:(uint64_t)reason;
+- (void)_setNeedsResolutionOfPhysicalButtonConfigurationsInWindow:(unint64_t)window forReason:;
+- (void)_setResolutionStrategy:(int)strategy forInitialization:;
+- (void)_unregisterAllPhysicalButtonInteractionsForDetachingWindow:(uint64_t)window;
+- (void)_windowHostingScene:(id)scene willMoveFromScreen:(id)screen toScreen:(id)toScreen;
+- (void)_windowVisibilityDidChange:(id)change;
 - (void)dealloc;
-- (void)setNeedsResolutionOfPhysicalButtonConfigurationsForSystemShellDelegate:(id)a3;
-- (void)setSystemShellDelegate:(id)a3;
-- (void)window:(id)a3 changedFromLevel:(double)a4 toLevel:(double)a5;
+- (void)setNeedsResolutionOfPhysicalButtonConfigurationsForSystemShellDelegate:(id)delegate;
+- (void)setSystemShellDelegate:(id)delegate;
+- (void)window:(id)window changedFromLevel:(double)level toLevel:(double)toLevel;
 @end
 
 @implementation _UIPhysicalButtonInteractionArbiter
 
 - (void)_scheduleDeferredConfigurationResolution
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 48));
-  v3 = [WeakRetained _screen];
-  [(_UIPhysicalButtonInteractionArbiter *)a1 _configureDeferredResolutionDisplayLinkForScreen:v3];
+  WeakRetained = objc_loadWeakRetained((self + 48));
+  _screen = [WeakRetained _screen];
+  [(_UIPhysicalButtonInteractionArbiter *)self _configureDeferredResolutionDisplayLinkForScreen:_screen];
 
-  *(a1 + 40) |= 2u;
+  *(self + 40) |= 2u;
 }
 
 - (void)_resolveConfigurations
 {
   v282 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!self)
   {
     return;
   }
 
-  v1 = a1;
-  *(a1 + 40) &= 0xF9u;
-  [*(a1 + 104) setPaused:1];
-  v2 = [v1 _scene];
-  if (!v2 || (v3 = v2, v4 = [v2 _hasInvalidated], v3, v4))
+  selfCopy = self;
+  *(self + 40) &= 0xF9u;
+  [*(self + 104) setPaused:1];
+  _scene = [selfCopy _scene];
+  if (!_scene || (v3 = _scene, v4 = [_scene _hasInvalidated], v3, v4))
   {
-    *(v1 + 40) &= ~0x20u;
-    v5 = *(v1 + 120);
+    *(selfCopy + 40) &= ~0x20u;
+    v5 = *(selfCopy + 120);
 
     [v5 removeAllObjects];
     return;
   }
 
-  v6 = *(v1 + 40);
+  v6 = *(selfCopy + 40);
   if ((v6 & 8) != 0)
   {
-    *(v1 + 40) = v6 | 0x10;
+    *(selfCopy + 40) = v6 | 0x10;
     return;
   }
 
-  v7 = *(v1 + 112);
-  location = (v1 + 112);
-  *(v1 + 40) = v6 | 8;
+  v7 = *(selfCopy + 112);
+  location = (selfCopy + 112);
+  *(selfCopy + 40) = v6 | 8;
   v190 = v7;
-  v8 = [v190 configurations];
+  configurations = [v190 configurations];
   CategoryCachedImpl = __UILogGetCategoryCachedImpl("PhysicalButtonInteraction", &unk_1ED4A09C0);
   if (*CategoryCachedImpl)
   {
@@ -93,17 +93,17 @@
     if (os_log_type_enabled(v53, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349314;
-      v277 = v1;
+      v277 = selfCopy;
       v278 = 2112;
-      v279 = v8;
+      v279 = configurations;
       _os_log_impl(&dword_188A29000, v53, OS_LOG_TYPE_ERROR, "[%{public}p] Arbiter: resolving configurations: current: %@", buf, 0x16u);
     }
   }
 
   kdebug_trace();
-  v10 = *(v1 + 40);
-  WeakRetained = objc_loadWeakRetained((v1 + 56));
-  v232 = v1;
+  v10 = *(selfCopy + 40);
+  WeakRetained = objc_loadWeakRetained((selfCopy + 56));
+  v232 = selfCopy;
   if (!WeakRetained)
   {
     LODWORD(v13) = 0;
@@ -111,7 +111,7 @@
   }
 
   v12 = WeakRetained;
-  v13 = [*(v1 + 120) count];
+  v13 = [*(selfCopy + 120) count];
 
   if (!v13)
   {
@@ -119,15 +119,15 @@
   }
 
   v219 = v10;
-  v195 = v8;
-  v14 = [*(v1 + 120) setRepresentation];
-  *(v1 + 40) &= ~0x20u;
-  [*(v1 + 120) removeAllObjects];
+  v195 = configurations;
+  setRepresentation = [*(selfCopy + 120) setRepresentation];
+  *(selfCopy + 40) &= ~0x20u;
+  [*(selfCopy + 120) removeAllObjects];
   v249 = 0u;
   v250 = 0u;
   v247 = 0u;
   v248 = 0u;
-  obj = v14;
+  obj = setRepresentation;
   v15 = [obj countByEnumeratingWithState:&v247 objects:v258 count:16];
   if (!v15)
   {
@@ -149,8 +149,8 @@
       }
 
       v19 = *(*(&v247 + 1) + 8 * v18);
-      v20 = [*(v1 + 128) objectForKey:v19];
-      v21 = [v20 configurations];
+      v20 = [*(selfCopy + 128) objectForKey:v19];
+      configurations2 = [v20 configurations];
       v22 = __UILogGetCategoryCachedImpl("PhysicalButtonInteraction", &unk_1ED4A09C8);
       if (*v22)
       {
@@ -165,7 +165,7 @@
             v39 = NSStringFromClass(v38);
             v40 = [v36 stringWithFormat:@"<%@: %p>", v39, v37];
 
-            v1 = v232;
+            selfCopy = v232;
           }
 
           else
@@ -174,25 +174,25 @@
           }
 
           *buf = 134349570;
-          v277 = v1;
+          v277 = selfCopy;
           v278 = 2112;
           v279 = v40;
           v280 = 2112;
-          v281 = v21;
+          v281 = configurations2;
           _os_log_impl(&dword_188A29000, v35, OS_LOG_TYPE_ERROR, "[%{public}p] Arbiter: system shell resolving configurations for window: %@; current: %@", buf, 0x20u);
         }
       }
 
-      v23 = [(_UIPhysicalButtonInteractionArbiter *)v1 _performConfigurationResolutionForRequiredWindow:v19];
-      v24 = [v23 configurations];
-      v25 = *(v1 + 128);
+      v23 = [(_UIPhysicalButtonInteractionArbiter *)selfCopy _performConfigurationResolutionForRequiredWindow:v19];
+      configurations3 = [v23 configurations];
+      v25 = *(selfCopy + 128);
       if (!v25)
       {
         v26 = [MEMORY[0x1E696AD18] mapTableWithKeyOptions:517 valueOptions:512];
-        v27 = *(v1 + 128);
-        *(v1 + 128) = v26;
+        v27 = *(selfCopy + 128);
+        *(selfCopy + 128) = v26;
 
-        v25 = *(v1 + 128);
+        v25 = *(selfCopy + 128);
       }
 
       [v25 setObject:v23 forKey:v19];
@@ -211,7 +211,7 @@
             v207 = NSStringFromClass(v44);
             v45 = [v42 stringWithFormat:@"<%@: %p>", v207, v43];
 
-            v1 = v232;
+            selfCopy = v232;
           }
 
           else
@@ -220,19 +220,19 @@
           }
 
           *buf = 134349570;
-          v277 = v1;
+          v277 = selfCopy;
           v278 = 2112;
           v279 = v45;
           v280 = 2112;
-          v281 = v24;
+          v281 = configurations3;
           _os_log_impl(&dword_188A29000, log, OS_LOG_TYPE_ERROR, "[%{public}p] Arbiter: system shell resolving configurations for window: %@; new: %@", buf, 0x20u);
 
           v41 = log;
         }
       }
 
-      v29 = v21;
-      v30 = v24;
+      v29 = configurations2;
+      v30 = configurations3;
       v31 = v30;
       if (v29 == v30)
       {
@@ -264,7 +264,7 @@ LABEL_28:
 LABEL_29:
 
       ++v18;
-      v1 = v232;
+      selfCopy = v232;
     }
 
     while (v16 != v18);
@@ -276,18 +276,18 @@ LABEL_29:
 LABEL_48:
   LODWORD(v13) = v17;
 
-  v8 = v195;
+  configurations = v195;
   v10 = v219;
 LABEL_49:
-  v47 = objc_loadWeakRetained((v1 + 56));
+  v47 = objc_loadWeakRetained((selfCopy + 56));
 
   if (v47)
   {
     if ((v13 | (v10 >> 5)))
     {
-      v48 = objc_loadWeakRetained((v1 + 56));
-      v49 = objc_loadWeakRetained((v1 + 48));
-      v50 = [v48 physicalButtonInteractionArbiter:v1 resolutionContextForScene:v49];
+      v48 = objc_loadWeakRetained((selfCopy + 56));
+      v49 = objc_loadWeakRetained((selfCopy + 48));
+      v50 = [v48 physicalButtonInteractionArbiter:selfCopy resolutionContextForScene:v49];
 
       if (v50)
       {
@@ -296,9 +296,9 @@ LABEL_49:
         goto LABEL_59;
       }
 
-      v54 = [MEMORY[0x1E696AAA8] currentHandler];
-      v55 = objc_loadWeakRetained((v1 + 56));
-      [v54 handleFailureInMethod:sel__resolveConfigurations object:v1 file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1419 description:{@"Nil resolution context from system shell delegate: %@", v55}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      v55 = objc_loadWeakRetained((selfCopy + 56));
+      [currentHandler handleFailureInMethod:sel__resolveConfigurations object:selfCopy file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1419 description:{@"Nil resolution context from system shell delegate: %@", v55}];
     }
 
     v52 = objc_opt_new();
@@ -306,13 +306,13 @@ LABEL_49:
 
   else
   {
-    v52 = [(_UIPhysicalButtonInteractionArbiter *)v1 _performConfigurationResolutionForRequiredWindow:?];
+    v52 = [(_UIPhysicalButtonInteractionArbiter *)selfCopy _performConfigurationResolutionForRequiredWindow:?];
   }
 
   v51 = v52;
 LABEL_59:
-  v56 = objc_loadWeakRetained((v1 + 48));
-  v57 = v56;
+  v56 = objc_loadWeakRetained((selfCopy + 48));
+  currentHandler2 = v56;
   v208 = v51;
   if (!v51)
   {
@@ -321,8 +321,8 @@ LABEL_59:
     goto LABEL_206;
   }
 
-  v58 = [v51[1] _count];
-  if (v58 != [v51[2] count])
+  _count = [v51[1] _count];
+  if (_count != [v51[2] count])
   {
     v180 = MEMORY[0x1E696ABC0];
     v274 = *MEMORY[0x1E696A588];
@@ -343,13 +343,13 @@ LABEL_100:
     }
 
 LABEL_206:
-    v57 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v57 handleFailureInMethod:sel__resolveConfigurations object:v1 file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1429 description:{@"Invalid resolution context for reason: %@", v92}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:sel__resolveConfigurations object:selfCopy file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1429 description:{@"Invalid resolution context for reason: %@", v92}];
     v51 = 0;
     goto LABEL_93;
   }
 
-  if (v58)
+  if (_count)
   {
     v273 = 0u;
     v272 = 0u;
@@ -363,14 +363,14 @@ LABEL_206:
       goto LABEL_100;
     }
 
-    v196 = v8;
+    v196 = configurations;
     v200 = 0;
     v59 = 0;
     v60 = **&v271[16];
     loga = *MEMORY[0x1E696A588];
     v198 = 1;
     v203 = **&v271[16];
-    v205 = v57;
+    v205 = currentHandler2;
 LABEL_64:
     v61 = 0;
     while (1)
@@ -389,12 +389,12 @@ LABEL_64:
 
       v64 = v63;
       obja = v61;
-      v65 = [v63 view];
-      v66 = [v65 _window];
-      v67 = [v66 _eventRoutingScene];
+      view = [v63 view];
+      _window = [view _window];
+      _eventRoutingScene = [_window _eventRoutingScene];
 
-      v229 = v67;
-      if (v67 != v57)
+      v229 = _eventRoutingScene;
+      if (_eventRoutingScene != currentHandler2)
       {
         v93 = MEMORY[0x1E696ABC0];
         v267 = loga;
@@ -420,20 +420,20 @@ LABEL_97:
         v99 = v90;
 
 LABEL_98:
-        v8 = v196;
+        configurations = v196;
         goto LABEL_99;
       }
 
-      v68 = [v62 _button];
-      v69 = 1 << v68;
-      if (v68 >= 8)
+      _button = [v62 _button];
+      v69 = 1 << _button;
+      if (_button >= 8)
       {
         v69 = 0;
       }
 
       if ((v69 & ~v59) != 0)
       {
-        v70 = v68;
+        v70 = _button;
         v59 |= v69;
         v71 = _UIPhysicalButtonRequiredButtonsForButton([v62 _button]);
         v251 = 0u;
@@ -455,11 +455,11 @@ LABEL_98:
                 objc_enumerationMutation(v72);
               }
 
-              v77 = [*(*(&v251 + 1) + 8 * i) unsignedIntegerValue];
-              if (v77 != v70)
+              unsignedIntegerValue = [*(*(&v251 + 1) + 8 * i) unsignedIntegerValue];
+              if (unsignedIntegerValue != v70)
               {
-                v78 = v77;
-                v79 = [v208[1] _configurationForButton:v77];
+                v78 = unsignedIntegerValue;
+                v79 = [v208[1] _configurationForButton:unsignedIntegerValue];
                 v80 = [v208[2] objectForKey:v79];
                 v81 = v80;
                 if (v64 != v80)
@@ -499,12 +499,12 @@ LABEL_98:
           }
 
 LABEL_87:
-          v57 = v205;
+          currentHandler2 = v205;
           v51 = v208;
           v60 = v203;
         }
 
-        v1 = v232;
+        selfCopy = v232;
       }
 
       v61 = obja + 1;
@@ -516,7 +516,7 @@ LABEL_87:
           goto LABEL_64;
         }
 
-        v8 = v196;
+        configurations = v196;
         v90 = v200;
         v91 = v198;
         goto LABEL_100;
@@ -539,7 +539,7 @@ LABEL_93:
 
 LABEL_101:
   objc_storeStrong(location, v51);
-  v100 = [*location configurations];
+  configurations4 = [*location configurations];
   v101 = __UILogGetCategoryCachedImpl("PhysicalButtonInteraction", &unk_1ED4A09D8);
   if (*v101)
   {
@@ -547,18 +547,18 @@ LABEL_101:
     if (os_log_type_enabled(v182, OS_LOG_TYPE_ERROR))
     {
       *buf = 134349314;
-      v277 = v1;
+      v277 = selfCopy;
       v278 = 2112;
-      v279 = v100;
+      v279 = configurations4;
       _os_log_impl(&dword_188A29000, v182, OS_LOG_TYPE_ERROR, "[%{public}p] Arbiter: resolving configurations: new: %@", buf, 0x16u);
     }
   }
 
-  v102 = v8;
-  v103 = v100;
+  v102 = configurations;
+  v103 = configurations4;
   v104 = v103;
-  v105 = v103;
-  v106 = v102;
+  configurationToInteractionMap2 = v103;
+  configurationToInteractionMap = v102;
   if (v102 == v103)
   {
     goto LABEL_193;
@@ -570,7 +570,7 @@ LABEL_101:
 LABEL_108:
     v188 = v102;
     v189 = v92;
-    v106 = [*location configurationToInteractionMap];
+    configurationToInteractionMap = [*location configurationToInteractionMap];
     v243 = 0u;
     v244 = 0u;
     v245 = 0u;
@@ -614,7 +614,7 @@ LABEL_108:
                 v116 = -[__CFString _configurationForButton:](v104, "_configurationForButton:", [*(*(&v239 + 1) + 8 * k) unsignedIntegerValue]);
                 if (v116)
                 {
-                  v117 = [v106 objectForKey:v116];
+                  v117 = [configurationToInteractionMap objectForKey:v116];
                   v118 = v117;
                   if (v113)
                   {
@@ -651,22 +651,22 @@ LABEL_108:
     }
 
     v119 = *location;
-    v120 = [v119 configurations];
+    configurations5 = [v119 configurations];
     v102 = v188;
     v121 = v188;
-    v122 = v120;
+    v122 = configurations5;
     v123 = v122;
     if (v122 == v121)
     {
       v125 = v122;
       v206 = v121;
-      v1 = v232;
+      selfCopy = v232;
       v92 = v189;
     }
 
     else
     {
-      v1 = v232;
+      selfCopy = v232;
       if (v188 && v122)
       {
         v124 = [(__CFString *)v121 isEqual:v122];
@@ -685,18 +685,18 @@ LABEL_108:
       }
 
       v126 = objc_loadWeakRetained((v232 + 48));
-      v127 = [v126 _eventDeferringManager];
+      _eventDeferringManager = [v126 _eventDeferringManager];
 
-      v206 = v127;
-      if (!v127)
+      v206 = _eventDeferringManager;
+      if (!_eventDeferringManager)
       {
 LABEL_177:
 
 LABEL_178:
-        v166 = *(v1 + 64);
+        v166 = *(selfCopy + 64);
         if (!v166)
         {
-          v167 = objc_loadWeakRetained((v1 + 48));
+          v167 = objc_loadWeakRetained((selfCopy + 48));
           v237[0] = MEMORY[0x1E69E9820];
           v237[1] = 3221225472;
           v237[2] = __61___UIPhysicalButtonInteractionArbiter__resolveConfigurations__block_invoke;
@@ -704,7 +704,7 @@ LABEL_178:
           v238 = v104;
           [v167 _updateUIClientSettingsWithBlock:v237];
 
-          v166 = *(v1 + 64);
+          v166 = *(selfCopy + 64);
         }
 
         if (v166 != 1)
@@ -712,12 +712,12 @@ LABEL_178:
           goto LABEL_194;
         }
 
-        v105 = [*(v1 + 112) configurationToInteractionMap];
+        configurationToInteractionMap2 = [*(selfCopy + 112) configurationToInteractionMap];
         v233 = 0u;
         v234 = 0u;
         v235 = 0u;
         v236 = 0u;
-        v168 = *(v1 + 144);
+        v168 = *(selfCopy + 144);
         v169 = [v168 countByEnumeratingWithState:&v233 objects:v255 count:16];
         if (v169)
         {
@@ -748,7 +748,7 @@ LABEL_178:
                 }
               }
 
-              [(__CFString *)v173 _physicalButtonInteractionArbiter:v232 didUpdateResolvedConfigurations:v105 inActiveViewServiceSession:*(v232 + 136)];
+              [(__CFString *)v173 _physicalButtonInteractionArbiter:v232 didUpdateResolvedConfigurations:configurationToInteractionMap2 inActiveViewServiceSession:*(v232 + 136)];
               ++v172;
             }
 
@@ -760,7 +760,7 @@ LABEL_178:
           while (v175);
         }
 
-        v1 = v232;
+        selfCopy = v232;
         v102 = v188;
         v92 = v189;
 LABEL_193:
@@ -783,20 +783,20 @@ LABEL_194:
         }
       }
 
-      v129 = [MEMORY[0x1E698E3B0] sharedInstance];
+      mEMORY[0x1E698E3B0] = [MEMORY[0x1E698E3B0] sharedInstance];
       v130 = MEMORY[0x1E696AEC0];
       v131 = v232;
       v132 = objc_opt_class();
       v133 = NSStringFromClass(v132);
-      v134 = [v130 stringWithFormat:@"<%@: %p>", v133, v131];
+      v131 = [v130 stringWithFormat:@"<%@: %p>", v133, v131];
 
       v135 = v130;
       v136 = v131;
-      v137 = [v135 stringWithFormat:@"%@: updating physical button event deferring rules", v134];
+      v134 = [v135 stringWithFormat:@"%@: updating physical button event deferring rules", v131];
 
-      v186 = v137;
-      v187 = v129;
-      v185 = [v129 transactionAssertionWithReason:v137];
+      v186 = v134;
+      v187 = mEMORY[0x1E698E3B0];
+      v185 = [mEMORY[0x1E698E3B0] transactionAssertionWithReason:v134];
       v261 = 0u;
       v262 = 0u;
       v263 = 0u;
@@ -819,11 +819,11 @@ LABEL_194:
 
             v139 = *(*(&v261 + 1) + 8 * m);
             v140 = _UIPhysicalButtonsForBKSHIDEventDeferringEnvironment(v139);
-            v141 = [v140 firstObject];
-            v142 = v141;
-            if (v141)
+            firstObject = [v140 firstObject];
+            v142 = firstObject;
+            if (firstObject)
             {
-              v143 = [v141 unsignedIntegerValue];
+              unsignedIntegerValue2 = [firstObject unsignedIntegerValue];
               v144 = [v136[19] objectForKey:v139];
               if (v144)
               {
@@ -835,8 +835,8 @@ LABEL_194:
                 objc = 0;
               }
 
-              v145 = [v119 configurationToInteractionMap];
-              v231 = _UIPhysicalButtonInteractionArbiterTargetWindowForButton(v211, v145);
+              configurationToInteractionMap3 = [v119 configurationToInteractionMap];
+              v231 = _UIPhysicalButtonInteractionArbiterTargetWindowForButton(v211, configurationToInteractionMap3);
 
               if (v144)
               {
@@ -857,7 +857,7 @@ LABEL_194:
                 locationa = [v136[19] objectForKey:v139];
                 if (locationa)
                 {
-                  v201 = [(__CFString *)v193 _configurationForButton:v143];
+                  v201 = [(__CFString *)v193 _configurationForButton:unsignedIntegerValue2];
                   v149 = [MEMORY[0x1E696AEC0] stringWithFormat:@"[%p]: end %@ event deferring for generation: %llu", v136, v139, objc_msgSend(v201, "_generation")];
                   v150 = locationa[2];
                   if (v150)
@@ -875,16 +875,16 @@ LABEL_194:
 
                 if (v231)
                 {
-                  v152 = [(__CFString *)v211 _configurationForButton:v143];
+                  v152 = [(__CFString *)v211 _configurationForButton:unsignedIntegerValue2];
                   v153 = MEMORY[0x1E696AEC0];
                   v202 = v152;
-                  v184 = [v152 _generation];
+                  _generation = [v152 _generation];
                   v154 = v153;
                   v136 = v222;
-                  v155 = [v154 stringWithFormat:@"[%p]: begin %@ event deferring for generation: %llu", v222, v139, v184];
+                  v184 = [v154 stringWithFormat:@"[%p]: begin %@ event deferring for generation: %llu", v222, v139, _generation];
                   v194 = [MEMORY[0x1E695DFD8] setWithObject:v139];
-                  v197 = v155;
-                  v156 = [(_UIEventDeferringManager *)v206 beginLocalEventDeferringInEnvironments:v194 forOwningInterfaceElement:v222 withReason:v155];
+                  v197 = v184;
+                  v156 = [(_UIEventDeferringManager *)v206 beginLocalEventDeferringInEnvironments:v194 forOwningInterfaceElement:v222 withReason:v184];
                   if (v156)
                   {
                     v157 = v222[19];
@@ -912,12 +912,12 @@ LABEL_194:
                         v162 = MEMORY[0x1E696AEC0];
                         v163 = objc_opt_class();
                         v191 = NSStringFromClass(v163);
-                        v164 = [v162 stringWithFormat:@"<%@: %p>", v191, v161];
+                        v161 = [v162 stringWithFormat:@"<%@: %p>", v191, v161];
                       }
 
                       else
                       {
-                        v164 = @"(nil)";
+                        v161 = @"(nil)";
                       }
 
                       *v271 = 134349570;
@@ -925,8 +925,8 @@ LABEL_194:
                       *&v271[12] = 2112;
                       *&v271[14] = v139;
                       *&v271[22] = 2112;
-                      v165 = v164;
-                      *&v271[24] = v164;
+                      v165 = v161;
+                      *&v271[24] = v161;
                       v160 = v192;
                       _os_log_impl(&dword_188A29000, v192, OS_LOG_TYPE_ERROR, "[%{public}p] Arbiter: failed to begin %@ event deferring for configuration: %@", v271, 0x20u);
 
@@ -938,7 +938,7 @@ LABEL_194:
                 }
               }
 
-              v1 = v232;
+              selfCopy = v232;
             }
           }
 
@@ -967,22 +967,22 @@ LABEL_194:
 
 LABEL_195:
 
-  v176 = *(v1 + 40);
-  *(v1 + 40) = v176 & 0xE7;
+  v176 = *(selfCopy + 40);
+  *(selfCopy + 40) = v176 & 0xE7;
   if ((v176 & 0x10) != 0)
   {
-    [(_UIPhysicalButtonInteractionArbiter *)v1 _scheduleDeferredConfigurationResolution];
-    *(v1 + 40) |= 4u;
+    [(_UIPhysicalButtonInteractionArbiter *)selfCopy _scheduleDeferredConfigurationResolution];
+    *(selfCopy + 40) |= 4u;
   }
 }
 
 - (void)_beginObservingWindowVisibilityChanges
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v2 addObserver:a1 selector:sel__windowVisibilityDidChange_ name:@"UIWindowDidBecomeVisibleNotification" object:0];
-    [v2 addObserver:a1 selector:sel__windowVisibilityDidChange_ name:@"UIWindowDidBecomeHiddenNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:self selector:sel__windowVisibilityDidChange_ name:@"UIWindowDidBecomeVisibleNotification" object:0];
+    [defaultCenter addObserver:self selector:sel__windowVisibilityDidChange_ name:@"UIWindowDidBecomeHiddenNotification" object:0];
   }
 }
 
@@ -1018,8 +1018,8 @@ LABEL_195:
 
 - (_UIPhysicalButtonInteractionArbiter)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:568 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonInteractionArbiter init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:568 description:{@"%s: init is not allowed on %@", "-[_UIPhysicalButtonInteractionArbiter init]", objc_opt_class()}];
 
   return 0;
 }
@@ -1029,20 +1029,20 @@ LABEL_195:
   v6[4] = *MEMORY[0x1E69E9840];
   [(CADisplayLink *)self->_deferredConfigurationResolutionDisplayLink invalidate];
   [(BSInvalidatable *)self->_stateCaptureToken invalidate];
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v6[0] = @"UIWindowFirstResponderDidChangeNotification";
   v6[1] = @"UIWindowDidBecomeVisibleNotification";
   v6[2] = @"UIWindowDidBecomeHiddenNotification";
   v6[3] = @"_UIActiveViewServiceSessionDidChangeNotification";
   v4 = [MEMORY[0x1E695DEC8] arrayWithObjects:v6 count:4];
-  [(NSNotificationCenter *)v3 _uiRemoveObserver:v4 names:?];
+  [(NSNotificationCenter *)defaultCenter _uiRemoveObserver:v4 names:?];
 
   v5.receiver = self;
   v5.super_class = _UIPhysicalButtonInteractionArbiter;
   [(_UIPhysicalButtonInteractionArbiter *)&v5 dealloc];
 }
 
-- (_UIPhysicalButtonInteractionArbiter)initWithScene:(id)a3
+- (_UIPhysicalButtonInteractionArbiter)initWithScene:(id)scene
 {
   v39 = *MEMORY[0x1E69E9840];
   v31.receiver = self;
@@ -1051,44 +1051,44 @@ LABEL_195:
   v5 = v4;
   if (v4)
   {
-    objc_storeWeak(&v4->_scene, a3);
+    objc_storeWeak(&v4->_scene, scene);
     CategoryCachedImpl = __UILogGetCategoryCachedImpl("PhysicalButtonInteraction", &initWithScene____s_category_1);
     if (*CategoryCachedImpl)
     {
       v24 = *(CategoryCachedImpl + 8);
       if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
       {
-        if (a3)
+        if (scene)
         {
           v25 = MEMORY[0x1E696AEC0];
-          v26 = a3;
+          sceneCopy = scene;
           v27 = objc_opt_class();
           v28 = NSStringFromClass(v27);
-          v29 = [v25 stringWithFormat:@"<%@: %p>", v28, v26];
+          sceneCopy = [v25 stringWithFormat:@"<%@: %p>", v28, sceneCopy];
         }
 
         else
         {
-          v29 = @"(nil)";
+          sceneCopy = @"(nil)";
         }
 
         *location = 134349314;
         *&location[4] = v5;
         v37 = 2112;
-        v38 = v29;
+        v38 = sceneCopy;
         _os_log_impl(&dword_188A29000, v24, OS_LOG_TYPE_ERROR, "[%{public}p] Arbiter: initializing with scene: %@", location, 0x16u);
       }
     }
 
     WeakRetained = objc_loadWeakRetained((v5 + 48));
-    v8 = [WeakRetained _FBSScene];
-    v9 = v8 == 0;
+    _FBSScene = [WeakRetained _FBSScene];
+    v9 = _FBSScene == 0;
 
     [(_UIPhysicalButtonInteractionArbiter *)v5 _setResolutionStrategy:v9 forInitialization:1];
     v10 = objc_loadWeakRetained((v5 + 48));
-    v11 = [v10 _eventDeferringManager];
+    _eventDeferringManager = [v10 _eventDeferringManager];
 
-    if (v11 && (*(v5 + 40) & 1) == 0)
+    if (_eventDeferringManager && (*(v5 + 40) & 1) == 0)
     {
       v34 = 0u;
       v35 = 0u;
@@ -1108,7 +1108,7 @@ LABEL_195:
               objc_enumerationMutation(v12);
             }
 
-            [(_UIEventDeferringManager *)v11 registerTargetProvider:v5 forEnvironment:*(*(&v32 + 1) + 8 * i)];
+            [(_UIEventDeferringManager *)_eventDeferringManager registerTargetProvider:v5 forEnvironment:*(*(&v32 + 1) + 8 * i)];
           }
 
           v13 = [v12 countByEnumeratingWithState:&v32 objects:location count:16];
@@ -1123,8 +1123,8 @@ LABEL_195:
     objc_initWeak(location, v5);
     v16 = MEMORY[0x1E696AEC0];
     v17 = objc_loadWeakRetained((v5 + 48));
-    v18 = [v17 _sceneIdentifier];
-    v19 = [v16 stringWithFormat:@"UIKit - PhysicalButtonInteractionArbiter - %@", v18];
+    _sceneIdentifier = [v17 _sceneIdentifier];
+    v19 = [v16 stringWithFormat:@"UIKit - PhysicalButtonInteractionArbiter - %@", _sceneIdentifier];
 
     v20 = MEMORY[0x1E69E96A0];
     objc_copyWeak(&v30, location);
@@ -1139,42 +1139,42 @@ LABEL_195:
   return v5;
 }
 
-- (void)_setResolutionStrategy:(int)a3 forInitialization:
+- (void)_setResolutionStrategy:(int)strategy forInitialization:
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = a1[8];
-  if (v3 != a2 || a3 != 0)
+  v3 = self[8];
+  if (v3 != a2 || strategy != 0)
   {
-    a1[8] = a2;
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
-    if (a3)
+    self[8] = a2;
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    if (strategy)
     {
-      [(_UIPhysicalButtonInteractionArbiter *)a1 _beginObservingWindowVisibilityChanges];
+      [(_UIPhysicalButtonInteractionArbiter *)self _beginObservingWindowVisibilityChanges];
     }
 
     if (v3 == 1)
     {
-      [v8 removeObserver:a1 name:@"_UIActiveViewServiceSessionDidChangeNotification" object:0];
-      v9 = a1[17];
-      a1[17] = 0;
+      [defaultCenter removeObserver:self name:@"_UIActiveViewServiceSessionDidChangeNotification" object:0];
+      v9 = self[17];
+      self[17] = 0;
 
-      v10 = a1[1];
-      a1[1] = 0;
+      v10 = self[1];
+      self[1] = 0;
     }
 
     if (a2 == 1)
     {
-      [v8 addObserver:a1 selector:sel__mostActiveViewServiceSessionDidChange_ name:@"_UIActiveViewServiceSessionDidChangeNotification" object:0];
-      if (!a1[17])
+      [defaultCenter addObserver:self selector:sel__mostActiveViewServiceSessionDidChange_ name:@"_UIActiveViewServiceSessionDidChangeNotification" object:0];
+      if (!self[17])
       {
-        v11 = [(_UIPhysicalButtonInteractionArbiter *)a1 _mostActiveViewServiceSessionForScene];
-        v12 = a1[17];
-        a1[17] = v11;
+        _mostActiveViewServiceSessionForScene = [(_UIPhysicalButtonInteractionArbiter *)self _mostActiveViewServiceSessionForScene];
+        v12 = self[17];
+        self[17] = _mostActiveViewServiceSessionForScene;
 
         v13 = *(__UILogGetCategoryCachedImpl("PhysicalButtonInteraction", &_setResolutionStrategy_forInitialization____s_category) + 8);
         if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
         {
-          v14 = a1[8];
+          v14 = self[8];
           v15 = &stru_1EFB14550;
           if (v14 == 1)
           {
@@ -1192,28 +1192,28 @@ LABEL_195:
           }
 
           v17 = v16;
-          v18 = a1[17];
+          v18 = self[17];
           v19 = v13;
-          v20 = [v18 succinctDescription];
+          succinctDescription = [v18 succinctDescription];
           *buf = 134349570;
-          v26 = a1;
+          selfCopy = self;
           v27 = 2112;
           v28 = v17;
           v29 = 2112;
-          v30 = v20;
+          v30 = succinctDescription;
           _os_log_impl(&dword_188A29000, v19, OS_LOG_TYPE_DEFAULT, "[%{public}p] Arbiter: set %@ strategy; most active view service session: %@", buf, 0x20u);
         }
       }
 
-      objc_initWeak(buf, a1);
+      objc_initWeak(buf, self);
       aBlock[0] = MEMORY[0x1E69E9820];
       aBlock[1] = 3221225472;
       aBlock[2] = __80___UIPhysicalButtonInteractionArbiter__setResolutionStrategy_forInitialization___block_invoke;
       aBlock[3] = &unk_1E7120C88;
       objc_copyWeak(&v24, buf);
       v21 = _Block_copy(aBlock);
-      v22 = a1[1];
-      a1[1] = v21;
+      v22 = self[1];
+      self[1] = v21;
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(buf);
@@ -1221,7 +1221,7 @@ LABEL_195:
   }
 }
 
-- (id)_actionRespondersForScene:(id)a3
+- (id)_actionRespondersForScene:(id)scene
 {
   v6[1] = *MEMORY[0x1E69E9840];
   v3 = objc_opt_new();
@@ -1231,17 +1231,17 @@ LABEL_195:
   return v4;
 }
 
-- (void)_windowHostingScene:(id)a3 willMoveFromScreen:(id)a4 toScreen:(id)a5
+- (void)_windowHostingScene:(id)scene willMoveFromScreen:(id)screen toScreen:(id)toScreen
 {
   arbiterFlags = self->_arbiterFlags;
-  [(CADisplayLink *)self->_deferredConfigurationResolutionDisplayLink invalidate:a3];
+  [(CADisplayLink *)self->_deferredConfigurationResolutionDisplayLink invalidate:scene];
   deferredConfigurationResolutionDisplayLink = self->_deferredConfigurationResolutionDisplayLink;
   self->_deferredConfigurationResolutionDisplayLink = 0;
 
   if ((arbiterFlags & 2) != 0)
   {
 
-    [(_UIPhysicalButtonInteractionArbiter *)self _configureDeferredResolutionDisplayLinkForScreen:a5];
+    [(_UIPhysicalButtonInteractionArbiter *)self _configureDeferredResolutionDisplayLinkForScreen:toScreen];
   }
 }
 
@@ -1258,8 +1258,8 @@ LABEL_195:
       *(v2 + 104) = v4;
 
       v6 = *(v2 + 104);
-      v7 = [MEMORY[0x1E695DFD0] mainRunLoop];
-      [v6 addToRunLoop:v7 forMode:*MEMORY[0x1E695DA28]];
+      mainRunLoop = [MEMORY[0x1E695DFD0] mainRunLoop];
+      [v6 addToRunLoop:mainRunLoop forMode:*MEMORY[0x1E695DA28]];
 
       v3 = *(v2 + 104);
     }
@@ -1276,10 +1276,10 @@ LABEL_195:
   return result;
 }
 
-- (void)_sceneWillInvalidate:(id)a3
+- (void)_sceneWillInvalidate:(id)invalidate
 {
   v48 = *MEMORY[0x1E69E9840];
-  if (![a3 _hasInvalidated])
+  if (![invalidate _hasInvalidated])
   {
     return;
   }
@@ -1298,24 +1298,24 @@ LABEL_195:
   v33 = *(CategoryCachedImpl + 8);
   if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
   {
-    if (a3)
+    if (invalidate)
     {
       v34 = MEMORY[0x1E696AEC0];
-      v35 = a3;
+      invalidateCopy = invalidate;
       v36 = objc_opt_class();
       v37 = NSStringFromClass(v36);
-      v38 = [v34 stringWithFormat:@"<%@: %p>", v37, v35];
+      invalidateCopy = [v34 stringWithFormat:@"<%@: %p>", v37, invalidateCopy];
     }
 
     else
     {
-      v38 = @"(nil)";
+      invalidateCopy = @"(nil)";
     }
 
     *buf = 134349314;
-    v45 = self;
+    selfCopy = self;
     v46 = 2112;
-    v47 = v38;
+    v47 = invalidateCopy;
     _os_log_impl(&dword_188A29000, v33, OS_LOG_TYPE_ERROR, "[%{public}p] Arbiter: resetting state for invalidating scene: %@", buf, 0x16u);
   }
 
@@ -1344,12 +1344,12 @@ LABEL_4:
           v10 = *(*(&v40 + 1) + 8 * i);
           v11 = [(NSMutableDictionary *)self->_eventDeferringTokenByEnvironment objectForKey:v10];
           v12 = MEMORY[0x1E696AEC0];
-          v13 = self;
+          selfCopy2 = self;
           v14 = objc_opt_class();
           v15 = NSStringFromClass(v14);
-          v16 = [v12 stringWithFormat:@"<%@: %p>", v15, v13];
+          selfCopy2 = [v12 stringWithFormat:@"<%@: %p>", v15, selfCopy2];
 
-          v17 = [v12 stringWithFormat:@"%@: ending %@ event deferring for arbiter reset", v16, v10];
+          v17 = [v12 stringWithFormat:@"%@: ending %@ event deferring for arbiter reset", selfCopy2, v10];
 
           [(_UIEventDeferringOwnershipToken *)v11 endEventDeferringWithReason:v17];
         }
@@ -1400,55 +1400,55 @@ LABEL_4:
     self->_uniqueConfigurationGenerationNumbers = 0;
 
     WeakRetained = objc_loadWeakRetained(&self->_scene);
-    v31 = [WeakRetained _FBSScene];
-    v32 = v31 == 0;
+    _FBSScene = [WeakRetained _FBSScene];
+    v32 = _FBSScene == 0;
 
     [(_UIPhysicalButtonInteractionArbiter *)self _setResolutionStrategy:v32 forInitialization:0];
   }
 }
 
-- (id)_registerPhysicalButtonInteraction:(uint64_t)a1
+- (id)_registerPhysicalButtonInteraction:(uint64_t)interaction
 {
   v76 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (interaction)
   {
-    v2 = [a2 view];
-    v50 = [v2 _window];
+    view = [a2 view];
+    _window = [view _window];
 
-    v3 = [a1 _scene];
-    v4 = v3;
-    if (v3)
+    _scene = [interaction _scene];
+    v4 = _scene;
+    if (_scene)
     {
-      v5 = [v3 _hasInvalidated];
+      _hasInvalidated = [_scene _hasInvalidated];
 
-      if ((v5 & 1) == 0)
+      if ((_hasInvalidated & 1) == 0)
       {
-        v6 = [v50 _windowHostingScene];
-        WeakRetained = objc_loadWeakRetained((a1 + 48));
+        _windowHostingScene = [_window _windowHostingScene];
+        WeakRetained = objc_loadWeakRetained((interaction + 48));
 
-        if (v6 == WeakRetained)
+        if (_windowHostingScene == WeakRetained)
         {
-          v8 = [(_UIEvaluatedObjectCache *)*(a1 + 72) sortedObjects];
-          v9 = [v8 containsObject:a2];
+          sortedObjects = [(_UIEvaluatedObjectCache *)*(interaction + 72) sortedObjects];
+          v9 = [sortedObjects containsObject:a2];
 
           if (!v9)
           {
-            if (!*(a1 + 24))
+            if (!*(interaction + 24))
             {
               v13 = objc_opt_new();
-              v14 = *(a1 + 24);
-              *(a1 + 24) = v13;
+              v14 = *(interaction + 24);
+              *(interaction + 24) = v13;
             }
 
             v65 = 0u;
             v66 = 0u;
             v63 = 0u;
             v64 = 0u;
-            v15 = [a2 _configurationSet];
-            v16 = [v15 countByEnumeratingWithState:&v63 objects:v75 count:16];
+            _configurationSet = [a2 _configurationSet];
+            v16 = [_configurationSet countByEnumeratingWithState:&v63 objects:v75 count:16];
             if (v16)
             {
-              v48 = 0;
+              currentHandler2 = 0;
               v17 = *v64;
               do
               {
@@ -1456,15 +1456,15 @@ LABEL_4:
                 {
                   if (*v64 != v17)
                   {
-                    objc_enumerationMutation(v15);
+                    objc_enumerationMutation(_configurationSet);
                   }
 
-                  v19 = [*(*(&v63 + 1) + 8 * i) _generation];
+                  _generation = [*(*(&v63 + 1) + 8 * i) _generation];
                   v61 = 0u;
                   v62 = 0u;
                   v60 = 0u;
                   v59 = 0u;
-                  v20 = *(a1 + 24);
+                  v20 = *(interaction + 24);
                   v21 = [v20 countByEnumeratingWithState:&v59 objects:v74 count:16];
                   if (v21)
                   {
@@ -1478,7 +1478,7 @@ LABEL_4:
                           objc_enumerationMutation(v20);
                         }
 
-                        if ([*(*(&v59 + 1) + 8 * j) unsignedLongLongValue] == v19)
+                        if ([*(*(&v59 + 1) + 8 * j) unsignedLongLongValue] == _generation)
                         {
 
                           v40 = objc_opt_new();
@@ -1486,7 +1486,7 @@ LABEL_4:
                           v58 = 0u;
                           v55 = 0u;
                           v56 = 0u;
-                          v41 = *(a1 + 24);
+                          v41 = *(interaction + 24);
                           v42 = [v41 countByEnumeratingWithState:&v55 objects:v73 count:16];
                           if (v42)
                           {
@@ -1521,8 +1521,8 @@ LABEL_4:
                             while (v42);
                           }
 
-                          v47 = [MEMORY[0x1E696AAA8] currentHandler];
-                          [v47 handleFailureInMethod:sel__registerPhysicalButtonInteraction_ object:"-[_UIPhysicalButtonInteractionArbiter _registerPhysicalButtonInteraction:]" file:a2 lineNumber:v40 description:a1];
+                          currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+                          [currentHandler handleFailureInMethod:sel__registerPhysicalButtonInteraction_ object:"-[_UIPhysicalButtonInteractionArbiter _registerPhysicalButtonInteraction:]" file:a2 lineNumber:v40 description:interaction];
 
                           goto LABEL_48;
                         }
@@ -1538,38 +1538,38 @@ LABEL_4:
                     }
                   }
 
-                  if (!v48)
+                  if (!currentHandler2)
                   {
-                    v48 = objc_opt_new();
+                    currentHandler2 = objc_opt_new();
                   }
 
-                  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:v19];
-                  [v48 addObject:v24];
+                  v24 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:_generation];
+                  [currentHandler2 addObject:v24];
                 }
 
-                v16 = [v15 countByEnumeratingWithState:&v63 objects:v75 count:16];
+                v16 = [_configurationSet countByEnumeratingWithState:&v63 objects:v75 count:16];
               }
 
               while (v16);
 
-              if (v48)
+              if (currentHandler2)
               {
-                [*(a1 + 24) addObjectsFromArray:v48];
-                [(_UIPhysicalButtonInteractionArbiter *)a1 _beginTrackingWindow:v50];
-                [(_UIPhysicalButtonInteractionArbiter *)a1 _addSystemShellWindowRequiringResolutionIfNeeded:v50];
-                [(_UIPhysicalButtonInteractionArbiter *)a1 _createEvaluatedObjectCacheIfNeeded];
-                objc_initWeak(&location, a1);
+                [*(interaction + 24) addObjectsFromArray:currentHandler2];
+                [(_UIPhysicalButtonInteractionArbiter *)interaction _beginTrackingWindow:_window];
+                [(_UIPhysicalButtonInteractionArbiter *)interaction _addSystemShellWindowRequiringResolutionIfNeeded:_window];
+                [(_UIPhysicalButtonInteractionArbiter *)interaction _createEvaluatedObjectCacheIfNeeded];
+                objc_initWeak(&location, interaction);
                 v25 = ++qword_1ED4A0A08;
                 v26 = objc_opt_class();
                 v27 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s-%p-%lu", class_getName(v26), a2, v25];
                 v28 = MEMORY[0x1E696AEC0];
-                v29 = a1;
+                interactionCopy = interaction;
                 v30 = MEMORY[0x1E696AEC0];
                 v31 = objc_opt_class();
                 v32 = NSStringFromClass(v31);
-                v33 = [v30 stringWithFormat:@"<%@: %p>", v32, v29];
+                interactionCopy = [v30 stringWithFormat:@"<%@: %p>", v32, interactionCopy];
 
-                v34 = [v28 stringWithFormat:@"Registering interaction with: %@", v33];
+                v34 = [v28 stringWithFormat:@"Registering interaction with: %@", interactionCopy];
 
                 v35 = objc_alloc(MEMORY[0x1E698E778]);
                 v36 = MEMORY[0x1E69E96A0];
@@ -1584,18 +1584,18 @@ LABEL_4:
                 v38 = *(__UILogGetCategoryCachedImpl("PhysicalButtonInteraction", &_MergedGlobals_1285) + 8);
                 if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
                 {
-                  v39 = [a2 succinctDescription];
+                  succinctDescription = [a2 succinctDescription];
                   *buf = 134349570;
-                  v68 = v29;
+                  v68 = interactionCopy;
                   v69 = 2112;
-                  v70 = v39;
+                  v70 = succinctDescription;
                   v71 = 2112;
                   v72 = v37;
                   _os_log_impl(&dword_188A29000, v38, OS_LOG_TYPE_DEFAULT, "[%{public}p] Arbiter: registered physical button interaction: %@; with registrationToken: %@", buf, 0x20u);
                 }
 
-                [(_UIEvaluatedObjectCache *)*(a1 + 72) addObject:a2];
-                [(_UIPhysicalButtonInteractionArbiter *)v29 _resolveConfigurations];
+                [(_UIEvaluatedObjectCache *)*(interaction + 72) addObject:a2];
+                [(_UIPhysicalButtonInteractionArbiter *)interactionCopy _resolveConfigurations];
                 v11 = v37;
                 objc_destroyWeak(&v53);
 
@@ -1608,16 +1608,16 @@ LABEL_4:
             {
             }
 
-            v48 = [MEMORY[0x1E696AAA8] currentHandler];
-            [v48 handleFailureInMethod:sel__registerPhysicalButtonInteraction_ object:"-[_UIPhysicalButtonInteractionArbiter _registerPhysicalButtonInteraction:]" file:a2 lineNumber:a1 description:?];
+            currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+            [currentHandler2 handleFailureInMethod:sel__registerPhysicalButtonInteraction_ object:"-[_UIPhysicalButtonInteractionArbiter _registerPhysicalButtonInteraction:]" file:a2 lineNumber:interaction description:?];
 LABEL_48:
             v11 = 0;
 
             goto LABEL_8;
           }
 
-          v10 = [MEMORY[0x1E696AAA8] currentHandler];
-          [v10 handleFailureInMethod:sel__registerPhysicalButtonInteraction_ object:"-[_UIPhysicalButtonInteractionArbiter _registerPhysicalButtonInteraction:]" file:a2 lineNumber:a1 description:?];
+          currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+          [currentHandler3 handleFailureInMethod:sel__registerPhysicalButtonInteraction_ object:"-[_UIPhysicalButtonInteractionArbiter _registerPhysicalButtonInteraction:]" file:a2 lineNumber:interaction description:?];
         }
       }
     }
@@ -1634,51 +1634,51 @@ LABEL_9:
   return v11;
 }
 
-- (void)_beginTrackingWindow:(uint64_t)a1
+- (void)_beginTrackingWindow:(uint64_t)window
 {
   v27 = *MEMORY[0x1E69E9840];
   v4 = [MEMORY[0x1E696B098] valueWithPointer:a2];
-  v5 = *(a1 + 80);
+  v5 = *(window + 80);
   if (!v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:514 capacity:2];
-    v7 = *(a1 + 80);
-    *(a1 + 80) = v6;
+    v7 = *(window + 80);
+    *(window + 80) = v6;
 
-    v5 = *(a1 + 80);
+    v5 = *(window + 80);
   }
 
   [v5 addObject:a2];
-  v8 = *(a1 + 88);
+  v8 = *(window + 88);
   if (!v8)
   {
     v9 = objc_opt_new();
-    v10 = *(a1 + 88);
-    *(a1 + 88) = v9;
+    v10 = *(window + 88);
+    *(window + 88) = v9;
 
-    v8 = *(a1 + 88);
+    v8 = *(window + 88);
   }
 
   [v8 addObject:v4];
-  WeakRetained = objc_loadWeakRetained((a1 + 56));
+  WeakRetained = objc_loadWeakRetained((window + 56));
 
   if (!WeakRetained)
   {
-    v12 = *(a1 + 96);
+    v12 = *(window + 96);
     if (!v12)
     {
       v13 = objc_opt_new();
-      v14 = *(a1 + 96);
-      *(a1 + 96) = v13;
+      v14 = *(window + 96);
+      *(window + 96) = v13;
 
-      v12 = *(a1 + 96);
+      v12 = *(window + 96);
     }
 
     v15 = [v12 containsObject:v4];
-    [*(a1 + 96) addObject:v4];
+    [*(window + 96) addObject:v4];
     if ((v15 & 1) == 0)
     {
-      [a2 _addWindowLevelChangedObserver:a1];
+      [a2 _addWindowLevelChangedObserver:window];
       CategoryCachedImpl = __UILogGetCategoryCachedImpl("PhysicalButtonInteraction", &_beginTrackingWindow____s_category);
       if (*CategoryCachedImpl)
       {
@@ -1700,7 +1700,7 @@ LABEL_9:
           }
 
           *buf = 134349314;
-          v24 = a1;
+          windowCopy = window;
           v25 = 2112;
           v26 = v22;
           _os_log_impl(&dword_188A29000, v17, OS_LOG_TYPE_ERROR, "[%{public}p] Arbiter began observing window level for window: %@", buf, 0x16u);
@@ -1710,23 +1710,23 @@ LABEL_9:
   }
 }
 
-- (void)_addSystemShellWindowRequiringResolutionIfNeeded:(uint64_t)a1
+- (void)_addSystemShellWindowRequiringResolutionIfNeeded:(uint64_t)needed
 {
-  WeakRetained = objc_loadWeakRetained((a1 + 56));
+  WeakRetained = objc_loadWeakRetained((needed + 56));
   if (a2 && WeakRetained)
   {
     v5 = *(a2 + 88);
 
     if ((v5 & 0x800) == 0)
     {
-      v6 = *(a1 + 120);
+      v6 = *(needed + 120);
       if (!v6)
       {
         v7 = [objc_alloc(MEMORY[0x1E696AC70]) initWithOptions:517 capacity:3];
-        v8 = *(a1 + 120);
-        *(a1 + 120) = v7;
+        v8 = *(needed + 120);
+        *(needed + 120) = v7;
 
-        v6 = *(a1 + 120);
+        v6 = *(needed + 120);
       }
 
       [v6 addObject:a2];
@@ -1738,22 +1738,22 @@ LABEL_9:
   }
 }
 
-- (void)_unregisterAllPhysicalButtonInteractionsForDetachingWindow:(uint64_t)a1
+- (void)_unregisterAllPhysicalButtonInteractionsForDetachingWindow:(uint64_t)window
 {
   v19 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (window)
   {
-    if ((*(a1 + 40) & 8) == 0)
+    if ((*(window + 40) & 8) == 0)
     {
-      *(a1 + 40) |= 8u;
+      *(window + 40) |= 8u;
     }
 
     v16 = 0u;
     v17 = 0u;
     v14 = 0u;
     v15 = 0u;
-    v4 = [(_UIEvaluatedObjectCache *)*(a1 + 72) sortedObjects];
-    v5 = [v4 copy];
+    sortedObjects = [(_UIEvaluatedObjectCache *)*(window + 72) sortedObjects];
+    v5 = [sortedObjects copy];
 
     v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v6)
@@ -1770,10 +1770,10 @@ LABEL_9:
           }
 
           v10 = *(*(&v14 + 1) + 8 * i);
-          v11 = [v10 view];
-          v12 = [v11 _window];
+          view = [v10 view];
+          _window = [view _window];
 
-          if (v12 == a2)
+          if (_window == a2)
           {
             [(_UIPhysicalButtonInteraction *)v10 _unregisterFromArbiter];
           }
@@ -1785,62 +1785,62 @@ LABEL_9:
       while (v7);
     }
 
-    v13 = *(a1 + 40);
-    *(a1 + 40) = v13 & 0xE7;
+    v13 = *(window + 40);
+    *(window + 40) = v13 & 0xE7;
     if ((v13 & 0x10) != 0)
     {
-      [(_UIPhysicalButtonInteractionArbiter *)a1 _resolveConfigurations];
+      [(_UIPhysicalButtonInteractionArbiter *)window _resolveConfigurations];
     }
 
-    [(_UIPhysicalButtonInteractionArbiter *)a1 _removeAllSystemShellReferencesForDetachingWindow:a2];
+    [(_UIPhysicalButtonInteractionArbiter *)window _removeAllSystemShellReferencesForDetachingWindow:a2];
   }
 }
 
-- (void)_removeAllSystemShellReferencesForDetachingWindow:(uint64_t)a1
+- (void)_removeAllSystemShellReferencesForDetachingWindow:(uint64_t)window
 {
-  if (a1)
+  if (window)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 56));
+    WeakRetained = objc_loadWeakRetained((window + 56));
 
     if (WeakRetained)
     {
-      [*(a1 + 120) removeObject:a2];
-      v5 = *(a1 + 128);
+      [*(window + 120) removeObject:a2];
+      v5 = *(window + 128);
 
       [v5 removeObjectForKey:a2];
     }
   }
 }
 
-- (id)localEventDeferringTargetWindowForEnvironment:(id)a3
+- (id)localEventDeferringTargetWindowForEnvironment:(id)environment
 {
-  v6 = _UIPhysicalButtonsForBKSHIDEventDeferringEnvironment(a3);
-  v7 = [v6 firstObject];
-  v8 = [v7 unsignedIntegerValue];
-  if (!v7 || (v8 - 1) >= 7)
+  v6 = _UIPhysicalButtonsForBKSHIDEventDeferringEnvironment(environment);
+  firstObject = [v6 firstObject];
+  unsignedIntegerValue = [firstObject unsignedIntegerValue];
+  if (!firstObject || (unsignedIntegerValue - 1) >= 7)
   {
-    v9 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v9 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:985 description:{@"%s: Invalid state: asked for target window of unknown event deferring environment: %@", "-[_UIPhysicalButtonInteractionArbiter localEventDeferringTargetWindowForEnvironment:]", a3}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:985 description:{@"%s: Invalid state: asked for target window of unknown event deferring environment: %@", "-[_UIPhysicalButtonInteractionArbiter localEventDeferringTargetWindowForEnvironment:]", environment}];
   }
 
   v10 = self->_sceneConfigurationResolutionContext;
-  v11 = [(_UIPhysicalButtonConfigurationResolutionContext *)v10 configurations];
-  v12 = [(_UIPhysicalButtonConfigurationResolutionContext *)v10 configurationToInteractionMap];
+  configurations = [(_UIPhysicalButtonConfigurationResolutionContext *)v10 configurations];
+  configurationToInteractionMap = [(_UIPhysicalButtonConfigurationResolutionContext *)v10 configurationToInteractionMap];
 
-  v13 = _UIPhysicalButtonInteractionArbiterTargetWindowForButton(v11, v12);
+  v13 = _UIPhysicalButtonInteractionArbiterTargetWindowForButton(configurations, configurationToInteractionMap);
 
   return v13;
 }
 
 - (id)_mostActiveViewServiceSessionForScene
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 48));
-    v2 = [WeakRetained _screen];
-    v3 = [v2 _userInterfaceIdiom];
+    WeakRetained = objc_loadWeakRetained((self + 48));
+    _screen = [WeakRetained _screen];
+    _userInterfaceIdiom = [_screen _userInterfaceIdiom];
 
-    v4 = _UIActiveViewServiceSessionEffectiveIdiomForIdiom(v3);
+    v4 = _UIActiveViewServiceSessionEffectiveIdiomForIdiom(_userInterfaceIdiom);
     v5 = +[_UIActiveViewServiceSessionTracker sharedTracker];
     v6 = [(_UIActiveViewServiceSessionTracker *)v5 mostActiveViewServiceSessionForUserInterfaceIdiom:v4];
   }
@@ -1853,9 +1853,9 @@ LABEL_9:
   return v6;
 }
 
-- (void)_enumerateAndValidateInteractionsInWindow:(uint64_t)a3 withRequiredBehaviorMask:(uint64_t)a4 configurationAcceptanceEvaluator:(uint64_t)a5 interactionAcceptanceHandler:(uint64_t)a6 shouldStopEvaluator:
+- (void)_enumerateAndValidateInteractionsInWindow:(uint64_t)window withRequiredBehaviorMask:(uint64_t)mask configurationAcceptanceEvaluator:(uint64_t)evaluator interactionAcceptanceHandler:(uint64_t)handler shouldStopEvaluator:
 {
-  v6 = *(a1 + 72);
+  v6 = *(self + 72);
   if (v6)
   {
     if ([*(v6 + 24) count])
@@ -1872,25 +1872,25 @@ LABEL_9:
       v24[3] = __Block_byref_object_copy__181;
       v24[4] = __Block_byref_object_dispose__181;
       v25 = 0;
-      WeakRetained = objc_loadWeakRetained((a1 + 48));
-      v14 = [WeakRetained _coordinateSpace];
+      WeakRetained = objc_loadWeakRetained((self + 48));
+      _coordinateSpace = [WeakRetained _coordinateSpace];
 
-      v15 = [(_UIEvaluatedObjectCache *)*(a1 + 72) sortedObjects];
+      sortedObjects = [(_UIEvaluatedObjectCache *)*(self + 72) sortedObjects];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __188___UIPhysicalButtonInteractionArbiter__enumerateAndValidateInteractionsInWindow_withRequiredBehaviorMask_configurationAcceptanceEvaluator_interactionAcceptanceHandler_shouldStopEvaluator___block_invoke_2;
       v16[3] = &unk_1E7120CD0;
-      v16[4] = a1;
+      v16[4] = self;
       v16[5] = a2;
       v22 = v24;
-      v23 = a3;
-      v16[6] = v14;
+      windowCopy = window;
+      v16[6] = _coordinateSpace;
       v17 = &__block_literal_global_138_0;
-      v18 = a4;
-      v19 = a5;
-      v20 = a6;
+      maskCopy = mask;
+      evaluatorCopy = evaluator;
+      handlerCopy = handler;
       v21 = v26;
-      [v15 enumerateObjectsWithOptions:2 usingBlock:v16];
+      [sortedObjects enumerateObjectsWithOptions:2 usingBlock:v16];
 
       _Block_object_dispose(v24, 8);
       _Block_object_dispose(v26, 8);
@@ -1898,12 +1898,12 @@ LABEL_9:
   }
 }
 
-- (id)_gestureViewsForWindow:(uint64_t)a3 physicalButton:
+- (id)_gestureViewsForWindow:(uint64_t)window physicalButton:
 {
-  if (a1)
+  if (self)
   {
-    v6 = [*(a1 + 112) configurations];
-    v7 = [v6 _configurationForButton:a3];
+    configurations = [*(self + 112) configurations];
+    v7 = [configurations _configurationForButton:window];
 
     if (v7)
     {
@@ -1913,7 +1913,7 @@ LABEL_9:
       v20 = __Block_byref_object_copy__181;
       v21 = __Block_byref_object_dispose__181;
       v22 = 0;
-      v8 = [v7 _behavior];
+      _behavior = [v7 _behavior];
       v16[0] = MEMORY[0x1E69E9820];
       v16[1] = 3221225472;
       v16[2] = __77___UIPhysicalButtonInteractionArbiter__gestureViewsForWindow_physicalButton___block_invoke;
@@ -1923,19 +1923,19 @@ LABEL_9:
       v14[1] = 3221225472;
       v14[2] = __77___UIPhysicalButtonInteractionArbiter__gestureViewsForWindow_physicalButton___block_invoke_2;
       v14[3] = &unk_1E7120D20;
-      if (v8 >= 3)
+      if (_behavior >= 3)
       {
         v9 = 0;
       }
 
       else
       {
-        v9 = 1 << v8;
+        v9 = 1 << _behavior;
       }
 
-      v15 = v8 != 2;
+      v15 = _behavior != 2;
       v14[4] = &v17;
-      [(_UIPhysicalButtonInteractionArbiter *)a1 _enumerateAndValidateInteractionsInWindow:a2 withRequiredBehaviorMask:v9 configurationAcceptanceEvaluator:0 interactionAcceptanceHandler:v16 shouldStopEvaluator:v14];
+      [(_UIPhysicalButtonInteractionArbiter *)self _enumerateAndValidateInteractionsInWindow:a2 withRequiredBehaviorMask:v9 configurationAcceptanceEvaluator:0 interactionAcceptanceHandler:v16 shouldStopEvaluator:v14];
       v10 = v18[5];
       if (v10)
       {
@@ -1965,7 +1965,7 @@ LABEL_9:
   return v12;
 }
 
-- (id)_performConfigurationResolutionForRequiredWindow:(uint64_t)a1
+- (id)_performConfigurationResolutionForRequiredWindow:(uint64_t)window
 {
   v4 = objc_opt_new();
   v15 = 0;
@@ -1995,7 +1995,7 @@ LABEL_9:
   v6[1] = 3221225472;
   v6[2] = __88___UIPhysicalButtonInteractionArbiter__performConfigurationResolutionForRequiredWindow___block_invoke_3;
   v6[3] = &unk_1E7120D70;
-  [(_UIPhysicalButtonInteractionArbiter *)a1 _enumerateAndValidateInteractionsInWindow:a2 withRequiredBehaviorMask:0 configurationAcceptanceEvaluator:v8 interactionAcceptanceHandler:v7 shouldStopEvaluator:v6];
+  [(_UIPhysicalButtonInteractionArbiter *)window _enumerateAndValidateInteractionsInWindow:a2 withRequiredBehaviorMask:0 configurationAcceptanceEvaluator:v8 interactionAcceptanceHandler:v7 shouldStopEvaluator:v6];
   [v4 setConfigurations:v16[5]];
   [v4 setConfigurationToInteractionMap:v10[5]];
   _Block_object_dispose(&v9, 8);
@@ -2005,7 +2005,7 @@ LABEL_9:
   return v4;
 }
 
-- (void)_deferredResolutionDisplayLinkTicked:(id)a3
+- (void)_deferredResolutionDisplayLinkTicked:(id)ticked
 {
   arbiterFlags = self->_arbiterFlags;
   *&self->_arbiterFlags = arbiterFlags & 0xF9;
@@ -2040,14 +2040,14 @@ LABEL_9:
     goto LABEL_13;
   }
 
-  v8 = [(_UIPhysicalButtonInteractionArbiter *)self _scene];
-  if (v8)
+  _scene = [(_UIPhysicalButtonInteractionArbiter *)self _scene];
+  if (_scene)
   {
-    v9 = v8;
-    v10 = [v8 _hasInvalidated];
+    v9 = _scene;
+    _hasInvalidated = [_scene _hasInvalidated];
 
     kdebug_trace();
-    if ((v10 & 1) == 0)
+    if ((_hasInvalidated & 1) == 0)
     {
 
       [(_UIPhysicalButtonInteractionArbiter *)self _resolveConfigurations];
@@ -2061,29 +2061,29 @@ LABEL_13:
   kdebug_trace();
 }
 
-- (void)_setNeedsResolutionOfPhysicalButtonConfigurationsInSceneForReason:(uint64_t)a1
+- (void)_setNeedsResolutionOfPhysicalButtonConfigurationsInSceneForReason:(uint64_t)reason
 {
-  if (a1)
+  if (reason)
   {
-    v2 = *(a1 + 72);
+    v2 = *(reason + 72);
     if (v2)
     {
       if ([*(v2 + 24) count])
       {
-        v3 = [a1 _scene];
-        if (v3)
+        _scene = [reason _scene];
+        if (_scene)
         {
-          v4 = v3;
-          v5 = [v3 _hasInvalidated];
+          v4 = _scene;
+          _hasInvalidated = [_scene _hasInvalidated];
 
-          if ((v5 & 1) == 0)
+          if ((_hasInvalidated & 1) == 0)
           {
-            v6 = *(a1 + 40) & 2;
+            v6 = *(reason + 40) & 2;
             kdebug_trace();
             if (!v6)
             {
 
-              [(_UIPhysicalButtonInteractionArbiter *)a1 _scheduleDeferredConfigurationResolution];
+              [(_UIPhysicalButtonInteractionArbiter *)reason _scheduleDeferredConfigurationResolution];
             }
           }
         }
@@ -2092,34 +2092,34 @@ LABEL_13:
   }
 }
 
-- (void)_setNeedsResolutionOfPhysicalButtonConfigurationsInWindow:(unint64_t)a3 forReason:
+- (void)_setNeedsResolutionOfPhysicalButtonConfigurationsInWindow:(unint64_t)window forReason:
 {
   v21 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     if (a2)
     {
-      v5 = *(a1 + 72);
+      v5 = *(self + 72);
       if (v5)
       {
         if ([*(v5 + 24) count])
         {
-          v7 = [a1 _scene];
-          if (v7)
+          _scene = [self _scene];
+          if (_scene)
           {
-            v8 = v7;
-            v9 = [v7 _hasInvalidated];
+            v8 = _scene;
+            _hasInvalidated = [_scene _hasInvalidated];
 
-            if ((v9 & 1) == 0 && (a3 != 2 || [*(a1 + 80) containsObject:a2]))
+            if ((_hasInvalidated & 1) == 0 && (window != 2 || [*(self + 80) containsObject:a2]))
             {
-              v10 = [a2 _windowHostingScene];
-              WeakRetained = objc_loadWeakRetained((a1 + 48));
+              _windowHostingScene = [a2 _windowHostingScene];
+              WeakRetained = objc_loadWeakRetained((self + 48));
 
-              if (v10 == WeakRetained)
+              if (_windowHostingScene == WeakRetained)
               {
-                [(_UIPhysicalButtonInteractionArbiter *)a1 _addSystemShellWindowRequiringResolutionIfNeeded:a2];
+                [(_UIPhysicalButtonInteractionArbiter *)self _addSystemShellWindowRequiringResolutionIfNeeded:a2];
 
-                [_UIPhysicalButtonInteractionArbiter _setNeedsResolutionOfPhysicalButtonConfigurationsInSceneForReason:a1];
+                [_UIPhysicalButtonInteractionArbiter _setNeedsResolutionOfPhysicalButtonConfigurationsInSceneForReason:self];
               }
 
               else
@@ -2127,18 +2127,18 @@ LABEL_13:
                 v12 = *(__UILogGetCategoryCachedImpl("PhysicalButtonInteraction", &_setNeedsResolutionOfPhysicalButtonConfigurationsInWindow_forReason____s_category) + 8);
                 if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
                 {
-                  if (a3 > 4)
+                  if (window > 4)
                   {
                     v13 = &stru_1EFB14550;
                   }
 
                   else
                   {
-                    v13 = off_1E7120DE0[a3];
+                    v13 = off_1E7120DE0[window];
                   }
 
                   v15 = 134349570;
-                  v16 = a1;
+                  selfCopy = self;
                   v17 = 2112;
                   v18 = a2;
                   v19 = 2112;
@@ -2155,30 +2155,30 @@ LABEL_13:
   }
 }
 
-- (void)_windowVisibilityDidChange:(id)a3
+- (void)_windowVisibilityDidChange:(id)change
 {
   WeakRetained = objc_loadWeakRetained(&self->_systemShellDelegate);
 
   if (!WeakRetained)
   {
-    v6 = [a3 object];
+    object = [change object];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v10 = [a3 object];
+      object2 = [change object];
 
-      v7 = v10;
-      if (v10)
+      v7 = object2;
+      if (object2)
       {
-        v8 = [v10 _windowHostingScene];
+        _windowHostingScene = [object2 _windowHostingScene];
         v9 = objc_loadWeakRetained(&self->_scene);
 
-        if (v8 == v9)
+        if (_windowHostingScene == v9)
         {
-          [(_UIPhysicalButtonInteractionArbiter *)self _setNeedsResolutionOfPhysicalButtonConfigurationsInWindow:v10 forReason:0];
+          [(_UIPhysicalButtonInteractionArbiter *)self _setNeedsResolutionOfPhysicalButtonConfigurationsInWindow:object2 forReason:0];
         }
 
-        v7 = v10;
+        v7 = object2;
       }
     }
 
@@ -2190,7 +2190,7 @@ LABEL_13:
   }
 }
 
-- (void)window:(id)a3 changedFromLevel:(double)a4 toLevel:(double)a5
+- (void)window:(id)window changedFromLevel:(double)level toLevel:(double)toLevel
 {
   WeakRetained = objc_loadWeakRetained(&self->_systemShellDelegate);
 
@@ -2205,13 +2205,13 @@ LABEL_13:
 - (void)_resetWindowLevelObservation
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (self)
   {
     v12 = 0u;
     v13 = 0u;
     v10 = 0u;
     v11 = 0u;
-    v2 = *(a1 + 96);
+    v2 = *(self + 96);
     v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
     if (v3)
     {
@@ -2227,11 +2227,11 @@ LABEL_13:
             objc_enumerationMutation(v2);
           }
 
-          v7 = [*(*(&v10 + 1) + 8 * v6) pointerValue];
-          v8 = v7;
-          if (v7)
+          pointerValue = [*(*(&v10 + 1) + 8 * v6) pointerValue];
+          v8 = pointerValue;
+          if (pointerValue)
           {
-            [v7 _removeWindowLevelChangedObserver:a1];
+            [pointerValue _removeWindowLevelChangedObserver:self];
           }
 
           ++v6;
@@ -2244,24 +2244,24 @@ LABEL_13:
       while (v4);
     }
 
-    v9 = *(a1 + 96);
-    *(a1 + 96) = 0;
+    v9 = *(self + 96);
+    *(self + 96) = 0;
   }
 }
 
-- (void)setSystemShellDelegate:(id)a3
+- (void)setSystemShellDelegate:(id)delegate
 {
   v38 = *MEMORY[0x1E69E9840];
   IsSpringBoard = _UIApplicationProcessIsSpringBoard();
   v7 = IsSpringBoard;
-  if (a3)
+  if (delegate)
   {
-    v8 = [a3 conformsToProtocol:&unk_1F016DB90];
+    v8 = [delegate conformsToProtocol:&unk_1F016DB90];
     v9 = v8;
     if ((v7 & 1) == 0)
     {
-      v29 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v29 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1713 description:{@"%s: A system shell delegate is not allowed for this process", "-[_UIPhysicalButtonInteractionArbiter setSystemShellDelegate:]"}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1713 description:{@"%s: A system shell delegate is not allowed for this process", "-[_UIPhysicalButtonInteractionArbiter setSystemShellDelegate:]"}];
 
       if (v9)
       {
@@ -2274,8 +2274,8 @@ LABEL_13:
     if ((v8 & 1) == 0)
     {
 LABEL_4:
-      v31 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v31 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1714 description:{@"%s: Candidate system shell delegate does not conform to _UIPhysicalButtonInteractionArbiterSystemShellDelegate: %@", "-[_UIPhysicalButtonInteractionArbiter setSystemShellDelegate:]", a3}];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1714 description:{@"%s: Candidate system shell delegate does not conform to _UIPhysicalButtonInteractionArbiterSystemShellDelegate: %@", "-[_UIPhysicalButtonInteractionArbiter setSystemShellDelegate:]", delegate}];
 LABEL_28:
 
       return;
@@ -2284,16 +2284,16 @@ LABEL_28:
 
   else if ((IsSpringBoard & 1) == 0)
   {
-    v31 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v31 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1713 description:{@"%s: A system shell delegate is not allowed for this process", "-[_UIPhysicalButtonInteractionArbiter setSystemShellDelegate:]", v30}];
+    currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler2 handleFailureInMethod:a2 object:self file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1713 description:{@"%s: A system shell delegate is not allowed for this process", "-[_UIPhysicalButtonInteractionArbiter setSystemShellDelegate:]", v30}];
     goto LABEL_28;
   }
 
   WeakRetained = objc_loadWeakRetained(&self->_systemShellDelegate);
-  v11 = a3;
+  delegateCopy = delegate;
   v12 = WeakRetained;
   v13 = v12;
-  if (v12 == v11)
+  if (v12 == delegateCopy)
   {
     v14 = 1;
   }
@@ -2301,9 +2301,9 @@ LABEL_28:
   else
   {
     v14 = 0;
-    if (v11 && v12)
+    if (delegateCopy && v12)
     {
-      v14 = [v11 isEqual:v12];
+      v14 = [delegateCopy isEqual:v12];
     }
   }
 
@@ -2325,10 +2325,10 @@ LABEL_28:
     }
 
     v21 = v20;
-    if (a3)
+    if (delegate)
     {
       v22 = MEMORY[0x1E696AEC0];
-      v23 = v11;
+      v23 = delegateCopy;
       v24 = objc_opt_class();
       v25 = NSStringFromClass(v24);
       v26 = [v22 stringWithFormat:@"<%@: %p>", v25, v23];
@@ -2340,7 +2340,7 @@ LABEL_28:
     }
 
     *buf = 134349570;
-    v33 = self;
+    selfCopy = self;
     v34 = 2112;
     v35 = v21;
     v36 = 2112;
@@ -2348,7 +2348,7 @@ LABEL_28:
     _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}p] Arbiter: setting system shell delegate: existing: %@; new: %@", buf, 0x20u);
   }
 
-  objc_storeWeak(&self->_systemShellDelegate, v11);
+  objc_storeWeak(&self->_systemShellDelegate, delegateCopy);
   if ((v14 & 1) == 0)
   {
     v27 = objc_loadWeakRetained(&self->_systemShellDelegate);
@@ -2358,9 +2358,9 @@ LABEL_28:
       [(_UIPhysicalButtonInteractionArbiter *)self _resetWindowLevelObservation];
       if (self)
       {
-        v28 = [MEMORY[0x1E696AD88] defaultCenter];
-        [v28 removeObserver:self name:@"UIWindowDidBecomeVisibleNotification" object:0];
-        [v28 removeObserver:self name:@"UIWindowDidBecomeHiddenNotification" object:0];
+        defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+        [defaultCenter removeObserver:self name:@"UIWindowDidBecomeVisibleNotification" object:0];
+        [defaultCenter removeObserver:self name:@"UIWindowDidBecomeHiddenNotification" object:0];
       }
     }
 
@@ -2371,7 +2371,7 @@ LABEL_28:
   }
 }
 
-- (void)setNeedsResolutionOfPhysicalButtonConfigurationsForSystemShellDelegate:(id)a3
+- (void)setNeedsResolutionOfPhysicalButtonConfigurationsForSystemShellDelegate:(id)delegate
 {
   WeakRetained = objc_loadWeakRetained(&self->_systemShellDelegate);
   if (WeakRetained)
@@ -2379,7 +2379,7 @@ LABEL_28:
     v6 = WeakRetained;
     v7 = objc_loadWeakRetained(&self->_systemShellDelegate);
 
-    if (v7 == a3)
+    if (v7 == delegate)
     {
       *&self->_arbiterFlags |= 0x20u;
 
@@ -2388,15 +2388,15 @@ LABEL_28:
   }
 }
 
-- (id)configurationResolutionContextForSystemShellWindow:(id)a3
+- (id)configurationResolutionContextForSystemShellWindow:(id)window
 {
-  v5 = [(NSMapTable *)self->_systemShellWindowConfigurationResolutionContexts objectForKey:a3];
+  v5 = [(NSMapTable *)self->_systemShellWindowConfigurationResolutionContexts objectForKey:window];
   v6 = [v5 copy];
 
   return v6;
 }
 
-- (void)_mostActiveViewServiceSessionDidChange:(id)a3
+- (void)_mostActiveViewServiceSessionDidChange:(id)change
 {
   v21 = *MEMORY[0x1E69E9840];
   if (self)
@@ -2409,29 +2409,29 @@ LABEL_28:
     WeakRetained = 0;
   }
 
-  v6 = [WeakRetained _screen];
-  v7 = [v6 _userInterfaceIdiom];
+  _screen = [WeakRetained _screen];
+  _userInterfaceIdiom = [_screen _userInterfaceIdiom];
 
-  v8 = _UIActiveViewServiceSessionEffectiveIdiomForIdiom(v7);
-  v9 = [a3 userInfo];
-  v10 = [v9 objectForKey:@"_UIActiveViewServiceSessionChangingIdiomKey"];
+  v8 = _UIActiveViewServiceSessionEffectiveIdiomForIdiom(_userInterfaceIdiom);
+  userInfo = [change userInfo];
+  v10 = [userInfo objectForKey:@"_UIActiveViewServiceSessionChangingIdiomKey"];
 
   if (v10 && [v10 integerValue] == v8)
   {
-    v11 = [(_UIPhysicalButtonInteractionArbiter *)self _mostActiveViewServiceSessionForScene];
+    _mostActiveViewServiceSessionForScene = [(_UIPhysicalButtonInteractionArbiter *)self _mostActiveViewServiceSessionForScene];
     mostActiveViewServiceSession = self->_mostActiveViewServiceSession;
-    self->_mostActiveViewServiceSession = v11;
+    self->_mostActiveViewServiceSession = _mostActiveViewServiceSessionForScene;
 
     v13 = *(__UILogGetCategoryCachedImpl("PhysicalButtonInteraction", &_mostActiveViewServiceSessionDidChange____s_category) + 8);
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
     {
       v14 = self->_mostActiveViewServiceSession;
       v15 = v13;
-      v16 = [(_UIViewServiceSessionActivityRecord *)v14 succinctDescription];
+      succinctDescription = [(_UIViewServiceSessionActivityRecord *)v14 succinctDescription];
       v17 = 134349314;
-      v18 = self;
+      selfCopy = self;
       v19 = 2112;
-      v20 = v16;
+      v20 = succinctDescription;
       _os_log_impl(&dword_188A29000, v15, OS_LOG_TYPE_DEFAULT, "[%{public}p] Arbiter: received new most active view service session: %@", &v17, 0x16u);
     }
 
@@ -2439,58 +2439,58 @@ LABEL_28:
   }
 }
 
-- (id)_registerViewServiceObserver:(id *)a1
+- (id)_registerViewServiceObserver:(id *)observer
 {
-  v2 = a1;
+  observerCopy = observer;
   v41 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (observer)
   {
-    v4 = [a1 _scene];
-    v5 = v4;
-    if (!v4)
+    _scene = [observer _scene];
+    v5 = _scene;
+    if (!_scene)
     {
       goto LABEL_16;
     }
 
-    v6 = [v4 _hasInvalidated];
+    _hasInvalidated = [_scene _hasInvalidated];
 
-    if (v6)
+    if (_hasInvalidated)
     {
       goto LABEL_16;
     }
 
-    if ([v2[18] containsObject:a2])
+    if ([observerCopy[18] containsObject:a2])
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:sel__registerViewServiceObserver_ object:v2 file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1837 description:{@"%s: View service observer is already registered with arbiter: viewServiceObserver: %@; arbiter: %@", "-[_UIPhysicalButtonInteractionArbiter _registerViewServiceObserver:]", a2, v2}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__registerViewServiceObserver_ object:observerCopy file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1837 description:{@"%s: View service observer is already registered with arbiter: viewServiceObserver: %@; arbiter: %@", "-[_UIPhysicalButtonInteractionArbiter _registerViewServiceObserver:]", a2, observerCopy}];
 LABEL_15:
 
 LABEL_16:
-      v2 = 0;
+      observerCopy = 0;
       goto LABEL_17;
     }
 
     if ((objc_opt_respondsToSelector() & 1) == 0 || ([a2 isMemberOfClass:objc_opt_class()] & 1) == 0 && (objc_msgSend(a2, "isMemberOfClass:", objc_opt_class()) & 1) == 0)
     {
-      v7 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v7 handleFailureInMethod:sel__registerViewServiceObserver_ object:v2 file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1848 description:{@"%s: Invalid view service observer attempting registration with arbiter: viewServiceObserver: %@; arbiter: %@", "-[_UIPhysicalButtonInteractionArbiter _registerViewServiceObserver:]", a2, v2}];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:sel__registerViewServiceObserver_ object:observerCopy file:@"_UIPhysicalButtonInteractionArbiter.m" lineNumber:1848 description:{@"%s: Invalid view service observer attempting registration with arbiter: viewServiceObserver: %@; arbiter: %@", "-[_UIPhysicalButtonInteractionArbiter _registerViewServiceObserver:]", a2, observerCopy}];
       goto LABEL_15;
     }
 
-    if (!v2[18])
+    if (!observerCopy[18])
     {
       v8 = [MEMORY[0x1E696AC70] hashTableWithOptions:517];
-      v9 = v2[18];
-      v2[18] = v8;
+      v9 = observerCopy[18];
+      observerCopy[18] = v8;
     }
 
-    objc_initWeak(&location, v2);
+    objc_initWeak(&location, observerCopy);
     objc_initWeak(&from, a2);
     v10 = ++qword_1ED4A0A20;
     v11 = objc_opt_class();
     v29 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%s-%p-%lu", class_getName(v11), a2, v10];
     v12 = MEMORY[0x1E696AEC0];
-    v13 = v2;
+    v13 = observerCopy;
     v14 = MEMORY[0x1E696AEC0];
     v15 = objc_opt_class();
     v16 = NSStringFromClass(v15);
@@ -2534,8 +2534,8 @@ LABEL_16:
       _os_log_impl(&dword_188A29000, v22, OS_LOG_TYPE_DEFAULT, "[%{public}p] Arbiter: registered view service observer: %@ with registrationToken: %@", buf, 0x20u);
     }
 
-    [v2[18] addObject:a2];
-    v2 = v21;
+    [observerCopy[18] addObject:a2];
+    observerCopy = v21;
     objc_destroyWeak(&v32);
     objc_destroyWeak(&v31);
 
@@ -2545,40 +2545,40 @@ LABEL_16:
 
 LABEL_17:
 
-  return v2;
+  return observerCopy;
 }
 
-- (void)_handleBSAction:(uint64_t)a1
+- (void)_handleBSAction:(uint64_t)action
 {
   v28 = *MEMORY[0x1E69E9840];
-  if (a1)
+  if (action)
   {
     v4 = *(__UILogGetCategoryCachedImpl("PhysicalButtonInteraction", &qword_1ED4A09F8) + 8);
     if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134349314;
-      v23 = a1;
+      actionCopy3 = action;
       v24 = 2112;
       v25 = a2;
       _os_log_impl(&dword_188A29000, v4, OS_LOG_TYPE_DEFAULT, "[%{public}p] Arbiter: received BSAction: %@", buf, 0x16u);
     }
 
-    v5 = [*(a1 + 112) configurations];
+    configurations = [*(action + 112) configurations];
     v21[0] = MEMORY[0x1E69E9820];
     v21[1] = 3221225472;
     v21[2] = __55___UIPhysicalButtonInteractionArbiter__handleBSAction___block_invoke;
     v21[3] = &unk_1E7120D98;
     v21[4] = a2;
-    v6 = [v5 _configurationPassingTest:v21];
+    v6 = [configurations _configurationPassingTest:v21];
     if (v6)
     {
-      v7 = [*(a1 + 112) configurationToInteractionMap];
-      v8 = [v7 objectForKey:v6];
+      configurationToInteractionMap = [*(action + 112) configurationToInteractionMap];
+      v8 = [configurationToInteractionMap objectForKey:v6];
 
       if ([v8 _isProxyInteraction])
       {
-        v9 = [(_UIPhysicalButtonInteraction *)v8 _bsActionDriver];
-        [v9 _handleBSAction:a2];
+        _bsActionDriver = [(_UIPhysicalButtonInteraction *)v8 _bsActionDriver];
+        [_bsActionDriver _handleBSAction:a2];
 LABEL_17:
 
 LABEL_18:
@@ -2589,21 +2589,21 @@ LABEL_19:
 
       if ([a2 behavior] == 2)
       {
-        v12 = [(_UIEvaluatedObjectCache *)*(a1 + 72) sortedObjects];
+        sortedObjects = [(_UIEvaluatedObjectCache *)*(action + 72) sortedObjects];
         v14 = MEMORY[0x1E69E9820];
         v15 = 3221225472;
         v16 = __55___UIPhysicalButtonInteractionArbiter__handleBSAction___block_invoke_238;
         v17 = &unk_1E7120DC0;
-        v18 = a1;
+        actionCopy2 = action;
         v19 = v6;
         v20 = a2;
-        [v12 enumerateObjectsWithOptions:2 usingBlock:&v14];
+        [sortedObjects enumerateObjectsWithOptions:2 usingBlock:&v14];
       }
 
       else
       {
-        v13 = [(_UIPhysicalButtonInteraction *)v8 _bsActionDriver];
-        [v13 _handleBSAction:a2];
+        _bsActionDriver2 = [(_UIPhysicalButtonInteraction *)v8 _bsActionDriver];
+        [_bsActionDriver2 _handleBSAction:a2];
       }
 
       if (![a2 canSendResponse])
@@ -2611,7 +2611,7 @@ LABEL_19:
         goto LABEL_18;
       }
 
-      v11 = [MEMORY[0x1E698E600] response];
+      response = [MEMORY[0x1E698E600] response];
     }
 
     else
@@ -2620,11 +2620,11 @@ LABEL_19:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
         *buf = 134349570;
-        v23 = a1;
+        actionCopy3 = action;
         v24 = 2112;
         v25 = a2;
         v26 = 2112;
-        v27 = v5;
+        v27 = configurations;
         _os_log_impl(&dword_188A29000, v10, OS_LOG_TYPE_ERROR, "[%{public}p] Arbiter: dropping action as there is no matching configuration in resolved configurations; action: %@; resolved configurations: %@", buf, 0x20u);
       }
 
@@ -2634,21 +2634,21 @@ LABEL_19:
       }
 
       v8 = [MEMORY[0x1E696ABC0] errorWithDomain:@"_UIPhysicalButtonBSActionErrorDomain" code:0 userInfo:0];
-      v11 = [MEMORY[0x1E698E600] responseForError:v8];
+      response = [MEMORY[0x1E698E600] responseForError:v8];
     }
 
-    v9 = v11;
-    [a2 sendResponse:v11];
+    _bsActionDriver = response;
+    [a2 sendResponse:response];
     goto LABEL_17;
   }
 }
 
 - (id)succinctDescription
 {
-  v2 = [(_UIPhysicalButtonInteractionArbiter *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(_UIPhysicalButtonInteractionArbiter *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -2674,40 +2674,40 @@ LABEL_19:
 
   [v3 appendString:v7 withName:@"resolutionStrategy"];
   v8 = [v4 appendBool:(*&self->_arbiterFlags >> 1) & 1 withName:@"hasScheduledDeferredConfigurationResolution"];
-  v9 = [(_UIPhysicalButtonConfigurationResolutionContext *)self->_sceneConfigurationResolutionContext configurations];
-  v10 = _UIPhysicalButtonSuccinctConfigurationsDescriptionForSet(v9);
+  configurations = [(_UIPhysicalButtonConfigurationResolutionContext *)self->_sceneConfigurationResolutionContext configurations];
+  v10 = _UIPhysicalButtonSuccinctConfigurationsDescriptionForSet(configurations);
   v11 = [v4 appendObject:v10 withName:@"resolvedConfigurations"];
 
   return v4;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonInteractionArbiter *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonInteractionArbiter *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(_UIPhysicalButtonInteractionArbiter *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(_UIPhysicalButtonInteractionArbiter *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __77___UIPhysicalButtonInteractionArbiter_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E70F35B8;
   v6 = v5;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v7 = [v6 modifyBody:v10];
   v8 = v6;
 

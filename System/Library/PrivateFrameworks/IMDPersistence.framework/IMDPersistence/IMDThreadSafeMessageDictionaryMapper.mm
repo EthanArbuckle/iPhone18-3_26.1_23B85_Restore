@@ -1,18 +1,18 @@
 @interface IMDThreadSafeMessageDictionaryMapper
 - (BOOL)_generateNextBatchOfIndexableDictionaries;
-- (BOOL)processOnceWithBlock:(id)a3;
-- (IMDThreadSafeMessageDictionaryMapper)initWithBatchFetcher:(id)a3;
-- (IMDThreadSafeMessageDictionaryMapper)initWithBatchFetcher:(id)a3 timingCollection:(id)a4;
-- (id)_loadChatDictionariesForMessagesWithGUIDs:(id)a3;
-- (id)_loadChatsWithGUIDs:(id)a3;
+- (BOOL)processOnceWithBlock:(id)block;
+- (IMDThreadSafeMessageDictionaryMapper)initWithBatchFetcher:(id)fetcher;
+- (IMDThreadSafeMessageDictionaryMapper)initWithBatchFetcher:(id)fetcher timingCollection:(id)collection;
+- (id)_loadChatDictionariesForMessagesWithGUIDs:(id)ds;
+- (id)_loadChatsWithGUIDs:(id)ds;
 - (id)_nextBatchOfMessageRecords;
-- (id)initForFetchingMessageGUIDs:(id)a3 timingCollection:(id)a4;
-- (id)mapWithBlock:(id)a3;
+- (id)initForFetchingMessageGUIDs:(id)ds timingCollection:(id)collection;
+- (id)mapWithBlock:(id)block;
 - (unint64_t)_messageRecordBatchSize;
-- (void)_generateIndexableDictionariesForMessageRecords:(id)a3;
-- (void)processWithBlock:(id)a3;
-- (void)setLastIndexedRowID:(unint64_t)a3;
-- (void)setMaxMessagesToProcess:(unint64_t)a3;
+- (void)_generateIndexableDictionariesForMessageRecords:(id)records;
+- (void)processWithBlock:(id)block;
+- (void)setLastIndexedRowID:(unint64_t)d;
+- (void)setMaxMessagesToProcess:(unint64_t)process;
 @end
 
 @implementation IMDThreadSafeMessageDictionaryMapper
@@ -86,10 +86,10 @@
   }
 }
 
-- (IMDThreadSafeMessageDictionaryMapper)initWithBatchFetcher:(id)a3 timingCollection:(id)a4
+- (IMDThreadSafeMessageDictionaryMapper)initWithBatchFetcher:(id)fetcher timingCollection:(id)collection
 {
-  v7 = a3;
-  v8 = a4;
+  fetcherCopy = fetcher;
+  collectionCopy = collection;
   v24.receiver = self;
   v24.super_class = IMDThreadSafeMessageDictionaryMapper;
   v9 = [(IMDThreadSafeMessageDictionaryMapper *)&v24 init];
@@ -99,9 +99,9 @@
     *(v9 + 2) = 0;
     *(v9 + 56) = xmmword_1B7D09CD0;
     *(v9 + 9) = objc_msgSend_messageRecordBatchSize(MEMORY[0x1E69A7FF8], v10, v11);
-    objc_storeStrong(&v12->_batchFetcher, a3);
+    objc_storeStrong(&v12->_batchFetcher, fetcher);
     objc_msgSend_setParentedOnly_(v12->_batchFetcher, v13, 1);
-    objc_storeStrong(&v12->_timingCollection, a4);
+    objc_storeStrong(&v12->_timingCollection, collection);
     v14 = objc_alloc_init(MEMORY[0x1E695DEE0]);
     chatDictionaries = v12->_chatDictionaries;
     v12->_chatDictionaries = v14;
@@ -116,58 +116,58 @@
   return v12;
 }
 
-- (IMDThreadSafeMessageDictionaryMapper)initWithBatchFetcher:(id)a3
+- (IMDThreadSafeMessageDictionaryMapper)initWithBatchFetcher:(id)fetcher
 {
   v4 = MEMORY[0x1E69A6170];
-  v5 = a3;
+  fetcherCopy = fetcher;
   v6 = objc_alloc_init(v4);
-  v8 = objc_msgSend_initWithBatchFetcher_timingCollection_(self, v7, v5, v6);
+  v8 = objc_msgSend_initWithBatchFetcher_timingCollection_(self, v7, fetcherCopy, v6);
 
   return v8;
 }
 
-- (id)initForFetchingMessageGUIDs:(id)a3 timingCollection:(id)a4
+- (id)initForFetchingMessageGUIDs:(id)ds timingCollection:(id)collection
 {
-  v6 = a4;
-  v7 = a3;
+  collectionCopy = collection;
+  dsCopy = ds;
   v8 = objc_alloc_init(IMDMessageRecordBatchFetcher);
-  v10 = objc_msgSend_predicateWithFormat_(MEMORY[0x1E696AE18], v9, @"%K IN %@", *MEMORY[0x1E69A7168], v7);
+  v10 = objc_msgSend_predicateWithFormat_(MEMORY[0x1E696AE18], v9, @"%K IN %@", *MEMORY[0x1E69A7168], dsCopy);
 
   objc_msgSend_setPredicate_(v8, v11, v10);
-  v13 = objc_msgSend_initWithBatchFetcher_timingCollection_(self, v12, v8, v6);
+  v13 = objc_msgSend_initWithBatchFetcher_timingCollection_(self, v12, v8, collectionCopy);
 
   return v13;
 }
 
-- (void)setMaxMessagesToProcess:(unint64_t)a3
+- (void)setMaxMessagesToProcess:(unint64_t)process
 {
-  self->_maxMessagesToProcess = a3;
-  v4 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], a2, a3);
+  self->_maxMessagesToProcess = process;
+  v4 = objc_msgSend_arrayWithCapacity_(MEMORY[0x1E695DF70], a2, process);
   objc_msgSend_addObjectsFromArray_(v4, v5, self->_indexableDictionaries);
   indexableDictionaries = self->_indexableDictionaries;
   self->_indexableDictionaries = v4;
 }
 
-- (void)setLastIndexedRowID:(unint64_t)a3
+- (void)setLastIndexedRowID:(unint64_t)d
 {
-  v5 = objc_msgSend_batchFetcher(self, a2, a3);
-  objc_msgSend_setLastRowID_(v5, v6, a3);
+  v5 = objc_msgSend_batchFetcher(self, a2, d);
+  objc_msgSend_setLastRowID_(v5, v6, d);
 
-  self->_lastIndexedRowID = a3;
+  self->_lastIndexedRowID = d;
 }
 
-- (id)_loadChatsWithGUIDs:(id)a3
+- (id)_loadChatsWithGUIDs:(id)ds
 {
   v68 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dsCopy = ds;
   v5 = objc_autoreleasePoolPush();
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v8 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFA8], v7, v4);
+  v8 = objc_msgSend_setWithArray_(MEMORY[0x1E695DFA8], v7, dsCopy);
   v62 = 0u;
   v63 = 0u;
   v64 = 0u;
   v65 = 0u;
-  v9 = v4;
+  v9 = dsCopy;
   v10 = v8;
   obj = v9;
   v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v9, v11, &v62, v67, 16);
@@ -258,9 +258,9 @@
   return v6;
 }
 
-- (id)_loadChatDictionariesForMessagesWithGUIDs:(id)a3
+- (id)_loadChatDictionariesForMessagesWithGUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   v28 = 0;
   v29 = &v28;
   v30 = 0x3032000000;
@@ -273,7 +273,7 @@
   v27[2] = sub_1B7BCC254;
   v27[3] = &unk_1E7CBC3D8;
   v27[4] = &v28;
-  objc_msgSend_fetchChatGUIDsForMessageGUIDs_completionHandler_(v7, v8, v4, v27);
+  objc_msgSend_fetchChatGUIDsForMessageGUIDs_completionHandler_(v7, v8, dsCopy, v27);
 
   v11 = objc_msgSend_allKeys(v29[5], v9, v10);
   if (objc_msgSend_count(v11, v12, v13))
@@ -304,9 +304,9 @@
   return v22;
 }
 
-- (void)_generateIndexableDictionariesForMessageRecords:(id)a3
+- (void)_generateIndexableDictionariesForMessageRecords:(id)records
 {
-  v4 = a3;
+  recordsCopy = records;
   v7 = objc_msgSend_timingCollection(self, v5, v6);
   objc_msgSend_startTimingForKey_(v7, v8, @"dictionaryConversion");
 
@@ -322,7 +322,7 @@
   block[3] = &unk_1E7CBC338;
   v26 = v27;
   block[4] = self;
-  v9 = v4;
+  v9 = recordsCopy;
   v25 = v9;
   IMDPersistencePerformBlock(block, 1, v10);
   v17 = MEMORY[0x1E69E9820];
@@ -331,7 +331,7 @@
   v20 = &unk_1E7CBC428;
   v11 = v9;
   v21 = v11;
-  v22 = self;
+  selfCopy = self;
   v23 = v27;
   IMDPersistencePerformBlock(&v17, 1, v12);
   v15 = objc_msgSend_timingCollection(self, v13, v14, v17, v18, v19, v20);
@@ -340,10 +340,10 @@
   _Block_object_dispose(v27, 8);
 }
 
-- (BOOL)processOnceWithBlock:(id)a3
+- (BOOL)processOnceWithBlock:(id)block
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_autoreleasePoolPush();
   NextBatchOfIndexableDictionaries = objc_msgSend__generateNextBatchOfIndexableDictionaries(self, v6, v7);
   v10 = objc_msgSend_timingCollection(self, v8, v9);
@@ -371,7 +371,7 @@
         v21 = *(*(&v32 + 1) + 8 * i);
         v22 = objc_msgSend_objectAtIndexedSubscript_(v21, v17, 0);
         v24 = objc_msgSend_objectAtIndexedSubscript_(v21, v23, 1);
-        v4[2](v4, v22, v24);
+        blockCopy[2](blockCopy, v22, v24);
       }
 
       v18 = objc_msgSend_countByEnumeratingWithState_objects_count_(v14, v17, &v32, v36, 16);
@@ -388,24 +388,24 @@
   return NextBatchOfIndexableDictionaries;
 }
 
-- (void)processWithBlock:(id)a3
+- (void)processWithBlock:(id)block
 {
     ;
   }
 }
 
-- (id)mapWithBlock:(id)a3
+- (id)mapWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v13 = MEMORY[0x1E69E9820];
   v14 = 3221225472;
   v15 = sub_1B7BCCA2C;
   v16 = &unk_1E7CBC450;
   v17 = v5;
-  v18 = v4;
+  v18 = blockCopy;
   v6 = v5;
-  v7 = v4;
+  v7 = blockCopy;
   objc_msgSend_processWithBlock_(self, v8, &v13);
   v11 = objc_msgSend_copy(v6, v9, v10, v13, v14, v15, v16);
 

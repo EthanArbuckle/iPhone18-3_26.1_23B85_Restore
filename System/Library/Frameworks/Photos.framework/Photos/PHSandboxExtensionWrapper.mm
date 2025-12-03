@@ -1,5 +1,5 @@
 @interface PHSandboxExtensionWrapper
-+ (PHSandboxExtensionWrapper)wrapperWithToken:(id)a3;
++ (PHSandboxExtensionWrapper)wrapperWithToken:(id)token;
 - (void)dealloc;
 @end
 
@@ -17,11 +17,11 @@
   [(PHSandboxExtensionWrapper *)&v3 dealloc];
 }
 
-+ (PHSandboxExtensionWrapper)wrapperWithToken:(id)a3
++ (PHSandboxExtensionWrapper)wrapperWithToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = objc_alloc(objc_opt_class());
-  v5 = [v3 copy];
+  v5 = [tokenCopy copy];
 
   if (v5)
   {

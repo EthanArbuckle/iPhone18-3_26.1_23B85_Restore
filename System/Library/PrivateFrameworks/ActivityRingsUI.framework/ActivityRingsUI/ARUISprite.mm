@@ -1,10 +1,10 @@
 @interface ARUISprite
 + (id)randomSprite;
-- (ARUISprite)initWithFrameCount:(ARUISprite *)self frameColumns:(SEL)a2 firstFrameOrigin:(unint64_t)a3 frameSize:(unint64_t)a4;
-- (ARUISprite)initWithSprite:(id)a3;
-- (BOOL)isEqual:(id)a3;
+- (ARUISprite)initWithFrameCount:(ARUISprite *)self frameColumns:(SEL)columns firstFrameOrigin:(unint64_t)origin frameSize:(unint64_t)size;
+- (ARUISprite)initWithSprite:(id)sprite;
+- (BOOL)isEqual:(id)equal;
 - (float32x2_t)textureRect;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
@@ -32,14 +32,14 @@
 
 - (float32x2_t)textureRect
 {
-  v1 = a1[4];
-  v2 = a1[7];
+  v1 = self[4];
+  v2 = self[7];
   v3.i64[0] = *&v1 % *&v2;
   v3.i64[1] = *&v1 / *&v2;
-  return vmla_f32(a1[5], a1[6], vcvt_f32_f64(vcvtq_f64_u64(v3)));
+  return vmla_f32(self[5], self[6], vcvt_f32_f64(vcvtq_f64_u64(v3)));
 }
 
-- (ARUISprite)initWithFrameCount:(ARUISprite *)self frameColumns:(SEL)a2 firstFrameOrigin:(unint64_t)a3 frameSize:(unint64_t)a4
+- (ARUISprite)initWithFrameCount:(ARUISprite *)self frameColumns:(SEL)columns firstFrameOrigin:(unint64_t)origin frameSize:(unint64_t)size
 {
   v6 = v5;
   v7 = v4;
@@ -48,11 +48,11 @@
   result = [(ARUISprite *)&v11 init];
   if (result)
   {
-    result->_frameColumns = a4;
+    result->_frameColumns = size;
     *result->_firstFrameOrigin = v7;
     *result->_frameSize = v6;
     *result->_translation = 0;
-    result->_frameCount = a3;
+    result->_frameCount = origin;
     result->_currentFrameIndex = 0;
     *&result->_size = 0x3F80000043960000;
   }
@@ -60,36 +60,36 @@
   return result;
 }
 
-- (ARUISprite)initWithSprite:(id)a3
+- (ARUISprite)initWithSprite:(id)sprite
 {
-  v4 = a3;
-  v5 = [v4 frameCount];
-  v6 = [v4 frameColumns];
-  [v4 firstFrameOrigin];
+  spriteCopy = sprite;
+  frameCount = [spriteCopy frameCount];
+  frameColumns = [spriteCopy frameColumns];
+  [spriteCopy firstFrameOrigin];
   v8 = v7;
-  [v4 frameSize];
-  v10 = [(ARUISprite *)self initWithFrameCount:v5 frameColumns:v6 firstFrameOrigin:v8 frameSize:v9];
+  [spriteCopy frameSize];
+  v10 = [(ARUISprite *)self initWithFrameCount:frameCount frameColumns:frameColumns firstFrameOrigin:v8 frameSize:v9];
   if (v10)
   {
-    v10->_currentFrameIndex = [v4 currentFrameIndex];
-    [v4 size];
+    v10->_currentFrameIndex = [spriteCopy currentFrameIndex];
+    [spriteCopy size];
     v10->_size = v11;
-    [v4 translation];
+    [spriteCopy translation];
     *v10->_translation = v12;
-    [v4 opacity];
+    [spriteCopy opacity];
     v10->_opacity = v13;
   }
 
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     frameCount = self->_frameCount;
     if (frameCount == [v5 frameCount] && (frameColumns = self->_frameColumns, frameColumns == objc_msgSend(v5, "frameColumns")) && (currentFrameIndex = self->_currentFrameIndex, currentFrameIndex == objc_msgSend(v5, "currentFrameIndex")) && (v9 = *self->_firstFrameOrigin, objc_msgSend(v5, "firstFrameOrigin"), ARUIFloat2Equal(v9, v10)) && (v11 = *self->_frameSize, objc_msgSend(v5, "frameSize"), ARUIFloat2Equal(v11, v12)) && (p_size = &self->_size, v14 = vld1_dup_f32(p_size), objc_msgSend(v5, "size"), ARUIFloat2Equal(v14, vdup_lane_s32(v15, 0))) && (v16 = *self->_translation, objc_msgSend(v5, "translation"), ARUIFloat2Equal(v16, v17)))
     {
@@ -123,9 +123,9 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [ARUISprite allocWithZone:a3];
+  v4 = [ARUISprite allocWithZone:zone];
 
   return [(ARUISprite *)v4 initWithSprite:self];
 }

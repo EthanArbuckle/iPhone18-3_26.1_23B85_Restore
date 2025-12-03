@@ -1,99 +1,99 @@
 @interface HMDCoreDataCloudTransformableLocalApplicationData
-+ (BOOL)exportUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6;
++ (BOOL)exportUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context;
 @end
 
 @implementation HMDCoreDataCloudTransformableLocalApplicationData
 
-+ (BOOL)exportUpdateWithObjectID:(id)a3 updatedProperties:(id)a4 additionalUpdates:(id)a5 context:(id)a6
++ (BOOL)exportUpdateWithObjectID:(id)d updatedProperties:(id)properties additionalUpdates:(id)updates context:(id)context
 {
   v57 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [v10 entity];
+  dCopy = d;
+  propertiesCopy = properties;
+  updatesCopy = updates;
+  contextCopy = context;
+  entity = [dCopy entity];
   v15 = +[_MKFApplicationData entity];
-  v16 = [v14 isKindOfEntity:v15];
+  v16 = [entity isKindOfEntity:v15];
 
   if (v16)
   {
     v44 = 0;
-    v17 = [v13 existingObjectWithID:v10 error:&v44];
+    v17 = [contextCopy existingObjectWithID:dCopy error:&v44];
     v18 = v44;
     if (v17)
     {
-      v19 = [v17 home];
+      home = [v17 home];
 
-      if (v19)
+      if (home)
       {
-        v20 = [v17 home];
-        v21 = [v20 objectID];
+        home2 = [v17 home];
+        objectID = [home2 objectID];
         v50 = @"applicationData";
         v22 = MEMORY[0x277CBEA60];
         v23 = &v50;
 LABEL_17:
         v35 = [v22 arrayWithObjects:v23 count:1];
-        [a1 addToUpdates:v12 objectID:v21 properties:v35];
+        [self addToUpdates:updatesCopy objectID:objectID properties:v35];
 
         goto LABEL_18;
       }
 
-      v32 = [v17 actionSet];
+      actionSet = [v17 actionSet];
 
-      if (v32)
+      if (actionSet)
       {
-        v20 = [v17 actionSet];
-        v21 = [v20 objectID];
+        home2 = [v17 actionSet];
+        objectID = [home2 objectID];
         v49 = @"applicationData";
         v22 = MEMORY[0x277CBEA60];
         v23 = &v49;
         goto LABEL_17;
       }
 
-      v33 = [v17 room];
+      room = [v17 room];
 
-      if (v33)
+      if (room)
       {
-        v20 = [v17 room];
-        v21 = [v20 objectID];
+        home2 = [v17 room];
+        objectID = [home2 objectID];
         v48 = @"applicationData";
         v22 = MEMORY[0x277CBEA60];
         v23 = &v48;
         goto LABEL_17;
       }
 
-      v34 = [v17 accessory];
+      accessory = [v17 accessory];
 
-      if (v34)
+      if (accessory)
       {
-        v20 = [v17 accessory];
-        v21 = [v20 objectID];
+        home2 = [v17 accessory];
+        objectID = [home2 objectID];
         v47 = @"applicationData";
         v22 = MEMORY[0x277CBEA60];
         v23 = &v47;
         goto LABEL_17;
       }
 
-      v38 = [v17 service];
+      service = [v17 service];
 
-      if (v38)
+      if (service)
       {
-        v43 = [v17 service];
-        v39 = [v43 accessory];
-        v40 = [v39 objectID];
+        service2 = [v17 service];
+        accessory2 = [service2 accessory];
+        objectID2 = [accessory2 objectID];
         v46 = @"services_";
         v41 = [MEMORY[0x277CBEA60] arrayWithObjects:&v46 count:1];
-        [a1 addToUpdates:v12 objectID:v40 properties:v41];
+        [self addToUpdates:updatesCopy objectID:objectID2 properties:v41];
 
         goto LABEL_18;
       }
 
-      v42 = [v17 serviceGroup];
+      serviceGroup = [v17 serviceGroup];
 
-      if (v42)
+      if (serviceGroup)
       {
-        v20 = [v17 serviceGroup];
-        v21 = [v20 objectID];
+        home2 = [v17 serviceGroup];
+        objectID = [home2 objectID];
         v45 = @"applicationData";
         v22 = MEMORY[0x277CBEA60];
         v23 = &v45;
@@ -109,7 +109,7 @@ LABEL_17:
         *buf = 138543618;
         v52 = v27;
         v53 = 2114;
-        v54 = v10;
+        v54 = dCopy;
         v29 = "%{public}@Failed to determine app data container for object with objectID %{public}@";
         v30 = v26;
         v31 = 22;
@@ -135,7 +135,7 @@ LABEL_9:
         }
 
         v53 = 2114;
-        v54 = v10;
+        v54 = dCopy;
         v55 = 2114;
         v56 = v28;
         v29 = "%{public}@Failed to fetch object with objectID %{public}@: %{public}@";

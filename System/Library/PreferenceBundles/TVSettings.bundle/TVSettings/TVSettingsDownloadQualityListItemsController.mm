@@ -8,10 +8,10 @@
 {
   v18.receiver = self;
   v18.super_class = TVSettingsDownloadQualityListItemsController;
-  v3 = [(TVSettingsDownloadQualityListItemsController *)&v18 specifiers];
+  specifiers = [(TVSettingsDownloadQualityListItemsController *)&v18 specifiers];
   v4 = OBJC_IVAR___PSListController__specifiers;
   v5 = *&self->super.PSListItemsController_opaque[OBJC_IVAR___PSListController__specifiers];
-  *&self->super.PSListItemsController_opaque[OBJC_IVAR___PSListController__specifiers] = v3;
+  *&self->super.PSListItemsController_opaque[OBJC_IVAR___PSListController__specifiers] = specifiers;
 
   v16 = 0u;
   v17 = 0u;

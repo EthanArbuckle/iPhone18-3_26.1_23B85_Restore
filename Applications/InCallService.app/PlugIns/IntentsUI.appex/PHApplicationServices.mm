@@ -7,12 +7,12 @@
 - (PHApplicationServices)init;
 - (TUCallProviderManager)callProviderManager;
 - (TUMetadataCache)metadataCache;
-- (void)setCallProviderManager:(id)a3;
-- (void)setContactGeminiManager:(id)a3;
-- (void)setContactStore:(id)a3;
-- (void)setInitializationBlockQueued:(BOOL)a3;
-- (void)setMetadataCache:(id)a3;
-- (void)setSuggestedContactStore:(id)a3;
+- (void)setCallProviderManager:(id)manager;
+- (void)setContactGeminiManager:(id)manager;
+- (void)setContactStore:(id)store;
+- (void)setInitializationBlockQueued:(BOOL)queued;
+- (void)setMetadataCache:(id)cache;
+- (void)setSuggestedContactStore:(id)store;
 @end
 
 @implementation PHApplicationServices
@@ -23,7 +23,7 @@
   block[1] = 3221225472;
   block[2] = sub_100002CA4;
   block[3] = &unk_1000B1B58;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1000C6048 != -1)
   {
     dispatch_once(&qword_1000C6048, block);
@@ -49,13 +49,13 @@
     v3->_dispatchQueue = v5;
 
     [(PHApplicationServices *)v3 setInitializationBlockQueued:1];
-    v7 = [(PHApplicationServices *)v3 dispatchQueue];
+    dispatchQueue = [(PHApplicationServices *)v3 dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100002DEC;
     block[3] = &unk_1000B1B80;
     v10 = v3;
-    dispatch_async(v7, block);
+    dispatch_async(dispatchQueue, block);
   }
 
   return v3;
@@ -69,13 +69,13 @@
   return initializationBlockQueued;
 }
 
-- (void)setInitializationBlockQueued:(BOOL)a3
+- (void)setInitializationBlockQueued:(BOOL)queued
 {
-  v3 = a3;
+  queuedCopy = queued;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_initializationBlockQueued != v3)
+  if (self->_initializationBlockQueued != queuedCopy)
   {
-    self->_initializationBlockQueued = v3;
+    self->_initializationBlockQueued = queuedCopy;
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -98,14 +98,14 @@
   v4 = v12[5];
   if (!v4)
   {
-    v5 = [(PHApplicationServices *)self dispatchQueue];
+    dispatchQueue = [(PHApplicationServices *)self dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100003268;
     block[3] = &unk_1000B1BD0;
     v10 = &v11;
     v9 = v3;
-    dispatch_sync(v5, block);
+    dispatch_sync(dispatchQueue, block);
 
     v4 = v12[5];
   }
@@ -116,13 +116,13 @@
   return v6;
 }
 
-- (void)setCallProviderManager:(id)a3
+- (void)setCallProviderManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_callProviderManager != v5)
+  if (self->_callProviderManager != managerCopy)
   {
-    objc_storeStrong(&self->_callProviderManager, a3);
+    objc_storeStrong(&self->_callProviderManager, manager);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -147,13 +147,13 @@
   return v6;
 }
 
-- (void)setContactGeminiManager:(id)a3
+- (void)setContactGeminiManager:(id)manager
 {
-  v5 = a3;
+  managerCopy = manager;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_contactGeminiManager != v5)
+  if (self->_contactGeminiManager != managerCopy)
   {
-    objc_storeStrong(&self->_contactGeminiManager, a3);
+    objc_storeStrong(&self->_contactGeminiManager, manager);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -175,7 +175,7 @@
   v18 = (v3[2])();
   if (!v14[5] && [(PHApplicationServices *)self isInitializationBlockQueued])
   {
-    v4 = [(PHApplicationServices *)self dispatchQueue];
+    dispatchQueue = [(PHApplicationServices *)self dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100003658;
@@ -183,7 +183,7 @@
     v12 = &v13;
     v5 = v3;
     v11 = v5;
-    dispatch_sync(v4, block);
+    dispatch_sync(dispatchQueue, block);
 
     v6 = (v3[2])(v5);
     v7 = v14[5];
@@ -196,13 +196,13 @@
   return v8;
 }
 
-- (void)setContactStore:(id)a3
+- (void)setContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_contactStore != v5)
+  if (self->_contactStore != storeCopy)
   {
-    objc_storeStrong(&self->_contactStore, a3);
+    objc_storeStrong(&self->_contactStore, store);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -224,14 +224,14 @@
   v15 = (v3[2])();
   if (!v11[5] && [(PHApplicationServices *)self isInitializationBlockQueued])
   {
-    v4 = [(PHApplicationServices *)self dispatchQueue];
+    dispatchQueue = [(PHApplicationServices *)self dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100003930;
     block[3] = &unk_1000B1BD0;
     v9 = &v10;
     v8 = v3;
-    dispatch_sync(v4, block);
+    dispatch_sync(dispatchQueue, block);
   }
 
   v5 = v11[5];
@@ -240,13 +240,13 @@
   return v5;
 }
 
-- (void)setSuggestedContactStore:(id)a3
+- (void)setSuggestedContactStore:(id)store
 {
-  v5 = a3;
+  storeCopy = store;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_suggestedContactStore != v5)
+  if (self->_suggestedContactStore != storeCopy)
   {
-    objc_storeStrong(&self->_suggestedContactStore, a3);
+    objc_storeStrong(&self->_suggestedContactStore, store);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);
@@ -269,14 +269,14 @@
   v4 = v12[5];
   if (!v4)
   {
-    v5 = [(PHApplicationServices *)self dispatchQueue];
+    dispatchQueue = [(PHApplicationServices *)self dispatchQueue];
     block[0] = _NSConcreteStackBlock;
     block[1] = 3221225472;
     block[2] = sub_100003BFC;
     block[3] = &unk_1000B1BD0;
     v10 = &v11;
     v9 = v3;
-    dispatch_sync(v5, block);
+    dispatch_sync(dispatchQueue, block);
 
     v4 = v12[5];
   }
@@ -287,13 +287,13 @@
   return v6;
 }
 
-- (void)setMetadataCache:(id)a3
+- (void)setMetadataCache:(id)cache
 {
-  v5 = a3;
+  cacheCopy = cache;
   os_unfair_lock_lock(&self->_accessorLock);
-  if (self->_metadataCache != v5)
+  if (self->_metadataCache != cacheCopy)
   {
-    objc_storeStrong(&self->_metadataCache, a3);
+    objc_storeStrong(&self->_metadataCache, cache);
   }
 
   os_unfair_lock_unlock(&self->_accessorLock);

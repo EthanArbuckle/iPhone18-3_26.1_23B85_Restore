@@ -1,14 +1,14 @@
 @interface MCNearbyDiscoveryPeer
 - (MCNearbyDiscoveryPeer)init;
-- (MCNearbyDiscoveryPeer)initWithPeerID:(id)a3;
+- (MCNearbyDiscoveryPeer)initWithPeerID:(id)d;
 - (id)description;
-- (id)stringForState:(int)a3;
-- (void)attachConnection:(id)a3;
+- (id)stringForState:(int)state;
+- (void)attachConnection:(id)connection;
 - (void)closeConnection;
 - (void)dealloc;
 - (void)flushDataBuffer;
 - (void)invalidate;
-- (void)sendData:(id)a3 withCompletionHandler:(id)a4;
+- (void)sendData:(id)data withCompletionHandler:(id)handler;
 @end
 
 @implementation MCNearbyDiscoveryPeer
@@ -21,14 +21,14 @@
   return 0;
 }
 
-- (MCNearbyDiscoveryPeer)initWithPeerID:(id)a3
+- (MCNearbyDiscoveryPeer)initWithPeerID:(id)d
 {
   v6.receiver = self;
   v6.super_class = MCNearbyDiscoveryPeer;
   v4 = [(MCNearbyDiscoveryPeer *)&v6 init];
   if (v4)
   {
-    v4->_peerID = [a3 copy];
+    v4->_peerID = [d copy];
     v4->_sendDataBuffer = objc_alloc_init(MEMORY[0x277CBEB18]);
   }
 
@@ -42,7 +42,7 @@
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v7 = self;
+    selfCopy = self;
     _os_log_impl(&dword_239FB7000, v3, OS_LOG_TYPE_DEFAULT, "Deallocating peer [%@].", buf, 0xCu);
   }
 
@@ -61,15 +61,15 @@
 
 - (id)description
 {
-  v2 = [(MCNearbyDiscoveryPeer *)self peerID];
+  peerID = [(MCNearbyDiscoveryPeer *)self peerID];
 
-  return [(MCPeerID *)v2 displayNameAndPID];
+  return [(MCPeerID *)peerID displayNameAndPID];
 }
 
-- (void)attachConnection:(id)a3
+- (void)attachConnection:(id)connection
 {
   [(MCNearbyDiscoveryPeer *)self setConnection:?];
-  if ([(MCNearbyDiscoveryPeer *)self trialConnection]!= a3)
+  if ([(MCNearbyDiscoveryPeer *)self trialConnection]!= connection)
   {
     [(MCNearbyDiscoveryPeerConnection *)[(MCNearbyDiscoveryPeer *)self trialConnection] invalidate];
   }
@@ -92,18 +92,18 @@
   [(MCNearbyDiscoveryPeerConnection *)trialConnection invalidate];
 }
 
-- (id)stringForState:(int)a3
+- (id)stringForState:(int)state
 {
   v12 = *MEMORY[0x277D85DE8];
-  if (a3 >= 3)
+  if (state >= 3)
   {
     v6 = mcdp_log();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v8 = 138412546;
-      v9 = self;
+      selfCopy = self;
       v10 = 1024;
-      v11 = a3;
+      stateCopy = state;
       _os_log_impl(&dword_239FB7000, v6, OS_LOG_TYPE_DEFAULT, "Peer [%@] unrecognized state [%d].", &v8, 0x12u);
     }
 
@@ -112,25 +112,25 @@
 
   else
   {
-    result = off_278B447F8[a3];
+    result = off_278B447F8[state];
   }
 
   v7 = *MEMORY[0x277D85DE8];
   return result;
 }
 
-- (void)sendData:(id)a3 withCompletionHandler:(id)a4
+- (void)sendData:(id)data withCompletionHandler:(id)handler
 {
   if (self->_state == 2)
   {
     connection = self->_connection;
 
-    [(MCNearbyDiscoveryPeerConnection *)connection sendData:a3 withCompletionHandler:a4];
+    [(MCNearbyDiscoveryPeerConnection *)connection sendData:data withCompletionHandler:handler];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{a3, @"NSNearbyDiscoveryPeerSendDataKey", a4, @"NSNearbyDiscoveryPeerSendCompletionHandlerKey", 0}];
+    v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{data, @"NSNearbyDiscoveryPeerSendDataKey", handler, @"NSNearbyDiscoveryPeerSendCompletionHandlerKey", 0}];
     sendDataBuffer = self->_sendDataBuffer;
 
     [(NSMutableArray *)sendDataBuffer addObject:v6];
@@ -147,7 +147,7 @@
     {
       v4 = [(NSMutableArray *)self->_sendDataBuffer count];
       *buf = 138412546;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 1024;
       v33 = v4;
       _os_log_impl(&dword_239FB7000, v3, OS_LOG_TYPE_DEFAULT, "Peer [%@] relaying buffered data (%d sendData calls) to the peer connection object).", buf, 0x12u);
@@ -189,7 +189,7 @@
     {
       v11 = [(NSMutableArray *)self->_sendDataBuffer count];
       *buf = 138412546;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 1024;
       v33 = v11;
       _os_log_impl(&dword_239FB7000, v10, OS_LOG_TYPE_DEFAULT, "Peer [%@] failed to send [%d] messages.", buf, 0x12u);

@@ -2,18 +2,18 @@
 + (SCNDistanceConstraint)distanceConstraintWithTarget:(SCNNode *)target;
 + (id)distanceConstraint;
 - (SCNDistanceConstraint)init;
-- (SCNDistanceConstraint)initWithCoder:(id)a3;
+- (SCNDistanceConstraint)initWithCoder:(id)coder;
 - (SCNVector3)targetDirection;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)_customDecodingOfSCNDistanceConstraint:(id)a3;
-- (void)_customEncodingOfSCNDistanceConstraint:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)_customDecodingOfSCNDistanceConstraint:(id)constraint;
+- (void)_customEncodingOfSCNDistanceConstraint:(id)constraint;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setKeepTargetDirection:(BOOL)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setKeepTargetDirection:(BOOL)direction;
 - (void)setMaximumDistance:(CGFloat)maximumDistance;
 - (void)setMinimumDistance:(CGFloat)minimumDistance;
 - (void)setTarget:(SCNNode *)target;
-- (void)setTargetDirection:(SCNVector3)a3;
+- (void)setTargetDirection:(SCNVector3)direction;
 @end
 
 @implementation SCNDistanceConstraint
@@ -66,22 +66,22 @@
   self->_target = v5;
   if (v5)
   {
-    v6 = [(SCNNode *)v5 nodeRef];
+    nodeRef = [(SCNNode *)v5 nodeRef];
   }
 
   else
   {
-    v6 = 0;
+    nodeRef = 0;
   }
 
-  v7 = [(SCNConstraint *)self sceneRef];
+  sceneRef = [(SCNConstraint *)self sceneRef];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35__SCNDistanceConstraint_setTarget___block_invoke;
   v8[3] = &unk_2782FB7D0;
   v8[4] = self;
-  v8[5] = v6;
-  [SCNTransaction postCommandWithContext:v7 object:self applyBlock:v8];
+  v8[5] = nodeRef;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v8];
 }
 
 - (SCNVector3)targetDirection
@@ -95,13 +95,13 @@
   return result;
 }
 
-- (void)setTargetDirection:(SCNVector3)a3
+- (void)setTargetDirection:(SCNVector3)direction
 {
-  z = a3.z;
-  y = a3.y;
-  x = a3.x;
-  self->_targetDirection = a3;
-  v7 = [(SCNConstraint *)self sceneRef];
+  z = direction.z;
+  y = direction.y;
+  x = direction.x;
+  self->_targetDirection = direction;
+  sceneRef = [(SCNConstraint *)self sceneRef];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __44__SCNDistanceConstraint_setTargetDirection___block_invoke;
@@ -110,7 +110,7 @@
   v9 = x;
   v10 = y;
   v11 = z;
-  [SCNTransaction postCommandWithContext:v7 object:self key:@"targetDirection" applyBlock:v8];
+  [SCNTransaction postCommandWithContext:sceneRef object:self key:@"targetDirection" applyBlock:v8];
 }
 
 void __44__SCNDistanceConstraint_setTargetDirection___block_invoke(uint64_t a1, __n128 a2)
@@ -120,31 +120,31 @@ void __44__SCNDistanceConstraint_setTargetDirection___block_invoke(uint64_t a1, 
   C3DConstraintDistanceSetTargetDirection(*(*(a1 + 32) + 8), a2);
 }
 
-- (void)setKeepTargetDirection:(BOOL)a3
+- (void)setKeepTargetDirection:(BOOL)direction
 {
-  self->_keepTargetDirection = a3;
-  v5 = [(SCNConstraint *)self sceneRef];
+  self->_keepTargetDirection = direction;
+  sceneRef = [(SCNConstraint *)self sceneRef];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __48__SCNDistanceConstraint_setKeepTargetDirection___block_invoke;
   v6[3] = &unk_2782FB7F8;
   v6[4] = self;
-  v7 = a3;
-  [SCNTransaction postCommandWithContext:v5 object:self applyBlock:v6];
+  directionCopy = direction;
+  [SCNTransaction postCommandWithContext:sceneRef object:self applyBlock:v6];
 }
 
 - (void)setMinimumDistance:(CGFloat)minimumDistance
 {
   v5 = minimumDistance;
   self->_minimumDistance = v5;
-  v6 = [(SCNConstraint *)self sceneRef];
+  sceneRef = [(SCNConstraint *)self sceneRef];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__SCNDistanceConstraint_setMinimumDistance___block_invoke;
   v7[3] = &unk_2782FB7D0;
   v7[4] = self;
   *&v7[5] = minimumDistance;
-  [SCNTransaction postCommandWithContext:v6 object:self key:@"minimumDistance" applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:self key:@"minimumDistance" applyBlock:v7];
 }
 
 float __44__SCNDistanceConstraint_setMinimumDistance___block_invoke(uint64_t a1)
@@ -158,14 +158,14 @@ float __44__SCNDistanceConstraint_setMinimumDistance___block_invoke(uint64_t a1)
 {
   v5 = maximumDistance;
   self->_maximumDistance = v5;
-  v6 = [(SCNConstraint *)self sceneRef];
+  sceneRef = [(SCNConstraint *)self sceneRef];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __44__SCNDistanceConstraint_setMaximumDistance___block_invoke;
   v7[3] = &unk_2782FB7D0;
   v7[4] = self;
   *&v7[5] = maximumDistance;
-  [SCNTransaction postCommandWithContext:v6 object:self key:@"maximumDistance" applyBlock:v7];
+  [SCNTransaction postCommandWithContext:sceneRef object:self key:@"maximumDistance" applyBlock:v7];
 }
 
 float __44__SCNDistanceConstraint_setMaximumDistance___block_invoke(uint64_t a1)
@@ -175,7 +175,7 @@ float __44__SCNDistanceConstraint_setMaximumDistance___block_invoke(uint64_t a1)
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
   [v4 setTarget:{-[SCNDistanceConstraint target](self, "target")}];
@@ -187,36 +187,36 @@ float __44__SCNDistanceConstraint_setMaximumDistance___block_invoke(uint64_t a1)
   return v4;
 }
 
-- (void)_customEncodingOfSCNDistanceConstraint:(id)a3
+- (void)_customEncodingOfSCNDistanceConstraint:(id)constraint
 {
   target = self->_target;
   if (target)
   {
-    [a3 encodeObject:target forKey:@"target"];
+    [constraint encodeObject:target forKey:@"target"];
   }
 }
 
-- (void)_customDecodingOfSCNDistanceConstraint:(id)a3
+- (void)_customDecodingOfSCNDistanceConstraint:(id)constraint
 {
   self->super._constraintRef = C3DConstraintCreateDistance();
-  -[SCNDistanceConstraint setTarget:](self, "setTarget:", [a3 decodeObjectOfClass:objc_opt_class() forKey:@"target"]);
+  -[SCNDistanceConstraint setTarget:](self, "setTarget:", [constraint decodeObjectOfClass:objc_opt_class() forKey:@"target"]);
 
-  [(SCNConstraint *)self finalizeDecodeConstraint:a3];
+  [(SCNConstraint *)self finalizeDecodeConstraint:constraint];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = SCNDistanceConstraint;
   [(SCNConstraint *)&v7 encodeWithCoder:?];
-  [(SCNDistanceConstraint *)self _customEncodingOfSCNDistanceConstraint:a3];
+  [(SCNDistanceConstraint *)self _customEncodingOfSCNDistanceConstraint:coder];
   *&v5 = self->_minimumDistance;
-  [a3 encodeFloat:@"minimumDistance" forKey:v5];
+  [coder encodeFloat:@"minimumDistance" forKey:v5];
   *&v6 = self->_maximumDistance;
-  [a3 encodeFloat:@"maximumDistance" forKey:v6];
+  [coder encodeFloat:@"maximumDistance" forKey:v6];
 }
 
-- (SCNDistanceConstraint)initWithCoder:(id)a3
+- (SCNDistanceConstraint)initWithCoder:(id)coder
 {
   v9.receiver = self;
   v9.super_class = SCNDistanceConstraint;
@@ -225,10 +225,10 @@ float __44__SCNDistanceConstraint_setMaximumDistance___block_invoke(uint64_t a1)
   {
     v5 = +[SCNTransaction immediateMode];
     [SCNTransaction setImmediateMode:1];
-    [(SCNDistanceConstraint *)v4 _customDecodingOfSCNDistanceConstraint:a3];
-    [a3 decodeFloatForKey:@"minimumDistance"];
+    [(SCNDistanceConstraint *)v4 _customDecodingOfSCNDistanceConstraint:coder];
+    [coder decodeFloatForKey:@"minimumDistance"];
     [(SCNDistanceConstraint *)v4 setMinimumDistance:v6];
-    [a3 decodeFloatForKey:@"maximumDistance"];
+    [coder decodeFloatForKey:@"maximumDistance"];
     [(SCNDistanceConstraint *)v4 setMaximumDistance:v7];
     [SCNTransaction setImmediateMode:v5];
   }

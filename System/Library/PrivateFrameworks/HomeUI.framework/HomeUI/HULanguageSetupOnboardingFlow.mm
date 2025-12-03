@@ -1,32 +1,32 @@
 @interface HULanguageSetupOnboardingFlow
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4;
-- (HULanguageSetupOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4;
++ (id)needsOnboardingForHome:(id)home options:(id)options;
+- (HULanguageSetupOnboardingFlow)initWithUsageOptions:(id)options home:(id)home;
 - (NSString)description;
-- (id)_determineNextViewControllerWithPriorResults:(id)a3;
-- (id)processUserInput:(id)a3;
+- (id)_determineNextViewControllerWithPriorResults:(id)results;
+- (id)processUserInput:(id)input;
 @end
 
 @implementation HULanguageSetupOnboardingFlow
 
-- (HULanguageSetupOnboardingFlow)initWithUsageOptions:(id)a3 home:(id)a4
+- (HULanguageSetupOnboardingFlow)initWithUsageOptions:(id)options home:(id)home
 {
-  v7 = a3;
-  v8 = a4;
+  optionsCopy = options;
+  homeCopy = home;
   v20.receiver = self;
   v20.super_class = HULanguageSetupOnboardingFlow;
   v9 = [(HULanguageSetupOnboardingFlow *)&v20 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_home, a4);
+    objc_storeStrong(&v9->_home, home);
     v10->_languageOnboardingFlowType = 0;
-    objc_storeStrong(&v10->_usageOptions, a3);
+    objc_storeStrong(&v10->_usageOptions, options);
     v11 = objc_alloc_init(MEMORY[0x277D2C900]);
     readyFuture = v10->_readyFuture;
     v10->_readyFuture = v11;
 
     objc_initWeak(&location, v10);
-    v13 = [objc_opt_class() needsOnboardingForHome:v8 options:v7];
+    v13 = [objc_opt_class() needsOnboardingForHome:homeCopy options:optionsCopy];
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __59__HULanguageSetupOnboardingFlow_initWithUsageOptions_home___block_invoke;
@@ -80,38 +80,38 @@ void __59__HULanguageSetupOnboardingFlow_initWithUsageOptions_home___block_invok
   }
 }
 
-- (id)_determineNextViewControllerWithPriorResults:(id)a3
+- (id)_determineNextViewControllerWithPriorResults:(id)results
 {
   v76 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HULanguageSetupOnboardingFlow *)self languageOnboardingFlowType];
-  if (v6 != 1)
+  resultsCopy = results;
+  languageOnboardingFlowType = [(HULanguageSetupOnboardingFlow *)self languageOnboardingFlowType];
+  if (languageOnboardingFlowType != 1)
   {
-    if (!v6)
+    if (!languageOnboardingFlowType)
     {
       v7 = HFLogForCategory();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
         v8 = NSStringFromSelector(a2);
         *buf = 138412802;
-        v67 = self;
+        selfCopy12 = self;
         v68 = 2112;
         v69 = v8;
         v70 = 2112;
-        v71 = v5;
+        v71 = resultsCopy;
         _os_log_impl(&dword_20CEB6000, v7, OS_LOG_TYPE_DEFAULT, "%@:%@ Determining next Assistant Device Language onboarding view controller with results %@ ", buf, 0x20u);
       }
 
-      if (v5)
+      if (resultsCopy)
       {
-        v9 = [v5 objectForKeyedSubscript:@"HULanguageOnboardingKey_SupportedLanguageInfo"];
-        v10 = [v5 objectForKeyedSubscript:@"HULanguageOnboardingKey_LanguageMismatchedHomeAssistantDevices"];
+        v9 = [resultsCopy objectForKeyedSubscript:@"HULanguageOnboardingKey_SupportedLanguageInfo"];
+        v10 = [resultsCopy objectForKeyedSubscript:@"HULanguageOnboardingKey_LanguageMismatchedHomeAssistantDevices"];
         v11 = HFLogForCategory();
         if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
         {
           v12 = NSStringFromSelector(a2);
           *buf = 138412546;
-          v67 = self;
+          selfCopy12 = self;
           v68 = 2112;
           v69 = v12;
           _os_log_impl(&dword_20CEB6000, v11, OS_LOG_TYPE_DEFAULT, "%@:%@: Starting Home Assistant Device Language Configuration view", buf, 0x16u);
@@ -129,8 +129,8 @@ void __59__HULanguageSetupOnboardingFlow_initWithUsageOptions_home___block_invok
       }
 
       v22 = [HUHomeAssistantDeviceLanguageSetupViewController alloc];
-      v19 = [(HULanguageSetupOnboardingFlow *)self home];
-      v20 = [(HUHomeAssistantDeviceLanguageSetupViewController *)v22 initWithHome:v19];
+      home = [(HULanguageSetupOnboardingFlow *)self home];
+      v20 = [(HUHomeAssistantDeviceLanguageSetupViewController *)v22 initWithHome:home];
 LABEL_20:
       v13 = v20;
 
@@ -148,30 +148,30 @@ LABEL_16:
   {
     v15 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v67 = self;
+    selfCopy12 = self;
     v68 = 2112;
     v69 = v15;
     v70 = 2112;
-    v71 = v5;
+    v71 = resultsCopy;
     _os_log_impl(&dword_20CEB6000, v14, OS_LOG_TYPE_DEFAULT, "%@:%@ Determining next Personal Identity Device Language onboarding view controller with results %@ ", buf, 0x20u);
   }
 
   v16 = HFLogForCategory();
   v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (resultsCopy)
   {
     if (v17)
     {
       v18 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v67 = self;
+      selfCopy12 = self;
       v68 = 2112;
       v69 = v18;
       _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "%@:%@: Now starting Personal Identity Device Language Configuration screen", buf, 0x16u);
     }
 
-    v19 = [v5 objectForKeyedSubscript:@"HULanguageOnboardingKey_MediaProfileAndLanguageInfo"];
-    v20 = [[HUHomePersonalIdentityDeviceConfigurationViewController alloc] initWithMediaProfileAndLanguageInfo:v19];
+    home = [resultsCopy objectForKeyedSubscript:@"HULanguageOnboardingKey_MediaProfileAndLanguageInfo"];
+    v20 = [[HUHomePersonalIdentityDeviceConfigurationViewController alloc] initWithMediaProfileAndLanguageInfo:home];
     goto LABEL_20;
   }
 
@@ -181,17 +181,17 @@ LABEL_16:
     _os_log_impl(&dword_20CEB6000, v16, OS_LOG_TYPE_DEFAULT, "Configuring Personal Identity Device Setup View", buf, 2u);
   }
 
-  v23 = [MEMORY[0x277CEF368] sharedPreferences];
-  v24 = [v23 languageCode];
+  mEMORY[0x277CEF368] = [MEMORY[0x277CEF368] sharedPreferences];
+  languageCode = [mEMORY[0x277CEF368] languageCode];
 
-  if (!v24)
+  if (!languageCode)
   {
     v38 = HFLogForCategory();
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
       v39 = NSStringFromSelector(a2);
       *buf = 138412546;
-      v67 = self;
+      selfCopy12 = self;
       v68 = 2112;
       v69 = v39;
       _os_log_impl(&dword_20CEB6000, v38, OS_LOG_TYPE_DEFAULT, "%@:%@ There is NO Siri language on this device, skipping personal device onboarding, will train & set up Siri voice during voice profile onboarding instead...", buf, 0x16u);
@@ -203,13 +203,13 @@ LABEL_16:
   v9 = +[HUHomeFeatureOnboardingUtilities fetchSupportedVoiceRecognitionLanguages];
   if (v9)
   {
-    v25 = [(HULanguageSetupOnboardingFlow *)self home];
-    v26 = [v25 hf_hasHomePods];
+    home2 = [(HULanguageSetupOnboardingFlow *)self home];
+    hf_hasHomePods = [home2 hf_hasHomePods];
 
-    if (v26)
+    if (hf_hasHomePods)
     {
-      v27 = [(HULanguageSetupOnboardingFlow *)self home];
-      v10 = [HUHomeFeatureOnboardingUtilities home:v27 createMultiUserLanguageToHomePodsMapping:v9];
+      home3 = [(HULanguageSetupOnboardingFlow *)self home];
+      v10 = [HUHomeFeatureOnboardingUtilities home:home3 createMultiUserLanguageToHomePodsMapping:v9];
 
       v28 = HFLogForCategory();
       if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
@@ -217,7 +217,7 @@ LABEL_16:
         v29 = NSStringFromSelector(a2);
         v30 = [v10 count];
         *buf = 138413058;
-        v67 = self;
+        selfCopy12 = self;
         v68 = 2112;
         v69 = v29;
         v70 = 2112;
@@ -236,16 +236,16 @@ LABEL_16:
           _os_log_impl(&dword_20CEB6000, v31, OS_LOG_TYPE_DEFAULT, "Starting Personal Identity Device Setup View", buf, 2u);
         }
 
-        v32 = [HUHomeFeatureOnboardingUtilities createPersonalIdentityDeviceLanguageMismatchList:v10];
-        v33 = [MEMORY[0x277CEF368] sharedPreferences];
-        v34 = [v33 languageCode];
+        assistantDeviceIntendedRecognitionLanguage4 = [HUHomeFeatureOnboardingUtilities createPersonalIdentityDeviceLanguageMismatchList:v10];
+        mEMORY[0x277CEF368]2 = [MEMORY[0x277CEF368] sharedPreferences];
+        languageCode2 = [mEMORY[0x277CEF368]2 languageCode];
 
-        v35 = [v10 allKeys];
-        v65 = v34;
-        v36 = v35;
-        if ([v9 containsObject:v34])
+        allKeys = [v10 allKeys];
+        v65 = languageCode2;
+        v36 = allKeys;
+        if ([v9 containsObject:languageCode2])
         {
-          v37 = [v35 containsObject:v34];
+          v37 = [allKeys containsObject:languageCode2];
         }
 
         else
@@ -257,13 +257,13 @@ LABEL_16:
         if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
         {
           v53 = NSStringFromSelector(a2);
-          v54 = [v32 count];
+          v54 = [assistantDeviceIntendedRecognitionLanguage4 count];
           *buf = 138413314;
-          v67 = self;
+          selfCopy12 = self;
           v68 = 2112;
           v69 = v53;
           v70 = 2112;
-          v71 = v32;
+          v71 = assistantDeviceIntendedRecognitionLanguage4;
           v72 = 2048;
           v73 = v54;
           v74 = 1024;
@@ -271,19 +271,19 @@ LABEL_16:
           _os_log_impl(&dword_20CEB6000, v52, OS_LOG_TYPE_DEFAULT, "%@:%@: List of Personal Identity Device Mismatches %@ (%lu) - hasAtLeastOneHomePodSupportingPersonalIdentityDeviceLanguage %{BOOL}d", buf, 0x30u);
         }
 
-        v55 = ([v32 count] == 0) | v37;
-        v56 = HFLogForCategory();
-        v57 = os_log_type_enabled(v56, OS_LOG_TYPE_DEFAULT);
+        v55 = ([assistantDeviceIntendedRecognitionLanguage4 count] == 0) | v37;
+        home4 = HFLogForCategory();
+        v57 = os_log_type_enabled(home4, OS_LOG_TYPE_DEFAULT);
         if (v55)
         {
           if (v57)
           {
             v58 = NSStringFromSelector(a2);
             *buf = 138412546;
-            v67 = self;
+            selfCopy12 = self;
             v68 = 2112;
             v69 = v58;
-            _os_log_impl(&dword_20CEB6000, v56, OS_LOG_TYPE_DEFAULT, "%@:%@ all languages match - onboarding not required", buf, 0x16u);
+            _os_log_impl(&dword_20CEB6000, home4, OS_LOG_TYPE_DEFAULT, "%@:%@ all languages match - onboarding not required", buf, 0x16u);
           }
 
           v13 = 0;
@@ -295,39 +295,39 @@ LABEL_16:
           {
             v59 = NSStringFromSelector(a2);
             *buf = 138412546;
-            v67 = self;
+            selfCopy12 = self;
             v68 = 2112;
             v69 = v59;
-            _os_log_impl(&dword_20CEB6000, v56, OS_LOG_TYPE_DEFAULT, "%@:%@: Now starting Personal Identity Device Language Setup screen", buf, 0x16u);
+            _os_log_impl(&dword_20CEB6000, home4, OS_LOG_TYPE_DEFAULT, "%@:%@: Now starting Personal Identity Device Language Setup screen", buf, 0x16u);
           }
 
           v60 = [HUHomePersonalIdentityDeviceLanguageSetupViewController alloc];
-          v56 = [(HULanguageSetupOnboardingFlow *)self home];
-          v13 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)v60 initWithHome:v56];
+          home4 = [(HULanguageSetupOnboardingFlow *)self home];
+          v13 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)v60 initWithHome:home4];
         }
       }
 
       else
       {
-        v45 = [(HULanguageSetupOnboardingFlow *)self assistantDeviceIntendedRecognitionLanguage];
+        assistantDeviceIntendedRecognitionLanguage = [(HULanguageSetupOnboardingFlow *)self assistantDeviceIntendedRecognitionLanguage];
 
-        if (!v45)
+        if (!assistantDeviceIntendedRecognitionLanguage)
         {
-          v64 = [MEMORY[0x277CCA890] currentHandler];
-          [v64 handleFailureInMethod:a2 object:self file:@"HULanguageSetupOnboardingFlow.m" lineNumber:227 description:@"Attempting to run Personal Identity Device Language Setup with no HomePods in Supported Language & No Intended Language - this shouldn't happen."];
+          currentHandler = [MEMORY[0x277CCA890] currentHandler];
+          [currentHandler handleFailureInMethod:a2 object:self file:@"HULanguageSetupOnboardingFlow.m" lineNumber:227 description:@"Attempting to run Personal Identity Device Language Setup with no HomePods in Supported Language & No Intended Language - this shouldn't happen."];
         }
 
         v46 = HFLogForCategory();
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
         {
           v62 = NSStringFromSelector(a2);
-          v63 = [(HULanguageSetupOnboardingFlow *)self assistantDeviceIntendedRecognitionLanguage];
+          assistantDeviceIntendedRecognitionLanguage2 = [(HULanguageSetupOnboardingFlow *)self assistantDeviceIntendedRecognitionLanguage];
           *buf = 138412802;
-          v67 = self;
+          selfCopy12 = self;
           v68 = 2112;
           v69 = v62;
           v70 = 2112;
-          v71 = v63;
+          v71 = assistantDeviceIntendedRecognitionLanguage2;
           _os_log_error_impl(&dword_20CEB6000, v46, OS_LOG_TYPE_ERROR, "%@:%@: No HomePods in a supported language, even after Home Assistant Device Language Setup - user intended: %@", buf, 0x20u);
         }
 
@@ -335,23 +335,23 @@ LABEL_16:
         if (os_log_type_enabled(v47, OS_LOG_TYPE_DEFAULT))
         {
           v48 = NSStringFromSelector(a2);
-          v49 = [(HULanguageSetupOnboardingFlow *)self assistantDeviceIntendedRecognitionLanguage];
+          assistantDeviceIntendedRecognitionLanguage3 = [(HULanguageSetupOnboardingFlow *)self assistantDeviceIntendedRecognitionLanguage];
           *buf = 138412802;
-          v67 = self;
+          selfCopy12 = self;
           v68 = 2112;
           v69 = v48;
           v70 = 2112;
-          v71 = v49;
+          v71 = assistantDeviceIntendedRecognitionLanguage3;
           _os_log_impl(&dword_20CEB6000, v47, OS_LOG_TYPE_DEFAULT, "%@:%@: Now starting Personal Identity Device Language Setup screen with override language %@", buf, 0x20u);
         }
 
         [(HULanguageSetupOnboardingFlow *)self setForceOnboardingFinishedForErrorRecovery:1];
         v50 = [HUHomePersonalIdentityDeviceLanguageSetupViewController alloc];
-        v51 = [(HULanguageSetupOnboardingFlow *)self home];
-        v13 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)v50 initWithHome:v51];
+        home5 = [(HULanguageSetupOnboardingFlow *)self home];
+        v13 = [(HUHomePersonalIdentityDeviceLanguageSetupViewController *)v50 initWithHome:home5];
 
-        v32 = [(HULanguageSetupOnboardingFlow *)self assistantDeviceIntendedRecognitionLanguage];
-        [(HUHomeAssistantDeviceLanguageConfigurationViewController *)v13 setOverrideTargetLanguage:v32];
+        assistantDeviceIntendedRecognitionLanguage4 = [(HULanguageSetupOnboardingFlow *)self assistantDeviceIntendedRecognitionLanguage];
+        [(HUHomeAssistantDeviceLanguageConfigurationViewController *)v13 setOverrideTargetLanguage:assistantDeviceIntendedRecognitionLanguage4];
       }
 
       goto LABEL_60;
@@ -361,11 +361,11 @@ LABEL_16:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v41 = NSStringFromSelector(a2);
-      v42 = [(HULanguageSetupOnboardingFlow *)self home];
-      v43 = [v42 hf_appleTVs];
-      v44 = [v43 count];
+      home6 = [(HULanguageSetupOnboardingFlow *)self home];
+      hf_appleTVs = [home6 hf_appleTVs];
+      v44 = [hf_appleTVs count];
       *buf = 138412802;
-      v67 = self;
+      selfCopy12 = self;
       v68 = 2112;
       v69 = v41;
       v70 = 2048;
@@ -381,7 +381,7 @@ LABEL_16:
     {
       v40 = NSStringFromSelector(a2);
       *buf = 138412290;
-      v67 = v40;
+      selfCopy12 = v40;
       _os_log_error_impl(&dword_20CEB6000, v10, OS_LOG_TYPE_ERROR, "%@ Error fetching voice recognition languages", buf, 0xCu);
     }
   }
@@ -396,14 +396,14 @@ LABEL_61:
 
 - (NSString)description
 {
-  v2 = [(HULanguageSetupOnboardingFlow *)self languageOnboardingFlowType];
+  languageOnboardingFlowType = [(HULanguageSetupOnboardingFlow *)self languageOnboardingFlowType];
   v3 = @"Personal Identity Device";
-  if (v2 != 1)
+  if (languageOnboardingFlowType != 1)
   {
     v3 = 0;
   }
 
-  if (!v2)
+  if (!languageOnboardingFlowType)
   {
     v3 = @"Home Assistant Device";
   }
@@ -411,36 +411,36 @@ LABEL_61:
   return [MEMORY[0x277CCACA8] stringWithFormat:@"Voice Recognition LANGUAGE Setup (%@)", v3];
 }
 
-- (id)processUserInput:(id)a3
+- (id)processUserInput:(id)input
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [(HULanguageSetupOnboardingFlow *)self languageOnboardingFlowType];
-  if (v6 == 1)
+  inputCopy = input;
+  languageOnboardingFlowType = [(HULanguageSetupOnboardingFlow *)self languageOnboardingFlowType];
+  if (languageOnboardingFlowType == 1)
   {
-    v7 = [v5 objectForKeyedSubscript:@"HULanguageOnboardingKey_SetupLanguage_PersonalDevice_UserInput"];
+    v7 = [inputCopy objectForKeyedSubscript:@"HULanguageOnboardingKey_SetupLanguage_PersonalDevice_UserInput"];
     if ([v7 integerValue] != 3 && objc_msgSend(v7, "integerValue") != 5 && objc_msgSend(v7, "integerValue") != 4)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"HULanguageSetupOnboardingFlow.m" lineNumber:312 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HULanguageOnboardingValue_SetupLanguage_PersonalDevice_Completed) || (userInputValue.integerValue == HULanguageOnboardingValue_SetupLanguage_PersonalDevice_Cancelled) || (userInputValue.integerValue == HULanguageOnboardingValue_SetupLanguage_PersonalDevice_Customize)"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HULanguageSetupOnboardingFlow.m" lineNumber:312 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HULanguageOnboardingValue_SetupLanguage_PersonalDevice_Completed) || (userInputValue.integerValue == HULanguageOnboardingValue_SetupLanguage_PersonalDevice_Cancelled) || (userInputValue.integerValue == HULanguageOnboardingValue_SetupLanguage_PersonalDevice_Customize)"}];
       goto LABEL_44;
     }
   }
 
   else
   {
-    if (v6)
+    if (languageOnboardingFlowType)
     {
       NSLog(&cfstr_UnexpectedLang.isa, [(HULanguageSetupOnboardingFlow *)self languageOnboardingFlowType]);
       v21 = 0;
       goto LABEL_40;
     }
 
-    v7 = [v5 objectForKeyedSubscript:@"HULanguageOnboardingKey_SetupLanguage_AssistantDevice_UserInput"];
+    v7 = [inputCopy objectForKeyedSubscript:@"HULanguageOnboardingKey_SetupLanguage_AssistantDevice_UserInput"];
     if ([v7 integerValue] && objc_msgSend(v7, "integerValue") != 2 && objc_msgSend(v7, "integerValue") != 1)
     {
-      v8 = [MEMORY[0x277CCA890] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"HULanguageSetupOnboardingFlow.m" lineNumber:302 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HULanguageOnboardingValue_SetupLanguage_AssistantDevice_Completed) || (userInputValue.integerValue == HULanguageOnboardingValue_SetupLanguage_AssistantDevice_Cancelled) || (userInputValue.integerValue == HULanguageOnboardingValue_SetupLanguage_AssistantDevice_Customize)"}];
+      currentHandler = [MEMORY[0x277CCA890] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"HULanguageSetupOnboardingFlow.m" lineNumber:302 description:{@"Invalid parameter not satisfying: %@", @"(userInputValue.integerValue == HULanguageOnboardingValue_SetupLanguage_AssistantDevice_Completed) || (userInputValue.integerValue == HULanguageOnboardingValue_SetupLanguage_AssistantDevice_Cancelled) || (userInputValue.integerValue == HULanguageOnboardingValue_SetupLanguage_AssistantDevice_Customize)"}];
 LABEL_44:
     }
   }
@@ -450,57 +450,57 @@ LABEL_44:
   {
     v10 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v39 = self;
+    selfCopy4 = self;
     v40 = 2112;
     v41 = v10;
     v42 = 2112;
-    v43 = v5;
+    v43 = inputCopy;
     _os_log_impl(&dword_20CEB6000, v9, OS_LOG_TYPE_DEFAULT, "%@:%@ with input results: %@", buf, 0x20u);
   }
 
-  v11 = [v5 objectForKeyedSubscript:@"HUMultiUserKey_SetIsEnabled"];
+  v11 = [inputCopy objectForKeyedSubscript:@"HUMultiUserKey_SetIsEnabled"];
   if ([v11 BOOLValue])
   {
-    v12 = [(HULanguageSetupOnboardingFlow *)self home];
+    home = [(HULanguageSetupOnboardingFlow *)self home];
     v37[0] = MEMORY[0x277D85DD0];
     v37[1] = 3221225472;
     v37[2] = __50__HULanguageSetupOnboardingFlow_processUserInput___block_invoke;
     v37[3] = &unk_277DB8E70;
     v37[4] = self;
     v37[5] = a2;
-    [v12 enableMultiUserWithCompletionHandler:v37];
+    [home enableMultiUserWithCompletionHandler:v37];
   }
 
-  v13 = [v7 integerValue];
-  if (v13 > 2)
+  integerValue = [v7 integerValue];
+  if (integerValue > 2)
   {
-    if (v13 == 3)
+    if (integerValue == 3)
     {
       if ([(HULanguageSetupOnboardingFlow *)self forceOnboardingFinishedForErrorRecovery])
       {
         v34 = MEMORY[0x277CBEC38];
-        [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_FinishedOnboarding"];
-        [v5 setObject:v34 forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_DismissReminderBanner"];
+        [inputCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_FinishedOnboarding"];
+        [inputCopy setObject:v34 forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_DismissReminderBanner"];
       }
 
       goto LABEL_23;
     }
 
-    if (v13 != 4)
+    if (integerValue != 4)
     {
-      if (v13 != 5)
+      if (integerValue != 5)
       {
         goto LABEL_18;
       }
 
 LABEL_22:
-      [v5 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_FinishedOnboarding"];
+      [inputCopy setObject:MEMORY[0x277CBEC38] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_FinishedOnboarding"];
       [(HULanguageSetupOnboardingFlow *)self setShouldAbortThisOnboardingFlowGroup:1];
       v14 = objc_alloc(MEMORY[0x277D14C98]);
-      v15 = [(HULanguageSetupOnboardingFlow *)self home];
-      v16 = [(HULanguageSetupOnboardingFlow *)self home];
-      v17 = [v16 currentUser];
-      v18 = [v14 initWithHome:v15 user:v17 nameStyle:0];
+      home2 = [(HULanguageSetupOnboardingFlow *)self home];
+      home3 = [(HULanguageSetupOnboardingFlow *)self home];
+      currentUser = [home3 currentUser];
+      v18 = [v14 initWithHome:home2 user:currentUser nameStyle:0];
 
       v19 = [v18 setEnableIdentifyVoice:0];
       goto LABEL_23;
@@ -509,22 +509,22 @@ LABEL_22:
     goto LABEL_25;
   }
 
-  switch(v13)
+  switch(integerValue)
   {
     case 0:
-      v24 = [v5 objectForKeyedSubscript:@"HULanguageOnboardingKey_SetupLanguage_AssistantDevice_IntendedLanguage"];
+      v24 = [inputCopy objectForKeyedSubscript:@"HULanguageOnboardingKey_SetupLanguage_AssistantDevice_IntendedLanguage"];
       [(HULanguageSetupOnboardingFlow *)self setAssistantDeviceIntendedRecognitionLanguage:v24];
 
       [(HULanguageSetupOnboardingFlow *)self setLanguageOnboardingFlowType:1];
-      v22 = self;
+      selfCopy3 = self;
       v23 = 0;
       goto LABEL_27;
     case 1:
 LABEL_25:
-      v22 = self;
-      v23 = v5;
+      selfCopy3 = self;
+      v23 = inputCopy;
 LABEL_27:
-      v20 = [(HULanguageSetupOnboardingFlow *)v22 _determineNextViewControllerWithPriorResults:v23];
+      v20 = [(HULanguageSetupOnboardingFlow *)selfCopy3 _determineNextViewControllerWithPriorResults:v23];
       goto LABEL_28;
     case 2:
       goto LABEL_22;
@@ -540,7 +540,7 @@ LABEL_28:
   {
     v26 = NSStringFromSelector(a2);
     *buf = 138412802;
-    v39 = self;
+    selfCopy4 = self;
     v40 = 2112;
     v41 = v26;
     v42 = 2112;
@@ -550,30 +550,30 @@ LABEL_28:
 
   if (!v20)
   {
-    v27 = [v5 objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_DismissReminderBanner"];
+    v27 = [inputCopy objectForKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_DismissReminderBanner"];
 
     if (!v27)
     {
       v28 = objc_alloc(MEMORY[0x277D14C98]);
-      v29 = [(HULanguageSetupOnboardingFlow *)self home];
-      v30 = [(HULanguageSetupOnboardingFlow *)self home];
-      v31 = [v30 currentUser];
-      v32 = [v28 initWithHome:v29 user:v31 nameStyle:0];
+      home4 = [(HULanguageSetupOnboardingFlow *)self home];
+      home5 = [(HULanguageSetupOnboardingFlow *)self home];
+      currentUser2 = [home5 currentUser];
+      v32 = [v28 initWithHome:home4 user:currentUser2 nameStyle:0];
 
       if ([v32 hasDismissedVoiceProfileOnboarding])
       {
         v33 = [MEMORY[0x277CCABB0] numberWithBool:1];
-        [v5 setObject:v33 forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_DismissReminderBanner"];
+        [inputCopy setObject:v33 forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_DismissReminderBanner"];
       }
 
       else
       {
-        [v5 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_DismissReminderBanner"];
+        [inputCopy setObject:MEMORY[0x277CBEC28] forKeyedSubscript:@"HUHomeFeatureOnboardingKey_IdentifyVoice_DismissReminderBanner"];
       }
     }
 
-    v35 = [(HULanguageSetupOnboardingFlow *)self onboardingFuture];
-    [v35 finishWithNoResult];
+    onboardingFuture = [(HULanguageSetupOnboardingFlow *)self onboardingFuture];
+    [onboardingFuture finishWithNoResult];
   }
 
   v21 = v20;
@@ -602,10 +602,10 @@ void __50__HULanguageSetupOnboardingFlow_processUserInput___block_invoke(uint64_
   }
 }
 
-+ (id)needsOnboardingForHome:(id)a3 options:(id)a4
++ (id)needsOnboardingForHome:(id)home options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
+  homeCopy = home;
+  optionsCopy = options;
   if ([MEMORY[0x277D14CE8] isAVisionPro])
   {
     v9 = [MEMORY[0x277D2C900] futureWithResult:MEMORY[0x277CBEC28]];
@@ -613,15 +613,15 @@ void __50__HULanguageSetupOnboardingFlow_processUserInput___block_invoke(uint64_
 
   else
   {
-    objc_initWeak(&location, a1);
+    objc_initWeak(&location, self);
     v10 = MEMORY[0x277D2C900];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __64__HULanguageSetupOnboardingFlow_needsOnboardingForHome_options___block_invoke;
     v12[3] = &unk_277DBCAB8;
     objc_copyWeak(v15, &location);
-    v13 = v7;
-    v14 = v8;
+    v13 = homeCopy;
+    v14 = optionsCopy;
     v15[1] = a2;
     v9 = [v10 futureWithBlock:v12];
 

@@ -1,6 +1,6 @@
 @interface OnboardingBuddySetupViewModel
 - (int64_t)loadingStatus;
-- (void)setLoadingStatus:(int64_t)a3;
+- (void)setLoadingStatus:(int64_t)status;
 @end
 
 @implementation OnboardingBuddySetupViewModel
@@ -15,7 +15,7 @@
   return v3;
 }
 
-- (void)setLoadingStatus:(int64_t)a3
+- (void)setLoadingStatus:(int64_t)status
 {
   swift_getKeyPath();
   swift_getKeyPath();

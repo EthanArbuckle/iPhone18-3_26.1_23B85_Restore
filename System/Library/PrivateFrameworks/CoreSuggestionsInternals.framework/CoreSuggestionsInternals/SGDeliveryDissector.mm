@@ -1,19 +1,19 @@
 @interface SGDeliveryDissector
-- (id)_createEnrichmentsForDetections:(id)a3 entity:(id)a4 foundInString:(id)a5;
-- (id)createEnrichmentWithMatch:(id)a3 onParentEntity:(id)a4 foundInString:(id)a5;
-- (void)_logDeliverySenderForSenderDomain:(id)a3;
-- (void)_logUniqueEnrichments:(id)a3;
-- (void)dissectMailMessage:(id)a3 entity:(id)a4 context:(id)a5;
-- (void)dissectTextMessage:(id)a3 entity:(id)a4 context:(id)a5;
+- (id)_createEnrichmentsForDetections:(id)detections entity:(id)entity foundInString:(id)string;
+- (id)createEnrichmentWithMatch:(id)match onParentEntity:(id)entity foundInString:(id)string;
+- (void)_logDeliverySenderForSenderDomain:(id)domain;
+- (void)_logUniqueEnrichments:(id)enrichments;
+- (void)dissectMailMessage:(id)message entity:(id)entity context:(id)context;
+- (void)dissectTextMessage:(id)message entity:(id)entity context:(id)context;
 @end
 
 @implementation SGDeliveryDissector
 
-- (void)_logUniqueEnrichments:(id)a3
+- (void)_logUniqueEnrichments:(id)enrichments
 {
-  v3 = a3;
+  enrichmentsCopy = enrichments;
   v4 = objc_opt_new();
-  v9 = [v3 _pas_leftFoldWithInitialObject:v4 accumulate:&__block_literal_global_3823];
+  v9 = [enrichmentsCopy _pas_leftFoldWithInitialObject:v4 accumulate:&__block_literal_global_3823];
 
   v5 = [v9 count];
   if (v5 >= 0xA)
@@ -72,12 +72,12 @@ id __45__SGDeliveryDissector__logUniqueEnrichments___block_invoke(uint64_t a1, v
   return v18;
 }
 
-- (void)_logDeliverySenderForSenderDomain:(id)a3
+- (void)_logDeliverySenderForSenderDomain:(id)domain
 {
   v8[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 length])
+  domainCopy = domain;
+  v4 = domainCopy;
+  if (domainCopy && [domainCopy length])
   {
     v5 = [objc_alloc(MEMORY[0x277D05310]) initWithKey:@"com.apple.suggestions.deliveries.domain"];
     v8[0] = v4;
@@ -88,17 +88,17 @@ id __45__SGDeliveryDissector__logUniqueEnrichments___block_invoke(uint64_t a1, v
   v7 = *MEMORY[0x277D85DE8];
 }
 
-- (void)dissectTextMessage:(id)a3 entity:(id)a4 context:(id)a5
+- (void)dissectTextMessage:(id)message entity:(id)entity context:(id)context
 {
-  v14 = a3;
-  v7 = a4;
-  v8 = [v7 message];
-  v9 = [v8 textContent];
+  messageCopy = message;
+  entityCopy = entity;
+  message = [entityCopy message];
+  textContent = [message textContent];
 
-  if (v9)
+  if (textContent)
   {
-    v10 = [v14 plainTextDetectedData];
-    v11 = [(SGDeliveryDissector *)self _createEnrichmentsForDetections:v10 entity:v7 foundInString:v9];
+    plainTextDetectedData = [messageCopy plainTextDetectedData];
+    v11 = [(SGDeliveryDissector *)self _createEnrichmentsForDetections:plainTextDetectedData entity:entityCopy foundInString:textContent];
   }
 
   else
@@ -106,7 +106,7 @@ id __45__SGDeliveryDissector__logUniqueEnrichments___block_invoke(uint64_t a1, v
     v11 = MEMORY[0x277CBEBF8];
   }
 
-  [v7 addEnrichments:v11];
+  [entityCopy addEnrichments:v11];
   v12 = +[SGRTCLogging defaultLogger];
   v13 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SGDelivery_ctTxtMsg_%lu", objc_msgSend(v11, "count")];
   [v12 logAggregateSummaryForInteraction:v13];
@@ -114,17 +114,17 @@ id __45__SGDeliveryDissector__logUniqueEnrichments___block_invoke(uint64_t a1, v
   [(SGDeliveryDissector *)self _logUniqueEnrichments:v11];
 }
 
-- (void)dissectMailMessage:(id)a3 entity:(id)a4 context:(id)a5
+- (void)dissectMailMessage:(id)message entity:(id)entity context:(id)context
 {
-  v28 = a3;
-  v8 = a4;
-  v9 = a5;
+  messageCopy = message;
+  entityCopy = entity;
+  contextCopy = context;
   v10 = objc_autoreleasePoolPush();
-  v11 = [v28 subject];
-  if (v11)
+  subject = [messageCopy subject];
+  if (subject)
   {
-    v12 = [v28 messageSubjectDetectedData];
-    v13 = [(SGDeliveryDissector *)self _createEnrichmentsForDetections:v12 entity:v8 foundInString:v11];
+    messageSubjectDetectedData = [messageCopy messageSubjectDetectedData];
+    v13 = [(SGDeliveryDissector *)self _createEnrichmentsForDetections:messageSubjectDetectedData entity:entityCopy foundInString:subject];
   }
 
   else
@@ -132,18 +132,18 @@ id __45__SGDeliveryDissector__logUniqueEnrichments___block_invoke(uint64_t a1, v
     v13 = MEMORY[0x277CBEBF8];
   }
 
-  [v8 addEnrichments:v13];
+  [entityCopy addEnrichments:v13];
   v14 = +[SGRTCLogging defaultLogger];
   v15 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SGDelivery_ctEmlSub_%lu", objc_msgSend(v13, "count")];
   [v14 logAggregateSummaryForInteraction:v15];
 
   objc_autoreleasePoolPop(v10);
   v16 = objc_autoreleasePoolPush();
-  v17 = [v28 textContent];
-  if (v17)
+  textContent = [messageCopy textContent];
+  if (textContent)
   {
-    v18 = [v28 plainTextDetectedData];
-    v19 = [(SGDeliveryDissector *)self _createEnrichmentsForDetections:v18 entity:v8 foundInString:v17];
+    plainTextDetectedData = [messageCopy plainTextDetectedData];
+    v19 = [(SGDeliveryDissector *)self _createEnrichmentsForDetections:plainTextDetectedData entity:entityCopy foundInString:textContent];
   }
 
   else
@@ -151,7 +151,7 @@ id __45__SGDeliveryDissector__logUniqueEnrichments___block_invoke(uint64_t a1, v
     v19 = MEMORY[0x277CBEBF8];
   }
 
-  [v8 addEnrichments:v19];
+  [entityCopy addEnrichments:v19];
   v20 = +[SGRTCLogging defaultLogger];
   v21 = [objc_alloc(MEMORY[0x277CCACA8]) initWithFormat:@"SGDelivery_ctEmlBod_%lu", objc_msgSend(v19, "count")];
   [v20 logAggregateSummaryForInteraction:v21];
@@ -161,12 +161,12 @@ id __45__SGDeliveryDissector__logUniqueEnrichments___block_invoke(uint64_t a1, v
   v23 = [v13 count];
   if (v23 + [v19 count])
   {
-    v24 = [v28 senderDomain];
+    senderDomain = [messageCopy senderDomain];
 
-    if (v24)
+    if (senderDomain)
     {
-      v25 = [v28 senderDomain];
-      [(SGDeliveryDissector *)self _logDeliverySenderForSenderDomain:v25];
+      senderDomain2 = [messageCopy senderDomain];
+      [(SGDeliveryDissector *)self _logDeliverySenderForSenderDomain:senderDomain2];
     }
   }
 
@@ -178,21 +178,21 @@ id __45__SGDeliveryDissector__logUniqueEnrichments___block_invoke(uint64_t a1, v
   objc_autoreleasePoolPop(v26);
 }
 
-- (id)_createEnrichmentsForDetections:(id)a3 entity:(id)a4 foundInString:(id)a5
+- (id)_createEnrichmentsForDetections:(id)detections entity:(id)entity foundInString:(id)string
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v8 count])
+  detectionsCopy = detections;
+  entityCopy = entity;
+  stringCopy = string;
+  if ([detectionsCopy count])
   {
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __76__SGDeliveryDissector__createEnrichmentsForDetections_entity_foundInString___block_invoke;
     v13[3] = &unk_27894B678;
     v13[4] = self;
-    v14 = v9;
-    v15 = v10;
-    v11 = [v8 _pas_mappedArrayWithTransform:v13];
+    v14 = entityCopy;
+    v15 = stringCopy;
+    v11 = [detectionsCopy _pas_mappedArrayWithTransform:v13];
   }
 
   else
@@ -221,44 +221,44 @@ id __76__SGDeliveryDissector__createEnrichmentsForDetections_entity_foundInStrin
   return v5;
 }
 
-- (id)createEnrichmentWithMatch:(id)a3 onParentEntity:(id)a4 foundInString:(id)a5
+- (id)createEnrichmentWithMatch:(id)match onParentEntity:(id)entity foundInString:(id)string
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 valueString];
-  if (v10)
+  matchCopy = match;
+  entityCopy = entity;
+  stringCopy = string;
+  valueString = [matchCopy valueString];
+  if (valueString)
   {
-    v11 = v10;
+    v11 = valueString;
 LABEL_3:
-    v12 = [v7 labelString];
-    v13 = [v8 duplicateKey];
-    v14 = [SGDuplicateKey duplicateKeyForDeliveryWithProviderString:v12 trackingNumber:v11 parentKey:v13];
+    labelString = [matchCopy labelString];
+    duplicateKey = [entityCopy duplicateKey];
+    v14 = [SGDuplicateKey duplicateKeyForDeliveryWithProviderString:labelString trackingNumber:v11 parentKey:duplicateKey];
 
-    v15 = [[SGPipelineEnrichment alloc] initWithDuplicateKey:v14 title:@"DTN" parent:v8];
-    [v8 creationTimestamp];
+    v15 = [[SGPipelineEnrichment alloc] initWithDuplicateKey:v14 title:@"DTN" parent:entityCopy];
+    [entityCopy creationTimestamp];
     [(SGPipelineEnrichment *)v15 setCreationTimestamp:?];
 
     goto LABEL_9;
   }
 
-  [v7 valueRange];
+  [matchCopy valueRange];
   if (!v16)
   {
     goto LABEL_8;
   }
 
-  v17 = [v9 length];
-  v25.location = [v7 valueRange];
+  v17 = [stringCopy length];
+  v25.location = [matchCopy valueRange];
   v25.length = v18;
   v24.location = 0;
   v24.length = v17;
   v19 = NSIntersectionRange(v24, v25);
   v15 = 0;
-  if (v19.location == [v7 valueRange] && v19.length == v20)
+  if (v19.location == [matchCopy valueRange] && v19.length == v20)
   {
     v21 = objc_autoreleasePoolPush();
-    v11 = [v9 substringWithRange:{v19.location, v19.length}];
+    v11 = [stringCopy substringWithRange:{v19.location, v19.length}];
     objc_autoreleasePoolPop(v21);
     if (v11)
     {

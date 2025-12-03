@@ -1,12 +1,12 @@
 @interface AXSDSoundDetectionController
 + (id)sharedInstance;
 - (AXSDSoundDetectionController)init;
-- (BOOL)containsListenType:(id)a3;
-- (id)pipeInFile:(id)a3;
+- (BOOL)containsListenType:(id)type;
+- (id)pipeInFile:(id)file;
 - (void)_pipedInFileUpdated;
-- (void)addListenType:(id)a3;
+- (void)addListenType:(id)type;
 - (void)enrollForDataCollection;
-- (void)removeListenType:(id)a3;
+- (void)removeListenType:(id)type;
 - (void)startListening;
 - (void)stopListening;
 @end
@@ -53,13 +53,13 @@ uint64_t __46__AXSDSoundDetectionController_sharedInstance__block_invoke()
       v2->_controller = v5;
 
       objc_initWeak(&location, v2);
-      v7 = [MEMORY[0x277CE6F98] sharedInstance];
+      mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
       v9[0] = MEMORY[0x277D85DD0];
       v9[1] = 3221225472;
       v9[2] = __36__AXSDSoundDetectionController_init__block_invoke;
       v9[3] = &unk_278BDD060;
       objc_copyWeak(&v10, &location);
-      [v7 registerUpdateBlock:v9 forRetrieveSelector:sel_pipedInFile withListener:v2];
+      [mEMORY[0x277CE6F98] registerUpdateBlock:v9 forRetrieveSelector:sel_pipedInFile withListener:v2];
 
       objc_destroyWeak(&v10);
       objc_destroyWeak(&location);
@@ -84,10 +84,10 @@ void __36__AXSDSoundDetectionController_init__block_invoke(uint64_t a1)
   }
 }
 
-- (void)addListenType:(id)a3
+- (void)addListenType:(id)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v5 = AXLogUltron();
   v6 = os_signpost_id_generate(v5);
 
@@ -96,21 +96,21 @@ void __36__AXSDSoundDetectionController_init__block_invoke(uint64_t a1)
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     v9 = MEMORY[0x277CCABB0];
-    v10 = [(AXSDSoundDetectionController *)self currentDetectionTypes];
-    v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+    currentDetectionTypes = [(AXSDSoundDetectionController *)self currentDetectionTypes];
+    v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(currentDetectionTypes, "count")}];
     v18 = 138412290;
     v19 = v11;
     _os_signpost_emit_with_name_impl(&dword_23D62D000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "Add Sound Detection Type", "Begin - Number enabled: %@", &v18, 0xCu);
   }
 
-  [(AXSDControllerImplementation *)self->_controller addWithListenType:v4];
+  [(AXSDControllerImplementation *)self->_controller addWithListenType:typeCopy];
   v12 = AXLogUltron();
   v13 = v12;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
     v14 = MEMORY[0x277CCABB0];
-    v15 = [(AXSDSoundDetectionController *)self currentDetectionTypes];
-    v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
+    currentDetectionTypes2 = [(AXSDSoundDetectionController *)self currentDetectionTypes];
+    v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(currentDetectionTypes2, "count")}];
     v18 = 138412290;
     v19 = v16;
     _os_signpost_emit_with_name_impl(&dword_23D62D000, v13, OS_SIGNPOST_INTERVAL_END, v6, "Add Sound Detection Type", "End - Number enabled: %@", &v18, 0xCu);
@@ -119,10 +119,10 @@ void __36__AXSDSoundDetectionController_init__block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeListenType:(id)a3
+- (void)removeListenType:(id)type
 {
   v20 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  typeCopy = type;
   v5 = AXLogUltron();
   v6 = os_signpost_id_generate(v5);
 
@@ -131,21 +131,21 @@ void __36__AXSDSoundDetectionController_init__block_invoke(uint64_t a1)
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v7))
   {
     v9 = MEMORY[0x277CCABB0];
-    v10 = [(AXSDSoundDetectionController *)self currentDetectionTypes];
-    v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(v10, "count")}];
+    currentDetectionTypes = [(AXSDSoundDetectionController *)self currentDetectionTypes];
+    v11 = [v9 numberWithUnsignedInteger:{objc_msgSend(currentDetectionTypes, "count")}];
     v18 = 138412290;
     v19 = v11;
     _os_signpost_emit_with_name_impl(&dword_23D62D000, v8, OS_SIGNPOST_INTERVAL_BEGIN, v6, "Remove Sound Detection Type", "Begin - Number enabled: %@", &v18, 0xCu);
   }
 
-  [(AXSDControllerImplementation *)self->_controller removeWithListenType:v4];
+  [(AXSDControllerImplementation *)self->_controller removeWithListenType:typeCopy];
   v12 = AXLogUltron();
   v13 = v12;
   if (v6 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v12))
   {
     v14 = MEMORY[0x277CCABB0];
-    v15 = [(AXSDSoundDetectionController *)self currentDetectionTypes];
-    v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(v15, "count")}];
+    currentDetectionTypes2 = [(AXSDSoundDetectionController *)self currentDetectionTypes];
+    v16 = [v14 numberWithUnsignedInteger:{objc_msgSend(currentDetectionTypes2, "count")}];
     v18 = 138412290;
     v19 = v16;
     _os_signpost_emit_with_name_impl(&dword_23D62D000, v13, OS_SIGNPOST_INTERVAL_END, v6, "Remove Sound Detection Type", "End - Number enabled: %@", &v18, 0xCu);
@@ -154,11 +154,11 @@ void __36__AXSDSoundDetectionController_init__block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)containsListenType:(id)a3
+- (BOOL)containsListenType:(id)type
 {
-  v4 = a3;
-  v5 = [(AXSDSoundDetectionController *)self currentDetectionTypes];
-  v6 = [v5 containsObject:v4];
+  typeCopy = type;
+  currentDetectionTypes = [(AXSDSoundDetectionController *)self currentDetectionTypes];
+  v6 = [currentDetectionTypes containsObject:typeCopy];
 
   return v6;
 }
@@ -169,7 +169,7 @@ void __36__AXSDSoundDetectionController_init__block_invoke(uint64_t a1)
   v3 = AXLogUltron();
   v4 = os_signpost_id_generate(v3);
 
-  v5 = [(AXSDSoundDetectionController *)self _hasMedinaSupport];
+  _hasMedinaSupport = [(AXSDSoundDetectionController *)self _hasMedinaSupport];
   v6 = AXLogUltron();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -189,9 +189,9 @@ void __36__AXSDSoundDetectionController_init__block_invoke(uint64_t a1)
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v11))
   {
     v13 = MEMORY[0x277CCABB0];
-    v14 = [(AXSDSoundDetectionController *)self currentDetectionTypes];
-    v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(v14, "count")}];
-    v16 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+    currentDetectionTypes = [(AXSDSoundDetectionController *)self currentDetectionTypes];
+    v15 = [v13 numberWithUnsignedInteger:{objc_msgSend(currentDetectionTypes, "count")}];
+    v16 = [MEMORY[0x277CCABB0] numberWithBool:_hasMedinaSupport];
     v24 = 138412546;
     v25 = v15;
     v26 = 2112;
@@ -205,9 +205,9 @@ void __36__AXSDSoundDetectionController_init__block_invoke(uint64_t a1)
   if (v4 - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v17))
   {
     v19 = MEMORY[0x277CCABB0];
-    v20 = [(AXSDSoundDetectionController *)self currentDetectionTypes];
-    v21 = [v19 numberWithUnsignedInteger:{objc_msgSend(v20, "count")}];
-    v22 = [MEMORY[0x277CCABB0] numberWithBool:v5];
+    currentDetectionTypes2 = [(AXSDSoundDetectionController *)self currentDetectionTypes];
+    v21 = [v19 numberWithUnsignedInteger:{objc_msgSend(currentDetectionTypes2, "count")}];
+    v22 = [MEMORY[0x277CCABB0] numberWithBool:_hasMedinaSupport];
     v24 = 138412546;
     v25 = v21;
     v26 = 2112;
@@ -243,19 +243,19 @@ void __36__AXSDSoundDetectionController_init__block_invoke(uint64_t a1)
 
 - (void)_pipedInFileUpdated
 {
-  v5 = [MEMORY[0x277CE6F98] sharedInstance];
-  v3 = [v5 pipedInFile];
-  v4 = [(AXSDSoundDetectionController *)self pipeInFile:v3];
+  mEMORY[0x277CE6F98] = [MEMORY[0x277CE6F98] sharedInstance];
+  pipedInFile = [mEMORY[0x277CE6F98] pipedInFile];
+  v4 = [(AXSDSoundDetectionController *)self pipeInFile:pipedInFile];
 }
 
-- (id)pipeInFile:(id)a3
+- (id)pipeInFile:(id)file
 {
-  v4 = a3;
+  fileCopy = file;
   if ([(AXSDControllerImplementation *)self->_controller conformsToProtocol:&unk_284FB8328])
   {
     v5 = self->_controller;
     v11 = 0;
-    v6 = [(AXSDControllerImplementation *)v5 pipeInFilePath:v4 error:&v11];
+    v6 = [(AXSDControllerImplementation *)v5 pipeInFilePath:fileCopy error:&v11];
     v7 = v11;
     if (v7)
     {

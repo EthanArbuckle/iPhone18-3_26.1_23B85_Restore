@@ -1,6 +1,6 @@
 @interface TSPObjectContextObserver
 - (TSPObjectContextObserver)init;
-- (TSPObjectContextObserver)initWithTarget:(id)a3 action:(SEL)a4;
+- (TSPObjectContextObserver)initWithTarget:(id)target action:(SEL)action;
 - (id)target;
 @end
 
@@ -22,17 +22,17 @@
   objc_exception_throw(v13);
 }
 
-- (TSPObjectContextObserver)initWithTarget:(id)a3 action:(SEL)a4
+- (TSPObjectContextObserver)initWithTarget:(id)target action:(SEL)action
 {
-  v6 = a3;
+  targetCopy = target;
   v10.receiver = self;
   v10.super_class = TSPObjectContextObserver;
   v7 = [(TSPObjectContextObserver *)&v10 init];
   v8 = v7;
   if (v7)
   {
-    objc_storeWeak(&v7->_target, v6);
-    v8->_action = a4;
+    objc_storeWeak(&v7->_target, targetCopy);
+    v8->_action = action;
   }
 
   return v8;

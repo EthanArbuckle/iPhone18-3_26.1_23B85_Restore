@@ -1,30 +1,30 @@
 @interface ICLegacyNoteStringActivityItemSource
-- (ICLegacyNoteStringActivityItemSource)initWithTitle:(id)a3 content:(id)a4 plainText:(id)a5;
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4;
+- (ICLegacyNoteStringActivityItemSource)initWithTitle:(id)title content:(id)content plainText:(id)text;
+- (id)activityViewController:(id)controller itemForActivityType:(id)type;
 @end
 
 @implementation ICLegacyNoteStringActivityItemSource
 
-- (ICLegacyNoteStringActivityItemSource)initWithTitle:(id)a3 content:(id)a4 plainText:(id)a5
+- (ICLegacyNoteStringActivityItemSource)initWithTitle:(id)title content:(id)content plainText:(id)text
 {
-  v8 = a4;
-  v9 = a5;
+  contentCopy = content;
+  textCopy = text;
   v13.receiver = self;
   v13.super_class = ICLegacyNoteStringActivityItemSource;
-  v10 = [(ICNoteBaseActivityItemSource *)&v13 initWithTitle:a3];
+  v10 = [(ICNoteBaseActivityItemSource *)&v13 initWithTitle:title];
   v11 = v10;
   if (v10)
   {
-    [(ICLegacyNoteStringActivityItemSource *)v10 setContent:v8];
-    [(ICLegacyNoteStringActivityItemSource *)v11 setPlainText:v9];
+    [(ICLegacyNoteStringActivityItemSource *)v10 setContent:contentCopy];
+    [(ICLegacyNoteStringActivityItemSource *)v11 setPlainText:textCopy];
   }
 
   return v11;
 }
 
-- (id)activityViewController:(id)a3 itemForActivityType:(id)a4
+- (id)activityViewController:(id)controller itemForActivityType:(id)type
 {
-  if ([a4 isEqual:*MEMORY[0x1E69CDA78]])
+  if ([type isEqual:*MEMORY[0x1E69CDA78]])
   {
     [(ICLegacyNoteStringActivityItemSource *)self plainText];
   }

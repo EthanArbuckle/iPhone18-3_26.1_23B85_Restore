@@ -1,21 +1,21 @@
 @interface OFDThumbnailProvider
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4;
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler;
 @end
 
 @implementation OFDThumbnailProvider
 
-- (void)provideThumbnailForFileRequest:(id)a3 completionHandler:(id)a4
+- (void)provideThumbnailForFileRequest:(id)request completionHandler:(id)handler
 {
-  v5 = a3;
-  v6 = a4;
+  requestCopy = request;
+  handlerCopy = handler;
   if (qword_100008110 != -1)
   {
     sub_100000EB0();
   }
 
   v7 = gFunc_OFDCreatePDFDataFromURL;
-  v8 = [v5 fileURL];
-  v9 = v7(v8, 0);
+  fileURL = [requestCopy fileURL];
+  v9 = v7(fileURL, 0);
 
   if (v9 && (v10 = CGDataProviderCreateWithCFData(v9)) != 0)
   {
@@ -29,9 +29,9 @@
       BoxRect = CGPDFPageGetBoxRect(Page, kCGPDFMediaBox);
       width = BoxRect.size.width;
       height = BoxRect.size.height;
-      [v5 maximumSize];
+      [requestCopy maximumSize];
       v18 = v17 / width;
-      [v5 maximumSize];
+      [requestCopy maximumSize];
       v20 = v19 / height;
       if (v18 < v19 / height)
       {
@@ -46,10 +46,10 @@
       v25[2] = sub_100000E30;
       v25[3] = &unk_100004140;
       v27 = v21;
-      v26 = v5;
+      v26 = requestCopy;
       v28 = Page;
       v24 = [QLThumbnailReply replyWithContextSize:v25 drawingBlock:v22, v23];
-      v6[2](v6, v24, 0);
+      handlerCopy[2](handlerCopy, v24, 0);
 
       CGPDFDocumentRelease(v13);
     }
@@ -59,7 +59,7 @@
 
   else
   {
-    v6[2](v6, 0, 0);
+    handlerCopy[2](handlerCopy, 0, 0);
   }
 }
 

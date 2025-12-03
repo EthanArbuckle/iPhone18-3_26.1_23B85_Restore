@@ -1,14 +1,14 @@
 @interface ADInstrumentationResolver
 - (ADInstrumentationResolver)init;
-- (ADInstrumentationResolver)initWithQueue:(id)a3;
-- (id)wallClockTimeForTimestamp:(unint64_t)a3;
-- (void)buildDeviceDynamicContextRelativeToTimestamp:(unint64_t)a3 withCompletion:(id)a4;
-- (void)logInstrumentationOfType:(id)a3 machAbsoluteTime:(unint64_t)a4 turnIdentifier:(id)a5;
+- (ADInstrumentationResolver)initWithQueue:(id)queue;
+- (id)wallClockTimeForTimestamp:(unint64_t)timestamp;
+- (void)buildDeviceDynamicContextRelativeToTimestamp:(unint64_t)timestamp withCompletion:(id)completion;
+- (void)logInstrumentationOfType:(id)type machAbsoluteTime:(unint64_t)time turnIdentifier:(id)identifier;
 @end
 
 @implementation ADInstrumentationResolver
 
-- (id)wallClockTimeForTimestamp:(unint64_t)a3
+- (id)wallClockTimeForTimestamp:(unint64_t)timestamp
 {
   v3 = +[NSDate date];
   mach_absolute_time();
@@ -20,10 +20,10 @@
   return v7;
 }
 
-- (void)buildDeviceDynamicContextRelativeToTimestamp:(unint64_t)a3 withCompletion:(id)a4
+- (void)buildDeviceDynamicContextRelativeToTimestamp:(unint64_t)timestamp withCompletion:(id)completion
 {
-  v6 = a4;
-  v7 = [(ADInstrumentationResolver *)self wallClockTimeForTimestamp:a3];
+  completionCopy = completion;
+  v7 = [(ADInstrumentationResolver *)self wallClockTimeForTimestamp:timestamp];
   v8 = objc_alloc_init(SISchemaDeviceDynamicContext);
   [v7 timeIntervalSince1970];
   [v8 setTimeIntervalSince1970:?];
@@ -33,18 +33,18 @@
   v12[2] = sub_10022C208;
   v12[3] = &unk_100517310;
   v13 = v8;
-  v14 = self;
-  v15 = v6;
-  v10 = v6;
+  selfCopy = self;
+  v15 = completionCopy;
+  v10 = completionCopy;
   v11 = v8;
   [v9 fetchLastLocationWithCompletion:v12];
 }
 
-- (void)logInstrumentationOfType:(id)a3 machAbsoluteTime:(unint64_t)a4 turnIdentifier:(id)a5
+- (void)logInstrumentationOfType:(id)type machAbsoluteTime:(unint64_t)time turnIdentifier:(id)identifier
 {
-  v8 = a3;
-  v9 = a5;
-  if (!v8)
+  typeCopy = type;
+  identifierCopy = identifier;
+  if (!typeCopy)
   {
     v13 = AFSiriLogContextAnalytics;
     if (!os_log_type_enabled(AFSiriLogContextAnalytics, OS_LOG_TYPE_ERROR))
@@ -64,7 +64,7 @@ LABEL_9:
 
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [v8 isEqualToString:v11];
+  v12 = [typeCopy isEqualToString:v11];
 
   if (!v12)
   {
@@ -77,7 +77,7 @@ LABEL_9:
     *buf = 136315394;
     v22 = "[ADInstrumentationResolver logInstrumentationOfType:machAbsoluteTime:turnIdentifier:]";
     v23 = 2112;
-    v24 = v8;
+    v24 = typeCopy;
     v14 = "%s Unsupported instrumentation class provided %@";
     v15 = v17;
     v16 = 22;
@@ -88,23 +88,23 @@ LABEL_9:
   v18[1] = 3221225472;
   v18[2] = sub_10022C5E0;
   v18[3] = &unk_1005172E8;
-  v20 = a4;
-  v19 = v9;
-  [(ADInstrumentationResolver *)self buildDeviceDynamicContextRelativeToTimestamp:a4 withCompletion:v18];
+  timeCopy = time;
+  v19 = identifierCopy;
+  [(ADInstrumentationResolver *)self buildDeviceDynamicContextRelativeToTimestamp:time withCompletion:v18];
 
 LABEL_7:
 }
 
-- (ADInstrumentationResolver)initWithQueue:(id)a3
+- (ADInstrumentationResolver)initWithQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v9.receiver = self;
   v9.super_class = ADInstrumentationResolver;
   v6 = [(ADInstrumentationResolver *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_externalQueue, a3);
+    objc_storeStrong(&v6->_externalQueue, queue);
   }
 
   return v7;

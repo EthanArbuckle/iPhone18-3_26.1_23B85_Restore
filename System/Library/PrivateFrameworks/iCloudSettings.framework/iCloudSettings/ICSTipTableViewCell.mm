@@ -1,18 +1,18 @@
 @interface ICSTipTableViewCell
-- (ICSTipTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
-- (void)actionButtonTapped:(id)a3;
+- (ICSTipTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
+- (void)actionButtonTapped:(id)tapped;
 - (void)layoutSubviews;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation ICSTipTableViewCell
 
-- (ICSTipTableViewCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (ICSTipTableViewCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v69[3] = *MEMORY[0x277D85DE8];
   v66.receiver = self;
   v66.super_class = ICSTipTableViewCell;
-  v4 = [(PSTableCell *)&v66 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(PSTableCell *)&v66 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -23,8 +23,8 @@
 
     [(UIImageView *)v5->_imageView setContentMode:1];
     [(UIImageView *)v5->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v8 = [MEMORY[0x277D75348] systemRedColor];
-    [(UIImageView *)v5->_imageView setTintColor:v8];
+    systemRedColor = [MEMORY[0x277D75348] systemRedColor];
+    [(UIImageView *)v5->_imageView setTintColor:systemRedColor];
 
     v9 = objc_alloc_init(MEMORY[0x277D756B8]);
     titleLabel = v5->_titleLabel;
@@ -38,8 +38,8 @@
     [(UILabel *)v11 setFont:v13];
 
     v14 = v5->_titleLabel;
-    v15 = [MEMORY[0x277D75348] labelColor];
-    [(UILabel *)v14 setTextColor:v15];
+    labelColor = [MEMORY[0x277D75348] labelColor];
+    [(UILabel *)v14 setTextColor:labelColor];
 
     v16 = objc_alloc_init(MEMORY[0x277D756B8]);
     subtitleLabel = v5->_subtitleLabel;
@@ -52,31 +52,31 @@
     [(UILabel *)v18 setFont:v19];
 
     v20 = v5->_subtitleLabel;
-    v21 = [MEMORY[0x277D75348] secondaryLabelColor];
-    [(UILabel *)v20 setTextColor:v21];
+    secondaryLabelColor = [MEMORY[0x277D75348] secondaryLabelColor];
+    [(UILabel *)v20 setTextColor:secondaryLabelColor];
 
     v22 = objc_alloc_init(MEMORY[0x277D75220]);
     actionButton = v5->_actionButton;
     v5->_actionButton = v22;
 
     [(UIButton *)v5->_actionButton setTranslatesAutoresizingMaskIntoConstraints:0];
-    v24 = [(UIButton *)v5->_actionButton titleLabel];
-    [v24 setNumberOfLines:0];
+    titleLabel = [(UIButton *)v5->_actionButton titleLabel];
+    [titleLabel setNumberOfLines:0];
 
-    v25 = [(UIButton *)v5->_actionButton titleLabel];
-    [v25 setTextAlignment:0];
+    titleLabel2 = [(UIButton *)v5->_actionButton titleLabel];
+    [titleLabel2 setTextAlignment:0];
 
     v26 = [MEMORY[0x277D74300] preferredFontForTextStyle:v12];
-    v27 = [(UIButton *)v5->_actionButton titleLabel];
-    [v27 setFont:v26];
+    titleLabel3 = [(UIButton *)v5->_actionButton titleLabel];
+    [titleLabel3 setFont:v26];
 
     v28 = v5->_actionButton;
-    v29 = [(ICSTipTableViewCell *)v5 tintColor];
-    [(UIButton *)v28 setTitleColor:v29 forState:0];
+    tintColor = [(ICSTipTableViewCell *)v5 tintColor];
+    [(UIButton *)v28 setTitleColor:tintColor forState:0];
 
     v30 = v5->_actionButton;
-    v31 = [(ICSTipTableViewCell *)v5 tintColor];
-    v32 = [v31 colorWithAlphaComponent:0.200000003];
+    tintColor2 = [(ICSTipTableViewCell *)v5 tintColor];
+    v32 = [tintColor2 colorWithAlphaComponent:0.200000003];
     [(UIButton *)v30 setTitleColor:v32 forState:1];
 
     [(UIButton *)v5->_actionButton addTarget:v5 action:sel_actionButtonTapped_ forControlEvents:64];
@@ -102,35 +102,35 @@
     [v39 setAxis:0];
     [v39 setAlignment:3];
     [v39 setSpacing:12.0];
-    v40 = [(ICSTipTableViewCell *)v5 contentView];
-    [v40 addSubview:v39];
+    contentView = [(ICSTipTableViewCell *)v5 contentView];
+    [contentView addSubview:v39];
 
     v56 = MEMORY[0x277CCAAD0];
-    v63 = [v39 leadingAnchor];
-    v64 = [(ICSTipTableViewCell *)v5 contentView];
-    v62 = [v64 leadingAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62 constant:6.0];
+    leadingAnchor = [v39 leadingAnchor];
+    contentView2 = [(ICSTipTableViewCell *)v5 contentView];
+    leadingAnchor2 = [contentView2 leadingAnchor];
+    v61 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:6.0];
     v67[0] = v61;
-    v59 = [v39 trailingAnchor];
-    v60 = [(ICSTipTableViewCell *)v5 contentView];
-    v58 = [v60 trailingAnchor];
-    v57 = [v59 constraintEqualToAnchor:v58 constant:-11.0];
+    trailingAnchor = [v39 trailingAnchor];
+    contentView3 = [(ICSTipTableViewCell *)v5 contentView];
+    trailingAnchor2 = [contentView3 trailingAnchor];
+    v57 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-11.0];
     v67[1] = v57;
-    v54 = [v39 topAnchor];
-    v55 = [(ICSTipTableViewCell *)v5 contentView];
-    v53 = [v55 topAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53 constant:11.0];
+    topAnchor = [v39 topAnchor];
+    contentView4 = [(ICSTipTableViewCell *)v5 contentView];
+    topAnchor2 = [contentView4 topAnchor];
+    v52 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:11.0];
     v67[2] = v52;
-    v51 = [v39 bottomAnchor];
-    v41 = [(ICSTipTableViewCell *)v5 contentView];
-    v42 = [v41 bottomAnchor];
-    v43 = [v51 constraintEqualToAnchor:v42 constant:-11.0];
+    bottomAnchor = [v39 bottomAnchor];
+    contentView5 = [(ICSTipTableViewCell *)v5 contentView];
+    bottomAnchor2 = [contentView5 bottomAnchor];
+    v43 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-11.0];
     v67[3] = v43;
-    v44 = [(UIImageView *)v5->_imageView widthAnchor];
-    v45 = [v44 constraintEqualToConstant:40.0];
+    widthAnchor = [(UIImageView *)v5->_imageView widthAnchor];
+    v45 = [widthAnchor constraintEqualToConstant:40.0];
     v67[4] = v45;
-    v46 = [(UIImageView *)v5->_imageView heightAnchor];
-    v47 = [v46 constraintEqualToConstant:40.0];
+    heightAnchor = [(UIImageView *)v5->_imageView heightAnchor];
+    v47 = [heightAnchor constraintEqualToConstant:40.0];
     v67[5] = v47;
     v48 = [MEMORY[0x277CBEA60] arrayWithObjects:v67 count:6];
     [v56 activateConstraints:v48];
@@ -147,35 +147,35 @@
   [(PSTableCell *)&v2 layoutSubviews];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v12.receiver = self;
   v12.super_class = ICSTipTableViewCell;
-  v4 = a3;
-  [(PSTableCell *)&v12 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(PSTableCell *)&v12 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(PSTableCell *)self titleLabel:v12.receiver];
   [v5 setText:&stru_288487370];
 
-  v6 = [(ICSTipTableViewCell *)self imageView];
-  [v6 setImage:0];
+  imageView = [(ICSTipTableViewCell *)self imageView];
+  [imageView setImage:0];
 
-  v7 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3FFC0]];
+  v7 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277D3FFC0]];
   [(UIImageView *)self->_imageView setImage:v7];
 
-  v8 = [v4 objectForKeyedSubscript:*MEMORY[0x277D40170]];
+  v8 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277D40170]];
   [(UILabel *)self->_titleLabel setText:v8];
 
-  v9 = [v4 objectForKeyedSubscript:*MEMORY[0x277D40160]];
+  v9 = [specifierCopy objectForKeyedSubscript:*MEMORY[0x277D40160]];
   [(UILabel *)self->_subtitleLabel setText:v9];
 
   actionButton = self->_actionButton;
-  v11 = [v4 objectForKeyedSubscript:@"ICSActionButtonTitleKey"];
+  v11 = [specifierCopy objectForKeyedSubscript:@"ICSActionButtonTitleKey"];
 
   [(UIButton *)actionButton setTitle:v11 forStates:0];
   [(ICSTipTableViewCell *)self setNeedsLayout];
 }
 
-- (void)actionButtonTapped:(id)a3
+- (void)actionButtonTapped:(id)tapped
 {
   v4 = _ICQGetLogSystem();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT))
@@ -184,8 +184,8 @@
     _os_log_impl(&dword_275819000, v4, OS_LOG_TYPE_DEFAULT, "Action button tapped.", v6, 2u);
   }
 
-  v5 = [(PSTableCell *)self specifier];
-  [v5 performButtonAction];
+  specifier = [(PSTableCell *)self specifier];
+  [specifier performButtonAction];
 }
 
 @end

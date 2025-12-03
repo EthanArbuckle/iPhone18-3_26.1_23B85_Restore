@@ -1,20 +1,20 @@
 @interface APBaseShieldViewConfig
-- (APBaseShieldViewConfig)initWithApplication:(id)a3;
+- (APBaseShieldViewConfig)initWithApplication:(id)application;
 - (APBaseShieldViewDelegate)delegate;
 @end
 
 @implementation APBaseShieldViewConfig
 
-- (APBaseShieldViewConfig)initWithApplication:(id)a3
+- (APBaseShieldViewConfig)initWithApplication:(id)application
 {
-  v4 = a3;
+  applicationCopy = application;
   v8.receiver = self;
   v8.super_class = APBaseShieldViewConfig;
   v5 = [(APBaseShieldViewConfig *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(APBaseShieldViewConfig *)v5 setApplication:v4];
+    [(APBaseShieldViewConfig *)v5 setApplication:applicationCopy];
   }
 
   return v6;

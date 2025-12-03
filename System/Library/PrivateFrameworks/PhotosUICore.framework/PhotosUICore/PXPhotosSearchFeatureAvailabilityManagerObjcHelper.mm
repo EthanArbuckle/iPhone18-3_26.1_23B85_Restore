@@ -7,12 +7,12 @@
 
 + (BOOL)wantsSearchReportAConcernStyling
 {
-  if ([a1 searchReportAConcernIsInternalOrSeed])
+  if ([self searchReportAConcernIsInternalOrSeed])
   {
     return 1;
   }
 
-  return [a1 searchReportAConcernIsExternal];
+  return [self searchReportAConcernIsExternal];
 }
 
 - (PXPhotosSearchFeatureAvailabilityManagerObjcHelper)init

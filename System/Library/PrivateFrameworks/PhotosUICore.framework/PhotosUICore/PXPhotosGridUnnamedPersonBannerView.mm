@@ -1,12 +1,12 @@
 @interface PXPhotosGridUnnamedPersonBannerView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (NSString)actionString;
 - (PXPhotosGridUnnamedPersonBannerDelegate)delegate;
-- (PXPhotosGridUnnamedPersonBannerView)initWithType:(int64_t)a3;
+- (PXPhotosGridUnnamedPersonBannerView)initWithType:(int64_t)type;
 - (void)_handlePrimaryAction;
 - (void)_updateButtonConfiguration;
 - (void)layoutSubviews;
-- (void)setSpec:(id)a3;
+- (void)setSpec:(id)spec;
 @end
 
 @implementation PXPhotosGridUnnamedPersonBannerView
@@ -18,29 +18,29 @@
   return WeakRetained;
 }
 
-- (void)setSpec:(id)a3
+- (void)setSpec:(id)spec
 {
-  v5 = a3;
+  specCopy = spec;
   spec = self->_spec;
-  if (spec != v5)
+  if (spec != specCopy)
   {
-    v9 = v5;
-    v7 = [(PXFeatureSpec *)spec contentSizeCategory];
-    objc_storeStrong(&self->_spec, a3);
-    v8 = [(PXFeatureSpec *)self->_spec contentSizeCategory];
-    v5 = v9;
-    if (v7 != v8)
+    v9 = specCopy;
+    contentSizeCategory = [(PXFeatureSpec *)spec contentSizeCategory];
+    objc_storeStrong(&self->_spec, spec);
+    contentSizeCategory2 = [(PXFeatureSpec *)self->_spec contentSizeCategory];
+    specCopy = v9;
+    if (contentSizeCategory != contentSizeCategory2)
     {
       [(PXPhotosGridUnnamedPersonBannerView *)self _updateButtonConfiguration];
-      v5 = v9;
+      specCopy = v9;
     }
   }
 }
 
 - (void)_handlePrimaryAction
 {
-  v3 = [(PXPhotosGridUnnamedPersonBannerView *)self delegate];
-  [v3 didTapUnnamedPersonBanner:self];
+  delegate = [(PXPhotosGridUnnamedPersonBannerView *)self delegate];
+  [delegate didTapUnnamedPersonBanner:self];
 }
 
 - (void)_updateButtonConfiguration
@@ -52,35 +52,35 @@
   v5 = *MEMORY[0x1E69DB6A8];
   v16[0] = v4;
   v16[1] = v5;
-  v6 = [(PXPhotosGridUnnamedPersonBannerView *)self buttonShadow];
-  v17[1] = v6;
+  buttonShadow = [(PXPhotosGridUnnamedPersonBannerView *)self buttonShadow];
+  v17[1] = buttonShadow;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v17 forKeys:v16 count:2];
 
   v8 = objc_alloc(MEMORY[0x1E696AAB0]);
-  v9 = [(PXPhotosGridUnnamedPersonBannerView *)self actionString];
-  v10 = [v8 initWithString:v9 attributes:v7];
+  actionString = [(PXPhotosGridUnnamedPersonBannerView *)self actionString];
+  v10 = [v8 initWithString:actionString attributes:v7];
 
-  v11 = [(PXPhotosGridUnnamedPersonBannerView *)self primaryActionButton];
-  v12 = [v11 configuration];
-  v13 = [v12 copy];
+  primaryActionButton = [(PXPhotosGridUnnamedPersonBannerView *)self primaryActionButton];
+  configuration = [primaryActionButton configuration];
+  v13 = [configuration copy];
 
   [v13 setAttributedTitle:v10];
   v14 = [MEMORY[0x1E69DCAD8] configurationWithFont:v3];
   [v13 setPreferredSymbolConfigurationForImage:v14];
 
-  v15 = [(PXPhotosGridUnnamedPersonBannerView *)self primaryActionButton];
-  [v15 setConfiguration:v13];
+  primaryActionButton2 = [(PXPhotosGridUnnamedPersonBannerView *)self primaryActionButton];
+  [primaryActionButton2 setConfiguration:v13];
 }
 
 - (NSString)actionString
 {
-  v4 = [(PXPhotosGridUnnamedPersonBannerView *)self type];
-  if (v4)
+  type = [(PXPhotosGridUnnamedPersonBannerView *)self type];
+  if (type)
   {
-    if (v4 != 1)
+    if (type != 1)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v8 handleFailureInMethod:a2 object:self file:@"PXPhotosGridUnnamedPersonBannerView.m" lineNumber:78 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXPhotosGridUnnamedPersonBannerView.m" lineNumber:78 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
@@ -107,12 +107,12 @@
   PXEdgeInsetsMake();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v4 = a3.height + -20.0;
-  v5 = [(PXPhotosGridUnnamedPersonBannerView *)self primaryActionButton];
-  [v5 sizeThatFits:{width, v4}];
+  width = fits.width;
+  v4 = fits.height + -20.0;
+  primaryActionButton = [(PXPhotosGridUnnamedPersonBannerView *)self primaryActionButton];
+  [primaryActionButton sizeThatFits:{width, v4}];
   v7 = v6;
   v9 = v8;
 
@@ -123,7 +123,7 @@
   return result;
 }
 
-- (PXPhotosGridUnnamedPersonBannerView)initWithType:(int64_t)a3
+- (PXPhotosGridUnnamedPersonBannerView)initWithType:(int64_t)type
 {
   v22.receiver = self;
   v22.super_class = PXPhotosGridUnnamedPersonBannerView;
@@ -131,21 +131,21 @@
   v5 = v4;
   if (v4)
   {
-    v4->_type = a3;
+    v4->_type = type;
     v6 = objc_alloc_init(MEMORY[0x1E69DB7D8]);
     buttonShadow = v5->_buttonShadow;
     v5->_buttonShadow = v6;
 
     [(NSShadow *)v5->_buttonShadow setShadowBlurRadius:10.0];
-    v8 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
-    [v8 setTitleAlignment:1];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    [plainButtonConfiguration setTitleAlignment:1];
     v9 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"plus.circle"];
-    [v8 setImage:v9];
+    [plainButtonConfiguration setImage:v9];
 
-    v10 = [MEMORY[0x1E69DC888] whiteColor];
-    [v8 setBaseForegroundColor:v10];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [plainButtonConfiguration setBaseForegroundColor:whiteColor];
 
-    [v8 setImagePadding:10.0];
+    [plainButtonConfiguration setImagePadding:10.0];
     objc_initWeak(&location, v5);
     v11 = MEMORY[0x1E69DC628];
     v16 = MEMORY[0x1E69E9820];
@@ -154,7 +154,7 @@
     v19 = &unk_1E774BB08;
     objc_copyWeak(&v20, &location);
     v12 = [v11 actionWithHandler:&v16];
-    v13 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v8 primaryAction:{v12, v16, v17, v18, v19}];
+    v13 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:{v12, v16, v17, v18, v19}];
     primaryActionButton = v5->_primaryActionButton;
     v5->_primaryActionButton = v13;
 

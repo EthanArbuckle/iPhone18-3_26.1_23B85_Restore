@@ -2,8 +2,8 @@
 + (_TtC24AssistantSettingsSupport11TipsManager)shared;
 - (BOOL)shouldShowTip;
 - (_TtC24AssistantSettingsSupport11TipsManager)init;
-- (void)configureTipsWithController:(id)a3;
-- (void)setShouldShowTip:(BOOL)a3;
+- (void)configureTipsWithController:(id)controller;
+- (void)setShouldShowTip:(BOOL)tip;
 @end
 
 @implementation TipsManager
@@ -27,18 +27,18 @@
   return *(&self->super.isa + v3);
 }
 
-- (void)setShouldShowTip:(BOOL)a3
+- (void)setShouldShowTip:(BOOL)tip
 {
   v5 = OBJC_IVAR____TtC24AssistantSettingsSupport11TipsManager_shouldShowTip;
   swift_beginAccess();
-  *(&self->super.isa + v5) = a3;
+  *(&self->super.isa + v5) = tip;
 }
 
-- (void)configureTipsWithController:(id)a3
+- (void)configureTipsWithController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_2413E9758(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_2413E9758(controller);
 }
 
 - (_TtC24AssistantSettingsSupport11TipsManager)init

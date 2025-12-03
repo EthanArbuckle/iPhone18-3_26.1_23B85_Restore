@@ -1,7 +1,7 @@
 @interface DOCOperationBuffer
-- (DOCOperationBuffer)initWithLabel:(id)a3 targetQueue:(id)a4;
+- (DOCOperationBuffer)initWithLabel:(id)label targetQueue:(id)queue;
 - (OS_dispatch_queue)queue;
-- (void)buffer:(id)a3;
+- (void)buffer:(id)buffer;
 - (void)signal;
 @end
 
@@ -12,23 +12,23 @@
   queue = self->_queue;
   if (!queue)
   {
-    v4 = self;
-    objc_sync_enter(v4);
+    selfCopy = self;
+    objc_sync_enter(selfCopy);
     if (!self->_queue)
     {
-      v5 = [(DOCOperationBuffer *)v4 label];
-      v6 = [@"com.apple.DocumentManager.operationBuffer." stringByAppendingString:v5];
+      label = [(DOCOperationBuffer *)selfCopy label];
+      v6 = [@"com.apple.DocumentManager.operationBuffer." stringByAppendingString:label];
       v7 = dispatch_queue_create([v6 UTF8String], 0);
 
-      v8 = [(DOCOperationBuffer *)v4 targetQueue];
-      dispatch_set_target_queue(v7, v8);
+      targetQueue = [(DOCOperationBuffer *)selfCopy targetQueue];
+      dispatch_set_target_queue(v7, targetQueue);
 
       dispatch_suspend(v7);
       v9 = self->_queue;
       self->_queue = v7;
     }
 
-    objc_sync_exit(v4);
+    objc_sync_exit(selfCopy);
 
     queue = self->_queue;
   }
@@ -52,15 +52,15 @@
       _os_signpost_emit_with_name_impl(&dword_249340000, v6, OS_SIGNPOST_EVENT, v4, "Files-PostLaunchBuffer unlocked", "", v8, 2u);
     }
 
-    v7 = [(DOCOperationBuffer *)self queue];
-    dispatch_resume(v7);
+    queue = [(DOCOperationBuffer *)self queue];
+    dispatch_resume(queue);
   }
 }
 
-- (DOCOperationBuffer)initWithLabel:(id)a3 targetQueue:(id)a4
+- (DOCOperationBuffer)initWithLabel:(id)label targetQueue:(id)queue
 {
-  v6 = a3;
-  v7 = a4;
+  labelCopy = label;
+  queueCopy = queue;
   v11.receiver = self;
   v11.super_class = DOCOperationBuffer;
   v8 = [(DOCOperationBuffer *)&v11 init];
@@ -68,18 +68,18 @@
   if (v8)
   {
     [(DOCOperationBuffer *)v8 setLocked:1];
-    [(DOCOperationBuffer *)v9 setLabel:v6];
-    [(DOCOperationBuffer *)v9 setTargetQueue:v7];
+    [(DOCOperationBuffer *)v9 setLabel:labelCopy];
+    [(DOCOperationBuffer *)v9 setTargetQueue:queueCopy];
   }
 
   return v9;
 }
 
-- (void)buffer:(id)a3
+- (void)buffer:(id)buffer
 {
-  v4 = a3;
-  v5 = [(DOCOperationBuffer *)self queue];
-  dispatch_async(v5, v4);
+  bufferCopy = buffer;
+  queue = [(DOCOperationBuffer *)self queue];
+  dispatch_async(queue, bufferCopy);
 }
 
 @end

@@ -1,15 +1,15 @@
 @interface PKDirectoryCoordinator
-- (PKDirectoryCoordinator)initWithURL:(id)a3;
+- (PKDirectoryCoordinator)initWithURL:(id)l;
 - (void)invalidate;
-- (void)performCoordinatedAction:(id)a3;
+- (void)performCoordinatedAction:(id)action;
 @end
 
 @implementation PKDirectoryCoordinator
 
-- (PKDirectoryCoordinator)initWithURL:(id)a3
+- (PKDirectoryCoordinator)initWithURL:(id)l
 {
-  v4 = a3;
-  if (v4)
+  lCopy = l;
+  if (lCopy)
   {
     v11.receiver = self;
     v11.super_class = PKDirectoryCoordinator;
@@ -18,21 +18,21 @@
     if (v5)
     {
       v5->_lock._os_unfair_lock_opaque = 0;
-      v7 = [v4 copy];
+      v7 = [lCopy copy];
       url = v6->_url;
       v6->_url = v7;
     }
 
     self = v6;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (void)invalidate
@@ -49,16 +49,16 @@
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)performCoordinatedAction:(id)a3
+- (void)performCoordinatedAction:(id)action
 {
-  v4 = a3;
-  if (v4)
+  actionCopy = action;
+  if (actionCopy)
   {
-    v5 = v4;
+    v5 = actionCopy;
     os_unfair_lock_lock(&self->_lock);
     v5[2](v5, self->_url);
     os_unfair_lock_unlock(&self->_lock);
-    v4 = v5;
+    actionCopy = v5;
   }
 }
 

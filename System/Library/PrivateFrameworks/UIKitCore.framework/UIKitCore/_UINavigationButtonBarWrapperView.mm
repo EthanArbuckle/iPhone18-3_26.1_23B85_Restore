@@ -1,18 +1,18 @@
 @interface _UINavigationButtonBarWrapperView
 - (CGSize)intrinsicContentSize;
 - (NSArray)barSections;
-- (_UINavigationButtonBarWrapperView)initWithCoder:(id)a3;
-- (_UINavigationButtonBarWrapperView)initWithFrame:(CGRect)a3;
+- (_UINavigationButtonBarWrapperView)initWithCoder:(id)coder;
+- (_UINavigationButtonBarWrapperView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
-- (void)setBarSections:(id)a3;
-- (void)setBarSections:(id)a3 animated:(BOOL)a4;
+- (void)setBarSections:(id)sections;
+- (void)setBarSections:(id)sections animated:(BOOL)animated;
 @end
 
 @implementation _UINavigationButtonBarWrapperView
 
 - (NSArray)barSections
 {
-  v2 = [(_UINavigationButtonBarWrapperView *)self buttonBar];
+  buttonBar = [(_UINavigationButtonBarWrapperView *)self buttonBar];
 
   type metadata accessor for _UIBarSection(0);
   v3 = sub_18A4A7518();
@@ -20,33 +20,33 @@
   return v3;
 }
 
-- (void)setBarSections:(id)a3
+- (void)setBarSections:(id)sections
 {
   type metadata accessor for _UIBarSection(0);
   v4 = sub_18A4A7548();
-  v7 = self;
-  v5 = [(_UINavigationButtonBarWrapperView *)v7 buttonBar];
-  v6 = *(&v5->super.isa + OBJC_IVAR____TtC5UIKit19NavigationButtonBar_barSections);
-  *(&v5->super.isa + OBJC_IVAR____TtC5UIKit19NavigationButtonBar_barSections) = v4;
+  selfCopy = self;
+  buttonBar = [(_UINavigationButtonBarWrapperView *)selfCopy buttonBar];
+  v6 = *(&buttonBar->super.isa + OBJC_IVAR____TtC5UIKit19NavigationButtonBar_barSections);
+  *(&buttonBar->super.isa + OBJC_IVAR____TtC5UIKit19NavigationButtonBar_barSections) = v4;
   sub_188B34B5C(v6);
 }
 
-- (void)setBarSections:(id)a3 animated:(BOOL)a4
+- (void)setBarSections:(id)sections animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = self;
-  v8 = v7;
-  if (v4)
+  animatedCopy = animated;
+  sectionsCopy = sections;
+  selfCopy = self;
+  v8 = selfCopy;
+  if (animatedCopy)
   {
-    [(_UINavigationButtonBarWrapperView *)v7 setAnimatesNextUpdate:1];
-    v7 = v8;
+    [(_UINavigationButtonBarWrapperView *)selfCopy setAnimatesNextUpdate:1];
+    selfCopy = v8;
   }
 
-  [(_UINavigationButtonBarWrapperView *)v7 setBarSections:v6];
+  [(_UINavigationButtonBarWrapperView *)selfCopy setBarSections:sectionsCopy];
 }
 
-- (_UINavigationButtonBarWrapperView)initWithCoder:(id)a3
+- (_UINavigationButtonBarWrapperView)initWithCoder:(id)coder
 {
   *(&self->super.super.super.isa + OBJC_IVAR____UINavigationButtonBarWrapperView_animatesNextUpdate) = 0;
   result = sub_18A4A8398();
@@ -56,7 +56,7 @@
 
 - (CGSize)intrinsicContentSize
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_188FBA068();
   v5 = v4;
 
@@ -69,11 +69,11 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_188FBA1E0();
 }
 
-- (_UINavigationButtonBarWrapperView)initWithFrame:(CGRect)a3
+- (_UINavigationButtonBarWrapperView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

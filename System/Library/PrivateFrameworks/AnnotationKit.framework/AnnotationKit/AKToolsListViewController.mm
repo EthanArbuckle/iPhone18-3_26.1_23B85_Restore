@@ -1,39 +1,39 @@
 @interface AKToolsListViewController
-- (AKToolsListViewController)initWithCoder:(id)a3;
-- (AKToolsListViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (AKToolsListViewController)initWithCoder:(id)coder;
+- (AKToolsListViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (AKToolsListViewControllerDelegate)delegate;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
 - (id)_buttonViewForImageDescription;
 - (id)_buttonViewForLoupe;
 - (id)_buttonViewForOpacity;
 - (id)_buttonViewForShapes;
 - (id)_buttonViewForSignature;
 - (id)_buttonViewForText;
-- (id)_buttonViewWithImage:(id)a3 title:(id)a4 tintColor:(id)a5;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)_buttonViewWithImage:(id)image title:(id)title tintColor:(id)color;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (int64_t)_bottomPaddingCellIndexRow;
 - (int64_t)_shapesCellIndexRow;
 - (int64_t)_topPaddingCellIndexRow;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_reloadCellItemTypes;
-- (void)_shapeButtonPressed:(id)a3;
+- (void)_shapeButtonPressed:(id)pressed;
 - (void)_updateDeviceLocked;
-- (void)addRowView:(id)a3 toCellView:(id)a4;
-- (void)setSupportsImageDescriptionEditing:(BOOL)a3;
-- (void)setSupportsOpacityEditing:(BOOL)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)addRowView:(id)view toCellView:(id)cellView;
+- (void)setSupportsImageDescriptionEditing:(BOOL)editing;
+- (void)setSupportsOpacityEditing:(BOOL)editing;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation AKToolsListViewController
 
-- (AKToolsListViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (AKToolsListViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v8.receiver = self;
   v8.super_class = AKToolsListViewController;
-  v4 = [(AKToolsListViewController *)&v8 initWithNibName:a3 bundle:a4];
+  v4 = [(AKToolsListViewController *)&v8 initWithNibName:name bundle:bundle];
   v5 = v4;
   if (v4)
   {
@@ -45,11 +45,11 @@
   return v5;
 }
 
-- (AKToolsListViewController)initWithCoder:(id)a3
+- (AKToolsListViewController)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = AKToolsListViewController;
-  v3 = [(AKToolsListViewController *)&v7 initWithCoder:a3];
+  v3 = [(AKToolsListViewController *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {
@@ -70,75 +70,75 @@
   v4 = [v3 initWithFrame:0 style:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
   [(AKToolsListViewController *)self setTableView:v4];
 
-  v5 = [(AKToolsListViewController *)self tableView];
-  [v5 setDelegate:self];
+  tableView = [(AKToolsListViewController *)self tableView];
+  [tableView setDelegate:self];
 
-  v6 = [(AKToolsListViewController *)self tableView];
-  [v6 setDataSource:self];
+  tableView2 = [(AKToolsListViewController *)self tableView];
+  [tableView2 setDataSource:self];
 
   v7 = *MEMORY[0x277D768C8];
   v8 = *(MEMORY[0x277D768C8] + 8);
   v9 = *(MEMORY[0x277D768C8] + 16);
   v10 = *(MEMORY[0x277D768C8] + 24);
-  v11 = [(AKToolsListViewController *)self tableView];
-  [v11 setSeparatorInset:{v7, v8, v9, v10}];
+  tableView3 = [(AKToolsListViewController *)self tableView];
+  [tableView3 setSeparatorInset:{v7, v8, v9, v10}];
 
-  v12 = [(AKToolsListViewController *)self tableView];
-  [v12 setSeparatorStyle:0];
+  tableView4 = [(AKToolsListViewController *)self tableView];
+  [tableView4 setSeparatorStyle:0];
 
-  v13 = [(AKToolsListViewController *)self tableView];
-  [v13 setAlwaysBounceVertical:0];
+  tableView5 = [(AKToolsListViewController *)self tableView];
+  [tableView5 setAlwaysBounceVertical:0];
 
-  v14 = [(AKToolsListViewController *)self tableView];
-  [v14 setAlwaysBounceHorizontal:0];
+  tableView6 = [(AKToolsListViewController *)self tableView];
+  [tableView6 setAlwaysBounceHorizontal:0];
 
-  v15 = [MEMORY[0x277D75348] clearColor];
-  v16 = [(AKToolsListViewController *)self tableView];
-  [v16 setBackgroundColor:v15];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  tableView7 = [(AKToolsListViewController *)self tableView];
+  [tableView7 setBackgroundColor:clearColor];
 
-  v17 = [(AKToolsListViewController *)self tableView];
-  [v17 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKImageDescriptionRowIdentifier"];
+  tableView8 = [(AKToolsListViewController *)self tableView];
+  [tableView8 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKImageDescriptionRowIdentifier"];
 
-  v18 = [(AKToolsListViewController *)self tableView];
-  [v18 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKTextRowIdentifier"];
+  tableView9 = [(AKToolsListViewController *)self tableView];
+  [tableView9 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKTextRowIdentifier"];
 
-  v19 = [(AKToolsListViewController *)self tableView];
-  [v19 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKLoupeRowIdentifier"];
+  tableView10 = [(AKToolsListViewController *)self tableView];
+  [tableView10 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKLoupeRowIdentifier"];
 
-  v20 = [(AKToolsListViewController *)self tableView];
-  [v20 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKSignatureRowIdentifier"];
+  tableView11 = [(AKToolsListViewController *)self tableView];
+  [tableView11 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKSignatureRowIdentifier"];
 
-  v21 = [(AKToolsListViewController *)self tableView];
-  [v21 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKShapesRowIdentifier"];
+  tableView12 = [(AKToolsListViewController *)self tableView];
+  [tableView12 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKShapesRowIdentifier"];
 
-  v22 = [(AKToolsListViewController *)self tableView];
-  [v22 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKOpacityRowIdentifier"];
+  tableView13 = [(AKToolsListViewController *)self tableView];
+  [tableView13 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKOpacityRowIdentifier"];
 
-  v23 = [(AKToolsListViewController *)self tableView];
-  [v23 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKPaddingRowIdentifier"];
+  tableView14 = [(AKToolsListViewController *)self tableView];
+  [tableView14 registerClass:objc_opt_class() forCellReuseIdentifier:@"AKPaddingRowIdentifier"];
 
-  v24 = [(AKToolsListViewController *)self tableView];
-  [v24 setAccessibilityIdentifier:@"shapes-picker-popover"];
+  tableView15 = [(AKToolsListViewController *)self tableView];
+  [tableView15 setAccessibilityIdentifier:@"shapes-picker-popover"];
 
-  v25 = [(AKToolsListViewController *)self view];
-  v26 = [(AKToolsListViewController *)self tableView];
-  [v25 ak_addSubview:v26 withEdgeInsets:{v7, v8, v9, v10}];
+  view = [(AKToolsListViewController *)self view];
+  tableView16 = [(AKToolsListViewController *)self tableView];
+  [view ak_addSubview:tableView16 withEdgeInsets:{v7, v8, v9, v10}];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v10.receiver = self;
   v10.super_class = AKToolsListViewController;
-  [(AKToolsListViewController *)&v10 viewWillAppear:a3];
-  v4 = [(AKToolsListViewController *)self tableView];
-  [v4 layoutIfNeeded];
+  [(AKToolsListViewController *)&v10 viewWillAppear:appear];
+  tableView = [(AKToolsListViewController *)self tableView];
+  [tableView layoutIfNeeded];
 
-  v5 = [(AKToolsListViewController *)self tableView];
-  [v5 contentSize];
+  tableView2 = [(AKToolsListViewController *)self tableView];
+  [tableView2 contentSize];
   v7 = v6;
 
-  v8 = [(AKToolsListViewController *)self _buttonViewForShapes];
-  [v8 sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
+  _buttonViewForShapes = [(AKToolsListViewController *)self _buttonViewForShapes];
+  [_buttonViewForShapes sizeThatFits:{*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)}];
   [(AKToolsListViewController *)self setPreferredContentSize:v9 + 32.0, v7];
 }
 
@@ -171,68 +171,68 @@
   self->_isDeviceLocked = v3(0) - 1 < 2;
 }
 
-- (void)_shapeButtonPressed:(id)a3
+- (void)_shapeButtonPressed:(id)pressed
 {
-  v4 = [a3 currentTag];
-  v5 = [(AKToolsListViewController *)self delegate];
-  if (v4 != 763000)
+  currentTag = [pressed currentTag];
+  delegate = [(AKToolsListViewController *)self delegate];
+  if (currentTag != 763000)
   {
-    v6 = v5;
+    v6 = delegate;
     if (objc_opt_respondsToSelector())
     {
-      [v6 toolsList:self didSelectToolWithTag:v4];
+      [v6 toolsList:self didSelectToolWithTag:currentTag];
     }
   }
 
   MEMORY[0x2821F9730]();
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  [a3 deselectRowAtIndexPath:v6 animated:1];
-  v15 = [(AKToolsListViewController *)self delegate];
-  v7 = [(AKToolsListViewController *)self cellItemTypes];
-  v8 = [v6 row];
+  pathCopy = path;
+  [view deselectRowAtIndexPath:pathCopy animated:1];
+  delegate = [(AKToolsListViewController *)self delegate];
+  cellItemTypes = [(AKToolsListViewController *)self cellItemTypes];
+  v8 = [pathCopy row];
 
-  v9 = [v7 objectAtIndex:v8];
-  v10 = [v9 integerValue];
+  v9 = [cellItemTypes objectAtIndex:v8];
+  integerValue = [v9 integerValue];
 
-  if (v10 <= 1)
+  if (integerValue <= 1)
   {
-    if (!v10)
+    if (!integerValue)
     {
-      v13 = v15;
-      v14 = self;
+      v13 = delegate;
+      selfCopy2 = self;
       v12 = 764014;
       goto LABEL_13;
     }
 
-    v11 = v15;
-    if (v10 != 1)
+    v11 = delegate;
+    if (integerValue != 1)
     {
       goto LABEL_15;
     }
 
     v12 = 764019;
 LABEL_10:
-    v13 = v15;
-    v14 = self;
+    v13 = delegate;
+    selfCopy2 = self;
 LABEL_13:
-    [v13 toolsList:v14 didSelectToolWithTag:v12];
+    [v13 toolsList:selfCopy2 didSelectToolWithTag:v12];
     goto LABEL_14;
   }
 
-  if (v10 == 2)
+  if (integerValue == 2)
   {
     v12 = 764020;
     goto LABEL_10;
   }
 
-  v11 = v15;
-  if (v10 != 4)
+  v11 = delegate;
+  if (integerValue != 4)
   {
-    if (v10 != 5)
+    if (integerValue != 5)
     {
       goto LABEL_15;
     }
@@ -241,66 +241,66 @@ LABEL_13:
     goto LABEL_10;
   }
 
-  [v15 toolsListDidSelectOpacityItem:self];
+  [delegate toolsListDidSelectOpacityItem:self];
 LABEL_14:
-  v11 = v15;
+  v11 = delegate;
 LABEL_15:
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(AKToolsListViewController *)self cellItemTypes:a3];
+  v4 = [(AKToolsListViewController *)self cellItemTypes:view];
   v5 = [v4 count];
 
   return v5;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AKToolsListViewController *)self cellItemTypes];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v7, "row")}];
-  v10 = [v9 integerValue];
+  viewCopy = view;
+  pathCopy = path;
+  cellItemTypes = [(AKToolsListViewController *)self cellItemTypes];
+  v9 = [cellItemTypes objectAtIndex:{objc_msgSend(pathCopy, "row")}];
+  integerValue = [v9 integerValue];
 
   v11 = 0;
-  if (v10 > 3)
+  if (integerValue > 3)
   {
-    if ((v10 - 6) < 2)
+    if ((integerValue - 6) < 2)
     {
-      v11 = [v6 dequeueReusableCellWithIdentifier:@"AKPaddingRowIdentifier"];
+      v11 = [viewCopy dequeueReusableCellWithIdentifier:@"AKPaddingRowIdentifier"];
       goto LABEL_23;
     }
 
-    if (v10 == 4)
+    if (integerValue == 4)
     {
-      v11 = [v6 dequeueReusableCellWithIdentifier:@"AKOpacityRowIdentifier"];
+      v11 = [viewCopy dequeueReusableCellWithIdentifier:@"AKOpacityRowIdentifier"];
       [v11 setAccessibilityIdentifier:@"opacity-cell"];
-      v23 = [MEMORY[0x277D75348] _labelColor];
-      [v11 setTintColor:v23];
+      _labelColor = [MEMORY[0x277D75348] _labelColor];
+      [v11 setTintColor:_labelColor];
 
-      v24 = [v11 contentView];
-      v25 = [v24 viewWithTag:1000];
+      contentView = [v11 contentView];
+      v25 = [contentView viewWithTag:1000];
 
       if (v25)
       {
         goto LABEL_23;
       }
 
-      v14 = [(AKToolsListViewController *)self _buttonViewForOpacity];
+      _buttonViewForOpacity = [(AKToolsListViewController *)self _buttonViewForOpacity];
       goto LABEL_22;
     }
 
-    if (v10 == 5)
+    if (integerValue == 5)
     {
-      v11 = [v6 dequeueReusableCellWithIdentifier:@"AKImageDescriptionRowIdentifier" forIndexPath:v7];
+      v11 = [viewCopy dequeueReusableCellWithIdentifier:@"AKImageDescriptionRowIdentifier" forIndexPath:pathCopy];
       [v11 setAccessibilityIdentifier:@"image-description-cell"];
-      v15 = [v11 contentView];
-      v16 = [v15 viewWithTag:1000];
+      contentView2 = [v11 contentView];
+      v16 = [contentView2 viewWithTag:1000];
 
       if (!v16)
       {
-        v14 = [(AKToolsListViewController *)self _buttonViewForImageDescription];
+        _buttonViewForOpacity = [(AKToolsListViewController *)self _buttonViewForImageDescription];
         goto LABEL_22;
       }
     }
@@ -308,86 +308,86 @@ LABEL_15:
 
   else
   {
-    if (v10 > 1)
+    if (integerValue > 1)
     {
-      if (v10 == 2)
+      if (integerValue == 2)
       {
-        v11 = [v6 dequeueReusableCellWithIdentifier:@"AKLoupeRowIdentifier"];
+        v11 = [viewCopy dequeueReusableCellWithIdentifier:@"AKLoupeRowIdentifier"];
         [v11 setAccessibilityIdentifier:@"magnifier-cell"];
-        v21 = [v11 contentView];
-        v22 = [v21 viewWithTag:1000];
+        contentView3 = [v11 contentView];
+        v22 = [contentView3 viewWithTag:1000];
 
         if (v22)
         {
           goto LABEL_23;
         }
 
-        v14 = [(AKToolsListViewController *)self _buttonViewForLoupe];
+        _buttonViewForOpacity = [(AKToolsListViewController *)self _buttonViewForLoupe];
       }
 
       else
       {
-        v11 = [v6 dequeueReusableCellWithIdentifier:@"AKShapesRowIdentifier"];
+        v11 = [viewCopy dequeueReusableCellWithIdentifier:@"AKShapesRowIdentifier"];
         [v11 setAccessibilityIdentifier:@"shapes-cell"];
-        v17 = [v11 contentView];
-        v18 = [v17 viewWithTag:1000];
+        contentView4 = [v11 contentView];
+        v18 = [contentView4 viewWithTag:1000];
 
         if (v18)
         {
           goto LABEL_23;
         }
 
-        v14 = [(AKToolsListViewController *)self _buttonViewForShapes];
+        _buttonViewForOpacity = [(AKToolsListViewController *)self _buttonViewForShapes];
       }
 
       goto LABEL_22;
     }
 
-    if (!v10)
+    if (!integerValue)
     {
-      v11 = [v6 dequeueReusableCellWithIdentifier:@"AKTextRowIdentifier" forIndexPath:v7];
+      v11 = [viewCopy dequeueReusableCellWithIdentifier:@"AKTextRowIdentifier" forIndexPath:pathCopy];
       [v11 setAccessibilityIdentifier:@"text-cell"];
-      v19 = [v11 contentView];
-      v20 = [v19 viewWithTag:1000];
+      contentView5 = [v11 contentView];
+      v20 = [contentView5 viewWithTag:1000];
 
       if (v20)
       {
         goto LABEL_23;
       }
 
-      v14 = [(AKToolsListViewController *)self _buttonViewForText];
+      _buttonViewForOpacity = [(AKToolsListViewController *)self _buttonViewForText];
       goto LABEL_22;
     }
 
-    if (v10 == 1)
+    if (integerValue == 1)
     {
-      v11 = [v6 dequeueReusableCellWithIdentifier:@"AKSignatureRowIdentifier"];
+      v11 = [viewCopy dequeueReusableCellWithIdentifier:@"AKSignatureRowIdentifier"];
       [v11 setAccessibilityIdentifier:@"signature-cell"];
-      v12 = [v11 contentView];
-      v13 = [v12 viewWithTag:1000];
+      contentView6 = [v11 contentView];
+      v13 = [contentView6 viewWithTag:1000];
 
       if (!v13)
       {
-        v14 = [(AKToolsListViewController *)self _buttonViewForSignature];
+        _buttonViewForOpacity = [(AKToolsListViewController *)self _buttonViewForSignature];
 LABEL_22:
-        v26 = v14;
-        v27 = [v11 contentView];
-        [(AKToolsListViewController *)self addRowView:v26 toCellView:v27];
+        v26 = _buttonViewForOpacity;
+        contentView7 = [v11 contentView];
+        [(AKToolsListViewController *)self addRowView:v26 toCellView:contentView7];
       }
     }
   }
 
 LABEL_23:
-  v28 = [MEMORY[0x277D75348] clearColor];
-  [v11 setBackgroundColor:v28];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [v11 setBackgroundColor:clearColor];
 
   return v11;
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 row];
+  pathCopy = path;
+  v6 = [pathCopy row];
   if (v6 == [(AKToolsListViewController *)self _shapesCellIndexRow])
   {
     v7 = 52.0;
@@ -395,11 +395,11 @@ LABEL_23:
 
   else
   {
-    v8 = [v5 row];
+    v8 = [pathCopy row];
     v7 = 12.0;
     if (v8 != [(AKToolsListViewController *)self _topPaddingCellIndexRow])
     {
-      v9 = [v5 row];
+      v9 = [pathCopy row];
       if (v9 == [(AKToolsListViewController *)self _bottomPaddingCellIndexRow])
       {
         v7 = 12.0;
@@ -415,18 +415,18 @@ LABEL_23:
   return v7;
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [v5 row];
-  if (v6 == -[AKToolsListViewController _shapesCellIndexRow](self, "_shapesCellIndexRow") || (v7 = [v5 row], v7 == -[AKToolsListViewController _topPaddingCellIndexRow](self, "_topPaddingCellIndexRow")))
+  pathCopy = path;
+  v6 = [pathCopy row];
+  if (v6 == -[AKToolsListViewController _shapesCellIndexRow](self, "_shapesCellIndexRow") || (v7 = [pathCopy row], v7 == -[AKToolsListViewController _topPaddingCellIndexRow](self, "_topPaddingCellIndexRow")))
   {
     v8 = 0;
   }
 
   else
   {
-    v9 = [v5 row];
+    v9 = [pathCopy row];
     v8 = v9 != [(AKToolsListViewController *)self _bottomPaddingCellIndexRow];
   }
 
@@ -439,8 +439,8 @@ LABEL_23:
   v4 = +[AKController akBundle];
   v5 = [v4 localizedStringForKey:@"Description" value:&stru_28519E870 table:@"AKToolbarViewController_iOS"];
 
-  v6 = [MEMORY[0x277D75348] labelColor];
-  v7 = [(AKToolsListViewController *)self _buttonViewWithImage:v3 title:v5 tintColor:v6];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v7 = [(AKToolsListViewController *)self _buttonViewWithImage:v3 title:v5 tintColor:labelColor];
 
   return v7;
 }
@@ -451,8 +451,8 @@ LABEL_23:
   v4 = +[AKController akBundle];
   v5 = [v4 localizedStringForKey:@"Text" value:&stru_28519E870 table:@"AKToolbarViewController_iOS"];
 
-  v6 = [MEMORY[0x277D75348] labelColor];
-  v7 = [(AKToolsListViewController *)self _buttonViewWithImage:v3 title:v5 tintColor:v6];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v7 = [(AKToolsListViewController *)self _buttonViewWithImage:v3 title:v5 tintColor:labelColor];
 
   return v7;
 }
@@ -463,8 +463,8 @@ LABEL_23:
   v4 = +[AKController akBundle];
   v5 = [v4 localizedStringForKey:@"Signature" value:&stru_28519E870 table:@"AKToolbarViewController_iOS"];
 
-  v6 = [MEMORY[0x277D75348] labelColor];
-  v7 = [(AKToolsListViewController *)self _buttonViewWithImage:v3 title:v5 tintColor:v6];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v7 = [(AKToolsListViewController *)self _buttonViewWithImage:v3 title:v5 tintColor:labelColor];
 
   return v7;
 }
@@ -475,8 +475,8 @@ LABEL_23:
   v4 = +[AKController akBundle];
   v5 = [v4 localizedStringForKey:@"Magnifier" value:&stru_28519E870 table:@"AKToolbarViewController_iOS"];
 
-  v6 = [MEMORY[0x277D75348] labelColor];
-  v7 = [(AKToolsListViewController *)self _buttonViewWithImage:v3 title:v5 tintColor:v6];
+  labelColor = [MEMORY[0x277D75348] labelColor];
+  v7 = [(AKToolsListViewController *)self _buttonViewWithImage:v3 title:v5 tintColor:labelColor];
 
   return v7;
 }
@@ -503,33 +503,33 @@ LABEL_23:
   return v7;
 }
 
-- (void)addRowView:(id)a3 toCellView:(id)a4
+- (void)addRowView:(id)view toCellView:(id)cellView
 {
-  v5 = a4;
-  v6 = a3;
-  [v6 setTranslatesAutoresizingMaskIntoConstraints:0];
-  [v6 setTag:1000];
-  [v5 ak_addSubview:v6 withEdgeInsets:{0.0, 16.0, 0.0, -16.0}];
+  cellViewCopy = cellView;
+  viewCopy = view;
+  [viewCopy setTranslatesAutoresizingMaskIntoConstraints:0];
+  [viewCopy setTag:1000];
+  [cellViewCopy ak_addSubview:viewCopy withEdgeInsets:{0.0, 16.0, 0.0, -16.0}];
 }
 
-- (id)_buttonViewWithImage:(id)a3 title:(id)a4 tintColor:(id)a5
+- (id)_buttonViewWithImage:(id)image title:(id)title tintColor:(id)color
 {
   v22[2] = *MEMORY[0x277D85DE8];
   v7 = MEMORY[0x277D755E8];
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [[v7 alloc] initWithImage:v10];
+  colorCopy = color;
+  titleCopy = title;
+  imageCopy = image;
+  v11 = [[v7 alloc] initWithImage:imageCopy];
 
   [v11 setTranslatesAutoresizingMaskIntoConstraints:0];
   [v11 setContentMode:4];
-  [v11 setTintColor:v8];
+  [v11 setTintColor:colorCopy];
 
   LODWORD(v12) = 1144750080;
   [v11 setContentHuggingPriority:0 forAxis:v12];
   v13 = objc_alloc(MEMORY[0x277D756B8]);
   v14 = [v13 initWithFrame:{*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)}];
-  [v14 setText:v9];
+  [v14 setText:titleCopy];
 
   LODWORD(v15) = 1132068864;
   [v14 setContentHuggingPriority:0 forAxis:v15];
@@ -541,8 +541,8 @@ LABEL_23:
 
   [v18 setDistribution:0];
   [v18 setSpacing:11.0];
-  v19 = [v11 widthAnchor];
-  v20 = [v19 constraintEqualToConstant:36.0];
+  widthAnchor = [v11 widthAnchor];
+  v20 = [widthAnchor constraintEqualToConstant:36.0];
   [v20 setActive:1];
 
   return v18;
@@ -550,28 +550,28 @@ LABEL_23:
 
 - (void)_reloadCellItemTypes
 {
-  v12 = [objc_opt_class() defaultCellItemTypes];
-  v3 = [(AKToolsListViewController *)self supportsImageDescriptionEditing];
-  v4 = [(AKToolsListViewController *)self supportsOpacityEditing];
-  v5 = [(AKToolsListViewController *)self isDeviceLocked];
-  v6 = v5;
-  if (!v3 && !v4 && !v5)
+  defaultCellItemTypes = [objc_opt_class() defaultCellItemTypes];
+  supportsImageDescriptionEditing = [(AKToolsListViewController *)self supportsImageDescriptionEditing];
+  supportsOpacityEditing = [(AKToolsListViewController *)self supportsOpacityEditing];
+  isDeviceLocked = [(AKToolsListViewController *)self isDeviceLocked];
+  v6 = isDeviceLocked;
+  if (!supportsImageDescriptionEditing && !supportsOpacityEditing && !isDeviceLocked)
   {
-    v7 = v12;
+    v7 = defaultCellItemTypes;
     goto LABEL_10;
   }
 
-  v8 = [v12 mutableCopy];
+  v8 = [defaultCellItemTypes mutableCopy];
   v9 = v8;
-  if (!v3)
+  if (!supportsImageDescriptionEditing)
   {
-    if (!v4)
+    if (!supportsOpacityEditing)
     {
       goto LABEL_7;
     }
 
 LABEL_14:
-    [v9 insertObject:&unk_2851BB400 atIndex:{objc_msgSend(v12, "count") - 2}];
+    [v9 insertObject:&unk_2851BB400 atIndex:{objc_msgSend(defaultCellItemTypes, "count") - 2}];
     if (!v6)
     {
       goto LABEL_9;
@@ -581,7 +581,7 @@ LABEL_14:
   }
 
   [v8 insertObject:&unk_2851BB3E8 atIndex:1];
-  if (v4)
+  if (supportsOpacityEditing)
   {
     goto LABEL_14;
   }
@@ -600,48 +600,48 @@ LABEL_9:
 LABEL_10:
   v13 = v7;
   [(AKToolsListViewController *)self setCellItemTypes:v7];
-  v11 = [(AKToolsListViewController *)self tableView];
-  [v11 reloadData];
+  tableView = [(AKToolsListViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (int64_t)_shapesCellIndexRow
 {
-  v2 = [(AKToolsListViewController *)self cellItemTypes];
-  v3 = [v2 indexOfObject:&unk_2851BB3B8];
+  cellItemTypes = [(AKToolsListViewController *)self cellItemTypes];
+  v3 = [cellItemTypes indexOfObject:&unk_2851BB3B8];
 
   return v3;
 }
 
 - (int64_t)_topPaddingCellIndexRow
 {
-  v2 = [(AKToolsListViewController *)self cellItemTypes];
-  v3 = [v2 indexOfObject:&unk_2851BB358];
+  cellItemTypes = [(AKToolsListViewController *)self cellItemTypes];
+  v3 = [cellItemTypes indexOfObject:&unk_2851BB358];
 
   return v3;
 }
 
 - (int64_t)_bottomPaddingCellIndexRow
 {
-  v2 = [(AKToolsListViewController *)self cellItemTypes];
-  v3 = [v2 indexOfObject:&unk_2851BB3D0];
+  cellItemTypes = [(AKToolsListViewController *)self cellItemTypes];
+  v3 = [cellItemTypes indexOfObject:&unk_2851BB3D0];
 
   return v3;
 }
 
-- (void)setSupportsOpacityEditing:(BOOL)a3
+- (void)setSupportsOpacityEditing:(BOOL)editing
 {
-  if (self->_supportsOpacityEditing != a3)
+  if (self->_supportsOpacityEditing != editing)
   {
-    self->_supportsOpacityEditing = a3;
+    self->_supportsOpacityEditing = editing;
     [(AKToolsListViewController *)self _reloadCellItemTypes];
   }
 }
 
-- (void)setSupportsImageDescriptionEditing:(BOOL)a3
+- (void)setSupportsImageDescriptionEditing:(BOOL)editing
 {
-  if (self->_supportsImageDescriptionEditing != a3)
+  if (self->_supportsImageDescriptionEditing != editing)
   {
-    self->_supportsImageDescriptionEditing = a3;
+    self->_supportsImageDescriptionEditing = editing;
     [(AKToolsListViewController *)self _reloadCellItemTypes];
   }
 }

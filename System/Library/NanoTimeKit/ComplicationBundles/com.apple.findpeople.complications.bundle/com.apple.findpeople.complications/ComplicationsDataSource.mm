@@ -3,23 +3,23 @@
 + (NSString)bundleIdentifier;
 + (NSString)localizedAppName;
 - (_TtC34com_apple_findpeople_complications23ComplicationsDataSource)init;
-- (_TtC34com_apple_findpeople_complications23ComplicationsDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5;
+- (_TtC34com_apple_findpeople_complications23ComplicationsDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device;
 - (id)currentSwitcherTemplate;
-- (void)fetchWidgetMigrationForDescriptor:(CLKComplicationDescriptor *)a3 family:(int64_t)a4 completion:(id)a5;
-- (void)getCurrentTimelineEntryWithHandler:(id)a3;
+- (void)fetchWidgetMigrationForDescriptor:(CLKComplicationDescriptor *)descriptor family:(int64_t)family completion:(id)completion;
+- (void)getCurrentTimelineEntryWithHandler:(id)handler;
 @end
 
 @implementation ComplicationsDataSource
 
-- (void)fetchWidgetMigrationForDescriptor:(CLKComplicationDescriptor *)a3 family:(int64_t)a4 completion:(id)a5
+- (void)fetchWidgetMigrationForDescriptor:(CLKComplicationDescriptor *)descriptor family:(int64_t)family completion:(id)completion
 {
   v9 = (*(*(sub_3260(&qword_C378, &qword_4320) - 8) + 64) + 15) & 0xFFFFFFFFFFFFFFF0;
   __chkstk_darwin();
   v11 = &v19 - v10;
-  v12 = _Block_copy(a5);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
-  v13[2] = a3;
-  v13[3] = a4;
+  v13[2] = descriptor;
+  v13[3] = family;
   v13[4] = v12;
   v13[5] = self;
   v14 = sub_3960();
@@ -34,8 +34,8 @@
   v16[3] = 0;
   v16[4] = &unk_4340;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  descriptorCopy = descriptor;
+  selfCopy = self;
   sub_1F84(0, 0, v11, &unk_4350, v16);
 }
 
@@ -75,22 +75,22 @@
 
 - (id)currentSwitcherTemplate
 {
-  v2 = self;
-  v3 = sub_2F0C([(ComplicationsDataSource *)v2 family]);
+  selfCopy = self;
+  v3 = sub_2F0C([(ComplicationsDataSource *)selfCopy family]);
 
   return v3;
 }
 
-- (void)getCurrentTimelineEntryWithHandler:(id)a3
+- (void)getCurrentTimelineEntryWithHandler:(id)handler
 {
   v5 = sub_38C0();
   v6 = *(v5 - 8);
   v7 = *(v6 + 64);
   __chkstk_darwin();
   v9 = &v16 - ((v8 + 15) & 0xFFFFFFFFFFFFFFF0);
-  v10 = _Block_copy(a3);
-  v11 = self;
-  v12 = sub_2F0C([(ComplicationsDataSource *)v11 family]);
+  v10 = _Block_copy(handler);
+  selfCopy = self;
+  v12 = sub_2F0C([(ComplicationsDataSource *)selfCopy family]);
   sub_38B0();
   v13 = v12;
   isa = sub_38A0().super.isa;
@@ -102,11 +102,11 @@
   _Block_release(v10);
 }
 
-- (_TtC34com_apple_findpeople_complications23ComplicationsDataSource)initWithComplication:(id)a3 family:(int64_t)a4 forDevice:(id)a5
+- (_TtC34com_apple_findpeople_complications23ComplicationsDataSource)initWithComplication:(id)complication family:(int64_t)family forDevice:(id)device
 {
   v9.receiver = self;
   v9.super_class = type metadata accessor for ComplicationsDataSource();
-  return [(ComplicationsDataSource *)&v9 initWithComplication:a3 family:a4 forDevice:a5];
+  return [(ComplicationsDataSource *)&v9 initWithComplication:complication family:family forDevice:device];
 }
 
 - (_TtC34com_apple_findpeople_complications23ComplicationsDataSource)init

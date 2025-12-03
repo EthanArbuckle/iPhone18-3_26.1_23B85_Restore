@@ -17,8 +17,8 @@
 
 - (id)interactiveViews
 {
-  v4 = self;
-  v2 = [NSArray arrayWithObjects:&v4 count:1];
+  selfCopy = self;
+  v2 = [NSArray arrayWithObjects:&selfCopy count:1];
 
   return v2;
 }

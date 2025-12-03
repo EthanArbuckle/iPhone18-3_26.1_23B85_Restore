@@ -1,8 +1,8 @@
 @interface TROperationQueue
 - (TROperationQueue)init;
-- (void)addOperation:(id)a3;
-- (void)addOperationWithBlock:(id)a3;
-- (void)addOperations:(id)a3 waitUntilFinished:(BOOL)a4;
+- (void)addOperation:(id)operation;
+- (void)addOperationWithBlock:(id)block;
+- (void)addOperations:(id)operations waitUntilFinished:(BOOL)finished;
 - (void)invalidate;
 @end
 
@@ -43,17 +43,17 @@ uint64_t __30__TROperationQueue_invalidate__block_invoke(uint64_t a1)
   return [v2 cancelAllOperations];
 }
 
-- (void)addOperation:(id)a3
+- (void)addOperation:(id)operation
 {
-  v4 = a3;
+  operationCopy = operation;
   cancellationQ = self->_cancellationQ;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__TROperationQueue_addOperation___block_invoke;
   v7[3] = &unk_279DCEC20;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = operationCopy;
+  v6 = operationCopy;
   dispatch_sync(cancellationQ, v7);
 }
 
@@ -70,17 +70,17 @@ id __33__TROperationQueue_addOperation___block_invoke(uint64_t a1)
   return objc_msgSendSuper2(&v4, sel_addOperation_, v2);
 }
 
-- (void)addOperationWithBlock:(id)a3
+- (void)addOperationWithBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   cancellationQ = self->_cancellationQ;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __42__TROperationQueue_addOperationWithBlock___block_invoke;
   v7[3] = &unk_279DCEC48;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = blockCopy;
+  v6 = blockCopy;
   dispatch_sync(cancellationQ, v7);
 }
 
@@ -99,18 +99,18 @@ uint64_t __42__TROperationQueue_addOperationWithBlock___block_invoke(uint64_t a1
   return result;
 }
 
-- (void)addOperations:(id)a3 waitUntilFinished:(BOOL)a4
+- (void)addOperations:(id)operations waitUntilFinished:(BOOL)finished
 {
-  v6 = a3;
+  operationsCopy = operations;
   cancellationQ = self->_cancellationQ;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__TROperationQueue_addOperations_waitUntilFinished___block_invoke;
   block[3] = &unk_279DCEC70;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = operationsCopy;
+  finishedCopy = finished;
+  v8 = operationsCopy;
   dispatch_sync(cancellationQ, block);
 }
 

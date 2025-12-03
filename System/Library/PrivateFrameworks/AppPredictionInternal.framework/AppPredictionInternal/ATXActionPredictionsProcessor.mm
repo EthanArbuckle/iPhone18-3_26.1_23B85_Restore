@@ -1,28 +1,28 @@
 @interface ATXActionPredictionsProcessor
-+ (BOOL)actionPredictionsContainsAlarmAction:(id)a3;
-+ (BOOL)isBlockedEmailAddressContainedInAddresses:(id)a3;
-+ (BOOL)isBlockedPhoneNumberContainedInNumbers:(id)a3;
-+ (BOOL)scoredActionsAreDuplicatesWithScoredAction1:(id)a3 scoredAction2:(id)a4;
-+ (BOOL)validTimeToSuggestAlarmForAlarmComponents:(id)a3 currentDate:(id)a4;
-+ (id)_contactIdentifiersReferencedByAction:(id)a3;
-+ (id)hourAndMinuteComponentsFromDateComponents:(id)a3;
-+ (id)indicesOfNonDuplicateScoredActions:(id)a3;
-+ (id)removeAlarmActionsInconsistentWithAlarmAppState:(id)a3;
-+ (id)removeAlarmActionsInconsistentWithAlarmAppState:(id)a3 enabledAlarms:(id)a4 disabledAlarms:(id)a5 currentDate:(id)a6;
-+ (id)removeDuplicateActionPredictions:(id)a3;
-+ (id)removeDuplicateTVActionPredictions:(id)a3;
-+ (id)removeMissingOrBlockedRecipientPredictions:(id)a3;
++ (BOOL)actionPredictionsContainsAlarmAction:(id)action;
++ (BOOL)isBlockedEmailAddressContainedInAddresses:(id)addresses;
++ (BOOL)isBlockedPhoneNumberContainedInNumbers:(id)numbers;
++ (BOOL)scoredActionsAreDuplicatesWithScoredAction1:(id)action1 scoredAction2:(id)action2;
++ (BOOL)validTimeToSuggestAlarmForAlarmComponents:(id)components currentDate:(id)date;
++ (id)_contactIdentifiersReferencedByAction:(id)action;
++ (id)hourAndMinuteComponentsFromDateComponents:(id)components;
++ (id)indicesOfNonDuplicateScoredActions:(id)actions;
++ (id)removeAlarmActionsInconsistentWithAlarmAppState:(id)state;
++ (id)removeAlarmActionsInconsistentWithAlarmAppState:(id)state enabledAlarms:(id)alarms disabledAlarms:(id)disabledAlarms currentDate:(id)date;
++ (id)removeDuplicateActionPredictions:(id)predictions;
++ (id)removeDuplicateTVActionPredictions:(id)predictions;
++ (id)removeMissingOrBlockedRecipientPredictions:(id)predictions;
 + (id)userAlarms;
-+ (void)addEligibleCreateAlarmIndexesToAcceptedIndexes:(id)a3 currentDate:(id)a4 enabledAlarms:(id)a5 idx:(unint64_t)a6 params:(id)a7 parameterCombinations:(id)a8;
-+ (void)addEligibleToggleAlarmIndexesToAcceptedIndexes:(id)a3 currentDate:(id)a4 disabledAlarms:(id)a5 enabledAlarms:(id)a6 idx:(unint64_t)a7 params:(id)a8 parameterCombinations:(id)a9;
++ (void)addEligibleCreateAlarmIndexesToAcceptedIndexes:(id)indexes currentDate:(id)date enabledAlarms:(id)alarms idx:(unint64_t)idx params:(id)params parameterCombinations:(id)combinations;
++ (void)addEligibleToggleAlarmIndexesToAcceptedIndexes:(id)indexes currentDate:(id)date disabledAlarms:(id)alarms enabledAlarms:(id)enabledAlarms idx:(unint64_t)idx params:(id)params parameterCombinations:(id)combinations;
 + (void)userAlarms;
 @end
 
 @implementation ATXActionPredictionsProcessor
 
-+ (id)removeMissingOrBlockedRecipientPredictions:(id)a3
++ (id)removeMissingOrBlockedRecipientPredictions:(id)predictions
 {
-  v4 = a3;
+  predictionsCopy = predictions;
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
@@ -34,20 +34,20 @@
   v11[1] = 3221225472;
   v11[2] = __76__ATXActionPredictionsProcessor_removeMissingOrBlockedRecipientPredictions___block_invoke;
   v11[3] = &unk_27859F818;
-  v14 = a1;
+  selfCopy = self;
   v6 = v5;
   v12 = v6;
   v13 = v15;
-  [v4 enumerateObjectsUsingBlock:v11];
+  [predictionsCopy enumerateObjectsUsingBlock:v11];
   v7 = [v6 count];
-  if (v7 == [v4 count])
+  if (v7 == [predictionsCopy count])
   {
-    v8 = v4;
+    v8 = predictionsCopy;
   }
 
   else
   {
-    v8 = [v4 objectsAtIndexes:v6];
+    v8 = [predictionsCopy objectsAtIndexes:v6];
   }
 
   v9 = v8;
@@ -255,33 +255,33 @@ void __76__ATXActionPredictionsProcessor_removeMissingOrBlockedRecipientPredicti
   v46 = *MEMORY[0x277D85DE8];
 }
 
-+ (id)_contactIdentifiersReferencedByAction:(id)a3
++ (id)_contactIdentifiersReferencedByAction:(id)action
 {
   v15[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [v3 intent];
+  actionCopy = action;
+  intent = [actionCopy intent];
 
-  if (!v4)
+  if (!intent)
   {
     v7 = 0;
     goto LABEL_12;
   }
 
-  v5 = [v3 intent];
+  intent2 = [actionCopy intent];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 recipients];
+    recipients = [intent2 recipients];
 LABEL_9:
-    v8 = v6;
-    v7 = contactIdentifiersFromINPersons(v6);
+    v8 = recipients;
+    v7 = contactIdentifiersFromINPersons(recipients);
     goto LABEL_10;
   }
 
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()) || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
-    v6 = [v5 contacts];
+    recipients = [intent2 contacts];
     goto LABEL_9;
   }
 
@@ -292,14 +292,14 @@ LABEL_9:
     goto LABEL_11;
   }
 
-  v8 = v5;
-  v11 = [v8 payee];
-  v12 = [v11 contactIdentifier];
-  if (v12)
+  v8 = intent2;
+  payee = [v8 payee];
+  contactIdentifier = [payee contactIdentifier];
+  if (contactIdentifier)
   {
-    v13 = [v8 payee];
-    v14 = [v13 contactIdentifier];
-    v15[0] = v14;
+    payee2 = [v8 payee];
+    contactIdentifier2 = [payee2 contactIdentifier];
+    v15[0] = contactIdentifier2;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v15 count:1];
   }
 
@@ -317,15 +317,15 @@ LABEL_12:
   return v7;
 }
 
-+ (BOOL)isBlockedEmailAddressContainedInAddresses:(id)a3
++ (BOOL)isBlockedEmailAddressContainedInAddresses:(id)addresses
 {
   v30 = *MEMORY[0x277D85DE8];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v16 objects:v29 count:16];
+  addressesCopy = addresses;
+  v4 = [addressesCopy countByEnumeratingWithState:&v16 objects:v29 count:16];
   if (v4)
   {
     v5 = *v17;
@@ -335,7 +335,7 @@ LABEL_12:
       {
         if (*v17 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(addressesCopy);
         }
 
         v7 = *(*(&v16 + 1) + 8 * i);
@@ -378,7 +378,7 @@ LABEL_12:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v16 objects:v29 count:16];
+      v4 = [addressesCopy countByEnumeratingWithState:&v16 objects:v29 count:16];
       if (v4)
       {
         continue;
@@ -394,15 +394,15 @@ LABEL_15:
   return v4;
 }
 
-+ (BOOL)isBlockedPhoneNumberContainedInNumbers:(id)a3
++ (BOOL)isBlockedPhoneNumberContainedInNumbers:(id)numbers
 {
   v35 = *MEMORY[0x277D85DE8];
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v3 = a3;
-  v4 = [v3 countByEnumeratingWithState:&v21 objects:v34 count:16];
+  numbersCopy = numbers;
+  v4 = [numbersCopy countByEnumeratingWithState:&v21 objects:v34 count:16];
   if (v4)
   {
     v5 = *v22;
@@ -412,15 +412,15 @@ LABEL_15:
       {
         if (*v22 != v5)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(numbersCopy);
         }
 
         v7 = *(*(&v21 + 1) + 8 * i);
         v8 = MEMORY[0x277CFBE78];
-        v9 = [v7 stringValue];
-        v10 = [v8 countryCodeForNumber:v9];
+        stringValue = [v7 stringValue];
+        v10 = [v8 countryCodeForNumber:stringValue];
 
-        v11 = [v7 stringValue];
+        stringValue2 = [v7 stringValue];
         v12 = CFPhoneNumberCreate();
 
         if (!v12)
@@ -474,7 +474,7 @@ LABEL_14:
         }
       }
 
-      v4 = [v3 countByEnumeratingWithState:&v21 objects:v34 count:16];
+      v4 = [numbersCopy countByEnumeratingWithState:&v21 objects:v34 count:16];
     }
 
     while (v4);
@@ -486,10 +486,10 @@ LABEL_17:
   return v4;
 }
 
-+ (id)removeDuplicateTVActionPredictions:(id)a3
++ (id)removeDuplicateTVActionPredictions:(id)predictions
 {
   v33 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  predictionsCopy = predictions;
   context = objc_autoreleasePoolPush();
   v4 = [MEMORY[0x277CEB2C8] getActionKeyForBundleId:@"com.apple.tv" actionType:@"INPlayMediaIntent"];
   v5 = objc_opt_new();
@@ -497,7 +497,7 @@ LABEL_17:
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  v6 = v3;
+  v6 = predictionsCopy;
   v7 = [v6 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v7)
   {
@@ -513,22 +513,22 @@ LABEL_17:
         }
 
         v11 = *(*(&v28 + 1) + 8 * i);
-        v12 = [v11 actionKey];
-        v13 = [v12 isEqualToString:v4];
+        actionKey = [v11 actionKey];
+        v13 = [actionKey isEqualToString:v4];
 
         if (v13)
         {
-          v14 = [v11 scoredAction];
-          v15 = [v14 predictedItem];
-          v16 = [v15 intent];
+          scoredAction = [v11 scoredAction];
+          predictedItem = [scoredAction predictedItem];
+          intent = [predictedItem intent];
 
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v17 = [v16 proxiedBundleIdentifier];
-            if (v17)
+            proxiedBundleIdentifier = [intent proxiedBundleIdentifier];
+            if (proxiedBundleIdentifier)
             {
-              [v5 addObject:v17];
+              [v5 addObject:proxiedBundleIdentifier];
             }
           }
         }
@@ -582,21 +582,21 @@ uint64_t __68__ATXActionPredictionsProcessor_removeDuplicateTVActionPredictions_
   return v9;
 }
 
-+ (id)removeDuplicateActionPredictions:(id)a3
++ (id)removeDuplicateActionPredictions:(id)predictions
 {
-  v4 = a3;
-  v5 = [v4 _pas_mappedArrayWithTransform:&__block_literal_global_181];
-  v6 = [a1 indicesOfNonDuplicateScoredActions:v5];
-  v7 = [v4 objectsAtIndexes:v6];
+  predictionsCopy = predictions;
+  v5 = [predictionsCopy _pas_mappedArrayWithTransform:&__block_literal_global_181];
+  v6 = [self indicesOfNonDuplicateScoredActions:v5];
+  v7 = [predictionsCopy objectsAtIndexes:v6];
 
   return v7;
 }
 
-+ (id)indicesOfNonDuplicateScoredActions:(id)a3
++ (id)indicesOfNonDuplicateScoredActions:(id)actions
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(v4, "count")}];
-  if (![v4 count])
+  actionsCopy = actions;
+  v5 = [MEMORY[0x277CCAB58] indexSetWithIndexesInRange:{0, objc_msgSend(actionsCopy, "count")}];
+  if (![actionsCopy count])
   {
     goto LABEL_18;
   }
@@ -604,7 +604,7 @@ uint64_t __68__ATXActionPredictionsProcessor_removeDuplicateTVActionPredictions_
   v6 = 0;
   do
   {
-    v7 = [v4 objectAtIndexedSubscript:v6];
+    v7 = [actionsCopy objectAtIndexedSubscript:v6];
     if (([v5 containsIndex:v6] & 1) == 0)
     {
       v9 = v6 + 1;
@@ -613,7 +613,7 @@ uint64_t __68__ATXActionPredictionsProcessor_removeDuplicateTVActionPredictions_
 
     v8 = objc_opt_new();
     v9 = v6 + 1;
-    if (v6 + 1 >= [v4 count])
+    if (v6 + 1 >= [actionsCopy count])
     {
       goto LABEL_14;
     }
@@ -622,8 +622,8 @@ uint64_t __68__ATXActionPredictionsProcessor_removeDuplicateTVActionPredictions_
     while (1)
     {
       v11 = objc_autoreleasePoolPush();
-      v12 = [v4 objectAtIndexedSubscript:v10];
-      if (![v5 containsIndex:v10] || !objc_msgSend(a1, "scoredActionsAreDuplicatesWithScoredAction1:scoredAction2:", v7, v12))
+      v12 = [actionsCopy objectAtIndexedSubscript:v10];
+      if (![v5 containsIndex:v10] || !objc_msgSend(self, "scoredActionsAreDuplicatesWithScoredAction1:scoredAction2:", v7, v12))
       {
         goto LABEL_10;
       }
@@ -640,7 +640,7 @@ uint64_t __68__ATXActionPredictionsProcessor_removeDuplicateTVActionPredictions_
 LABEL_10:
 
       objc_autoreleasePoolPop(v11);
-      if (++v10 >= [v4 count])
+      if (++v10 >= [actionsCopy count])
       {
         goto LABEL_14;
       }
@@ -659,54 +659,54 @@ LABEL_17:
     v6 = v9;
   }
 
-  while (v9 < [v4 count]);
+  while (v9 < [actionsCopy count]);
 LABEL_18:
 
   return v5;
 }
 
-+ (BOOL)scoredActionsAreDuplicatesWithScoredAction1:(id)a3 scoredAction2:(id)a4
++ (BOOL)scoredActionsAreDuplicatesWithScoredAction1:(id)action1 scoredAction2:(id)action2
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 predictedItem];
-  v8 = [v6 predictedItem];
-  if ([_ATXActionUtils isTitleEquivalenceBetweenAction:v7 other:v8])
+  action1Copy = action1;
+  action2Copy = action2;
+  predictedItem = [action1Copy predictedItem];
+  predictedItem2 = [action2Copy predictedItem];
+  if ([_ATXActionUtils isTitleEquivalenceBetweenAction:predictedItem other:predictedItem2])
   {
     v9 = 1;
   }
 
   else
   {
-    v10 = [v5 predictedItem];
-    v11 = [v6 predictedItem];
-    if ([_ATXActionUtils isContainmentBetweenAction:v10 other:v11])
+    predictedItem3 = [action1Copy predictedItem];
+    predictedItem4 = [action2Copy predictedItem];
+    if ([_ATXActionUtils isContainmentBetweenAction:predictedItem3 other:predictedItem4])
     {
       v9 = 1;
     }
 
     else
     {
-      v12 = [v5 predictedItem];
-      v13 = [v6 predictedItem];
-      v9 = [_ATXActionUtils isCallIntentEquivalenceBetweenAction:v12 other:v13];
+      predictedItem5 = [action1Copy predictedItem];
+      predictedItem6 = [action2Copy predictedItem];
+      v9 = [_ATXActionUtils isCallIntentEquivalenceBetweenAction:predictedItem5 other:predictedItem6];
     }
   }
 
   return v9;
 }
 
-+ (BOOL)actionPredictionsContainsAlarmAction:(id)a3
++ (BOOL)actionPredictionsContainsAlarmAction:(id)action
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  actionCopy = action;
   v4 = [MEMORY[0x277CEB2C8] getActionKeyForBundleId:@"com.apple.mobiletimer" actionType:@"MTToggleAlarmIntent"];
   v5 = [MEMORY[0x277CEB2C8] getActionKeyForBundleId:@"com.apple.mobiletimer" actionType:@"MTCreateAlarmIntent"];
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v6 = v3;
+  v6 = actionCopy;
   v7 = [v6 countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v7)
   {
@@ -721,11 +721,11 @@ LABEL_18:
           objc_enumerationMutation(v6);
         }
 
-        v11 = [*(*(&v19 + 1) + 8 * i) scoredAction];
-        v12 = [v11 predictedItem];
-        v13 = [v12 actionKey];
+        scoredAction = [*(*(&v19 + 1) + 8 * i) scoredAction];
+        predictedItem = [scoredAction predictedItem];
+        actionKey = [predictedItem actionKey];
 
-        if (([v13 isEqualToString:v4] & 1) != 0 || objc_msgSend(v13, "isEqualToString:", v5))
+        if (([actionKey isEqualToString:v4] & 1) != 0 || objc_msgSend(actionKey, "isEqualToString:", v5))
         {
           v15 = __atxlog_handle_action_prediction();
           if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -761,20 +761,20 @@ LABEL_15:
   return v14;
 }
 
-+ (id)removeAlarmActionsInconsistentWithAlarmAppState:(id)a3
++ (id)removeAlarmActionsInconsistentWithAlarmAppState:(id)state
 {
   v33 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if ([ATXActionPredictionsProcessor actionPredictionsContainsAlarmAction:v4])
+  stateCopy = state;
+  if ([ATXActionPredictionsProcessor actionPredictionsContainsAlarmAction:stateCopy])
   {
-    v5 = [a1 userAlarms];
+    userAlarms = [self userAlarms];
     v6 = objc_opt_new();
     v7 = objc_opt_new();
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v8 = v5;
+    v8 = userAlarms;
     v9 = [v8 countByEnumeratingWithState:&v24 objects:v32 count:16];
     if (v9)
     {
@@ -833,12 +833,12 @@ LABEL_15:
     }
 
     v20 = objc_opt_new();
-    v21 = [ATXActionPredictionsProcessor removeAlarmActionsInconsistentWithAlarmAppState:v4 enabledAlarms:v6 disabledAlarms:v7 currentDate:v20];
+    v21 = [ATXActionPredictionsProcessor removeAlarmActionsInconsistentWithAlarmAppState:stateCopy enabledAlarms:v6 disabledAlarms:v7 currentDate:v20];
   }
 
   else
   {
-    v21 = v4;
+    v21 = stateCopy;
   }
 
   v22 = *MEMORY[0x277D85DE8];
@@ -861,8 +861,8 @@ LABEL_15:
   v17[2] = __Block_byref_object_copy__80;
   v17[3] = __Block_byref_object_dispose__80;
   v18 = 0;
-  v3 = [MEMORY[0x277CE89F0] sharedAlarmManager];
-  v4 = [v3 alarmsIncludingSleepAlarm:1];
+  mEMORY[0x277CE89F0] = [MEMORY[0x277CE89F0] sharedAlarmManager];
+  v4 = [mEMORY[0x277CE89F0] alarmsIncludingSleepAlarm:1];
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __43__ATXActionPredictionsProcessor_userAlarms__block_invoke;
@@ -929,12 +929,12 @@ void __43__ATXActionPredictionsProcessor_userAlarms__block_invoke_2()
   }
 }
 
-+ (id)removeAlarmActionsInconsistentWithAlarmAppState:(id)a3 enabledAlarms:(id)a4 disabledAlarms:(id)a5 currentDate:(id)a6
++ (id)removeAlarmActionsInconsistentWithAlarmAppState:(id)state enabledAlarms:(id)alarms disabledAlarms:(id)disabledAlarms currentDate:(id)date
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
+  stateCopy = state;
+  alarmsCopy = alarms;
+  disabledAlarmsCopy = disabledAlarms;
+  dateCopy = date;
   v13 = objc_opt_new();
   v14 = [MEMORY[0x277CEB2C8] getActionKeyForBundleId:@"com.apple.mobiletimer" actionType:@"MTToggleAlarmIntent"];
   v15 = [MEMORY[0x277CEB2C8] getActionKeyForBundleId:@"com.apple.mobiletimer" actionType:@"MTCreateAlarmIntent"];
@@ -945,25 +945,25 @@ void __43__ATXActionPredictionsProcessor_userAlarms__block_invoke_2()
   v30 = v14;
   v16 = v13;
   v31 = v16;
-  v32 = v12;
-  v33 = v11;
-  v34 = v10;
+  v32 = dateCopy;
+  v33 = disabledAlarmsCopy;
+  v34 = alarmsCopy;
   v35 = v15;
   v17 = v15;
-  v18 = v10;
-  v19 = v11;
-  v20 = v12;
+  v18 = alarmsCopy;
+  v19 = disabledAlarmsCopy;
+  v20 = dateCopy;
   v21 = v14;
-  [v9 enumerateObjectsUsingBlock:&v26];
+  [stateCopy enumerateObjectsUsingBlock:&v26];
   v22 = [v16 count];
-  if (v22 == [v9 count])
+  if (v22 == [stateCopy count])
   {
-    v23 = v9;
+    v23 = stateCopy;
   }
 
   else
   {
-    v23 = [v9 objectsAtIndexes:v16];
+    v23 = [stateCopy objectsAtIndexes:v16];
   }
 
   v24 = v23;
@@ -1004,33 +1004,33 @@ void __122__ATXActionPredictionsProcessor_removeAlarmActionsInconsistentWithAlar
   objc_autoreleasePoolPop(v5);
 }
 
-+ (void)addEligibleToggleAlarmIndexesToAcceptedIndexes:(id)a3 currentDate:(id)a4 disabledAlarms:(id)a5 enabledAlarms:(id)a6 idx:(unint64_t)a7 params:(id)a8 parameterCombinations:(id)a9
++ (void)addEligibleToggleAlarmIndexesToAcceptedIndexes:(id)indexes currentDate:(id)date disabledAlarms:(id)alarms enabledAlarms:(id)enabledAlarms idx:(unint64_t)idx params:(id)params parameterCombinations:(id)combinations
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a8;
-  v19 = a9;
-  if ([v18 containsObject:@"state"])
+  indexesCopy = indexes;
+  dateCopy = date;
+  alarmsCopy = alarms;
+  enabledAlarmsCopy = enabledAlarms;
+  paramsCopy = params;
+  combinationsCopy = combinations;
+  if ([paramsCopy containsObject:@"state"])
   {
-    if ([v18 containsObject:@"alarm"])
+    if ([paramsCopy containsObject:@"alarm"])
     {
-      v20 = [v19 objectForKeyedSubscript:@"alarm"];
+      v20 = [combinationsCopy objectForKeyedSubscript:@"alarm"];
       v21 = [v20 valueForKey:@"dateComponents"];
 
       if (v21)
       {
-        v22 = [v19 objectForKeyedSubscript:@"state"];
-        v23 = [v22 intValue];
+        v22 = [combinationsCopy objectForKeyedSubscript:@"state"];
+        intValue = [v22 intValue];
 
-        v24 = [v19 objectForKeyedSubscript:@"alarm"];
+        v24 = [combinationsCopy objectForKeyedSubscript:@"alarm"];
         v25 = [v24 valueForKey:@"dateComponents"];
 
         v26 = [ATXActionPredictionsProcessor hourAndMinuteComponentsFromDateComponents:v25];
-        if (v23 == 1 && ([v17 containsObject:v26] & 1) == 0 && objc_msgSend(v16, "containsObject:", v26) && +[ATXActionPredictionsProcessor validTimeToSuggestAlarmForAlarmComponents:currentDate:](ATXActionPredictionsProcessor, "validTimeToSuggestAlarmForAlarmComponents:currentDate:", v26, v15))
+        if (intValue == 1 && ([enabledAlarmsCopy containsObject:v26] & 1) == 0 && objc_msgSend(alarmsCopy, "containsObject:", v26) && +[ATXActionPredictionsProcessor validTimeToSuggestAlarmForAlarmComponents:currentDate:](ATXActionPredictionsProcessor, "validTimeToSuggestAlarmForAlarmComponents:currentDate:", v26, dateCopy))
         {
-          [v14 addIndex:a7];
+          [indexesCopy addIndex:idx];
         }
 
         else
@@ -1047,17 +1047,17 @@ void __122__ATXActionPredictionsProcessor_removeAlarmActionsInconsistentWithAlar
   }
 }
 
-+ (void)addEligibleCreateAlarmIndexesToAcceptedIndexes:(id)a3 currentDate:(id)a4 enabledAlarms:(id)a5 idx:(unint64_t)a6 params:(id)a7 parameterCombinations:(id)a8
++ (void)addEligibleCreateAlarmIndexesToAcceptedIndexes:(id)indexes currentDate:(id)date enabledAlarms:(id)alarms idx:(unint64_t)idx params:(id)params parameterCombinations:(id)combinations
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a8;
-  if ([a7 containsObject:@"dateComponents"])
+  indexesCopy = indexes;
+  dateCopy = date;
+  alarmsCopy = alarms;
+  combinationsCopy = combinations;
+  if ([params containsObject:@"dateComponents"])
   {
-    v17 = [v16 objectForKeyedSubscript:@"dateComponents"];
+    v17 = [combinationsCopy objectForKeyedSubscript:@"dateComponents"];
     v18 = [ATXActionPredictionsProcessor hourAndMinuteComponentsFromDateComponents:v17];
-    if (([v15 containsObject:v18] & 1) != 0 || !+[ATXActionPredictionsProcessor validTimeToSuggestAlarmForAlarmComponents:currentDate:](ATXActionPredictionsProcessor, "validTimeToSuggestAlarmForAlarmComponents:currentDate:", v18, v14))
+    if (([alarmsCopy containsObject:v18] & 1) != 0 || !+[ATXActionPredictionsProcessor validTimeToSuggestAlarmForAlarmComponents:currentDate:](ATXActionPredictionsProcessor, "validTimeToSuggestAlarmForAlarmComponents:currentDate:", v18, dateCopy))
     {
       v19 = __atxlog_handle_action_prediction();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
@@ -1069,33 +1069,33 @@ void __122__ATXActionPredictionsProcessor_removeAlarmActionsInconsistentWithAlar
 
     else
     {
-      [v13 addIndex:a6];
+      [indexesCopy addIndex:idx];
     }
   }
 }
 
-+ (id)hourAndMinuteComponentsFromDateComponents:(id)a3
++ (id)hourAndMinuteComponentsFromDateComponents:(id)components
 {
-  v3 = a3;
+  componentsCopy = components;
   v4 = objc_opt_new();
-  [v4 setHour:{objc_msgSend(v3, "hour")}];
-  v5 = [v3 minute];
+  [v4 setHour:{objc_msgSend(componentsCopy, "hour")}];
+  minute = [componentsCopy minute];
 
-  [v4 setMinute:v5];
+  [v4 setMinute:minute];
 
   return v4;
 }
 
-+ (BOOL)validTimeToSuggestAlarmForAlarmComponents:(id)a3 currentDate:(id)a4
++ (BOOL)validTimeToSuggestAlarmForAlarmComponents:(id)components currentDate:(id)date
 {
   v5 = MEMORY[0x277CBEA80];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 currentCalendar];
-  v9 = [v8 components:96 fromDate:v6];
+  dateCopy = date;
+  componentsCopy = components;
+  currentCalendar = [v5 currentCalendar];
+  v9 = [currentCalendar components:96 fromDate:dateCopy];
 
-  v10 = [v8 dateFromComponents:v9];
-  v11 = [v8 dateFromComponents:v7];
+  v10 = [currentCalendar dateFromComponents:v9];
+  v11 = [currentCalendar dateFromComponents:componentsCopy];
 
   [v11 timeIntervalSinceDate:v10];
   if (v12 <= 0.0)
@@ -1168,7 +1168,7 @@ void __76__ATXActionPredictionsProcessor_removeMissingOrBlockedRecipientPredicti
 + (void)userAlarms
 {
   v8 = *MEMORY[0x277D85DE8];
-  v7 = *(*a1 + 40);
+  v7 = *(*self + 40);
   OUTLINED_FUNCTION_1_2();
   _os_log_error_impl(v1, v2, v3, v4, v5, 0xCu);
   v6 = *MEMORY[0x277D85DE8];

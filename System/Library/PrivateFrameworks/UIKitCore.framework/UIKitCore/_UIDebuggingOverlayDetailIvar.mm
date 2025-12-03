@@ -1,8 +1,8 @@
 @interface _UIDebuggingOverlayDetailIvar
 - (id)viewController;
 - (void)_createVCIfNecessary;
-- (void)_updateForInspectedView:(id)a3;
-- (void)_updateForInspectedViewController:(id)a3;
+- (void)_updateForInspectedView:(id)view;
+- (void)_updateForInspectedViewController:(id)controller;
 @end
 
 @implementation _UIDebuggingOverlayDetailIvar
@@ -25,18 +25,18 @@
   return vc;
 }
 
-- (void)_updateForInspectedView:(id)a3
+- (void)_updateForInspectedView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   [(_UIDebuggingOverlayDetailIvar *)self _createVCIfNecessary];
-  [(UIDebuggingIvarViewController *)self->_vc setInspectedObject:v4];
+  [(UIDebuggingIvarViewController *)self->_vc setInspectedObject:viewCopy];
 }
 
-- (void)_updateForInspectedViewController:(id)a3
+- (void)_updateForInspectedViewController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   [(_UIDebuggingOverlayDetailIvar *)self _createVCIfNecessary];
-  [(UIDebuggingIvarViewController *)self->_vc setInspectedObject:v4];
+  [(UIDebuggingIvarViewController *)self->_vc setInspectedObject:controllerCopy];
 }
 
 @end

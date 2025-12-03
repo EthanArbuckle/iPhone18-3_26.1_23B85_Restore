@@ -1,18 +1,18 @@
 @interface DEDHealthLogsEncryptor
-- (id)encryptLogsAtPath:(id)a3 toDirectory:(id)a4 withMetadata:(id)a5 anonymousDeviceUUID:(id)a6;
+- (id)encryptLogsAtPath:(id)path toDirectory:(id)directory withMetadata:(id)metadata anonymousDeviceUUID:(id)d;
 @end
 
 @implementation DEDHealthLogsEncryptor
 
-- (id)encryptLogsAtPath:(id)a3 toDirectory:(id)a4 withMetadata:(id)a5 anonymousDeviceUUID:(id)a6
+- (id)encryptLogsAtPath:(id)path toDirectory:(id)directory withMetadata:(id)metadata anonymousDeviceUUID:(id)d
 {
   v79 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v11 objectForKey:@"cloudKitEnv"];
-  v14 = [v11 objectForKey:@"publicKey"];
+  pathCopy = path;
+  directoryCopy = directory;
+  metadataCopy = metadata;
+  dCopy = d;
+  v13 = [metadataCopy objectForKey:@"cloudKitEnv"];
+  v14 = [metadataCopy objectForKey:@"publicKey"];
   if (!v14 && v13)
   {
     [v13 BOOLValue];
@@ -22,23 +22,23 @@
   if (v15)
   {
     v59 = v13;
-    v16 = [MEMORY[0x277CCAA00] defaultManager];
-    v17 = [v9 path];
-    v18 = [v16 fileExistsAtPath:v17];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [pathCopy path];
+    v18 = [defaultManager fileExistsAtPath:path];
 
-    v19 = [v9 path];
+    path2 = [pathCopy path];
     v68 = 0;
-    v58 = v16;
-    v62 = [v16 attributesOfItemAtPath:v19 error:&v68];
+    v58 = defaultManager;
+    v62 = [defaultManager attributesOfItemAtPath:path2 error:&v68];
     v20 = v68;
 
     v21 = LogEncryptor();
     v63 = v20;
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
-      v22 = [v9 path];
+      path3 = [pathCopy path];
       *buf = 138543618;
-      v72 = v22;
+      v72 = path3;
       v73 = 1026;
       LODWORD(v74) = v18;
       _os_log_impl(&dword_248AD7000, v21, OS_LOG_TYPE_DEFAULT, "Does file exist at path: %{public}@ (Y/N): %{public}d", buf, 0x12u);
@@ -51,25 +51,25 @@
       v23 = LogEncryptor();
       if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
       {
-        [DEDHealthLogsEncryptor encryptLogsAtPath:v9 toDirectory:v20 withMetadata:v23 anonymousDeviceUUID:?];
+        [DEDHealthLogsEncryptor encryptLogsAtPath:pathCopy toDirectory:v20 withMetadata:v23 anonymousDeviceUUID:?];
       }
     }
 
     v24 = LogEncryptor();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
     {
-      v25 = [v9 path];
+      path4 = [pathCopy path];
       *buf = 138543618;
-      v72 = v25;
+      v72 = path4;
       v73 = 2114;
       v74 = v62;
       _os_log_impl(&dword_248AD7000, v24, OS_LOG_TYPE_DEFAULT, "File Attributes of file: %{public}@ Attributes Dict: %{public}@", buf, 0x16u);
     }
 
-    v26 = [v11 objectForKeyedSubscript:@"channel"];
-    v27 = [v11 objectForKeyedSubscript:@"payloadType"];
-    v28 = [v11 objectForKeyedSubscript:@"timberLorryUUID"];
-    v64 = [MEMORY[0x277CCAD78] UUID];
+    v26 = [metadataCopy objectForKeyedSubscript:@"channel"];
+    v27 = [metadataCopy objectForKeyedSubscript:@"payloadType"];
+    v28 = [metadataCopy objectForKeyedSubscript:@"timberLorryUUID"];
+    uUID = [MEMORY[0x277CCAD78] UUID];
     v60 = v27;
     v61 = v28;
     if (!v26 || !v27 || !v28)
@@ -78,7 +78,7 @@
       if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
       {
         *buf = 138544130;
-        v72 = v9;
+        v72 = pathCopy;
         v73 = 2112;
         v74 = v26;
         v75 = 2112;
@@ -93,46 +93,46 @@
     }
 
     v56 = v26;
-    v57 = v10;
+    v57 = directoryCopy;
     v29 = v15;
-    v30 = [v11 objectForKey:@"studyID"];
+    v30 = [metadataCopy objectForKey:@"studyID"];
 
     if (v30)
     {
-      v31 = [v11 objectForKey:@"studyID"];
+      v31 = [metadataCopy objectForKey:@"studyID"];
       v32 = [objc_alloc(MEMORY[0x277CCAD78]) initWithUUIDString:v31];
     }
 
     else
     {
-      v32 = v64;
+      v32 = uUID;
     }
 
     v36 = objc_alloc(MEMORY[0x277CCD500]);
-    v37 = [MEMORY[0x277CCAD78] UUID];
-    v64 = v32;
+    uUID2 = [MEMORY[0x277CCAD78] UUID];
+    uUID = v32;
     v38 = v32;
     v15 = v29;
-    v35 = [v36 initWithSubjectUUID:v37 studyUUID:v38 channel:v56 payloadType:v27 certificate:v29];
+    v35 = [v36 initWithSubjectUUID:uUID2 studyUUID:v38 channel:v56 payloadType:v27 certificate:v29];
 
-    v39 = [MEMORY[0x277CBEAA8] date];
-    [v35 setStartDate:v39];
+    date = [MEMORY[0x277CBEAA8] date];
+    [v35 setStartDate:date];
 
-    v40 = [MEMORY[0x277CBEAA8] date];
-    [v35 setEndDate:v40];
+    date2 = [MEMORY[0x277CBEAA8] date];
+    [v35 setEndDate:date2];
 
     v70[0] = v61;
     v69[0] = @"caseID";
     v69[1] = @"deviceUUID";
-    v55 = v12;
-    v41 = [v12 UUIDString];
-    v70[1] = v41;
+    v55 = dCopy;
+    uUIDString = [dCopy UUIDString];
+    v70[1] = uUIDString;
     v69[2] = @"modelID";
     v42 = MGCopyAnswer();
     v70[2] = v42;
     v69[3] = @"originalFilename";
-    v43 = [v9 lastPathComponent];
-    v70[3] = v43;
+    lastPathComponent = [pathCopy lastPathComponent];
+    v70[3] = lastPathComponent;
     v44 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v70 forKeys:v69 count:4];
     [v35 setKeyValuePairs:v44];
 
@@ -145,7 +145,7 @@
     if (v44)
     {
       v66 = v47;
-      v49 = [v45 appendDataFromFileURL:v9 error:&v66];
+      v49 = [v45 appendDataFromFileURL:pathCopy error:&v66];
       v50 = v66;
 
       if (v49 && !v50)
@@ -171,8 +171,8 @@ LABEL_35:
 LABEL_36:
 
         v26 = v56;
-        v10 = v57;
-        v12 = v55;
+        directoryCopy = v57;
+        dCopy = v55;
 LABEL_37:
         v33 = v63;
 

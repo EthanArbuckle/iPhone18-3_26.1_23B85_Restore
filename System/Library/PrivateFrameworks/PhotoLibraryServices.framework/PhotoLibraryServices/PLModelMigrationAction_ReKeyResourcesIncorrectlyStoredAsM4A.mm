@@ -1,13 +1,13 @@
 @interface PLModelMigrationAction_ReKeyResourcesIncorrectlyStoredAsM4A
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4;
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error;
 @end
 
 @implementation PLModelMigrationAction_ReKeyResourcesIncorrectlyStoredAsM4A
 
-- (int64_t)performActionWithManagedObjectContext:(id)a3 error:(id *)a4
+- (int64_t)performActionWithManagedObjectContext:(id)context error:(id *)error
 {
   v99 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  contextCopy = context;
   v60 = 0;
   v61 = &v60;
   v62 = 0x2020000000;
@@ -35,7 +35,7 @@
   v46[1] = 3221225472;
   v46[2] = __107__PLModelMigrationAction_ReKeyResourcesIncorrectlyStoredAsM4A_performActionWithManagedObjectContext_error___block_invoke;
   v46[3] = &unk_1E7575B30;
-  v12 = v6;
+  v12 = contextCopy;
   v47 = v12;
   v45[0] = MEMORY[0x1E69E9820];
   v45[1] = 3221225472;
@@ -67,8 +67,8 @@
       goto LABEL_16;
     }
 
-    v18 = [(PLModelMigrationActionCore *)self logger];
-    v19 = v18 == 0;
+    logger = [(PLModelMigrationActionCore *)self logger];
+    v19 = logger == 0;
 
     if (!v19)
     {
@@ -105,9 +105,9 @@
       memset(buf, 0, sizeof(buf));
       v20 = PLMigrationGetLog();
       os_log_type_enabled(v20, OS_LOG_TYPE_DEFAULT);
-      v21 = [v49[5] totalUnitCount];
+      totalUnitCount = [v49[5] totalUnitCount];
       v64 = 134217984;
-      v65 = v21;
+      v65 = totalUnitCount;
       LODWORD(v42) = 12;
       v22 = _os_log_send_and_compose_impl();
 
@@ -120,9 +120,9 @@
     v33 = PLMigrationGetLog();
     if (os_log_type_enabled(v33, OS_LOG_TYPE_DEFAULT))
     {
-      v34 = [v49[5] totalUnitCount];
+      totalUnitCount2 = [v49[5] totalUnitCount];
       *buf = 134217984;
-      *&buf[4] = v34;
+      *&buf[4] = totalUnitCount2;
       _os_log_impl(&dword_19BF1F000, v33, OS_LOG_TYPE_DEFAULT, "Patched %lld resources with incorrect encoding of video file path in library.", buf, 0xCu);
     }
 
@@ -140,8 +140,8 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  v26 = [(PLModelMigrationActionCore *)self logger];
-  v27 = v26 == 0;
+  logger2 = [(PLModelMigrationActionCore *)self logger];
+  v27 = logger2 == 0;
 
   if (v27)
   {
@@ -216,10 +216,10 @@ LABEL_8:
 LABEL_16:
   v38 = v61[3];
   v39 = v55[5];
-  if (v38 != 1 && a4)
+  if (v38 != 1 && error)
   {
     v39 = v39;
-    *a4 = v39;
+    *error = v39;
   }
 
   [(PLModelMigrationActionCore *)self finalizeProgress];

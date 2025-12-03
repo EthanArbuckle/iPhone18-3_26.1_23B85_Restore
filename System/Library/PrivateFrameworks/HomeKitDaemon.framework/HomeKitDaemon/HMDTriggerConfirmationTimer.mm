@@ -1,5 +1,5 @@
 @interface HMDTriggerConfirmationTimer
-- (HMDTriggerConfirmationTimer)initWithExecutionSessionID:(id)a3 timeoutInterval:(double)a4;
+- (HMDTriggerConfirmationTimer)initWithExecutionSessionID:(id)d timeoutInterval:(double)interval;
 - (id)description;
 @end
 
@@ -16,16 +16,16 @@
   return v5;
 }
 
-- (HMDTriggerConfirmationTimer)initWithExecutionSessionID:(id)a3 timeoutInterval:(double)a4
+- (HMDTriggerConfirmationTimer)initWithExecutionSessionID:(id)d timeoutInterval:(double)interval
 {
-  v7 = a3;
+  dCopy = d;
   v11.receiver = self;
   v11.super_class = HMDTriggerConfirmationTimer;
-  v8 = [(HMFTimer *)&v11 initWithTimeInterval:1 options:a4];
+  v8 = [(HMFTimer *)&v11 initWithTimeInterval:1 options:interval];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_executionSessionID, a3);
+    objc_storeStrong(&v8->_executionSessionID, d);
   }
 
   return v9;

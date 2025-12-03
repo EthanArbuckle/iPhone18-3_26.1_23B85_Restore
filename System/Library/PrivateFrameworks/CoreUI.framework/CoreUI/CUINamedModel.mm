@@ -1,42 +1,42 @@
 @interface CUINamedModel
-- (CUINamedModel)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5;
+- (CUINamedModel)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme;
 - (MDLAsset)asset;
-- (id)_renditionForKey:(id)a3 inThemeRef:(unint64_t)a4;
+- (id)_renditionForKey:(id)key inThemeRef:(unint64_t)ref;
 @end
 
 @implementation CUINamedModel
 
-- (id)_renditionForKey:(id)a3 inThemeRef:(unint64_t)a4
+- (id)_renditionForKey:(id)key inThemeRef:(unint64_t)ref
 {
-  v5 = _LookupStructuredThemeProvider(a4, a2);
-  if (![v5 assetExistsForKey:{objc_msgSend(a3, "keyList")}])
+  v5 = _LookupStructuredThemeProvider(ref, a2);
+  if (![v5 assetExistsForKey:{objc_msgSend(key, "keyList")}])
   {
     return 0;
   }
 
-  v6 = [a3 keyList];
+  keyList = [key keyList];
 
-  return [v5 renditionWithKey:v6];
+  return [v5 renditionWithKey:keyList];
 }
 
-- (CUINamedModel)initWithName:(id)a3 usingRenditionKey:(id)a4 fromTheme:(unint64_t)a5
+- (CUINamedModel)initWithName:(id)name usingRenditionKey:(id)key fromTheme:(unint64_t)theme
 {
   v49.receiver = self;
   v49.super_class = CUINamedModel;
-  v6 = [(CUINamedLookup *)&v49 initWithName:a3 usingRenditionKey:a4 fromTheme:?];
-  v7 = [(CUINamedLookup *)v6 _rendition];
-  if ([(CUIThemeRendition *)v7 type]!= 1011)
+  v6 = [(CUINamedLookup *)&v49 initWithName:name usingRenditionKey:key fromTheme:?];
+  _rendition = [(CUINamedLookup *)v6 _rendition];
+  if ([(CUIThemeRendition *)_rendition type]!= 1011)
   {
 
     v6 = 0;
   }
 
-  v36 = [(CUIThemeRendition *)v7 modelAsset];
+  modelAsset = [(CUIThemeRendition *)_rendition modelAsset];
   v45 = 0u;
   v46 = 0u;
   v47 = 0u;
   v48 = 0u;
-  obj = [(CUIThemeRendition *)v7 meshKeys];
+  obj = [(CUIThemeRendition *)_rendition meshKeys];
   v8 = [obj countByEnumeratingWithState:&v45 objects:v51 count:16];
   if (v8)
   {
@@ -55,19 +55,19 @@
         }
 
         v12 = *(*(&v45 + 1) + 8 * v11);
-        v13 = [(CUINamedModel *)v6 _renditionForKey:v12 inThemeRef:a5];
+        v13 = [(CUINamedModel *)v6 _renditionForKey:v12 inThemeRef:theme];
         if ([v13 type] == 1012)
         {
           v40 = v11;
-          [v36 addObject:{objc_msgSend(v13, "modelMesh")}];
+          [modelAsset addObject:{objc_msgSend(v13, "modelMesh")}];
           v20 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(objc_msgSend(v13, "submeshKeys"), "count")}];
           v41 = 0u;
           v42 = 0u;
           v43 = 0u;
           v44 = 0u;
           v39 = v13;
-          v21 = [v13 submeshKeys];
-          v22 = [v21 countByEnumeratingWithState:&v41 objects:v50 count:16];
+          submeshKeys = [v13 submeshKeys];
+          v22 = [submeshKeys countByEnumeratingWithState:&v41 objects:v50 count:16];
           if (v22)
           {
             v23 = v22;
@@ -78,11 +78,11 @@
               {
                 if (*v42 != v24)
                 {
-                  objc_enumerationMutation(v21);
+                  objc_enumerationMutation(submeshKeys);
                 }
 
                 v26 = *(*(&v41 + 1) + 8 * i);
-                v27 = [(CUINamedModel *)v6 _renditionForKey:v26 inThemeRef:a5];
+                v27 = [(CUINamedModel *)v6 _renditionForKey:v26 inThemeRef:theme];
                 if ([v27 type] == 1016)
                 {
                   [v20 addObject:{objc_msgSend(v27, "modelSubmesh")}];
@@ -94,7 +94,7 @@
                 }
               }
 
-              v23 = [v21 countByEnumeratingWithState:&v41 objects:v50 count:16];
+              v23 = [submeshKeys countByEnumeratingWithState:&v41 objects:v50 count:16];
             }
 
             while (v23);
@@ -127,9 +127,9 @@
 
 - (MDLAsset)asset
 {
-  v2 = [(CUINamedLookup *)self _rendition];
+  _rendition = [(CUINamedLookup *)self _rendition];
 
-  return [(CUIThemeRendition *)v2 modelAsset];
+  return [(CUIThemeRendition *)_rendition modelAsset];
 }
 
 @end

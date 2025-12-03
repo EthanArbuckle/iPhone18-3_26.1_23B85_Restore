@@ -1,16 +1,16 @@
 @interface VIRefinedRegion
 - (CGRect)regionOfInterest;
-- (VIRefinedRegion)initWithRegionOfInterest:(CGRect)a3 confidence:(float)a4;
+- (VIRefinedRegion)initWithRegionOfInterest:(CGRect)interest confidence:(float)confidence;
 @end
 
 @implementation VIRefinedRegion
 
-- (VIRefinedRegion)initWithRegionOfInterest:(CGRect)a3 confidence:(float)a4
+- (VIRefinedRegion)initWithRegionOfInterest:(CGRect)interest confidence:(float)confidence
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = interest.size.height;
+  width = interest.size.width;
+  y = interest.origin.y;
+  x = interest.origin.x;
   v10.receiver = self;
   v10.super_class = VIRefinedRegion;
   result = [(VIRefinedRegion *)&v10 init];
@@ -20,7 +20,7 @@
     result->_regionOfInterest.origin.y = y;
     result->_regionOfInterest.size.width = width;
     result->_regionOfInterest.size.height = height;
-    result->_confidence = a4;
+    result->_confidence = confidence;
   }
 
   return result;

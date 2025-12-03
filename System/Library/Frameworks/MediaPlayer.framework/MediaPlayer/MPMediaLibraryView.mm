@@ -1,17 +1,17 @@
 @interface MPMediaLibraryView
-- (BOOL)hasEntitiesForModelKind:(id)a3;
-- (MPMediaLibraryView)initWithLibrary:(id)a3 filteringOptions:(unint64_t)a4;
+- (BOOL)hasEntitiesForModelKind:(id)kind;
+- (MPMediaLibraryView)initWithLibrary:(id)library filteringOptions:(unint64_t)options;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (shared_ptr<mlcore::DeviceLibraryView>)mlCoreView;
-- (shared_ptr<mlcore::QueryResult>)_performCoreQuery:(shared_ptr<mlcore:(id *)a4 :Query>)a3 error:;
-- (shared_ptr<mlcore::QueryResult>)resultsForCoreQuery:(shared_ptr<mlcore:(id *)a4 :Query>)a3 error:;
+- (shared_ptr<mlcore::QueryResult>)_performCoreQuery:(shared_ptr<mlcore:(id *)query :Query>)a3 error:;
+- (shared_ptr<mlcore::QueryResult>)resultsForCoreQuery:(shared_ptr<mlcore:(id *)query :Query>)a3 error:;
 - (uint64_t)performCoreQuery:withCompletion:;
 - (uint64_t)performCoreSearchQuery:withCompletion:;
-- (void)performCoreQuery:(shared_ptr<mlcore:(id)a4 :Query>)a3 withCompletion:;
+- (void)performCoreQuery:(shared_ptr<mlcore:(id)query :Query>)a3 withCompletion:;
 - (void)performCoreQuery:withCompletion:;
-- (void)performCoreSearchQuery:(shared_ptr<mlcore:(id)a4 :LocalizedSearchQuery>)a3 withCompletion:;
+- (void)performCoreSearchQuery:(shared_ptr<mlcore:(id)query :LocalizedSearchQuery>)a3 withCompletion:;
 - (void)performCoreSearchQuery:withCompletion:;
 @end
 
@@ -24,7 +24,7 @@
   return self;
 }
 
-- (shared_ptr<mlcore::QueryResult>)_performCoreQuery:(shared_ptr<mlcore:(id *)a4 :Query>)a3 error:
+- (shared_ptr<mlcore::QueryResult>)_performCoreQuery:(shared_ptr<mlcore:(id *)query :Query>)a3 error:
 {
   var1 = a3.var1;
   var0 = a3.var0;
@@ -119,7 +119,7 @@ void __46__MPMediaLibraryView__performCoreQuery_error___block_invoke(uint64_t a1
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (shared_ptr<mlcore::QueryResult>)resultsForCoreQuery:(shared_ptr<mlcore:(id *)a4 :Query>)a3 error:
+- (shared_ptr<mlcore::QueryResult>)resultsForCoreQuery:(shared_ptr<mlcore:(id *)query :Query>)a3 error:
 {
   var1 = a3.var1;
   v8 = v4;
@@ -156,7 +156,7 @@ void __46__MPMediaLibraryView__performCoreQuery_error___block_invoke(uint64_t a1
   v14[4] = &v23;
   v14[5] = &v17;
   v14[6] = &v31;
-  [(MPMediaLibraryView *)self performCoreQuery:&v15 withCompletion:v14, a4];
+  [(MPMediaLibraryView *)self performCoreQuery:&v15 withCompletion:v14, query];
   if (v16)
   {
     std::__shared_weak_count::__release_shared[abi:ne200100](v16);
@@ -172,8 +172,8 @@ void __46__MPMediaLibraryView__performCoreQuery_error___block_invoke(uint64_t a1
     goto LABEL_7;
   }
 
-  v13 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v13 handleFailureInMethod:a2 object:self file:@"MPMediaLibraryView.mm" lineNumber:233 description:@"MLCore library queries should be guaranteed no-escape"];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"MPMediaLibraryView.mm" lineNumber:233 description:@"MLCore library queries should be guaranteed no-escape"];
 
   if (var1)
   {
@@ -231,7 +231,7 @@ void __48__MPMediaLibraryView_resultsForCoreQuery_error___block_invoke(void *a1,
   *(*(a1[6] + 8) + 24) = 1;
 }
 
-- (void)performCoreSearchQuery:(shared_ptr<mlcore:(id)a4 :LocalizedSearchQuery>)a3 withCompletion:
+- (void)performCoreSearchQuery:(shared_ptr<mlcore:(id)query :LocalizedSearchQuery>)a3 withCompletion:
 {
   ptr = a3.__ptr_;
   v11 = *MEMORY[0x1E69E9840];
@@ -266,7 +266,7 @@ void __48__MPMediaLibraryView_resultsForCoreQuery_error___block_invoke(void *a1,
 {
   if (std::type_info::operator==[abi:ne200100](*(a2 + 8), "Z60-[MPMediaLibraryView performCoreSearchQuery:withCompletion:]E3$_1"))
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -281,7 +281,7 @@ void __48__MPMediaLibraryView_resultsForCoreQuery_error___block_invoke(void *a1,
   JUMPOUT(0x1A58E14E0);
 }
 
-- (void)performCoreQuery:(shared_ptr<mlcore:(id)a4 :Query>)a3 withCompletion:
+- (void)performCoreQuery:(shared_ptr<mlcore:(id)query :Query>)a3 withCompletion:
 {
   var0 = a3.var0;
   v11 = *MEMORY[0x1E69E9840];
@@ -316,7 +316,7 @@ void __48__MPMediaLibraryView_resultsForCoreQuery_error___block_invoke(void *a1,
 {
   if (std::type_info::operator==[abi:ne200100](*(a2 + 8), "Z54-[MPMediaLibraryView performCoreQuery:withCompletion:]E3$_0"))
   {
-    return a1 + 8;
+    return self + 8;
   }
 
   else
@@ -346,13 +346,13 @@ void __48__MPMediaLibraryView_resultsForCoreQuery_error___block_invoke(void *a1,
   return result;
 }
 
-- (BOOL)hasEntitiesForModelKind:(id)a3
+- (BOOL)hasEntitiesForModelKind:(id)kind
 {
-  v4 = a3;
+  kindCopy = kind;
   v5 = objc_alloc_init(MPMediaLibraryEntityTranslationContext);
   [(MPMediaLibraryEntityTranslationContext *)v5 setMediaLibrary:self->_library];
-  [(MPMediaLibraryEntityTranslationContext *)v5 setModelKind:v4];
-  v6 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [v4 modelClass]);
+  [(MPMediaLibraryEntityTranslationContext *)v5 setModelKind:kindCopy];
+  v6 = +[MPMediaLibraryEntityTranslator translatorForMPModelClass:](MPMediaLibraryEntityTranslator, "translatorForMPModelClass:", [kindCopy modelClass]);
   v7 = +[MPPropertySet emptyPropertySet];
   if (v6)
   {
@@ -401,23 +401,23 @@ void __48__MPMediaLibraryView_resultsForCoreQuery_error___block_invoke(void *a1,
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
-  v5 = [(MPMediaLibraryView *)self library];
-  v6 = [v4 initWithLibrary:v5 filteringOptions:{-[MPMediaLibraryView filteringOptions](self, "filteringOptions")}];
+  library = [(MPMediaLibraryView *)self library];
+  v6 = [v4 initWithLibrary:library filteringOptions:{-[MPMediaLibraryView filteringOptions](self, "filteringOptions")}];
 
   return v6;
 }
 
 - (id)description
 {
-  v3 = [MEMORY[0x1E695DF70] array];
-  v4 = v3;
+  array = [MEMORY[0x1E695DF70] array];
+  v4 = array;
   filteringOptions = self->_filteringOptions;
   if ((filteringOptions & 2) != 0)
   {
-    [v3 addObject:@"local"];
+    [array addObject:@"local"];
     filteringOptions = self->_filteringOptions;
   }
 
@@ -513,17 +513,17 @@ void __48__MPMediaLibraryView_resultsForCoreQuery_error___block_invoke(void *a1,
   return v7;
 }
 
-- (MPMediaLibraryView)initWithLibrary:(id)a3 filteringOptions:(unint64_t)a4
+- (MPMediaLibraryView)initWithLibrary:(id)library filteringOptions:(unint64_t)options
 {
-  v7 = a3;
+  libraryCopy = library;
   v20.receiver = self;
   v20.super_class = MPMediaLibraryView;
   v8 = [(MPMediaLibraryView *)&v20 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_library, a3);
-    v9->_filteringOptions = a4;
+    objc_storeStrong(&v8->_library, library);
+    v9->_filteringOptions = options;
     library = v9->_library;
     if (library)
     {
@@ -568,7 +568,7 @@ void __48__MPMediaLibraryView_resultsForCoreQuery_error___block_invoke(void *a1,
     }
 
     mlcore::LibraryView::filters(v9->_coreView.__ptr_);
-    if ((a4 & 0x10000) == 0)
+    if ((options & 0x10000) == 0)
     {
       v13 = +[MPRestrictionsMonitor sharedRestrictionsMonitor];
       mlcore::ContentRestrictions::ContentRestrictions(v17);

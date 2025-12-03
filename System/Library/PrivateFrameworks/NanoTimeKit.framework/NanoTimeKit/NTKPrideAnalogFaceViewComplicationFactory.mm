@@ -1,33 +1,33 @@
 @interface NTKPrideAnalogFaceViewComplicationFactory
 - (NTKFaceView)faceView;
-- (NTKPrideAnalogFaceViewComplicationFactory)initWithFaceView:(id)a3 device:(id)a4;
-- (double)_edgeGapForState:(int64_t)a3;
-- (double)_keylinePaddingForState:(int64_t)a3;
-- (double)_lisaGapForState:(int64_t)a3;
+- (NTKPrideAnalogFaceViewComplicationFactory)initWithFaceView:(id)view device:(id)device;
+- (double)_edgeGapForState:(int64_t)state;
+- (double)_keylinePaddingForState:(int64_t)state;
+- (double)_lisaGapForState:(int64_t)state;
 - (id)_complicationSlots;
-- (id)createComplicationContentSpecificAttributesAnimationWithAttributes:(unint64_t)a3 faceView:(id)a4 forSlots:(id)a5;
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5;
-- (int64_t)keylineStyleForComplicationSlot:(id)a3;
-- (void)applyComplicationContentSpecificAttributesAnimated:(BOOL)a3 faceView:(id)a4;
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4;
+- (id)createComplicationContentSpecificAttributesAnimationWithAttributes:(unint64_t)attributes faceView:(id)view forSlots:(id)slots;
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot;
+- (int64_t)keylineStyleForComplicationSlot:(id)slot;
+- (void)applyComplicationContentSpecificAttributesAnimated:(BOOL)animated faceView:(id)view;
+- (void)configureComplicationView:(id)view forSlot:(id)slot;
 - (void)loadLayoutRules;
 @end
 
 @implementation NTKPrideAnalogFaceViewComplicationFactory
 
-- (NTKPrideAnalogFaceViewComplicationFactory)initWithFaceView:(id)a3 device:(id)a4
+- (NTKPrideAnalogFaceViewComplicationFactory)initWithFaceView:(id)view device:(id)device
 {
-  v6 = a3;
+  viewCopy = view;
   v12.receiver = self;
   v12.super_class = NTKPrideAnalogFaceViewComplicationFactory;
-  v7 = [(NTKFaceViewComplicationFactory *)&v12 initForDevice:a4];
+  v7 = [(NTKFaceViewComplicationFactory *)&v12 initForDevice:device];
   v8 = v7;
   if (v7)
   {
-    [(NTKPrideAnalogFaceViewComplicationFactory *)v7 setFaceView:v6];
+    [(NTKPrideAnalogFaceViewComplicationFactory *)v7 setFaceView:viewCopy];
     [(NTKFaceViewComplicationFactory *)v8 setContentSpecificAnimationDuration:0.45];
-    v9 = [MEMORY[0x277D75348] whiteColor];
-    [(NTKFaceViewComplicationFactory *)v8 setForegroundColor:v9];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
+    [(NTKFaceViewComplicationFactory *)v8 setForegroundColor:whiteColor];
 
     v10 = NTKActivityBackgroundPlatterColor();
     [(NTKFaceViewComplicationFactory *)v8 setPlatterColor:v10];
@@ -38,11 +38,11 @@
 
 - (void)loadLayoutRules
 {
-  v3 = [(NTKPrideAnalogFaceViewComplicationFactory *)self faceView];
-  v4 = v3;
-  if (v3)
+  faceView = [(NTKPrideAnalogFaceViewComplicationFactory *)self faceView];
+  v4 = faceView;
+  if (faceView)
   {
-    [v3 bounds];
+    [faceView bounds];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __60__NTKPrideAnalogFaceViewComplicationFactory_loadLayoutRules__block_invoke;
@@ -106,61 +106,61 @@ void __60__NTKPrideAnalogFaceViewComplicationFactory_loadLayoutRules__block_invo
   [v26 setDefaultLayoutRule:v27 forState:a2];
 }
 
-- (id)newLegacyViewForComplication:(id)a3 family:(int64_t)a4 slot:(id)a5
+- (id)newLegacyViewForComplication:(id)complication family:(int64_t)family slot:(id)slot
 {
-  v6 = +[NTKCircularComplicationView viewForComplicationType:](NTKCircularComplicationView, "viewForComplicationType:", [a3 complicationType]);
-  v7 = [(NTKFaceViewComplicationFactory *)self foregroundColor];
-  [v6 setForegroundColor:v7];
+  v6 = +[NTKCircularComplicationView viewForComplicationType:](NTKCircularComplicationView, "viewForComplicationType:", [complication complicationType]);
+  foregroundColor = [(NTKFaceViewComplicationFactory *)self foregroundColor];
+  [v6 setForegroundColor:foregroundColor];
 
-  v8 = [(NTKFaceViewComplicationFactory *)self platterColor];
-  [v6 setPlatterColor:v8];
+  platterColor = [(NTKFaceViewComplicationFactory *)self platterColor];
+  [v6 setPlatterColor:platterColor];
 
   return v6;
 }
 
-- (void)configureComplicationView:(id)a3 forSlot:(id)a4
+- (void)configureComplicationView:(id)view forSlot:(id)slot
 {
-  v5 = a3;
-  v6 = [(NTKFaceViewComplicationFactory *)self foregroundColor];
-  [v5 setForegroundColor:v6];
+  viewCopy = view;
+  foregroundColor = [(NTKFaceViewComplicationFactory *)self foregroundColor];
+  [viewCopy setForegroundColor:foregroundColor];
 
-  v7 = [(NTKFaceViewComplicationFactory *)self platterColor];
-  [v5 setPlatterColor:v7];
+  platterColor = [(NTKFaceViewComplicationFactory *)self platterColor];
+  [viewCopy setPlatterColor:platterColor];
 
-  [v5 setUseRoundedFontDesign:1];
-  v8 = [MEMORY[0x277D75348] clearColor];
-  [v5 setBackgroundColor:v8];
+  [viewCopy setUseRoundedFontDesign:1];
+  clearColor = [MEMORY[0x277D75348] clearColor];
+  [viewCopy setBackgroundColor:clearColor];
 }
 
-- (int64_t)keylineStyleForComplicationSlot:(id)a3
+- (int64_t)keylineStyleForComplicationSlot:(id)slot
 {
-  v3 = [(NTKFaceViewComplicationFactory *)self device];
-  v4 = [v3 deviceCategory] != 1;
+  device = [(NTKFaceViewComplicationFactory *)self device];
+  v4 = [device deviceCategory] != 1;
 
   return v4;
 }
 
-- (double)_edgeGapForState:(int64_t)a3
+- (double)_edgeGapForState:(int64_t)state
 {
-  if ((a3 - 2) >= 2)
+  if ((state - 2) >= 2)
   {
-    if (a3 == 1)
+    if (state == 1)
     {
-      v3 = [(NTKFaceViewComplicationFactory *)self device];
-      v4 = NTKColorFaceViewEdgeGapEditing(v3);
+      device = [(NTKFaceViewComplicationFactory *)self device];
+      v4 = NTKColorFaceViewEdgeGapEditing(device);
     }
 
     else
     {
-      v3 = [(NTKFaceViewComplicationFactory *)self device];
-      v4 = NTKColorFaceViewEdgeGapNormal(v3);
+      device = [(NTKFaceViewComplicationFactory *)self device];
+      v4 = NTKColorFaceViewEdgeGapNormal(device);
     }
   }
 
   else
   {
-    v3 = [(NTKFaceViewComplicationFactory *)self device];
-    v4 = NTKColorFaceViewEdgeGapDeselected(v3);
+    device = [(NTKFaceViewComplicationFactory *)self device];
+    v4 = NTKColorFaceViewEdgeGapDeselected(device);
   }
 
   v5 = v4;
@@ -168,28 +168,28 @@ void __60__NTKPrideAnalogFaceViewComplicationFactory_loadLayoutRules__block_invo
   return v5;
 }
 
-- (double)_keylinePaddingForState:(int64_t)a3
+- (double)_keylinePaddingForState:(int64_t)state
 {
   v3 = 0.0;
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) == 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) == 2)
   {
     v5 = NTKKeylineWidth();
-    v6 = [(NTKFaceViewComplicationFactory *)self device];
-    v3 = v5 + NTKColorFaceViewDeselectedKeylineInnerPadding(v6);
+    device = [(NTKFaceViewComplicationFactory *)self device];
+    v3 = v5 + NTKColorFaceViewDeselectedKeylineInnerPadding(device);
   }
 
   return v3;
 }
 
-- (double)_lisaGapForState:(int64_t)a3
+- (double)_lisaGapForState:(int64_t)state
 {
-  if ((a3 & 0xFFFFFFFFFFFFFFFELL) != 2)
+  if ((state & 0xFFFFFFFFFFFFFFFELL) != 2)
   {
     return 0.0;
   }
 
-  v3 = [(NTKFaceViewComplicationFactory *)self device];
-  v4 = NTKColorFaceViewLisaKeylineGap(v3);
+  device = [(NTKFaceViewComplicationFactory *)self device];
+  v4 = NTKColorFaceViewLisaKeylineGap(device);
 
   return v4;
 }
@@ -218,30 +218,30 @@ void __63__NTKPrideAnalogFaceViewComplicationFactory__complicationSlots__block_i
   _complicationSlots_slots_0 = v0;
 }
 
-- (void)applyComplicationContentSpecificAttributesAnimated:(BOOL)a3 faceView:(id)a4
+- (void)applyComplicationContentSpecificAttributesAnimated:(BOOL)animated faceView:(id)view
 {
-  v4 = a3;
-  v10 = a4;
-  if (v4)
+  animatedCopy = animated;
+  viewCopy = view;
+  if (animatedCopy)
   {
-    v6 = [(NTKFaceViewComplicationFactory *)self foregroundColorProviderBlock];
+    foregroundColorProviderBlock = [(NTKFaceViewComplicationFactory *)self foregroundColorProviderBlock];
 
-    v7 = [(NTKFaceViewComplicationFactory *)self platterColorProviderBlock];
+    platterColorProviderBlock = [(NTKFaceViewComplicationFactory *)self platterColorProviderBlock];
 
     v8 = 8;
-    if (v6)
+    if (foregroundColorProviderBlock)
     {
       v8 = 9;
     }
 
-    if (v7)
+    if (platterColorProviderBlock)
     {
       v9 = v8;
     }
 
     else
     {
-      v9 = v6 != 0;
+      v9 = foregroundColorProviderBlock != 0;
     }
   }
 
@@ -250,18 +250,18 @@ void __63__NTKPrideAnalogFaceViewComplicationFactory__complicationSlots__block_i
     v9 = 0xFFFFFFFFLL;
   }
 
-  [(NTKFaceViewComplicationFactory *)self applyComplicationContentSpecificAttributesAnimated:v4 attributes:v9 faceView:v10];
+  [(NTKFaceViewComplicationFactory *)self applyComplicationContentSpecificAttributesAnimated:animatedCopy attributes:v9 faceView:viewCopy];
 }
 
-- (id)createComplicationContentSpecificAttributesAnimationWithAttributes:(unint64_t)a3 faceView:(id)a4 forSlots:(id)a5
+- (id)createComplicationContentSpecificAttributesAnimationWithAttributes:(unint64_t)attributes faceView:(id)view forSlots:(id)slots
 {
-  if ((a3 & 9) != 0)
+  if ((attributes & 9) != 0)
   {
-    v6 = (a3 >> 3) & 1;
-    v7 = a3 & 1;
-    v8 = a4;
-    v9 = [(NTKFaceViewComplicationFactory *)self foregroundColor];
-    v10 = [(NTKFaceViewComplicationFactory *)self platterColor];
+    v6 = (attributes >> 3) & 1;
+    v7 = attributes & 1;
+    viewCopy = view;
+    foregroundColor = [(NTKFaceViewComplicationFactory *)self foregroundColor];
+    platterColor = [(NTKFaceViewComplicationFactory *)self platterColor];
     v11 = objc_opt_new();
     v22[0] = MEMORY[0x277D85DD0];
     v22[1] = 3221225472;
@@ -269,13 +269,13 @@ void __63__NTKPrideAnalogFaceViewComplicationFactory__complicationSlots__block_i
     v22[3] = &unk_278785FC8;
     v26 = v7;
     v27 = v6;
-    v23 = v9;
-    v24 = v10;
+    v23 = foregroundColor;
+    v24 = platterColor;
     v12 = v11;
     v25 = v12;
-    v13 = v10;
-    v14 = v9;
-    [v8 enumerateComplicationDisplayWrappersWithBlock:v22];
+    v13 = platterColor;
+    v14 = foregroundColor;
+    [viewCopy enumerateComplicationDisplayWrappersWithBlock:v22];
 
     [(NTKFaceViewComplicationFactory *)self contentSpecificAnimationDuration];
     v16 = v15;

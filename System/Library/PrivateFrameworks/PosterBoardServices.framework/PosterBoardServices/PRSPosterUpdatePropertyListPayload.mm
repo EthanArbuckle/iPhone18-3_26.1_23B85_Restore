@@ -1,19 +1,19 @@
 @interface PRSPosterUpdatePropertyListPayload
-- (PRSPosterUpdatePropertyListPayload)initWithCoder:(id)a3;
-- (PRSPosterUpdatePropertyListPayload)initWithPropertyList:(id)a3;
-- (PRSPosterUpdatePropertyListPayload)initWithPropertyListData:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PRSPosterUpdatePropertyListPayload)initWithCoder:(id)coder;
+- (PRSPosterUpdatePropertyListPayload)initWithPropertyList:(id)list;
+- (PRSPosterUpdatePropertyListPayload)initWithPropertyListData:(id)data;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)propertyListRoot;
 - (id)rawValue;
 @end
 
 @implementation PRSPosterUpdatePropertyListPayload
 
-- (PRSPosterUpdatePropertyListPayload)initWithPropertyListData:(id)a3
+- (PRSPosterUpdatePropertyListPayload)initWithPropertyListData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   NSClassFromString(&cfstr_Nsdata.isa);
-  if (!v5)
+  if (!dataCopy)
   {
     [PRSPosterUpdatePropertyListPayload initWithPropertyListData:a2];
   }
@@ -25,27 +25,27 @@
 
   v10.receiver = self;
   v10.super_class = PRSPosterUpdatePropertyListPayload;
-  v6 = [(PRSPosterUpdatePayload *)&v10 _init];
-  if (v6)
+  _init = [(PRSPosterUpdatePayload *)&v10 _init];
+  if (_init)
   {
-    v7 = [v5 copy];
-    propertyListData = v6->_propertyListData;
-    v6->_propertyListData = v7;
+    v7 = [dataCopy copy];
+    propertyListData = _init->_propertyListData;
+    _init->_propertyListData = v7;
   }
 
-  return v6;
+  return _init;
 }
 
-- (PRSPosterUpdatePropertyListPayload)initWithPropertyList:(id)a3
+- (PRSPosterUpdatePropertyListPayload)initWithPropertyList:(id)list
 {
-  v6 = a3;
-  if (!v6)
+  listCopy = list;
+  if (!listCopy)
   {
     [PRSPosterUpdatePropertyListPayload initWithPropertyList:a2];
   }
 
-  v7 = v6;
-  if (([MEMORY[0x1E696AE40] propertyList:v6 isValidForFormat:200] & 1) == 0)
+  v7 = listCopy;
+  if (([MEMORY[0x1E696AE40] propertyList:listCopy isValidForFormat:200] & 1) == 0)
   {
     [PRSPosterUpdatePropertyListPayload initWithPropertyList:a2];
   }
@@ -59,12 +59,12 @@
 
   v12.receiver = self;
   v12.super_class = PRSPosterUpdatePropertyListPayload;
-  v9 = [(PRSPosterUpdatePayload *)&v12 _init];
-  v10 = v9;
-  if (v9)
+  _init = [(PRSPosterUpdatePayload *)&v12 _init];
+  v10 = _init;
+  if (_init)
   {
-    objc_storeStrong(v9 + 1, v8);
-    objc_storeStrong(&v10->_propertyListRoot, a3);
+    objc_storeStrong(_init + 1, v8);
+    objc_storeStrong(&v10->_propertyListRoot, list);
   }
 
   return v10;
@@ -87,27 +87,27 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   propertyListData = self->_propertyListData;
 
   return [v4 initWithPropertyListData:propertyListData];
 }
 
-- (PRSPosterUpdatePropertyListPayload)initWithCoder:(id)a3
+- (PRSPosterUpdatePropertyListPayload)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(PRSPosterUpdatePayload *)self _init];
-  if (v5)
+  coderCopy = coder;
+  _init = [(PRSPosterUpdatePayload *)self _init];
+  if (_init)
   {
     v6 = objc_opt_self();
-    v7 = [v4 decodeObjectOfClass:v6 forKey:@"_propertyListData"];
-    propertyListData = v5->_propertyListData;
-    v5->_propertyListData = v7;
+    v7 = [coderCopy decodeObjectOfClass:v6 forKey:@"_propertyListData"];
+    propertyListData = _init->_propertyListData;
+    _init->_propertyListData = v7;
   }
 
-  return v5;
+  return _init;
 }
 
 - (id)rawValue

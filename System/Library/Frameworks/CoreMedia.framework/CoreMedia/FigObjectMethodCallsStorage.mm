@@ -1,13 +1,13 @@
 @interface FigObjectMethodCallsStorage
 + (id)shared;
-+ (void)recordForObject:(id)a3 withMethodEnum:(id)a4;
-+ (void)surfaceMethodCallsBeforeCrashForObject:(id)a3;
++ (void)recordForObject:(id)object withMethodEnum:(id)enum;
++ (void)surfaceMethodCallsBeforeCrashForObject:(id)object;
 - (FigObjectMethodCallsStorage)init;
 - (id)description;
 - (void)checkAndflushObjectMethodCalls;
 - (void)dealloc;
-- (void)surfaceMethodCallsBeforeCrashForStringObjectPtr:(id)a3;
-- (void)updateMethodCallsForObject:(id)a3 withMethodEnum:(id)a4;
+- (void)surfaceMethodCallsBeforeCrashForStringObjectPtr:(id)ptr;
+- (void)updateMethodCallsForObject:(id)object withMethodEnum:(id)enum;
 @end
 
 @implementation FigObjectMethodCallsStorage
@@ -84,7 +84,7 @@ id __61__FigObjectMethodCallsStorage_checkAndflushObjectMethodCalls__block_invok
   return result;
 }
 
-- (void)updateMethodCallsForObject:(id)a3 withMethodEnum:(id)a4
+- (void)updateMethodCallsForObject:(id)object withMethodEnum:(id)enum
 {
   [(FigObjectMethodCallsStorage *)self checkAndflushObjectMethodCalls];
   objectMethodCallsUpdateQueue = self->_objectMethodCallsUpdateQueue;
@@ -93,8 +93,8 @@ id __61__FigObjectMethodCallsStorage_checkAndflushObjectMethodCalls__block_invok
   block[2] = __73__FigObjectMethodCallsStorage_updateMethodCallsForObject_withMethodEnum___block_invoke;
   block[3] = &unk_1E749EC68;
   block[4] = self;
-  block[5] = a3;
-  block[6] = a4;
+  block[5] = object;
+  block[6] = enum;
   dispatch_sync(objectMethodCallsUpdateQueue, block);
 }
 
@@ -123,7 +123,7 @@ uint64_t __73__FigObjectMethodCallsStorage_updateMethodCallsForObject_withMethod
   return [v6 setObject:v4 forKey:v5];
 }
 
-- (void)surfaceMethodCallsBeforeCrashForStringObjectPtr:(id)a3
+- (void)surfaceMethodCallsBeforeCrashForStringObjectPtr:(id)ptr
 {
   objectMethodCallsUpdateQueue = self->_objectMethodCallsUpdateQueue;
   v4[0] = MEMORY[0x1E69E9820];
@@ -131,7 +131,7 @@ uint64_t __73__FigObjectMethodCallsStorage_updateMethodCallsForObject_withMethod
   v4[2] = __79__FigObjectMethodCallsStorage_surfaceMethodCallsBeforeCrashForStringObjectPtr___block_invoke;
   v4[3] = &unk_1E749EC90;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = ptr;
   dispatch_sync(objectMethodCallsUpdateQueue, v4);
   qword_1EAF1B730 = surfaceMethodCallsBeforeCrashForStringObjectPtr__gFigObjectMethodCallsCrashMessage;
 }
@@ -150,7 +150,7 @@ uint64_t __73__FigObjectMethodCallsStorage_updateMethodCallsForObject_withMethod
   block[1] = 3221225472;
   block[2] = __37__FigObjectMethodCallsStorage_shared__block_invoke;
   block[3] = &unk_1E749CE18;
-  block[4] = a1;
+  block[4] = self;
   if (shared_onceToken != -1)
   {
     dispatch_once(&shared_onceToken, block);
@@ -166,20 +166,20 @@ id __37__FigObjectMethodCallsStorage_shared__block_invoke(uint64_t a1)
   return result;
 }
 
-+ (void)recordForObject:(id)a3 withMethodEnum:(id)a4
++ (void)recordForObject:(id)object withMethodEnum:(id)enum
 {
   v6 = +[FigObjectMethodCallsStorage shared];
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", a3];
+  object = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", object];
 
-  [v6 updateMethodCallsForObject:v7 withMethodEnum:a4];
+  [v6 updateMethodCallsForObject:object withMethodEnum:enum];
 }
 
-+ (void)surfaceMethodCallsBeforeCrashForObject:(id)a3
++ (void)surfaceMethodCallsBeforeCrashForObject:(id)object
 {
   v4 = +[FigObjectMethodCallsStorage shared];
-  v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", a3];
+  object = [MEMORY[0x1E696AEC0] stringWithFormat:@"%p", object];
 
-  [v4 surfaceMethodCallsBeforeCrashForStringObjectPtr:v5];
+  [v4 surfaceMethodCallsBeforeCrashForStringObjectPtr:object];
 }
 
 @end

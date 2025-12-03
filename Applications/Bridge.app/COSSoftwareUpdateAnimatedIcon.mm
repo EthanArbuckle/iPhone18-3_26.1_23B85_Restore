@@ -1,38 +1,38 @@
 @interface COSSoftwareUpdateAnimatedIcon
-- (COSSoftwareUpdateAnimatedIcon)initWithFrame:(CGRect)a3;
+- (COSSoftwareUpdateAnimatedIcon)initWithFrame:(CGRect)frame;
 - (id)outerGearView;
 @end
 
 @implementation COSSoftwareUpdateAnimatedIcon
 
-- (COSSoftwareUpdateAnimatedIcon)initWithFrame:(CGRect)a3
+- (COSSoftwareUpdateAnimatedIcon)initWithFrame:(CGRect)frame
 {
   v14.receiver = self;
   v14.super_class = COSSoftwareUpdateAnimatedIcon;
-  v3 = [(COSSoftwareUpdateAnimatedIcon *)&v14 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
-  v4 = [(COSSoftwareUpdateAnimatedIcon *)v3 constraints];
-  if ([v4 count])
+  v3 = [(COSSoftwareUpdateAnimatedIcon *)&v14 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
+  constraints = [(COSSoftwareUpdateAnimatedIcon *)v3 constraints];
+  if ([constraints count])
   {
     v5 = 0;
     do
     {
-      v6 = [v4 objectAtIndex:v5];
+      v6 = [constraints objectAtIndex:v5];
       [v6 setActive:0];
 
       ++v5;
     }
 
-    while ([v4 count] > v5);
+    while ([constraints count] > v5);
   }
 
-  v7 = [(UIImageView *)v3->_outerGear centerYAnchor];
-  v8 = [(COSSoftwareUpdateAnimatedIcon *)v3 centerYAnchor];
-  v9 = [v7 constraintEqualToAnchor:v8];
+  centerYAnchor = [(UIImageView *)v3->_outerGear centerYAnchor];
+  centerYAnchor2 = [(COSSoftwareUpdateAnimatedIcon *)v3 centerYAnchor];
+  v9 = [centerYAnchor constraintEqualToAnchor:centerYAnchor2];
   [v9 setActive:1];
 
-  v10 = [(UIImageView *)v3->_outerGear centerXAnchor];
-  v11 = [(COSSoftwareUpdateAnimatedIcon *)v3 centerXAnchor];
-  v12 = [v10 constraintEqualToAnchor:v11 constant:-1.5];
+  centerXAnchor = [(UIImageView *)v3->_outerGear centerXAnchor];
+  centerXAnchor2 = [(COSSoftwareUpdateAnimatedIcon *)v3 centerXAnchor];
+  v12 = [centerXAnchor constraintEqualToAnchor:centerXAnchor2 constant:-1.5];
   [v12 setActive:1];
 
   return v3;

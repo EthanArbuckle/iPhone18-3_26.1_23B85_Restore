@@ -7,7 +7,7 @@
 - (id)tryToInstantiateViewControllerWithIdentifier:()UISafeStoryboard
 {
   v4 = a3;
-  v5 = [a1 instantiateViewControllerWithIdentifier:v4];
+  v5 = [self instantiateViewControllerWithIdentifier:v4];
 
   return v5;
 }

@@ -1,5 +1,5 @@
 @interface PIFakeBoost
-+ (id)boostParametersFromRawProperties:(id)a3;
++ (id)boostParametersFromRawProperties:(id)properties;
 + (id)kernelFB0;
 + (id)kernelFB3;
 - (id)outputImage;
@@ -9,11 +9,11 @@
 
 @implementation PIFakeBoost
 
-+ (id)boostParametersFromRawProperties:(id)a3
++ (id)boostParametersFromRawProperties:(id)properties
 {
   v42 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if (!v3)
+  propertiesCopy = properties;
+  if (!propertiesCopy)
   {
     v24 = NUAssertLogger_13971();
     if (os_log_type_enabled(v24, OS_LOG_TYPE_ERROR))
@@ -35,8 +35,8 @@
         v32 = dispatch_get_specific(*v26);
         v33 = MEMORY[0x1E696AF00];
         v34 = v32;
-        v35 = [v33 callStackSymbols];
-        v36 = [v35 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v33 callStackSymbols];
+        v36 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v39 = v32;
         v40 = 2114;
@@ -47,8 +47,8 @@
 
     else if (v29)
     {
-      v30 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v31 = [v30 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v31 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v39 = v31;
       _os_log_error_impl(&dword_1C7694000, v28, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -57,13 +57,13 @@
     _NUAssertFailHandler();
   }
 
-  v4 = v3;
-  v5 = [v3 rawToneCurveProperties];
-  v7 = v5;
-  if (v5)
+  v4 = propertiesCopy;
+  rawToneCurveProperties = [propertiesCopy rawToneCurveProperties];
+  v7 = rawToneCurveProperties;
+  if (rawToneCurveProperties)
   {
     LODWORD(v6) = 1045220557;
-    [v5 boostCurveValueAt:v6];
+    [rawToneCurveProperties boostCurveValueAt:v6];
     v9 = v8;
     LODWORD(v10) = 0.5;
     [v7 boostCurveValueAt:v10];
@@ -131,8 +131,8 @@ LABEL_11:
           v18 = MEMORY[0x1E696AF00];
           v19 = specific;
           v20 = v16;
-          v21 = [v18 callStackSymbols];
-          v2 = [v21 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v2 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v24 = specific;
           v25 = 2114;
@@ -159,8 +159,8 @@ LABEL_11:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v12 callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v15;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -216,8 +216,8 @@ LABEL_11:
           v18 = MEMORY[0x1E696AF00];
           v19 = specific;
           v20 = v16;
-          v21 = [v18 callStackSymbols];
-          v2 = [v21 componentsJoinedByString:@"\n"];
+          callStackSymbols = [v18 callStackSymbols];
+          v2 = [callStackSymbols componentsJoinedByString:@"\n"];
           *buf = 138543618;
           v24 = specific;
           v25 = 2114;
@@ -244,8 +244,8 @@ LABEL_11:
     {
       v12 = MEMORY[0x1E696AF00];
       v13 = v11;
-      v14 = [v12 callStackSymbols];
-      v15 = [v14 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [v12 callStackSymbols];
+      v15 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v24 = v15;
       _os_log_error_impl(&dword_1C7694000, v13, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -276,7 +276,7 @@ LABEL_14:
       _os_log_error_impl(&dword_1C7694000, v41, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v43 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     specific = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v45 = NUAssertLogger_13971();
     v46 = os_log_type_enabled(v45, OS_LOG_TYPE_ERROR);
@@ -284,11 +284,11 @@ LABEL_14:
     {
       if (v46)
       {
-        v60 = dispatch_get_specific(*v43);
+        v60 = dispatch_get_specific(*callStackSymbols);
         v61 = MEMORY[0x1E696AF00];
         v62 = v60;
-        v43 = [v61 callStackSymbols];
-        v63 = [v43 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v61 callStackSymbols];
+        v63 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v75 = v60;
         v76 = 2114;
@@ -299,10 +299,10 @@ LABEL_14:
 
     else if (v46)
     {
-      v47 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v43 = [v47 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      callStackSymbols = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
-      v75 = v43;
+      v75 = callStackSymbols;
       _os_log_error_impl(&dword_1C7694000, v45, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
     }
 
@@ -310,7 +310,7 @@ LABEL_14:
     goto LABEL_29;
   }
 
-  v4 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+  imageByUnpremultiplyingAlpha = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
   if ([(NSArray *)self->_inputParams count]!= 3)
   {
     v48 = NUAssertLogger_13971();
@@ -322,7 +322,7 @@ LABEL_14:
       _os_log_error_impl(&dword_1C7694000, v48, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v43 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v50 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v45 = NUAssertLogger_13971();
     v51 = os_log_type_enabled(v45, OS_LOG_TYPE_ERROR);
@@ -330,10 +330,10 @@ LABEL_14:
     {
       if (v51)
       {
-        v52 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v43 = [v52 componentsJoinedByString:@"\n"];
+        callStackSymbols3 = [MEMORY[0x1E696AF00] callStackSymbols];
+        callStackSymbols = [callStackSymbols3 componentsJoinedByString:@"\n"];
         *buf = 138543362;
-        v75 = v43;
+        v75 = callStackSymbols;
         _os_log_error_impl(&dword_1C7694000, v45, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
       }
 
@@ -346,11 +346,11 @@ LABEL_31:
 LABEL_29:
     if (v51)
     {
-      v64 = dispatch_get_specific(*v43);
+      v64 = dispatch_get_specific(*callStackSymbols);
       v65 = MEMORY[0x1E696AF00];
       v66 = v64;
-      v43 = [v65 callStackSymbols];
-      v67 = [v43 componentsJoinedByString:@"\n"];
+      callStackSymbols = [v65 callStackSymbols];
+      v67 = [callStackSymbols componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v75 = v64;
       v76 = 2114;
@@ -384,7 +384,7 @@ LABEL_29:
       _os_log_error_impl(&dword_1C7694000, v53, OS_LOG_TYPE_ERROR, "Fail: %{public}@", buf, 0xCu);
     }
 
-    v43 = MEMORY[0x1E69B38E8];
+    callStackSymbols = MEMORY[0x1E69B38E8];
     v56 = dispatch_get_specific(*MEMORY[0x1E69B38E8]);
     v45 = NUAssertLogger_13971();
     v57 = os_log_type_enabled(v45, OS_LOG_TYPE_ERROR);
@@ -392,8 +392,8 @@ LABEL_29:
     {
       if (v57)
       {
-        v58 = [MEMORY[0x1E696AF00] callStackSymbols];
-        v59 = [v58 componentsJoinedByString:@"\n"];
+        callStackSymbols4 = [MEMORY[0x1E696AF00] callStackSymbols];
+        v59 = [callStackSymbols4 componentsJoinedByString:@"\n"];
         *buf = 138543362;
         v75 = v59;
         _os_log_error_impl(&dword_1C7694000, v45, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -405,11 +405,11 @@ LABEL_29:
 LABEL_32:
     if (v57)
     {
-      v68 = dispatch_get_specific(*v43);
+      v68 = dispatch_get_specific(*callStackSymbols);
       v69 = MEMORY[0x1E696AF00];
       v70 = v68;
-      v71 = [v69 callStackSymbols];
-      v72 = [v71 componentsJoinedByString:@"\n"];
+      callStackSymbols5 = [v69 callStackSymbols];
+      v72 = [callStackSymbols5 componentsJoinedByString:@"\n"];
       *buf = 138543618;
       v75 = v68;
       v76 = 2114;
@@ -434,24 +434,24 @@ LABEL_34:
   v24 = [MEMORY[0x1E695F688] vectorWithX:v17 Y:v20 Z:v18 W:v19];
   v25 = [MEMORY[0x1E695F688] vectorWithX:0.200000003 Y:v7 Z:v22];
   v26 = [MEMORY[0x1E695F688] vectorWithX:0.800000012 Y:v13 Z:v23];
-  v27 = [objc_opt_class() kernelFB3];
+  kernelFB3 = [objc_opt_class() kernelFB3];
   [(CIImage *)self->_inputImage extent];
   v29 = v28;
   v31 = v30;
   v33 = v32;
   v35 = v34;
-  v73[0] = v4;
+  v73[0] = imageByUnpremultiplyingAlpha;
   v36 = [MEMORY[0x1E696AD98] numberWithDouble:self->_inputBoost];
   v73[1] = v36;
   v73[2] = v24;
   v73[3] = v25;
   v73[4] = v26;
   v37 = [MEMORY[0x1E695DEC8] arrayWithObjects:v73 count:5];
-  v38 = [v27 applyWithExtent:v37 arguments:{v29, v31, v33, v35}];
+  v38 = [kernelFB3 applyWithExtent:v37 arguments:{v29, v31, v33, v35}];
 
-  v39 = [v38 imageByPremultiplyingAlpha];
+  imageByPremultiplyingAlpha = [v38 imageByPremultiplyingAlpha];
 
-  return v39;
+  return imageByPremultiplyingAlpha;
 }
 
 - (id)outputImageFB0
@@ -480,8 +480,8 @@ LABEL_34:
         v27 = dispatch_get_specific(*v21);
         v28 = MEMORY[0x1E696AF00];
         v29 = v27;
-        v30 = [v28 callStackSymbols];
-        v31 = [v30 componentsJoinedByString:@"\n"];
+        callStackSymbols = [v28 callStackSymbols];
+        v31 = [callStackSymbols componentsJoinedByString:@"\n"];
         *buf = 138543618;
         v34 = v27;
         v35 = 2114;
@@ -492,8 +492,8 @@ LABEL_34:
 
     else if (v24)
     {
-      v25 = [MEMORY[0x1E696AF00] callStackSymbols];
-      v26 = [v25 componentsJoinedByString:@"\n"];
+      callStackSymbols2 = [MEMORY[0x1E696AF00] callStackSymbols];
+      v26 = [callStackSymbols2 componentsJoinedByString:@"\n"];
       *buf = 138543362;
       v34 = v26;
       _os_log_error_impl(&dword_1C7694000, v23, OS_LOG_TYPE_ERROR, "Trace:\n%{public}@", buf, 0xCu);
@@ -502,21 +502,21 @@ LABEL_34:
     _NUAssertFailHandler();
   }
 
-  v4 = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
-  v5 = [objc_opt_class() kernelFB0];
+  imageByUnpremultiplyingAlpha = [(CIImage *)inputImage imageByUnpremultiplyingAlpha];
+  kernelFB0 = [objc_opt_class() kernelFB0];
   [(CIImage *)self->_inputImage extent];
   v7 = v6;
   v9 = v8;
   v11 = v10;
   v13 = v12;
-  v14 = [MEMORY[0x1E696AD98] numberWithDouble:{self->_inputBoost, v4}];
+  v14 = [MEMORY[0x1E696AD98] numberWithDouble:{self->_inputBoost, imageByUnpremultiplyingAlpha}];
   v32[1] = v14;
   v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v32 count:2];
-  v16 = [v5 applyWithExtent:v15 arguments:{v7, v9, v11, v13}];
+  v16 = [kernelFB0 applyWithExtent:v15 arguments:{v7, v9, v11, v13}];
 
-  v17 = [v16 imageByPremultiplyingAlpha];
+  imageByPremultiplyingAlpha = [v16 imageByPremultiplyingAlpha];
 
-  return v17;
+  return imageByPremultiplyingAlpha;
 }
 
 - (id)outputImage

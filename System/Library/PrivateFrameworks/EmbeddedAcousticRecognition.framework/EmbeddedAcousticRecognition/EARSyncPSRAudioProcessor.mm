@@ -1,17 +1,17 @@
 @interface EARSyncPSRAudioProcessor
 + (void)initialize;
-- (EARSyncPSRAudioProcessor)initWithConfigFile:(id)a3 configRoot:(id)a4 sampleRate:(unint64_t)a5 delegate:(id)a6;
-- (EARSyncPSRAudioProcessor)initWithConfigFile:(id)a3 configRoot:(id)a4 sampleRate:(unint64_t)a5 delegate:(id)a6 queue:(id)a7 maxBufferSizeSeconds:(int64_t)a8 memoryLock:(BOOL)a9 outputLastRowOnly:(BOOL)a10;
-- (EARSyncPSRAudioProcessor)initWithConfigFile:(id)a3 configRoot:(id)a4 sampleRate:(unint64_t)a5 delegate:(id)a6 queue:(id)a7 outputLastRowOnly:(BOOL)a8;
+- (EARSyncPSRAudioProcessor)initWithConfigFile:(id)file configRoot:(id)root sampleRate:(unint64_t)rate delegate:(id)delegate;
+- (EARSyncPSRAudioProcessor)initWithConfigFile:(id)file configRoot:(id)root sampleRate:(unint64_t)rate delegate:(id)delegate queue:(id)queue maxBufferSizeSeconds:(int64_t)seconds memoryLock:(BOOL)lock outputLastRowOnly:(BOOL)self0;
+- (EARSyncPSRAudioProcessor)initWithConfigFile:(id)file configRoot:(id)root sampleRate:(unint64_t)rate delegate:(id)delegate queue:(id)queue outputLastRowOnly:(BOOL)only;
 - (EARSyncPSRAudioProcessorDelegate)delegate;
 - (id).cxx_construct;
 - (id)getLatestSuperVector;
 - (unint64_t)getAccmulatedProcessingTime;
 - (unint64_t)getProcessedAudioDurationMs;
-- (void)_addAudio:(id)a3;
+- (void)_addAudio:(id)audio;
 - (void)_resetForNewRequest;
-- (void)addAudio:(id)a3;
-- (void)addAudioSync:(id)a3;
+- (void)addAudio:(id)audio;
+- (void)addAudioSync:(id)sync;
 - (void)endAudio;
 - (void)resetForNewRequest;
 - (void)resetForNewRequestSync;
@@ -21,7 +21,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     v2 = os_log_create("com.apple.ear", "EARSyncPSRAudioProcessor");
     v3 = earPSRLog;
@@ -29,28 +29,28 @@
   }
 }
 
-- (EARSyncPSRAudioProcessor)initWithConfigFile:(id)a3 configRoot:(id)a4 sampleRate:(unint64_t)a5 delegate:(id)a6
+- (EARSyncPSRAudioProcessor)initWithConfigFile:(id)file configRoot:(id)root sampleRate:(unint64_t)rate delegate:(id)delegate
 {
   v11 = dispatch_get_global_queue(2, 0);
-  v12 = [(EARSyncPSRAudioProcessor *)self initWithConfigFile:a3 configRoot:a4 sampleRate:a5 delegate:a6 queue:v11];
+  v12 = [(EARSyncPSRAudioProcessor *)self initWithConfigFile:file configRoot:root sampleRate:rate delegate:delegate queue:v11];
 
   return v12;
 }
 
-- (EARSyncPSRAudioProcessor)initWithConfigFile:(id)a3 configRoot:(id)a4 sampleRate:(unint64_t)a5 delegate:(id)a6 queue:(id)a7 outputLastRowOnly:(BOOL)a8
+- (EARSyncPSRAudioProcessor)initWithConfigFile:(id)file configRoot:(id)root sampleRate:(unint64_t)rate delegate:(id)delegate queue:(id)queue outputLastRowOnly:(BOOL)only
 {
-  BYTE1(v9) = a8;
+  BYTE1(v9) = only;
   LOBYTE(v9) = 0;
-  return [(EARSyncPSRAudioProcessor *)self initWithConfigFile:a3 configRoot:a4 sampleRate:a5 delegate:a6 queue:a7 maxBufferSizeSeconds:120 memoryLock:v9 outputLastRowOnly:?];
+  return [(EARSyncPSRAudioProcessor *)self initWithConfigFile:file configRoot:root sampleRate:rate delegate:delegate queue:queue maxBufferSizeSeconds:120 memoryLock:v9 outputLastRowOnly:?];
 }
 
-- (EARSyncPSRAudioProcessor)initWithConfigFile:(id)a3 configRoot:(id)a4 sampleRate:(unint64_t)a5 delegate:(id)a6 queue:(id)a7 maxBufferSizeSeconds:(int64_t)a8 memoryLock:(BOOL)a9 outputLastRowOnly:(BOOL)a10
+- (EARSyncPSRAudioProcessor)initWithConfigFile:(id)file configRoot:(id)root sampleRate:(unint64_t)rate delegate:(id)delegate queue:(id)queue maxBufferSizeSeconds:(int64_t)seconds memoryLock:(BOOL)lock outputLastRowOnly:(BOOL)self0
 {
   v40 = *MEMORY[0x1E69E9840];
-  v16 = a3;
-  v17 = a4;
-  v18 = a6;
-  v19 = a7;
+  fileCopy = file;
+  rootCopy = root;
+  delegateCopy = delegate;
+  queueCopy = queue;
   v36.receiver = self;
   v36.super_class = EARSyncPSRAudioProcessor;
   v20 = [(EARSyncPSRAudioProcessor *)&v36 init];
@@ -60,20 +60,20 @@
     goto LABEL_18;
   }
 
-  v20->_sampleRate = a5;
-  objc_storeStrong(&v20->_configRoot, a4);
-  objc_storeWeak(&v21->_delegate, v18);
-  objc_storeStrong(&v21->_queue, a7);
-  v21->_maxBufferSizeSeconds = a8;
+  v20->_sampleRate = rate;
+  objc_storeStrong(&v20->_configRoot, root);
+  objc_storeWeak(&v21->_delegate, delegateCopy);
+  objc_storeStrong(&v21->_queue, queue);
+  v21->_maxBufferSizeSeconds = seconds;
   v21->_accumulatedProcessingTime = 0;
-  v22 = [MEMORY[0x1E696AC08] defaultManager];
-  v23 = [v22 fileExistsAtPath:v16];
+  defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+  v23 = [defaultManager fileExistsAtPath:fileCopy];
 
   if (v23)
   {
-    if (v16)
+    if (fileCopy)
     {
-      [v16 ear_toString];
+      [fileCopy ear_toString];
     }
 
     else
@@ -117,9 +117,9 @@
       goto LABEL_16;
     }
 
-    v21->_lastRowOutputOnly = a10;
+    v21->_lastRowOutputOnly = only;
     ModelLoader = quasar::SystemConfig::getModelLoader(&v21->_sysConfig);
-    quasar::ModelLoader::enableEmbeddedMlock(ModelLoader, a9);
+    quasar::ModelLoader::enableEmbeddedMlock(ModelLoader, lock);
 LABEL_18:
     v30 = v21;
     goto LABEL_19;
@@ -129,7 +129,7 @@ LABEL_18:
   if (os_log_type_enabled(earPSRLog, OS_LOG_TYPE_DEFAULT))
   {
     LODWORD(__p) = 138412290;
-    *(&__p + 4) = v16;
+    *(&__p + 4) = fileCopy;
     v25 = "PSR: EARSyncAudioProcessor Config file does not exist at %@";
     v26 = v24;
     v27 = 12;
@@ -217,23 +217,23 @@ LABEL_19:
   quasar::SyncPSRAudioProcessor::reset(ptr);
 }
 
-- (void)addAudio:(id)a3
+- (void)addAudio:(id)audio
 {
-  v4 = a3;
+  audioCopy = audio;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __37__EARSyncPSRAudioProcessor_addAudio___block_invoke;
   v7[3] = &unk_1E7C1A5C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = audioCopy;
+  v6 = audioCopy;
   dispatch_async(queue, v7);
 }
 
-- (void)addAudioSync:(id)a3
+- (void)addAudioSync:(id)sync
 {
-  v4 = a3;
+  syncCopy = sync;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3812000000;
@@ -247,7 +247,7 @@ LABEL_19:
   block[2] = __41__EARSyncPSRAudioProcessor_addAudioSync___block_invoke;
   block[3] = &unk_1E7C1C068;
   block[4] = self;
-  v6 = v4;
+  v6 = syncCopy;
   v10 = v6;
   v11 = &v12;
   dispatch_sync(queue, block);
@@ -267,24 +267,24 @@ LABEL_19:
   }
 }
 
-- (void)_addAudio:(id)a3
+- (void)_addAudio:(id)audio
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  audioCopy = audio;
   dispatch_assert_queue_V2(self->_queue);
-  v5 = [v4 bytes];
-  v6 = [v4 length];
+  bytes = [audioCopy bytes];
+  v6 = [audioCopy length];
   v7 = mach_absolute_time();
   v8 = v6 >> 1;
-  quasar::SyncPSRAudioProcessor::addAudio(self->_audioProcessor.__ptr_, v5, v8, 0);
+  quasar::SyncPSRAudioProcessor::addAudio(self->_audioProcessor.__ptr_, bytes, v8, 0);
   quasar::SyncPSRAudioProcessor::getSpeakerRecogMatrix(self->_audioProcessor.__ptr_, v20);
   if (kaldi::MatrixBase<float>::NumRows(v20))
   {
     v9 = quasar::SyncPSRAudioProcessor::processedAudioDurationMs(self->_audioProcessor.__ptr_);
     v10 = _getNSDataForLastRowInMatrix(v20);
     v11 = mach_absolute_time();
-    v12 = [MEMORY[0x1E696AE30] processInfo];
-    [v12 systemUptime];
+    processInfo = [MEMORY[0x1E696AE30] processInfo];
+    [processInfo systemUptime];
     v14 = v13;
 
     self->_accumulatedProcessingTime += v11 - v7;
@@ -292,12 +292,12 @@ LABEL_19:
     {
       self->_scoreReportTimestamp = v14;
       v15 = objc_initWeak(&v19, self);
-      v16 = [(EARSyncPSRAudioProcessor *)self delegate];
+      delegate = [(EARSyncPSRAudioProcessor *)self delegate];
 
       if (objc_opt_respondsToSelector())
       {
         v17 = objc_loadWeakRetained(&v19);
-        [v16 psrAudioProcessor:v17 hasSpeakerVector:v10 speakerVectorSize:kaldi::MatrixBase<float>::NumCols(v20) processedAudioDurationMs:v9];
+        [delegate psrAudioProcessor:v17 hasSpeakerVector:v10 speakerVectorSize:kaldi::MatrixBase<float>::NumCols(v20) processedAudioDurationMs:v9];
       }
 
       v18 = earPSRLog;

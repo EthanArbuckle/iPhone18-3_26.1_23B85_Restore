@@ -1,6 +1,6 @@
 @interface MTRCommodityTariffClusterDayEntryStruct
 - (MTRCommodityTariffClusterDayEntryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -33,23 +33,23 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRCommodityTariffClusterDayEntryStruct);
-  v5 = [(MTRCommodityTariffClusterDayEntryStruct *)self dayEntryID];
-  [(MTRCommodityTariffClusterDayEntryStruct *)v4 setDayEntryID:v5];
+  dayEntryID = [(MTRCommodityTariffClusterDayEntryStruct *)self dayEntryID];
+  [(MTRCommodityTariffClusterDayEntryStruct *)v4 setDayEntryID:dayEntryID];
 
-  v6 = [(MTRCommodityTariffClusterDayEntryStruct *)self startTime];
-  [(MTRCommodityTariffClusterDayEntryStruct *)v4 setStartTime:v6];
+  startTime = [(MTRCommodityTariffClusterDayEntryStruct *)self startTime];
+  [(MTRCommodityTariffClusterDayEntryStruct *)v4 setStartTime:startTime];
 
-  v7 = [(MTRCommodityTariffClusterDayEntryStruct *)self duration];
-  [(MTRCommodityTariffClusterDayEntryStruct *)v4 setDuration:v7];
+  duration = [(MTRCommodityTariffClusterDayEntryStruct *)self duration];
+  [(MTRCommodityTariffClusterDayEntryStruct *)v4 setDuration:duration];
 
-  v8 = [(MTRCommodityTariffClusterDayEntryStruct *)self randomizationOffset];
-  [(MTRCommodityTariffClusterDayEntryStruct *)v4 setRandomizationOffset:v8];
+  randomizationOffset = [(MTRCommodityTariffClusterDayEntryStruct *)self randomizationOffset];
+  [(MTRCommodityTariffClusterDayEntryStruct *)v4 setRandomizationOffset:randomizationOffset];
 
-  v9 = [(MTRCommodityTariffClusterDayEntryStruct *)self randomizationType];
-  [(MTRCommodityTariffClusterDayEntryStruct *)v4 setRandomizationType:v9];
+  randomizationType = [(MTRCommodityTariffClusterDayEntryStruct *)self randomizationType];
+  [(MTRCommodityTariffClusterDayEntryStruct *)v4 setRandomizationType:randomizationType];
 
   return v4;
 }

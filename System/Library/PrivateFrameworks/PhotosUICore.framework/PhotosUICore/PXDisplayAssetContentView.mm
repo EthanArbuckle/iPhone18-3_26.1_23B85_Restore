@@ -1,12 +1,12 @@
 @interface PXDisplayAssetContentView
 + (PXReusableObjectPool)viewPool;
-+ (id)checkOutViewForAsset:(id)a3;
-+ (id)checkOutViewForAsset:(id)a3 withPlaybackStyle:(int64_t)a4;
++ (id)checkOutViewForAsset:(id)asset;
++ (id)checkOutViewForAsset:(id)asset withPlaybackStyle:(int64_t)style;
 - (CGRect)contentBounds;
 - (CGRect)contentsRect;
 - (CGSize)targetSize;
 - (OS_os_log)log;
-- (PXDisplayAssetContentView)initWithFrame:(CGRect)a3;
+- (PXDisplayAssetContentView)initWithFrame:(CGRect)frame;
 - (PXDisplayAssetContentViewDelegate)delegate;
 - (PXRegionOfInterest)regionOfInterest;
 - (void)_invalidateError;
@@ -24,36 +24,36 @@
 - (void)becomeReusable;
 - (void)didMoveToWindow;
 - (void)effectivePreferredImageDynamicRangeDidChange;
-- (void)handleError:(id)a3;
+- (void)handleError:(id)error;
 - (void)invalidateLoadingProgress;
 - (void)isDisplayingFullQualityContentDidChange;
 - (void)layoutSubviews;
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5;
-- (void)setAnimatedContentEnabled:(BOOL)a3;
-- (void)setAsset:(id)a3;
-- (void)setContentBounds:(CGRect)a3;
-- (void)setContentMode:(int64_t)a3;
-- (void)setContentsRect:(CGRect)a3;
-- (void)setEffectivePreferredImageDynamicRange:(int64_t)a3;
-- (void)setError:(id)a3;
-- (void)setImage:(id)a3;
-- (void)setImageRequester:(id)a3;
-- (void)setLatestError:(id)a3;
-- (void)setMediaProvider:(id)a3;
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context;
+- (void)setAnimatedContentEnabled:(BOOL)enabled;
+- (void)setAsset:(id)asset;
+- (void)setContentBounds:(CGRect)bounds;
+- (void)setContentMode:(int64_t)mode;
+- (void)setContentsRect:(CGRect)rect;
+- (void)setEffectivePreferredImageDynamicRange:(int64_t)range;
+- (void)setError:(id)error;
+- (void)setImage:(id)image;
+- (void)setImageRequester:(id)requester;
+- (void)setLatestError:(id)error;
+- (void)setMediaProvider:(id)provider;
 - (void)setNeedsLayout;
 - (void)setNeedsUpdateContent;
-- (void)setPlaceholderImageFilters:(id)a3;
-- (void)setPlaceholderTransitionDuration:(double)a3;
-- (void)setPreferredImageDynamicRange:(int64_t)a3;
-- (void)setProgressView:(id)a3;
-- (void)setRequestID:(int64_t)a3;
-- (void)setScreenDynamicRangeMonitor:(id)a3;
-- (void)setTargetSize:(CGSize)a3;
-- (void)setToneMapVideoToStandardDynamicRange:(BOOL)a3;
-- (void)setViewModel:(id)a3;
+- (void)setPlaceholderImageFilters:(id)filters;
+- (void)setPlaceholderTransitionDuration:(double)duration;
+- (void)setPreferredImageDynamicRange:(int64_t)range;
+- (void)setProgressView:(id)view;
+- (void)setRequestID:(int64_t)d;
+- (void)setScreenDynamicRangeMonitor:(id)monitor;
+- (void)setTargetSize:(CGSize)size;
+- (void)setToneMapVideoToStandardDynamicRange:(BOOL)range;
+- (void)setViewModel:(id)model;
 - (void)updateContent;
-- (void)viewModelDidChange:(unint64_t)a3;
-- (void)willMoveToWindow:(id)a3;
+- (void)viewModelDidChange:(unint64_t)change;
+- (void)willMoveToWindow:(id)window;
 @end
 
 @implementation PXDisplayAssetContentView
@@ -102,12 +102,12 @@
 
 - (void)_stopHeadroomMonitoring
 {
-  v3 = [(PXDisplayAssetContentView *)self screenDynamicRangeMonitor];
+  screenDynamicRangeMonitor = [(PXDisplayAssetContentView *)self screenDynamicRangeMonitor];
 
-  if (v3)
+  if (screenDynamicRangeMonitor)
   {
-    v4 = [(PXDisplayAssetContentView *)self screenDynamicRangeMonitor];
-    [v4 stopMonitoring];
+    screenDynamicRangeMonitor2 = [(PXDisplayAssetContentView *)self screenDynamicRangeMonitor];
+    [screenDynamicRangeMonitor2 stopMonitoring];
 
     [(PXDisplayAssetContentView *)self setScreenDynamicRangeMonitor:0];
   }
@@ -115,27 +115,27 @@
 
 - (void)_startHeadroomMonitoringIfPossible
 {
-  v3 = [(PXDisplayAssetContentView *)self window];
+  window = [(PXDisplayAssetContentView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(PXDisplayAssetContentView *)self screenDynamicRangeMonitor];
-    if (v4)
+    screenDynamicRangeMonitor = [(PXDisplayAssetContentView *)self screenDynamicRangeMonitor];
+    if (screenDynamicRangeMonitor)
     {
-      v5 = v4;
-      v6 = [(PXDisplayAssetContentView *)self screenDynamicRangeMonitor];
-      v7 = [v6 isMonitoring];
+      v5 = screenDynamicRangeMonitor;
+      screenDynamicRangeMonitor2 = [(PXDisplayAssetContentView *)self screenDynamicRangeMonitor];
+      isMonitoring = [screenDynamicRangeMonitor2 isMonitoring];
 
-      if ((v7 & 1) == 0)
+      if ((isMonitoring & 1) == 0)
       {
         objc_initWeak(&location, self);
-        v8 = [(PXDisplayAssetContentView *)self screenDynamicRangeMonitor];
+        screenDynamicRangeMonitor3 = [(PXDisplayAssetContentView *)self screenDynamicRangeMonitor];
         v9[0] = MEMORY[0x1E69E9820];
         v9[1] = 3221225472;
         v9[2] = __63__PXDisplayAssetContentView__startHeadroomMonitoringIfPossible__block_invoke;
         v9[3] = &unk_1E7734C38;
         objc_copyWeak(&v10, &location);
-        [v8 startMonitoringWithScreenProvider:v9];
+        [screenDynamicRangeMonitor3 startMonitoringWithScreenProvider:v9];
 
         objc_destroyWeak(&v10);
         objc_destroyWeak(&location);
@@ -155,51 +155,51 @@ id __63__PXDisplayAssetContentView__startHeadroomMonitoringIfPossible__block_inv
 
 - (void)_updateEffectiveImageDynamicRange
 {
-  v3 = [(PXDisplayAssetContentView *)self screenDynamicRangeMonitor];
-  v4 = [v3 screenSupportsHDR];
+  screenDynamicRangeMonitor = [(PXDisplayAssetContentView *)self screenDynamicRangeMonitor];
+  screenSupportsHDR = [screenDynamicRangeMonitor screenSupportsHDR];
 
-  if (v4)
+  if (screenSupportsHDR)
   {
-    v5 = [(PXDisplayAssetContentView *)self preferredImageDynamicRange];
+    preferredImageDynamicRange = [(PXDisplayAssetContentView *)self preferredImageDynamicRange];
   }
 
   else
   {
-    v5 = 0;
+    preferredImageDynamicRange = 0;
   }
 
-  [(PXDisplayAssetContentView *)self setEffectivePreferredImageDynamicRange:v5];
+  [(PXDisplayAssetContentView *)self setEffectivePreferredImageDynamicRange:preferredImageDynamicRange];
 }
 
 - (void)effectivePreferredImageDynamicRangeDidChange
 {
   [(PXDisplayAssetContentView *)self setNeedsUpdateContent];
-  v3 = [(PXDisplayAssetContentView *)self delegate];
-  [v3 displayAssetContentView:self didChangeEffectivePreferredImageDynamicRange:{-[PXDisplayAssetContentView effectivePreferredImageDynamicRange](self, "effectivePreferredImageDynamicRange")}];
+  delegate = [(PXDisplayAssetContentView *)self delegate];
+  [delegate displayAssetContentView:self didChangeEffectivePreferredImageDynamicRange:{-[PXDisplayAssetContentView effectivePreferredImageDynamicRange](self, "effectivePreferredImageDynamicRange")}];
 }
 
 - (void)_loadContentView
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetContentView.m" lineNumber:733 description:{@"Method %s is a responsibility of subclass %@", "-[PXDisplayAssetContentView _loadContentView]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetContentView.m" lineNumber:733 description:{@"Method %s is a responsibility of subclass %@", "-[PXDisplayAssetContentView _loadContentView]", v6}];
 
   abort();
 }
 
-- (void)setProgressView:(id)a3
+- (void)setProgressView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   progressView = self->_progressView;
-  if (progressView != v5)
+  if (progressView != viewCopy)
   {
-    v7 = v5;
+    v7 = viewCopy;
     [(PXRoundProgressView *)progressView removeFromSuperview];
-    objc_storeStrong(&self->_progressView, a3);
+    objc_storeStrong(&self->_progressView, view);
     [(PXDisplayAssetContentView *)self addSubview:self->_progressView];
     [(PXDisplayAssetContentView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
@@ -207,38 +207,38 @@ id __63__PXDisplayAssetContentView__startHeadroomMonitoringIfPossible__block_inv
 {
   if (![(PXDisplayAssetContentView *)self canDisplayLoadingIndicator])
   {
-    v4 = [(PXDisplayAssetContentView *)self failureView];
+    failureView = [(PXDisplayAssetContentView *)self failureView];
     goto LABEL_7;
   }
 
-  v3 = [(PXDisplayAssetContentView *)self error];
+  error = [(PXDisplayAssetContentView *)self error];
 
-  v4 = [(PXDisplayAssetContentView *)self failureView];
-  if (!v3)
+  failureView = [(PXDisplayAssetContentView *)self failureView];
+  if (!error)
   {
 LABEL_7:
-    v6 = v4;
+    v6 = failureView;
     v5 = 1;
     goto LABEL_8;
   }
 
-  if (!v4)
+  if (!failureView)
   {
     [PXLoadingFailureBadgeView sizeForSizeClass:1];
     PXRectWithOriginAndSize();
   }
 
-  v6 = v4;
+  v6 = failureView;
   v5 = 0;
 LABEL_8:
-  [v4 setHidden:v5];
+  [failureView setHidden:v5];
 }
 
 - (void)_updateTargetSize
 {
-  v3 = [(PXDisplayAssetContentView *)self window];
-  v4 = [v3 screen];
-  [v4 scale];
+  window = [(PXDisplayAssetContentView *)self window];
+  screen = [window screen];
+  [screen scale];
   v6 = v5;
 
   if (v6 != 0.0)
@@ -257,9 +257,9 @@ LABEL_8:
   {
     if (self->_updateFlags.isPerformingUpdate)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXDisplayAssetContentView _updateIfNeeded]"];
-      [v8 handleFailureInFunction:v9 file:@"PXDisplayAssetContentView.m" lineNumber:658 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
+      [currentHandler handleFailureInFunction:v9 file:@"PXDisplayAssetContentView.m" lineNumber:658 description:{@"Invalid parameter not satisfying: %@", @"!_updateFlags.isPerformingUpdate"}];
 
       needsUpdate = p_updateFlags->needsUpdate;
     }
@@ -272,9 +272,9 @@ LABEL_8:
       [(PXDisplayAssetContentView *)self updateContent];
       if (!p_updateFlags->isPerformingUpdate)
       {
-        v10 = [MEMORY[0x1E696AAA8] currentHandler];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
         v11 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXDisplayAssetContentView _updateIfNeeded]"];
-        [v10 handleFailureInFunction:v11 file:@"PXDisplayAssetContentView.m" lineNumber:662 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+        [currentHandler2 handleFailureInFunction:v11 file:@"PXDisplayAssetContentView.m" lineNumber:662 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
       }
     }
 
@@ -288,9 +288,9 @@ LABEL_8:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v12 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v13 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXDisplayAssetContentView _updateIfNeeded]"];
-      [v12 handleFailureInFunction:v13 file:@"PXDisplayAssetContentView.m" lineNumber:665 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler3 handleFailureInFunction:v13 file:@"PXDisplayAssetContentView.m" lineNumber:665 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v6 = p_updateFlags->needsUpdate;
@@ -303,9 +303,9 @@ LABEL_8:
 
     if (!p_updateFlags->isPerformingUpdate)
     {
-      v14 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v15 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXDisplayAssetContentView _updateIfNeeded]"];
-      [v14 handleFailureInFunction:v15 file:@"PXDisplayAssetContentView.m" lineNumber:668 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
+      [currentHandler4 handleFailureInFunction:v15 file:@"PXDisplayAssetContentView.m" lineNumber:668 description:{@"Invalid parameter not satisfying: %@", @"_updateFlags.isPerformingUpdate"}];
     }
 
     v7 = p_updateFlags->needsUpdate;
@@ -320,26 +320,26 @@ LABEL_8:
     p_updateFlags->isPerformingUpdate = 0;
     if (v7)
     {
-      v17 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v16 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXDisplayAssetContentView _updateIfNeeded]"];
-      [v17 handleFailureInFunction:v16 file:@"PXDisplayAssetContentView.m" lineNumber:672 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
+      [currentHandler5 handleFailureInFunction:v16 file:@"PXDisplayAssetContentView.m" lineNumber:672 description:{@"still needing to update %lu after update pass", p_updateFlags->needsUpdate}];
     }
   }
 }
 
 - (void)_updateViewModelProperties
 {
-  v3 = [(PXDisplayAssetContentView *)self viewModel];
-  v4 = [v3 asset];
-  v5 = [(PXDisplayAssetContentView *)self asset];
-  v6 = v5;
-  if (v4 == v5)
+  viewModel = [(PXDisplayAssetContentView *)self viewModel];
+  asset = [viewModel asset];
+  asset2 = [(PXDisplayAssetContentView *)self asset];
+  v6 = asset2;
+  if (asset == asset2)
   {
   }
 
   else
   {
-    v7 = [v4 isEqual:v5];
+    v7 = [asset isEqual:asset2];
 
     if ((v7 & 1) == 0)
     {
@@ -352,7 +352,7 @@ LABEL_8:
   v8[2] = __55__PXDisplayAssetContentView__updateViewModelProperties__block_invoke;
   v8[3] = &unk_1E774A128;
   v8[4] = self;
-  [v3 performChanges:v8];
+  [viewModel performChanges:v8];
 LABEL_6:
 }
 
@@ -387,9 +387,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 8) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXDisplayAssetContentView _invalidateViewModelProperties]"];
-      [v6 handleFailureInFunction:v7 file:@"PXDisplayAssetContentView.m" lineNumber:635 description:{@"invalidating %lu after it already has been updated", 8}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXDisplayAssetContentView.m" lineNumber:635 description:{@"invalidating %lu after it already has been updated", 8}];
 
       abort();
     }
@@ -421,8 +421,8 @@ LABEL_5:
 
   else
   {
-    v3 = [(PXDisplayAssetContentView *)self latestError];
-    [(PXDisplayAssetContentView *)self setError:v3];
+    latestError = [(PXDisplayAssetContentView *)self latestError];
+    [(PXDisplayAssetContentView *)self setError:latestError];
   }
 }
 
@@ -442,9 +442,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 4) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXDisplayAssetContentView _invalidateError]"];
-      [v6 handleFailureInFunction:v7 file:@"PXDisplayAssetContentView.m" lineNumber:625 description:{@"invalidating %lu after it already has been updated", 4}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXDisplayAssetContentView.m" lineNumber:625 description:{@"invalidating %lu after it already has been updated", 4}];
 
       abort();
     }
@@ -468,18 +468,18 @@ LABEL_5:
 
 - (void)updateContent
 {
-  v3 = [(PXDisplayAssetContentView *)self asset];
-  v4 = [(PXDisplayAssetContentView *)self mediaProvider];
-  v5 = v4;
-  if (v3 && v4)
+  asset = [(PXDisplayAssetContentView *)self asset];
+  mediaProvider = [(PXDisplayAssetContentView *)self mediaProvider];
+  v5 = mediaProvider;
+  if (asset && mediaProvider)
   {
     if (!-[PXDisplayAssetContentView disableImageRequestsOnResize](self, "disableImageRequestsOnResize") || (-[PXDisplayAssetContentView imageRequester](self, "imageRequester"), v6 = objc_claimAutoreleasedReturnValue(), v7 = [v6 hasFullQuality], v6, (v7 & 1) == 0))
     {
-      v8 = [(PXDisplayAssetContentView *)self imageRequester];
+      imageRequester = [(PXDisplayAssetContentView *)self imageRequester];
 
-      if (!v8)
+      if (!imageRequester)
       {
-        v9 = [[PXImageRequester alloc] initWithMediaProvider:v5 asset:v3];
+        v9 = [[PXImageRequester alloc] initWithMediaProvider:v5 asset:asset];
         [(PXDisplayAssetContentView *)self setImageRequester:v9];
       }
 
@@ -533,9 +533,9 @@ LABEL_6:
 LABEL_5:
     if ((self->_updateFlags.updated & 2) != 0)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXDisplayAssetContentView invalidateLoadingProgress]"];
-      [v6 handleFailureInFunction:v7 file:@"PXDisplayAssetContentView.m" lineNumber:539 description:{@"invalidating %lu after it already has been updated", 2}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXDisplayAssetContentView.m" lineNumber:539 description:{@"invalidating %lu after it already has been updated", 2}];
 
       abort();
     }
@@ -560,174 +560,174 @@ LABEL_7:
   [(PXDisplayAssetContentView *)self _invalidateViewModelProperties];
 }
 
-- (void)setScreenDynamicRangeMonitor:(id)a3
+- (void)setScreenDynamicRangeMonitor:(id)monitor
 {
-  v5 = a3;
+  monitorCopy = monitor;
   screenDynamicRangeMonitor = self->_screenDynamicRangeMonitor;
-  if (screenDynamicRangeMonitor != v5)
+  if (screenDynamicRangeMonitor != monitorCopy)
   {
-    v7 = v5;
+    v7 = monitorCopy;
     [(PXDisplayScreenDynamicRangeMonitor *)screenDynamicRangeMonitor unregisterChangeObserver:self context:PXDisplayScreenDynamicRangeObservationContext];
-    objc_storeStrong(&self->_screenDynamicRangeMonitor, a3);
+    objc_storeStrong(&self->_screenDynamicRangeMonitor, monitor);
     [(PXDisplayScreenDynamicRangeMonitor *)self->_screenDynamicRangeMonitor registerChangeObserver:self context:PXDisplayScreenDynamicRangeObservationContext];
-    v5 = v7;
+    monitorCopy = v7;
   }
 }
 
-- (void)setEffectivePreferredImageDynamicRange:(int64_t)a3
+- (void)setEffectivePreferredImageDynamicRange:(int64_t)range
 {
-  if (self->_effectivePreferredImageDynamicRange != a3)
+  if (self->_effectivePreferredImageDynamicRange != range)
   {
-    self->_effectivePreferredImageDynamicRange = a3;
+    self->_effectivePreferredImageDynamicRange = range;
     [(PXDisplayAssetContentView *)self effectivePreferredImageDynamicRangeDidChange];
   }
 }
 
-- (void)setPreferredImageDynamicRange:(int64_t)a3
+- (void)setPreferredImageDynamicRange:(int64_t)range
 {
-  if (self->_preferredImageDynamicRange != a3)
+  if (self->_preferredImageDynamicRange != range)
   {
-    self->_preferredImageDynamicRange = a3;
+    self->_preferredImageDynamicRange = range;
     [(PXDisplayAssetContentView *)self preferredImageDynamicRangeDidChange];
   }
 }
 
-- (void)setToneMapVideoToStandardDynamicRange:(BOOL)a3
+- (void)setToneMapVideoToStandardDynamicRange:(BOOL)range
 {
-  if (self->_toneMapVideoToStandardDynamicRange != a3)
+  if (self->_toneMapVideoToStandardDynamicRange != range)
   {
-    self->_toneMapVideoToStandardDynamicRange = a3;
+    self->_toneMapVideoToStandardDynamicRange = range;
     [(PXDisplayAssetContentView *)self toneMapVideoToStandardDynamicRangeDidChange];
   }
 }
 
-- (void)setPlaceholderTransitionDuration:(double)a3
+- (void)setPlaceholderTransitionDuration:(double)duration
 {
-  if (self->_placeholderTransitionDuration != a3)
+  if (self->_placeholderTransitionDuration != duration)
   {
-    self->_placeholderTransitionDuration = a3;
+    self->_placeholderTransitionDuration = duration;
     [(PXDisplayAssetContentView *)self placeholderTransitionDurationDidChange];
   }
 }
 
-- (void)setAnimatedContentEnabled:(BOOL)a3
+- (void)setAnimatedContentEnabled:(BOOL)enabled
 {
-  if (self->_animatedContentEnabled != a3)
+  if (self->_animatedContentEnabled != enabled)
   {
-    self->_animatedContentEnabled = a3;
+    self->_animatedContentEnabled = enabled;
     [(PXDisplayAssetContentView *)self animatedContentEnabledDidChange];
   }
 }
 
-- (void)setError:(id)a3
+- (void)setError:(id)error
 {
-  v5 = a3;
-  if (self->_error != v5)
+  errorCopy = error;
+  if (self->_error != errorCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_error, a3);
+    v6 = errorCopy;
+    objc_storeStrong(&self->_error, error);
     [(PXDisplayAssetContentView *)self _invalidateViewModelProperties];
     [(PXDisplayAssetContentView *)self _updateFailureView];
     [(PXDisplayAssetContentView *)self _updateProgressView];
-    v5 = v6;
+    errorCopy = v6;
   }
 }
 
-- (void)setLatestError:(id)a3
+- (void)setLatestError:(id)error
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_latestError != v5)
+  errorCopy = error;
+  v6 = errorCopy;
+  if (self->_latestError != errorCopy)
   {
-    v8 = v5;
-    v7 = [(NSError *)v5 isEqual:?];
+    v8 = errorCopy;
+    v7 = [(NSError *)errorCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_latestError, a3);
+      objc_storeStrong(&self->_latestError, error);
       [(PXDisplayAssetContentView *)self _invalidateError];
       v6 = v8;
     }
   }
 }
 
-- (void)setRequestID:(int64_t)a3
+- (void)setRequestID:(int64_t)d
 {
   requestID = self->_requestID;
-  if (requestID != a3)
+  if (requestID != d)
   {
     if (requestID)
     {
-      v6 = [(PXDisplayAssetContentView *)self mediaProvider];
-      [v6 cancelImageRequest:self->_requestID];
+      mediaProvider = [(PXDisplayAssetContentView *)self mediaProvider];
+      [mediaProvider cancelImageRequest:self->_requestID];
     }
 
-    self->_requestID = a3;
+    self->_requestID = d;
   }
 }
 
-- (void)setTargetSize:(CGSize)a3
+- (void)setTargetSize:(CGSize)size
 {
-  if (a3.width != self->_targetSize.width || a3.height != self->_targetSize.height)
+  if (size.width != self->_targetSize.width || size.height != self->_targetSize.height)
   {
-    self->_targetSize = a3;
+    self->_targetSize = size;
     [(PXDisplayAssetContentView *)self setNeedsUpdateContent];
   }
 }
 
-- (void)setMediaProvider:(id)a3
+- (void)setMediaProvider:(id)provider
 {
-  v5 = a3;
-  if (self->_mediaProvider != v5)
+  providerCopy = provider;
+  if (self->_mediaProvider != providerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_mediaProvider, a3);
+    v6 = providerCopy;
+    objc_storeStrong(&self->_mediaProvider, provider);
     [(PXDisplayAssetContentView *)self setNeedsUpdateContent];
-    v5 = v6;
+    providerCopy = v6;
   }
 }
 
-- (void)setAsset:(id)a3
+- (void)setAsset:(id)asset
 {
-  v5 = a3;
-  if (self->_asset != v5)
+  assetCopy = asset;
+  if (self->_asset != assetCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_asset, a3);
+    v6 = assetCopy;
+    objc_storeStrong(&self->_asset, asset);
     [(PXDisplayAssetContentView *)self setNeedsUpdateContent];
     [(PXDisplayAssetContentView *)self setLatestError:0];
-    v5 = v6;
+    assetCopy = v6;
   }
 }
 
-- (void)setImageRequester:(id)a3
+- (void)setImageRequester:(id)requester
 {
-  v5 = a3;
+  requesterCopy = requester;
   imageRequester = self->_imageRequester;
-  if (imageRequester != v5)
+  if (imageRequester != requesterCopy)
   {
-    v8 = v5;
+    v8 = requesterCopy;
     [(PXImageRequester *)imageRequester unregisterChangeObserver:self context:PXImageRequesterObserverContext_70049];
-    objc_storeStrong(&self->_imageRequester, a3);
+    objc_storeStrong(&self->_imageRequester, requester);
     [(PXImageRequester *)v8 registerChangeObserver:self context:PXImageRequesterObserverContext_70049];
-    v7 = [(PXImageRequester *)v8 image];
-    [(PXDisplayAssetContentView *)self setImage:v7];
+    image = [(PXImageRequester *)v8 image];
+    [(PXDisplayAssetContentView *)self setImage:image];
 
     [(PXImageRequester *)v8 loadingProgress];
     [(PXDisplayAssetContentView *)self setImageProgress:?];
     [(PXDisplayAssetContentView *)self imageRequesterDidChange:-1];
     [(PXDisplayAssetContentView *)self _updateContentsRect];
-    v5 = v8;
+    requesterCopy = v8;
   }
 }
 
-- (void)setContentsRect:(CGRect)a3
+- (void)setContentsRect:(CGRect)rect
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  if (CGRectIsEmpty(a3))
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  if (CGRectIsEmpty(rect))
   {
     x = *off_1E77221F8;
     y = *(off_1E77221F8 + 1);
@@ -750,29 +750,29 @@ LABEL_7:
   }
 }
 
-- (void)setImage:(id)a3
+- (void)setImage:(id)image
 {
-  v5 = a3;
-  if (self->_image != v5)
+  imageCopy = image;
+  if (self->_image != imageCopy)
   {
-    v7 = v5;
-    objc_storeStrong(&self->_image, a3);
+    v7 = imageCopy;
+    objc_storeStrong(&self->_image, image);
     [(PXDisplayAssetContentView *)self imageDidChange];
-    v6 = [(PXDisplayAssetContentView *)self delegate];
-    [v6 displayAssetContentViewDidChangeImage:self];
+    delegate = [(PXDisplayAssetContentView *)self delegate];
+    [delegate displayAssetContentViewDidChangeImage:self];
 
-    v5 = v7;
+    imageCopy = v7;
   }
 }
 
-- (void)setContentBounds:(CGRect)a3
+- (void)setContentBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   p_contentBounds = &self->_contentBounds;
-  if (!CGRectEqualToRect(a3, self->_contentBounds))
+  if (!CGRectEqualToRect(bounds, self->_contentBounds))
   {
     p_contentBounds->origin.x = x;
     p_contentBounds->origin.y = y;
@@ -784,14 +784,14 @@ LABEL_7:
   }
 }
 
-- (void)setPlaceholderImageFilters:(id)a3
+- (void)setPlaceholderImageFilters:(id)filters
 {
-  v4 = a3;
-  v5 = v4;
-  if (self->_placeholderImageFilters != v4)
+  filtersCopy = filters;
+  v5 = filtersCopy;
+  if (self->_placeholderImageFilters != filtersCopy)
   {
-    v9 = v4;
-    v6 = [(NSArray *)v4 isEqual:?];
+    v9 = filtersCopy;
+    v6 = [(NSArray *)filtersCopy isEqual:?];
     v5 = v9;
     if ((v6 & 1) == 0)
     {
@@ -821,9 +821,9 @@ LABEL_6:
 LABEL_5:
     if (self->_updateFlags.updated)
     {
-      v6 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v7 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"-[PXDisplayAssetContentView setNeedsUpdateContent]"];
-      [v6 handleFailureInFunction:v7 file:@"PXDisplayAssetContentView.m" lineNumber:368 description:{@"invalidating %lu after it already has been updated", 1}];
+      [currentHandler handleFailureInFunction:v7 file:@"PXDisplayAssetContentView.m" lineNumber:368 description:{@"invalidating %lu after it already has been updated", 1}];
 
       abort();
     }
@@ -850,8 +850,8 @@ LABEL_5:
   v3 = [off_1E7721860 alloc];
   [(PXDisplayAssetContentView *)self bounds];
   v4 = [v3 initWithRect:self inCoordinateSpace:?];
-  v5 = [(PXDisplayAssetContentView *)self imageRequester];
-  [v4 setImageRequester:v5];
+  imageRequester = [(PXDisplayAssetContentView *)self imageRequester];
+  [v4 setImageRequester:imageRequester];
 
   [(PXDisplayAssetContentView *)self contentsRect];
   [v4 setImageContentsRect:?];
@@ -859,30 +859,30 @@ LABEL_5:
   return v4;
 }
 
-- (void)observable:(id)a3 didChange:(unint64_t)a4 context:(void *)a5
+- (void)observable:(id)observable didChange:(unint64_t)change context:(void *)context
 {
-  v9 = a3;
-  if (PXImageRequesterObserverContext_70049 == a5)
+  observableCopy = observable;
+  if (PXImageRequesterObserverContext_70049 == context)
   {
     px_dispatch_on_main_queue();
   }
 
-  if (ViewModelObservationContext_70051 == a5)
+  if (ViewModelObservationContext_70051 == context)
   {
-    [(PXDisplayAssetContentView *)self viewModelDidChange:a4];
+    [(PXDisplayAssetContentView *)self viewModelDidChange:change];
   }
 
   else
   {
-    if (PXDisplayScreenDynamicRangeObservationContext != a5)
+    if (PXDisplayScreenDynamicRangeObservationContext != context)
     {
-      v10 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v10 handleFailureInMethod:a2 object:self file:@"PXDisplayAssetContentView.m" lineNumber:346 description:@"Code which should be unreachable has been reached"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"PXDisplayAssetContentView.m" lineNumber:346 description:@"Code which should be unreachable has been reached"];
 
       abort();
     }
 
-    if (a4)
+    if (change)
     {
       [(PXDisplayAssetContentView *)self _updateEffectiveImageDynamicRange];
     }
@@ -939,8 +939,8 @@ uint64_t __58__PXDisplayAssetContentView_observable_didChange_context___block_in
 
 - (void)_updateContentsRect
 {
-  v3 = [(PXDisplayAssetContentView *)self viewModel];
-  [v3 stillImageContentsRect];
+  viewModel = [(PXDisplayAssetContentView *)self viewModel];
+  [viewModel stillImageContentsRect];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -952,8 +952,8 @@ uint64_t __58__PXDisplayAssetContentView_observable_didChange_context___block_in
   v14.size.height = v11;
   if (CGRectIsEmpty(v14))
   {
-    v12 = [(PXDisplayAssetContentView *)self imageRequester];
-    [v12 contentsRect];
+    imageRequester = [(PXDisplayAssetContentView *)self imageRequester];
+    [imageRequester contentsRect];
     [(PXDisplayAssetContentView *)self setContentsRect:?];
   }
 
@@ -999,53 +999,53 @@ void __32__PXDisplayAssetContentView_log__block_invoke()
   log_log = v0;
 }
 
-- (void)handleError:(id)a3
+- (void)handleError:(id)error
 {
   v10 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
-    [(PXDisplayAssetContentView *)self setLatestError:v4];
+    [(PXDisplayAssetContentView *)self setLatestError:errorCopy];
     v5 = [(PXDisplayAssetContentView *)self log];
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
       v6 = 138412546;
-      v7 = self;
+      selfCopy = self;
       v8 = 2112;
-      v9 = v4;
+      v9 = errorCopy;
       _os_log_error_impl(&dword_1A3C1C000, v5, OS_LOG_TYPE_ERROR, "%@ received error : %@", &v6, 0x16u);
     }
   }
 }
 
-- (void)viewModelDidChange:(unint64_t)a3
+- (void)viewModelDidChange:(unint64_t)change
 {
-  if ((a3 & 0x20000) != 0)
+  if ((change & 0x20000) != 0)
   {
     [(PXDisplayAssetContentView *)self _updateContentsRect];
   }
 }
 
-- (void)setViewModel:(id)a3
+- (void)setViewModel:(id)model
 {
-  v5 = a3;
+  modelCopy = model;
   viewModel = self->_viewModel;
-  if (viewModel != v5)
+  if (viewModel != modelCopy)
   {
-    v7 = v5;
+    v7 = modelCopy;
     [(PXDisplayAssetViewModel *)viewModel unregisterChangeObserver:self context:ViewModelObservationContext_70051];
-    objc_storeStrong(&self->_viewModel, a3);
+    objc_storeStrong(&self->_viewModel, model);
     [(PXDisplayAssetViewModel *)self->_viewModel registerChangeObserver:self context:ViewModelObservationContext_70051];
     [(PXDisplayAssetContentView *)self viewModelDidChange:-1];
-    v5 = v7;
+    modelCopy = v7;
   }
 }
 
-- (void)setContentMode:(int64_t)a3
+- (void)setContentMode:(int64_t)mode
 {
   v4.receiver = self;
   v4.super_class = PXDisplayAssetContentView;
-  [(PXDisplayAssetContentView *)&v4 setContentMode:a3];
+  [(PXDisplayAssetContentView *)&v4 setContentMode:mode];
   [(PXDisplayAssetContentView *)self contentModeDidChange];
 }
 
@@ -1059,8 +1059,8 @@ void __32__PXDisplayAssetContentView_log__block_invoke()
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(PXDisplayAssetContentView *)self contentView];
-  [v11 setFrame:{v4, v6, v8, v10}];
+  contentView = [(PXDisplayAssetContentView *)self contentView];
+  [contentView setFrame:{v4, v6, v8, v10}];
 
   [(PXDisplayAssetContentView *)self setContentBounds:v4, v6, v8, v10];
   [(PXDisplayAssetContentView *)self _updateIfNeeded];
@@ -1077,8 +1077,8 @@ void __32__PXDisplayAssetContentView_log__block_invoke()
   v21.size.width = v8;
   v21.size.height = v10;
   v17 = CGRectGetMaxY(v21) - v15 + -8.0;
-  v18 = [(PXDisplayAssetContentView *)self progressView];
-  [v18 setFrame:{v16, v17, v13, v15}];
+  progressView = [(PXDisplayAssetContentView *)self progressView];
+  [progressView setFrame:{v16, v17, v13, v15}];
 
   PXRectGetCenter();
 }
@@ -1099,31 +1099,31 @@ void __32__PXDisplayAssetContentView_log__block_invoke()
   [(PXDisplayAssetContentView *)self _startHeadroomMonitoringIfPossible];
 }
 
-- (void)willMoveToWindow:(id)a3
+- (void)willMoveToWindow:(id)window
 {
   v4.receiver = self;
   v4.super_class = PXDisplayAssetContentView;
-  [(PXDisplayAssetContentView *)&v4 willMoveToWindow:a3];
+  [(PXDisplayAssetContentView *)&v4 willMoveToWindow:window];
   [(PXDisplayAssetContentView *)self _stopHeadroomMonitoring];
 }
 
-- (PXDisplayAssetContentView)initWithFrame:(CGRect)a3
+- (PXDisplayAssetContentView)initWithFrame:(CGRect)frame
 {
   v8.receiver = self;
   v8.super_class = PXDisplayAssetContentView;
-  v3 = [(PXDisplayAssetContentView *)&v8 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXDisplayAssetContentView *)&v8 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
     [(PXDisplayAssetContentView *)v3 _resetPreferredImageDynamicRange];
-    v5 = [(PXDisplayAssetContentView *)v4 contentView];
-    [(PXDisplayAssetContentView *)v4 addSubview:v5];
+    contentView = [(PXDisplayAssetContentView *)v4 contentView];
+    [(PXDisplayAssetContentView *)v4 addSubview:contentView];
 
     [(PXDisplayAssetContentView *)v4 _updateTargetSize];
     [(PXDisplayAssetContentView *)v4 _updateProgressView];
     [(PXDisplayAssetContentView *)v4 setAccessibilityIgnoresInvertColors:1];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 addObserver:v4 selector:sel__applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v4 selector:sel__applicationDidEnterBackground name:*MEMORY[0x1E69DDAC8] object:0];
   }
 
   return v4;
@@ -1135,31 +1135,31 @@ void __41__PXDisplayAssetContentView_checkInView___block_invoke(uint64_t a1)
   [v2 checkInReusableObject:*(a1 + 32)];
 }
 
-+ (id)checkOutViewForAsset:(id)a3 withPlaybackStyle:(int64_t)a4
++ (id)checkOutViewForAsset:(id)asset withPlaybackStyle:(int64_t)style
 {
-  if ((a4 - 2) > 3)
+  if ((style - 2) > 3)
   {
     v5 = 0;
   }
 
   else
   {
-    v5 = qword_1A53819D8[a4 - 2];
+    v5 = qword_1A53819D8[style - 2];
   }
 
-  v6 = a3;
-  v7 = [a1 viewPool];
-  v8 = [v7 checkOutReusableObjectWithReuseIdentifier:v5];
+  assetCopy = asset;
+  viewPool = [self viewPool];
+  v8 = [viewPool checkOutReusableObjectWithReuseIdentifier:v5];
 
-  [v8 setAsset:v6];
+  [v8 setAsset:assetCopy];
 
   return v8;
 }
 
-+ (id)checkOutViewForAsset:(id)a3
++ (id)checkOutViewForAsset:(id)asset
 {
-  v4 = a3;
-  v5 = [a1 checkOutViewForAsset:v4 withPlaybackStyle:{objc_msgSend(v4, "playbackStyle")}];
+  assetCopy = asset;
+  v5 = [self checkOutViewForAsset:assetCopy withPlaybackStyle:{objc_msgSend(assetCopy, "playbackStyle")}];
 
   return v5;
 }

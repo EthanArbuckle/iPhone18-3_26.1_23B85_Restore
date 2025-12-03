@@ -1,32 +1,32 @@
 @interface CLSAdminRequestor
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5;
-- (CLSAdminRequestor)initWithDatabaseRow:(id)a3;
-- (void)bindTo:(id)a3;
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database;
+- (CLSAdminRequestor)initWithDatabaseRow:(id)row;
+- (void)bindTo:(id)to;
 @end
 
 @implementation CLSAdminRequestor
 
-- (CLSAdminRequestor)initWithDatabaseRow:(id)a3
+- (CLSAdminRequestor)initWithDatabaseRow:(id)row
 {
-  v4 = a3;
-  v5 = [(CLSAdminRequestor *)self _init];
-  v6 = v5;
-  if (v5)
+  rowCopy = row;
+  _init = [(CLSAdminRequestor *)self _init];
+  v6 = _init;
+  if (_init)
   {
-    [v5 _initCommonPropsWithDatabaseRow:v4];
-    v7 = sub_10016D778(v4, @"state");
+    [_init _initCommonPropsWithDatabaseRow:rowCopy];
+    v7 = sub_10016D778(rowCopy, @"state");
     [v6 setState:{objc_msgSend(v7, "intValue")}];
 
-    v8 = sub_10016D778(v4, @"email");
+    v8 = sub_10016D778(rowCopy, @"email");
     [v6 setEmail:v8];
 
-    v9 = sub_10016D778(v4, @"verificationCode");
+    v9 = sub_10016D778(rowCopy, @"verificationCode");
     [v6 setVerificationCode:v9];
 
-    v10 = sub_10016D778(v4, @"note");
+    v10 = sub_10016D778(rowCopy, @"note");
     [v6 setNote:v10];
 
-    v11 = sub_10016D778(v4, @"serverRequestHeaders");
+    v11 = sub_10016D778(rowCopy, @"serverRequestHeaders");
     if (v11)
     {
       v12 = [NSSet alloc];
@@ -40,35 +40,35 @@
   return v6;
 }
 
-- (void)bindTo:(id)a3
+- (void)bindTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   v16.receiver = self;
   v16.super_class = CLSAdminRequestor;
-  [(CLSAdminRequestor *)&v16 bindTo:v4];
+  [(CLSAdminRequestor *)&v16 bindTo:toCopy];
   v5 = [NSNumber numberWithInteger:[(CLSAdminRequestor *)self state]];
-  sub_1000982FC(v4, v5, @"state");
+  sub_1000982FC(toCopy, v5, @"state");
 
-  v6 = [(CLSAdminRequestor *)self email];
-  sub_1000982FC(v4, v6, @"email");
+  email = [(CLSAdminRequestor *)self email];
+  sub_1000982FC(toCopy, email, @"email");
 
-  v7 = [(CLSAdminRequestor *)self verificationCode];
-  sub_1000982FC(v4, v7, @"verificationCode");
+  verificationCode = [(CLSAdminRequestor *)self verificationCode];
+  sub_1000982FC(toCopy, verificationCode, @"verificationCode");
 
-  v8 = [(CLSAdminRequestor *)self note];
-  sub_1000982FC(v4, v8, @"note");
+  note = [(CLSAdminRequestor *)self note];
+  sub_1000982FC(toCopy, note, @"note");
 
-  v9 = [(CLSAdminRequestor *)self serverRequestHeaders];
+  serverRequestHeaders = [(CLSAdminRequestor *)self serverRequestHeaders];
 
-  if (v9)
+  if (serverRequestHeaders)
   {
-    v10 = [(CLSAdminRequestor *)self serverRequestHeaders];
-    v11 = [CLSUtil dictionaryStrippingNSNullValues:v10];
+    serverRequestHeaders2 = [(CLSAdminRequestor *)self serverRequestHeaders];
+    v11 = [CLSUtil dictionaryStrippingNSNullValues:serverRequestHeaders2];
     [(CLSAdminRequestor *)self setServerRequestHeaders:v11];
 
-    v12 = [(CLSAdminRequestor *)self serverRequestHeaders];
+    serverRequestHeaders3 = [(CLSAdminRequestor *)self serverRequestHeaders];
     v15 = 0;
-    v13 = [NSKeyedArchiver archivedDataWithRootObject:v12 requiringSecureCoding:1 error:&v15];
+    v13 = [NSKeyedArchiver archivedDataWithRootObject:serverRequestHeaders3 requiringSecureCoding:1 error:&v15];
     v14 = v15;
 
     if (v14)
@@ -82,25 +82,25 @@
     v13 = 0;
   }
 
-  sub_1000982FC(v4, v13, @"serverRequestHeaders");
+  sub_1000982FC(toCopy, v13, @"serverRequestHeaders");
 }
 
-+ (BOOL)migrateFromVersion:(unint64_t)a3 finalVersion:(unint64_t *)a4 inDatabase:(id)a5
++ (BOOL)migrateFromVersion:(unint64_t)version finalVersion:(unint64_t *)finalVersion inDatabase:(id)database
 {
-  v7 = a5;
-  v8 = v7;
-  if (!a3)
+  databaseCopy = database;
+  v8 = databaseCopy;
+  if (!version)
   {
-    if (!sub_1000B9298(v7, @"create table CLSAdminRequestor (\n    objectID               text not null,\n    dateCreated            real not null,\n    dateLastModified       real not null,\n    email                  text,\n    state                  integer,\n    verificationCode       text,\n    note                   text,\n    serverRequestHeaders   blob\n)\n", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSAdminRequestor_objectID on CLSAdminRequestor (objectID)", 0, 0, 0))
+    if (!sub_1000B9298(databaseCopy, @"create table CLSAdminRequestor (\n    objectID               text not null,\n    dateCreated            real not null,\n    dateLastModified       real not null,\n    email                  text,\n    state                  integer,\n    verificationCode       text,\n    note                   text,\n    serverRequestHeaders   blob\n)\n", 0, 0, 0) || !sub_1000B9298(v8, @"create unique index if not exists CLSAdminRequestor_objectID on CLSAdminRequestor (objectID)", 0, 0, 0))
     {
       v9 = 0;
       goto LABEL_7;
     }
 
-    a3 = 1;
+    version = 1;
   }
 
-  *a4 = a3;
+  *finalVersion = version;
   v9 = 1;
 LABEL_7:
 

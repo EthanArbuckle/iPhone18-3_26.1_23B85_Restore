@@ -11,13 +11,13 @@
 - (void)notifyOfInvalidation;
 - (void)notifyOfResume;
 - (void)onQueue_setupConnection;
-- (void)registerObserver:(id)a3;
-- (void)remoteHotspotSessionForClient:(id)a3 withCompletionHandler:(id)a4;
-- (void)serviceManagerProxyForIdentifier:(id)a3 client:(id)a4 withCompletionHandler:(id)a5;
+- (void)registerObserver:(id)observer;
+- (void)remoteHotspotSessionForClient:(id)client withCompletionHandler:(id)handler;
+- (void)serviceManagerProxyForIdentifier:(id)identifier client:(id)client withCompletionHandler:(id)handler;
 - (void)setupConnection;
-- (void)streamsForMessage:(id)a3 withCompletionHandler:(id)a4;
-- (void)unlockManagerWithCompletionHandler:(id)a3;
-- (void)unregisterObserver:(id)a3;
+- (void)streamsForMessage:(id)message withCompletionHandler:(id)handler;
+- (void)unlockManagerWithCompletionHandler:(id)handler;
+- (void)unregisterObserver:(id)observer;
 @end
 
 @implementation SFCompanionXPCManager
@@ -265,12 +265,12 @@ uint64_t __29__SFCompanionXPCManager_init__block_invoke(uint64_t result)
 
   [(NSXPCConnection *)self->_connection _setQueue:self->_xpcSetupQueue];
   [(NSXPCConnection *)self->_connection setRemoteObjectInterface:sXPCManagerInterface];
-  v5 = self;
+  selfCopy = self;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __48__SFCompanionXPCManager_onQueue_setupConnection__block_invoke;
   v14[3] = &unk_1E788B198;
-  v6 = v5;
+  v6 = selfCopy;
   v15 = v6;
   [(NSXPCConnection *)self->_connection setInterruptionHandler:v14];
   v9 = MEMORY[0x1E69E9820];
@@ -343,10 +343,10 @@ uint64_t __48__SFCompanionXPCManager_onQueue_setupConnection__block_invoke_358(u
 - (void)notifyOfInterruption
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_observers copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_observers copy];
+  objc_sync_exit(selfCopy);
 
   v11 = 0u;
   v12 = 0u;
@@ -383,10 +383,10 @@ uint64_t __48__SFCompanionXPCManager_onQueue_setupConnection__block_invoke_358(u
 - (void)notifyOfResume
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_observers copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_observers copy];
+  objc_sync_exit(selfCopy);
 
   v12 = 0u;
   v13 = 0u;
@@ -410,7 +410,7 @@ uint64_t __48__SFCompanionXPCManager_onQueue_setupConnection__block_invoke_358(u
         v8 = *(*(&v10 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          [v8 xpcManagerDidResumeConnection:{v2, v10}];
+          [v8 xpcManagerDidResumeConnection:{selfCopy, v10}];
         }
 
         ++v7;
@@ -429,10 +429,10 @@ uint64_t __48__SFCompanionXPCManager_onQueue_setupConnection__block_invoke_358(u
 - (void)notifyOfInvalidation
 {
   v15 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(NSMutableArray *)v2->_observers copy];
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(NSMutableArray *)selfCopy->_observers copy];
+  objc_sync_exit(selfCopy);
 
   v12 = 0u;
   v13 = 0u;
@@ -456,7 +456,7 @@ uint64_t __48__SFCompanionXPCManager_onQueue_setupConnection__block_invoke_358(u
         v8 = *(*(&v10 + 1) + 8 * v7);
         if (objc_opt_respondsToSelector())
         {
-          [v8 xpcManagerDidInvalidate:{v2, v10}];
+          [v8 xpcManagerDidInvalidate:{selfCopy, v10}];
         }
 
         ++v7;
@@ -472,56 +472,56 @@ uint64_t __48__SFCompanionXPCManager_onQueue_setupConnection__block_invoke_358(u
   v9 = *MEMORY[0x1E69E9840];
 }
 
-- (void)registerObserver:(id)a3
+- (void)registerObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (([(NSMutableArray *)v4->_observers containsObject:v5]& 1) == 0)
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (([(NSMutableArray *)selfCopy->_observers containsObject:observerCopy]& 1) == 0)
   {
-    [(NSMutableArray *)v4->_observers addObject:v5];
+    [(NSMutableArray *)selfCopy->_observers addObject:observerCopy];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)unregisterObserver:(id)a3
+- (void)unregisterObserver:(id)observer
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(NSMutableArray *)v4->_observers removeObject:v5];
-  objc_sync_exit(v4);
+  observerCopy = observer;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(NSMutableArray *)selfCopy->_observers removeObject:observerCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)serviceManagerProxyForIdentifier:(id)a3 client:(id)a4 withCompletionHandler:(id)a5
+- (void)serviceManagerProxyForIdentifier:(id)identifier client:(id)client withCompletionHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(SFCompanionXPCManager *)self connection];
+  identifierCopy = identifier;
+  clientCopy = client;
+  handlerCopy = handler;
+  connection = [(SFCompanionXPCManager *)self connection];
 
-  if (v11)
+  if (connection)
   {
     v12 = _os_activity_create(&dword_1A9662000, "Sharing/SFCompanionXPC/createCompanionServiceManagerWithIdentifier", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v12, &state);
-    v13 = [(SFCompanionXPCManager *)self connection];
+    connection2 = [(SFCompanionXPCManager *)self connection];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __87__SFCompanionXPCManager_serviceManagerProxyForIdentifier_client_withCompletionHandler___block_invoke;
     v18[3] = &unk_1E788B6D8;
-    v14 = v10;
+    v14 = handlerCopy;
     v19 = v14;
-    v15 = [v13 remoteObjectProxyWithErrorHandler:v18];
+    v15 = [connection2 remoteObjectProxyWithErrorHandler:v18];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __87__SFCompanionXPCManager_serviceManagerProxyForIdentifier_client_withCompletionHandler___block_invoke_364;
     v16[3] = &unk_1E788CB88;
     v17 = v14;
-    [v15 createCompanionServiceManagerWithIdentifier:v8 clientProxy:v9 reply:v16];
+    [v15 createCompanionServiceManagerWithIdentifier:identifierCopy clientProxy:clientCopy reply:v16];
 
     os_activity_scope_leave(&state);
   }
@@ -539,34 +539,34 @@ void __87__SFCompanionXPCManager_serviceManagerProxyForIdentifier_client_withCom
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)streamsForMessage:(id)a3 withCompletionHandler:(id)a4
+- (void)streamsForMessage:(id)message withCompletionHandler:(id)handler
 {
   v22[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SFCompanionXPCManager *)self connection];
+  messageCopy = message;
+  handlerCopy = handler;
+  connection = [(SFCompanionXPCManager *)self connection];
 
-  if (v8)
+  if (connection)
   {
     v9 = _os_activity_create(&dword_1A9662000, "Sharing/SFCompanionXPC/createStreamsForMessage", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v9, &state);
-    v10 = [(SFCompanionXPCManager *)self connection];
+    connection2 = [(SFCompanionXPCManager *)self connection];
     v18[0] = MEMORY[0x1E69E9820];
     v18[1] = 3221225472;
     v18[2] = __65__SFCompanionXPCManager_streamsForMessage_withCompletionHandler___block_invoke;
     v18[3] = &unk_1E788B6D8;
-    v11 = v7;
+    v11 = handlerCopy;
     v19 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v18];
+    v12 = [connection2 remoteObjectProxyWithErrorHandler:v18];
 
     v16[0] = MEMORY[0x1E69E9820];
     v16[1] = 3221225472;
     v16[2] = __65__SFCompanionXPCManager_streamsForMessage_withCompletionHandler___block_invoke_366;
     v16[3] = &unk_1E788CBB0;
     v17 = v11;
-    [v12 createStreamsForMessage:v6 reply:v16];
+    [v12 createStreamsForMessage:messageCopy reply:v16];
 
     os_activity_scope_leave(&state);
   }
@@ -579,7 +579,7 @@ void __87__SFCompanionXPCManager_serviceManagerProxyForIdentifier_client_withCom
     v14 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v22 forKeys:&v21 count:1];
     v9 = [v13 errorWithDomain:*MEMORY[0x1E696A798] code:64 userInfo:v14];
 
-    (*(v7 + 2))(v7, 0, v9);
+    (*(handlerCopy + 2))(handlerCopy, 0, v9);
   }
 
   v15 = *MEMORY[0x1E69E9840];
@@ -597,9 +597,9 @@ void __65__SFCompanionXPCManager_streamsForMessage_withCompletionHandler___block
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)unlockManagerWithCompletionHandler:(id)a3
+- (void)unlockManagerWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   if ([(SFCompanionXPCManager *)self isInvalid])
   {
     v5 = auto_unlock_log();
@@ -612,22 +612,22 @@ void __65__SFCompanionXPCManager_streamsForMessage_withCompletionHandler___block
     [(SFCompanionXPCManager *)self setupConnection];
   }
 
-  v6 = [(SFCompanionXPCManager *)self connection];
+  connection = [(SFCompanionXPCManager *)self connection];
 
-  if (v6)
+  if (connection)
   {
     v7 = _os_activity_create(&dword_1A9662000, "Sharing/SFCompanionXPC/createUnlockManagerWithReply", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     buf.opaque[0] = 0;
     buf.opaque[1] = 0;
     os_activity_scope_enter(v7, &buf);
-    v8 = [(SFCompanionXPCManager *)self connection];
+    connection2 = [(SFCompanionXPCManager *)self connection];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __60__SFCompanionXPCManager_unlockManagerWithCompletionHandler___block_invoke;
     v13[3] = &unk_1E788B6D8;
-    v9 = v4;
+    v9 = handlerCopy;
     v14 = v9;
-    v10 = [v8 remoteObjectProxyWithErrorHandler:v13];
+    v10 = [connection2 remoteObjectProxyWithErrorHandler:v13];
 
     v11[0] = MEMORY[0x1E69E9820];
     v11[1] = 3221225472;
@@ -652,33 +652,33 @@ void __60__SFCompanionXPCManager_unlockManagerWithCompletionHandler___block_invo
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)remoteHotspotSessionForClient:(id)a3 withCompletionHandler:(id)a4
+- (void)remoteHotspotSessionForClient:(id)client withCompletionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(SFCompanionXPCManager *)self connection];
+  clientCopy = client;
+  handlerCopy = handler;
+  connection = [(SFCompanionXPCManager *)self connection];
 
-  if (v8)
+  if (connection)
   {
     v9 = _os_activity_create(&dword_1A9662000, "Sharing/SFCompanionXPC/createHotspotSessionForClientProxy", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     state.opaque[0] = 0;
     state.opaque[1] = 0;
     os_activity_scope_enter(v9, &state);
-    v10 = [(SFCompanionXPCManager *)self connection];
+    connection2 = [(SFCompanionXPCManager *)self connection];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __77__SFCompanionXPCManager_remoteHotspotSessionForClient_withCompletionHandler___block_invoke;
     v15[3] = &unk_1E788B6D8;
-    v11 = v7;
+    v11 = handlerCopy;
     v16 = v11;
-    v12 = [v10 remoteObjectProxyWithErrorHandler:v15];
+    v12 = [connection2 remoteObjectProxyWithErrorHandler:v15];
 
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __77__SFCompanionXPCManager_remoteHotspotSessionForClient_withCompletionHandler___block_invoke_373;
     v13[3] = &unk_1E788CC00;
     v14 = v11;
-    [v12 createHotspotSessionForClientProxy:v6 reply:v13];
+    [v12 createHotspotSessionForClientProxy:clientCopy reply:v13];
 
     os_activity_scope_leave(&state);
   }
@@ -710,23 +710,23 @@ void __71__SFCompanionXPCManager_updateLowLatencyFilter_isAddFilter_completion__
 
 - (void)appleAccountSignedIn
 {
-  v3 = [(SFCompanionXPCManager *)self connection];
+  connection = [(SFCompanionXPCManager *)self connection];
 
-  if (!v3)
+  if (!connection)
   {
     [(SFCompanionXPCManager *)self setupConnection];
   }
 
-  v4 = [(SFCompanionXPCManager *)self connection];
+  connection2 = [(SFCompanionXPCManager *)self connection];
 
-  if (v4)
+  if (connection2)
   {
     v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFCompanionXPC/appleAccountSignedIn", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v8.opaque[0] = 0;
     v8.opaque[1] = 0;
     os_activity_scope_enter(v5, &v8);
-    v6 = [(SFCompanionXPCManager *)self connection];
-    v7 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_376];
+    connection3 = [(SFCompanionXPCManager *)self connection];
+    v7 = [connection3 remoteObjectProxyWithErrorHandler:&__block_literal_global_376];
 
     [v7 appleAccountSignedIn];
     os_activity_scope_leave(&v8);
@@ -745,23 +745,23 @@ void __45__SFCompanionXPCManager_appleAccountSignedIn__block_invoke(uint64_t a1,
 
 - (void)appleAccountSignedOut
 {
-  v3 = [(SFCompanionXPCManager *)self connection];
+  connection = [(SFCompanionXPCManager *)self connection];
 
-  if (!v3)
+  if (!connection)
   {
     [(SFCompanionXPCManager *)self setupConnection];
   }
 
-  v4 = [(SFCompanionXPCManager *)self connection];
+  connection2 = [(SFCompanionXPCManager *)self connection];
 
-  if (v4)
+  if (connection2)
   {
     v5 = _os_activity_create(&dword_1A9662000, "Sharing/SFCompanionXPC/appleAccountSignedOut", MEMORY[0x1E69E9C00], OS_ACTIVITY_FLAG_DEFAULT);
     v8.opaque[0] = 0;
     v8.opaque[1] = 0;
     os_activity_scope_enter(v5, &v8);
-    v6 = [(SFCompanionXPCManager *)self connection];
-    v7 = [v6 remoteObjectProxyWithErrorHandler:&__block_literal_global_378];
+    connection3 = [(SFCompanionXPCManager *)self connection];
+    v7 = [connection3 remoteObjectProxyWithErrorHandler:&__block_literal_global_378];
 
     [v7 appleAccountSignedOut];
     os_activity_scope_leave(&v8);

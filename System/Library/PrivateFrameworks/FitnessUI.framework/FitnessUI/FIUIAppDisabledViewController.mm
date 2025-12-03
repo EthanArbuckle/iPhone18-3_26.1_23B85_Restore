@@ -1,31 +1,31 @@
 @interface FIUIAppDisabledViewController
-- (FIUIAppDisabledViewController)initWithAppName:(id)a3 disabledReason:(unint64_t)a4;
+- (FIUIAppDisabledViewController)initWithAppName:(id)name disabledReason:(unint64_t)reason;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation FIUIAppDisabledViewController
 
-- (FIUIAppDisabledViewController)initWithAppName:(id)a3 disabledReason:(unint64_t)a4
+- (FIUIAppDisabledViewController)initWithAppName:(id)name disabledReason:(unint64_t)reason
 {
   v37[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  nameCopy = name;
   v35.receiver = self;
   v35.super_class = FIUIAppDisabledViewController;
   v7 = [(FIUIAppDisabledViewController *)&v35 init];
   v8 = v7;
   if (v7)
   {
-    [(FIUIAppDisabledViewController *)v7 setTitle:v6];
-    if (a4)
+    [(FIUIAppDisabledViewController *)v7 setTitle:nameCopy];
+    if (reason)
     {
-      if (a4 != 1)
+      if (reason != 1)
       {
         v11 = 0;
 LABEL_8:
         active = FIIsActivePairedDeviceSatellitePaired();
-        v34 = v6;
-        if (a4 == 1)
+        v34 = nameCopy;
+        if (reason == 1)
         {
           v14 = FIUIBundle();
           v15 = v14;
@@ -35,7 +35,7 @@ LABEL_8:
 
         else
         {
-          if (a4)
+          if (reason)
           {
             v18 = 0;
 LABEL_16:
@@ -46,8 +46,8 @@ LABEL_16:
             [v19 setHyphenationFactor:v20];
             v36[0] = *MEMORY[0x1E69DB650];
             v21 = v36[0];
-            v22 = [MEMORY[0x1E6989B18] systemGrayTextColor];
-            v37[0] = v22;
+            systemGrayTextColor = [MEMORY[0x1E6989B18] systemGrayTextColor];
+            v37[0] = systemGrayTextColor;
             v36[1] = *MEMORY[0x1E69DB648];
             v23 = [MEMORY[0x1E69DB878] systemFontOfSize:12.0];
             v36[2] = *MEMORY[0x1E69DB688];
@@ -57,8 +57,8 @@ LABEL_16:
 
             v25 = [objc_alloc(MEMORY[0x1E696AD40]) initWithString:v33 attributes:v24];
             v26 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v24];
-            v27 = [MEMORY[0x1E69DC888] whiteColor];
-            [v26 setObject:v27 forKey:v21];
+            whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+            [v26 setObject:whiteColor forKey:v21];
 
             [v25 setAttributes:v26 range:{0, objc_msgSend(v11, "length")}];
             v28 = [FIUITextView alloc];
@@ -68,11 +68,11 @@ LABEL_16:
 
             [(FIUITextView *)v8->_textView setEditable:0];
             [(FIUITextView *)v8->_textView setSelectable:0];
-            v31 = [MEMORY[0x1E69DC888] blackColor];
-            [(FIUITextView *)v8->_textView setBackgroundColor:v31];
+            blackColor = [MEMORY[0x1E69DC888] blackColor];
+            [(FIUITextView *)v8->_textView setBackgroundColor:blackColor];
 
             [(FIUITextView *)v8->_textView setAttributedText:v25];
-            v6 = v34;
+            nameCopy = v34;
             goto LABEL_17;
           }
 
@@ -121,8 +121,8 @@ LABEL_17:
   v4.receiver = self;
   v4.super_class = FIUIAppDisabledViewController;
   [(FIUIAppDisabledViewController *)&v4 viewDidLoad];
-  v3 = [(FIUIAppDisabledViewController *)self view];
-  [v3 addSubview:self->_textView];
+  view = [(FIUIAppDisabledViewController *)self view];
+  [view addSubview:self->_textView];
 }
 
 - (void)viewWillLayoutSubviews
@@ -130,16 +130,16 @@ LABEL_17:
   v14.receiver = self;
   v14.super_class = FIUIAppDisabledViewController;
   [(FIUIAppDisabledViewController *)&v14 viewWillLayoutSubviews];
-  v3 = [(FIUIAppDisabledViewController *)self view];
-  [v3 bounds];
+  view = [(FIUIAppDisabledViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
 
-  v8 = [(FIUIAppDisabledViewController *)self view];
-  v9 = [v8 window];
-  v10 = [v9 windowScene];
-  v11 = [v10 statusBarManager];
-  [v11 statusBarFrame];
+  view2 = [(FIUIAppDisabledViewController *)self view];
+  window = [view2 window];
+  windowScene = [window windowScene];
+  statusBarManager = [windowScene statusBarManager];
+  [statusBarManager statusBarFrame];
   v13 = v12;
 
   [(FIUITextView *)self->_textView setFrame:0.0, v13, v5, v7 - v13];

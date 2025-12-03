@@ -1,57 +1,57 @@
 @interface MHSchemaMHEndpointDelayContext
-- (BOOL)isEqual:(id)a3;
-- (MHSchemaMHEndpointDelayContext)initWithDictionary:(id)a3;
-- (MHSchemaMHEndpointDelayContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MHSchemaMHEndpointDelayContext)initWithDictionary:(id)dictionary;
+- (MHSchemaMHEndpointDelayContext)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)setHasEndpointDelayInNs:(BOOL)a3;
-- (void)setHasEndpointDelayInNsV2:(BOOL)a3;
-- (void)setHasEndpointModelDelayInNs:(BOOL)a3;
-- (void)setHasSpeakingEndInNs:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasEndpointDelayInNs:(BOOL)ns;
+- (void)setHasEndpointDelayInNsV2:(BOOL)v2;
+- (void)setHasEndpointModelDelayInNs:(BOOL)ns;
+- (void)setHasSpeakingEndInNs:(BOOL)ns;
+- (void)writeTo:(id)to;
 @end
 
 @implementation MHSchemaMHEndpointDelayContext
 
-- (MHSchemaMHEndpointDelayContext)initWithDictionary:(id)a3
+- (MHSchemaMHEndpointDelayContext)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v13.receiver = self;
   v13.super_class = MHSchemaMHEndpointDelayContext;
   v5 = [(MHSchemaMHEndpointDelayContext *)&v13 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"speakingStartInNs"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"speakingStartInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHEndpointDelayContext setSpeakingStartInNs:](v5, "setSpeakingStartInNs:", [v6 unsignedLongLongValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"speakingEndInNs"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"speakingEndInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHEndpointDelayContext setSpeakingEndInNs:](v5, "setSpeakingEndInNs:", [v7 unsignedLongLongValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"endpointDelayInNs"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"endpointDelayInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHEndpointDelayContext setEndpointDelayInNs:](v5, "setEndpointDelayInNs:", [v8 unsignedLongLongValue]);
     }
 
-    v9 = [v4 objectForKeyedSubscript:@"endpointModelDelayInNs"];
+    v9 = [dictionaryCopy objectForKeyedSubscript:@"endpointModelDelayInNs"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[MHSchemaMHEndpointDelayContext setEndpointModelDelayInNs:](v5, "setEndpointModelDelayInNs:", [v9 unsignedLongLongValue]);
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"endpointDelayInNsV2"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"endpointDelayInNsV2"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -64,30 +64,30 @@
   return v5;
 }
 
-- (MHSchemaMHEndpointDelayContext)initWithJSON:(id)a3
+- (MHSchemaMHEndpointDelayContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(MHSchemaMHEndpointDelayContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(MHSchemaMHEndpointDelayContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(MHSchemaMHEndpointDelayContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -100,12 +100,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 4) != 0)
   {
     v7 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHEndpointDelayContext endpointDelayInNs](self, "endpointDelayInNs")}];
-    [v3 setObject:v7 forKeyedSubscript:@"endpointDelayInNs"];
+    [dictionary setObject:v7 forKeyedSubscript:@"endpointDelayInNs"];
 
     has = self->_has;
     if ((has & 0x10) == 0)
@@ -126,7 +126,7 @@ LABEL_3:
   }
 
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHEndpointDelayContext endpointDelayInNsV2](self, "endpointDelayInNsV2")}];
-  [v3 setObject:v8 forKeyedSubscript:@"endpointDelayInNsV2"];
+  [dictionary setObject:v8 forKeyedSubscript:@"endpointDelayInNsV2"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -142,7 +142,7 @@ LABEL_4:
 
 LABEL_12:
   v9 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHEndpointDelayContext endpointModelDelayInNs](self, "endpointModelDelayInNs")}];
-  [v3 setObject:v9 forKeyedSubscript:@"endpointModelDelayInNs"];
+  [dictionary setObject:v9 forKeyedSubscript:@"endpointModelDelayInNs"];
 
   has = self->_has;
   if ((has & 2) == 0)
@@ -158,19 +158,19 @@ LABEL_5:
 
 LABEL_13:
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHEndpointDelayContext speakingEndInNs](self, "speakingEndInNs")}];
-  [v3 setObject:v10 forKeyedSubscript:@"speakingEndInNs"];
+  [dictionary setObject:v10 forKeyedSubscript:@"speakingEndInNs"];
 
   if (*&self->_has)
   {
 LABEL_6:
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{-[MHSchemaMHEndpointDelayContext speakingStartInNs](self, "speakingStartInNs")}];
-    [v3 setObject:v5 forKeyedSubscript:@"speakingStartInNs"];
+    [dictionary setObject:v5 forKeyedSubscript:@"speakingStartInNs"];
   }
 
 LABEL_7:
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -241,16 +241,16 @@ LABEL_6:
   return v3 ^ v2 ^ v4 ^ v5 ^ v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_22;
   }
 
   has = self->_has;
-  v6 = v4[48];
+  v6 = equalCopy[48];
   if ((*&has & 1) != (v6 & 1))
   {
     goto LABEL_22;
@@ -259,13 +259,13 @@ LABEL_6:
   if (*&has)
   {
     speakingStartInNs = self->_speakingStartInNs;
-    if (speakingStartInNs != [v4 speakingStartInNs])
+    if (speakingStartInNs != [equalCopy speakingStartInNs])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[48];
+    v6 = equalCopy[48];
   }
 
   v8 = (*&has >> 1) & 1;
@@ -277,13 +277,13 @@ LABEL_6:
   if (v8)
   {
     speakingEndInNs = self->_speakingEndInNs;
-    if (speakingEndInNs != [v4 speakingEndInNs])
+    if (speakingEndInNs != [equalCopy speakingEndInNs])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[48];
+    v6 = equalCopy[48];
   }
 
   v10 = (*&has >> 2) & 1;
@@ -295,13 +295,13 @@ LABEL_6:
   if (v10)
   {
     endpointDelayInNs = self->_endpointDelayInNs;
-    if (endpointDelayInNs != [v4 endpointDelayInNs])
+    if (endpointDelayInNs != [equalCopy endpointDelayInNs])
     {
       goto LABEL_22;
     }
 
     has = self->_has;
-    v6 = v4[48];
+    v6 = equalCopy[48];
   }
 
   v12 = (*&has >> 3) & 1;
@@ -313,10 +313,10 @@ LABEL_6:
   if (v12)
   {
     endpointModelDelayInNs = self->_endpointModelDelayInNs;
-    if (endpointModelDelayInNs == [v4 endpointModelDelayInNs])
+    if (endpointModelDelayInNs == [equalCopy endpointModelDelayInNs])
     {
       has = self->_has;
-      v6 = v4[48];
+      v6 = equalCopy[48];
       goto LABEL_18;
     }
 
@@ -335,7 +335,7 @@ LABEL_18:
   if (v14)
   {
     endpointDelayInNsV2 = self->_endpointDelayInNsV2;
-    if (endpointDelayInNsV2 != [v4 endpointDelayInNsV2])
+    if (endpointDelayInNsV2 != [equalCopy endpointDelayInNsV2])
     {
       goto LABEL_22;
     }
@@ -347,9 +347,9 @@ LABEL_23:
   return v16;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v5 = a3;
+  toCopy = to;
   has = self->_has;
   if (has)
   {
@@ -410,9 +410,9 @@ LABEL_6:
 LABEL_7:
 }
 
-- (void)setHasEndpointDelayInNsV2:(BOOL)a3
+- (void)setHasEndpointDelayInNsV2:(BOOL)v2
 {
-  if (a3)
+  if (v2)
   {
     v3 = 16;
   }
@@ -425,9 +425,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasEndpointModelDelayInNs:(BOOL)a3
+- (void)setHasEndpointModelDelayInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 8;
   }
@@ -440,9 +440,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasEndpointDelayInNs:(BOOL)a3
+- (void)setHasEndpointDelayInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 4;
   }
@@ -455,9 +455,9 @@ LABEL_7:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasSpeakingEndInNs:(BOOL)a3
+- (void)setHasSpeakingEndInNs:(BOOL)ns
 {
-  if (a3)
+  if (ns)
   {
     v3 = 2;
   }

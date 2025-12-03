@@ -1,36 +1,36 @@
 @interface MLEQPreset
-+ (id)eqPresetForBuiltInPresetType:(int)a3;
-+ (id)eqPresetForName:(id)a3;
-- (MLEQPreset)initWithBuiltInPresetType:(int)a3;
++ (id)eqPresetForBuiltInPresetType:(int)type;
++ (id)eqPresetForName:(id)name;
+- (MLEQPreset)initWithBuiltInPresetType:(int)type;
 @end
 
 @implementation MLEQPreset
 
-- (MLEQPreset)initWithBuiltInPresetType:(int)a3
+- (MLEQPreset)initWithBuiltInPresetType:(int)type
 {
   v10.receiver = self;
   v10.super_class = MLEQPreset;
   v4 = [(MLEQPreset *)&v10 init];
   if (v4)
   {
-    v5 = MLNSStringForBuiltInPreset(a3, 0);
+    v5 = MLNSStringForBuiltInPreset(type, 0);
     name = v4->_name;
     v4->_name = v5;
 
-    v7 = MLNSStringForBuiltInPreset(a3, 1);
+    v7 = MLNSStringForBuiltInPreset(type, 1);
     localizedName = v4->_localizedName;
     v4->_localizedName = v7;
 
-    v4->_builtInPresetType = a3;
+    v4->_builtInPresetType = type;
   }
 
   return v4;
 }
 
-+ (id)eqPresetForBuiltInPresetType:(int)a3
++ (id)eqPresetForBuiltInPresetType:(int)type
 {
-  v3 = *&a3;
-  if (!sPresetsByBuiltInType || (CFDictionaryGetValue(sPresetsByBuiltInType, a3), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
+  v3 = *&type;
+  if (!sPresetsByBuiltInType || (CFDictionaryGetValue(sPresetsByBuiltInType, type), (v4 = objc_claimAutoreleasedReturnValue()) == 0))
   {
     v5 = [[MLEQPreset alloc] initWithBuiltInPresetType:v3];
     Mutable = sPresetsByBuiltInType;
@@ -55,14 +55,14 @@
   return v4;
 }
 
-+ (id)eqPresetForName:(id)a3
++ (id)eqPresetForName:(id)name
 {
-  v3 = a3;
-  if (v3)
+  nameCopy = name;
+  if (nameCopy)
   {
     if (sPresetsByPresetName)
     {
-      v4 = CFDictionaryGetValue(sPresetsByPresetName, v3);
+      v4 = CFDictionaryGetValue(sPresetsByPresetName, nameCopy);
       if (v4)
       {
         goto LABEL_11;
@@ -73,7 +73,7 @@
     while (1)
     {
       v6 = MLNSStringForBuiltInPreset(v5, 0);
-      v7 = [v6 isEqualToString:v3];
+      v7 = [v6 isEqualToString:nameCopy];
 
       if (v7)
       {
@@ -94,13 +94,13 @@
     }
 
 LABEL_9:
-    v8 = [MEMORY[0x277CCA900] punctuationCharacterSet];
-    v9 = [v3 stringByTrimmingCharactersInSet:v8];
-    v10 = [v9 intValue];
+    punctuationCharacterSet = [MEMORY[0x277CCA900] punctuationCharacterSet];
+    v9 = [nameCopy stringByTrimmingCharactersInSet:punctuationCharacterSet];
+    intValue = [v9 intValue];
 
-    if ((v10 - 100) <= 0x15)
+    if ((intValue - 100) <= 0x15)
     {
-      v4 = [MLEQPreset eqPresetForBuiltInPresetType:v10];
+      v4 = [MLEQPreset eqPresetForBuiltInPresetType:intValue];
 LABEL_11:
       v11 = v4;
       goto LABEL_13;

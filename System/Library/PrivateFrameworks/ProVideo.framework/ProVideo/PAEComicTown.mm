@@ -1,18 +1,18 @@
 @interface PAEComicTown
 - (BOOL)addParameters;
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5;
-- (PAEComicTown)initWithAPIManager:(id)a3;
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info;
+- (PAEComicTown)initWithAPIManager:(id)manager;
 - (id)properties;
 - (void)dealloc;
 @end
 
 @implementation PAEComicTown
 
-- (PAEComicTown)initWithAPIManager:(id)a3
+- (PAEComicTown)initWithAPIManager:(id)manager
 {
   v4.receiver = self;
   v4.super_class = PAEComicTown;
-  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:a3];
+  return [(PAESharedDefaultBase *)&v4 initWithAPIManager:manager];
 }
 
 - (void)dealloc
@@ -64,7 +64,7 @@
   return v3;
 }
 
-- (BOOL)canThrowRenderOutput:(id)a3 withInput:(id)a4 withInfo:(id *)a5
+- (BOOL)canThrowRenderOutput:(id)output withInput:(id)input withInfo:(id *)info
 {
   v9 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735B780];
   v10 = [(PROAPIAccessing *)self->super.super._apiManager apiForProtocol:&unk_28735F2C8];
@@ -89,30 +89,30 @@
   v29 = 0;
   v30 = 0;
   v28 = 0;
-  [v9 getFloatValue:&v33 fromParm:1 atFxTime:a5->var0.var1];
-  [v9 getIntValue:&v32 fromParm:2 atFxTime:a5->var0.var1];
-  [v9 getIntValue:&v31 fromParm:3 atFxTime:a5->var0.var1];
-  [v9 getIntValue:&v30 + 4 fromParm:4 atFxTime:a5->var0.var1];
-  [v9 getIntValue:&v30 fromParm:5 atFxTime:a5->var0.var1];
-  [v9 getIntValue:&v29 fromParm:6 atFxTime:a5->var0.var1];
-  [v9 getIntValue:&v29 + 4 fromParm:9 atFxTime:a5->var0.var1];
-  [v9 getIntValue:&v28 fromParm:10 atFxTime:a5->var0.var1];
-  v12 = [(PAESharedDefaultBase *)self getRenderMode:a5->var0.var1];
+  [v9 getFloatValue:&v33 fromParm:1 atFxTime:info->var0.var1];
+  [v9 getIntValue:&v32 fromParm:2 atFxTime:info->var0.var1];
+  [v9 getIntValue:&v31 fromParm:3 atFxTime:info->var0.var1];
+  [v9 getIntValue:&v30 + 4 fromParm:4 atFxTime:info->var0.var1];
+  [v9 getIntValue:&v30 fromParm:5 atFxTime:info->var0.var1];
+  [v9 getIntValue:&v29 fromParm:6 atFxTime:info->var0.var1];
+  [v9 getIntValue:&v29 + 4 fromParm:9 atFxTime:info->var0.var1];
+  [v9 getIntValue:&v28 fromParm:10 atFxTime:info->var0.var1];
+  v12 = [(PAESharedDefaultBase *)self getRenderMode:info->var0.var1];
   if (!v12)
   {
     return v12;
   }
 
-  if ([a4 imageType] != 3)
+  if ([input imageType] != 3)
   {
 LABEL_9:
     LOBYTE(v12) = 0;
     return v12;
   }
 
-  if (a4)
+  if (input)
   {
-    [a4 heliumRef];
+    [input heliumRef];
   }
 
   else
@@ -133,10 +133,10 @@ LABEL_9:
   (*(*v13 + 96))(v13, 7, v29, 0.0, 0.0, 0.0);
   (*(*v13 + 96))(v13, 3, SHIDWORD(v29), 0.0, 0.0, 0.0);
   (*(*v13 + 96))(v13, 10, 1.0, 0.0, 0.0, 0.0);
-  v14 = [a4 dod];
+  v14 = [input dod];
   v17 = HGRectMake4i(v14 + 1, HIDWORD(v14) + 1, v15 - 1, v16 - 1);
   (*(*v13 + 96))(v13, 8, v17, SHIDWORD(v17), v18, v19);
-  [(PAESharedDefaultBase *)self getScaleForImage:a4];
+  [(PAESharedDefaultBase *)self getScaleForImage:input];
   v20 = v24;
   v21 = v25;
   (*(*v13 + 96))(v13, 9, v20, v21, 0.0, 0.0);
@@ -144,7 +144,7 @@ LABEL_9:
   v26 = v13;
   (*(v22 + 16))(v13);
   (*(*v13 + 24))(v13);
-  [a3 setHeliumRef:&v26];
+  [output setHeliumRef:&v26];
   if (v26)
   {
     (*(*v26 + 24))(v26);

@@ -1,9 +1,9 @@
 @interface HUWheelControlPopUpButton
 - (HUControlViewDelegate)delegate;
 - (id)_createMenu;
-- (void)setValue:(id)a3;
-- (void)setValueFormatter:(id)a3;
-- (void)setValues:(id)a3;
+- (void)setValue:(id)value;
+- (void)setValueFormatter:(id)formatter;
+- (void)setValues:(id)values;
 @end
 
 @implementation HUWheelControlPopUpButton
@@ -12,7 +12,7 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB18]);
   objc_initWeak(&location, self);
-  v4 = [(HUWheelControlPopUpButton *)self values];
+  values = [(HUWheelControlPopUpButton *)self values];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __40__HUWheelControlPopUpButton__createMenu__block_invoke;
@@ -20,7 +20,7 @@
   objc_copyWeak(&v10, &location);
   v5 = v3;
   v9 = v5;
-  [v4 enumerateObjectsUsingBlock:v8];
+  [values enumerateObjectsUsingBlock:v8];
 
   v6 = [MEMORY[0x277D75710] menuWithTitle:&stru_2823E0EE8 children:v5];
 
@@ -64,47 +64,47 @@ void __40__HUWheelControlPopUpButton__createMenu__block_invoke_2(uint64_t a1)
   [v3 controlView:*(a1 + 32) valueDidChange:*(a1 + 40)];
 }
 
-- (void)setValues:(id)a3
+- (void)setValues:(id)values
 {
-  v6 = a3;
+  valuesCopy = values;
   if (![(NSArray *)self->_values isEqualToArray:?])
   {
-    objc_storeStrong(&self->_values, a3);
-    v5 = [(HUWheelControlPopUpButton *)self _createMenu];
-    [(HUWheelControlPopUpButton *)self setMenu:v5];
+    objc_storeStrong(&self->_values, values);
+    _createMenu = [(HUWheelControlPopUpButton *)self _createMenu];
+    [(HUWheelControlPopUpButton *)self setMenu:_createMenu];
   }
 }
 
-- (void)setValueFormatter:(id)a3
+- (void)setValueFormatter:(id)formatter
 {
-  v6 = a3;
+  formatterCopy = formatter;
   if (([(NSFormatter *)self->_valueFormatter isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_valueFormatter, a3);
-    v5 = [(HUWheelControlPopUpButton *)self _createMenu];
-    [(HUWheelControlPopUpButton *)self setMenu:v5];
+    objc_storeStrong(&self->_valueFormatter, formatter);
+    _createMenu = [(HUWheelControlPopUpButton *)self _createMenu];
+    [(HUWheelControlPopUpButton *)self setMenu:_createMenu];
   }
 }
 
-- (void)setValue:(id)a3
+- (void)setValue:(id)value
 {
-  v5 = a3;
-  if (v5)
+  valueCopy = value;
+  if (valueCopy)
   {
-    v10 = v5;
-    v6 = [self->_value isEqualToNumber:v5];
-    v5 = v10;
+    v10 = valueCopy;
+    v6 = [self->_value isEqualToNumber:valueCopy];
+    valueCopy = v10;
     if ((v6 & 1) == 0)
     {
-      objc_storeStrong(&self->_value, a3);
-      v7 = [(HUWheelControlPopUpButton *)self valueFormatter];
-      v8 = [v7 stringForObjectValue:v10];
+      objc_storeStrong(&self->_value, value);
+      valueFormatter = [(HUWheelControlPopUpButton *)self valueFormatter];
+      v8 = [valueFormatter stringForObjectValue:v10];
       [(HUWheelControlPopUpButton *)self setTitle:v8 forState:0];
 
-      v9 = [(HUWheelControlPopUpButton *)self _createMenu];
-      [(HUWheelControlPopUpButton *)self setMenu:v9];
+      _createMenu = [(HUWheelControlPopUpButton *)self _createMenu];
+      [(HUWheelControlPopUpButton *)self setMenu:_createMenu];
 
-      v5 = v10;
+      valueCopy = v10;
     }
   }
 }

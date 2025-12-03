@@ -3,10 +3,10 @@
 + (MEMessageActionDestination)inbox;
 + (MEMessageActionDestination)junk;
 + (MEMessageActionDestination)trash;
-- (BOOL)isEqual:(id)a3;
-- (MEMessageActionDestination)initWithCoder:(id)a3;
-- (MEMessageActionDestination)initWithDefaultMailboxType:(int64_t)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MEMessageActionDestination)initWithCoder:(id)coder;
+- (MEMessageActionDestination)initWithDefaultMailboxType:(int64_t)type;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MEMessageActionDestination
@@ -39,10 +39,10 @@
   return v2;
 }
 
-- (MEMessageActionDestination)initWithDefaultMailboxType:(int64_t)a3
+- (MEMessageActionDestination)initWithDefaultMailboxType:(int64_t)type
 {
   v5 = +[MEMessageActionDestination allowedMailboxTypes];
-  v6 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v6 = [MEMORY[0x277CCABB0] numberWithInteger:type];
   v7 = [v5 containsObject:v6];
 
   if (v7)
@@ -52,44 +52,44 @@
     v8 = [(MEMessageActionDestination *)&v11 init];
     if (v8)
     {
-      v8->_mailboxType = a3;
+      v8->_mailboxType = type;
     }
 
     self = v8;
-    v9 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v9 = 0;
+    selfCopy = 0;
   }
 
-  return v9;
+  return selfCopy;
 }
 
-- (MEMessageActionDestination)initWithCoder:(id)a3
+- (MEMessageActionDestination)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = -[MEMessageActionDestination initWithDefaultMailboxType:](self, "initWithDefaultMailboxType:", [v4 decodeIntegerForKey:@"EFPropertyKey_mailboxType"]);
+  coderCopy = coder;
+  v5 = -[MEMessageActionDestination initWithDefaultMailboxType:](self, "initWithDefaultMailboxType:", [coderCopy decodeIntegerForKey:@"EFPropertyKey_mailboxType"]);
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[MEMessageActionDestination mailboxType](self forKey:{"mailboxType"), @"EFPropertyKey_mailboxType"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[MEMessageActionDestination mailboxType](self forKey:{"mailboxType"), @"EFPropertyKey_mailboxType"}];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
   if ([v5 isEqual:objc_opt_class()])
   {
-    v6 = v4;
-    v7 = [(MEMessageActionDestination *)self mailboxType];
-    v8 = v7 == [v6 mailboxType];
+    v6 = equalCopy;
+    mailboxType = [(MEMessageActionDestination *)self mailboxType];
+    v8 = mailboxType == [v6 mailboxType];
   }
 
   else

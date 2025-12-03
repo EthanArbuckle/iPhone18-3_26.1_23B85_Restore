@@ -5,15 +5,15 @@
 - (VKFrameProcessor)init;
 - (double)infrequentProcessingInterval;
 - (double)processingInterval;
-- (void)_processFrame:(void *)a1;
+- (void)_processFrame:(void *)frame;
 - (void)cancel;
-- (void)enqueueFrame:(id)a3;
+- (void)enqueueFrame:(id)frame;
 - (void)requestImmediateProcessing;
 - (void)reset;
-- (void)setExecuting:(void *)a1;
-- (void)setInfrequentProcessingInterval:(double)a3;
-- (void)setProcessingInterval:(double)a3;
-- (void)setResultHandlerQueue:(id)a3;
+- (void)setExecuting:(void *)executing;
+- (void)setInfrequentProcessingInterval:(double)interval;
+- (void)setProcessingInterval:(double)interval;
+- (void)setResultHandlerQueue:(id)queue;
 @end
 
 @implementation VKFrameProcessor
@@ -55,31 +55,31 @@
   return v3;
 }
 
-- (void)setResultHandlerQueue:(id)a3
+- (void)setResultHandlerQueue:(id)queue
 {
-  v4 = a3;
+  queueCopy = queue;
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __42__VKFrameProcessor_setResultHandlerQueue___block_invoke;
   v6[3] = &unk_1E7BE4768;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = queueCopy;
+  v5 = queueCopy;
   vk_performWhileLocked(self, v6);
 }
 
-- (void)enqueueFrame:(id)a3
+- (void)enqueueFrame:(id)frame
 {
-  v4 = a3;
-  v5 = [(VKFrameProcessor *)self wantsThrottling];
+  frameCopy = frame;
+  wantsThrottling = [(VKFrameProcessor *)self wantsThrottling];
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __33__VKFrameProcessor_enqueueFrame___block_invoke;
   v7[3] = &unk_1E7BE5068;
-  v9 = v5;
+  v9 = wantsThrottling;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = frameCopy;
+  v6 = frameCopy;
   vk_performWhileLocked(self, v7);
 }
 
@@ -147,14 +147,14 @@ uint64_t __34__VKFrameProcessor__processFrame___block_invoke(uint64_t result)
   return processingInterval;
 }
 
-- (void)setProcessingInterval:(double)a3
+- (void)setProcessingInterval:(double)interval
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __42__VKFrameProcessor_setProcessingInterval___block_invoke;
   v3[3] = &unk_1E7BE5090;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = interval;
   vk_performWhileLocked(self, v3);
 }
 
@@ -173,14 +173,14 @@ double __42__VKFrameProcessor_setProcessingInterval___block_invoke(uint64_t a1)
   return infrequentProcessingInterval;
 }
 
-- (void)setInfrequentProcessingInterval:(double)a3
+- (void)setInfrequentProcessingInterval:(double)interval
 {
   v3[0] = MEMORY[0x1E69E9820];
   v3[1] = 3221225472;
   v3[2] = __52__VKFrameProcessor_setInfrequentProcessingInterval___block_invoke;
   v3[3] = &unk_1E7BE5090;
   v3[4] = self;
-  *&v3[5] = a3;
+  *&v3[5] = interval;
   vk_performWhileLocked(self, v3);
 }
 
@@ -248,35 +248,35 @@ uint64_t __25__VKFrameProcessor_reset__block_invoke(uint64_t result)
   return result;
 }
 
-- (void)_processFrame:(void *)a1
+- (void)_processFrame:(void *)frame
 {
-  if (a1)
+  if (frame)
   {
-    v3 = a1[3];
+    v3 = frame[3];
     v4 = a2;
     dispatch_assert_queue_V2(v3);
-    [a1 processFrame:v4];
+    [frame processFrame:v4];
 
     v5[0] = MEMORY[0x1E69E9820];
     v5[1] = 3221225472;
     v5[2] = __34__VKFrameProcessor__processFrame___block_invoke;
     v5[3] = &unk_1E7BE4208;
-    v5[4] = a1;
-    vk_performWhileLocked(a1, v5);
+    v5[4] = frame;
+    vk_performWhileLocked(frame, v5);
   }
 }
 
-- (void)setExecuting:(void *)a1
+- (void)setExecuting:(void *)executing
 {
-  if (a1)
+  if (executing)
   {
     v2[0] = MEMORY[0x1E69E9820];
     v2[1] = 3221225472;
     v2[2] = __33__VKFrameProcessor_setExecuting___block_invoke;
     v2[3] = &unk_1E7BE41B8;
-    v2[4] = a1;
+    v2[4] = executing;
     v3 = a2;
-    vk_performWhileLocked(a1, v2);
+    vk_performWhileLocked(executing, v2);
   }
 }
 

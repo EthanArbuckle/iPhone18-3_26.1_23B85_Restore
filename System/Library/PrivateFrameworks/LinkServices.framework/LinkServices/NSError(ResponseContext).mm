@@ -10,8 +10,8 @@
   if (a3)
   {
     v4 = a3;
-    v5 = [a1 userInfo];
-    v6 = [v5 mutableCopy];
+    userInfo = [self userInfo];
+    v6 = [userInfo mutableCopy];
     v7 = v6;
     if (v6)
     {
@@ -27,22 +27,22 @@
 
     [v10 setObject:v4 forKeyedSubscript:@"responseContext"];
     v11 = MEMORY[0x1E696ABC0];
-    v12 = [a1 domain];
-    v9 = [v11 errorWithDomain:v12 code:objc_msgSend(a1 userInfo:{"code"), v10}];
+    domain = [self domain];
+    selfCopy = [v11 errorWithDomain:domain code:objc_msgSend(self userInfo:{"code"), v10}];
   }
 
   else
   {
-    v9 = a1;
+    selfCopy = self;
   }
 
-  return v9;
+  return selfCopy;
 }
 
 - (id)responseContext
 {
-  v1 = [a1 userInfo];
-  v2 = [v1 objectForKeyedSubscript:@"responseContext"];
+  userInfo = [self userInfo];
+  v2 = [userInfo objectForKeyedSubscript:@"responseContext"];
 
   return v2;
 }

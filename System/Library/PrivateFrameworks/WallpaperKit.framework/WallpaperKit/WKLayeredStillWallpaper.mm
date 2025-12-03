@@ -1,27 +1,27 @@
 @interface WKLayeredStillWallpaper
 + (id)na_identity;
-- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)a3 error:(id *)a4;
-- (WKLayeredStillWallpaper)initWithIdentifier:(int64_t)a3 name:(id)a4 backgroundThumbnailImageURL:(id)a5 foregroundThumbnailImageURL:(id)a6 floatingThumbnailImageURL:(id)a7 backgroundFullSizeImageURL:(id)a8 foregroundFullSizeImageURL:(id)a9 floatingFullSizeImageURL:(id)a10;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)l error:(id *)error;
+- (WKLayeredStillWallpaper)initWithIdentifier:(int64_t)identifier name:(id)name backgroundThumbnailImageURL:(id)l foregroundThumbnailImageURL:(id)rL floatingThumbnailImageURL:(id)uRL backgroundFullSizeImageURL:(id)imageURL foregroundFullSizeImageURL:(id)sizeImageURL floatingFullSizeImageURL:(id)self0;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)propertyListRepresentation;
 @end
 
 @implementation WKLayeredStillWallpaper
 
-- (WKLayeredStillWallpaper)initWithIdentifier:(int64_t)a3 name:(id)a4 backgroundThumbnailImageURL:(id)a5 foregroundThumbnailImageURL:(id)a6 floatingThumbnailImageURL:(id)a7 backgroundFullSizeImageURL:(id)a8 foregroundFullSizeImageURL:(id)a9 floatingFullSizeImageURL:(id)a10
+- (WKLayeredStillWallpaper)initWithIdentifier:(int64_t)identifier name:(id)name backgroundThumbnailImageURL:(id)l foregroundThumbnailImageURL:(id)rL floatingThumbnailImageURL:(id)uRL backgroundFullSizeImageURL:(id)imageURL foregroundFullSizeImageURL:(id)sizeImageURL floatingFullSizeImageURL:(id)self0
 {
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
+  lCopy = l;
+  rLCopy = rL;
+  uRLCopy = uRL;
+  imageURLCopy = imageURL;
+  sizeImageURLCopy = sizeImageURL;
+  fullSizeImageURLCopy = fullSizeImageURL;
   v26.receiver = self;
   v26.super_class = WKLayeredStillWallpaper;
-  v22 = [(WKLayeredThumbnailWallpaper *)&v26 initWithIdentifier:a3 name:a4 type:4 representedType:4 backgroundThumbnailImageURL:v16 foregroundThumbnailImageURL:v17 floatingThumbnailImageURL:v18];
+  v22 = [(WKLayeredThumbnailWallpaper *)&v26 initWithIdentifier:identifier name:name type:4 representedType:4 backgroundThumbnailImageURL:lCopy foregroundThumbnailImageURL:rLCopy floatingThumbnailImageURL:uRLCopy];
   if (v22)
   {
-    v23 = [[WKLayeredStillWallpaperInput alloc] initWithBackgroundThumbnailImageURL:v16 foregroundThumbnailImageURL:v17 floatingThumbnailImageURL:v18 backgroundFullSizeImageURL:v19 foregroundFullSizeImageURL:v20 floatingFullSizeImageURL:v21];
+    v23 = [[WKLayeredStillWallpaperInput alloc] initWithBackgroundThumbnailImageURL:lCopy foregroundThumbnailImageURL:rLCopy floatingThumbnailImageURL:uRLCopy backgroundFullSizeImageURL:imageURLCopy foregroundFullSizeImageURL:sizeImageURLCopy floatingFullSizeImageURL:fullSizeImageURLCopy];
     wallpaperValue = v22->__wallpaperValue;
     v22->__wallpaperValue = v23;
   }
@@ -29,24 +29,24 @@
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v17 = [objc_opt_class() allocWithZone:a3];
-  v16 = [(WKAbstractWallpaper *)self identifier];
-  v15 = [(WKAbstractWallpaper *)self name];
-  v20 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-  v4 = [v20 backgroundThumbnailImageURL];
-  v19 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-  v5 = [v19 foregroundThumbnailImageURL];
-  v18 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-  v6 = [v18 floatingThumbnailImageURL];
-  v7 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-  v8 = [v7 backgroundFullSizeImageURL];
-  v9 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-  v10 = [v9 foregroundFullSizeImageURL];
-  v11 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-  v12 = [v11 floatingFullSizeImageURL];
-  v13 = [v17 initWithIdentifier:v16 name:v15 backgroundThumbnailImageURL:v4 foregroundThumbnailImageURL:v5 floatingThumbnailImageURL:v6 backgroundFullSizeImageURL:v8 foregroundFullSizeImageURL:v10 floatingFullSizeImageURL:v12];
+  v17 = [objc_opt_class() allocWithZone:zone];
+  identifier = [(WKAbstractWallpaper *)self identifier];
+  name = [(WKAbstractWallpaper *)self name];
+  wallpaperValue = [(WKLayeredStillWallpaper *)self wallpaperValue];
+  backgroundThumbnailImageURL = [wallpaperValue backgroundThumbnailImageURL];
+  wallpaperValue2 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+  foregroundThumbnailImageURL = [wallpaperValue2 foregroundThumbnailImageURL];
+  wallpaperValue3 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+  floatingThumbnailImageURL = [wallpaperValue3 floatingThumbnailImageURL];
+  wallpaperValue4 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+  backgroundFullSizeImageURL = [wallpaperValue4 backgroundFullSizeImageURL];
+  wallpaperValue5 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+  foregroundFullSizeImageURL = [wallpaperValue5 foregroundFullSizeImageURL];
+  wallpaperValue6 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+  floatingFullSizeImageURL = [wallpaperValue6 floatingFullSizeImageURL];
+  v13 = [v17 initWithIdentifier:identifier name:name backgroundThumbnailImageURL:backgroundThumbnailImageURL foregroundThumbnailImageURL:foregroundThumbnailImageURL floatingThumbnailImageURL:floatingThumbnailImageURL backgroundFullSizeImageURL:backgroundFullSizeImageURL foregroundFullSizeImageURL:foregroundFullSizeImageURL floatingFullSizeImageURL:floatingFullSizeImageURL];
 
   return v13;
 }
@@ -55,59 +55,59 @@
 {
   v16.receiver = self;
   v16.super_class = WKLayeredStillWallpaper;
-  v3 = [(WKLayeredThumbnailWallpaper *)&v16 propertyListRepresentation];
-  v4 = [MEMORY[0x1E695DF90] dictionary];
-  v5 = v4;
-  if (v3)
+  propertyListRepresentation = [(WKLayeredThumbnailWallpaper *)&v16 propertyListRepresentation];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v5 = dictionary;
+  if (propertyListRepresentation)
   {
-    [v4 addEntriesFromDictionary:v3];
+    [dictionary addEntriesFromDictionary:propertyListRepresentation];
   }
 
-  v6 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-  v7 = [v6 backgroundFullSizeImageURL];
-  v8 = [v7 lastPathComponent];
-  [v5 na_safeSetObject:v8 forKey:@"backgroundFullSizeImageFileName"];
+  wallpaperValue = [(WKLayeredStillWallpaper *)self wallpaperValue];
+  backgroundFullSizeImageURL = [wallpaperValue backgroundFullSizeImageURL];
+  lastPathComponent = [backgroundFullSizeImageURL lastPathComponent];
+  [v5 na_safeSetObject:lastPathComponent forKey:@"backgroundFullSizeImageFileName"];
 
-  v9 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-  v10 = [v9 foregroundFullSizeImageURL];
-  v11 = [v10 lastPathComponent];
-  [v5 na_safeSetObject:v11 forKey:@"foregroundFullSizeImageFileName"];
+  wallpaperValue2 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+  foregroundFullSizeImageURL = [wallpaperValue2 foregroundFullSizeImageURL];
+  lastPathComponent2 = [foregroundFullSizeImageURL lastPathComponent];
+  [v5 na_safeSetObject:lastPathComponent2 forKey:@"foregroundFullSizeImageFileName"];
 
-  v12 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-  v13 = [v12 floatingFullSizeImageURL];
-  v14 = [v13 lastPathComponent];
-  [v5 na_safeSetObject:v14 forKey:@"floatingFullSizeImageFileName"];
+  wallpaperValue3 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+  floatingFullSizeImageURL = [wallpaperValue3 floatingFullSizeImageURL];
+  lastPathComponent3 = [floatingFullSizeImageURL lastPathComponent];
+  [v5 na_safeSetObject:lastPathComponent3 forKey:@"floatingFullSizeImageFileName"];
 
   return v5;
 }
 
-- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)a3 error:(id *)a4
+- (BOOL)copyWallpaperContentsToDestinationDirectoryURL:(id)l error:(id *)error
 {
-  v6 = a3;
+  lCopy = l;
   v48.receiver = self;
   v48.super_class = WKLayeredStillWallpaper;
-  v46 = a4;
-  v7 = [(WKLayeredThumbnailWallpaper *)&v48 copyWallpaperContentsToDestinationDirectoryURL:v6 error:a4];
+  errorCopy = error;
+  v7 = [(WKLayeredThumbnailWallpaper *)&v48 copyWallpaperContentsToDestinationDirectoryURL:lCopy error:error];
   v8 = v7;
   if (v7)
   {
     v45 = v7;
-    v9 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-    v10 = [v9 backgroundFullSizeImageURL];
-    if (v10)
+    wallpaperValue = [(WKLayeredStillWallpaper *)self wallpaperValue];
+    backgroundFullSizeImageURL = [wallpaperValue backgroundFullSizeImageURL];
+    if (backgroundFullSizeImageURL)
     {
-      v11 = v10;
-      v12 = [MEMORY[0x1E696AC08] defaultManager];
-      v43 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-      v13 = [v43 backgroundFullSizeImageURL];
-      v14 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-      v15 = [v14 backgroundFullSizeImageURL];
-      v16 = [v15 lastPathComponent];
-      [v6 URLByAppendingPathComponent:v16];
-      v18 = v17 = v6;
-      v41 = [v12 copyItemAtURL:v13 toURL:v18 error:v46];
+      v11 = backgroundFullSizeImageURL;
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      wallpaperValue2 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+      backgroundFullSizeImageURL2 = [wallpaperValue2 backgroundFullSizeImageURL];
+      wallpaperValue3 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+      backgroundFullSizeImageURL3 = [wallpaperValue3 backgroundFullSizeImageURL];
+      lastPathComponent = [backgroundFullSizeImageURL3 lastPathComponent];
+      [lCopy URLByAppendingPathComponent:lastPathComponent];
+      v18 = v17 = lCopy;
+      v41 = [defaultManager copyItemAtURL:backgroundFullSizeImageURL2 toURL:v18 error:errorCopy];
 
-      v6 = v17;
+      lCopy = v17;
       if (!v41)
       {
 LABEL_12:
@@ -120,22 +120,22 @@ LABEL_12:
     {
     }
 
-    v19 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-    v20 = [v19 foregroundFullSizeImageURL];
-    if (v20)
+    wallpaperValue4 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+    foregroundFullSizeImageURL = [wallpaperValue4 foregroundFullSizeImageURL];
+    if (foregroundFullSizeImageURL)
     {
-      v21 = v20;
-      v22 = [MEMORY[0x1E696AC08] defaultManager];
-      v44 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-      [v44 foregroundFullSizeImageURL];
-      v24 = v23 = v6;
-      v25 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-      v26 = [v25 foregroundFullSizeImageURL];
-      v27 = [v26 lastPathComponent];
-      v28 = [v23 URLByAppendingPathComponent:v27];
-      v42 = [v22 copyItemAtURL:v24 toURL:v28 error:v46];
+      v21 = foregroundFullSizeImageURL;
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      wallpaperValue5 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+      [wallpaperValue5 foregroundFullSizeImageURL];
+      v24 = v23 = lCopy;
+      wallpaperValue6 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+      foregroundFullSizeImageURL2 = [wallpaperValue6 foregroundFullSizeImageURL];
+      lastPathComponent2 = [foregroundFullSizeImageURL2 lastPathComponent];
+      v28 = [v23 URLByAppendingPathComponent:lastPathComponent2];
+      v42 = [defaultManager2 copyItemAtURL:v24 toURL:v28 error:errorCopy];
 
-      v6 = v23;
+      lCopy = v23;
       if (!v42)
       {
         goto LABEL_12;
@@ -146,27 +146,27 @@ LABEL_12:
     {
     }
 
-    v29 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-    v30 = [v29 floatingFullSizeImageURL];
-    if (!v30)
+    wallpaperValue7 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+    floatingFullSizeImageURL = [wallpaperValue7 floatingFullSizeImageURL];
+    if (!floatingFullSizeImageURL)
     {
 
       v8 = v45;
       goto LABEL_14;
     }
 
-    v31 = v30;
-    v32 = [MEMORY[0x1E696AC08] defaultManager];
-    v33 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-    [v33 floatingFullSizeImageURL];
-    v35 = v34 = v6;
-    v36 = [(WKLayeredStillWallpaper *)self wallpaperValue];
-    v37 = [v36 floatingFullSizeImageURL];
-    v38 = [v37 lastPathComponent];
-    v39 = [v34 URLByAppendingPathComponent:v38];
-    v47 = [v32 copyItemAtURL:v35 toURL:v39 error:v46];
+    v31 = floatingFullSizeImageURL;
+    defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+    wallpaperValue8 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+    [wallpaperValue8 floatingFullSizeImageURL];
+    v35 = v34 = lCopy;
+    wallpaperValue9 = [(WKLayeredStillWallpaper *)self wallpaperValue];
+    floatingFullSizeImageURL2 = [wallpaperValue9 floatingFullSizeImageURL];
+    lastPathComponent3 = [floatingFullSizeImageURL2 lastPathComponent];
+    v39 = [v34 URLByAppendingPathComponent:lastPathComponent3];
+    v47 = [defaultManager3 copyItemAtURL:v35 toURL:v39 error:errorCopy];
 
-    v6 = v34;
+    lCopy = v34;
     v8 = v45;
     if (!v47)
     {
@@ -185,7 +185,7 @@ LABEL_14:
   v4[1] = 3221225472;
   v4[2] = __38__WKLayeredStillWallpaper_na_identity__block_invoke;
   v4[3] = &__block_descriptor_40_e5__8__0l;
-  v4[4] = a1;
+  v4[4] = self;
   v2 = __38__WKLayeredStillWallpaper_na_identity__block_invoke(v4);
 
   return v2;

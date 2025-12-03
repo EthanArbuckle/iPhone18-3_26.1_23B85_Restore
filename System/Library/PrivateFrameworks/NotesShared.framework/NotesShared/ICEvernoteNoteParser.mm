@@ -1,21 +1,21 @@
 @interface ICEvernoteNoteParser
 - (ICEvernoteNoteParser)init;
 - (NSURL)importDirectory;
-- (id)archiveItemsFromFileURL:(id)a3 error:(id *)a4;
-- (id)dateFromDateString:(id)a3;
-- (id)importDirectoryURLWithImportIdentifier:(id)a3;
-- (id)unarchiveEvernoteNoteFromArchiveId:(id)a3 noteArchiveId:(id)a4;
-- (id)unarchiveEvernoteResourceFromArchiveId:(id)a3 resourceArchiveId:(id)a4;
-- (unint64_t)countEvernoteNotesFromFileURL:(id)a3;
-- (void)archiveEvernoteNote:(id)a3;
-- (void)archiveEvernoteResource:(id)a3;
-- (void)cleanupArchiveId:(id)a3;
-- (void)parseFileAtFileURL:(id)a3 shouldCountOnly:(BOOL)a4;
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6;
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7;
-- (void)parser:(id)a3 foundCharacters:(id)a4;
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4;
-- (void)parserDidEndDocument:(id)a3;
+- (id)archiveItemsFromFileURL:(id)l error:(id *)error;
+- (id)dateFromDateString:(id)string;
+- (id)importDirectoryURLWithImportIdentifier:(id)identifier;
+- (id)unarchiveEvernoteNoteFromArchiveId:(id)id noteArchiveId:(id)archiveId;
+- (id)unarchiveEvernoteResourceFromArchiveId:(id)id resourceArchiveId:(id)archiveId;
+- (unint64_t)countEvernoteNotesFromFileURL:(id)l;
+- (void)archiveEvernoteNote:(id)note;
+- (void)archiveEvernoteResource:(id)resource;
+- (void)cleanupArchiveId:(id)id;
+- (void)parseFileAtFileURL:(id)l shouldCountOnly:(BOOL)only;
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name;
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes;
+- (void)parser:(id)parser foundCharacters:(id)characters;
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred;
+- (void)parserDidEndDocument:(id)document;
 @end
 
 @implementation ICEvernoteNoteParser
@@ -38,69 +38,69 @@
 
 - (NSURL)importDirectory
 {
-  v2 = [MEMORY[0x277D36230] importDocumentsURL];
-  v3 = [v2 URLByAppendingPathComponent:@"tmp" isDirectory:1];
+  importDocumentsURL = [MEMORY[0x277D36230] importDocumentsURL];
+  v3 = [importDocumentsURL URLByAppendingPathComponent:@"tmp" isDirectory:1];
 
   v4 = [v3 URLByAppendingPathComponent:@"Import" isDirectory:1];
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  [v5 createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:0];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  [defaultManager createDirectoryAtURL:v4 withIntermediateDirectories:1 attributes:0 error:0];
 
   return v4;
 }
 
-- (unint64_t)countEvernoteNotesFromFileURL:(id)a3
+- (unint64_t)countEvernoteNotesFromFileURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v5 = objc_autoreleasePoolPush();
-  [(ICEvernoteNoteParser *)self parseFileAtFileURL:v4 shouldCountOnly:1];
-  v6 = [(ICEvernoteNoteParser *)self noteCount];
+  [(ICEvernoteNoteParser *)self parseFileAtFileURL:lCopy shouldCountOnly:1];
+  noteCount = [(ICEvernoteNoteParser *)self noteCount];
   objc_autoreleasePoolPop(v5);
 
-  return v6;
+  return noteCount;
 }
 
-- (id)archiveItemsFromFileURL:(id)a3 error:(id *)a4
+- (id)archiveItemsFromFileURL:(id)l error:(id *)error
 {
   v6 = MEMORY[0x277CBEB18];
-  v7 = a3;
+  lCopy = l;
   v8 = objc_alloc_init(v6);
   [(ICEvernoteNoteParser *)self setImportItems:v8];
 
-  [(ICEvernoteNoteParser *)self parseFileAtFileURL:v7 shouldCountOnly:0];
-  if (a4)
+  [(ICEvernoteNoteParser *)self parseFileAtFileURL:lCopy shouldCountOnly:0];
+  if (error)
   {
-    v9 = [(ICEvernoteNoteParser *)self parseError];
+    parseError = [(ICEvernoteNoteParser *)self parseError];
 
-    if (v9)
+    if (parseError)
     {
-      *a4 = [(ICEvernoteNoteParser *)self parseError];
+      *error = [(ICEvernoteNoteParser *)self parseError];
     }
   }
 
   return [(ICEvernoteNoteParser *)self importItems];
 }
 
-- (id)unarchiveEvernoteNoteFromArchiveId:(id)a3 noteArchiveId:(id)a4
+- (id)unarchiveEvernoteNoteFromArchiveId:(id)id noteArchiveId:(id)archiveId
 {
-  v6 = a4;
-  v7 = v6;
+  archiveIdCopy = archiveId;
+  v7 = archiveIdCopy;
   v8 = 0;
-  if (a3 && v6)
+  if (id && archiveIdCopy)
   {
-    v9 = a3;
-    v10 = [(ICEvernoteNoteParser *)self importDirectory];
-    v11 = [v10 URLByAppendingPathComponent:v9 isDirectory:1];
+    idCopy = id;
+    importDirectory = [(ICEvernoteNoteParser *)self importDirectory];
+    v11 = [importDirectory URLByAppendingPathComponent:idCopy isDirectory:1];
 
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v11 path];
-    v14 = [v12 fileExistsAtPath:v13];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v11 path];
+    v14 = [defaultManager fileExistsAtPath:path];
 
     if (v14)
     {
       v15 = [v11 URLByAppendingPathComponent:v7 isDirectory:0];
-      v16 = [MEMORY[0x277CCAA00] defaultManager];
-      v17 = [v15 path];
-      v18 = [v16 fileExistsAtPath:v17];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      path2 = [v15 path];
+      v18 = [defaultManager2 fileExistsAtPath:path2];
 
       if (v18)
       {
@@ -135,9 +135,9 @@
           v8 = 0;
         }
 
-        v24 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
         v29 = v20;
-        v25 = [v24 removeItemAtURL:v15 error:&v29];
+        v25 = [defaultManager3 removeItemAtURL:v15 error:&v29];
         v26 = v29;
 
         if ((v25 & 1) == 0)
@@ -165,27 +165,27 @@
   return v8;
 }
 
-- (id)unarchiveEvernoteResourceFromArchiveId:(id)a3 resourceArchiveId:(id)a4
+- (id)unarchiveEvernoteResourceFromArchiveId:(id)id resourceArchiveId:(id)archiveId
 {
-  v6 = a4;
-  v7 = v6;
+  archiveIdCopy = archiveId;
+  v7 = archiveIdCopy;
   v8 = 0;
-  if (a3 && v6)
+  if (id && archiveIdCopy)
   {
-    v9 = a3;
-    v10 = [(ICEvernoteNoteParser *)self importDirectory];
-    v11 = [v10 URLByAppendingPathComponent:v9 isDirectory:1];
+    idCopy = id;
+    importDirectory = [(ICEvernoteNoteParser *)self importDirectory];
+    v11 = [importDirectory URLByAppendingPathComponent:idCopy isDirectory:1];
 
-    v12 = [MEMORY[0x277CCAA00] defaultManager];
-    v13 = [v11 path];
-    v14 = [v12 fileExistsAtPath:v13];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    path = [v11 path];
+    v14 = [defaultManager fileExistsAtPath:path];
 
     if (v14)
     {
       v15 = [v11 URLByAppendingPathComponent:v7 isDirectory:0];
-      v16 = [MEMORY[0x277CCAA00] defaultManager];
-      v17 = [v15 path];
-      v18 = [v16 fileExistsAtPath:v17];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      path2 = [v15 path];
+      v18 = [defaultManager2 fileExistsAtPath:path2];
 
       if (v18)
       {
@@ -220,9 +220,9 @@
           v8 = 0;
         }
 
-        v24 = [MEMORY[0x277CCAA00] defaultManager];
+        defaultManager3 = [MEMORY[0x277CCAA00] defaultManager];
         v29 = v20;
-        v25 = [v24 removeItemAtURL:v15 error:&v29];
+        v25 = [defaultManager3 removeItemAtURL:v15 error:&v29];
         v26 = v29;
 
         if ((v25 & 1) == 0)
@@ -250,21 +250,21 @@
   return v8;
 }
 
-- (void)cleanupArchiveId:(id)a3
+- (void)cleanupArchiveId:(id)id
 {
-  v4 = a3;
-  v5 = [(ICEvernoteNoteParser *)self importDirectory];
-  v6 = [v5 URLByAppendingPathComponent:v4 isDirectory:1];
+  idCopy = id;
+  importDirectory = [(ICEvernoteNoteParser *)self importDirectory];
+  v6 = [importDirectory URLByAppendingPathComponent:idCopy isDirectory:1];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v6 path];
-  v9 = [v7 fileExistsAtPath:v8];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v6 path];
+  v9 = [defaultManager fileExistsAtPath:path];
 
   if (v9)
   {
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
     v13 = 0;
-    [v10 removeItemAtURL:v6 error:&v13];
+    [defaultManager2 removeItemAtURL:v6 error:&v13];
     v11 = v13;
 
     if (v11)
@@ -278,15 +278,15 @@
   }
 }
 
-- (void)parserDidEndDocument:(id)a3
+- (void)parserDidEndDocument:(id)document
 {
-  v4 = [(ICEvernoteNoteParser *)self parseQueue];
+  parseQueue = [(ICEvernoteNoteParser *)self parseQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __45__ICEvernoteNoteParser_parserDidEndDocument___block_invoke;
   block[3] = &unk_278194B00;
   block[4] = self;
-  dispatch_async(v4, block);
+  dispatch_async(parseQueue, block);
 }
 
 void __45__ICEvernoteNoteParser_parserDidEndDocument___block_invoke(uint64_t a1)
@@ -295,18 +295,18 @@ void __45__ICEvernoteNoteParser_parserDidEndDocument___block_invoke(uint64_t a1)
   dispatch_semaphore_signal(v1);
 }
 
-- (void)parser:(id)a3 parseErrorOccurred:(id)a4
+- (void)parser:(id)parser parseErrorOccurred:(id)occurred
 {
-  v5 = a4;
-  v6 = [(ICEvernoteNoteParser *)self parseQueue];
+  occurredCopy = occurred;
+  parseQueue = [(ICEvernoteNoteParser *)self parseQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__ICEvernoteNoteParser_parser_parseErrorOccurred___block_invoke;
   v8[3] = &unk_278194AD8;
-  v9 = v5;
-  v10 = self;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = occurredCopy;
+  selfCopy = self;
+  v7 = occurredCopy;
+  dispatch_async(parseQueue, v8);
 }
 
 void __50__ICEvernoteNoteParser_parser_parseErrorOccurred___block_invoke(uint64_t a1)
@@ -322,18 +322,18 @@ void __50__ICEvernoteNoteParser_parser_parseErrorOccurred___block_invoke(uint64_
   dispatch_semaphore_signal(v3);
 }
 
-- (void)parser:(id)a3 didStartElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6 attributes:(id)a7
+- (void)parser:(id)parser didStartElement:(id)element namespaceURI:(id)i qualifiedName:(id)name attributes:(id)attributes
 {
-  v8 = a4;
-  v9 = [(ICEvernoteNoteParser *)self parseQueue];
+  elementCopy = element;
+  parseQueue = [(ICEvernoteNoteParser *)self parseQueue];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __85__ICEvernoteNoteParser_parser_didStartElement_namespaceURI_qualifiedName_attributes___block_invoke;
   v11[3] = &unk_278194AD8;
   v11[4] = self;
-  v12 = v8;
-  v10 = v8;
-  dispatch_async(v9, v11);
+  v12 = elementCopy;
+  v10 = elementCopy;
+  dispatch_async(parseQueue, v11);
 }
 
 void __85__ICEvernoteNoteParser_parser_didStartElement_namespaceURI_qualifiedName_attributes___block_invoke(uint64_t a1)
@@ -402,18 +402,18 @@ LABEL_12:
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)parser:(id)a3 foundCharacters:(id)a4
+- (void)parser:(id)parser foundCharacters:(id)characters
 {
-  v5 = a4;
-  v6 = [(ICEvernoteNoteParser *)self parseQueue];
+  charactersCopy = characters;
+  parseQueue = [(ICEvernoteNoteParser *)self parseQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __47__ICEvernoteNoteParser_parser_foundCharacters___block_invoke;
   v8[3] = &unk_278194AD8;
   v8[4] = self;
-  v9 = v5;
-  v7 = v5;
-  dispatch_async(v6, v8);
+  v9 = charactersCopy;
+  v7 = charactersCopy;
+  dispatch_async(parseQueue, v8);
 }
 
 void __47__ICEvernoteNoteParser_parser_foundCharacters___block_invoke(uint64_t a1)
@@ -428,18 +428,18 @@ void __47__ICEvernoteNoteParser_parser_foundCharacters___block_invoke(uint64_t a
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)parser:(id)a3 didEndElement:(id)a4 namespaceURI:(id)a5 qualifiedName:(id)a6
+- (void)parser:(id)parser didEndElement:(id)element namespaceURI:(id)i qualifiedName:(id)name
 {
-  v7 = a4;
-  v8 = [(ICEvernoteNoteParser *)self parseQueue];
+  elementCopy = element;
+  parseQueue = [(ICEvernoteNoteParser *)self parseQueue];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __72__ICEvernoteNoteParser_parser_didEndElement_namespaceURI_qualifiedName___block_invoke;
   v10[3] = &unk_278194AD8;
-  v11 = v7;
-  v12 = self;
-  v9 = v7;
-  dispatch_async(v8, v10);
+  v11 = elementCopy;
+  selfCopy = self;
+  v9 = elementCopy;
+  dispatch_async(parseQueue, v10);
 }
 
 void __72__ICEvernoteNoteParser_parser_didEndElement_namespaceURI_qualifiedName___block_invoke(uint64_t a1)
@@ -678,11 +678,11 @@ LABEL_22:
   objc_autoreleasePoolPop(v2);
 }
 
-- (void)parseFileAtFileURL:(id)a3 shouldCountOnly:(BOOL)a4
+- (void)parseFileAtFileURL:(id)l shouldCountOnly:(BOOL)only
 {
-  v4 = a4;
-  v6 = a3;
-  [(ICEvernoteNoteParser *)self setShouldCountOnly:v4];
+  onlyCopy = only;
+  lCopy = l;
+  [(ICEvernoteNoteParser *)self setShouldCountOnly:onlyCopy];
   [(ICEvernoteNoteParser *)self setShouldIgnoreCurrentNote:0];
   [(ICEvernoteNoteParser *)self setContentLevel:-1];
   [(ICEvernoteNoteParser *)self setNoteCount:0];
@@ -690,15 +690,15 @@ LABEL_22:
   v7 = dispatch_semaphore_create(0);
   [(ICEvernoteNoteParser *)self setParseSemaphore:v7];
 
-  v8 = [(ICEvernoteNoteParser *)self parseQueue];
+  parseQueue = [(ICEvernoteNoteParser *)self parseQueue];
   v11 = MEMORY[0x277D85DD0];
   v12 = 3221225472;
   v13 = __59__ICEvernoteNoteParser_parseFileAtFileURL_shouldCountOnly___block_invoke;
   v14 = &unk_278194AD8;
-  v15 = v6;
-  v16 = self;
-  v9 = v6;
-  dispatch_async(v8, &v11);
+  v15 = lCopy;
+  selfCopy = self;
+  v9 = lCopy;
+  dispatch_async(parseQueue, &v11);
 
   v10 = [(ICEvernoteNoteParser *)self parseSemaphore:v11];
   dispatch_semaphore_wait(v10, 0xFFFFFFFFFFFFFFFFLL);
@@ -714,40 +714,40 @@ void __59__ICEvernoteNoteParser_parseFileAtFileURL_shouldCountOnly___block_invok
   [v2 parse];
 }
 
-- (void)archiveEvernoteNote:(id)a3
+- (void)archiveEvernoteNote:(id)note
 {
-  if (a3)
+  if (note)
   {
     v4 = MEMORY[0x277CCAD78];
-    v5 = a3;
-    v6 = [v4 UUID];
-    v7 = [v6 UUIDString];
+    noteCopy = note;
+    uUID = [v4 UUID];
+    uUIDString = [uUID UUIDString];
 
-    v8 = [(ICEvernoteNoteParser *)self currentImportDirectory];
-    v9 = [v8 URLByAppendingPathComponent:v7 isDirectory:0];
+    currentImportDirectory = [(ICEvernoteNoteParser *)self currentImportDirectory];
+    v9 = [currentImportDirectory URLByAppendingPathComponent:uUIDString isDirectory:0];
 
     v10 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-    [v5 encodeWithCoder:v10];
+    [noteCopy encodeWithCoder:v10];
 
-    v11 = [v10 encodedData];
+    encodedData = [v10 encodedData];
     v18 = 0;
-    v12 = [v11 writeToURL:v9 options:2 error:&v18];
+    v12 = [encodedData writeToURL:v9 options:2 error:&v18];
     v13 = v18;
     if (v12)
     {
-      v14 = [(ICEvernoteNoteParser *)self currentImportItem];
-      [v14 setObject:v7 forKeyedSubscript:@"noteId"];
+      currentImportItem = [(ICEvernoteNoteParser *)self currentImportItem];
+      [currentImportItem setObject:uUIDString forKeyedSubscript:@"noteId"];
 
-      v15 = [(ICEvernoteNoteParser *)self importItems];
-      v16 = [(ICEvernoteNoteParser *)self currentImportItem];
-      v17 = [v16 copy];
-      [v15 addObject:v17];
+      importItems = [(ICEvernoteNoteParser *)self importItems];
+      currentImportItem2 = [(ICEvernoteNoteParser *)self currentImportItem];
+      v17 = [currentImportItem2 copy];
+      [importItems addObject:v17];
     }
 
     else
     {
-      v15 = os_log_create("com.apple.notes", "Import");
-      if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
+      importItems = os_log_create("com.apple.notes", "Import");
+      if (os_log_type_enabled(importItems, OS_LOG_TYPE_ERROR))
       {
         [ICEvernoteNoteParser archiveEvernoteNote:];
       }
@@ -755,38 +755,38 @@ void __59__ICEvernoteNoteParser_parseFileAtFileURL_shouldCountOnly___block_invok
   }
 }
 
-- (void)archiveEvernoteResource:(id)a3
+- (void)archiveEvernoteResource:(id)resource
 {
-  if (a3)
+  if (resource)
   {
     v4 = MEMORY[0x277CCAD78];
-    v5 = a3;
-    v6 = [v4 UUID];
-    v7 = [v6 UUIDString];
+    resourceCopy = resource;
+    uUID = [v4 UUID];
+    uUIDString = [uUID UUIDString];
 
-    v8 = [(ICEvernoteNoteParser *)self currentImportDirectory];
-    v9 = [v8 URLByAppendingPathComponent:v7 isDirectory:0];
+    currentImportDirectory = [(ICEvernoteNoteParser *)self currentImportDirectory];
+    v9 = [currentImportDirectory URLByAppendingPathComponent:uUIDString isDirectory:0];
 
     v10 = [objc_alloc(MEMORY[0x277CCAAB0]) initRequiringSecureCoding:1];
-    [v5 encodeWithCoder:v10];
+    [resourceCopy encodeWithCoder:v10];
 
-    v11 = [v10 encodedData];
+    encodedData = [v10 encodedData];
     v17 = 0;
-    v12 = [v11 writeToURL:v9 options:2 error:&v17];
+    v12 = [encodedData writeToURL:v9 options:2 error:&v17];
     v13 = v17;
     if (v12)
     {
-      v14 = [(ICEvernoteNoteParser *)self currentImportItem];
-      v15 = [v14 objectForKeyedSubscript:@"resourceIds"];
+      currentImportItem = [(ICEvernoteNoteParser *)self currentImportItem];
+      v15 = [currentImportItem objectForKeyedSubscript:@"resourceIds"];
 
       if (!v15)
       {
         v15 = objc_alloc_init(MEMORY[0x277CBEB18]);
       }
 
-      [v15 addObject:v7];
-      v16 = [(ICEvernoteNoteParser *)self currentImportItem];
-      [v16 setObject:v15 forKeyedSubscript:@"resourceIds"];
+      [v15 addObject:uUIDString];
+      currentImportItem2 = [(ICEvernoteNoteParser *)self currentImportItem];
+      [currentImportItem2 setObject:v15 forKeyedSubscript:@"resourceIds"];
     }
 
     else
@@ -800,15 +800,15 @@ void __59__ICEvernoteNoteParser_parseFileAtFileURL_shouldCountOnly___block_invok
   }
 }
 
-- (id)importDirectoryURLWithImportIdentifier:(id)a3
+- (id)importDirectoryURLWithImportIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(ICEvernoteNoteParser *)self importDirectory];
-  v6 = [v5 URLByAppendingPathComponent:v4 isDirectory:1];
+  identifierCopy = identifier;
+  importDirectory = [(ICEvernoteNoteParser *)self importDirectory];
+  v6 = [importDirectory URLByAppendingPathComponent:identifierCopy isDirectory:1];
 
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
   v11 = 0;
-  [v7 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v11];
+  [defaultManager createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v11];
   v8 = v11;
 
   if (v8)
@@ -823,9 +823,9 @@ void __59__ICEvernoteNoteParser_parseFileAtFileURL_shouldCountOnly___block_invok
   return v6;
 }
 
-- (id)dateFromDateString:(id)a3
+- (id)dateFromDateString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = dateFromDateString__dateFormatter;
   if (!dateFromDateString__dateFormatter)
   {
@@ -843,7 +843,7 @@ void __59__ICEvernoteNoteParser_parseFileAtFileURL_shouldCountOnly___block_invok
     v4 = dateFromDateString__dateFormatter;
   }
 
-  v10 = [v4 dateFromString:v3];
+  v10 = [v4 dateFromString:stringCopy];
 
   return v10;
 }

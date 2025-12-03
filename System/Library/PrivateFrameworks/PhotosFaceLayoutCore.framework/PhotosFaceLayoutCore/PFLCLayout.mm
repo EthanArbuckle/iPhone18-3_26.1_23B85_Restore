@@ -1,29 +1,29 @@
 @interface PFLCLayout
 - (CGRect)visibleRect;
-- (PFLCLayout)initWithCropScore:(double)a3 layoutScore:(double)a4 foregroundCoverage:(double)a5 visibleRect:(CGRect)a6 usesMask:(BOOL)a7;
+- (PFLCLayout)initWithCropScore:(double)score layoutScore:(double)layoutScore foregroundCoverage:(double)coverage visibleRect:(CGRect)rect usesMask:(BOOL)mask;
 @end
 
 @implementation PFLCLayout
 
-- (PFLCLayout)initWithCropScore:(double)a3 layoutScore:(double)a4 foregroundCoverage:(double)a5 visibleRect:(CGRect)a6 usesMask:(BOOL)a7
+- (PFLCLayout)initWithCropScore:(double)score layoutScore:(double)layoutScore foregroundCoverage:(double)coverage visibleRect:(CGRect)rect usesMask:(BOOL)mask
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v16.receiver = self;
   v16.super_class = PFLCLayout;
   result = [(PFLCLayout *)&v16 init];
   if (result)
   {
-    result->_cropScore = a3;
-    result->_layoutScore = a4;
-    result->_foregroundCoverage = a5;
+    result->_cropScore = score;
+    result->_layoutScore = layoutScore;
+    result->_foregroundCoverage = coverage;
     result->_visibleRect.origin.x = x;
     result->_visibleRect.origin.y = y;
     result->_visibleRect.size.width = width;
     result->_visibleRect.size.height = height;
-    result->_usesMask = a7;
+    result->_usesMask = mask;
   }
 
   return result;

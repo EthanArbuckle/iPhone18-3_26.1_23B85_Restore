@@ -1,6 +1,6 @@
 @interface DODMLSchemaDODMLClientEvent
-+ (id)getInnerTypeStringByTag:(unint64_t)a3;
-- (BOOL)isEqual:(id)a3;
++ (id)getInnerTypeStringByTag:(unint64_t)tag;
+- (BOOL)isEqual:(id)equal;
 - (DODMLASRSchemaDODMLASRAudioFileResultTier1)audioFileResultTier1;
 - (DODMLASRSchemaDODMLASRContextualReplayBiomeRecordCreated)contextualReplayBiomeRecordCreated;
 - (DODMLASRSchemaDODMLASRContextualReplayBiomeRecordDeleted)contextualReplayBiomeRecordDeleted;
@@ -10,11 +10,11 @@
 - (DODMLASRSchemaDODMLASRPersonalizationExperimentContext)personalizationExperimentContext;
 - (DODMLASRSchemaDODMLASRUserEditExperimentContext)userEditExperimentContext;
 - (DODMLASRSchemaDODMLASRUserEditExperimentEndedTier1)userEditExperimentEndedTier1;
-- (DODMLSchemaDODMLClientEvent)initWithDictionary:(id)a3;
-- (DODMLSchemaDODMLClientEvent)initWithJSON:(id)a3;
+- (DODMLSchemaDODMLClientEvent)initWithDictionary:(id)dictionary;
+- (DODMLSchemaDODMLClientEvent)initWithJSON:(id)n;
 - (NSData)jsonData;
 - (SISchemaInstrumentationMessage)innerEvent;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)getComponentId;
 - (id)qualifiedMessageName;
@@ -29,29 +29,29 @@
 - (void)deletePersonalizationExperimentContext;
 - (void)deleteUserEditExperimentContext;
 - (void)deleteUserEditExperimentEndedTier1;
-- (void)setAudioFileResultTier1:(id)a3;
-- (void)setContextualReplayBiomeRecordCreated:(id)a3;
-- (void)setContextualReplayBiomeRecordDeleted:(id)a3;
-- (void)setFullPayloadCorrectionExperimentContext:(id)a3;
-- (void)setFullPayloadCorrectionExperimentPostAnalysis:(id)a3;
-- (void)setFullPayloadCorrectionExperimentTier1:(id)a3;
-- (void)setPersonalizationExperimentContext:(id)a3;
-- (void)setUserEditExperimentContext:(id)a3;
-- (void)setUserEditExperimentEndedTier1:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setAudioFileResultTier1:(id)tier1;
+- (void)setContextualReplayBiomeRecordCreated:(id)created;
+- (void)setContextualReplayBiomeRecordDeleted:(id)deleted;
+- (void)setFullPayloadCorrectionExperimentContext:(id)context;
+- (void)setFullPayloadCorrectionExperimentPostAnalysis:(id)analysis;
+- (void)setFullPayloadCorrectionExperimentTier1:(id)tier1;
+- (void)setPersonalizationExperimentContext:(id)context;
+- (void)setUserEditExperimentContext:(id)context;
+- (void)setUserEditExperimentEndedTier1:(id)tier1;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DODMLSchemaDODMLClientEvent
 
-- (DODMLSchemaDODMLClientEvent)initWithDictionary:(id)a3
+- (DODMLSchemaDODMLClientEvent)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v32.receiver = self;
   v32.super_class = DODMLSchemaDODMLClientEvent;
   v5 = [(DODMLSchemaDODMLClientEvent *)&v32 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"eventMetadata"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"eventMetadata"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -59,7 +59,7 @@
       [(DODMLSchemaDODMLClientEvent *)v5 setEventMetadata:v7];
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"personalizationExperimentContext"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"personalizationExperimentContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -67,7 +67,7 @@
       [(DODMLSchemaDODMLClientEvent *)v5 setPersonalizationExperimentContext:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"userEditExperimentContext"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"userEditExperimentContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -76,7 +76,7 @@
     }
 
     v30 = v10;
-    v12 = [v4 objectForKeyedSubscript:@"userEditExperimentEndedTier1"];
+    v12 = [dictionaryCopy objectForKeyedSubscript:@"userEditExperimentEndedTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -85,7 +85,7 @@
     }
 
     v29 = v12;
-    v14 = [v4 objectForKeyedSubscript:@"audioFileResultTier1"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"audioFileResultTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -93,7 +93,7 @@
       [(DODMLSchemaDODMLClientEvent *)v5 setAudioFileResultTier1:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"fullPayloadCorrectionExperimentContext"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"fullPayloadCorrectionExperimentContext"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -102,7 +102,7 @@
     }
 
     v31 = v8;
-    v18 = [v4 objectForKeyedSubscript:@"fullPayloadCorrectionExperimentTier1"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"fullPayloadCorrectionExperimentTier1"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -111,7 +111,7 @@
     }
 
     v20 = v6;
-    v21 = [v4 objectForKeyedSubscript:@"fullPayloadCorrectionExperimentPostAnalysis"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"fullPayloadCorrectionExperimentPostAnalysis"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -119,7 +119,7 @@
       [(DODMLSchemaDODMLClientEvent *)v5 setFullPayloadCorrectionExperimentPostAnalysis:v22];
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"contextualReplayBiomeRecordCreated"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"contextualReplayBiomeRecordCreated"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -127,7 +127,7 @@
       [(DODMLSchemaDODMLClientEvent *)v5 setContextualReplayBiomeRecordCreated:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"contextualReplayBiomeRecordDeleted"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"contextualReplayBiomeRecordDeleted"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -141,30 +141,30 @@
   return v5;
 }
 
-- (DODMLSchemaDODMLClientEvent)initWithJSON:(id)a3
+- (DODMLSchemaDODMLClientEvent)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DODMLSchemaDODMLClientEvent *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DODMLSchemaDODMLClientEvent *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DODMLSchemaDODMLClientEvent *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -177,170 +177,170 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_audioFileResultTier1)
   {
-    v4 = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
-    v5 = [v4 dictionaryRepresentation];
-    if (v5)
+    audioFileResultTier1 = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
+    dictionaryRepresentation = [audioFileResultTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v5 forKeyedSubscript:@"audioFileResultTier1"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"audioFileResultTier1"];
     }
 
     else
     {
-      v6 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v6 forKeyedSubscript:@"audioFileResultTier1"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"audioFileResultTier1"];
     }
   }
 
   if (self->_contextualReplayBiomeRecordCreated)
   {
-    v7 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
-    v8 = [v7 dictionaryRepresentation];
-    if (v8)
+    contextualReplayBiomeRecordCreated = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
+    dictionaryRepresentation2 = [contextualReplayBiomeRecordCreated dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v8 forKeyedSubscript:@"contextualReplayBiomeRecordCreated"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"contextualReplayBiomeRecordCreated"];
     }
 
     else
     {
-      v9 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v9 forKeyedSubscript:@"contextualReplayBiomeRecordCreated"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"contextualReplayBiomeRecordCreated"];
     }
   }
 
   if (self->_contextualReplayBiomeRecordDeleted)
   {
-    v10 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
-    v11 = [v10 dictionaryRepresentation];
-    if (v11)
+    contextualReplayBiomeRecordDeleted = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
+    dictionaryRepresentation3 = [contextualReplayBiomeRecordDeleted dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v11 forKeyedSubscript:@"contextualReplayBiomeRecordDeleted"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"contextualReplayBiomeRecordDeleted"];
     }
 
     else
     {
-      v12 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v12 forKeyedSubscript:@"contextualReplayBiomeRecordDeleted"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"contextualReplayBiomeRecordDeleted"];
     }
   }
 
   if (self->_eventMetadata)
   {
-    v13 = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
-    v14 = [v13 dictionaryRepresentation];
-    if (v14)
+    eventMetadata = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
+    dictionaryRepresentation4 = [eventMetadata dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v14 forKeyedSubscript:@"eventMetadata"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"eventMetadata"];
     }
 
     else
     {
-      v15 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v15 forKeyedSubscript:@"eventMetadata"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"eventMetadata"];
     }
   }
 
   if (self->_fullPayloadCorrectionExperimentContext)
   {
-    v16 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
-    v17 = [v16 dictionaryRepresentation];
-    if (v17)
+    fullPayloadCorrectionExperimentContext = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
+    dictionaryRepresentation5 = [fullPayloadCorrectionExperimentContext dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v17 forKeyedSubscript:@"fullPayloadCorrectionExperimentContext"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"fullPayloadCorrectionExperimentContext"];
     }
 
     else
     {
-      v18 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v18 forKeyedSubscript:@"fullPayloadCorrectionExperimentContext"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"fullPayloadCorrectionExperimentContext"];
     }
   }
 
   if (self->_fullPayloadCorrectionExperimentPostAnalysis)
   {
-    v19 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    fullPayloadCorrectionExperimentPostAnalysis = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
+    dictionaryRepresentation6 = [fullPayloadCorrectionExperimentPostAnalysis dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"fullPayloadCorrectionExperimentPostAnalysis"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"fullPayloadCorrectionExperimentPostAnalysis"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"fullPayloadCorrectionExperimentPostAnalysis"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"fullPayloadCorrectionExperimentPostAnalysis"];
     }
   }
 
   if (self->_fullPayloadCorrectionExperimentTier1)
   {
-    v22 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
-    v23 = [v22 dictionaryRepresentation];
-    if (v23)
+    fullPayloadCorrectionExperimentTier1 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
+    dictionaryRepresentation7 = [fullPayloadCorrectionExperimentTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation7)
     {
-      [v3 setObject:v23 forKeyedSubscript:@"fullPayloadCorrectionExperimentTier1"];
+      [dictionary setObject:dictionaryRepresentation7 forKeyedSubscript:@"fullPayloadCorrectionExperimentTier1"];
     }
 
     else
     {
-      v24 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v24 forKeyedSubscript:@"fullPayloadCorrectionExperimentTier1"];
+      null7 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null7 forKeyedSubscript:@"fullPayloadCorrectionExperimentTier1"];
     }
   }
 
   if (self->_personalizationExperimentContext)
   {
-    v25 = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
-    v26 = [v25 dictionaryRepresentation];
-    if (v26)
+    personalizationExperimentContext = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
+    dictionaryRepresentation8 = [personalizationExperimentContext dictionaryRepresentation];
+    if (dictionaryRepresentation8)
     {
-      [v3 setObject:v26 forKeyedSubscript:@"personalizationExperimentContext"];
+      [dictionary setObject:dictionaryRepresentation8 forKeyedSubscript:@"personalizationExperimentContext"];
     }
 
     else
     {
-      v27 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v27 forKeyedSubscript:@"personalizationExperimentContext"];
+      null8 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null8 forKeyedSubscript:@"personalizationExperimentContext"];
     }
   }
 
   if (self->_userEditExperimentContext)
   {
-    v28 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
-    v29 = [v28 dictionaryRepresentation];
-    if (v29)
+    userEditExperimentContext = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
+    dictionaryRepresentation9 = [userEditExperimentContext dictionaryRepresentation];
+    if (dictionaryRepresentation9)
     {
-      [v3 setObject:v29 forKeyedSubscript:@"userEditExperimentContext"];
+      [dictionary setObject:dictionaryRepresentation9 forKeyedSubscript:@"userEditExperimentContext"];
     }
 
     else
     {
-      v30 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v30 forKeyedSubscript:@"userEditExperimentContext"];
+      null9 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null9 forKeyedSubscript:@"userEditExperimentContext"];
     }
   }
 
   if (self->_userEditExperimentEndedTier1)
   {
-    v31 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
-    v32 = [v31 dictionaryRepresentation];
-    if (v32)
+    userEditExperimentEndedTier1 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
+    dictionaryRepresentation10 = [userEditExperimentEndedTier1 dictionaryRepresentation];
+    if (dictionaryRepresentation10)
     {
-      [v3 setObject:v32 forKeyedSubscript:@"userEditExperimentEndedTier1"];
+      [dictionary setObject:dictionaryRepresentation10 forKeyedSubscript:@"userEditExperimentEndedTier1"];
     }
 
     else
     {
-      v33 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v33 forKeyedSubscript:@"userEditExperimentEndedTier1"];
+      null10 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null10 forKeyedSubscript:@"userEditExperimentEndedTier1"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -357,34 +357,34 @@
   return v9 ^ v11 ^ [(DODMLASRSchemaDODMLASRContextualReplayBiomeRecordDeleted *)self->_contextualReplayBiomeRecordDeleted hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_53;
   }
 
   whichEvent_Type = self->_whichEvent_Type;
-  if (whichEvent_Type != [v4 whichEvent_Type])
+  if (whichEvent_Type != [equalCopy whichEvent_Type])
   {
     goto LABEL_53;
   }
 
-  v6 = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
-  v7 = [v4 eventMetadata];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
+  eventMetadata2 = [equalCopy eventMetadata];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v8 = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
-  if (v8)
+  eventMetadata3 = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
+  if (eventMetadata3)
   {
-    v9 = v8;
-    v10 = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
-    v11 = [v4 eventMetadata];
-    v12 = [v10 isEqual:v11];
+    v9 = eventMetadata3;
+    eventMetadata4 = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
+    eventMetadata5 = [equalCopy eventMetadata];
+    v12 = [eventMetadata4 isEqual:eventMetadata5];
 
     if (!v12)
     {
@@ -396,20 +396,20 @@
   {
   }
 
-  v6 = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
-  v7 = [v4 personalizationExperimentContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
+  eventMetadata2 = [equalCopy personalizationExperimentContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v13 = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
-  if (v13)
+  personalizationExperimentContext = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
+  if (personalizationExperimentContext)
   {
-    v14 = v13;
-    v15 = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
-    v16 = [v4 personalizationExperimentContext];
-    v17 = [v15 isEqual:v16];
+    v14 = personalizationExperimentContext;
+    personalizationExperimentContext2 = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
+    personalizationExperimentContext3 = [equalCopy personalizationExperimentContext];
+    v17 = [personalizationExperimentContext2 isEqual:personalizationExperimentContext3];
 
     if (!v17)
     {
@@ -421,20 +421,20 @@
   {
   }
 
-  v6 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
-  v7 = [v4 userEditExperimentContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
+  eventMetadata2 = [equalCopy userEditExperimentContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v18 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
-  if (v18)
+  userEditExperimentContext = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
+  if (userEditExperimentContext)
   {
-    v19 = v18;
-    v20 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
-    v21 = [v4 userEditExperimentContext];
-    v22 = [v20 isEqual:v21];
+    v19 = userEditExperimentContext;
+    userEditExperimentContext2 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
+    userEditExperimentContext3 = [equalCopy userEditExperimentContext];
+    v22 = [userEditExperimentContext2 isEqual:userEditExperimentContext3];
 
     if (!v22)
     {
@@ -446,20 +446,20 @@
   {
   }
 
-  v6 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
-  v7 = [v4 userEditExperimentEndedTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
+  eventMetadata2 = [equalCopy userEditExperimentEndedTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v23 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
-  if (v23)
+  userEditExperimentEndedTier1 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
+  if (userEditExperimentEndedTier1)
   {
-    v24 = v23;
-    v25 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
-    v26 = [v4 userEditExperimentEndedTier1];
-    v27 = [v25 isEqual:v26];
+    v24 = userEditExperimentEndedTier1;
+    userEditExperimentEndedTier12 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
+    userEditExperimentEndedTier13 = [equalCopy userEditExperimentEndedTier1];
+    v27 = [userEditExperimentEndedTier12 isEqual:userEditExperimentEndedTier13];
 
     if (!v27)
     {
@@ -471,20 +471,20 @@
   {
   }
 
-  v6 = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
-  v7 = [v4 audioFileResultTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
+  eventMetadata2 = [equalCopy audioFileResultTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v28 = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
-  if (v28)
+  audioFileResultTier1 = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
+  if (audioFileResultTier1)
   {
-    v29 = v28;
-    v30 = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
-    v31 = [v4 audioFileResultTier1];
-    v32 = [v30 isEqual:v31];
+    v29 = audioFileResultTier1;
+    audioFileResultTier12 = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
+    audioFileResultTier13 = [equalCopy audioFileResultTier1];
+    v32 = [audioFileResultTier12 isEqual:audioFileResultTier13];
 
     if (!v32)
     {
@@ -496,20 +496,20 @@
   {
   }
 
-  v6 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
-  v7 = [v4 fullPayloadCorrectionExperimentContext];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
+  eventMetadata2 = [equalCopy fullPayloadCorrectionExperimentContext];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v33 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
-  if (v33)
+  fullPayloadCorrectionExperimentContext = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
+  if (fullPayloadCorrectionExperimentContext)
   {
-    v34 = v33;
-    v35 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
-    v36 = [v4 fullPayloadCorrectionExperimentContext];
-    v37 = [v35 isEqual:v36];
+    v34 = fullPayloadCorrectionExperimentContext;
+    fullPayloadCorrectionExperimentContext2 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
+    fullPayloadCorrectionExperimentContext3 = [equalCopy fullPayloadCorrectionExperimentContext];
+    v37 = [fullPayloadCorrectionExperimentContext2 isEqual:fullPayloadCorrectionExperimentContext3];
 
     if (!v37)
     {
@@ -521,20 +521,20 @@
   {
   }
 
-  v6 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
-  v7 = [v4 fullPayloadCorrectionExperimentTier1];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
+  eventMetadata2 = [equalCopy fullPayloadCorrectionExperimentTier1];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v38 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
-  if (v38)
+  fullPayloadCorrectionExperimentTier1 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
+  if (fullPayloadCorrectionExperimentTier1)
   {
-    v39 = v38;
-    v40 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
-    v41 = [v4 fullPayloadCorrectionExperimentTier1];
-    v42 = [v40 isEqual:v41];
+    v39 = fullPayloadCorrectionExperimentTier1;
+    fullPayloadCorrectionExperimentTier12 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
+    fullPayloadCorrectionExperimentTier13 = [equalCopy fullPayloadCorrectionExperimentTier1];
+    v42 = [fullPayloadCorrectionExperimentTier12 isEqual:fullPayloadCorrectionExperimentTier13];
 
     if (!v42)
     {
@@ -546,20 +546,20 @@
   {
   }
 
-  v6 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
-  v7 = [v4 fullPayloadCorrectionExperimentPostAnalysis];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
+  eventMetadata2 = [equalCopy fullPayloadCorrectionExperimentPostAnalysis];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v43 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
-  if (v43)
+  fullPayloadCorrectionExperimentPostAnalysis = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
+  if (fullPayloadCorrectionExperimentPostAnalysis)
   {
-    v44 = v43;
-    v45 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
-    v46 = [v4 fullPayloadCorrectionExperimentPostAnalysis];
-    v47 = [v45 isEqual:v46];
+    v44 = fullPayloadCorrectionExperimentPostAnalysis;
+    fullPayloadCorrectionExperimentPostAnalysis2 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
+    fullPayloadCorrectionExperimentPostAnalysis3 = [equalCopy fullPayloadCorrectionExperimentPostAnalysis];
+    v47 = [fullPayloadCorrectionExperimentPostAnalysis2 isEqual:fullPayloadCorrectionExperimentPostAnalysis3];
 
     if (!v47)
     {
@@ -571,20 +571,20 @@
   {
   }
 
-  v6 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
-  v7 = [v4 contextualReplayBiomeRecordCreated];
-  if ((v6 != 0) == (v7 == 0))
+  eventMetadata = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
+  eventMetadata2 = [equalCopy contextualReplayBiomeRecordCreated];
+  if ((eventMetadata != 0) == (eventMetadata2 == 0))
   {
     goto LABEL_52;
   }
 
-  v48 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
-  if (v48)
+  contextualReplayBiomeRecordCreated = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
+  if (contextualReplayBiomeRecordCreated)
   {
-    v49 = v48;
-    v50 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
-    v51 = [v4 contextualReplayBiomeRecordCreated];
-    v52 = [v50 isEqual:v51];
+    v49 = contextualReplayBiomeRecordCreated;
+    contextualReplayBiomeRecordCreated2 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
+    contextualReplayBiomeRecordCreated3 = [equalCopy contextualReplayBiomeRecordCreated];
+    v52 = [contextualReplayBiomeRecordCreated2 isEqual:contextualReplayBiomeRecordCreated3];
 
     if (!v52)
     {
@@ -596,12 +596,12 @@
   {
   }
 
-  v6 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
-  v7 = [v4 contextualReplayBiomeRecordDeleted];
-  if ((v6 != 0) != (v7 == 0))
+  eventMetadata = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
+  eventMetadata2 = [equalCopy contextualReplayBiomeRecordDeleted];
+  if ((eventMetadata != 0) != (eventMetadata2 == 0))
   {
-    v53 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
-    if (!v53)
+    contextualReplayBiomeRecordDeleted = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
+    if (!contextualReplayBiomeRecordDeleted)
     {
 
 LABEL_56:
@@ -609,10 +609,10 @@ LABEL_56:
       goto LABEL_54;
     }
 
-    v54 = v53;
-    v55 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
-    v56 = [v4 contextualReplayBiomeRecordDeleted];
-    v57 = [v55 isEqual:v56];
+    v54 = contextualReplayBiomeRecordDeleted;
+    contextualReplayBiomeRecordDeleted2 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
+    contextualReplayBiomeRecordDeleted3 = [equalCopy contextualReplayBiomeRecordDeleted];
+    v57 = [contextualReplayBiomeRecordDeleted2 isEqual:contextualReplayBiomeRecordDeleted3];
 
     if (v57)
     {
@@ -632,90 +632,90 @@ LABEL_54:
   return v58;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v25 = a3;
-  v4 = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
+  toCopy = to;
+  eventMetadata = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
 
-  if (v4)
+  if (eventMetadata)
   {
-    v5 = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
+    eventMetadata2 = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
     PBDataWriterWriteSubmessage();
   }
 
-  v6 = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
+  personalizationExperimentContext = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
 
-  if (v6)
+  if (personalizationExperimentContext)
   {
-    v7 = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
+    personalizationExperimentContext2 = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v8 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
+  userEditExperimentContext = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
 
-  if (v8)
+  if (userEditExperimentContext)
   {
-    v9 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
+    userEditExperimentContext2 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v10 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
+  userEditExperimentEndedTier1 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
 
-  if (v10)
+  if (userEditExperimentEndedTier1)
   {
-    v11 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
+    userEditExperimentEndedTier12 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v12 = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
+  audioFileResultTier1 = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
 
-  if (v12)
+  if (audioFileResultTier1)
   {
-    v13 = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
+    audioFileResultTier12 = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
+  fullPayloadCorrectionExperimentContext = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
 
-  if (v14)
+  if (fullPayloadCorrectionExperimentContext)
   {
-    v15 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
+    fullPayloadCorrectionExperimentContext2 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
+  fullPayloadCorrectionExperimentTier1 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
 
-  if (v16)
+  if (fullPayloadCorrectionExperimentTier1)
   {
-    v17 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
+    fullPayloadCorrectionExperimentTier12 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
     PBDataWriterWriteSubmessage();
   }
 
-  v18 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
+  fullPayloadCorrectionExperimentPostAnalysis = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
 
-  if (v18)
+  if (fullPayloadCorrectionExperimentPostAnalysis)
   {
-    v19 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
+    fullPayloadCorrectionExperimentPostAnalysis2 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
     PBDataWriterWriteSubmessage();
   }
 
-  v20 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
+  contextualReplayBiomeRecordCreated = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
 
-  if (v20)
+  if (contextualReplayBiomeRecordCreated)
   {
-    v21 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
+    contextualReplayBiomeRecordCreated2 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
     PBDataWriterWriteSubmessage();
   }
 
-  v22 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
+  contextualReplayBiomeRecordDeleted = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
 
-  v23 = v25;
-  if (v22)
+  v23 = toCopy;
+  if (contextualReplayBiomeRecordDeleted)
   {
-    v24 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
+    contextualReplayBiomeRecordDeleted2 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
     PBDataWriterWriteSubmessage();
 
-    v23 = v25;
+    v23 = toCopy;
   }
 }
 
@@ -744,9 +744,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setContextualReplayBiomeRecordDeleted:(id)a3
+- (void)setContextualReplayBiomeRecordDeleted:(id)deleted
 {
-  v4 = a3;
+  deletedCopy = deleted;
   personalizationExperimentContext = self->_personalizationExperimentContext;
   self->_personalizationExperimentContext = 0;
 
@@ -772,14 +772,14 @@ LABEL_54:
   self->_contextualReplayBiomeRecordCreated = 0;
 
   v13 = 10;
-  if (!v4)
+  if (!deletedCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   contextualReplayBiomeRecordDeleted = self->_contextualReplayBiomeRecordDeleted;
-  self->_contextualReplayBiomeRecordDeleted = v4;
+  self->_contextualReplayBiomeRecordDeleted = deletedCopy;
 }
 
 - (void)deleteContextualReplayBiomeRecordCreated
@@ -807,9 +807,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setContextualReplayBiomeRecordCreated:(id)a3
+- (void)setContextualReplayBiomeRecordCreated:(id)created
 {
-  v4 = a3;
+  createdCopy = created;
   personalizationExperimentContext = self->_personalizationExperimentContext;
   self->_personalizationExperimentContext = 0;
 
@@ -835,14 +835,14 @@ LABEL_54:
   self->_contextualReplayBiomeRecordDeleted = 0;
 
   v13 = 9;
-  if (!v4)
+  if (!createdCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   contextualReplayBiomeRecordCreated = self->_contextualReplayBiomeRecordCreated;
-  self->_contextualReplayBiomeRecordCreated = v4;
+  self->_contextualReplayBiomeRecordCreated = createdCopy;
 }
 
 - (void)deleteFullPayloadCorrectionExperimentPostAnalysis
@@ -870,9 +870,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setFullPayloadCorrectionExperimentPostAnalysis:(id)a3
+- (void)setFullPayloadCorrectionExperimentPostAnalysis:(id)analysis
 {
-  v4 = a3;
+  analysisCopy = analysis;
   personalizationExperimentContext = self->_personalizationExperimentContext;
   self->_personalizationExperimentContext = 0;
 
@@ -897,9 +897,9 @@ LABEL_54:
   contextualReplayBiomeRecordDeleted = self->_contextualReplayBiomeRecordDeleted;
   self->_contextualReplayBiomeRecordDeleted = 0;
 
-  self->_whichEvent_Type = 8 * (v4 != 0);
+  self->_whichEvent_Type = 8 * (analysisCopy != 0);
   fullPayloadCorrectionExperimentPostAnalysis = self->_fullPayloadCorrectionExperimentPostAnalysis;
-  self->_fullPayloadCorrectionExperimentPostAnalysis = v4;
+  self->_fullPayloadCorrectionExperimentPostAnalysis = analysisCopy;
 }
 
 - (void)deleteFullPayloadCorrectionExperimentTier1
@@ -927,9 +927,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setFullPayloadCorrectionExperimentTier1:(id)a3
+- (void)setFullPayloadCorrectionExperimentTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   personalizationExperimentContext = self->_personalizationExperimentContext;
   self->_personalizationExperimentContext = 0;
 
@@ -955,14 +955,14 @@ LABEL_54:
   self->_contextualReplayBiomeRecordDeleted = 0;
 
   v13 = 7;
-  if (!v4)
+  if (!tier1Copy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   fullPayloadCorrectionExperimentTier1 = self->_fullPayloadCorrectionExperimentTier1;
-  self->_fullPayloadCorrectionExperimentTier1 = v4;
+  self->_fullPayloadCorrectionExperimentTier1 = tier1Copy;
 }
 
 - (void)deleteFullPayloadCorrectionExperimentContext
@@ -990,9 +990,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setFullPayloadCorrectionExperimentContext:(id)a3
+- (void)setFullPayloadCorrectionExperimentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   personalizationExperimentContext = self->_personalizationExperimentContext;
   self->_personalizationExperimentContext = 0;
 
@@ -1018,14 +1018,14 @@ LABEL_54:
   self->_contextualReplayBiomeRecordDeleted = 0;
 
   v13 = 6;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   fullPayloadCorrectionExperimentContext = self->_fullPayloadCorrectionExperimentContext;
-  self->_fullPayloadCorrectionExperimentContext = v4;
+  self->_fullPayloadCorrectionExperimentContext = contextCopy;
 }
 
 - (void)deleteAudioFileResultTier1
@@ -1053,9 +1053,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setAudioFileResultTier1:(id)a3
+- (void)setAudioFileResultTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   personalizationExperimentContext = self->_personalizationExperimentContext;
   self->_personalizationExperimentContext = 0;
 
@@ -1081,14 +1081,14 @@ LABEL_54:
   self->_contextualReplayBiomeRecordDeleted = 0;
 
   v13 = 5;
-  if (!v4)
+  if (!tier1Copy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   audioFileResultTier1 = self->_audioFileResultTier1;
-  self->_audioFileResultTier1 = v4;
+  self->_audioFileResultTier1 = tier1Copy;
 }
 
 - (void)deleteUserEditExperimentEndedTier1
@@ -1116,9 +1116,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setUserEditExperimentEndedTier1:(id)a3
+- (void)setUserEditExperimentEndedTier1:(id)tier1
 {
-  v4 = a3;
+  tier1Copy = tier1;
   personalizationExperimentContext = self->_personalizationExperimentContext;
   self->_personalizationExperimentContext = 0;
 
@@ -1143,9 +1143,9 @@ LABEL_54:
   contextualReplayBiomeRecordDeleted = self->_contextualReplayBiomeRecordDeleted;
   self->_contextualReplayBiomeRecordDeleted = 0;
 
-  self->_whichEvent_Type = 4 * (v4 != 0);
+  self->_whichEvent_Type = 4 * (tier1Copy != 0);
   userEditExperimentEndedTier1 = self->_userEditExperimentEndedTier1;
-  self->_userEditExperimentEndedTier1 = v4;
+  self->_userEditExperimentEndedTier1 = tier1Copy;
 }
 
 - (void)deleteUserEditExperimentContext
@@ -1173,9 +1173,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setUserEditExperimentContext:(id)a3
+- (void)setUserEditExperimentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   personalizationExperimentContext = self->_personalizationExperimentContext;
   self->_personalizationExperimentContext = 0;
 
@@ -1201,14 +1201,14 @@ LABEL_54:
   self->_contextualReplayBiomeRecordDeleted = 0;
 
   v13 = 3;
-  if (!v4)
+  if (!contextCopy)
   {
     v13 = 0;
   }
 
   self->_whichEvent_Type = v13;
   userEditExperimentContext = self->_userEditExperimentContext;
-  self->_userEditExperimentContext = v4;
+  self->_userEditExperimentContext = contextCopy;
 }
 
 - (void)deletePersonalizationExperimentContext
@@ -1236,9 +1236,9 @@ LABEL_54:
   return v3;
 }
 
-- (void)setPersonalizationExperimentContext:(id)a3
+- (void)setPersonalizationExperimentContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   userEditExperimentContext = self->_userEditExperimentContext;
   self->_userEditExperimentContext = 0;
 
@@ -1263,152 +1263,152 @@ LABEL_54:
   contextualReplayBiomeRecordDeleted = self->_contextualReplayBiomeRecordDeleted;
   self->_contextualReplayBiomeRecordDeleted = 0;
 
-  self->_whichEvent_Type = 2 * (v4 != 0);
+  self->_whichEvent_Type = 2 * (contextCopy != 0);
   personalizationExperimentContext = self->_personalizationExperimentContext;
-  self->_personalizationExperimentContext = v4;
+  self->_personalizationExperimentContext = contextCopy;
 }
 
 - (id)qualifiedMessageName
 {
-  v2 = [(DODMLSchemaDODMLClientEvent *)self whichEvent_Type];
-  if (v2 - 2 > 8)
+  whichEvent_Type = [(DODMLSchemaDODMLClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 2 > 8)
   {
     return @"com.apple.aiml.siri.dodml.DODMLClientEvent";
   }
 
   else
   {
-    return off_1E78D4490[v2 - 2];
+    return off_1E78D4490[whichEvent_Type - 2];
   }
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v37.receiver = self;
   v37.super_class = DODMLSchemaDODMLClientEvent;
-  v5 = [(SISchemaInstrumentationMessage *)&v37 applySensitiveConditionsPolicy:v4];
-  if ([v4 isConditionSet:2])
+  v5 = [(SISchemaInstrumentationMessage *)&v37 applySensitiveConditionsPolicy:policyCopy];
+  if ([policyCopy isConditionSet:2])
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteUserEditExperimentEndedTier1];
     [(DODMLSchemaDODMLClientEvent *)self deleteAudioFileResultTier1];
     [(DODMLSchemaDODMLClientEvent *)self deleteFullPayloadCorrectionExperimentTier1];
   }
 
-  if ([v4 isConditionSet:4])
+  if ([policyCopy isConditionSet:4])
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteUserEditExperimentEndedTier1];
     [(DODMLSchemaDODMLClientEvent *)self deleteAudioFileResultTier1];
     [(DODMLSchemaDODMLClientEvent *)self deleteFullPayloadCorrectionExperimentTier1];
   }
 
-  if ([v4 isConditionSet:5])
+  if ([policyCopy isConditionSet:5])
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteUserEditExperimentEndedTier1];
     [(DODMLSchemaDODMLClientEvent *)self deleteAudioFileResultTier1];
     [(DODMLSchemaDODMLClientEvent *)self deleteFullPayloadCorrectionExperimentTier1];
   }
 
-  if ([v4 isConditionSet:6])
+  if ([policyCopy isConditionSet:6])
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteUserEditExperimentEndedTier1];
     [(DODMLSchemaDODMLClientEvent *)self deleteAudioFileResultTier1];
     [(DODMLSchemaDODMLClientEvent *)self deleteFullPayloadCorrectionExperimentTier1];
   }
 
-  if ([v4 isConditionSet:7])
+  if ([policyCopy isConditionSet:7])
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteUserEditExperimentEndedTier1];
     [(DODMLSchemaDODMLClientEvent *)self deleteAudioFileResultTier1];
     [(DODMLSchemaDODMLClientEvent *)self deleteFullPayloadCorrectionExperimentTier1];
   }
 
-  v6 = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  eventMetadata = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
+  v7 = [eventMetadata applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteEventMetadata];
   }
 
-  v9 = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  personalizationExperimentContext = [(DODMLSchemaDODMLClientEvent *)self personalizationExperimentContext];
+  v10 = [personalizationExperimentContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(DODMLSchemaDODMLClientEvent *)self deletePersonalizationExperimentContext];
   }
 
-  v12 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  userEditExperimentContext = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentContext];
+  v13 = [userEditExperimentContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteUserEditExperimentContext];
   }
 
-  v15 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  userEditExperimentEndedTier1 = [(DODMLSchemaDODMLClientEvent *)self userEditExperimentEndedTier1];
+  v16 = [userEditExperimentEndedTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteUserEditExperimentEndedTier1];
   }
 
-  v18 = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  audioFileResultTier1 = [(DODMLSchemaDODMLClientEvent *)self audioFileResultTier1];
+  v19 = [audioFileResultTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteAudioFileResultTier1];
   }
 
-  v21 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  fullPayloadCorrectionExperimentContext = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentContext];
+  v22 = [fullPayloadCorrectionExperimentContext applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteFullPayloadCorrectionExperimentContext];
   }
 
-  v24 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
-  v25 = [v24 applySensitiveConditionsPolicy:v4];
-  v26 = [v25 suppressMessage];
+  fullPayloadCorrectionExperimentTier1 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentTier1];
+  v25 = [fullPayloadCorrectionExperimentTier1 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage7 = [v25 suppressMessage];
 
-  if (v26)
+  if (suppressMessage7)
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteFullPayloadCorrectionExperimentTier1];
   }
 
-  v27 = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
-  v28 = [v27 applySensitiveConditionsPolicy:v4];
-  v29 = [v28 suppressMessage];
+  fullPayloadCorrectionExperimentPostAnalysis = [(DODMLSchemaDODMLClientEvent *)self fullPayloadCorrectionExperimentPostAnalysis];
+  v28 = [fullPayloadCorrectionExperimentPostAnalysis applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage8 = [v28 suppressMessage];
 
-  if (v29)
+  if (suppressMessage8)
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteFullPayloadCorrectionExperimentPostAnalysis];
   }
 
-  v30 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
-  v31 = [v30 applySensitiveConditionsPolicy:v4];
-  v32 = [v31 suppressMessage];
+  contextualReplayBiomeRecordCreated = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordCreated];
+  v31 = [contextualReplayBiomeRecordCreated applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage9 = [v31 suppressMessage];
 
-  if (v32)
+  if (suppressMessage9)
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteContextualReplayBiomeRecordCreated];
   }
 
-  v33 = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
-  v34 = [v33 applySensitiveConditionsPolicy:v4];
-  v35 = [v34 suppressMessage];
+  contextualReplayBiomeRecordDeleted = [(DODMLSchemaDODMLClientEvent *)self contextualReplayBiomeRecordDeleted];
+  v34 = [contextualReplayBiomeRecordDeleted applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage10 = [v34 suppressMessage];
 
-  if (v35)
+  if (suppressMessage10)
   {
     [(DODMLSchemaDODMLClientEvent *)self deleteContextualReplayBiomeRecordDeleted];
   }
@@ -1426,65 +1426,65 @@ LABEL_54:
 
 - (id)getComponentId
 {
-  v2 = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
-  v3 = [v2 dodMlId];
+  eventMetadata = [(DODMLSchemaDODMLClientEvent *)self eventMetadata];
+  dodMlId = [eventMetadata dodMlId];
 
-  if (!v3)
+  if (!dodMlId)
   {
     goto LABEL_5;
   }
 
-  v4 = [v3 value];
-  if (!v4)
+  value = [dodMlId value];
+  if (!value)
   {
     goto LABEL_6;
   }
 
-  v5 = [v3 value];
-  v6 = [v5 length];
+  value2 = [dodMlId value];
+  v6 = [value2 length];
 
   if (v6)
   {
-    v4 = v3;
+    value = dodMlId;
   }
 
   else
   {
 LABEL_5:
-    v4 = 0;
+    value = 0;
   }
 
 LABEL_6:
 
-  return v4;
+  return value;
 }
 
 - (SISchemaInstrumentationMessage)innerEvent
 {
-  v3 = [(DODMLSchemaDODMLClientEvent *)self whichEvent_Type];
-  if (v3 - 2 > 8)
+  whichEvent_Type = [(DODMLSchemaDODMLClientEvent *)self whichEvent_Type];
+  if (whichEvent_Type - 2 > 8)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.super.super.isa + *off_1E78E9518[v3 - 2]);
+    v4 = *(&self->super.super.super.super.isa + *off_1E78E9518[whichEvent_Type - 2]);
   }
 
   return v4;
 }
 
-+ (id)getInnerTypeStringByTag:(unint64_t)a3
++ (id)getInnerTypeStringByTag:(unint64_t)tag
 {
-  if (a3 - 2 > 8)
+  if (tag - 2 > 8)
   {
     return 0;
   }
 
   else
   {
-    return off_1E78E9560[a3 - 2];
+    return off_1E78E9560[tag - 2];
   }
 }
 

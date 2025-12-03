@@ -1,12 +1,12 @@
 @interface ASUIRootViewController
-- (_TtC16AccessorySetupUI22ASUIRootViewController)initWithCoder:(id)a3;
-- (_TtC16AccessorySetupUI22ASUIRootViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (_TtC16AccessorySetupUI22ASUIRootViewController)initWithCoder:(id)coder;
+- (_TtC16AccessorySetupUI22ASUIRootViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (void)viewDidLoad;
 @end
 
 @implementation ASUIRootViewController
 
-- (_TtC16AccessorySetupUI22ASUIRootViewController)initWithCoder:(id)a3
+- (_TtC16AccessorySetupUI22ASUIRootViewController)initWithCoder:(id)coder
 {
   swift_unknownObjectWeakInit();
   *(&self->super.super.super.isa + OBJC_IVAR____TtC16AccessorySetupUI22ASUIRootViewController_pickingSession) = 0;
@@ -26,7 +26,7 @@
   [(ASUIRootViewController *)&v2 viewDidLoad];
 }
 
-- (_TtC16AccessorySetupUI22ASUIRootViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC16AccessorySetupUI22ASUIRootViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

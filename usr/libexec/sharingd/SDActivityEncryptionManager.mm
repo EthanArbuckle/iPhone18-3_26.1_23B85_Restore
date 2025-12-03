@@ -1,31 +1,31 @@
 @interface SDActivityEncryptionManager
 + (id)sharedEncryptionManager;
 - (BOOL)deleteAllEncryptionAndDecryptionKeys;
-- (BOOL)saveDecryptionKeyDataRepresentation:(id)a3 forDeviceIdentifier:(id)a4;
-- (BOOL)saveEncryptionKeyDataRepresentation:(id)a3;
-- (BOOL)saveKeyDataRepresentation:(id)a3 withBaseDict:(id)a4;
+- (BOOL)saveDecryptionKeyDataRepresentation:(id)representation forDeviceIdentifier:(id)identifier;
+- (BOOL)saveEncryptionKeyDataRepresentation:(id)representation;
+- (BOOL)saveKeyDataRepresentation:(id)representation withBaseDict:(id)dict;
 - (NSData)dataRepresentationForCurrentEncryptionKey;
 - (NSString)state;
 - (SDActivityEncryptionKey)encryptionKey;
 - (SDActivityEncryptionManager)init;
 - (id)allKeys;
 - (id)baseDict;
-- (id)baseDictDecryptionKeyForDeviceIdentifier:(id)a3;
+- (id)baseDictDecryptionKeyForDeviceIdentifier:(id)identifier;
 - (id)baseDictEncryptionKey;
 - (id)baseDictWrappingKey;
-- (id)decryptionKeyForDeviceIdentifier:(id)a3;
-- (id)loadDecryptionKeyDataRepresentationForDeviceIdentifier:(id)a3;
+- (id)decryptionKeyForDeviceIdentifier:(id)identifier;
+- (id)loadDecryptionKeyDataRepresentationForDeviceIdentifier:(id)identifier;
 - (id)loadEncryptionKeyDataRepresentation;
-- (id)loadKeyDataRepresentationWithBaseDict:(id)a3;
+- (id)loadKeyDataRepresentationWithBaseDict:(id)dict;
 - (id)loadWrappingKeyData;
-- (id)newDecryptionKeyFromDataRepresentation:(id)a3;
-- (id)unwrappedDataRepresentationForKey:(id)a3;
+- (id)newDecryptionKeyFromDataRepresentation:(id)representation;
+- (id)unwrappedDataRepresentationForKey:(id)key;
 - (void)addObservers;
 - (void)bumpEncryptionKeyCounterValue;
 - (void)dealloc;
 - (void)generateNewEncryptionKey;
 - (void)removeObservers;
-- (void)setDecryptionKey:(id)a3 forDeviceIdentifier:(id)a4;
+- (void)setDecryptionKey:(id)key forDeviceIdentifier:(id)identifier;
 @end
 
 @implementation SDActivityEncryptionManager
@@ -74,13 +74,13 @@
   v8 = v5;
 
   v9 = [(SDActivityEncryptionManager *)self allKeys:v18];
-  v10 = [NSString stringWithFormat:@"@unionOfObjects.%@", kSecAttrLabel];
-  v11 = [v9 valueForKeyPath:v10];
+  kSecAttrLabel = [NSString stringWithFormat:@"@unionOfObjects.%@", kSecAttrLabel];
+  v11 = [v9 valueForKeyPath:kSecAttrLabel];
   v19 = SFCompactStringFromCollection();
   NSAppendPrintF();
   v12 = v8;
 
-  v13 = [(SDActivityEncryptionManager *)self encryptionKey];
+  encryptionKey = [(SDActivityEncryptionManager *)self encryptionKey];
   NSAppendPrintF();
   v14 = v12;
 
@@ -94,12 +94,12 @@
 - (id)allKeys
 {
   v3 = objc_opt_new();
-  v4 = [(SDActivityEncryptionManager *)self baseDict];
-  [v4 setObject:&__kCFBooleanTrue forKeyedSubscript:kSecReturnAttributes];
-  [v4 setObject:kSecMatchLimitAll forKeyedSubscript:kSecMatchLimit];
-  v5 = [v4 mutableCopy];
-  v6 = [(SDActivityEncryptionManager *)self baseDictWrappingKey];
-  [v5 addEntriesFromDictionary:v6];
+  baseDict = [(SDActivityEncryptionManager *)self baseDict];
+  [baseDict setObject:&__kCFBooleanTrue forKeyedSubscript:kSecReturnAttributes];
+  [baseDict setObject:kSecMatchLimitAll forKeyedSubscript:kSecMatchLimit];
+  v5 = [baseDict mutableCopy];
+  baseDictWrappingKey = [(SDActivityEncryptionManager *)self baseDictWrappingKey];
+  [v5 addEntriesFromDictionary:baseDictWrappingKey];
 
   result = 0;
   v7 = SecItemCopyMatching(v5, &result);
@@ -121,9 +121,9 @@
     CFRelease(result);
   }
 
-  v10 = [v4 mutableCopy];
-  v11 = [(SDActivityEncryptionManager *)self baseDictEncryptionKey];
-  [v10 addEntriesFromDictionary:v11];
+  v10 = [baseDict mutableCopy];
+  baseDictEncryptionKey = [(SDActivityEncryptionManager *)self baseDictEncryptionKey];
+  [v10 addEntriesFromDictionary:baseDictEncryptionKey];
 
   *buf = 0;
   if (SecItemCopyMatching(v10, buf))
@@ -141,7 +141,7 @@
     CFRelease(*buf);
   }
 
-  v13 = [v4 mutableCopy];
+  v13 = [baseDict mutableCopy];
   v14 = [(SDActivityEncryptionManager *)self baseDictDecryptionKeyForDeviceIdentifier:0];
   [v13 addEntriesFromDictionary:v14];
 
@@ -159,7 +159,7 @@
   {
     v24 = v10;
     v25 = v5;
-    v26 = v4;
+    v26 = baseDict;
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
@@ -195,7 +195,7 @@
 
     CFRelease(cf);
     v5 = v25;
-    v4 = v26;
+    baseDict = v26;
     v10 = v24;
   }
 
@@ -213,30 +213,30 @@
 
 - (id)baseDictWrappingKey
 {
-  v2 = [(SDActivityEncryptionManager *)self baseDict];
-  [v2 setObject:@"com.apple.continuity.encryption" forKeyedSubscript:kSecAttrAccessGroup];
-  [v2 setObject:@"handoff-wrapping-key" forKeyedSubscript:kSecAttrAccount];
-  v3 = [v2 objectForKeyedSubscript:kSecAttrAccount];
-  [v2 setObject:v3 forKeyedSubscript:kSecAttrLabel];
+  baseDict = [(SDActivityEncryptionManager *)self baseDict];
+  [baseDict setObject:@"com.apple.continuity.encryption" forKeyedSubscript:kSecAttrAccessGroup];
+  [baseDict setObject:@"handoff-wrapping-key" forKeyedSubscript:kSecAttrAccount];
+  v3 = [baseDict objectForKeyedSubscript:kSecAttrAccount];
+  [baseDict setObject:v3 forKeyedSubscript:kSecAttrLabel];
 
-  [v2 setObject:@"Handoff Wrapping Key" forKeyedSubscript:kSecAttrDescription];
-  [v2 setObject:&__kCFBooleanTrue forKeyedSubscript:kSecAttrSynchronizable];
+  [baseDict setObject:@"Handoff Wrapping Key" forKeyedSubscript:kSecAttrDescription];
+  [baseDict setObject:&__kCFBooleanTrue forKeyedSubscript:kSecAttrSynchronizable];
 
-  return v2;
+  return baseDict;
 }
 
 - (id)baseDictEncryptionKey
 {
-  v2 = [(SDActivityEncryptionManager *)self baseDict];
-  [v2 setObject:@"com.apple.continuity.encryption" forKeyedSubscript:kSecAttrAccessGroup];
-  [v2 setObject:@"handoff-own-encryption-key" forKeyedSubscript:kSecAttrAccount];
-  v3 = [v2 objectForKeyedSubscript:kSecAttrAccount];
-  [v2 setObject:v3 forKeyedSubscript:kSecAttrLabel];
+  baseDict = [(SDActivityEncryptionManager *)self baseDict];
+  [baseDict setObject:@"com.apple.continuity.encryption" forKeyedSubscript:kSecAttrAccessGroup];
+  [baseDict setObject:@"handoff-own-encryption-key" forKeyedSubscript:kSecAttrAccount];
+  v3 = [baseDict objectForKeyedSubscript:kSecAttrAccount];
+  [baseDict setObject:v3 forKeyedSubscript:kSecAttrLabel];
 
-  [v2 setObject:@"Handoff Encryption Key" forKeyedSubscript:kSecAttrDescription];
-  [v2 setObject:&__kCFBooleanFalse forKeyedSubscript:kSecAttrSynchronizable];
+  [baseDict setObject:@"Handoff Encryption Key" forKeyedSubscript:kSecAttrDescription];
+  [baseDict setObject:&__kCFBooleanFalse forKeyedSubscript:kSecAttrSynchronizable];
 
-  return v2;
+  return baseDict;
 }
 
 - (SDActivityEncryptionKey)encryptionKey
@@ -244,20 +244,20 @@
   encryptionKey = self->_encryptionKey;
   if (!encryptionKey)
   {
-    v4 = [(SDActivityEncryptionManager *)self loadEncryptionKeyDataRepresentation];
-    if (v4)
+    loadEncryptionKeyDataRepresentation = [(SDActivityEncryptionManager *)self loadEncryptionKeyDataRepresentation];
+    if (loadEncryptionKeyDataRepresentation)
     {
       v19 = 0;
       v20 = 0;
-      v5 = [NSPropertyListSerialization propertyListWithData:v4 options:1 format:&v20 error:&v19];
+      v5 = [NSPropertyListSerialization propertyListWithData:loadEncryptionKeyDataRepresentation options:1 format:&v20 error:&v19];
       v6 = v19;
       if (v5)
       {
         v7 = [v5 objectForKeyedSubscript:@"lastUsedCounter"];
-        v8 = [v7 integerValue];
+        integerValue = [v7 integerValue];
 
-        v9 = v8;
-        if (v8 > 0xFF90u)
+        v9 = integerValue;
+        if (integerValue > 0xFF90u)
         {
           v14 = handoff_log();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -269,7 +269,7 @@
 
         else
         {
-          v10 = [NSNumber numberWithInteger:v8 + 110];
+          v10 = [NSNumber numberWithInteger:integerValue + 110];
           [v5 setObject:v10 forKeyedSubscript:@"lastUsedCounter"];
 
           v11 = [(SDActivityKey *)[SDActivityEncryptionKey alloc] initWithDictRepresentation:v5];
@@ -377,8 +377,8 @@
 - (void)bumpEncryptionKeyCounterValue
 {
   v3 = arc4random();
-  v4 = [(SDActivityEncryptionManager *)self encryptionKey];
-  v5 = v3 + [v4 lastUsedCounter] - 31 * (v3 / 0x1F) + 20;
+  encryptionKey = [(SDActivityEncryptionManager *)self encryptionKey];
+  v5 = v3 + [encryptionKey lastUsedCounter] - 31 * (v3 / 0x1F) + 20;
 
   v6 = handoff_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
@@ -397,31 +397,31 @@
   {
     if (v7)
     {
-      v8 = [(SDActivityEncryptionManager *)self encryptionKey];
+      encryptionKey2 = [(SDActivityEncryptionManager *)self encryptionKey];
       v10 = 134218240;
-      v11 = [v8 lastUsedCounter];
+      lastUsedCounter = [encryptionKey2 lastUsedCounter];
       v12 = 2048;
       v13 = v5;
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "Bumped advertising encryption key counter value from %ld to %ld", &v10, 0x16u);
     }
 
-    v9 = [(SDActivityEncryptionManager *)self encryptionKey];
-    [v9 setLastUsedCounter:v5];
+    encryptionKey3 = [(SDActivityEncryptionManager *)self encryptionKey];
+    [encryptionKey3 setLastUsedCounter:v5];
   }
 }
 
-- (void)setDecryptionKey:(id)a3 forDeviceIdentifier:(id)a4
+- (void)setDecryptionKey:(id)key forDeviceIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  keyCopy = key;
+  identifierCopy = identifier;
+  if (keyCopy)
   {
-    v8 = [(NSMutableDictionary *)self->_deviceIdentifierToDecryptionKey objectForKeyedSubscript:v7];
+    v8 = [(NSMutableDictionary *)self->_deviceIdentifierToDecryptionKey objectForKeyedSubscript:identifierCopy];
     if (v8)
     {
-      v9 = [v6 dateCreated];
-      v10 = [v8 dateCreated];
-      [v9 timeIntervalSinceDate:v10];
+      dateCreated = [keyCopy dateCreated];
+      dateCreated2 = [v8 dateCreated];
+      [dateCreated timeIntervalSinceDate:dateCreated2];
       v12 = (v11 / 3600.0);
     }
 
@@ -430,10 +430,10 @@
       v12 = 0;
     }
 
-    sub_1001091AC(v8 != 0, [v8 lastUsedCounter], objc_msgSend(v6, "lastUsedCounter"), v12);
-    [(NSMutableDictionary *)self->_deviceIdentifierToDecryptionKey setObject:v6 forKeyedSubscript:v7];
-    v13 = [(SDActivityEncryptionManager *)self unwrappedDataRepresentationForKey:v6];
-    v14 = [(SDActivityEncryptionManager *)self saveDecryptionKeyDataRepresentation:v13 forDeviceIdentifier:v7];
+    sub_1001091AC(v8 != 0, [v8 lastUsedCounter], objc_msgSend(keyCopy, "lastUsedCounter"), v12);
+    [(NSMutableDictionary *)self->_deviceIdentifierToDecryptionKey setObject:keyCopy forKeyedSubscript:identifierCopy];
+    v13 = [(SDActivityEncryptionManager *)self unwrappedDataRepresentationForKey:keyCopy];
+    v14 = [(SDActivityEncryptionManager *)self saveDecryptionKeyDataRepresentation:v13 forDeviceIdentifier:identifierCopy];
 
     v15 = handoff_log();
     v16 = v15;
@@ -452,13 +452,13 @@
   }
 }
 
-- (id)decryptionKeyForDeviceIdentifier:(id)a3
+- (id)decryptionKeyForDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_deviceIdentifierToDecryptionKey objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  v5 = [(NSMutableDictionary *)self->_deviceIdentifierToDecryptionKey objectForKeyedSubscript:identifierCopy];
   if (!v5)
   {
-    v6 = [(SDActivityEncryptionManager *)self loadDecryptionKeyDataRepresentationForDeviceIdentifier:v4];
+    v6 = [(SDActivityEncryptionManager *)self loadDecryptionKeyDataRepresentationForDeviceIdentifier:identifierCopy];
     v5 = [(SDActivityEncryptionManager *)self newDecryptionKeyFromDataRepresentation:v6];
 
     if (v5)
@@ -469,7 +469,7 @@
         sub_1001B5BD0();
       }
 
-      [(NSMutableDictionary *)self->_deviceIdentifierToDecryptionKey setObject:v5 forKeyedSubscript:v4];
+      [(NSMutableDictionary *)self->_deviceIdentifierToDecryptionKey setObject:v5 forKeyedSubscript:identifierCopy];
     }
   }
 
@@ -478,15 +478,15 @@
 
 - (NSData)dataRepresentationForCurrentEncryptionKey
 {
-  v3 = [(SDActivityEncryptionManager *)self encryptionKey];
-  v4 = [v3 dictRepresentation];
-  v5 = [v4 mutableCopy];
+  encryptionKey = [(SDActivityEncryptionManager *)self encryptionKey];
+  dictRepresentation = [encryptionKey dictRepresentation];
+  v5 = [dictRepresentation mutableCopy];
 
   v6 = [v5 objectForKeyedSubscript:@"keyData"];
   if (v6)
   {
-    v7 = [(SDActivityEncryptionManager *)self loadWrappingKeyData];
-    v8 = [v7 length];
+    loadWrappingKeyData = [(SDActivityEncryptionManager *)self loadWrappingKeyData];
+    v8 = [loadWrappingKeyData length];
     v9 = handoff_log();
     v10 = os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT);
     if (v8)
@@ -499,8 +499,8 @@
 
       v11 = ccaes_ecb_encrypt_mode();
       bzero(&v19 - ((*v11 + 15) & 0xFFFFFFFFFFFFFFF0), (*v11 + 15) & 0xFFFFFFFFFFFFFFF0);
-      [v7 length];
-      [v7 bytes];
+      [loadWrappingKeyData length];
+      [loadWrappingKeyData bytes];
       ccecb_init();
       [v6 length];
       v12 = ccwrap_wrapped_size();
@@ -549,10 +549,10 @@
   return v15;
 }
 
-- (id)unwrappedDataRepresentationForKey:(id)a3
+- (id)unwrappedDataRepresentationForKey:(id)key
 {
-  v3 = [a3 dictRepresentation];
-  v4 = [v3 mutableCopy];
+  dictRepresentation = [key dictRepresentation];
+  v4 = [dictRepresentation mutableCopy];
 
   [v4 setObject:&__kCFBooleanFalse forKeyedSubscript:@"isWrappedKey"];
   v9 = 0;
@@ -570,21 +570,21 @@
   return v5;
 }
 
-- (id)newDecryptionKeyFromDataRepresentation:(id)a3
+- (id)newDecryptionKeyFromDataRepresentation:(id)representation
 {
-  v3 = a3;
-  if ([v3 length])
+  representationCopy = representation;
+  if ([representationCopy length])
   {
     v21 = 0;
     v22 = 0;
-    v4 = [NSPropertyListSerialization propertyListWithData:v3 options:1 format:&v22 error:&v21];
+    v4 = [NSPropertyListSerialization propertyListWithData:representationCopy options:1 format:&v22 error:&v21];
     v5 = v21;
     if (v4)
     {
       v6 = [v4 objectForKeyedSubscript:@"isWrappedKey"];
-      v7 = [v6 BOOLValue];
+      bOOLValue = [v6 BOOLValue];
 
-      if (!v7)
+      if (!bOOLValue)
       {
 LABEL_9:
         v17 = [(SDActivityKey *)[SDActivityDecryptionKey alloc] initWithDictRepresentation:v4];
@@ -597,9 +597,9 @@ LABEL_20:
       if ([v8 length])
       {
         v9 = +[SDActivityEncryptionManager sharedEncryptionManager];
-        v10 = [v9 loadWrappingKeyData];
+        loadWrappingKeyData = [v9 loadWrappingKeyData];
 
-        v11 = [v10 length];
+        v11 = [loadWrappingKeyData length];
         v12 = handoff_log();
         v13 = v12;
         if (v11)
@@ -613,8 +613,8 @@ LABEL_20:
           v14 = ccaes_ecb_decrypt_mode();
           v19[1] = v19;
           bzero(v19 - ((*v14 + 15) & 0xFFFFFFFFFFFFFFF0), (*v14 + 15) & 0xFFFFFFFFFFFFFFF0);
-          [v10 length];
-          [v10 bytes];
+          [loadWrappingKeyData length];
+          [loadWrappingKeyData bytes];
           ccecb_init();
           [v8 length];
           v15 = ccwrap_unwrapped_size();
@@ -638,8 +638,8 @@ LABEL_20:
 
       else
       {
-        v10 = handoff_log();
-        if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+        loadWrappingKeyData = handoff_log();
+        if (os_log_type_enabled(loadWrappingKeyData, OS_LOG_TYPE_ERROR))
         {
           sub_1001B5CE8();
         }
@@ -729,8 +729,8 @@ LABEL_21:
     wrappingKey = self->_wrappingKey;
     self->_wrappingKey = 0;
 
-    v5 = [(SDActivityEncryptionManager *)self baseDictWrappingKey];
-    v6 = [(SDActivityEncryptionManager *)self loadKeyDataRepresentationWithBaseDict:v5];
+    baseDictWrappingKey = [(SDActivityEncryptionManager *)self baseDictWrappingKey];
+    v6 = [(SDActivityEncryptionManager *)self loadKeyDataRepresentationWithBaseDict:baseDictWrappingKey];
 
     if ([v6 length] == 32)
     {
@@ -767,12 +767,12 @@ LABEL_7:
   return v11;
 }
 
-- (id)loadKeyDataRepresentationWithBaseDict:(id)a3
+- (id)loadKeyDataRepresentationWithBaseDict:(id)dict
 {
-  v3 = a3;
-  [v3 setObject:&__kCFBooleanTrue forKeyedSubscript:kSecReturnData];
+  dictCopy = dict;
+  [dictCopy setObject:&__kCFBooleanTrue forKeyedSubscript:kSecReturnData];
   result = 0;
-  v4 = SecItemCopyMatching(v3, &result);
+  v4 = SecItemCopyMatching(dictCopy, &result);
 
   if (v4)
   {
@@ -793,22 +793,22 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)saveKeyDataRepresentation:(id)a3 withBaseDict:(id)a4
+- (BOOL)saveKeyDataRepresentation:(id)representation withBaseDict:(id)dict
 {
-  v5 = a4;
+  dictCopy = dict;
   v22 = kSecValueData;
-  v23 = a3;
-  v6 = a3;
+  representationCopy = representation;
+  representationCopy2 = representation;
   v7 = 1;
-  v8 = [NSDictionary dictionaryWithObjects:&v23 forKeys:&v22 count:1];
+  v8 = [NSDictionary dictionaryWithObjects:&representationCopy forKeys:&v22 count:1];
 
   v9 = [v8 mutableCopy];
   [v9 setObject:kSecAttrAccessibleAfterFirstUnlockThisDeviceOnly forKeyedSubscript:kSecAttrAccessible];
-  v10 = [v5 mutableCopy];
+  v10 = [dictCopy mutableCopy];
   [v10 addEntriesFromDictionary:v9];
   if (SecItemAdd(v10, 0))
   {
-    v11 = SecItemUpdate(v5, v9);
+    v11 = SecItemUpdate(dictCopy, v9);
     if (!v11)
     {
       goto LABEL_13;
@@ -821,7 +821,7 @@ LABEL_7:
       v17[0] = 67109634;
       v17[1] = v12;
       v18 = 2112;
-      v19 = v5;
+      v19 = dictCopy;
       v20 = 2112;
       v21 = v9;
       _os_log_error_impl(&_mh_execute_header, v13, OS_LOG_TYPE_ERROR, "Failed to update keychain item with error %d for query %@ attributesToUpdate %@", v17, 0x1Cu);
@@ -861,56 +861,56 @@ LABEL_13:
 
 - (id)loadEncryptionKeyDataRepresentation
 {
-  v3 = [(SDActivityEncryptionManager *)self baseDictEncryptionKey];
-  v4 = [(SDActivityEncryptionManager *)self loadKeyDataRepresentationWithBaseDict:v3];
+  baseDictEncryptionKey = [(SDActivityEncryptionManager *)self baseDictEncryptionKey];
+  v4 = [(SDActivityEncryptionManager *)self loadKeyDataRepresentationWithBaseDict:baseDictEncryptionKey];
 
   return v4;
 }
 
-- (BOOL)saveEncryptionKeyDataRepresentation:(id)a3
+- (BOOL)saveEncryptionKeyDataRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(SDActivityEncryptionManager *)self baseDictEncryptionKey];
-  LOBYTE(self) = [(SDActivityEncryptionManager *)self saveKeyDataRepresentation:v4 withBaseDict:v5];
+  representationCopy = representation;
+  baseDictEncryptionKey = [(SDActivityEncryptionManager *)self baseDictEncryptionKey];
+  LOBYTE(self) = [(SDActivityEncryptionManager *)self saveKeyDataRepresentation:representationCopy withBaseDict:baseDictEncryptionKey];
 
   return self;
 }
 
-- (id)loadDecryptionKeyDataRepresentationForDeviceIdentifier:(id)a3
+- (id)loadDecryptionKeyDataRepresentationForDeviceIdentifier:(id)identifier
 {
-  v4 = [(SDActivityEncryptionManager *)self baseDictDecryptionKeyForDeviceIdentifier:a3];
+  v4 = [(SDActivityEncryptionManager *)self baseDictDecryptionKeyForDeviceIdentifier:identifier];
   v5 = [(SDActivityEncryptionManager *)self loadKeyDataRepresentationWithBaseDict:v4];
 
   return v5;
 }
 
-- (BOOL)saveDecryptionKeyDataRepresentation:(id)a3 forDeviceIdentifier:(id)a4
+- (BOOL)saveDecryptionKeyDataRepresentation:(id)representation forDeviceIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = [(SDActivityEncryptionManager *)self baseDictDecryptionKeyForDeviceIdentifier:a4];
-  LOBYTE(self) = [(SDActivityEncryptionManager *)self saveKeyDataRepresentation:v6 withBaseDict:v7];
+  representationCopy = representation;
+  v7 = [(SDActivityEncryptionManager *)self baseDictDecryptionKeyForDeviceIdentifier:identifier];
+  LOBYTE(self) = [(SDActivityEncryptionManager *)self saveKeyDataRepresentation:representationCopy withBaseDict:v7];
 
   return self;
 }
 
-- (id)baseDictDecryptionKeyForDeviceIdentifier:(id)a3
+- (id)baseDictDecryptionKeyForDeviceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(SDActivityEncryptionManager *)self baseDict];
-  [v5 setObject:@"com.apple.continuity.encryption" forKeyedSubscript:kSecAttrAccessGroup];
-  if (v4)
+  identifierCopy = identifier;
+  baseDict = [(SDActivityEncryptionManager *)self baseDict];
+  [baseDict setObject:@"com.apple.continuity.encryption" forKeyedSubscript:kSecAttrAccessGroup];
+  if (identifierCopy)
   {
-    v6 = [NSString stringWithFormat:@"%@-%@", @"handoff-decryption-key", v4];
-    [v5 setObject:v6 forKeyedSubscript:kSecAttrAccount];
+    identifierCopy = [NSString stringWithFormat:@"%@-%@", @"handoff-decryption-key", identifierCopy];
+    [baseDict setObject:identifierCopy forKeyedSubscript:kSecAttrAccount];
 
-    v7 = [v5 objectForKeyedSubscript:kSecAttrAccount];
-    [v5 setObject:v7 forKeyedSubscript:kSecAttrLabel];
+    v7 = [baseDict objectForKeyedSubscript:kSecAttrAccount];
+    [baseDict setObject:v7 forKeyedSubscript:kSecAttrLabel];
   }
 
-  [v5 setObject:@"Handoff Decryption Key" forKeyedSubscript:kSecAttrDescription];
-  [v5 setObject:&__kCFBooleanFalse forKeyedSubscript:kSecAttrSynchronizable];
+  [baseDict setObject:@"Handoff Decryption Key" forKeyedSubscript:kSecAttrDescription];
+  [baseDict setObject:&__kCFBooleanFalse forKeyedSubscript:kSecAttrSynchronizable];
 
-  return v5;
+  return baseDict;
 }
 
 @end

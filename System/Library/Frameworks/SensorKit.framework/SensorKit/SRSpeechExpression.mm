@@ -1,13 +1,13 @@
 @interface SRSpeechExpression
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (CMTimeRange)timeRange;
 - (SRSpeechExpression)init;
-- (SRSpeechExpression)initWithCoder:(id)a3;
-- (SRSpeechExpression)initWithVersion:(id)a3 timeRange:(id *)a4 confidence:(double)a5 mood:(double)a6 valence:(double)a7 activation:(double)a8 dominance:(double)a9;
+- (SRSpeechExpression)initWithCoder:(id)coder;
+- (SRSpeechExpression)initWithVersion:(id)version timeRange:(id *)range confidence:(double)confidence mood:(double)mood valence:(double)valence activation:(double)activation dominance:(double)dominance;
 - (id)description;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SRSpeechExpression
@@ -19,24 +19,24 @@
   return 0;
 }
 
-- (SRSpeechExpression)initWithVersion:(id)a3 timeRange:(id *)a4 confidence:(double)a5 mood:(double)a6 valence:(double)a7 activation:(double)a8 dominance:(double)a9
+- (SRSpeechExpression)initWithVersion:(id)version timeRange:(id *)range confidence:(double)confidence mood:(double)mood valence:(double)valence activation:(double)activation dominance:(double)dominance
 {
   v20.receiver = self;
   v20.super_class = SRSpeechExpression;
   v16 = [(SRSpeechExpression *)&v20 init];
   if (v16)
   {
-    *(v16 + 1) = [a3 copy];
-    v18 = *&a4->var0.var3;
-    v17 = *&a4->var1.var1;
-    *(v16 + 56) = *&a4->var0.var0;
+    *(v16 + 1) = [version copy];
+    v18 = *&range->var0.var3;
+    v17 = *&range->var1.var1;
+    *(v16 + 56) = *&range->var0.var0;
     *(v16 + 72) = v18;
     *(v16 + 88) = v17;
-    *(v16 + 2) = a5;
-    *(v16 + 3) = a6;
-    *(v16 + 4) = a7;
-    *(v16 + 5) = a8;
-    *(v16 + 6) = a9;
+    *(v16 + 2) = confidence;
+    *(v16 + 3) = mood;
+    *(v16 + 4) = valence;
+    *(v16 + 5) = activation;
+    *(v16 + 6) = dominance;
   }
 
   return v16;
@@ -49,9 +49,9 @@
   [(SRSpeechExpression *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v10) = 1;
   }
@@ -65,15 +65,15 @@
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
     LOBYTE(v10) = 0;
-    if (self && (isKindOfClass & 1) != 0 && (!-[SRSpeechExpression version](self, "version") && ![a3 version] || (v10 = -[NSString isEqual:](-[SRSpeechExpression version](self, "version"), "isEqual:", objc_msgSend(a3, "version"))) != 0))
+    if (self && (isKindOfClass & 1) != 0 && (!-[SRSpeechExpression version](self, "version") && ![equal version] || (v10 = -[NSString isEqual:](-[SRSpeechExpression version](self, "version"), "isEqual:", objc_msgSend(equal, "version"))) != 0))
     {
       v11 = MEMORY[0x1E696B098];
       [(SRSpeechExpression *)self timeRange];
       v12 = [v11 valueWithCMTimeRange:v25];
       v13 = MEMORY[0x1E696B098];
-      if (a3)
+      if (equal)
       {
-        [a3 timeRange];
+        [equal timeRange];
       }
 
       else
@@ -85,11 +85,11 @@
       if (v10)
       {
         confidence = self->_confidence;
-        [a3 confidence];
-        if (confidence == v15 && (mood = self->_mood, [a3 mood], mood == v17) && (valence = self->_valence, objc_msgSend(a3, "valence"), valence == v19) && (activation = self->_activation, objc_msgSend(a3, "activation"), activation == v21))
+        [equal confidence];
+        if (confidence == v15 && (mood = self->_mood, [equal mood], mood == v17) && (valence = self->_valence, objc_msgSend(equal, "valence"), valence == v19) && (activation = self->_activation, objc_msgSend(equal, "activation"), activation == v21))
         {
           dominance = self->_dominance;
-          [a3 dominance];
+          [equal dominance];
           LOBYTE(v10) = dominance == v23;
         }
 
@@ -151,42 +151,42 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  [a3 encodeObject:self->_version forKey:@"version"];
+  [coder encodeObject:self->_version forKey:@"version"];
   v6 = MEMORY[0x1E696B098];
   [(SRSpeechExpression *)self timeRange];
-  [a3 encodeObject:objc_msgSend(v6 forKey:{"valueWithCMTimeRange:", v7), @"timeRange"}];
-  [a3 encodeDouble:@"confidence" forKey:self->_confidence];
-  [a3 encodeDouble:@"mood" forKey:self->_mood];
-  [a3 encodeDouble:@"valence" forKey:self->_valence];
-  [a3 encodeDouble:@"activation" forKey:self->_activation];
-  [a3 encodeDouble:@"dominance" forKey:self->_dominance];
+  [coder encodeObject:objc_msgSend(v6 forKey:{"valueWithCMTimeRange:", v7), @"timeRange"}];
+  [coder encodeDouble:@"confidence" forKey:self->_confidence];
+  [coder encodeDouble:@"mood" forKey:self->_mood];
+  [coder encodeDouble:@"valence" forKey:self->_valence];
+  [coder encodeDouble:@"activation" forKey:self->_activation];
+  [coder encodeDouble:@"dominance" forKey:self->_dominance];
 }
 
-- (SRSpeechExpression)initWithCoder:(id)a3
+- (SRSpeechExpression)initWithCoder:(id)coder
 {
-  if (([a3 allowsKeyedCoding] & 1) == 0)
+  if (([coder allowsKeyedCoding] & 1) == 0)
   {
     [objc_msgSend(MEMORY[0x1E696AAA8] "currentHandler")];
   }
 
-  v6 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"version"];
-  v7 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"timeRange"];
-  [a3 decodeDoubleForKey:@"confidence"];
+  v6 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"version"];
+  v7 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"timeRange"];
+  [coder decodeDoubleForKey:@"confidence"];
   v9 = v8;
-  [a3 decodeDoubleForKey:@"mood"];
+  [coder decodeDoubleForKey:@"mood"];
   v11 = v10;
-  [a3 decodeDoubleForKey:@"valence"];
+  [coder decodeDoubleForKey:@"valence"];
   v13 = v12;
-  [a3 decodeDoubleForKey:@"activation"];
+  [coder decodeDoubleForKey:@"activation"];
   v15 = v14;
-  [a3 decodeDoubleForKey:@"dominance"];
+  [coder decodeDoubleForKey:@"dominance"];
   v17 = v16;
   if (v7)
   {

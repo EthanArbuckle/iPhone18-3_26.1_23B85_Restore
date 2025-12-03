@@ -1,49 +1,49 @@
 @interface HPSMovieLoopPlayer
 - (CGRect)desiredBounds;
-- (HPSMovieLoopPlayer)initWithFrame:(CGRect)a3 urlForResource:(id)a4;
+- (HPSMovieLoopPlayer)initWithFrame:(CGRect)frame urlForResource:(id)resource;
 - (void)hideVideoPlayer;
 - (void)layoutSubviews;
 - (void)load;
 - (void)play;
-- (void)setAlpha:(double)a3;
-- (void)setAlphaHideOnZero:(double)a3;
+- (void)setAlpha:(double)alpha;
+- (void)setAlphaHideOnZero:(double)zero;
 - (void)showVideoPlayer;
 @end
 
 @implementation HPSMovieLoopPlayer
 
-- (HPSMovieLoopPlayer)initWithFrame:(CGRect)a3 urlForResource:(id)a4
+- (HPSMovieLoopPlayer)initWithFrame:(CGRect)frame urlForResource:(id)resource
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v10 = a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  resourceCopy = resource;
   v16.receiver = self;
   v16.super_class = HPSMovieLoopPlayer;
-  v11 = [(HPSMovieLoopPlayer *)&v16 initWithFrame:x, y, width, height];
-  if (v11)
+  height = [(HPSMovieLoopPlayer *)&v16 initWithFrame:x, y, width, height];
+  if (height)
   {
     v12 = [MEMORY[0x277CE65D8] playerLayerWithPlayer:0];
-    playerLayer = v11->_playerLayer;
-    v11->_playerLayer = v12;
+    playerLayer = height->_playerLayer;
+    height->_playerLayer = v12;
 
-    objc_storeStrong(&v11->_url, a4);
-    v11->_desiredBounds.origin.x = 0.0;
-    v11->_desiredBounds.origin.y = 0.0;
-    v11->_desiredBounds.size.width = width;
-    v11->_desiredBounds.size.height = height;
-    v14 = [(HPSMovieLoopPlayer *)v11 layer];
-    [v14 addSublayer:v11->_playerLayer];
+    objc_storeStrong(&height->_url, resource);
+    height->_desiredBounds.origin.x = 0.0;
+    height->_desiredBounds.origin.y = 0.0;
+    height->_desiredBounds.size.width = width;
+    height->_desiredBounds.size.height = height;
+    layer = [(HPSMovieLoopPlayer *)height layer];
+    [layer addSublayer:height->_playerLayer];
   }
 
-  return v11;
+  return height;
 }
 
 - (void)load
 {
-  v3 = [MEMORY[0x277CB83F8] sharedInstance];
-  [v3 setCategory:*MEMORY[0x277CB8020] withOptions:1 error:0];
+  mEMORY[0x277CB83F8] = [MEMORY[0x277CB83F8] sharedInstance];
+  [mEMORY[0x277CB83F8] setCategory:*MEMORY[0x277CB8020] withOptions:1 error:0];
 
   v4 = objc_opt_new();
   videoPlayer = self->_videoPlayer;
@@ -52,8 +52,8 @@
   [(AVQueuePlayer *)self->_videoPlayer setMuted:1];
   [(AVQueuePlayer *)self->_videoPlayer setAllowsExternalPlayback:0];
   v6 = self->_videoPlayer;
-  v7 = [(HPSMovieLoopPlayer *)self playerLayer];
-  [v7 setPlayer:v6];
+  playerLayer = [(HPSMovieLoopPlayer *)self playerLayer];
+  [playerLayer setPlayer:v6];
 
   [(HPSMovieLoopPlayer *)self showVideoPlayer];
   v8 = MEMORY[0x277CE65E0];
@@ -65,10 +65,10 @@
   playerLooper = self->_playerLooper;
   self->_playerLooper = v13;
 
-  v15 = [(HPSMovieLoopPlayer *)self videoPlayer];
+  videoPlayer = [(HPSMovieLoopPlayer *)self videoPlayer];
   v16 = *MEMORY[0x277CC08F0];
   v17 = *(MEMORY[0x277CC08F0] + 16);
-  [v15 seekToTime:&v16];
+  [videoPlayer seekToTime:&v16];
 }
 
 - (void)layoutSubviews
@@ -76,28 +76,28 @@
   v15.receiver = self;
   v15.super_class = HPSMovieLoopPlayer;
   [(HPSMovieLoopPlayer *)&v15 layoutSubviews];
-  v3 = [(HPSMovieLoopPlayer *)self playerLayer];
+  playerLayer = [(HPSMovieLoopPlayer *)self playerLayer];
   [(HPSMovieLoopPlayer *)self desiredBounds];
-  [v3 setBounds:?];
+  [playerLayer setBounds:?];
 
-  v4 = [(HPSMovieLoopPlayer *)self layer];
-  [v4 setMasksToBounds:0];
+  layer = [(HPSMovieLoopPlayer *)self layer];
+  [layer setMasksToBounds:0];
 
-  v5 = [(HPSMovieLoopPlayer *)self layer];
-  [v5 setCornerRadius:0.0];
+  layer2 = [(HPSMovieLoopPlayer *)self layer];
+  [layer2 setCornerRadius:0.0];
 
-  v6 = [(HPSMovieLoopPlayer *)self layer];
-  [v6 bounds];
+  layer3 = [(HPSMovieLoopPlayer *)self layer];
+  [layer3 bounds];
   v8 = v7 * 0.5;
-  v9 = [(HPSMovieLoopPlayer *)self layer];
-  [v9 bounds];
+  layer4 = [(HPSMovieLoopPlayer *)self layer];
+  [layer4 bounds];
   v11 = v10 * 0.5;
-  v12 = [(HPSMovieLoopPlayer *)self playerLayer];
-  [v12 setPosition:{v8, v11}];
+  playerLayer2 = [(HPSMovieLoopPlayer *)self playerLayer];
+  [playerLayer2 setPosition:{v8, v11}];
 
   v13 = *MEMORY[0x277CE5DD8];
-  v14 = [(HPSMovieLoopPlayer *)self playerLayer];
-  [v14 setVideoGravity:v13];
+  playerLayer3 = [(HPSMovieLoopPlayer *)self playerLayer];
+  [playerLayer3 setVideoGravity:v13];
 }
 
 - (void)showVideoPlayer
@@ -133,35 +133,35 @@ void __37__HPSMovieLoopPlayer_hideVideoPlayer__block_invoke(uint64_t a1)
   [v1 setOpacity:0.0];
 }
 
-- (void)setAlphaHideOnZero:(double)a3
+- (void)setAlphaHideOnZero:(double)zero
 {
   [(HPSMovieLoopPlayer *)self setAlpha:?];
 
-  [(HPSMovieLoopPlayer *)self setHidden:a3 == 0.0];
+  [(HPSMovieLoopPlayer *)self setHidden:zero == 0.0];
 }
 
-- (void)setAlpha:(double)a3
+- (void)setAlpha:(double)alpha
 {
   v7.receiver = self;
   v7.super_class = HPSMovieLoopPlayer;
   [(HPSMovieLoopPlayer *)&v7 setAlpha:?];
-  v5 = [(HPSMovieLoopPlayer *)self playerLayer];
-  *&a3 = a3;
-  LODWORD(v6) = LODWORD(a3);
-  [v5 setOpacity:v6];
+  playerLayer = [(HPSMovieLoopPlayer *)self playerLayer];
+  *&alpha = alpha;
+  LODWORD(v6) = LODWORD(alpha);
+  [playerLayer setOpacity:v6];
 }
 
 - (void)play
 {
   NSLog(&cfstr_SpatialProfile_26.isa, a2);
-  v3 = [(HPSMovieLoopPlayer *)self videoPlayer];
+  videoPlayer = [(HPSMovieLoopPlayer *)self videoPlayer];
   v6 = *MEMORY[0x277CC08F0];
   v7 = *(MEMORY[0x277CC08F0] + 16);
-  [v3 seekToTime:&v6];
+  [videoPlayer seekToTime:&v6];
 
-  v4 = [(HPSMovieLoopPlayer *)self videoPlayer];
+  videoPlayer2 = [(HPSMovieLoopPlayer *)self videoPlayer];
   LODWORD(v5) = 1.0;
-  [v4 playImmediatelyAtRate:v5];
+  [videoPlayer2 playImmediatelyAtRate:v5];
 }
 
 - (CGRect)desiredBounds

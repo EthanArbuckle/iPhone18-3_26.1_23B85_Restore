@@ -1,29 +1,29 @@
 @interface MKThreadContext
 + (id)currentContext;
-- (void)_CA_setDisableActions:(BOOL)a3;
+- (void)_CA_setDisableActions:(BOOL)actions;
 @end
 
 @implementation MKThreadContext
 
 + (id)currentContext
 {
-  v2 = [MEMORY[0x1E696AF00] currentThread];
-  v3 = [v2 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v4 = [v3 objectForKey:@"MKThreadContext"];
+  v4 = [threadDictionary objectForKey:@"MKThreadContext"];
   if (!v4)
   {
     v4 = objc_alloc_init(MKThreadContext);
-    [v3 setObject:v4 forKey:@"MKThreadContext"];
+    [threadDictionary setObject:v4 forKey:@"MKThreadContext"];
   }
 
   return v4;
 }
 
-- (void)_CA_setDisableActions:(BOOL)a3
+- (void)_CA_setDisableActions:(BOOL)actions
 {
   CA_disableActionsCounter = self->_CA_disableActionsCounter;
-  if (a3)
+  if (actions)
   {
     self->_CA_disableActionsCounter = CA_disableActionsCounter + 1;
     if (CA_disableActionsCounter)

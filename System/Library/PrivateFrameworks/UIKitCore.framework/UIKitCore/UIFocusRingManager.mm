@@ -1,25 +1,25 @@
 @interface UIFocusRingManager
-+ (BOOL)focusRingAvailableInBehavior:(uint64_t)a1;
-+ (id)_currentFocusItemForClient:(id)a3;
++ (BOOL)focusRingAvailableInBehavior:(uint64_t)behavior;
++ (id)_currentFocusItemForClient:(id)client;
 + (id)manager;
 + (void)_removeActiveFocusLayers;
 + (void)_updateActiveFocusLayers;
-+ (void)moveRingToFocusItem:(id)a3 forClient:(id)a4;
-+ (void)removeRingFromFocusItem:(id)a3 forClient:(id)a4;
-+ (void)updateRingForFocusItem:(id)a3 forClient:(id)a4;
-- (BOOL)_focusItemWantsFocusRing:(id)a3 forClient:(id)a4;
-- (id)_focusRingPathForItem:(id)a3 inView:(id)a4;
-- (id)_viewToAddFocusLayerForItem:(id)a3 forClient:(id)a4;
-- (id)activeFocusLayersForClient:(id)a3;
-- (id)activeFocusLayersToItemsForClient:(id)a3;
++ (void)moveRingToFocusItem:(id)item forClient:(id)client;
++ (void)removeRingFromFocusItem:(id)item forClient:(id)client;
++ (void)updateRingForFocusItem:(id)item forClient:(id)client;
+- (BOOL)_focusItemWantsFocusRing:(id)ring forClient:(id)client;
+- (id)_focusRingPathForItem:(id)item inView:(id)view;
+- (id)_viewToAddFocusLayerForItem:(id)item forClient:(id)client;
+- (id)activeFocusLayersForClient:(id)client;
+- (id)activeFocusLayersToItemsForClient:(id)client;
 - (id)description;
-- (void)_addFocusLayer:(id)a3 toView:(id)a4 forItem:(id)a5;
-- (void)_removeActiveFocusLayersForClient:(id)a3;
+- (void)_addFocusLayer:(id)layer toView:(id)view forItem:(id)item;
+- (void)_removeActiveFocusLayersForClient:(id)client;
 - (void)_updateFocusLayerFrames;
-- (void)addFocusRingForItem:(id)a3 forClient:(id)a4;
-- (void)addParentFocusRingForItem:(id)a3 forClient:(id)a4;
-- (void)addSelectedFocusRingForItem:(id)a3 forClient:(id)a4;
-- (void)addSelectedParentFocusRingForItem:(id)a3 forClient:(id)a4;
+- (void)addFocusRingForItem:(id)item forClient:(id)client;
+- (void)addParentFocusRingForItem:(id)item forClient:(id)client;
+- (void)addSelectedFocusRingForItem:(id)item forClient:(id)client;
+- (void)addSelectedParentFocusRingForItem:(id)item forClient:(id)client;
 @end
 
 @implementation UIFocusRingManager
@@ -43,11 +43,11 @@
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
-  v2 = [(UIFocusRingManager *)self focusRingStateForClient];
-  v3 = [v2 allValues];
+  focusRingStateForClient = [(UIFocusRingManager *)self focusRingStateForClient];
+  allValues = [focusRingStateForClient allValues];
 
-  obj = v3;
-  v37 = [v3 countByEnumeratingWithState:&v47 objects:v52 count:16];
+  obj = allValues;
+  v37 = [allValues countByEnumeratingWithState:&v47 objects:v52 count:16];
   if (v37)
   {
     v36 = *v48;
@@ -63,18 +63,18 @@
         }
 
         v7 = *(*(&v47 + 1) + 8 * i);
-        v8 = [v7 activeFocusLayersToItems];
-        v9 = [v8 copy];
+        activeFocusLayersToItems = [v7 activeFocusLayersToItems];
+        v9 = [activeFocusLayersToItems copy];
 
         v45 = 0u;
         v46 = 0u;
         v43 = 0u;
         v44 = 0u;
-        v42 = [v9 keyEnumerator];
-        v10 = [v42 countByEnumeratingWithState:&v43 objects:v51 count:16];
+        keyEnumerator = [v9 keyEnumerator];
+        v10 = [keyEnumerator countByEnumeratingWithState:&v43 objects:v51 count:16];
         if (!v10)
         {
-          v33 = v42;
+          clientID = keyEnumerator;
           goto LABEL_35;
         }
 
@@ -89,13 +89,13 @@
           {
             if (*v44 != v12)
             {
-              objc_enumerationMutation(v42);
+              objc_enumerationMutation(keyEnumerator);
             }
 
             v14 = *(*(&v43 + 1) + 8 * j);
-            v15 = [v14 superlayer];
+            superlayer = [v14 superlayer];
 
-            if (!v15)
+            if (!superlayer)
             {
               continue;
             }
@@ -130,19 +130,19 @@
 
             [v14 setOpacity:v20];
 LABEL_17:
-            v22 = [v14 superlayer];
+            superlayer2 = [v14 superlayer];
             v23 = CALayerGetDelegate();
 
             if ((_IsKindOfUIView(v23) & 1) == 0)
             {
-              v32 = [MEMORY[0x1E696AAA8] currentHandler];
-              [v32 handleFailureInMethod:a2 object:self file:@"UIFocusRingManager.m" lineNumber:396 description:@"Internal inconsistency: the layer owning the focus ring is no longer associated with a UIView."];
+              currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+              [currentHandler handleFailureInMethod:a2 object:self file:@"UIFocusRingManager.m" lineNumber:396 description:@"Internal inconsistency: the layer owning the focus ring is no longer associated with a UIView."];
             }
 
             v24 = v23;
-            v25 = [v24 _window];
+            _window = [v24 _window];
 
-            if (v25)
+            if (_window)
             {
               v26 = v11;
               v27 = v12;
@@ -164,13 +164,13 @@ LABEL_17:
               v40 = 1;
             }
 
-            if (!v25)
+            if (!_window)
             {
               goto LABEL_30;
             }
           }
 
-          v11 = [v42 countByEnumeratingWithState:&v43 objects:v51 count:16];
+          v11 = [keyEnumerator countByEnumeratingWithState:&v43 objects:v51 count:16];
           if (v11)
           {
             continue;
@@ -188,8 +188,8 @@ LABEL_30:
         }
 
 LABEL_34:
-        v33 = [v38 clientID];
-        [(UIFocusRingManager *)self _removeActiveFocusLayersForClient:v33];
+        clientID = [v38 clientID];
+        [(UIFocusRingManager *)self _removeActiveFocusLayersForClient:clientID];
 LABEL_35:
 
 LABEL_36:
@@ -202,13 +202,13 @@ LABEL_36:
   }
 }
 
-+ (BOOL)focusRingAvailableInBehavior:(uint64_t)a1
++ (BOOL)focusRingAvailableInBehavior:(uint64_t)behavior
 {
   v2 = a2;
   objc_opt_self();
-  v3 = [v2 focusRingVisibility];
+  focusRingVisibility = [v2 focusRingVisibility];
 
-  return v3 == 1;
+  return focusRingVisibility == 1;
 }
 
 void __29__UIFocusRingManager_manager__block_invoke()
@@ -218,77 +218,77 @@ void __29__UIFocusRingManager_manager__block_invoke()
   qword_1ED49FBA0 = v0;
 }
 
-- (id)activeFocusLayersToItemsForClient:(id)a3
+- (id)activeFocusLayersToItemsForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_focusRingStateForClient objectForKeyedSubscript:v4];
-  v6 = [v5 activeFocusLayersToItems];
+  clientCopy = client;
+  v5 = [(NSMutableDictionary *)self->_focusRingStateForClient objectForKeyedSubscript:clientCopy];
+  activeFocusLayersToItems = [v5 activeFocusLayersToItems];
 
-  if (!v6)
+  if (!activeFocusLayersToItems)
   {
-    v7 = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
-    v8 = [(NSMutableDictionary *)self->_focusRingStateForClient objectForKeyedSubscript:v4];
-    [v8 setActiveFocusLayersToItems:v7];
+    weakToWeakObjectsMapTable = [MEMORY[0x1E696AD18] weakToWeakObjectsMapTable];
+    v8 = [(NSMutableDictionary *)self->_focusRingStateForClient objectForKeyedSubscript:clientCopy];
+    [v8 setActiveFocusLayersToItems:weakToWeakObjectsMapTable];
   }
 
-  v9 = [(NSMutableDictionary *)self->_focusRingStateForClient objectForKeyedSubscript:v4];
-  v10 = [v9 activeFocusLayersToItems];
+  v9 = [(NSMutableDictionary *)self->_focusRingStateForClient objectForKeyedSubscript:clientCopy];
+  activeFocusLayersToItems2 = [v9 activeFocusLayersToItems];
 
-  return v10;
+  return activeFocusLayersToItems2;
 }
 
-- (id)activeFocusLayersForClient:(id)a3
+- (id)activeFocusLayersForClient:(id)client
 {
-  v4 = a3;
-  v5 = [(NSMutableDictionary *)self->_focusRingStateForClient objectForKeyedSubscript:v4];
-  v6 = [v5 activeFocusLayers];
+  clientCopy = client;
+  v5 = [(NSMutableDictionary *)self->_focusRingStateForClient objectForKeyedSubscript:clientCopy];
+  activeFocusLayers = [v5 activeFocusLayers];
 
-  if (!v6)
+  if (!activeFocusLayers)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
-    v8 = [(NSMutableDictionary *)self->_focusRingStateForClient objectForKeyedSubscript:v4];
-    [v8 setActiveFocusLayers:v7];
+    array = [MEMORY[0x1E695DF70] array];
+    v8 = [(NSMutableDictionary *)self->_focusRingStateForClient objectForKeyedSubscript:clientCopy];
+    [v8 setActiveFocusLayers:array];
   }
 
-  v9 = [(NSMutableDictionary *)self->_focusRingStateForClient objectForKeyedSubscript:v4];
-  v10 = [v9 activeFocusLayers];
+  v9 = [(NSMutableDictionary *)self->_focusRingStateForClient objectForKeyedSubscript:clientCopy];
+  activeFocusLayers2 = [v9 activeFocusLayers];
 
-  return v10;
+  return activeFocusLayers2;
 }
 
-+ (void)moveRingToFocusItem:(id)a3 forClient:(id)a4
++ (void)moveRingToFocusItem:(id)item forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 manager];
-  v9 = [v8 focusRingStateForClient];
+  itemCopy = item;
+  clientCopy = client;
+  manager = [self manager];
+  focusRingStateForClient = [manager focusRingStateForClient];
 
-  if (!v9)
+  if (!focusRingStateForClient)
   {
-    v10 = [MEMORY[0x1E695DF90] dictionary];
-    [v8 setFocusRingStateForClient:v10];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    [manager setFocusRingStateForClient:dictionary];
   }
 
-  v11 = [v8 focusRingStateForClient];
-  v12 = [v11 objectForKeyedSubscript:v7];
+  focusRingStateForClient2 = [manager focusRingStateForClient];
+  v12 = [focusRingStateForClient2 objectForKeyedSubscript:clientCopy];
 
   if (!v12)
   {
-    v13 = [v8 focusRingStateForClient];
-    v14 = [[UIFocusRingClientState alloc] initWithClientID:v7];
-    [v13 setObject:v14 forKey:v7];
+    focusRingStateForClient3 = [manager focusRingStateForClient];
+    v14 = [[UIFocusRingClientState alloc] initWithClientID:clientCopy];
+    [focusRingStateForClient3 setObject:v14 forKey:clientCopy];
   }
 
-  v15 = [v8 focusRingStateForClient];
-  v16 = [v15 objectForKey:v7];
-  [v16 setCurrentFocusItem:v6];
+  focusRingStateForClient4 = [manager focusRingStateForClient];
+  v16 = [focusRingStateForClient4 objectForKey:clientCopy];
+  [v16 setCurrentFocusItem:itemCopy];
 
-  [v8 _removeActiveFocusLayersForClient:v7];
+  [manager _removeActiveFocusLayersForClient:clientCopy];
   v22 = 0;
   v23 = &v22;
   v24 = 0x2020000000;
   v25 = 0;
-  v17 = _UIFocusBehaviorForEnvironment(v6);
+  v17 = _UIFocusBehaviorForEnvironment(itemCopy);
   LODWORD(v16) = [v17 supportsParentFocusRings];
 
   if (v16)
@@ -298,22 +298,22 @@ void __29__UIFocusRingManager_manager__block_invoke()
     v18[2] = __52__UIFocusRingManager_moveRingToFocusItem_forClient___block_invoke;
     v18[3] = &unk_1E7119FF8;
     v21 = &v22;
-    v19 = v8;
-    v20 = v7;
-    _UIFocusEnvironmentEnumerateAncestorEnvironments(v6, v18);
+    v19 = manager;
+    v20 = clientCopy;
+    _UIFocusEnvironmentEnumerateAncestorEnvironments(itemCopy, v18);
   }
 
   if (*(v23 + 24) == 1)
   {
-    [v8 addSelectedFocusRingForItem:v6 forClient:v7];
+    [manager addSelectedFocusRingForItem:itemCopy forClient:clientCopy];
   }
 
   else
   {
-    [v8 addFocusRingForItem:v6 forClient:v7];
+    [manager addFocusRingForItem:itemCopy forClient:clientCopy];
   }
 
-  [v8 _updateFocusLayerFrames];
+  [manager _updateFocusLayerFrames];
   _Block_object_dispose(&v22, 8);
 }
 
@@ -348,26 +348,26 @@ void __52__UIFocusRingManager_moveRingToFocusItem_forClient___block_invoke(uint6
 LABEL_8:
 }
 
-+ (void)removeRingFromFocusItem:(id)a3 forClient:(id)a4
++ (void)removeRingFromFocusItem:(id)item forClient:(id)client
 {
   v32 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
-  v8 = [a1 manager];
-  v9 = [v8 focusRingStateForClient];
-  if (v9 && (v10 = v9, [v8 focusRingStateForClient], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKey:", v7), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "currentFocusItem"), v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v11, v10, v13 == v6))
+  itemCopy = item;
+  clientCopy = client;
+  manager = [self manager];
+  focusRingStateForClient = [manager focusRingStateForClient];
+  if (focusRingStateForClient && (v10 = focusRingStateForClient, [manager focusRingStateForClient], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "objectForKey:", clientCopy), v12 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v12, "currentFocusItem"), v13 = objc_claimAutoreleasedReturnValue(), v13, v12, v11, v10, v13 == itemCopy))
   {
-    [v8 _removeActiveFocusLayersForClient:v7];
+    [manager _removeActiveFocusLayersForClient:clientCopy];
   }
 
   else
   {
-    v14 = [v8 activeFocusLayersForClient:v7];
+    v14 = [manager activeFocusLayersForClient:clientCopy];
     v15 = [v14 count];
 
     if (v15)
     {
-      v16 = [v8 activeFocusLayersForClient:v7];
+      v16 = [manager activeFocusLayersForClient:clientCopy];
       v17 = [v16 copy];
 
       v29 = 0u;
@@ -391,13 +391,13 @@ LABEL_8:
             }
 
             v23 = *(*(&v27 + 1) + 8 * v22);
-            v24 = [v8 activeFocusLayersToItemsForClient:{v7, v27}];
+            v24 = [manager activeFocusLayersToItemsForClient:{clientCopy, v27}];
             v25 = [v24 objectForKey:v23];
 
             if (!v25)
             {
               [v23 removeFromSuperlayer];
-              v26 = [v8 activeFocusLayersForClient:v7];
+              v26 = [manager activeFocusLayersForClient:clientCopy];
               [v26 removeObject:v23];
             }
 
@@ -414,118 +414,118 @@ LABEL_8:
   }
 }
 
-+ (void)updateRingForFocusItem:(id)a3 forClient:(id)a4
++ (void)updateRingForFocusItem:(id)item forClient:(id)client
 {
-  v6 = a3;
-  v7 = [a1 _currentFocusItemForClient:a4];
-  v8 = [v6 isEqual:v7];
+  itemCopy = item;
+  v7 = [self _currentFocusItemForClient:client];
+  v8 = [itemCopy isEqual:v7];
 
   if (v8)
   {
-    v9 = [a1 manager];
-    [v9 _updateFocusLayerFrames];
+    manager = [self manager];
+    [manager _updateFocusLayerFrames];
   }
 }
 
-- (void)addFocusRingForItem:(id)a3 forClient:(id)a4
+- (void)addFocusRingForItem:(id)item forClient:(id)client
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(UIFocusRingManager *)self _viewToAddFocusLayerForItem:v13 forClient:v6];
+  itemCopy = item;
+  clientCopy = client;
+  v7 = [(UIFocusRingManager *)self _viewToAddFocusLayerForItem:itemCopy forClient:clientCopy];
   if (v7)
   {
-    v8 = [objc_opt_class() shapeLayerClassForItem:v13 client:v6];
-    v9 = [v7 traitCollection];
-    v10 = [v8 focusLayerForUserInterfaceStyle:{objc_msgSend(v9, "userInterfaceStyle")}];
+    v8 = [objc_opt_class() shapeLayerClassForItem:itemCopy client:clientCopy];
+    traitCollection = [v7 traitCollection];
+    v10 = [v8 focusLayerForUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-    [(UIFocusRingManager *)self _addFocusLayer:v10 toView:v7 forItem:v13];
-    v11 = [(UIFocusRingManager *)self activeFocusLayersToItemsForClient:v6];
-    [v11 setObject:v13 forKey:v10];
+    [(UIFocusRingManager *)self _addFocusLayer:v10 toView:v7 forItem:itemCopy];
+    v11 = [(UIFocusRingManager *)self activeFocusLayersToItemsForClient:clientCopy];
+    [v11 setObject:itemCopy forKey:v10];
 
-    v12 = [(UIFocusRingManager *)self activeFocusLayersForClient:v6];
+    v12 = [(UIFocusRingManager *)self activeFocusLayersForClient:clientCopy];
     [v12 addObject:v10];
   }
 }
 
-- (void)addParentFocusRingForItem:(id)a3 forClient:(id)a4
+- (void)addParentFocusRingForItem:(id)item forClient:(id)client
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(UIFocusRingManager *)self _viewToAddFocusLayerForItem:v13 forClient:v6];
+  itemCopy = item;
+  clientCopy = client;
+  v7 = [(UIFocusRingManager *)self _viewToAddFocusLayerForItem:itemCopy forClient:clientCopy];
   if (v7)
   {
-    v8 = [objc_opt_class() shapeLayerClassForItem:v13 client:v6];
-    v9 = [v7 traitCollection];
-    v10 = [v8 parentLayerForUserInterfaceStyle:{objc_msgSend(v9, "userInterfaceStyle")}];
+    v8 = [objc_opt_class() shapeLayerClassForItem:itemCopy client:clientCopy];
+    traitCollection = [v7 traitCollection];
+    v10 = [v8 parentLayerForUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-    [(UIFocusRingManager *)self _addFocusLayer:v10 toView:v7 forItem:v13];
-    v11 = [(UIFocusRingManager *)self activeFocusLayersToItemsForClient:v6];
-    [v11 setObject:v13 forKey:v10];
+    [(UIFocusRingManager *)self _addFocusLayer:v10 toView:v7 forItem:itemCopy];
+    v11 = [(UIFocusRingManager *)self activeFocusLayersToItemsForClient:clientCopy];
+    [v11 setObject:itemCopy forKey:v10];
 
-    v12 = [(UIFocusRingManager *)self activeFocusLayersForClient:v6];
+    v12 = [(UIFocusRingManager *)self activeFocusLayersForClient:clientCopy];
     [v12 addObject:v10];
   }
 }
 
-- (void)addSelectedFocusRingForItem:(id)a3 forClient:(id)a4
+- (void)addSelectedFocusRingForItem:(id)item forClient:(id)client
 {
-  v14 = a3;
-  v6 = a4;
-  v7 = [(UIFocusRingManager *)self _viewToAddFocusLayerForItem:v14 forClient:v6];
+  itemCopy = item;
+  clientCopy = client;
+  v7 = [(UIFocusRingManager *)self _viewToAddFocusLayerForItem:itemCopy forClient:clientCopy];
   if (v7)
   {
-    v8 = [objc_opt_class() shapeLayerClassForItem:v14 client:v6];
-    v9 = [v7 traitCollection];
-    v10 = [v8 selectedLayerForUserInterfaceStyle:{objc_msgSend(v9, "userInterfaceStyle")}];
+    v8 = [objc_opt_class() shapeLayerClassForItem:itemCopy client:clientCopy];
+    traitCollection = [v7 traitCollection];
+    v10 = [v8 selectedLayerForUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-    v11 = [v7 layer];
-    [v11 addSublayer:v10];
+    layer = [v7 layer];
+    [layer addSublayer:v10];
 
-    v12 = [(UIFocusRingManager *)self activeFocusLayersToItemsForClient:v6];
-    [v12 setObject:v14 forKey:v10];
+    v12 = [(UIFocusRingManager *)self activeFocusLayersToItemsForClient:clientCopy];
+    [v12 setObject:itemCopy forKey:v10];
 
-    v13 = [(UIFocusRingManager *)self activeFocusLayersForClient:v6];
+    v13 = [(UIFocusRingManager *)self activeFocusLayersForClient:clientCopy];
     [v13 addObject:v10];
   }
 }
 
-- (void)addSelectedParentFocusRingForItem:(id)a3 forClient:(id)a4
+- (void)addSelectedParentFocusRingForItem:(id)item forClient:(id)client
 {
-  v13 = a3;
-  v6 = a4;
-  v7 = [(UIFocusRingManager *)self _viewToAddFocusLayerForItem:v13 forClient:v6];
+  itemCopy = item;
+  clientCopy = client;
+  v7 = [(UIFocusRingManager *)self _viewToAddFocusLayerForItem:itemCopy forClient:clientCopy];
   if (v7)
   {
-    v8 = [objc_opt_class() shapeLayerClassForItem:v13 client:v6];
-    v9 = [v7 traitCollection];
-    v10 = [v8 selectedParentLayerForUserInterfaceStyle:{objc_msgSend(v9, "userInterfaceStyle")}];
+    v8 = [objc_opt_class() shapeLayerClassForItem:itemCopy client:clientCopy];
+    traitCollection = [v7 traitCollection];
+    v10 = [v8 selectedParentLayerForUserInterfaceStyle:{objc_msgSend(traitCollection, "userInterfaceStyle")}];
 
-    [(UIFocusRingManager *)self _addFocusLayer:v10 toView:v7 forItem:v13];
-    v11 = [(UIFocusRingManager *)self activeFocusLayersToItemsForClient:v6];
-    [v11 setObject:v13 forKey:v10];
+    [(UIFocusRingManager *)self _addFocusLayer:v10 toView:v7 forItem:itemCopy];
+    v11 = [(UIFocusRingManager *)self activeFocusLayersToItemsForClient:clientCopy];
+    [v11 setObject:itemCopy forKey:v10];
 
-    v12 = [(UIFocusRingManager *)self activeFocusLayersForClient:v6];
+    v12 = [(UIFocusRingManager *)self activeFocusLayersForClient:clientCopy];
     [v12 addObject:v10];
   }
 }
 
-- (void)_addFocusLayer:(id)a3 toView:(id)a4 forItem:(id)a5
+- (void)_addFocusLayer:(id)layer toView:(id)view forItem:(id)item
 {
-  v9 = a3;
-  v6 = a4;
+  layerCopy = layer;
+  viewCopy = view;
   if (objc_opt_respondsToSelector())
   {
-    v7 = [v6 tintColor];
-    [v9 _updateWithTintColor:v7];
+    tintColor = [viewCopy tintColor];
+    [layerCopy _updateWithTintColor:tintColor];
   }
 
-  v8 = [v6 layer];
-  [v8 addSublayer:v9];
+  layer = [viewCopy layer];
+  [layer addSublayer:layerCopy];
 }
 
-- (void)_removeActiveFocusLayersForClient:(id)a3
+- (void)_removeActiveFocusLayersForClient:(id)client
 {
-  v3 = [(UIFocusRingManager *)self activeFocusLayersForClient:a3];
+  v3 = [(UIFocusRingManager *)self activeFocusLayersForClient:client];
   if ([v3 count])
   {
     [v3 makeObjectsPerformSelector:sel_removeFromSuperlayer];
@@ -533,69 +533,69 @@ LABEL_8:
   }
 }
 
-- (BOOL)_focusItemWantsFocusRing:(id)a3 forClient:(id)a4
+- (BOOL)_focusItemWantsFocusRing:(id)ring forClient:(id)client
 {
-  v4 = a3;
-  v5 = _UIFocusBehaviorForEnvironment(v4);
-  v6 = [v5 focusRingVisibility];
+  ringCopy = ring;
+  v5 = _UIFocusBehaviorForEnvironment(ringCopy);
+  focusRingVisibility = [v5 focusRingVisibility];
 
-  if ((v6 - 2) >= 2)
+  if ((focusRingVisibility - 2) >= 2)
   {
-    v8 = v6 == 1;
+    v8 = focusRingVisibility == 1;
   }
 
   else
   {
-    v7 = _UIFocusItemHaloEffect(v4);
+    v7 = _UIFocusItemHaloEffect(ringCopy);
     v8 = v7 != 0;
   }
 
   return v8;
 }
 
-- (id)_viewToAddFocusLayerForItem:(id)a3 forClient:(id)a4
+- (id)_viewToAddFocusLayerForItem:(id)item forClient:(id)client
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && [(UIFocusRingManager *)self _focusItemWantsFocusRing:v6 forClient:v7])
+  itemCopy = item;
+  clientCopy = client;
+  if (itemCopy && [(UIFocusRingManager *)self _focusItemWantsFocusRing:itemCopy forClient:clientCopy])
   {
-    if (!_IsKindOfUIView(v6) || ([v6 _containerViewForLegacyFocusRing], (v8 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!_IsKindOfUIView(itemCopy) || ([itemCopy _containerViewForLegacyFocusRing], (superview = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v9 = _UIFocusEnvironmentContainingView(v6);
+      v9 = _UIFocusEnvironmentContainingView(itemCopy);
       [(UIView *)v9 _addGeometryChangeObserver:?];
-      v8 = [v9 superview];
+      superview = [v9 superview];
     }
   }
 
   else
   {
-    v8 = 0;
+    superview = 0;
   }
 
-  return v8;
+  return superview;
 }
 
-- (id)_focusRingPathForItem:(id)a3 inView:(id)a4
+- (id)_focusRingPathForItem:(id)item inView:(id)view
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = _UIFocusItemHaloEffect(v5);
+  itemCopy = item;
+  viewCopy = view;
+  v7 = _UIFocusItemHaloEffect(itemCopy);
   v8 = v7;
   if (v7)
   {
-    v9 = [v7 _shape];
-    v10 = _UIFocusEnvironmentContainingView(v5);
-    v11 = [v10 coordinateSpace];
+    _shape = [v7 _shape];
+    v10 = _UIFocusEnvironmentContainingView(itemCopy);
+    coordinateSpace = [v10 coordinateSpace];
 
-    v12 = [v9 shapeConvertedFromCoordinateSpace:v11 toCoordinateSpace:v6];
+    v12 = [_shape shapeConvertedFromCoordinateSpace:coordinateSpace toCoordinateSpace:viewCopy];
 
-    v13 = [v12 outline];
+    outline = [v12 outline];
 
     goto LABEL_14;
   }
 
-  v14 = [v6 coordinateSpace];
-  v15 = _UIFocusItemFrameInCoordinateSpace(v5, v14);
+  coordinateSpace2 = [viewCopy coordinateSpace];
+  v15 = _UIFocusItemFrameInCoordinateSpace(itemCopy, coordinateSpace2);
   v17 = v16;
   v19 = v18;
   v21 = v20;
@@ -605,7 +605,7 @@ LABEL_8:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v24 = v5;
+    layer = itemCopy;
   }
 
   else
@@ -619,16 +619,16 @@ LABEL_12:
       goto LABEL_13;
     }
 
-    v24 = [v5 layer];
+    layer = [itemCopy layer];
   }
 
-  v12 = v24;
-  if (!v24)
+  v12 = layer;
+  if (!layer)
   {
     goto LABEL_12;
   }
 
-  [v24 cornerRadius];
+  [layer cornerRadius];
   if (v25 <= 0.0)
   {
     goto LABEL_12;
@@ -636,8 +636,8 @@ LABEL_12:
 
   [v12 cornerRadius];
   v23 = v26;
-  v27 = [v12 cornerCurve];
-  v28 = [v27 isEqualToString:*MEMORY[0x1E69796E8]];
+  cornerCurve = [v12 cornerCurve];
+  v28 = [cornerCurve isEqualToString:*MEMORY[0x1E69796E8]];
 
   if (!v28)
   {
@@ -646,37 +646,37 @@ LABEL_12:
 
   v29 = [UIBezierPath _bezierPathWithPillRect:v15 cornerRadius:v17, v19, v21, v23];
 LABEL_13:
-  v13 = v29;
+  outline = v29;
 LABEL_14:
 
-  return v13;
+  return outline;
 }
 
-+ (id)_currentFocusItemForClient:(id)a3
++ (id)_currentFocusItemForClient:(id)client
 {
-  v4 = a3;
-  v5 = [a1 manager];
-  v6 = [v5 focusRingStateForClient];
-  v7 = [v6 objectForKey:v4];
+  clientCopy = client;
+  manager = [self manager];
+  focusRingStateForClient = [manager focusRingStateForClient];
+  v7 = [focusRingStateForClient objectForKey:clientCopy];
 
-  v8 = [v7 currentFocusItem];
+  currentFocusItem = [v7 currentFocusItem];
 
-  return v8;
+  return currentFocusItem;
 }
 
 + (void)_removeActiveFocusLayers
 {
-  v2 = [a1 manager];
-  [v2 _removeActiveFocusLayersForClient:@"FocusEngineClient"];
+  manager = [self manager];
+  [manager _removeActiveFocusLayersForClient:@"FocusEngineClient"];
 }
 
 + (void)_updateActiveFocusLayers
 {
-  v4 = [a1 manager];
-  v3 = [a1 _currentFocusItemForClient:@"FocusEngineClient"];
+  manager = [self manager];
+  v3 = [self _currentFocusItemForClient:@"FocusEngineClient"];
   if (v3)
   {
-    [a1 moveRingToFocusItem:v3];
+    [self moveRingToFocusItem:v3];
   }
 }
 
@@ -685,8 +685,8 @@ LABEL_14:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(UIFocusRingManager *)self focusRingStateForClient];
-  v7 = [v3 stringWithFormat:@"<%@: %p, state: %@>", v5, self, v6];
+  focusRingStateForClient = [(UIFocusRingManager *)self focusRingStateForClient];
+  v7 = [v3 stringWithFormat:@"<%@: %p, state: %@>", v5, self, focusRingStateForClient];
 
   return v7;
 }

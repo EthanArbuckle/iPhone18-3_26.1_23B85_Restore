@@ -1,9 +1,9 @@
 @interface UITableViewRow
 + (id)row;
-- (UITableViewRow)initWithCoder:(id)a3;
+- (UITableViewRow)initWithCoder:(id)coder;
 - (int64_t)indentationLevel;
-- (void)encodeWithCoder:(id)a3;
-- (void)setIndentationLevel:(int64_t)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setIndentationLevel:(int64_t)level;
 @end
 
 @implementation UITableViewRow
@@ -15,23 +15,23 @@
   return v2;
 }
 
-- (UITableViewRow)initWithCoder:(id)a3
+- (UITableViewRow)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = UITableViewRow;
   v5 = [(UITableViewRow *)&v12 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"UITableRowCell"];
+    v6 = [coderCopy decodeObjectForKey:@"UITableRowCell"];
     cell = v5->_cell;
     v5->_cell = v6;
 
-    v8 = [v4 containsValueForKey:@"UITableRowHeight"];
+    v8 = [coderCopy containsValueForKey:@"UITableRowHeight"];
     v9 = -1.0;
     if (v8)
     {
-      [v4 decodeFloatForKey:{@"UITableRowHeight", -1.0}];
+      [coderCopy decodeFloatForKey:{@"UITableRowHeight", -1.0}];
       v9 = v10;
     }
 
@@ -41,17 +41,17 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = v4;
+  coderCopy = coder;
+  v5 = coderCopy;
   cell = self->_cell;
   if (cell)
   {
-    [v4 encodeObject:cell forKey:@"UITableRowCell"];
+    [coderCopy encodeObject:cell forKey:@"UITableRowCell"];
     height = self->_height;
-    v8 = [(UITableViewCell *)self->_cell _tableView];
-    [v8 rowHeight];
+    _tableView = [(UITableViewCell *)self->_cell _tableView];
+    [_tableView rowHeight];
     v10 = v9;
 
     if (height != v10)
@@ -82,7 +82,7 @@
   }
 }
 
-- (void)setIndentationLevel:(int64_t)a3
+- (void)setIndentationLevel:(int64_t)level
 {
   if (os_variant_has_internal_diagnostics())
   {
@@ -104,7 +104,7 @@
     }
   }
 
-  [(UITableViewCell *)self->_cell setIndentationLevel:a3];
+  [(UITableViewCell *)self->_cell setIndentationLevel:level];
 }
 
 - (int64_t)indentationLevel

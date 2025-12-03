@@ -1,10 +1,10 @@
 @interface HomeSearchStatusOutlineCell
-- (HomeSearchStatusOutlineCell)initWithFrame:(CGRect)a3;
+- (HomeSearchStatusOutlineCell)initWithFrame:(CGRect)frame;
 - (void)_didTapOnRAPButton;
 - (void)_removeRAPButton;
 - (void)_updateFromModel;
 - (void)prepareForReuse;
-- (void)setCellModel:(id)a3;
+- (void)setCellModel:(id)model;
 @end
 
 @implementation HomeSearchStatusOutlineCell
@@ -19,8 +19,8 @@
 
 - (void)_didTapOnRAPButton
 {
-  v2 = [(HomeSearchStatusOutlineCellModel *)self->_cellModel delegate];
-  [v2 didTapOnReportAnIssue];
+  delegate = [(HomeSearchStatusOutlineCellModel *)self->_cellModel delegate];
+  [delegate didTapOnReportAnIssue];
 }
 
 - (void)_removeRAPButton
@@ -36,22 +36,22 @@
   v3 = sub_1000410AC();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(HomeSearchStatusOutlineCellModel *)self->_cellModel errorString];
-    v5 = [(HomeSearchStatusOutlineCellModel *)self->_cellModel enableStructuredRAPAffordance];
+    errorString = [(HomeSearchStatusOutlineCellModel *)self->_cellModel errorString];
+    enableStructuredRAPAffordance = [(HomeSearchStatusOutlineCellModel *)self->_cellModel enableStructuredRAPAffordance];
     v10 = 138412546;
-    v11 = v4;
+    v11 = errorString;
     v12 = 1024;
-    v13 = v5;
+    v13 = enableStructuredRAPAffordance;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "Loading started for search %@ enableStructuredRAPAffordance %d", &v10, 0x12u);
   }
 
-  v6 = [(HomeSearchStatusOutlineCellModel *)self->_cellModel errorString];
-  v7 = [v6 length];
+  errorString2 = [(HomeSearchStatusOutlineCellModel *)self->_cellModel errorString];
+  v7 = [errorString2 length];
 
   if (v7)
   {
-    v8 = [(HomeSearchStatusOutlineCellModel *)self->_cellModel errorString];
-    [(UILabel *)self->_errorLabel setText:v8];
+    errorString3 = [(HomeSearchStatusOutlineCellModel *)self->_cellModel errorString];
+    [(UILabel *)self->_errorLabel setText:errorString3];
 
     [(UIActivityIndicatorView *)self->_loadingIndicator setHidden:1];
     [(UILabel *)self->_errorLabel setHidden:0];
@@ -65,8 +65,8 @@
       [(HomeSearchStatusOutlineCell *)self _removeRAPButton];
     }
 
-    v9 = [(HomeSearchStatusOutlineCell *)self contentView];
-    [v9 invalidateIntrinsicContentSize];
+    contentView = [(HomeSearchStatusOutlineCell *)self contentView];
+    [contentView invalidateIntrinsicContentSize];
   }
 
   else
@@ -77,29 +77,29 @@
   }
 }
 
-- (void)setCellModel:(id)a3
+- (void)setCellModel:(id)model
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_cellModel != v5)
+  modelCopy = model;
+  v6 = modelCopy;
+  if (self->_cellModel != modelCopy)
   {
-    v8 = v5;
-    v7 = [(HomeSearchStatusOutlineCellModel *)v5 isEqual:?];
+    v8 = modelCopy;
+    v7 = [(HomeSearchStatusOutlineCellModel *)modelCopy isEqual:?];
     v6 = v8;
     if ((v7 & 1) == 0)
     {
-      objc_storeStrong(&self->_cellModel, a3);
+      objc_storeStrong(&self->_cellModel, model);
       [(HomeSearchStatusOutlineCell *)self _updateFromModel];
       v6 = v8;
     }
   }
 }
 
-- (HomeSearchStatusOutlineCell)initWithFrame:(CGRect)a3
+- (HomeSearchStatusOutlineCell)initWithFrame:(CGRect)frame
 {
   v57.receiver = self;
   v57.super_class = HomeSearchStatusOutlineCell;
-  v3 = [(SidebarOutlineCell *)&v57 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SidebarOutlineCell *)&v57 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(UIStackView);
@@ -110,8 +110,8 @@
     [(UIStackView *)v3->_stackView setAxis:1];
     [(UIStackView *)v3->_stackView setDistribution:0];
     [(UIStackView *)v3->_stackView setAlignment:1];
-    v6 = [(HomeSearchStatusOutlineCell *)v3 contentView];
-    [v6 addSubview:v3->_stackView];
+    contentView = [(HomeSearchStatusOutlineCell *)v3 contentView];
+    [contentView addSubview:v3->_stackView];
 
     v7 = [UILabel alloc];
     y = CGRectZero.origin.y;
@@ -139,8 +139,8 @@
     v17 = +[UIColor blackColor];
     [(UIActivityIndicatorView *)v3->_loadingIndicator setColor:v17];
 
-    v18 = [(HomeSearchStatusOutlineCell *)v3 contentView];
-    [v18 addSubview:v3->_loadingIndicator];
+    contentView2 = [(HomeSearchStatusOutlineCell *)v3 contentView];
+    [contentView2 addSubview:v3->_loadingIndicator];
 
     [(UIActivityIndicatorView *)v3->_loadingIndicator setHidesWhenStopped:0];
     [(UIActivityIndicatorView *)v3->_loadingIndicator startAnimating];
@@ -157,43 +157,43 @@
     [(UIButton *)v3->_rapButton setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UIButton *)v3->_rapButton addTarget:v3 action:"_didTapOnRAPButton" forControlEvents:64];
     [(UIButton *)v3->_rapButton setConfiguration:v19];
-    v54 = [(UIStackView *)v3->_stackView topAnchor];
-    v55 = [(HomeSearchStatusOutlineCell *)v3 contentView];
-    v53 = [v55 topAnchor];
-    v52 = [v54 constraintEqualToAnchor:v53 constant:16.0];
+    topAnchor = [(UIStackView *)v3->_stackView topAnchor];
+    contentView3 = [(HomeSearchStatusOutlineCell *)v3 contentView];
+    topAnchor2 = [contentView3 topAnchor];
+    v52 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:16.0];
     v58[0] = v52;
-    v50 = [(UIStackView *)v3->_stackView leadingAnchor];
-    v51 = [(HomeSearchStatusOutlineCell *)v3 contentView];
-    v49 = [v51 layoutMarginsGuide];
-    v48 = [v49 leadingAnchor];
-    v47 = [v50 constraintEqualToAnchor:v48];
+    leadingAnchor = [(UIStackView *)v3->_stackView leadingAnchor];
+    contentView4 = [(HomeSearchStatusOutlineCell *)v3 contentView];
+    layoutMarginsGuide = [contentView4 layoutMarginsGuide];
+    leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+    v47 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     v58[1] = v47;
-    v45 = [(UIStackView *)v3->_stackView trailingAnchor];
-    v46 = [(HomeSearchStatusOutlineCell *)v3 contentView];
-    v44 = [v46 layoutMarginsGuide];
-    v43 = [v44 trailingAnchor];
-    v42 = [v45 constraintEqualToAnchor:v43];
+    trailingAnchor = [(UIStackView *)v3->_stackView trailingAnchor];
+    contentView5 = [(HomeSearchStatusOutlineCell *)v3 contentView];
+    layoutMarginsGuide2 = [contentView5 layoutMarginsGuide];
+    trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+    v42 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v58[2] = v42;
-    v40 = [(UIStackView *)v3->_stackView bottomAnchor];
-    v41 = [(HomeSearchStatusOutlineCell *)v3 contentView];
-    v39 = [v41 bottomAnchor];
-    v38 = [v40 constraintEqualToAnchor:v39 constant:-16.0];
+    bottomAnchor = [(UIStackView *)v3->_stackView bottomAnchor];
+    contentView6 = [(HomeSearchStatusOutlineCell *)v3 contentView];
+    bottomAnchor2 = [contentView6 bottomAnchor];
+    v38 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2 constant:-16.0];
     v58[3] = v38;
-    v37 = [(UIActivityIndicatorView *)v3->_loadingIndicator leadingAnchor];
-    v36 = [(UIStackView *)v3->_stackView leadingAnchor];
-    v35 = [v37 constraintEqualToAnchor:v36];
+    leadingAnchor3 = [(UIActivityIndicatorView *)v3->_loadingIndicator leadingAnchor];
+    leadingAnchor4 = [(UIStackView *)v3->_stackView leadingAnchor];
+    v35 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4];
     v58[4] = v35;
-    v34 = [(UIActivityIndicatorView *)v3->_loadingIndicator trailingAnchor];
-    v24 = [(UIStackView *)v3->_stackView trailingAnchor];
-    v25 = [v34 constraintLessThanOrEqualToAnchor:v24];
+    trailingAnchor3 = [(UIActivityIndicatorView *)v3->_loadingIndicator trailingAnchor];
+    trailingAnchor4 = [(UIStackView *)v3->_stackView trailingAnchor];
+    v25 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4];
     v58[5] = v25;
-    v26 = [(UIActivityIndicatorView *)v3->_loadingIndicator topAnchor];
-    v27 = [(UIStackView *)v3->_stackView topAnchor];
-    v28 = [v26 constraintEqualToAnchor:v27];
+    topAnchor3 = [(UIActivityIndicatorView *)v3->_loadingIndicator topAnchor];
+    topAnchor4 = [(UIStackView *)v3->_stackView topAnchor];
+    v28 = [topAnchor3 constraintEqualToAnchor:topAnchor4];
     v58[6] = v28;
-    v29 = [(UIActivityIndicatorView *)v3->_loadingIndicator bottomAnchor];
-    v30 = [(UIStackView *)v3->_stackView bottomAnchor];
-    v31 = [v29 constraintLessThanOrEqualToAnchor:v30];
+    bottomAnchor3 = [(UIActivityIndicatorView *)v3->_loadingIndicator bottomAnchor];
+    bottomAnchor4 = [(UIStackView *)v3->_stackView bottomAnchor];
+    v31 = [bottomAnchor3 constraintLessThanOrEqualToAnchor:bottomAnchor4];
     v58[7] = v31;
     v32 = [NSArray arrayWithObjects:v58 count:8];
     [NSLayoutConstraint activateConstraints:v32];

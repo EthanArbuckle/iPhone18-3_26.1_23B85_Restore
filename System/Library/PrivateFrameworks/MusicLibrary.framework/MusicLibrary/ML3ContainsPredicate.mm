@@ -1,26 +1,26 @@
 @interface ML3ContainsPredicate
-+ (id)predicateWithProperty:(id)a3 valueSet:(id)a4;
-+ (id)predicateWithProperty:(id)a3 values:(id)a4;
-- (BOOL)containsPropertyPredicate:(id)a3 matchingValue:(id)a4 usingComparison:(int)a5;
-- (BOOL)isEqual:(id)a3;
-- (ML3ContainsPredicate)initWithCoder:(id)a3;
-- (ML3ContainsPredicate)initWithProperty:(id)a3 values:(id)a4;
++ (id)predicateWithProperty:(id)property valueSet:(id)set;
++ (id)predicateWithProperty:(id)property values:(id)values;
+- (BOOL)containsPropertyPredicate:(id)predicate matchingValue:(id)value usingComparison:(int)comparison;
+- (BOOL)isEqual:(id)equal;
+- (ML3ContainsPredicate)initWithCoder:(id)coder;
+- (ML3ContainsPredicate)initWithProperty:(id)property values:(id)values;
 - (id)databaseStatementParameters;
 - (id)description;
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4;
-- (void)encodeWithCoder:(id)a3;
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ML3ContainsPredicate
 
-- (BOOL)containsPropertyPredicate:(id)a3 matchingValue:(id)a4 usingComparison:(int)a5
+- (BOOL)containsPropertyPredicate:(id)predicate matchingValue:(id)value usingComparison:(int)comparison
 {
-  v5 = *&a5;
+  v5 = *&comparison;
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [(ML3PropertyPredicate *)self property];
-  v11 = [v10 isEqualToString:v8];
+  predicateCopy = predicate;
+  valueCopy = value;
+  property = [(ML3PropertyPredicate *)self property];
+  v11 = [property isEqualToString:predicateCopy];
 
   if (v11)
   {
@@ -43,7 +43,7 @@
             objc_enumerationMutation(v12);
           }
 
-          if ([v9 ml_matchesValue:*(*(&v19 + 1) + 8 * i) usingComparison:{v5, v19}])
+          if ([valueCopy ml_matchesValue:*(*(&v19 + 1) + 8 * i) usingComparison:{v5, v19}])
           {
             v17 = 1;
             goto LABEL_13;
@@ -115,24 +115,24 @@ LABEL_13:
   return v3;
 }
 
-- (void)appendSQLToMutableString:(id)a3 entityClass:(Class)a4
+- (void)appendSQLToMutableString:(id)string entityClass:(Class)class
 {
-  v10 = a3;
-  v6 = [(objc_class *)a4 disambiguatedSQLForProperty:self->super._property];
-  [v10 appendString:v6];
+  stringCopy = string;
+  v6 = [(objc_class *)class disambiguatedSQLForProperty:self->super._property];
+  [stringCopy appendString:v6];
 
-  objc_msgSend(v10, "appendString:", @" IN (");
+  objc_msgSend(stringCopy, "appendString:", @" IN (");
   v7 = [self->_values count];
   if (v7)
   {
     v8 = v7;
-    [v10 appendString:@"?"];
+    [stringCopy appendString:@"?"];
     v9 = v8 - 1;
     if (v8 != 1)
     {
       do
       {
-        [v10 appendString:{@", ?"}];
+        [stringCopy appendString:{@", ?"}];
         --v9;
       }
 
@@ -140,7 +140,7 @@ LABEL_13:
     }
   }
 
-  [v10 appendString:@""]);
+  [stringCopy appendString:@""]);
 }
 
 - (id)description
@@ -154,10 +154,10 @@ LABEL_13:
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v7 = 1;
   }
@@ -166,18 +166,18 @@ LABEL_13:
   {
     v9.receiver = self;
     v9.super_class = ML3ContainsPredicate;
-    if ([(ML3PropertyPredicate *)&v9 isEqual:v4])
+    if ([(ML3PropertyPredicate *)&v9 isEqual:equalCopy])
     {
-      v5 = [(ML3ContainsPredicate *)self values];
-      v6 = [(ML3ContainsPredicate *)v4 values];
-      if (v5 == v6)
+      values = [(ML3ContainsPredicate *)self values];
+      values2 = [(ML3ContainsPredicate *)equalCopy values];
+      if (values == values2)
       {
         v7 = 1;
       }
 
       else
       {
-        v7 = [v5 isEqual:v6];
+        v7 = [values isEqual:values2];
       }
     }
 
@@ -190,61 +190,61 @@ LABEL_13:
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v6.receiver = self;
   v6.super_class = ML3ContainsPredicate;
-  v4 = a3;
-  [(ML3PropertyPredicate *)&v6 encodeWithCoder:v4];
+  coderCopy = coder;
+  [(ML3PropertyPredicate *)&v6 encodeWithCoder:coderCopy];
   v5 = [(ML3ContainsPredicate *)self values:v6.receiver];
-  [v4 encodeObject:v5 forKey:@"values"];
+  [coderCopy encodeObject:v5 forKey:@"values"];
 }
 
-- (ML3ContainsPredicate)initWithCoder:(id)a3
+- (ML3ContainsPredicate)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ML3ContainsPredicate;
-  v5 = [(ML3PropertyPredicate *)&v9 initWithCoder:v4];
+  v5 = [(ML3PropertyPredicate *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = MSVPropertyListDataClasses();
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"value"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"value"];
     [(ML3ContainsPredicate *)v5 setValues:v7];
   }
 
   return v5;
 }
 
-- (ML3ContainsPredicate)initWithProperty:(id)a3 values:(id)a4
+- (ML3ContainsPredicate)initWithProperty:(id)property values:(id)values
 {
-  v6 = a4;
+  valuesCopy = values;
   v10.receiver = self;
   v10.super_class = ML3ContainsPredicate;
-  v7 = [(ML3PropertyPredicate *)&v10 initWithProperty:a3];
+  v7 = [(ML3PropertyPredicate *)&v10 initWithProperty:property];
   v8 = v7;
   if (v7)
   {
-    [(ML3ContainsPredicate *)v7 setValues:v6];
+    [(ML3ContainsPredicate *)v7 setValues:valuesCopy];
   }
 
   return v8;
 }
 
-+ (id)predicateWithProperty:(id)a3 valueSet:(id)a4
++ (id)predicateWithProperty:(id)property valueSet:(id)set
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithProperty:v7 values:v6];
+  setCopy = set;
+  propertyCopy = property;
+  v8 = [[self alloc] initWithProperty:propertyCopy values:setCopy];
 
   return v8;
 }
 
-+ (id)predicateWithProperty:(id)a3 values:(id)a4
++ (id)predicateWithProperty:(id)property values:(id)values
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithProperty:v7 values:v6];
+  valuesCopy = values;
+  propertyCopy = property;
+  v8 = [[self alloc] initWithProperty:propertyCopy values:valuesCopy];
 
   return v8;
 }

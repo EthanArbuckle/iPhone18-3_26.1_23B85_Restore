@@ -1,8 +1,8 @@
 @interface VectorKitDebugRenderController
 - (id)delegate;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4;
-- (void)featureDisableSwitchChanged:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section;
+- (void)featureDisableSwitchChanged:(id)changed;
 - (void)viewDidLoad;
 @end
 
@@ -15,89 +15,89 @@
   return WeakRetained;
 }
 
-- (void)featureDisableSwitchChanged:(id)a3
+- (void)featureDisableSwitchChanged:(id)changed
 {
-  v12 = a3;
-  v4 = [(VectorKitDebugRenderController *)self delegate];
-  v5 = [v4 allVisibleMapViewsForDebugController:self];
-  v6 = [v5 firstObject];
-  v7 = [v6 _mapLayer];
+  changedCopy = changed;
+  delegate = [(VectorKitDebugRenderController *)self delegate];
+  v5 = [delegate allVisibleMapViewsForDebugController:self];
+  firstObject = [v5 firstObject];
+  _mapLayer = [firstObject _mapLayer];
 
-  v8 = [v12 switchIndex];
-  if (v8 <= 3)
+  switchIndex = [changedCopy switchIndex];
+  if (switchIndex <= 3)
   {
-    if (v8 > 1)
+    if (switchIndex > 1)
     {
-      if (v8 == 2)
+      if (switchIndex == 2)
       {
-        [v7 setDisableRoads:{objc_msgSend(v12, "isOn")}];
+        [_mapLayer setDisableRoads:{objc_msgSend(changedCopy, "isOn")}];
       }
 
       else
       {
-        [v7 setDisableTransitLines:{objc_msgSend(v12, "isOn")}];
+        [_mapLayer setDisableTransitLines:{objc_msgSend(changedCopy, "isOn")}];
       }
     }
 
-    else if (v8)
+    else if (switchIndex)
     {
-      if (v8 == 1)
+      if (switchIndex == 1)
       {
-        [v7 setDisablePolygons:{objc_msgSend(v12, "isOn")}];
+        [_mapLayer setDisablePolygons:{objc_msgSend(changedCopy, "isOn")}];
       }
     }
 
     else
     {
-      [v7 setDisableRasters:{objc_msgSend(v12, "isOn")}];
+      [_mapLayer setDisableRasters:{objc_msgSend(changedCopy, "isOn")}];
     }
 
     goto LABEL_19;
   }
 
-  if (v8 <= 5)
+  if (switchIndex <= 5)
   {
-    if (v8 == 4)
+    if (switchIndex == 4)
     {
-      [v7 setDisableLabels:{objc_msgSend(v12, "isOn")}];
+      [_mapLayer setDisableLabels:{objc_msgSend(changedCopy, "isOn")}];
       goto LABEL_19;
     }
 
-    [v7 setDisableBuildingFootprints:{objc_msgSend(v12, "isOn")}];
-    v9 = [v12 isOn];
+    [_mapLayer setDisableBuildingFootprints:{objc_msgSend(changedCopy, "isOn")}];
+    isOn = [changedCopy isOn];
     v10 = +[VKDebugSettings sharedSettingsExt];
-    [v10 setDisableBuildingFootprints:v9];
+    [v10 setDisableBuildingFootprints:isOn];
     goto LABEL_18;
   }
 
-  if (v8 == 6)
+  if (switchIndex == 6)
   {
-    v11 = [v12 isOn];
+    isOn2 = [changedCopy isOn];
     v10 = +[VKDebugSettings sharedSettingsExt];
-    [v10 setDisableRoute:v11];
+    [v10 setDisableRoute:isOn2];
 LABEL_18:
 
     goto LABEL_19;
   }
 
-  if (v8 == 7)
+  if (switchIndex == 7)
   {
-    [v7 setDisableGrid:{objc_msgSend(v12, "isOn")}];
+    [_mapLayer setDisableGrid:{objc_msgSend(changedCopy, "isOn")}];
   }
 
 LABEL_19:
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(VectorKitDebugRenderController *)self delegate];
-  v9 = [v8 allVisibleMapViewsForDebugController:self];
-  v10 = [v9 firstObject];
-  v11 = [v10 _mapLayer];
+  pathCopy = path;
+  viewCopy = view;
+  delegate = [(VectorKitDebugRenderController *)self delegate];
+  v9 = [delegate allVisibleMapViewsForDebugController:self];
+  firstObject = [v9 firstObject];
+  _mapLayer = [firstObject _mapLayer];
 
-  v12 = [v7 dequeueReusableCellWithIdentifier:@"Cell"];
+  v12 = [viewCopy dequeueReusableCellWithIdentifier:@"Cell"];
 
   if (!v12)
   {
@@ -105,9 +105,9 @@ LABEL_19:
   }
 
   [v12 setAccessoryView:0];
-  if (![v6 section] && objc_msgSend(v6, "row") <= 7 && (objc_msgSend(v6, "row") & 0x8000000000000000) == 0)
+  if (![pathCopy section] && objc_msgSend(pathCopy, "row") <= 7 && (objc_msgSend(pathCopy, "row") & 0x8000000000000000) == 0)
   {
-    v13 = -[NSMutableArray objectAtIndexedSubscript:](self->_debugFeatureSwitches, "objectAtIndexedSubscript:", [v6 row]);
+    v13 = -[NSMutableArray objectAtIndexedSubscript:](self->_debugFeatureSwitches, "objectAtIndexedSubscript:", [pathCopy row]);
     v14 = +[NSNull null];
     v15 = [v13 isEqual:v14];
 
@@ -115,15 +115,15 @@ LABEL_19:
     {
       v16 = objc_alloc_init(VKDebugRenderSwitch);
 
-      -[VKDebugRenderSwitch setSwitchIndex:](v16, "setSwitchIndex:", [v6 row]);
+      -[VKDebugRenderSwitch setSwitchIndex:](v16, "setSwitchIndex:", [pathCopy row]);
       [(VKDebugRenderSwitch *)v16 addTarget:self action:"featureDisableSwitchChanged:" forControlEvents:4096];
-      -[NSMutableArray setObject:atIndexedSubscript:](self->_debugFeatureSwitches, "setObject:atIndexedSubscript:", v16, [v6 row]);
+      -[NSMutableArray setObject:atIndexedSubscript:](self->_debugFeatureSwitches, "setObject:atIndexedSubscript:", v16, [pathCopy row]);
       v13 = v16;
     }
 
     [v12 setAccessoryView:v13];
-    v17 = *(&off_10164ED68 + [v6 row]);
-    v18 = [v6 row];
+    v17 = *(&off_10164ED68 + [pathCopy row]);
+    v18 = [pathCopy row];
     v19 = 0;
     if (v18 <= 3)
     {
@@ -131,12 +131,12 @@ LABEL_19:
       {
         if (v18 == 2)
         {
-          v20 = [v11 roadsDisabled];
+          roadsDisabled = [_mapLayer roadsDisabled];
         }
 
         else
         {
-          v20 = [v11 transitLinesDisabled];
+          roadsDisabled = [_mapLayer transitLinesDisabled];
         }
 
         goto LABEL_24;
@@ -144,15 +144,15 @@ LABEL_19:
 
       if (!v18)
       {
-        v20 = [v11 rastersDisabled];
+        roadsDisabled = [_mapLayer rastersDisabled];
         goto LABEL_24;
       }
 
       if (v18 == 1)
       {
-        v20 = [v11 polygonsDisabled];
+        roadsDisabled = [_mapLayer polygonsDisabled];
 LABEL_24:
-        v19 = v20;
+        v19 = roadsDisabled;
         goto LABEL_27;
       }
 
@@ -165,35 +165,35 @@ LABEL_24:
       {
         if (v18 == 7)
         {
-          v20 = [v11 gridDisabled];
+          roadsDisabled = [_mapLayer gridDisabled];
           goto LABEL_24;
         }
 
 LABEL_27:
-        v23 = [v12 textLabel];
-        [v23 setText:v17];
+        textLabel = [v12 textLabel];
+        [textLabel setText:v17];
 
         [v13 setOn:v19];
         goto LABEL_28;
       }
 
       v21 = +[VKDebugSettings sharedSettingsExt];
-      v22 = [v21 disableRoute];
+      disableRoute = [v21 disableRoute];
     }
 
     else
     {
       if (v18 == 4)
       {
-        v20 = [v11 labelsDisabled];
+        roadsDisabled = [_mapLayer labelsDisabled];
         goto LABEL_24;
       }
 
       v21 = +[VKDebugSettings sharedSettingsExt];
-      v22 = [v21 disableBuildingFootprints];
+      disableRoute = [v21 disableBuildingFootprints];
     }
 
-    v19 = v22;
+    v19 = disableRoute;
 
     goto LABEL_27;
   }
@@ -203,9 +203,9 @@ LABEL_28:
   return v12;
 }
 
-- (id)tableView:(id)a3 titleForHeaderInSection:(int64_t)a4
+- (id)tableView:(id)view titleForHeaderInSection:(int64_t)section
 {
-  if (a4)
+  if (section)
   {
     return 0;
   }

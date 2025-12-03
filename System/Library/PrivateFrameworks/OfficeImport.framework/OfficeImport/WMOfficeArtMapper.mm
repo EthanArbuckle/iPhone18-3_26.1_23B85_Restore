@@ -1,17 +1,17 @@
 @interface WMOfficeArtMapper
-- (CGSize)expandedSizeForTextBox:(id)a3 withState:(id)a4;
-- (WMOfficeArtMapper)initWithOadDrawable:(id)a3 asFloating:(BOOL)a4 parent:(id)a5;
-- (WMOfficeArtMapper)initWithWdOfficeArt:(id)a3 parent:(id)a4;
-- (id)blipAtIndex:(unsigned int)a3;
-- (void)mapAt:(id)a3 withState:(id)a4;
-- (void)mapDiagramAt:(id)a3 withState:(id)a4;
-- (void)mapOfficeArtGroupAt:(id)a3 withState:(id)a4;
-- (void)mapOfficeArtImageAt:(id)a3 withState:(id)a4;
-- (void)mapOfficeArtShapeAt:(id)a3 withState:(id)a4;
-- (void)mapOfficeArtTextboxAt:(id)a3 withState:(id)a4;
-- (void)mapTextBoxAt:(id)a3 withState:(id)a4;
+- (CGSize)expandedSizeForTextBox:(id)box withState:(id)state;
+- (WMOfficeArtMapper)initWithOadDrawable:(id)drawable asFloating:(BOOL)floating parent:(id)parent;
+- (WMOfficeArtMapper)initWithWdOfficeArt:(id)art parent:(id)parent;
+- (id)blipAtIndex:(unsigned int)index;
+- (void)mapAt:(id)at withState:(id)state;
+- (void)mapDiagramAt:(id)at withState:(id)state;
+- (void)mapOfficeArtGroupAt:(id)at withState:(id)state;
+- (void)mapOfficeArtImageAt:(id)at withState:(id)state;
+- (void)mapOfficeArtShapeAt:(id)at withState:(id)state;
+- (void)mapOfficeArtTextboxAt:(id)at withState:(id)state;
+- (void)mapTextBoxAt:(id)at withState:(id)state;
 - (void)setBoundingBox;
-- (void)setWithClientData:(id)a3 state:(id)a4;
+- (void)setWithClientData:(id)data state:(id)state;
 @end
 
 @implementation WMOfficeArtMapper
@@ -26,22 +26,22 @@
   self->super.mBox.size.height = v6;
 }
 
-- (WMOfficeArtMapper)initWithWdOfficeArt:(id)a3 parent:(id)a4
+- (WMOfficeArtMapper)initWithWdOfficeArt:(id)art parent:(id)parent
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isDrawableOverridden])
+  artCopy = art;
+  parentCopy = parent;
+  if ([artCopy isDrawableOverridden])
   {
     self->mIsInsideGroup = 0;
-    v8 = [v6 drawable];
-    v9 = -[WMOfficeArtMapper initWithOadDrawable:asFloating:parent:](self, "initWithOadDrawable:asFloating:parent:", v8, [v6 isFloating], v7);
+    drawable = [artCopy drawable];
+    v9 = -[WMOfficeArtMapper initWithOadDrawable:asFloating:parent:](self, "initWithOadDrawable:asFloating:parent:", drawable, [artCopy isFloating], parentCopy);
   }
 
   else
   {
     v12.receiver = self;
     v12.super_class = WMOfficeArtMapper;
-    v10 = [(CMDrawableMapper *)&v12 initWithParent:v7];
+    v10 = [(CMDrawableMapper *)&v12 initWithParent:parentCopy];
     if (v10)
     {
       v10->mIsMapped = 0;
@@ -53,20 +53,20 @@
   return v9;
 }
 
-- (WMOfficeArtMapper)initWithOadDrawable:(id)a3 asFloating:(BOOL)a4 parent:(id)a5
+- (WMOfficeArtMapper)initWithOadDrawable:(id)drawable asFloating:(BOOL)floating parent:(id)parent
 {
-  v8 = a3;
-  v9 = a5;
+  drawableCopy = drawable;
+  parentCopy = parent;
   v16.receiver = self;
   v16.super_class = WMOfficeArtMapper;
-  v10 = [(CMDrawableMapper *)&v16 initWithOadDrawable:v8 parent:v9];
+  v10 = [(CMDrawableMapper *)&v16 initWithOadDrawable:drawableCopy parent:parentCopy];
   v11 = v10;
   if (v10)
   {
     mContent = v10->mContent;
     v10->mContent = 0;
 
-    v11->mFloating = a4;
+    v11->mFloating = floating;
     v11->mIsMapped = 1;
     [(WMOfficeArtMapper *)v11 setBoundingBox];
     objc_opt_class();
@@ -82,40 +82,40 @@
   return v11;
 }
 
-- (void)mapAt:(id)a3 withState:(id)a4
+- (void)mapAt:(id)at withState:(id)state
 {
-  v15 = a3;
-  v6 = a4;
-  v7 = v6;
+  atCopy = at;
+  stateCopy = state;
+  v7 = stateCopy;
   if (self->mIsMapped)
   {
-    self->mCurrentPage = [v6 currentPage];
-    v8 = [(OADDrawable *)self->super.mDrawable clientData];
-    [(WMOfficeArtMapper *)self setWithClientData:v8 state:v7];
+    self->mCurrentPage = [stateCopy currentPage];
+    clientData = [(OADDrawable *)self->super.mDrawable clientData];
+    [(WMOfficeArtMapper *)self setWithClientData:clientData state:v7];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v9 = [(OADDrawable *)self->super.mDrawable graphicProperties];
-      v10 = [v9 clickHyperlink];
+      graphicProperties = [(OADDrawable *)self->super.mDrawable graphicProperties];
+      clickHyperlink = [graphicProperties clickHyperlink];
 
-      if (v10)
+      if (clickHyperlink)
       {
         v11 = [OIXMLElement elementWithType:0];
-        v12 = [v10 targetLocation];
-        v13 = [v12 absoluteString];
-        v14 = [OIXMLAttribute attributeWithName:0x286F07D70 stringValue:v13];
+        targetLocation = [clickHyperlink targetLocation];
+        absoluteString = [targetLocation absoluteString];
+        v14 = [OIXMLAttribute attributeWithName:0x286F07D70 stringValue:absoluteString];
         [v11 addAttribute:v14];
 
-        [v15 addChild:v11];
-        v15 = v11;
+        [atCopy addChild:v11];
+        atCopy = v11;
       }
     }
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [(WMOfficeArtMapper *)self mapOfficeArtShapeAt:v15 withState:v7];
+      [(WMOfficeArtMapper *)self mapOfficeArtShapeAt:atCopy withState:v7];
     }
 
     else
@@ -123,7 +123,7 @@
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        [(WMOfficeArtMapper *)self mapOfficeArtImageAt:v15 withState:v7];
+        [(WMOfficeArtMapper *)self mapOfficeArtImageAt:atCopy withState:v7];
       }
 
       else
@@ -131,7 +131,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          [(WMOfficeArtMapper *)self mapOfficeArtGroupAt:v15 withState:v7];
+          [(WMOfficeArtMapper *)self mapOfficeArtGroupAt:atCopy withState:v7];
         }
 
         else
@@ -139,7 +139,7 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            [(WMOfficeArtMapper *)self mapDiagramAt:v15 withState:v7];
+            [(WMOfficeArtMapper *)self mapDiagramAt:atCopy withState:v7];
           }
         }
       }
@@ -147,11 +147,11 @@
   }
 }
 
-- (void)setWithClientData:(id)a3 state:(id)a4
+- (void)setWithClientData:(id)data state:(id)state
 {
-  v5 = a3;
-  v51 = a3;
-  v7 = a4;
+  dataCopy = data;
+  dataCopy2 = data;
+  stateCopy = state;
   self->mIsMapped = 1;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -159,7 +159,7 @@
     goto LABEL_45;
   }
 
-  objc_storeStrong(&self->mContent, v5);
+  objc_storeStrong(&self->mContent, dataCopy);
   if (!self->mFloating && !self->mIsInsideGroup)
   {
     [(CMStyle *)self->super.mStyle appendPropertyForName:0x286EEA530 length:1 unit:self->super.mBox.size.width];
@@ -167,7 +167,7 @@
     goto LABEL_45;
   }
 
-  if ([v7 isHeaderOrFooter])
+  if ([stateCopy isHeaderOrFooter])
   {
     v8 = -1000.0;
   }
@@ -177,30 +177,30 @@
     v8 = 0.0;
   }
 
-  v9 = [(WDAContent *)self->mContent isShape];
-  v10 = v9;
-  if (v9)
+  isShape = [(WDAContent *)self->mContent isShape];
+  v10 = isShape;
+  if (isShape)
   {
-    v5 = [(WDAContent *)self->mContent anchor];
-    if ([v5 relativeVerticalPosition] != 2)
+    dataCopy = [(WDAContent *)self->mContent anchor];
+    if ([dataCopy relativeVerticalPosition] != 2)
     {
       if ([(WDAContent *)self->mContent floating])
       {
 
 LABEL_11:
-        [v7 pageOffset];
+        [stateCopy pageOffset];
         self->super.mBox.origin.y = self->super.mBox.origin.y + v11;
-        v12 = [(WDAContent *)self->mContent anchor];
-        v13 = [v12 relativeVerticalPosition];
+        anchor = [(WDAContent *)self->mContent anchor];
+        relativeVerticalPosition = [anchor relativeVerticalPosition];
 
-        if (v13)
+        if (relativeVerticalPosition)
         {
           y = self->super.mBox.origin.y;
         }
 
         else
         {
-          [v7 topMargin];
+          [stateCopy topMargin];
           y = v44 / 20.0 + self->super.mBox.origin.y;
           self->super.mBox.origin.y = y;
         }
@@ -208,17 +208,17 @@ LABEL_11:
         [(CMDrawableStyle *)self->super.mStyle addPositionProperties:self->super.mBox.origin.x, y, self->super.mBox.size.width, self->super.mBox.size.height];
         v45 = self->super.mBox.origin.y;
         height = self->super.mBox.size.height;
-        [v7 totalPageHeight];
+        [stateCopy totalPageHeight];
         if (v45 + height > v47)
         {
           v48 = self->super.mBox.origin.y + self->super.mBox.size.height;
           *&v48 = v48;
-          [v7 setTotalPageHeight:v48];
+          [stateCopy setTotalPageHeight:v48];
         }
 
         mStyle = self->super.mStyle;
-        v50 = [(WDAContent *)self->mContent anchor];
-        -[CMStyle appendPropertyForName:intValue:](mStyle, "appendPropertyForName:intValue:", 0x286F04990, (v8 + [v50 zIndex]));
+        anchor2 = [(WDAContent *)self->mContent anchor];
+        -[CMStyle appendPropertyForName:intValue:](mStyle, "appendPropertyForName:intValue:", 0x286F04990, (v8 + [anchor2 zIndex]));
 
         goto LABEL_45;
       }
@@ -230,8 +230,8 @@ LABEL_11:
     goto LABEL_18;
   }
 
-  v15 = [(WDAContent *)self->mContent anchor];
-  if (([v15 zIndex] & 0x8000000000000000) == 0)
+  anchor3 = [(WDAContent *)self->mContent anchor];
+  if (([anchor3 zIndex] & 0x8000000000000000) == 0)
   {
 LABEL_17:
 
@@ -243,34 +243,34 @@ LABEL_18:
     goto LABEL_20;
   }
 
-  v16 = [(WDAContent *)self->mContent anchor];
-  if ([v16 relativeVerticalPosition] == 2)
+  anchor4 = [(WDAContent *)self->mContent anchor];
+  if ([anchor4 relativeVerticalPosition] == 2)
   {
 
     goto LABEL_17;
   }
 
-  v43 = [(WDAContent *)self->mContent floating];
+  floating = [(WDAContent *)self->mContent floating];
 
   if (v10)
   {
 
-    if (v43)
+    if (floating)
     {
       goto LABEL_11;
     }
   }
 
-  else if (v43)
+  else if (floating)
   {
     goto LABEL_11;
   }
 
 LABEL_20:
-  v17 = [(WDAContent *)self->mContent anchor];
-  v18 = [v17 textWrappingMode];
+  anchor5 = [(WDAContent *)self->mContent anchor];
+  textWrappingMode = [anchor5 textWrappingMode];
 
-  if (v18 == 1)
+  if (textWrappingMode == 1)
   {
     [(CMStyle *)self->super.mStyle appendPropertyForName:0x286EF47B0 stringValue:0x286EFB5F0];
     [(CMStyle *)self->super.mStyle appendSizeInfoFromRect:self->super.mBox.origin.x, self->super.mBox.origin.y, self->super.mBox.size.width, self->super.mBox.size.height];
@@ -279,8 +279,8 @@ LABEL_20:
 
   else
   {
-    v19 = [(WDAContent *)self->mContent anchor];
-    if ([v19 textWrappingMode] == 3)
+    anchor6 = [(WDAContent *)self->mContent anchor];
+    if ([anchor6 textWrappingMode] == 3)
     {
     }
 
@@ -290,8 +290,8 @@ LABEL_20:
 
       if (!mIsInsideGroup)
       {
-        v38 = [(CMMapper *)self root];
-        [v38 contentSizeForDevice];
+        root = [(CMMapper *)self root];
+        [root contentSizeForDevice];
         v40 = v39;
 
         [(CMStyle *)self->super.mStyle appendPositionInfoFromRect:self->super.mBox.origin.x, self->super.mBox.origin.y, self->super.mBox.size.width, self->super.mBox.size.height];
@@ -312,17 +312,17 @@ LABEL_20:
       }
     }
 
-    [v7 pageOffset];
+    [stateCopy pageOffset];
     self->super.mBox.origin.y = self->super.mBox.origin.y + v21;
-    v22 = [(WDAContent *)self->mContent anchor];
-    v23 = [v22 relativeHorizontalPosition];
+    anchor7 = [(WDAContent *)self->mContent anchor];
+    relativeHorizontalPosition = [anchor7 relativeHorizontalPosition];
 
     v24 = self->super.mStyle;
     x = self->super.mBox.origin.x;
     v26 = self->super.mBox.origin.y;
     width = self->super.mBox.size.width;
     v28 = self->super.mBox.size.height;
-    if (v23 == 2)
+    if (relativeHorizontalPosition == 2)
     {
       [(CMDrawableStyle *)v24 addPositionUsingOffsets:x, v26, width, v28];
     }
@@ -334,22 +334,22 @@ LABEL_20:
 
     v29 = self->super.mBox.origin.y;
     v30 = self->super.mBox.size.height;
-    [v7 totalPageHeight];
+    [stateCopy totalPageHeight];
     if (v29 + v30 > v31)
     {
       v32 = self->super.mBox.origin.y + self->super.mBox.size.height;
       *&v32 = v32;
-      [v7 setTotalPageHeight:v32];
+      [stateCopy setTotalPageHeight:v32];
     }
 
-    v33 = [(WDAContent *)self->mContent anchor];
-    v34 = [v33 zIndex];
+    anchor8 = [(WDAContent *)self->mContent anchor];
+    zIndex = [anchor8 zIndex];
 
-    v35 = [(WDAContent *)self->mContent anchor];
-    v36 = [v35 zIndex];
+    anchor9 = [(WDAContent *)self->mContent anchor];
+    zIndex2 = [anchor9 zIndex];
 
     v37 = self->super.mStyle;
-    if (v36 < 0)
+    if (zIndex2 < 0)
     {
       [(CMStyle *)v37 appendPropertyForName:0x286F04990 stringWithColons:@":-1;"];
       [(CMStyle *)self->super.mStyle appendPropertyForName:0x286F08150 stringWithColons:@":0.25;"];
@@ -357,42 +357,42 @@ LABEL_20:
 
     else
     {
-      [(CMStyle *)v37 appendPropertyForName:0x286F04990 intValue:(v8 + v34)];
+      [(CMStyle *)v37 appendPropertyForName:0x286F04990 intValue:(v8 + zIndex)];
     }
   }
 
 LABEL_45:
 }
 
-- (id)blipAtIndex:(unsigned int)a3
+- (id)blipAtIndex:(unsigned int)index
 {
-  v3 = *&a3;
-  v4 = [(CMMapper *)self root];
-  v5 = [v4 blipAtIndex:v3];
+  v3 = *&index;
+  root = [(CMMapper *)self root];
+  v5 = [root blipAtIndex:v3];
 
   return v5;
 }
 
-- (void)mapTextBoxAt:(id)a3 withState:(id)a4
+- (void)mapTextBoxAt:(id)at withState:(id)state
 {
-  v11 = a3;
-  v6 = a4;
-  v7 = [(WDAContent *)self->mContent textBox];
+  atCopy = at;
+  stateCopy = state;
+  textBox = [(WDAContent *)self->mContent textBox];
   v8 = [WMSectionContentMapper alloc];
-  v9 = [v7 text];
-  v10 = [(WMSectionContentMapper *)v8 initWithWDText:v9 parent:self];
+  text = [textBox text];
+  v10 = [(WMSectionContentMapper *)v8 initWithWDText:text parent:self];
 
-  [(WMSectionContentMapper *)v10 mapAt:v11 withState:v6];
+  [(WMSectionContentMapper *)v10 mapAt:atCopy withState:stateCopy];
 }
 
-- (void)mapOfficeArtImageAt:(id)a3 withState:(id)a4
+- (void)mapOfficeArtImageAt:(id)at withState:(id)state
 {
-  v5 = a3;
-  v6 = [(OADDrawable *)self->super.mDrawable imageProperties];
-  v7 = [v6 imageFill];
+  atCopy = at;
+  imageProperties = [(OADDrawable *)self->super.mDrawable imageProperties];
+  imageFill = [imageProperties imageFill];
   v16.receiver = self;
   v16.super_class = WMOfficeArtMapper;
-  [(CMDrawableMapper *)&v16 calculateUncroppedBox:v7];
+  [(CMDrawableMapper *)&v16 calculateUncroppedBox:imageFill];
   v8 = [OIXMLElement elementWithType:9];
   if ([(CMDrawableMapper *)self isCropped]&& self->super.mIsSupported)
   {
@@ -428,18 +428,18 @@ LABEL_45:
   }
 
   [(CMMapper *)self addStyleUsingGlobalCacheTo:v11 style:self->super.mStyle];
-  [v5 addChild:v11];
+  [atCopy addChild:v11];
 }
 
-- (void)mapOfficeArtShapeAt:(id)a3 withState:(id)a4
+- (void)mapOfficeArtShapeAt:(id)at withState:(id)state
 {
-  v42 = a3;
-  v43 = a4;
+  atCopy = at;
+  stateCopy = state;
   v41 = self->super.mDrawable;
-  v6 = [(OADDrawable *)v41 type];
-  v7 = [(OADDrawable *)v41 shapeProperties];
-  v8 = [v7 fill];
-  if (v8)
+  type = [(OADDrawable *)v41 type];
+  shapeProperties = [(OADDrawable *)v41 shapeProperties];
+  fill = [shapeProperties fill];
+  if (fill)
   {
     objc_opt_class();
     isKindOfClass = objc_opt_isKindOfClass();
@@ -450,10 +450,10 @@ LABEL_45:
     isKindOfClass = 1;
   }
 
-  v10 = [v7 stroke];
-  v11 = [v10 fill];
+  stroke = [shapeProperties stroke];
+  fill2 = [stroke fill];
 
-  if (v11)
+  if (fill2)
   {
     objc_opt_class();
     v12 = objc_opt_isKindOfClass();
@@ -464,26 +464,26 @@ LABEL_45:
     v12 = 1;
   }
 
-  v13 = [v7 isTextBox];
+  isTextBox = [shapeProperties isTextBox];
   v14 = [OIXMLElement elementWithType:3];
-  if (v6 == 1 || v6 == 75 || v6 == 202)
+  if (type == 1 || type == 75 || type == 202)
   {
     v17 = 1;
   }
 
   else
   {
-    v17 = v13;
+    v17 = isTextBox;
   }
 
   if (v17 & 1) != 0 || (isKindOfClass & v12)
   {
-    [(WMOfficeArtMapper *)self mapOfficeArtTextboxAt:v14 withState:v43];
+    [(WMOfficeArtMapper *)self mapOfficeArtTextboxAt:v14 withState:stateCopy];
     if ((v12 & 1) == 0)
     {
       v34 = [CMBordersProperty alloc];
-      v35 = [v7 stroke];
-      v36 = [(CMBordersProperty *)v34 initWithOADStroke:v35];
+      stroke2 = [shapeProperties stroke];
+      v36 = [(CMBordersProperty *)v34 initWithOADStroke:stroke2];
 
       [(CMStyle *)self->super.mStyle addProperty:v36 forKey:0x286F07E30];
     }
@@ -493,12 +493,12 @@ LABEL_45:
       objc_opt_class();
       if (objc_opt_isKindOfClass())
       {
-        v37 = [v8 color];
+        color = [fill color];
         mStyle = self->super.mStyle;
-        v39 = [CMColorProperty cssStringFromOADColor:v37];
+        v39 = [CMColorProperty cssStringFromOADColor:color];
         [(CMStyle *)mStyle appendPropertyForName:0x286F07DF0 stringWithColons:v39];
 
-        [CMColorProperty transformedAlphaFromOADColor:v37];
+        [CMColorProperty transformedAlphaFromOADColor:color];
         if (v40 != 1.0)
         {
           [(CMStyle *)self->super.mStyle appendPropertyForName:0x286F08150 floatValue:?];
@@ -507,7 +507,7 @@ LABEL_45:
     }
 
     [(CMMapper *)self addStyleUsingGlobalCacheTo:v14 style:self->super.mStyle];
-    [v42 addChild:v14];
+    [atCopy addChild:v14];
   }
 
   else
@@ -515,17 +515,17 @@ LABEL_45:
     [(CMMapper *)self addStyleUsingGlobalCacheTo:v14 style:self->super.mStyle];
     v45.receiver = self;
     v45.super_class = WMOfficeArtMapper;
-    [(CMDrawableMapper *)&v45 mapShapeGraphicsAt:v14 withState:v43];
-    [v42 addChild:v14];
-    v18 = [(WDAContent *)self->mContent textBox];
-    if (v18)
+    [(CMDrawableMapper *)&v45 mapShapeGraphicsAt:v14 withState:stateCopy];
+    [atCopy addChild:v14];
+    textBox = [(WDAContent *)self->mContent textBox];
+    if (textBox)
     {
       Width = CGRectGetWidth(self->super.mBox);
 
       if (Width > 0.0)
       {
         v20 = [OIXMLElement elementWithType:3];
-        [(WMOfficeArtMapper *)self mapTextBoxAt:v20 withState:v43];
+        [(WMOfficeArtMapper *)self mapTextBoxAt:v20 withState:stateCopy];
         v44.receiver = self;
         v44.super_class = WMOfficeArtMapper;
         [(CMDrawableMapper *)&v44 shapeTextBoxRect];
@@ -537,12 +537,12 @@ LABEL_45:
         v30 = v22 - self->super.mBox.origin.x;
         v31 = v24 - self->super.mBox.origin.y;
         [(CMDrawableStyle *)v29 addPositionUsingOffsets:v30, v31, v26, v28];
-        [v43 totalPageHeight];
+        [stateCopy totalPageHeight];
         v33 = v32;
         if (v28 + v31 > v33)
         {
           *&v33 = v28 + v31;
-          [v43 setTotalPageHeight:v33];
+          [stateCopy setTotalPageHeight:v33];
         }
 
         [(CMMapper *)self addStyleUsingGlobalCacheTo:v20 style:v29];
@@ -552,12 +552,12 @@ LABEL_45:
   }
 }
 
-- (void)mapOfficeArtTextboxAt:(id)a3 withState:(id)a4
+- (void)mapOfficeArtTextboxAt:(id)at withState:(id)state
 {
-  v16 = a3;
-  v6 = a4;
-  v7 = [(WDAContent *)self->mContent textBox];
-  if ([v7 nextTextBoxId])
+  atCopy = at;
+  stateCopy = state;
+  textBox = [(WDAContent *)self->mContent textBox];
+  if ([textBox nextTextBoxId])
   {
     WeakRetained = objc_loadWeakRetained(&self->super.super.mParent);
     objc_opt_class();
@@ -565,7 +565,7 @@ LABEL_45:
 
     if (isKindOfClass)
     {
-      [(WMOfficeArtMapper *)self expandedSizeForTextBox:v7 withState:v6];
+      [(WMOfficeArtMapper *)self expandedSizeForTextBox:textBox withState:stateCopy];
       v11 = v10;
       self->super.mBox.size.width = v12;
       self->super.mBox.size.height = v10;
@@ -575,23 +575,23 @@ LABEL_45:
   }
 
   v13 = [WMSectionContentMapper alloc];
-  v14 = [v7 text];
-  v15 = [(WMSectionContentMapper *)v13 initWithWDText:v14 parent:self];
+  text = [textBox text];
+  v15 = [(WMSectionContentMapper *)v13 initWithWDText:text parent:self];
 
-  [(WMSectionContentMapper *)v15 mapAt:v16 withState:v6];
+  [(WMSectionContentMapper *)v15 mapAt:atCopy withState:stateCopy];
 }
 
-- (void)mapOfficeArtGroupAt:(id)a3 withState:(id)a4
+- (void)mapOfficeArtGroupAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  atCopy = at;
+  stateCopy = state;
   v8 = self->super.mDrawable;
-  v9 = [(OADDrawable *)v8 childCount];
-  v10 = v9;
+  childCount = [(OADDrawable *)v8 childCount];
+  v10 = childCount;
   if (self->mFloating || self->mIsInsideGroup)
   {
-    v18 = v6;
-    if (!v9)
+    v18 = atCopy;
+    if (!childCount)
     {
       goto LABEL_7;
     }
@@ -600,7 +600,7 @@ LABEL_45:
   else
   {
     v17 = [OIXMLElement elementWithType:3];
-    [v6 addChild:v17];
+    [atCopy addChild:v17];
     v18 = v17;
 
     [CMMapper addStyleUsingGlobalCacheTo:"addStyleUsingGlobalCacheTo:style:" style:?];
@@ -621,7 +621,7 @@ LABEL_45:
 
     v15 = [[WMOfficeArtMapper alloc] initWithOadDrawable:v14 asFloating:self->mFloating parent:self];
     [(WMOfficeArtMapper *)v15 setIsInsideGroup:1];
-    [(WMOfficeArtMapper *)v15 mapAt:v18 withState:v7];
+    [(WMOfficeArtMapper *)v15 mapAt:v18 withState:stateCopy];
 
     v11 = v13;
     v16 = v10 > v13++;
@@ -633,14 +633,14 @@ LABEL_45:
 LABEL_7:
 }
 
-- (void)mapDiagramAt:(id)a3 withState:(id)a4
+- (void)mapDiagramAt:(id)at withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  atCopy = at;
+  stateCopy = state;
   v8 = [OIXMLElement elementWithType:3];
   [(CMStyle *)self->super.mStyle appendPropertyString:@"display:inline-block;"];
   [(CMMapper *)self addStyleUsingGlobalCacheTo:v8 style:self->super.mStyle];
-  [v6 addChild:v8];
+  [atCopy addChild:v8];
   v15 = v8;
 
   v9 = objc_alloc_init(CMDrawableStyle);
@@ -653,31 +653,31 @@ LABEL_7:
   self->super.mOrientedBounds = v12;
 
   v14 = [[CMDiagramMapper alloc] initWithOddDiagram:self->super.mDrawable drawingContext:v11 orientedBounds:self->super.mOrientedBounds parent:self];
-  [(CMDiagramMapper *)v14 mapAt:v10 withState:v7];
-  [(CMDrawableMapper *)self mapDrawingContext:v11 at:v15 relative:1 withState:v7];
+  [(CMDiagramMapper *)v14 mapAt:v10 withState:stateCopy];
+  [(CMDrawableMapper *)self mapDrawingContext:v11 at:v15 relative:1 withState:stateCopy];
   [v15 addChild:v10];
-  [WMParagraphMapper mapPlaceholderAt:v15 rect:v7 withState:self->super.mBox.origin.x, self->super.mBox.origin.y, self->super.mBox.size.width, self->super.mBox.size.height];
+  [WMParagraphMapper mapPlaceholderAt:v15 rect:stateCopy withState:self->super.mBox.origin.x, self->super.mBox.origin.y, self->super.mBox.size.width, self->super.mBox.size.height];
 }
 
-- (CGSize)expandedSizeForTextBox:(id)a3 withState:(id)a4
+- (CGSize)expandedSizeForTextBox:(id)box withState:(id)state
 {
-  v6 = a3;
-  v7 = a4;
+  boxCopy = box;
+  stateCopy = state;
   p_mBox = &self->super.mBox;
   width = self->super.mBox.size.width;
   height = self->super.mBox.size.height;
-  v11 = [v7 runIndex];
-  [v7 pageOffset];
+  runIndex = [stateCopy runIndex];
+  [stateCopy pageOffset];
   v13 = v12;
-  v14 = [v6 nextTextBoxId];
+  nextTextBoxId = [boxCopy nextTextBoxId];
   v15 = 0;
   v16 = v13;
   while (1)
   {
-    ++v11;
+    ++runIndex;
     v17 = v15;
     WeakRetained = objc_loadWeakRetained(&self->super.super.mParent);
-    v15 = [WeakRetained runAtIndex:v11];
+    v15 = [WeakRetained runAtIndex:runIndex];
 
     if (!v15)
     {
@@ -686,15 +686,15 @@ LABEL_7:
 
     if ([v15 runType] == 3)
     {
-      v19 = [v15 drawable];
-      v20 = v19;
-      if (v19)
+      drawable = [v15 drawable];
+      v20 = drawable;
+      if (drawable)
       {
-        v21 = [v19 clientData];
-        if (!v21 || v14 == [v20 id])
+        clientData = [drawable clientData];
+        if (!clientData || nextTextBoxId == [v20 id])
         {
-          v22 = [v20 clientData];
-          [v22 bounds];
+          clientData2 = [v20 clientData];
+          [clientData2 bounds];
           v24 = v23;
           v26 = v25;
           v28 = v27;
@@ -715,15 +715,15 @@ LABEL_7:
             }
           }
 
-          v32 = [v21 textBox];
-          v33 = v32;
-          if (!v32 || ![v32 nextTextBoxId])
+          textBox = [clientData textBox];
+          v33 = textBox;
+          if (!textBox || ![textBox nextTextBoxId])
           {
 
             break;
           }
 
-          v14 = [v33 nextTextBoxId];
+          nextTextBoxId = [v33 nextTextBoxId];
         }
       }
     }

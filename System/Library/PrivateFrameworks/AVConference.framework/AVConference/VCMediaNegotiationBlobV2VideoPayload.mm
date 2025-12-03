@@ -1,28 +1,28 @@
 @interface VCMediaNegotiationBlobV2VideoPayload
-+ (int)payloadWithRTPPayload:(int)a3;
-+ (int)rtpPayloadWithPayload:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setupEncode:(BOOL)a3 videoRules:(id)a4;
++ (int)payloadWithRTPPayload:(int)payload;
++ (int)rtpPayloadWithPayload:(int)payload;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setupEncode:(BOOL)encode videoRules:(id)rules;
 - (NSArray)decodeVideoRules;
 - (NSArray)encodeVideoRules;
-- (VCMediaNegotiationBlobV2VideoPayload)initWithPayload:(int)a3 encodeVideoRules:(id)a4 decodeVideoRules:(id)a5 videoParameterSupport:(unsigned int)a6 featureListStrings:(id)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (VCMediaNegotiationBlobV2VideoPayload)initWithPayload:(int)payload encodeVideoRules:(id)rules decodeVideoRules:(id)videoRules videoParameterSupport:(unsigned int)support featureListStrings:(id)strings;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)videoRulesWithBitmap:(unsigned int)a3 preferredBitmap:(unsigned int)a4;
+- (id)videoRulesWithBitmap:(unsigned int)bitmap preferredBitmap:(unsigned int)preferredBitmap;
 - (int)payload;
 - (unint64_t)hash;
 - (unsigned)videoPayload;
-- (void)copyTo:(id)a3;
+- (void)copyTo:(id)to;
 - (void)dealloc;
-- (void)mergeFrom:(id)a3;
-- (void)printWithLogFile:(void *)a3 prefix:(id)a4;
-- (void)setHasEncodeFormats:(BOOL)a3;
-- (void)setHasParameterSet:(BOOL)a3;
-- (void)setHasPreferredDecodeFormat:(BOOL)a3;
-- (void)setHasVideoPayload:(BOOL)a3;
-- (void)setupVideoParameterSupport:(unsigned int)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)printWithLogFile:(void *)file prefix:(id)prefix;
+- (void)setHasEncodeFormats:(BOOL)formats;
+- (void)setHasParameterSet:(BOOL)set;
+- (void)setHasPreferredDecodeFormat:(BOOL)format;
+- (void)setHasVideoPayload:(BOOL)payload;
+- (void)setupVideoParameterSupport:(unsigned int)support;
+- (void)writeTo:(id)to;
 @end
 
 @implementation VCMediaNegotiationBlobV2VideoPayload
@@ -49,9 +49,9 @@
   }
 }
 
-- (void)setHasVideoPayload:(BOOL)a3
+- (void)setHasVideoPayload:(BOOL)payload
 {
-  if (a3)
+  if (payload)
   {
     v3 = 16;
   }
@@ -64,9 +64,9 @@
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasParameterSet:(BOOL)a3
+- (void)setHasParameterSet:(BOOL)set
 {
-  if (a3)
+  if (set)
   {
     v3 = 4;
   }
@@ -79,9 +79,9 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasEncodeFormats:(BOOL)a3
+- (void)setHasEncodeFormats:(BOOL)formats
 {
-  if (a3)
+  if (formats)
   {
     v3 = 2;
   }
@@ -94,9 +94,9 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setHasPreferredDecodeFormat:(BOOL)a3
+- (void)setHasPreferredDecodeFormat:(BOOL)format
 {
-  if (a3)
+  if (format)
   {
     v3 = 8;
   }
@@ -119,11 +119,11 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_videoPayload), @"videoPayload"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_videoPayload), @"videoPayload"}];
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -142,7 +142,7 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_parameterSet), @"parameterSet"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_parameterSet), @"parameterSet"}];
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -156,29 +156,29 @@ LABEL_4:
   }
 
 LABEL_13:
-  [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_encodeFormats), @"encodeFormats"}];
+  [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_encodeFormats), @"encodeFormats"}];
   if (*&self->_has)
   {
 LABEL_5:
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_decodeFormats), @"decodeFormats"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_decodeFormats), @"decodeFormats"}];
   }
 
 LABEL_6:
   encodeDecodeFeatures = self->_encodeDecodeFeatures;
   if (encodeDecodeFeatures)
   {
-    [v3 setObject:encodeDecodeFeatures forKey:@"encodeDecodeFeatures"];
+    [dictionary setObject:encodeDecodeFeatures forKey:@"encodeDecodeFeatures"];
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    [v3 setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_preferredDecodeFormat), @"preferredDecodeFormat"}];
+    [dictionary setObject:objc_msgSend(MEMORY[0x1E696AD98] forKey:{"numberWithUnsignedInt:", self->_preferredDecodeFormat), @"preferredDecodeFormat"}];
   }
 
-  return v3;
+  return dictionary;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -236,13 +236,13 @@ LABEL_6:
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   has = self->_has;
   if ((has & 0x10) != 0)
   {
-    *(a3 + 9) = self->_videoPayload;
-    *(a3 + 40) |= 0x10u;
+    *(to + 9) = self->_videoPayload;
+    *(to + 40) |= 0x10u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -261,8 +261,8 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  *(a3 + 7) = self->_parameterSet;
-  *(a3 + 40) |= 4u;
+  *(to + 7) = self->_parameterSet;
+  *(to + 40) |= 4u;
   has = self->_has;
   if ((has & 2) == 0)
   {
@@ -276,31 +276,31 @@ LABEL_4:
   }
 
 LABEL_13:
-  *(a3 + 6) = self->_encodeFormats;
-  *(a3 + 40) |= 2u;
+  *(to + 6) = self->_encodeFormats;
+  *(to + 40) |= 2u;
   if (*&self->_has)
   {
 LABEL_5:
-    *(a3 + 2) = self->_decodeFormats;
-    *(a3 + 40) |= 1u;
+    *(to + 2) = self->_decodeFormats;
+    *(to + 40) |= 1u;
   }
 
 LABEL_6:
   if (self->_encodeDecodeFeatures)
   {
-    [a3 setEncodeDecodeFeatures:?];
+    [to setEncodeDecodeFeatures:?];
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(a3 + 8) = self->_preferredDecodeFormat;
-    *(a3 + 40) |= 8u;
+    *(to + 8) = self->_preferredDecodeFormat;
+    *(to + 40) |= 8u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   has = self->_has;
   if ((has & 0x10) != 0)
@@ -351,7 +351,7 @@ LABEL_5:
 
 LABEL_6:
 
-  *(v6 + 16) = [(NSData *)self->_encodeDecodeFeatures copyWithZone:a3];
+  *(v6 + 16) = [(NSData *)self->_encodeDecodeFeatures copyWithZone:zone];
   if ((*&self->_has & 8) != 0)
   {
     *(v6 + 32) = self->_preferredDecodeFormat;
@@ -361,21 +361,21 @@ LABEL_6:
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = [a3 isMemberOfClass:objc_opt_class()];
+  v5 = [equal isMemberOfClass:objc_opt_class()];
   if (v5)
   {
     has = self->_has;
     if ((has & 0x10) != 0)
     {
-      if ((*(a3 + 40) & 0x10) == 0 || self->_videoPayload != *(a3 + 9))
+      if ((*(equal + 40) & 0x10) == 0 || self->_videoPayload != *(equal + 9))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 40) & 0x10) != 0)
+    else if ((*(equal + 40) & 0x10) != 0)
     {
 LABEL_29:
       LOBYTE(v5) = 0;
@@ -384,45 +384,45 @@ LABEL_29:
 
     if ((*&self->_has & 4) != 0)
     {
-      if ((*(a3 + 40) & 4) == 0 || self->_parameterSet != *(a3 + 7))
+      if ((*(equal + 40) & 4) == 0 || self->_parameterSet != *(equal + 7))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 40) & 4) != 0)
+    else if ((*(equal + 40) & 4) != 0)
     {
       goto LABEL_29;
     }
 
     if ((*&self->_has & 2) != 0)
     {
-      if ((*(a3 + 40) & 2) == 0 || self->_encodeFormats != *(a3 + 6))
+      if ((*(equal + 40) & 2) == 0 || self->_encodeFormats != *(equal + 6))
       {
         goto LABEL_29;
       }
     }
 
-    else if ((*(a3 + 40) & 2) != 0)
+    else if ((*(equal + 40) & 2) != 0)
     {
       goto LABEL_29;
     }
 
     if (*&self->_has)
     {
-      if ((*(a3 + 40) & 1) == 0 || self->_decodeFormats != *(a3 + 2))
+      if ((*(equal + 40) & 1) == 0 || self->_decodeFormats != *(equal + 2))
       {
         goto LABEL_29;
       }
     }
 
-    else if (*(a3 + 40))
+    else if (*(equal + 40))
     {
       goto LABEL_29;
     }
 
     encodeDecodeFeatures = self->_encodeDecodeFeatures;
-    if (encodeDecodeFeatures | *(a3 + 2))
+    if (encodeDecodeFeatures | *(equal + 2))
     {
       v5 = [(NSData *)encodeDecodeFeatures isEqual:?];
       if (!v5)
@@ -433,10 +433,10 @@ LABEL_29:
       has = self->_has;
     }
 
-    LOBYTE(v5) = (*(a3 + 40) & 8) == 0;
+    LOBYTE(v5) = (*(equal + 40) & 8) == 0;
     if ((has & 8) != 0)
     {
-      if ((*(a3 + 40) & 8) == 0 || self->_preferredDecodeFormat != *(a3 + 8))
+      if ((*(equal + 40) & 8) == 0 || self->_preferredDecodeFormat != *(equal + 8))
       {
         goto LABEL_29;
       }
@@ -514,14 +514,14 @@ LABEL_10:
   return v4 ^ v3 ^ v5 ^ v6 ^ v8 ^ v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 0x10) != 0)
   {
-    self->_videoPayload = *(a3 + 9);
+    self->_videoPayload = *(from + 9);
     *&self->_has |= 0x10u;
-    v5 = *(a3 + 40);
+    v5 = *(from + 40);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -534,14 +534,14 @@ LABEL_3:
     }
   }
 
-  else if ((*(a3 + 40) & 4) == 0)
+  else if ((*(from + 40) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_parameterSet = *(a3 + 7);
+  self->_parameterSet = *(from + 7);
   *&self->_has |= 4u;
-  v5 = *(a3 + 40);
+  v5 = *(from + 40);
   if ((v5 & 2) == 0)
   {
 LABEL_4:
@@ -554,32 +554,32 @@ LABEL_4:
   }
 
 LABEL_13:
-  self->_encodeFormats = *(a3 + 6);
+  self->_encodeFormats = *(from + 6);
   *&self->_has |= 2u;
-  if (*(a3 + 40))
+  if (*(from + 40))
   {
 LABEL_5:
-    self->_decodeFormats = *(a3 + 2);
+    self->_decodeFormats = *(from + 2);
     *&self->_has |= 1u;
   }
 
 LABEL_6:
-  if (*(a3 + 2))
+  if (*(from + 2))
   {
     [(VCMediaNegotiationBlobV2VideoPayload *)self setEncodeDecodeFeatures:?];
   }
 
-  if ((*(a3 + 40) & 8) != 0)
+  if ((*(from + 40) & 8) != 0)
   {
-    self->_preferredDecodeFormat = *(a3 + 8);
+    self->_preferredDecodeFormat = *(from + 8);
     *&self->_has |= 8u;
   }
 }
 
-- (VCMediaNegotiationBlobV2VideoPayload)initWithPayload:(int)a3 encodeVideoRules:(id)a4 decodeVideoRules:(id)a5 videoParameterSupport:(unsigned int)a6 featureListStrings:(id)a7
+- (VCMediaNegotiationBlobV2VideoPayload)initWithPayload:(int)payload encodeVideoRules:(id)rules decodeVideoRules:(id)videoRules videoParameterSupport:(unsigned int)support featureListStrings:(id)strings
 {
-  v8 = *&a6;
-  v11 = *&a3;
+  v8 = *&support;
+  v11 = *&payload;
   v31 = *MEMORY[0x1E69E9840];
   v12 = [(VCMediaNegotiationBlobV2VideoPayload *)self init];
   if (v12)
@@ -594,11 +594,11 @@ LABEL_6:
       }
 
       v15 = _os_feature_enabled_impl();
-      if (a7)
+      if (strings)
       {
         if (v15)
         {
-          v16 = [a7 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v11)}];
+          v16 = [strings objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AD98], "numberWithUnsignedInt:", v11)}];
           if (v16)
           {
             v17 = v16;
@@ -627,9 +627,9 @@ LABEL_6:
       }
 
       [(VCMediaNegotiationBlobV2VideoPayload *)v12 setupVideoParameterSupport:v8];
-      if ([(VCMediaNegotiationBlobV2VideoPayload *)v12 setupEncode:1 videoRules:a4])
+      if ([(VCMediaNegotiationBlobV2VideoPayload *)v12 setupEncode:1 videoRules:rules])
       {
-        if ([(VCMediaNegotiationBlobV2VideoPayload *)v12 setupEncode:0 videoRules:a5])
+        if ([(VCMediaNegotiationBlobV2VideoPayload *)v12 setupEncode:0 videoRules:videoRules])
         {
           return v12;
         }
@@ -656,35 +656,35 @@ LABEL_6:
 
 - (int)payload
 {
-  v2 = [(VCMediaNegotiationBlobV2VideoPayload *)self videoPayload];
+  videoPayload = [(VCMediaNegotiationBlobV2VideoPayload *)self videoPayload];
 
-  return [VCMediaNegotiationBlobV2VideoPayload rtpPayloadWithPayload:v2];
+  return [VCMediaNegotiationBlobV2VideoPayload rtpPayloadWithPayload:videoPayload];
 }
 
 - (NSArray)encodeVideoRules
 {
-  v3 = [(VCMediaNegotiationBlobV2VideoPayload *)self encodeFormats];
+  encodeFormats = [(VCMediaNegotiationBlobV2VideoPayload *)self encodeFormats];
 
-  return [(VCMediaNegotiationBlobV2VideoPayload *)self videoRulesWithBitmap:v3 preferredBitmap:0];
+  return [(VCMediaNegotiationBlobV2VideoPayload *)self videoRulesWithBitmap:encodeFormats preferredBitmap:0];
 }
 
 - (NSArray)decodeVideoRules
 {
-  v3 = [(VCMediaNegotiationBlobV2VideoPayload *)self decodeFormats];
+  decodeFormats = [(VCMediaNegotiationBlobV2VideoPayload *)self decodeFormats];
   if ([(VCMediaNegotiationBlobV2VideoPayload *)self hasPreferredDecodeFormat])
   {
-    v4 = [(VCMediaNegotiationBlobV2VideoPayload *)self preferredDecodeFormat];
+    preferredDecodeFormat = [(VCMediaNegotiationBlobV2VideoPayload *)self preferredDecodeFormat];
   }
 
   else
   {
-    v4 = 0;
+    preferredDecodeFormat = 0;
   }
 
-  return [(VCMediaNegotiationBlobV2VideoPayload *)self videoRulesWithBitmap:v3 preferredBitmap:v4];
+  return [(VCMediaNegotiationBlobV2VideoPayload *)self videoRulesWithBitmap:decodeFormats preferredBitmap:preferredDecodeFormat];
 }
 
-- (id)videoRulesWithBitmap:(unsigned int)a3 preferredBitmap:(unsigned int)a4
+- (id)videoRulesWithBitmap:(unsigned int)bitmap preferredBitmap:(unsigned int)preferredBitmap
 {
   v168 = *MEMORY[0x1E69E9840];
   v7 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -705,7 +705,7 @@ LABEL_183:
   }
 
   v9 = v8;
-  if ((a3 & 1) == 0)
+  if ((bitmap & 1) == 0)
   {
     goto LABEL_8;
   }
@@ -720,7 +720,7 @@ LABEL_183:
   }
 
   v14 = v12;
-  if (a4)
+  if (preferredBitmap)
   {
     LODWORD(v13) = 1.0;
     [(VCVideoRule *)v12 setFPref:v13];
@@ -729,7 +729,7 @@ LABEL_183:
   [v7 addObject:v14];
 
 LABEL_8:
-  if ((a3 & 2) == 0)
+  if ((bitmap & 2) == 0)
   {
     goto LABEL_13;
   }
@@ -744,7 +744,7 @@ LABEL_8:
   }
 
   v19 = v17;
-  if ((a4 & 2) != 0)
+  if ((preferredBitmap & 2) != 0)
   {
     LODWORD(v18) = 1.0;
     [(VCVideoRule *)v17 setFPref:v18];
@@ -753,7 +753,7 @@ LABEL_8:
   [v7 addObject:v19];
 
 LABEL_13:
-  if ((a3 & 4) == 0)
+  if ((bitmap & 4) == 0)
   {
     goto LABEL_18;
   }
@@ -768,7 +768,7 @@ LABEL_13:
   }
 
   v24 = v22;
-  if ((a4 & 4) != 0)
+  if ((preferredBitmap & 4) != 0)
   {
     LODWORD(v23) = 1.0;
     [(VCVideoRule *)v22 setFPref:v23];
@@ -777,7 +777,7 @@ LABEL_13:
   [v7 addObject:v24];
 
 LABEL_18:
-  if ((a3 & 8) == 0)
+  if ((bitmap & 8) == 0)
   {
     goto LABEL_23;
   }
@@ -792,7 +792,7 @@ LABEL_18:
   }
 
   v29 = v27;
-  if ((a4 & 8) != 0)
+  if ((preferredBitmap & 8) != 0)
   {
     LODWORD(v28) = 1.0;
     [(VCVideoRule *)v27 setFPref:v28];
@@ -801,7 +801,7 @@ LABEL_18:
   [v7 addObject:v29];
 
 LABEL_23:
-  if ((a3 & 0x10) == 0)
+  if ((bitmap & 0x10) == 0)
   {
     goto LABEL_28;
   }
@@ -816,7 +816,7 @@ LABEL_23:
   }
 
   v34 = v32;
-  if ((a4 & 0x10) != 0)
+  if ((preferredBitmap & 0x10) != 0)
   {
     LODWORD(v33) = 1.0;
     [(VCVideoRule *)v32 setFPref:v33];
@@ -825,7 +825,7 @@ LABEL_23:
   [v7 addObject:v34];
 
 LABEL_28:
-  if ((a3 & 0x20) == 0)
+  if ((bitmap & 0x20) == 0)
   {
     goto LABEL_33;
   }
@@ -840,7 +840,7 @@ LABEL_28:
   }
 
   v39 = v37;
-  if ((a4 & 0x20) != 0)
+  if ((preferredBitmap & 0x20) != 0)
   {
     LODWORD(v38) = 1.0;
     [(VCVideoRule *)v37 setFPref:v38];
@@ -849,7 +849,7 @@ LABEL_28:
   [v7 addObject:v39];
 
 LABEL_33:
-  if ((a3 & 0x40) == 0)
+  if ((bitmap & 0x40) == 0)
   {
     goto LABEL_38;
   }
@@ -864,7 +864,7 @@ LABEL_33:
   }
 
   v44 = v42;
-  if ((a4 & 0x40) != 0)
+  if ((preferredBitmap & 0x40) != 0)
   {
     LODWORD(v43) = 1.0;
     [(VCVideoRule *)v42 setFPref:v43];
@@ -873,7 +873,7 @@ LABEL_33:
   [v7 addObject:v44];
 
 LABEL_38:
-  if ((a3 & 0x80) == 0)
+  if ((bitmap & 0x80) == 0)
   {
     goto LABEL_43;
   }
@@ -888,7 +888,7 @@ LABEL_38:
   }
 
   v49 = v47;
-  if ((a4 & 0x80) != 0)
+  if ((preferredBitmap & 0x80) != 0)
   {
     LODWORD(v48) = 1.0;
     [(VCVideoRule *)v47 setFPref:v48];
@@ -897,7 +897,7 @@ LABEL_38:
   [v7 addObject:v49];
 
 LABEL_43:
-  if ((a3 & 0x100) == 0)
+  if ((bitmap & 0x100) == 0)
   {
     goto LABEL_48;
   }
@@ -912,7 +912,7 @@ LABEL_43:
   }
 
   v54 = v52;
-  if ((a4 & 0x100) != 0)
+  if ((preferredBitmap & 0x100) != 0)
   {
     LODWORD(v53) = 1.0;
     [(VCVideoRule *)v52 setFPref:v53];
@@ -921,7 +921,7 @@ LABEL_43:
   [v7 addObject:v54];
 
 LABEL_48:
-  if ((a3 & 0x200) == 0)
+  if ((bitmap & 0x200) == 0)
   {
     goto LABEL_53;
   }
@@ -936,7 +936,7 @@ LABEL_48:
   }
 
   v59 = v57;
-  if ((a4 & 0x200) != 0)
+  if ((preferredBitmap & 0x200) != 0)
   {
     LODWORD(v58) = 1.0;
     [(VCVideoRule *)v57 setFPref:v58];
@@ -945,7 +945,7 @@ LABEL_48:
   [v7 addObject:v59];
 
 LABEL_53:
-  if ((a3 & 0x400) == 0)
+  if ((bitmap & 0x400) == 0)
   {
     goto LABEL_58;
   }
@@ -960,7 +960,7 @@ LABEL_53:
   }
 
   v64 = v62;
-  if ((a4 & 0x400) != 0)
+  if ((preferredBitmap & 0x400) != 0)
   {
     LODWORD(v63) = 1.0;
     [(VCVideoRule *)v62 setFPref:v63];
@@ -969,7 +969,7 @@ LABEL_53:
   [v7 addObject:v64];
 
 LABEL_58:
-  if ((a3 & 0x800) == 0)
+  if ((bitmap & 0x800) == 0)
   {
     goto LABEL_63;
   }
@@ -984,7 +984,7 @@ LABEL_58:
   }
 
   v69 = v67;
-  if ((a4 & 0x800) != 0)
+  if ((preferredBitmap & 0x800) != 0)
   {
     LODWORD(v68) = 1.0;
     [(VCVideoRule *)v67 setFPref:v68];
@@ -993,7 +993,7 @@ LABEL_58:
   [v7 addObject:v69];
 
 LABEL_63:
-  if ((a3 & 0x1000) == 0)
+  if ((bitmap & 0x1000) == 0)
   {
     goto LABEL_68;
   }
@@ -1008,7 +1008,7 @@ LABEL_63:
   }
 
   v74 = v72;
-  if ((a4 & 0x1000) != 0)
+  if ((preferredBitmap & 0x1000) != 0)
   {
     LODWORD(v73) = 1.0;
     [(VCVideoRule *)v72 setFPref:v73];
@@ -1017,7 +1017,7 @@ LABEL_63:
   [v7 addObject:v74];
 
 LABEL_68:
-  if ((a3 & 0x2000) == 0)
+  if ((bitmap & 0x2000) == 0)
   {
     goto LABEL_73;
   }
@@ -1032,7 +1032,7 @@ LABEL_68:
   }
 
   v79 = v77;
-  if ((a4 & 0x2000) != 0)
+  if ((preferredBitmap & 0x2000) != 0)
   {
     LODWORD(v78) = 1.0;
     [(VCVideoRule *)v77 setFPref:v78];
@@ -1041,7 +1041,7 @@ LABEL_68:
   [v7 addObject:v79];
 
 LABEL_73:
-  if ((a3 & 0x4000) == 0)
+  if ((bitmap & 0x4000) == 0)
   {
     goto LABEL_78;
   }
@@ -1056,7 +1056,7 @@ LABEL_73:
   }
 
   v84 = v82;
-  if ((a4 & 0x4000) != 0)
+  if ((preferredBitmap & 0x4000) != 0)
   {
     LODWORD(v83) = 1.0;
     [(VCVideoRule *)v82 setFPref:v83];
@@ -1065,7 +1065,7 @@ LABEL_73:
   [v7 addObject:v84];
 
 LABEL_78:
-  if ((a3 & 0x8000) == 0)
+  if ((bitmap & 0x8000) == 0)
   {
     goto LABEL_83;
   }
@@ -1080,7 +1080,7 @@ LABEL_78:
   }
 
   v89 = v87;
-  if ((a4 & 0x8000) != 0)
+  if ((preferredBitmap & 0x8000) != 0)
   {
     LODWORD(v88) = 1.0;
     [(VCVideoRule *)v87 setFPref:v88];
@@ -1089,7 +1089,7 @@ LABEL_78:
   [v7 addObject:v89];
 
 LABEL_83:
-  if ((a3 & 0x10000) == 0)
+  if ((bitmap & 0x10000) == 0)
   {
     goto LABEL_88;
   }
@@ -1104,7 +1104,7 @@ LABEL_83:
   }
 
   v94 = v92;
-  if ((a4 & 0x10000) != 0)
+  if ((preferredBitmap & 0x10000) != 0)
   {
     LODWORD(v93) = 1.0;
     [(VCVideoRule *)v92 setFPref:v93];
@@ -1113,7 +1113,7 @@ LABEL_83:
   [v7 addObject:v94];
 
 LABEL_88:
-  if ((a3 & 0x20000) == 0)
+  if ((bitmap & 0x20000) == 0)
   {
     goto LABEL_93;
   }
@@ -1128,7 +1128,7 @@ LABEL_88:
   }
 
   v99 = v97;
-  if ((a4 & 0x20000) != 0)
+  if ((preferredBitmap & 0x20000) != 0)
   {
     LODWORD(v98) = 1.0;
     [(VCVideoRule *)v97 setFPref:v98];
@@ -1137,7 +1137,7 @@ LABEL_88:
   [v7 addObject:v99];
 
 LABEL_93:
-  if ((a3 & 0x40000) == 0)
+  if ((bitmap & 0x40000) == 0)
   {
     goto LABEL_98;
   }
@@ -1152,7 +1152,7 @@ LABEL_93:
   }
 
   v104 = v102;
-  if ((a4 & 0x40000) != 0)
+  if ((preferredBitmap & 0x40000) != 0)
   {
     LODWORD(v103) = 1.0;
     [(VCVideoRule *)v102 setFPref:v103];
@@ -1161,7 +1161,7 @@ LABEL_93:
   [v7 addObject:v104];
 
 LABEL_98:
-  if ((a3 & 0x80000) == 0)
+  if ((bitmap & 0x80000) == 0)
   {
     goto LABEL_103;
   }
@@ -1176,7 +1176,7 @@ LABEL_98:
   }
 
   v109 = v107;
-  if ((a4 & 0x80000) != 0)
+  if ((preferredBitmap & 0x80000) != 0)
   {
     LODWORD(v108) = 1.0;
     [(VCVideoRule *)v107 setFPref:v108];
@@ -1185,7 +1185,7 @@ LABEL_98:
   [v7 addObject:v109];
 
 LABEL_103:
-  if ((a3 & 0x100000) == 0)
+  if ((bitmap & 0x100000) == 0)
   {
     goto LABEL_108;
   }
@@ -1200,7 +1200,7 @@ LABEL_103:
   }
 
   v114 = v112;
-  if ((a4 & 0x100000) != 0)
+  if ((preferredBitmap & 0x100000) != 0)
   {
     LODWORD(v113) = 1.0;
     [(VCVideoRule *)v112 setFPref:v113];
@@ -1209,7 +1209,7 @@ LABEL_103:
   [v7 addObject:v114];
 
 LABEL_108:
-  if ((a3 & 0x200000) == 0)
+  if ((bitmap & 0x200000) == 0)
   {
     goto LABEL_113;
   }
@@ -1224,7 +1224,7 @@ LABEL_108:
   }
 
   v119 = v117;
-  if ((a4 & 0x200000) != 0)
+  if ((preferredBitmap & 0x200000) != 0)
   {
     LODWORD(v118) = 1.0;
     [(VCVideoRule *)v117 setFPref:v118];
@@ -1233,7 +1233,7 @@ LABEL_108:
   [v7 addObject:v119];
 
 LABEL_113:
-  if ((a3 & 0x400000) == 0)
+  if ((bitmap & 0x400000) == 0)
   {
     goto LABEL_118;
   }
@@ -1248,7 +1248,7 @@ LABEL_113:
   }
 
   v124 = v122;
-  if ((a4 & 0x400000) != 0)
+  if ((preferredBitmap & 0x400000) != 0)
   {
     LODWORD(v123) = 1.0;
     [(VCVideoRule *)v122 setFPref:v123];
@@ -1257,7 +1257,7 @@ LABEL_113:
   [v7 addObject:v124];
 
 LABEL_118:
-  if ((a3 & 0x800000) == 0)
+  if ((bitmap & 0x800000) == 0)
   {
     goto LABEL_123;
   }
@@ -1272,7 +1272,7 @@ LABEL_118:
   }
 
   v129 = v127;
-  if ((a4 & 0x800000) != 0)
+  if ((preferredBitmap & 0x800000) != 0)
   {
     LODWORD(v128) = 1.0;
     [(VCVideoRule *)v127 setFPref:v128];
@@ -1281,7 +1281,7 @@ LABEL_118:
   [v7 addObject:v129];
 
 LABEL_123:
-  if ((a3 & 0x1000000) == 0)
+  if ((bitmap & 0x1000000) == 0)
   {
     goto LABEL_128;
   }
@@ -1296,7 +1296,7 @@ LABEL_123:
   }
 
   v134 = v132;
-  if ((a4 & 0x1000000) != 0)
+  if ((preferredBitmap & 0x1000000) != 0)
   {
     LODWORD(v133) = 1.0;
     [(VCVideoRule *)v132 setFPref:v133];
@@ -1305,7 +1305,7 @@ LABEL_123:
   [v7 addObject:v134];
 
 LABEL_128:
-  if ((a3 & 0x2000000) == 0)
+  if ((bitmap & 0x2000000) == 0)
   {
     goto LABEL_133;
   }
@@ -1320,7 +1320,7 @@ LABEL_128:
   }
 
   v139 = v137;
-  if ((a4 & 0x2000000) != 0)
+  if ((preferredBitmap & 0x2000000) != 0)
   {
     LODWORD(v138) = 1.0;
     [(VCVideoRule *)v137 setFPref:v138];
@@ -1329,7 +1329,7 @@ LABEL_128:
   [v7 addObject:v139];
 
 LABEL_133:
-  if ((a3 & 0x4000000) == 0)
+  if ((bitmap & 0x4000000) == 0)
   {
     goto LABEL_138;
   }
@@ -1344,7 +1344,7 @@ LABEL_133:
   }
 
   v144 = v142;
-  if ((a4 & 0x4000000) != 0)
+  if ((preferredBitmap & 0x4000000) != 0)
   {
     LODWORD(v143) = 1.0;
     [(VCVideoRule *)v142 setFPref:v143];
@@ -1353,7 +1353,7 @@ LABEL_133:
   [v7 addObject:v144];
 
 LABEL_138:
-  if ((a3 & 0x10000000) == 0)
+  if ((bitmap & 0x10000000) == 0)
   {
     goto LABEL_143;
   }
@@ -1368,7 +1368,7 @@ LABEL_138:
   }
 
   v149 = v147;
-  if ((a4 & 0x10000000) != 0)
+  if ((preferredBitmap & 0x10000000) != 0)
   {
     LODWORD(v148) = 1.0;
     [(VCVideoRule *)v147 setFPref:v148];
@@ -1377,7 +1377,7 @@ LABEL_138:
   [v7 addObject:v149];
 
 LABEL_143:
-  if ((a3 & 0x8000000) == 0)
+  if ((bitmap & 0x8000000) == 0)
   {
     goto LABEL_148;
   }
@@ -1392,7 +1392,7 @@ LABEL_143:
   }
 
   v154 = v152;
-  if ((a4 & 0x8000000) != 0)
+  if ((preferredBitmap & 0x8000000) != 0)
   {
     LODWORD(v153) = 1.0;
     [(VCVideoRule *)v152 setFPref:v153];
@@ -1414,7 +1414,7 @@ LABEL_148:
       v162 = 1024;
       v163 = 131;
       v164 = 1024;
-      v165 = a4;
+      preferredBitmapCopy = preferredBitmap;
       v166 = 2112;
       v167 = v7;
       _os_log_impl(&dword_1DB56E000, v156, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d preferredBitmap=0x%x, videoRules=%@", &v158, 0x2Cu);
@@ -1424,34 +1424,34 @@ LABEL_148:
   return v7;
 }
 
-- (void)printWithLogFile:(void *)a3 prefix:(id)a4
+- (void)printWithLogFile:(void *)file prefix:(id)prefix
 {
   v69 = *MEMORY[0x1E69E9840];
-  v5 = [MEMORY[0x1E696AD60] stringWithFormat:@"[%lu] %@", objc_msgSend(-[VCMediaNegotiationBlobV2VideoPayload data](self, "data"), "length"), a4];
-  v6 = [(VCMediaNegotiationBlobV2VideoPayload *)self videoPayload];
-  if ((v6 - 1) >= 3)
+  prefix = [MEMORY[0x1E696AD60] stringWithFormat:@"[%lu] %@", objc_msgSend(-[VCMediaNegotiationBlobV2VideoPayload data](self, "data"), "length"), prefix];
+  videoPayload = [(VCMediaNegotiationBlobV2VideoPayload *)self videoPayload];
+  if ((videoPayload - 1) >= 3)
   {
-    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v6];
+    v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", videoPayload];
   }
 
   else
   {
-    v7 = off_1E85F78D0[(v6 - 1)];
+    v7 = off_1E85F78D0[(videoPayload - 1)];
   }
 
-  [v5 appendFormat:@"Payload=%@", v7];
+  [prefix appendFormat:@"Payload=%@", v7];
   if ([(VCMediaNegotiationBlobV2VideoPayload *)self hasEncodeDecodeFeatures])
   {
-    [v5 appendFormat:@" encodeDecodeFeatures=%@", -[VCMediaNegotiationBlobV2VideoPayload encodeDecodeFeatures](self, "encodeDecodeFeatures")];
+    [prefix appendFormat:@" encodeDecodeFeatures=%@", -[VCMediaNegotiationBlobV2VideoPayload encodeDecodeFeatures](self, "encodeDecodeFeatures")];
   }
 
-  v8 = v5;
-  [v5 appendFormat:@" Encode=["];
+  v8 = prefix;
+  [prefix appendFormat:@" Encode=["];
   v67 = 0u;
   v68 = 0u;
   v65 = 0u;
   v66 = 0u;
-  v48 = self;
+  selfCopy = self;
   obj = [(VCMediaNegotiationBlobV2VideoPayload *)self encodeVideoRules];
   v9 = [(NSArray *)obj countByEnumeratingWithState:&v65 objects:v64 count:16];
   if (v9)
@@ -1469,8 +1469,8 @@ LABEL_148:
         }
 
         v14 = *(*(&v65 + 1) + 8 * i);
-        v15 = [v14 iWidth];
-        v16 = [v14 iHeight];
+        iWidth = [v14 iWidth];
+        iHeight = [v14 iHeight];
         [v14 fRate];
         v18 = v17;
         [v14 fPref];
@@ -1480,7 +1480,7 @@ LABEL_148:
           v19 = "(Pref)";
         }
 
-        [v8 appendFormat:@"%@%dx%d@%.0f%s", v11, v15, v16, *&v18, v19];
+        [v8 appendFormat:@"%@%dx%d@%.0f%s", v11, iWidth, iHeight, *&v18, v19];
         v11 = @", ";
       }
 
@@ -1496,7 +1496,7 @@ LABEL_148:
   v63 = 0u;
   v60 = 0u;
   v61 = 0u;
-  obja = [(VCMediaNegotiationBlobV2VideoPayload *)v48 decodeVideoRules];
+  obja = [(VCMediaNegotiationBlobV2VideoPayload *)selfCopy decodeVideoRules];
   v21 = [(NSArray *)obja countByEnumeratingWithState:&v60 objects:v59 count:16];
   if (v21)
   {
@@ -1513,8 +1513,8 @@ LABEL_148:
         }
 
         v26 = *(*(&v60 + 1) + 8 * j);
-        v27 = [v26 iWidth];
-        v28 = [v26 iHeight];
+        iWidth2 = [v26 iWidth];
+        iHeight2 = [v26 iHeight];
         [v26 fRate];
         v30 = v29;
         [v26 fPref];
@@ -1524,7 +1524,7 @@ LABEL_148:
           v31 = "(Pref)";
         }
 
-        [v8 appendFormat:@"%@%dx%d@%.0f%s", v23, v27, v28, *&v30, v31];
+        [v8 appendFormat:@"%@%dx%d@%.0f%s", v23, iWidth2, iHeight2, *&v30, v31];
         v23 = @", ";
       }
 
@@ -1537,18 +1537,18 @@ LABEL_148:
 
   v33 = v8;
   [v8 appendFormat:@"]"];
-  v34 = [(VCMediaNegotiationBlobV2VideoPayload *)v48 parameterSet];
+  parameterSet = [(VCMediaNegotiationBlobV2VideoPayload *)selfCopy parameterSet];
   [v8 appendFormat:@" paramSet=["];
-  if ((v34 & 0xF) != 0)
+  if ((parameterSet & 0xF) != 0)
   {
     v35 = 1;
     v36 = &stru_1F570E008;
-    while ((v34 & v35) == 0)
+    while ((parameterSet & v35) == 0)
     {
 LABEL_39:
-      v34 &= ~v35;
+      parameterSet &= ~v35;
       v35 = (2 * v35);
-      if ((v34 & 0xF) == 0)
+      if ((parameterSet & 0xF) == 0)
       {
         goto LABEL_40;
       }
@@ -1594,8 +1594,8 @@ LABEL_38:
 
 LABEL_40:
   [v33 appendString:@"]"];
-  v38 = [v33 UTF8String];
-  VRLogfilePrintWithTimestamp(a3, "%s\n", v39, v40, v41, v42, v43, v44, v38);
+  uTF8String = [v33 UTF8String];
+  VRLogfilePrintWithTimestamp(file, "%s\n", v39, v40, v41, v42, v43, v44, uTF8String);
   if (VRTraceGetErrorLogLevelForModule() > 5)
   {
     v45 = VRTraceErrorLogLevelToCSTR();
@@ -1615,15 +1615,15 @@ LABEL_40:
   }
 }
 
-+ (int)payloadWithRTPPayload:(int)a3
++ (int)payloadWithRTPPayload:(int)payload
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 == 123)
+  if (payload == 123)
   {
     return 1;
   }
 
-  if (a3 == 100)
+  if (payload == 100)
   {
     return 2;
   }
@@ -1645,22 +1645,22 @@ LABEL_40:
     v11 = 1024;
     v12 = 199;
     v13 = 1024;
-    v14 = a3;
+    payloadCopy = payload;
     _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Unknown video payload (payload=%d)", &v7, 0x22u);
   }
 
   return 0;
 }
 
-+ (int)rtpPayloadWithPayload:(int)a3
++ (int)rtpPayloadWithPayload:(int)payload
 {
   v15 = *MEMORY[0x1E69E9840];
-  if (a3 == 2)
+  if (payload == 2)
   {
     return 100;
   }
 
-  if (a3 == 1)
+  if (payload == 1)
   {
     return 123;
   }
@@ -1678,7 +1678,7 @@ LABEL_40:
       v11 = 1024;
       v12 = 211;
       v13 = 1024;
-      v14 = a3;
+      payloadCopy = payload;
       _os_log_impl(&dword_1DB56E000, v6, OS_LOG_TYPE_DEFAULT, " [%s] %s:%d Unknown video payload (%d)", &v7, 0x22u);
     }
   }
@@ -1686,15 +1686,15 @@ LABEL_40:
   return 128;
 }
 
-- (BOOL)setupEncode:(BOOL)a3 videoRules:(id)a4
+- (BOOL)setupEncode:(BOOL)encode videoRules:(id)rules
 {
-  v5 = a3;
+  encodeCopy = encode;
   v80 = *MEMORY[0x1E69E9840];
   v76 = 0u;
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
-  v7 = [a4 countByEnumeratingWithState:&v76 objects:v75 count:16];
+  v7 = [rules countByEnumeratingWithState:&v76 objects:v75 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1707,7 +1707,7 @@ LABEL_3:
     {
       if (*v77 != v11)
       {
-        objc_enumerationMutation(a4);
+        objc_enumerationMutation(rules);
       }
 
       v13 = *(*(&v76 + 1) + 8 * v12);
@@ -2021,7 +2021,7 @@ LABEL_3:
 
       if (v8 == ++v12)
       {
-        v8 = [a4 countByEnumeratingWithState:&v76 objects:v75 count:16];
+        v8 = [rules countByEnumeratingWithState:&v76 objects:v75 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -2035,7 +2035,7 @@ LABEL_3:
   v9 = 0;
   v10 = 0;
 LABEL_155:
-  if (v5)
+  if (encodeCopy)
   {
     if ([(VCMediaNegotiationBlobV2VideoPayload *)self encodeFormats]!= v10)
     {
@@ -2057,9 +2057,9 @@ LABEL_155:
   return v72;
 }
 
-- (void)setupVideoParameterSupport:(unsigned int)a3
+- (void)setupVideoParameterSupport:(unsigned int)support
 {
-  v4 = a3 & 0xF;
+  v4 = support & 0xF;
   if (v4 != [(VCMediaNegotiationBlobV2VideoPayload *)self parameterSet])
   {
 

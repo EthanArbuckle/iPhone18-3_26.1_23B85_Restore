@@ -1,11 +1,11 @@
 @interface _UIStatusBarItemUpdate
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
 @implementation _UIStatusBarItemUpdate
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(_UIStatusBarItemUpdate);
   [(_UIStatusBarItemUpdate *)v4 setEnabilityChanged:self->_enabilityChanged];

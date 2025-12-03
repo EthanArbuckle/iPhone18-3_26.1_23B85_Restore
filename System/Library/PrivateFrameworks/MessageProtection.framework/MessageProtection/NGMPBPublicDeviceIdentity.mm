@@ -1,12 +1,12 @@
 @interface NGMPBPublicDeviceIdentity
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NGMPBPublicDeviceIdentity
@@ -17,20 +17,20 @@
   v8.receiver = self;
   v8.super_class = NGMPBPublicDeviceIdentity;
   v4 = [(NGMPBPublicDeviceIdentity *)&v8 description];
-  v5 = [(NGMPBPublicDeviceIdentity *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(NGMPBPublicDeviceIdentity *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   signingKey = self->_signingKey;
   if (signingKey)
   {
-    [v3 setObject:signingKey forKey:@"signing_key"];
+    [dictionary setObject:signingKey forKey:@"signing_key"];
   }
 
   if (*&self->_has)
@@ -42,15 +42,15 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_signingKey)
   {
     [NGMPBPublicDeviceIdentity writeTo:];
   }
 
-  v6 = v4;
+  v6 = toCopy;
   PBDataWriterWriteDataField();
   if (*&self->_has)
   {
@@ -59,21 +59,21 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
-  [v4 setSigningKey:self->_signingKey];
+  toCopy = to;
+  [toCopy setSigningKey:self->_signingKey];
   if (*&self->_has)
   {
-    *(v4 + 4) = self->_tetraVersion;
-    *(v4 + 20) |= 1u;
+    *(toCopy + 4) = self->_tetraVersion;
+    *(toCopy + 20) |= 1u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_signingKey copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_signingKey copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 
@@ -86,16 +86,16 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_8;
   }
 
   signingKey = self->_signingKey;
-  if (signingKey | *(v4 + 1))
+  if (signingKey | *(equalCopy + 1))
   {
     if (![(NSData *)signingKey isEqual:?])
     {
@@ -103,10 +103,10 @@
     }
   }
 
-  v6 = (*(v4 + 20) & 1) == 0;
+  v6 = (*(equalCopy + 20) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 20) & 1) != 0 && self->_tetraVersion == *(v4 + 4))
+    if ((*(equalCopy + 20) & 1) != 0 && self->_tetraVersion == *(equalCopy + 4))
     {
       v6 = 1;
       goto LABEL_9;
@@ -137,19 +137,19 @@ LABEL_9:
   return v4 ^ v3;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  if (*(v4 + 1))
+  fromCopy = from;
+  if (*(fromCopy + 1))
   {
-    v5 = v4;
+    v5 = fromCopy;
     [(NGMPBPublicDeviceIdentity *)self setSigningKey:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[5])
+  if (fromCopy[5])
   {
-    self->_tetraVersion = v4[4];
+    self->_tetraVersion = fromCopy[4];
     *&self->_has |= 1u;
   }
 }

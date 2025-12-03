@@ -1,7 +1,7 @@
 @interface SecDbKeychainMetadataKeyStore
 + (id)sharedStore;
 + (void)resetSharedStore;
-- (BOOL)readKeyDataForClass:(int)a3 fromDb:(__OpaqueSecDbConnection *)a4 actualKeyclass:(int *)a5 wrappedKey:(id *)a6 error:(id *)a7;
+- (BOOL)readKeyDataForClass:(int)class fromDb:(__OpaqueSecDbConnection *)db actualKeyclass:(int *)keyclass wrappedKey:(id *)key error:(id *)error;
 - (id)_init;
 - (void)_onQueueDropAllKeys;
 - (void)_onQueueDropClassAKeys;
@@ -42,7 +42,7 @@
   v5[2] = sub_100012800;
   v5[3] = &unk_100059EE8;
   v5[4] = &v6;
-  v5[5] = a1;
+  v5[5] = self;
   dispatch_sync(qword_100073718, v5);
   v3 = v7[5];
   _Block_object_dispose(&v6, 8);
@@ -146,7 +146,7 @@
   [(NSMutableDictionary *)self->_keysDict removeAllObjects];
 }
 
-- (BOOL)readKeyDataForClass:(int)a3 fromDb:(__OpaqueSecDbConnection *)a4 actualKeyclass:(int *)a5 wrappedKey:(id *)a6 error:(id *)a7
+- (BOOL)readKeyDataForClass:(int)class fromDb:(__OpaqueSecDbConnection *)db actualKeyclass:(int *)keyclass wrappedKey:(id *)key error:(id *)error
 {
   dispatch_assert_queue_V2(self->_queue);
   v31 = 0;
@@ -171,22 +171,22 @@
   v17[1] = 3221225472;
   v17[2] = sub_10001381C;
   v17[3] = &unk_100059FB0;
-  v18 = a3;
+  classCopy = class;
   v17[4] = &v27;
   v17[5] = &v19;
-  v17[8] = a4;
-  v17[9] = a5;
+  v17[8] = db;
+  v17[9] = keyclass;
   v17[6] = &v31;
   v17[7] = &v23;
-  v12 = SecDbPrepare(a4, @"SELECT data, actualKeyclass FROM metadatakeys WHERE keyclass = ?", &v22, v17);
+  v12 = SecDbPrepare(db, @"SELECT data, actualKeyclass FROM metadatakeys WHERE keyclass = ?", &v22, v17);
   v13 = (v12 & v28[3]) == 0;
   *(v28 + 24) &= v12;
   if (v13 || (v24[3] & 1) == 0)
   {
     v15 = v20[3];
-    if (a7)
+    if (error)
     {
-      *a7 = v15;
+      *error = v15;
       v20[3] = 0;
     }
 
@@ -197,12 +197,12 @@
     }
 
     v14 = 0;
-    *a5 = 0;
+    *keyclass = 0;
   }
 
   else
   {
-    *a6 = v32[5];
+    *key = v32[5];
     v14 = 1;
   }
 

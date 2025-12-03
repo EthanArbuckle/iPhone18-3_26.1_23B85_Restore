@@ -1,22 +1,22 @@
 @interface CNPropertyCell
-+ (id)labelStringFromAppName:(id)a3 andPropertyLabel:(id)a4;
++ (id)labelStringFromAppName:(id)name andPropertyLabel:(id)label;
 - (BOOL)isSuggested;
 - (BOOL)shouldShowSuggestionOrigin;
 - (CNPresenterDelegate)presentingDelegate;
-- (CNPropertyCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (CNPropertyCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (CNPropertyCellDelegate)delegate;
-- (id)appNameForSuggestion:(id)a3;
+- (id)appNameForSuggestion:(id)suggestion;
 - (id)labelString;
 - (id)property;
 - (id)valueString;
-- (void)copy:(id)a3;
+- (void)copy:(id)copy;
 - (void)performAccessoryAction;
 - (void)performDefaultAction;
-- (void)setCardGroupItem:(id)a3;
-- (void)setProperty:(id)a3;
+- (void)setCardGroupItem:(id)item;
+- (void)setProperty:(id)property;
 - (void)tintColorDidChange;
-- (void)updateValueWithPropertyItem:(id)a3;
-- (void)updateWithPropertyItem:(id)a3;
+- (void)updateValueWithPropertyItem:(id)item;
+- (void)updateWithPropertyItem:(id)item;
 @end
 
 @implementation CNPropertyCell
@@ -42,36 +42,36 @@
   return WeakRetained;
 }
 
-- (void)updateValueWithPropertyItem:(id)a3
+- (void)updateValueWithPropertyItem:(id)item
 {
-  v4 = [(CNPropertyCell *)self valueString];
-  v5 = [(CNLabeledCell *)self valueView];
-  v6 = [v5 ab_text];
-  v7 = [v4 isEqualToString:v6];
+  valueString = [(CNPropertyCell *)self valueString];
+  valueView = [(CNLabeledCell *)self valueView];
+  ab_text = [valueView ab_text];
+  v7 = [valueString isEqualToString:ab_text];
 
   if ((v7 & 1) == 0)
   {
-    v9 = [(CNPropertyCell *)self valueString];
-    v8 = [(CNLabeledCell *)self valueView];
-    [v8 setAb_text:v9];
+    valueString2 = [(CNPropertyCell *)self valueString];
+    valueView2 = [(CNLabeledCell *)self valueView];
+    [valueView2 setAb_text:valueString2];
   }
 }
 
-- (void)updateWithPropertyItem:(id)a3
+- (void)updateWithPropertyItem:(id)item
 {
-  v10 = a3;
-  v4 = [(CNPropertyCell *)self labelString];
-  v5 = [(CNLabeledCell *)self labelView];
-  v6 = [v5 ab_text];
-  v7 = [v4 isEqualToString:v6];
+  itemCopy = item;
+  labelString = [(CNPropertyCell *)self labelString];
+  labelView = [(CNLabeledCell *)self labelView];
+  ab_text = [labelView ab_text];
+  v7 = [labelString isEqualToString:ab_text];
 
   if ((v7 & 1) == 0)
   {
-    v8 = [(CNLabeledCell *)self labelView];
-    [v8 setAb_text:v4];
+    labelView2 = [(CNLabeledCell *)self labelView];
+    [labelView2 setAb_text:labelString];
   }
 
-  [(CNPropertyCell *)self updateValueWithPropertyItem:v10];
+  [(CNPropertyCell *)self updateValueWithPropertyItem:itemCopy];
   if ([(CNPropertyCell *)self isSuggested]&& ![(CNPropertyCell *)self forceSuggested])
   {
     [(CNPropertyCell *)self setAccessoryType:1];
@@ -92,29 +92,29 @@
   [(CNLabeledCell *)&v9 tintColorDidChange];
   if (![(CNPropertyCell *)self isSuggested]&& (![(CNPropertyCell *)self isHighlightedProperty]|| ![(CNPropertyCell *)self isImportant]) && [(CNPropertyCell *)self supportsTintColorValue])
   {
-    v3 = [(CNLabeledCell *)self valueTextAttributes];
-    v4 = [(UIView *)self tintColorOverride];
+    valueTextAttributes = [(CNLabeledCell *)self valueTextAttributes];
+    tintColorOverride = [(UIView *)self tintColorOverride];
     v5 = *MEMORY[0x1E69DB650];
-    v6 = [v3 objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
-    v7 = [v6 isEqual:v4];
+    v6 = [valueTextAttributes objectForKeyedSubscript:*MEMORY[0x1E69DB650]];
+    v7 = [v6 isEqual:tintColorOverride];
 
     if ((v7 & 1) == 0)
     {
-      v8 = [v3 mutableCopy];
-      [v8 setObject:v4 forKeyedSubscript:v5];
+      v8 = [valueTextAttributes mutableCopy];
+      [v8 setObject:tintColorOverride forKeyedSubscript:v5];
       [(CNLabeledCell *)self setValueTextAttributes:v8];
     }
   }
 }
 
-- (void)copy:(id)a3
+- (void)copy:(id)copy
 {
-  v3 = [(CNPropertyCell *)self propertyItem];
-  v4 = [v3 displayValue];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  displayValue = [propertyItem displayValue];
 
-  if (v4)
+  if (displayValue)
   {
-    v5 = v4;
+    v5 = displayValue;
   }
 
   else
@@ -123,54 +123,54 @@
   }
 
   v7 = v5;
-  v6 = [MEMORY[0x1E69DCD50] generalPasteboard];
-  [v6 setString:v7];
+  generalPasteboard = [MEMORY[0x1E69DCD50] generalPasteboard];
+  [generalPasteboard setString:v7];
 }
 
 - (id)valueString
 {
-  v2 = [(CNPropertyCell *)self propertyItem];
-  v3 = [v2 displayValue];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  displayValue = [propertyItem displayValue];
 
-  return v3;
+  return displayValue;
 }
 
-- (id)appNameForSuggestion:(id)a3
+- (id)appNameForSuggestion:(id)suggestion
 {
-  v4 = a3;
-  if ([v4 isSuggested])
+  suggestionCopy = suggestion;
+  if ([suggestionCopy isSuggested])
   {
-    v5 = [v4 localizedAppName];
-    if (!v5)
+    localizedAppName = [suggestionCopy localizedAppName];
+    if (!localizedAppName)
     {
-      v6 = [(CNPropertyCell *)self delegate];
-      v7 = [v6 contactViewCache];
-      v8 = [v7 contactStore];
+      delegate = [(CNPropertyCell *)self delegate];
+      contactViewCache = [delegate contactViewCache];
+      contactStore = [contactViewCache contactStore];
 
       v11 = 0;
-      v9 = [v8 originForSuggestion:v4 error:&v11];
-      v5 = [v9 localizedApplicationName];
+      v9 = [contactStore originForSuggestion:suggestionCopy error:&v11];
+      localizedAppName = [v9 localizedApplicationName];
     }
   }
 
   else
   {
-    v5 = 0;
+    localizedAppName = 0;
   }
 
-  return v5;
+  return localizedAppName;
 }
 
 - (BOOL)shouldShowSuggestionOrigin
 {
-  v3 = [(CNPropertyCell *)self propertyItem];
-  v4 = [v3 contact];
-  v5 = [v4 isSuggestedMe];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  contact = [propertyItem contact];
+  isSuggestedMe = [contact isSuggestedMe];
 
-  if (v5)
+  if (isSuggestedMe)
   {
-    v6 = [(CNPropertyCell *)self propertyItem];
-    if ([v6 isSuggested])
+    propertyItem2 = [(CNPropertyCell *)self propertyItem];
+    if ([propertyItem2 isSuggested])
     {
       v7 = [(CNPropertyCell *)self isEditing]^ 1;
     }
@@ -192,47 +192,47 @@
 
 - (id)labelString
 {
-  v3 = [(CNPropertyCell *)self propertyItem];
-  v4 = [v3 displayLabel];
-  v5 = [v3 property];
-  v6 = CNUILocalizedStringForPropertyWithFormatKey(@"LOWERCASE_LABEL", v5);
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  displayLabel = [propertyItem displayLabel];
+  property = [propertyItem property];
+  v6 = CNUILocalizedStringForPropertyWithFormatKey(@"LOWERCASE_LABEL", property);
 
-  v7 = [(CNPropertyCell *)self shouldShowSuggestionOrigin];
-  v8 = [(CNPropertyCell *)self propertyItem];
-  v9 = v8;
-  if (v7)
+  shouldShowSuggestionOrigin = [(CNPropertyCell *)self shouldShowSuggestionOrigin];
+  propertyItem2 = [(CNPropertyCell *)self propertyItem];
+  v9 = propertyItem2;
+  if (shouldShowSuggestionOrigin)
   {
-    v10 = [v8 labeledValue];
-    v11 = [v10 valueOrigin];
+    labeledValue = [propertyItem2 labeledValue];
+    valueOrigin = [labeledValue valueOrigin];
 
-    if (v11)
+    if (valueOrigin)
     {
-      v12 = [(CNPropertyCell *)self propertyItem];
-      v13 = [v12 labeledValue];
-      v14 = [v13 valueOrigin];
-      v15 = [v14 localizedApplicationName];
+      propertyItem3 = [(CNPropertyCell *)self propertyItem];
+      labeledValue2 = [propertyItem3 labeledValue];
+      valueOrigin2 = [labeledValue2 valueOrigin];
+      localizedApplicationName = [valueOrigin2 localizedApplicationName];
 
-      v16 = [objc_opt_class() labelStringFromAppName:v15 andPropertyLabel:v6];
+      v16 = [objc_opt_class() labelStringFromAppName:localizedApplicationName andPropertyLabel:v6];
 
-      v4 = v15;
+      displayLabel = localizedApplicationName;
     }
 
     else
     {
-      v18 = [v3 labeledValue];
-      v19 = [(CNPropertyCell *)self appNameForSuggestion:v18];
+      labeledValue3 = [propertyItem labeledValue];
+      v19 = [(CNPropertyCell *)self appNameForSuggestion:labeledValue3];
 
       v16 = [objc_opt_class() labelStringFromAppName:v19 andPropertyLabel:v6];
 
-      v4 = v19;
+      displayLabel = v19;
     }
   }
 
   else
   {
-    v17 = [v8 isSuggested];
+    isSuggested = [propertyItem2 isSuggested];
 
-    if (!v17)
+    if (!isSuggested)
     {
       goto LABEL_8;
     }
@@ -240,10 +240,10 @@
     v16 = v6;
   }
 
-  v4 = v16;
+  displayLabel = v16;
 LABEL_8:
 
-  return v4;
+  return displayLabel;
 }
 
 - (BOOL)isSuggested
@@ -258,57 +258,57 @@ LABEL_8:
     return 0;
   }
 
-  v4 = [(CNPropertyCell *)self propertyItem];
-  if ([v4 isSuggested])
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  if ([propertyItem isSuggested])
   {
-    v3 = 1;
+    isSuggested = 1;
   }
 
   else
   {
-    v5 = [(CNPropertyCell *)self propertyItem];
-    v6 = [v5 contact];
-    v3 = [v6 isSuggested];
+    propertyItem2 = [(CNPropertyCell *)self propertyItem];
+    contact = [propertyItem2 contact];
+    isSuggested = [contact isSuggested];
   }
 
-  return v3;
+  return isSuggested;
 }
 
-- (void)setCardGroupItem:(id)a3
+- (void)setCardGroupItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   v8.receiver = self;
   v8.super_class = CNPropertyCell;
-  v5 = [(CNContactCell *)&v8 cardGroupItem];
-  v6 = v5;
-  if (v4 && !v5 || v5 && ([v5 isEqual:v4] & 1) == 0)
+  cardGroupItem = [(CNContactCell *)&v8 cardGroupItem];
+  v6 = cardGroupItem;
+  if (itemCopy && !cardGroupItem || cardGroupItem && ([cardGroupItem isEqual:itemCopy] & 1) == 0)
   {
     v7.receiver = self;
     v7.super_class = CNPropertyCell;
-    [(CNContactCell *)&v7 setCardGroupItem:v4];
-    if (v4)
+    [(CNContactCell *)&v7 setCardGroupItem:itemCopy];
+    if (itemCopy)
     {
-      [(CNPropertyCell *)self updateWithPropertyItem:v4];
+      [(CNPropertyCell *)self updateWithPropertyItem:itemCopy];
     }
   }
 }
 
-- (void)setProperty:(id)a3
+- (void)setProperty:(id)property
 {
-  obj = a3;
-  v4 = [obj value];
+  obj = property;
+  value = [obj value];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   if (isKindOfClass)
   {
-    v6 = [obj label];
-    v7 = [(CNLabeledCell *)self labelView];
-    [v7 setAb_text:v6];
+    label = [obj label];
+    labelView = [(CNLabeledCell *)self labelView];
+    [labelView setAb_text:label];
 
-    v8 = [obj value];
-    v9 = [(CNLabeledCell *)self valueView];
-    [v9 setAb_text:v8];
+    value2 = [obj value];
+    valueView = [(CNLabeledCell *)self valueView];
+    [valueView setAb_text:value2];
   }
 
   objc_storeWeak(&self->_property, obj);
@@ -316,40 +316,40 @@ LABEL_8:
 
 - (void)performAccessoryAction
 {
-  v3 = [(CNPropertyCell *)self propertyItem];
-  v4 = [v3 isSuggested];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  isSuggested = [propertyItem isSuggested];
 
-  if (v4)
+  if (isSuggested)
   {
-    v6 = [(CNPropertyCell *)self delegate];
-    v5 = [(CNPropertyCell *)self propertyItem];
-    [v6 propertyCell:self performActionForItem:v5 withTransportType:0];
+    delegate = [(CNPropertyCell *)self delegate];
+    propertyItem2 = [(CNPropertyCell *)self propertyItem];
+    [delegate propertyCell:self performActionForItem:propertyItem2 withTransportType:0];
   }
 }
 
 - (void)performDefaultAction
 {
-  v4 = [(CNPropertyCell *)self delegate];
-  v3 = [(CNPropertyCell *)self propertyItem];
-  [v4 propertyCell:self performActionForItem:v3 withTransportType:0];
+  delegate = [(CNPropertyCell *)self delegate];
+  propertyItem = [(CNPropertyCell *)self propertyItem];
+  [delegate propertyCell:self performActionForItem:propertyItem withTransportType:0];
 }
 
-- (CNPropertyCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (CNPropertyCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v6.receiver = self;
   v6.super_class = CNPropertyCell;
-  v4 = [(CNLabeledCell *)&v6 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(CNLabeledCell *)&v6 initWithStyle:style reuseIdentifier:identifier];
   [(CNPropertyCell *)v4 setAccessoryType:0];
   return v4;
 }
 
-+ (id)labelStringFromAppName:(id)a3 andPropertyLabel:(id)a4
++ (id)labelStringFromAppName:(id)name andPropertyLabel:(id)label
 {
-  v5 = a3;
+  nameCopy = name;
   v6 = *MEMORY[0x1E6996568];
   v7 = *(*MEMORY[0x1E6996568] + 16);
-  v8 = a4;
-  LOBYTE(v7) = v7(v6, v5);
+  labelCopy = label;
+  LOBYTE(v7) = v7(v6, nameCopy);
   v9 = MEMORY[0x1E696AEC0];
   v10 = CNContactsUIBundle();
   v11 = v10;
@@ -361,10 +361,10 @@ LABEL_8:
   else
   {
     v12 = [v10 localizedStringForKey:@"SUGGESTION_FOUND_IN_APP" value:&stru_1F0CE7398 table:@"Localized"];
-    v15 = v5;
+    v15 = nameCopy;
   }
 
-  v13 = [v9 stringWithFormat:v12, v8, v15];
+  v13 = [v9 stringWithFormat:v12, labelCopy, v15];
 
   return v13;
 }

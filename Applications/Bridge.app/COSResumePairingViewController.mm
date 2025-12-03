@@ -4,10 +4,10 @@
 - (id)detailString;
 - (id)suggestedButtonTitle;
 - (id)titleString;
-- (void)alternateButtonPressed:(id)a3;
-- (void)dismissSetupFlow:(id)a3;
-- (void)suggestedButtonPressed:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)alternateButtonPressed:(id)pressed;
+- (void)dismissSetupFlow:(id)flow;
+- (void)suggestedButtonPressed:(id)pressed;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation COSResumePairingViewController
@@ -26,18 +26,18 @@
   return v3;
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v9.receiver = self;
   v9.super_class = COSResumePairingViewController;
-  [(COSResumePairingViewController *)&v9 viewWillAppear:a3];
-  v4 = [(COSResumePairingViewController *)self navigationItem];
+  [(COSResumePairingViewController *)&v9 viewWillAppear:appear];
+  navigationItem = [(COSResumePairingViewController *)self navigationItem];
   v5 = [UIBarButtonItem alloc];
   v6 = +[NSBundle mainBundle];
   v7 = [v6 localizedStringForKey:@"CANCEL_SETUP_FLOW" value:&stru_10026E598 table:@"Localizable"];
   v8 = [v5 initWithTitle:v7 style:0 target:self action:"dismissSetupFlow:"];
 
-  [v4 setRightBarButtonItem:v8 animated:0];
+  [navigationItem setRightBarButtonItem:v8 animated:0];
 }
 
 - (id)titleString
@@ -72,27 +72,27 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = [(COSResumePairingViewController *)self delegate];
-  v5 = [v4 resumePairingController];
-  [v5 resumePairing];
+  delegate = [(COSResumePairingViewController *)self delegate];
+  resumePairingController = [delegate resumePairingController];
+  [resumePairingController resumePairing];
 
-  v6 = [(COSResumePairingViewController *)self delegate];
-  [v6 buddyControllerDone:self];
+  delegate2 = [(COSResumePairingViewController *)self delegate];
+  [delegate2 buddyControllerDone:self];
 }
 
-- (void)alternateButtonPressed:(id)a3
+- (void)alternateButtonPressed:(id)pressed
 {
-  v4 = [(COSResumePairingViewController *)self delegate];
-  v5 = [v4 resumePairingController];
-  [v5 startPairingOver];
+  delegate = [(COSResumePairingViewController *)self delegate];
+  resumePairingController = [delegate resumePairingController];
+  [resumePairingController startPairingOver];
 
-  v6 = [(COSResumePairingViewController *)self delegate];
-  [v6 buddyControllerDone:self];
+  delegate2 = [(COSResumePairingViewController *)self delegate];
+  [delegate2 buddyControllerDone:self];
 }
 
-- (void)dismissSetupFlow:(id)a3
+- (void)dismissSetupFlow:(id)flow
 {
   [PBBridgeCAReporter incrementSuccessType:17];
   v3 = UIApp;

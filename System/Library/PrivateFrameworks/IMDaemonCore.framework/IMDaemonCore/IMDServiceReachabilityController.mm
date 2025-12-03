@@ -1,10 +1,10 @@
 @interface IMDServiceReachabilityController
 + (IMDServiceReachabilityController)sharedController;
 - (IMDServiceReachabilityController)init;
-- (id)reachabilityContextForChat:(id)a3;
-- (int64_t)sortOrderForServiceName:(id)a3;
-- (void)calculateServiceForSendingToChat:(id)a3 accounts:(id)a4 completionBlock:(id)a5;
-- (void)calculateServiceForSendingToHandles:(id)a3 accounts:(id)a4 context:(id)a5 completionBlock:(id)a6;
+- (id)reachabilityContextForChat:(id)chat;
+- (int64_t)sortOrderForServiceName:(id)name;
+- (void)calculateServiceForSendingToChat:(id)chat accounts:(id)accounts completionBlock:(id)block;
+- (void)calculateServiceForSendingToHandles:(id)handles accounts:(id)accounts context:(id)context completionBlock:(id)block;
 @end
 
 @implementation IMDServiceReachabilityController
@@ -21,47 +21,47 @@
   return v3;
 }
 
-- (int64_t)sortOrderForServiceName:(id)a3
+- (int64_t)sortOrderForServiceName:(id)name
 {
   sub_22B7DB6A8();
-  v4 = self;
+  selfCopy = self;
   v5 = sub_22B74CA5C();
 
   return v5;
 }
 
-- (id)reachabilityContextForChat:(id)a3
+- (id)reachabilityContextForChat:(id)chat
 {
-  v5 = a3;
-  v6 = self;
-  v7 = sub_22B74CC5C(a3);
+  chatCopy = chat;
+  selfCopy = self;
+  v7 = sub_22B74CC5C(chat);
 
   return v7;
 }
 
-- (void)calculateServiceForSendingToChat:(id)a3 accounts:(id)a4 completionBlock:(id)a5
+- (void)calculateServiceForSendingToChat:(id)chat accounts:(id)accounts completionBlock:(id)block
 {
-  v7 = _Block_copy(a5);
+  v7 = _Block_copy(block);
   sub_22B4D01A0(0, &qword_28141F298, off_2786FF850);
   v8 = sub_22B7DB918();
   v9 = swift_allocObject();
   *(v9 + 16) = v7;
-  v10 = a3;
-  v11 = self;
-  sub_22B74BF9C(v10, v8, sub_22B74CEA8, v9);
+  chatCopy = chat;
+  selfCopy = self;
+  sub_22B74BF9C(chatCopy, v8, sub_22B74CEA8, v9);
 }
 
-- (void)calculateServiceForSendingToHandles:(id)a3 accounts:(id)a4 context:(id)a5 completionBlock:(id)a6
+- (void)calculateServiceForSendingToHandles:(id)handles accounts:(id)accounts context:(id)context completionBlock:(id)block
 {
-  v8 = _Block_copy(a6);
+  v8 = _Block_copy(block);
   v9 = sub_22B7DB918();
   sub_22B4D01A0(0, &qword_28141F298, off_2786FF850);
   v10 = sub_22B7DB918();
   v11 = swift_allocObject();
   *(v11 + 16) = v8;
-  v12 = a5;
-  v13 = self;
-  sub_22B74C1CC(v9, v10, v12, sub_22B74C9C0, v11);
+  contextCopy = context;
+  selfCopy = self;
+  sub_22B74C1CC(v9, v10, contextCopy, sub_22B74C9C0, v11);
 }
 
 - (IMDServiceReachabilityController)init

@@ -18,9 +18,9 @@
 - (NSString)serialNumber;
 - (int)acquisitionFailure;
 - (unsigned)transportType;
-- (void)setAcquired:(BOOL)a3;
-- (void)setIdentify:(BOOL)a3;
-- (void)setName:(id)a3;
+- (void)setAcquired:(BOOL)acquired;
+- (void)setIdentify:(BOOL)identify;
+- (void)setName:(id)name;
 @end
 
 @implementation ASABox
@@ -51,10 +51,10 @@ LABEL_7:
   return v2;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
-  v4 = a3;
-  [(ASAObject *)self setMainGlobalProperty:1819173229 withData:&v4 ofSize:8 withQualifier:0 ofSize:0];
+  nameCopy = name;
+  [(ASAObject *)self setMainGlobalProperty:1819173229 withData:&nameCopy ofSize:8 withQualifier:0 ofSize:0];
 }
 
 - (NSString)manufacturer
@@ -291,12 +291,12 @@ LABEL_7:
   return v4 != 0;
 }
 
-- (void)setAcquired:(BOOL)a3
+- (void)setAcquired:(BOOL)acquired
 {
-  v3 = a3;
+  acquiredCopy = acquired;
   if ([(ASABox *)self isAcquireSettable])
   {
-    v5 = v3;
+    v5 = acquiredCopy;
     [(ASAObject *)self setMainGlobalProperty:1652060014 withData:&v5 ofSize:4 withQualifier:0 ofSize:0];
   }
 }
@@ -327,12 +327,12 @@ LABEL_7:
   return v4 != 0;
 }
 
-- (void)setIdentify:(BOOL)a3
+- (void)setIdentify:(BOOL)identify
 {
-  v3 = a3;
+  identifyCopy = identify;
   if ([(ASABox *)self isIdentifySettable])
   {
-    v5 = v3;
+    v5 = identifyCopy;
     [(ASAObject *)self setMainGlobalProperty:1768187246 withData:&v5 ofSize:4 withQualifier:0 ofSize:0];
   }
 }
@@ -346,11 +346,11 @@ LABEL_7:
     v6 = v5;
     bzero(v5, v4);
     v7 = [(ASAObject *)self getMainGlobalProperty:1650751011 withData:v6 ofSize:&v15 withQualifier:0 ofSize:0];
-    v8 = 0;
+    array = 0;
     if (v7)
     {
       v9 = v15;
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v9 >= 4)
       {
         v10 = v9 >> 2;
@@ -359,7 +359,7 @@ LABEL_7:
         {
           v12 = *v11++;
           v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v12];
-          [v8 addObject:v13];
+          [array addObject:v13];
 
           --v10;
         }
@@ -373,22 +373,22 @@ LABEL_7:
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
 - (NSArray)audioDevices
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(ASABox *)self audioDeviceObjectIDs];
-  v3 = [MEMORY[0x277CBEB18] array];
+  audioDeviceObjectIDs = [(ASABox *)self audioDeviceObjectIDs];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = audioDeviceObjectIDs;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -408,7 +408,7 @@ LABEL_7:
         v11 = -[ASAObject initWithAudioObjectID:](v10, "initWithAudioObjectID:", [v9 unsignedIntValue]);
         if (v11)
         {
-          [v3 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -420,7 +420,7 @@ LABEL_7:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 - (NSArray)clockDeviceObjectIDs
@@ -432,11 +432,11 @@ LABEL_7:
     v6 = v5;
     bzero(v5, v4);
     v7 = [(ASAObject *)self getMainGlobalProperty:1650682915 withData:v6 ofSize:&v15 withQualifier:0 ofSize:0];
-    v8 = 0;
+    array = 0;
     if (v7)
     {
       v9 = v15;
-      v8 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       if (v9 >= 4)
       {
         v10 = v9 >> 2;
@@ -445,7 +445,7 @@ LABEL_7:
         {
           v12 = *v11++;
           v13 = [MEMORY[0x277CCABB0] numberWithUnsignedLong:v12];
-          [v8 addObject:v13];
+          [array addObject:v13];
 
           --v10;
         }
@@ -459,22 +459,22 @@ LABEL_7:
 
   else
   {
-    v8 = 0;
+    array = 0;
   }
 
-  return v8;
+  return array;
 }
 
 - (NSArray)clockDevices
 {
   v19 = *MEMORY[0x277D85DE8];
-  v2 = [(ASABox *)self clockDeviceObjectIDs];
-  v3 = [MEMORY[0x277CBEB18] array];
+  clockDeviceObjectIDs = [(ASABox *)self clockDeviceObjectIDs];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = v2;
+  v4 = clockDeviceObjectIDs;
   v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
@@ -494,7 +494,7 @@ LABEL_7:
         v11 = -[ASAObject initWithAudioObjectID:](v10, "initWithAudioObjectID:", [v9 unsignedIntValue]);
         if (v11)
         {
-          [v3 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -506,7 +506,7 @@ LABEL_7:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v3;
+  return array;
 }
 
 @end

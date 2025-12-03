@@ -1,17 +1,17 @@
 @interface GKBadgeController
 + (id)sharedController;
-- (BOOL)isBadgingEnabledForBundleID:(id)a3;
+- (BOOL)isBadgingEnabledForBundleID:(id)d;
 - (GKBadgeController)init;
 - (id)_badgeCountURL;
-- (id)_dictionaryForBadgeType:(unint64_t)a3;
-- (unint64_t)_badgeCountForBundleID:(id)a3 badgeType:(unint64_t)a4;
-- (unint64_t)_totalBadgeCountForBundleID:(id)a3;
-- (unint64_t)badgeCountForBundleID:(id)a3 badgeType:(unint64_t)a4;
+- (id)_dictionaryForBadgeType:(unint64_t)type;
+- (unint64_t)_badgeCountForBundleID:(id)d badgeType:(unint64_t)type;
+- (unint64_t)_totalBadgeCountForBundleID:(id)d;
+- (unint64_t)badgeCountForBundleID:(id)d badgeType:(unint64_t)type;
 - (void)badgeAllApplications;
-- (void)badgeApplicationWithBundleID:(id)a3 badgeCount:(unint64_t)a4;
-- (void)badgeBundleID:(id)a3 badgeCount:(unint64_t)a4;
-- (void)registerBadgePermissionForBundleID:(id)a3 completionHandler:(id)a4;
-- (void)setBadgeCount:(unint64_t)a3 forBundleID:(id)a4 badgeType:(unint64_t)a5;
+- (void)badgeApplicationWithBundleID:(id)d badgeCount:(unint64_t)count;
+- (void)badgeBundleID:(id)d badgeCount:(unint64_t)count;
+- (void)registerBadgePermissionForBundleID:(id)d completionHandler:(id)handler;
+- (void)setBadgeCount:(unint64_t)count forBundleID:(id)d badgeType:(unint64_t)type;
 - (void)synchronize;
 - (void)unbadgeAllApplications;
 @end
@@ -86,27 +86,27 @@
   }
 }
 
-- (BOOL)isBadgingEnabledForBundleID:(id)a3
+- (BOOL)isBadgingEnabledForBundleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[GKPreferences shared];
   if ([v4 notificationBadgesEnabled])
   {
-    v5 = [NSBundle _gkBundleWithIdentifier:v3];
-    v6 = [v5 _gkIsBadgingEnabled];
+    v5 = [NSBundle _gkBundleWithIdentifier:dCopy];
+    _gkIsBadgingEnabled = [v5 _gkIsBadgingEnabled];
   }
 
   else
   {
-    v6 = 0;
+    _gkIsBadgingEnabled = 0;
   }
 
-  return v6;
+  return _gkIsBadgingEnabled;
 }
 
-- (void)badgeApplicationWithBundleID:(id)a3 badgeCount:(unint64_t)a4
+- (void)badgeApplicationWithBundleID:(id)d badgeCount:(unint64_t)count
 {
-  v6 = a3;
+  dCopy = d;
   if (!os_log_GKGeneral)
   {
     v7 = GKOSLoggers();
@@ -119,25 +119,25 @@
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "GKBadgeController: badgeApplicationWithBundleID", buf, 2u);
   }
 
-  if ([(GKBadgeController *)self isBadgingEnabledForBundleID:v6])
+  if ([(GKBadgeController *)self isBadgingEnabledForBundleID:dCopy])
   {
-    [(GKBadgeController *)self badgeBundleID:v6 badgeCount:a4];
+    [(GKBadgeController *)self badgeBundleID:dCopy badgeCount:count];
   }
 
   else
   {
-    v9 = [NSBundle _gkBundleWithIdentifier:v6];
-    v10 = [v9 _gkIsBadgingEnabled];
+    v9 = [NSBundle _gkBundleWithIdentifier:dCopy];
+    _gkIsBadgingEnabled = [v9 _gkIsBadgingEnabled];
 
-    if (v10)
+    if (_gkIsBadgingEnabled)
     {
       v16[0] = _NSConcreteStackBlock;
       v16[1] = 3221225472;
       v16[2] = sub_10011F2A4;
       v16[3] = &unk_100367700;
       v16[4] = self;
-      v17 = v6;
-      v18 = a4;
+      v17 = dCopy;
+      countCopy = count;
       [(GKBadgeController *)self registerBadgePermissionForBundleID:v17 completionHandler:v16];
     }
   }
@@ -147,19 +147,19 @@
   block[1] = 3221225472;
   block[2] = sub_10011F358;
   block[3] = &unk_1003610B8;
-  v14 = v6;
-  v15 = self;
-  v12 = v6;
+  v14 = dCopy;
+  selfCopy = self;
+  v12 = dCopy;
   dispatch_async(syncQueue, block);
 }
 
-- (void)badgeBundleID:(id)a3 badgeCount:(unint64_t)a4
+- (void)badgeBundleID:(id)d badgeCount:(unint64_t)count
 {
-  v6 = a3;
+  dCopy = d;
   v7 = +[GKPreferences shared];
-  v8 = [v7 notificationBadgesEnabled];
+  notificationBadgesEnabled = [v7 notificationBadgesEnabled];
 
-  if (v8)
+  if (notificationBadgesEnabled)
   {
     if (!os_log_GKGeneral)
     {
@@ -174,7 +174,7 @@
     }
 
     bzero(buf, 0x400uLL);
-    if ([(GKBadgeController *)self isBadgingEnabledForBundleID:v6]&& CFStringGetCString(v6, buf, 1024, 0x8000100u))
+    if ([(GKBadgeController *)self isBadgingEnabledForBundleID:dCopy]&& CFStringGetCString(dCopy, buf, 1024, 0x8000100u))
     {
       if (!os_log_GKGeneral)
       {
@@ -185,22 +185,22 @@
       if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
       {
         v13 = v12;
-        v14 = [NSNumber numberWithUnsignedInteger:a4];
+        v14 = [NSNumber numberWithUnsignedInteger:count];
         v17 = 138412546;
-        v18 = v6;
+        v18 = dCopy;
         v19 = 2112;
         v20 = v14;
         _os_log_impl(&_mh_execute_header, v13, OS_LOG_TYPE_INFO, "Setting badge count for bundleID: %@ count: %@", &v17, 0x16u);
       }
 
-      v15 = [[UISApplicationState alloc] initWithBundleIdentifier:v6];
-      v16 = [NSNumber numberWithUnsignedInteger:a4];
+      v15 = [[UISApplicationState alloc] initWithBundleIdentifier:dCopy];
+      v16 = [NSNumber numberWithUnsignedInteger:count];
       [v15 setBadgeValue:v16];
     }
   }
 }
 
-- (id)_dictionaryForBadgeType:(unint64_t)a3
+- (id)_dictionaryForBadgeType:(unint64_t)type
 {
   v5 = dispatch_get_current_queue();
   v6 = v5;
@@ -212,20 +212,20 @@
     v10 = +[NSThread callStackSymbols];
     v11 = [NSString stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "[GKBadgeController _dictionaryForBadgeType:]", label, v9, v10];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKBadgeController.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == _syncQueue)\n[%s (%s:%d)]", v11, "-[GKBadgeController _dictionaryForBadgeType:]", [v13 UTF8String], 207);
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == _syncQueue)\n[%s (%s:%d)]", v11, "-[GKBadgeController _dictionaryForBadgeType:]", [lastPathComponent UTF8String], 207);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v14];
   }
 
-  v15 = self->_badgeDictionaries[a3];
+  v15 = self->_badgeDictionaries[type];
 
   return v15;
 }
 
-- (unint64_t)_badgeCountForBundleID:(id)a3 badgeType:(unint64_t)a4
+- (unint64_t)_badgeCountForBundleID:(id)d badgeType:(unint64_t)type
 {
-  v6 = a3;
+  dCopy = d;
   v7 = dispatch_get_current_queue();
   v8 = v7;
   syncQueue = self->_syncQueue;
@@ -236,22 +236,22 @@
     v12 = +[NSThread callStackSymbols];
     v13 = [NSString stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "[GKBadgeController _badgeCountForBundleID:badgeType:]", label, v11, v12];
     v14 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKBadgeController.m"];
-    v15 = [v14 lastPathComponent];
-    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == _syncQueue)\n[%s (%s:%d)]", v13, "-[GKBadgeController _badgeCountForBundleID:badgeType:]", [v15 UTF8String], 213);
+    lastPathComponent = [v14 lastPathComponent];
+    v16 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == _syncQueue)\n[%s (%s:%d)]", v13, "-[GKBadgeController _badgeCountForBundleID:badgeType:]", [lastPathComponent UTF8String], 213);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v16];
   }
 
-  v17 = [(GKBadgeController *)self _dictionaryForBadgeType:a4];
-  v18 = [v17 objectForKeyedSubscript:v6];
-  v19 = [v18 unsignedIntegerValue];
+  v17 = [(GKBadgeController *)self _dictionaryForBadgeType:type];
+  v18 = [v17 objectForKeyedSubscript:dCopy];
+  unsignedIntegerValue = [v18 unsignedIntegerValue];
 
-  return v19;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)badgeCountForBundleID:(id)a3 badgeType:(unint64_t)a4
+- (unint64_t)badgeCountForBundleID:(id)d badgeType:(unint64_t)type
 {
-  v6 = a3;
+  dCopy = d;
   v7 = dispatch_get_current_queue();
   syncQueue = self->_syncQueue;
 
@@ -261,8 +261,8 @@
     v10 = +[NSThread callStackSymbols];
     v11 = [NSString stringWithFormat:@"%s invoked on the same queue(%s), would deadlock at %@", "[GKBadgeController badgeCountForBundleID:badgeType:]", label, v10];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKBadgeController.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (dispatch_get_current_queue() != _syncQueue)\n[%s (%s:%d)]", v11, "-[GKBadgeController badgeCountForBundleID:badgeType:]", [v13 UTF8String], 219);
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (dispatch_get_current_queue() != _syncQueue)\n[%s (%s:%d)]", v11, "-[GKBadgeController badgeCountForBundleID:badgeType:]", [lastPathComponent UTF8String], 219);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v14];
   }
@@ -271,9 +271,9 @@
   v24 = &v23;
   v25 = 0x2020000000;
   v26 = 0;
-  if (!v6)
+  if (!dCopy)
   {
-    v6 = GKGameCenterIdentifier;
+    dCopy = GKGameCenterIdentifier;
   }
 
   v15 = self->_syncQueue;
@@ -282,10 +282,10 @@
   block[2] = sub_10011FB28;
   block[3] = &unk_100367728;
   block[4] = self;
-  v20 = v6;
+  v20 = dCopy;
   v21 = &v23;
-  v22 = a4;
-  v16 = v6;
+  typeCopy = type;
+  v16 = dCopy;
   dispatch_sync(v15, block);
   v17 = v24[3];
 
@@ -293,9 +293,9 @@
   return v17;
 }
 
-- (unint64_t)_totalBadgeCountForBundleID:(id)a3
+- (unint64_t)_totalBadgeCountForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = dispatch_get_current_queue();
   v6 = v5;
   syncQueue = self->_syncQueue;
@@ -306,8 +306,8 @@
     v10 = +[NSThread callStackSymbols];
     v11 = [NSString stringWithFormat:@"%s invoked on the wrong queue (got:%s expected:%s) at %@", "[GKBadgeController _totalBadgeCountForBundleID:]", label, v9, v10];
     v12 = [NSString stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter_Daemons/Frameworks/GameCenterFoundation/gamed/GKBadgeController.m"];
-    v13 = [v12 lastPathComponent];
-    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == _syncQueue)\n[%s (%s:%d)]", v11, "-[GKBadgeController _totalBadgeCountForBundleID:]", [v13 UTF8String], 232);
+    lastPathComponent = [v12 lastPathComponent];
+    v14 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"%@ (_actualCurrentQueue == _syncQueue)\n[%s (%s:%d)]", v11, "-[GKBadgeController _totalBadgeCountForBundleID:]", [lastPathComponent UTF8String], 232);
 
     [NSException raise:@"GameKit Exception" format:@"%@", v14];
   }
@@ -317,7 +317,7 @@
   badgeDictionaries = self->_badgeDictionaries;
   do
   {
-    v18 = [(NSMutableDictionary *)badgeDictionaries[v15] objectForKeyedSubscript:v4];
+    v18 = [(NSMutableDictionary *)badgeDictionaries[v15] objectForKeyedSubscript:dCopy];
     v16 += [v18 unsignedIntegerValue];
 
     ++v15;
@@ -328,9 +328,9 @@
   return v16;
 }
 
-- (void)setBadgeCount:(unint64_t)a3 forBundleID:(id)a4 badgeType:(unint64_t)a5
+- (void)setBadgeCount:(unint64_t)count forBundleID:(id)d badgeType:(unint64_t)type
 {
-  v8 = a4;
+  dCopy = d;
   if (!os_log_GKGeneral)
   {
     v9 = GKOSLoggers();
@@ -343,7 +343,7 @@
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "GKBadgeController: setBadgeCount", buf, 2u);
   }
 
-  if ((a5 & 0xFFFFFFFFFFFFFFFELL) == 2 && (+[GKPreferences shared](GKPreferences, "shared"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 multiplayerAllowedPlayerType], v11, !v12))
+  if ((type & 0xFFFFFFFFFFFFFFFELL) == 2 && (+[GKPreferences shared](GKPreferences, "shared"), v11 = objc_claimAutoreleasedReturnValue(), v12 = [v11 multiplayerAllowedPlayerType], v11, !v12))
   {
     if (!os_log_GKGeneral)
     {
@@ -366,16 +366,16 @@
     if (os_log_type_enabled(os_log_GKDaemon, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v27 = v8;
+      v27 = dCopy;
       _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_INFO, "ignoring turn-based and sessions badge count update for %@ as multiplayer is restricted", buf, 0xCu);
     }
   }
 
   else
   {
-    if (!v8)
+    if (!dCopy)
     {
-      v8 = GKGameCenterIdentifier;
+      dCopy = GKGameCenterIdentifier;
     }
 
     syncQueue = self->_syncQueue;
@@ -383,11 +383,11 @@
     v19 = 3221225472;
     v20 = sub_10011FF4C;
     v21 = &unk_100367750;
-    v22 = self;
-    v24 = a5;
-    v8 = v8;
-    v23 = v8;
-    v25 = a3;
+    selfCopy = self;
+    typeCopy = type;
+    dCopy = dCopy;
+    v23 = dCopy;
+    countCopy = count;
     dispatch_async(syncQueue, &v18);
     [(GKBadgeController *)self synchronize:v18];
   }
@@ -416,10 +416,10 @@
   [(GKBadgeController *)self synchronize];
 }
 
-- (void)registerBadgePermissionForBundleID:(id)a3 completionHandler:(id)a4
+- (void)registerBadgePermissionForBundleID:(id)d completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  dCopy = d;
+  handlerCopy = handler;
   if (!os_log_GKGeneral)
   {
     v8 = GKOSLoggers();
@@ -432,10 +432,10 @@
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "GKBadgeController: registerBadgePermissionForBundleID:", buf, 2u);
   }
 
-  if (v6 && ([v6 isEqualToString:GKGameCenterIdentifier] & 1) == 0)
+  if (dCopy && ([dCopy isEqualToString:GKGameCenterIdentifier] & 1) == 0)
   {
     v10 = +[GKApplicationWorkspace defaultWorkspace];
-    v11 = [v10 applicationProxyForBundleID:v6];
+    v11 = [v10 applicationProxyForBundleID:dCopy];
     if ([v11 isInstalled] && (objc_msgSend(v11, "isRestricted") & 1) == 0)
     {
       syncQueue = self->_syncQueue;
@@ -444,8 +444,8 @@
       block[2] = sub_1001205F0;
       block[3] = &unk_100360FC8;
       block[4] = self;
-      v14 = v6;
-      v15 = v7;
+      v14 = dCopy;
+      v15 = handlerCopy;
       dispatch_async(syncQueue, block);
     }
   }

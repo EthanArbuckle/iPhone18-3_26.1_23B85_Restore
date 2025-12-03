@@ -25,10 +25,10 @@
   v21.receiver = self;
   v21.super_class = WDSourcesViewController;
   [(WDTableViewController *)&v21 viewDidLoad];
-  v3 = [(WDSourcesViewController *)self tableView];
+  tableView = [(WDSourcesViewController *)self tableView];
   v4 = objc_opt_class();
   v5 = +[WDSpinnerTableViewCell defaultReuseIdentifier];
-  [v3 registerClass:v4 forCellReuseIdentifier:v5];
+  [tableView registerClass:v4 forCellReuseIdentifier:v5];
 
   v19 = 0u;
   v20 = 0u;
@@ -51,8 +51,8 @@
         }
 
         v10 = *(*(&v17 + 1) + 8 * v9);
-        v11 = [(WDTableViewController *)self tableSections];
-        [v10 setShouldHideHeader:{objc_msgSend(v11, "count") == 1}];
+        tableSections = [(WDTableViewController *)self tableSections];
+        [v10 setShouldHideHeader:{objc_msgSend(tableSections, "count") == 1}];
 
         objc_opt_class();
         if (objc_opt_isKindOfClass())

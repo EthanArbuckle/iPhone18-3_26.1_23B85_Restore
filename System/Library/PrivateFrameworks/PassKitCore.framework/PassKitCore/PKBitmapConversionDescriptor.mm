@@ -3,12 +3,12 @@
 + (id)create16Float;
 + (id)create32Float;
 + (id)create8Uint;
-- (id)convertFromContext:(id)a3;
-- (id)convertImage:(CGImage *)a3;
-- (uint64_t)_convertContext:(uint64_t)a1;
+- (id)convertFromContext:(id)context;
+- (id)convertImage:(CGImage *)image;
+- (uint64_t)_convertContext:(uint64_t)context;
 - (void)dealloc;
-- (void)setBitsPerComponent:(unsigned __int8)a3 withByteOrder:(unsigned int)a4;
-- (void)setColorSpace:(CGColorSpace *)a3 withPolicy:(id)a4;
+- (void)setBitsPerComponent:(unsigned __int8)component withByteOrder:(unsigned int)order;
+- (void)setColorSpace:(CGColorSpace *)space withPolicy:(id)policy;
 @end
 
 @implementation PKBitmapConversionDescriptor
@@ -153,12 +153,12 @@ uint64_t __45__PKBitmapConversionDescriptor_create32Float__block_invoke(uint64_t
   [(PKBitmapConversionDescriptor *)&v3 dealloc];
 }
 
-- (uint64_t)_convertContext:(uint64_t)a1
+- (uint64_t)_convertContext:(uint64_t)context
 {
   v78 = *MEMORY[0x1E69E9840];
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (context)
   {
     if (!v3)
     {
@@ -167,7 +167,7 @@ uint64_t __45__PKBitmapConversionDescriptor_create32Float__block_invoke(uint64_t
 
     v5 = v3;
     v6 = *(v4 + 8) & 0x1F;
-    v7 = *(a1 + 16);
+    v7 = *(context + 16);
     if (v7)
     {
       v6 = (*(v7 + 16))(v7, *(v4 + 8) & 0x1F);
@@ -178,7 +178,7 @@ uint64_t __45__PKBitmapConversionDescriptor_create32Float__block_invoke(uint64_t
     }
 
     v8 = (v4 + 16);
-    if (*(a1 + 8))
+    if (*(context + 8))
     {
       v9 = 256;
     }
@@ -188,9 +188,9 @@ uint64_t __45__PKBitmapConversionDescriptor_create32Float__block_invoke(uint64_t
       v9 = 0;
     }
 
-    v10 = *(a1 + 9);
-    v11 = (a1 + 12);
-    if (!*(a1 + 9))
+    v10 = *(context + 9);
+    v11 = (context + 12);
+    if (!*(context + 9))
     {
       v11 = v4 + 32;
     }
@@ -213,7 +213,7 @@ uint64_t __45__PKBitmapConversionDescriptor_create32Float__block_invoke(uint64_t
 
     else
     {
-      v14 = *(a1 + 24);
+      v14 = *(context + 24);
       if (!v14)
       {
         v14 = *(v4 + 3);
@@ -247,8 +247,8 @@ uint64_t __45__PKBitmapConversionDescriptor_create32Float__block_invoke(uint64_t
         }
       }
 
-      v16 = *(a1 + 9);
-      space.bitsPerComponent = *(a1 + 9);
+      v16 = *(context + 9);
+      space.bitsPerComponent = *(context + 9);
       v17 = NumberOfComponents * v16;
       if (v17 >= 0x100)
       {
@@ -258,7 +258,7 @@ uint64_t __45__PKBitmapConversionDescriptor_create32Float__block_invoke(uint64_t
       space.bitsPerPixel = v17;
     }
 
-    v18 = *(a1 + 32);
+    v18 = *(context + 32);
     if (v18)
     {
       v19 = (*(v18 + 16))(v18, *(v4 + 3), space.colorSpace);
@@ -647,9 +647,9 @@ LABEL_115:
   return v46;
 }
 
-- (id)convertFromContext:(id)a3
+- (id)convertFromContext:(id)context
 {
-  result = a3;
+  result = context;
   if (result)
   {
     v5 = result;
@@ -697,10 +697,10 @@ void __51__PKBitmapConversionDescriptor_convertFromContext___block_invoke(uint64
   *(v4 + 40) = v3;
 }
 
-- (id)convertImage:(CGImage *)a3
+- (id)convertImage:(CGImage *)image
 {
   v49 = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!image)
   {
     goto LABEL_60;
   }
@@ -723,24 +723,24 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  BitsPerComponent = CGImageGetBitsPerComponent(a3);
+  BitsPerComponent = CGImageGetBitsPerComponent(image);
   if (HIDWORD(BitsPerComponent))
   {
     goto LABEL_60;
   }
 
   v7 = BitsPerComponent;
-  BitsPerPixel = CGImageGetBitsPerPixel(a3);
+  BitsPerPixel = CGImageGetBitsPerPixel(image);
   if (HIDWORD(BitsPerPixel))
   {
     goto LABEL_60;
   }
 
   v9 = BitsPerPixel;
-  ColorSpace = CGImageGetColorSpace(a3);
-  BitmapInfo = CGImageGetBitmapInfo(a3);
-  Decode = CGImageGetDecode(a3);
-  RenderingIntent = CGImageGetRenderingIntent(a3);
+  ColorSpace = CGImageGetColorSpace(image);
+  BitmapInfo = CGImageGetBitmapInfo(image);
+  Decode = CGImageGetDecode(image);
+  RenderingIntent = CGImageGetRenderingIntent(image);
   v14 = CGColorSpaceRetain(ColorSpace);
   v15 = v14;
   if (!Decode)
@@ -808,8 +808,8 @@ LABEL_18:
   *(v5 + 9) = 0;
   *(v5 + 5) = v18;
   *(v5 + 12) = RenderingIntent;
-  Width = CGImageGetWidth(a3);
-  Height = CGImageGetHeight(a3);
+  Width = CGImageGetWidth(image);
+  Height = CGImageGetHeight(image);
   v23 = MEMORY[0x1B26FA130](v5 + 56, Height, Width, *(v5 + 5), 512);
   if (v23 < 0 || *(v5 + 7))
   {
@@ -908,7 +908,7 @@ LABEL_40:
     goto LABEL_41;
   }
 
-  v32 = MEMORY[0x1B26FA140](v5 + 56, v5 + 16, 0, a3, 528);
+  v32 = MEMORY[0x1B26FA140](v5 + 56, v5 + 16, 0, image, 528);
   if (v32)
   {
     v33 = v32;
@@ -957,27 +957,27 @@ LABEL_42:
   return v35;
 }
 
-- (void)setBitsPerComponent:(unsigned __int8)a3 withByteOrder:(unsigned int)a4
+- (void)setBitsPerComponent:(unsigned __int8)component withByteOrder:(unsigned int)order
 {
-  self->_bitsPerComponent = a3;
-  if ((a4 & 0xFFFF8FFF) != 0)
+  self->_bitsPerComponent = component;
+  if ((order & 0xFFFF8FFF) != 0)
   {
     __break(1u);
   }
 
   else
   {
-    self->_byteOrder = a4;
+    self->_byteOrder = order;
   }
 }
 
-- (void)setColorSpace:(CGColorSpace *)a3 withPolicy:(id)a4
+- (void)setColorSpace:(CGColorSpace *)space withPolicy:(id)policy
 {
   colorSpace = self->_colorSpace;
-  v7 = a4;
+  policyCopy = policy;
   CGColorSpaceRelease(colorSpace);
-  self->_colorSpace = CGColorSpaceRetain(a3);
-  v8 = _Block_copy(v7);
+  self->_colorSpace = CGColorSpaceRetain(space);
+  v8 = _Block_copy(policyCopy);
 
   colorTransformPolicy = self->_colorTransformPolicy;
   self->_colorTransformPolicy = v8;

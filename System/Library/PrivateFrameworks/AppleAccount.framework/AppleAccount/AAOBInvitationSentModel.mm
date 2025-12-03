@@ -1,16 +1,16 @@
 @interface AAOBInvitationSentModel
-- (AAOBInvitationSentModel)initWithCoder:(id)a3;
-- (AAOBInvitationSentModel)initWithType:(int64_t)a3 recipientHandle:(id)a4;
+- (AAOBInvitationSentModel)initWithCoder:(id)coder;
+- (AAOBInvitationSentModel)initWithType:(int64_t)type recipientHandle:(id)handle;
 - (NSString)description;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation AAOBInvitationSentModel
 
-- (AAOBInvitationSentModel)initWithType:(int64_t)a3 recipientHandle:(id)a4
+- (AAOBInvitationSentModel)initWithType:(int64_t)type recipientHandle:(id)handle
 {
-  v7 = a4;
+  handleCopy = handle;
   v24.receiver = self;
   v24.super_class = AAOBInvitationSentModel;
   v8 = [(AAOBInvitationSentModel *)&v24 init];
@@ -18,7 +18,7 @@
   {
     v9 = [MEMORY[0x1E696AAE8] bundleWithIdentifier:@"com.apple.AppleAccount"];
     v10 = v9;
-    if (a3)
+    if (type)
     {
       v11 = @"CUSTODIAN_INVITATION_SENT_TITLE";
     }
@@ -28,7 +28,7 @@
       v11 = @"CUSTODIAN_INVITATION_SENT_FAMILY_TITLE";
     }
 
-    if (a3)
+    if (type)
     {
       v12 = @"CUSTODIAN_INVITATION_SENT_DETAIL_TEXT";
     }
@@ -52,7 +52,7 @@
     primaryButton = v8->_primaryButton;
     v8->_primaryButton = v19;
 
-    objc_storeStrong(&v8->_recipientHandle, a4);
+    objc_storeStrong(&v8->_recipientHandle, handle);
     helpLinkTitle = v8->_helpLinkTitle;
     v8->_helpLinkTitle = 0;
 
@@ -63,62 +63,62 @@
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   imageName = self->_imageName;
-  v5 = a3;
-  [v5 encodeObject:imageName forKey:@"_imageName"];
-  [v5 encodeObject:self->_title forKey:@"_title"];
-  [v5 encodeObject:self->_detailText forKey:@"_detailText"];
-  [v5 encodeObject:self->_primaryButton forKey:@" _primaryButton"];
-  [v5 encodeObject:self->_secondaryButton forKey:@"_secondaryButton"];
-  [v5 encodeObject:self->_helpLinkTitle forKey:@"_helpLinkTitle"];
-  [v5 encodeObject:self->_helpLinkURL forKey:@"_helpLinkURL"];
-  [v5 encodeObject:self->_ownerHandle forKey:@"_ownerHandle"];
-  [v5 encodeObject:self->_recipientHandle forKey:@"_recipientHandle"];
+  coderCopy = coder;
+  [coderCopy encodeObject:imageName forKey:@"_imageName"];
+  [coderCopy encodeObject:self->_title forKey:@"_title"];
+  [coderCopy encodeObject:self->_detailText forKey:@"_detailText"];
+  [coderCopy encodeObject:self->_primaryButton forKey:@" _primaryButton"];
+  [coderCopy encodeObject:self->_secondaryButton forKey:@"_secondaryButton"];
+  [coderCopy encodeObject:self->_helpLinkTitle forKey:@"_helpLinkTitle"];
+  [coderCopy encodeObject:self->_helpLinkURL forKey:@"_helpLinkURL"];
+  [coderCopy encodeObject:self->_ownerHandle forKey:@"_ownerHandle"];
+  [coderCopy encodeObject:self->_recipientHandle forKey:@"_recipientHandle"];
 }
 
-- (AAOBInvitationSentModel)initWithCoder:(id)a3
+- (AAOBInvitationSentModel)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v25.receiver = self;
   v25.super_class = AAOBInvitationSentModel;
   v5 = [(AAOBInvitationSentModel *)&v25 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_imageName"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_imageName"];
     imageName = v5->_imageName;
     v5->_imageName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_title"];
     title = v5->_title;
     v5->_title = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_detailText"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_detailText"];
     detailText = v5->_detailText;
     v5->_detailText = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@" _primaryButton"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@" _primaryButton"];
     primaryButton = v5->_primaryButton;
     v5->_primaryButton = v12;
 
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_secondaryButton"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_secondaryButton"];
     secondaryButton = v5->_secondaryButton;
     v5->_secondaryButton = v14;
 
-    v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_helpLinkTitle"];
+    v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_helpLinkTitle"];
     helpLinkTitle = v5->_helpLinkTitle;
     v5->_helpLinkTitle = v16;
 
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_helpLinkURL"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_helpLinkURL"];
     helpLinkURL = v5->_helpLinkURL;
     v5->_helpLinkURL = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_ownerHandle"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_ownerHandle"];
     ownerHandle = v5->_ownerHandle;
     v5->_ownerHandle = v20;
 
-    v22 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_recipientHandle"];
+    v22 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_recipientHandle"];
     recipientHandle = v5->_recipientHandle;
     v5->_recipientHandle = v22;
   }
@@ -126,7 +126,7 @@
   return v5;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(AAOBInvitationSentModel);
   v5 = [(NSString *)self->_imageName copy];
@@ -171,16 +171,16 @@
 - (NSString)description
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(AAOBInvitationSentModel *)self imageName];
-  v5 = [(AAOBInvitationSentModel *)self title];
-  v6 = [(AAOBInvitationSentModel *)self detailText];
-  v7 = [(AAOBInvitationSentModel *)self primaryButton];
-  v8 = [(AAOBInvitationSentModel *)self secondaryButton];
-  v9 = [(AAOBInvitationSentModel *)self helpLinkTitle];
-  v10 = [(AAOBInvitationSentModel *)self helpLinkURL];
-  v11 = [(AAOBInvitationSentModel *)self ownerHandle];
-  v12 = [(AAOBInvitationSentModel *)self recipientHandle];
-  v13 = [v3 stringWithFormat:@"imageName: %@\title: %@\ndetailText: %@\nprimaryButton: %@\nsecondaryButton: %@\nhelpLinkTitle: %@\nhelpLinkURL: %@\nownerHandle: %@\nrecipientHandle: %@\n", v4, v5, v6, v7, v8, v9, v10, v11, v12];
+  imageName = [(AAOBInvitationSentModel *)self imageName];
+  title = [(AAOBInvitationSentModel *)self title];
+  detailText = [(AAOBInvitationSentModel *)self detailText];
+  primaryButton = [(AAOBInvitationSentModel *)self primaryButton];
+  secondaryButton = [(AAOBInvitationSentModel *)self secondaryButton];
+  helpLinkTitle = [(AAOBInvitationSentModel *)self helpLinkTitle];
+  helpLinkURL = [(AAOBInvitationSentModel *)self helpLinkURL];
+  ownerHandle = [(AAOBInvitationSentModel *)self ownerHandle];
+  recipientHandle = [(AAOBInvitationSentModel *)self recipientHandle];
+  v13 = [v3 stringWithFormat:@"imageName: %@\title: %@\ndetailText: %@\nprimaryButton: %@\nsecondaryButton: %@\nhelpLinkTitle: %@\nhelpLinkURL: %@\nownerHandle: %@\nrecipientHandle: %@\n", imageName, title, detailText, primaryButton, secondaryButton, helpLinkTitle, helpLinkURL, ownerHandle, recipientHandle];
 
   return v13;
 }

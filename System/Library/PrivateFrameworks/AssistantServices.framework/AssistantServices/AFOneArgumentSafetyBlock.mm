@@ -1,6 +1,6 @@
 @interface AFOneArgumentSafetyBlock
-- (AFOneArgumentSafetyBlock)initWithBlock:(id)a3 defaultValue:(id)a4;
-- (BOOL)invokeWithValue:(id)a3;
+- (AFOneArgumentSafetyBlock)initWithBlock:(id)block defaultValue:(id)value;
+- (BOOL)invokeWithValue:(id)value;
 - (void)dealloc;
 @end
 
@@ -14,16 +14,16 @@
   [(AFOneArgumentSafetyBlock *)&v3 dealloc];
 }
 
-- (BOOL)invokeWithValue:(id)a3
+- (BOOL)invokeWithValue:(id)value
 {
-  v4 = a3;
+  valueCopy = value;
   v5 = atomic_exchange(&self->_hasInvoked._Value, 1u);
   if ((v5 & 1) == 0)
   {
     block = self->_block;
     if (block)
     {
-      block[2](block, v4);
+      block[2](block, valueCopy);
       v7 = self->_block;
       self->_block = 0;
     }
@@ -32,20 +32,20 @@
   return (v5 & 1) == 0;
 }
 
-- (AFOneArgumentSafetyBlock)initWithBlock:(id)a3 defaultValue:(id)a4
+- (AFOneArgumentSafetyBlock)initWithBlock:(id)block defaultValue:(id)value
 {
-  v6 = a3;
-  v7 = a4;
+  blockCopy = block;
+  valueCopy = value;
   v12.receiver = self;
   v12.super_class = AFOneArgumentSafetyBlock;
   v8 = [(AFOneArgumentSafetyBlock *)&v12 init];
   if (v8)
   {
-    v9 = MEMORY[0x193AFB7B0](v6);
+    v9 = MEMORY[0x193AFB7B0](blockCopy);
     block = v8->_block;
     v8->_block = v9;
 
-    objc_storeStrong(&v8->_defaultValue, a4);
+    objc_storeStrong(&v8->_defaultValue, value);
   }
 
   return v8;

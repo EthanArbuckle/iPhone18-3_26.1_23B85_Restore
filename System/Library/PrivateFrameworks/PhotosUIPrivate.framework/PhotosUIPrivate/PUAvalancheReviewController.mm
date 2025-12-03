@@ -1,81 +1,81 @@
 @interface PUAvalancheReviewController
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
 - (BOOL)prefersStatusBarHidden;
-- (BOOL)reviewScrubber:(id)a3 shouldProvideFeedbackForCellAtIndexPath:(id)a4;
-- (CGRect)_frameAtIndexPath:(id)a3 inView:(id)a4;
+- (BOOL)reviewScrubber:(id)scrubber shouldProvideFeedbackForCellAtIndexPath:(id)path;
+- (CGRect)_frameAtIndexPath:(id)path inView:(id)view;
 - (CGRect)_previousPreheatRect;
-- (CGRect)embeddedActivityViewFrameWhenShowing:(BOOL)a3;
-- (CGRect)layout:(id)a3 collectionView:(id)a4 selectionBadgeFrameForItemFrame:(CGRect)a5 atIndexPath:(id)a6;
-- (CGRect)oneUpAssetTransitionAssetFinalFrame:(id)a3;
-- (CGRect)selectionBadgeFrameForItemFrame:(CGRect)a3 atIndexPath:(id)a4;
-- (CGSize)_sizeForItemAtIndexPath:(id)a3;
-- (CGSize)layout:(id)a3 collectionView:(id)a4 sizeForItemAtIndexPath:(id)a5;
+- (CGRect)embeddedActivityViewFrameWhenShowing:(BOOL)showing;
+- (CGRect)layout:(id)layout collectionView:(id)view selectionBadgeFrameForItemFrame:(CGRect)frame atIndexPath:(id)path;
+- (CGRect)oneUpAssetTransitionAssetFinalFrame:(id)frame;
+- (CGRect)selectionBadgeFrameForItemFrame:(CGRect)frame atIndexPath:(id)path;
+- (CGSize)_sizeForItemAtIndexPath:(id)path;
+- (CGSize)layout:(id)layout collectionView:(id)view sizeForItemAtIndexPath:(id)path;
 - (PHFetchResult)assetCollectionsFetchResult;
 - (PUAvalancheReviewController)init;
-- (PUAvalancheReviewController)initWithCoder:(id)a3;
-- (PUAvalancheReviewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (PUAvalancheReviewController)initWithSpec:(id)a3 startingAtAsset:(id)a4 inAvalanche:(id)a5 currentAssetContainer:(id)a6 photoLibrary:(id)a7;
+- (PUAvalancheReviewController)initWithCoder:(id)coder;
+- (PUAvalancheReviewController)initWithNibName:(id)name bundle:(id)bundle;
+- (PUAvalancheReviewController)initWithSpec:(id)spec startingAtAsset:(id)asset inAvalanche:(id)avalanche currentAssetContainer:(id)container photoLibrary:(id)library;
 - (PUAvalancheReviewControllerDelegate)delegate;
-- (double)_horizontalOffsetInCollectionView:(id)a3 forCenteringOnItemAtIndexPath:(id)a4;
-- (id)_assetAtIndexPath:(id)a3;
+- (double)_horizontalOffsetInCollectionView:(id)view forCenteringOnItemAtIndexPath:(id)path;
+- (id)_assetAtIndexPath:(id)path;
 - (id)_currentAsset;
-- (id)_indexPathInCollectionView:(id)a3 closestToPoint:(CGPoint)a4 excludingIndexPath:(id)a5;
-- (id)_indexPathOfCenterVisibleItemInCollectionView:(id)a3;
-- (id)_phAssetAtIndexPath:(id)a3;
-- (id)_selectionViewAtIndexPath:(id)a3 forCollectionView:(id)a4;
-- (id)assetsInAssetCollection:(id)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5;
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4;
-- (unint64_t)reviewScrubber:(id)a3 numberOfItemsInSection:(unint64_t)a4;
+- (id)_indexPathInCollectionView:(id)view closestToPoint:(CGPoint)point excludingIndexPath:(id)path;
+- (id)_indexPathOfCenterVisibleItemInCollectionView:(id)view;
+- (id)_phAssetAtIndexPath:(id)path;
+- (id)_selectionViewAtIndexPath:(id)path forCollectionView:(id)view;
+- (id)assetsInAssetCollection:(id)collection;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path;
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section;
+- (unint64_t)reviewScrubber:(id)scrubber numberOfItemsInSection:(unint64_t)section;
 - (unsigned)reviewScrubberImageFormat;
-- (void)_beginZoomingForCellAtIndexPath:(id)a3;
+- (void)_beginZoomingForCellAtIndexPath:(id)path;
 - (void)_cancelReviewMode;
-- (void)_dismissReviewControllerWithAsset:(id)a3;
+- (void)_dismissReviewControllerWithAsset:(id)asset;
 - (void)_endZoomingForCell;
-- (void)_finishReviewAndDeleteNonPicks:(BOOL)a3;
-- (void)_getFirstValidIndexPath:(id *)a3 lastValidIndexPath:(id *)a4;
-- (void)_getMainCollectionViewFrame:(CGRect *)a3 collectionViewLayoutInsets:(UIEdgeInsets *)a4;
-- (void)_handleDoneButton:(id)a3;
-- (void)_handlePhotoPinch:(id)a3;
-- (void)_handleTapAtIndexPath:(id)a3;
-- (void)_handleTapInMainCollectionView:(id)a3;
-- (void)_pageToIndexPath:(id)a3 animated:(BOOL)a4;
-- (void)_promoteFavoriteAssetsAndDeleteNonPicks:(BOOL)a3 withReviewCompletionHandler:(id)a4;
-- (void)_reallyToggleCurrentPickStatusAtIndexPath:(id)a3;
-- (void)_reloadAvalancheDataWithAsset:(id)a3;
+- (void)_finishReviewAndDeleteNonPicks:(BOOL)picks;
+- (void)_getFirstValidIndexPath:(id *)path lastValidIndexPath:(id *)indexPath;
+- (void)_getMainCollectionViewFrame:(CGRect *)frame collectionViewLayoutInsets:(UIEdgeInsets *)insets;
+- (void)_handleDoneButton:(id)button;
+- (void)_handlePhotoPinch:(id)pinch;
+- (void)_handleTapAtIndexPath:(id)path;
+- (void)_handleTapInMainCollectionView:(id)view;
+- (void)_pageToIndexPath:(id)path animated:(BOOL)animated;
+- (void)_promoteFavoriteAssetsAndDeleteNonPicks:(BOOL)picks withReviewCompletionHandler:(id)handler;
+- (void)_reallyToggleCurrentPickStatusAtIndexPath:(id)path;
+- (void)_reloadAvalancheDataWithAsset:(id)asset;
 - (void)_resetPreheating;
 - (void)_startPreheatingAllAssets;
-- (void)_toggleCurrentPickStatusAtIndexPath:(id)a3;
-- (void)_updateBarItemsAnimated:(BOOL)a3;
-- (void)_updateCell:(id)a3 forItemAtIndexPath:(id)a4;
+- (void)_toggleCurrentPickStatusAtIndexPath:(id)path;
+- (void)_updateBarItemsAnimated:(BOOL)animated;
+- (void)_updateCell:(id)cell forItemAtIndexPath:(id)path;
 - (void)_updateCollectionViewLayoutInsets;
 - (void)_updateEnabledNavigationBarItems;
 - (void)_updateMainView;
 - (void)_updateNavigationItemTitle;
-- (void)_updatePhotoForAsset:(id)a3 cell:(id)a4 atIndexPath:(id)a5;
+- (void)_updatePhotoForAsset:(id)asset cell:(id)cell atIndexPath:(id)path;
 - (void)_updatePreheatedAssets;
 - (void)_updateReviewScrubberFromContentOffset;
 - (void)_updateReviewScrubberHeightIfNeeded;
 - (void)dealloc;
-- (void)oneUpAssetTransition:(id)a3 requestTransitionContextWithCompletion:(id)a4;
-- (void)reviewScrubber:(id)a3 willDisplayCell:(id)a4 atIndexPath:(id)a5;
-- (void)reviewScrubberDidScrub:(id)a3;
-- (void)reviewScrubberDidSelectItemAtIndexPath:(id)a3;
-- (void)scrollViewDidEndDecelerating:(id)a3;
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4;
-- (void)scrollViewDidScroll:(id)a3;
-- (void)scrollViewWillBeginDragging:(id)a3;
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5;
-- (void)setOneUpPhotosSharingTransitionInfo:(id)a3;
-- (void)setPhotosSharingTransitionContext:(id)a3;
-- (void)setPhotosSharingTransitionLayout:(id)a3 animated:(BOOL)a4;
-- (void)viewDidAppear:(BOOL)a3;
+- (void)oneUpAssetTransition:(id)transition requestTransitionContextWithCompletion:(id)completion;
+- (void)reviewScrubber:(id)scrubber willDisplayCell:(id)cell atIndexPath:(id)path;
+- (void)reviewScrubberDidScrub:(id)scrub;
+- (void)reviewScrubberDidSelectItemAtIndexPath:(id)path;
+- (void)scrollViewDidEndDecelerating:(id)decelerating;
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate;
+- (void)scrollViewDidScroll:(id)scroll;
+- (void)scrollViewWillBeginDragging:(id)dragging;
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset;
+- (void)setOneUpPhotosSharingTransitionInfo:(id)info;
+- (void)setPhotosSharingTransitionContext:(id)context;
+- (void)setPhotosSharingTransitionLayout:(id)layout animated:(BOOL)animated;
+- (void)viewDidAppear:(BOOL)appear;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 - (void)viewWillLayoutSubviews;
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4;
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator;
 @end
 
 @implementation PUAvalancheReviewController
@@ -103,9 +103,9 @@
 - (void)_updatePreheatedAssets
 {
   v91 = *MEMORY[0x1E69E9840];
-  v3 = [(PUAvalancheReviewController *)self _collectionView];
-  v4 = [v3 collectionViewLayout];
-  v5 = v4;
+  _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+  collectionViewLayout = [_collectionView collectionViewLayout];
+  v5 = collectionViewLayout;
   if (self->__transitionLayout)
   {
     v6 = 1;
@@ -113,12 +113,12 @@
 
   else
   {
-    v6 = v4 == 0;
+    v6 = collectionViewLayout == 0;
   }
 
   if (!v6)
   {
-    [v3 bounds];
+    [_collectionView bounds];
     x = v92.origin.x;
     y = v92.origin.y;
     width = v92.size.width;
@@ -157,8 +157,8 @@
         if ([(PUAvalancheReviewController *)self px_isVisible])
         {
           [(PUAvalancheReviewController *)self _setPreviousPreheatRect:v14, v15, v17, v18];
-          v19 = [v3 collectionViewLayout];
-          v20 = [v19 layoutAttributesForElementsInRect:{v14, v15, v17, v18}];
+          collectionViewLayout2 = [_collectionView collectionViewLayout];
+          v20 = [collectionViewLayout2 layoutAttributesForElementsInRect:{v14, v15, v17, v18}];
 
           v21 = [MEMORY[0x1E695DFA8] setWithCapacity:{objc_msgSend(v20, "count")}];
           v71 = [MEMORY[0x1E695DF90] dictionaryWithCapacity:{objc_msgSend(v20, "count")}];
@@ -186,10 +186,10 @@
                 v28 = *(*(&v81 + 1) + 8 * i);
                 if (![v28 representedElementCategory])
                 {
-                  v29 = [v28 indexPath];
-                  v30 = [(PUAvalancheReviewController *)self _phAssetAtIndexPath:v29];
+                  indexPath = [v28 indexPath];
+                  v30 = [(PUAvalancheReviewController *)self _phAssetAtIndexPath:indexPath];
                   [v23 addObject:v30];
-                  [v71 setObject:v29 forKey:v30];
+                  [v71 setObject:indexPath forKey:v30];
                 }
               }
 
@@ -199,21 +199,21 @@
             while (v25);
           }
 
-          v31 = [(PUAvalancheReviewController *)self _preheatedAssets];
+          _preheatedAssets = [(PUAvalancheReviewController *)self _preheatedAssets];
           [(PUAvalancheReviewController *)self _setPreheatedAssets:v23];
           v32 = [v23 mutableCopy];
-          [v32 minusSet:v31];
-          v67 = [v31 mutableCopy];
+          [v32 minusSet:_preheatedAssets];
+          v67 = [_preheatedAssets mutableCopy];
           [v67 minusSet:v23];
           if ([v32 count] || objc_msgSend(v67, "count"))
           {
-            v63 = v31;
+            v63 = _preheatedAssets;
             v65 = v5;
-            v66 = v3;
+            v66 = _collectionView;
             if (!self->__assetsToSizeDictionary)
             {
-              v33 = [MEMORY[0x1E695DF90] dictionary];
-              [(PUAvalancheReviewController *)self _setAssetsToSizeDictionary:v33];
+              dictionary = [MEMORY[0x1E695DF90] dictionary];
+              [(PUAvalancheReviewController *)self _setAssetsToSizeDictionary:dictionary];
             }
 
             v64 = v23;
@@ -221,7 +221,7 @@
             [v34 setNetworkAccessAllowed:1];
             v72 = v34;
             [v34 setLoadingMode:0x40000];
-            v35 = [(PUAvalancheReviewController *)self _cachingImageManager];
+            _cachingImageManager = [(PUAvalancheReviewController *)self _cachingImageManager];
             v77 = 0u;
             v78 = 0u;
             v79 = 0u;
@@ -249,7 +249,7 @@
                   v45 = v44;
                   v88 = v40;
                   v46 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v88 count:1];
-                  [v35 startCachingImagesForAssets:v46 targetSize:0 contentMode:v72 options:{v43, v45}];
+                  [_cachingImageManager startCachingImagesForAssets:v46 targetSize:0 contentMode:v72 options:{v43, v45}];
 
                   assetsToSizeDictionary = self->__assetsToSizeDictionary;
                   v48 = [MEMORY[0x1E696B098] valueWithCGSize:{v43, v45}];
@@ -291,12 +291,12 @@
 
                   v86 = v54;
                   v60 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v86 count:1];
-                  [v35 stopCachingImagesForAssets:v60 targetSize:0 contentMode:v72 options:{v57, v59}];
+                  [_cachingImageManager stopCachingImagesForAssets:v60 targetSize:0 contentMode:v72 options:{v57, v59}];
 
                   [(NSMutableDictionary *)self->__assetsToSizeDictionary removeObjectForKey:v54];
                   v85 = v54;
                   v61 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v85 count:1];
-                  [v35 startCachingImagesForAssets:v61 targetSize:0 contentMode:v49 options:{v57, v59}];
+                  [_cachingImageManager startCachingImagesForAssets:v61 targetSize:0 contentMode:v49 options:{v57, v59}];
                 }
 
                 v51 = [v69 countByEnumeratingWithState:&v73 objects:v87 count:16];
@@ -306,8 +306,8 @@
             }
 
             v5 = v65;
-            v3 = v66;
-            v31 = v63;
+            _collectionView = v66;
+            _preheatedAssets = v63;
             v23 = v64;
             v32 = v62;
           }
@@ -327,56 +327,56 @@
   [(PUAvalancheReviewController *)self _setAssetsToSizeDictionary:0];
 }
 
-- (void)oneUpAssetTransition:(id)a3 requestTransitionContextWithCompletion:(id)a4
+- (void)oneUpAssetTransition:(id)transition requestTransitionContextWithCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = [(PUAvalancheReviewController *)self view];
-  [v6 layoutIfNeeded];
+  completionCopy = completion;
+  view = [(PUAvalancheReviewController *)self view];
+  [view layoutIfNeeded];
 
   v7 = [(PUAvalancheReviewController *)self _indexPathOfCenterVisibleItemInCollectionView:self->__collectionView];
   v8 = [(UICollectionView *)self->__collectionView cellForItemAtIndexPath:v7];
-  v9 = [v8 photoView];
-  v10 = [v9 contentHelper];
-  v11 = [v10 photoImage];
+  photoView = [v8 photoView];
+  contentHelper = [photoView contentHelper];
+  photoImage = [contentHelper photoImage];
 
-  v12 = [(PUAvalancheReviewController *)self view];
-  [(PUAvalancheReviewController *)self _frameAtIndexPath:v7 inView:v12];
+  view2 = [(PUAvalancheReviewController *)self view];
+  [(PUAvalancheReviewController *)self _frameAtIndexPath:v7 inView:view2];
   v14 = v13;
   v16 = v15;
   v18 = v17;
   v20 = v19;
 
   v21 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithFrame:{v14, v16, v18, v20}];
-  [v21 setImage:v11];
-  v22 = [MEMORY[0x1E69C3640] sharedInstance];
-  [v22 insetContentCornerRadius];
+  [v21 setImage:photoImage];
+  mEMORY[0x1E69C3640] = [MEMORY[0x1E69C3640] sharedInstance];
+  [mEMORY[0x1E69C3640] insetContentCornerRadius];
   v24 = v23;
-  v25 = [v21 layer];
-  [v25 setCornerRadius:v24];
+  layer = [v21 layer];
+  [layer setCornerRadius:v24];
 
   v26 = *MEMORY[0x1E69796E8];
-  v27 = [v21 layer];
-  [v27 setCornerCurve:v26];
+  layer2 = [v21 layer];
+  [layer2 setCornerCurve:v26];
 
   [v21 setClipsToBounds:1];
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __91__PUAvalancheReviewController_oneUpAssetTransition_requestTransitionContextWithCompletion___block_invoke;
   v34[3] = &unk_1E7B7F3E0;
-  v28 = v11;
+  v28 = photoImage;
   v35 = v28;
-  v36 = self;
+  selfCopy = self;
   v29 = v7;
   v37 = v29;
   v30 = [PUAssetTransitionInfo assetTransitionInfoWithConfigurationBlock:v34];
-  v31 = [(PUAvalancheReviewController *)self view];
-  v32 = [PUOneUpAssetTransitionContext oneUpAssetTransitionContextWithContainerView:0 fromView:v31 snapshotView:v21 transitionInfo:v30];
+  view3 = [(PUAvalancheReviewController *)self view];
+  v32 = [PUOneUpAssetTransitionContext oneUpAssetTransitionContextWithContainerView:0 fromView:view3 snapshotView:v21 transitionInfo:v30];
 
   v33 = [v32 oneUpTransitionContextWithContextShouldHideBackground:1];
 
-  if (v5)
+  if (completionCopy)
   {
-    v5[2](v5, v33);
+    completionCopy[2](completionCopy, v33);
   }
 }
 
@@ -389,13 +389,13 @@ void __91__PUAvalancheReviewController_oneUpAssetTransition_requestTransitionCon
   [v4 setAsset:v5];
 }
 
-- (CGRect)oneUpAssetTransitionAssetFinalFrame:(id)a3
+- (CGRect)oneUpAssetTransitionAssetFinalFrame:(id)frame
 {
-  v4 = [(PUAvalancheReviewController *)self _collectionView];
-  v5 = [(PUAvalancheReviewController *)self _indexPathOfCenterVisibleItemInCollectionView:v4];
+  _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+  v5 = [(PUAvalancheReviewController *)self _indexPathOfCenterVisibleItemInCollectionView:_collectionView];
 
-  v6 = [(PUAvalancheReviewController *)self view];
-  [(PUAvalancheReviewController *)self _frameAtIndexPath:v5 inView:v6];
+  view = [(PUAvalancheReviewController *)self view];
+  [(PUAvalancheReviewController *)self _frameAtIndexPath:v5 inView:view];
   v8 = v7;
   v10 = v9;
   v12 = v11;
@@ -412,20 +412,20 @@ void __91__PUAvalancheReviewController_oneUpAssetTransition_requestTransitionCon
   return result;
 }
 
-- (CGRect)_frameAtIndexPath:(id)a3 inView:(id)a4
+- (CGRect)_frameAtIndexPath:(id)path inView:(id)view
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUAvalancheReviewController *)self _collectionViewLayout];
-  v9 = [v8 layoutAttributesForItemAtIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  _collectionViewLayout = [(PUAvalancheReviewController *)self _collectionViewLayout];
+  v9 = [_collectionViewLayout layoutAttributesForItemAtIndexPath:pathCopy];
 
   [v9 frame];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  v18 = [(PUAvalancheReviewController *)self _collectionView];
-  [v6 convertRect:v18 fromView:{v11, v13, v15, v17}];
+  _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+  [viewCopy convertRect:_collectionView fromView:{v11, v13, v15, v17}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -442,7 +442,7 @@ void __91__PUAvalancheReviewController_oneUpAssetTransition_requestTransitionCon
   return result;
 }
 
-- (CGRect)embeddedActivityViewFrameWhenShowing:(BOOL)a3
+- (CGRect)embeddedActivityViewFrameWhenShowing:(BOOL)showing
 {
   v3 = *MEMORY[0x1E695F058];
   v4 = *(MEMORY[0x1E695F058] + 8);
@@ -455,70 +455,70 @@ void __91__PUAvalancheReviewController_oneUpAssetTransition_requestTransitionCon
   return result;
 }
 
-- (void)setPhotosSharingTransitionLayout:(id)a3 animated:(BOOL)a4
+- (void)setPhotosSharingTransitionLayout:(id)layout animated:(BOOL)animated
 {
-  v4 = a4;
-  v12 = a3;
-  v7 = [(PUAvalancheReviewController *)self _transitionLayout];
+  animatedCopy = animated;
+  layoutCopy = layout;
+  _transitionLayout = [(PUAvalancheReviewController *)self _transitionLayout];
 
-  v8 = v12;
-  if (v7 != v12)
+  v8 = layoutCopy;
+  if (_transitionLayout != layoutCopy)
   {
-    objc_storeStrong(&self->__transitionLayout, a3);
-    if (v12)
+    objc_storeStrong(&self->__transitionLayout, layout);
+    if (layoutCopy)
     {
-      v9 = v12;
+      _collectionViewLayout = layoutCopy;
     }
 
     else
     {
-      v9 = [(PUAvalancheReviewController *)self _collectionViewLayout];
+      _collectionViewLayout = [(PUAvalancheReviewController *)self _collectionViewLayout];
     }
 
-    v10 = v9;
-    v11 = [(PUAvalancheReviewController *)self _collectionView];
-    [v11 setCollectionViewLayout:v10 animated:v4];
+    v10 = _collectionViewLayout;
+    _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+    [_collectionView setCollectionViewLayout:v10 animated:animatedCopy];
 
-    v8 = v12;
+    v8 = layoutCopy;
   }
 }
 
-- (void)setOneUpPhotosSharingTransitionInfo:(id)a3
+- (void)setOneUpPhotosSharingTransitionInfo:(id)info
 {
-  v5 = a3;
-  if (self->__assetTransitionInfo != v5)
+  infoCopy = info;
+  if (self->__assetTransitionInfo != infoCopy)
   {
-    v13 = v5;
-    objc_storeStrong(&self->__assetTransitionInfo, a3);
-    v6 = [(PUAvalancheReviewController *)self _collectionView];
-    v7 = [(PUAvalancheReviewController *)self _indexPathOfCenterVisibleItemInCollectionView:v6];
+    v13 = infoCopy;
+    objc_storeStrong(&self->__assetTransitionInfo, info);
+    _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+    v7 = [(PUAvalancheReviewController *)self _indexPathOfCenterVisibleItemInCollectionView:_collectionView];
 
-    v8 = [(PUAvalancheReviewController *)self _collectionView];
-    v9 = [v8 cellForItemAtIndexPath:v7];
+    _collectionView2 = [(PUAvalancheReviewController *)self _collectionView];
+    v9 = [_collectionView2 cellForItemAtIndexPath:v7];
 
-    v10 = [v9 photoView];
-    v11 = [v10 contentHelper];
-    v12 = [(PUAssetTransitionInfo *)v13 image];
-    [v11 setPlaceHolderImage:v12];
+    photoView = [v9 photoView];
+    contentHelper = [photoView contentHelper];
+    image = [(PUAssetTransitionInfo *)v13 image];
+    [contentHelper setPlaceHolderImage:image];
 
-    v5 = v13;
+    infoCopy = v13;
   }
 }
 
-- (void)setPhotosSharingTransitionContext:(id)a3
+- (void)setPhotosSharingTransitionContext:(id)context
 {
   v19 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (self->__photosSharingTransitionContext != v5)
+  contextCopy = context;
+  if (self->__photosSharingTransitionContext != contextCopy)
   {
-    objc_storeStrong(&self->__photosSharingTransitionContext, a3);
-    v6 = [(PUAvalancheReviewController *)self _collectionView];
+    objc_storeStrong(&self->__photosSharingTransitionContext, context);
+    _collectionView = [(PUAvalancheReviewController *)self _collectionView];
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
     v17 = 0u;
-    v7 = [v6 visibleCells];
-    v8 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+    visibleCells = [_collectionView visibleCells];
+    v8 = [visibleCells countByEnumeratingWithState:&v14 objects:v18 count:16];
     if (v8)
     {
       v9 = v8;
@@ -529,15 +529,15 @@ void __91__PUAvalancheReviewController_oneUpAssetTransition_requestTransitionCon
         {
           if (*v15 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(visibleCells);
           }
 
           v12 = *(*(&v14 + 1) + 8 * i);
-          v13 = [v6 indexPathForCell:v12];
+          v13 = [_collectionView indexPathForCell:v12];
           [(PUAvalancheReviewController *)self _updateCell:v12 forItemAtIndexPath:v13];
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v14 objects:v18 count:16];
+        v9 = [visibleCells countByEnumeratingWithState:&v14 objects:v18 count:16];
       }
 
       while (v9);
@@ -545,44 +545,44 @@ void __91__PUAvalancheReviewController_oneUpAssetTransition_requestTransitionCon
   }
 }
 
-- (BOOL)gestureRecognizer:(id)a3 shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)a4
+- (BOOL)gestureRecognizer:(id)recognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(id)gestureRecognizer
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(PUAvalancheReviewController *)self _collectionView];
+  gestureRecognizerCopy = gestureRecognizer;
+  recognizerCopy = recognizer;
+  _collectionView = [(PUAvalancheReviewController *)self _collectionView];
   tapGestureRecognizer = self->__tapGestureRecognizer;
 
-  if (tapGestureRecognizer == v7)
+  if (tapGestureRecognizer == recognizerCopy)
   {
-    v11 = [v8 panGestureRecognizer];
-    if (v11 == v6)
+    panGestureRecognizer = [_collectionView panGestureRecognizer];
+    if (panGestureRecognizer == gestureRecognizerCopy)
     {
-      v10 = [v8 isDecelerating];
+      isDecelerating = [_collectionView isDecelerating];
     }
 
     else
     {
-      v10 = 0;
+      isDecelerating = 0;
     }
   }
 
   else
   {
-    v10 = 0;
+    isDecelerating = 0;
   }
 
-  return v10;
+  return isDecelerating;
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [(PUAvalancheReviewController *)self _photoZoomPinchGestureRecognizer];
+  beginCopy = begin;
+  _photoZoomPinchGestureRecognizer = [(PUAvalancheReviewController *)self _photoZoomPinchGestureRecognizer];
 
-  if (v5 == v4)
+  if (_photoZoomPinchGestureRecognizer == beginCopy)
   {
-    v7 = [(PUAvalancheReviewController *)self _collectionView];
-    if ([v7 isDragging] & 1) != 0 || (objc_msgSend(v7, "isDecelerating"))
+    _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+    if ([_collectionView isDragging] & 1) != 0 || (objc_msgSend(_collectionView, "isDecelerating"))
     {
       v6 = 0;
     }
@@ -598,7 +598,7 @@ void __91__PUAvalancheReviewController_oneUpAssetTransition_requestTransitionCon
       v9 = *(&v16 + 1) + *&v14;
       v10 = *&v17 - (*(&v14 + 1) + *(&v15 + 1));
       v11 = *(&v17 + 1) - (*&v14 + *&v15);
-      [v4 locationInView:v7];
+      [beginCopy locationInView:_collectionView];
       v18.y = v12;
       v19.origin.x = v8;
       v19.origin.y = v9;
@@ -617,78 +617,78 @@ void __91__PUAvalancheReviewController_oneUpAssetTransition_requestTransitionCon
   return v6;
 }
 
-- (BOOL)reviewScrubber:(id)a3 shouldProvideFeedbackForCellAtIndexPath:(id)a4
+- (BOOL)reviewScrubber:(id)scrubber shouldProvideFeedbackForCellAtIndexPath:(id)path
 {
-  v5 = a4;
-  v6 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v7 = [v6 assets];
-  v8 = [v5 item];
+  pathCopy = path;
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assets = [_avalancheBeingReviewed assets];
+  item = [pathCopy item];
 
-  v9 = [v7 objectAtIndex:v8];
+  v9 = [assets objectAtIndex:item];
 
-  LOBYTE(v7) = [v6 isAutoPick:v9];
-  return v7;
+  LOBYTE(assets) = [_avalancheBeingReviewed isAutoPick:v9];
+  return assets;
 }
 
-- (unint64_t)reviewScrubber:(id)a3 numberOfItemsInSection:(unint64_t)a4
+- (unint64_t)reviewScrubber:(id)scrubber numberOfItemsInSection:(unint64_t)section
 {
-  v4 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed:a3];
-  v5 = [v4 assetsCount];
+  v4 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed:scrubber];
+  assetsCount = [v4 assetsCount];
 
-  return v5;
+  return assetsCount;
 }
 
-- (void)reviewScrubberDidSelectItemAtIndexPath:(id)a3
+- (void)reviewScrubberDidSelectItemAtIndexPath:(id)path
 {
   collectionView = self->__collectionView;
-  v5 = a3;
+  pathCopy = path;
   [(UICollectionView *)collectionView stopScrollingAndZooming];
-  [(PUAvalancheReviewController *)self _pageToIndexPath:v5 animated:1];
+  [(PUAvalancheReviewController *)self _pageToIndexPath:pathCopy animated:1];
 }
 
-- (void)reviewScrubberDidScrub:(id)a3
+- (void)reviewScrubberDidScrub:(id)scrub
 {
   collectionView = self->__collectionView;
-  v5 = a3;
+  scrubCopy = scrub;
   [(UICollectionView *)collectionView stopScrollingAndZooming];
   self->__updatingContentOffsetFromScrubbing = 1;
-  v6 = [v5 selectedIndexPath];
+  selectedIndexPath = [scrubCopy selectedIndexPath];
 
-  [(PUAvalancheReviewController *)self _pageToIndexPath:v6 animated:0];
+  [(PUAvalancheReviewController *)self _pageToIndexPath:selectedIndexPath animated:0];
   self->__updatingContentOffsetFromScrubbing = 0;
 }
 
-- (void)reviewScrubber:(id)a3 willDisplayCell:(id)a4 atIndexPath:(id)a5
+- (void)reviewScrubber:(id)scrubber willDisplayCell:(id)cell atIndexPath:(id)path
 {
   v35[2] = *MEMORY[0x1E69E9840];
-  v8 = a4;
-  v9 = a5;
-  v10 = a3;
-  v11 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v12 = [v11 assets];
-  v13 = [v9 item];
+  cellCopy = cell;
+  pathCopy = path;
+  scrubberCopy = scrubber;
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assets = [_avalancheBeingReviewed assets];
+  item = [pathCopy item];
 
-  v14 = [v12 objectAtIndex:v13];
+  v14 = [assets objectAtIndex:item];
 
-  [v8 setSuggested:{objc_msgSend(v11, "isAutoPick:", v14)}];
-  [v8 setFavorite:{objc_msgSend(v11, "isUserFavorite:", v14)}];
-  v15 = [v10 isCompactHeight];
+  [cellCopy setSuggested:{objc_msgSend(_avalancheBeingReviewed, "isAutoPick:", v14)}];
+  [cellCopy setFavorite:{objc_msgSend(_avalancheBeingReviewed, "isUserFavorite:", v14)}];
+  isCompactHeight = [scrubberCopy isCompactHeight];
 
-  [v8 setWantsSmallSuggestionIndicators:v15];
-  v16 = [v8 tag] + 1;
-  [v8 setTag:v16];
+  [cellCopy setWantsSmallSuggestionIndicators:isCompactHeight];
+  v16 = [cellCopy tag] + 1;
+  [cellCopy setTag:v16];
   v17 = objc_alloc_init(MEMORY[0x1E6978868]);
   [v17 setAllowPlaceholder:1];
   [v17 setDeliveryMode:1];
   [v17 setLoadingMode:0x40000];
   v18 = [MEMORY[0x1E69BF260] formatWithID:{-[PUAvalancheReviewController reviewScrubberImageFormat](self, "reviewScrubberImageFormat")}];
-  v31 = [v18 contentMode];
+  contentMode = [v18 contentMode];
   [v18 sizeWithFallBackSize:{*MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8)}];
   v20 = v19;
   v22 = v21;
   v23 = objc_alloc(MEMORY[0x1E69786C0]);
-  v24 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v25 = [v23 initWithPLManagedObject:v14 photoLibrary:v24];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  v25 = [v23 initWithPLManagedObject:v14 photoLibrary:px_deprecated_appPhotoLibrary];
 
   v26 = *MEMORY[0x1E6978C68];
   v35[0] = *MEMORY[0x1E6978C18];
@@ -697,15 +697,15 @@ void __91__PUAvalancheReviewController_oneUpAssetTransition_requestTransitionCon
   v28 = [v25 newObjectWithPropertySets:v27];
 
   [v17 setSynchronous:1];
-  v29 = [(PUAvalancheReviewController *)self _cachingImageManager];
+  _cachingImageManager = [(PUAvalancheReviewController *)self _cachingImageManager];
   v32[0] = MEMORY[0x1E69E9820];
   v32[1] = 3221225472;
   v32[2] = __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPath___block_invoke;
   v32[3] = &unk_1E7B758C0;
-  v33 = v8;
+  v33 = cellCopy;
   v34 = v16;
-  v30 = v8;
-  [v29 requestImageForAsset:v28 targetSize:v31 contentMode:v17 options:v32 resultHandler:{v20, v22}];
+  v30 = cellCopy;
+  [_cachingImageManager requestImageForAsset:v28 targetSize:contentMode contentMode:v17 options:v32 resultHandler:{v20, v22}];
 }
 
 void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPath___block_invoke(uint64_t a1, void *a2)
@@ -717,9 +717,9 @@ void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPat
   }
 }
 
-- (CGRect)layout:(id)a3 collectionView:(id)a4 selectionBadgeFrameForItemFrame:(CGRect)a5 atIndexPath:(id)a6
+- (CGRect)layout:(id)layout collectionView:(id)view selectionBadgeFrameForItemFrame:(CGRect)frame atIndexPath:(id)path
 {
-  [(PUAvalancheReviewController *)self selectionBadgeFrameForItemFrame:a6 atIndexPath:a4, a5.origin.x, a5.origin.y, a5.size.width, a5.size.height];
+  [(PUAvalancheReviewController *)self selectionBadgeFrameForItemFrame:path atIndexPath:view, frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   result.size.height = v9;
   result.size.width = v8;
   result.origin.y = v7;
@@ -727,64 +727,64 @@ void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPat
   return result;
 }
 
-- (CGSize)layout:(id)a3 collectionView:(id)a4 sizeForItemAtIndexPath:(id)a5
+- (CGSize)layout:(id)layout collectionView:(id)view sizeForItemAtIndexPath:(id)path
 {
-  [(PUAvalancheReviewController *)self _sizeForItemAtIndexPath:a5, a4];
+  [(PUAvalancheReviewController *)self _sizeForItemAtIndexPath:path, view];
   result.height = v6;
   result.width = v5;
   return result;
 }
 
-- (id)collectionView:(id)a3 viewForSupplementaryElementOfKind:(id)a4 atIndexPath:(id)a5
+- (id)collectionView:(id)view viewForSupplementaryElementOfKind:(id)kind atIndexPath:(id)path
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  if (![v10 isEqualToString:@"PUAvalancheReviewBadgeKind"])
+  viewCopy = view;
+  kindCopy = kind;
+  pathCopy = path;
+  if (![kindCopy isEqualToString:@"PUAvalancheReviewBadgeKind"])
   {
-    v14 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v14 handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:1219 description:@"Code which should be unreachable has been reached"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:1219 description:@"Code which should be unreachable has been reached"];
 
     abort();
   }
 
-  v12 = [(PUAvalancheReviewController *)self _selectionViewAtIndexPath:v11 forCollectionView:v9];
+  v12 = [(PUAvalancheReviewController *)self _selectionViewAtIndexPath:pathCopy forCollectionView:viewCopy];
 
   return v12;
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithReuseIdentifier:@"PUAvalancheReviewCellIdentifier" forIndexPath:v6];
-  [(PUAvalancheReviewController *)self _updateCell:v7 forItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithReuseIdentifier:@"PUAvalancheReviewCellIdentifier" forIndexPath:pathCopy];
+  [(PUAvalancheReviewController *)self _updateCell:v7 forItemAtIndexPath:pathCopy];
 
   return v7;
 }
 
-- (int64_t)collectionView:(id)a3 numberOfItemsInSection:(int64_t)a4
+- (int64_t)collectionView:(id)view numberOfItemsInSection:(int64_t)section
 {
-  v4 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed:a3];
-  v5 = [v4 assetsCount];
+  v4 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed:view];
+  assetsCount = [v4 assetsCount];
 
-  return v5;
+  return assetsCount;
 }
 
-- (void)scrollViewWillEndDragging:(id)a3 withVelocity:(CGPoint)a4 targetContentOffset:(CGPoint *)a5
+- (void)scrollViewWillEndDragging:(id)dragging withVelocity:(CGPoint)velocity targetContentOffset:(CGPoint *)offset
 {
-  x = a4.x;
+  x = velocity.x;
   v35 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  [v8 bounds];
+  draggingCopy = dragging;
+  [draggingCopy bounds];
   width = v36.size.width;
   height = v36.size.height;
-  v11 = a5->x;
-  y = a5->y;
-  v36.origin.x = a5->x;
+  v11 = offset->x;
+  y = offset->y;
+  v36.origin.x = offset->x;
   v36.origin.y = y;
   MidX = CGRectGetMidX(v36);
-  v14 = [v8 collectionViewLayout];
-  v15 = [v14 layoutAttributesForElementsInRect:{v11, y, width, height}];
+  collectionViewLayout = [draggingCopy collectionViewLayout];
+  v15 = [collectionViewLayout layoutAttributesForElementsInRect:{v11, y, width, height}];
 
   v32 = 0u;
   v33 = 0u;
@@ -809,10 +809,10 @@ void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPat
         }
 
         v23 = *(*(&v30 + 1) + 8 * v22);
-        v24 = [v23 indexPath];
+        indexPath = [v23 indexPath];
         if (![v23 representedElementCategory])
         {
-          if (([(PUAvalancheReviewController *)self _horizontalOffsetInCollectionView:v8 forCenteringOnItemAtIndexPath:v24], v26 = v25, x == 0.0) || x > 0.0 && v25 > a5->x || x < 0.0 && v25 < a5->x)
+          if (([(PUAvalancheReviewController *)self _horizontalOffsetInCollectionView:draggingCopy forCenteringOnItemAtIndexPath:indexPath], v26 = v25, x == 0.0) || x > 0.0 && v25 > offset->x || x < 0.0 && v25 < offset->x)
           {
             [v23 center];
             v28 = vabdd_f64(v27, MidX);
@@ -836,8 +836,8 @@ void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPat
 
     if (v21 != 1.79769313e308)
     {
-      a5->x = v21;
-      a5->y = 0.0;
+      offset->x = v21;
+      offset->y = 0.0;
     }
   }
 
@@ -846,26 +846,26 @@ void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPat
   }
 }
 
-- (void)scrollViewDidEndDecelerating:(id)a3
+- (void)scrollViewDidEndDecelerating:(id)decelerating
 {
-  v3 = [(PUAvalancheReviewController *)self reviewScrubber];
-  [v3 finishInteractiveUpdate];
+  reviewScrubber = [(PUAvalancheReviewController *)self reviewScrubber];
+  [reviewScrubber finishInteractiveUpdate];
 }
 
-- (void)scrollViewDidEndDragging:(id)a3 willDecelerate:(BOOL)a4
+- (void)scrollViewDidEndDragging:(id)dragging willDecelerate:(BOOL)decelerate
 {
-  if (!a4)
+  if (!decelerate)
   {
-    v5 = [(PUAvalancheReviewController *)self reviewScrubber];
-    [v5 finishInteractiveUpdate];
+    reviewScrubber = [(PUAvalancheReviewController *)self reviewScrubber];
+    [reviewScrubber finishInteractiveUpdate];
   }
 }
 
-- (void)scrollViewDidScroll:(id)a3
+- (void)scrollViewDidScroll:(id)scroll
 {
   [(PUAvalancheReviewController *)self _updatePreheatedAssets];
-  v4 = [(PUAvalancheReviewController *)self _photosSharingTransitionContext];
-  if (v4)
+  _photosSharingTransitionContext = [(PUAvalancheReviewController *)self _photosSharingTransitionContext];
+  if (_photosSharingTransitionContext)
   {
   }
 
@@ -876,31 +876,31 @@ void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPat
   }
 }
 
-- (void)scrollViewWillBeginDragging:(id)a3
+- (void)scrollViewWillBeginDragging:(id)dragging
 {
-  v3 = [(PUAvalancheReviewController *)self reviewScrubber];
-  [v3 beginInteractiveUpdate];
+  reviewScrubber = [(PUAvalancheReviewController *)self reviewScrubber];
+  [reviewScrubber beginInteractiveUpdate];
 }
 
 - (void)_startPreheatingAllAssets
 {
   v27[1] = *MEMORY[0x1E69E9840];
-  v3 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v4 = [v3 assetsCount];
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assetsCount = [_avalancheBeingReviewed assetsCount];
 
   v5 = objc_opt_new();
   [v5 setNetworkAccessAllowed:1];
-  v6 = [(PUAvalancheReviewController *)self _cachingImageManager];
-  v7 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v8 = [v7 assets];
-  v9 = [(PUAvalancheReviewController *)self _initialAsset];
-  v10 = [v8 indexOfObject:v9];
+  _cachingImageManager = [(PUAvalancheReviewController *)self _cachingImageManager];
+  _avalancheBeingReviewed2 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assets = [_avalancheBeingReviewed2 assets];
+  _initialAsset = [(PUAvalancheReviewController *)self _initialAsset];
+  v10 = [assets indexOfObject:_initialAsset];
 
-  if (v4)
+  if (assetsCount)
   {
-    for (i = 0; i < v4; ++i)
+    for (i = 0; i < assetsCount; ++i)
     {
-      if ((i + v10) >= v4)
+      if ((i + v10) >= assetsCount)
       {
         v17 = 0;
         v12 = 0;
@@ -915,13 +915,13 @@ void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPat
         v17 = [(PUAvalancheReviewController *)self _phAssetAtIndexPath:v12];
         v27[0] = v17;
         v18 = [MEMORY[0x1E695DEC8] arrayWithObjects:v27 count:1];
-        [v6 startCachingImagesForAssets:v18 targetSize:0 contentMode:v5 options:{v14, v16}];
+        [_cachingImageManager startCachingImagesForAssets:v18 targetSize:0 contentMode:v5 options:{v14, v16}];
       }
 
       if (((v10 - i) & 0x8000000000000000) != 0)
       {
 
-        if ((i + v10) >= v4)
+        if ((i + v10) >= assetsCount)
         {
           break;
         }
@@ -938,7 +938,7 @@ void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPat
 
         v26 = v24;
         v25 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v26 count:1];
-        [v6 startCachingImagesForAssets:v25 targetSize:0 contentMode:v5 options:{v21, v23}];
+        [_cachingImageManager startCachingImagesForAssets:v25 targetSize:0 contentMode:v5 options:{v21, v23}];
       }
     }
   }
@@ -947,43 +947,43 @@ void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPat
 - (void)_cancelReviewMode
 {
   [(PUAvalancheReviewController *)self _updateBarItemsAnimated:1];
-  v5 = [(PUAvalancheReviewController *)self _initialAsset];
-  v3 = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
-  v4 = [v5 pl_PHAssetFromPhotoLibrary:v3];
+  _initialAsset = [(PUAvalancheReviewController *)self _initialAsset];
+  px_deprecated_appPhotoLibrary = [MEMORY[0x1E69789A8] px_deprecated_appPhotoLibrary];
+  v4 = [_initialAsset pl_PHAssetFromPhotoLibrary:px_deprecated_appPhotoLibrary];
   [(PUAvalancheReviewController *)self _dismissReviewControllerWithAsset:v4];
 }
 
-- (void)_handleDoneButton:(id)a3
+- (void)_handleDoneButton:(id)button
 {
-  v4 = a3;
-  v5 = [(PUAvalancheReviewController *)self _initialFavorites];
-  v6 = v5;
-  if (v5)
+  buttonCopy = button;
+  _initialFavorites = [(PUAvalancheReviewController *)self _initialFavorites];
+  v6 = _initialFavorites;
+  if (_initialFavorites)
   {
-    v7 = v5;
+    orderedSet = _initialFavorites;
   }
 
   else
   {
-    v7 = [MEMORY[0x1E695DFB8] orderedSet];
+    orderedSet = [MEMORY[0x1E695DFB8] orderedSet];
   }
 
-  v8 = v7;
+  v8 = orderedSet;
 
-  v9 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v10 = [v9 userFavorites];
-  v11 = v10;
-  if (v10)
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  userFavorites = [_avalancheBeingReviewed userFavorites];
+  v11 = userFavorites;
+  if (userFavorites)
   {
-    v12 = v10;
+    orderedSet2 = userFavorites;
   }
 
   else
   {
-    v12 = [MEMORY[0x1E695DFB8] orderedSet];
+    orderedSet2 = [MEMORY[0x1E695DFB8] orderedSet];
   }
 
-  v13 = v12;
+  v13 = orderedSet2;
 
   if ([v8 count])
   {
@@ -995,14 +995,14 @@ void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPat
     v14 = [v13 count] != 0;
   }
 
-  v15 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v16 = [v15 assetsCount];
+  _avalancheBeingReviewed2 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assetsCount = [_avalancheBeingReviewed2 assetsCount];
 
   v17 = [v13 count];
-  if (v14 && (v18 = v17, v17 >= 1) && v16 - v17 >= 1)
+  if (v14 && (v18 = v17, v17 >= 1) && assetsCount - v17 >= 1)
   {
-    v31 = v4;
-    if (v16 - v17 == 1)
+    v31 = buttonCopy;
+    if (assetsCount - v17 == 1)
     {
       v20 = PULocalizedString(@"AVALANCHE_KEEP_OTHER_PHOTO_TITLE");
     }
@@ -1040,10 +1040,10 @@ void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPat
     [v25 addAction:v28];
 
     [(PUAvalancheReviewController *)self presentViewController:v25 animated:1 completion:0];
-    v29 = [v25 popoverPresentationController];
-    [v29 setPermittedArrowDirections:15];
-    v4 = v31;
-    [v29 setBarButtonItem:v31];
+    popoverPresentationController = [v25 popoverPresentationController];
+    [popoverPresentationController setPermittedArrowDirections:15];
+    buttonCopy = v31;
+    [popoverPresentationController setBarButtonItem:v31];
   }
 
   else
@@ -1052,9 +1052,9 @@ void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPat
   }
 }
 
-- (void)_finishReviewAndDeleteNonPicks:(BOOL)a3
+- (void)_finishReviewAndDeleteNonPicks:(BOOL)picks
 {
-  v3 = a3;
+  picksCopy = picks;
   self->__completingReviewMode = 1;
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -1062,7 +1062,7 @@ void __74__PUAvalancheReviewController_reviewScrubber_willDisplayCell_atIndexPat
   aBlock[3] = &unk_1E7B75898;
   aBlock[4] = self;
   v5 = _Block_copy(aBlock);
-  [(PUAvalancheReviewController *)self _promoteFavoriteAssetsAndDeleteNonPicks:v3 withReviewCompletionHandler:v5];
+  [(PUAvalancheReviewController *)self _promoteFavoriteAssetsAndDeleteNonPicks:picksCopy withReviewCompletionHandler:v5];
 }
 
 void __62__PUAvalancheReviewController__finishReviewAndDeleteNonPicks___block_invoke(uint64_t a1, void *a2)
@@ -1076,61 +1076,61 @@ void __62__PUAvalancheReviewController__finishReviewAndDeleteNonPicks___block_in
   [*(a1 + 32) _dismissReviewControllerWithAsset:v6];
 }
 
-- (void)_dismissReviewControllerWithAsset:(id)a3
+- (void)_dismissReviewControllerWithAsset:(id)asset
 {
-  v6 = a3;
+  assetCopy = asset;
   avalancheBeingReviewed = self->__avalancheBeingReviewed;
-  v5 = [(PUAvalancheReviewController *)self delegate];
-  if (v5 && (objc_opt_respondsToSelector() & 1) != 0)
+  delegate = [(PUAvalancheReviewController *)self delegate];
+  if (delegate && (objc_opt_respondsToSelector() & 1) != 0)
   {
-    [v5 avalancheReviewControllerDidComplete:self withAsset:v6 animated:avalancheBeingReviewed != 0];
+    [delegate avalancheReviewControllerDidComplete:self withAsset:assetCopy animated:avalancheBeingReviewed != 0];
   }
 }
 
-- (void)_reallyToggleCurrentPickStatusAtIndexPath:(id)a3
+- (void)_reallyToggleCurrentPickStatusAtIndexPath:(id)path
 {
-  v12 = a3;
-  v4 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v5 = [v4 assets];
-  v6 = [v5 objectAtIndex:{objc_msgSend(v12, "item")}];
+  pathCopy = path;
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assets = [_avalancheBeingReviewed assets];
+  v6 = [assets objectAtIndex:{objc_msgSend(pathCopy, "item")}];
 
-  v7 = [v4 isUserFavorite:v6];
-  v8 = [(PUAvalancheReviewController *)self reviewScrubber];
-  [v8 toggleIndexPath:v12 animated:0];
+  v7 = [_avalancheBeingReviewed isUserFavorite:v6];
+  reviewScrubber = [(PUAvalancheReviewController *)self reviewScrubber];
+  [reviewScrubber toggleIndexPath:pathCopy animated:0];
   if (v7)
   {
-    [v4 removeUserFavorite:v6];
+    [_avalancheBeingReviewed removeUserFavorite:v6];
   }
 
   else
   {
-    [v4 addUserFavorite:v6];
+    [_avalancheBeingReviewed addUserFavorite:v6];
   }
 
-  v9 = [(PUAvalancheReviewController *)self _collectionView];
-  v10 = [v9 cellForItemAtIndexPath:v12];
+  _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+  v10 = [_collectionView cellForItemAtIndexPath:pathCopy];
   [v10 setSelected:v7 ^ 1u];
-  v11 = [v9 _visibleSupplementaryViewOfKind:@"PUAvalancheReviewBadgeKind" atIndexPath:v12];
+  v11 = [_collectionView _visibleSupplementaryViewOfKind:@"PUAvalancheReviewBadgeKind" atIndexPath:pathCopy];
   [v11 setSelected:v7 ^ 1u animated:0];
-  [v8 reloadIndexPath:v12 animated:0];
+  [reviewScrubber reloadIndexPath:pathCopy animated:0];
   [(PUAvalancheReviewController *)self _updateNavigationItemTitle];
   [(PUAvalancheReviewController *)self _updateEnabledNavigationBarItems];
 }
 
-- (void)_toggleCurrentPickStatusAtIndexPath:(id)a3
+- (void)_toggleCurrentPickStatusAtIndexPath:(id)path
 {
   v48[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v6 = [v5 assets];
-  v7 = [v6 objectAtIndex:{objc_msgSend(v4, "item")}];
+  pathCopy = path;
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assets = [_avalancheBeingReviewed assets];
+  v7 = [assets objectAtIndex:{objc_msgSend(pathCopy, "item")}];
 
-  if (![v5 isUserFavorite:v7])
+  if (![_avalancheBeingReviewed isUserFavorite:v7])
   {
     goto LABEL_8;
   }
 
-  v8 = [v5 proposedStackAssetAfterRemovingFavorite:v7];
+  v8 = [_avalancheBeingReviewed proposedStackAssetAfterRemovingFavorite:v7];
   v9 = v8;
   if (v7 == v8)
   {
@@ -1138,18 +1138,18 @@ void __62__PUAvalancheReviewController__finishReviewAndDeleteNonPicks___block_in
     goto LABEL_8;
   }
 
-  v10 = [v7 albums];
-  v11 = [v10 count];
+  albums = [v7 albums];
+  v11 = [albums count];
 
   if (v11 < 2)
   {
 LABEL_8:
-    [(PUAvalancheReviewController *)self _reallyToggleCurrentPickStatusAtIndexPath:v4];
+    [(PUAvalancheReviewController *)self _reallyToggleCurrentPickStatusAtIndexPath:pathCopy];
     goto LABEL_9;
   }
 
-  v12 = [v7 albums];
-  [v12 count];
+  albums2 = [v7 albums];
+  [albums2 count];
 
   v48[0] = v7;
   v13 = [MEMORY[0x1E695DEC8] arrayWithObjects:v48 count:1];
@@ -1168,24 +1168,24 @@ LABEL_8:
   v46[2] = __67__PUAvalancheReviewController__toggleCurrentPickStatusAtIndexPath___block_invoke;
   v46[3] = &unk_1E7B7E120;
   v46[4] = self;
-  v20 = v4;
+  v20 = pathCopy;
   v47 = v20;
   v21 = [v19 actionWithTitle:v15 style:2 handler:v46];
   [v17 addAction:v21];
 
-  v22 = [v17 popoverPresentationController];
-  if (v22)
+  popoverPresentationController = [v17 popoverPresentationController];
+  if (popoverPresentationController)
   {
-    v23 = [(PUAvalancheReviewController *)self _collectionView];
-    v24 = [v23 cellForItemAtIndexPath:v20];
+    _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+    v24 = [_collectionView cellForItemAtIndexPath:v20];
 
     [v24 bounds];
     v26 = v25;
     v28 = v27;
     v30 = v29;
     v32 = v31;
-    v33 = [(PUAvalancheReviewController *)self navigationController];
-    [v33 view];
+    navigationController = [(PUAvalancheReviewController *)self navigationController];
+    [navigationController view];
     v44 = v15;
     v35 = v34 = v14;
     [v24 convertRect:v35 toView:{v26, v28, v30, v32}];
@@ -1197,8 +1197,8 @@ LABEL_8:
     v14 = v34;
     v15 = v44;
 
-    [v22 setSourceView:v24];
-    [v22 setSourceRect:{v37, v39, v41, v43}];
+    [popoverPresentationController setSourceView:v24];
+    [popoverPresentationController setSourceRect:{v37, v39, v41, v43}];
   }
 
   [(PUAvalancheReviewController *)self presentViewController:v17 animated:1 completion:0];
@@ -1206,29 +1206,29 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)_promoteFavoriteAssetsAndDeleteNonPicks:(BOOL)a3 withReviewCompletionHandler:(id)a4
+- (void)_promoteFavoriteAssetsAndDeleteNonPicks:(BOOL)picks withReviewCompletionHandler:(id)handler
 {
-  v6 = a4;
-  v7 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  handlerCopy = handler;
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
   v15[0] = 0;
   v15[1] = v15;
   v15[2] = 0x3032000000;
   v15[3] = __Block_byref_object_copy__12307;
   v15[4] = __Block_byref_object_dispose__12308;
-  v16 = [(PUAvalancheReviewController *)self _currentAsset];
-  if ([v7 canPerformEditOperation:1])
+  _currentAsset = [(PUAvalancheReviewController *)self _currentAsset];
+  if ([_avalancheBeingReviewed canPerformEditOperation:1])
   {
-    v8 = [v7 photoLibrary];
+    photoLibrary = [_avalancheBeingReviewed photoLibrary];
     v9[0] = MEMORY[0x1E69E9820];
     v9[1] = 3221225472;
     v9[2] = __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPicks_withReviewCompletionHandler___block_invoke;
     v9[3] = &unk_1E7B75870;
-    v14 = a3;
-    v10 = v7;
-    v11 = self;
+    picksCopy = picks;
+    v10 = _avalancheBeingReviewed;
+    selfCopy = self;
     v13 = v15;
-    v12 = v6;
-    [v8 performTransaction:v9];
+    v12 = handlerCopy;
+    [photoLibrary performTransaction:v9];
   }
 
   _Block_object_dispose(v15, 8);
@@ -1271,20 +1271,20 @@ uint64_t __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPic
   return result;
 }
 
-- (void)_reloadAvalancheDataWithAsset:(id)a3
+- (void)_reloadAvalancheDataWithAsset:(id)asset
 {
-  v4 = a3;
-  v14 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v5 = [v14 assets];
-  v6 = [v5 indexOfObject:v4];
+  assetCopy = asset;
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assets = [_avalancheBeingReviewed assets];
+  v6 = [assets indexOfObject:assetCopy];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v14 userFavorites];
-    v8 = [v7 firstObject];
+    userFavorites = [_avalancheBeingReviewed userFavorites];
+    firstObject = [userFavorites firstObject];
 
-    v9 = [v14 assets];
-    v6 = [v9 indexOfObject:v8];
+    assets2 = [_avalancheBeingReviewed assets];
+    v6 = [assets2 indexOfObject:firstObject];
   }
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
@@ -1298,12 +1298,12 @@ uint64_t __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPic
   }
 
   v11 = [MEMORY[0x1E696AC88] indexPathForItem:v10 inSection:0];
-  v12 = [(PUAvalancheReviewController *)self reviewScrubber];
-  [v12 setSelectedIndexPath:v11];
+  reviewScrubber = [(PUAvalancheReviewController *)self reviewScrubber];
+  [reviewScrubber setSelectedIndexPath:v11];
 
   [(PUAvalancheReviewController *)self _pageToIndexPath:v11 animated:0];
-  v13 = [(PUAvalancheReviewController *)self reviewScrubber];
-  [v13 reloadData];
+  reviewScrubber2 = [(PUAvalancheReviewController *)self reviewScrubber];
+  [reviewScrubber2 reloadData];
 }
 
 - (void)_updateReviewScrubberFromContentOffset
@@ -1317,17 +1317,17 @@ uint64_t __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPic
   v8 = v6 - v7;
   [(PUAvalancheReviewControllerSpec *)self->__spec interItemSpacing];
   v10 = v8 / (v4 + v9);
-  v11 = [(PUAvalancheReviewController *)self reviewScrubber];
-  [v11 updateWithAbsoluteProgress:v10];
+  reviewScrubber = [(PUAvalancheReviewController *)self reviewScrubber];
+  [reviewScrubber updateWithAbsoluteProgress:v10];
 }
 
 - (unsigned)reviewScrubberImageFormat
 {
-  v2 = [MEMORY[0x1E69BF248] defaultFormatChooser];
-  v3 = [v2 largestUncroppedNonJPEGThumbnailFormat];
-  v4 = [v3 formatID];
+  defaultFormatChooser = [MEMORY[0x1E69BF248] defaultFormatChooser];
+  largestUncroppedNonJPEGThumbnailFormat = [defaultFormatChooser largestUncroppedNonJPEGThumbnailFormat];
+  formatID = [largestUncroppedNonJPEGThumbnailFormat formatID];
 
-  return v4;
+  return formatID;
 }
 
 - (void)_updateReviewScrubberHeightIfNeeded
@@ -1335,11 +1335,11 @@ uint64_t __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPic
   if ([(PUAvalancheReviewController *)self _needsUpdateReviewScrubberHeight])
   {
     [(PUAvalancheReviewController *)self _setNeedsUpdateReviewScrubberHeight:0];
-    v3 = [(PUAvalancheReviewController *)self reviewScrubberHeightConstraint];
-    v7 = v3;
-    v4 = [(PUAvalancheReviewController *)self reviewScrubber];
-    v5 = [(PUAvalancheReviewController *)self traitCollection];
-    [PUReviewScrubberSetupHelper configureHeightConstraint:&v7 forReviewScrubber:v4 withTraitCollection:v5];
+    reviewScrubberHeightConstraint = [(PUAvalancheReviewController *)self reviewScrubberHeightConstraint];
+    v7 = reviewScrubberHeightConstraint;
+    reviewScrubber = [(PUAvalancheReviewController *)self reviewScrubber];
+    traitCollection = [(PUAvalancheReviewController *)self traitCollection];
+    [PUReviewScrubberSetupHelper configureHeightConstraint:&v7 forReviewScrubber:reviewScrubber withTraitCollection:traitCollection];
     v6 = v7;
 
     [(PUAvalancheReviewController *)self setReviewScrubberHeightConstraint:v6];
@@ -1348,74 +1348,74 @@ uint64_t __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPic
 
 - (void)_endZoomingForCell
 {
-  v3 = [(PUAvalancheReviewController *)self _photoZoomCell];
-  [v3 removeFromSuperview];
+  _photoZoomCell = [(PUAvalancheReviewController *)self _photoZoomCell];
+  [_photoZoomCell removeFromSuperview];
 
   [(PUAvalancheReviewController *)self _setPhotoZoomCell:0];
-  v4 = [(PUAvalancheReviewController *)self _collectionViewLayout];
-  [v4 setZoomingCellIndexPath:0];
+  _collectionViewLayout = [(PUAvalancheReviewController *)self _collectionViewLayout];
+  [_collectionViewLayout setZoomingCellIndexPath:0];
 
-  v5 = [(PUAvalancheReviewController *)self view];
-  [v5 setUserInteractionEnabled:1];
+  view = [(PUAvalancheReviewController *)self view];
+  [view setUserInteractionEnabled:1];
 
-  v6 = [(PUAvalancheReviewController *)self navigationController];
-  v7 = [v6 navigationBar];
-  [v7 setUserInteractionEnabled:1];
+  navigationController = [(PUAvalancheReviewController *)self navigationController];
+  navigationBar = [navigationController navigationBar];
+  [navigationBar setUserInteractionEnabled:1];
 
-  v8 = [(PUAvalancheReviewController *)self _photoZoomAnimator];
-  [v8 setDelegate:0];
+  _photoZoomAnimator = [(PUAvalancheReviewController *)self _photoZoomAnimator];
+  [_photoZoomAnimator setDelegate:0];
 
   [(PUAvalancheReviewController *)self _setPhotoZoomAnimator:0];
 }
 
-- (void)_beginZoomingForCellAtIndexPath:(id)a3
+- (void)_beginZoomingForCellAtIndexPath:(id)path
 {
-  v31 = a3;
-  if (!v31)
+  pathCopy = path;
+  if (!pathCopy)
   {
-    v30 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v30 handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:819 description:@"expected index path"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:819 description:@"expected index path"];
   }
 
-  v5 = [(PUAvalancheReviewController *)self navigationController];
-  v6 = [v5 view];
+  navigationController = [(PUAvalancheReviewController *)self navigationController];
+  view = [navigationController view];
 
-  v7 = [(PUAvalancheReviewController *)self _photoZoomPinchGestureRecognizer];
-  v8 = [(PUAvalancheReviewController *)self _collectionView];
-  v9 = [v8 cellForItemAtIndexPath:v31];
+  _photoZoomPinchGestureRecognizer = [(PUAvalancheReviewController *)self _photoZoomPinchGestureRecognizer];
+  _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+  v9 = [_collectionView cellForItemAtIndexPath:pathCopy];
   [v9 bounds];
-  [v9 convertRect:v6 toView:?];
+  [v9 convertRect:view toView:?];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
-  [v7 setInitialPinchRect:?];
-  v18 = [(PUAvalancheReviewController *)self _spec];
-  v19 = [v18 selectionBadgeCorner];
+  [_photoZoomPinchGestureRecognizer setInitialPinchRect:?];
+  _spec = [(PUAvalancheReviewController *)self _spec];
+  selectionBadgeCorner = [_spec selectionBadgeCorner];
 
-  v20 = [(PUAvalancheReviewController *)self _selectionViewAtIndexPath:v31 forCollectionView:0];
-  [(PUAvalancheReviewController *)self selectionBadgeFrameForItemFrame:v31 atIndexPath:v11, v13, v15, v17];
+  v20 = [(PUAvalancheReviewController *)self _selectionViewAtIndexPath:pathCopy forCollectionView:0];
+  [(PUAvalancheReviewController *)self selectionBadgeFrameForItemFrame:pathCopy atIndexPath:v11, v13, v15, v17];
   [v20 setFrame:?];
-  v21 = [[PUPhotosZoomingSharingGridCell alloc] initWithFrame:v20 selectionView:0 optionView:v19 layoutAnchor:v11, v13, v15, v17];
+  v21 = [[PUPhotosZoomingSharingGridCell alloc] initWithFrame:v20 selectionView:0 optionView:selectionBadgeCorner layoutAnchor:v11, v13, v15, v17];
   [(PUAvalancheReviewController *)self _setPhotoZoomCell:v21];
-  [(PUAvalancheReviewController *)self _updateCell:v21 forItemAtIndexPath:v31];
-  [v6 addSubview:v21];
-  v22 = [(PUAvalancheReviewController *)self _collectionViewLayout];
-  [v22 setZoomingCellIndexPath:v31];
+  [(PUAvalancheReviewController *)self _updateCell:v21 forItemAtIndexPath:pathCopy];
+  [view addSubview:v21];
+  _collectionViewLayout = [(PUAvalancheReviewController *)self _collectionViewLayout];
+  [_collectionViewLayout setZoomingCellIndexPath:pathCopy];
 
-  v23 = [(PUAvalancheReviewController *)self view];
-  [v23 setUserInteractionEnabled:0];
+  view2 = [(PUAvalancheReviewController *)self view];
+  [view2 setUserInteractionEnabled:0];
 
-  v24 = [(PUAvalancheReviewController *)self navigationController];
-  v25 = [v24 navigationBar];
-  [v25 setUserInteractionEnabled:0];
+  navigationController2 = [(PUAvalancheReviewController *)self navigationController];
+  navigationBar = [navigationController2 navigationBar];
+  [navigationBar setUserInteractionEnabled:0];
 
   v26 = [PUTransitionViewAnimator alloc];
   UIRectGetCenter();
-  v29 = [(PUTransitionViewAnimator *)v26 initWithView:v21 sourceFrame:1 targetFrame:0 anchorPoint:v11 shouldUseTargetAspectRatio:v13 rampUpDuration:v15 direction:v17, v11, v13, v15, v17, v27, v28, 0x3FB999999999999ALL];
-  [(PUTransitionViewAnimator *)v29 setAppliesScaleViaTransform:0];
-  [(PUTransitionViewAnimator *)v29 setDelegate:self];
-  [(PUAvalancheReviewController *)self _setPhotoZoomAnimator:v29];
+  0x3FB999999999999ALL = [(PUTransitionViewAnimator *)v26 initWithView:v21 sourceFrame:1 targetFrame:0 anchorPoint:v11 shouldUseTargetAspectRatio:v13 rampUpDuration:v15 direction:v17, v11, v13, v15, v17, v27, v28, 0x3FB999999999999ALL];
+  [(PUTransitionViewAnimator *)0x3FB999999999999ALL setAppliesScaleViaTransform:0];
+  [(PUTransitionViewAnimator *)0x3FB999999999999ALL setDelegate:self];
+  [(PUAvalancheReviewController *)self _setPhotoZoomAnimator:0x3FB999999999999ALL];
 }
 
 - (void)_updateCollectionViewLayoutInsets
@@ -1461,47 +1461,47 @@ uint64_t __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPic
   [(PUHorizontalCollectionViewLayout *)self->__collectionViewLayout setItemsContentInset:*&v14, v9, *&v15, v11];
 }
 
-- (id)_selectionViewAtIndexPath:(id)a3 forCollectionView:(id)a4
+- (id)_selectionViewAtIndexPath:(id)path forCollectionView:(id)view
 {
-  if (a4)
+  if (view)
   {
-    v6 = [a4 dequeueReusableSupplementaryViewOfKind:@"PUAvalancheReviewBadgeKind" withReuseIdentifier:@"PUAvalancheReviewBadgeIdentifier" forIndexPath:a3];
+    v6 = [view dequeueReusableSupplementaryViewOfKind:@"PUAvalancheReviewBadgeKind" withReuseIdentifier:@"PUAvalancheReviewBadgeIdentifier" forIndexPath:path];
   }
 
   else
   {
-    v7 = a3;
+    pathCopy = path;
     v6 = objc_alloc_init(PUPhotosSharingSelectionView);
   }
 
   v8 = v6;
-  v9 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v10 = [v9 assets];
-  v11 = [a3 item];
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assets = [_avalancheBeingReviewed assets];
+  item = [path item];
 
-  v12 = [v10 objectAtIndex:v11];
+  v12 = [assets objectAtIndex:item];
 
-  -[PUPhotosSharingSelectionView setSelected:animated:](v8, "setSelected:animated:", [v9 isUserFavorite:v12], 0);
+  -[PUPhotosSharingSelectionView setSelected:animated:](v8, "setSelected:animated:", [_avalancheBeingReviewed isUserFavorite:v12], 0);
 
   return v8;
 }
 
-- (id)_indexPathInCollectionView:(id)a3 closestToPoint:(CGPoint)a4 excludingIndexPath:(id)a5
+- (id)_indexPathInCollectionView:(id)view closestToPoint:(CGPoint)point excludingIndexPath:(id)path
 {
-  y = a4.y;
-  x = a4.x;
+  y = point.y;
+  x = point.x;
   v29 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 indexPathForItemAtPoint:{x, y}];
+  viewCopy = view;
+  pathCopy = path;
+  v10 = [viewCopy indexPathForItemAtPoint:{x, y}];
   if (!v10)
   {
-    v11 = [v8 visibleCells];
+    visibleCells = [viewCopy visibleCells];
     v24 = 0u;
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v12 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+    v12 = [visibleCells countByEnumeratingWithState:&v24 objects:v28 count:16];
     if (v12)
     {
       v13 = v12;
@@ -1514,12 +1514,12 @@ uint64_t __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPic
         {
           if (*v25 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(visibleCells);
           }
 
           v17 = *(*(&v24 + 1) + 8 * i);
-          v18 = [v8 indexPathForCell:v17];
-          if (([v9 isEqual:v18] & 1) == 0)
+          v18 = [viewCopy indexPathForCell:v17];
+          if (([pathCopy isEqual:v18] & 1) == 0)
           {
             [v17 center];
             v21 = (v20 - y) * (v20 - y) + (v19 - x) * (v19 - x);
@@ -1533,7 +1533,7 @@ uint64_t __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPic
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v24 objects:v28 count:16];
+        v13 = [visibleCells countByEnumeratingWithState:&v24 objects:v28 count:16];
       }
 
       while (v13);
@@ -1548,22 +1548,22 @@ uint64_t __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPic
   return v10;
 }
 
-- (double)_horizontalOffsetInCollectionView:(id)a3 forCenteringOnItemAtIndexPath:(id)a4
+- (double)_horizontalOffsetInCollectionView:(id)view forCenteringOnItemAtIndexPath:(id)path
 {
-  v5 = a3;
-  v6 = [v5 layoutAttributesForItemAtIndexPath:a4];
+  viewCopy = view;
+  v6 = [viewCopy layoutAttributesForItemAtIndexPath:path];
   [v6 center];
   v8 = v7;
-  [v5 bounds];
+  [viewCopy bounds];
   v10 = v9;
 
   return round(v8 + v10 * -0.5);
 }
 
-- (id)_indexPathOfCenterVisibleItemInCollectionView:(id)a3
+- (id)_indexPathOfCenterVisibleItemInCollectionView:(id)view
 {
-  v4 = a3;
-  [v4 bounds];
+  viewCopy = view;
+  [viewCopy bounds];
   x = v13.origin.x;
   y = v13.origin.y;
   width = v13.size.width;
@@ -1573,32 +1573,32 @@ uint64_t __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPic
   v14.origin.y = y;
   v14.size.width = width;
   v14.size.height = height;
-  v10 = [(PUAvalancheReviewController *)self _indexPathInCollectionView:v4 closestToPoint:0 excludingIndexPath:MidX, CGRectGetMidY(v14)];
+  v10 = [(PUAvalancheReviewController *)self _indexPathInCollectionView:viewCopy closestToPoint:0 excludingIndexPath:MidX, CGRectGetMidY(v14)];
 
   return v10;
 }
 
-- (void)_pageToIndexPath:(id)a3 animated:(BOOL)a4
+- (void)_pageToIndexPath:(id)path animated:(BOOL)animated
 {
-  v4 = a4;
-  v6 = a3;
-  v11 = [(PUAvalancheReviewController *)self _collectionView];
-  [v11 contentOffset];
+  animatedCopy = animated;
+  pathCopy = path;
+  _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+  [_collectionView contentOffset];
   v8 = v7;
-  [(PUAvalancheReviewController *)self _horizontalOffsetInCollectionView:v11 forCenteringOnItemAtIndexPath:v6];
+  [(PUAvalancheReviewController *)self _horizontalOffsetInCollectionView:_collectionView forCenteringOnItemAtIndexPath:pathCopy];
   v10 = v9;
 
-  [v11 setContentOffset:v4 animated:{v10, v8}];
+  [_collectionView setContentOffset:animatedCopy animated:{v10, v8}];
 }
 
-- (CGSize)_sizeForItemAtIndexPath:(id)a3
+- (CGSize)_sizeForItemAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v6 = [v5 assets];
-  v7 = [v4 item];
+  pathCopy = path;
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assets = [_avalancheBeingReviewed assets];
+  item = [pathCopy item];
 
-  v8 = [v6 objectAtIndex:v7];
+  v8 = [assets objectAtIndex:item];
 
   v38 = 0u;
   v39 = 0u;
@@ -1610,17 +1610,17 @@ uint64_t __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPic
   [v8 imageSize];
   v12 = v11;
   v14 = v13;
-  v15 = [(PUAvalancheReviewController *)self _spec];
-  [v15 interItemSpacing];
+  _spec = [(PUAvalancheReviewController *)self _spec];
+  [_spec interItemSpacing];
   v17 = v16;
 
   v18 = v9 + v17 * -4.0;
   v19 = v10 + v17 * -2.0;
-  v20 = [(PUAvalancheReviewController *)self _spec];
-  [v20 selectionBadgeSize];
+  _spec2 = [(PUAvalancheReviewController *)self _spec];
+  [_spec2 selectionBadgeSize];
   v22 = v21;
-  v23 = [(PUAvalancheReviewController *)self _spec];
-  [v23 selectionBadgeOffset];
+  _spec3 = [(PUAvalancheReviewController *)self _spec];
+  [_spec3 selectionBadgeOffset];
   v25 = v22 + v24 * 2.0;
 
   PURectWithSizeThatFitsInRect(v12, v14, 0.0, 0.0, v18, v19);
@@ -1676,28 +1676,28 @@ uint64_t __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPic
   return result;
 }
 
-- (id)_phAssetAtIndexPath:(id)a3
+- (id)_phAssetAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUAvalancheReviewController *)self assetCollectionsFetchResult];
-  v6 = [v5 lastObject];
+  pathCopy = path;
+  assetCollectionsFetchResult = [(PUAvalancheReviewController *)self assetCollectionsFetchResult];
+  lastObject = [assetCollectionsFetchResult lastObject];
 
-  v7 = [(PUAvalancheReviewController *)self assetsInAssetCollection:v6];
-  v8 = [v4 item];
+  v7 = [(PUAvalancheReviewController *)self assetsInAssetCollection:lastObject];
+  item = [pathCopy item];
 
-  v9 = [v7 objectAtIndex:v8];
+  v9 = [v7 objectAtIndex:item];
 
   return v9;
 }
 
-- (id)_assetAtIndexPath:(id)a3
+- (id)_assetAtIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v6 = [v5 assets];
-  v7 = [v4 item];
+  pathCopy = path;
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assets = [_avalancheBeingReviewed assets];
+  item = [pathCopy item];
 
-  v8 = [v6 objectAtIndex:v7];
+  v8 = [assets objectAtIndex:item];
 
   return v8;
 }
@@ -1705,105 +1705,105 @@ uint64_t __99__PUAvalancheReviewController__promoteFavoriteAssetsAndDeleteNonPic
 - (id)_currentAsset
 {
   v3 = [(PUAvalancheReviewController *)self _indexPathOfCenterVisibleItemInCollectionView:self->__collectionView];
-  v4 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v5 = [v4 assetsCount];
-  if ([v3 item] >= v5)
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assetsCount = [_avalancheBeingReviewed assetsCount];
+  if ([v3 item] >= assetsCount)
   {
     v7 = 0;
   }
 
   else
   {
-    v6 = [v4 assets];
-    v7 = [v6 objectAtIndex:{objc_msgSend(v3, "item")}];
+    assets = [_avalancheBeingReviewed assets];
+    v7 = [assets objectAtIndex:{objc_msgSend(v3, "item")}];
   }
 
   return v7;
 }
 
-- (void)_handlePhotoPinch:(id)a3
+- (void)_handlePhotoPinch:(id)pinch
 {
-  v19 = a3;
-  v4 = [v19 state];
-  if ((v4 - 3) < 3)
+  pinchCopy = pinch;
+  state = [pinchCopy state];
+  if ((state - 3) < 3)
   {
-    v5 = [(PUAvalancheReviewController *)self _photoZoomAnimator];
-    if (v5)
+    _photoZoomAnimator = [(PUAvalancheReviewController *)self _photoZoomAnimator];
+    if (_photoZoomAnimator)
     {
-      v6 = [(PUAvalancheReviewController *)self _photoZoomCell];
-      v7 = [v6 superview];
+      _photoZoomCell = [(PUAvalancheReviewController *)self _photoZoomCell];
+      superview = [_photoZoomCell superview];
 
-      [v19 adjustedTranslationVelocityInView:v7];
+      [pinchCopy adjustedTranslationVelocityInView:superview];
       v9 = v8;
       v11 = v10;
-      [v19 adjustedScaleVelocityInView:v7];
-      [v5 finishWithTranslationVelocity:0 rotationVelocity:v9 scaleVelocity:v11 shouldBounce:{0.0, v12}];
+      [pinchCopy adjustedScaleVelocityInView:superview];
+      [_photoZoomAnimator finishWithTranslationVelocity:0 rotationVelocity:v9 scaleVelocity:v11 shouldBounce:{0.0, v12}];
       goto LABEL_14;
     }
 
     [(PUAvalancheReviewController *)self _endZoomingForCell];
 LABEL_11:
-    v7 = 0;
+    superview = 0;
     goto LABEL_14;
   }
 
-  if (v4 == 2)
+  if (state == 2)
   {
-    v5 = [(PUAvalancheReviewController *)self _photoZoomAnimator];
-    if (v5)
+    _photoZoomAnimator = [(PUAvalancheReviewController *)self _photoZoomAnimator];
+    if (_photoZoomAnimator)
     {
-      v13 = [(PUAvalancheReviewController *)self _photoZoomCell];
-      v7 = [v13 superview];
+      _photoZoomCell2 = [(PUAvalancheReviewController *)self _photoZoomCell];
+      superview = [_photoZoomCell2 superview];
 
-      [v19 adjustedTranslationInView:v7];
+      [pinchCopy adjustedTranslationInView:superview];
       v15 = v14;
       v17 = v16;
-      [v19 adjustedScaleInView:v7];
-      [v5 updateWithTranslation:v15 rotation:v17 scale:{0.0, v18}];
+      [pinchCopy adjustedScaleInView:superview];
+      [_photoZoomAnimator updateWithTranslation:v15 rotation:v17 scale:{0.0, v18}];
       goto LABEL_14;
     }
 
     goto LABEL_11;
   }
 
-  if (v4 == 1)
+  if (state == 1)
   {
-    v7 = [(PUAvalancheReviewController *)self _collectionView];
-    [v19 locationInView:v7];
-    v5 = [(PUAvalancheReviewController *)self _indexPathInCollectionView:v7 closestToPoint:0 excludingIndexPath:?];
-    if (!v5)
+    superview = [(PUAvalancheReviewController *)self _collectionView];
+    [pinchCopy locationInView:superview];
+    _photoZoomAnimator = [(PUAvalancheReviewController *)self _indexPathInCollectionView:superview closestToPoint:0 excludingIndexPath:?];
+    if (!_photoZoomAnimator)
     {
       goto LABEL_14;
     }
 
-    [(PUAvalancheReviewController *)self _beginZoomingForCellAtIndexPath:v5];
+    [(PUAvalancheReviewController *)self _beginZoomingForCellAtIndexPath:_photoZoomAnimator];
   }
 
   else
   {
-    v7 = 0;
+    superview = 0;
   }
 
-  v5 = 0;
+  _photoZoomAnimator = 0;
 LABEL_14:
 }
 
-- (void)_handleTapInMainCollectionView:(id)a3
+- (void)_handleTapInMainCollectionView:(id)view
 {
-  v4 = a3;
-  v17 = [(PUAvalancheReviewController *)self _collectionView];
-  [v4 locationInView:v17];
+  viewCopy = view;
+  _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+  [viewCopy locationInView:_collectionView];
   v6 = v5;
   v8 = v7;
 
-  v9 = [(PUAvalancheReviewController *)self _collectionViewLayout];
-  [v17 contentSize];
+  _collectionViewLayout = [(PUAvalancheReviewController *)self _collectionViewLayout];
+  [_collectionView contentSize];
   v11 = v10;
-  [v9 itemsContentInset];
+  [_collectionViewLayout itemsContentInset];
   v14 = v11 - fabs(v13);
   if (v6 > fabs(v12) && v6 < v14)
   {
-    v16 = [(PUAvalancheReviewController *)self _indexPathInCollectionView:v17 closestToPoint:0 excludingIndexPath:v6, v8];
+    v16 = [(PUAvalancheReviewController *)self _indexPathInCollectionView:_collectionView closestToPoint:0 excludingIndexPath:v6, v8];
     if (v16)
     {
       [(PUAvalancheReviewController *)self _handleTapAtIndexPath:v16];
@@ -1811,43 +1811,43 @@ LABEL_14:
   }
 }
 
-- (void)_handleTapAtIndexPath:(id)a3
+- (void)_handleTapAtIndexPath:(id)path
 {
-  v6 = a3;
-  v4 = [(PUAvalancheReviewController *)self _collectionView];
-  [(PUAvalancheReviewController *)self _toggleCurrentPickStatusAtIndexPath:v6];
-  if (([v4 isDragging] & 1) == 0 && (objc_msgSend(v4, "isDecelerating") & 1) == 0 && objc_msgSend(v4, "isTracking"))
+  pathCopy = path;
+  _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+  [(PUAvalancheReviewController *)self _toggleCurrentPickStatusAtIndexPath:pathCopy];
+  if (([_collectionView isDragging] & 1) == 0 && (objc_msgSend(_collectionView, "isDecelerating") & 1) == 0 && objc_msgSend(_collectionView, "isTracking"))
   {
-    v5 = [(PUAvalancheReviewController *)self reviewScrubber];
-    [v5 beginInteractiveUpdate];
-    [(PUAvalancheReviewController *)self _pageToIndexPath:v6 animated:1];
+    reviewScrubber = [(PUAvalancheReviewController *)self reviewScrubber];
+    [reviewScrubber beginInteractiveUpdate];
+    [(PUAvalancheReviewController *)self _pageToIndexPath:pathCopy animated:1];
   }
 }
 
-- (CGRect)selectionBadgeFrameForItemFrame:(CGRect)a3 atIndexPath:(id)a4
+- (CGRect)selectionBadgeFrameForItemFrame:(CGRect)frame atIndexPath:(id)path
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(PUAvalancheReviewController *)self _spec];
-  [v9 selectionBadgeSize];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  _spec = [(PUAvalancheReviewController *)self _spec];
+  [_spec selectionBadgeSize];
   v11 = v10;
   v13 = v12;
 
-  v14 = [(PUAvalancheReviewController *)self _spec];
-  [v14 selectionBadgeOffset];
+  _spec2 = [(PUAvalancheReviewController *)self _spec];
+  [_spec2 selectionBadgeOffset];
   v16 = v15;
   v18 = v17;
 
-  v19 = [(PUAvalancheReviewController *)self _spec];
-  v20 = [v19 selectionBadgeCorner];
+  _spec3 = [(PUAvalancheReviewController *)self _spec];
+  selectionBadgeCorner = [_spec3 selectionBadgeCorner];
 
-  if (v20 != 1)
+  if (selectionBadgeCorner != 1)
   {
     v21 = y;
     v22 = *(MEMORY[0x1E695F058] + 8);
-    if (v20 == 4)
+    if (selectionBadgeCorner == 4)
     {
       v28 = x;
       v29 = width;
@@ -1858,7 +1858,7 @@ LABEL_14:
     {
       v23 = height;
       v24 = *MEMORY[0x1E695F058];
-      if (v20 == 2)
+      if (selectionBadgeCorner == 2)
       {
         v25 = x;
         v26 = width;
@@ -1909,85 +1909,85 @@ LABEL_8:
   return result;
 }
 
-- (void)_updateCell:(id)a3 forItemAtIndexPath:(id)a4
+- (void)_updateCell:(id)cell forItemAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = a3;
-  v17 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v8 = [v17 assets];
-  v9 = [v8 objectAtIndex:{objc_msgSend(v6, "item")}];
+  pathCopy = path;
+  cellCopy = cell;
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assets = [_avalancheBeingReviewed assets];
+  v9 = [assets objectAtIndex:{objc_msgSend(pathCopy, "item")}];
 
   [v9 imageSize];
   v11 = v10;
   v13 = v12;
-  v14 = [v7 photoView];
-  v15 = [v14 contentHelper];
+  photoView = [cellCopy photoView];
+  contentHelper = [photoView contentHelper];
 
-  [v15 setPhotoSize:{v11, v13}];
-  [v15 setFillMode:1];
-  v16 = [MEMORY[0x1E69C3640] sharedInstance];
-  [v16 insetContentCornerRadius];
-  [v15 setCornerRadius:?];
+  [contentHelper setPhotoSize:{v11, v13}];
+  [contentHelper setFillMode:1];
+  mEMORY[0x1E69C3640] = [MEMORY[0x1E69C3640] sharedInstance];
+  [mEMORY[0x1E69C3640] insetContentCornerRadius];
+  [contentHelper setCornerRadius:?];
 
-  [v15 setContinuousCorners:1];
-  [v7 setSelected:{objc_msgSend(v17, "isUserFavorite:", v9)}];
-  [(PUAvalancheReviewController *)self _updatePhotoForAsset:v9 cell:v7 atIndexPath:v6];
+  [contentHelper setContinuousCorners:1];
+  [cellCopy setSelected:{objc_msgSend(_avalancheBeingReviewed, "isUserFavorite:", v9)}];
+  [(PUAvalancheReviewController *)self _updatePhotoForAsset:v9 cell:cellCopy atIndexPath:pathCopy];
 }
 
-- (void)_updatePhotoForAsset:(id)a3 cell:(id)a4 atIndexPath:(id)a5
+- (void)_updatePhotoForAsset:(id)asset cell:(id)cell atIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [v7 tag] + 1;
-  [v7 setTag:v9];
-  v10 = [(PUAvalancheReviewController *)self _photoZoomCell];
+  cellCopy = cell;
+  pathCopy = path;
+  v9 = [cellCopy tag] + 1;
+  [cellCopy setTag:v9];
+  _photoZoomCell = [(PUAvalancheReviewController *)self _photoZoomCell];
 
-  v11 = [(PUAvalancheReviewController *)self _photosSharingTransitionContext];
-  v12 = [v11 keyAssetIndexPath];
-  v13 = [v12 isEqual:v8];
+  _photosSharingTransitionContext = [(PUAvalancheReviewController *)self _photosSharingTransitionContext];
+  keyAssetIndexPath = [_photosSharingTransitionContext keyAssetIndexPath];
+  v13 = [keyAssetIndexPath isEqual:pathCopy];
 
-  v14 = [(PUAvalancheReviewController *)self _existingView];
-  [v14 bounds];
+  _existingView = [(PUAvalancheReviewController *)self _existingView];
+  [_existingView bounds];
   v16 = v15;
 
-  v17 = [(PUAvalancheReviewController *)self _phAssetAtIndexPath:v8];
+  v17 = [(PUAvalancheReviewController *)self _phAssetAtIndexPath:pathCopy];
 
   v18 = objc_opt_new();
   v19 = v18;
-  v20 = (v10 == v7) | v13;
-  if (v10 == v7)
+  v20 = (_photoZoomCell == cellCopy) | v13;
+  if (_photoZoomCell == cellCopy)
   {
     [v18 setDeliveryMode:1];
   }
 
-  v21 = v10 == v7;
-  v22 = v10 != v7;
+  v21 = _photoZoomCell == cellCopy;
+  v22 = _photoZoomCell != cellCopy;
   v23 = v21;
   [v19 setSynchronous:v23];
   [v19 setNetworkAccessAllowed:v22];
   [v19 setLoadingMode:0x40000];
   if ((v20 & 1) == 0)
   {
-    [v7 frame];
+    [cellCopy frame];
     v16 = v24;
   }
 
   v25 = PUPixelSizeFromPointSize(v16);
   v27 = v26;
-  v28 = [v7 photoView];
-  v29 = [v28 contentHelper];
+  photoView = [cellCopy photoView];
+  contentHelper = [photoView contentHelper];
 
-  v30 = [(PUAvalancheReviewController *)self _cachingImageManager];
+  _cachingImageManager = [(PUAvalancheReviewController *)self _cachingImageManager];
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __69__PUAvalancheReviewController__updatePhotoForAsset_cell_atIndexPath___block_invoke;
   v33[3] = &unk_1E7B75848;
-  v35 = v29;
+  v35 = contentHelper;
   v36 = v9;
-  v34 = v7;
-  v31 = v29;
-  v32 = v7;
-  [v30 requestImageForAsset:v17 targetSize:0 contentMode:v19 options:v33 resultHandler:{v25, v27}];
+  v34 = cellCopy;
+  v31 = contentHelper;
+  v32 = cellCopy;
+  [_cachingImageManager requestImageForAsset:v17 targetSize:0 contentMode:v19 options:v33 resultHandler:{v25, v27}];
 }
 
 void __69__PUAvalancheReviewController__updatePhotoForAsset_cell_atIndexPath___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -2031,15 +2031,15 @@ void __69__PUAvalancheReviewController__updatePhotoForAsset_cell_atIndexPath___b
 LABEL_10:
 }
 
-- (void)_getFirstValidIndexPath:(id *)a3 lastValidIndexPath:(id *)a4
+- (void)_getFirstValidIndexPath:(id *)path lastValidIndexPath:(id *)indexPath
 {
-  v6 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v7 = [v6 assetsCount];
-  if (v7)
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  assetsCount = [_avalancheBeingReviewed assetsCount];
+  if (assetsCount)
   {
     v9 = [MEMORY[0x1E696AC88] indexPathForItem:0 inSection:0];
-    v7 = [MEMORY[0x1E696AC88] indexPathForItem:v7 - 1 inSection:0];
-    if (!a3)
+    assetsCount = [MEMORY[0x1E696AC88] indexPathForItem:assetsCount - 1 inSection:0];
+    if (!path)
     {
       goto LABEL_4;
     }
@@ -2048,48 +2048,48 @@ LABEL_10:
   }
 
   v9 = 0;
-  if (a3)
+  if (path)
   {
 LABEL_3:
-    *a3 = v9;
+    *path = v9;
   }
 
 LABEL_4:
-  if (a4)
+  if (indexPath)
   {
-    v8 = v7;
-    *a4 = v7;
+    v8 = assetsCount;
+    *indexPath = assetsCount;
   }
 }
 
-- (void)_getMainCollectionViewFrame:(CGRect *)a3 collectionViewLayoutInsets:(UIEdgeInsets *)a4
+- (void)_getMainCollectionViewFrame:(CGRect *)frame collectionViewLayoutInsets:(UIEdgeInsets *)insets
 {
-  v7 = [(PUAvalancheReviewController *)self view];
-  [v7 bounds];
+  view = [(PUAvalancheReviewController *)self view];
+  [view bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
   v15 = v14;
 
-  if (a3)
+  if (frame)
   {
-    a3->origin.x = v9;
-    a3->origin.y = v11;
-    a3->size.width = v13;
-    a3->size.height = v15;
+    frame->origin.x = v9;
+    frame->origin.y = v11;
+    frame->size.width = v13;
+    frame->size.height = v15;
   }
 
-  if (a4)
+  if (insets)
   {
     [(PUAvalancheReviewController *)self px_safeAreaInsets];
-    v16 = [(PUAvalancheReviewController *)self reviewScrubberHeightConstraint];
-    [v16 constant];
+    reviewScrubberHeightConstraint = [(PUAvalancheReviewController *)self reviewScrubberHeightConstraint];
+    [reviewScrubberHeightConstraint constant];
 
     UIEdgeInsetsMax();
-    a4->top = v17;
-    a4->left = v18;
-    a4->bottom = v19;
-    a4->right = v20;
+    insets->top = v17;
+    insets->left = v18;
+    insets->bottom = v19;
+    insets->right = v20;
   }
 }
 
@@ -2100,44 +2100,44 @@ LABEL_4:
     return;
   }
 
-  v3 = [(PUAvalancheReviewController *)self _spec];
+  _spec = [(PUAvalancheReviewController *)self _spec];
   v19 = 0u;
   v20 = 0u;
   memset(v18, 0, sizeof(v18));
   [(PUAvalancheReviewController *)self _getMainCollectionViewFrame:&v19 collectionViewLayoutInsets:v18];
   v4 = +[PUInterfaceManager currentTheme];
-  v5 = [v4 photoCollectionViewBackgroundColor];
+  photoCollectionViewBackgroundColor = [v4 photoCollectionViewBackgroundColor];
 
-  v6 = [(PUAvalancheReviewController *)self _collectionView];
-  v7 = [(PUAvalancheReviewController *)self _collectionViewLayout];
-  [v3 interItemSpacing];
-  if (!v7)
+  _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+  _collectionViewLayout = [(PUAvalancheReviewController *)self _collectionViewLayout];
+  [_spec interItemSpacing];
+  if (!_collectionViewLayout)
   {
     v13 = v8;
-    v7 = objc_alloc_init(PUAvalancheReviewCollectionViewLayout);
-    [(PUHorizontalCollectionViewLayout *)v7 setInteritemSpacing:v13];
-    [(PUHorizontalCollectionViewLayout *)v7 setDelegate:self];
-    objc_storeStrong(&self->__collectionViewLayout, v7);
-    if (v6)
+    _collectionViewLayout = objc_alloc_init(PUAvalancheReviewCollectionViewLayout);
+    [(PUHorizontalCollectionViewLayout *)_collectionViewLayout setInteritemSpacing:v13];
+    [(PUHorizontalCollectionViewLayout *)_collectionViewLayout setDelegate:self];
+    objc_storeStrong(&self->__collectionViewLayout, _collectionViewLayout);
+    if (_collectionView)
     {
       goto LABEL_4;
     }
 
 LABEL_9:
     v14 = objc_alloc(MEMORY[0x1E69DC7F0]);
-    v6 = [v14 initWithFrame:v7 collectionViewLayout:{v19, v20}];
-    [v6 setAutoresizingMask:18];
-    [v6 setAlwaysBounceVertical:0];
-    [v6 setAlwaysBounceHorizontal:1];
-    [v6 setPagingEnabled:0];
-    [v6 setDecelerationRate:*MEMORY[0x1E69DE3A0]];
-    [v6 setDataSource:self];
-    [v6 setDelegate:self];
-    [v6 setShowsHorizontalScrollIndicator:0];
-    [v6 setBackgroundColor:v5];
-    [v6 registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PUAvalancheReviewCellIdentifier"];
-    [v6 registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUAvalancheReviewBadgeKind" withReuseIdentifier:@"PUAvalancheReviewBadgeIdentifier"];
-    [v6 setContentInsetAdjustmentBehavior:2];
+    _collectionView = [v14 initWithFrame:_collectionViewLayout collectionViewLayout:{v19, v20}];
+    [_collectionView setAutoresizingMask:18];
+    [_collectionView setAlwaysBounceVertical:0];
+    [_collectionView setAlwaysBounceHorizontal:1];
+    [_collectionView setPagingEnabled:0];
+    [_collectionView setDecelerationRate:*MEMORY[0x1E69DE3A0]];
+    [_collectionView setDataSource:self];
+    [_collectionView setDelegate:self];
+    [_collectionView setShowsHorizontalScrollIndicator:0];
+    [_collectionView setBackgroundColor:photoCollectionViewBackgroundColor];
+    [_collectionView registerClass:objc_opt_class() forCellWithReuseIdentifier:@"PUAvalancheReviewCellIdentifier"];
+    [_collectionView registerClass:objc_opt_class() forSupplementaryViewOfKind:@"PUAvalancheReviewBadgeKind" withReuseIdentifier:@"PUAvalancheReviewBadgeIdentifier"];
+    [_collectionView setContentInsetAdjustmentBehavior:2];
     v15 = [objc_alloc(MEMORY[0x1E69DD060]) initWithTarget:self action:sel__handleTapInMainCollectionView_];
     tapGestureRecognizer = self->__tapGestureRecognizer;
     self->__tapGestureRecognizer = v15;
@@ -2145,21 +2145,21 @@ LABEL_9:
     [(UITapGestureRecognizer *)self->__tapGestureRecognizer setNumberOfTapsRequired:1];
     [(UITapGestureRecognizer *)self->__tapGestureRecognizer setNumberOfTouchesRequired:1];
     [(UITapGestureRecognizer *)self->__tapGestureRecognizer setDelegate:self];
-    [v6 addGestureRecognizer:self->__tapGestureRecognizer];
-    objc_storeStrong(&self->__collectionView, v6);
-    v17 = [(PUAvalancheReviewController *)self view];
-    [v17 addSubview:self->__collectionView];
+    [_collectionView addGestureRecognizer:self->__tapGestureRecognizer];
+    objc_storeStrong(&self->__collectionView, _collectionView);
+    view = [(PUAvalancheReviewController *)self view];
+    [view addSubview:self->__collectionView];
 
     goto LABEL_4;
   }
 
-  if (!v6)
+  if (!_collectionView)
   {
     goto LABEL_9;
   }
 
 LABEL_4:
-  [v6 setFrame:{v19, v20}];
+  [_collectionView setFrame:{v19, v20}];
   [(PUAvalancheReviewController *)self _updateCollectionViewLayoutInsets];
   if (!self->_reviewScrubber)
   {
@@ -2168,8 +2168,8 @@ LABEL_4:
     self->_reviewScrubber = v9;
 
     v11 = self->_reviewScrubber;
-    v12 = [(PUAvalancheReviewController *)self view];
-    [PUReviewScrubberSetupHelper setupBaseConstraintsForReviewScrubber:v11 inView:v12];
+    view2 = [(PUAvalancheReviewController *)self view];
+    [PUReviewScrubberSetupHelper setupBaseConstraintsForReviewScrubber:v11 inView:view2];
 
     [(PUAvalancheReviewController *)self _invalidateReviewScrubberHeight];
   }
@@ -2177,7 +2177,7 @@ LABEL_4:
   [(PUAvalancheReviewController *)self _updateReviewScrubberHeightIfNeeded];
 }
 
-- (void)_updateBarItemsAnimated:(BOOL)a3
+- (void)_updateBarItemsAnimated:(BOOL)animated
 {
   v23[1] = *MEMORY[0x1E69E9840];
   if (!self->__doneBarButtonItem)
@@ -2191,9 +2191,9 @@ LABEL_4:
     {
       v5 = [_BarButton alloc];
       v6 = PULocalizedString(@"AVALANCHE_DONE");
-      v7 = [MEMORY[0x1E69DC888] whiteColor];
-      v8 = [MEMORY[0x1E69DC888] systemBlueColor];
-      v9 = [(_BarButton *)v5 initWithTitle:v6 titleColor:v7 backgroundColor:v8 target:self action:sel__handleDoneButton_];
+      whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+      systemBlueColor = [MEMORY[0x1E69DC888] systemBlueColor];
+      v9 = [(_BarButton *)v5 initWithTitle:v6 titleColor:whiteColor backgroundColor:systemBlueColor target:self action:sel__handleDoneButton_];
 
       v4 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v9];
     }
@@ -2214,9 +2214,9 @@ LABEL_4:
     {
       v13 = [_BarButton alloc];
       v14 = PULocalizedString(@"AVALANCHE_CANCEL");
-      v15 = [MEMORY[0x1E69DC888] systemBlueColor];
-      v16 = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
-      v17 = [(_BarButton *)v13 initWithTitle:v14 titleColor:v15 backgroundColor:v16 target:self action:sel__cancelReviewModeAction_];
+      systemBlueColor2 = [MEMORY[0x1E69DC888] systemBlueColor];
+      tertiarySystemFillColor = [MEMORY[0x1E69DC888] tertiarySystemFillColor];
+      v17 = [(_BarButton *)v13 initWithTitle:v14 titleColor:systemBlueColor2 backgroundColor:tertiarySystemFillColor target:self action:sel__cancelReviewModeAction_];
 
       v12 = [objc_alloc(MEMORY[0x1E69DC708]) initWithCustomView:v17];
     }
@@ -2231,17 +2231,17 @@ LABEL_4:
   v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:v23 count:1];
   v22 = self->__doneBarButtonItem;
   v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v22 count:1];
-  v21 = [(PUAvalancheReviewController *)self navigationItem];
-  [v21 setLeftBarButtonItems:v19];
-  [v21 setRightBarButtonItems:v20];
+  navigationItem = [(PUAvalancheReviewController *)self navigationItem];
+  [navigationItem setLeftBarButtonItems:v19];
+  [navigationItem setRightBarButtonItems:v20];
   [(PUAvalancheReviewController *)self _updateNavigationItemTitle];
 }
 
 - (void)_updateNavigationItemTitle
 {
-  v3 = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
-  v4 = [v3 userFavorites];
-  v5 = [v4 count];
+  _avalancheBeingReviewed = [(PUAvalancheReviewController *)self _avalancheBeingReviewed];
+  userFavorites = [_avalancheBeingReviewed userFavorites];
+  v5 = [userFavorites count];
 
   if (v5)
   {
@@ -2255,27 +2255,27 @@ LABEL_4:
     v9 = PULocalizedString(@"EMPTY_REVIEW_TITLE_TEXT");
   }
 
-  v7 = [(PUAvalancheReviewController *)self navigationItem];
-  [v7 setTitle:v9];
-  [v7 setPrompt:0];
+  navigationItem = [(PUAvalancheReviewController *)self navigationItem];
+  [navigationItem setTitle:v9];
+  [navigationItem setPrompt:0];
 }
 
 - (void)_updateEnabledNavigationBarItems
 {
-  v2 = [(PUAvalancheReviewController *)self _doneBarButtonItem];
-  [v2 setEnabled:1];
+  _doneBarButtonItem = [(PUAvalancheReviewController *)self _doneBarButtonItem];
+  [_doneBarButtonItem setEnabled:1];
 }
 
-- (void)viewWillTransitionToSize:(CGSize)a3 withTransitionCoordinator:(id)a4
+- (void)viewWillTransitionToSize:(CGSize)size withTransitionCoordinator:(id)coordinator
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v14.receiver = self;
   v14.super_class = PUAvalancheReviewController;
-  v7 = a4;
-  [(PUAvalancheReviewController *)&v14 viewWillTransitionToSize:v7 withTransitionCoordinator:width, height];
-  v8 = [(PUAvalancheReviewController *)self _collectionView];
-  v9 = [(PUAvalancheReviewController *)self _indexPathOfCenterVisibleItemInCollectionView:v8];
+  coordinatorCopy = coordinator;
+  [(PUAvalancheReviewController *)&v14 viewWillTransitionToSize:coordinatorCopy withTransitionCoordinator:width, height];
+  _collectionView = [(PUAvalancheReviewController *)self _collectionView];
+  v9 = [(PUAvalancheReviewController *)self _indexPathOfCenterVisibleItemInCollectionView:_collectionView];
 
   inFlightReferenceIndexPath = self->__inFlightReferenceIndexPath;
   self->__inFlightReferenceIndexPath = v9;
@@ -2291,7 +2291,7 @@ LABEL_4:
   v12[1] = 3221225472;
   v12[2] = __82__PUAvalancheReviewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke_2;
   v12[3] = &unk_1E7B7DC38;
-  [v7 animateAlongsideTransition:v13 completion:v12];
+  [coordinatorCopy animateAlongsideTransition:v13 completion:v12];
 }
 
 void __82__PUAvalancheReviewController_viewWillTransitionToSize_withTransitionCoordinator___block_invoke(uint64_t a1)
@@ -2316,15 +2316,15 @@ void __82__PUAvalancheReviewController_viewWillTransitionToSize_withTransitionCo
   [(PUAvalancheReviewController *)self _updateCollectionViewLayoutInsets];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5.receiver = self;
   v5.super_class = PUAvalancheReviewController;
   [(PUAvalancheReviewController *)&v5 viewWillAppear:?];
   [(PUAvalancheReviewController *)self _updateMainView];
   [(PUAvalancheReviewController *)self _reloadAvalancheDataWithAsset:self->__initialAsset];
-  [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:v3];
+  [(UIViewController *)self pu_setupInitialBarsVisibilityOnViewWillAppearAnimated:appearCopy];
 }
 
 - (void)dealloc
@@ -2337,11 +2337,11 @@ void __82__PUAvalancheReviewController_viewWillTransitionToSize_withTransitionCo
   [(PUAvalancheReviewController *)&v3 dealloc];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = PUAvalancheReviewController;
-  [(PUAvalancheReviewController *)&v4 viewDidAppear:a3];
+  [(PUAvalancheReviewController *)&v4 viewDidAppear:appear];
   [(PUAvalancheReviewController *)self _startPreheatingAllAssets];
 }
 
@@ -2356,16 +2356,16 @@ void __82__PUAvalancheReviewController_viewWillTransitionToSize_withTransitionCo
   v3 = [[PUPhotoPinchGestureRecognizer alloc] initWithTarget:self action:sel__handlePhotoPinch_];
   [(PUPhotoPinchGestureRecognizer *)v3 setDelegate:self];
   [(PUAvalancheReviewController *)self _setPhotoZoomPinchGestureRecognizer:v3];
-  v4 = [(PUAvalancheReviewController *)self view];
-  [v4 addGestureRecognizer:v3];
+  view = [(PUAvalancheReviewController *)self view];
+  [view addGestureRecognizer:v3];
 
   v5 = MEMORY[0x1E696AD98];
-  v6 = [(PUAvalancheReviewController *)self _initialAsset];
-  [v6 imageSize];
+  _initialAsset = [(PUAvalancheReviewController *)self _initialAsset];
+  [_initialAsset imageSize];
   PXSizeGetAspectRatio();
   v7 = [v5 numberWithDouble:?];
-  v8 = [(PUAvalancheReviewController *)self reviewScrubber];
-  [v8 setCellAspectRatio:v7];
+  reviewScrubber = [(PUAvalancheReviewController *)self reviewScrubber];
+  [reviewScrubber setCellAspectRatio:v7];
 
   [(PUAvalancheReviewController *)self _invalidateReviewScrubberHeight];
   [(PUAvalancheReviewController *)self _updateReviewScrubberHeightIfNeeded];
@@ -2397,17 +2397,17 @@ void __42__PUAvalancheReviewController_viewDidLoad__block_invoke(uint64_t a1)
   return PXShouldHideStatusBarWithCameraWorkaround();
 }
 
-- (id)assetsInAssetCollection:(id)a3
+- (id)assetsInAssetCollection:(id)collection
 {
-  v4 = a3;
-  if (v4)
+  collectionCopy = collection;
+  if (collectionCopy)
   {
     if (!self->_assetCollectionsFetchResult)
     {
-      v5 = [(PUAvalancheReviewController *)self assetCollectionsFetchResult];
+      assetCollectionsFetchResult = [(PUAvalancheReviewController *)self assetCollectionsFetchResult];
     }
 
-    v6 = [(NSMutableDictionary *)self->_resultsForAssetCollection objectForKey:v4];
+    v6 = [(NSMutableDictionary *)self->_resultsForAssetCollection objectForKey:collectionCopy];
   }
 
   else
@@ -2420,28 +2420,28 @@ void __42__PUAvalancheReviewController_viewDidLoad__block_invoke(uint64_t a1)
 
 - (PHFetchResult)assetCollectionsFetchResult
 {
-  v2 = self;
+  selfCopy = self;
   v40 = *MEMORY[0x1E69E9840];
   assetCollectionsFetchResult = self->_assetCollectionsFetchResult;
   if (!assetCollectionsFetchResult)
   {
-    v4 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v5 = 1000;
-    resultsForAssetCollection = v2->_resultsForAssetCollection;
-    v2->_resultsForAssetCollection = v4;
+    resultsForAssetCollection = selfCopy->_resultsForAssetCollection;
+    selfCopy->_resultsForAssetCollection = dictionary;
 
     v7 = 1008;
-    v8 = [(PHPhotoLibrary *)v2->_photoLibrary px_standardLibrarySpecificFetchOptions];
-    [v8 setWantsIncrementalChangeDetails:0];
-    v9 = [(PUAvalancheReviewController *)v2 avalancheContainerList];
-    v10 = [v9 containers];
+    px_standardLibrarySpecificFetchOptions = [(PHPhotoLibrary *)selfCopy->_photoLibrary px_standardLibrarySpecificFetchOptions];
+    [px_standardLibrarySpecificFetchOptions setWantsIncrementalChangeDetails:0];
+    avalancheContainerList = [(PUAvalancheReviewController *)selfCopy avalancheContainerList];
+    containers = [avalancheContainerList containers];
 
-    v29 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(v10, "count")}];
+    v29 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(containers, "count")}];
     v31 = 0u;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
-    obj = v10;
+    obj = containers;
     v30 = [obj countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v30)
     {
@@ -2456,21 +2456,21 @@ void __42__PUAvalancheReviewController_viewDidLoad__block_invoke(uint64_t a1)
             objc_enumerationMutation(obj);
           }
 
-          v14 = [*(v12 + 1616) pl_PHAssetCollectionForAssetContainer:*(*(&v31 + 1) + 8 * i) photoLibrary:*(&v2->super.super.super.isa + v7) includeTrash:1];
+          v14 = [*(v12 + 1616) pl_PHAssetCollectionForAssetContainer:*(*(&v31 + 1) + 8 * i) photoLibrary:*(&selfCopy->super.super.super.isa + v7) includeTrash:1];
           if (v14)
           {
             [v29 addObject:v14];
-            v15 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v14 options:v8];
-            [*(&v2->super.super.super.isa + v5) setObject:v15 forKey:v14];
+            v15 = [MEMORY[0x1E6978630] fetchAssetsInAssetCollection:v14 options:px_standardLibrarySpecificFetchOptions];
+            [*(&selfCopy->super.super.super.isa + v5) setObject:v15 forKey:v14];
             v16 = PLOneUpGetLog();
             if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
             {
               [v14 uuid];
               v17 = v11;
-              v18 = v2;
+              v18 = selfCopy;
               v19 = v7;
               v20 = v5;
-              v22 = v21 = v8;
+              v22 = v21 = px_standardLibrarySpecificFetchOptions;
               v23 = [v15 count];
               *buf = 138543618;
               v36 = v22;
@@ -2478,10 +2478,10 @@ void __42__PUAvalancheReviewController_viewDidLoad__block_invoke(uint64_t a1)
               v38 = v23;
               _os_log_impl(&dword_1B36F3000, v16, OS_LOG_TYPE_DEFAULT, "PUAvalanceReviewController: Fetched assets for collection: %{public}@ with count: %lu", buf, 0x16u);
 
-              v8 = v21;
+              px_standardLibrarySpecificFetchOptions = v21;
               v5 = v20;
               v7 = v19;
-              v2 = v18;
+              selfCopy = v18;
               v11 = v17;
               v12 = 0x1E6978000;
             }
@@ -2495,27 +2495,27 @@ void __42__PUAvalancheReviewController_viewDidLoad__block_invoke(uint64_t a1)
     }
 
     v24 = [MEMORY[0x1E6978760] transientCollectionListWithCollections:v29 title:&stru_1F2AC6818];
-    v25 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v24 options:v8];
-    v26 = v2->_assetCollectionsFetchResult;
-    v2->_assetCollectionsFetchResult = v25;
+    v25 = [MEMORY[0x1E6978758] fetchCollectionsInCollectionList:v24 options:px_standardLibrarySpecificFetchOptions];
+    v26 = selfCopy->_assetCollectionsFetchResult;
+    selfCopy->_assetCollectionsFetchResult = v25;
 
-    assetCollectionsFetchResult = v2->_assetCollectionsFetchResult;
+    assetCollectionsFetchResult = selfCopy->_assetCollectionsFetchResult;
   }
 
   return assetCollectionsFetchResult;
 }
 
-- (PUAvalancheReviewController)initWithSpec:(id)a3 startingAtAsset:(id)a4 inAvalanche:(id)a5 currentAssetContainer:(id)a6 photoLibrary:(id)a7
+- (PUAvalancheReviewController)initWithSpec:(id)spec startingAtAsset:(id)asset inAvalanche:(id)avalanche currentAssetContainer:(id)container photoLibrary:(id)library
 {
   v47 = *MEMORY[0x1E69E9840];
-  v39 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
-  v35 = a7;
-  if (v14)
+  specCopy = spec;
+  assetCopy = asset;
+  avalancheCopy = avalanche;
+  containerCopy = container;
+  libraryCopy = library;
+  if (assetCopy)
   {
-    if (v15)
+    if (avalancheCopy)
     {
       goto LABEL_3;
     }
@@ -2523,45 +2523,45 @@ void __42__PUAvalancheReviewController_viewDidLoad__block_invoke(uint64_t a1)
 
   else
   {
-    v37 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v37 handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"asset", v35}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:164 description:{@"Invalid parameter not satisfying: %@", @"asset", libraryCopy}];
 
-    if (v15)
+    if (avalancheCopy)
     {
       goto LABEL_3;
     }
   }
 
-  v38 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v38 handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"avalanche"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:165 description:{@"Invalid parameter not satisfying: %@", @"avalanche"}];
 
 LABEL_3:
-  v36 = v16;
-  if (!v16)
+  v36 = containerCopy;
+  if (!containerCopy)
   {
-    v34 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v34 handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"currentAssetContainer"}];
+    currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler3 handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:166 description:{@"Invalid parameter not satisfying: %@", @"currentAssetContainer"}];
   }
 
-  v17 = [v15 assets];
-  v18 = [v17 indexOfObject:v14];
+  assets = [avalancheCopy assets];
+  v18 = [assets indexOfObject:assetCopy];
 
   if (v18 == 0x7FFFFFFFFFFFFFFFLL || (v40.receiver = self, v40.super_class = PUAvalancheReviewController, v19 = [(PUAvalancheReviewController *)&v40 initWithNibName:0 bundle:0], (self = v19) == 0))
   {
-    v32 = 0;
+    selfCopy = 0;
   }
 
   else
   {
-    objc_storeStrong(&v19->__spec, a3);
-    objc_storeStrong(&self->__avalancheBeingReviewed, a5);
-    objc_storeStrong(&self->__initialAsset, a4);
-    v20 = [v15 userFavorites];
+    objc_storeStrong(&v19->__spec, spec);
+    objc_storeStrong(&self->__avalancheBeingReviewed, avalanche);
+    objc_storeStrong(&self->__initialAsset, asset);
+    userFavorites = [avalancheCopy userFavorites];
     initialFavorites = self->__initialFavorites;
-    self->__initialFavorites = v20;
+    self->__initialFavorites = userFavorites;
 
-    objc_storeStrong(&self->__currentAssetContainer, a6);
-    objc_storeStrong(&self->_photoLibrary, a7);
+    objc_storeStrong(&self->__currentAssetContainer, container);
+    objc_storeStrong(&self->_photoLibrary, library);
     v22 = objc_opt_new();
     cachingImageManager = self->__cachingImageManager;
     self->__cachingImageManager = v22;
@@ -2573,13 +2573,13 @@ LABEL_3:
     v26 = PLOneUpGetLog();
     if (os_log_type_enabled(v26, OS_LOG_TYPE_DEFAULT))
     {
-      v27 = [(PLAvalanche *)self->__avalancheBeingReviewed uuid];
-      v28 = [(PLAvalanche *)self->__avalancheBeingReviewed assets];
-      v29 = [v28 count];
-      v30 = [(PLAssetContainerList *)self->_avalancheContainerList containers];
-      v31 = [v30 count];
+      uuid = [(PLAvalanche *)self->__avalancheBeingReviewed uuid];
+      assets2 = [(PLAvalanche *)self->__avalancheBeingReviewed assets];
+      v29 = [assets2 count];
+      containers = [(PLAssetContainerList *)self->_avalancheContainerList containers];
+      v31 = [containers count];
       *buf = 138543874;
-      v42 = v27;
+      v42 = uuid;
       v43 = 2048;
       v44 = v29;
       v45 = 2048;
@@ -2588,35 +2588,35 @@ LABEL_3:
     }
 
     self = self;
-    v32 = self;
+    selfCopy = self;
   }
 
-  return v32;
+  return selfCopy;
 }
 
 - (PUAvalancheReviewController)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:160 description:{@"%s is not available as initializer", "-[PUAvalancheReviewController init]"}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:160 description:{@"%s is not available as initializer", "-[PUAvalancheReviewController init]"}];
 
   abort();
 }
 
-- (PUAvalancheReviewController)initWithCoder:(id)a3
+- (PUAvalancheReviewController)initWithCoder:(id)coder
 {
-  v5 = a3;
-  v6 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v6 handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:156 description:{@"%s is not available as initializer", "-[PUAvalancheReviewController initWithCoder:]"}];
+  coderCopy = coder;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:156 description:{@"%s is not available as initializer", "-[PUAvalancheReviewController initWithCoder:]"}];
 
   abort();
 }
 
-- (PUAvalancheReviewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PUAvalancheReviewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v9 handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:152 description:{@"%s is not available as initializer", "-[PUAvalancheReviewController initWithNibName:bundle:]"}];
+  nameCopy = name;
+  bundleCopy = bundle;
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PUAvalancheReviewController.m" lineNumber:152 description:{@"%s is not available as initializer", "-[PUAvalancheReviewController initWithNibName:bundle:]"}];
 
   abort();
 }

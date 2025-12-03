@@ -1,12 +1,12 @@
 @interface GSStagingPrefix
-- (BOOL)_refreshWithError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isStagedPath:(id)a3;
+- (BOOL)_refreshWithError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isStagedPath:(id)path;
 - (GSStagingPrefix)init;
-- (GSStagingPrefix)initWithDocumentID:(id)a3;
-- (id)stagingPathforCreatingAdditionWithError:(id *)a3;
-- (void)_invalidate:(BOOL)a3;
-- (void)cleanupStagingPath:(id)a3;
+- (GSStagingPrefix)initWithDocumentID:(id)d;
+- (id)stagingPathforCreatingAdditionWithError:(id *)error;
+- (void)_invalidate:(BOOL)_invalidate;
+- (void)cleanupStagingPath:(id)path;
 - (void)dealloc;
 - (void)finalize;
 @end
@@ -21,9 +21,9 @@
   return 0;
 }
 
-- (GSStagingPrefix)initWithDocumentID:(id)a3
+- (GSStagingPrefix)initWithDocumentID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v8.receiver = self;
   v8.super_class = GSStagingPrefix;
   v5 = [(GSStagingPrefix *)&v8 init];
@@ -31,57 +31,57 @@
   if (v5)
   {
     *(v5 + 7) = -1;
-    *(v5 + 8) = *(v4 + 8);
-    *(v5 + 6) = *(v4 + 8);
+    *(v5 + 8) = *(dCopy + 8);
+    *(v5 + 6) = *(dCopy + 8);
   }
 
   return v6;
 }
 
-- (BOOL)_refreshWithError:(id *)a3
+- (BOOL)_refreshWithError:(id *)error
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_sandboxHandle < 0)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_sandboxHandle < 0)
   {
     v6 = +[GSDaemonProxySync proxy];
-    v7 = [[NSUUID alloc] initWithUUIDBytes:v4->_volumeUUID];
-    deviceID = v4->_deviceID;
+    v7 = [[NSUUID alloc] initWithUUIDBytes:selfCopy->_volumeUUID];
+    deviceID = selfCopy->_deviceID;
     v12 = _NSConcreteStackBlock;
     v13 = 3221225472;
     v14 = sub_100001CD4;
     v15 = &unk_100040A98;
-    v16 = v4;
+    v16 = selfCopy;
     v9 = v6;
     v17 = v9;
     [v9 stagingPrefixForDevice:deviceID volumeUUID:v7 reply:&v12];
-    v10 = [v9 result];
-    if (a3)
+    result = [v9 result];
+    if (error)
     {
-      *a3 = [v9 error];
+      *error = [v9 error];
     }
 
-    v5 = [v10 BOOLValue];
+    bOOLValue = [result BOOLValue];
   }
 
   else
   {
-    v5 = 1;
+    bOOLValue = 1;
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
-  return v5;
+  return bOOLValue;
 }
 
-- (void)_invalidate:(BOOL)a3
+- (void)_invalidate:(BOOL)_invalidate
 {
-  v3 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v3)
+  _invalidateCopy = _invalidate;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (_invalidateCopy)
   {
-    path = v4->_path;
+    path = selfCopy->_path;
     if (path)
     {
       v6 = path;
@@ -101,22 +101,22 @@
     }
   }
 
-  if ((v4->_sandboxHandle & 0x8000000000000000) == 0)
+  if ((selfCopy->_sandboxHandle & 0x8000000000000000) == 0)
   {
     sandbox_extension_release();
-    v4->_sandboxHandle = -1;
+    selfCopy->_sandboxHandle = -1;
   }
 
-  v9 = v4->_path;
-  v4->_path = 0;
+  v9 = selfCopy->_path;
+  selfCopy->_path = 0;
 
-  pathComponents = v4->_pathComponents;
-  v4->_pathComponents = 0;
+  pathComponents = selfCopy->_pathComponents;
+  selfCopy->_pathComponents = 0;
 
-  extension = v4->_extension;
-  v4->_extension = 0;
+  extension = selfCopy->_extension;
+  selfCopy->_extension = 0;
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)finalize
@@ -135,10 +135,10 @@
   [(GSStagingPrefix *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v5 = 1;
   }
@@ -148,7 +148,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(NSString *)self->_path isEqualToString:v4->_path];
+      v5 = [(NSString *)self->_path isEqualToString:equalCopy->_path];
     }
 
     else
@@ -160,10 +160,10 @@
   return v5;
 }
 
-- (id)stagingPathforCreatingAdditionWithError:(id *)a3
+- (id)stagingPathforCreatingAdditionWithError:(id *)error
 {
   v5 = +[NSFileManager defaultManager];
-  if (self->_sandboxHandle < 0 && ![(GSStagingPrefix *)self _refreshWithError:a3])
+  if (self->_sandboxHandle < 0 && ![(GSStagingPrefix *)self _refreshWithError:error])
   {
     v10 = 0;
     v9 = 0;
@@ -185,11 +185,11 @@ LABEL_4:
 
     if ([v8 code] == 642)
     {
-      if (a3)
+      if (error)
       {
         v11 = v9;
         v7 = 0;
-        *a3 = v9;
+        *error = v9;
       }
 
       else
@@ -201,9 +201,9 @@ LABEL_4:
     }
 
     [(GSStagingPrefix *)self _invalidate:1];
-    if ([(GSStagingPrefix *)self _refreshWithError:a3])
+    if ([(GSStagingPrefix *)self _refreshWithError:error])
     {
-      v7 = [v5 gs_createTemporarySubdirectoryOfItem:self->_path withTemplate:@"XXXXXXXX" error:a3];
+      v7 = [v5 gs_createTemporarySubdirectoryOfItem:self->_path withTemplate:@"XXXXXXXX" error:error];
       goto LABEL_4;
     }
 
@@ -215,17 +215,17 @@ LABEL_12:
   return v10;
 }
 
-- (BOOL)isStagedPath:(id)a3
+- (BOOL)isStagedPath:(id)path
 {
-  v3 = sub_1000022A8(self->_path, self->_pathComponents, a3);
+  v3 = sub_1000022A8(self->_path, self->_pathComponents, path);
   v4 = v3 != 0;
 
   return v4;
 }
 
-- (void)cleanupStagingPath:(id)a3
+- (void)cleanupStagingPath:(id)path
 {
-  v3 = sub_1000022A8(self->_path, self->_pathComponents, a3);
+  v3 = sub_1000022A8(self->_path, self->_pathComponents, path);
   if (v3)
   {
     v5 = v3;

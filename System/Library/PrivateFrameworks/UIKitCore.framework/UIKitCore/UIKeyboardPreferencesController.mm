@@ -1,49 +1,49 @@
 @interface UIKeyboardPreferencesController
 + (id)sharedPreferencesController;
-- (BOOL)BOOLForKey:(int)a3;
-- (BOOL)BOOLForPreferenceKey:(id)a3;
+- (BOOL)BOOLForKey:(int)key;
+- (BOOL)BOOLForPreferenceKey:(id)key;
 - (BOOL)allEnabledInputModesAreValid;
 - (BOOL)colorAdaptiveKeyboardBackdropEnabled;
 - (BOOL)colorAdaptiveKeyboardEnabled;
 - (BOOL)currentInputModeSupportsCrescendo;
 - (BOOL)defaultGlobeAsEmojiKeySetting;
 - (BOOL)enableProKeyboard;
-- (BOOL)inputModeSupportsCrescendo:(id)a3 screenTraits:(id)a4;
+- (BOOL)inputModeSupportsCrescendo:(id)crescendo screenTraits:(id)traits;
 - (BOOL)isDictationAsPrimaryInputMode;
 - (BOOL)isPasswordAutoFillAllowed;
-- (BOOL)isPreferenceKeyLockedDown:(id)a3;
+- (BOOL)isPreferenceKeyLockedDown:(id)down;
 - (BOOL)keyboardLanguageIndicatorEnabled;
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (BOOL)showSensitiveUI;
 - (BOOL)spaceConfirmationEnabled;
 - (BOOL)useHardwareGlobeKeyAsEmojiKey;
 - (UIKeyboardPreferencesController)init;
-- (double)rivenSizeFactor:(double)a3;
+- (double)rivenSizeFactor:(double)factor;
 - (id)inputModeUpdateTime;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)methodSignatureForSelector:(SEL)selector;
 - (id)sb_defaults;
-- (id)valueForKey:(int)a3;
-- (id)valueForPreferenceKey:(id)a3;
+- (id)valueForKey:(int)key;
+- (id)valueForPreferenceKey:(id)key;
 - (int64_t)compactAssistantBarPersistentLocation;
 - (int64_t)handBias;
 - (int64_t)visceral;
 - (void)_configurePreferences;
 - (void)dealloc;
-- (void)forwardInvocation:(id)a3;
+- (void)forwardInvocation:(id)invocation;
 - (void)performedFirstReachableKeyboardInteraction;
-- (void)preferencesControllerChanged:(id)a3;
-- (void)saveInputModes:(id)a3;
-- (void)setCompactAssistantBarPersistentLocation:(int64_t)a3;
-- (void)setDictationAsPrimaryInputMode:(BOOL)a3;
-- (void)setDictationAutoPunctuation:(BOOL)a3;
-- (void)setEnableProKeyboard:(BOOL)a3;
-- (void)setEnabledDictationLanguages:(id)a3;
-- (void)setHandBias:(int64_t)a3;
-- (void)setLanguageAwareInputModeLastUsed:(id)a3;
-- (void)setLastUsedDictationLanguages:(id)a3;
-- (void)setValue:(id)a3 forKey:(int)a4;
-- (void)setValue:(id)a3 forPreferenceKey:(id)a4;
-- (void)setVisceral:(int64_t)a3;
+- (void)preferencesControllerChanged:(id)changed;
+- (void)saveInputModes:(id)modes;
+- (void)setCompactAssistantBarPersistentLocation:(int64_t)location;
+- (void)setDictationAsPrimaryInputMode:(BOOL)mode;
+- (void)setDictationAutoPunctuation:(BOOL)punctuation;
+- (void)setEnableProKeyboard:(BOOL)keyboard;
+- (void)setEnabledDictationLanguages:(id)languages;
+- (void)setHandBias:(int64_t)bias;
+- (void)setLanguageAwareInputModeLastUsed:(id)used;
+- (void)setLastUsedDictationLanguages:(id)languages;
+- (void)setValue:(id)value forKey:(int)key;
+- (void)setValue:(id)value forPreferenceKey:(id)key;
+- (void)setVisceral:(int64_t)visceral;
 - (void)synchronizePreferences;
 - (void)touchSynchronizePreferencesTimer;
 @end
@@ -78,10 +78,10 @@ void __62__UIKeyboardPreferencesController_sharedPreferencesController__block_in
   if (v2)
   {
     [(UIKeyboardPreferencesController *)v2 _configurePreferences];
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v5 = *MEMORY[0x1E69D9908];
-    v6 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-    [v4 addObserver:v3 selector:sel_preferencesControllerChanged_ name:v5 object:v6];
+    mEMORY[0x1E69D9688] = [MEMORY[0x1E69D9688] sharedPreferencesController];
+    [defaultCenter addObserver:v3 selector:sel_preferencesControllerChanged_ name:v5 object:mEMORY[0x1E69D9688]];
 
     v7 = v3;
   }
@@ -92,41 +92,41 @@ void __62__UIKeyboardPreferencesController_sharedPreferencesController__block_in
 - (void)_configurePreferences
 {
   v2 = MGGetBoolAnswer();
-  v3 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  mEMORY[0x1E69D9688] = [MEMORY[0x1E69D9688] sharedPreferencesController];
   v4 = MEMORY[0x1E695E118];
-  [v3 _configureKey:@"YukonMagnifiersDisabled" domain:@"com.apple.keyboard.preferences" defaultValue:MEMORY[0x1E695E118]];
+  [mEMORY[0x1E69D9688] _configureKey:@"YukonMagnifiersDisabled" domain:@"com.apple.keyboard.preferences" defaultValue:MEMORY[0x1E695E118]];
 
-  v5 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  mEMORY[0x1E69D9688]2 = [MEMORY[0x1E69D9688] sharedPreferencesController];
   v6 = [MEMORY[0x1E696AD98] numberWithBool:v2];
-  [v5 _configureKey:@"GesturesEnabled" domain:@"com.apple.keyboard.preferences" defaultValue:v6];
+  [mEMORY[0x1E69D9688]2 _configureKey:@"GesturesEnabled" domain:@"com.apple.keyboard.preferences" defaultValue:v6];
 
-  v7 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v7 _configureKey:@"HandwritingAutoConfirmationEnabled" domain:@"com.apple.InputModePreferences" defaultValue:v4];
+  mEMORY[0x1E69D9688]3 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]3 _configureKey:@"HandwritingAutoConfirmationEnabled" domain:@"com.apple.InputModePreferences" defaultValue:v4];
 
-  v8 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v8 _configureKey:@"HandwritingAutoConfirmationMinTimeout" domain:@"com.apple.keyboard" defaultValue:&unk_1EFE2E658];
+  mEMORY[0x1E69D9688]4 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]4 _configureKey:@"HandwritingAutoConfirmationMinTimeout" domain:@"com.apple.keyboard" defaultValue:&unk_1EFE2E658];
 
-  v9 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v9 _configureKey:@"HandwritingAutoConfirmationMaxTimeout" domain:@"com.apple.keyboard" defaultValue:&unk_1EFE2E668];
+  mEMORY[0x1E69D9688]5 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]5 _configureKey:@"HandwritingAutoConfirmationMaxTimeout" domain:@"com.apple.keyboard" defaultValue:&unk_1EFE2E668];
 
-  v10 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  mEMORY[0x1E69D9688]6 = [MEMORY[0x1E69D9688] sharedPreferencesController];
   v11 = MEMORY[0x1E695E110];
-  [v10 _configureKey:@"DidShowGestureKeyboardIntroduction" domain:@"com.apple.keyboard.preferences" defaultValue:MEMORY[0x1E695E110]];
+  [mEMORY[0x1E69D9688]6 _configureKey:@"DidShowGestureKeyboardIntroduction" domain:@"com.apple.keyboard.preferences" defaultValue:MEMORY[0x1E695E110]];
 
-  v12 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v12 _configureKey:@"SwipeDeleteWordEnabled" domain:@"com.apple.keyboard" defaultValue:v11];
+  mEMORY[0x1E69D9688]7 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]7 _configureKey:@"SwipeDeleteWordEnabled" domain:@"com.apple.keyboard" defaultValue:v11];
 
-  v13 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v13 _configureKey:@"RepeatDeleteWordEnabled" domain:@"com.apple.keyboard" defaultValue:v11];
+  mEMORY[0x1E69D9688]8 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]8 _configureKey:@"RepeatDeleteWordEnabled" domain:@"com.apple.keyboard" defaultValue:v11];
 
-  v14 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v14 _configureKey:@"RepeatDeleteWordFirstDelay" domain:@"com.apple.keyboard" defaultValue:&unk_1EFE2E678];
+  mEMORY[0x1E69D9688]9 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]9 _configureKey:@"RepeatDeleteWordFirstDelay" domain:@"com.apple.keyboard" defaultValue:&unk_1EFE2E678];
 
-  v15 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v15 _configureKey:@"RepeatDeleteWordRepeatInterfal" domain:@"com.apple.keyboard" defaultValue:&unk_1EFE2E678];
+  mEMORY[0x1E69D9688]10 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]10 _configureKey:@"RepeatDeleteWordRepeatInterfal" domain:@"com.apple.keyboard" defaultValue:&unk_1EFE2E678];
 
-  v16 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v16 _configureKey:@"RepeatDeleteWordCountForDecrement" domain:@"com.apple.keyboard" defaultValue:&unk_1EFE30EE0];
+  mEMORY[0x1E69D9688]11 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]11 _configureKey:@"RepeatDeleteWordCountForDecrement" domain:@"com.apple.keyboard" defaultValue:&unk_1EFE30EE0];
 
   if (+[UIKeyboard isRedesignedTextCursorEnabled])
   {
@@ -138,66 +138,66 @@ void __62__UIKeyboardPreferencesController_sharedPreferencesController__block_in
     v17 = 2.0;
   }
 
-  v18 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  mEMORY[0x1E69D9688]12 = [MEMORY[0x1E69D9688] sharedPreferencesController];
   v19 = [MEMORY[0x1E696AD98] numberWithDouble:v17];
-  [v18 _configureKey:@"DictationMenuReturnPauseInterval" domain:@"com.apple.keyboard" defaultValue:v19];
+  [mEMORY[0x1E69D9688]12 _configureKey:@"DictationMenuReturnPauseInterval" domain:@"com.apple.keyboard" defaultValue:v19];
 
-  v20 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v20 _configureKey:@"DetachHardwareKeyboardDelayInterval" domain:@"com.apple.keyboard" defaultValue:&unk_1EFE30EF8];
+  mEMORY[0x1E69D9688]13 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]13 _configureKey:@"DetachHardwareKeyboardDelayInterval" domain:@"com.apple.keyboard" defaultValue:&unk_1EFE30EF8];
 
-  v21 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v21 _configureKey:@"ShowPasswordKeyboardInVideo" domain:@"com.apple.keyboard" defaultValue:v11];
+  mEMORY[0x1E69D9688]14 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]14 _configureKey:@"ShowPasswordKeyboardInVideo" domain:@"com.apple.keyboard" defaultValue:v11];
 
-  v22 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v22 _configureKey:@"ShowKeyboardButtonOnDictationPopover" domain:@"com.apple.keyboard" defaultValue:v11];
+  mEMORY[0x1E69D9688]15 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]15 _configureKey:@"ShowKeyboardButtonOnDictationPopover" domain:@"com.apple.keyboard" defaultValue:v11];
 
-  v23 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v23 _configureKey:@"DictationCommandTipsEnabled" domain:@"com.apple.keyboard" defaultValue:v11];
+  mEMORY[0x1E69D9688]16 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]16 _configureKey:@"DictationCommandTipsEnabled" domain:@"com.apple.keyboard" defaultValue:v11];
 
-  v24 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v24 _configureKey:@"DictationWordwiseBackspaceEnabled" domain:@"com.apple.keyboard.preferences" defaultValue:v4];
+  mEMORY[0x1E69D9688]17 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]17 _configureKey:@"DictationWordwiseBackspaceEnabled" domain:@"com.apple.keyboard.preferences" defaultValue:v4];
 
-  v25 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v25 _configureKey:@"ShowDockItemTouchArea" domain:@"com.apple.keyboard.preferences" defaultValue:v11];
+  mEMORY[0x1E69D9688]18 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]18 _configureKey:@"ShowDockItemTouchArea" domain:@"com.apple.keyboard.preferences" defaultValue:v11];
 
-  v26 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v26 _configureKey:@"KeyboardDockItemHitAreaReductionPercent" domain:@"com.apple.keyboard.preferences" defaultValue:&unk_1EFE30F10];
+  mEMORY[0x1E69D9688]19 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]19 _configureKey:@"KeyboardDockItemHitAreaReductionPercent" domain:@"com.apple.keyboard.preferences" defaultValue:&unk_1EFE30F10];
 
-  v27 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v27 _configureKey:@"DidShowInlineCompletionEducationTip" domain:@"com.apple.keyboard.preferences" defaultValue:v11];
+  mEMORY[0x1E69D9688]20 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]20 _configureKey:@"DidShowInlineCompletionEducationTip" domain:@"com.apple.keyboard.preferences" defaultValue:v11];
 
-  v28 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v28 _configureKey:@"InlineCompletionAcceptedBySpaceEventCount" domain:@"com.apple.keyboard.preferences" defaultValue:&unk_1EFE30F28];
+  mEMORY[0x1E69D9688]21 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]21 _configureKey:@"InlineCompletionAcceptedBySpaceEventCount" domain:@"com.apple.keyboard.preferences" defaultValue:&unk_1EFE30F28];
 
-  v29 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v29 _configureKey:@"UseDotKeyOvalHitArea" domain:@"com.apple.keyboard.preferences" defaultValue:v11];
+  mEMORY[0x1E69D9688]22 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]22 _configureKey:@"UseDotKeyOvalHitArea" domain:@"com.apple.keyboard.preferences" defaultValue:v11];
 
-  v30 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v30 _configureKey:@"ShowDotKeyDebugHitArea" domain:@"com.apple.keyboard.preferences" defaultValue:v11];
+  mEMORY[0x1E69D9688]23 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]23 _configureKey:@"ShowDotKeyDebugHitArea" domain:@"com.apple.keyboard.preferences" defaultValue:v11];
 
-  v31 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v31 _configureKey:@"DotKeyHitAreaPercentage" domain:@"com.apple.keyboard.preferences" defaultValue:&unk_1EFE30F40];
+  mEMORY[0x1E69D9688]24 = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688]24 _configureKey:@"DotKeyHitAreaPercentage" domain:@"com.apple.keyboard.preferences" defaultValue:&unk_1EFE30F40];
 }
 
 - (BOOL)showSensitiveUI
 {
   v2 = +[UIKeyboardInputModeController sharedInputModeController];
-  v3 = [v2 deviceStateIsLocked];
+  deviceStateIsLocked = [v2 deviceStateIsLocked];
 
-  if (!v3)
+  if (!deviceStateIsLocked)
   {
     return 1;
   }
 
   v4 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v5 = [v4 preferencesActions];
-  v6 = [v5 sb_defaults];
-  v7 = [v6 BOOLForKey:@"SBSensitiveUIEnabled"];
+  preferencesActions = [v4 preferencesActions];
+  sb_defaults = [preferencesActions sb_defaults];
+  v7 = [sb_defaults BOOLForKey:@"SBSensitiveUIEnabled"];
 
   v8 = +[UIKeyboardPreferencesController sharedPreferencesController];
-  v9 = [v8 preferencesActions];
-  v10 = [v9 sb_defaults];
-  v11 = [v10 objectForKey:@"SBSensitiveUIEnabled"];
+  preferencesActions2 = [v8 preferencesActions];
+  sb_defaults2 = [preferencesActions2 sb_defaults];
+  v11 = [sb_defaults2 objectForKey:@"SBSensitiveUIEnabled"];
 
   if (v11)
   {
@@ -213,9 +213,9 @@ void __62__UIKeyboardPreferencesController_sharedPreferencesController__block_in
 - (int64_t)visceral
 {
   v2 = [(UIKeyboardPreferencesController *)self valueForPreferenceKey:*MEMORY[0x1E69D98F8]];
-  v3 = [v2 integerValue];
+  integerValue = [v2 integerValue];
 
-  return v3;
+  return integerValue;
 }
 
 - (BOOL)keyboardLanguageIndicatorEnabled
@@ -266,12 +266,12 @@ void __62__UIKeyboardPreferencesController_sharedPreferencesController__block_in
   }
 
   v3 = +[UIKeyboardImpl activeInstance];
-  v4 = [v3 textInputTraits];
+  textInputTraits = [v3 textInputTraits];
 
-  v5 = [v4 keyboardType];
+  keyboardType = [textInputTraits keyboardType];
   v6 = +[UIScreen _carScreen];
   v7 = +[UIKBScreenTraits traitsWithScreen:orientation:](UIKBScreenTraits, "traitsWithScreen:orientation:", v6, [v6 _interfaceOrientation]);
-  if ([v4 isCarPlayIdiom])
+  if ([textInputTraits isCarPlayIdiom])
   {
     v8 = +[UIKeyboardImpl activeInstance];
     v9 = [v8 requestedInteractionModel] == 2;
@@ -283,16 +283,16 @@ void __62__UIKeyboardPreferencesController_sharedPreferencesController__block_in
   }
 
   v10 = 0;
-  if (!v9 && v5 != 127)
+  if (!v9 && keyboardType != 127)
   {
     v10 = 1;
-    if ((v5 > 0xB || ((1 << v5) & 0x930) == 0) && v5 != 127)
+    if ((keyboardType > 0xB || ((1 << keyboardType) & 0x930) == 0) && keyboardType != 127)
     {
       v11 = +[UIKeyboardInputModeController sharedInputModeController];
-      v12 = [v11 currentInputMode];
-      v13 = [v12 identifierWithLayouts];
+      currentInputMode = [v11 currentInputMode];
+      identifierWithLayouts = [currentInputMode identifierWithLayouts];
 
-      v10 = [(UIKeyboardPreferencesController *)self inputModeSupportsCrescendo:v13 screenTraits:v7];
+      v10 = [(UIKeyboardPreferencesController *)self inputModeSupportsCrescendo:identifierWithLayouts screenTraits:v7];
     }
   }
 
@@ -321,31 +321,31 @@ void __46__UIKeyboardPreferencesController_sb_defaults__block_invoke()
 
 - (BOOL)isPasswordAutoFillAllowed
 {
-  v2 = [MEMORY[0x1E69ADFB8] sharedConnection];
+  mEMORY[0x1E69ADFB8] = [MEMORY[0x1E69ADFB8] sharedConnection];
   if (objc_opt_respondsToSelector())
   {
-    v3 = [v2 isPasswordAutoFillAllowed];
+    isPasswordAutoFillAllowed = [mEMORY[0x1E69ADFB8] isPasswordAutoFillAllowed];
   }
 
   else
   {
-    v3 = 1;
+    isPasswordAutoFillAllowed = 1;
   }
 
-  return v3;
+  return isPasswordAutoFillAllowed;
 }
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self name:*MEMORY[0x1E69D9908] object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self name:*MEMORY[0x1E69D9908] object:0];
 
   v4.receiver = self;
   v4.super_class = UIKeyboardPreferencesController;
   [(UIKeyboardPreferencesController *)&v4 dealloc];
 }
 
-- (void)preferencesControllerChanged:(id)a3
+- (void)preferencesControllerChanged:(id)changed
 {
   v3 = +[UIKeyboardImpl activeInstance];
   [v3 updateDefaultsWithResults:&__block_literal_global_110_0];
@@ -361,80 +361,80 @@ void __64__UIKeyboardPreferencesController_preferencesControllerChanged___block_
   [v3 postNotificationName:@"UIKeyboardPreferencesDidUpdateNotification" object:0];
 }
 
-- (id)valueForKey:(int)a3
+- (id)valueForKey:(int)key
 {
-  v3 = *&a3;
-  v4 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  v5 = [v4 valueForKey:v3];
+  v3 = *&key;
+  mEMORY[0x1E69D9688] = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  v5 = [mEMORY[0x1E69D9688] valueForKey:v3];
 
   return v5;
 }
 
-- (BOOL)BOOLForKey:(int)a3
+- (BOOL)BOOLForKey:(int)key
 {
-  v3 = *&a3;
-  v4 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  LOBYTE(v3) = [v4 BOOLForKey:v3];
+  v3 = *&key;
+  mEMORY[0x1E69D9688] = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  LOBYTE(v3) = [mEMORY[0x1E69D9688] BOOLForKey:v3];
 
   return v3;
 }
 
 - (void)synchronizePreferences
 {
-  v2 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v2 synchronizePreferences];
+  mEMORY[0x1E69D9688] = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688] synchronizePreferences];
 }
 
 - (void)touchSynchronizePreferencesTimer
 {
-  v2 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  [v2 touchSynchronizePreferencesTimer];
+  mEMORY[0x1E69D9688] = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  [mEMORY[0x1E69D9688] touchSynchronizePreferencesTimer];
 }
 
-- (void)setValue:(id)a3 forKey:(int)a4
+- (void)setValue:(id)value forKey:(int)key
 {
-  v4 = *&a4;
+  v4 = *&key;
   v5 = MEMORY[0x1E69D9688];
-  v6 = a3;
-  v7 = [v5 sharedPreferencesController];
-  [v7 setValue:v6 forKey:v4];
+  valueCopy = value;
+  sharedPreferencesController = [v5 sharedPreferencesController];
+  [sharedPreferencesController setValue:valueCopy forKey:v4];
 }
 
-- (id)valueForPreferenceKey:(id)a3
+- (id)valueForPreferenceKey:(id)key
 {
   v3 = MEMORY[0x1E69D9688];
-  v4 = a3;
-  v5 = [v3 sharedPreferencesController];
-  v6 = [v5 valueForPreferenceKey:v4];
+  keyCopy = key;
+  sharedPreferencesController = [v3 sharedPreferencesController];
+  v6 = [sharedPreferencesController valueForPreferenceKey:keyCopy];
 
   return v6;
 }
 
-- (BOOL)BOOLForPreferenceKey:(id)a3
+- (BOOL)BOOLForPreferenceKey:(id)key
 {
   v3 = MEMORY[0x1E69D9688];
-  v4 = a3;
-  v5 = [v3 sharedPreferencesController];
-  v6 = [v5 BOOLForPreferenceKey:v4];
+  keyCopy = key;
+  sharedPreferencesController = [v3 sharedPreferencesController];
+  v6 = [sharedPreferencesController BOOLForPreferenceKey:keyCopy];
 
   return v6;
 }
 
-- (void)setValue:(id)a3 forPreferenceKey:(id)a4
+- (void)setValue:(id)value forPreferenceKey:(id)key
 {
   v5 = MEMORY[0x1E69D9688];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedPreferencesController];
-  [v8 setValue:v7 forPreferenceKey:v6];
+  keyCopy = key;
+  valueCopy = value;
+  sharedPreferencesController = [v5 sharedPreferencesController];
+  [sharedPreferencesController setValue:valueCopy forPreferenceKey:keyCopy];
 }
 
-- (void)saveInputModes:(id)a3
+- (void)saveInputModes:(id)modes
 {
   v4 = MEMORY[0x1E69D9688];
-  v5 = a3;
-  v6 = [v4 sharedPreferencesController];
-  [v6 updateInputModes:v5];
+  modesCopy = modes;
+  sharedPreferencesController = [v4 sharedPreferencesController];
+  [sharedPreferencesController updateInputModes:modesCopy];
 
   v7 = +[UIKeyboardInputModeController sharedInputModeController];
   v8 = [v7 updateEnabledDictationLanguages:1];
@@ -444,74 +444,74 @@ void __64__UIKeyboardPreferencesController_preferencesControllerChanged___block_
   +[_UIKeyboardUsageTracking keyboardExtensionsOnDevice];
 }
 
-- (void)setLanguageAwareInputModeLastUsed:(id)a3
+- (void)setLanguageAwareInputModeLastUsed:(id)used
 {
   v76 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  if ([v3 length])
+  usedCopy = used;
+  if ([usedCopy length])
   {
     v4 = TIInputModeGetNormalizedIdentifier();
     v5 = [v4 isEqualToString:@"emoji"];
 
     if (v5)
     {
-      v6 = [(UIKeyboardPreferencesController *)self preferencesActions];
-      v7 = [v6 inputModeSelectionSequence];
+      preferencesActions = [(UIKeyboardPreferencesController *)self preferencesActions];
+      inputModeSelectionSequence = [preferencesActions inputModeSelectionSequence];
 
-      if ([v7 count])
+      if ([inputModeSelectionSequence count])
       {
-        v8 = [v7 firstObject];
+        firstObject = [inputModeSelectionSequence firstObject];
       }
 
       else
       {
-        v8 = 0;
+        firstObject = 0;
       }
 
-      v3 = v8;
+      usedCopy = firstObject;
     }
   }
 
-  if ([v3 length])
+  if ([usedCopy length])
   {
     v9 = [(UIKeyboardPreferencesController *)self valueForPreferenceKey:*MEMORY[0x1E69D9868]];
-    v57 = [UIKeyboardInputMode keyboardInputModeWithIdentifier:v3];
+    v57 = [UIKeyboardInputMode keyboardInputModeWithIdentifier:usedCopy];
     v10 = [UIKeyboardInputMode keyboardInputModeWithIdentifier:v9];
     v11 = +[UIKeyboardInputModeController sharedInputModeController];
-    v12 = [v11 inputModeContextIdentifier];
+    inputModeContextIdentifier = [v11 inputModeContextIdentifier];
 
-    if (v12)
+    if (inputModeContextIdentifier)
     {
       v13 = +[UIPeripheralHost sharedInstance];
-      v56 = [v13 lastUsedInputModeForCurrentContext];
+      lastUsedInputModeForCurrentContext = [v13 lastUsedInputModeForCurrentContext];
 
-      if (v56)
+      if (lastUsedInputModeForCurrentContext)
       {
-        v14 = [v56 identifier];
+        identifier = [lastUsedInputModeForCurrentContext identifier];
 
-        v15 = v14;
+        v15 = identifier;
         goto LABEL_14;
       }
 
-      v56 = [UIKeyboardInputMode keyboardInputModeWithIdentifier:v9];
+      lastUsedInputModeForCurrentContext = [UIKeyboardInputMode keyboardInputModeWithIdentifier:v9];
     }
 
     else
     {
-      v56 = v10;
+      lastUsedInputModeForCurrentContext = v10;
     }
 
     v15 = v9;
 LABEL_14:
     v55 = v15;
-    if ((UIKeyboardInputModesEqual(v3, v15) & 1) == 0)
+    if ((UIKeyboardInputModesEqual(usedCopy, v15) & 1) == 0)
     {
       v16 = TIInputModeGetNormalizedIdentifier();
       v17 = [v16 isEqualToString:@"emoji"];
 
       if ((v17 & 1) == 0)
       {
-        if (([v57 isExtensionInputMode] & 1) == 0 && (objc_msgSend(v56, "isExtensionInputMode") & 1) == 0)
+        if (([v57 isExtensionInputMode] & 1) == 0 && (objc_msgSend(lastUsedInputModeForCurrentContext, "isExtensionInputMode") & 1) == 0)
         {
           v18 = TIInputModeGetBaseLanguage();
           v19 = TIInputModeGetBaseLanguage();
@@ -520,13 +520,13 @@ LABEL_14:
           if ((v20 & 1) == 0)
           {
             v21 = MEMORY[0x1E696AEC0];
-            v22 = [MEMORY[0x1E695DF58] preferredLanguages];
-            v23 = [v22 firstObject];
-            v24 = v23;
+            preferredLanguages = [MEMORY[0x1E695DF58] preferredLanguages];
+            firstObject2 = [preferredLanguages firstObject];
+            v24 = firstObject2;
             v25 = @"Unknown";
-            if (v23)
+            if (firstObject2)
             {
-              v25 = v23;
+              v25 = firstObject2;
             }
 
             v26 = [v21 stringWithFormat:@"%@.%@", *MEMORY[0x1E69D9B18], v25];
@@ -536,28 +536,28 @@ LABEL_14:
         }
 
         v28 = +[UIKeyboardInputModeController sharedInputModeController];
-        v29 = [v28 inputModeContextIdentifier];
+        inputModeContextIdentifier2 = [v28 inputModeContextIdentifier];
 
-        if (!v29)
+        if (!inputModeContextIdentifier2)
         {
           if (!+[UIKeyboard usesInputSystemUI])
           {
-            v30 = [(UIKeyboardPreferencesController *)self preferencesActions];
-            [v30 updateLastUsedInputMode:v3];
+            preferencesActions2 = [(UIKeyboardPreferencesController *)self preferencesActions];
+            [preferencesActions2 updateLastUsedInputMode:usedCopy];
           }
 
           v31 = +[UIKeyboardInputModeController sharedInputModeController];
-          [v31 handleLastUsedInputMode:0 withNewInputMode:v3];
+          [v31 handleLastUsedInputMode:0 withNewInputMode:usedCopy];
         }
 
-        v32 = [(UIKeyboardPreferencesController *)self preferencesActions];
-        [v32 updateLastUsedLayout:v3];
+        preferencesActions3 = [(UIKeyboardPreferencesController *)self preferencesActions];
+        [preferencesActions3 updateLastUsedLayout:usedCopy];
 
         [(UIKeyboardPreferencesController *)self touchSynchronizePreferencesTimer];
       }
     }
 
-    v33 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v58 = [(UIKeyboardPreferencesController *)self valueForPreferenceKey:*MEMORY[0x1E69D9860]];
     v34 = TIInputModeGetLanguageWithRegion();
     v69 = 0;
@@ -568,8 +568,8 @@ LABEL_14:
     v74 = [v58 objectForKey:v34];
     if ([v57 isExtensionInputMode])
     {
-      v35 = [v57 languageWithRegion];
-      v36 = [v35 stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
+      languageWithRegion = [v57 languageWithRegion];
+      v36 = [languageWithRegion stringByReplacingOccurrencesOfString:@"-" withString:@"_"];
 
       v64[0] = MEMORY[0x1E69E9820];
       v64[1] = 3221225472;
@@ -578,9 +578,9 @@ LABEL_14:
       v37 = v36;
       v65 = v37;
       v68 = &v69;
-      v38 = v3;
+      v38 = usedCopy;
       v66 = v38;
-      v39 = v33;
+      v39 = array;
       v67 = v39;
       [v58 enumerateKeysAndObjectsUsingBlock:v64];
       if ([v39 count])
@@ -593,7 +593,7 @@ LABEL_14:
         v40 = TIGetDefaultInputModesForLanguage();
         if ([v40 count])
         {
-          v41 = [v40 firstObject];
+          firstObject3 = [v40 firstObject];
           v34 = TIInputModeGetLanguageWithRegion();
 
           v42 = [v58 objectForKey:v34];
@@ -613,26 +613,26 @@ LABEL_14:
       }
     }
 
-    else if ((UIKeyboardInputModesEqual(v3, v70[5]) & 1) == 0)
+    else if ((UIKeyboardInputModesEqual(usedCopy, v70[5]) & 1) == 0)
     {
-      [v33 addObject:v34];
+      [array addObject:v34];
     }
 
-    if (UIKeyboardLayoutDefaultTypeForInputModeIsASCIICapable(v3))
+    if (UIKeyboardLayoutDefaultTypeForInputModeIsASCIICapable(usedCopy))
     {
       v44 = [v58 objectForKey:@"ASCIICapable"];
       v45 = 0;
-      v46 = UIKeyboardInputModesEqual(v3, v44) ^ 1;
+      v46 = UIKeyboardInputModesEqual(usedCopy, v44) ^ 1;
     }
 
     else
     {
       v44 = [v58 objectForKey:@"NonASCII"];
       v46 = 0;
-      v45 = UIKeyboardInputModesEqual(v3, v44) ^ 1;
+      v45 = UIKeyboardInputModesEqual(usedCopy, v44) ^ 1;
     }
 
-    if (([v33 count] != 0) | v46 & 1 | v45 & 1)
+    if (([array count] != 0) | v46 & 1 | v45 & 1)
     {
       if (v58)
       {
@@ -649,8 +649,8 @@ LABEL_14:
       v63 = 0u;
       v60 = 0u;
       v61 = 0u;
-      v49 = v33;
-      v50 = v33;
+      v49 = array;
+      v50 = array;
       v51 = [v50 countByEnumeratingWithState:&v60 objects:v75 count:16];
       if (v51)
       {
@@ -664,7 +664,7 @@ LABEL_14:
               objc_enumerationMutation(v50);
             }
 
-            [v48 setObject:v3 forKey:*(*(&v60 + 1) + 8 * i)];
+            [v48 setObject:usedCopy forKey:*(*(&v60 + 1) + 8 * i)];
           }
 
           v51 = [v50 countByEnumeratingWithState:&v60 objects:v75 count:16];
@@ -673,19 +673,19 @@ LABEL_14:
         while (v51);
       }
 
-      v33 = v49;
+      array = v49;
       if (v46)
       {
-        [v48 setObject:v3 forKey:@"ASCIICapable"];
+        [v48 setObject:usedCopy forKey:@"ASCIICapable"];
       }
 
       if (v45)
       {
-        [v48 setObject:v3 forKey:@"NonASCII"];
+        [v48 setObject:usedCopy forKey:@"NonASCII"];
       }
 
-      v54 = [(UIKeyboardPreferencesController *)self preferencesActions];
-      [v54 updateLastUsedKeyboards:v48];
+      preferencesActions4 = [(UIKeyboardPreferencesController *)self preferencesActions];
+      [preferencesActions4 updateLastUsedKeyboards:v48];
 
       [(UIKeyboardPreferencesController *)self touchSynchronizePreferencesTimer];
     }
@@ -710,13 +710,13 @@ void __69__UIKeyboardPreferencesController_setLanguageAwareInputModeLastUsed___b
 
 - (BOOL)allEnabledInputModesAreValid
 {
-  v2 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-  v3 = [v2 allEnabledInputModesAreValid];
+  mEMORY[0x1E69D9688] = [MEMORY[0x1E69D9688] sharedPreferencesController];
+  allEnabledInputModesAreValid = [mEMORY[0x1E69D9688] allEnabledInputModesAreValid];
 
-  return v3;
+  return allEnabledInputModesAreValid;
 }
 
-- (double)rivenSizeFactor:(double)a3
+- (double)rivenSizeFactor:(double)factor
 {
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
@@ -741,8 +741,8 @@ void __69__UIKeyboardPreferencesController_setLanguageAwareInputModeLastUsed___b
     result = 1.23484848;
   }
 
-  v7 = round(result * a3);
-  if (a3 != 1.0)
+  v7 = round(result * factor);
+  if (factor != 1.0)
   {
     return v7;
   }
@@ -792,21 +792,21 @@ void __51__UIKeyboardPreferencesController_rivenSizeFactor___block_invoke(uint64
         v7 = MEMORY[0x1E695E118];
       }
 
-      v8 = [v7 BOOLValue];
+      bOOLValue = [v7 BOOLValue];
     }
 
     else
     {
-      v8 = 0;
+      bOOLValue = 0;
     }
   }
 
   else
   {
-    v8 = 1;
+    bOOLValue = 1;
   }
 
-  return v8;
+  return bOOLValue;
 }
 
 - (BOOL)enableProKeyboard
@@ -815,41 +815,41 @@ void __51__UIKeyboardPreferencesController_rivenSizeFactor___block_invoke(uint64
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v5 = [objc_opt_self() mainScreen];
-    [v5 _referenceBounds];
-    v4 = v6 == 1366.0;
+    mainScreen = [objc_opt_self() mainScreen];
+    [mainScreen _referenceBounds];
+    bOOLValue = v6 == 1366.0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (void)setEnableProKeyboard:(BOOL)a3
+- (void)setEnableProKeyboard:(BOOL)keyboard
 {
-  v3 = a3;
-  v5 = [(UIKeyboardPreferencesController *)self preferencesActions];
+  keyboardCopy = keyboard;
+  preferencesActions = [(UIKeyboardPreferencesController *)self preferencesActions];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v7 = [(UIKeyboardPreferencesController *)self preferencesActions];
-    [v7 updateEnableProKeyboard:v3];
+    preferencesActions2 = [(UIKeyboardPreferencesController *)self preferencesActions];
+    [preferencesActions2 updateEnableProKeyboard:keyboardCopy];
   }
 }
 
-- (void)setHandBias:(int64_t)a3
+- (void)setHandBias:(int64_t)bias
 {
   v3 = @"None";
-  if (a3 == 1)
+  if (bias == 1)
   {
     v3 = @"Right";
   }
 
-  if (a3 == 2)
+  if (bias == 2)
   {
     v4 = @"Left";
   }
@@ -859,100 +859,100 @@ void __51__UIKeyboardPreferencesController_rivenSizeFactor___block_invoke(uint64
     v4 = v3;
   }
 
-  v5 = [(UIKeyboardPreferencesController *)self preferencesActions];
-  [v5 updateKeyboardHandBias:v4];
+  preferencesActions = [(UIKeyboardPreferencesController *)self preferencesActions];
+  [preferencesActions updateKeyboardHandBias:v4];
 }
 
 - (int64_t)compactAssistantBarPersistentLocation
 {
   v2 = [(UIKeyboardPreferencesController *)self valueForPreferenceKey:*MEMORY[0x1E69D9728]];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
-- (void)setCompactAssistantBarPersistentLocation:(int64_t)a3
+- (void)setCompactAssistantBarPersistentLocation:(int64_t)location
 {
-  v4 = [(UIKeyboardPreferencesController *)self preferencesActions];
-  [v4 updateCompactAssistantBarPersistentLocation:a3];
+  preferencesActions = [(UIKeyboardPreferencesController *)self preferencesActions];
+  [preferencesActions updateCompactAssistantBarPersistentLocation:location];
 }
 
 - (void)performedFirstReachableKeyboardInteraction
 {
-  v3 = [(UIKeyboardPreferencesController *)self preferencesActions];
+  preferencesActions = [(UIKeyboardPreferencesController *)self preferencesActions];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(UIKeyboardPreferencesController *)self preferencesActions];
-    [v5 updateDidPerformFirstReachableKeyboardInteraction];
+    preferencesActions2 = [(UIKeyboardPreferencesController *)self preferencesActions];
+    [preferencesActions2 updateDidPerformFirstReachableKeyboardInteraction];
   }
 }
 
-- (void)setVisceral:(int64_t)a3
+- (void)setVisceral:(int64_t)visceral
 {
-  v5 = [(UIKeyboardPreferencesController *)self preferencesActions];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 updateVisceral:v4];
+  preferencesActions = [(UIKeyboardPreferencesController *)self preferencesActions];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:visceral];
+  [preferencesActions updateVisceral:v4];
 }
 
-- (void)setEnabledDictationLanguages:(id)a3
+- (void)setEnabledDictationLanguages:(id)languages
 {
-  v7 = a3;
-  v4 = [(UIKeyboardPreferencesController *)self preferencesActions];
+  languagesCopy = languages;
+  preferencesActions = [(UIKeyboardPreferencesController *)self preferencesActions];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIKeyboardPreferencesController *)self preferencesActions];
-    [v6 updateEnabledDictationLanguages:v7];
+    preferencesActions2 = [(UIKeyboardPreferencesController *)self preferencesActions];
+    [preferencesActions2 updateEnabledDictationLanguages:languagesCopy];
   }
 }
 
-- (void)setLastUsedDictationLanguages:(id)a3
+- (void)setLastUsedDictationLanguages:(id)languages
 {
-  v7 = a3;
-  v4 = [(UIKeyboardPreferencesController *)self preferencesActions];
+  languagesCopy = languages;
+  preferencesActions = [(UIKeyboardPreferencesController *)self preferencesActions];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(UIKeyboardPreferencesController *)self preferencesActions];
-    [v6 updateLastUsedDictationLanguages:v7];
+    preferencesActions2 = [(UIKeyboardPreferencesController *)self preferencesActions];
+    [preferencesActions2 updateLastUsedDictationLanguages:languagesCopy];
   }
 }
 
-- (void)setDictationAutoPunctuation:(BOOL)a3
+- (void)setDictationAutoPunctuation:(BOOL)punctuation
 {
-  v3 = a3;
-  v5 = [(UIKeyboardPreferencesController *)self preferencesActions];
+  punctuationCopy = punctuation;
+  preferencesActions = [(UIKeyboardPreferencesController *)self preferencesActions];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v8 = [(UIKeyboardPreferencesController *)self preferencesActions];
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v8 updateDictationAutoPunctuation:v7];
+    preferencesActions2 = [(UIKeyboardPreferencesController *)self preferencesActions];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:punctuationCopy];
+    [preferencesActions2 updateDictationAutoPunctuation:v7];
   }
 }
 
-- (void)setDictationAsPrimaryInputMode:(BOOL)a3
+- (void)setDictationAsPrimaryInputMode:(BOOL)mode
 {
-  v3 = a3;
-  v5 = [(UIKeyboardPreferencesController *)self preferencesActions];
+  modeCopy = mode;
+  preferencesActions = [(UIKeyboardPreferencesController *)self preferencesActions];
   v6 = objc_opt_respondsToSelector();
 
   if (v6)
   {
-    v8 = [(UIKeyboardPreferencesController *)self preferencesActions];
-    v7 = [MEMORY[0x1E696AD98] numberWithBool:v3];
-    [v8 updateDictationAsPrimaryInputMode:v7];
+    preferencesActions2 = [(UIKeyboardPreferencesController *)self preferencesActions];
+    v7 = [MEMORY[0x1E696AD98] numberWithBool:modeCopy];
+    [preferencesActions2 updateDictationAsPrimaryInputMode:v7];
   }
 }
 
 - (BOOL)isDictationAsPrimaryInputMode
 {
-  v3 = [(UIKeyboardPreferencesController *)self preferencesActions];
+  preferencesActions = [(UIKeyboardPreferencesController *)self preferencesActions];
   v4 = objc_opt_respondsToSelector();
 
   if ((v4 & 1) == 0)
@@ -963,62 +963,62 @@ void __51__UIKeyboardPreferencesController_rivenSizeFactor___block_invoke(uint64
   return [(UIKeyboardPreferencesController *)self BOOLForPreferenceKey:@"DictationAsPrimaryInputMode"];
 }
 
-- (BOOL)isPreferenceKeyLockedDown:(id)a3
+- (BOOL)isPreferenceKeyLockedDown:(id)down
 {
   v3 = MEMORY[0x1E69D9688];
-  v4 = a3;
-  v5 = [v3 sharedPreferencesController];
-  v6 = [v5 isPreferenceKeyLockedDown:v4];
+  downCopy = down;
+  sharedPreferencesController = [v3 sharedPreferencesController];
+  v6 = [sharedPreferencesController isPreferenceKeyLockedDown:downCopy];
 
   return v6;
 }
 
-- (void)forwardInvocation:(id)a3
+- (void)forwardInvocation:(id)invocation
 {
-  v4 = a3;
+  invocationCopy = invocation;
   v5 = &unk_1F016D470;
-  if (protocol_getMethodDescription(v5, [v4 selector], 1, 1).name)
+  if (protocol_getMethodDescription(v5, [invocationCopy selector], 1, 1).name)
   {
-    v6 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-    [v6 forwardInvocation:v4];
+    mEMORY[0x1E69D9688] = [MEMORY[0x1E69D9688] sharedPreferencesController];
+    [mEMORY[0x1E69D9688] forwardInvocation:invocationCopy];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIKeyboardPreferencesController;
-    [(UIKeyboardPreferencesController *)&v7 forwardInvocation:v4];
+    [(UIKeyboardPreferencesController *)&v7 forwardInvocation:invocationCopy];
   }
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v5 = &unk_1F016D470;
-  if (protocol_getMethodDescription(v5, a3, 1, 1).name)
+  if (protocol_getMethodDescription(v5, selector, 1, 1).name)
   {
-    v6 = [MEMORY[0x1E69D9688] sharedPreferencesController];
-    v7 = [v6 methodSignatureForSelector:a3];
+    mEMORY[0x1E69D9688] = [MEMORY[0x1E69D9688] sharedPreferencesController];
+    v7 = [mEMORY[0x1E69D9688] methodSignatureForSelector:selector];
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = UIKeyboardPreferencesController;
-    v7 = [(UIKeyboardPreferencesController *)&v9 methodSignatureForSelector:a3];
+    v7 = [(UIKeyboardPreferencesController *)&v9 methodSignatureForSelector:selector];
   }
 
   return v7;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5 = &unk_1F016D470;
   v6 = 1;
-  if (!protocol_getMethodDescription(v5, a3, 1, 1).name)
+  if (!protocol_getMethodDescription(v5, selector, 1, 1).name)
   {
     v8.receiver = self;
     v8.super_class = UIKeyboardPreferencesController;
-    v6 = [(UIKeyboardPreferencesController *)&v8 respondsToSelector:a3];
+    v6 = [(UIKeyboardPreferencesController *)&v8 respondsToSelector:selector];
   }
 
   return v6;
@@ -1028,19 +1028,19 @@ void __51__UIKeyboardPreferencesController_rivenSizeFactor___block_invoke(uint64
 {
   v3 = [(UIKeyboardPreferencesController *)self valueForPreferenceKey:*MEMORY[0x1E69D9768]];
   v4 = +[UIKeyboardInputModeController sharedInputModeController];
-  v5 = [v4 enabledInputModeIdentifiers];
+  enabledInputModeIdentifiers = [v4 enabledInputModeIdentifiers];
 
-  if (v3 && [v5 count] >= 3)
+  if (v3 && [enabledInputModeIdentifiers count] >= 3)
   {
-    v6 = [v3 BOOLValue];
+    bOOLValue = [v3 BOOLValue];
   }
 
   else
   {
-    v6 = [(UIKeyboardPreferencesController *)self defaultGlobeAsEmojiKeySetting];
+    bOOLValue = [(UIKeyboardPreferencesController *)self defaultGlobeAsEmojiKeySetting];
   }
 
-  v7 = v6;
+  v7 = bOOLValue;
 
   return v7;
 }
@@ -1048,26 +1048,26 @@ void __51__UIKeyboardPreferencesController_rivenSizeFactor___block_invoke(uint64
 - (BOOL)defaultGlobeAsEmojiKeySetting
 {
   v2 = +[UIKeyboardInputModeController sharedInputModeController];
-  v3 = [v2 enabledInputModeIdentifiers];
+  enabledInputModeIdentifiers = [v2 enabledInputModeIdentifiers];
 
   IsEmojiInputModeActive = UIKeyboardIsEmojiInputModeActive();
-  if ([v3 count] == 2 && (IsEmojiInputModeActive & 1) != 0)
+  if ([enabledInputModeIdentifiers count] == 2 && (IsEmojiInputModeActive & 1) != 0)
   {
-    v5 = 1;
+    capsLockKeyHasLanguageSwitchLabel = 1;
   }
 
-  else if ((([v3 count] == 3) & IsEmojiInputModeActive) == 1 && (+[UIKeyboardImpl sharedInstance](UIKeyboardImpl, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isCapsLockASCIIToggle"), v6, v7))
+  else if ((([enabledInputModeIdentifiers count] == 3) & IsEmojiInputModeActive) == 1 && (+[UIKeyboardImpl sharedInstance](UIKeyboardImpl, "sharedInstance"), v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v6, "isCapsLockASCIIToggle"), v6, v7))
   {
     v8 = +[UIKeyboardImpl sharedInstance];
-    v5 = [v8 capsLockKeyHasLanguageSwitchLabel];
+    capsLockKeyHasLanguageSwitchLabel = [v8 capsLockKeyHasLanguageSwitchLabel];
   }
 
   else
   {
-    v5 = 0;
+    capsLockKeyHasLanguageSwitchLabel = 0;
   }
 
-  return v5;
+  return capsLockKeyHasLanguageSwitchLabel;
 }
 
 - (BOOL)colorAdaptiveKeyboardEnabled
@@ -1084,9 +1084,9 @@ void __51__UIKeyboardPreferencesController_rivenSizeFactor___block_invoke(uint64
   }
 
   v4 = v3;
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)colorAdaptiveKeyboardBackdropEnabled
@@ -1103,19 +1103,19 @@ void __51__UIKeyboardPreferencesController_rivenSizeFactor___block_invoke(uint64
   }
 
   v4 = v3;
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
-- (BOOL)inputModeSupportsCrescendo:(id)a3 screenTraits:(id)a4
+- (BOOL)inputModeSupportsCrescendo:(id)crescendo screenTraits:(id)traits
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
+  crescendoCopy = crescendo;
+  traitsCopy = traits;
+  v7 = traitsCopy;
   if (inputModeSupportsCrescendo_screenTraits__supportedModes)
   {
-    if (!v6)
+    if (!traitsCopy)
     {
       goto LABEL_10;
     }
@@ -1143,10 +1143,10 @@ void __51__UIKeyboardPreferencesController_rivenSizeFactor___block_invoke(uint64
     }
   }
 
-  if ((UIKeyboardDynamicKeyboardShouldFallBackToStaticKeyboard(v7, v5) & 1) == 0)
+  if ((UIKeyboardDynamicKeyboardShouldFallBackToStaticKeyboard(v7, crescendoCopy) & 1) == 0)
   {
 LABEL_10:
-    v11 = KBStarLayoutString(v5);
+    v11 = KBStarLayoutString(crescendoCopy);
     v10 = [inputModeSupportsCrescendo_screenTraits__supportedModes containsObject:v11];
 
     goto LABEL_11;

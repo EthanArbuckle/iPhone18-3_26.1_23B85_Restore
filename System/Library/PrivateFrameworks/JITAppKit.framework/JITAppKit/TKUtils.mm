@@ -1,29 +1,29 @@
 @interface TKUtils
-+ (BOOL)decompressFile:(id)a3 toDestinationPath:(id)a4 algorithm:(int)a5;
-+ (id)URL:(id)a3 withQueryParameters:(id)a4 addKeys:(id)a5 removeKeys:(id)a6 escape:(BOOL)a7;
++ (BOOL)decompressFile:(id)file toDestinationPath:(id)path algorithm:(int)algorithm;
++ (id)URL:(id)l withQueryParameters:(id)parameters addKeys:(id)keys removeKeys:(id)removeKeys escape:(BOOL)escape;
 + (id)applicationLibraryPath;
-+ (id)decompressData:(id)a3 algorithm:(int)a4;
-+ (id)decompressData:(id)a3 algorithm:(int)a4 operation:(int)a5;
-+ (id)hexForColor:(id)a3 withAlpha:(BOOL)a4;
-+ (id)httpDataURLEncoded:(id)a3;
-+ (id)uniqueKeyForURL:(id)a3;
++ (id)decompressData:(id)data algorithm:(int)algorithm;
++ (id)decompressData:(id)data algorithm:(int)algorithm operation:(int)operation;
++ (id)hexForColor:(id)color withAlpha:(BOOL)alpha;
++ (id)httpDataURLEncoded:(id)encoded;
++ (id)uniqueKeyForURL:(id)l;
 @end
 
 @implementation TKUtils
 
-+ (BOOL)decompressFile:(id)a3 toDestinationPath:(id)a4 algorithm:(int)a5
++ (BOOL)decompressFile:(id)file toDestinationPath:(id)path algorithm:(int)algorithm
 {
-  v14 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, file);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
-  v11 = a5;
+  objc_storeStrong(&v12, path);
+  algorithmCopy = algorithm;
   v10 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:location[0]];
   if ([v10 length])
   {
-    v8 = [v14 decompressData:v10 algorithm:v11];
+    v8 = [selfCopy decompressData:v10 algorithm:algorithmCopy];
     if ([v8 length])
     {
       v15 = [v8 writeToFile:v12 options:1073741825 error:0] & 1;
@@ -50,28 +50,28 @@
   return v15 & 1;
 }
 
-+ (id)decompressData:(id)a3 algorithm:(int)a4
++ (id)decompressData:(id)data algorithm:(int)algorithm
 {
-  v8 = a1;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v6 = [v8 decompressData:location[0] algorithm:a4 operation:1];
+  objc_storeStrong(location, data);
+  v6 = [selfCopy decompressData:location[0] algorithm:algorithm operation:1];
   objc_storeStrong(location, 0);
 
   return v6;
 }
 
-+ (id)decompressData:(id)a3 algorithm:(int)a4 operation:(int)a5
++ (id)decompressData:(id)data algorithm:(int)algorithm operation:(int)operation
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v19 = a4;
-  v18 = a5;
+  objc_storeStrong(location, data);
+  algorithmCopy = algorithm;
+  operationCopy = operation;
   memset(&__b, 0, sizeof(__b));
-  v16 = compression_stream_init(&__b, a5, a4);
+  v16 = compression_stream_init(&__b, operation, algorithm);
   if (v16)
   {
     v21 = 0;
@@ -89,7 +89,7 @@
     __b.dst_ptr = v13;
     __b.dst_size = 0x4000;
     v12 = objc_alloc_init(MEMORY[0x277CBEB28]);
-    flags = v18 == 0;
+    flags = operationCopy == 0;
     while (v16 == COMPRESSION_STATUS_OK)
     {
       v16 = compression_stream_process(&__b, flags);
@@ -133,30 +133,30 @@ LABEL_17:
 + (id)applicationLibraryPath
 {
   v3 = NSSearchPathForDirectoriesInDomains(NSLibraryDirectory, 1uLL, 1);
-  v4 = [(NSArray *)v3 firstObject];
+  firstObject = [(NSArray *)v3 firstObject];
   MEMORY[0x277D82BD8](v3);
 
-  return v4;
+  return firstObject;
 }
 
-+ (id)uniqueKeyForURL:(id)a3
++ (id)uniqueKeyForURL:(id)l
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v4 = [MCLURLDataLoader uniqueKeyForURL:location[0]];
   objc_storeStrong(location, 0);
 
   return v4;
 }
 
-+ (id)httpDataURLEncoded:(id)a3
++ (id)httpDataURLEncoded:(id)encoded
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, encoded);
   v17 = &httpDataURLEncoded__onceToken;
   v16 = 0;
   objc_storeStrong(&v16, &__block_literal_global_1);
@@ -177,9 +177,9 @@ LABEL_17:
   [v4 enumerateKeysAndObjectsUsingBlock:&v8];
   v7 = objc_alloc_init(MEMORY[0x277CCACE0]);
   [v7 setQueryItems:v14];
-  v5 = [v7 query];
-  v6 = [v5 dataUsingEncoding:4];
-  MEMORY[0x277D82BD8](v5);
+  query = [v7 query];
+  v6 = [query dataUsingEncoding:4];
+  MEMORY[0x277D82BD8](query);
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v14, 0);
@@ -245,19 +245,19 @@ void __30__TKUtils_httpDataURLEncoded___block_invoke_2(void *a1, void *a2, void 
   objc_storeStrong(location, 0);
 }
 
-+ (id)URL:(id)a3 withQueryParameters:(id)a4 addKeys:(id)a5 removeKeys:(id)a6 escape:(BOOL)a7
++ (id)URL:(id)l withQueryParameters:(id)parameters addKeys:(id)keys removeKeys:(id)removeKeys escape:(BOOL)escape
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, l);
   v53 = 0;
-  objc_storeStrong(&v53, a4);
+  objc_storeStrong(&v53, parameters);
   v52 = 0;
-  objc_storeStrong(&v52, a5);
+  objc_storeStrong(&v52, keys);
   v51 = 0;
-  objc_storeStrong(&v51, a6);
-  v50 = a7;
+  objc_storeStrong(&v51, removeKeys);
+  escapeCopy = escape;
   v56 = &URL_withQueryParameters_addKeys_removeKeys_escape__onceToken;
   v55 = 0;
   objc_storeStrong(&v55, &__block_literal_global_10);
@@ -269,12 +269,12 @@ void __30__TKUtils_httpDataURLEncoded___block_invoke_2(void *a1, void *a2, void 
   objc_storeStrong(&v55, 0);
   v7 = objc_alloc(MEMORY[0x277CCACE0]);
   v49 = [v7 initWithURL:location[0] resolvingAgainstBaseURL:0];
-  v20 = [v49 percentEncodedQuery];
+  percentEncodedQuery = [v49 percentEncodedQuery];
   [v49 setQuery:?];
-  MEMORY[0x277D82BD8](v20);
-  v21 = [v49 queryItems];
-  v48 = [v21 mutableCopy];
-  MEMORY[0x277D82BD8](v21);
+  MEMORY[0x277D82BD8](percentEncodedQuery);
+  queryItems = [v49 queryItems];
+  v48 = [queryItems mutableCopy];
+  MEMORY[0x277D82BD8](queryItems);
   if (v48)
   {
     v16 = v48;
@@ -300,7 +300,7 @@ void __30__TKUtils_httpDataURLEncoded___block_invoke_2(void *a1, void *a2, void 
     v37 = __61__TKUtils_URL_withQueryParameters_addKeys_removeKeys_escape___block_invoke_3;
     v38 = &unk_2797EE310;
     v39 = MEMORY[0x277D82BE0](v53);
-    v41 = v50;
+    v41 = escapeCopy;
     v40 = MEMORY[0x277D82BE0](v48);
     [v19 enumerateObjectsUsingBlock:&v34];
     if ([v48 count])
@@ -323,7 +323,7 @@ void __30__TKUtils_httpDataURLEncoded___block_invoke_2(void *a1, void *a2, void 
     v28 = 0;
     v29 = __61__TKUtils_URL_withQueryParameters_addKeys_removeKeys_escape___block_invoke_5;
     v30 = &unk_2797EE338;
-    v32 = v50;
+    v32 = escapeCopy;
     v31 = MEMORY[0x277D82BE0](v33);
     [v14 enumerateKeysAndObjectsUsingBlock:&v26];
     if ([v33 count])
@@ -335,9 +335,9 @@ void __30__TKUtils_httpDataURLEncoded___block_invoke_2(void *a1, void *a2, void 
     objc_storeStrong(&v33, 0);
   }
 
-  v12 = [v49 query];
+  query = [v49 query];
   [v49 setPercentEncodedQuery:?];
-  MEMORY[0x277D82BD8](v12);
+  MEMORY[0x277D82BD8](query);
   v11 = [v49 URL];
   objc_storeStrong(&v48, 0);
   objc_storeStrong(&v49, 0);
@@ -525,13 +525,13 @@ void __61__TKUtils_URL_withQueryParameters_addKeys_removeKeys_escape___block_inv
   objc_storeStrong(location, 0);
 }
 
-+ (id)hexForColor:(id)a3 withAlpha:(BOOL)a4
++ (id)hexForColor:(id)color withAlpha:(BOOL)alpha
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v14 = a4;
+  objc_storeStrong(location, color);
+  alphaCopy = alpha;
   v13 = 0.0;
   v12 = 0.0;
   v11 = 0.0;
@@ -540,7 +540,7 @@ void __61__TKUtils_URL_withQueryParameters_addKeys_removeKeys_escape___block_inv
   v9 = (v13 * 255.0);
   v8 = (v12 * 255.0);
   v7 = (v11 * 255.0);
-  if (v14)
+  if (alphaCopy)
   {
     v16 = [MEMORY[0x277CCACA8] stringWithFormat:@"%02X%02X%02X%02X", v9, v8, v7, (v10 * 255.0)];
   }

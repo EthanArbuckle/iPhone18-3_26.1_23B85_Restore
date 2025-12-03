@@ -1,29 +1,29 @@
 @interface UIPencilInteractionTap
 - (UIPencilInteractionTap)init;
-- (id)_initWithTimestamp:(double)a3 hoverPose:;
-- (id)debugDescriptionWithMultilinePrefix:(id)a3;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
+- (id)_initWithTimestamp:(double)timestamp hoverPose:;
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (id)succinctDescriptionBuilder;
 @end
 
 @implementation UIPencilInteractionTap
 
-- (id)_initWithTimestamp:(double)a3 hoverPose:
+- (id)_initWithTimestamp:(double)timestamp hoverPose:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v8.receiver = a1;
+  v8.receiver = self;
   v8.super_class = UIPencilInteractionTap;
   v5 = objc_msgSendSuper2(&v8, sel_init);
   v6 = v5;
   if (v5)
   {
-    *(v5 + 1) = a3;
+    *(v5 + 1) = timestamp;
     objc_storeStrong(v5 + 2, a2);
   }
 
@@ -32,18 +32,18 @@
 
 - (UIPencilInteractionTap)init
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v4 handleFailureInMethod:a2 object:self file:@"UIPencilInteraction.m" lineNumber:383 description:{@"%s: init is not allowed on %@", "-[UIPencilInteractionTap init]", objc_opt_class()}];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"UIPencilInteraction.m" lineNumber:383 description:{@"%s: init is not allowed on %@", "-[UIPencilInteractionTap init]", objc_opt_class()}];
 
   return 0;
 }
 
 - (id)succinctDescription
 {
-  v2 = [(UIPencilInteractionTap *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(UIPencilInteractionTap *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 - (id)succinctDescriptionBuilder
@@ -52,46 +52,46 @@
   hoverPose = self->_hoverPose;
   if (hoverPose)
   {
-    v5 = [(UIPencilHoverPose *)hoverPose succinctDescription];
+    succinctDescription = [(UIPencilHoverPose *)hoverPose succinctDescription];
   }
 
   else
   {
-    v5 = @"(nil)";
+    succinctDescription = @"(nil)";
   }
 
-  v6 = [v3 appendObject:v5 withName:@"hoverPose"];
+  v6 = [v3 appendObject:succinctDescription withName:@"hoverPose"];
 
   return v3;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIPencilInteractionTap *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIPencilInteractionTap *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)debugDescriptionWithMultilinePrefix:(id)a3
+- (id)debugDescriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(UIPencilInteractionTap *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(UIPencilInteractionTap *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v5 = [MEMORY[0x1E698E680] builderWithObject:self];
-  [v5 setActiveMultilinePrefix:a3];
+  [v5 setActiveMultilinePrefix:prefix];
   v10[0] = MEMORY[0x1E69E9820];
   v10[1] = 3221225472;
   v10[2] = __64__UIPencilInteractionTap_descriptionBuilderWithMultilinePrefix___block_invoke;
   v10[3] = &unk_1E70F35B8;
   v6 = v5;
   v11 = v6;
-  v12 = self;
+  selfCopy = self;
   v7 = [v6 modifyBody:v10];
   v8 = v6;
 

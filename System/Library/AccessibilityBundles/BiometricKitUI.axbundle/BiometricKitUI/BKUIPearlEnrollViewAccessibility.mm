@@ -1,19 +1,19 @@
 @interface BKUIPearlEnrollViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BKUIPearlEnrollViewAccessibility)init;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_updateRaiseLowerGuidanceLabelIfNeededForPitch:(double)a3;
+- (void)_updateRaiseLowerGuidanceLabelIfNeededForPitch:(double)pitch;
 @end
 
 @implementation BKUIPearlEnrollViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BKUIPearlEnrollView" hasInstanceVariable:@"_tutorialMovieView" withType:"BKUIPearlMovieLoopView"];
-  [v3 validateClass:@"BKUIPearlEnrollView" hasInstanceVariable:@"_repositionPhoneLabel" withType:"UILabel"];
-  [v3 validateClass:@"BKUIPearlEnrollView" hasInstanceMethod:@"state" withFullSignature:{"i", 0}];
-  [v3 validateClass:@"BKUIPearlEnrollView" hasInstanceMethod:@"_updateRaiseLowerGuidanceLabelIfNeededForPitch:" withFullSignature:{"v", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BKUIPearlEnrollView" hasInstanceVariable:@"_tutorialMovieView" withType:"BKUIPearlMovieLoopView"];
+  [validationsCopy validateClass:@"BKUIPearlEnrollView" hasInstanceVariable:@"_repositionPhoneLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"BKUIPearlEnrollView" hasInstanceMethod:@"state" withFullSignature:{"i", 0}];
+  [validationsCopy validateClass:@"BKUIPearlEnrollView" hasInstanceMethod:@"_updateRaiseLowerGuidanceLabelIfNeededForPitch:" withFullSignature:{"v", "d", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -41,18 +41,18 @@
   return v3;
 }
 
-- (void)_updateRaiseLowerGuidanceLabelIfNeededForPitch:(double)a3
+- (void)_updateRaiseLowerGuidanceLabelIfNeededForPitch:(double)pitch
 {
   v7.receiver = self;
   v7.super_class = BKUIPearlEnrollViewAccessibility;
-  [(BKUIPearlEnrollViewAccessibility *)&v7 _updateRaiseLowerGuidanceLabelIfNeededForPitch:a3];
+  [(BKUIPearlEnrollViewAccessibility *)&v7 _updateRaiseLowerGuidanceLabelIfNeededForPitch:pitch];
   if ([(BKUIPearlEnrollViewAccessibility *)self safeIntForKey:@"_state"]== 4)
   {
     v4 = [(BKUIPearlEnrollViewAccessibility *)self _accessibilityStringForLabelKeyValues:@"_repositionPhoneLabel"];
     if ([v4 length])
     {
-      v5 = [(BKUIPearlEnrollViewAccessibility *)self _axSpokenGuidance];
-      v6 = [v4 isEqualToString:v5];
+      _axSpokenGuidance = [(BKUIPearlEnrollViewAccessibility *)self _axSpokenGuidance];
+      v6 = [v4 isEqualToString:_axSpokenGuidance];
 
       if ((v6 & 1) == 0)
       {

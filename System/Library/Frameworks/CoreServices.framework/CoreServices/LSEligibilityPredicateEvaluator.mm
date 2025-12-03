@@ -1,29 +1,29 @@
 @interface LSEligibilityPredicateEvaluator
 + (id)sharedCachingEligibilityPredicateEvaluator;
-- (LSEligibilityPredicateEvaluator)initWithResolver:(id)a3;
-- (id)evaluatePredicate:(id)a3 error:(id *)a4;
+- (LSEligibilityPredicateEvaluator)initWithResolver:(id)resolver;
+- (id)evaluatePredicate:(id)predicate error:(id *)error;
 @end
 
 @implementation LSEligibilityPredicateEvaluator
 
-- (LSEligibilityPredicateEvaluator)initWithResolver:(id)a3
+- (LSEligibilityPredicateEvaluator)initWithResolver:(id)resolver
 {
-  v5 = a3;
+  resolverCopy = resolver;
   v9.receiver = self;
   v9.super_class = LSEligibilityPredicateEvaluator;
   v6 = [(LSEligibilityPredicateEvaluator *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_resolver, a3);
+    objc_storeStrong(&v6->_resolver, resolver);
   }
 
   return v7;
 }
 
-- (id)evaluatePredicate:(id)a3 error:(id *)a4
+- (id)evaluatePredicate:(id)predicate error:(id *)error
 {
-  v4 = [a3 evaluateWithDomainEligibilityResolver:self->_resolver error:a4];
+  v4 = [predicate evaluateWithDomainEligibilityResolver:self->_resolver error:error];
 
   return v4;
 }

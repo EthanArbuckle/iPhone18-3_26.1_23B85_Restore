@@ -1,119 +1,119 @@
 @interface CHSRemoteDevice
-- (BOOL)isEqual:(id)a3;
-- (CHSRemoteDevice)initWithCoder:(id)a3;
-- (CHSRemoteDevice)initWithName:(id)a3 relationshipID:(id)a4 deviceID:(id)a5 currentSupportedVersion:(int64_t)a6 minSupportedVersion:(int64_t)a7 isPossibleSource:(BOOL)a8 pairingState:(int64_t)a9 lastConnectionDate:(id)a10 deviceType:(int64_t)a11;
-- (id)_initWithDevice:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (CHSRemoteDevice)initWithCoder:(id)coder;
+- (CHSRemoteDevice)initWithName:(id)name relationshipID:(id)d deviceID:(id)iD currentSupportedVersion:(int64_t)version minSupportedVersion:(int64_t)supportedVersion isPossibleSource:(BOOL)source pairingState:(int64_t)state lastConnectionDate:(id)self0 deviceType:(int64_t)self1;
+- (id)_initWithDevice:(id)device;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CHSRemoteDevice
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeObject:self->_name forKey:@"name"];
-  [v4 encodeObject:self->_relationshipID forKey:@"relationshipID"];
-  [v4 encodeObject:self->_deviceID forKey:@"deviceID"];
-  [v4 encodeInt32:LODWORD(self->_currentSupportedVersion) forKey:@"currentSupportedVersion"];
-  [v4 encodeInt32:LODWORD(self->_minSupportedVersion) forKey:@"minSupportedVersion"];
-  [v4 encodeBool:self->_isPossibleSource forKey:@"isPossibleSource"];
-  [v4 encodeInt32:LODWORD(self->_pairingState) forKey:@"pairingState"];
-  [v4 encodeObject:self->_lastConnectionDate forKey:@"lastConnectionDate"];
-  [v4 encodeInt32:LODWORD(self->_deviceType) forKey:@"deviceType"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_name forKey:@"name"];
+  [coderCopy encodeObject:self->_relationshipID forKey:@"relationshipID"];
+  [coderCopy encodeObject:self->_deviceID forKey:@"deviceID"];
+  [coderCopy encodeInt32:LODWORD(self->_currentSupportedVersion) forKey:@"currentSupportedVersion"];
+  [coderCopy encodeInt32:LODWORD(self->_minSupportedVersion) forKey:@"minSupportedVersion"];
+  [coderCopy encodeBool:self->_isPossibleSource forKey:@"isPossibleSource"];
+  [coderCopy encodeInt32:LODWORD(self->_pairingState) forKey:@"pairingState"];
+  [coderCopy encodeObject:self->_lastConnectionDate forKey:@"lastConnectionDate"];
+  [coderCopy encodeInt32:LODWORD(self->_deviceType) forKey:@"deviceType"];
 }
 
-- (CHSRemoteDevice)initWithName:(id)a3 relationshipID:(id)a4 deviceID:(id)a5 currentSupportedVersion:(int64_t)a6 minSupportedVersion:(int64_t)a7 isPossibleSource:(BOOL)a8 pairingState:(int64_t)a9 lastConnectionDate:(id)a10 deviceType:(int64_t)a11
+- (CHSRemoteDevice)initWithName:(id)name relationshipID:(id)d deviceID:(id)iD currentSupportedVersion:(int64_t)version minSupportedVersion:(int64_t)supportedVersion isPossibleSource:(BOOL)source pairingState:(int64_t)state lastConnectionDate:(id)self0 deviceType:(int64_t)self1
 {
-  v17 = a3;
-  v18 = a4;
-  v19 = a5;
-  v20 = a10;
+  nameCopy = name;
+  dCopy = d;
+  iDCopy = iD;
+  dateCopy = date;
   v31.receiver = self;
   v31.super_class = CHSRemoteDevice;
   v21 = [(CHSRemoteDevice *)&v31 init];
   if (v21)
   {
-    v22 = [v17 copy];
+    v22 = [nameCopy copy];
     name = v21->_name;
     v21->_name = v22;
 
-    v24 = [v18 copy];
+    v24 = [dCopy copy];
     relationshipID = v21->_relationshipID;
     v21->_relationshipID = v24;
 
-    v26 = [v19 copy];
+    v26 = [iDCopy copy];
     deviceID = v21->_deviceID;
     v21->_deviceID = v26;
 
-    v21->_currentSupportedVersion = a6;
-    v21->_minSupportedVersion = a7;
-    v21->_isPossibleSource = a8;
-    v21->_pairingState = a9;
-    v28 = [v20 copy];
+    v21->_currentSupportedVersion = version;
+    v21->_minSupportedVersion = supportedVersion;
+    v21->_isPossibleSource = source;
+    v21->_pairingState = state;
+    v28 = [dateCopy copy];
     lastConnectionDate = v21->_lastConnectionDate;
     v21->_lastConnectionDate = v28;
 
-    v21->_deviceType = a11;
+    v21->_deviceType = type;
   }
 
   return v21;
 }
 
-- (CHSRemoteDevice)initWithCoder:(id)a3
+- (CHSRemoteDevice)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = CHSRemoteDevice;
   v5 = [(CHSRemoteDevice *)&v15 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"name"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"name"];
     name = v5->_name;
     v5->_name = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"relationshipID"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"relationshipID"];
     relationshipID = v5->_relationshipID;
     v5->_relationshipID = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deviceID"];
     deviceID = v5->_deviceID;
     v5->_deviceID = v10;
 
-    v5->_currentSupportedVersion = [v4 decodeInt32ForKey:@"currentSupportedVersion"];
-    v5->_minSupportedVersion = [v4 decodeInt32ForKey:@"minSupportedVersion"];
-    v5->_isPossibleSource = [v4 decodeBoolForKey:@"isPossibleSource"];
-    v5->_pairingState = [v4 decodeInt32ForKey:@"pairingState"];
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"lastConnectionDate"];
+    v5->_currentSupportedVersion = [coderCopy decodeInt32ForKey:@"currentSupportedVersion"];
+    v5->_minSupportedVersion = [coderCopy decodeInt32ForKey:@"minSupportedVersion"];
+    v5->_isPossibleSource = [coderCopy decodeBoolForKey:@"isPossibleSource"];
+    v5->_pairingState = [coderCopy decodeInt32ForKey:@"pairingState"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"lastConnectionDate"];
     lastConnectionDate = v5->_lastConnectionDate;
     v5->_lastConnectionDate = v12;
 
-    v5->_deviceType = [v4 decodeInt32ForKey:@"deviceType"];
+    v5->_deviceType = [coderCopy decodeInt32ForKey:@"deviceType"];
   }
 
   return v5;
 }
 
-- (id)_initWithDevice:(id)a3
+- (id)_initWithDevice:(id)device
 {
-  v4 = a3;
+  deviceCopy = device;
   v8.receiver = self;
   v8.super_class = CHSRemoteDevice;
   v5 = [(CHSRemoteDevice *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeStrong(&v5->_name, v4[1]);
-    objc_storeStrong(&v6->_relationshipID, v4[2]);
-    objc_storeStrong(&v6->_deviceID, v4[3]);
-    v6->_currentSupportedVersion = v4[4];
-    v6->_minSupportedVersion = v4[5];
-    v6->_isPossibleSource = *(v4 + 48);
-    v6->_pairingState = v4[7];
-    objc_storeStrong(&v6->_lastConnectionDate, v4[8]);
-    v6->_deviceType = v4[9];
+    objc_storeStrong(&v5->_name, deviceCopy[1]);
+    objc_storeStrong(&v6->_relationshipID, deviceCopy[2]);
+    objc_storeStrong(&v6->_deviceID, deviceCopy[3]);
+    v6->_currentSupportedVersion = deviceCopy[4];
+    v6->_minSupportedVersion = deviceCopy[5];
+    v6->_isPossibleSource = *(deviceCopy + 48);
+    v6->_pairingState = deviceCopy[7];
+    objc_storeStrong(&v6->_lastConnectionDate, deviceCopy[8]);
+    v6->_deviceType = deviceCopy[9];
   }
 
   return v6;
@@ -122,27 +122,27 @@
 - (id)description
 {
   v14 = MEMORY[0x1E696AEC0];
-  v15 = [(CHSRemoteDevice *)self name];
-  v3 = [(CHSRemoteDevice *)self relationshipID];
-  v4 = [v3 UUIDString];
-  v5 = [(CHSRemoteDevice *)self deviceID];
-  v6 = [(CHSRemoteDevice *)self currentSupportedVersion];
-  v7 = [(CHSRemoteDevice *)self minSupportedVersion];
-  v8 = [(CHSRemoteDevice *)self isPossibleSource];
-  v9 = [(CHSRemoteDevice *)self pairingState];
-  v10 = [(CHSRemoteDevice *)self lastConnectionDate];
-  v11 = [v10 description];
-  v12 = [v14 stringWithFormat:@"name: %@, relationshipID: %@, deviceID: %@, currentSupportedVersion: %lu, minSupportedVersion: %lu, isPossibleSource: %u, pairingState: %lu, lastConnectionDate: %@, deviceType: %lu", v15, v4, v5, v6, v7, v8, v9, v11, -[CHSRemoteDevice deviceType](self, "deviceType")];
+  name = [(CHSRemoteDevice *)self name];
+  relationshipID = [(CHSRemoteDevice *)self relationshipID];
+  uUIDString = [relationshipID UUIDString];
+  deviceID = [(CHSRemoteDevice *)self deviceID];
+  currentSupportedVersion = [(CHSRemoteDevice *)self currentSupportedVersion];
+  minSupportedVersion = [(CHSRemoteDevice *)self minSupportedVersion];
+  isPossibleSource = [(CHSRemoteDevice *)self isPossibleSource];
+  pairingState = [(CHSRemoteDevice *)self pairingState];
+  lastConnectionDate = [(CHSRemoteDevice *)self lastConnectionDate];
+  v11 = [lastConnectionDate description];
+  v12 = [v14 stringWithFormat:@"name: %@, relationshipID: %@, deviceID: %@, currentSupportedVersion: %lu, minSupportedVersion: %lu, isPossibleSource: %u, pairingState: %lu, lastConnectionDate: %@, deviceType: %lu", name, uUIDString, deviceID, currentSupportedVersion, minSupportedVersion, isPossibleSource, pairingState, v11, -[CHSRemoteDevice deviceType](self, "deviceType")];
 
   return v12;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [MEMORY[0x1E698E6A0] builderWithObject:v4 ofExpectedClass:objc_opt_class()];
+  equalCopy = equal;
+  v5 = [MEMORY[0x1E698E6A0] builderWithObject:equalCopy ofExpectedClass:objc_opt_class()];
   v6 = objc_opt_class();
-  v7 = v4;
+  v7 = equalCopy;
   if (v6)
   {
     if (objc_opt_isKindOfClass())
@@ -240,16 +240,16 @@
   return v32;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [CHSRemoteDevice allocWithZone:a3];
+  v4 = [CHSRemoteDevice allocWithZone:zone];
 
   return [(CHSRemoteDevice *)v4 _initWithDevice:self];
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
-  v4 = [CHSMutableRemoteDevice allocWithZone:a3];
+  v4 = [CHSMutableRemoteDevice allocWithZone:zone];
 
   return [(CHSRemoteDevice *)v4 _initWithDevice:self];
 }

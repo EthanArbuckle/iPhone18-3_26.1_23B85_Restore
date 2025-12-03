@@ -1,6 +1,6 @@
 @interface PadRootSideBarProfileView
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5;
-- (id)initInView:(id)a3 withFrame:(CGRect)a4 withItemList:(id)a5;
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority;
+- (id)initInView:(id)view withFrame:(CGRect)frame withItemList:(id)list;
 - (void)layoutSubviews;
 @end
 
@@ -8,14 +8,14 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_1E3A15B34();
 }
 
-- (CGSize)systemLayoutSizeFittingSize:(CGSize)a3 withHorizontalFittingPriority:(float)a4 verticalFittingPriority:(float)a5
+- (CGSize)systemLayoutSizeFittingSize:(CGSize)size withHorizontalFittingPriority:(float)priority verticalFittingPriority:(float)fittingPriority
 {
-  width = a3.width;
-  v6 = self;
+  width = size.width;
+  selfCopy = self;
   v7 = sub_1E3A15C40(width);
   v9 = v8;
 
@@ -26,14 +26,14 @@
   return result;
 }
 
-- (id)initInView:(id)a3 withFrame:(CGRect)a4 withItemList:(id)a5
+- (id)initInView:(id)view withFrame:(CGRect)frame withItemList:(id)list
 {
-  if (a5)
+  if (list)
   {
     sub_1E42062B4();
   }
 
-  v6 = a3;
+  viewCopy = view;
   sub_1E3A15D3C();
 }
 

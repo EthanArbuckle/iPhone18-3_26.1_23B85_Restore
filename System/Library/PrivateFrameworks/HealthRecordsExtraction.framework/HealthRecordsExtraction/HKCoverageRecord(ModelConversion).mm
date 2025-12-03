@@ -9,10 +9,10 @@
   v172 = *MEMORY[0x277D85DE8];
   v4 = a3;
   v140 = objc_alloc_init(MEMORY[0x277CBEB18]);
-  v5 = [(__CFString *)v4 representedResource];
-  v138 = [v5 identifier];
+  representedResource = [(__CFString *)v4 representedResource];
+  identifier = [representedResource identifier];
 
-  if (!v138)
+  if (!identifier)
   {
     _HKInitializeLogging();
     v6 = *MEMORY[0x277CCC2C0];
@@ -28,11 +28,11 @@
     [v140 addObject:v8];
   }
 
-  v106 = [objc_alloc(MEMORY[0x277CCD600]) initWithFHIRIdentifier:v138];
-  v9 = [(__CFString *)v4 rulesVersion];
-  v10 = [v9 integerValue];
+  v106 = [objc_alloc(MEMORY[0x277CCD600]) initWithFHIRIdentifier:identifier];
+  rulesVersion = [(__CFString *)v4 rulesVersion];
+  integerValue = [rulesVersion integerValue];
 
-  if (v10 <= 0)
+  if (integerValue <= 0)
   {
     _HKInitializeLogging();
     v11 = *MEMORY[0x277CCC2C0];
@@ -72,7 +72,7 @@
     [v140 addObject:v137];
   }
 
-  v105 = [(__CFString *)v4 country];
+  country = [(__CFString *)v4 country];
   v156 = 0;
   v123 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"note" expectedClass:objc_opt_class() isArray:0 error:&v156];
   v136 = v156;
@@ -117,8 +117,8 @@
     [v140 addObject:v135];
   }
 
-  v20 = [(__CFString *)v4 representedResource];
-  v103 = [v20 extractionHints];
+  representedResource2 = [(__CFString *)v4 representedResource];
+  extractionHints = [representedResource2 extractionHints];
 
   v154 = 0;
   v21 = [(__CFString *)v4 medicalRecordPropertyValueForKey:@"statusCoding" expectedClass:objc_opt_class() isArray:0 error:&v154];
@@ -502,27 +502,27 @@
   v84 = v79;
   if (![v140 count])
   {
-    v92 = [(__CFString *)v4 representedResource];
-    v93 = [v92 receivedDate];
-    v94 = v93;
-    if (v93)
+    representedResource3 = [(__CFString *)v4 representedResource];
+    receivedDate = [representedResource3 receivedDate];
+    v94 = receivedDate;
+    if (receivedDate)
     {
-      v95 = v93;
+      date = receivedDate;
     }
 
     else
     {
-      v95 = [MEMORY[0x277CBEAA8] date];
+      date = [MEMORY[0x277CBEAA8] date];
     }
 
-    v96 = [v122 BOOLValue];
-    v89 = [MEMORY[0x277CCD2E8] localDevice];
-    v139 = [(__CFString *)v4 medicalRecordMetadata];
-    v97 = [MEMORY[0x277CCD278] coverageRecordType];
-    v98 = [MEMORY[0x277CCD270] coverageRecordWithType:v97 note:v123 enteredInError:v96 modifiedDate:v95 originIdentifier:v106 locale:v124 extractionVersion:v10 device:v89 metadata:v139 country:v105 state:(v103 >> 2) & 1 statusCoding:v110 coverageTypeCodingCollection:v111 subscriber:v112 subscriberId:v113 beneficiary:v114 policyHolder:v115 payor:v116 relationshipCodingCollection:v117 classification:v118 network:v119 periodStartDate:v120 periodEndDate:v121 subscriberIdentifier:v78 beneficiaryIdentifier:v84];
-    v99 = [(__CFString *)v4 representedResource];
-    v100 = [v99 firstSeenDate];
-    [v98 _setCreationDate:v100];
+    bOOLValue = [v122 BOOLValue];
+    localDevice = [MEMORY[0x277CCD2E8] localDevice];
+    medicalRecordMetadata = [(__CFString *)v4 medicalRecordMetadata];
+    coverageRecordType = [MEMORY[0x277CCD278] coverageRecordType];
+    v98 = [MEMORY[0x277CCD270] coverageRecordWithType:coverageRecordType note:v123 enteredInError:bOOLValue modifiedDate:date originIdentifier:v106 locale:v124 extractionVersion:integerValue device:localDevice metadata:medicalRecordMetadata country:country state:(extractionHints >> 2) & 1 statusCoding:v110 coverageTypeCodingCollection:v111 subscriber:v112 subscriberId:v113 beneficiary:v114 policyHolder:v115 payor:v116 relationshipCodingCollection:v117 classification:v118 network:v119 periodStartDate:v120 periodEndDate:v121 subscriberIdentifier:v78 beneficiaryIdentifier:v84];
+    representedResource4 = [(__CFString *)v4 representedResource];
+    firstSeenDate = [representedResource4 firstSeenDate];
+    [v98 _setCreationDate:firstSeenDate];
 
     v91 = v98;
     goto LABEL_111;
@@ -535,7 +535,7 @@
   v87 = [v85 errorWithDomain:@"HDHealthRecordsServiceErrorDomain" code:201 userInfo:v86];
 
   v88 = v87;
-  v89 = v88;
+  localDevice = v88;
   if (!v88)
   {
     goto LABEL_107;
@@ -551,9 +551,9 @@ LABEL_107:
 
   v90 = v88;
   v91 = 0;
-  *a4 = v89;
+  *a4 = localDevice;
 LABEL_108:
-  v95 = v89;
+  date = localDevice;
 LABEL_111:
 
   v101 = *MEMORY[0x277D85DE8];

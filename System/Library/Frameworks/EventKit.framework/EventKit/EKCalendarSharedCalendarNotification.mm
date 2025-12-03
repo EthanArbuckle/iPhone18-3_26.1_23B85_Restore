@@ -1,17 +1,17 @@
 @interface EKCalendarSharedCalendarNotification
 - (BOOL)couldBeJunk;
-- (EKCalendarSharedCalendarNotification)initWithType:(int64_t)a3;
+- (EKCalendarSharedCalendarNotification)initWithType:(int64_t)type;
 @end
 
 @implementation EKCalendarSharedCalendarNotification
 
-- (EKCalendarSharedCalendarNotification)initWithType:(int64_t)a3
+- (EKCalendarSharedCalendarNotification)initWithType:(int64_t)type
 {
   v8.receiver = self;
   v8.super_class = EKCalendarSharedCalendarNotification;
   v5 = [(EKCalendarNotification *)&v8 initWithType:?];
   v6 = v5;
-  if (a3 != 8 && v5)
+  if (type != 8 && v5)
   {
     [(EKCalendarSharedCalendarNotification *)a2 initWithType:v5];
   }
@@ -21,10 +21,10 @@
 
 - (BOOL)couldBeJunk
 {
-  v2 = [(EKCalendarNotification *)self calendar];
-  v3 = [v2 couldBeJunk];
+  calendar = [(EKCalendarNotification *)self calendar];
+  couldBeJunk = [calendar couldBeJunk];
 
-  return v3;
+  return couldBeJunk;
 }
 
 - (void)initWithType:(uint64_t)a1 .cold.1(uint64_t a1, uint64_t a2)

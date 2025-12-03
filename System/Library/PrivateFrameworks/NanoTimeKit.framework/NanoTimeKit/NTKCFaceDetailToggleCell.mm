@@ -37,8 +37,8 @@
     v2->_toggle = v3;
 
     [(UISwitch *)v2->_toggle addTarget:v2 action:sel__switchToggled forControlEvents:4096];
-    v5 = [(NTKCFaceDetailToggleCell *)v2 contentView];
-    [v5 addSubview:v2->_toggle];
+    contentView = [(NTKCFaceDetailToggleCell *)v2 contentView];
+    [contentView addSubview:v2->_toggle];
 
     [(NTKCDetailTableViewCell *)v2 setShowsSeparator:1];
   }
@@ -48,8 +48,8 @@
 
 - (void)_switchToggled
 {
-  v3 = [(NTKCFaceDetailToggleCell *)self delegate];
-  [v3 toggleCell:self didToggle:{-[UISwitch isOn](self->_toggle, "isOn")}];
+  delegate = [(NTKCFaceDetailToggleCell *)self delegate];
+  [delegate toggleCell:self didToggle:{-[UISwitch isOn](self->_toggle, "isOn")}];
 }
 
 - (void)layoutSubviews
@@ -57,8 +57,8 @@
   v50.receiver = self;
   v50.super_class = NTKCFaceDetailToggleCell;
   [(NTKCDetailTableViewCell *)&v50 layoutSubviews];
-  v3 = [(NTKCFaceDetailToggleCell *)self contentView];
-  [v3 bounds];
+  contentView = [(NTKCFaceDetailToggleCell *)self contentView];
+  [contentView bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -122,8 +122,8 @@
 
   v33 = v48;
   v34 = MinX + -16.0 - v48;
-  v35 = [(NTKCFaceDetailToggleCell *)self textLabel];
-  [v35 frame];
+  textLabel = [(NTKCFaceDetailToggleCell *)self textLabel];
+  [textLabel frame];
   v37 = v36;
   v39 = v38;
   v41 = v40;
@@ -149,8 +149,8 @@
       v33 = v44 - CGRectGetWidth(v58) - v48;
     }
 
-    v45 = [(NTKCFaceDetailToggleCell *)self textLabel];
-    [v45 setFrame:{v33, v39, v34, v43}];
+    textLabel2 = [(NTKCFaceDetailToggleCell *)self textLabel];
+    [textLabel2 setFrame:{v33, v39, v34, v43}];
   }
 }
 

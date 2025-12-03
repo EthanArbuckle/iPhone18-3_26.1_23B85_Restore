@@ -1,14 +1,14 @@
 @interface WBInMemoryChangeFilterVisible
-- (BOOL)isBookmarkVisible:(id)a3;
+- (BOOL)isBookmarkVisible:(id)visible;
 @end
 
 @implementation WBInMemoryChangeFilterVisible
 
-- (BOOL)isBookmarkVisible:(id)a3
+- (BOOL)isBookmarkVisible:(id)visible
 {
-  v3 = a3;
-  v4 = [v3 extraAttributes];
-  v5 = [v4 objectForKeyedSubscript:@"com.apple.bookmarks.OmitFromUI"];
+  visibleCopy = visible;
+  extraAttributes = [visibleCopy extraAttributes];
+  v5 = [extraAttributes objectForKeyedSubscript:@"com.apple.bookmarks.OmitFromUI"];
   if (v5)
   {
     LOBYTE(v6) = 0;
@@ -16,7 +16,7 @@
 
   else
   {
-    v6 = [v3 isHidden] ^ 1;
+    v6 = [visibleCopy isHidden] ^ 1;
   }
 
   return v6;

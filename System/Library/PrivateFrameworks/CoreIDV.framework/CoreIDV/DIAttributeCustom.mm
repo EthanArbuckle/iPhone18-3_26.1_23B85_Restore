@@ -1,29 +1,29 @@
 @interface DIAttributeCustom
 - (DIAttributeCustom)init;
-- (DIAttributeCustom)initWithCoder:(id)a3;
+- (DIAttributeCustom)initWithCoder:(id)coder;
 - (id)defaultValue;
 - (id)getCurrentValue;
 - (id)submissionString;
-- (void)encodeWithCoder:(id)a3;
-- (void)setCurrentValue:(id)a3;
-- (void)setDefaultValue:(id)a3;
-- (void)setIdentifier:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setCurrentValue:(id)value;
+- (void)setDefaultValue:(id)value;
+- (void)setIdentifier:(id)identifier;
 @end
 
 @implementation DIAttributeCustom
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v3.receiver = self;
   v3.super_class = DIAttributeCustom;
-  [(DIAttributeText *)&v3 encodeWithCoder:a3];
+  [(DIAttributeText *)&v3 encodeWithCoder:coder];
 }
 
-- (DIAttributeCustom)initWithCoder:(id)a3
+- (DIAttributeCustom)initWithCoder:(id)coder
 {
   v4.receiver = self;
   v4.super_class = DIAttributeCustom;
-  return [(DIAttributeText *)&v4 initWithCoder:a3];
+  return [(DIAttributeText *)&v4 initWithCoder:coder];
 }
 
 - (DIAttributeCustom)init
@@ -44,9 +44,9 @@
 {
   v6.receiver = self;
   v6.super_class = DIAttributeCustom;
-  v2 = [(DIAttributeText *)&v6 submissionString];
-  v3 = v2;
-  if (v2 && ([v2 isEqualToString:&stru_282E746B8] & 1) != 0)
+  submissionString = [(DIAttributeText *)&v6 submissionString];
+  v3 = submissionString;
+  if (submissionString && ([submissionString isEqualToString:&stru_282E746B8] & 1) != 0)
   {
     v4 = 0;
   }
@@ -59,43 +59,43 @@
   return v4;
 }
 
-- (void)setCurrentValue:(id)a3
+- (void)setCurrentValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = DIAttributeCustom;
-  [(DIAttributeText *)&v3 setCurrentValue:a3];
+  [(DIAttributeText *)&v3 setCurrentValue:value];
 }
 
-- (void)setDefaultValue:(id)a3
+- (void)setDefaultValue:(id)value
 {
   v3.receiver = self;
   v3.super_class = DIAttributeCustom;
-  [(DIAttributeText *)&v3 setDefaultValue:a3];
+  [(DIAttributeText *)&v3 setDefaultValue:value];
 }
 
-- (void)setIdentifier:(id)a3
+- (void)setIdentifier:(id)identifier
 {
   v3.receiver = self;
   v3.super_class = DIAttributeCustom;
-  [(DIAttribute *)&v3 setIdentifier:a3];
+  [(DIAttribute *)&v3 setIdentifier:identifier];
 }
 
 - (id)getCurrentValue
 {
   v4.receiver = self;
   v4.super_class = DIAttributeCustom;
-  v2 = [(DIAttributeText *)&v4 getCurrentValue];
+  getCurrentValue = [(DIAttributeText *)&v4 getCurrentValue];
 
-  return v2;
+  return getCurrentValue;
 }
 
 - (id)defaultValue
 {
   v4.receiver = self;
   v4.super_class = DIAttributeCustom;
-  v2 = [(DIAttributeText *)&v4 defaultValue];
+  defaultValue = [(DIAttributeText *)&v4 defaultValue];
 
-  return v2;
+  return defaultValue;
 }
 
 @end

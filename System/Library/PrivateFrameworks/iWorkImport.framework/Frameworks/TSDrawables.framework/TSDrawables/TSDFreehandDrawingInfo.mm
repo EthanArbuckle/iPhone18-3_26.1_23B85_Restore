@@ -1,29 +1,29 @@
 @interface TSDFreehandDrawingInfo
-- (TSDFreehandDrawingInfo)initWithSpacerShapeAndContext:(id)a3 geometry:(id)a4;
+- (TSDFreehandDrawingInfo)initWithSpacerShapeAndContext:(id)context geometry:(id)geometry;
 - (id)allNestedChildrenInfosForWrap;
 - (id)childEnumerator;
 - (id)childEnumeratorForUserSearch;
 - (id)infosToObserveForAttachedInfo;
 - (id)tsaxTypeDescription;
 - (id)typeName;
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4;
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4;
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 upgradeDOLC:(BOOL)a5;
-- (void)saveToArchive:(void *)a3 archiver:(id)a4;
-- (void)setFreehandDrawingSpacerShape:(id)a3;
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)wasRemovedFromDocumentRoot:(id)a3;
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4;
-- (void)willBeRemovedFromDocumentRoot:(id)a3;
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context;
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper;
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver upgradeDOLC:(BOOL)c;
+- (void)saveToArchive:(void *)archive archiver:(id)archiver;
+- (void)setFreehandDrawingSpacerShape:(id)shape;
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)wasRemovedFromDocumentRoot:(id)root;
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context;
+- (void)willBeRemovedFromDocumentRoot:(id)root;
 @end
 
 @implementation TSDFreehandDrawingInfo
 
-- (TSDFreehandDrawingInfo)initWithSpacerShapeAndContext:(id)a3 geometry:(id)a4
+- (TSDFreehandDrawingInfo)initWithSpacerShapeAndContext:(id)context geometry:(id)geometry
 {
   v5.receiver = self;
   v5.super_class = TSDFreehandDrawingInfo;
-  result = [(TSDGroupInfo *)&v5 initWithContext:a3 geometry:a4];
+  result = [(TSDGroupInfo *)&v5 initWithContext:context geometry:geometry];
   if (result)
   {
     result->_opacity = 1.0;
@@ -32,10 +32,10 @@
   return result;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3 context:(id)a4
+- (int64_t)mixingTypeWithObject:(id)object context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  objectCopy = object;
+  contextCopy = context;
   objc_opt_class();
   v9 = TSUDynamicCast();
   if (!v9)
@@ -50,37 +50,37 @@
 
   v29.receiver = self;
   v29.super_class = TSDFreehandDrawingInfo;
-  v17 = [(TSDGroupInfo *)&v29 mixingTypeWithObject:v6 context:v7];
+  v17 = [(TSDGroupInfo *)&v29 mixingTypeWithObject:objectCopy context:contextCopy];
   v18 = TSDMixingTypeBestFromMixingTypes(5, v17);
   v21 = objc_msgSend_geometry(self, v19, v20);
   v24 = objc_msgSend_geometry(v9, v22, v23);
-  v26 = objc_msgSend_mixingTypeWithObject_context_(v21, v25, v24, v7);
+  v26 = objc_msgSend_mixingTypeWithObject_context_(v21, v25, v24, contextCopy);
   v27 = TSDMixingTypeBestFromMixingTypes(v18, v26);
 
   return v27;
 }
 
-- (void)adoptStylesheet:(id)a3 withMapper:(id)a4
+- (void)adoptStylesheet:(id)stylesheet withMapper:(id)mapper
 {
-  v6 = a3;
-  v7 = a4;
-  matched = objc_msgSend_forceMatchStyle(v7, v8, v9);
-  objc_msgSend_setForceMatchStyle_(v7, v11, 0);
+  stylesheetCopy = stylesheet;
+  mapperCopy = mapper;
+  matched = objc_msgSend_forceMatchStyle(mapperCopy, v8, v9);
+  objc_msgSend_setForceMatchStyle_(mapperCopy, v11, 0);
   v14.receiver = self;
   v14.super_class = TSDFreehandDrawingInfo;
-  [(TSDGroupInfo *)&v14 adoptStylesheet:v6 withMapper:v7];
-  objc_msgSend_adoptStylesheet_withMapper_(self->_freehandDrawingSpacerShape, v12, v6, v7);
-  objc_msgSend_setForceMatchStyle_(v7, v13, matched);
+  [(TSDGroupInfo *)&v14 adoptStylesheet:stylesheetCopy withMapper:mapperCopy];
+  objc_msgSend_adoptStylesheet_withMapper_(self->_freehandDrawingSpacerShape, v12, stylesheetCopy, mapperCopy);
+  objc_msgSend_setForceMatchStyle_(mapperCopy, v13, matched);
 }
 
-- (void)setFreehandDrawingSpacerShape:(id)a3
+- (void)setFreehandDrawingSpacerShape:(id)shape
 {
-  v9 = a3;
-  if (self->_freehandDrawingSpacerShape != v9)
+  shapeCopy = shape;
+  if (self->_freehandDrawingSpacerShape != shapeCopy)
   {
     objc_msgSend_willModify(self, v5, v6);
     objc_msgSend_setParentInfo_(self->_freehandDrawingSpacerShape, v7, 0);
-    objc_storeStrong(&self->_freehandDrawingSpacerShape, a3);
+    objc_storeStrong(&self->_freehandDrawingSpacerShape, shape);
     objc_msgSend_setParentInfo_(self->_freehandDrawingSpacerShape, v8, self);
   }
 }
@@ -98,7 +98,7 @@
   objc_opt_class();
   v15.receiver = self;
   v15.super_class = TSDFreehandDrawingInfo;
-  v3 = [(TSDGroupInfo *)&v15 childEnumerator];
+  childEnumerator = [(TSDGroupInfo *)&v15 childEnumerator];
   v4 = TSUCheckedDynamicCast();
 
   freehandDrawingSpacerShape = self->_freehandDrawingSpacerShape;
@@ -124,12 +124,12 @@
 {
   v9.receiver = self;
   v9.super_class = TSDFreehandDrawingInfo;
-  v3 = [(TSDGroupInfo *)&v9 infosToObserveForAttachedInfo];
-  v5 = v3;
+  infosToObserveForAttachedInfo = [(TSDGroupInfo *)&v9 infosToObserveForAttachedInfo];
+  v5 = infosToObserveForAttachedInfo;
   freehandDrawingSpacerShape = self->_freehandDrawingSpacerShape;
   if (freehandDrawingSpacerShape)
   {
-    v7 = objc_msgSend_setByAddingObject_(v3, v4, freehandDrawingSpacerShape);
+    v7 = objc_msgSend_setByAddingObject_(infosToObserveForAttachedInfo, v4, freehandDrawingSpacerShape);
 
     v5 = v7;
   }
@@ -137,48 +137,48 @@
   return v5;
 }
 
-- (void)willBeAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)willBeAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = TSDFreehandDrawingInfo;
-  [(TSDGroupInfo *)&v11 willBeAddedToDocumentRoot:v6 dolcContext:v7];
-  if ((objc_msgSend_wasUnarchived(v7, v8, v9) & 1) == 0)
+  [(TSDGroupInfo *)&v11 willBeAddedToDocumentRoot:rootCopy dolcContext:contextCopy];
+  if ((objc_msgSend_wasUnarchived(contextCopy, v8, v9) & 1) == 0)
   {
-    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(self->_freehandDrawingSpacerShape, v10, v6, v7);
+    objc_msgSend_willBeAddedToDocumentRoot_dolcContext_(self->_freehandDrawingSpacerShape, v10, rootCopy, contextCopy);
   }
 }
 
-- (void)wasAddedToDocumentRoot:(id)a3 dolcContext:(id)a4
+- (void)wasAddedToDocumentRoot:(id)root dolcContext:(id)context
 {
-  v6 = a3;
-  v7 = a4;
+  rootCopy = root;
+  contextCopy = context;
   v11.receiver = self;
   v11.super_class = TSDFreehandDrawingInfo;
-  [(TSDGroupInfo *)&v11 wasAddedToDocumentRoot:v6 dolcContext:v7];
-  if ((objc_msgSend_wasUnarchived(v7, v8, v9) & 1) == 0)
+  [(TSDGroupInfo *)&v11 wasAddedToDocumentRoot:rootCopy dolcContext:contextCopy];
+  if ((objc_msgSend_wasUnarchived(contextCopy, v8, v9) & 1) == 0)
   {
-    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(self->_freehandDrawingSpacerShape, v10, v6, v7);
+    objc_msgSend_wasAddedToDocumentRoot_dolcContext_(self->_freehandDrawingSpacerShape, v10, rootCopy, contextCopy);
   }
 }
 
-- (void)willBeRemovedFromDocumentRoot:(id)a3
+- (void)willBeRemovedFromDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v6.receiver = self;
   v6.super_class = TSDFreehandDrawingInfo;
-  [(TSDGroupInfo *)&v6 willBeRemovedFromDocumentRoot:v4];
-  objc_msgSend_willBeRemovedFromDocumentRoot_(self->_freehandDrawingSpacerShape, v5, v4);
+  [(TSDGroupInfo *)&v6 willBeRemovedFromDocumentRoot:rootCopy];
+  objc_msgSend_willBeRemovedFromDocumentRoot_(self->_freehandDrawingSpacerShape, v5, rootCopy);
 }
 
-- (void)wasRemovedFromDocumentRoot:(id)a3
+- (void)wasRemovedFromDocumentRoot:(id)root
 {
-  v4 = a3;
+  rootCopy = root;
   v6.receiver = self;
   v6.super_class = TSDFreehandDrawingInfo;
-  [(TSDGroupInfo *)&v6 wasRemovedFromDocumentRoot:v4];
-  objc_msgSend_wasRemovedFromDocumentRoot_(self->_freehandDrawingSpacerShape, v5, v4);
+  [(TSDGroupInfo *)&v6 wasRemovedFromDocumentRoot:rootCopy];
+  objc_msgSend_wasRemovedFromDocumentRoot_(self->_freehandDrawingSpacerShape, v5, rootCopy);
 }
 
 - (id)typeName
@@ -198,47 +198,47 @@
   {
     v15.receiver = self;
     v15.super_class = TSDFreehandDrawingInfo;
-    v8 = [(TSDGroupInfo *)&v15 allNestedChildrenInfosForWrap];
-    v11 = objc_msgSend_mutableCopy(v8, v9, v10);
+    allNestedChildrenInfosForWrap = [(TSDGroupInfo *)&v15 allNestedChildrenInfosForWrap];
+    allNestedChildrenInfosForWrap2 = objc_msgSend_mutableCopy(allNestedChildrenInfosForWrap, v9, v10);
 
-    objc_msgSend_addObject_(v11, v12, self->_freehandDrawingSpacerShape);
+    objc_msgSend_addObject_(allNestedChildrenInfosForWrap2, v12, self->_freehandDrawingSpacerShape);
   }
 
   else
   {
     v14.receiver = self;
     v14.super_class = TSDFreehandDrawingInfo;
-    v11 = [(TSDGroupInfo *)&v14 allNestedChildrenInfosForWrap];
+    allNestedChildrenInfosForWrap2 = [(TSDGroupInfo *)&v14 allNestedChildrenInfosForWrap];
   }
 
-  return v11;
+  return allNestedChildrenInfosForWrap2;
 }
 
-- (void)loadFromArchive:(const void *)a3 unarchiver:(id)a4 upgradeDOLC:(BOOL)a5
+- (void)loadFromArchive:(const void *)archive unarchiver:(id)unarchiver upgradeDOLC:(BOOL)c
 {
-  v5 = a5;
-  v8 = a4;
+  cCopy = c;
+  unarchiverCopy = unarchiver;
   v35.receiver = self;
   v35.super_class = TSDFreehandDrawingInfo;
-  [(TSDGroupInfo *)&v35 loadFromArchive:a3 unarchiver:v8 upgradeDOLC:v5];
-  if (google::protobuf::internal::ExtensionSet::Has((a3 + 16)))
+  [(TSDGroupInfo *)&v35 loadFromArchive:archive unarchiver:unarchiverCopy upgradeDOLC:cCopy];
+  if (google::protobuf::internal::ExtensionSet::Has((archive + 16)))
   {
     Message = google::protobuf::internal::ExtensionSet::GetMessage();
     if (*(Message + 16))
     {
-      v21 = objc_msgSend_sourceType(v8, v9, v10);
+      v21 = objc_msgSend_sourceType(unarchiverCopy, v9, v10);
       v24 = objc_msgSend_unarchivingContext(MEMORY[0x277D805F0], v22, v23);
       v25 = *(Message + 24);
       v31[0] = MEMORY[0x277D85DD0];
       v31[1] = 3221225472;
       v31[2] = sub_2766EEF0C;
       v31[3] = &unk_27A6CD0B0;
-      v33 = v5;
+      v33 = cCopy;
       v31[4] = self;
       v26 = v24;
       v32 = v26;
       v34 = v21 == 1;
-      v27 = v8;
+      v27 = unarchiverCopy;
       v29 = objc_opt_class();
       if (v25)
       {
@@ -271,17 +271,17 @@
   }
 }
 
-- (void)saveToArchive:(void *)a3 archiver:(id)a4
+- (void)saveToArchive:(void *)archive archiver:(id)archiver
 {
   v49[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
+  archiverCopy = archiver;
   v48.receiver = self;
   v48.super_class = TSDFreehandDrawingInfo;
-  v7 = [(TSDGroupInfo *)&v48 saveToArchive:a3 archiver:v6];
+  v7 = [(TSDGroupInfo *)&v48 saveToArchive:archive archiver:archiverCopy];
   TSD::FreehandDrawingArchive::default_instance(v7);
   v8 = google::protobuf::internal::ExtensionSet::MutableMessage();
   v9 = *MEMORY[0x277D80990];
-  objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(v6, v10, *MEMORY[0x277D80970], *MEMORY[0x277D80990], @"TSDFreehandDrawings");
+  objc_msgSend_requiresDocumentReadVersion_writeVersion_featureIdentifier_(archiverCopy, v10, *MEMORY[0x277D80970], *MEMORY[0x277D80990], @"TSDFreehandDrawings");
   freehandDrawingSpacerShape = self->_freehandDrawingSpacerShape;
   if (freehandDrawingSpacerShape || (v13 = MEMORY[0x277D81150], objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v11, "[TSDFreehandDrawingInfo saveToArchive:archiver:]"), v14 = objc_claimAutoreleasedReturnValue(), objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v15, "/Library/Caches/com.apple.xbs/Sources/iWorkImport/shared/drawables/TSDFreehandDrawingInfo.mm"), v16 = objc_claimAutoreleasedReturnValue(), objc_msgSend_handleFailureInFunction_file_lineNumber_isFatal_description_(v13, v17, v14, v16, 417, 0, "invalid nil value for '%{public}s'", "_freehandDrawingSpacerShape"), v16, v14, objc_msgSend_logBacktraceThrottled(MEMORY[0x277D81150], v18, v19), (freehandDrawingSpacerShape = self->_freehandDrawingSpacerShape) != 0))
   {
@@ -299,7 +299,7 @@
       *(v8 + 24) = v21;
     }
 
-    objc_msgSend_setStrongReference_message_(v6, v11, freehandDrawingSpacerShape, v21);
+    objc_msgSend_setStrongReference_message_(archiverCopy, v11, freehandDrawingSpacerShape, v21);
   }
 
   objc_msgSend_opacity(self, v11, v20);
@@ -308,9 +308,9 @@
   v26 = objc_msgSend_documentRoot(self, v24, v25);
   v29 = objc_msgSend_freehandDrawingsRequireSpacerShape(v26, v27, v28);
 
-  if ((objc_msgSend_shouldSaveAlternates(v6, v30, v31) & v29) == 1)
+  if ((objc_msgSend_shouldSaveAlternates(archiverCopy, v30, v31) & v29) == 1)
   {
-    v33 = objc_msgSend_alternateDiffToMergeBeforeVersion_fileFormatVersion_message_(v6, v32, v9, *MEMORY[0x277D809B8], a3);
+    v33 = objc_msgSend_alternateDiffToMergeBeforeVersion_fileFormatVersion_message_(archiverCopy, v32, v9, *MEMORY[0x277D809B8], archive);
     google::protobuf::internal::AssignDescriptors();
     v35 = objc_msgSend_messageWithNewFunction_descriptor_(v33, v34, sub_276656694, off_2812F5188[74]);
 

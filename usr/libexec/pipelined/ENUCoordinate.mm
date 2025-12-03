@@ -1,56 +1,56 @@
 @interface ENUCoordinate
-+ (id)fromLatLonOrigin:(id)a3 andEcefOrigin:(id)a4 andEcefPoint:(id)a5;
-- (ENUCoordinate)initWithEast:(double)a3 north:(double)a4 up:(double)a5;
-- (void)setFromLatLonOrigin:(id)a3 andEcefOrigin:(id)a4 andEcefPoint:(id)a5;
++ (id)fromLatLonOrigin:(id)origin andEcefOrigin:(id)ecefOrigin andEcefPoint:(id)point;
+- (ENUCoordinate)initWithEast:(double)east north:(double)north up:(double)up;
+- (void)setFromLatLonOrigin:(id)origin andEcefOrigin:(id)ecefOrigin andEcefPoint:(id)point;
 @end
 
 @implementation ENUCoordinate
 
-- (ENUCoordinate)initWithEast:(double)a3 north:(double)a4 up:(double)a5
+- (ENUCoordinate)initWithEast:(double)east north:(double)north up:(double)up
 {
-  self->_east = a3;
-  self->_north = a4;
-  self->_up = a5;
+  self->_east = east;
+  self->_north = north;
+  self->_up = up;
   return self;
 }
 
-+ (id)fromLatLonOrigin:(id)a3 andEcefOrigin:(id)a4 andEcefPoint:(id)a5
++ (id)fromLatLonOrigin:(id)origin andEcefOrigin:(id)ecefOrigin andEcefPoint:(id)point
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  originCopy = origin;
+  ecefOriginCopy = ecefOrigin;
+  pointCopy = point;
   v10 = objc_alloc_init(ENUCoordinate);
-  [(ENUCoordinate *)v10 setFromLatLonOrigin:v7 andEcefOrigin:v8 andEcefPoint:v9];
+  [(ENUCoordinate *)v10 setFromLatLonOrigin:originCopy andEcefOrigin:ecefOriginCopy andEcefPoint:pointCopy];
 
   return v10;
 }
 
-- (void)setFromLatLonOrigin:(id)a3 andEcefOrigin:(id)a4 andEcefPoint:(id)a5
+- (void)setFromLatLonOrigin:(id)origin andEcefOrigin:(id)ecefOrigin andEcefPoint:(id)point
 {
-  v38 = a3;
-  v8 = a4;
-  v9 = a5;
-  [v38 latitude];
+  originCopy = origin;
+  ecefOriginCopy = ecefOrigin;
+  pointCopy = point;
+  [originCopy latitude];
   v11 = v10;
-  [v38 latitude];
+  [originCopy latitude];
   v13 = v12;
-  [v38 longitude];
+  [originCopy longitude];
   v15 = v14;
-  [v38 longitude];
+  [originCopy longitude];
   v17 = v16;
-  [v9 x];
+  [pointCopy x];
   v19 = v18;
-  [v8 x];
+  [ecefOriginCopy x];
   v21 = v20;
   v36 = v15;
   v37 = v13;
-  [v9 y];
+  [pointCopy y];
   v23 = v22;
-  [v8 y];
+  [ecefOriginCopy y];
   v25 = v24;
-  [v9 z];
+  [pointCopy z];
   v35 = v26;
-  [v8 z];
+  [ecefOriginCopy z];
   v28 = v27;
   v29 = v23 - v25;
   v30 = v19 - v21;

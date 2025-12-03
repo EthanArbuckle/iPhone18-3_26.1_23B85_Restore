@@ -1,37 +1,37 @@
 @interface HMImmutableSettingsProtoSettingChangeEvent
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsSettingChangeEvent:(id)a3;
+- (int)StringAsSettingChangeEvent:(id)event;
 - (int)settingChangeEvent;
 - (unint64_t)hash;
 - (void)clearOneofValuesForSettingChangeEvent;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setAvailableLanguages:(id)a3;
-- (void)setBoolSetting:(id)a3;
-- (void)setBoundedIntegerSetting:(id)a3;
-- (void)setHasReadOnly:(BOOL)a3;
-- (void)setLanguageSetting:(id)a3;
-- (void)setStringSetting:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setAvailableLanguages:(id)languages;
+- (void)setBoolSetting:(id)setting;
+- (void)setBoundedIntegerSetting:(id)setting;
+- (void)setHasReadOnly:(BOOL)only;
+- (void)setLanguageSetting:(id)setting;
+- (void)setStringSetting:(id)setting;
+- (void)writeTo:(id)to;
 @end
 
 @implementation HMImmutableSettingsProtoSettingChangeEvent
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[17])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[17])
   {
-    self->_settingChangeEvent = v4[12];
+    self->_settingChangeEvent = fromCopy[12];
     *&self->_has |= 1u;
   }
 
-  v16 = v4;
-  if (*(v4 + 4))
+  v16 = fromCopy;
+  if (*(fromCopy + 4))
   {
     [(HMImmutableSettingsProtoSettingChangeEvent *)self setKeyPath:?];
     v5 = v16;
@@ -197,31 +197,31 @@ LABEL_37:
   return v9 ^ [(HMImmutableSettingsProtoAvailableLanguageListEvent *)self->_availableLanguages hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_23;
   }
 
   has = self->_has;
-  v6 = *(v4 + 68);
+  v6 = *(equalCopy + 68);
   if (has)
   {
-    if ((*(v4 + 68) & 1) == 0 || self->_settingChangeEvent != *(v4 + 12))
+    if ((*(equalCopy + 68) & 1) == 0 || self->_settingChangeEvent != *(equalCopy + 12))
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 68))
+  else if (*(equalCopy + 68))
   {
     goto LABEL_23;
   }
 
   keyPath = self->_keyPath;
-  if (keyPath | *(v4 + 4))
+  if (keyPath | *(equalCopy + 4))
   {
     if (![(NSString *)keyPath isEqual:?])
     {
@@ -229,7 +229,7 @@ LABEL_37:
     }
 
     has = self->_has;
-    v6 = *(v4 + 68);
+    v6 = *(equalCopy + 68);
   }
 
   if ((has & 2) == 0)
@@ -249,29 +249,29 @@ LABEL_23:
     goto LABEL_23;
   }
 
-  v15 = *(v4 + 64);
+  v15 = *(equalCopy + 64);
   if (self->_readOnly)
   {
-    if ((*(v4 + 64) & 1) == 0)
+    if ((*(equalCopy + 64) & 1) == 0)
     {
       goto LABEL_23;
     }
   }
 
-  else if (*(v4 + 64))
+  else if (*(equalCopy + 64))
   {
     goto LABEL_23;
   }
 
 LABEL_12:
   stringSetting = self->_stringSetting;
-  if (stringSetting | *(v4 + 7) && ![(HMImmutableSettingsProtoStringSettingEvent *)stringSetting isEqual:?])
+  if (stringSetting | *(equalCopy + 7) && ![(HMImmutableSettingsProtoStringSettingEvent *)stringSetting isEqual:?])
   {
     goto LABEL_23;
   }
 
   boundedIntegerSetting = self->_boundedIntegerSetting;
-  if (boundedIntegerSetting | *(v4 + 3))
+  if (boundedIntegerSetting | *(equalCopy + 3))
   {
     if (![(HMImmutableSettingsProtoBoundedIntegerSettingEvent *)boundedIntegerSetting isEqual:?])
     {
@@ -280,7 +280,7 @@ LABEL_12:
   }
 
   BOOLSetting = self->_BOOLSetting;
-  if (BOOLSetting | *(v4 + 2))
+  if (BOOLSetting | *(equalCopy + 2))
   {
     if (![(HMImmutableSettingsProtoBoolSettingEvent *)BOOLSetting isEqual:?])
     {
@@ -289,7 +289,7 @@ LABEL_12:
   }
 
   languageSetting = self->_languageSetting;
-  if (languageSetting | *(v4 + 5))
+  if (languageSetting | *(equalCopy + 5))
   {
     if (![(HMImmutableSettingsProtoLanguageSettingEvent *)languageSetting isEqual:?])
     {
@@ -298,7 +298,7 @@ LABEL_12:
   }
 
   availableLanguages = self->_availableLanguages;
-  if (availableLanguages | *(v4 + 1))
+  if (availableLanguages | *(equalCopy + 1))
   {
     v13 = [(HMImmutableSettingsProtoAvailableLanguageListEvent *)availableLanguages isEqual:?];
   }
@@ -313,9 +313,9 @@ LABEL_24:
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -323,7 +323,7 @@ LABEL_24:
     *(v5 + 68) |= 1u;
   }
 
-  v7 = [(NSString *)self->_keyPath copyWithZone:a3];
+  v7 = [(NSString *)self->_keyPath copyWithZone:zone];
   v8 = *(v6 + 32);
   *(v6 + 32) = v7;
 
@@ -333,138 +333,138 @@ LABEL_24:
     *(v6 + 68) |= 2u;
   }
 
-  v9 = [(HMImmutableSettingsProtoStringSettingEvent *)self->_stringSetting copyWithZone:a3];
+  v9 = [(HMImmutableSettingsProtoStringSettingEvent *)self->_stringSetting copyWithZone:zone];
   v10 = *(v6 + 56);
   *(v6 + 56) = v9;
 
-  v11 = [(HMImmutableSettingsProtoBoundedIntegerSettingEvent *)self->_boundedIntegerSetting copyWithZone:a3];
+  v11 = [(HMImmutableSettingsProtoBoundedIntegerSettingEvent *)self->_boundedIntegerSetting copyWithZone:zone];
   v12 = *(v6 + 24);
   *(v6 + 24) = v11;
 
-  v13 = [(HMImmutableSettingsProtoBoolSettingEvent *)self->_BOOLSetting copyWithZone:a3];
+  v13 = [(HMImmutableSettingsProtoBoolSettingEvent *)self->_BOOLSetting copyWithZone:zone];
   v14 = *(v6 + 16);
   *(v6 + 16) = v13;
 
-  v15 = [(HMImmutableSettingsProtoLanguageSettingEvent *)self->_languageSetting copyWithZone:a3];
+  v15 = [(HMImmutableSettingsProtoLanguageSettingEvent *)self->_languageSetting copyWithZone:zone];
   v16 = *(v6 + 40);
   *(v6 + 40) = v15;
 
-  v17 = [(HMImmutableSettingsProtoAvailableLanguageListEvent *)self->_availableLanguages copyWithZone:a3];
+  v17 = [(HMImmutableSettingsProtoAvailableLanguageListEvent *)self->_availableLanguages copyWithZone:zone];
   v18 = *(v6 + 8);
   *(v6 + 8) = v17;
 
   return v6;
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[12] = self->_settingChangeEvent;
-    *(v4 + 68) |= 1u;
+    toCopy[12] = self->_settingChangeEvent;
+    *(toCopy + 68) |= 1u;
   }
 
-  v5 = v4;
+  v5 = toCopy;
   if (self->_keyPath)
   {
-    [v4 setKeyPath:?];
-    v4 = v5;
+    [toCopy setKeyPath:?];
+    toCopy = v5;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    *(v4 + 64) = self->_readOnly;
-    *(v4 + 68) |= 2u;
+    *(toCopy + 64) = self->_readOnly;
+    *(toCopy + 68) |= 2u;
   }
 
   if (self->_stringSetting)
   {
     [v5 setStringSetting:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_boundedIntegerSetting)
   {
     [v5 setBoundedIntegerSetting:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_BOOLSetting)
   {
     [v5 setBoolSetting:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_languageSetting)
   {
     [v5 setLanguageSetting:?];
-    v4 = v5;
+    toCopy = v5;
   }
 
   if (self->_availableLanguages)
   {
     [v5 setAvailableLanguages:?];
-    v4 = v5;
+    toCopy = v5;
   }
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v6 = v4;
+  toCopy = to;
+  v6 = toCopy;
   if (self->_keyPath)
   {
     PBDataWriterWriteStringField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if ((*&self->_has & 2) != 0)
   {
     readOnly = self->_readOnly;
     PBDataWriterWriteBOOLField();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_stringSetting)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_boundedIntegerSetting)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_BOOLSetting)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_languageSetting)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 
   if (self->_availableLanguages)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v6;
+    toCopy = v6;
   }
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   keyPath = self->_keyPath;
   if (keyPath)
   {
-    [v3 setObject:keyPath forKey:@"keyPath"];
+    [dictionary setObject:keyPath forKey:@"keyPath"];
   }
 
   if ((*&self->_has & 2) != 0)
@@ -476,36 +476,36 @@ LABEL_24:
   stringSetting = self->_stringSetting;
   if (stringSetting)
   {
-    v8 = [(HMImmutableSettingsProtoStringSettingEvent *)stringSetting dictionaryRepresentation];
-    [v4 setObject:v8 forKey:@"stringSetting"];
+    dictionaryRepresentation = [(HMImmutableSettingsProtoStringSettingEvent *)stringSetting dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation forKey:@"stringSetting"];
   }
 
   boundedIntegerSetting = self->_boundedIntegerSetting;
   if (boundedIntegerSetting)
   {
-    v10 = [(HMImmutableSettingsProtoBoundedIntegerSettingEvent *)boundedIntegerSetting dictionaryRepresentation];
-    [v4 setObject:v10 forKey:@"boundedIntegerSetting"];
+    dictionaryRepresentation2 = [(HMImmutableSettingsProtoBoundedIntegerSettingEvent *)boundedIntegerSetting dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation2 forKey:@"boundedIntegerSetting"];
   }
 
   BOOLSetting = self->_BOOLSetting;
   if (BOOLSetting)
   {
-    v12 = [(HMImmutableSettingsProtoBoolSettingEvent *)BOOLSetting dictionaryRepresentation];
-    [v4 setObject:v12 forKey:@"BOOLSetting"];
+    dictionaryRepresentation3 = [(HMImmutableSettingsProtoBoolSettingEvent *)BOOLSetting dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation3 forKey:@"BOOLSetting"];
   }
 
   languageSetting = self->_languageSetting;
   if (languageSetting)
   {
-    v14 = [(HMImmutableSettingsProtoLanguageSettingEvent *)languageSetting dictionaryRepresentation];
-    [v4 setObject:v14 forKey:@"languageSetting"];
+    dictionaryRepresentation4 = [(HMImmutableSettingsProtoLanguageSettingEvent *)languageSetting dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation4 forKey:@"languageSetting"];
   }
 
   availableLanguages = self->_availableLanguages;
   if (availableLanguages)
   {
-    v16 = [(HMImmutableSettingsProtoAvailableLanguageListEvent *)availableLanguages dictionaryRepresentation];
-    [v4 setObject:v16 forKey:@"availableLanguages"];
+    dictionaryRepresentation5 = [(HMImmutableSettingsProtoAvailableLanguageListEvent *)availableLanguages dictionaryRepresentation];
+    [v4 setObject:dictionaryRepresentation5 forKey:@"availableLanguages"];
   }
 
   if (*&self->_has)
@@ -533,8 +533,8 @@ LABEL_24:
   v8.receiver = self;
   v8.super_class = HMImmutableSettingsProtoSettingChangeEvent;
   v4 = [(HMImmutableSettingsProtoSettingChangeEvent *)&v8 description];
-  v5 = [(HMImmutableSettingsProtoSettingChangeEvent *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(HMImmutableSettingsProtoSettingChangeEvent *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -559,35 +559,35 @@ LABEL_24:
   self->_availableLanguages = 0;
 }
 
-- (int)StringAsSettingChangeEvent:(id)a3
+- (int)StringAsSettingChangeEvent:(id)event
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"PBUNSET"])
+  eventCopy = event;
+  if ([eventCopy isEqualToString:@"PBUNSET"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"stringSetting"])
+  else if ([eventCopy isEqualToString:@"stringSetting"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"boundedIntegerSetting"])
+  else if ([eventCopy isEqualToString:@"boundedIntegerSetting"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"BOOLSetting"])
+  else if ([eventCopy isEqualToString:@"BOOLSetting"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"languageSetting"])
+  else if ([eventCopy isEqualToString:@"languageSetting"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"availableLanguages"])
+  else if ([eventCopy isEqualToString:@"availableLanguages"])
   {
     v4 = 5;
   }
@@ -613,59 +613,59 @@ LABEL_24:
   }
 }
 
-- (void)setAvailableLanguages:(id)a3
+- (void)setAvailableLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   [(HMImmutableSettingsProtoSettingChangeEvent *)self clearOneofValuesForSettingChangeEvent];
   *&self->_has |= 1u;
   self->_settingChangeEvent = 5;
   availableLanguages = self->_availableLanguages;
-  self->_availableLanguages = v4;
+  self->_availableLanguages = languagesCopy;
 }
 
-- (void)setLanguageSetting:(id)a3
+- (void)setLanguageSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(HMImmutableSettingsProtoSettingChangeEvent *)self clearOneofValuesForSettingChangeEvent];
   *&self->_has |= 1u;
   self->_settingChangeEvent = 4;
   languageSetting = self->_languageSetting;
-  self->_languageSetting = v4;
+  self->_languageSetting = settingCopy;
 }
 
-- (void)setBoolSetting:(id)a3
+- (void)setBoolSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(HMImmutableSettingsProtoSettingChangeEvent *)self clearOneofValuesForSettingChangeEvent];
   *&self->_has |= 1u;
   self->_settingChangeEvent = 3;
   BOOLSetting = self->_BOOLSetting;
-  self->_BOOLSetting = v4;
+  self->_BOOLSetting = settingCopy;
 }
 
-- (void)setBoundedIntegerSetting:(id)a3
+- (void)setBoundedIntegerSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(HMImmutableSettingsProtoSettingChangeEvent *)self clearOneofValuesForSettingChangeEvent];
   *&self->_has |= 1u;
   self->_settingChangeEvent = 2;
   boundedIntegerSetting = self->_boundedIntegerSetting;
-  self->_boundedIntegerSetting = v4;
+  self->_boundedIntegerSetting = settingCopy;
 }
 
-- (void)setStringSetting:(id)a3
+- (void)setStringSetting:(id)setting
 {
-  v4 = a3;
+  settingCopy = setting;
   [(HMImmutableSettingsProtoSettingChangeEvent *)self clearOneofValuesForSettingChangeEvent];
   *&self->_has |= 1u;
   self->_settingChangeEvent = 1;
   stringSetting = self->_stringSetting;
-  self->_stringSetting = v4;
+  self->_stringSetting = settingCopy;
 }
 
-- (void)setHasReadOnly:(BOOL)a3
+- (void)setHasReadOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
     v3 = 2;
   }

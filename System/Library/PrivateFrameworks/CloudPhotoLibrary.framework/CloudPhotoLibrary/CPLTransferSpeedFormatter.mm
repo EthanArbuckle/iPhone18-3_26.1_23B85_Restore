@@ -1,16 +1,16 @@
 @interface CPLTransferSpeedFormatter
 - (CPLTransferSpeedFormatter)init;
-- (id)stringForObjectValue:(id)a3;
+- (id)stringForObjectValue:(id)value;
 @end
 
 @implementation CPLTransferSpeedFormatter
 
-- (id)stringForObjectValue:(id)a3
+- (id)stringForObjectValue:(id)value
 {
   v4 = MEMORY[0x1E696AEC0];
-  v5 = a3;
+  valueCopy = value;
   v6 = [v4 alloc];
-  v7 = [(NSByteCountFormatter *)self->_byteCountFormatter stringForObjectValue:v5];
+  v7 = [(NSByteCountFormatter *)self->_byteCountFormatter stringForObjectValue:valueCopy];
 
   v8 = [v6 initWithFormat:@"%@/s", v7];
 

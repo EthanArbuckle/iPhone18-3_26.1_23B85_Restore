@@ -1,9 +1,9 @@
 @interface MBLogManager
 + (id)sharedManager;
 - (MBLogManager)init;
-- (id)safeErrorFromError:(id)a3;
-- (void)logFaultInFunction:(const char *)a3 atLine:(int)a4 withString:(id)a5;
-- (void)logType:(int)a3 inFunction:(const char *)a4 atLine:(int)a5 withString:(id)a6;
+- (id)safeErrorFromError:(id)error;
+- (void)logFaultInFunction:(const char *)function atLine:(int)line withString:(id)string;
+- (void)logType:(int)type inFunction:(const char *)function atLine:(int)line withString:(id)string;
 @end
 
 @implementation MBLogManager
@@ -33,9 +33,9 @@
     v3 = os_log_create("com.apple.newdevicesetup", "MacBuddyX");
     [(MBLogManager *)v2 setConnObj:v3];
 
-    v4 = [(MBLogManager *)v2 connObj];
+    connObj = [(MBLogManager *)v2 connObj];
 
-    if (!v4 && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
+    if (!connObj && os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR))
     {
       sub_100013830();
     }
@@ -47,30 +47,30 @@
   return v2;
 }
 
-- (void)logFaultInFunction:(const char *)a3 atLine:(int)a4 withString:(id)a5
+- (void)logFaultInFunction:(const char *)function atLine:(int)line withString:(id)string
 {
-  v8 = a5;
-  v9 = [(MBLogManager *)self connObj];
-  if (os_log_type_enabled(v9, OS_LOG_TYPE_FAULT))
+  stringCopy = string;
+  connObj = [(MBLogManager *)self connObj];
+  if (os_log_type_enabled(connObj, OS_LOG_TYPE_FAULT))
   {
     v10 = 136315650;
-    v11 = a3;
+    functionCopy = function;
     v12 = 1024;
-    v13 = a4;
+    lineCopy = line;
     v14 = 2082;
-    v15 = [v8 UTF8String];
-    _os_log_fault_impl(&_mh_execute_header, v9, OS_LOG_TYPE_FAULT, "Log fault in function: %s, at line: %i. %{public}s", &v10, 0x1Cu);
+    uTF8String = [stringCopy UTF8String];
+    _os_log_fault_impl(&_mh_execute_header, connObj, OS_LOG_TYPE_FAULT, "Log fault in function: %s, at line: %i. %{public}s", &v10, 0x1Cu);
   }
 }
 
-- (void)logType:(int)a3 inFunction:(const char *)a4 atLine:(int)a5 withString:(id)a6
+- (void)logType:(int)type inFunction:(const char *)function atLine:(int)line withString:(id)string
 {
-  v8 = a6;
+  stringCopy = string;
   if ([(MBLogManager *)self legacyLoggingEnabled])
   {
-    if (a3)
+    if (type)
     {
-      if (a3 != 1)
+      if (type != 1)
       {
         goto LABEL_7;
       }
@@ -83,33 +83,33 @@
       v9 = 119;
     }
 
-    syslog(v9, "%s", [v8 UTF8String]);
+    syslog(v9, "%s", [stringCopy UTF8String]);
   }
 
 LABEL_7:
-  v10 = [(MBLogManager *)self connObj];
-  if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
+  connObj = [(MBLogManager *)self connObj];
+  if (os_log_type_enabled(connObj, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 136446210;
-    v12 = [v8 UTF8String];
-    _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
+    uTF8String = [stringCopy UTF8String];
+    _os_log_impl(&_mh_execute_header, connObj, OS_LOG_TYPE_DEFAULT, "%{public}s", buf, 0xCu);
   }
 }
 
-- (id)safeErrorFromError:(id)a3
+- (id)safeErrorFromError:(id)error
 {
-  v4 = a3;
-  if (v4)
+  errorCopy = error;
+  if (errorCopy)
   {
     if ([(MBLogManager *)self isInternalBuild])
     {
-      v5 = [v4 description];
+      v5 = [errorCopy description];
     }
 
     else
     {
-      v6 = [v4 domain];
-      v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", v6, [v4 code]);
+      domain = [errorCopy domain];
+      v5 = +[NSString stringWithFormat:](NSString, "stringWithFormat:", @"<Error domain: %@, code %ld>", domain, [errorCopy code]);
     }
   }
 

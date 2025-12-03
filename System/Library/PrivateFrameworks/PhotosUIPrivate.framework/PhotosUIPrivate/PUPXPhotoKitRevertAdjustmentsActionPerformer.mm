@@ -1,6 +1,6 @@
 @interface PUPXPhotoKitRevertAdjustmentsActionPerformer
-+ (BOOL)_canRevertOnAsset:(id)a3 fast:(BOOL)a4;
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5;
++ (BOOL)_canRevertOnAsset:(id)asset fast:(BOOL)fast;
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group;
 - (void)performUserInteractionTask;
 @end
 
@@ -8,7 +8,7 @@
 
 - (void)performUserInteractionTask
 {
-  v3 = [(PXPhotoKitAssetActionPerformer *)self assets];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
   v4 = PFFilter();
   if ([v4 count])
   {
@@ -20,10 +20,10 @@
     aBlock[4] = self;
     v24 = v4;
     v6 = _Block_copy(aBlock);
-    v7 = [v3 count];
+    v7 = [assets count];
     if ([v5 count])
     {
-      [v3 count];
+      [assets count];
       v8 = PXLocalizedString();
       PXMediaTypeForAssets();
       v9 = PXLocalizedUsageStringWithoutAssetCount();
@@ -127,18 +127,18 @@ uint64_t __74__PUPXPhotoKitRevertAdjustmentsActionPerformer_performUserInteracti
   return v3;
 }
 
-+ (BOOL)_canRevertOnAsset:(id)a3 fast:(BOOL)a4
++ (BOOL)_canRevertOnAsset:(id)asset fast:(BOOL)fast
 {
-  v6 = a3;
-  if ([v6 hasAdjustments])
+  assetCopy = asset;
+  if ([assetCopy hasAdjustments])
   {
-    v10.receiver = a1;
+    v10.receiver = self;
     v10.super_class = &OBJC_METACLASS___PUPXPhotoKitRevertAdjustmentsActionPerformer;
-    v7 = objc_msgSendSuper2(&v10, sel_canPerformBatchOnAsset_, v6);
-    if (v7 && !a4)
+    v7 = objc_msgSendSuper2(&v10, sel_canPerformBatchOnAsset_, assetCopy);
+    if (v7 && !fast)
     {
-      v8 = [MEMORY[0x1E69C4220] sharedPresetManager];
-      LOBYTE(v7) = [v8 assetHasRevertibleAdjustments:v6];
+      mEMORY[0x1E69C4220] = [MEMORY[0x1E69C4220] sharedPresetManager];
+      LOBYTE(v7) = [mEMORY[0x1E69C4220] assetHasRevertibleAdjustments:assetCopy];
     }
   }
 
@@ -150,13 +150,13 @@ uint64_t __74__PUPXPhotoKitRevertAdjustmentsActionPerformer_performUserInteracti
   return v7;
 }
 
-+ (BOOL)canPerformWithSelectionSnapshot:(id)a3 person:(id)a4 socialGroup:(id)a5
++ (BOOL)canPerformWithSelectionSnapshot:(id)snapshot person:(id)person socialGroup:(id)group
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [MEMORY[0x1E69C4220] sharedPresetManager];
-  if (([v11 isBusyWithBatchAction] & 1) != 0 || (objc_msgSend(v8, "selectedIndexPaths"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, !v13))
+  snapshotCopy = snapshot;
+  personCopy = person;
+  groupCopy = group;
+  mEMORY[0x1E69C4220] = [MEMORY[0x1E69C4220] sharedPresetManager];
+  if (([mEMORY[0x1E69C4220] isBusyWithBatchAction] & 1) != 0 || (objc_msgSend(snapshotCopy, "selectedIndexPaths"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "count"), v12, !v13))
   {
     v14 = 0;
   }
@@ -173,8 +173,8 @@ uint64_t __74__PUPXPhotoKitRevertAdjustmentsActionPerformer_performUserInteracti
     v16[3] = &unk_1E7B7A890;
     v17 = v13 > 2;
     v16[4] = &v18;
-    v16[5] = a1;
-    [v8 enumerateSelectedObjectsUsingBlock:v16];
+    v16[5] = self;
+    [snapshotCopy enumerateSelectedObjectsUsingBlock:v16];
     v14 = *(v19 + 24);
     _Block_object_dispose(&v18, 8);
   }

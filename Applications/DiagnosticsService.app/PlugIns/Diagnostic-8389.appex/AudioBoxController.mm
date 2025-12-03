@@ -1,30 +1,30 @@
 @interface AudioBoxController
-- (void)setupWithInputs:(id)a3 responder:(id)a4;
+- (void)setupWithInputs:(id)inputs responder:(id)responder;
 - (void)start;
 - (void)teardown;
 @end
 
 @implementation AudioBoxController
 
-- (void)setupWithInputs:(id)a3 responder:(id)a4
+- (void)setupWithInputs:(id)inputs responder:(id)responder
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_10001A62C(a3, a4);
+  selfCopy = self;
+  sub_10001A62C(inputs, responder);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
 - (void)start
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001A99C();
 }
 
 - (void)teardown
 {
-  v2 = self;
+  selfCopy = self;
   sub_10001AF30();
 }
 

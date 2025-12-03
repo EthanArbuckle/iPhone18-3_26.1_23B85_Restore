@@ -1,8 +1,8 @@
 @interface SBDisplayItemLayoutAttributesKey
-+ (id)keyFromProtobufRepresentation:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SBDisplayItemLayoutAttributesKey)initWithDisplayItem:(id)a3 displayOrdinal:(int64_t)a4 orientation:(int64_t)a5;
-- (id)copyWithZone:(_NSZone *)a3;
++ (id)keyFromProtobufRepresentation:(id)representation;
+- (BOOL)isEqual:(id)equal;
+- (SBDisplayItemLayoutAttributesKey)initWithDisplayItem:(id)item displayOrdinal:(int64_t)ordinal orientation:(int64_t)orientation;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)protobufRepresentation;
 - (unint64_t)hash;
@@ -24,8 +24,8 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SBDisplayItem *)self->_displayItem uniqueIdentifier];
-  v5 = v4;
+  uniqueIdentifier = [(SBDisplayItem *)self->_displayItem uniqueIdentifier];
+  v5 = uniqueIdentifier;
   orientation = self->_orientation;
   if (orientation > 2)
   {
@@ -37,36 +37,36 @@
     v7 = off_2783B2BD8[orientation];
   }
 
-  v8 = [v3 stringWithFormat:@"%@ (displayOrdinal=%ld, orientation=%@)", v4, self->_displayOrdinal, v7];
+  v8 = [v3 stringWithFormat:@"%@ (displayOrdinal=%ld, orientation=%@)", uniqueIdentifier, self->_displayOrdinal, v7];
 
   return v8;
 }
 
-- (SBDisplayItemLayoutAttributesKey)initWithDisplayItem:(id)a3 displayOrdinal:(int64_t)a4 orientation:(int64_t)a5
+- (SBDisplayItemLayoutAttributesKey)initWithDisplayItem:(id)item displayOrdinal:(int64_t)ordinal orientation:(int64_t)orientation
 {
-  v10 = a3;
+  itemCopy = item;
   v13.receiver = self;
   v13.super_class = SBDisplayItemLayoutAttributesKey;
   v11 = [(SBDisplayItemLayoutAttributesKey *)&v13 init];
   if (v11)
   {
-    if (!v10)
+    if (!itemCopy)
     {
       [SBDisplayItemLayoutAttributesKey initWithDisplayItem:a2 displayOrdinal:v11 orientation:?];
     }
 
-    objc_storeStrong(&v11->_displayItem, a3);
-    v11->_displayOrdinal = a4;
-    v11->_orientation = a5;
+    objc_storeStrong(&v11->_displayItem, item);
+    v11->_displayOrdinal = ordinal;
+    v11->_orientation = orientation;
   }
 
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -74,7 +74,7 @@
   else
   {
     v5 = objc_opt_class();
-    v6 = v4;
+    v6 = equalCopy;
     if (v5)
     {
       if (objc_opt_isKindOfClass())
@@ -109,7 +109,7 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [SBDisplayItemLayoutAttributesKey alloc];
   displayItem = self->_displayItem;
@@ -119,17 +119,17 @@
   return [(SBDisplayItemLayoutAttributesKey *)v4 initWithDisplayItem:displayItem displayOrdinal:displayOrdinal orientation:orientation];
 }
 
-+ (id)keyFromProtobufRepresentation:(id)a3
++ (id)keyFromProtobufRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [(SBPBDisplayItemLayoutAttributesKey *)v4 displayItem];
-  v6 = [SBDisplayItem displayItemWithProtobufRepresentation:v5];
+  representationCopy = representation;
+  displayItem = [(SBPBDisplayItemLayoutAttributesKey *)representationCopy displayItem];
+  v6 = [SBDisplayItem displayItemWithProtobufRepresentation:displayItem];
 
-  v7 = [a1 alloc];
-  v8 = [(SBPBDisplayItemLayoutAttributesKey *)v4 displayOrdinal];
-  v9 = [(SBPBDisplayItemLayoutAttributesKey *)v4 orientation];
+  v7 = [self alloc];
+  displayOrdinal = [(SBPBDisplayItemLayoutAttributesKey *)representationCopy displayOrdinal];
+  orientation = [(SBPBDisplayItemLayoutAttributesKey *)representationCopy orientation];
 
-  v10 = [v7 initWithDisplayItem:v6 displayOrdinal:v8 orientation:v9];
+  v10 = [v7 initWithDisplayItem:v6 displayOrdinal:displayOrdinal orientation:orientation];
 
   return v10;
 }
@@ -137,8 +137,8 @@
 - (id)protobufRepresentation
 {
   v3 = objc_alloc_init(SBPBDisplayItemLayoutAttributesKey);
-  v4 = [(SBDisplayItem *)self->_displayItem protobufRepresentation];
-  [(SBPBDisplayItemLayoutAttributesKey *)v3 setDisplayItem:v4];
+  protobufRepresentation = [(SBDisplayItem *)self->_displayItem protobufRepresentation];
+  [(SBPBDisplayItemLayoutAttributesKey *)v3 setDisplayItem:protobufRepresentation];
 
   [(SBPBDisplayItemLayoutAttributesKey *)v3 setDisplayOrdinal:?];
   [(SBPBDisplayItemLayoutAttributesKey *)v3 setOrientation:?];

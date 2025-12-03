@@ -1,69 +1,69 @@
 @interface _UIStatusBarStaticBatteryView
-+ (id)_batteryBodyImageWithSize:(CGSize)a3 forScale:(double)a4 batteryRect:(CGRect)a5 cornerRadius:(double)a6 lineWidth:(double)a7 filled:(BOOL)a8;
-+ (id)_batteryBodyImageWithSize:(double)a3 forScale:(double)a4 batteryRect:(double)a5 cornerRadius:(double)a6 lineWidth:(double)a7 withBoltCutOutOfSize:(double)a8 inRect:(double)a9 boltFlipped:(uint64_t)a10;
-+ (id)_batteryBoltImageWithSize:(CGSize)a3 boltSize:(CGSize)a4 forScale:(double)a5;
-+ (id)_batteryBoltMaskImageWithSize:(CGSize)a3 boltSize:(CGSize)a4 forScale:(double)a5;
-+ (id)_batteryFillImageWithSize:(CGSize)a3 forScale:(double)a4 cornerRadius:(double)a5;
-+ (id)_batteryFillImageWithSize:(CGSize)a3 forScale:(double)a4 cornerRadius:(double)a5 withBoltCutOutOfSize:(CGSize)a6 inRect:(CGRect)a7 boltFlipped:(BOOL)a8;
-+ (id)_batteryPinImageWithSize:(CGSize)a3 forScale:(double)a4 complexPinPath:(BOOL)a5;
-+ (id)_imageByPunchingImage:(id)a3 inRect:(CGRect)a4 flippedHorizontally:(BOOL)a5 outOfImage:(id)a6 inRect:(CGRect)a7 size:(CGSize)a8 scale:(double)a9;
-+ (id)_imageWithRenderedBezierPath:(id)a3 size:(CGSize)a4 scale:(double)a5 pathScaleFactor:(double)a6 stroke:(BOOL)a7 fill:(BOOL)a8;
-+ (id)_percentFillImageWithSize:(CGSize)a3 forScale:(double)a4 batteryRect:(CGRect)a5 cornerRadius:(double)a6 lineWidth:(double)a7;
-+ (id)_renderedImageOfSize:(CGSize)a3 scale:(double)a4 withActions:(id)a5;
++ (id)_batteryBodyImageWithSize:(CGSize)size forScale:(double)scale batteryRect:(CGRect)rect cornerRadius:(double)radius lineWidth:(double)width filled:(BOOL)filled;
++ (id)_batteryBodyImageWithSize:(double)size forScale:(double)scale batteryRect:(double)rect cornerRadius:(double)radius lineWidth:(double)width withBoltCutOutOfSize:(double)ofSize inRect:(double)inRect boltFlipped:(uint64_t)self0;
++ (id)_batteryBoltImageWithSize:(CGSize)size boltSize:(CGSize)boltSize forScale:(double)scale;
++ (id)_batteryBoltMaskImageWithSize:(CGSize)size boltSize:(CGSize)boltSize forScale:(double)scale;
++ (id)_batteryFillImageWithSize:(CGSize)size forScale:(double)scale cornerRadius:(double)radius;
++ (id)_batteryFillImageWithSize:(CGSize)size forScale:(double)scale cornerRadius:(double)radius withBoltCutOutOfSize:(CGSize)ofSize inRect:(CGRect)rect boltFlipped:(BOOL)flipped;
++ (id)_batteryPinImageWithSize:(CGSize)size forScale:(double)scale complexPinPath:(BOOL)path;
++ (id)_imageByPunchingImage:(id)image inRect:(CGRect)rect flippedHorizontally:(BOOL)horizontally outOfImage:(id)ofImage inRect:(CGRect)inRect size:(CGSize)size scale:(double)scale;
++ (id)_imageWithRenderedBezierPath:(id)path size:(CGSize)size scale:(double)scale pathScaleFactor:(double)factor stroke:(BOOL)stroke fill:(BOOL)fill;
++ (id)_percentFillImageWithSize:(CGSize)size forScale:(double)scale batteryRect:(CGRect)rect cornerRadius:(double)radius lineWidth:(double)width;
++ (id)_renderedImageOfSize:(CGSize)size scale:(double)scale withActions:(id)actions;
 - (BOOL)_useImagesWithCutoutsForBolt;
-- (CGRect)_boltRectForTraitCollection:(id)a3 boltSize:(CGSize)a4;
+- (CGRect)_boltRectForTraitCollection:(id)collection boltSize:(CGSize)size;
 - (CGRect)_updateBodyLayers;
 - (CGSize)_boltPathSize;
 - (double)_batteryPathScaleFactor;
 - (void)_createBodyLayers;
-- (void)_createBoltLayersWithSize:(CGSize)a3;
+- (void)_createBoltLayersWithSize:(CGSize)size;
 - (void)_createFillLayer;
-- (void)_didFinishAnimatingBoltToVisible:(BOOL)a3;
+- (void)_didFinishAnimatingBoltToVisible:(BOOL)visible;
 - (void)_updateBatteryFillColor;
 - (void)_updateBodyColors;
 - (void)_updateFillLayer;
-- (void)_willBeginAnimatingBoltToVisible:(BOOL)a3;
-- (void)setLowBatteryMode:(int64_t)a3;
-- (void)setShowsPercentage:(BOOL)a3;
+- (void)_willBeginAnimatingBoltToVisible:(BOOL)visible;
+- (void)setLowBatteryMode:(int64_t)mode;
+- (void)setShowsPercentage:(BOOL)percentage;
 @end
 
 @implementation _UIStatusBarStaticBatteryView
 
 - (void)_createBodyLayers
 {
-  v7 = [MEMORY[0x1E6979398] layer];
-  [(_UIStatusBarBatteryView *)self setBodyLayer:v7];
+  layer = [MEMORY[0x1E6979398] layer];
+  [(_UIStatusBarBatteryView *)self setBodyLayer:layer];
   v3 = +[UIColor clearColor];
-  [v7 setContentsMultiplyColor:{objc_msgSend(v3, "CGColor")}];
+  [layer setContentsMultiplyColor:{objc_msgSend(v3, "CGColor")}];
 
-  v4 = [(UIView *)self layer];
-  [v4 addSublayer:v7];
+  layer2 = [(UIView *)self layer];
+  [layer2 addSublayer:layer];
 
-  v5 = [MEMORY[0x1E6979398] layer];
-  [(_UIStatusBarBatteryView *)self setPinLayer:v5];
-  v6 = [(UIView *)self layer];
-  [v6 addSublayer:v5];
+  layer3 = [MEMORY[0x1E6979398] layer];
+  [(_UIStatusBarBatteryView *)self setPinLayer:layer3];
+  layer4 = [(UIView *)self layer];
+  [layer4 addSublayer:layer3];
 }
 
 - (void)_createFillLayer
 {
-  v5 = [MEMORY[0x1E6979398] layer];
-  [(_UIStatusBarBatteryView *)self setFillLayer:v5];
+  layer = [MEMORY[0x1E6979398] layer];
+  [(_UIStatusBarBatteryView *)self setFillLayer:layer];
   v3 = +[UIColor clearColor];
-  [v5 setContentsMultiplyColor:{objc_msgSend(v3, "CGColor")}];
+  [layer setContentsMultiplyColor:{objc_msgSend(v3, "CGColor")}];
 
-  v4 = [(_UIStatusBarBatteryView *)self bodyLayer];
-  [v4 addSublayer:v5];
+  bodyLayer = [(_UIStatusBarBatteryView *)self bodyLayer];
+  [bodyLayer addSublayer:layer];
 
-  [(_UIStatusBarBatteryView *)self setPercentFillLayer:v5];
+  [(_UIStatusBarBatteryView *)self setPercentFillLayer:layer];
 }
 
-- (void)_createBoltLayersWithSize:(CGSize)a3
+- (void)_createBoltLayersWithSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIView *)self traitCollection];
-  [v6 displayScale];
+  height = size.height;
+  width = size.width;
+  traitCollection = [(UIView *)self traitCollection];
+  [traitCollection displayScale];
   v8 = v7;
 
   [(_UIStatusBarStaticBatteryView *)self _batteryPathScaleFactor];
@@ -72,25 +72,25 @@
   v12 = *MEMORY[0x1E695EFF8];
   v13 = *(MEMORY[0x1E695EFF8] + 8);
   v19 = [objc_opt_class() _batteryBoltMaskImageWithSize:width * v9 boltSize:height * v9 forScale:{width, height, v8}];
-  v14 = [MEMORY[0x1E6979398] layer];
+  layer = [MEMORY[0x1E6979398] layer];
   v15 = v19;
-  [v14 setContents:{objc_msgSend(v19, "CGImage")}];
+  [layer setContents:{objc_msgSend(v19, "CGImage")}];
   v16 = [MEMORY[0x1E6979378] filterWithType:*MEMORY[0x1E69798E8]];
-  [v14 setCompositingFilter:v16];
+  [layer setCompositingFilter:v16];
 
-  [v14 setBounds:{v12, v13, v10, v11}];
-  [(_UIStatusBarBatteryView *)self setBoltMaskLayer:v14];
+  [layer setBounds:{v12, v13, v10, v11}];
+  [(_UIStatusBarBatteryView *)self setBoltMaskLayer:layer];
   v17 = [objc_opt_class() _batteryBoltImageWithSize:v10 boltSize:v11 forScale:{width, height, v8}];
-  v18 = [MEMORY[0x1E6979398] layer];
-  [v18 setContents:{objc_msgSend(v17, "CGImage")}];
-  [v18 setBounds:{v12, v13, v10, v11}];
-  [(_UIStatusBarBatteryView *)self setBoltLayer:v18];
+  layer2 = [MEMORY[0x1E6979398] layer];
+  [layer2 setContents:{objc_msgSend(v17, "CGImage")}];
+  [layer2 setBounds:{v12, v13, v10, v11}];
+  [(_UIStatusBarBatteryView *)self setBoltLayer:layer2];
 }
 
 - (CGSize)_boltPathSize
 {
-  v3 = [(_UIStatusBarBatteryView *)self boltMaskLayer];
-  [v3 bounds];
+  boltMaskLayer = [(_UIStatusBarBatteryView *)self boltMaskLayer];
+  [boltMaskLayer bounds];
   v5 = v4;
   v7 = v6;
 
@@ -102,11 +102,11 @@
   return result;
 }
 
-- (CGRect)_boltRectForTraitCollection:(id)a3 boltSize:(CGSize)a4
+- (CGRect)_boltRectForTraitCollection:(id)collection boltSize:(CGSize)size
 {
-  height = a4.height;
-  width = a4.width;
-  [(_UIStatusBarBatteryView *)self _bodyRectForTraitCollection:a3];
+  height = size.height;
+  width = size.width;
+  [(_UIStatusBarBatteryView *)self _bodyRectForTraitCollection:collection];
   x = v21.origin.x;
   y = v21.origin.y;
   v9 = v21.size.width;
@@ -134,20 +134,20 @@
 
 - (CGRect)_updateBodyLayers
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [(_UIStatusBarStaticBatteryView *)self _useImagesWithCutoutsForBolt];
-  v5 = [(UIView *)self _shouldReverseLayoutDirection];
-  v6 = [(_UIStatusBarBatteryView *)self showsPercentage];
-  [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:v3];
+  traitCollection = [(UIView *)self traitCollection];
+  _useImagesWithCutoutsForBolt = [(_UIStatusBarStaticBatteryView *)self _useImagesWithCutoutsForBolt];
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
+  showsPercentage = [(_UIStatusBarBatteryView *)self showsPercentage];
+  [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:traitCollection];
   v8 = v7;
-  [v3 displayScale];
+  [traitCollection displayScale];
   v10 = v9;
-  [(_UIStatusBarBatteryView *)self _batterySizeForTraitCollection:v3];
+  [(_UIStatusBarBatteryView *)self _batterySizeForTraitCollection:traitCollection];
   v62 = v11;
-  [(_UIStatusBarBatteryView *)self _pinSizeForTraitCollection:v3];
+  [(_UIStatusBarBatteryView *)self _pinSizeForTraitCollection:traitCollection];
   v13 = v12;
   v64 = v14;
-  [(_UIStatusBarBatteryView *)self _bodyRectForTraitCollection:v3];
+  [(_UIStatusBarBatteryView *)self _bodyRectForTraitCollection:traitCollection];
   v16 = v15;
   v65 = v18;
   v66 = v17;
@@ -164,15 +164,15 @@
 
   else
   {
-    [(_UIStatusBarBatteryView *)self _outsideCornerRadiusForTraitCollection:v3];
+    [(_UIStatusBarBatteryView *)self _outsideCornerRadiusForTraitCollection:traitCollection];
     v27 = v28 + v8 * -0.5;
   }
 
   v61 = v27;
-  if (v4)
+  if (_useImagesWithCutoutsForBolt)
   {
-    v29 = [(_UIStatusBarBatteryView *)self boltMaskLayer];
-    [v29 bounds];
+    boltMaskLayer = [(_UIStatusBarBatteryView *)self boltMaskLayer];
+    [boltMaskLayer bounds];
     v60 = v16;
     v31 = v30;
     v59 = v21;
@@ -182,43 +182,43 @@
     [(_UIStatusBarStaticBatteryView *)self _boltPathSize];
     v36 = v35;
     v58 = v37;
-    [(_UIStatusBarStaticBatteryView *)self _boltRectForTraitCollection:v3 boltSize:v31, v34];
+    [(_UIStatusBarStaticBatteryView *)self _boltRectForTraitCollection:traitCollection boltSize:v31, v34];
     v8 = v32;
     v21 = v59;
     v16 = v60;
     v57 = v36;
     v38 = v63;
-    [objc_opt_class() _batteryBodyImageWithSize:v5 forScale:v25 batteryRect:v63 cornerRadius:v10 lineWidth:v60 withBoltCutOutOfSize:v66 inRect:v65 boltFlipped:{v67, v61, *&v8, v57, v58, v39, v40, v41, v42}];
+    [objc_opt_class() _batteryBodyImageWithSize:_shouldReverseLayoutDirection forScale:v25 batteryRect:v63 cornerRadius:v10 lineWidth:v60 withBoltCutOutOfSize:v66 inRect:v65 boltFlipped:{v67, v61, *&v8, v57, v58, v39, v40, v41, v42}];
   }
 
   else
   {
     v38 = v63;
-    [objc_opt_class() _batteryBodyImageWithSize:v6 forScale:v25 batteryRect:v63 cornerRadius:v10 lineWidth:v16 filled:{v66, v65, v67, v27, *&v8}];
+    [objc_opt_class() _batteryBodyImageWithSize:showsPercentage forScale:v25 batteryRect:v63 cornerRadius:v10 lineWidth:v16 filled:{v66, v65, v67, v27, *&v8}];
   }
   v43 = ;
-  v44 = [v43 CGImage];
-  v45 = [(_UIStatusBarBatteryView *)self bodyLayer];
-  [v45 setContents:v44];
+  cGImage = [v43 CGImage];
+  bodyLayer = [(_UIStatusBarBatteryView *)self bodyLayer];
+  [bodyLayer setContents:cGImage];
 
-  v46 = [(_UIStatusBarBatteryView *)self bodyLayer];
-  [v46 setFrame:{v21, v23, v25, v38}];
+  bodyLayer2 = [(_UIStatusBarBatteryView *)self bodyLayer];
+  [bodyLayer2 setFrame:{v21, v23, v25, v38}];
 
-  v47 = [(_UIStatusBarBatteryView *)self boltMaskLayer];
-  [v47 setHidden:v4];
+  boltMaskLayer2 = [(_UIStatusBarBatteryView *)self boltMaskLayer];
+  [boltMaskLayer2 setHidden:_useImagesWithCutoutsForBolt];
 
   v68.origin.x = v21;
   v68.origin.y = v23;
   v68.size.width = v25;
   v68.size.height = v38;
   v48 = CGRectGetMidY(v68) + v64 * -0.5;
-  v49 = [(_UIStatusBarBatteryView *)self pinLayer];
-  [v49 setFrame:{v8 + v62, v48, v13, v64}];
+  pinLayer = [(_UIStatusBarBatteryView *)self pinLayer];
+  [pinLayer setFrame:{v8 + v62, v48, v13, v64}];
 
   v50 = [objc_opt_class() _batteryPinImageWithSize:-[_UIStatusBarBatteryView internalSizeCategory](self forScale:"internalSizeCategory") == 2 complexPinPath:{v13, v64, v10}];
-  v51 = [v50 CGImage];
-  v52 = [(_UIStatusBarBatteryView *)self pinLayer];
-  [v52 setContents:v51];
+  cGImage2 = [v50 CGImage];
+  pinLayer2 = [(_UIStatusBarBatteryView *)self pinLayer];
+  [pinLayer2 setContents:cGImage2];
 
   v53 = v16;
   v55 = v65;
@@ -233,11 +233,11 @@
 
 - (void)_updateFillLayer
 {
-  v3 = [(UIView *)self traitCollection];
-  v4 = [(UIView *)self _shouldReverseLayoutDirection];
+  traitCollection = [(UIView *)self traitCollection];
+  _shouldReverseLayoutDirection = [(UIView *)self _shouldReverseLayoutDirection];
   [(UIView *)self bounds];
-  [(_UIStatusBarBatteryView *)self _bodyRectForTraitCollection:v3];
-  [v3 displayScale];
+  [(_UIStatusBarBatteryView *)self _bodyRectForTraitCollection:traitCollection];
+  [traitCollection displayScale];
   v6 = v5;
   v7 = *(MEMORY[0x1E695F058] + 16);
   v41 = *MEMORY[0x1E695F058];
@@ -246,23 +246,23 @@
   [(_UIStatusBarBatteryView *)self _fillLayerFrame:&v41 cornerRadius:&v40];
   if ([(_UIStatusBarStaticBatteryView *)self _useImagesWithCutoutsForBolt])
   {
-    v8 = [(_UIStatusBarBatteryView *)self boltMaskLayer];
-    [v8 bounds];
+    boltMaskLayer = [(_UIStatusBarBatteryView *)self boltMaskLayer];
+    [boltMaskLayer bounds];
     v10 = v9;
     v12 = v11;
 
     [(_UIStatusBarStaticBatteryView *)self _boltPathSize];
     v14 = v13;
     v16 = v15;
-    [(_UIStatusBarStaticBatteryView *)self _boltRectForTraitCollection:v3 boltSize:v10, v12];
-    v21 = [objc_opt_class() _batteryFillImageWithSize:v4 forScale:v42 cornerRadius:v6 withBoltCutOutOfSize:v40 inRect:v14 boltFlipped:{v16, v17 - *&v41, v18 - *(&v41 + 1), v19, v20}];
+    [(_UIStatusBarStaticBatteryView *)self _boltRectForTraitCollection:traitCollection boltSize:v10, v12];
+    v21 = [objc_opt_class() _batteryFillImageWithSize:_shouldReverseLayoutDirection forScale:v42 cornerRadius:v6 withBoltCutOutOfSize:v40 inRect:v14 boltFlipped:{v16, v17 - *&v41, v18 - *(&v41 + 1), v19, v20}];
   }
 
   else if ([(_UIStatusBarBatteryView *)self showsPercentage])
   {
-    [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:v3];
+    [(_UIStatusBarBatteryView *)self _lineWidthAndInterspaceForTraitCollection:traitCollection];
     v23 = v22;
-    [(_UIStatusBarBatteryView *)self _bodyRectForTraitCollection:v3];
+    [(_UIStatusBarBatteryView *)self _bodyRectForTraitCollection:traitCollection];
     v25 = v24;
     v27 = v26;
     v29 = v28;
@@ -274,7 +274,7 @@
 
     else
     {
-      [(_UIStatusBarBatteryView *)self _outsideCornerRadiusForTraitCollection:v3];
+      [(_UIStatusBarBatteryView *)self _outsideCornerRadiusForTraitCollection:traitCollection];
       v32 = v33 + v23 * -0.5;
     }
 
@@ -287,63 +287,63 @@
   }
 
   v34 = v21;
-  v35 = [v21 CGImage];
-  v36 = [(_UIStatusBarBatteryView *)self fillLayer];
-  [v36 setContents:v35];
+  cGImage = [v21 CGImage];
+  fillLayer = [(_UIStatusBarBatteryView *)self fillLayer];
+  [fillLayer setContents:cGImage];
 
   v37 = v41;
   v38 = v42;
-  v39 = [(_UIStatusBarBatteryView *)self fillLayer];
-  [v39 setFrame:{v37, v38}];
+  fillLayer2 = [(_UIStatusBarBatteryView *)self fillLayer];
+  [fillLayer2 setFrame:{v37, v38}];
 }
 
 - (void)_updateBodyColors
 {
   if ([(_UIStatusBarBatteryView *)self showsPercentage])
   {
-    v3 = [(_UIStatusBarBatteryView *)self _batteryUnfilledColor];
-    v4 = [v3 CGColor];
+    _batteryUnfilledColor = [(_UIStatusBarBatteryView *)self _batteryUnfilledColor];
+    cGColor = [_batteryUnfilledColor CGColor];
 
-    v5 = [(_UIStatusBarBatteryView *)self bodyLayer];
-    [v5 setContentsMultiplyColor:v4];
+    bodyLayer = [(_UIStatusBarBatteryView *)self bodyLayer];
+    [bodyLayer setContentsMultiplyColor:cGColor];
 
-    v6 = [(_UIStatusBarBatteryView *)self pinLayer];
-    [v6 setContentsMultiplyColor:v4];
+    pinLayer = [(_UIStatusBarBatteryView *)self pinLayer];
+    [pinLayer setContentsMultiplyColor:cGColor];
 
     [(_UIStatusBarBatteryView *)self _batteryTextColor];
   }
 
   else
   {
-    v7 = [(_UIStatusBarBatteryView *)self bodyColor];
-    v8 = [v7 CGColor];
-    v9 = [(_UIStatusBarBatteryView *)self bodyLayer];
-    [v9 setContentsMultiplyColor:v8];
+    bodyColor = [(_UIStatusBarBatteryView *)self bodyColor];
+    cGColor2 = [bodyColor CGColor];
+    bodyLayer2 = [(_UIStatusBarBatteryView *)self bodyLayer];
+    [bodyLayer2 setContentsMultiplyColor:cGColor2];
 
-    v10 = [(_UIStatusBarBatteryView *)self pinColor];
-    v11 = [v10 CGColor];
-    v12 = [(_UIStatusBarBatteryView *)self pinLayer];
-    [v12 setContentsMultiplyColor:v11];
+    pinColor = [(_UIStatusBarBatteryView *)self pinColor];
+    cGColor3 = [pinColor CGColor];
+    pinLayer2 = [(_UIStatusBarBatteryView *)self pinLayer];
+    [pinLayer2 setContentsMultiplyColor:cGColor3];
 
     [(_UIStatusBarBatteryView *)self boltColor];
   }
   v16 = ;
   v13 = v16;
-  v14 = [v16 CGColor];
-  v15 = [(_UIStatusBarBatteryView *)self boltLayer];
-  [v15 setContentsMultiplyColor:v14];
+  cGColor4 = [v16 CGColor];
+  boltLayer = [(_UIStatusBarBatteryView *)self boltLayer];
+  [boltLayer setContentsMultiplyColor:cGColor4];
 }
 
 - (void)_updateBatteryFillColor
 {
-  v3 = [(_UIStatusBarBatteryView *)self _batteryFillColor];
-  v4 = [v3 CGColor];
-  v5 = [(_UIStatusBarBatteryView *)self fillLayer];
-  [v5 setContentsMultiplyColor:v4];
+  _batteryFillColor = [(_UIStatusBarBatteryView *)self _batteryFillColor];
+  cGColor = [_batteryFillColor CGColor];
+  fillLayer = [(_UIStatusBarBatteryView *)self fillLayer];
+  [fillLayer setContentsMultiplyColor:cGColor];
 
-  v6 = [(_UIStatusBarBatteryView *)self fillLayer];
+  fillLayer2 = [(_UIStatusBarBatteryView *)self fillLayer];
   LODWORD(v7) = 1.0;
-  [v6 setOpacity:v7];
+  [fillLayer2 setOpacity:v7];
 
   if ([(_UIStatusBarBatteryView *)self showsPercentage])
   {
@@ -372,7 +372,7 @@
   return [(_UIStatusBarBatteryView *)self _shouldShowBolt];
 }
 
-- (void)_willBeginAnimatingBoltToVisible:(BOOL)a3
+- (void)_willBeginAnimatingBoltToVisible:(BOOL)visible
 {
   ++self->_inflightBoltAnimationCount;
   [MEMORY[0x1E6979518] begin];
@@ -384,7 +384,7 @@
   [v4 commit];
 }
 
-- (void)_didFinishAnimatingBoltToVisible:(BOOL)a3
+- (void)_didFinishAnimatingBoltToVisible:(BOOL)visible
 {
   --self->_inflightBoltAnimationCount;
   [MEMORY[0x1E6979518] begin];
@@ -396,11 +396,11 @@
   [v4 commit];
 }
 
-- (void)setShowsPercentage:(BOOL)a3
+- (void)setShowsPercentage:(BOOL)percentage
 {
   v4.receiver = self;
   v4.super_class = _UIStatusBarStaticBatteryView;
-  [(_UIStatusBarBatteryView *)&v4 setShowsPercentage:a3];
+  [(_UIStatusBarBatteryView *)&v4 setShowsPercentage:percentage];
   [(UIView *)self frame];
   if (!CGRectIsEmpty(v5))
   {
@@ -409,57 +409,57 @@
   }
 }
 
-- (void)setLowBatteryMode:(int64_t)a3
+- (void)setLowBatteryMode:(int64_t)mode
 {
-  v5 = [(_UIStatusBarBatteryView *)self isLowBattery];
+  isLowBattery = [(_UIStatusBarBatteryView *)self isLowBattery];
   v6.receiver = self;
   v6.super_class = _UIStatusBarStaticBatteryView;
-  [(_UIStatusBarBatteryView *)&v6 setLowBatteryMode:a3];
-  if (v5 != [(_UIStatusBarBatteryView *)self isLowBattery])
+  [(_UIStatusBarBatteryView *)&v6 setLowBatteryMode:mode];
+  if (isLowBattery != [(_UIStatusBarBatteryView *)self isLowBattery])
   {
     [(_UIStatusBarStaticBatteryView *)self _updateBatteryFillColor];
   }
 }
 
-+ (id)_imageWithRenderedBezierPath:(id)a3 size:(CGSize)a4 scale:(double)a5 pathScaleFactor:(double)a6 stroke:(BOOL)a7 fill:(BOOL)a8
++ (id)_imageWithRenderedBezierPath:(id)path size:(CGSize)size scale:(double)scale pathScaleFactor:(double)factor stroke:(BOOL)stroke fill:(BOOL)fill
 {
-  height = a4.height;
-  width = a4.width;
-  v15 = a3;
+  height = size.height;
+  width = size.width;
+  pathCopy = path;
   v19[0] = MEMORY[0x1E69E9820];
   v19[1] = 3221225472;
   v19[2] = __101___UIStatusBarStaticBatteryView__imageWithRenderedBezierPath_size_scale_pathScaleFactor_stroke_fill___block_invoke;
   v19[3] = &unk_1E7109C88;
-  v21 = a6;
-  v22 = a7;
-  v20 = v15;
-  v23 = a8;
-  v16 = v15;
-  v17 = [a1 _renderedImageOfSize:v19 scale:width withActions:{height, a5}];
+  factorCopy = factor;
+  strokeCopy = stroke;
+  v20 = pathCopy;
+  fillCopy = fill;
+  v16 = pathCopy;
+  v17 = [self _renderedImageOfSize:v19 scale:width withActions:{height, scale}];
 
   return v17;
 }
 
-+ (id)_imageByPunchingImage:(id)a3 inRect:(CGRect)a4 flippedHorizontally:(BOOL)a5 outOfImage:(id)a6 inRect:(CGRect)a7 size:(CGSize)a8 scale:(double)a9
++ (id)_imageByPunchingImage:(id)image inRect:(CGRect)rect flippedHorizontally:(BOOL)horizontally outOfImage:(id)ofImage inRect:(CGRect)inRect size:(CGSize)size scale:(double)scale
 {
-  height = a7.size.height;
-  width = a7.size.width;
-  y = a7.origin.y;
-  x = a7.origin.x;
-  v15 = a4.size.height;
-  v16 = a4.size.width;
-  v17 = a4.origin.y;
-  v18 = a4.origin.x;
-  v20 = a3;
-  v21 = a6;
-  if (a5)
+  height = inRect.size.height;
+  width = inRect.size.width;
+  y = inRect.origin.y;
+  x = inRect.origin.x;
+  v15 = rect.size.height;
+  v16 = rect.size.width;
+  v17 = rect.origin.y;
+  v18 = rect.origin.x;
+  imageCopy = image;
+  ofImageCopy = ofImage;
+  if (horizontally)
   {
-    v22 = [v20 imageWithHorizontallyFlippedOrientation];
+    imageWithHorizontallyFlippedOrientation = [imageCopy imageWithHorizontallyFlippedOrientation];
   }
 
   else
   {
-    v22 = v20;
+    imageWithHorizontallyFlippedOrientation = imageCopy;
   }
 
   v27[0] = MEMORY[0x1E69E9820];
@@ -470,68 +470,68 @@
   v31 = y;
   v32 = width;
   v33 = height;
-  v28 = v21;
-  v29 = v22;
+  v28 = ofImageCopy;
+  v29 = imageWithHorizontallyFlippedOrientation;
   v34 = v18;
   v35 = v17;
   v36 = v16;
   v37 = v15;
-  v23 = v22;
-  v24 = v21;
-  v25 = [a1 _renderedImageOfSize:v27 scale:a9 withActions:{v39, v40}];
+  v23 = imageWithHorizontallyFlippedOrientation;
+  v24 = ofImageCopy;
+  v25 = [self _renderedImageOfSize:v27 scale:scale withActions:{v39, v40}];
 
   return v25;
 }
 
-+ (id)_renderedImageOfSize:(CGSize)a3 scale:(double)a4 withActions:(id)a5
++ (id)_renderedImageOfSize:(CGSize)size scale:(double)scale withActions:(id)actions
 {
-  height = a3.height;
-  width = a3.width;
-  v10 = a5;
-  if (!v10)
+  height = size.height;
+  width = size.width;
+  actionsCopy = actions;
+  if (!actionsCopy)
   {
-    v15 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v15 handleFailureInMethod:a2 object:a1 file:@"_UIStatusBarStaticBatteryView.m" lineNumber:331 description:{@"Invalid parameter not satisfying: %@", @"actions"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_UIStatusBarStaticBatteryView.m" lineNumber:331 description:{@"Invalid parameter not satisfying: %@", @"actions"}];
   }
 
   v11 = +[UIGraphicsImageRendererFormat defaultFormat];
-  [v11 setScale:a4];
+  [v11 setScale:scale];
   [v11 setOpaque:0];
   [v11 setPreferredRange:0x7FFFLL];
-  v12 = [[UIGraphicsImageRenderer alloc] initWithSize:v11 format:width, height];
-  v13 = [(UIGraphicsImageRenderer *)v12 imageWithActions:v10];
+  height = [[UIGraphicsImageRenderer alloc] initWithSize:v11 format:width, height];
+  v13 = [(UIGraphicsImageRenderer *)height imageWithActions:actionsCopy];
 
   return v13;
 }
 
-+ (id)_batteryBodyImageWithSize:(CGSize)a3 forScale:(double)a4 batteryRect:(CGRect)a5 cornerRadius:(double)a6 lineWidth:(double)a7 filled:(BOOL)a8
++ (id)_batteryBodyImageWithSize:(CGSize)size forScale:(double)scale batteryRect:(CGRect)rect cornerRadius:(double)radius lineWidth:(double)width filled:(BOOL)filled
 {
-  v8 = a8;
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v14 = a3.height;
-  v15 = a3.width;
+  filledCopy = filled;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v14 = size.height;
+  v15 = size.width;
   if (qword_1ED49E028 != -1)
   {
     dispatch_once(&qword_1ED49E028, &__block_literal_global_255);
   }
 
-  v17 = [[_UIStatusBarSignalViewCacheKey alloc] initWithClass:a1 size:v8 rect:v15 radius:v14 lineWidth:x alternate:y scale:width, height, a6, a7, *&a4];
+  v17 = [[_UIStatusBarSignalViewCacheKey alloc] initWithClass:self size:filledCopy rect:v15 radius:v14 lineWidth:x alternate:y scale:width, height, radius, width, *&scale];
   v18 = [_MergedGlobals_1109 objectForKey:v17];
   if (!v18)
   {
-    v19 = [UIBezierPath bezierPathWithRoundedRect:x cornerRadius:y, width, height, a6];
-    [v19 setLineWidth:a7];
-    v18 = [a1 _imageWithRenderedBezierPath:v19 size:1 scale:v8 pathScaleFactor:v15 stroke:v14 fill:{a4, 1.0}];
+    radius = [UIBezierPath bezierPathWithRoundedRect:x cornerRadius:y, width, height, radius];
+    [radius setLineWidth:width];
+    v18 = [self _imageWithRenderedBezierPath:radius size:1 scale:filledCopy pathScaleFactor:v15 stroke:v14 fill:{scale, 1.0}];
     [_MergedGlobals_1109 setObject:v18 forKey:v17];
   }
 
   return v18;
 }
 
-+ (id)_batteryBodyImageWithSize:(double)a3 forScale:(double)a4 batteryRect:(double)a5 cornerRadius:(double)a6 lineWidth:(double)a7 withBoltCutOutOfSize:(double)a8 inRect:(double)a9 boltFlipped:(uint64_t)a10
++ (id)_batteryBodyImageWithSize:(double)size forScale:(double)scale batteryRect:(double)rect cornerRadius:(double)radius lineWidth:(double)width withBoltCutOutOfSize:(double)ofSize inRect:(double)inRect boltFlipped:(uint64_t)self0
 {
   if (qword_1ED49E038 != -1)
   {
@@ -539,91 +539,91 @@
   }
 
   v28 = [_UIStatusBarSignalViewCacheKey alloc];
-  v29 = [(_UIStatusBarSignalViewCacheKey *)v28 initWithClass:a1 size:a11 rect:a2 radius:a3 lineWidth:a5 secondarySize:a6 secondaryRect:a7 alternate:a8 scale:a9, a12, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8), *&a15, *&a16, *&a17, *&a18, *&a4];
+  v29 = [(_UIStatusBarSignalViewCacheKey *)v28 initWithClass:self size:a11 rect:a2 radius:size lineWidth:rect secondarySize:radius secondaryRect:width alternate:ofSize scale:inRect, a12, *MEMORY[0x1E695F060], *(MEMORY[0x1E695F060] + 8), *&a15, *&a16, *&a17, *&a18, *&scale];
   v30 = [qword_1ED49E030 objectForKey:v29];
   if (!v30)
   {
-    v31 = [a1 _batteryBodyImageWithSize:0 forScale:a2 batteryRect:a3 cornerRadius:a4 lineWidth:a5 filled:{a6, a7, a8, a9, *&a12}];
-    v32 = [a1 _batteryBoltMaskImageWithSize:a13 boltSize:a14 forScale:{a13, a14, a4}];
-    v30 = [objc_opt_class() _imageByPunchingImage:v32 inRect:a11 flippedHorizontally:v31 outOfImage:a15 inRect:a16 size:a17 scale:{a18, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a2, a3, *&a2, *&a3, *&a4}];
+    v31 = [self _batteryBodyImageWithSize:0 forScale:a2 batteryRect:size cornerRadius:scale lineWidth:rect filled:{radius, width, ofSize, inRect, *&a12}];
+    v32 = [self _batteryBoltMaskImageWithSize:a13 boltSize:a14 forScale:{a13, a14, scale}];
+    v30 = [objc_opt_class() _imageByPunchingImage:v32 inRect:a11 flippedHorizontally:v31 outOfImage:a15 inRect:a16 size:a17 scale:{a18, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), a2, size, *&a2, *&size, *&scale}];
     [qword_1ED49E030 setObject:v30 forKey:v29];
   }
 
   return v30;
 }
 
-+ (id)_percentFillImageWithSize:(CGSize)a3 forScale:(double)a4 batteryRect:(CGRect)a5 cornerRadius:(double)a6 lineWidth:(double)a7
++ (id)_percentFillImageWithSize:(CGSize)size forScale:(double)scale batteryRect:(CGRect)rect cornerRadius:(double)radius lineWidth:(double)width
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v12 = a3.height;
-  v13 = a3.width;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v12 = size.height;
+  v13 = size.width;
   if (qword_1ED49E048 != -1)
   {
     dispatch_once(&qword_1ED49E048, &__block_literal_global_25_3);
   }
 
-  v15 = [[_UIStatusBarSignalViewCacheKey alloc] initWithClass:a1 size:0 rect:v13 radius:v12 lineWidth:x alternate:y scale:width, height, a6, a7, *&a4];
+  v15 = [[_UIStatusBarSignalViewCacheKey alloc] initWithClass:self size:0 rect:v13 radius:v12 lineWidth:x alternate:y scale:width, height, radius, width, *&scale];
   v16 = [qword_1ED49E040 objectForKey:v15];
   if (!v16)
   {
-    if (width >= a6 + a6)
+    if (width >= radius + radius)
     {
-      v17 = width;
+      widthCopy = width;
     }
 
     else
     {
-      v17 = a6 + a6;
+      widthCopy = radius + radius;
     }
 
-    v18 = [UIBezierPath bezierPathWithRoundedRect:x cornerRadius:y, v17, height, a6];
-    [v18 setLineWidth:a7];
-    v16 = [a1 _imageWithRenderedBezierPath:v18 size:1 scale:1 pathScaleFactor:v13 stroke:v12 fill:{a4, 1.0}];
+    radius = [UIBezierPath bezierPathWithRoundedRect:x cornerRadius:y, widthCopy, height, radius];
+    [radius setLineWidth:width];
+    v16 = [self _imageWithRenderedBezierPath:radius size:1 scale:1 pathScaleFactor:v13 stroke:v12 fill:{scale, 1.0}];
     [qword_1ED49E040 setObject:v16 forKey:v15];
   }
 
   return v16;
 }
 
-+ (id)_batteryPinImageWithSize:(CGSize)a3 forScale:(double)a4 complexPinPath:(BOOL)a5
++ (id)_batteryPinImageWithSize:(CGSize)size forScale:(double)scale complexPinPath:(BOOL)path
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
+  pathCopy = path;
+  height = size.height;
+  width = size.width;
   if (qword_1ED49E058 != -1)
   {
     dispatch_once(&qword_1ED49E058, &__block_literal_global_27);
   }
 
   v10 = [_UIStatusBarSignalViewCacheKey alloc];
-  v11 = [(_UIStatusBarSignalViewCacheKey *)v10 initWithClass:a1 size:v5 rect:width radius:height lineWidth:*MEMORY[0x1E695F050] alternate:*(MEMORY[0x1E695F050] + 8) scale:*(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), 0.0, 0.0, *&a4];
+  v11 = [(_UIStatusBarSignalViewCacheKey *)v10 initWithClass:self size:pathCopy rect:width radius:height lineWidth:*MEMORY[0x1E695F050] alternate:*(MEMORY[0x1E695F050] + 8) scale:*(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), 0.0, 0.0, *&scale];
   v12 = [qword_1ED49E050 objectForKey:v11];
   if (!v12)
   {
-    v13 = [a1 _pinBezierPathForSize:v5 isComplex:{width, height}];
-    v12 = [a1 _imageWithRenderedBezierPath:v13 size:0 scale:1 pathScaleFactor:width stroke:height fill:{a4, 1.0}];
+    v13 = [self _pinBezierPathForSize:pathCopy isComplex:{width, height}];
+    v12 = [self _imageWithRenderedBezierPath:v13 size:0 scale:1 pathScaleFactor:width stroke:height fill:{scale, 1.0}];
     [qword_1ED49E050 setObject:v12 forKey:v11];
   }
 
   return v12;
 }
 
-+ (id)_batteryBoltImageWithSize:(CGSize)a3 boltSize:(CGSize)a4 forScale:(double)a5
++ (id)_batteryBoltImageWithSize:(CGSize)size boltSize:(CGSize)boltSize forScale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3.height;
-  v9 = a3.width;
+  height = boltSize.height;
+  width = boltSize.width;
+  v8 = size.height;
+  v9 = size.width;
   if (qword_1ED49E068 != -1)
   {
     dispatch_once(&qword_1ED49E068, &__block_literal_global_29_1);
   }
 
   v11 = [_UIStatusBarSignalViewCacheKey alloc];
-  v12 = [(_UIStatusBarSignalViewCacheKey *)v11 initWithClass:a1 size:0 rect:v9 radius:v8 lineWidth:*&width secondarySize:*&height secondaryRect:*MEMORY[0x1E695F050] alternate:*(MEMORY[0x1E695F050] + 8) scale:*(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *&a5];
+  v12 = [(_UIStatusBarSignalViewCacheKey *)v11 initWithClass:self size:0 rect:v9 radius:v8 lineWidth:*&width secondarySize:*&height secondaryRect:*MEMORY[0x1E695F050] alternate:*(MEMORY[0x1E695F050] + 8) scale:*(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *&scale];
   v13 = [qword_1ED49E060 objectForKey:v12];
   if (!v13)
   {
@@ -637,27 +637,27 @@
       v14 = v8 / height;
     }
 
-    v15 = [a1 _boltBezierPathForSize:{width, height}];
-    v13 = [a1 _imageWithRenderedBezierPath:v15 size:0 scale:1 pathScaleFactor:v9 stroke:v8 fill:{a5, v14}];
+    v15 = [self _boltBezierPathForSize:{width, height}];
+    v13 = [self _imageWithRenderedBezierPath:v15 size:0 scale:1 pathScaleFactor:v9 stroke:v8 fill:{scale, v14}];
     [qword_1ED49E060 setObject:v13 forKey:v12];
   }
 
   return v13;
 }
 
-+ (id)_batteryBoltMaskImageWithSize:(CGSize)a3 boltSize:(CGSize)a4 forScale:(double)a5
++ (id)_batteryBoltMaskImageWithSize:(CGSize)size boltSize:(CGSize)boltSize forScale:(double)scale
 {
-  height = a4.height;
-  width = a4.width;
-  v8 = a3.height;
-  v9 = a3.width;
+  height = boltSize.height;
+  width = boltSize.width;
+  v8 = size.height;
+  v9 = size.width;
   if (qword_1ED49E078 != -1)
   {
     dispatch_once(&qword_1ED49E078, &__block_literal_global_31);
   }
 
   v11 = [_UIStatusBarSignalViewCacheKey alloc];
-  v12 = [(_UIStatusBarSignalViewCacheKey *)v11 initWithClass:a1 size:0 rect:v9 radius:v8 lineWidth:*&width secondarySize:*&height secondaryRect:*MEMORY[0x1E695F050] alternate:*(MEMORY[0x1E695F050] + 8) scale:*(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *&a5];
+  v12 = [(_UIStatusBarSignalViewCacheKey *)v11 initWithClass:self size:0 rect:v9 radius:v8 lineWidth:*&width secondarySize:*&height secondaryRect:*MEMORY[0x1E695F050] alternate:*(MEMORY[0x1E695F050] + 8) scale:*(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), *&scale];
   v13 = [qword_1ED49E070 objectForKey:v12];
   if (!v13)
   {
@@ -671,56 +671,56 @@
       v14 = v8 / height;
     }
 
-    v15 = [a1 _boltMaskBezierPath];
-    v13 = [a1 _imageWithRenderedBezierPath:v15 size:0 scale:1 pathScaleFactor:v9 stroke:v8 fill:{a5, v14}];
+    _boltMaskBezierPath = [self _boltMaskBezierPath];
+    v13 = [self _imageWithRenderedBezierPath:_boltMaskBezierPath size:0 scale:1 pathScaleFactor:v9 stroke:v8 fill:{scale, v14}];
     [qword_1ED49E070 setObject:v13 forKey:v12];
   }
 
   return v13;
 }
 
-+ (id)_batteryFillImageWithSize:(CGSize)a3 forScale:(double)a4 cornerRadius:(double)a5
++ (id)_batteryFillImageWithSize:(CGSize)size forScale:(double)scale cornerRadius:(double)radius
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   if (qword_1ED49E088 != -1)
   {
     dispatch_once(&qword_1ED49E088, &__block_literal_global_33_4);
   }
 
   v10 = [_UIStatusBarSignalViewCacheKey alloc];
-  v11 = [(_UIStatusBarSignalViewCacheKey *)v10 initWithClass:a1 size:0 rect:width radius:height lineWidth:*MEMORY[0x1E695F050] alternate:*(MEMORY[0x1E695F050] + 8) scale:*(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), a5, 0.0, *&a4];
+  v11 = [(_UIStatusBarSignalViewCacheKey *)v10 initWithClass:self size:0 rect:width radius:height lineWidth:*MEMORY[0x1E695F050] alternate:*(MEMORY[0x1E695F050] + 8) scale:*(MEMORY[0x1E695F050] + 16), *(MEMORY[0x1E695F050] + 24), radius, 0.0, *&scale];
   v12 = [qword_1ED49E080 objectForKey:v11];
   if (!v12)
   {
-    v13 = [UIBezierPath _bezierPathWithArcRoundedRect:*MEMORY[0x1E695EFF8] cornerRadius:*(MEMORY[0x1E695EFF8] + 8), width, height, a5];
-    v12 = [a1 _imageWithRenderedBezierPath:v13 size:0 scale:1 pathScaleFactor:width stroke:height fill:{a4, 1.0}];
+    radius = [UIBezierPath _bezierPathWithArcRoundedRect:*MEMORY[0x1E695EFF8] cornerRadius:*(MEMORY[0x1E695EFF8] + 8), width, height, radius];
+    v12 = [self _imageWithRenderedBezierPath:radius size:0 scale:1 pathScaleFactor:width stroke:height fill:{scale, 1.0}];
     [qword_1ED49E080 setObject:v12 forKey:v11];
   }
 
   return v12;
 }
 
-+ (id)_batteryFillImageWithSize:(CGSize)a3 forScale:(double)a4 cornerRadius:(double)a5 withBoltCutOutOfSize:(CGSize)a6 inRect:(CGRect)a7 boltFlipped:(BOOL)a8
++ (id)_batteryFillImageWithSize:(CGSize)size forScale:(double)scale cornerRadius:(double)radius withBoltCutOutOfSize:(CGSize)ofSize inRect:(CGRect)rect boltFlipped:(BOOL)flipped
 {
-  v8 = a8;
-  height = a6.height;
-  width = a6.width;
-  v21 = a3.height;
-  v12 = a3.width;
+  flippedCopy = flipped;
+  height = ofSize.height;
+  width = ofSize.width;
+  v21 = size.height;
+  v12 = size.width;
   if (qword_1ED49E098 != -1)
   {
     dispatch_once(&qword_1ED49E098, &__block_literal_global_35_0);
   }
 
   v14 = [_UIStatusBarSignalViewCacheKey alloc];
-  v15 = [(_UIStatusBarSignalViewCacheKey *)v14 initWithClass:a1 size:v8 rect:v12 radius:v21 lineWidth:*MEMORY[0x1E695F050] secondarySize:*(MEMORY[0x1E695F050] + 8) secondaryRect:*(MEMORY[0x1E695F050] + 16) alternate:*(MEMORY[0x1E695F050] + 24) scale:a5, 0.0, *&width, *&height, *&a7.origin.x, *&a7.origin.y, *&a7.size.width, *&a7.size.height, *&a4];
+  v15 = [(_UIStatusBarSignalViewCacheKey *)v14 initWithClass:self size:flippedCopy rect:v12 radius:v21 lineWidth:*MEMORY[0x1E695F050] secondarySize:*(MEMORY[0x1E695F050] + 8) secondaryRect:*(MEMORY[0x1E695F050] + 16) alternate:*(MEMORY[0x1E695F050] + 24) scale:radius, 0.0, *&width, *&height, *&rect.origin.x, *&rect.origin.y, *&rect.size.width, *&rect.size.height, *&scale];
   v16 = [qword_1ED49E090 objectForKey:v15];
   if (!v16)
   {
-    v17 = [a1 _batteryFillImageWithSize:v12 forScale:v21 cornerRadius:{a4, a5}];
-    v18 = [a1 _batteryBoltMaskImageWithSize:width boltSize:height forScale:{width, height, a4}];
-    v16 = [objc_opt_class() _imageByPunchingImage:v18 inRect:v8 flippedHorizontally:v17 outOfImage:a7.origin.x inRect:a7.origin.y size:a7.size.width scale:{a7.size.height, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v12, v21, *&v12, *&v21, *&a4}];
+    v17 = [self _batteryFillImageWithSize:v12 forScale:v21 cornerRadius:{scale, radius}];
+    v18 = [self _batteryBoltMaskImageWithSize:width boltSize:height forScale:{width, height, scale}];
+    v16 = [objc_opt_class() _imageByPunchingImage:v18 inRect:flippedCopy flippedHorizontally:v17 outOfImage:rect.origin.x inRect:rect.origin.y size:rect.size.width scale:{rect.size.height, *MEMORY[0x1E695EFF8], *(MEMORY[0x1E695EFF8] + 8), v12, v21, *&v12, *&v21, *&scale}];
     [qword_1ED49E090 setObject:v16 forKey:v15];
   }
 

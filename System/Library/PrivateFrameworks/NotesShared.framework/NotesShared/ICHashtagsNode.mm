@@ -1,9 +1,9 @@
 @interface ICHashtagsNode
 - (NSMutableSet)hashtagSuggestions;
 - (NSMutableSet)possibleHashtagSuggestions;
-- (void)addChild:(id)a3;
-- (void)addHashtagSuggestion:(id)a3;
-- (void)addPossibleHashtagSuggestion:(id)a3;
+- (void)addChild:(id)child;
+- (void)addHashtagSuggestion:(id)suggestion;
+- (void)addPossibleHashtagSuggestion:(id)suggestion;
 @end
 
 @implementation ICHashtagsNode
@@ -38,38 +38,38 @@
   return possibleHashtagSuggestions;
 }
 
-- (void)addHashtagSuggestion:(id)a3
+- (void)addHashtagSuggestion:(id)suggestion
 {
-  v5 = a3;
-  v4 = [(ICHashtagsNode *)self hashtagSuggestions];
-  [v4 addObject:v5];
+  suggestionCopy = suggestion;
+  hashtagSuggestions = [(ICHashtagsNode *)self hashtagSuggestions];
+  [hashtagSuggestions addObject:suggestionCopy];
 
-  [(ICHashtagsNode *)self addPossibleHashtagSuggestion:v5];
+  [(ICHashtagsNode *)self addPossibleHashtagSuggestion:suggestionCopy];
 }
 
-- (void)addPossibleHashtagSuggestion:(id)a3
+- (void)addPossibleHashtagSuggestion:(id)suggestion
 {
-  v4 = a3;
-  v5 = [(ICHashtagsNode *)self possibleHashtagSuggestions];
-  [v5 addObject:v4];
+  suggestionCopy = suggestion;
+  possibleHashtagSuggestions = [(ICHashtagsNode *)self possibleHashtagSuggestions];
+  [possibleHashtagSuggestions addObject:suggestionCopy];
 }
 
-- (void)addChild:(id)a3
+- (void)addChild:(id)child
 {
-  v4 = a3;
+  childCopy = child;
   children = self->_children;
-  v9 = v4;
+  v9 = childCopy;
   if (!children)
   {
     v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:1];
     v7 = self->_children;
     self->_children = v6;
 
-    v4 = v9;
+    childCopy = v9;
     children = self->_children;
   }
 
-  v8 = [v4 key];
+  v8 = [childCopy key];
   [(NSMutableDictionary *)children setObject:v9 forKey:v8];
 }
 

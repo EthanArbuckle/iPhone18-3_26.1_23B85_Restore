@@ -1,15 +1,15 @@
 @interface BRCSystemResourcesManager
-+ (id)_fetchBundleIDsFromAppRegisteredNotificationWithXPCEvent:(id)a3;
++ (id)_fetchBundleIDsFromAppRegisteredNotificationWithXPCEvent:(id)event;
 + (id)manager;
 - (BOOL)isCellularNetwork;
-- (BOOL)isNetworkAvailableForDriveWithError:(id *)a3;
+- (BOOL)isNetworkAvailableForDriveWithError:(id *)error;
 - (BOOL)isNetworkReachable;
 - (BOOL)isPowerOK;
 - (BRCSystemResourcesManager)init;
 - (id)_init;
 - (void)__resetReachability;
 - (void)_didReceiveMemoryWarning;
-- (void)_handleAppsMonitorXPCEvent:(id)a3;
+- (void)_handleAppsMonitorXPCEvent:(id)event;
 - (void)_initAppListObservers;
 - (void)_initLowDiskManager;
 - (void)_initLowMemory;
@@ -24,29 +24,29 @@
 - (void)_invalidateProcessObservers;
 - (void)_invalidateReachability;
 - (void)_invalidateScreenLockManager;
-- (void)_processLowDiskNotification:(BOOL)a3;
+- (void)_processLowDiskNotification:(BOOL)notification;
 - (void)_resetLowDiskManager;
 - (void)_resetPowerManager;
 - (void)_resetReachability;
-- (void)_setPowerLevelWithCoalescing:(BOOL)a3;
-- (void)addAppListObserver:(id)a3;
-- (void)addLowDiskObserver:(id)a3 forDevice:(int)a4;
-- (void)addLowMemoryObserver:(id)a3;
-- (void)addPowerObserver:(id)a3;
-- (void)addProcessMonitor:(id)a3 forProcessID:(int)a4;
-- (void)addReachabilityObserver:(id)a3;
-- (void)addScreenLockObserver:(id)a3;
+- (void)_setPowerLevelWithCoalescing:(BOOL)coalescing;
+- (void)addAppListObserver:(id)observer;
+- (void)addLowDiskObserver:(id)observer forDevice:(int)device;
+- (void)addLowMemoryObserver:(id)observer;
+- (void)addPowerObserver:(id)observer;
+- (void)addProcessMonitor:(id)monitor forProcessID:(int)d;
+- (void)addReachabilityObserver:(id)observer;
+- (void)addScreenLockObserver:(id)observer;
 - (void)close;
 - (void)dealloc;
-- (void)reachabilityMonitor:(id)a3 didChangeCellularNetworkTo:(BOOL)a4;
-- (void)reachabilityMonitor:(id)a3 didChangeReachabilityStatusTo:(BOOL)a4;
-- (void)removeAppListObserver:(id)a3;
-- (void)removeLowDiskObserver:(id)a3 forDevice:(int)a4;
-- (void)removeLowMemoryObserver:(id)a3;
-- (void)removePowerObserver:(id)a3;
-- (void)removeProcessMonitor:(id)a3;
-- (void)removeReachabilityObserver:(id)a3;
-- (void)removeScreenLockObserver:(id)a3;
+- (void)reachabilityMonitor:(id)monitor didChangeCellularNetworkTo:(BOOL)to;
+- (void)reachabilityMonitor:(id)monitor didChangeReachabilityStatusTo:(BOOL)to;
+- (void)removeAppListObserver:(id)observer;
+- (void)removeLowDiskObserver:(id)observer forDevice:(int)device;
+- (void)removeLowMemoryObserver:(id)observer;
+- (void)removePowerObserver:(id)observer;
+- (void)removeProcessMonitor:(id)monitor;
+- (void)removeReachabilityObserver:(id)observer;
+- (void)removeScreenLockObserver:(id)observer;
 - (void)reset;
 @end
 
@@ -91,11 +91,11 @@ uint64_t __36__BRCSystemResourcesManager_manager__block_invoke()
 
 - (BRCSystemResourcesManager)init
 {
-  v2 = [(BRCSystemResourcesManager *)self _init];
-  v3 = v2;
-  if (v2)
+  _init = [(BRCSystemResourcesManager *)self _init];
+  v3 = _init;
+  if (_init)
   {
-    [(BRCSystemResourcesManager *)v2 _initScreenLockManager];
+    [(BRCSystemResourcesManager *)_init _initScreenLockManager];
     [(BRCSystemResourcesManager *)v3 _initReachability];
     [(BRCSystemResourcesManager *)v3 _initPowerManager];
     [(BRCSystemResourcesManager *)v3 _initLowDiskManager];
@@ -173,46 +173,46 @@ void __34__BRCSystemResourcesManager_close__block_invoke(uint64_t a1)
 
 - (void)_initScreenLockManager
 {
-  v3 = [MEMORY[0x277CFAEB8] sharedScreenLockMonitor];
-  [v3 addObserver:self];
+  mEMORY[0x277CFAEB8] = [MEMORY[0x277CFAEB8] sharedScreenLockMonitor];
+  [mEMORY[0x277CFAEB8] addObserver:self];
 
-  v4 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   screenLockObservers = self->_screenLockObservers;
-  self->_screenLockObservers = v4;
+  self->_screenLockObservers = weakObjectsHashTable;
 
   MEMORY[0x2821F96F8]();
 }
 
 - (void)_invalidateScreenLockManager
 {
-  v3 = [MEMORY[0x277CFAEB8] sharedScreenLockMonitor];
-  [v3 removeObserver:self];
+  mEMORY[0x277CFAEB8] = [MEMORY[0x277CFAEB8] sharedScreenLockMonitor];
+  [mEMORY[0x277CFAEB8] removeObserver:self];
 
   screenLockObservers = self->_screenLockObservers;
   self->_screenLockObservers = 0;
 }
 
-- (void)addScreenLockObserver:(id)a3
+- (void)addScreenLockObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_screenLockObservers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_screenLockObservers addObject:v5];
+  [(NSHashTable *)self->_screenLockObservers addObject:observerCopy];
   objc_sync_exit(v4);
 
-  [v5 screenLockChanged:self->_screenLocked];
+  [observerCopy screenLockChanged:self->_screenLocked];
 }
 
-- (void)removeScreenLockObserver:(id)a3
+- (void)removeScreenLockObserver:(id)observer
 {
-  v5 = a3;
+  observerCopy = observer;
   v4 = self->_screenLockObservers;
   objc_sync_enter(v4);
-  [(NSHashTable *)self->_screenLockObservers removeObject:v5];
+  [(NSHashTable *)self->_screenLockObservers removeObject:observerCopy];
   objc_sync_exit(v4);
 }
 
-- (void)reachabilityMonitor:(id)a3 didChangeReachabilityStatusTo:(BOOL)a4
+- (void)reachabilityMonitor:(id)monitor didChangeReachabilityStatusTo:(BOOL)to
 {
   notificationQueue = self->_notificationQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -220,11 +220,11 @@ void __34__BRCSystemResourcesManager_close__block_invoke(uint64_t a1)
   v5[2] = __79__BRCSystemResourcesManager_reachabilityMonitor_didChangeReachabilityStatusTo___block_invoke;
   v5[3] = &unk_278500EE0;
   v5[4] = self;
-  v6 = a4;
+  toCopy = to;
   dispatch_async(notificationQueue, v5);
 }
 
-- (void)reachabilityMonitor:(id)a3 didChangeCellularNetworkTo:(BOOL)a4
+- (void)reachabilityMonitor:(id)monitor didChangeCellularNetworkTo:(BOOL)to
 {
   notificationQueue = self->_notificationQueue;
   v5[0] = MEMORY[0x277D85DD0];
@@ -232,7 +232,7 @@ void __34__BRCSystemResourcesManager_close__block_invoke(uint64_t a1)
   v5[2] = __76__BRCSystemResourcesManager_reachabilityMonitor_didChangeCellularNetworkTo___block_invoke;
   v5[3] = &unk_278500EE0;
   v5[4] = self;
-  v6 = a4;
+  toCopy = to;
   dispatch_async(notificationQueue, v5);
 }
 
@@ -240,9 +240,9 @@ void __34__BRCSystemResourcesManager_close__block_invoke(uint64_t a1)
 {
   self->_isNetworkReachable = 1;
   self->_isCellularNetwork = 0;
-  v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   reachabilityObservers = self->_reachabilityObservers;
-  self->_reachabilityObservers = v3;
+  self->_reachabilityObservers = weakObjectsHashTable;
 
   v25 = [BRCUserDefaults defaultsForMangledID:0];
   v5 = [BRCStateUpdateCoalescer alloc];
@@ -267,8 +267,8 @@ void __34__BRCSystemResourcesManager_close__block_invoke(uint64_t a1)
   cellularStateUpdateCoalescer = self->_cellularStateUpdateCoalescer;
   self->_cellularStateUpdateCoalescer = v21;
 
-  v23 = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
-  [v23 addObserver:self];
+  mEMORY[0x277CFAEA0] = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
+  [mEMORY[0x277CFAEA0] addObserver:self];
 
   v24 = +[BRCUploadConstraintChecker defaultChecker];
   [v24 sendCellularConstraintNotification];
@@ -300,8 +300,8 @@ void __34__BRCSystemResourcesManager_close__block_invoke(uint64_t a1)
   reachabilityObservers = self->_reachabilityObservers;
   self->_reachabilityObservers = 0;
 
-  v4 = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
-  [v4 removeObserver:self];
+  mEMORY[0x277CFAEA0] = [MEMORY[0x277CFAEA0] sharedReachabilityMonitor];
+  [mEMORY[0x277CFAEA0] removeObserver:self];
 
   [(BRCSystemResourcesManager *)self __resetReachability];
   reachabilityStateUpdateCoalescer = self->_reachabilityStateUpdateCoalescer;
@@ -349,7 +349,7 @@ void __34__BRCSystemResourcesManager_close__block_invoke(uint64_t a1)
   return v3;
 }
 
-- (BOOL)isNetworkAvailableForDriveWithError:(id *)a3
+- (BOOL)isNetworkAvailableForDriveWithError:(id *)error
 {
   if ([(BRCSystemResourcesManager *)self isNetworkReachable])
   {
@@ -359,45 +359,45 @@ void __34__BRCSystemResourcesManager_close__block_invoke(uint64_t a1)
     }
 
     v5 = +[BRCContainerCellularSettings containerCellularSettings];
-    v6 = [v5 isCellularEnabled];
+    isCellularEnabled = [v5 isCellularEnabled];
 
-    if (v6)
+    if (isCellularEnabled)
     {
       return 1;
     }
 
-    if (a3)
+    if (error)
     {
-      v8 = [MEMORY[0x277CCA9B8] brc_errorNetworkUnreachableDueToCellularOverICDDisabled];
+      brc_errorNetworkUnreachableDueToCellularOverICDDisabled = [MEMORY[0x277CCA9B8] brc_errorNetworkUnreachableDueToCellularOverICDDisabled];
       goto LABEL_7;
     }
   }
 
-  else if (a3)
+  else if (error)
   {
-    v8 = [MEMORY[0x277CCA9B8] brc_errorNetworkUnreachable];
+    brc_errorNetworkUnreachableDueToCellularOverICDDisabled = [MEMORY[0x277CCA9B8] brc_errorNetworkUnreachable];
 LABEL_7:
-    v9 = v8;
-    v10 = v8;
+    v9 = brc_errorNetworkUnreachableDueToCellularOverICDDisabled;
+    v10 = brc_errorNetworkUnreachableDueToCellularOverICDDisabled;
     result = 0;
-    *a3 = v9;
+    *error = v9;
     return result;
   }
 
   return 0;
 }
 
-- (void)addReachabilityObserver:(id)a3
+- (void)addReachabilityObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__BRCSystemResourcesManager_addReachabilityObserver___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 
@@ -418,26 +418,26 @@ uint64_t __53__BRCSystemResourcesManager_addReachabilityObserver___block_invoke(
   return result;
 }
 
-- (void)removeReachabilityObserver:(id)a3
+- (void)removeReachabilityObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __56__BRCSystemResourcesManager_removeReachabilityObserver___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 
 - (void)_initPowerManager
 {
   self->_powerLevelOK = 1;
-  v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   powerObservers = self->_powerObservers;
-  self->_powerObservers = v3;
+  self->_powerObservers = weakObjectsHashTable;
 
   notificationQueue = self->_notificationQueue;
   v12[0] = MEMORY[0x277D85DD0];
@@ -448,8 +448,8 @@ uint64_t __53__BRCSystemResourcesManager_addReachabilityObserver___block_invoke(
   v6 = v12;
   v7 = MEMORY[0x277D77BF8];
   v8 = notificationQueue;
-  v9 = [v7 sharedManager];
-  v10 = [v9 br_currentPersonaID];
+  sharedManager = [v7 sharedManager];
+  br_currentPersonaID = [sharedManager br_currentPersonaID];
 
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
@@ -457,8 +457,8 @@ uint64_t __53__BRCSystemResourcesManager_addReachabilityObserver___block_invoke(
   handler[3] = &unk_2784FF800;
   v15 = v6;
   v16 = "com.apple.system.powermanagement.SystemLoadAdvisory";
-  v14 = v10;
-  v11 = v10;
+  v14 = br_currentPersonaID;
+  v11 = br_currentPersonaID;
   notify_register_dispatch("com.apple.system.powermanagement.SystemLoadAdvisory", &self->_powerNotifyToken, v8, handler);
 
   [(BRCSystemResourcesManager *)self _resetPowerManager];
@@ -530,13 +530,13 @@ uint64_t __47__BRCSystemResourcesManager__resetPowerManager__block_invoke(uint64
   return v3;
 }
 
-- (void)_setPowerLevelWithCoalescing:(BOOL)a3
+- (void)_setPowerLevelWithCoalescing:(BOOL)coalescing
 {
   v5 = [BRCUserDefaults defaultsForMangledID:0];
   [v5 systemPowerLatency];
   v7 = v6;
   dispatch_assert_queue_V2(self->_notificationQueue);
-  if (a3)
+  if (coalescing)
   {
     powerLevelOKTimer = self->_powerLevelOKTimer;
     if (self->_powerLevelOK)
@@ -558,7 +558,7 @@ uint64_t __47__BRCSystemResourcesManager__resetPowerManager__block_invoke(uint64
         v25[2] = __58__BRCSystemResourcesManager__setPowerLevelWithCoalescing___block_invoke_2;
         v25[3] = &unk_278500EE0;
         v25[4] = self;
-        v26 = a3;
+        coalescingCopy = coalescing;
         v12 = powerLevelOKTimer;
         v13 = v25;
         v14 = v13;
@@ -583,7 +583,7 @@ uint64_t __47__BRCSystemResourcesManager__resetPowerManager__block_invoke(uint64
         v27[2] = __58__BRCSystemResourcesManager__setPowerLevelWithCoalescing___block_invoke;
         v27[3] = &unk_278500EE0;
         v27[4] = self;
-        v28 = a3;
+        coalescingCopy2 = coalescing;
         v19 = v17;
         v20 = v27;
         v21 = v20;
@@ -622,17 +622,17 @@ uint64_t __47__BRCSystemResourcesManager__resetPowerManager__block_invoke(uint64
   }
 }
 
-- (void)addPowerObserver:(id)a3
+- (void)addPowerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__BRCSystemResourcesManager_addPowerObserver___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 
@@ -645,17 +645,17 @@ uint64_t __46__BRCSystemResourcesManager_addPowerObserver___block_invoke(uint64_
   return [v2 powerLevelChanged:v3];
 }
 
-- (void)removePowerObserver:(id)a3
+- (void)removePowerObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __49__BRCSystemResourcesManager_removePowerObserver___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 
@@ -784,7 +784,7 @@ uint64_t __48__BRCSystemResourcesManager__initLowDiskManager__block_invoke_2(uin
   dispatch_async(notificationQueue, block);
 }
 
-- (void)_processLowDiskNotification:(BOOL)a3
+- (void)_processLowDiskNotification:(BOOL)notification
 {
   dispatch_assert_queue_V2(self->_notificationQueue);
   lowDiskDict = self->_lowDiskDict;
@@ -793,7 +793,7 @@ uint64_t __48__BRCSystemResourcesManager__initLowDiskManager__block_invoke_2(uin
   v6[2] = __57__BRCSystemResourcesManager__processLowDiskNotification___block_invoke;
   v6[3] = &unk_278508358;
   v6[4] = self;
-  v7 = a3;
+  notificationCopy = notification;
   [(NSMutableDictionary *)lowDiskDict enumerateKeysAndObjectsUsingBlock:v6];
 }
 
@@ -868,10 +868,10 @@ void __57__BRCSystemResourcesManager__processLowDiskNotification___block_invoke(
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addLowDiskObserver:(id)a3 forDevice:(int)a4
+- (void)addLowDiskObserver:(id)observer forDevice:(int)device
 {
-  v6 = a3;
-  if (!a4)
+  observerCopy = observer;
+  if (!device)
   {
     [BRCSystemResourcesManager addLowDiskObserver:forDevice:];
   }
@@ -881,10 +881,10 @@ void __57__BRCSystemResourcesManager__processLowDiskNotification___block_invoke(
   block[1] = 3221225472;
   block[2] = __58__BRCSystemResourcesManager_addLowDiskObserver_forDevice___block_invoke;
   block[3] = &unk_278504488;
-  v11 = a4;
+  deviceCopy = device;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = observerCopy;
+  v8 = observerCopy;
   dispatch_sync(notificationQueue, block);
 }
 
@@ -919,18 +919,18 @@ void __58__BRCSystemResourcesManager_addLowDiskObserver_forDevice___block_invoke
   [*(a1 + 40) lowDiskStatusChangedForDevice:*(a1 + 48) hasEnoughSpace:v4];
 }
 
-- (void)removeLowDiskObserver:(id)a3 forDevice:(int)a4
+- (void)removeLowDiskObserver:(id)observer forDevice:(int)device
 {
-  v6 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __61__BRCSystemResourcesManager_removeLowDiskObserver_forDevice___block_invoke;
   block[3] = &unk_278504488;
-  v11 = a4;
+  deviceCopy = device;
   block[4] = self;
-  v10 = v6;
-  v8 = v6;
+  v10 = observerCopy;
+  v8 = observerCopy;
   dispatch_sync(notificationQueue, block);
 }
 
@@ -952,9 +952,9 @@ void __61__BRCSystemResourcesManager_removeLowDiskObserver_forDevice___block_inv
 
 - (void)_initLowMemory
 {
-  v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   lowMemoryObservers = self->_lowMemoryObservers;
-  self->_lowMemoryObservers = v3;
+  self->_lowMemoryObservers = weakObjectsHashTable;
 
   if (self->_memoryNotificationEventSource)
   {
@@ -1068,39 +1068,39 @@ void __49__BRCSystemResourcesManager__invalidateLowMemory__block_invoke(uint64_t
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addLowMemoryObserver:(id)a3
+- (void)addLowMemoryObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__BRCSystemResourcesManager_addLowMemoryObserver___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 
-- (void)removeLowMemoryObserver:(id)a3
+- (void)removeLowMemoryObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __53__BRCSystemResourcesManager_removeLowMemoryObserver___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 
 - (void)_initProcessObservers
 {
-  v3 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+  weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
   processObservers = self->_processObservers;
-  self->_processObservers = v3;
+  self->_processObservers = weakToStrongObjectsMapTable;
 
   MEMORY[0x2821F96F8]();
 }
@@ -1156,18 +1156,18 @@ void __56__BRCSystemResourcesManager__invalidateProcessObservers__block_invoke(u
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addProcessMonitor:(id)a3 forProcessID:(int)a4
+- (void)addProcessMonitor:(id)monitor forProcessID:(int)d
 {
-  v6 = a3;
+  monitorCopy = monitor;
   notificationQueue = self->_notificationQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __60__BRCSystemResourcesManager_addProcessMonitor_forProcessID___block_invoke;
   block[3] = &unk_278504488;
   block[4] = self;
-  v10 = v6;
-  v11 = a4;
-  v8 = v6;
+  v10 = monitorCopy;
+  dCopy = d;
+  v8 = monitorCopy;
   dispatch_sync(notificationQueue, block);
 }
 
@@ -1187,17 +1187,17 @@ void __60__BRCSystemResourcesManager_addProcessMonitor_forProcessID___block_invo
   }
 }
 
-- (void)removeProcessMonitor:(id)a3
+- (void)removeProcessMonitor:(id)monitor
 {
-  v4 = a3;
+  monitorCopy = monitor;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __50__BRCSystemResourcesManager_removeProcessMonitor___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = monitorCopy;
+  v6 = monitorCopy;
   dispatch_sync(notificationQueue, v7);
 }
 
@@ -1213,9 +1213,9 @@ void __50__BRCSystemResourcesManager_removeProcessMonitor___block_invoke(uint64_
   }
 }
 
-+ (id)_fetchBundleIDsFromAppRegisteredNotificationWithXPCEvent:(id)a3
++ (id)_fetchBundleIDsFromAppRegisteredNotificationWithXPCEvent:(id)event
 {
-  v3 = xpc_dictionary_get_value(a3, "UserInfo");
+  v3 = xpc_dictionary_get_value(event, "UserInfo");
   v4 = v3;
   if (!v3)
   {
@@ -1271,12 +1271,12 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v11 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   applier[0] = MEMORY[0x277D85DD0];
   applier[1] = 3221225472;
   applier[2] = __86__BRCSystemResourcesManager__fetchBundleIDsFromAppRegisteredNotificationWithXPCEvent___block_invoke;
   applier[3] = &unk_278508380;
-  v9 = v11;
+  v9 = array;
   v13 = v9;
   xpc_array_apply(v5, applier);
   v6 = v13;
@@ -1302,10 +1302,10 @@ uint64_t __86__BRCSystemResourcesManager__fetchBundleIDsFromAppRegisteredNotific
   return 1;
 }
 
-- (void)_handleAppsMonitorXPCEvent:(id)a3
+- (void)_handleAppsMonitorXPCEvent:(id)event
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  eventCopy = event;
   v5 = brc_bread_crumbs();
   v6 = brc_default_log();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -1314,12 +1314,12 @@ uint64_t __86__BRCSystemResourcesManager__fetchBundleIDsFromAppRegisteredNotific
   }
 
   v7 = [BRCUserDefaults defaultsForMangledID:0];
-  v8 = [v7 supportsIncrementalAppsMonitoring];
+  supportsIncrementalAppsMonitoring = [v7 supportsIncrementalAppsMonitoring];
 
   v9 = 0;
-  if (v8)
+  if (supportsIncrementalAppsMonitoring)
   {
-    v9 = [objc_opt_class() _fetchBundleIDsFromAppRegisteredNotificationWithXPCEvent:v4];
+    v9 = [objc_opt_class() _fetchBundleIDsFromAppRegisteredNotificationWithXPCEvent:eventCopy];
   }
 
   v19 = 0u;
@@ -1368,9 +1368,9 @@ uint64_t __86__BRCSystemResourcesManager__fetchBundleIDsFromAppRegisteredNotific
 
 - (void)_initAppListObservers
 {
-  v3 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+  weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
   appListObservers = self->_appListObservers;
-  self->_appListObservers = v3;
+  self->_appListObservers = weakObjectsHashTable;
 
   notificationQueue = self->_notificationQueue;
   handler[0] = MEMORY[0x277D85DD0];
@@ -1388,31 +1388,31 @@ uint64_t __86__BRCSystemResourcesManager__fetchBundleIDsFromAppRegisteredNotific
   MEMORY[0x2821F96F8]();
 }
 
-- (void)addAppListObserver:(id)a3
+- (void)addAppListObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __48__BRCSystemResourcesManager_addAppListObserver___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 
-- (void)removeAppListObserver:(id)a3
+- (void)removeAppListObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   notificationQueue = self->_notificationQueue;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __51__BRCSystemResourcesManager_removeAppListObserver___block_invoke;
   v7[3] = &unk_2784FF478;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = observerCopy;
+  v6 = observerCopy;
   dispatch_sync(notificationQueue, v7);
 }
 

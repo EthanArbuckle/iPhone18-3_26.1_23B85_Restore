@@ -6,7 +6,7 @@
 
 + (id)cameraWithSCNCamera:()SCNModelIO
 {
-  v4 = objc_alloc_init(a1);
+  v4 = objc_alloc_init(self);
   objc_setAssociatedObject(v4, @"SCNSceneKitAssociatedObject", a3, 0x301);
   [a3 focusDistance];
   *&v5 = v5;

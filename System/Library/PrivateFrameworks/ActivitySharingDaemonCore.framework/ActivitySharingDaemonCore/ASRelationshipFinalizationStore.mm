@@ -1,30 +1,30 @@
 @interface ASRelationshipFinalizationStore
-- (ASRelationshipFinalizationStore)initWithCloudType:(unint64_t)a3 contactsManager:(id)a4 clientQueue:(id)a5;
-- (id)_placeholderForContactUUID:(id)a3;
+- (ASRelationshipFinalizationStore)initWithCloudType:(unint64_t)type contactsManager:(id)manager clientQueue:(id)queue;
+- (id)_placeholderForContactUUID:(id)d;
 - (id)allFinalizedFriendUUIDs;
-- (void)_updatePlaceholder:(id)a3 contactUUID:(id)a4;
-- (void)addFinalizedFriendUUIDs:(id)a3;
-- (void)insertPlaceholderForEventTypes:(id)a3 contactUUID:(id)a4;
-- (void)performBlockWaitingOnInviteFinalizationForContactUUID:(id)a3 block:(id)a4;
+- (void)_updatePlaceholder:(id)placeholder contactUUID:(id)d;
+- (void)addFinalizedFriendUUIDs:(id)ds;
+- (void)insertPlaceholderForEventTypes:(id)types contactUUID:(id)d;
+- (void)performBlockWaitingOnInviteFinalizationForContactUUID:(id)d block:(id)block;
 - (void)removeAllFinalizedFriendUUIDs;
-- (void)removePlaceholderWithContactUUID:(id)a3 shouldNotify:(BOOL)a4;
+- (void)removePlaceholderWithContactUUID:(id)d shouldNotify:(BOOL)notify;
 @end
 
 @implementation ASRelationshipFinalizationStore
 
-- (ASRelationshipFinalizationStore)initWithCloudType:(unint64_t)a3 contactsManager:(id)a4 clientQueue:(id)a5
+- (ASRelationshipFinalizationStore)initWithCloudType:(unint64_t)type contactsManager:(id)manager clientQueue:(id)queue
 {
-  v9 = a4;
-  v10 = a5;
+  managerCopy = manager;
+  queueCopy = queue;
   v18.receiver = self;
   v18.super_class = ASRelationshipFinalizationStore;
   v11 = [(ASRelationshipFinalizationStore *)&v18 init];
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_clientQueue, a5);
-    v12->_cloudType = a3;
-    objc_storeStrong(&v12->_contactsManager, a4);
+    objc_storeStrong(&v11->_clientQueue, queue);
+    v12->_cloudType = type;
+    objc_storeStrong(&v12->_contactsManager, manager);
     v13 = objc_alloc_init(MEMORY[0x277CBEB18]);
     finalizedFriendUUIDs = v12->_finalizedFriendUUIDs;
     v12->_finalizedFriendUUIDs = v13;
@@ -39,12 +39,12 @@
   return v12;
 }
 
-- (void)insertPlaceholderForEventTypes:(id)a3 contactUUID:(id)a4
+- (void)insertPlaceholderForEventTypes:(id)types contactUUID:(id)d
 {
   v39 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASRelationshipFinalizationStore *)self _placeholderForContactUUID:v7];
+  typesCopy = types;
+  dCopy = d;
+  v8 = [(ASRelationshipFinalizationStore *)self _placeholderForContactUUID:dCopy];
   v9 = MEMORY[0x277CE9008];
   if (v8)
   {
@@ -53,9 +53,9 @@
     if (os_log_type_enabled(*v9, OS_LOG_TYPE_DEFAULT))
     {
       v11 = v10;
-      v12 = [v8 token];
+      token = [v8 token];
       *buf = 138412290;
-      v38 = v12;
+      v38 = token;
       _os_log_impl(&dword_23E5E3000, v11, OS_LOG_TYPE_DEFAULT, "RelationshipManager found existing placeholder began token for this contact: %@", buf, 0xCu);
     }
 
@@ -67,11 +67,11 @@
       _os_log_impl(&dword_23E5E3000, v13, OS_LOG_TYPE_DEFAULT, "RelationshipManager removing placeholder contact to avoid orphaning the token", buf, 2u);
     }
 
-    v14 = [v8 token];
-    ASRemovePlaceholderForToken(v14, self->_contactsManager);
+    token2 = [v8 token];
+    ASRemovePlaceholderForToken(token2, self->_contactsManager);
   }
 
-  v15 = ASContactPreferringPlaceholderForUUID(v7, self->_contactsManager);
+  v15 = ASContactPreferringPlaceholderForUUID(dCopy, self->_contactsManager);
   ASLoggingInitialize();
   v16 = *v9;
   if (v15)
@@ -80,20 +80,20 @@
     if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v38 = v7;
+      v38 = dCopy;
       _os_log_impl(&dword_23E5E3000, v16, OS_LOG_TYPE_DEFAULT, "RelationshipManager inserting placeholder contact: %@", buf, 0xCu);
     }
 
-    v30 = v7;
-    v17 = [v15 relationshipStorage];
-    v18 = [v17 relationshipForCloudType:self->_cloudType];
-    v19 = [v17 remoteRelationshipForCloudType:self->_cloudType];
+    v30 = dCopy;
+    relationshipStorage = [v15 relationshipStorage];
+    v18 = [relationshipStorage relationshipForCloudType:self->_cloudType];
+    v19 = [relationshipStorage remoteRelationshipForCloudType:self->_cloudType];
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
     v35 = 0u;
-    v31 = v6;
-    v20 = v6;
+    v31 = typesCopy;
+    v20 = typesCopy;
     v21 = [v20 countByEnumeratingWithState:&v32 objects:v36 count:16];
     if (v21)
     {
@@ -119,32 +119,32 @@
       while (v22);
     }
 
-    [v17 setLegacyRelationship:v18];
-    [v17 setLegacyRemoteRelationship:v19];
-    [v15 setRelationshipStorage:v17];
+    [relationshipStorage setLegacyRelationship:v18];
+    [relationshipStorage setLegacyRemoteRelationship:v19];
+    [v15 setRelationshipStorage:relationshipStorage];
     v26 = [(ASContactsManager *)self->_contactsManager savePlaceholderContact:v15];
     v27 = [[ASRelationshipBeganPlaceholder alloc] initWithToken:v26];
-    v7 = v30;
+    dCopy = v30;
     [(ASRelationshipFinalizationStore *)self _updatePlaceholder:v27 contactUUID:v30];
 
-    v6 = v31;
+    typesCopy = v31;
     v8 = v29;
   }
 
   else if (os_log_type_enabled(*v9, OS_LOG_TYPE_ERROR))
   {
-    [ASRelationshipFinalizationStore insertPlaceholderForEventTypes:v7 contactUUID:v16];
+    [ASRelationshipFinalizationStore insertPlaceholderForEventTypes:dCopy contactUUID:v16];
   }
 
   v28 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removePlaceholderWithContactUUID:(id)a3 shouldNotify:(BOOL)a4
+- (void)removePlaceholderWithContactUUID:(id)d shouldNotify:(BOOL)notify
 {
-  v4 = a4;
+  notifyCopy = notify;
   v20 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [(ASRelationshipFinalizationStore *)self _placeholderForContactUUID:v6];
+  dCopy = d;
+  v7 = [(ASRelationshipFinalizationStore *)self _placeholderForContactUUID:dCopy];
   ASLoggingInitialize();
   v8 = MEMORY[0x277CE9008];
   v9 = *MEMORY[0x277CE9008];
@@ -154,16 +154,16 @@
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v19 = v6;
+      v19 = dCopy;
       _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "Removing relationship began placeholder: %@", buf, 0xCu);
     }
 
     contactsManager = self->_contactsManager;
-    v12 = [v7 token];
-    [(ASContactsManager *)contactsManager removePlaceholderContactWithToken:v12];
+    token = [v7 token];
+    [(ASContactsManager *)contactsManager removePlaceholderContactWithToken:token];
 
-    [(ASRelationshipFinalizationStore *)self _updatePlaceholder:0 contactUUID:v6];
-    if (v4)
+    [(ASRelationshipFinalizationStore *)self _updatePlaceholder:0 contactUUID:dCopy];
+    if (notifyCopy)
     {
       clientQueue = self->_clientQueue;
       block[0] = MEMORY[0x277D85DD0];
@@ -187,7 +187,7 @@
 
   else if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
   {
-    [ASRelationshipFinalizationStore removePlaceholderWithContactUUID:v6 shouldNotify:v9];
+    [ASRelationshipFinalizationStore removePlaceholderWithContactUUID:dCopy shouldNotify:v9];
   }
 
   v15 = *MEMORY[0x277D85DE8];
@@ -241,12 +241,12 @@ void __81__ASRelationshipFinalizationStore_removePlaceholderWithContactUUID_shou
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)performBlockWaitingOnInviteFinalizationForContactUUID:(id)a3 block:(id)a4
+- (void)performBlockWaitingOnInviteFinalizationForContactUUID:(id)d block:(id)block
 {
   v16 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(ASRelationshipFinalizationStore *)self _placeholderForContactUUID:v6];
+  dCopy = d;
+  blockCopy = block;
+  v8 = [(ASRelationshipFinalizationStore *)self _placeholderForContactUUID:dCopy];
   if (v8)
   {
     ASLoggingInitialize();
@@ -254,11 +254,11 @@ void __81__ASRelationshipFinalizationStore_removePlaceholderWithContactUUID_shou
     if (os_log_type_enabled(*MEMORY[0x277CE9008], OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v15 = v6;
+      v15 = dCopy;
       _os_log_impl(&dword_23E5E3000, v9, OS_LOG_TYPE_DEFAULT, "RelationshipManager friendship is still finalizing, holding this action until complete for contact: %@", buf, 0xCu);
     }
 
-    [v8 registerBlockWaitingOnSuccess:v7];
+    [v8 registerBlockWaitingOnSuccess:blockCopy];
   }
 
   else
@@ -268,39 +268,39 @@ void __81__ASRelationshipFinalizationStore_removePlaceholderWithContactUUID_shou
     block[1] = 3221225472;
     block[2] = __95__ASRelationshipFinalizationStore_performBlockWaitingOnInviteFinalizationForContactUUID_block___block_invoke;
     block[3] = &unk_278C4B228;
-    v13 = v7;
+    v13 = blockCopy;
     dispatch_async(clientQueue, block);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_placeholderForContactUUID:(id)a3
+- (id)_placeholderForContactUUID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   os_unfair_lock_lock(&self->_unfairLock);
-  v5 = [(NSMutableDictionary *)self->_placeholderFriendshipFinalizedTokens objectForKeyedSubscript:v4];
+  v5 = [(NSMutableDictionary *)self->_placeholderFriendshipFinalizedTokens objectForKeyedSubscript:dCopy];
 
   os_unfair_lock_unlock(&self->_unfairLock);
 
   return v5;
 }
 
-- (void)_updatePlaceholder:(id)a3 contactUUID:(id)a4
+- (void)_updatePlaceholder:(id)placeholder contactUUID:(id)d
 {
-  v6 = a4;
-  v7 = a3;
+  dCopy = d;
+  placeholderCopy = placeholder;
   os_unfair_lock_lock(&self->_unfairLock);
-  [(NSMutableDictionary *)self->_placeholderFriendshipFinalizedTokens setObject:v7 forKeyedSubscript:v6];
+  [(NSMutableDictionary *)self->_placeholderFriendshipFinalizedTokens setObject:placeholderCopy forKeyedSubscript:dCopy];
 
   os_unfair_lock_unlock(&self->_unfairLock);
 }
 
-- (void)addFinalizedFriendUUIDs:(id)a3
+- (void)addFinalizedFriendUUIDs:(id)ds
 {
-  v4 = a3;
+  dsCopy = ds;
   os_unfair_lock_lock(&self->_unfairLock);
-  [(NSMutableArray *)self->_finalizedFriendUUIDs addObject:v4];
+  [(NSMutableArray *)self->_finalizedFriendUUIDs addObject:dsCopy];
 
   os_unfair_lock_unlock(&self->_unfairLock);
 }

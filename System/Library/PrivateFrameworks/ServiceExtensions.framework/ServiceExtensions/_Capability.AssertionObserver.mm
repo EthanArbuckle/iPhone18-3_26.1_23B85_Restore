@@ -1,22 +1,22 @@
 @interface _Capability.AssertionObserver
 - (_TtCO17ServiceExtensions11_CapabilityP33_3A110C98667FE5E79B17C7ACF7B087C017AssertionObserver)init;
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4;
-- (void)assertionWillInvalidate:(id)a3;
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error;
+- (void)assertionWillInvalidate:(id)invalidate;
 @end
 
 @implementation _Capability.AssertionObserver
 
-- (void)assertion:(id)a3 didInvalidateWithError:(id)a4
+- (void)assertion:(id)assertion didInvalidateWithError:(id)error
 {
-  v5 = a3;
-  v6 = self;
+  assertionCopy = assertion;
+  selfCopy = self;
   sub_26574AD38(&OBJC_IVAR____TtCO17ServiceExtensions11_CapabilityP33_3A110C98667FE5E79B17C7ACF7B087C017AssertionObserver__didInvalidate);
 }
 
-- (void)assertionWillInvalidate:(id)a3
+- (void)assertionWillInvalidate:(id)invalidate
 {
-  v4 = a3;
-  v5 = self;
+  invalidateCopy = invalidate;
+  selfCopy = self;
   sub_26574AD38(&OBJC_IVAR____TtCO17ServiceExtensions11_CapabilityP33_3A110C98667FE5E79B17C7ACF7B087C017AssertionObserver__willInvalidate);
 }
 

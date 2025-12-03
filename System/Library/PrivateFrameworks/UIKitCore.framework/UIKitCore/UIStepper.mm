@@ -1,45 +1,45 @@
 @interface UIStepper
 + (Class)_fallbackVisualElementClass;
-+ (Class)visualElementClassForTraitCollection:(id)a3 usingImageCustomization:(BOOL)a4;
-+ (id)visualElementForTraitCollection:(id)a3 usingImageCustomization:(BOOL)a4;
-+ (void)_registerVisualElementClass:(Class)a3 forIdiom:(int64_t)a4;
-+ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)a3;
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (BOOL)gestureRecognizerShouldBegin:(id)a3;
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
++ (Class)visualElementClassForTraitCollection:(id)collection usingImageCustomization:(BOOL)customization;
++ (id)visualElementForTraitCollection:(id)collection usingImageCustomization:(BOOL)customization;
++ (void)_registerVisualElementClass:(Class)class forIdiom:(int64_t)idiom;
++ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)behavior;
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event;
+- (BOOL)gestureRecognizerShouldBegin:(id)begin;
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)alignmentRectInsets;
 - (UIImage)backgroundImageForState:(UIControlState)state;
 - (UIImage)decrementImageForState:(UIControlState)state;
-- (UIImage)dividerImageForLeftSegmentState:(UIControlState)state rightSegmentState:(UIControlState)a4;
+- (UIImage)dividerImageForLeftSegmentState:(UIControlState)state rightSegmentState:(UIControlState)state;
 - (UIImage)incrementImageForState:(UIControlState)state;
-- (UIStepper)initWithCoder:(id)a3;
-- (UIStepper)initWithFrame:(CGRect)a3;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4;
+- (UIStepper)initWithCoder:(id)coder;
+- (UIStepper)initWithFrame:(CGRect)frame;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region;
 - (void)_commonStepperInit;
-- (void)_populateArchivedSubviews:(id)a3;
+- (void)_populateArchivedSubviews:(id)subviews;
 - (void)_refreshVisualElement;
-- (void)_refreshVisualElementForTraitCollection:(id)a3 populatingAPIProperties:(BOOL)a4;
-- (void)cancelTrackingWithEvent:(id)a3;
-- (void)encodeWithCoder:(id)a3;
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4;
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5;
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5;
+- (void)_refreshVisualElementForTraitCollection:(id)collection populatingAPIProperties:(BOOL)properties;
+- (void)cancelTrackingWithEvent:(id)event;
+- (void)encodeWithCoder:(id)coder;
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event;
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator;
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator;
 - (void)setAutorepeat:(BOOL)autorepeat;
 - (void)setBackgroundImage:(UIImage *)image forState:(UIControlState)state;
 - (void)setContinuous:(BOOL)continuous;
 - (void)setDecrementImage:(UIImage *)image forState:(UIControlState)state;
 - (void)setDividerImage:(UIImage *)image forLeftSegmentState:(UIControlState)leftState rightSegmentState:(UIControlState)rightState;
-- (void)setEnabled:(BOOL)a3;
-- (void)setFrame:(CGRect)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setFrame:(CGRect)frame;
 - (void)setIncrementImage:(UIImage *)image forState:(UIControlState)state;
 - (void)setMaximumValue:(double)maximumValue;
 - (void)setMinimumValue:(double)minimumValue;
 - (void)setStepValue:(double)stepValue;
-- (void)setTintColor:(id)a3;
+- (void)setTintColor:(id)color;
 - (void)setValue:(double)value;
 - (void)setWraps:(BOOL)wraps;
 - (void)tintColorDidChange;
@@ -47,10 +47,10 @@
 
 @implementation UIStepper
 
-- (UIStepper)initWithFrame:(CGRect)a3
+- (UIStepper)initWithFrame:(CGRect)frame
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [objc_msgSend(objc_opt_class() "_fallbackVisualElementClass")];
   v11.receiver = self;
   v11.super_class = UIStepper;
@@ -65,21 +65,21 @@
   return v9;
 }
 
-- (void)_populateArchivedSubviews:(id)a3
+- (void)_populateArchivedSubviews:(id)subviews
 {
   v6.receiver = self;
   v6.super_class = UIStepper;
-  v4 = a3;
-  [(UIView *)&v6 _populateArchivedSubviews:v4];
+  subviewsCopy = subviews;
+  [(UIView *)&v6 _populateArchivedSubviews:subviewsCopy];
   v5 = [(UIStepper *)self visualElement:v6.receiver];
-  [v4 removeObject:v5];
+  [subviewsCopy removeObject:v5];
 }
 
-- (void)setFrame:(CGRect)a3
+- (void)setFrame:(CGRect)frame
 {
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(UIStepper *)self sizeThatFits:a3.size.width, a3.size.height];
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(UIStepper *)self sizeThatFits:frame.size.width, frame.size.height];
   v8.receiver = self;
   v8.super_class = UIStepper;
   [(UIView *)&v8 setFrame:x, y, v6, v7];
@@ -105,8 +105,8 @@
   if (maximumValue != self->_value)
   {
     self->_value = maximumValue;
-    v4 = [(UIStepper *)self visualElement];
-    [v4 setValue:maximumValue];
+    visualElement = [(UIStepper *)self visualElement];
+    [visualElement setValue:maximumValue];
   }
 }
 
@@ -127,8 +127,8 @@
     }
 
     [(UIStepper *)self setValue:value];
-    v6 = [(UIStepper *)self visualElement];
-    [v6 setMinimumValue:minimumValue];
+    visualElement = [(UIStepper *)self visualElement];
+    [visualElement setMinimumValue:minimumValue];
   }
 }
 
@@ -149,8 +149,8 @@
     }
 
     [(UIStepper *)self setValue:value];
-    v6 = [(UIStepper *)self visualElement];
-    [v6 setMaximumValue:maximumValue];
+    visualElement = [(UIStepper *)self visualElement];
+    [visualElement setMaximumValue:maximumValue];
   }
 }
 
@@ -164,33 +164,33 @@
     }
 
     self->_stepValue = stepValue;
-    v5 = [(UIStepper *)self visualElement];
-    [v5 setStepValue:stepValue];
+    visualElement = [(UIStepper *)self visualElement];
+    [visualElement setStepValue:stepValue];
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(UIControl *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(UIControl *)self isEnabled]!= enabled)
   {
     v6.receiver = self;
     v6.super_class = UIStepper;
-    [(UIControl *)&v6 setEnabled:v3];
-    v5 = [(UIStepper *)self visualElement];
-    [v5 setEnabled:v3];
+    [(UIControl *)&v6 setEnabled:enabledCopy];
+    visualElement = [(UIStepper *)self visualElement];
+    [visualElement setEnabled:enabledCopy];
   }
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIStepper *)self visualElement];
-  v7 = v6;
-  if (v6)
+  height = fits.height;
+  width = fits.width;
+  visualElement = [(UIStepper *)self visualElement];
+  v7 = visualElement;
+  if (visualElement)
   {
-    [v6 sizeThatFits:self forControl:{width, height}];
+    [visualElement sizeThatFits:self forControl:{width, height}];
   }
 
   else
@@ -208,15 +208,15 @@
   return result;
 }
 
-- (CGSize)_intrinsicSizeWithinSize:(CGSize)a3
+- (CGSize)_intrinsicSizeWithinSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(UIStepper *)self visualElement];
-  v7 = v6;
-  if (v6)
+  height = size.height;
+  width = size.width;
+  visualElement = [(UIStepper *)self visualElement];
+  v7 = visualElement;
+  if (visualElement)
   {
-    [v6 intrinsicSizeWithinSize:self forControl:{width, height}];
+    [visualElement intrinsicSizeWithinSize:self forControl:{width, height}];
   }
 
   else
@@ -236,11 +236,11 @@
 
 - (UIEdgeInsets)alignmentRectInsets
 {
-  v3 = [(UIStepper *)self visualElement];
-  v4 = v3;
-  if (v3)
+  visualElement = [(UIStepper *)self visualElement];
+  v4 = visualElement;
+  if (visualElement)
   {
-    [v3 alignmentRectInsetsForControl:self];
+    [visualElement alignmentRectInsetsForControl:self];
   }
 
   else
@@ -270,8 +270,8 @@
   {
     v4 = continuous;
     self->_continuous = continuous;
-    v5 = [(UIStepper *)self visualElement];
-    [v5 setContinuous:v4];
+    visualElement = [(UIStepper *)self visualElement];
+    [visualElement setContinuous:v4];
   }
 }
 
@@ -281,8 +281,8 @@
   {
     v4 = autorepeat;
     self->_autorepeat = autorepeat;
-    v5 = [(UIStepper *)self visualElement];
-    [v5 setAutorepeat:v4];
+    visualElement = [(UIStepper *)self visualElement];
+    [visualElement setAutorepeat:v4];
   }
 }
 
@@ -292,58 +292,58 @@
   {
     v4 = wraps;
     self->_wraps = wraps;
-    v5 = [(UIStepper *)self visualElement];
-    [v5 setWraps:v4];
+    visualElement = [(UIStepper *)self visualElement];
+    [visualElement setWraps:v4];
   }
 }
 
-- (UIStepper)initWithCoder:(id)a3
+- (UIStepper)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = UIStepper;
-  v5 = [(UIControl *)&v12 initWithCoder:v4];
+  v5 = [(UIControl *)&v12 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     [(UIStepper *)v5 _commonStepperInit];
-    if ([v4 containsValueForKey:@"UIValue"])
+    if ([coderCopy containsValueForKey:@"UIValue"])
     {
-      [v4 decodeDoubleForKey:@"UIValue"];
+      [coderCopy decodeDoubleForKey:@"UIValue"];
       v6->_value = v7;
     }
 
-    if ([v4 containsValueForKey:@"UIMinimumValue"])
+    if ([coderCopy containsValueForKey:@"UIMinimumValue"])
     {
-      [v4 decodeDoubleForKey:@"UIMinimumValue"];
+      [coderCopy decodeDoubleForKey:@"UIMinimumValue"];
       v6->_minimumValue = v8;
     }
 
-    if ([v4 containsValueForKey:@"UIMaximumValue"])
+    if ([coderCopy containsValueForKey:@"UIMaximumValue"])
     {
-      [v4 decodeDoubleForKey:@"UIMaximumValue"];
+      [coderCopy decodeDoubleForKey:@"UIMaximumValue"];
       v6->_maximumValue = v9;
     }
 
-    if ([v4 containsValueForKey:@"UIStepValue"])
+    if ([coderCopy containsValueForKey:@"UIStepValue"])
     {
-      [v4 decodeDoubleForKey:@"UIStepValue"];
+      [coderCopy decodeDoubleForKey:@"UIStepValue"];
       v6->_stepValue = v10;
     }
 
-    if ([v4 containsValueForKey:@"UIContinuous"])
+    if ([coderCopy containsValueForKey:@"UIContinuous"])
     {
-      v6->_continuous = [v4 decodeBoolForKey:@"UIContinuous"];
+      v6->_continuous = [coderCopy decodeBoolForKey:@"UIContinuous"];
     }
 
-    if ([v4 containsValueForKey:@"UIAutorepeat"])
+    if ([coderCopy containsValueForKey:@"UIAutorepeat"])
     {
-      v6->_autorepeat = [v4 decodeBoolForKey:@"UIAutorepeat"];
+      v6->_autorepeat = [coderCopy decodeBoolForKey:@"UIAutorepeat"];
     }
 
-    if ([v4 containsValueForKey:@"UIWraps"])
+    if ([coderCopy containsValueForKey:@"UIWraps"])
     {
-      v6->_wraps = [v4 decodeBoolForKey:@"UIWraps"];
+      v6->_wraps = [coderCopy decodeBoolForKey:@"UIWraps"];
     }
 
     [(UIStepper *)v6 _refreshVisualElement];
@@ -352,45 +352,45 @@
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5.receiver = self;
   v5.super_class = UIStepper;
-  [(UIControl *)&v5 encodeWithCoder:v4];
+  [(UIControl *)&v5 encodeWithCoder:coderCopy];
   if (self->_value != 0.0)
   {
-    [v4 encodeDouble:@"UIValue" forKey:?];
+    [coderCopy encodeDouble:@"UIValue" forKey:?];
   }
 
   if (self->_minimumValue != 0.0)
   {
-    [v4 encodeDouble:@"UIMinimumValue" forKey:?];
+    [coderCopy encodeDouble:@"UIMinimumValue" forKey:?];
   }
 
   if (self->_maximumValue != 100.0)
   {
-    [v4 encodeDouble:@"UIMaximumValue" forKey:?];
+    [coderCopy encodeDouble:@"UIMaximumValue" forKey:?];
   }
 
   if (self->_stepValue != 1.0)
   {
-    [v4 encodeDouble:@"UIStepValue" forKey:?];
+    [coderCopy encodeDouble:@"UIStepValue" forKey:?];
   }
 
   if (!self->_continuous)
   {
-    [v4 encodeBool:0 forKey:@"UIContinuous"];
+    [coderCopy encodeBool:0 forKey:@"UIContinuous"];
   }
 
   if (!self->_autorepeat)
   {
-    [v4 encodeBool:0 forKey:@"UIAutorepeat"];
+    [coderCopy encodeBool:0 forKey:@"UIAutorepeat"];
   }
 
   if (self->_wraps)
   {
-    [v4 encodeBool:1 forKey:@"UIWraps"];
+    [coderCopy encodeBool:1 forKey:@"UIWraps"];
   }
 }
 
@@ -417,20 +417,20 @@
   self->_decrementImages = v9;
 }
 
-+ (void)_registerVisualElementClass:(Class)a3 forIdiom:(int64_t)a4
++ (void)_registerVisualElementClass:(Class)class forIdiom:(int64_t)idiom
 {
   v6 = __stepperIdiomsToVisualElementClasses;
   if (!__stepperIdiomsToVisualElementClasses)
   {
-    v7 = [MEMORY[0x1E695DF90] dictionary];
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
     v8 = __stepperIdiomsToVisualElementClasses;
-    __stepperIdiomsToVisualElementClasses = v7;
+    __stepperIdiomsToVisualElementClasses = dictionary;
 
     v6 = __stepperIdiomsToVisualElementClasses;
   }
 
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-  [v6 setObject:a3 forKey:v9];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:idiom];
+  [v6 setObject:class forKey:v9];
 }
 
 + (Class)_fallbackVisualElementClass
@@ -442,12 +442,12 @@
   return v4;
 }
 
-+ (Class)visualElementClassForTraitCollection:(id)a3 usingImageCustomization:(BOOL)a4
++ (Class)visualElementClassForTraitCollection:(id)collection usingImageCustomization:(BOOL)customization
 {
-  v4 = a3;
-  v5 = v4;
+  collectionCopy = collection;
+  v5 = collectionCopy;
   v6 = __stepperIdiomsToVisualElementClasses;
-  if (__stepperIdiomsToVisualElementClasses && ([MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(v4, "userInterfaceIdiom")}], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "objectForKeyedSubscript:", v7), v7, v8))
+  if (__stepperIdiomsToVisualElementClasses && ([MEMORY[0x1E696AD98] numberWithInteger:{objc_msgSend(collectionCopy, "userInterfaceIdiom")}], v7 = objc_claimAutoreleasedReturnValue(), v8 = objc_msgSend(v6, "objectForKeyedSubscript:", v7), v7, v8))
   {
     v9 = v8;
   }
@@ -469,9 +469,9 @@
   return v10;
 }
 
-+ (id)visualElementForTraitCollection:(id)a3 usingImageCustomization:(BOOL)a4
++ (id)visualElementForTraitCollection:(id)collection usingImageCustomization:(BOOL)customization
 {
-  v4 = [a1 visualElementClassForTraitCollection:a3 usingImageCustomization:a4];
+  v4 = [self visualElementClassForTraitCollection:collection usingImageCustomization:customization];
   v5 = [objc_msgSend(v4 "alloc")];
 
   return v5;
@@ -479,15 +479,15 @@
 
 - (void)_refreshVisualElement
 {
-  v3 = [(UIView *)self traitCollection];
-  [(UIStepper *)self _refreshVisualElementForTraitCollection:v3 populatingAPIProperties:0];
+  traitCollection = [(UIView *)self traitCollection];
+  [(UIStepper *)self _refreshVisualElementForTraitCollection:traitCollection populatingAPIProperties:0];
 }
 
-- (void)_refreshVisualElementForTraitCollection:(id)a3 populatingAPIProperties:(BOOL)a4
+- (void)_refreshVisualElementForTraitCollection:(id)collection populatingAPIProperties:(BOOL)properties
 {
-  v4 = a4;
+  propertiesCopy = properties;
   dividerImages = self->_dividerImages;
-  v8 = a3;
+  collectionCopy = collection;
   if ([(NSMutableDictionary *)dividerImages count])
   {
     v9 = 1;
@@ -498,19 +498,19 @@
     v9 = [(NSMutableDictionary *)self->_backgroundImages count]!= 0;
   }
 
-  v10 = [objc_opt_class() visualElementForTraitCollection:v8 usingImageCustomization:v9];
+  v10 = [objc_opt_class() visualElementForTraitCollection:collectionCopy usingImageCustomization:v9];
 
   if (!v10)
   {
-    v22 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v22 handleFailureInMethod:a2 object:self file:@"UIStepper.m" lineNumber:328 description:@"Nil UIStepper visual element"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"UIStepper.m" lineNumber:328 description:@"Nil UIStepper visual element"];
   }
 
-  v11 = [(UIStepper *)self visualElement];
-  [v11 removeFromSuperview];
+  visualElement = [(UIStepper *)self visualElement];
+  [visualElement removeFromSuperview];
 
-  v12 = [(UIStepper *)self visualElement];
-  [v12 setStepperControl:0];
+  visualElement2 = [(UIStepper *)self visualElement];
+  [visualElement2 setStepperControl:0];
 
   [(UIStepper *)self setVisualElement:v10];
   [v10 setStepperControl:self];
@@ -530,10 +530,10 @@
   [v10 setContinuous:{-[UIStepper isContinuous](self, "isContinuous")}];
   [v10 setWraps:{-[UIStepper wraps](self, "wraps")}];
   [v10 setAutorepeat:{-[UIStepper autorepeat](self, "autorepeat")}];
-  if (v4)
+  if (propertiesCopy)
   {
-    v13 = [(UIView *)self tintColor];
-    [v10 setTintColor:v13];
+    tintColor = [(UIView *)self tintColor];
+    [v10 setTintColor:tintColor];
   }
 
   v14 = self->_dividerImages;
@@ -600,71 +600,71 @@ void __77__UIStepper__refreshVisualElementForTraitCollection_populatingAPIProper
   [v4 setBackgroundImage:v5 forState:{objc_msgSend(a2, "unsignedIntegerValue")}];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
-  v4 = self;
+  selfCopy = self;
   v9.receiver = self;
   v9.super_class = UIStepper;
-  v5 = [(UIControl *)&v9 hitTest:a4 withEvent:a3.x, a3.y];
-  v6 = [(UIStepper *)v4 visualElement];
+  v5 = [(UIControl *)&v9 hitTest:event withEvent:test.x, test.y];
+  visualElement = [(UIStepper *)selfCopy visualElement];
 
-  if (v5 != v6)
+  if (v5 != visualElement)
   {
-    v4 = v5;
+    selfCopy = v5;
   }
 
-  v7 = v4;
+  v7 = selfCopy;
 
-  return v4;
+  return selfCopy;
 }
 
-- (BOOL)beginTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)beginTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIStepper *)self visualElement];
-  v9 = [v8 beginTrackingWithTouch:v7 withEvent:v6];
+  eventCopy = event;
+  touchCopy = touch;
+  visualElement = [(UIStepper *)self visualElement];
+  v9 = [visualElement beginTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return v9;
 }
 
-- (BOOL)continueTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (BOOL)continueTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIStepper *)self visualElement];
-  v9 = [v8 continueTrackingWithTouch:v7 withEvent:v6];
+  eventCopy = event;
+  touchCopy = touch;
+  visualElement = [(UIStepper *)self visualElement];
+  v9 = [visualElement continueTrackingWithTouch:touchCopy withEvent:eventCopy];
 
   return v9;
 }
 
-- (void)endTrackingWithTouch:(id)a3 withEvent:(id)a4
+- (void)endTrackingWithTouch:(id)touch withEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(UIStepper *)self visualElement];
-  [v8 endTrackingWithTouch:v7 withEvent:v6];
+  eventCopy = event;
+  touchCopy = touch;
+  visualElement = [(UIStepper *)self visualElement];
+  [visualElement endTrackingWithTouch:touchCopy withEvent:eventCopy];
 }
 
-- (void)cancelTrackingWithEvent:(id)a3
+- (void)cancelTrackingWithEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(UIStepper *)self visualElement];
-  [v5 cancelTrackingWithEvent:v4];
+  eventCopy = event;
+  visualElement = [(UIStepper *)self visualElement];
+  [visualElement cancelTrackingWithEvent:eventCopy];
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(UIStepper *)self visualElement];
+  interactionCopy = interaction;
+  requestCopy = request;
+  regionCopy = region;
+  visualElement = [(UIStepper *)self visualElement];
   v12 = objc_opt_respondsToSelector();
 
   if (v12)
   {
-    v13 = [(UIStepper *)self visualElement];
-    v14 = [v13 pointerInteraction:v8 regionForRequest:v9 defaultRegion:v10];
+    visualElement2 = [(UIStepper *)self visualElement];
+    v14 = [visualElement2 pointerInteraction:interactionCopy regionForRequest:requestCopy defaultRegion:regionCopy];
   }
 
   else
@@ -675,17 +675,17 @@ void __77__UIStepper__refreshVisualElementForTraitCollection_populatingAPIProper
   return v14;
 }
 
-- (id)pointerInteraction:(id)a3 styleForRegion:(id)a4
+- (id)pointerInteraction:(id)interaction styleForRegion:(id)region
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(UIStepper *)self visualElement];
+  interactionCopy = interaction;
+  regionCopy = region;
+  visualElement = [(UIStepper *)self visualElement];
   v9 = objc_opt_respondsToSelector();
 
   if (v9)
   {
-    v10 = [(UIStepper *)self visualElement];
-    v11 = [v10 pointerInteraction:v6 styleForRegion:v7];
+    visualElement2 = [(UIStepper *)self visualElement];
+    v11 = [visualElement2 pointerInteraction:interactionCopy styleForRegion:regionCopy];
   }
 
   else
@@ -696,41 +696,41 @@ void __77__UIStepper__refreshVisualElementForTraitCollection_populatingAPIProper
   return v11;
 }
 
-- (void)pointerInteraction:(id)a3 willEnterRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willEnterRegion:(id)region animator:(id)animator
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(UIStepper *)self visualElement];
+  interactionCopy = interaction;
+  regionCopy = region;
+  animatorCopy = animator;
+  visualElement = [(UIStepper *)self visualElement];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(UIStepper *)self visualElement];
-    [v12 pointerInteraction:v13 willEnterRegion:v8 animator:v9];
+    visualElement2 = [(UIStepper *)self visualElement];
+    [visualElement2 pointerInteraction:interactionCopy willEnterRegion:regionCopy animator:animatorCopy];
   }
 }
 
-- (void)pointerInteraction:(id)a3 willExitRegion:(id)a4 animator:(id)a5
+- (void)pointerInteraction:(id)interaction willExitRegion:(id)region animator:(id)animator
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [(UIStepper *)self visualElement];
+  interactionCopy = interaction;
+  regionCopy = region;
+  animatorCopy = animator;
+  visualElement = [(UIStepper *)self visualElement];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(UIStepper *)self visualElement];
-    [v12 pointerInteraction:v13 willExitRegion:v8 animator:v9];
+    visualElement2 = [(UIStepper *)self visualElement];
+    [visualElement2 pointerInteraction:interactionCopy willExitRegion:regionCopy animator:animatorCopy];
   }
 }
 
-- (BOOL)gestureRecognizerShouldBegin:(id)a3
+- (BOOL)gestureRecognizerShouldBegin:(id)begin
 {
-  v4 = a3;
-  v5 = [v4 view];
-  v6 = v5 == self || ![v4 _isGestureType:0] || objc_msgSend(v4, "numberOfTouchesRequired") != 1 || objc_msgSend(v4, "numberOfTapsRequired") != 1;
+  beginCopy = begin;
+  view = [beginCopy view];
+  v6 = view == self || ![beginCopy _isGestureType:0] || objc_msgSend(beginCopy, "numberOfTouchesRequired") != 1 || objc_msgSend(beginCopy, "numberOfTapsRequired") != 1;
 
   return v6;
 }
@@ -743,14 +743,14 @@ void __77__UIStepper__refreshVisualElementForTraitCollection_populatingAPIProper
   v9 = [v7 numberWithUnsignedInteger:state];
   [(NSMutableDictionary *)backgroundImages setObject:v8 forKeyedSubscript:v9];
 
-  v10 = [(UIStepper *)self visualElement];
-  [v10 setBackgroundImage:v8 forState:state];
+  visualElement = [(UIStepper *)self visualElement];
+  [visualElement setBackgroundImage:v8 forState:state];
 }
 
 - (UIImage)backgroundImageForState:(UIControlState)state
 {
-  v4 = [(UIStepper *)self visualElement];
-  v5 = [v4 backgroundImageForState:state];
+  visualElement = [(UIStepper *)self visualElement];
+  v5 = [visualElement backgroundImageForState:state];
 
   return v5;
 }
@@ -765,14 +765,14 @@ void __77__UIStepper__refreshVisualElementForTraitCollection_populatingAPIProper
   v11 = [v9 valueWithBytes:&v13 objCType:"{?=QQ}"];
   [(NSMutableDictionary *)dividerImages setObject:v10 forKeyedSubscript:v11, v13, v14];
 
-  v12 = [(UIStepper *)self visualElement];
-  [v12 setDividerImage:v10 forLeftSegmentState:leftState rightSegmentState:rightState];
+  visualElement = [(UIStepper *)self visualElement];
+  [visualElement setDividerImage:v10 forLeftSegmentState:leftState rightSegmentState:rightState];
 }
 
-- (UIImage)dividerImageForLeftSegmentState:(UIControlState)state rightSegmentState:(UIControlState)a4
+- (UIImage)dividerImageForLeftSegmentState:(UIControlState)state rightSegmentState:(UIControlState)state
 {
-  v6 = [(UIStepper *)self visualElement];
-  v7 = [v6 dividerImageForLeftSegmentState:state rightSegmentState:a4];
+  visualElement = [(UIStepper *)self visualElement];
+  v7 = [visualElement dividerImageForLeftSegmentState:state rightSegmentState:state];
 
   return v7;
 }
@@ -785,14 +785,14 @@ void __77__UIStepper__refreshVisualElementForTraitCollection_populatingAPIProper
   v9 = [v7 numberWithUnsignedInteger:state];
   [(NSMutableDictionary *)incrementImages setObject:v8 forKeyedSubscript:v9];
 
-  v10 = [(UIStepper *)self visualElement];
-  [v10 setIncrementImage:v8 forState:state];
+  visualElement = [(UIStepper *)self visualElement];
+  [visualElement setIncrementImage:v8 forState:state];
 }
 
 - (UIImage)incrementImageForState:(UIControlState)state
 {
-  v4 = [(UIStepper *)self visualElement];
-  v5 = [v4 incrementImageForState:state];
+  visualElement = [(UIStepper *)self visualElement];
+  v5 = [visualElement incrementImageForState:state];
 
   return v5;
 }
@@ -805,26 +805,26 @@ void __77__UIStepper__refreshVisualElementForTraitCollection_populatingAPIProper
   v9 = [v7 numberWithUnsignedInteger:state];
   [(NSMutableDictionary *)decrementImages setObject:v8 forKeyedSubscript:v9];
 
-  v10 = [(UIStepper *)self visualElement];
-  [v10 setDecrementImage:v8 forState:state];
+  visualElement = [(UIStepper *)self visualElement];
+  [visualElement setDecrementImage:v8 forState:state];
 }
 
 - (UIImage)decrementImageForState:(UIControlState)state
 {
-  v4 = [(UIStepper *)self visualElement];
-  v5 = [v4 decrementImageForState:state];
+  visualElement = [(UIStepper *)self visualElement];
+  v5 = [visualElement decrementImageForState:state];
 
   return v5;
 }
 
-- (void)setTintColor:(id)a3
+- (void)setTintColor:(id)color
 {
   v6.receiver = self;
   v6.super_class = UIStepper;
-  v4 = a3;
-  [(UIView *)&v6 setTintColor:v4];
+  colorCopy = color;
+  [(UIView *)&v6 setTintColor:colorCopy];
   v5 = [(UIStepper *)self visualElement:v6.receiver];
-  [v5 setTintColor:v4];
+  [v5 setTintColor:colorCopy];
 }
 
 - (void)tintColorDidChange
@@ -832,13 +832,13 @@ void __77__UIStepper__refreshVisualElementForTraitCollection_populatingAPIProper
   v4.receiver = self;
   v4.super_class = UIStepper;
   [(UIView *)&v4 tintColorDidChange];
-  v3 = [(UIStepper *)self visualElement];
-  [v3 tintColorDidChange];
+  visualElement = [(UIStepper *)self visualElement];
+  [visualElement tintColorDidChange];
 }
 
-+ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)a3
++ (void)_setAllowsUnsupportedMacIdiomBehavior:(BOOL)behavior
 {
-  if (a3)
+  if (behavior)
   {
     v3 = 2;
   }

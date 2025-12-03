@@ -1,11 +1,11 @@
 @interface PBBProtoHandleActivationData
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PBBProtoHandleActivationData
@@ -16,20 +16,20 @@
   v8.receiver = self;
   v8.super_class = PBBProtoHandleActivationData;
   v4 = [(PBBProtoHandleActivationData *)&v8 description];
-  v5 = [(PBBProtoHandleActivationData *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(PBBProtoHandleActivationData *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x277CBEB38] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v4 = dictionary;
   activationData = self->_activationData;
   if (activationData)
   {
-    [v3 setObject:activationData forKey:@"activationData"];
+    [dictionary setObject:activationData forKey:@"activationData"];
   }
 
   responseHeaders = self->_responseHeaders;
@@ -41,44 +41,44 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   activationData = self->_activationData;
-  v6 = a3;
+  toCopy = to;
   PBDataWriterWriteDataField();
   responseHeaders = self->_responseHeaders;
   PBDataWriterWriteDataField();
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
   activationData = self->_activationData;
-  v5 = a3;
-  [v5 setActivationData:activationData];
-  [v5 setResponseHeaders:self->_responseHeaders];
+  toCopy = to;
+  [toCopy setActivationData:activationData];
+  [toCopy setResponseHeaders:self->_responseHeaders];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSData *)self->_activationData copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSData *)self->_activationData copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
-  v8 = [(NSData *)self->_responseHeaders copyWithZone:a3];
+  v8 = [(NSData *)self->_responseHeaders copyWithZone:zone];
   v9 = v5[2];
   v5[2] = v8;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((activationData = self->_activationData, !(activationData | v4[1])) || -[NSData isEqual:](activationData, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((activationData = self->_activationData, !(activationData | equalCopy[1])) || -[NSData isEqual:](activationData, "isEqual:")))
   {
     responseHeaders = self->_responseHeaders;
-    if (responseHeaders | v4[2])
+    if (responseHeaders | equalCopy[2])
     {
       v7 = [(NSData *)responseHeaders isEqual:?];
     }
@@ -97,20 +97,20 @@
   return v7;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4[1])
+  fromCopy = from;
+  v5 = fromCopy;
+  if (fromCopy[1])
   {
     [(PBBProtoHandleActivationData *)self setActivationData:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 
-  if (v4[2])
+  if (fromCopy[2])
   {
     [(PBBProtoHandleActivationData *)self setResponseHeaders:?];
-    v4 = v5;
+    fromCopy = v5;
   }
 }
 

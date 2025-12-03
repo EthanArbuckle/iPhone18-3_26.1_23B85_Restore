@@ -1,7 +1,7 @@
 @interface Migrator
 - (Migrator)init;
-- (void)_handleMonitorStateDidChangeNotification:(id)a3;
-- (void)_handleNetworkStateDidChangeNotification:(id)a3;
+- (void)_handleMonitorStateDidChangeNotification:(id)notification;
+- (void)_handleNetworkStateDidChangeNotification:(id)notification;
 - (void)dealloc;
 @end
 
@@ -46,7 +46,7 @@
   [(Migrator *)&v5 dealloc];
 }
 
-- (void)_handleNetworkStateDidChangeNotification:(id)a3
+- (void)_handleNetworkStateDidChangeNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
@@ -57,7 +57,7 @@
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_handleMonitorStateDidChangeNotification:(id)a3
+- (void)_handleMonitorStateDidChangeNotification:(id)notification
 {
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;

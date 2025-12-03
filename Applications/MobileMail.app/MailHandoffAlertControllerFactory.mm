@@ -1,19 +1,19 @@
 @interface MailHandoffAlertControllerFactory
-+ (id)mailAlertControllerForHandoffError:(id)a3 acknowledgmentObserver:(id)a4;
++ (id)mailAlertControllerForHandoffError:(id)error acknowledgmentObserver:(id)observer;
 @end
 
 @implementation MailHandoffAlertControllerFactory
 
-+ (id)mailAlertControllerForHandoffError:(id)a3 acknowledgmentObserver:(id)a4
++ (id)mailAlertControllerForHandoffError:(id)error acknowledgmentObserver:(id)observer
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 mf_mailHandoffActivityType];
-  if (v7)
+  errorCopy = error;
+  observerCopy = observer;
+  mf_mailHandoffActivityType = [errorCopy mf_mailHandoffActivityType];
+  if (mf_mailHandoffActivityType)
   {
-    v8 = v5;
-    v9 = [v8 mf_activitySource];
-    if (v9 == 2)
+    v8 = errorCopy;
+    mf_activitySource = [v8 mf_activitySource];
+    if (mf_activitySource == 2)
     {
       v10 = [NSBundle bundleForClass:objc_opt_class()];
       v11 = [v10 localizedStringForKey:@"SIRI_SHORTCUT_FAILED_ERROR_TITLE" value:&stru_100662A88 table:@"Main"];
@@ -21,7 +21,7 @@
 
     else
     {
-      if (v9 == 3)
+      if (mf_activitySource == 3)
       {
         v10 = [NSBundle bundleForClass:objc_opt_class()];
         [v10 localizedStringForKey:@"SELECTED_MESSAGE_NOT_FOUND_ERROR_TITLE" value:&stru_100662A88 table:@"Main"];
@@ -38,46 +38,46 @@
     v13 = v11;
 
     v14 = v8;
-    v15 = [v14 domain];
-    if ([v15 isEqualToString:MFHandoffErrorDomain])
+    domain = [v14 domain];
+    if ([domain isEqualToString:MFHandoffErrorDomain])
     {
     }
 
     else
     {
-      v16 = [v14 localizedDescription];
+      localizedDescription = [v14 localizedDescription];
 
-      if (v16)
+      if (localizedDescription)
       {
-        v15 = [v14 localizedDescription];
+        domain = [v14 localizedDescription];
         goto LABEL_23;
       }
     }
 
-    v17 = [v14 mf_activityErrorReason];
-    if (v17 == 1)
+    mf_activityErrorReason = [v14 mf_activityErrorReason];
+    if (mf_activityErrorReason == 1)
     {
       v20 = [NSBundle bundleForClass:objc_opt_class()];
       v21 = [v20 localizedStringForKey:@"SELECTED_MESSAGE_NOT_FOUND_ERROR_BODY" value:&stru_100662A88 table:@"Main"];
 LABEL_22:
-      v15 = v21;
+      domain = v21;
 
       goto LABEL_23;
     }
 
-    if (!v17)
+    if (!mf_activityErrorReason)
     {
-      v18 = [v14 mf_activitySource];
+      mf_activitySource2 = [v14 mf_activitySource];
       v19 = [NSBundle bundleForClass:objc_opt_class()];
       v20 = v19;
-      if (v18 == 3)
+      if (mf_activitySource2 == 3)
       {
         v21 = [v19 localizedStringForKey:@"SELECTED_MESSAGE_NOT_FOUND_ERROR_BODY" value:&stru_100662A88 table:@"Main"];
       }
 
       else
       {
-        if (v18 == 2)
+        if (mf_activitySource2 == 2)
         {
           [v19 localizedStringForKey:@"SIRI_SHORTCUT_FAILED_ERROR_BODY" value:&stru_100662A88 table:@"Main"];
         }
@@ -94,14 +94,14 @@ LABEL_22:
 
 LABEL_23:
 
-    v12 = [UIAlertController alertControllerWithTitle:v13 message:v15 preferredStyle:1];
-    if (v6)
+    v12 = [UIAlertController alertControllerWithTitle:v13 message:domain preferredStyle:1];
+    if (observerCopy)
     {
       v27[0] = _NSConcreteStackBlock;
       v27[1] = 3221225472;
       v27[2] = sub_1001132D4;
       v27[3] = &unk_100650850;
-      v28 = v6;
+      v28 = observerCopy;
       v29 = v14;
       v22 = objc_retainBlock(v27);
     }

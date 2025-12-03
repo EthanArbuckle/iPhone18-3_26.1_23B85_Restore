@@ -1,17 +1,17 @@
 @interface CHFriendsSetupViewController
-- (BOOL)_isManagedAppleId:(id *)a3;
+- (BOOL)_isManagedAppleId:(id *)id;
 - (CHFriendsSetupViewController)init;
 - (CHFriendsSetupViewControllerDelegate)delegate;
 - (void)_nextButtonTapped;
 - (void)_willEnterForeground;
 - (void)configurePlayer;
-- (void)setPhase:(int64_t)a3 animated:(BOOL)a4;
+- (void)setPhase:(int64_t)phase animated:(BOOL)animated;
 - (void)teardownPlayer;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CHFriendsSetupViewController
@@ -34,12 +34,12 @@
   v41.receiver = self;
   v41.super_class = CHFriendsSetupViewController;
   [(CHFriendsSetupViewController *)&v41 viewDidLoad];
-  v3 = [(CHFriendsSetupViewController *)self navigationController];
-  [v3 setNavigationBarHidden:1];
+  navigationController = [(CHFriendsSetupViewController *)self navigationController];
+  [navigationController setNavigationBarHidden:1];
 
-  v4 = [(CHFriendsSetupViewController *)self view];
+  view = [(CHFriendsSetupViewController *)self view];
   v5 = +[UIColor blackColor];
-  [v4 setBackgroundColor:v5];
+  [view setBackgroundColor:v5];
 
   v6 = +[UIScreen mainScreen];
   [v6 bounds];
@@ -71,12 +71,12 @@
   [(UILabel *)self->_titleLabel setAdjustsFontSizeToFitWidth:1];
   [(UILabel *)self->_titleLabel setTextAlignment:1];
   [(UILabel *)self->_titleLabel setAccessibilityTraits:UIAccessibilityTraitHeader];
-  [v4 addSubview:self->_titleLabel];
+  [view addSubview:self->_titleLabel];
   v17 = sub_1001102A4();
   currentDescriptionLabel = self->_currentDescriptionLabel;
   self->_currentDescriptionLabel = v17;
 
-  [v4 addSubview:self->_currentDescriptionLabel];
+  [view addSubview:self->_currentDescriptionLabel];
   v19 = sub_1001102A4();
   nextDescriptionLabel = self->_nextDescriptionLabel;
   self->_nextDescriptionLabel = v19;
@@ -86,8 +86,8 @@
   if (_UISolariumEnabled())
   {
     v22 = +[ARUIMetricColors keyColors];
-    v23 = [v22 nonGradientTextColor];
-    [v21 setBaseBackgroundColor:v23];
+    nonGradientTextColor = [v22 nonGradientTextColor];
+    [v21 setBaseBackgroundColor:nonGradientTextColor];
 
     [v21 setCornerStyle:4];
     v24 = +[UIColor blackColor];
@@ -112,19 +112,19 @@
   self->_nextButton = v26;
 
   [(UIButton *)self->_nextButton setMaximumContentSizeCategory:v10];
-  [v4 addSubview:self->_nextButton];
+  [view addSubview:self->_nextButton];
   v28 = [OBPrivacyLinkController linkWithBundleIdentifier:@"com.apple.onboarding.activity"];
   privacyLink = self->_privacyLink;
   self->_privacyLink = v28;
 
   [(OBPrivacyLinkController *)self->_privacyLink setPresentedViewControllerShouldUseDarkMode:1];
-  v30 = [(OBPrivacyLinkController *)self->_privacyLink view];
-  [v30 setMaximumContentSizeCategory:v10];
+  view2 = [(OBPrivacyLinkController *)self->_privacyLink view];
+  [view2 setMaximumContentSizeCategory:v10];
 
   [(CHFriendsSetupViewController *)self addChildViewController:self->_privacyLink];
-  v31 = [(CHFriendsSetupViewController *)self view];
-  v32 = [(OBPrivacyLinkController *)self->_privacyLink view];
-  [v31 addSubview:v32];
+  view3 = [(CHFriendsSetupViewController *)self view];
+  view4 = [(OBPrivacyLinkController *)self->_privacyLink view];
+  [view3 addSubview:view4];
 
   [(CHFriendsSetupViewController *)self setPhase:self->_phase animated:0];
   v33 = +[NSNotificationCenter defaultCenter];
@@ -140,8 +140,8 @@
 - (void)_willEnterForeground
 {
   [(CHFriendsSetupViewController *)self configurePlayer];
-  v3 = [(AVPlayerLayer *)self->_onboardingPlayerLayer player];
-  [v3 play];
+  player = [(AVPlayerLayer *)self->_onboardingPlayerLayer player];
+  [player play];
 }
 
 - (void)viewDidLayoutSubviews
@@ -149,8 +149,8 @@
   v82.receiver = self;
   v82.super_class = CHFriendsSetupViewController;
   [(CHFriendsSetupViewController *)&v82 viewDidLayoutSubviews];
-  v3 = [(CHFriendsSetupViewController *)self view];
-  [v3 bounds];
+  view = [(CHFriendsSetupViewController *)self view];
+  [view bounds];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -180,8 +180,8 @@
   [(AVPlayerLayer *)self->_onboardingPlayerLayer setBounds:?];
   [(AVPlayerLayer *)self->_onboardingPlayerLayer setPosition:v16, 183.0];
   +[CATransaction commit];
-  v17 = [(UILabel *)self->_titleLabel font];
-  [v17 _scaledValueForValue:24.0];
+  font = [(UILabel *)self->_titleLabel font];
+  [font _scaledValueForValue:24.0];
   v19 = v18;
 
   [(AVPlayerLayer *)self->_onboardingPlayerLayer frame];
@@ -200,11 +200,11 @@
   v74 = Width;
   [(UILabel *)self->_titleLabel setBounds:0.0, 0.0, Width, CGRectGetHeight(v91)];
   [(UILabel *)self->_titleLabel setPosition:v22, v25];
-  v26 = [(CHFriendsSetupViewController *)self view];
-  [v26 directionalLayoutMargins];
+  view2 = [(CHFriendsSetupViewController *)self view];
+  [view2 directionalLayoutMargins];
   v28 = v14 - v27;
-  v29 = [(CHFriendsSetupViewController *)self view];
-  [v29 directionalLayoutMargins];
+  view3 = [(CHFriendsSetupViewController *)self view];
+  [view3 directionalLayoutMargins];
   v31 = v28 - v30;
 
   [(UIButton *)self->_nextButton systemLayoutSizeFittingSize:v14, v11];
@@ -213,27 +213,27 @@
   v35 = sub_1000E0C74(v15, v31);
   [(UIButton *)self->_nextButton setBounds:0.0, 0.0, v31, v33];
   [(UIButton *)self->_nextButton setCenter:v35, v34];
-  v36 = [(CHFriendsSetupViewController *)self view];
-  [v36 directionalLayoutMargins];
+  view4 = [(CHFriendsSetupViewController *)self view];
+  [view4 directionalLayoutMargins];
   v38 = v14 - v37;
-  v39 = [(CHFriendsSetupViewController *)self view];
-  [v39 directionalLayoutMargins];
+  view5 = [(CHFriendsSetupViewController *)self view];
+  [view5 directionalLayoutMargins];
   v41 = v38 - v40;
 
-  v42 = [(OBPrivacyLinkController *)self->_privacyLink view];
+  view6 = [(OBPrivacyLinkController *)self->_privacyLink view];
   LODWORD(v43) = 1148846080;
   LODWORD(v44) = 1112014848;
-  [v42 systemLayoutSizeFittingSize:v41 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v43, v44}];
+  [view6 systemLayoutSizeFittingSize:v41 withHorizontalFittingPriority:0.0 verticalFittingPriority:{v43, v44}];
   v46 = v45;
 
-  v47 = [(OBPrivacyLinkController *)self->_privacyLink view];
-  [v47 setBounds:{0.0, 0.0, v41, v46}];
+  view7 = [(OBPrivacyLinkController *)self->_privacyLink view];
+  [view7 setBounds:{0.0, 0.0, v41, v46}];
 
-  v48 = [(OBPrivacyLinkController *)self->_privacyLink view];
-  [v48 setPosition:{v21, Height + -44.0 - v33 + -30.0 - v46 * 0.5}];
+  view8 = [(OBPrivacyLinkController *)self->_privacyLink view];
+  [view8 setPosition:{v21, Height + -44.0 - v33 + -30.0 - v46 * 0.5}];
 
-  v49 = [(OBPrivacyLinkController *)self->_privacyLink view];
-  [v49 frameOrigin];
+  view9 = [(OBPrivacyLinkController *)self->_privacyLink view];
+  [view9 frameOrigin];
   v51 = v50;
 
   currentDescriptionLabel = self->_currentDescriptionLabel;
@@ -260,8 +260,8 @@
         }
 
         v59 = *(*(&v78 + 1) + 8 * i);
-        v60 = [v59 font];
-        [v60 _scaledValueForValue:32.0];
+        font2 = [v59 font];
+        [font2 _scaledValueForValue:32.0];
         v62 = v61;
 
         v63 = v75 + v62;
@@ -287,28 +287,28 @@
   }
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = CHFriendsSetupViewController;
-  [(CHFriendsSetupViewController *)&v4 viewWillAppear:a3];
+  [(CHFriendsSetupViewController *)&v4 viewWillAppear:appear];
   [(CHFriendsSetupViewController *)self configurePlayer];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v5.receiver = self;
   v5.super_class = CHFriendsSetupViewController;
-  [(CHFriendsSetupViewController *)&v5 viewDidAppear:a3];
-  v4 = [(AVPlayerLayer *)self->_onboardingPlayerLayer player];
-  [v4 play];
+  [(CHFriendsSetupViewController *)&v5 viewDidAppear:appear];
+  player = [(AVPlayerLayer *)self->_onboardingPlayerLayer player];
+  [player play];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = CHFriendsSetupViewController;
-  [(CHFriendsSetupViewController *)&v4 viewDidDisappear:a3];
+  [(CHFriendsSetupViewController *)&v4 viewDidDisappear:disappear];
   [(CHFriendsSetupViewController *)self teardownPlayer];
 }
 
@@ -333,9 +333,9 @@
     onboardingPlayerLayer = self->_onboardingPlayerLayer;
     self->_onboardingPlayerLayer = v9;
 
-    v11 = [(CHFriendsSetupViewController *)self view];
-    v12 = [v11 layer];
-    [v12 addSublayer:self->_onboardingPlayerLayer];
+    view = [(CHFriendsSetupViewController *)self view];
+    layer = [view layer];
+    [layer addSublayer:self->_onboardingPlayerLayer];
   }
 }
 
@@ -351,16 +351,16 @@
   self->_onboardingPlayerLayer = 0;
 }
 
-- (void)setPhase:(int64_t)a3 animated:(BOOL)a4
+- (void)setPhase:(int64_t)phase animated:(BOOL)animated
 {
-  v4 = a4;
-  self->_phase = a3;
+  animatedCopy = animated;
+  self->_phase = phase;
   if (![(CHFriendsSetupViewController *)self isViewLoaded])
   {
     return;
   }
 
-  switch(a3)
+  switch(phase)
   {
     case 0:
       v17 = +[NSBundle mainBundle];
@@ -422,8 +422,8 @@ LABEL_14:
   }
 
   [(UILabel *)self->_nextDescriptionLabel setAlpha:0.0];
-  v23 = [(CHFriendsSetupViewController *)self view];
-  [v23 insertSubview:self->_nextDescriptionLabel below:self->_currentDescriptionLabel];
+  view = [(CHFriendsSetupViewController *)self view];
+  [view insertSubview:self->_nextDescriptionLabel below:self->_currentDescriptionLabel];
 
   if (_UISolariumEnabled())
   {
@@ -454,7 +454,7 @@ LABEL_14:
   v30[3] = &unk_10083B8E0;
   v30[4] = self;
   v29 = objc_retainBlock(v30);
-  if (v4)
+  if (animatedCopy)
   {
     [UIView animateWithDuration:v28 animations:v29 completion:0.35];
   }
@@ -466,12 +466,12 @@ LABEL_14:
   }
 }
 
-- (BOOL)_isManagedAppleId:(id *)a3
+- (BOOL)_isManagedAppleId:(id *)id
 {
   v4 = objc_alloc_init(ACAccountStore);
-  v5 = [v4 aa_primaryAppleAccount];
-  v6 = v5;
-  if (v5 && [v5 aa_isManagedAppleID])
+  aa_primaryAppleAccount = [v4 aa_primaryAppleAccount];
+  v6 = aa_primaryAppleAccount;
+  if (aa_primaryAppleAccount && [aa_primaryAppleAccount aa_isManagedAppleID])
   {
     ASLoggingInitialize();
     v7 = ASLogDefault;
@@ -481,9 +481,9 @@ LABEL_14:
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_DEFAULT, "Apple ID is a managed account, reverting to unsigned-in behavior", v10, 2u);
     }
 
-    if (a3)
+    if (id)
     {
-      *a3 = [v6 username];
+      *id = [v6 username];
     }
 
     v8 = 1;
@@ -499,13 +499,13 @@ LABEL_14:
 
 - (void)_nextButtonTapped
 {
-  v3 = [(CHFriendsSetupViewController *)self delegate];
-  [v3 friendsSetupViewController:self didCompletePhase:self->_phase];
+  delegate = [(CHFriendsSetupViewController *)self delegate];
+  [delegate friendsSetupViewController:self didCompletePhase:self->_phase];
 
   if (!self->_phase)
   {
-    v4 = [(CHFriendsSetupViewController *)self delegate];
-    v5 = [v4 friendsSetupViewControllerShouldTransitionToCloudKitSignInPhase:self];
+    delegate2 = [(CHFriendsSetupViewController *)self delegate];
+    v5 = [delegate2 friendsSetupViewControllerShouldTransitionToCloudKitSignInPhase:self];
 
     if (v5)
     {
@@ -515,8 +515,8 @@ LABEL_14:
 
     else
     {
-      v6 = [(CHFriendsSetupViewController *)self delegate];
-      [v6 friendsSetupViewControllerDidCompleteSetup:self];
+      delegate3 = [(CHFriendsSetupViewController *)self delegate];
+      [delegate3 friendsSetupViewControllerDidCompleteSetup:self];
     }
   }
 }

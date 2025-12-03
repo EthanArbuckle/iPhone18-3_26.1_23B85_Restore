@@ -4,8 +4,8 @@
 - (id)effectiveAppIdentifiers;
 - (id)effectiveExtensionAttributes;
 - (id)effectiveExtensionIdentifiers;
-- (void)applicationInstallsDidStart:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
+- (void)applicationInstallsDidStart:(id)start;
+- (void)applicationsDidInstall:(id)install;
 - (void)dealloc;
 - (void)findExtension;
 - (void)matchExtension;
@@ -49,8 +49,8 @@
     v5 = +[MSDTargetDevice sharedInstance];
     -[F13Server setPOSDevice:](v2, "setPOSDevice:", [v5 isVerifiedPOSDevice]);
 
-    v6 = [(F13Server *)v2 workspace];
-    [v6 addObserver:v2];
+    workspace = [(F13Server *)v2 workspace];
+    [workspace addObserver:v2];
 
     [(F13Server *)v2 findExtension];
   }
@@ -60,8 +60,8 @@
 
 - (void)dealloc
 {
-  v3 = [(F13Server *)self workspace];
-  [v3 removeObserver:self];
+  workspace = [(F13Server *)self workspace];
+  [workspace removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = F13Server;
@@ -111,9 +111,9 @@
 - (id)effectiveExtensionAttributes
 {
   v3 = objc_alloc_init(NSMutableArray);
-  v4 = [(F13Server *)self isPOSDevice];
+  isPOSDevice = [(F13Server *)self isPOSDevice];
   v5 = NSExtensionIdentifierName;
-  if (v4)
+  if (isPOSDevice)
   {
     v21[0] = NSExtensionIdentifierName;
     v22[0] = @"com.apple.ist.pierogi.potato";
@@ -216,8 +216,8 @@
         v10 = v17;
         if (!v10 && [v9 count])
         {
-          v13 = [v9 firstObject];
-          [(F13Server *)self setExtension:v13];
+          firstObject = [v9 firstObject];
+          [(F13Server *)self setExtension:firstObject];
 
           v14 = sub_100063A54();
           if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
@@ -300,36 +300,36 @@ LABEL_19:
   [(F13Server *)self setAppInstallationInProgress:1];
 }
 
-- (void)applicationInstallsDidStart:(id)a3
+- (void)applicationInstallsDidStart:(id)start
 {
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v33 count:16];
+  startCopy = start;
+  v5 = [startCopy countByEnumeratingWithState:&v26 objects:v33 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v27;
     v20 = *v27;
-    v21 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v6; i = i + 1)
       {
         if (*v27 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(startCopy);
         }
 
         v9 = *(*(&v26 + 1) + 8 * i);
-        v10 = [(F13Server *)self effectiveAppIdentifiers];
+        effectiveAppIdentifiers = [(F13Server *)self effectiveAppIdentifiers];
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v11 = v10;
+        v11 = effectiveAppIdentifiers;
         v12 = [v11 countByEnumeratingWithState:&v22 objects:v32 count:16];
         if (v12)
         {
@@ -345,21 +345,21 @@ LABEL_19:
               }
 
               v16 = *(*(&v22 + 1) + 8 * j);
-              v17 = [v9 bundleIdentifier];
-              LODWORD(v16) = [v17 isEqualToString:v16];
+              bundleIdentifier = [v9 bundleIdentifier];
+              LODWORD(v16) = [bundleIdentifier isEqualToString:v16];
 
               if (v16)
               {
                 v18 = sub_100063A54();
                 if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
                 {
-                  v19 = [v9 bundleIdentifier];
+                  bundleIdentifier2 = [v9 bundleIdentifier];
                   *buf = 138543362;
-                  v31 = v19;
+                  v31 = bundleIdentifier2;
                   _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "F13Server: New %{public}@ app installation started, killing extension...", buf, 0xCu);
                 }
 
-                [(F13Server *)v21 windwardAppInstallationStarted];
+                [(F13Server *)selfCopy windwardAppInstallationStarted];
                 goto LABEL_20;
               }
             }
@@ -375,10 +375,10 @@ LABEL_19:
         }
 
         v7 = v20;
-        self = v21;
+        self = selfCopy;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v26 objects:v33 count:16];
+      v6 = [startCopy countByEnumeratingWithState:&v26 objects:v33 count:16];
     }
 
     while (v6);
@@ -387,36 +387,36 @@ LABEL_19:
 LABEL_20:
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v26 objects:v33 count:16];
+  installCopy = install;
+  v5 = [installCopy countByEnumeratingWithState:&v26 objects:v33 count:16];
   if (v5)
   {
     v6 = v5;
     v7 = *v27;
     v20 = *v27;
-    v21 = self;
+    selfCopy = self;
     do
     {
       for (i = 0; i != v6; i = i + 1)
       {
         if (*v27 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(installCopy);
         }
 
         v9 = *(*(&v26 + 1) + 8 * i);
-        v10 = [(F13Server *)self effectiveAppIdentifiers];
+        effectiveAppIdentifiers = [(F13Server *)self effectiveAppIdentifiers];
         v22 = 0u;
         v23 = 0u;
         v24 = 0u;
         v25 = 0u;
-        v11 = v10;
+        v11 = effectiveAppIdentifiers;
         v12 = [v11 countByEnumeratingWithState:&v22 objects:v32 count:16];
         if (v12)
         {
@@ -432,22 +432,22 @@ LABEL_20:
               }
 
               v16 = *(*(&v22 + 1) + 8 * j);
-              v17 = [v9 bundleIdentifier];
-              LODWORD(v16) = [v17 isEqualToString:v16];
+              bundleIdentifier = [v9 bundleIdentifier];
+              LODWORD(v16) = [bundleIdentifier isEqualToString:v16];
 
               if (v16)
               {
                 v18 = sub_100063A54();
                 if (os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT))
                 {
-                  v19 = [v9 bundleIdentifier];
+                  bundleIdentifier2 = [v9 bundleIdentifier];
                   *buf = 138543362;
-                  v31 = v19;
+                  v31 = bundleIdentifier2;
                   _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_DEFAULT, "F13Server: %{public}@ app installation finished", buf, 0xCu);
                 }
 
-                [(F13Server *)v21 setAppInstallationInProgress:0];
-                [(F13Server *)v21 matchExtension];
+                [(F13Server *)selfCopy setAppInstallationInProgress:0];
+                [(F13Server *)selfCopy matchExtension];
 
                 goto LABEL_20;
               }
@@ -464,10 +464,10 @@ LABEL_20:
         }
 
         v7 = v20;
-        self = v21;
+        self = selfCopy;
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v26 objects:v33 count:16];
+      v6 = [installCopy countByEnumeratingWithState:&v26 objects:v33 count:16];
     }
 
     while (v6);

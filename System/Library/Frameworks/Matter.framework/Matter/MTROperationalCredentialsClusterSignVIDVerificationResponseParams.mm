@@ -1,9 +1,9 @@
 @interface MTROperationalCredentialsClusterSignVIDVerificationResponseParams
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3;
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct;
 - (MTROperationalCredentialsClusterSignVIDVerificationResponseParams)init;
-- (MTROperationalCredentialsClusterSignVIDVerificationResponseParams)initWithDecodableStruct:(const void *)a3;
-- (MTROperationalCredentialsClusterSignVIDVerificationResponseParams)initWithResponseValue:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MTROperationalCredentialsClusterSignVIDVerificationResponseParams)initWithDecodableStruct:(const void *)struct;
+- (MTROperationalCredentialsClusterSignVIDVerificationResponseParams)initWithResponseValue:(id)value error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -23,25 +23,25 @@
     fabricBindingVersion = v3->_fabricBindingVersion;
     v3->_fabricBindingVersion = &unk_284C3E4C8;
 
-    v6 = [MEMORY[0x277CBEA90] data];
+    data = [MEMORY[0x277CBEA90] data];
     signature = v3->_signature;
-    v3->_signature = v6;
+    v3->_signature = data;
   }
 
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTROperationalCredentialsClusterSignVIDVerificationResponseParams);
-  v5 = [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)self fabricIndex];
-  [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)v4 setFabricIndex:v5];
+  fabricIndex = [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)self fabricIndex];
+  [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)v4 setFabricIndex:fabricIndex];
 
-  v6 = [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)self fabricBindingVersion];
-  [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)v4 setFabricBindingVersion:v6];
+  fabricBindingVersion = [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)self fabricBindingVersion];
+  [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)v4 setFabricBindingVersion:fabricBindingVersion];
 
-  v7 = [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)self signature];
-  [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)v4 setSignature:v7];
+  signature = [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)self signature];
+  [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)v4 setSignature:signature];
 
   return v4;
 }
@@ -59,9 +59,9 @@
   return v9;
 }
 
-- (MTROperationalCredentialsClusterSignVIDVerificationResponseParams)initWithResponseValue:(id)a3 error:(id *)a4
+- (MTROperationalCredentialsClusterSignVIDVerificationResponseParams)initWithResponseValue:(id)value error:(id *)error
 {
-  v6 = a3;
+  valueCopy = value;
   v17.receiver = self;
   v17.super_class = MTROperationalCredentialsClusterSignVIDVerificationResponseParams;
   v7 = [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)&v17 init];
@@ -71,7 +71,7 @@
     goto LABEL_10;
   }
 
-  [MTRBaseDevice _responseDataForCommand:v6 clusterID:62 commandID:14 error:a4];
+  [MTRBaseDevice _responseDataForCommand:valueCopy clusterID:62 commandID:14 error:error];
   if (v16)
   {
     sub_2393C5AAC(v15);
@@ -94,7 +94,7 @@
       }
     }
 
-    sub_238DD3F98(v8, v9, a4);
+    sub_238DD3F98(v8, v9, error);
   }
 
   v10 = 0;
@@ -105,7 +105,7 @@ LABEL_10:
   return v10;
 }
 
-- (MTROperationalCredentialsClusterSignVIDVerificationResponseParams)initWithDecodableStruct:(const void *)a3
+- (MTROperationalCredentialsClusterSignVIDVerificationResponseParams)initWithDecodableStruct:(const void *)struct
 {
   v10.receiver = self;
   v10.super_class = MTROperationalCredentialsClusterSignVIDVerificationResponseParams;
@@ -113,7 +113,7 @@ LABEL_10:
   v5 = v4;
   if (v4)
   {
-    v6 = [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)v4 _setFieldsFromDecodableStruct:a3];
+    v6 = [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)v4 _setFieldsFromDecodableStruct:struct];
     if (!v6)
     {
       v8 = v5;
@@ -129,15 +129,15 @@ LABEL_6:
   return v8;
 }
 
-- (ChipError)_setFieldsFromDecodableStruct:(const void *)a3
+- (ChipError)_setFieldsFromDecodableStruct:(const void *)struct
 {
-  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*a3];
+  v5 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*struct];
   [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)self setFabricIndex:v5];
 
-  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(a3 + 1)];
+  v6 = [MEMORY[0x277CCABB0] numberWithUnsignedChar:*(struct + 1)];
   [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)self setFabricBindingVersion:v6];
 
-  v7 = [MEMORY[0x277CBEA90] dataWithBytes:*(a3 + 1) length:*(a3 + 2)];
+  v7 = [MEMORY[0x277CBEA90] dataWithBytes:*(struct + 1) length:*(struct + 2)];
   [(MTROperationalCredentialsClusterSignVIDVerificationResponseParams *)self setSignature:v7];
 
   v8 = 0;

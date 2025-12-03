@@ -2,7 +2,7 @@
 - (BOOL)_migrateCameraRollFiles;
 - (BOOL)_migrateMetadataFilesToPhotoData;
 - (BOOL)performMigration;
-- (MobileSlideShowLegacyMigrationSupport)initWithLibraryURL:(id)a3;
+- (MobileSlideShowLegacyMigrationSupport)initWithLibraryURL:(id)l;
 - (void)_generateMigrationFilegroupsAndOptions;
 - (void)_migrateAssetsdPreferencesDomain;
 - (void)_removeOldLargeThubnails;
@@ -13,8 +13,8 @@
 - (void)_removeOldLargeThubnails
 {
   v3 = +[PLFileUtilities fileManager];
-  v4 = [(MobileSlideShowLegacyMigrationSupport *)self pathManager];
-  v5 = [v4 photoDirectoryWithType:29];
+  pathManager = [(MobileSlideShowLegacyMigrationSupport *)self pathManager];
+  v5 = [pathManager photoDirectoryWithType:29];
 
   v20 = v5;
   v6 = [NSURL fileURLWithPath:v5 isDirectory:1];
@@ -83,8 +83,8 @@
 
 - (BOOL)_migrateMetadataFilesToPhotoData
 {
-  v2 = [(MobileSlideShowLegacyMigrationSupport *)self pathManager];
-  v3 = [v2 photoDirectoryWithType:1];
+  pathManager = [(MobileSlideShowLegacyMigrationSupport *)self pathManager];
+  v3 = [pathManager photoDirectoryWithType:1];
 
   v4 = [v3 stringByAppendingPathComponent:@"DCIM"];
   v5 = [v3 stringByAppendingPathComponent:@"PhotoData/MISC"];
@@ -135,7 +135,7 @@ LABEL_42:
           _os_log_impl(&dword_0, v34, OS_LOG_TYPE_ERROR, "Failed to enumerate %{public}@. No *APPLE or *IMPRT directories will be migrated.", buf, 0xCu);
         }
 
-        LODWORD(v13) = 1;
+        LODWORD(v106) = 1;
         goto LABEL_91;
       }
 
@@ -149,7 +149,7 @@ LABEL_42:
       v36 = [v35 countByEnumeratingWithState:&v145 objects:v163 count:16];
       if (!v36)
       {
-        LODWORD(v13) = 1;
+        LODWORD(v106) = 1;
         goto LABEL_90;
       }
 
@@ -265,7 +265,7 @@ LABEL_58:
             if ((v53 & 1) == 0)
             {
 
-              LODWORD(v13) = 0;
+              LODWORD(v106) = 0;
               v7 = v113;
               v9 = v127;
               goto LABEL_85;
@@ -312,7 +312,7 @@ LABEL_80:
         v37 = [v35 countByEnumeratingWithState:&v145 objects:v163 count:16];
         if (!v37)
         {
-          LODWORD(v13) = 1;
+          LODWORD(v106) = 1;
           v7 = v113;
 LABEL_85:
           v3 = v108;
@@ -376,7 +376,7 @@ LABEL_91:
             if (v75)
             {
 
-              if (v13)
+              if (v106)
               {
                 v138 = 0;
                 v77 = [v9 subpathsOfDirectoryAtPath:v7 error:&v138];
@@ -397,7 +397,7 @@ LABEL_91:
                   }
 
                   v78 = 0;
-                  LOBYTE(v13) = 1;
+                  LOBYTE(v106) = 1;
                   goto LABEL_153;
                 }
 
@@ -409,7 +409,7 @@ LABEL_91:
                 v126 = [v78 countByEnumeratingWithState:&v134 objects:v160 count:16];
                 if (!v126)
                 {
-                  LOBYTE(v13) = 1;
+                  LOBYTE(v106) = 1;
                   goto LABEL_152;
                 }
 
@@ -429,17 +429,17 @@ LABEL_107:
                   }
 
                   v81 = *(*(&v134 + 1) + 8 * v80);
-                  v13 = [v7 stringByAppendingPathComponent:v81, v106];
+                  v106 = [v7 stringByAppendingPathComponent:v81, v106];
                   v133 = 0;
-                  if ([v9 fileExistsAtPath:v13 isDirectory:&v133])
+                  if ([v9 fileExistsAtPath:v106 isDirectory:&v133])
                   {
                     if ((v133 & 1) == 0)
                     {
                       goto LABEL_129;
                     }
 
-                    v82 = [v13 pathExtension];
-                    v83 = [v82 isEqualToString:@"MISC"];
+                    pathExtension = [v106 pathExtension];
+                    v83 = [pathExtension isEqualToString:@"MISC"];
 
                     v5 = v123;
                     if ((v83 & 1) == 0)
@@ -454,11 +454,11 @@ LABEL_107:
                   }
 
                   v84 = [v8 stringByAppendingPathComponent:v81];
-                  v85 = [v84 stringByDeletingLastPathComponent];
-                  if ([v127 fileExistsAtPath:v85])
+                  stringByDeletingLastPathComponent = [v84 stringByDeletingLastPathComponent];
+                  if ([v127 fileExistsAtPath:stringByDeletingLastPathComponent])
                   {
                     v132 = 0;
-                    v86 = [v127 removeItemAtPath:v85 error:&v132];
+                    v86 = [v127 removeItemAtPath:stringByDeletingLastPathComponent error:&v132];
                     v87 = v132;
                     v88 = v87;
                     if ((v86 & 1) == 0)
@@ -471,7 +471,7 @@ LABEL_107:
                         if (os_log_type_enabled(v103, OS_LOG_TYPE_ERROR))
                         {
                           *buf = 138543618;
-                          v165 = v85;
+                          v165 = stringByDeletingLastPathComponent;
                           v166 = 2114;
                           v167 = v88;
                           v104 = "Failed to remove %{public}@ to replace it with the current version [Migration will fail.] Error: %{public}@";
@@ -484,7 +484,7 @@ LABEL_150:
 
 LABEL_151:
 
-                      LOBYTE(v13) = 0;
+                      LOBYTE(v106) = 0;
                       v9 = v127;
                       v63 = v120;
                       v78 = v117;
@@ -493,7 +493,7 @@ LABEL_151:
                   }
 
                   v131 = 0;
-                  v89 = [PLFileUtilities createDirectoryAtPath:v85 error:&v131];
+                  v89 = [PLFileUtilities createDirectoryAtPath:stringByDeletingLastPathComponent error:&v131];
                   v90 = v131;
                   v88 = v90;
                   if ((v89 & 1) == 0)
@@ -506,7 +506,7 @@ LABEL_151:
                       if (os_log_type_enabled(v103, OS_LOG_TYPE_ERROR))
                       {
                         *buf = 138543618;
-                        v165 = v85;
+                        v165 = stringByDeletingLastPathComponent;
                         v166 = 2114;
                         v167 = v88;
                         v104 = "Failed to create %{public}@ to hold the video's metadata [Migration will fail.] Error: %{public}@";
@@ -525,7 +525,7 @@ LABEL_151:
                   v159 = NSFileProtectionCompleteUntilFirstUserAuthentication;
                   v93 = [NSDictionary dictionaryWithObjects:&v159 forKeys:&v158 count:1];
                   v130 = 0;
-                  v94 = [v127 setAttributes:v93 ofItemAtPath:v13 error:&v130];
+                  v94 = [v127 setAttributes:v93 ofItemAtPath:v106 error:&v130];
                   v95 = v130;
 
                   if ((v94 & 1) == 0)
@@ -534,7 +534,7 @@ LABEL_151:
                     if (os_log_type_enabled(v96, OS_LOG_TYPE_ERROR))
                     {
                       *buf = 138543618;
-                      v165 = v13;
+                      v165 = v106;
                       v166 = 2114;
                       v167 = v95;
                       _os_log_impl(&dword_0, v96, OS_LOG_TYPE_ERROR, "Unable to assign data protection to %{public}@: %{public}@", buf, 0x16u);
@@ -542,7 +542,7 @@ LABEL_151:
                   }
 
                   v129 = 0;
-                  v97 = [v127 moveItemAtPath:v13 toPath:v84 error:&v129];
+                  v97 = [v127 moveItemAtPath:v106 toPath:v84 error:&v129];
                   v98 = v129;
                   v99 = v98;
                   if ((v97 & 1) == 0 && v98)
@@ -551,7 +551,7 @@ LABEL_151:
                     if (os_log_type_enabled(v100, OS_LOG_TYPE_ERROR))
                     {
                       *buf = v106;
-                      v165 = v13;
+                      v165 = v106;
                       v166 = 2114;
                       v167 = v84;
                       v168 = 2114;
@@ -578,7 +578,7 @@ LABEL_129:
                       goto LABEL_107;
                     }
 
-                    LOBYTE(v13) = 1;
+                    LOBYTE(v106) = 1;
                     v3 = v109;
 LABEL_152:
 
@@ -605,12 +605,12 @@ LABEL_153:
                   _os_log_impl(&dword_0, v78, OS_LOG_TYPE_ERROR, "Failed to create %{public}@ [Migration will fail.] Error: %{public}@", buf, 0x16u);
                 }
 
-                LOBYTE(v13) = 0;
+                LOBYTE(v106) = 0;
                 goto LABEL_153;
               }
 
               v101 = 0;
-              LOBYTE(v13) = 0;
+              LOBYTE(v106) = 0;
 LABEL_154:
             }
           }
@@ -740,16 +740,16 @@ LABEL_41:
     goto LABEL_42;
   }
 
-  LOBYTE(v13) = 1;
+  LOBYTE(v106) = 1;
 LABEL_156:
 
-  return v13;
+  return v106;
 }
 
 - (BOOL)_migrateCameraRollFiles
 {
   [(MobileSlideShowLegacyMigrationSupport *)self _generateMigrationFilegroupsAndOptions];
-  v30 = self;
+  selfCopy = self;
   v3 = [(NSMutableArray *)self->_fileGroupsToMigrate count];
   v4 = +[PLFileUtilities fileManager];
   v29 = v3;
@@ -760,15 +760,15 @@ LABEL_156:
     v28 = v5;
     do
     {
-      v7 = [(NSMutableArray *)v30->_fileGroupsToMigrate objectAtIndex:v6, v28];
-      v8 = [(NSMutableArray *)v30->_fileGroupProcessingOptions objectAtIndex:v6];
-      v9 = [v8 intValue];
+      v7 = [(NSMutableArray *)selfCopy->_fileGroupsToMigrate objectAtIndex:v6, v28];
+      v8 = [(NSMutableArray *)selfCopy->_fileGroupProcessingOptions objectAtIndex:v6];
+      intValue = [v8 intValue];
 
       [v7 createMetadataDirectoryIfNecessary];
-      v10 = [v7 pathForContainingDirectory];
-      v11 = [v7 pathForThumbnailFile];
-      v12 = [v7 thumbnailFilename];
-      v13 = [v10 stringByAppendingPathComponent:v12];
+      pathForContainingDirectory = [v7 pathForContainingDirectory];
+      pathForThumbnailFile = [v7 pathForThumbnailFile];
+      thumbnailFilename = [v7 thumbnailFilename];
+      v13 = [pathForContainingDirectory stringByAppendingPathComponent:thumbnailFilename];
 
       v41 = NSFileProtectionKey;
       v42 = NSFileProtectionCompleteUntilFirstUserAuthentication;
@@ -792,13 +792,13 @@ LABEL_156:
       }
 
       v4 = v15;
-      [v15 moveItemAtPath:v13 toPath:v11 error:0];
-      if ((v9 & 0x10) != 0)
+      [v15 moveItemAtPath:v13 toPath:pathForThumbnailFile error:0];
+      if ((intValue & 0x10) != 0)
       {
         [v7 deleteObsoleteFiles];
       }
 
-      if ((v9 & 0x20) != 0)
+      if ((intValue & 0x20) != 0)
       {
         [v7 deleteFiles];
       }
@@ -814,7 +814,7 @@ LABEL_156:
     while (v29 != v6);
   }
 
-  strayFileGroups = v30->_strayFileGroups;
+  strayFileGroups = selfCopy->_strayFileGroups;
   if (strayFileGroups)
   {
     v20 = v4;
@@ -856,9 +856,9 @@ LABEL_156:
 
 - (void)_generateMigrationFilegroupsAndOptions
 {
-  v2 = self;
-  v3 = [(MobileSlideShowLegacyMigrationSupport *)self pathManager];
-  v4 = [v3 photoDirectoryWithType:4];
+  selfCopy = self;
+  pathManager = [(MobileSlideShowLegacyMigrationSupport *)self pathManager];
+  v4 = [pathManager photoDirectoryWithType:4];
 
   v5 = +[PLFileUtilities fileManager];
   if ([v5 fileExistsAtPath:v4])
@@ -893,12 +893,12 @@ LABEL_156:
         v7 = *(*(&v48 + 1) + 8 * v6);
         context = objc_autoreleasePoolPush();
         [v7 setConsiderInvalidFileGroups:1];
-        v8 = [v7 fileGroups];
+        fileGroups = [v7 fileGroups];
         v44 = 0u;
         v45 = 0u;
         v46 = 0u;
         v47 = 0u;
-        v39 = v8;
+        v39 = fileGroups;
         v41 = [v39 countByEnumeratingWithState:&v44 objects:v52 count:16];
         if (v41)
         {
@@ -914,8 +914,8 @@ LABEL_156:
 
               v10 = *(*(&v44 + 1) + 8 * i);
               v11 = objc_autoreleasePoolPush();
-              v12 = [v10 hasVideoFile];
-              if (v12)
+              hasVideoFile = [v10 hasVideoFile];
+              if (hasVideoFile)
               {
                 [v10 pathForVideoFile];
               }
@@ -925,17 +925,17 @@ LABEL_156:
                 [v10 pathForFullSizeImage];
               }
               v13 = ;
-              v14 = [v10 pathForThumbnailFile];
-              v43 = [v10 pathForPrebakedThumbnail];
-              v15 = [v10 hasObsoleteFiles];
+              pathForThumbnailFile = [v10 pathForThumbnailFile];
+              pathForPrebakedThumbnail = [v10 pathForPrebakedThumbnail];
+              hasObsoleteFiles = [v10 hasObsoleteFiles];
               v16 = [v5 fileExistsAtPath:v13];
-              if ((v16 & 1) == 0 && !v15)
+              if ((v16 & 1) == 0 && !hasObsoleteFiles)
               {
-                [(NSMutableArray *)v2->_strayFileGroups addObject:v10];
+                [(NSMutableArray *)selfCopy->_strayFileGroups addObject:v10];
                 goto LABEL_40;
               }
 
-              if (v15)
+              if (hasObsoleteFiles)
               {
                 v17 = 16;
               }
@@ -956,10 +956,10 @@ LABEL_156:
               }
 
               v42 = v11;
-              if (v12)
+              if (hasVideoFile)
               {
-                v19 = [v10 pathForVideoPreviewFile];
-                v20 = [v5 fileExistsAtPath:v19];
+                pathForVideoPreviewFile = [v10 pathForVideoPreviewFile];
+                v20 = [v5 fileExistsAtPath:pathForVideoPreviewFile];
 
                 if (v20)
                 {
@@ -974,13 +974,13 @@ LABEL_156:
 
               if (v38)
               {
-                v21 = [v10 pathForPrebakedWildcatThumbnailsFile];
-                v22 = [v5 fileExistsAtPath:v21];
-                v23 = v2;
+                pathForPrebakedWildcatThumbnailsFile = [v10 pathForPrebakedWildcatThumbnailsFile];
+                v22 = [v5 fileExistsAtPath:pathForPrebakedWildcatThumbnailsFile];
+                v23 = selfCopy;
                 v24 = v22;
 
                 v25 = (v24 & 1) == 0;
-                v2 = v23;
+                selfCopy = v23;
                 if (v25)
                 {
                   v18 |= 4u;
@@ -988,19 +988,19 @@ LABEL_156:
               }
 
               v11 = v42;
-              if ((v12 & 1) == 0)
+              if ((hasVideoFile & 1) == 0)
               {
                 v5 = v37;
-                if (![v37 fileExistsAtPath:v43])
+                if (![v37 fileExistsAtPath:pathForPrebakedThumbnail])
                 {
                   v18 |= 2u;
                 }
 
-                v26 = [v37 fileExistsAtPath:v14];
+                v26 = [v37 fileExistsAtPath:pathForThumbnailFile];
 LABEL_39:
                 v27 = v26 ^ 1;
-                [(NSMutableArray *)v2->_fileGroupsToMigrate addObject:v10];
-                fileGroupProcessingOptions = v2->_fileGroupProcessingOptions;
+                [(NSMutableArray *)selfCopy->_fileGroupsToMigrate addObject:v10];
+                fileGroupProcessingOptions = selfCopy->_fileGroupProcessingOptions;
                 v29 = [NSNumber numberWithInt:v18 | v27];
                 [(NSMutableArray *)fileGroupProcessingOptions addObject:v29];
 
@@ -1009,7 +1009,7 @@ LABEL_39:
               }
 
               v5 = v37;
-              v26 = [v37 fileExistsAtPath:v14];
+              v26 = [v37 fileExistsAtPath:pathForThumbnailFile];
               if (v20)
               {
                 goto LABEL_39;
@@ -1064,27 +1064,27 @@ LABEL_44:
   [(MobileSlideShowLegacyMigrationSupport *)self _migrateAssetsdPreferencesDomain];
   if ([(MobileSlideShowLegacyMigrationSupport *)self _migrateCameraRollFiles])
   {
-    v3 = [(MobileSlideShowLegacyMigrationSupport *)self _migrateMetadataFilesToPhotoData];
+    _migrateMetadataFilesToPhotoData = [(MobileSlideShowLegacyMigrationSupport *)self _migrateMetadataFilesToPhotoData];
   }
 
   else
   {
-    v3 = 0;
+    _migrateMetadataFilesToPhotoData = 0;
   }
 
   [(MobileSlideShowLegacyMigrationSupport *)self _removeOldLargeThubnails];
-  return v3;
+  return _migrateMetadataFilesToPhotoData;
 }
 
-- (MobileSlideShowLegacyMigrationSupport)initWithLibraryURL:(id)a3
+- (MobileSlideShowLegacyMigrationSupport)initWithLibraryURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v15.receiver = self;
   v15.super_class = MobileSlideShowLegacyMigrationSupport;
   v5 = [(MobileSlideShowLegacyMigrationSupport *)&v15 init];
   if (v5)
   {
-    v6 = [[PLPhotoLibraryPathManager alloc] initWithLibraryURL:v4];
+    v6 = [[PLPhotoLibraryPathManager alloc] initWithLibraryURL:lCopy];
     pathManager = v5->_pathManager;
     v5->_pathManager = v6;
 

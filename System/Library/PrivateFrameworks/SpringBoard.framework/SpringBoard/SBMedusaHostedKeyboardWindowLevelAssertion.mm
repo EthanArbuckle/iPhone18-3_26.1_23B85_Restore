@@ -1,24 +1,24 @@
 @interface SBMedusaHostedKeyboardWindowLevelAssertion
-- (SBMedusaHostedKeyboardWindowLevelAssertion)initWithMedusaHostedKeyboardWindow:(id)a3 priority:(unint64_t)a4 windowLevel:(double)a5;
+- (SBMedusaHostedKeyboardWindowLevelAssertion)initWithMedusaHostedKeyboardWindow:(id)window priority:(unint64_t)priority windowLevel:(double)level;
 - (void)dealloc;
 - (void)invalidate;
 @end
 
 @implementation SBMedusaHostedKeyboardWindowLevelAssertion
 
-- (SBMedusaHostedKeyboardWindowLevelAssertion)initWithMedusaHostedKeyboardWindow:(id)a3 priority:(unint64_t)a4 windowLevel:(double)a5
+- (SBMedusaHostedKeyboardWindowLevelAssertion)initWithMedusaHostedKeyboardWindow:(id)window priority:(unint64_t)priority windowLevel:(double)level
 {
-  v8 = a3;
+  windowCopy = window;
   v22.receiver = self;
   v22.super_class = SBMedusaHostedKeyboardWindowLevelAssertion;
   v9 = [(SBMedusaHostedKeyboardWindowLevelAssertion *)&v22 init];
   v10 = v9;
   if (v9)
   {
-    v9->_priority = a4;
-    v9->_windowLevel = a5;
+    v9->_priority = priority;
+    v9->_windowLevel = level;
     objc_initWeak(&location, v9);
-    objc_initWeak(&from, v8);
+    objc_initWeak(&from, windowCopy);
     v14 = MEMORY[0x277D85DD0];
     v15 = 3221225472;
     v16 = __102__SBMedusaHostedKeyboardWindowLevelAssertion_initWithMedusaHostedKeyboardWindow_priority_windowLevel___block_invoke;
@@ -29,7 +29,7 @@
     invalidationHandler = v10->_invalidationHandler;
     v10->_invalidationHandler = v11;
 
-    [v8 addWindowLevelAssertion:{v10, v14, v15, v16, v17}];
+    [windowCopy addWindowLevelAssertion:{v10, v14, v15, v16, v17}];
     objc_destroyWeak(&v19);
     objc_destroyWeak(&v18);
     objc_destroyWeak(&from);

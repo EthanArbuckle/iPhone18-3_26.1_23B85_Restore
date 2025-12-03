@@ -1,24 +1,24 @@
 @interface RadioTxDutyCycleCC
-- (RadioTxDutyCycleCC)initWithRunLoopAndParams:(__CFRunLoop *)a3 withParams:(__CFDictionary *)a4;
+- (RadioTxDutyCycleCC)initWithRunLoopAndParams:(__CFRunLoop *)params withParams:(__CFDictionary *)withParams;
 - (int)numberOfFields;
 - (void)calculateAdditionalRadioMitigations;
 @end
 
 @implementation RadioTxDutyCycleCC
 
-- (RadioTxDutyCycleCC)initWithRunLoopAndParams:(__CFRunLoop *)a3 withParams:(__CFDictionary *)a4
+- (RadioTxDutyCycleCC)initWithRunLoopAndParams:(__CFRunLoop *)params withParams:(__CFDictionary *)withParams
 {
   v9.receiver = self;
   v9.super_class = RadioTxDutyCycleCC;
-  v5 = [(RadioCC *)&v9 initWithRunLoopAndParams:a3 withParams:?];
+  v5 = [(RadioCC *)&v9 initWithRunLoopAndParams:params withParams:?];
   v6 = v5;
   if (v5)
   {
     *(&v5->super.maxLoadingIndexPrevious + 1) = 250;
-    if (a4)
+    if (withParams)
     {
       v8 = 0;
-      if (sub_100002A20(a4, @"minRadioTxDutyCycle", kCFNumberIntType, &v8))
+      if (sub_100002A20(withParams, @"minRadioTxDutyCycle", kCFNumberIntType, &v8))
       {
         *(&v6->super.maxLoadingIndexPrevious + 1) = v8;
       }

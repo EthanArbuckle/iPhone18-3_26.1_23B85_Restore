@@ -1,55 +1,55 @@
 @interface CKDUploadAssetsOperation
-+ (id)nameForState:(unint64_t)a3;
-- (BOOL)_didFetchUploadTokensForAssetTokenRequest:(id)a3 error:(id)a4 newError:(id *)a5;
++ (id)nameForState:(unint64_t)state;
+- (BOOL)_didFetchUploadTokensForAssetTokenRequest:(id)request error:(id)error newError:(id *)newError;
 - (BOOL)_fetchConfiguration;
 - (BOOL)_fetchUploadTokens;
-- (BOOL)_planPackageSectionItemsForMMCSItems:(id)a3;
-- (BOOL)_planSectionsForPackage:(id)a3 error:(id *)a4;
+- (BOOL)_planPackageSectionItemsForMMCSItems:(id)items;
+- (BOOL)_planSectionsForPackage:(id)package error:(id *)error;
 - (BOOL)_prepareForUpload;
 - (BOOL)_upload;
 - (BOOL)makeStateTransition;
-- (CKDUploadAssetsOperation)initWithOperationInfo:(id)a3 container:(id)a4;
+- (CKDUploadAssetsOperation)initWithOperationInfo:(id)info container:(id)container;
 - (id)CKStatusReportLogGroups;
-- (id)_prepareAssetForUpload:(id)a3;
-- (id)_preparePackageForUpload:(id)a3;
-- (id)_prepareReferenceAssetForUpload:(id)a3;
-- (id)_prepareReferencePackageForUpload:(id)a3;
-- (void)_collectMetricsFromCompletedItemGroup:(id)a3;
-- (void)_collectMetricsFromCompletedItemGroupSet:(id)a3;
-- (void)_collectMetricsFromMMCSOperationMetrics:(id)a3;
-- (void)_didMakeProgressForAsset:(id)a3 progress:(double)a4;
-- (void)_didMakeProgressForMMCSItem:(id)a3;
-- (void)_didMakeProgressForMMCSSectionItem:(id)a3 task:(id)a4;
-- (void)_didPrepareAsset:(id)a3;
-- (void)_didPrepareAssetBatch:(id)a3 error:(id)a4;
-- (void)_didUploadAsset:(id)a3 error:(id)a4;
-- (void)_didUploadMMCSItem:(id)a3 error:(id)a4;
-- (void)_didUploadMMCSItems:(id)a3 error:(id)a4;
-- (void)_didUploadMMCSSectionItem:(id)a3 task:(id)a4 error:(id)a5;
-- (void)_didUploadMMCSSectionItems:(id)a3 task:(id)a4 error:(id)a5;
-- (void)_didUploadPackageWithTask:(id)a3;
-- (void)_failAllItemsInAssetBatch:(id)a3 error:(id)a4;
-- (void)_finishOnCallbackQueueWithError:(id)a3;
+- (id)_prepareAssetForUpload:(id)upload;
+- (id)_preparePackageForUpload:(id)upload;
+- (id)_prepareReferenceAssetForUpload:(id)upload;
+- (id)_prepareReferencePackageForUpload:(id)upload;
+- (void)_collectMetricsFromCompletedItemGroup:(id)group;
+- (void)_collectMetricsFromCompletedItemGroupSet:(id)set;
+- (void)_collectMetricsFromMMCSOperationMetrics:(id)metrics;
+- (void)_didMakeProgressForAsset:(id)asset progress:(double)progress;
+- (void)_didMakeProgressForMMCSItem:(id)item;
+- (void)_didMakeProgressForMMCSSectionItem:(id)item task:(id)task;
+- (void)_didPrepareAsset:(id)asset;
+- (void)_didPrepareAssetBatch:(id)batch error:(id)error;
+- (void)_didUploadAsset:(id)asset error:(id)error;
+- (void)_didUploadMMCSItem:(id)item error:(id)error;
+- (void)_didUploadMMCSItems:(id)items error:(id)error;
+- (void)_didUploadMMCSSectionItem:(id)item task:(id)task error:(id)error;
+- (void)_didUploadMMCSSectionItems:(id)items task:(id)task error:(id)error;
+- (void)_didUploadPackageWithTask:(id)task;
+- (void)_failAllItemsInAssetBatch:(id)batch error:(id)error;
+- (void)_finishOnCallbackQueueWithError:(id)error;
 - (void)_registerMMCSItems;
 - (void)_removePackageManifests;
-- (void)_uploadPackageSection:(id)a3 task:(id)a4 completionBlock:(id)a5;
-- (void)_uploadPackageSectionsWithEnumerator:(id)a3 task:(id)a4 completionBlock:(id)a5;
-- (void)_uploadPackageSectionsWithPendingTasks:(id)a3 uploadingTasks:(id)a4 completedTasks:(id)a5;
-- (void)_uploadPackageSectionsWithTask:(id)a3 completionBlock:(id)a4;
+- (void)_uploadPackageSection:(id)section task:(id)task completionBlock:(id)block;
+- (void)_uploadPackageSectionsWithEnumerator:(id)enumerator task:(id)task completionBlock:(id)block;
+- (void)_uploadPackageSectionsWithPendingTasks:(id)tasks uploadingTasks:(id)uploadingTasks completedTasks:(id)completedTasks;
+- (void)_uploadPackageSectionsWithTask:(id)task completionBlock:(id)block;
 - (void)cancel;
-- (void)finishWithError:(id)a3;
+- (void)finishWithError:(id)error;
 - (void)main;
 @end
 
 @implementation CKDUploadAssetsOperation
 
-- (CKDUploadAssetsOperation)initWithOperationInfo:(id)a3 container:(id)a4
+- (CKDUploadAssetsOperation)initWithOperationInfo:(id)info container:(id)container
 {
-  v6 = a3;
-  v7 = a4;
+  infoCopy = info;
+  containerCopy = container;
   v62.receiver = self;
   v62.super_class = CKDUploadAssetsOperation;
-  v8 = [(CKDDatabaseOperation *)&v62 initWithOperationInfo:v6 container:v7];
+  v8 = [(CKDDatabaseOperation *)&v62 initWithOperationInfo:infoCopy container:containerCopy];
   if (v8)
   {
     v9 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
@@ -60,7 +60,7 @@
     queue = v8->_queue;
     v8->_queue = v14;
 
-    v18 = objc_msgSend_assetsToUpload(v6, v16, v17);
+    v18 = objc_msgSend_assetsToUpload(infoCopy, v16, v17);
     v20 = objc_msgSend_sortedArrayUsingComparator_(v18, v19, &unk_28385D500);
     assetsToUpload = v8->_assetsToUpload;
     v8->_assetsToUpload = v20;
@@ -69,10 +69,10 @@
     cancelTokens = v8->_cancelTokens;
     v8->_cancelTokens = v22;
 
-    v26 = objc_msgSend_containerID(v7, v24, v25);
+    v26 = objc_msgSend_containerID(containerCopy, v24, v25);
     if (objc_msgSend_specialContainerType(v26, v27, v28) == 5)
     {
-      v31 = objc_msgSend_group(v6, v29, v30);
+      v31 = objc_msgSend_group(infoCopy, v29, v30);
       v34 = objc_msgSend_name(v31, v32, v33);
       isEqualToString = objc_msgSend_isEqualToString_(v34, v35, @"Compute State Upload");
 
@@ -88,17 +88,17 @@ LABEL_7:
         uploadTasksByPackages = v8->_uploadTasksByPackages;
         v8->_uploadTasksByPackages = v43;
 
-        v47 = objc_msgSend_assetUUIDToExpectedProperties(v6, v45, v46);
+        v47 = objc_msgSend_assetUUIDToExpectedProperties(infoCopy, v45, v46);
         assetUUIDToExpectedProperties = v8->_assetUUIDToExpectedProperties;
         v8->_assetUUIDToExpectedProperties = v47;
 
-        v51 = objc_msgSend_packageUUIDToExpectedProperties(v6, v49, v50);
+        v51 = objc_msgSend_packageUUIDToExpectedProperties(infoCopy, v49, v50);
         packageUUIDToExpectedProperties = v8->_packageUUIDToExpectedProperties;
         v8->_packageUUIDToExpectedProperties = v51;
 
-        v8->_temporary = objc_msgSend_temporary(v6, v53, v54);
-        v8->_shouldCloneFileInAssetCache = objc_msgSend_shouldCloneFileInAssetCache(v6, v55, v56);
-        v59 = objc_msgSend_cloneContextsBySignature(v6, v57, v58);
+        v8->_temporary = objc_msgSend_temporary(infoCopy, v53, v54);
+        v8->_shouldCloneFileInAssetCache = objc_msgSend_shouldCloneFileInAssetCache(infoCopy, v55, v56);
+        v59 = objc_msgSend_cloneContextsBySignature(infoCopy, v57, v58);
         cloneContextsBySignature = v8->_cloneContextsBySignature;
         v8->_cloneContextsBySignature = v59;
 
@@ -123,23 +123,23 @@ LABEL_8:
 {
   v19.receiver = self;
   v19.super_class = CKDUploadAssetsOperation;
-  v3 = [(CKDOperation *)&v19 CKStatusReportLogGroups];
+  cKStatusReportLogGroups = [(CKDOperation *)&v19 CKStatusReportLogGroups];
   v6 = objc_msgSend_assetRequestPlanner(self, v4, v5);
   v9 = objc_msgSend_assetRegisterAndPutBatches(v6, v7, v8);
   v11 = objc_msgSend_CKFlatMap_(v9, v10, &unk_28385D460);
 
   if (objc_msgSend_count(v11, v12, v13))
   {
-    if (!v3)
+    if (!cKStatusReportLogGroups)
     {
-      v3 = objc_opt_new();
+      cKStatusReportLogGroups = objc_opt_new();
     }
 
     v16 = objc_msgSend_mutableCopy(v11, v14, v15);
-    objc_msgSend_setObject_forKeyedSubscript_(v3, v17, v16, @"MMCS Items");
+    objc_msgSend_setObject_forKeyedSubscript_(cKStatusReportLogGroups, v17, v16, @"MMCS Items");
   }
 
-  return v3;
+  return cKStatusReportLogGroups;
 }
 
 - (BOOL)makeStateTransition
@@ -209,29 +209,29 @@ LABEL_8:
   }
 }
 
-+ (id)nameForState:(unint64_t)a3
++ (id)nameForState:(unint64_t)state
 {
-  if (a3 - 2 >= 4)
+  if (state - 2 >= 4)
   {
     v8 = v3;
     v9 = v4;
-    v7.receiver = a1;
+    v7.receiver = self;
     v7.super_class = &OBJC_METACLASS___CKDUploadAssetsOperation;
     v5 = objc_msgSendSuper2(&v7, sel_nameForState_);
   }
 
   else
   {
-    v5 = off_278548F80[a3 - 2];
+    v5 = off_278548F80[state - 2];
   }
 
   return v5;
 }
 
-- (void)_didPrepareAsset:(id)a3
+- (void)_didPrepareAsset:(id)asset
 {
-  v7 = a3;
-  if (!v7)
+  assetCopy = asset;
+  if (!assetCopy)
   {
     v10 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v5, v6);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v10, v11, a2, self, @"CKDUploadAssetsOperation.m", 303, @"Expected non-nil asset for %@", self);
@@ -243,15 +243,15 @@ LABEL_8:
   block[2] = sub_2251BAB4C;
   block[3] = &unk_278545898;
   block[4] = self;
-  v13 = v7;
-  v9 = v7;
+  v13 = assetCopy;
+  v9 = assetCopy;
   dispatch_async(v8, block);
 }
 
-- (void)_didMakeProgressForAsset:(id)a3 progress:(double)a4
+- (void)_didMakeProgressForAsset:(id)asset progress:(double)progress
 {
-  v9 = a3;
-  if (!v9)
+  assetCopy = asset;
+  if (!assetCopy)
   {
     v12 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v7, v8);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v12, v13, a2, self, @"CKDUploadAssetsOperation.m", 311, @"Expected non-nil asset for %@", self);
@@ -263,20 +263,20 @@ LABEL_8:
   block[2] = sub_2251BACDC;
   block[3] = &unk_278545E20;
   block[4] = self;
-  v15 = v9;
-  v16 = a4;
-  v11 = v9;
+  v15 = assetCopy;
+  progressCopy = progress;
+  v11 = assetCopy;
   dispatch_async(v10, block);
 }
 
-- (void)_didUploadAsset:(id)a3 error:(id)a4
+- (void)_didUploadAsset:(id)asset error:(id)error
 {
-  v7 = a3;
-  v8 = a4;
-  v11 = v8;
-  if (v7)
+  assetCopy = asset;
+  errorCopy = error;
+  v11 = errorCopy;
+  if (assetCopy)
   {
-    if (v8)
+    if (errorCopy)
     {
       goto LABEL_5;
     }
@@ -293,10 +293,10 @@ LABEL_8:
     }
   }
 
-  if ((objc_msgSend_uploaded(v7, v9, v10) & 1) == 0)
+  if ((objc_msgSend_uploaded(assetCopy, v9, v10) & 1) == 0)
   {
     v17 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v9, v10);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v17, v18, a2, self, @"CKDUploadAssetsOperation.m", 320, @"Expected asset %@ to be marked as uploaded for %@", v7, self);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v17, v18, a2, self, @"CKDUploadAssetsOperation.m", 320, @"Expected asset %@ to be marked as uploaded for %@", assetCopy, self);
   }
 
 LABEL_5:
@@ -306,28 +306,28 @@ LABEL_5:
   block[2] = sub_2251BAEE0;
   block[3] = &unk_278546990;
   block[4] = self;
-  v20 = v7;
+  v20 = assetCopy;
   v21 = v11;
   v13 = v11;
-  v14 = v7;
+  v14 = assetCopy;
   dispatch_async(v12, block);
 }
 
-- (BOOL)_planSectionsForPackage:(id)a3 error:(id *)a4
+- (BOOL)_planSectionsForPackage:(id)package error:(id *)error
 {
   v228 = *MEMORY[0x277D85DE8];
-  v194 = a3;
-  v203 = self;
+  packageCopy = package;
+  selfCopy = self;
   v7 = objc_msgSend_container(self, v5, v6);
   v189 = objc_msgSend_MMCS(v7, v8, v9);
 
   MaxChunkCountForSection = objc_msgSend_getMaxChunkCountForSection(v189, v10, v11);
   if (!MaxChunkCountForSection)
   {
-    if (a4)
+    if (error)
     {
       objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v12, *MEMORY[0x277CBC120], 1000, @"Invalid maxSectionChunkCount value: %lu", 0);
-      *a4 = v40 = 0;
+      *error = v40 = 0;
     }
 
     else
@@ -339,20 +339,20 @@ LABEL_5:
   }
 
   v13 = [CKDMMCSPackageSignatureGenerator alloc];
-  v16 = objc_msgSend_boundaryKey(v194, v14, v15);
+  v16 = objc_msgSend_boundaryKey(packageCopy, v14, v15);
   v182 = objc_msgSend_initWithBoundaryKey_(v13, v17, v16);
 
   v18 = [CKDMMCSPackageSignatureGenerator alloc];
-  v21 = objc_msgSend_boundaryKey(v194, v19, v20);
+  v21 = objc_msgSend_boundaryKey(packageCopy, v19, v20);
   v23 = objc_msgSend_initWithBoundaryKey_(v18, v22, v21);
 
-  v184 = objc_msgSend_itemEnumerator(v194, v24, v25);
+  v184 = objc_msgSend_itemEnumerator(packageCopy, v24, v25);
   v215 = 0;
   v216 = &v215;
   v217 = 0x3032000000;
   v218 = sub_225073FF0;
   v219 = sub_225073584;
-  v220 = objc_msgSend_prepareForSectionPlanning(v194, v26, v27);
+  v220 = objc_msgSend_prepareForSectionPlanning(packageCopy, v26, v27);
   v181 = dispatch_semaphore_create(0);
   if (!v216[5])
   {
@@ -366,7 +366,7 @@ LABEL_5:
     {
       v202 = v31;
       context = objc_autoreleasePoolPush();
-      isCancelled = objc_msgSend_isCancelled(v203, v45, v46);
+      isCancelled = objc_msgSend_isCancelled(selfCopy, v45, v46);
       if (isCancelled)
       {
         v49 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v47, v186, 1, @"Operation was cancelled");
@@ -399,7 +399,7 @@ LABEL_70:
           v165 = objc_msgSend_dataByFinishingVerificationKey(v202, v163, v164);
           v166 = objc_alloc(MEMORY[0x277CBC548]);
           v168 = objc_msgSend_initWithIndex_signature_verificationKey_(v166, v167, v187, v162, v165);
-          v170 = objc_msgSend_addSection_(v194, v169, v168);
+          v170 = objc_msgSend_addSection_(packageCopy, v169, v168);
           v171 = v216[5];
           v216[5] = v170;
 
@@ -439,9 +439,9 @@ LABEL_70:
     v212[1] = 3221225472;
     v212[2] = sub_2251BBE00;
     v212[3] = &unk_278548E00;
-    v190 = v194;
+    v190 = packageCopy;
     v213 = v190;
-    v214 = v203;
+    v214 = selfCopy;
     v188 = objc_msgSend_CKMap_(v204, v51, v212);
     v52 = [CKDMMCSItemGroupSet alloc];
     v185 = objc_msgSend_initWithItems_(v52, v53, v188);
@@ -462,12 +462,12 @@ LABEL_70:
     v211 = &v215;
     v57 = v181;
     v210 = v57;
-    v191 = objc_msgSend_registerItemGroupSet_operation_options_completionHandler_(v189, v58, v185, v203, v56, v209);
-    v61 = objc_msgSend_cancelTokens(v203, v59, v60);
-    objc_msgSend_addCancelToken_withOperation_(v61, v62, v191, v203);
+    v191 = objc_msgSend_registerItemGroupSet_operation_options_completionHandler_(v189, v58, v185, selfCopy, v56, v209);
+    v61 = objc_msgSend_cancelTokens(selfCopy, v59, v60);
+    objc_msgSend_addCancelToken_withOperation_(v61, v62, v191, selfCopy);
 
     dispatch_semaphore_wait(v57, 0xFFFFFFFFFFFFFFFFLL);
-    v65 = objc_msgSend_cancelTokens(v203, v63, v64);
+    v65 = objc_msgSend_cancelTokens(selfCopy, v63, v64);
     objc_msgSend_removeCancelToken_(v65, v66, v191);
 
     v67 = v216[5];
@@ -702,16 +702,16 @@ LABEL_63:
   v31 = v23;
 LABEL_4:
   v32 = objc_msgSend_dataByFinishingSignature(v182, v28, v29);
-  if (objc_msgSend_useMMCSEncryptionV2(v194, v33, v34))
+  if (objc_msgSend_useMMCSEncryptionV2(packageCopy, v33, v34))
   {
     v37 = objc_msgSend_dataByFinishingVerificationKey(v182, v35, v36);
-    v39 = objc_msgSend_setSignature_verificationKey_(v194, v38, v32, v37);
+    v39 = objc_msgSend_setSignature_verificationKey_(packageCopy, v38, v32, v37);
   }
 
   else
   {
     v37 = 0;
-    v39 = objc_msgSend_setSignature_verificationKey_(v194, v35, v32, 0);
+    v39 = objc_msgSend_setSignature_verificationKey_(packageCopy, v35, v32, 0);
   }
 
   v41 = v39;
@@ -732,16 +732,16 @@ LABEL_4:
       {
         v177 = v216[5];
         *buf = 138412546;
-        v222 = v194;
+        v222 = packageCopy;
         v223 = 2112;
         v224 = v177;
         _os_log_error_impl(&dword_22506F000, v44, OS_LOG_TYPE_ERROR, "Failed to create sections for package %@: %@", buf, 0x16u);
       }
     }
 
-    if (a4)
+    if (error)
     {
-      *a4 = v216[5];
+      *error = v216[5];
     }
   }
 
@@ -756,7 +756,7 @@ LABEL_4:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412290;
-      v222 = v194;
+      v222 = packageCopy;
       _os_log_debug_impl(&dword_22506F000, v159, OS_LOG_TYPE_DEBUG, "Created sections for package %@", buf, 0xCu);
     }
   }
@@ -768,32 +768,32 @@ LABEL_79:
   return v40;
 }
 
-- (void)_didPrepareAssetBatch:(id)a3 error:(id)a4
+- (void)_didPrepareAssetBatch:(id)batch error:(id)error
 {
   v199 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v182 = v7;
-  v183 = v6;
-  v184 = self;
-  if (v7)
+  batchCopy = batch;
+  errorCopy = error;
+  v182 = errorCopy;
+  v183 = batchCopy;
+  selfCopy = self;
+  if (errorCopy)
   {
-    v12 = v7;
+    v12 = errorCopy;
     goto LABEL_30;
   }
 
-  v12 = objc_msgSend_firstMMCSItemError(v6, v8, v9);
+  v12 = objc_msgSend_firstMMCSItemError(batchCopy, v8, v9);
   if (!v12)
   {
     v13 = objc_msgSend_packageUUIDToExpectedProperties(self, v10, v11);
-    if (v13 && (v16 = v13, v17 = objc_msgSend_isPackageSectionBatch(v6, v14, v15), v16, v17))
+    if (v13 && (v16 = v13, v17 = objc_msgSend_isPackageSectionBatch(batchCopy, v14, v15), v16, v17))
     {
-      v18 = objc_msgSend_allMMCSAndSectionItems(v6, v14, v15);
+      v18 = objc_msgSend_allMMCSAndSectionItems(batchCopy, v14, v15);
       v21 = objc_msgSend_count(v18, v19, v20);
 
       if (v21)
       {
-        v22 = objc_msgSend_allMMCSAndSectionItems(v6, v10, v11);
+        v22 = objc_msgSend_allMMCSAndSectionItems(batchCopy, v10, v11);
         v25 = objc_msgSend_firstObject(v22, v23, v24);
         v28 = objc_msgSend_package(v25, v26, v27);
 
@@ -803,7 +803,7 @@ LABEL_79:
 
         if (v36)
         {
-          v39 = objc_msgSend_allMMCSAndSectionItems(v6, v37, v38);
+          v39 = objc_msgSend_allMMCSAndSectionItems(batchCopy, v37, v38);
           v42 = objc_msgSend_count(v39, v40, v41);
           v45 = objc_msgSend_count(v36, v43, v44);
 
@@ -812,17 +812,17 @@ LABEL_79:
             v113 = MEMORY[0x277CBC560];
             v114 = *MEMORY[0x277CBC120];
             v115 = objc_msgSend_count(v36, v46, v47);
-            v57 = objc_msgSend_allMMCSAndSectionItems(v6, v116, v117);
+            v57 = objc_msgSend_allMMCSAndSectionItems(batchCopy, v116, v117);
             v120 = objc_msgSend_count(v57, v118, v119);
             v181 = v115;
-            self = v184;
+            self = selfCopy;
             v12 = objc_msgSend_errorWithDomain_code_format_(v113, v121, v114, 3012, @"Number of expected file signatures did not match number of assets in package %@ (%lu versus %lu)", v28, v181, v120);
 LABEL_28:
 
             goto LABEL_29;
           }
 
-          v48 = objc_msgSend_allMMCSAndSectionItems(v6, v46, v47);
+          v48 = objc_msgSend_allMMCSAndSectionItems(batchCopy, v46, v47);
           v51 = objc_msgSend_count(v48, v49, v50);
 
           if (v51)
@@ -830,7 +830,7 @@ LABEL_28:
             v54 = 0;
             while (1)
             {
-              v55 = objc_msgSend_allMMCSAndSectionItems(v6, v52, v53);
+              v55 = objc_msgSend_allMMCSAndSectionItems(batchCopy, v52, v53);
               v57 = objc_msgSend_objectAtIndexedSubscript_(v55, v56, v54);
 
               v59 = objc_msgSend_objectAtIndexedSubscript_(v36, v58, v54);
@@ -848,22 +848,22 @@ LABEL_28:
               }
 
               ++v54;
-              v6 = v183;
+              batchCopy = v183;
               v71 = objc_msgSend_allMMCSAndSectionItems(v183, v69, v70);
               v74 = objc_msgSend_count(v71, v72, v73);
 
               if (v54 >= v74)
               {
                 v12 = 0;
-                self = v184;
+                self = selfCopy;
                 goto LABEL_29;
               }
             }
 
             v12 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v68, *MEMORY[0x277CBC120], 3012, @"Did not find expected file signature for item %@ in package %@", v57, v28);
 
-            v6 = v183;
-            self = v184;
+            batchCopy = v183;
+            self = selfCopy;
             goto LABEL_28;
           }
         }
@@ -881,11 +881,11 @@ LABEL_29:
       if (v75)
       {
         v76 = v75;
-        isPackageSectionBatch = objc_msgSend_isPackageSectionBatch(v6, v10, v11);
+        isPackageSectionBatch = objc_msgSend_isPackageSectionBatch(batchCopy, v10, v11);
 
         if ((isPackageSectionBatch & 1) == 0)
         {
-          v78 = objc_msgSend_allMMCSItems(v6, v10, v11);
+          v78 = objc_msgSend_allMMCSItems(batchCopy, v10, v11);
           v81 = objc_msgSend_count(v78, v79, v80);
 
           if (v81)
@@ -893,7 +893,7 @@ LABEL_29:
             v82 = 0;
             while (1)
             {
-              v83 = objc_msgSend_allMMCSItems(v6, v10, v11);
+              v83 = objc_msgSend_allMMCSItems(batchCopy, v10, v11);
               v85 = objc_msgSend_objectAtIndexedSubscript_(v83, v84, v82);
 
               v88 = objc_msgSend_asset(v85, v86, v87);
@@ -914,18 +914,18 @@ LABEL_29:
                   {
                     v12 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v106, *MEMORY[0x277CBC120], 3012, @"Did not find expected file signature for asset %@", v91);
 
-                    v6 = v183;
-                    self = v184;
+                    batchCopy = v183;
+                    self = selfCopy;
                     goto LABEL_30;
                   }
                 }
 
-                v6 = v183;
-                self = v184;
+                batchCopy = v183;
+                self = selfCopy;
               }
 
               ++v82;
-              v109 = objc_msgSend_allMMCSItems(v6, v107, v108);
+              v109 = objc_msgSend_allMMCSItems(batchCopy, v107, v108);
               v112 = objc_msgSend_count(v109, v110, v111);
 
               v12 = 0;
@@ -947,7 +947,7 @@ LABEL_30:
   v189 = 0u;
   v186 = 0u;
   v187 = 0u;
-  v122 = objc_msgSend_allMMCSItems(v6, v10, v11);
+  v122 = objc_msgSend_allMMCSItems(batchCopy, v10, v11);
   v124 = objc_msgSend_countByEnumeratingWithState_objects_count_(v122, v123, &v186, v198, 16);
   if (!v124)
   {
@@ -997,7 +997,7 @@ LABEL_30:
             v197 = v12;
             _os_log_error_impl(&dword_22506F000, v153, OS_LOG_TYPE_ERROR, "Failed to register MMCS item %@ for package %@ and operation %{public}@: %@", buf, 0x2Au);
 
-            self = v184;
+            self = selfCopy;
           }
 
 LABEL_41:
@@ -1014,7 +1014,7 @@ LABEL_41:
         if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
         {
           v157 = v143;
-          v160 = objc_msgSend_operationID(v184, v158, v159);
+          v160 = objc_msgSend_operationID(selfCopy, v158, v159);
           *buf = 138412802;
           v191 = v130;
           v192 = 2114;
@@ -1023,7 +1023,7 @@ LABEL_41:
           v195 = v12;
           _os_log_error_impl(&dword_22506F000, v157, OS_LOG_TYPE_ERROR, "Failed to register MMCS item %@ for operation %{public}@: %@", buf, 0x20u);
 
-          self = v184;
+          self = selfCopy;
         }
 
         objc_msgSend__didUploadAsset_error_(self, v144, v136, v12);
@@ -1046,7 +1046,7 @@ LABEL_41:
           if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
           {
             v149 = v148;
-            v152 = objc_msgSend_operationID(v184, v150, v151);
+            v152 = objc_msgSend_operationID(selfCopy, v150, v151);
             *buf = 138413058;
             v191 = v130;
             v192 = 2112;
@@ -1057,7 +1057,7 @@ LABEL_41:
             v197 = v12;
             _os_log_error_impl(&dword_22506F000, v149, OS_LOG_TYPE_ERROR, "Invalid package manifest size for MMCS item %@, package %@ and operation %{public}@: %@", buf, 0x2Au);
 
-            self = v184;
+            self = selfCopy;
           }
 
           goto LABEL_41;
@@ -1130,24 +1130,24 @@ LABEL_57:
   return 1;
 }
 
-- (id)_prepareAssetForUpload:(id)a3
+- (id)_prepareAssetForUpload:(id)upload
 {
   v50 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_fileURL(v4, v5, v6);
-  v12 = objc_msgSend_fileHandle(v4, v8, v9);
-  if (!(v7 | v12) && (objc_msgSend_shouldReadAssetContentUsingClientProxy(v4, v10, v11) & 1) == 0)
+  uploadCopy = upload;
+  v7 = objc_msgSend_fileURL(uploadCopy, v5, v6);
+  v12 = objc_msgSend_fileHandle(uploadCopy, v8, v9);
+  if (!(v7 | v12) && (objc_msgSend_shouldReadAssetContentUsingClientProxy(uploadCopy, v10, v11) & 1) == 0)
   {
     v28 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v13, *MEMORY[0x277CBC120], 1017, @"nil fileURL property");
-    objc_msgSend__didUploadAsset_error_(self, v30, v4, v28);
+    objc_msgSend__didUploadAsset_error_(self, v30, uploadCopy, v28);
     v29 = 0;
     goto LABEL_20;
   }
 
   v14 = [CKDMMCSItem alloc];
   v17 = objc_msgSend_temporary(self, v15, v16);
-  v19 = objc_msgSend_initWithAsset_temporary_(v14, v18, v4, v17);
-  v22 = objc_msgSend_UUID(v4, v20, v21);
+  v19 = objc_msgSend_initWithAsset_temporary_(v14, v18, uploadCopy, v17);
+  v22 = objc_msgSend_UUID(uploadCopy, v20, v21);
   objc_msgSend_setTrackingUUID_(v19, v23, v22);
 
   v47 = 0;
@@ -1155,7 +1155,7 @@ LABEL_57:
   v28 = v47;
   if (!v25)
   {
-    objc_msgSend__didUploadAsset_error_(self, v26, v4, v28);
+    objc_msgSend__didUploadAsset_error_(self, v26, uploadCopy, v28);
 LABEL_18:
     v29 = 0;
     goto LABEL_19;
@@ -1200,10 +1200,10 @@ LABEL_18:
     }
 
     v41 = objc_msgSend_zeroSizeFileSignature(CKDMMCS, v34, v35);
-    objc_msgSend_setSignature_(v4, v42, v41);
+    objc_msgSend_setSignature_(uploadCopy, v42, v41);
 
-    objc_msgSend_setUploaded_(v4, v43, 1);
-    objc_msgSend__didUploadAsset_error_(self, v44, v4, 0);
+    objc_msgSend_setUploaded_(uploadCopy, v43, 1);
+    objc_msgSend__didUploadAsset_error_(self, v44, uploadCopy, 0);
     goto LABEL_18;
   }
 
@@ -1216,15 +1216,15 @@ LABEL_20:
   return v29;
 }
 
-- (id)_prepareReferenceAssetForUpload:(id)a3
+- (id)_prepareReferenceAssetForUpload:(id)upload
 {
-  v4 = a3;
+  uploadCopy = upload;
   v7 = objc_msgSend_container(self, v5, v6);
   v10 = objc_msgSend_MMCS(v7, v8, v9);
 
-  if (objc_msgSend_size(v4, v11, v12) || (objc_msgSend_signature(v4, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend_zeroSizeFileSignature(CKDMMCS, v16, v17), v18 = objc_claimAutoreleasedReturnValue(), isEqualToData = objc_msgSend_isEqualToData_(v15, v19, v18), v18, v15, !isEqualToData))
+  if (objc_msgSend_size(uploadCopy, v11, v12) || (objc_msgSend_signature(uploadCopy, v13, v14), v15 = objc_claimAutoreleasedReturnValue(), objc_msgSend_zeroSizeFileSignature(CKDMMCS, v16, v17), v18 = objc_claimAutoreleasedReturnValue(), isEqualToData = objc_msgSend_isEqualToData_(v15, v19, v18), v18, v15, !isEqualToData))
   {
-    v24 = objc_msgSend_registeredMMCSItemForRereferencedAsset_(v10, v13, v4);
+    v24 = objc_msgSend_registeredMMCSItemForRereferencedAsset_(v10, v13, uploadCopy);
     v27 = v24;
     if (v24)
     {
@@ -1238,14 +1238,14 @@ LABEL_20:
     v30 = ;
     if (v30)
     {
-      objc_msgSend__didUploadAsset_error_(self, v28, v4, v30);
+      objc_msgSend__didUploadAsset_error_(self, v28, uploadCopy, v30);
 LABEL_18:
 
       goto LABEL_19;
     }
 
     v31 = objc_msgSend_databaseScope(self, v28, v29);
-    objc_msgSend_setupForReReferenceWithAsset_destinationDatabaseScope_(v27, v32, v4, v31);
+    objc_msgSend_setupForReReferenceWithAsset_destinationDatabaseScope_(v27, v32, uploadCopy, v31);
     v35 = objc_msgSend_assetZoneKey(v27, v33, v34);
     if (objc_msgSend_isCrossOwner(v35, v36, v37))
     {
@@ -1256,14 +1256,14 @@ LABEL_18:
       if (!v43)
       {
         v30 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v44, *MEMORY[0x277CBC120], 1017, @"no clone context for asset clone");
-        objc_msgSend__didUploadAsset_error_(self, v49, v4, v30);
+        objc_msgSend__didUploadAsset_error_(self, v49, uploadCopy, v30);
         goto LABEL_17;
       }
 
       objc_msgSend_setCloneContext_(v35, v44, v43);
     }
 
-    v45 = objc_msgSend_UUID(v4, v38, v39);
+    v45 = objc_msgSend_UUID(uploadCopy, v38, v39);
     objc_msgSend_setTrackingUUID_(v27, v46, v45);
 
     objc_msgSend_addMMCSItem_(self->_assetRequestPlanner, v47, v27);
@@ -1285,24 +1285,24 @@ LABEL_17:
     _os_log_debug_impl(&dword_22506F000, v21, OS_LOG_TYPE_DEBUG, "Skipped rereference of empty asset", v50, 2u);
   }
 
-  objc_msgSend_setUploaded_(v4, v22, 1);
-  objc_msgSend__didUploadAsset_error_(self, v23, v4, 0);
+  objc_msgSend_setUploaded_(uploadCopy, v22, 1);
+  objc_msgSend__didUploadAsset_error_(self, v23, uploadCopy, 0);
 LABEL_19:
 
   return 0;
 }
 
-- (id)_preparePackageForUpload:(id)a3
+- (id)_preparePackageForUpload:(id)upload
 {
   v164 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  uploadCopy = upload;
   v7 = objc_msgSend_container(self, v5, v6);
   v157 = 0;
-  v9 = objc_msgSend__planSectionsForPackage_error_(self, v8, v4, &v157);
+  v9 = objc_msgSend__planSectionsForPackage_error_(self, v8, uploadCopy, &v157);
   v12 = v157;
   if ((v9 & 1) == 0)
   {
-    objc_msgSend__didUploadAsset_error_(self, v10, v4, v12);
+    objc_msgSend__didUploadAsset_error_(self, v10, uploadCopy, v12);
     v62 = 0;
     goto LABEL_42;
   }
@@ -1313,9 +1313,9 @@ LABEL_19:
   v19 = objc_msgSend_URLByAppendingPathComponent_isDirectory_(v16, v18, v17, 0);
 
   v20 = [CKDMMCSItem alloc];
-  v22 = objc_msgSend_initWithPackage_temporary_(v20, v21, v4, 1);
-  objc_msgSend_setManifestItem_(v4, v23, v22);
-  v26 = objc_msgSend_UUID(v4, v24, v25);
+  v22 = objc_msgSend_initWithPackage_temporary_(v20, v21, uploadCopy, 1);
+  objc_msgSend_setManifestItem_(uploadCopy, v23, v22);
+  v26 = objc_msgSend_UUID(uploadCopy, v24, v25);
   objc_msgSend_setTrackingUUID_(v22, v27, v26);
 
   objc_msgSend_setFileURL_(v22, v28, v19);
@@ -1326,13 +1326,13 @@ LABEL_19:
     v153 = v7;
     v154 = v19;
     v35 = objc_msgSend_packageUUIDToExpectedProperties(self, v33, v34);
-    v38 = objc_msgSend_UUID(v4, v36, v37);
+    v38 = objc_msgSend_UUID(uploadCopy, v36, v37);
     v40 = objc_msgSend_objectForKeyedSubscript_(v35, v39, v38);
     v43 = objc_msgSend_count(v40, v41, v42);
-    if (v43 == objc_msgSend_sectionCount(v4, v44, v45) + 1)
+    if (v43 == objc_msgSend_sectionCount(uploadCopy, v44, v45) + 1)
     {
       v149 = objc_msgSend_packageUUIDToExpectedProperties(self, v46, v47);
-      objc_msgSend_UUID(v4, v48, v49);
+      objc_msgSend_UUID(uploadCopy, v48, v49);
       v50 = v151 = v35;
       v52 = objc_msgSend_objectForKeyedSubscript_(v149, v51, v50);
       objc_msgSend_firstObject(v52, v53, v54);
@@ -1352,7 +1352,7 @@ LABEL_19:
       v61 = 0;
     }
 
-    v68 = objc_msgSend_useMMCSEncryptionV2(v4, v66, v67);
+    v68 = objc_msgSend_useMMCSEncryptionV2(uploadCopy, v66, v67);
     if (v61)
     {
       objc_msgSend_setAssetKey_(v22, v69, v61);
@@ -1373,13 +1373,13 @@ LABEL_19:
     if (v76 && !v72)
     {
       v79 = objc_msgSend_packageUUIDToExpectedProperties(self, v77, v78);
-      v82 = objc_msgSend_UUID(v4, v80, v81);
+      v82 = objc_msgSend_UUID(uploadCopy, v80, v81);
       v84 = objc_msgSend_objectForKeyedSubscript_(v79, v83, v82);
       v87 = objc_msgSend_count(v84, v85, v86);
-      if (v87 == objc_msgSend_sectionCount(v4, v88, v89) + 1)
+      if (v87 == objc_msgSend_sectionCount(uploadCopy, v88, v89) + 1)
       {
         v148 = objc_msgSend_packageUUIDToExpectedProperties(self, v90, v91);
-        objc_msgSend_UUID(v4, v92, v93);
+        objc_msgSend_UUID(uploadCopy, v92, v93);
         v94 = v152 = v22;
         objc_msgSend_objectForKeyedSubscript_(v148, v95, v94);
         v96 = v150 = v61;
@@ -1413,7 +1413,7 @@ LABEL_19:
       goto LABEL_26;
     }
 
-    objc_msgSend__didUploadAsset_error_(self, v77, v4, v12);
+    objc_msgSend__didUploadAsset_error_(self, v77, uploadCopy, v12);
 
     v62 = 0;
     v7 = v153;
@@ -1454,7 +1454,7 @@ LABEL_28:
         v136 = v111;
         v139 = objc_msgSend_operationID(self, v137, v138);
         *buf = 138412546;
-        v159 = v4;
+        v159 = uploadCopy;
         v160 = 2114;
         v161 = v139;
         _os_log_debug_impl(&dword_22506F000, v136, OS_LOG_TYPE_DEBUG, "Creating manifest for package %@ and operation %{public}@", buf, 0x16u);
@@ -1462,7 +1462,7 @@ LABEL_28:
 
       v114 = objc_msgSend_path(v19, v112, v113);
       v155 = v12;
-      v116 = objc_msgSend_writePackage_toFile_error_(CKDPackageManifest, v115, v4, v114, &v155);
+      v116 = objc_msgSend_writePackage_toFile_error_(CKDPackageManifest, v115, uploadCopy, v114, &v155);
       v117 = v155;
 
       v118 = *MEMORY[0x277CBC878];
@@ -1480,7 +1480,7 @@ LABEL_28:
           v140 = v120;
           v143 = objc_msgSend_operationID(self, v141, v142);
           *buf = 138412802;
-          v159 = v4;
+          v159 = uploadCopy;
           v160 = 2114;
           v161 = v143;
           v162 = 2114;
@@ -1490,12 +1490,12 @@ LABEL_28:
 
         v121 = [CKDPackageUploadTask alloc];
         v124 = objc_msgSend_uploadProgressBlock(self, v122, v123);
-        v126 = objc_msgSend_initWithPackage_trackProgress_(v121, v125, v4, v124 != 0);
+        v126 = objc_msgSend_initWithPackage_trackProgress_(v121, v125, uploadCopy, v124 != 0);
 
         v22 = v109;
         objc_msgSend_setMMCSManifestItem_(v126, v127, v109);
         v130 = objc_msgSend_uploadTasksByPackages(self, v128, v129);
-        objc_msgSend_setObject_forKey_(v130, v131, v126, v4);
+        objc_msgSend_setObject_forKey_(v130, v131, v126, uploadCopy);
 
         v62 = v109;
         v12 = v117;
@@ -1514,7 +1514,7 @@ LABEL_28:
           v144 = v132;
           v147 = objc_msgSend_operationID(self, v145, v146);
           *buf = 138412802;
-          v159 = v4;
+          v159 = uploadCopy;
           v160 = 2114;
           v161 = v147;
           v162 = 2112;
@@ -1522,7 +1522,7 @@ LABEL_28:
           _os_log_error_impl(&dword_22506F000, v144, OS_LOG_TYPE_ERROR, "Failed to create the manifest for package %@ and operation %{public}@: %@", buf, 0x20u);
         }
 
-        objc_msgSend__didUploadAsset_error_(self, v133, v4, v117);
+        objc_msgSend__didUploadAsset_error_(self, v133, uploadCopy, v117);
         v62 = 0;
         v12 = v117;
         v22 = v109;
@@ -1533,7 +1533,7 @@ LABEL_28:
 
     v64 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v63, *MEMORY[0x277CBC120], 1000, @"clear asset key not supported for package manifests");
 
-    objc_msgSend__didUploadAsset_error_(self, v65, v4, v64);
+    objc_msgSend__didUploadAsset_error_(self, v65, uploadCopy, v64);
     v62 = 0;
     v12 = v64;
   }
@@ -1546,9 +1546,9 @@ LABEL_42:
   return v62;
 }
 
-- (id)_prepareReferencePackageForUpload:(id)a3
+- (id)_prepareReferencePackageForUpload:(id)upload
 {
-  v4 = objc_msgSend_assets(a3, a2, a3);
+  v4 = objc_msgSend_assets(upload, a2, upload);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = sub_2251BD8C8;
@@ -1559,15 +1559,15 @@ LABEL_42:
   return 0;
 }
 
-- (BOOL)_planPackageSectionItemsForMMCSItems:(id)a3
+- (BOOL)_planPackageSectionItemsForMMCSItems:(id)items
 {
   v179 = *MEMORY[0x277D85DE8];
   v170 = 0u;
   v171 = 0u;
   v172 = 0u;
   v173 = 0u;
-  v4 = a3;
-  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v5, &v170, v178, 16);
+  itemsCopy = items;
+  v6 = objc_msgSend_countByEnumeratingWithState_objects_count_(itemsCopy, v5, &v170, v178, 16);
   if (v6)
   {
     v9 = v6;
@@ -1576,8 +1576,8 @@ LABEL_42:
     v12 = MEMORY[0x277CBC830];
     *&v8 = 138412546;
     v152 = v8;
-    v162 = self;
-    v155 = v4;
+    selfCopy = self;
+    v155 = itemsCopy;
     v153 = *v171;
     while (2)
     {
@@ -1587,7 +1587,7 @@ LABEL_42:
       {
         if (*v171 != v10)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v14 = *(*(&v170 + 1) + 8 * v13);
@@ -1638,7 +1638,7 @@ LABEL_42:
                   dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
                 }
 
-                v4 = v155;
+                itemsCopy = v155;
                 v142 = *v12;
                 if (!os_log_type_enabled(*v12, OS_LOG_TYPE_ERROR))
                 {
@@ -1668,7 +1668,7 @@ LABEL_71:
                     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
                   }
 
-                  v4 = v155;
+                  itemsCopy = v155;
                   v142 = *v12;
                   if (os_log_type_enabled(*v12, OS_LOG_TYPE_ERROR))
                   {
@@ -1711,7 +1711,7 @@ LABEL_71:
                   v84 = v83;
                   v27 = v82;
 
-                  self = v162;
+                  self = selfCopy;
                 }
 
                 else
@@ -1743,7 +1743,7 @@ LABEL_71:
                     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
                   }
 
-                  v4 = v155;
+                  itemsCopy = v155;
                   v145 = *MEMORY[0x277CBC830];
                   if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_ERROR))
                   {
@@ -1798,7 +1798,7 @@ LABEL_71:
                 }
 
                 v12 = MEMORY[0x277CBC830];
-                self = v162;
+                self = selfCopy;
                 if (*MEMORY[0x277CBC880] != -1)
                 {
                   dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
@@ -1831,7 +1831,7 @@ LABEL_71:
                     dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
                   }
 
-                  v4 = v155;
+                  itemsCopy = v155;
                   v144 = *v12;
                   if (os_log_type_enabled(*v12, OS_LOG_TYPE_ERROR))
                   {
@@ -1873,7 +1873,7 @@ LABEL_71:
               dispatch_once(MEMORY[0x277CBC880], *MEMORY[0x277CBC878]);
             }
 
-            v4 = v155;
+            itemsCopy = v155;
             v141 = *v12;
             if (os_log_type_enabled(*v12, OS_LOG_TYPE_ERROR))
             {
@@ -1894,7 +1894,7 @@ LABEL_43:
 
           objc_msgSend_setMMCSSectionItems_(v138, v139, v27);
           v9 = v154;
-          v4 = v155;
+          itemsCopy = v155;
           v10 = v153;
           v11 = &OBJC_IVAR___CKDDeviceCapabilityUsageSQLEntry__IDString;
           v13 = v156;
@@ -1904,7 +1904,7 @@ LABEL_43:
       }
 
       while (v13 != v9);
-      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v4, v7, &v170, v178, 16);
+      v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(itemsCopy, v7, &v170, v178, 16);
       v140 = 1;
       if (v9)
       {
@@ -1993,7 +1993,7 @@ LABEL_73:
           v55[3] = &unk_278548E78;
           v56 = v27;
           v57 = v15;
-          v58 = self;
+          selfCopy = self;
           v44 = v27;
           v46 = objc_msgSend_registerItemGroupSet_operation_options_completionHandler_(v53, v45, v24, self, v42, v55);
           v49 = objc_msgSend_cancelTokens(self, v47, v48);
@@ -2139,23 +2139,23 @@ LABEL_28:
   return v4;
 }
 
-- (void)_failAllItemsInAssetBatch:(id)a3 error:(id)a4
+- (void)_failAllItemsInAssetBatch:(id)batch error:(id)error
 {
   v57 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (!v7)
+  batchCopy = batch;
+  errorCopy = error;
+  if (!errorCopy)
   {
     __assert_rtn("[CKDUploadAssetsOperation _failAllItemsInAssetBatch:error:]", "CKDUploadAssetsOperation.m", 863, "error");
   }
 
-  v10 = v7;
+  v10 = errorCopy;
   v46 = 0u;
   v47 = 0u;
   v44 = 0u;
   v45 = 0u;
-  v42 = v6;
-  v11 = objc_msgSend_allRegularAndSectionAndRereferenceItems(v6, v8, v9);
+  v42 = batchCopy;
+  v11 = objc_msgSend_allRegularAndSectionAndRereferenceItems(batchCopy, v8, v9);
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v44, v56, 16);
   if (v13)
   {
@@ -2246,15 +2246,15 @@ LABEL_28:
   v41 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_didFetchUploadTokensForAssetTokenRequest:(id)a3 error:(id)a4 newError:(id *)a5
+- (BOOL)_didFetchUploadTokensForAssetTokenRequest:(id)request error:(id)error newError:(id *)newError
 {
   v54 = *MEMORY[0x277D85DE8];
-  v8 = a4;
+  errorCopy = error;
   v48 = 0u;
   v49 = 0u;
   v50 = 0u;
   v51 = 0u;
-  v11 = objc_msgSend_assetBatches(a3, v9, v10);
+  v11 = objc_msgSend_assetBatches(request, v9, v10);
   v13 = objc_msgSend_countByEnumeratingWithState_objects_count_(v11, v12, &v48, v53, 16);
   if (v13)
   {
@@ -2265,7 +2265,7 @@ LABEL_28:
     v40 = *v49;
     v19 = 1;
     v41 = v11;
-    v42 = self;
+    selfCopy = self;
     while (1)
     {
       for (i = 0; i != v16; ++i)
@@ -2276,18 +2276,18 @@ LABEL_28:
         }
 
         v21 = *(*(&v48 + 1) + 8 * i);
-        if (v8)
+        if (errorCopy)
         {
-          v22 = v8;
+          v22 = errorCopy;
 LABEL_9:
           v25 = v22;
           objc_msgSend__failAllItemsInAssetBatch_error_(self, v23, v21, v22);
 LABEL_10:
-          if (a5)
+          if (newError)
           {
             v26 = v25;
             v19 = 0;
-            *a5 = v25;
+            *newError = v25;
           }
 
           else
@@ -2351,9 +2351,9 @@ LABEL_15:
           }
 
           v11 = v41;
-          self = v42;
+          self = selfCopy;
           v17 = v40;
-          objc_msgSend__failAllItemsInAssetBatch_error_(v42, v36, v21, v25);
+          objc_msgSend__failAllItemsInAssetBatch_error_(selfCopy, v36, v21, v25);
           goto LABEL_10;
         }
 
@@ -2362,7 +2362,7 @@ LABEL_21:
         v25 = 0;
 LABEL_24:
         v11 = v41;
-        self = v42;
+        self = selfCopy;
         v17 = v40;
         v19 = v43;
 LABEL_25:
@@ -2710,14 +2710,14 @@ LABEL_29:
   return v42;
 }
 
-- (void)_didUploadMMCSSectionItem:(id)a3 task:(id)a4 error:(id)a5
+- (void)_didUploadMMCSSectionItem:(id)item task:(id)task error:(id)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = objc_msgSend_package(v9, v11, v12);
-  v16 = objc_msgSend_error(v8, v14, v15);
+  itemCopy = item;
+  taskCopy = task;
+  errorCopy = error;
+  v13 = objc_msgSend_package(taskCopy, v11, v12);
+  v16 = objc_msgSend_error(itemCopy, v14, v15);
   v17 = v16;
   if (v16)
   {
@@ -2726,7 +2726,7 @@ LABEL_29:
 
   else
   {
-    v18 = v10;
+    v18 = errorCopy;
   }
 
   v19 = v18;
@@ -2745,7 +2745,7 @@ LABEL_15:
       v41 = v38;
       v44 = objc_msgSend_operationID(self, v42, v43);
       *buf = 138413058;
-      v50 = v8;
+      v50 = itemCopy;
       v51 = 2112;
       v52 = v13;
       v53 = 2114;
@@ -2755,7 +2755,7 @@ LABEL_15:
       _os_log_debug_impl(&dword_22506F000, v41, OS_LOG_TYPE_DEBUG, "Failed to upload MMCS section item %@ for package %@ and operation %{public}@: %@", buf, 0x2Au);
     }
 
-    objc_msgSend_setError_(v9, v39, v19);
+    objc_msgSend_setError_(taskCopy, v39, v19);
   }
 
   else
@@ -2764,7 +2764,7 @@ LABEL_15:
     v48 = 0u;
     v45 = 0u;
     v46 = 0u;
-    v22 = objc_msgSend_sectionItems(v8, v20, v21, 0);
+    v22 = objc_msgSend_sectionItems(itemCopy, v20, v21, 0);
     v24 = objc_msgSend_countByEnumeratingWithState_objects_count_(v22, v23, &v45, v57, 16);
     if (v24)
     {
@@ -2798,8 +2798,8 @@ LABEL_15:
       }
     }
 
-    v33 = objc_msgSend_progressTracker(v9, v31, v32);
-    objc_msgSend_updateProgressWithItem_progress_(v33, v34, v8, 1.0);
+    v33 = objc_msgSend_progressTracker(taskCopy, v31, v32);
+    objc_msgSend_updateProgressWithItem_progress_(v33, v34, itemCopy, 1.0);
     v36 = v35;
 
     objc_msgSend__didMakeProgressForAsset_progress_(self, v37, v13, v36);
@@ -2808,17 +2808,17 @@ LABEL_15:
   v40 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didUploadMMCSSectionItems:(id)a3 task:(id)a4 error:(id)a5
+- (void)_didUploadMMCSSectionItems:(id)items task:(id)task error:(id)error
 {
   v40 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  itemsCopy = items;
+  taskCopy = task;
+  errorCopy = error;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v11, &v29, v39, 16);
+  v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(itemsCopy, v11, &v29, v39, 16);
   if (v12)
   {
     v15 = v12;
@@ -2829,24 +2829,24 @@ LABEL_15:
       {
         if (*v30 != v16)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v18 = *(*(&v29 + 1) + 8 * i);
         if ((objc_msgSend_finished(v18, v13, v14) & 1) == 0)
         {
           objc_msgSend_setFinished_(v18, v13, 1);
-          objc_msgSend__didUploadMMCSSectionItem_task_error_(self, v19, v18, v9, v10);
+          objc_msgSend__didUploadMMCSSectionItem_task_error_(self, v19, v18, taskCopy, errorCopy);
         }
       }
 
-      v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(v8, v13, &v29, v39, 16);
+      v15 = objc_msgSend_countByEnumeratingWithState_objects_count_(itemsCopy, v13, &v29, v39, 16);
     }
 
     while (v15);
   }
 
-  if (v10)
+  if (errorCopy)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -2857,14 +2857,14 @@ LABEL_15:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
       v22 = v20;
-      v25 = objc_msgSend_count(v8, v23, v24);
+      v25 = objc_msgSend_count(itemsCopy, v23, v24);
       v28 = objc_msgSend_operationID(self, v26, v27);
       *buf = 134218498;
       v34 = v25;
       v35 = 2114;
       v36 = v28;
       v37 = 2112;
-      v38 = v10;
+      v38 = errorCopy;
       _os_log_debug_impl(&dword_22506F000, v22, OS_LOG_TYPE_DEBUG, "Failed to upload %lu MMCS section items for operation %{public}@: %@", buf, 0x20u);
     }
   }
@@ -2872,30 +2872,30 @@ LABEL_15:
   v21 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didMakeProgressForMMCSSectionItem:(id)a3 task:(id)a4
+- (void)_didMakeProgressForMMCSSectionItem:(id)item task:(id)task
 {
-  v28 = a3;
-  v6 = a4;
-  v9 = objc_msgSend_finished(v28, v7, v8);
-  v12 = objc_msgSend_error(v28, v10, v11);
+  itemCopy = item;
+  taskCopy = task;
+  v9 = objc_msgSend_finished(itemCopy, v7, v8);
+  v12 = objc_msgSend_error(itemCopy, v10, v11);
   v15 = v12;
   if (v9)
   {
-    objc_msgSend__didUploadMMCSSectionItem_task_error_(self, v13, v28, v6, v12);
+    objc_msgSend__didUploadMMCSSectionItem_task_error_(self, v13, itemCopy, taskCopy, v12);
   }
 
   else if (!v12)
   {
-    objc_msgSend_progress(v28, v13, v14);
+    objc_msgSend_progress(itemCopy, v13, v14);
     if (v18 < 0.0)
     {
       goto LABEL_7;
     }
 
-    v15 = objc_msgSend_package(v6, v16, v17);
-    v21 = objc_msgSend_progressTracker(v6, v19, v20);
-    objc_msgSend_progress(v28, v22, v23);
-    objc_msgSend_updateProgressWithItem_progress_(v21, v24, v28);
+    v15 = objc_msgSend_package(taskCopy, v16, v17);
+    v21 = objc_msgSend_progressTracker(taskCopy, v19, v20);
+    objc_msgSend_progress(itemCopy, v22, v23);
+    objc_msgSend_updateProgressWithItem_progress_(v21, v24, itemCopy);
     v26 = v25;
 
     objc_msgSend__didMakeProgressForAsset_progress_(self, v27, v15, v26);
@@ -2904,18 +2904,18 @@ LABEL_15:
 LABEL_7:
 }
 
-- (void)_uploadPackageSection:(id)a3 task:(id)a4 completionBlock:(id)a5
+- (void)_uploadPackageSection:(id)section task:(id)task completionBlock:(id)block
 {
   v144 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sectionCopy = section;
+  taskCopy = task;
+  blockCopy = block;
   v14 = objc_msgSend_container(self, v12, v13);
   v116 = objc_msgSend_MMCS(v14, v15, v16);
 
-  v117 = objc_msgSend_package(v10, v17, v18);
-  v21 = objc_msgSend_MMCSSectionItems(v10, v19, v20);
-  v24 = objc_msgSend_sectionIndex(v9, v22, v23);
+  v117 = objc_msgSend_package(taskCopy, v17, v18);
+  v21 = objc_msgSend_MMCSSectionItems(taskCopy, v19, v20);
+  v24 = objc_msgSend_sectionIndex(sectionCopy, v22, v23);
   if (!objc_msgSend_isCancelled(self, v25, v26))
   {
     v30 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -2926,7 +2926,7 @@ LABEL_7:
     v132[3] = &unk_278548EC8;
     v32 = v117;
     v133 = v32;
-    v134 = self;
+    selfCopy = self;
     v115 = v30;
     v135 = v115;
     v114 = v31;
@@ -2936,8 +2936,8 @@ LABEL_7:
     {
       v44 = MEMORY[0x277CBC560];
       v45 = objc_msgSend_count(v21, v37, v38);
-      v47 = objc_msgSend_errorWithDomain_code_format_(v44, v46, *MEMORY[0x277CBC120], 1000, @"Invalid section %@ at index %lu/%lu", v9, v24, v45);
-      objc_msgSend_setError_(v10, v48, v47);
+      v47 = objc_msgSend_errorWithDomain_code_format_(v44, v46, *MEMORY[0x277CBC120], 1000, @"Invalid section %@ at index %lu/%lu", sectionCopy, v24, v45);
+      objc_msgSend_setError_(taskCopy, v48, v47);
 
       if (*MEMORY[0x277CBC880] != -1)
       {
@@ -2954,13 +2954,13 @@ LABEL_7:
         v138 = 2048;
         v139 = v96;
         v140 = 2112;
-        v141 = v9;
+        v141 = sectionCopy;
         _os_log_error_impl(&dword_22506F000, v93, OS_LOG_TYPE_ERROR, "Invalid section index %lu/%lu for section %@", location, 0x20u);
       }
 
-      if (v11)
+      if (blockCopy)
       {
-        v11[2](v11);
+        blockCopy[2](blockCopy);
       }
 
       goto LABEL_34;
@@ -2968,13 +2968,13 @@ LABEL_7:
 
     v113 = objc_msgSend_objectAtIndex_(v21, v37, v24);
     v131 = 0;
-    v40 = objc_msgSend_size_(v9, v39, &v131);
+    v40 = objc_msgSend_size_(sectionCopy, v39, &v131);
     v41 = v131;
     v112 = v41;
     if (v41)
     {
-      objc_msgSend_setError_(v10, v42, v41);
-      if (!v11)
+      objc_msgSend_setError_(taskCopy, v42, v41);
+      if (!blockCopy)
       {
 LABEL_33:
 
@@ -2983,7 +2983,7 @@ LABEL_34:
       }
     }
 
-    else if (v40 == objc_msgSend_fileSize(v113, v42, v43) && (objc_msgSend_signature(v9, v50, v51), v52 = objc_claimAutoreleasedReturnValue(), objc_msgSend_signature(v113, v53, v54), v55 = objc_claimAutoreleasedReturnValue(), group = objc_msgSend_isEqualToData_(v52, v56, v55), v55, v52, (group & 1) != 0))
+    else if (v40 == objc_msgSend_fileSize(v113, v42, v43) && (objc_msgSend_signature(sectionCopy, v50, v51), v52 = objc_claimAutoreleasedReturnValue(), objc_msgSend_signature(v113, v53, v54), v55 = objc_claimAutoreleasedReturnValue(), group = objc_msgSend_isEqualToData_(v52, v56, v55), v55, v52, (group & 1) != 0))
     {
       v57 = CKCreateGUID();
       objc_msgSend_setPutPackageSectionIdentifier_(v113, v58, v57);
@@ -3030,20 +3030,20 @@ LABEL_34:
         v71 = dispatch_group_create();
         dispatch_group_enter(v71);
         objc_initWeak(location, self);
-        v74 = objc_msgSend_MMCSRequestOptions(v10, v72, v73);
+        v74 = objc_msgSend_MMCSRequestOptions(taskCopy, v72, v73);
         v128[0] = MEMORY[0x277D85DD0];
         v128[1] = 3221225472;
         v128[2] = sub_2251C0B7C;
         v128[3] = &unk_278548EF0;
         objc_copyWeak(&v130, location);
-        v129 = v10;
+        v129 = taskCopy;
         v122[0] = MEMORY[0x277D85DD0];
         v122[1] = 3221225472;
         v122[2] = sub_2251C0BDC;
         v122[3] = &unk_278548F18;
         v123 = v113;
         v124 = v114;
-        v125 = self;
+        selfCopy2 = self;
         v75 = v129;
         v126 = v75;
         groupa = v71;
@@ -3061,7 +3061,7 @@ LABEL_34:
         block[3] = &unk_278546C30;
         v119 = v75;
         v120 = v77;
-        v121 = v11;
+        v121 = blockCopy;
         v85 = v77;
         dispatch_group_notify(groupa, v84, block);
 
@@ -3078,8 +3078,8 @@ LABEL_34:
       }
 
       objc_msgSend_setSectionItems_(v113, v97, v114);
-      objc_msgSend__didUploadMMCSSectionItem_task_error_(self, v99, v113, v10, 0);
-      if (!v11)
+      objc_msgSend__didUploadMMCSSectionItem_task_error_(self, v99, v113, taskCopy, 0);
+      if (!blockCopy)
       {
         goto LABEL_33;
       }
@@ -3089,8 +3089,8 @@ LABEL_34:
     {
       v86 = MEMORY[0x277CBC560];
       v87 = objc_msgSend_count(v21, v50, v51);
-      v89 = objc_msgSend_errorWithDomain_code_format_(v86, v88, *MEMORY[0x277CBC120], 1000, @"Invalid section %@ at index %lu/%lu", v9, v24, v87);
-      objc_msgSend_setError_(v10, v90, v89);
+      v89 = objc_msgSend_errorWithDomain_code_format_(v86, v88, *MEMORY[0x277CBC120], 1000, @"Invalid section %@ at index %lu/%lu", sectionCopy, v24, v87);
+      objc_msgSend_setError_(taskCopy, v90, v89);
 
       if (*MEMORY[0x277CBC880] != -1)
       {
@@ -3107,28 +3107,28 @@ LABEL_34:
         v138 = 2048;
         v139 = v103;
         v140 = 2112;
-        v141 = v9;
+        v141 = sectionCopy;
         v142 = 2112;
         v143 = v113;
         _os_log_error_impl(&dword_22506F000, v100, OS_LOG_TYPE_ERROR, "Invalid section at index %lu/%lu for section %@: %@", location, 0x2Au);
       }
 
-      if (!v11)
+      if (!blockCopy)
       {
         goto LABEL_33;
       }
     }
 
-    v11[2](v11);
+    blockCopy[2](blockCopy);
     goto LABEL_33;
   }
 
   v28 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v27, *MEMORY[0x277CBC120], 1, @"Operation was cancelled");
-  objc_msgSend_setError_(v10, v29, v28);
+  objc_msgSend_setError_(taskCopy, v29, v28);
 
-  if (v11)
+  if (blockCopy)
   {
-    v11[2](v11);
+    blockCopy[2](blockCopy);
   }
 
 LABEL_35:
@@ -3136,18 +3136,18 @@ LABEL_35:
   v92 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_uploadPackageSectionsWithEnumerator:(id)a3 task:(id)a4 completionBlock:(id)a5
+- (void)_uploadPackageSectionsWithEnumerator:(id)enumerator task:(id)task completionBlock:(id)block
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v13 = objc_msgSend_error(v9, v11, v12);
+  enumeratorCopy = enumerator;
+  taskCopy = task;
+  blockCopy = block;
+  v13 = objc_msgSend_error(taskCopy, v11, v12);
 
-  if (v13 || (objc_msgSend_nextObject(v8, v14, v15), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
+  if (v13 || (objc_msgSend_nextObject(enumeratorCopy, v14, v15), (v16 = objc_claimAutoreleasedReturnValue()) == 0))
   {
-    if (v10)
+    if (blockCopy)
     {
-      v10[2](v10);
+      blockCopy[2](blockCopy);
     }
   }
 
@@ -3159,20 +3159,20 @@ LABEL_35:
     v19[2] = sub_2251C0E68;
     v19[3] = &unk_2785488E0;
     v19[4] = self;
-    v20 = v8;
-    v21 = v9;
-    v22 = v10;
+    v20 = enumeratorCopy;
+    v21 = taskCopy;
+    v22 = blockCopy;
     objc_msgSend__uploadPackageSection_task_completionBlock_(self, v18, v17, v21, v19);
   }
 }
 
-- (void)_uploadPackageSectionsWithTask:(id)a3 completionBlock:(id)a4
+- (void)_uploadPackageSectionsWithTask:(id)task completionBlock:(id)block
 {
   v87 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v10 = objc_msgSend_package(v6, v8, v9);
-  v13 = objc_msgSend_MMCSSectionItems(v6, v11, v12);
+  taskCopy = task;
+  blockCopy = block;
+  v10 = objc_msgSend_package(taskCopy, v8, v9);
+  v13 = objc_msgSend_MMCSSectionItems(taskCopy, v11, v12);
   v16 = objc_msgSend_sectionCount(v10, v14, v15);
   if (objc_msgSend_isCancelled(self, v17, v18))
   {
@@ -3209,7 +3209,7 @@ LABEL_35:
     {
 LABEL_12:
       v33 = [CKDMMCSRequestOptions alloc];
-      v73 = self;
+      selfCopy = self;
       v35 = objc_msgSend_initWithOperation_(v33, v34, self);
       v38 = objc_msgSend_record(v10, v36, v37);
       v41 = objc_msgSend_recordID(v38, v39, v40);
@@ -3223,14 +3223,14 @@ LABEL_12:
         objc_msgSend_setZoneNames_(v35, v50, v49);
       }
 
-      objc_msgSend_setMMCSRequestOptions_(v6, v48, v35);
+      objc_msgSend_setMMCSRequestOptions_(taskCopy, v48, v35);
       v53 = objc_msgSend_objectEnumerator(v27, v51, v52);
       v75[0] = MEMORY[0x277D85DD0];
       v75[1] = 3221225472;
       v75[2] = sub_2251C1368;
       v75[3] = &unk_2785456A0;
-      v76 = v7;
-      objc_msgSend__uploadPackageSectionsWithEnumerator_task_completionBlock_(v73, v54, v53, v6, v75);
+      v76 = blockCopy;
+      objc_msgSend__uploadPackageSectionsWithEnumerator_task_completionBlock_(selfCopy, v54, v53, taskCopy, v75);
 
       v13 = v74;
       goto LABEL_23;
@@ -3258,7 +3258,7 @@ LABEL_12:
     }
 
     v60 = objc_msgSend_errorWithDomain_code_format_(MEMORY[0x277CBC560], v32, *MEMORY[0x277CBC120], 1000, @"Can't find section at index %lu: %@", v29, v28);
-    objc_msgSend_setError_(v6, v61, v60);
+    objc_msgSend_setError_(taskCopy, v61, v60);
 
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -3281,20 +3281,20 @@ LABEL_12:
       v86 = v28;
       _os_log_error_impl(&dword_22506F000, v68, OS_LOG_TYPE_ERROR, "Can't find section at index %lu for package %@ and operation %{public}@: %{public}@", buf, 0x2Au);
 
-      if (!v7)
+      if (!blockCopy)
       {
         goto LABEL_23;
       }
     }
 
-    else if (!v7)
+    else if (!blockCopy)
     {
 LABEL_23:
 
       goto LABEL_24;
     }
 
-    v7[2](v7);
+    blockCopy[2](blockCopy);
     goto LABEL_23;
   }
 
@@ -3303,11 +3303,11 @@ LABEL_23:
   v72 = objc_msgSend_count(v13, v21, v22);
   objc_msgSend_errorWithDomain_code_format_(v55, v57, v56, 1000, @"Invalid section count %lu/%lu", v16, v72);
   v58 = LABEL_16:;
-  objc_msgSend_setError_(v6, v59, v58);
+  objc_msgSend_setError_(taskCopy, v59, v58);
 
-  if (v7)
+  if (blockCopy)
   {
-    v7[2](v7);
+    blockCopy[2](blockCopy);
   }
 
 LABEL_24:
@@ -3315,38 +3315,38 @@ LABEL_24:
   v63 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_uploadPackageSectionsWithPendingTasks:(id)a3 uploadingTasks:(id)a4 completedTasks:(id)a5
+- (void)_uploadPackageSectionsWithPendingTasks:(id)tasks uploadingTasks:(id)uploadingTasks completedTasks:(id)completedTasks
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  tasksCopy = tasks;
+  uploadingTasksCopy = uploadingTasks;
+  completedTasksCopy = completedTasks;
   if (!objc_msgSend_maxPackageUploadsPerBatch(self, v12, v13))
   {
     v25 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v14, v15);
     objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v25, v26, a2, self, @"CKDUploadAssetsOperation.m", 1191, @"Expected non-0 maxPackageUploadsPerBatch");
   }
 
-  v16 = objc_msgSend_count(v10, v14, v15);
+  v16 = objc_msgSend_count(uploadingTasksCopy, v14, v15);
   if (v16 > objc_msgSend_maxPackageUploadsPerBatch(self, v17, v18))
   {
     v27 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v19, v20);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v27, v28, a2, self, @"CKDUploadAssetsOperation.m", 1192, @"Expected max uploading tasks: %@", v10);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v27, v28, a2, self, @"CKDUploadAssetsOperation.m", 1192, @"Expected max uploading tasks: %@", uploadingTasksCopy);
 
-    if (!v11)
+    if (!completedTasksCopy)
     {
       goto LABEL_7;
     }
   }
 
-  else if (!v11)
+  else if (!completedTasksCopy)
   {
     goto LABEL_7;
   }
 
-  if (!objc_msgSend_count(v11, v19, v20))
+  if (!objc_msgSend_count(completedTasksCopy, v19, v20))
   {
     v29 = objc_msgSend_currentHandler(MEMORY[0x277CCA890], v19, v20);
-    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v29, v30, a2, self, @"CKDUploadAssetsOperation.m", 1193, @"Expected completed tasks: %@", v11);
+    objc_msgSend_handleFailureInMethod_object_file_lineNumber_description_(v29, v30, a2, self, @"CKDUploadAssetsOperation.m", 1193, @"Expected completed tasks: %@", completedTasksCopy);
   }
 
 LABEL_7:
@@ -3355,22 +3355,22 @@ LABEL_7:
   block[1] = 3221225472;
   block[2] = sub_2251C157C;
   block[3] = &unk_2785463D0;
-  v32 = v10;
-  v33 = v11;
-  v34 = self;
-  v35 = v9;
-  v22 = v9;
-  v23 = v11;
-  v24 = v10;
+  v32 = uploadingTasksCopy;
+  v33 = completedTasksCopy;
+  selfCopy = self;
+  v35 = tasksCopy;
+  v22 = tasksCopy;
+  v23 = completedTasksCopy;
+  v24 = uploadingTasksCopy;
   dispatch_async(v21, block);
 }
 
-- (void)_didUploadMMCSItem:(id)a3 error:(id)a4
+- (void)_didUploadMMCSItem:(id)item error:(id)error
 {
   v79 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v11 = objc_msgSend_error(v7, v9, v10);
+  itemCopy = item;
+  errorCopy = error;
+  v11 = objc_msgSend_error(itemCopy, v9, v10);
   v12 = v11;
   if (v11)
   {
@@ -3379,13 +3379,13 @@ LABEL_7:
 
   else
   {
-    v13 = v8;
+    v13 = errorCopy;
   }
 
   v14 = v13;
 
-  v17 = objc_msgSend_package(v7, v15, v16);
-  v22 = objc_msgSend_asset(v7, v18, v19);
+  v17 = objc_msgSend_package(itemCopy, v15, v16);
+  v22 = objc_msgSend_asset(itemCopy, v18, v19);
   if (v14)
   {
     v23 = *MEMORY[0x277CBC878];
@@ -3403,7 +3403,7 @@ LABEL_7:
         v61 = v25;
         v64 = objc_msgSend_operationID(self, v62, v63);
         *buf = 138413058;
-        v72 = v7;
+        v72 = itemCopy;
         v73 = 2112;
         v74 = v17;
         v75 = 2114;
@@ -3432,7 +3432,7 @@ LABEL_7:
         v65 = v45;
         v68 = objc_msgSend_operationID(self, v66, v67);
         *buf = 138412802;
-        v72 = v7;
+        v72 = itemCopy;
         v73 = 2114;
         v74 = v68;
         v75 = 2112;
@@ -3446,7 +3446,7 @@ LABEL_7:
 
   else
   {
-    v32 = objc_msgSend_fileSize(v7, v20, v21);
+    v32 = objc_msgSend_fileSize(itemCopy, v20, v21);
     if (v17)
     {
       if (!v32)
@@ -3459,7 +3459,7 @@ LABEL_7:
       v37 = objc_msgSend_objectForKey_(v35, v36, v17);
 
       v40 = objc_msgSend_progressTracker(v37, v38, v39);
-      objc_msgSend_updateProgressWithItem_progress_(v40, v41, v7, 1.0);
+      objc_msgSend_updateProgressWithItem_progress_(v40, v41, itemCopy, 1.0);
       v43 = v42;
 
       objc_msgSend__didMakeProgressForAsset_progress_(self, v44, v17, v43);
@@ -3469,7 +3469,7 @@ LABEL_7:
     {
       if (v32)
       {
-        v47 = objc_msgSend_uploadReceipt(v7, v33, v34);
+        v47 = objc_msgSend_uploadReceipt(itemCopy, v33, v34);
         objc_msgSend_setUploadReceipt_(v22, v48, v47);
         objc_msgSend_setUploaded_(v22, v49, v47 != 0);
       }
@@ -3479,9 +3479,9 @@ LABEL_7:
         objc_msgSend_setUploadReceipt_(v22, v33, 0);
       }
 
-      objc_msgSend_uploadReceiptExpiration(v7, v50, v51);
+      objc_msgSend_uploadReceiptExpiration(itemCopy, v50, v51);
       objc_msgSend_setUploadReceiptExpiration_(v22, v52, v53);
-      v56 = objc_msgSend_paddedFileSize(v7, v54, v55);
+      v56 = objc_msgSend_paddedFileSize(itemCopy, v54, v55);
       objc_msgSend_setPaddedFileSize_(v22, v57, v56);
       objc_msgSend__didMakeProgressForAsset_progress_(self, v58, v22, 1.0);
       objc_msgSend__didUploadAsset_error_(self, v59, v22, 0);
@@ -3491,24 +3491,24 @@ LABEL_7:
   v60 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_collectMetricsFromMMCSOperationMetrics:(id)a3
+- (void)_collectMetricsFromMMCSOperationMetrics:(id)metrics
 {
-  v4 = a3;
-  if (objc_msgSend_count(v4, v5, v6))
+  metricsCopy = metrics;
+  if (objc_msgSend_count(metricsCopy, v5, v6))
   {
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = sub_2251C1DF4;
     v8[3] = &unk_2785487F8;
-    v9 = v4;
+    v9 = metricsCopy;
     objc_msgSend_updateMMCSMetrics_(self, v7, v8);
   }
 }
 
-- (void)_collectMetricsFromCompletedItemGroup:(id)a3
+- (void)_collectMetricsFromCompletedItemGroup:(id)group
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v4 = objc_msgSend_metrics(a3, a2, a3);
+  v4 = objc_msgSend_metrics(group, a2, group);
   v6 = v4;
   if (v4)
   {
@@ -3520,24 +3520,24 @@ LABEL_7:
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_collectMetricsFromCompletedItemGroupSet:(id)a3
+- (void)_collectMetricsFromCompletedItemGroupSet:(id)set
 {
-  v4 = objc_msgSend_itemsGroups(a3, a2, a3);
+  v4 = objc_msgSend_itemsGroups(set, a2, set);
   v7 = objc_msgSend_CKCompactMap_(v4, v5, &unk_28385D4A0);
 
   objc_msgSend__collectMetricsFromMMCSOperationMetrics_(self, v6, v7);
 }
 
-- (void)_didUploadMMCSItems:(id)a3 error:(id)a4
+- (void)_didUploadMMCSItems:(id)items error:(id)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  itemsCopy = items;
+  errorCopy = error;
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v8, &v26, v36, 16);
+  v9 = objc_msgSend_countByEnumeratingWithState_objects_count_(itemsCopy, v8, &v26, v36, 16);
   if (v9)
   {
     v12 = v9;
@@ -3548,24 +3548,24 @@ LABEL_7:
       {
         if (*v27 != v13)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v15 = *(*(&v26 + 1) + 8 * i);
         if ((objc_msgSend_finished(v15, v10, v11) & 1) == 0)
         {
           objc_msgSend_setFinished_(v15, v10, 1);
-          objc_msgSend__didUploadMMCSItem_error_(self, v16, v15, v7);
+          objc_msgSend__didUploadMMCSItem_error_(self, v16, v15, errorCopy);
         }
       }
 
-      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(v6, v10, &v26, v36, 16);
+      v12 = objc_msgSend_countByEnumeratingWithState_objects_count_(itemsCopy, v10, &v26, v36, 16);
     }
 
     while (v12);
   }
 
-  if (v7)
+  if (errorCopy)
   {
     if (*MEMORY[0x277CBC880] != -1)
     {
@@ -3576,14 +3576,14 @@ LABEL_7:
     if (os_log_type_enabled(*MEMORY[0x277CBC830], OS_LOG_TYPE_DEBUG))
     {
       v19 = v17;
-      v22 = objc_msgSend_count(v6, v20, v21);
+      v22 = objc_msgSend_count(itemsCopy, v20, v21);
       v25 = objc_msgSend_operationID(self, v23, v24);
       *buf = 134218498;
       v31 = v22;
       v32 = 2114;
       v33 = v25;
       v34 = 2112;
-      v35 = v7;
+      v35 = errorCopy;
       _os_log_debug_impl(&dword_22506F000, v19, OS_LOG_TYPE_DEBUG, "Failed to upload %lu MMCS items for operation %{public}@: %@", buf, 0x20u);
     }
   }
@@ -3591,34 +3591,34 @@ LABEL_7:
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_didMakeProgressForMMCSItem:(id)a3
+- (void)_didMakeProgressForMMCSItem:(id)item
 {
-  v34 = a3;
-  v6 = objc_msgSend_finished(v34, v4, v5);
-  v9 = objc_msgSend_error(v34, v7, v8);
+  itemCopy = item;
+  v6 = objc_msgSend_finished(itemCopy, v4, v5);
+  v9 = objc_msgSend_error(itemCopy, v7, v8);
   v12 = v9;
   if (v6)
   {
-    objc_msgSend__didUploadMMCSItem_error_(self, v10, v34, v9);
+    objc_msgSend__didUploadMMCSItem_error_(self, v10, itemCopy, v9);
   }
 
   else if (!v9)
   {
-    objc_msgSend_progress(v34, v10, v11);
+    objc_msgSend_progress(itemCopy, v10, v11);
     if (v15 < 0.0)
     {
       goto LABEL_10;
     }
 
-    v12 = objc_msgSend_package(v34, v13, v14);
+    v12 = objc_msgSend_package(itemCopy, v13, v14);
     if (v12)
     {
       v18 = objc_msgSend_uploadTasksByPackages(self, v16, v17);
       v20 = objc_msgSend_objectForKey_(v18, v19, v12);
 
       v23 = objc_msgSend_progressTracker(v20, v21, v22);
-      objc_msgSend_progress(v34, v24, v25);
-      objc_msgSend_updateProgressWithItem_progress_(v23, v26, v34);
+      objc_msgSend_progress(itemCopy, v24, v25);
+      objc_msgSend_updateProgressWithItem_progress_(v23, v26, itemCopy);
       v28 = v27;
 
       objc_msgSend__didMakeProgressForAsset_progress_(self, v29, v12, v28);
@@ -3626,8 +3626,8 @@ LABEL_7:
 
     else
     {
-      v20 = objc_msgSend_asset(v34, v16, v17);
-      objc_msgSend_progress(v34, v30, v31);
+      v20 = objc_msgSend_asset(itemCopy, v16, v17);
+      objc_msgSend_progress(itemCopy, v30, v31);
       objc_msgSend__didMakeProgressForAsset_progress_(self, v32, v20, v33);
     }
   }
@@ -3635,25 +3635,25 @@ LABEL_7:
 LABEL_10:
 }
 
-- (void)_didUploadPackageWithTask:(id)a3
+- (void)_didUploadPackageWithTask:(id)task
 {
   v166 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v7 = objc_msgSend_package(v4, v5, v6);
-  v10 = objc_msgSend_error(v4, v8, v9);
+  taskCopy = task;
+  v7 = objc_msgSend_package(taskCopy, v5, v6);
+  v10 = objc_msgSend_error(taskCopy, v8, v9);
 
   if (v10)
   {
     objc_msgSend_setUploaded_(v7, v11, 0);
     objc_msgSend_setAssets_(v7, v13, 0);
-    v16 = objc_msgSend_error(v4, v14, v15);
+    v16 = objc_msgSend_error(taskCopy, v14, v15);
     objc_msgSend__didUploadAsset_error_(self, v17, v7, v16);
 
     goto LABEL_46;
   }
 
-  v18 = objc_msgSend_MMCSSectionItems(v4, v11, v12);
-  v21 = objc_msgSend_MMCSManifestItem(v4, v19, v20);
+  v18 = objc_msgSend_MMCSSectionItems(taskCopy, v11, v12);
+  v21 = objc_msgSend_MMCSManifestItem(taskCopy, v19, v20);
   v24 = objc_msgSend_record(v7, v22, v23);
   v27 = objc_msgSend_count(v18, v25, v26);
   v28 = objc_alloc(MEMORY[0x277CBEB18]);
@@ -3684,7 +3684,7 @@ LABEL_10:
   v69 = MEMORY[0x277CBC878];
   v70 = MEMORY[0x277CBC880];
   v156 = v21;
-  v157 = v4;
+  v157 = taskCopy;
   if (v66)
   {
     v71 = objc_msgSend_assetKey(v21, v67, v68);
@@ -3880,7 +3880,7 @@ LABEL_38:
   objc_msgSend_setUploaded_(v35, v152, v87);
   objc_msgSend__didUploadAsset_error_(self, v153, v35, 0);
 
-  v4 = v157;
+  taskCopy = v157;
 LABEL_46:
 
   v154 = *MEMORY[0x277D85DE8];
@@ -4450,21 +4450,21 @@ LABEL_23:
   objc_msgSend_cancel(v5, v6, v7);
 }
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend__removePackageManifests(self, v5, v6);
   v9 = objc_msgSend_cancelTokens(self, v7, v8);
   objc_msgSend_removeAllCancelTokens(v9, v10, v11);
 
   v12.receiver = self;
   v12.super_class = CKDUploadAssetsOperation;
-  [(CKDOperation *)&v12 finishWithError:v4];
+  [(CKDOperation *)&v12 finishWithError:errorCopy];
 }
 
-- (void)_finishOnCallbackQueueWithError:(id)a3
+- (void)_finishOnCallbackQueueWithError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   objc_msgSend_hash(self, v5, v6);
   kdebug_trace();
   objc_msgSend_setUploadPreparationBlock_(self, v7, 0);
@@ -4476,7 +4476,7 @@ LABEL_23:
 
   v18.receiver = self;
   v18.super_class = CKDUploadAssetsOperation;
-  [(CKDOperation *)&v18 _finishOnCallbackQueueWithError:v4];
+  [(CKDOperation *)&v18 _finishOnCallbackQueueWithError:errorCopy];
 }
 
 - (void)main

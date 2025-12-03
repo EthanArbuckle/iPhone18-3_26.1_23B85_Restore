@@ -1,6 +1,6 @@
 @interface CSIGenerator
 + (void)initialize;
-+ (void)setFileEncoding:(int)a3;
++ (void)setFileEncoding:(int)encoding;
 - ($01BB1521EC52D44A8E7628F5261DCEC8)alignmentRectInsets;
 - (CGPoint)namedgradientEndPoint;
 - (CGPoint)namedgradientStartPoint;
@@ -8,47 +8,47 @@
 - (CGSize)originalUncroppedSize;
 - (CGSize)physicalSizeInMeters;
 - (CGSize)size;
-- (CSIGenerator)initWithCanvasSize:(CGSize)a3 sliceCount:(unsigned int)a4 layout:(signed __int16)a5;
-- (CSIGenerator)initWithColorNamed:(id)a3 colorSpaceID:(unint64_t)a4 components:(id)a5;
-- (CSIGenerator)initWithColorNamed:(id)a3 colorSpaceID:(unint64_t)a4 components:(id)a5 linkedToSystemColorWithName:(id)a6;
-- (CSIGenerator)initWithExternalReference:(id)a3 tags:(id)a4;
-- (CSIGenerator)initWithGradientNamed:(id)a3 type:(int64_t)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 colorNames:(id)a7 colorStops:(id)a8;
-- (CSIGenerator)initWithInternalReferenceRect:(CGRect)a3 layout:(signed __int16)a4;
-- (CSIGenerator)initWithLayerStackData:(id)a3 type:(int64_t)a4 withCanvasSize:(CGSize)a5;
-- (CSIGenerator)initWithModelAsset:(id)a3;
-- (CSIGenerator)initWithModelMesh:(id)a3;
-- (CSIGenerator)initWithModelSubmesh:(id)a3;
-- (CSIGenerator)initWithMultisizeImageSetNamed:(id)a3 sizesByIndex:(id)a4;
-- (CSIGenerator)initWithNameList:(id)a3;
-- (CSIGenerator)initWithRawData:(id)a3 pixelFormat:(unsigned int)a4 layout:(signed __int16)a5;
-- (CSIGenerator)initWithShapeEffectPreset:(id)a3 forScaleFactor:(unsigned int)a4;
-- (CSIGenerator)initWithTextStyleNamed:(id)a3 fontName:(id)a4 fontSize:(double)a5 maxPointSize:(double)a6 minPointSize:(double)a7 scalingStyle:(signed __int16)a8 alignment:(signed __int16)a9;
-- (CSIGenerator)initWithTextureForPixelFormat:(int64_t)a3;
-- (CSIGenerator)initWithTextureImageWithSize:(CGSize)a3 forPixelFormat:(int64_t)a4 cubeMap:(BOOL)a5;
-- (__n128)setTransformation:(__n128)a3;
-- (id)CSIRepresentationWithCompression:(BOOL)a3;
-- (id)_addNodes:(uint64_t)a3 toNodeList:;
+- (CSIGenerator)initWithCanvasSize:(CGSize)size sliceCount:(unsigned int)count layout:(signed __int16)layout;
+- (CSIGenerator)initWithColorNamed:(id)named colorSpaceID:(unint64_t)d components:(id)components;
+- (CSIGenerator)initWithColorNamed:(id)named colorSpaceID:(unint64_t)d components:(id)components linkedToSystemColorWithName:(id)name;
+- (CSIGenerator)initWithExternalReference:(id)reference tags:(id)tags;
+- (CSIGenerator)initWithGradientNamed:(id)named type:(int64_t)type startPoint:(CGPoint)point endPoint:(CGPoint)endPoint colorNames:(id)names colorStops:(id)stops;
+- (CSIGenerator)initWithInternalReferenceRect:(CGRect)rect layout:(signed __int16)layout;
+- (CSIGenerator)initWithLayerStackData:(id)data type:(int64_t)type withCanvasSize:(CGSize)size;
+- (CSIGenerator)initWithModelAsset:(id)asset;
+- (CSIGenerator)initWithModelMesh:(id)mesh;
+- (CSIGenerator)initWithModelSubmesh:(id)submesh;
+- (CSIGenerator)initWithMultisizeImageSetNamed:(id)named sizesByIndex:(id)index;
+- (CSIGenerator)initWithNameList:(id)list;
+- (CSIGenerator)initWithRawData:(id)data pixelFormat:(unsigned int)format layout:(signed __int16)layout;
+- (CSIGenerator)initWithShapeEffectPreset:(id)preset forScaleFactor:(unsigned int)factor;
+- (CSIGenerator)initWithTextStyleNamed:(id)named fontName:(id)name fontSize:(double)size maxPointSize:(double)pointSize minPointSize:(double)minPointSize scalingStyle:(signed __int16)style alignment:(signed __int16)alignment;
+- (CSIGenerator)initWithTextureForPixelFormat:(int64_t)format;
+- (CSIGenerator)initWithTextureImageWithSize:(CGSize)size forPixelFormat:(int64_t)format cubeMap:(BOOL)map;
+- (__n128)setTransformation:(__n128)transformation;
+- (id)CSIRepresentationWithCompression:(BOOL)compression;
+- (id)_addNodes:(uint64_t)nodes toNodeList:;
 - (id)_updateCompressionInfoFor:(id)result;
 - (id)formatCSIHeader:(id)result;
-- (size_t)writeMultisizeImageSetToData:(uint64_t)a1;
+- (size_t)writeMultisizeImageSetToData:(uint64_t)data;
 - (uint64_t)_shouldUseCompactCompressionForBitmap:(uint64_t)result;
-- (uint64_t)writeBitmap:(void *)a3 toData:(uint64_t)a4 compress:;
-- (uint64_t)writeColorToData:(uint64_t)a1;
-- (uint64_t)writeExternalLinkToData:(uint64_t)a1;
-- (uint64_t)writeGradientToData:(id *)a1;
-- (uint64_t)writeNamedGradientToData:(uint64_t)a1;
+- (uint64_t)writeBitmap:(void *)bitmap toData:(uint64_t)data compress:;
+- (uint64_t)writeColorToData:(uint64_t)data;
+- (uint64_t)writeExternalLinkToData:(uint64_t)data;
+- (uint64_t)writeGradientToData:(id *)data;
+- (uint64_t)writeNamedGradientToData:(uint64_t)data;
 - (uint64_t)writeRawDataToData:(uint64_t)result;
 - (uint64_t)writeRecognitionObjectToData:(uint64_t)result;
-- (uint64_t)writeResourcesToData:(uint64_t)a1;
-- (uint64_t)writeTextStyleToData:(CFStringRef *)a1;
-- (uint64_t)writeTextureToData:(uint64_t)a1;
-- (void)addBitmap:(id)a3;
-- (void)addMetrics:(id *)a3;
-- (void)addSliceRect:(CGRect)a3;
+- (uint64_t)writeResourcesToData:(uint64_t)data;
+- (uint64_t)writeTextStyleToData:(CFStringRef *)data;
+- (uint64_t)writeTextureToData:(uint64_t)data;
+- (void)addBitmap:(id)bitmap;
+- (void)addMetrics:(id *)metrics;
+- (void)addSliceRect:(CGRect)rect;
 - (void)dealloc;
-- (void)setCompressionQuality:(double)a3;
-- (void)setCompressionType:(int64_t)a3;
-- (void)setTargetPlatform:(int64_t)a3;
+- (void)setCompressionQuality:(double)quality;
+- (void)setCompressionType:(int64_t)type;
+- (void)setTargetPlatform:(int64_t)platform;
 @end
 
 @implementation CSIGenerator
@@ -131,19 +131,19 @@
   }
 }
 
-+ (void)setFileEncoding:(int)a3
++ (void)setFileEncoding:(int)encoding
 {
   if (!getenv("CoreUI_USELZVN") && !getenv("CoreUI_COMPRESSION"))
   {
-    __environmentRequestedCompression = a3;
+    __environmentRequestedCompression = encoding;
   }
 }
 
-- (CSIGenerator)initWithCanvasSize:(CGSize)a3 sliceCount:(unsigned int)a4 layout:(signed __int16)a5
+- (CSIGenerator)initWithCanvasSize:(CGSize)size sliceCount:(unsigned int)count layout:(signed __int16)layout
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
+  layoutCopy = layout;
+  height = size.height;
+  width = size.width;
   v12.receiver = self;
   v12.super_class = CSIGenerator;
   v9 = [(CSIGenerator *)&v12 init];
@@ -152,10 +152,10 @@
   {
     v9->_size.width = width;
     v9->_size.height = height;
-    v9->_layout = v5;
-    if (v5 != 6)
+    v9->_layout = layoutCopy;
+    if (layoutCopy != 6)
     {
-      v9->_slices = [[NSMutableArray alloc] initWithCapacity:a4];
+      v9->_slices = [[NSMutableArray alloc] initWithCapacity:count];
       v10->_bitmaps = [[NSMutableArray alloc] initWithCapacity:1];
       v10->_metrics = [[NSMutableArray alloc] initWithCapacity:2];
     }
@@ -171,7 +171,7 @@
   return v10;
 }
 
-- (CSIGenerator)initWithShapeEffectPreset:(id)a3 forScaleFactor:(unsigned int)a4
+- (CSIGenerator)initWithShapeEffectPreset:(id)preset forScaleFactor:(unsigned int)factor
 {
   v9.receiver = self;
   v9.super_class = CSIGenerator;
@@ -181,8 +181,8 @@
   {
     v6->_size = NSZeroSize;
     v6->_layout = 7;
-    v6->_scaleFactor = a4;
-    [(CSIGenerator *)v6 setEffectPreset:a3];
+    v6->_scaleFactor = factor;
+    [(CSIGenerator *)v6 setEffectPreset:preset];
     v7->_blendMode = 0;
     v7->_opacity = 1.0;
     v7->_pixelFormat = 1095911234;
@@ -193,7 +193,7 @@
   return v7;
 }
 
-- (CSIGenerator)initWithNameList:(id)a3
+- (CSIGenerator)initWithNameList:(id)list
 {
   v7.receiver = self;
   v7.super_class = CSIGenerator;
@@ -203,17 +203,17 @@
   {
     v4->_layout = 1005;
     v4->_scaleFactor = 1;
-    v4->_containedNamedElements = a3;
+    v4->_containedNamedElements = list;
   }
 
   return v5;
 }
 
-- (CSIGenerator)initWithRawData:(id)a3 pixelFormat:(unsigned int)a4 layout:(signed __int16)a5
+- (CSIGenerator)initWithRawData:(id)data pixelFormat:(unsigned int)format layout:(signed __int16)layout
 {
-  if (a4 <= 1246774598)
+  if (format <= 1246774598)
   {
-    if (a4 == 1145132097)
+    if (format == 1145132097)
     {
       goto LABEL_9;
     }
@@ -223,7 +223,7 @@
 
   else
   {
-    if (a4 == 1246774599 || a4 == 1346651680)
+    if (format == 1246774599 || format == 1346651680)
     {
       goto LABEL_9;
     }
@@ -231,7 +231,7 @@
     v9 = 1398163232;
   }
 
-  if (a4 != v9)
+  if (format != v9)
   {
     [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:a2 file:self lineNumber:@"CSIGenerator.m" description:293, @"initWithRawData is only supported for SVG/PDF/JPEG/HEIGF and Raw data for now"];
   }
@@ -243,14 +243,14 @@ LABEL_9:
   v11 = v10;
   if (v10)
   {
-    v10->_layout = a5;
+    v10->_layout = layout;
     v10->_scaleFactor = 0;
-    v10->_pixelFormat = a4;
-    v10->_rawData = a3;
+    v10->_pixelFormat = format;
+    v10->_rawData = data;
     *&v11->_allowsMultiPassEncoding = 257;
     *&v11->_allowsPaletteImageCompression = 0;
     v11->_opacity = 1.0;
-    if (a4 == 1246774599 || a4 == 1212500294)
+    if (format == 1246774599 || format == 1212500294)
     {
       v11->_slices = objc_alloc_init(NSMutableArray);
       v11->_bitmaps = objc_alloc_init(NSMutableArray);
@@ -261,7 +261,7 @@ LABEL_9:
   return v11;
 }
 
-- (CSIGenerator)initWithExternalReference:(id)a3 tags:(id)a4
+- (CSIGenerator)initWithExternalReference:(id)reference tags:(id)tags
 {
   v9.receiver = self;
   v9.super_class = CSIGenerator;
@@ -276,18 +276,18 @@ LABEL_9:
     v6->_pixelFormat = 1095911234;
     *&v6->_allowsMultiPassEncoding = 257;
     *&v6->_allowsPaletteImageCompression = 0;
-    v6->_assetPackIdentifier = a3;
-    v7->_externalTags = a4;
+    v6->_assetPackIdentifier = reference;
+    v7->_externalTags = tags;
   }
 
   return v7;
 }
 
-- (CSIGenerator)initWithLayerStackData:(id)a3 type:(int64_t)a4 withCanvasSize:(CGSize)a5
+- (CSIGenerator)initWithLayerStackData:(id)data type:(int64_t)type withCanvasSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  v7 = a4;
+  height = size.height;
+  width = size.width;
+  typeCopy = type;
   v12.receiver = self;
   v12.super_class = CSIGenerator;
   v9 = [(CSIGenerator *)&v12 init];
@@ -296,7 +296,7 @@ LABEL_9:
   {
     v9->_size.width = width;
     v9->_size.height = height;
-    v9->_layout = v7;
+    v9->_layout = typeCopy;
     v9->_blendMode = 0;
     v9->_opacity = 1.0;
     v9->_pixelFormat = 1145132097;
@@ -304,13 +304,13 @@ LABEL_9:
     *&v9->_allowsPaletteImageCompression = 0;
     v9->_metrics = objc_alloc_init(NSMutableArray);
     v10->_layerReferences = objc_alloc_init(NSMutableArray);
-    v10->_rawData = a3;
+    v10->_rawData = data;
   }
 
   return v10;
 }
 
-- (CSIGenerator)initWithTextureForPixelFormat:(int64_t)a3
+- (CSIGenerator)initWithTextureForPixelFormat:(int64_t)format
 {
   v7.receiver = self;
   v7.super_class = CSIGenerator;
@@ -319,7 +319,7 @@ LABEL_9:
   if (v4)
   {
     v4->_layout = 1007;
-    v4->_textureFormat = a3;
+    v4->_textureFormat = format;
     v4->_pixelFormat = 1095911234;
     v4->_opacity = 1.0;
     *&v4->_allowsMultiPassEncoding = 257;
@@ -330,11 +330,11 @@ LABEL_9:
   return v5;
 }
 
-- (CSIGenerator)initWithTextureImageWithSize:(CGSize)a3 forPixelFormat:(int64_t)a4 cubeMap:(BOOL)a5
+- (CSIGenerator)initWithTextureImageWithSize:(CGSize)size forPixelFormat:(int64_t)format cubeMap:(BOOL)map
 {
-  v5 = a5;
-  height = a3.height;
-  width = a3.width;
+  mapCopy = map;
+  height = size.height;
+  width = size.width;
   v14.receiver = self;
   v14.super_class = CSIGenerator;
   v9 = [(CSIGenerator *)&v14 init];
@@ -344,12 +344,12 @@ LABEL_9:
     v9->_size.width = width;
     v9->_size.height = height;
     v9->_layout = 1008;
-    v9->_textureFormat = a4;
+    v9->_textureFormat = format;
     v9->_pixelFormat = 1095911234;
     v9->_opacity = 1.0;
-    v9->_isCubeMap = v5;
+    v9->_isCubeMap = mapCopy;
     v11 = [NSMutableArray alloc];
-    if (v5)
+    if (mapCopy)
     {
       v12 = 6;
     }
@@ -366,13 +366,13 @@ LABEL_9:
   return v10;
 }
 
-- (CSIGenerator)initWithInternalReferenceRect:(CGRect)a3 layout:(signed __int16)a4
+- (CSIGenerator)initWithInternalReferenceRect:(CGRect)rect layout:(signed __int16)layout
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(CSIGenerator *)self initWithCanvasSize:1 sliceCount:1003 layout:a3.size.width, a3.size.height];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  v9 = [(CSIGenerator *)self initWithCanvasSize:1 sliceCount:1003 layout:rect.size.width, rect.size.height];
   v10 = v9;
   if (v9)
   {
@@ -389,72 +389,72 @@ LABEL_9:
     v10->_pixelFormat = 1095911234;
     *&v10->_allowsMultiPassEncoding = 257;
     *&v10->_allowsPaletteImageCompression = 0;
-    v10->_linkLayout = a4;
+    v10->_linkLayout = layout;
   }
 
   return v10;
 }
 
-- (CSIGenerator)initWithColorNamed:(id)a3 colorSpaceID:(unint64_t)a4 components:(id)a5
+- (CSIGenerator)initWithColorNamed:(id)named colorSpaceID:(unint64_t)d components:(id)components
 {
-  v6 = a4;
+  dCopy = d;
   v10.receiver = self;
   v10.super_class = CSIGenerator;
   v8 = [(CSIGenerator *)&v10 init];
   if (v8)
   {
-    v8->_name = a3;
-    v8->_colorComponents = a5;
-    v8->_colorSpaceID = v6;
+    v8->_name = named;
+    v8->_colorComponents = components;
+    v8->_colorSpaceID = dCopy;
     v8->_layout = 1009;
   }
 
   return v8;
 }
 
-- (CSIGenerator)initWithColorNamed:(id)a3 colorSpaceID:(unint64_t)a4 components:(id)a5 linkedToSystemColorWithName:(id)a6
+- (CSIGenerator)initWithColorNamed:(id)named colorSpaceID:(unint64_t)d components:(id)components linkedToSystemColorWithName:(id)name
 {
-  v8 = a4;
+  dCopy = d;
   v12.receiver = self;
   v12.super_class = CSIGenerator;
   v10 = [(CSIGenerator *)&v12 init];
   if (v10)
   {
-    v10->_name = a3;
-    v10->_colorComponents = a5;
-    v10->_colorSpaceID = v8;
+    v10->_name = named;
+    v10->_colorComponents = components;
+    v10->_colorSpaceID = dCopy;
     v10->_layout = 1009;
-    v10->_systemColorName = a6;
+    v10->_systemColorName = name;
   }
 
   return v10;
 }
 
-- (CSIGenerator)initWithGradientNamed:(id)a3 type:(int64_t)a4 startPoint:(CGPoint)a5 endPoint:(CGPoint)a6 colorNames:(id)a7 colorStops:(id)a8
+- (CSIGenerator)initWithGradientNamed:(id)named type:(int64_t)type startPoint:(CGPoint)point endPoint:(CGPoint)endPoint colorNames:(id)names colorStops:(id)stops
 {
-  y = a6.y;
-  x = a6.x;
-  v13 = a5.y;
-  v14 = a5.x;
+  y = endPoint.y;
+  x = endPoint.x;
+  v13 = point.y;
+  v14 = point.x;
   v25.receiver = self;
   v25.super_class = CSIGenerator;
   v16 = [(CSIGenerator *)&v25 init];
   if (v16)
   {
-    v16->_name = a3;
+    v16->_name = named;
     v16->_layout = 1021;
-    v16->_namedgradientType = a4;
+    v16->_namedgradientType = type;
     v16->_namedgradientStartPoint.x = v14;
     v16->_namedgradientStartPoint.y = v13;
     v16->_namedgradatientEndPoint.x = x;
     v16->_namedgradatientEndPoint.y = y;
-    v16->_namedgradientStops = a8;
-    v16->_namedgradationColors = a7;
+    v16->_namedgradientStops = stops;
+    v16->_namedgradationColors = names;
     v17 = [(NSArray *)v16->_namedgradientStops count];
     if (v17 != [(NSArray *)v16->_namedgradationColors count])
     {
 
-      _CUILog(4, "CoreUI: stops count != colornames count '%s' ignoring", v18, v19, v20, v21, v22, v23, a3);
+      _CUILog(4, "CoreUI: stops count != colornames count '%s' ignoring", v18, v19, v20, v21, v22, v23, named);
       return 0;
     }
   }
@@ -462,49 +462,49 @@ LABEL_9:
   return v16;
 }
 
-- (CSIGenerator)initWithTextStyleNamed:(id)a3 fontName:(id)a4 fontSize:(double)a5 maxPointSize:(double)a6 minPointSize:(double)a7 scalingStyle:(signed __int16)a8 alignment:(signed __int16)a9
+- (CSIGenerator)initWithTextStyleNamed:(id)named fontName:(id)name fontSize:(double)size maxPointSize:(double)pointSize minPointSize:(double)minPointSize scalingStyle:(signed __int16)style alignment:(signed __int16)alignment
 {
   v18.receiver = self;
   v18.super_class = CSIGenerator;
   v16 = [(CSIGenerator *)&v18 init];
   if (v16)
   {
-    v16->_name = a3;
-    v16->_fontName = a4;
-    v16->_fontSize = a5;
-    v16->_maxPointSize = a6;
-    v16->_minPointSize = a7;
-    v16->_scalingStyle = a8;
-    v16->_alignment = a9;
+    v16->_name = named;
+    v16->_fontName = name;
+    v16->_fontSize = size;
+    v16->_maxPointSize = pointSize;
+    v16->_minPointSize = minPointSize;
+    v16->_scalingStyle = style;
+    v16->_alignment = alignment;
     v16->_layout = 1015;
   }
 
   return v16;
 }
 
-- (CSIGenerator)initWithMultisizeImageSetNamed:(id)a3 sizesByIndex:(id)a4
+- (CSIGenerator)initWithMultisizeImageSetNamed:(id)named sizesByIndex:(id)index
 {
   v8.receiver = self;
   v8.super_class = CSIGenerator;
   v6 = [(CSIGenerator *)&v8 init];
   if (v6)
   {
-    v6->_name = a3;
-    v6->_sizesByIndex = a4;
+    v6->_name = named;
+    v6->_sizesByIndex = index;
     v6->_layout = 1010;
   }
 
   return v6;
 }
 
-- (CSIGenerator)initWithModelAsset:(id)a3
+- (CSIGenerator)initWithModelAsset:(id)asset
 {
   v6.receiver = self;
   v6.super_class = CSIGenerator;
   v4 = [(CSIGenerator *)&v6 init];
   if (v4)
   {
-    v4->_modelAsset = a3;
+    v4->_modelAsset = asset;
     v4->_layout = 1011;
     v4->_meshReferences = objc_alloc_init(NSMutableArray);
   }
@@ -512,14 +512,14 @@ LABEL_9:
   return v4;
 }
 
-- (CSIGenerator)initWithModelMesh:(id)a3
+- (CSIGenerator)initWithModelMesh:(id)mesh
 {
   v6.receiver = self;
   v6.super_class = CSIGenerator;
   v4 = [(CSIGenerator *)&v6 init];
   if (v4)
   {
-    v4->_modelMesh = a3;
+    v4->_modelMesh = mesh;
     v4->_layout = 1012;
     v4->_submeshReferences = objc_alloc_init(NSMutableArray);
   }
@@ -527,23 +527,23 @@ LABEL_9:
   return v4;
 }
 
-- (CSIGenerator)initWithModelSubmesh:(id)a3
+- (CSIGenerator)initWithModelSubmesh:(id)submesh
 {
   v6.receiver = self;
   v6.super_class = CSIGenerator;
   v4 = [(CSIGenerator *)&v6 init];
   if (v4)
   {
-    v4->_modelSubmesh = a3;
+    v4->_modelSubmesh = submesh;
     v4->_layout = 1016;
   }
 
   return v4;
 }
 
-- (void)setCompressionQuality:(double)a3
+- (void)setCompressionQuality:(double)quality
 {
-  self->_compressionQuality = a3;
+  self->_compressionQuality = quality;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -573,9 +573,9 @@ LABEL_9:
   }
 }
 
-- (void)setCompressionType:(int64_t)a3
+- (void)setCompressionType:(int64_t)type
 {
-  self->_compressionType = a3;
+  self->_compressionType = type;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -605,9 +605,9 @@ LABEL_9:
   }
 }
 
-- (void)setTargetPlatform:(int64_t)a3
+- (void)setTargetPlatform:(int64_t)platform
 {
-  self->_targetPlatform = a3;
+  self->_targetPlatform = platform;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
@@ -637,26 +637,26 @@ LABEL_9:
   }
 }
 
-- (void)addSliceRect:(CGRect)a3
+- (void)addSliceRect:(CGRect)rect
 {
   slices = self->_slices;
-  v4 = [NSValue valueWithRect:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v4 = [NSValue valueWithRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
 
   [(NSMutableArray *)slices addObject:v4];
 }
 
-- (void)addMetrics:(id *)a3
+- (void)addMetrics:(id *)metrics
 {
-  var1 = a3->var1;
-  v7[0] = a3->var0;
+  var1 = metrics->var1;
+  v7[0] = metrics->var0;
   v7[1] = var1;
-  v7[2] = a3->var2;
+  v7[2] = metrics->var2;
   v6[0] = CSIIllegalMetrics;
   v6[1] = unk_18E021298;
   v6[2] = xmmword_18E0212A8;
   if (!CSIEqualMetrics(v7, v6))
   {
-    [(NSMutableArray *)self->_metrics addObject:[NSValue valueWithBytes:a3 objCType:"{?={CGSize=dd}{CGSize=dd}{CGSize=dd}}"]];
+    [(NSMutableArray *)self->_metrics addObject:[NSValue valueWithBytes:metrics objCType:"{?={CGSize=dd}{CGSize=dd}{CGSize=dd}}"]];
   }
 }
 
@@ -700,10 +700,10 @@ LABEL_9:
   return result;
 }
 
-- (__n128)setTransformation:(__n128)a3
+- (__n128)setTransformation:(__n128)transformation
 {
   result[33] = a2;
-  result[34] = a3;
+  result[34] = transformation;
   result[35] = a4;
   result[36] = a5;
   return result;
@@ -753,10 +753,10 @@ LABEL_9:
   OUTLINED_FUNCTION_35();
   if ([v3 compressionType] == 3)
   {
-    v4 = [v2 allowsHevcCompression];
-    if ([v2 pixelFormat] == 1195456544 && !v4)
+    allowsHevcCompression = [v2 allowsHevcCompression];
+    if ([v2 pixelFormat] == 1195456544 && !allowsHevcCompression)
     {
-      v5 = 0;
+      compressionType = 0;
       goto LABEL_6;
     }
   }
@@ -768,16 +768,16 @@ LABEL_9:
 
   if (([CSIGenerator _shouldUseCompactCompressionForBitmap:v2]& 1) != 0)
   {
-    v5 = 7;
+    compressionType = 7;
   }
 
   else
   {
-    v5 = [v2 compressionType];
+    compressionType = [v2 compressionType];
   }
 
 LABEL_6:
-  [v1 setCompressionType:v5];
+  [v1 setCompressionType:compressionType];
   [v1 setTargetPlatform:{objc_msgSend(v2, "targetPlatform")}];
   [v2 compressionQuality];
   [v1 setCompressionQuality:?];
@@ -793,13 +793,13 @@ LABEL_6:
   return [v6 setAllowsDeepmap2ImageCompression:?];
 }
 
-- (void)addBitmap:(id)a3
+- (void)addBitmap:(id)bitmap
 {
-  [a3 setName:{-[CSIGenerator name](self, "name")}];
+  [bitmap setName:{-[CSIGenerator name](self, "name")}];
   [CSIGenerator _updateCompressionInfoFor:?];
   bitmaps = self->_bitmaps;
 
-  [(NSMutableArray *)bitmaps addObject:a3];
+  [(NSMutableArray *)bitmaps addObject:bitmap];
 }
 
 - (id)formatCSIHeader:(id)result
@@ -833,14 +833,14 @@ LABEL_6:
 
   *(v4 + 8) = v6 | v5;
   *(v4 + 28) &= 0xFu;
-  v7 = [v3 templateRenderingMode];
-  if (v7 == 1)
+  templateRenderingMode = [v3 templateRenderingMode];
+  if (templateRenderingMode == 1)
   {
     v8 = 8;
     goto LABEL_12;
   }
 
-  if (v7 == 2)
+  if (templateRenderingMode == 2)
   {
     v8 = 16;
 LABEL_12:
@@ -911,15 +911,15 @@ LABEL_33:
   v14 = *(v2 + 24);
   if (v14)
   {
-    v15 = [v14 UTF8String];
+    uTF8String = [v14 UTF8String];
   }
 
   else
   {
-    v15 = "CoreStructuredImage";
+    uTF8String = "CoreStructuredImage";
   }
 
-  strncpy((v1 + 40), v15, 0x7FuLL);
+  strncpy((v1 + 40), uTF8String, 0x7FuLL);
   *(v1 + 168) = 0;
   result = [*(v2 + 64) count];
   if (result <= 1)
@@ -936,24 +936,24 @@ LABEL_33:
   return result;
 }
 
-- (uint64_t)writeResourcesToData:(uint64_t)a1
+- (uint64_t)writeResourcesToData:(uint64_t)data
 {
-  if (!a1)
+  if (!data)
   {
     return 0;
   }
 
-  v3 = a1;
+  dataCopy = data;
   v297 = 0;
   v296 = 0;
-  if ([*(a1 + 56) count] == 9 && objc_msgSend(*(v3 + 64), "count") && (objc_msgSend(objc_msgSend(*(v3 + 56), "objectAtIndex:", 4), "rectValue"), v4 == objc_msgSend(objc_msgSend(*(v3 + 64), "objectAtIndex:", 0), "width")) && (objc_msgSend(objc_msgSend(*(v3 + 56), "objectAtIndex:", 4), "rectValue"), v5 == objc_msgSend(objc_msgSend(*(v3 + 64), "objectAtIndex:", 0), "height")) && ((objc_msgSend(objc_msgSend(*(v3 + 56), "objectAtIndex:", 0), "rectValue"), v7 = v6, v9 = v8, objc_msgSend(objc_msgSend(*(v3 + 56), "objectAtIndex:", 1), "rectValue"), v260 = v10, v12 = v11, objc_msgSend(objc_msgSend(*(v3 + 56), "objectAtIndex:", 2), "rectValue"), v249 = v13, v255 = v14, objc_msgSend(objc_msgSend(*(v3 + 56), "objectAtIndex:", 3), "rectValue"), v235 = v15, obj = v16, objc_msgSend(objc_msgSend(*(v3 + 56), "objectAtIndex:", 4), "rectValue"), objc_msgSend(objc_msgSend(*(v3 + 56), "objectAtIndex:", 5), "rectValue"), v231 = v17, v19 = v18, objc_msgSend(objc_msgSend(*(v3 + 56), "objectAtIndex:", 6), "rectValue"), v21 = v20, v23 = v22, objc_msgSend(objc_msgSend(*(v3 + 56), "objectAtIndex:", 7), "rectValue"), v25 = v24, v27 = v26, objc_msgSend(objc_msgSend(*(v3 + 56), "objectAtIndex:", 8), "rectValue"), v9 == 0.0) || v7 == 0.0) && (v12 == 0.0 || *&v260 == 0.0) && (*&v255 == 0.0 || *&v249 == 0.0) && (*&obj == 0.0 || *&v235 == 0.0) && (v19 == 0.0 || v231 == 0.0) && (v23 == 0.0 || v21 == 0.0) && (v27 == 0.0 || v25 == 0.0) && (v29 == 0.0 || v28 == 0.0))
+  if ([*(data + 56) count] == 9 && objc_msgSend(*(dataCopy + 64), "count") && (objc_msgSend(objc_msgSend(*(dataCopy + 56), "objectAtIndex:", 4), "rectValue"), v4 == objc_msgSend(objc_msgSend(*(dataCopy + 64), "objectAtIndex:", 0), "width")) && (objc_msgSend(objc_msgSend(*(dataCopy + 56), "objectAtIndex:", 4), "rectValue"), v5 == objc_msgSend(objc_msgSend(*(dataCopy + 64), "objectAtIndex:", 0), "height")) && ((objc_msgSend(objc_msgSend(*(dataCopy + 56), "objectAtIndex:", 0), "rectValue"), v7 = v6, v9 = v8, objc_msgSend(objc_msgSend(*(dataCopy + 56), "objectAtIndex:", 1), "rectValue"), v260 = v10, v12 = v11, objc_msgSend(objc_msgSend(*(dataCopy + 56), "objectAtIndex:", 2), "rectValue"), v249 = v13, v255 = v14, objc_msgSend(objc_msgSend(*(dataCopy + 56), "objectAtIndex:", 3), "rectValue"), v235 = v15, obj = v16, objc_msgSend(objc_msgSend(*(dataCopy + 56), "objectAtIndex:", 4), "rectValue"), objc_msgSend(objc_msgSend(*(dataCopy + 56), "objectAtIndex:", 5), "rectValue"), v231 = v17, v19 = v18, objc_msgSend(objc_msgSend(*(dataCopy + 56), "objectAtIndex:", 6), "rectValue"), v21 = v20, v23 = v22, objc_msgSend(objc_msgSend(*(dataCopy + 56), "objectAtIndex:", 7), "rectValue"), v25 = v24, v27 = v26, objc_msgSend(objc_msgSend(*(dataCopy + 56), "objectAtIndex:", 8), "rectValue"), v9 == 0.0) || v7 == 0.0) && (v12 == 0.0 || *&v260 == 0.0) && (*&v255 == 0.0 || *&v249 == 0.0) && (*&obj == 0.0 || *&v235 == 0.0) && (v19 == 0.0 || v231 == 0.0) && (v23 == 0.0 || v21 == 0.0) && (v27 == 0.0 || v25 == 0.0) && (v29 == 0.0 || v28 == 0.0))
   {
-    v30 = *(v3 + 56);
+    v30 = *(dataCopy + 56);
   }
 
   else
   {
-    v30 = [*(v3 + 56) sortedArrayUsingFunction:__sliceSort context:0];
+    v30 = [*(dataCopy + 56) sortedArrayUsingFunction:__sliceSort context:0];
   }
 
   v31 = [v30 count];
@@ -1008,7 +1008,7 @@ LABEL_33:
   }
 
   v232 = sel_writeResourcesToData_;
-  v46 = [*(v3 + 72) count];
+  v46 = [*(dataCopy + 72) count];
   v291 = v46;
   if (v46)
   {
@@ -1021,7 +1021,7 @@ LABEL_33:
     v290 = 0u;
     v287 = 0u;
     v288 = 0u;
-    v48 = *(v3 + 72);
+    v48 = *(dataCopy + 72);
     v56 = OUTLINED_FUNCTION_22_0(v47, v49, v50, v51, v52, v53, v54, v55, v227, sel_writeResourcesToData_, v235, v239, obj, v249, v255, v260, *v265, *&v265[8], *&v265[16], *&v265[24], *&v265[32], *&v265[40], *&v265[48], *&v265[56], *&v265[64], v266, v267, *(&v267 + 1), v268, *(&v268 + 1), v269, *(&v269 + 1), v270, *(&v270 + 1), v271, *(&v271 + 1), v272, *(&v272 + 1), v273, *(&v273 + 1), v274, *(&v274 + 1), v275, *(&v275 + 1), v276, *(&v276 + 1), v277, *(&v277 + 1), v278, *(&v278 + 1), v279, *(&v279 + 1), v280, *(&v280 + 1), v281, *(&v281 + 1), v282, *(&v282 + 1), v283, v284, v285.i64[0], v285.i64[1], v286);
     if (v56)
     {
@@ -1043,7 +1043,7 @@ LABEL_33:
           v285 = vtrn1q_s32(v61, vextq_s8(v61, v61, 0xCuLL));
           v62 = vcvt_s32_f32(vrndx_f32(vcvt_f32_f64(*&v265[32])));
           v286 = v62;
-          if (*(v3 + 456) == 1)
+          if (*(dataCopy + 456) == 1)
           {
             v63 = vmaxq_s32(v61, 0);
             v285 = vtrn1q_s32(v63, vextq_s8(v63, v63, 0xCuLL));
@@ -1061,23 +1061,23 @@ LABEL_33:
     }
   }
 
-  v72 = [*(v3 + 80) count];
+  v72 = [*(dataCopy + 80) count];
   v73 = v72;
   v257 = a2;
-  v262 = v3;
-  if (*(v3 + 138) == 1003)
+  v262 = dataCopy;
+  if (*(dataCopy + 138) == 1003)
   {
     v74 = objc_alloc_init(NSMutableData);
     *&v265[26] = 0;
     *v265 = 1229868107;
-    *&v75 = OUTLINED_FUNCTION_18_0(*(v3 + 224), *(v3 + 240)).u64[0];
-    *&v265[24] = *(v3 + 256);
+    *&v75 = OUTLINED_FUNCTION_18_0(*(dataCopy + 224), *(dataCopy + 240)).u64[0];
+    *&v265[24] = *(dataCopy + 256);
     if (v73 != 1)
     {
-      [+[NSAssertionHandler handleFailureInMethod:v75]object:"handleFailureInMethod:object:file:lineNumber:description:" file:v232 lineNumber:v3 description:@"CSIGenerator.m", 938, @"We need to have at 1 and only 1 reference file here"];
+      [+[NSAssertionHandler handleFailureInMethod:v75]object:"handleFailureInMethod:object:file:lineNumber:description:" file:v232 lineNumber:dataCopy description:@"CSIGenerator.m", 938, @"We need to have at 1 and only 1 reference file here"];
     }
 
-    v76 = [objc_msgSend(objc_msgSend(*(v3 + 80) "firstObject")];
+    v76 = [objc_msgSend(objc_msgSend(*(dataCopy + 80) "firstObject")];
     v77 = CUIRenditionKeyTokenCount(v76);
     v78 = (4 * v77 + 4);
     *&v265[26] = 4 * v77 + 4;
@@ -1096,14 +1096,14 @@ LABEL_33:
     v283 = 0;
     v79 = objc_alloc_init(NSMutableData);
     v285.i32[1] = 0;
-    v285.i32[0] = [*(v3 + 80) count];
+    v285.i32[0] = [*(dataCopy + 80) count];
     v80 = [v79 appendBytes:&v285 length:8];
     v281 = 0u;
     v282 = 0u;
     v279 = 0u;
     v280 = 0u;
-    v81 = *(v3 + 80);
-    v89 = OUTLINED_FUNCTION_25_0(v80, v82, v83, v84, v85, v86, v87, v88, v227, v232, v235, v239, obj, v37, a2, v3, *v265, *&v265[8], *&v265[16], *&v265[24], *&v265[32], *&v265[40], *&v265[48], *&v265[56], *&v265[64], v266, v267, *(&v267 + 1), v268, *(&v268 + 1), v269, *(&v269 + 1), v270, *(&v270 + 1), v271, *(&v271 + 1), v272, *(&v272 + 1), v273, *(&v273 + 1), v274, *(&v274 + 1), v275, *(&v275 + 1), v276, *(&v276 + 1), v277, *(&v277 + 1), v278, *(&v278 + 1), 0);
+    v81 = *(dataCopy + 80);
+    v89 = OUTLINED_FUNCTION_25_0(v80, v82, v83, v84, v85, v86, v87, v88, v227, v232, v235, v239, obj, v37, a2, dataCopy, *v265, *&v265[8], *&v265[16], *&v265[24], *&v265[32], *&v265[40], *&v265[48], *&v265[56], *&v265[64], v266, v267, *(&v267 + 1), v268, *(&v268 + 1), v269, *(&v269 + 1), v270, *(&v270 + 1), v271, *(&v271 + 1), v272, *(&v272 + 1), v273, *(&v273 + 1), v274, *(&v274 + 1), v275, *(&v275 + 1), v276, *(&v276 + 1), v277, *(&v277 + 1), v278, *(&v278 + 1), 0);
     if (v89)
     {
       v90 = v89;
@@ -1151,13 +1151,13 @@ LABEL_33:
 
     v110 = objc_alloc_init(NSMutableData);
     HIDWORD(v284) = 0;
-    LODWORD(v284) = [*(v3 + 80) count];
+    LODWORD(v284) = [*(dataCopy + 80) count];
     v111 = [v110 appendBytes:&v284 length:8];
     v277 = 0u;
     v278 = 0u;
     v275 = 0u;
     v276 = 0u;
-    v112 = *(v3 + 80);
+    v112 = *(dataCopy + 80);
     v120 = OUTLINED_FUNCTION_19_0(v111, v113, v114, v115, v116, v117, v118, v119, v228, v233, v236, v240, obja, v251, v258, v263, *v265, *&v265[8], *&v265[16], *&v265[24], *&v265[32], *&v265[40], *&v265[48], *&v265[56], *&v265[64], v266, v267, *(&v267 + 1), v268, *(&v268 + 1), v269, *(&v269 + 1), v270, *(&v270 + 1), v271, *(&v271 + 1), v272, *(&v272 + 1), v273, *(&v273 + 1), v274, *(&v274 + 1), 0);
     if (v120)
     {
@@ -1190,14 +1190,14 @@ LABEL_33:
           *v265 = *v265 & 0xFFFFFFFD | v124;
           [v123 blurStrength];
           *&v265[4] = v125;
-          v126 = [v123 gradientOrColorName];
-          if ([(__CFString *)v126 length])
+          gradientOrColorName = [v123 gradientOrColorName];
+          if ([(__CFString *)gradientOrColorName length])
           {
-            MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(v126);
+            MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(gradientOrColorName);
             v128 = malloc_type_malloc(MaximumSizeOfFileSystemRepresentation, 0x53EDDE0FuLL);
-            CFStringGetFileSystemRepresentation(v126, v128, MaximumSizeOfFileSystemRepresentation);
+            CFStringGetFileSystemRepresentation(gradientOrColorName, v128, MaximumSizeOfFileSystemRepresentation);
             v129 = MaximumSizeOfFileSystemRepresentation;
-            v3 = v264;
+            dataCopy = v264;
             v130 = strnlen(v128, v129) + 1;
           }
 
@@ -1232,13 +1232,13 @@ LABEL_33:
 
     v142 = objc_alloc_init(NSMutableData);
     HIDWORD(v283) = 0;
-    LODWORD(v283) = [*(v3 + 80) count];
+    LODWORD(v283) = [*(dataCopy + 80) count];
     v143 = [v142 appendBytes:&v283 length:8];
     v273 = 0u;
     v274 = 0u;
     v271 = 0u;
     v272 = 0u;
-    v144 = *(v3 + 80);
+    v144 = *(dataCopy + 80);
     v152 = OUTLINED_FUNCTION_26_0(v143, v145, v146, v147, v148, v149, v150, v151, v229, v234, v237, v241, objb, v252, v259, v264, *v265, *&v265[8], *&v265[16], *&v265[24], *&v265[32], *&v265[40], *&v265[48], *&v265[56], *&v265[64], v266, v267, *(&v267 + 1), v268, *(&v268 + 1), v269, *(&v269 + 1), v270, *(&v270 + 1), 0);
     if (v152)
     {
@@ -1285,16 +1285,16 @@ LABEL_33:
   v297 = 0x8000003ECLL;
   OUTLINED_FUNCTION_5_0();
   v284 = 0;
-  [v3 opacity];
+  [dataCopy opacity];
   *&v166 = v166;
   HIDWORD(v284) = LODWORD(v166);
-  LODWORD(v284) = [v3 blendMode];
+  LODWORD(v284) = [dataCopy blendMode];
   [a2 appendBytes:&v284 length:8];
-  if ([*(v3 + 32) length])
+  if ([*(dataCopy + 32) length])
   {
-    v167 = CFStringGetMaximumSizeOfFileSystemRepresentation(*(v3 + 32));
+    v167 = CFStringGetMaximumSizeOfFileSystemRepresentation(*(dataCopy + 32));
     v168 = malloc_type_malloc(v167, 0x51437AEAuLL);
-    CFStringGetFileSystemRepresentation(*(v3 + 32), v168, v167);
+    CFStringGetFileSystemRepresentation(*(dataCopy + 32), v168, v167);
     v169 = strnlen(v168, v167);
     *v265 = (v169 + 1);
     LODWORD(v297) = 1005;
@@ -1311,10 +1311,10 @@ LABEL_33:
     v170 = v37 + 16;
   }
 
-  v171 = [*(v3 + 504) count];
+  v171 = [*(dataCopy + 504) count];
   if (v171)
   {
-    v173 = [objc_msgSend(*(v3 + 504) "allKeys")];
+    v173 = [objc_msgSend(*(dataCopy + 504) "allKeys")];
     v267 = 0u;
     v268 = 0u;
     v269 = 0u;
@@ -1342,7 +1342,7 @@ LABEL_33:
           }
 
           v183 = *(*(&v267 + 1) + 8 * v182);
-          v184 = [*(v3 + 504) objectForKey:v183];
+          v184 = [*(dataCopy + 504) objectForKey:v183];
           v185 = CFStringGetMaximumSizeOfFileSystemRepresentation(v183);
           v186 = malloc_type_malloc(v185, 0x10FB8C29uLL);
           CFStringGetFileSystemRepresentation(v183, v186, v185);
@@ -1361,8 +1361,8 @@ LABEL_33:
             objc_opt_class();
             if (objc_opt_isKindOfClass())
             {
-              v190 = [(__CFString *)v184 objCType];
-              if (*v190 == 100 && !v190[1])
+              objCType = [(__CFString *)v184 objCType];
+              if (*objCType == 100 && !objCType[1])
               {
                 v187 = malloc_type_malloc(8uLL, 0x26DC55A7uLL);
                 [(__CFString *)v184 doubleValue];
@@ -1429,7 +1429,7 @@ LABEL_33:
 
           if (v185 < 1 || v175 < 1)
           {
-            v3 = v262;
+            dataCopy = v262;
             [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:v232 file:v262 lineNumber:@"CSIGenerator.m" description:1204, @"[CSIGenerator writeResourcesToData:] writing renditionProperties key must be a string, value can only be string, NSNumber or CGColorRef"];
             free(v186);
             if (v187)
@@ -1455,7 +1455,7 @@ LABEL_33:
             free(v187);
             free(v186);
             v175 = 0;
-            v3 = v262;
+            dataCopy = v262;
           }
 
           v182 = v182 + 1;
@@ -1470,7 +1470,7 @@ LABEL_33:
     }
   }
 
-  v198 = *(v3 + 40);
+  v198 = *(dataCopy + 40);
   v199 = vmovn_s64(vceqq_f64(v198, CGSizeZero));
   if ((v199.i32[0] & v199.i32[1] & 1) == 0)
   {
@@ -1482,21 +1482,21 @@ LABEL_33:
     v170 += 20;
   }
 
-  v200 = *(v3 + 196);
+  v200 = *(dataCopy + 196);
   if (!v200)
   {
     v200 = 1;
-    *(v3 + 196) = 1;
+    *(dataCopy + 196) = 1;
   }
 
   *v265 = v200;
   v297 = 0x4000003EELL;
   OUTLINED_FUNCTION_3_0();
   [OUTLINED_FUNCTION_9_0() appendBytes:? length:?];
-  v201 = *(v3 + 528);
-  v202 = *(v3 + 544);
-  v203 = *(v3 + 560);
-  v204 = *(v3 + 576);
+  v201 = *(dataCopy + 528);
+  v202 = *(dataCopy + 544);
+  v203 = *(dataCopy + 560);
+  v204 = *(dataCopy + 576);
   if ((vminvq_u32(vandq_s8(vandq_s8(vceqzq_f32(v202), vceqzq_f32(v201)), vandq_s8(vceqzq_f32(v203), vceqzq_f32(v204)))) & 0x80000000) != 0)
   {
     v205 = v170 + 12;
@@ -1515,41 +1515,41 @@ LABEL_33:
     v205 = v170 + 88;
   }
 
-  if (*(v3 + 200))
+  if (*(dataCopy + 200))
   {
-    *v265 = *(v3 + 200);
+    *v265 = *(dataCopy + 200);
     v297 = 0x4000003EFLL;
     OUTLINED_FUNCTION_3_0();
     [OUTLINED_FUNCTION_9_0() appendBytes:? length:?];
     v205 += 12;
   }
 
-  if (!CGRectIsEmpty(*(v3 + 280)))
+  if (!CGRectIsEmpty(*(dataCopy + 280)))
   {
     *v265 = 1011;
-    OUTLINED_FUNCTION_18_0(*(v3 + 264), *(v3 + 280));
-    *&v265[24] = vmovn_s64(vcvtq_u64_f64(*(v3 + 296)));
+    OUTLINED_FUNCTION_18_0(*(dataCopy + 264), *(dataCopy + 280));
+    *&v265[24] = vmovn_s64(vcvtq_u64_f64(*(dataCopy + 296)));
     v297 = 0x20000003F3;
     OUTLINED_FUNCTION_3_0();
     [OUTLINED_FUNCTION_9_0() appendBytes:? length:?];
     v205 += 40;
   }
 
-  v206 = *(v3 + 138);
+  v206 = *(dataCopy + 138);
   if (v206 == 1005)
   {
     v285.i32[0] = 0;
     v207 = objc_alloc_init(NSMutableData);
-    *v265 = [*(v3 + 312) count];
+    *v265 = [*(dataCopy + 312) count];
     [OUTLINED_FUNCTION_14_0() appendBytes:? length:?];
     if (*v265)
     {
       v208 = 0;
       do
       {
-        v209 = CFStringGetMaximumSizeOfFileSystemRepresentation([*(v3 + 312) objectAtIndex:v208]);
+        v209 = CFStringGetMaximumSizeOfFileSystemRepresentation([*(dataCopy + 312) objectAtIndex:v208]);
         v210 = malloc_type_malloc(v209, 0x1791A74EuLL);
-        CFStringGetFileSystemRepresentation([*(v3 + 312) objectAtIndex:v208], v210, v209);
+        CFStringGetFileSystemRepresentation([*(dataCopy + 312) objectAtIndex:v208], v210, v209);
         v211 = OUTLINED_FUNCTION_10_0();
         v285.i32[0] = strnlen(v211, v212);
         [v207 appendBytes:&v285 length:4];
@@ -1566,15 +1566,15 @@ LABEL_33:
     [OUTLINED_FUNCTION_7_0() appendData:?];
     v205 += [v207 length] + 8;
 
-    v206 = *(v3 + 138);
+    v206 = *(dataCopy + 138);
   }
 
   if (v206 == 1007)
   {
     v213 = objc_alloc_init(NSMutableData);
-    v214 = [v3 textureInterpretation];
-    v215 = *(v3 + 368);
-    *&v265[4] = v214;
+    textureInterpretation = [dataCopy textureInterpretation];
+    v215 = *(dataCopy + 368);
+    *&v265[4] = textureInterpretation;
     *&v265[8] = v215;
     *v265 = 0;
     [OUTLINED_FUNCTION_14_0() appendBytes:? length:?];
@@ -1584,19 +1584,19 @@ LABEL_33:
     v205 += [v213 length] + 8;
   }
 
-  if ([*(v3 + 632) count] || *(v3 + 640))
+  if ([*(dataCopy + 632) count] || *(dataCopy + 640))
   {
     v216 = objc_alloc_init(NSMutableData);
-    v217 = [*(v3 + 632) count];
+    v217 = [*(dataCopy + 632) count];
     v218 = v217;
-    v219 = *(v3 + 640);
+    v219 = *(dataCopy + 640);
     *v265 = 3;
     *&v265[4] = v219;
-    *&v265[8] = *(v3 + 644);
-    *&v265[16] = *(v3 + 652);
-    v220 = vcvt_hight_f32_f64(vcvt_f32_f64(*(v3 + 656)), *(v3 + 672));
+    *&v265[8] = *(dataCopy + 644);
+    *&v265[16] = *(dataCopy + 652);
+    v220 = vcvt_hight_f32_f64(vcvt_f32_f64(*(dataCopy + 656)), *(dataCopy + 672));
     *&v265[20] = vextq_s8(v220, v220, 4uLL);
-    if (*(v3 + 688) == 1)
+    if (*(dataCopy + 688) == 1)
     {
       *v265 = 7;
     }
@@ -1608,7 +1608,7 @@ LABEL_33:
       for (ii = 0; ii != v218; ++ii)
       {
         v285.i64[0] = ii;
-        v285.i32[1] = [objc_msgSend(*(v3 + 632) objectAtIndex:{ii), "intValue"}];
+        v285.i32[1] = [objc_msgSend(*(dataCopy + 632) objectAtIndex:{ii), "intValue"}];
         [v216 appendBytes:&v285 length:8];
       }
     }
@@ -1619,9 +1619,9 @@ LABEL_33:
     v222 = [v216 length];
 
     v223 = objc_alloc_init(NSMutableData);
-    v285.i32[1] = *(v3 + 104);
+    v285.i32[1] = *(dataCopy + 104);
     v285.i32[0] = 1;
-    v285.i32[2] = *(v3 + 112) | (2 * *(v3 + 113));
+    v285.i32[2] = *(dataCopy + 112) | (2 * *(dataCopy + 113));
     [v223 appendBytes:&v285 length:12];
     v283 = 1019;
     v224 = [v223 length];
@@ -1634,15 +1634,15 @@ LABEL_33:
   return v205;
 }
 
-- (uint64_t)writeBitmap:(void *)a3 toData:(uint64_t)a4 compress:
+- (uint64_t)writeBitmap:(void *)bitmap toData:(uint64_t)data compress:
 {
-  v4 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v27 = 0;
     v24 = 0;
     v21 = 0;
-    v7 = [a2 compressedData:a4 usedEncoding:&v21 + 4 andRowChunkSize:&v21];
+    v7 = [a2 compressedData:data usedEncoding:&v21 + 4 andRowChunkSize:&v21];
     v8 = [v7 count];
     v26 = 1128614989;
     v28 = HIDWORD(v21);
@@ -1650,7 +1650,7 @@ LABEL_33:
     v22 = 1128416075;
     v23 = 0;
     v25 = 0;
-    if ([v4 allowsMultiPassEncoding] && (!objc_msgSend(a2, "sourceAlphaInfo") || objc_msgSend(a2, "sourceAlphaInfo") == 6 || objc_msgSend(a2, "sourceAlphaInfo") == 5))
+    if ([selfCopy allowsMultiPassEncoding] && (!objc_msgSend(a2, "sourceAlphaInfo") || objc_msgSend(a2, "sourceAlphaInfo") == 6 || objc_msgSend(a2, "sourceAlphaInfo") == 5))
     {
       v9 = 2;
     }
@@ -1664,8 +1664,8 @@ LABEL_33:
     {
       v27 = v9 | 1;
       v29 = v8;
-      v4 = 16;
-      [a3 appendBytes:&v26 length:16];
+      selfCopy = 16;
+      [bitmap appendBytes:&v26 length:16];
       v13 = 0;
       v14 = v21;
       v15 = v21;
@@ -1675,8 +1675,8 @@ LABEL_33:
         v17 = [v16 length];
         v24 = v15;
         v25 = v17;
-        [a3 appendBytes:&v22 length:20];
-        [a3 appendData:v16];
+        [bitmap appendBytes:&v22 length:20];
+        [bitmap appendData:v16];
         v18 = v25;
         v19 = v14 + v15;
         if (v14 + v15 > [a2 height])
@@ -1684,7 +1684,7 @@ LABEL_33:
           v15 = [a2 height] - v14;
         }
 
-        v4 += v18 + 20;
+        selfCopy += v18 + 20;
         ++v13;
         v14 = v19;
       }
@@ -1695,14 +1695,14 @@ LABEL_33:
     else
     {
       v27 = v9;
-      v10 = [v7 lastObject];
-      if (v10)
+      lastObject = [v7 lastObject];
+      if (lastObject)
       {
-        v11 = v10;
-        v12 = [v10 length];
+        v11 = lastObject;
+        v12 = [lastObject length];
         v29 += v12;
-        [a3 appendBytes:&v26 length:16];
-        [a3 appendData:v11];
+        [bitmap appendBytes:&v26 length:16];
+        [bitmap appendData:v11];
         return v29 + 16;
       }
 
@@ -1713,10 +1713,10 @@ LABEL_33:
     }
   }
 
-  return v4;
+  return selfCopy;
 }
 
-- (id)_addNodes:(uint64_t)a3 toNodeList:
+- (id)_addNodes:(uint64_t)nodes toNodeList:
 {
   if (result)
   {
@@ -1729,10 +1729,10 @@ LABEL_33:
       isKindOfClass = objc_opt_isKindOfClass();
       if ((isKindOfClass & 1) == 0)
       {
-        v11 = [v6 isColorStop];
+        isColorStop = [v6 isColorStop];
         isKindOfClass = [v6 isOpacityStop];
         v12 = isKindOfClass;
-        if (isKindOfClass & 1) != 0 || (v11)
+        if (isKindOfClass & 1) != 0 || (isColorStop)
         {
           goto LABEL_7;
         }
@@ -1740,7 +1740,7 @@ LABEL_33:
         isKindOfClass = [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:sel__addNodes_toNodeList_ file:v5 lineNumber:@"CSIGenerator.m" description:1576, @"Unsupported gradient nodes: %@", a2];
       }
 
-      v11 = 0;
+      isColorStop = 0;
       v12 = 0;
 LABEL_7:
       result = OUTLINED_FUNCTION_20_0(isKindOfClass, v8, v9, v10);
@@ -1755,7 +1755,7 @@ LABEL_7:
       do
       {
         v15 = 0;
-        v16 = (a3 + 32 + 72 * v41);
+        v16 = (nodes + 32 + 72 * v41);
         v41 += v13;
         do
         {
@@ -1765,7 +1765,7 @@ LABEL_7:
           }
 
           v17 = *v15;
-          if (v11)
+          if (isColorStop)
           {
             [*v15 colorLocation];
             v19 = v18;
@@ -1775,10 +1775,10 @@ LABEL_7:
             v25 = v24;
             v27 = v26;
             OUTLINED_FUNCTION_10_0();
-            v28 = objc_opt_respondsToSelector();
-            if (v28)
+            leadOutColor = objc_opt_respondsToSelector();
+            if (leadOutColor)
             {
-              v28 = [v17 leadOutColor];
+              leadOutColor = [v17 leadOutColor];
               v36 = 1129270340;
               goto LABEL_22;
             }
@@ -1792,11 +1792,11 @@ LABEL_7:
             v19 = v37;
             [v17 opacity];
             v27 = v38;
-            v28 = objc_opt_respondsToSelector();
+            leadOutColor = objc_opt_respondsToSelector();
             v21 = 0;
-            if (v28)
+            if (leadOutColor)
             {
-              v28 = [v17 leadOutOpacity];
+              leadOutColor = [v17 leadOutOpacity];
               v35 = v39;
               v23 = 0;
               v25 = 0;
@@ -1814,7 +1814,7 @@ LABEL_7:
 
           else
           {
-            v28 = [*v15 floatValue];
+            leadOutColor = [*v15 floatValue];
             v19 = v40;
             v21 = 0;
             v23 = 0;
@@ -1844,7 +1844,7 @@ LABEL_22:
         }
 
         while (v13);
-        result = OUTLINED_FUNCTION_20_0(v28, v29, v30, v31);
+        result = OUTLINED_FUNCTION_20_0(leadOutColor, v29, v30, v31);
         v13 = result;
       }
 
@@ -1855,22 +1855,22 @@ LABEL_22:
   return result;
 }
 
-- (uint64_t)writeGradientToData:(id *)a1
+- (uint64_t)writeGradientToData:(id *)data
 {
-  if (!a1)
+  if (!data)
   {
     return 0;
   }
 
-  v3 = [a1[18] evaluator];
-  v19 = [v3 colorStops];
-  v20 = [v3 colorMidpointLocations];
-  v21 = [v3 opacityStops];
-  v22 = [v3 opacityMidpointLocations];
-  v4 = [v19 count];
-  v5 = [v20 count];
-  v6 = [v21 count];
-  v7 = [v22 count];
+  evaluator = [data[18] evaluator];
+  colorStops = [evaluator colorStops];
+  colorMidpointLocations = [evaluator colorMidpointLocations];
+  opacityStops = [evaluator opacityStops];
+  opacityMidpointLocations = [evaluator opacityMidpointLocations];
+  v4 = [colorStops count];
+  v5 = [colorMidpointLocations count];
+  v6 = [opacityStops count];
+  v7 = [opacityMidpointLocations count];
   v8 = 72 * (v5 + v4 + v6 + v7);
   v9 = v8 + 80;
   OUTLINED_FUNCTION_13_0();
@@ -1878,36 +1878,36 @@ LABEL_22:
   *v11 = 1196572996;
   v11[4] = 2;
   v11[2] = v8;
-  v11[3] = [a1[18] gradientStyle];
-  [a1[18] drawingAngle];
+  v11[3] = [data[18] gradientStyle];
+  [data[18] drawingAngle];
   *&v12 = v12;
   v11[14] = LODWORD(v12);
-  [v3 smoothingCoefficient];
+  [evaluator smoothingCoefficient];
   *&v13 = v13;
   v11[15] = LODWORD(v13);
-  v11[1] = [v3 isDithered];
-  [v3 fillColor];
+  v11[1] = [evaluator isDithered];
+  [evaluator fillColor];
   *(v11 + 3) = v14;
   *(v11 + 4) = v15;
   *(v11 + 5) = v16;
   *(v11 + 6) = v17;
-  v11[5] = [v3 blendMode];
+  v11[5] = [evaluator blendMode];
   v11[16] = v4;
   v11[17] = v5;
   v11[18] = v6;
   v11[19] = v7;
-  [(CSIGenerator *)a1 _addNodes:v19 toNodeList:(v11 + 20)];
-  [(CSIGenerator *)a1 _addNodes:v20 toNodeList:&v11[18 * v4 + 20]];
-  [(CSIGenerator *)a1 _addNodes:v21 toNodeList:&v11[18 * v5 + 20 + 18 * v4]];
-  [(CSIGenerator *)a1 _addNodes:v22 toNodeList:&v11[18 * v5 + 20 + 18 * v4 + 18 * v6]];
+  [(CSIGenerator *)data _addNodes:colorStops toNodeList:(v11 + 20)];
+  [(CSIGenerator *)data _addNodes:colorMidpointLocations toNodeList:&v11[18 * v4 + 20]];
+  [(CSIGenerator *)data _addNodes:opacityStops toNodeList:&v11[18 * v5 + 20 + 18 * v4]];
+  [(CSIGenerator *)data _addNodes:opacityMidpointLocations toNodeList:&v11[18 * v5 + 20 + 18 * v4 + 18 * v6]];
   [a2 appendBytes:v11 length:v8 + 80];
   free(v11);
   return v9;
 }
 
-- (uint64_t)writeColorToData:(uint64_t)a1
+- (uint64_t)writeColorToData:(uint64_t)data
 {
-  if (!a1)
+  if (!data)
   {
     return 0;
   }
@@ -1940,19 +1940,19 @@ LABEL_22:
   free(v8);
   if ([v2[48] length])
   {
-    v12 = [v2[48] UTF8String];
-    v13 = strlen(v12);
+    uTF8String = [v2[48] UTF8String];
+    v13 = strlen(uTF8String);
     OUTLINED_FUNCTION_24_0(v13, v14, v15, v16, v17, v18, v19, v20, 0x1434F4C52, v22);
-    [v1 appendBytes:v12 length:v23];
+    [v1 appendBytes:uTF8String length:v23];
     return v5 + v23 + 28;
   }
 
   return v6;
 }
 
-- (uint64_t)writeNamedGradientToData:(uint64_t)a1
+- (uint64_t)writeNamedGradientToData:(uint64_t)data
 {
-  if (!a1)
+  if (!data)
   {
     return 0;
   }
@@ -2007,32 +2007,32 @@ LABEL_22:
   return v6;
 }
 
-- (uint64_t)writeTextStyleToData:(CFStringRef *)a1
+- (uint64_t)writeTextStyleToData:(CFStringRef *)data
 {
-  if (!a1)
+  if (!data)
   {
     return 0;
   }
 
-  MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(a1[58]);
+  MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(data[58]);
   v3 = malloc_type_malloc(MaximumSizeOfFileSystemRepresentation, 0xD1F32978uLL);
-  CFStringGetFileSystemRepresentation(a1[58], v3, MaximumSizeOfFileSystemRepresentation);
+  CFStringGetFileSystemRepresentation(data[58], v3, MaximumSizeOfFileSystemRepresentation);
   v4 = strnlen(v3, MaximumSizeOfFileSystemRepresentation) + 1;
   v5 = v4 + 32;
   OUTLINED_FUNCTION_13_0();
   v7 = malloc_type_calloc(v4 + 32, 1uLL, v6);
   *v7 = 0x15354594CLL;
-  *(v7 + 2) = [(CFStringRef *)a1 scalingStyle];
-  [(CFStringRef *)a1 fontSize];
+  *(v7 + 2) = [(CFStringRef *)data scalingStyle];
+  [(CFStringRef *)data fontSize];
   *&v8 = v8;
   *(v7 + 3) = LODWORD(v8);
-  [(CFStringRef *)a1 maxPointSize];
+  [(CFStringRef *)data maxPointSize];
   *&v9 = v9;
   *(v7 + 4) = LODWORD(v9);
-  [(CFStringRef *)a1 minPointSize];
+  [(CFStringRef *)data minPointSize];
   *&v10 = v10;
   *(v7 + 5) = LODWORD(v10);
-  *(v7 + 6) = [(CFStringRef *)a1 alignment];
+  *(v7 + 6) = [(CFStringRef *)data alignment];
   *(v7 + 7) = v4;
   strcpy(v7 + 32, v3);
   [OUTLINED_FUNCTION_17_0() appendBytes:? length:?];
@@ -2041,9 +2041,9 @@ LABEL_22:
   return v5;
 }
 
-- (size_t)writeMultisizeImageSetToData:(uint64_t)a1
+- (size_t)writeMultisizeImageSetToData:(uint64_t)data
 {
-  if (!a1)
+  if (!data)
   {
     return 0;
   }
@@ -2126,25 +2126,25 @@ LABEL_22:
   return v27 + 12;
 }
 
-- (uint64_t)writeExternalLinkToData:(uint64_t)a1
+- (uint64_t)writeExternalLinkToData:(uint64_t)data
 {
-  if (!a1)
+  if (!data)
   {
     return 0;
   }
 
   v32 = 1008;
   v33 = 1163414603;
-  v34 = [*(a1 + 216) count];
+  v34 = [*(data + 216) count];
   [a2 appendBytes:&v33 length:12];
-  if (![*(a1 + 208) length])
+  if (![*(data + 208) length])
   {
-    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:sel_writeExternalLinkToData_ file:a1 lineNumber:@"CSIGenerator.m" description:1881, @"We must have an assetpack identifier or none of this will work"];
+    [+[NSAssertionHandler currentHandler](NSAssertionHandler handleFailureInMethod:"handleFailureInMethod:object:file:lineNumber:description:" object:sel_writeExternalLinkToData_ file:data lineNumber:@"CSIGenerator.m" description:1881, @"We must have an assetpack identifier or none of this will work"];
   }
 
-  MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(*(a1 + 208));
+  MaximumSizeOfFileSystemRepresentation = CFStringGetMaximumSizeOfFileSystemRepresentation(*(data + 208));
   v6 = malloc_type_malloc(MaximumSizeOfFileSystemRepresentation, 0x23C4829DuLL);
-  CFStringGetFileSystemRepresentation(*(a1 + 208), v6, MaximumSizeOfFileSystemRepresentation);
+  CFStringGetFileSystemRepresentation(*(data + 208), v6, MaximumSizeOfFileSystemRepresentation);
   v7 = OUTLINED_FUNCTION_1_0();
   v9 = strnlen(v7, v8);
   HIDWORD(v32) = v9 + 1;
@@ -2156,7 +2156,7 @@ LABEL_22:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v12 = *(a1 + 216);
+  v12 = *(data + 216);
   v15 = OUTLINED_FUNCTION_12_0(v13, v14, &v28, v35);
   if (v15)
   {
@@ -2196,17 +2196,17 @@ LABEL_22:
   return v11;
 }
 
-- (uint64_t)writeTextureToData:(uint64_t)a1
+- (uint64_t)writeTextureToData:(uint64_t)data
 {
-  if (!a1)
+  if (!data)
   {
     return 0;
   }
 
   v24 = 1415074898;
-  v25 = *(a1 + 344);
+  v25 = *(data + 344);
   v26 = 0x100000001;
-  if (*(a1 + 336))
+  if (*(data + 336))
   {
     v4 = 5;
   }
@@ -2217,14 +2217,14 @@ LABEL_22:
   }
 
   v27 = v4;
-  v28 = [*(a1 + 360) count];
+  v28 = [*(data + 360) count];
   v5 = 24;
   v6 = [a2 appendBytes:&v24 length:24];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v7 = *(a1 + 360);
+  v7 = *(data + 360);
   v9 = OUTLINED_FUNCTION_12_0(v6, v8, &v20, v29);
   if (v9)
   {
@@ -2274,9 +2274,9 @@ LABEL_22:
   return result;
 }
 
-- (id)CSIRepresentationWithCompression:(BOOL)a3
+- (id)CSIRepresentationWithCompression:(BOOL)compression
 {
-  v82 = a3;
+  compressionCopy = compression;
   v5 = +[NSMutableData data];
   bzero(v87, 0xB0uLL);
   [CSIGenerator formatCSIHeader:?];
@@ -2363,9 +2363,9 @@ LABEL_37:
       v66 = v52;
       v67 = [v52 writeToData:v5];
 
-      v68 = [v5 mutableBytes];
-      v68[44] = 0;
-      v68[45] = v67;
+      mutableBytes = [v5 mutableBytes];
+      mutableBytes[44] = 0;
+      mutableBytes[45] = v67;
       goto LABEL_6;
     case 0x3FD:
       v47 = OUTLINED_FUNCTION_1_0();
@@ -2379,9 +2379,9 @@ LABEL_37:
         v72 = OUTLINED_FUNCTION_1_0();
         v3 = [(CSIGenerator *)v72 writeResourcesToData:v73];
         [v5 appendData:{-[CUIShapeEffectPreset CUIEffectDataRepresentation](self->_effectPreset, "CUIEffectDataRepresentation")}];
-        v74 = [v5 mutableBytes];
-        v74[44] = 0;
-        v74[45] = [v5 length];
+        mutableBytes2 = [v5 mutableBytes];
+        mutableBytes2[44] = 0;
+        mutableBytes2[45] = [v5 length];
         goto LABEL_6;
       }
 
@@ -2404,9 +2404,9 @@ LABEL_4:
         v11 = [CSIGenerator writeRawDataToData:v10];
 LABEL_5:
         v12 = v11;
-        v13 = [v5 mutableBytes];
-        v13[44] = 0;
-        v13[45] = v12;
+        mutableBytes3 = [v5 mutableBytes];
+        mutableBytes3[44] = 0;
+        mutableBytes3[45] = v12;
 LABEL_6:
         *([v5 mutableBytes] + 42) = v3;
         return v5;
@@ -2424,32 +2424,32 @@ LABEL_6:
       v86 = 0u;
       v83 = 0u;
       v84 = 0u;
-      v18 = self;
+      selfCopy = self;
       bitmaps = self->_bitmaps;
       v20 = OUTLINED_FUNCTION_21_0();
       if (!v20)
       {
 LABEL_18:
-        p_isa = &v18->super.isa;
-        v18->_rowbytes = [-[NSMutableArray firstObject](v18->_bitmaps "firstObject")];
+        p_isa = &selfCopy->super.isa;
+        selfCopy->_rowbytes = [-[NSMutableArray firstObject](selfCopy->_bitmaps "firstObject")];
         v5 = v80;
-        v3 = [(CSIGenerator *)v18 writeResourcesToData:v80];
+        v3 = [(CSIGenerator *)selfCopy writeResourcesToData:v80];
         [v5 appendData:v17];
-        v28 = [v5 mutableBytes];
+        mutableBytes4 = [v5 mutableBytes];
         v29 = [objc_msgSend(p_isa[8] "firstObject")];
         v30 = [objc_msgSend(p_isa[8] "firstObject")];
         if ([p_isa colorSpaceID] != v30 || v29 != objc_msgSend(p_isa, "pixelFormat"))
         {
-          v31 = v28[7] & 0xFFFFFFF0 | v30 & 0xF;
-          v28[6] = v29;
-          v28[7] = v31;
+          v31 = mutableBytes4[7] & 0xFFFFFFF0 | v30 & 0xF;
+          mutableBytes4[6] = v29;
+          mutableBytes4[7] = v31;
         }
 
         v32 = v79;
         if (v79)
         {
           v33 = 0;
-          v34 = v28 + 44;
+          v34 = mutableBytes4 + 44;
           do
           {
             *v34++ = v33;
@@ -2478,7 +2478,7 @@ LABEL_12:
           objc_enumerationMutation(bitmaps);
         }
 
-        v26 = [(CSIGenerator *)v18 writeBitmap:v17 toData:v82 compress:?];
+        v26 = [(CSIGenerator *)selfCopy writeBitmap:v17 toData:compressionCopy compress:?];
         if (!v26)
         {
           return 0;

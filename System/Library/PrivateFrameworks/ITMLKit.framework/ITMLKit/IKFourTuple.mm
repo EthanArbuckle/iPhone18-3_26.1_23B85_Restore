@@ -1,23 +1,23 @@
 @interface IKFourTuple
 - (IKCornerRadii)cornerRadiiValue;
-- (IKFourTuple)initWithCornerRadii:(IKCornerRadii)a3;
-- (IKFourTuple)initWithStyleString:(id)a3;
+- (IKFourTuple)initWithCornerRadii:(IKCornerRadii)radii;
+- (IKFourTuple)initWithStyleString:(id)string;
 - (UIEdgeInsets)edgeInsetsValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation IKFourTuple
 
-- (IKFourTuple)initWithStyleString:(id)a3
+- (IKFourTuple)initWithStyleString:(id)string
 {
-  v4 = a3;
+  stringCopy = string;
   v21.receiver = self;
   v21.super_class = IKFourTuple;
   v5 = [(IKFourTuple *)&v21 init];
   if (v5)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
-    v7 = [v4 componentsSeparatedByString:@" "];
+    v7 = [stringCopy componentsSeparatedByString:@" "];
     v19[0] = MEMORY[0x277D85DD0];
     v19[1] = 3221225472;
     v19[2] = __35__IKFourTuple_initWithStyleString___block_invoke;
@@ -88,12 +88,12 @@ void __35__IKFourTuple_initWithStyleString___block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (IKFourTuple)initWithCornerRadii:(IKCornerRadii)a3
+- (IKFourTuple)initWithCornerRadii:(IKCornerRadii)radii
 {
-  var3 = a3.var3;
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var3 = radii.var3;
+  var2 = radii.var2;
+  var1 = radii.var1;
+  var0 = radii.var0;
   v8.receiver = self;
   v8.super_class = IKFourTuple;
   result = [(IKFourTuple *)&v8 init];
@@ -226,10 +226,10 @@ LABEL_9:
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_namedStyle copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_namedStyle copyWithZone:zone];
   v7 = *(v5 + 8);
   *(v5 + 8) = v6;
 

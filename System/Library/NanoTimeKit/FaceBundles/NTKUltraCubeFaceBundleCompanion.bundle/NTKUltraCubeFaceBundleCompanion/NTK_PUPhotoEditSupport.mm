@@ -1,15 +1,15 @@
 @interface NTK_PUPhotoEditSupport
-+ (BOOL)photoWasTakenWithoutFlashWithImageProperties:(id)a3;
-+ (double)changeValueOfSlider:(id)a3 reverse:(BOOL)a4 coarse:(BOOL)a5;
-+ (id)photoEditStylisticFontForSize:(double)a3;
++ (BOOL)photoWasTakenWithoutFlashWithImageProperties:(id)properties;
++ (double)changeValueOfSlider:(id)slider reverse:(BOOL)reverse coarse:(BOOL)coarse;
++ (id)photoEditStylisticFontForSize:(double)size;
 @end
 
 @implementation NTK_PUPhotoEditSupport
 
-+ (BOOL)photoWasTakenWithoutFlashWithImageProperties:(id)a3
++ (BOOL)photoWasTakenWithoutFlashWithImageProperties:(id)properties
 {
-  v3 = [a3 metadata];
-  v4 = [v3 objectForKeyedSubscript:kCGImagePropertyExifDictionary];
+  metadata = [properties metadata];
+  v4 = [metadata objectForKeyedSubscript:kCGImagePropertyExifDictionary];
 
   v5 = [v4 objectForKeyedSubscript:kCGImagePropertyExifFlash];
   v7 = ([v5 integerValue] & 1) == 0 && v5 != 0;
@@ -17,21 +17,21 @@
   return v7;
 }
 
-+ (double)changeValueOfSlider:(id)a3 reverse:(BOOL)a4 coarse:(BOOL)a5
++ (double)changeValueOfSlider:(id)slider reverse:(BOOL)reverse coarse:(BOOL)coarse
 {
-  v5 = a5;
-  v6 = a4;
-  v7 = a3;
-  [v7 maximumValue];
+  coarseCopy = coarse;
+  reverseCopy = reverse;
+  sliderCopy = slider;
+  [sliderCopy maximumValue];
   v9 = v8;
-  [v7 minimumValue];
-  v11 = (v9 - v10) / fmax(([v7 tickMarkCount] - 1), 1.0);
-  if (v6)
+  [sliderCopy minimumValue];
+  v11 = (v9 - v10) / fmax(([sliderCopy tickMarkCount] - 1), 1.0);
+  if (reverseCopy)
   {
     v11 = -v11;
   }
 
-  if (v5)
+  if (coarseCopy)
   {
     v12 = v11 * 5.0;
   }
@@ -41,16 +41,16 @@
     v12 = v11;
   }
 
-  [v7 value];
-  [v7 setValue:v13 + v12];
+  [sliderCopy value];
+  [sliderCopy setValue:v13 + v12];
 
   return v12;
 }
 
-+ (id)photoEditStylisticFontForSize:(double)a3
++ (id)photoEditStylisticFontForSize:(double)size
 {
-  v4 = [UIFont systemFontOfSize:UIFontSystemFontDesignAlternate weight:a3 design:UIFontWeightRegular];
-  v5 = [v4 fontDescriptor];
+  v4 = [UIFont systemFontOfSize:UIFontSystemFontDesignAlternate weight:size design:UIFontWeightRegular];
+  fontDescriptor = [v4 fontDescriptor];
   v20[0] = UIFontFeatureTypeIdentifierKey;
   v20[1] = UIFontFeatureSelectorIdentifierKey;
   v21[0] = &off_4B870;
@@ -74,9 +74,9 @@
   v14 = UIFontDescriptorFeatureSettingsAttribute;
   v15 = v9;
   v10 = [NSDictionary dictionaryWithObjects:&v15 forKeys:&v14 count:1];
-  v11 = [v5 fontDescriptorByAddingAttributes:v10];
+  v11 = [fontDescriptor fontDescriptorByAddingAttributes:v10];
 
-  v12 = [UIFont fontWithDescriptor:v11 size:a3];
+  v12 = [UIFont fontWithDescriptor:v11 size:size];
 
   return v12;
 }

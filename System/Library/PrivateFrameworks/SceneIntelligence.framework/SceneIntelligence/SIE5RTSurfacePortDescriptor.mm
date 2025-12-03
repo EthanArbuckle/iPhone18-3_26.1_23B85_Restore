@@ -1,8 +1,8 @@
 @interface SIE5RTSurfacePortDescriptor
-- (SIE5RTSurfacePortDescriptor)initWithE5RTPort:(e5rt_io_port *)a3 portType:(int64_t)a4;
+- (SIE5RTSurfacePortDescriptor)initWithE5RTPort:(e5rt_io_port *)port portType:(int64_t)type;
 - (const)getShape;
 - (id)getSurface;
-- (int64_t)bindSurface:(id)a3;
+- (int64_t)bindSurface:(id)surface;
 - (unint64_t)getBatchnum;
 - (unint64_t)getBytePerRow;
 - (unint64_t)getChannels;
@@ -11,19 +11,19 @@
 - (unint64_t)getRank;
 - (unint64_t)getRowElements;
 - (unint64_t)getSizeInBytes;
-- (void)bindRawPointer:(const void *)a3;
+- (void)bindRawPointer:(const void *)pointer;
 - (void)dealloc;
 - (void)getDataPtr;
 @end
 
 @implementation SIE5RTSurfacePortDescriptor
 
-- (SIE5RTSurfacePortDescriptor)initWithE5RTPort:(e5rt_io_port *)a3 portType:(int64_t)a4
+- (SIE5RTSurfacePortDescriptor)initWithE5RTPort:(e5rt_io_port *)port portType:(int64_t)type
 {
   v30 = *MEMORY[0x277D85DE8];
   v23.receiver = self;
   v23.super_class = SIE5RTSurfacePortDescriptor;
-  v5 = [(SIE5RTSurfacePortDescriptor *)&v23 init:a3];
+  v5 = [(SIE5RTSurfacePortDescriptor *)&v23 init:port];
   if (v5)
   {
     if (e5rt_io_port_retain_surface_desc())
@@ -47,7 +47,7 @@
         v9 = "YES";
         v25 = "/Library/Caches/com.apple.xbs/Sources/SceneIntelligence/Source/Common/E5RT/SIE5RTSurfacePortDescriptor.mm";
         *buf = 136381187;
-        if (!a3)
+        if (!port)
         {
           v9 = "NO";
         }
@@ -62,7 +62,7 @@
 
     else
     {
-      v5->_port = a3;
+      v5->_port = port;
       desc = v5->_desc;
       if (e5rt_surface_desc_get_width())
       {
@@ -162,14 +162,14 @@ LABEL_29:
   return v20;
 }
 
-- (int64_t)bindSurface:(id)a3
+- (int64_t)bindSurface:(id)surface
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  surfaceCopy = surface;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
-  v19 = [v4 createE5RTSurface];
+  createE5RTSurface = [surfaceCopy createE5RTSurface];
   if (v17[3])
   {
     v12[0] = MEMORY[0x277D85DD0];
@@ -225,7 +225,7 @@ LABEL_29:
   return v9;
 }
 
-- (void)bindRawPointer:(const void *)a3
+- (void)bindRawPointer:(const void *)pointer
 {
   v9 = *MEMORY[0x277D85DE8];
   v3 = __SceneIntelligenceLogSharedInstance();

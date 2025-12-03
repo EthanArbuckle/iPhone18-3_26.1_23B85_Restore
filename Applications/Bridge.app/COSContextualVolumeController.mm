@@ -6,8 +6,8 @@
 - (COSContextualVolumeControllerDelegate)delegate;
 - (NSNumber)ringtoneUserVolume;
 - (NSString)profileValue;
-- (void)setEnabled:(BOOL)a3;
-- (void)setRingtoneUserVolume:(float)a3;
+- (void)setEnabled:(BOOL)enabled;
+- (void)setRingtoneUserVolume:(float)volume;
 @end
 
 @implementation COSContextualVolumeController
@@ -41,21 +41,21 @@
 
 - (BOOL)enabled
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ConsiderateVolumeSettingsController.isEnabled(for:)();
 
   return v3 & 1;
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = self;
+  selfCopy = self;
   ConsiderateVolumeSettingsController.setEnabled(_:for:)();
 }
 
 - (NSString)profileValue
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001544AC();
 
   v3 = String._bridgeToObjectiveC()();
@@ -65,7 +65,7 @@
 
 - (NSNumber)ringtoneUserVolume
 {
-  v2 = self;
+  selfCopy = self;
   v3 = ConsiderateVolumeSettingsController.ringtoneUserVolume.getter();
   if ((v3 & 0x100000000) != 0)
   {
@@ -83,9 +83,9 @@
   return v7;
 }
 
-- (void)setRingtoneUserVolume:(float)a3
+- (void)setRingtoneUserVolume:(float)volume
 {
-  v3 = self;
+  selfCopy = self;
   ConsiderateVolumeSettingsController.ringtoneUserVolume.setter();
 }
 

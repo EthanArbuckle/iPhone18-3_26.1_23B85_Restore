@@ -6,12 +6,12 @@
 
 - (uint64_t)avtui_isMoving
 {
-  if ([a1 isDragging] & 1) != 0 || (objc_msgSend(a1, "isTracking") & 1) != 0 || (objc_msgSend(a1, "isDecelerating"))
+  if ([self isDragging] & 1) != 0 || (objc_msgSend(self, "isTracking") & 1) != 0 || (objc_msgSend(self, "isDecelerating"))
   {
     return 1;
   }
 
-  return [a1 isScrollAnimating];
+  return [self isScrollAnimating];
 }
 
 @end

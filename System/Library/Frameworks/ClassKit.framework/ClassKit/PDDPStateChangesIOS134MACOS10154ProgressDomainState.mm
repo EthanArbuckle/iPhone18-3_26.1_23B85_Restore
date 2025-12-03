@@ -1,18 +1,18 @@
 @interface PDDPStateChangesIOS134MACOS10154ProgressDomainState
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int)StringAsDomain:(id)a3;
-- (int)StringAsState:(id)a3;
+- (int)StringAsDomain:(id)domain;
+- (int)StringAsState:(id)state;
 - (int)domain;
 - (int)state;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDomain:(BOOL)a3;
-- (void)setHasState:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDomain:(BOOL)domain;
+- (void)setHasState:(BOOL)state;
+- (void)writeTo:(id)to;
 @end
 
 @implementation PDDPStateChangesIOS134MACOS10154ProgressDomainState
@@ -30,9 +30,9 @@
   }
 }
 
-- (void)setHasDomain:(BOOL)a3
+- (void)setHasDomain:(BOOL)domain
 {
-  if (a3)
+  if (domain)
   {
     v3 = 2;
   }
@@ -45,35 +45,35 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (int)StringAsDomain:(id)a3
+- (int)StringAsDomain:(id)domain
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_DOMAIN"])
+  domainCopy = domain;
+  if ([domainCopy isEqualToString:@"UNKNOWN_DOMAIN"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"ACTIVITY"])
+  else if ([domainCopy isEqualToString:@"ACTIVITY"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PERSONAL"])
+  else if ([domainCopy isEqualToString:@"PERSONAL"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"PROGRESS"])
+  else if ([domainCopy isEqualToString:@"PROGRESS"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"MESSAGE"])
+  else if ([domainCopy isEqualToString:@"MESSAGE"])
   {
     v4 = 4;
   }
 
-  else if ([v3 isEqualToString:@"HANDOUT"])
+  else if ([domainCopy isEqualToString:@"HANDOUT"])
   {
     v4 = 5;
   }
@@ -99,9 +99,9 @@
   }
 }
 
-- (void)setHasState:(BOOL)a3
+- (void)setHasState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -114,20 +114,20 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsState:(id)a3
+- (int)StringAsState:(id)state
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"UNKNOWN_PROGRESS_STATE"])
+  stateCopy = state;
+  if ([stateCopy isEqualToString:@"UNKNOWN_PROGRESS_STATE"])
   {
     v4 = 0;
   }
 
-  else if ([v3 isEqualToString:@"OFF"])
+  else if ([stateCopy isEqualToString:@"OFF"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"ON"])
+  else if ([stateCopy isEqualToString:@"ON"])
   {
     v4 = 2;
   }
@@ -145,8 +145,8 @@
   v7.receiver = self;
   v7.super_class = PDDPStateChangesIOS134MACOS10154ProgressDomainState;
   v3 = [(PDDPStateChangesIOS134MACOS10154ProgressDomainState *)&v7 description];
-  v4 = [(PDDPStateChangesIOS134MACOS10154ProgressDomainState *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(PDDPStateChangesIOS134MACOS10154ProgressDomainState *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -215,16 +215,16 @@ LABEL_5:
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
-  v9 = v4;
+  v9 = toCopy;
   if ((has & 2) != 0)
   {
     domain = self->_domain;
     PBDataWriterWriteInt32Field();
-    v4 = v9;
+    toCopy = v9;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -245,26 +245,26 @@ LABEL_3:
 
   state = self->_state;
   PBDataWriterWriteInt32Field();
-  v4 = v9;
+  toCopy = v9;
   if (*&self->_has)
   {
 LABEL_4:
     flags = self->_flags;
     PBDataWriterWriteUint64Field();
-    v4 = v9;
+    toCopy = v9;
   }
 
 LABEL_5:
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   has = self->_has;
   if ((has & 2) != 0)
   {
-    v4[4] = self->_domain;
-    *(v4 + 24) |= 2u;
+    toCopy[4] = self->_domain;
+    *(toCopy + 24) |= 2u;
     has = self->_has;
     if ((has & 4) == 0)
     {
@@ -283,21 +283,21 @@ LABEL_3:
     goto LABEL_3;
   }
 
-  v4[5] = self->_state;
-  *(v4 + 24) |= 4u;
+  toCopy[5] = self->_state;
+  *(toCopy + 24) |= 4u;
   if (*&self->_has)
   {
 LABEL_4:
-    *(v4 + 1) = self->_flags;
-    *(v4 + 24) |= 1u;
+    *(toCopy + 1) = self->_flags;
+    *(toCopy + 24) |= 1u;
   }
 
 LABEL_5:
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   has = self->_has;
   if ((has & 2) != 0)
   {
@@ -334,23 +334,23 @@ LABEL_4:
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_16;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 24) & 2) == 0 || self->_domain != *(v4 + 4))
+    if ((*(equalCopy + 24) & 2) == 0 || self->_domain != *(equalCopy + 4))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 24) & 2) != 0)
+  else if ((*(equalCopy + 24) & 2) != 0)
   {
 LABEL_16:
     v5 = 0;
@@ -359,21 +359,21 @@ LABEL_16:
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 24) & 4) == 0 || self->_state != *(v4 + 5))
+    if ((*(equalCopy + 24) & 4) == 0 || self->_state != *(equalCopy + 5))
     {
       goto LABEL_16;
     }
   }
 
-  else if ((*(v4 + 24) & 4) != 0)
+  else if ((*(equalCopy + 24) & 4) != 0)
   {
     goto LABEL_16;
   }
 
-  v5 = (*(v4 + 24) & 1) == 0;
+  v5 = (*(equalCopy + 24) & 1) == 0;
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_flags != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_flags != *(equalCopy + 1))
     {
       goto LABEL_16;
     }
@@ -426,15 +426,15 @@ LABEL_4:
   return v3 ^ v2 ^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 24);
+  fromCopy = from;
+  v5 = *(fromCopy + 24);
   if ((v5 & 2) != 0)
   {
-    self->_domain = *(v4 + 4);
+    self->_domain = *(fromCopy + 4);
     *&self->_has |= 2u;
-    v5 = *(v4 + 24);
+    v5 = *(fromCopy + 24);
     if ((v5 & 4) == 0)
     {
 LABEL_3:
@@ -447,17 +447,17 @@ LABEL_3:
     }
   }
 
-  else if ((*(v4 + 24) & 4) == 0)
+  else if ((*(fromCopy + 24) & 4) == 0)
   {
     goto LABEL_3;
   }
 
-  self->_state = *(v4 + 5);
+  self->_state = *(fromCopy + 5);
   *&self->_has |= 4u;
-  if (*(v4 + 24))
+  if (*(fromCopy + 24))
   {
 LABEL_4:
-    self->_flags = *(v4 + 1);
+    self->_flags = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 

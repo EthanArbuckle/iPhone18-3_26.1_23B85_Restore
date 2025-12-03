@@ -1,6 +1,6 @@
 @interface PDRelayRequestOperation
 + (id)defaultEndpointInfo;
-- (PDRelayRequestOperation)initWithDatabase:(id)a3 data:(id)a4 fileHandle:(id)a5 requestType:(unint64_t)a6;
+- (PDRelayRequestOperation)initWithDatabase:(id)database data:(id)data fileHandle:(id)handle requestType:(unint64_t)type;
 - (id)requestData;
 - (void)didCompleteProcessingResponse;
 - (void)execute;
@@ -29,19 +29,19 @@
   return v3;
 }
 
-- (PDRelayRequestOperation)initWithDatabase:(id)a3 data:(id)a4 fileHandle:(id)a5 requestType:(unint64_t)a6
+- (PDRelayRequestOperation)initWithDatabase:(id)database data:(id)data fileHandle:(id)handle requestType:(unint64_t)type
 {
-  v11 = a4;
-  v12 = a5;
+  dataCopy = data;
+  handleCopy = handle;
   v16.receiver = self;
   v16.super_class = PDRelayRequestOperation;
-  v13 = [(PDURLRequestOperation *)&v16 initWithDatabase:a3];
+  v13 = [(PDURLRequestOperation *)&v16 initWithDatabase:database];
   v14 = v13;
   if (v13)
   {
-    objc_storeStrong((v13 + 226), a4);
-    objc_storeStrong((v14 + 234), a5);
-    *(v14 + 242) = a6;
+    objc_storeStrong((v13 + 226), data);
+    objc_storeStrong((v14 + 234), handle);
+    *(v14 + 242) = type;
   }
 
   return v14;
@@ -50,8 +50,8 @@
 - (void)prepareForNextRequest
 {
   v3 = [PDURLResponse alloc];
-  v4 = [(PDURLRequestOperation *)self operationID];
-  v5 = sub_10011250C(&v3->super.isa, v4, *(&self->_data + 2));
+  operationID = [(PDURLRequestOperation *)self operationID];
+  v5 = sub_10011250C(&v3->super.isa, operationID, *(&self->_data + 2));
 
   [(PDURLRequestOperation *)self prepareForNextRequestWithResponse:v5];
 }

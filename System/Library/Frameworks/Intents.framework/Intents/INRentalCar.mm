@@ -1,13 +1,13 @@
 @interface INRentalCar
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (INRentalCar)initWithCoder:(id)a3;
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from;
+- (BOOL)isEqual:(id)equal;
+- (INRentalCar)initWithCoder:(id)coder;
 - (INRentalCar)initWithRentalCompanyName:(NSString *)rentalCompanyName type:(NSString *)type make:(NSString *)make model:(NSString *)model rentalCarDescription:(NSString *)rentalCarDescription;
 - (id)_dictionaryRepresentation;
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4;
-- (id)descriptionAtIndent:(unint64_t)a3;
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description;
+- (id)descriptionAtIndent:(unint64_t)indent;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INRentalCar
@@ -17,50 +17,50 @@
   v23[5] = *MEMORY[0x1E69E9840];
   v18 = @"rentalCompanyName";
   rentalCompanyName = self->_rentalCompanyName;
-  v4 = rentalCompanyName;
+  null = rentalCompanyName;
   if (!rentalCompanyName)
   {
-    v4 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  v16 = v4;
-  v23[0] = v4;
+  v16 = null;
+  v23[0] = null;
   v19 = @"type";
   type = self->_type;
-  v6 = type;
+  null2 = type;
   if (!type)
   {
-    v6 = [MEMORY[0x1E695DFB0] null];
+    null2 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[1] = v6;
+  v23[1] = null2;
   v20 = @"make";
   make = self->_make;
-  v8 = make;
+  null3 = make;
   if (!make)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null3 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[2] = v8;
+  v23[2] = null3;
   v21 = @"model";
   model = self->_model;
-  v10 = model;
+  null4 = model;
   if (!model)
   {
-    v10 = [MEMORY[0x1E695DFB0] null];
+    null4 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[3] = v10;
+  v23[3] = null4;
   v22 = @"rentalCarDescription";
   rentalCarDescription = self->_rentalCarDescription;
-  v12 = rentalCarDescription;
+  null5 = rentalCarDescription;
   if (!rentalCarDescription)
   {
-    v12 = [MEMORY[0x1E695DFB0] null];
+    null5 = [MEMORY[0x1E695DFB0] null];
   }
 
-  v23[4] = v12;
+  v23[4] = null5;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v23 forKeys:&v18 count:{5, v16}];
   if (rentalCarDescription)
   {
@@ -124,90 +124,90 @@ LABEL_16:
   return v13;
 }
 
-- (id)descriptionAtIndent:(unint64_t)a3
+- (id)descriptionAtIndent:(unint64_t)indent
 {
   v5 = MEMORY[0x1E696AEC0];
   v11.receiver = self;
   v11.super_class = INRentalCar;
   v6 = [(INRentalCar *)&v11 description];
-  v7 = [(INRentalCar *)self _dictionaryRepresentation];
-  v8 = [v7 descriptionAtIndent:a3];
+  _dictionaryRepresentation = [(INRentalCar *)self _dictionaryRepresentation];
+  v8 = [_dictionaryRepresentation descriptionAtIndent:indent];
   v9 = [v5 stringWithFormat:@"%@ %@", v6, v8];
 
   return v9;
 }
 
-- (id)_intents_encodeWithJSONEncoder:(id)a3 codableDescription:(id)a4
+- (id)_intents_encodeWithJSONEncoder:(id)encoder codableDescription:(id)description
 {
   v5 = MEMORY[0x1E695DF90];
-  v6 = a3;
-  v7 = [v5 dictionary];
-  v8 = [v6 encodeObject:self->_rentalCompanyName];
-  [v7 if_setObjectIfNonNil:v8 forKey:@"rentalCompanyName"];
+  encoderCopy = encoder;
+  dictionary = [v5 dictionary];
+  v8 = [encoderCopy encodeObject:self->_rentalCompanyName];
+  [dictionary if_setObjectIfNonNil:v8 forKey:@"rentalCompanyName"];
 
-  v9 = [v6 encodeObject:self->_type];
-  [v7 if_setObjectIfNonNil:v9 forKey:@"type"];
+  v9 = [encoderCopy encodeObject:self->_type];
+  [dictionary if_setObjectIfNonNil:v9 forKey:@"type"];
 
-  v10 = [v6 encodeObject:self->_make];
-  [v7 if_setObjectIfNonNil:v10 forKey:@"make"];
+  v10 = [encoderCopy encodeObject:self->_make];
+  [dictionary if_setObjectIfNonNil:v10 forKey:@"make"];
 
-  v11 = [v6 encodeObject:self->_model];
-  [v7 if_setObjectIfNonNil:v11 forKey:@"model"];
+  v11 = [encoderCopy encodeObject:self->_model];
+  [dictionary if_setObjectIfNonNil:v11 forKey:@"model"];
 
-  v12 = [v6 encodeObject:self->_rentalCarDescription];
+  v12 = [encoderCopy encodeObject:self->_rentalCarDescription];
 
-  [v7 if_setObjectIfNonNil:v12 forKey:@"rentalCarDescription"];
+  [dictionary if_setObjectIfNonNil:v12 forKey:@"rentalCarDescription"];
 
-  return v7;
+  return dictionary;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   rentalCompanyName = self->_rentalCompanyName;
-  v5 = a3;
-  [v5 encodeObject:rentalCompanyName forKey:@"rentalCompanyName"];
-  [v5 encodeObject:self->_type forKey:@"type"];
-  [v5 encodeObject:self->_make forKey:@"make"];
-  [v5 encodeObject:self->_model forKey:@"model"];
-  [v5 encodeObject:self->_rentalCarDescription forKey:@"rentalCarDescription"];
+  coderCopy = coder;
+  [coderCopy encodeObject:rentalCompanyName forKey:@"rentalCompanyName"];
+  [coderCopy encodeObject:self->_type forKey:@"type"];
+  [coderCopy encodeObject:self->_make forKey:@"make"];
+  [coderCopy encodeObject:self->_model forKey:@"model"];
+  [coderCopy encodeObject:self->_rentalCarDescription forKey:@"rentalCarDescription"];
 }
 
-- (INRentalCar)initWithCoder:(id)a3
+- (INRentalCar)initWithCoder:(id)coder
 {
   v4 = MEMORY[0x1E695DFD8];
-  v5 = a3;
+  coderCopy = coder;
   v6 = objc_opt_class();
   v7 = [v4 setWithObjects:{v6, objc_opt_class(), 0}];
-  v8 = [v5 decodeObjectOfClasses:v7 forKey:@"rentalCompanyName"];
+  v8 = [coderCopy decodeObjectOfClasses:v7 forKey:@"rentalCompanyName"];
 
   v9 = MEMORY[0x1E695DFD8];
   v10 = objc_opt_class();
   v11 = [v9 setWithObjects:{v10, objc_opt_class(), 0}];
-  v12 = [v5 decodeObjectOfClasses:v11 forKey:@"type"];
+  v12 = [coderCopy decodeObjectOfClasses:v11 forKey:@"type"];
 
   v13 = MEMORY[0x1E695DFD8];
   v14 = objc_opt_class();
   v15 = [v13 setWithObjects:{v14, objc_opt_class(), 0}];
-  v16 = [v5 decodeObjectOfClasses:v15 forKey:@"make"];
+  v16 = [coderCopy decodeObjectOfClasses:v15 forKey:@"make"];
 
   v17 = MEMORY[0x1E695DFD8];
   v18 = objc_opt_class();
   v19 = [v17 setWithObjects:{v18, objc_opt_class(), 0}];
-  v20 = [v5 decodeObjectOfClasses:v19 forKey:@"model"];
+  v20 = [coderCopy decodeObjectOfClasses:v19 forKey:@"model"];
 
   v21 = MEMORY[0x1E695DFD8];
   v22 = objc_opt_class();
   v23 = [v21 setWithObjects:{v22, objc_opt_class(), 0}];
-  v24 = [v5 decodeObjectOfClasses:v23 forKey:@"rentalCarDescription"];
+  v24 = [coderCopy decodeObjectOfClasses:v23 forKey:@"rentalCarDescription"];
 
   v25 = [(INRentalCar *)self initWithRentalCompanyName:v8 type:v12 make:v16 model:v20 rentalCarDescription:v24];
   return v25;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v11 = 1;
   }
@@ -217,7 +217,7 @@ LABEL_16:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       rentalCompanyName = self->_rentalCompanyName;
       v11 = 0;
       if (rentalCompanyName == v5->_rentalCompanyName || [(NSString *)rentalCompanyName isEqual:?])
@@ -296,18 +296,18 @@ LABEL_16:
   return v17;
 }
 
-+ (id)_intents_decodeWithJSONDecoder:(id)a3 codableDescription:(id)a4 from:(id)a5
++ (id)_intents_decodeWithJSONDecoder:(id)decoder codableDescription:(id)description from:(id)from
 {
-  v6 = a5;
+  fromCopy = from;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v7 = [v6 objectForKeyedSubscript:@"rentalCompanyName"];
-    v8 = [v6 objectForKeyedSubscript:@"type"];
-    v9 = [v6 objectForKeyedSubscript:@"make"];
-    v10 = [v6 objectForKeyedSubscript:@"model"];
-    v11 = [v6 objectForKeyedSubscript:@"rentalCarDescription"];
-    v12 = [[a1 alloc] initWithRentalCompanyName:v7 type:v8 make:v9 model:v10 rentalCarDescription:v11];
+    v7 = [fromCopy objectForKeyedSubscript:@"rentalCompanyName"];
+    v8 = [fromCopy objectForKeyedSubscript:@"type"];
+    v9 = [fromCopy objectForKeyedSubscript:@"make"];
+    v10 = [fromCopy objectForKeyedSubscript:@"model"];
+    v11 = [fromCopy objectForKeyedSubscript:@"rentalCarDescription"];
+    v12 = [[self alloc] initWithRentalCompanyName:v7 type:v8 make:v9 model:v10 rentalCarDescription:v11];
   }
 
   else

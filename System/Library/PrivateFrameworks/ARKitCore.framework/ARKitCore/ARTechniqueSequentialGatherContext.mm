@@ -1,18 +1,18 @@
 @interface ARTechniqueSequentialGatherContext
-- (ARTechniqueSequentialGatherContext)initWithCoder:(id)a3;
-- (ARTechniqueSequentialGatherContext)initWithParentContext:(id)a3;
+- (ARTechniqueSequentialGatherContext)initWithCoder:(id)coder;
+- (ARTechniqueSequentialGatherContext)initWithParentContext:(id)context;
 - (id)gatheredData;
-- (void)addResultData:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)addResultData:(id)data;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation ARTechniqueSequentialGatherContext
 
-- (ARTechniqueSequentialGatherContext)initWithParentContext:(id)a3
+- (ARTechniqueSequentialGatherContext)initWithParentContext:(id)context
 {
   v7.receiver = self;
   v7.super_class = ARTechniqueSequentialGatherContext;
-  v3 = [(ARTechniqueGatherContext *)&v7 initWithParentContext:a3];
+  v3 = [(ARTechniqueGatherContext *)&v7 initWithParentContext:context];
   if (v3)
   {
     v4 = objc_opt_new();
@@ -32,23 +32,23 @@
   return v3;
 }
 
-- (void)addResultData:(id)a3
+- (void)addResultData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   os_unfair_lock_lock(&self->super._stateLock);
-  [(NSMutableArray *)self->_gatheredData addObjectsFromArray:v4];
+  [(NSMutableArray *)self->_gatheredData addObjectsFromArray:dataCopy];
   os_unfair_lock_unlock(&self->super._stateLock);
 }
 
-- (ARTechniqueSequentialGatherContext)initWithCoder:(id)a3
+- (ARTechniqueSequentialGatherContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = ARTechniqueSequentialGatherContext;
-  v5 = [(ARTechniqueGatherContext *)&v9 initWithCoder:v4];
+  v5 = [(ARTechniqueGatherContext *)&v9 initWithCoder:coderCopy];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"gatheredData"];
+    v6 = [coderCopy decodeObjectForKey:@"gatheredData"];
     gatheredData = v5->_gatheredData;
     v5->_gatheredData = v6;
   }
@@ -56,13 +56,13 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v32 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  coderCopy = coder;
   v24.receiver = self;
   v24.super_class = ARTechniqueSequentialGatherContext;
-  [(ARTechniqueGatherContext *)&v24 encodeWithCoder:v4];
+  [(ARTechniqueGatherContext *)&v24 encodeWithCoder:coderCopy];
   v5 = self->_gatheredData;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -73,7 +73,7 @@
     v21 = 0u;
     v22 = 0u;
     v23 = 0u;
-    v19 = self;
+    selfCopy = self;
     v8 = self->_gatheredData;
     v9 = [(NSMutableArray *)v8 countByEnumeratingWithState:&v20 objects:v31 count:16];
     if (v9)
@@ -125,7 +125,7 @@
         *buf = 138543874;
         v26 = v18;
         v27 = 2048;
-        v28 = v19;
+        v28 = selfCopy;
         v29 = 2112;
         v30 = v7;
         _os_log_impl(&dword_1C241C000, v16, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: got insecure contexts to encode for daemon connection: %@", buf, 0x20u);
@@ -135,7 +135,7 @@
     v5 = v6;
   }
 
-  [v4 encodeObject:v5 forKey:@"gatheredData"];
+  [coderCopy encodeObject:v5 forKey:@"gatheredData"];
 }
 
 @end

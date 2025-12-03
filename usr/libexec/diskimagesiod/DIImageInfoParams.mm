@@ -1,39 +1,39 @@
 @interface DIImageInfoParams
-+ (BOOL)isDiskImageWithURL:(id)a3;
-- (BOOL)retrieveWithError:(id *)a3;
-- (DIImageInfoParams)initWithExistingParams:(id)a3 error:(id *)a4;
-- (DIImageInfoParams)initWithURL:(id)a3 error:(id *)a4;
++ (BOOL)isDiskImageWithURL:(id)l;
+- (BOOL)retrieveWithError:(id *)error;
+- (DIImageInfoParams)initWithExistingParams:(id)params error:(id *)error;
+- (DIImageInfoParams)initWithURL:(id)l error:(id *)error;
 @end
 
 @implementation DIImageInfoParams
 
-- (DIImageInfoParams)initWithURL:(id)a3 error:(id *)a4
+- (DIImageInfoParams)initWithURL:(id)l error:(id *)error
 {
   v5.receiver = self;
   v5.super_class = DIImageInfoParams;
-  return [(DIBaseParams *)&v5 initWithURL:a3 error:a4];
+  return [(DIBaseParams *)&v5 initWithURL:l error:error];
 }
 
-- (DIImageInfoParams)initWithExistingParams:(id)a3 error:(id *)a4
+- (DIImageInfoParams)initWithExistingParams:(id)params error:(id *)error
 {
-  v6 = a3;
-  v7 = [v6 inputURL];
+  paramsCopy = params;
+  inputURL = [paramsCopy inputURL];
   v16.receiver = self;
   v16.super_class = DIImageInfoParams;
-  v8 = [(DIBaseParams *)&v16 initWithURL:v7 error:a4];
+  v8 = [(DIBaseParams *)&v16 initWithURL:inputURL error:error];
 
   if (!v8)
   {
     goto LABEL_3;
   }
 
-  v9 = [v6 diskImageParamsXPC];
-  [(DIBaseParams *)v8 setDiskImageParamsXPC:v9];
+  diskImageParamsXPC = [paramsCopy diskImageParamsXPC];
+  [(DIBaseParams *)v8 setDiskImageParamsXPC:diskImageParamsXPC];
 
-  v10 = [(DIBaseParams *)v8 shadowChain];
-  v11 = [v6 shadowChain];
-  v12 = [v11 nodes];
-  v13 = [v10 addShadowNodes:v12 wrapReadOnly:1 error:a4];
+  shadowChain = [(DIBaseParams *)v8 shadowChain];
+  shadowChain2 = [paramsCopy shadowChain];
+  nodes = [shadowChain2 nodes];
+  v13 = [shadowChain addShadowNodes:nodes wrapReadOnly:1 error:error];
 
   if ((v13 & 1) == 0)
   {
@@ -49,7 +49,7 @@ LABEL_3:
   return v14;
 }
 
-- (BOOL)retrieveWithError:(id *)a3
+- (BOOL)retrieveWithError:(id *)error
 {
   if ([(DIBaseParams *)self openExistingImageWithError:?])
   {
@@ -90,16 +90,16 @@ LABEL_3:
     else
     {
       v8 = objc_alloc_init(DIClient2Controller_XPCHandler);
-      if (![(DIClient2Controller_XPCHandler *)v8 connectWithError:a3]|| ![(DIBaseParams *)self prepareImageWithXpcHandler:v8 fileMode:2 error:a3])
+      if (![(DIClient2Controller_XPCHandler *)v8 connectWithError:error]|| ![(DIBaseParams *)self prepareImageWithXpcHandler:v8 fileMode:2 error:error])
       {
         goto LABEL_21;
       }
 
-      v9 = [(DIBaseParams *)self diskImageParamsXPC];
-      v10 = [(DIImageInfoParams *)self extraInfo];
-      if (v9)
+      diskImageParamsXPC = [(DIBaseParams *)self diskImageParamsXPC];
+      extraInfo = [(DIImageInfoParams *)self extraInfo];
+      if (diskImageParamsXPC)
       {
-        [v9 getImageInfoWithExtra:v10 error:a3];
+        [diskImageParamsXPC getImageInfoWithExtra:extraInfo error:error];
       }
 
       else
@@ -145,20 +145,20 @@ LABEL_22:
   return 0;
 }
 
-+ (BOOL)isDiskImageWithURL:(id)a3
++ (BOOL)isDiskImageWithURL:(id)l
 {
-  v3 = a3;
-  if (![v3 isFileURL])
+  lCopy = l;
+  if (![lCopy isFileURL])
   {
     goto LABEL_5;
   }
 
   v10 = 0;
   v4 = +[NSFileManager defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 fileExistsAtPath:v5 isDirectory:&v10];
+  path = [lCopy path];
+  v6 = [v4 fileExistsAtPath:path isDirectory:&v10];
 
-  if (!v6 || v10 == 1 && ![SparseBundleBackendXPC isSparseBundleWithURL:v3])
+  if (!v6 || v10 == 1 && ![SparseBundleBackendXPC isSparseBundleWithURL:lCopy])
   {
     v8 = 0;
   }
@@ -166,7 +166,7 @@ LABEL_22:
   else
   {
 LABEL_5:
-    v7 = [[DIImageInfoParams alloc] initWithURL:v3 error:0];
+    v7 = [[DIImageInfoParams alloc] initWithURL:lCopy error:0];
     v8 = v7 != 0;
   }
 

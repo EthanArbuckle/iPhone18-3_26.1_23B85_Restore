@@ -1,31 +1,31 @@
 @interface RERelevanceEngineSubsystem
 - (NSString)name;
 - (RERelevanceEngine)relevanceEngine;
-- (RERelevanceEngineSubsystem)initWithRelevanceEngine:(id)a3;
-- (void)activityTracker:(id)a3 didBeginActivity:(id)a4;
-- (void)activityTracker:(id)a3 didEndActivity:(id)a4;
-- (void)beginActivity:(id)a3 forObject:(id)a4;
+- (RERelevanceEngineSubsystem)initWithRelevanceEngine:(id)engine;
+- (void)activityTracker:(id)tracker didBeginActivity:(id)activity;
+- (void)activityTracker:(id)tracker didEndActivity:(id)activity;
+- (void)beginActivity:(id)activity forObject:(id)object;
 - (void)dealloc;
-- (void)endActivity:(id)a3 forObject:(id)a4;
-- (void)trackObject:(id)a3;
-- (void)withdrawObject:(id)a3;
+- (void)endActivity:(id)activity forObject:(id)object;
+- (void)trackObject:(id)object;
+- (void)withdrawObject:(id)object;
 @end
 
 @implementation RERelevanceEngineSubsystem
 
-- (RERelevanceEngineSubsystem)initWithRelevanceEngine:(id)a3
+- (RERelevanceEngineSubsystem)initWithRelevanceEngine:(id)engine
 {
-  v4 = a3;
+  engineCopy = engine;
   v12.receiver = self;
   v12.super_class = RERelevanceEngineSubsystem;
   v5 = [(RERelevanceEngineSubsystem *)&v12 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_relevanceEngine, v4);
-    v7 = [v4 subsystemQueue];
+    objc_storeWeak(&v5->_relevanceEngine, engineCopy);
+    subsystemQueue = [engineCopy subsystemQueue];
     relevanceEngineQueue = v6->_relevanceEngineQueue;
-    v6->_relevanceEngineQueue = v7;
+    v6->_relevanceEngineQueue = subsystemQueue;
 
     v6->_running = 0;
     v6->_lock._os_unfair_lock_opaque = 0;
@@ -33,7 +33,7 @@
     activityTracker = v6->_activityTracker;
     v6->_activityTracker = v9;
 
-    [v4 _addSubsystem:v6];
+    [engineCopy _addSubsystem:v6];
   }
 
   return v6;
@@ -59,24 +59,24 @@
   return NSStringFromClass(v2);
 }
 
-- (void)trackObject:(id)a3
+- (void)trackObject:(id)object
 {
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  [(REActivityTracker *)self->_activityTracker trackObject:v4];
+  [(REActivityTracker *)self->_activityTracker trackObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)withdrawObject:(id)a3
+- (void)withdrawObject:(id)object
 {
   v17 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
   v5 = 0;
   do
   {
-    v6 = [(REActivityTracker *)self->_activityTracker outstandingActivitiesForObject:v4];
+    v6 = [(REActivityTracker *)self->_activityTracker outstandingActivitiesForObject:objectCopy];
 
     v14 = 0u;
     v15 = 0u;
@@ -98,7 +98,7 @@
             objc_enumerationMutation(v5);
           }
 
-          [(REActivityTracker *)self->_activityTracker endActivity:*(*(&v12 + 1) + 8 * v10++) forObject:v4];
+          [(REActivityTracker *)self->_activityTracker endActivity:*(*(&v12 + 1) + 8 * v10++) forObject:objectCopy];
         }
 
         while (v8 != v10);
@@ -110,48 +110,48 @@
   }
 
   while ([v5 count]);
-  [(REActivityTracker *)self->_activityTracker withdrawObject:v4];
+  [(REActivityTracker *)self->_activityTracker withdrawObject:objectCopy];
   os_unfair_lock_unlock(&self->_lock);
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)beginActivity:(id)a3 forObject:(id)a4
+- (void)beginActivity:(id)activity forObject:(id)object
 {
-  v7 = a3;
-  v6 = a4;
+  activityCopy = activity;
+  objectCopy = object;
   os_unfair_lock_lock(&self->_lock);
-  if (![(REActivityTracker *)self->_activityTracker trackingObject:v6])
+  if (![(REActivityTracker *)self->_activityTracker trackingObject:objectCopy])
   {
-    [(REActivityTracker *)self->_activityTracker trackObject:v6];
+    [(REActivityTracker *)self->_activityTracker trackObject:objectCopy];
   }
 
-  [(REActivityTracker *)self->_activityTracker beginActivity:v7 forObject:v6];
+  [(REActivityTracker *)self->_activityTracker beginActivity:activityCopy forObject:objectCopy];
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)endActivity:(id)a3 forObject:(id)a4
+- (void)endActivity:(id)activity forObject:(id)object
 {
-  v6 = a4;
-  v7 = a3;
+  objectCopy = object;
+  activityCopy = activity;
   os_unfair_lock_lock(&self->_lock);
-  [(REActivityTracker *)self->_activityTracker endActivity:v7 forObject:v6];
+  [(REActivityTracker *)self->_activityTracker endActivity:activityCopy forObject:objectCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)activityTracker:(id)a3 didBeginActivity:(id)a4
+- (void)activityTracker:(id)tracker didBeginActivity:(id)activity
 {
-  v5 = a4;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_relevanceEngine);
-  [WeakRetained beginActivity:v5 forObject:self];
+  [WeakRetained beginActivity:activityCopy forObject:self];
 }
 
-- (void)activityTracker:(id)a3 didEndActivity:(id)a4
+- (void)activityTracker:(id)tracker didEndActivity:(id)activity
 {
-  v5 = a4;
+  activityCopy = activity;
   WeakRetained = objc_loadWeakRetained(&self->_relevanceEngine);
-  [WeakRetained endActivity:v5 forObject:self];
+  [WeakRetained endActivity:activityCopy forObject:self];
 }
 
 - (RERelevanceEngine)relevanceEngine

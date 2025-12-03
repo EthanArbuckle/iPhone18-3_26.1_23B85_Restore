@@ -1,15 +1,15 @@
 @interface STStorageMediaItemCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 @end
 
 @implementation STStorageMediaItemCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"STStorageMediaItemCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
-  [v3 validateClass:@"STStorageMediaItemCell" hasInstanceVariable:@"_infoLabel" withType:"UILabel"];
-  [v3 validateClass:@"STStorageMediaItemCell" hasInstanceVariable:@"_sizeLabel" withType:"UILabel"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"STStorageMediaItemCell" hasInstanceVariable:@"_titleLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"STStorageMediaItemCell" hasInstanceVariable:@"_infoLabel" withType:"UILabel"];
+  [validationsCopy validateClass:@"STStorageMediaItemCell" hasInstanceVariable:@"_sizeLabel" withType:"UILabel"];
 }
 
 @end

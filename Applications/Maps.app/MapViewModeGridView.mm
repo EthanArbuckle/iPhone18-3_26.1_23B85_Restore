@@ -1,20 +1,20 @@
 @interface MapViewModeGridView
-- (MapViewModeGridView)initWithFrame:(CGRect)a3;
-- (id)_constraintsForStackingButtonViews:(id)a3 inRowLayoutGuide:(id)a4;
+- (MapViewModeGridView)initWithFrame:(CGRect)frame;
+- (id)_constraintsForStackingButtonViews:(id)views inRowLayoutGuide:(id)guide;
 - (id)_constraintsForStackingRows;
-- (void)_addOrRemoveObjectsInMutableArray:(id)a3 toMatchCount:(unint64_t)a4 addBlock:(id)a5 removeBlock:(id)a6;
+- (void)_addOrRemoveObjectsInMutableArray:(id)array toMatchCount:(unint64_t)count addBlock:(id)block removeBlock:(id)removeBlock;
 - (void)_rebuildGrid;
-- (void)setButtonViewModels:(id)a3;
+- (void)setButtonViewModels:(id)models;
 @end
 
 @implementation MapViewModeGridView
 
-- (id)_constraintsForStackingButtonViews:(id)a3 inRowLayoutGuide:(id)a4
+- (id)_constraintsForStackingButtonViews:(id)views inRowLayoutGuide:(id)guide
 {
-  v6 = a3;
-  v7 = a4;
+  viewsCopy = views;
+  guideCopy = guide;
   v8 = +[NSMutableArray array];
-  v41 = self;
+  selfCopy = self;
   v45 = 0u;
   v46 = 0u;
   if (sub_10000FA08(self) == 5)
@@ -29,14 +29,14 @@
 
   v47 = 0uLL;
   v48 = 0uLL;
-  v10 = v6;
+  v10 = viewsCopy;
   v42 = [v10 countByEnumeratingWithState:&v45 objects:v50 count:16];
   if (v42)
   {
     v11 = 0;
     v39 = *v46;
     v40 = v10;
-    v43 = v7;
+    v43 = guideCopy;
     do
     {
       v12 = 0;
@@ -49,66 +49,66 @@
         }
 
         v14 = *(*(&v45 + 1) + 8 * v12);
-        v15 = [v14 leadingAnchor];
+        leadingAnchor = [v14 leadingAnchor];
         v44 = v13;
         if (v13)
         {
-          v16 = [v13 trailingAnchor];
-          [v15 constraintEqualToAnchor:v16 constant:v9];
+          trailingAnchor = [v13 trailingAnchor];
+          [leadingAnchor constraintEqualToAnchor:trailingAnchor constant:v9];
         }
 
         else
         {
-          v16 = [v7 leadingAnchor];
-          [v15 constraintEqualToAnchor:v16];
+          trailingAnchor = [guideCopy leadingAnchor];
+          [leadingAnchor constraintEqualToAnchor:trailingAnchor];
         }
         v17 = ;
         [v8 addObject:v17];
 
-        v18 = [v14 topAnchor];
-        v19 = [v7 topAnchor];
-        v20 = [v18 constraintEqualToAnchor:v19];
+        topAnchor = [v14 topAnchor];
+        topAnchor2 = [guideCopy topAnchor];
+        v20 = [topAnchor constraintEqualToAnchor:topAnchor2];
         v49[0] = v20;
-        v21 = [v14 bottomAnchor];
-        [v7 bottomAnchor];
+        bottomAnchor = [v14 bottomAnchor];
+        [guideCopy bottomAnchor];
         v23 = v22 = v8;
-        v24 = [v21 constraintEqualToAnchor:v23];
+        v24 = [bottomAnchor constraintEqualToAnchor:v23];
         v49[1] = v24;
         v25 = [NSArray arrayWithObjects:v49 count:2];
         [v22 addObjectsFromArray:v25];
 
         v8 = v22;
         v10 = v40;
-        v26 = [v40 lastObject];
+        lastObject = [v40 lastObject];
 
-        if (v14 == v26)
+        if (v14 == lastObject)
         {
-          v27 = [v14 trailingAnchor];
-          v28 = [v43 trailingAnchor];
-          v29 = [v27 constraintEqualToAnchor:v28];
+          trailingAnchor2 = [v14 trailingAnchor];
+          trailingAnchor3 = [v43 trailingAnchor];
+          v29 = [trailingAnchor2 constraintEqualToAnchor:trailingAnchor3];
           [v8 addObject:v29];
         }
 
         if (v44)
         {
-          v30 = [v14 widthAnchor];
-          v31 = [v44 widthAnchor];
-          v32 = [v30 constraintEqualToAnchor:v31];
+          widthAnchor = [v14 widthAnchor];
+          widthAnchor2 = [v44 widthAnchor];
+          v32 = [widthAnchor constraintEqualToAnchor:widthAnchor2];
           [v8 addObject:v32];
         }
 
         if ([v40 count] >= 2)
         {
-          v33 = [v14 widthAnchor];
-          v34 = [v14 heightAnchor];
-          v35 = [v33 constraintEqualToAnchor:v34 multiplier:1.42105263];
+          widthAnchor3 = [v14 widthAnchor];
+          heightAnchor = [v14 heightAnchor];
+          v35 = [widthAnchor3 constraintEqualToAnchor:heightAnchor multiplier:1.42105263];
           [v8 addObject:v35];
         }
 
-        if (sub_10000FA08(v41) == 5)
+        if (sub_10000FA08(selfCopy) == 5)
         {
-          v36 = [v14 widthAnchor];
-          v37 = [v36 constraintEqualToConstant:152.0];
+          widthAnchor4 = [v14 widthAnchor];
+          v37 = [widthAnchor4 constraintEqualToConstant:152.0];
           [v8 addObject:v37];
         }
 
@@ -116,7 +116,7 @@
 
         v12 = v12 + 1;
         v13 = v11;
-        v7 = v43;
+        guideCopy = v43;
       }
 
       while (v42 != v12);
@@ -153,7 +153,7 @@
   {
     v32 = v3;
     v33 = *v40;
-    v35 = self;
+    selfCopy = self;
     do
     {
       v6 = 0;
@@ -166,58 +166,58 @@
         }
 
         v8 = *(*(&v39 + 1) + 8 * v6);
-        v9 = [v8 topAnchor];
+        topAnchor = [v8 topAnchor];
         v37 = v7;
         v38 = v6;
         if (v7)
         {
-          v10 = [v7 bottomAnchor];
-          v11 = [v9 constraintEqualToAnchor:v10 constant:v4];
-          [v3 addObject:v11];
+          bottomAnchor = [v7 bottomAnchor];
+          topAnchor2 = [topAnchor constraintEqualToAnchor:bottomAnchor constant:v4];
+          [v3 addObject:topAnchor2];
         }
 
         else
         {
-          v10 = [(MapViewModeGridView *)self layoutMarginsGuide];
-          v11 = [v10 topAnchor];
-          v12 = [v9 constraintEqualToAnchor:v11];
+          bottomAnchor = [(MapViewModeGridView *)self layoutMarginsGuide];
+          topAnchor2 = [bottomAnchor topAnchor];
+          v12 = [topAnchor constraintEqualToAnchor:topAnchor2];
           [v3 addObject:v12];
         }
 
-        v36 = [v8 leadingAnchor];
-        v13 = [(MapViewModeGridView *)self layoutMarginsGuide];
-        v14 = [v13 leadingAnchor];
-        [v36 constraintEqualToAnchor:v14];
+        leadingAnchor = [v8 leadingAnchor];
+        layoutMarginsGuide = [(MapViewModeGridView *)self layoutMarginsGuide];
+        leadingAnchor2 = [layoutMarginsGuide leadingAnchor];
+        [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
         v16 = v15 = v8;
         v43[0] = v16;
-        v17 = [v8 trailingAnchor];
-        v18 = [(MapViewModeGridView *)self layoutMarginsGuide];
-        v19 = [v18 trailingAnchor];
-        v20 = [v17 constraintEqualToAnchor:v19];
+        trailingAnchor = [v8 trailingAnchor];
+        layoutMarginsGuide2 = [(MapViewModeGridView *)self layoutMarginsGuide];
+        trailingAnchor2 = [layoutMarginsGuide2 trailingAnchor];
+        v20 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
         v43[1] = v20;
         v21 = [NSArray arrayWithObjects:v43 count:2];
         [v32 addObjectsFromArray:v21];
 
-        self = v35;
-        v22 = [(NSMutableArray *)v35->_rowLayoutGuides lastObject];
+        self = selfCopy;
+        lastObject = [(NSMutableArray *)selfCopy->_rowLayoutGuides lastObject];
 
         v3 = v32;
-        if (v15 == v22)
+        if (v15 == lastObject)
         {
-          v23 = [v15 bottomAnchor];
-          v24 = [(MapViewModeGridView *)v35 layoutMarginsGuide];
-          v25 = [v24 bottomAnchor];
-          v26 = [v23 constraintEqualToAnchor:v25];
+          bottomAnchor2 = [v15 bottomAnchor];
+          layoutMarginsGuide3 = [(MapViewModeGridView *)selfCopy layoutMarginsGuide];
+          bottomAnchor3 = [layoutMarginsGuide3 bottomAnchor];
+          v26 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3];
           [v32 addObject:v26];
 
-          self = v35;
+          self = selfCopy;
         }
 
         if (v37)
         {
-          v27 = [v15 heightAnchor];
-          v28 = [v37 heightAnchor];
-          v29 = [v27 constraintEqualToAnchor:v28];
+          heightAnchor = [v15 heightAnchor];
+          heightAnchor2 = [v37 heightAnchor];
+          v29 = [heightAnchor constraintEqualToAnchor:heightAnchor2];
           [v32 addObject:v29];
         }
 
@@ -237,78 +237,78 @@
   return v3;
 }
 
-- (void)_addOrRemoveObjectsInMutableArray:(id)a3 toMatchCount:(unint64_t)a4 addBlock:(id)a5 removeBlock:(id)a6
+- (void)_addOrRemoveObjectsInMutableArray:(id)array toMatchCount:(unint64_t)count addBlock:(id)block removeBlock:(id)removeBlock
 {
-  v15 = a3;
-  v9 = a5;
-  v10 = a6;
-  v11 = [v15 count];
-  v12 = [v15 count];
-  if (v11 >= a4)
+  arrayCopy = array;
+  blockCopy = block;
+  removeBlockCopy = removeBlock;
+  v11 = [arrayCopy count];
+  v12 = [arrayCopy count];
+  if (v11 >= count)
   {
-    if (v12 > a4 && [v15 count] > a4)
+    if (v12 > count && [arrayCopy count] > count)
     {
       do
       {
-        v14 = [v15 lastObject];
-        [v15 removeLastObject];
-        v10[2](v10, v14);
+        lastObject = [arrayCopy lastObject];
+        [arrayCopy removeLastObject];
+        removeBlockCopy[2](removeBlockCopy, lastObject);
       }
 
-      while ([v15 count] > a4);
+      while ([arrayCopy count] > count);
     }
   }
 
-  else if (v12 < a4)
+  else if (v12 < count)
   {
     do
     {
-      v13 = v9[2](v9);
-      [v15 addObject:v13];
+      v13 = blockCopy[2](blockCopy);
+      [arrayCopy addObject:v13];
     }
 
-    while ([v15 count] < a4);
+    while ([arrayCopy count] < count);
   }
 }
 
 - (void)_rebuildGrid
 {
-  v2 = self;
+  selfCopy = self;
   if (self->_constraints)
   {
     [NSLayoutConstraint deactivateConstraints:?];
-    constraints = v2->_constraints;
-    v2->_constraints = 0;
+    constraints = selfCopy->_constraints;
+    selfCopy->_constraints = 0;
   }
 
   v4 = 8;
-  buttonViews = v2->_buttonViews;
-  v6 = [(NSArray *)v2->_buttonViewModels count];
+  buttonViews = selfCopy->_buttonViews;
+  v6 = [(NSArray *)selfCopy->_buttonViewModels count];
   v33[0] = _NSConcreteStackBlock;
   v33[1] = 3221225472;
   v33[2] = sub_100BDDCA0;
   v33[3] = &unk_10164D030;
-  v33[4] = v2;
-  [(MapViewModeGridView *)v2 _addOrRemoveObjectsInMutableArray:buttonViews toMatchCount:v6 addBlock:v33 removeBlock:&stru_10164D070];
-  v27 = [(NSMutableArray *)v2->_buttonViews count]& 1;
-  v7 = v27 + ([(NSMutableArray *)v2->_buttonViews count]>> 1);
+  v33[4] = selfCopy;
+  [(MapViewModeGridView *)selfCopy _addOrRemoveObjectsInMutableArray:buttonViews toMatchCount:v6 addBlock:v33 removeBlock:&stru_10164D070];
+  v27 = [(NSMutableArray *)selfCopy->_buttonViews count]& 1;
+  v7 = v27 + ([(NSMutableArray *)selfCopy->_buttonViews count]>> 1);
   v8 = 16;
-  rowLayoutGuides = v2->_rowLayoutGuides;
-  v31[4] = v2;
+  rowLayoutGuides = selfCopy->_rowLayoutGuides;
+  v31[4] = selfCopy;
   v32[0] = _NSConcreteStackBlock;
   v32[1] = 3221225472;
   v32[2] = sub_100BDDD0C;
   v32[3] = &unk_10164D030;
-  v32[4] = v2;
+  v32[4] = selfCopy;
   v31[0] = _NSConcreteStackBlock;
   v31[1] = 3221225472;
   v31[2] = sub_100BDDD5C;
   v31[3] = &unk_10164D098;
-  [(MapViewModeGridView *)v2 _addOrRemoveObjectsInMutableArray:rowLayoutGuides toMatchCount:v7 addBlock:v32 removeBlock:v31];
+  [(MapViewModeGridView *)selfCopy _addOrRemoveObjectsInMutableArray:rowLayoutGuides toMatchCount:v7 addBlock:v32 removeBlock:v31];
   v10 = +[NSMutableArray array];
-  v11 = [(MapViewModeGridView *)v2 _constraintsForStackingRows];
+  _constraintsForStackingRows = [(MapViewModeGridView *)selfCopy _constraintsForStackingRows];
   v29 = v10;
-  [v10 addObjectsFromArray:v11];
+  [v10 addObjectsFromArray:_constraintsForStackingRows];
 
   if (v7)
   {
@@ -319,15 +319,15 @@
     {
       if (v12 || !v27)
       {
-        v28 = [*(&v2->super.super.super.isa + v4) objectAtIndexedSubscript:v13];
+        v28 = [*(&selfCopy->super.super.super.isa + v4) objectAtIndexedSubscript:v13];
         v34[0] = v28;
-        v30 = [*(&v2->super.super.super.isa + v4) objectAtIndexedSubscript:v13 + 1];
+        v30 = [*(&selfCopy->super.super.super.isa + v4) objectAtIndexedSubscript:v13 + 1];
         v34[1] = v30;
-        v17 = [v14[286] arrayWithObjects:v34 count:2];
-        v18 = [*(&v2->super.super.super.isa + v8) objectAtIndexedSubscript:v12];
-        [(MapViewModeGridView *)v2 _constraintsForStackingButtonViews:v17 inRowLayoutGuide:v18];
+        firstObject2 = [v14[286] arrayWithObjects:v34 count:2];
+        v18 = [*(&selfCopy->super.super.super.isa + v8) objectAtIndexedSubscript:v12];
+        [(MapViewModeGridView *)selfCopy _constraintsForStackingButtonViews:firstObject2 inRowLayoutGuide:v18];
         v19 = v14;
-        v20 = v2;
+        v20 = selfCopy;
         v21 = v4;
         v22 = v8;
         v24 = v23 = v7;
@@ -336,19 +336,19 @@
         v7 = v23;
         v8 = v22;
         v4 = v21;
-        v2 = v20;
+        selfCopy = v20;
         v14 = v19;
-        v15 = v28;
+        firstObject = v28;
       }
 
       else
       {
-        v15 = [*(&v2->super.super.super.isa + v4) firstObject];
-        v35 = v15;
+        firstObject = [*(&selfCopy->super.super.super.isa + v4) firstObject];
+        v35 = firstObject;
         v16 = [v14[286] arrayWithObjects:&v35 count:1];
-        v17 = [*(&v2->super.super.super.isa + v8) firstObject];
+        firstObject2 = [*(&selfCopy->super.super.super.isa + v8) firstObject];
         v30 = v16;
-        v18 = [(MapViewModeGridView *)v2 _constraintsForStackingButtonViews:v16 inRowLayoutGuide:v17];
+        v18 = [(MapViewModeGridView *)selfCopy _constraintsForStackingButtonViews:v16 inRowLayoutGuide:firstObject2];
         [v29 addObjectsFromArray:v18];
       }
 
@@ -359,24 +359,24 @@
     while (v7 != v12);
   }
 
-  if (sub_10000FA08(v2) == 5)
+  if (sub_10000FA08(selfCopy) == 5)
   {
-    [(MapViewModeGridView *)v2 setLayoutMargins:16.0, 14.0, 16.0, 14.0];
+    [(MapViewModeGridView *)selfCopy setLayoutMargins:16.0, 14.0, 16.0, 14.0];
   }
 
   [NSLayoutConstraint activateConstraints:v29];
   v25 = [v29 copy];
-  v26 = v2->_constraints;
-  v2->_constraints = v25;
+  v26 = selfCopy->_constraints;
+  selfCopy->_constraints = v25;
 }
 
-- (void)setButtonViewModels:(id)a3
+- (void)setButtonViewModels:(id)models
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_buttonViewModels != v5 && ([(NSArray *)v5 isEqual:?]& 1) == 0)
+  modelsCopy = models;
+  v6 = modelsCopy;
+  if (self->_buttonViewModels != modelsCopy && ([(NSArray *)modelsCopy isEqual:?]& 1) == 0)
   {
-    objc_storeStrong(&self->_buttonViewModels, a3);
+    objc_storeStrong(&self->_buttonViewModels, models);
     v7 = [(NSMutableArray *)self->_buttonViews count];
     if (v7 != [(NSArray *)self->_buttonViewModels count])
     {
@@ -393,11 +393,11 @@
   }
 }
 
-- (MapViewModeGridView)initWithFrame:(CGRect)a3
+- (MapViewModeGridView)initWithFrame:(CGRect)frame
 {
   v10.receiver = self;
   v10.super_class = MapViewModeGridView;
-  v3 = [(MapViewModeGridView *)&v10 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MapViewModeGridView *)&v10 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = +[NSMutableArray array];

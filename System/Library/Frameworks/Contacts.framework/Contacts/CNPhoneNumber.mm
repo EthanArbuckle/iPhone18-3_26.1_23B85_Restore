@@ -1,20 +1,20 @@
 @interface CNPhoneNumber
-+ (BOOL)_isCountryCodeForNorthAmericanDialingPlan:(id)a3;
-+ (CNPhoneNumber)phoneNumberWithCopiedStringValue:(id)a3;
-+ (CNPhoneNumber)phoneNumberWithDigits:(id)a3 countryCode:(id)a4;
++ (BOOL)_isCountryCodeForNorthAmericanDialingPlan:(id)plan;
++ (CNPhoneNumber)phoneNumberWithCopiedStringValue:(id)value;
++ (CNPhoneNumber)phoneNumberWithDigits:(id)digits countryCode:(id)code;
 + (CNPhoneNumber)phoneNumberWithStringValue:(NSString *)stringValue;
-+ (__CFPhoneNumber)createCFPhoneNumberForStringValue:(id)a3 countryCode:(id)a4;
++ (__CFPhoneNumber)createCFPhoneNumberForStringValue:(id)value countryCode:(id)code;
 + (id)_countryCodeForNorthAmericanDialingPlanAreaCodesExcludingUS;
 + (id)_countryCodesForNorthAmericanDialingPlan;
-+ (id)dialingCodeForISOCountryCode:(id)a3;
++ (id)dialingCodeForISOCountryCode:(id)code;
 + (id)unsupportedCountryCodes;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)isFullyQualified;
-- (BOOL)isLikePhoneNumber:(id)a3;
-- (BOOL)isLikePhoneNumberForSamePerson:(id)a3;
-- (BOOL)isValid:(id *)a3;
-- (CNPhoneNumber)initWithCoder:(id)a3;
-- (CNPhoneNumber)initWithStringValue:(id)a3 countryCode:(id)a4;
+- (BOOL)isLikePhoneNumber:(id)number;
+- (BOOL)isLikePhoneNumberForSamePerson:(id)person;
+- (BOOL)isValid:(id *)valid;
+- (CNPhoneNumber)initWithCoder:(id)coder;
+- (CNPhoneNumber)initWithStringValue:(id)value countryCode:(id)code;
 - (NSString)countryCode;
 - (NSString)description;
 - (__CFPhoneNumber)nts_lazyPhoneNumberRef;
@@ -24,11 +24,11 @@
 - (id)formattedStringValueRemovingDialingCode;
 - (id)fullyQualifiedDigits;
 - (id)lastFourDigits;
-- (id)primitiveInitWithStringValue:(id)a3 countryCode:(id)a4;
-- (id)stringValueWithCFPhoneNumberOptions:(unint64_t)a3;
+- (id)primitiveInitWithStringValue:(id)value countryCode:(id)code;
+- (id)stringValueWithCFPhoneNumberOptions:(unint64_t)options;
 - (unint64_t)hash;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CNPhoneNumber
@@ -49,9 +49,9 @@
 - (__CFPhoneNumber)phoneNumberRef
 {
   os_unfair_lock_lock(&self->_stateLock);
-  v3 = [(CNPhoneNumber *)self nts_lazyPhoneNumberRef];
+  nts_lazyPhoneNumberRef = [(CNPhoneNumber *)self nts_lazyPhoneNumberRef];
   os_unfair_lock_unlock(&self->_stateLock);
-  return v3;
+  return nts_lazyPhoneNumberRef;
 }
 
 - (__CFPhoneNumber)nts_lazyPhoneNumberRef
@@ -60,9 +60,9 @@
   if (!result)
   {
     v4 = objc_opt_class();
-    v5 = [(CNPhoneNumber *)self stringValue];
-    v6 = [(CNPhoneNumber *)self initialCountryCode];
-    self->_phoneNumberRef = [v4 createCFPhoneNumberForStringValue:v5 countryCode:v6];
+    stringValue = [(CNPhoneNumber *)self stringValue];
+    initialCountryCode = [(CNPhoneNumber *)self initialCountryCode];
+    self->_phoneNumberRef = [v4 createCFPhoneNumberForStringValue:stringValue countryCode:initialCountryCode];
 
     return self->_phoneNumberRef;
   }
@@ -72,101 +72,101 @@
 
 - (NSString)countryCode
 {
-  v3 = [(CNPhoneNumber *)self _countryCodeFromPhoneNumberRef];
-  v4 = v3;
-  if (v3)
+  _countryCodeFromPhoneNumberRef = [(CNPhoneNumber *)self _countryCodeFromPhoneNumberRef];
+  v4 = _countryCodeFromPhoneNumberRef;
+  if (_countryCodeFromPhoneNumberRef)
   {
-    v5 = v3;
+    initialCountryCode = _countryCodeFromPhoneNumberRef;
   }
 
   else
   {
-    v5 = [(CNPhoneNumber *)self initialCountryCode];
+    initialCountryCode = [(CNPhoneNumber *)self initialCountryCode];
   }
 
-  v6 = v5;
+  v6 = initialCountryCode;
 
   return v6;
 }
 
 - (id)_countryCodeFromPhoneNumberRef
 {
-  v3 = [(CNPhoneNumber *)self phoneNumberRef];
-  if (v3)
+  phoneNumberRef = [(CNPhoneNumber *)self phoneNumberRef];
+  if (phoneNumberRef)
   {
     [(CNPhoneNumber *)self phoneNumberRef];
-    v3 = CFPhoneNumberCopyISOCountryCode();
+    phoneNumberRef = CFPhoneNumberCopyISOCountryCode();
   }
 
-  return v3;
+  return phoneNumberRef;
 }
 
 - (NSString)description
 {
   v3 = [MEMORY[0x1E69966B0] descriptionBuilderWithObject:self];
-  v4 = [(CNPhoneNumber *)self stringValue];
-  v5 = [v3 appendName:@"stringValue" object:v4];
+  stringValue = [(CNPhoneNumber *)self stringValue];
+  v5 = [v3 appendName:@"stringValue" object:stringValue];
 
-  v6 = [(CNPhoneNumber *)self initialCountryCode];
-  v7 = [v3 appendName:@"initialCountryCode" object:v6];
+  initialCountryCode = [(CNPhoneNumber *)self initialCountryCode];
+  v7 = [v3 appendName:@"initialCountryCode" object:initialCountryCode];
 
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 - (unint64_t)hash
 {
   v3 = MEMORY[0x1E6996730];
-  v4 = [(CNPhoneNumber *)self stringValue];
-  v5 = [v3 objectHash:v4];
+  stringValue = [(CNPhoneNumber *)self stringValue];
+  v5 = [v3 objectHash:stringValue];
 
   v6 = MEMORY[0x1E6996730];
-  v7 = [(CNPhoneNumber *)self initialCountryCode];
-  v8 = [v6 objectHash:v7] - v5 + 32 * v5;
+  initialCountryCode = [(CNPhoneNumber *)self initialCountryCode];
+  v8 = [v6 objectHash:initialCountryCode] - v5 + 32 * v5;
 
   return v8 + 16337;
 }
 
-- (CNPhoneNumber)initWithStringValue:(id)a3 countryCode:(id)a4
+- (CNPhoneNumber)initWithStringValue:(id)value countryCode:(id)code
 {
-  v6 = a4;
-  v7 = [a3 copy];
-  v8 = [v6 copy];
+  codeCopy = code;
+  v7 = [value copy];
+  v8 = [codeCopy copy];
 
   v9 = [(CNPhoneNumber *)self primitiveInitWithStringValue:v7 countryCode:v8];
   return v9;
 }
 
-- (id)primitiveInitWithStringValue:(id)a3 countryCode:(id)a4
+- (id)primitiveInitWithStringValue:(id)value countryCode:(id)code
 {
-  v6 = a3;
-  v7 = a4;
-  if (v6 && (v13.receiver = self, v13.super_class = CNPhoneNumber, v8 = [(CNPhoneNumber *)&v13 init], (self = v8) != 0))
+  valueCopy = value;
+  codeCopy = code;
+  if (valueCopy && (v13.receiver = self, v13.super_class = CNPhoneNumber, v8 = [(CNPhoneNumber *)&v13 init], (self = v8) != 0))
   {
     v8->_stateLock._os_unfair_lock_opaque = 0;
-    objc_storeStrong(&v8->_initialCountryCode, a4);
-    v9 = [v6 _cn_stringBySanitizingPhoneNumber];
+    objc_storeStrong(&v8->_initialCountryCode, code);
+    _cn_stringBySanitizingPhoneNumber = [valueCopy _cn_stringBySanitizingPhoneNumber];
     stringValue = self->_stringValue;
-    self->_stringValue = v9;
+    self->_stringValue = _cn_stringBySanitizingPhoneNumber;
 
     self = self;
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-+ (CNPhoneNumber)phoneNumberWithDigits:(id)a3 countryCode:(id)a4
++ (CNPhoneNumber)phoneNumberWithDigits:(id)digits countryCode:(id)code
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] initWithStringValue:v7 countryCode:v6];
+  codeCopy = code;
+  digitsCopy = digits;
+  v8 = [[self alloc] initWithStringValue:digitsCopy countryCode:codeCopy];
 
   return v8;
 }
@@ -174,59 +174,59 @@
 + (CNPhoneNumber)phoneNumberWithStringValue:(NSString *)stringValue
 {
   v4 = [(NSString *)stringValue copy];
-  v5 = [a1 phoneNumberWithCopiedStringValue:v4];
+  v5 = [self phoneNumberWithCopiedStringValue:v4];
 
   return v5;
 }
 
-+ (CNPhoneNumber)phoneNumberWithCopiedStringValue:(id)a3
++ (CNPhoneNumber)phoneNumberWithCopiedStringValue:(id)value
 {
-  v4 = a3;
-  v5 = [[a1 alloc] primitiveInitWithStringValue:v4 countryCode:0];
+  valueCopy = value;
+  v5 = [[self alloc] primitiveInitWithStringValue:valueCopy countryCode:0];
 
   return v5;
 }
 
-+ (__CFPhoneNumber)createCFPhoneNumberForStringValue:(id)a3 countryCode:(id)a4
++ (__CFPhoneNumber)createCFPhoneNumberForStringValue:(id)value countryCode:(id)code
 {
-  v5 = a4;
-  v6 = [a3 _cn_take:100];
+  codeCopy = code;
+  v6 = [value _cn_take:100];
   if ((*(*MEMORY[0x1E6996568] + 16))())
   {
     v7 = [MEMORY[0x1E69967B0] countryCodeForNumber:v6];
 
-    v5 = v7;
+    codeCopy = v7;
   }
 
   v8 = +[CNCFPhoneNumber makeProxy];
-  v9 = [v8 create:v6 :v5];
+  v9 = [v8 create:v6 :codeCopy];
 
   return v9;
 }
 
-- (CNPhoneNumber)initWithCoder:(id)a3
+- (CNPhoneNumber)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
 
   v7 = [(CNPhoneNumber *)self initWithStringValue:v5 countryCode:v6];
   return v7;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(CNPhoneNumber *)self stringValue];
-  [v4 encodeObject:v5 forKey:@"stringValue"];
+  coderCopy = coder;
+  stringValue = [(CNPhoneNumber *)self stringValue];
+  [coderCopy encodeObject:stringValue forKey:@"stringValue"];
 
-  v6 = [(CNPhoneNumber *)self initialCountryCode];
-  [v4 encodeObject:v6 forKey:@"countryCode"];
+  initialCountryCode = [(CNPhoneNumber *)self initialCountryCode];
+  [coderCopy encodeObject:initialCountryCode forKey:@"countryCode"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v13) = 1;
   }
@@ -239,13 +239,13 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v11 = [(CNPhoneNumber *)self stringValue];
-      v12 = [a3 stringValue];
-      if (!(v11 | v12) || (v13 = [v11 isEqual:v12]) != 0)
+      stringValue = [(CNPhoneNumber *)self stringValue];
+      stringValue2 = [equal stringValue];
+      if (!(stringValue | stringValue2) || (v13 = [stringValue isEqual:stringValue2]) != 0)
       {
         v14 = [(CNPhoneNumber *)self initialCountryCode:v6];
-        v15 = [a3 initialCountryCode];
-        if (!(v14 | v15) || (v13 = [v14 isEqual:v15]) != 0)
+        initialCountryCode = [equal initialCountryCode];
+        if (!(v14 | initialCountryCode) || (v13 = [v14 isEqual:initialCountryCode]) != 0)
         {
           LOBYTE(v13) = 1;
         }
@@ -261,22 +261,22 @@
   return v13;
 }
 
-- (BOOL)isLikePhoneNumberForSamePerson:(id)a3
+- (BOOL)isLikePhoneNumberForSamePerson:(id)person
 {
-  v4 = a3;
+  personCopy = person;
   stringValue = self->_stringValue;
-  if (!stringValue || (v6 = v4[2]) == 0 || (v7 = comparePhoneNumberStrings(stringValue, v6), v8 = v7 == 0, v7 == 2))
+  if (!stringValue || (v6 = personCopy[2]) == 0 || (v7 = comparePhoneNumberStrings(stringValue, v6), v8 = v7 == 0, v7 == 2))
   {
-    v8 = [(CNPhoneNumber *)self isLikePhoneNumber:v4];
+    v8 = [(CNPhoneNumber *)self isLikePhoneNumber:personCopy];
   }
 
   return v8;
 }
 
-- (BOOL)isLikePhoneNumber:(id)a3
+- (BOOL)isLikePhoneNumber:(id)number
 {
-  v4 = a3;
-  v5 = -[CNPhoneNumber phoneNumberRef](self, "phoneNumberRef") && [v4 phoneNumberRef] && CFEqual(-[CNPhoneNumber phoneNumberRef](self, "phoneNumberRef"), objc_msgSend(v4, "phoneNumberRef")) != 0;
+  numberCopy = number;
+  v5 = -[CNPhoneNumber phoneNumberRef](self, "phoneNumberRef") && [numberCopy phoneNumberRef] && CFEqual(-[CNPhoneNumber phoneNumberRef](self, "phoneNumberRef"), objc_msgSend(numberCopy, "phoneNumberRef")) != 0;
 
   return v5;
 }
@@ -284,13 +284,13 @@
 - (id)lastFourDigits
 {
   v2 = MEMORY[0x1E69967B0];
-  v3 = [(CNPhoneNumber *)self unformattedInternationalStringValue];
-  v4 = [v2 lastFourDigitsForNumber:v3];
+  unformattedInternationalStringValue = [(CNPhoneNumber *)self unformattedInternationalStringValue];
+  v4 = [v2 lastFourDigitsForNumber:unformattedInternationalStringValue];
 
   return v4;
 }
 
-- (BOOL)isValid:(id *)a3
+- (BOOL)isValid:(id *)valid
 {
   if (isValid__cn_once_token_0_4 != -1)
   {
@@ -310,7 +310,7 @@
     [CNPhoneNumber isValid:];
   }
 
-  v8 = [CN areValidKeyPaths:v5 forObject:self expectedClasses:v7 allowNil:isValid__cn_once_object_2_4 error:a3];
+  v8 = [CN areValidKeyPaths:v5 forObject:self expectedClasses:v7 allowNil:isValid__cn_once_object_2_4 error:valid];
 
   return v8;
 }
@@ -346,7 +346,7 @@ uint64_t __25__CNPhoneNumber_isValid___block_invoke_3()
   return MEMORY[0x1EEE66BB8](v0, v1);
 }
 
-- (id)stringValueWithCFPhoneNumberOptions:(unint64_t)a3
+- (id)stringValueWithCFPhoneNumberOptions:(unint64_t)options
 {
   if (![(CNPhoneNumber *)self phoneNumberRef]|| (os_unfair_lock_lock(&self->_stateLock), String = CFPhoneNumberCreateString(), os_unfair_lock_unlock(&self->_stateLock), !String))
   {
@@ -374,7 +374,7 @@ void __40__CNPhoneNumber_unsupportedCountryCodes__block_invoke()
   unsupportedCountryCodes_cn_once_object_3 = &unk_1F0987630;
 }
 
-+ (id)dialingCodeForISOCountryCode:(id)a3
++ (id)dialingCodeForISOCountryCode:(id)code
 {
   v3 = _PNCopyInternationalCodeForCountry();
   if ((*(*MEMORY[0x1E6996568] + 16))())
@@ -392,15 +392,15 @@ void __40__CNPhoneNumber_unsupportedCountryCodes__block_invoke()
 
 - (BOOL)isFullyQualified
 {
-  v2 = [(CNPhoneNumber *)self digits];
-  v3 = [v2 hasPrefix:@"+"];
+  digits = [(CNPhoneNumber *)self digits];
+  v3 = [digits hasPrefix:@"+"];
 
   return v3;
 }
 
 - (id)fullyQualifiedDigits
 {
-  v3 = [(CNPhoneNumber *)self stringValue];
+  stringValue = [(CNPhoneNumber *)self stringValue];
   [(CNPhoneNumber *)self _countryCodeFromPhoneNumberRef];
   v4 = _PNCopyFullyQualifiedNumberForCountry();
 
@@ -411,14 +411,14 @@ void __40__CNPhoneNumber_unsupportedCountryCodes__block_invoke()
 
 - (id)digitsRemovingDialingCode
 {
-  v3 = [(CNPhoneNumber *)self countryCode];
-  if ([objc_opt_class() _isCountryCodeForNorthAmericanDialingPlan:v3])
+  countryCode = [(CNPhoneNumber *)self countryCode];
+  if ([objc_opt_class() _isCountryCodeForNorthAmericanDialingPlan:countryCode])
   {
 
-    v3 = @"us";
+    countryCode = @"us";
   }
 
-  v4 = [(CNPhoneNumber *)self stringValue];
+  stringValue = [(CNPhoneNumber *)self stringValue];
   v5 = PNCreateFormattedStringWithCountry();
 
   return v5;
@@ -426,24 +426,24 @@ void __40__CNPhoneNumber_unsupportedCountryCodes__block_invoke()
 
 - (id)formattedStringValueRemovingDialingCode
 {
-  v3 = [(CNPhoneNumber *)self countryCode];
-  if ([objc_opt_class() _isCountryCodeForNorthAmericanDialingPlan:v3])
+  countryCode = [(CNPhoneNumber *)self countryCode];
+  if ([objc_opt_class() _isCountryCodeForNorthAmericanDialingPlan:countryCode])
   {
 
-    v3 = @"us";
+    countryCode = @"us";
   }
 
-  v4 = [(CNPhoneNumber *)self stringValue];
+  stringValue = [(CNPhoneNumber *)self stringValue];
   v5 = PNCreateFormattedStringWithCountry();
 
   return v5;
 }
 
-+ (BOOL)_isCountryCodeForNorthAmericanDialingPlan:(id)a3
++ (BOOL)_isCountryCodeForNorthAmericanDialingPlan:(id)plan
 {
-  v3 = a3;
-  v4 = [objc_opt_class() _countryCodesForNorthAmericanDialingPlan];
-  v5 = [v4 containsObject:v3];
+  planCopy = plan;
+  _countryCodesForNorthAmericanDialingPlan = [objc_opt_class() _countryCodesForNorthAmericanDialingPlan];
+  v5 = [_countryCodesForNorthAmericanDialingPlan containsObject:planCopy];
 
   return v5;
 }
@@ -454,7 +454,7 @@ void __40__CNPhoneNumber_unsupportedCountryCodes__block_invoke()
   block[1] = 3221225472;
   block[2] = __57__CNPhoneNumber__countryCodesForNorthAmericanDialingPlan__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_countryCodesForNorthAmericanDialingPlan_cn_once_token_4 != -1)
   {
     dispatch_once(&_countryCodesForNorthAmericanDialingPlan_cn_once_token_4, block);

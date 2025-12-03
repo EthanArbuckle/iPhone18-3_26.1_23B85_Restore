@@ -28,8 +28,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v4 = [MEMORY[0x277CBEAA8] cat_RFC3339Formatters];
-    v5 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    cat_RFC3339Formatters = [MEMORY[0x277CBEAA8] cat_RFC3339Formatters];
+    v5 = [cat_RFC3339Formatters countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v5)
     {
       v6 = v5;
@@ -40,7 +40,7 @@
         {
           if (*v14 != v7)
           {
-            objc_enumerationMutation(v4);
+            objc_enumerationMutation(cat_RFC3339Formatters);
           }
 
           v9 = [*(*(&v13 + 1) + 8 * i) dateFromString:v3];
@@ -51,7 +51,7 @@
           }
         }
 
-        v6 = [v4 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v6 = [cat_RFC3339Formatters countByEnumeratingWithState:&v13 objects:v17 count:16];
         if (v6)
         {
           continue;
@@ -77,9 +77,9 @@ LABEL_12:
 
 - (id)cat_internetTimeString
 {
-  v2 = [MEMORY[0x277CBEAA8] cat_RFC3339Formatters];
-  v3 = [v2 firstObject];
-  v4 = [v3 stringFromDate:a1];
+  cat_RFC3339Formatters = [MEMORY[0x277CBEAA8] cat_RFC3339Formatters];
+  firstObject = [cat_RFC3339Formatters firstObject];
+  v4 = [firstObject stringFromDate:self];
 
   return v4;
 }

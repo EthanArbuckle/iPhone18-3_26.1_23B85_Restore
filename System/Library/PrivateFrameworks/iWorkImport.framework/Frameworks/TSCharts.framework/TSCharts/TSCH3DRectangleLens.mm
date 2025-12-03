@@ -2,16 +2,16 @@
 - (TSCH3DRectangleLens)init;
 - (float)height;
 - (float)width;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)frustumRect;
-- (id)narrowByNormalizedBounds:(void *)a3;
-- (id)narrowedByNormalizedBounds:(void *)a3;
-- (id)shiftByPercentage:(void *)a3;
-- (id)shiftedByPercentage:(void *)a3;
+- (id)narrowByNormalizedBounds:(void *)bounds;
+- (id)narrowedByNormalizedBounds:(void *)bounds;
+- (id)shiftByPercentage:(void *)percentage;
+- (id)shiftedByPercentage:(void *)percentage;
 - (void)deviceNormalize;
 - (void)normalize;
-- (void)setPerPixelSize:(void *)a3;
+- (void)setPerPixelSize:(void *)size;
 @end
 
 @implementation TSCH3DRectangleLens
@@ -30,11 +30,11 @@
   return v7;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v38.receiver = self;
   v38.super_class = TSCH3DRectangleLens;
-  v5 = [(TSCH3DLens *)&v38 copyWithZone:a3];
+  v5 = [(TSCH3DLens *)&v38 copyWithZone:zone];
   if (v5)
   {
     objc_msgSend_left(self, v4, v6, v7, v8);
@@ -91,12 +91,12 @@
   *&self->super._near = -_D0;
 }
 
-- (void)setPerPixelSize:(void *)a3
+- (void)setPerPixelSize:(void *)size
 {
   self->_left = 0.0;
-  self->_right = *a3;
+  self->_right = *size;
   self->_bottom = 0.0;
-  self->_top = *(a3 + 1);
+  self->_top = *(size + 1);
 }
 
 - (float)width
@@ -115,7 +115,7 @@
   return v7 - v11;
 }
 
-- (id)narrowByNormalizedBounds:(void *)a3
+- (id)narrowByNormalizedBounds:(void *)bounds
 {
   objc_msgSend_width(self, a2, v3, v4, v5);
   v9 = *&v8;
@@ -125,33 +125,33 @@
   v19 = *&v18;
   objc_msgSend_bottom(self, v20, v18, v21, v22);
   v24 = v23;
-  *&v25 = v19 + (*a3 * v9);
+  *&v25 = v19 + (*bounds * v9);
   objc_msgSend_setLeft_(self, v26, v25, v27, v28);
-  *&v29 = v19 + (*(a3 + 2) * v9);
+  *&v29 = v19 + (*(bounds + 2) * v9);
   objc_msgSend_setRight_(self, v30, v29, v31, v32);
-  *&v33 = v24 + (*(a3 + 1) * v14);
+  *&v33 = v24 + (*(bounds + 1) * v14);
   objc_msgSend_setBottom_(self, v34, v33, v35, v36);
-  *&v37 = v24 + (*(a3 + 3) * v14);
+  *&v37 = v24 + (*(bounds + 3) * v14);
   objc_msgSend_setTop_(self, v38, v37, v39, v40);
   return self;
 }
 
-- (id)narrowedByNormalizedBounds:(void *)a3
+- (id)narrowedByNormalizedBounds:(void *)bounds
 {
   v7 = objc_msgSend_copy(self, a2, v3, v4, v5);
-  v12 = objc_msgSend_narrowByNormalizedBounds_(v7, v8, v9, v10, v11, a3);
+  v12 = objc_msgSend_narrowByNormalizedBounds_(v7, v8, v9, v10, v11, bounds);
 
   return v12;
 }
 
-- (id)shiftByPercentage:(void *)a3
+- (id)shiftByPercentage:(void *)percentage
 {
   objc_msgSend_width(self, a2, v3, v4, v5);
   v9 = *&v8;
   objc_msgSend_height(self, v10, v8, v11, v12);
-  LODWORD(v13) = *a3;
-  LODWORD(v14) = *(a3 + 1);
-  v15 = v9 * *a3;
+  LODWORD(v13) = *percentage;
+  LODWORD(v14) = *(percentage + 1);
+  v15 = v9 * *percentage;
   v17 = *&v16 * *&v14;
   objc_msgSend_left(self, v18, v16, v13, v14);
   *&v20 = v19 - v15;
@@ -168,10 +168,10 @@
   return self;
 }
 
-- (id)shiftedByPercentage:(void *)a3
+- (id)shiftedByPercentage:(void *)percentage
 {
   v7 = objc_msgSend_copy(self, a2, v3, v4, v5);
-  v12 = objc_msgSend_shiftByPercentage_(v7, v8, v9, v10, v11, a3);
+  v12 = objc_msgSend_shiftByPercentage_(v7, v8, v9, v10, v11, percentage);
 
   return v12;
 }

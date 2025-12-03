@@ -9,8 +9,8 @@
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(TKVibrationRecorderProgressDotImageView *)self accessibilityValue];
-  v3 = v2 != 0;
+  accessibilityValue = [(TKVibrationRecorderProgressDotImageView *)self accessibilityValue];
+  v3 = accessibilityValue != 0;
 
   return v3;
 }

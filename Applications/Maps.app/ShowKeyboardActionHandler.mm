@@ -1,20 +1,20 @@
 @interface ShowKeyboardActionHandler
-+ (void)performAction:(id)a3 inContext:(id)a4;
++ (void)performAction:(id)action inContext:(id)context;
 @end
 
 @implementation ShowKeyboardActionHandler
 
-+ (void)performAction:(id)a3 inContext:(id)a4
++ (void)performAction:(id)action inContext:(id)context
 {
-  v7 = a3;
+  actionCopy = action;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v7;
+    v4 = actionCopy;
     v5 = +[CarChromeModeCoordinator sharedInstance];
-    v6 = [v4 interactionModel];
+    interactionModel = [v4 interactionModel];
 
-    [v5 launchIntoKeyboardSearchWithRequestedInteractionModel:v6];
+    [v5 launchIntoKeyboardSearchWithRequestedInteractionModel:interactionModel];
   }
 }
 

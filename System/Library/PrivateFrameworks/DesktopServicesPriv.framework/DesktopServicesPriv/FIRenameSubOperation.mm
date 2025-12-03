@@ -1,31 +1,31 @@
 @interface FIRenameSubOperation
-- (BOOL)reconfigureOpForRename:(id)a3 error:(id *)a4;
-- (id)configureOperationRecord:(id)a3 forNode:(id)a4 rawName:(id)a5 hideExtension:(const void *)a6;
+- (BOOL)reconfigureOpForRename:(id)rename error:(id *)error;
+- (id)configureOperationRecord:(id)record forNode:(id)node rawName:(id)name hideExtension:(const void *)extension;
 @end
 
 @implementation FIRenameSubOperation
 
-- (BOOL)reconfigureOpForRename:(id)a3 error:(id *)a4
+- (BOOL)reconfigureOpForRename:(id)rename error:(id *)error
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(FISubOperation *)self operation];
-  if (v7)
+  renameCopy = rename;
+  operation = [(FISubOperation *)self operation];
+  if (operation)
   {
-    if (v6)
+    if (renameCopy)
     {
 LABEL_8:
-      v13 = self;
-      objc_sync_enter(v13);
-      v18[0] = v6;
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v18[0] = renameCopy;
       v14 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
-      [v7 setSourceNodes:v14];
+      [operation setSourceNodes:v14];
 
-      [v7 setDestinationNode:0];
-      v15 = [v7 sourceNodes];
-      [v7 configureForNodes:v15];
+      [operation setDestinationNode:0];
+      sourceNodes = [operation sourceNodes];
+      [operation configureForNodes:sourceNodes];
 
-      objc_sync_exit(v13);
+      objc_sync_exit(selfCopy);
       v10 = 0;
       v12 = 1;
       goto LABEL_9;
@@ -46,11 +46,11 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  if (a4)
+  if (error)
   {
     v11 = v9;
     v12 = 0;
-    *a4 = v10;
+    *error = v10;
   }
 
   else
@@ -64,22 +64,22 @@ LABEL_9:
   return v12;
 }
 
-- (id)configureOperationRecord:(id)a3 forNode:(id)a4 rawName:(id)a5 hideExtension:(const void *)a6
+- (id)configureOperationRecord:(id)record forNode:(id)node rawName:(id)name hideExtension:(const void *)extension
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = [v8 nodePropertyList];
-  v11 = MutableCopy<NSDictionary<NSString *,objc_object *>>(v10);
+  recordCopy = record;
+  nameCopy = name;
+  nodePropertyList = [recordCopy nodePropertyList];
+  v11 = MutableCopy<NSDictionary<NSString *,objc_object *>>(nodePropertyList);
 
-  [v11 setAsString:v9 forProperty:1886282093 error:0];
-  if (*(a6 + 1) == 1)
+  [v11 setAsString:nameCopy forProperty:1886282093 error:0];
+  if (*(extension + 1) == 1)
   {
-    [v11 setAsBool:*a6 forProperty:1751480436 error:0];
+    [v11 setAsBool:*extension forProperty:1751480436 error:0];
   }
 
-  [v8 setNodePropertyList:v11];
+  [recordCopy setNodePropertyList:v11];
 
-  return v8;
+  return recordCopy;
 }
 
 @end

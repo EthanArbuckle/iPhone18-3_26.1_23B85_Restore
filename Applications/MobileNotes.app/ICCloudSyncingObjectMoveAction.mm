@@ -1,60 +1,60 @@
 @interface ICCloudSyncingObjectMoveAction
 - (ICCloudSyncingObjectMoveAction)init;
-- (ICCloudSyncingObjectMoveAction)initWithFolder:(id)a3 toParentObject:(id)a4 isCopy:(BOOL)a5;
-- (ICCloudSyncingObjectMoveAction)initWithNote:(id)a3 toFolder:(id)a4 isCopy:(BOOL)a5;
-- (ICCloudSyncingObjectMoveAction)initWithObject:(id)a3 fromParentObject:(id)a4 toParentObject:(id)a5 isCopy:(BOOL)a6;
-- (ICCloudSyncingObjectMoveAction)initWithType:(int64_t)a3 object:(id)a4 fromParentObject:(id)a5 toParentObject:(id)a6 isCopy:(BOOL)a7;
+- (ICCloudSyncingObjectMoveAction)initWithFolder:(id)folder toParentObject:(id)object isCopy:(BOOL)copy;
+- (ICCloudSyncingObjectMoveAction)initWithNote:(id)note toFolder:(id)folder isCopy:(BOOL)copy;
+- (ICCloudSyncingObjectMoveAction)initWithObject:(id)object fromParentObject:(id)parentObject toParentObject:(id)toParentObject isCopy:(BOOL)copy;
+- (ICCloudSyncingObjectMoveAction)initWithType:(int64_t)type object:(id)object fromParentObject:(id)parentObject toParentObject:(id)toParentObject isCopy:(BOOL)copy;
 @end
 
 @implementation ICCloudSyncingObjectMoveAction
 
-- (ICCloudSyncingObjectMoveAction)initWithType:(int64_t)a3 object:(id)a4 fromParentObject:(id)a5 toParentObject:(id)a6 isCopy:(BOOL)a7
+- (ICCloudSyncingObjectMoveAction)initWithType:(int64_t)type object:(id)object fromParentObject:(id)parentObject toParentObject:(id)toParentObject isCopy:(BOOL)copy
 {
   ObjectType = swift_getObjectType();
-  *(&self->super.isa + OBJC_IVAR___ICCloudSyncingObjectMoveAction_type) = a3;
-  *(&self->super.isa + OBJC_IVAR___ICCloudSyncingObjectMoveAction_object) = a4;
-  *(&self->super.isa + OBJC_IVAR___ICCloudSyncingObjectMoveAction_fromParentObject) = a5;
-  *(&self->super.isa + OBJC_IVAR___ICCloudSyncingObjectMoveAction_toParentObject) = a6;
-  *(&self->super.isa + OBJC_IVAR___ICCloudSyncingObjectMoveAction_isCopy) = a7;
+  *(&self->super.isa + OBJC_IVAR___ICCloudSyncingObjectMoveAction_type) = type;
+  *(&self->super.isa + OBJC_IVAR___ICCloudSyncingObjectMoveAction_object) = object;
+  *(&self->super.isa + OBJC_IVAR___ICCloudSyncingObjectMoveAction_fromParentObject) = parentObject;
+  *(&self->super.isa + OBJC_IVAR___ICCloudSyncingObjectMoveAction_toParentObject) = toParentObject;
+  *(&self->super.isa + OBJC_IVAR___ICCloudSyncingObjectMoveAction_isCopy) = copy;
   v18.receiver = self;
   v18.super_class = ObjectType;
-  v14 = a4;
-  v15 = a5;
-  v16 = a6;
+  objectCopy = object;
+  parentObjectCopy = parentObject;
+  toParentObjectCopy = toParentObject;
   return [(ICCloudSyncingObjectMoveAction *)&v18 init];
 }
 
-- (ICCloudSyncingObjectMoveAction)initWithObject:(id)a3 fromParentObject:(id)a4 toParentObject:(id)a5 isCopy:(BOOL)a6
+- (ICCloudSyncingObjectMoveAction)initWithObject:(id)object fromParentObject:(id)parentObject toParentObject:(id)toParentObject isCopy:(BOOL)copy
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  return ICCloudSyncingObject.MoveAction.init(object:fromParentObject:toParentObject:isCopy:)(v9, a4, a5, a6);
+  objectCopy = object;
+  parentObjectCopy = parentObject;
+  toParentObjectCopy = toParentObject;
+  return ICCloudSyncingObject.MoveAction.init(object:fromParentObject:toParentObject:isCopy:)(objectCopy, parentObject, toParentObject, copy);
 }
 
-- (ICCloudSyncingObjectMoveAction)initWithFolder:(id)a3 toParentObject:(id)a4 isCopy:(BOOL)a5
+- (ICCloudSyncingObjectMoveAction)initWithFolder:(id)folder toParentObject:(id)object isCopy:(BOOL)copy
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 parent];
-  if (!v10)
+  copyCopy = copy;
+  folderCopy = folder;
+  objectCopy = object;
+  parent = [folderCopy parent];
+  if (!parent)
   {
-    v10 = [v8 account];
+    parent = [folderCopy account];
   }
 
-  v11 = [(ICCloudSyncingObjectMoveAction *)self initWithObject:v8 fromParentObject:v10 toParentObject:v9 isCopy:v5];
+  v11 = [(ICCloudSyncingObjectMoveAction *)self initWithObject:folderCopy fromParentObject:parent toParentObject:objectCopy isCopy:copyCopy];
 
   return v11;
 }
 
-- (ICCloudSyncingObjectMoveAction)initWithNote:(id)a3 toFolder:(id)a4 isCopy:(BOOL)a5
+- (ICCloudSyncingObjectMoveAction)initWithNote:(id)note toFolder:(id)folder isCopy:(BOOL)copy
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  v10 = [v8 folder];
-  v11 = [(ICCloudSyncingObjectMoveAction *)self initWithObject:v8 fromParentObject:v10 toParentObject:v9 isCopy:v5];
+  copyCopy = copy;
+  noteCopy = note;
+  folderCopy = folder;
+  folder = [noteCopy folder];
+  v11 = [(ICCloudSyncingObjectMoveAction *)self initWithObject:noteCopy fromParentObject:folder toParentObject:folderCopy isCopy:copyCopy];
 
   return v11;
 }

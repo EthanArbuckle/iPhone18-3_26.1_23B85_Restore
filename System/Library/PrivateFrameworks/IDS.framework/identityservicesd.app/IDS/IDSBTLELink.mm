@@ -1,30 +1,30 @@
 @interface IDSBTLELink
-- (IDSBTLELink)initWithWPLinkManager:(id)a3 withIdentifier:(id)a4;
+- (IDSBTLELink)initWithWPLinkManager:(id)manager withIdentifier:(id)identifier;
 - (IDSLinkDelegate)alternateDelegate;
 - (IDSLinkDelegate)delegate;
 - (id)copyLinkStatsDict;
-- (id)generateLinkReport:(double)a3 isCurrentLink:(BOOL)a4;
-- (unint64_t)sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5;
-- (void)_didReceiveData:(id)a3;
+- (id)generateLinkReport:(double)report isCurrentLink:(BOOL)link;
+- (unint64_t)sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid;
+- (void)_didReceiveData:(id)data;
 - (void)dealloc;
-- (void)didReceiveData:(id)a3;
+- (void)didReceiveData:(id)data;
 - (void)start;
 @end
 
 @implementation IDSBTLELink
 
-- (IDSBTLELink)initWithWPLinkManager:(id)a3 withIdentifier:(id)a4
+- (IDSBTLELink)initWithWPLinkManager:(id)manager withIdentifier:(id)identifier
 {
-  v7 = a3;
-  v8 = a4;
+  managerCopy = manager;
+  identifierCopy = identifier;
   v16.receiver = self;
   v16.super_class = IDSBTLELink;
   v9 = [(IDSBTLELink *)&v16 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_wpLinkManager, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_wpLinkManager, manager);
+    v11 = [identifierCopy copy];
     linkID = v10->_linkID;
     v10->_linkID = v11;
 
@@ -80,12 +80,12 @@
   return v8;
 }
 
-- (unint64_t)sendPacketBuffer:(id *)a3 toDeviceUniqueID:(id)a4 cbuuid:(id)a5
+- (unint64_t)sendPacketBuffer:(id *)buffer toDeviceUniqueID:(id)d cbuuid:(id)cbuuid
 {
-  v8 = a4;
-  v9 = a5;
-  v10 = v9;
-  if (v9 && ([v9 isEqualToString:self->_cbuuid] & 1) == 0)
+  dCopy = d;
+  cbuuidCopy = cbuuid;
+  v10 = cbuuidCopy;
+  if (cbuuidCopy && ([cbuuidCopy isEqualToString:self->_cbuuid] & 1) == 0)
   {
     _IDSLinkPacketBufferRelease();
     v11 = 10;
@@ -100,7 +100,7 @@
       self->_shouldSendHasSpaceAvailable = 1;
     }
 
-    else if (a3->var2 <= 0)
+    else if (buffer->var2 <= 0)
     {
       _IDSLinkPacketBufferRelease();
       v11 = 15;
@@ -108,24 +108,24 @@
 
     else
     {
-      if (*a3->var0 < 0)
+      if (*buffer->var0 < 0)
       {
-        v12 = *a3->var0;
+        v12 = *buffer->var0;
         v13 = bufferChecksum();
         IDSLinkPacketBufferAddBufferStart();
-        *a3->var0 = v12;
-        a3->var0[1] = HIBYTE(v13);
-        a3->var0[2] = v13;
+        *buffer->var0 = v12;
+        buffer->var0[1] = HIBYTE(v13);
+        buffer->var0[2] = v13;
       }
 
       if (self->_hasSpaceAvailable)
       {
         v14 = vdupq_n_s64(1uLL);
-        v14.i64[0] = a3->var2;
+        v14.i64[0] = buffer->var2;
         *&self->_totalBytesSent = vaddq_s64(*&self->_totalBytesSent, v14);
         self->_hasSpaceAvailable = 0;
         v15 = objc_autoreleasePoolPush();
-        v16 = [NSData dataWithBytesNoCopy:a3->var0 length:a3->var2 freeWhenDone:0];
+        v16 = [NSData dataWithBytesNoCopy:buffer->var0 length:buffer->var2 freeWhenDone:0];
         v11 = [(IDSWPPacketSendingProtocol *)self->_wpLinkManager sendData:v16 peerID:self->_peerID];
 
         objc_autoreleasePoolPop(v15);
@@ -133,7 +133,7 @@
 
       else
       {
-        v17 = [[NSData alloc] initWithBytes:a3->var0 length:a3->var2];
+        v17 = [[NSData alloc] initWithBytes:buffer->var0 length:buffer->var2];
         outgoingData = self->_outgoingData;
         self->_outgoingData = v17;
 
@@ -154,17 +154,17 @@
   return v11;
 }
 
-- (void)didReceiveData:(id)a3
+- (void)didReceiveData:(id)data
 {
-  v4 = a3;
-  v3 = v4;
+  dataCopy = data;
+  v3 = dataCopy;
   IDSTransportThreadAddBlock();
 }
 
-- (void)_didReceiveData:(id)a3
+- (void)_didReceiveData:(id)data
 {
-  v4 = a3;
-  v5 = [v4 length];
+  dataCopy = data;
+  v5 = [dataCopy length];
   v6 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
@@ -182,9 +182,9 @@
   v7 = vdupq_n_s64(1uLL);
   v7.i64[0] = v5;
   *&self->_totalBytesReceived = vaddq_s64(*&self->_totalBytesReceived, v7);
-  if ([v4 length] < 0x7D1)
+  if ([dataCopy length] < 0x7D1)
   {
-    if (![v4 length])
+    if (![dataCopy length])
     {
       v15 = OSLogHandleForIDSCategory();
       if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
@@ -207,17 +207,17 @@
       incomingPacketBuffer = _IDSLinkPacketBufferCreate();
     }
 
-    [v4 getBytes:incomingPacketBuffer->var0 length:v5];
+    [dataCopy getBytes:incomingPacketBuffer->var0 length:v5];
     incomingPacketBuffer->var2 = v5;
     v11 = *incomingPacketBuffer->var0;
     if (v11 < 0)
     {
-      if ([v4 length] <= 2)
+      if ([dataCopy length] <= 2)
       {
         v16 = OSLogHandleForIDSCategory();
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
-          v17 = [v4 length];
+          v17 = [dataCopy length];
           *buf = 134217984;
           *&v29 = v17;
           _os_log_impl(&_mh_execute_header, v16, OS_LOG_TYPE_DEFAULT, "Received data too small (%lu) - rejecting", buf, 0xCu);
@@ -247,7 +247,7 @@
           WORD5(v29) = 1024;
           HIDWORD(v29) = v5;
           v30 = 2112;
-          v31 = v4;
+          v31 = dataCopy;
           _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_DEFAULT, "Data corruption! Checksum check failed (old:%04x new:%04x) data(%d): %@", buf, 0x1Eu);
         }
 
@@ -256,14 +256,14 @@
           if (_IDSShouldLogTransport())
           {
             v26 = v5;
-            v27 = v4;
+            v27 = dataCopy;
             v24 = v21;
             v25 = v20;
             _IDSLogTransport();
             if (_IDSShouldLog())
             {
               v26 = v5;
-              v27 = v4;
+              v27 = dataCopy;
               v24 = v21;
               v25 = v20;
               _IDSLogV();
@@ -295,7 +295,7 @@ LABEL_43:
       *buf = 67109378;
       LODWORD(v29) = v5;
       WORD2(v29) = 2112;
-      *(&v29 + 6) = v4;
+      *(&v29 + 6) = dataCopy;
       _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "Data corruption! This data did not decode(%d): %@", buf, 0x12u);
     }
 
@@ -304,7 +304,7 @@ LABEL_43:
       if (_IDSShouldLogTransport())
       {
         v24 = v5;
-        v25 = v4;
+        v25 = dataCopy;
         _IDSLogTransport();
         if (_IDSShouldLog())
         {
@@ -323,7 +323,7 @@ LABEL_42:
   v8 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
-    v9 = [v4 length];
+    v9 = [dataCopy length];
     *buf = 134217984;
     *&v29 = v9;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "Received data too big (%lu) - rejecting", buf, 0xCu);
@@ -332,14 +332,14 @@ LABEL_42:
   if (os_log_shim_legacy_logging_enabled() && _IDSShouldLog())
   {
 LABEL_11:
-    [v4 length];
+    [dataCopy length];
     _IDSLogV();
   }
 
 LABEL_44:
 }
 
-- (id)generateLinkReport:(double)a3 isCurrentLink:(BOOL)a4
+- (id)generateLinkReport:(double)report isCurrentLink:(BOOL)link
 {
   if (self->_previousReportTime == 0.0)
   {
@@ -349,7 +349,7 @@ LABEL_44:
   else
   {
     state = self->_state;
-    if (a4)
+    if (link)
     {
       v7 = 42;
     }
@@ -384,7 +384,7 @@ LABEL_44:
     v9 = [NSString stringWithFormat:@"%c BTLE      (%s) Tx %6llu pkts %@B %@bps     %6llu pkts %@B\n                        Rx %6llu pkts %@B %@bps     %6llu pkts %@B\n", v23, v22, v21, v10, v11, totalPacketsSent, v13, v14, v15, v16, totalPacketsReceived, v18];
   }
 
-  self->_previousReportTime = a3;
+  self->_previousReportTime = report;
   v19 = *&self->_totalBytesReceived;
   *&self->_previousBytesSent = *&self->_totalBytesSent;
   *&self->_previousBytesReceived = v19;

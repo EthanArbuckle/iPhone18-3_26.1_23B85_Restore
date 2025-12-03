@@ -9,10 +9,10 @@
 
 - (BOOL)hasHomeButton
 {
-  v1 = [a1 valueForProperty:*MEMORY[0x277D37BA0]];
-  v2 = [v1 integerValue];
+  v1 = [self valueForProperty:*MEMORY[0x277D37BA0]];
+  integerValue = [v1 integerValue];
 
-  return v2 != 2;
+  return integerValue != 2;
 }
 
 - (uint64_t)isRunningInternalBuild
@@ -27,20 +27,20 @@
 
 - (BOOL)isCellularSeries3
 {
-  v1 = [a1 valueForProperty:*MEMORY[0x277D37BE8]];
-  v2 = [v1 stringValue];
+  v1 = [self valueForProperty:*MEMORY[0x277D37BE8]];
+  stringValue = [v1 stringValue];
 
-  v3 = ![v2 caseInsensitiveCompare:{@"watch3, 1"}] || !objc_msgSend(v2, "caseInsensitiveCompare:", @"watch3,2");
+  v3 = ![stringValue caseInsensitiveCompare:{@"watch3, 1"}] || !objc_msgSend(stringValue, "caseInsensitiveCompare:", @"watch3,2");
   return v3;
 }
 
 + (id)activeDevice
 {
-  v0 = [MEMORY[0x277D37B50] sharedInstance];
-  v1 = [v0 getDevicesExcluding:4];
-  v2 = [v1 firstObject];
+  mEMORY[0x277D37B50] = [MEMORY[0x277D37B50] sharedInstance];
+  v1 = [mEMORY[0x277D37B50] getDevicesExcluding:4];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 @end

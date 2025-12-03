@@ -9,8 +9,8 @@
 - (id)mutableCopy
 {
   v3 = objc_alloc_init(POMutableWrappedTokenJWTBody);
-  v4 = [(_POJWTBodyBase *)self data];
-  v5 = [v4 mutableCopy];
+  data = [(_POJWTBodyBase *)self data];
+  v5 = [data mutableCopy];
   [(_POJWTBodyBase *)v3 setData:v5];
 
   return v3;

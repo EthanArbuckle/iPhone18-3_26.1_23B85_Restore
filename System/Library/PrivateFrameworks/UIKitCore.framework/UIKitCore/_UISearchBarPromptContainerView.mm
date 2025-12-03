@@ -1,5 +1,5 @@
 @interface _UISearchBarPromptContainerView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UIEdgeInsets)contentInset;
 - (id)description;
 - (void)layoutSubviews;
@@ -7,17 +7,17 @@
 
 @implementation _UISearchBarPromptContainerView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
-  v5 = [(UILabel *)self->_promptLabel text:a3.width];
+  width = fits.width;
+  v5 = [(UILabel *)self->_promptLabel text:fits.width];
   v6 = [v5 length];
 
   if (v6)
   {
-    v7 = [(_UISearchBarPromptContainerView *)self useMini];
+    useMini = [(_UISearchBarPromptContainerView *)self useMini];
     v8 = 22.0;
-    if (!v7)
+    if (!useMini)
     {
       v8 = 34.0;
     }
@@ -36,8 +36,8 @@
 
 - (void)layoutSubviews
 {
-  v3 = [(UILabel *)self->_promptLabel text];
-  v4 = [v3 length];
+  text = [(UILabel *)self->_promptLabel text];
+  v4 = [text length];
 
   if (v4)
   {
@@ -103,13 +103,13 @@
   v3 = [(UIView *)&v14 description];
   if (os_variant_has_internal_diagnostics())
   {
-    v5 = [(UILabel *)self->_promptLabel text];
-    v6 = [v5 length];
+    text = [(UILabel *)self->_promptLabel text];
+    v6 = [text length];
 
     if (v6)
     {
-      v7 = [(UILabel *)self->_promptLabel text];
-      v8 = [v3 stringByAppendingFormat:@" %@", v7];
+      text2 = [(UILabel *)self->_promptLabel text];
+      v8 = [v3 stringByAppendingFormat:@" %@", text2];
 
       v3 = v8;
     }

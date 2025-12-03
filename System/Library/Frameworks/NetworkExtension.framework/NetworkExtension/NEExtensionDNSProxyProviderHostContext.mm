@@ -1,6 +1,6 @@
 @interface NEExtensionDNSProxyProviderHostContext
 + (id)_extensionAuxiliaryVendorProtocol;
-- (void)setSystemDNSSettings:(id)a3;
+- (void)setSystemDNSSettings:(id)settings;
 @end
 
 @implementation NEExtensionDNSProxyProviderHostContext
@@ -29,11 +29,11 @@ void __75__NEExtensionDNSProxyProviderHostContext__extensionAuxiliaryVendorProto
   [_extensionAuxiliaryVendorProtocol_protocol_2290 setClasses:v4 forSelector:sel_setSystemDNSSettings_ argumentIndex:0 ofReply:0];
 }
 
-- (void)setSystemDNSSettings:(id)a3
+- (void)setSystemDNSSettings:(id)settings
 {
-  v4 = a3;
-  v5 = [(NEExtensionProviderHostContext *)&self->super.super.super.super.super.isa vendorContext];
-  [v5 setSystemDNSSettings:v4];
+  settingsCopy = settings;
+  vendorContext = [(NEExtensionProviderHostContext *)&self->super.super.super.super.super.isa vendorContext];
+  [vendorContext setSystemDNSSettings:settingsCopy];
 }
 
 @end

@@ -1,7 +1,7 @@
 @interface RPDeviceContext
 - (void)invalidate;
 - (void)pairVerify;
-- (void)systemInfoResponse:(id)a3 error:(id)a4;
+- (void)systemInfoResponse:(id)response error:(id)error;
 @end
 
 @implementation RPDeviceContext
@@ -93,11 +93,11 @@ LABEL_6:
   [v5 requestSystemInfoWithCompletion:v6];
 }
 
-- (void)systemInfoResponse:(id)a3 error:(id)a4
+- (void)systemInfoResponse:(id)response error:(id)error
 {
-  v8 = a3;
-  v6 = a4;
-  if (v8)
+  responseCopy = response;
+  errorCopy = error;
+  if (responseCopy)
   {
     [(RPDevice *)self->_device updateWithSystemInfo:?];
     if (gLogCategory_RPLegacySupport <= 30 && (gLogCategory_RPLegacySupport != -1 || _LogCategory_Initialize()))

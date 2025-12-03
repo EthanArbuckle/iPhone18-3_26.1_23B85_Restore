@@ -1,20 +1,20 @@
 @interface CKMessageEntryViewController
-- (CKMessageEntryViewController)initWithEntryView:(id)a3;
+- (CKMessageEntryViewController)initWithEntryView:(id)view;
 - (void)loadView;
 @end
 
 @implementation CKMessageEntryViewController
 
-- (CKMessageEntryViewController)initWithEntryView:(id)a3
+- (CKMessageEntryViewController)initWithEntryView:(id)view
 {
-  v5 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = CKMessageEntryViewController;
   v6 = [(CKMessageEntryViewController *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_entryView, a3);
+    objc_storeStrong(&v6->_entryView, view);
   }
 
   return v7;
@@ -24,8 +24,8 @@
 {
   if ([(CKMessageEntryViewController *)self inputAccessoryViewControllerEnabled])
   {
-    v3 = [(CKMessageEntryViewController *)self entryView];
-    [(UIInputViewController *)self setView:v3];
+    entryView = [(CKMessageEntryViewController *)self entryView];
+    [(UIInputViewController *)self setView:entryView];
   }
 }
 

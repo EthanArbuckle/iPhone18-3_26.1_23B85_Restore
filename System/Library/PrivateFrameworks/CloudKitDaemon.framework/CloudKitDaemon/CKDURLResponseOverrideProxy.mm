@@ -1,17 +1,17 @@
 @interface CKDURLResponseOverrideProxy
-- (CKDURLResponseOverrideProxy)initWithResponse:(id)a3 overrides:(id)a4;
+- (CKDURLResponseOverrideProxy)initWithResponse:(id)response overrides:(id)overrides;
 - (id)allHeaderFields;
-- (id)valueForHTTPHeaderField:(id)a3;
+- (id)valueForHTTPHeaderField:(id)field;
 @end
 
 @implementation CKDURLResponseOverrideProxy
 
-- (CKDURLResponseOverrideProxy)initWithResponse:(id)a3 overrides:(id)a4
+- (CKDURLResponseOverrideProxy)initWithResponse:(id)response overrides:(id)overrides
 {
-  v7 = a3;
-  v8 = a4;
-  objc_storeStrong(&self->_realResponse, a3);
-  v10 = objc_msgSend_objectForKeyedSubscript_(v8, v9, @"HTTPResponseStatusOverride");
+  responseCopy = response;
+  overridesCopy = overrides;
+  objc_storeStrong(&self->_realResponse, response);
+  v10 = objc_msgSend_objectForKeyedSubscript_(overridesCopy, v9, @"HTTPResponseStatusOverride");
   v13 = v10;
   if (v10)
   {
@@ -20,11 +20,11 @@
 
   else
   {
-    v14 = objc_msgSend_statusCode(v7, v11, v12);
+    v14 = objc_msgSend_statusCode(responseCopy, v11, v12);
   }
 
   self->_statusCode = v14;
-  v16 = objc_msgSend_objectForKeyedSubscript_(v8, v15, @"HTTPResponseHeaderOverrides");
+  v16 = objc_msgSend_objectForKeyedSubscript_(overridesCopy, v15, @"HTTPResponseHeaderOverrides");
   responseHeaderOverrides = self->_responseHeaderOverrides;
   self->_responseHeaderOverrides = v16;
 
@@ -42,13 +42,13 @@
   return v11;
 }
 
-- (id)valueForHTTPHeaderField:(id)a3
+- (id)valueForHTTPHeaderField:(id)field
 {
-  v4 = a3;
-  v7 = objc_msgSend_objectForKey_(self->_responseHeaderOverrides, v5, v4);
+  fieldCopy = field;
+  v7 = objc_msgSend_objectForKey_(self->_responseHeaderOverrides, v5, fieldCopy);
   if (!v7)
   {
-    v7 = objc_msgSend_valueForHTTPHeaderField_(self->_realResponse, v6, v4);
+    v7 = objc_msgSend_valueForHTTPHeaderField_(self->_realResponse, v6, fieldCopy);
   }
 
   return v7;

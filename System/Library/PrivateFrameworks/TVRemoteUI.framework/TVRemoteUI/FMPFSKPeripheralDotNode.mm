@@ -7,7 +7,7 @@
 
 - (NSString)description
 {
-  v2 = self;
+  selfCopy = self;
   v3 = FMPFSKPeripheralDotNode.description.getter();
   v5 = v4;
 

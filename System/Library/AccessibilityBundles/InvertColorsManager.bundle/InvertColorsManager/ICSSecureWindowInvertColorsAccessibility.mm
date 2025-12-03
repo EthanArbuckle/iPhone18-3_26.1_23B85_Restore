@@ -22,8 +22,8 @@
 
 - (BOOL)_accessibilityInvertColorsSupportsDarkWindowInvert
 {
-  v2 = [(ICSSecureWindowInvertColorsAccessibility *)self traitCollection];
-  v3 = [v2 userInterfaceStyle] == &dword_0 + 2;
+  traitCollection = [(ICSSecureWindowInvertColorsAccessibility *)self traitCollection];
+  v3 = [traitCollection userInterfaceStyle] == &dword_0 + 2;
 
   return v3;
 }

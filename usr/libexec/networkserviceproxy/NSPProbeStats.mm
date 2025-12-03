@@ -7,14 +7,14 @@
 
 - (id)probeReasonToString
 {
-  v2 = [(NSPProbeStats *)self probeReason];
+  probeReason = [(NSPProbeStats *)self probeReason];
   v3 = @"Unknown";
-  if (v2 == 1)
+  if (probeReason == 1)
   {
     v3 = @"Proxy";
   }
 
-  if (v2 == 2)
+  if (probeReason == 2)
   {
     return @"DNS";
   }
@@ -27,19 +27,19 @@
 
 - (id)analyticsDict
 {
-  v3 = [(NSPProbeStats *)self tierType];
+  tierType = [(NSPProbeStats *)self tierType];
 
-  if (v3)
+  if (tierType)
   {
     v4 = objc_alloc_init(NSMutableDictionary);
-    v5 = [(NSPProbeStats *)self tierType];
-    [v4 setObject:v5 forKeyedSubscript:@"TierType"];
+    tierType2 = [(NSPProbeStats *)self tierType];
+    [v4 setObject:tierType2 forKeyedSubscript:@"TierType"];
 
-    v6 = [(NSPProbeStats *)self probeReasonToString];
-    [v4 setObject:v6 forKeyedSubscript:@"ProbeReason"];
+    probeReasonToString = [(NSPProbeStats *)self probeReasonToString];
+    [v4 setObject:probeReasonToString forKeyedSubscript:@"ProbeReason"];
 
-    v7 = [(NSPProbeStats *)self probeInterface];
-    [v4 setObject:v7 forKeyedSubscript:@"ProbeInterface"];
+    probeInterface = [(NSPProbeStats *)self probeInterface];
+    [v4 setObject:probeInterface forKeyedSubscript:@"ProbeInterface"];
 
     v8 = [NSNumber numberWithUnsignedInteger:[(NSPProbeStats *)self probeDurationSec]];
     [v4 setObject:v8 forKeyedSubscript:@"ProbeDuration"];

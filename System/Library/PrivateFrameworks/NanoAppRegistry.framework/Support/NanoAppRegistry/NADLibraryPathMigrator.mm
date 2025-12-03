@@ -1,25 +1,25 @@
 @interface NADLibraryPathMigrator
-- (BOOL)fileManager:(id)a3 shouldProceedAfterError:(id)a4 movingItemAtURL:(id)a5 toURL:(id)a6;
-- (NADLibraryPathMigrator)initWithSourceURL:(id)a3 destinationURL:(id)a4;
+- (BOOL)fileManager:(id)manager shouldProceedAfterError:(id)error movingItemAtURL:(id)l toURL:(id)rL;
+- (NADLibraryPathMigrator)initWithSourceURL:(id)l destinationURL:(id)rL;
 - (void)migrate;
 @end
 
 @implementation NADLibraryPathMigrator
 
-- (NADLibraryPathMigrator)initWithSourceURL:(id)a3 destinationURL:(id)a4
+- (NADLibraryPathMigrator)initWithSourceURL:(id)l destinationURL:(id)rL
 {
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  rLCopy = rL;
   v14.receiver = self;
   v14.super_class = NADLibraryPathMigrator;
   v8 = [(NADLibraryPathMigrator *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [lCopy copy];
     sourceURL = v8->_sourceURL;
     v8->_sourceURL = v9;
 
-    v11 = [v7 copy];
+    v11 = [rLCopy copy];
     destinationURL = v8->_destinationURL;
     v8->_destinationURL = v11;
   }
@@ -31,10 +31,10 @@
 {
   v3 = objc_alloc_init(NSFileManager);
   [v3 setDelegate:self];
-  v4 = [(NADLibraryPathMigrator *)self sourceURL];
-  v5 = [(NADLibraryPathMigrator *)self destinationURL];
+  sourceURL = [(NADLibraryPathMigrator *)self sourceURL];
+  destinationURL = [(NADLibraryPathMigrator *)self destinationURL];
   v17 = 0;
-  v6 = [v3 moveItemAtURL:v4 toURL:v5 error:&v17];
+  v6 = [v3 moveItemAtURL:sourceURL toURL:destinationURL error:&v17];
   v7 = v17;
   v8 = v7;
   if (v6)
@@ -43,9 +43,9 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v19 = v4;
+      v19 = sourceURL;
       v20 = 2112;
-      v21 = v5;
+      v21 = destinationURL;
       v10 = "Migrated store from %@ to %@";
       v11 = v9;
       v12 = 22;
@@ -58,15 +58,15 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  v13 = [v7 domain];
-  v14 = [v13 isEqualToString:NSCocoaErrorDomain];
+  domain = [v7 domain];
+  v14 = [domain isEqualToString:NSCocoaErrorDomain];
 
   if (v14)
   {
-    v15 = [v8 code];
+    code = [v8 code];
     v16 = nar_workspace_log();
     v9 = v16;
-    if (v15 == 516)
+    if (code == 516)
     {
       if (!os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
@@ -79,14 +79,14 @@ LABEL_13:
 
     else
     {
-      if (v15 != 4)
+      if (code != 4)
       {
         if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412802;
-          v19 = v4;
+          v19 = sourceURL;
           v20 = 2112;
-          v21 = v5;
+          v21 = destinationURL;
           v22 = 2112;
           v23 = v8;
           _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "Error migrating from %@ to %@: %@", buf, 0x20u);
@@ -113,22 +113,22 @@ LABEL_14:
   [v3 setDelegate:0];
 }
 
-- (BOOL)fileManager:(id)a3 shouldProceedAfterError:(id)a4 movingItemAtURL:(id)a5 toURL:(id)a6
+- (BOOL)fileManager:(id)manager shouldProceedAfterError:(id)error movingItemAtURL:(id)l toURL:(id)rL
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = [v10 domain];
-  if (![v13 isEqualToString:NSCocoaErrorDomain] || objc_msgSend(v10, "code") != 516)
+  managerCopy = manager;
+  errorCopy = error;
+  lCopy = l;
+  rLCopy = rL;
+  domain = [errorCopy domain];
+  if (![domain isEqualToString:NSCocoaErrorDomain] || objc_msgSend(errorCopy, "code") != 516)
   {
 LABEL_9:
 
     goto LABEL_10;
   }
 
-  v14 = [v11 path];
-  v15 = [v9 fileExistsAtPath:v14];
+  path = [lCopy path];
+  v15 = [managerCopy fileExistsAtPath:path];
 
   if (!v15)
   {
@@ -138,20 +138,20 @@ LABEL_10:
   }
 
   v21 = 0;
-  v16 = [v9 removeItemAtURL:v12 error:&v21];
+  v16 = [managerCopy removeItemAtURL:rLCopy error:&v21];
   v17 = v21;
-  v13 = v17;
+  domain = v17;
   if ((v16 & 1) == 0)
   {
     v19 = nar_workspace_log();
     if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412802;
-      v23 = v12;
+      v23 = rLCopy;
       v24 = 2112;
-      v25 = v11;
+      v25 = lCopy;
       v26 = 2112;
-      v27 = v13;
+      v27 = domain;
       _os_log_error_impl(&_mh_execute_header, v19, OS_LOG_TYPE_ERROR, "Error removing item at %@ trying to move item from %@: %@", buf, 0x20u);
     }
 

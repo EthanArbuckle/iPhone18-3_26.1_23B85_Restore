@@ -1,26 +1,26 @@
 @interface NSPropertyListSerialization
-+ (id)tsu_localizedPropertyListWithContentsOfURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-+ (id)tsu_propertyListWithContentsOfURL:(id)a3 options:(unint64_t)a4 error:(id *)a5;
-+ (void)tsu_processLocalizedPropertyList:(id)a3;
++ (id)tsu_localizedPropertyListWithContentsOfURL:(id)l options:(unint64_t)options error:(id *)error;
++ (id)tsu_propertyListWithContentsOfURL:(id)l options:(unint64_t)options error:(id *)error;
++ (void)tsu_processLocalizedPropertyList:(id)list;
 @end
 
 @implementation NSPropertyListSerialization
 
-+ (id)tsu_propertyListWithContentsOfURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
++ (id)tsu_propertyListWithContentsOfURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v7 = [NSInputStream inputStreamWithURL:a3];
+  v7 = [NSInputStream inputStreamWithURL:l];
   v8 = v7;
   if (v7)
   {
     [v7 open];
-    v9 = [NSPropertyListSerialization propertyListWithStream:v8 options:a4 format:0 error:a5];
+    v9 = [NSPropertyListSerialization propertyListWithStream:v8 options:options format:0 error:error];
     [v8 close];
   }
 
-  else if (a5)
+  else if (error)
   {
     [NSError tsu_fileReadUnknownErrorWithUserInfo:0];
-    *a5 = v9 = 0;
+    *error = v9 = 0;
   }
 
   else
@@ -31,13 +31,13 @@
   return v9;
 }
 
-+ (void)tsu_processLocalizedPropertyList:(id)a3
++ (void)tsu_processLocalizedPropertyList:(id)list
 {
-  v4 = a3;
+  listCopy = list;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = listCopy;
     v6 = [v5 objectForKey:@"_LOCALIZABLE_"];
     if (v6)
     {
@@ -48,7 +48,7 @@
     v18[1] = 3221225472;
     v18[2] = sub_1000AF714;
     v18[3] = &unk_1001CEE20;
-    v18[4] = a1;
+    v18[4] = self;
     [v5 enumerateKeysAndObjectsUsingBlock:v18];
     if (v6)
     {
@@ -83,7 +83,7 @@ LABEL_21:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v9 = v4;
+    v9 = listCopy;
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
@@ -102,7 +102,7 @@ LABEL_21:
             objc_enumerationMutation(v9);
           }
 
-          [a1 tsu_processLocalizedPropertyList:*(*(&v14 + 1) + 8 * i)];
+          [self tsu_processLocalizedPropertyList:*(*(&v14 + 1) + 8 * i)];
         }
 
         v11 = [v9 countByEnumeratingWithState:&v14 objects:v19 count:16];
@@ -117,10 +117,10 @@ LABEL_21:
 LABEL_22:
 }
 
-+ (id)tsu_localizedPropertyListWithContentsOfURL:(id)a3 options:(unint64_t)a4 error:(id *)a5
++ (id)tsu_localizedPropertyListWithContentsOfURL:(id)l options:(unint64_t)options error:(id *)error
 {
-  v8 = a3;
-  if (a4 - 1 >= 2)
+  lCopy = l;
+  if (options - 1 >= 2)
   {
     +[TSUAssertionHandler _atomicIncrementAssertCount];
     if (TSUAssertCat_init_token != -1)
@@ -140,8 +140,8 @@ LABEL_22:
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v11 = [a1 tsu_propertyListWithContentsOfURL:v8 options:a4 error:a5];
-  [a1 tsu_processLocalizedPropertyList:v11];
+  v11 = [self tsu_propertyListWithContentsOfURL:lCopy options:options error:error];
+  [self tsu_processLocalizedPropertyList:v11];
 
   return v11;
 }

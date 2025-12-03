@@ -1,26 +1,26 @@
 @interface CEKAnimationSequence
-- (CEKAnimationSequence)initWithAnimations:(id)a3 completionHandler:(id)a4;
-- (void)_notifyCompletionWithSuccess:(BOOL)a3;
+- (CEKAnimationSequence)initWithAnimations:(id)animations completionHandler:(id)handler;
+- (void)_notifyCompletionWithSuccess:(BOOL)success;
 - (void)_startNextAnimation;
 - (void)stopAllAnimations;
 @end
 
 @implementation CEKAnimationSequence
 
-- (CEKAnimationSequence)initWithAnimations:(id)a3 completionHandler:(id)a4
+- (CEKAnimationSequence)initWithAnimations:(id)animations completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  animationsCopy = animations;
+  handlerCopy = handler;
   v17.receiver = self;
   v17.super_class = CEKAnimationSequence;
   v8 = [(CEKAnimationSequence *)&v17 init];
   if (v8)
   {
-    v9 = [v6 mutableCopy];
+    v9 = [animationsCopy mutableCopy];
     animations = v8->__animations;
     v8->__animations = v9;
 
-    v11 = [v7 copy];
+    v11 = [handlerCopy copy];
     completionHandler = v8->__completionHandler;
     v8->__completionHandler = v11;
 
@@ -37,35 +37,35 @@
 - (void)_startNextAnimation
 {
   v18 = *MEMORY[0x1E69E9840];
-  v3 = [(CEKAnimationSequence *)self _animations];
-  v4 = [v3 firstObject];
+  _animations = [(CEKAnimationSequence *)self _animations];
+  firstObject = [_animations firstObject];
 
-  if (v4)
+  if (firstObject)
   {
-    v5 = [(CEKAnimationSequence *)self _animations];
-    [v5 removeObjectAtIndex:0];
+    _animations2 = [(CEKAnimationSequence *)self _animations];
+    [_animations2 removeObjectAtIndex:0];
 
     v6 = os_log_create("com.apple.camera", "CameraEditKit");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
-      v7 = [v4 identifier];
+      identifier = [firstObject identifier];
       *buf = 138543362;
-      v17 = v7;
+      v17 = identifier;
       _os_log_impl(&dword_1B7E93000, v6, OS_LOG_TYPE_DEFAULT, "Starting animation %{public}@", buf, 0xCu);
     }
 
-    v8 = [(CEKAnimationSequence *)self _animationGenerator];
-    v9 = [v4 identifier];
-    [v4 duration];
+    _animationGenerator = [(CEKAnimationSequence *)self _animationGenerator];
+    identifier2 = [firstObject identifier];
+    [firstObject duration];
     v11 = v10;
-    v12 = [v4 updateHandler];
+    updateHandler = [firstObject updateHandler];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = __43__CEKAnimationSequence__startNextAnimation__block_invoke;
     v13[3] = &unk_1E7CC6410;
-    v14 = v4;
-    v15 = self;
-    [v8 startAnimationForIdentifier:v9 duration:v12 updateHandler:v13 completionHandler:v11];
+    v14 = firstObject;
+    selfCopy = self;
+    [_animationGenerator startAnimationForIdentifier:identifier2 duration:updateHandler updateHandler:v13 completionHandler:v11];
   }
 
   else
@@ -130,41 +130,41 @@ void __43__CEKAnimationSequence__startNextAnimation__block_invoke_30(uint64_t a1
   v3 = os_log_create("com.apple.camera", "CameraEditKit");
   if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
   {
-    v4 = [(CEKAnimationSequence *)self _animationGenerator];
-    v5 = [v4 isAnimating];
-    v6 = [(CEKAnimationSequence *)self _animations];
+    _animationGenerator = [(CEKAnimationSequence *)self _animationGenerator];
+    isAnimating = [_animationGenerator isAnimating];
+    _animations = [(CEKAnimationSequence *)self _animations];
     v9[0] = 67109376;
-    v9[1] = v5;
+    v9[1] = isAnimating;
     v10 = 2048;
-    v11 = [v6 count];
+    v11 = [_animations count];
     _os_log_impl(&dword_1B7E93000, v3, OS_LOG_TYPE_DEFAULT, "Stopping animations (%d in progress, %ld pending)", v9, 0x12u);
   }
 
-  v7 = [(CEKAnimationSequence *)self _animationGenerator];
-  [v7 stopAllAnimations];
+  _animationGenerator2 = [(CEKAnimationSequence *)self _animationGenerator];
+  [_animationGenerator2 stopAllAnimations];
 
   [(CEKAnimationSequence *)self set_animationGenerator:0];
-  v8 = [(CEKAnimationSequence *)self _animations];
-  [v8 removeAllObjects];
+  _animations2 = [(CEKAnimationSequence *)self _animations];
+  [_animations2 removeAllObjects];
 }
 
-- (void)_notifyCompletionWithSuccess:(BOOL)a3
+- (void)_notifyCompletionWithSuccess:(BOOL)success
 {
-  v3 = a3;
+  successCopy = success;
   v8 = *MEMORY[0x1E69E9840];
-  v5 = [(CEKAnimationSequence *)self _completionHandler];
+  _completionHandler = [(CEKAnimationSequence *)self _completionHandler];
   [(CEKAnimationSequence *)self set_completionHandler:0];
-  if (v5)
+  if (_completionHandler)
   {
     v6 = os_log_create("com.apple.camera", "CameraEditKit");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v7[0] = 67109120;
-      v7[1] = v3;
+      v7[1] = successCopy;
       _os_log_impl(&dword_1B7E93000, v6, OS_LOG_TYPE_DEFAULT, "Animations completed with success=%d", v7, 8u);
     }
 
-    v5[2](v5, v3);
+    _completionHandler[2](_completionHandler, successCopy);
   }
 }
 

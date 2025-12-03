@@ -1,33 +1,33 @@
 @interface PCLocationOnlyDirectionScaleFactorEstimator
-- (PCLocationOnlyDirectionScaleFactorEstimator)initWithConfig:(id)a3;
-- (id)computeScaleForCandidates:(id)a3 locationHistory:(id)a4 motionActivity:(id)a5 currentLocation:(id)a6 currentTime:(double)a7 lastVisitExitTime:(double)a8 isInTransition:(BOOL)a9;
+- (PCLocationOnlyDirectionScaleFactorEstimator)initWithConfig:(id)config;
+- (id)computeScaleForCandidates:(id)candidates locationHistory:(id)history motionActivity:(id)activity currentLocation:(id)location currentTime:(double)time lastVisitExitTime:(double)exitTime isInTransition:(BOOL)transition;
 @end
 
 @implementation PCLocationOnlyDirectionScaleFactorEstimator
 
-- (PCLocationOnlyDirectionScaleFactorEstimator)initWithConfig:(id)a3
+- (PCLocationOnlyDirectionScaleFactorEstimator)initWithConfig:(id)config
 {
-  v5 = a3;
+  configCopy = config;
   v10.receiver = self;
   v10.super_class = PCLocationOnlyDirectionScaleFactorEstimator;
   v6 = [(PCLocationOnlyDirectionScaleFactorEstimator *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_cfg, a3);
+    objc_storeStrong(&v6->_cfg, config);
     v8 = v7;
   }
 
   return v7;
 }
 
-- (id)computeScaleForCandidates:(id)a3 locationHistory:(id)a4 motionActivity:(id)a5 currentLocation:(id)a6 currentTime:(double)a7 lastVisitExitTime:(double)a8 isInTransition:(BOOL)a9
+- (id)computeScaleForCandidates:(id)candidates locationHistory:(id)history motionActivity:(id)activity currentLocation:(id)location currentTime:(double)time lastVisitExitTime:(double)exitTime isInTransition:(BOOL)transition
 {
   v116 = *MEMORY[0x1E69E9840];
-  v15 = a3;
-  v16 = a4;
-  v17 = a6;
-  if ([v16 count] <= 1)
+  candidatesCopy = candidates;
+  historyCopy = history;
+  locationCopy = location;
+  if ([historyCopy count] <= 1)
   {
     v18 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -36,7 +36,7 @@
       *buf = 138412546;
       v104 = v19;
       v105 = 2048;
-      v106 = [v16 count];
+      v106 = [historyCopy count];
       v20 = "[%@] skip Direction scal factor, not enough buffered location, location count, %lu";
       v21 = v18;
       v22 = 22;
@@ -49,7 +49,7 @@ LABEL_10:
     goto LABEL_11;
   }
 
-  if (!a9)
+  if (!transition)
   {
     v18 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_INFO))
@@ -65,7 +65,7 @@ LABEL_10:
 
 LABEL_11:
 
-    v44 = [PCDynamicsUtils neutralScaleFactorsForDataMap:v15];
+    v44 = [PCDynamicsUtils neutralScaleFactorsForDataMap:candidatesCopy];
     goto LABEL_36;
   }
 
@@ -78,7 +78,7 @@ LABEL_11:
   v29 = v28;
   v30 = [(PCLocationOnlyDirectionScaleFactorEstimator *)self cfg];
   [v30 maxLocationUncertaintyM];
-  v32 = [(PCDynamicsWindowContext *)v23 initWithRawHistory:v16 currentTime:a7 lastVisitExitTime:a8 minTravelTime:v26 fullEffectTime:v29 maxUncertainty:v31];
+  v32 = [(PCDynamicsWindowContext *)v23 initWithRawHistory:historyCopy currentTime:time lastVisitExitTime:exitTime minTravelTime:v26 fullEffectTime:v29 maxUncertainty:v31];
 
   [(PCDynamicsWindowContext *)v32 travelTimeSec];
   v34 = v33;
@@ -88,16 +88,16 @@ LABEL_11:
 
   if (v34 >= v37)
   {
-    v45 = [(PCDynamicsWindowContext *)v32 startFix];
+    startFix = [(PCDynamicsWindowContext *)v32 startFix];
 
-    if (v45)
+    if (startFix)
     {
       v46 = 0x1E83B7000uLL;
-      v47 = [(PCDynamicsWindowContext *)v32 startFix];
-      v48 = [v47 location];
-      v49 = [PCLocationUtils cartesianFromProtoLocation:v48];
+      startFix2 = [(PCDynamicsWindowContext *)v32 startFix];
+      location = [startFix2 location];
+      v49 = [PCLocationUtils cartesianFromProtoLocation:location];
 
-      [v49 distanceTo:v17];
+      [v49 distanceTo:locationCopy];
       v51 = v50;
       v52 = [(PCLocationOnlyDirectionScaleFactorEstimator *)self cfg];
       [v52 minReliableDistanceM];
@@ -106,16 +106,16 @@ LABEL_11:
       if (v51 >= v54)
       {
         v90 = v49;
-        v91 = v16;
-        v96 = [PCLocationUtils vectorFrom:v49 to:v17];
-        v57 = [MEMORY[0x1E695DF90] dictionary];
+        v91 = historyCopy;
+        v96 = [PCLocationUtils vectorFrom:v49 to:locationCopy];
+        dictionary = [MEMORY[0x1E695DF90] dictionary];
         v99 = 0u;
         v100 = 0u;
         v101 = 0u;
         v102 = 0u;
-        v92 = v15;
-        v58 = v15;
-        v59 = v57;
+        v92 = candidatesCopy;
+        v58 = candidatesCopy;
+        v59 = dictionary;
         obj = [v58 objectEnumerator];
         v98 = [obj countByEnumeratingWithState:&v99 objects:v115 count:16];
         if (v98)
@@ -133,8 +133,8 @@ LABEL_11:
               }
 
               v62 = *(*(&v99 + 1) + 8 * i);
-              v63 = [v62 coordinate];
-              [v17 distanceTo:v63];
+              coordinate = [v62 coordinate];
+              [locationCopy distanceTo:coordinate];
               v65 = v64;
 
               v66 = [(PCLocationOnlyDirectionScaleFactorEstimator *)self cfg];
@@ -144,8 +144,8 @@ LABEL_11:
               if (v65 >= v68)
               {
                 v71 = *(v46 + 2176);
-                v72 = [v62 coordinate];
-                v69 = [v71 vectorFrom:v17 to:v72];
+                coordinate2 = [v62 coordinate];
+                v69 = [v71 vectorFrom:locationCopy to:coordinate2];
 
                 [*(v46 + 2176) cosineSimilarityBetween:v96 and:v69];
                 v74 = v73;
@@ -154,18 +154,18 @@ LABEL_11:
                 [(PCDynamicsWindowContext *)v32 rampWeight];
                 v78 = 1.0 - v76 * v77;
                 v79 = [MEMORY[0x1E696AD98] numberWithDouble:v78];
-                v80 = [v62 visitIdentifier];
-                [v59 setObject:v79 forKeyedSubscript:v80];
+                visitIdentifier = [v62 visitIdentifier];
+                [v59 setObject:v79 forKeyedSubscript:visitIdentifier];
 
-                v70 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
-                if (os_log_type_enabled(v70, OS_LOG_TYPE_INFO))
+                visitIdentifier2 = _plc_log_get_normal_handle(PCLogCategoryDynamicsWeighting);
+                if (os_log_type_enabled(visitIdentifier2, OS_LOG_TYPE_INFO))
                 {
                   v81 = NSStringFromSelector(a2);
                   v82 = v46;
-                  v83 = self;
-                  v84 = v17;
-                  v85 = [v62 loiIdentifier];
-                  v86 = [PCAlgorithmsCommonUtils uuidStringFromData:v85];
+                  selfCopy = self;
+                  v84 = locationCopy;
+                  loiIdentifier = [v62 loiIdentifier];
+                  v86 = [PCAlgorithmsCommonUtils uuidStringFromData:loiIdentifier];
                   [(PCDynamicsWindowContext *)v32 travelTimeSec];
                   *buf = 138413570;
                   v104 = v81;
@@ -179,10 +179,10 @@ LABEL_11:
                   v112 = v51;
                   v113 = 2048;
                   v114 = v78;
-                  _os_log_impl(&dword_1CEE74000, v70, OS_LOG_TYPE_INFO, "[%@] Computed direction factor for loiID: %@, cosine similarity: %.2f, travel duration(s), %.2f, travel Distance(m), %.2f, direction scale factor: %.2f", buf, 0x3Eu);
+                  _os_log_impl(&dword_1CEE74000, visitIdentifier2, OS_LOG_TYPE_INFO, "[%@] Computed direction factor for loiID: %@, cosine similarity: %.2f, travel duration(s), %.2f, travel Distance(m), %.2f, direction scale factor: %.2f", buf, 0x3Eu);
 
-                  v17 = v84;
-                  self = v83;
+                  locationCopy = v84;
+                  self = selfCopy;
                   v46 = v82;
                   v59 = v93;
                 }
@@ -193,8 +193,8 @@ LABEL_11:
               else
               {
                 v69 = [MEMORY[0x1E696AD98] numberWithDouble:1.0];
-                v70 = [v62 visitIdentifier];
-                [v59 setObject:v69 forKeyedSubscript:v70];
+                visitIdentifier2 = [v62 visitIdentifier];
+                [v59 setObject:v69 forKeyedSubscript:visitIdentifier2];
               }
             }
 
@@ -205,8 +205,8 @@ LABEL_11:
         }
 
         v44 = [v59 copy];
-        v16 = v91;
-        v15 = v92;
+        historyCopy = v91;
+        candidatesCopy = v92;
         v49 = v90;
       }
 
@@ -223,7 +223,7 @@ LABEL_11:
           _os_log_impl(&dword_1CEE74000, v55, OS_LOG_TYPE_INFO, "[%@] skip Direction scal factor, traveled distance: %.2f too low", buf, 0x16u);
         }
 
-        v44 = [PCDynamicsUtils neutralScaleFactorsForDataMap:v15];
+        v44 = [PCDynamicsUtils neutralScaleFactorsForDataMap:candidatesCopy];
       }
 
       goto LABEL_35;
@@ -261,7 +261,7 @@ LABEL_19:
     }
   }
 
-  v44 = [PCDynamicsUtils neutralScaleFactorsForDataMap:v15];
+  v44 = [PCDynamicsUtils neutralScaleFactorsForDataMap:candidatesCopy];
 LABEL_35:
 
 LABEL_36:

@@ -1,6 +1,6 @@
 @interface OABRTable
-- (OABRTable)initWithSourceTable:(id)a3 targetTable:(id)a4 state:(id)a5;
-- (id)readStrokeFromShape:(void *)a3;
+- (OABRTable)initWithSourceTable:(id)table targetTable:(id)targetTable state:(id)state;
+- (id)readStrokeFromShape:(void *)shape;
 - (void)createTargetTableContents;
 - (void)dealloc;
 - (void)map;
@@ -15,8 +15,8 @@
 
 - (void)map
 {
-  v3 = [(OADTable *)self->mTgtTable tableProperties];
-  [v3 setRightToLeft:{*(EshGroupProperties::getTableProperties((-[ESDContainer eshGroup](self->mSrcTable, "eshGroup") + 288)) + 2)}];
+  tableProperties = [(OADTable *)self->mTgtTable tableProperties];
+  [tableProperties setRightToLeft:{*(EshGroupProperties::getTableProperties((-[ESDContainer eshGroup](self->mSrcTable, "eshGroup") + 288)) + 2)}];
 
   [(OABRTable *)self readAnchor];
   [(OABRTable *)self mapScale];
@@ -24,10 +24,10 @@
   [(OABRTable *)self readCellsAndLines];
   [(OABRTable *)self validateTable];
   [(OABRTable *)self createTargetTableContents];
-  v4 = [(OADTable *)self->mTgtTable tableProperties];
-  v5 = [v4 rightToLeft];
+  tableProperties2 = [(OADTable *)self->mTgtTable tableProperties];
+  rightToLeft = [tableProperties2 rightToLeft];
 
-  if (v5)
+  if (rightToLeft)
   {
     mTgtTable = self->mTgtTable;
 
@@ -38,12 +38,12 @@
 - (void)readAnchor
 {
   [OABContent readFromContainer:self->mSrcTable toDrawable:self->mTgtTable state:self->mState];
-  v3 = [(OABReaderState *)self->mState client];
+  client = [(OABReaderState *)self->mState client];
   mSrcTable = self->mSrcTable;
   mTgtTable = self->mTgtTable;
   mState = self->mState;
 
-  [(objc_class *)v3 readClientDataFromGroup:mSrcTable toGroup:mTgtTable state:mState];
+  [(objc_class *)client readClientDataFromGroup:mSrcTable toGroup:mTgtTable state:mState];
 }
 
 - (void)mapScale
@@ -53,12 +53,12 @@
   v5 = *(MEMORY[0x277CBF3A0] + 8);
   v6 = *(MEMORY[0x277CBF3A0] + 16);
   v7 = *(MEMORY[0x277CBF3A0] + 24);
-  v8 = [(OADDrawable *)self->mTgtTable clientData];
+  clientData = [(OADDrawable *)self->mTgtTable clientData];
 
-  if (v8)
+  if (clientData)
   {
-    v9 = [(OADDrawable *)self->mTgtTable clientData];
-    [v9 bounds];
+    clientData2 = [(OADDrawable *)self->mTgtTable clientData];
+    [clientData2 bounds];
     v4 = v10;
     v5 = v11;
     v6 = v12;
@@ -71,9 +71,9 @@
   v28.size.height = v7;
   if (CGRectEqualToRect(v28, *v3))
   {
-    v14 = [(OADDrawable *)self->mTgtTable drawableProperties];
-    v15 = [v14 orientedBounds];
-    [v15 bounds];
+    drawableProperties = [(OADDrawable *)self->mTgtTable drawableProperties];
+    orientedBounds = [drawableProperties orientedBounds];
+    [orientedBounds bounds];
     v4 = v16;
     v5 = v17;
     v6 = v18;
@@ -114,14 +114,14 @@
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB58]);
   v4 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v5 = [(ESDContainer *)self->mSrcTable childCount];
-  if (v5 >= 2)
+  childCount = [(ESDContainer *)self->mSrcTable childCount];
+  if (childCount >= 2)
   {
-    for (i = 1; i != v5; ++i)
+    for (i = 1; i != childCount; ++i)
     {
       v7 = [(ESDContainer *)self->mSrcTable childAt:i];
-      v8 = [v7 eshShape];
-      if (!v8)
+      eshShape = [v7 eshShape];
+      if (!eshShape)
       {
 
         v4 = 0;
@@ -129,18 +129,18 @@
         [MEMORY[0x277CBEAD8] raise:@"Could not read shape" format:&stru_286EE1130];
       }
 
-      if (EshShapeProperties::getShapeType((v8 + 424)) == 1)
+      if (EshShapeProperties::getShapeType((eshShape + 424)) == 1)
       {
-        v9 = [MEMORY[0x277CCABB0] numberWithInt:EshContentProperties::getLeft((v8 + 424))];
+        v9 = [MEMORY[0x277CCABB0] numberWithInt:EshContentProperties::getLeft((eshShape + 424))];
         [v3 addObject:v9];
 
-        v10 = [MEMORY[0x277CCABB0] numberWithInt:EshContentProperties::getRight((v8 + 424))];
+        v10 = [MEMORY[0x277CCABB0] numberWithInt:EshContentProperties::getRight((eshShape + 424))];
         [v3 addObject:v10];
 
-        v11 = [MEMORY[0x277CCABB0] numberWithInt:EshContentProperties::getTop((v8 + 424))];
+        v11 = [MEMORY[0x277CCABB0] numberWithInt:EshContentProperties::getTop((eshShape + 424))];
         [v4 addObject:v11];
 
-        v12 = [MEMORY[0x277CCABB0] numberWithInt:EshContentProperties::getBottom((v8 + 424))];
+        v12 = [MEMORY[0x277CCABB0] numberWithInt:EshContentProperties::getBottom((eshShape + 424))];
         [v4 addObject:v12];
       }
     }
@@ -161,19 +161,19 @@
 
 - (void)readCellsAndLines
 {
-  v3 = [(ESDContainer *)self->mSrcTable childCount];
-  if (v3 >= 2)
+  childCount = [(ESDContainer *)self->mSrcTable childCount];
+  if (childCount >= 2)
   {
-    v20 = v3 & 0x7FFFFFFF;
+    v20 = childCount & 0x7FFFFFFF;
     v4 = 1;
     do
     {
       v24 = [(ESDContainer *)self->mSrcTable childAt:v4, v20];
-      v5 = [v24 eshShape];
-      v22 = [(OABTableSortedIntArray *)self->mXCoords indexOfInt:EshContentProperties::getLeft((v5 + 424))];
-      v23 = [(OABTableSortedIntArray *)self->mXCoords indexOfInt:EshContentProperties::getRight((v5 + 424))];
-      v26 = [(OABTableSortedIntArray *)self->mYCoords indexOfInt:EshContentProperties::getTop((v5 + 424))];
-      v25 = [(OABTableSortedIntArray *)self->mYCoords indexOfInt:EshContentProperties::getBottom((v5 + 424))];
+      eshShape = [v24 eshShape];
+      v22 = [(OABTableSortedIntArray *)self->mXCoords indexOfInt:EshContentProperties::getLeft((eshShape + 424))];
+      v23 = [(OABTableSortedIntArray *)self->mXCoords indexOfInt:EshContentProperties::getRight((eshShape + 424))];
+      v26 = [(OABTableSortedIntArray *)self->mYCoords indexOfInt:EshContentProperties::getTop((eshShape + 424))];
+      v25 = [(OABTableSortedIntArray *)self->mYCoords indexOfInt:EshContentProperties::getBottom((eshShape + 424))];
       mCells = self->mCells;
       if (v22 >= *mCells || v26 >= mCells[1])
       {
@@ -181,7 +181,7 @@
       }
 
       v21 = v4;
-      if (EshShapeProperties::getShapeType((v5 + 424)) == 1)
+      if (EshShapeProperties::getShapeType((eshShape + 424)) == 1)
       {
         if (v23 > v22)
         {
@@ -239,7 +239,7 @@
         }
       }
 
-      else if (EshShapeProperties::getShapeType((v5 + 424)) == 20 && (v23 == v22 || v25 == v26))
+      else if (EshShapeProperties::getShapeType((eshShape + 424)) == 20 && (v23 == v22 || v25 == v26))
       {
         v17 = v22;
         if (v23 > v22)
@@ -248,7 +248,7 @@
           {
             v18 = *OABTable2DArray<EshShape *>::element(self->mHorzLines, v17, v26) == 0;
             TCVerifyInputMeetsCondition(v18);
-            *OABTable2DArray<EshShape *>::element(self->mHorzLines, v17++, v26) = v5;
+            *OABTable2DArray<EshShape *>::element(self->mHorzLines, v17++, v26) = eshShape;
           }
 
           while (v23 != v17);
@@ -260,7 +260,7 @@
           {
             v19 = *OABTable2DArray<EshShape *>::element(self->mVertLines, v22, v26) == 0;
             TCVerifyInputMeetsCondition(v19);
-            *OABTable2DArray<EshShape *>::element(self->mVertLines, v22, v26++) = v5;
+            *OABTable2DArray<EshShape *>::element(self->mVertLines, v22, v26++) = eshShape;
           }
 
           while (v25 != v26);
@@ -477,11 +477,11 @@
       v4 = (v3 + 1);
       v5 = [(OABTableSortedIntArray *)self->mXCoords intAtIndex:v4];
       v6 = [(OABTableSortedIntArray *)self->mXCoords intAtIndex:v3];
-      v28 = [(OADTable *)self->mTgtTable grid];
-      v7 = [v28 addColumn];
+      grid = [(OADTable *)self->mTgtTable grid];
+      addColumn = [grid addColumn];
       v8 = self->mScale.x * (v5 - v6);
       *&v8 = v8;
-      [v7 setWidth:v8];
+      [addColumn setWidth:v8];
 
       v3 = v4;
     }
@@ -494,42 +494,42 @@
     v9 = 0;
     do
     {
-      v29 = [(OADTable *)self->mTgtTable addRow];
+      addRow = [(OADTable *)self->mTgtTable addRow];
       v27 = v9 + 1;
       v10 = [(OABTableSortedIntArray *)self->mYCoords intAtIndex:?];
       v11 = self->mScale.y * (v10 - [(OABTableSortedIntArray *)self->mYCoords intAtIndex:v9]);
       *&v11 = v11;
-      [v29 setHeight:v11];
+      [addRow setHeight:v11];
       if (self->mColumnCount >= 1)
       {
         v12 = 0;
         do
         {
-          v13 = [v29 addCell];
+          addCell = [addRow addCell];
           v14 = OABTable2DArray<OABTableCell>::element(self->mCells, v12, v9);
-          [v13 setRowSpan:*(v14 + 3)];
-          [v13 setGridSpan:*(v14 + 2)];
-          [v13 setHorzMerge:*(v14 + 16)];
-          [v13 setVertMerge:*(v14 + 17)];
+          [addCell setRowSpan:*(v14 + 3)];
+          [addCell setGridSpan:*(v14 + 2)];
+          [addCell setHorzMerge:*(v14 + 16)];
+          [addCell setVertMerge:*(v14 + 17)];
           if ((v14[2] & 1) == 0 && (*(v14 + 17) & 1) == 0)
           {
-            v15 = [*v14 eshShape];
-            [(objc_class *)[(OABReaderState *)self->mState client] readClientDataFromTableCell:*v14 toTableCell:v13 state:self->mState];
-            v16 = [v13 textBody];
-            if (!v16)
+            eshShape = [*v14 eshShape];
+            [(objc_class *)[(OABReaderState *)self->mState client] readClientDataFromTableCell:*v14 toTableCell:addCell state:self->mState];
+            textBody = [addCell textBody];
+            if (!textBody)
             {
-              v16 = objc_alloc_init(OADTextBody);
-              [v13 setTextBody:v16];
+              textBody = objc_alloc_init(OADTextBody);
+              [addCell setTextBody:textBody];
             }
 
-            v17 = [(OADTextBody *)v16 properties];
-            [OABTextBodyProperties readTextBodyProperties:v17 textBox:v15 + 272 useDefaults:1 state:self->mState];
+            properties = [(OADTextBody *)textBody properties];
+            [OABTextBodyProperties readTextBodyProperties:properties textBox:eshShape + 272 useDefaults:1 state:self->mState];
 
-            v18 = [(OADTextBody *)v16 properties];
-            [(OADTextBody *)v16 setProperties:v18];
+            properties2 = [(OADTextBody *)textBody properties];
+            [(OADTextBody *)textBody setProperties:properties2];
 
             v19 = objc_alloc_init(OADTableCellProperties);
-            v20 = [[OABShapeManager alloc] initWithShape:v15];
+            v20 = [[OABShapeManager alloc] initWithShape:eshShape];
             v21 = [OABFill readFillFromFillPropertiesManager:v20 state:self->mState];
             [(OADTableCellProperties *)v19 setFill:v21];
             v22 = [(OABRTable *)self readStrokeFromShape:*OABTable2DArray<EshShape *>::element(self->mVertLines, v12, v9)];
@@ -544,10 +544,10 @@
             v25 = [(OABRTable *)self readStrokeFromShape:*OABTable2DArray<EshShape *>::element(self->mHorzLines, v12, *(v14 + 3) + v9)];
             [(OADTableCellProperties *)v19 setBottomStroke:v25];
 
-            v26 = [(OADTextBody *)v16 properties];
-            -[OADTableCellProperties setTextAnchor:](v19, "setTextAnchor:", [v26 textAnchorType]);
+            properties3 = [(OADTextBody *)textBody properties];
+            -[OADTableCellProperties setTextAnchor:](v19, "setTextAnchor:", [properties3 textAnchorType]);
 
-            [v13 setProperties:v19];
+            [addCell setProperties:v19];
           }
 
           ++v12;
@@ -563,30 +563,30 @@
   }
 }
 
-- (OABRTable)initWithSourceTable:(id)a3 targetTable:(id)a4 state:(id)a5
+- (OABRTable)initWithSourceTable:(id)table targetTable:(id)targetTable state:(id)state
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  tableCopy = table;
+  targetTableCopy = targetTable;
+  stateCopy = state;
   v15.receiver = self;
   v15.super_class = OABRTable;
   v12 = [(OABRTable *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->mSrcTable, a3);
-    objc_storeStrong(&v13->mTgtTable, a4);
-    objc_storeStrong(&v13->mState, a5);
+    objc_storeStrong(&v12->mSrcTable, table);
+    objc_storeStrong(&v13->mTgtTable, targetTable);
+    objc_storeStrong(&v13->mState, state);
   }
 
   return v13;
 }
 
-- (id)readStrokeFromShape:(void *)a3
+- (id)readStrokeFromShape:(void *)shape
 {
-  if (a3)
+  if (shape)
   {
-    v4 = [[OABShapeManager alloc] initWithShape:a3];
+    v4 = [[OABShapeManager alloc] initWithShape:shape];
     v5 = [OABStroke readStrokeFromShapeBaseManager:v4 state:self->mState];
     if ([(OADStroke *)v5 isCapOverridden]&& [(OADStroke *)v5 cap]!= 2)
     {

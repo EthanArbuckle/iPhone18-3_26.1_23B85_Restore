@@ -11,34 +11,34 @@
 + (id)entryEventPointDefinitionConnection;
 + (id)entryEventPointDefinitions;
 + (void)load;
-- (BOOL)outcomeHasDataUsage:(id)a3;
+- (BOOL)outcomeHasDataUsage:(id)usage;
 - (PLProcessNetworkAgent)init;
-- (id)compressNetworkBitmap:(id)a3;
-- (void)accountWithNetworkUsageDiffEntries:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5;
-- (void)aggregateAndLogNetworkBitmaps:(id)a3 withStartTime:(unint64_t)a4 andEndTime:(unint64_t)a5;
-- (void)didAddNewSource:(__NStatSource *)a3;
-- (void)didRemoveSource:(id)a3;
-- (void)didSetCountsBlock:(id)a3 withCounts:(id)a4;
-- (void)didSetDescriptionBlock:(id)a3 withDescription:(id)a4;
-- (void)getNetWorkBitmapForEndTime:(unint64_t)a3 andSysdiagnoseTrigger:(BOOL)a4;
-- (void)handleHighBWEndCallback:(id)a3;
-- (void)handleHighBWStartCallback:(id)a3;
+- (id)compressNetworkBitmap:(id)bitmap;
+- (void)accountWithNetworkUsageDiffEntries:(id)entries withStartDate:(id)date withEndDate:(id)endDate;
+- (void)aggregateAndLogNetworkBitmaps:(id)bitmaps withStartTime:(unint64_t)time andEndTime:(unint64_t)endTime;
+- (void)didAddNewSource:(__NStatSource *)source;
+- (void)didRemoveSource:(id)source;
+- (void)didSetCountsBlock:(id)block withCounts:(id)counts;
+- (void)didSetDescriptionBlock:(id)block withDescription:(id)description;
+- (void)getNetWorkBitmapForEndTime:(unint64_t)time andSysdiagnoseTrigger:(BOOL)trigger;
+- (void)handleHighBWEndCallback:(id)callback;
+- (void)handleHighBWStartCallback:(id)callback;
 - (void)initOperatorDependancies;
 - (void)log;
 - (void)logEventBackwardNetworkBitmaps;
 - (void)logEventBackwardNetworkBitmapsSysdiagnoseTrigger;
 - (void)logEventBackwardUsage;
-- (void)logEventBackwardUsageWithOutcome:(id)a3;
+- (void)logEventBackwardUsageWithOutcome:(id)outcome;
 - (void)logEventForwardLowInternet;
-- (void)processesOfInterest:(id)a3;
-- (void)setLastNetworkBitmapTimestampFor:(id)a3;
+- (void)processesOfInterest:(id)interest;
+- (void)setLastNetworkBitmapTimestampFor:(id)for;
 @end
 
 @implementation PLProcessNetworkAgent
 
 + (void)load
 {
-  v2.receiver = a1;
+  v2.receiver = self;
   v2.super_class = &OBJC_METACLASS___PLProcessNetworkAgent;
   objc_msgSendSuper2(&v2, sel_load);
 }
@@ -76,65 +76,65 @@
   v44[0] = v38;
   v43[1] = *MEMORY[0x277D3F540];
   v39[0] = @"EventType";
-  v37 = [MEMORY[0x277D3F198] sharedInstance];
-  v36 = [v37 commonTypeDict_IntegerFormat];
-  v40[0] = v36;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v40[0] = commonTypeDict_IntegerFormat;
   v39[1] = @"InterfaceName";
-  v35 = [MEMORY[0x277D3F198] sharedInstance];
-  v34 = [v35 commonTypeDict_StringFormat];
-  v40[1] = v34;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat];
+  v40[1] = commonTypeDict_StringFormat;
   v39[2] = @"ProcessName";
-  v33 = [MEMORY[0x277D3F198] sharedInstance];
-  v32 = [v33 commonTypeDict_StringFormat_withBundleID];
-  v40[2] = v32;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat_withBundleID];
+  v40[2] = commonTypeDict_StringFormat_withBundleID;
   v39[3] = @"ProcessPID";
-  v31 = [MEMORY[0x277D3F198] sharedInstance];
-  v30 = [v31 commonTypeDict_IntegerFormat];
-  v40[3] = v30;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v40[3] = commonTypeDict_IntegerFormat2;
   v39[4] = @"ProviderType";
-  v29 = [MEMORY[0x277D3F198] sharedInstance];
-  v28 = [v29 commonTypeDict_IntegerFormat];
-  v40[4] = v28;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v40[4] = commonTypeDict_IntegerFormat3;
   v39[5] = @"LocalAddress";
-  v27 = [MEMORY[0x277D3F198] sharedInstance];
-  v26 = [v27 commonTypeDict_StringFormat];
-  v40[5] = v26;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]6 commonTypeDict_StringFormat];
+  v40[5] = commonTypeDict_StringFormat2;
   v39[6] = @"LocalPort";
-  v25 = [MEMORY[0x277D3F198] sharedInstance];
-  v24 = [v25 commonTypeDict_IntegerFormat];
-  v40[6] = v24;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v40[6] = commonTypeDict_IntegerFormat4;
   v39[7] = @"RemoteAddress";
-  v23 = [MEMORY[0x277D3F198] sharedInstance];
-  v22 = [v23 commonTypeDict_StringFormat];
-  v40[7] = v22;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat3 = [mEMORY[0x277D3F198]8 commonTypeDict_StringFormat];
+  v40[7] = commonTypeDict_StringFormat3;
   v39[8] = @"RemotePort";
-  v21 = [MEMORY[0x277D3F198] sharedInstance];
-  v20 = [v21 commonTypeDict_IntegerFormat];
-  v40[8] = v20;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v40[8] = commonTypeDict_IntegerFormat5;
   v39[9] = @"TrafficClass";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_StringFormat];
-  v40[9] = v18;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat4 = [mEMORY[0x277D3F198]10 commonTypeDict_StringFormat];
+  v40[9] = commonTypeDict_StringFormat4;
   v39[10] = @"rxWifiBytes";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v40[10] = v16;
+  mEMORY[0x277D3F198]11 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]11 commonTypeDict_IntegerFormat];
+  v40[10] = commonTypeDict_IntegerFormat6;
   v39[11] = @"txWifiBytes";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v40[11] = v5;
+  mEMORY[0x277D3F198]12 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]12 commonTypeDict_IntegerFormat];
+  v40[11] = commonTypeDict_IntegerFormat7;
   v39[12] = @"rxCellularBytes";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v40[12] = v7;
+  mEMORY[0x277D3F198]13 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]13 commonTypeDict_IntegerFormat];
+  v40[12] = commonTypeDict_IntegerFormat8;
   v39[13] = @"txCellularBytes";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_IntegerFormat];
-  v40[13] = v9;
+  mEMORY[0x277D3F198]14 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat9 = [mEMORY[0x277D3F198]14 commonTypeDict_IntegerFormat];
+  v40[13] = commonTypeDict_IntegerFormat9;
   v39[14] = @"isChannelArch";
-  v10 = [MEMORY[0x277D3F198] sharedInstance];
-  v11 = [v10 commonTypeDict_BoolFormat];
-  v40[14] = v11;
+  mEMORY[0x277D3F198]15 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_BoolFormat = [mEMORY[0x277D3F198]15 commonTypeDict_BoolFormat];
+  v40[14] = commonTypeDict_BoolFormat;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v40 forKeys:v39 count:15];
   v44[1] = v12;
   v13 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v44 forKeys:v43 count:2];
@@ -207,21 +207,21 @@
   v34[0] = v20;
   v33[1] = *MEMORY[0x277D3F540];
   v29[0] = @"BundleName";
-  v19 = [MEMORY[0x277D3F198] sharedInstance];
-  v18 = [v19 commonTypeDict_StringFormat_withBundleID];
-  v30[0] = v18;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withBundleID];
+  v30[0] = commonTypeDict_StringFormat_withBundleID;
   v29[1] = @"CurrentMachAbsoluteTime";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_IntegerFormat];
-  v30[1] = v16;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v30[1] = commonTypeDict_IntegerFormat;
   v29[2] = @"MachAbsoluteStartTime";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v30[2] = v4;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v30[2] = commonTypeDict_IntegerFormat2;
   v29[3] = @"MachAbsoluteEndTime";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v30[3] = v6;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v30[3] = commonTypeDict_IntegerFormat3;
   v29[4] = *MEMORY[0x277D6B600];
   v27 = *MEMORY[0x277D3F5A8];
   v7 = v27;
@@ -265,9 +265,9 @@
   v15[0] = v3;
   v14[1] = *MEMORY[0x277D3F540];
   v10 = @"Mode";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v11 = v5;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v11 = commonTypeDict_IntegerFormat;
   v6 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v11 forKeys:&v10 count:1];
   v15[1] = v6;
   v7 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v15 forKeys:v14 count:2];
@@ -290,45 +290,45 @@
   v33[0] = v27;
   v32[1] = *MEMORY[0x277D3F540];
   v28[0] = @"ProcessName";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_StringFormat_withBundleID];
-  v29[0] = v25;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withBundleID];
+  v29[0] = commonTypeDict_StringFormat_withBundleID;
   v28[1] = @"BundleName";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_StringFormat_withBundleID];
-  v29[1] = v23;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v29[1] = commonTypeDict_StringFormat_withBundleID2;
   v28[2] = @"ExtensionName";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_StringFormat_withBundleID];
-  v29[2] = v21;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID3 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat_withBundleID];
+  v29[2] = commonTypeDict_StringFormat_withBundleID3;
   v28[3] = @"WifiIn";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v29[3] = v19;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v29[3] = commonTypeDict_IntegerFormat;
   v28[4] = @"WifiOut";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v29[4] = v17;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v29[4] = commonTypeDict_IntegerFormat2;
   v28[5] = @"CellIn";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v29[5] = v15;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v29[5] = commonTypeDict_IntegerFormat3;
   v28[6] = @"CellOut";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v29[6] = v4;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v29[6] = commonTypeDict_IntegerFormat4;
   v28[7] = @"BTCompanionIn";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v29[7] = v6;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v29[7] = commonTypeDict_IntegerFormat5;
   v28[8] = @"BTCompanionOut";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v29[8] = v8;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v29[8] = commonTypeDict_IntegerFormat6;
   v28[9] = @"SinceTime";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_DateFormat];
-  v29[9] = v10;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]10 commonTypeDict_DateFormat];
+  v29[9] = commonTypeDict_DateFormat;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:10];
   v33[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
@@ -353,45 +353,45 @@
   v33[0] = v27;
   v32[1] = *MEMORY[0x277D3F540];
   v28[0] = @"ProcessName";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_StringFormat_withBundleID];
-  v29[0] = v25;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID = [mEMORY[0x277D3F198] commonTypeDict_StringFormat_withBundleID];
+  v29[0] = commonTypeDict_StringFormat_withBundleID;
   v28[1] = @"BundleName";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_StringFormat_withBundleID];
-  v29[1] = v23;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID2 = [mEMORY[0x277D3F198]2 commonTypeDict_StringFormat_withBundleID];
+  v29[1] = commonTypeDict_StringFormat_withBundleID2;
   v28[2] = @"ExtensionName";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_StringFormat_withBundleID];
-  v29[2] = v21;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat_withBundleID3 = [mEMORY[0x277D3F198]3 commonTypeDict_StringFormat_withBundleID];
+  v29[2] = commonTypeDict_StringFormat_withBundleID3;
   v28[3] = @"WifiIn";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v29[3] = v19;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198]4 commonTypeDict_IntegerFormat];
+  v29[3] = commonTypeDict_IntegerFormat;
   v28[4] = @"WifiOut";
-  v18 = [MEMORY[0x277D3F198] sharedInstance];
-  v17 = [v18 commonTypeDict_IntegerFormat];
-  v29[4] = v17;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v29[4] = commonTypeDict_IntegerFormat2;
   v28[5] = @"CellIn";
-  v16 = [MEMORY[0x277D3F198] sharedInstance];
-  v15 = [v16 commonTypeDict_IntegerFormat];
-  v29[5] = v15;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]6 commonTypeDict_IntegerFormat];
+  v29[5] = commonTypeDict_IntegerFormat3;
   v28[6] = @"CellOut";
-  v3 = [MEMORY[0x277D3F198] sharedInstance];
-  v4 = [v3 commonTypeDict_IntegerFormat];
-  v29[6] = v4;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v29[6] = commonTypeDict_IntegerFormat4;
   v28[7] = @"BTCompanionIn";
-  v5 = [MEMORY[0x277D3F198] sharedInstance];
-  v6 = [v5 commonTypeDict_IntegerFormat];
-  v29[7] = v6;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v29[7] = commonTypeDict_IntegerFormat5;
   v28[8] = @"BTCompanionOut";
-  v7 = [MEMORY[0x277D3F198] sharedInstance];
-  v8 = [v7 commonTypeDict_IntegerFormat];
-  v29[8] = v8;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v29[8] = commonTypeDict_IntegerFormat6;
   v28[9] = @"timestampEnd";
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_DateFormat];
-  v29[9] = v10;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_DateFormat = [mEMORY[0x277D3F198]10 commonTypeDict_DateFormat];
+  v29[9] = commonTypeDict_DateFormat;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v29 forKeys:v28 count:10];
   v33[1] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
@@ -411,21 +411,21 @@
   v20[0] = v14;
   v19[1] = *MEMORY[0x277D3F540];
   v15[0] = @"HighThroughputStartReason";
-  v2 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v2 commonTypeDict_IntegerFormat];
-  v16[0] = v3;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v16[0] = commonTypeDict_IntegerFormat;
   v15[1] = @"HighThroughputLinkRxTputAfterStart";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v16[1] = v5;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v16[1] = commonTypeDict_IntegerFormat2;
   v15[2] = @"HighThroughputLinkTxTputAfterStart";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v16[2] = v7;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v16[2] = commonTypeDict_IntegerFormat3;
   v15[3] = @"HighThroughputOriginators";
-  v8 = [MEMORY[0x277D3F198] sharedInstance];
-  v9 = [v8 commonTypeDict_StringFormat];
-  v16[3] = v9;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v16[3] = commonTypeDict_StringFormat;
   v10 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v16 forKeys:v15 count:4];
   v20[1] = v10;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v20 forKeys:v19 count:2];
@@ -448,51 +448,51 @@
   v39[0] = v29;
   v38[1] = *MEMORY[0x277D3F540];
   v34[0] = @"HighThroughputStartReason";
-  v28 = [MEMORY[0x277D3F198] sharedInstance];
-  v27 = [v28 commonTypeDict_IntegerFormat];
-  v35[0] = v27;
+  mEMORY[0x277D3F198] = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat = [mEMORY[0x277D3F198] commonTypeDict_IntegerFormat];
+  v35[0] = commonTypeDict_IntegerFormat;
   v34[1] = @"HighThroughputLinkRxTputAfterStart";
-  v26 = [MEMORY[0x277D3F198] sharedInstance];
-  v25 = [v26 commonTypeDict_IntegerFormat];
-  v35[1] = v25;
+  mEMORY[0x277D3F198]2 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat2 = [mEMORY[0x277D3F198]2 commonTypeDict_IntegerFormat];
+  v35[1] = commonTypeDict_IntegerFormat2;
   v34[2] = @"HighThroughputLinkTxTputAfterStart";
-  v24 = [MEMORY[0x277D3F198] sharedInstance];
-  v23 = [v24 commonTypeDict_IntegerFormat];
-  v35[2] = v23;
+  mEMORY[0x277D3F198]3 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat3 = [mEMORY[0x277D3F198]3 commonTypeDict_IntegerFormat];
+  v35[2] = commonTypeDict_IntegerFormat3;
   v34[3] = @"HighThroughputOriginators";
-  v22 = [MEMORY[0x277D3F198] sharedInstance];
-  v21 = [v22 commonTypeDict_StringFormat];
-  v35[3] = v21;
+  mEMORY[0x277D3F198]4 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat = [mEMORY[0x277D3F198]4 commonTypeDict_StringFormat];
+  v35[3] = commonTypeDict_StringFormat;
   v34[4] = @"HighThroughputDuration";
-  v20 = [MEMORY[0x277D3F198] sharedInstance];
-  v19 = [v20 commonTypeDict_IntegerFormat];
-  v35[4] = v19;
+  mEMORY[0x277D3F198]5 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat4 = [mEMORY[0x277D3F198]5 commonTypeDict_IntegerFormat];
+  v35[4] = commonTypeDict_IntegerFormat4;
   v18 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v35 forKeys:v34 count:5];
   v39[1] = v18;
   v38[2] = *MEMORY[0x277D3F500];
   v32[0] = @"key";
   v30[0] = @"Participant";
-  v17 = [MEMORY[0x277D3F198] sharedInstance];
-  v16 = [v17 commonTypeDict_StringFormat];
-  v31[0] = v16;
+  mEMORY[0x277D3F198]6 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_StringFormat2 = [mEMORY[0x277D3F198]6 commonTypeDict_StringFormat];
+  v31[0] = commonTypeDict_StringFormat2;
   v30[1] = @"Duration";
-  v15 = [MEMORY[0x277D3F198] sharedInstance];
-  v3 = [v15 commonTypeDict_IntegerFormat];
-  v31[1] = v3;
+  mEMORY[0x277D3F198]7 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat5 = [mEMORY[0x277D3F198]7 commonTypeDict_IntegerFormat];
+  v31[1] = commonTypeDict_IntegerFormat5;
   v30[2] = @"RxBytes";
-  v4 = [MEMORY[0x277D3F198] sharedInstance];
-  v5 = [v4 commonTypeDict_IntegerFormat];
-  v31[2] = v5;
+  mEMORY[0x277D3F198]8 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat6 = [mEMORY[0x277D3F198]8 commonTypeDict_IntegerFormat];
+  v31[2] = commonTypeDict_IntegerFormat6;
   v30[3] = @"TxBytes";
-  v6 = [MEMORY[0x277D3F198] sharedInstance];
-  v7 = [v6 commonTypeDict_IntegerFormat];
-  v31[3] = v7;
+  mEMORY[0x277D3F198]9 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat7 = [mEMORY[0x277D3F198]9 commonTypeDict_IntegerFormat];
+  v31[3] = commonTypeDict_IntegerFormat7;
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v31 forKeys:v30 count:4];
   v32[1] = @"value";
   v33[0] = v8;
-  v9 = [MEMORY[0x277D3F198] sharedInstance];
-  v10 = [v9 commonTypeDict_IntegerFormat];
-  v33[1] = v10;
+  mEMORY[0x277D3F198]10 = [MEMORY[0x277D3F198] sharedInstance];
+  commonTypeDict_IntegerFormat8 = [mEMORY[0x277D3F198]10 commonTypeDict_IntegerFormat];
+  v33[1] = commonTypeDict_IntegerFormat8;
   v11 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v33 forKeys:v32 count:2];
   v39[2] = v11;
   v12 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v39 forKeys:v38 count:3];
@@ -513,8 +513,8 @@
     processes = v2->_processes;
     v2->_processes = v3;
 
-    v5 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v5 addObserver:v2 selector:sel_processesOfInterest_ name:@"PLProcessNetworkAgent.addProcessesOfInterest" object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_processesOfInterest_ name:@"PLProcessNetworkAgent.addProcessesOfInterest" object:0];
   }
 
   return v2;
@@ -525,7 +525,7 @@
   if ((([MEMORY[0x277D3F180] fullMode] & 1) != 0 || objc_msgSend(MEMORY[0x277D3F208], "internalBuild")) && (objc_msgSend(MEMORY[0x277D3F208], "isMac") & 1) == 0)
   {
     v3 = *MEMORY[0x277CBECE8];
-    v4 = [(PLOperator *)self workQueue];
+    workQueue = [(PLOperator *)self workQueue];
     v33[5] = MEMORY[0x277D85DD0];
     v33[6] = 3221225472;
     v33[7] = __49__PLProcessNetworkAgent_initOperatorDependancies__block_invoke;
@@ -588,25 +588,25 @@
     {
       v12 = MEMORY[0x277D3F1E0];
       v13 = [MEMORY[0x277CBEAA8] monotonicDateWithTimeIntervalSinceNow:5.0];
-      v14 = [(PLOperator *)self workQueue];
+      workQueue2 = [(PLOperator *)self workQueue];
       v33[0] = MEMORY[0x277D85DD0];
       v33[1] = 3221225472;
       v33[2] = __49__PLProcessNetworkAgent_initOperatorDependancies__block_invoke_214;
       v33[3] = &unk_279A5D110;
       v33[4] = self;
-      v15 = [v12 scheduledTimerWithMonotonicFireDate:v13 withInterval:v14 withQueue:v33 withBlock:5.0];
+      v15 = [v12 scheduledTimerWithMonotonicFireDate:v13 withInterval:workQueue2 withQueue:v33 withBlock:5.0];
       [(PLProcessNetworkAgent *)self setLogUsageTimer:v15];
 
       if ([(PLProcessNetworkAgent *)self hasSymptomsLogging])
       {
         v16 = objc_alloc(MEMORY[0x277D3F160]);
-        v17 = [(PLOperator *)self workQueue];
+        workQueue3 = [(PLOperator *)self workQueue];
         v32[0] = MEMORY[0x277D85DD0];
         v32[1] = 3221225472;
         v32[2] = __49__PLProcessNetworkAgent_initOperatorDependancies__block_invoke_2;
         v32[3] = &unk_279A5BE78;
         v32[4] = self;
-        v18 = [v16 initWithWorkQueue:v17 forNotification:@"com.apple.powerlogd.flushNetworkBitmaps" requireState:0 withBlock:v32];
+        v18 = [v16 initWithWorkQueue:workQueue3 forNotification:@"com.apple.powerlogd.flushNetworkBitmaps" requireState:0 withBlock:v32];
         [(PLProcessNetworkAgent *)self setFlushNetworkBitmapsListener:v18];
       }
 
@@ -717,27 +717,27 @@ void __49__PLProcessNetworkAgent_initOperatorDependancies__block_invoke_253(uint
   [*(a1 + 32) handleHighBWEndCallback:v6];
 }
 
-- (void)processesOfInterest:(id)a3
+- (void)processesOfInterest:(id)interest
 {
-  v4 = [a3 userInfo];
-  if (v4)
+  userInfo = [interest userInfo];
+  if (userInfo)
   {
-    v8 = v4;
-    v5 = [v4 objectForKeyedSubscript:@"entry"];
+    v8 = userInfo;
+    v5 = [userInfo objectForKeyedSubscript:@"entry"];
     if (v5)
     {
-      v6 = [(PLProcessNetworkAgent *)self processes];
+      processes = [(PLProcessNetworkAgent *)self processes];
       v7 = [v8 objectForKeyedSubscript:@"entry"];
-      [v6 unionSet:v7];
+      [processes unionSet:v7];
     }
 
-    v4 = v8;
+    userInfo = v8;
   }
 }
 
-- (void)didAddNewSource:(__NStatSource *)a3
+- (void)didAddNewSource:(__NStatSource *)source
 {
-  v5 = [[PLProcessNetworkSource alloc] initWithSource:a3];
+  v5 = [[PLProcessNetworkSource alloc] initWithSource:source];
   NStatSourceSetCountsBlock();
   v4 = v5;
   NStatSourceSetDescriptionBlock();
@@ -745,12 +745,12 @@ void __49__PLProcessNetworkAgent_initOperatorDependancies__block_invoke_253(uint
   NStatSourceSetRemovedBlock();
 }
 
-- (void)didSetCountsBlock:(id)a3 withCounts:(id)a4
+- (void)didSetCountsBlock:(id)block withCounts:(id)counts
 {
-  if (a4)
+  if (counts)
   {
 
-    [a3 setCountsDictionary:a4];
+    [block setCountsDictionary:counts];
   }
 
   else
@@ -763,43 +763,43 @@ void __49__PLProcessNetworkAgent_initOperatorDependancies__block_invoke_253(uint
   }
 }
 
-- (void)didSetDescriptionBlock:(id)a3 withDescription:(id)a4
+- (void)didSetDescriptionBlock:(id)block withDescription:(id)description
 {
   v43 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v7)
+  blockCopy = block;
+  descriptionCopy = description;
+  if (descriptionCopy)
   {
-    v8 = [v6 descriptionDictionary];
+    descriptionDictionary = [blockCopy descriptionDictionary];
 
-    if (v8)
+    if (descriptionDictionary)
     {
-      v9 = [v6 descriptionDictionary];
+      descriptionDictionary2 = [blockCopy descriptionDictionary];
       v10 = MEMORY[0x277D2CAC8];
-      v11 = [v9 objectForCFString:*MEMORY[0x277D2CAC8]];
+      v11 = [descriptionDictionary2 objectForCFString:*MEMORY[0x277D2CAC8]];
 
-      v12 = [v7 objectForCFString:*v10];
-      v13 = [v6 descriptionDictionary];
+      v12 = [descriptionCopy objectForCFString:*v10];
+      descriptionDictionary3 = [blockCopy descriptionDictionary];
       v14 = MEMORY[0x277D2CB10];
-      v15 = [v13 objectForCFString:*MEMORY[0x277D2CB10]];
+      v15 = [descriptionDictionary3 objectForCFString:*MEMORY[0x277D2CB10]];
 
-      v16 = [v7 objectForCFString:*v14];
-      v17 = [v6 descriptionDictionary];
+      v16 = [descriptionCopy objectForCFString:*v14];
+      descriptionDictionary4 = [blockCopy descriptionDictionary];
       v18 = MEMORY[0x277D2CB08];
-      v19 = [v17 objectForCFString:*MEMORY[0x277D2CB08]];
+      v19 = [descriptionDictionary4 objectForCFString:*MEMORY[0x277D2CB08]];
 
-      v20 = [v7 objectForCFString:*v18];
+      v20 = [descriptionCopy objectForCFString:*v18];
       if ([v15 isEqualToString:v16])
       {
         v21 = PLLogProcessNetwork();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
         {
-          [v6 descriptionDictionary];
+          [blockCopy descriptionDictionary];
           v23 = v22 = v11;
           *buf = 138412546;
           v40 = v23;
           v41 = 2112;
-          v42 = v7;
+          v42 = descriptionCopy;
           _os_log_impl(&dword_25EE51000, v21, OS_LOG_TYPE_DEFAULT, "WARNING: new description dictionary with same process name: %@ => %@", buf, 0x16u);
 
           v11 = v22;
@@ -868,19 +868,19 @@ LABEL_20:
         }
       }
 
-      [(PLProcessNetworkAgent *)self transferSource:v6 fromPID:v19 toPID:v20];
-      [v6 setDescriptionDictionary:v7];
-      [(PLProcessNetworkAgent *)self logEventPointConnectionEvent:2 forSource:v6];
+      [(PLProcessNetworkAgent *)self transferSource:blockCopy fromPID:v19 toPID:v20];
+      [blockCopy setDescriptionDictionary:descriptionCopy];
+      [(PLProcessNetworkAgent *)self logEventPointConnectionEvent:2 forSource:blockCopy];
       v12 = v37;
       v11 = v38;
       goto LABEL_22;
     }
 
-    v25 = [v7 objectForCFString:*MEMORY[0x277D2CB08]];
-    [(PLProcessNetworkAgent *)self addSource:v6 toPID:v25];
+    v25 = [descriptionCopy objectForCFString:*MEMORY[0x277D2CB08]];
+    [(PLProcessNetworkAgent *)self addSource:blockCopy toPID:v25];
 
-    [v6 setDescriptionDictionary:v7];
-    [(PLProcessNetworkAgent *)self logEventPointConnectionEvent:0 forSource:v6];
+    [blockCopy setDescriptionDictionary:descriptionCopy];
+    [(PLProcessNetworkAgent *)self logEventPointConnectionEvent:0 forSource:blockCopy];
   }
 
   else
@@ -897,23 +897,23 @@ LABEL_23:
   v35 = *MEMORY[0x277D85DE8];
 }
 
-- (void)didRemoveSource:(id)a3
+- (void)didRemoveSource:(id)source
 {
-  v5 = a3;
-  v4 = [v5 descriptionDictionary];
+  sourceCopy = source;
+  descriptionDictionary = [sourceCopy descriptionDictionary];
 
-  if (v4)
+  if (descriptionDictionary)
   {
-    [(PLProcessNetworkAgent *)self logEventPointConnectionEvent:1 forSource:v5];
+    [(PLProcessNetworkAgent *)self logEventPointConnectionEvent:1 forSource:sourceCopy];
   }
 }
 
-- (void)aggregateAndLogNetworkBitmaps:(id)a3 withStartTime:(unint64_t)a4 andEndTime:(unint64_t)a5
+- (void)aggregateAndLogNetworkBitmaps:(id)bitmaps withStartTime:(unint64_t)time andEndTime:(unint64_t)endTime
 {
   v88[4] = *MEMORY[0x277D85DE8];
-  v57 = a3;
+  bitmapsCopy = bitmaps;
   context = objc_autoreleasePoolPush();
-  v5 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v62 = *MEMORY[0x277D6B5D8];
   v6 = *MEMORY[0x277D6B5D8];
   v63 = *MEMORY[0x277D6B600];
@@ -946,7 +946,7 @@ LABEL_23:
 
         v64 = v9;
         v66 = *(*(&v79 + 1) + 8 * v9);
-        v10 = [v57 objectForKeyedSubscript:?];
+        v10 = [bitmapsCopy objectForKeyedSubscript:?];
         v11 = v10;
         if (v10)
         {
@@ -970,12 +970,12 @@ LABEL_23:
 
                 v16 = *(*(&v75 + 1) + 8 * i);
                 v17 = [v11 objectForKeyedSubscript:v16];
-                v18 = [v5 objectForKeyedSubscript:v16];
+                v18 = [dictionary objectForKeyedSubscript:v16];
 
                 if (!v18)
                 {
-                  v19 = [MEMORY[0x277CBEB38] dictionary];
-                  [v5 setObject:v19 forKeyedSubscript:v16];
+                  dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+                  [dictionary setObject:dictionary2 forKeyedSubscript:v16];
                 }
 
                 v20 = [v17 objectForKeyedSubscript:v8];
@@ -983,7 +983,7 @@ LABEL_23:
 
                 if (v21)
                 {
-                  v22 = [v5 objectForKeyedSubscript:v16];
+                  v22 = [dictionary objectForKeyedSubscript:v16];
                   [v22 setObject:v21 forKeyedSubscript:v66];
                 }
               }
@@ -1025,7 +1025,7 @@ LABEL_23:
   v70 = 0u;
   v71 = 0u;
   v72 = 0u;
-  v26 = v5;
+  v26 = dictionary;
   v67 = [v26 countByEnumeratingWithState:&v69 objects:v83 count:16];
   if (v67)
   {
@@ -1083,10 +1083,10 @@ LABEL_37:
           [v36 setObject:v37 forKeyedSubscript:@"CurrentMachAbsoluteTime"];
 
           [v36 setObject:v28 forKeyedSubscript:@"BundleName"];
-          v38 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+          v38 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:time];
           [v36 setObject:v38 forKeyedSubscript:@"MachAbsoluteStartTime"];
 
-          v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a5];
+          v39 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:endTime];
           [v36 setObject:v39 forKeyedSubscript:@"MachAbsoluteEndTime"];
 
           v40 = [v26 objectForKeyedSubscript:v28];
@@ -1144,24 +1144,24 @@ LABEL_38:
   v50 = *MEMORY[0x277D85DE8];
 }
 
-- (id)compressNetworkBitmap:(id)a3
+- (id)compressNetworkBitmap:(id)bitmap
 {
-  v3 = a3;
-  v4 = v3;
-  if (!v3 || ![v3 length])
+  bitmapCopy = bitmap;
+  v4 = bitmapCopy;
+  if (!bitmapCopy || ![bitmapCopy length])
   {
     goto LABEL_15;
   }
 
   v5 = [v4 length];
-  v6 = [v4 bytes];
+  bytes = [v4 bytes];
   if ((v5 & 7) == 0)
   {
     v9 = v5 >> 3;
     if (v5 >= 8)
     {
       v11 = 0;
-      while (!*(v6 + 8 * v9 - 8 + 8 * v11))
+      while (!*(bytes + 8 * v9 - 8 + 8 * v11))
       {
         if (-v9 == --v11)
         {
@@ -1181,10 +1181,10 @@ LABEL_38:
     if (v9 != v10)
     {
       v8 = [MEMORY[0x277CBEB28] dataWithCapacity:8 * v12];
-      v14 = [v4 bytes];
+      bytes2 = [v4 bytes];
       do
       {
-        v15 = *v14++;
+        v15 = *bytes2++;
         v16 = v15;
         [v8 appendBytes:&v16 length:8];
         --v12;
@@ -1231,36 +1231,36 @@ LABEL_16:
   v4 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v17 forKeys:v16 count:2];
   if (+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") || +[PLUtilities isPerfPowerMetricd])
   {
-    v5 = [(PLProcessNetworkAgent *)self usageFeed];
-    v6 = [(PLProcessNetworkAgent *)self processes];
+    usageFeed = [(PLProcessNetworkAgent *)self usageFeed];
+    processes = [(PLProcessNetworkAgent *)self processes];
     v7 = *MEMORY[0x277D6B770];
     v13[0] = MEMORY[0x277D85DD0];
     v13[1] = 3221225472;
     v13[2] = __46__PLProcessNetworkAgent_logEventBackwardUsage__block_invoke_285;
     v13[3] = &unk_279A5D5C0;
     v13[4] = self;
-    [v5 usageToDateWithOptionsFor:v6 nameKind:v7 options:v4 reply:v13];
+    [usageFeed usageToDateWithOptionsFor:processes nameKind:v7 options:v4 reply:v13];
   }
 
   else
   {
-    v9 = [(PLProcessNetworkAgent *)self usageFeed];
+    usageFeed2 = [(PLProcessNetworkAgent *)self usageFeed];
     v10 = *MEMORY[0x277D6B770];
     v15[0] = MEMORY[0x277D85DD0];
     v15[1] = 3221225472;
     v15[2] = __46__PLProcessNetworkAgent_logEventBackwardUsage__block_invoke;
     v15[3] = &unk_279A5D5C0;
     v15[4] = self;
-    v11 = [v9 usageToDateWithOptionsFor:0 nameKind:v10 options:v4 reply:v15];
+    v11 = [usageFeed2 usageToDateWithOptionsFor:0 nameKind:v10 options:v4 reply:v15];
 
     v12 = PLLogProcessNetwork();
-    v5 = v12;
+    usageFeed = v12;
     if (v11)
     {
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 0;
-        _os_log_impl(&dword_25EE51000, v5, OS_LOG_TYPE_DEFAULT, "successfully retrieved network usage data", buf, 2u);
+        _os_log_impl(&dword_25EE51000, usageFeed, OS_LOG_TYPE_DEFAULT, "successfully retrieved network usage data", buf, 2u);
       }
     }
 
@@ -1302,10 +1302,10 @@ void __46__PLProcessNetworkAgent_logEventBackwardUsage__block_invoke_285(uint64_
   }
 }
 
-- (BOOL)outcomeHasDataUsage:(id)a3
+- (BOOL)outcomeHasDataUsage:(id)usage
 {
   v21[6] = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  usageCopy = usage;
   v4 = *MEMORY[0x277D6B740];
   v21[0] = *MEMORY[0x277D6B738];
   v21[1] = v4;
@@ -1333,7 +1333,7 @@ void __46__PLProcessNetworkAgent_logEventBackwardUsage__block_invoke_285(uint64_
           objc_enumerationMutation(v7);
         }
 
-        v11 = [v3 valueForKey:{*(*(&v16 + 1) + 8 * i), v16}];
+        v11 = [usageCopy valueForKey:{*(*(&v16 + 1) + 8 * i), v16}];
         [v11 doubleValue];
         v13 = v12;
 
@@ -1360,30 +1360,30 @@ LABEL_11:
   return v8;
 }
 
-- (void)logEventBackwardUsageWithOutcome:(id)a3
+- (void)logEventBackwardUsageWithOutcome:(id)outcome
 {
   v91 = *MEMORY[0x277D85DE8];
-  v47 = a3;
-  v63 = [MEMORY[0x277CBEAA8] monotonicDate];
+  outcomeCopy = outcome;
+  monotonicDate = [MEMORY[0x277CBEAA8] monotonicDate];
   v49 = [(PLOperator *)PLProcessNetworkAgent entryKeyForType:*MEMORY[0x277D3F5D8] andName:@"UsageDiff"];
   v61 = [(PLOperator *)PLProcessNetworkAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"Usage"];
-  if (v47 && [v47 count])
+  if (outcomeCopy && [outcomeCopy count])
   {
     v3 = PLLogProcessNetwork();
     if (os_log_type_enabled(v3, OS_LOG_TYPE_DEFAULT))
     {
       LODWORD(buf) = 134217984;
-      *(&buf + 4) = [v47 count];
+      *(&buf + 4) = [outcomeCopy count];
       _os_log_impl(&dword_25EE51000, v3, OS_LOG_TYPE_DEFAULT, "NetworkUsage outcome has payload size: %lu", &buf, 0xCu);
     }
 
-    v50 = [MEMORY[0x277CBEB38] dictionary];
-    v48 = [MEMORY[0x277CBEB18] array];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    array = [MEMORY[0x277CBEB18] array];
     v80 = 0u;
     v81 = 0u;
     v78 = 0u;
     v79 = 0u;
-    obj = v47;
+    obj = outcomeCopy;
     v4 = [obj countByEnumeratingWithState:&v78 objects:v90 count:16];
     if (v4)
     {
@@ -1409,7 +1409,7 @@ LABEL_11:
 
           v8 = *(*(&v78 + 1) + 8 * i);
           v9 = objc_autoreleasePoolPush();
-          v10 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v61 withDate:v63];
+          v10 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v61 withDate:monotonicDate];
           v11 = [v8 valueForKey:v59];
           [v10 setObject:v11 forKeyedSubscript:@"ProcessName"];
           v12 = [v8 valueForKey:v58];
@@ -1443,7 +1443,7 @@ LABEL_11:
           *(&buf + 1) = &buf;
           v88 = 0x2020000000;
           v89 = 0;
-          v21 = [v10 dictionary];
+          dictionary2 = [v10 dictionary];
           v75[0] = MEMORY[0x277D85DD0];
           v75[1] = 3221225472;
           v75[2] = __58__PLProcessNetworkAgent_logEventBackwardUsageWithOutcome___block_invoke;
@@ -1451,21 +1451,21 @@ LABEL_11:
           p_buf = &buf;
           v22 = v10;
           v76 = v22;
-          [v21 enumerateKeysAndObjectsUsingBlock:v75];
+          [dictionary2 enumerateKeysAndObjectsUsingBlock:v75];
 
           if (*(*(&buf + 1) + 24) > 0.0)
           {
-            [v50 setObject:v22 forKeyedSubscript:v11];
-            v23 = [(PLProcessNetworkAgent *)self lastEntryDate];
-            v24 = v23 == 0;
+            [dictionary setObject:v22 forKeyedSubscript:v11];
+            lastEntryDate = [(PLProcessNetworkAgent *)self lastEntryDate];
+            v24 = lastEntryDate == 0;
 
             if (!v24)
             {
               v25 = objc_alloc(MEMORY[0x277D3F190]);
-              v26 = [(PLProcessNetworkAgent *)self lastEntryDate];
-              v27 = [v25 initWithEntryKey:v49 withDate:v26];
+              lastEntryDate2 = [(PLProcessNetworkAgent *)self lastEntryDate];
+              v27 = [v25 initWithEntryKey:v49 withDate:lastEntryDate2];
 
-              [v27 setObject:v63 forKeyedSubscript:@"timestampEnd"];
+              [v27 setObject:monotonicDate forKeyedSubscript:@"timestampEnd"];
               [v27 setObject:v11 forKeyedSubscript:@"ProcessName"];
               v28 = [v22 objectForKeyedSubscript:@"BundleName"];
               [v27 setObject:v28 forKeyedSubscript:@"BundleName"];
@@ -1473,7 +1473,7 @@ LABEL_11:
               v29 = [v22 objectForKeyedSubscript:@"ExtensionName"];
               [v27 setObject:v29 forKeyedSubscript:@"ExtensionName"];
 
-              v30 = [v22 dictionary];
+              dictionary3 = [v22 dictionary];
               v72[0] = MEMORY[0x277D85DD0];
               v72[1] = 3221225472;
               v72[2] = __58__PLProcessNetworkAgent_logEventBackwardUsageWithOutcome___block_invoke_2;
@@ -1481,10 +1481,10 @@ LABEL_11:
               v31 = v27;
               v73 = v31;
               v74 = v22;
-              [v30 enumerateKeysAndObjectsUsingBlock:v72];
+              [dictionary3 enumerateKeysAndObjectsUsingBlock:v72];
 
-              v32 = [(PLProcessNetworkAgent *)self lastProcessNameToNetworkUsageEntry];
-              v33 = [v32 objectForKeyedSubscript:v11];
+              lastProcessNameToNetworkUsageEntry = [(PLProcessNetworkAgent *)self lastProcessNameToNetworkUsageEntry];
+              v33 = [lastProcessNameToNetworkUsageEntry objectForKeyedSubscript:v11];
 
               v68 = 0;
               v69 = &v68;
@@ -1494,7 +1494,7 @@ LABEL_11:
               if (v33)
               {
                 v71 = 0.0;
-                v35 = [v33 dictionary];
+                dictionary4 = [v33 dictionary];
                 v64[0] = MEMORY[0x277D85DD0];
                 v64[1] = 3221225472;
                 v64[2] = __58__PLProcessNetworkAgent_logEventBackwardUsageWithOutcome___block_invoke_3;
@@ -1502,14 +1502,14 @@ LABEL_11:
                 v65 = v31;
                 v66 = v33;
                 v67 = &v68;
-                [v35 enumerateKeysAndObjectsUsingBlock:v64];
+                [dictionary4 enumerateKeysAndObjectsUsingBlock:v64];
 
                 v34 = v69[3];
               }
 
               if (v34 > 0.0)
               {
-                [v48 addObject:v31];
+                [array addObject:v31];
               }
 
               _Block_object_dispose(&v68, 8);
@@ -1529,21 +1529,21 @@ LABEL_11:
     if ([(PLOperator *)self isDebugEnabled]&& !+[PLUtilities isPowerlogHelperd](PLUtilities, "isPowerlogHelperd") && !+[PLUtilities isPerfPowerMetricd])
     {
       v85 = v61;
-      v36 = [v50 allValues];
-      v86 = v36;
+      allValues = [dictionary allValues];
+      v86 = allValues;
       v37 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v86 forKeys:&v85 count:1];
       [(PLOperator *)self logEntries:v37 withGroupID:v61];
     }
 
-    v38 = [(PLProcessNetworkAgent *)self lastEntryDate];
+    lastEntryDate3 = [(PLProcessNetworkAgent *)self lastEntryDate];
 
-    if (v38)
+    if (lastEntryDate3)
     {
-      if (![v48 count] && +[PLUtilities isPerfPowerMetricd](PLUtilities, "isPerfPowerMetricd"))
+      if (![array count] && +[PLUtilities isPerfPowerMetricd](PLUtilities, "isPerfPowerMetricd"))
       {
         v39 = objc_alloc(MEMORY[0x277D3F190]);
-        v40 = [(PLProcessNetworkAgent *)self lastEntryDate];
-        v41 = [v39 initWithEntryKey:v49 withDate:v40];
+        lastEntryDate4 = [(PLProcessNetworkAgent *)self lastEntryDate];
+        v41 = [v39 initWithEntryKey:v49 withDate:lastEntryDate4];
 
         v84 = v41;
         v42 = [MEMORY[0x277CBEA60] arrayWithObjects:&v84 count:1];
@@ -1551,16 +1551,16 @@ LABEL_11:
       }
 
       v82 = v49;
-      v83 = v48;
+      v83 = array;
       v43 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v83 forKeys:&v82 count:1];
       [(PLOperator *)self logEntries:v43 withGroupID:v49];
 
-      v44 = [(PLProcessNetworkAgent *)self lastEntryDate];
-      [(PLProcessNetworkAgent *)self accountWithNetworkUsageDiffEntries:v48 withStartDate:v44 withEndDate:v63];
+      lastEntryDate5 = [(PLProcessNetworkAgent *)self lastEntryDate];
+      [(PLProcessNetworkAgent *)self accountWithNetworkUsageDiffEntries:array withStartDate:lastEntryDate5 withEndDate:monotonicDate];
     }
 
-    [(PLProcessNetworkAgent *)self setLastEntryDate:v63];
-    [(PLProcessNetworkAgent *)self setLastProcessNameToNetworkUsageEntry:v50];
+    [(PLProcessNetworkAgent *)self setLastEntryDate:monotonicDate];
+    [(PLProcessNetworkAgent *)self setLastProcessNameToNetworkUsageEntry:dictionary];
   }
 
   else
@@ -1571,10 +1571,10 @@ LABEL_11:
       [PLProcessNetworkAgent logEventBackwardUsageWithOutcome:];
     }
 
-    v50 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v49 withDate:v63];
-    [v50 setIsErrorEntry:1];
-    [v50 setObject:@"NetworkUsage outcome has no payload" forKeyedSubscript:@"__PLEntryErrorString__"];
-    [(PLOperator *)self logEntry:v50];
+    dictionary = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v49 withDate:monotonicDate];
+    [dictionary setIsErrorEntry:1];
+    [dictionary setObject:@"NetworkUsage outcome has no payload" forKeyedSubscript:@"__PLEntryErrorString__"];
+    [(PLOperator *)self logEntry:dictionary];
   }
 
   v46 = *MEMORY[0x277D85DE8];
@@ -1631,13 +1631,13 @@ void __58__PLProcessNetworkAgent_logEventBackwardUsageWithOutcome___block_invoke
   }
 }
 
-- (void)setLastNetworkBitmapTimestampFor:(id)a3
+- (void)setLastNetworkBitmapTimestampFor:(id)for
 {
   v25 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  forCopy = for;
   if (+[PLUtilities deviceRebooted])
   {
-    v5 = 0;
+    unsignedLongLongValue = 0;
   }
 
   else
@@ -1646,13 +1646,13 @@ void __58__PLProcessNetworkAgent_logEventBackwardUsageWithOutcome___block_invoke
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v21 = 138412290;
-      v22 = v4;
+      v22 = forCopy;
       _os_log_impl(&dword_25EE51000, v6, OS_LOG_TYPE_DEFAULT, "[%@]: Detected that powerlog restarted", &v21, 0xCu);
     }
 
     v7 = [(PLOperator *)PLProcessNetworkAgent entryKeyForType:*MEMORY[0x277D3F5C8] andName:@"NetworkBitmap"];
-    v8 = [(PLOperator *)self storage];
-    v9 = [v8 lastEntryForKey:v7];
+    storage = [(PLOperator *)self storage];
+    v9 = [storage lastEntryForKey:v7];
 
     if (v9 && (+[PLUtilities deviceBootTime](PLUtilities, "deviceBootTime"), v10 = objc_claimAutoreleasedReturnValue(), [v9 entryDate], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_msgSend(v10, "compare:", v11), v11, v10, v12 == -1))
     {
@@ -1661,14 +1661,14 @@ void __58__PLProcessNetworkAgent_logEventBackwardUsageWithOutcome___block_invoke
       {
         v15 = [v9 objectForKeyedSubscript:@"MachAbsoluteEndTime"];
         v21 = 138412546;
-        v22 = v4;
+        v22 = forCopy;
         v23 = 2112;
         v24 = v15;
         _os_log_impl(&dword_25EE51000, v14, OS_LOG_TYPE_DEFAULT, "[%@]: Recovered last entry's mach time: %@", &v21, 0x16u);
       }
 
       v13 = [v9 objectForKeyedSubscript:@"MachAbsoluteEndTime"];
-      v5 = [v13 unsignedLongLongValue];
+      unsignedLongLongValue = [v13 unsignedLongLongValue];
     }
 
     else
@@ -1677,11 +1677,11 @@ void __58__PLProcessNetworkAgent_logEventBackwardUsageWithOutcome___block_invoke
       if (os_log_type_enabled(v13, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138412290;
-        v22 = v4;
+        v22 = forCopy;
         _os_log_impl(&dword_25EE51000, v13, OS_LOG_TYPE_DEFAULT, "[%@]: Last entry's mach time not available", &v21, 0xCu);
       }
 
-      v5 = 0;
+      unsignedLongLongValue = 0;
     }
   }
 
@@ -1692,9 +1692,9 @@ void __58__PLProcessNetworkAgent_logEventBackwardUsageWithOutcome___block_invoke
     v17 = 0;
   }
 
-  if (v17 <= v5)
+  if (v17 <= unsignedLongLongValue)
   {
-    v17 = v5;
+    v17 = unsignedLongLongValue;
   }
 
   v18 = v17 & 0xFFFFFFFFFFFFFFF8;
@@ -1703,7 +1703,7 @@ void __58__PLProcessNetworkAgent_logEventBackwardUsageWithOutcome___block_invoke
   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 138412546;
-    v22 = v4;
+    v22 = forCopy;
     v23 = 2048;
     v24 = v18;
     _os_log_impl(&dword_25EE51000, v19, OS_LOG_TYPE_DEFAULT, "[%@]: Network bitmaps initialized start time: %llu.", &v21, 0x16u);
@@ -1712,10 +1712,10 @@ void __58__PLProcessNetworkAgent_logEventBackwardUsageWithOutcome___block_invoke
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)getNetWorkBitmapForEndTime:(unint64_t)a3 andSysdiagnoseTrigger:(BOOL)a4
+- (void)getNetWorkBitmapForEndTime:(unint64_t)time andSysdiagnoseTrigger:(BOOL)trigger
 {
   v22[1] = *MEMORY[0x277D85DE8];
-  if (a4)
+  if (trigger)
   {
     v7 = @"Sysdiagnose Bitmap";
   }
@@ -1728,16 +1728,16 @@ void __58__PLProcessNetworkAgent_logEventBackwardUsageWithOutcome___block_invoke
   v21 = *MEMORY[0x277D6B5F0];
   v22[0] = MEMORY[0x277CBEC38];
   v8 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v22 forKeys:&v21 count:1];
-  v9 = [(PLProcessNetworkAgent *)self usageFeed];
-  v10 = [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
+  usageFeed = [(PLProcessNetworkAgent *)self usageFeed];
+  lastNetworkBitmapTimestamp = [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __74__PLProcessNetworkAgent_getNetWorkBitmapForEndTime_andSysdiagnoseTrigger___block_invoke;
   v15[3] = &unk_279A5D638;
   v16 = v7;
-  v17 = self;
-  v18 = a4;
-  v11 = [v9 networkBitmapsToDateWithOptionsFor:0 startTime:v10 endTime:a3 options:v8 reply:v15];
+  selfCopy = self;
+  triggerCopy = trigger;
+  v11 = [usageFeed networkBitmapsToDateWithOptionsFor:0 startTime:lastNetworkBitmapTimestamp endTime:time options:v8 reply:v15];
 
   v12 = PLLogProcessNetwork();
   v13 = v12;
@@ -1864,10 +1864,10 @@ LABEL_5:
 - (void)logEventBackwardNetworkBitmapsSysdiagnoseTrigger
 {
   v24 = *MEMORY[0x277D85DE8];
-  v3 = [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
+  lastNetworkBitmapTimestamp = [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
   v4 = PLLogProcessNetwork();
   v5 = os_log_type_enabled(v4, OS_LOG_TYPE_DEFAULT);
-  if (v3 == -1)
+  if (lastNetworkBitmapTimestamp == -1)
   {
     if (v5)
     {
@@ -1884,7 +1884,7 @@ LABEL_5:
     if (v5)
     {
       v20 = 134217984;
-      v21 = [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
+      lastNetworkBitmapTimestamp2 = [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
       _os_log_impl(&dword_25EE51000, v4, OS_LOG_TYPE_DEFAULT, "[Sysdiagnose Bitmap]: Network bitmaps start time: %llu.", &v20, 0xCu);
     }
 
@@ -1895,61 +1895,61 @@ LABEL_5:
       v7 = PLLogProcessNetwork();
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
       {
-        v8 = [(PLProcessNetworkAgent *)self curNetworkBitmapTimestampForSysdiagnoseTrigger];
+        curNetworkBitmapTimestampForSysdiagnoseTrigger = [(PLProcessNetworkAgent *)self curNetworkBitmapTimestampForSysdiagnoseTrigger];
         v20 = 134217984;
-        v21 = v8;
+        lastNetworkBitmapTimestamp2 = curNetworkBitmapTimestampForSysdiagnoseTrigger;
         _os_log_impl(&dword_25EE51000, v7, OS_LOG_TYPE_DEFAULT, "[Sysdiagnose Bitmap]: Setting network bitmaps current time for sysdiagnose trigger: %llu.", &v20, 0xCu);
       }
     }
 
-    v9 = [(PLProcessNetworkAgent *)self curNetworkBitmapTimestampForSysdiagnoseTrigger];
+    curNetworkBitmapTimestampForSysdiagnoseTrigger2 = [(PLProcessNetworkAgent *)self curNetworkBitmapTimestampForSysdiagnoseTrigger];
     v10 = PLLogProcessNetwork();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v20 = 134218240;
-      v21 = v6;
+      lastNetworkBitmapTimestamp2 = v6;
       v22 = 2048;
-      v23 = v9;
+      v23 = curNetworkBitmapTimestampForSysdiagnoseTrigger2;
       _os_log_impl(&dword_25EE51000, v10, OS_LOG_TYPE_DEFAULT, "[Sysdiagnose Bitmap]: Network bitmaps end time: %llu, curr time: %llu.", &v20, 0x16u);
     }
 
-    if (v9 > v6)
+    if (curNetworkBitmapTimestampForSysdiagnoseTrigger2 > v6)
     {
       v11 = PLLogProcessNetwork();
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
-        v12 = [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
+        lastNetworkBitmapTimestamp3 = [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
         v20 = 134218240;
-        v21 = v12;
+        lastNetworkBitmapTimestamp2 = lastNetworkBitmapTimestamp3;
         v22 = 2048;
         v23 = v6;
         _os_log_impl(&dword_25EE51000, v11, OS_LOG_TYPE_DEFAULT, "[Sysdiagnose Bitmap]: Requesting network bitmaps from symptoms with start time: %llu, end time: %llu.", &v20, 0x16u);
       }
 
-      v13 = self;
+      selfCopy2 = self;
       v14 = v6;
 LABEL_21:
-      [(PLProcessNetworkAgent *)v13 getNetWorkBitmapForEndTime:v14 andSysdiagnoseTrigger:1];
+      [(PLProcessNetworkAgent *)selfCopy2 getNetWorkBitmapForEndTime:v14 andSysdiagnoseTrigger:1];
       goto LABEL_25;
     }
 
-    v15 = v9 - [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
+    v15 = curNetworkBitmapTimestampForSysdiagnoseTrigger2 - [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
     v16 = PLLogProcessNetwork();
     v17 = os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT);
     if (v15 >= 8)
     {
       if (v17)
       {
-        v18 = [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
+        lastNetworkBitmapTimestamp4 = [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
         v20 = 134218240;
-        v21 = v18;
+        lastNetworkBitmapTimestamp2 = lastNetworkBitmapTimestamp4;
         v22 = 2048;
-        v23 = v9;
+        v23 = curNetworkBitmapTimestampForSysdiagnoseTrigger2;
         _os_log_impl(&dword_25EE51000, v16, OS_LOG_TYPE_DEFAULT, "[Sysdiagnose Bitmap]: Requesting network bitmaps from symptoms with start time: %llu, curr time: %llu.", &v20, 0x16u);
       }
 
-      v13 = self;
-      v14 = v9;
+      selfCopy2 = self;
+      v14 = curNetworkBitmapTimestampForSysdiagnoseTrigger2;
       goto LABEL_21;
     }
 
@@ -1988,7 +1988,7 @@ LABEL_25:
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134218496;
-      v10 = [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
+      lastNetworkBitmapTimestamp = [(PLProcessNetworkAgent *)self lastNetworkBitmapTimestamp];
       v11 = 2048;
       v12 = v3;
       v13 = 2048;
@@ -2014,35 +2014,35 @@ LABEL_25:
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)accountWithNetworkUsageDiffEntries:(id)a3 withStartDate:(id)a4 withEndDate:(id)a5
+- (void)accountWithNetworkUsageDiffEntries:(id)entries withStartDate:(id)date withEndDate:(id)endDate
 {
   v90 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  entriesCopy = entries;
+  dateCopy = date;
+  endDateCopy = endDate;
   if (([MEMORY[0x277D3F208] isHomePod] & 1) == 0)
   {
     v10 = PLLogProcessNetwork();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v85 = v7;
+      v85 = entriesCopy;
       v86 = 2112;
-      v87 = v8;
+      v87 = dateCopy;
       v88 = 2112;
-      v89 = v9;
+      v89 = endDateCopy;
       _os_log_debug_impl(&dword_25EE51000, v10, OS_LOG_TYPE_DEBUG, "networkUsageDiffEntries=%@, startDate=%@, endDate=%@", buf, 0x20u);
     }
 
-    v63 = v9;
-    v64 = v8;
+    v63 = endDateCopy;
+    v64 = dateCopy;
 
     v11 = [&unk_287148CE8 mutableCopy];
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
-    v12 = v7;
+    v12 = entriesCopy;
     v13 = [v12 countByEnumeratingWithState:&v78 objects:v83 count:16];
     if (v13)
     {
@@ -2093,11 +2093,11 @@ LABEL_25:
       [PLProcessNetworkAgent accountWithNetworkUsageDiffEntries:v30 withStartDate:v23 withEndDate:v29];
     }
 
-    v68 = [MEMORY[0x277CBEB38] dictionary];
-    v67 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     if (v23 + v29 > 0.0)
     {
-      v62 = v7;
+      v62 = entriesCopy;
       v73 = 0u;
       v74 = 0u;
       v71 = 0u;
@@ -2160,7 +2160,7 @@ LABEL_25:
             }
 
             v51 = [MEMORY[0x277CCABB0] numberWithDouble:v42];
-            [v68 setObject:v51 forKeyedSubscript:v40];
+            [dictionary setObject:v51 forKeyedSubscript:v40];
 
             if (v29 > 0.0)
             {
@@ -2173,7 +2173,7 @@ LABEL_25:
             }
 
             v57 = [MEMORY[0x277CCABB0] numberWithDouble:v41];
-            [v67 setObject:v57 forKeyedSubscript:v40];
+            [dictionary2 setObject:v57 forKeyedSubscript:v40];
           }
 
           v69 = [obj countByEnumeratingWithState:&v71 objects:v82 count:16];
@@ -2182,22 +2182,22 @@ LABEL_25:
         while (v69);
       }
 
-      v7 = v62;
+      entriesCopy = v62;
     }
 
     v58 = PLLogProcessNetwork();
-    v9 = v63;
-    v8 = v64;
+    endDateCopy = v63;
+    dateCopy = v64;
     if (os_log_type_enabled(v58, OS_LOG_TYPE_DEBUG))
     {
       [PLProcessNetworkAgent accountWithNetworkUsageDiffEntries:withStartDate:withEndDate:];
     }
 
-    v59 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v59 createDistributionEventIntervalWithDistributionID:37 withChildNodeNameToWeight:v68 withStartDate:v64 withEndDate:v63];
+    mEMORY[0x277D3F0C0] = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0] createDistributionEventIntervalWithDistributionID:37 withChildNodeNameToWeight:dictionary withStartDate:v64 withEndDate:v63];
 
-    v60 = [MEMORY[0x277D3F0C0] sharedInstance];
-    [v60 createDistributionEventIntervalWithDistributionID:38 withChildNodeNameToWeight:v67 withStartDate:v64 withEndDate:v63];
+    mEMORY[0x277D3F0C0]2 = [MEMORY[0x277D3F0C0] sharedInstance];
+    [mEMORY[0x277D3F0C0]2 createDistributionEventIntervalWithDistributionID:38 withChildNodeNameToWeight:dictionary2 withStartDate:v64 withEndDate:v63];
   }
 
   v61 = *MEMORY[0x277D85DE8];
@@ -2217,9 +2217,9 @@ void __86__PLProcessNetworkAgent_accountWithNetworkUsageDiffEntries_withStartDat
   [*(a1 + 32) setObject:v10 forKeyedSubscript:v5];
 }
 
-- (void)handleHighBWStartCallback:(id)a3
+- (void)handleHighBWStartCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v5 = PLLogProcessNetwork();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -2228,26 +2228,26 @@ void __86__PLProcessNetworkAgent_accountWithNetworkUsageDiffEntries_withStartDat
 
   v6 = [(PLOperator *)PLProcessNetworkAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"HighCellularBWTransactions"];
   v7 = [objc_alloc(MEMORY[0x277D3F190]) initWithEntryKey:v6];
-  v8 = [v4 objectForKeyedSubscript:@"HighThroughputStartReason"];
+  v8 = [callbackCopy objectForKeyedSubscript:@"HighThroughputStartReason"];
   [v7 setObject:v8 forKeyedSubscript:@"HighThroughputStartReason"];
 
-  v9 = [v4 objectForKeyedSubscript:@"HighThroughputLinkRxTputAfterStart"];
+  v9 = [callbackCopy objectForKeyedSubscript:@"HighThroughputLinkRxTputAfterStart"];
   [v7 setObject:v9 forKeyedSubscript:@"HighThroughputLinkRxTputAfterStart"];
 
-  v10 = [v4 objectForKeyedSubscript:@"HighThroughputLinkTxTputAfterStart"];
+  v10 = [callbackCopy objectForKeyedSubscript:@"HighThroughputLinkTxTputAfterStart"];
   [v7 setObject:v10 forKeyedSubscript:@"HighThroughputLinkTxTputAfterStart"];
 
-  v11 = [v4 objectForKeyedSubscript:@"HighThroughputOriginators"];
+  v11 = [callbackCopy objectForKeyedSubscript:@"HighThroughputOriginators"];
   v12 = [v11 componentsJoinedByString:{@", "}];
   [v7 setObject:v12 forKeyedSubscript:@"HighThroughputOriginators"];
 
   [(PLOperator *)self logEntry:v7];
 }
 
-- (void)handleHighBWEndCallback:(id)a3
+- (void)handleHighBWEndCallback:(id)callback
 {
   v35 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  callbackCopy = callback;
   v4 = PLLogProcessNetwork();
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -2256,20 +2256,20 @@ void __86__PLProcessNetworkAgent_accountWithNetworkUsageDiffEntries_withStartDat
 
   v23 = [(PLOperator *)PLProcessNetworkAgent entryKeyForType:*MEMORY[0x277D3F5D0] andName:@"HighCellularBWTransactionsDetail"];
   v5 = [objc_alloc(MEMORY[0x277D3F1E8]) initWithEntryKey:v23];
-  v6 = [v3 objectForKeyedSubscript:@"HighThroughputStartReason"];
+  v6 = [callbackCopy objectForKeyedSubscript:@"HighThroughputStartReason"];
   [v5 setObject:v6 forKeyedSubscript:@"HighThroughputStartReason"];
 
-  v7 = [v3 objectForKeyedSubscript:@"HighThroughputLinkRxTputAfterStart"];
+  v7 = [callbackCopy objectForKeyedSubscript:@"HighThroughputLinkRxTputAfterStart"];
   [v5 setObject:v7 forKeyedSubscript:@"HighThroughputLinkRxTputAfterStart"];
 
-  v8 = [v3 objectForKeyedSubscript:@"HighThroughputLinkTxTputAfterStart"];
+  v8 = [callbackCopy objectForKeyedSubscript:@"HighThroughputLinkTxTputAfterStart"];
   [v5 setObject:v8 forKeyedSubscript:@"HighThroughputLinkTxTputAfterStart"];
 
-  v9 = [v3 objectForKeyedSubscript:@"HighThroughputOriginators"];
+  v9 = [callbackCopy objectForKeyedSubscript:@"HighThroughputOriginators"];
   v10 = [v9 componentsJoinedByString:{@", "}];
   [v5 setObject:v10 forKeyedSubscript:@"HighThroughputOriginators"];
 
-  v11 = [v3 objectForKeyedSubscript:@"HighThroughputDuration"];
+  v11 = [callbackCopy objectForKeyedSubscript:@"HighThroughputDuration"];
   v27 = v5;
   [v5 setObject:v11 forKeyedSubscript:@"HighThroughputDuration"];
 
@@ -2277,8 +2277,8 @@ void __86__PLProcessNetworkAgent_accountWithNetworkUsageDiffEntries_withStartDat
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v25 = v3;
-  obj = [v3 objectForKeyedSubscript:@"HighThroughputParticipants"];
+  v25 = callbackCopy;
+  obj = [callbackCopy objectForKeyedSubscript:@"HighThroughputParticipants"];
   v12 = [obj countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v12)
   {

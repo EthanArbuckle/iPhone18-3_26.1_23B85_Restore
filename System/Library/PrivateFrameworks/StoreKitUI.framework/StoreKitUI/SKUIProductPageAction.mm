@@ -1,20 +1,20 @@
 @interface SKUIProductPageAction
-+ (id)actionWithType:(int64_t)a3;
++ (id)actionWithType:(int64_t)type;
 - (UIViewController)viewController;
 - (void)viewController;
 @end
 
 @implementation SKUIProductPageAction
 
-+ (id)actionWithType:(int64_t)a3
++ (id)actionWithType:(int64_t)type
 {
   if (os_variant_has_internal_content() && _os_feature_enabled_impl() && os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_FAULT))
   {
     +[SKUIProductPageAction actionWithType:];
   }
 
-  v5 = objc_alloc_init(a1);
-  [v5 setActionType:a3];
+  v5 = objc_alloc_init(self);
+  [v5 setActionType:type];
 
   return v5;
 }

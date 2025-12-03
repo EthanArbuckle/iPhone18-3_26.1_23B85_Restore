@@ -1,7 +1,7 @@
 @interface FMLocationShifterItem
 - (CLLocationCoordinate2D)coordinate;
 - (FMLocationShifterItem)init;
-- (FMLocationShifterItem)initWithCoordinate:(CLLocationCoordinate2D)a3 accuracy:(double)a4 timestamp:(id)a5 context:(id)a6;
+- (FMLocationShifterItem)initWithCoordinate:(CLLocationCoordinate2D)coordinate accuracy:(double)accuracy timestamp:(id)timestamp context:(id)context;
 - (id)description;
 @end
 
@@ -14,12 +14,12 @@
   return 0;
 }
 
-- (FMLocationShifterItem)initWithCoordinate:(CLLocationCoordinate2D)a3 accuracy:(double)a4 timestamp:(id)a5 context:(id)a6
+- (FMLocationShifterItem)initWithCoordinate:(CLLocationCoordinate2D)coordinate accuracy:(double)accuracy timestamp:(id)timestamp context:(id)context
 {
-  longitude = a3.longitude;
-  latitude = a3.latitude;
-  v12 = a5;
-  v13 = a6;
+  longitude = coordinate.longitude;
+  latitude = coordinate.latitude;
+  timestampCopy = timestamp;
+  contextCopy = context;
   v17.receiver = self;
   v17.super_class = FMLocationShifterItem;
   v14 = [(FMLocationShifterItem *)&v17 init];
@@ -28,9 +28,9 @@
   {
     v14->_coordinate.latitude = latitude;
     v14->_coordinate.longitude = longitude;
-    v14->_accuracy = a4;
-    objc_storeStrong(&v14->_timestamp, a5);
-    objc_storeStrong(&v15->_context, a6);
+    v14->_accuracy = accuracy;
+    objc_storeStrong(&v14->_timestamp, timestamp);
+    objc_storeStrong(&v15->_context, context);
   }
 
   return v15;
@@ -46,10 +46,10 @@
   v8 = v7;
   [(FMLocationShifterItem *)self accuracy];
   v10 = v9;
-  v11 = [(FMLocationShifterItem *)self context];
-  v12 = [(FMLocationShifterItem *)self shifted];
-  v13 = [(FMLocationShifterItem *)self error];
-  v14 = [v3 stringWithFormat:@"<%@: %p %.6f, %.6f @ %.3f ctx:%p s:%d e:%@>", v4, self, v6, v8, v10, v11, v12, v13];
+  context = [(FMLocationShifterItem *)self context];
+  shifted = [(FMLocationShifterItem *)self shifted];
+  error = [(FMLocationShifterItem *)self error];
+  v14 = [v3 stringWithFormat:@"<%@: %p %.6f, %.6f @ %.3f ctx:%p s:%d e:%@>", v4, self, v6, v8, v10, context, shifted, error];
 
   return v14;
 }

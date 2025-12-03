@@ -1,13 +1,13 @@
 @interface TTRIRemindersListMessagingView
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5;
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range;
 - (NSString)accessibilityLabel;
-- (_TtC9Reminders30TTRIRemindersListMessagingView)initWithArrangedSubviews:(id)a3;
-- (_TtC9Reminders30TTRIRemindersListMessagingView)initWithCoder:(id)a3;
+- (_TtC9Reminders30TTRIRemindersListMessagingView)initWithArrangedSubviews:(id)subviews;
+- (_TtC9Reminders30TTRIRemindersListMessagingView)initWithCoder:(id)coder;
 @end
 
 @implementation TTRIRemindersListMessagingView
 
-- (_TtC9Reminders30TTRIRemindersListMessagingView)initWithCoder:(id)a3
+- (_TtC9Reminders30TTRIRemindersListMessagingView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC9Reminders30TTRIRemindersListMessagingView_listLayout;
   v5 = enum case for TTRRemindersListLayout.list(_:);
@@ -38,22 +38,22 @@
   return v4;
 }
 
-- (_TtC9Reminders30TTRIRemindersListMessagingView)initWithArrangedSubviews:(id)a3
+- (_TtC9Reminders30TTRIRemindersListMessagingView)initWithArrangedSubviews:(id)subviews
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);
   return result;
 }
 
-- (BOOL)textView:(id)a3 shouldInteractWithURL:(id)a4 inRange:(_NSRange)a5
+- (BOOL)textView:(id)view shouldInteractWithURL:(id)l inRange:(_NSRange)range
 {
   v7 = type metadata accessor for URL();
   v8 = *(v7 - 8);
   __chkstk_darwin(v7);
   v10 = &v14 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static URL._unconditionallyBridgeFromObjectiveC(_:)();
-  v11 = a3;
-  v12 = self;
+  viewCopy = view;
+  selfCopy = self;
   LOBYTE(self) = sub_10028CD9C();
 
   (*(v8 + 8))(v10, v7);

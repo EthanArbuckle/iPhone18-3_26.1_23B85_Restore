@@ -1,9 +1,9 @@
 @interface MPSWorkloadInfoCapture
-- (MPSWorkloadInfoCapture)captureWithCommandQueue:(id)a3 workload:(id)a4 completionHandler:(id)a5 scheduleHanlder:(id)a6;
+- (MPSWorkloadInfoCapture)captureWithCommandQueue:(id)queue workload:(id)workload completionHandler:(id)handler scheduleHanlder:(id)hanlder;
 - (MPSWorkloadInfoCapture)init;
 - (void)dealloc;
-- (void)endBlitEncoderWithLabel:(id)a3;
-- (void)endComputeEncoderWithLabel:(id)a3;
+- (void)endBlitEncoderWithLabel:(id)label;
+- (void)endComputeEncoderWithLabel:(id)label;
 - (void)print;
 - (void)startBlitEncoder;
 - (void)startComputeEncoder;
@@ -29,31 +29,31 @@
   return v2;
 }
 
-- (MPSWorkloadInfoCapture)captureWithCommandQueue:(id)a3 workload:(id)a4 completionHandler:(id)a5 scheduleHanlder:(id)a6
+- (MPSWorkloadInfoCapture)captureWithCommandQueue:(id)queue workload:(id)workload completionHandler:(id)handler scheduleHanlder:(id)hanlder
 {
-  v10 = objc_msgSend_commandBuffer(a3, a2, a3, a4, a5);
+  v10 = objc_msgSend_commandBuffer(queue, a2, queue, workload, handler);
   objc_msgSend_setProfilingEnabled_(v10, v11, 1, v12, v13);
   v14 = [MPSBenchmarkLoopCommandBuffer alloc];
   v18 = objc_msgSend_initWithCommandBuffer_(v14, v15, v10, v16, v17);
   objc_msgSend_setCurrentWorkloadCapture_(v18, v19, self, v20, v21);
-  if (a6)
+  if (hanlder)
   {
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
     v43[2] = sub_2399126AC;
     v43[3] = &unk_278AA8CD0;
-    v43[4] = a6;
+    v43[4] = hanlder;
     objc_msgSend_addScheduledHandler_(v10, v22, v43, v23, v24);
   }
 
-  objc_msgSend_encodeToCommandBuffer_withResources_(a4, v22, v18, 0, v24);
-  if (a5)
+  objc_msgSend_encodeToCommandBuffer_withResources_(workload, v22, v18, 0, v24);
+  if (handler)
   {
     v42[0] = MEMORY[0x277D85DD0];
     v42[1] = 3221225472;
     v42[2] = sub_2399126BC;
     v42[3] = &unk_278AA8CD0;
-    v42[4] = a5;
+    v42[4] = handler;
     objc_msgSend_addCompletedHandler_(v18, v25, v42, v27, v28);
   }
 
@@ -73,12 +73,12 @@
   }
 }
 
-- (void)endComputeEncoderWithLabel:(id)a3
+- (void)endComputeEncoderWithLabel:(id)label
 {
   currentEncoderInfo = self->_currentEncoderInfo;
   if (currentEncoderInfo)
   {
-    objc_msgSend_setEncoderLabel_(currentEncoderInfo, a2, a3, v3, v4);
+    objc_msgSend_setEncoderLabel_(currentEncoderInfo, a2, label, v3, v4);
     objc_msgSend_addObject_(self->_allEncoders, v7, self->_currentEncoderInfo, v8, v9);
     objc_msgSend_addObject_(self->_computeEncoders, v10, self->_currentEncoderInfo, v11, v12);
 
@@ -94,12 +94,12 @@
   }
 }
 
-- (void)endBlitEncoderWithLabel:(id)a3
+- (void)endBlitEncoderWithLabel:(id)label
 {
   currentEncoderInfo = self->_currentEncoderInfo;
   if (currentEncoderInfo)
   {
-    objc_msgSend_setEncoderLabel_(currentEncoderInfo, a2, a3, v3, v4);
+    objc_msgSend_setEncoderLabel_(currentEncoderInfo, a2, label, v3, v4);
     objc_msgSend_addObject_(self->_allEncoders, v7, self->_currentEncoderInfo, v8, v9);
     objc_msgSend_addObject_(self->_blitEncoders, v10, self->_currentEncoderInfo, v11, v12);
 

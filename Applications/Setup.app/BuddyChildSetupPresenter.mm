@@ -2,15 +2,15 @@
 - (BuddyChildSetupPresenter)init;
 - (BuddyChildSetupPresenterDelegate)delegate;
 - (void)_ensurePresenter;
-- (void)childSetupPresenter:(id)a3 didCompleteWithResult:(id)a4;
-- (void)childSetupPresenter:(id)a3 didFail:(id)a4;
-- (void)fetchCutOffAgeForChildAccountWithCompletionHandler:(id)a3;
-- (void)setupLocationServicesWithCompletion:(id)a3;
-- (void)setupLocationServicesWithNextTaskInfo:(id)a3 completion:(id)a4;
-- (void)setupPasscodeForAccount:(id)a3 nextTaskInfo:(id)a4 completion:(id)a5;
-- (void)setupPasscodeWithCompletion:(id)a3;
-- (void)setupPerformAIDASignInWith:(id)a3 completion:(id)a4;
-- (void)startFlowWithNavigationController:(id)a3;
+- (void)childSetupPresenter:(id)presenter didCompleteWithResult:(id)result;
+- (void)childSetupPresenter:(id)presenter didFail:(id)fail;
+- (void)fetchCutOffAgeForChildAccountWithCompletionHandler:(id)handler;
+- (void)setupLocationServicesWithCompletion:(id)completion;
+- (void)setupLocationServicesWithNextTaskInfo:(id)info completion:(id)completion;
+- (void)setupPasscodeForAccount:(id)account nextTaskInfo:(id)info completion:(id)completion;
+- (void)setupPasscodeWithCompletion:(id)completion;
+- (void)setupPerformAIDASignInWith:(id)with completion:(id)completion;
+- (void)startFlowWithNavigationController:(id)controller;
 @end
 
 @implementation BuddyChildSetupPresenter
@@ -33,46 +33,46 @@
   return v2;
 }
 
-- (void)startFlowWithNavigationController:(id)a3
+- (void)startFlowWithNavigationController:(id)controller
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyChildSetupPresenter *)v5 _ensurePresenter];
-  v3 = [(BuddyChildSetupPresenter *)v5 presenter];
-  [(AISChildSetupPresenter *)v3 startFlowWithViewControllerPresentationHandler:location[0]];
+  objc_storeStrong(location, controller);
+  [(BuddyChildSetupPresenter *)selfCopy _ensurePresenter];
+  presenter = [(BuddyChildSetupPresenter *)selfCopy presenter];
+  [(AISChildSetupPresenter *)presenter startFlowWithViewControllerPresentationHandler:location[0]];
 
   objc_storeStrong(location, 0);
 }
 
-- (void)fetchCutOffAgeForChildAccountWithCompletionHandler:(id)a3
+- (void)fetchCutOffAgeForChildAccountWithCompletionHandler:(id)handler
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(BuddyChildSetupPresenter *)v16 _ensurePresenter];
+  objc_storeStrong(location, handler);
+  [(BuddyChildSetupPresenter *)selfCopy _ensurePresenter];
   oslog = _BYLoggingFacility();
   v13 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
   {
-    v3 = [(BuddyChildSetupPresenter *)v16 presenter];
-    v4 = [(AISChildSetupPresenter *)v3 childSetupStore];
-    sub_10006AE18(buf, v4);
+    presenter = [(BuddyChildSetupPresenter *)selfCopy presenter];
+    childSetupStore = [(AISChildSetupPresenter *)presenter childSetupStore];
+    sub_10006AE18(buf, childSetupStore);
     _os_log_impl(&_mh_execute_header, oslog, v13, "Will fetch cut off age for child account with child setup store %@", buf, 0xCu);
   }
 
   objc_storeStrong(&oslog, 0);
-  v5 = [(BuddyChildSetupPresenter *)v16 presenter];
-  v6 = [(AISChildSetupPresenter *)v5 childSetupStore];
+  presenter2 = [(BuddyChildSetupPresenter *)selfCopy presenter];
+  childSetupStore2 = [(AISChildSetupPresenter *)presenter2 childSetupStore];
   v7 = _NSConcreteStackBlock;
   v8 = -1073741824;
   v9 = 0;
   v10 = sub_1001DF198;
   v11 = &unk_10032EB40;
   v12 = location[0];
-  [v6 fetchMaxAgeForChildAccountWithCompletionHandler:&v7];
+  [childSetupStore2 fetchMaxAgeForChildAccountWithCompletionHandler:&v7];
 
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
@@ -93,42 +93,42 @@
   }
 }
 
-- (void)childSetupPresenter:(id)a3 didCompleteWithResult:(id)a4
+- (void)childSetupPresenter:(id)presenter didCompleteWithResult:(id)result
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, presenter);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(BuddyChildSetupPresenter *)v8 delegate];
-  [(BuddyChildSetupPresenterDelegate *)v5 didSucceedWithChildSetupPresenter:v8];
+  objc_storeStrong(&v6, result);
+  delegate = [(BuddyChildSetupPresenter *)selfCopy delegate];
+  [(BuddyChildSetupPresenterDelegate *)delegate didSucceedWithChildSetupPresenter:selfCopy];
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)childSetupPresenter:(id)a3 didFail:(id)a4
+- (void)childSetupPresenter:(id)presenter didFail:(id)fail
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, presenter);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(BuddyChildSetupPresenter *)v8 delegate];
-  [(BuddyChildSetupPresenterDelegate *)v5 childSetupPresenter:v8 didFail:v6];
+  objc_storeStrong(&v6, fail);
+  delegate = [(BuddyChildSetupPresenter *)selfCopy delegate];
+  [(BuddyChildSetupPresenterDelegate *)delegate childSetupPresenter:selfCopy didFail:v6];
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setupLocationServicesWithCompletion:(id)a3
+- (void)setupLocationServicesWithCompletion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   oslog = _BYLoggingFacility();
   v8 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -141,19 +141,19 @@
 
   objc_storeStrong(&oslog, 0);
   v6 = [[BuddyAISFlowTaskInfo alloc] initWithUnderlyingFlowTaskInfo:0];
-  v5 = [(BuddyChildSetupPresenter *)v11 delegate];
-  [(BuddyChildSetupPresenterDelegate *)v5 setupLocationServicesWithNextTaskInfo:v6 completion:location[0]];
+  delegate = [(BuddyChildSetupPresenter *)selfCopy delegate];
+  [(BuddyChildSetupPresenterDelegate *)delegate setupLocationServicesWithNextTaskInfo:v6 completion:location[0]];
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setupPasscodeWithCompletion:(id)a3
+- (void)setupPasscodeWithCompletion:(id)completion
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   oslog = _BYLoggingFacility();
   v8 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -166,23 +166,23 @@
 
   objc_storeStrong(&oslog, 0);
   v6 = [[BuddyAISFlowTaskInfo alloc] initWithUnderlyingFlowTaskInfo:0];
-  v5 = [(BuddyChildSetupPresenter *)v11 delegate];
-  [(BuddyChildSetupPresenterDelegate *)v5 setupPasscodeWithNextTaskInfo:v6 completion:location[0]];
+  delegate = [(BuddyChildSetupPresenter *)selfCopy delegate];
+  [(BuddyChildSetupPresenterDelegate *)delegate setupPasscodeWithNextTaskInfo:v6 completion:location[0]];
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setupPasscodeForAccount:(id)a3 nextTaskInfo:(id)a4 completion:(id)a5
+- (void)setupPasscodeForAccount:(id)account nextTaskInfo:(id)info completion:(id)completion
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, account);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
+  objc_storeStrong(&v13, info);
   v12 = 0;
-  objc_storeStrong(&v12, a5);
+  objc_storeStrong(&v12, completion);
   oslog = _BYLoggingFacility();
   v10 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -194,8 +194,8 @@
   objc_storeStrong(&oslog, 0);
   v7 = [BuddyAISFlowTaskInfo alloc];
   v9 = [(BuddyAISFlowTaskInfo *)v7 initWithUnderlyingFlowTaskInfo:v13];
-  v8 = [(BuddyChildSetupPresenter *)v15 delegate];
-  [(BuddyChildSetupPresenterDelegate *)v8 setupPasscodeWithNextTaskInfo:v9 completion:v12];
+  delegate = [(BuddyChildSetupPresenter *)selfCopy delegate];
+  [(BuddyChildSetupPresenterDelegate *)delegate setupPasscodeWithNextTaskInfo:v9 completion:v12];
 
   objc_storeStrong(&v9, 0);
   objc_storeStrong(&v12, 0);
@@ -203,14 +203,14 @@
   objc_storeStrong(location, 0);
 }
 
-- (void)setupLocationServicesWithNextTaskInfo:(id)a3 completion:(id)a4
+- (void)setupLocationServicesWithNextTaskInfo:(id)info completion:(id)completion
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, info);
   v10 = 0;
-  objc_storeStrong(&v10, a4);
+  objc_storeStrong(&v10, completion);
   oslog = _BYLoggingFacility();
   v8 = OS_LOG_TYPE_DEFAULT;
   if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
@@ -222,24 +222,24 @@
   objc_storeStrong(&oslog, 0);
   v5 = [BuddyAISFlowTaskInfo alloc];
   v7 = [(BuddyAISFlowTaskInfo *)v5 initWithUnderlyingFlowTaskInfo:location[0]];
-  v6 = [(BuddyChildSetupPresenter *)v12 delegate];
-  [(BuddyChildSetupPresenterDelegate *)v6 setupLocationServicesWithNextTaskInfo:v7 completion:v10];
+  delegate = [(BuddyChildSetupPresenter *)selfCopy delegate];
+  [(BuddyChildSetupPresenterDelegate *)delegate setupLocationServicesWithNextTaskInfo:v7 completion:v10];
 
   objc_storeStrong(&v7, 0);
   objc_storeStrong(&v10, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)setupPerformAIDASignInWith:(id)a3 completion:(id)a4
+- (void)setupPerformAIDASignInWith:(id)with completion:(id)completion
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, with);
   v6 = 0;
-  objc_storeStrong(&v6, a4);
-  v5 = [(BuddyChildSetupPresenter *)v8 delegate];
-  [(BuddyChildSetupPresenterDelegate *)v5 setupPerformAIDASignInWith:location[0] completion:v6];
+  objc_storeStrong(&v6, completion);
+  delegate = [(BuddyChildSetupPresenter *)selfCopy delegate];
+  [(BuddyChildSetupPresenterDelegate *)delegate setupPerformAIDASignInWith:location[0] completion:v6];
 
   objc_storeStrong(&v6, 0);
   objc_storeStrong(location, 0);

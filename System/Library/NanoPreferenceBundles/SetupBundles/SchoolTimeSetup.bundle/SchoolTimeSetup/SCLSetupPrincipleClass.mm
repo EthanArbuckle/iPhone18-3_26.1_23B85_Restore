@@ -2,9 +2,9 @@
 - (BOOL)holdBeforeDisplaying;
 - (SCLSetupPrincipleClass)init;
 - (id)familyMember;
-- (void)_commitViewModel:(id)a3 toDevice:(id)a4 retryIfNeeded:(BOOL)a5;
+- (void)_commitViewModel:(id)model toDevice:(id)device retryIfNeeded:(BOOL)needed;
 - (void)_unregisterPairingTokens;
-- (void)commitViewModel:(id)a3;
+- (void)commitViewModel:(id)model;
 - (void)dealloc;
 - (void)didEstablishHold;
 - (void)showSettingsConfiguration;
@@ -49,8 +49,8 @@
     [(SCLSetupListViewController *)self->_listViewController setFlowController:self];
   }
 
-  v5 = [(SCLSetupPrincipleClass *)self navigationController];
-  [v5 pushViewController:self->_listViewController animated:1];
+  navigationController = [(SCLSetupPrincipleClass *)self navigationController];
+  [navigationController pushViewController:self->_listViewController animated:1];
 }
 
 - (void)skipSettingsConfiguration
@@ -62,22 +62,22 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "Skip settings configuration", v5, 2u);
   }
 
-  v4 = [(SCLSetupPrincipleClass *)self delegate];
-  [v4 buddyControllerDone:self];
+  delegate = [(SCLSetupPrincipleClass *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
-- (void)commitViewModel:(id)a3
+- (void)commitViewModel:(id)model
 {
-  v4 = a3;
-  v5 = [v4 isEnabled];
+  modelCopy = model;
+  isEnabled = [modelCopy isEnabled];
   v6 = scl_setup_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
-  if (v5)
+  if (isEnabled)
   {
     if (v7)
     {
       *buf = 138412290;
-      v22 = v4;
+      v22 = modelCopy;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Commit view model: %@", buf, 0xCu);
     }
 
@@ -94,7 +94,7 @@
     v19[2] = sub_1420;
     v19[3] = &unk_82B8;
     v19[4] = self;
-    v20 = v4;
+    v20 = modelCopy;
     v13 = [v10 addObserverForName:v11 object:0 queue:v12 usingBlock:v19];
 
     [(SCLSetupPrincipleClass *)self setDeviceDidPairToken:v13];
@@ -119,34 +119,34 @@
     }
   }
 
-  v17 = [(SCLSetupPrincipleClass *)self delegate];
-  [v17 buddyControllerDone:self];
+  delegate = [(SCLSetupPrincipleClass *)self delegate];
+  [delegate buddyControllerDone:self];
 }
 
 - (void)_unregisterPairingTokens
 {
   v3 = +[NSNotificationCenter defaultCenter];
-  v4 = [(SCLSetupPrincipleClass *)self deviceDidPairToken];
-  [v3 removeObserver:v4];
+  deviceDidPairToken = [(SCLSetupPrincipleClass *)self deviceDidPairToken];
+  [v3 removeObserver:deviceDidPairToken];
 
   v5 = +[NSNotificationCenter defaultCenter];
-  v6 = [(SCLSetupPrincipleClass *)self pairingDidFailToken];
-  [v5 removeObserver:v6];
+  pairingDidFailToken = [(SCLSetupPrincipleClass *)self pairingDidFailToken];
+  [v5 removeObserver:pairingDidFailToken];
 
   [(SCLSetupPrincipleClass *)self setDeviceDidPairToken:0];
 
   [(SCLSetupPrincipleClass *)self setPairingDidFailToken:0];
 }
 
-- (void)_commitViewModel:(id)a3 toDevice:(id)a4 retryIfNeeded:(BOOL)a5
+- (void)_commitViewModel:(id)model toDevice:(id)device retryIfNeeded:(BOOL)needed
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = [SCLScheduleSettings scheduleSettingsWithViewModel:v8];
+  modelCopy = model;
+  deviceCopy = device;
+  v10 = [SCLScheduleSettings scheduleSettingsWithViewModel:modelCopy];
   v11 = objc_alloc_init(SCLSchoolModeConfiguration);
   [v11 setIdentifier:@"SchoolTime.Setup"];
-  v12 = [v9 pairingID];
-  [v11 setPairingID:v12];
+  pairingID = [deviceCopy pairingID];
+  [v11 setPairingID:pairingID];
 
   v13 = [[SCLSchoolMode alloc] initWithConfiguration:v11];
   [v13 resume];
@@ -157,12 +157,12 @@
   v17[2] = sub_186C;
   v17[3] = &unk_8330;
   v18 = v10;
-  v19 = v9;
-  v22 = a5;
-  v20 = self;
-  v21 = v8;
-  v14 = v8;
-  v15 = v9;
+  v19 = deviceCopy;
+  neededCopy = needed;
+  selfCopy = self;
+  v21 = modelCopy;
+  v14 = modelCopy;
+  v15 = deviceCopy;
   v16 = v10;
   [v13 applyScheduleSettings:v16 completion:v17];
 }
@@ -188,8 +188,8 @@
     _os_log_impl(&dword_0, v3, OS_LOG_TYPE_DEFAULT, "didEstablishHold", &v9, 2u);
   }
 
-  v4 = [(SCLSetupPrincipleClass *)self familyMember];
-  v5 = [(SCLSetupPrincipleClass *)self wantsSetupFlowForFamilyMember:v4];
+  familyMember = [(SCLSetupPrincipleClass *)self familyMember];
+  v5 = [(SCLSetupPrincipleClass *)self wantsSetupFlowForFamilyMember:familyMember];
   v6 = scl_pairing_log();
   v7 = os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT);
   if (v5)
@@ -197,12 +197,12 @@
     if (v7)
     {
       v9 = 138412290;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%@ releasing hold", &v9, 0xCu);
     }
 
-    v8 = [(SCLSetupPrincipleClass *)self delegate];
-    [v8 buddyControllerReleaseHold:self];
+    delegate = [(SCLSetupPrincipleClass *)self delegate];
+    [delegate buddyControllerReleaseHold:self];
   }
 
   else
@@ -210,26 +210,26 @@
     if (v7)
     {
       v9 = 138412290;
-      v10 = self;
+      selfCopy2 = self;
       _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "%@ releasing hold and skipping", &v9, 0xCu);
     }
 
-    v8 = [(SCLSetupPrincipleClass *)self delegate];
-    [v8 buddyControllerReleaseHoldAndSkip:self];
+    delegate = [(SCLSetupPrincipleClass *)self delegate];
+    [delegate buddyControllerReleaseHoldAndSkip:self];
   }
 }
 
 - (id)familyMember
 {
-  v2 = [(SCLSetupPrincipleClass *)self delegate];
-  v3 = v2;
-  if (v2)
+  delegate = [(SCLSetupPrincipleClass *)self delegate];
+  v3 = delegate;
+  if (delegate)
   {
-    v4 = [v2 setupFlowUserInfo];
-    v5 = v4;
-    if (v4)
+    setupFlowUserInfo = [delegate setupFlowUserInfo];
+    v5 = setupFlowUserInfo;
+    if (setupFlowUserInfo)
     {
-      v6 = [v4 objectForKey:BPSPairingFlowFamilyMember];
+      v6 = [setupFlowUserInfo objectForKey:BPSPairingFlowFamilyMember];
       if (v6)
       {
         goto LABEL_13;

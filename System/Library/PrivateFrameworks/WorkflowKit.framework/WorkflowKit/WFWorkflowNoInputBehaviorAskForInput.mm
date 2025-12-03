@@ -1,10 +1,10 @@
 @interface WFWorkflowNoInputBehaviorAskForInput
 + (id)behaviorName;
 - (NSDictionary)serializedParameters;
-- (WFWorkflowNoInputBehaviorAskForInput)initWithContentItemClass:(Class)a3 serializedParameters:(id)a4;
-- (WFWorkflowNoInputBehaviorAskForInput)initWithSerializedRepresentation:(id)a3;
+- (WFWorkflowNoInputBehaviorAskForInput)initWithContentItemClass:(Class)class serializedParameters:(id)parameters;
+- (WFWorkflowNoInputBehaviorAskForInput)initWithSerializedRepresentation:(id)representation;
 - (id)serializedRepresentation;
-- (void)resolveWithUserInterface:(id)a3 runningDelegate:(id)a4 completionHandler:(id)a5;
+- (void)resolveWithUserInterface:(id)interface runningDelegate:(id)delegate completionHandler:(id)handler;
 @end
 
 @implementation WFWorkflowNoInputBehaviorAskForInput
@@ -18,32 +18,32 @@
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v14 forKeys:&v13 count:1];
   v5 = [v4 mutableCopy];
 
-  v6 = [(WFWorkflowNoInputBehaviorAskForInput *)self serializedParameters];
+  serializedParameters = [(WFWorkflowNoInputBehaviorAskForInput *)self serializedParameters];
 
-  if (v6)
+  if (serializedParameters)
   {
-    v7 = [(WFWorkflowNoInputBehaviorAskForInput *)self serializedParameters];
-    [v5 setObject:v7 forKeyedSubscript:@"SerializedParameters"];
+    serializedParameters2 = [(WFWorkflowNoInputBehaviorAskForInput *)self serializedParameters];
+    [v5 setObject:serializedParameters2 forKeyedSubscript:@"SerializedParameters"];
   }
 
-  v8 = [objc_opt_class() behaviorName];
+  behaviorName = [objc_opt_class() behaviorName];
   v9 = [v5 copy];
-  v10 = WFNoInputBehaviorSerializedRepresentation(v8, v9);
+  v10 = WFNoInputBehaviorSerializedRepresentation(behaviorName, v9);
 
   v11 = *MEMORY[0x1E69E9840];
 
   return v10;
 }
 
-- (WFWorkflowNoInputBehaviorAskForInput)initWithSerializedRepresentation:(id)a3
+- (WFWorkflowNoInputBehaviorAskForInput)initWithSerializedRepresentation:(id)representation
 {
-  v4 = a3;
-  v5 = [objc_opt_class() behaviorName];
-  v6 = WFNoInputBehaviorParametersIfBehavior(v5, v4);
+  representationCopy = representation;
+  behaviorName = [objc_opt_class() behaviorName];
+  v6 = WFNoInputBehaviorParametersIfBehavior(behaviorName, representationCopy);
 
   if (!v6)
   {
-    v11 = 0;
+    selfCopy = 0;
     goto LABEL_13;
   }
 
@@ -77,7 +77,7 @@
 
       v14 = [(WFWorkflowNoInputBehaviorAskForInput *)self initWithContentItemClass:v8 serializedParameters:v13];
       self = v14;
-      v11 = self;
+      selfCopy = self;
       goto LABEL_11;
     }
   }
@@ -88,23 +88,23 @@
     v7 = 0;
   }
 
-  v11 = 0;
+  selfCopy = 0;
 LABEL_11:
 
 LABEL_13:
-  return v11;
+  return selfCopy;
 }
 
-- (void)resolveWithUserInterface:(id)a3 runningDelegate:(id)a4 completionHandler:(id)a5
+- (void)resolveWithUserInterface:(id)interface runningDelegate:(id)delegate completionHandler:(id)handler
 {
   v23 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = v11;
-  if (v10)
+  interfaceCopy = interface;
+  delegateCopy = delegate;
+  handlerCopy = handler;
+  v12 = handlerCopy;
+  if (delegateCopy)
   {
-    if (v11)
+    if (handlerCopy)
     {
       goto LABEL_3;
     }
@@ -112,8 +112,8 @@ LABEL_13:
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"WFWorkflowNoInputBehavior.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflowNoInputBehavior.m" lineNumber:83 description:{@"Invalid parameter not satisfying: %@", @"delegate"}];
 
     if (v12)
     {
@@ -121,18 +121,18 @@ LABEL_13:
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"WFWorkflowNoInputBehavior.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"WFWorkflowNoInputBehavior.m" lineNumber:84 description:{@"Invalid parameter not satisfying: %@", @"completion"}];
 
 LABEL_3:
   v13 = +[WFActionRegistry sharedRegistry];
-  v14 = [(WFWorkflowNoInputBehaviorAskForInput *)self contentItemClass];
-  v15 = [(WFWorkflowNoInputBehaviorAskForInput *)self serializedParameters];
-  v16 = [v13 createActionForSelectingContentOfType:v14 serializedParameters:v15];
+  contentItemClass = [(WFWorkflowNoInputBehaviorAskForInput *)self contentItemClass];
+  serializedParameters = [(WFWorkflowNoInputBehaviorAskForInput *)self serializedParameters];
+  v16 = [v13 createActionForSelectingContentOfType:contentItemClass serializedParameters:serializedParameters];
 
   if (v16)
   {
-    [v10 noInputBehavior:self wantsToRunAction:v16 completionHandler:v12];
+    [delegateCopy noInputBehavior:self wantsToRunAction:v16 completionHandler:v12];
   }
 
   else
@@ -167,13 +167,13 @@ LABEL_3:
   return v3;
 }
 
-- (WFWorkflowNoInputBehaviorAskForInput)initWithContentItemClass:(Class)a3 serializedParameters:(id)a4
+- (WFWorkflowNoInputBehaviorAskForInput)initWithContentItemClass:(Class)class serializedParameters:(id)parameters
 {
-  v8 = a4;
-  if (!a3)
+  parametersCopy = parameters;
+  if (!class)
   {
-    v13 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v13 handleFailureInMethod:a2 object:self file:@"WFWorkflowNoInputBehavior.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"contentItemClass"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"WFWorkflowNoInputBehavior.m" lineNumber:56 description:{@"Invalid parameter not satisfying: %@", @"contentItemClass"}];
   }
 
   v14.receiver = self;
@@ -182,8 +182,8 @@ LABEL_3:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_contentItemClass, a3);
-    objc_storeStrong(&v10->_serializedParameters, a4);
+    objc_storeStrong(&v9->_contentItemClass, class);
+    objc_storeStrong(&v10->_serializedParameters, parameters);
     v11 = v10;
   }
 

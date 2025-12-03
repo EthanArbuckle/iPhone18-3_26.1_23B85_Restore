@@ -1,50 +1,50 @@
 @interface PKDashboardRewardsBalanceItem
-- (PKDashboardRewardsBalanceItem)initWithPaymentRewardsBalance:(id)a3 passUniqueIdentifier:(id)a4 transactionSourceIdentifiers:(id)a5;
+- (PKDashboardRewardsBalanceItem)initWithPaymentRewardsBalance:(id)balance passUniqueIdentifier:(id)identifier transactionSourceIdentifiers:(id)identifiers;
 @end
 
 @implementation PKDashboardRewardsBalanceItem
 
-- (PKDashboardRewardsBalanceItem)initWithPaymentRewardsBalance:(id)a3 passUniqueIdentifier:(id)a4 transactionSourceIdentifiers:(id)a5
+- (PKDashboardRewardsBalanceItem)initWithPaymentRewardsBalance:(id)balance passUniqueIdentifier:(id)identifier transactionSourceIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  balanceCopy = balance;
+  identifierCopy = identifier;
+  identifiersCopy = identifiers;
   v29.receiver = self;
   v29.super_class = PKDashboardRewardsBalanceItem;
   v11 = [(PKDashboardRewardsBalanceItem *)&v29 init];
   if (v11)
   {
-    v12 = [v8 identifier];
+    identifier = [balanceCopy identifier];
     balanceIdentifier = v11->_balanceIdentifier;
-    v11->_balanceIdentifier = v12;
+    v11->_balanceIdentifier = identifier;
 
-    v14 = [v8 programName];
+    programName = [balanceCopy programName];
     programName = v11->_programName;
-    v11->_programName = v14;
+    v11->_programName = programName;
 
-    v16 = [v8 programURL];
+    programURL = [balanceCopy programURL];
     programURL = v11->_programURL;
-    v11->_programURL = v16;
+    v11->_programURL = programURL;
 
-    v11->_rewardsType = [v8 type];
-    v18 = [v8 formattedQuantityValue];
+    v11->_rewardsType = [balanceCopy type];
+    formattedQuantityValue = [balanceCopy formattedQuantityValue];
     formattedQuantityValue = v11->_formattedQuantityValue;
-    v11->_formattedQuantityValue = v18;
+    v11->_formattedQuantityValue = formattedQuantityValue;
 
-    v20 = [v8 formattedMonetaryValue];
+    formattedMonetaryValue = [balanceCopy formattedMonetaryValue];
     formattedMonetaryValue = v11->_formattedMonetaryValue;
-    v11->_formattedMonetaryValue = v20;
+    v11->_formattedMonetaryValue = formattedMonetaryValue;
 
-    v11->_isRedeemable = [v8 isRedeemable];
-    v22 = [v8 lastFetchedAt];
+    v11->_isRedeemable = [balanceCopy isRedeemable];
+    lastFetchedAt = [balanceCopy lastFetchedAt];
     lastFetchedAt = v11->_lastFetchedAt;
-    v11->_lastFetchedAt = v22;
+    v11->_lastFetchedAt = lastFetchedAt;
 
-    v24 = [v9 copy];
+    v24 = [identifierCopy copy];
     passUniqueID = v11->_passUniqueID;
     v11->_passUniqueID = v24;
 
-    v26 = [v10 copy];
+    v26 = [identifiersCopy copy];
     transactionSourceIdentifiers = v11->_transactionSourceIdentifiers;
     v11->_transactionSourceIdentifiers = v26;
   }

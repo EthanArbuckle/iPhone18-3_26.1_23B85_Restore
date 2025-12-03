@@ -1,30 +1,30 @@
 @interface SKTaskRawParser
-- (SKTaskRawParser)initWithCallback:(id)a3;
-- (void)parseData:(id)a3;
+- (SKTaskRawParser)initWithCallback:(id)callback;
+- (void)parseData:(id)data;
 @end
 
 @implementation SKTaskRawParser
 
-- (SKTaskRawParser)initWithCallback:(id)a3
+- (SKTaskRawParser)initWithCallback:(id)callback
 {
-  v4 = a3;
+  callbackCopy = callback;
   v8.receiver = self;
   v8.super_class = SKTaskRawParser;
   v5 = [(SKTaskRawParser *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(SKTaskRawParser *)v5 setCallback:v4];
+    [(SKTaskRawParser *)v5 setCallback:callbackCopy];
   }
 
   return v6;
 }
 
-- (void)parseData:(id)a3
+- (void)parseData:(id)data
 {
-  v4 = a3;
-  v5 = [(SKTaskRawParser *)self callback];
-  v5[2](v5, v4);
+  dataCopy = data;
+  callback = [(SKTaskRawParser *)self callback];
+  callback[2](callback, dataCopy);
 }
 
 @end

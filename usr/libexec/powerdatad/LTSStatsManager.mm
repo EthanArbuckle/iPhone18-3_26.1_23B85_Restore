@@ -3,7 +3,7 @@
 - (LTSStatsManager)init;
 - (id)getLifetimeStats;
 - (id)getStatsSinceBoot;
-- (int)updateLifetimeStatsForChannel:(__CFDictionary *)a3;
+- (int)updateLifetimeStatsForChannel:(__CFDictionary *)channel;
 - (void)dealloc;
 - (void)updateLifetimeStats;
 - (void)updateLifetimeStatsGated;
@@ -17,7 +17,7 @@
   block[1] = 3221225472;
   block[2] = sub_10000684C;
   block[3] = &unk_100010690;
-  block[4] = a1;
+  block[4] = self;
   if (qword_100014B48 != -1)
   {
     dispatch_once(&qword_100014B48, block);
@@ -187,7 +187,7 @@ LABEL_3:
   return Samples;
 }
 
-- (int)updateLifetimeStatsForChannel:(__CFDictionary *)a3
+- (int)updateLifetimeStatsForChannel:(__CFDictionary *)channel
 {
   ChannelName = IOReportChannelGetChannelName();
   if (!ChannelName)
@@ -299,8 +299,8 @@ LABEL_3:
   v11[2] = sub_100007178;
   v11[3] = &unk_100010720;
   v3 = objc_retainBlock(v11);
-  v4 = [(LTSStatsManager *)self getStatsSinceBoot];
-  if (v4)
+  getStatsSinceBoot = [(LTSStatsManager *)self getStatsSinceBoot];
+  if (getStatsSinceBoot)
   {
     prevStatsSinceBoot = self->_prevStatsSinceBoot;
     p_prevStatsSinceBoot = &self->_prevStatsSinceBoot;
@@ -312,7 +312,7 @@ LABEL_3:
 
       if (!*p_prevStatsSinceBoot)
       {
-        SamplesDelta = v4;
+        SamplesDelta = getStatsSinceBoot;
         v10 = off_100014B00;
         if (os_log_type_enabled(off_100014B00, OS_LOG_TYPE_INFO))
         {
@@ -329,8 +329,8 @@ LABEL_3:
     {
 LABEL_5:
       IOReportIterate();
-      [LTSStatsStore saveStatsSinceBoot:v4];
-      objc_storeStrong(p_prevStatsSinceBoot, v4);
+      [LTSStatsStore saveStatsSinceBoot:getStatsSinceBoot];
+      objc_storeStrong(p_prevStatsSinceBoot, getStatsSinceBoot);
       goto LABEL_6;
     }
 

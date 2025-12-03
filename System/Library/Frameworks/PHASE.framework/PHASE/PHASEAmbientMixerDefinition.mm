@@ -35,14 +35,14 @@
   v6 = layout;
   v20.receiver = self;
   v20.super_class = PHASEAmbientMixerDefinition;
-  v7 = [(PHASEMixerDefinition *)&v20 initInternal];
-  if (!v7)
+  initInternal = [(PHASEMixerDefinition *)&v20 initInternal];
+  if (!initInternal)
   {
     goto LABEL_11;
   }
 
-  v8 = [(AVAudioChannelLayout *)v6 layout];
-  v10 = Phase::ChannelLayout::IsLayoutSupported(v8, v9);
+  layout = [(AVAudioChannelLayout *)v6 layout];
+  v10 = Phase::ChannelLayout::IsLayoutSupported(layout, v9);
   if (v10)
   {
     v11 = 1.0 - sqrtf(vmuls_lane_f32(orientation.vector.f32[3], orientation, 3) + (vmuls_lane_f32(orientation.vector.f32[2], orientation, 2) + (vmulq_f32(orientation, orientation).f32[0] + vmuls_lane_f32(orientation.vector.f32[1], *orientation.vector.f32, 1))));
@@ -53,9 +53,9 @@
 
     if (v11 <= 0.1)
     {
-      *(v7 + 3) = orientation;
-      objc_storeStrong(v7 + 5, layout);
-      v17 = v7;
+      *(initInternal + 3) = orientation;
+      objc_storeStrong(initInternal + 5, layout);
+      v17 = initInternal;
       goto LABEL_12;
     }
 

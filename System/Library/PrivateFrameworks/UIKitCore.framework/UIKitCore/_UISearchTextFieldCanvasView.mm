@@ -16,15 +16,15 @@
 
 - (double)_uiatom_currentScreenScale
 {
-  v2 = [(UIView *)self window];
-  v3 = [v2 screen];
+  window = [(UIView *)self window];
+  screen = [window screen];
 
-  if (!v3)
+  if (!screen)
   {
-    v3 = [objc_opt_self() mainScreen];
+    screen = [objc_opt_self() mainScreen];
   }
 
-  [v3 scale];
+  [screen scale];
   v5 = v4;
 
   return v5;
@@ -49,37 +49,37 @@
     v4 = objc_opt_new();
   }
 
-  v7 = [(_UITextCanvasView *)self context];
-  [v7 textContainerOrigin];
+  context = [(_UITextCanvasView *)self context];
+  [context textContainerOrigin];
   v9 = v8;
   v11 = v10;
 
   [(_UISearchTextFieldCanvasView *)self _uiatom_currentScreenScale];
   v13 = v12;
-  v14 = [(_UITextCanvasView *)self context];
-  v15 = [v14 layoutManager];
+  context2 = [(_UITextCanvasView *)self context];
+  layoutManager = [context2 layoutManager];
 
-  v16 = [(_UITextCanvasView *)self context];
-  v17 = [v16 textContainer];
+  context3 = [(_UITextCanvasView *)self context];
+  textContainer = [context3 textContainer];
 
-  v18 = [v15 textStorage];
-  v19 = [v18 length];
+  textStorage = [layoutManager textStorage];
+  v19 = [textStorage length];
   v20 = *off_1E70EC8C8;
   v33[0] = MEMORY[0x1E69E9820];
   v33[1] = 3221225472;
   v33[2] = __49___UISearchTextFieldCanvasView__updateTokenViews__block_invoke;
   v33[3] = &unk_1E7125AE0;
-  v21 = v15;
+  v21 = layoutManager;
   v34 = v21;
-  v22 = v17;
+  v22 = textContainer;
   v35 = v22;
   v23 = v4;
   v36 = v23;
-  v37 = self;
+  selfCopy = self;
   v38 = v13;
   v39 = v9;
   v40 = v11;
-  [v18 enumerateAttribute:v20 inRange:0 options:v19 usingBlock:{0, v33}];
+  [textStorage enumerateAttribute:v20 inRange:0 options:v19 usingBlock:{0, v33}];
   if ([v23 count])
   {
     [(NSMutableSet *)self->_atomViews minusSet:v23];

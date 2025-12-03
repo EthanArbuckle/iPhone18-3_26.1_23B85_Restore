@@ -1,21 +1,21 @@
 @interface MPCScriptedSceneCollectionParser
-+ (id)_instructionsForSceneDictionaries:(id)a3;
-+ (id)sceneCollectionForMetadataItems:(id)a3;
-+ (id)sceneCollectionForScriptData:(id)a3;
++ (id)_instructionsForSceneDictionaries:(id)dictionaries;
++ (id)sceneCollectionForMetadataItems:(id)items;
++ (id)sceneCollectionForScriptData:(id)data;
 @end
 
 @implementation MPCScriptedSceneCollectionParser
 
-+ (id)_instructionsForSceneDictionaries:(id)a3
++ (id)_instructionsForSceneDictionaries:(id)dictionaries
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E695DF70] array];
+  dictionariesCopy = dictionaries;
+  array = [MEMORY[0x1E695DF70] array];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v5 = v3;
+  v5 = dictionariesCopy;
   v6 = [v5 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v6)
   {
@@ -52,7 +52,7 @@
             -[MPCScene setIterations:](v11, "setIterations:", [v14 integerValue]);
           }
 
-          [v4 addObject:v11];
+          [array addObject:v11];
         }
       }
 
@@ -62,15 +62,15 @@
     while (v7);
   }
 
-  return v4;
+  return array;
 }
 
-+ (id)sceneCollectionForScriptData:(id)a3
++ (id)sceneCollectionForScriptData:(id)data
 {
   v40 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v34 = 0;
-  v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:v4 options:0 error:&v34];
+  v5 = [MEMORY[0x1E696ACB0] JSONObjectWithData:dataCopy options:0 error:&v34];
   v6 = v34;
   if (v6)
   {
@@ -80,7 +80,7 @@
       *buf = 138543618;
       v37 = v6;
       v38 = 2114;
-      v39 = v4;
+      v39 = dataCopy;
       _os_log_impl(&dword_1C5C61000, v7, OS_LOG_TYPE_ERROR, "Error serializing JSONObject with scriptData. error=%{public}@ scriptData=%{public}@", buf, 0x16u);
     }
   }
@@ -93,12 +93,12 @@
       v9 = [v8 objectForKeyedSubscript:@"versions"];
       if (_NSIsNSArray())
       {
-        v24 = a1;
+        selfCopy = self;
         v25 = v9;
         v26 = v8;
         v27 = v6;
         v28 = v5;
-        v29 = v4;
+        v29 = dataCopy;
         v32 = 0u;
         v33 = 0u;
         v30 = 0u;
@@ -133,7 +133,7 @@
                       v19 = [v15 objectForKeyedSubscript:@"scenes"];
                       if (_NSIsNSArray())
                       {
-                        v23 = [v24 _instructionsForSceneDictionaries:v19];
+                        v23 = [selfCopy _instructionsForSceneDictionaries:v19];
                         v21 = objc_alloc_init(MPCSceneCollection);
                         [(MPCSceneCollection *)v21 setVersion:v16];
                         [v17 doubleValue];
@@ -141,7 +141,7 @@
                         [(MPCSceneCollection *)v21 setScenes:v23];
 
                         v5 = v28;
-                        v4 = v29;
+                        dataCopy = v29;
                         v20 = v26;
                         v6 = v27;
                         goto LABEL_30;
@@ -163,7 +163,7 @@
         }
 
         v5 = v28;
-        v4 = v29;
+        dataCopy = v29;
         v8 = v26;
         v6 = v27;
         v9 = v25;
@@ -185,15 +185,15 @@ LABEL_30:
   return v21;
 }
 
-+ (id)sceneCollectionForMetadataItems:(id)a3
++ (id)sceneCollectionForMetadataItems:(id)items
 {
   v26 = *MEMORY[0x1E69E9840];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v25 count:16];
+  itemsCopy = items;
+  v5 = [itemsCopy countByEnumeratingWithState:&v17 objects:v25 count:16];
   if (v5)
   {
     v6 = v5;
@@ -204,7 +204,7 @@ LABEL_30:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(itemsCopy);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
@@ -213,19 +213,19 @@ LABEL_30:
 
         if (v11)
         {
-          v12 = [v9 value];
+          value = [v9 value];
           if (_NSIsNSString())
           {
-            v15 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:v12 options:0];
-            v14 = [a1 sceneCollectionForScriptData:v15];
+            v15 = [objc_alloc(MEMORY[0x1E695DEF0]) initWithBase64EncodedString:value options:0];
+            v14 = [self sceneCollectionForScriptData:v15];
 
-            v13 = v4;
+            v13 = itemsCopy;
             goto LABEL_15;
           }
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v25 count:16];
+      v6 = [itemsCopy countByEnumeratingWithState:&v17 objects:v25 count:16];
       if (v6)
       {
         continue;
@@ -241,7 +241,7 @@ LABEL_30:
     *buf = 138543618;
     v22 = @"com.apple.music.scenes";
     v23 = 2114;
-    v24 = v4;
+    v24 = itemsCopy;
     _os_log_impl(&dword_1C5C61000, v13, OS_LOG_TYPE_ERROR, "MPCScriptedSceneCollectionParser: sceneCollectionForMetadataItems: Well-defined string script data corresponding to %{public}@ not found [returning nil] metadataItems=%{public}@", buf, 0x16u);
   }
 

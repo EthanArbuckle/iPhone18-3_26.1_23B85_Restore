@@ -1,28 +1,28 @@
 @interface CSLIconPositionsStore
 - (CSLIconPositionsStore)init;
 - (CSLIconPostionsStoreDelegate)delegate;
-- (id)_loadLocalPositionsUsingKey:(id)a3;
-- (id)_loadPositionsFromObject:(id)a3 usingKey:(id)a4;
-- (id)_loadPositionsUsingKey:(id)a3;
-- (id)archivalPositionsObjectForGraph:(id)a3;
-- (id)defaultOrderingForConfiguration:(int64_t)a3;
-- (id)loadDefaultPositionsForConfiguration:(int64_t)a3;
-- (id)loadDefaultPositionsVerticalOnly:(BOOL)a3;
+- (id)_loadLocalPositionsUsingKey:(id)key;
+- (id)_loadPositionsFromObject:(id)object usingKey:(id)key;
+- (id)_loadPositionsUsingKey:(id)key;
+- (id)archivalPositionsObjectForGraph:(id)graph;
+- (id)defaultOrderingForConfiguration:(int64_t)configuration;
+- (id)loadDefaultPositionsForConfiguration:(int64_t)configuration;
+- (id)loadDefaultPositionsVerticalOnly:(BOOL)only;
 - (id)loadDefaultVerticalOnlyPositions;
 - (id)loadLegacyDefaultPositions;
 - (id)orderedBundleIdentifiers;
 - (int64_t)deviceConfiguration;
-- (void)_saveLocalPositions:(id)a3 usingKey:(id)a4;
-- (void)_savePositions:(id)a3 usingKey:(id)a4;
+- (void)_saveLocalPositions:(id)positions usingKey:(id)key;
+- (void)_savePositions:(id)positions usingKey:(id)key;
 - (void)actionsOnInitialSyncComplete;
-- (void)archivePositionsToDiagnostics:(id)a3;
+- (void)archivePositionsToDiagnostics:(id)diagnostics;
 - (void)dealloc;
 - (void)initialSyncComplete;
-- (void)moveIconsToTopWithBundleIdentifiers:(id)a3;
+- (void)moveIconsToTopWithBundleIdentifiers:(id)identifiers;
 - (void)positionsChanged;
-- (void)resetIconPositionsToConfiguration:(int64_t)a3;
-- (void)saveTargetPositions:(id)a3;
-- (void)setDelegate:(id)a3;
+- (void)resetIconPositionsToConfiguration:(int64_t)configuration;
+- (void)saveTargetPositions:(id)positions;
+- (void)setDelegate:(id)delegate;
 @end
 
 @implementation CSLIconPositionsStore
@@ -54,9 +54,9 @@
   return v2;
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
-  obj = a3;
+  obj = delegate;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
 
   if (WeakRetained != obj)
@@ -91,13 +91,13 @@
 
 - (void)actionsOnInitialSyncComplete
 {
-  v3 = [(CSLIconPositionsStore *)self delegate];
-  [v3 store:self initialSyncComplete:1];
+  delegate = [(CSLIconPositionsStore *)self delegate];
+  [delegate store:self initialSyncComplete:1];
 }
 
-- (id)loadDefaultPositionsVerticalOnly:(BOOL)a3
+- (id)loadDefaultPositionsVerticalOnly:(BOOL)only
 {
-  if (a3)
+  if (only)
   {
     [(CSLIconPositionsStore *)self loadDefaultVerticalOnlyPositions];
   }
@@ -111,17 +111,17 @@
   return v3;
 }
 
-- (id)defaultOrderingForConfiguration:(int64_t)a3
+- (id)defaultOrderingForConfiguration:(int64_t)configuration
 {
-  if (a3 > 3)
+  if (configuration > 3)
   {
-    if (a3 > 5)
+    if (configuration > 5)
     {
-      if (a3 != 6)
+      if (configuration != 6)
       {
-        if (a3 != 7)
+        if (configuration != 7)
         {
-          if (a3 != 8)
+          if (configuration != 8)
           {
             goto LABEL_23;
           }
@@ -283,7 +283,7 @@
       goto LABEL_22;
     }
 
-    if (a3 != 4)
+    if (configuration != 4)
     {
       v9[0] = kNanoPhoneBundleIdentifier;
       v9[1] = kMailBundleIdentifier;
@@ -385,11 +385,11 @@ LABEL_19:
     goto LABEL_22;
   }
 
-  if (a3 <= 1)
+  if (configuration <= 1)
   {
-    if (a3)
+    if (configuration)
     {
-      if (a3 != 1)
+      if (configuration != 1)
       {
         goto LABEL_23;
       }
@@ -502,7 +502,7 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  if (a3 != 2)
+  if (configuration != 2)
   {
     v11[0] = kNanoPhoneBundleIdentifier;
     v11[1] = kMailBundleIdentifier;
@@ -612,12 +612,12 @@ LABEL_23:
 {
   v2 = +[PDRRegistry sharedInstance];
   v3 = [v2 getDevicesExcluding:5];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  v5 = [v4 supportsCapability:3847477697];
+  v5 = [firstObject supportsCapability:3847477697];
   IsTinker = CSLPairingIsTinker();
-  v7 = [v4 supportsCapability:3174712129];
-  if (([v4 supportsCapability:3847477697] & 1) != 0 || objc_msgSend(v4, "supportsCapability:", 2878292065))
+  v7 = [firstObject supportsCapability:3174712129];
+  if (([firstObject supportsCapability:3847477697] & 1) != 0 || objc_msgSend(firstObject, "supportsCapability:", 2878292065))
   {
     if ((v5 & 1) == 0)
     {
@@ -683,14 +683,14 @@ LABEL_14:
 
 - (id)loadDefaultVerticalOnlyPositions
 {
-  v3 = [(CSLIconPositionsStore *)self deviceConfiguration];
+  deviceConfiguration = [(CSLIconPositionsStore *)self deviceConfiguration];
 
-  return [(CSLIconPositionsStore *)self loadDefaultPositionsForConfiguration:v3];
+  return [(CSLIconPositionsStore *)self loadDefaultPositionsForConfiguration:deviceConfiguration];
 }
 
-- (id)loadDefaultPositionsForConfiguration:(int64_t)a3
+- (id)loadDefaultPositionsForConfiguration:(int64_t)configuration
 {
-  v3 = [(CSLIconPositionsStore *)self defaultOrderingForConfiguration:a3];
+  v3 = [(CSLIconPositionsStore *)self defaultOrderingForConfiguration:configuration];
   v4 = [[CSLHexAppGraph alloc] initVerticalOnly:1];
   v13 = 0u;
   v14 = 0u;
@@ -729,43 +729,43 @@ LABEL_14:
 {
   v2 = +[PDRRegistry sharedInstance];
   v3 = [v2 getDevicesExcluding:5];
-  v4 = [v3 firstObject];
+  firstObject = [v3 firstObject];
 
-  LODWORD(v2) = [v4 supportsCapability:3847477697];
-  v5 = [v4 isAltAccount];
+  LODWORD(v2) = [firstObject supportsCapability:3847477697];
+  isAltAccount = [firstObject isAltAccount];
   if (v2)
   {
     v6 = @"DefaultIconPositions-N199";
     v7 = @"DefaultIconPositions-Tinker-N199";
   }
 
-  else if (v5)
+  else if (isAltAccount)
   {
-    v5 = [v4 supportsCapability:2876656872];
+    isAltAccount = [firstObject supportsCapability:2876656872];
     v6 = @"DefaultIconPositions-TinkerNoCompass";
     v7 = @"DefaultIconPositions-Tinker";
   }
 
   else
   {
-    if ([v4 supportsCapability:3174712129])
+    if ([firstObject supportsCapability:3174712129])
     {
       v8 = @"DefaultIconPositions-OxygenSaturation";
       goto LABEL_8;
     }
 
-    if ([v4 supportsCapability:2876656872])
+    if ([firstObject supportsCapability:2876656872])
     {
       v8 = @"DefaultIconPositions-Compass";
       goto LABEL_8;
     }
 
-    v5 = [v4 supportsCapability:1756047751];
+    isAltAccount = [firstObject supportsCapability:1756047751];
     v6 = @"DefaultIconPositions";
     v7 = @"DefaultIconPositions-EKG";
   }
 
-  if (v5)
+  if (isAltAccount)
   {
     v8 = v7;
   }
@@ -883,9 +883,9 @@ LABEL_36:
   return v18;
 }
 
-- (void)saveTargetPositions:(id)a3
+- (void)saveTargetPositions:(id)positions
 {
-  v4 = a3;
+  positionsCopy = positions;
   v5 = cslprf_icon_field_log();
   if (os_variant_has_internal_diagnostics())
   {
@@ -900,7 +900,7 @@ LABEL_36:
   if (os_log_type_enabled(v5, v6))
   {
     v7 = "saving";
-    if (!v4)
+    if (!positionsCopy)
     {
       v7 = "clearing";
     }
@@ -910,66 +910,66 @@ LABEL_36:
     _os_log_impl(&dword_0, v5, v6, "%s target icon positions", &v8, 0xCu);
   }
 
-  [(CSLIconPositionsStore *)self _saveLocalPositions:v4 usingKey:@"TargetIconPositions"];
+  [(CSLIconPositionsStore *)self _saveLocalPositions:positionsCopy usingKey:@"TargetIconPositions"];
 }
 
-- (void)resetIconPositionsToConfiguration:(int64_t)a3
+- (void)resetIconPositionsToConfiguration:(int64_t)configuration
 {
-  v5 = [(CSLIconPositionsStore *)self loadDefaultPositionsForConfiguration:a3];
+  v5 = [(CSLIconPositionsStore *)self loadDefaultPositionsForConfiguration:configuration];
   [(CSLIconPositionsStore *)self saveTargetPositions:0];
   [(CSLIconPositionsStore *)self savePositions:v5];
-  v4 = [(CSLIconPositionsStore *)self delegate];
-  [v4 store:self updatedIconGraph:v5];
+  delegate = [(CSLIconPositionsStore *)self delegate];
+  [delegate store:self updatedIconGraph:v5];
 }
 
-- (void)moveIconsToTopWithBundleIdentifiers:(id)a3
+- (void)moveIconsToTopWithBundleIdentifiers:(id)identifiers
 {
-  v8 = a3;
-  v4 = [(CSLIconPositionsStore *)self loadPositions];
-  v5 = [NSOrderedSet orderedSetWithArray:v8];
-  v6 = [v5 array];
+  identifiersCopy = identifiers;
+  loadPositions = [(CSLIconPositionsStore *)self loadPositions];
+  v5 = [NSOrderedSet orderedSetWithArray:identifiersCopy];
+  array = [v5 array];
 
-  [v4 moveNodesToTopWithBundleIdentifiers:v6 forReason:2];
+  [loadPositions moveNodesToTopWithBundleIdentifiers:array forReason:2];
   [(CSLIconPositionsStore *)self saveTargetPositions:0];
-  [(CSLIconPositionsStore *)self savePositions:v4];
-  v7 = [(CSLIconPositionsStore *)self delegate];
-  [v7 store:self updatedIconGraph:v4];
+  [(CSLIconPositionsStore *)self savePositions:loadPositions];
+  delegate = [(CSLIconPositionsStore *)self delegate];
+  [delegate store:self updatedIconGraph:loadPositions];
 }
 
 - (id)orderedBundleIdentifiers
 {
-  v2 = [(CSLIconPositionsStore *)self loadPositions];
-  v3 = [v2 allNodes];
-  v4 = [v3 sortedArrayUsingComparator:&stru_38CF8];
+  loadPositions = [(CSLIconPositionsStore *)self loadPositions];
+  allNodes = [loadPositions allNodes];
+  v4 = [allNodes sortedArrayUsingComparator:&stru_38CF8];
   v5 = [v4 bs_map:&stru_38D38];
 
   return v5;
 }
 
-- (id)_loadPositionsUsingKey:(id)a3
+- (id)_loadPositionsUsingKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.Carousel"];
-  v6 = [v5 synchronize];
-  v7 = [(CSLIconPositionsStore *)self _loadPositionsFromObject:v5 usingKey:v4];
+  synchronize = [v5 synchronize];
+  v7 = [(CSLIconPositionsStore *)self _loadPositionsFromObject:v5 usingKey:keyCopy];
 
   return v7;
 }
 
-- (id)_loadLocalPositionsUsingKey:(id)a3
+- (id)_loadLocalPositionsUsingKey:(id)key
 {
-  v4 = a3;
+  keyCopy = key;
   v5 = +[NSUserDefaults standardUserDefaults];
-  v6 = [(CSLIconPositionsStore *)self _loadPositionsFromObject:v5 usingKey:v4];
+  v6 = [(CSLIconPositionsStore *)self _loadPositionsFromObject:v5 usingKey:keyCopy];
 
   return v6;
 }
 
-- (id)_loadPositionsFromObject:(id)a3 usingKey:(id)a4
+- (id)_loadPositionsFromObject:(id)object usingKey:(id)key
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 dictionaryForKey:v6];
+  objectCopy = object;
+  keyCopy = key;
+  v7 = [objectCopy dictionaryForKey:keyCopy];
   if (!v7)
   {
     goto LABEL_8;
@@ -985,7 +985,7 @@ LABEL_36:
     }
 
 LABEL_8:
-    v9 = [v5 dataForKey:v6];
+    v9 = [objectCopy dataForKey:keyCopy];
     if (v9)
     {
       v15 = 0;
@@ -1017,11 +1017,11 @@ LABEL_19:
       v12 = cslprf_icon_field_log();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
       {
-        v13 = [v8 abbreviatedDescription];
+        abbreviatedDescription = [v8 abbreviatedDescription];
         *buf = 138412546;
-        v17 = v6;
+        v17 = keyCopy;
         v18 = 2114;
-        v19 = v13;
+        v19 = abbreviatedDescription;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "Successfully loaded local icon position data (%@): %{public}@", buf, 0x16u);
       }
     }
@@ -1032,7 +1032,7 @@ LABEL_19:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v17 = v6;
+        v17 = keyCopy;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_INFO, "Successfully loaded local icon position data (%@)", buf, 0xCu);
       }
     }
@@ -1044,7 +1044,7 @@ LABEL_19:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v17 = v6;
+    v17 = keyCopy;
     _os_log_impl(&dword_0, v9, OS_LOG_TYPE_INFO, "Successfully loaded icon positions from dictionary with key:(%@)", buf, 0xCu);
   }
 
@@ -1053,51 +1053,51 @@ LABEL_20:
   return v8;
 }
 
-- (void)_savePositions:(id)a3 usingKey:(id)a4
+- (void)_savePositions:(id)positions usingKey:(id)key
 {
-  v11 = a4;
-  v6 = [(CSLIconPositionsStore *)self archivalPositionsObjectForGraph:a3];
+  keyCopy = key;
+  v6 = [(CSLIconPositionsStore *)self archivalPositionsObjectForGraph:positions];
   v7 = [[NPSDomainAccessor alloc] initWithDomain:@"com.apple.Carousel"];
   v8 = v7;
   if (v6)
   {
-    [v7 setObject:v6 forKey:v11];
+    [v7 setObject:v6 forKey:keyCopy];
   }
 
   else
   {
-    [v7 removeObjectForKey:v11];
+    [v7 removeObjectForKey:keyCopy];
   }
 
-  v9 = [v8 synchronize];
-  v10 = [NSSet setWithObject:v11];
+  synchronize = [v8 synchronize];
+  v10 = [NSSet setWithObject:keyCopy];
   [(NPSManager *)self->_syncManager synchronizeNanoDomain:@"com.apple.Carousel" keys:v10];
 }
 
-- (void)_saveLocalPositions:(id)a3 usingKey:(id)a4
+- (void)_saveLocalPositions:(id)positions usingKey:(id)key
 {
-  v9 = a4;
-  v6 = [(CSLIconPositionsStore *)self archivalPositionsObjectForGraph:a3];
+  keyCopy = key;
+  v6 = [(CSLIconPositionsStore *)self archivalPositionsObjectForGraph:positions];
   v7 = +[NSUserDefaults standardUserDefaults];
   v8 = v7;
   if (v6)
   {
-    [v7 setObject:v6 forKey:v9];
+    [v7 setObject:v6 forKey:keyCopy];
   }
 
   else
   {
-    [v7 removeObjectForKey:v9];
+    [v7 removeObjectForKey:keyCopy];
   }
 }
 
-- (id)archivalPositionsObjectForGraph:(id)a3
+- (id)archivalPositionsObjectForGraph:(id)graph
 {
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  graphCopy = graph;
+  v4 = graphCopy;
+  if (graphCopy)
   {
-    if ([v3 hasDictionaryRepresentation])
+    if ([graphCopy hasDictionaryRepresentation])
     {
       [v4 archiveToDictionaryRepresentation];
     }
@@ -1119,24 +1119,24 @@ LABEL_20:
 
 - (void)positionsChanged
 {
-  v3 = [(CSLIconPositionsStore *)self loadPositions];
+  loadPositions = [(CSLIconPositionsStore *)self loadPositions];
   v4 = cslprf_icon_field_log();
   has_internal_diagnostics = os_variant_has_internal_diagnostics();
   if (os_log_type_enabled(v4, (has_internal_diagnostics ^ 1)))
   {
-    v6 = [v3 abbreviatedDescription];
+    abbreviatedDescription = [loadPositions abbreviatedDescription];
     v8 = 138543362;
-    v9 = v6;
+    v9 = abbreviatedDescription;
     _os_log_impl(&dword_0, v4, (has_internal_diagnostics ^ 1), "icon positions changed: %{public}@", &v8, 0xCu);
   }
 
-  v7 = [(CSLIconPositionsStore *)self delegate];
-  [v7 store:self updatedIconGraph:v3];
+  delegate = [(CSLIconPositionsStore *)self delegate];
+  [delegate store:self updatedIconGraph:loadPositions];
 }
 
-- (void)archivePositionsToDiagnostics:(id)a3
+- (void)archivePositionsToDiagnostics:(id)diagnostics
 {
-  v3 = a3;
+  diagnosticsCopy = diagnostics;
   if (os_variant_has_internal_diagnostics())
   {
     v4 = [[NSUserDefaults alloc] initWithSuiteName:@"com.apple.Carousel.internal"];
@@ -1144,21 +1144,21 @@ LABEL_20:
 
     if (v5)
     {
-      v6 = [v3 archiveToPropertyList];
-      if (v6)
+      archiveToPropertyList = [diagnosticsCopy archiveToPropertyList];
+      if (archiveToPropertyList)
       {
         v30 = 0;
-        v7 = [NSPropertyListSerialization dataWithPropertyList:v6 format:100 options:0 error:&v30];
+        v7 = [NSPropertyListSerialization dataWithPropertyList:archiveToPropertyList format:100 options:0 error:&v30];
         v8 = v30;
         if (v7)
         {
           v9 = CSLDiagnosticFileURLWithFilename(@"DefaultIconPositions.plist");
-          v10 = [v9 path];
+          path = [v9 path];
           v11 = +[NSFileManager defaultManager];
-          if ([v11 fileExistsAtPath:v10])
+          if ([v11 fileExistsAtPath:path])
           {
             v29 = v8;
-            v12 = [v11 attributesOfItemAtPath:v10 error:&v29];
+            v12 = [v11 attributesOfItemAtPath:path error:&v29];
             v13 = v29;
 
             if (v13)
@@ -1194,10 +1194,10 @@ LABEL_20:
                   v19 = cslprf_icon_field_log();
                   if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
                   {
-                    v20 = [v26 path];
+                    path2 = [v26 path];
                     *buf = 138412290;
-                    v32 = v20;
-                    v24 = v20;
+                    v32 = path2;
+                    v24 = path2;
                     _os_log_impl(&dword_0, v19, OS_LOG_TYPE_DEFAULT, "renamed old icon positions to: %@", buf, 0xCu);
                   }
                 }
@@ -1225,9 +1225,9 @@ LABEL_20:
             v22 = cslprf_icon_field_log();
             if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
             {
-              v23 = [v9 path];
+              path3 = [v9 path];
               *buf = 138412290;
-              v32 = v23;
+              v32 = path3;
               _os_log_impl(&dword_0, v22, OS_LOG_TYPE_DEFAULT, "wrote icon poitions to file:%@", buf, 0xCu);
             }
           }

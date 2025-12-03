@@ -1,19 +1,19 @@
 @interface PSBundleController
-- (PSBundleController)initWithParentListController:(id)a3;
+- (PSBundleController)initWithParentListController:(id)controller;
 @end
 
 @implementation PSBundleController
 
-- (PSBundleController)initWithParentListController:(id)a3
+- (PSBundleController)initWithParentListController:(id)controller
 {
-  v4 = a3;
+  controllerCopy = controller;
   v8.receiver = self;
   v8.super_class = PSBundleController;
   v5 = [(PSBundleController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_parent, v4);
+    objc_storeWeak(&v5->_parent, controllerCopy);
   }
 
   return v6;

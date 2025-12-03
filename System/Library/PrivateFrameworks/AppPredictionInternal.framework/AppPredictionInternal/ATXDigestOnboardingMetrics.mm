@@ -8,46 +8,46 @@
 {
   v27[10] = *MEMORY[0x277D85DE8];
   v26[0] = @"sessionUUID";
-  v3 = [(ATXDigestOnboardingMetrics *)self sessionUUID];
-  v4 = v3;
-  if (!v3)
+  sessionUUID = [(ATXDigestOnboardingMetrics *)self sessionUUID];
+  v4 = sessionUUID;
+  if (!sessionUUID)
   {
-    v3 = [MEMORY[0x277CBEB68] null];
+    sessionUUID = [MEMORY[0x277CBEB68] null];
   }
 
-  v24 = v3;
-  v27[0] = v3;
+  v24 = sessionUUID;
+  v27[0] = sessionUUID;
   v26[1] = @"entrySource";
-  v5 = [(ATXDigestOnboardingMetrics *)self entrySource];
-  v6 = v5;
-  if (!v5)
+  entrySource = [(ATXDigestOnboardingMetrics *)self entrySource];
+  v6 = entrySource;
+  if (!entrySource)
   {
-    v5 = [MEMORY[0x277CBEB68] null];
+    entrySource = [MEMORY[0x277CBEB68] null];
   }
 
-  v23 = v5;
-  v27[1] = v5;
+  v23 = entrySource;
+  v27[1] = entrySource;
   v26[2] = @"digestOnboardingOutcome";
-  v7 = [(ATXDigestOnboardingMetrics *)self digestOnboardingOutcome];
-  v8 = v7;
-  if (!v7)
+  digestOnboardingOutcome = [(ATXDigestOnboardingMetrics *)self digestOnboardingOutcome];
+  v8 = digestOnboardingOutcome;
+  if (!digestOnboardingOutcome)
   {
-    v7 = [MEMORY[0x277CBEB68] null];
+    digestOnboardingOutcome = [MEMORY[0x277CBEB68] null];
   }
 
   v25 = v4;
-  v22 = v7;
-  v27[2] = v7;
+  v22 = digestOnboardingOutcome;
+  v27[2] = digestOnboardingOutcome;
   v26[3] = @"finalUIShown";
-  v9 = [(ATXDigestOnboardingMetrics *)self finalUIShown];
-  v10 = v9;
-  if (!v9)
+  finalUIShown = [(ATXDigestOnboardingMetrics *)self finalUIShown];
+  v10 = finalUIShown;
+  if (!finalUIShown)
   {
-    v9 = [MEMORY[0x277CBEB68] null];
+    finalUIShown = [MEMORY[0x277CBEB68] null];
   }
 
-  v21 = v9;
-  v27[3] = v9;
+  v21 = finalUIShown;
+  v27[3] = finalUIShown;
   v26[4] = @"didSelectShowMore";
   v11 = [MEMORY[0x277CCABB0] numberWithBool:{-[ATXDigestOnboardingMetrics didSelectShowMore](self, "didSelectShowMore")}];
   v27[4] = v11;

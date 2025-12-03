@@ -1,84 +1,84 @@
 @interface BDSReadingHistoryDayInfo
-- (BDSReadingHistoryDayInfo)initWithCoder:(id)a3;
-- (BDSReadingHistoryDayInfo)initWithReadingTime:(int64_t)a3 goal:(int64_t)a4 isStreakDay:(BOOL)a5;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (BDSReadingHistoryDayInfo)initWithCoder:(id)coder;
+- (BDSReadingHistoryDayInfo)initWithReadingTime:(int64_t)time goal:(int64_t)goal isStreakDay:(BOOL)day;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation BDSReadingHistoryDayInfo
 
-- (BDSReadingHistoryDayInfo)initWithReadingTime:(int64_t)a3 goal:(int64_t)a4 isStreakDay:(BOOL)a5
+- (BDSReadingHistoryDayInfo)initWithReadingTime:(int64_t)time goal:(int64_t)goal isStreakDay:(BOOL)day
 {
   v9.receiver = self;
   v9.super_class = BDSReadingHistoryDayInfo;
   result = [(BDSReadingHistoryDayInfo *)&v9 init];
   if (result)
   {
-    result->_readingTime = a3;
-    result->_goal = a4;
-    result->_isStreakDay = a5;
+    result->_readingTime = time;
+    result->_goal = goal;
+    result->_isStreakDay = day;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
-    LOBYTE(v5) = 1;
+    LOBYTE(equalCopy) = 1;
   }
 
   else
   {
-    v5 = a3;
+    equalCopy = equal;
     objc_opt_class();
     v4 = BUDynamicCast();
 
-    LOBYTE(v5) = 0;
+    LOBYTE(equalCopy) = 0;
     if (self && v4)
     {
-      v6 = [(BDSReadingHistoryDayInfo *)self readingTime];
-      if (v6 == [v4 readingTime] && (v7 = -[BDSReadingHistoryDayInfo goal](self, "goal"), v7 == objc_msgSend(v4, "goal")))
+      readingTime = [(BDSReadingHistoryDayInfo *)self readingTime];
+      if (readingTime == [v4 readingTime] && (v7 = -[BDSReadingHistoryDayInfo goal](self, "goal"), v7 == objc_msgSend(v4, "goal")))
       {
-        v8 = [(BDSReadingHistoryDayInfo *)self isStreakDay];
-        LODWORD(v5) = v8 ^ [v4 isStreakDay] ^ 1;
+        isStreakDay = [(BDSReadingHistoryDayInfo *)self isStreakDay];
+        LODWORD(equalCopy) = isStreakDay ^ [v4 isStreakDay] ^ 1;
       }
 
       else
       {
-        LOBYTE(v5) = 0;
+        LOBYTE(equalCopy) = 0;
       }
     }
   }
 
-  return v5;
+  return equalCopy;
 }
 
-- (BDSReadingHistoryDayInfo)initWithCoder:(id)a3
+- (BDSReadingHistoryDayInfo)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(BDSReadingHistoryDayInfo *)self init];
   if (v5)
   {
-    v5->_readingTime = [v4 decodeIntegerForKey:@"readingTime"];
-    v5->_goal = [v4 decodeIntegerForKey:@"goal"];
-    v5->_isStreakDay = [v4 decodeBoolForKey:@"isStreakDay"];
+    v5->_readingTime = [coderCopy decodeIntegerForKey:@"readingTime"];
+    v5->_goal = [coderCopy decodeIntegerForKey:@"goal"];
+    v5->_isStreakDay = [coderCopy decodeBoolForKey:@"isStreakDay"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[BDSReadingHistoryDayInfo readingTime](self forKey:{"readingTime"), @"readingTime"}];
-  [v4 encodeInteger:-[BDSReadingHistoryDayInfo goal](self forKey:{"goal"), @"goal"}];
-  [v4 encodeBool:-[BDSReadingHistoryDayInfo isStreakDay](self forKey:{"isStreakDay"), @"isStreakDay"}];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[BDSReadingHistoryDayInfo readingTime](self forKey:{"readingTime"), @"readingTime"}];
+  [coderCopy encodeInteger:-[BDSReadingHistoryDayInfo goal](self forKey:{"goal"), @"goal"}];
+  [coderCopy encodeBool:-[BDSReadingHistoryDayInfo isStreakDay](self forKey:{"isStreakDay"), @"isStreakDay"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(BDSReadingHistoryDayInfo);
   if (v4)

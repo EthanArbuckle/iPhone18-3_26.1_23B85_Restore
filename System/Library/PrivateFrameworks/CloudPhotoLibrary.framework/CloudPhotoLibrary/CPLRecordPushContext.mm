@@ -1,110 +1,110 @@
 @interface CPLRecordPushContext
 + (id)newEmptyPushContext;
-+ (id)newPushContextForChange:(id)a3 overStoredRecord:(id)a4 initialUpload:(BOOL)a5;
-+ (id)pushContextsFromStoredUploadIdentifiers:(id)a3;
-+ (id)pushContextsFromStoredUploadIdentifiersInCoder:(id)a3 key:(id)a4;
-+ (int64_t)mergingFlags:(int64_t)a3 previousFlags:(int64_t)a4 changeType:(unint64_t)a5;
++ (id)newPushContextForChange:(id)change overStoredRecord:(id)record initialUpload:(BOOL)upload;
++ (id)pushContextsFromStoredUploadIdentifiers:(id)identifiers;
++ (id)pushContextsFromStoredUploadIdentifiersInCoder:(id)coder key:(id)key;
++ (int64_t)mergingFlags:(int64_t)flags previousFlags:(int64_t)previousFlags changeType:(unint64_t)type;
 + (unint64_t)minimumPriorityForLocalConflictResolution;
-- (CPLRecordPushContext)initWithCoder:(id)a3;
-- (CPLRecordPushContext)initWithUploadIdentifier:(id)a3 flags:(int64_t)a4 priority:(unint64_t)a5;
-- (id)copyContextWithPriority:(unint64_t)a3;
-- (id)copyContextWithUploadIdentifier:(id)a3;
+- (CPLRecordPushContext)initWithCoder:(id)coder;
+- (CPLRecordPushContext)initWithUploadIdentifier:(id)identifier flags:(int64_t)flags priority:(unint64_t)priority;
+- (id)copyContextWithPriority:(unint64_t)priority;
+- (id)copyContextWithUploadIdentifier:(id)identifier;
 - (id)pushContextAddingUploadIdentifier;
-- (id)pushContextMergingFlags:(int64_t)a3 changeType:(unint64_t)a4 uploadIdentifier:(id)a5 priority:(unint64_t)a6;
-- (void)encodeWithCoder:(id)a3;
+- (id)pushContextMergingFlags:(int64_t)flags changeType:(unint64_t)type uploadIdentifier:(id)identifier priority:(unint64_t)priority;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CPLRecordPushContext
 
-- (id)pushContextMergingFlags:(int64_t)a3 changeType:(unint64_t)a4 uploadIdentifier:(id)a5 priority:(unint64_t)a6
+- (id)pushContextMergingFlags:(int64_t)flags changeType:(unint64_t)type uploadIdentifier:(id)identifier priority:(unint64_t)priority
 {
-  v10 = a5;
-  v11 = [CPLRecordPushContext mergingFlags:self->_flags previousFlags:a3 changeType:a4];
+  identifierCopy = identifier;
+  v11 = [CPLRecordPushContext mergingFlags:self->_flags previousFlags:flags changeType:type];
   if (v11 != self->_flags)
   {
     goto LABEL_5;
   }
 
   uploadIdentifier = self->_uploadIdentifier;
-  if (v10 && uploadIdentifier)
+  if (identifierCopy && uploadIdentifier)
   {
-    if (([v10 isEqual:?] & 1) == 0)
+    if (([identifierCopy isEqual:?] & 1) == 0)
     {
 LABEL_5:
-      v13 = [[CPLRecordPushContext alloc] initWithUploadIdentifier:v10 flags:v11 priority:a6];
+      selfCopy = [[CPLRecordPushContext alloc] initWithUploadIdentifier:identifierCopy flags:v11 priority:priority];
       goto LABEL_8;
     }
   }
 
-  else if (v10 | uploadIdentifier)
+  else if (identifierCopy | uploadIdentifier)
   {
     goto LABEL_5;
   }
 
-  v13 = self;
+  selfCopy = self;
 LABEL_8:
-  v14 = v13;
+  v14 = selfCopy;
 
   return v14;
 }
 
 - (id)pushContextAddingUploadIdentifier
 {
-  v3 = [MEMORY[0x1E696AFB0] UUID];
-  v4 = [v3 UUIDString];
-  v5 = [(CPLRecordPushContext *)self copyContextWithUploadIdentifier:v4];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  v5 = [(CPLRecordPushContext *)self copyContextWithUploadIdentifier:uUIDString];
 
   return v5;
 }
 
-- (id)copyContextWithPriority:(unint64_t)a3
+- (id)copyContextWithPriority:(unint64_t)priority
 {
   v5 = [CPLRecordPushContext alloc];
   uploadIdentifier = self->_uploadIdentifier;
   flags = self->_flags;
 
-  return [(CPLRecordPushContext *)v5 initWithUploadIdentifier:uploadIdentifier flags:flags priority:a3];
+  return [(CPLRecordPushContext *)v5 initWithUploadIdentifier:uploadIdentifier flags:flags priority:priority];
 }
 
-- (id)copyContextWithUploadIdentifier:(id)a3
+- (id)copyContextWithUploadIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [[CPLRecordPushContext alloc] initWithUploadIdentifier:v4 flags:self->_flags priority:self->_priority];
+  identifierCopy = identifier;
+  v5 = [[CPLRecordPushContext alloc] initWithUploadIdentifier:identifierCopy flags:self->_flags priority:self->_priority];
 
   return v5;
 }
 
-- (CPLRecordPushContext)initWithUploadIdentifier:(id)a3 flags:(int64_t)a4 priority:(unint64_t)a5
+- (CPLRecordPushContext)initWithUploadIdentifier:(id)identifier flags:(int64_t)flags priority:(unint64_t)priority
 {
-  v8 = a3;
+  identifierCopy = identifier;
   v13.receiver = self;
   v13.super_class = CPLRecordPushContext;
   v9 = [(CPLRecordPushContext *)&v13 init];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [identifierCopy copy];
     uploadIdentifier = v9->_uploadIdentifier;
     v9->_uploadIdentifier = v10;
 
-    v9->_flags = a4;
-    v9->_priority = a5;
+    v9->_flags = flags;
+    v9->_priority = priority;
   }
 
   return v9;
 }
 
-- (CPLRecordPushContext)initWithCoder:(id)a3
+- (CPLRecordPushContext)initWithCoder:(id)coder
 {
   v4 = initWithCoder__onceToken_5341;
-  v5 = a3;
+  coderCopy = coder;
   if (v4 != -1)
   {
     dispatch_once(&initWithCoder__onceToken_5341, &__block_literal_global_5342);
   }
 
-  v6 = [v5 decodeObjectOfClass:initWithCoder___NSStringClass forKey:@"u"];
-  v7 = [v5 decodeIntegerForKey:@"f"];
-  v8 = [v5 decodeIntegerForKey:@"p"];
+  v6 = [coderCopy decodeObjectOfClass:initWithCoder___NSStringClass forKey:@"u"];
+  v7 = [coderCopy decodeIntegerForKey:@"f"];
+  v8 = [coderCopy decodeIntegerForKey:@"p"];
 
   v9 = [(CPLRecordPushContext *)self initWithUploadIdentifier:v6 flags:v7 priority:v8];
   return v9;
@@ -117,84 +117,84 @@ uint64_t __38__CPLRecordPushContext_initWithCoder___block_invoke()
   return result;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   uploadIdentifier = self->_uploadIdentifier;
-  v5 = a3;
-  [v5 encodeObject:uploadIdentifier forKey:@"u"];
-  [v5 encodeInteger:self->_flags forKey:@"f"];
+  coderCopy = coder;
+  [coderCopy encodeObject:uploadIdentifier forKey:@"u"];
+  [coderCopy encodeInteger:self->_flags forKey:@"f"];
 }
 
 + (unint64_t)minimumPriorityForLocalConflictResolution
 {
-  v2 = overriddenMinimumPriorityForLocalConflictResolution;
+  unsignedIntegerValue = overriddenMinimumPriorityForLocalConflictResolution;
   if (overriddenMinimumPriorityForLocalConflictResolution == -1)
   {
-    v3 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v4 = [v3 objectForKey:@"CPLMinimumPriorityForLocalConflictResolution"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v4 = [standardUserDefaults objectForKey:@"CPLMinimumPriorityForLocalConflictResolution"];
 
     if (v4)
     {
-      v2 = [v4 unsignedIntegerValue];
+      unsignedIntegerValue = [v4 unsignedIntegerValue];
     }
 
     else
     {
-      v2 = 1000;
+      unsignedIntegerValue = 1000;
     }
   }
 
-  return v2;
+  return unsignedIntegerValue;
 }
 
-+ (int64_t)mergingFlags:(int64_t)a3 previousFlags:(int64_t)a4 changeType:(unint64_t)a5
++ (int64_t)mergingFlags:(int64_t)flags previousFlags:(int64_t)previousFlags changeType:(unint64_t)type
 {
-  result = a3;
-  if (a5 != 1024 && (!a5 || (a5 & 0x40) != 0))
+  result = flags;
+  if (type != 1024 && (!type || (type & 0x40) != 0))
   {
-    v6 = a4 & 3 | a3;
-    v7 = a3 & 0xFFFFFFFFFFFFFFFCLL;
-    if ((a4 & 1) == 0)
+    v6 = previousFlags & 3 | flags;
+    flagsCopy = flags & 0xFFFFFFFFFFFFFFFCLL;
+    if ((previousFlags & 1) == 0)
     {
-      v7 = a3;
+      flagsCopy = flags;
     }
 
-    if ((a3 & 2) != 0)
+    if ((flags & 2) != 0)
     {
-      v6 = v7;
+      v6 = flagsCopy;
     }
 
-    v8 = a3 & 0xFFFFFFFFFFFFFFFELL;
-    if ((a4 & 2) == 0)
+    flagsCopy2 = flags & 0xFFFFFFFFFFFFFFFELL;
+    if ((previousFlags & 2) == 0)
     {
-      v8 = a3;
+      flagsCopy2 = flags;
     }
 
-    if (a3)
+    if (flags)
     {
-      v6 = v8;
+      v6 = flagsCopy2;
     }
 
-    return v6 | a4 & 4;
+    return v6 | previousFlags & 4;
   }
 
   return result;
 }
 
-+ (id)newPushContextForChange:(id)a3 overStoredRecord:(id)a4 initialUpload:(BOOL)a5
++ (id)newPushContextForChange:(id)change overStoredRecord:(id)record initialUpload:(BOOL)upload
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isAssetChange] && objc_msgSend(v6, "hasChangeType:", 64))
+  changeCopy = change;
+  recordCopy = record;
+  if ([changeCopy isAssetChange] && objc_msgSend(changeCopy, "hasChangeType:", 64))
   {
-    v8 = [v6 sharingScopeIdentifier];
-    if (v7)
+    sharingScopeIdentifier = [changeCopy sharingScopeIdentifier];
+    if (recordCopy)
     {
-      v9 = [v7 sharingScopeIdentifier];
-      v10 = v9;
-      if (v8)
+      sharingScopeIdentifier2 = [recordCopy sharingScopeIdentifier];
+      v10 = sharingScopeIdentifier2;
+      if (sharingScopeIdentifier)
       {
-        if (v9 && ([v8 isEqual:v9] & 1) != 0)
+        if (sharingScopeIdentifier2 && ([sharingScopeIdentifier isEqual:sharingScopeIdentifier2] & 1) != 0)
         {
 
           v11 = 0;
@@ -209,7 +209,7 @@ uint64_t __38__CPLRecordPushContext_initWithCoder___block_invoke()
 
       else
       {
-        v14 = v9 != 0;
+        v14 = sharingScopeIdentifier2 != 0;
 
         v11 = 2 * v14;
       }
@@ -217,13 +217,13 @@ uint64_t __38__CPLRecordPushContext_initWithCoder___block_invoke()
 
     else
     {
-      v13 = [v6 sharingScopeIdentifier];
+      sharingScopeIdentifier3 = [changeCopy sharingScopeIdentifier];
 
-      v11 = v13 != 0;
+      v11 = sharingScopeIdentifier3 != 0;
     }
 
-    v15 = [v6 updateSharingContributorUserIdentifiers];
-    v16 = [v15 count];
+    updateSharingContributorUserIdentifiers = [changeCopy updateSharingContributorUserIdentifiers];
+    v16 = [updateSharingContributorUserIdentifiers count];
 
     if (v16)
     {
@@ -246,17 +246,17 @@ uint64_t __38__CPLRecordPushContext_initWithCoder___block_invoke()
   return v17;
 }
 
-+ (id)pushContextsFromStoredUploadIdentifiersInCoder:(id)a3 key:(id)a4
++ (id)pushContextsFromStoredUploadIdentifiersInCoder:(id)coder key:(id)key
 {
   v5 = pushContextsFromStoredUploadIdentifiersInCoder_key__onceToken;
-  v6 = a4;
-  v7 = a3;
+  keyCopy = key;
+  coderCopy = coder;
   if (v5 != -1)
   {
     dispatch_once(&pushContextsFromStoredUploadIdentifiersInCoder_key__onceToken, &__block_literal_global_14);
   }
 
-  v8 = [v7 decodeObjectOfClasses:pushContextsFromStoredUploadIdentifiersInCoder_key__uploadIdentifiersClasses forKey:v6];
+  v8 = [coderCopy decodeObjectOfClasses:pushContextsFromStoredUploadIdentifiersInCoder_key__uploadIdentifiersClasses forKey:keyCopy];
 
   v9 = [CPLRecordPushContext pushContextsFromStoredUploadIdentifiers:v8];
 
@@ -275,9 +275,9 @@ uint64_t __75__CPLRecordPushContext_pushContextsFromStoredUploadIdentifiersInCod
   return MEMORY[0x1EEE66BB8](v3, v4);
 }
 
-+ (id)pushContextsFromStoredUploadIdentifiers:(id)a3
++ (id)pushContextsFromStoredUploadIdentifiers:(id)identifiers
 {
-  v3 = [CPLScopedIdentifier scopedIdentifiersFromDictionaryOfUnknownIdentifiers:a3];
+  v3 = [CPLScopedIdentifier scopedIdentifiersFromDictionaryOfUnknownIdentifiers:identifiers];
   if ([v3 count])
   {
     v4 = [objc_alloc(MEMORY[0x1E695DF90]) initWithCapacity:{objc_msgSend(v3, "count")}];

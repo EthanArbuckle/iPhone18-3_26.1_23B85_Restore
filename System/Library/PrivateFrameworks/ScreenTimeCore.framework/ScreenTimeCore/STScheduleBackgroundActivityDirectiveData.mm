@@ -1,20 +1,20 @@
 @interface STScheduleBackgroundActivityDirectiveData
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDirectiveData:(id)a3;
-- (STScheduleBackgroundActivityDirectiveData)initWithType:(int64_t)a3 interval:(id)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDirectiveData:(id)data;
+- (STScheduleBackgroundActivityDirectiveData)initWithType:(int64_t)type interval:(id)interval;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation STScheduleBackgroundActivityDirectiveData
 
-- (STScheduleBackgroundActivityDirectiveData)initWithType:(int64_t)a3 interval:(id)a4
+- (STScheduleBackgroundActivityDirectiveData)initWithType:(int64_t)type interval:(id)interval
 {
   v10.receiver = self;
   v10.super_class = STScheduleBackgroundActivityDirectiveData;
-  v5 = a4;
+  intervalCopy = interval;
   v6 = [(STScheduleBackgroundActivityDirectiveData *)&v10 init];
-  v6->_type = a3;
-  v7 = [v5 copy];
+  v6->_type = type;
+  v7 = [intervalCopy copy];
 
   interval = v6->_interval;
   v6->_interval = v7;
@@ -22,7 +22,7 @@
   return v6;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
   type = self->_type;
@@ -31,10 +31,10 @@
   return [v4 initWithType:type interval:interval];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v5 = 1;
   }
@@ -44,7 +44,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(STScheduleBackgroundActivityDirectiveData *)self isEqualToDirectiveData:v4];
+      v5 = [(STScheduleBackgroundActivityDirectiveData *)self isEqualToDirectiveData:equalCopy];
     }
 
     else
@@ -56,25 +56,25 @@
   return v5;
 }
 
-- (BOOL)isEqualToDirectiveData:(id)a3
+- (BOOL)isEqualToDirectiveData:(id)data
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  dataCopy = data;
+  v5 = dataCopy;
+  if (dataCopy == self)
   {
     v12 = 1;
   }
 
   else
   {
-    v6 = [(STScheduleBackgroundActivityDirectiveData *)v4 type];
-    if (v6 == [(STScheduleBackgroundActivityDirectiveData *)self type])
+    type = [(STScheduleBackgroundActivityDirectiveData *)dataCopy type];
+    if (type == [(STScheduleBackgroundActivityDirectiveData *)self type])
     {
-      v7 = [(STScheduleBackgroundActivityDirectiveData *)v5 interval];
-      [v7 doubleValue];
+      interval = [(STScheduleBackgroundActivityDirectiveData *)v5 interval];
+      [interval doubleValue];
       v9 = v8;
-      v10 = [(STScheduleBackgroundActivityDirectiveData *)self interval];
-      [v10 doubleValue];
+      interval2 = [(STScheduleBackgroundActivityDirectiveData *)self interval];
+      [interval2 doubleValue];
       v12 = v9 == v11;
     }
 

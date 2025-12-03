@@ -1,35 +1,35 @@
 @interface HearingSettingsCountdownCell
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 @end
 
 @implementation HearingSettingsCountdownCell
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
   v14.receiver = self;
   v14.super_class = HearingSettingsCountdownCell;
-  v4 = a3;
-  [(HearingSettingsCountdownCell *)&v14 refreshCellContentsWithSpecifier:v4];
+  specifierCopy = specifier;
+  [(HearingSettingsCountdownCell *)&v14 refreshCellContentsWithSpecifier:specifierCopy];
   v5 = [(HearingSettingsCountdownCell *)self defaultContentConfiguration:v14.receiver];
-  v6 = [v4 name];
-  [v5 setText:v6];
+  name = [specifierCopy name];
+  [v5 setText:name];
 
-  v7 = [v4 performGetter];
+  performGetter = [specifierCopy performGetter];
 
-  [v5 setSecondaryText:v7];
+  [v5 setSecondaryText:performGetter];
   v8 = +[NSCharacterSet letterCharacterSet];
-  v9 = [v7 rangeOfCharacterFromSet:v8];
+  v9 = [performGetter rangeOfCharacterFromSet:v8];
 
   if (v9 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v10 = [v5 secondaryTextProperties];
-    v11 = [v10 font];
+    secondaryTextProperties = [v5 secondaryTextProperties];
+    font = [secondaryTextProperties font];
 
-    v12 = [v5 secondaryTextProperties];
-    [v11 pointSize];
+    secondaryTextProperties2 = [v5 secondaryTextProperties];
+    [font pointSize];
     v13 = [UIFont monospacedDigitSystemFontOfSize:"monospacedDigitSystemFontOfSize:weight:" weight:?];
-    [v12 setFont:v13];
+    [secondaryTextProperties2 setFont:v13];
   }
 
   [(HearingSettingsCountdownCell *)self setContentConfiguration:v5];

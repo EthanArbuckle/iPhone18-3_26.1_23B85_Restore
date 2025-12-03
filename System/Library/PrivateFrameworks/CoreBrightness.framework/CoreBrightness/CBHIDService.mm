@@ -1,48 +1,48 @@
 @interface CBHIDService
-- (CBHIDService)initWithHIDServiceClient:(__IOHIDServiceClient *)a3 andIdentifier:(id)a4;
+- (CBHIDService)initWithHIDServiceClient:(__IOHIDServiceClient *)client andIdentifier:(id)identifier;
 - (void)dealloc;
-- (void)setEvent:(__IOHIDEvent *)a3;
+- (void)setEvent:(__IOHIDEvent *)event;
 @end
 
 @implementation CBHIDService
 
-- (CBHIDService)initWithHIDServiceClient:(__IOHIDServiceClient *)a3 andIdentifier:(id)a4
+- (CBHIDService)initWithHIDServiceClient:(__IOHIDServiceClient *)client andIdentifier:(id)identifier
 {
-  v23 = self;
+  selfCopy = self;
   v22 = a2;
-  v21 = a3;
-  v20 = a4;
+  clientCopy = client;
+  identifierCopy = identifier;
   v19.receiver = self;
   v19.super_class = CBHIDService;
-  v23 = [(CBHIDService *)&v19 init];
-  if (v23)
+  selfCopy = [(CBHIDService *)&v19 init];
+  if (selfCopy)
   {
-    v23->_service = v21;
-    CFRetain(v23->_service);
-    RegistryID = IOHIDServiceClientGetRegistryID(v23->_service);
+    selfCopy->_service = clientCopy;
+    CFRetain(selfCopy->_service);
+    RegistryID = IOHIDServiceClientGetRegistryID(selfCopy->_service);
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v4 = [RegistryID unsignedIntegerValue];
-      v23->_registryID = v4;
+      unsignedIntegerValue = [RegistryID unsignedIntegerValue];
+      selfCopy->_registryID = unsignedIntegerValue;
     }
 
     v17 = 0;
-    if (v20)
+    if (identifierCopy)
     {
-      v17 = [v20 copy];
+      v17 = [identifierCopy copy];
     }
 
     else
     {
       v5 = objc_alloc(MEMORY[0x1E696AEC0]);
-      v17 = [v5 initWithFormat:@"com.apple.CBHIDService.%lu", v23->_registryID];
+      v17 = [v5 initWithFormat:@"com.apple.CBHIDService.%lu", selfCopy->_registryID];
     }
 
     if (v17)
     {
       v6 = os_log_create([v17 cStringUsingEncoding:1], "default");
-      v23->_logHandle = v6;
+      selfCopy->_logHandle = v6;
       MEMORY[0x1E69E5920](v17);
       v17 = 0;
     }
@@ -50,10 +50,10 @@
     else
     {
       v7 = os_log_create("com.apple.CBHIDService", "default");
-      v23->_logHandle = v7;
+      selfCopy->_logHandle = v7;
     }
 
-    if (!v23->_logHandle)
+    if (!selfCopy->_logHandle)
     {
       v12 = (_COREBRIGHTNESS_LOG_DEFAULT ? _COREBRIGHTNESS_LOG_DEFAULT : init_default_corebrightness_log());
       v16 = v12;
@@ -67,48 +67,48 @@
       }
     }
 
-    v13 = IOHIDServiceClientCopyProperty(v23->_service, @"Built-In");
+    v13 = IOHIDServiceClientCopyProperty(selfCopy->_service, @"Built-In");
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v8 = [v13 BOOLValue];
-      v23->_builtIn = v8;
+      bOOLValue = [v13 BOOLValue];
+      selfCopy->_builtIn = bOOLValue;
     }
 
     MEMORY[0x1E69E5920](v13);
   }
 
-  return v23;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_event)
   {
-    CFRelease(v4->_event);
+    CFRelease(selfCopy->_event);
   }
 
-  if (v4->_logHandle)
+  if (selfCopy->_logHandle)
   {
-    MEMORY[0x1E69E5920](v4->_logHandle);
+    MEMORY[0x1E69E5920](selfCopy->_logHandle);
   }
 
-  CFRelease(v4->_service);
-  v2.receiver = v4;
+  CFRelease(selfCopy->_service);
+  v2.receiver = selfCopy;
   v2.super_class = CBHIDService;
   [(CBHIDService *)&v2 dealloc];
 }
 
-- (void)setEvent:(__IOHIDEvent *)a3
+- (void)setEvent:(__IOHIDEvent *)event
 {
   if (self->_event)
   {
     CFRelease(self->_event);
   }
 
-  self->_event = a3;
+  self->_event = event;
   CFRetain(self->_event);
 }
 

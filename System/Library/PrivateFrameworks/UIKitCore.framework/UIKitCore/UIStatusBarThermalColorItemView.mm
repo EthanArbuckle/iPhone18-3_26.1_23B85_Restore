@@ -1,16 +1,16 @@
 @interface UIStatusBarThermalColorItemView
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4;
+- (BOOL)updateForNewData:(id)data actions:(int)actions;
 - (id)_color;
 - (id)contentsImage;
 @end
 
 @implementation UIStatusBarThermalColorItemView
 
-- (BOOL)updateForNewData:(id)a3 actions:(int)a4
+- (BOOL)updateForNewData:(id)data actions:(int)actions
 {
-  v5 = [a3 rawData];
-  v6 = *(v5 + 2268);
-  v7 = *(v5 + 2272) & 1;
+  rawData = [data rawData];
+  v6 = *(rawData + 2268);
+  v7 = *(rawData + 2272) & 1;
   thermalColor = self->_thermalColor;
   result = v6 != thermalColor;
   if (v6 != thermalColor)
@@ -49,8 +49,8 @@
   v10 = floor(v4);
   CGContextSaveGState(v9);
   CGContextTranslateCTM(v9, v6, 0.0);
-  v11 = [(UIStatusBarThermalColorItemView *)self _color];
-  [v11 set];
+  _color = [(UIStatusBarThermalColorItemView *)self _color];
+  [_color set];
 
   if (self->_sunlightMode)
   {

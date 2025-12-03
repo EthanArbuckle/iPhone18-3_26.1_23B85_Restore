@@ -7,20 +7,20 @@
 - (void)complete
 {
   v16 = *MEMORY[0x1E69E9840];
-  if (a1 && *(a1 + 8))
+  if (self && *(self + 8))
   {
     gotLoadHelper_x22__OBJC_CLASS___BGSystemTaskScheduler(a2);
     if (v4)
     {
       [v4 setTaskCompleted];
-      v5 = *(a1 + 16);
-      *(a1 + 16) = 0;
+      v5 = *(self + 16);
+      *(self + 16) = 0;
     }
 
     else
     {
-      v6 = [*(v2 + 1216) sharedScheduler];
-      v7 = [v6 cancelTaskRequestWithIdentifier:*(a1 + 8) error:0];
+      sharedScheduler = [*(v2 + 1216) sharedScheduler];
+      v7 = [sharedScheduler cancelTaskRequestWithIdentifier:*(self + 8) error:0];
 
       if ((v7 & 1) == 0)
       {
@@ -32,7 +32,7 @@
         v8 = gurlLogObj;
         if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
         {
-          v9 = *(a1 + 8);
+          v9 = *(self + 8);
           v12 = 138412546;
           v13 = v9;
           v14 = 2112;
@@ -42,11 +42,11 @@
       }
     }
 
-    v10 = [*(v2 + 1216) sharedScheduler];
-    [v10 deregisterTaskWithIdentifier:*(a1 + 8)];
+    sharedScheduler2 = [*(v2 + 1216) sharedScheduler];
+    [sharedScheduler2 deregisterTaskWithIdentifier:*(self + 8)];
 
-    v11 = *(a1 + 8);
-    *(a1 + 8) = 0;
+    v11 = *(self + 8);
+    *(self + 8) = 0;
   }
 }
 

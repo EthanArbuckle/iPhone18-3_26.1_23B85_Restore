@@ -1,9 +1,9 @@
 @interface DOCItemStatusBadgeView
 - (CGSize)intrinsicContentSize;
-- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithCoder:(id)a3;
-- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithFrame:(CGRect)a3;
-- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithImage:(id)a3;
-- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithImage:(id)a3 highlightedImage:(id)a4;
+- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithCoder:(id)coder;
+- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithFrame:(CGRect)frame;
+- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithImage:(id)image;
+- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithImage:(id)image highlightedImage:(id)highlightedImage;
 @end
 
 @implementation DOCItemStatusBadgeView
@@ -29,7 +29,7 @@
   return result;
 }
 
-- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithImage:(id)a3
+- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithImage:(id)image
 {
   v4 = self + OBJC_IVAR____TtC26DocumentManagerExecutables22DOCItemStatusBadgeView_layoutTraits;
   *v4 = 0u;
@@ -37,10 +37,10 @@
   v4[32] = 1;
   v6.receiver = self;
   v6.super_class = type metadata accessor for DOCItemStatusBadgeView();
-  return [(DOCItemStatusBadgeView *)&v6 initWithImage:a3];
+  return [(DOCItemStatusBadgeView *)&v6 initWithImage:image];
 }
 
-- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithImage:(id)a3 highlightedImage:(id)a4
+- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithImage:(id)image highlightedImage:(id)highlightedImage
 {
   v6 = self + OBJC_IVAR____TtC26DocumentManagerExecutables22DOCItemStatusBadgeView_layoutTraits;
   *v6 = 0u;
@@ -48,15 +48,15 @@
   v6[32] = 1;
   v8.receiver = self;
   v8.super_class = type metadata accessor for DOCItemStatusBadgeView();
-  return [(DOCItemStatusBadgeView *)&v8 initWithImage:a3 highlightedImage:a4];
+  return [(DOCItemStatusBadgeView *)&v8 initWithImage:image highlightedImage:highlightedImage];
 }
 
-- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithFrame:(CGRect)a3
+- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = self + OBJC_IVAR____TtC26DocumentManagerExecutables22DOCItemStatusBadgeView_layoutTraits;
   *v7 = 0u;
   *(v7 + 1) = 0u;
@@ -66,7 +66,7 @@
   return [(DOCItemStatusBadgeView *)&v9 initWithFrame:x, y, width, height];
 }
 
-- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithCoder:(id)a3
+- (_TtC26DocumentManagerExecutables22DOCItemStatusBadgeView)initWithCoder:(id)coder
 {
   v4 = self + OBJC_IVAR____TtC26DocumentManagerExecutables22DOCItemStatusBadgeView_layoutTraits;
   *v4 = 0u;
@@ -74,8 +74,8 @@
   v4[32] = 1;
   v8.receiver = self;
   v8.super_class = type metadata accessor for DOCItemStatusBadgeView();
-  v5 = a3;
-  v6 = [(DOCItemStatusBadgeView *)&v8 initWithCoder:v5];
+  coderCopy = coder;
+  v6 = [(DOCItemStatusBadgeView *)&v8 initWithCoder:coderCopy];
 
   if (v6)
   {

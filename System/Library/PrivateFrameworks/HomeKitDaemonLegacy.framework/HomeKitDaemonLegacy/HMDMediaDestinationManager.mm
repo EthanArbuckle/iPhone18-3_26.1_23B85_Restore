@@ -1,33 +1,33 @@
 @interface HMDMediaDestinationManager
 + (id)logCategory;
-- (HMDMediaDestinationManager)initWithDestination:(id)a3 messageDispatcher:(id)a4 notificationCenter:(id)a5 backingStore:(id)a6 targetDevice:(BOOL)a7 dataSource:(id)a8 delegate:(id)a9;
-- (HMDMediaDestinationManager)initWithDestination:(id)a3 messageHandler:(id)a4 backingStoreHandler:(id)a5 metricsDispatcher:(id)a6 targetDevice:(BOOL)a7 dataSource:(id)a8 delegate:(id)a9;
+- (HMDMediaDestinationManager)initWithDestination:(id)destination messageDispatcher:(id)dispatcher notificationCenter:(id)center backingStore:(id)store targetDevice:(BOOL)device dataSource:(id)source delegate:(id)delegate;
+- (HMDMediaDestinationManager)initWithDestination:(id)destination messageHandler:(id)handler backingStoreHandler:(id)storeHandler metricsDispatcher:(id)dispatcher targetDevice:(BOOL)device dataSource:(id)source delegate:(id)delegate;
 - (HMDMediaDestinationManagerDataSource)dataSource;
 - (HMDMediaDestinationManagerDelegate)delegate;
 - (HMMediaDestination)committedDestination;
 - (HMMediaDestination)destination;
 - (id)attributeDescriptions;
-- (id)dataSourceDestinationControllerWithIdentifier:(id)a3;
+- (id)dataSourceDestinationControllerWithIdentifier:(id)identifier;
 - (id)dataSourceRootDestinationManager;
 - (id)dataSourceTargetAccessory;
-- (id)legacyUpdateAudioGroupIdentifier:(id)a3;
-- (id)legacyUpdateSupportedOptions:(unint64_t)a3;
+- (id)legacyUpdateAudioGroupIdentifier:(id)identifier;
+- (id)legacyUpdateSupportedOptions:(unint64_t)options;
 - (id)logIdentifier;
 - (id)mediaGroupParticipantLocalDataStorage;
-- (id)messageHandler:(id)a3 deviceForOutgoingMessage:(id)a4;
-- (id)messageHandler:(id)a3 shouldRelayIncomingMessage:(id)a4;
-- (id)updateAudioGroupIdentifier:(id)a3;
-- (id)updateSupportedOptions:(unint64_t)a3;
-- (void)configureWithHome:(id)a3 currentAccessory:(BOOL)a4;
-- (void)mediaDestinationBackingStoreHandler:(id)a3 didUpdateDestination:(id)a4;
-- (void)mediaDestinationMessageHandler:(id)a3 didReceiveUpdateAudioGroupIdentifierRequestMessage:(id)a4 audioGroupIdentifier:(id)a5;
-- (void)mediaDestinationMessageHandler:(id)a3 didReceiveUpdateSupportedOptionsRequestMessage:(id)a4 supportOptions:(unint64_t)a5;
-- (void)mergeDestination:(id)a3;
-- (void)migrateWithHome:(id)a3 cloudZone:(id)a4 migrationQueue:(id)a5 completion:(id)a6;
+- (id)messageHandler:(id)handler deviceForOutgoingMessage:(id)message;
+- (id)messageHandler:(id)handler shouldRelayIncomingMessage:(id)message;
+- (id)updateAudioGroupIdentifier:(id)identifier;
+- (id)updateSupportedOptions:(unint64_t)options;
+- (void)configureWithHome:(id)home currentAccessory:(BOOL)accessory;
+- (void)mediaDestinationBackingStoreHandler:(id)handler didUpdateDestination:(id)destination;
+- (void)mediaDestinationMessageHandler:(id)handler didReceiveUpdateAudioGroupIdentifierRequestMessage:(id)message audioGroupIdentifier:(id)identifier;
+- (void)mediaDestinationMessageHandler:(id)handler didReceiveUpdateSupportedOptionsRequestMessage:(id)message supportOptions:(unint64_t)options;
+- (void)mergeDestination:(id)destination;
+- (void)migrateWithHome:(id)home cloudZone:(id)zone migrationQueue:(id)queue completion:(id)completion;
 - (void)notifyDelegateDidUpdateStagedValues;
-- (void)requestToUpdateAudioGroupIdentifier:(id)a3 completion:(id)a4;
-- (void)stageAudioGroupIdentifier:(id)a3;
-- (void)stagedValue:(id)a3 didExpireValue:(id)a4;
+- (void)requestToUpdateAudioGroupIdentifier:(id)identifier completion:(id)completion;
+- (void)stageAudioGroupIdentifier:(id)identifier;
+- (void)stagedValue:(id)value didExpireValue:(id)expireValue;
 - (void)triggerStageValueDidExpireValueForAudioDestinationIdentifier;
 @end
 
@@ -47,24 +47,24 @@
   return WeakRetained;
 }
 
-- (void)stagedValue:(id)a3 didExpireValue:(id)a4
+- (void)stagedValue:(id)value didExpireValue:(id)expireValue
 {
   v30 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDMediaDestinationManager *)self stagedAudioGroupIdentifier];
+  valueCopy = value;
+  expireValueCopy = expireValue;
+  stagedAudioGroupIdentifier = [(HMDMediaDestinationManager *)self stagedAudioGroupIdentifier];
 
-  if (v8 == v6)
+  if (stagedAudioGroupIdentifier == valueCopy)
   {
-    v13 = v7;
-    v14 = [(HMDMediaDestinationManager *)self committedDestination];
-    v15 = [v14 audioGroupIdentifier];
+    v13 = expireValueCopy;
+    committedDestination = [(HMDMediaDestinationManager *)self committedDestination];
+    audioGroupIdentifier = [committedDestination audioGroupIdentifier];
     v16 = HMFEqualObjects();
 
     if ((v16 & 1) == 0)
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = self;
+      selfCopy = self;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -77,18 +77,18 @@
       }
 
       objc_autoreleasePoolPop(v17);
-      v21 = [(HMDMediaDestinationManager *)v18 messageHandler];
-      v22 = [(HMDMediaDestinationManager *)v18 destination];
-      [v21 handleUpdatedDestination:v22];
+      messageHandler = [(HMDMediaDestinationManager *)selfCopy messageHandler];
+      destination = [(HMDMediaDestinationManager *)selfCopy destination];
+      [messageHandler handleUpdatedDestination:destination];
 
-      [(HMDMediaDestinationManager *)v18 notifyDelegateDidUpdateStagedValues];
+      [(HMDMediaDestinationManager *)selfCopy notifyDelegateDidUpdateStagedValues];
     }
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = self;
+    selfCopy2 = self;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -96,9 +96,9 @@
       v24 = 138543874;
       v25 = v12;
       v26 = 2112;
-      v27 = v6;
+      v27 = valueCopy;
       v28 = 2112;
-      v29 = v7;
+      v29 = expireValueCopy;
       _os_log_impl(&dword_2531F8000, v11, OS_LOG_TYPE_ERROR, "%{public}@Unknown stage value: %@ did expire value: %@", &v24, 0x20u);
     }
 
@@ -112,7 +112,7 @@
 {
   v12 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -123,27 +123,27 @@
   }
 
   objc_autoreleasePoolPop(v3);
-  v7 = [(HMDMediaDestinationManager *)v4 stagedAudioGroupIdentifier];
-  v8 = [v7 value];
-  [(HMDMediaDestinationManager *)v4 stagedValue:v7 didExpireValue:v8];
+  stagedAudioGroupIdentifier = [(HMDMediaDestinationManager *)selfCopy stagedAudioGroupIdentifier];
+  value = [stagedAudioGroupIdentifier value];
+  [(HMDMediaDestinationManager *)selfCopy stagedValue:stagedAudioGroupIdentifier didExpireValue:value];
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
 - (id)logIdentifier
 {
-  v2 = [(HMDMediaDestinationManager *)self identifier];
-  v3 = [v2 UUIDString];
+  identifier = [(HMDMediaDestinationManager *)self identifier];
+  uUIDString = [identifier UUIDString];
 
-  return v3;
+  return uUIDString;
 }
 
 - (id)attributeDescriptions
 {
   v9[1] = *MEMORY[0x277D85DE8];
   v3 = objc_alloc(MEMORY[0x277D0F778]);
-  v4 = [(HMDMediaDestinationManager *)self identifier];
-  v5 = [v3 initWithName:@"identifier" value:v4];
+  identifier = [(HMDMediaDestinationManager *)self identifier];
+  v5 = [v3 initWithName:@"identifier" value:identifier];
   v9[0] = v5;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:1];
 
@@ -155,17 +155,17 @@
 - (void)notifyDelegateDidUpdateStagedValues
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMediaDestinationManager *)self delegate];
-  v4 = v3;
-  if (v3)
+  delegate = [(HMDMediaDestinationManager *)self delegate];
+  v4 = delegate;
+  if (delegate)
   {
-    [v3 mediaDestinationManagerDidUpdateStagedValues:self];
+    [delegate mediaDestinationManagerDidUpdateStagedValues:self];
   }
 
   else
   {
     v5 = objc_autoreleasePoolPush();
-    v6 = self;
+    selfCopy = self;
     v7 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -181,14 +181,14 @@
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mediaDestinationMessageHandler:(id)a3 didReceiveUpdateAudioGroupIdentifierRequestMessage:(id)a4 audioGroupIdentifier:(id)a5
+- (void)mediaDestinationMessageHandler:(id)handler didReceiveUpdateAudioGroupIdentifierRequestMessage:(id)message audioGroupIdentifier:(id)identifier
 {
   v27 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  handlerCopy = handler;
+  messageCopy = message;
+  identifierCopy = identifier;
   v11 = objc_autoreleasePoolPush();
-  v12 = self;
+  selfCopy = self;
   v13 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v13, OS_LOG_TYPE_INFO))
   {
@@ -199,12 +199,12 @@
   }
 
   objc_autoreleasePoolPop(v11);
-  v15 = [(HMDMediaDestinationManager *)v12 updateAudioGroupIdentifier:v10];
+  v15 = [(HMDMediaDestinationManager *)selfCopy updateAudioGroupIdentifier:identifierCopy];
   v23[0] = MEMORY[0x277D85DD0];
   v23[1] = 3221225472;
   v23[2] = __133__HMDMediaDestinationManager_mediaDestinationMessageHandler_didReceiveUpdateAudioGroupIdentifierRequestMessage_audioGroupIdentifier___block_invoke;
   v23[3] = &unk_2797359D8;
-  v16 = v9;
+  v16 = messageCopy;
   v24 = v16;
   v17 = [v15 addFailureBlock:v23];
   v21[0] = MEMORY[0x277D85DD0];
@@ -218,13 +218,13 @@
   v20 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mediaDestinationMessageHandler:(id)a3 didReceiveUpdateSupportedOptionsRequestMessage:(id)a4 supportOptions:(unint64_t)a5
+- (void)mediaDestinationMessageHandler:(id)handler didReceiveUpdateSupportedOptionsRequestMessage:(id)message supportOptions:(unint64_t)options
 {
   v26 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
+  handlerCopy = handler;
+  messageCopy = message;
   v10 = objc_autoreleasePoolPush();
-  v11 = self;
+  selfCopy = self;
   v12 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
   {
@@ -235,12 +235,12 @@
   }
 
   objc_autoreleasePoolPop(v10);
-  v14 = [(HMDMediaDestinationManager *)v11 updateSupportedOptions:a5];
+  v14 = [(HMDMediaDestinationManager *)selfCopy updateSupportedOptions:options];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __123__HMDMediaDestinationManager_mediaDestinationMessageHandler_didReceiveUpdateSupportedOptionsRequestMessage_supportOptions___block_invoke;
   v22[3] = &unk_2797359D8;
-  v15 = v9;
+  v15 = messageCopy;
   v23 = v15;
   v16 = [v14 addFailureBlock:v22];
   v20[0] = MEMORY[0x277D85DD0];
@@ -254,22 +254,22 @@
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)messageHandler:(id)a3 deviceForOutgoingMessage:(id)a4
+- (id)messageHandler:(id)handler deviceForOutgoingMessage:(id)message
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDMediaDestinationManager *)self dataSourceTargetAccessory];
-  v9 = v8;
-  if (v8)
+  handlerCopy = handler;
+  messageCopy = message;
+  dataSourceTargetAccessory = [(HMDMediaDestinationManager *)self dataSourceTargetAccessory];
+  v9 = dataSourceTargetAccessory;
+  if (dataSourceTargetAccessory)
   {
-    v10 = [v8 deviceForDirectMessaging];
+    deviceForDirectMessaging = [dataSourceTargetAccessory deviceForDirectMessaging];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -280,30 +280,30 @@
     }
 
     objc_autoreleasePoolPop(v11);
-    v10 = 0;
+    deviceForDirectMessaging = 0;
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return deviceForDirectMessaging;
 }
 
-- (id)messageHandler:(id)a3 shouldRelayIncomingMessage:(id)a4
+- (id)messageHandler:(id)handler shouldRelayIncomingMessage:(id)message
 {
   v19 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(HMDMediaDestinationManager *)self dataSourceTargetAccessory];
-  v9 = v8;
-  if (v8)
+  handlerCopy = handler;
+  messageCopy = message;
+  dataSourceTargetAccessory = [(HMDMediaDestinationManager *)self dataSourceTargetAccessory];
+  v9 = dataSourceTargetAccessory;
+  if (dataSourceTargetAccessory)
   {
-    v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(v8, "isCurrentAccessory") ^ 1}];
+    v10 = [MEMORY[0x277CCABB0] numberWithInt:{objc_msgSend(dataSourceTargetAccessory, "isCurrentAccessory") ^ 1}];
   }
 
   else
   {
     v11 = objc_autoreleasePoolPush();
-    v12 = self;
+    selfCopy = self;
     v13 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -322,34 +322,34 @@
   return v10;
 }
 
-- (void)mediaDestinationBackingStoreHandler:(id)a3 didUpdateDestination:(id)a4
+- (void)mediaDestinationBackingStoreHandler:(id)handler didUpdateDestination:(id)destination
 {
   v24 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  destinationCopy = destination;
   v8 = self->_logger;
   if (os_signpost_enabled(v8))
   {
-    v9 = [v7 audioGroupIdentifier];
-    v10 = v9;
-    if (v9)
+    audioGroupIdentifier = [destinationCopy audioGroupIdentifier];
+    v10 = audioGroupIdentifier;
+    if (audioGroupIdentifier)
     {
       v20 = 138412290;
-      v21 = v9;
+      v21 = audioGroupIdentifier;
       _os_signpost_emit_with_name_impl(&dword_2531F8000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "HMDMediaDestinationManagerCommitAudioGroupIdentifier", "audioGroupIdentifier=%{signpost.description:attribute}@ ", &v20, 0xCu);
     }
 
     else
     {
-      v11 = [MEMORY[0x277CBEB68] null];
+      null = [MEMORY[0x277CBEB68] null];
       v20 = 138412290;
-      v21 = v11;
+      v21 = null;
       _os_signpost_emit_with_name_impl(&dword_2531F8000, v8, OS_SIGNPOST_EVENT, 0xEEEEB0B5B2B2EEEELL, "HMDMediaDestinationManagerCommitAudioGroupIdentifier", "audioGroupIdentifier=%{signpost.description:attribute}@ ", &v20, 0xCu);
     }
   }
 
   v12 = objc_autoreleasePoolPush();
-  v13 = self;
+  selfCopy = self;
   v14 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -357,59 +357,59 @@
     v20 = 138543618;
     v21 = v15;
     v22 = 2112;
-    v23 = v7;
+    v23 = destinationCopy;
     _os_log_impl(&dword_2531F8000, v14, OS_LOG_TYPE_INFO, "%{public}@Handling did update destination: %@", &v20, 0x16u);
   }
 
   objc_autoreleasePoolPop(v12);
-  v16 = [(HMDMediaDestinationManager *)v13 stagedAudioGroupIdentifier];
-  v17 = [v7 audioGroupIdentifier];
-  [v16 commitValue:v17];
+  stagedAudioGroupIdentifier = [(HMDMediaDestinationManager *)selfCopy stagedAudioGroupIdentifier];
+  audioGroupIdentifier2 = [destinationCopy audioGroupIdentifier];
+  [stagedAudioGroupIdentifier commitValue:audioGroupIdentifier2];
 
-  v18 = [(HMDMediaDestinationManager *)v13 messageHandler];
-  [v18 handleUpdatedDestination:v7];
+  messageHandler = [(HMDMediaDestinationManager *)selfCopy messageHandler];
+  [messageHandler handleUpdatedDestination:destinationCopy];
 
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)migrateWithHome:(id)a3 cloudZone:(id)a4 migrationQueue:(id)a5 completion:(id)a6
+- (void)migrateWithHome:(id)home cloudZone:(id)zone migrationQueue:(id)queue completion:(id)completion
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(HMDMediaDestinationManager *)self backingStoreHandler];
-  [v14 migrateWithHome:v13 cloudZone:v12 migrationQueue:v11 completion:v10];
+  completionCopy = completion;
+  queueCopy = queue;
+  zoneCopy = zone;
+  homeCopy = home;
+  backingStoreHandler = [(HMDMediaDestinationManager *)self backingStoreHandler];
+  [backingStoreHandler migrateWithHome:homeCopy cloudZone:zoneCopy migrationQueue:queueCopy completion:completionCopy];
 }
 
-- (id)legacyUpdateAudioGroupIdentifier:(id)a3
+- (id)legacyUpdateAudioGroupIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (v4)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v5 = [(HMDMediaDestinationManager *)self dataSourceDestinationControllerWithIdentifier:v4];
+    v5 = [(HMDMediaDestinationManager *)self dataSourceDestinationControllerWithIdentifier:identifierCopy];
     if (v5)
     {
-      v6 = [(HMDMediaDestinationManager *)self dataSourceRootDestinationManager];
-      v7 = v6;
-      if (v6)
+      dataSourceRootDestinationManager = [(HMDMediaDestinationManager *)self dataSourceRootDestinationManager];
+      v7 = dataSourceRootDestinationManager;
+      if (dataSourceRootDestinationManager)
       {
-        [(HMDMediaDestinationManager *)v6 stageAudioGroupIdentifier:v4];
-        v8 = v7;
+        [(HMDMediaDestinationManager *)dataSourceRootDestinationManager stageAudioGroupIdentifier:identifierCopy];
+        selfCopy = v7;
       }
 
       else
       {
-        v8 = self;
+        selfCopy = self;
       }
 
-      v9 = [(HMDMediaDestinationManager *)v8 identifier];
-      [v5 stageDestinationIdentifier:v9];
+      identifier = [(HMDMediaDestinationManager *)selfCopy identifier];
+      [v5 stageDestinationIdentifier:identifier];
     }
   }
 
   v10 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v11 = [(HMDMediaDestinationManager *)self backingStoreHandler];
+  backingStoreHandler = [(HMDMediaDestinationManager *)self backingStoreHandler];
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __63__HMDMediaDestinationManager_legacyUpdateAudioGroupIdentifier___block_invoke;
@@ -417,7 +417,7 @@
   v16[4] = self;
   v12 = v10;
   v17 = v12;
-  [v11 updateAudioGroupIdentifier:v4 completion:v16];
+  [backingStoreHandler updateAudioGroupIdentifier:identifierCopy completion:v16];
 
   v13 = v17;
   v14 = v12;
@@ -466,12 +466,12 @@ void __63__HMDMediaDestinationManager_legacyUpdateAudioGroupIdentifier___block_i
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updateAudioGroupIdentifier:(id)a3
+- (id)updateAudioGroupIdentifier:(id)identifier
 {
   v29 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -479,28 +479,28 @@ void __63__HMDMediaDestinationManager_legacyUpdateAudioGroupIdentifier___block_i
     v25 = 138543618;
     v26 = v8;
     v27 = 2112;
-    v28 = v4;
+    v28 = identifierCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Updating audio group identifier: %@", &v25, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
   if (isFeatureHomeTheaterQFAEnabledForTests && ([isFeatureHomeTheaterQFAEnabledForTests BOOLValue] & 1) != 0)
   {
-    v9 = [(HMDMediaDestinationManager *)v6 mediaGroupParticipantLocalDataStorage];
-    v10 = v9;
-    if (v9)
+    mediaGroupParticipantLocalDataStorage = [(HMDMediaDestinationManager *)selfCopy mediaGroupParticipantLocalDataStorage];
+    v10 = mediaGroupParticipantLocalDataStorage;
+    if (mediaGroupParticipantLocalDataStorage)
     {
-      [v9 updateAudioGroupIdentifier:v4];
-      v11 = [(HMDMediaDestinationManager *)v6 stagedAudioGroupIdentifier];
-      [v11 commitValue:v4];
+      [mediaGroupParticipantLocalDataStorage updateAudioGroupIdentifier:identifierCopy];
+      stagedAudioGroupIdentifier = [(HMDMediaDestinationManager *)selfCopy stagedAudioGroupIdentifier];
+      [stagedAudioGroupIdentifier commitValue:identifierCopy];
 
-      v12 = [MEMORY[0x277D2C900] futureWithNoResult];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = v6;
+      v18 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -508,21 +508,21 @@ void __63__HMDMediaDestinationManager_legacyUpdateAudioGroupIdentifier___block_i
         v25 = 138543618;
         v26 = v20;
         v27 = 2112;
-        v28 = v4;
+        v28 = identifierCopy;
         _os_log_impl(&dword_2531F8000, v19, OS_LOG_TYPE_ERROR, "%{public}@Failed to update local storage with audio group identifier: %@ due to no local storage found", &v25, 0x16u);
       }
 
       objc_autoreleasePoolPop(v17);
       v21 = MEMORY[0x277D2C900];
       v22 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
-      v12 = [v21 futureWithError:v22];
+      futureWithNoResult = [v21 futureWithError:v22];
     }
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v6;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -533,18 +533,18 @@ void __63__HMDMediaDestinationManager_legacyUpdateAudioGroupIdentifier___block_i
     }
 
     objc_autoreleasePoolPop(v13);
-    v12 = [(HMDMediaDestinationManager *)v14 legacyUpdateAudioGroupIdentifier:v4];
+    futureWithNoResult = [(HMDMediaDestinationManager *)v14 legacyUpdateAudioGroupIdentifier:identifierCopy];
   }
 
   v23 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return futureWithNoResult;
 }
 
-- (id)legacyUpdateSupportedOptions:(unint64_t)a3
+- (id)legacyUpdateSupportedOptions:(unint64_t)options
 {
   v5 = objc_alloc_init(MEMORY[0x277D2C900]);
-  v6 = [(HMDMediaDestinationManager *)self backingStoreHandler];
+  backingStoreHandler = [(HMDMediaDestinationManager *)self backingStoreHandler];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __59__HMDMediaDestinationManager_legacyUpdateSupportedOptions___block_invoke;
@@ -552,7 +552,7 @@ void __63__HMDMediaDestinationManager_legacyUpdateAudioGroupIdentifier___block_i
   v11[4] = self;
   v7 = v5;
   v12 = v7;
-  [v6 updateSupportedOptions:a3 completion:v11];
+  [backingStoreHandler updateSupportedOptions:options completion:v11];
 
   v8 = v12;
   v9 = v7;
@@ -601,11 +601,11 @@ void __59__HMDMediaDestinationManager_legacyUpdateSupportedOptions___block_invok
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (id)updateSupportedOptions:(unint64_t)a3
+- (id)updateSupportedOptions:(unint64_t)options
 {
   v30 = *MEMORY[0x277D85DE8];
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -621,18 +621,18 @@ void __59__HMDMediaDestinationManager_legacyUpdateSupportedOptions___block_invok
   objc_autoreleasePoolPop(v5);
   if (isFeatureHomeTheaterQFAEnabledForTests && ([isFeatureHomeTheaterQFAEnabledForTests BOOLValue] & 1) != 0)
   {
-    v10 = [(HMDMediaDestinationManager *)v6 mediaGroupParticipantLocalDataStorage];
-    v11 = v10;
-    if (v10)
+    mediaGroupParticipantLocalDataStorage = [(HMDMediaDestinationManager *)selfCopy mediaGroupParticipantLocalDataStorage];
+    v11 = mediaGroupParticipantLocalDataStorage;
+    if (mediaGroupParticipantLocalDataStorage)
     {
-      [v10 updateDestinationSupportOptions:a3];
-      v12 = [MEMORY[0x277D2C900] futureWithNoResult];
+      [mediaGroupParticipantLocalDataStorage updateDestinationSupportOptions:options];
+      futureWithNoResult = [MEMORY[0x277D2C900] futureWithNoResult];
     }
 
     else
     {
       v17 = objc_autoreleasePoolPush();
-      v18 = v6;
+      v18 = selfCopy;
       v19 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
       {
@@ -648,14 +648,14 @@ void __59__HMDMediaDestinationManager_legacyUpdateSupportedOptions___block_invok
       objc_autoreleasePoolPop(v17);
       v22 = MEMORY[0x277D2C900];
       v23 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:4];
-      v12 = [v22 futureWithError:v23];
+      futureWithNoResult = [v22 futureWithError:v23];
     }
   }
 
   else
   {
     v13 = objc_autoreleasePoolPush();
-    v14 = v6;
+    v14 = selfCopy;
     v15 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
@@ -666,22 +666,22 @@ void __59__HMDMediaDestinationManager_legacyUpdateSupportedOptions___block_invok
     }
 
     objc_autoreleasePoolPop(v13);
-    v12 = [(HMDMediaDestinationManager *)v14 legacyUpdateSupportedOptions:a3];
+    futureWithNoResult = [(HMDMediaDestinationManager *)v14 legacyUpdateSupportedOptions:options];
   }
 
   v24 = *MEMORY[0x277D85DE8];
 
-  return v12;
+  return futureWithNoResult;
 }
 
 - (id)dataSourceRootDestinationManager
 {
   v13 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMediaDestinationManager *)self dataSource];
-  if (!v3)
+  dataSource = [(HMDMediaDestinationManager *)self dataSource];
+  if (!dataSource)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = self;
+    selfCopy = self;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
     {
@@ -694,28 +694,28 @@ void __59__HMDMediaDestinationManager_legacyUpdateSupportedOptions___block_invok
     objc_autoreleasePoolPop(v4);
   }
 
-  v8 = [v3 rootDestinationManagerForMediaDestinationManager:self];
+  v8 = [dataSource rootDestinationManagerForMediaDestinationManager:self];
 
   v9 = *MEMORY[0x277D85DE8];
 
   return v8;
 }
 
-- (id)dataSourceDestinationControllerWithIdentifier:(id)a3
+- (id)dataSourceDestinationControllerWithIdentifier:(id)identifier
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(HMDMediaDestinationManager *)self dataSource];
-  v6 = v5;
-  if (v5)
+  identifierCopy = identifier;
+  dataSource = [(HMDMediaDestinationManager *)self dataSource];
+  v6 = dataSource;
+  if (dataSource)
   {
-    v7 = [v5 mediaDestinationManager:self destinationControllerWithIdentifier:v4];
+    v7 = [dataSource mediaDestinationManager:self destinationControllerWithIdentifier:identifierCopy];
   }
 
   else
   {
     v8 = objc_autoreleasePoolPush();
-    v9 = self;
+    selfCopy = self;
     v10 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -737,8 +737,8 @@ void __59__HMDMediaDestinationManager_legacyUpdateSupportedOptions___block_invok
 - (id)dataSourceTargetAccessory
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMediaDestinationManager *)self dataSource];
-  v4 = [v3 targetAccessoryForMediaDestinationManager:self];
+  dataSource = [(HMDMediaDestinationManager *)self dataSource];
+  v4 = [dataSource targetAccessoryForMediaDestinationManager:self];
   v5 = v4;
   if (v4)
   {
@@ -748,7 +748,7 @@ void __59__HMDMediaDestinationManager_legacyUpdateSupportedOptions___block_invok
   else
   {
     v7 = objc_autoreleasePoolPush();
-    v8 = self;
+    selfCopy = self;
     v9 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -756,7 +756,7 @@ void __59__HMDMediaDestinationManager_legacyUpdateSupportedOptions___block_invok
       v13 = 138543618;
       v14 = v10;
       v15 = 2112;
-      v16 = v3;
+      v16 = dataSource;
       _os_log_impl(&dword_2531F8000, v9, OS_LOG_TYPE_ERROR, "%{public}@Failed to get associated accessory from data source: %@", &v13, 0x16u);
     }
 
@@ -771,17 +771,17 @@ void __59__HMDMediaDestinationManager_legacyUpdateSupportedOptions___block_invok
 - (id)mediaGroupParticipantLocalDataStorage
 {
   v14 = *MEMORY[0x277D85DE8];
-  v3 = [(HMDMediaDestinationManager *)self dataSource];
-  v4 = v3;
-  if (v3)
+  dataSource = [(HMDMediaDestinationManager *)self dataSource];
+  v4 = dataSource;
+  if (dataSource)
   {
-    v5 = [v3 mediaGroupParticipantLocalDataStorageForMediaDestinationManager:self];
+    v5 = [dataSource mediaGroupParticipantLocalDataStorageForMediaDestinationManager:self];
   }
 
   else
   {
     v6 = objc_autoreleasePoolPush();
-    v7 = self;
+    selfCopy = self;
     v8 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
     {
@@ -802,41 +802,41 @@ void __59__HMDMediaDestinationManager_legacyUpdateSupportedOptions___block_invok
 
 - (HMMediaDestination)committedDestination
 {
-  v2 = [(HMDMediaDestinationManager *)self backingStoreHandler];
-  v3 = [v2 destination];
+  backingStoreHandler = [(HMDMediaDestinationManager *)self backingStoreHandler];
+  destination = [backingStoreHandler destination];
 
-  return v3;
+  return destination;
 }
 
 - (HMMediaDestination)destination
 {
-  v3 = [(HMDMediaDestinationManager *)self backingStoreHandler];
-  v4 = [v3 destination];
-  v5 = [v4 mutableCopy];
+  backingStoreHandler = [(HMDMediaDestinationManager *)self backingStoreHandler];
+  destination = [backingStoreHandler destination];
+  v5 = [destination mutableCopy];
 
-  v6 = [(HMDMediaDestinationManager *)self stagedAudioGroupIdentifier];
-  v7 = [v6 value];
-  [v5 setAudioGroupIdentifier:v7];
+  stagedAudioGroupIdentifier = [(HMDMediaDestinationManager *)self stagedAudioGroupIdentifier];
+  value = [stagedAudioGroupIdentifier value];
+  [v5 setAudioGroupIdentifier:value];
 
   v8 = [v5 copy];
 
   return v8;
 }
 
-- (void)requestToUpdateAudioGroupIdentifier:(id)a3 completion:(id)a4
+- (void)requestToUpdateAudioGroupIdentifier:(id)identifier completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HMDMediaDestinationManager *)self messageHandler];
-  [v8 sendRequestToUpdateAudioGroupIdentifier:v7 completion:v6];
+  completionCopy = completion;
+  identifierCopy = identifier;
+  messageHandler = [(HMDMediaDestinationManager *)self messageHandler];
+  [messageHandler sendRequestToUpdateAudioGroupIdentifier:identifierCopy completion:completionCopy];
 }
 
-- (void)stageAudioGroupIdentifier:(id)a3
+- (void)stageAudioGroupIdentifier:(id)identifier
 {
   v18 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -844,96 +844,96 @@ void __59__HMDMediaDestinationManager_legacyUpdateSupportedOptions___block_invok
     v14 = 138543618;
     v15 = v8;
     v16 = 2112;
-    v17 = v4;
+    v17 = identifierCopy;
     _os_log_impl(&dword_2531F8000, v7, OS_LOG_TYPE_INFO, "%{public}@Staging audio group identifier: %@", &v14, 0x16u);
   }
 
   objc_autoreleasePoolPop(v5);
-  v9 = [(HMDMediaDestinationManager *)v6 stagedAudioGroupIdentifier];
-  v10 = [v9 value];
-  v11 = [v10 hmf_isEqualToUUID:v4];
+  stagedAudioGroupIdentifier = [(HMDMediaDestinationManager *)selfCopy stagedAudioGroupIdentifier];
+  value = [stagedAudioGroupIdentifier value];
+  v11 = [value hmf_isEqualToUUID:identifierCopy];
 
-  v12 = [(HMDMediaDestinationManager *)v6 stagedAudioGroupIdentifier];
-  [v12 stageValue:v4 withTimeout:600.0];
+  stagedAudioGroupIdentifier2 = [(HMDMediaDestinationManager *)selfCopy stagedAudioGroupIdentifier];
+  [stagedAudioGroupIdentifier2 stageValue:identifierCopy withTimeout:600.0];
 
   if ((v11 & 1) == 0)
   {
-    [(HMDMediaDestinationManager *)v6 notifyDelegateDidUpdateStagedValues];
+    [(HMDMediaDestinationManager *)selfCopy notifyDelegateDidUpdateStagedValues];
   }
 
   v13 = *MEMORY[0x277D85DE8];
 }
 
-- (void)mergeDestination:(id)a3
+- (void)mergeDestination:(id)destination
 {
-  v7 = a3;
-  v4 = [(HMDMediaDestinationManager *)self backingStoreHandler];
-  [v4 mergeDestination:v7];
+  destinationCopy = destination;
+  backingStoreHandler = [(HMDMediaDestinationManager *)self backingStoreHandler];
+  [backingStoreHandler mergeDestination:destinationCopy];
 
   if (![(HMDMediaDestinationManager *)self isTargetDevice])
   {
-    v5 = [(HMDMediaDestinationManager *)self stagedAudioGroupIdentifier];
-    v6 = [v7 audioGroupIdentifier];
-    [v5 commitValue:v6];
+    stagedAudioGroupIdentifier = [(HMDMediaDestinationManager *)self stagedAudioGroupIdentifier];
+    audioGroupIdentifier = [destinationCopy audioGroupIdentifier];
+    [stagedAudioGroupIdentifier commitValue:audioGroupIdentifier];
   }
 }
 
-- (void)configureWithHome:(id)a3 currentAccessory:(BOOL)a4
+- (void)configureWithHome:(id)home currentAccessory:(BOOL)accessory
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  homeCopy = home;
   v6 = objc_autoreleasePoolPush();
-  v7 = self;
+  selfCopy = self;
   v8 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
   {
     v9 = HMFGetLogIdentifier();
-    v10 = [(HMDMediaDestinationManager *)v7 committedDestination];
+    committedDestination = [(HMDMediaDestinationManager *)selfCopy committedDestination];
     v13 = 138543874;
     v14 = v9;
     v15 = 2112;
-    v16 = v7;
+    v16 = selfCopy;
     v17 = 2112;
-    v18 = v10;
+    v18 = committedDestination;
     _os_log_impl(&dword_2531F8000, v8, OS_LOG_TYPE_INFO, "%{public}@Configuring destination manager: %@ destination: %@", &v13, 0x20u);
   }
 
   objc_autoreleasePoolPop(v6);
-  v11 = [(HMDMediaDestinationManager *)v7 messageHandler];
-  [v11 configureWithHome:v5];
+  messageHandler = [(HMDMediaDestinationManager *)selfCopy messageHandler];
+  [messageHandler configureWithHome:homeCopy];
 
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDMediaDestinationManager)initWithDestination:(id)a3 messageHandler:(id)a4 backingStoreHandler:(id)a5 metricsDispatcher:(id)a6 targetDevice:(BOOL)a7 dataSource:(id)a8 delegate:(id)a9
+- (HMDMediaDestinationManager)initWithDestination:(id)destination messageHandler:(id)handler backingStoreHandler:(id)storeHandler metricsDispatcher:(id)dispatcher targetDevice:(BOOL)device dataSource:(id)source delegate:(id)delegate
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v39 = a6;
-  v18 = a8;
-  v19 = a9;
-  if (!v15)
+  destinationCopy = destination;
+  handlerCopy = handler;
+  storeHandlerCopy = storeHandler;
+  dispatcherCopy = dispatcher;
+  sourceCopy = source;
+  delegateCopy = delegate;
+  if (!destinationCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_8;
   }
 
-  if (!v16)
+  if (!handlerCopy)
   {
 LABEL_8:
     _HMFPreconditionFailure();
     goto LABEL_9;
   }
 
-  if (!v17)
+  if (!storeHandlerCopy)
   {
 LABEL_9:
     v31 = _HMFPreconditionFailure();
-    return [(HMDMediaDestinationManager *)v31 initWithDestination:v32 messageDispatcher:v33 notificationCenter:v34 backingStore:v35 targetDevice:v36 dataSource:v37 delegate:v38, a9];
+    return [(HMDMediaDestinationManager *)v31 initWithDestination:v32 messageDispatcher:v33 notificationCenter:v34 backingStore:v35 targetDevice:v36 dataSource:v37 delegate:v38, delegate];
   }
 
-  v20 = v19;
+  v20 = delegateCopy;
   v40.receiver = self;
   v40.super_class = HMDMediaDestinationManager;
   v21 = [(HMDMediaDestinationManager *)&v40 init];
@@ -943,19 +943,19 @@ LABEL_9:
     logger = v21->_logger;
     v21->_logger = v22;
 
-    v24 = [v15 uniqueIdentifier];
+    uniqueIdentifier = [destinationCopy uniqueIdentifier];
     identifier = v21->_identifier;
-    v21->_identifier = v24;
+    v21->_identifier = uniqueIdentifier;
 
-    objc_storeStrong(&v21->_messageHandler, a4);
-    objc_storeStrong(&v21->_backingStoreHandler, a5);
-    objc_storeStrong(&v21->_metricsDispatcher, a6);
-    v21->_targetDevice = a7;
-    objc_storeWeak(&v21->_dataSource, v18);
+    objc_storeStrong(&v21->_messageHandler, handler);
+    objc_storeStrong(&v21->_backingStoreHandler, storeHandler);
+    objc_storeStrong(&v21->_metricsDispatcher, dispatcher);
+    v21->_targetDevice = device;
+    objc_storeWeak(&v21->_dataSource, sourceCopy);
     objc_storeWeak(&v21->_delegate, v20);
     v26 = objc_alloc(MEMORY[0x277D0F900]);
-    v27 = [v15 audioGroupIdentifier];
-    v28 = [v26 initWithValue:v27];
+    audioGroupIdentifier = [destinationCopy audioGroupIdentifier];
+    v28 = [v26 initWithValue:audioGroupIdentifier];
     stagedAudioGroupIdentifier = v21->_stagedAudioGroupIdentifier;
     v21->_stagedAudioGroupIdentifier = v28;
 
@@ -965,24 +965,24 @@ LABEL_9:
   return v21;
 }
 
-- (HMDMediaDestinationManager)initWithDestination:(id)a3 messageDispatcher:(id)a4 notificationCenter:(id)a5 backingStore:(id)a6 targetDevice:(BOOL)a7 dataSource:(id)a8 delegate:(id)a9
+- (HMDMediaDestinationManager)initWithDestination:(id)destination messageDispatcher:(id)dispatcher notificationCenter:(id)center backingStore:(id)store targetDevice:(BOOL)device dataSource:(id)source delegate:(id)delegate
 {
-  v29 = a7;
-  v28 = a9;
-  v15 = a8;
-  v16 = a6;
-  v17 = a5;
-  v18 = a4;
-  v19 = a3;
+  deviceCopy = device;
+  delegateCopy = delegate;
+  sourceCopy = source;
+  storeCopy = store;
+  centerCopy = center;
+  dispatcherCopy = dispatcher;
+  destinationCopy = destination;
   v20 = [HMDMediaDestinationManagerMetricsDispatcher alloc];
-  v21 = [v19 uniqueIdentifier];
+  uniqueIdentifier = [destinationCopy uniqueIdentifier];
   v22 = +[HMDMetricsManager sharedLogEventSubmitter];
-  v23 = [(HMDMediaDestinationManagerMetricsDispatcher *)v20 initWithIdentifier:v21 logEventSubmitter:v22];
+  v23 = [(HMDMediaDestinationManagerMetricsDispatcher *)v20 initWithIdentifier:uniqueIdentifier logEventSubmitter:v22];
 
-  v24 = [[HMDMediaDestinationMessageHandler alloc] initWithDestination:v19 messageDispatcher:v18 notificationCenter:v17 dataSource:self delegate:self];
-  v25 = [[HMDMediaDestinationBackingStoreHandler alloc] initWithDestination:v19 backingStore:v16 metricsDispatcher:v23 delegate:self];
+  v24 = [[HMDMediaDestinationMessageHandler alloc] initWithDestination:destinationCopy messageDispatcher:dispatcherCopy notificationCenter:centerCopy dataSource:self delegate:self];
+  v25 = [[HMDMediaDestinationBackingStoreHandler alloc] initWithDestination:destinationCopy backingStore:storeCopy metricsDispatcher:v23 delegate:self];
 
-  v26 = [(HMDMediaDestinationManager *)self initWithDestination:v19 messageHandler:v24 backingStoreHandler:v25 metricsDispatcher:v23 targetDevice:v29 dataSource:v15 delegate:v28];
+  v26 = [(HMDMediaDestinationManager *)self initWithDestination:destinationCopy messageHandler:v24 backingStoreHandler:v25 metricsDispatcher:v23 targetDevice:deviceCopy dataSource:sourceCopy delegate:delegateCopy];
   return v26;
 }
 

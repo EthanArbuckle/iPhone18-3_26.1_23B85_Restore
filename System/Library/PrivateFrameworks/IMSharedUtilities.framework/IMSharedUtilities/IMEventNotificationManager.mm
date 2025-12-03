@@ -1,19 +1,19 @@
 @interface IMEventNotificationManager
 - (BOOL)isBusy;
 - (IMEventNotificationManager)init;
-- (id)createEventListenerForNotificationName:(id)a3 object:(id)a4;
-- (void)appendNotificationForEventHandler:(id)a3 eventNotificationBlock:(id)a4;
-- (void)appendNotificationForEventHandler:(id)a3 sender:(id)a4 eventNotificationBlock:(id)a5;
+- (id)createEventListenerForNotificationName:(id)name object:(id)object;
+- (void)appendNotificationForEventHandler:(id)handler eventNotificationBlock:(id)block;
+- (void)appendNotificationForEventHandler:(id)handler sender:(id)sender eventNotificationBlock:(id)block;
 - (void)cancelAllEventNotifications;
-- (void)cancelEventNotificationsForEventHandler:(id)a3;
+- (void)cancelEventNotificationsForEventHandler:(id)handler;
 - (void)dealloc;
-- (void)eventListenerDidFinish:(id)a3;
-- (void)eventNotificationQueue:(id)a3 didChangeBusyState:(BOOL)a4;
-- (void)pauseEventNotifications:(BOOL)a3;
-- (void)pushNotificationForEventHandler:(id)a3 eventNotificationBlock:(id)a4;
-- (void)pushNotificationForEventHandler:(id)a3 sender:(id)a4 eventNotificationBlock:(id)a5;
-- (void)registerEventListener:(id)a3;
-- (void)registerNotificationQueue:(id)a3;
+- (void)eventListenerDidFinish:(id)finish;
+- (void)eventNotificationQueue:(id)queue didChangeBusyState:(BOOL)state;
+- (void)pauseEventNotifications:(BOOL)notifications;
+- (void)pushNotificationForEventHandler:(id)handler eventNotificationBlock:(id)block;
+- (void)pushNotificationForEventHandler:(id)handler sender:(id)sender eventNotificationBlock:(id)block;
+- (void)registerEventListener:(id)listener;
+- (void)registerNotificationQueue:(id)queue;
 @end
 
 @implementation IMEventNotificationManager
@@ -25,9 +25,9 @@
   v2 = [(IMEventNotificationManager *)&v10 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     registeredNotificationQueues = v2->_registeredNotificationQueues;
-    v2->_registeredNotificationQueues = v3;
+    v2->_registeredNotificationQueues = array;
 
     v5 = objc_alloc_init(IMEventListenerList);
     eventListeners = v2->_eventListeners;
@@ -46,8 +46,8 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = IMEventNotificationManager;
@@ -56,80 +56,80 @@
 
 - (BOOL)isBusy
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = [(IMEventNotificationManager *)v2 busyCount]> 0 || [(IMEventListenerList *)v2->_eventListeners count]!= 0;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = [(IMEventNotificationManager *)selfCopy busyCount]> 0 || [(IMEventListenerList *)selfCopy->_eventListeners count]!= 0;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)eventNotificationQueue:(id)a3 didChangeBusyState:(BOOL)a4
+- (void)eventNotificationQueue:(id)queue didChangeBusyState:(BOOL)state
 {
   [(IMEventNotificationManager *)self busyCount];
 
   MEMORY[0x1EEE66B58](self, sel_setBusyCount_);
 }
 
-- (void)registerNotificationQueue:(id)a3
+- (void)registerNotificationQueue:(id)queue
 {
-  v4 = a3;
-  [v4 setDelegate:self];
-  [(NSMutableArray *)self->_registeredNotificationQueues addObject:v4];
+  queueCopy = queue;
+  [queueCopy setDelegate:self];
+  [(NSMutableArray *)self->_registeredNotificationQueues addObject:queueCopy];
 }
 
-- (void)eventListenerDidFinish:(id)a3
+- (void)eventListenerDidFinish:(id)finish
 {
-  v5 = a3;
-  v4 = self;
-  objc_sync_enter(v4);
-  [(IMEventListenerList *)v4->_eventListeners removeObject:v5];
-  objc_sync_exit(v4);
+  finishCopy = finish;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(IMEventListenerList *)selfCopy->_eventListeners removeObject:finishCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)registerEventListener:(id)a3
+- (void)registerEventListener:(id)listener
 {
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
-  [v4 timeout];
+  listenerCopy = listener;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [listenerCopy timeout];
   if (v6 == 0.0)
   {
-    [v4 setTimeout:v5->_eventTimeout];
+    [listenerCopy setTimeout:selfCopy->_eventTimeout];
   }
 
-  [(IMEventListenerList *)v5->_eventListeners addObject:v4];
-  objc_initWeak(&location, v5);
+  [(IMEventListenerList *)selfCopy->_eventListeners addObject:listenerCopy];
+  objc_initWeak(&location, selfCopy);
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = sub_1A864FA14;
   v7[3] = &unk_1E7827750;
   objc_copyWeak(&v8, &location);
-  [v4 setDidInvokeCompletion:v7];
+  [listenerCopy setDidInvokeCompletion:v7];
   objc_destroyWeak(&v8);
   objc_destroyWeak(&location);
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (id)createEventListenerForNotificationName:(id)a3 object:(id)a4
+- (id)createEventListenerForNotificationName:(id)name object:(id)object
 {
-  v5 = [IMNotificationCenterEventListener eventListenerForNotificationName:a3 object:0];
+  v5 = [IMNotificationCenterEventListener eventListenerForNotificationName:name object:0];
   [(IMEventNotificationManager *)self registerEventListener:v5];
 
   return v5;
 }
 
-- (void)cancelEventNotificationsForEventHandler:(id)a3
+- (void)cancelEventNotificationsForEventHandler:(id)handler
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = self;
-  objc_sync_enter(v5);
+  handlerCopy = handler;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v12 = 0u;
   v13 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v6 = v5->_registeredNotificationQueues;
+  v6 = selfCopy->_registeredNotificationQueues;
   v7 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v7)
   {
@@ -144,7 +144,7 @@
           objc_enumerationMutation(v6);
         }
 
-        [*(*(&v10 + 1) + 8 * v9++) cancelEventNotificationsForNotificationTarget:{v4, v10}];
+        [*(*(&v10 + 1) + 8 * v9++) cancelEventNotificationsForNotificationTarget:{handlerCopy, v10}];
       }
 
       while (v7 != v9);
@@ -154,19 +154,19 @@
     while (v7);
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (void)cancelAllEventNotifications
 {
   v12 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v9 = 0u;
   v10 = 0u;
   v7 = 0u;
   v8 = 0u;
-  v3 = v2->_registeredNotificationQueues;
+  v3 = selfCopy->_registeredNotificationQueues;
   v4 = [(NSMutableArray *)v3 countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v4)
   {
@@ -191,20 +191,20 @@
     while (v4);
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)pauseEventNotifications:(BOOL)a3
+- (void)pauseEventNotifications:(BOOL)notifications
 {
-  v3 = a3;
+  notificationsCopy = notifications;
   v14 = *MEMORY[0x1E69E9840];
-  v4 = self;
-  objc_sync_enter(v4);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   v11 = 0u;
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v5 = v4->_registeredNotificationQueues;
+  v5 = selfCopy->_registeredNotificationQueues;
   v6 = [(NSMutableArray *)v5 countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v6)
   {
@@ -219,7 +219,7 @@
           objc_enumerationMutation(v5);
         }
 
-        [*(*(&v9 + 1) + 8 * v8++) setPaused:{v3, v9}];
+        [*(*(&v9 + 1) + 8 * v8++) setPaused:{notificationsCopy, v9}];
       }
 
       while (v6 != v8);
@@ -229,49 +229,49 @@
     while (v6);
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)pushNotificationForEventHandler:(id)a3 eventNotificationBlock:(id)a4
+- (void)pushNotificationForEventHandler:(id)handler eventNotificationBlock:(id)block
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(IMEventNotificationQueue *)v7->_notificationQueue pushEventTarget:v8 eventNotificationBlock:v6];
-  objc_sync_exit(v7);
+  handlerCopy = handler;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(IMEventNotificationQueue *)selfCopy->_notificationQueue pushEventTarget:handlerCopy eventNotificationBlock:blockCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)appendNotificationForEventHandler:(id)a3 eventNotificationBlock:(id)a4
+- (void)appendNotificationForEventHandler:(id)handler eventNotificationBlock:(id)block
 {
-  v8 = a3;
-  v6 = a4;
-  v7 = self;
-  objc_sync_enter(v7);
-  [(IMEventNotificationQueue *)v7->_notificationQueue appendEventTarget:v8 eventNotificationBlock:v6];
-  objc_sync_exit(v7);
+  handlerCopy = handler;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(IMEventNotificationQueue *)selfCopy->_notificationQueue appendEventTarget:handlerCopy eventNotificationBlock:blockCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)pushNotificationForEventHandler:(id)a3 sender:(id)a4 eventNotificationBlock:(id)a5
+- (void)pushNotificationForEventHandler:(id)handler sender:(id)sender eventNotificationBlock:(id)block
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  [(IMEventNotificationQueue *)v10->_notificationQueue pushEventTarget:v11 sender:v8 eventNotificationBlock:v9];
-  objc_sync_exit(v10);
+  handlerCopy = handler;
+  senderCopy = sender;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(IMEventNotificationQueue *)selfCopy->_notificationQueue pushEventTarget:handlerCopy sender:senderCopy eventNotificationBlock:blockCopy];
+  objc_sync_exit(selfCopy);
 }
 
-- (void)appendNotificationForEventHandler:(id)a3 sender:(id)a4 eventNotificationBlock:(id)a5
+- (void)appendNotificationForEventHandler:(id)handler sender:(id)sender eventNotificationBlock:(id)block
 {
-  v11 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = self;
-  objc_sync_enter(v10);
-  [(IMEventNotificationQueue *)v10->_notificationQueue appendEventTarget:v11 sender:v8 eventNotificationBlock:v9];
-  objc_sync_exit(v10);
+  handlerCopy = handler;
+  senderCopy = sender;
+  blockCopy = block;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(IMEventNotificationQueue *)selfCopy->_notificationQueue appendEventTarget:handlerCopy sender:senderCopy eventNotificationBlock:blockCopy];
+  objc_sync_exit(selfCopy);
 }
 
 @end

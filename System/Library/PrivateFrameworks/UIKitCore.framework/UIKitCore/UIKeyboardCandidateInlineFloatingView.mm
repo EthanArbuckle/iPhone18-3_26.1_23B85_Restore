@@ -1,30 +1,30 @@
 @interface UIKeyboardCandidateInlineFloatingView
-- (BOOL)isAcceptableFrame:(CGRect)a3 afterScrollBy:(double)a4;
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)isAcceptableFrame:(CGRect)frame afterScrollBy:(double)by;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (BOOL)shouldExtendUpwards;
-- (CGRect)adjustedFrameFromDesiredFrame:(CGRect)a3 textHeight:(double)a4;
-- (CGRect)adjustedFrameFromDesiredFrame:(CGRect)a3 textWidth:(double)a4;
-- (CGRect)adjustedInlineRectFromInlineText:(id)a3 inlineRect:(CGRect)a4;
+- (CGRect)adjustedFrameFromDesiredFrame:(CGRect)frame textHeight:(double)height;
+- (CGRect)adjustedFrameFromDesiredFrame:(CGRect)frame textWidth:(double)width;
+- (CGRect)adjustedInlineRectFromInlineText:(id)text inlineRect:(CGRect)rect;
 - (CGRect)inlineRect;
 - (CGRect)previousCollapsedFrame;
 - (CGSize)preferredSize;
 - (UIEdgeInsets)cellPadding;
 - (UIEdgeInsets)extraInsets;
-- (UIKeyboardCandidateInlineFloatingView)initWithFrame:(CGRect)a3;
+- (UIKeyboardCandidateInlineFloatingView)initWithFrame:(CGRect)frame;
 - (id)traitCollection;
-- (void)adjustFrameForInlineText:(id)a3 inlineRect:(CGRect)a4 maxX:(double)a5;
+- (void)adjustFrameForInlineText:(id)text inlineRect:(CGRect)rect maxX:(double)x;
 - (void)dealloc;
 - (void)layoutSubviews;
-- (void)setInlineText:(id)a3 inlineRect:(CGRect)a4 maxX:(double)a5 layout:(BOOL)a6;
+- (void)setInlineText:(id)text inlineRect:(CGRect)rect maxX:(double)x layout:(BOOL)layout;
 @end
 
 @implementation UIKeyboardCandidateInlineFloatingView
 
-- (UIKeyboardCandidateInlineFloatingView)initWithFrame:(CGRect)a3
+- (UIKeyboardCandidateInlineFloatingView)initWithFrame:(CGRect)frame
 {
   v4 = *MEMORY[0x1E695EFF8];
   v5 = *(MEMORY[0x1E695EFF8] + 8);
-  [(UIView *)self frame:a3.origin.x];
+  [(UIView *)self frame:frame.origin.x];
   v10.receiver = self;
   v10.super_class = UIKeyboardCandidateInlineFloatingView;
   v6 = [(UIView *)&v10 initWithFrame:v4, v5];
@@ -32,8 +32,8 @@
   if (v6)
   {
     [(UIView *)v6 setOpaque:0];
-    v8 = [(UIView *)v7 layer];
-    [v8 setMasksToBounds:0];
+    layer = [(UIView *)v7 layer];
+    [layer setMasksToBounds:0];
 
     v7->_tewObserverIsSet = 0;
   }
@@ -45,9 +45,9 @@
 {
   if (self->_tewObserverIsSet)
   {
-    v3 = [MEMORY[0x1E696AD88] defaultCenter];
-    v4 = [(UIView *)self window];
-    [v3 removeObserver:self name:0x1EFBA8F70 object:v4];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    window = [(UIView *)self window];
+    [defaultCenter removeObserver:self name:0x1EFBA8F70 object:window];
   }
 
   v5.receiver = self;
@@ -55,15 +55,15 @@
   [(UIView *)&v5 dealloc];
 }
 
-- (CGRect)adjustedInlineRectFromInlineText:(id)a3 inlineRect:(CGRect)a4
+- (CGRect)adjustedInlineRectFromInlineText:(id)text inlineRect:(CGRect)rect
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v9 = a3;
-  v10 = [(UIView *)self superview];
-  v11 = AutocorrectAdjustedInlineRect(v9, v10, x, y, width, height);
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  textCopy = text;
+  superview = [(UIView *)self superview];
+  v11 = AutocorrectAdjustedInlineRect(textCopy, superview, x, y, width, height);
   v13 = v12;
   v15 = v14;
   v17 = v16;
@@ -79,21 +79,21 @@
   return result;
 }
 
-- (BOOL)isAcceptableFrame:(CGRect)a3 afterScrollBy:(double)a4
+- (BOOL)isAcceptableFrame:(CGRect)frame afterScrollBy:(double)by
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = [(UIView *)self superview];
-  v10 = y - a4;
-  [v9 bounds];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  superview = [(UIView *)self superview];
+  v10 = y - by;
+  [superview bounds];
   v12 = v11;
   v14 = v13;
   v16 = v15;
   v18 = v17;
-  v19 = [(UIView *)self superview];
-  [v19 safeAreaInsets];
+  superview2 = [(UIView *)self superview];
+  [superview2 safeAreaInsets];
   v21 = v12 + v20;
   v23 = v14 + v22;
   v25 = v16 - (v20 + v24);
@@ -104,7 +104,7 @@
   v31 = v23 + v30;
   v33 = v25 - (v28 + v32);
   v35 = v27 - (v30 + v34);
-  v36 = [(UIKeyboardCandidateInlineFloatingView *)self inlineRectIsVertical];
+  inlineRectIsVertical = [(UIKeyboardCandidateInlineFloatingView *)self inlineRectIsVertical];
   v37 = v29;
   v38 = v31;
   v39 = v33;
@@ -112,7 +112,7 @@
   v41 = x;
   v42 = v10;
   v43 = width;
-  if (v36)
+  if (inlineRectIsVertical)
   {
     v44 = height;
     v45 = height;
@@ -133,21 +133,21 @@ LABEL_7:
     }
   }
 
-  v46 = [(UIView *)self window];
-  [v9 convertRect:v46 toView:{x, v10, width, v44}];
+  window = [(UIView *)self window];
+  [superview convertRect:window toView:{x, v10, width, v44}];
   v48 = v47;
   v50 = v49;
   v52 = v51;
   v54 = v53;
 
-  v55 = [(UIKeyboardCandidateInlineFloatingView *)self inlineRectIsVertical];
-  v56 = [(UIView *)self window];
-  [v56 bounds];
+  inlineRectIsVertical2 = [(UIKeyboardCandidateInlineFloatingView *)self inlineRectIsVertical];
+  window2 = [(UIView *)self window];
+  [window2 bounds];
   v61 = v48;
   v62 = v50;
   v63 = v52;
   v64 = v54;
-  if (v55)
+  if (inlineRectIsVertical2)
   {
     v65 = CGRectContainsRect(*&v57, *&v61);
 
@@ -168,50 +168,50 @@ LABEL_7:
   }
 
   v68 = +[UIKeyboardImpl activeInstance];
-  v69 = [v68 _window];
-  v70 = [v69 screen];
-  v71 = [(UIView *)self _window];
-  v72 = [v71 screen];
+  _window = [v68 _window];
+  screen = [_window screen];
+  _window2 = [(UIView *)self _window];
+  screen2 = [_window2 screen];
 
-  if (v70 != v72)
+  if (screen != screen2)
   {
     goto LABEL_16;
   }
 
-  [v9 _convertViewPointToSceneSpaceForKeyboard:{x, v10, width, v44}];
+  [superview _convertViewPointToSceneSpaceForKeyboard:{x, v10, width, v44}];
   v74 = v73;
   v76 = v75;
   v78 = v77;
   v80 = v79;
-  v81 = [v68 superview];
+  superview3 = [v68 superview];
   [v68 frame];
-  [v81 _convertViewPointToSceneSpaceForKeyboard:?];
+  [superview3 _convertViewPointToSceneSpaceForKeyboard:?];
   v83 = v82;
   v85 = v84;
   v87 = v86;
   v89 = v88;
 
   v90 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v91 = [v90 inputViews];
-  v92 = [v91 inputAccessoryView];
+  inputViews = [v90 inputViews];
+  inputAccessoryView = [inputViews inputAccessoryView];
 
-  [v92 frame];
+  [inputAccessoryView frame];
   if (v93 > 0.0)
   {
     v107 = v76;
     v109 = v74;
-    v94 = [v92 window];
-    [v94 windowLevel];
+    window3 = [inputAccessoryView window];
+    [window3 windowLevel];
     v96 = v95;
-    v97 = [(UIView *)self window];
-    [v97 windowLevel];
+    window4 = [(UIView *)self window];
+    [window4 windowLevel];
     v99 = v98;
 
     if (v96 > v99)
     {
-      v100 = [v92 superview];
-      [v92 frame];
-      [v100 _convertViewPointToSceneSpaceForKeyboard:?];
+      superview4 = [inputAccessoryView superview];
+      [inputAccessoryView frame];
+      [superview4 _convertViewPointToSceneSpaceForKeyboard:?];
       v113.origin.x = v101;
       v113.origin.y = v102;
       v113.size.width = v103;
@@ -256,13 +256,13 @@ LABEL_18:
   return v66;
 }
 
-- (CGRect)adjustedFrameFromDesiredFrame:(CGRect)a3 textHeight:(double)a4
+- (CGRect)adjustedFrameFromDesiredFrame:(CGRect)frame textHeight:(double)height
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v9 = a3.origin.y + a4;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v9 = frame.origin.y + height;
   [(UIKeyboardCandidateInlineFloatingView *)self extendedStateAdditionalHeight];
   if ([(UIKeyboardCandidateInlineFloatingView *)self isAcceptableFrame:x afterScrollBy:v9, width, height + v10, 0.0])
   {
@@ -282,10 +282,10 @@ LABEL_18:
     v41 = *MEMORY[0x1E695F058];
     rect = *(MEMORY[0x1E695F058] + 24);
     v14 = +[UIKeyboardImpl activeInstance];
-    v15 = [v14 inputDelegateManager];
-    v16 = [v15 keyInputDelegate];
+    inputDelegateManager = [v14 inputDelegateManager];
+    keyInputDelegate = [inputDelegateManager keyInputDelegate];
 
-    if (v16)
+    if (keyInputDelegate)
     {
       while (1)
       {
@@ -297,13 +297,13 @@ LABEL_18:
 
         if (objc_opt_respondsToSelector())
         {
-          [v16 visibleTextRect];
+          [keyInputDelegate visibleTextRect];
           v19 = v18;
           v40 = v21;
           v42 = v20;
           recta = v22;
-          v23 = [(UIView *)self superview];
-          [v16 convertRect:v23 toCoordinateSpace:{v19, v42, v40, recta}];
+          superview = [(UIView *)self superview];
+          [keyInputDelegate convertRect:superview toCoordinateSpace:{v19, v42, v40, recta}];
           v39 = v25;
           v41 = v24;
           v13 = v26;
@@ -312,10 +312,10 @@ LABEL_18:
           break;
         }
 
-        v17 = [v16 superview];
+        superview2 = [keyInputDelegate superview];
 
-        v16 = v17;
-        if (!v17)
+        keyInputDelegate = superview2;
+        if (!superview2)
         {
           goto LABEL_11;
         }
@@ -346,8 +346,8 @@ LABEL_14:
 
     else
     {
-      v29 = [(UIView *)self superview];
-      [v29 frame];
+      superview3 = [(UIView *)self superview];
+      [superview3 frame];
       v32 = (v30 + v31) * 0.5;
 
       v11 = y >= v32;
@@ -362,21 +362,21 @@ LABEL_14:
   v33 = x;
   v34 = v9;
   v35 = width;
-  v36 = height;
-  result.size.height = v36;
+  heightCopy = height;
+  result.size.height = heightCopy;
   result.size.width = v35;
   result.origin.y = v34;
   result.origin.x = v33;
   return result;
 }
 
-- (CGRect)adjustedFrameFromDesiredFrame:(CGRect)a3 textWidth:(double)a4
+- (CGRect)adjustedFrameFromDesiredFrame:(CGRect)frame textWidth:(double)width
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  [(UIKeyboardCandidateInlineFloatingView *)self extendedStateAdditionalHeight:a3.origin.x];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  [(UIKeyboardCandidateInlineFloatingView *)self extendedStateAdditionalHeight:frame.origin.x];
   v10 = height + v9;
   if ([(UIKeyboardCandidateInlineFloatingView *)self isAcceptableFrame:x afterScrollBy:y, width, height + v9, 0.0]&& ([(UIKeyboardCandidateInlineFloatingView *)self inlineRect], v31.origin.x = x, v31.origin.y = y, v31.size.width = width, v31.size.height = v10, !CGRectIntersectsRect(v29, v31)))
   {
@@ -432,20 +432,20 @@ LABEL_14:
   [(UIKeyboardCandidateInlineFloatingView *)self setPosition:v14];
   v25 = x;
   v26 = y;
-  v27 = width;
+  widthCopy = width;
   v28 = height;
   result.size.height = v28;
-  result.size.width = v27;
+  result.size.width = widthCopy;
   result.origin.y = v26;
   result.origin.x = v25;
   return result;
 }
 
-- (void)adjustFrameForInlineText:(id)a3 inlineRect:(CGRect)a4 maxX:(double)a5
+- (void)adjustFrameForInlineText:(id)text inlineRect:(CGRect)rect maxX:(double)x
 {
   v127 = *MEMORY[0x1E69E9840];
   self->_reducedWidth = 0;
-  [(UIKeyboardCandidateInlineFloatingView *)self adjustedInlineRectFromInlineText:a3 inlineRect:a4.origin.x, a4.origin.y, a4.size.width, a4.size.height];
+  [(UIKeyboardCandidateInlineFloatingView *)self adjustedInlineRectFromInlineText:text inlineRect:rect.origin.x, rect.origin.y, rect.size.width, rect.size.height];
   v107 = v7;
   v9 = v8;
   v11 = v10;
@@ -459,7 +459,7 @@ LABEL_14:
   v108 = v11;
   if ([(UIKeyboardCandidateInlineFloatingView *)self adjustMode]== 1)
   {
-    v20 = [(UIKeyboardCandidateInlineFloatingView *)self inlineRectIsVertical];
+    inlineRectIsVertical = [(UIKeyboardCandidateInlineFloatingView *)self inlineRectIsVertical];
     [(UIKeyboardCandidateInlineFloatingView *)self cellPadding];
     v22 = v21;
     v23 = v17;
@@ -487,7 +487,7 @@ LABEL_14:
     }
 
     v31 = v30 + v22 + v26;
-    if (v20)
+    if (inlineRectIsVertical)
     {
       v19 = v31;
     }
@@ -507,37 +507,37 @@ LABEL_14:
     v111 = v19;
   }
 
-  v32 = [(UIView *)self superview];
-  [v32 bounds];
+  superview = [(UIView *)self superview];
+  [superview bounds];
   v34 = v33;
   v36 = v35;
   v38 = v37;
   v40 = v39;
 
-  v41 = [(UIView *)self superview];
-  [v41 safeAreaInsets];
+  superview2 = [(UIView *)self superview];
+  [superview2 safeAreaInsets];
   x = v34 + v42;
   y = v36 + v44;
   width = v38 - (v42 + v46);
   height = v40 - (v44 + v48);
 
-  v50 = [(UIView *)self window];
-  v51 = [v50 _isTextEffectsWindow];
+  window = [(UIView *)self window];
+  _isTextEffectsWindow = [window _isTextEffectsWindow];
 
   rect = v13;
-  if (v51)
+  if (_isTextEffectsWindow)
   {
-    v52 = [(UIView *)self superview];
-    v53 = [(UIView *)self window];
-    [v53 actualSceneBounds];
+    superview3 = [(UIView *)self superview];
+    window2 = [(UIView *)self window];
+    [window2 actualSceneBounds];
     v55 = v54;
     v57 = v56;
     v103 = v9;
-    v104 = a5;
+    xCopy = x;
     v59 = v58;
     v61 = v60;
-    v62 = [(UIView *)self window];
-    [v52 convertRect:v62 fromView:{v55, v57, v59, v61}];
+    window3 = [(UIView *)self window];
+    [superview3 convertRect:window3 fromView:{v55, v57, v59, v61}];
     v64 = v63;
     v66 = v65;
     v68 = v67;
@@ -547,7 +547,7 @@ LABEL_14:
     v129.origin.y = v66;
     v129.size.width = v68;
     v9 = v103;
-    a5 = v104;
+    x = xCopy;
     v129.size.height = v70;
     v142.origin.x = x;
     v142.origin.y = y;
@@ -586,9 +586,9 @@ LABEL_14:
     v133.size.width = width;
     v133.size.height = height;
     v74 = CGRectGetWidth(v133);
-    if (v74 <= a5)
+    if (v74 <= x)
     {
-      a5 = v74;
+      x = v74;
     }
 
     v75 = 312.0;
@@ -600,20 +600,20 @@ LABEL_14:
   v134.size.width = v75;
   v134.size.height = v71;
   MaxX = CGRectGetMaxX(v134);
-  if (MaxX >= a5)
+  if (MaxX >= x)
   {
-    v80 = v107 - (MaxX - a5);
-    if (v75 >= a5)
+    v80 = v107 - (MaxX - x);
+    if (v75 >= x)
     {
       goto LABEL_28;
     }
 
-    if (a5 - v75 > 1.0)
+    if (x - v75 > 1.0)
     {
       v80 = v80 + -1.0;
     }
 
-    if (a5 - v75 <= 2.0)
+    if (x - v75 <= 2.0)
     {
 LABEL_28:
       v78 = v75;
@@ -625,8 +625,8 @@ LABEL_28:
       v80 = v80 + -1.0;
     }
 
-    v81 = [(UIKeyboardCandidateInlineFloatingView *)self inlineRectIsVertical];
-    if (v80 >= 0.0 || v81)
+    inlineRectIsVertical2 = [(UIKeyboardCandidateInlineFloatingView *)self inlineRectIsVertical];
+    if (v80 >= 0.0 || inlineRectIsVertical2)
     {
       v79 = v80;
     }
@@ -651,13 +651,13 @@ LABEL_28:
     }
   }
 
-  v83 = [(UIKeyboardCandidateInlineFloatingView *)self inlineRectIsVertical];
+  inlineRectIsVertical3 = [(UIKeyboardCandidateInlineFloatingView *)self inlineRectIsVertical];
   v112 = v71;
   v84 = v107;
   v85 = v9;
   v86 = v76;
-  v87 = rect;
-  if (v83)
+  rectCopy = rect;
+  if (inlineRectIsVertical3)
   {
     [(UIKeyboardCandidateInlineFloatingView *)self adjustedFrameFromDesiredFrame:v79 textWidth:v9, v78, v71, CGRectGetWidth(*&v84)];
   }
@@ -696,22 +696,22 @@ LABEL_28:
       v141.size.width = v94;
       v141.size.height = v95;
       v100 = NSStringFromCGRect(v141);
-      v101 = [(UIView *)self superview];
-      v102 = [(UIView *)self window];
+      superview4 = [(UIView *)self superview];
+      window4 = [(UIView *)self window];
       *buf = 136316674;
       v114 = "[UIKeyboardCandidateInlineFloatingView adjustFrameForInlineText:inlineRect:maxX:]";
       v115 = 2112;
       v116 = v98;
       v117 = 2048;
-      v118 = a5;
+      xCopy3 = x;
       v119 = 2112;
       v120 = v99;
       v121 = 2112;
       v122 = v100;
       v123 = 2112;
-      v124 = v101;
+      v124 = superview4;
       v125 = 2112;
-      v126 = v102;
+      v126 = window4;
       _os_log_fault_impl(&dword_188A29000, v97, OS_LOG_TYPE_FAULT, "%s: invalid adjust frame, inlineRect %@, maxX %f, adjustedFrame %@, finalAdjustedFrame %@, superview %@, window %@", buf, 0x48u);
     }
 
@@ -739,22 +739,22 @@ LABEL_28:
       v138.size.width = v94;
       v138.size.height = v95;
       v100 = NSStringFromCGRect(v138);
-      v101 = [(UIView *)self superview];
-      v102 = [(UIView *)self window];
+      superview4 = [(UIView *)self superview];
+      window4 = [(UIView *)self window];
       *buf = 136316674;
       v114 = "[UIKeyboardCandidateInlineFloatingView adjustFrameForInlineText:inlineRect:maxX:]";
       v115 = 2112;
       v116 = v98;
       v117 = 2048;
-      v118 = a5;
+      xCopy3 = x;
       v119 = 2112;
       v120 = v99;
       v121 = 2112;
       v122 = v100;
       v123 = 2112;
-      v124 = v101;
+      v124 = superview4;
       v125 = 2112;
-      v126 = v102;
+      v126 = window4;
       _os_log_impl(&dword_188A29000, v97, OS_LOG_TYPE_ERROR, "%s: invalid adjust frame, inlineRect %@, maxX %f, adjustedFrame %@, finalAdjustedFrame %@, superview %@, window %@", buf, 0x48u);
     }
 
@@ -767,12 +767,12 @@ LABEL_49:
 
 - (BOOL)shouldExtendUpwards
 {
-  v3 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (v3)
+  if (superview)
   {
-    v4 = [(UIKeyboardCandidateInlineFloatingView *)self position];
-    if (v4 != 1)
+    position = [(UIKeyboardCandidateInlineFloatingView *)self position];
+    if (position != 1)
     {
       [(UIView *)self frame];
       v6 = v5;
@@ -781,58 +781,58 @@ LABEL_49:
       v12 = v11;
       [(UIKeyboardCandidateInlineFloatingView *)self extendedStateAdditionalHeight];
       v14 = v13 + v12;
-      v15 = [(UIView *)self superview];
-      [v15 bounds];
+      superview2 = [(UIView *)self superview];
+      [superview2 bounds];
       v17 = v16;
       v19 = v18;
       v21 = v20;
       v23 = v22;
 
-      v24 = [(UIView *)self superview];
-      [v24 safeAreaInsets];
+      superview3 = [(UIView *)self superview];
+      [superview3 safeAreaInsets];
       v26 = v17 + v25;
       v28 = v19 + v27;
       v30 = v21 - (v25 + v29);
       v32 = v23 - (v27 + v31);
 
-      LOBYTE(v4) = !_CGRectContainsRectVertically(v26, v28, v30, v32, v6, v8, v10, v14);
+      LOBYTE(position) = !_CGRectContainsRectVertically(v26, v28, v30, v32, v6, v8, v10, v14);
     }
   }
 
   else
   {
-    LOBYTE(v4) = 0;
+    LOBYTE(position) = 0;
   }
 
-  return v4;
+  return position;
 }
 
-- (void)setInlineText:(id)a3 inlineRect:(CGRect)a4 maxX:(double)a5 layout:(BOOL)a6
+- (void)setInlineText:(id)text inlineRect:(CGRect)rect maxX:(double)x layout:(BOOL)layout
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  [(UIKeyboardCandidateInlineFloatingView *)self setInlineText:a3, a6];
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
+  [(UIKeyboardCandidateInlineFloatingView *)self setInlineText:text, layout];
   [(UIKeyboardCandidateInlineFloatingView *)self setInlineRect:x, y, width, height];
-  [(UIKeyboardCandidateInlineFloatingView *)self setMaxX:a5];
+  [(UIKeyboardCandidateInlineFloatingView *)self setMaxX:x];
   v12 = +[UIKeyboardImpl activeInstance];
-  v91 = [v12 inputOverlayContainer];
+  inputOverlayContainer = [v12 inputOverlayContainer];
 
-  v13 = [(UIView *)self superview];
+  superview = [(UIView *)self superview];
 
-  if (v13)
+  if (superview)
   {
-    [v91 bringSubviewToFront:self];
+    [inputOverlayContainer bringSubviewToFront:self];
   }
 
   else
   {
-    [v91 addSubview:self];
+    [inputOverlayContainer addSubview:self];
     v14 = +[UIKeyboardImpl activeInstance];
-    v15 = [v14 inputDelegate];
-    v16 = [v15 textInputView];
-    [v16 _convertVisualAltitude:self toView:0.0];
+    inputDelegate = [v14 inputDelegate];
+    textInputView = [inputDelegate textInputView];
+    [textInputView _convertVisualAltitude:self toView:0.0];
     [(UIView *)self _setVisualAltitude:?];
   }
 
@@ -843,14 +843,14 @@ LABEL_49:
     [(UIKeyboardCandidateInlineFloatingView *)self inlineRect];
     if (v17 > 100.0)
     {
-      v18 = [(UIView *)self superview];
-      [v18 bounds];
+      superview2 = [(UIView *)self superview];
+      [superview2 bounds];
       v20 = v19;
       v22 = v21;
       v24 = v23;
       v26 = v25;
-      v27 = [(UIView *)self superview];
-      [v27 safeAreaInsets];
+      superview3 = [(UIView *)self superview];
+      [superview3 safeAreaInsets];
       v29 = v20 + v28;
       v31 = v22 + v30;
       v33 = v24 - (v28 + v32);
@@ -870,23 +870,23 @@ LABEL_49:
     }
   }
 
-  v40 = [(UIKeyboardCandidateInlineFloatingView *)self inlineText];
+  inlineText = [(UIKeyboardCandidateInlineFloatingView *)self inlineText];
   [(UIKeyboardCandidateInlineFloatingView *)self inlineRect];
   v42 = v41;
   v44 = v43;
   v46 = v45;
   v48 = v47;
   [(UIKeyboardCandidateInlineFloatingView *)self maxX];
-  [(UIKeyboardCandidateInlineFloatingView *)self adjustFrameForInlineText:v40 inlineRect:v42 maxX:v44, v46, v48, v49];
+  [(UIKeyboardCandidateInlineFloatingView *)self adjustFrameForInlineText:inlineText inlineRect:v42 maxX:v44, v46, v48, v49];
 
   v50 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v51 = [v50 containerView];
+  containerView = [v50 containerView];
 
-  v52 = [(UIView *)self superview];
-  if (v52 != v51)
+  superview4 = [(UIView *)self superview];
+  if (superview4 != containerView)
   {
-    v53 = [(UIView *)self superview];
-    [v53 bounds];
+    superview5 = [(UIView *)self superview];
+    [superview5 bounds];
     v55 = v54;
     v57 = v56;
     v59 = v58;
@@ -907,17 +907,17 @@ LABEL_49:
       goto LABEL_13;
     }
 
-    v52 = v51;
+    superview4 = containerView;
     [(UIKeyboardCandidateInlineFloatingView *)self inlineRect];
     v68 = v67;
     v70 = v69;
     v72 = v71;
     v74 = v73;
-    v75 = [(UIView *)self superview];
-    [v52 convertRect:v75 fromView:{v68, v70, v72, v74}];
+    superview6 = [(UIView *)self superview];
+    [superview4 convertRect:superview6 fromView:{v68, v70, v72, v74}];
     [(UIKeyboardCandidateInlineFloatingView *)self setInlineRect:?];
 
-    [v52 bounds];
+    [superview4 bounds];
     [(UIKeyboardCandidateInlineFloatingView *)self setMaxX:v76 + v77];
     if ([(UIKeyboardCandidateInlineFloatingView *)self inlineRectIsVertical])
     {
@@ -925,21 +925,21 @@ LABEL_49:
       [(UIKeyboardCandidateInlineFloatingView *)self setMaxX:CGRectGetMinX(v97)];
     }
 
-    [v52 addSubview:self];
+    [superview4 addSubview:self];
     v78 = +[UIKeyboardImpl activeInstance];
-    v79 = [v78 inputDelegate];
-    v80 = [v79 textInputView];
-    [v80 _convertVisualAltitude:self toView:0.0];
+    inputDelegate2 = [v78 inputDelegate];
+    textInputView2 = [inputDelegate2 textInputView];
+    [textInputView2 _convertVisualAltitude:self toView:0.0];
     [(UIView *)self _setVisualAltitude:?];
 
-    v81 = [(UIKeyboardCandidateInlineFloatingView *)self inlineText];
+    inlineText2 = [(UIKeyboardCandidateInlineFloatingView *)self inlineText];
     [(UIKeyboardCandidateInlineFloatingView *)self inlineRect];
     v83 = v82;
     v85 = v84;
     v87 = v86;
     v89 = v88;
     [(UIKeyboardCandidateInlineFloatingView *)self maxX];
-    [(UIKeyboardCandidateInlineFloatingView *)self adjustFrameForInlineText:v81 inlineRect:v83 maxX:v85, v87, v89, v90];
+    [(UIKeyboardCandidateInlineFloatingView *)self adjustFrameForInlineText:inlineText2 inlineRect:v83 maxX:v85, v87, v89, v90];
   }
 
 LABEL_13:
@@ -957,8 +957,8 @@ LABEL_13:
   v12 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v3 = [(UIView *)self subviews];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+  subviews = [(UIView *)self subviews];
+  v4 = [subviews countByEnumeratingWithState:&v9 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -970,7 +970,7 @@ LABEL_13:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(subviews);
         }
 
         v8 = *(*(&v9 + 1) + 8 * v7);
@@ -980,25 +980,25 @@ LABEL_13:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v14 count:16];
+      v5 = [subviews countByEnumeratingWithState:&v9 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   v22 = *MEMORY[0x1E69E9840];
-  v7 = a4;
+  eventCopy = event;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v8 = [(UIView *)self subviews];
-  v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  subviews = [(UIView *)self subviews];
+  v9 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v9)
   {
     v10 = v9;
@@ -1009,12 +1009,12 @@ LABEL_13:
       {
         if (*v18 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(subviews);
         }
 
         v13 = *(*(&v17 + 1) + 8 * i);
         [(UIView *)self convertPoint:v13 toView:x, y];
-        if ([v13 pointInside:v7 withEvent:?])
+        if ([v13 pointInside:eventCopy withEvent:?])
         {
 
           v14 = 1;
@@ -1022,7 +1022,7 @@ LABEL_13:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v10 = [subviews countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v10)
       {
         continue;
@@ -1034,7 +1034,7 @@ LABEL_13:
 
   v16.receiver = self;
   v16.super_class = UIKeyboardCandidateInlineFloatingView;
-  v14 = [(UIView *)&v16 pointInside:v7 withEvent:x, y];
+  v14 = [(UIView *)&v16 pointInside:eventCopy withEvent:x, y];
 LABEL_11:
 
   return v14;
@@ -1042,22 +1042,22 @@ LABEL_11:
 
 - (id)traitCollection
 {
-  v3 = [(UIView *)self window];
+  window = [(UIView *)self window];
 
-  if (v3)
+  if (window)
   {
-    v4 = [(UIView *)self window];
-    v5 = [v4 traitCollection];
+    window2 = [(UIView *)self window];
+    traitCollection = [window2 traitCollection];
   }
 
   else
   {
     v7.receiver = self;
     v7.super_class = UIKeyboardCandidateInlineFloatingView;
-    v5 = [(UIView *)&v7 traitCollection];
+    traitCollection = [(UIView *)&v7 traitCollection];
   }
 
-  return v5;
+  return traitCollection;
 }
 
 - (CGRect)inlineRect

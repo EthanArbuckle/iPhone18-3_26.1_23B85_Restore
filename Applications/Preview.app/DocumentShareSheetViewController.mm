@@ -1,13 +1,13 @@
 @interface DocumentShareSheetViewController
-- (_TtC7PreviewP33_A22D73F1BBD8537A10652A1CB219D69332DocumentShareSheetViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4;
-- (void)viewWillAppear:(BOOL)a3;
+- (_TtC7PreviewP33_A22D73F1BBD8537A10652A1CB219D69332DocumentShareSheetViewController)initWithActivityItems:(id)items applicationActivities:(id)activities;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation DocumentShareSheetViewController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   type metadata accessor for MainActor();
   static MainActor.shared.getter();
   dispatch thunk of Actor.unownedExecutor.getter();
@@ -18,14 +18,14 @@
 
   v7.receiver = self;
   v7.super_class = type metadata accessor for DocumentShareSheetViewController(0);
-  v5 = self;
-  [(DocumentShareSheetViewController *)&v7 viewWillAppear:v3];
+  selfCopy = self;
+  [(DocumentShareSheetViewController *)&v7 viewWillAppear:appearCopy];
   if (sub_10006A15C())
   {
-    v6 = [objc_opt_self() sharedApplication];
-    [(DocumentShareSheetViewController *)v6 sendAction:"resignFirstResponder" to:0 from:0 forEvent:0];
+    sharedApplication = [objc_opt_self() sharedApplication];
+    [(DocumentShareSheetViewController *)sharedApplication sendAction:"resignFirstResponder" to:0 from:0 forEvent:0];
 
-    v5 = v6;
+    selfCopy = sharedApplication;
   }
 
   else
@@ -33,7 +33,7 @@
   }
 }
 
-- (_TtC7PreviewP33_A22D73F1BBD8537A10652A1CB219D69332DocumentShareSheetViewController)initWithActivityItems:(id)a3 applicationActivities:(id)a4
+- (_TtC7PreviewP33_A22D73F1BBD8537A10652A1CB219D69332DocumentShareSheetViewController)initWithActivityItems:(id)items applicationActivities:(id)activities
 {
   type metadata accessor for MainActor();
   static MainActor.shared.getter();

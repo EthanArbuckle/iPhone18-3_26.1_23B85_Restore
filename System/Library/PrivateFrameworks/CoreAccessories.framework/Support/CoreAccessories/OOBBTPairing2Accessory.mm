@@ -1,31 +1,31 @@
 @interface OOBBTPairing2Accessory
-+ (id)accessoryForUID:(id)a3;
++ (id)accessoryForUID:(id)d;
 + (id)accessoryList;
 + (id)accessoryListLock;
 + (id)processingQueue;
-+ (void)addAccessory:(id)a3;
-+ (void)removeAccessoryForUID:(id)a3;
++ (void)addAccessory:(id)accessory;
++ (void)removeAccessoryForUID:(id)d;
 - (BOOL)carPlaySupported;
-- (BOOL)checkAlreadyPairedComponent:(id)a3;
-- (OOBBTPairing2Accessory)initWithUID:(id)a3 accInfo:(id)a4;
+- (BOOL)checkAlreadyPairedComponent:(id)component;
+- (OOBBTPairing2Accessory)initWithUID:(id)d accInfo:(id)info;
 - (id)getDeviceMacAddress;
 - (id)getPendingComponent;
 - (int)checkComponentsAlreadyPaired;
-- (void)addComponent:(id)a3;
-- (void)cancelPairing:(id)a3;
-- (void)checkDeviceSupportsContactsSync:(id)a3 withReply:(id)a4;
+- (void)addComponent:(id)component;
+- (void)cancelPairing:(id)pairing;
+- (void)checkDeviceSupportsContactsSync:(id)sync withReply:(id)reply;
 - (void)connectToACCBluetoothPairingService;
 - (void)disconnectFromACCBluetoothPairingService;
-- (void)showContactsSyncAlert:(id)a3 accessoryUID:(id)a4 macAddr:(id)a5;
-- (void)startPairing:(id)a3 macAddr:(id)a4 pairingDataP192:(id)a5 pairingDataP256:(id)a6;
+- (void)showContactsSyncAlert:(id)alert accessoryUID:(id)d macAddr:(id)addr;
+- (void)startPairing:(id)pairing macAddr:(id)addr pairingDataP192:(id)p192 pairingDataP256:(id)p256;
 @end
 
 @implementation OOBBTPairing2Accessory
 
-- (OOBBTPairing2Accessory)initWithUID:(id)a3 accInfo:(id)a4
+- (OOBBTPairing2Accessory)initWithUID:(id)d accInfo:(id)info
 {
-  v7 = a3;
-  v8 = a4;
+  dCopy = d;
+  infoCopy = info;
   v35.receiver = self;
   v35.super_class = OOBBTPairing2Accessory;
   v9 = [(OOBBTPairing2Accessory *)&v35 init];
@@ -35,8 +35,8 @@
     v11 = *(v9 + 1);
     *(v9 + 1) = v10;
 
-    objc_storeStrong(v9 + 2, a3);
-    objc_storeStrong(v9 + 3, a4);
+    objc_storeStrong(v9 + 2, d);
+    objc_storeStrong(v9 + 3, info);
     v12 = +[OOBBTPairing2Accessory processingQueue];
     v13 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, v12);
     v14 = *(v9 + 7);
@@ -55,9 +55,9 @@
     v16 = acc_strings_bundle();
     v17 = [v16 localizedStringForKey:@"“%@” would like to pair with your %@." value:&stru_10022D360 table:0];
 
-    v18 = [v9 name];
+    name = [v9 name];
     v19 = MGCopyAnswer();
-    v20 = [NSString stringWithFormat:v17, v18, v19, handler, v30, v31, v32];
+    v20 = [NSString stringWithFormat:v17, name, v19, handler, v30, v31, v32];
 
     v21 = acc_strings_bundle();
     v22 = [v21 localizedStringForKey:@"Allow" value:&stru_10022D360 table:0];
@@ -65,7 +65,7 @@
     v23 = acc_strings_bundle();
     v24 = [v23 localizedStringForKey:@"Cancel" value:&stru_10022D360 table:0];
 
-    v25 = [NSString stringWithFormat:@"oobPairing2-%@", v7];
+    dCopy = [NSString stringWithFormat:@"oobPairing2-%@", dCopy];
     v26 = objc_alloc_init(ACCUserNotification);
     v27 = *(v9 + 5);
     *(v9 + 5) = v26;
@@ -78,8 +78,8 @@
     [*(v9 + 5) setIconURL:0];
     [*(v9 + 5) setIsModal:1];
     [*(v9 + 5) setTimeout:0.0];
-    [*(v9 + 5) setIdentifier:v25];
-    [*(v9 + 5) setGroupIdentifier:v7];
+    [*(v9 + 5) setIdentifier:dCopy];
+    [*(v9 + 5) setGroupIdentifier:dCopy];
 
     objc_destroyWeak(&v33);
     objc_destroyWeak(&location);
@@ -120,9 +120,9 @@ void __46__OOBBTPairing2Accessory_initWithUID_accInfo___block_invoke(uint64_t a1
 - (BOOL)carPlaySupported
 {
   v2 = [(NSDictionary *)self->_accInfo objectForKey:@"ACCOOBBTPairingCarPlaySupported"];
-  v3 = [v2 BOOLValue];
+  bOOLValue = [v2 BOOLValue];
 
-  return v3;
+  return bOOLValue;
 }
 
 - (id)getPendingComponent
@@ -131,8 +131,8 @@ void __46__OOBBTPairing2Accessory_initWithUID_accInfo___block_invoke(uint64_t a1
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(NSMutableDictionary *)self->_componentList allValues];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  allValues = [(NSMutableDictionary *)self->_componentList allValues];
+  v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = *v9;
@@ -142,7 +142,7 @@ void __46__OOBBTPairing2Accessory_initWithUID_accInfo___block_invoke(uint64_t a1
       {
         if (*v9 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(allValues);
         }
 
         v6 = *(*(&v8 + 1) + 8 * i);
@@ -153,7 +153,7 @@ void __46__OOBBTPairing2Accessory_initWithUID_accInfo___block_invoke(uint64_t a1
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [allValues countByEnumeratingWithState:&v8 objects:v12 count:16];
       if (v3)
       {
         continue;
@@ -168,12 +168,12 @@ LABEL_11:
   return v3;
 }
 
-- (void)addComponent:(id)a3
+- (void)addComponent:(id)component
 {
   componentList = self->_componentList;
-  v4 = a3;
-  v5 = [v4 componentUID];
-  [(NSMutableDictionary *)componentList setObject:v4 forKey:v5];
+  componentCopy = component;
+  componentUID = [componentCopy componentUID];
+  [(NSMutableDictionary *)componentList setObject:componentCopy forKey:componentUID];
 }
 
 - (void)connectToACCBluetoothPairingService
@@ -444,9 +444,9 @@ void __45__OOBBTPairing2Accessory_getDeviceMacAddress__block_invoke_85(uint64_t 
   }
 }
 
-- (BOOL)checkAlreadyPairedComponent:(id)a3
+- (BOOL)checkAlreadyPairedComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   v24 = 0;
   v25 = &v24;
   v26 = 0x2020000000;
@@ -463,16 +463,16 @@ void __45__OOBBTPairing2Accessory_getDeviceMacAddress__block_invoke_85(uint64_t 
     v7 = v5;
     v23 = v7;
     v8 = [(NSXPCConnection *)connectionToACCBluetoothPairingService remoteObjectProxyWithErrorHandler:v22];
-    v9 = [v4 macAddr];
+    macAddr = [componentCopy macAddr];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = __54__OOBBTPairing2Accessory_checkAlreadyPairedComponent___block_invoke_87;
     v18[3] = &unk_10022A408;
-    v19 = v4;
+    v19 = componentCopy;
     v21 = &v24;
     v10 = v7;
     v20 = v10;
-    [v8 checkAlreadyPaired:v9 completionHandler:v18];
+    [v8 checkAlreadyPaired:macAddr completionHandler:v18];
 
     v11 = dispatch_time(0, 1000000000);
     if (dispatch_semaphore_wait(v10, v11))
@@ -596,8 +596,8 @@ intptr_t __54__OOBBTPairing2Accessory_checkAlreadyPairedComponent___block_invoke
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(NSMutableDictionary *)self->_componentList allValues];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  allValues = [(NSMutableDictionary *)self->_componentList allValues];
+  v4 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -609,7 +609,7 @@ intptr_t __54__OOBBTPairing2Accessory_checkAlreadyPairedComponent___block_invoke
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(allValues);
         }
 
         v9 = *(*(&v11 + 1) + 8 * i);
@@ -624,7 +624,7 @@ intptr_t __54__OOBBTPairing2Accessory_checkAlreadyPairedComponent___block_invoke
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [allValues countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -638,19 +638,19 @@ intptr_t __54__OOBBTPairing2Accessory_checkAlreadyPairedComponent___block_invoke
   return v6;
 }
 
-- (void)checkDeviceSupportsContactsSync:(id)a3 withReply:(id)a4
+- (void)checkDeviceSupportsContactsSync:(id)sync withReply:(id)reply
 {
-  v6 = a4;
+  replyCopy = reply;
   connectionToACCBluetoothPairingService = self->_connectionToACCBluetoothPairingService;
-  v8 = a3;
+  syncCopy = sync;
   v9 = [(NSXPCConnection *)connectionToACCBluetoothPairingService remoteObjectProxyWithErrorHandler:&__block_literal_global_42];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = __68__OOBBTPairing2Accessory_checkDeviceSupportsContactsSync_withReply___block_invoke_89;
   v11[3] = &unk_100228090;
-  v12 = v6;
-  v10 = v6;
-  [v9 deviceSupportsContactsSync:v8 withReply:v11];
+  v12 = replyCopy;
+  v10 = replyCopy;
+  [v9 deviceSupportsContactsSync:syncCopy withReply:v11];
 }
 
 void __68__OOBBTPairing2Accessory_checkDeviceSupportsContactsSync_withReply___block_invoke(id a1, NSError *a2)
@@ -689,21 +689,21 @@ uint64_t __68__OOBBTPairing2Accessory_checkDeviceSupportsContactsSync_withReply_
   return result;
 }
 
-- (void)showContactsSyncAlert:(id)a3 accessoryUID:(id)a4 macAddr:(id)a5
+- (void)showContactsSyncAlert:(id)alert accessoryUID:(id)d macAddr:(id)addr
 {
-  v8 = a3;
-  v9 = a5;
-  v10 = a4;
+  alertCopy = alert;
+  addrCopy = addr;
+  dCopy = d;
   v11 = acc_strings_bundle();
-  if (v8)
+  if (alertCopy)
   {
     v12 = [v11 localizedStringForKey:@"The accessory %@ may request your contacts value:phone favorites table:{and recent phone calls over Bluetooth. Do you wish to allow this?", &stru_10022D360, 0}];
-    v13 = [NSString stringWithFormat:v12, v8];
+    alertCopy = [NSString stringWithFormat:v12, alertCopy];
   }
 
   else
   {
-    v13 = [v11 localizedStringForKey:@"An unknown accessory may request your contacts value:phone favorites table:{and recent phone calls over Bluetooth. Do you wish to allow this?", &stru_10022D360, 0}];
+    alertCopy = [v11 localizedStringForKey:@"An unknown accessory may request your contacts value:phone favorites table:{and recent phone calls over Bluetooth. Do you wish to allow this?", &stru_10022D360, 0}];
   }
 
   v14 = acc_strings_bundle();
@@ -715,18 +715,18 @@ uint64_t __68__OOBBTPairing2Accessory_checkDeviceSupportsContactsSync_withReply_
   v18 = acc_strings_bundle();
   v19 = [v18 localizedStringForKey:@"Don’t Allow" value:&stru_10022D360 table:0];
 
-  v20 = [NSString stringWithFormat:@"oobPairing-contact-sync-%@", a4];
+  v20 = [NSString stringWithFormat:@"oobPairing-contact-sync-%@", d];
   v21 = objc_alloc_init(ACCUserNotification);
   [(ACCUserNotification *)v21 setType:0];
   [(ACCUserNotification *)v21 setTitle:v15];
-  [(ACCUserNotification *)v21 setMessage:v13];
+  [(ACCUserNotification *)v21 setMessage:alertCopy];
   [(ACCUserNotification *)v21 setDefaultButtonName:v17];
   [(ACCUserNotification *)v21 setOtherButtonName:v19];
   [(ACCUserNotification *)v21 setIconURL:0];
   [(ACCUserNotification *)v21 setIsModal:1];
   [(ACCUserNotification *)v21 setTimeout:0.0];
   [(ACCUserNotification *)v21 setIdentifier:v20];
-  [(ACCUserNotification *)v21 setGroupIdentifier:a4];
+  [(ACCUserNotification *)v21 setGroupIdentifier:d];
 
   v22 = +[ACCUserNotificationManager sharedManager];
   v24[0] = _NSConcreteStackBlock;
@@ -734,8 +734,8 @@ uint64_t __68__OOBBTPairing2Accessory_checkDeviceSupportsContactsSync_withReply_
   v24[2] = __69__OOBBTPairing2Accessory_showContactsSyncAlert_accessoryUID_macAddr___block_invoke;
   v24[3] = &unk_100227B50;
   v24[4] = self;
-  v25 = v9;
-  v23 = v9;
+  v25 = addrCopy;
+  v23 = addrCopy;
   [v22 presentNotification:v21 completionHandler:v24];
 }
 
@@ -825,12 +825,12 @@ void __69__OOBBTPairing2Accessory_showContactsSyncAlert_accessoryUID_macAddr___b
   }
 }
 
-- (void)startPairing:(id)a3 macAddr:(id)a4 pairingDataP192:(id)a5 pairingDataP256:(id)a6
+- (void)startPairing:(id)pairing macAddr:(id)addr pairingDataP192:(id)p192 pairingDataP256:(id)p256
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  pairingCopy = pairing;
+  addrCopy = addr;
+  p192Copy = p192;
+  p256Copy = p256;
   if (gLogObjects && gNumLogObjects >= 51)
   {
     v14 = *(gLogObjects + 400);
@@ -849,27 +849,27 @@ void __69__OOBBTPairing2Accessory_showContactsSyncAlert_accessoryUID_macAddr___b
 
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
-    v16 = [v10 componentUID];
+    componentUID = [pairingCopy componentUID];
     *buf = 138413058;
-    v40 = v16;
+    v40 = componentUID;
     v41 = 2112;
-    v42 = v11;
+    v42 = addrCopy;
     v43 = 2112;
-    v44 = v12;
+    v44 = p192Copy;
     v45 = 2112;
-    v46 = v13;
+    v46 = p256Copy;
     _os_log_impl(&_mh_execute_header, v14, OS_LOG_TYPE_DEFAULT, "startPairing: %@ macAddr: %@ pairingDataP192: %@ pairingDataP256: %@", buf, 0x2Au);
   }
 
-  if ([v11 length] == 6 && objc_msgSend(v12, "length") == 32 && (!v13 || objc_msgSend(v13, "length") == 32))
+  if ([addrCopy length] == 6 && objc_msgSend(p192Copy, "length") == 32 && (!p256Copy || objc_msgSend(p256Copy, "length") == 32))
   {
     [(OOBBTPairing2Accessory *)self connectToACCBluetoothPairingService];
     if (self->_connectionToACCBluetoothPairingService)
     {
-      v30 = [v12 subdataWithRange:{0, 16}];
-      v29 = [v12 subdataWithRange:{16, 16}];
-      v17 = [v13 subdataWithRange:{0, 16}];
-      v18 = [v13 subdataWithRange:{16, 16}];
+      v30 = [p192Copy subdataWithRange:{0, 16}];
+      v29 = [p192Copy subdataWithRange:{16, 16}];
+      v17 = [p256Copy subdataWithRange:{0, 16}];
+      v18 = [p256Copy subdataWithRange:{16, 16}];
       if (gLogObjects && gNumLogObjects >= 51)
       {
         v19 = *(gLogObjects + 400);
@@ -889,7 +889,7 @@ void __69__OOBBTPairing2Accessory_showContactsSyncAlert_accessoryUID_macAddr___b
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138413314;
-        v40 = v11;
+        v40 = addrCopy;
         v41 = 2112;
         v42 = v30;
         v43 = 2112;
@@ -906,13 +906,13 @@ void __69__OOBBTPairing2Accessory_showContactsSyncAlert_accessoryUID_macAddr___b
       v31[1] = 3221225472;
       v31[2] = __79__OOBBTPairing2Accessory_startPairing_macAddr_pairingDataP192_pairingDataP256___block_invoke_112;
       v31[3] = &unk_10022A490;
-      v32 = v11;
+      v32 = addrCopy;
       v33 = v30;
       v34 = v29;
       v35 = v17;
       v36 = v18;
-      v37 = v10;
-      v38 = self;
+      v37 = pairingCopy;
+      selfCopy = self;
       v23 = v18;
       v24 = v17;
       v25 = v29;
@@ -966,15 +966,15 @@ void __69__OOBBTPairing2Accessory_showContactsSyncAlert_accessoryUID_macAddr___b
 
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v10 componentUID];
+      componentUID2 = [pairingCopy componentUID];
       *buf = 138413058;
-      v40 = v26;
+      v40 = componentUID2;
       v41 = 2112;
-      v42 = v11;
+      v42 = addrCopy;
       v43 = 2112;
-      v44 = v12;
+      v44 = p192Copy;
       v45 = 2112;
-      v46 = v13;
+      v46 = p256Copy;
       _os_log_error_impl(&_mh_execute_header, v20, OS_LOG_TYPE_ERROR, "startPairing: %@ macAddr: %@ pairingDataP192: %@ pairingDataP256: %@, invalid parameter found, skip!", buf, 0x2Au);
     }
   }
@@ -1119,9 +1119,9 @@ void __79__OOBBTPairing2Accessory_startPairing_macAddr_pairingDataP192_pairingDa
   }
 }
 
-- (void)cancelPairing:(id)a3
+- (void)cancelPairing:(id)pairing
 {
-  v4 = a3;
+  pairingCopy = pairing;
   if (gLogObjects && gNumLogObjects >= 51)
   {
     v5 = *(gLogObjects + 400);
@@ -1140,9 +1140,9 @@ void __79__OOBBTPairing2Accessory_startPairing_macAddr_pairingDataP192_pairingDa
 
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v4 componentUID];
+    componentUID = [pairingCopy componentUID];
     v16 = 138412290;
-    v17 = v7;
+    v17 = componentUID;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "cancelPairing: %@", &v16, 0xCu);
   }
 
@@ -1179,15 +1179,15 @@ void __79__OOBBTPairing2Accessory_startPairing_macAddr_pairingDataP192_pairingDa
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
     {
       v16 = 138412290;
-      v17 = v4;
+      v17 = pairingCopy;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "call service cancelBTOOBPairing: component: %@", &v16, 0xCu);
     }
 
     v13 = [(NSXPCConnection *)self->_connectionToACCBluetoothPairingService remoteObjectProxyWithErrorHandler:&__block_literal_global_115];
-    v14 = [v4 macAddr];
-    [v13 cancelBTOOBPairing:v14];
+    macAddr = [pairingCopy macAddr];
+    [v13 cancelBTOOBPairing:macAddr];
 
-    [v4 setStatus:4];
+    [pairingCopy setStatus:4];
   }
 
   else
@@ -1279,29 +1279,29 @@ void __39__OOBBTPairing2Accessory_accessoryList__block_invoke(id a1)
   _objc_release_x1();
 }
 
-+ (id)accessoryForUID:(id)a3
++ (id)accessoryForUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = +[OOBBTPairing2Accessory accessoryList];
-  v5 = [v4 objectForKey:v3];
+  v5 = [v4 objectForKey:dCopy];
 
   return v5;
 }
 
-+ (void)addAccessory:(id)a3
++ (void)addAccessory:(id)accessory
 {
-  v3 = a3;
+  accessoryCopy = accessory;
   v5 = +[OOBBTPairing2Accessory accessoryList];
-  v4 = [v3 accessoryUID];
-  [v5 setObject:v3 forKey:v4];
+  accessoryUID = [accessoryCopy accessoryUID];
+  [v5 setObject:accessoryCopy forKey:accessoryUID];
 }
 
-+ (void)removeAccessoryForUID:(id)a3
++ (void)removeAccessoryForUID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v5 = +[OOBBTPairing2Accessory accessoryList];
-  v4 = [v5 objectForKey:v3];
-  [v5 removeObjectForKey:v3];
+  v4 = [v5 objectForKey:dCopy];
+  [v5 removeObjectForKey:dCopy];
 
   [v4 disconnectFromACCBluetoothPairingService];
 }

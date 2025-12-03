@@ -1,16 +1,16 @@
 @interface PREditingVariationSliderAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityValue;
-- (void)_axAdjustSliderValue:(BOOL)a3;
+- (void)_axAdjustSliderValue:(BOOL)value;
 @end
 
 @implementation PREditingVariationSliderAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"PREditingVariationSlider" hasProperty:@"value" withType:"d"];
-  [v3 validateClass:@"PREditingVariationSlider" hasInstanceMethod:@"_setSliderValue:" withFullSignature:{"v", "d", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"PREditingVariationSlider" hasProperty:@"value" withType:"d"];
+  [validationsCopy validateClass:@"PREditingVariationSlider" hasInstanceMethod:@"_setSliderValue:" withFullSignature:{"v", "d", 0}];
 }
 
 - (id)accessibilityValue
@@ -22,12 +22,12 @@
   return MEMORY[0x2A1C5E4D0](0, v2);
 }
 
-- (void)_axAdjustSliderValue:(BOOL)a3
+- (void)_axAdjustSliderValue:(BOOL)value
 {
-  v3 = a3;
+  valueCopy = value;
   [(PREditingVariationSliderAccessibility *)self safeCGFloatForKey:@"value"];
   v5 = -0.1;
-  if (v3)
+  if (valueCopy)
   {
     v5 = 0.1;
   }

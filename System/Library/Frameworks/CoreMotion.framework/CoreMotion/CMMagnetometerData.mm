@@ -1,23 +1,23 @@
 @interface CMMagnetometerData
 - (CMMagneticField)magneticField;
-- (CMMagnetometerData)initWithCoder:(id)a3;
-- (CMMagnetometerData)initWithMagneticField:(id)a3 andTimestamp:(double)a4;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CMMagnetometerData)initWithCoder:(id)coder;
+- (CMMagnetometerData)initWithMagneticField:(id)field andTimestamp:(double)timestamp;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CMMagnetometerData
 
-- (CMMagnetometerData)initWithMagneticField:(id)a3 andTimestamp:(double)a4
+- (CMMagnetometerData)initWithMagneticField:(id)field andTimestamp:(double)timestamp
 {
-  var2 = a3.var2;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var2 = field.var2;
+  var1 = field.var1;
+  var0 = field.var0;
   v15.receiver = self;
   v15.super_class = CMMagnetometerData;
-  v7 = [(CMLogItem *)&v15 initWithTimestamp:a4];
+  v7 = [(CMLogItem *)&v15 initWithTimestamp:timestamp];
   if (v7)
   {
     v8 = [CMMagnetometerDataInternal alloc];
@@ -30,7 +30,7 @@
   return v7;
 }
 
-- (CMMagnetometerData)initWithCoder:(id)a3
+- (CMMagnetometerData)initWithCoder:(id)coder
 {
   v19.receiver = self;
   v19.super_class = CMMagnetometerData;
@@ -39,11 +39,11 @@
   {
     v5 = [CMMagnetometerDataInternal alloc];
     v4->_internal = v5;
-    objc_msgSend_decodeDoubleForKey_(a3, v6, @"kCMMagneticFieldCodingKeyX");
+    objc_msgSend_decodeDoubleForKey_(coder, v6, @"kCMMagneticFieldCodingKeyX");
     v8 = v7;
-    objc_msgSend_decodeDoubleForKey_(a3, v9, @"kCMMagneticFieldCodingKeyY");
+    objc_msgSend_decodeDoubleForKey_(coder, v9, @"kCMMagneticFieldCodingKeyY");
     v11 = v10;
-    objc_msgSend_decodeDoubleForKey_(a3, v12, @"kCMMagneticFieldCodingKeyZ");
+    objc_msgSend_decodeDoubleForKey_(coder, v12, @"kCMMagneticFieldCodingKeyZ");
     *&v14 = v13;
     *&v13 = v8;
     *&v15 = v11;
@@ -53,7 +53,7 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v11.receiver = self;
   v11.super_class = CMMagnetometerData;
@@ -61,9 +61,9 @@
   internal = self->_internal;
   v6 = internal[3];
   v7 = internal[4];
-  objc_msgSend_encodeDouble_forKey_(a3, v8, @"kCMMagneticFieldCodingKeyX", internal[2]);
-  objc_msgSend_encodeDouble_forKey_(a3, v9, @"kCMMagneticFieldCodingKeyY", v6);
-  objc_msgSend_encodeDouble_forKey_(a3, v10, @"kCMMagneticFieldCodingKeyZ", v7);
+  objc_msgSend_encodeDouble_forKey_(coder, v8, @"kCMMagneticFieldCodingKeyX", internal[2]);
+  objc_msgSend_encodeDouble_forKey_(coder, v9, @"kCMMagneticFieldCodingKeyY", v6);
+  objc_msgSend_encodeDouble_forKey_(coder, v10, @"kCMMagneticFieldCodingKeyZ", v7);
 }
 
 - (void)dealloc
@@ -73,14 +73,14 @@
   [(CMLogItem *)&v3 dealloc];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = CMMagnetometerData;
   v6 = [(CMLogItem *)&v8 copyWithZone:?];
   if (v6)
   {
-    v6[2] = objc_msgSend_copyWithZone_(self->_internal, v5, a3);
+    v6[2] = objc_msgSend_copyWithZone_(self->_internal, v5, zone);
   }
 
   return v6;

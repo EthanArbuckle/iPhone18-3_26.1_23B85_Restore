@@ -1,17 +1,17 @@
 @interface GKInsetTextField
-- (CGRect)editingRectForBounds:(CGRect)a3;
-- (CGRect)textRectForBounds:(CGRect)a3;
+- (CGRect)editingRectForBounds:(CGRect)bounds;
+- (CGRect)textRectForBounds:(CGRect)bounds;
 - (CGSize)textInsets;
 @end
 
 @implementation GKInsetTextField
 
-- (CGRect)textRectForBounds:(CGRect)a3
+- (CGRect)textRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(GKInsetTextField *)self textInsets];
   v9 = v8;
   [(GKInsetTextField *)self textInsets];
@@ -24,12 +24,12 @@
   return CGRectInset(*&v12, v9, v11);
 }
 
-- (CGRect)editingRectForBounds:(CGRect)a3
+- (CGRect)editingRectForBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   [(GKInsetTextField *)self textInsets];
   v9 = v8;
   [(GKInsetTextField *)self textInsets];

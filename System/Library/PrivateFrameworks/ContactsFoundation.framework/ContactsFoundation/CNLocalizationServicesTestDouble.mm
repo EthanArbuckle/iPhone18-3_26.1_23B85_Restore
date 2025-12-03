@@ -1,8 +1,8 @@
 @interface CNLocalizationServicesTestDouble
-+ (id)storageKeyForKey:(id)a3 table:(id)a4 inBundleForClass:(Class)a5;
++ (id)storageKeyForKey:(id)key table:(id)table inBundleForClass:(Class)class;
 - (CNLocalizationServicesTestDouble)init;
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 bundleForClass:(Class)a6 comment:(id)a7;
-- (void)givenLocalizedString:(id)a3 forKey:(id)a4 table:(id)a5 bundleForClass:(Class)a6;
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table bundleForClass:(Class)class comment:(id)comment;
+- (void)givenLocalizedString:(id)string forKey:(id)key table:(id)table bundleForClass:(Class)class;
 @end
 
 @implementation CNLocalizationServicesTestDouble
@@ -24,50 +24,50 @@
   return v2;
 }
 
-- (void)givenLocalizedString:(id)a3 forKey:(id)a4 table:(id)a5 bundleForClass:(Class)a6
+- (void)givenLocalizedString:(id)string forKey:(id)key table:(id)table bundleForClass:(Class)class
 {
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [objc_opt_class() storageKeyForKey:v11 table:v10 inBundleForClass:a6];
+  tableCopy = table;
+  keyCopy = key;
+  stringCopy = string;
+  v13 = [objc_opt_class() storageKeyForKey:keyCopy table:tableCopy inBundleForClass:class];
 
-  [(NSMutableDictionary *)self->_values setObject:v12 forKeyedSubscript:v13];
+  [(NSMutableDictionary *)self->_values setObject:stringCopy forKeyedSubscript:v13];
 }
 
-- (id)localizedStringForKey:(id)a3 value:(id)a4 table:(id)a5 bundleForClass:(Class)a6 comment:(id)a7
+- (id)localizedStringForKey:(id)key value:(id)value table:(id)table bundleForClass:(Class)class comment:(id)comment
 {
-  v11 = a4;
-  v12 = a5;
-  v13 = a3;
-  v14 = [objc_opt_class() storageKeyForKey:v13 table:v12 inBundleForClass:a6];
+  valueCopy = value;
+  tableCopy = table;
+  keyCopy = key;
+  v14 = [objc_opt_class() storageKeyForKey:keyCopy table:tableCopy inBundleForClass:class];
 
   v15 = [(NSMutableDictionary *)self->_values objectForKeyedSubscript:v14];
   if (!v15)
   {
-    v15 = v11;
+    v15 = valueCopy;
   }
 
   return v15;
 }
 
-+ (id)storageKeyForKey:(id)a3 table:(id)a4 inBundleForClass:(Class)a5
++ (id)storageKeyForKey:(id)key table:(id)table inBundleForClass:(Class)class
 {
-  v7 = a4;
-  v8 = a3;
+  tableCopy = table;
+  keyCopy = key;
   v9 = objc_opt_new();
-  v10 = NSStringFromClass(a5);
+  v10 = NSStringFromClass(class);
   [v9 appendString:v10];
 
   [v9 appendString:@"."];
   v11 = @"*";
-  if (v7 && [(__CFString *)v7 length])
+  if (tableCopy && [(__CFString *)tableCopy length])
   {
-    v11 = v7;
+    v11 = tableCopy;
   }
 
   [v9 appendString:v11];
   [v9 appendString:@"."];
-  [v9 appendString:v8];
+  [v9 appendString:keyCopy];
 
   return v9;
 }

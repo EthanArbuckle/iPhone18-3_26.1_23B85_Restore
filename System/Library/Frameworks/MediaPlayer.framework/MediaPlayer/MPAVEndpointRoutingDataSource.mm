@@ -1,19 +1,19 @@
 @interface MPAVEndpointRoutingDataSource
 - (BOOL)didReceiveDiscoveryResults;
-- (MPAVEndpointRoutingDataSource)initWithThrottlingEnabled:(BOOL)a3;
+- (MPAVEndpointRoutingDataSource)initWithThrottlingEnabled:(BOOL)enabled;
 - (MRAVRoutingDiscoverySessionConfiguration)discoverySessionConfiguration;
-- (id)getRoutesForCategory:(id)a3;
+- (id)getRoutesForCategory:(id)category;
 - (int64_t)discoveryMode;
 - (void)_clearDiscoverySessionCallback;
-- (void)_endpointsDidChange:(id)a3;
+- (void)_endpointsDidChange:(id)change;
 - (void)_setDiscoverySessionCallback;
 - (void)dealloc;
-- (void)setDidReceiveDiscoveryResults:(BOOL)a3;
-- (void)setDiscoveryMode:(int64_t)a3;
-- (void)setPickedRoute:(id)a3 withPassword:(id)a4 completion:(id)a5;
-- (void)setRoutingContextUID:(id)a3;
-- (void)setSuppressNotifications:(BOOL)a3;
-- (void)setTargetSessionID:(unsigned int)a3;
+- (void)setDidReceiveDiscoveryResults:(BOOL)results;
+- (void)setDiscoveryMode:(int64_t)mode;
+- (void)setPickedRoute:(id)route withPassword:(id)password completion:(id)completion;
+- (void)setRoutingContextUID:(id)d;
+- (void)setSuppressNotifications:(BOOL)notifications;
+- (void)setTargetSessionID:(unsigned int)d;
 @end
 
 @implementation MPAVEndpointRoutingDataSource
@@ -63,23 +63,23 @@ void __61__MPAVEndpointRoutingDataSource__setDiscoverySessionCallback__block_inv
 
 - (BOOL)didReceiveDiscoveryResults
 {
-  v2 = self;
+  selfCopy = self;
   v6 = 0;
   v7 = &v6;
   v8 = 0x2020000000;
   v9 = 0;
-  v3 = [(MPAVEndpointRoutingDataSource *)self serialQueue];
+  serialQueue = [(MPAVEndpointRoutingDataSource *)self serialQueue];
   v5[0] = MEMORY[0x1E69E9820];
   v5[1] = 3221225472;
   v5[2] = __59__MPAVEndpointRoutingDataSource_didReceiveDiscoveryResults__block_invoke;
   v5[3] = &unk_1E76819F0;
-  v5[4] = v2;
+  v5[4] = selfCopy;
   v5[5] = &v6;
-  dispatch_sync(v3, v5);
+  dispatch_sync(serialQueue, v5);
 
-  LOBYTE(v2) = *(v7 + 24);
+  LOBYTE(selfCopy) = *(v7 + 24);
   _Block_object_dispose(&v6, 8);
-  return v2;
+  return selfCopy;
 }
 
 - (void)_clearDiscoverySessionCallback
@@ -92,24 +92,24 @@ void __61__MPAVEndpointRoutingDataSource__setDiscoverySessionCallback__block_inv
   }
 }
 
-- (void)_endpointsDidChange:(id)a3
+- (void)_endpointsDidChange:(id)change
 {
-  v4 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v4 postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
 }
 
-- (void)setPickedRoute:(id)a3 withPassword:(id)a4 completion:(id)a5
+- (void)setPickedRoute:(id)route withPassword:(id)password completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  routeCopy = route;
+  passwordCopy = password;
+  completionCopy = completion;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v8 routeUID];
+    routeUID = [routeCopy routeUID];
     v12 = MRAVRouteQueryCreate();
     MRAVRouteQuerySetRouteUID();
-    v21 = v10;
+    v21 = completionCopy;
     MRMediaRemoteFindAndPickRoute();
     CFRelease(v12);
   }
@@ -121,14 +121,14 @@ void __61__MPAVEndpointRoutingDataSource__setDiscoverySessionCallback__block_inv
     {
       v13 = MEMORY[0x1E69B09A0];
       routingContextUID = self->_routingContextUID;
-      v15 = v8;
+      v15 = routeCopy;
       v16 = [v13 sharedLocalEndpointForRoutingContextWithUID:routingContextUID];
-      v17 = [v15 endpointObject];
+      endpointObject = [v15 endpointObject];
 
-      v18 = [v17 outputDevices];
+      outputDevices = [endpointObject outputDevices];
       v19 = objc_opt_class();
       v20 = NSStringFromClass(v19);
-      [v16 setOutputDevices:v18 initiator:v20 withReplyQueue:MEMORY[0x1E69E96A0] completion:v10];
+      [v16 setOutputDevices:outputDevices initiator:v20 withReplyQueue:MEMORY[0x1E69E96A0] completion:completionCopy];
     }
   }
 }
@@ -179,7 +179,7 @@ LABEL_7:
   return result;
 }
 
-- (id)getRoutesForCategory:(id)a3
+- (id)getRoutesForCategory:(id)category
 {
   v7 = 0;
   v8 = &v7;
@@ -278,19 +278,19 @@ void __54__MPAVEndpointRoutingDataSource_getRoutesForCategory___block_invoke(uin
   *(v18 + 40) = v17;
 }
 
-- (void)setDiscoveryMode:(int64_t)a3
+- (void)setDiscoveryMode:(int64_t)mode
 {
-  if ((a3 - 1) < 3)
+  if ((mode - 1) < 3)
   {
-    a3 = a3;
+    mode = mode;
   }
 
   else
   {
-    a3 = 0;
+    mode = 0;
   }
 
-  [(MRAVRoutingDiscoverySession *)self->_discoverySession setDiscoveryMode:a3];
+  [(MRAVRoutingDiscoverySession *)self->_discoverySession setDiscoveryMode:mode];
 }
 
 - (int64_t)discoveryMode
@@ -307,29 +307,29 @@ void __54__MPAVEndpointRoutingDataSource_getRoutesForCategory___block_invoke(uin
   }
 }
 
-- (void)setDidReceiveDiscoveryResults:(BOOL)a3
+- (void)setDidReceiveDiscoveryResults:(BOOL)results
 {
-  v5 = [(MPAVEndpointRoutingDataSource *)self serialQueue];
+  serialQueue = [(MPAVEndpointRoutingDataSource *)self serialQueue];
   v6[0] = MEMORY[0x1E69E9820];
   v6[1] = 3221225472;
   v6[2] = __63__MPAVEndpointRoutingDataSource_setDidReceiveDiscoveryResults___block_invoke;
   v6[3] = &unk_1E7682280;
   v6[4] = self;
-  v7 = a3;
-  dispatch_sync(v5, v6);
+  resultsCopy = results;
+  dispatch_sync(serialQueue, v6);
 }
 
-- (void)setRoutingContextUID:(id)a3
+- (void)setRoutingContextUID:(id)d
 {
   v17 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if (!v5)
+  dCopy = d;
+  if (!dCopy)
   {
-    v10 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v10 handleFailureInMethod:a2 object:self file:@"MPAVEndpointRoutingDataSource.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"routingContextUID"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"MPAVEndpointRoutingDataSource.m" lineNumber:94 description:{@"Invalid parameter not satisfying: %@", @"routingContextUID"}];
   }
 
-  if (![(NSString *)self->_routingContextUID isEqualToString:v5])
+  if (![(NSString *)self->_routingContextUID isEqualToString:dCopy])
   {
     v6 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -337,35 +337,35 @@ void __54__MPAVEndpointRoutingDataSource_getRoutesForCategory___block_invoke(uin
       *buf = 138543874;
       v12 = objc_opt_class();
       v13 = 2048;
-      v14 = self;
+      selfCopy = self;
       v15 = 2114;
-      v16 = v5;
+      v16 = dCopy;
       _os_log_impl(&dword_1A238D000, v6, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p> setting routing context UID = %{public}@", buf, 0x20u);
     }
 
-    v7 = [v5 copy];
+    v7 = [dCopy copy];
     routingContextUID = self->_routingContextUID;
     self->_routingContextUID = v7;
 
     [(MRAVRoutingDiscoverySession *)self->_discoverySession setRoutingContextUID:self->_routingContextUID];
-    v9 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v9 postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
   }
 }
 
-- (void)setTargetSessionID:(unsigned int)a3
+- (void)setTargetSessionID:(unsigned int)d
 {
   v13 = *MEMORY[0x1E69E9840];
-  if (self->_targetSessionID != a3)
+  if (self->_targetSessionID != d)
   {
-    v3 = *&a3;
+    v3 = *&d;
     v5 = os_log_create("com.apple.amp.mediaplayer", "RemoteControl");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       v7 = 138543874;
       v8 = objc_opt_class();
       v9 = 2048;
-      v10 = self;
+      selfCopy = self;
       v11 = 1026;
       v12 = v3;
       _os_log_impl(&dword_1A238D000, v5, OS_LOG_TYPE_DEFAULT, "<%{public}@: %p>_targetSessionID setting target session ID = %{public}d", &v7, 0x1Cu);
@@ -373,14 +373,14 @@ void __54__MPAVEndpointRoutingDataSource_getRoutesForCategory___block_invoke(uin
 
     self->_targetSessionID = v3;
     [(MRAVRoutingDiscoverySession *)self->_discoverySession setTargetAudioSessionID:v3];
-    v6 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v6 postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter postNotificationName:@"MPAVRoutingDataSourceRoutesDidChangeNotification" object:self];
   }
 }
 
-- (void)setSuppressNotifications:(BOOL)a3
+- (void)setSuppressNotifications:(BOOL)notifications
 {
-  if (a3)
+  if (notifications)
   {
     [(MPAVEndpointRoutingDataSource *)self _clearDiscoverySessionCallback];
   }
@@ -390,7 +390,7 @@ void __54__MPAVEndpointRoutingDataSource_getRoutesForCategory___block_invoke(uin
     [(MPAVEndpointRoutingDataSource *)self _setDiscoverySessionCallback];
   }
 
-  self->_suppressNotifications = a3;
+  self->_suppressNotifications = notifications;
 }
 
 - (void)dealloc
@@ -401,9 +401,9 @@ void __54__MPAVEndpointRoutingDataSource_getRoutesForCategory___block_invoke(uin
   [(MPAVRoutingDataSource *)&v3 dealloc];
 }
 
-- (MPAVEndpointRoutingDataSource)initWithThrottlingEnabled:(BOOL)a3
+- (MPAVEndpointRoutingDataSource)initWithThrottlingEnabled:(BOOL)enabled
 {
-  v3 = a3;
+  enabledCopy = enabled;
   v13.receiver = self;
   v13.super_class = MPAVEndpointRoutingDataSource;
   v4 = [(MPAVRoutingDataSource *)&v13 init];
@@ -417,10 +417,10 @@ void __54__MPAVEndpointRoutingDataSource_getRoutesForCategory___block_invoke(uin
     serialQueue = v4->_serialQueue;
     v4->_serialQueue = v7;
 
-    v9 = [(MPAVEndpointRoutingDataSource *)v4 discoverySessionConfiguration];
-    [v9 setEnableThrottling:v3];
+    discoverySessionConfiguration = [(MPAVEndpointRoutingDataSource *)v4 discoverySessionConfiguration];
+    [discoverySessionConfiguration setEnableThrottling:enabledCopy];
     v4->_suppressNotifications = 0;
-    v10 = [MEMORY[0x1E69B09C0] discoverySessionWithConfiguration:v9];
+    v10 = [MEMORY[0x1E69B09C0] discoverySessionWithConfiguration:discoverySessionConfiguration];
     discoverySession = v4->_discoverySession;
     v4->_discoverySession = v10;
 

@@ -1,52 +1,52 @@
 @interface ATXBirthdaysDataSource
-- (ATXBirthdaysDataSource)initWithDevice:(id)a3;
-- (void)birthdaysWithCallback:(id)a3;
+- (ATXBirthdaysDataSource)initWithDevice:(id)device;
+- (void)birthdaysWithCallback:(id)callback;
 @end
 
 @implementation ATXBirthdaysDataSource
 
-- (ATXBirthdaysDataSource)initWithDevice:(id)a3
+- (ATXBirthdaysDataSource)initWithDevice:(id)device
 {
-  v5 = a3;
+  deviceCopy = device;
   v9.receiver = self;
   v9.super_class = ATXBirthdaysDataSource;
   v6 = [(ATXBirthdaysDataSource *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_device, a3);
+    objc_storeStrong(&v6->_device, device);
   }
 
   return v7;
 }
 
-- (void)birthdaysWithCallback:(id)a3
+- (void)birthdaysWithCallback:(id)callback
 {
   v62 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  callbackCopy = callback;
   if (ATXHeuristicCanLearnFromApp(&unk_2850BA2A8))
   {
-    v40 = v4;
+    v40 = callbackCopy;
     context = objc_autoreleasePoolPush();
     v5 = [(ATXHeuristicDevice *)self->_device now];
-    v6 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v38 = v5;
-    v7 = [v6 startOfDayForDate:v5];
+    v7 = [currentCalendar startOfDayForDate:v5];
 
-    v8 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar2 = [MEMORY[0x277CBEA80] currentCalendar];
     v43 = v7;
-    v42 = [v8 dateByAddingUnit:16 value:1 toDate:v7 options:0];
+    v42 = [currentCalendar2 dateByAddingUnit:16 value:1 toDate:v7 options:0];
 
-    v45 = self;
-    v9 = [(ATXHeuristicDevice *)self->_device eventStore];
+    selfCopy = self;
+    eventStore = [(ATXHeuristicDevice *)self->_device eventStore];
     v10 = objc_opt_new();
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v41 = v9;
-    v11 = [v9 sources];
-    v12 = [v11 countByEnumeratingWithState:&v55 objects:v61 count:16];
+    v41 = eventStore;
+    sources = [eventStore sources];
+    v12 = [sources countByEnumeratingWithState:&v55 objects:v61 count:16];
     if (v12)
     {
       v13 = v12;
@@ -57,7 +57,7 @@
         {
           if (*v56 != v14)
           {
-            objc_enumerationMutation(v11);
+            objc_enumerationMutation(sources);
           }
 
           v16 = *(*(&v55 + 1) + 8 * i);
@@ -94,7 +94,7 @@
           }
         }
 
-        v13 = [v11 countByEnumeratingWithState:&v55 objects:v61 count:16];
+        v13 = [sources countByEnumeratingWithState:&v55 objects:v61 count:16];
       }
 
       while (v13);
@@ -111,7 +111,7 @@
       v37 = v23;
       obj = [v41 eventsMatchingPredicate:v23];
       v24 = [obj countByEnumeratingWithState:&v47 objects:v59 count:16];
-      v25 = v45;
+      v25 = selfCopy;
       if (v24)
       {
         v26 = v24;
@@ -135,10 +135,10 @@
                 v32 = v31;
                 v33 = [v30 objectForKeyedSubscript:@"birthdayContact"];
                 v34 = [v33 objectForKeyedSubscript:@"isMeContact"];
-                v35 = [v34 BOOLValue];
+                bOOLValue = [v34 BOOLValue];
 
-                v25 = v45;
-                if ((v35 & 1) == 0)
+                v25 = selfCopy;
+                if ((bOOLValue & 1) == 0)
                 {
                   [v44 addObject:v30];
                 }
@@ -152,13 +152,13 @@
         while (v26);
       }
 
-      v4 = v40;
+      callbackCopy = v40;
       (*(v40 + 2))(v40, v44, 0);
     }
 
     else
     {
-      v4 = v40;
+      callbackCopy = v40;
       (*(v40 + 2))(v40, MEMORY[0x277CBEBF8], 0);
     }
 
@@ -167,7 +167,7 @@
 
   else
   {
-    (*(v4 + 2))(v4, MEMORY[0x277CBEBF8], 0);
+    (*(callbackCopy + 2))(callbackCopy, MEMORY[0x277CBEBF8], 0);
   }
 
   v36 = *MEMORY[0x277D85DE8];

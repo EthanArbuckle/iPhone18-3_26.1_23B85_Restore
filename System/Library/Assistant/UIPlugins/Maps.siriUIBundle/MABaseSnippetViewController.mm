@@ -1,36 +1,36 @@
 @interface MABaseSnippetViewController
 - (CLLocationManager)locManager;
-- (MABaseSnippetViewController)initWithMapItemSnippet:(id)a3;
-- (MABaseSnippetViewController)initWithSnippet:(id)a3;
+- (MABaseSnippetViewController)initWithMapItemSnippet:(id)snippet;
+- (MABaseSnippetViewController)initWithSnippet:(id)snippet;
 - (SALocalSearchMapItem)selectedLocalSearchMapItem;
 - (SALocalSearchMapItemSnippet)mapItemSnippet;
-- (id)generateURLWithSession:(id)a3;
-- (void)_updateTitleAndSubtitleWithCompletionHandler:(id)a3;
+- (id)generateURLWithSession:(id)session;
+- (void)_updateTitleAndSubtitleWithCompletionHandler:(id)handler;
 - (void)dealloc;
-- (void)donateLocationForMapItem:(id)a3;
-- (void)locationManagerDidChangeAuthorization:(id)a3;
-- (void)makeReservationAtSelectedRestaurantForSelectedTimeIndex:(unint64_t)a3;
-- (void)openURL:(id)a3 completion:(id)a4;
-- (void)openURLWithDirectionsFromPlace:(id)a3 toPlace:(id)a4 transportType:(unint64_t)a5;
-- (void)openURLWithMapItem:(id)a3;
+- (void)donateLocationForMapItem:(id)item;
+- (void)locationManagerDidChangeAuthorization:(id)authorization;
+- (void)makeReservationAtSelectedRestaurantForSelectedTimeIndex:(unint64_t)index;
+- (void)openURL:(id)l completion:(id)completion;
+- (void)openURLWithDirectionsFromPlace:(id)place toPlace:(id)toPlace transportType:(unint64_t)type;
+- (void)openURLWithMapItem:(id)item;
 - (void)openURLWithSnippetMapItemsAndSelectedMapItem;
-- (void)setDelegate:(id)a3;
-- (void)setSelectedMapItemIndex:(unint64_t)a3;
-- (void)siriDidScrollVisible:(BOOL)a3;
+- (void)setDelegate:(id)delegate;
+- (void)setSelectedMapItemIndex:(unint64_t)index;
+- (void)siriDidScrollVisible:(BOOL)visible;
 @end
 
 @implementation MABaseSnippetViewController
 
-- (MABaseSnippetViewController)initWithSnippet:(id)a3
+- (MABaseSnippetViewController)initWithSnippet:(id)snippet
 {
-  v4 = a3;
+  snippetCopy = snippet;
   v8.receiver = self;
   v8.super_class = MABaseSnippetViewController;
   v5 = [(MABaseSnippetViewController *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    [(MABaseSnippetViewController *)v5 setSnippet:v4];
+    [(MABaseSnippetViewController *)v5 setSnippet:snippetCopy];
     [(MABaseSnippetViewController *)v6 setDefaultViewInsets:UIEdgeInsetsZero.top, UIEdgeInsetsZero.left, UIEdgeInsetsZero.bottom, UIEdgeInsetsZero.right];
     [(MABaseSnippetViewController *)v6 setLoading:1];
   }
@@ -38,14 +38,14 @@
   return v6;
 }
 
-- (MABaseSnippetViewController)initWithMapItemSnippet:(id)a3
+- (MABaseSnippetViewController)initWithMapItemSnippet:(id)snippet
 {
-  v4 = a3;
-  v5 = [(MABaseSnippetViewController *)self initWithSnippet:v4];
+  snippetCopy = snippet;
+  v5 = [(MABaseSnippetViewController *)self initWithSnippet:snippetCopy];
   if (v5)
   {
-    -[MABaseSnippetViewController setSelectedMapItemIndex:](v5, "setSelectedMapItemIndex:", [v4 selectedItemIndex]);
-    [v4 setSelectedItemIndex:0x7FFFFFFFFFFFFFFFLL];
+    -[MABaseSnippetViewController setSelectedMapItemIndex:](v5, "setSelectedMapItemIndex:", [snippetCopy selectedItemIndex]);
+    [snippetCopy setSelectedItemIndex:0x7FFFFFFFFFFFFFFFLL];
   }
 
   return v5;
@@ -60,18 +60,18 @@
   [(MABaseSnippetViewController *)&v3 dealloc];
 }
 
-- (void)setDelegate:(id)a3
+- (void)setDelegate:(id)delegate
 {
   v9.receiver = self;
   v9.super_class = MABaseSnippetViewController;
   [(MABaseSnippetViewController *)&v9 setDelegate:?];
-  if (a3)
+  if (delegate)
   {
     if (!self->_hasEverStartedLoading)
     {
       self->_hasEverStartedLoading = 1;
-      v5 = [(MABaseSnippetViewController *)self delegate];
-      v6 = [v5 siriViewControllerEffectiveBundleForCoreLocation:self];
+      delegate = [(MABaseSnippetViewController *)self delegate];
+      v6 = [delegate siriViewControllerEffectiveBundleForCoreLocation:self];
 
       v7 = +[MKLocationManager sharedLocationManager];
       [v7 setEffectiveBundle:v6];
@@ -90,12 +90,12 @@
 {
   if (!self->_locManager)
   {
-    v3 = [(MABaseSnippetViewController *)self mapItemSnippet];
-    if ([v3 usesFixedLocation])
+    mapItemSnippet = [(MABaseSnippetViewController *)self mapItemSnippet];
+    if ([mapItemSnippet usesFixedLocation])
     {
-      v4 = [(MABaseSnippetViewController *)self needsLocationManager];
+      needsLocationManager = [(MABaseSnippetViewController *)self needsLocationManager];
 
-      if (!v4)
+      if (!needsLocationManager)
       {
         goto LABEL_7;
       }
@@ -105,12 +105,12 @@
     {
     }
 
-    v5 = [(MABaseSnippetViewController *)self delegate];
-    v6 = [v5 siriViewControllerEffectiveBundleForCoreLocation:self];
+    delegate = [(MABaseSnippetViewController *)self delegate];
+    v6 = [delegate siriViewControllerEffectiveBundleForCoreLocation:self];
 
     v7 = [CLLocationManager alloc];
-    v8 = [v6 bundlePath];
-    v9 = [v7 initWithEffectiveBundlePath:v8 delegate:self onQueue:&_dispatch_main_q];
+    bundlePath = [v6 bundlePath];
+    v9 = [v7 initWithEffectiveBundlePath:bundlePath delegate:self onQueue:&_dispatch_main_q];
     locManager = self->_locManager;
     self->_locManager = v9;
 
@@ -126,81 +126,81 @@ LABEL_7:
 
 - (SALocalSearchMapItemSnippet)mapItemSnippet
 {
-  v3 = [(MABaseSnippetViewController *)self snippet];
+  snippet = [(MABaseSnippetViewController *)self snippet];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [(MABaseSnippetViewController *)self snippet];
+    snippet2 = [(MABaseSnippetViewController *)self snippet];
   }
 
   else
   {
-    v4 = 0;
+    snippet2 = 0;
   }
 
-  return v4;
+  return snippet2;
 }
 
-- (void)setSelectedMapItemIndex:(unint64_t)a3
+- (void)setSelectedMapItemIndex:(unint64_t)index
 {
-  v5 = [(MABaseSnippetViewController *)self mapItemSnippet];
-  v6 = [v5 items];
-  v7 = [v6 count];
+  mapItemSnippet = [(MABaseSnippetViewController *)self mapItemSnippet];
+  items = [mapItemSnippet items];
+  v7 = [items count];
 
-  if (v7 > a3)
+  if (v7 > index)
   {
-    self->_selectedMapItemIndex = a3;
+    self->_selectedMapItemIndex = index;
   }
 }
 
 - (SALocalSearchMapItem)selectedLocalSearchMapItem
 {
-  v3 = [(MABaseSnippetViewController *)self mapItemSnippet];
-  v4 = [v3 items];
-  v5 = [v4 objectAtIndex:{-[MABaseSnippetViewController selectedMapItemIndex](self, "selectedMapItemIndex")}];
+  mapItemSnippet = [(MABaseSnippetViewController *)self mapItemSnippet];
+  items = [mapItemSnippet items];
+  v5 = [items objectAtIndex:{-[MABaseSnippetViewController selectedMapItemIndex](self, "selectedMapItemIndex")}];
 
   return v5;
 }
 
-- (void)donateLocationForMapItem:(id)a3
+- (void)donateLocationForMapItem:(id)item
 {
-  v4 = a3;
-  if (([v4 isCurrentLocation] & 1) == 0 && (objc_msgSend(v4, "isParkingLocation") & 1) == 0)
+  itemCopy = item;
+  if (([itemCopy isCurrentLocation] & 1) == 0 && (objc_msgSend(itemCopy, "isParkingLocation") & 1) == 0)
   {
-    v5 = [v4 donateActivityCommand];
-    if (v5)
+    donateActivityCommand = [itemCopy donateActivityCommand];
+    if (donateActivityCommand)
     {
-      v6 = [(MABaseSnippetViewController *)self delegate];
-      v8 = v5;
+      delegate = [(MABaseSnippetViewController *)self delegate];
+      v8 = donateActivityCommand;
       v7 = [NSArray arrayWithObjects:&v8 count:1];
-      [v6 siriViewController:self performAceCommands:v7];
+      [delegate siriViewController:self performAceCommands:v7];
     }
   }
 }
 
-- (void)locationManagerDidChangeAuthorization:(id)a3
+- (void)locationManagerDidChangeAuthorization:(id)authorization
 {
-  v6 = a3;
-  v3 = [v6 authorizationStatus];
-  if (v3 == 2)
+  authorizationCopy = authorization;
+  authorizationStatus = [authorizationCopy authorizationStatus];
+  if (authorizationStatus == 2)
   {
-    [v6 stopUpdatingLocation];
+    [authorizationCopy stopUpdatingLocation];
     goto LABEL_6;
   }
 
-  v4 = v3 == 3;
-  v5 = v6;
+  v4 = authorizationStatus == 3;
+  v5 = authorizationCopy;
   if (v4)
   {
-    [v6 startUpdatingLocation];
+    [authorizationCopy startUpdatingLocation];
 LABEL_6:
-    v5 = v6;
+    v5 = authorizationCopy;
   }
 }
 
-- (void)siriDidScrollVisible:(BOOL)a3
+- (void)siriDidScrollVisible:(BOOL)visible
 {
-  if (a3)
+  if (visible)
   {
     v3 = 7;
   }
@@ -213,36 +213,36 @@ LABEL_6:
   [(MABaseSnippetViewController *)self captureUserAction:v3];
 }
 
-- (void)makeReservationAtSelectedRestaurantForSelectedTimeIndex:(unint64_t)a3
+- (void)makeReservationAtSelectedRestaurantForSelectedTimeIndex:(unint64_t)index
 {
-  v5 = [(MABaseSnippetViewController *)self selectedLocalSearchMapItem];
-  v6 = [v5 restaurantInfo];
+  selectedLocalSearchMapItem = [(MABaseSnippetViewController *)self selectedLocalSearchMapItem];
+  restaurantInfo = [selectedLocalSearchMapItem restaurantInfo];
 
-  v7 = [v6 _ma_makeReservationPunchOutForSelectedOpeningIndex:a3];
+  v7 = [restaurantInfo _ma_makeReservationPunchOutForSelectedOpeningIndex:index];
   if (v7)
   {
-    v8 = [(MABaseSnippetViewController *)self delegate];
+    delegate = [(MABaseSnippetViewController *)self delegate];
     v10 = v7;
     v9 = [NSArray arrayWithObjects:&v10 count:1];
-    [v8 siriViewController:self performAceCommands:v9];
+    [delegate siriViewController:self performAceCommands:v9];
   }
 }
 
-- (void)openURL:(id)a3 completion:(id)a4
+- (void)openURL:(id)l completion:(id)completion
 {
-  if (a3)
+  if (l)
   {
-    v5 = a3;
-    v6 = [(MABaseSnippetViewController *)self delegate];
-    [v6 siriViewController:self openURL:v5 completion:0];
+    lCopy = l;
+    delegate = [(MABaseSnippetViewController *)self delegate];
+    [delegate siriViewController:self openURL:lCopy completion:0];
   }
 }
 
-- (id)generateURLWithSession:(id)a3
+- (id)generateURLWithSession:(id)session
 {
-  if (a3)
+  if (session)
   {
-    v4 = (*(a3 + 2))(a3, a2);
+    v4 = (*(session + 2))(session, a2);
   }
 
   else
@@ -253,17 +253,17 @@ LABEL_6:
   return v4;
 }
 
-- (void)openURLWithMapItem:(id)a3
+- (void)openURLWithMapItem:(id)item
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  itemCopy = item;
+  v5 = itemCopy;
+  if (itemCopy)
   {
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_FC40;
     v7[3] = &unk_42510;
-    v8 = v4;
+    v8 = itemCopy;
     v6 = [(MABaseSnippetViewController *)self generateURLWithSession:v7];
     [(MABaseSnippetViewController *)self openURL:v6 completion:0];
   }
@@ -283,15 +283,15 @@ LABEL_6:
   }
 }
 
-- (void)openURLWithDirectionsFromPlace:(id)a3 toPlace:(id)a4 transportType:(unint64_t)a5
+- (void)openURLWithDirectionsFromPlace:(id)place toPlace:(id)toPlace transportType:(unint64_t)type
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8 && v9)
+  placeCopy = place;
+  toPlaceCopy = toPlace;
+  v10 = toPlaceCopy;
+  if (placeCopy && toPlaceCopy)
   {
     v11 = MKLaunchOptionsDirectionsModeDriving;
-    switch(a5)
+    switch(type)
     {
       case 2uLL:
         v12 = &MKLaunchOptionsDirectionsModeWalking;
@@ -308,7 +308,7 @@ LABEL_10:
         v16[1] = 3221225472;
         v16[2] = sub_FFDC;
         v16[3] = &unk_42538;
-        v17 = v8;
+        v17 = placeCopy;
         v18 = v10;
         v19 = v11;
         v14 = v11;
@@ -327,11 +327,11 @@ LABEL_10:
 LABEL_11:
 }
 
-- (void)_updateTitleAndSubtitleWithCompletionHandler:(id)a3
+- (void)_updateTitleAndSubtitleWithCompletionHandler:(id)handler
 {
-  if (a3)
+  if (handler)
   {
-    (*(a3 + 2))(a3);
+    (*(handler + 2))(handler);
   }
 }
 

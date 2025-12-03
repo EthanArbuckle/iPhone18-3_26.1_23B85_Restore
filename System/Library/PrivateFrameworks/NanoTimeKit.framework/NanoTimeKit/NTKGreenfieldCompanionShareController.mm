@@ -1,13 +1,13 @@
 @interface NTKGreenfieldCompanionShareController
 + (id)sharedController;
-- (void)_handleError:(id)a3;
+- (void)_handleError:(id)error;
 - (void)_prepareForShareSheet;
-- (void)_presentInternalWarningIfNeededWithContinueBlock:(id)a3;
-- (void)_presentShareSheetWithDraftRecipe:(id)a3 previewImage:(id)a4;
+- (void)_presentInternalWarningIfNeededWithContinueBlock:(id)block;
+- (void)_presentShareSheetWithDraftRecipe:(id)recipe previewImage:(id)image;
 - (void)_showPhotosPickerView;
 - (void)_startFaceSharing;
-- (void)companionSharePhotosPickerViewController:(id)a3 didFinishWithFace:(id)a4;
-- (void)shareWatchFace:(id)a3 fromViewController:(id)a4 completion:(id)a5;
+- (void)companionSharePhotosPickerViewController:(id)controller didFinishWithFace:(id)face;
+- (void)shareWatchFace:(id)face fromViewController:(id)controller completion:(id)completion;
 @end
 
 @implementation NTKGreenfieldCompanionShareController
@@ -31,26 +31,26 @@ void __57__NTKGreenfieldCompanionShareController_sharedController__block_invoke(
   sharedController_controller = v0;
 }
 
-- (void)shareWatchFace:(id)a3 fromViewController:(id)a4 completion:(id)a5
+- (void)shareWatchFace:(id)face fromViewController:(id)controller completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  objc_storeWeak(&self->_face, v8);
+  faceCopy = face;
+  controllerCopy = controller;
+  completionCopy = completion;
+  objc_storeWeak(&self->_face, faceCopy);
   updatedFace = self->_updatedFace;
   self->_updatedFace = 0;
 
-  objc_storeWeak(&self->_originatedViewController, v9);
+  objc_storeWeak(&self->_originatedViewController, controllerCopy);
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __86__NTKGreenfieldCompanionShareController_shareWatchFace_fromViewController_completion___block_invoke;
   aBlock[3] = &unk_278783DB8;
   objc_copyWeak(&v16, &location);
-  v12 = v10;
+  v12 = completionCopy;
   v15 = v12;
   v13 = _Block_copy(aBlock);
-  if ([NTKGreenfieldUtilities shouldPresentUnreleasedFeaturesInternalWarningForFace:v8])
+  if ([NTKGreenfieldUtilities shouldPresentUnreleasedFeaturesInternalWarningForFace:faceCopy])
   {
     [(NTKGreenfieldCompanionShareController *)self _presentInternalWarningIfNeededWithContinueBlock:v13];
   }
@@ -83,16 +83,16 @@ void __86__NTKGreenfieldCompanionShareController_shareWatchFace_fromViewControll
   }
 }
 
-- (void)_presentInternalWarningIfNeededWithContinueBlock:(id)a3
+- (void)_presentInternalWarningIfNeededWithContinueBlock:(id)block
 {
-  v4 = a3;
+  blockCopy = block;
   v5 = [MEMORY[0x277D75110] alertControllerWithTitle:@"Warning" message:@"This face is not released or contains complications that are not released. Please make sure it will not be shared with undisclosed individuals." preferredStyle:1];
   v6 = MEMORY[0x277D750F8];
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __90__NTKGreenfieldCompanionShareController__presentInternalWarningIfNeededWithContinueBlock___block_invoke;
   v18[3] = &unk_278783DE0;
-  v7 = v4;
+  v7 = blockCopy;
   v19 = v7;
   v8 = [v6 actionWithTitle:@"I Agree" style:2 handler:v18];
   v9 = MEMORY[0x277D750F8];
@@ -112,9 +112,9 @@ void __86__NTKGreenfieldCompanionShareController_shareWatchFace_fromViewControll
 - (void)_startFaceSharing
 {
   WeakRetained = objc_loadWeakRetained(&self->_face);
-  v4 = [WeakRetained faceStyle];
+  faceStyle = [WeakRetained faceStyle];
 
-  if (v4 == 22)
+  if (faceStyle == 22)
   {
 
     [(NTKGreenfieldCompanionShareController *)self _showPhotosPickerView];
@@ -194,18 +194,18 @@ void __62__NTKGreenfieldCompanionShareController__prepareForShareSheet__block_in
   }
 }
 
-- (void)_presentShareSheetWithDraftRecipe:(id)a3 previewImage:(id)a4
+- (void)_presentShareSheetWithDraftRecipe:(id)recipe previewImage:(id)image
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[NTKGreenfieldCompanionActivityViewController alloc] initWithDraftRecipe:v6 previewImage:v7];
+  recipeCopy = recipe;
+  imageCopy = image;
+  v8 = [[NTKGreenfieldCompanionActivityViewController alloc] initWithDraftRecipe:recipeCopy previewImage:imageCopy];
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __88__NTKGreenfieldCompanionShareController__presentShareSheetWithDraftRecipe_previewImage___block_invoke;
   aBlock[3] = &unk_278783E30;
   objc_copyWeak(&v14, &location);
-  v9 = v6;
+  v9 = recipeCopy;
   v13 = v9;
   v10 = _Block_copy(aBlock);
   [(NTKGreenfieldCompanionActivityViewController *)v8 setCompletionWithItemsHandler:v10];
@@ -234,16 +234,16 @@ void __88__NTKGreenfieldCompanionShareController__presentShareSheetWithDraftReci
   }
 }
 
-- (void)_handleError:(id)a3
+- (void)_handleError:(id)error
 {
-  v4 = a3;
+  errorCopy = error;
   aBlock[0] = MEMORY[0x277D85DD0];
   aBlock[1] = 3221225472;
   aBlock[2] = __54__NTKGreenfieldCompanionShareController__handleError___block_invoke;
   aBlock[3] = &unk_27877E438;
-  v12 = v4;
-  v13 = self;
-  v5 = v4;
+  v12 = errorCopy;
+  selfCopy = self;
+  v5 = errorCopy;
   v6 = _Block_copy(aBlock);
   WeakRetained = objc_loadWeakRetained(&self->_originatedViewController);
   v9[0] = MEMORY[0x277D85DD0];
@@ -276,12 +276,12 @@ void __54__NTKGreenfieldCompanionShareController__handleError___block_invoke(uin
   [WeakRetained presentViewController:v7 animated:1 completion:0];
 }
 
-- (void)companionSharePhotosPickerViewController:(id)a3 didFinishWithFace:(id)a4
+- (void)companionSharePhotosPickerViewController:(id)controller didFinishWithFace:(id)face
 {
-  v7 = a4;
-  if (v7)
+  faceCopy = face;
+  if (faceCopy)
   {
-    objc_storeStrong(&self->_updatedFace, a4);
+    objc_storeStrong(&self->_updatedFace, face);
     [(NTKGreenfieldCompanionShareController *)self _prepareForShareSheet];
   }
 

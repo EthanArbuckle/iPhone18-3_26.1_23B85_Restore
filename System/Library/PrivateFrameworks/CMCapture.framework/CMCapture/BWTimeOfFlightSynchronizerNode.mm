@@ -1,16 +1,16 @@
 @interface BWTimeOfFlightSynchronizerNode
 - (BWTimeOfFlightSynchronizerNode)init;
-- (uint64_t)_attachPointCloudsToSampleBufferOrReportMissing:(_BYTE *)a3 pointCloudsAreMissing:;
-- (uint64_t)_mergePointClouds:(__CVBuffer *)a3 intoDataBuffer:(_DWORD *)a4 numberOfPoints:;
+- (uint64_t)_attachPointCloudsToSampleBufferOrReportMissing:(_BYTE *)missing pointCloudsAreMissing:;
+- (uint64_t)_mergePointClouds:(__CVBuffer *)clouds intoDataBuffer:(_DWORD *)buffer numberOfPoints:;
 - (unint64_t)_cleanupPointCloudBufferQueue;
 - (unint64_t)_tryToEmitBuffers;
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5;
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input;
 - (void)dealloc;
-- (void)didReachEndOfDataForInput:(id)a3;
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5;
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4;
-- (void)handleNodeError:(id)a3 forInput:(id)a4;
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4;
+- (void)didReachEndOfDataForInput:(id)input;
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key;
+- (void)handleDroppedSample:(id)sample forInput:(id)input;
+- (void)handleNodeError:(id)error forInput:(id)input;
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input;
 @end
 
 @implementation BWTimeOfFlightSynchronizerNode
@@ -73,13 +73,13 @@
   [(BWNode *)&v4 dealloc];
 }
 
-- (void)didSelectFormat:(id)a3 forInput:(id)a4 forAttachedMediaKey:(id)a5
+- (void)didSelectFormat:(id)format forInput:(id)input forAttachedMediaKey:(id)key
 {
-  if (self->_videoInput == a4)
+  if (self->_videoInput == input)
   {
-    if ([a5 isEqualToString:@"PrimaryFormat"])
+    if ([key isEqualToString:@"PrimaryFormat"])
     {
-      [(BWNodeOutput *)self->super._output setFormat:a3];
+      [(BWNodeOutput *)self->super._output setFormat:format];
     }
   }
 
@@ -87,8 +87,8 @@
   {
     v9 = objc_alloc_init(BWPointCloudFormatRequirements);
     [(BWPointCloudFormatRequirements *)v9 setSupportedDataFormats:&unk_1F2248688];
-    -[BWPointCloudFormatRequirements setDataBufferSize:](v9, "setDataBufferSize:", 4 * [a3 dataBufferSize]);
-    -[BWPointCloudFormatRequirements setMaxPoints:](v9, "setMaxPoints:", 4 * [a3 maxPoints]);
+    -[BWPointCloudFormatRequirements setDataBufferSize:](v9, "setDataBufferSize:", 4 * [format dataBufferSize]);
+    -[BWPointCloudFormatRequirements setMaxPoints:](v9, "setMaxPoints:", 4 * [format maxPoints]);
     v10 = objc_alloc_init(BWNodeOutputMediaConfiguration);
     [(BWNodeOutputMediaConfiguration *)v10 setPassthroughMode:0];
     [(BWNodeOutputMediaConfiguration *)v10 setFormatRequirements:v9];
@@ -99,10 +99,10 @@
 
   v11.receiver = self;
   v11.super_class = BWTimeOfFlightSynchronizerNode;
-  [(BWNode *)&v11 didSelectFormat:a3 forInput:a4 forAttachedMediaKey:a5];
+  [(BWNode *)&v11 didSelectFormat:format forInput:input forAttachedMediaKey:key];
 }
 
-- (void)configurationWithID:(int64_t)a3 updatedFormat:(id)a4 didBecomeLiveForInput:(id)a5
+- (void)configurationWithID:(int64_t)d updatedFormat:(id)format didBecomeLiveForInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
   if (![(BWNodeOutput *)self->super._output liveFormat])
@@ -113,7 +113,7 @@
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)didReachEndOfDataForInput:(id)a3
+- (void)didReachEndOfDataForInput:(id)input
 {
   v4 = atomic_fetch_add_explicit(&self->_numEODMessagesReceived, 1u, memory_order_relaxed) + 1;
   if ([(NSArray *)[(BWNode *)self inputs] count]== v4)
@@ -125,10 +125,10 @@
   }
 }
 
-- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)a3 forInput:(id)a4
+- (void)renderSampleBuffer:(opaqueCMSampleBuffer *)buffer forInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  if (self->_videoInput == a4)
+  if (self->_videoInput == input)
   {
     v7 = &OBJC_IVAR___BWTimeOfFlightSynchronizerNode__videoBufferQueue;
   }
@@ -138,26 +138,26 @@
     v7 = &OBJC_IVAR___BWTimeOfFlightSynchronizerNode__pointCloudBufferQueue;
   }
 
-  [*(&self->super.super.isa + *v7) addObject:a3];
+  [*(&self->super.super.isa + *v7) addObject:buffer];
   [(BWTimeOfFlightSynchronizerNode *)self _tryToEmitBuffers];
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)handleNodeError:(id)a3 forInput:(id)a4
+- (void)handleNodeError:(id)error forInput:(id)input
 {
   os_unfair_lock_lock(&self->_bufferServicingLock);
-  [(BWNodeOutput *)self->super._output emitNodeError:a3];
+  [(BWNodeOutput *)self->super._output emitNodeError:error];
 
   os_unfair_lock_unlock(&self->_bufferServicingLock);
 }
 
-- (void)handleDroppedSample:(id)a3 forInput:(id)a4
+- (void)handleDroppedSample:(id)sample forInput:(id)input
 {
-  if (self->_videoInput == a4)
+  if (self->_videoInput == input)
   {
     os_unfair_lock_lock(&self->_bufferServicingLock);
-    [(BWNodeOutput *)self->super._output emitDroppedSample:a3];
+    [(BWNodeOutput *)self->super._output emitDroppedSample:sample];
 
     os_unfair_lock_unlock(&self->_bufferServicingLock);
   }
@@ -227,22 +227,22 @@
   return result;
 }
 
-- (uint64_t)_attachPointCloudsToSampleBufferOrReportMissing:(_BYTE *)a3 pointCloudsAreMissing:
+- (uint64_t)_attachPointCloudsToSampleBufferOrReportMissing:(_BYTE *)missing pointCloudsAreMissing:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v36 = 0;
-  v6 = [*(a1 + 160) lastObject];
-  if (!v6)
+  lastObject = [*(self + 160) lastObject];
+  if (!lastObject)
   {
     return 0;
   }
 
   v7 = *off_1E798A3C8;
-  v8 = CMGetAttachment(v6, *off_1E798A3C8, 0);
+  v8 = CMGetAttachment(lastObject, *off_1E798A3C8, 0);
   v9 = *off_1E798A420;
   CMTimeMakeFromDictionary(&time, [v8 objectForKeyedSubscript:*off_1E798A420]);
   Seconds = CMTimeGetSeconds(&time);
@@ -257,13 +257,13 @@
   }
 
   v29 = a2;
-  v30 = a3;
-  v15 = [MEMORY[0x1E695DF70] array];
+  missingCopy = missing;
+  array = [MEMORY[0x1E695DF70] array];
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v16 = *(a1 + 160);
+  v16 = *(self + 160);
   OUTLINED_FUNCTION_13_14();
   v17 = [v16 countByEnumeratingWithState:? objects:? count:?];
   if (v17)
@@ -285,7 +285,7 @@
         v23 = CMTimeGetSeconds(&time);
         if (v23 > v14 + -0.0166 && v23 <= v14 + 0.0166)
         {
-          [v15 addObject:v21];
+          [array addObject:v21];
         }
       }
 
@@ -296,30 +296,30 @@
     while (v18);
   }
 
-  if (![v15 count] && Seconds > v14)
+  if (![array count] && Seconds > v14)
   {
     v25 = 0;
-    *v30 = 1;
+    *missingCopy = 1;
     return v25;
   }
 
-  if (![v15 count])
+  if (![array count])
   {
     return 0;
   }
 
-  v26 = [*(a1 + 200) newDataBuffer];
-  if (!v26)
+  newDataBuffer = [*(self + 200) newDataBuffer];
+  if (!newDataBuffer)
   {
     return 0;
   }
 
-  v27 = v26;
+  v27 = newDataBuffer;
   v31[0] = 0;
-  if ([(BWTimeOfFlightSynchronizerNode *)a1 _mergePointClouds:v15 intoDataBuffer:v26 numberOfPoints:v31])
+  if ([(BWTimeOfFlightSynchronizerNode *)self _mergePointClouds:array intoDataBuffer:newDataBuffer numberOfPoints:v31])
   {
     time = **&MEMORY[0x1E6960C70];
-    BWSampleBufferCreateFromDataBufferWithNumberOfPoints(v27, &time, 0x6A737070u, (a1 + 176), &v36, v31[0]);
+    BWSampleBufferCreateFromDataBufferWithNumberOfPoints(v27, &time, 0x6A737070u, (self + 176), &v36, v31[0]);
     if (v36)
     {
       BWSampleBufferSetAttachedMedia(v29, 0x1F21AAA30, v36);
@@ -380,12 +380,12 @@ LABEL_24:
   return result;
 }
 
-- (uint64_t)_mergePointClouds:(__CVBuffer *)a3 intoDataBuffer:(_DWORD *)a4 numberOfPoints:
+- (uint64_t)_mergePointClouds:(__CVBuffer *)clouds intoDataBuffer:(_DWORD *)buffer numberOfPoints:
 {
   if (result)
   {
-    v7 = [MEMORY[0x1E695DF70] array];
-    v15 = OUTLINED_FUNCTION_4_34(v7, v8, v9, v10, v11, v12, v13, v14, v41, v43, v45, buffer, v50, v7, v54, v56, v58, v60, v62, v64, v66, v68, v70, v72, v74, v76, v78, v80, v82, v84, v86, v88, v90, v92, v94, v96, v98, v100, v102);
+    array = [MEMORY[0x1E695DF70] array];
+    v15 = OUTLINED_FUNCTION_4_34(array, v8, v9, v10, v11, v12, v13, v14, v41, v43, v45, buffer, v50, array, v54, v56, v58, v60, v62, v64, v66, v68, v70, v72, v74, v76, v78, v80, v82, v84, v86, v88, v90, v92, v94, v96, v98, v100, v102);
     if (v15)
     {
       v16 = v15;
@@ -426,10 +426,10 @@ LABEL_4:
     v17 = 0;
     CVDataBuffer = 0;
 LABEL_12:
-    result = [getADJasperPointCloudClass() prepareDataBuffer:a3 forLength:v17];
+    result = [getADJasperPointCloudClass() prepareDataBuffer:clouds forLength:v17];
     if (result)
     {
-      v31 = [objc_alloc(getADMutableJasperPointCloudClass()) initWithDataBuffer:a3];
+      v31 = [objc_alloc(getADMutableJasperPointCloudClass()) initWithDataBuffer:clouds];
       if (!v31)
       {
 LABEL_24:
@@ -440,8 +440,8 @@ LABEL_24:
       }
 
       v32 = v31;
-      bufferb = a3;
-      v52 = a4;
+      bufferb = clouds;
+      bufferCopy = buffer;
       OUTLINED_FUNCTION_13_14();
       v33 = [obj countByEnumeratingWithState:? objects:? count:?];
       if (v33)
@@ -486,7 +486,7 @@ LABEL_24:
         CVBufferSetAttachment(bufferb, @"CameraCalibration", v40, kCVAttachmentMode_ShouldPropagate);
       }
 
-      *v52 = v17;
+      *bufferCopy = v17;
       return 1;
     }
   }

@@ -1,20 +1,20 @@
 @interface PUParallaxVisualDiagnosticsProvider
-- (void)_addImagingGatingScores:(id)a3;
-- (void)_addLayerStack:(id)a3;
-- (void)_addLayerStackProperties:(id)a3;
-- (void)_addLayersTable:(id)a3;
-- (void)_addSegmentationItemProperties:(id)a3;
-- (void)_drawLayer:(id)a3 inRect:(CGRect)a4 context:(id)a5;
-- (void)addVisualDiagnosticsToContext:(id)a3 completionHandler:(id)a4;
+- (void)_addImagingGatingScores:(id)scores;
+- (void)_addLayerStack:(id)stack;
+- (void)_addLayerStackProperties:(id)properties;
+- (void)_addLayersTable:(id)table;
+- (void)_addSegmentationItemProperties:(id)properties;
+- (void)_drawLayer:(id)layer inRect:(CGRect)rect context:(id)context;
+- (void)addVisualDiagnosticsToContext:(id)context completionHandler:(id)handler;
 @end
 
 @implementation PUParallaxVisualDiagnosticsProvider
 
-- (void)_addSegmentationItemProperties:(id)a3
+- (void)_addSegmentationItemProperties:(id)properties
 {
-  v4 = a3;
-  [v4 beginPage];
-  [v4 currentPageBounds];
+  propertiesCopy = properties;
+  [propertiesCopy beginPage];
+  [propertiesCopy currentPageBounds];
   v22 = CGRectInset(v21, 20.0, 20.0);
   x = v22.origin.x;
   y = v22.origin.y;
@@ -23,20 +23,20 @@
   v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v9 appendString:@"\n"];
   [v9 appendString:@"Segmentation Item Properties\n\n"];
-  v10 = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
-  [v10 classification];
+  segmentationItem = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
+  [segmentationItem classification];
   v11 = PFPosterClassificationName();
   [v9 appendFormat:@"Classification: %@\n", v11];
 
   [v9 appendFormat:@"Available styles:\n"];
-  v12 = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
-  v13 = [v12 availableStyles];
+  segmentationItem2 = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
+  availableStyles = [segmentationItem2 availableStyles];
   v14 = PFMap();
 
   v15 = [v14 componentsJoinedByString:{@", \n\t"}];
   [v9 appendFormat:@"\t%@\n", v15];
-  v16 = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
-  [v16 settlingEffectStatus];
+  segmentationItem3 = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
+  [segmentationItem3 settlingEffectStatus];
   v17 = PIPosterSettlingEffectStatusDescription();
   [v9 appendFormat:@"Settling Effect Status: %@", v17];
 
@@ -46,8 +46,8 @@
   v19[3] = &unk_1E7B80210;
   v20 = v9;
   v18 = v9;
-  [v4 drawTextInRect:v19 configuration:{x, y, width, height}];
-  [v4 endPage];
+  [propertiesCopy drawTextInRect:v19 configuration:{x, y, width, height}];
+  [propertiesCopy endPage];
 }
 
 void __70__PUParallaxVisualDiagnosticsProvider__addSegmentationItemProperties___block_invoke_2(uint64_t a1, void *a2)
@@ -60,12 +60,12 @@ void __70__PUParallaxVisualDiagnosticsProvider__addSegmentationItemProperties___
   [v3 setTextColor:v4];
 }
 
-- (void)_addImagingGatingScores:(id)a3
+- (void)_addImagingGatingScores:(id)scores
 {
   v41 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  [v4 beginPage];
-  [v4 currentPageBounds];
+  scoresCopy = scores;
+  [scoresCopy beginPage];
+  [scoresCopy currentPageBounds];
   v43 = CGRectInset(v42, 20.0, 20.0);
   x = v43.origin.x;
   y = v43.origin.y;
@@ -74,14 +74,14 @@ void __70__PUParallaxVisualDiagnosticsProvider__addSegmentationItemProperties___
   v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v9 appendString:@"\n"];
   [v9 appendString:@"Imaging Gating scores\n\n"];
-  v10 = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
+  segmentationItem = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
 
-  if (v10)
+  if (segmentationItem)
   {
-    v11 = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
-    v12 = [v11 scores];
+    segmentationItem2 = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
+    scores = [segmentationItem2 scores];
 
-    if ([MEMORY[0x1E69BDF28] curatedSegmentationGatingDecisionForSegmentationScores:v12])
+    if ([MEMORY[0x1E69BDF28] curatedSegmentationGatingDecisionForSegmentationScores:scores])
     {
       v13 = @"Pass";
     }
@@ -92,7 +92,7 @@ void __70__PUParallaxVisualDiagnosticsProvider__addSegmentationItemProperties___
     }
 
     [v9 appendFormat:@"Curated Segmentation gating: %@\n", v13];
-    if ([MEMORY[0x1E69BDF28] manualSegmentationGatingDecisionForSegmentationScores:v12])
+    if ([MEMORY[0x1E69BDF28] manualSegmentationGatingDecisionForSegmentationScores:scores])
     {
       v14 = @"Pass";
     }
@@ -103,7 +103,7 @@ void __70__PUParallaxVisualDiagnosticsProvider__addSegmentationItemProperties___
     }
 
     [v9 appendFormat:@"Manual Segmentation gating: %@\n", v14];
-    if ([MEMORY[0x1E69BDF28] layoutGatingDecisionForSegmentationScores:v12])
+    if ([MEMORY[0x1E69BDF28] layoutGatingDecisionForSegmentationScores:scores])
     {
       v15 = @"Pass";
     }
@@ -114,15 +114,15 @@ void __70__PUParallaxVisualDiagnosticsProvider__addSegmentationItemProperties___
     }
 
     [v9 appendFormat:@"Layout gating: %@\n", v15];
-    [v9 appendFormat:@"Scores: %@\n", v12];
+    [v9 appendFormat:@"Scores: %@\n", scores];
     v37 = 0u;
     v38 = 0u;
     v35 = 0u;
     v36 = 0u;
-    v16 = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
-    v17 = [v16 settlingEffectGatingDiagnostics];
+    segmentationItem3 = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
+    settlingEffectGatingDiagnostics = [segmentationItem3 settlingEffectGatingDiagnostics];
 
-    v18 = [v17 countByEnumeratingWithState:&v35 objects:v40 count:16];
+    v18 = [settlingEffectGatingDiagnostics countByEnumeratingWithState:&v35 objects:v40 count:16];
     if (v18)
     {
       v19 = v18;
@@ -134,14 +134,14 @@ void __70__PUParallaxVisualDiagnosticsProvider__addSegmentationItemProperties___
         {
           if (*v36 != v20)
           {
-            objc_enumerationMutation(v17);
+            objc_enumerationMutation(settlingEffectGatingDiagnostics);
           }
 
           [v9 appendFormat:@"%@\n", *(*(&v35 + 1) + 8 * v21++)];
         }
 
         while (v19 != v21);
-        v19 = [v17 countByEnumeratingWithState:&v35 objects:v40 count:16];
+        v19 = [settlingEffectGatingDiagnostics countByEnumeratingWithState:&v35 objects:v40 count:16];
       }
 
       while (v19);
@@ -151,8 +151,8 @@ void __70__PUParallaxVisualDiagnosticsProvider__addSegmentationItemProperties___
     v34 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v22 = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
-    v23 = [v22 spatialPhotoGatingDiagnosticsOnlyFailures:0];
+    segmentationItem4 = [(PUParallaxVisualDiagnosticsProvider *)self segmentationItem];
+    v23 = [segmentationItem4 spatialPhotoGatingDiagnosticsOnlyFailures:0];
 
     v24 = [v23 countByEnumeratingWithState:&v31 objects:v39 count:16];
     if (v24)
@@ -191,8 +191,8 @@ void __70__PUParallaxVisualDiagnosticsProvider__addSegmentationItemProperties___
   v29[3] = &unk_1E7B80210;
   v30 = v9;
   v28 = v9;
-  [v4 drawTextInRect:v29 configuration:{x, y, width, height}];
-  [v4 endPage];
+  [scoresCopy drawTextInRect:v29 configuration:{x, y, width, height}];
+  [scoresCopy endPage];
 }
 
 void __63__PUParallaxVisualDiagnosticsProvider__addImagingGatingScores___block_invoke(uint64_t a1, void *a2)
@@ -205,11 +205,11 @@ void __63__PUParallaxVisualDiagnosticsProvider__addImagingGatingScores___block_i
   [v3 setTextColor:v4];
 }
 
-- (void)_addLayerStackProperties:(id)a3
+- (void)_addLayerStackProperties:(id)properties
 {
-  v4 = a3;
-  [v4 beginPage];
-  [v4 currentPageBounds];
+  propertiesCopy = properties;
+  [propertiesCopy beginPage];
+  [propertiesCopy currentPageBounds];
   v26 = CGRectInset(v25, 20.0, 20.0);
   x = v26.origin.x;
   y = v26.origin.y;
@@ -218,23 +218,23 @@ void __63__PUParallaxVisualDiagnosticsProvider__addImagingGatingScores___block_i
   v9 = objc_alloc_init(MEMORY[0x1E696AD60]);
   [v9 appendString:@"\n"];
   [v9 appendString:@"LayerStack Properties\n\n"];
-  v10 = [(PUParallaxVisualDiagnosticsProvider *)self compoundLayerStack];
-  v11 = [v10 portraitLayerStack];
-  [v11 size];
+  compoundLayerStack = [(PUParallaxVisualDiagnosticsProvider *)self compoundLayerStack];
+  portraitLayerStack = [compoundLayerStack portraitLayerStack];
+  [portraitLayerStack size];
   v12 = NSStringFromCGSize(v24);
   [v9 appendFormat:@"CanvasSize: %@\n\n", v12];
 
-  v13 = [(PUParallaxVisualDiagnosticsProvider *)self compoundLayerStack];
-  v14 = [v13 portraitLayerStack];
-  v15 = [v14 layout];
-  v16 = [v15 debugDescription];
+  compoundLayerStack2 = [(PUParallaxVisualDiagnosticsProvider *)self compoundLayerStack];
+  portraitLayerStack2 = [compoundLayerStack2 portraitLayerStack];
+  layout = [portraitLayerStack2 layout];
+  v16 = [layout debugDescription];
   [v9 appendFormat:@"Portrait Layout: %@\n", v16];
 
   [v9 appendString:@"\n\n\n"];
-  v17 = [(PUParallaxVisualDiagnosticsProvider *)self compoundLayerStack];
-  v18 = [v17 landscapeLayerStack];
-  v19 = [v18 layout];
-  v20 = [v19 debugDescription];
+  compoundLayerStack3 = [(PUParallaxVisualDiagnosticsProvider *)self compoundLayerStack];
+  landscapeLayerStack = [compoundLayerStack3 landscapeLayerStack];
+  layout2 = [landscapeLayerStack layout];
+  v20 = [layout2 debugDescription];
   [v9 appendFormat:@"Landscape Layout: %@\n", v20];
 
   v22[0] = MEMORY[0x1E69E9820];
@@ -243,8 +243,8 @@ void __63__PUParallaxVisualDiagnosticsProvider__addImagingGatingScores___block_i
   v22[3] = &unk_1E7B80210;
   v23 = v9;
   v21 = v9;
-  [v4 drawTextInRect:v22 configuration:{x, y, width, height}];
-  [v4 endPage];
+  [propertiesCopy drawTextInRect:v22 configuration:{x, y, width, height}];
+  [propertiesCopy endPage];
 }
 
 void __64__PUParallaxVisualDiagnosticsProvider__addLayerStackProperties___block_invoke(uint64_t a1, void *a2)
@@ -257,9 +257,9 @@ void __64__PUParallaxVisualDiagnosticsProvider__addLayerStackProperties___block_
   [v3 setTextColor:v4];
 }
 
-- (void)_addLayersTable:(id)a3
+- (void)_addLayersTable:(id)table
 {
-  v4 = a3;
+  tableCopy = table;
   v13[0] = MEMORY[0x1E69E9820];
   v13[1] = 3221225472;
   v13[2] = __55__PUParallaxVisualDiagnosticsProvider__addLayersTable___block_invoke_2;
@@ -275,12 +275,12 @@ void __64__PUParallaxVisualDiagnosticsProvider__addLayerStackProperties___block_
   v6[3] = &unk_1E7B79348;
   v6[4] = self;
   v7 = @"Layer";
-  v8 = v4;
+  v8 = tableCopy;
   v9 = @"Id";
   v10 = @"Size";
   v11 = @"Frame";
   v12 = @"zPosition";
-  v5 = v4;
+  v5 = tableCopy;
   [v5 addPagesForTableWithConfiguration:&__block_literal_global_372 columnsConfiguration:v13 rowsConfiguration:v6];
 }
 
@@ -469,48 +469,48 @@ void __55__PUParallaxVisualDiagnosticsProvider__addLayersTable___block_invoke_3(
   [v2 setWidth:120.0];
 }
 
-- (void)_drawLayer:(id)a3 inRect:(CGRect)a4 context:(id)a5
+- (void)_drawLayer:(id)layer inRect:(CGRect)rect context:(id)context
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = rect.size.height;
+  width = rect.size.width;
+  y = rect.origin.y;
+  x = rect.origin.x;
   v39 = *MEMORY[0x1E69E9840];
-  v10 = a3;
-  v11 = a5;
-  v12 = [v11 CGContext];
-  CGContextSaveGState(v12);
+  layerCopy = layer;
+  contextCopy = context;
+  cGContext = [contextCopy CGContext];
+  CGContextSaveGState(cGContext);
   v40.origin.x = x;
   v40.origin.y = y;
   v40.size.width = width;
   v40.size.height = height;
-  CGContextClipToRect(v12, v40);
-  v13 = [MEMORY[0x1E69DC888] lightGrayColor];
-  CGContextSetFillColorWithColor(v12, [v13 CGColor]);
+  CGContextClipToRect(cGContext, v40);
+  lightGrayColor = [MEMORY[0x1E69DC888] lightGrayColor];
+  CGContextSetFillColorWithColor(cGContext, [lightGrayColor CGColor]);
 
   v41.origin.x = x;
   v41.origin.y = y;
   v41.size.width = width;
   v41.size.height = height;
-  CGContextFillRect(v12, v41);
+  CGContextFillRect(cGContext, v41);
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v14 = v10;
+    v14 = layerCopy;
     v15 = objc_alloc(MEMORY[0x1E695F658]);
-    v16 = [v14 image];
+    image = [v14 image];
     v31 = *MEMORY[0x1E695F9B8];
     v32 = MEMORY[0x1E695E110];
     v17 = [MEMORY[0x1E695DF20] dictionaryWithObjects:&v32 forKeys:&v31 count:1];
-    v18 = [v15 initWithCVPixelBuffer:v16 options:v17];
+    v18 = [v15 initWithCVPixelBuffer:image options:v17];
 
     [v18 extent];
     v20 = v19;
     v22 = v21;
     v24 = v23;
     v26 = v25;
-    v27 = [MEMORY[0x1E695F620] context];
-    v28 = [v27 createCGImage:v18 fromRect:{v20, v22, v24, v26}];
+    context = [MEMORY[0x1E695F620] context];
+    v28 = [context createCGImage:v18 fromRect:{v20, v22, v24, v26}];
 
     if ((v24 == 0.0 || v26 == 0.0 || v24 == *MEMORY[0x1E69BDDB0] && v26 == *(MEMORY[0x1E69BDDB0] + 8)) && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_FAULT))
     {
@@ -528,16 +528,16 @@ void __55__PUParallaxVisualDiagnosticsProvider__addLayersTable___block_invoke_3(
     v42.size.height = v30;
     v42.origin.x = x + width * 0.5 + v29 * -0.5;
     v42.origin.y = y + height * 0.5 + v30 * -0.5;
-    CGContextDrawImage(v12, v42, v28);
+    CGContextDrawImage(cGContext, v42, v28);
     CGImageRelease(v28);
   }
 
   else
   {
-    [v11 drawTextInRect:&__block_literal_global_39571 configuration:{x, y, width, height}];
+    [contextCopy drawTextInRect:&__block_literal_global_39571 configuration:{x, y, width, height}];
   }
 
-  CGContextRestoreGState(v12);
+  CGContextRestoreGState(cGContext);
 }
 
 void __65__PUParallaxVisualDiagnosticsProvider__drawLayer_inRect_context___block_invoke(uint64_t a1, void *a2)
@@ -549,24 +549,24 @@ void __65__PUParallaxVisualDiagnosticsProvider__drawLayer_inRect_context___block
   [v2 setTextColor:v3];
 }
 
-- (void)_addLayerStack:(id)a3
+- (void)_addLayerStack:(id)stack
 {
   v46 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PUParallaxVisualDiagnosticsProvider *)self compoundLayerStack];
-  v6 = [v5 portraitLayerStack];
-  v7 = [v6 layers];
-  v8 = [v7 mutableCopy];
+  stackCopy = stack;
+  compoundLayerStack = [(PUParallaxVisualDiagnosticsProvider *)self compoundLayerStack];
+  portraitLayerStack = [compoundLayerStack portraitLayerStack];
+  layers = [portraitLayerStack layers];
+  v8 = [layers mutableCopy];
 
-  v9 = [(PUParallaxVisualDiagnosticsProvider *)self compoundLayerStack];
-  v10 = [v9 landscapeLayerStack];
+  compoundLayerStack2 = [(PUParallaxVisualDiagnosticsProvider *)self compoundLayerStack];
+  landscapeLayerStack = [compoundLayerStack2 landscapeLayerStack];
 
-  if (v10)
+  if (landscapeLayerStack)
   {
-    v11 = [(PUParallaxVisualDiagnosticsProvider *)self compoundLayerStack];
-    v12 = [v11 landscapeLayerStack];
-    v13 = [v12 layers];
-    [v8 addObjectsFromArray:v13];
+    compoundLayerStack3 = [(PUParallaxVisualDiagnosticsProvider *)self compoundLayerStack];
+    landscapeLayerStack2 = [compoundLayerStack3 landscapeLayerStack];
+    layers2 = [landscapeLayerStack2 layers];
+    [v8 addObjectsFromArray:layers2];
   }
 
   v43 = 0u;
@@ -590,23 +590,23 @@ void __65__PUParallaxVisualDiagnosticsProvider__drawLayer_inRect_context___block
         }
 
         v18 = *(*(&v41 + 1) + 8 * v17);
-        [v4 beginPage];
+        [stackCopy beginPage];
         memset(&slice, 0, sizeof(slice));
-        [v4 currentPageBounds];
+        [stackCopy currentPageBounds];
         slice = CGRectInset(v47, 10.0, 10.0);
         memset(&remainder, 0, sizeof(remainder));
         memset(&v38, 0, sizeof(v38));
         CGRectDivide(slice, &slice, &remainder, 260.0, CGRectMaxYEdge);
         CGRectDivide(slice, &v38, &slice, 250.0, CGRectMaxYEdge);
-        v19 = [(PUParallaxVisualDiagnosticsProvider *)self asset];
-        [v19 aspectRatio];
+        asset = [(PUParallaxVisualDiagnosticsProvider *)self asset];
+        [asset aspectRatio];
         PXRectWithAspectRatioFittingRect();
         v21 = v20;
         v23 = v22;
         v25 = v24;
         v27 = v26;
 
-        [(PUParallaxVisualDiagnosticsProvider *)self _drawLayer:v18 inRect:v4 context:v21, v23, v25, v27];
+        [(PUParallaxVisualDiagnosticsProvider *)self _drawLayer:v18 inRect:stackCopy context:v21, v23, v25, v27];
         v28 = objc_alloc_init(MEMORY[0x1E696AD60]);
         [v28 appendString:@"\n"];
         v29 = [v18 debugDescription];
@@ -622,8 +622,8 @@ void __65__PUParallaxVisualDiagnosticsProvider__drawLayer_inRect_context___block
         width = v38.size.width;
         height = v38.size.height;
         v34 = v28;
-        [v4 drawTextInRect:v36 configuration:{x, y, width, height}];
-        [v4 endPage];
+        [stackCopy drawTextInRect:v36 configuration:{x, y, width, height}];
+        [stackCopy endPage];
 
         ++v17;
       }
@@ -646,18 +646,18 @@ void __54__PUParallaxVisualDiagnosticsProvider__addLayerStack___block_invoke(uin
   [v3 setTextColor:v4];
 }
 
-- (void)addVisualDiagnosticsToContext:(id)a3 completionHandler:(id)a4
+- (void)addVisualDiagnosticsToContext:(id)context completionHandler:(id)handler
 {
-  v7 = a4;
-  v6 = a3;
-  [(PUParallaxVisualDiagnosticsProvider *)self _addCoverPage:v6];
-  [(PUParallaxVisualDiagnosticsProvider *)self _addLayersTable:v6];
-  [(PUParallaxVisualDiagnosticsProvider *)self _addLayerStack:v6];
-  [(PUParallaxVisualDiagnosticsProvider *)self _addLayerStackProperties:v6];
-  [(PUParallaxVisualDiagnosticsProvider *)self _addImagingGatingScores:v6];
-  [(PUParallaxVisualDiagnosticsProvider *)self _addSegmentationItemProperties:v6];
+  handlerCopy = handler;
+  contextCopy = context;
+  [(PUParallaxVisualDiagnosticsProvider *)self _addCoverPage:contextCopy];
+  [(PUParallaxVisualDiagnosticsProvider *)self _addLayersTable:contextCopy];
+  [(PUParallaxVisualDiagnosticsProvider *)self _addLayerStack:contextCopy];
+  [(PUParallaxVisualDiagnosticsProvider *)self _addLayerStackProperties:contextCopy];
+  [(PUParallaxVisualDiagnosticsProvider *)self _addImagingGatingScores:contextCopy];
+  [(PUParallaxVisualDiagnosticsProvider *)self _addSegmentationItemProperties:contextCopy];
 
-  v7[2](v7, 1, 0);
+  handlerCopy[2](handlerCopy, 1, 0);
 }
 
 @end

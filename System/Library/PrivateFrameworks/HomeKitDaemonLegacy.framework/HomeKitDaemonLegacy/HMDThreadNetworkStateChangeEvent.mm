@@ -1,5 +1,5 @@
 @interface HMDThreadNetworkStateChangeEvent
-- (HMDThreadNetworkStateChangeEvent)initWithEventType:(int64_t)a3 eventValue:(unint64_t)a4;
+- (HMDThreadNetworkStateChangeEvent)initWithEventType:(int64_t)type eventValue:(unint64_t)value;
 - (id)_connectionStateValueToString;
 - (id)_eventTypeToString;
 - (id)_eventValueToString;
@@ -15,72 +15,72 @@
   v9.receiver = self;
   v9.super_class = HMDThreadNetworkStateChangeEvent;
   v4 = [(HMDThreadNetworkStateChangeEvent *)&v9 description];
-  v5 = [(HMDThreadNetworkStateChangeEvent *)self _eventTypeToString];
-  v6 = [(HMDThreadNetworkStateChangeEvent *)self _eventValueToString];
-  v7 = [v3 stringWithFormat:@"%@ [%@/%@]", v4, v5, v6];
+  _eventTypeToString = [(HMDThreadNetworkStateChangeEvent *)self _eventTypeToString];
+  _eventValueToString = [(HMDThreadNetworkStateChangeEvent *)self _eventValueToString];
+  v7 = [v3 stringWithFormat:@"%@ [%@/%@]", v4, _eventTypeToString, _eventValueToString];
 
   return v7;
 }
 
 - (id)_eventValueToString
 {
-  v3 = [(HMDThreadNetworkStateChangeEvent *)self eventType];
-  if (v3 == 1)
+  eventType = [(HMDThreadNetworkStateChangeEvent *)self eventType];
+  if (eventType == 1)
   {
-    v4 = [(HMDThreadNetworkStateChangeEvent *)self _nodeTypeValueToString];
+    _nodeTypeValueToString = [(HMDThreadNetworkStateChangeEvent *)self _nodeTypeValueToString];
   }
 
-  else if (v3)
+  else if (eventType)
   {
-    v4 = @"unknown";
+    _nodeTypeValueToString = @"unknown";
   }
 
   else
   {
-    v4 = [(HMDThreadNetworkStateChangeEvent *)self _connectionStateValueToString];
+    _nodeTypeValueToString = [(HMDThreadNetworkStateChangeEvent *)self _connectionStateValueToString];
   }
 
-  return v4;
+  return _nodeTypeValueToString;
 }
 
 - (id)_nodeTypeValueToString
 {
-  v2 = [(HMDThreadNetworkStateChangeEvent *)self eventValue];
-  if ((v2 - 1) > 6)
+  eventValue = [(HMDThreadNetworkStateChangeEvent *)self eventValue];
+  if ((eventValue - 1) > 6)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279723978[v2 - 1];
+    return off_279723978[eventValue - 1];
   }
 }
 
 - (id)_connectionStateValueToString
 {
-  v2 = [(HMDThreadNetworkStateChangeEvent *)self eventValue];
-  if (v2 > 3)
+  eventValue = [(HMDThreadNetworkStateChangeEvent *)self eventValue];
+  if (eventValue > 3)
   {
     return @"unknown";
   }
 
   else
   {
-    return off_279723958[v2];
+    return off_279723958[eventValue];
   }
 }
 
 - (id)_eventTypeToString
 {
-  v2 = [(HMDThreadNetworkStateChangeEvent *)self eventType];
+  eventType = [(HMDThreadNetworkStateChangeEvent *)self eventType];
   v3 = @"unknown";
-  if (v2 == 1)
+  if (eventType == 1)
   {
     v3 = @"nodeType";
   }
 
-  if (v2)
+  if (eventType)
   {
     return v3;
   }
@@ -91,15 +91,15 @@
   }
 }
 
-- (HMDThreadNetworkStateChangeEvent)initWithEventType:(int64_t)a3 eventValue:(unint64_t)a4
+- (HMDThreadNetworkStateChangeEvent)initWithEventType:(int64_t)type eventValue:(unint64_t)value
 {
   v7.receiver = self;
   v7.super_class = HMDThreadNetworkStateChangeEvent;
   result = [(HMDThreadNetworkStateChangeEvent *)&v7 init];
   if (result)
   {
-    result->_eventType = a3;
-    result->_eventValue = a4;
+    result->_eventType = type;
+    result->_eventValue = value;
   }
 
   return result;

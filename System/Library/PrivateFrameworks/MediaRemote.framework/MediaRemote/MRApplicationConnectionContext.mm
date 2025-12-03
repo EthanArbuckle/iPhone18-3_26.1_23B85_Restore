@@ -1,37 +1,37 @@
 @interface MRApplicationConnectionContext
-- (BOOL)isEqual:(id)a3;
-- (MRApplicationConnectionContext)initWithCoder:(id)a3;
-- (MRApplicationConnectionContext)initWithIdentifier:(id)a3 service:(id)a4 destinationPlayerPath:(id)a5;
-- (MRApplicationConnectionContext)initWithProtobuf:(id)a3;
-- (MRApplicationConnectionContext)initWithProtobufData:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (MRApplicationConnectionContext)initWithCoder:(id)coder;
+- (MRApplicationConnectionContext)initWithIdentifier:(id)identifier service:(id)service destinationPlayerPath:(id)path;
+- (MRApplicationConnectionContext)initWithProtobuf:(id)protobuf;
+- (MRApplicationConnectionContext)initWithProtobufData:(id)data;
 - (NSData)protobufData;
 - (_MRApplicationConnectionContextProtobuf)protobuf;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRApplicationConnectionContext
 
-- (MRApplicationConnectionContext)initWithIdentifier:(id)a3 service:(id)a4 destinationPlayerPath:(id)a5
+- (MRApplicationConnectionContext)initWithIdentifier:(id)identifier service:(id)service destinationPlayerPath:(id)path
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  identifierCopy = identifier;
+  serviceCopy = service;
+  pathCopy = path;
   v19.receiver = self;
   v19.super_class = MRApplicationConnectionContext;
   v11 = [(MRApplicationConnectionContext *)&v19 init];
   if (v11)
   {
-    v12 = [v8 copy];
+    v12 = [identifierCopy copy];
     identifier = v11->_identifier;
     v11->_identifier = v12;
 
-    v14 = [v9 copy];
+    v14 = [serviceCopy copy];
     service = v11->_service;
     v11->_service = v14;
 
-    v16 = [v10 copy];
+    v16 = [pathCopy copy];
     destinationPlayerPath = v11->_destinationPlayerPath;
     v11->_destinationPlayerPath = v16;
   }
@@ -39,68 +39,68 @@
   return v11;
 }
 
-- (MRApplicationConnectionContext)initWithProtobufData:(id)a3
+- (MRApplicationConnectionContext)initWithProtobufData:(id)data
 {
-  if (a3)
+  if (data)
   {
-    v4 = a3;
-    v5 = [[_MRApplicationConnectionContextProtobuf alloc] initWithData:v4];
+    dataCopy = data;
+    v5 = [[_MRApplicationConnectionContextProtobuf alloc] initWithData:dataCopy];
 
     self = [(MRApplicationConnectionContext *)self initWithProtobuf:v5];
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = 0;
+    selfCopy = 0;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (MRApplicationConnectionContext)initWithProtobuf:(id)a3
+- (MRApplicationConnectionContext)initWithProtobuf:(id)protobuf
 {
-  v4 = a3;
-  if (v4)
+  protobufCopy = protobuf;
+  if (protobufCopy)
   {
     v16.receiver = self;
     v16.super_class = MRApplicationConnectionContext;
     v5 = [(MRApplicationConnectionContext *)&v16 init];
     if (v5)
     {
-      v6 = [v4 identifier];
+      identifier = [protobufCopy identifier];
       identifier = v5->_identifier;
-      v5->_identifier = v6;
+      v5->_identifier = identifier;
 
-      v8 = [v4 serviceName];
+      serviceName = [protobufCopy serviceName];
       service = v5->_service;
-      v5->_service = v8;
+      v5->_service = serviceName;
 
       v10 = [MRPlayerPath alloc];
-      v11 = [v4 destinationPlayerPath];
-      v12 = [(MRPlayerPath *)v10 initWithProtobuf:v11];
+      destinationPlayerPath = [protobufCopy destinationPlayerPath];
+      v12 = [(MRPlayerPath *)v10 initWithProtobuf:destinationPlayerPath];
       destinationPlayerPath = v5->_destinationPlayerPath;
       v5->_destinationPlayerPath = v12;
     }
 
     self = v5;
-    v14 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v14 = 0;
+    selfCopy = 0;
   }
 
-  return v14;
+  return selfCopy;
 }
 
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(MRApplicationConnectionContext *)self identifier];
-  v5 = [(MRApplicationConnectionContext *)self service];
-  v6 = [v3 initWithFormat:@"<MRApplicationConnectionContext - id: %@, service: %@>", v4, v5];
+  identifier = [(MRApplicationConnectionContext *)self identifier];
+  service = [(MRApplicationConnectionContext *)self service];
+  v6 = [v3 initWithFormat:@"<MRApplicationConnectionContext - id: %@, service: %@>", identifier, service];
 
   return v6;
 }
@@ -108,31 +108,31 @@
 - (_MRApplicationConnectionContextProtobuf)protobuf
 {
   v3 = objc_alloc_init(_MRApplicationConnectionContextProtobuf);
-  v4 = [(MRApplicationConnectionContext *)self identifier];
-  [(_MRApplicationConnectionContextProtobuf *)v3 setIdentifier:v4];
+  identifier = [(MRApplicationConnectionContext *)self identifier];
+  [(_MRApplicationConnectionContextProtobuf *)v3 setIdentifier:identifier];
 
-  v5 = [(MRApplicationConnectionContext *)self service];
-  [(_MRApplicationConnectionContextProtobuf *)v3 setServiceName:v5];
+  service = [(MRApplicationConnectionContext *)self service];
+  [(_MRApplicationConnectionContextProtobuf *)v3 setServiceName:service];
 
-  v6 = [(MRApplicationConnectionContext *)self destinationPlayerPath];
-  v7 = [v6 protobuf];
-  [(_MRApplicationConnectionContextProtobuf *)v3 setDestinationPlayerPath:v7];
+  destinationPlayerPath = [(MRApplicationConnectionContext *)self destinationPlayerPath];
+  protobuf = [destinationPlayerPath protobuf];
+  [(_MRApplicationConnectionContextProtobuf *)v3 setDestinationPlayerPath:protobuf];
 
   return v3;
 }
 
 - (NSData)protobufData
 {
-  v2 = [(MRApplicationConnectionContext *)self protobuf];
-  v3 = [v2 data];
+  protobuf = [(MRApplicationConnectionContext *)self protobuf];
+  data = [protobuf data];
 
-  return v3;
+  return data;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -143,7 +143,7 @@
     if (objc_opt_isKindOfClass())
     {
       identifier = self->_identifier;
-      v6 = v4->_identifier;
+      v6 = equalCopy->_identifier;
       v7 = identifier;
       v8 = v7;
       if (v7 == v6)
@@ -168,23 +168,23 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MRApplicationConnectionContext *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(MRApplicationConnectionContext *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MRApplicationConnectionContext *)self protobufData];
-  [v4 encodeObject:v5 forKey:@"protobufData"];
+  coderCopy = coder;
+  protobufData = [(MRApplicationConnectionContext *)self protobufData];
+  [coderCopy encodeObject:protobufData forKey:@"protobufData"];
 }
 
-- (MRApplicationConnectionContext)initWithCoder:(id)a3
+- (MRApplicationConnectionContext)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufData"];
 
   v6 = [(MRApplicationConnectionContext *)self initWithProtobufData:v5];
   return v6;

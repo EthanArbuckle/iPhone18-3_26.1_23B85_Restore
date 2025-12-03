@@ -1,36 +1,36 @@
 @interface _HMFCFHTTPServerResponse
 - (_CFHTTPServerResponse)responseRef;
-- (_HMFCFHTTPServerResponse)initWithRequest:(id)a3 statusCode:(int64_t)a4;
+- (_HMFCFHTTPServerResponse)initWithRequest:(id)request statusCode:(int64_t)code;
 - (id)attributeDescriptions;
 - (id)body;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)headerFields;
 - (void)dealloc;
-- (void)setBody:(id)a3;
-- (void)setHeaderValue:(id)a3 forHeaderKey:(id)a4;
+- (void)setBody:(id)body;
+- (void)setHeaderValue:(id)value forHeaderKey:(id)key;
 @end
 
 @implementation _HMFCFHTTPServerResponse
 
-- (_HMFCFHTTPServerResponse)initWithRequest:(id)a3 statusCode:(int64_t)a4
+- (_HMFCFHTTPServerResponse)initWithRequest:(id)request statusCode:(int64_t)code
 {
   v27 = *MEMORY[0x277D85DE8];
-  v7 = a3;
+  requestCopy = request;
   v8 = [HMFActivity alloc];
-  v9 = [v7 activity];
-  v10 = [(HMFActivity *)v8 initWithName:@"HTTPResponse" parent:v9 options:1];
+  activity = [requestCopy activity];
+  v10 = [(HMFActivity *)v8 initWithName:@"HTTPResponse" parent:activity options:1];
 
   v24.receiver = self;
   v24.super_class = _HMFCFHTTPServerResponse;
-  v11 = [(HMFHTTPResponseInternal *)&v24 initWithStatusCode:a4 headerFields:MEMORY[0x277CBEC10] body:0 activity:v10];
+  v11 = [(HMFHTTPResponseInternal *)&v24 initWithStatusCode:code headerFields:MEMORY[0x277CBEC10] body:0 activity:v10];
   v12 = v11;
   if (!v11)
   {
     goto LABEL_4;
   }
 
-  objc_storeStrong(&v11->_request, a3);
-  [v7 requestRef];
+  objc_storeStrong(&v11->_request, request);
+  [requestCopy requestRef];
   ResponseMessage = _CFHTTPServerRequestCreateResponseMessage();
   if (ResponseMessage)
   {
@@ -82,8 +82,8 @@ LABEL_8:
   v11[1] = *MEMORY[0x277D85DE8];
   v3 = [HMFAttributeDescription alloc];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(_HMFCFHTTPServerResponse *)self request];
-  v6 = [v4 stringWithFormat:@"%@", v5];
+  request = [(_HMFCFHTTPServerResponse *)self request];
+  v6 = [v4 stringWithFormat:@"%@", request];
   v7 = [(HMFAttributeDescription *)v3 initWithName:@"Request" value:v6];
   v11[0] = v7;
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
@@ -93,20 +93,20 @@ LABEL_8:
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v10.receiver = self;
   v10.super_class = _HMFCFHTTPServerResponse;
-  v4 = [(HMFHTTPResponseInternal *)&v10 copyWithZone:a3];
+  v4 = [(HMFHTTPResponseInternal *)&v10 copyWithZone:zone];
   if (v4)
   {
-    v5 = [(_HMFCFHTTPServerResponse *)self request];
+    request = [(_HMFCFHTTPServerResponse *)self request];
     v6 = v4[6];
-    v4[6] = v5;
+    v4[6] = request;
 
-    v7 = [(_HMFCFHTTPServerResponse *)self response];
+    response = [(_HMFCFHTTPServerResponse *)self response];
     v8 = v4[8];
-    v4[8] = v7;
+    v4[8] = response;
   }
 
   return v4;
@@ -114,29 +114,29 @@ LABEL_8:
 
 - (id)headerFields
 {
-  v2 = [(_HMFCFHTTPServerResponse *)self response];
-  v3 = [v2 headerFields];
+  response = [(_HMFCFHTTPServerResponse *)self response];
+  headerFields = [response headerFields];
 
-  return v3;
+  return headerFields;
 }
 
-- (void)setHeaderValue:(id)a3 forHeaderKey:(id)a4
+- (void)setHeaderValue:(id)value forHeaderKey:(id)key
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(_HMFCFHTTPServerResponse *)self response];
-  [v8 setValue:v7 forHeaderField:v6];
+  keyCopy = key;
+  valueCopy = value;
+  response = [(_HMFCFHTTPServerResponse *)self response];
+  [response setValue:valueCopy forHeaderField:keyCopy];
 }
 
 - (id)body
 {
-  v3 = [(_HMFCFHTTPServerResponse *)self response];
+  response = [(_HMFCFHTTPServerResponse *)self response];
 
-  if (v3)
+  if (response)
   {
-    v4 = [(_HMFCFHTTPServerResponse *)self response];
-    v5 = [v4 body];
-    v6 = [v5 copy];
+    response2 = [(_HMFCFHTTPServerResponse *)self response];
+    body = [response2 body];
+    v6 = [body copy];
   }
 
   else
@@ -147,15 +147,15 @@ LABEL_8:
   return v6;
 }
 
-- (void)setBody:(id)a3
+- (void)setBody:(id)body
 {
-  v6 = a3;
-  v4 = [(_HMFCFHTTPServerResponse *)self response];
+  bodyCopy = body;
+  response = [(_HMFCFHTTPServerResponse *)self response];
 
-  if (v4)
+  if (response)
   {
-    v5 = [(_HMFCFHTTPServerResponse *)self response];
-    [v5 setBody:v6];
+    response2 = [(_HMFCFHTTPServerResponse *)self response];
+    [response2 setBody:bodyCopy];
   }
 }
 
@@ -164,12 +164,12 @@ LABEL_8:
   result = self->_responseRef;
   if (!result)
   {
-    v4 = [(_HMFCFHTTPServerResponse *)self request];
-    [v4 requestRef];
-    v5 = [(_HMFCFHTTPServerResponse *)self response];
-    [v5 message];
-    v6 = [(_HMFCFHTTPServerResponse *)self response];
-    [v6 body];
+    request = [(_HMFCFHTTPServerResponse *)self request];
+    [request requestRef];
+    response = [(_HMFCFHTTPServerResponse *)self response];
+    [response message];
+    response2 = [(_HMFCFHTTPServerResponse *)self response];
+    [response2 body];
     self->_responseRef = _CFHTTPServerResponseCreateWithData();
 
     [(_HMFCFHTTPServerResponse *)self responseRef];

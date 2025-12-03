@@ -1,30 +1,30 @@
 @interface MapsSuggestionsRealNetworkRequester
-- (BOOL)ETAFromWaypoint:(id)a3 toWaypoint:(id)a4 transportType:(int)a5 arrivalDate:(id)a6 automobileOptions:(id)a7 completion:(id)a8;
-- (BOOL)canonicalLocalSearchPostalAddress:(id)a3 completion:(id)a4;
-- (BOOL)composedWaypointForAddressString:(id)a3 completion:(id)a4;
-- (BOOL)composedWaypointForCurrentLocation:(id)a3 completion:(id)a4;
-- (BOOL)composedWaypointForLocation:(id)a3 completion:(id)a4;
-- (BOOL)composedWaypointForLocation:(id)a3 mapItem:(id)a4 completion:(id)a5;
-- (BOOL)composedWaypointForMapItem:(id)a3 completion:(id)a4;
-- (BOOL)drivingETAFromLocation:(id)a3 toLocation:(id)a4 arrivalDate:(id)a5 automobileOptions:(id)a6 completion:(id)a7;
-- (BOOL)forwardGeocodeAddressString:(id)a3 completion:(id)a4;
-- (BOOL)forwardGeocodePostalAddress:(id)a3 completion:(id)a4;
-- (BOOL)placeForMuid:(id)a3 completion:(id)a4;
-- (BOOL)placeRefinementForAddress:(id)a3 completion:(id)a4;
-- (BOOL)placeRefinementForCoordinate:(id)a3 address:(id)a4 completion:(id)a5;
-- (BOOL)resolveMapItemHandleData:(id)a3 dropAnalyticsSessionID:(BOOL)a4 completion:(id)a5;
-- (BOOL)reverseGeocodeCoordinate:(id)a3 shiftIfNeeded:(BOOL)a4 completion:(id)a5;
-- (BOOL)routeForWaypoints:(id)a3 currentLocation:(id)a4 routeAttributes:(id)a5 feedback:(id)a6 completion:(id)a7;
-- (BOOL)searchPOIWithName:(id)a3 ofPOICategory:(id)a4 withinVenue:(id)a5 maxResults:(unint64_t)a6 completion:(id)a7;
-- (BOOL)searchString:(id)a3 maxResults:(unsigned int)a4 completion:(id)a5;
-- (BOOL)searchWithAirportCode:(id)a3 terminal:(id)a4 gate:(id)a5 completion:(id)a6;
+- (BOOL)ETAFromWaypoint:(id)waypoint toWaypoint:(id)toWaypoint transportType:(int)type arrivalDate:(id)date automobileOptions:(id)options completion:(id)completion;
+- (BOOL)canonicalLocalSearchPostalAddress:(id)address completion:(id)completion;
+- (BOOL)composedWaypointForAddressString:(id)string completion:(id)completion;
+- (BOOL)composedWaypointForCurrentLocation:(id)location completion:(id)completion;
+- (BOOL)composedWaypointForLocation:(id)location completion:(id)completion;
+- (BOOL)composedWaypointForLocation:(id)location mapItem:(id)item completion:(id)completion;
+- (BOOL)composedWaypointForMapItem:(id)item completion:(id)completion;
+- (BOOL)drivingETAFromLocation:(id)location toLocation:(id)toLocation arrivalDate:(id)date automobileOptions:(id)options completion:(id)completion;
+- (BOOL)forwardGeocodeAddressString:(id)string completion:(id)completion;
+- (BOOL)forwardGeocodePostalAddress:(id)address completion:(id)completion;
+- (BOOL)placeForMuid:(id)muid completion:(id)completion;
+- (BOOL)placeRefinementForAddress:(id)address completion:(id)completion;
+- (BOOL)placeRefinementForCoordinate:(id)coordinate address:(id)address completion:(id)completion;
+- (BOOL)resolveMapItemHandleData:(id)data dropAnalyticsSessionID:(BOOL)d completion:(id)completion;
+- (BOOL)reverseGeocodeCoordinate:(id)coordinate shiftIfNeeded:(BOOL)needed completion:(id)completion;
+- (BOOL)routeForWaypoints:(id)waypoints currentLocation:(id)location routeAttributes:(id)attributes feedback:(id)feedback completion:(id)completion;
+- (BOOL)searchPOIWithName:(id)name ofPOICategory:(id)category withinVenue:(id)venue maxResults:(unint64_t)results completion:(id)completion;
+- (BOOL)searchString:(id)string maxResults:(unsigned int)results completion:(id)completion;
+- (BOOL)searchWithAirportCode:(id)code terminal:(id)terminal gate:(id)gate completion:(id)completion;
 - (NSString)uniqueName;
-- (id)initFromResourceDepot:(id)a3;
+- (id)initFromResourceDepot:(id)depot;
 @end
 
 @implementation MapsSuggestionsRealNetworkRequester
 
-- (id)initFromResourceDepot:(id)a3
+- (id)initFromResourceDepot:(id)depot
 {
   v4.receiver = self;
   v4.super_class = MapsSuggestionsRealNetworkRequester;
@@ -38,12 +38,12 @@
   return [v2 description];
 }
 
-- (BOOL)forwardGeocodePostalAddress:(id)a3 completion:(id)a4
+- (BOOL)forwardGeocodePostalAddress:(id)address completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  addressCopy = address;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -68,7 +68,7 @@ LABEL_11:
 
   v7 = GEOFindOrCreateLog();
   v8 = v7;
-  if (!v5)
+  if (!addressCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -90,32 +90,32 @@ LABEL_11:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138412290;
-    v17 = v5;
+    v17 = addressCopy;
     _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "Making request: fwd-geo for '%@'", &v16, 0xCu);
   }
 
-  v9 = [MEMORY[0x1E69A2208] sharedService];
-  v10 = [MEMORY[0x1E69A2208] sharedService];
-  v11 = [v10 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  mEMORY[0x1E69A2208]2 = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208]2 defaultTraits];
 
   v12 = GEOConfigGetString();
-  [v11 setAppIdentifier:v12];
+  [defaultTraits setAppIdentifier:v12];
 
   v13 = 1;
-  v8 = [v9 ticketForForwardGeocodePostalAddress:v5 maxResults:1 traits:v11];
+  v8 = [mEMORY[0x1E69A2208] ticketForForwardGeocodePostalAddress:addressCopy maxResults:1 traits:defaultTraits];
 
-  [v8 submitWithHandler:v6 networkActivity:0];
+  [v8 submitWithHandler:completionCopy networkActivity:0];
 LABEL_12:
 
   return v13;
 }
 
-- (BOOL)forwardGeocodeAddressString:(id)a3 completion:(id)a4
+- (BOOL)forwardGeocodeAddressString:(id)string completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  stringCopy = string;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -140,7 +140,7 @@ LABEL_11:
 
   v7 = GEOFindOrCreateLog();
   v8 = v7;
-  if (!v5)
+  if (!stringCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -162,35 +162,35 @@ LABEL_11:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138412290;
-    v17 = v5;
+    v17 = stringCopy;
     _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "Making request: fwd-geo for '%@'", &v16, 0xCu);
   }
 
-  v9 = [MEMORY[0x1E69A2208] sharedService];
-  v10 = [MEMORY[0x1E69A2208] sharedService];
-  v11 = [v10 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  mEMORY[0x1E69A2208]2 = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208]2 defaultTraits];
 
   v12 = GEOConfigGetString();
-  [v11 setAppIdentifier:v12];
+  [defaultTraits setAppIdentifier:v12];
 
   v13 = 1;
-  v8 = [v9 ticketForForwardGeocodeString:v5 maxResults:1 traits:v11];
+  v8 = [mEMORY[0x1E69A2208] ticketForForwardGeocodeString:stringCopy maxResults:1 traits:defaultTraits];
 
-  [v8 submitWithHandler:v6 networkActivity:0];
+  [v8 submitWithHandler:completionCopy networkActivity:0];
 LABEL_12:
 
   return v13;
 }
 
-- (BOOL)canonicalLocalSearchPostalAddress:(id)a3 completion:(id)a4
+- (BOOL)canonicalLocalSearchPostalAddress:(id)address completion:(id)completion
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  addressCopy = address;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v7 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    autoupdatingCurrentLocale = GEOFindOrCreateLog();
+    if (os_log_type_enabled(autoupdatingCurrentLocale, OS_LOG_TYPE_ERROR))
     {
       v23 = 136446978;
       v24 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/UT_Never/MapsSuggestionsRealNetworkRequester.m";
@@ -202,7 +202,7 @@ LABEL_12:
       v30 = "nil == (completion)";
       v21 = "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a completion handler";
 LABEL_10:
-      _os_log_impl(&dword_1C5126000, v7, OS_LOG_TYPE_ERROR, v21, &v23, 0x26u);
+      _os_log_impl(&dword_1C5126000, autoupdatingCurrentLocale, OS_LOG_TYPE_ERROR, v21, &v23, 0x26u);
     }
 
 LABEL_11:
@@ -210,10 +210,10 @@ LABEL_11:
     goto LABEL_12;
   }
 
-  if (!v5)
+  if (!addressCopy)
   {
-    v7 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
+    autoupdatingCurrentLocale = GEOFindOrCreateLog();
+    if (os_log_type_enabled(autoupdatingCurrentLocale, OS_LOG_TYPE_ERROR))
     {
       v23 = 136446978;
       v24 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/UT_Never/MapsSuggestionsRealNetworkRequester.m";
@@ -230,12 +230,12 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v7 = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
+  autoupdatingCurrentLocale = [MEMORY[0x1E695DF58] autoupdatingCurrentLocale];
   v8 = objc_alloc(MEMORY[0x1E69A1B40]);
-  v9 = [v7 languageCode];
-  v10 = [v7 regionCode];
-  v11 = [v7 languageCode];
-  v12 = [v8 initWithCNPostalAddress:v5 language:v9 country:v10 phoneticLocale:v11];
+  languageCode = [autoupdatingCurrentLocale languageCode];
+  regionCode = [autoupdatingCurrentLocale regionCode];
+  languageCode2 = [autoupdatingCurrentLocale languageCode];
+  v12 = [v8 initWithCNPostalAddress:addressCopy language:languageCode country:regionCode phoneticLocale:languageCode2];
 
   v13 = [v12 fullAddressWithMultiline:0];
   v14 = GEOFindOrCreateLog();
@@ -246,30 +246,30 @@ LABEL_11:
     _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "Making request: canonical for '%@'", &v23, 0xCu);
   }
 
-  v15 = [MEMORY[0x1E69A2208] sharedService];
-  v16 = [MEMORY[0x1E69A2208] sharedService];
-  v17 = [v16 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  mEMORY[0x1E69A2208]2 = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208]2 defaultTraits];
 
   v18 = GEOConfigGetString();
-  [v17 setAppIdentifier:v18];
+  [defaultTraits setAppIdentifier:v18];
 
-  v19 = [v15 ticketForCanonicalLocationSearchQueryString:v13 traits:v17];
+  v19 = [mEMORY[0x1E69A2208] ticketForCanonicalLocationSearchQueryString:v13 traits:defaultTraits];
 
-  [v19 submitWithHandler:v6 networkActivity:0];
+  [v19 submitWithHandler:completionCopy networkActivity:0];
   v20 = 1;
 LABEL_12:
 
   return v20;
 }
 
-- (BOOL)reverseGeocodeCoordinate:(id)a3 shiftIfNeeded:(BOOL)a4 completion:(id)a5
+- (BOOL)reverseGeocodeCoordinate:(id)coordinate shiftIfNeeded:(BOOL)needed completion:(id)completion
 {
-  v5 = a4;
-  var1 = a3.var1;
-  var0 = a3.var0;
+  neededCopy = needed;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   v25 = *MEMORY[0x1E69E9840];
-  v8 = a5;
-  if (!v8)
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v15 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
@@ -332,33 +332,33 @@ LABEL_16:
     _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "Making request: rev-geo for <%.6f,%.6f>", &v19, 0x16u);
   }
 
-  v11 = [MEMORY[0x1E69A2208] sharedService];
-  v12 = [MEMORY[0x1E69A2208] sharedService];
-  v13 = [v12 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  mEMORY[0x1E69A2208]2 = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208]2 defaultTraits];
 
   v14 = GEOConfigGetString();
-  [v13 setAppIdentifier:v14];
+  [defaultTraits setAppIdentifier:v14];
 
-  v15 = [v11 ticketForReverseGeocodeCoordinate:v5 shiftLocationsIfNeeded:v13 traits:{var0, var1}];
+  v15 = [mEMORY[0x1E69A2208] ticketForReverseGeocodeCoordinate:neededCopy shiftLocationsIfNeeded:defaultTraits traits:{var0, var1}];
 
-  [v15 submitWithHandler:v8 networkActivity:0];
+  [v15 submitWithHandler:completionCopy networkActivity:0];
   v16 = 1;
 LABEL_17:
 
   return v16;
 }
 
-- (BOOL)placeRefinementForCoordinate:(id)a3 address:(id)a4 completion:(id)a5
+- (BOOL)placeRefinementForCoordinate:(id)coordinate address:(id)address completion:(id)completion
 {
-  var1 = a3.var1;
-  var0 = a3.var0;
+  var1 = coordinate.var1;
+  var0 = coordinate.var0;
   v22 = *MEMORY[0x1E69E9840];
-  v17 = a3;
-  v8 = a4;
-  v9 = a5;
+  coordinateCopy = coordinate;
+  addressCopy = address;
+  completionCopy = completion;
   v10 = GEOFindOrCreateLog();
   v11 = v10;
-  if (v9)
+  if (completionCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
     {
@@ -367,20 +367,20 @@ LABEL_17:
       v20 = 2048;
       *v21 = var1;
       *&v21[8] = 2112;
-      *&v21[10] = v8;
+      *&v21[10] = addressCopy;
       _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_DEBUG, "Making place refinement: <%.6f,%.6f>, %@", buf, 0x20u);
     }
 
-    v12 = [MEMORY[0x1E69A2208] sharedService];
-    v13 = [MEMORY[0x1E69A2208] sharedService];
-    v14 = [v13 defaultTraits];
+    mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+    mEMORY[0x1E69A2208]2 = [MEMORY[0x1E69A2208] sharedService];
+    defaultTraits = [mEMORY[0x1E69A2208]2 defaultTraits];
 
     v15 = GEOConfigGetString();
-    [v14 setAppIdentifier:v15];
+    [defaultTraits setAppIdentifier:v15];
 
-    v11 = [v12 ticketForPlaceRefinementRequestWithCoordinate:&v17 addressLine:v8 placeName:0 traits:v14];
+    v11 = [mEMORY[0x1E69A2208] ticketForPlaceRefinementRequestWithCoordinate:&coordinateCopy addressLine:addressCopy placeName:0 traits:defaultTraits];
 
-    [v11 submitWithHandler:v9 networkActivity:0];
+    [v11 submitWithHandler:completionCopy networkActivity:0];
   }
 
   else if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -396,35 +396,35 @@ LABEL_17:
     _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a completion handler", buf, 0x26u);
   }
 
-  return v9 != 0;
+  return completionCopy != 0;
 }
 
-- (BOOL)placeRefinementForAddress:(id)a3 completion:(id)a4
+- (BOOL)placeRefinementForAddress:(id)address completion:(id)completion
 {
   v22 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  addressCopy = address;
+  completionCopy = completion;
   v7 = GEOFindOrCreateLog();
   v8 = v7;
-  if (v6)
+  if (completionCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
     {
       v14 = 138412290;
-      v15 = v5;
+      v15 = addressCopy;
       _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "Making place refinement with address: %@", &v14, 0xCu);
     }
 
-    v9 = [MEMORY[0x1E69A2208] sharedService];
-    v10 = [MEMORY[0x1E69A2208] sharedService];
-    v11 = [v10 defaultTraits];
+    mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+    mEMORY[0x1E69A2208]2 = [MEMORY[0x1E69A2208] sharedService];
+    defaultTraits = [mEMORY[0x1E69A2208]2 defaultTraits];
 
     v12 = GEOConfigGetString();
-    [v11 setAppIdentifier:v12];
+    [defaultTraits setAppIdentifier:v12];
 
-    v8 = [v9 ticketForPlaceRefinementRequestWithCoordinate:0 addressLine:v5 placeName:0 traits:v11];
+    v8 = [mEMORY[0x1E69A2208] ticketForPlaceRefinementRequestWithCoordinate:0 addressLine:addressCopy placeName:0 traits:defaultTraits];
 
-    [v8 submitWithHandler:v6 networkActivity:0];
+    [v8 submitWithHandler:completionCopy networkActivity:0];
   }
 
   else if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -440,38 +440,38 @@ LABEL_17:
     _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_ERROR, "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a completion handler", &v14, 0x26u);
   }
 
-  return v6 != 0;
+  return completionCopy != 0;
 }
 
-- (BOOL)placeForMuid:(id)a3 completion:(id)a4
+- (BOOL)placeForMuid:(id)muid completion:(id)completion
 {
   v15[1] = *MEMORY[0x1E69E9840];
   v5 = MEMORY[0x1E69A2208];
-  v6 = a4;
-  v7 = a3;
-  v8 = [v5 sharedService];
-  v15[0] = v7;
+  completionCopy = completion;
+  muidCopy = muid;
+  sharedService = [v5 sharedService];
+  v15[0] = muidCopy;
   v9 = [MEMORY[0x1E695DEC8] arrayWithObjects:v15 count:1];
-  v10 = [MEMORY[0x1E69A2208] sharedService];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
 
-  v11 = [v10 defaultTraits];
+  defaultTraits = [mEMORY[0x1E69A2208] defaultTraits];
 
   v12 = GEOConfigGetString();
-  [v11 setAppIdentifier:v12];
+  [defaultTraits setAppIdentifier:v12];
 
-  v13 = [v8 ticketForIdentifiers:v9 traits:v11];
+  v13 = [sharedService ticketForIdentifiers:v9 traits:defaultTraits];
 
-  [v13 submitWithHandler:v6 networkActivity:0];
+  [v13 submitWithHandler:completionCopy networkActivity:0];
   return 1;
 }
 
-- (BOOL)searchString:(id)a3 maxResults:(unsigned int)a4 completion:(id)a5
+- (BOOL)searchString:(id)string maxResults:(unsigned int)results completion:(id)completion
 {
-  v6 = *&a4;
+  v6 = *&results;
   v26 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if (!v8)
+  stringCopy = string;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v10 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
@@ -496,7 +496,7 @@ LABEL_11:
 
   v9 = GEOFindOrCreateLog();
   v10 = v9;
-  if (!v7)
+  if (!stringCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -518,34 +518,34 @@ LABEL_11:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     v18 = 138412290;
-    v19 = v7;
+    v19 = stringCopy;
     _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "Making request: search for '%@'", &v18, 0xCu);
   }
 
-  v11 = [MEMORY[0x1E69A2208] sharedService];
-  v12 = [MEMORY[0x1E69A2208] sharedService];
-  v13 = [v12 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  mEMORY[0x1E69A2208]2 = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208]2 defaultTraits];
 
   v14 = GEOConfigGetString();
-  [v13 setAppIdentifier:v14];
+  [defaultTraits setAppIdentifier:v14];
 
-  v10 = [v11 ticketForSearchQuery:v7 completionItem:0 maxResults:v6 traits:v13 searchSessionData:0];
+  v10 = [mEMORY[0x1E69A2208] ticketForSearchQuery:stringCopy completionItem:0 maxResults:v6 traits:defaultTraits searchSessionData:0];
 
-  [v10 submitWithHandler:v8 networkActivity:0];
+  [v10 submitWithHandler:completionCopy networkActivity:0];
   v15 = 1;
 LABEL_12:
 
   return v15;
 }
 
-- (BOOL)searchPOIWithName:(id)a3 ofPOICategory:(id)a4 withinVenue:(id)a5 maxResults:(unint64_t)a6 completion:(id)a7
+- (BOOL)searchPOIWithName:(id)name ofPOICategory:(id)category withinVenue:(id)venue maxResults:(unint64_t)results completion:(id)completion
 {
   v35 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a7;
-  if (!v14)
+  nameCopy = name;
+  categoryCopy = category;
+  venueCopy = venue;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v16 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
@@ -570,7 +570,7 @@ LABEL_16:
 
   v15 = GEOFindOrCreateLog();
   v16 = v15;
-  if (!v11)
+  if (!nameCopy)
   {
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
@@ -592,57 +592,57 @@ LABEL_16:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412802;
-    v32 = v11;
+    v32 = nameCopy;
     v33 = 2112;
-    *v34 = v12;
+    *v34 = categoryCopy;
     *&v34[8] = 2048;
-    *&v34[10] = [v13 venueID];
+    *&v34[10] = [venueCopy venueID];
     _os_log_impl(&dword_1C5126000, v16, OS_LOG_TYPE_DEBUG, "Making request: search POI for '%@' (category=%@ venue=%llu)", buf, 0x20u);
   }
 
   v16 = [objc_alloc(MEMORY[0x1E695DF70]) initWithCapacity:2];
   v17 = [objc_alloc(MEMORY[0x1E69A2498]) initWithResultTypes:2];
   [v16 addObject:v17];
-  if (v12)
+  if (categoryCopy)
   {
     v18 = objc_alloc(MEMORY[0x1E69A2328]);
-    v30 = v12;
+    v30 = categoryCopy;
     v19 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v30 count:1];
     v20 = [v18 initWithCategoriesToInclude:v19 categoriesToExclude:0];
 
     [v16 addObject:v20];
   }
 
-  if (v13 && [v13 _hasFeatureID])
+  if (venueCopy && [venueCopy _hasFeatureID])
   {
-    v21 = [objc_alloc(MEMORY[0x1E69A2760]) initWithIdentifier:v13];
+    v21 = [objc_alloc(MEMORY[0x1E69A2760]) initWithIdentifier:venueCopy];
     [v16 addObject:v21];
   }
 
-  v22 = [MEMORY[0x1E69A2208] sharedService];
-  v23 = [MEMORY[0x1E69A2208] sharedService];
-  v24 = [v23 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  mEMORY[0x1E69A2208]2 = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208]2 defaultTraits];
 
   v25 = GEOConfigGetString();
-  [v24 setAppIdentifier:v25];
+  [defaultTraits setAppIdentifier:v25];
 
-  v26 = [v22 ticketForSearchQuery:v11 filters:v16 maxResults:a6 traits:v24 searchSessionData:0];
+  v26 = [mEMORY[0x1E69A2208] ticketForSearchQuery:nameCopy filters:v16 maxResults:results traits:defaultTraits searchSessionData:0];
 
-  [v26 submitWithHandler:v14 networkActivity:0];
+  [v26 submitWithHandler:completionCopy networkActivity:0];
   v27 = 1;
 LABEL_17:
 
   return v27;
 }
 
-- (BOOL)searchWithAirportCode:(id)a3 terminal:(id)a4 gate:(id)a5 completion:(id)a6
+- (BOOL)searchWithAirportCode:(id)code terminal:(id)terminal gate:(id)gate completion:(id)completion
 {
   v26 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  if (!v12)
+  codeCopy = code;
+  terminalCopy = terminal;
+  gateCopy = gate;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v14 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
@@ -667,7 +667,7 @@ LABEL_11:
 
   v13 = GEOFindOrCreateLog();
   v14 = v13;
-  if (!v9)
+  if (!codeCopy)
   {
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
     {
@@ -689,40 +689,40 @@ LABEL_11:
   if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
   {
     v22 = 138412802;
-    v23 = v9;
+    v23 = codeCopy;
     v24 = 2112;
-    *v25 = v10;
+    *v25 = terminalCopy;
     *&v25[8] = 2112;
-    *&v25[10] = v11;
+    *&v25[10] = gateCopy;
     _os_log_impl(&dword_1C5126000, v14, OS_LOG_TYPE_DEBUG, "Making request: airport for {'%@', '%@', '%@'}", &v22, 0x20u);
   }
 
-  v15 = [MEMORY[0x1E69A2208] sharedService];
-  v16 = [MEMORY[0x1E69A2208] sharedService];
-  v17 = [v16 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  mEMORY[0x1E69A2208]2 = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208]2 defaultTraits];
 
   v18 = GEOConfigGetString();
-  [v17 setAppIdentifier:v18];
+  [defaultTraits setAppIdentifier:v18];
 
-  v14 = [v15 ticketForAirportCode:v9 terminalCode:v10 gateCode:v11 traits:v17];
+  v14 = [mEMORY[0x1E69A2208] ticketForAirportCode:codeCopy terminalCode:terminalCopy gateCode:gateCopy traits:defaultTraits];
 
-  [v14 submitWithHandler:v12 networkActivity:0];
+  [v14 submitWithHandler:completionCopy networkActivity:0];
   v19 = 1;
 LABEL_12:
 
   return v19;
 }
 
-- (BOOL)resolveMapItemHandleData:(id)a3 dropAnalyticsSessionID:(BOOL)a4 completion:(id)a5
+- (BOOL)resolveMapItemHandleData:(id)data dropAnalyticsSessionID:(BOOL)d completion:(id)completion
 {
-  v6 = a4;
+  dCopy = d;
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a5;
-  if (!v8)
+  dataCopy = data;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v10 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
+    defaultTraits = GEOFindOrCreateLog();
+    if (os_log_type_enabled(defaultTraits, OS_LOG_TYPE_ERROR))
     {
       *buf = 136446978;
       v20 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/UT_Never/MapsSuggestionsRealNetworkRequester.m";
@@ -734,7 +734,7 @@ LABEL_12:
       v26 = "nil == (completion)";
       v15 = "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a completion handler";
 LABEL_10:
-      _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_ERROR, v15, buf, 0x26u);
+      _os_log_impl(&dword_1C5126000, defaultTraits, OS_LOG_TYPE_ERROR, v15, buf, 0x26u);
     }
 
 LABEL_11:
@@ -743,8 +743,8 @@ LABEL_11:
   }
 
   v9 = GEOFindOrCreateLog();
-  v10 = v9;
-  if (!v7)
+  defaultTraits = v9;
+  if (!dataCopy)
   {
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
@@ -766,24 +766,24 @@ LABEL_11:
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEBUG))
   {
     *buf = 138412290;
-    v20 = v7;
-    _os_log_impl(&dword_1C5126000, v10, OS_LOG_TYPE_DEBUG, "Making request: place-refinement for %@", buf, 0xCu);
+    v20 = dataCopy;
+    _os_log_impl(&dword_1C5126000, defaultTraits, OS_LOG_TYPE_DEBUG, "Making request: place-refinement for %@", buf, 0xCu);
   }
 
-  v11 = [MEMORY[0x1E69A2208] sharedService];
-  v10 = [v11 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208] defaultTraits];
 
   v12 = GEOConfigGetString();
-  [v10 setAppIdentifier:v12];
+  [defaultTraits setAppIdentifier:v12];
 
-  [v10 setAnalyticsOptOut:v6];
-  v13 = [MEMORY[0x1E69A2208] sharedService];
+  [defaultTraits setAnalyticsOptOut:dCopy];
+  mEMORY[0x1E69A2208]2 = [MEMORY[0x1E69A2208] sharedService];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __98__MapsSuggestionsRealNetworkRequester_resolveMapItemHandleData_dropAnalyticsSessionID_completion___block_invoke;
   v17[3] = &unk_1E81F64A8;
-  v18 = v8;
-  [v13 resolveMapItemFromHandle:v7 traits:v10 completionHandler:v17];
+  v18 = completionCopy;
+  [mEMORY[0x1E69A2208]2 resolveMapItemFromHandle:dataCopy traits:defaultTraits completionHandler:v17];
 
   v14 = 1;
 LABEL_12:
@@ -810,12 +810,12 @@ void __98__MapsSuggestionsRealNetworkRequester_resolveMapItemHandleData_dropAnal
   (*(*(a1 + 32) + 16))();
 }
 
-- (BOOL)composedWaypointForMapItem:(id)a3 completion:(id)a4
+- (BOOL)composedWaypointForMapItem:(id)item completion:(id)completion
 {
   v29 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  itemCopy = item;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v8 = GEOFindOrCreateLog();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -840,7 +840,7 @@ LABEL_11:
 
   v7 = GEOFindOrCreateLog();
   v8 = v7;
-  if (!v5)
+  if (!itemCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -867,20 +867,20 @@ LABEL_11:
 
   v9 = MapsSuggestionsNow();
   v10 = MEMORY[0x1E69A1CC8];
-  v11 = [MEMORY[0x1E69A2208] sharedService];
-  v12 = [v11 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208] defaultTraits];
 
   v13 = GEOConfigGetString();
-  [v12 setAppIdentifier:v13];
+  [defaultTraits setAppIdentifier:v13];
 
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __77__MapsSuggestionsRealNetworkRequester_composedWaypointForMapItem_completion___block_invoke;
   v18[3] = &unk_1E81F6458;
   v19 = v9;
-  v20 = v6;
+  v20 = completionCopy;
   v8 = v9;
-  v14 = [v10 composedWaypointForMapItem:v5 traits:v12 clientAttributes:0 completionHandler:v18 networkActivityHandler:0];
+  v14 = [v10 composedWaypointForMapItem:itemCopy traits:defaultTraits clientAttributes:0 completionHandler:v18 networkActivityHandler:0];
 
   v15 = 1;
 LABEL_12:
@@ -907,15 +907,15 @@ void __77__MapsSuggestionsRealNetworkRequester_composedWaypointForMapItem_comple
   (*(*(a1 + 40) + 16))();
 }
 
-- (BOOL)composedWaypointForLocation:(id)a3 completion:(id)a4
+- (BOOL)composedWaypointForLocation:(id)location completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  locationCopy = location;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v8 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    defaultTraits = GEOFindOrCreateLog();
+    if (os_log_type_enabled(defaultTraits, OS_LOG_TYPE_ERROR))
     {
       v16 = 136446978;
       v17 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/UT_Never/MapsSuggestionsRealNetworkRequester.m";
@@ -927,7 +927,7 @@ void __77__MapsSuggestionsRealNetworkRequester_composedWaypointForMapItem_comple
       v23 = "nil == (completion)";
       v14 = "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a completion handler";
 LABEL_10:
-      _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_ERROR, v14, &v16, 0x26u);
+      _os_log_impl(&dword_1C5126000, defaultTraits, OS_LOG_TYPE_ERROR, v14, &v16, 0x26u);
     }
 
 LABEL_11:
@@ -936,8 +936,8 @@ LABEL_11:
   }
 
   v7 = GEOFindOrCreateLog();
-  v8 = v7;
-  if (!v5)
+  defaultTraits = v7;
+  if (!locationCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -959,34 +959,34 @@ LABEL_11:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138412290;
-    v17 = v5;
-    _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "Making request: waypoint for location %@", &v16, 0xCu);
+    v17 = locationCopy;
+    _os_log_impl(&dword_1C5126000, defaultTraits, OS_LOG_TYPE_DEBUG, "Making request: waypoint for location %@", &v16, 0xCu);
   }
 
   v9 = MEMORY[0x1E69A1CC8];
-  v10 = [MEMORY[0x1E69A2208] sharedService];
-  v8 = [v10 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208] defaultTraits];
 
   v11 = GEOConfigGetString();
-  [v8 setAppIdentifier:v11];
+  [defaultTraits setAppIdentifier:v11];
 
-  v12 = [v9 composedWaypointForLocation:v5 mapItem:0 traits:v8 completionHandler:v6 networkActivityHandler:0];
+  v12 = [v9 composedWaypointForLocation:locationCopy mapItem:0 traits:defaultTraits completionHandler:completionCopy networkActivityHandler:0];
   v13 = 1;
 LABEL_12:
 
   return v13;
 }
 
-- (BOOL)composedWaypointForLocation:(id)a3 mapItem:(id)a4 completion:(id)a5
+- (BOOL)composedWaypointForLocation:(id)location mapItem:(id)item completion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (!v9)
+  locationCopy = location;
+  itemCopy = item;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v11 = GEOFindOrCreateLog();
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    defaultTraits = GEOFindOrCreateLog();
+    if (!os_log_type_enabled(defaultTraits, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_14;
     }
@@ -1001,14 +1001,14 @@ LABEL_12:
     v26 = "nil == (completion)";
     v17 = "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a completion handler";
 LABEL_13:
-    _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_ERROR, v17, &v19, 0x26u);
+    _os_log_impl(&dword_1C5126000, defaultTraits, OS_LOG_TYPE_ERROR, v17, &v19, 0x26u);
     goto LABEL_14;
   }
 
-  if (!v7)
+  if (!locationCopy)
   {
-    v11 = GEOFindOrCreateLog();
-    if (!os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
+    defaultTraits = GEOFindOrCreateLog();
+    if (!os_log_type_enabled(defaultTraits, OS_LOG_TYPE_ERROR))
     {
       goto LABEL_14;
     }
@@ -1026,8 +1026,8 @@ LABEL_13:
   }
 
   v10 = GEOFindOrCreateLog();
-  v11 = v10;
-  if (!v8)
+  defaultTraits = v10;
+  if (!itemCopy)
   {
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
@@ -1051,33 +1051,33 @@ LABEL_14:
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG))
   {
     v19 = 138412290;
-    v20 = v7;
-    _os_log_impl(&dword_1C5126000, v11, OS_LOG_TYPE_DEBUG, "Making request: waypoint for location %@", &v19, 0xCu);
+    v20 = locationCopy;
+    _os_log_impl(&dword_1C5126000, defaultTraits, OS_LOG_TYPE_DEBUG, "Making request: waypoint for location %@", &v19, 0xCu);
   }
 
   v12 = MEMORY[0x1E69A1CC8];
-  v13 = [MEMORY[0x1E69A2208] sharedService];
-  v11 = [v13 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208] defaultTraits];
 
   v14 = GEOConfigGetString();
-  [v11 setAppIdentifier:v14];
+  [defaultTraits setAppIdentifier:v14];
 
-  v15 = [v12 composedWaypointForLocation:v7 mapItem:v8 traits:v11 completionHandler:v9 networkActivityHandler:0];
+  v15 = [v12 composedWaypointForLocation:locationCopy mapItem:itemCopy traits:defaultTraits completionHandler:completionCopy networkActivityHandler:0];
   v16 = 1;
 LABEL_15:
 
   return v16;
 }
 
-- (BOOL)composedWaypointForCurrentLocation:(id)a3 completion:(id)a4
+- (BOOL)composedWaypointForCurrentLocation:(id)location completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  locationCopy = location;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v8 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    defaultTraits = GEOFindOrCreateLog();
+    if (os_log_type_enabled(defaultTraits, OS_LOG_TYPE_ERROR))
     {
       v16 = 136446978;
       v17 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/UT_Never/MapsSuggestionsRealNetworkRequester.m";
@@ -1089,7 +1089,7 @@ LABEL_15:
       v23 = "nil == (completion)";
       v14 = "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a completion handler";
 LABEL_10:
-      _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_ERROR, v14, &v16, 0x26u);
+      _os_log_impl(&dword_1C5126000, defaultTraits, OS_LOG_TYPE_ERROR, v14, &v16, 0x26u);
     }
 
 LABEL_11:
@@ -1098,8 +1098,8 @@ LABEL_11:
   }
 
   v7 = GEOFindOrCreateLog();
-  v8 = v7;
-  if (!v5)
+  defaultTraits = v7;
+  if (!locationCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -1121,33 +1121,33 @@ LABEL_11:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138412290;
-    v17 = v5;
-    _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "Making request: waypoint for Currentlocation %@", &v16, 0xCu);
+    v17 = locationCopy;
+    _os_log_impl(&dword_1C5126000, defaultTraits, OS_LOG_TYPE_DEBUG, "Making request: waypoint for Currentlocation %@", &v16, 0xCu);
   }
 
   v9 = MEMORY[0x1E69A1CC8];
-  v10 = [MEMORY[0x1E69A2208] sharedService];
-  v8 = [v10 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208] defaultTraits];
 
   v11 = GEOConfigGetString();
-  [v8 setAppIdentifier:v11];
+  [defaultTraits setAppIdentifier:v11];
 
-  v12 = [v9 composedWaypointForCurrentLocation:v5 traits:v8 completionHandler:v6 networkActivityHandler:0];
+  v12 = [v9 composedWaypointForCurrentLocation:locationCopy traits:defaultTraits completionHandler:completionCopy networkActivityHandler:0];
   v13 = 1;
 LABEL_12:
 
   return v13;
 }
 
-- (BOOL)composedWaypointForAddressString:(id)a3 completion:(id)a4
+- (BOOL)composedWaypointForAddressString:(id)string completion:(id)completion
 {
   v24 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
-  if (!v6)
+  stringCopy = string;
+  completionCopy = completion;
+  if (!completionCopy)
   {
-    v8 = GEOFindOrCreateLog();
-    if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
+    defaultTraits = GEOFindOrCreateLog();
+    if (os_log_type_enabled(defaultTraits, OS_LOG_TYPE_ERROR))
     {
       v16 = 136446978;
       v17 = "/Library/Caches/com.apple.xbs/Sources/Maps/iOS/Suggestions/UT_Never/MapsSuggestionsRealNetworkRequester.m";
@@ -1159,7 +1159,7 @@ LABEL_12:
       v23 = "nil == (completion)";
       v14 = "At %{public}s:%d, %{public}s forbids: %{public}s. Requires a completion handler";
 LABEL_10:
-      _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_ERROR, v14, &v16, 0x26u);
+      _os_log_impl(&dword_1C5126000, defaultTraits, OS_LOG_TYPE_ERROR, v14, &v16, 0x26u);
     }
 
 LABEL_11:
@@ -1168,8 +1168,8 @@ LABEL_11:
   }
 
   v7 = GEOFindOrCreateLog();
-  v8 = v7;
-  if (!v5)
+  defaultTraits = v7;
+  if (!stringCopy)
   {
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
@@ -1191,35 +1191,35 @@ LABEL_11:
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     v16 = 138412290;
-    v17 = v5;
-    _os_log_impl(&dword_1C5126000, v8, OS_LOG_TYPE_DEBUG, "Making request: waypoint for address '%@'", &v16, 0xCu);
+    v17 = stringCopy;
+    _os_log_impl(&dword_1C5126000, defaultTraits, OS_LOG_TYPE_DEBUG, "Making request: waypoint for address '%@'", &v16, 0xCu);
   }
 
   v9 = MEMORY[0x1E69A1CC8];
-  v10 = [MEMORY[0x1E69A2208] sharedService];
-  v8 = [v10 defaultTraits];
+  mEMORY[0x1E69A2208] = [MEMORY[0x1E69A2208] sharedService];
+  defaultTraits = [mEMORY[0x1E69A2208] defaultTraits];
 
   v11 = GEOConfigGetString();
-  [v8 setAppIdentifier:v11];
+  [defaultTraits setAppIdentifier:v11];
 
-  v12 = [v9 composedWaypointForAddressString:v5 traits:v8 clientAttributes:0 completionHandler:v6 networkActivityHandler:0];
+  v12 = [v9 composedWaypointForAddressString:stringCopy traits:defaultTraits clientAttributes:0 completionHandler:completionCopy networkActivityHandler:0];
   v13 = 1;
 LABEL_12:
 
   return v13;
 }
 
-- (BOOL)drivingETAFromLocation:(id)a3 toLocation:(id)a4 arrivalDate:(id)a5 automobileOptions:(id)a6 completion:(id)a7
+- (BOOL)drivingETAFromLocation:(id)location toLocation:(id)toLocation arrivalDate:(id)date automobileOptions:(id)options completion:(id)completion
 {
   v44 = *MEMORY[0x1E69E9840];
-  v12 = a5;
-  v13 = a6;
-  v14 = a7;
+  dateCopy = date;
+  optionsCopy = options;
+  completionCopy = completion;
   v15 = MEMORY[0x1E69A1CC8];
-  v16 = a4;
-  v17 = a3;
+  toLocationCopy = toLocation;
+  locationCopy = location;
   v18 = [v15 alloc];
-  [v17 coordinate];
+  [locationCopy coordinate];
   v20 = v19;
   v22 = v21;
 
@@ -1227,7 +1227,7 @@ LABEL_12:
   v24 = [v18 initWithLocation:v23 isCurrentLocation:1];
 
   v25 = objc_alloc(MEMORY[0x1E69A1CC8]);
-  [v16 coordinate];
+  [toLocationCopy coordinate];
   v27 = v26;
   v29 = v28;
 
@@ -1278,22 +1278,22 @@ LABEL_9:
     goto LABEL_9;
   }
 
-  v32 = [(MapsSuggestionsRealNetworkRequester *)self ETAFromWaypoint:v24 toWaypoint:v31 transportType:0 arrivalDate:v12 automobileOptions:v13 completion:v14];
+  v32 = [(MapsSuggestionsRealNetworkRequester *)self ETAFromWaypoint:v24 toWaypoint:v31 transportType:0 arrivalDate:dateCopy automobileOptions:optionsCopy completion:completionCopy];
 LABEL_10:
 
   return v32;
 }
 
-- (BOOL)ETAFromWaypoint:(id)a3 toWaypoint:(id)a4 transportType:(int)a5 arrivalDate:(id)a6 automobileOptions:(id)a7 completion:(id)a8
+- (BOOL)ETAFromWaypoint:(id)waypoint toWaypoint:(id)toWaypoint transportType:(int)type arrivalDate:(id)date automobileOptions:(id)options completion:(id)completion
 {
-  v11 = *&a5;
+  v11 = *&type;
   v78[2] = *MEMORY[0x1E69E9840];
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
-  v16 = a7;
-  v17 = a8;
-  if (!v17)
+  waypointCopy = waypoint;
+  toWaypointCopy = toWaypoint;
+  dateCopy = date;
+  optionsCopy = options;
+  completionCopy = completion;
+  if (!completionCopy)
   {
     v19 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1315,7 +1315,7 @@ LABEL_15:
     goto LABEL_16;
   }
 
-  if (!v13)
+  if (!waypointCopy)
   {
     v19 = GEOFindOrCreateLog();
     if (!os_log_type_enabled(v19, OS_LOG_TYPE_ERROR))
@@ -1337,7 +1337,7 @@ LABEL_15:
 
   v18 = GEOFindOrCreateLog();
   v19 = v18;
-  if (!v14)
+  if (!toWaypointCopy)
   {
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
@@ -1368,17 +1368,17 @@ LABEL_16:
   [v19 setMainTransportType:v11];
   if (!v11)
   {
-    if (v16)
+    if (optionsCopy)
     {
-      [v19 setAutomobileOptions:v16];
+      [v19 setAutomobileOptions:optionsCopy];
     }
 
     else
     {
       v58 = objc_alloc_init(MEMORY[0x1E69A1B90]);
-      v22 = [MEMORY[0x1E696AC08] defaultManager];
-      v23 = [v22 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
-      v24 = [v23 path];
+      defaultManager = [MEMORY[0x1E696AC08] defaultManager];
+      v23 = [defaultManager containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
+      path = [v23 path];
 
       LODWORD(v23) = _CFPreferencesGetAppBooleanValueWithContainer() == 0;
       if (v23)
@@ -1392,30 +1392,30 @@ LABEL_16:
       }
 
       [v58 setTrafficType:v25];
-      v26 = [v58 userPreferences];
-      [v26 setAvoidTolls:0];
+      userPreferences = [v58 userPreferences];
+      [userPreferences setAvoidTolls:0];
 
-      v27 = [v58 userPreferences];
-      [v27 setAvoidHighways:0];
+      userPreferences2 = [v58 userPreferences];
+      [userPreferences2 setAvoidHighways:0];
 
-      v28 = [MEMORY[0x1E696AC08] defaultManager];
-      v29 = [v28 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
-      v30 = [v29 path];
+      defaultManager2 = [MEMORY[0x1E696AC08] defaultManager];
+      v29 = [defaultManager2 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
+      path2 = [v29 path];
 
       LOBYTE(v29) = _CFPreferencesGetAppBooleanValueWithContainer() == 0;
       if ((v29 & 1) == 0)
       {
-        v31 = [v58 userPreferences];
-        [v31 setAvoidTolls:1];
+        userPreferences3 = [v58 userPreferences];
+        [userPreferences3 setAvoidTolls:1];
       }
 
       v32 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v32, OS_LOG_TYPE_DEBUG))
       {
-        v33 = [v58 userPreferences];
-        v34 = [v33 avoidTolls];
+        userPreferences4 = [v58 userPreferences];
+        avoidTolls = [userPreferences4 avoidTolls];
         v35 = @"NO";
-        if (v34)
+        if (avoidTolls)
         {
           v35 = @"YES";
         }
@@ -1425,24 +1425,24 @@ LABEL_16:
         _os_log_impl(&dword_1C5126000, v32, OS_LOG_TYPE_DEBUG, "Avoid Tolls from groupPreferences: %@", buf, 0xCu);
       }
 
-      v36 = [MEMORY[0x1E696AC08] defaultManager];
-      v37 = [v36 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
-      v38 = [v37 path];
+      defaultManager3 = [MEMORY[0x1E696AC08] defaultManager];
+      v37 = [defaultManager3 containerURLForSecurityApplicationGroupIdentifier:@"group.com.apple.Maps"];
+      path3 = [v37 path];
 
       LOBYTE(v37) = _CFPreferencesGetAppBooleanValueWithContainer() == 0;
       if ((v37 & 1) == 0)
       {
-        v39 = [v58 userPreferences];
-        [v39 setAvoidHighways:1];
+        userPreferences5 = [v58 userPreferences];
+        [userPreferences5 setAvoidHighways:1];
       }
 
       v40 = GEOFindOrCreateLog();
       if (os_log_type_enabled(v40, OS_LOG_TYPE_DEBUG))
       {
-        v41 = [v58 userPreferences];
-        v42 = [v41 avoidHighways];
+        userPreferences6 = [v58 userPreferences];
+        avoidHighways = [userPreferences6 avoidHighways];
         v43 = @"NO";
-        if (v42)
+        if (avoidHighways)
         {
           v43 = @"YES";
         }
@@ -1456,8 +1456,8 @@ LABEL_16:
     }
 
     v44 = objc_alloc(MEMORY[0x1E69B3750]);
-    v78[0] = v13;
-    v78[1] = v14;
+    v78[0] = waypointCopy;
+    v78[1] = toWaypointCopy;
     v45 = [MEMORY[0x1E695DEC8] arrayWithObjects:v78 count:2];
     v46 = [v44 initWithAttributes:v19 waypoints:v45];
 
@@ -1494,8 +1494,8 @@ LABEL_16:
   v53 = [v51 initWithPurpose:1 reason:@"MapsSuggestions QuickETA" date:v52];
 
   dispatch_group_enter(v50);
-  v75[0] = v13;
-  v75[1] = v14;
+  v75[0] = waypointCopy;
+  v75[1] = toWaypointCopy;
   v54 = [MEMORY[0x1E695DEC8] arrayWithObjects:v75 count:2];
   v67[0] = MEMORY[0x1E69E9820];
   v67[1] = 3221225472;
@@ -1510,13 +1510,13 @@ LABEL_16:
   block[1] = 3221225472;
   block[2] = __121__MapsSuggestionsRealNetworkRequester_ETAFromWaypoint_toWaypoint_transportType_arrivalDate_automobileOptions_completion___block_invoke_3;
   block[3] = &unk_1E81F6520;
-  v60 = v13;
+  v60 = waypointCopy;
   v66 = v11;
-  v61 = v14;
+  v61 = toWaypointCopy;
   v64 = buf;
   v65 = v73;
-  v62 = v15;
-  v63 = v17;
+  v62 = dateCopy;
+  v63 = completionCopy;
   v56 = MEMORY[0x1E69E96A0];
   dispatch_group_notify(v55, MEMORY[0x1E69E96A0], block);
 
@@ -1588,39 +1588,39 @@ void __121__MapsSuggestionsRealNetworkRequester_ETAFromWaypoint_toWaypoint_trans
   }
 }
 
-- (BOOL)routeForWaypoints:(id)a3 currentLocation:(id)a4 routeAttributes:(id)a5 feedback:(id)a6 completion:(id)a7
+- (BOOL)routeForWaypoints:(id)waypoints currentLocation:(id)location routeAttributes:(id)attributes feedback:(id)feedback completion:(id)completion
 {
   v32 = *MEMORY[0x1E69E9840];
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = a7;
-  if (v11)
+  waypointsCopy = waypoints;
+  locationCopy = location;
+  attributesCopy = attributes;
+  feedbackCopy = feedback;
+  completionCopy = completion;
+  if (waypointsCopy)
   {
     v16 = objc_alloc_init(MEMORY[0x1E69A1D30]);
     [v16 setCallbackQueue:MEMORY[0x1E69E96A0]];
     [v16 setRequestType:1];
-    -[NSObject setTransportType:](v16, "setTransportType:", [v13 mainTransportType]);
-    [v16 setWaypoints:v11];
+    -[NSObject setTransportType:](v16, "setTransportType:", [attributesCopy mainTransportType]);
+    [v16 setWaypoints:waypointsCopy];
     [v16 setMaxRouteCount:1];
-    [v16 setCurrentLocation:v12];
-    [v16 setRouteAttributes:v13];
+    [v16 setCurrentLocation:locationCopy];
+    [v16 setRouteAttributes:attributesCopy];
     v17 = [objc_alloc(MEMORY[0x1E69B3738]) initWithPurpose:0 reason:@"MapsSuggestions Route" date:0];
     [v16 setFamiliarRouteProvider:v17];
 
-    [v14 setRequestingAppId:@"com.apple.MapsSuggestions"];
-    [v16 setFeedback:v14];
+    [feedbackCopy setRequestingAppId:@"com.apple.MapsSuggestions"];
+    [v16 setFeedback:feedbackCopy];
     v18 = [objc_alloc(MEMORY[0x1E69A1B68]) initWithProxiedApplicationBundleId:@"com.apple.Maps"];
     [v16 setAuditToken:v18];
 
-    v19 = [MEMORY[0x1E69A1D18] sharedService];
+    mEMORY[0x1E69A1D18] = [MEMORY[0x1E69A1D18] sharedService];
     v22[0] = MEMORY[0x1E69E9820];
     v22[1] = 3221225472;
     v22[2] = __109__MapsSuggestionsRealNetworkRequester_routeForWaypoints_currentLocation_routeAttributes_feedback_completion___block_invoke;
     v22[3] = &unk_1E81F6548;
-    v23 = v15;
-    v20 = [v19 requestDirections:v16 handler:v22];
+    v23 = completionCopy;
+    v20 = [mEMORY[0x1E69A1D18] requestDirections:v16 handler:v22];
   }
 
   else
@@ -1640,7 +1640,7 @@ void __121__MapsSuggestionsRealNetworkRequester_ETAFromWaypoint_toWaypoint_trans
     }
   }
 
-  return v11 != 0;
+  return waypointsCopy != 0;
 }
 
 uint64_t __109__MapsSuggestionsRealNetworkRequester_routeForWaypoints_currentLocation_routeAttributes_feedback_completion___block_invoke(uint64_t a1, uint64_t a2, uint64_t a3, uint64_t a4, uint64_t a5, uint64_t a6)

@@ -6,50 +6,50 @@
 
 + (id)px_containerized_defaultConfiguration
 {
-  v0 = [MEMORY[0x1E69DC8C8] emptyConfiguration];
+  emptyConfiguration = [MEMORY[0x1E69DC8C8] emptyConfiguration];
   v1 = [MEMORY[0x1E69DCAD8] configurationWithTextStyle:*MEMORY[0x1E69DDDB8]];
-  v2 = [v0 imageProperties];
-  [v2 setPreferredSymbolConfiguration:v1];
+  imageProperties = [emptyConfiguration imageProperties];
+  [imageProperties setPreferredSymbolConfiguration:v1];
 
-  v3 = [MEMORY[0x1E69DC888] tertiaryLabelColor];
-  v4 = [v0 imageProperties];
-  [v4 setTintColor:v3];
+  tertiaryLabelColor = [MEMORY[0x1E69DC888] tertiaryLabelColor];
+  imageProperties2 = [emptyConfiguration imageProperties];
+  [imageProperties2 setTintColor:tertiaryLabelColor];
 
   v5 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD40]];
-  v6 = [v0 textProperties];
-  [v6 setFont:v5];
+  textProperties = [emptyConfiguration textProperties];
+  [textProperties setFont:v5];
 
-  v7 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v8 = [v0 textProperties];
-  [v8 setColor:v7];
+  secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  textProperties2 = [emptyConfiguration textProperties];
+  [textProperties2 setColor:secondaryLabelColor];
 
   v9 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD28]];
-  v10 = [v0 secondaryTextProperties];
-  [v10 setFont:v9];
+  secondaryTextProperties = [emptyConfiguration secondaryTextProperties];
+  [secondaryTextProperties setFont:v9];
 
-  v11 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-  v12 = [v0 secondaryTextProperties];
-  [v12 setColor:v11];
+  secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+  secondaryTextProperties2 = [emptyConfiguration secondaryTextProperties];
+  [secondaryTextProperties2 setColor:secondaryLabelColor2];
 
-  [v0 setImageToTextPadding:8.0];
-  [v0 setTextToSecondaryTextPadding:4.0];
-  [v0 setTextToButtonPadding:12.0];
-  [v0 setButtonToSecondaryButtonPadding:12.0];
+  [emptyConfiguration setImageToTextPadding:8.0];
+  [emptyConfiguration setTextToSecondaryTextPadding:4.0];
+  [emptyConfiguration setTextToButtonPadding:12.0];
+  [emptyConfiguration setButtonToSecondaryButtonPadding:12.0];
   if (objc_opt_respondsToSelector())
   {
-    [v0 setDirectionalLayoutMargins:{20.0, 20.0, 20.0, 20.0}];
+    [emptyConfiguration setDirectionalLayoutMargins:{20.0, 20.0, 20.0, 20.0}];
   }
 
   if (objc_opt_respondsToSelector())
   {
-    v13 = [MEMORY[0x1E69DC6E8] clearConfiguration];
-    v14 = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
-    [v13 setBackgroundColor:v14];
+    clearConfiguration = [MEMORY[0x1E69DC6E8] clearConfiguration];
+    systemGroupedBackgroundColor = [MEMORY[0x1E69DC888] systemGroupedBackgroundColor];
+    [clearConfiguration setBackgroundColor:systemGroupedBackgroundColor];
 
-    [v0 setBackground:v13];
+    [emptyConfiguration setBackground:clearConfiguration];
   }
 
-  return v0;
+  return emptyConfiguration;
 }
 
 @end

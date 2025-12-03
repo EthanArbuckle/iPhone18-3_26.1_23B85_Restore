@@ -1,5 +1,5 @@
 @interface TSDMediaRep
-- (BOOL)i_shouldRenderStroke:(id)a3;
+- (BOOL)i_shouldRenderStroke:(id)stroke;
 - (BOOL)isPlaceholder;
 - (TSDMediaInfo)mediaInfo;
 - (TSDMediaLayout)mediaLayout;
@@ -94,16 +94,16 @@ LABEL_10:
 LABEL_11:
 }
 
-- (BOOL)i_shouldRenderStroke:(id)a3
+- (BOOL)i_shouldRenderStroke:(id)stroke
 {
-  v4 = a3;
+  strokeCopy = stroke;
   v7 = objc_msgSend_null(MEMORY[0x277CBEB68], v5, v6);
   shouldRenderFrameStroke = 0;
-  if (v4 && v7 != v4)
+  if (strokeCopy && v7 != strokeCopy)
   {
-    if (objc_msgSend_shouldRender(v4, v8, v9))
+    if (objc_msgSend_shouldRender(strokeCopy, v8, v9))
     {
-      if (objc_msgSend_isFrame(v4, v11, v12))
+      if (objc_msgSend_isFrame(strokeCopy, v11, v12))
       {
         v15 = objc_msgSend_mediaLayout(self, v13, v14);
         shouldRenderFrameStroke = objc_msgSend_shouldRenderFrameStroke(v15, v16, v17);

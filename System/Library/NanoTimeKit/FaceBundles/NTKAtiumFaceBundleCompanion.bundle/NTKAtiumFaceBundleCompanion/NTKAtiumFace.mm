@@ -1,40 +1,40 @@
 @interface NTKAtiumFace
-+ (BOOL)isRestrictedForDevice:(id)a3;
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4;
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4;
++ (BOOL)isRestrictedForDevice:(id)device;
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device;
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device;
 + (id)complicationConfiguration;
-- (Class)_optionClassForCustomEditMode:(int64_t)a3;
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (Class)_optionClassForCustomEditMode:(int64_t)mode;
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)_faceDescription;
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot;
 - (id)editOptionThatHidesAllComplications;
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5;
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4;
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot;
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot;
 @end
 
 @implementation NTKAtiumFace
 
 - (id)_faceDescription
 {
-  v2 = [(NTKAtiumFace *)self _faceDescriptionKey];
-  v3 = [NTKAtiumFaceBundle localizedStringForKey:v2 comment:v2];
+  _faceDescriptionKey = [(NTKAtiumFace *)self _faceDescriptionKey];
+  v3 = [NTKAtiumFaceBundle localizedStringForKey:_faceDescriptionKey comment:_faceDescriptionKey];
 
   return v3;
 }
 
-+ (BOOL)isRestrictedForDevice:(id)a3
++ (BOOL)isRestrictedForDevice:(id)device
 {
-  v3 = a3;
-  v4 = [v3 deviceCategory];
+  deviceCopy = device;
+  deviceCategory = [deviceCopy deviceCategory];
   v5 = _os_feature_enabled_impl();
-  v6 = [v3 supportsPDRCapability:3669496134];
+  v6 = [deviceCopy supportsPDRCapability:3669496134];
 
-  return v4 == &dword_0 + 1 || (v5 & v6 & 1) == 0;
+  return deviceCategory == &dword_0 + 1 || (v5 & v6 & 1) == 0;
 }
 
-- (Class)_optionClassForCustomEditMode:(int64_t)a3
+- (Class)_optionClassForCustomEditMode:(int64_t)mode
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
     v4 = objc_opt_class();
   }
@@ -47,9 +47,9 @@
   return v4;
 }
 
-- (id)_defaultOptionForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (id)_defaultOptionForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
     v4 = [(NTKAtiumFace *)self device:15];
     v5 = [NTKAnalogDialShapeEditOption optionWithShape:1 forDevice:v4];
@@ -63,39 +63,39 @@
   return v5;
 }
 
-- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)a3 slot:(id)a4
+- (unint64_t)_numberOfOptionsForCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v5 = [(NTKAtiumFace *)self _optionClassForCustomEditMode:a3, a4];
-  v6 = [(NTKAtiumFace *)self device];
-  v7 = [(objc_class *)v5 numberOfOptionsForDevice:v6];
+  slot = [(NTKAtiumFace *)self _optionClassForCustomEditMode:mode, slot];
+  device = [(NTKAtiumFace *)self device];
+  v7 = [(objc_class *)slot numberOfOptionsForDevice:device];
 
   return v7;
 }
 
-- (id)_optionAtIndex:(unint64_t)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (id)_optionAtIndex:(unint64_t)index forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = [(NTKAtiumFace *)self _optionClassForCustomEditMode:a4];
-  v8 = [(NTKAtiumFace *)self device];
-  v9 = [(objc_class *)v7 optionAtIndex:a3 forDevice:v8];
+  v7 = [(NTKAtiumFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKAtiumFace *)self device];
+  v9 = [(objc_class *)v7 optionAtIndex:index forDevice:device];
 
   return v9;
 }
 
-- (unint64_t)_indexOfOption:(id)a3 forCustomEditMode:(int64_t)a4 slot:(id)a5
+- (unint64_t)_indexOfOption:(id)option forCustomEditMode:(int64_t)mode slot:(id)slot
 {
-  v7 = a3;
-  v8 = [(NTKAtiumFace *)self _optionClassForCustomEditMode:a4];
-  v9 = [(NTKAtiumFace *)self device];
-  v10 = [(objc_class *)v8 indexOfOption:v7 forDevice:v9];
+  optionCopy = option;
+  v8 = [(NTKAtiumFace *)self _optionClassForCustomEditMode:mode];
+  device = [(NTKAtiumFace *)self device];
+  v10 = [(objc_class *)v8 indexOfOption:optionCopy forDevice:device];
 
   return v10;
 }
 
-+ (id)_localizedNameOverrideForCustomEditMode:(int64_t)a3 forDevice:(id)a4
++ (id)_localizedNameOverrideForCustomEditMode:(int64_t)mode forDevice:(id)device
 {
-  if (a3 == 15)
+  if (mode == 15)
   {
-    v4 = [@"EDIT_MODE_LABEL_DIAL" stringByAppendingString:{@"_COMPANION", a4}];
+    v4 = [@"EDIT_MODE_LABEL_DIAL" stringByAppendingString:{@"_COMPANION", device}];
     v5 = NTKCompanionClockFaceLocalizedString();
   }
 
@@ -119,9 +119,9 @@
   return v3;
 }
 
-+ (id)_initialDefaultComplicationForSlot:(id)a3 forDevice:(id)a4
++ (id)_initialDefaultComplicationForSlot:(id)slot forDevice:(id)device
 {
-  if ([a3 isEqualToString:{NTKComplicationSlotBottomLeft, a4}])
+  if ([slot isEqualToString:{NTKComplicationSlotBottomLeft, device}])
   {
     v4 = [NTKComplication timerComplicationWithDuration:180.0];
   }
@@ -136,8 +136,8 @@
 
 - (id)editOptionThatHidesAllComplications
 {
-  v2 = [(NTKAtiumFace *)self device];
-  v3 = [NTKAnalogDialShapeEditOption optionWithShape:1 forDevice:v2];
+  device = [(NTKAtiumFace *)self device];
+  v3 = [NTKAnalogDialShapeEditOption optionWithShape:1 forDevice:device];
 
   return v3;
 }

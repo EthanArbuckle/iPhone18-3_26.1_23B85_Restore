@@ -1,12 +1,12 @@
 @interface AXSelectAppViewController
 - (id)makeSpecifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_generateUnselectedAppSpecifiers;
 - (void)_removeSelectedAndHiddenAppSpecfiers;
-- (void)_showHiddenApps:(id)a3;
+- (void)_showHiddenApps:(id)apps;
 - (void)applicationDidResume;
-- (void)setSelectedApps:(id)a3;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
+- (void)setSelectedApps:(id)apps;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -18,8 +18,8 @@
   v6.super_class = AXSelectAppViewController;
   [(AXSelectAppViewController *)&v6 viewDidLoad];
   v3 = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:1 target:self action:"cancelButtonClicked:"];
-  v4 = [(AXSelectAppViewController *)self navigationItem];
-  [v4 setRightBarButtonItem:v3];
+  navigationItem = [(AXSelectAppViewController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v3];
 
   v5 = +[NSNotificationCenter defaultCenter];
   [v5 addObserver:self selector:"_handleAppDidEnterBackground" name:UIApplicationDidEnterBackgroundNotification object:0];
@@ -34,9 +34,9 @@
   [(AXSelectAppViewController *)self reloadSpecifiers];
 }
 
-- (void)setSelectedApps:(id)a3
+- (void)setSelectedApps:(id)apps
 {
-  objc_storeStrong(&self->_selectedApps, a3);
+  objc_storeStrong(&self->_selectedApps, apps);
   [(AXSelectAppViewController *)self setNeedsSpecifierRefresh];
 
   [(AXSelectAppViewController *)self reloadSpecifiers];
@@ -65,41 +65,41 @@
   return v3;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXSelectAppViewController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AXSelectAppViewController *)self specifierForIndexPath:pathCopy];
   v9 = v8;
   if (v8)
   {
-    v10 = [v8 identifier];
-    v11 = [v10 isEqualToString:@"PROTECTED_APPS_SHOW_HIDDEN_TITLE"];
+    identifier = [v8 identifier];
+    v11 = [identifier isEqualToString:@"PROTECTED_APPS_SHOW_HIDDEN_TITLE"];
 
     if (v11)
     {
       v14.receiver = self;
       v14.super_class = AXSelectAppViewController;
-      [(AXSelectAppViewController *)&v14 tableView:v6 didSelectRowAtIndexPath:v7];
+      [(AXSelectAppViewController *)&v14 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
     }
 
     else
     {
-      v12 = [(AXSelectAppViewController *)self parentController];
-      [v12 addAppSpecifier:v9];
-      v13 = [(AXSelectAppViewController *)self navigationController];
-      [v13 dismissViewControllerAnimated:1 completion:0];
+      parentController = [(AXSelectAppViewController *)self parentController];
+      [parentController addAppSpecifier:v9];
+      navigationController = [(AXSelectAppViewController *)self navigationController];
+      [navigationController dismissViewControllerAnimated:1 completion:0];
     }
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v18.receiver = self;
   v18.super_class = AXSelectAppViewController;
-  v6 = a4;
-  v7 = [(AXSelectAppViewController *)&v18 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(AXSelectAppViewController *)self specifierForIndexPath:v6, v18.receiver, v18.super_class];
+  pathCopy = path;
+  v7 = [(AXSelectAppViewController *)&v18 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(AXSelectAppViewController *)self specifierForIndexPath:pathCopy, v18.receiver, v18.super_class];
 
   v9 = [v8 propertyForKey:PSIconImageKey];
   if (v9)
@@ -110,12 +110,12 @@
     [v12 continuousCornerRadius];
     v14 = v13;
 
-    v15 = [v11 iconImageView];
-    [v15 _setContinuousCornerRadius:v14];
+    iconImageView = [v11 iconImageView];
+    [iconImageView _setContinuousCornerRadius:v14];
 
-    v16 = [v11 iconImageView];
+    iconImageView2 = [v11 iconImageView];
 
-    [v16 setClipsToBounds:1];
+    [iconImageView2 setClipsToBounds:1];
   }
 
   return v7;
@@ -163,8 +163,8 @@
           goto LABEL_11;
         }
 
-        v10 = [(AXSelectAppViewController *)self selectedApps];
-        v11 = [v10 objectForKey:v9];
+        selectedApps = [(AXSelectAppViewController *)self selectedApps];
+        v11 = [selectedApps objectForKey:v9];
         if (((v11 == 0) & v16) != 1)
         {
           v12 = v11;
@@ -208,15 +208,15 @@ LABEL_12:
   [(NSMutableArray *)self->_appSpecifiers removeObjectsInArray:v3];
 }
 
-- (void)_showHiddenApps:(id)a3
+- (void)_showHiddenApps:(id)apps
 {
-  v4 = [(AXSelectAppViewController *)self parentController];
+  parentController = [(AXSelectAppViewController *)self parentController];
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = __45__AXSelectAppViewController__showHiddenApps___block_invoke;
   v5[3] = &unk_2564C0;
   v5[4] = self;
-  [v4 showHiddenAppsWithCompletion:v5];
+  [parentController showHiddenAppsWithCompletion:v5];
 }
 
 id __45__AXSelectAppViewController__showHiddenApps___block_invoke(uint64_t a1)

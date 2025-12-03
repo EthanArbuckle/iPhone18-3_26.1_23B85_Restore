@@ -10,7 +10,7 @@
 - (double)CA_distanceToValue:()CAAnimatableValue
 {
   v15 = *MEMORY[0x1E69E9840];
-  v5 = CFGetTypeID(a1);
+  v5 = CFGetTypeID(self);
   TypeID = CGColorGetTypeID();
   result = 1.0;
   if (v5 == TypeID)
@@ -20,7 +20,7 @@
     v11 = 0u;
     v12 = 0u;
     v8 = CAGetColorSpace(35);
-    CA_CGColorGetRGBComponents(a1, v8, v13.f64);
+    CA_CGColorGetRGBComponents(self, v8, v13.f64);
     CA_CGColorGetRGBComponents(a3, v8, v11.f64);
     v9 = vsubq_f64(v13, v11);
     v10 = vsubq_f64(v14, v12);
@@ -33,7 +33,7 @@
 - (id)CA_interpolateValues:()CAAnimatableValue ::interpolator:
 {
   v31 = *MEMORY[0x1E69E9840];
-  v11 = CFGetTypeID(a1);
+  v11 = CFGetTypeID(self);
   if (v11 == CGColorGetTypeID())
   {
     memset(v30, 0, sizeof(v30));
@@ -42,7 +42,7 @@
     memset(v27, 0, sizeof(v27));
     memset(v26, 0, sizeof(v26));
     v12 = CAGetColorSpace(35);
-    CA_CGColorGetRGBComponents(a1, v12, v28);
+    CA_CGColorGetRGBComponents(self, v12, v28);
     CA_CGColorGetRGBComponents(a4, v12, v27);
     if (a3)
     {
@@ -98,20 +98,20 @@ LABEL_10:
   v15 = a6->f64[0];
   *&v15 = a6->f64[0];
 
-  return [a1 CA_interpolateValue:a4 byFraction:v15];
+  return [self CA_interpolateValue:a4 byFraction:v15];
 }
 
 - (CGColor)CA_interpolateValue:()CAAnimatableValue byFraction:
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = CFGetTypeID(a1);
+  v7 = CFGetTypeID(self);
   if (v7 == CGColorGetTypeID())
   {
     memset(&v23, 0, 32);
     *v21 = 0u;
     v22 = 0u;
     v8 = CAGetColorSpace(35);
-    CA_CGColorGetRGBComponents(a1, v8, &v23.var0);
+    CA_CGColorGetRGBComponents(self, v8, &v23.var0);
     CA_CGColorGetRGBComponents(a4, v8, v21);
     v9 = 0;
     v10 = vdupq_lane_s64(COERCE__INT64(a2), 0);
@@ -129,7 +129,7 @@ LABEL_10:
 
   else if (v7 == CGPathGetTypeID())
   {
-    v13 = CA::Render::Path::new_path(a1, v12);
+    v13 = CA::Render::Path::new_path(self, v12);
     v15 = CA::Render::Path::new_path(a4, v14);
     v23.var0 = a2;
     memset(&v23.var1, 0, 112);
@@ -192,21 +192,21 @@ LABEL_10:
 
   else
   {
-    return a1;
+    return self;
   }
 }
 
 - (CGColor)CA_addValue:()CAAnimatableValue multipliedBy:
 {
-  v6 = a1;
+  selfCopy = self;
   v15 = *MEMORY[0x1E69E9840];
-  v7 = CFGetTypeID(a1);
+  v7 = CFGetTypeID(self);
   if (v7 == CGColorGetTypeID())
   {
     memset(v14, 0, sizeof(v14));
     memset(v13, 0, sizeof(v13));
     v8 = CAGetColorSpace(35);
-    CA_CGColorGetRGBComponents(v6, v8, v14);
+    CA_CGColorGetRGBComponents(selfCopy, v8, v14);
     CA_CGColorGetRGBComponents(a3, v8, v13);
     v9 = 0;
     v10 = vdupq_lane_s64(COERCE__INT64(a4), 0);
@@ -224,10 +224,10 @@ LABEL_10:
 
   if (v7 != CGPathGetTypeID())
   {
-    return v6;
+    return selfCopy;
   }
 
-  v11 = CGPathRetain(v6);
+  v11 = CGPathRetain(selfCopy);
 
   return v11;
 }

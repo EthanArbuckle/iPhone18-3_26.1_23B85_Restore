@@ -1,54 +1,54 @@
 @interface HUTimerTriggerEditorItemManager
-- (HUTimerTriggerEditorItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4;
-- (HUTimerTriggerEditorItemManager)initWithTimerTriggerBuilder:(id)a3 delegate:(id)a4;
+- (HUTimerTriggerEditorItemManager)initWithDelegate:(id)delegate sourceItem:(id)item;
+- (HUTimerTriggerEditorItemManager)initWithTimerTriggerBuilder:(id)builder delegate:(id)delegate;
 - (NSSet)dateOptionsItems;
-- (id)_buildItemProvidersForHome:(id)a3;
-- (id)_buildSectionsWithDisplayedItems:(id)a3;
-- (id)_itemsToHideInSet:(id)a3;
-- (id)defaultOffsetForSignificantEvent:(id)a3;
-- (void)setDatePickerShown:(BOOL)a3;
-- (void)setDefaultOffset:(id)a3 forSignificantEvent:(id)a4;
+- (id)_buildItemProvidersForHome:(id)home;
+- (id)_buildSectionsWithDisplayedItems:(id)items;
+- (id)_itemsToHideInSet:(id)set;
+- (id)defaultOffsetForSignificantEvent:(id)event;
+- (void)setDatePickerShown:(BOOL)shown;
+- (void)setDefaultOffset:(id)offset forSignificantEvent:(id)event;
 - (void)updateForSignificantEventOffsetChange;
 @end
 
 @implementation HUTimerTriggerEditorItemManager
 
-- (HUTimerTriggerEditorItemManager)initWithDelegate:(id)a3 sourceItem:(id)a4
+- (HUTimerTriggerEditorItemManager)initWithDelegate:(id)delegate sourceItem:(id)item
 {
-  v6 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v7 = NSStringFromSelector(sel_initWithTimerTriggerBuilder_delegate_);
-  [v6 handleFailureInMethod:a2 object:self file:@"HUTimerTriggerEditorItemManager.m" lineNumber:46 description:{@"%s is unavailable; use %@ instead", "-[HUTimerTriggerEditorItemManager initWithDelegate:sourceItem:]", v7}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUTimerTriggerEditorItemManager.m" lineNumber:46 description:{@"%s is unavailable; use %@ instead", "-[HUTimerTriggerEditorItemManager initWithDelegate:sourceItem:]", v7}];
 
   return 0;
 }
 
-- (HUTimerTriggerEditorItemManager)initWithTimerTriggerBuilder:(id)a3 delegate:(id)a4
+- (HUTimerTriggerEditorItemManager)initWithTimerTriggerBuilder:(id)builder delegate:(id)delegate
 {
   v57[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  if (!v8)
+  builderCopy = builder;
+  delegateCopy = delegate;
+  if (!builderCopy)
   {
-    v47 = [MEMORY[0x277CCA890] currentHandler];
-    [v47 handleFailureInMethod:a2 object:self file:@"HUTimerTriggerEditorItemManager.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"timerTriggerBuilder != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HUTimerTriggerEditorItemManager.m" lineNumber:51 description:{@"Invalid parameter not satisfying: %@", @"timerTriggerBuilder != nil"}];
   }
 
   v55.receiver = self;
   v55.super_class = HUTimerTriggerEditorItemManager;
-  v10 = [(HFItemManager *)&v55 initWithDelegate:v9 sourceItem:0];
+  v10 = [(HFItemManager *)&v55 initWithDelegate:delegateCopy sourceItem:0];
   v11 = v10;
   if (v10)
   {
-    objc_storeStrong(&v10->_timerTriggerBuilder, a3);
-    v12 = [MEMORY[0x277CBEB38] dictionary];
+    objc_storeStrong(&v10->_timerTriggerBuilder, builder);
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     significantEventToDefaultOffsetMap = v11->_significantEventToDefaultOffsetMap;
-    v11->_significantEventToDefaultOffsetMap = v12;
+    v11->_significantEventToDefaultOffsetMap = dictionary;
 
     v14 = [HUTriggerConditionEditorItemModule alloc];
-    v15 = [v8 home];
-    v16 = [v8 conditionCollection];
+    home = [builderCopy home];
+    conditionCollection = [builderCopy conditionCollection];
     v17 = [MEMORY[0x277CBEB98] setWithObject:&unk_282492168];
-    v18 = [(HUTriggerConditionEditorItemModule *)v14 initWithItemUpdater:v11 home:v15 conditionCollection:v16 disallowedConditionTypes:v17];
+    v18 = [(HUTriggerConditionEditorItemModule *)v14 initWithItemUpdater:v11 home:home conditionCollection:conditionCollection disallowedConditionTypes:v17];
     conditionModule = v11->_conditionModule;
     v11->_conditionModule = v18;
 
@@ -64,7 +64,7 @@
     v51[1] = 3221225472;
     v51[2] = __72__HUTimerTriggerEditorItemManager_initWithTimerTriggerBuilder_delegate___block_invoke;
     v51[3] = &unk_277DC1DE0;
-    v25 = v8;
+    v25 = builderCopy;
     v52 = v25;
     objc_copyWeak(&v53, &location);
     v26 = [v24 initWithResultsBlock:v51];
@@ -198,20 +198,20 @@ id __72__HUTimerTriggerEditorItemManager_initWithTimerTriggerBuilder_delegate___
   return v14;
 }
 
-- (void)setDatePickerShown:(BOOL)a3
+- (void)setDatePickerShown:(BOOL)shown
 {
-  if (self->_datePickerShown != a3)
+  if (self->_datePickerShown != shown)
   {
-    self->_datePickerShown = a3;
-    v5 = [(HFItemManager *)self allItems];
-    v6 = [(HUTimerTriggerEditorItemManager *)self datePickerItem];
-    v7 = [v5 containsObject:v6];
+    self->_datePickerShown = shown;
+    allItems = [(HFItemManager *)self allItems];
+    datePickerItem = [(HUTimerTriggerEditorItemManager *)self datePickerItem];
+    v7 = [allItems containsObject:datePickerItem];
 
     if (v7)
     {
       v8 = MEMORY[0x277CBEB98];
-      v11 = [(HUTimerTriggerEditorItemManager *)self datePickerItem];
-      v9 = [v8 setWithObject:v11];
+      datePickerItem2 = [(HUTimerTriggerEditorItemManager *)self datePickerItem];
+      v9 = [v8 setWithObject:datePickerItem2];
       v10 = [(HFItemManager *)self updateResultsForItems:v9 senderSelector:a2];
     }
   }
@@ -220,70 +220,70 @@ id __72__HUTimerTriggerEditorItemManager_initWithTimerTriggerBuilder_delegate___
 - (NSSet)dateOptionsItems
 {
   v3 = MEMORY[0x277CBEB98];
-  v4 = [(HUTimerTriggerEditorItemManager *)self sunriseOptionItem];
-  v5 = [(HUTimerTriggerEditorItemManager *)self sunsetOptionItem];
-  v6 = [(HUTimerTriggerEditorItemManager *)self timeOptionItem];
-  v7 = [v3 setWithObjects:{v4, v5, v6, 0}];
+  sunriseOptionItem = [(HUTimerTriggerEditorItemManager *)self sunriseOptionItem];
+  sunsetOptionItem = [(HUTimerTriggerEditorItemManager *)self sunsetOptionItem];
+  timeOptionItem = [(HUTimerTriggerEditorItemManager *)self timeOptionItem];
+  v7 = [v3 setWithObjects:{sunriseOptionItem, sunsetOptionItem, timeOptionItem, 0}];
 
   return v7;
 }
 
-- (id)_buildItemProvidersForHome:(id)a3
+- (id)_buildItemProvidersForHome:(id)home
 {
   v21[1] = *MEMORY[0x277D85DE8];
   v4 = objc_alloc(MEMORY[0x277D14B40]);
   v5 = MEMORY[0x277CBEB98];
-  v6 = [(HUTimerTriggerEditorItemManager *)self instructionsItem];
-  v7 = [(HUTimerTriggerEditorItemManager *)self sunriseOptionItem];
-  v8 = [(HUTimerTriggerEditorItemManager *)self sunsetOptionItem];
-  v9 = [(HUTimerTriggerEditorItemManager *)self timeOptionItem];
-  v10 = [(HUTimerTriggerEditorItemManager *)self datePickerItem];
-  v11 = [(HUTimerTriggerEditorItemManager *)self recurrencesInstructionsItem];
-  v12 = [(HUTimerTriggerEditorItemManager *)self recurrencesItem];
-  v13 = [v5 setWithObjects:{v6, v7, v8, v9, v10, v11, v12, 0}];
+  instructionsItem = [(HUTimerTriggerEditorItemManager *)self instructionsItem];
+  sunriseOptionItem = [(HUTimerTriggerEditorItemManager *)self sunriseOptionItem];
+  sunsetOptionItem = [(HUTimerTriggerEditorItemManager *)self sunsetOptionItem];
+  timeOptionItem = [(HUTimerTriggerEditorItemManager *)self timeOptionItem];
+  datePickerItem = [(HUTimerTriggerEditorItemManager *)self datePickerItem];
+  recurrencesInstructionsItem = [(HUTimerTriggerEditorItemManager *)self recurrencesInstructionsItem];
+  recurrencesItem = [(HUTimerTriggerEditorItemManager *)self recurrencesItem];
+  v13 = [v5 setWithObjects:{instructionsItem, sunriseOptionItem, sunsetOptionItem, timeOptionItem, datePickerItem, recurrencesInstructionsItem, recurrencesItem, 0}];
   v14 = [v4 initWithItems:v13];
 
   v21[0] = v14;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v21 count:1];
-  v16 = [(HUTimerTriggerEditorItemManager *)self conditionModule];
-  v17 = [v16 itemProviders];
-  v18 = [v17 allObjects];
-  v19 = [v15 arrayByAddingObjectsFromArray:v18];
+  conditionModule = [(HUTimerTriggerEditorItemManager *)self conditionModule];
+  itemProviders = [conditionModule itemProviders];
+  allObjects = [itemProviders allObjects];
+  v19 = [v15 arrayByAddingObjectsFromArray:allObjects];
 
   return v19;
 }
 
-- (id)_buildSectionsWithDisplayedItems:(id)a3
+- (id)_buildSectionsWithDisplayedItems:(id)items
 {
   v41[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  itemsCopy = items;
   v5 = objc_opt_new();
-  v6 = [(HUTimerTriggerEditorItemManager *)self instructionsItem];
-  v7 = [v4 containsObject:v6];
+  instructionsItem = [(HUTimerTriggerEditorItemManager *)self instructionsItem];
+  v7 = [itemsCopy containsObject:instructionsItem];
 
   if (v7)
   {
     v8 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTimerTriggerEditorSectionIdentifierInstructions"];
-    v9 = [(HUTimerTriggerEditorItemManager *)self instructionsItem];
-    v41[0] = v9;
+    instructionsItem2 = [(HUTimerTriggerEditorItemManager *)self instructionsItem];
+    v41[0] = instructionsItem2;
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v41 count:1];
     [v8 setItems:v10];
 
     [v5 addObject:v8];
   }
 
-  v11 = [(HUTimerTriggerEditorItemManager *)self sunriseOptionItem];
-  v40[0] = v11;
-  v12 = [(HUTimerTriggerEditorItemManager *)self sunsetOptionItem];
-  v40[1] = v12;
-  v13 = [(HUTimerTriggerEditorItemManager *)self timeOptionItem];
-  v40[2] = v13;
+  sunriseOptionItem = [(HUTimerTriggerEditorItemManager *)self sunriseOptionItem];
+  v40[0] = sunriseOptionItem;
+  sunsetOptionItem = [(HUTimerTriggerEditorItemManager *)self sunsetOptionItem];
+  v40[1] = sunsetOptionItem;
+  timeOptionItem = [(HUTimerTriggerEditorItemManager *)self timeOptionItem];
+  v40[2] = timeOptionItem;
   v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v40 count:3];
 
   if ([(HUTimerTriggerEditorItemManager *)self datePickerShown])
   {
-    v15 = [(HUTimerTriggerEditorItemManager *)self datePickerItem];
-    v16 = [v14 arrayByAddingObject:v15];
+    datePickerItem = [(HUTimerTriggerEditorItemManager *)self datePickerItem];
+    v16 = [v14 arrayByAddingObject:datePickerItem];
 
     v14 = v16;
   }
@@ -292,7 +292,7 @@ id __72__HUTimerTriggerEditorItemManager_initWithTimerTriggerBuilder_delegate___
   v34 = 3221225472;
   v35 = __68__HUTimerTriggerEditorItemManager__buildSectionsWithDisplayedItems___block_invoke;
   v36 = &unk_277DB85D8;
-  v17 = v4;
+  v17 = itemsCopy;
   v37 = v17;
   v18 = [v14 na_filter:&v33];
 
@@ -303,53 +303,53 @@ id __72__HUTimerTriggerEditorItemManager_initWithTimerTriggerBuilder_delegate___
     [v5 addObject:v19];
   }
 
-  v20 = [(HUTimerTriggerEditorItemManager *)self recurrencesInstructionsItem];
-  v21 = [v17 containsObject:v20];
+  recurrencesInstructionsItem = [(HUTimerTriggerEditorItemManager *)self recurrencesInstructionsItem];
+  v21 = [v17 containsObject:recurrencesInstructionsItem];
 
   if (v21)
   {
     v22 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTimerTriggerEditorSectionIdentifierRepeatInstructions"];
-    v23 = [(HUTimerTriggerEditorItemManager *)self recurrencesInstructionsItem];
-    v39 = v23;
+    recurrencesInstructionsItem2 = [(HUTimerTriggerEditorItemManager *)self recurrencesInstructionsItem];
+    v39 = recurrencesInstructionsItem2;
     v24 = [MEMORY[0x277CBEA60] arrayWithObjects:&v39 count:1];
     [v22 setItems:v24];
 
     [v5 addObject:v22];
   }
 
-  v25 = [(HUTimerTriggerEditorItemManager *)self recurrencesItem];
-  v26 = [v17 containsObject:v25];
+  recurrencesItem = [(HUTimerTriggerEditorItemManager *)self recurrencesItem];
+  v26 = [v17 containsObject:recurrencesItem];
 
   if (v26)
   {
     v27 = [objc_alloc(MEMORY[0x277D14850]) initWithIdentifier:@"HUTimerTriggerEditorSectionIdentifierRepeat"];
-    v28 = [(HUTimerTriggerEditorItemManager *)self recurrencesItem];
-    v38 = v28;
+    recurrencesItem2 = [(HUTimerTriggerEditorItemManager *)self recurrencesItem];
+    v38 = recurrencesItem2;
     v29 = [MEMORY[0x277CBEA60] arrayWithObjects:&v38 count:1];
     [v27 setItems:v29];
 
     [v5 addObject:v27];
   }
 
-  v30 = [(HUTimerTriggerEditorItemManager *)self conditionModule];
-  v31 = [v30 buildSectionsWithDisplayedItems:v17];
+  conditionModule = [(HUTimerTriggerEditorItemManager *)self conditionModule];
+  v31 = [conditionModule buildSectionsWithDisplayedItems:v17];
   [v5 addObjectsFromArray:v31];
 
   return v5;
 }
 
-- (id)_itemsToHideInSet:(id)a3
+- (id)_itemsToHideInSet:(id)set
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v9.receiver = self;
   v9.super_class = HUTimerTriggerEditorItemManager;
-  v4 = [(HFItemManager *)&v9 _itemsToHideInSet:a3];
+  v4 = [(HFItemManager *)&v9 _itemsToHideInSet:set];
   v5 = [v4 mutableCopy];
 
   if ([MEMORY[0x277D14CE8] useMacIdiom])
   {
-    v6 = [(HUTimerTriggerEditorItemManager *)self datePickerItem];
-    v10[0] = v6;
+    datePickerItem = [(HUTimerTriggerEditorItemManager *)self datePickerItem];
+    v10[0] = datePickerItem;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
     [v5 addObjectsFromArray:v7];
   }
@@ -360,20 +360,20 @@ id __72__HUTimerTriggerEditorItemManager_initWithTimerTriggerBuilder_delegate___
 - (void)updateForSignificantEventOffsetChange
 {
   v4 = MEMORY[0x277CBEB98];
-  v5 = [(HUTimerTriggerEditorItemManager *)self sunriseOptionItem];
-  v6 = [(HUTimerTriggerEditorItemManager *)self sunsetOptionItem];
-  v7 = [v4 setWithObjects:{v5, v6, 0}];
-  v8 = [(HFItemManager *)self allItems];
-  v10 = [v7 na_setByIntersectingWithSet:v8];
+  sunriseOptionItem = [(HUTimerTriggerEditorItemManager *)self sunriseOptionItem];
+  sunsetOptionItem = [(HUTimerTriggerEditorItemManager *)self sunsetOptionItem];
+  v7 = [v4 setWithObjects:{sunriseOptionItem, sunsetOptionItem, 0}];
+  allItems = [(HFItemManager *)self allItems];
+  v10 = [v7 na_setByIntersectingWithSet:allItems];
 
   v9 = [(HFItemManager *)self updateResultsForItems:v10 senderSelector:a2];
 }
 
-- (id)defaultOffsetForSignificantEvent:(id)a3
+- (id)defaultOffsetForSignificantEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(HUTimerTriggerEditorItemManager *)self significantEventToDefaultOffsetMap];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  eventCopy = event;
+  significantEventToDefaultOffsetMap = [(HUTimerTriggerEditorItemManager *)self significantEventToDefaultOffsetMap];
+  v6 = [significantEventToDefaultOffsetMap objectForKeyedSubscript:eventCopy];
 
   if (!v6)
   {
@@ -383,12 +383,12 @@ id __72__HUTimerTriggerEditorItemManager_initWithTimerTriggerBuilder_delegate___
   return v6;
 }
 
-- (void)setDefaultOffset:(id)a3 forSignificantEvent:(id)a4
+- (void)setDefaultOffset:(id)offset forSignificantEvent:(id)event
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(HUTimerTriggerEditorItemManager *)self significantEventToDefaultOffsetMap];
-  [v8 setObject:v7 forKeyedSubscript:v6];
+  eventCopy = event;
+  offsetCopy = offset;
+  significantEventToDefaultOffsetMap = [(HUTimerTriggerEditorItemManager *)self significantEventToDefaultOffsetMap];
+  [significantEventToDefaultOffsetMap setObject:offsetCopy forKeyedSubscript:eventCopy];
 }
 
 @end

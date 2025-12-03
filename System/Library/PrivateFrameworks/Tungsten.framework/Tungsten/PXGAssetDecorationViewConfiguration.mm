@@ -1,6 +1,6 @@
 @interface PXGAssetDecorationViewConfiguration
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
@@ -8,16 +8,16 @@
 
 - (unint64_t)hash
 {
-  v2 = [(PXGAssetDecorationViewConfiguration *)self loadStatus];
-  v3 = [v2 hash];
+  loadStatus = [(PXGAssetDecorationViewConfiguration *)self loadStatus];
+  v3 = [loadStatus hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
@@ -27,17 +27,17 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(PXGAssetDecorationViewConfiguration *)self loadStatus];
-      v7 = [(PXGAssetDecorationViewConfiguration *)v5 loadStatus];
-      if (v6 == v7)
+      v5 = equalCopy;
+      loadStatus = [(PXGAssetDecorationViewConfiguration *)self loadStatus];
+      loadStatus2 = [(PXGAssetDecorationViewConfiguration *)v5 loadStatus];
+      if (loadStatus == loadStatus2)
       {
         v8 = 1;
       }
 
       else
       {
-        v8 = [v6 isEqual:v7];
+        v8 = [loadStatus isEqual:loadStatus2];
       }
     }
 
@@ -50,11 +50,11 @@
   return v8;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(objc_opt_class());
-  v5 = [(PXGAssetDecorationViewConfiguration *)self loadStatus];
-  [v4 setLoadStatus:v5];
+  loadStatus = [(PXGAssetDecorationViewConfiguration *)self loadStatus];
+  [v4 setLoadStatus:loadStatus];
 
   return v4;
 }

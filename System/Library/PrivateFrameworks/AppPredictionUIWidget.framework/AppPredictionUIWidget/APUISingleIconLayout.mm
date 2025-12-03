@@ -1,12 +1,12 @@
 @interface APUISingleIconLayout
 - (CGSize)size;
 - (SBIconImageInfo)iconImageInfo;
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3;
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation;
 @end
 
 @implementation APUISingleIconLayout
 
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation
 {
   v3 = *MEMORY[0x277D768C8];
   v4 = *(MEMORY[0x277D768C8] + 8);

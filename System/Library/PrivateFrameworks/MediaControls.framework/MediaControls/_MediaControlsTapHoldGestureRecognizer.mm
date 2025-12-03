@@ -1,23 +1,23 @@
 @interface _MediaControlsTapHoldGestureRecognizer
-- (void)touchesBegan:(id)a3 withEvent:(id)a4;
-- (void)touchesEnded:(id)a3 withEvent:(id)a4;
-- (void)touchesMoved:(id)a3 withEvent:(id)a4;
+- (void)touchesBegan:(id)began withEvent:(id)event;
+- (void)touchesEnded:(id)ended withEvent:(id)event;
+- (void)touchesMoved:(id)moved withEvent:(id)event;
 @end
 
 @implementation _MediaControlsTapHoldGestureRecognizer
 
-- (void)touchesBegan:(id)a3 withEvent:(id)a4
+- (void)touchesBegan:(id)began withEvent:(id)event
 {
-  v6 = a3;
+  beganCopy = began;
   v12.receiver = self;
   v12.super_class = _MediaControlsTapHoldGestureRecognizer;
-  [(_MediaControlsTapHoldGestureRecognizer *)&v12 touchesBegan:v6 withEvent:a4];
-  if ([v6 count] == 1)
+  [(_MediaControlsTapHoldGestureRecognizer *)&v12 touchesBegan:beganCopy withEvent:event];
+  if ([beganCopy count] == 1)
   {
-    v7 = [v6 anyObject];
-    v8 = [(_MediaControlsTapHoldGestureRecognizer *)self view];
-    v9 = [v8 window];
-    [v7 locationInView:v9];
+    anyObject = [beganCopy anyObject];
+    view = [(_MediaControlsTapHoldGestureRecognizer *)self view];
+    window = [view window];
+    [anyObject locationInView:window];
     self->_startingLocation.x = v10;
     self->_startingLocation.y = v11;
 
@@ -30,18 +30,18 @@
   }
 }
 
-- (void)touchesMoved:(id)a3 withEvent:(id)a4
+- (void)touchesMoved:(id)moved withEvent:(id)event
 {
-  v6 = a3;
+  movedCopy = moved;
   v14.receiver = self;
   v14.super_class = _MediaControlsTapHoldGestureRecognizer;
-  [(_MediaControlsTapHoldGestureRecognizer *)&v14 touchesMoved:v6 withEvent:a4];
-  if ([v6 count] == 1)
+  [(_MediaControlsTapHoldGestureRecognizer *)&v14 touchesMoved:movedCopy withEvent:event];
+  if ([movedCopy count] == 1)
   {
-    v7 = [v6 anyObject];
-    v8 = [(_MediaControlsTapHoldGestureRecognizer *)self view];
-    v9 = [v8 window];
-    [v7 locationInView:v9];
+    anyObject = [movedCopy anyObject];
+    view = [(_MediaControlsTapHoldGestureRecognizer *)self view];
+    window = [view window];
+    [anyObject locationInView:window];
     v11 = v10;
     v13 = v12;
 
@@ -57,11 +57,11 @@
   }
 }
 
-- (void)touchesEnded:(id)a3 withEvent:(id)a4
+- (void)touchesEnded:(id)ended withEvent:(id)event
 {
   v5.receiver = self;
   v5.super_class = _MediaControlsTapHoldGestureRecognizer;
-  [(_MediaControlsTapHoldGestureRecognizer *)&v5 touchesEnded:a3 withEvent:a4];
+  [(_MediaControlsTapHoldGestureRecognizer *)&v5 touchesEnded:ended withEvent:event];
   [(_MediaControlsTapHoldGestureRecognizer *)self setState:3];
 }
 

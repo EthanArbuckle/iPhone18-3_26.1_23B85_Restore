@@ -13,7 +13,7 @@
   v6 = a3;
   if (v6)
   {
-    v7 = [a1 rangeOfString:v6 options:9 range:{a4, objc_msgSend(a1, "length") - a4}] != 0x7FFFFFFFFFFFFFFFLL;
+    v7 = [self rangeOfString:v6 options:9 range:{a4, objc_msgSend(self, "length") - a4}] != 0x7FFFFFFFFFFFFFFFLL;
   }
 
   else
@@ -35,8 +35,8 @@
   v18 = 0u;
   v19 = 0u;
   v15 = v5;
-  v7 = [v5 reverseObjectEnumerator];
-  v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
+  reverseObjectEnumerator = [v5 reverseObjectEnumerator];
+  v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
   if (v8)
   {
     v9 = 0;
@@ -48,7 +48,7 @@ LABEL_3:
     {
       if (*v17 != v11)
       {
-        objc_enumerationMutation(v7);
+        objc_enumerationMutation(reverseObjectEnumerator);
       }
 
       v13 = *(*(&v16 + 1) + 8 * v12);
@@ -72,7 +72,7 @@ LABEL_3:
       ++v9;
       if (v8 == ++v12)
       {
-        v8 = [v7 countByEnumeratingWithState:&v16 objects:v21 count:16];
+        v8 = [reverseObjectEnumerator countByEnumeratingWithState:&v16 objects:v21 count:16];
         if (v8)
         {
           goto LABEL_3;
@@ -119,31 +119,31 @@ LABEL_3:
   if (v22[3])
   {
     v11 = [v16[5] length];
-    if (v11 != [a1 length])
+    if (v11 != [self length])
     {
-      a1 = v16[5];
+      self = v16[5];
     }
 
-    v12 = a1;
+    selfCopy = self;
   }
 
   else
   {
-    v12 = 0;
+    selfCopy = 0;
   }
 
   _Block_object_dispose(&v15, 8);
 
   _Block_object_dispose(&v21, 8);
 
-  return v12;
+  return selfCopy;
 }
 
 - (uint64_t)_lp_lengthOfDeepSubdomainsFromComponents:()LPInternal
 {
   v4 = a3;
   v12 = 0;
-  v5 = [a1 _lp_highLevelDomainFromComponents:v4 indexOfFirstHighLevelDomainComponent:&v12 indexOfFirstTopLevelDomainComponent:0];
+  v5 = [self _lp_highLevelDomainFromComponents:v4 indexOfFirstHighLevelDomainComponent:&v12 indexOfFirstTopLevelDomainComponent:0];
 
   v6 = 0;
   if (v5 && v12 >= 2)
@@ -167,8 +167,8 @@ LABEL_3:
 
 - (id)_lp_simplifiedUserVisibleURLStringWithSimplifications:()LPInternal forDisplayOnly:
 {
-  v56 = a1;
-  v5 = [v56 copy];
+  selfCopy = self;
+  v5 = [selfCopy copy];
   v7 = [v5 rangeOfString:@"://" options:2];
   v8 = 0x7FFFFFFFFFFFFFFFLL;
   if (v7 == 0x7FFFFFFFFFFFFFFFLL)
@@ -235,12 +235,12 @@ LABEL_14:
   {
     if ((((a3 & 0x20) != 0) & (v18 | v20)) == 1)
     {
-      v22 = [v56 rangeOfString:@":" options:4 range:{v8, v17}];
+      v22 = [selfCopy rangeOfString:@":" options:4 range:{v8, v17}];
       v23 = v22;
       if (v22 != 0x7FFFFFFFFFFFFFFFLL)
       {
         v24 = v8 + v17 - v22;
-        if ([v56 rangeOfString:@"]" options:0 range:{v22, v24}] == 0x7FFFFFFFFFFFFFFFLL)
+        if ([selfCopy rangeOfString:@"]" options:0 range:{v22, v24}] == 0x7FFFFFFFFFFFFFFFLL)
         {
           v25 = [v5 stringByReplacingCharactersInRange:v23 withString:{v8 + v17 - v23, &stru_28803EAC8}];
 
@@ -389,8 +389,8 @@ LABEL_14:
 LABEL_67:
       if (v47)
       {
-        v48 = [v45 _lp_highLevelDomainFromHost];
-        v49 = [v45 isEqualToString:v48];
+        _lp_highLevelDomainFromHost = [v45 _lp_highLevelDomainFromHost];
+        v49 = [v45 isEqualToString:_lp_highLevelDomainFromHost];
 
         if ((v49 & 1) == 0)
         {
@@ -435,9 +435,9 @@ LABEL_74:
 
   if (a4)
   {
-    v52 = [v5 _lp_stringForcingLeftToRightDirection];
+    _lp_stringForcingLeftToRightDirection = [v5 _lp_stringForcingLeftToRightDirection];
 
-    v5 = v52;
+    v5 = _lp_stringForcingLeftToRightDirection;
   }
 
   return v5;

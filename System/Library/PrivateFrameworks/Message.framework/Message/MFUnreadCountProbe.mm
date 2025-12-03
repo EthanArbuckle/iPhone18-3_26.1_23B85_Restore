@@ -1,12 +1,12 @@
 @interface MFUnreadCountProbe
-+ (BOOL)addProbeWithConnection:(id)a3;
++ (BOOL)addProbeWithConnection:(id)connection;
 @end
 
 @implementation MFUnreadCountProbe
 
-+ (BOOL)addProbeWithConnection:(id)a3
++ (BOOL)addProbeWithConnection:(id)connection
 {
-  v4 = a3;
+  connectionCopy = connection;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
@@ -16,17 +16,17 @@
 
   if (v6)
   {
-    v7 = [v4 sqlDB];
-    sqlite3_create_function(v7, "probe_message_update", -1, 1, a1, probeMessageUpdate, 0, 0);
-    sqlite3_create_function(v7, "probe_message_add", -1, 1, a1, probeMessageAdd, 0, 0);
-    sqlite3_create_function(v7, "probe_message_delete", -1, 1, a1, probeMessageDelete, 0, 0);
+    sqlDB = [connectionCopy sqlDB];
+    sqlite3_create_function(sqlDB, "probe_message_update", -1, 1, self, probeMessageUpdate, 0, 0);
+    sqlite3_create_function(sqlDB, "probe_message_add", -1, 1, self, probeMessageAdd, 0, 0);
+    sqlite3_create_function(sqlDB, "probe_message_delete", -1, 1, self, probeMessageDelete, 0, 0);
     v10[0] = MEMORY[0x1E69E9820];
     v10[1] = 3221225472;
     v10[2] = __45__MFUnreadCountProbe_addProbeWithConnection___block_invoke;
     v10[3] = &unk_1E7AA3E00;
     v10[4] = &v11;
-    v10[5] = v7;
-    [v4 performWithOptions:3 transactionError:0 block:v10];
+    v10[5] = sqlDB;
+    [connectionCopy performWithOptions:3 transactionError:0 block:v10];
   }
 
   v8 = *(v12 + 24);

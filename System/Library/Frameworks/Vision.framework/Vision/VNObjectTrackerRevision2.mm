@@ -3,28 +3,28 @@
 + (id)rpnTrackQueue;
 + (id)serializeRPNInitializationQueue;
 + (id)serializeRPNTrackingQueue;
-+ (id)supportedComputeDevicesForOptions:(id)a3 error:(id *)a4;
-- (VNObjectTrackerRevision2)initWithOptions:(id)a3 error:(id *)a4;
++ (id)supportedComputeDevicesForOptions:(id)options error:(id *)error;
+- (VNObjectTrackerRevision2)initWithOptions:(id)options error:(id *)error;
 @end
 
 @implementation VNObjectTrackerRevision2
 
-- (VNObjectTrackerRevision2)initWithOptions:(id)a3 error:(id *)a4
+- (VNObjectTrackerRevision2)initWithOptions:(id)options error:(id *)error
 {
-  v6 = a3;
+  optionsCopy = options;
   v36.receiver = self;
   v36.super_class = VNObjectTrackerRevision2;
-  v7 = [(VNTracker *)&v36 initWithOptions:v6 error:a4];
+  v7 = [(VNTracker *)&v36 initWithOptions:optionsCopy error:error];
   if (v7)
   {
     v35 = 0;
-    if ([VNValidationUtilities getNSUIntegerValue:&v35 forKey:@"VNTrackingOption_InputImageMaxWidth" inOptions:v6 error:a4])
+    if ([VNValidationUtilities getNSUIntegerValue:&v35 forKey:@"VNTrackingOption_InputImageMaxWidth" inOptions:optionsCopy error:error])
     {
       v34 = 0;
-      if ([VNValidationUtilities getNSUIntegerValue:&v34 forKey:@"VNTrackingOption_InputImageMaxHeight" inOptions:v6 error:a4])
+      if ([VNValidationUtilities getNSUIntegerValue:&v34 forKey:@"VNTrackingOption_InputImageMaxHeight" inOptions:optionsCopy error:error])
       {
         v33 = 0;
-        v8 = [VNValidationUtilities getOptionalObject:&v33 ofClass:objc_opt_class() forKey:@"VNTrackerOption_RPNEspressoResources" inOptions:v6 error:a4];
+        v8 = [VNValidationUtilities getOptionalObject:&v33 ofClass:objc_opt_class() forKey:@"VNTrackerOption_RPNEspressoResources" inOptions:optionsCopy error:error];
         v9 = v33;
         if (v8)
         {
@@ -32,34 +32,34 @@
           v20 = 0;
           v19[0] = &unk_1F19762D8;
           v19[1] = 0;
-          v24 = [v10 rpnInitQueue];
+          rpnInitQueue = [v10 rpnInitQueue];
 
-          v28 = [v10 rpnTrackQueue];
+          rpnTrackQueue = [v10 rpnTrackQueue];
 
-          v29 = [v10 serializeRPNInitializationQueue];
+          serializeRPNInitializationQueue = [v10 serializeRPNInitializationQueue];
 
-          v30 = [v10 serializeRPNTrackingQueue];
+          serializeRPNTrackingQueue = [v10 serializeRPNTrackingQueue];
 
           v31 = v35;
           v32 = v34;
-          v11 = [(VNRPNTrackerEspressoResources *)v9 rpnInitEspressoResources];
-          v21 = [v11 network];
+          rpnInitEspressoResources = [(VNRPNTrackerEspressoResources *)v9 rpnInitEspressoResources];
+          network = [rpnInitEspressoResources network];
           v22 = v12;
 
-          v13 = [(VNRPNTrackerEspressoResources *)v9 rpnInitEspressoResources];
-          v23 = [v13 plan];
+          rpnInitEspressoResources2 = [(VNRPNTrackerEspressoResources *)v9 rpnInitEspressoResources];
+          plan = [rpnInitEspressoResources2 plan];
 
-          v14 = [(VNRPNTrackerEspressoResources *)v9 rpnTrackEspressoResources];
-          v25 = [v14 network];
+          rpnTrackEspressoResources = [(VNRPNTrackerEspressoResources *)v9 rpnTrackEspressoResources];
+          network2 = [rpnTrackEspressoResources network];
           v26 = v15;
 
-          v16 = [(VNRPNTrackerEspressoResources *)v9 rpnTrackEspressoResources];
-          v27 = [v16 plan];
+          rpnTrackEspressoResources2 = [(VNRPNTrackerEspressoResources *)v9 rpnTrackEspressoResources];
+          plan2 = [rpnTrackEspressoResources2 plan];
 
-          v17 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNTrackingOption_TrackingLevel" inOptions:v6 error:a4];
+          v17 = [VNValidationUtilities requiredObjectOfClass:objc_opt_class() forKey:@"VNTrackingOption_TrackingLevel" inOptions:optionsCopy error:error];
           if (v17)
           {
-            [(VNTracker *)v7 _createTrackerWithLevel:v17 options:v19 error:a4];
+            [(VNTracker *)v7 _createTrackerWithLevel:v17 options:v19 error:error];
             std::shared_ptr<vision::mod::ObjectTrackerAbstract>::reset[abi:ne200100]<vision::mod::ObjectTrackerAbstract,0>();
           }
 
@@ -118,7 +118,7 @@ void __59__VNObjectTrackerRevision2_serializeRPNInitializationQueue__block_invok
   block[1] = 3221225472;
   block[2] = __41__VNObjectTrackerRevision2_rpnTrackQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNObjectTrackerRevision2 rpnTrackQueue]::onceToken != -1)
   {
     dispatch_once(&+[VNObjectTrackerRevision2 rpnTrackQueue]::onceToken, block);
@@ -145,7 +145,7 @@ void __41__VNObjectTrackerRevision2_rpnTrackQueue__block_invoke(uint64_t a1)
   block[1] = 3221225472;
   block[2] = __40__VNObjectTrackerRevision2_rpnInitQueue__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (+[VNObjectTrackerRevision2 rpnInitQueue]::onceToken != -1)
   {
     dispatch_once(&+[VNObjectTrackerRevision2 rpnInitQueue]::onceToken, block);
@@ -166,9 +166,9 @@ void __40__VNObjectTrackerRevision2_rpnInitQueue__block_invoke(uint64_t a1)
   +[VNObjectTrackerRevision2 rpnInitQueue]::rpnInitQueue = v3;
 }
 
-+ (id)supportedComputeDevicesForOptions:(id)a3 error:(id *)a4
++ (id)supportedComputeDevicesForOptions:(id)options error:(id *)error
 {
-  v4 = [VNComputeDeviceUtilities espressoV1ModelComputeDevices:a3];
+  v4 = [VNComputeDeviceUtilities espressoV1ModelComputeDevices:options];
 
   return v4;
 }

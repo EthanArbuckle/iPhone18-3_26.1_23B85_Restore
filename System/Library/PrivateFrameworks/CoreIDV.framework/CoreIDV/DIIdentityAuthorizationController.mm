@@ -1,20 +1,20 @@
 @interface DIIdentityAuthorizationController
 - (void)cancelRequest;
-- (void)checkCanRequestDocument:(DIIdentityDocumentDescriptor *)a3 completion:(id)a4;
-- (void)requestDocument:(DIIdentityRequest *)a3 completion:(id)a4;
+- (void)checkCanRequestDocument:(DIIdentityDocumentDescriptor *)document completion:(id)completion;
+- (void)requestDocument:(DIIdentityRequest *)document completion:(id)completion;
 @end
 
 @implementation DIIdentityAuthorizationController
 
-- (void)checkCanRequestDocument:(DIIdentityDocumentDescriptor *)a3 completion:(id)a4
+- (void)checkCanRequestDocument:(DIIdentityDocumentDescriptor *)document completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CE19190, &qword_21CD8E260);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9);
   v11 = &v18 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = document;
   v13[3] = v12;
   v13[4] = self;
   v14 = sub_21CD83D74();
@@ -30,19 +30,19 @@
   v16[4] = &unk_21CD88E70;
   v16[5] = v15;
   swift_unknownObjectRetain();
-  v17 = self;
+  selfCopy = self;
   sub_21CD01F00(0, 0, v11, &unk_21CD88E78, v16);
 }
 
-- (void)requestDocument:(DIIdentityRequest *)a3 completion:(id)a4
+- (void)requestDocument:(DIIdentityRequest *)document completion:(id)completion
 {
   v7 = __swift_instantiateConcreteTypeFromMangledNameV2(&unk_27CE19190, &qword_21CD8E260);
   v8 = *(*(v7 - 8) + 64);
   MEMORY[0x28223BE20](v7 - 8, v9);
   v11 = &v19 - v10;
-  v12 = _Block_copy(a4);
+  v12 = _Block_copy(completion);
   v13 = swift_allocObject();
-  v13[2] = a3;
+  v13[2] = document;
   v13[3] = v12;
   v13[4] = self;
   v14 = sub_21CD83D74();
@@ -57,8 +57,8 @@
   v16[3] = 0;
   v16[4] = &unk_21CD8E390;
   v16[5] = v15;
-  v17 = a3;
-  v18 = self;
+  documentCopy = document;
+  selfCopy = self;
   sub_21CD01F00(0, 0, v11, &unk_21CD8E280, v16);
 }
 
@@ -74,7 +74,7 @@
   v9[2] = 0;
   v9[3] = 0;
   v9[4] = self;
-  v10 = self;
+  selfCopy = self;
   sub_21CD5C550(0, 0, v7, &unk_21CD88E10, v9);
 }
 

@@ -1,38 +1,38 @@
 @interface PLLargeTextPlatterHeaderContentViewLayoutManager
-+ (double)contentBaselineToBoundsBottomWithFont:(id)a3 boundsWidth:(double)a4 scale:(double)a5;
-- (CGRect)_dateLabelBoundsThatFitsWidth:(double)a3;
-- (CGRect)_titleLabelBoundsThatFitsWidth:(double)a3;
-- (CGSize)_boundingRectSizeForLabel:(id)a3 width:(double)a4 numberOfLines:(unint64_t *)a5;
-- (CGSize)_utilityViewSizeThatFitsWidth:(double)a3;
++ (double)contentBaselineToBoundsBottomWithFont:(id)font boundsWidth:(double)width scale:(double)scale;
+- (CGRect)_dateLabelBoundsThatFitsWidth:(double)width;
+- (CGRect)_titleLabelBoundsThatFitsWidth:(double)width;
+- (CGSize)_boundingRectSizeForLabel:(id)label width:(double)width numberOfLines:(unint64_t *)lines;
+- (CGSize)_utilityViewSizeThatFitsWidth:(double)width;
 - (double)_dateLabelBaselineOffset;
 - (double)_largeTextLabelBaselineOffsetFromBottom;
 - (double)_largeTextUtilityLabelBaselineOffset;
 - (double)_titleLabelBaselineOffset;
 - (double)contentBaseline;
-- (double)headerHeightForWidth:(double)a3;
+- (double)headerHeightForWidth:(double)width;
 - (id)_dateLabelFont;
-- (unint64_t)_titleLabelNumberOfLinesThatFitsWidth:(double)a3;
-- (void)_updateCachedTitleLabelSizeInfoIfNecessaryWithWidth:(double)a3;
+- (unint64_t)_titleLabelNumberOfLinesThatFitsWidth:(double)width;
+- (void)_updateCachedTitleLabelSizeInfoIfNecessaryWithWidth:(double)width;
 - (void)invalidateCachedSizeInfo;
-- (void)layoutDateLabelWithScale:(double)a3;
-- (void)layoutIconButtonsWithScale:(double)a3;
-- (void)layoutTitleLabelWithTrailingXLimit:(double)a3 scale:(double)a4;
-- (void)layoutUtilityButtonWithScale:(double)a3;
+- (void)layoutDateLabelWithScale:(double)scale;
+- (void)layoutIconButtonsWithScale:(double)scale;
+- (void)layoutTitleLabelWithTrailingXLimit:(double)limit scale:(double)scale;
+- (void)layoutUtilityButtonWithScale:(double)scale;
 @end
 
 @implementation PLLargeTextPlatterHeaderContentViewLayoutManager
 
-+ (double)contentBaselineToBoundsBottomWithFont:(id)a3 boundsWidth:(double)a4 scale:(double)a5
++ (double)contentBaselineToBoundsBottomWithFont:(id)font boundsWidth:(double)width scale:(double)scale
 {
-  [a3 _scaledValueForValue:6.5];
+  [font _scaledValueForValue:6.5];
 
   UIRoundToScale();
   return result;
 }
 
-- (double)headerHeightForWidth:(double)a3
+- (double)headerHeightForWidth:(double)width
 {
-  if (a3 <= 0.0)
+  if (width <= 0.0)
   {
     v10.receiver = self;
     v10.super_class = PLLargeTextPlatterHeaderContentViewLayoutManager;
@@ -48,8 +48,8 @@
     [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _dateLabelBoundsThatFitsWidth:v5];
     CGRectGetHeight(v12);
     [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _largeTextLabelBaselineOffsetFromBottom];
-    v6 = [MEMORY[0x277D759A0] mainScreen];
-    [v6 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     UIRoundToScale();
     v8 = v7;
 
@@ -61,24 +61,24 @@
 
 - (double)contentBaseline
 {
-  v3 = [(PLPlatterHeaderContentViewLayoutManager *)self _date];
+  _date = [(PLPlatterHeaderContentViewLayoutManager *)self _date];
 
-  if (v3)
+  if (_date)
   {
-    v4 = [(PLPlatterHeaderContentViewLayoutManager *)self _dateLabel];
+    _dateLabel = [(PLPlatterHeaderContentViewLayoutManager *)self _dateLabel];
     goto LABEL_8;
   }
 
-  v5 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
-  [v5 alpha];
+  _utilityButton = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
+  [_utilityButton alpha];
   v7 = v6;
 
   if (v7 <= 0.0)
   {
-    v4 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
+    _dateLabel = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
 LABEL_8:
-    v14 = v4;
-    if (v4)
+    _utilityButton4 = _dateLabel;
+    if (_dateLabel)
     {
       goto LABEL_9;
     }
@@ -86,21 +86,21 @@ LABEL_8:
     return 0.0;
   }
 
-  v8 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
-  v9 = [v8 titleLabel];
-  v10 = [v9 text];
-  v11 = [v10 length];
+  _utilityButton2 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
+  titleLabel = [_utilityButton2 titleLabel];
+  text = [titleLabel text];
+  v11 = [text length];
 
-  v12 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
-  v13 = v12;
+  _utilityButton3 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
+  v13 = _utilityButton3;
   if (!v11)
   {
-    v17 = [v12 imageForState:0];
+    v17 = [_utilityButton3 imageForState:0];
 
     if (v17)
     {
-      v14 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
-      [v14 frame];
+      _utilityButton4 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
+      [_utilityButton4 frame];
       MaxY = CGRectGetMaxY(v19);
       goto LABEL_10;
     }
@@ -108,30 +108,30 @@ LABEL_8:
     return 0.0;
   }
 
-  v14 = [v12 titleLabel];
+  _utilityButton4 = [_utilityButton3 titleLabel];
 
-  if (!v14)
+  if (!_utilityButton4)
   {
     return 0.0;
   }
 
 LABEL_9:
-  [v14 _lastLineBaselineFrameOriginY];
+  [_utilityButton4 _lastLineBaselineFrameOriginY];
 LABEL_10:
   v16 = MaxY;
 
   return v16;
 }
 
-- (void)layoutIconButtonsWithScale:(double)a3
+- (void)layoutIconButtonsWithScale:(double)scale
 {
-  v32 = [(PLPlatterHeaderContentViewLayoutManager *)self _iconButtons];
-  v4 = [v32 count];
+  _iconButtons = [(PLPlatterHeaderContentViewLayoutManager *)self _iconButtons];
+  v4 = [_iconButtons count];
   if (v4)
   {
     v5 = v4;
-    v6 = [(PLPlatterHeaderContentViewLayoutManager *)self headerContentView];
-    [v6 bounds];
+    headerContentView = [(PLPlatterHeaderContentViewLayoutManager *)self headerContentView];
+    [headerContentView bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -142,9 +142,9 @@ LABEL_10:
     v34.size.width = 44.0;
     v34.size.height = 44.0;
     v15 = (CGRectGetWidth(v34) + -20.0) * 0.5;
-    v16 = [(PLPlatterHeaderContentViewLayoutManager *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection = [(PLPlatterHeaderContentViewLayoutManager *)self _shouldReverseLayoutDirection];
     v17 = 10.0;
-    if (v16)
+    if (_shouldReverseLayoutDirection)
     {
       v35.origin.x = v8;
       v35.origin.y = v10;
@@ -154,17 +154,17 @@ LABEL_10:
     }
 
     v18 = v17 - v15;
-    v19 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
-    v20 = [v19 font];
-    [v20 capHeight];
+    _titleLabel = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
+    font = [_titleLabel font];
+    [font capHeight];
     v22 = v21;
 
     [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _titleLabelBaselineOffset];
     v24 = v23 + v22 * -0.5 + -10.0 - v15;
-    v25 = [(PLPlatterHeaderContentViewLayoutManager *)self _shouldReverseLayoutDirection];
+    _shouldReverseLayoutDirection2 = [(PLPlatterHeaderContentViewLayoutManager *)self _shouldReverseLayoutDirection];
     for (i = 0; i != v5; ++i)
     {
-      v27 = [v32 objectAtIndex:i];
+      v27 = [_iconButtons objectAtIndex:i];
       UIRectIntegralWithScale();
       [v27 setFrame:?];
       if (i < v5 - 1)
@@ -173,7 +173,7 @@ LABEL_10:
         v29 = v24;
         v30 = 0x4046000000000000;
         v31 = 0x4046000000000000;
-        if (v25)
+        if (_shouldReverseLayoutDirection2)
         {
           v18 = CGRectGetMinX(*&v28) + -10.0 + -20.0;
         }
@@ -187,14 +187,14 @@ LABEL_10:
   }
 }
 
-- (void)layoutTitleLabelWithTrailingXLimit:(double)a3 scale:(double)a4
+- (void)layoutTitleLabelWithTrailingXLimit:(double)limit scale:(double)scale
 {
-  v5 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
-  if (v5)
+  _titleLabel = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
+  if (_titleLabel)
   {
-    v24 = v5;
-    v6 = [(PLPlatterHeaderContentViewLayoutManager *)self headerContentView];
-    [v6 bounds];
+    v24 = _titleLabel;
+    headerContentView = [(PLPlatterHeaderContentViewLayoutManager *)self headerContentView];
+    [headerContentView bounds];
     v8 = v7;
     v10 = v9;
     v12 = v11;
@@ -212,8 +212,8 @@ LABEL_10:
     rect = v17;
     v19 = v18;
     v21 = v20;
-    v22 = [(PLPlatterHeaderContentViewLayoutManager *)self _iconButtons];
-    [v22 count];
+    _iconButtons = [(PLPlatterHeaderContentViewLayoutManager *)self _iconButtons];
+    [_iconButtons count];
 
     if ([(PLPlatterHeaderContentViewLayoutManager *)self _shouldReverseLayoutDirection])
     {
@@ -233,25 +233,25 @@ LABEL_10:
     [v24 _firstLineBaselineOffsetFromBoundsTop];
     UIRectIntegralWithScale();
     [v24 setFrame:?];
-    v5 = v24;
+    _titleLabel = v24;
   }
 }
 
-- (void)layoutUtilityButtonWithScale:(double)a3
+- (void)layoutUtilityButtonWithScale:(double)scale
 {
-  v5 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityView];
-  if (!v5)
+  _utilityView = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityView];
+  if (!_utilityView)
   {
-    v5 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
-    if (!v5)
+    _utilityView = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
+    if (!_utilityView)
     {
       return;
     }
   }
 
-  v6 = v5;
-  v7 = [(PLPlatterHeaderContentViewLayoutManager *)self headerContentView];
-  [v7 bounds];
+  v6 = _utilityView;
+  headerContentView = [(PLPlatterHeaderContentViewLayoutManager *)self headerContentView];
+  [headerContentView bounds];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -263,7 +263,7 @@ LABEL_10:
   v47.size.height = v15;
   [(PLPlatterHeaderContentViewLayoutManager *)self _measuringSizeForWidth:CGRectGetWidth(v47)];
   [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _utilityViewSizeThatFitsWidth:?];
-  v40 = a3;
+  scaleCopy = scale;
   UISizeRoundToScale();
   BSRectWithSize();
   v17 = v16;
@@ -271,14 +271,14 @@ LABEL_10:
   v21 = v20;
   v23 = v22;
   [v6 setBounds:?];
-  v24 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
-  v25 = v24;
-  if (v6 == v24)
+  _utilityButton = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
+  v25 = _utilityButton;
+  if (v6 == _utilityButton)
   {
-    v27 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
-    v28 = [v27 titleLabel];
-    v29 = [v28 text];
-    v30 = [v29 length];
+    _utilityButton2 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
+    titleLabel = [_utilityButton2 titleLabel];
+    text = [titleLabel text];
+    v30 = [text length];
 
     if (v30)
     {
@@ -301,7 +301,7 @@ LABEL_10:
 
   v26 = 0;
 LABEL_8:
-  if ([(PLPlatterHeaderContentViewLayoutManager *)self _shouldReverseLayoutDirection:*&v40])
+  if ([(PLPlatterHeaderContentViewLayoutManager *)self _shouldReverseLayoutDirection:*&scaleCopy])
   {
     v48.origin.x = v17;
     v48.origin.y = v19;
@@ -328,19 +328,19 @@ LABEL_8:
 
   v35 = MinX + v33;
   [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self layoutTitleLabelWithTrailingXLimit:0.0 scale:v41];
-  v36 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
-  [v36 _lastLineBaselineFrameOriginY];
+  _titleLabel = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
+  [_titleLabel _lastLineBaselineFrameOriginY];
   if (v26)
   {
-    v37 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
-    v38 = [v37 titleLabel];
-    [v38 _firstLineBaselineOffsetFromBoundsTop];
+    _utilityButton3 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
+    titleLabel2 = [_utilityButton3 titleLabel];
+    [titleLabel2 _firstLineBaselineOffsetFromBoundsTop];
   }
 
   else
   {
-    v39 = [v36 font];
-    [v39 capHeight];
+    font = [_titleLabel font];
+    [font capHeight];
 
     v51.origin.x = v35;
     v51.origin.y = v19;
@@ -353,23 +353,23 @@ LABEL_8:
   [v6 setFrame:?];
 }
 
-- (void)layoutDateLabelWithScale:(double)a3
+- (void)layoutDateLabelWithScale:(double)scale
 {
-  v5 = [(PLPlatterHeaderContentViewLayoutManager *)self _dateLabel];
-  if (!v5)
+  _dateLabel = [(PLPlatterHeaderContentViewLayoutManager *)self _dateLabel];
+  if (!_dateLabel)
   {
     goto LABEL_12;
   }
 
-  v36 = v5;
-  v6 = [(PLPlatterHeaderContentViewLayoutManager *)self headerContentView];
-  [v6 bounds];
+  v36 = _dateLabel;
+  headerContentView = [(PLPlatterHeaderContentViewLayoutManager *)self headerContentView];
+  [headerContentView bounds];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [(PLPlatterHeaderContentViewLayoutManager *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PLPlatterHeaderContentViewLayoutManager *)self _shouldReverseLayoutDirection];
   v32 = v10;
   v34 = v8;
   v38.origin.x = v8;
@@ -379,39 +379,39 @@ LABEL_8:
   [(PLPlatterHeaderContentViewLayoutManager *)self _measuringSizeForWidth:CGRectGetWidth(v38)];
   [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _dateLabelBoundsThatFitsWidth:?];
   [v36 setBounds:?];
-  [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self layoutTitleLabelWithTrailingXLimit:0.0 scale:a3];
-  v16 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
-  [v16 _lastLineBaselineFrameOriginY];
+  [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self layoutTitleLabelWithTrailingXLimit:0.0 scale:scale];
+  _titleLabel = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
+  [_titleLabel _lastLineBaselineFrameOriginY];
 
-  v17 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
-  v18 = [v17 titleLabel];
-  v19 = [v18 text];
-  if ([v19 length])
+  _utilityButton = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
+  titleLabel = [_utilityButton titleLabel];
+  text = [titleLabel text];
+  if ([text length])
   {
-    v20 = [v17 isHidden];
+    isHidden = [_utilityButton isHidden];
 
-    if (v20)
+    if (isHidden)
     {
       goto LABEL_9;
     }
 
 LABEL_7:
-    [v17 frame];
+    [_utilityButton frame];
     CGRectGetWidth(v39);
     goto LABEL_9;
   }
 
-  v21 = [v17 currentImage];
-  if (!v21)
+  currentImage = [_utilityButton currentImage];
+  if (!currentImage)
   {
 
     goto LABEL_9;
   }
 
-  v22 = v21;
-  v23 = [v17 isHidden];
+  v22 = currentImage;
+  isHidden2 = [_utilityButton isHidden];
 
-  if ((v23 & 1) == 0)
+  if ((isHidden2 & 1) == 0)
   {
     goto LABEL_7;
   }
@@ -420,7 +420,7 @@ LABEL_9:
   [v36 frame];
   v27 = v26;
   v29 = v28;
-  if (v15)
+  if (_shouldReverseLayoutDirection)
   {
     v30 = v24;
     v31 = v25;
@@ -441,15 +441,15 @@ LABEL_9:
   UIRectIntegralWithScale();
   [v36 setFrame:?];
 
-  v5 = v36;
+  _dateLabel = v36;
 LABEL_12:
 }
 
 - (double)_titleLabelBaselineOffset
 {
-  v2 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
-  v3 = [v2 font];
-  [v3 _scaledValueForValue:16.5];
+  _titleLabel = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
+  font = [_titleLabel font];
+  [font _scaledValueForValue:16.5];
   v5 = v4;
 
   return v5;
@@ -457,26 +457,26 @@ LABEL_12:
 
 - (id)_dateLabelFont
 {
-  v2 = [(PLPlatterHeaderContentViewLayoutManager *)self headerContentView];
-  v3 = [v2 _dateLabelFont];
+  headerContentView = [(PLPlatterHeaderContentViewLayoutManager *)self headerContentView];
+  _dateLabelFont = [headerContentView _dateLabelFont];
 
-  return v3;
+  return _dateLabelFont;
 }
 
 - (void)invalidateCachedSizeInfo
 {
   v4 = *MEMORY[0x277D85DE8];
   v2 = 138543362;
-  v3 = a1;
+  selfCopy = self;
   _os_log_debug_impl(&dword_21FDE2000, a2, OS_LOG_TYPE_DEBUG, "%{public}@: Invalidating cached size info", &v2, 0xCu);
 }
 
-- (CGSize)_boundingRectSizeForLabel:(id)a3 width:(double)a4 numberOfLines:(unint64_t *)a5
+- (CGSize)_boundingRectSizeForLabel:(id)label width:(double)width numberOfLines:(unint64_t *)lines
 {
-  v8 = a3;
+  labelCopy = label;
   v9 = *MEMORY[0x277CBF3A8];
   v10 = *(MEMORY[0x277CBF3A8] + 8);
-  if (v8 && a4 != 0.0)
+  if (labelCopy && width != 0.0)
   {
     if (!self->_drawingContext)
     {
@@ -487,14 +487,14 @@ LABEL_12:
       [(NSStringDrawingContext *)self->_drawingContext setWantsNumberOfLineFragments:1];
     }
 
-    v13 = [v8 attributedText];
-    [v13 boundingRectWithSize:1 options:self->_drawingContext context:{a4, 1.79769313e308}];
+    attributedText = [labelCopy attributedText];
+    [attributedText boundingRectWithSize:1 options:self->_drawingContext context:{width, 1.79769313e308}];
     v9 = v14;
     v10 = v15;
 
-    if (a5)
+    if (lines)
     {
-      *a5 = [(NSStringDrawingContext *)self->_drawingContext numberOfLineFragments];
+      *lines = [(NSStringDrawingContext *)self->_drawingContext numberOfLineFragments];
     }
   }
 
@@ -507,10 +507,10 @@ LABEL_12:
 
 - (double)_largeTextUtilityLabelBaselineOffset
 {
-  v2 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
-  v3 = [v2 titleLabel];
-  v4 = [v3 font];
-  [v4 _scaledValueForValue:16.5];
+  _utilityButton = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton];
+  titleLabel = [_utilityButton titleLabel];
+  font = [titleLabel font];
+  [font _scaledValueForValue:16.5];
   v6 = v5;
 
   return v6;
@@ -518,9 +518,9 @@ LABEL_12:
 
 - (double)_largeTextLabelBaselineOffsetFromBottom
 {
-  v2 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
-  v3 = [v2 font];
-  [v3 _scaledValueForValue:6.5];
+  _titleLabel = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
+  font = [_titleLabel font];
+  [font _scaledValueForValue:6.5];
   v5 = v4;
 
   return v5;
@@ -528,24 +528,24 @@ LABEL_12:
 
 - (double)_dateLabelBaselineOffset
 {
-  v2 = [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _dateLabelFont];
-  [v2 _scaledValueForValue:16.5];
+  _dateLabelFont = [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _dateLabelFont];
+  [_dateLabelFont _scaledValueForValue:16.5];
   v4 = v3;
 
   return v4;
 }
 
-- (CGSize)_utilityViewSizeThatFitsWidth:(double)a3
+- (CGSize)_utilityViewSizeThatFitsWidth:(double)width
 {
   v3 = *MEMORY[0x277CBF3A8];
   v4 = *(MEMORY[0x277CBF3A8] + 8);
-  if (a3 > 0.0)
+  if (width > 0.0)
   {
-    v7 = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityView];
-    if (v7 || ([(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton], (v7 = objc_claimAutoreleasedReturnValue()) != 0))
+    _utilityView = [(PLPlatterHeaderContentViewLayoutManager *)self _utilityView];
+    if (_utilityView || ([(PLPlatterHeaderContentViewLayoutManager *)self _utilityButton], (_utilityView = objc_claimAutoreleasedReturnValue()) != 0))
     {
-      v8 = v7;
-      [v7 sizeThatFits:{a3, 1.79769313e308}];
+      v8 = _utilityView;
+      [_utilityView sizeThatFits:{width, 1.79769313e308}];
       v3 = v9;
       v4 = v10;
     }
@@ -558,56 +558,56 @@ LABEL_12:
   return result;
 }
 
-- (void)_updateCachedTitleLabelSizeInfoIfNecessaryWithWidth:(double)a3
+- (void)_updateCachedTitleLabelSizeInfoIfNecessaryWithWidth:(double)width
 {
-  v6 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
+  _titleLabel = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
 
-  if (v6 && self->_referenceWidth != a3)
+  if (_titleLabel && self->_referenceWidth != width)
   {
     [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self invalidateCachedSizeInfo];
-    [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _utilityViewSizeThatFitsWidth:a3];
+    [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _utilityViewSizeThatFitsWidth:width];
     if (v7 <= 0.0)
     {
-      v8 = a3;
+      widthCopy = width;
     }
 
     else
     {
-      v8 = a3 - (v7 + 7.0);
+      widthCopy = width - (v7 + 7.0);
     }
 
     referenceWidth = self->_referenceWidth;
-    if (referenceWidth != 0.0 && referenceWidth != a3)
+    if (referenceWidth != 0.0 && referenceWidth != width)
     {
       [(PLLargeTextPlatterHeaderContentViewLayoutManager *)&self->_referenceWidth _updateCachedTitleLabelSizeInfoIfNecessaryWithWidth:a2, self];
     }
 
-    self->_referenceWidth = a3;
-    v13 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
-    [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _boundingRectSizeForLabel:v13 width:&self->_cachedTitleNumberOfLines numberOfLines:v8];
+    self->_referenceWidth = width;
+    _titleLabel2 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
+    [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _boundingRectSizeForLabel:_titleLabel2 width:&self->_cachedTitleNumberOfLines numberOfLines:widthCopy];
     self->_cachedTitleBoundingRectSize.width = v11;
     self->_cachedTitleBoundingRectSize.height = v12;
   }
 }
 
-- (unint64_t)_titleLabelNumberOfLinesThatFitsWidth:(double)a3
+- (unint64_t)_titleLabelNumberOfLinesThatFitsWidth:(double)width
 {
-  v5 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
+  _titleLabel = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
 
-  if (!v5)
+  if (!_titleLabel)
   {
     return 0;
   }
 
-  [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _updateCachedTitleLabelSizeInfoIfNecessaryWithWidth:a3];
+  [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _updateCachedTitleLabelSizeInfoIfNecessaryWithWidth:width];
   return self->_cachedTitleNumberOfLines;
 }
 
-- (CGRect)_dateLabelBoundsThatFitsWidth:(double)a3
+- (CGRect)_dateLabelBoundsThatFitsWidth:(double)width
 {
-  v4 = [(PLPlatterHeaderContentViewLayoutManager *)self _date];
+  _date = [(PLPlatterHeaderContentViewLayoutManager *)self _date];
 
-  if (v4)
+  if (_date)
   {
     [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _titleLabelBaselineOffset];
     BSRectWithSize();
@@ -628,18 +628,18 @@ LABEL_12:
   return result;
 }
 
-- (CGRect)_titleLabelBoundsThatFitsWidth:(double)a3
+- (CGRect)_titleLabelBoundsThatFitsWidth:(double)width
 {
-  v5 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
+  _titleLabel = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
 
-  if (v5)
+  if (_titleLabel)
   {
     [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _titleLabelBaselineOffset];
-    v6 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
-    v7 = [v6 font];
-    [v7 lineHeight];
+    _titleLabel2 = [(PLPlatterHeaderContentViewLayoutManager *)self _titleLabel];
+    font = [_titleLabel2 font];
+    [font lineHeight];
 
-    [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _updateCachedTitleLabelSizeInfoIfNecessaryWithWidth:a3];
+    [(PLLargeTextPlatterHeaderContentViewLayoutManager *)self _updateCachedTitleLabelSizeInfoIfNecessaryWithWidth:width];
     BSRectWithSize();
   }
 

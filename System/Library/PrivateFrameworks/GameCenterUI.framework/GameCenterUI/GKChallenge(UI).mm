@@ -43,16 +43,16 @@
     v22 = v8;
     v24 = &v25;
     v23 = v12;
-    [v22 loadImageForURLString:v9 reference:a1 queue:v13 handler:v21];
+    [v22 loadImageForURLString:v9 reference:self queue:v13 handler:v21];
 
     v15 = v22;
   }
 
   else
   {
-    v16 = [v8 renderedDefaultImage];
+    renderedDefaultImage = [v8 renderedDefaultImage];
     v15 = v26[5];
-    v26[5] = v16;
+    v26[5] = renderedDefaultImage;
   }
 
   block[0] = MEMORY[0x277D85DD0];
@@ -70,17 +70,17 @@
 - (void)loadBannerImageWithHandler:()UI
 {
   v4 = a3;
-  v6 = [a1 iconSource];
-  v5 = [a1 smallIconURLString];
-  [a1 loadImageWithSource:v6 URLString:v5 withHandler:v4];
+  iconSource = [self iconSource];
+  smallIconURLString = [self smallIconURLString];
+  [self loadImageWithSource:iconSource URLString:smallIconURLString withHandler:v4];
 }
 
 - (void)loadImageWithCompletionHandler:()UI
 {
   v4 = a3;
-  v6 = [a1 iconSource];
-  v5 = [a1 iconURLString];
-  [a1 loadImageWithSource:v6 URLString:v5 withHandler:v4];
+  iconSource = [self iconSource];
+  iconURLString = [self iconURLString];
+  [self loadImageWithSource:iconSource URLString:iconURLString withHandler:v4];
 }
 
 - (uint64_t)alertGoalText
@@ -168,8 +168,8 @@
   v2 = MEMORY[0x277CCACA8];
   v3 = GKGameCenterUIFrameworkBundle();
   v4 = GKGetLocalizedStringFromTableInBundle();
-  v5 = [a1 issuingPlayer];
-  v6 = [v5 displayNameWithOptions:0];
+  issuingPlayer = [self issuingPlayer];
+  v6 = [issuingPlayer displayNameWithOptions:0];
   v7 = [v2 stringWithFormat:v4, v6];
 
   return v7;
@@ -264,7 +264,7 @@
 
 - (void)alertGoalText
 {
-  v2 = a1;
+  selfCopy = self;
   v3 = OUTLINED_FUNCTION_5_1();
   v4 = NSStringFromClass(v3);
   OUTLINED_FUNCTION_2_0();

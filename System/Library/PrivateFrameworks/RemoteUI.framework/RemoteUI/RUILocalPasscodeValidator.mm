@@ -1,5 +1,5 @@
 @interface RUILocalPasscodeValidator
-- (BOOL)isCorrectPasscode:(id)a3 error:(id *)a4;
+- (BOOL)isCorrectPasscode:(id)passcode error:(id *)error;
 - (RUILocalPasscodeConfiguration)configuration;
 - (id)_readConfiguration;
 @end
@@ -11,16 +11,16 @@
   configuration = self->_configuration;
   if (configuration)
   {
-    v4 = configuration;
+    _readConfiguration = configuration;
   }
 
   else
   {
-    v4 = [(RUILocalPasscodeValidator *)self _readConfiguration];
+    _readConfiguration = [(RUILocalPasscodeValidator *)self _readConfiguration];
   }
 
   v5 = self->_configuration;
-  self->_configuration = v4;
+  self->_configuration = _readConfiguration;
 
   v6 = self->_configuration;
 
@@ -31,8 +31,8 @@
 {
   v13 = *MEMORY[0x277D85DE8];
   v10 = 0;
-  v2 = [getMCProfileConnectionClass() sharedConnection];
-  v3 = [v2 unlockScreenTypeWithOutSimplePasscodeType:&v10];
+  sharedConnection = [getMCProfileConnectionClass() sharedConnection];
+  v3 = [sharedConnection unlockScreenTypeWithOutSimplePasscodeType:&v10];
 
   if (v3)
   {
@@ -94,13 +94,13 @@ LABEL_17:
   return v4;
 }
 
-- (BOOL)isCorrectPasscode:(id)a3 error:(id *)a4
+- (BOOL)isCorrectPasscode:(id)passcode error:(id *)error
 {
   v15 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [getMCProfileConnectionClass() sharedConnection];
+  passcodeCopy = passcode;
+  sharedConnection = [getMCProfileConnectionClass() sharedConnection];
   v12 = 0;
-  v7 = [v6 unlockDeviceWithPasscode:v5 outError:&v12];
+  v7 = [sharedConnection unlockDeviceWithPasscode:passcodeCopy outError:&v12];
 
   v8 = v12;
   if (v8 && _isInternalInstall())
@@ -114,10 +114,10 @@ LABEL_17:
     }
   }
 
-  if (a4)
+  if (error)
   {
     v10 = v8;
-    *a4 = v8;
+    *error = v8;
   }
 
   return v7;

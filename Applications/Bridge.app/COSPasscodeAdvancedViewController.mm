@@ -7,7 +7,7 @@
 - (id)suggestedButtonTitle;
 - (id)titleString;
 - (void)dealloc;
-- (void)suggestedButtonPressed:(id)a3;
+- (void)suggestedButtonPressed:(id)pressed;
 @end
 
 @implementation COSPasscodeAdvancedViewController
@@ -22,8 +22,8 @@
     if ([objc_opt_class() isMandatory])
     {
       v3 = +[UIApplication sharedApplication];
-      v4 = [v3 bridgeController];
-      [v4 sendGizmoPasscodeRestrictions];
+      bridgeController = [v3 bridgeController];
+      [bridgeController sendGizmoPasscodeRestrictions];
     }
 
     [(COSPasscodeAdvancedViewController *)v2 setStyle:66];
@@ -53,7 +53,7 @@
 - (id)imageResource
 {
   v2 = sub_10002D528(@"Screen-LongPasscode");
-  v3 = [UIApp activeWatch];
+  activeWatch = [UIApp activeWatch];
   v4 = BPSIsDeviceCompatibleWithVersions();
 
   if (v4)
@@ -76,11 +76,11 @@
 
 - (id)detailString
 {
-  v2 = [UIApp bridgeController];
-  v3 = [v2 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
   v4 = +[NSBundle mainBundle];
   v5 = v4;
-  if (v3)
+  if (isTinkerPairing)
   {
     v6 = @"LONG_PASSCODE_DESCRIPTION_TINKER";
     v7 = @"Localizable-tinker";
@@ -105,18 +105,18 @@
   return v3;
 }
 
-- (void)suggestedButtonPressed:(id)a3
+- (void)suggestedButtonPressed:(id)pressed
 {
-  v4 = [(COSPasscodeAdvancedViewController *)self delegate];
-  [v4 buddyControllerDone:self nextControllerClass:objc_opt_class()];
+  delegate = [(COSPasscodeAdvancedViewController *)self delegate];
+  [delegate buddyControllerDone:self nextControllerClass:objc_opt_class()];
 }
 
 + (BOOL)isMandatory
 {
-  v2 = [UIApp bridgeController];
-  v3 = [v2 isTinkerPairing];
+  bridgeController = [UIApp bridgeController];
+  isTinkerPairing = [bridgeController isTinkerPairing];
 
-  if (v3)
+  if (isTinkerPairing)
   {
     return 0;
   }

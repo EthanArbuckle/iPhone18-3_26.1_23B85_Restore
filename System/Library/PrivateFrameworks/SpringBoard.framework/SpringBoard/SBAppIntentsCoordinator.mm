@@ -1,66 +1,66 @@
 @interface SBAppIntentsCoordinator
-- (id)_actionReasonForAppIntent:(uint64_t)a1;
-- (id)_previewReasonForActionIdentifier:(void *)a1;
-- (id)initWithClientCoordinator:(void *)a3 cameraActivationManager:(void *)a4 flashlightActivityManager:(void *)a5 focusActivityManager:(void *)a6 ringerControl:;
-- (id)showPreviewForAction:(id)a3 withContext:(id)a4;
-- (id)soundForPerformingActionWithIdentifier:(id)a3;
-- (id)systemActionDataSource:(id)a3 overrideActionForAction:(id)a4;
-- (uint64_t)_performFocusAppIntent:(uint64_t)a1;
-- (uint64_t)_performOpenCameraAppIntent:(void *)a3 withCompletion:;
+- (id)_actionReasonForAppIntent:(uint64_t)intent;
+- (id)_previewReasonForActionIdentifier:(void *)identifier;
+- (id)initWithClientCoordinator:(void *)coordinator cameraActivationManager:(void *)manager flashlightActivityManager:(void *)activityManager focusActivityManager:(void *)focusActivityManager ringerControl:;
+- (id)showPreviewForAction:(id)action withContext:(id)context;
+- (id)soundForPerformingActionWithIdentifier:(id)identifier;
+- (id)systemActionDataSource:(id)source overrideActionForAction:(id)action;
+- (uint64_t)_performFocusAppIntent:(uint64_t)intent;
+- (uint64_t)_performOpenCameraAppIntent:(void *)intent withCompletion:;
 - (uint64_t)_performToggleFlashlightAppIntent:(uint64_t)result;
-- (void)_performAppIntent:(void *)a3 locallyWithCompletion:;
-- (void)_performAppIntent:(void *)a3 withCompletion:;
+- (void)_performAppIntent:(void *)intent locallyWithCompletion:;
+- (void)_performAppIntent:(void *)intent withCompletion:;
 @end
 
 @implementation SBAppIntentsCoordinator
 
-- (id)initWithClientCoordinator:(void *)a3 cameraActivationManager:(void *)a4 flashlightActivityManager:(void *)a5 focusActivityManager:(void *)a6 ringerControl:
+- (id)initWithClientCoordinator:(void *)coordinator cameraActivationManager:(void *)manager flashlightActivityManager:(void *)activityManager focusActivityManager:(void *)focusActivityManager ringerControl:
 {
   v25[3] = *MEMORY[0x277D85DE8];
   v12 = a2;
-  v23 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a6;
-  if (a1)
+  coordinatorCopy = coordinator;
+  managerCopy = manager;
+  activityManagerCopy = activityManager;
+  focusActivityManagerCopy = focusActivityManager;
+  if (self)
   {
     if (!v12)
     {
       [SBAppIntentsCoordinator initWithClientCoordinator:? cameraActivationManager:? flashlightActivityManager:? focusActivityManager:? ringerControl:?];
     }
 
-    if (!v23)
+    if (!coordinatorCopy)
     {
       [SBAppIntentsCoordinator initWithClientCoordinator:? cameraActivationManager:? flashlightActivityManager:? focusActivityManager:? ringerControl:?];
     }
 
-    if (!v13)
+    if (!managerCopy)
     {
       [SBAppIntentsCoordinator initWithClientCoordinator:? cameraActivationManager:? flashlightActivityManager:? focusActivityManager:? ringerControl:?];
     }
 
-    if (!v14)
+    if (!activityManagerCopy)
     {
       [SBAppIntentsCoordinator initWithClientCoordinator:? cameraActivationManager:? flashlightActivityManager:? focusActivityManager:? ringerControl:?];
     }
 
-    if (!v15)
+    if (!focusActivityManagerCopy)
     {
       [SBAppIntentsCoordinator initWithClientCoordinator:? cameraActivationManager:? flashlightActivityManager:? focusActivityManager:? ringerControl:?];
     }
 
-    v24.receiver = a1;
+    v24.receiver = self;
     v24.super_class = SBAppIntentsCoordinator;
     v16 = objc_msgSendSuper2(&v24, sel_init);
-    a1 = v16;
+    self = v16;
     if (v16)
     {
       objc_storeStrong(v16 + 2, a2);
-      [v12 setDelegate:a1];
-      objc_storeStrong(a1 + 3, a3);
-      objc_storeStrong(a1 + 4, a4);
-      objc_storeStrong(a1 + 5, a5);
-      objc_storeStrong(a1 + 6, a6);
+      [v12 setDelegate:self];
+      objc_storeStrong(self + 3, coordinator);
+      objc_storeStrong(self + 4, manager);
+      objc_storeStrong(self + 5, activityManager);
+      objc_storeStrong(self + 6, focusActivityManager);
       v17 = [@"com.apple.springboard" stringByAppendingFormat:@".%@", *MEMORY[0x277D66968]];
       v25[0] = v17;
       v18 = [@"com.apple.springboard" stringByAppendingFormat:@".%@", *MEMORY[0x277D66958]];
@@ -68,20 +68,20 @@
       v25[1] = v18;
       v25[2] = v19;
       v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:3];
-      v21 = a1[1];
-      a1[1] = v20;
+      v21 = self[1];
+      self[1] = v20;
     }
   }
 
-  return a1;
+  return self;
 }
 
-- (id)showPreviewForAction:(id)a3 withContext:(id)a4
+- (id)showPreviewForAction:(id)action withContext:(id)context
 {
-  v5 = [a3 configuredAction];
-  v6 = [v5 identifier];
-  v7 = [(SBAppIntentsCoordinator *)self _previewReasonForActionIdentifier:v6];
-  if ([v6 hasSuffix:*MEMORY[0x277D66968]])
+  configuredAction = [action configuredAction];
+  identifier = [configuredAction identifier];
+  v7 = [(SBAppIntentsCoordinator *)self _previewReasonForActionIdentifier:identifier];
+  if ([identifier hasSuffix:*MEMORY[0x277D66968]])
   {
     if (self)
     {
@@ -99,15 +99,15 @@ LABEL_10:
     goto LABEL_12;
   }
 
-  if ([v6 hasSuffix:*MEMORY[0x277D66958]])
+  if ([identifier hasSuffix:*MEMORY[0x277D66958]])
   {
-    [(SBAppIntentsCoordinator *)self showPreviewForAction:v5 withContext:v7, &v13];
+    [(SBAppIntentsCoordinator *)self showPreviewForAction:configuredAction withContext:v7, &v13];
     v11 = v13;
   }
 
   else
   {
-    if ([v6 isEqualToString:*MEMORY[0x277D7A578]])
+    if ([identifier isEqualToString:*MEMORY[0x277D7A578]])
     {
       if (self)
       {
@@ -131,9 +131,9 @@ LABEL_12:
   return v11;
 }
 
-- (id)soundForPerformingActionWithIdentifier:(id)a3
+- (id)soundForPerformingActionWithIdentifier:(id)identifier
 {
-  if ([a3 isEqualToString:*MEMORY[0x277D7A578]])
+  if ([identifier isEqualToString:*MEMORY[0x277D7A578]])
   {
     [(SBAppIntentsCoordinator *)self soundForPerformingActionWithIdentifier:?];
     v4 = v6;
@@ -147,20 +147,20 @@ LABEL_12:
   return v4;
 }
 
-- (id)systemActionDataSource:(id)a3 overrideActionForAction:(id)a4
+- (id)systemActionDataSource:(id)source overrideActionForAction:(id)action
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 configuredAction];
-  v9 = [v8 sectionIdentifier];
-  v10 = [v7 instanceIdentity];
+  sourceCopy = source;
+  actionCopy = action;
+  configuredAction = [actionCopy configuredAction];
+  sectionIdentifier = [configuredAction sectionIdentifier];
+  instanceIdentity = [actionCopy instanceIdentity];
   objc_initWeak(&location, self);
-  if ([v9 isEqualToString:@"Camera"])
+  if ([sectionIdentifier isEqualToString:@"Camera"])
   {
     v27 = 0;
     v28 = 0;
-    v11 = [v8 sb_configuredIntentAction];
-    [(WFConfiguredStaccatoIntentAction *)v11 sb_getCameraCaptureMode:&v27 andCaptureDevice:?];
+    sb_configuredIntentAction = [configuredAction sb_configuredIntentAction];
+    [(WFConfiguredStaccatoIntentAction *)sb_configuredIntentAction sb_getCameraCaptureMode:&v27 andCaptureDevice:?];
 
     v12 = v25;
     v25[0] = MEMORY[0x277D85DD0];
@@ -170,14 +170,14 @@ LABEL_12:
     v26[1] = v27;
     v26[2] = v28;
     objc_copyWeak(v26, &location);
-    v13 = [SBBlockSystemAction localActionWithConfiguredAction:v8 instanceIdentity:v10 actionBlock:v25];
+    v13 = [SBBlockSystemAction localActionWithConfiguredAction:configuredAction instanceIdentity:instanceIdentity actionBlock:v25];
 LABEL_5:
     v14 = v13;
     objc_destroyWeak(v12 + 4);
     goto LABEL_6;
   }
 
-  if ([v9 isEqualToString:@"Flashlight"])
+  if ([sectionIdentifier isEqualToString:@"Flashlight"])
   {
     v12 = v23;
     v23[0] = MEMORY[0x277D85DD0];
@@ -185,30 +185,30 @@ LABEL_5:
     v23[2] = __74__SBAppIntentsCoordinator_systemActionDataSource_overrideActionForAction___block_invoke_2;
     v23[3] = &unk_2783BCA80;
     objc_copyWeak(&v24, &location);
-    v13 = [SBBlockSystemAction localActionWithConfiguredAction:v8 instanceIdentity:v10 actionBlock:v23];
+    v13 = [SBBlockSystemAction localActionWithConfiguredAction:configuredAction instanceIdentity:instanceIdentity actionBlock:v23];
     goto LABEL_5;
   }
 
-  if ([v9 isEqualToString:@"Focus"])
+  if ([sectionIdentifier isEqualToString:@"Focus"])
   {
-    v16 = [v8 sb_configuredIntentAction];
-    v17 = [(WFConfiguredStaccatoIntentAction *)v16 sb_focusModeIdentifier];
+    sb_configuredIntentAction2 = [configuredAction sb_configuredIntentAction];
+    sb_focusModeIdentifier = [(WFConfiguredStaccatoIntentAction *)sb_configuredIntentAction2 sb_focusModeIdentifier];
 
     v20[0] = MEMORY[0x277D85DD0];
     v20[1] = 3221225472;
     v20[2] = __74__SBAppIntentsCoordinator_systemActionDataSource_overrideActionForAction___block_invoke_3;
     v20[3] = &unk_2783BCAA8;
-    v18 = v17;
+    v18 = sb_focusModeIdentifier;
     v21 = v18;
     objc_copyWeak(&v22, &location);
-    v14 = [SBBlockSystemAction localActionWithConfiguredAction:v8 instanceIdentity:v10 actionBlock:v20];
+    v14 = [SBBlockSystemAction localActionWithConfiguredAction:configuredAction instanceIdentity:instanceIdentity actionBlock:v20];
     objc_destroyWeak(&v22);
 
 LABEL_15:
     goto LABEL_6;
   }
 
-  if ([v9 isEqualToString:@"SilentMode"])
+  if ([sectionIdentifier isEqualToString:@"SilentMode"])
   {
     if (self)
     {
@@ -221,7 +221,7 @@ LABEL_15:
     }
 
     v18 = ringerControl;
-    v14 = [SBBlockSystemAction toggleSilentModeActionWithRingerControl:v18 instanceIdentity:v10 name:@"Local"];
+    v14 = [SBBlockSystemAction toggleSilentModeActionWithRingerControl:v18 instanceIdentity:instanceIdentity name:@"Local"];
     goto LABEL_15;
   }
 
@@ -270,28 +270,28 @@ uint64_t __70__SBAppIntentsCoordinator__performOpenCameraAppIntent_withCompletio
   return result;
 }
 
-- (id)_previewReasonForActionIdentifier:(void *)a1
+- (id)_previewReasonForActionIdentifier:(void *)identifier
 {
-  if (a1)
+  if (identifier)
   {
-    a1 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ Action Preview", a2];
+    identifier = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ Action Preview", a2];
     v2 = vars8;
   }
 
-  return a1;
+  return identifier;
 }
 
-- (void)_performAppIntent:(void *)a3 locallyWithCompletion:
+- (void)_performAppIntent:(void *)intent locallyWithCompletion:
 {
-  v5 = a3;
-  if (a1)
+  intentCopy = intent;
+  if (self)
   {
     OUTLINED_FUNCTION_1_4();
     v7 = 3221225472;
     v8 = __67__SBAppIntentsCoordinator__performAppIntent_locallyWithCompletion___block_invoke;
     v9 = &unk_2783A9C70;
-    v10 = v5;
-    [(SBAppIntentsCoordinator *)a1 _performAppIntent:a2 withCompletion:v6];
+    v10 = intentCopy;
+    [(SBAppIntentsCoordinator *)self _performAppIntent:a2 withCompletion:v6];
   }
 }
 
@@ -318,30 +318,30 @@ void __74__SBAppIntentsCoordinator_systemActionDataSource_overrideActionForActio
   [(SBAppIntentsCoordinator *)WeakRetained _performAppIntent:v9 locallyWithCompletion:v6];
 }
 
-- (void)_performAppIntent:(void *)a3 withCompletion:
+- (void)_performAppIntent:(void *)intent withCompletion:
 {
   v9 = a2;
-  v5 = a3;
-  if (a1)
+  intentCopy = intent;
+  if (self)
   {
-    v6 = [v9 identifier];
-    if ([v6 isEqualToString:*MEMORY[0x277D66960]])
+    identifier = [v9 identifier];
+    if ([identifier isEqualToString:*MEMORY[0x277D66960]])
     {
-      [(SBAppIntentsCoordinator *)a1 _performOpenCameraAppIntent:v9 withCompletion:v5];
+      [(SBAppIntentsCoordinator *)self _performOpenCameraAppIntent:v9 withCompletion:intentCopy];
       goto LABEL_7;
     }
 
-    if ([v6 isEqualToString:*MEMORY[0x277D66968]])
+    if ([identifier isEqualToString:*MEMORY[0x277D66968]])
     {
-      v8 = [(SBAppIntentsCoordinator *)a1 _performToggleFlashlightAppIntent:v9];
+      v8 = [(SBAppIntentsCoordinator *)self _performToggleFlashlightAppIntent:v9];
     }
 
     else
     {
-      if (![v6 isEqualToString:*MEMORY[0x277D66958]])
+      if (![identifier isEqualToString:*MEMORY[0x277D66958]])
       {
         v7 = 0;
-        if (!v5)
+        if (!intentCopy)
         {
 LABEL_7:
 
@@ -349,15 +349,15 @@ LABEL_7:
         }
 
 LABEL_6:
-        (*(v5 + 2))(v5, v7);
+        (*(intentCopy + 2))(intentCopy, v7);
         goto LABEL_7;
       }
 
-      v8 = [(SBAppIntentsCoordinator *)a1 _performFocusAppIntent:v9];
+      v8 = [(SBAppIntentsCoordinator *)self _performFocusAppIntent:v9];
     }
 
     v7 = v8;
-    if (!v5)
+    if (!intentCopy)
     {
       goto LABEL_7;
     }
@@ -368,10 +368,10 @@ LABEL_6:
 LABEL_8:
 }
 
-- (uint64_t)_performOpenCameraAppIntent:(void *)a3 withCompletion:
+- (uint64_t)_performOpenCameraAppIntent:(void *)intent withCompletion:
 {
-  v5 = a3;
-  if (a1)
+  intentCopy = intent;
+  if (self)
   {
     v6 = a2;
     [v6 captureDevice];
@@ -379,17 +379,17 @@ LABEL_8:
     [v6 captureMode];
     v8 = NSStringFromSBINCameraCaptureMode();
     v9 = NSURLForCameraActivationWithCaptureConfiguration(v7, v8);
-    v10 = [v6 systemContext];
+    systemContext = [v6 systemContext];
 
-    v11 = *(a1 + 24);
-    v12 = [v10 actionSource];
+    v11 = *(self + 24);
+    actionSource = [systemContext actionSource];
     v13 = 67;
-    if (v12 != 1)
+    if (actionSource != 1)
     {
       v13 = 0;
     }
 
-    if (v12 == 2)
+    if (actionSource == 2)
     {
       v14 = 13;
     }
@@ -403,7 +403,7 @@ LABEL_8:
     v18 = 3221225472;
     v19 = __70__SBAppIntentsCoordinator__performOpenCameraAppIntent_withCompletion___block_invoke;
     v20 = &unk_2783AE778;
-    v21 = v5;
+    v21 = intentCopy;
     v15 = [(SBCameraActivationManager *)v11 activateCaptureApplicationWithBundleID:v9 URL:0 launchType:v14 fromSource:0 withPreludeAnimationToken:v17 completion:?];
   }
 
@@ -430,35 +430,35 @@ LABEL_8:
   return result;
 }
 
-- (uint64_t)_performFocusAppIntent:(uint64_t)a1
+- (uint64_t)_performFocusAppIntent:(uint64_t)intent
 {
   v3 = a2;
-  if (a1)
+  if (intent)
   {
-    v4 = *(a1 + 40);
-    v5 = [v3 modeIdentifier];
-    if ([v5 isEqualToString:*MEMORY[0x277D66970]])
+    v4 = *(intent + 40);
+    modeIdentifier = [v3 modeIdentifier];
+    if ([modeIdentifier isEqualToString:*MEMORY[0x277D66970]])
     {
-      a1 = [(SBFocusActivityManager *)v4 toggleActivityPickerPresentation];
+      intent = [(SBFocusActivityManager *)v4 toggleActivityPickerPresentation];
     }
 
     else
     {
-      v7 = [(SBAppIntentsCoordinator *)a1 _actionReasonForAppIntent:v3];
-      a1 = [(SBFocusActivityManager *)v4 toggleFocusWithModeIdentifier:v5 withReason:v7];
+      v7 = [(SBAppIntentsCoordinator *)intent _actionReasonForAppIntent:v3];
+      intent = [(SBFocusActivityManager *)v4 toggleFocusWithModeIdentifier:modeIdentifier withReason:v7];
     }
   }
 
-  return a1;
+  return intent;
 }
 
-- (id)_actionReasonForAppIntent:(uint64_t)a1
+- (id)_actionReasonForAppIntent:(uint64_t)intent
 {
-  if (a1)
+  if (intent)
   {
     v2 = MEMORY[0x277CCACA8];
-    v3 = [a2 identifier];
-    v4 = [v2 stringWithFormat:@"%@ App Intent", v3];
+    identifier = [a2 identifier];
+    v4 = [v2 stringWithFormat:@"%@ App Intent", identifier];
   }
 
   else

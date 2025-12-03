@@ -1,8 +1,8 @@
 @interface LibraryArtistsContainerViewController
 - (UINavigationItem)navigationItem;
-- (_TtC5Music37LibraryArtistsContainerViewController)initWithCoder:(id)a3;
-- (_TtC5Music37LibraryArtistsContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)didMoveToParentViewController:(id)a3;
+- (_TtC5Music37LibraryArtistsContainerViewController)initWithCoder:(id)coder;
+- (_TtC5Music37LibraryArtistsContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)didMoveToParentViewController:(id)controller;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
 - (void)viewSafeAreaInsetsDidChange;
@@ -10,7 +10,7 @@
 
 @implementation LibraryArtistsContainerViewController
 
-- (_TtC5Music37LibraryArtistsContainerViewController)initWithCoder:(id)a3
+- (_TtC5Music37LibraryArtistsContainerViewController)initWithCoder:(id)coder
 {
   result = _assertionFailure(_:_:file:line:flags:)();
   __break(1u);
@@ -19,20 +19,20 @@
 
 - (UINavigationItem)navigationItem
 {
-  v2 = [*(&self->super.super.super.isa + OBJC_IVAR____TtC5Music37LibraryArtistsContainerViewController_layoutContainer) navigationItem];
+  navigationItem = [*(&self->super.super.super.isa + OBJC_IVAR____TtC5Music37LibraryArtistsContainerViewController_layoutContainer) navigationItem];
 
-  return v2;
+  return navigationItem;
 }
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100457A94();
 }
 
 - (void)viewDidLayoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_100457CDC();
 }
 
@@ -42,19 +42,19 @@
   v7.super_class = type metadata accessor for LibraryArtistsContainerViewController();
   v2 = v7.receiver;
   [(LibraryArtistsContainerViewController *)&v7 viewSafeAreaInsetsDidChange];
-  v3 = [v2 traitCollection];
-  v4 = [v3 horizontalSizeClass];
+  traitCollection = [v2 traitCollection];
+  horizontalSizeClass = [traitCollection horizontalSizeClass];
 
-  if (v4 != 2)
+  if (horizontalSizeClass != 2)
   {
     goto LABEL_4;
   }
 
-  v5 = [v2 view];
-  if (v5)
+  view = [v2 view];
+  if (view)
   {
-    v6 = v5;
-    [v5 setNeedsLayout];
+    v6 = view;
+    [view setNeedsLayout];
 
 LABEL_4:
     return;
@@ -63,14 +63,14 @@ LABEL_4:
   __break(1u);
 }
 
-- (void)didMoveToParentViewController:(id)a3
+- (void)didMoveToParentViewController:(id)controller
 {
-  v5 = a3;
-  v6 = self;
-  sub_1004580FC(a3);
+  controllerCopy = controller;
+  selfCopy = self;
+  sub_1004580FC(controller);
 }
 
-- (_TtC5Music37LibraryArtistsContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC5Music37LibraryArtistsContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

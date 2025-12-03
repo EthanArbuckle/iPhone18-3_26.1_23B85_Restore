@@ -14,8 +14,8 @@
 {
   v4 = MEMORY[0x1E69A21E0];
   v5 = a3;
-  v6 = [a1 _geoMapItem];
-  v7 = [v4 mapItemStorageForGEOMapItem:v6];
+  _geoMapItem = [self _geoMapItem];
+  v7 = [v4 mapItemStorageForGEOMapItem:_geoMapItem];
   v8 = [v7 subtitleAttributedStringForFont:v5];
 
   return v8;
@@ -25,8 +25,8 @@
 {
   v4 = MEMORY[0x1E69A21E0];
   v5 = a3;
-  v6 = [a1 _geoMapItem];
-  v7 = [v4 mapItemStorageForGEOMapItem:v6];
+  _geoMapItem = [self _geoMapItem];
+  v7 = [v4 mapItemStorageForGEOMapItem:_geoMapItem];
   v8 = [v7 footerAttributedStringForFont:v5];
 
   return v8;
@@ -36,8 +36,8 @@
 {
   v8 = MEMORY[0x1E69A21E0];
   v9 = a5;
-  v11 = [a1 _geoMapItem];
-  v10 = [v8 mapItemStorageForGEOMapItem:v11];
+  _geoMapItem = [self _geoMapItem];
+  v10 = [v8 mapItemStorageForGEOMapItem:_geoMapItem];
   [v10 fetchImageTilewWithSize:v9 completion:{a2, a3}];
 }
 
@@ -45,8 +45,8 @@
 {
   v4 = MEMORY[0x1E69A21E0];
   v5 = a3;
-  v7 = [a1 _geoMapItem];
-  v6 = [v4 mapItemStorageForGEOMapItem:v7];
+  _geoMapItem = [self _geoMapItem];
+  v6 = [v4 mapItemStorageForGEOMapItem:_geoMapItem];
   [v6 fetchFallbackIconWithCompletion:v5];
 }
 
@@ -54,29 +54,29 @@
 {
   v4 = MEMORY[0x1E69A21E0];
   v5 = a3;
-  v7 = [a1 _geoMapItem];
-  v6 = [v4 mapItemStorageForGEOMapItem:v7];
+  _geoMapItem = [self _geoMapItem];
+  v6 = [v4 mapItemStorageForGEOMapItem:_geoMapItem];
   [v6 fetchBadgeIconWithCompletion:v5];
 }
 
 - (uint64_t)expectedNumberOfFooterLines
 {
   v1 = MEMORY[0x1E69A21E0];
-  v2 = [a1 _geoMapItem];
-  v3 = [v1 mapItemStorageForGEOMapItem:v2];
-  v4 = [v3 expectedNumberOfFooterLines];
+  _geoMapItem = [self _geoMapItem];
+  v3 = [v1 mapItemStorageForGEOMapItem:_geoMapItem];
+  expectedNumberOfFooterLines = [v3 expectedNumberOfFooterLines];
 
-  return v4;
+  return expectedNumberOfFooterLines;
 }
 
 - (id)tileName
 {
   v1 = MEMORY[0x1E69A21E0];
-  v2 = [a1 _geoMapItem];
-  v3 = [v1 mapItemStorageForGEOMapItem:v2];
-  v4 = [v3 tileName];
+  _geoMapItem = [self _geoMapItem];
+  v3 = [v1 mapItemStorageForGEOMapItem:_geoMapItem];
+  tileName = [v3 tileName];
 
-  return v4;
+  return tileName;
 }
 
 @end

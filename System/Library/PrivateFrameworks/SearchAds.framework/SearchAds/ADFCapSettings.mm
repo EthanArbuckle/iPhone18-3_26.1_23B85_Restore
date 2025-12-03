@@ -1,34 +1,34 @@
 @interface ADFCapSettings
-- (ADFCapSettings)initWithType:(int64_t)a3 location:(double)a4 clickExpiration:(double)a5 fCapExpiration:(double)a6 maxFCapElements:(unint64_t)a7 maxClickCapElements:(unint64_t)a8;
-- (id)_capTypeToString:(int64_t)a3;
-- (void)overrideClickExpiration:(double)a3;
-- (void)overrideFrequencyCapExpiration:(double)a3;
-- (void)overrideMaxClickElements:(unint64_t)a3;
-- (void)overrideMaxFrequencyCapElements:(unint64_t)a3;
-- (void)overrideRevGeoThreshold:(double)a3;
+- (ADFCapSettings)initWithType:(int64_t)type location:(double)location clickExpiration:(double)expiration fCapExpiration:(double)capExpiration maxFCapElements:(unint64_t)elements maxClickCapElements:(unint64_t)capElements;
+- (id)_capTypeToString:(int64_t)string;
+- (void)overrideClickExpiration:(double)expiration;
+- (void)overrideFrequencyCapExpiration:(double)expiration;
+- (void)overrideMaxClickElements:(unint64_t)elements;
+- (void)overrideMaxFrequencyCapElements:(unint64_t)elements;
+- (void)overrideRevGeoThreshold:(double)threshold;
 @end
 
 @implementation ADFCapSettings
 
-- (ADFCapSettings)initWithType:(int64_t)a3 location:(double)a4 clickExpiration:(double)a5 fCapExpiration:(double)a6 maxFCapElements:(unint64_t)a7 maxClickCapElements:(unint64_t)a8
+- (ADFCapSettings)initWithType:(int64_t)type location:(double)location clickExpiration:(double)expiration fCapExpiration:(double)capExpiration maxFCapElements:(unint64_t)elements maxClickCapElements:(unint64_t)capElements
 {
   v15.receiver = self;
   v15.super_class = ADFCapSettings;
   result = [(ADFCapSettings *)&v15 init];
   if (result)
   {
-    result->_pageType = a3;
-    result->_reverseGeolocationRefreshThresholdInMeters = a4;
-    result->_clickExpirationThresholdInSeconds = a5;
-    result->_frequencyCapExpirationInSeconds = a6;
-    result->_maxFrequencyCapElements = a7;
-    result->_maxClickCapElements = a8;
+    result->_pageType = type;
+    result->_reverseGeolocationRefreshThresholdInMeters = location;
+    result->_clickExpirationThresholdInSeconds = expiration;
+    result->_frequencyCapExpirationInSeconds = capExpiration;
+    result->_maxFrequencyCapElements = elements;
+    result->_maxClickCapElements = capElements;
   }
 
   return result;
 }
 
-- (void)overrideFrequencyCapExpiration:(double)a3
+- (void)overrideFrequencyCapExpiration:(double)expiration
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = APLogForCategory();
@@ -39,15 +39,15 @@
     v20 = 138412546;
     v21 = v14;
     v22 = 2048;
-    v23 = a3;
+    expirationCopy = expiration;
     _os_log_impl(&dword_264E42000, v5, OS_LOG_TYPE_DEFAULT, "%@ Frequency Cap Expiration Overridden: %f seconds.", &v20, 0x16u);
   }
 
-  objc_msgSend_setFrequencyCapExpirationInSeconds_(self, v15, v16, v17, v18, a3);
+  objc_msgSend_setFrequencyCapExpirationInSeconds_(self, v15, v16, v17, v18, expiration);
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)overrideMaxFrequencyCapElements:(unint64_t)a3
+- (void)overrideMaxFrequencyCapElements:(unint64_t)elements
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = APLogForCategory();
@@ -58,15 +58,15 @@
     v19 = 138412546;
     v20 = v14;
     v21 = 2048;
-    v22 = a3;
+    elementsCopy = elements;
     _os_log_impl(&dword_264E42000, v5, OS_LOG_TYPE_DEFAULT, "%@ Max Frequency Cap Elements Overridden: %lu elements.", &v19, 0x16u);
   }
 
-  objc_msgSend_setMaxFrequencyCapElements_(self, v15, a3, v16, v17);
+  objc_msgSend_setMaxFrequencyCapElements_(self, v15, elements, v16, v17);
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)overrideClickExpiration:(double)a3
+- (void)overrideClickExpiration:(double)expiration
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = APLogForCategory();
@@ -77,15 +77,15 @@
     v20 = 138412546;
     v21 = v14;
     v22 = 2048;
-    v23 = a3;
+    expirationCopy = expiration;
     _os_log_impl(&dword_264E42000, v5, OS_LOG_TYPE_DEFAULT, "%@ Toro Click Expiration Overridden: %f seconds.", &v20, 0x16u);
   }
 
-  objc_msgSend_setClickExpirationThresholdInSeconds_(self, v15, v16, v17, v18, a3);
+  objc_msgSend_setClickExpirationThresholdInSeconds_(self, v15, v16, v17, v18, expiration);
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (void)overrideMaxClickElements:(unint64_t)a3
+- (void)overrideMaxClickElements:(unint64_t)elements
 {
   v23 = *MEMORY[0x277D85DE8];
   v5 = APLogForCategory();
@@ -96,15 +96,15 @@
     v19 = 138412546;
     v20 = v14;
     v21 = 2048;
-    v22 = a3;
+    elementsCopy = elements;
     _os_log_impl(&dword_264E42000, v5, OS_LOG_TYPE_DEFAULT, "%@ Max Toro Click Elements Overridden: %lu elements.", &v19, 0x16u);
   }
 
-  objc_msgSend_setMaxClickCapElements_(self, v15, a3, v16, v17);
+  objc_msgSend_setMaxClickCapElements_(self, v15, elements, v16, v17);
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)overrideRevGeoThreshold:(double)a3
+- (void)overrideRevGeoThreshold:(double)threshold
 {
   v24 = *MEMORY[0x277D85DE8];
   v5 = APLogForCategory();
@@ -115,24 +115,24 @@
     v20 = 138412546;
     v21 = v14;
     v22 = 2048;
-    v23 = a3;
+    thresholdCopy = threshold;
     _os_log_impl(&dword_264E42000, v5, OS_LOG_TYPE_DEFAULT, "%@ Reverse Geolocation Update Threshold Overridden: %f meters.", &v20, 0x16u);
   }
 
-  objc_msgSend_setReverseGeolocationRefreshThresholdInMeters_(self, v15, v16, v17, v18, a3);
+  objc_msgSend_setReverseGeolocationRefreshThresholdInMeters_(self, v15, v16, v17, v18, threshold);
   v19 = *MEMORY[0x277D85DE8];
 }
 
-- (id)_capTypeToString:(int64_t)a3
+- (id)_capTypeToString:(int64_t)string
 {
-  if (a3 > 5)
+  if (string > 5)
   {
     return @"Unknown";
   }
 
   else
   {
-    return off_279B88898[a3];
+    return off_279B88898[string];
   }
 }
 

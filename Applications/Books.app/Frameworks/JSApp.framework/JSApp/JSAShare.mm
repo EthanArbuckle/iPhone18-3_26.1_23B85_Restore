@@ -1,69 +1,69 @@
 @interface JSAShare
-+ (void)shareURL:(id)a3 fromViewController:(id)a4 options:(id)a5 completionHandler:(id)a6;
-+ (void)shareURL:(id)a3 fromViewController:(id)a4 sourceView:(id)a5 sourceBarButtonItem:(id)a6;
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4;
-- (id)activityViewControllerLinkMetadata:(void *)a1;
-- (id)activityViewControllerPlaceholderItem:(id)a3;
++ (void)shareURL:(id)l fromViewController:(id)controller options:(id)options completionHandler:(id)handler;
++ (void)shareURL:(id)l fromViewController:(id)controller sourceView:(id)view sourceBarButtonItem:(id)item;
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type;
+- (id)activityViewControllerLinkMetadata:(void *)metadata;
+- (id)activityViewControllerPlaceholderItem:(id)item;
 @end
 
 @implementation JSAShare
 
-+ (void)shareURL:(id)a3 fromViewController:(id)a4 options:(id)a5 completionHandler:(id)a6
++ (void)shareURL:(id)l fromViewController:(id)controller options:(id)options completionHandler:(id)handler
 {
-  v13 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [NSURL URLWithString:a3];
+  controllerCopy = controller;
+  optionsCopy = options;
+  handlerCopy = handler;
+  v12 = [NSURL URLWithString:l];
   if (v12)
   {
-    sub_AD08(a1, v12, v13, v10, v11);
+    sub_AD08(self, v12, controllerCopy, optionsCopy, handlerCopy);
   }
 }
 
-+ (void)shareURL:(id)a3 fromViewController:(id)a4 sourceView:(id)a5 sourceBarButtonItem:(id)a6
++ (void)shareURL:(id)l fromViewController:(id)controller sourceView:(id)view sourceBarButtonItem:(id)item
 {
-  v15 = a4;
-  v10 = a5;
-  v11 = a6;
-  v12 = [NSURL URLWithString:a3];
+  controllerCopy = controller;
+  viewCopy = view;
+  itemCopy = item;
+  v12 = [NSURL URLWithString:l];
   if (v12)
   {
     v13 = objc_opt_new();
     v14 = v13;
-    if (v10)
+    if (viewCopy)
     {
-      [v13 setObject:v10 forKeyedSubscript:@"sourceView"];
+      [v13 setObject:viewCopy forKeyedSubscript:@"sourceView"];
     }
 
-    if (v11)
+    if (itemCopy)
     {
-      [v14 setObject:v11 forKeyedSubscript:@"sourceBarButtonItem"];
+      [v14 setObject:itemCopy forKeyedSubscript:@"sourceBarButtonItem"];
     }
 
-    sub_AD08(a1, v12, v15, v14, 0);
+    sub_AD08(self, v12, controllerCopy, v14, 0);
   }
 }
 
-- (id)activityViewControllerPlaceholderItem:(id)a3
+- (id)activityViewControllerPlaceholderItem:(id)item
 {
   v3 = objc_alloc_init(NSString);
 
   return v3;
 }
 
-- (id)activityViewController:(id)a3 subjectForActivityType:(id)a4
+- (id)activityViewController:(id)controller subjectForActivityType:(id)type
 {
-  v5 = [(JSAShare *)self options:a3];
+  v5 = [(JSAShare *)self options:controller];
   v6 = [v5 objectForKeyedSubscript:@"linkPresentation"];
   if (v6)
   {
-    v7 = [(JSAShare *)self options];
-    v8 = [v7 objectForKeyedSubscript:@"linkPresentation"];
+    options = [(JSAShare *)self options];
+    v8 = [options objectForKeyedSubscript:@"linkPresentation"];
     v9 = [v8 objectForKeyedSubscript:@"title"];
     if (v9)
     {
-      v10 = [(JSAShare *)self options];
-      v11 = [v10 objectForKeyedSubscript:@"linkPresentation"];
+      options2 = [(JSAShare *)self options];
+      v11 = [options2 objectForKeyedSubscript:@"linkPresentation"];
       v12 = [v11 objectForKeyedSubscript:@"title"];
     }
 
@@ -81,33 +81,33 @@
   return v12;
 }
 
-- (id)activityViewControllerLinkMetadata:(void *)a1
+- (id)activityViewControllerLinkMetadata:(void *)metadata
 {
-  if (a1)
+  if (metadata)
   {
     v2 = objc_alloc_init(LPLinkMetadata);
-    v3 = [a1 options];
-    v4 = [v3 objectForKeyedSubscript:@"linkPresentation"];
+    options = [metadata options];
+    v4 = [options objectForKeyedSubscript:@"linkPresentation"];
     v5 = [v4 objectForKeyedSubscript:@"title"];
     [v2 setTitle:v5];
 
-    v6 = [a1 options];
-    v7 = [v6 objectForKeyedSubscript:@"linkPresentation"];
+    options2 = [metadata options];
+    v7 = [options2 objectForKeyedSubscript:@"linkPresentation"];
     v8 = [v7 objectForKeyedSubscript:@"summary"];
     [v2 setSummary:v8];
 
-    v9 = [a1 options];
-    v10 = [v9 objectForKeyedSubscript:@"linkPresentation"];
+    options3 = [metadata options];
+    v10 = [options3 objectForKeyedSubscript:@"linkPresentation"];
     v11 = [v10 objectForKeyedSubscript:@"imageUrl"];
 
-    v12 = [a1 options];
-    v13 = [v12 objectForKeyedSubscript:@"linkPresentation"];
+    options4 = [metadata options];
+    v13 = [options4 objectForKeyedSubscript:@"linkPresentation"];
     v14 = [v13 objectForKeyedSubscript:@"artworkUrl"];
 
     if (v14)
     {
-      v15 = [a1 options];
-      v16 = [v15 objectForKeyedSubscript:@"linkPresentation"];
+      options5 = [metadata options];
+      v16 = [options5 objectForKeyedSubscript:@"linkPresentation"];
       v17 = [v16 objectForKeyedSubscript:@"artworkAspect"];
 
       if (v17)
@@ -125,7 +125,7 @@
       v28 = [NSURL URLWithString:v27];
       if (v28)
       {
-        v29 = sub_B54C(a1, v28);
+        v29 = sub_B54C(metadata, v28);
         v30 = objc_opt_new();
         v31 = [[LPImage alloc] initWithItemProvider:v29 properties:v30 placeholderImage:0];
         [v2 setImage:v31];
@@ -152,8 +152,8 @@ LABEL_16:
 
       if ([v20 isFileURL])
       {
-        v21 = [a1 options];
-        v22 = [v21 objectForKeyedSubscript:@"linkPresentation"];
+        options6 = [metadata options];
+        v22 = [options6 objectForKeyedSubscript:@"linkPresentation"];
         v23 = [v22 objectForKeyedSubscript:@"imageMIMEType"];
         v24 = v23;
         v25 = @"image/png";
@@ -170,7 +170,7 @@ LABEL_16:
 
       else
       {
-        v27 = sub_B54C(a1, v17);
+        v27 = sub_B54C(metadata, v17);
         v33 = [[LPImage alloc] initWithItemProvider:v27 properties:0 placeholderImage:0];
         [v2 setImage:v33];
       }

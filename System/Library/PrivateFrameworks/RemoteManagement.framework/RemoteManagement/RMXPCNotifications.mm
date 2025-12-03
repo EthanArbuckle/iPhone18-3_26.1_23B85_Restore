@@ -1,15 +1,15 @@
 @interface RMXPCNotifications
 + (RMXPCNotifications)sharedNotifier;
-- (BOOL)hasObserverForEvent:(id)a3;
+- (BOOL)hasObserverForEvent:(id)event;
 - (id)initPrivate;
-- (void)_addXPCEvent:(id)a3;
-- (void)_didReceiveNotificationForStream:(id)a3 notificationName:(id)a4;
-- (void)_removeXPCEvent:(id)a3;
-- (void)_setupEventStreamHandlerForStream:(id)a3;
-- (void)_waitForQueue:(id)a3;
-- (void)addObserverForEvent:(id)a3 observer:(id)a4;
-- (void)registerForEvents:(id)a3;
-- (void)removeObserverForEvent:(id)a3;
+- (void)_addXPCEvent:(id)event;
+- (void)_didReceiveNotificationForStream:(id)stream notificationName:(id)name;
+- (void)_removeXPCEvent:(id)event;
+- (void)_setupEventStreamHandlerForStream:(id)stream;
+- (void)_waitForQueue:(id)queue;
+- (void)addObserverForEvent:(id)event observer:(id)observer;
+- (void)registerForEvents:(id)events;
+- (void)removeObserverForEvent:(id)event;
 @end
 
 @implementation RMXPCNotifications
@@ -59,10 +59,10 @@ uint64_t __36__RMXPCNotifications_sharedNotifier__block_invoke()
   return v3;
 }
 
-- (void)registerForEvents:(id)a3
+- (void)registerForEvents:(id)events
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  eventsCopy = events;
   if ([(RMXPCNotifications *)self registered])
   {
     v5 = +[RMLog xpcNotifications];
@@ -80,7 +80,7 @@ uint64_t __36__RMXPCNotifications_sharedNotifier__block_invoke()
     v14 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = v4;
+    v6 = eventsCopy;
     v7 = [v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v7)
     {
@@ -96,11 +96,11 @@ uint64_t __36__RMXPCNotifications_sharedNotifier__block_invoke()
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * v10) streamName];
-          if (([v5 containsObject:v11]& 1) == 0)
+          streamName = [*(*(&v13 + 1) + 8 * v10) streamName];
+          if (([v5 containsObject:streamName]& 1) == 0)
           {
-            [(RMXPCNotifications *)self _setupEventStreamHandlerForStream:v11];
-            [v5 addObject:v11];
+            [(RMXPCNotifications *)self _setupEventStreamHandlerForStream:streamName];
+            [v5 addObject:streamName];
           }
 
           ++v10;
@@ -117,34 +117,34 @@ uint64_t __36__RMXPCNotifications_sharedNotifier__block_invoke()
   v12 = *MEMORY[0x1E69E9840];
 }
 
-- (BOOL)hasObserverForEvent:(id)a3
+- (BOOL)hasObserverForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [(RMXPCNotifications *)self notificationObservers];
-  v6 = [v4 eventKey];
+  eventCopy = event;
+  notificationObservers = [(RMXPCNotifications *)self notificationObservers];
+  eventKey = [eventCopy eventKey];
 
-  v7 = [v5 objectForKey:v6];
-  LOBYTE(v4) = v7 != 0;
+  v7 = [notificationObservers objectForKey:eventKey];
+  LOBYTE(eventCopy) = v7 != 0;
 
-  return v4;
+  return eventCopy;
 }
 
-- (void)addObserverForEvent:(id)a3 observer:(id)a4
+- (void)addObserverForEvent:(id)event observer:(id)observer
 {
-  v6 = a3;
-  v7 = a4;
+  eventCopy = event;
+  observerCopy = observer;
   objc_initWeak(&location, self);
-  v8 = [(RMXPCNotifications *)self modificationQueue];
+  modificationQueue = [(RMXPCNotifications *)self modificationQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __51__RMXPCNotifications_addObserverForEvent_observer___block_invoke;
   v11[3] = &unk_1E8706320;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = eventCopy;
+  v13 = observerCopy;
+  v9 = observerCopy;
+  v10 = eventCopy;
+  dispatch_async(modificationQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -201,19 +201,19 @@ LABEL_10:
   }
 }
 
-- (void)removeObserverForEvent:(id)a3
+- (void)removeObserverForEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   objc_initWeak(&location, self);
-  v5 = [(RMXPCNotifications *)self modificationQueue];
+  modificationQueue = [(RMXPCNotifications *)self modificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __45__RMXPCNotifications_removeObserverForEvent___block_invoke;
   block[3] = &unk_1E8706348;
   objc_copyWeak(&v9, &location);
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = eventCopy;
+  v6 = eventCopy;
+  dispatch_async(modificationQueue, block);
 
   objc_destroyWeak(&v9);
   objc_destroyWeak(&location);
@@ -250,24 +250,24 @@ void __45__RMXPCNotifications_removeObserverForEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_setupEventStreamHandlerForStream:(id)a3
+- (void)_setupEventStreamHandlerForStream:(id)stream
 {
-  v4 = a3;
+  streamCopy = stream;
   v5 = +[RMLog xpcNotifications];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
     [RMXPCNotifications _setupEventStreamHandlerForStream:];
   }
 
-  v6 = [v4 cStringUsingEncoding:4];
+  v6 = [streamCopy cStringUsingEncoding:4];
   v7 = dispatch_get_global_queue(21, 0);
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __56__RMXPCNotifications__setupEventStreamHandlerForStream___block_invoke;
   v9[3] = &unk_1E8706370;
-  v10 = v4;
-  v11 = self;
-  v8 = v4;
+  v10 = streamCopy;
+  selfCopy = self;
+  v8 = streamCopy;
   xpc_set_event_stream_handler(v6, v7, v9);
 }
 
@@ -283,48 +283,48 @@ void __56__RMXPCNotifications__setupEventStreamHandlerForStream___block_invoke(u
   [*(a1 + 40) _didReceiveNotificationForStream:*(a1 + 32) notificationName:v3];
 }
 
-- (void)_addXPCEvent:(id)a3
+- (void)_addXPCEvent:(id)event
 {
-  v3 = a3;
-  v4 = [v3 descriptor];
+  eventCopy = event;
+  descriptor = [eventCopy descriptor];
   v7 = _CFXPCCreateXPCObjectFromCFObject();
 
-  v5 = [v3 streamName];
-  [v5 cStringUsingEncoding:4];
-  v6 = [v3 notificationName];
+  streamName = [eventCopy streamName];
+  [streamName cStringUsingEncoding:4];
+  notificationName = [eventCopy notificationName];
 
-  [v6 cStringUsingEncoding:4];
+  [notificationName cStringUsingEncoding:4];
   xpc_set_event();
 }
 
-- (void)_removeXPCEvent:(id)a3
+- (void)_removeXPCEvent:(id)event
 {
-  v3 = a3;
-  v6 = [v3 streamName];
-  v4 = v6;
-  [v6 cStringUsingEncoding:4];
-  v5 = [v3 notificationName];
+  eventCopy = event;
+  streamName = [eventCopy streamName];
+  v4 = streamName;
+  [streamName cStringUsingEncoding:4];
+  notificationName = [eventCopy notificationName];
 
-  [v5 cStringUsingEncoding:4];
+  [notificationName cStringUsingEncoding:4];
   xpc_set_event();
 }
 
-- (void)_didReceiveNotificationForStream:(id)a3 notificationName:(id)a4
+- (void)_didReceiveNotificationForStream:(id)stream notificationName:(id)name
 {
-  v6 = a3;
-  v7 = a4;
+  streamCopy = stream;
+  nameCopy = name;
   objc_initWeak(&location, self);
-  v8 = [(RMXPCNotifications *)self modificationQueue];
+  modificationQueue = [(RMXPCNotifications *)self modificationQueue];
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __72__RMXPCNotifications__didReceiveNotificationForStream_notificationName___block_invoke;
   v11[3] = &unk_1E8706320;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
-  dispatch_async(v8, v11);
+  v12 = streamCopy;
+  v13 = nameCopy;
+  v9 = nameCopy;
+  v10 = streamCopy;
+  dispatch_async(modificationQueue, v11);
 
   objc_destroyWeak(&v14);
   objc_destroyWeak(&location);
@@ -374,17 +374,17 @@ void __72__RMXPCNotifications__didReceiveNotificationForStream_notificationName_
   }
 }
 
-- (void)_waitForQueue:(id)a3
+- (void)_waitForQueue:(id)queue
 {
-  v4 = a3;
-  v5 = [(RMXPCNotifications *)self modificationQueue];
+  queueCopy = queue;
+  modificationQueue = [(RMXPCNotifications *)self modificationQueue];
   block[0] = MEMORY[0x1E69E9820];
   block[1] = 3221225472;
   block[2] = __36__RMXPCNotifications__waitForQueue___block_invoke;
   block[3] = &unk_1E87063C0;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, block);
+  v8 = queueCopy;
+  v6 = queueCopy;
+  dispatch_async(modificationQueue, block);
 }
 
 void __51__RMXPCNotifications_addObserverForEvent_observer___block_invoke_cold_1()

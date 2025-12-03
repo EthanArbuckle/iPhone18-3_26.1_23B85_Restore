@@ -1,44 +1,44 @@
 @interface SXEmbedComponentViewFactory
-- (SXEmbedComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6 reachabilityProvider:(id)a7 embedDataProvider:(id)a8 actionHandler:(id)a9 layoutInvalidator:(id)a10 websiteDataStore:(id)a11 processPoolCache:(id)a12 proxyAuthenticationHandler:(id)a13 sceneStateMonitor:(id)a14 analyticsReportingProvider:(id)a15;
-- (id)componentViewForComponent:(id)a3;
+- (SXEmbedComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory reachabilityProvider:(id)reachabilityProvider embedDataProvider:(id)dataProvider actionHandler:(id)handler layoutInvalidator:(id)self0 websiteDataStore:(id)self1 processPoolCache:(id)self2 proxyAuthenticationHandler:(id)self3 sceneStateMonitor:(id)self4 analyticsReportingProvider:(id)self5;
+- (id)componentViewForComponent:(id)component;
 @end
 
 @implementation SXEmbedComponentViewFactory
 
-- (SXEmbedComponentViewFactory)initWithDOMObjectProvider:(id)a3 viewport:(id)a4 presentationDelegateProvider:(id)a5 componentStyleRendererFactory:(id)a6 reachabilityProvider:(id)a7 embedDataProvider:(id)a8 actionHandler:(id)a9 layoutInvalidator:(id)a10 websiteDataStore:(id)a11 processPoolCache:(id)a12 proxyAuthenticationHandler:(id)a13 sceneStateMonitor:(id)a14 analyticsReportingProvider:(id)a15
+- (SXEmbedComponentViewFactory)initWithDOMObjectProvider:(id)provider viewport:(id)viewport presentationDelegateProvider:(id)delegateProvider componentStyleRendererFactory:(id)factory reachabilityProvider:(id)reachabilityProvider embedDataProvider:(id)dataProvider actionHandler:(id)handler layoutInvalidator:(id)self0 websiteDataStore:(id)self1 processPoolCache:(id)self2 proxyAuthenticationHandler:(id)self3 sceneStateMonitor:(id)self4 analyticsReportingProvider:(id)self5
 {
-  v33 = a7;
-  v32 = a8;
-  v31 = a9;
-  v30 = a10;
-  v29 = a11;
-  v28 = a12;
-  v18 = a13;
-  v19 = a14;
-  v20 = a15;
+  reachabilityProviderCopy = reachabilityProvider;
+  dataProviderCopy = dataProvider;
+  handlerCopy = handler;
+  invalidatorCopy = invalidator;
+  storeCopy = store;
+  cacheCopy = cache;
+  authenticationHandlerCopy = authenticationHandler;
+  monitorCopy = monitor;
+  reportingProviderCopy = reportingProvider;
   v34.receiver = self;
   v34.super_class = SXEmbedComponentViewFactory;
-  v21 = [(SXComponentViewFactory *)&v34 initWithDOMObjectProvider:a3 viewport:a4 presentationDelegateProvider:a5 componentStyleRendererFactory:a6];
+  v21 = [(SXComponentViewFactory *)&v34 initWithDOMObjectProvider:provider viewport:viewport presentationDelegateProvider:delegateProvider componentStyleRendererFactory:factory];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_reachabilityProvider, a7);
-    objc_storeStrong(&v22->_embedDataProvider, a8);
-    objc_storeStrong(&v22->_actionHandler, a9);
-    objc_storeStrong(&v22->_layoutInvalidator, a10);
-    objc_storeStrong(&v22->_dataStore, a11);
-    objc_storeStrong(&v22->_processPoolCache, a12);
-    objc_storeStrong(&v22->_proxyAuthenticationHandler, a13);
-    objc_storeStrong(&v22->_sceneStateMonitor, a14);
-    objc_storeStrong(&v22->_analyticsReportingProvider, a15);
+    objc_storeStrong(&v21->_reachabilityProvider, reachabilityProvider);
+    objc_storeStrong(&v22->_embedDataProvider, dataProvider);
+    objc_storeStrong(&v22->_actionHandler, handler);
+    objc_storeStrong(&v22->_layoutInvalidator, invalidator);
+    objc_storeStrong(&v22->_dataStore, store);
+    objc_storeStrong(&v22->_processPoolCache, cache);
+    objc_storeStrong(&v22->_proxyAuthenticationHandler, authenticationHandler);
+    objc_storeStrong(&v22->_sceneStateMonitor, monitor);
+    objc_storeStrong(&v22->_analyticsReportingProvider, reportingProvider);
   }
 
   return v22;
 }
 
-- (id)componentViewForComponent:(id)a3
+- (id)componentViewForComponent:(id)component
 {
-  v4 = a3;
+  componentCopy = component;
   objc_opt_class();
   if (objc_opt_isKindOfClass() & 1) != 0 || (objc_opt_class(), (objc_opt_isKindOfClass()))
   {
@@ -51,22 +51,22 @@
   }
 
   v20 = objc_alloc(*v5);
-  v23 = [(SXComponentViewFactory *)self DOMObjectProvider];
-  v6 = [(SXComponentViewFactory *)self viewport];
-  v22 = [(SXComponentViewFactory *)self presentationDelegateProvider];
-  v7 = [v22 presentationDelegate];
-  v19 = [(SXComponentViewFactory *)self componentStyleRendererFactory];
-  v18 = [(SXEmbedComponentViewFactory *)self reachabilityProvider];
-  v17 = [(SXEmbedComponentViewFactory *)self embedDataProvider];
-  v16 = [(SXEmbedComponentViewFactory *)self actionHandler];
-  v15 = [(SXEmbedComponentViewFactory *)self layoutInvalidator];
-  v14 = [(SXEmbedComponentViewFactory *)self dataStore];
-  v8 = [(SXEmbedComponentViewFactory *)self processPoolCache];
-  v9 = [(SXEmbedComponentViewFactory *)self proxyAuthenticationHandler];
-  v10 = [(SXEmbedComponentViewFactory *)self sceneStateMonitor];
-  v11 = [(SXEmbedComponentViewFactory *)self analyticsReportingProvider];
-  v12 = [v11 analyticsReporting];
-  v21 = [v20 initWithDOMObjectProvider:v23 viewport:v6 presentationDelegate:v7 componentStyleRendererFactory:v19 reachabilityProvider:v18 embedDataProvider:v17 actionHandler:v16 layoutInvalidator:v15 websiteDataStore:v14 processPoolCache:v8 proxyAuthenticationHandler:v9 sceneStateMonitor:v10 analyticsReporting:v12];
+  dOMObjectProvider = [(SXComponentViewFactory *)self DOMObjectProvider];
+  viewport = [(SXComponentViewFactory *)self viewport];
+  presentationDelegateProvider = [(SXComponentViewFactory *)self presentationDelegateProvider];
+  presentationDelegate = [presentationDelegateProvider presentationDelegate];
+  componentStyleRendererFactory = [(SXComponentViewFactory *)self componentStyleRendererFactory];
+  reachabilityProvider = [(SXEmbedComponentViewFactory *)self reachabilityProvider];
+  embedDataProvider = [(SXEmbedComponentViewFactory *)self embedDataProvider];
+  actionHandler = [(SXEmbedComponentViewFactory *)self actionHandler];
+  layoutInvalidator = [(SXEmbedComponentViewFactory *)self layoutInvalidator];
+  dataStore = [(SXEmbedComponentViewFactory *)self dataStore];
+  processPoolCache = [(SXEmbedComponentViewFactory *)self processPoolCache];
+  proxyAuthenticationHandler = [(SXEmbedComponentViewFactory *)self proxyAuthenticationHandler];
+  sceneStateMonitor = [(SXEmbedComponentViewFactory *)self sceneStateMonitor];
+  analyticsReportingProvider = [(SXEmbedComponentViewFactory *)self analyticsReportingProvider];
+  analyticsReporting = [analyticsReportingProvider analyticsReporting];
+  v21 = [v20 initWithDOMObjectProvider:dOMObjectProvider viewport:viewport presentationDelegate:presentationDelegate componentStyleRendererFactory:componentStyleRendererFactory reachabilityProvider:reachabilityProvider embedDataProvider:embedDataProvider actionHandler:actionHandler layoutInvalidator:layoutInvalidator websiteDataStore:dataStore processPoolCache:processPoolCache proxyAuthenticationHandler:proxyAuthenticationHandler sceneStateMonitor:sceneStateMonitor analyticsReporting:analyticsReporting];
 
   return v21;
 }

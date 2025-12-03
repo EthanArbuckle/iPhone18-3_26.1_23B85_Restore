@@ -1,21 +1,21 @@
 @interface _VehiclePOI
-- (_VehiclePOI)initWithRTVehicleEvent:(id)a3;
+- (_VehiclePOI)initWithRTVehicleEvent:(id)event;
 - (void)showInfo;
 @end
 
 @implementation _VehiclePOI
 
-- (_VehiclePOI)initWithRTVehicleEvent:(id)a3
+- (_VehiclePOI)initWithRTVehicleEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v5 = NTKFoghornFaceLocalizedString(@"LEGHORN_MAPS_PARKED_CAR");
   v7 = objc_msgSend_colorWithRed_green_blue_alpha_(MEMORY[0x277D75348], v6, 0.180392157, 0.419607843, 0.97254902, 1.0);
   v10 = objc_msgSend_whiteColor(MEMORY[0x277D75348], v8, v9);
-  v13 = objc_msgSend_location(v4, v11, v12);
+  v13 = objc_msgSend_location(eventCopy, v11, v12);
   objc_msgSend_latitude(v13, v14, v15);
   v17 = v16;
 
-  v20 = objc_msgSend_location(v4, v18, v19);
+  v20 = objc_msgSend_location(eventCopy, v18, v19);
 
   objc_msgSend_longitude(v20, v21, v22);
   v24 = v23;

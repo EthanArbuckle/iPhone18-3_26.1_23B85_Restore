@@ -1,7 +1,7 @@
 @interface SXAnimatedImageFrame
 - (double)duration;
 - (id)image;
-- (id)initWithImageSource:(void *)a3 index:(void *)a4 cache:(void *)a5 type:;
+- (id)initWithImageSource:(void *)source index:(void *)index cache:(void *)cache type:;
 - (uint64_t)index;
 - (void)captureFrameProperties;
 - (void)dealloc;
@@ -23,36 +23,36 @@
   [(SXAnimatedImageFrame *)&v4 dealloc];
 }
 
-- (id)initWithImageSource:(void *)a3 index:(void *)a4 cache:(void *)a5 type:
+- (id)initWithImageSource:(void *)source index:(void *)index cache:(void *)cache type:
 {
-  v10 = a4;
-  if (a1)
+  indexCopy = index;
+  if (self)
   {
-    v12.receiver = a1;
+    v12.receiver = self;
     v12.super_class = SXAnimatedImageFrame;
-    a1 = objc_msgSendSuper2(&v12, sel_init);
-    if (a1)
+    self = objc_msgSendSuper2(&v12, sel_init);
+    if (self)
     {
-      a1[2] = CFRetain(a2);
-      a1[4] = a3;
-      objc_storeStrong(a1 + 1, a4);
-      a1[5] = a5;
-      [(SXAnimatedImageFrame *)a1 captureFrameProperties];
+      self[2] = CFRetain(a2);
+      self[4] = source;
+      objc_storeStrong(self + 1, index);
+      self[5] = cache;
+      [(SXAnimatedImageFrame *)self captureFrameProperties];
     }
   }
 
-  return a1;
+  return self;
 }
 
 - (void)captureFrameProperties
 {
-  if (a1)
+  if (self)
   {
     v1 = MEMORY[0x1E696DB70];
     v2 = MEMORY[0x1E696DB68];
-    *(a1 + 24) = 0x3FB999999999999ALL;
-    v3 = (a1 + 24);
-    v4 = *(a1 + 40);
+    *(self + 24) = 0x3FB999999999999ALL;
+    v3 = (self + 24);
+    v4 = *(self + 40);
     if (v4 == 1)
     {
       v5 = MEMORY[0x1E696D3C0];
@@ -69,7 +69,7 @@
     }
 
     v6 = *v1;
-    v7 = CGImageSourceCopyPropertiesAtIndex(*(a1 + 16), *(a1 + 32), 0);
+    v7 = CGImageSourceCopyPropertiesAtIndex(*(self + 16), *(self + 32), 0);
     value = 0;
     if (CFDictionaryGetValueIfPresent(v7, v6, &value))
     {
@@ -115,20 +115,20 @@
 
 - (id)image
 {
-  if (a1)
+  if (self)
   {
-    a1 = [*(a1 + 8) imageForFrameIndex:*(a1 + 32)];
+    self = [*(self + 8) imageForFrameIndex:*(self + 32)];
     v1 = vars8;
   }
 
-  return a1;
+  return self;
 }
 
 - (double)duration
 {
-  if (a1)
+  if (self)
   {
-    return *(a1 + 24);
+    return *(self + 24);
   }
 
   else

@@ -1,14 +1,14 @@
 @interface RSDRemoteNCMHostDevice
 - (BOOL)connectable;
 - (RSDRemoteNCMHostDevice)initWithGeneratedName;
-- (RSDRemoteNCMHostDevice)initWithInterface:(id)a3;
-- (RSDRemoteNCMHostDevice)initWithUSBSerialNumber:(const __CFString *)a3;
+- (RSDRemoteNCMHostDevice)initWithInterface:(id)interface;
+- (RSDRemoteNCMHostDevice)initWithUSBSerialNumber:(const __CFString *)number;
 - (uint64_t)tlsRequirement;
 - (void)attach;
 - (void)connected;
 - (void)disconnect;
 - (void)needsConnect;
-- (void)setSuspended:(BOOL)a3;
+- (void)setSuspended:(BOOL)suspended;
 - (void)setupConnectionTimer;
 @end
 
@@ -27,25 +27,25 @@
   return [(RSDRemoteDevice *)&v6 initWithName:__str];
 }
 
-- (RSDRemoteNCMHostDevice)initWithUSBSerialNumber:(const __CFString *)a3
+- (RSDRemoteNCMHostDevice)initWithUSBSerialNumber:(const __CFString *)number
 {
-  v4 = a3;
-  v5 = [qword_1000643B8 objectForKeyedSubscript:v4];
+  numberCopy = number;
+  v5 = [qword_1000643B8 objectForKeyedSubscript:numberCopy];
   v6 = v5;
   if (v5)
   {
-    v7 = [v5 UTF8String];
+    uTF8String = [v5 UTF8String];
     v8 = qword_1000643A8;
     if (os_log_type_enabled(qword_1000643A8, OS_LOG_TYPE_INFO))
     {
       *buf = 136446210;
-      v16 = v7;
+      v16 = uTF8String;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_INFO, "Using previously allocated name %{public}s", buf, 0xCu);
     }
 
     v14.receiver = self;
     v14.super_class = RSDRemoteNCMHostDevice;
-    v9 = [(RSDRemoteDevice *)&v14 initWithName:v7];
+    v9 = [(RSDRemoteDevice *)&v14 initWithName:uTF8String];
   }
 
   else
@@ -57,23 +57,23 @@
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_INFO, "New device attached, allocating name", buf, 2u);
     }
 
-    v11 = [(RSDRemoteNCMHostDevice *)self initWithGeneratedName];
-    v9 = v11;
-    if (v11)
+    initWithGeneratedName = [(RSDRemoteNCMHostDevice *)self initWithGeneratedName];
+    v9 = initWithGeneratedName;
+    if (initWithGeneratedName)
     {
-      v12 = [NSString stringWithCString:[(RSDRemoteDevice *)v11 device_name] encoding:4];
-      [qword_1000643B8 setObject:v12 forKeyedSubscript:v4];
+      v12 = [NSString stringWithCString:[(RSDRemoteDevice *)initWithGeneratedName device_name] encoding:4];
+      [qword_1000643B8 setObject:v12 forKeyedSubscript:numberCopy];
     }
   }
 
   return v9;
 }
 
-- (RSDRemoteNCMHostDevice)initWithInterface:(id)a3
+- (RSDRemoteNCMHostDevice)initWithInterface:(id)interface
 {
-  v4 = a3;
+  interfaceCopy = interface;
   cf = 0;
-  v5 = sub_100012D28([v4 service], &cf);
+  v5 = sub_100012D28([interfaceCopy service], &cf);
   v6 = qword_1000643A8;
   if (v5)
   {
@@ -84,13 +84,13 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "USB Serial Number: %{public}@", buf, 0xCu);
     }
 
-    v7 = [(RSDRemoteNCMHostDevice *)self initWithUSBSerialNumber:cf];
+    initWithGeneratedName = [(RSDRemoteNCMHostDevice *)self initWithUSBSerialNumber:cf];
     CFRelease(cf);
-    if (v7)
+    if (initWithGeneratedName)
     {
 LABEL_5:
-      [(RSDRemoteNCMDevice *)v7 setInterface:v4];
-      v7->fd = -1;
+      [(RSDRemoteNCMDevice *)initWithGeneratedName setInterface:interfaceCopy];
+      initWithGeneratedName->fd = -1;
     }
   }
 
@@ -101,14 +101,14 @@ LABEL_5:
       sub_10003C45C(v6);
     }
 
-    v7 = [(RSDRemoteNCMHostDevice *)self initWithGeneratedName];
-    if (v7)
+    initWithGeneratedName = [(RSDRemoteNCMHostDevice *)self initWithGeneratedName];
+    if (initWithGeneratedName)
     {
       goto LABEL_5;
     }
   }
 
-  return v7;
+  return initWithGeneratedName;
 }
 
 - (void)attach
@@ -116,10 +116,10 @@ LABEL_5:
   v5.receiver = self;
   v5.super_class = RSDRemoteNCMHostDevice;
   [(RSDRemoteDevice *)&v5 attach];
-  v3 = [(RSDRemoteNCMDevice *)self interface];
-  v4 = [v3 is_private];
+  interface = [(RSDRemoteNCMDevice *)self interface];
+  is_private = [interface is_private];
 
-  if ((v4 & 1) == 0)
+  if ((is_private & 1) == 0)
   {
     [(RSDRemoteNCMHostDevice *)self setupConnectionTimer];
   }
@@ -157,9 +157,9 @@ LABEL_5:
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> needsConnect", buf, 0xCu);
   }
 
-  v4 = [(RSDRemoteDevice *)self connection];
+  connection = [(RSDRemoteDevice *)self connection];
 
-  if (v4)
+  if (connection)
   {
     v5 = qword_1000643A8;
     if (!os_log_type_enabled(qword_1000643A8, OS_LOG_TYPE_DEFAULT))
@@ -175,10 +175,10 @@ LABEL_17:
     return;
   }
 
-  v7 = [(RSDRemoteNCMDevice *)self interface];
-  v8 = [v7 state];
+  interface = [(RSDRemoteNCMDevice *)self interface];
+  state = [interface state];
 
-  if (v8 != 2)
+  if (state != 2)
   {
     v5 = qword_1000643A8;
     if (!os_log_type_enabled(qword_1000643A8, OS_LOG_TYPE_DEFAULT))
@@ -194,29 +194,29 @@ LABEL_17:
 
   if (*[(RSDRemoteNCMDevice *)self local_address]|| *([(RSDRemoteNCMDevice *)self local_address]+ 1) || *([(RSDRemoteNCMDevice *)self local_address]+ 2) || *([(RSDRemoteNCMDevice *)self local_address]+ 3))
   {
-    v9 = [(RSDRemoteNCMDevice *)self interface];
-    v10 = [v9 is_private];
+    interface2 = [(RSDRemoteNCMDevice *)self interface];
+    is_private = [interface2 is_private];
 
-    if ((v10 & 1) == 0)
+    if ((is_private & 1) == 0)
     {
       bonjour_service = nw_endpoint_create_bonjour_service("ncm", "_remoted._tcp", "local.");
       [(RSDRemoteNCMDevice *)self setEndpoint:bonjour_service];
 
-      v12 = [(RSDRemoteNCMDevice *)self endpoint];
-      if (!v12)
+      endpoint = [(RSDRemoteNCMDevice *)self endpoint];
+      if (!endpoint)
       {
         sub_10003C6DC(&v38, buf);
       }
 
-      v13 = [(RSDRemoteNCMDevice *)self interface];
-      v14 = sub_100031974([v13 index]);
+      interface3 = [(RSDRemoteNCMDevice *)self interface];
+      v14 = sub_100031974([interface3 index]);
 
       if (v14)
       {
         v15 = nw_parameters_copy_required_interface(v14);
         name = nw_interface_get_name(v15);
-        v17 = [(RSDRemoteNCMDevice *)self interface];
-        v18 = strncmp(name, [v17 name], 0x10uLL);
+        interface4 = [(RSDRemoteNCMDevice *)self interface];
+        v18 = strncmp(name, [interface4 name], 0x10uLL);
 
         if (v18)
         {
@@ -226,8 +226,8 @@ LABEL_17:
           v41 = 0u;
           *buf = 0u;
           os_log_type_enabled(&_os_log_default, OS_LOG_TYPE_ERROR);
-          v35 = [(RSDRemoteNCMDevice *)self interface];
-          [v35 name];
+          interface5 = [(RSDRemoteNCMDevice *)self interface];
+          [interface5 name];
           _os_log_send_and_compose_impl();
 
           _os_crash_msg();
@@ -235,8 +235,8 @@ LABEL_17:
           return;
         }
 
-        v19 = [(RSDRemoteNCMDevice *)self endpoint];
-        v20 = nw_connection_create(v19, v14);
+        endpoint2 = [(RSDRemoteNCMDevice *)self endpoint];
+        v20 = nw_connection_create(endpoint2, v14);
 
         v21 = v20;
         if (!v21)
@@ -287,9 +287,9 @@ LABEL_17:
       goto LABEL_17;
     }
 
-    v27 = [(RSDRemoteNCMDevice *)self remote_address];
-    v28 = [(RSDRemoteNCMDevice *)self interface];
-    v29 = sub_100023C1C(&self->fd, v27, 0xE59Fu, [v28 index], &xmmword_100049E58);
+    remote_address = [(RSDRemoteNCMDevice *)self remote_address];
+    interface6 = [(RSDRemoteNCMDevice *)self interface];
+    v29 = sub_100023C1C(&self->fd, remote_address, 0xE59Fu, [interface6 index], &xmmword_100049E58);
 
     v30 = qword_1000643A8;
     if (v29)
@@ -347,7 +347,7 @@ LABEL_17:
   if (os_log_type_enabled(qword_1000643A8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "%{public}@> disconnect", buf, 0xCu);
   }
 
@@ -391,19 +391,19 @@ LABEL_17:
   return [(RSDRemoteDevice *)&v5 connectable];
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  if (self->_suspended != a3)
+  if (self->_suspended != suspended)
   {
-    v3 = a3;
+    suspendedCopy = suspended;
     v5 = qword_1000643A8;
     v6 = os_log_type_enabled(qword_1000643A8, OS_LOG_TYPE_INFO);
-    if (v3)
+    if (suspendedCopy)
     {
       if (v6)
       {
         v7 = 138543362;
-        v8 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%{public}@> Suspending", &v7, 0xCu);
       }
     }
@@ -413,14 +413,14 @@ LABEL_17:
       if (v6)
       {
         v7 = 138543362;
-        v8 = self;
+        selfCopy2 = self;
         _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "%{public}@> Resuming", &v7, 0xCu);
       }
 
       [(RSDRemoteDevice *)self drainPendedRequests];
     }
 
-    self->_suspended = v3;
+    self->_suspended = suspendedCopy;
   }
 }
 

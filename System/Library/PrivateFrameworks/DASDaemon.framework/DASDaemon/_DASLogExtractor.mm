@@ -1,51 +1,51 @@
 @interface _DASLogExtractor
-+ (id)extractorForArchive:(id)a3;
-- (BOOL)didActivityRun:(id)a3 forActivity:(id)a4;
-- (BOOL)didBARFinish:(id)a3 forApplication:(id)a4;
-- (_DASLogExtractor)initWithArchive:(id)a3;
-- (id)descriptionOfHigherThresholds:(id)a3;
-- (id)descriptionOfIncompatibilityDenials:(id)a3;
-- (id)descriptionOfPolicyToIntervalsMap:(id)a3;
-- (id)getActivityStartBeforeDate:(id)a3 forActivity:(id)a4;
-- (id)getAllBARActivityNames:(id)a3;
-- (id)getAllPushLaunchActivityNames:(id)a3;
-- (id)getBARSummaryFromLogs:(id)a3 forApplication:(id)a4 detail:(BOOL)a5;
++ (id)extractorForArchive:(id)archive;
+- (BOOL)didActivityRun:(id)run forActivity:(id)activity;
+- (BOOL)didBARFinish:(id)finish forApplication:(id)application;
+- (_DASLogExtractor)initWithArchive:(id)archive;
+- (id)descriptionOfHigherThresholds:(id)thresholds;
+- (id)descriptionOfIncompatibilityDenials:(id)denials;
+- (id)descriptionOfPolicyToIntervalsMap:(id)map;
+- (id)getActivityStartBeforeDate:(id)date forActivity:(id)activity;
+- (id)getAllBARActivityNames:(id)names;
+- (id)getAllPushLaunchActivityNames:(id)names;
+- (id)getBARSummaryFromLogs:(id)logs forApplication:(id)application detail:(BOOL)detail;
 - (id)getDefaultFilterPredicate;
-- (id)getIncompatibilityReasons:(id)a3 forActivity:(id)a4;
-- (id)getInstancesOfHigherThreshold:(id)a3 forActivity:(id)a4;
-- (id)getMessagesActivityFinish:(id)a3 forActivity:(id)a4 isCompleted:(BOOL)a5;
-- (id)getMessagesAfterRunning:(id)a3 forActivity:(id)a4;
-- (id)getMessagesBeforeRunning:(id)a3 forActivity:(id)a4;
-- (id)getMessagesForAllBARTasks:(id)a3;
-- (id)getMessagesForBARLifecycle:(id)a3 forApplication:(id)a4 queryStatus:(id)a5 taskType:(id)a6;
-- (id)getMessagesWhenAppBackgroundSwitch:(id)a3 forApplication:(id)a4 switchTo:(id)a5;
-- (id)getPolicyDenialReasonsFromMessage:(id)a3;
-- (id)getScheduledBlocksOfBARMessages:(id)a3 forApplication:(id)a4;
-- (id)getScheduledBlocksOfMessages:(id)a3 forActivity:(id)a4;
-- (id)getpolicyToIntervals:(id)a3;
-- (id)objectForTrigger:(id)a3 fromCondition:(id)a4 compactRepresentation:(BOOL)a5;
-- (id)summarizeAllDenialsOverMessages:(id)a3 forActivity:(id)a4 detail:(BOOL)a5;
-- (id)summarizePolicyDenialsOverMessages:(id)a3 maxDuration:(double)a4;
-- (id)summarizeRuntimeOverMessages:(id)a3 forActivity:(id)a4;
-- (int)didActivityFinish:(id)a3 forActivity:(id)a4;
-- (int)didActivityFinish:(id)a3 forBARActivity:(id)a4;
-- (int)handleLogEventsLogEvents:(id)a3 sinceDate:(id)a4 withHandler:(id)a5;
-- (int)sysConditionsLog:(BOOL)a3 startDate:(id)a4 endDate:(id)a5;
+- (id)getIncompatibilityReasons:(id)reasons forActivity:(id)activity;
+- (id)getInstancesOfHigherThreshold:(id)threshold forActivity:(id)activity;
+- (id)getMessagesActivityFinish:(id)finish forActivity:(id)activity isCompleted:(BOOL)completed;
+- (id)getMessagesAfterRunning:(id)running forActivity:(id)activity;
+- (id)getMessagesBeforeRunning:(id)running forActivity:(id)activity;
+- (id)getMessagesForAllBARTasks:(id)tasks;
+- (id)getMessagesForBARLifecycle:(id)lifecycle forApplication:(id)application queryStatus:(id)status taskType:(id)type;
+- (id)getMessagesWhenAppBackgroundSwitch:(id)switch forApplication:(id)application switchTo:(id)to;
+- (id)getPolicyDenialReasonsFromMessage:(id)message;
+- (id)getScheduledBlocksOfBARMessages:(id)messages forApplication:(id)application;
+- (id)getScheduledBlocksOfMessages:(id)messages forActivity:(id)activity;
+- (id)getpolicyToIntervals:(id)intervals;
+- (id)objectForTrigger:(id)trigger fromCondition:(id)condition compactRepresentation:(BOOL)representation;
+- (id)summarizeAllDenialsOverMessages:(id)messages forActivity:(id)activity detail:(BOOL)detail;
+- (id)summarizePolicyDenialsOverMessages:(id)messages maxDuration:(double)duration;
+- (id)summarizeRuntimeOverMessages:(id)messages forActivity:(id)activity;
+- (int)didActivityFinish:(id)finish forActivity:(id)activity;
+- (int)didActivityFinish:(id)finish forBARActivity:(id)activity;
+- (int)handleLogEventsLogEvents:(id)events sinceDate:(id)date withHandler:(id)handler;
+- (int)sysConditionsLog:(BOOL)log startDate:(id)date endDate:(id)endDate;
 @end
 
 @implementation _DASLogExtractor
 
-+ (id)extractorForArchive:(id)a3
++ (id)extractorForArchive:(id)archive
 {
-  v3 = a3;
-  v4 = [[_DASLogExtractor alloc] initWithArchive:v3];
+  archiveCopy = archive;
+  v4 = [[_DASLogExtractor alloc] initWithArchive:archiveCopy];
 
   return v4;
 }
 
-- (_DASLogExtractor)initWithArchive:(id)a3
+- (_DASLogExtractor)initWithArchive:(id)archive
 {
-  v4 = a3;
+  archiveCopy = archive;
   v12.receiver = self;
   v12.super_class = _DASLogExtractor;
   v5 = [(_DASLogExtractor *)&v12 init];
@@ -59,9 +59,9 @@
     v5->_subsystem = @"com.apple.duetactivityscheduler";
 
     [(NSDateFormatter *)v5->_dateFormatter setDateFormat:@"y-MM-dd-HH-mm-ss.SSS-z"];
-    if (v4)
+    if (archiveCopy)
     {
-      [MEMORY[0x277D24438] storeWithArchiveURL:v4];
+      [MEMORY[0x277D24438] storeWithArchiveURL:archiveCopy];
     }
 
     else
@@ -90,14 +90,14 @@
   return v3;
 }
 
-- (int)handleLogEventsLogEvents:(id)a3 sinceDate:(id)a4 withHandler:(id)a5
+- (int)handleLogEventsLogEvents:(id)events sinceDate:(id)date withHandler:(id)handler
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (!v9)
+  eventsCopy = events;
+  dateCopy = date;
+  handlerCopy = handler;
+  if (!dateCopy)
   {
-    v9 = [MEMORY[0x277CBEAA8] distantPast];
+    dateCopy = [MEMORY[0x277CBEAA8] distantPast];
   }
 
   v23 = 0;
@@ -110,12 +110,12 @@
   v17[2] = __67___DASLogExtractor_handleLogEventsLogEvents_sinceDate_withHandler___block_invoke;
   v17[3] = &unk_278EE17F8;
   v17[4] = self;
-  v12 = v8;
+  v12 = eventsCopy;
   v18 = v12;
-  v22 = self;
-  v13 = v10;
+  selfCopy = self;
+  v13 = handlerCopy;
   v20 = v13;
-  v14 = v9;
+  v14 = dateCopy;
   v19 = v14;
   v21 = &v23;
   [(OSLogEventStore *)logStore prepareWithCompletionHandler:v17];
@@ -125,25 +125,25 @@
   return v15;
 }
 
-- (id)getScheduledBlocksOfMessages:(id)a3 forActivity:(id)a4
+- (id)getScheduledBlocksOfMessages:(id)messages forActivity:(id)activity
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (![v5 count])
+  messagesCopy = messages;
+  activityCopy = activity;
+  if (![messagesCopy count])
   {
     v28 = 0;
     goto LABEL_27;
   }
 
-  v26 = v6;
+  v26 = activityCopy;
   [MEMORY[0x277CBEB18] array];
-  v28 = v27 = v5;
+  v28 = v27 = messagesCopy;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v7 = v5;
+  v7 = messagesCopy;
   v8 = [v7 countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v8)
   {
@@ -167,18 +167,18 @@
       v14 = *(*(&v29 + 1) + 8 * i);
       if (v11)
       {
-        v15 = [*(*(&v29 + 1) + 8 * i) message];
-        if ([v15 containsString:@"Submitted Activity:"])
+        message = [*(*(&v29 + 1) + 8 * i) message];
+        if ([message containsString:@"Submitted Activity:"])
         {
 
 LABEL_11:
-          v18 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
           v11 = 0;
           goto LABEL_18;
         }
 
-        v16 = [v14 message];
-        v17 = [v16 containsString:@"SUBMITTING:"];
+        message2 = [v14 message];
+        v17 = [message2 containsString:@"SUBMITTING:"];
 
         if (v17)
         {
@@ -186,15 +186,15 @@ LABEL_11:
         }
       }
 
-      v19 = [v14 message];
-      if ([v19 containsString:@"COMPLETED"])
+      message3 = [v14 message];
+      if ([message3 containsString:@"COMPLETED"])
       {
       }
 
       else
       {
-        v20 = [v14 message];
-        v21 = [v20 containsString:@"CANCELED"];
+        message4 = [v14 message];
+        v21 = [message4 containsString:@"CANCELED"];
 
         if (!v21)
         {
@@ -209,11 +209,11 @@ LABEL_11:
         [v28 addObject:v22];
       }
 
-      v18 = 0;
+      array = 0;
       v11 = 1;
 LABEL_18:
 
-      v10 = v18;
+      v10 = array;
 LABEL_19:
       [v10 addObject:v14];
     }
@@ -224,14 +224,14 @@ LABEL_19:
   while (v9);
 LABEL_24:
 
-  v6 = v26;
+  activityCopy = v26;
   if ([v10 count])
   {
     v23 = [v10 copy];
     [v28 addObject:v23];
   }
 
-  v5 = v27;
+  messagesCopy = v27;
 LABEL_27:
 
   v24 = *MEMORY[0x277D85DE8];
@@ -239,26 +239,26 @@ LABEL_27:
   return v28;
 }
 
-- (id)getScheduledBlocksOfBARMessages:(id)a3 forApplication:(id)a4
+- (id)getScheduledBlocksOfBARMessages:(id)messages forApplication:(id)application
 {
   v32 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (![v5 count])
+  messagesCopy = messages;
+  applicationCopy = application;
+  if (![messagesCopy count])
   {
-    v26 = 0;
+    array = 0;
     goto LABEL_21;
   }
 
-  v24 = v6;
-  v26 = [MEMORY[0x277CBEB18] array];
-  v7 = [MEMORY[0x277CBEB18] array];
+  v24 = applicationCopy;
+  array = [MEMORY[0x277CBEB18] array];
+  array2 = [MEMORY[0x277CBEB18] array];
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v25 = v5;
-  v8 = v5;
+  v25 = messagesCopy;
+  v8 = messagesCopy;
   v9 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
   if (!v9)
   {
@@ -280,34 +280,34 @@ LABEL_27:
       v14 = *(*(&v27 + 1) + 8 * i);
       if ((v12 & 1) != 0 && ([*(*(&v27 + 1) + 8 * i) message], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "containsString:", @"Setting process visibility to: Background"), v15, v16))
       {
-        v17 = [MEMORY[0x277CBEB18] array];
+        array3 = [MEMORY[0x277CBEB18] array];
         v12 = 0;
       }
 
       else
       {
-        v18 = [v14 message];
-        v19 = [v18 containsString:@"Setting process visibility to: Foreground"];
+        message = [v14 message];
+        v19 = [message containsString:@"Setting process visibility to: Foreground"];
 
         if (!v19)
         {
           goto LABEL_15;
         }
 
-        [v7 addObject:v14];
-        if ([v7 count])
+        [array2 addObject:v14];
+        if ([array2 count])
         {
-          v20 = [v7 copy];
-          [v26 addObject:v20];
+          v20 = [array2 copy];
+          [array addObject:v20];
         }
 
-        v17 = 0;
+        array3 = 0;
         v12 = 1;
       }
 
-      v7 = v17;
+      array2 = array3;
 LABEL_15:
-      [v7 addObject:v14];
+      [array2 addObject:v14];
     }
 
     v10 = [v8 countByEnumeratingWithState:&v27 objects:v31 count:16];
@@ -316,31 +316,31 @@ LABEL_15:
   while (v10);
 LABEL_17:
 
-  if ([v7 count])
+  if ([array2 count])
   {
-    v21 = [v7 copy];
-    [v26 addObject:v21];
+    v21 = [array2 copy];
+    [array addObject:v21];
   }
 
-  v6 = v24;
-  v5 = v25;
+  applicationCopy = v24;
+  messagesCopy = v25;
 LABEL_21:
 
   v22 = *MEMORY[0x277D85DE8];
 
-  return v26;
+  return array;
 }
 
-- (id)getMessagesBeforeRunning:(id)a3 forActivity:(id)a4
+- (id)getMessagesBeforeRunning:(id)running forActivity:(id)activity
 {
   v36 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
+  runningCopy = running;
+  activityCopy = activity;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v7 = v5;
+  v7 = runningCopy;
   v8 = [v7 countByEnumeratingWithState:&v31 objects:v35 count:16];
   if (v8)
   {
@@ -359,21 +359,21 @@ LABEL_3:
       }
 
       v13 = *(*(&v31 + 1) + 8 * v12);
-      v14 = [v13 message];
-      v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", v6];
-      if (([v14 containsString:v15] & 1) == 0)
+      message = [v13 message];
+      activityCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"%@", activityCopy];
+      if (([message containsString:activityCopy] & 1) == 0)
       {
         break;
       }
 
       v16 = v11;
       v17 = v7;
-      v18 = v6;
-      v19 = [v13 message];
-      if ([v19 containsString:@"Submitted:"])
+      v18 = activityCopy;
+      message2 = [v13 message];
+      if ([message2 containsString:@"Submitted:"])
       {
 
-        v6 = v18;
+        activityCopy = v18;
         v7 = v17;
         v11 = v16;
         v9 = v29;
@@ -386,7 +386,7 @@ LABEL_3:
         v28 = [v23 containsString:@"SUBMITTING:"];
 
         v10 = v22;
-        v6 = v18;
+        activityCopy = v18;
         v7 = v17;
         v11 = v16;
         v9 = v29;
@@ -396,10 +396,10 @@ LABEL_3:
         }
       }
 
-      v24 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
 
       v10 = 1;
-      v11 = v24;
+      v11 = array;
 LABEL_16:
       [v11 addObject:v13];
       if (v9 == ++v12)
@@ -417,8 +417,8 @@ LABEL_16:
 LABEL_10:
     if (v10)
     {
-      v20 = [v13 message];
-      v21 = [v20 containsString:@"Running activities :"];
+      message3 = [v13 message];
+      v21 = [message3 containsString:@"Running activities :"];
 
       if (v21)
       {
@@ -450,16 +450,16 @@ LABEL_22:
   return v25;
 }
 
-- (id)getAllBARActivityNames:(id)a3
+- (id)getAllBARActivityNames:(id)names
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  namesCopy = names;
   v16 = [MEMORY[0x277CBEB58] set];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = v3;
+  v4 = namesCopy;
   v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
@@ -475,23 +475,23 @@ LABEL_22:
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 message];
-        if ([v10 containsString:@"Submitted Activity: <_DASActivity: bgRefresh-"])
+        message = [v9 message];
+        if ([message containsString:@"Submitted Activity: <_DASActivity: bgRefresh-"])
         {
-          v11 = [v9 message];
-          v12 = [v11 containsString:@"widget"];
+          message2 = [v9 message];
+          v12 = [message2 containsString:@"widget"];
 
           if (v12)
           {
             continue;
           }
 
-          v13 = [v9 message];
-          v10 = getSubstring(v13, @"Submitted: <_DASActivity: ", @", Background,", 0);
+          message3 = [v9 message];
+          message = getSubstring(message3, @"Submitted: <_DASActivity: ", @", Background,", 0);
 
-          if (v10)
+          if (message)
           {
-            [v16 addObject:v10];
+            [v16 addObject:message];
           }
         }
       }
@@ -507,16 +507,16 @@ LABEL_22:
   return v16;
 }
 
-- (id)getAllPushLaunchActivityNames:(id)a3
+- (id)getAllPushLaunchActivityNames:(id)names
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  namesCopy = names;
   v17 = [MEMORY[0x277CBEB58] set];
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = v3;
+  v4 = namesCopy;
   v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
@@ -532,30 +532,30 @@ LABEL_22:
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
-        v10 = [v9 message];
-        if ([v10 containsString:@"Submitted: <_DASActivity: "])
+        message = [v9 message];
+        if ([message containsString:@"Submitted: <_DASActivity: "])
         {
-          v11 = [v9 message];
-          if ([v11 containsString:@"widget"])
+          message2 = [v9 message];
+          if ([message2 containsString:@"widget"])
           {
           }
 
           else
           {
-            v12 = [v9 message];
-            v13 = [v12 containsString:@"pushLaunch"];
+            message3 = [v9 message];
+            v13 = [message3 containsString:@"pushLaunch"];
 
             if (!v13)
             {
               continue;
             }
 
-            v14 = [v9 message];
-            v10 = getSubstring(v14, @"Submitted: <_DASActivity: ", @", Maintenance,", 0);
+            message4 = [v9 message];
+            message = getSubstring(message4, @"Submitted: <_DASActivity: ", @", Maintenance,", 0);
 
-            if (v10)
+            if (message)
             {
-              [v17 addObject:v10];
+              [v17 addObject:message];
             }
           }
         }
@@ -572,16 +572,16 @@ LABEL_22:
   return v17;
 }
 
-- (id)getMessagesWhenAppBackgroundSwitch:(id)a3 forApplication:(id)a4 switchTo:(id)a5
+- (id)getMessagesWhenAppBackgroundSwitch:(id)switch forApplication:(id)application switchTo:(id)to
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a5;
+  switchCopy = switch;
+  toCopy = to;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v8 = v6;
+  v8 = switchCopy;
   v9 = [v8 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v9)
   {
@@ -597,15 +597,15 @@ LABEL_22:
         }
 
         v13 = *(*(&v22 + 1) + 8 * i);
-        v14 = [v13 message];
-        v15 = [MEMORY[0x277CCACA8] stringWithFormat:@"Setting process visibility to: %@", v7];
-        v16 = [v14 containsString:v15];
+        message = [v13 message];
+        toCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"Setting process visibility to: %@", toCopy];
+        v16 = [message containsString:toCopy];
 
         if (v16)
         {
-          v19 = [MEMORY[0x277CBEB18] array];
-          [v19 addObject:v13];
-          v18 = v19;
+          array = [MEMORY[0x277CBEB18] array];
+          [array addObject:v13];
+          v18 = array;
 
           v17 = v18;
           goto LABEL_11;
@@ -631,16 +631,16 @@ LABEL_11:
   return v17;
 }
 
-- (id)getMessagesForAllBARTasks:(id)a3
+- (id)getMessagesForAllBARTasks:(id)tasks
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v26 = [MEMORY[0x277CBEB18] array];
+  tasksCopy = tasks;
+  array = [MEMORY[0x277CBEB18] array];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  obj = v4;
+  obj = tasksCopy;
   v5 = [obj countByEnumeratingWithState:&v30 objects:v34 count:16];
   if (v5)
   {
@@ -661,37 +661,37 @@ LABEL_11:
         }
 
         v11 = *(*(&v30 + 1) + 8 * v10);
-        v12 = [v11 message];
+        message = [v11 message];
         v13 = [*(v7 + 3240) stringWithFormat:v9];
-        v14 = [v12 containsString:v13];
+        v14 = [message containsString:v13];
         if (v14)
         {
-          v3 = [v11 message];
-          if (([v3 containsString:@"widget"] & 1) == 0)
+          message2 = [v11 message];
+          if (([message2 containsString:@"widget"] & 1) == 0)
           {
 
 LABEL_17:
-            [v26 addObject:v11];
+            [array addObject:v11];
             goto LABEL_18;
           }
         }
 
-        v28 = v12;
-        v29 = v3;
-        v15 = [v11 message];
+        v28 = message;
+        v29 = message2;
+        message3 = [v11 message];
         v16 = [*(v7 + 3240) stringWithFormat:@"Timeline for "];
-        if ([v15 containsString:v16])
+        if ([message3 containsString:v16])
         {
           v27 = 1;
         }
 
         else
         {
-          v17 = [v11 message];
+          message4 = [v11 message];
           [*(v7 + 3240) stringWithFormat:@"pushLaunch"];
           v18 = v9;
           v20 = v19 = v7;
-          v27 = [v17 containsString:v20];
+          v27 = [message4 containsString:v20];
 
           v7 = v19;
           v9 = v18;
@@ -702,7 +702,7 @@ LABEL_17:
 
         if (v14)
         {
-          v3 = v29;
+          message2 = v29;
 
           if (v27)
           {
@@ -713,7 +713,7 @@ LABEL_17:
         else
         {
 
-          v3 = v29;
+          message2 = v29;
           if (v27)
           {
             goto LABEL_17;
@@ -733,29 +733,29 @@ LABEL_18:
 
   v21 = *MEMORY[0x277D85DE8];
 
-  return v26;
+  return array;
 }
 
-- (id)getMessagesForBARLifecycle:(id)a3 forApplication:(id)a4 queryStatus:(id)a5 taskType:(id)a6
+- (id)getMessagesForBARLifecycle:(id)lifecycle forApplication:(id)application queryStatus:(id)status taskType:(id)type
 {
   v37 = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v30 = a6;
-  v29 = [MEMORY[0x277CBEB18] array];
-  v28 = v11;
-  if ([v11 isEqual:@"Submitted"])
+  lifecycleCopy = lifecycle;
+  applicationCopy = application;
+  statusCopy = status;
+  typeCopy = type;
+  array = [MEMORY[0x277CBEB18] array];
+  v28 = statusCopy;
+  if ([statusCopy isEqual:@"Submitted"])
   {
     v12 = @"Submitted: <_DASActivity: ";
   }
 
-  else if ([v11 isEqual:{@"Completed", v11}])
+  else if ([statusCopy isEqual:{@"Completed", statusCopy}])
   {
     v12 = @"COMPLETED ";
   }
 
-  else if ([v11 isEqual:@"Prediction"])
+  else if ([statusCopy isEqual:@"Prediction"])
   {
     v12 = @"Timeline for ";
   }
@@ -770,7 +770,7 @@ LABEL_18:
   v35 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v13 = v9;
+  v13 = lifecycleCopy;
   v14 = [v13 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v14)
   {
@@ -786,14 +786,14 @@ LABEL_18:
         }
 
         v18 = *(*(&v32 + 1) + 8 * i);
-        v19 = [v18 message];
-        if (([v19 containsString:v10] & 1) == 0)
+        message = [v18 message];
+        if (([message containsString:applicationCopy] & 1) == 0)
         {
           goto LABEL_18;
         }
 
-        v20 = [v18 message];
-        if (([v20 containsString:v12] & 1) == 0)
+        message2 = [v18 message];
+        if (([message2 containsString:v12] & 1) == 0)
         {
 
 LABEL_18:
@@ -802,19 +802,19 @@ LABEL_18:
 
         [v18 message];
         v21 = v16;
-        v22 = v10;
+        v22 = applicationCopy;
         v23 = v13;
         v25 = v24 = v12;
-        v31 = [v25 containsString:v30];
+        v31 = [v25 containsString:typeCopy];
 
         v12 = v24;
         v13 = v23;
-        v10 = v22;
+        applicationCopy = v22;
         v16 = v21;
 
         if (v31)
         {
-          [v29 addObject:v18];
+          [array addObject:v18];
         }
       }
 
@@ -826,18 +826,18 @@ LABEL_18:
 
   v26 = *MEMORY[0x277D85DE8];
 
-  return v29;
+  return array;
 }
 
-- (id)getActivityStartBeforeDate:(id)a3 forActivity:(id)a4
+- (id)getActivityStartBeforeDate:(id)date forActivity:(id)activity
 {
   v25 = *MEMORY[0x277D85DE8];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  dateCopy = date;
+  v5 = [dateCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = *v21;
@@ -847,17 +847,17 @@ LABEL_18:
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(dateCopy);
         }
 
         v8 = *(*(&v20 + 1) + 8 * i);
-        v9 = [v8 message];
-        v10 = [v9 containsString:@"Submitted:"];
+        message = [v8 message];
+        v10 = [message containsString:@"Submitted:"];
 
         if (v10)
         {
-          v11 = [v8 message];
-          v12 = getSubstring(v11, @", [", @"], Group:", 0);
+          message2 = [v8 message];
+          v12 = getSubstring(message2, @", [", @"], Group:", 0);
 
           v13 = [v12 componentsSeparatedByString:@" "];
           v14 = MEMORY[0x277CCACA8];
@@ -870,7 +870,7 @@ LABEL_18:
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [dateCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v5)
       {
         continue;
@@ -887,15 +887,15 @@ LABEL_11:
   return v5;
 }
 
-- (BOOL)didActivityRun:(id)a3 forActivity:(id)a4
+- (BOOL)didActivityRun:(id)run forActivity:(id)activity
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  runCopy = run;
+  v5 = [runCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -906,11 +906,11 @@ LABEL_11:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(runCopy);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) message];
-        v10 = [v9 containsString:@"Running activities :"];
+        message = [*(*(&v14 + 1) + 8 * i) message];
+        v10 = [message containsString:@"Running activities :"];
 
         if (v10)
         {
@@ -919,7 +919,7 @@ LABEL_11:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [runCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -936,21 +936,21 @@ LABEL_11:
   return v11;
 }
 
-- (id)getMessagesAfterRunning:(id)a3 forActivity:(id)a4
+- (id)getMessagesAfterRunning:(id)running forActivity:(id)activity
 {
   v27 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v21 = a4;
+  runningCopy = running;
+  activityCopy = activity;
   v22 = 0u;
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
-  v6 = v5;
+  v6 = runningCopy;
   v7 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
   if (v7)
   {
     v8 = v7;
-    v9 = 0;
+    array2 = 0;
     v10 = *v23;
     while (2)
     {
@@ -962,34 +962,34 @@ LABEL_11:
         }
 
         v12 = *(*(&v22 + 1) + 8 * i);
-        v13 = [v12 message];
-        v14 = [v13 containsString:@"Running activities :"];
+        message = [v12 message];
+        v14 = [message containsString:@"Running activities :"];
 
         if (v14)
         {
-          v15 = [MEMORY[0x277CBEB18] array];
+          array = [MEMORY[0x277CBEB18] array];
 
-          v9 = v15;
+          array2 = array;
         }
 
         else
         {
-          v16 = [v12 message];
-          if ([v16 containsString:@"COMPLETED"])
+          message2 = [v12 message];
+          if ([message2 containsString:@"COMPLETED"])
           {
 
 LABEL_15:
-            if (!v9)
+            if (!array2)
             {
-              v9 = [MEMORY[0x277CBEB18] array];
+              array2 = [MEMORY[0x277CBEB18] array];
             }
 
-            [v9 addObject:v12];
+            [array2 addObject:v12];
             goto LABEL_18;
           }
 
-          v17 = [v12 message];
-          v18 = [v17 containsString:@"CANCELED"];
+          message3 = [v12 message];
+          v18 = [message3 containsString:@"CANCELED"];
 
           if (v18)
           {
@@ -997,7 +997,7 @@ LABEL_15:
           }
         }
 
-        [v9 addObject:v12];
+        [array2 addObject:v12];
       }
 
       v8 = [v6 countByEnumeratingWithState:&v22 objects:v26 count:16];
@@ -1012,25 +1012,25 @@ LABEL_15:
 
   else
   {
-    v9 = 0;
+    array2 = 0;
   }
 
 LABEL_18:
 
   v19 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return array2;
 }
 
-- (int)didActivityFinish:(id)a3 forActivity:(id)a4
+- (int)didActivityFinish:(id)finish forActivity:(id)activity
 {
   v22 = *MEMORY[0x277D85DE8];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+  finishCopy = finish;
+  v5 = [finishCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1041,12 +1041,12 @@ LABEL_18:
       {
         if (*v18 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(finishCopy);
         }
 
         v9 = *(*(&v17 + 1) + 8 * i);
-        v10 = [v9 message];
-        v11 = [v10 containsString:@"COMPLETED"];
+        message = [v9 message];
+        v11 = [message containsString:@"COMPLETED"];
 
         if (v11)
         {
@@ -1054,8 +1054,8 @@ LABEL_18:
           goto LABEL_14;
         }
 
-        v12 = [v9 message];
-        v13 = [v12 containsString:@"CANCELED"];
+        message2 = [v9 message];
+        v13 = [message2 containsString:@"CANCELED"];
 
         if (v13)
         {
@@ -1064,7 +1064,7 @@ LABEL_18:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v17 objects:v21 count:16];
+      v6 = [finishCopy countByEnumeratingWithState:&v17 objects:v21 count:16];
       v14 = 0;
       if (v6)
       {
@@ -1086,15 +1086,15 @@ LABEL_14:
   return v14;
 }
 
-- (int)didActivityFinish:(id)a3 forBARActivity:(id)a4
+- (int)didActivityFinish:(id)finish forBARActivity:(id)activity
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  finishCopy = finish;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v5 = [finishCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v5)
   {
     v6 = 0;
@@ -1106,12 +1106,12 @@ LABEL_14:
       {
         if (*v19 != v8)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(finishCopy);
         }
 
         v10 = *(*(&v18 + 1) + 8 * i);
-        v11 = [v10 message];
-        v12 = [v11 containsString:@"COMPLETED"];
+        message = [v10 message];
+        v12 = [message containsString:@"COMPLETED"];
 
         if (v12)
         {
@@ -1120,14 +1120,14 @@ LABEL_14:
 
         else
         {
-          v13 = [v10 message];
-          v14 = [v13 containsString:@"CANCELED"];
+          message2 = [v10 message];
+          v14 = [message2 containsString:@"CANCELED"];
 
           v6 |= v14;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [finishCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -1156,17 +1156,17 @@ LABEL_14:
   return v5;
 }
 
-- (id)getMessagesActivityFinish:(id)a3 forActivity:(id)a4 isCompleted:(BOOL)a5
+- (id)getMessagesActivityFinish:(id)finish forActivity:(id)activity isCompleted:(BOOL)completed
 {
-  v5 = a5;
+  completedCopy = completed;
   v29 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
+  finishCopy = finish;
+  activityCopy = activity;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v9 = v7;
+  v9 = finishCopy;
   v10 = [v9 countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v10)
   {
@@ -1182,15 +1182,15 @@ LABEL_14:
         }
 
         v14 = *(*(&v24 + 1) + 8 * i);
-        v15 = [v14 message];
-        v16 = [v15 containsString:v8];
+        message = [v14 message];
+        v16 = [message containsString:activityCopy];
 
         if (v16)
         {
-          v17 = [v14 message];
-          v18 = v17;
-          v19 = v5 ? @"COMPLETED" : @"CANCELED";
-          v20 = [v17 containsString:v19];
+          message2 = [v14 message];
+          v18 = message2;
+          v19 = completedCopy ? @"COMPLETED" : @"CANCELED";
+          v20 = [message2 containsString:v19];
 
           if (v20)
           {
@@ -1218,15 +1218,15 @@ LABEL_15:
   return v21;
 }
 
-- (BOOL)didBARFinish:(id)a3 forApplication:(id)a4
+- (BOOL)didBARFinish:(id)finish forApplication:(id)application
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v4 = a3;
-  v5 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  finishCopy = finish;
+  v5 = [finishCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1237,11 +1237,11 @@ LABEL_15:
       {
         if (*v15 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(finishCopy);
         }
 
-        v9 = [*(*(&v14 + 1) + 8 * i) message];
-        v10 = [v9 containsString:@"COMPLETED bgRefresh-"];
+        message = [*(*(&v14 + 1) + 8 * i) message];
+        v10 = [message containsString:@"COMPLETED bgRefresh-"];
 
         if (v10)
         {
@@ -1250,7 +1250,7 @@ LABEL_15:
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v6 = [finishCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v6)
       {
         continue;
@@ -1267,31 +1267,31 @@ LABEL_11:
   return v11;
 }
 
-- (id)summarizeRuntimeOverMessages:(id)a3 forActivity:(id)a4
+- (id)summarizeRuntimeOverMessages:(id)messages forActivity:(id)activity
 {
   v44 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if ([v5 count])
+  messagesCopy = messages;
+  activityCopy = activity;
+  if ([messagesCopy count])
   {
     v35 = defaultFormatter();
-    v7 = [v5 firstObject];
-    v38 = [v7 date];
+    firstObject = [messagesCopy firstObject];
+    date = [firstObject date];
 
-    v8 = [v5 lastObject];
-    v37 = [v8 date];
+    lastObject = [messagesCopy lastObject];
+    date2 = [lastObject date];
 
     v41 = 0u;
     v42 = 0u;
     v39 = 0u;
     v40 = 0u;
-    v9 = v5;
+    v9 = messagesCopy;
     v10 = [v9 countByEnumeratingWithState:&v39 objects:v43 count:16];
-    v36 = v6;
+    v36 = activityCopy;
     if (v10)
     {
       v11 = v10;
-      v34 = v5;
+      v34 = messagesCopy;
       v12 = 0;
       v13 = 0;
       v14 = *v40;
@@ -1305,15 +1305,15 @@ LABEL_11:
           }
 
           v16 = *(*(&v39 + 1) + 8 * i);
-          v17 = [v16 message];
-          v18 = [v17 containsString:@"Suspending"];
+          message = [v16 message];
+          v18 = [message containsString:@"Suspending"];
 
           if (v18)
           {
-            v19 = [v16 date];
+            date3 = [v16 date];
 
             v13 = 1;
-            v12 = v19;
+            v12 = date3;
           }
         }
 
@@ -1330,32 +1330,32 @@ LABEL_11:
         v23 = 1;
         v24 = [v20 stringWithFormat:@"%d %@", 1, v22];
 
-        v5 = v34;
+        messagesCopy = v34;
 LABEL_17:
         v26 = MEMORY[0x277CCACA8];
-        v27 = getIntervalString(v38, v37);
-        v28 = [v21 stringFromDate:v38];
-        v29 = [v21 stringFromDate:v37];
+        v27 = getIntervalString(date, date2);
+        v28 = [v21 stringFromDate:date];
+        v29 = [v21 stringFromDate:date2];
         v30 = [v26 stringWithFormat:@"Activity ran for %@, from %@ to %@(Was suspended = %@)\n", v27, v28, v29, v24];
 
-        v25 = [MEMORY[0x277CBEB38] dictionary];
-        [v25 setObject:v30 forKeyedSubscript:@"result"];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
+        [dictionary setObject:v30 forKeyedSubscript:@"result"];
         if (v23)
         {
           v31 = [v21 stringFromDate:v12];
-          [v25 setObject:v31 forKeyedSubscript:@"suspendTime"];
+          [dictionary setObject:v31 forKeyedSubscript:@"suspendTime"];
         }
 
         else
         {
-          [v25 setObject:&stru_2859F0B50 forKeyedSubscript:@"suspendTime"];
+          [dictionary setObject:&stru_2859F0B50 forKeyedSubscript:@"suspendTime"];
         }
 
-        v6 = v36;
+        activityCopy = v36;
         goto LABEL_21;
       }
 
-      v5 = v34;
+      messagesCopy = v34;
     }
 
     else
@@ -1371,23 +1371,23 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v25 = 0;
+  dictionary = 0;
 LABEL_21:
 
   v32 = *MEMORY[0x277D85DE8];
 
-  return v25;
+  return dictionary;
 }
 
-- (id)getPolicyDenialReasonsFromMessage:(id)a3
+- (id)getPolicyDenialReasonsFromMessage:(id)message
 {
   v22 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 containsString:@"Must Not Proceed}"])
+  messageCopy = message;
+  if ([messageCopy containsString:@"Must Not Proceed}"])
   {
-    v4 = [MEMORY[0x277CBEB38] dictionary];
-    v16 = v3;
-    v5 = [v3 componentsSeparatedByString:@"\n"];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    v16 = messageCopy;
+    v5 = [messageCopy componentsSeparatedByString:@"\n"];
     v17 = 0u;
     v18 = 0u;
     v19 = 0u;
@@ -1413,7 +1413,7 @@ LABEL_21:
             if (v11)
             {
               v12 = getSubstring(v10, @"Rationale: [", @"]", 1);
-              [v4 setObject:v12 forKeyedSubscript:v11];
+              [dictionary setObject:v12 forKeyedSubscript:v11];
             }
           }
         }
@@ -1424,9 +1424,9 @@ LABEL_21:
       while (v7);
     }
 
-    v13 = v4;
+    v13 = dictionary;
 
-    v3 = v16;
+    messageCopy = v16;
   }
 
   else
@@ -1439,17 +1439,17 @@ LABEL_21:
   return v13;
 }
 
-- (id)getpolicyToIntervals:(id)a3
+- (id)getpolicyToIntervals:(id)intervals
 {
   v128 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = [MEMORY[0x277CBEB38] dictionary];
+  intervalsCopy = intervals;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v101 = defaultFormatter();
   v119 = 0u;
   v120 = 0u;
   v121 = 0u;
   v122 = 0u;
-  obj = v3;
+  obj = intervalsCopy;
   v5 = [obj countByEnumeratingWithState:&v119 objects:v127 count:16];
   if (v5)
   {
@@ -1457,7 +1457,7 @@ LABEL_21:
     v7 = 0;
     v87 = *v120;
     v8 = 1;
-    v100 = v4;
+    v100 = dictionary;
     do
     {
       v9 = 0;
@@ -1470,20 +1470,20 @@ LABEL_21:
         }
 
         v10 = *(*(&v119 + 1) + 8 * v9);
-        v11 = [v10 message];
-        v12 = [(_DASLogExtractor *)self getPolicyDenialReasonsFromMessage:v11];
+        message = [v10 message];
+        v12 = [(_DASLogExtractor *)self getPolicyDenialReasonsFromMessage:message];
 
         v102 = v12;
         if (v12)
         {
           v90 = v9;
           v13 = MEMORY[0x277CBEB98];
-          v14 = [v7 allKeys];
-          v15 = [v13 setWithArray:v14];
+          allKeys = [v7 allKeys];
+          v15 = [v13 setWithArray:allKeys];
 
           v16 = MEMORY[0x277CBEB98];
-          v17 = [v12 allKeys];
-          v18 = [v16 setWithArray:v17];
+          allKeys2 = [v12 allKeys];
+          v18 = [v16 setWithArray:allKeys2];
 
           v91 = v7;
           v89 = v18;
@@ -1512,26 +1512,26 @@ LABEL_21:
                   }
 
                   v24 = *(*(&v115 + 1) + 8 * i);
-                  v25 = [MEMORY[0x277CBEB18] array];
-                  [v4 setObject:v25 forKeyedSubscript:v24];
+                  array = [MEMORY[0x277CBEB18] array];
+                  [dictionary setObject:array forKeyedSubscript:v24];
 
                   v26 = objc_opt_new();
-                  v27 = [v10 date];
-                  [v26 setStartDate:v27];
+                  date = [v10 date];
+                  [v26 setStartDate:date];
 
-                  v28 = [v10 date];
-                  [v26 setEndDate:v28];
+                  date2 = [v10 date];
+                  [v26 setEndDate:date2];
 
                   v29 = [v102 objectForKeyedSubscript:v24];
-                  v30 = [MEMORY[0x277CBEB18] array];
+                  array2 = [MEMORY[0x277CBEB18] array];
                   v31 = MEMORY[0x277CCACA8];
-                  v32 = [v10 date];
-                  v33 = [v101 stringFromDate:v32];
+                  date3 = [v10 date];
+                  v33 = [v101 stringFromDate:date3];
                   v34 = [v31 stringWithFormat:@"[%@] %@", v33, v29];
-                  [v30 addObject:v34];
+                  [array2 addObject:v34];
 
-                  v4 = v100;
-                  [v26 setValue:v30];
+                  dictionary = v100;
+                  [v26 setValue:array2];
                   v35 = [v100 objectForKeyedSubscript:v24];
                   [v35 addObject:v26];
                 }
@@ -1583,31 +1583,31 @@ LABEL_21:
                   }
 
                   v42 = *(*(&v111 + 1) + 8 * j);
-                  v43 = [v4 objectForKeyedSubscript:v42];
+                  v43 = [dictionary objectForKeyedSubscript:v42];
 
                   if (!v43)
                   {
-                    v44 = [MEMORY[0x277CBEB18] array];
-                    [v4 setObject:v44 forKeyedSubscript:v42];
+                    array3 = [MEMORY[0x277CBEB18] array];
+                    [dictionary setObject:array3 forKeyedSubscript:v42];
                   }
 
                   v45 = objc_opt_new();
-                  v46 = [v10 date];
-                  [v45 setStartDate:v46];
+                  date4 = [v10 date];
+                  [v45 setStartDate:date4];
 
-                  v47 = [v10 date];
-                  [v45 setEndDate:v47];
+                  date5 = [v10 date];
+                  [v45 setEndDate:date5];
 
                   v48 = [v102 objectForKeyedSubscript:v42];
-                  v49 = [MEMORY[0x277CBEB18] array];
+                  array4 = [MEMORY[0x277CBEB18] array];
                   v50 = MEMORY[0x277CCACA8];
-                  v51 = [v10 date];
-                  v52 = [v101 stringFromDate:v51];
+                  date6 = [v10 date];
+                  v52 = [v101 stringFromDate:date6];
                   v53 = [v50 stringWithFormat:@"[%@] %@", v52, v48];
-                  [v49 addObject:v53];
+                  [array4 addObject:v53];
 
-                  v4 = v100;
-                  [v45 setValue:v49];
+                  dictionary = v100;
+                  [v45 setValue:array4];
                   v54 = [v100 objectForKeyedSubscript:v42];
                   [v54 addObject:v45];
                 }
@@ -1643,24 +1643,24 @@ LABEL_21:
                   }
 
                   v59 = *(*(&v107 + 1) + 8 * k);
-                  v60 = [v4 objectForKeyedSubscript:v59];
+                  v60 = [dictionary objectForKeyedSubscript:v59];
                   [v60 count];
-                  v61 = [v60 lastObject];
-                  v62 = [v10 date];
-                  [v61 setEndDate:v62];
+                  lastObject = [v60 lastObject];
+                  date7 = [v10 date];
+                  [lastObject setEndDate:date7];
 
                   v63 = [v57 objectForKeyedSubscript:v59];
                   v64 = [v56 objectForKeyedSubscript:v59];
                   if (([v63 isEqualToString:v64] & 1) == 0)
                   {
-                    v65 = [v61 value];
+                    value = [lastObject value];
                     v66 = MEMORY[0x277CCACA8];
-                    v67 = [v10 date];
-                    v68 = [v101 stringFromDate:v67];
+                    date8 = [v10 date];
+                    v68 = [v101 stringFromDate:date8];
                     v69 = [v66 stringWithFormat:@"[%@] %@", v68, v63];
-                    [v65 addObject:v69];
+                    [value addObject:v69];
 
-                    v4 = v100;
+                    dictionary = v100;
                     v57 = v102;
 
                     v56 = v91;
@@ -1699,15 +1699,15 @@ LABEL_21:
     v7 = 0;
   }
 
-  v71 = [obj lastObject];
-  v72 = [v71 date];
+  lastObject2 = [obj lastObject];
+  date9 = [lastObject2 date];
 
   v105 = 0u;
   v106 = 0u;
   v103 = 0u;
   v104 = 0u;
-  v73 = [v7 allKeys];
-  v74 = [v73 countByEnumeratingWithState:&v103 objects:v123 count:16];
+  allKeys3 = [v7 allKeys];
+  v74 = [allKeys3 countByEnumeratingWithState:&v103 objects:v123 count:16];
   if (v74)
   {
     v75 = v74;
@@ -1718,40 +1718,40 @@ LABEL_21:
       {
         if (*v104 != v76)
         {
-          objc_enumerationMutation(v73);
+          objc_enumerationMutation(allKeys3);
         }
 
-        v78 = [v4 objectForKeyedSubscript:*(*(&v103 + 1) + 8 * m)];
+        v78 = [dictionary objectForKeyedSubscript:*(*(&v103 + 1) + 8 * m)];
         [v78 count];
-        v79 = [v78 lastObject];
-        [v79 setEndDate:v72];
+        lastObject3 = [v78 lastObject];
+        [lastObject3 setEndDate:date9];
       }
 
-      v75 = [v73 countByEnumeratingWithState:&v103 objects:v123 count:16];
+      v75 = [allKeys3 countByEnumeratingWithState:&v103 objects:v123 count:16];
     }
 
     while (v75);
   }
 
-  v80 = v4;
+  v80 = dictionary;
   v81 = *MEMORY[0x277D85DE8];
-  return v4;
+  return dictionary;
 }
 
-- (id)descriptionOfPolicyToIntervalsMap:(id)a3
+- (id)descriptionOfPolicyToIntervalsMap:(id)map
 {
   v61 = *MEMORY[0x277D85DE8];
-  v36 = a3;
-  v3 = [v36 allKeys];
-  if ([v3 count])
+  mapCopy = map;
+  allKeys = [mapCopy allKeys];
+  if ([allKeys count])
   {
-    v4 = [MEMORY[0x277CCAB68] string];
+    string = [MEMORY[0x277CCAB68] string];
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v31 = v3;
-    obj = v3;
+    v31 = allKeys;
+    obj = allKeys;
     v34 = [obj countByEnumeratingWithState:&v53 objects:v60 count:16];
     if (v34)
     {
@@ -1768,20 +1768,20 @@ LABEL_21:
 
           v35 = v5;
           v6 = *(*(&v53 + 1) + 8 * v5);
-          [(__CFString *)v4 appendString:@"\n\n-------------------------------------------------------"];
-          [(__CFString *)v4 appendString:@"-------------------------------------------------------\n"];
+          [(__CFString *)string appendString:@"\n\n-------------------------------------------------------"];
+          [(__CFString *)string appendString:@"-------------------------------------------------------\n"];
           v7 = [MEMORY[0x277CCACA8] stringWithFormat:@"Policy: %@", v6];
-          [(__CFString *)v4 appendString:v7];
+          [(__CFString *)string appendString:v7];
 
           v8 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n\nDenial Intervals:\n"];
-          [(__CFString *)v4 appendString:v8];
+          [(__CFString *)string appendString:v8];
 
           v51 = 0u;
           v52 = 0u;
           v49 = 0u;
           v50 = 0u;
           v39 = v6;
-          v9 = [v36 objectForKeyedSubscript:v6];
+          v9 = [mapCopy objectForKeyedSubscript:v6];
           v10 = [v9 countByEnumeratingWithState:&v49 objects:v59 count:16];
           if (v10)
           {
@@ -1797,10 +1797,10 @@ LABEL_21:
                 }
 
                 v14 = *(*(&v49 + 1) + 8 * i);
-                v15 = [v14 intervalString];
-                v16 = [v14 durationString];
-                v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"\t%@\t%@\n", v15, v16];
-                [(__CFString *)v4 appendString:v17];
+                intervalString = [v14 intervalString];
+                durationString = [v14 durationString];
+                v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"\t%@\t%@\n", intervalString, durationString];
+                [(__CFString *)string appendString:v17];
               }
 
               v11 = [v9 countByEnumeratingWithState:&v49 objects:v59 count:16];
@@ -1810,13 +1810,13 @@ LABEL_21:
           }
 
           v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n\nRationales:\n"];
-          [(__CFString *)v4 appendString:v18];
+          [(__CFString *)string appendString:v18];
 
           v47 = 0u;
           v48 = 0u;
           v45 = 0u;
           v46 = 0u;
-          v37 = [v36 objectForKeyedSubscript:v39];
+          v37 = [mapCopy objectForKeyedSubscript:v39];
           v40 = [v37 countByEnumeratingWithState:&v45 objects:v58 count:16];
           if (v40)
           {
@@ -1831,16 +1831,16 @@ LABEL_21:
                 }
 
                 v20 = *(*(&v45 + 1) + 8 * j);
-                v21 = [v20 intervalString];
-                v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"\t%@:\n", v21];
-                [(__CFString *)v4 appendString:v22];
+                intervalString2 = [v20 intervalString];
+                v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"\t%@:\n", intervalString2];
+                [(__CFString *)string appendString:v22];
 
                 v43 = 0u;
                 v44 = 0u;
                 v41 = 0u;
                 v42 = 0u;
-                v23 = [v20 value];
-                v24 = [v23 countByEnumeratingWithState:&v41 objects:v57 count:16];
+                value = [v20 value];
+                v24 = [value countByEnumeratingWithState:&v41 objects:v57 count:16];
                 if (v24)
                 {
                   v25 = v24;
@@ -1851,14 +1851,14 @@ LABEL_21:
                     {
                       if (*v42 != v26)
                       {
-                        objc_enumerationMutation(v23);
+                        objc_enumerationMutation(value);
                       }
 
                       v28 = [MEMORY[0x277CCACA8] stringWithFormat:@"\t\t%@\n", *(*(&v41 + 1) + 8 * k)];
-                      [(__CFString *)v4 appendString:v28];
+                      [(__CFString *)string appendString:v28];
                     }
 
-                    v25 = [v23 countByEnumeratingWithState:&v41 objects:v57 count:16];
+                    v25 = [value countByEnumeratingWithState:&v41 objects:v57 count:16];
                   }
 
                   while (v25);
@@ -1881,32 +1881,32 @@ LABEL_21:
       while (v34);
     }
 
-    [(__CFString *)v4 appendString:@"\n\n-------------------------------------------------------"];
-    [(__CFString *)v4 appendString:@"-------------------------------------------------------"];
-    v3 = v31;
+    [(__CFString *)string appendString:@"\n\n-------------------------------------------------------"];
+    [(__CFString *)string appendString:@"-------------------------------------------------------"];
+    allKeys = v31;
   }
 
   else
   {
-    v4 = &stru_2859F0B50;
+    string = &stru_2859F0B50;
   }
 
   v29 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return string;
 }
 
-- (id)getIncompatibilityReasons:(id)a3 forActivity:(id)a4
+- (id)getIncompatibilityReasons:(id)reasons forActivity:(id)activity
 {
   v46 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v39 = [MEMORY[0x277CBEB18] array];
+  reasonsCopy = reasons;
+  activityCopy = activity;
+  array = [MEMORY[0x277CBEB18] array];
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
   v44 = 0u;
-  v7 = v5;
+  v7 = reasonsCopy;
   v8 = [v7 countByEnumeratingWithState:&v41 objects:v45 count:16];
   if (v8)
   {
@@ -1914,7 +1914,7 @@ LABEL_21:
     v10 = 0;
     v11 = @"Bailing  out.";
     v12 = *v42;
-    v37 = v6;
+    v37 = activityCopy;
     v38 = v7;
     do
     {
@@ -1928,68 +1928,68 @@ LABEL_21:
         }
 
         v14 = *(*(&v41 + 1) + 8 * v13);
-        v15 = [v14 message];
-        v16 = [v15 containsString:v11];
+        message = [v14 message];
+        v16 = [message containsString:v11];
 
         if (v16)
         {
           v17 = v11;
-          v18 = [v14 message];
-          v19 = getSubstring(v18, @"'", @"' has compatibility", 0);
+          message2 = [v14 message];
+          v19 = getSubstring(message2, @"'", @"' has compatibility", 0);
 
           v20 = [v19 copy];
           v21 = getSubstring(v20, 0, @":", 0);
 
-          if ([v21 containsString:v6])
+          if ([v21 containsString:activityCopy])
           {
-            v22 = [v14 message];
-            v23 = getSubstring(v22, @"with ", @". Bailing ", 0);
+            message3 = [v14 message];
+            v23 = getSubstring(message3, @"with ", @". Bailing ", 0);
 
-            v24 = [v14 message];
-            v25 = getSubstring(v24, @"score of ", @" with", 0);
+            message4 = [v14 message];
+            v25 = getSubstring(message4, @"score of ", @" with", 0);
 
             if (v10)
             {
               if ([v23 isEqualToString:v10])
               {
-                v26 = [v14 date];
-                v27 = [v39 lastObject];
-                [v27 setEndDate:v26];
+                date = [v14 date];
+                lastObject = [array lastObject];
+                [lastObject setEndDate:date];
               }
 
               else
               {
-                v26 = objc_opt_new();
-                v31 = [v14 date];
-                [v26 setStartDate:v31];
+                date = objc_opt_new();
+                date2 = [v14 date];
+                [date setStartDate:date2];
 
-                v32 = [v14 date];
-                [v26 setEndDate:v32];
+                date3 = [v14 date];
+                [date setEndDate:date3];
 
                 v33 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v23, @"activity", v25, @"score", 0}];
-                [v26 setValue:v33];
+                [date setValue:v33];
 
-                [v39 addObject:v26];
+                [array addObject:date];
                 v34 = v23;
 
                 v10 = v34;
-                v6 = v37;
+                activityCopy = v37;
               }
             }
 
             else
             {
-              v26 = objc_opt_new();
-              v28 = [v14 date];
-              [v26 setStartDate:v28];
+              date = objc_opt_new();
+              date4 = [v14 date];
+              [date setStartDate:date4];
 
-              v29 = [v14 date];
-              [v26 setEndDate:v29];
+              date5 = [v14 date];
+              [date setEndDate:date5];
 
               v30 = [MEMORY[0x277CBEAC0] dictionaryWithObjectsAndKeys:{v23, @"activity", v25, @"score", 0}];
-              [v26 setValue:v30];
+              [date setValue:v30];
 
-              [v39 addObject:v26];
+              [array addObject:date];
               v10 = v23;
             }
 
@@ -2017,24 +2017,24 @@ LABEL_21:
 
   v35 = *MEMORY[0x277D85DE8];
 
-  return v39;
+  return array;
 }
 
-- (id)descriptionOfIncompatibilityDenials:(id)a3
+- (id)descriptionOfIncompatibilityDenials:(id)denials
 {
   v25 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  denialsCopy = denials;
+  if ([denialsCopy count])
   {
-    v4 = [MEMORY[0x277CCAB68] string];
-    [(__CFString *)v4 appendString:@"\n"];
-    [(__CFString *)v4 appendString:@"Denials due to incompatibility:\n"];
+    string = [MEMORY[0x277CCAB68] string];
+    [(__CFString *)string appendString:@"\n"];
+    [(__CFString *)string appendString:@"Denials due to incompatibility:\n"];
     v22 = 0u;
     v23 = 0u;
     v20 = 0u;
     v21 = 0u;
-    v18 = v3;
-    obj = v3;
+    v18 = denialsCopy;
+    obj = denialsCopy;
     v5 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
     if (v5)
     {
@@ -2050,14 +2050,14 @@ LABEL_21:
           }
 
           v9 = *(*(&v20 + 1) + 8 * i);
-          v10 = [v9 value];
-          v11 = [v10 objectForKeyedSubscript:@"activity"];
+          value = [v9 value];
+          v11 = [value objectForKeyedSubscript:@"activity"];
           v12 = MEMORY[0x277CCACA8];
-          v13 = [v9 durationString];
-          v14 = [v9 intervalString];
-          v15 = [v12 stringWithFormat:@"\tDuration: %@ %@ Activity: %@ \n", v13, v14, v11];
+          durationString = [v9 durationString];
+          intervalString = [v9 intervalString];
+          v15 = [v12 stringWithFormat:@"\tDuration: %@ %@ Activity: %@ \n", durationString, intervalString, v11];
 
-          [(__CFString *)v4 appendString:v15];
+          [(__CFString *)string appendString:v15];
         }
 
         v6 = [obj countByEnumeratingWithState:&v20 objects:v24 count:16];
@@ -2066,32 +2066,32 @@ LABEL_21:
       while (v6);
     }
 
-    [(__CFString *)v4 appendString:@"\n\n-------------------------------------------------------"];
-    [(__CFString *)v4 appendString:@"-------------------------------------------------------"];
-    v3 = v18;
+    [(__CFString *)string appendString:@"\n\n-------------------------------------------------------"];
+    [(__CFString *)string appendString:@"-------------------------------------------------------"];
+    denialsCopy = v18;
   }
 
   else
   {
-    v4 = &stru_2859F0B50;
+    string = &stru_2859F0B50;
   }
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return string;
 }
 
-- (id)getInstancesOfHigherThreshold:(id)a3 forActivity:(id)a4
+- (id)getInstancesOfHigherThreshold:(id)threshold forActivity:(id)activity
 {
   v38 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v31 = a4;
-  v6 = [MEMORY[0x277CBEB18] array];
+  thresholdCopy = threshold;
+  activityCopy = activity;
+  array = [MEMORY[0x277CBEB18] array];
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
   v36 = 0u;
-  v7 = v5;
+  v7 = thresholdCopy;
   v8 = [v7 countByEnumeratingWithState:&v33 objects:v37 count:16];
   if (v8)
   {
@@ -2109,36 +2109,36 @@ LABEL_21:
         }
 
         v12 = *(*(&v33 + 1) + 8 * i);
-        v13 = [v12 message];
-        v14 = v13;
+        message = [v12 message];
+        v14 = message;
         if (v10)
         {
-          v15 = [v13 containsString:@"DecisionToRun:0"];
+          v15 = [message containsString:@"DecisionToRun:0"];
 
           if (v15)
           {
-            v16 = objc_opt_new();
-            v17 = [v12 date];
-            [v16 setStartDate:v17];
+            date3 = objc_opt_new();
+            date = [v12 date];
+            [date3 setStartDate:date];
 
-            v18 = [v12 date];
-            [v16 setEndDate:v18];
+            date2 = [v12 date];
+            [date3 setEndDate:date2];
 
-            v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@", v31];
-            v20 = [v12 message];
-            v21 = getSubstring(v20, v19, @" CurrentScore:", 0);
+            activityCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"'%@", activityCopy];
+            message2 = [v12 message];
+            v21 = getSubstring(message2, activityCopy, @" CurrentScore:", 0);
 
-            v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", v19, v21];
-            v23 = [v12 message];
-            getSubstring(v23, v22, @" DecisionToRun", 0);
+            v22 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@%@", activityCopy, v21];
+            message3 = [v12 message];
+            getSubstring(message3, v22, @" DecisionToRun", 0);
             v24 = v9;
-            v26 = v25 = v6;
-            [v16 setValue:v26];
+            v26 = v25 = array;
+            [date3 setValue:v26];
 
-            v6 = v25;
+            array = v25;
             v9 = v24;
 
-            [v6 addObject:v16];
+            [array addObject:date3];
             v7 = v30;
 
 LABEL_11:
@@ -2152,13 +2152,13 @@ LABEL_11:
 
         else
         {
-          v27 = [v13 containsString:@"Must Not Proceed"];
+          v27 = [message containsString:@"Must Not Proceed"];
 
           if (v27)
           {
-            v16 = [v12 date];
-            v19 = [v6 lastObject];
-            [v19 setEndDate:v16];
+            date3 = [v12 date];
+            activityCopy = [array lastObject];
+            [activityCopy setEndDate:date3];
             goto LABEL_11;
           }
 
@@ -2174,23 +2174,23 @@ LABEL_11:
 
   v28 = *MEMORY[0x277D85DE8];
 
-  return v6;
+  return array;
 }
 
-- (id)descriptionOfHigherThresholds:(id)a3
+- (id)descriptionOfHigherThresholds:(id)thresholds
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if ([v3 count])
+  thresholdsCopy = thresholds;
+  if ([thresholdsCopy count])
   {
-    v4 = [MEMORY[0x277CCAB68] string];
-    [(__CFString *)v4 appendString:@"\n"];
-    [(__CFString *)v4 appendString:@"Denials due to higher Threshold scores:\n"];
+    string = [MEMORY[0x277CCAB68] string];
+    [(__CFString *)string appendString:@"\n"];
+    [(__CFString *)string appendString:@"Denials due to higher Threshold scores:\n"];
     v20 = 0u;
     v21 = 0u;
     v18 = 0u;
     v19 = 0u;
-    obj = v3;
+    obj = thresholdsCopy;
     v5 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
     if (v5)
     {
@@ -2206,13 +2206,13 @@ LABEL_11:
           }
 
           v9 = *(*(&v18 + 1) + 8 * i);
-          v10 = [v9 value];
+          value = [v9 value];
           v11 = MEMORY[0x277CCACA8];
-          v12 = [v9 durationString];
-          v13 = [v9 intervalString];
-          v14 = [v11 stringWithFormat:@"\t%@   Duration: %@   Values: %@\n", v12, v13, v10];
+          durationString = [v9 durationString];
+          intervalString = [v9 intervalString];
+          v14 = [v11 stringWithFormat:@"\t%@   Duration: %@   Values: %@\n", durationString, intervalString, value];
 
-          [(__CFString *)v4 appendString:v14];
+          [(__CFString *)string appendString:v14];
         }
 
         v6 = [obj countByEnumeratingWithState:&v18 objects:v22 count:16];
@@ -2221,27 +2221,27 @@ LABEL_11:
       while (v6);
     }
 
-    [(__CFString *)v4 appendString:@"\n\n-------------------------------------------------------"];
-    [(__CFString *)v4 appendString:@"-------------------------------------------------------"];
+    [(__CFString *)string appendString:@"\n\n-------------------------------------------------------"];
+    [(__CFString *)string appendString:@"-------------------------------------------------------"];
   }
 
   else
   {
-    v4 = &stru_2859F0B50;
+    string = &stru_2859F0B50;
   }
 
   v15 = *MEMORY[0x277D85DE8];
 
-  return v4;
+  return string;
 }
 
-- (id)summarizePolicyDenialsOverMessages:(id)a3 maxDuration:(double)a4
+- (id)summarizePolicyDenialsOverMessages:(id)messages maxDuration:(double)duration
 {
   v53 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = [MEMORY[0x277CBEB38] dictionary];
-  v40 = v5;
-  [v5 allKeys];
+  messagesCopy = messages;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  v40 = messagesCopy;
+  [messagesCopy allKeys];
   v47 = 0u;
   v48 = 0u;
   v49 = 0u;
@@ -2272,7 +2272,7 @@ LABEL_11:
         {
           v15 = v14;
           v16 = *v44;
-          v17 = 0.0;
+          durationCopy = 0.0;
           while (2)
           {
             for (j = 0; j != v15; ++j)
@@ -2283,13 +2283,13 @@ LABEL_11:
               }
 
               [*(*(&v43 + 1) + 8 * j) duration];
-              if (v17 < 0.0)
+              if (durationCopy < 0.0)
               {
-                v17 = a4;
+                durationCopy = duration;
                 goto LABEL_17;
               }
 
-              v17 = v17 + v19;
+              durationCopy = durationCopy + v19;
             }
 
             v15 = [v13 countByEnumeratingWithState:&v43 objects:v51 count:16];
@@ -2304,13 +2304,13 @@ LABEL_11:
 
         else
         {
-          v17 = 0.0;
+          durationCopy = 0.0;
         }
 
 LABEL_17:
 
-        v20 = [MEMORY[0x277CCABB0] numberWithDouble:v17];
-        [v6 setObject:v20 forKeyedSubscript:v11];
+        v20 = [MEMORY[0x277CCABB0] numberWithDouble:durationCopy];
+        [dictionary setObject:v20 forKeyedSubscript:v11];
       }
 
       v8 = [obj countByEnumeratingWithState:&v47 objects:v52 count:16];
@@ -2319,19 +2319,19 @@ LABEL_17:
     while (v8);
   }
 
-  v21 = [v6 allKeys];
+  allKeys = [dictionary allKeys];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __67___DASLogExtractor_summarizePolicyDenialsOverMessages_maxDuration___block_invoke;
   v41[3] = &unk_278EE1820;
-  v22 = v6;
+  v22 = dictionary;
   v42 = v22;
-  v23 = [v21 sortedArrayUsingComparator:v41];
+  v23 = [allKeys sortedArrayUsingComparator:v41];
 
   if ([v23 count])
   {
     v24 = [MEMORY[0x277CCAB68] stringWithFormat:@"\tThe top blocking policies are :\n"];
-    v25 = [MEMORY[0x277CBEAA8] date];
+    date = [MEMORY[0x277CBEAA8] date];
     if ([v23 count])
     {
       v26 = 0;
@@ -2341,11 +2341,11 @@ LABEL_17:
         v28 = [v23 objectAtIndexedSubscript:v26];
         v29 = [v22 objectForKeyedSubscript:v28];
         [v29 doubleValue];
-        v30 = [v27 dateWithTimeInterval:v25 sinceDate:?];
+        v30 = [v27 dateWithTimeInterval:date sinceDate:?];
 
         v31 = MEMORY[0x277CCACA8];
         v32 = [v23 objectAtIndexedSubscript:v26];
-        v33 = getIntervalString(v25, v30);
+        v33 = getIntervalString(date, v30);
         v34 = [v31 stringWithFormat:@"\t\t%@ : %@, \n", v32, v33];
         [(__CFString *)v24 appendString:v34];
 
@@ -2373,62 +2373,62 @@ LABEL_17:
   return v24;
 }
 
-- (id)summarizeAllDenialsOverMessages:(id)a3 forActivity:(id)a4 detail:(BOOL)a5
+- (id)summarizeAllDenialsOverMessages:(id)messages forActivity:(id)activity detail:(BOOL)detail
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if ([v8 count])
+  detailCopy = detail;
+  messagesCopy = messages;
+  activityCopy = activity;
+  if ([messagesCopy count])
   {
-    v10 = [MEMORY[0x277CCAB68] string];
-    v11 = [v8 firstObject];
-    v12 = [v11 date];
+    string = [MEMORY[0x277CCAB68] string];
+    firstObject = [messagesCopy firstObject];
+    date = [firstObject date];
 
-    v13 = [v8 lastObject];
-    v14 = [v13 date];
+    lastObject = [messagesCopy lastObject];
+    date2 = [lastObject date];
 
-    v25 = v12;
-    [v14 timeIntervalSinceDate:v12];
+    v25 = date;
+    [date2 timeIntervalSinceDate:date];
     v16 = v15;
-    v17 = [(_DASLogExtractor *)self getpolicyToIntervals:v8];
+    v17 = [(_DASLogExtractor *)self getpolicyToIntervals:messagesCopy];
     v18 = [(_DASLogExtractor *)self summarizePolicyDenialsOverMessages:v17 maxDuration:v16];
-    [(__CFString *)v10 appendString:v18];
-    if (v5)
+    [(__CFString *)string appendString:v18];
+    if (detailCopy)
     {
       v19 = [(_DASLogExtractor *)self descriptionOfPolicyToIntervalsMap:v17];
-      [(__CFString *)v10 appendString:v19];
+      [(__CFString *)string appendString:v19];
     }
 
-    v20 = [(_DASLogExtractor *)self getIncompatibilityReasons:v8 forActivity:v9];
+    v20 = [(_DASLogExtractor *)self getIncompatibilityReasons:messagesCopy forActivity:activityCopy];
     v21 = [(_DASLogExtractor *)self descriptionOfIncompatibilityDenials:v20];
-    [(__CFString *)v10 appendString:v21];
-    v22 = [(_DASLogExtractor *)self getInstancesOfHigherThreshold:v8 forActivity:v9];
+    [(__CFString *)string appendString:v21];
+    v22 = [(_DASLogExtractor *)self getInstancesOfHigherThreshold:messagesCopy forActivity:activityCopy];
     v23 = [(_DASLogExtractor *)self descriptionOfHigherThresholds:v22];
-    [(__CFString *)v10 appendString:v23];
+    [(__CFString *)string appendString:v23];
   }
 
   else
   {
-    v10 = @"The task is not blocked";
+    string = @"The task is not blocked";
   }
 
-  return v10;
+  return string;
 }
 
-- (id)getBARSummaryFromLogs:(id)a3 forApplication:(id)a4 detail:(BOOL)a5
+- (id)getBARSummaryFromLogs:(id)logs forApplication:(id)application detail:(BOOL)detail
 {
-  v152 = a5;
+  detailCopy = detail;
   v176 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = [(_DASLogExtractor *)self getScheduledBlocksOfBARMessages:a3 forApplication:v7];
+  applicationCopy = application;
+  v8 = [(_DASLogExtractor *)self getScheduledBlocksOfBARMessages:logs forApplication:applicationCopy];
   v151 = defaultFormatter();
-  v9 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v169 = 0u;
   v170 = 0u;
   v171 = 0u;
   v172 = 0u;
   obj = v8;
-  v116 = v7;
+  v116 = applicationCopy;
   v117 = [obj countByEnumeratingWithState:&v169 objects:v175 count:16];
   if (v117)
   {
@@ -2438,8 +2438,8 @@ LABEL_17:
     v127 = 0;
     v115 = *v170;
     v12 = 1;
-    v144 = v9;
-    v159 = self;
+    v144 = string;
+    selfCopy = self;
     while (1)
     {
       v13 = 0;
@@ -2454,13 +2454,13 @@ LABEL_17:
 
         v123 = v13;
         v15 = *(*(&v169 + 1) + 8 * v13);
-        v136 = [(_DASLogExtractor *)self getMessagesWhenAppBackgroundSwitch:v15 forApplication:v7 switchTo:@"Background"];
-        v135 = [(_DASLogExtractor *)self getMessagesWhenAppBackgroundSwitch:v15 forApplication:v7 switchTo:@"Foreground"];
+        v136 = [(_DASLogExtractor *)self getMessagesWhenAppBackgroundSwitch:v15 forApplication:applicationCopy switchTo:@"Background"];
+        v135 = [(_DASLogExtractor *)self getMessagesWhenAppBackgroundSwitch:v15 forApplication:applicationCopy switchTo:@"Foreground"];
         v160 = v15;
         v16 = [(_DASLogExtractor *)self getMessagesForAllBARTasks:v15];
-        v17 = [(_DASLogExtractor *)self getMessagesForBARLifecycle:v16 forApplication:v7 queryStatus:@"Submitted" taskType:@"bgRefresh"];
+        v17 = [(_DASLogExtractor *)self getMessagesForBARLifecycle:v16 forApplication:applicationCopy queryStatus:@"Submitted" taskType:@"bgRefresh"];
         v141 = v16;
-        v150 = [(_DASLogExtractor *)self getMessagesForBARLifecycle:v16 forApplication:v7 queryStatus:@"Completed" taskType:@"bgRefresh"];
+        v150 = [(_DASLogExtractor *)self getMessagesForBARLifecycle:v16 forApplication:applicationCopy queryStatus:@"Completed" taskType:@"bgRefresh"];
         if ([v17 count])
         {
           v134 = [v17 count];
@@ -2481,8 +2481,8 @@ LABEL_17:
           v133 = 0;
         }
 
-        v18 = [(_DASLogExtractor *)self getMessagesForBARLifecycle:v16 forApplication:v7 queryStatus:@"Submitted" taskType:@"pushLaunch"];
-        v149 = [(_DASLogExtractor *)self getMessagesForBARLifecycle:v141 forApplication:v7 queryStatus:@"Completed" taskType:@"pushLaunch"];
+        v18 = [(_DASLogExtractor *)self getMessagesForBARLifecycle:v16 forApplication:applicationCopy queryStatus:@"Submitted" taskType:@"pushLaunch"];
+        v149 = [(_DASLogExtractor *)self getMessagesForBARLifecycle:v141 forApplication:applicationCopy queryStatus:@"Completed" taskType:@"pushLaunch"];
         if ([v18 count])
         {
           v132 = [v18 count];
@@ -2508,91 +2508,91 @@ LABEL_17:
           v131 = 0;
         }
 
-        v137 = [(_DASLogExtractor *)self getMessagesForBARLifecycle:v141 forApplication:v7 queryStatus:@"Prediction" taskType:&stru_2859F0B50];
+        v137 = [(_DASLogExtractor *)self getMessagesForBARLifecycle:v141 forApplication:applicationCopy queryStatus:@"Prediction" taskType:&stru_2859F0B50];
         v140 = [(_DASLogExtractor *)self getAllBARActivityNames:v141];
         v129 = [(_DASLogExtractor *)self getAllPushLaunchActivityNames:v141];
-        v19 = [v136 lastObject];
-        v20 = [v19 date];
+        lastObject = [v136 lastObject];
+        date = [lastObject date];
 
-        v21 = [v135 lastObject];
-        v22 = [v21 date];
+        lastObject2 = [v135 lastObject];
+        date2 = [lastObject2 date];
 
-        v23 = [v150 lastObject];
-        v128 = [v23 date];
+        lastObject3 = [v150 lastObject];
+        date3 = [lastObject3 date];
 
         v24 = MEMORY[0x277CCACA8];
-        v121 = v20;
-        v25 = [v151 stringFromDate:v20];
+        v121 = date;
+        v25 = [v151 stringFromDate:date];
         v130 = [v24 stringWithFormat:@"%@", v25];
 
         v26 = MEMORY[0x277CCACA8];
-        v120 = v22;
-        v27 = [v151 stringFromDate:v22];
+        v120 = date2;
+        v27 = [v151 stringFromDate:date2];
         v28 = [v26 stringWithFormat:@"%@", v27];
 
-        v29 = [(_DASLogExtractor *)self didBARFinish:v141 forApplication:v7];
+        v29 = [(_DASLogExtractor *)self didBARFinish:v141 forApplication:applicationCopy];
         v30 = &stru_2859F0B50;
         if (v29)
         {
           v31 = MEMORY[0x277CCACA8];
-          v32 = [v151 stringFromDate:v128];
+          v32 = [v151 stringFromDate:date3];
           v30 = [v31 stringWithFormat:@"%@", v32];
         }
 
         v33 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n\n######################## Scheduled Block %d ########################\n\n", v12];
-        [v9 appendString:v33];
+        [string appendString:v33];
 
-        v34 = [MEMORY[0x277CCACA8] stringWithFormat:@"App switch to background at:                %@\n", v130];
-        [v9 appendString:v34];
+        v130 = [MEMORY[0x277CCACA8] stringWithFormat:@"App switch to background at:                %@\n", v130];
+        [string appendString:v130];
 
         v119 = v28;
         v35 = [MEMORY[0x277CCACA8] stringWithFormat:@"App switch to foreground at:                %@\n", v28];
-        [v9 appendString:v35];
+        [string appendString:v35];
 
-        v36 = [MEMORY[0x277CCACA8] stringWithFormat:@"Number of bgRefresh tasks submitted:        %lu\n", v134];
-        [v9 appendString:v36];
+        v134 = [MEMORY[0x277CCACA8] stringWithFormat:@"Number of bgRefresh tasks submitted:        %lu\n", v134];
+        [string appendString:v134];
 
-        v37 = [MEMORY[0x277CCACA8] stringWithFormat:@"Number of bgRefresh tasks completed:        %lu\n", v133];
-        [v9 appendString:v37];
+        v133 = [MEMORY[0x277CCACA8] stringWithFormat:@"Number of bgRefresh tasks completed:        %lu\n", v133];
+        [string appendString:v133];
 
-        v38 = [MEMORY[0x277CCACA8] stringWithFormat:@"Number of pushLaunch tasks submitted:       %lu\n", v132];
-        [v9 appendString:v38];
+        v132 = [MEMORY[0x277CCACA8] stringWithFormat:@"Number of pushLaunch tasks submitted:       %lu\n", v132];
+        [string appendString:v132];
 
-        v39 = [MEMORY[0x277CCACA8] stringWithFormat:@"Number of pushLaunch tasks completed:       %lu\n", v131];
-        [v9 appendString:v39];
+        v131 = [MEMORY[0x277CCACA8] stringWithFormat:@"Number of pushLaunch tasks completed:       %lu\n", v131];
+        [string appendString:v131];
 
         v40 = v138;
         if (v29)
         {
           v41 = [MEMORY[0x277CCACA8] stringWithFormat:@"Last Background Refresh Task Completed at:  %@\n", v30];
-          [v9 appendString:v41];
+          [string appendString:v41];
         }
 
         v118 = v30;
         v42 = v137;
         if ([v137 count])
         {
-          v43 = [v137 lastObject];
-          v44 = [v43 date];
+          lastObject4 = [v137 lastObject];
+          date4 = [lastObject4 date];
 
           v45 = MEMORY[0x277CCACA8];
-          v46 = [v151 stringFromDate:v44];
+          v46 = [v151 stringFromDate:date4];
           v47 = [v45 stringWithFormat:@"%@", v46];
 
-          v48 = [v137 lastObject];
-          v49 = [v48 message];
+          lastObject5 = [v137 lastObject];
+          message = [lastObject5 message];
 
           v50 = [MEMORY[0x277CCACA8] stringWithFormat:@"Last App Launch Prediction Generated at:    %@\n", v47];
-          [v9 appendString:v50];
+          [string appendString:v50];
 
-          v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"Last App Launch Prediction:                 %@\n", v49];
-          [v9 appendString:v51];
+          v51 = [MEMORY[0x277CCACA8] stringWithFormat:@"Last App Launch Prediction:                 %@\n", message];
+          [string appendString:v51];
         }
 
         if ([v140 count])
         {
-          [v9 appendString:@"--------------------------------------------------------------------\n"];
-          [v9 appendString:@"Summary for bgRefresh tasks:\n"];
+          [string appendString:@"--------------------------------------------------------------------\n"];
+          [string appendString:@"Summary for bgRefresh tasks:\n"];
           v167 = 0u;
           v168 = 0u;
           v165 = 0u;
@@ -2616,12 +2616,12 @@ LABEL_17:
 
               v53 = *(*(&v165 + 1) + 8 * i);
               v54 = [MEMORY[0x277CCACA8] stringWithFormat:@"Activity %@     \n", v53];
-              [v9 appendString:v54];
+              [string appendString:v54];
 
               v55 = [(_DASLogExtractor *)self getMessagesBeforeRunning:v160 forActivity:v53];
               LODWORD(v54) = [(_DASLogExtractor *)self didActivityRun:v160 forActivity:v53];
-              v56 = [v55 lastObject];
-              v157 = [v56 date];
+              lastObject6 = [v55 lastObject];
+              date5 = [lastObject6 date];
 
               v57 = &stru_2859F0B50;
               v153 = &stru_2859F0B50;
@@ -2633,17 +2633,17 @@ LABEL_17:
                 v155 = [v59 objectForKeyedSubscript:@"result"];
                 v57 = [v59 objectForKeyedSubscript:@"suspendTime"];
                 v60 = MEMORY[0x277CCACA8];
-                v61 = [v151 stringFromDate:v157];
+                v61 = [v151 stringFromDate:date5];
                 v62 = [v60 stringWithFormat:@"%@", v61];
 
                 v153 = v62;
                 v63 = [MEMORY[0x277CCACA8] stringWithFormat:@"Activity ran at:                            %@\n", v62];
-                [v9 appendString:v63];
+                [string appendString:v63];
 
                 if (([(__CFString *)v57 isEqualToString:&stru_2859F0B50]& 1) == 0)
                 {
                   v64 = [MEMORY[0x277CCACA8] stringWithFormat:@"Suspended at:                                %@\n", v57];
-                  [v9 appendString:v64];
+                  [string appendString:v64];
                 }
               }
 
@@ -2672,24 +2672,24 @@ LABEL_17:
               {
                 v68 = @"Completed at:                               %@\n";
 LABEL_40:
-                v69 = [v67 date];
+                date6 = [v67 date];
                 v70 = MEMORY[0x277CCACA8];
-                v71 = [v151 stringFromDate:v69];
+                v71 = [v151 stringFromDate:date6];
                 v66 = [v70 stringWithFormat:@"%@", v71];
 
                 v72 = [MEMORY[0x277CCACA8] stringWithFormat:v68, v66];
-                v9 = v144;
+                string = v144;
                 [v144 appendString:v72];
 
-                self = v159;
+                self = selfCopy;
               }
 
 LABEL_42:
 
 LABEL_43:
-              v73 = [(_DASLogExtractor *)self summarizeAllDenialsOverMessages:v55 forActivity:v53 detail:v152];
+              v73 = [(_DASLogExtractor *)self summarizeAllDenialsOverMessages:v55 forActivity:v53 detail:detailCopy];
               v74 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n", v73];
-              [v9 appendString:v74];
+              [string appendString:v74];
             }
 
             v147 = [v142 countByEnumeratingWithState:&v165 objects:v174 count:16];
@@ -2711,8 +2711,8 @@ LABEL_45:
           goto LABEL_68;
         }
 
-        [v9 appendString:@"--------------------------------------------------------------------\n"];
-        [v9 appendString:@"Summary for pushLaunch tasks:\n"];
+        [string appendString:@"--------------------------------------------------------------------\n"];
+        [string appendString:@"Summary for pushLaunch tasks:\n"];
         v163 = 0u;
         v164 = 0u;
         v161 = 0u;
@@ -2736,44 +2736,44 @@ LABEL_45:
 
             v77 = *(*(&v161 + 1) + 8 * j);
             v78 = [MEMORY[0x277CCACA8] stringWithFormat:@"Activity %@     \n", v77];
-            [v9 appendString:v78];
+            [string appendString:v78];
 
             v79 = [(_DASLogExtractor *)self getMessagesBeforeRunning:v160 forActivity:v77];
             LODWORD(v78) = [(_DASLogExtractor *)self didActivityRun:v160 forActivity:v77];
-            v80 = [v79 lastObject];
-            v158 = [v80 date];
+            lastObject7 = [v79 lastObject];
+            date7 = [lastObject7 date];
 
             v154 = &stru_2859F0B50;
             v156 = &stru_2859F0B50;
-            v81 = self;
+            selfCopy2 = self;
             v82 = &stru_2859F0B50;
             if (v78)
             {
-              v83 = [(_DASLogExtractor *)v81 getMessagesAfterRunning:v160 forActivity:v77];
-              v84 = [(_DASLogExtractor *)v81 summarizeRuntimeOverMessages:v83 forActivity:v77];
+              v83 = [(_DASLogExtractor *)selfCopy2 getMessagesAfterRunning:v160 forActivity:v77];
+              v84 = [(_DASLogExtractor *)selfCopy2 summarizeRuntimeOverMessages:v83 forActivity:v77];
               v156 = [v84 objectForKeyedSubscript:@"result"];
               v82 = [v84 objectForKeyedSubscript:@"suspendTime"];
               v85 = MEMORY[0x277CCACA8];
-              v86 = [v151 stringFromDate:v158];
+              v86 = [v151 stringFromDate:date7];
               v87 = [v85 stringWithFormat:@"%@", v86];
 
               v154 = v87;
               v88 = [MEMORY[0x277CCACA8] stringWithFormat:@"Activity ran at:                            %@\n", v87];
-              [v9 appendString:v88];
+              [string appendString:v88];
 
               if (([(__CFString *)v82 isEqualToString:&stru_2859F0B50]& 1) == 0)
               {
                 v89 = [MEMORY[0x277CCACA8] stringWithFormat:@"Suspended at:                                %@\n", v82];
-                [v9 appendString:v89];
+                [string appendString:v89];
               }
 
-              v81 = v159;
+              selfCopy2 = selfCopy;
             }
 
-            v90 = [(_DASLogExtractor *)v81 didActivityFinish:v149 forBARActivity:v77];
+            v90 = [(_DASLogExtractor *)selfCopy2 didActivityFinish:v149 forBARActivity:v77];
             if (v90 == 2)
             {
-              v92 = [(_DASLogExtractor *)v159 getMessagesActivityFinish:v149 forActivity:v77 isCompleted:0];
+              v92 = [(_DASLogExtractor *)selfCopy getMessagesActivityFinish:v149 forActivity:v77 isCompleted:0];
               if (!v92)
               {
                 v91 = &stru_2859F0B50;
@@ -2790,29 +2790,29 @@ LABEL_45:
               goto LABEL_65;
             }
 
-            v92 = [(_DASLogExtractor *)v159 getMessagesActivityFinish:v149 forActivity:v77 isCompleted:1];
+            v92 = [(_DASLogExtractor *)selfCopy getMessagesActivityFinish:v149 forActivity:v77 isCompleted:1];
             if (v92)
             {
               v93 = @"Completed at:                               %@\n";
 LABEL_62:
-              v94 = [v92 date];
+              date8 = [v92 date];
               v95 = MEMORY[0x277CCACA8];
-              v96 = [v151 stringFromDate:v94];
+              v96 = [v151 stringFromDate:date8];
               v91 = [v95 stringWithFormat:@"%@", v96];
 
               v97 = [MEMORY[0x277CCACA8] stringWithFormat:v93, v91];
-              v9 = v144;
+              string = v144;
               [v144 appendString:v97];
             }
 
 LABEL_64:
 
 LABEL_65:
-            v98 = [(_DASLogExtractor *)v159 summarizeAllDenialsOverMessages:v79 forActivity:v77 detail:v152];
+            v98 = [(_DASLogExtractor *)selfCopy summarizeAllDenialsOverMessages:v79 forActivity:v77 detail:detailCopy];
             v99 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@\n", v98];
-            [v9 appendString:v99];
+            [string appendString:v99];
 
-            self = v159;
+            self = selfCopy;
           }
 
           v148 = [v143 countByEnumeratingWithState:&v161 objects:v173 count:16];
@@ -2833,7 +2833,7 @@ LABEL_68:
         v10 = v131 + v125;
 
         v13 = v123 + 1;
-        v7 = v116;
+        applicationCopy = v116;
       }
 
       while (v123 + 1 != v117);
@@ -2855,19 +2855,19 @@ LABEL_68:
 LABEL_72:
 
   v103 = [MEMORY[0x277CCACA8] stringWithFormat:@"\n\n######################### Overall Summary #########################\n\n"];
-  [v9 appendString:v103];
+  [string appendString:v103];
 
-  v104 = [MEMORY[0x277CCACA8] stringWithFormat:@"Total Number of bgRefresh tasks submitted:  %lu\n", v101];
-  [v9 appendString:v104];
+  v101 = [MEMORY[0x277CCACA8] stringWithFormat:@"Total Number of bgRefresh tasks submitted:  %lu\n", v101];
+  [string appendString:v101];
 
-  v105 = [MEMORY[0x277CCACA8] stringWithFormat:@"Total Number of bgRefresh tasks completed:  %lu\n", v102];
-  [v9 appendString:v105];
+  v102 = [MEMORY[0x277CCACA8] stringWithFormat:@"Total Number of bgRefresh tasks completed:  %lu\n", v102];
+  [string appendString:v102];
 
-  v106 = [MEMORY[0x277CCACA8] stringWithFormat:@"Total Number of pushLaunch tasks submitted: %lu\n", v100];
-  [v9 appendString:v106];
+  v100 = [MEMORY[0x277CCACA8] stringWithFormat:@"Total Number of pushLaunch tasks submitted: %lu\n", v100];
+  [string appendString:v100];
 
   v107 = [MEMORY[0x277CCACA8] stringWithFormat:@"Total Number of pushLaunch tasks completed: %lu\n", v10];
-  [v9 appendString:v107];
+  [string appendString:v107];
 
   v108 = 0.0;
   v109 = ((v102 / v101) * 100.0);
@@ -2877,7 +2877,7 @@ LABEL_72:
   }
 
   v110 = [MEMORY[0x277CCACA8] stringWithFormat:@"Success rate of bgRefresh tasks completed: %.1f%%\n", *&v109];
-  [v9 appendString:v110];
+  [string appendString:v110];
 
   if (v10)
   {
@@ -2885,23 +2885,23 @@ LABEL_72:
   }
 
   v111 = [MEMORY[0x277CCACA8] stringWithFormat:@"Success rate of pushLaunch tasks completed: %.1f%%\n", *&v108];
-  [v9 appendString:v111];
+  [string appendString:v111];
 
   v112 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return string;
 }
 
-- (id)objectForTrigger:(id)a3 fromCondition:(id)a4 compactRepresentation:(BOOL)a5
+- (id)objectForTrigger:(id)trigger fromCondition:(id)condition compactRepresentation:(BOOL)representation
 {
-  v5 = a5;
-  v7 = a3;
-  v8 = a4;
-  if (![v7 isEqualToString:@"/device/system/thermalpressure"])
+  representationCopy = representation;
+  triggerCopy = trigger;
+  conditionCopy = condition;
+  if (![triggerCopy isEqualToString:@"/device/system/thermalpressure"])
   {
-    if ([v7 isEqualToString:@"/device/system/isPluggedIn"])
+    if ([triggerCopy isEqualToString:@"/device/system/isPluggedIn"])
     {
-      if (![v8 isEqualToString:@"0"])
+      if (![conditionCopy isEqualToString:@"0"])
       {
         v9 = @"Plugged In";
         goto LABEL_15;
@@ -2911,15 +2911,15 @@ LABEL_72:
       goto LABEL_56;
     }
 
-    if ([v7 isEqualToString:@"/device/system/cpuusage"])
+    if ([triggerCopy isEqualToString:@"/device/system/cpuusage"])
     {
-      if ([v8 isEqualToString:@"0"])
+      if ([conditionCopy isEqualToString:@"0"])
       {
         goto LABEL_3;
       }
 
-      v12 = [v8 isEqualToString:@"50"];
-      if (v5)
+      v12 = [conditionCopy isEqualToString:@"50"];
+      if (representationCopy)
       {
         if (v12)
         {
@@ -2938,19 +2938,19 @@ LABEL_56:
         goto LABEL_15;
       }
 
-      if ([v8 isEqualToString:@"75"])
+      if ([conditionCopy isEqualToString:@"75"])
       {
         v10 = @"Moderate";
         goto LABEL_56;
       }
 
-      if ([v8 isEqualToString:@"90"])
+      if ([conditionCopy isEqualToString:@"90"])
       {
         v10 = @"Somewhat Heavy";
         goto LABEL_56;
       }
 
-      if ([v8 isEqualToString:@"95"])
+      if ([conditionCopy isEqualToString:@"95"])
       {
         v10 = @"Really Heavy";
         goto LABEL_56;
@@ -2959,23 +2959,23 @@ LABEL_56:
 
     else
     {
-      if (([v7 isEqualToString:@"/device/system/wifi/status"] & 1) == 0 && (objc_msgSend(v7, "isEqualToString:", @"/device/system/cell/status") & 1) == 0 && !objc_msgSend(v7, "isEqualToString:", @"/device/system/wired/status"))
+      if (([triggerCopy isEqualToString:@"/device/system/wifi/status"] & 1) == 0 && (objc_msgSend(triggerCopy, "isEqualToString:", @"/device/system/cell/status") & 1) == 0 && !objc_msgSend(triggerCopy, "isEqualToString:", @"/device/system/wired/status"))
       {
         v11 = 0;
-        if ([v7 isEqualToString:@"/device/system/batteryPercentage"] && v5)
+        if ([triggerCopy isEqualToString:@"/device/system/batteryPercentage"] && representationCopy)
         {
-          v16 = [v8 intValue];
-          if (v16 <= 10)
+          intValue = [conditionCopy intValue];
+          if (intValue <= 10)
           {
-            v11 = [MEMORY[0x277CCABB0] numberWithInt:v16];
+            v11 = [MEMORY[0x277CCABB0] numberWithInt:intValue];
             v15 = v11;
             goto LABEL_28;
           }
 
-          v19 = [MEMORY[0x277CCABB0] numberWithInt:10 * (v16 / 0xA)];
+          v19 = [MEMORY[0x277CCABB0] numberWithInt:10 * (intValue / 0xA)];
           v14 = [_DASLogCondition withCondition:v19];
 
-          if (v16 < 0x15)
+          if (intValue < 0x15)
           {
             goto LABEL_57;
           }
@@ -2986,33 +2986,33 @@ LABEL_60:
         }
 
 LABEL_59:
-        v14 = [_DASLogCondition withCondition:v8];
+        v14 = [_DASLogCondition withCondition:conditionCopy];
 
         goto LABEL_60;
       }
 
-      if ([v8 isEqualToString:@"0"])
+      if ([conditionCopy isEqualToString:@"0"])
       {
         v10 = @"None";
         goto LABEL_56;
       }
 
-      if ([v8 isEqualToString:@"20"])
+      if ([conditionCopy isEqualToString:@"20"])
       {
         v10 = @"Minimally Viable";
         goto LABEL_56;
       }
 
-      if ([v8 isEqualToString:@"50"])
+      if ([conditionCopy isEqualToString:@"50"])
       {
         v10 = @"Fair";
         goto LABEL_56;
       }
 
-      if ([v8 isEqualToString:@"100"])
+      if ([conditionCopy isEqualToString:@"100"])
       {
         v14 = [_DASLogCondition withCondition:@"Best"];
-        if ([v7 containsString:@"cell"])
+        if ([triggerCopy containsString:@"cell"])
         {
           goto LABEL_57;
         }
@@ -3025,9 +3025,9 @@ LABEL_59:
     goto LABEL_59;
   }
 
-  if (![v8 isEqualToString:@"0"])
+  if (![conditionCopy isEqualToString:@"0"])
   {
-    if (v5)
+    if (representationCopy)
     {
       v11 = [_DASLogCondition withCondition:@"Under Thermal Pressure"];
     }
@@ -3037,7 +3037,7 @@ LABEL_59:
       v11 = 0;
     }
 
-    if ([v8 isEqualToString:@"10"])
+    if ([conditionCopy isEqualToString:@"10"])
     {
       v15 = @"Light";
 LABEL_28:
@@ -3046,19 +3046,19 @@ LABEL_28:
       goto LABEL_57;
     }
 
-    if (([v8 isEqualToString:@"1"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"20"))
+    if (([conditionCopy isEqualToString:@"1"] & 1) != 0 || objc_msgSend(conditionCopy, "isEqualToString:", @"20"))
     {
       v15 = @"Moderate";
       goto LABEL_28;
     }
 
-    if (([v8 isEqualToString:@"2"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"30"))
+    if (([conditionCopy isEqualToString:@"2"] & 1) != 0 || objc_msgSend(conditionCopy, "isEqualToString:", @"30"))
     {
       v15 = @"Heavy";
       goto LABEL_28;
     }
 
-    if (([v8 isEqualToString:@"3"] & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"40") || (objc_msgSend(v8, "isEqualToString:", @"4") & 1) != 0 || objc_msgSend(v8, "isEqualToString:", @"50"))
+    if (([conditionCopy isEqualToString:@"3"] & 1) != 0 || objc_msgSend(conditionCopy, "isEqualToString:", @"40") || (objc_msgSend(conditionCopy, "isEqualToString:", @"4") & 1) != 0 || objc_msgSend(conditionCopy, "isEqualToString:", @"50"))
     {
       v15 = @"Trapping";
       goto LABEL_28;
@@ -3080,23 +3080,23 @@ LABEL_57:
   return v14;
 }
 
-- (int)sysConditionsLog:(BOOL)a3 startDate:(id)a4 endDate:(id)a5
+- (int)sysConditionsLog:(BOOL)log startDate:(id)date endDate:(id)endDate
 {
   v82 = *MEMORY[0x277D85DE8];
-  v8 = a4;
-  v9 = a5;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
-  v11 = [MEMORY[0x277CBEB18] array];
+  dateCopy = date;
+  endDateCopy = endDate;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
+  array = [MEMORY[0x277CBEB18] array];
   v12 = [MEMORY[0x277CCAC30] predicateWithFormat:@"subsystem = %@", self->_subsystem];
-  [v11 addObject:v12];
+  [array addObject:v12];
 
   v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"eventMessage contains Trigger:"];
-  [v11 addObject:v13];
+  [array addObject:v13];
 
-  if (v9)
+  if (endDateCopy)
   {
-    v14 = [MEMORY[0x277CCAC30] predicateWithFormat:@"date <= %@", v9];
-    [v11 addObject:v14];
+    endDateCopy = [MEMORY[0x277CCAC30] predicateWithFormat:@"date <= %@", endDateCopy];
+    [array addObject:endDateCopy];
   }
 
   v78[0] = MEMORY[0x277D85DD0];
@@ -3104,23 +3104,23 @@ LABEL_57:
   v78[2] = __55___DASLogExtractor_sysConditionsLog_startDate_endDate___block_invoke;
   v78[3] = &unk_278EE1890;
   v78[4] = self;
-  v15 = v10;
+  v15 = dictionary;
   v79 = v15;
-  v80 = a3;
-  v16 = [(_DASLogExtractor *)self handleLogEventsLogEvents:v11 sinceDate:v8 withHandler:v78];
+  logCopy = log;
+  v16 = [(_DASLogExtractor *)self handleLogEventsLogEvents:array sinceDate:dateCopy withHandler:v78];
   if (!v16)
   {
-    v62 = v8;
-    v17 = [MEMORY[0x277CBEB18] array];
+    v62 = dateCopy;
+    array2 = [MEMORY[0x277CBEB18] array];
     v76[0] = MEMORY[0x277D85DD0];
     v76[1] = 3221225472;
     v76[2] = __55___DASLogExtractor_sysConditionsLog_startDate_endDate___block_invoke_2;
     v76[3] = &unk_278EE18B8;
-    v18 = v17;
+    v18 = array2;
     v77 = v18;
     [v15 enumerateKeysAndObjectsUsingBlock:v76];
-    v65 = v11;
-    v66 = v9;
+    v65 = array;
+    v66 = endDateCopy;
     v63 = v18;
     v64 = v15;
     if ([v18 count] >= 2)
@@ -3133,7 +3133,7 @@ LABEL_57:
         v22 = v20;
         if ([v21 count] && objc_msgSend(v22, "count"))
         {
-          v70 = [MEMORY[0x277CBEB18] array];
+          array3 = [MEMORY[0x277CBEB18] array];
           if ([v21 count])
           {
             v23 = 0;
@@ -3152,14 +3152,14 @@ LABEL_57:
 
               if (v28)
               {
-                [v70 addObject:v28];
+                [array3 addObject:v28];
               }
 
               v29 = [v21 objectAtIndexedSubscript:v23];
-              v30 = [v29 endDate];
+              endDate = [v29 endDate];
               v31 = [v22 objectAtIndexedSubscript:v24];
-              v32 = [v31 endDate];
-              v33 = [v30 compare:v32];
+              endDate2 = [v31 endDate];
+              v33 = [endDate compare:endDate2];
 
               if (v33 == 1)
               {
@@ -3182,10 +3182,10 @@ LABEL_57:
             while ([v21 count] > v23);
           }
 
-          v34 = [v70 copy];
+          v34 = [array3 copy];
 
-          v11 = v65;
-          v9 = v66;
+          array = v65;
+          endDateCopy = v66;
           v18 = v63;
           v15 = v64;
         }
@@ -3211,16 +3211,16 @@ LABEL_57:
     }
 
     v69 = timeOnlyFormatter_timeOnlyFormatter;
-    v36 = [MEMORY[0x277CBEA80] currentCalendar];
+    currentCalendar = [MEMORY[0x277CBEA80] currentCalendar];
     v72 = 0u;
     v73 = 0u;
     v74 = 0u;
     v75 = 0u;
-    v37 = [v18 firstObject];
-    v71 = [v37 countByEnumeratingWithState:&v72 objects:v81 count:16];
+    firstObject = [v18 firstObject];
+    v71 = [firstObject countByEnumeratingWithState:&v72 objects:v81 count:16];
     if (v71)
     {
-      obj = v37;
+      obj = firstObject;
       v68 = *v73;
       v38 = 0.0;
       do
@@ -3233,17 +3233,17 @@ LABEL_57:
           }
 
           v40 = *(*(&v72 + 1) + 8 * i);
-          v41 = [v40 startDate];
-          v42 = [v36 components:24 fromDate:v41];
-          v43 = [v40 endDate];
-          v44 = [v36 components:24 fromDate:v43];
+          startDate = [v40 startDate];
+          v42 = [currentCalendar components:24 fromDate:startDate];
+          endDate3 = [v40 endDate];
+          v44 = [currentCalendar components:24 fromDate:endDate3];
           v45 = [v42 isEqual:v44];
 
           v46 = *MEMORY[0x277D85E08];
-          v47 = [v40 startDate];
-          v48 = [v35 stringFromDate:v47];
-          v49 = [v48 UTF8String];
-          v50 = [v40 endDate];
+          startDate2 = [v40 startDate];
+          v48 = [v35 stringFromDate:startDate2];
+          uTF8String = [v48 UTF8String];
+          endDate4 = [v40 endDate];
           if (v45)
           {
             v51 = v69;
@@ -3254,12 +3254,12 @@ LABEL_57:
             v51 = v35;
           }
 
-          v52 = [v51 stringFromDate:v50];
-          fprintf(v46, "  %s - %s\n", v49, [v52 UTF8String]);
+          v52 = [v51 stringFromDate:endDate4];
+          fprintf(v46, "  %s - %s\n", uTF8String, [v52 UTF8String]);
 
-          v53 = [v40 endDate];
-          v54 = [MEMORY[0x277CBEAA8] distantFuture];
-          v55 = [v53 isEqual:v54];
+          endDate5 = [v40 endDate];
+          distantFuture = [MEMORY[0x277CBEAA8] distantFuture];
+          v55 = [endDate5 isEqual:distantFuture];
 
           if ((v55 & 1) == 0)
           {
@@ -3278,15 +3278,15 @@ LABEL_57:
       {
         v58 = "hours";
         v59 = v38 / 3600.0;
-        v11 = v65;
-        v9 = v66;
+        array = v65;
+        endDateCopy = v66;
         v18 = v63;
         v15 = v64;
         goto LABEL_40;
       }
 
-      v11 = v65;
-      v9 = v66;
+      array = v65;
+      endDateCopy = v66;
       v18 = v63;
       v15 = v64;
     }
@@ -3304,7 +3304,7 @@ LABEL_40:
     fprintf(v57, "Over the course of the log, there was %5.2f %s of ideal conditions.\n", v59, v58);
 
     v16 = 0;
-    v8 = v62;
+    dateCopy = v62;
   }
 
   v60 = *MEMORY[0x277D85DE8];

@@ -3,11 +3,11 @@
 - (NSXPCConnection)conn;
 - (SLDServiceCenter)init;
 - (id)_synchronousRemoteObjectProxy;
-- (id)connectionForServiceClass:(Class)a3;
+- (id)connectionForServiceClass:(Class)class;
 - (void)_ensureMainConnectionSynchronously;
 - (void)_synchronousRemoteObjectProxy;
 - (void)init;
-- (void)setConn:(id)a3;
+- (void)setConn:(id)conn;
 @end
 
 @implementation SLDServiceCenter
@@ -15,9 +15,9 @@
 - (id)_synchronousRemoteObjectProxy
 {
   [(SLDServiceCenter *)self _ensureMainConnectionSynchronously];
-  v3 = [(SLDServiceCenter *)self conn];
-  v4 = v3;
-  if (!v3)
+  conn = [(SLDServiceCenter *)self conn];
+  v4 = conn;
+  if (!conn)
   {
     v6 = SLDaemonLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -33,7 +33,7 @@
   v9[2] = __49__SLDServiceCenter__synchronousRemoteObjectProxy__block_invoke;
   v9[3] = &unk_278925CC8;
   v9[4] = self;
-  v5 = [v3 synchronousRemoteObjectProxyWithErrorHandler:v9];
+  v5 = [conn synchronousRemoteObjectProxyWithErrorHandler:v9];
   v6 = v5;
   if (v5 && ([v5 conformsToProtocol:&unk_2846BD5A0]& 1) == 0)
   {
@@ -52,13 +52,13 @@ LABEL_9:
 
 - (void)_ensureMainConnectionSynchronously
 {
-  v3 = [(SLDServiceCenter *)self mainConnectionSetupQueue];
+  mainConnectionSetupQueue = [(SLDServiceCenter *)self mainConnectionSetupQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __54__SLDServiceCenter__ensureMainConnectionSynchronously__block_invoke;
   block[3] = &unk_278925D90;
   block[4] = self;
-  dispatch_sync(v3, block);
+  dispatch_sync(mainConnectionSetupQueue, block);
 }
 
 - (NSXPCConnection)conn
@@ -69,14 +69,14 @@ LABEL_9:
   v10 = __Block_byref_object_copy__11;
   v11 = __Block_byref_object_dispose__11;
   v12 = 0;
-  v3 = [(SLDServiceCenter *)self propertyConcurrentQueue];
+  propertyConcurrentQueue = [(SLDServiceCenter *)self propertyConcurrentQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __24__SLDServiceCenter_conn__block_invoke;
   v6[3] = &unk_278925D18;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(propertyConcurrentQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -176,7 +176,7 @@ void __54__SLDServiceCenter__ensureMainConnectionSynchronously__block_invoke(uin
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (id)connectionForServiceClass:(Class)a3
+- (id)connectionForServiceClass:(Class)class
 {
   v5 = SLGeneralTelemetryLogHandle();
   v6 = os_signpost_id_generate(v5);
@@ -199,18 +199,18 @@ void __54__SLDServiceCenter__ensureMainConnectionSynchronously__block_invoke(uin
   v10 = inited;
   if (objc_opt_respondsToSelector())
   {
-    v11 = NSStringFromClass(a3);
-    v12 = [(SLDServiceCenter *)self _synchronousRemoteObjectProxy];
-    v13 = v12;
-    if (v12)
+    v11 = NSStringFromClass(class);
+    _synchronousRemoteObjectProxy = [(SLDServiceCenter *)self _synchronousRemoteObjectProxy];
+    v13 = _synchronousRemoteObjectProxy;
+    if (_synchronousRemoteObjectProxy)
     {
       v20[0] = MEMORY[0x277D85DD0];
       v20[1] = 3221225472;
       v20[2] = __46__SLDServiceCenter_connectionForServiceClass___block_invoke;
       v20[3] = &unk_2789270D0;
       v20[4] = buf;
-      v20[5] = a3;
-      [v12 endpointForServiceNamed:v11 reply:v20];
+      v20[5] = class;
+      [_synchronousRemoteObjectProxy endpointForServiceNamed:v11 reply:v20];
     }
 
     else
@@ -274,18 +274,18 @@ void __46__SLDServiceCenter_connectionForServiceClass___block_invoke(uint64_t a1
   }
 }
 
-- (void)setConn:(id)a3
+- (void)setConn:(id)conn
 {
-  v4 = a3;
-  v5 = [(SLDServiceCenter *)self propertyConcurrentQueue];
+  connCopy = conn;
+  propertyConcurrentQueue = [(SLDServiceCenter *)self propertyConcurrentQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __28__SLDServiceCenter_setConn___block_invoke;
   v7[3] = &unk_278925CF0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_barrier_async(v5, v7);
+  v8 = connCopy;
+  v6 = connCopy;
+  dispatch_barrier_async(propertyConcurrentQueue, v7);
 }
 
 void __49__SLDServiceCenter__synchronousRemoteObjectProxy__block_invoke(uint64_t a1, void *a2)

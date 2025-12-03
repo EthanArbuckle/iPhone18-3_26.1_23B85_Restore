@@ -1,27 +1,27 @@
 @interface _CNAPeopleSuggesterFacadeTestDouble
-+ (id)makeContactWithDisplayName:(id)a3;
-+ (id)makeContactWithDisplayName:(id)a3 handle:(id)a4;
-+ (id)makeRecipientWithDisplayName:(id)a3 handle:(id)a4 hasContact:(BOOL)a5;
++ (id)makeContactWithDisplayName:(id)name;
++ (id)makeContactWithDisplayName:(id)name handle:(id)handle;
++ (id)makeRecipientWithDisplayName:(id)name handle:(id)handle hasContact:(BOOL)contact;
 - (NSString)description;
-- (_CNAPeopleSuggesterFacadeTestDouble)initWithDelegate:(id)a3;
+- (_CNAPeopleSuggesterFacadeTestDouble)initWithDelegate:(id)delegate;
 - (_CNAPeopleSuggesterFacadeTestDoubleDelegate)delegate;
-- (id)addGroupWithDisplayName:(id)a3 conversationIdentifier:(id)a4 recipients:(id)a5;
-- (id)addPerson:(id)a3;
-- (id)autocompleteSearchResultsWithPredictionContext:(id)a3;
+- (id)addGroupWithDisplayName:(id)name conversationIdentifier:(id)identifier recipients:(id)recipients;
+- (id)addPerson:(id)person;
+- (id)autocompleteSearchResultsWithPredictionContext:(id)context;
 @end
 
 @implementation _CNAPeopleSuggesterFacadeTestDouble
 
-- (_CNAPeopleSuggesterFacadeTestDouble)initWithDelegate:(id)a3
+- (_CNAPeopleSuggesterFacadeTestDouble)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v11.receiver = self;
   v11.super_class = _CNAPeopleSuggesterFacadeTestDouble;
   v5 = [(_CNAPeopleSuggesterFacadeTestDouble *)&v11 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = objc_opt_new();
     suggestions = v6->_suggestions;
     v6->_suggestions = v7;
@@ -39,19 +39,19 @@
   v5 = [v3 appendName:@"delegate" object:WeakRetained];
 
   v6 = [v3 appendName:@"suggestions" object:self->_suggestions];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
-- (id)addPerson:(id)a3
+- (id)addPerson:(id)person
 {
   v10[1] = *MEMORY[0x277D85DE8];
   v4 = get_PSSuggestionClass;
-  v5 = a3;
+  personCopy = person;
   v6 = objc_alloc_init(v4());
   [v6 setSuggestionType:1];
-  v10[0] = v5;
+  v10[0] = personCopy;
   v7 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
 
   [v6 setRecipients:v7];
@@ -61,13 +61,13 @@
   return v6;
 }
 
-- (id)addGroupWithDisplayName:(id)a3 conversationIdentifier:(id)a4 recipients:(id)a5
+- (id)addGroupWithDisplayName:(id)name conversationIdentifier:(id)identifier recipients:(id)recipients
 {
   v8 = get_PSSuggestionClass;
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
-  v12 = [objc_alloc(v8()) initWithBundleID:0 conversationIdentifier:v10 groupName:v11 recipients:v9];
+  recipientsCopy = recipients;
+  identifierCopy = identifier;
+  nameCopy = name;
+  v12 = [objc_alloc(v8()) initWithBundleID:0 conversationIdentifier:identifierCopy groupName:nameCopy recipients:recipientsCopy];
 
   [v12 setSuggestionType:2];
   [(_CNAPeopleSuggesterFacadeTestDouble *)self addSuggestion:v12];
@@ -75,14 +75,14 @@
   return v12;
 }
 
-+ (id)makeRecipientWithDisplayName:(id)a3 handle:(id)a4 hasContact:(BOOL)a5
++ (id)makeRecipientWithDisplayName:(id)name handle:(id)handle hasContact:(BOOL)contact
 {
-  v5 = a5;
-  v8 = a3;
-  v9 = a4;
-  if (v5)
+  contactCopy = contact;
+  nameCopy = name;
+  handleCopy = handle;
+  if (contactCopy)
   {
-    v10 = [a1 makeContactWithDisplayName:v8 handle:v9];
+    v10 = [self makeContactWithDisplayName:nameCopy handle:handleCopy];
   }
 
   else
@@ -91,31 +91,31 @@
   }
 
   v11 = objc_alloc(get_PSRecipientClass());
-  v12 = [MEMORY[0x277CCAD78] UUID];
-  v13 = [v12 UUIDString];
-  v14 = [v11 initWithIdentifier:v13 handle:v9 displayName:v8 contact:v10];
+  uUID = [MEMORY[0x277CCAD78] UUID];
+  uUIDString = [uUID UUIDString];
+  v14 = [v11 initWithIdentifier:uUIDString handle:handleCopy displayName:nameCopy contact:v10];
 
   return v14;
 }
 
-+ (id)makeContactWithDisplayName:(id)a3 handle:(id)a4
++ (id)makeContactWithDisplayName:(id)name handle:(id)handle
 {
   v17[1] = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = [a1 makeContactWithDisplayName:a3];
-  if (v6 && [v6 length])
+  handleCopy = handle;
+  v7 = [self makeContactWithDisplayName:name];
+  if (handleCopy && [handleCopy length])
   {
     v8 = MEMORY[0x277CFBE30];
-    v17[0] = v6;
+    v17[0] = handleCopy;
     v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v17 count:1];
     v10 = [v8 classificationOfHandleStrings:v9];
 
-    v11 = [v10 emailAddresses];
-    v12 = [v11 _cn_map:&__block_literal_global_22];
+    emailAddresses = [v10 emailAddresses];
+    v12 = [emailAddresses _cn_map:&__block_literal_global_22];
     [v7 setEmailAddresses:v12];
 
-    v13 = [v10 phoneNumbers];
-    v14 = [v13 _cn_map:&__block_literal_global_23_0];
+    phoneNumbers = [v10 phoneNumbers];
+    v14 = [phoneNumbers _cn_map:&__block_literal_global_23_0];
     [v7 setPhoneNumbers:v14];
   }
 
@@ -124,40 +124,40 @@
   return v7;
 }
 
-+ (id)makeContactWithDisplayName:(id)a3
++ (id)makeContactWithDisplayName:(id)name
 {
-  v3 = a3;
+  nameCopy = name;
   v4 = objc_alloc_init(MEMORY[0x277CBDB38]);
-  if (v3 && [v3 length])
+  if (nameCopy && [nameCopy length])
   {
-    v5 = [MEMORY[0x277CFBE50] componentsFromString:v3];
-    v6 = [v5 givenName];
-    [v4 setGivenName:v6];
+    v5 = [MEMORY[0x277CFBE50] componentsFromString:nameCopy];
+    givenName = [v5 givenName];
+    [v4 setGivenName:givenName];
 
-    v7 = [v5 familyName];
-    [v4 setFamilyName:v7];
+    familyName = [v5 familyName];
+    [v4 setFamilyName:familyName];
 
-    v8 = [v5 middleName];
-    [v4 setMiddleName:v8];
+    middleName = [v5 middleName];
+    [v4 setMiddleName:middleName];
 
-    v9 = [v5 namePrefix];
-    [v4 setNamePrefix:v9];
+    namePrefix = [v5 namePrefix];
+    [v4 setNamePrefix:namePrefix];
 
-    v10 = [v5 nameSuffix];
-    [v4 setNameSuffix:v10];
+    nameSuffix = [v5 nameSuffix];
+    [v4 setNameSuffix:nameSuffix];
 
-    v11 = [v5 nickname];
-    [v4 setNickname:v11];
+    nickname = [v5 nickname];
+    [v4 setNickname:nickname];
   }
 
   return v4;
 }
 
-- (id)autocompleteSearchResultsWithPredictionContext:(id)a3
+- (id)autocompleteSearchResultsWithPredictionContext:(id)context
 {
-  v4 = a3;
-  v5 = [(_CNAPeopleSuggesterFacadeTestDouble *)self delegate];
-  [v5 didQueryPeopleSuggesterWithContext:v4];
+  contextCopy = context;
+  delegate = [(_CNAPeopleSuggesterFacadeTestDouble *)self delegate];
+  [delegate didQueryPeopleSuggesterWithContext:contextCopy];
 
   v6 = [(NSMutableArray *)self->_suggestions copy];
 

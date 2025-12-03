@@ -1,41 +1,41 @@
 @interface SCLScheduleAttributes
-- (SCLScheduleAttributes)initWithSchedule:(id)a3 options:(unint64_t)a4;
-- (void)_prepareWithRecurrences:(id)a3;
+- (SCLScheduleAttributes)initWithSchedule:(id)schedule options:(unint64_t)options;
+- (void)_prepareWithRecurrences:(id)recurrences;
 @end
 
 @implementation SCLScheduleAttributes
 
-- (SCLScheduleAttributes)initWithSchedule:(id)a3 options:(unint64_t)a4
+- (SCLScheduleAttributes)initWithSchedule:(id)schedule options:(unint64_t)options
 {
-  v6 = a3;
+  scheduleCopy = schedule;
   v12.receiver = self;
   v12.super_class = SCLScheduleAttributes;
   v7 = [(SCLScheduleAttributes *)&v12 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [scheduleCopy copy];
     schedule = v7->_schedule;
     v7->_schedule = v8;
 
-    v7->_validationOptions = a4;
-    v10 = [v6 recurrences];
-    [(SCLScheduleAttributes *)v7 _prepareWithRecurrences:v10];
+    v7->_validationOptions = options;
+    recurrences = [scheduleCopy recurrences];
+    [(SCLScheduleAttributes *)v7 _prepareWithRecurrences:recurrences];
   }
 
   return v7;
 }
 
-- (void)_prepareWithRecurrences:(id)a3
+- (void)_prepareWithRecurrences:(id)recurrences
 {
   v51 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  recurrencesCopy = recurrences;
   v46 = 0;
   v47 = &v46;
   v48 = 0x2020000000;
   v49 = 0;
   v5 = [MEMORY[0x277CBEB58] set];
   v6 = [MEMORY[0x277CBEB58] set];
-  v7 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v42 = 0;
   v43 = &v42;
   v44 = 0x2020000000;
@@ -45,13 +45,13 @@
   v34[2] = __49__SCLScheduleAttributes__prepareWithRecurrences___block_invoke;
   v34[3] = &unk_279B6CB08;
   v40 = &v42;
-  v8 = v7;
+  v8 = dictionary;
   v35 = v8;
-  v36 = self;
+  selfCopy = self;
   v41 = &v46;
   v9 = v6;
   v37 = v9;
-  v10 = v4;
+  v10 = recurrencesCopy;
   v38 = v10;
   v11 = v5;
   v39 = v11;
@@ -61,22 +61,22 @@
   self->_valid = v12 == 0;
   if (v12)
   {
-    v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    [v13 setObject:@"Recurrence validation failed." forKeyedSubscript:*MEMORY[0x277CCA450]];
+    nextObject = objc_alloc_init(MEMORY[0x277CBEB38]);
+    [nextObject setObject:@"Recurrence validation failed." forKeyedSubscript:*MEMORY[0x277CCA450]];
     v14 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:v47[3]];
-    [v13 setObject:v14 forKeyedSubscript:@"FailedValidations"];
+    [nextObject setObject:v14 forKeyedSubscript:@"FailedValidations"];
 
     if ([v11 count])
     {
-      [v13 setObject:v11 forKeyedSubscript:@"OverlappingRecurrences"];
+      [nextObject setObject:v11 forKeyedSubscript:@"OverlappingRecurrences"];
     }
 
     if ([v9 count])
     {
-      [v13 setObject:v9 forKeyedSubscript:@"CrossDayBoundaryRecurrences"];
+      [nextObject setObject:v9 forKeyedSubscript:@"CrossDayBoundaryRecurrences"];
     }
 
-    v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.schooltime" code:3 userInfo:v13];
+    v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"com.apple.schooltime" code:3 userInfo:nextObject];
     validationError = self->_validationError;
     self->_validationError = v15;
   }
@@ -84,15 +84,15 @@
   else
   {
     v17 = [v8 count] != 0;
-    v18 = [v8 objectEnumerator];
-    v13 = [v18 nextObject];
+    objectEnumerator = [v8 objectEnumerator];
+    nextObject = [objectEnumerator nextObject];
 
     v32 = 0u;
     v33 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v19 = [v8 objectEnumerator];
-    v20 = [v19 countByEnumeratingWithState:&v30 objects:v50 count:16];
+    objectEnumerator2 = [v8 objectEnumerator];
+    v20 = [objectEnumerator2 countByEnumeratingWithState:&v30 objects:v50 count:16];
     v26 = v11;
     v27 = v9;
     v28 = v8;
@@ -107,15 +107,15 @@
         {
           if (*v31 != v21)
           {
-            objc_enumerationMutation(v19);
+            objc_enumerationMutation(objectEnumerator2);
           }
 
           v24 = *(*(&v30 + 1) + 8 * i);
-          v22 &= [v24 isEqual:{v13, v26, v27, v28, v29}];
+          v22 &= [v24 isEqual:{nextObject, v26, v27, v28, v29}];
           v17 &= [v24 count] < 2;
         }
 
-        v20 = [v19 countByEnumeratingWithState:&v30 objects:v50 count:16];
+        v20 = [objectEnumerator2 countByEnumeratingWithState:&v30 objects:v50 count:16];
       }
 
       while (v20);

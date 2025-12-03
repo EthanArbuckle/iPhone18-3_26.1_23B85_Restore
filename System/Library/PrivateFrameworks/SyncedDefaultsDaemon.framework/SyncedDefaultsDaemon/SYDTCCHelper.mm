@@ -1,10 +1,10 @@
 @interface SYDTCCHelper
 + (id)sharedHelper;
-- (BOOL)isUbiquityDisabledForStoreIdentifier:(id)a3;
+- (BOOL)isUbiquityDisabledForStoreIdentifier:(id)identifier;
 - (SYDTCCHelper)init;
 - (id)findDisabledStoreIdentifiers;
 - (void)dealloc;
-- (void)enableUbiquityIfNecessaryForAuditToken:(id *)a3;
+- (void)enableUbiquityIfNecessaryForAuditToken:(id *)token;
 - (void)startListeningToTCCAccessChangedNotifications;
 - (void)stopListeningToTCCAccessChangedNotifications;
 @end
@@ -57,27 +57,27 @@ uint64_t __28__SYDTCCHelper_sharedHelper__block_invoke()
   [(SYDTCCHelper *)&v3 dealloc];
 }
 
-- (BOOL)isUbiquityDisabledForStoreIdentifier:(id)a3
+- (BOOL)isUbiquityDisabledForStoreIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v12 = 0;
   v13 = &v12;
   v14 = 0x2020000000;
   v15 = 0;
-  v5 = [(SYDTCCHelper *)self queue];
+  queue = [(SYDTCCHelper *)self queue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __53__SYDTCCHelper_isUbiquityDisabledForStoreIdentifier___block_invoke;
   block[3] = &unk_279D2F560;
-  v9 = v4;
-  v10 = self;
+  v9 = identifierCopy;
+  selfCopy = self;
   v11 = &v12;
-  v6 = v4;
-  dispatch_sync(v5, block);
+  v6 = identifierCopy;
+  dispatch_sync(queue, block);
 
-  LOBYTE(v4) = *(v13 + 24);
+  LOBYTE(identifierCopy) = *(v13 + 24);
   _Block_object_dispose(&v12, 8);
-  return v4;
+  return identifierCopy;
 }
 
 void __53__SYDTCCHelper_isUbiquityDisabledForStoreIdentifier___block_invoke(uint64_t a1)
@@ -178,8 +178,8 @@ void __53__SYDTCCHelper_isUbiquityDisabledForStoreIdentifier___block_invoke(uint
         {
           v16 = v4;
           v15 = [objc_alloc(MEMORY[0x277D6B878]) initWithBundleRecord:v13];
-          v17 = [v15 storeIdentifiers];
-          v18 = [v17 count];
+          storeIdentifiers = [v15 storeIdentifiers];
+          v18 = [storeIdentifiers count];
           v19 = SYDGetTCCLog();
           v20 = v19;
           if (v18)
@@ -189,11 +189,11 @@ void __53__SYDTCCHelper_isUbiquityDisabledForStoreIdentifier___block_invoke(uint
               *buf = v23;
               v32 = v11;
               v33 = 2112;
-              v34 = v17;
+              v34 = storeIdentifiers;
               _os_log_impl(&dword_26C384000, v20, OS_LOG_TYPE_INFO, "Bundle %@ has Ubiquity disabled and is entitled to store identifiers: %@", buf, 0x16u);
             }
 
-            [v24 addObjectsFromArray:v17];
+            [v24 addObjectsFromArray:storeIdentifiers];
           }
 
           else
@@ -235,7 +235,7 @@ void __53__SYDTCCHelper_isUbiquityDisabledForStoreIdentifier___block_invoke(uint
   return v24;
 }
 
-- (void)enableUbiquityIfNecessaryForAuditToken:(id *)a3
+- (void)enableUbiquityIfNecessaryForAuditToken:(id *)token
 {
   v34 = *MEMORY[0x277D85DE8];
   v4 = SYDGetTCCLog();
@@ -245,13 +245,13 @@ void __53__SYDTCCHelper_isUbiquityDisabledForStoreIdentifier___block_invoke(uint
   }
 
   v30 = 0;
-  v5 = *&a3->var0[4];
-  *buf = *a3->var0;
+  v5 = *&token->var0[4];
+  *buf = *token->var0;
   v33 = v5;
   v6 = [MEMORY[0x277CC1E90] bundleRecordForAuditToken:buf error:&v30];
   v7 = v30;
-  v8 = [v6 bundleIdentifier];
-  if (v8)
+  bundleIdentifier = [v6 bundleIdentifier];
+  if (bundleIdentifier)
   {
     v25 = v7;
     v26 = 0u;
@@ -301,10 +301,10 @@ LABEL_6:
         goto LABEL_17;
       }
 
-      v19 = [v18 BOOLValue];
+      bOOLValue = [v18 BOOLValue];
       v20 = SYDGetTCCLog();
       v21 = os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG);
-      if (v19)
+      if (bOOLValue)
       {
         if (v21)
         {
@@ -327,7 +327,7 @@ LABEL_17:
       if (os_log_type_enabled(v22, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        *&buf[4] = v8;
+        *&buf[4] = bundleIdentifier;
         _os_log_impl(&dword_26C384000, v22, OS_LOG_TYPE_INFO, "Enabling TCC for %@", buf, 0xCu);
       }
 

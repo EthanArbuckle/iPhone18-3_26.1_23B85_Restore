@@ -1,7 +1,7 @@
 @interface CNAssetInfo
 + (void)checkIfCinematic:(AVAsset *)asset completionHandler:(void *)completionHandler;
 + (void)loadFromAsset:(AVAsset *)asset completionHandler:(void *)completionHandler;
-+ (void)loadFromCinematicVideoTrack:(id)a3 completionHandler:(id)a4;
++ (void)loadFromCinematicVideoTrack:(id)track completionHandler:(id)handler;
 - (AVAsset)asset;
 - (CGAffineTransform)preferredTransform;
 - (CGSize)naturalSize;
@@ -11,7 +11,7 @@
 - (NSArray)sampleDataTrackIDs;
 - (NSArray)videoCompositionTrackIDs;
 - (NSArray)videoCompositionTracks;
-- (id)_initWithVideoTrack:(id)a3 disparityTrack:(id)a4 metadataTrack:(id)a5;
+- (id)_initWithVideoTrack:(id)track disparityTrack:(id)disparityTrack metadataTrack:(id)metadataTrack;
 @end
 
 @implementation CNAssetInfo
@@ -56,7 +56,7 @@ uint64_t __50__CNAssetInfo_checkIfCinematic_completionHandler___block_invoke(uin
   v11[3] = &unk_278A161A0;
   v12 = v6;
   v13 = v7;
-  v14 = a1;
+  selfCopy = self;
   v9 = v7;
   v10 = v6;
   [(AVAsset *)v10 loadTracksWithMediaType:v8 completionHandler:v11];
@@ -185,20 +185,20 @@ void __47__CNAssetInfo_loadFromAsset_completionHandler___block_invoke_2(uint64_t
   dispatch_group_leave(*(a1 + 32));
 }
 
-+ (void)loadFromCinematicVideoTrack:(id)a3 completionHandler:(id)a4
++ (void)loadFromCinematicVideoTrack:(id)track completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
+  trackCopy = track;
+  handlerCopy = handler;
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __61__CNAssetInfo_loadFromCinematicVideoTrack_completionHandler___block_invoke;
   v11[3] = &unk_278A161F0;
-  v12 = v6;
-  v13 = v7;
-  v14 = a1;
+  v12 = trackCopy;
+  v13 = handlerCopy;
+  selfCopy = self;
   v8 = *MEMORY[0x277CE61A8];
-  v9 = v7;
-  v10 = v6;
+  v9 = handlerCopy;
+  v10 = trackCopy;
   _CNLoadFirstAssociatedTrack(v10, v8, v11);
 }
 
@@ -290,10 +290,10 @@ LABEL_13:
 
 - (AVAsset)asset
 {
-  v2 = [(CNAssetInfo *)self cinematicVideoTrack];
-  v3 = [v2 asset];
+  cinematicVideoTrack = [(CNAssetInfo *)self cinematicVideoTrack];
+  asset = [cinematicVideoTrack asset];
 
-  return v3;
+  return asset;
 }
 
 - (CMTimeRange)timeRange
@@ -301,11 +301,11 @@ LABEL_13:
   *&retstr->start.epoch = 0u;
   *&retstr->duration.timescale = 0u;
   *&retstr->start.value = 0u;
-  v5 = [(CNAssetInfo *)self cinematicVideoTrack];
-  v6 = v5;
-  if (v5)
+  cinematicVideoTrack = [(CNAssetInfo *)self cinematicVideoTrack];
+  v6 = cinematicVideoTrack;
+  if (cinematicVideoTrack)
   {
-    [v5 timeRange];
+    [cinematicVideoTrack timeRange];
   }
 
   else
@@ -315,11 +315,11 @@ LABEL_13:
     *&retstr->start.value = 0u;
   }
 
-  v7 = [(CNAssetInfo *)self cinematicDisparityTrack];
-  v8 = v7;
-  if (v7)
+  cinematicDisparityTrack = [(CNAssetInfo *)self cinematicDisparityTrack];
+  v8 = cinematicDisparityTrack;
+  if (cinematicDisparityTrack)
   {
-    [v7 timeRange];
+    [cinematicDisparityTrack timeRange];
   }
 
   else
@@ -337,11 +337,11 @@ LABEL_13:
   *&retstr->start.epoch = v10;
   *&retstr->duration.timescale = *&v18.duration.timescale;
 
-  v11 = [(CNAssetInfo *)self cinematicMetadataTrack];
-  v12 = v11;
-  if (v11)
+  cinematicMetadataTrack = [(CNAssetInfo *)self cinematicMetadataTrack];
+  v12 = cinematicMetadataTrack;
+  if (cinematicMetadataTrack)
   {
-    [v11 timeRange];
+    [cinematicMetadataTrack timeRange];
   }
 
   else
@@ -364,8 +364,8 @@ LABEL_13:
 
 - (CGSize)naturalSize
 {
-  v2 = [(CNAssetInfo *)self cinematicVideoTrack];
-  [v2 naturalSize];
+  cinematicVideoTrack = [(CNAssetInfo *)self cinematicVideoTrack];
+  [cinematicVideoTrack naturalSize];
   v4 = v3;
   v6 = v5;
 
@@ -398,12 +398,12 @@ LABEL_13:
 
 - (CGAffineTransform)preferredTransform
 {
-  v4 = [(CNAssetInfo *)self cinematicVideoTrack];
-  if (v4)
+  cinematicVideoTrack = [(CNAssetInfo *)self cinematicVideoTrack];
+  if (cinematicVideoTrack)
   {
-    v6 = v4;
-    [v4 preferredTransform];
-    v4 = v6;
+    v6 = cinematicVideoTrack;
+    [cinematicVideoTrack preferredTransform];
+    cinematicVideoTrack = v6;
   }
 
   else
@@ -419,11 +419,11 @@ LABEL_13:
 - (NSArray)allCinematicTracks
 {
   v9[3] = *MEMORY[0x277D85DE8];
-  v3 = [(CNAssetInfo *)self cinematicVideoTrack];
-  v4 = [(CNAssetInfo *)self cinematicDisparityTrack];
-  v9[1] = v4;
-  v5 = [(CNAssetInfo *)self cinematicMetadataTrack];
-  v9[2] = v5;
+  cinematicVideoTrack = [(CNAssetInfo *)self cinematicVideoTrack];
+  cinematicDisparityTrack = [(CNAssetInfo *)self cinematicDisparityTrack];
+  v9[1] = cinematicDisparityTrack;
+  cinematicMetadataTrack = [(CNAssetInfo *)self cinematicMetadataTrack];
+  v9[2] = cinematicMetadataTrack;
   v6 = [MEMORY[0x277CBEA60] arrayWithObjects:v9 count:3];
 
   v7 = *MEMORY[0x277D85DE8];
@@ -434,10 +434,10 @@ LABEL_13:
 - (NSArray)videoCompositionTracks
 {
   v8[2] = *MEMORY[0x277D85DE8];
-  v3 = [(CNAssetInfo *)self cinematicVideoTrack];
-  v8[0] = v3;
-  v4 = [(CNAssetInfo *)self cinematicDisparityTrack];
-  v8[1] = v4;
+  cinematicVideoTrack = [(CNAssetInfo *)self cinematicVideoTrack];
+  v8[0] = cinematicVideoTrack;
+  cinematicDisparityTrack = [(CNAssetInfo *)self cinematicDisparityTrack];
+  v8[1] = cinematicDisparityTrack;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:2];
 
   v6 = *MEMORY[0x277D85DE8];
@@ -449,12 +449,12 @@ LABEL_13:
 {
   v12[2] = *MEMORY[0x277D85DE8];
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(CNAssetInfo *)self cinematicVideoTrack];
-  v5 = [v3 numberWithInt:{objc_msgSend(v4, "trackID")}];
+  cinematicVideoTrack = [(CNAssetInfo *)self cinematicVideoTrack];
+  v5 = [v3 numberWithInt:{objc_msgSend(cinematicVideoTrack, "trackID")}];
   v12[0] = v5;
   v6 = MEMORY[0x277CCABB0];
-  v7 = [(CNAssetInfo *)self cinematicDisparityTrack];
-  v8 = [v6 numberWithInt:{objc_msgSend(v7, "trackID")}];
+  cinematicDisparityTrack = [(CNAssetInfo *)self cinematicDisparityTrack];
+  v8 = [v6 numberWithInt:{objc_msgSend(cinematicDisparityTrack, "trackID")}];
   v12[1] = v8;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v12 count:2];
 
@@ -467,8 +467,8 @@ LABEL_13:
 {
   v8[1] = *MEMORY[0x277D85DE8];
   v2 = MEMORY[0x277CCABB0];
-  v3 = [(CNAssetInfo *)self cinematicMetadataTrack];
-  v4 = [v2 numberWithInt:{objc_msgSend(v3, "trackID")}];
+  cinematicMetadataTrack = [(CNAssetInfo *)self cinematicMetadataTrack];
+  v4 = [v2 numberWithInt:{objc_msgSend(cinematicMetadataTrack, "trackID")}];
   v8[0] = v4;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v8 count:1];
 
@@ -477,20 +477,20 @@ LABEL_13:
   return v5;
 }
 
-- (id)_initWithVideoTrack:(id)a3 disparityTrack:(id)a4 metadataTrack:(id)a5
+- (id)_initWithVideoTrack:(id)track disparityTrack:(id)disparityTrack metadataTrack:(id)metadataTrack
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  trackCopy = track;
+  disparityTrackCopy = disparityTrack;
+  metadataTrackCopy = metadataTrack;
   v15.receiver = self;
   v15.super_class = CNAssetInfo;
   v12 = [(CNAssetInfo *)&v15 init];
   p_isa = &v12->super.isa;
   if (v12)
   {
-    objc_storeStrong(&v12->_cinematicVideoTrack, a3);
-    objc_storeStrong(p_isa + 2, a4);
-    objc_storeStrong(p_isa + 3, a5);
+    objc_storeStrong(&v12->_cinematicVideoTrack, track);
+    objc_storeStrong(p_isa + 2, disparityTrack);
+    objc_storeStrong(p_isa + 3, metadataTrack);
   }
 
   return p_isa;

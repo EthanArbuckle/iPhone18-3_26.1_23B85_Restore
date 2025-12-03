@@ -21,11 +21,11 @@
 - (UIEdgeInsets)safeAreaInsetsPortrait;
 - (UIEdgeInsets)safeAreaInsetsPortraitUpsideDown;
 - (double)angleFromHostReferenceUprightDirection;
-- (double)defaultStatusBarHeightForOrientation:(int64_t)a3;
+- (double)defaultStatusBarHeightForOrientation:(int64_t)orientation;
 - (double)homeAffordanceOverlayAllowance;
 - (double)statusBarHeight;
 - (double)systemMinimumMargin;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (int64_t)accessibilityContrast;
 - (int64_t)deviceOrientation;
 - (int64_t)interfaceOrientationMode;
@@ -39,172 +39,172 @@
 - (unint64_t)scenePresenterRenderIdentifierForSnapshotting;
 - (unint64_t)statusBarStyleOverridesToSuppress;
 - (unsigned)hostContextIdentifierForSnapshotting;
-- (void)setAccessibilityContrast:(int64_t)a3;
-- (void)setAngleFromHostReferenceUprightDirection:(double)a3;
-- (void)setArtworkSubtype:(unint64_t)a3;
-- (void)setCanShowAlerts:(BOOL)a3;
-- (void)setCornerRadiusConfiguration:(id)a3;
-- (void)setDeactivationReasons:(unint64_t)a3;
-- (void)setDefaultStatusBarHeight:(double)a3 forOrientation:(int64_t)a4;
-- (void)setDeviceOrientation:(int64_t)a3;
-- (void)setDeviceOrientationEventsEnabled:(BOOL)a3;
-- (void)setEnhancedWindowingEnabled:(BOOL)a3;
-- (void)setForcedStatusBarForegroundTransparent:(BOOL)a3;
-- (void)setForcedStatusBarStyle:(id)a3;
-- (void)setHomeAffordanceOverlayAllowance:(double)a3;
-- (void)setHostContextIdentifierForSnapshotting:(unsigned int)a3;
-- (void)setHostReferenceAngleMode:(unint64_t)a3;
-- (void)setIdleModeEnabled:(BOOL)a3;
-- (void)setInLiveResize:(BOOL)a3;
-- (void)setInterfaceOrientationMapResolver:(id)a3;
-- (void)setInterfaceOrientationMode:(int64_t)a3;
-- (void)setIsCapturingContentForAdditionalRenderingDestination:(BOOL)a3;
-- (void)setPeripheryInsets:(UIEdgeInsets)a3;
-- (void)setPersistenceIdentifier:(id)a3;
-- (void)setPointerLockStatus:(int64_t)a3;
-- (void)setSafeAreaInsetsLandscapeLeft:(UIEdgeInsets)a3;
-- (void)setSafeAreaInsetsLandscapeRight:(UIEdgeInsets)a3;
-- (void)setSafeAreaInsetsPortrait:(UIEdgeInsets)a3;
-- (void)setSafeAreaInsetsPortraitUpsideDown:(UIEdgeInsets)a3;
-- (void)setScenePresenterRenderIdentifierForSnapshotting:(unint64_t)a3;
-- (void)setScreenBoundsIgnoresSceneOrientation:(BOOL)a3;
-- (void)setScreenReferenceDisplayModeStatus:(int64_t)a3;
-- (void)setStatusBarAvoidanceFrame:(CGRect)a3;
-- (void)setStatusBarDisabled:(BOOL)a3;
-- (void)setStatusBarHeight:(double)a3;
-- (void)setStatusBarParts:(int64_t)a3;
-- (void)setStatusBarStyleOverridesToSuppress:(unint64_t)a3;
-- (void)setSystemMinimumMargin:(double)a3;
-- (void)setTargetOfEventDeferringEnvironments:(id)a3;
-- (void)setUnderLock:(BOOL)a3;
-- (void)setUserInterfaceStyle:(int64_t)a3;
+- (void)setAccessibilityContrast:(int64_t)contrast;
+- (void)setAngleFromHostReferenceUprightDirection:(double)direction;
+- (void)setArtworkSubtype:(unint64_t)subtype;
+- (void)setCanShowAlerts:(BOOL)alerts;
+- (void)setCornerRadiusConfiguration:(id)configuration;
+- (void)setDeactivationReasons:(unint64_t)reasons;
+- (void)setDefaultStatusBarHeight:(double)height forOrientation:(int64_t)orientation;
+- (void)setDeviceOrientation:(int64_t)orientation;
+- (void)setDeviceOrientationEventsEnabled:(BOOL)enabled;
+- (void)setEnhancedWindowingEnabled:(BOOL)enabled;
+- (void)setForcedStatusBarForegroundTransparent:(BOOL)transparent;
+- (void)setForcedStatusBarStyle:(id)style;
+- (void)setHomeAffordanceOverlayAllowance:(double)allowance;
+- (void)setHostContextIdentifierForSnapshotting:(unsigned int)snapshotting;
+- (void)setHostReferenceAngleMode:(unint64_t)mode;
+- (void)setIdleModeEnabled:(BOOL)enabled;
+- (void)setInLiveResize:(BOOL)resize;
+- (void)setInterfaceOrientationMapResolver:(id)resolver;
+- (void)setInterfaceOrientationMode:(int64_t)mode;
+- (void)setIsCapturingContentForAdditionalRenderingDestination:(BOOL)destination;
+- (void)setPeripheryInsets:(UIEdgeInsets)insets;
+- (void)setPersistenceIdentifier:(id)identifier;
+- (void)setPointerLockStatus:(int64_t)status;
+- (void)setSafeAreaInsetsLandscapeLeft:(UIEdgeInsets)left;
+- (void)setSafeAreaInsetsLandscapeRight:(UIEdgeInsets)right;
+- (void)setSafeAreaInsetsPortrait:(UIEdgeInsets)portrait;
+- (void)setSafeAreaInsetsPortraitUpsideDown:(UIEdgeInsets)down;
+- (void)setScenePresenterRenderIdentifierForSnapshotting:(unint64_t)snapshotting;
+- (void)setScreenBoundsIgnoresSceneOrientation:(BOOL)orientation;
+- (void)setScreenReferenceDisplayModeStatus:(int64_t)status;
+- (void)setStatusBarAvoidanceFrame:(CGRect)frame;
+- (void)setStatusBarDisabled:(BOOL)disabled;
+- (void)setStatusBarHeight:(double)height;
+- (void)setStatusBarParts:(int64_t)parts;
+- (void)setStatusBarStyleOverridesToSuppress:(unint64_t)suppress;
+- (void)setSystemMinimumMargin:(double)margin;
+- (void)setTargetOfEventDeferringEnvironments:(id)environments;
+- (void)setUnderLock:(BOOL)lock;
+- (void)setUserInterfaceStyle:(int64_t)style;
 @end
 
 @implementation UIMutableApplicationSceneSettings
 
 - (BOOL)isCapturingContentForAdditionalRenderingDestination
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:44];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:44];
 
   return v3;
 }
 
 - (unint64_t)deactivationReasons
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:3];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:3];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (NSString)persistenceIdentifier
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:29];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:29];
 
   return v3;
 }
 
-- (void)setPersistenceIdentifier:(id)a3
+- (void)setPersistenceIdentifier:(id)identifier
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:29];
+  identifierCopy = identifier;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:identifierCopy forSetting:29];
 }
 
 - (BOOL)underLock
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  v4 = [v3 BOOLForSetting:1];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [otherSettings BOOLForSetting:1];
 
   return v4 | ([(UIMutableApplicationSceneSettings *)self deactivationReasons]>> 30) & 1;
 }
 
-- (void)setUnderLock:(BOOL)a3
+- (void)setUnderLock:(BOOL)lock
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:1];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:1];
 }
 
 - (unint64_t)statusBarStyleOverridesToSuppress
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:2];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:2];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setStatusBarStyleOverridesToSuppress:(unint64_t)a3
+- (void)setStatusBarStyleOverridesToSuppress:(unint64_t)suppress
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:a3];
-  [v5 setObject:v4 forSetting:2];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:suppress];
+  [otherSettings setObject:v4 forSetting:2];
 }
 
-- (void)setDeactivationReasons:(unint64_t)a3
+- (void)setDeactivationReasons:(unint64_t)reasons
 {
-  if ((([(UIMutableApplicationSceneSettings *)self deactivationReasons]>> 11) & 1) != ((a3 >> 11) & 1))
+  if ((([(UIMutableApplicationSceneSettings *)self deactivationReasons]>> 11) & 1) != ((reasons >> 11) & 1))
   {
-    [(UIMutableApplicationSceneSettings *)self setOccluded:(a3 & 0x800) != 0];
+    [(UIMutableApplicationSceneSettings *)self setOccluded:(reasons & 0x800) != 0];
   }
 
-  v6 = [(FBSSettings *)self otherSettings];
-  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v6 setObject:v5 forSetting:3];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:reasons];
+  [otherSettings setObject:v5 forSetting:3];
 }
 
 - (int64_t)userInterfaceStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:10];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:10];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setUserInterfaceStyle:(int64_t)a3
+- (void)setUserInterfaceStyle:(int64_t)style
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:10];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:style];
+  [otherSettings setObject:v4 forSetting:10];
 }
 
 - (NSNumber)forcedStatusBarStyle
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:4];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:4];
 
   return v3;
 }
 
-- (void)setForcedStatusBarStyle:(id)a3
+- (void)setForcedStatusBarStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:4];
+  styleCopy = style;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:styleCopy forSetting:4];
 }
 
 - (BOOL)forcedStatusBarForegroundTransparent
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:11];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:11];
 
   return v3;
 }
 
-- (void)setForcedStatusBarForegroundTransparent:(BOOL)a3
+- (void)setForcedStatusBarForegroundTransparent:(BOOL)transparent
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:11];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:11];
 }
 
 - (UIEdgeInsets)peripheryInsets
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:12];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:12];
   [v3 UIEdgeInsetsValue];
   v5 = v4;
   v7 = v6;
@@ -222,50 +222,50 @@
   return result;
 }
 
-- (void)setPeripheryInsets:(UIEdgeInsets)a3
+- (void)setPeripheryInsets:(UIEdgeInsets)insets
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(FBSSettings *)self otherSettings];
+  right = insets.right;
+  bottom = insets.bottom;
+  left = insets.left;
+  top = insets.top;
+  otherSettings = [(FBSSettings *)self otherSettings];
   *v9 = top;
   *&v9[1] = left;
   *&v9[2] = bottom;
   *&v9[3] = right;
   v8 = [MEMORY[0x1E696B098] valueWithBytes:v9 objCType:"{UIEdgeInsets=dddd}"];
-  [v7 setObject:v8 forSetting:12];
+  [otherSettings setObject:v8 forSetting:12];
 }
 
 - (int64_t)statusBarParts
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:19];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:19];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = 0xFFFFLL;
+    integerValue = 0xFFFFLL;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setStatusBarParts:(int64_t)a3
+- (void)setStatusBarParts:(int64_t)parts
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:19];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:parts];
+  [otherSettings setObject:v4 forSetting:19];
 }
 
 - (CGRect)statusBarAvoidanceFrame
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:20];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:20];
   [v3 CGRectValue];
   v5 = v4;
   v7 = v6;
@@ -283,86 +283,86 @@
   return result;
 }
 
-- (void)setStatusBarAvoidanceFrame:(CGRect)a3
+- (void)setStatusBarAvoidanceFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v7 = [(FBSSettings *)self otherSettings];
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  otherSettings = [(FBSSettings *)self otherSettings];
   *v9 = x;
   *&v9[1] = y;
   *&v9[2] = width;
   *&v9[3] = height;
   v8 = [MEMORY[0x1E696B098] valueWithBytes:v9 objCType:"{CGRect={CGPoint=dd}{CGSize=dd}}"];
-  [v7 setObject:v8 forSetting:20];
+  [otherSettings setObject:v8 forSetting:20];
 }
 
 - (double)statusBarHeight
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:24];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:24];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setStatusBarHeight:(double)a3
+- (void)setStatusBarHeight:(double)height
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:24];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:height];
+  [otherSettings setObject:v4 forSetting:24];
 }
 
-- (double)defaultStatusBarHeightForOrientation:(int64_t)a3
+- (double)defaultStatusBarHeightForOrientation:(int64_t)orientation
 {
-  if ((a3 - 1) > 3)
+  if ((orientation - 1) > 3)
   {
     return 0.0;
   }
 
-  v3 = qword_18A67B868[a3 - 1];
-  v4 = [(FBSSettings *)self otherSettings];
-  v5 = [v4 objectForSetting:v3];
+  v3 = qword_18A67B868[orientation - 1];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v5 = [otherSettings objectForSetting:v3];
   [v5 doubleValue];
   v7 = v6;
 
   return v7;
 }
 
-- (void)setDefaultStatusBarHeight:(double)a3 forOrientation:(int64_t)a4
+- (void)setDefaultStatusBarHeight:(double)height forOrientation:(int64_t)orientation
 {
-  if ((a4 - 1) <= 3)
+  if ((orientation - 1) <= 3)
   {
-    v6 = qword_18A67B868[a4 - 1];
-    v8 = [(FBSSettings *)self otherSettings];
-    v7 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-    [v8 setObject:v7 forSetting:v6];
+    v6 = qword_18A67B868[orientation - 1];
+    otherSettings = [(FBSSettings *)self otherSettings];
+    v7 = [MEMORY[0x1E696AD98] numberWithDouble:height];
+    [otherSettings setObject:v7 forSetting:v6];
   }
 }
 
 - (double)systemMinimumMargin
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:14];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:14];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setSystemMinimumMargin:(double)a3
+- (void)setSystemMinimumMargin:(double)margin
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:14];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:margin];
+  [otherSettings setObject:v4 forSetting:14];
 }
 
 - (UIEdgeInsets)safeAreaInsetsPortrait
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:15];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:15];
   [v3 UIEdgeInsetsValue];
   v5 = v4;
   v7 = v6;
@@ -380,42 +380,42 @@
   return result;
 }
 
-- (void)setSafeAreaInsetsPortrait:(UIEdgeInsets)a3
+- (void)setSafeAreaInsetsPortrait:(UIEdgeInsets)portrait
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(FBSSettings *)self otherSettings];
+  right = portrait.right;
+  bottom = portrait.bottom;
+  left = portrait.left;
+  top = portrait.top;
+  otherSettings = [(FBSSettings *)self otherSettings];
   *v9 = top;
   *&v9[1] = left;
   *&v9[2] = bottom;
   *&v9[3] = right;
   v8 = [MEMORY[0x1E696B098] valueWithBytes:v9 objCType:"{UIEdgeInsets=dddd}"];
-  [v7 setObject:v8 forSetting:15];
+  [otherSettings setObject:v8 forSetting:15];
 }
 
 - (double)homeAffordanceOverlayAllowance
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:22];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:22];
   [v3 doubleValue];
   v5 = v4;
 
   return v5;
 }
 
-- (void)setHomeAffordanceOverlayAllowance:(double)a3
+- (void)setHomeAffordanceOverlayAllowance:(double)allowance
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:22];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:allowance];
+  [otherSettings setObject:v4 forSetting:22];
 }
 
 - (UIEdgeInsets)safeAreaInsetsLandscapeLeft
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  v4 = [v3 objectForSetting:16];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [otherSettings objectForSetting:16];
 
   if (v4 || (-[FBSSettings otherSettings](self, "otherSettings"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForSetting:18], v4 = objc_claimAutoreleasedReturnValue(), v5, v4))
   {
@@ -444,25 +444,25 @@
   return result;
 }
 
-- (void)setSafeAreaInsetsLandscapeLeft:(UIEdgeInsets)a3
+- (void)setSafeAreaInsetsLandscapeLeft:(UIEdgeInsets)left
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(FBSSettings *)self otherSettings];
+  right = left.right;
+  bottom = left.bottom;
+  left = left.left;
+  top = left.top;
+  otherSettings = [(FBSSettings *)self otherSettings];
   *v9 = top;
   *&v9[1] = left;
   *&v9[2] = bottom;
   *&v9[3] = right;
   v8 = [MEMORY[0x1E696B098] valueWithBytes:v9 objCType:"{UIEdgeInsets=dddd}"];
-  [v7 setObject:v8 forSetting:16];
+  [otherSettings setObject:v8 forSetting:16];
 }
 
 - (UIEdgeInsets)safeAreaInsetsPortraitUpsideDown
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  v4 = [v3 objectForSetting:17];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [otherSettings objectForSetting:17];
 
   if (v4)
   {
@@ -490,25 +490,25 @@
   return result;
 }
 
-- (void)setSafeAreaInsetsPortraitUpsideDown:(UIEdgeInsets)a3
+- (void)setSafeAreaInsetsPortraitUpsideDown:(UIEdgeInsets)down
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(FBSSettings *)self otherSettings];
+  right = down.right;
+  bottom = down.bottom;
+  left = down.left;
+  top = down.top;
+  otherSettings = [(FBSSettings *)self otherSettings];
   *v9 = top;
   *&v9[1] = left;
   *&v9[2] = bottom;
   *&v9[3] = right;
   v8 = [MEMORY[0x1E696B098] valueWithBytes:v9 objCType:"{UIEdgeInsets=dddd}"];
-  [v7 setObject:v8 forSetting:17];
+  [otherSettings setObject:v8 forSetting:17];
 }
 
 - (UIEdgeInsets)safeAreaInsetsLandscapeRight
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  v4 = [v3 objectForSetting:18];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [otherSettings objectForSetting:18];
 
   if (v4 || (-[FBSSettings otherSettings](self, "otherSettings"), v5 = objc_claimAutoreleasedReturnValue(), [v5 objectForSetting:16], v4 = objc_claimAutoreleasedReturnValue(), v5, v4))
   {
@@ -537,142 +537,142 @@
   return result;
 }
 
-- (void)setSafeAreaInsetsLandscapeRight:(UIEdgeInsets)a3
+- (void)setSafeAreaInsetsLandscapeRight:(UIEdgeInsets)right
 {
-  right = a3.right;
-  bottom = a3.bottom;
-  left = a3.left;
-  top = a3.top;
-  v7 = [(FBSSettings *)self otherSettings];
+  right = right.right;
+  bottom = right.bottom;
+  left = right.left;
+  top = right.top;
+  otherSettings = [(FBSSettings *)self otherSettings];
   *v9 = top;
   *&v9[1] = left;
   *&v9[2] = bottom;
   *&v9[3] = right;
   v8 = [MEMORY[0x1E696B098] valueWithBytes:v9 objCType:"{UIEdgeInsets=dddd}"];
-  [v7 setObject:v8 forSetting:18];
+  [otherSettings setObject:v8 forSetting:18];
 }
 
 - (BSCornerRadiusConfiguration)cornerRadiusConfiguration
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:23];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:23];
 
   return v3;
 }
 
-- (void)setCornerRadiusConfiguration:(id)a3
+- (void)setCornerRadiusConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:23];
+  configurationCopy = configuration;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:configurationCopy forSetting:23];
 }
 
 - (BOOL)deviceOrientationEventsEnabled
 {
-  v3 = [(UIMutableApplicationSceneSettings *)self interfaceOrientationMode];
-  if (v3)
+  interfaceOrientationMode = [(UIMutableApplicationSceneSettings *)self interfaceOrientationMode];
+  if (interfaceOrientationMode)
   {
-    return v3 == 100;
+    return interfaceOrientationMode == 100;
   }
 
-  v5 = [(FBSSettings *)self otherSettings];
-  v6 = [v5 BOOLForSetting:6];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v6 = [otherSettings BOOLForSetting:6];
 
   return v6;
 }
 
-- (void)setDeviceOrientationEventsEnabled:(BOOL)a3
+- (void)setDeviceOrientationEventsEnabled:(BOOL)enabled
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:6];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:6];
 }
 
 - (BOOL)canShowAlerts
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:7];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:7];
 
   return v3;
 }
 
-- (void)setCanShowAlerts:(BOOL)a3
+- (void)setCanShowAlerts:(BOOL)alerts
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:7];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:7];
 }
 
 - (BOOL)idleModeEnabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:8];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:8];
 
   return v3;
 }
 
-- (void)setIdleModeEnabled:(BOOL)a3
+- (void)setIdleModeEnabled:(BOOL)enabled
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:8];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:8];
 }
 
 - (BOOL)statusBarDisabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:9];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:9];
 
   return v3;
 }
 
-- (void)setStatusBarDisabled:(BOOL)a3
+- (void)setStatusBarDisabled:(BOOL)disabled
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:9];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:9];
 }
 
 - (int64_t)deviceOrientation
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:13];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:13];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setDeviceOrientation:(int64_t)a3
+- (void)setDeviceOrientation:(int64_t)orientation
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:13];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:orientation];
+  [otherSettings setObject:v4 forSetting:13];
 }
 
 - (unint64_t)artworkSubtype
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:21];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:21];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setArtworkSubtype:(unint64_t)a3
+- (void)setArtworkSubtype:(unint64_t)subtype
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:21];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:subtype];
+  [otherSettings setObject:v4 forSetting:21];
 }
 
 - (unsigned)hostContextIdentifierForSnapshotting
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:30];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:30];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setHostContextIdentifierForSnapshotting:(unsigned int)a3
+- (void)setHostContextIdentifierForSnapshotting:(unsigned int)snapshotting
 {
-  if (a3)
+  if (snapshotting)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:?];
   }
@@ -682,22 +682,22 @@
     v5 = 0;
   }
 
-  v4 = [(FBSSettings *)self otherSettings];
-  [v4 setObject:v5 forSetting:30];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:v5 forSetting:30];
 }
 
 - (unint64_t)scenePresenterRenderIdentifierForSnapshotting
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:31];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:31];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setScenePresenterRenderIdentifierForSnapshotting:(unint64_t)a3
+- (void)setScenePresenterRenderIdentifierForSnapshotting:(unint64_t)snapshotting
 {
-  if (a3)
+  if (snapshotting)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:?];
   }
@@ -707,131 +707,131 @@
     v5 = 0;
   }
 
-  v4 = [(FBSSettings *)self otherSettings];
-  [v4 setObject:v5 forSetting:31];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:v5 forSetting:31];
 }
 
 - (int64_t)accessibilityContrast
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:32];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:32];
 
   if (v3)
   {
-    v4 = [v3 integerValue];
+    integerValue = [v3 integerValue];
   }
 
   else
   {
-    v4 = -1;
+    integerValue = -1;
   }
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setAccessibilityContrast:(int64_t)a3
+- (void)setAccessibilityContrast:(int64_t)contrast
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:32];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:contrast];
+  [otherSettings setObject:v4 forSetting:32];
 }
 
 - (int64_t)pointerLockStatus
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:33];
-  v4 = [v3 integerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:33];
+  integerValue = [v3 integerValue];
 
-  return v4;
+  return integerValue;
 }
 
-- (void)setPointerLockStatus:(int64_t)a3
+- (void)setPointerLockStatus:(int64_t)status
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:33];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:status];
+  [otherSettings setObject:v4 forSetting:33];
 }
 
 - (int64_t)interfaceOrientationMode
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:35];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:35];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setInterfaceOrientationMode:(int64_t)a3
+- (void)setInterfaceOrientationMode:(int64_t)mode
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:35];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:mode];
+  [otherSettings setObject:v4 forSetting:35];
 }
 
 - (BOOL)screenBoundsIgnoresSceneOrientation
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:41];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:41];
 
   return v3;
 }
 
-- (void)setScreenBoundsIgnoresSceneOrientation:(BOOL)a3
+- (void)setScreenBoundsIgnoresSceneOrientation:(BOOL)orientation
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:41];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:41];
 }
 
 - (int64_t)screenReferenceDisplayModeStatus
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:38];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:38];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setScreenReferenceDisplayModeStatus:(int64_t)a3
+- (void)setScreenReferenceDisplayModeStatus:(int64_t)status
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  [v5 setObject:v4 forSetting:38];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithInteger:status];
+  [otherSettings setObject:v4 forSetting:38];
 }
 
 - (BOOL)enhancedWindowingEnabled
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:40];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:40];
 
   return v3;
 }
 
-- (void)setEnhancedWindowingEnabled:(BOOL)a3
+- (void)setEnhancedWindowingEnabled:(BOOL)enabled
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:40];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:40];
 }
 
 - (unint64_t)hostReferenceAngleMode
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:43];
-  v4 = [v3 unsignedIntegerValue];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:43];
+  unsignedIntegerValue = [v3 unsignedIntegerValue];
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
-- (void)setHostReferenceAngleMode:(unint64_t)a3
+- (void)setHostReferenceAngleMode:(unint64_t)mode
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:a3];
-  [v5 setObject:v4 forSetting:43];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:mode];
+  [otherSettings setObject:v4 forSetting:43];
 }
 
 - (double)angleFromHostReferenceUprightDirection
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:42];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:42];
 
   if (v3)
   {
@@ -847,28 +847,28 @@
   return v5;
 }
 
-- (void)setAngleFromHostReferenceUprightDirection:(double)a3
+- (void)setAngleFromHostReferenceUprightDirection:(double)direction
 {
-  v5 = [(FBSSettings *)self otherSettings];
-  v4 = [MEMORY[0x1E696AD98] numberWithDouble:a3];
-  [v5 setObject:v4 forSetting:42];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v4 = [MEMORY[0x1E696AD98] numberWithDouble:direction];
+  [otherSettings setObject:v4 forSetting:42];
 }
 
 - (NSSet)targetOfEventDeferringEnvironments
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:36];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:36];
 
-  v4 = [(_UIEventDeferringEnvironmentsContainer *)v3 environments];
+  environments = [(_UIEventDeferringEnvironmentsContainer *)v3 environments];
 
-  return v4;
+  return environments;
 }
 
-- (void)setTargetOfEventDeferringEnvironments:(id)a3
+- (void)setTargetOfEventDeferringEnvironments:(id)environments
 {
-  v4 = a3;
-  v7 = v4;
-  if (v4 && [v4 count])
+  environmentsCopy = environments;
+  v7 = environmentsCopy;
+  if (environmentsCopy && [environmentsCopy count])
   {
     v5 = [[_UIEventDeferringEnvironmentsContainer alloc] _initWithEnvironments:v7];
   }
@@ -878,46 +878,46 @@
     v5 = 0;
   }
 
-  v6 = [(FBSSettings *)self otherSettings];
-  [v6 setObject:v5 forSetting:36];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:v5 forSetting:36];
 }
 
 - (BSInterfaceOrientationMapResolving)interfaceOrientationMapResolver
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 objectForSetting:37];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings objectForSetting:37];
 
   return v3;
 }
 
-- (void)setInterfaceOrientationMapResolver:(id)a3
+- (void)setInterfaceOrientationMapResolver:(id)resolver
 {
-  v4 = a3;
-  v5 = [(FBSSettings *)self otherSettings];
-  [v5 setObject:v4 forSetting:37];
+  resolverCopy = resolver;
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setObject:resolverCopy forSetting:37];
 }
 
 - (BOOL)inLiveResize
 {
-  v2 = [(FBSSettings *)self otherSettings];
-  v3 = [v2 BOOLForSetting:39];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  v3 = [otherSettings BOOLForSetting:39];
 
   return v3;
 }
 
-- (void)setInLiveResize:(BOOL)a3
+- (void)setInLiveResize:(BOOL)resize
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:39];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:39];
 }
 
-- (void)setIsCapturingContentForAdditionalRenderingDestination:(BOOL)a3
+- (void)setIsCapturingContentForAdditionalRenderingDestination:(BOOL)destination
 {
-  v3 = [(FBSSettings *)self otherSettings];
-  [v3 setFlag:BSSettingFlagForBool() forSetting:44];
+  otherSettings = [(FBSSettings *)self otherSettings];
+  [otherSettings setFlag:BSSettingFlagForBool() forSetting:44];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [UIApplicationSceneSettings alloc];
 

@@ -1,19 +1,19 @@
 @interface PXContentSyndicationPhotoKitAssetArrivalObserver
-- (PXContentSyndicationPhotoKitAssetArrivalObserver)initWithExpectedAssetUUIDs:(id)a3 inPhotoLibrary:(id)a4;
+- (PXContentSyndicationPhotoKitAssetArrivalObserver)initWithExpectedAssetUUIDs:(id)ds inPhotoLibrary:(id)library;
 - (void)dealloc;
-- (void)photoLibraryDidChange:(id)a3;
-- (void)updateWithFetchResult:(id)a3;
-- (void)waitForAssetArrivalsWithCompletion:(id)a3;
+- (void)photoLibraryDidChange:(id)change;
+- (void)updateWithFetchResult:(id)result;
+- (void)waitForAssetArrivalsWithCompletion:(id)completion;
 @end
 
 @implementation PXContentSyndicationPhotoKitAssetArrivalObserver
 
-- (void)photoLibraryDidChange:(id)a3
+- (void)photoLibraryDidChange:(id)change
 {
   v31 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self assetsFetchResult];
-  v6 = [v4 changeDetailsForFetchResult:v5];
+  changeCopy = change;
+  assetsFetchResult = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self assetsFetchResult];
+  v6 = [changeCopy changeDetailsForFetchResult:assetsFetchResult];
 
   if (v6)
   {
@@ -26,21 +26,21 @@
 
     if ([v6 hasIncrementalChanges])
     {
-      v8 = [v6 insertedObjects];
-      v9 = [v8 count];
+      insertedObjects = [v6 insertedObjects];
+      v9 = [insertedObjects count];
 
       if (v9)
       {
         v10 = MEMORY[0x1E695DF70];
-        v11 = [v6 insertedObjects];
-        v12 = [v10 arrayWithCapacity:{objc_msgSend(v11, "count")}];
+        insertedObjects2 = [v6 insertedObjects];
+        v12 = [v10 arrayWithCapacity:{objc_msgSend(insertedObjects2, "count")}];
 
         v24 = 0u;
         v25 = 0u;
         v22 = 0u;
         v23 = 0u;
-        v13 = [v6 insertedObjects];
-        v14 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+        insertedObjects3 = [v6 insertedObjects];
+        v14 = [insertedObjects3 countByEnumeratingWithState:&v22 objects:v30 count:16];
         if (v14)
         {
           v15 = v14;
@@ -52,17 +52,17 @@
             {
               if (*v23 != v16)
               {
-                objc_enumerationMutation(v13);
+                objc_enumerationMutation(insertedObjects3);
               }
 
-              v18 = [*(*(&v22 + 1) + 8 * v17) localIdentifier];
-              [v12 addObject:v18];
+              localIdentifier = [*(*(&v22 + 1) + 8 * v17) localIdentifier];
+              [v12 addObject:localIdentifier];
 
               ++v17;
             }
 
             while (v15 != v17);
-            v15 = [v13 countByEnumeratingWithState:&v22 objects:v30 count:16];
+            v15 = [insertedObjects3 countByEnumeratingWithState:&v22 objects:v30 count:16];
           }
 
           while (v15);
@@ -81,25 +81,25 @@
       }
     }
 
-    v21 = [v6 fetchResultAfterChanges];
-    [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self updateWithFetchResult:v21];
+    fetchResultAfterChanges = [v6 fetchResultAfterChanges];
+    [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self updateWithFetchResult:fetchResultAfterChanges];
   }
 }
 
-- (void)updateWithFetchResult:(id)a3
+- (void)updateWithFetchResult:(id)result
 {
   v21 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  objc_storeStrong(&self->_assetsFetchResult, a3);
+  resultCopy = result;
+  objc_storeStrong(&self->_assetsFetchResult, result);
   v6 = [(PHFetchResult *)self->_assetsFetchResult count];
-  v7 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self expectedUUIDs];
-  v8 = [v7 count];
+  expectedUUIDs = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self expectedUUIDs];
+  v8 = [expectedUUIDs count];
 
   if (v6 >= v8)
   {
     v9 = [MEMORY[0x1E695DF00] now];
-    v10 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self waitStartTimestamp];
-    [v9 timeIntervalSinceDate:v10];
+    waitStartTimestamp = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self waitStartTimestamp];
+    [v9 timeIntervalSinceDate:waitStartTimestamp];
     v12 = v11;
 
     v13 = PLSyndicationUIGetLog();
@@ -112,15 +112,15 @@
       _os_log_impl(&dword_1A3C1C000, v13, OS_LOG_TYPE_DEFAULT, "[AssetArrivalObserver] Expected number of assets (%lu) have arrived. Completing observation. Took %.3f seconds", &v17, 0x16u);
     }
 
-    v14 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self photoLibrary];
-    [v14 unregisterChangeObserver:self];
+    photoLibrary = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self photoLibrary];
+    [photoLibrary unregisterChangeObserver:self];
 
-    v15 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self completionHandler];
+    completionHandler = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self completionHandler];
     [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self setCompletionHandler:0];
-    if (v15)
+    if (completionHandler)
     {
-      v16 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self assetsFetchResult];
-      (v15)[2](v15, v16, 0);
+      assetsFetchResult = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self assetsFetchResult];
+      (completionHandler)[2](completionHandler, assetsFetchResult, 0);
     }
   }
 
@@ -138,33 +138,33 @@
   }
 }
 
-- (void)waitForAssetArrivalsWithCompletion:(id)a3
+- (void)waitForAssetArrivalsWithCompletion:(id)completion
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self photoLibrary];
-  v6 = [v5 librarySpecificFetchOptions];
+  completionCopy = completion;
+  photoLibrary = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
-  [v6 setIncludePlaceholderAssets:0];
-  [v6 setIncludeGuestAssets:0];
-  v7 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self expectedUUIDs];
-  v8 = [v7 count];
+  [librarySpecificFetchOptions setIncludePlaceholderAssets:0];
+  [librarySpecificFetchOptions setIncludeGuestAssets:0];
+  expectedUUIDs = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self expectedUUIDs];
+  v8 = [expectedUUIDs count];
 
   v9 = PLSyndicationUIGetLog();
   if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
   {
-    v10 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self expectedUUIDs];
+    expectedUUIDs2 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self expectedUUIDs];
     v23 = 134218242;
     v24 = v8;
     v25 = 2114;
-    v26 = v10;
+    v26 = expectedUUIDs2;
     _os_log_impl(&dword_1A3C1C000, v9, OS_LOG_TYPE_DEFAULT, "[AssetArrivalObserver] Waiting for the existence of %lu assets in the user library: %{public}@", &v23, 0x16u);
   }
 
   v11 = MEMORY[0x1E6978630];
-  v12 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self expectedUUIDs];
-  v13 = [v12 allObjects];
-  v14 = [v11 fetchAssetsWithLocalIdentifiers:v13 options:v6];
+  expectedUUIDs3 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self expectedUUIDs];
+  allObjects = [expectedUUIDs3 allObjects];
+  v14 = [v11 fetchAssetsWithLocalIdentifiers:allObjects options:librarySpecificFetchOptions];
 
   v15 = [(PHFetchResult *)v14 count];
   v16 = PLSyndicationUIGetLog();
@@ -178,9 +178,9 @@
       _os_log_impl(&dword_1A3C1C000, v16, OS_LOG_TYPE_DEFAULT, "[AssetArrivalObserver] Expected number of assets (%lu) already found in library. Returning early.", &v23, 0xCu);
     }
 
-    if (v4)
+    if (completionCopy)
     {
-      v4[2](v4, v14, 0);
+      completionCopy[2](completionCopy, v14, 0);
     }
   }
 
@@ -199,11 +199,11 @@
     v19 = [MEMORY[0x1E695DF00] now];
     [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self setWaitStartTimestamp:v19];
 
-    v20 = [v4 copy];
+    v20 = [completionCopy copy];
     [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self setCompletionHandler:v20];
 
-    v21 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self photoLibrary];
-    [v21 registerChangeObserver:self];
+    photoLibrary2 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)self photoLibrary];
+    [photoLibrary2 registerChangeObserver:self];
   }
 
   assetsFetchResult = self->_assetsFetchResult;
@@ -221,20 +221,20 @@
   [(PXContentSyndicationPhotoKitAssetArrivalObserver *)&v4 dealloc];
 }
 
-- (PXContentSyndicationPhotoKitAssetArrivalObserver)initWithExpectedAssetUUIDs:(id)a3 inPhotoLibrary:(id)a4
+- (PXContentSyndicationPhotoKitAssetArrivalObserver)initWithExpectedAssetUUIDs:(id)ds inPhotoLibrary:(id)library
 {
-  v6 = a3;
-  v7 = a4;
+  dsCopy = ds;
+  libraryCopy = library;
   v12.receiver = self;
   v12.super_class = PXContentSyndicationPhotoKitAssetArrivalObserver;
   v8 = [(PXContentSyndicationPhotoKitAssetArrivalObserver *)&v12 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [dsCopy copy];
     expectedUUIDs = v8->_expectedUUIDs;
     v8->_expectedUUIDs = v9;
 
-    objc_storeStrong(&v8->_photoLibrary, a4);
+    objc_storeStrong(&v8->_photoLibrary, library);
   }
 
   return v8;

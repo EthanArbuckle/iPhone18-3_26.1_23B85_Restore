@@ -1,7 +1,7 @@
 @interface VUIMetricsController
 + (id)_baseToVPAFMapping;
 + (id)sharedInstance;
-- (BOOL)arePageEventsIdentical:(id)a3 previousPage:(id)a4;
+- (BOOL)arePageEventsIdentical:(id)identical previousPage:(id)page;
 - (NSDictionary)baseFields;
 - (NSDictionary)baseFieldsForVPAF;
 - (NSDictionary)profileSelectorPageMetrics;
@@ -9,53 +9,53 @@
 - (NSDictionary)tabBarPageMetrics;
 - (VUIMetricsController)init;
 - (VUIScopedBackgroundTask)backgroundTask;
-- (id)_createDataAddingBaseAndPageFieldsToEventData:(id)a3 forEventType:(id)a4;
+- (id)_createDataAddingBaseAndPageFieldsToEventData:(id)data forEventType:(id)type;
 - (id)_getCurrentMetricsTopic;
 - (id)_getLocationAuthorizationStatus;
-- (id)_processPageFields:(id)a3 forEventType:(id)a4;
+- (id)_processPageFields:(id)fields forEventType:(id)type;
 - (id)createEventTime;
-- (id)extractPageMetricsFromEventData:(id)a3;
-- (id)getBasePerfData:(BOOL)a3;
-- (id)getMetricsEnhancedBuyParams:(id)a3;
+- (id)extractPageMetricsFromEventData:(id)data;
+- (id)getBasePerfData:(BOOL)data;
+- (id)getMetricsEnhancedBuyParams:(id)params;
 - (id)getMetricsOverlayForBundleOffer;
 - (id)getMetricsOverlayForWebContainer;
 - (id)getRecentEventsForDebuggerUI;
-- (id)iTunesLibraryPlaybackMediaMetricsForAdamID:(id)a3 mediaType:(id)a4;
-- (void)_handleGroupActivitiesSessionStateChange:(id)a3;
-- (void)_handleLocationChange:(id)a3;
-- (void)_handleServerConfigChange:(id)a3;
-- (void)_handleTabBarChange:(id)a3;
-- (void)_handleWLKAppLibChange:(id)a3;
-- (void)_handleWLKSettingsDidChange:(id)a3;
+- (id)iTunesLibraryPlaybackMediaMetricsForAdamID:(id)d mediaType:(id)type;
+- (void)_handleGroupActivitiesSessionStateChange:(id)change;
+- (void)_handleLocationChange:(id)change;
+- (void)_handleServerConfigChange:(id)change;
+- (void)_handleTabBarChange:(id)change;
+- (void)_handleWLKAppLibChange:(id)change;
+- (void)_handleWLKSettingsDidChange:(id)change;
 - (void)_initializeBaseFields;
 - (void)_recordAccount;
-- (void)_recordEnter:(id)a3;
-- (void)_recordEvent:(id)a3 withEventData:(id)a4 pageData:(id)a5;
-- (void)_recordEventWithJet:(id)a3 withEventData:(id)a4 pageData:(id)a5;
-- (void)_recordExit:(id)a3;
-- (void)_removeBaseFieldsForKeys:(id)a3;
-- (void)_saveRecentEvents:(id)a3;
-- (void)_setGDPRConsentStatus:(BOOL)a3;
-- (void)_updateBaseFieldsWithData:(id)a3;
+- (void)_recordEnter:(id)enter;
+- (void)_recordEvent:(id)event withEventData:(id)data pageData:(id)pageData;
+- (void)_recordEventWithJet:(id)jet withEventData:(id)data pageData:(id)pageData;
+- (void)_recordExit:(id)exit;
+- (void)_removeBaseFieldsForKeys:(id)keys;
+- (void)_saveRecentEvents:(id)events;
+- (void)_setGDPRConsentStatus:(BOOL)status;
+- (void)_updateBaseFieldsWithData:(id)data;
 - (void)flushMetrics;
-- (void)forceGDPRConsentStatus:(BOOL)a3;
+- (void)forceGDPRConsentStatus:(BOOL)status;
 - (void)recordAppBecameActive;
 - (void)recordAppLaunched;
 - (void)recordAppWillBackground;
 - (void)recordAppWillTerminate;
-- (void)recordDialog:(id)a3;
-- (void)recordImpressions:(id)a3 pageData:(id)a4;
-- (void)recordLog:(id)a3;
-- (void)recordMedia:(id)a3;
-- (void)recordOpenUrlLaunchWithExtURL:(id)a3 andOptions:(id)a4;
-- (void)recordPage:(id)a3;
-- (void)recordPageChange:(id)a3;
-- (void)recordPerfEvent:(id)a3;
-- (void)recordRawEvent:(id)a3;
+- (void)recordDialog:(id)dialog;
+- (void)recordImpressions:(id)impressions pageData:(id)data;
+- (void)recordLog:(id)log;
+- (void)recordMedia:(id)media;
+- (void)recordOpenUrlLaunchWithExtURL:(id)l andOptions:(id)options;
+- (void)recordPage:(id)page;
+- (void)recordPageChange:(id)change;
+- (void)recordPerfEvent:(id)event;
+- (void)recordRawEvent:(id)event;
 - (void)registerForBaseFieldChanges;
-- (void)setBackgroundTask:(id)a3;
-- (void)setBaseFields:(id)a3;
-- (void)setLastRecordedPageEventData:(id)a3;
+- (void)setBackgroundTask:(id)task;
+- (void)setBaseFields:(id)fields;
+- (void)setLastRecordedPageEventData:(id)data;
 - (void)setupMetricsController;
 - (void)updateGDPRConsentStatus;
 @end
@@ -68,7 +68,7 @@
   block[1] = 3221225472;
   block[2] = __38__VUIMetricsController_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_once_500 != -1)
   {
     dispatch_once(&sharedInstance_once_500, block);
@@ -102,8 +102,8 @@
   localMetricsRecorder = self->_localMetricsRecorder;
   self->_localMetricsRecorder = v11;
 
-  v13 = [MEMORY[0x1E69D5920] activeOrLocalAccount];
-  self->_isGDPRConsented = [MEMORY[0x1E698C790] acknowledgementNeededForPrivacyIdentifier:@"com.apple.onboarding.tvapp" account:v13] ^ 1;
+  activeOrLocalAccount = [MEMORY[0x1E69D5920] activeOrLocalAccount];
+  self->_isGDPRConsented = [MEMORY[0x1E698C790] acknowledgementNeededForPrivacyIdentifier:@"com.apple.onboarding.tvapp" account:activeOrLocalAccount] ^ 1;
   v14 = VUIDefaultLogObject();
   if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
   {
@@ -114,9 +114,9 @@
   }
 
   dispatch_async(self->_metricsDataDispatchSQ, &__block_literal_global_127);
-  v16 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   cachedGroupEvents = self->_cachedGroupEvents;
-  self->_cachedGroupEvents = v16;
+  self->_cachedGroupEvents = array;
 
   v18 = objc_opt_new();
   cachedUnifiedMessagingImpressions = self->_cachedUnifiedMessagingImpressions;
@@ -169,12 +169,12 @@ void __38__VUIMetricsController_sharedInstance__block_invoke(uint64_t a1)
 
 - (void)registerForBaseFieldChanges
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 addObserver:self selector:sel__handleTabBarChange_ name:@"TVAppRootViewControllerCurrentNavigationControllerDidChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__handleTabBarChange_ name:@"TVAppRootViewControllerCurrentNavigationControllerDidChangeNotification" object:0];
 
   v4 = _os_feature_enabled_impl();
-  v5 = [MEMORY[0x1E696AD88] defaultCenter];
-  v6 = v5;
+  defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+  v6 = defaultCenter2;
   if (v4)
   {
     v7 = +[_TtC8VideosUI40VUIUTSConfigurationProxyNotificationName configurationDidChange];
@@ -183,14 +183,14 @@ void __38__VUIMetricsController_sharedInstance__block_invoke(uint64_t a1)
 
   else
   {
-    [v5 addObserver:self selector:sel__handleServerConfigChange_ name:*MEMORY[0x1E69E1690] object:0];
+    [defaultCenter2 addObserver:self selector:sel__handleServerConfigChange_ name:*MEMORY[0x1E69E1690] object:0];
   }
 
-  v8 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v8 addObserver:self selector:sel__handleWLKSettingsDidChange_ name:*MEMORY[0x1E69E1728] object:0];
+  defaultCenter3 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__handleWLKSettingsDidChange_ name:*MEMORY[0x1E69E1728] object:0];
 
-  v9 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v9 addObserver:self selector:sel__handleWLKAppLibChange_ name:*MEMORY[0x1E69E1668] object:0];
+  defaultCenter4 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__handleWLKAppLibChange_ name:*MEMORY[0x1E69E1668] object:0];
 
   if (_os_feature_enabled_impl())
   {
@@ -203,18 +203,18 @@ void __38__VUIMetricsController_sharedInstance__block_invoke(uint64_t a1)
   }
 
   v13 = v10;
-  v11 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v11 addObserver:self selector:sel__handleLocationChange_ name:v13 object:0];
+  defaultCenter5 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel__handleLocationChange_ name:v13 object:0];
 
-  v12 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v12 addObserver:self selector:sel__handleGroupActivitiesSessionStateChange_ name:@"GroupActivitiesSessionStateDidChangeNotification" object:0];
+  defaultCenter6 = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter6 addObserver:self selector:sel__handleGroupActivitiesSessionStateChange_ name:@"GroupActivitiesSessionStateDidChangeNotification" object:0];
 }
 
 - (void)_initializeBaseFields
 {
-  v3 = [MEMORY[0x1E69E15D0] sharedSettings];
-  v4 = [MEMORY[0x1E69E1620] currentEnvironment];
-  v5 = [v4 entitlements];
+  mEMORY[0x1E69E15D0] = [MEMORY[0x1E69E15D0] sharedSettings];
+  currentEnvironment = [MEMORY[0x1E69E1620] currentEnvironment];
+  entitlements = [currentEnvironment entitlements];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v24 = 0;
   v25 = &v24;
@@ -224,10 +224,10 @@ void __38__VUIMetricsController_sharedInstance__block_invoke(uint64_t a1)
   v29 = @"unknown";
   v7 = dispatch_semaphore_create(0);
   v8 = +[VUIFeaturesConfiguration sharedInstance];
-  v9 = [v8 launchConfig];
-  v10 = [v9 useConfigCacheIgnoreExpiry];
+  launchConfig = [v8 launchConfig];
+  useConfigCacheIgnoreExpiry = [launchConfig useConfigCacheIgnoreExpiry];
 
-  if (v10)
+  if (useConfigCacheIgnoreExpiry)
   {
     v11 = 5;
   }
@@ -245,37 +245,37 @@ void __38__VUIMetricsController_sharedInstance__block_invoke(uint64_t a1)
     v22[3] = &unk_1E8735240;
     v23[1] = &v24;
     v23[0] = v7;
-    [_TtC8VideosUI25VUIUTSNetworkManagerProxy fetchConfiguration:v10 ^ 1u completion:v22];
+    [_TtC8VideosUI25VUIUTSNetworkManagerProxy fetchConfiguration:useConfigCacheIgnoreExpiry ^ 1u completion:v22];
     v12 = v23;
   }
 
   else
   {
-    v13 = [MEMORY[0x1E69E1508] sharedInstance];
+    mEMORY[0x1E69E1508] = [MEMORY[0x1E69E1508] sharedInstance];
     v20[0] = MEMORY[0x1E69E9820];
     v20[1] = 3221225472;
     v20[2] = __45__VUIMetricsController__initializeBaseFields__block_invoke_545;
     v20[3] = &unk_1E8735268;
     v21[1] = &v24;
     v21[0] = v7;
-    [v13 fetchConfigurationWithOptions:0 cachePolicy:v11 queryParameters:0 completion:v20];
+    [mEMORY[0x1E69E1508] fetchConfigurationWithOptions:0 cachePolicy:v11 queryParameters:0 completion:v20];
     v12 = v21;
   }
 
-  v14 = [v3 consentedBrands];
-  [v6 vui_setObjectIfNotNil:v14 forKey:@"cbids"];
+  consentedBrands = [mEMORY[0x1E69E15D0] consentedBrands];
+  [v6 vui_setObjectIfNotNil:consentedBrands forKey:@"cbids"];
 
-  v15 = [v3 deniedBrands];
-  [v6 vui_setObjectIfNotNil:v15 forKey:@"dbids"];
+  deniedBrands = [mEMORY[0x1E69E15D0] deniedBrands];
+  [v6 vui_setObjectIfNotNil:deniedBrands forKey:@"dbids"];
 
-  v16 = [v5 objectForKey:@"Installed"];
+  v16 = [entitlements objectForKey:@"Installed"];
   [v6 vui_setObjectIfNotNil:v16 forKey:@"ibids"];
 
-  v17 = [v5 objectForKey:@"Subscribed"];
+  v17 = [entitlements objectForKey:@"Subscribed"];
   [v6 vui_setObjectIfNotNil:v17 forKey:@"sbids"];
 
-  v18 = [(VUIMetricsController *)self _getLocationAuthorizationStatus];
-  [v6 setObject:v18 forKey:@"locationAuthorization"];
+  _getLocationAuthorizationStatus = [(VUIMetricsController *)self _getLocationAuthorizationStatus];
+  [v6 setObject:_getLocationAuthorizationStatus forKey:@"locationAuthorization"];
 
   v19 = dispatch_time(0, 60000000000);
   dispatch_semaphore_wait(v7, v19);
@@ -290,26 +290,26 @@ void __38__VUIMetricsController_sharedInstance__block_invoke(uint64_t a1)
 {
   if (_os_feature_enabled_impl())
   {
-    v2 = +[_TtC8VideosUI27VUILocationServiceProxyObjC authorizationStatus];
+    authorizationStatus = +[_TtC8VideosUI27VUILocationServiceProxyObjC authorizationStatus];
     v3 = @"approved";
     v4 = @"denied";
   }
 
   else
   {
-    v5 = [MEMORY[0x1E69E1540] defaultLocationManager];
-    v2 = [v5 authorizationStatus];
+    defaultLocationManager = [MEMORY[0x1E69E1540] defaultLocationManager];
+    authorizationStatus = [defaultLocationManager authorizationStatus];
 
     v3 = @"denied";
     v4 = @"approved";
   }
 
-  if (v2 != 1)
+  if (authorizationStatus != 1)
   {
     v4 = @"undetermined";
   }
 
-  if (v2)
+  if (authorizationStatus)
   {
     return v4;
   }
@@ -322,10 +322,10 @@ void __38__VUIMetricsController_sharedInstance__block_invoke(uint64_t a1)
 
 - (NSDictionary)baseFields
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_baseFields;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_baseFields;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -369,25 +369,25 @@ void __38__VUIMetricsController_sharedInstance__block_invoke(uint64_t a1)
   }
 }
 
-- (id)iTunesLibraryPlaybackMediaMetricsForAdamID:(id)a3 mediaType:(id)a4
+- (id)iTunesLibraryPlaybackMediaMetricsForAdamID:(id)d mediaType:(id)type
 {
   v15[2] = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  v6 = a4;
+  dCopy = d;
+  typeCopy = type;
   v7 = +[VUIFeaturesConfiguration sharedInstance];
-  v8 = [v7 nowPlayingConfig];
-  v9 = [v8 allowQOSReportingForiTunesLibraryPlayback];
+  nowPlayingConfig = [v7 nowPlayingConfig];
+  allowQOSReportingForiTunesLibraryPlayback = [nowPlayingConfig allowQOSReportingForiTunesLibraryPlayback];
 
   v10 = 0;
-  if (v5 && v9)
+  if (dCopy && allowQOSReportingForiTunesLibraryPlayback)
   {
-    if (([v5 isEqualToNumber:&unk_1F5E5D8D8] & 1) == 0 && objc_msgSend(v6, "length"))
+    if (([dCopy isEqualToNumber:&unk_1F5E5D8D8] & 1) == 0 && objc_msgSend(typeCopy, "length"))
     {
-      if ([v6 isEqualToString:*MEMORY[0x1E69D5EB8]] & 1) != 0 || (objc_msgSend(v6, "isEqualToString:", *MEMORY[0x1E69D5EC8]))
+      if ([typeCopy isEqualToString:*MEMORY[0x1E69D5EB8]] & 1) != 0 || (objc_msgSend(typeCopy, "isEqualToString:", *MEMORY[0x1E69D5EC8]))
       {
         v11 = @"movie";
 LABEL_8:
-        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"a=%@:s=%@:e=%@", v5, *MEMORY[0x1E69E1688], v11];
+        v12 = [MEMORY[0x1E696AEC0] stringWithFormat:@"a=%@:s=%@:e=%@", dCopy, *MEMORY[0x1E69E1688], v11];
         v14[0] = @"MediaIdentifier";
         v14[1] = @"iTunesServiceMonitoringKey";
         v15[0] = v12;
@@ -397,7 +397,7 @@ LABEL_8:
         goto LABEL_12;
       }
 
-      if ([v6 isEqualToString:*MEMORY[0x1E69D5ED0]])
+      if ([typeCopy isEqualToString:*MEMORY[0x1E69D5ED0]])
       {
         v11 = @"episode";
         goto LABEL_8;
@@ -441,11 +441,11 @@ LABEL_12:
   [(VUIMetricsController *)self _recordEnter:v4];
 }
 
-- (void)recordOpenUrlLaunchWithExtURL:(id)a3 andOptions:(id)a4
+- (void)recordOpenUrlLaunchWithExtURL:(id)l andOptions:(id)options
 {
   v31[3] = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  optionsCopy = options;
   self->_isAppJustDeepLinkOpened = 1;
   if (self->_isAppJustLaunched)
   {
@@ -458,13 +458,13 @@ LABEL_12:
   }
 
   v9 = v8;
-  v10 = [v7 objectForKey:*MEMORY[0x1E69DDB68]];
+  v10 = [optionsCopy objectForKey:*MEMORY[0x1E69DDB68]];
   if (!v10)
   {
-    v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:v6];
+    v11 = [objc_alloc(MEMORY[0x1E695DFF8]) initWithString:lCopy];
     v12 = +[VUIInterfaceFactory sharedInstance];
-    v13 = [v12 openURLHandler];
-    v10 = [v13 queryParameterStringfromURL:v11 parameter:@"refApp"];
+    openURLHandler = [v12 openURLHandler];
+    v10 = [openURLHandler queryParameterStringfromURL:v11 parameter:@"refApp"];
 
     if (v10)
     {
@@ -472,16 +472,16 @@ LABEL_12:
     }
   }
 
-  v15 = [v7 vui_dictionaryForKey:*MEMORY[0x1E69DDB58]];
+  v15 = [optionsCopy vui_dictionaryForKey:*MEMORY[0x1E69DDB58]];
   v16 = [v15 vui_stringForKey:*MEMORY[0x1E6963598]];
   v17 = @"navigate";
-  if (!v6)
+  if (!lCopy)
   {
     v17 = @"default";
   }
 
   v18 = v17;
-  if (([(__CFString *)v6 containsString:@"?play"]& 1) != 0 || [(__CFString *)v6 containsString:@"action=play"])
+  if (([(__CFString *)lCopy containsString:@"?play"]& 1) != 0 || [(__CFString *)lCopy containsString:@"action=play"])
   {
 
     v18 = @"play";
@@ -512,9 +512,9 @@ LABEL_12:
   v31[0] = v19;
   v31[1] = v20;
   v30[2] = @"openUrl";
-  if (v6)
+  if (lCopy)
   {
-    v21 = v6;
+    v21 = lCopy;
   }
 
   else
@@ -534,18 +534,18 @@ LABEL_12:
   v24 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v29 forKeys:v28 count:2];
   v25 = [v23 dictionaryWithDictionary:v24];
 
-  v26 = [(VUIMetricsController *)self cachedOpenUrlData];
-  [v25 addEntriesFromDictionary:v26];
+  cachedOpenUrlData = [(VUIMetricsController *)self cachedOpenUrlData];
+  [v25 addEntriesFromDictionary:cachedOpenUrlData];
 
   v27 = [v25 copy];
   [(VUIMetricsController *)self _recordEnter:v27];
 }
 
-- (void)_recordEnter:(id)a3
+- (void)_recordEnter:(id)enter
 {
   if (self->_shouldRecordEnter)
   {
-    [(VUIMetricsController *)self _recordEvent:@"enter" withEventData:a3];
+    [(VUIMetricsController *)self _recordEvent:@"enter" withEventData:enter];
     *&self->_shouldRecordEnter = 256;
     self->_isAppJustLaunched = 0;
   }
@@ -566,12 +566,12 @@ LABEL_12:
   v7[0] = @"type";
   v7[1] = @"destinationUrl";
   v8[0] = @"taskSwitch";
-  v3 = [(VUIMetricsController *)self exitEventDestinationUrl];
-  v4 = v3;
+  exitEventDestinationUrl = [(VUIMetricsController *)self exitEventDestinationUrl];
+  v4 = exitEventDestinationUrl;
   v5 = &stru_1F5DB25C0;
-  if (v3)
+  if (exitEventDestinationUrl)
   {
-    v5 = v3;
+    v5 = exitEventDestinationUrl;
   }
 
   v8[1] = v5;
@@ -581,40 +581,40 @@ LABEL_12:
   [(VUIMetricsController *)self setExitEventDestinationUrl:0];
 }
 
-- (void)_recordExit:(id)a3
+- (void)_recordExit:(id)exit
 {
   shouldRecordExit = self->_shouldRecordExit;
   if (shouldRecordExit)
   {
     *&self->_shouldRecordEnter = shouldRecordExit;
-    v6 = a3;
+    exitCopy = exit;
     [(VUIMetricsController *)self setShouldFlushMetrics:1];
-    [(VUIMetricsController *)self _recordEvent:@"exit" withEventData:v6];
+    [(VUIMetricsController *)self _recordEvent:@"exit" withEventData:exitCopy];
   }
 }
 
-- (void)recordPage:(id)a3
+- (void)recordPage:(id)page
 {
   v21 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  pageCopy = page;
   if (self->_isGDPRConsented || [(VUIMetricsController *)self _isSiri])
   {
-    v5 = [(VUIMetricsController *)self lastEventType];
-    v6 = [v5 isEqualToString:@"page"];
+    lastEventType = [(VUIMetricsController *)self lastEventType];
+    v6 = [lastEventType isEqualToString:@"page"];
 
-    if (v6 && ([v4 generateMetricsDataDictionary], v7 = objc_claimAutoreleasedReturnValue(), -[VUIMetricsController lastEventData](self, "lastEventData"), v8 = objc_claimAutoreleasedReturnValue(), v9 = -[VUIMetricsController arePageEventsIdentical:previousPage:](self, "arePageEventsIdentical:previousPage:", v7, v8), v8, v7, v9))
+    if (v6 && ([pageCopy generateMetricsDataDictionary], v7 = objc_claimAutoreleasedReturnValue(), -[VUIMetricsController lastEventData](self, "lastEventData"), v8 = objc_claimAutoreleasedReturnValue(), v9 = -[VUIMetricsController arePageEventsIdentical:previousPage:](self, "arePageEventsIdentical:previousPage:", v7, v8), v8, v7, v9))
     {
-      v10 = [(VUIMetricsController *)self lastEventData];
-      v11 = [v10 objectForKey:@"pageId"];
+      lastEventData = [(VUIMetricsController *)self lastEventData];
+      generateMetricsDataDictionary = [lastEventData objectForKey:@"pageId"];
 
-      v12 = [(VUIMetricsController *)self lastEventData];
-      v13 = [v12 objectForKey:@"pageType"];
+      lastEventData2 = [(VUIMetricsController *)self lastEventData];
+      v13 = [lastEventData2 objectForKey:@"pageType"];
 
       v14 = VUIDefaultLogObject();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         v17 = 138412546;
-        v18 = v11;
+        v18 = generateMetricsDataDictionary;
         v19 = 2112;
         v20 = v13;
         _os_log_impl(&dword_1E323F000, v14, OS_LOG_TYPE_INFO, "VUIMetricsController: Discarding duplicate page event pageId=%@ pageType=%@", &v17, 0x16u);
@@ -623,8 +623,8 @@ LABEL_12:
 
     else
     {
-      v11 = [v4 generateMetricsDataDictionary];
-      [(VUIMetricsController *)self _recordEvent:@"page" withEventData:v11 pageData:v11];
+      generateMetricsDataDictionary = [pageCopy generateMetricsDataDictionary];
+      [(VUIMetricsController *)self _recordEvent:@"page" withEventData:generateMetricsDataDictionary pageData:generateMetricsDataDictionary];
     }
   }
 
@@ -633,47 +633,47 @@ LABEL_12:
     v15 = VUIDefaultLogObject();
     if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
     {
-      v16 = [v4 pageId];
+      pageId = [pageCopy pageId];
       v17 = 138412290;
-      v18 = v16;
+      v18 = pageId;
       _os_log_impl(&dword_1E323F000, v15, OS_LOG_TYPE_INFO, "VUIMetricsController: caching page event until GDPR acceptance pageType:%@", &v17, 0xCu);
     }
 
-    [(VUIMetricsController *)self setGdprCachedPageEvent:v4];
+    [(VUIMetricsController *)self setGdprCachedPageEvent:pageCopy];
   }
 }
 
-- (void)recordPageChange:(id)a3
+- (void)recordPageChange:(id)change
 {
-  v4 = [a3 generateMetricsDataDictionary];
-  [(VUIMetricsController *)self _recordEvent:@"pageChange" withEventData:v4];
+  generateMetricsDataDictionary = [change generateMetricsDataDictionary];
+  [(VUIMetricsController *)self _recordEvent:@"pageChange" withEventData:generateMetricsDataDictionary];
 }
 
-- (void)recordDialog:(id)a3
+- (void)recordDialog:(id)dialog
 {
   v18 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(VUIMetricsController *)self lastEventType];
-  v6 = [v5 isEqualToString:@"dialog"];
+  dialogCopy = dialog;
+  lastEventType = [(VUIMetricsController *)self lastEventType];
+  v6 = [lastEventType isEqualToString:@"dialog"];
 
   if (!v6)
   {
     goto LABEL_8;
   }
 
-  v7 = [v4 objectForKey:@"dialogId"];
-  v8 = [v4 objectForKey:@"dialogType"];
-  v9 = [(VUIMetricsController *)self lastEventData];
-  v10 = [v9 objectForKey:@"dialogId"];
+  v7 = [dialogCopy objectForKey:@"dialogId"];
+  v8 = [dialogCopy objectForKey:@"dialogType"];
+  lastEventData = [(VUIMetricsController *)self lastEventData];
+  v10 = [lastEventData objectForKey:@"dialogId"];
 
-  v11 = [(VUIMetricsController *)self lastEventData];
-  v12 = [v11 objectForKey:@"dialogType"];
+  lastEventData2 = [(VUIMetricsController *)self lastEventData];
+  v12 = [lastEventData2 objectForKey:@"dialogType"];
 
   if (![v7 isEqualToString:v10] || !objc_msgSend(v8, "isEqualToString:", v12))
   {
 
 LABEL_8:
-    [(VUIMetricsController *)self _recordEvent:@"dialog" withEventData:v4];
+    [(VUIMetricsController *)self _recordEvent:@"dialog" withEventData:dialogCopy];
     goto LABEL_9;
   }
 
@@ -690,19 +690,19 @@ LABEL_8:
 LABEL_9:
 }
 
-- (void)recordImpressions:(id)a3 pageData:(id)a4
+- (void)recordImpressions:(id)impressions pageData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
+  impressionsCopy = impressions;
+  dataCopy = data;
   if (self->_isGDPRConsented)
   {
     [(VUIMetricsController *)self setShouldFlushMetrics:0];
-    v8 = [v6 vui_arrayForKey:@"impressions"];
+    v8 = [impressionsCopy vui_arrayForKey:@"impressions"];
     v9 = v8;
     if (v8 && [v8 count])
     {
-      v10 = [(VUIMetricsController *)self cachedUnifiedMessagingImpressions];
-      v11 = [v10 copy];
+      cachedUnifiedMessagingImpressions = [(VUIMetricsController *)self cachedUnifiedMessagingImpressions];
+      v11 = [cachedUnifiedMessagingImpressions copy];
 
       if (v11 && [v11 count])
       {
@@ -717,17 +717,17 @@ LABEL_9:
           _os_log_impl(&dword_1E323F000, v13, OS_LOG_TYPE_INFO, "VUIMetricsController: adding cached Unified Messaging impressions to impressions event", v17, 2u);
         }
 
-        v14 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:v6];
+        v14 = [MEMORY[0x1E695DF90] dictionaryWithDictionary:impressionsCopy];
         v15 = [v12 copy];
         [v14 setValue:v15 forKey:@"impressions"];
 
         v16 = [v14 copy];
-        [(VUIMetricsController *)self _recordEvent:@"impressions" withEventData:v16 pageData:v7];
+        [(VUIMetricsController *)self _recordEvent:@"impressions" withEventData:v16 pageData:dataCopy];
       }
 
       else
       {
-        [(VUIMetricsController *)self _recordEvent:@"impressions" withEventData:v6 pageData:v7];
+        [(VUIMetricsController *)self _recordEvent:@"impressions" withEventData:impressionsCopy pageData:dataCopy];
       }
     }
 
@@ -743,11 +743,11 @@ LABEL_9:
   }
 }
 
-- (void)recordMedia:(id)a3
+- (void)recordMedia:(id)media
 {
   if (self->_isGDPRConsented)
   {
-    [(VUIMetricsController *)self _recordEvent:@"media" withEventData:a3];
+    [(VUIMetricsController *)self _recordEvent:@"media" withEventData:media];
   }
 }
 
@@ -764,13 +764,13 @@ LABEL_9:
   v4 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v10 forKeys:v9 count:3];
   v5 = [v3 dictionaryWithDictionary:v4];
 
-  v6 = [(VUIMetricsController *)self cachedOpenUrlData];
-  if (v6)
+  cachedOpenUrlData = [(VUIMetricsController *)self cachedOpenUrlData];
+  if (cachedOpenUrlData)
   {
 
 LABEL_4:
-    v7 = [(VUIMetricsController *)self cachedOpenUrlData];
-    [v5 addEntriesFromDictionary:v7];
+    cachedOpenUrlData2 = [(VUIMetricsController *)self cachedOpenUrlData];
+    [v5 addEntriesFromDictionary:cachedOpenUrlData2];
 
     [(VUIMetricsController *)self setCachedOpenUrlData:0];
     self->_shouldRecordCachedAccount = 0;
@@ -787,11 +787,11 @@ LABEL_5:
   [(VUIMetricsController *)self _recordEvent:@"account" withEventData:v8];
 }
 
-- (void)recordRawEvent:(id)a3
+- (void)recordRawEvent:(id)event
 {
   v9 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"eventType"];
+  eventCopy = event;
+  v5 = [eventCopy objectForKeyedSubscript:@"eventType"];
   v6 = VUIDefaultLogObject();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -800,25 +800,25 @@ LABEL_5:
     _os_log_impl(&dword_1E323F000, v6, OS_LOG_TYPE_INFO, "VUIMetricsController: received raw event type:[%@]", &v7, 0xCu);
   }
 
-  [(VUIMetricsController *)self _recordEvent:v5 withEventData:v4];
+  [(VUIMetricsController *)self _recordEvent:v5 withEventData:eventCopy];
 }
 
-- (void)_recordEvent:(id)a3 withEventData:(id)a4 pageData:(id)a5
+- (void)_recordEvent:(id)event withEventData:(id)data pageData:(id)pageData
 {
   v34 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  eventCopy = event;
+  dataCopy = data;
+  pageDataCopy = pageData;
   if (![(VUIMetricsController *)self isInDebugMode])
   {
-    v11 = [(VUIMetricsController *)self baseFields];
-    v12 = [v11 vui_BOOLForKey:@"sharedActivity" defaultValue:0];
+    baseFields = [(VUIMetricsController *)self baseFields];
+    v12 = [baseFields vui_BOOLForKey:@"sharedActivity" defaultValue:0];
 
-    v13 = [(VUIMetricsController *)self baseFields];
-    v14 = [v13 vui_numberForKey:@"sharedActivityDevicesCurrent"];
-    v15 = [v14 integerValue];
+    baseFields2 = [(VUIMetricsController *)self baseFields];
+    v14 = [baseFields2 vui_numberForKey:@"sharedActivityDevicesCurrent"];
+    integerValue = [v14 integerValue];
 
-    if (v15)
+    if (integerValue)
     {
       v16 = 0;
     }
@@ -830,38 +830,38 @@ LABEL_5:
 
     if (v16 == 1)
     {
-      v17 = [v9 mutableCopy];
-      v18 = [(VUIMetricsController *)self createEventTime];
-      [(VUIScopedBackgroundTask *)v17 setValue:v18 forKey:@"eventTime"];
+      v17 = [dataCopy mutableCopy];
+      createEventTime = [(VUIMetricsController *)self createEventTime];
+      [(VUIScopedBackgroundTask *)v17 setValue:createEventTime forKey:@"eventTime"];
       v19 = VUIDefaultLogObject();
       if (os_log_type_enabled(v19, OS_LOG_TYPE_INFO))
       {
         *buf = 138412546;
-        v31 = v8;
+        v31 = eventCopy;
         v32 = 2112;
-        v33 = v18;
+        v33 = createEventTime;
         _os_log_impl(&dword_1E323F000, v19, OS_LOG_TYPE_INFO, "VUIMetricsController: caching %@ event with timestamp %@  until shared activity data is available", buf, 0x16u);
       }
 
-      v20 = self;
-      objc_sync_enter(v20);
-      v21 = [[VUICachedMetricsEvent alloc] initWithEventType:v8 eventData:v9];
-      v22 = [(VUIMetricsController *)v20 cachedGroupEvents];
-      [v22 addObject:v21];
+      selfCopy = self;
+      objc_sync_enter(selfCopy);
+      v21 = [[VUICachedMetricsEvent alloc] initWithEventType:eventCopy eventData:dataCopy];
+      cachedGroupEvents = [(VUIMetricsController *)selfCopy cachedGroupEvents];
+      [cachedGroupEvents addObject:v21];
 
-      objc_sync_exit(v20);
+      objc_sync_exit(selfCopy);
     }
 
     else
     {
-      if (([v8 isEqualToString:@"pageRender"] & 1) == 0 && (objc_msgSend(v8, "isEqualToString:", @"log") & 1) == 0)
+      if (([eventCopy isEqualToString:@"pageRender"] & 1) == 0 && (objc_msgSend(eventCopy, "isEqualToString:", @"log") & 1) == 0)
       {
-        [(VUIMetricsController *)self setLastEventType:v8];
-        [(VUIMetricsController *)self setLastEventData:v9];
+        [(VUIMetricsController *)self setLastEventType:eventCopy];
+        [(VUIMetricsController *)self setLastEventData:dataCopy];
       }
 
-      v23 = [(VUIMetricsController *)self currentTabIdentifier];
-      [(VUIMetricsController *)self setLastTabIdentifier:v23];
+      currentTabIdentifier = [(VUIMetricsController *)self currentTabIdentifier];
+      [(VUIMetricsController *)self setLastTabIdentifier:currentTabIdentifier];
 
       v17 = [[VUIScopedBackgroundTask alloc] initWithIdentifier:@"VUIMetricsBackgroundTask" expirationHandler:0];
       [(VUIMetricsController *)self setBackgroundTask:v17];
@@ -870,13 +870,13 @@ LABEL_5:
       v25[1] = 3221225472;
       v25[2] = __60__VUIMetricsController__recordEvent_withEventData_pageData___block_invoke;
       v25[3] = &unk_1E872E5D8;
-      v26 = v8;
-      v27 = v9;
-      v28 = self;
-      v29 = v10;
+      v26 = eventCopy;
+      v27 = dataCopy;
+      selfCopy2 = self;
+      v29 = pageDataCopy;
       dispatch_async(metricsDataDispatchSQ, v25);
 
-      v18 = v26;
+      createEventTime = v26;
     }
   }
 }
@@ -938,20 +938,20 @@ LABEL_11:
   }
 }
 
-- (void)_recordEventWithJet:(id)a3 withEventData:(id)a4 pageData:(id)a5
+- (void)_recordEventWithJet:(id)jet withEventData:(id)data pageData:(id)pageData
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  jetCopy = jet;
+  dataCopy = data;
+  pageDataCopy = pageData;
   if (!self->_isGDPRConsented)
   {
     v12 = @"xp_amp_tv_unidentified";
     goto LABEL_9;
   }
 
-  if (![v8 isEqualToString:@"pageRender"])
+  if (![jetCopy isEqualToString:@"pageRender"])
   {
-    if ([v8 isEqualToString:@"log"])
+    if ([jetCopy isEqualToString:@"log"])
     {
       v12 = @"xp_amp_tv_log";
     }
@@ -962,54 +962,54 @@ LABEL_11:
     }
 
 LABEL_9:
-    v11 = [(VUIMetricsController *)self lastRecordedPageEventData];
-    if (v10)
+    lastRecordedPageEventData = [(VUIMetricsController *)self lastRecordedPageEventData];
+    if (pageDataCopy)
     {
-      v13 = v10;
+      sidebarPageMetrics = pageDataCopy;
       goto LABEL_15;
     }
 
-    v14 = [v9 vui_stringForKey:@"pageType"];
+    v14 = [dataCopy vui_stringForKey:@"pageType"];
     if ([v14 isEqualToString:@"PreRoll"])
     {
     }
 
     else
     {
-      v15 = [v9 vui_stringForKey:@"pageType"];
+      v15 = [dataCopy vui_stringForKey:@"pageType"];
       v16 = [v15 isEqualToString:@"MediaPlayer"];
 
       if (!v16)
       {
-        v20 = [v9 vui_stringForKey:@"pageType"];
+        v20 = [dataCopy vui_stringForKey:@"pageType"];
         v21 = [v20 isEqualToString:@"Tab"];
 
         if (v21)
         {
-          v13 = [(VUIMetricsController *)self sidebarPageMetrics];
+          sidebarPageMetrics = [(VUIMetricsController *)self sidebarPageMetrics];
         }
 
         else
         {
-          v22 = [v9 vui_stringForKey:@"pageType"];
+          v22 = [dataCopy vui_stringForKey:@"pageType"];
           v23 = [v22 isEqualToString:@"TabBar"];
 
           if (v23)
           {
-            v13 = [(VUIMetricsController *)self tabBarPageMetrics];
+            sidebarPageMetrics = [(VUIMetricsController *)self tabBarPageMetrics];
           }
 
           else
           {
-            v24 = [v9 vui_stringForKey:@"pageType"];
+            v24 = [dataCopy vui_stringForKey:@"pageType"];
             v25 = [v24 isEqualToString:@"ProfileSelector"];
 
             if (!v25)
             {
-              if (v11)
+              if (lastRecordedPageEventData)
               {
-                v26 = [v9 vui_stringForKey:@"pageId"];
-                if (v26 && (-[NSObject pageId](v11, "pageId"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v26 isEqualToString:v27], v27, (v28 & 1) == 0))
+                v26 = [dataCopy vui_stringForKey:@"pageId"];
+                if (v26 && (-[NSObject pageId](lastRecordedPageEventData, "pageId"), v27 = objc_claimAutoreleasedReturnValue(), v28 = [v26 isEqualToString:v27], v27, (v28 & 1) == 0))
                 {
                   v30 = VUIDefaultLogObject();
                   if (os_log_type_enabled(v30, OS_LOG_TYPE_DEFAULT))
@@ -1018,16 +1018,16 @@ LABEL_9:
                     _os_log_impl(&dword_1E323F000, v30, OS_LOG_TYPE_DEFAULT, "VUIMetricsController: mismatch of lastPageEvent data and page data embedded in event. extracting embedded data ", buf, 2u);
                   }
 
-                  v29 = [(VUIMetricsController *)self extractPageMetricsFromEventData:v9];
+                  generateMetricsDataDictionary = [(VUIMetricsController *)self extractPageMetricsFromEventData:dataCopy];
                 }
 
                 else
                 {
-                  v29 = [v11 generateMetricsDataDictionary];
+                  generateMetricsDataDictionary = [lastRecordedPageEventData generateMetricsDataDictionary];
                 }
 
-                v31 = v29;
-                v17 = [(VUIMetricsController *)self _processPageFields:v29 forEventType:v8];
+                v31 = generateMetricsDataDictionary;
+                v17 = [(VUIMetricsController *)self _processPageFields:generateMetricsDataDictionary forEventType:jetCopy];
               }
 
               else
@@ -1038,15 +1038,15 @@ LABEL_9:
               goto LABEL_16;
             }
 
-            v13 = [(VUIMetricsController *)self profileSelectorPageMetrics];
+            sidebarPageMetrics = [(VUIMetricsController *)self profileSelectorPageMetrics];
           }
         }
 
 LABEL_15:
-        v17 = v13;
+        v17 = sidebarPageMetrics;
 LABEL_16:
         v18 = +[VUIMetricsJetEngine sharedInstance];
-        v19 = [v18 recordEventWithTopic:v12 eventType:v8 eventData:v9 pageData:v17];
+        v19 = [v18 recordEventWithTopic:v12 eventType:jetCopy eventData:dataCopy pageData:v17];
 
         v32[0] = MEMORY[0x1E69E9820];
         v32[1] = 3221225472;
@@ -1059,15 +1059,15 @@ LABEL_16:
       }
     }
 
-    v13 = [(VUIMetricsController *)self extractPageMetricsFromEventData:v9];
+    sidebarPageMetrics = [(VUIMetricsController *)self extractPageMetricsFromEventData:dataCopy];
     goto LABEL_15;
   }
 
-  v11 = VUIDefaultLogObject();
-  if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
+  lastRecordedPageEventData = VUIDefaultLogObject();
+  if (os_log_type_enabled(lastRecordedPageEventData, OS_LOG_TYPE_INFO))
   {
     *buf = 0;
-    _os_log_impl(&dword_1E323F000, v11, OS_LOG_TYPE_INFO, "Tried to publish render event to Jet which should be handled by PageRenderMetricsPresenter. Ignoring.", buf, 2u);
+    _os_log_impl(&dword_1E323F000, lastRecordedPageEventData, OS_LOG_TYPE_INFO, "Tried to publish render event to Jet which should be handled by PageRenderMetricsPresenter. Ignoring.", buf, 2u);
   }
 
 LABEL_17:
@@ -1114,17 +1114,17 @@ uint64_t __67__VUIMetricsController__recordEventWithJet_withEventData_pageData__
   return [v2 setBackgroundTask:0];
 }
 
-- (void)setLastRecordedPageEventData:(id)a3
+- (void)setLastRecordedPageEventData:(id)data
 {
-  v11 = a3;
-  v4 = [v11 pageId];
-  v5 = [v11 pageType];
-  if ([(__CFString *)v4 length]|| [(__CFString *)v5 length])
+  dataCopy = data;
+  pageId = [dataCopy pageId];
+  pageType = [dataCopy pageType];
+  if ([(__CFString *)pageId length]|| [(__CFString *)pageType length])
   {
-    v6 = [v11 eventData];
-    if (v4)
+    eventData = [dataCopy eventData];
+    if (pageId)
     {
-      v7 = v4;
+      v7 = pageId;
     }
 
     else
@@ -1132,9 +1132,9 @@ uint64_t __67__VUIMetricsController__recordEventWithJet_withEventData_pageData__
       v7 = &stru_1F5DB25C0;
     }
 
-    if (v5)
+    if (pageType)
     {
-      v8 = v5;
+      v8 = pageType;
     }
 
     else
@@ -1142,23 +1142,23 @@ uint64_t __67__VUIMetricsController__recordEventWithJet_withEventData_pageData__
       v8 = &stru_1F5DB25C0;
     }
 
-    v9 = [VUIMetricsPageEventData createWithPageId:v7 andPageType:v8 andEventData:v6];
+    v9 = [VUIMetricsPageEventData createWithPageId:v7 andPageType:v8 andEventData:eventData];
     lastRecordedPageEventData = self->_lastRecordedPageEventData;
     self->_lastRecordedPageEventData = v9;
   }
 }
 
-- (void)recordPerfEvent:(id)a3
+- (void)recordPerfEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   metricsDataDispatchSQ = self->_metricsDataDispatchSQ;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __40__VUIMetricsController_recordPerfEvent___block_invoke;
   v7[3] = &unk_1E872D990;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = eventCopy;
+  v6 = eventCopy;
   dispatch_async(metricsDataDispatchSQ, v7);
 }
 
@@ -1196,14 +1196,14 @@ void __40__VUIMetricsController_recordPerfEvent___block_invoke(uint64_t a1)
   }
 }
 
-- (id)getBasePerfData:(BOOL)a3
+- (id)getBasePerfData:(BOOL)data
 {
-  v3 = a3;
-  if (a3)
+  dataCopy = data;
+  if (data)
   {
     v5 = +[VUIPerfMetricsAppLaunchController sharedInstance];
-    v6 = [v5 appLaunchData];
-    v7 = [v6 mutableCopy];
+    appLaunchData = [v5 appLaunchData];
+    v7 = [appLaunchData mutableCopy];
   }
 
   else
@@ -1211,7 +1211,7 @@ void __40__VUIMetricsController_recordPerfEvent___block_invoke(uint64_t a1)
     v7 = objc_opt_new();
   }
 
-  v8 = [MEMORY[0x1E696AD98] numberWithBool:v3];
+  v8 = [MEMORY[0x1E696AD98] numberWithBool:dataCopy];
   [v7 setValue:v8 forKey:@"isAppLaunch"];
 
   v9 = [(VUIMetricsController *)self _createDataAddingBaseAndPageFieldsToEventData:v7 forEventType:@"pageRender"];
@@ -1219,17 +1219,17 @@ void __40__VUIMetricsController_recordPerfEvent___block_invoke(uint64_t a1)
   return v9;
 }
 
-- (void)recordLog:(id)a3
+- (void)recordLog:(id)log
 {
-  v4 = a3;
+  logCopy = log;
   metricsDataDispatchSQ = self->_metricsDataDispatchSQ;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __34__VUIMetricsController_recordLog___block_invoke;
   v7[3] = &unk_1E872D990;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = logCopy;
+  v6 = logCopy;
   dispatch_async(metricsDataDispatchSQ, v7);
 }
 
@@ -1322,46 +1322,46 @@ void __45__VUIMetricsController__initializeBaseFields__block_invoke_545(uint64_t
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (id)_processPageFields:(id)a3 forEventType:(id)a4
+- (id)_processPageFields:(id)fields forEventType:(id)type
 {
-  v5 = a3;
-  v6 = a4;
-  if (([v6 isEqualToString:@"enter"] & 1) != 0 || objc_msgSend(v6, "isEqualToString:", @"exit"))
+  fieldsCopy = fields;
+  typeCopy = type;
+  if (([typeCopy isEqualToString:@"enter"] & 1) != 0 || objc_msgSend(typeCopy, "isEqualToString:", @"exit"))
   {
-    v7 = [v5 objectForKey:@"sharedContent"];
+    v7 = [fieldsCopy objectForKey:@"sharedContent"];
 
     if (v7)
     {
-      v8 = [v5 mutableCopy];
+      v8 = [fieldsCopy mutableCopy];
       [v8 removeObjectForKey:@"sharedContent"];
       v9 = [v8 copy];
 
-      v5 = v9;
+      fieldsCopy = v9;
     }
   }
 
-  return v5;
+  return fieldsCopy;
 }
 
-- (id)_createDataAddingBaseAndPageFieldsToEventData:(id)a3 forEventType:(id)a4
+- (id)_createDataAddingBaseAndPageFieldsToEventData:(id)data forEventType:(id)type
 {
-  v5 = a3;
+  dataCopy = data;
   v6 = objc_opt_new();
   v7 = v6;
-  if (v5)
+  if (dataCopy)
   {
-    [v6 addEntriesFromDictionary:v5];
+    [v6 addEntriesFromDictionary:dataCopy];
   }
 
-  v8 = [(VUIMetricsController *)self baseFields];
+  baseFields = [(VUIMetricsController *)self baseFields];
 
-  if (v8)
+  if (baseFields)
   {
-    v9 = [(VUIMetricsController *)self baseFields];
-    [v7 addEntriesFromDictionary:v9];
+    baseFields2 = [(VUIMetricsController *)self baseFields];
+    [v7 addEntriesFromDictionary:baseFields2];
   }
 
-  v10 = [v5 vui_stringForKey:@"pageContext"];
+  v10 = [dataCopy vui_stringForKey:@"pageContext"];
   v11 = v10;
   if (v10)
   {
@@ -1370,8 +1370,8 @@ void __45__VUIMetricsController__initializeBaseFields__block_invoke_545(uint64_t
 
   else
   {
-    v13 = [(VUIMetricsPageEventData *)self->_lastRecordedPageEventData eventData];
-    v12 = [v13 vui_stringForKey:@"pageContext"];
+    eventData = [(VUIMetricsPageEventData *)self->_lastRecordedPageEventData eventData];
+    v12 = [eventData vui_stringForKey:@"pageContext"];
   }
 
   if (![v12 length])
@@ -1383,8 +1383,8 @@ void __45__VUIMetricsController__initializeBaseFields__block_invoke_545(uint64_t
 
     else
     {
-      v15 = [(VUIMetricsController *)self baseFields];
-      v16 = [v15 objectForKey:@"pageContext"];
+      baseFields3 = [(VUIMetricsController *)self baseFields];
+      v16 = [baseFields3 objectForKey:@"pageContext"];
 
       v17 = &stru_1F5DB25C0;
       if (v16)
@@ -1401,7 +1401,7 @@ void __45__VUIMetricsController__initializeBaseFields__block_invoke_545(uint64_t
   }
 
   [v7 setObject:v12 forKey:@"pageContext"];
-  v18 = [v5 vui_dictionaryForKey:@"pageDetails"];
+  v18 = [dataCopy vui_dictionaryForKey:@"pageDetails"];
   if ([v18 count])
   {
     [v7 setObject:v18 forKey:@"pageDetails"];
@@ -1411,8 +1411,8 @@ void __45__VUIMetricsController__initializeBaseFields__block_invoke_545(uint64_t
 
   if (!v19)
   {
-    v20 = [MEMORY[0x1E695E000] standardUserDefaults];
-    v21 = [v20 stringForKey:@"jsVersion"];
+    standardUserDefaults = [MEMORY[0x1E695E000] standardUserDefaults];
+    v21 = [standardUserDefaults stringForKey:@"jsVersion"];
 
     [v7 vui_setObjectIfNotNil:v21 forKey:@"resourceRevNum"];
   }
@@ -1422,8 +1422,8 @@ void __45__VUIMetricsController__initializeBaseFields__block_invoke_545(uint64_t
 
 - (id)createEventTime
 {
-  v2 = [MEMORY[0x1E695DF00] date];
-  [v2 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   v4 = v3 * 1000.0;
 
   v5 = MEMORY[0x1E696AD98];
@@ -1473,11 +1473,11 @@ void __45__VUIMetricsController__initializeBaseFields__block_invoke_545(uint64_t
   return v2;
 }
 
-- (id)extractPageMetricsFromEventData:(id)a3
+- (id)extractPageMetricsFromEventData:(id)data
 {
   v18[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 vui_stringForKey:@"pageId"];
+  dataCopy = data;
+  v4 = [dataCopy vui_stringForKey:@"pageId"];
   v5 = v4;
   if (v4)
   {
@@ -1491,7 +1491,7 @@ void __45__VUIMetricsController__initializeBaseFields__block_invoke_545(uint64_t
 
   v7 = v6;
 
-  v8 = [v3 vui_stringForKey:@"pageType"];
+  v8 = [dataCopy vui_stringForKey:@"pageType"];
   v9 = v8;
   if (v8)
   {
@@ -1505,7 +1505,7 @@ void __45__VUIMetricsController__initializeBaseFields__block_invoke_545(uint64_t
 
   v11 = v10;
 
-  v12 = [v3 vui_stringForKey:@"pageContext"];
+  v12 = [dataCopy vui_stringForKey:@"pageContext"];
 
   if (v12)
   {
@@ -1530,26 +1530,26 @@ void __45__VUIMetricsController__initializeBaseFields__block_invoke_545(uint64_t
   return v15;
 }
 
-- (void)forceGDPRConsentStatus:(BOOL)a3
+- (void)forceGDPRConsentStatus:(BOOL)status
 {
-  v3 = a3;
+  statusCopy = status;
   v7 = *MEMORY[0x1E69E9840];
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
     v6[0] = 67109120;
-    v6[1] = v3;
+    v6[1] = statusCopy;
     _os_log_impl(&dword_1E323F000, v5, OS_LOG_TYPE_INFO, "GDPR forced status: %d", v6, 8u);
   }
 
-  [(VUIMetricsController *)self _setGDPRConsentStatus:v3];
+  [(VUIMetricsController *)self _setGDPRConsentStatus:statusCopy];
 }
 
 - (void)updateGDPRConsentStatus
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69D5920] activeOrLocalAccount];
-  v4 = [MEMORY[0x1E698C790] acknowledgementNeededForPrivacyIdentifier:@"com.apple.onboarding.tvapp" account:v3] ^ 1;
+  activeOrLocalAccount = [MEMORY[0x1E69D5920] activeOrLocalAccount];
+  v4 = [MEMORY[0x1E698C790] acknowledgementNeededForPrivacyIdentifier:@"com.apple.onboarding.tvapp" account:activeOrLocalAccount] ^ 1;
   v5 = VUIDefaultLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -1561,7 +1561,7 @@ void __45__VUIMetricsController__initializeBaseFields__block_invoke_545(uint64_t
   [(VUIMetricsController *)self _setGDPRConsentStatus:v4];
 }
 
-- (void)_setGDPRConsentStatus:(BOOL)a3
+- (void)_setGDPRConsentStatus:(BOOL)status
 {
   metricsDataDispatchSQ = self->_metricsDataDispatchSQ;
   v4[0] = MEMORY[0x1E69E9820];
@@ -1569,7 +1569,7 @@ void __45__VUIMetricsController__initializeBaseFields__block_invoke_545(uint64_t
   v4[2] = __46__VUIMetricsController__setGDPRConsentStatus___block_invoke;
   v4[3] = &unk_1E872ECA0;
   v4[4] = self;
-  v5 = a3;
+  statusCopy = status;
   dispatch_async(metricsDataDispatchSQ, v4);
 }
 
@@ -1616,58 +1616,58 @@ void __46__VUIMetricsController__setGDPRConsentStatus___block_invoke(uint64_t a1
   [v2 flushMetrics];
 }
 
-- (void)setBaseFields:(id)a3
+- (void)setBaseFields:(id)fields
 {
-  v4 = a3;
+  fieldsCopy = fields;
   obj = self;
   objc_sync_enter(obj);
   baseFields = obj->_baseFields;
-  obj->_baseFields = v4;
+  obj->_baseFields = fieldsCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)_updateBaseFieldsWithData:(id)a3
+- (void)_updateBaseFieldsWithData:(id)data
 {
-  v8 = a3;
-  v4 = [(VUIMetricsController *)self baseFields];
+  dataCopy = data;
+  baseFields = [(VUIMetricsController *)self baseFields];
 
-  if (!v4)
+  if (!baseFields)
   {
     [(VUIMetricsController *)self _initializeBaseFields];
   }
 
-  v5 = [(VUIMetricsController *)self baseFields];
-  v6 = [v5 mutableCopy];
+  baseFields2 = [(VUIMetricsController *)self baseFields];
+  v6 = [baseFields2 mutableCopy];
 
-  if (v8)
+  if (dataCopy)
   {
-    [v6 addEntriesFromDictionary:v8];
+    [v6 addEntriesFromDictionary:dataCopy];
   }
 
   v7 = [v6 copy];
   [(VUIMetricsController *)self setBaseFields:v7];
 }
 
-- (void)_removeBaseFieldsForKeys:(id)a3
+- (void)_removeBaseFieldsForKeys:(id)keys
 {
-  v7 = a3;
-  v4 = [(VUIMetricsController *)self baseFields];
-  v5 = [v4 mutableCopy];
+  keysCopy = keys;
+  baseFields = [(VUIMetricsController *)self baseFields];
+  v5 = [baseFields mutableCopy];
 
-  if (v7)
+  if (keysCopy)
   {
-    [v5 removeObjectsForKeys:v7];
+    [v5 removeObjectsForKeys:keysCopy];
   }
 
   v6 = [v5 copy];
   [(VUIMetricsController *)self setBaseFields:v6];
 }
 
-- (void)_handleTabBarChange:(id)a3
+- (void)_handleTabBarChange:(id)change
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:@"VUIMetricsTabBarItemNotificationKey"];
+  userInfo = [change userInfo];
+  v5 = [userInfo objectForKey:@"VUIMetricsTabBarItemNotificationKey"];
 
   if ([v5 length])
   {
@@ -1694,10 +1694,10 @@ void __44__VUIMetricsController__handleTabBarChange___block_invoke(uint64_t a1)
   [v2 _updateBaseFieldsWithData:v3];
 }
 
-- (void)_handleServerConfigChange:(id)a3
+- (void)_handleServerConfigChange:(id)change
 {
-  v4 = [a3 object];
-  v5 = [v4 vui_dictionaryForKey:@"data"];
+  object = [change object];
+  v5 = [object vui_dictionaryForKey:@"data"];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
   v7 = [v5 objectForKey:@"vppaState"];
   [v6 vui_setObjectIfNotNil:v7 forKey:@"vppaState"];
@@ -1713,16 +1713,16 @@ void __44__VUIMetricsController__handleTabBarChange___block_invoke(uint64_t a1)
   dispatch_async(metricsDataDispatchSQ, v10);
 }
 
-- (void)_handleWLKSettingsDidChange:(id)a3
+- (void)_handleWLKSettingsDidChange:(id)change
 {
   v13[2] = *MEMORY[0x1E69E9840];
-  v4 = [MEMORY[0x1E69E15D0] sharedSettings];
+  mEMORY[0x1E69E15D0] = [MEMORY[0x1E69E15D0] sharedSettings];
   v12[0] = @"cbids";
-  v5 = [v4 consentedBrands];
-  v13[0] = v5;
+  consentedBrands = [mEMORY[0x1E69E15D0] consentedBrands];
+  v13[0] = consentedBrands;
   v12[1] = @"dbids";
-  v6 = [v4 deniedBrands];
-  v13[1] = v6;
+  deniedBrands = [mEMORY[0x1E69E15D0] deniedBrands];
+  v13[1] = deniedBrands;
   v7 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:v12 count:2];
 
   metricsDataDispatchSQ = self->_metricsDataDispatchSQ;
@@ -1736,15 +1736,15 @@ void __44__VUIMetricsController__handleTabBarChange___block_invoke(uint64_t a1)
   dispatch_async(metricsDataDispatchSQ, block);
 }
 
-- (void)_handleWLKAppLibChange:(id)a3
+- (void)_handleWLKAppLibChange:(id)change
 {
-  v4 = [MEMORY[0x1E69E1620] currentEnvironment];
-  v5 = [v4 entitlements];
+  currentEnvironment = [MEMORY[0x1E69E1620] currentEnvironment];
+  entitlements = [currentEnvironment entitlements];
   v6 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v7 = [v5 objectForKey:@"Installed"];
+  v7 = [entitlements objectForKey:@"Installed"];
   [v6 vui_setObjectIfNotNil:v7 forKey:@"ibids"];
 
-  v8 = [v5 objectForKey:@"Subscribed"];
+  v8 = [entitlements objectForKey:@"Subscribed"];
   [v6 vui_setObjectIfNotNil:v8 forKey:@"sbids"];
 
   metricsDataDispatchSQ = self->_metricsDataDispatchSQ;
@@ -1758,7 +1758,7 @@ void __44__VUIMetricsController__handleTabBarChange___block_invoke(uint64_t a1)
   dispatch_async(metricsDataDispatchSQ, v11);
 }
 
-- (void)_handleLocationChange:(id)a3
+- (void)_handleLocationChange:(id)change
 {
   objc_initWeak(&location, self);
   metricsDataDispatchSQ = self->_metricsDataDispatchSQ;
@@ -1784,17 +1784,17 @@ void __46__VUIMetricsController__handleLocationChange___block_invoke(uint64_t a1
   [WeakRetained _updateBaseFieldsWithData:v3];
 }
 
-- (void)_handleGroupActivitiesSessionStateChange:(id)a3
+- (void)_handleGroupActivitiesSessionStateChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   metricsDataDispatchSQ = self->_metricsDataDispatchSQ;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __65__VUIMetricsController__handleGroupActivitiesSessionStateChange___block_invoke;
   v7[3] = &unk_1E872D990;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = changeCopy;
+  selfCopy = self;
+  v6 = changeCopy;
   dispatch_async(metricsDataDispatchSQ, v7);
 }
 
@@ -1861,39 +1861,39 @@ void __65__VUIMetricsController__handleGroupActivitiesSessionStateChange___block
 
 - (VUIScopedBackgroundTask)backgroundTask
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_backgroundTask;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_backgroundTask;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
 
-- (void)setBackgroundTask:(id)a3
+- (void)setBackgroundTask:(id)task
 {
-  v4 = a3;
+  taskCopy = task;
   obj = self;
   objc_sync_enter(obj);
   backgroundTask = obj->_backgroundTask;
-  obj->_backgroundTask = v4;
+  obj->_backgroundTask = taskCopy;
 
   objc_sync_exit(obj);
 }
 
-- (void)_saveRecentEvents:(id)a3
+- (void)_saveRecentEvents:(id)events
 {
   v105[55] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (self && v4 && self->_isInternalBuild)
+  eventsCopy = events;
+  v5 = eventsCopy;
+  if (self && eventsCopy && self->_isInternalBuild)
   {
-    v6 = [v4 objectForKey:@"eventType"];
+    v6 = [eventsCopy objectForKey:@"eventType"];
     if ([v6 isEqualToString:@"pageRender"])
     {
-      v7 = [MEMORY[0x1E69DF6E0] sharedInstance];
-      v8 = [v7 metricsPageRenderLoggingEnabled];
+      mEMORY[0x1E69DF6E0] = [MEMORY[0x1E69DF6E0] sharedInstance];
+      metricsPageRenderLoggingEnabled = [mEMORY[0x1E69DF6E0] metricsPageRenderLoggingEnabled];
 
-      if (!v8)
+      if (!metricsPageRenderLoggingEnabled)
       {
         goto LABEL_73;
       }
@@ -1903,16 +1903,16 @@ void __65__VUIMetricsController__handleGroupActivitiesSessionStateChange___block
     {
     }
 
-    v9 = [MEMORY[0x1E69DF6E0] sharedInstance];
-    v10 = [v9 metricsLoggingEnabled];
+    mEMORY[0x1E69DF6E0]2 = [MEMORY[0x1E69DF6E0] sharedInstance];
+    metricsLoggingEnabled = [mEMORY[0x1E69DF6E0]2 metricsLoggingEnabled];
 
-    if (v10)
+    if (metricsLoggingEnabled)
     {
       [(NSHashTable *)self->_savedRecentEvents addObject:v5];
-      v11 = [MEMORY[0x1E69DF6E0] sharedInstance];
-      v12 = [v11 metricsExpandedLoggingEnabled];
+      mEMORY[0x1E69DF6E0]3 = [MEMORY[0x1E69DF6E0] sharedInstance];
+      metricsExpandedLoggingEnabled = [mEMORY[0x1E69DF6E0]3 metricsExpandedLoggingEnabled];
 
-      if (v12)
+      if (metricsExpandedLoggingEnabled)
       {
         v90 = 0;
         v13 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v5 options:1 error:&v90];
@@ -1924,9 +1924,9 @@ void __65__VUIMetricsController__handleGroupActivitiesSessionStateChange___block
           if (os_log_type_enabled(v16, OS_LOG_TYPE_INFO))
           {
             v17 = [v5 objectForKeyedSubscript:@"eventType"];
-            v18 = [v17 uppercaseString];
+            uppercaseString = [v17 uppercaseString];
             *buf = 138412546;
-            v92 = v18;
+            v92 = uppercaseString;
             v93 = 2112;
             v94 = v15;
             _os_log_impl(&dword_1E323F000, v16, OS_LOG_TYPE_INFO, "========== %@ Metrics Event ========== (all fields):%@", buf, 0x16u);
@@ -2228,22 +2228,22 @@ void __65__VUIMetricsController__handleGroupActivitiesSessionStateChange___block
         }
 
         v58 = [v14 objectForKey:@"sharedActivity"];
-        v59 = [v58 BOOLValue];
+        bOOLValue = [v58 BOOLValue];
 
-        if ((v59 & 1) == 0)
+        if ((bOOLValue & 1) == 0)
         {
           [v14 removeObjectsForKeys:&unk_1F5E5EAD8];
         }
 
-        v60 = [v5 allKeys];
-        v61 = [v5 allKeys];
-        v62 = [v61 indexesOfObjectsPassingTest:&__block_literal_global_735];
-        v63 = [v60 objectsAtIndexes:v62];
+        allKeys = [v5 allKeys];
+        allKeys2 = [v5 allKeys];
+        v62 = [allKeys2 indexesOfObjectsPassingTest:&__block_literal_global_735];
+        v63 = [allKeys objectsAtIndexes:v62];
 
-        v64 = [v5 allKeys];
-        v65 = [v5 allKeys];
-        v66 = [v65 indexesOfObjectsPassingTest:&__block_literal_global_746];
-        v67 = [v64 objectsAtIndexes:v66];
+        allKeys3 = [v5 allKeys];
+        allKeys4 = [v5 allKeys];
+        v66 = [allKeys4 indexesOfObjectsPassingTest:&__block_literal_global_746];
+        v67 = [allKeys3 objectsAtIndexes:v66];
 
         v15 = v75;
         [v14 removeObjectsForKeys:v75];
@@ -2253,9 +2253,9 @@ void __65__VUIMetricsController__handleGroupActivitiesSessionStateChange___block
         v69 = VUIDefaultLogObject();
         if (os_log_type_enabled(v69, OS_LOG_TYPE_INFO))
         {
-          v70 = [v13 uppercaseString];
+          uppercaseString2 = [v13 uppercaseString];
           *buf = 138413058;
-          v92 = v70;
+          v92 = uppercaseString2;
           v93 = 2112;
           v94 = v14;
           v95 = 2112;
@@ -2335,19 +2335,19 @@ void __52__VUIMetricsController_getRecentEventsForDebuggerUI__block_invoke(uint6
   *(v3 + 40) = v2;
 }
 
-- (BOOL)arePageEventsIdentical:(id)a3 previousPage:(id)a4
+- (BOOL)arePageEventsIdentical:(id)identical previousPage:(id)page
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 objectForKey:@"pageId"];
-  v9 = [v7 objectForKey:@"pageType"];
-  v10 = [(VUIMetricsController *)self currentTabIdentifier];
-  v11 = [v6 objectForKey:@"pageId"];
-  v12 = [v6 objectForKey:@"pageType"];
-  v13 = [(VUIMetricsController *)self lastTabIdentifier];
-  v14 = [v6 objectForKey:@"searchTerm"];
+  pageCopy = page;
+  identicalCopy = identical;
+  v8 = [identicalCopy objectForKey:@"pageId"];
+  v9 = [identicalCopy objectForKey:@"pageType"];
+  currentTabIdentifier = [(VUIMetricsController *)self currentTabIdentifier];
+  v11 = [pageCopy objectForKey:@"pageId"];
+  v12 = [pageCopy objectForKey:@"pageType"];
+  lastTabIdentifier = [(VUIMetricsController *)self lastTabIdentifier];
+  v14 = [pageCopy objectForKey:@"searchTerm"];
 
-  v15 = [v7 objectForKey:@"searchTerm"];
+  v15 = [identicalCopy objectForKey:@"searchTerm"];
 
   if (v15 | v14)
   {
@@ -2359,37 +2359,37 @@ void __52__VUIMetricsController_getRecentEventsForDebuggerUI__block_invoke(uint6
     v16 = 1;
   }
 
-  v17 = [v8 isEqualToString:v11] && (objc_msgSend(v9, "isEqualToString:", v12) & v16) == 1 && (objc_msgSend(v13, "isEqualToString:", v10) & 1) != 0;
+  v17 = [v8 isEqualToString:v11] && (objc_msgSend(v9, "isEqualToString:", v12) & v16) == 1 && (objc_msgSend(lastTabIdentifier, "isEqualToString:", currentTabIdentifier) & 1) != 0;
 
   return v17;
 }
 
-- (id)getMetricsEnhancedBuyParams:(id)a3
+- (id)getMetricsEnhancedBuyParams:(id)params
 {
   v4 = MEMORY[0x1E696AD60];
-  v5 = a3;
-  v6 = [[v4 alloc] initWithString:v5];
+  paramsCopy = params;
+  v6 = [[v4 alloc] initWithString:paramsCopy];
 
-  v7 = [MEMORY[0x1E696AAE8] mainBundle];
-  v8 = [v7 bundleIdentifier];
-  [v6 appendFormat:@"&mtApp=%@", v8];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
+  [v6 appendFormat:@"&mtApp=%@", bundleIdentifier];
 
-  v9 = [MEMORY[0x1E69DC938] currentDevice];
-  v10 = [v9 systemVersion];
-  [v6 appendFormat:@"&mtOsVersion=%@", v10];
+  currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+  systemVersion = [currentDevice systemVersion];
+  [v6 appendFormat:@"&mtOsVersion=%@", systemVersion];
 
   lastRecordedPageEventData = self->_lastRecordedPageEventData;
   if (lastRecordedPageEventData)
   {
-    v12 = [(VUIMetricsPageEventData *)lastRecordedPageEventData pageId];
-    [v6 appendFormat:@"&mtPageId=%@", v12];
+    pageId = [(VUIMetricsPageEventData *)lastRecordedPageEventData pageId];
+    [v6 appendFormat:@"&mtPageId=%@", pageId];
 
-    v13 = [(VUIMetricsPageEventData *)self->_lastRecordedPageEventData pageType];
-    [v6 appendFormat:@"&mtPageType=%@", v13];
+    pageType = [(VUIMetricsPageEventData *)self->_lastRecordedPageEventData pageType];
+    [v6 appendFormat:@"&mtPageType=%@", pageType];
   }
 
-  v14 = [(VUIMetricsController *)self baseFields];
-  v15 = [v14 objectForKey:@"pageContext"];
+  baseFields = [(VUIMetricsController *)self baseFields];
+  v15 = [baseFields objectForKey:@"pageContext"];
 
   if (v15)
   {
@@ -2403,15 +2403,15 @@ void __52__VUIMetricsController_getRecentEventsForDebuggerUI__block_invoke(uint6
     [v6 appendFormat:@"&mtOsBuildNumber=%@", v16];
   }
 
-  v18 = [(VUIMetricsController *)self _getCurrentMetricsTopic];
-  [v6 appendFormat:@"&mtTopic=%@", v18];
+  _getCurrentMetricsTopic = [(VUIMetricsController *)self _getCurrentMetricsTopic];
+  [v6 appendFormat:@"&mtTopic=%@", _getCurrentMetricsTopic];
 
-  v19 = [MEMORY[0x1E696AFB0] UUID];
-  v20 = [v19 UUIDString];
-  [v6 appendFormat:@"&mtRequestId=%@", v20];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
+  uUIDString = [uUID UUIDString];
+  [v6 appendFormat:@"&mtRequestId=%@", uUIDString];
 
-  v21 = [MEMORY[0x1E695DF00] date];
-  [v21 timeIntervalSince1970];
+  date = [MEMORY[0x1E695DF00] date];
+  [date timeIntervalSince1970];
   [v6 appendFormat:@"&mtEventTime=%lf", v22 * 1000.0];
 
   v23 = [v6 copy];
@@ -2422,10 +2422,10 @@ void __52__VUIMetricsController_getRecentEventsForDebuggerUI__block_invoke(uint6
 - (id)getMetricsOverlayForBundleOffer
 {
   v12[3] = *MEMORY[0x1E69E9840];
-  v3 = [(VUIMetricsController *)self _getCurrentMetricsTopic];
+  _getCurrentMetricsTopic = [(VUIMetricsController *)self _getCurrentMetricsTopic];
   v4 = +[VUIAuthenticationManager DSID];
-  v5 = [(VUIMetricsController *)self baseFields];
-  v6 = [v5 objectForKey:@"pageContext"];
+  baseFields = [(VUIMetricsController *)self baseFields];
+  v6 = [baseFields objectForKey:@"pageContext"];
 
   v7 = &stru_1F5DB25C0;
   v11[0] = @"pageContext";
@@ -2448,7 +2448,7 @@ void __52__VUIMetricsController_getRecentEventsForDebuggerUI__block_invoke(uint6
   v12[0] = v8;
   v12[1] = v7;
   v11[2] = @"topic";
-  v12[2] = v3;
+  v12[2] = _getCurrentMetricsTopic;
   v9 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v12 forKeys:v11 count:3];
 
   return v9;
@@ -2457,20 +2457,20 @@ void __52__VUIMetricsController_getRecentEventsForDebuggerUI__block_invoke(uint6
 - (id)getMetricsOverlayForWebContainer
 {
   v16[4] = *MEMORY[0x1E69E9840];
-  v2 = [(VUIMetricsController *)self _getCurrentMetricsTopic];
+  _getCurrentMetricsTopic = [(VUIMetricsController *)self _getCurrentMetricsTopic];
   v3 = +[VUIAuthenticationManager DSID];
-  v4 = [MEMORY[0x1E696AAE8] mainBundle];
-  v5 = [v4 bundleIdentifier];
+  mainBundle = [MEMORY[0x1E696AAE8] mainBundle];
+  bundleIdentifier = [mainBundle bundleIdentifier];
 
-  v6 = [MEMORY[0x1E696AAE8] mainBundle];
-  v7 = [v6 infoDictionary];
+  mainBundle2 = [MEMORY[0x1E696AAE8] mainBundle];
+  infoDictionary = [mainBundle2 infoDictionary];
 
-  v8 = [v7 objectForKey:@"CFBundleShortVersionString"];
+  v8 = [infoDictionary objectForKey:@"CFBundleShortVersionString"];
   v9 = v8;
   v10 = &stru_1F5DB25C0;
-  if (v5)
+  if (bundleIdentifier)
   {
-    v11 = v5;
+    v11 = bundleIdentifier;
   }
 
   else
@@ -2500,7 +2500,7 @@ void __52__VUIMetricsController_getRecentEventsForDebuggerUI__block_invoke(uint6
   v15[2] = @"dsId";
   v15[3] = @"topic";
   v16[2] = v10;
-  v16[3] = v2;
+  v16[3] = _getCurrentMetricsTopic;
   v13 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:4];
 
   return v13;
@@ -2540,18 +2540,18 @@ void __48__VUIMetricsController_VPAF___baseToVPAFMapping__block_invoke()
 
 - (NSDictionary)baseFieldsForVPAF
 {
-  v2 = [(VUIMetricsController *)self baseFields];
+  baseFields = [(VUIMetricsController *)self baseFields];
   v3 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v4 = [objc_opt_class() _baseToVPAFMapping];
+  _baseToVPAFMapping = [objc_opt_class() _baseToVPAFMapping];
   v9 = MEMORY[0x1E69E9820];
   v10 = 3221225472;
   v11 = __47__VUIMetricsController_VPAF__baseFieldsForVPAF__block_invoke;
   v12 = &unk_1E87367E0;
-  v13 = v4;
+  v13 = _baseToVPAFMapping;
   v5 = v3;
   v14 = v5;
-  v6 = v4;
-  [v2 enumerateKeysAndObjectsUsingBlock:&v9];
+  v6 = _baseToVPAFMapping;
+  [baseFields enumerateKeysAndObjectsUsingBlock:&v9];
   if ([v5 count])
   {
     v7 = v5;

@@ -1,5 +1,5 @@
 @interface SUIAShockwaveRadialMaskSettings
-+ (BOOL)ignoresKey:(id)a3;
++ (BOOL)ignoresKey:(id)key;
 + (id)settingsControllerModule;
 - (BOOL)validateComputedValuesCorrespondToSourceValues;
 - (NSString)name;
@@ -13,14 +13,14 @@
 - (double)ringWidth;
 - (id)computeDerivativeValuesAndGenerateSource;
 - (unint64_t)sampleCount;
-- (void)setBlurRadius:(double)a3;
+- (void)setBlurRadius:(double)radius;
 - (void)setDefaultValues;
-- (void)setDefaultValuesWithName:(id)a3 majorDiameter:(double)a4 ringWidth:(double)a5 blurRadius:(double)a6 sampleCount:(unint64_t)a7 locations:(id)a8 colors:(id)a9 gradientLayerSize:(CGSize)a10;
-- (void)setGradientLayerSize:(id)a3;
-- (void)setMajorDiameter:(double)a3;
-- (void)setName:(id)a3;
-- (void)setRingWidth:(double)a3;
-- (void)setSampleCount:(unint64_t)a3;
+- (void)setDefaultValuesWithName:(id)name majorDiameter:(double)diameter ringWidth:(double)width blurRadius:(double)radius sampleCount:(unint64_t)count locations:(id)locations colors:(id)colors gradientLayerSize:(CGSize)self0;
+- (void)setGradientLayerSize:(id)size;
+- (void)setMajorDiameter:(double)diameter;
+- (void)setName:(id)name;
+- (void)setRingWidth:(double)width;
+- (void)setSampleCount:(unint64_t)count;
 @end
 
 @implementation SUIAShockwaveRadialMaskSettings
@@ -34,7 +34,7 @@
   return v2;
 }
 
-- (void)setName:(id)a3
+- (void)setName:(id)name
 {
   v4 = sub_26C614E48();
   v6 = v5;
@@ -51,13 +51,13 @@
   return *(self + v3);
 }
 
-- (void)setGradientLayerSize:(id)a3
+- (void)setGradientLayerSize:(id)size
 {
   v5 = OBJC_IVAR___SUIAShockwaveRadialMaskSettings_gradientLayerSize;
   swift_beginAccess();
   v6 = *(self + v5);
-  *(self + v5) = a3;
-  v7 = a3;
+  *(self + v5) = size;
+  sizeCopy = size;
 }
 
 - (double)majorDiameter
@@ -67,11 +67,11 @@
   return *(self + v3);
 }
 
-- (void)setMajorDiameter:(double)a3
+- (void)setMajorDiameter:(double)diameter
 {
   v5 = OBJC_IVAR___SUIAShockwaveRadialMaskSettings_majorDiameter;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = diameter;
 }
 
 - (double)ringWidth
@@ -81,11 +81,11 @@
   return *(self + v3);
 }
 
-- (void)setRingWidth:(double)a3
+- (void)setRingWidth:(double)width
 {
   v5 = OBJC_IVAR___SUIAShockwaveRadialMaskSettings_ringWidth;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = width;
 }
 
 - (double)blurRadius
@@ -95,11 +95,11 @@
   return *(self + v3);
 }
 
-- (void)setBlurRadius:(double)a3
+- (void)setBlurRadius:(double)radius
 {
   v5 = OBJC_IVAR___SUIAShockwaveRadialMaskSettings_blurRadius;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = radius;
 }
 
 - (unint64_t)sampleCount
@@ -109,16 +109,16 @@
   return *(self + v3);
 }
 
-- (void)setSampleCount:(unint64_t)a3
+- (void)setSampleCount:(unint64_t)count
 {
   v5 = OBJC_IVAR___SUIAShockwaveRadialMaskSettings_sampleCount;
   swift_beginAccess();
-  *(self + v5) = a3;
+  *(self + v5) = count;
 }
 
-+ (BOOL)ignoresKey:(id)a3
++ (BOOL)ignoresKey:(id)key
 {
-  if (a3)
+  if (key)
   {
     v3 = sub_26C614E48();
     v5 = v4;
@@ -138,7 +138,7 @@
 
 - (double)innerRadius
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SUIAShockwaveRadialMaskSettings.innerRadius.getter();
 
   return v3;
@@ -146,7 +146,7 @@
 
 - (double)outerRadius
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SUIAShockwaveRadialMaskSettings.outerRadius.getter();
 
   return v3;
@@ -154,7 +154,7 @@
 
 - (double)maximumExtentOfZeroOpacity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SUIAShockwaveRadialMaskSettings.maximumExtentOfZeroOpacity.getter();
 
   return v3;
@@ -162,7 +162,7 @@
 
 - (double)radiusOfMaximumOpacity
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SUIAShockwaveRadialMaskSettings.radiusOfMaximumOpacity.getter();
 
   return v3;
@@ -170,7 +170,7 @@
 
 - (BOOL)validateComputedValuesCorrespondToSourceValues
 {
-  v2 = self;
+  selfCopy = self;
   v3 = SUIAShockwaveRadialMaskSettings.validateComputedValuesCorrespondToSourceValues()();
 
   return v3;
@@ -178,7 +178,7 @@
 
 - (id)computeDerivativeValuesAndGenerateSource
 {
-  v2 = self;
+  selfCopy = self;
   SUIAShockwaveRadialMaskSettings.computeDerivativeValuesAndGenerateSource()();
 
   v3 = sub_26C614E38();
@@ -193,18 +193,18 @@
   [(PTSettings *)&v2 setDefaultValues];
 }
 
-- (void)setDefaultValuesWithName:(id)a3 majorDiameter:(double)a4 ringWidth:(double)a5 blurRadius:(double)a6 sampleCount:(unint64_t)a7 locations:(id)a8 colors:(id)a9 gradientLayerSize:(CGSize)a10
+- (void)setDefaultValuesWithName:(id)name majorDiameter:(double)diameter ringWidth:(double)width blurRadius:(double)radius sampleCount:(unint64_t)count locations:(id)locations colors:(id)colors gradientLayerSize:(CGSize)self0
 {
-  height = a10.height;
-  width = a10.width;
+  height = size.height;
+  width = size.width;
   v17 = sub_26C614E48();
   v19 = v18;
   sub_26C5CC548(0, &unk_28125E420);
   sub_26C614EC8();
   sub_26C5CC548(0, &qword_28125E430);
   sub_26C614EC8();
-  v20 = self;
-  SUIAShockwaveRadialMaskSettings.setDefaultValuesWithName(_:majorDiameter:ringWidth:blurRadius:sampleCount:locations:colors:gradientLayerSize:)(a4, a5, a6, width, height, v17, v19, a7);
+  selfCopy = self;
+  SUIAShockwaveRadialMaskSettings.setDefaultValuesWithName(_:majorDiameter:ringWidth:blurRadius:sampleCount:locations:colors:gradientLayerSize:)(diameter, width, radius, width, height, v17, v19, count);
 }
 
 + (id)settingsControllerModule

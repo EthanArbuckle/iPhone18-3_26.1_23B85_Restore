@@ -1,22 +1,22 @@
 @interface CEMFontRemoveOperation
-- (CEMFontRemoveOperation)initWithFontDeclaration:(id)a3 installMetadata:(id)a4;
+- (CEMFontRemoveOperation)initWithFontDeclaration:(id)declaration installMetadata:(id)metadata;
 - (void)main;
 @end
 
 @implementation CEMFontRemoveOperation
 
-- (CEMFontRemoveOperation)initWithFontDeclaration:(id)a3 installMetadata:(id)a4
+- (CEMFontRemoveOperation)initWithFontDeclaration:(id)declaration installMetadata:(id)metadata
 {
-  v7 = a3;
-  v8 = a4;
+  declarationCopy = declaration;
+  metadataCopy = metadata;
   v12.receiver = self;
   v12.super_class = CEMFontRemoveOperation;
   v9 = [(CEMFontRemoveOperation *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_fontDeclaration, a3);
-    objc_storeStrong(&v10->_installMetadata, a4);
+    objc_storeStrong(&v9->_fontDeclaration, declaration);
+    objc_storeStrong(&v10->_installMetadata, metadata);
   }
 
   return v10;
@@ -24,12 +24,12 @@
 
 - (void)main
 {
-  v3 = [(CEMFontRemoveOperation *)self installMetadata];
-  v4 = [v3 fontURL];
+  installMetadata = [(CEMFontRemoveOperation *)self installMetadata];
+  fontURL = [installMetadata fontURL];
 
   v5 = +[NSFileManager defaultManager];
-  v6 = [v4 path];
-  v7 = [v5 fileExistsAtPath:v6];
+  path = [fontURL path];
+  v7 = [v5 fileExistsAtPath:path];
 
   if (!v7)
   {
@@ -38,7 +38,7 @@
   }
 
   v10 = 0;
-  v8 = [v5 removeItemAtURL:v4 error:&v10];
+  v8 = [v5 removeItemAtURL:fontURL error:&v10];
   v9 = v10;
   if (v8)
   {

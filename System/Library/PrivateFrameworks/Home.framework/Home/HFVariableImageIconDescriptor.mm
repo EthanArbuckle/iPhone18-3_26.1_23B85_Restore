@@ -1,30 +1,30 @@
 @interface HFVariableImageIconDescriptor
-- (BOOL)isEqual:(id)a3;
-- (HFVariableImageIconDescriptor)initWithSystemImageNamed:(id)a3 variableValue:(double)a4 configuration:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (HFVariableImageIconDescriptor)initWithSystemImageNamed:(id)named variableValue:(double)value configuration:(id)configuration;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation HFVariableImageIconDescriptor
 
-- (HFVariableImageIconDescriptor)initWithSystemImageNamed:(id)a3 variableValue:(double)a4 configuration:(id)a5
+- (HFVariableImageIconDescriptor)initWithSystemImageNamed:(id)named variableValue:(double)value configuration:(id)configuration
 {
   v7.receiver = self;
   v7.super_class = HFVariableImageIconDescriptor;
-  result = [(HFImageIconDescriptor *)&v7 initWithSystemImageNamed:a3 configuration:a5];
+  result = [(HFImageIconDescriptor *)&v7 initWithSystemImageNamed:named configuration:configuration];
   if (result)
   {
-    result->_variableValue = a4;
+    result->_variableValue = value;
   }
 
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = v4;
+  v5 = equalCopy;
   if (objc_opt_isKindOfClass())
   {
     v6 = v5;
@@ -71,10 +71,10 @@
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HFImageIconDescriptor *)self imageIdentifier];
-  v7 = [(HFImageIconDescriptor *)self imageSymbolConfiguration];
+  imageIdentifier = [(HFImageIconDescriptor *)self imageIdentifier];
+  imageSymbolConfiguration = [(HFImageIconDescriptor *)self imageSymbolConfiguration];
   [(HFVariableImageIconDescriptor *)self variableValue];
-  v9 = [v3 stringWithFormat:@"<%@: %p, %@, %@ (%f)>", v5, self, v6, v7, v8];
+  v9 = [v3 stringWithFormat:@"<%@: %p, %@, %@ (%f)>", v5, self, imageIdentifier, imageSymbolConfiguration, v8];
 
   return v9;
 }

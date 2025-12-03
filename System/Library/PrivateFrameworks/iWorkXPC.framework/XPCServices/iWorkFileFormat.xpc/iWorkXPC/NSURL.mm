@@ -1,21 +1,21 @@
 @interface NSURL
-+ (id)tsp_iWorkAVAssetURLWithUUID:(id)a3 filename:(id)a4 contentTypeUTI:(id)a5;
-+ (id)tsu_fileURLWithPath:(id)a3;
-+ (id)tsu_urlFromUserProvidedTelephoneString:(id)a3 withDataDetector:(id)a4;
++ (id)tsp_iWorkAVAssetURLWithUUID:(id)d filename:(id)filename contentTypeUTI:(id)i;
++ (id)tsu_fileURLWithPath:(id)path;
++ (id)tsu_urlFromUserProvidedTelephoneString:(id)string withDataDetector:(id)detector;
 - (BOOL)tsp_isIWorkAVAssetURL;
 - (BOOL)tsu_canOpenURL;
-- (BOOL)tsu_conformsToAnyUTI:(id)a3;
-- (BOOL)tsu_conformsToUTI:(id)a3;
-- (BOOL)tsu_fileSize:(unint64_t *)a3 error:(id *)a4;
+- (BOOL)tsu_conformsToAnyUTI:(id)i;
+- (BOOL)tsu_conformsToUTI:(id)i;
+- (BOOL)tsu_fileSize:(unint64_t *)size error:(id *)error;
 - (BOOL)tsu_isInTemporaryDirectory;
 - (BOOL)tsu_isInTrash;
 - (BOOL)tsu_isOnForeignVolume;
-- (BOOL)tsu_isOnSameVolumeAs:(id)a3;
+- (BOOL)tsu_isOnSameVolumeAs:(id)as;
 - (BOOL)tsu_isVolumeKnownToBeEjectable;
 - (BOOL)tsu_isVolumeKnownToBeLocal;
 - (BOOL)tsu_isVolumeKnownToBeRemovable;
-- (BOOL)tsu_matchesURL:(id)a3 canCompareFileID:(BOOL)a4;
-- (BOOL)tsu_setNeedsDocumentIdentifierAndReturnError:(id *)a3;
+- (BOOL)tsu_matchesURL:(id)l canCompareFileID:(BOOL)d;
+- (BOOL)tsu_setNeedsDocumentIdentifierAndReturnError:(id *)error;
 - (BOOL)tsu_volumeRenameOpenFail;
 - (BOOL)tsu_volumeSupportsCloning;
 - (CGImageSource)tsu_createImageSourceFromURLAfterForcingFileCoordination;
@@ -24,39 +24,39 @@
 - (id)tsp_fileIdentifier;
 - (id)tsp_queryDictionary;
 - (id)tsu_URLExceptPrivate;
-- (id)tsu_contentModificationDateWithLogContext:(id)a3;
+- (id)tsu_contentModificationDateWithLogContext:(id)context;
 - (id)tsu_documentIdentifier;
 - (id)tsu_fileTypeIdentifierHandlingFileCoordinationPromises;
 - (id)tsu_pathExceptPrivate;
 - (id)tsu_prettyStringFromTelephoneURL;
 - (id)tsu_reachableFileURLByDeletingUnreachablePathComponents;
 - (unint64_t)tsu_fileSize;
-- (void)tsu_removeCachedResourceValueForKeys:(id)a3;
+- (void)tsu_removeCachedResourceValueForKeys:(id)keys;
 @end
 
 @implementation NSURL
 
 - (BOOL)tsp_isIWorkAVAssetURL
 {
-  v2 = [(NSURL *)self scheme];
-  v3 = [v2 isEqualToString:@"iWorkAVAsset"];
+  scheme = [(NSURL *)self scheme];
+  v3 = [scheme isEqualToString:@"iWorkAVAsset"];
 
   return v3;
 }
 
-+ (id)tsp_iWorkAVAssetURLWithUUID:(id)a3 filename:(id)a4 contentTypeUTI:(id)a5
++ (id)tsp_iWorkAVAssetURLWithUUID:(id)d filename:(id)filename contentTypeUTI:(id)i
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  iCopy = i;
+  filenameCopy = filename;
+  dCopy = d;
   v10 = objc_alloc_init(NSURLComponents);
   [v10 setScheme:@"iWorkAVAsset"];
-  [v10 setHost:v9];
+  [v10 setHost:dCopy];
 
-  v11 = [@"/" stringByAppendingString:v8];
+  v11 = [@"/" stringByAppendingString:filenameCopy];
 
   [v10 setPath:v11];
-  v12 = [@"uti=" stringByAppendingString:v7];
+  v12 = [@"uti=" stringByAppendingString:iCopy];
 
   [v10 setQuery:v12];
   v13 = [v10 URL];
@@ -86,8 +86,8 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v5 = [(NSURL *)self absoluteString];
-  v6 = [v5 rangeOfString:@"uti="];
+  absoluteString = [(NSURL *)self absoluteString];
+  v6 = [absoluteString rangeOfString:@"uti="];
   v8 = v7;
   if (!v7)
   {
@@ -109,7 +109,7 @@
     +[TSUAssertionHandler logBacktraceThrottled];
   }
 
-  v11 = [v5 substringFromIndex:&v6[v8]];
+  v11 = [absoluteString substringFromIndex:&v6[v8]];
 
   return v11;
 }
@@ -147,8 +147,8 @@
 
 - (id)tsp_queryDictionary
 {
-  v2 = [(NSURL *)self query];
-  v3 = [v2 componentsSeparatedByString:@"&"];
+  query = [(NSURL *)self query];
+  v3 = [query componentsSeparatedByString:@"&"];
 
   v4 = [v3 count];
   if (v4)
@@ -183,8 +183,8 @@
             if (!v12)
             {
               v13 = [v10 objectAtIndexedSubscript:1];
-              v14 = [v13 stringByRemovingPercentEncoding];
-              [v4 setObject:v14 forKeyedSubscript:v11];
+              stringByRemovingPercentEncoding = [v13 stringByRemovingPercentEncoding];
+              [v4 setObject:stringByRemovingPercentEncoding forKeyedSubscript:v11];
             }
           }
         }
@@ -222,19 +222,19 @@
   return v3;
 }
 
-- (BOOL)tsu_fileSize:(unint64_t *)a3 error:(id *)a4
+- (BOOL)tsu_fileSize:(unint64_t *)size error:(id *)error
 {
-  v5 = self;
+  selfCopy = self;
   [(NSURL *)self removeCachedResourceValueForKey:NSURLFileSizeKey];
   v38 = 0;
-  v29 = v5;
-  LODWORD(v5) = [(NSURL *)v5 getResourceValue:&v38 forKey:NSURLFileSizeKey error:0];
+  v29 = selfCopy;
+  LODWORD(selfCopy) = [(NSURL *)selfCopy getResourceValue:&v38 forKey:NSURLFileSizeKey error:0];
   v6 = v38;
   v7 = v6;
-  v8 = 0;
-  if (v5)
+  unsignedLongLongValue = 0;
+  if (selfCopy)
   {
-    v8 = [v6 unsignedLongLongValue];
+    unsignedLongLongValue = [v6 unsignedLongLongValue];
   }
 
   v9 = +[NSFileManager defaultManager];
@@ -249,7 +249,7 @@
   if (v11)
   {
     v12 = v11;
-    v30 = a4;
+    errorCopy = error;
     v13 = *v35;
     v14 = 1;
     do
@@ -273,7 +273,7 @@
         v19 = v32;
         if (v18)
         {
-          v8 = &v8[[v7 unsignedLongLongValue]];
+          unsignedLongLongValue = &unsignedLongLongValue[[v7 unsignedLongLongValue]];
         }
 
         else
@@ -294,26 +294,26 @@
             v22 = v20;
             v23 = objc_opt_class();
             v24 = NSStringFromClass(v23);
-            v25 = [v19 domain];
-            v26 = [v19 code];
+            domain = [v19 domain];
+            code = [v19 code];
             *buf = 138413314;
             v40 = v29;
             v41 = 2114;
             v42 = v24;
             v43 = 2114;
-            v44 = v25;
+            v44 = domain;
             v45 = 2048;
-            v46 = v26;
+            v46 = code;
             v47 = 2112;
             v48 = v19;
             _os_log_error_impl(&_mh_execute_header, v22, OS_LOG_TYPE_ERROR, "Unable to get NSURLFileSizeKey for URL: %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
           }
 
-          if (v30)
+          if (errorCopy)
           {
             v21 = v19;
             v14 = 0;
-            *v30 = v19;
+            *errorCopy = v19;
           }
 
           else
@@ -338,21 +338,21 @@ LABEL_17:
     v14 = 1;
   }
 
-  if (a3)
+  if (size)
   {
-    *a3 = v8;
+    *size = unsignedLongLongValue;
   }
 
   return v14 & 1;
 }
 
-- (BOOL)tsu_setNeedsDocumentIdentifierAndReturnError:(id *)a3
+- (BOOL)tsu_setNeedsDocumentIdentifierAndReturnError:(id *)error
 {
   v4 = open([(NSURL *)self fileSystemRepresentation], 0x200000);
   if (v4 < 0)
   {
     v6 = -1;
-    if (!a3)
+    if (!error)
     {
       return v6 == 0;
     }
@@ -377,12 +377,12 @@ LABEL_17:
   }
 
   close(v5);
-  if (a3)
+  if (error)
   {
 LABEL_9:
     if (v6)
     {
-      *a3 = [NSError tsu_fileReadPOSIXErrorWithNumber:*__error() userInfo:0];
+      *error = [NSError tsu_fileReadPOSIXErrorWithNumber:*__error() userInfo:0];
     }
   }
 
@@ -412,9 +412,9 @@ LABEL_9:
   v3 = TSUDefaultCat_log_t;
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(NSURL *)self path];
+    path = [(NSURL *)self path];
     *buf = 138412290;
-    v22 = v4;
+    v22 = path;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "About to perform file coordination to create image source from %@:", buf, 0xCu);
   }
 
@@ -437,19 +437,19 @@ LABEL_9:
     v7 = TSUDefaultCat_log_t;
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
     {
-      v10 = [(NSURL *)self path];
+      path2 = [(NSURL *)self path];
       v11 = objc_opt_class();
       v12 = NSStringFromClass(v11);
-      v13 = [v6 domain];
-      v14 = [v6 code];
+      domain = [v6 domain];
+      code = [v6 code];
       *buf = 138413314;
-      v22 = v10;
+      v22 = path2;
       v23 = 2114;
       v24 = v12;
       v25 = 2114;
-      v26 = v13;
+      v26 = domain;
       v27 = 2048;
-      v28 = v14;
+      v28 = code;
       v29 = 2112;
       v30 = v6;
       _os_log_error_impl(&_mh_execute_header, v7, OS_LOG_TYPE_ERROR, "Failed to coordinate access to URL: %@ error: errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -464,44 +464,44 @@ LABEL_9:
 
 - (BOOL)tsu_isOnForeignVolume
 {
-  v3 = [(NSURL *)self isFileURL];
-  if (v3)
+  isFileURL = [(NSURL *)self isFileURL];
+  if (isFileURL)
   {
     memset(&v6, 0, 512);
-    LOBYTE(v3) = !tsu_reachable_statfs(self, &v6) && (*v6.f_fstypename == 26216 ? (v4 = v6.f_fstypename[2] == 115) : (v4 = 0), !v4) && (*v6.f_fstypename ^ 0x73667061 | v6.f_fstypename[4]) != 0;
+    LOBYTE(isFileURL) = !tsu_reachable_statfs(self, &v6) && (*v6.f_fstypename == 26216 ? (v4 = v6.f_fstypename[2] == 115) : (v4 = 0), !v4) && (*v6.f_fstypename ^ 0x73667061 | v6.f_fstypename[4]) != 0;
   }
 
-  return v3;
+  return isFileURL;
 }
 
 - (BOOL)tsu_volumeSupportsCloning
 {
   v7 = xmmword_10017D1A0;
   v8 = 0;
-  v3 = [(NSURL *)self isFileURL];
-  if (v3)
+  isFileURL = [(NSURL *)self isFileURL];
+  if (isFileURL)
   {
     memset(&v9, 0, 512);
     v6 = 0;
     memset(v5, 0, sizeof(v5));
     if (tsu_reachable_statfs(self, &v9) || getattrlist(v9.f_mntonname, &v7, v5, 0x24uLL, 0x21u))
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isFileURL) = 0;
     }
 
     else
     {
-      LOBYTE(v3) = BYTE10(v5[0]) & 1;
+      LOBYTE(isFileURL) = BYTE10(v5[0]) & 1;
     }
   }
 
-  return v3;
+  return isFileURL;
 }
 
 - (BOOL)tsu_volumeRenameOpenFail
 {
-  v3 = [(NSURL *)self isFileURL];
-  if (v3)
+  isFileURL = [(NSURL *)self isFileURL];
+  if (isFileURL)
   {
     memset(&v9, 0, 512);
     v7 = xmmword_10017D1A0;
@@ -510,7 +510,7 @@ LABEL_9:
     memset(v5, 0, sizeof(v5));
     if (tsu_reachable_statfs(self, &v9) || getattrlist(v9.f_mntonname, &v7, v5, 0x24uLL, 0x21u))
     {
-      LOBYTE(v3) = 0;
+      LOBYTE(isFileURL) = 0;
     }
 
     else
@@ -519,28 +519,28 @@ LABEL_9:
     }
   }
 
-  return v3;
+  return isFileURL;
 }
 
 - (id)tsu_reachableFileURLByDeletingUnreachablePathComponents
 {
   if ([(NSURL *)self isFileURL])
   {
-    v3 = self;
+    selfCopy = self;
     while (1)
     {
-      v4 = [(NSURL *)v3 path];
-      v5 = [v4 length];
+      path = [(NSURL *)selfCopy path];
+      v5 = [path length];
 
       if (v5 < 3)
       {
         break;
       }
 
-      if ([(NSURL *)v3 checkResourceIsReachableAndReturnError:0])
+      if ([(NSURL *)selfCopy checkResourceIsReachableAndReturnError:0])
       {
-        v6 = v3;
-        v3 = v6;
+        v6 = selfCopy;
+        selfCopy = v6;
         if (v6)
         {
           goto LABEL_10;
@@ -549,9 +549,9 @@ LABEL_9:
 
       else
       {
-        v7 = [(NSURL *)v3 URLByDeletingLastPathComponent];
+        uRLByDeletingLastPathComponent = [(NSURL *)selfCopy URLByDeletingLastPathComponent];
 
-        v3 = v7;
+        selfCopy = uRLByDeletingLastPathComponent;
       }
     }
 
@@ -567,12 +567,12 @@ LABEL_10:
   return v6;
 }
 
-- (BOOL)tsu_isOnSameVolumeAs:(id)a3
+- (BOOL)tsu_isOnSameVolumeAs:(id)as
 {
-  v4 = a3;
-  v5 = [(NSURL *)self tsu_reachableFileURLByDeletingUnreachablePathComponents];
-  v6 = [v4 tsu_reachableFileURLByDeletingUnreachablePathComponents];
-  if (![v5 isFileURL] || !objc_msgSend(v6, "isFileURL"))
+  asCopy = as;
+  tsu_reachableFileURLByDeletingUnreachablePathComponents = [(NSURL *)self tsu_reachableFileURLByDeletingUnreachablePathComponents];
+  tsu_reachableFileURLByDeletingUnreachablePathComponents2 = [asCopy tsu_reachableFileURLByDeletingUnreachablePathComponents];
+  if (![tsu_reachableFileURLByDeletingUnreachablePathComponents isFileURL] || !objc_msgSend(tsu_reachableFileURLByDeletingUnreachablePathComponents2, "isFileURL"))
   {
     v24 = 0;
     goto LABEL_24;
@@ -580,12 +580,12 @@ LABEL_10:
 
   memset(&v27, 0, sizeof(v27));
   memset(&v26, 0, sizeof(v26));
-  v7 = [v5 path];
-  v8 = [v7 fileSystemRepresentation];
+  path = [tsu_reachableFileURLByDeletingUnreachablePathComponents path];
+  fileSystemRepresentation = [path fileSystemRepresentation];
 
-  if (v8)
+  if (fileSystemRepresentation)
   {
-    v9 = lstat(v8, &v27);
+    v9 = lstat(fileSystemRepresentation, &v27);
     if (v9 != -1)
     {
       goto LABEL_10;
@@ -600,11 +600,11 @@ LABEL_10:
     if (os_log_type_enabled(TSUDefaultCat_log_t, OS_LOG_TYPE_INFO))
     {
       v11 = v10;
-      v12 = [(NSURL *)self path];
+      path2 = [(NSURL *)self path];
       v13 = __error();
       v14 = strerror(*v13);
       *buf = 138412546;
-      v29 = v12;
+      v29 = path2;
       v30 = 2082;
       v31 = v14;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Error retrieving the file system of path %@: %{public}s", buf, 0x16u);
@@ -613,17 +613,17 @@ LABEL_10:
 
   v9 = -1;
 LABEL_10:
-  v15 = [v6 path];
-  v16 = [v15 fileSystemRepresentation];
+  path3 = [tsu_reachableFileURLByDeletingUnreachablePathComponents2 path];
+  fileSystemRepresentation2 = [path3 fileSystemRepresentation];
 
-  if (!v16)
+  if (!fileSystemRepresentation2)
   {
 LABEL_16:
     v17 = -1;
     goto LABEL_17;
   }
 
-  v17 = lstat(v16, &v26);
+  v17 = lstat(fileSystemRepresentation2, &v26);
   if (v17 == -1)
   {
     if (TSUDefaultCat_init_token != -1)
@@ -635,11 +635,11 @@ LABEL_16:
     if (os_log_type_enabled(TSUDefaultCat_log_t, OS_LOG_TYPE_INFO))
     {
       v19 = v18;
-      v20 = [v4 path];
+      path4 = [asCopy path];
       v21 = __error();
       v22 = strerror(*v21);
       *buf = 138412546;
-      v29 = v20;
+      v29 = path4;
       v30 = 2082;
       v31 = v22;
       _os_log_impl(&_mh_execute_header, v19, OS_LOG_TYPE_INFO, "Error retrieving the file system of path %@: %{public}s", buf, 0x16u);
@@ -687,9 +687,9 @@ LABEL_24:
     v3 = &__kCFBooleanFalse;
   }
 
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)tsu_isVolumeKnownToBeRemovable
@@ -714,9 +714,9 @@ LABEL_24:
     v3 = &__kCFBooleanFalse;
   }
 
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)tsu_isVolumeKnownToBeLocal
@@ -741,9 +741,9 @@ LABEL_24:
     v3 = &__kCFBooleanTrue;
   }
 
-  v5 = [v3 BOOLValue];
+  bOOLValue = [v3 BOOLValue];
 
-  return v5;
+  return bOOLValue;
 }
 
 - (BOOL)tsu_isInTemporaryDirectory
@@ -802,16 +802,16 @@ LABEL_19:
         v17 = v16;
         v18 = objc_opt_class();
         v19 = NSStringFromClass(v18);
-        v20 = [v6 domain];
-        v21 = [v6 code];
+        domain = [v6 domain];
+        code = [v6 code];
         *buf = 138413314;
-        v30 = self;
+        selfCopy = self;
         v31 = 2114;
         v32 = v19;
         v33 = 2114;
-        v34 = v20;
+        v34 = domain;
         v35 = 2048;
-        v36 = v21;
+        v36 = code;
         v37 = 2112;
         v38 = v6;
         _os_log_impl(&_mh_execute_header, v17, OS_LOG_TYPE_DEFAULT, "Failed to find relationship between URL and trash directory: %@. errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x34u);
@@ -821,15 +821,15 @@ LABEL_19:
     goto LABEL_19;
   }
 
-  v8 = [(NSURL *)self URLByDeletingLastPathComponent];
-  v9 = [v8 pathComponents];
-  v10 = [v9 reverseObjectEnumerator];
+  uRLByDeletingLastPathComponent = [(NSURL *)self URLByDeletingLastPathComponent];
+  pathComponents = [uRLByDeletingLastPathComponent pathComponents];
+  reverseObjectEnumerator = [pathComponents reverseObjectEnumerator];
 
   v25 = 0u;
   v26 = 0u;
   v23 = 0u;
   v24 = 0u;
-  v11 = v10;
+  v11 = reverseObjectEnumerator;
   v12 = [v11 countByEnumeratingWithState:&v23 objects:v39 count:16];
   if (v12)
   {
@@ -868,9 +868,9 @@ LABEL_22:
   return v7;
 }
 
-+ (id)tsu_fileURLWithPath:(id)a3
++ (id)tsu_fileURLWithPath:(id)path
 {
-  if (a3)
+  if (path)
   {
     v4 = [NSURL fileURLWithPath:?];
   }
@@ -883,14 +883,14 @@ LABEL_22:
   return v4;
 }
 
-- (void)tsu_removeCachedResourceValueForKeys:(id)a3
+- (void)tsu_removeCachedResourceValueForKeys:(id)keys
 {
-  v4 = a3;
+  keysCopy = keys;
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  v5 = [keysCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = v5;
@@ -902,7 +902,7 @@ LABEL_22:
       {
         if (*v10 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(keysCopy);
         }
 
         [(NSURL *)self removeCachedResourceValueForKey:*(*(&v9 + 1) + 8 * v8)];
@@ -910,16 +910,16 @@ LABEL_22:
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v6 = [keysCopy countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v6);
   }
 }
 
-- (id)tsu_contentModificationDateWithLogContext:(id)a3
+- (id)tsu_contentModificationDateWithLogContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   [(NSURL *)self removeCachedResourceValueForKey:NSURLContentModificationDateKey];
   v17 = 0;
   v18 = 0;
@@ -929,7 +929,7 @@ LABEL_22:
   if ((v5 & 1) == 0)
   {
 
-    if (v4)
+    if (contextCopy)
     {
       if (TSUDefaultCat_init_token != -1)
       {
@@ -940,24 +940,24 @@ LABEL_22:
       if (os_log_type_enabled(TSUDefaultCat_log_t, OS_LOG_TYPE_ERROR))
       {
         v9 = v8;
-        v10 = [v4 publicString];
-        v11 = [v4 privateString];
+        publicString = [contextCopy publicString];
+        privateString = [contextCopy privateString];
         v12 = objc_opt_class();
         v13 = NSStringFromClass(v12);
-        v14 = [v7 domain];
-        v15 = [v7 code];
+        domain = [v7 domain];
+        code = [v7 code];
         *buf = 138544898;
-        v20 = v10;
+        v20 = publicString;
         v21 = 2112;
-        v22 = v11;
+        v22 = privateString;
         v23 = 2112;
-        v24 = self;
+        selfCopy = self;
         v25 = 2114;
         v26 = v13;
         v27 = 2114;
-        v28 = v14;
+        v28 = domain;
         v29 = 2048;
-        v30 = v15;
+        v30 = code;
         v31 = 2112;
         v32 = v7;
         _os_log_error_impl(&_mh_execute_header, v9, OS_LOG_TYPE_ERROR, "%{public}@ %@ Failed to get file modification date for URL=%@ error=errorClass=%{public}@, domain=%{public}@, code=%zd (%@) ", buf, 0x48u);
@@ -985,29 +985,29 @@ LABEL_22:
 
 - (id)tsu_pathExceptPrivate
 {
-  v2 = [(NSURL *)self path];
-  v3 = [v2 tsu_pathExceptPrivate];
+  path = [(NSURL *)self path];
+  tsu_pathExceptPrivate = [path tsu_pathExceptPrivate];
 
-  return v3;
+  return tsu_pathExceptPrivate;
 }
 
 - (id)tsu_URLExceptPrivate
 {
-  v2 = [(NSURL *)self tsu_pathExceptPrivate];
-  v3 = [NSURL tsu_fileURLWithPath:v2];
+  tsu_pathExceptPrivate = [(NSURL *)self tsu_pathExceptPrivate];
+  v3 = [NSURL tsu_fileURLWithPath:tsu_pathExceptPrivate];
 
   return v3;
 }
 
-- (BOOL)tsu_matchesURL:(id)a3 canCompareFileID:(BOOL)a4
+- (BOOL)tsu_matchesURL:(id)l canCompareFileID:(BOOL)d
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  v8 = self == v6;
-  if (v6 && self != v6)
+  dCopy = d;
+  lCopy = l;
+  v7 = lCopy;
+  v8 = self == lCopy;
+  if (lCopy && self != lCopy)
   {
-    if (([(NSURL *)self isEqual:v6]& 1) != 0)
+    if (([(NSURL *)self isEqual:lCopy]& 1) != 0)
     {
       v8 = 1;
     }
@@ -1016,9 +1016,9 @@ LABEL_22:
     {
       if ([(NSURL *)self isFileURL]&& [(NSURL *)v7 isFileURL])
       {
-        v9 = [(NSURL *)self tsu_pathExceptPrivate];
-        v10 = [(NSURL *)v7 tsu_pathExceptPrivate];
-        v8 = [v9 isEqualToString:v10];
+        tsu_pathExceptPrivate = [(NSURL *)self tsu_pathExceptPrivate];
+        tsu_pathExceptPrivate2 = [(NSURL *)v7 tsu_pathExceptPrivate];
+        v8 = [tsu_pathExceptPrivate isEqualToString:tsu_pathExceptPrivate2];
       }
 
       else
@@ -1026,7 +1026,7 @@ LABEL_22:
         v8 = 0;
       }
 
-      if ((v8 & 1) == 0 && v4)
+      if ((v8 & 1) == 0 && dCopy)
       {
         v16 = 0;
         v11 = [(NSURL *)self getResourceValue:&v16 forKey:NSURLFileResourceIdentifierKey error:0];
@@ -1047,35 +1047,35 @@ LABEL_22:
 
 - (BOOL)tsu_canOpenURL
 {
-  v3 = [(NSURL *)self scheme];
-  v4 = [v3 lowercaseString];
-  v5 = [v4 isEqualToString:@"tel"];
+  scheme = [(NSURL *)self scheme];
+  lowercaseString = [scheme lowercaseString];
+  v5 = [lowercaseString isEqualToString:@"tel"];
 
   if (!v5)
   {
     return 1;
   }
 
-  v6 = [(NSURL *)self resourceSpecifier];
-  v7 = [v6 stringByRemovingPercentEncoding];
+  resourceSpecifier = [(NSURL *)self resourceSpecifier];
+  stringByRemovingPercentEncoding = [resourceSpecifier stringByRemovingPercentEncoding];
 
   v8 = +[NSCharacterSet alphanumericCharacterSet];
-  v9 = [v8 invertedSet];
-  v10 = [v7 tsu_stringByRemovingCharactersInSet:v9];
+  invertedSet = [v8 invertedSet];
+  v10 = [stringByRemovingPercentEncoding tsu_stringByRemovingCharactersInSet:invertedSet];
 
   v11 = [v10 length] > 2;
   return v11;
 }
 
-+ (id)tsu_urlFromUserProvidedTelephoneString:(id)a3 withDataDetector:(id)a4
++ (id)tsu_urlFromUserProvidedTelephoneString:(id)string withDataDetector:(id)detector
 {
-  v5 = a3;
-  v6 = a4;
+  stringCopy = string;
+  detectorCopy = detector;
   v7 = +[NSCharacterSet whitespaceAndNewlineCharacterSet];
-  v8 = [v5 stringByTrimmingCharactersInSet:v7];
+  v8 = [stringCopy stringByTrimmingCharactersInSet:v7];
 
   v9 = +[NSCharacterSet alphanumericCharacterSet];
-  v10 = [v5 rangeOfCharacterFromSet:v9];
+  v10 = [stringCopy rangeOfCharacterFromSet:v9];
 
   if ([v8 length])
   {
@@ -1123,13 +1123,13 @@ LABEL_12:
   v17 = v28[5];
   if (!v17)
   {
-    v18 = [v8 tsu_range];
+    tsu_range = [v8 tsu_range];
     v26[0] = _NSConcreteStackBlock;
     v26[1] = 3221225472;
     v26[2] = sub_100073744;
     v26[3] = &unk_1001CBFD0;
     v26[4] = &v27;
-    [v6 enumerateMatchesInString:v8 options:0 range:v18 usingBlock:{v19, v26}];
+    [detectorCopy enumerateMatchesInString:v8 options:0 range:tsu_range usingBlock:{v19, v26}];
     v17 = v28[5];
     if (!v17)
     {
@@ -1154,12 +1154,12 @@ LABEL_16:
 
 - (id)tsu_prettyStringFromTelephoneURL
 {
-  v2 = [(NSURL *)self resourceSpecifier];
-  v3 = [v2 stringByRemovingPercentEncoding];
+  resourceSpecifier = [(NSURL *)self resourceSpecifier];
+  stringByRemovingPercentEncoding = [resourceSpecifier stringByRemovingPercentEncoding];
 
-  if (v3)
+  if (stringByRemovingPercentEncoding)
   {
-    v4 = v3;
+    v4 = stringByRemovingPercentEncoding;
   }
 
   else
@@ -1174,29 +1174,29 @@ LABEL_16:
 
 - (NSString)tsu_UTI
 {
-  v2 = [(NSURL *)self path];
-  v3 = [v2 tsu_pathUTI];
+  path = [(NSURL *)self path];
+  tsu_pathUTI = [path tsu_pathUTI];
 
-  return v3;
+  return tsu_pathUTI;
 }
 
-- (BOOL)tsu_conformsToUTI:(id)a3
+- (BOOL)tsu_conformsToUTI:(id)i
 {
-  v4 = a3;
-  v5 = [(NSURL *)self pathExtension];
-  v6 = [v5 tsu_pathExtensionConformsToUTI:v4];
+  iCopy = i;
+  pathExtension = [(NSURL *)self pathExtension];
+  v6 = [pathExtension tsu_pathExtensionConformsToUTI:iCopy];
 
   return v6;
 }
 
-- (BOOL)tsu_conformsToAnyUTI:(id)a3
+- (BOOL)tsu_conformsToAnyUTI:(id)i
 {
-  v4 = a3;
-  v5 = [(NSURL *)self pathExtension];
-  v6 = v5;
-  if (v5)
+  iCopy = i;
+  pathExtension = [(NSURL *)self pathExtension];
+  v6 = pathExtension;
+  if (pathExtension)
   {
-    [v5 tsu_allFilenameExtensionIdentifiersForTag];
+    [pathExtension tsu_allFilenameExtensionIdentifiersForTag];
     v25 = 0u;
     v26 = 0u;
     v27 = 0u;
@@ -1223,7 +1223,7 @@ LABEL_16:
             v24 = 0u;
             v21 = 0u;
             v22 = 0u;
-            v13 = v4;
+            v13 = iCopy;
             v14 = [v13 countByEnumeratingWithState:&v21 objects:v29 count:16];
             if (v14)
             {

@@ -7,13 +7,13 @@
 - (id)mediaContentRating
 {
   v40 = *MEMORY[0x1E69E9840];
-  v2 = [a1 asset];
-  v3 = [v2 metadata];
-  v4 = v3;
+  asset = [self asset];
+  metadata = [asset metadata];
+  v4 = metadata;
   v5 = MEMORY[0x1E695E0F0];
-  if (v3)
+  if (metadata)
   {
-    v6 = v3;
+    v6 = metadata;
   }
 
   else
@@ -23,11 +23,11 @@
 
   v7 = v6;
 
-  v8 = [a1 externalMetadata];
-  v9 = v8;
-  if (v8)
+  externalMetadata = [self externalMetadata];
+  v9 = externalMetadata;
+  if (externalMetadata)
   {
-    v10 = v8;
+    v10 = externalMetadata;
   }
 
   else
@@ -38,7 +38,7 @@
   v11 = [v7 arrayByAddingObjectsFromArray:v10];
 
   v12 = [MEMORY[0x1E695DFD8] setWithObjects:{*MEMORY[0x1E69877F8], *MEMORY[0x1E6987748], 0}];
-  v31 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v35 = 0u;
   v36 = 0u;
   v37 = 0u;
@@ -59,17 +59,17 @@
         }
 
         v17 = *(*(&v35 + 1) + 8 * i);
-        v18 = [v17 identifier];
-        v19 = [v12 containsObject:v18];
+        identifier = [v17 identifier];
+        v19 = [v12 containsObject:identifier];
 
         if (v19)
         {
-          v20 = [v17 locale];
-          v21 = [v20 countryCode];
+          locale = [v17 locale];
+          countryCode = [locale countryCode];
 
-          v22 = [v17 stringValue];
+          stringValue = [v17 stringValue];
           memset(&v34, 0, sizeof(v34));
-          [a1 duration];
+          [self duration];
           Seconds = 0.0;
           if ((~v34.flags & 0x11) != 0)
           {
@@ -78,23 +78,23 @@
           }
 
           v24 = Seconds < 4200.0 && Seconds > 0.0;
-          v25 = [a1 avkitMediaType];
-          if (v25 == 5)
+          avkitMediaType = [self avkitMediaType];
+          if (avkitMediaType == 5)
           {
             v26 = 1;
           }
 
           else
           {
-            v26 = 2 * (v25 == 6);
+            v26 = 2 * (avkitMediaType == 6);
           }
 
           v27 = +[AVRatingProviders shared];
-          v28 = [v27 findRatingString:v22 domain:v26 country:v21 shouldPreferTVDomain:v24];
+          v28 = [v27 findRatingString:stringValue domain:v26 country:countryCode shouldPreferTVDomain:v24];
 
           if (v28)
           {
-            [v31 addObject:v28];
+            [array addObject:v28];
           }
         }
       }
@@ -105,9 +105,9 @@
     while (v14);
   }
 
-  v29 = [v31 firstObject];
+  firstObject = [array firstObject];
 
-  return v29;
+  return firstObject;
 }
 
 @end

@@ -1,48 +1,48 @@
 @interface INHomeAttribute
-- (BOOL)isEqual:(id)a3;
-- (INHomeAttribute)initWithCoder:(id)a3;
-- (INHomeAttribute)initWithType:(int64_t)a3 BOOLValue:(BOOL)a4;
-- (INHomeAttribute)initWithType:(int64_t)a3 doubleValue:(double)a4;
-- (INHomeAttribute)initWithType:(int64_t)a3 stringValue:(id)a4;
-- (INHomeAttribute)initWithType:(int64_t)a3 valueType:(int64_t)a4 BOOLValue:(BOOL)a5 doubleValue:(double)a6 stringValue:(id)a7;
+- (BOOL)isEqual:(id)equal;
+- (INHomeAttribute)initWithCoder:(id)coder;
+- (INHomeAttribute)initWithType:(int64_t)type BOOLValue:(BOOL)value;
+- (INHomeAttribute)initWithType:(int64_t)type doubleValue:(double)value;
+- (INHomeAttribute)initWithType:(int64_t)type stringValue:(id)value;
+- (INHomeAttribute)initWithType:(int64_t)type valueType:(int64_t)valueType BOOLValue:(BOOL)value doubleValue:(double)doubleValue stringValue:(id)stringValue;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation INHomeAttribute
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   type = self->_type;
-  v5 = a3;
-  [v5 encodeInteger:type forKey:@"type"];
-  [v5 encodeInteger:self->_valueType forKey:@"valueType"];
-  [v5 encodeBool:self->_BOOLValue forKey:@"BOOLValue"];
-  [v5 encodeDouble:@"doubleValue" forKey:self->_doubleValue];
-  [v5 encodeObject:self->_stringValue forKey:@"stringValue"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:type forKey:@"type"];
+  [coderCopy encodeInteger:self->_valueType forKey:@"valueType"];
+  [coderCopy encodeBool:self->_BOOLValue forKey:@"BOOLValue"];
+  [coderCopy encodeDouble:@"doubleValue" forKey:self->_doubleValue];
+  [coderCopy encodeObject:self->_stringValue forKey:@"stringValue"];
 }
 
-- (INHomeAttribute)initWithCoder:(id)a3
+- (INHomeAttribute)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"type"];
-  v6 = [v4 decodeIntegerForKey:@"valueType"];
-  v7 = [v4 decodeBoolForKey:@"BOOLValue"];
-  [v4 decodeDoubleForKey:@"doubleValue"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"type"];
+  v6 = [coderCopy decodeIntegerForKey:@"valueType"];
+  v7 = [coderCopy decodeBoolForKey:@"BOOLValue"];
+  [coderCopy decodeDoubleForKey:@"doubleValue"];
   v9 = v8;
-  v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
+  v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"stringValue"];
 
   v11 = [(INHomeAttribute *)self initWithType:v5 valueType:v6 BOOLValue:v7 doubleValue:v10 stringValue:v9];
   return v11;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
+    v5 = equalCopy;
     v6 = v5;
     v7 = 0;
     if (self->_type == v5[2] && self->_valueType == v5[3] && self->_BOOLValue == *(v5 + 8) && self->_doubleValue == *(v5 + 4))
@@ -70,20 +70,20 @@
   return v2 ^ [(NSString *)self->_stringValue hash]^ doubleValue;
 }
 
-- (INHomeAttribute)initWithType:(int64_t)a3 valueType:(int64_t)a4 BOOLValue:(BOOL)a5 doubleValue:(double)a6 stringValue:(id)a7
+- (INHomeAttribute)initWithType:(int64_t)type valueType:(int64_t)valueType BOOLValue:(BOOL)value doubleValue:(double)doubleValue stringValue:(id)stringValue
 {
-  v12 = a7;
+  stringValueCopy = stringValue;
   v18.receiver = self;
   v18.super_class = INHomeAttribute;
   v13 = [(INHomeAttribute *)&v18 init];
   v14 = v13;
   if (v13)
   {
-    v13->_type = a3;
-    v13->_valueType = a4;
-    v13->_BOOLValue = a5;
-    v13->_doubleValue = a6;
-    v15 = [v12 copy];
+    v13->_type = type;
+    v13->_valueType = valueType;
+    v13->_BOOLValue = value;
+    v13->_doubleValue = doubleValue;
+    v15 = [stringValueCopy copy];
     stringValue = v14->_stringValue;
     v14->_stringValue = v15;
   }
@@ -91,49 +91,49 @@
   return v14;
 }
 
-- (INHomeAttribute)initWithType:(int64_t)a3 stringValue:(id)a4
+- (INHomeAttribute)initWithType:(int64_t)type stringValue:(id)value
 {
-  v6 = a4;
+  valueCopy = value;
   v11.receiver = self;
   v11.super_class = INHomeAttribute;
   v7 = [(INHomeAttribute *)&v11 init];
   if (v7)
   {
-    v8 = [v6 copy];
+    v8 = [valueCopy copy];
     stringValue = v7->_stringValue;
     v7->_stringValue = v8;
 
-    v7->_type = a3;
+    v7->_type = type;
     v7->_valueType = 3;
   }
 
   return v7;
 }
 
-- (INHomeAttribute)initWithType:(int64_t)a3 doubleValue:(double)a4
+- (INHomeAttribute)initWithType:(int64_t)type doubleValue:(double)value
 {
   v7.receiver = self;
   v7.super_class = INHomeAttribute;
   result = [(INHomeAttribute *)&v7 init];
   if (result)
   {
-    result->_doubleValue = a4;
-    result->_type = a3;
+    result->_doubleValue = value;
+    result->_type = type;
     result->_valueType = 2;
   }
 
   return result;
 }
 
-- (INHomeAttribute)initWithType:(int64_t)a3 BOOLValue:(BOOL)a4
+- (INHomeAttribute)initWithType:(int64_t)type BOOLValue:(BOOL)value
 {
   v7.receiver = self;
   v7.super_class = INHomeAttribute;
   result = [(INHomeAttribute *)&v7 init];
   if (result)
   {
-    result->_BOOLValue = a4;
-    result->_type = a3;
+    result->_BOOLValue = value;
+    result->_type = type;
     result->_valueType = 1;
   }
 

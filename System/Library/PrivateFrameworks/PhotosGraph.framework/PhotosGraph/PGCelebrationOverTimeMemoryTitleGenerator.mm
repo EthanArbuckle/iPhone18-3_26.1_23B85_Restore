@@ -1,8 +1,8 @@
 @interface PGCelebrationOverTimeMemoryTitleGenerator
-- (PGCelebrationOverTimeMemoryTitleGenerator)initWithMomentNodes:(id)a3 titleGenerationContext:(id)a4;
+- (PGCelebrationOverTimeMemoryTitleGenerator)initWithMomentNodes:(id)nodes titleGenerationContext:(id)context;
 - (id)_celebrationSubtitle;
 - (id)_celebrationTitle;
-- (void)_generateTitleAndSubtitleWithResult:(id)a3;
+- (void)_generateTitleAndSubtitleWithResult:(id)result;
 @end
 
 @implementation PGCelebrationOverTimeMemoryTitleGenerator
@@ -30,8 +30,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v2 = [(PGTitleGenerator *)self momentNodes];
-  v3 = [v2 countByEnumeratingWithState:&v12 objects:v22 count:16];
+  momentNodes = [(PGTitleGenerator *)self momentNodes];
+  v3 = [momentNodes countByEnumeratingWithState:&v12 objects:v22 count:16];
   if (v3)
   {
     v4 = *v13;
@@ -41,7 +41,7 @@ LABEL_3:
     {
       if (*v13 != v4)
       {
-        objc_enumerationMutation(v2);
+        objc_enumerationMutation(momentNodes);
       }
 
       v6 = *(*(&v12 + 1) + 8 * v5);
@@ -58,7 +58,7 @@ LABEL_3:
 
       if (v3 == ++v5)
       {
-        v3 = [v2 countByEnumeratingWithState:&v12 objects:v22 count:16];
+        v3 = [momentNodes countByEnumeratingWithState:&v12 objects:v22 count:16];
         if (v3)
         {
           goto LABEL_3;
@@ -104,22 +104,22 @@ void __62__PGCelebrationOverTimeMemoryTitleGenerator__celebrationTitle__block_in
   }
 }
 
-- (void)_generateTitleAndSubtitleWithResult:(id)a3
+- (void)_generateTitleAndSubtitleWithResult:(id)result
 {
-  v6 = a3;
-  v4 = [(PGCelebrationOverTimeMemoryTitleGenerator *)self _celebrationTitle];
-  v5 = [(PGCelebrationOverTimeMemoryTitleGenerator *)self _celebrationSubtitle];
-  if (v6)
+  resultCopy = result;
+  _celebrationTitle = [(PGCelebrationOverTimeMemoryTitleGenerator *)self _celebrationTitle];
+  _celebrationSubtitle = [(PGCelebrationOverTimeMemoryTitleGenerator *)self _celebrationSubtitle];
+  if (resultCopy)
   {
-    v6[2](v6, v4, v5);
+    resultCopy[2](resultCopy, _celebrationTitle, _celebrationSubtitle);
   }
 }
 
-- (PGCelebrationOverTimeMemoryTitleGenerator)initWithMomentNodes:(id)a3 titleGenerationContext:(id)a4
+- (PGCelebrationOverTimeMemoryTitleGenerator)initWithMomentNodes:(id)nodes titleGenerationContext:(id)context
 {
   v5.receiver = self;
   v5.super_class = PGCelebrationOverTimeMemoryTitleGenerator;
-  return [(PGTitleGenerator *)&v5 initWithMomentNodes:a3 referenceDateInterval:0 keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:0 titleGenerationContext:a4];
+  return [(PGTitleGenerator *)&v5 initWithMomentNodes:nodes referenceDateInterval:0 keyAsset:0 curatedAssetCollection:0 assetCollection:0 type:0 titleGenerationContext:context];
 }
 
 @end

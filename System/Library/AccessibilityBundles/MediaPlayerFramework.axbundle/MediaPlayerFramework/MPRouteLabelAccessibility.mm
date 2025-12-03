@@ -28,8 +28,8 @@
 {
   v2 = MEMORY[0x29EDBA018];
   v3 = [(MPRouteLabelAccessibility *)self safeSetForKey:@"routeNames"];
-  v4 = [v3 allObjects];
-  v5 = [v2 localizedStringByJoiningStrings:v4];
+  allObjects = [v3 allObjects];
+  v5 = [v2 localizedStringByJoiningStrings:allObjects];
 
   return v5;
 }

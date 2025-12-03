@@ -1,6 +1,6 @@
 @interface BWObjectLifetimeTracker
-+ (id)trackerWithDeallocHandler:(id)a3;
-+ (void)trackAttachmentBearer:(void *)a3 deallocHandler:(id)a4;
++ (id)trackerWithDeallocHandler:(id)handler;
++ (void)trackAttachmentBearer:(void *)bearer deallocHandler:(id)handler;
 - (void)dealloc;
 @end
 
@@ -19,7 +19,7 @@
   [(BWObjectLifetimeTracker *)&v4 dealloc];
 }
 
-+ (id)trackerWithDeallocHandler:(id)a3
++ (id)trackerWithDeallocHandler:(id)handler
 {
   v4 = [BWObjectLifetimeTracker alloc];
   if (v4)
@@ -29,7 +29,7 @@
     v5 = objc_msgSendSuper2(&v7, sel_init);
     if (v5)
     {
-      v5[1] = [a3 copy];
+      v5[1] = [handler copy];
     }
   }
 
@@ -41,7 +41,7 @@
   return v5;
 }
 
-+ (void)trackAttachmentBearer:(void *)a3 deallocHandler:(id)a4
++ (void)trackAttachmentBearer:(void *)bearer deallocHandler:(id)handler
 {
   v6 = [BWObjectLifetimeTracker alloc];
   if (v6)
@@ -51,7 +51,7 @@
     v7 = objc_msgSendSuper2(&v8, sel_init);
     if (v7)
     {
-      v7[1] = [a4 copy];
+      v7[1] = [handler copy];
     }
   }
 
@@ -60,7 +60,7 @@
     v7 = 0;
   }
 
-  CMSetAttachment(a3, @"BWObjectLifetimeTracker", v7, 0);
+  CMSetAttachment(bearer, @"BWObjectLifetimeTracker", v7, 0);
 }
 
 @end

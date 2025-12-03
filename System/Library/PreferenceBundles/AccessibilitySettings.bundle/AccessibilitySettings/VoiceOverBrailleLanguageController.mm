@@ -1,37 +1,37 @@
 @interface VoiceOverBrailleLanguageController
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4;
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4;
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path;
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path;
 - (BRLTTableEnumerator)tableEnumerator;
 - (id)_brailleLanguageSpecifiers;
 - (id)_defaultTable;
 - (id)_newAddLanguageSpecifier;
-- (id)_selectedBrailleTable:(id)a3;
+- (id)_selectedBrailleTable:(id)table;
 - (id)selectedBrailleTable;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5;
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4;
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4;
-- (void)_addLanguage:(id)a3;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath;
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path;
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path;
+- (void)_addLanguage:(id)language;
 - (void)_donePressed;
-- (void)_editPressed:(id)a3;
+- (void)_editPressed:(id)pressed;
 - (void)_manageEditButton;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation VoiceOverBrailleLanguageController
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = VoiceOverBrailleLanguageController;
-  [(VoiceOverBrailleLanguageController *)&v4 viewWillAppear:a3];
+  [(VoiceOverBrailleLanguageController *)&v4 viewWillAppear:appear];
   [(VoiceOverBrailleLanguageController *)self reloadSpecifiers];
   [(VoiceOverBrailleLanguageController *)self _manageEditButton];
 }
@@ -62,30 +62,30 @@ void __49__VoiceOverBrailleLanguageController_viewDidLoad__block_invoke(uint64_t
   [WeakRetained reloadSpecifiers];
 }
 
-- (id)_selectedBrailleTable:(id)a3
+- (id)_selectedBrailleTable:(id)table
 {
-  v3 = [(VoiceOverBrailleLanguageController *)self selectedBrailleTable];
-  v4 = [v3 localizedNameWithService];
+  selectedBrailleTable = [(VoiceOverBrailleLanguageController *)self selectedBrailleTable];
+  localizedNameWithService = [selectedBrailleTable localizedNameWithService];
 
-  return v4;
+  return localizedNameWithService;
 }
 
 - (id)selectedBrailleTable
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverBrailleTableIdentifier];
+  voiceOverBrailleTableIdentifier = [v3 voiceOverBrailleTableIdentifier];
 
-  if (v4)
+  if (voiceOverBrailleTableIdentifier)
   {
-    v5 = [[BRLTTable alloc] initWithIdentifier:v4];
+    _defaultTable = [[BRLTTable alloc] initWithIdentifier:voiceOverBrailleTableIdentifier];
   }
 
   else
   {
-    v5 = [(VoiceOverBrailleLanguageController *)self _defaultTable];
+    _defaultTable = [(VoiceOverBrailleLanguageController *)self _defaultTable];
   }
 
-  v6 = v5;
+  v6 = _defaultTable;
 
   return v6;
 }
@@ -100,9 +100,9 @@ void __49__VoiceOverBrailleLanguageController_viewDidLoad__block_invoke(uint64_t
     if ((VOSCustomBrailleEnabled() & 1) == 0)
     {
       v6 = +[AXSettings sharedInstance];
-      v7 = [v6 voiceOverBrailleLanguageRotorItems];
+      voiceOverBrailleLanguageRotorItems = [v6 voiceOverBrailleLanguageRotorItems];
 
-      if (v7)
+      if (voiceOverBrailleLanguageRotorItems)
       {
         v8 = +[PSSpecifier emptyGroupSpecifier];
         [v5 addObject:v8];
@@ -115,23 +115,23 @@ void __49__VoiceOverBrailleLanguageController_viewDidLoad__block_invoke(uint64_t
     }
 
     v11 = [PSSpecifier groupSpecifierWithID:@"LanguagesGroup"];
-    v12 = [(VoiceOverBrailleLanguageController *)self selectedBrailleTable];
+    selectedBrailleTable = [(VoiceOverBrailleLanguageController *)self selectedBrailleTable];
     v13 = settingsLocString(@"BRAILLE_LANGUAGES_FOOTER", @"VoiceOverSettings");
-    v14 = [v12 serviceIdentifier];
-    if ([v14 isEqualToString:@"com.apple.scrod.braille.table.duxbury"])
+    serviceIdentifier = [selectedBrailleTable serviceIdentifier];
+    if ([serviceIdentifier isEqualToString:@"com.apple.scrod.braille.table.duxbury"])
     {
-      v15 = [v12 language];
-      v16 = [v15 isEqualToString:@"jpn"];
+      language = [selectedBrailleTable language];
+      v16 = [language isEqualToString:@"jpn"];
 
       if (!v16)
       {
 LABEL_9:
         [v11 setProperty:v13 forKey:PSFooterTextGroupKey];
         [v5 addObject:v11];
-        v19 = [(VoiceOverBrailleLanguageController *)self _brailleLanguageSpecifiers];
-        [v5 addObjectsFromArray:v19];
-        v20 = [(VoiceOverBrailleLanguageController *)self _newAddLanguageSpecifier];
-        [v5 addObject:v20];
+        _brailleLanguageSpecifiers = [(VoiceOverBrailleLanguageController *)self _brailleLanguageSpecifiers];
+        [v5 addObjectsFromArray:_brailleLanguageSpecifiers];
+        _newAddLanguageSpecifier = [(VoiceOverBrailleLanguageController *)self _newAddLanguageSpecifier];
+        [v5 addObject:_newAddLanguageSpecifier];
 
         [(VoiceOverBrailleLanguageController *)self setupLongTitleSpecifiers:v5];
         v21 = *&self->AXUISettingsBaseListController_opaque[v3];
@@ -141,8 +141,8 @@ LABEL_9:
         goto LABEL_10;
       }
 
-      v14 = settingsLocString(@"JAPANESE_BRAILLE_LANGUAGES_FOOTER", @"VoiceOverSettings");
-      v17 = settingsLocString(v14, @"VoiceOverSettings");
+      serviceIdentifier = settingsLocString(@"JAPANESE_BRAILLE_LANGUAGES_FOOTER", @"VoiceOverSettings");
+      v17 = settingsLocString(serviceIdentifier, @"VoiceOverSettings");
       v18 = [NSString stringWithFormat:@"%@\n%@", v13, v17];
 
       v13 = v18;
@@ -159,26 +159,26 @@ LABEL_10:
 - (id)_defaultTable
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverBrailleLanguageRotorItems];
+  voiceOverBrailleLanguageRotorItems = [v3 voiceOverBrailleLanguageRotorItems];
 
-  v5 = [v4 indexOfObjectPassingTest:&__block_literal_global_47];
+  v5 = [voiceOverBrailleLanguageRotorItems indexOfObjectPassingTest:&__block_literal_global_47];
   v6 = +[AXLanguageManager sharedInstance];
-  v7 = [v6 userLocale];
+  userLocale = [v6 userLocale];
 
   if (v5 == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v8 = [(VoiceOverBrailleLanguageController *)self tableEnumerator];
-    v9 = [objc_opt_class() defaultTableForLocale:v7];
+    tableEnumerator = [(VoiceOverBrailleLanguageController *)self tableEnumerator];
+    v9 = [objc_opt_class() defaultTableForLocale:userLocale];
   }
 
   else
   {
-    v10 = [v4 objectAtIndexedSubscript:v5];
+    v10 = [voiceOverBrailleLanguageRotorItems objectAtIndexedSubscript:v5];
     v11 = [v10 objectForKeyedSubscript:@"LanguageDefaults"];
-    v12 = [v7 localeIdentifier];
-    v8 = [v11 objectForKeyedSubscript:v12];
+    localeIdentifier = [userLocale localeIdentifier];
+    tableEnumerator = [v11 objectForKeyedSubscript:localeIdentifier];
 
-    v9 = [[BRLTTable alloc] initWithIdentifier:v8];
+    v9 = [[BRLTTable alloc] initWithIdentifier:tableEnumerator];
   }
 
   v13 = v9;
@@ -199,22 +199,22 @@ BOOL __51__VoiceOverBrailleLanguageController__defaultTable__block_invoke(id a1,
   return v6;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 cellForRowAtIndexPath:v7];
-  v9 = [v8 specifier];
-  v10 = [v9 propertyForKey:PSIDKey];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v8 specifier];
+  v10 = [specifier propertyForKey:PSIDKey];
   v11 = [v10 isEqualToString:@"SelectedBrailleController"];
 
   if (v11)
   {
     v12 = objc_alloc_init(AXVoiceOverSelectedBrailleTableController);
-    v13 = [(VoiceOverBrailleLanguageController *)self rootController];
-    [(AXVoiceOverSelectedBrailleTableController *)v12 setRootController:v13];
+    rootController = [(VoiceOverBrailleLanguageController *)self rootController];
+    [(AXVoiceOverSelectedBrailleTableController *)v12 setRootController:rootController];
 
-    [(AXVoiceOverSelectedBrailleTableController *)v12 setSpecifier:v9];
+    [(AXVoiceOverSelectedBrailleTableController *)v12 setSpecifier:specifier];
     [(AXVoiceOverSelectedBrailleTableController *)v12 setParentBrailleController:self];
     [(AXVoiceOverSelectedBrailleTableController *)v12 setParentController:self];
     [(VoiceOverBrailleLanguageController *)self showController:v12 animate:1];
@@ -224,29 +224,29 @@ BOOL __51__VoiceOverBrailleLanguageController__defaultTable__block_invoke(id a1,
   {
     v14.receiver = self;
     v14.super_class = VoiceOverBrailleLanguageController;
-    [(VoiceOverBrailleLanguageController *)&v14 tableView:v6 didSelectRowAtIndexPath:v7];
+    [(VoiceOverBrailleLanguageController *)&v14 tableView:viewCopy didSelectRowAtIndexPath:pathCopy];
   }
 }
 
 - (id)_brailleLanguageSpecifiers
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 voiceOverBrailleLanguageRotorItems];
+  voiceOverBrailleLanguageRotorItems = [v3 voiceOverBrailleLanguageRotorItems];
 
-  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [v4 count]);
-  v6 = [v4 count];
+  v5 = +[NSMutableArray arrayWithCapacity:](NSMutableArray, "arrayWithCapacity:", [voiceOverBrailleLanguageRotorItems count]);
+  v6 = [voiceOverBrailleLanguageRotorItems count];
   v7 = +[AXLanguageManager sharedInstance];
-  v8 = [v7 userLocale];
+  userLocale = [v7 userLocale];
 
   if (v6)
   {
-    v39 = self;
+    selfCopy = self;
     v44 = 0u;
     v45 = 0u;
     v42 = 0u;
     v43 = 0u;
-    v37 = v4;
-    obj = v4;
+    v37 = voiceOverBrailleLanguageRotorItems;
+    obj = voiceOverBrailleLanguageRotorItems;
     v41 = [obj countByEnumeratingWithState:&v42 objects:v46 count:16];
     if (!v41)
     {
@@ -265,13 +265,13 @@ BOOL __51__VoiceOverBrailleLanguageController__defaultTable__block_invoke(id a1,
 
         v10 = *(*(&v42 + 1) + 8 * i);
         v11 = [v10 objectForKeyedSubscript:@"Default"];
-        v12 = [v11 BOOLValue];
+        bOOLValue = [v11 BOOLValue];
 
-        if (v12)
+        if (bOOLValue)
         {
           v13 = [v10 objectForKeyedSubscript:@"LanguageDefaults"];
-          v14 = [v8 localeIdentifier];
-          v15 = [v13 objectForKeyedSubscript:v14];
+          localeIdentifier = [userLocale localeIdentifier];
+          v15 = [v13 objectForKeyedSubscript:localeIdentifier];
 
           if (v15)
           {
@@ -280,8 +280,8 @@ BOOL __51__VoiceOverBrailleLanguageController__defaultTable__block_invoke(id a1,
 
           else
           {
-            v20 = [(VoiceOverBrailleLanguageController *)v39 tableEnumerator];
-            v16 = [objc_opt_class() defaultTableForLocale:v8];
+            tableEnumerator = [(VoiceOverBrailleLanguageController *)selfCopy tableEnumerator];
+            v16 = [objc_opt_class() defaultTableForLocale:userLocale];
           }
 
           v18 = objc_opt_class();
@@ -300,8 +300,8 @@ BOOL __51__VoiceOverBrailleLanguageController__defaultTable__block_invoke(id a1,
 
         if (VOSCustomBrailleEnabled())
         {
-          v21 = [v16 replacements];
-          v22 = [v21 count];
+          replacements = [v16 replacements];
+          v22 = [replacements count];
 
           if (v22)
           {
@@ -314,28 +314,28 @@ BOOL __51__VoiceOverBrailleLanguageController__defaultTable__block_invoke(id a1,
           goto LABEL_20;
         }
 
-        v23 = v8;
+        v23 = userLocale;
         v24 = v5;
-        v25 = [v16 localizedNameWithService];
-        v26 = [PSSpecifier preferenceSpecifierNamed:v25 target:v39 set:0 get:0 detail:v18 cell:v19 edit:0];
+        localizedNameWithService = [v16 localizedNameWithService];
+        v26 = [PSSpecifier preferenceSpecifierNamed:localizedNameWithService target:selfCopy set:0 get:0 detail:v18 cell:v19 edit:0];
 
         [v26 setProperty:&__kCFBooleanTrue forKey:@"IsLanguage"];
         [v26 setProperty:v16 forKey:@"Table"];
-        if (v12)
+        if (bOOLValue)
         {
           [v26 setIdentifier:@"DefaultLanguage"];
           v27 = +[AXLanguageManager sharedInstance];
-          v28 = [v27 userLocale];
+          userLocale2 = [v27 userLocale];
 
-          [v26 setProperty:v28 forKey:@"Locale"];
-          v29 = [(VoiceOverBrailleLanguageController *)v39 tableEnumerator];
-          [v26 setProperty:v29 forKey:@"TableEnumerator"];
+          [v26 setProperty:userLocale2 forKey:@"Locale"];
+          tableEnumerator2 = [(VoiceOverBrailleLanguageController *)selfCopy tableEnumerator];
+          [v26 setProperty:tableEnumerator2 forKey:@"TableEnumerator"];
         }
 
         v5 = v24;
         [v24 addObject:v26];
 
-        v8 = v23;
+        userLocale = v23;
 LABEL_20:
       }
 
@@ -344,24 +344,24 @@ LABEL_20:
       {
 LABEL_22:
 
-        v4 = v37;
+        voiceOverBrailleLanguageRotorItems = v37;
         goto LABEL_24;
       }
     }
   }
 
-  v30 = [(VoiceOverBrailleLanguageController *)self tableEnumerator];
-  v31 = [objc_opt_class() defaultTableForLocale:v8];
+  tableEnumerator3 = [(VoiceOverBrailleLanguageController *)self tableEnumerator];
+  v31 = [objc_opt_class() defaultTableForLocale:userLocale];
 
   [v31 localizedNameWithService];
-  v33 = v32 = v8;
+  v33 = v32 = userLocale;
   v34 = [PSSpecifier preferenceSpecifierNamed:v33 target:self set:0 get:0 detail:objc_opt_class() cell:2 edit:0];
 
   [v34 setIdentifier:@"DefaultLanguage"];
   [v34 setProperty:&__kCFBooleanTrue forKey:@"IsLanguage"];
   [v34 setProperty:v32 forKey:@"Locale"];
-  v35 = [(VoiceOverBrailleLanguageController *)self tableEnumerator];
-  [v34 setProperty:v35 forKey:@"TableEnumerator"];
+  tableEnumerator4 = [(VoiceOverBrailleLanguageController *)self tableEnumerator];
+  [v34 setProperty:tableEnumerator4 forKey:@"TableEnumerator"];
 
   [v34 setProperty:v31 forKey:@"Table"];
   [v5 addObject:v34];
@@ -376,8 +376,8 @@ LABEL_24:
   v3 = settingsLocString(@"ADD_NEW_BRAILLE_LANGUAGE_BUTTON", @"VoiceOverSettings");
   v4 = [PSSpecifier preferenceSpecifierNamed:v3 target:self set:0 get:0 detail:0 cell:13 edit:0];
   [v4 setButtonAction:"_addLanguage:"];
-  v5 = [(VoiceOverBrailleLanguageController *)self tableEnumerator];
-  [v4 setProperty:v5 forKey:@"TableEnumerator"];
+  tableEnumerator = [(VoiceOverBrailleLanguageController *)self tableEnumerator];
+  [v4 setProperty:tableEnumerator forKey:@"TableEnumerator"];
 
   [v4 setProperty:&__kCFBooleanTrue forKey:@"IsAddingNewLanguage"];
   [v4 setProperty:&__kCFBooleanTrue forKey:@"IsNewLanguage"];
@@ -401,93 +401,93 @@ id __62__VoiceOverBrailleLanguageController__newAddLanguageSpecifier__block_invo
   return [v2 _manageEditButton];
 }
 
-- (void)_addLanguage:(id)a3
+- (void)_addLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v6 = objc_alloc_init(VoiceOverBrailleAllLanguagesController);
   [(VoiceOverBrailleAllLanguagesController *)v6 setModalPresentationStyle:2];
-  [(VoiceOverBrailleAllLanguagesController *)v6 setSpecifier:v4];
+  [(VoiceOverBrailleAllLanguagesController *)v6 setSpecifier:languageCopy];
 
   v5 = [[UINavigationController alloc] initWithRootViewController:v6];
   [(VoiceOverBrailleLanguageController *)self presentViewController:v5 withTransition:8 completion:0];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v7.receiver = self;
   v7.super_class = VoiceOverBrailleLanguageController;
-  v4 = [(VoiceOverBrailleLanguageController *)&v7 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 textLabel];
-  [v5 setNumberOfLines:0];
+  v4 = [(VoiceOverBrailleLanguageController *)&v7 tableView:view cellForRowAtIndexPath:path];
+  textLabel = [v4 textLabel];
+  [textLabel setNumberOfLines:0];
 
   return v4;
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v14 = a4;
-  v6 = [v14 specifier];
-  v7 = [v6 propertyForKey:@"IsLanguage"];
-  v8 = [v7 BOOLValue];
+  cellCopy = cell;
+  specifier = [cellCopy specifier];
+  v7 = [specifier propertyForKey:@"IsLanguage"];
+  bOOLValue = [v7 BOOLValue];
 
   if ([*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] isEditing])
   {
-    if (v8)
+    if (bOOLValue)
     {
-      [v14 setUserInteractionEnabled:1];
-      [v14 setCellEnabled:1];
-      v9 = v14;
+      [cellCopy setUserInteractionEnabled:1];
+      [cellCopy setCellEnabled:1];
+      v9 = cellCopy;
       v10 = 1;
 LABEL_6:
       [v9 setShowsReorderControl:v10];
       goto LABEL_10;
     }
 
-    [v14 setUserInteractionEnabled:0];
-    [v14 setCellEnabled:0];
-    v11 = [v14 titleLabel];
-    v12 = v11;
+    [cellCopy setUserInteractionEnabled:0];
+    [cellCopy setCellEnabled:0];
+    titleLabel = [cellCopy titleLabel];
+    v12 = titleLabel;
     v13 = 0;
   }
 
   else
   {
-    [v14 setUserInteractionEnabled:1];
-    [v14 setCellEnabled:1];
-    if (v8)
+    [cellCopy setUserInteractionEnabled:1];
+    [cellCopy setCellEnabled:1];
+    if (bOOLValue)
     {
-      v9 = v14;
+      v9 = cellCopy;
       v10 = 0;
       goto LABEL_6;
     }
 
-    v11 = [v14 titleLabel];
-    v12 = v11;
+    titleLabel = [cellCopy titleLabel];
+    v12 = titleLabel;
     v13 = 1;
   }
 
-  [v11 setEnabled:v13];
+  [titleLabel setEnabled:v13];
 
 LABEL_10:
 }
 
-- (BOOL)tableView:(id)a3 canEditRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canEditRowAtIndexPath:(id)path
 {
-  v4 = [(VoiceOverBrailleLanguageController *)self specifierAtIndex:[(VoiceOverBrailleLanguageController *)self indexForIndexPath:a4]];
+  v4 = [(VoiceOverBrailleLanguageController *)self specifierAtIndex:[(VoiceOverBrailleLanguageController *)self indexForIndexPath:path]];
   v5 = [v4 propertyForKey:@"IsLanguage"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (int64_t)tableView:(id)a3 editingStyleForRowAtIndexPath:(id)a4
+- (int64_t)tableView:(id)view editingStyleForRowAtIndexPath:(id)path
 {
-  v4 = [(VoiceOverBrailleLanguageController *)self specifierAtIndex:[(VoiceOverBrailleLanguageController *)self indexForIndexPath:a4]];
+  v4 = [(VoiceOverBrailleLanguageController *)self specifierAtIndex:[(VoiceOverBrailleLanguageController *)self indexForIndexPath:path]];
   v5 = [v4 propertyForKey:@"IsLanguage"];
   if ([v5 BOOLValue])
   {
-    v6 = [v4 identifier];
-    v7 = ~[v6 isEqualToString:@"DefaultLanguage"];
+    identifier = [v4 identifier];
+    v7 = ~[identifier isEqualToString:@"DefaultLanguage"];
 
     v8 = v7 & 1;
   }
@@ -501,33 +501,33 @@ LABEL_10:
   return v8;
 }
 
-- (BOOL)tableView:(id)a3 shouldIndentWhileEditingRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldIndentWhileEditingRowAtIndexPath:(id)path
 {
-  v4 = [(VoiceOverBrailleLanguageController *)self specifierAtIndex:[(VoiceOverBrailleLanguageController *)self indexForIndexPath:a4]];
+  v4 = [(VoiceOverBrailleLanguageController *)self specifierAtIndex:[(VoiceOverBrailleLanguageController *)self indexForIndexPath:path]];
   v5 = [v4 propertyForKey:@"IsLanguage"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (id)tableView:(id)a3 targetIndexPathForMoveFromRowAtIndexPath:(id)a4 toProposedIndexPath:(id)a5
+- (id)tableView:(id)view targetIndexPathForMoveFromRowAtIndexPath:(id)path toProposedIndexPath:(id)indexPath
 {
-  v7 = a4;
-  v8 = a5;
-  v9 = [a3 cellForRowAtIndexPath:v8];
-  v10 = [v9 specifier];
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  v9 = [view cellForRowAtIndexPath:indexPathCopy];
+  specifier = [v9 specifier];
 
-  v11 = [v10 propertyForKey:@"IsLanguage"];
-  v12 = [v11 BOOLValue];
+  v11 = [specifier propertyForKey:@"IsLanguage"];
+  bOOLValue = [v11 BOOLValue];
 
-  if (v12)
+  if (bOOLValue)
   {
-    v13 = v8;
+    v13 = indexPathCopy;
   }
 
   else
   {
-    v13 = v7;
+    v13 = pathCopy;
   }
 
   v14 = v13;
@@ -535,54 +535,54 @@ LABEL_10:
   return v13;
 }
 
-- (BOOL)tableView:(id)a3 canMoveRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view canMoveRowAtIndexPath:(id)path
 {
-  v4 = [(VoiceOverBrailleLanguageController *)self specifierForIndexPath:a4];
+  v4 = [(VoiceOverBrailleLanguageController *)self specifierForIndexPath:path];
   v5 = [v4 propertyForKey:@"IsLanguage"];
-  v6 = [v5 BOOLValue];
+  bOOLValue = [v5 BOOLValue];
 
-  return v6;
+  return bOOLValue;
 }
 
-- (void)tableView:(id)a3 moveRowAtIndexPath:(id)a4 toIndexPath:(id)a5
+- (void)tableView:(id)view moveRowAtIndexPath:(id)path toIndexPath:(id)indexPath
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if ([v9 isEqual:v10])
+  viewCopy = view;
+  pathCopy = path;
+  indexPathCopy = indexPath;
+  if ([pathCopy isEqual:indexPathCopy])
   {
     goto LABEL_28;
   }
 
-  v45 = self;
-  v11 = [v8 cellForRowAtIndexPath:v9];
-  v12 = [v11 specifier];
+  selfCopy = self;
+  v11 = [viewCopy cellForRowAtIndexPath:pathCopy];
+  specifier = [v11 specifier];
 
-  v52 = [v12 propertyForKey:@"Table"];
-  v48 = v12;
-  v13 = [v12 identifier];
-  v14 = [v13 isEqualToString:@"DefaultLanguage"];
+  v52 = [specifier propertyForKey:@"Table"];
+  v48 = specifier;
+  identifier = [specifier identifier];
+  v14 = [identifier isEqualToString:@"DefaultLanguage"];
 
-  v15 = [v8 cellForRowAtIndexPath:v10];
-  v16 = [v15 specifier];
+  v15 = [viewCopy cellForRowAtIndexPath:indexPathCopy];
+  specifier2 = [v15 specifier];
 
-  v49 = [v16 propertyForKey:@"Table"];
-  v47 = v16;
-  v17 = [v16 identifier];
-  v18 = [v17 isEqualToString:@"DefaultLanguage"];
+  v49 = [specifier2 propertyForKey:@"Table"];
+  v47 = specifier2;
+  identifier2 = [specifier2 identifier];
+  v18 = [identifier2 isEqualToString:@"DefaultLanguage"];
 
   v19 = +[AXSettings sharedInstance];
-  v20 = [v19 voiceOverBrailleLanguageRotorItems];
-  v21 = [v20 mutableCopy];
+  voiceOverBrailleLanguageRotorItems = [v19 voiceOverBrailleLanguageRotorItems];
+  v21 = [voiceOverBrailleLanguageRotorItems mutableCopy];
 
   if (![v21 count])
   {
     goto LABEL_27;
   }
 
-  v46 = v10;
-  v43 = v9;
-  v44 = v8;
+  v46 = indexPathCopy;
+  v43 = pathCopy;
+  v44 = viewCopy;
   v22 = 0;
   v50 = 0x7FFFFFFFFFFFFFFFLL;
   v51 = 0x7FFFFFFFFFFFFFFFLL;
@@ -592,8 +592,8 @@ LABEL_10:
     v24 = v23;
     if (v14)
     {
-      v9 = [v23 objectForKeyedSubscript:@"Default"];
-      if ([v9 BOOLValue])
+      pathCopy = [v23 objectForKeyedSubscript:@"Default"];
+      if ([pathCopy BOOLValue])
       {
 
 LABEL_13:
@@ -603,8 +603,8 @@ LABEL_13:
     }
 
     v25 = [v24 objectForKeyedSubscript:@"RotorItem"];
-    v26 = [v52 identifier];
-    v27 = [v25 isEqualToString:v26];
+    identifier3 = [v52 identifier];
+    v27 = [v25 isEqualToString:identifier3];
 
     if (v14)
     {
@@ -622,8 +622,8 @@ LABEL_13:
 
     if (v18)
     {
-      v20 = [v24 objectForKeyedSubscript:@"Default"];
-      if ([v20 BOOLValue])
+      voiceOverBrailleLanguageRotorItems = [v24 objectForKeyedSubscript:@"Default"];
+      if ([voiceOverBrailleLanguageRotorItems BOOLValue])
       {
         v28 = 1;
 LABEL_15:
@@ -633,8 +633,8 @@ LABEL_15:
     }
 
     v29 = [v24 objectForKeyedSubscript:@"RotorItem"];
-    v30 = [v49 identifier];
-    v28 = [v29 isEqualToString:v30];
+    identifier4 = [v49 identifier];
+    v28 = [v29 isEqualToString:identifier4];
 
     if (v18)
     {
@@ -655,9 +655,9 @@ LABEL_19:
   }
 
   while (v22 < [v21 count]);
-  v9 = v43;
-  v8 = v44;
-  v10 = v46;
+  pathCopy = v43;
+  viewCopy = v44;
+  indexPathCopy = v46;
   if (v50 != 0x7FFFFFFFFFFFFFFFLL && v51 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v32 = [v21 objectAtIndexedSubscript:v50];
@@ -670,27 +670,27 @@ LABEL_19:
     if (os_log_type_enabled(v34, OS_LOG_TYPE_DEFAULT))
     {
       v35 = +[AXSettings sharedInstance];
-      v36 = [v35 voiceOverBrailleLanguageRotorItems];
-      v37 = [v36 debugDescription];
+      voiceOverBrailleLanguageRotorItems2 = [v35 voiceOverBrailleLanguageRotorItems];
+      v37 = [voiceOverBrailleLanguageRotorItems2 debugDescription];
       *buf = 138412290;
       v54 = v37;
       _os_log_impl(&dword_0, v34, OS_LOG_TYPE_DEFAULT, "Reordered braille languages settings %@", buf, 0xCu);
 
-      v10 = v46;
+      indexPathCopy = v46;
     }
 
     v38 = OBJC_IVAR___PSListController__specifiers;
-    v39 = [*&v45->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers] mutableCopy];
-    v40 = [(VoiceOverBrailleLanguageController *)v45 indexOfSpecifier:v48];
+    v39 = [*&selfCopy->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__specifiers] mutableCopy];
+    v40 = [(VoiceOverBrailleLanguageController *)selfCopy indexOfSpecifier:v48];
     if (v40 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v41 = v40;
       v42 = [v39 objectAtIndexedSubscript:v40];
       [v39 removeObjectAtIndex:v41];
       [v39 insertObject:v42 atIndex:&v41[v51 - v50]];
-      objc_storeStrong(&v45->AXUISettingsBaseListController_opaque[v38], v39);
+      objc_storeStrong(&selfCopy->AXUISettingsBaseListController_opaque[v38], v39);
 
-      v10 = v46;
+      indexPathCopy = v46;
     }
   }
 
@@ -699,17 +699,17 @@ LABEL_27:
 LABEL_28:
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  v7 = [(VoiceOverBrailleLanguageController *)self specifierAtIndex:[(VoiceOverBrailleLanguageController *)self indexForIndexPath:a5]];
+  v7 = [(VoiceOverBrailleLanguageController *)self specifierAtIndex:[(VoiceOverBrailleLanguageController *)self indexForIndexPath:path]];
   v8 = [v7 propertyForKey:@"IsLanguage"];
-  v9 = [v8 BOOLValue];
+  bOOLValue = [v8 BOOLValue];
 
-  if (a4 == 1 && v9)
+  if (style == 1 && bOOLValue)
   {
     v10 = +[AXSettings sharedInstance];
-    v11 = [v10 voiceOverBrailleLanguageRotorItems];
-    v12 = [v11 mutableCopy];
+    voiceOverBrailleLanguageRotorItems = [v10 voiceOverBrailleLanguageRotorItems];
+    v12 = [voiceOverBrailleLanguageRotorItems mutableCopy];
 
     v13 = [v7 propertyForKey:@"Table"];
     if ([v12 count])
@@ -719,8 +719,8 @@ LABEL_28:
       {
         v15 = [v12 objectAtIndexedSubscript:v14];
         v16 = [v15 objectForKeyedSubscript:@"RotorItem"];
-        v17 = [v13 identifier];
-        v18 = [v16 isEqualToString:v17];
+        identifier = [v13 identifier];
+        v18 = [v16 isEqualToString:identifier];
 
         if (v18)
         {
@@ -750,51 +750,51 @@ LABEL_9:
 
     if (VOSCustomBrailleEnabled())
     {
-      v21 = [v13 identifier];
+      identifier2 = [v13 identifier];
       v22 = +[AXSettings sharedInstance];
-      v23 = [v22 voiceOverTouchBrailleDisplayOutputTableIdentifier];
-      v24 = [v21 isEqualToString:v23];
+      voiceOverTouchBrailleDisplayOutputTableIdentifier = [v22 voiceOverTouchBrailleDisplayOutputTableIdentifier];
+      v24 = [identifier2 isEqualToString:voiceOverTouchBrailleDisplayOutputTableIdentifier];
 
       if (v24)
       {
-        v25 = [(VoiceOverBrailleLanguageController *)self _defaultTable];
-        v26 = [v25 identifier];
+        _defaultTable = [(VoiceOverBrailleLanguageController *)self _defaultTable];
+        identifier3 = [_defaultTable identifier];
         v27 = +[AXSettings sharedInstance];
-        [v27 setVoiceOverTouchBrailleDisplayOutputTableIdentifier:v26];
+        [v27 setVoiceOverTouchBrailleDisplayOutputTableIdentifier:identifier3];
       }
 
-      v28 = [v13 identifier];
+      identifier4 = [v13 identifier];
       v29 = +[AXSettings sharedInstance];
-      v30 = [v29 voiceOverTouchBrailleDisplayInputTableIdentifier];
-      v31 = [v28 isEqualToString:v30];
+      voiceOverTouchBrailleDisplayInputTableIdentifier = [v29 voiceOverTouchBrailleDisplayInputTableIdentifier];
+      v31 = [identifier4 isEqualToString:voiceOverTouchBrailleDisplayInputTableIdentifier];
 
       if (v31)
       {
-        v32 = [(VoiceOverBrailleLanguageController *)self _defaultTable];
-        v33 = [v32 identifier];
+        _defaultTable2 = [(VoiceOverBrailleLanguageController *)self _defaultTable];
+        identifier5 = [_defaultTable2 identifier];
         v34 = +[AXSettings sharedInstance];
-        [v34 setVoiceOverTouchBrailleDisplayInputTableIdentifier:v33];
+        [v34 setVoiceOverTouchBrailleDisplayInputTableIdentifier:identifier5];
       }
 
-      v35 = [v13 identifier];
+      identifier6 = [v13 identifier];
       v36 = +[AXSettings sharedInstance];
-      v37 = [v36 voiceOverTouchBrailleGesturesInputTableIdentifier];
-      v38 = [v35 isEqualToString:v37];
+      voiceOverTouchBrailleGesturesInputTableIdentifier = [v36 voiceOverTouchBrailleGesturesInputTableIdentifier];
+      v38 = [identifier6 isEqualToString:voiceOverTouchBrailleGesturesInputTableIdentifier];
 
       if (v38)
       {
         v39 = VOSFirstGesturesCompatibleBrailleTable();
-        v40 = [v39 identifier];
+        identifier7 = [v39 identifier];
         v41 = +[AXSettings sharedInstance];
-        [v41 setVoiceOverTouchBrailleGesturesInputTableIdentifier:v40];
+        [v41 setVoiceOverTouchBrailleGesturesInputTableIdentifier:identifier7];
       }
     }
 
     v42 = +[AXSettings sharedInstance];
-    v43 = [v42 voiceOverBrailleTableIdentifier];
+    voiceOverBrailleTableIdentifier = [v42 voiceOverBrailleTableIdentifier];
 
-    v44 = [v13 identifier];
-    v45 = [v44 isEqualToString:v43];
+    identifier8 = [v13 identifier];
+    v45 = [identifier8 isEqualToString:voiceOverBrailleTableIdentifier];
 
     if (v45)
     {
@@ -836,11 +836,11 @@ void __85__VoiceOverBrailleLanguageController_tableView_commitEditingStyle_forRo
   }
 }
 
-- (id)tableView:(id)a3 trailingSwipeActionsConfigurationForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view trailingSwipeActionsConfigurationForRowAtIndexPath:(id)path
 {
-  v4 = [(VoiceOverBrailleLanguageController *)self specifierAtIndex:[(VoiceOverBrailleLanguageController *)self indexForIndexPath:a4]];
-  v5 = [v4 identifier];
-  v6 = [v5 isEqualToString:@"DefaultLanguage"];
+  v4 = [(VoiceOverBrailleLanguageController *)self specifierAtIndex:[(VoiceOverBrailleLanguageController *)self indexForIndexPath:path]];
+  identifier = [v4 identifier];
+  v6 = [identifier isEqualToString:@"DefaultLanguage"];
 
   if (v6)
   {
@@ -872,13 +872,13 @@ void __85__VoiceOverBrailleLanguageController_tableView_commitEditingStyle_forRo
 
 - (void)_manageEditButton
 {
-  v3 = [(VoiceOverBrailleLanguageController *)self _brailleLanguageSpecifiers];
-  v4 = [v3 count];
+  _brailleLanguageSpecifiers = [(VoiceOverBrailleLanguageController *)self _brailleLanguageSpecifiers];
+  v4 = [_brailleLanguageSpecifiers count];
 
   if (v4 < 2)
   {
-    v5 = [(VoiceOverBrailleLanguageController *)self navigationItem];
-    [v5 setRightBarButtonItem:0];
+    navigationItem = [(VoiceOverBrailleLanguageController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:0];
 
     [(VoiceOverBrailleLanguageController *)self setEditing:0 animated:1];
   }
@@ -886,27 +886,27 @@ void __85__VoiceOverBrailleLanguageController_tableView_commitEditingStyle_forRo
   else if (([*&self->AXUISettingsBaseListController_opaque[OBJC_IVAR___PSListController__table] isEditing] & 1) == 0)
   {
     v7 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:2 target:self action:"_editPressed:"];
-    v6 = [(VoiceOverBrailleLanguageController *)self navigationItem];
-    [v6 setRightBarButtonItem:v7];
+    navigationItem2 = [(VoiceOverBrailleLanguageController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:v7];
   }
 }
 
-- (void)_editPressed:(id)a3
+- (void)_editPressed:(id)pressed
 {
   [(VoiceOverBrailleLanguageController *)self setEditing:1 animated:1];
-  v4 = [(VoiceOverBrailleLanguageController *)self table];
-  [v4 reloadData];
+  table = [(VoiceOverBrailleLanguageController *)self table];
+  [table reloadData];
 
   v6 = [objc_allocWithZone(UIBarButtonItem) initWithBarButtonSystemItem:0 target:self action:"_donePressed"];
-  v5 = [(VoiceOverBrailleLanguageController *)self navigationItem];
-  [v5 setRightBarButtonItem:v6];
+  navigationItem = [(VoiceOverBrailleLanguageController *)self navigationItem];
+  [navigationItem setRightBarButtonItem:v6];
 }
 
 - (void)_donePressed
 {
   [(VoiceOverBrailleLanguageController *)self setEditing:0 animated:1];
-  v3 = [(VoiceOverBrailleLanguageController *)self table];
-  [v3 reloadData];
+  table = [(VoiceOverBrailleLanguageController *)self table];
+  [table reloadData];
 
   [(VoiceOverBrailleLanguageController *)self _manageEditButton];
 }

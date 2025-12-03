@@ -1,21 +1,21 @@
 @interface CBUtil
-+ (BOOL)isAppleVID:(unsigned __int16)a3 forVIDSrc:(unsigned __int8)a4;
-+ (BOOL)isDeviceSupported:(id)a3;
-+ (BOOL)isDeviceSupportedOnWatchOS:(id)a3;
-+ (BOOL)isDeviceSupportedOnXROS:(id)a3;
-+ (id)decodeApplePayloadByteStream:(id)a3;
-+ (id)encodeApplePayloadByteStream:(id)a3;
-+ (id)getBluetoothDebugSettingString:(__CFString *)a3 InKey:(__CFString *)a4;
-+ (id)preSSPPairingCodeToString:(int64_t)a3;
-+ (int64_t)preSSPStringToPairingCode:(id)a3;
-+ (void)setBluetoothDebugSetting:(__CFString *)a3 InKey:(__CFString *)a4 InValue:(void *)a5;
++ (BOOL)isAppleVID:(unsigned __int16)d forVIDSrc:(unsigned __int8)src;
++ (BOOL)isDeviceSupported:(id)supported;
++ (BOOL)isDeviceSupportedOnWatchOS:(id)s;
++ (BOOL)isDeviceSupportedOnXROS:(id)s;
++ (id)decodeApplePayloadByteStream:(id)stream;
++ (id)encodeApplePayloadByteStream:(id)stream;
++ (id)getBluetoothDebugSettingString:(__CFString *)string InKey:(__CFString *)key;
++ (id)preSSPPairingCodeToString:(int64_t)string;
++ (int64_t)preSSPStringToPairingCode:(id)code;
++ (void)setBluetoothDebugSetting:(__CFString *)setting InKey:(__CFString *)key InValue:(void *)value;
 @end
 
 @implementation CBUtil
 
-+ (BOOL)isAppleVID:(unsigned __int16)a3 forVIDSrc:(unsigned __int8)a4
++ (BOOL)isAppleVID:(unsigned __int16)d forVIDSrc:(unsigned __int8)src
 {
-  if (a4 == 2)
+  if (src == 2)
   {
     v4 = 1452;
   }
@@ -25,13 +25,13 @@
     v4 = 76;
   }
 
-  return v4 == a3;
+  return v4 == d;
 }
 
-+ (BOOL)isDeviceSupportedOnXROS:(id)a3
++ (BOOL)isDeviceSupportedOnXROS:(id)s
 {
   v34 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sCopy = s;
   if (CBLogInitOnce != -1)
   {
     [CBRFCOMMChannel configureChannelPortParams:dataBits:parity:stopBits:];
@@ -43,23 +43,23 @@
     v26 = 136315394;
     v27 = "+[CBUtil isDeviceSupportedOnXROS:]";
     v28 = 2112;
-    *v29 = v3;
+    *v29 = sCopy;
     _os_log_impl(&dword_1C0AC1000, v4, OS_LOG_TYPE_DEFAULT, "%s - %@", &v26, 0x16u);
   }
 
-  v5 = [v3 valueForKey:@"DeviceType"];
-  v6 = [v5 unsignedCharValue];
+  v5 = [sCopy valueForKey:@"DeviceType"];
+  unsignedCharValue = [v5 unsignedCharValue];
 
-  v7 = [v3 valueForKey:@"VendorIDSrc"];
-  v8 = [v7 unsignedCharValue];
+  v7 = [sCopy valueForKey:@"VendorIDSrc"];
+  unsignedCharValue2 = [v7 unsignedCharValue];
 
-  v9 = [v3 valueForKey:@"VendorID"];
-  v10 = [v9 unsignedShortValue];
+  v9 = [sCopy valueForKey:@"VendorID"];
+  unsignedShortValue = [v9 unsignedShortValue];
 
-  v11 = [v3 valueForKey:@"ProductID"];
-  v12 = [v11 unsignedShortValue];
+  v11 = [sCopy valueForKey:@"ProductID"];
+  unsignedShortValue2 = [v11 unsignedShortValue];
 
-  if (v8 >= 3)
+  if (unsignedCharValue2 >= 3)
   {
     if (CBLogInitOnce == -1)
     {
@@ -70,14 +70,14 @@
       }
 
 LABEL_22:
-      [(CBUtil *)v8 isDeviceSupportedOnXROS:v13];
-      if ([CBUtil isAppleVID:v10 forVIDSrc:v8])
+      [(CBUtil *)unsignedCharValue2 isDeviceSupportedOnXROS:v13];
+      if ([CBUtil isAppleVID:unsignedShortValue forVIDSrc:unsignedCharValue2])
       {
         goto LABEL_9;
       }
 
 LABEL_23:
-      if (v6 - 16 < 5 && ((0x1Bu >> (v6 - 16)) & 1) != 0)
+      if (unsignedCharValue - 16 < 5 && ((0x1Bu >> (unsignedCharValue - 16)) & 1) != 0)
       {
         goto LABEL_29;
       }
@@ -118,23 +118,23 @@ LABEL_23:
   }
 
 LABEL_8:
-  if (![CBUtil isAppleVID:v10 forVIDSrc:v8])
+  if (![CBUtil isAppleVID:unsignedShortValue forVIDSrc:unsignedCharValue2])
   {
     goto LABEL_23;
   }
 
 LABEL_9:
-  if (v6 > 0x31)
+  if (unsignedCharValue > 0x31)
   {
     goto LABEL_18;
   }
 
-  if (((1 << v6) & 0x1B0000) != 0)
+  if (((1 << unsignedCharValue) & 0x1B0000) != 0)
   {
     goto LABEL_29;
   }
 
-  if (((1 << v6) & 0x2000023000000) == 0)
+  if (((1 << unsignedCharValue) & 0x2000023000000) == 0)
   {
 LABEL_18:
     if (CBLogInitOnce != -1)
@@ -156,7 +156,7 @@ LABEL_20:
       v26 = 136446466;
       v27 = "+[CBUtil isDeviceSupportedOnXROS:]";
       v28 = 1024;
-      *v29 = v6;
+      *v29 = unsignedCharValue;
       v20 = "%{public}s - Apple device type=%d (not HID or audio) - APPROVED";
       v21 = v19;
       v22 = 18;
@@ -169,7 +169,7 @@ LABEL_29:
     goto LABEL_30;
   }
 
-  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v12];
+  v14 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:unsignedShortValue2];
   v15 = [&unk_1F40210E0 containsObject:v14];
 
   if (CBLogInitOnce == -1)
@@ -181,7 +181,7 @@ LABEL_14:
       v17 = "APPROVED";
       v26 = 136447234;
       v27 = "+[CBUtil isDeviceSupportedOnXROS:]";
-      *v29 = v6;
+      *v29 = unsignedCharValue;
       v28 = 1024;
       if (v15)
       {
@@ -189,7 +189,7 @@ LABEL_14:
       }
 
       *&v29[4] = 1024;
-      *&v29[6] = v12;
+      *&v29[6] = unsignedShortValue2;
       v30 = 2112;
       v31 = &unk_1F40210E0;
       v32 = 2082;
@@ -215,10 +215,10 @@ LABEL_30:
   return v18;
 }
 
-+ (BOOL)isDeviceSupportedOnWatchOS:(id)a3
++ (BOOL)isDeviceSupportedOnWatchOS:(id)s
 {
   v28 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  sCopy = s;
   if (CBLogInitOnce != -1)
   {
     [CBRFCOMMChannel configureChannelPortParams:dataBits:parity:stopBits:];
@@ -230,27 +230,27 @@ LABEL_30:
     v22 = 136315394;
     v23 = "+[CBUtil isDeviceSupportedOnWatchOS:]";
     v24 = 2112;
-    *v25 = v3;
+    *v25 = sCopy;
     _os_log_impl(&dword_1C0AC1000, v4, OS_LOG_TYPE_DEFAULT, "%s - %@", &v22, 0x16u);
   }
 
-  v5 = [v3 valueForKey:@"DeviceType"];
-  v6 = [v5 unsignedCharValue];
+  v5 = [sCopy valueForKey:@"DeviceType"];
+  unsignedCharValue = [v5 unsignedCharValue];
 
-  v7 = [v3 valueForKey:@"VendorIDSrc"];
-  v8 = [v7 unsignedCharValue];
+  v7 = [sCopy valueForKey:@"VendorIDSrc"];
+  unsignedCharValue2 = [v7 unsignedCharValue];
 
-  v9 = [v3 valueForKey:@"VendorID"];
-  v10 = [v9 unsignedShortValue];
+  v9 = [sCopy valueForKey:@"VendorID"];
+  unsignedShortValue = [v9 unsignedShortValue];
 
-  v11 = [v3 valueForKey:@"ProductID"];
-  v12 = [v11 unsignedShortValue];
+  v11 = [sCopy valueForKey:@"ProductID"];
+  unsignedShortValue2 = [v11 unsignedShortValue];
 
-  if (v6 == 24)
+  if (unsignedCharValue == 24)
   {
-    if ([CBUtil isAppleVID:v10 forVIDSrc:v8])
+    if ([CBUtil isAppleVID:unsignedShortValue forVIDSrc:unsignedCharValue2])
     {
-      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:v12];
+      v15 = [MEMORY[0x1E696AD98] numberWithUnsignedShort:unsignedShortValue2];
       v14 = [&unk_1F40210F8 containsObject:v15];
 
       if (CBLogInitOnce == -1)
@@ -276,7 +276,7 @@ LABEL_30:
       v23 = "+[CBUtil isDeviceSupportedOnWatchOS:]";
       v24 = 1024;
       v22 = 136446978;
-      *v25 = v12;
+      *v25 = unsignedShortValue2;
       if (v14)
       {
         v17 = "APPROVED";
@@ -315,7 +315,7 @@ LABEL_30:
     goto LABEL_22;
   }
 
-  if (v6 != 25)
+  if (unsignedCharValue != 25)
   {
     if (CBLogInitOnce != -1)
     {
@@ -375,10 +375,10 @@ LABEL_24:
   return v14;
 }
 
-+ (BOOL)isDeviceSupported:(id)a3
++ (BOOL)isDeviceSupported:(id)supported
 {
   v13 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  supportedCopy = supported;
   if (CBLogInitOnce != -1)
   {
     [CBRFCOMMChannel configureChannelPortParams:dataBits:parity:stopBits:];
@@ -390,13 +390,13 @@ LABEL_24:
     v9 = 136446466;
     v10 = "+[CBUtil isDeviceSupported:]";
     v11 = 2114;
-    v12 = v3;
+    v12 = supportedCopy;
     _os_log_impl(&dword_1C0AC1000, v4, OS_LOG_TYPE_DEFAULT, "%{public}s - %{public}@", &v9, 0x16u);
   }
 
   if (+[CBUtil isWatchOS])
   {
-    v5 = [CBUtil isDeviceSupportedOnWatchOS:v3];
+    v5 = [CBUtil isDeviceSupportedOnWatchOS:supportedCopy];
   }
 
   else
@@ -407,7 +407,7 @@ LABEL_24:
       goto LABEL_11;
     }
 
-    v5 = [CBUtil isDeviceSupportedOnXROS:v3];
+    v5 = [CBUtil isDeviceSupportedOnXROS:supportedCopy];
   }
 
   v6 = v5;
@@ -417,11 +417,11 @@ LABEL_11:
   return v6;
 }
 
-+ (int64_t)preSSPStringToPairingCode:(id)a3
++ (int64_t)preSSPStringToPairingCode:(id)code
 {
   v14 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 dataUsingEncoding:4];
+  codeCopy = code;
+  v4 = [codeCopy dataUsingEncoding:4];
   [v4 bytes];
   [v4 length];
   __memcpy_chk();
@@ -436,7 +436,7 @@ LABEL_11:
     *buf = 136446722;
     v9 = "+[CBUtil preSSPStringToPairingCode:]";
     v10 = 2114;
-    v11 = v3;
+    v11 = codeCopy;
     v12 = 2048;
     v13 = 0;
     _os_log_impl(&dword_1C0AC1000, v5, OS_LOG_TYPE_DEFAULT, "%{public}s - str:%{public}@ -> pairingcode:0x%016llX", buf, 0x20u);
@@ -446,11 +446,11 @@ LABEL_11:
   return 0;
 }
 
-+ (id)preSSPPairingCodeToString:(int64_t)a3
++ (id)preSSPPairingCodeToString:(int64_t)string
 {
   v14 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:&v7];
+  stringCopy = string;
+  v3 = [MEMORY[0x1E696AEC0] stringWithUTF8String:&stringCopy];
   if (CBLogInitOnce != -1)
   {
     [CBClassicPeer handlePeerUpdated:];
@@ -462,7 +462,7 @@ LABEL_11:
     *buf = 136446722;
     v9 = "+[CBUtil preSSPPairingCodeToString:]";
     v10 = 2048;
-    v11 = v7;
+    v11 = stringCopy;
     v12 = 2114;
     v13 = v3;
     _os_log_impl(&dword_1C0AC1000, v4, OS_LOG_TYPE_DEFAULT, "%{public}s - pairingcode:0x%016llX -> str:%{public}@", buf, 0x20u);
@@ -473,20 +473,20 @@ LABEL_11:
   return v3;
 }
 
-+ (void)setBluetoothDebugSetting:(__CFString *)a3 InKey:(__CFString *)a4 InValue:(void *)a5
++ (void)setBluetoothDebugSetting:(__CFString *)setting InKey:(__CFString *)key InValue:(void *)value
 {
-  v8 = CFPreferencesCopyAppValue(a3, @"com.apple.MobileBluetooth.debug");
+  v8 = CFPreferencesCopyAppValue(setting, @"com.apple.MobileBluetooth.debug");
   if (v8)
   {
     v9 = v8;
     MutableCopy = CFDictionaryCreateMutableCopy(0, 0, v8);
     CFRelease(v9);
     Mutable = MutableCopy;
-    v12 = a4;
-    if (a5)
+    keyCopy2 = key;
+    if (value)
     {
 LABEL_3:
-      CFDictionarySetValue(Mutable, v12, a5);
+      CFDictionarySetValue(Mutable, keyCopy2, value);
       goto LABEL_6;
     }
   }
@@ -495,18 +495,18 @@ LABEL_3:
   {
     Mutable = CFDictionaryCreateMutable(0, 0, MEMORY[0x1E695E9D8], MEMORY[0x1E695E9E8]);
     MutableCopy = Mutable;
-    v12 = a4;
-    if (a5)
+    keyCopy2 = key;
+    if (value)
     {
       goto LABEL_3;
     }
   }
 
-  CFDictionaryRemoveValue(Mutable, v12);
+  CFDictionaryRemoveValue(Mutable, keyCopy2);
   if (CFDictionaryGetCount(MutableCopy))
   {
 LABEL_6:
-    CFPreferencesSetAppValue(a3, MutableCopy, @"com.apple.MobileBluetooth.debug");
+    CFPreferencesSetAppValue(setting, MutableCopy, @"com.apple.MobileBluetooth.debug");
     if (MutableCopy)
     {
 
@@ -518,13 +518,13 @@ LABEL_6:
 
   CFRelease(MutableCopy);
 
-  CFPreferencesSetAppValue(a3, 0, @"com.apple.MobileBluetooth.debug");
+  CFPreferencesSetAppValue(setting, 0, @"com.apple.MobileBluetooth.debug");
 }
 
-+ (id)getBluetoothDebugSettingString:(__CFString *)a3 InKey:(__CFString *)a4
++ (id)getBluetoothDebugSettingString:(__CFString *)string InKey:(__CFString *)key
 {
   v6 = [MEMORY[0x1E696AEC0] stringWithCString:"" encoding:1];
-  v7 = CFPreferencesCopyAppValue(a3, @"com.apple.MobileBluetooth.debug");
+  v7 = CFPreferencesCopyAppValue(string, @"com.apple.MobileBluetooth.debug");
   if (!v7)
   {
     goto LABEL_14;
@@ -533,9 +533,9 @@ LABEL_6:
   v8 = v7;
   MutableCopy = CFDictionaryCreateMutableCopy(0, 0, v7);
   v10 = MutableCopy;
-  if (a4)
+  if (key)
   {
-    Value = CFDictionaryGetValue(MutableCopy, a4);
+    Value = CFDictionaryGetValue(MutableCopy, key);
     if (Value)
     {
       v12 = Value;
@@ -578,12 +578,12 @@ LABEL_14:
   return v6;
 }
 
-+ (id)decodeApplePayloadByteStream:(id)a3
++ (id)decodeApplePayloadByteStream:(id)stream
 {
-  v3 = a3;
+  streamCopy = stream;
   v4 = objc_opt_new();
-  v5 = [v3 bytes];
-  if ([v3 length] < 3)
+  bytes = [streamCopy bytes];
+  if ([streamCopy length] < 3)
   {
 LABEL_8:
     v11 = v4;
@@ -594,13 +594,13 @@ LABEL_8:
   v7 = 2;
   while (1)
   {
-    v8 = v5 + v6;
-    if (*(v5 + v6) != 100)
+    v8 = bytes + v6;
+    if (*(bytes + v6) != 100)
     {
       goto LABEL_3;
     }
 
-    if ([v3 length] - 1 <= v6)
+    if ([streamCopy length] - 1 <= v6)
     {
       break;
     }
@@ -630,7 +630,7 @@ LABEL_8:
     v7 += v9;
 LABEL_3:
     v6 = ++v7;
-    if ([v3 length] <= v7)
+    if ([streamCopy length] <= v7)
     {
       goto LABEL_8;
     }
@@ -657,17 +657,17 @@ LABEL_19:
   return v11;
 }
 
-+ (id)encodeApplePayloadByteStream:(id)a3
++ (id)encodeApplePayloadByteStream:(id)stream
 {
   v23 = *MEMORY[0x1E69E9840];
-  v3 = a3;
+  streamCopy = stream;
   v21 = 76;
   v4 = [MEMORY[0x1E695DF88] dataWithBytes:&v21 length:2];
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = v3;
+  v5 = streamCopy;
   v6 = [v5 countByEnumeratingWithState:&v17 objects:v22 count:16];
   if (v6)
   {

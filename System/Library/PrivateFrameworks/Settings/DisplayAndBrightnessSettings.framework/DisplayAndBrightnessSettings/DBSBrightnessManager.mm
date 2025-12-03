@@ -1,19 +1,19 @@
 @interface DBSBrightnessManager
-+ (BOOL)specifiersPresentIn:(id)a3;
++ (BOOL)specifiersPresentIn:(id)in;
 + (id)defaultManager;
-+ (void)removeSpecifiersFrom:(id)a3;
++ (void)removeSpecifiersFrom:(id)from;
 - (DBSBrightnessManager)init;
 - (PSListController)delegate;
 - (id)_generateMainBrightnessSpecifier;
-- (id)backlightValue:(id)a3;
-- (id)getAutoWhiteBalanceEnabled:(id)a3;
+- (id)backlightValue:(id)value;
+- (id)getAutoWhiteBalanceEnabled:(id)enabled;
 - (id)mainDisplayBrightnessSpecifiers;
 - (void)_cleanupTransactionRef;
 - (void)brightnessChangedExternally;
 - (void)dealloc;
-- (void)setAutoWhiteBalanceEnabled:(id)a3 forSpecifier:(id)a4;
-- (void)setBacklightValue:(id)a3 specifier:(id)a4;
-- (void)showAlertToDisableAccessibilityFilters:(id)a3 cancel:(id)a4;
+- (void)setAutoWhiteBalanceEnabled:(id)enabled forSpecifier:(id)specifier;
+- (void)setBacklightValue:(id)value specifier:(id)specifier;
+- (void)showAlertToDisableAccessibilityFilters:(id)filters cancel:(id)cancel;
 @end
 
 @implementation DBSBrightnessManager
@@ -44,8 +44,8 @@ uint64_t __38__DBSBrightnessManager_defaultManager__block_invoke()
   v2 = [(DBSBrightnessManager *)&v7 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 addObserver:v2 selector:sel_handleBrightnessChangedExternallyNotification_ name:*MEMORY[0x277D76E88] object:0];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_handleBrightnessChangedExternallyNotification_ name:*MEMORY[0x277D76E88] object:0];
 
     v4 = objc_alloc_init(MEMORY[0x277CFD3A8]);
     brightnessClient = v2->_brightnessClient;
@@ -63,56 +63,56 @@ uint64_t __38__DBSBrightnessManager_defaultManager__block_invoke()
   [(DBSBrightnessManager *)&v3 dealloc];
 }
 
-+ (BOOL)specifiersPresentIn:(id)a3
++ (BOOL)specifiersPresentIn:(id)in
 {
-  v3 = [a3 specifierForID:@"BRIGHTNESS_GROUP"];
+  v3 = [in specifierForID:@"BRIGHTNESS_GROUP"];
   v4 = v3 != 0;
 
   return v4;
 }
 
-+ (void)removeSpecifiersFrom:(id)a3
++ (void)removeSpecifiersFrom:(id)from
 {
-  v7 = a3;
-  v3 = [MEMORY[0x277CBEB18] array];
-  v4 = [v7 specifierForID:@"BRIGHTNESS_GROUP"];
+  fromCopy = from;
+  array = [MEMORY[0x277CBEB18] array];
+  v4 = [fromCopy specifierForID:@"BRIGHTNESS_GROUP"];
   if (v4)
   {
-    [v3 addObject:v4];
+    [array addObject:v4];
   }
 
-  v5 = [v7 specifierForID:@"BRIGHTNESS"];
+  v5 = [fromCopy specifierForID:@"BRIGHTNESS"];
   if (v5)
   {
-    [v3 addObject:v5];
+    [array addObject:v5];
   }
 
-  v6 = [v7 specifierForID:@"WHITE_BALANCE"];
+  v6 = [fromCopy specifierForID:@"WHITE_BALANCE"];
   if (v6)
   {
-    [v3 addObject:v6];
+    [array addObject:v6];
   }
 
-  if ([v3 count])
+  if ([array count])
   {
-    [v7 removeContiguousSpecifiers:v3 animated:1];
+    [fromCopy removeContiguousSpecifiers:array animated:1];
   }
 }
 
 - (id)mainDisplayBrightnessSpecifiers
 {
-  v3 = [(DBSBrightnessManager *)self specifiers];
+  specifiers = [(DBSBrightnessManager *)self specifiers];
 
-  if (!v3)
+  if (!specifiers)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = [MEMORY[0x277D3FAD8] groupSpecifierWithID:@"BRIGHTNESS_GROUP"];
     v6 = DBS_LocalizedStringForConnectedDisplays(@"BRIGHTNESS_GROUP");
     [v5 setName:v6];
 
-    v7 = [MEMORY[0x277D3F990] sharedManager];
+    mEMORY[0x277D3F990] = [MEMORY[0x277D3F990] sharedManager];
     v8 = *MEMORY[0x277D3FDA8];
-    v9 = [v7 capabilityBoolAnswer:*MEMORY[0x277D3FDA8]];
+    v9 = [mEMORY[0x277D3F990] capabilityBoolAnswer:*MEMORY[0x277D3FDA8]];
 
     if (v9)
     {
@@ -120,11 +120,11 @@ uint64_t __38__DBSBrightnessManager_defaultManager__block_invoke()
       [v5 setProperty:v10 forKey:*MEMORY[0x277D3FF88]];
     }
 
-    [v4 addObject:v5];
-    v11 = [(DBSBrightnessManager *)self _generateMainBrightnessSpecifier];
-    [v4 addObject:v11];
-    v12 = [MEMORY[0x277D3F990] sharedManager];
-    v13 = [v12 capabilityBoolAnswer:v8];
+    [array addObject:v5];
+    _generateMainBrightnessSpecifier = [(DBSBrightnessManager *)self _generateMainBrightnessSpecifier];
+    [array addObject:_generateMainBrightnessSpecifier];
+    mEMORY[0x277D3F990]2 = [MEMORY[0x277D3F990] sharedManager];
+    v13 = [mEMORY[0x277D3F990]2 capabilityBoolAnswer:v8];
 
     if (v13)
     {
@@ -133,10 +133,10 @@ uint64_t __38__DBSBrightnessManager_defaultManager__block_invoke()
       v16 = [v14 preferenceSpecifierNamed:v15 target:self set:sel_setAutoWhiteBalanceEnabled_forSpecifier_ get:sel_getAutoWhiteBalanceEnabled_ detail:0 cell:6 edit:0];
 
       [v16 setObject:@"WHITE_BALANCE" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
-      [v4 addObject:v16];
+      [array addObject:v16];
     }
 
-    [(DBSBrightnessManager *)self setSpecifiers:v4];
+    [(DBSBrightnessManager *)self setSpecifiers:array];
   }
 
   return [(DBSBrightnessManager *)self specifiers];
@@ -151,11 +151,11 @@ uint64_t __38__DBSBrightnessManager_defaultManager__block_invoke()
   [v2 setObject:&unk_28349F648 forKeyedSubscript:*MEMORY[0x277D3FEF0]];
   [v2 setObject:MEMORY[0x277CBEC38] forKeyedSubscript:*MEMORY[0x277D400C0]];
   [v2 setObject:@"BRIGHTNESS" forKeyedSubscript:*MEMORY[0x277D3FFB8]];
-  v3 = [MEMORY[0x277D755B8] dbs_minSliderImage];
-  [v2 setObject:v3 forKeyedSubscript:*MEMORY[0x277D400D0]];
+  dbs_minSliderImage = [MEMORY[0x277D755B8] dbs_minSliderImage];
+  [v2 setObject:dbs_minSliderImage forKeyedSubscript:*MEMORY[0x277D400D0]];
 
-  v4 = [MEMORY[0x277D755B8] dbs_maxSliderImage];
-  [v2 setObject:v4 forKeyedSubscript:*MEMORY[0x277D400E0]];
+  dbs_maxSliderImage = [MEMORY[0x277D755B8] dbs_maxSliderImage];
+  [v2 setObject:dbs_maxSliderImage forKeyedSubscript:*MEMORY[0x277D400E0]];
 
   [v2 setObject:MEMORY[0x277CBEC28] forKeyedSubscript:*MEMORY[0x277D400F8]];
 
@@ -171,7 +171,7 @@ uint64_t __38__DBSBrightnessManager_defaultManager__block_invoke()
   }
 }
 
-- (id)backlightValue:(id)a3
+- (id)backlightValue:(id)value
 {
   v3 = MEMORY[0x277CCABB0];
   BKSDisplayBrightnessGetCurrent();
@@ -180,19 +180,19 @@ uint64_t __38__DBSBrightnessManager_defaultManager__block_invoke()
   return [v3 numberWithDouble:v5];
 }
 
-- (void)setBacklightValue:(id)a3 specifier:(id)a4
+- (void)setBacklightValue:(id)value specifier:(id)specifier
 {
-  v6 = a4;
-  [a3 floatValue];
-  v8 = [v6 propertyForKey:*MEMORY[0x277D3FEB0]];
+  specifierCopy = specifier;
+  [value floatValue];
+  v8 = [specifierCopy propertyForKey:*MEMORY[0x277D3FEB0]];
 
-  v7 = [v8 isTracking];
+  isTracking = [v8 isTracking];
   if (gTransactionRef || (gTransactionRef = BKSDisplayBrightnessTransactionCreate()) != 0)
   {
     BKSDisplayBrightnessSet();
   }
 
-  if ((v7 & 1) == 0)
+  if ((isTracking & 1) == 0)
   {
     [(DBSBrightnessManager *)self _cleanupTransactionRef];
   }
@@ -200,14 +200,14 @@ uint64_t __38__DBSBrightnessManager_defaultManager__block_invoke()
 
 - (void)brightnessChangedExternally
 {
-  v3 = [(DBSBrightnessManager *)self specifiers];
-  v9 = [v3 specifierForID:@"BRIGHTNESS"];
+  specifiers = [(DBSBrightnessManager *)self specifiers];
+  v9 = [specifiers specifierForID:@"BRIGHTNESS"];
 
   v4 = *MEMORY[0x277D40148];
   v5 = [v9 propertyForKey:*MEMORY[0x277D40148]];
-  v6 = [v5 control];
+  control = [v5 control];
 
-  if (([v6 isTracking] & 1) == 0 && !gTransactionRef && v9)
+  if (([control isTracking] & 1) == 0 && !gTransactionRef && v9)
   {
     v7 = [(DBSBrightnessManager *)self backlightValue:0];
     v8 = [v9 propertyForKey:v4];
@@ -216,23 +216,23 @@ uint64_t __38__DBSBrightnessManager_defaultManager__block_invoke()
   }
 }
 
-- (id)getAutoWhiteBalanceEnabled:(id)a3
+- (id)getAutoWhiteBalanceEnabled:(id)enabled
 {
   v3 = MEMORY[0x277CCABB0];
-  v4 = [(DBSBrightnessManager *)self brightnessClient];
-  v5 = [v4 adaptationClient];
-  v6 = [v3 numberWithBool:{objc_msgSend(v5, "getEnabled")}];
+  brightnessClient = [(DBSBrightnessManager *)self brightnessClient];
+  adaptationClient = [brightnessClient adaptationClient];
+  v6 = [v3 numberWithBool:{objc_msgSend(adaptationClient, "getEnabled")}];
 
   return v6;
 }
 
-- (void)setAutoWhiteBalanceEnabled:(id)a3 forSpecifier:(id)a4
+- (void)setAutoWhiteBalanceEnabled:(id)enabled forSpecifier:(id)specifier
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 BOOLValue];
-  v9 = [MEMORY[0x277CD9E40] mainDisplay];
-  v10 = [v9 isReference];
+  enabledCopy = enabled;
+  specifierCopy = specifier;
+  bOOLValue = [enabledCopy BOOLValue];
+  mainDisplay = [MEMORY[0x277CD9E40] mainDisplay];
+  isReference = [mainDisplay isReference];
 
   objc_initWeak(&location, self);
   v16[0] = MEMORY[0x277D85DD0];
@@ -240,10 +240,10 @@ uint64_t __38__DBSBrightnessManager_defaultManager__block_invoke()
   v16[2] = __64__DBSBrightnessManager_setAutoWhiteBalanceEnabled_forSpecifier___block_invoke;
   v16[3] = &unk_2784595B0;
   objc_copyWeak(&v17, &location);
-  v18 = v10;
-  v19 = v8;
+  v18 = isReference;
+  v19 = bOOLValue;
   v11 = MEMORY[0x223D9E740](v16);
-  if (v8 && _AXSScreenFilterApplied())
+  if (bOOLValue && _AXSScreenFilterApplied())
   {
     v14[0] = MEMORY[0x277D85DD0];
     v14[1] = 3221225472;
@@ -255,7 +255,7 @@ uint64_t __38__DBSBrightnessManager_defaultManager__block_invoke()
     v12[2] = __64__DBSBrightnessManager_setAutoWhiteBalanceEnabled_forSpecifier___block_invoke_3;
     v12[3] = &unk_2784594B8;
     v12[4] = self;
-    v13 = v7;
+    v13 = specifierCopy;
     [(DBSBrightnessManager *)self showAlertToDisableAccessibilityFilters:v14 cancel:v12];
   }
 
@@ -288,10 +288,10 @@ void __64__DBSBrightnessManager_setAutoWhiteBalanceEnabled_forSpecifier___block_
   [v2 reloadSpecifier:*(a1 + 40)];
 }
 
-- (void)showAlertToDisableAccessibilityFilters:(id)a3 cancel:(id)a4
+- (void)showAlertToDisableAccessibilityFilters:(id)filters cancel:(id)cancel
 {
-  v6 = a3;
-  v7 = a4;
+  filtersCopy = filters;
+  cancelCopy = cancel;
   v8 = MEMORY[0x277D75110];
   v9 = DBS_LocalizedStringForDisplays(@"DISABLE_AX_FILTERS_TITLE");
   v10 = DBS_LocalizedStringForDisplays(@"DISABLE_AX_FILTERS_MESSAGE");
@@ -303,8 +303,8 @@ void __64__DBSBrightnessManager_setAutoWhiteBalanceEnabled_forSpecifier___block_
   v26[1] = 3221225472;
   v26[2] = __70__DBSBrightnessManager_showAlertToDisableAccessibilityFilters_cancel___block_invoke;
   v26[3] = &unk_2784594E0;
-  v27 = v6;
-  v14 = v6;
+  v27 = filtersCopy;
+  v14 = filtersCopy;
   v15 = [v12 actionWithTitle:v13 style:0 handler:v26];
   [v11 addAction:v15];
 
@@ -314,13 +314,13 @@ void __64__DBSBrightnessManager_setAutoWhiteBalanceEnabled_forSpecifier___block_
   v22 = 3221225472;
   v23 = __70__DBSBrightnessManager_showAlertToDisableAccessibilityFilters_cancel___block_invoke_2;
   v24 = &unk_2784594E0;
-  v25 = v7;
-  v18 = v7;
+  v25 = cancelCopy;
+  v18 = cancelCopy;
   v19 = [v16 actionWithTitle:v17 style:1 handler:&v21];
   [v11 addAction:{v19, v21, v22, v23, v24}];
 
-  v20 = [(DBSBrightnessManager *)self delegate];
-  [v20 presentViewController:v11 animated:1 completion:0];
+  delegate = [(DBSBrightnessManager *)self delegate];
+  [delegate presentViewController:v11 animated:1 completion:0];
 }
 
 uint64_t __70__DBSBrightnessManager_showAlertToDisableAccessibilityFilters_cancel___block_invoke(uint64_t a1)

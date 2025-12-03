@@ -3,98 +3,98 @@
 + (SBSHomeScreenIconStyleConfiguration)darkStyleConfiguration;
 + (SBSHomeScreenIconStyleConfiguration)defaultStyleConfiguration;
 + (SBSHomeScreenIconStyleConfiguration)lightStyleConfiguration;
-+ (id)tintedStyleConfigurationWithTintColor:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (SBSHomeScreenIconStyleConfiguration)initWithBSXPCCoder:(id)a3;
-- (SBSHomeScreenIconStyleConfiguration)initWithCoder:(id)a3;
-- (SBSHomeScreenIconStyleConfiguration)initWithConfigurationType:(int64_t)a3 variant:(int64_t)a4 tintColor:(id)a5;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
++ (id)tintedStyleConfigurationWithTintColor:(id)color;
+- (BOOL)isEqual:(id)equal;
+- (SBSHomeScreenIconStyleConfiguration)initWithBSXPCCoder:(id)coder;
+- (SBSHomeScreenIconStyleConfiguration)initWithCoder:(id)coder;
+- (SBSHomeScreenIconStyleConfiguration)initWithConfigurationType:(int64_t)type variant:(int64_t)variant tintColor:(id)color;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
 - (id)succinctDescription;
 - (int64_t)configurationType;
-- (int64_t)iconServicesAppearanceUsingDarkInterfaceStyle:(BOOL)a3;
-- (int64_t)iconServicesAppearanceVariantUsingDarkInterfaceStyle:(BOOL)a3;
+- (int64_t)iconServicesAppearanceUsingDarkInterfaceStyle:(BOOL)style;
+- (int64_t)iconServicesAppearanceVariantUsingDarkInterfaceStyle:(BOOL)style;
 - (unint64_t)hash;
-- (void)encodeWithBSXPCCoder:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithBSXPCCoder:(id)coder;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SBSHomeScreenIconStyleConfiguration
 
 - (int64_t)configurationType
 {
-  v3 = [(SBSHomeScreenIconStyleConfiguration *)self updatedConfigurationType];
-  v4 = [(SBSHomeScreenIconStyleConfiguration *)self variant];
-  if (v3 - 2 >= 4)
+  updatedConfigurationType = [(SBSHomeScreenIconStyleConfiguration *)self updatedConfigurationType];
+  variant = [(SBSHomeScreenIconStyleConfiguration *)self variant];
+  if (updatedConfigurationType - 2 >= 4)
   {
-    if (v3 > 1 || v4 >= 3)
+    if (updatedConfigurationType > 1 || variant >= 3)
     {
       return 0;
     }
 
     else
     {
-      return qword_1917295C0[v4];
+      return qword_1917295C0[variant];
     }
   }
 
-  return v3;
+  return updatedConfigurationType;
 }
 
 + (SBSHomeScreenIconStyleConfiguration)defaultStyleConfiguration
 {
-  v2 = [[a1 alloc] initWithConfigurationType:0 variant:0 tintColor:0];
+  v2 = [[self alloc] initWithConfigurationType:0 variant:0 tintColor:0];
 
   return v2;
 }
 
 + (SBSHomeScreenIconStyleConfiguration)automaticStyleConfiguration
 {
-  v2 = [[a1 alloc] initWithConfigurationType:0 variant:2 tintColor:0];
+  v2 = [[self alloc] initWithConfigurationType:0 variant:2 tintColor:0];
 
   return v2;
 }
 
 + (SBSHomeScreenIconStyleConfiguration)lightStyleConfiguration
 {
-  v2 = [[a1 alloc] initWithConfigurationType:0 variant:0 tintColor:0];
+  v2 = [[self alloc] initWithConfigurationType:0 variant:0 tintColor:0];
 
   return v2;
 }
 
 + (SBSHomeScreenIconStyleConfiguration)darkStyleConfiguration
 {
-  v2 = [[a1 alloc] initWithConfigurationType:0 variant:1 tintColor:0];
+  v2 = [[self alloc] initWithConfigurationType:0 variant:1 tintColor:0];
 
   return v2;
 }
 
-+ (id)tintedStyleConfigurationWithTintColor:(id)a3
++ (id)tintedStyleConfigurationWithTintColor:(id)color
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithConfigurationType:2 variant:1 tintColor:v4];
+  colorCopy = color;
+  v5 = [[self alloc] initWithConfigurationType:2 variant:1 tintColor:colorCopy];
 
   return v5;
 }
 
-- (SBSHomeScreenIconStyleConfiguration)initWithConfigurationType:(int64_t)a3 variant:(int64_t)a4 tintColor:(id)a5
+- (SBSHomeScreenIconStyleConfiguration)initWithConfigurationType:(int64_t)type variant:(int64_t)variant tintColor:(id)color
 {
-  v9 = a5;
+  colorCopy = color;
   v13.receiver = self;
   v13.super_class = SBSHomeScreenIconStyleConfiguration;
   v10 = [(SBSHomeScreenIconStyleConfiguration *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_configurationType = a3;
-    v10->_variant = a4;
-    objc_storeStrong(&v10->_tintColor, a5);
+    v10->_configurationType = type;
+    v10->_variant = variant;
+    objc_storeStrong(&v10->_tintColor, color);
   }
 
   return v11;
 }
 
-- (int64_t)iconServicesAppearanceVariantUsingDarkInterfaceStyle:(BOOL)a3
+- (int64_t)iconServicesAppearanceVariantUsingDarkInterfaceStyle:(BOOL)style
 {
   result = [(SBSHomeScreenIconStyleConfiguration *)self updatedConfigurationType];
   v4 = 3;
@@ -111,17 +111,17 @@
   return result;
 }
 
-- (int64_t)iconServicesAppearanceUsingDarkInterfaceStyle:(BOOL)a3
+- (int64_t)iconServicesAppearanceUsingDarkInterfaceStyle:(BOOL)style
 {
-  v3 = a3;
-  v4 = [(SBSHomeScreenIconStyleConfiguration *)self variant];
-  v5 = v3;
-  if (v4 != 2)
+  styleCopy = style;
+  variant = [(SBSHomeScreenIconStyleConfiguration *)self variant];
+  v5 = styleCopy;
+  if (variant != 2)
   {
     v5 = 0;
   }
 
-  if (v4 == 1)
+  if (variant == 1)
   {
     return 1;
   }
@@ -134,18 +134,18 @@
 
 - (unint64_t)hash
 {
-  v3 = [(SBSHomeScreenIconStyleConfiguration *)self updatedConfigurationType];
-  v4 = [(SBSHomeScreenIconStyleConfiguration *)self variant]+ v3;
-  v5 = [(SBSHomeScreenIconStyleConfiguration *)self tintColor];
-  v6 = [v5 hash];
+  updatedConfigurationType = [(SBSHomeScreenIconStyleConfiguration *)self updatedConfigurationType];
+  v4 = [(SBSHomeScreenIconStyleConfiguration *)self variant]+ updatedConfigurationType;
+  tintColor = [(SBSHomeScreenIconStyleConfiguration *)self tintColor];
+  v6 = [tintColor hash];
 
   return v4 + v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v12 = 1;
   }
@@ -157,12 +157,12 @@
 
     if (isKindOfClass)
     {
-      v7 = v4;
-      v8 = [(SBSHomeScreenIconStyleConfiguration *)self updatedConfigurationType];
-      if (v8 == [(SBSHomeScreenIconStyleConfiguration *)v7 updatedConfigurationType]&& (v9 = [(SBSHomeScreenIconStyleConfiguration *)self variant], v9 == [(SBSHomeScreenIconStyleConfiguration *)v7 variant]))
+      v7 = equalCopy;
+      updatedConfigurationType = [(SBSHomeScreenIconStyleConfiguration *)self updatedConfigurationType];
+      if (updatedConfigurationType == [(SBSHomeScreenIconStyleConfiguration *)v7 updatedConfigurationType]&& (v9 = [(SBSHomeScreenIconStyleConfiguration *)self variant], v9 == [(SBSHomeScreenIconStyleConfiguration *)v7 variant]))
       {
-        v10 = [(SBSHomeScreenIconStyleConfiguration *)self tintColor];
-        v11 = [(SBSHomeScreenIconStyleConfiguration *)v7 tintColor];
+        tintColor = [(SBSHomeScreenIconStyleConfiguration *)self tintColor];
+        tintColor2 = [(SBSHomeScreenIconStyleConfiguration *)v7 tintColor];
         v12 = BSEqualObjects();
       }
 
@@ -181,43 +181,43 @@
   return v12;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInteger:-[SBSHomeScreenIconStyleConfiguration updatedConfigurationType](self forKey:{"updatedConfigurationType"), @"configurationType"}];
-  [v4 encodeInteger:-[SBSHomeScreenIconStyleConfiguration variant](self forKey:{"variant"), @"configurationVariant"}];
-  v5 = [(SBSHomeScreenIconStyleConfiguration *)self tintColor];
-  [v4 encodeObject:v5 forKey:@"tintColor"];
+  coderCopy = coder;
+  [coderCopy encodeInteger:-[SBSHomeScreenIconStyleConfiguration updatedConfigurationType](self forKey:{"updatedConfigurationType"), @"configurationType"}];
+  [coderCopy encodeInteger:-[SBSHomeScreenIconStyleConfiguration variant](self forKey:{"variant"), @"configurationVariant"}];
+  tintColor = [(SBSHomeScreenIconStyleConfiguration *)self tintColor];
+  [coderCopy encodeObject:tintColor forKey:@"tintColor"];
 }
 
-- (SBSHomeScreenIconStyleConfiguration)initWithCoder:(id)a3
+- (SBSHomeScreenIconStyleConfiguration)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeIntegerForKey:@"configurationType"];
-  v6 = [v4 decodeIntegerForKey:@"configurationVariant"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeIntegerForKey:@"configurationType"];
+  v6 = [coderCopy decodeIntegerForKey:@"configurationVariant"];
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"tintColor"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"tintColor"];
 
   v9 = [(SBSHomeScreenIconStyleConfiguration *)self initWithConfigurationType:v5 variant:v6 tintColor:v8];
   return v9;
 }
 
-- (void)encodeWithBSXPCCoder:(id)a3
+- (void)encodeWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  [v4 encodeInt64:-[SBSHomeScreenIconStyleConfiguration updatedConfigurationType](self forKey:{"updatedConfigurationType"), @"configurationType"}];
-  [v4 encodeInt64:-[SBSHomeScreenIconStyleConfiguration variant](self forKey:{"variant"), @"configurationVariant"}];
-  v5 = [(SBSHomeScreenIconStyleConfiguration *)self tintColor];
-  [v4 encodeObject:v5 forKey:@"tintColor"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:-[SBSHomeScreenIconStyleConfiguration updatedConfigurationType](self forKey:{"updatedConfigurationType"), @"configurationType"}];
+  [coderCopy encodeInt64:-[SBSHomeScreenIconStyleConfiguration variant](self forKey:{"variant"), @"configurationVariant"}];
+  tintColor = [(SBSHomeScreenIconStyleConfiguration *)self tintColor];
+  [coderCopy encodeObject:tintColor forKey:@"tintColor"];
 }
 
-- (SBSHomeScreenIconStyleConfiguration)initWithBSXPCCoder:(id)a3
+- (SBSHomeScreenIconStyleConfiguration)initWithBSXPCCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"configurationType"];
-  v6 = [v4 decodeInt64ForKey:@"configurationVariant"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"configurationType"];
+  v6 = [coderCopy decodeInt64ForKey:@"configurationVariant"];
   v7 = objc_opt_self();
-  v8 = [v4 decodeObjectOfClass:v7 forKey:@"tintColor"];
+  v8 = [coderCopy decodeObjectOfClass:v7 forKey:@"tintColor"];
 
   v9 = [(SBSHomeScreenIconStyleConfiguration *)self initWithConfigurationType:v5 variant:v6 tintColor:v8];
   return v9;
@@ -225,42 +225,42 @@
 
 - (id)succinctDescription
 {
-  v2 = [(SBSHomeScreenIconStyleConfiguration *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(SBSHomeScreenIconStyleConfiguration *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(SBSHomeScreenIconStyleConfiguration *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(SBSHomeScreenIconStyleConfiguration *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
-  v4 = [(SBSHomeScreenIconStyleConfiguration *)self succinctDescriptionBuilder];
+  succinctDescriptionBuilder = [(SBSHomeScreenIconStyleConfiguration *)self succinctDescriptionBuilder];
   v5 = SBSStringForHomeScreenIconStyleConfigurationType([(SBSHomeScreenIconStyleConfiguration *)self updatedConfigurationType]);
-  v6 = [v4 appendObject:v5 withName:@"configurationType"];
+  v6 = [succinctDescriptionBuilder appendObject:v5 withName:@"configurationType"];
 
-  v7 = [(SBSHomeScreenIconStyleConfiguration *)self variant];
-  if (v7 > 2)
+  variant = [(SBSHomeScreenIconStyleConfiguration *)self variant];
+  if (variant > 2)
   {
     v8 = 0;
   }
 
   else
   {
-    v8 = *(&off_1E7360AE0 + v7);
+    v8 = *(&off_1E7360AE0 + variant);
   }
 
-  v9 = [v4 appendObject:v8 withName:@"variant"];
-  v10 = [(SBSHomeScreenIconStyleConfiguration *)self tintColor];
-  v11 = [v4 appendObject:v10 withName:@"tintColor" skipIfNil:1];
+  v9 = [succinctDescriptionBuilder appendObject:v8 withName:@"variant"];
+  tintColor = [(SBSHomeScreenIconStyleConfiguration *)self tintColor];
+  v11 = [succinctDescriptionBuilder appendObject:tintColor withName:@"tintColor" skipIfNil:1];
 
-  return v4;
+  return succinctDescriptionBuilder;
 }
 
 @end

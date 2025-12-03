@@ -1,17 +1,17 @@
 @interface ATXUserEducationSuggestionCustomizeFocusServer
-- (ATXUserEducationSuggestionCustomizeFocusServer)initWithConnector:(id)a3;
-- (void)_processModeChangeEvent:(id)a3;
+- (ATXUserEducationSuggestionCustomizeFocusServer)initWithConnector:(id)connector;
+- (void)_processModeChangeEvent:(id)event;
 - (void)dealloc;
-- (void)processModeChangeEvent:(id)a3;
-- (void)sendSuggestion:(id)a3 eventType:(unint64_t)a4;
+- (void)processModeChangeEvent:(id)event;
+- (void)sendSuggestion:(id)suggestion eventType:(unint64_t)type;
 @end
 
 @implementation ATXUserEducationSuggestionCustomizeFocusServer
 
-- (ATXUserEducationSuggestionCustomizeFocusServer)initWithConnector:(id)a3
+- (ATXUserEducationSuggestionCustomizeFocusServer)initWithConnector:(id)connector
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  connectorCopy = connector;
   v13.receiver = self;
   v13.super_class = ATXUserEducationSuggestionCustomizeFocusServer;
   v6 = [(ATXUserEducationSuggestionBaseServer *)&v13 init];
@@ -25,11 +25,11 @@
       _os_log_impl(&dword_2263AA000, v7, OS_LOG_TYPE_DEFAULT, "%s: starting server", buf, 0xCu);
     }
 
-    v8 = [MEMORY[0x277CEB440] sharedInstance];
+    mEMORY[0x277CEB440] = [MEMORY[0x277CEB440] sharedInstance];
     modeConfigurationClient = v6->_modeConfigurationClient;
-    v6->_modeConfigurationClient = v8;
+    v6->_modeConfigurationClient = mEMORY[0x277CEB440];
 
-    objc_storeStrong(&v6->_connector, a3);
+    objc_storeStrong(&v6->_connector, connector);
     v10 = +[ATXUserEducationSuggestionModeChangeNotifier sharedInstance];
     [v10 registerObserver:v6];
   }
@@ -48,26 +48,26 @@
   [(ATXUserEducationSuggestionCustomizeFocusServer *)&v4 dealloc];
 }
 
-- (void)processModeChangeEvent:(id)a3
+- (void)processModeChangeEvent:(id)event
 {
-  v4 = a3;
+  eventCopy = event;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __73__ATXUserEducationSuggestionCustomizeFocusServer_processModeChangeEvent___block_invoke;
   v6[3] = &unk_278596C10;
   v6[4] = self;
-  v7 = v4;
-  v5 = v4;
+  v7 = eventCopy;
+  v5 = eventCopy;
   [(ATXUserEducationSuggestionBaseServer *)self performBlockOnInternalSerialQueue:v6];
 }
 
-- (void)_processModeChangeEvent:(id)a3
+- (void)_processModeChangeEvent:(id)event
 {
   v48 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 atx_dndModeSemanticType];
+  eventCopy = event;
+  atx_dndModeSemanticType = [eventCopy atx_dndModeSemanticType];
   v6 = DNDModeSemanticTypeToString();
-  v7 = [MEMORY[0x277CEB930] suggestionsAreSupportedForModeSemanticType:v5];
+  v7 = [MEMORY[0x277CEB930] suggestionsAreSupportedForModeSemanticType:atx_dndModeSemanticType];
   v8 = __atxlog_handle_context_user_education_suggestions();
   v9 = os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT);
   if (v7)
@@ -77,16 +77,16 @@
       *buf = 136315394;
       *&buf[4] = "[ATXUserEducationSuggestionCustomizeFocusServer _processModeChangeEvent:]";
       *&buf[12] = 2114;
-      *&buf[14] = v4;
+      *&buf[14] = eventCopy;
       _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "%s: processing new userFocusComputedModeEvent: %{public}@", buf, 0x16u);
     }
 
-    v8 = [objc_alloc(MEMORY[0x277CEB930]) initWithModeSemanticType:v5];
-    v10 = [v8 suggestionWasAlreadyShown];
-    v11 = [v8 suggestionWasAlreadyDismissed];
-    if ([v4 starting])
+    v8 = [objc_alloc(MEMORY[0x277CEB930]) initWithModeSemanticType:atx_dndModeSemanticType];
+    suggestionWasAlreadyShown = [v8 suggestionWasAlreadyShown];
+    suggestionWasAlreadyDismissed = [v8 suggestionWasAlreadyDismissed];
+    if ([eventCopy starting])
     {
-      if (v10)
+      if (suggestionWasAlreadyShown)
       {
         v12 = __atxlog_handle_context_user_education_suggestions();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -103,7 +103,7 @@ LABEL_33:
         goto LABEL_54;
       }
 
-      if ([v4 updateSource] != 1)
+      if ([eventCopy updateSource] != 1)
       {
         v12 = __atxlog_handle_context_user_education_suggestions();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -117,8 +117,8 @@ LABEL_33:
       }
 
       v14 = objc_alloc(MEMORY[0x277CCAD78]);
-      v15 = [v4 mode];
-      v16 = [v14 initWithUUIDString:v15];
+      mode = [eventCopy mode];
+      v16 = [v14 initWithUUIDString:mode];
 
       if (!v16)
       {
@@ -135,11 +135,11 @@ LABEL_33:
       v18 = v17;
       if (v17)
       {
-        v19 = [v17 configuration];
-        if ([v19 applicationConfigurationType] == 2)
+        configuration = [v17 configuration];
+        if ([configuration applicationConfigurationType] == 2)
         {
-          v20 = [v18 configuration];
-          v21 = [v20 senderConfigurationType] == 2;
+          configuration2 = [v18 configuration];
+          v21 = [configuration2 senderConfigurationType] == 2;
 
           if (v21)
           {
@@ -248,9 +248,9 @@ LABEL_53:
       goto LABEL_54;
     }
 
-    if (v11 & 1 | ((v10 & 1) == 0))
+    if (suggestionWasAlreadyDismissed & 1 | ((suggestionWasAlreadyShown & 1) == 0))
     {
-      if ((v10 & 1) == 0)
+      if ((suggestionWasAlreadyShown & 1) == 0)
       {
         v12 = __atxlog_handle_context_user_education_suggestions();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -265,7 +265,7 @@ LABEL_53:
         goto LABEL_33;
       }
 
-      if (v11)
+      if (suggestionWasAlreadyDismissed)
       {
         v12 = __atxlog_handle_context_user_education_suggestions();
         if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -301,13 +301,13 @@ LABEL_53:
 
   else if (v9)
   {
-    v13 = [MEMORY[0x277CEB930] supportedModeSemanticTypeStrings];
+    supportedModeSemanticTypeStrings = [MEMORY[0x277CEB930] supportedModeSemanticTypeStrings];
     *buf = 136315650;
     *&buf[4] = "[ATXUserEducationSuggestionCustomizeFocusServer _processModeChangeEvent:]";
     *&buf[12] = 2114;
     *&buf[14] = v6;
     *&buf[22] = 2114;
-    v45 = v13;
+    v45 = supportedModeSemanticTypeStrings;
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "%s: Not processing mode change event because mode: %{public}@ is not in the supported modes: %{public}@", buf, 0x20u);
   }
 
@@ -357,23 +357,23 @@ void __74__ATXUserEducationSuggestionCustomizeFocusServer__processModeChangeEven
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)sendSuggestion:(id)a3 eventType:(unint64_t)a4
+- (void)sendSuggestion:(id)suggestion eventType:(unint64_t)type
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = [objc_alloc(MEMORY[0x277CEB938]) initWithUserEducationSuggestion:v6 userEducationSuggestionEventType:a4];
+  suggestionCopy = suggestion;
+  v7 = [objc_alloc(MEMORY[0x277CEB938]) initWithUserEducationSuggestion:suggestionCopy userEducationSuggestionEventType:type];
   v8 = __atxlog_handle_context_user_education_suggestions();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v11 = 136315394;
     v12 = "[ATXUserEducationSuggestionCustomizeFocusServer sendSuggestion:eventType:]";
     v13 = 2114;
-    v14 = v6;
+    v14 = suggestionCopy;
     _os_log_impl(&dword_2263AA000, v8, OS_LOG_TYPE_DEFAULT, "%s: Sending suggestion: %{public}@", &v11, 0x16u);
   }
 
-  v9 = [(ATXUserEducationSuggestionConnector *)self->_connector remoteObjectProxy];
-  [v9 didReceiveUserEducationSuggestionEvent:v7];
+  remoteObjectProxy = [(ATXUserEducationSuggestionConnector *)self->_connector remoteObjectProxy];
+  [remoteObjectProxy didReceiveUserEducationSuggestionEvent:v7];
 
   v10 = *MEMORY[0x277D85DE8];
 }

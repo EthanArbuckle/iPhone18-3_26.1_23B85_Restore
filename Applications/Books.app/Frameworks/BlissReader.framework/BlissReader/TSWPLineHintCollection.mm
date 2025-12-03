@@ -1,24 +1,24 @@
 @interface TSWPLineHintCollection
-- (BOOL)applePubUpdateRangesWithLineBreakIndexes:(id)a3 textStorage:(id)a4;
-- (TSWPLineHintCollection)initWithApplePubData:(id)a3 context:(id)a4;
-- (id)initForEmptyShapeWithPreviousRange:(_NSRange)a3 context:(id)a4;
+- (BOOL)applePubUpdateRangesWithLineBreakIndexes:(id)indexes textStorage:(id)storage;
+- (TSWPLineHintCollection)initWithApplePubData:(id)data context:(id)context;
+- (id)initForEmptyShapeWithPreviousRange:(_NSRange)range context:(id)context;
 @end
 
 @implementation TSWPLineHintCollection
 
-- (TSWPLineHintCollection)initWithApplePubData:(id)a3 context:(id)a4
+- (TSWPLineHintCollection)initWithApplePubData:(id)data context:(id)context
 {
   v21.receiver = self;
   v21.super_class = TSWPLineHintCollection;
-  v5 = [(TSWPLineHintCollection *)&v21 initWithContext:a4];
+  v5 = [(TSWPLineHintCollection *)&v21 initWithContext:context];
   if (v5)
   {
-    v6 = [a3 bytes];
-    v7 = [a3 length];
+    bytes = [data bytes];
+    v7 = [data length];
     v8 = OBJC_IVAR___TSWPLineHintCollection_mHintsCount;
     v9 = OBJC_IVAR___TSWPLineHintCollection_mHasColumnIndices;
     *(v5 + OBJC_IVAR___TSWPLineHintCollection_mHintsCount) = 0;
-    if (v7 < 9 || *v6 != 73 || v6[1] != 66 || v6[2] != 76 || v6[3] != 70 || (v10 = v6[4], (v10 & 0xF0) != 0x10) || (v11 = v7 - 8, v12 = v6[5], v13 = (v7 - 8) / v12, (v7 - 8) % v12))
+    if (v7 < 9 || *bytes != 73 || bytes[1] != 66 || bytes[2] != 76 || bytes[3] != 70 || (v10 = bytes[4], (v10 & 0xF0) != 0x10) || (v11 = v7 - 8, v12 = bytes[5], v13 = (v7 - 8) / v12, (v7 - 8) % v12))
     {
       v14 = 0;
 LABEL_10:
@@ -40,7 +40,7 @@ LABEL_10:
     {
       v18 = 0;
       v19 = (v17 + 24);
-      v20 = (v6 + 12);
+      v20 = (bytes + 12);
       do
       {
         *(v19 - 3) = *(v20 - 1);
@@ -64,13 +64,13 @@ LABEL_10:
   return v5;
 }
 
-- (id)initForEmptyShapeWithPreviousRange:(_NSRange)a3 context:(id)a4
+- (id)initForEmptyShapeWithPreviousRange:(_NSRange)range context:(id)context
 {
-  length = a3.length;
-  location = a3.location;
+  length = range.length;
+  location = range.location;
   v10.receiver = self;
   v10.super_class = TSWPLineHintCollection;
-  v6 = [(TSWPLineHintCollection *)&v10 initWithContext:a4];
+  v6 = [(TSWPLineHintCollection *)&v10 initWithContext:context];
   v7 = v6;
   if (v6)
   {
@@ -88,22 +88,22 @@ LABEL_10:
   return v7;
 }
 
-- (BOOL)applePubUpdateRangesWithLineBreakIndexes:(id)a3 textStorage:(id)a4
+- (BOOL)applePubUpdateRangesWithLineBreakIndexes:(id)indexes textStorage:(id)storage
 {
-  v6 = [a4 length];
-  v7 = [a3 firstIndex];
+  v6 = [storage length];
+  firstIndex = [indexes firstIndex];
   v8 = 0;
   v9 = OBJC_IVAR___TSWPLineHintCollection_mHintsCount;
-  v10 = v7 != 0x7FFFFFFFFFFFFFFFLL;
-  if (v7 != 0x7FFFFFFFFFFFFFFFLL && *(self + OBJC_IVAR___TSWPLineHintCollection_mHintsCount))
+  v10 = firstIndex != 0x7FFFFFFFFFFFFFFFLL;
+  if (firstIndex != 0x7FFFFFFFFFFFFFFFLL && *(self + OBJC_IVAR___TSWPLineHintCollection_mHintsCount))
   {
-    v11 = v7;
+    v11 = firstIndex;
     v12 = 0;
     v8 = 0;
     v10 = 1;
     while (1)
     {
-      v13 = [a3 indexGreaterThanIndex:v11];
+      v13 = [indexes indexGreaterThanIndex:v11];
       if (v13 == 0x7FFFFFFFFFFFFFFFLL || v13 > v6)
       {
         break;
@@ -130,7 +130,7 @@ LABEL_10:
     }
   }
 
-  v15 = [a3 count];
+  v15 = [indexes count];
   v16 = *(self + v9);
   if (v8 == v16 && v15 == (v16 + 1))
   {

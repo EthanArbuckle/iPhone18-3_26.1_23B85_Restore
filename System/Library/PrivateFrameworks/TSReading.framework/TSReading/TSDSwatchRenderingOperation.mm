@@ -1,41 +1,41 @@
 @interface TSDSwatchRenderingOperation
-- (CGImage)p_newSwatchPressedStateBackgroundFromCGImage:(CGImage *)a3;
+- (CGImage)p_newSwatchPressedStateBackgroundFromCGImage:(CGImage *)image;
 - (CGRect)swatchFrame;
 - (CGSize)imageSize;
-- (TSDSwatchRenderingOperation)initWithPreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 swatchFrame:(CGRect)a6 documentRoot:(id)a7;
+- (TSDSwatchRenderingOperation)initWithPreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame documentRoot:(id)root;
 - (UIEdgeInsets)swatchEdgeInsets;
 - (void)dealloc;
-- (void)deliverCGImage:(CGImage *)a3;
+- (void)deliverCGImage:(CGImage *)image;
 - (void)doWorkWithReadLock;
 - (void)main;
 - (void)p_animateSwatchIn;
-- (void)p_deliverResultOnMainThread:(id)a3;
+- (void)p_deliverResultOnMainThread:(id)thread;
 @end
 
 @implementation TSDSwatchRenderingOperation
 
-- (TSDSwatchRenderingOperation)initWithPreset:(id)a3 imageSize:(CGSize)a4 imageScale:(double)a5 swatchFrame:(CGRect)a6 documentRoot:(id)a7
+- (TSDSwatchRenderingOperation)initWithPreset:(id)preset imageSize:(CGSize)size imageScale:(double)scale swatchFrame:(CGRect)frame documentRoot:(id)root
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
-  v13 = a4.height;
-  v14 = a4.width;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
+  v13 = size.height;
+  v14 = size.width;
   v18.receiver = self;
   v18.super_class = TSDSwatchRenderingOperation;
   v16 = [(TSDSwatchRenderingOperation *)&v18 init];
   if (v16)
   {
-    v16->mPreset = a3;
+    v16->mPreset = preset;
     v16->mImageSize.width = v14;
     v16->mImageSize.height = v13;
-    v16->mImageScale = a5;
+    v16->mImageScale = scale;
     v16->mSwatchFrame.origin.x = x;
     v16->mSwatchFrame.origin.y = y;
     v16->mSwatchFrame.size.width = width;
     v16->mSwatchFrame.size.height = height;
-    v16->mDocumentRoot = a7;
+    v16->mDocumentRoot = root;
   }
 
   return v16;
@@ -56,11 +56,11 @@
   {
     if (([(TSDSwatchRenderingOperation *)self isCancelled]& 1) == 0)
     {
-      v3 = [(UIView *)self->mView layer];
-      if (![(CALayer *)v3 valueForKey:TSDSwatchRenderingOperationLayerKey]|| [(CALayer *)v3 valueForKey:TSDSwatchRenderingOperationLayerKey]== self)
+      layer = [(UIView *)self->mView layer];
+      if (![(CALayer *)layer valueForKey:TSDSwatchRenderingOperationLayerKey]|| [(CALayer *)layer valueForKey:TSDSwatchRenderingOperationLayerKey]== self)
       {
-        [(CALayer *)v3 addRotateInAnimationWithDuration:0.3 delay:0.0];
-        [(CALayer *)v3 setValue:0 forKey:TSDSwatchRenderingOperationLayerKey];
+        [(CALayer *)layer addRotateInAnimationWithDuration:0.3 delay:0.0];
+        [(CALayer *)layer setValue:0 forKey:TSDSwatchRenderingOperationLayerKey];
       }
     }
 
@@ -70,10 +70,10 @@
   }
 }
 
-- (CGImage)p_newSwatchPressedStateBackgroundFromCGImage:(CGImage *)a3
+- (CGImage)p_newSwatchPressedStateBackgroundFromCGImage:(CGImage *)image
 {
-  Width = CGImageGetWidth(a3);
-  CGImageGetHeight(a3);
+  Width = CGImageGetWidth(image);
+  CGImageGetHeight(image);
   v6 = TSDRectWithSize();
   v10 = TSDMultiplyRectScalar(v6, v7, v8, v9, self->mImageScale);
   v12 = v11;
@@ -94,7 +94,7 @@
   return Image;
 }
 
-- (void)p_deliverResultOnMainThread:(id)a3
+- (void)p_deliverResultOnMainThread:(id)thread
 {
   if (!self->mView)
   {
@@ -103,16 +103,16 @@
 
   [MEMORY[0x277CD9FF0] begin];
   [MEMORY[0x277CD9FF0] setDisableActions:1];
-  v5 = [(UIView *)self->mView layer];
+  layer = [(UIView *)self->mView layer];
   objc_opt_class();
   v6 = TSUDynamicCast();
   if (v6)
   {
     v7 = v6;
-    [v6 setImage:objc_msgSend(MEMORY[0x277D755B8] forState:{"imageWithCGImage:scale:orientation:", objc_msgSend(a3, "foreground"), 0, self->mImageScale), 0}];
+    [v6 setImage:objc_msgSend(MEMORY[0x277D755B8] forState:{"imageWithCGImage:scale:orientation:", objc_msgSend(thread, "foreground"), 0, self->mImageScale), 0}];
     if ([(TSDSwatchRenderingOperation *)self needsPressedStateBackground])
     {
-      v8 = [MEMORY[0x277D755B8] imageWithCGImage:objc_msgSend(a3 scale:"background") orientation:{0, self->mImageScale}];
+      v8 = [MEMORY[0x277D755B8] imageWithCGImage:objc_msgSend(thread scale:"background") orientation:{0, self->mImageScale}];
       v9 = v7;
 LABEL_9:
       [v9 setBackgroundImage:v8 forState:1];
@@ -129,25 +129,25 @@ LABEL_9:
 
   else
   {
-    [(CALayer *)v5 setContentsScale:self->mImageScale];
-    -[CALayer setContents:](v5, "setContents:", [a3 foreground]);
+    [(CALayer *)layer setContentsScale:self->mImageScale];
+    -[CALayer setContents:](layer, "setContents:", [thread foreground]);
   }
 
 LABEL_10:
-  [(CALayer *)v5 setShouldRasterize:1];
-  [(CALayer *)v5 setRasterizationScale:self->mImageScale];
+  [(CALayer *)layer setShouldRasterize:1];
+  [(CALayer *)layer setRasterizationScale:self->mImageScale];
   [MEMORY[0x277CD9FF0] flush];
   [MEMORY[0x277CD9FF0] commit];
 
   [(TSDSwatchRenderingOperation *)self p_animateSwatchIn];
 }
 
-- (void)deliverCGImage:(CGImage *)a3
+- (void)deliverCGImage:(CGImage *)image
 {
   if ([(TSDSwatchRenderingOperation *)self needsPressedStateBackground])
   {
-    v5 = [(TSDSwatchRenderingOperation *)self p_newSwatchPressedStateBackgroundFromCGImage:a3];
-    v6 = [TSDSwatchRenderingResult renderingResultWithForeground:a3 background:v5];
+    v5 = [(TSDSwatchRenderingOperation *)self p_newSwatchPressedStateBackgroundFromCGImage:image];
+    v6 = [TSDSwatchRenderingResult renderingResultWithForeground:image background:v5];
     if (v5)
     {
       CGImageRelease(v5);
@@ -156,10 +156,10 @@ LABEL_10:
 
   else
   {
-    v6 = [TSDSwatchRenderingResult renderingResultWithForeground:a3 background:0];
+    v6 = [TSDSwatchRenderingResult renderingResultWithForeground:image background:0];
   }
 
-  self->mDeliveredImage = CGImageRetain(a3);
+  self->mDeliveredImage = CGImageRetain(image);
   if ([MEMORY[0x277CCACC8] isMainThread])
   {
 
@@ -188,18 +188,18 @@ LABEL_10:
 
 - (void)doWorkWithReadLock
 {
-  v2 = [MEMORY[0x277D6C290] currentHandler];
+  currentHandler = [MEMORY[0x277D6C290] currentHandler];
   v3 = [MEMORY[0x277CCACA8] stringWithUTF8String:"-[TSDSwatchRenderingOperation doWorkWithReadLock]"];
   v4 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/AlderShared/drawables/TSDSwatchRenderingOperation.m"];
 
-  [v2 handleFailureInFunction:v3 file:v4 lineNumber:271 description:@"Subclasses must override"];
+  [currentHandler handleFailureInFunction:v3 file:v4 lineNumber:271 description:@"Subclasses must override"];
 }
 
 - (void)main
 {
-  v3 = [(TSKDocumentRoot *)self->mDocumentRoot accessController];
+  accessController = [(TSKDocumentRoot *)self->mDocumentRoot accessController];
 
-  [(TSKAccessController *)v3 performRead:sel_doWorkWithReadLock withTarget:self argument:0];
+  [(TSKAccessController *)accessController performRead:sel_doWorkWithReadLock withTarget:self argument:0];
 }
 
 - (CGSize)imageSize

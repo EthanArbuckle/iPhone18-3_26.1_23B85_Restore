@@ -1,66 +1,66 @@
 @interface FigCaptureCameraParameters
-+ (id)cinematicFramingVirtualCameraConfigurationForPortType:(id)a3 sensorIDString:(id)a4;
-+ (id)sdofTuningParametersForSensorIDDictionary:(id)a3 zoomFactor:(float)a4;
-+ (id)sensorIDStringFromMetadata:(id)a3;
-+ (id)sensorIDStringFromModuleInfo:(id)a3;
++ (id)cinematicFramingVirtualCameraConfigurationForPortType:(id)type sensorIDString:(id)string;
++ (id)sdofTuningParametersForSensorIDDictionary:(id)dictionary zoomFactor:(float)factor;
++ (id)sensorIDStringFromMetadata:(id)metadata;
++ (id)sensorIDStringFromModuleInfo:(id)info;
 + (id)sharedInstance;
-+ (id)temporalFilterSessionConfigurationForPortType:(id)a3 sensorIDString:(id)a4;
-+ (int)movieFileMaxLossyCompressionLevelForPixelFormat:(unsigned int)a3;
++ (id)temporalFilterSessionConfigurationForPortType:(id)type sensorIDString:(id)string;
++ (int)movieFileMaxLossyCompressionLevelForPixelFormat:(unsigned int)format;
 + (int)previewMaxLossyCompressionLevel;
-+ (unsigned)sensorIDFromSensorIDString:(id)a3;
++ (unsigned)sensorIDFromSensorIDString:(id)string;
 + (void)initialize;
 - ($2825F4736939C4A6D3AD43837233062D)maxFocusPixelHorizontalPixelBufferDimensions;
-- ($2ACC23B9A21F50F5CC728381CA870116)landmarksVersionForInferenceType:(int)a3;
-- (BOOL)chromaticDefringingEnabledForSlomoForPortType:(id)a3 sensorIDString:(id)a4;
-- (BOOL)chromaticDefringingEnabledForVideoForPortType:(id)a3 sensorIDString:(id)a4;
+- ($2ACC23B9A21F50F5CC728381CA870116)landmarksVersionForInferenceType:(int)type;
+- (BOOL)chromaticDefringingEnabledForSlomoForPortType:(id)type sensorIDString:(id)string;
+- (BOOL)chromaticDefringingEnabledForVideoForPortType:(id)type sensorIDString:(id)string;
 - (BOOL)complementMatteSuppressionDecisionWithISPDetectedFaces;
-- (BOOL)deepZoomTransferWithZoomedImageEnabledForPortType:(id)a3 sensorIDString:(id)a4;
-- (BOOL)panoramaRequiresLTMLockingForPortType:(id)a3 sensorIDString:(id)a4;
-- (BOOL)portraitPreviewForegroundBlurEnabledForPortType:(id)a3 sensorIDString:(id)a4 zoomFactor:(float)a5;
+- (BOOL)deepZoomTransferWithZoomedImageEnabledForPortType:(id)type sensorIDString:(id)string;
+- (BOOL)panoramaRequiresLTMLockingForPortType:(id)type sensorIDString:(id)string;
+- (BOOL)portraitPreviewForegroundBlurEnabledForPortType:(id)type sensorIDString:(id)string zoomFactor:(float)factor;
 - (BOOL)portraitTapToRefocusPrevented;
 - (FigCaptureCameraParameters)init;
-- (FigCaptureCameraParameters)initWithContentsOfFile:(id)a3;
+- (FigCaptureCameraParameters)initWithContentsOfFile:(id)file;
 - (NSDictionary)stereoDisparityParameters;
-- (id)_initWithModelSpecificName:(void *)a3 fromFile:;
-- (id)actionCameraSceneMonitoringParametersForPortType:(id)a3 sensorIDString:(id)a4;
-- (id)chromaticDefringingParametersForPortType:(id)a3 sensorIDString:(id)a4;
-- (id)depthScalingTuneParametersForPortType:(id)a3 sensorIDString:(id)a4;
-- (id)focalLengthCharacterizationForStream:(id)a3;
-- (id)focusPixelDisparityTuningParametersForPortType:(id)a3 sensorIDString:(id)a4 zoomFactor:(float)a5;
-- (id)focusPixelsPatternsForPortType:(id)a3 sensorIDString:(id)a4;
-- (id)lensSmudgeDetectionParametersForPortType:(id)a3 sensorIDString:(id)a4;
-- (id)portraitSceneMonitoringParametersForPortType:(id)a3 sensorIDString:(id)a4 zoomFactorRelativeToWidePortType:(float)a5;
-- (id)quadraSubPixelSwitchingParametersForPortType:(id)a3 sensorIDString:(id)a4;
-- (id)sensorIDDictionaryForPortType:(id)a3 sensorIDString:(id)a4;
-- (id)sensorIDDictionaryForStream:(id)a3;
-- (id)stereoPhotoCaptureSceneMonitoringParametersForPortType:(id)a3 sensorIDString:(id)a4;
-- (id)stereoVideoCaptureSceneMonitoringParametersForPortType:(id)a3 sensorIDString:(id)a4;
+- (id)_initWithModelSpecificName:(void *)name fromFile:;
+- (id)actionCameraSceneMonitoringParametersForPortType:(id)type sensorIDString:(id)string;
+- (id)chromaticDefringingParametersForPortType:(id)type sensorIDString:(id)string;
+- (id)depthScalingTuneParametersForPortType:(id)type sensorIDString:(id)string;
+- (id)focalLengthCharacterizationForStream:(id)stream;
+- (id)focusPixelDisparityTuningParametersForPortType:(id)type sensorIDString:(id)string zoomFactor:(float)factor;
+- (id)focusPixelsPatternsForPortType:(id)type sensorIDString:(id)string;
+- (id)lensSmudgeDetectionParametersForPortType:(id)type sensorIDString:(id)string;
+- (id)portraitSceneMonitoringParametersForPortType:(id)type sensorIDString:(id)string zoomFactorRelativeToWidePortType:(float)portType;
+- (id)quadraSubPixelSwitchingParametersForPortType:(id)type sensorIDString:(id)string;
+- (id)sensorIDDictionaryForPortType:(id)type sensorIDString:(id)string;
+- (id)sensorIDDictionaryForStream:(id)stream;
+- (id)stereoPhotoCaptureSceneMonitoringParametersForPortType:(id)type sensorIDString:(id)string;
+- (id)stereoVideoCaptureSceneMonitoringParametersForPortType:(id)type sensorIDString:(id)string;
 - (int)coreImagePortraitFilterVersion;
 - (int)deepZoomVersion;
 - (int)depthProcessorVersion;
 - (int)deviceGeneration;
-- (int)disparityRefinementTypeForPortType:(id)a3 sensorIDString:(id)a4 zoomFactor:(float)a5;
+- (int)disparityRefinementTypeForPortType:(id)type sensorIDString:(id)string zoomFactor:(float)factor;
 - (int)disparityVersion;
-- (int)disparityVersionForPortType:(id)a3 sensorIDString:(id)a4;
+- (int)disparityVersionForPortType:(id)type sensorIDString:(id)string;
 - (int)distortionCorrectionVersion;
-- (int)focusPixelDisparityVersionForPortType:(id)a3 sensorIDString:(id)a4;
-- (int)fsdNetStereoImagesAlignmentForPortType:(id)a3 sensorIDString:(id)a4;
+- (int)focusPixelDisparityVersionForPortType:(id)type sensorIDString:(id)string;
+- (int)fsdNetStereoImagesAlignmentForPortType:(id)type sensorIDString:(id)string;
 - (int)gainMapVersion;
-- (int)landmarksConstellationPointCountForInferenceType:(int)a3;
+- (int)landmarksConstellationPointCountForInferenceType:(int)type;
 - (int)learnedMattingVersion;
 - (int)lensSmudgeDetectionVersion;
 - (int)mattingVersion;
-- (int)mattingVersionForPortType:(id)a3 sensorIDString:(id)a4;
+- (int)mattingVersionForPortType:(id)type sensorIDString:(id)string;
 - (int)meteorHeadroomProcessingType;
 - (int)monocularStreamingDepthType;
 - (int)nrfVersion;
 - (int)personSemanticsVersion;
-- (int)portraitSceneMonitorVersionForPortType:(id)a3 sensorIDString:(id)a4;
-- (int)sdofRenderingVersionForPortType:(id)a3 sensorIDString:(id)a4 zoomFactor:(float)a5;
+- (int)portraitSceneMonitorVersionForPortType:(id)type sensorIDString:(id)string;
+- (int)sdofRenderingVersionForPortType:(id)type sensorIDString:(id)string zoomFactor:(float)factor;
 - (int)videoGreenGhostBrightLightMitigationVersion;
 - (int)videoGreenGhostLowLightMitigationVersion;
 - (int)videoStabilizationProcessorVersion;
-- (uint64_t)_readAndPreprocessCameraParametersForModelSpecificName:(void *)a3 fromFile:;
+- (uint64_t)_readAndPreprocessCameraParametersForModelSpecificName:(void *)name fromFile:;
 - (void)dealloc;
 @end
 
@@ -206,13 +206,13 @@
 
 - (BOOL)complementMatteSuppressionDecisionWithISPDetectedFaces
 {
-  v2 = [(FigCaptureCameraParameters *)self cameraTuningParameters];
-  if (!v2)
+  cameraTuningParameters = [(FigCaptureCameraParameters *)self cameraTuningParameters];
+  if (!cameraTuningParameters)
   {
     return 0;
   }
 
-  v3 = [(NSDictionary *)v2 objectForKeyedSubscript:@"Common"];
+  v3 = [(NSDictionary *)cameraTuningParameters objectForKeyedSubscript:@"Common"];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -251,7 +251,7 @@
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     gCaptureCameraParametersLock = FigSimpleMutexCreate();
   }
@@ -279,50 +279,50 @@
   return [(NSDictionary *)stereoDisparityParameters objectForKeyedSubscript:v3];
 }
 
-- (id)sensorIDDictionaryForStream:(id)a3
+- (id)sensorIDDictionaryForStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     [FigCaptureCameraParameters sensorIDDictionaryForStream:];
     return 0;
   }
 
-  v5 = [a3 portType];
-  v6 = [objc_opt_class() sensorIDStringFromModuleInfo:{objc_msgSend(a3, "getProperty:error:", *off_1E798C078, 0)}];
-  if (!v5 || !v6)
+  portType = [stream portType];
+  v6 = [objc_opt_class() sensorIDStringFromModuleInfo:{objc_msgSend(stream, "getProperty:error:", *off_1E798C078, 0)}];
+  if (!portType || !v6)
   {
     [FigCaptureCameraParameters sensorIDDictionaryForStream:];
     return 0;
   }
 
-  return [(FigCaptureCameraParameters *)self sensorIDDictionaryForPortType:v5 sensorIDString:v6];
+  return [(FigCaptureCameraParameters *)self sensorIDDictionaryForPortType:portType sensorIDString:v6];
 }
 
-- (id)sensorIDDictionaryForPortType:(id)a3 sensorIDString:(id)a4
+- (id)sensorIDDictionaryForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3)
+  if (!type)
   {
     [FigCaptureCameraParameters sensorIDDictionaryForPortType:sensorIDString:];
-    v4 = 0;
+    stringCopy = 0;
     goto LABEL_18;
   }
 
-  v4 = a4;
-  if (!a4)
+  stringCopy = string;
+  if (!string)
   {
     [FigCaptureCameraParameters sensorIDDictionaryForPortType:sensorIDString:];
     goto LABEL_18;
   }
 
   v7 = objc_autoreleasePoolPush();
-  v8 = [(FigCaptureCameraParameters *)self cameraTuningParameters];
-  if (!v8)
+  cameraTuningParameters = [(FigCaptureCameraParameters *)self cameraTuningParameters];
+  if (!cameraTuningParameters)
   {
     goto LABEL_16;
   }
 
-  v9 = v8;
-  v10 = [(NSDictionary *)v8 objectForKeyedSubscript:a3];
+  v9 = cameraTuningParameters;
+  v10 = [(NSDictionary *)cameraTuningParameters objectForKeyedSubscript:type];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
@@ -333,16 +333,16 @@
   {
     [FigCaptureCameraParameters sensorIDDictionaryForPortType:sensorIDString:];
 LABEL_16:
-    v4 = 0;
+    stringCopy = 0;
     goto LABEL_17;
   }
 
-  v11 = [v10 objectForKey:v4];
+  v11 = [v10 objectForKey:stringCopy];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v11;
-    if (v4)
+    stringCopy = v11;
+    if (stringCopy)
     {
       goto LABEL_17;
     }
@@ -355,7 +355,7 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v13 = [v12 objectForKeyedSubscript:a3];
+  v13 = [v12 objectForKeyedSubscript:type];
   if (([objc_msgSend(v10 "allKeys")] & 1) == 0)
   {
     v13 = [objc_msgSend(v10 "allKeys")];
@@ -366,17 +366,17 @@ LABEL_16:
     goto LABEL_16;
   }
 
-  v4 = [v10 objectForKeyedSubscript:v13];
+  stringCopy = [v10 objectForKeyedSubscript:v13];
 LABEL_17:
   objc_autoreleasePoolPop(v7);
 LABEL_18:
 
-  return v4;
+  return stringCopy;
 }
 
-- (id)focalLengthCharacterizationForStream:(id)a3
+- (id)focalLengthCharacterizationForStream:(id)stream
 {
-  if (!a3)
+  if (!stream)
   {
     [FigCaptureCameraParameters focalLengthCharacterizationForStream:];
     return 0;
@@ -391,15 +391,15 @@ LABEL_18:
   return [v3 objectForKeyedSubscript:@"FocalLengthCharacterization"];
 }
 
-- (int)disparityVersionForPortType:(id)a3 sensorIDString:(id)a4
+- (int)disparityVersionForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3)
+  if (!type)
   {
     [FigCaptureCameraParameters disparityVersionForPortType:sensorIDString:];
     return 0;
   }
 
-  if (!a4)
+  if (!string)
   {
     [FigCaptureCameraParameters disparityVersionForPortType:sensorIDString:];
     return 0;
@@ -417,15 +417,15 @@ LABEL_18:
   return [v5 intValue];
 }
 
-- (int)focusPixelDisparityVersionForPortType:(id)a3 sensorIDString:(id)a4
+- (int)focusPixelDisparityVersionForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3)
+  if (!type)
   {
     [FigCaptureCameraParameters focusPixelDisparityVersionForPortType:sensorIDString:];
     return 0;
   }
 
-  if (!a4)
+  if (!string)
   {
     [FigCaptureCameraParameters focusPixelDisparityVersionForPortType:sensorIDString:];
     return 0;
@@ -582,15 +582,15 @@ uint64_t __103__FigCaptureCameraParameters_focusPixelDisparityTuningParametersFo
   return v2;
 }
 
-- (int)mattingVersionForPortType:(id)a3 sensorIDString:(id)a4
+- (int)mattingVersionForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3)
+  if (!type)
   {
     [FigCaptureCameraParameters mattingVersionForPortType:sensorIDString:];
     return 0;
   }
 
-  if (!a4)
+  if (!string)
   {
     [FigCaptureCameraParameters mattingVersionForPortType:sensorIDString:];
     return 0;
@@ -628,15 +628,15 @@ uint64_t __123__FigCaptureCameraParameters_portraitSceneMonitoringParametersForP
   }
 }
 
-- (id)depthScalingTuneParametersForPortType:(id)a3 sensorIDString:(id)a4
+- (id)depthScalingTuneParametersForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3)
+  if (!type)
   {
     [FigCaptureCameraParameters depthScalingTuneParametersForPortType:sensorIDString:];
     return 0;
   }
 
-  if (!a4)
+  if (!string)
   {
     [FigCaptureCameraParameters depthScalingTuneParametersForPortType:sensorIDString:];
     return 0;
@@ -654,15 +654,15 @@ uint64_t __123__FigCaptureCameraParameters_portraitSceneMonitoringParametersForP
   return [v5 objectForKeyedSubscript:@"DepthScalingParameters"];
 }
 
-- (BOOL)portraitPreviewForegroundBlurEnabledForPortType:(id)a3 sensorIDString:(id)a4 zoomFactor:(float)a5
+- (BOOL)portraitPreviewForegroundBlurEnabledForPortType:(id)type sensorIDString:(id)string zoomFactor:(float)factor
 {
-  if (!a3)
+  if (!type)
   {
     [FigCaptureCameraParameters portraitPreviewForegroundBlurEnabledForPortType:sensorIDString:zoomFactor:];
     return 0;
   }
 
-  if (!a4)
+  if (!string)
   {
     [FigCaptureCameraParameters portraitPreviewForegroundBlurEnabledForPortType:sensorIDString:zoomFactor:];
     return 0;
@@ -676,8 +676,8 @@ uint64_t __123__FigCaptureCameraParameters_portraitSceneMonitoringParametersForP
   }
 
   v11 = v9;
-  *&v10 = a5;
-  v12 = [(FigCaptureCameraParameters *)self sdofRenderingVersionForPortType:a3 sensorIDString:a4 zoomFactor:v10];
+  *&v10 = factor;
+  v12 = [(FigCaptureCameraParameters *)self sdofRenderingVersionForPortType:type sensorIDString:string zoomFactor:v10];
   if (!v12)
   {
     [FigCaptureCameraParameters portraitPreviewForegroundBlurEnabledForPortType:sensorIDString:zoomFactor:];
@@ -685,7 +685,7 @@ uint64_t __123__FigCaptureCameraParameters_portraitSceneMonitoringParametersForP
   }
 
   v14 = v12;
-  *&v13 = a5;
+  *&v13 = factor;
   v15 = [FigCaptureCameraParameters sdofTuningParametersForSensorIDDictionary:v11 zoomFactor:v13];
   if (!v15)
   {
@@ -725,15 +725,15 @@ uint64_t __123__FigCaptureCameraParameters_portraitSceneMonitoringParametersForP
   return v22 & ([objc_msgSend(objc_msgSend(v16 objectForKeyedSubscript:{v18), "objectForKeyedSubscript:", @"disablePortraitPreviewForegroundBlur", "BOOLValue"}] ^ 1);
 }
 
-- (int)disparityRefinementTypeForPortType:(id)a3 sensorIDString:(id)a4 zoomFactor:(float)a5
+- (int)disparityRefinementTypeForPortType:(id)type sensorIDString:(id)string zoomFactor:(float)factor
 {
-  if (!a3)
+  if (!type)
   {
     [FigCaptureCameraParameters disparityRefinementTypeForPortType:sensorIDString:zoomFactor:];
     return 0;
   }
 
-  if (!a4)
+  if (!string)
   {
     [FigCaptureCameraParameters disparityRefinementTypeForPortType:sensorIDString:zoomFactor:];
     return 0;
@@ -747,14 +747,14 @@ uint64_t __123__FigCaptureCameraParameters_portraitSceneMonitoringParametersForP
   }
 
   v11 = v9;
-  *&v10 = a5;
-  if (![(FigCaptureCameraParameters *)self sdofRenderingVersionForPortType:a3 sensorIDString:a4 zoomFactor:v10])
+  *&v10 = factor;
+  if (![(FigCaptureCameraParameters *)self sdofRenderingVersionForPortType:type sensorIDString:string zoomFactor:v10])
   {
     [FigCaptureCameraParameters disparityRefinementTypeForPortType:sensorIDString:zoomFactor:];
     return 0;
   }
 
-  *&v12 = a5;
+  *&v12 = factor;
   v13 = [FigCaptureCameraParameters sdofTuningParametersForSensorIDDictionary:v11 zoomFactor:v12];
   result = [objc_msgSend(objc_msgSend(v13 objectForKeyedSubscript:{@"DisparityRefinement", "objectForKeyedSubscript:", @"version", "intValue"}];
   if (result)
@@ -773,15 +773,15 @@ uint64_t __123__FigCaptureCameraParameters_portraitSceneMonitoringParametersForP
   return result;
 }
 
-- (id)actionCameraSceneMonitoringParametersForPortType:(id)a3 sensorIDString:(id)a4
+- (id)actionCameraSceneMonitoringParametersForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3)
+  if (!type)
   {
     [FigCaptureCameraParameters actionCameraSceneMonitoringParametersForPortType:sensorIDString:];
     return 0;
   }
 
-  if (!a4)
+  if (!string)
   {
     [FigCaptureCameraParameters actionCameraSceneMonitoringParametersForPortType:sensorIDString:];
     return 0;
@@ -797,15 +797,15 @@ uint64_t __123__FigCaptureCameraParameters_portraitSceneMonitoringParametersForP
   return [v4 objectForKeyedSubscript:@"ActionCameraSceneMonitoringParameters"];
 }
 
-- (id)stereoVideoCaptureSceneMonitoringParametersForPortType:(id)a3 sensorIDString:(id)a4
+- (id)stereoVideoCaptureSceneMonitoringParametersForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3)
+  if (!type)
   {
     [FigCaptureCameraParameters stereoVideoCaptureSceneMonitoringParametersForPortType:sensorIDString:];
     return 0;
   }
 
-  if (!a4)
+  if (!string)
   {
     [FigCaptureCameraParameters stereoVideoCaptureSceneMonitoringParametersForPortType:sensorIDString:];
     return 0;
@@ -821,15 +821,15 @@ uint64_t __123__FigCaptureCameraParameters_portraitSceneMonitoringParametersForP
   return [v4 objectForKeyedSubscript:@"StereoVideoCaptureSceneMonitoringParameters"];
 }
 
-- (id)stereoPhotoCaptureSceneMonitoringParametersForPortType:(id)a3 sensorIDString:(id)a4
+- (id)stereoPhotoCaptureSceneMonitoringParametersForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3)
+  if (!type)
   {
     [FigCaptureCameraParameters stereoPhotoCaptureSceneMonitoringParametersForPortType:sensorIDString:];
     return 0;
   }
 
-  if (!a4)
+  if (!string)
   {
     [FigCaptureCameraParameters stereoPhotoCaptureSceneMonitoringParametersForPortType:sensorIDString:];
     return 0;
@@ -845,15 +845,15 @@ uint64_t __123__FigCaptureCameraParameters_portraitSceneMonitoringParametersForP
   return [v4 objectForKeyedSubscript:@"StereoPhotoCaptureSceneMonitoringParameters"];
 }
 
-- (id)lensSmudgeDetectionParametersForPortType:(id)a3 sensorIDString:(id)a4
+- (id)lensSmudgeDetectionParametersForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3)
+  if (!type)
   {
     [FigCaptureCameraParameters lensSmudgeDetectionParametersForPortType:sensorIDString:];
     return 0;
   }
 
-  if (!a4)
+  if (!string)
   {
     [FigCaptureCameraParameters lensSmudgeDetectionParametersForPortType:sensorIDString:];
     return 0;
@@ -876,15 +876,15 @@ uint64_t __123__FigCaptureCameraParameters_portraitSceneMonitoringParametersForP
   return result;
 }
 
-- (BOOL)panoramaRequiresLTMLockingForPortType:(id)a3 sensorIDString:(id)a4
+- (BOOL)panoramaRequiresLTMLockingForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3)
+  if (!type)
   {
     [FigCaptureCameraParameters panoramaRequiresLTMLockingForPortType:sensorIDString:];
     return 1;
   }
 
-  if (!a4)
+  if (!string)
   {
     [FigCaptureCameraParameters panoramaRequiresLTMLockingForPortType:sensorIDString:];
     return 1;
@@ -900,30 +900,30 @@ uint64_t __123__FigCaptureCameraParameters_portraitSceneMonitoringParametersForP
   return [objc_msgSend(v4 objectForKeyedSubscript:{@"panoramaDoNotLockLTM", "BOOLValue"}] ^ 1;
 }
 
-+ (unsigned)sensorIDFromSensorIDString:(id)a3
++ (unsigned)sensorIDFromSensorIDString:(id)string
 {
   v4 = 0;
-  [objc_msgSend(MEMORY[0x1E696AE88] scannerWithString:{a3), "scanHexInt:", &v4}];
+  [objc_msgSend(MEMORY[0x1E696AE88] scannerWithString:{string), "scanHexInt:", &v4}];
   return v4;
 }
 
-- (BOOL)chromaticDefringingEnabledForVideoForPortType:(id)a3 sensorIDString:(id)a4
+- (BOOL)chromaticDefringingEnabledForVideoForPortType:(id)type sensorIDString:(id)string
 {
-  v4 = [objc_msgSend(objc_msgSend(-[FigCaptureCameraParameters sensorIDDictionaryForPortType:sensorIDString:](self sensorIDDictionaryForPortType:a3 sensorIDString:{a4), "objectForKeyedSubscript:", @"ChromaticDefringing", "objectForKeyedSubscript:", @"Video", "objectForKeyedSubscript:", @"CorrectionEnabled"}];
+  v4 = [objc_msgSend(objc_msgSend(-[FigCaptureCameraParameters sensorIDDictionaryForPortType:sensorIDString:](self sensorIDDictionaryForPortType:type sensorIDString:{string), "objectForKeyedSubscript:", @"ChromaticDefringing", "objectForKeyedSubscript:", @"Video", "objectForKeyedSubscript:", @"CorrectionEnabled"}];
 
   return [v4 BOOLValue];
 }
 
-- (BOOL)chromaticDefringingEnabledForSlomoForPortType:(id)a3 sensorIDString:(id)a4
+- (BOOL)chromaticDefringingEnabledForSlomoForPortType:(id)type sensorIDString:(id)string
 {
-  v4 = [objc_msgSend(objc_msgSend(-[FigCaptureCameraParameters sensorIDDictionaryForPortType:sensorIDString:](self sensorIDDictionaryForPortType:a3 sensorIDString:{a4), "objectForKeyedSubscript:", @"ChromaticDefringing", "objectForKeyedSubscript:", @"Slomo", "objectForKeyedSubscript:", @"CorrectionEnabled"}];
+  v4 = [objc_msgSend(objc_msgSend(-[FigCaptureCameraParameters sensorIDDictionaryForPortType:sensorIDString:](self sensorIDDictionaryForPortType:type sensorIDString:{string), "objectForKeyedSubscript:", @"ChromaticDefringing", "objectForKeyedSubscript:", @"Slomo", "objectForKeyedSubscript:", @"CorrectionEnabled"}];
 
   return [v4 BOOLValue];
 }
 
-- (id)chromaticDefringingParametersForPortType:(id)a3 sensorIDString:(id)a4
+- (id)chromaticDefringingParametersForPortType:(id)type sensorIDString:(id)string
 {
-  v4 = [(FigCaptureCameraParameters *)self sensorIDDictionaryForPortType:a3 sensorIDString:a4];
+  v4 = [(FigCaptureCameraParameters *)self sensorIDDictionaryForPortType:type sensorIDString:string];
   if (!v4)
   {
     [FigCaptureCameraParameters chromaticDefringingParametersForPortType:sensorIDString:];
@@ -940,11 +940,11 @@ uint64_t __123__FigCaptureCameraParameters_portraitSceneMonitoringParametersForP
   return result;
 }
 
-+ (int)movieFileMaxLossyCompressionLevelForPixelFormat:(unsigned int)a3
++ (int)movieFileMaxLossyCompressionLevelForPixelFormat:(unsigned int)format
 {
-  if (FigCapturePixelFormatIsTenBit(a3))
+  if (FigCapturePixelFormatIsTenBit(format))
   {
-    if (FigCapturePixelFormatIs422(a3))
+    if (FigCapturePixelFormatIs422(format))
     {
       v4 = 1;
     }
@@ -987,15 +987,15 @@ uint64_t __83__FigCaptureCameraParameters_sdofTuningParametersForSensorIDDiction
   }
 }
 
-- (id)quadraSubPixelSwitchingParametersForPortType:(id)a3 sensorIDString:(id)a4
+- (id)quadraSubPixelSwitchingParametersForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3)
+  if (!type)
   {
     [FigCaptureCameraParameters quadraSubPixelSwitchingParametersForPortType:sensorIDString:];
     return 0;
   }
 
-  if (!a4)
+  if (!string)
   {
     [FigCaptureCameraParameters quadraSubPixelSwitchingParametersForPortType:sensorIDString:];
     return 0;
@@ -1011,15 +1011,15 @@ uint64_t __83__FigCaptureCameraParameters_sdofTuningParametersForSensorIDDiction
   return [v4 objectForKeyedSubscript:@"QuadraSubPixelSwitchingParameters"];
 }
 
-+ (id)cinematicFramingVirtualCameraConfigurationForPortType:(id)a3 sensorIDString:(id)a4
++ (id)cinematicFramingVirtualCameraConfigurationForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3)
+  if (!type)
   {
     +[FigCaptureCameraParameters cinematicFramingVirtualCameraConfigurationForPortType:sensorIDString:];
     return 0;
   }
 
-  if (!a4)
+  if (!string)
   {
     +[FigCaptureCameraParameters cinematicFramingVirtualCameraConfigurationForPortType:sensorIDString:];
     return 0;
@@ -1035,15 +1035,15 @@ uint64_t __83__FigCaptureCameraParameters_sdofTuningParametersForSensorIDDiction
   return [v4 objectForKeyedSubscript:@"CinematicFramingVirtualCameraConfiguration"];
 }
 
-+ (id)temporalFilterSessionConfigurationForPortType:(id)a3 sensorIDString:(id)a4
++ (id)temporalFilterSessionConfigurationForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3)
+  if (!type)
   {
     +[FigCaptureCameraParameters temporalFilterSessionConfigurationForPortType:sensorIDString:];
     return 0;
   }
 
-  if (!a4)
+  if (!string)
   {
     +[FigCaptureCameraParameters temporalFilterSessionConfigurationForPortType:sensorIDString:];
     return 0;
@@ -1059,14 +1059,14 @@ uint64_t __83__FigCaptureCameraParameters_sdofTuningParametersForSensorIDDiction
   return [v4 objectForKeyedSubscript:@"MotionCompensatedTemporalFilterNoiseReductionConfiguration"];
 }
 
-- (id)_initWithModelSpecificName:(void *)a3 fromFile:
+- (id)_initWithModelSpecificName:(void *)name fromFile:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v11.receiver = a1;
+  v11.receiver = self;
   v11.super_class = FigCaptureCameraParameters;
   v5 = objc_msgSendSuper2(&v11, sel_init);
   v6 = v5;
@@ -1075,7 +1075,7 @@ uint64_t __83__FigCaptureCameraParameters_sdofTuningParametersForSensorIDDiction
     return v6;
   }
 
-  if ((-[FigCaptureCameraParameters _readAndPreprocessCameraParametersForModelSpecificName:fromFile:](v5, a2, a3) & 1) == 0 || (v8 = [v6[1] objectForKeyedSubscript:@"TuningParameters"], objc_opt_class(), (OUTLINED_FUNCTION_19() & 1) == 0))
+  if ((-[FigCaptureCameraParameters _readAndPreprocessCameraParametersForModelSpecificName:fromFile:](v5, a2, name) & 1) == 0 || (v8 = [v6[1] objectForKeyedSubscript:@"TuningParameters"], objc_opt_class(), (OUTLINED_FUNCTION_19() & 1) == 0))
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_0_5();
@@ -1249,37 +1249,37 @@ uint64_t __83__FigCaptureCameraParameters_sdofTuningParametersForSensorIDDiction
   return v6;
 }
 
-- (FigCaptureCameraParameters)initWithContentsOfFile:(id)a3
+- (FigCaptureCameraParameters)initWithContentsOfFile:(id)file
 {
   FigCaptureGetModelSpecificName();
   v4 = OUTLINED_FUNCTION_10_29();
 
-  return [(FigCaptureCameraParameters *)v4 _initWithModelSpecificName:v5 fromFile:a3];
+  return [(FigCaptureCameraParameters *)v4 _initWithModelSpecificName:v5 fromFile:file];
 }
 
-- (uint64_t)_readAndPreprocessCameraParametersForModelSpecificName:(void *)a3 fromFile:
+- (uint64_t)_readAndPreprocessCameraParametersForModelSpecificName:(void *)name fromFile:
 {
   v80 = a2;
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
   v5 = objc_autoreleasePoolPush();
-  if (a3)
+  if (name)
   {
-    v6 = [FigCaptureFlatPlist flatPlistWithContentsOfFile:a3];
+    v6 = [FigCaptureFlatPlist flatPlistWithContentsOfFile:name];
     if (v6)
     {
       v7 = v6;
-      if ([a3 hasSuffix:@"CameraSetup.plist"])
+      if ([name hasSuffix:@"CameraSetup.plist"])
       {
-        v8 = [a3 substringWithRange:{0, objc_msgSend(a3, "length") - objc_msgSend(@"CameraSetup.plist", "length")}];
+        v8 = [name substringWithRange:{0, objc_msgSend(name, "length") - objc_msgSend(@"CameraSetup.plist", "length")}];
       }
 
       else
       {
-        v8 = [objc_msgSend(a3 "stringByDeletingLastPathComponent")];
+        v8 = [objc_msgSend(name "stringByDeletingLastPathComponent")];
       }
 
       v10 = v8;
@@ -1318,13 +1318,13 @@ LABEL_10:
   v68 = [obj countByEnumeratingWithState:&v104 objects:v103 count:16];
   if (!v68)
   {
-    v56 = *(a1 + 8);
-    v53 = (a1 + 8);
+    v56 = *(self + 8);
+    v53 = (self + 8);
 
     goto LABEL_60;
   }
 
-  v61 = a1;
+  selfCopy = self;
   v62 = v7;
   v64 = 0;
   context = v5;
@@ -1352,14 +1352,14 @@ LABEL_10:
         v102 = 0u;
         v99 = 0u;
         v100 = 0u;
-        v17 = [v16 allKeys];
-        v18 = [v17 countByEnumeratingWithState:&v99 objects:v98 count:16];
+        allKeys = [v16 allKeys];
+        v18 = [allKeys countByEnumeratingWithState:&v99 objects:v98 count:16];
         if (v18)
         {
           v19 = v18;
           v75 = 0;
           v20 = *v100;
-          v72 = v17;
+          v72 = allKeys;
           v73 = v16;
           v71 = *v100;
           while (1)
@@ -1370,7 +1370,7 @@ LABEL_10:
             {
               if (*v100 != v20)
               {
-                objc_enumerationMutation(v17);
+                objc_enumerationMutation(allKeys);
               }
 
               v77 = *(*(&v99 + 1) + 8 * v21);
@@ -1383,7 +1383,7 @@ LABEL_10:
                 goto LABEL_45;
               }
 
-              v31 = OUTLINED_FUNCTION_9_62(isKindOfClass, v24, v25, v26, v27, v28, v29, v30, v58, v59, v60, v61, v62, v63, v64, context, v66, obj, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94, v95, v96, 0);
+              v31 = OUTLINED_FUNCTION_9_62(isKindOfClass, v24, v25, v26, v27, v28, v29, v30, v58, v59, v60, selfCopy, v62, v63, v64, context, v66, obj, v68, v69, v70, v71, v72, v73, v74, v75, v76, v77, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94, v95, v96, 0);
               if (!v31)
               {
                 v19 = v76;
@@ -1439,7 +1439,7 @@ LABEL_45:
                   }
                 }
 
-                v32 = OUTLINED_FUNCTION_9_62(v38, v39, v40, v41, v42, v43, v44, v45, v58, v59, v60, v61, v62, v63, v64, context, v66, obj, v68, v69, v70, v71, v72, v73, v74, v75, v76, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94, v95, v96, v97);
+                v32 = OUTLINED_FUNCTION_9_62(v38, v39, v40, v41, v42, v43, v44, v45, v58, v59, v60, selfCopy, v62, v63, v64, context, v66, obj, v68, v69, v70, v71, v72, v73, v74, v75, v76, v78, v79, v80, v81, v82, v83, v84, v85, v86, v87, v88, v89, v90, v91, v92, v93, v94, v95, v96, v97);
                 if (v32)
                 {
                   continue;
@@ -1452,13 +1452,13 @@ LABEL_45:
               v48 = v79;
               if (!v33)
               {
-                v17 = v72;
+                allKeys = v72;
                 v16 = v73;
                 v20 = v71;
                 goto LABEL_46;
               }
 
-              v17 = v72;
+              allKeys = v72;
               v16 = v73;
               v49 = v75;
               v20 = v71;
@@ -1488,7 +1488,7 @@ LABEL_46:
             }
 
             while (v21 != v19);
-            v50 = [v17 countByEnumeratingWithState:&v99 objects:v98 count:16];
+            v50 = [allKeys countByEnumeratingWithState:&v99 objects:v98 count:16];
             v19 = v50;
             if (!v50)
             {
@@ -1521,7 +1521,7 @@ LABEL_46:
   }
 
   while (v68);
-  v53 = (v61 + 8);
+  v53 = (selfCopy + 8);
 
   if (v63)
   {
@@ -1592,9 +1592,9 @@ LABEL_62:
   return monocularStreamingDepthParameters;
 }
 
-- (int)fsdNetStereoImagesAlignmentForPortType:(id)a3 sensorIDString:(id)a4
+- (int)fsdNetStereoImagesAlignmentForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3 || !a4 || (v4 = [FigCaptureCameraParameters sensorIDDictionaryForPortType:"sensorIDDictionaryForPortType:sensorIDString:" sensorIDString:?]) == 0)
+  if (!type || !string || (v4 = [FigCaptureCameraParameters sensorIDDictionaryForPortType:"sensorIDDictionaryForPortType:sensorIDString:" sensorIDString:?]) == 0)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_11();
@@ -1611,21 +1611,21 @@ LABEL_62:
   return [v5 intValue];
 }
 
-- (id)focusPixelDisparityTuningParametersForPortType:(id)a3 sensorIDString:(id)a4 zoomFactor:(float)a5
+- (id)focusPixelDisparityTuningParametersForPortType:(id)type sensorIDString:(id)string zoomFactor:(float)factor
 {
-  if (!a3)
+  if (!type)
   {
     goto LABEL_24;
   }
 
-  v5 = a4;
-  if (!a4)
+  stringCopy = string;
+  if (!string)
   {
     goto LABEL_23;
   }
 
   v9 = [FigCaptureCameraParameters focusPixelDisparityVersionForPortType:"focusPixelDisparityVersionForPortType:sensorIDString:" sensorIDString:?];
-  if (!v9 || (v10 = v9, (v11 = [(FigCaptureCameraParameters *)self sensorIDDictionaryForPortType:a3 sensorIDString:v5]) == 0))
+  if (!v9 || (v10 = v9, (v11 = [(FigCaptureCameraParameters *)self sensorIDDictionaryForPortType:type sensorIDString:stringCopy]) == 0))
   {
 LABEL_24:
     fig_log_get_emitter();
@@ -1634,29 +1634,29 @@ LABEL_24:
     return 0;
   }
 
-  v5 = [v11 objectForKeyedSubscript:@"FocusPixelDisparityParameters"];
-  if (!v5)
+  stringCopy = [v11 objectForKeyedSubscript:@"FocusPixelDisparityParameters"];
+  if (!stringCopy)
   {
 LABEL_23:
     fig_log_get_emitter();
     OUTLINED_FUNCTION_4_8();
     FigDebugAssert3();
-    return v5;
+    return stringCopy;
   }
 
   if (v10 >= 2)
   {
     v39 = v10;
-    v5 = [v5 objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"FPDisparityV%d"}];
+    stringCopy = [stringCopy objectForKeyedSubscript:{objc_msgSend(MEMORY[0x1E696AEC0], "stringWithFormat:", @"FPDisparityV%d"}];
   }
 
-  v12 = [v5 objectForKeyedSubscript:@"ZoomSpecificParameters"];
+  v12 = [stringCopy objectForKeyedSubscript:@"ZoomSpecificParameters"];
   if (!v12)
   {
-    return v5;
+    return stringCopy;
   }
 
-  if (a5 == 0.0)
+  if (factor == 0.0)
   {
     goto LABEL_24;
   }
@@ -1670,12 +1670,12 @@ LABEL_23:
   }
 
   [v14 firstObject];
-  v5 = [OUTLINED_FUNCTION_4() objectForKeyedSubscript:?];
-  v23 = OUTLINED_FUNCTION_17_0(v5, v16, v17, v18, v19, v20, v21, v22, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v61, v63, v65, v67, v69, v71, v73, 0);
+  stringCopy = [OUTLINED_FUNCTION_4() objectForKeyedSubscript:?];
+  v23 = OUTLINED_FUNCTION_17_0(stringCopy, v16, v17, v18, v19, v20, v21, v22, v39, v41, v43, v45, v47, v49, v51, v53, v55, v57, v59, v61, v63, v65, v67, v69, v71, v73, 0);
   if (v23)
   {
     v24 = v23;
-    v25 = fmaxf(a5, 1.0);
+    v25 = fmaxf(factor, 1.0);
     v26 = MEMORY[0];
 LABEL_13:
     v27 = 0;
@@ -1694,7 +1694,7 @@ LABEL_13:
       }
 
       v30 = [v13 objectForKeyedSubscript:v28];
-      v5 = v30;
+      stringCopy = v30;
       if (v24 == ++v27)
       {
         v24 = OUTLINED_FUNCTION_17_0(v30, v31, v32, v33, v34, v35, v36, v37, v40, v42, v44, v46, v48, v50, v52, v54, v56, v58, v60, v62, v64, v66, v68, v70, v72, v74, v75);
@@ -1703,12 +1703,12 @@ LABEL_13:
           goto LABEL_13;
         }
 
-        return v5;
+        return stringCopy;
       }
     }
   }
 
-  return v5;
+  return stringCopy;
 }
 
 - (BOOL)portraitTapToRefocusPrevented
@@ -1728,9 +1728,9 @@ LABEL_13:
   return [v3 BOOLValue];
 }
 
-- (id)focusPixelsPatternsForPortType:(id)a3 sensorIDString:(id)a4
+- (id)focusPixelsPatternsForPortType:(id)type sensorIDString:(id)string
 {
-  if (!a3 || !a4)
+  if (!type || !string)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_11();
@@ -1738,13 +1738,13 @@ LABEL_13:
     return 0;
   }
 
-  v6 = [(FigCaptureCameraParameters *)self cameraTuningParameters];
-  if (!v6)
+  cameraTuningParameters = [(FigCaptureCameraParameters *)self cameraTuningParameters];
+  if (!cameraTuningParameters)
   {
     return 0;
   }
 
-  v7 = [objc_msgSend(objc_msgSend(objc_msgSend(-[NSDictionary objectForKeyedSubscript:](v6 objectForKeyedSubscript:{a3), "objectForKeyedSubscript:", a4), "objectForKeyedSubscript:", @"ModuleConfig", "objectForKeyedSubscript:", @"FocusPixels", "objectForKeyedSubscript:", @"Layout"}];
+  v7 = [objc_msgSend(objc_msgSend(objc_msgSend(-[NSDictionary objectForKeyedSubscript:](cameraTuningParameters objectForKeyedSubscript:{type), "objectForKeyedSubscript:", string), "objectForKeyedSubscript:", @"ModuleConfig", "objectForKeyedSubscript:", @"FocusPixels", "objectForKeyedSubscript:", @"Layout"}];
 
   return [v7 objectForKeyedSubscript:@"Patterns"];
 }
@@ -1762,9 +1762,9 @@ LABEL_13:
   return depthProcessingParameters;
 }
 
-- (BOOL)deepZoomTransferWithZoomedImageEnabledForPortType:(id)a3 sensorIDString:(id)a4
+- (BOOL)deepZoomTransferWithZoomedImageEnabledForPortType:(id)type sensorIDString:(id)string
 {
-  v4 = [(FigCaptureCameraParameters *)self sensorIDDictionaryForPortType:a3 sensorIDString:a4];
+  v4 = [(FigCaptureCameraParameters *)self sensorIDDictionaryForPortType:type sensorIDString:string];
   if (!v4 || (v5 = [v4 objectForKeyedSubscript:@"DeepZoomParameters"]) == 0)
   {
     fig_log_get_emitter();
@@ -1782,14 +1782,14 @@ LABEL_13:
   return [v6 BOOLValue];
 }
 
-- (id)portraitSceneMonitoringParametersForPortType:(id)a3 sensorIDString:(id)a4 zoomFactorRelativeToWidePortType:(float)a5
+- (id)portraitSceneMonitoringParametersForPortType:(id)type sensorIDString:(id)string zoomFactorRelativeToWidePortType:(float)portType
 {
-  if (!a3)
+  if (!type)
   {
     goto LABEL_24;
   }
 
-  if (!a4)
+  if (!string)
   {
     goto LABEL_24;
   }
@@ -1812,7 +1812,7 @@ LABEL_13:
     return 0;
   }
 
-  if (a5 == 0.0)
+  if (portType == 0.0)
   {
 LABEL_24:
     fig_log_get_emitter();
@@ -1829,7 +1829,7 @@ LABEL_24:
     return 0;
   }
 
-  v13 = fmaxf(a5, 1.0);
+  v13 = fmaxf(portType, 1.0);
   [(NSDictionary *)self->_portraitSceneMonitoringParametersByZoomFactor objectForKeyedSubscript:@"Common"];
   v14 = [OUTLINED_FUNCTION_4() dictionaryWithDictionary:?];
   v15 = [v11 count];
@@ -1879,10 +1879,10 @@ LABEL_16:
   return v14;
 }
 
-- (int)portraitSceneMonitorVersionForPortType:(id)a3 sensorIDString:(id)a4
+- (int)portraitSceneMonitorVersionForPortType:(id)type sensorIDString:(id)string
 {
   LODWORD(v4) = 1.0;
-  v5 = [(FigCaptureCameraParameters *)self portraitSceneMonitoringParametersForPortType:a3 sensorIDString:a4 zoomFactorRelativeToWidePortType:v4];
+  v5 = [(FigCaptureCameraParameters *)self portraitSceneMonitoringParametersForPortType:type sensorIDString:string zoomFactorRelativeToWidePortType:v4];
   if (!v5)
   {
     return 0;
@@ -1897,14 +1897,14 @@ LABEL_16:
   return [v6 intValue];
 }
 
-- (int)sdofRenderingVersionForPortType:(id)a3 sensorIDString:(id)a4 zoomFactor:(float)a5
+- (int)sdofRenderingVersionForPortType:(id)type sensorIDString:(id)string zoomFactor:(float)factor
 {
-  if (!a3 || ([a3 isEqualToString:*off_1E798A0C8] & 1) != 0)
+  if (!type || ([type isEqualToString:*off_1E798A0C8] & 1) != 0)
   {
     return 0;
   }
 
-  if (!a4 || (v9 = [(FigCaptureCameraParameters *)self sensorIDDictionaryForPortType:a3 sensorIDString:a4]) == 0)
+  if (!string || (v9 = [(FigCaptureCameraParameters *)self sensorIDDictionaryForPortType:type sensorIDString:string]) == 0)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_1_11();
@@ -1912,20 +1912,20 @@ LABEL_16:
     return 0;
   }
 
-  *&v10 = a5;
+  *&v10 = factor;
   v11 = [+[FigCaptureCameraParameters sdofTuningParametersForSensorIDDictionary:zoomFactor:](FigCaptureCameraParameters sdofTuningParametersForSensorIDDictionary:v9 zoomFactor:{v10), "objectForKeyedSubscript:", @"Version"}];
 
   return [v11 intValue];
 }
 
-- ($2ACC23B9A21F50F5CC728381CA870116)landmarksVersionForInferenceType:(int)a3
+- ($2ACC23B9A21F50F5CC728381CA870116)landmarksVersionForInferenceType:(int)type
 {
-  if (a3 == 802)
+  if (type == 802)
   {
     landmarksParameters = self->_landmarksParameters;
     if (!landmarksParameters)
     {
-      v5 = 1;
+      intValue = 1;
       goto LABEL_15;
     }
 
@@ -1934,9 +1934,9 @@ LABEL_16:
 
   else
   {
-    if (a3 != 801)
+    if (type != 801)
     {
-      v5 = 0;
+      intValue = 0;
       goto LABEL_15;
     }
 
@@ -1945,12 +1945,12 @@ LABEL_16:
     {
       if (+[BWInferenceEngine isNeuralEngineSupported])
       {
-        v5 = 2;
+        intValue = 2;
       }
 
       else
       {
-        v5 = 1;
+        intValue = 1;
       }
 
       goto LABEL_15;
@@ -1959,24 +1959,24 @@ LABEL_16:
     v4 = @"InferenceTypeLandmarks";
   }
 
-  v5 = [(NSDictionary *)landmarksParameters objectForKeyedSubscript:v4];
-  if (v5)
+  intValue = [(NSDictionary *)landmarksParameters objectForKeyedSubscript:v4];
+  if (intValue)
   {
-    v5 = [v5 objectForKeyedSubscript:@"InferenceVersion"];
-    if (v5)
+    intValue = [intValue objectForKeyedSubscript:@"InferenceVersion"];
+    if (intValue)
     {
-      v5 = [v5 intValue];
+      intValue = [intValue intValue];
     }
   }
 
 LABEL_15:
 
-  return BWInferenceVersionMakeMajor(v5);
+  return BWInferenceVersionMakeMajor(intValue);
 }
 
-- (int)landmarksConstellationPointCountForInferenceType:(int)a3
+- (int)landmarksConstellationPointCountForInferenceType:(int)type
 {
-  if (a3 == 802)
+  if (type == 802)
   {
     landmarksParameters = self->_landmarksParameters;
     if (!landmarksParameters)
@@ -1990,7 +1990,7 @@ LABEL_15:
 
   else
   {
-    if (a3 != 801)
+    if (type != 801)
     {
       LODWORD(v5) = 0;
       return v5;
@@ -2012,8 +2012,8 @@ LABEL_15:
     v5 = [v5 objectForKeyedSubscript:@"ConstellationPointCount"];
     if (v5)
     {
-      v6 = [v5 intValue];
-      if (v6 == 65)
+      intValue = [v5 intValue];
+      if (intValue == 65)
       {
         v7 = 65;
       }
@@ -2023,7 +2023,7 @@ LABEL_15:
         v7 = 0;
       }
 
-      if (v6 == 76)
+      if (intValue == 76)
       {
         LODWORD(v5) = 76;
       }
@@ -2055,9 +2055,9 @@ LABEL_15:
   return [v3 intValue];
 }
 
-+ (id)sensorIDStringFromModuleInfo:(id)a3
++ (id)sensorIDStringFromModuleInfo:(id)info
 {
-  result = [a3 objectForKeyedSubscript:*off_1E798A270];
+  result = [info objectForKeyedSubscript:*off_1E798A270];
   if (result)
   {
     return [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%04x", objc_msgSend(result, "intValue")];
@@ -2066,9 +2066,9 @@ LABEL_15:
   return result;
 }
 
-+ (id)sensorIDStringFromMetadata:(id)a3
++ (id)sensorIDStringFromMetadata:(id)metadata
 {
-  result = [a3 objectForKeyedSubscript:*off_1E798B660];
+  result = [metadata objectForKeyedSubscript:*off_1E798B660];
   if (result)
   {
     return [MEMORY[0x1E696AEC0] stringWithFormat:@"0x%04x", objc_msgSend(result, "intValue")];
@@ -2090,9 +2090,9 @@ LABEL_15:
   return videoStabilizationParameters;
 }
 
-+ (id)sdofTuningParametersForSensorIDDictionary:(id)a3 zoomFactor:(float)a4
++ (id)sdofTuningParametersForSensorIDDictionary:(id)dictionary zoomFactor:(float)factor
 {
-  if (!a3)
+  if (!dictionary)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_4_8();
@@ -2102,7 +2102,7 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v6 = [a3 objectForKeyedSubscript:@"SDOFRenderingParameters"];
+  v6 = [dictionary objectForKeyedSubscript:@"SDOFRenderingParameters"];
   v7 = 1.0;
   if (v6)
   {
@@ -2110,13 +2110,13 @@ LABEL_15:
     goto LABEL_14;
   }
 
-  v8 = [a3 objectForKeyedSubscript:@"SDOFRenderingParametersByZoomFactor"];
+  v8 = [dictionary objectForKeyedSubscript:@"SDOFRenderingParametersByZoomFactor"];
   if (!v8)
   {
     goto LABEL_28;
   }
 
-  if (a4 == 0.0)
+  if (factor == 0.0)
   {
     fig_log_get_emitter();
     OUTLINED_FUNCTION_4_8();
@@ -2134,7 +2134,7 @@ LABEL_28:
     goto LABEL_14;
   }
 
-  a4 = fmaxf(a4, 1.0);
+  factor = fmaxf(factor, 1.0);
   [v10 firstObject];
   v12 = [OUTLINED_FUNCTION_4() objectForKeyedSubscript:?];
   v13 = [objc_msgSend(v10 "firstObject")];
@@ -2155,17 +2155,17 @@ LABEL_8:
 
       v26 = *(8 * v25);
       [v26 floatValue];
-      if (v27 > a4)
+      if (v27 > factor)
       {
         break;
       }
 
       v12 = [v9 objectForKeyedSubscript:v26];
-      v28 = [v26 floatValue];
+      floatValue = [v26 floatValue];
       v7 = v36;
       if (v23 == ++v25)
       {
-        v23 = OUTLINED_FUNCTION_17_0(v28, v29, v30, v31, v32, v33, v34, v35, v47, v49, v51, v53, v55, v57, v59, v61, v63, v65, v67, v69, v71, v73, v75, v77, v79, v81, v82);
+        v23 = OUTLINED_FUNCTION_17_0(floatValue, v29, v30, v31, v32, v33, v34, v35, v47, v49, v51, v53, v55, v57, v59, v61, v63, v65, v67, v69, v71, v73, v75, v77, v79, v81, v82);
         if (v23)
         {
           goto LABEL_8;
@@ -2177,7 +2177,7 @@ LABEL_8:
   }
 
 LABEL_14:
-  if (a4 != v7)
+  if (factor != v7)
   {
     v37 = [v12 objectForKeyedSubscript:@"InterpolableParameters"];
     if (v37)
@@ -2190,7 +2190,7 @@ LABEL_14:
         [objc_msgSend(v38 objectForKeyedSubscript:{@"ZoomFactorForTargetValues", "floatValue"}];
         if (v41 != 0.0)
         {
-          v42 = (v41 - a4) / (v41 - v7);
+          v42 = (v41 - factor) / (v41 - v7);
           if (v42 > 1.0)
           {
             v42 = 1.0;

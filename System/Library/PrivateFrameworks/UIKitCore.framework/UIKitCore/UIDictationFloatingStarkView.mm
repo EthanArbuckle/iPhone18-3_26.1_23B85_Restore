@@ -1,32 +1,32 @@
 @interface UIDictationFloatingStarkView
 - (CGPoint)positionForShow;
-- (UIDictationFloatingStarkView)initWithFrame:(CGRect)a3;
-- (void)dimmingViewWasTapped:(id)a3;
+- (UIDictationFloatingStarkView)initWithFrame:(CGRect)frame;
+- (void)dimmingViewWasTapped:(id)tapped;
 - (void)endpointButtonPressed;
 - (void)finishReturnToKeyboard;
 - (void)layoutSubviews;
 - (void)prepareForReturnToKeyboard;
 - (void)returnToKeyboard;
-- (void)setInputViewsHiddenForDictation:(BOOL)a3;
-- (void)setState:(int)a3;
+- (void)setInputViewsHiddenForDictation:(BOOL)dictation;
+- (void)setState:(int)state;
 - (void)show;
 @end
 
 @implementation UIDictationFloatingStarkView
 
-- (UIDictationFloatingStarkView)initWithFrame:(CGRect)a3
+- (UIDictationFloatingStarkView)initWithFrame:(CGRect)frame
 {
   v25[2] = *MEMORY[0x1E69E9840];
   v20.receiver = self;
   v20.super_class = UIDictationFloatingStarkView;
-  v3 = [(UIDictationView *)&v20 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(UIDictationView *)&v20 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v4 addObserver:v3 selector:sel_applicationEnteredBackground name:@"UIApplicationDidEnterBackgroundNotification" object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v3 selector:sel_applicationEnteredBackground name:@"UIApplicationDidEnterBackgroundNotification" object:0];
 
-    v5 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v5 addObserver:v3 selector:sel_keyboardDidShow_ name:@"UIKeyboardDidShowNotification" object:0];
+    defaultCenter2 = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter2 addObserver:v3 selector:sel_keyboardDidShow_ name:@"UIKeyboardDidShowNotification" object:0];
 
     v6 = [(UIButton *)UIKeyboardDictationStarkDoneButton buttonWithType:0];
     endpointButton = v3->super._endpointButton;
@@ -67,8 +67,8 @@
   v22.receiver = self;
   v22.super_class = UIDictationFloatingStarkView;
   [(UIView *)&v22 layoutSubviews];
-  v3 = [(UIView *)self window];
-  v4 = __UIStatusBarManagerForWindow(v3);
+  window = [(UIView *)self window];
+  v4 = __UIStatusBarManagerForWindow(window);
   [v4 statusBarHeight];
   v6 = v5;
 
@@ -81,23 +81,23 @@
   [(UIView *)self->super._endpointButton frame];
   [(UIView *)self->super._endpointButton setCenter:v10, v12 - v13 * 0.5];
   v14 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v15 = [v14 scene];
-  v16 = [v15 screen];
+  scene = [v14 scene];
+  screen = [scene screen];
 
-  v17 = [v16 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
-  v18 = [v17 integerValue];
+  v17 = [screen _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
+  integerValue = [v17 integerValue];
 
-  v19 = [(UIView *)self->super._endpointButton superview];
+  superview = [(UIView *)self->super._endpointButton superview];
 
-  if (v18 == 2)
+  if (integerValue == 2)
   {
-    if (v19 == self)
+    if (superview == self)
     {
       [(UIView *)self->super._endpointButton removeFromSuperview];
     }
   }
 
-  else if (v19 != self)
+  else if (superview != self)
   {
     [(UIView *)self addSubview:self->super._endpointButton];
   }
@@ -125,10 +125,10 @@
   [v4 setAutomaticAppearanceEnabled:1];
 }
 
-- (void)setState:(int)a3
+- (void)setState:(int)state
 {
-  v3 = *&a3;
-  if (a3 == 2)
+  v3 = *&state;
+  if (state == 2)
   {
     [(UIView *)self bounds];
     v6 = v5;
@@ -142,8 +142,8 @@
     else
     {
       v9 = [SUICFlamesViewClass alloc];
-      v10 = [objc_opt_self() mainScreen];
-      v11 = [v9 initWithFrame:v10 screen:2 fidelity:{0.0, 0.0, v6, 100.0}];
+      mainScreen = [objc_opt_self() mainScreen];
+      v11 = [v9 initWithFrame:mainScreen screen:2 fidelity:{0.0, 0.0, v6, 100.0}];
       v12 = self->super._flamesView;
       self->super._flamesView = v11;
     }
@@ -154,13 +154,13 @@
     [(SUICFlamesView *)self->super._flamesView setNeedsLayout];
     [(UIView *)self addSubview:self->super._flamesView];
     v13 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-    v14 = [v13 scene];
-    v15 = [v14 screen];
+    scene = [v13 scene];
+    screen = [scene screen];
 
-    v16 = [v15 _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
-    v17 = [v16 integerValue];
+    v16 = [screen _capabilityForKey:@"UIScreenCapabilityTouchLevelsKey"];
+    integerValue = [v16 integerValue];
 
-    if (v17 != 2)
+    if (integerValue != 2)
     {
       [(UIView *)self addSubview:self->super._endpointButton];
     }
@@ -179,21 +179,21 @@
   [(UIDictationView *)&v18 setState:v3];
 }
 
-- (void)setInputViewsHiddenForDictation:(BOOL)a3
+- (void)setInputViewsHiddenForDictation:(BOOL)dictation
 {
-  v3 = a3;
+  dictationCopy = dictation;
   v4 = +[UIKeyboardSceneDelegate activeKeyboardSceneDelegate];
-  v5 = [v4 containerView];
+  containerView = [v4 containerView];
 
-  if (v3)
+  if (dictationCopy)
   {
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __64__UIDictationFloatingStarkView_setInputViewsHiddenForDictation___block_invoke;
     v12[3] = &unk_1E70F3590;
     v6 = &v13;
-    v13 = v5;
-    v7 = v5;
+    v13 = containerView;
+    v7 = containerView;
     [UIView animateWithDuration:v12 animations:&__block_literal_global_261 completion:0.25];
   }
 
@@ -207,8 +207,8 @@
     v10[2] = __64__UIDictationFloatingStarkView_setInputViewsHiddenForDictation___block_invoke_3;
     v10[3] = &unk_1E70F3590;
     v6 = &v11;
-    v11 = v5;
-    v9 = v5;
+    v11 = containerView;
+    v9 = containerView;
     [UIView animateWithDuration:0x20000 delay:v10 options:0 animations:0.25 completion:0.25];
   }
 }
@@ -219,7 +219,7 @@ void __64__UIDictationFloatingStarkView_setInputViewsHiddenForDictation___block_
   [v0 setMinimized:1];
 }
 
-- (void)dimmingViewWasTapped:(id)a3
+- (void)dimmingViewWasTapped:(id)tapped
 {
   v3 = +[UIDictationController sharedInstance];
   [v3 cancelDictation];
@@ -287,8 +287,8 @@ uint64_t __48__UIDictationFloatingStarkView_returnToKeyboard__block_invoke_2(uin
   v3 = +[UIPeripheralHost sharedInstance];
   [v3 disableInterfaceAutorotation:1];
 
-  v4 = [v12 containerWindow];
-  [v4 beginDisablingInterfaceAutorotation];
+  containerWindow = [v12 containerWindow];
+  [containerWindow beginDisablingInterfaceAutorotation];
 
   [(UIDictationFloatingStarkView *)self setInputViewsHiddenForDictation:1];
   v5 = +[UIWindowScene _keyWindowScene];

@@ -1,17 +1,17 @@
 @interface PKToolPickerInkingItem
-+ (PKToolPickerInkingItem)_defaultInkingItemForType:(uint64_t)a1;
++ (PKToolPickerInkingItem)_defaultInkingItemForType:(uint64_t)type;
 - (BOOL)allowsColorSelection;
 - (PKInkingTool)inkingTool;
-- (PKToolPickerInkingItem)initWithInkType:(id)a3;
-- (PKToolPickerInkingItem)initWithInkType:(id)a3 color:(id)a4;
-- (PKToolPickerInkingItem)initWithInkType:(id)a3 color:(id)a4 width:(double)a5 azimuth:(double)a6 identifier:(id)a7;
-- (PKToolPickerInkingItem)initWithInkType:(id)a3 color:(id)a4 width:(double)a5 identifier:(id)a6;
-- (PKToolPickerInkingItem)initWithInkType:(id)a3 width:(double)a4;
+- (PKToolPickerInkingItem)initWithInkType:(id)type;
+- (PKToolPickerInkingItem)initWithInkType:(id)type color:(id)color;
+- (PKToolPickerInkingItem)initWithInkType:(id)type color:(id)color width:(double)width azimuth:(double)azimuth identifier:(id)identifier;
+- (PKToolPickerInkingItem)initWithInkType:(id)type color:(id)color width:(double)width identifier:(id)identifier;
+- (PKToolPickerInkingItem)initWithInkType:(id)type width:(double)width;
 - (double)width;
 - (id)_dictionaryRepresentation;
-- (id)_toolCopyWithColor:(id)a3;
-- (id)_toolCopyWithWidth:(double)a3;
-- (void)setAllowsColorSelection:(BOOL)a3;
+- (id)_toolCopyWithColor:(id)color;
+- (id)_toolCopyWithWidth:(double)width;
+- (void)setAllowsColorSelection:(BOOL)selection;
 @end
 
 @implementation PKToolPickerInkingItem
@@ -19,123 +19,123 @@
 - (PKInkingTool)inkingTool
 {
   v3 = objc_opt_class();
-  v4 = [(PKToolPickerItem *)self _tool];
-  v5 = PKDynamicCast(v3, v4);
+  _tool = [(PKToolPickerItem *)self _tool];
+  v5 = PKDynamicCast(v3, _tool);
 
   return v5;
 }
 
 - (id)_dictionaryRepresentation
 {
-  v3 = [(PKToolPickerInkingItem *)self inkingTool];
-  v4 = [v3 ink];
-  v5 = [v4 dictionaryRepresentation];
-  v6 = [v5 mutableCopy];
+  inkingTool = [(PKToolPickerInkingItem *)self inkingTool];
+  v4 = [inkingTool ink];
+  dictionaryRepresentation = [v4 dictionaryRepresentation];
+  v6 = [dictionaryRepresentation mutableCopy];
 
-  v7 = [(PKToolPickerItem *)self identifier];
-  [v6 setObject:v7 forKeyedSubscript:@"identifier"];
-
-  return v6;
-}
-
-- (PKToolPickerInkingItem)initWithInkType:(id)a3
-{
-  v4 = a3;
-  v5 = [PKToolConfiguration defaultColorForInkingToolWithIdentifier:v4];
-  [PKInkingTool defaultWidthForInkType:v4];
-  v6 = [(PKToolPickerInkingItem *)self initWithInkType:v4 color:v5 width:0 identifier:?];
+  identifier = [(PKToolPickerItem *)self identifier];
+  [v6 setObject:identifier forKeyedSubscript:@"identifier"];
 
   return v6;
 }
 
-- (PKToolPickerInkingItem)initWithInkType:(id)a3 color:(id)a4
+- (PKToolPickerInkingItem)initWithInkType:(id)type
 {
-  v6 = a4;
-  v7 = a3;
-  [PKInkingTool defaultWidthForInkType:v7];
-  v8 = [(PKToolPickerInkingItem *)self initWithInkType:v7 color:v6 width:0 identifier:?];
+  typeCopy = type;
+  v5 = [PKToolConfiguration defaultColorForInkingToolWithIdentifier:typeCopy];
+  [PKInkingTool defaultWidthForInkType:typeCopy];
+  v6 = [(PKToolPickerInkingItem *)self initWithInkType:typeCopy color:v5 width:0 identifier:?];
+
+  return v6;
+}
+
+- (PKToolPickerInkingItem)initWithInkType:(id)type color:(id)color
+{
+  colorCopy = color;
+  typeCopy = type;
+  [PKInkingTool defaultWidthForInkType:typeCopy];
+  v8 = [(PKToolPickerInkingItem *)self initWithInkType:typeCopy color:colorCopy width:0 identifier:?];
 
   return v8;
 }
 
-- (PKToolPickerInkingItem)initWithInkType:(id)a3 width:(double)a4
+- (PKToolPickerInkingItem)initWithInkType:(id)type width:(double)width
 {
-  v6 = a3;
-  v7 = [PKToolConfiguration defaultColorForInkingToolWithIdentifier:v6];
-  v8 = [(PKToolPickerInkingItem *)self initWithInkType:v6 color:v7 width:0 identifier:a4];
+  typeCopy = type;
+  v7 = [PKToolConfiguration defaultColorForInkingToolWithIdentifier:typeCopy];
+  v8 = [(PKToolPickerInkingItem *)self initWithInkType:typeCopy color:v7 width:0 identifier:width];
 
   return v8;
 }
 
-- (PKToolPickerInkingItem)initWithInkType:(id)a3 color:(id)a4 width:(double)a5 identifier:(id)a6
+- (PKToolPickerInkingItem)initWithInkType:(id)type color:(id)color width:(double)width identifier:(id)identifier
 {
-  v10 = a6;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[PKInkingTool alloc] initWithInkType:v12 color:v11 width:a5];
+  identifierCopy = identifier;
+  colorCopy = color;
+  typeCopy = type;
+  v13 = [[PKInkingTool alloc] initWithInkType:typeCopy color:colorCopy width:width];
 
   v16.receiver = self;
   v16.super_class = PKToolPickerInkingItem;
-  v14 = [(PKToolPickerItem *)&v16 initWithTool:v13 identifier:v10];
+  v14 = [(PKToolPickerItem *)&v16 initWithTool:v13 identifier:identifierCopy];
 
   return v14;
 }
 
-- (PKToolPickerInkingItem)initWithInkType:(id)a3 color:(id)a4 width:(double)a5 azimuth:(double)a6 identifier:(id)a7
+- (PKToolPickerInkingItem)initWithInkType:(id)type color:(id)color width:(double)width azimuth:(double)azimuth identifier:(id)identifier
 {
-  v12 = a7;
-  v13 = a4;
-  v14 = a3;
-  v15 = [[PKInkingTool alloc] initWithInkType:v14 color:v13 width:a5 azimuth:a6];
+  identifierCopy = identifier;
+  colorCopy = color;
+  typeCopy = type;
+  v15 = [[PKInkingTool alloc] initWithInkType:typeCopy color:colorCopy width:width azimuth:azimuth];
 
   v18.receiver = self;
   v18.super_class = PKToolPickerInkingItem;
-  v16 = [(PKToolPickerItem *)&v18 initWithTool:v15 identifier:v12];
+  v16 = [(PKToolPickerItem *)&v18 initWithTool:v15 identifier:identifierCopy];
 
   return v16;
 }
 
 - (BOOL)allowsColorSelection
 {
-  v2 = [(PKToolPickerItem *)self _tool];
-  v3 = [v2 _configuration];
-  v4 = [v3 supportsColor];
+  _tool = [(PKToolPickerItem *)self _tool];
+  _configuration = [_tool _configuration];
+  supportsColor = [_configuration supportsColor];
 
-  return v4;
+  return supportsColor;
 }
 
-- (void)setAllowsColorSelection:(BOOL)a3
+- (void)setAllowsColorSelection:(BOOL)selection
 {
-  v3 = a3;
-  v5 = [(PKToolPickerItem *)self _tool];
-  v6 = [v5 _configuration];
-  v14 = [v6 copy];
+  selectionCopy = selection;
+  _tool = [(PKToolPickerItem *)self _tool];
+  _configuration = [_tool _configuration];
+  v14 = [_configuration copy];
 
-  v7 = [v14 defaultColor];
-  [v14 setSupportsColor:v3 andOpacity:v3 defaultColor:v7];
+  defaultColor = [v14 defaultColor];
+  [v14 setSupportsColor:selectionCopy andOpacity:selectionCopy defaultColor:defaultColor];
 
   v8 = [PKInkingTool alloc];
-  v9 = [(PKToolPickerInkingItem *)self inkingTool];
-  v10 = [v9 ink];
+  inkingTool = [(PKToolPickerInkingItem *)self inkingTool];
+  v10 = [inkingTool ink];
   v11 = [(PKTool *)v8 _initWithInk:v10 configuration:v14];
 
-  v12 = [(PKToolPickerItem *)self _tool];
-  v13 = [v12 _toolPickerItemIdentifier];
-  [v11 _setToolPickerItemIdentifier:v13];
+  _tool2 = [(PKToolPickerItem *)self _tool];
+  _toolPickerItemIdentifier = [_tool2 _toolPickerItemIdentifier];
+  [v11 _setToolPickerItemIdentifier:_toolPickerItemIdentifier];
 
   [(PKToolPickerItem *)self _updateTool:v11 shouldCallObserver:1];
 }
 
 - (double)width
 {
-  v2 = [(PKToolPickerInkingItem *)self inkingTool];
-  [v2 width];
+  inkingTool = [(PKToolPickerInkingItem *)self inkingTool];
+  [inkingTool width];
   v4 = v3;
 
   return v4;
 }
 
-+ (PKToolPickerInkingItem)_defaultInkingItemForType:(uint64_t)a1
++ (PKToolPickerInkingItem)_defaultInkingItemForType:(uint64_t)type
 {
   v2 = a2;
   objc_opt_self();
@@ -146,48 +146,48 @@
   return v5;
 }
 
-- (id)_toolCopyWithWidth:(double)a3
+- (id)_toolCopyWithWidth:(double)width
 {
-  v5 = [(PKToolPickerInkingItem *)self inkingTool];
-  v6 = [v5 ink];
-  v7 = [v6 inkType];
-  [PKInkingTool _weightForWidth:v7 type:a3];
+  inkingTool = [(PKToolPickerInkingItem *)self inkingTool];
+  v6 = [inkingTool ink];
+  inkType = [v6 inkType];
+  [PKInkingTool _weightForWidth:inkType type:width];
   v9 = v8;
 
-  v10 = [v6 inkType];
-  v11 = [v6 color];
+  inkType2 = [v6 inkType];
+  color = [v6 color];
   [v6 _azimuth];
-  v13 = [PKInk inkWithType:v10 color:v11 weight:v9 azimuth:v12];
+  v13 = [PKInk inkWithType:inkType2 color:color weight:v9 azimuth:v12];
 
   v14 = [PKInkingTool alloc];
-  v15 = [v5 _configuration];
-  v16 = [(PKTool *)v14 _initWithInk:v13 configuration:v15];
+  _configuration = [inkingTool _configuration];
+  v16 = [(PKTool *)v14 _initWithInk:v13 configuration:_configuration];
 
-  v17 = [(PKToolPickerItem *)self _tool];
-  v18 = [v17 _toolPickerItemIdentifier];
-  [v16 _setToolPickerItemIdentifier:v18];
+  _tool = [(PKToolPickerItem *)self _tool];
+  _toolPickerItemIdentifier = [_tool _toolPickerItemIdentifier];
+  [v16 _setToolPickerItemIdentifier:_toolPickerItemIdentifier];
 
   return v16;
 }
 
-- (id)_toolCopyWithColor:(id)a3
+- (id)_toolCopyWithColor:(id)color
 {
-  v4 = a3;
-  v5 = [(PKToolPickerInkingItem *)self inkingTool];
-  v6 = [v5 ink];
-  v7 = [v6 inkType];
+  colorCopy = color;
+  inkingTool = [(PKToolPickerInkingItem *)self inkingTool];
+  v6 = [inkingTool ink];
+  inkType = [v6 inkType];
   [v6 weight];
   v9 = v8;
   [v6 _azimuth];
-  v11 = [PKInk inkWithType:v7 color:v4 weight:v9 azimuth:v10];
+  v11 = [PKInk inkWithType:inkType color:colorCopy weight:v9 azimuth:v10];
 
   v12 = [PKInkingTool alloc];
-  v13 = [v5 _configuration];
-  v14 = [(PKTool *)v12 _initWithInk:v11 configuration:v13];
+  _configuration = [inkingTool _configuration];
+  v14 = [(PKTool *)v12 _initWithInk:v11 configuration:_configuration];
 
-  v15 = [(PKToolPickerItem *)self _tool];
-  v16 = [v15 _toolPickerItemIdentifier];
-  [v14 _setToolPickerItemIdentifier:v16];
+  _tool = [(PKToolPickerItem *)self _tool];
+  _toolPickerItemIdentifier = [_tool _toolPickerItemIdentifier];
+  [v14 _setToolPickerItemIdentifier:_toolPickerItemIdentifier];
 
   return v14;
 }

@@ -1,7 +1,7 @@
 @interface TypographyPanel
-- (TypographyPanel)initWithNibName:(id)a3 bundle:(id)a4;
+- (TypographyPanel)initWithNibName:(id)name bundle:(id)bundle;
 - (TypographyPanelDelegate)delegate;
-- (void)setSelectedFont:(id)a3;
+- (void)setSelectedFont:(id)font;
 - (void)viewDidLoad;
 @end
 
@@ -9,7 +9,7 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_572B4();
 }
 
@@ -21,16 +21,16 @@
   return Strong;
 }
 
-- (void)setSelectedFont:(id)a3
+- (void)setSelectedFont:(id)font
 {
-  v4 = a3;
-  v5 = self;
-  sub_57A48(v4);
+  fontCopy = font;
+  selfCopy = self;
+  sub_57A48(fontCopy);
 }
 
-- (TypographyPanel)initWithNibName:(id)a3 bundle:(id)a4
+- (TypographyPanel)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = sub_598E0();
     v7 = v6;
@@ -42,8 +42,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return sub_57C8C(v5, v7, a4);
+  bundleCopy = bundle;
+  return sub_57C8C(v5, v7, bundle);
 }
 
 @end

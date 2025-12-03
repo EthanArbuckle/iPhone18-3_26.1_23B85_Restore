@@ -1,7 +1,7 @@
 @interface ContainerDetail.HeaderCell
 - (CGRect)bounds;
-- (_TtCV5Music15ContainerDetail10HeaderCell)initWithFrame:(CGRect)a3;
-- (void)setBounds:(CGRect)a3;
+- (_TtCV5Music15ContainerDetail10HeaderCell)initWithFrame:(CGRect)frame;
+- (void)setBounds:(CGRect)bounds;
 @end
 
 @implementation ContainerDetail.HeaderCell
@@ -18,12 +18,12 @@
   return result;
 }
 
-- (void)setBounds:(CGRect)a3
+- (void)setBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v9.receiver = self;
   v9.super_class = _s10HeaderCellCMa();
   v7 = v9.receiver;
@@ -42,12 +42,12 @@
   }
 }
 
-- (_TtCV5Music15ContainerDetail10HeaderCell)initWithFrame:(CGRect)a3
+- (_TtCV5Music15ContainerDetail10HeaderCell)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = (&self->super.super.super.super.super.isa + OBJC_IVAR____TtCV5Music15ContainerDetail10HeaderCell_didSetBoundsBlock);
   *v7 = 0;
   v7[1] = 0;

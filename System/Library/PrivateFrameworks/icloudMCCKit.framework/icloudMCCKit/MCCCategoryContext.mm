@@ -1,41 +1,41 @@
 @interface MCCCategoryContext
-- (MCCCategoryContext)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (MCCCategoryContext)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)stringValue;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MCCCategoryContext
 
-- (MCCCategoryContext)initWithCoder:(id)a3
+- (MCCCategoryContext)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = [(MCCCategoryContext *)self init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_senderNAme"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_senderNAme"];
     senderName = v5->_senderName;
     v5->_senderName = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_senderEmail"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_senderEmail"];
     senderEmail = v5->_senderEmail;
     v5->_senderEmail = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_recipientEmail"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_recipientEmail"];
     receiverEmail = v5->_receiverEmail;
     v5->_receiverEmail = v10;
 
-    v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_subject"];
+    v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_subject"];
     emailSubject = v5->_emailSubject;
     v5->_emailSubject = v12;
 
-    v5->_isUnsubscribeHeaderPresent = [v4 decodeBoolForKey:@"_unsubscribed"];
-    v5->_isSenderVIP = [v4 decodeBoolForKey:@"_isVIP"];
-    v5->_isSenderInAddressBook = [v4 decodeBoolForKey:@"_inAddressBook"];
-    v5->_isSenderRecentContact = [v4 decodeBoolForKey:@"_recentContact"];
-    v5->_isSenderPrimary = [v4 decodeBoolForKey:@"_senderPrimary"];
-    v5->_isNonPersonalAccount = [v4 decodeBoolForKey:@"_isNonPersonalAccount"];
-    v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_localRuleCategory"];
+    v5->_isUnsubscribeHeaderPresent = [coderCopy decodeBoolForKey:@"_unsubscribed"];
+    v5->_isSenderVIP = [coderCopy decodeBoolForKey:@"_isVIP"];
+    v5->_isSenderInAddressBook = [coderCopy decodeBoolForKey:@"_inAddressBook"];
+    v5->_isSenderRecentContact = [coderCopy decodeBoolForKey:@"_recentContact"];
+    v5->_isSenderPrimary = [coderCopy decodeBoolForKey:@"_senderPrimary"];
+    v5->_isNonPersonalAccount = [coderCopy decodeBoolForKey:@"_isNonPersonalAccount"];
+    v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_localRuleCategory"];
     localRuleCategory = v5->_localRuleCategory;
     v5->_localRuleCategory = v14;
   }
@@ -43,26 +43,26 @@
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   senderName = self->_senderName;
-  v5 = a3;
-  [v5 encodeObject:senderName forKey:@"_senderNAme"];
-  [v5 encodeObject:self->_senderEmail forKey:@"_senderEmail"];
-  [v5 encodeObject:self->_receiverEmail forKey:@"_recipientEmail"];
-  [v5 encodeObject:self->_emailSubject forKey:@"_subject"];
-  [v5 encodeBool:self->_isUnsubscribeHeaderPresent forKey:@"_unsubscribed"];
-  [v5 encodeBool:self->_isSenderVIP forKey:@"_isVIP"];
-  [v5 encodeBool:self->_isSenderInAddressBook forKey:@"_inAddressBook"];
-  [v5 encodeBool:self->_isSenderRecentContact forKey:@"_recentContact"];
-  [v5 encodeBool:self->_isSenderPrimary forKey:@"_senderPrimary"];
-  [v5 encodeBool:self->_isNonPersonalAccount forKey:@"_isNonPersonalAccount"];
-  [v5 encodeObject:self->_localRuleCategory forKey:@"_localRuleCategory"];
+  coderCopy = coder;
+  [coderCopy encodeObject:senderName forKey:@"_senderNAme"];
+  [coderCopy encodeObject:self->_senderEmail forKey:@"_senderEmail"];
+  [coderCopy encodeObject:self->_receiverEmail forKey:@"_recipientEmail"];
+  [coderCopy encodeObject:self->_emailSubject forKey:@"_subject"];
+  [coderCopy encodeBool:self->_isUnsubscribeHeaderPresent forKey:@"_unsubscribed"];
+  [coderCopy encodeBool:self->_isSenderVIP forKey:@"_isVIP"];
+  [coderCopy encodeBool:self->_isSenderInAddressBook forKey:@"_inAddressBook"];
+  [coderCopy encodeBool:self->_isSenderRecentContact forKey:@"_recentContact"];
+  [coderCopy encodeBool:self->_isSenderPrimary forKey:@"_senderPrimary"];
+  [coderCopy encodeBool:self->_isNonPersonalAccount forKey:@"_isNonPersonalAccount"];
+  [coderCopy encodeObject:self->_localRuleCategory forKey:@"_localRuleCategory"];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v5 = [(NSString *)self->_senderName copy];
   v6 = *(v4 + 16);
   *(v4 + 16) = v5;

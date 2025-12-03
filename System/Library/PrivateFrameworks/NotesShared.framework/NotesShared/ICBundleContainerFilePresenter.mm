@@ -1,19 +1,19 @@
 @interface ICBundleContainerFilePresenter
-- (ICBundleContainerFilePresenter)initWithURL:(id)a3;
-- (void)presentedSubitemDidChangeAtURL:(id)a3;
+- (ICBundleContainerFilePresenter)initWithURL:(id)l;
+- (void)presentedSubitemDidChangeAtURL:(id)l;
 @end
 
 @implementation ICBundleContainerFilePresenter
 
-- (ICBundleContainerFilePresenter)initWithURL:(id)a3
+- (ICBundleContainerFilePresenter)initWithURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v11.receiver = self;
   v11.super_class = ICBundleContainerFilePresenter;
   v5 = [(ICBundleContainerFilePresenter *)&v11 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [lCopy copy];
     url = v5->_url;
     v5->_url = v6;
 
@@ -29,10 +29,10 @@
   return v5;
 }
 
-- (void)presentedSubitemDidChangeAtURL:(id)a3
+- (void)presentedSubitemDidChangeAtURL:(id)l
 {
-  v4 = a3;
-  v3 = v4;
+  lCopy = l;
+  v3 = lCopy;
   performBlockOnMainThread();
 }
 

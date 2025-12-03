@@ -22,13 +22,13 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -38,14 +38,14 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         v10 = v4[2](v4, *(*(&v14 + 1) + 8 * i));
         [v5 addObject:{v10, v14}];
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -61,13 +61,13 @@
 {
   v19 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(a1, "count")}];
+  v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(self, "count")}];
   v16 = 0u;
   v17 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v6 = a1;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  selfCopy = self;
+  v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = *v15;
@@ -77,7 +77,7 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(selfCopy);
         }
 
         if (*(*(&v14 + 1) + 8 * i))
@@ -87,7 +87,7 @@
         }
       }
 
-      v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [selfCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v7);
@@ -118,7 +118,7 @@
     while (v7 != v8);
   }
 
-  v10 = [a1 arrayWithArray:v5];
+  v10 = [self arrayWithArray:v5];
 
   return v10;
 }
@@ -144,7 +144,7 @@
     while (v9);
   }
 
-  v11 = [a1 arrayWithArray:v5];
+  v11 = [self arrayWithArray:v5];
 
   return v11;
 }
@@ -155,13 +155,13 @@
   *a2 = 0;
   a2[1] = 0;
   a2[2] = 0;
-  std::vector<float>::reserve(a2, [a1 count]);
+  std::vector<float>::reserve(a2, [self count]);
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = a1;
-  v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  selfCopy = self;
+  v5 = [selfCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v5)
   {
     v6 = *v21;
@@ -171,7 +171,7 @@
       {
         if (*v21 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         [*(*(&v20 + 1) + 8 * i) floatValue];
@@ -231,7 +231,7 @@
         a2[1] = v11;
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v20 objects:v24 count:16];
     }
 
     while (v5);
@@ -246,13 +246,13 @@
   *a2 = 0;
   a2[1] = 0;
   a2[2] = 0;
-  _ZNSt3__16vectorIDv4_fNS_9allocatorIS1_EEE7reserveEm(a2, [a1 count]);
+  _ZNSt3__16vectorIDv4_fNS_9allocatorIS1_EEE7reserveEm(a2, [self count]);
   v23 = 0u;
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v4 = a1;
-  v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+  selfCopy = self;
+  v5 = [selfCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v5)
   {
     v6 = *v22;
@@ -262,7 +262,7 @@
       {
         if (*v22 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         [*(*(&v21 + 1) + 8 * i) vg_float3ByInvokingFloatValue];
@@ -323,7 +323,7 @@
         a2[1] = v11;
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v21 objects:v25 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v21 objects:v25 count:16];
     }
 
     while (v5);
@@ -339,7 +339,7 @@
   LODWORD(v4) = a2.n128_u32[1];
   v5 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
   v6 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a2.n128_u32[1], a2.n128_u32[2]))}];
-  v7 = [a1 arrayWithObjects:{v3, v5, v6, 0}];
+  v7 = [self arrayWithObjects:{v3, v5, v6, 0}];
 
   return v7;
 }
@@ -352,7 +352,7 @@
   v5 = [MEMORY[0x277CCABB0] numberWithFloat:v4];
   v6 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a2.n128_u32[1], a2.n128_u32[2]))}];
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a2.n128_u32[1], a2.n128_u32[3]))}];
-  v8 = [a1 arrayWithObjects:{v3, v5, v6, v7, 0}];
+  v8 = [self arrayWithObjects:{v3, v5, v6, v7, 0}];
 
   return v8;
 }
@@ -362,7 +362,7 @@
   v21 = [MEMORY[0x277CCABB0] numberWithFloat:?];
   v20 = [MEMORY[0x277CCABB0] numberWithFloat:a3.n128_f64[0]];
   v19 = [MEMORY[0x277CCABB0] numberWithFloat:a4.n128_f64[0]];
-  v5 = [a1 arrayWithObjects:{v21, v20, v19, 0}];
+  v5 = [self arrayWithObjects:{v21, v20, v19, 0}];
   HIDWORD(v6) = a2.n128_u32[1];
   LODWORD(v6) = a2.n128_u32[1];
   v7 = [MEMORY[0x277CCABB0] numberWithFloat:v6];
@@ -372,12 +372,12 @@
   HIDWORD(v10) = a4.n128_u32[1];
   LODWORD(v10) = a4.n128_u32[1];
   v11 = [MEMORY[0x277CCABB0] numberWithFloat:v10];
-  v12 = [a1 arrayWithObjects:{v7, v9, v11, 0}];
+  v12 = [self arrayWithObjects:{v7, v9, v11, 0}];
   v13 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a2.n128_u32[1], a2.n128_u32[2]))}];
   v14 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a3.n128_u32[1], a3.n128_u32[2]))}];
   v15 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a4.n128_u32[1], a4.n128_u32[2]))}];
-  v16 = [a1 arrayWithObjects:{v13, v14, v15, 0}];
-  v17 = [a1 arrayWithObjects:{v5, v12, v16, 0}];
+  v16 = [self arrayWithObjects:{v13, v14, v15, 0}];
+  v17 = [self arrayWithObjects:{v5, v12, v16, 0}];
 
   return v17;
 }
@@ -388,7 +388,7 @@
   v29 = [MEMORY[0x277CCABB0] numberWithFloat:a3.n128_f64[0]];
   v28 = [MEMORY[0x277CCABB0] numberWithFloat:a4.n128_f64[0]];
   v27 = [MEMORY[0x277CCABB0] numberWithFloat:a5.n128_f64[0]];
-  v6 = [a1 arrayWithObjects:{v30, v29, v28, v27, 0}];
+  v6 = [self arrayWithObjects:{v30, v29, v28, v27, 0}];
   HIDWORD(v7) = a2.n128_u32[1];
   LODWORD(v7) = a2.n128_u32[1];
   v26 = v6;
@@ -403,18 +403,18 @@
   LODWORD(v13) = a5.n128_u32[1];
   v24 = v12;
   v23 = [MEMORY[0x277CCABB0] numberWithFloat:v13];
-  v25 = [a1 arrayWithObjects:{v8, v10, v12, v23, 0}];
+  v25 = [self arrayWithObjects:{v8, v10, v12, v23, 0}];
   v33 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a2.n128_u32[1], a2.n128_u32[2]))}];
   v32 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a3.n128_u32[1], a3.n128_u32[2]))}];
   v31 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a4.n128_u32[1], a4.n128_u32[2]))}];
   v14 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a5.n128_u32[1], a5.n128_u32[2]))}];
-  v15 = [a1 arrayWithObjects:{v33, v32, v31, v14, 0}];
+  v15 = [self arrayWithObjects:{v33, v32, v31, v14, 0}];
   v16 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a2.n128_u32[1], a2.n128_u32[3]))}];
   v17 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a3.n128_u32[1], a3.n128_u32[3]))}];
   v18 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a4.n128_u32[1], a4.n128_u32[3]))}];
   v19 = [MEMORY[0x277CCABB0] numberWithFloat:{COERCE_DOUBLE(__PAIR64__(a5.n128_u32[1], a5.n128_u32[3]))}];
-  v20 = [a1 arrayWithObjects:{v16, v17, v18, v19, 0}];
-  v21 = [a1 arrayWithObjects:{v26, v25, v15, v20, 0}];
+  v20 = [self arrayWithObjects:{v16, v17, v18, v19, 0}];
+  v21 = [self arrayWithObjects:{v26, v25, v15, v20, 0}];
 
   return v21;
 }
@@ -422,14 +422,14 @@
 - (id)vg_dataByInvokingFloatValue
 {
   v16 = *MEMORY[0x277D85DE8];
-  v2 = [MEMORY[0x277CBEB28] dataWithLength:{4 * objc_msgSend(a1, "count")}];
-  v3 = [v2 mutableBytes];
+  v2 = [MEMORY[0x277CBEB28] dataWithLength:{4 * objc_msgSend(self, "count")}];
+  mutableBytes = [v2 mutableBytes];
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = a1;
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  selfCopy = self;
+  v5 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = *v12;
@@ -439,14 +439,14 @@
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(selfCopy);
         }
 
         [*(*(&v11 + 1) + 8 * i) floatValue];
-        *v3++ = v8;
+        *mutableBytes++ = v8;
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [selfCopy countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -459,13 +459,13 @@
 
 - (__n128)vg_float3ByInvokingFloatValue
 {
-  v2 = [a1 objectAtIndexedSubscript:0];
+  v2 = [self objectAtIndexedSubscript:0];
   [v2 floatValue];
   v11 = v3;
-  v4 = [a1 objectAtIndexedSubscript:1];
+  v4 = [self objectAtIndexedSubscript:1];
   [v4 floatValue];
   v10 = v5;
-  v6 = [a1 objectAtIndexedSubscript:2];
+  v6 = [self objectAtIndexedSubscript:2];
   [v6 floatValue];
   v9 = v7;
 
@@ -477,16 +477,16 @@
 
 - (__n128)vg_float4ByInvokingFloatValue
 {
-  v2 = [a1 objectAtIndexedSubscript:0];
+  v2 = [self objectAtIndexedSubscript:0];
   [v2 floatValue];
   v14 = v3;
-  v4 = [a1 objectAtIndexedSubscript:1];
+  v4 = [self objectAtIndexedSubscript:1];
   [v4 floatValue];
   v13 = v5;
-  v6 = [a1 objectAtIndexedSubscript:2];
+  v6 = [self objectAtIndexedSubscript:2];
   [v6 floatValue];
   v12 = v7;
-  v8 = [a1 objectAtIndexedSubscript:3];
+  v8 = [self objectAtIndexedSubscript:3];
   [v8 floatValue];
   *&v9 = __PAIR64__(v13, v14);
   *(&v9 + 1) = __PAIR64__(v10, v12);
@@ -497,34 +497,34 @@
 
 - (__n128)vg_float3x3FromRowMajorByInvokingFloatValue
 {
-  v26 = [a1 objectAtIndexedSubscript:0];
+  v26 = [self objectAtIndexedSubscript:0];
   v25 = [v26 objectAtIndexedSubscript:0];
   [v25 floatValue];
   v18 = v2;
-  v24 = [a1 objectAtIndexedSubscript:1];
+  v24 = [self objectAtIndexedSubscript:1];
   v23 = [v24 objectAtIndexedSubscript:0];
   [v23 floatValue];
   v17 = v3;
-  v22 = [a1 objectAtIndexedSubscript:2];
+  v22 = [self objectAtIndexedSubscript:2];
   v21 = [v22 objectAtIndexedSubscript:0];
   [v21 floatValue];
   v16 = v4;
-  v20 = [a1 objectAtIndexedSubscript:0];
+  v20 = [self objectAtIndexedSubscript:0];
   v19 = [v20 objectAtIndexedSubscript:1];
   [v19 floatValue];
-  v5 = [a1 objectAtIndexedSubscript:1];
+  v5 = [self objectAtIndexedSubscript:1];
   v6 = [v5 objectAtIndexedSubscript:1];
   [v6 floatValue];
-  v7 = [a1 objectAtIndexedSubscript:2];
+  v7 = [self objectAtIndexedSubscript:2];
   v8 = [v7 objectAtIndexedSubscript:1];
   [v8 floatValue];
-  v9 = [a1 objectAtIndexedSubscript:0];
+  v9 = [self objectAtIndexedSubscript:0];
   v10 = [v9 objectAtIndexedSubscript:2];
   [v10 floatValue];
-  v11 = [a1 objectAtIndexedSubscript:1];
+  v11 = [self objectAtIndexedSubscript:1];
   v12 = [v11 objectAtIndexedSubscript:2];
   [v12 floatValue];
-  v13 = [a1 objectAtIndexedSubscript:2];
+  v13 = [self objectAtIndexedSubscript:2];
   v14 = [v13 objectAtIndexedSubscript:2];
   [v14 floatValue];
 
@@ -536,26 +536,26 @@
 
 - (__n128)vg_float3x3From1DArrayByInvokingFloatValue
 {
-  v2 = [a1 objectAtIndexedSubscript:0];
+  v2 = [self objectAtIndexedSubscript:0];
   [v2 floatValue];
   v17 = v3;
-  v4 = [a1 objectAtIndexedSubscript:3];
+  v4 = [self objectAtIndexedSubscript:3];
   [v4 floatValue];
   v16 = v5;
-  v6 = [a1 objectAtIndexedSubscript:6];
+  v6 = [self objectAtIndexedSubscript:6];
   [v6 floatValue];
   v15 = v7;
-  v8 = [a1 objectAtIndexedSubscript:1];
+  v8 = [self objectAtIndexedSubscript:1];
   [v8 floatValue];
-  v9 = [a1 objectAtIndexedSubscript:4];
+  v9 = [self objectAtIndexedSubscript:4];
   [v9 floatValue];
-  v10 = [a1 objectAtIndexedSubscript:7];
+  v10 = [self objectAtIndexedSubscript:7];
   [v10 floatValue];
-  v11 = [a1 objectAtIndexedSubscript:2];
+  v11 = [self objectAtIndexedSubscript:2];
   [v11 floatValue];
-  v12 = [a1 objectAtIndexedSubscript:5];
+  v12 = [self objectAtIndexedSubscript:5];
   [v12 floatValue];
-  v13 = [a1 objectAtIndexedSubscript:8];
+  v13 = [self objectAtIndexedSubscript:8];
   [v13 floatValue];
 
   result.n128_u32[0] = v17;

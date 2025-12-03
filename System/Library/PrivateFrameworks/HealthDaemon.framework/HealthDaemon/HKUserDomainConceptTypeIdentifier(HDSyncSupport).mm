@@ -8,10 +8,10 @@
 - (HDCodableUserDomainConceptTypeIdentifier)codableRepresentationForSync
 {
   v2 = objc_alloc_init(HDCodableUserDomainConceptTypeIdentifier);
-  v3 = [a1 schema];
-  [(HDCodableUserDomainConceptTypeIdentifier *)v2 setSchema:v3];
+  schema = [self schema];
+  [(HDCodableUserDomainConceptTypeIdentifier *)v2 setSchema:schema];
 
-  -[HDCodableUserDomainConceptTypeIdentifier setCode:](v2, "setCode:", [a1 code]);
+  -[HDCodableUserDomainConceptTypeIdentifier setCode:](v2, "setCode:", [self code]);
 
   return v2;
 }
@@ -22,9 +22,9 @@
   if ([v3 isMemberOfClass:objc_opt_class()])
   {
     v4 = objc_alloc(MEMORY[0x277CCDB50]);
-    v5 = [v3 code];
-    v6 = [v3 schema];
-    v7 = [v4 initWithCode:v5 schema:v6];
+    code = [v3 code];
+    schema = [v3 schema];
+    v7 = [v4 initWithCode:code schema:schema];
   }
 
   else

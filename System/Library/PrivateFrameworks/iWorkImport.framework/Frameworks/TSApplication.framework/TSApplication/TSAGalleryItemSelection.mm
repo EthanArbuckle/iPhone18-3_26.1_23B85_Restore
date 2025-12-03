@@ -1,6 +1,6 @@
 @interface TSAGalleryItemSelection
-- (BOOL)isEqual:(id)a3;
-- (TSAGalleryItemSelection)initWithItems:(id)a3 displayedItem:(id)a4;
+- (BOOL)isEqual:(id)equal;
+- (TSAGalleryItemSelection)initWithItems:(id)items displayedItem:(id)item;
 - (id)UUIDDescription;
 - (id)description;
 - (unint64_t)hash;
@@ -8,11 +8,11 @@
 
 @implementation TSAGalleryItemSelection
 
-- (TSAGalleryItemSelection)initWithItems:(id)a3 displayedItem:(id)a4
+- (TSAGalleryItemSelection)initWithItems:(id)items displayedItem:(id)item
 {
-  v7 = a3;
-  v10 = a4;
-  if (!v10)
+  itemsCopy = items;
+  itemCopy = item;
+  if (!itemCopy)
   {
     v13 = MEMORY[0x277D81150];
     v14 = objc_msgSend_stringWithUTF8String_(MEMORY[0x277CCACA8], v8, "[TSAGalleryItemSelection initWithItems:displayedItem:]", v9);
@@ -23,7 +23,7 @@
     goto LABEL_5;
   }
 
-  if ((objc_msgSend_containsObject_(v7, v8, v10, v9) & 1) == 0)
+  if ((objc_msgSend_containsObject_(itemsCopy, v8, itemCopy, v9) & 1) == 0)
   {
 LABEL_5:
     v22 = MEMORY[0x277D81150];
@@ -40,8 +40,8 @@ LABEL_5:
   v32 = v31;
   if (v31)
   {
-    objc_storeStrong(&v31->_displayedItem, a4);
-    objc_storeStrong(&v32->_items, a3);
+    objc_storeStrong(&v31->_displayedItem, item);
+    objc_storeStrong(&v32->_items, items);
   }
 
   return v32;
@@ -108,14 +108,14 @@ LABEL_5:
   return v49;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     return 1;
   }
 
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   v5 = TSUDynamicCast();
 

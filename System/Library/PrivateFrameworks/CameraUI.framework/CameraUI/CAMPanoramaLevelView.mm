@@ -1,29 +1,29 @@
 @interface CAMPanoramaLevelView
-- (CAMPanoramaLevelView)initWithFrame:(CGRect)a3;
+- (CAMPanoramaLevelView)initWithFrame:(CGRect)frame;
 - (CGSize)intrinsicContentSize;
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4;
+- (id)hitTest:(CGPoint)test withEvent:(id)event;
 - (void)layoutSubviews;
 @end
 
 @implementation CAMPanoramaLevelView
 
-- (CAMPanoramaLevelView)initWithFrame:(CGRect)a3
+- (CAMPanoramaLevelView)initWithFrame:(CGRect)frame
 {
   v12.receiver = self;
   v12.super_class = CAMPanoramaLevelView;
-  v3 = [(CAMPanoramaLevelView *)&v12 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMPanoramaLevelView *)&v12 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
-    v4 = [MEMORY[0x1E69DC888] clearColor];
-    [(CAMPanoramaLevelView *)v3 setBackgroundColor:v4];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(CAMPanoramaLevelView *)v3 setBackgroundColor:clearColor];
 
     v5 = objc_alloc(MEMORY[0x1E69DD250]);
     v6 = [v5 initWithFrame:{*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)}];
     lineView = v3->_lineView;
     v3->_lineView = v6;
 
-    v8 = [MEMORY[0x1E69DC888] whiteColor];
-    v9 = [v8 colorWithAlphaComponent:0.5];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    v9 = [whiteColor colorWithAlphaComponent:0.5];
 
     [(UIView *)v3->_lineView setBackgroundColor:v9];
     [(CAMPanoramaLevelView *)v3 addSubview:v3->_lineView];
@@ -53,18 +53,18 @@
   UIRectGetCenter();
   v5 = v4;
   v7 = v6;
-  v8 = [(CAMPanoramaLevelView *)self lineView];
-  [v8 setBounds:{0.0, 0.0, Width, 3.0}];
-  [v8 setCenter:{v5, v7}];
-  v9 = [v8 layer];
-  [v9 setCornerRadius:1.5];
+  lineView = [(CAMPanoramaLevelView *)self lineView];
+  [lineView setBounds:{0.0, 0.0, Width, 3.0}];
+  [lineView setCenter:{v5, v7}];
+  layer = [lineView layer];
+  [layer setCornerRadius:1.5];
 }
 
-- (id)hitTest:(CGPoint)a3 withEvent:(id)a4
+- (id)hitTest:(CGPoint)test withEvent:(id)event
 {
   v7.receiver = self;
   v7.super_class = CAMPanoramaLevelView;
-  v5 = [(CAMPanoramaLevelView *)&v7 hitTest:a4 withEvent:a3.x, a3.y];
+  v5 = [(CAMPanoramaLevelView *)&v7 hitTest:event withEvent:test.x, test.y];
   if (v5 == self)
   {
 

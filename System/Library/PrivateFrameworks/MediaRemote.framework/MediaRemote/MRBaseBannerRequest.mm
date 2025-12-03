@@ -1,36 +1,36 @@
 @interface MRBaseBannerRequest
-+ (id)requestWithBundleIdentifierAffinity:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (MRBaseBannerRequest)initWithBundleIdentifierAffinity:(id)a3;
-- (MRBaseBannerRequest)initWithCoder:(id)a3;
++ (id)requestWithBundleIdentifierAffinity:(id)affinity;
+- (BOOL)isEqual:(id)equal;
+- (MRBaseBannerRequest)initWithBundleIdentifierAffinity:(id)affinity;
+- (MRBaseBannerRequest)initWithCoder:(id)coder;
 - (NSString)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation MRBaseBannerRequest
 
-+ (id)requestWithBundleIdentifierAffinity:(id)a3
++ (id)requestWithBundleIdentifierAffinity:(id)affinity
 {
-  v3 = a3;
-  v4 = [[MRBaseBannerRequest alloc] initWithBundleIdentifierAffinity:v3];
+  affinityCopy = affinity;
+  v4 = [[MRBaseBannerRequest alloc] initWithBundleIdentifierAffinity:affinityCopy];
 
   return v4;
 }
 
-- (MRBaseBannerRequest)initWithBundleIdentifierAffinity:(id)a3
+- (MRBaseBannerRequest)initWithBundleIdentifierAffinity:(id)affinity
 {
-  v4 = a3;
+  affinityCopy = affinity;
   v9.receiver = self;
   v9.super_class = MRBaseBannerRequest;
   v5 = [(MRBaseBannerRequest *)&v9 init];
   if (v5)
   {
-    v6 = [MEMORY[0x1E696AFB0] UUID];
-    v7 = [v6 UUIDString];
-    [(MRBaseBannerRequest *)v5 setRequestIdentifier:v7];
+    uUID = [MEMORY[0x1E696AFB0] UUID];
+    uUIDString = [uUID UUIDString];
+    [(MRBaseBannerRequest *)v5 setRequestIdentifier:uUIDString];
 
-    [(MRBaseBannerRequest *)v5 setBundleIdentifierAffinity:v4];
+    [(MRBaseBannerRequest *)v5 setBundleIdentifierAffinity:affinityCopy];
   }
 
   return v5;
@@ -43,49 +43,49 @@
   v5 = NSStringFromClass(v4);
   v6 = [v3 initWithFormat:@"<%@ (%p): ", v5, self];
 
-  v7 = [(MRBaseBannerRequest *)self requestIdentifier];
-  [v6 appendFormat:@" requestIdentifier: %@", v7];
+  requestIdentifier = [(MRBaseBannerRequest *)self requestIdentifier];
+  [v6 appendFormat:@" requestIdentifier: %@", requestIdentifier];
 
-  v8 = [(MRBaseBannerRequest *)self bundleIdentifierAffinity];
-  [v6 appendFormat:@" bundleIdentifierAffinity: %@", v8];
+  bundleIdentifierAffinity = [(MRBaseBannerRequest *)self bundleIdentifierAffinity];
+  [v6 appendFormat:@" bundleIdentifierAffinity: %@", bundleIdentifierAffinity];
 
   [v6 appendString:@">"];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(MRBaseBannerRequest *)self requestIdentifier];
-  [v4 encodeObject:v5 forKey:@"rid"];
+  coderCopy = coder;
+  requestIdentifier = [(MRBaseBannerRequest *)self requestIdentifier];
+  [coderCopy encodeObject:requestIdentifier forKey:@"rid"];
 
-  v6 = [(MRBaseBannerRequest *)self bundleIdentifierAffinity];
-  [v4 encodeObject:v6 forKey:@"bida"];
+  bundleIdentifierAffinity = [(MRBaseBannerRequest *)self bundleIdentifierAffinity];
+  [coderCopy encodeObject:bundleIdentifierAffinity forKey:@"bida"];
 }
 
-- (MRBaseBannerRequest)initWithCoder:(id)a3
+- (MRBaseBannerRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = MRBaseBannerRequest;
   v5 = [(MRBaseBannerRequest *)&v9 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"rid"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"rid"];
     [(MRBaseBannerRequest *)v5 setRequestIdentifier:v6];
 
-    v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bida"];
+    v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bida"];
     [(MRBaseBannerRequest *)v5 setBundleIdentifierAffinity:v7];
   }
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v8 = 1;
   }
@@ -95,11 +95,11 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(MRBaseBannerRequest *)self requestIdentifier];
-      v7 = [(MRBaseBannerRequest *)v5 requestIdentifier];
+      v5 = equalCopy;
+      requestIdentifier = [(MRBaseBannerRequest *)self requestIdentifier];
+      requestIdentifier2 = [(MRBaseBannerRequest *)v5 requestIdentifier];
 
-      v8 = [v6 isEqual:v7];
+      v8 = [requestIdentifier isEqual:requestIdentifier2];
     }
 
     else
@@ -113,8 +113,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(MRBaseBannerRequest *)self requestIdentifier];
-  v3 = [v2 hash];
+  requestIdentifier = [(MRBaseBannerRequest *)self requestIdentifier];
+  v3 = [requestIdentifier hash];
 
   return v3;
 }

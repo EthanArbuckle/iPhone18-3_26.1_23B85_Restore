@@ -1,13 +1,13 @@
 @interface NSValue
-+ (NSValue)valueWithMCVector:(id *)a3;
++ (NSValue)valueWithMCVector:(id *)vector;
 - ($421962E1114BB55FD51FACB03C2AC210)MCVectorValue;
 @end
 
 @implementation NSValue
 
-+ (NSValue)valueWithMCVector:(id *)a3
++ (NSValue)valueWithMCVector:(id *)vector
 {
-  v3 = [[NSValue alloc] initWithBytes:a3 objCType:"{?=C[4f]}"];
+  v3 = [[NSValue alloc] initWithBytes:vector objCType:"{?=C[4f]}"];
 
   return v3;
 }

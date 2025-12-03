@@ -1,24 +1,24 @@
 @interface TTRIIntentsSnippetHeaderCell
-- (_TtC21RemindersSiriUIPlugin28TTRIIntentsSnippetHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (_TtC21RemindersSiriUIPlugin28TTRIIntentsSnippetHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (void)prepareForReuse;
-- (void)setHeadingLabel:(id)a3;
-- (void)setTopConstraint:(id)a3;
+- (void)setHeadingLabel:(id)label;
+- (void)setTopConstraint:(id)constraint;
 @end
 
 @implementation TTRIIntentsSnippetHeaderCell
 
-- (void)setTopConstraint:(id)a3
+- (void)setTopConstraint:(id)constraint
 {
   v4 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC21RemindersSiriUIPlugin28TTRIIntentsSnippetHeaderCell_topConstraint);
-  *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC21RemindersSiriUIPlugin28TTRIIntentsSnippetHeaderCell_topConstraint) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC21RemindersSiriUIPlugin28TTRIIntentsSnippetHeaderCell_topConstraint) = constraint;
+  constraintCopy = constraint;
 }
 
-- (void)setHeadingLabel:(id)a3
+- (void)setHeadingLabel:(id)label
 {
   v4 = *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC21RemindersSiriUIPlugin28TTRIIntentsSnippetHeaderCell_headingLabel);
-  *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC21RemindersSiriUIPlugin28TTRIIntentsSnippetHeaderCell_headingLabel) = a3;
-  v3 = a3;
+  *(&self->super.super.super.super.super.isa + OBJC_IVAR____TtC21RemindersSiriUIPlugin28TTRIIntentsSnippetHeaderCell_headingLabel) = label;
+  labelCopy = label;
 }
 
 - (void)prepareForReuse
@@ -35,11 +35,11 @@
   sub_4700();
 }
 
-- (_TtC21RemindersSiriUIPlugin28TTRIIntentsSnippetHeaderCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (_TtC21RemindersSiriUIPlugin28TTRIIntentsSnippetHeaderCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
-  if (a4)
+  if (identifier)
   {
-    a4 = sub_2041C();
+    identifier = sub_2041C();
     v6 = v5;
   }
 
@@ -48,7 +48,7 @@
     v6 = 0;
   }
 
-  return sub_4924(a3, a4, v6);
+  return sub_4924(style, identifier, v6);
 }
 
 @end

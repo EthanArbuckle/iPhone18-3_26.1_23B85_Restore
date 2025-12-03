@@ -1,10 +1,10 @@
 @interface FlyoverStatusView
 - (CGSize)intrinsicContentSize;
-- (FlyoverStatusView)initWithCoder:(id)a3;
-- (FlyoverStatusView)initWithFrame:(CGRect)a3;
+- (FlyoverStatusView)initWithCoder:(id)coder;
+- (FlyoverStatusView)initWithFrame:(CGRect)frame;
 - (void)presentNewToastIfNecessary;
-- (void)setDebouncedTrackingStateReason:(unint64_t)a3;
-- (void)statusDebouncerOutputDidChange:(id)a3;
+- (void)setDebouncedTrackingStateReason:(unint64_t)reason;
+- (void)statusDebouncerOutputDidChange:(id)change;
 - (void)sv_commonInit;
 @end
 
@@ -20,21 +20,21 @@
 
     [(FlyoverStatusToastView *)self->_toastView setTranslatesAutoresizingMaskIntoConstraints:0];
     [(FlyoverStatusView *)self addSubview:self->_toastView];
-    v17 = [(FlyoverStatusToastView *)self->_toastView topAnchor];
-    v16 = [(FlyoverStatusView *)self topAnchor];
-    v15 = [v17 constraintEqualToAnchor:v16];
+    topAnchor = [(FlyoverStatusToastView *)self->_toastView topAnchor];
+    topAnchor2 = [(FlyoverStatusView *)self topAnchor];
+    v15 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v18[0] = v15;
-    v14 = [(FlyoverStatusToastView *)self->_toastView leftAnchor];
-    v13 = [(FlyoverStatusView *)self leftAnchor];
-    v5 = [v14 constraintEqualToAnchor:v13];
+    leftAnchor = [(FlyoverStatusToastView *)self->_toastView leftAnchor];
+    leftAnchor2 = [(FlyoverStatusView *)self leftAnchor];
+    v5 = [leftAnchor constraintEqualToAnchor:leftAnchor2];
     v18[1] = v5;
-    v6 = [(FlyoverStatusToastView *)self->_toastView bottomAnchor];
-    v7 = [(FlyoverStatusView *)self bottomAnchor];
-    v8 = [v6 constraintEqualToAnchor:v7];
+    bottomAnchor = [(FlyoverStatusToastView *)self->_toastView bottomAnchor];
+    bottomAnchor2 = [(FlyoverStatusView *)self bottomAnchor];
+    v8 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v18[2] = v8;
-    v9 = [(FlyoverStatusToastView *)self->_toastView rightAnchor];
-    v10 = [(FlyoverStatusView *)self rightAnchor];
-    v11 = [v9 constraintEqualToAnchor:v10];
+    rightAnchor = [(FlyoverStatusToastView *)self->_toastView rightAnchor];
+    rightAnchor2 = [(FlyoverStatusView *)self rightAnchor];
+    v11 = [rightAnchor constraintEqualToAnchor:rightAnchor2];
     v18[3] = v11;
     v12 = [NSArray arrayWithObjects:v18 count:4];
     [NSLayoutConstraint activateConstraints:v12];
@@ -44,11 +44,11 @@
   }
 }
 
-- (void)setDebouncedTrackingStateReason:(unint64_t)a3
+- (void)setDebouncedTrackingStateReason:(unint64_t)reason
 {
-  if (self->_debouncedTrackingStateReason != a3)
+  if (self->_debouncedTrackingStateReason != reason)
   {
-    self->_debouncedTrackingStateReason = a3;
+    self->_debouncedTrackingStateReason = reason;
     toastView = self->_toastView;
     if (toastView)
     {
@@ -72,11 +72,11 @@
   }
 }
 
-- (void)statusDebouncerOutputDidChange:(id)a3
+- (void)statusDebouncerOutputDidChange:(id)change
 {
-  v4 = [a3 output];
+  output = [change output];
 
-  [(FlyoverStatusView *)self setDebouncedTrackingStateReason:v4];
+  [(FlyoverStatusView *)self setDebouncedTrackingStateReason:output];
 }
 
 - (CGSize)intrinsicContentSize
@@ -87,11 +87,11 @@
   return result;
 }
 
-- (FlyoverStatusView)initWithFrame:(CGRect)a3
+- (FlyoverStatusView)initWithFrame:(CGRect)frame
 {
   v7.receiver = self;
   v7.super_class = FlyoverStatusView;
-  v3 = [(FlyoverStatusView *)&v7 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(FlyoverStatusView *)&v7 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -102,11 +102,11 @@
   return v4;
 }
 
-- (FlyoverStatusView)initWithCoder:(id)a3
+- (FlyoverStatusView)initWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = FlyoverStatusView;
-  v3 = [(FlyoverStatusView *)&v7 initWithCoder:a3];
+  v3 = [(FlyoverStatusView *)&v7 initWithCoder:coder];
   v4 = v3;
   if (v3)
   {

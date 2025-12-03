@@ -9,11 +9,11 @@
 
 + (id)boldButton
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___MailBoldTrayButton;
   v2 = objc_msgSendSuper2(&v5, "buttonWithType:", 0);
-  v3 = [v2 boldConfiguration];
-  [v2 setConfiguration:v3];
+  boldConfiguration = [v2 boldConfiguration];
+  [v2 setConfiguration:boldConfiguration];
 
   return v2;
 }
@@ -22,8 +22,8 @@
 {
   v2 = +[UIButtonConfiguration filledButtonConfiguration];
   [v2 setButtonSize:3];
-  v3 = [v2 background];
-  [v3 setCornerRadius:14.0];
+  background = [v2 background];
+  [background setCornerRadius:14.0];
 
   return v2;
 }
@@ -33,11 +33,11 @@
   v5.receiver = self;
   v5.super_class = MailBoldTrayButton;
   [(MailBoldTrayButton *)&v5 updateConfiguration];
-  v3 = [(MailBoldTrayButton *)self configuration];
-  v4 = [(MailBoldTrayButton *)self tintColor];
-  [v3 setBaseBackgroundColor:v4];
+  configuration = [(MailBoldTrayButton *)self configuration];
+  tintColor = [(MailBoldTrayButton *)self tintColor];
+  [configuration setBaseBackgroundColor:tintColor];
 
-  [(MailBoldTrayButton *)self setConfiguration:v3];
+  [(MailBoldTrayButton *)self setConfiguration:configuration];
 }
 
 - (void)tintColorDidChange

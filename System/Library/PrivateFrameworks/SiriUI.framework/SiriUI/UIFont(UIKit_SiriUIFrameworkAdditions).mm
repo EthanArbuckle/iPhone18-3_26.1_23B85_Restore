@@ -19,8 +19,8 @@
 + (id)siriui_serverUtteranceFont
 {
   v0 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A20]];
-  v1 = [v0 fontDescriptor];
-  v2 = [v1 fontDescriptorWithSymbolicTraits:2];
+  fontDescriptor = [v0 fontDescriptor];
+  v2 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
   v3 = [MEMORY[0x277D74300] fontWithDescriptor:v2 size:0.0];
 
@@ -30,8 +30,8 @@
 + (id)siriui_serverTipPrefixFont
 {
   v0 = [MEMORY[0x277D74300] preferredFontForTextStyle:*MEMORY[0x277D76A20]];
-  v1 = [v0 fontDescriptor];
-  v2 = [v1 fontDescriptorWithSymbolicTraits:2];
+  fontDescriptor = [v0 fontDescriptor];
+  v2 = [fontDescriptor fontDescriptorWithSymbolicTraits:2];
 
   v3 = [MEMORY[0x277D74300] fontWithDescriptor:v2 size:0.0];
 
@@ -68,50 +68,50 @@
 
 + (uint64_t)siriui_dynamicLightWeightBodySizeFont
 {
-  [a1 siriui_preferredDynamicBodySize];
+  [self siriui_preferredDynamicBodySize];
   v3 = v2;
 
-  return [a1 siriui_lightWeightFontWithSize:v3];
+  return [self siriui_lightWeightFontWithSize:v3];
 }
 
 + (uint64_t)siriui_dynamicThinWeightBodySizeFont
 {
-  [a1 siriui_preferredDynamicBodySize];
+  [self siriui_preferredDynamicBodySize];
   v3 = v2;
 
-  return [a1 siriui_thinWeightFontWithSize:v3];
+  return [self siriui_thinWeightFontWithSize:v3];
 }
 
 + (uint64_t)siriui_dynamicMediumWeightBodySizeFont
 {
-  [a1 siriui_preferredDynamicBodySize];
+  [self siriui_preferredDynamicBodySize];
   v3 = v2;
 
-  return [a1 siriui_mediumWeightFontWithSize:v3];
+  return [self siriui_mediumWeightFontWithSize:v3];
 }
 
 + (uint64_t)siriui_dynamicLightWeightBodySubtextSizeFont
 {
-  [a1 siriui_preferredDynamicBodySubtextSize];
+  [self siriui_preferredDynamicBodySubtextSize];
   v3 = v2;
 
-  return [a1 siriui_lightWeightFontWithSize:v3];
+  return [self siriui_lightWeightFontWithSize:v3];
 }
 
 + (uint64_t)siriui_dynamicThinWeightBodySubtextSizeFont
 {
-  [a1 siriui_preferredDynamicBodySubtextSize];
+  [self siriui_preferredDynamicBodySubtextSize];
   v3 = v2;
 
-  return [a1 siriui_thinWeightFontWithSize:v3];
+  return [self siriui_thinWeightFontWithSize:v3];
 }
 
 + (uint64_t)siriui_dynamicMediumWeightBodySubtextSizeFont
 {
-  [a1 siriui_preferredDynamicBodySubtextSize];
+  [self siriui_preferredDynamicBodySubtextSize];
   v3 = v2;
 
-  return [a1 siriui_mediumWeightFontWithSize:v3];
+  return [self siriui_mediumWeightFontWithSize:v3];
 }
 
 + (id)siriUI_dynamicSubHeadlineMediumSizeFont

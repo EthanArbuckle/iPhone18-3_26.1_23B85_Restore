@@ -1,24 +1,24 @@
 @interface SFUnifiedBarButtonView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 - (CGRect)_hitRect;
 - (CGRect)_selectedIndicatorBounds;
-- (SFUnifiedBarButtonView)initWithFrame:(CGRect)a3;
+- (SFUnifiedBarButtonView)initWithFrame:(CGRect)frame;
 - (double)_horizontalTitlePadding;
-- (double)preferredWidthForHeight:(double)a3;
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5;
-- (void)setEnabled:(BOOL)a3;
+- (double)preferredWidthForHeight:(double)height;
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region;
+- (void)setEnabled:(BOOL)enabled;
 - (void)tintColorDidChange;
 - (void)updateTitleFont;
 @end
 
 @implementation SFUnifiedBarButtonView
 
-- (SFUnifiedBarButtonView)initWithFrame:(CGRect)a3
+- (SFUnifiedBarButtonView)initWithFrame:(CGRect)frame
 {
   v37[4] = *MEMORY[0x1E69E9840];
   v35.receiver = self;
   v35.super_class = SFUnifiedBarButtonView;
-  v3 = [(SFUnifiedBarItemView *)&v35 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(SFUnifiedBarItemView *)&v35 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v4 = v3;
   if (v3)
   {
@@ -27,32 +27,32 @@
     imageView = v4->_imageView;
     v4->_imageView = v5;
 
-    v7 = [MEMORY[0x1E69DCAD8] safari_barButtonConfiguration];
-    [(UIImageView *)v4->_imageView setPreferredSymbolConfiguration:v7];
+    safari_barButtonConfiguration = [MEMORY[0x1E69DCAD8] safari_barButtonConfiguration];
+    [(UIImageView *)v4->_imageView setPreferredSymbolConfiguration:safari_barButtonConfiguration];
 
     [(UIImageView *)v4->_imageView setContentMode:4];
     [(UIImageView *)v4->_imageView setTranslatesAutoresizingMaskIntoConstraints:0];
-    v29 = [(SFUnifiedBarItemView *)v4 contentView];
-    [v29 addSubview:v4->_imageView];
-    v8 = [(UIImageView *)v4->_imageView leadingAnchor];
-    v9 = [v29 leadingAnchor];
-    v10 = [v8 constraintEqualToAnchor:v9];
+    contentView = [(SFUnifiedBarItemView *)v4 contentView];
+    [contentView addSubview:v4->_imageView];
+    leadingAnchor = [(UIImageView *)v4->_imageView leadingAnchor];
+    leadingAnchor2 = [contentView leadingAnchor];
+    v10 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
     imageViewLeadingConstraint = v4->_imageViewLeadingConstraint;
     v4->_imageViewLeadingConstraint = v10;
 
     v27 = MEMORY[0x1E696ACD8];
     v37[0] = v4->_imageViewLeadingConstraint;
-    v28 = [(UIImageView *)v4->_imageView topAnchor];
-    v12 = [v29 topAnchor];
-    v13 = [v28 constraintEqualToAnchor:v12];
+    topAnchor = [(UIImageView *)v4->_imageView topAnchor];
+    topAnchor2 = [contentView topAnchor];
+    v13 = [topAnchor constraintEqualToAnchor:topAnchor2];
     v37[1] = v13;
-    v14 = [v29 trailingAnchor];
-    v15 = [(UIImageView *)v4->_imageView trailingAnchor];
-    v16 = [v14 constraintEqualToAnchor:v15];
+    trailingAnchor = [contentView trailingAnchor];
+    trailingAnchor2 = [(UIImageView *)v4->_imageView trailingAnchor];
+    v16 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
     v37[2] = v16;
-    v17 = [v29 bottomAnchor];
-    v18 = [(UIImageView *)v4->_imageView bottomAnchor];
-    v19 = [v17 constraintEqualToAnchor:v18];
+    bottomAnchor = [contentView bottomAnchor];
+    bottomAnchor2 = [(UIImageView *)v4->_imageView bottomAnchor];
+    v19 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
     v37[3] = v19;
     v20 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:4];
     [v27 activateConstraints:v20];
@@ -132,32 +132,32 @@ void __40__SFUnifiedBarButtonView_initWithFrame___block_invoke_2(uint64_t a1, vo
 
 - (void)updateTitleFont
 {
-  v3 = [(SFUnifiedBarButtonView *)self _titleView];
-  if (v3)
+  _titleView = [(SFUnifiedBarButtonView *)self _titleView];
+  if (_titleView)
   {
     v4 = MEMORY[0x1E69DD1B8];
-    v10 = v3;
-    v5 = [(SFUnifiedBarButtonView *)self traitCollection];
-    v6 = [v5 preferredContentSizeCategory];
-    v7 = _SFToolbarContentSizeCategoryForPreferredCategory(v6);
+    v10 = _titleView;
+    traitCollection = [(SFUnifiedBarButtonView *)self traitCollection];
+    preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+    v7 = _SFToolbarContentSizeCategoryForPreferredCategory(preferredContentSizeCategory);
     v8 = [v4 traitCollectionWithPreferredContentSizeCategory:v7];
 
     v9 = [MEMORY[0x1E69DB878] _sf_preferredFontForTextStyle:*MEMORY[0x1E69DDD80] weight:v8 compatibleWithTraitCollection:*MEMORY[0x1E69DB958]];
     [v10 setFont:v9];
 
     [v10 setLineBreakMode:4];
-    v3 = v10;
+    _titleView = v10;
   }
 }
 
-- (void)setEnabled:(BOOL)a3
+- (void)setEnabled:(BOOL)enabled
 {
-  v3 = a3;
-  if ([(SFUnifiedBarButtonView *)self isEnabled]!= a3)
+  enabledCopy = enabled;
+  if ([(SFUnifiedBarButtonView *)self isEnabled]!= enabled)
   {
     v5.receiver = self;
     v5.super_class = SFUnifiedBarButtonView;
-    [(SFUnifiedBarButtonView *)&v5 setEnabled:v3];
+    [(SFUnifiedBarButtonView *)&v5 setEnabled:enabledCopy];
     [(SFUnifiedBarButtonView *)self tintColorDidChange];
   }
 }
@@ -178,11 +178,11 @@ void __40__SFUnifiedBarButtonView_initWithFrame___block_invoke_2(uint64_t a1, vo
   [(SFUnifiedBarButtonView *)self setTitleColor:v3 forState:0];
 }
 
-- (double)preferredWidthForHeight:(double)a3
+- (double)preferredWidthForHeight:(double)height
 {
-  v4 = [(UIImageView *)self->_imageView image];
+  image = [(UIImageView *)self->_imageView image];
 
-  if (v4)
+  if (image)
   {
     [(UIImageView *)self->_imageView intrinsicContentSize];
     return result;
@@ -219,9 +219,9 @@ void __40__SFUnifiedBarButtonView_initWithFrame___block_invoke_2(uint64_t a1, vo
 
 - (double)_horizontalTitlePadding
 {
-  v2 = [(SFUnifiedBarItemView *)self platterStyle];
+  platterStyle = [(SFUnifiedBarItemView *)self platterStyle];
   result = 0.0;
-  if (v2 == 10)
+  if (platterStyle == 10)
   {
     return 12.0;
   }
@@ -231,14 +231,14 @@ void __40__SFUnifiedBarButtonView_initWithFrame___block_invoke_2(uint64_t a1, vo
 
 - (CGRect)_selectedIndicatorBounds
 {
-  v3 = [(SFUnifiedBarButtonView *)self _titleView];
-  v4 = [v3 text];
-  v5 = [v4 length];
+  _titleView = [(SFUnifiedBarButtonView *)self _titleView];
+  text = [_titleView text];
+  v5 = [text length];
 
   if (v5)
   {
-    v6 = [(SFUnifiedBarButtonView *)self titleLabel];
-    [v6 frame];
+    titleLabel = [(SFUnifiedBarButtonView *)self titleLabel];
+    [titleLabel frame];
     x = v7;
     y = v9;
     width = v11;
@@ -260,8 +260,8 @@ void __40__SFUnifiedBarButtonView_initWithFrame___block_invoke_2(uint64_t a1, vo
 
   else
   {
-    v15 = [(SFUnifiedBarButtonView *)self imageView];
-    [v15 frame];
+    imageView = [(SFUnifiedBarButtonView *)self imageView];
+    [imageView frame];
     x = v16;
     y = v17;
     width = v18;
@@ -286,8 +286,8 @@ void __40__SFUnifiedBarButtonView_initWithFrame___block_invoke_2(uint64_t a1, vo
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(SFUnifiedBarItemView *)self barMetrics];
-  [v11 minimumItemSpacing];
+  barMetrics = [(SFUnifiedBarItemView *)self barMetrics];
+  [barMetrics minimumItemSpacing];
   v13 = v12 * -0.5;
   v22.origin.x = v4;
   v22.origin.y = v6;
@@ -310,10 +310,10 @@ void __40__SFUnifiedBarButtonView_initWithFrame___block_invoke_2(uint64_t a1, vo
   return result;
 }
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(SFUnifiedBarButtonView *)self _hitRect];
   v10 = x;
   v11 = y;
@@ -321,10 +321,10 @@ void __40__SFUnifiedBarButtonView_initWithFrame___block_invoke_2(uint64_t a1, vo
   return CGRectContainsPoint(*&v6, *&v10);
 }
 
-- (id)pointerInteraction:(id)a3 regionForRequest:(id)a4 defaultRegion:(id)a5
+- (id)pointerInteraction:(id)interaction regionForRequest:(id)request defaultRegion:(id)region
 {
   v5 = MEMORY[0x1E69DCDC0];
-  [(SFUnifiedBarButtonView *)self _hitRect:a3];
+  [(SFUnifiedBarButtonView *)self _hitRect:interaction];
 
   return [v5 regionWithRect:@"UnifiedBarButton" identifier:?];
 }

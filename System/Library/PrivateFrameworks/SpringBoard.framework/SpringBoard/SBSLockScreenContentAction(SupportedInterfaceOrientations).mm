@@ -7,13 +7,13 @@
 - (uint64_t)supportedInterfaceOrientations
 {
   v2 = objc_opt_class();
-  v3 = [a1 configurationObject];
-  v4 = SBSafeCast(v2, v3);
+  configurationObject = [self configurationObject];
+  v4 = SBSafeCast(v2, configurationObject);
 
   v5 = [v4 objectForKey:*MEMORY[0x277D66FF8]];
-  v6 = [v5 unsignedIntegerValue];
+  unsignedIntegerValue = [v5 unsignedIntegerValue];
 
-  return v6;
+  return unsignedIntegerValue;
 }
 
 @end

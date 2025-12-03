@@ -1,30 +1,30 @@
 @interface HMDHH2AutoMigrationMonitor
 + (id)logCategory;
-- (HMDHH2AutoMigrationMonitor)initWithHomeManager:(id)a3 eligibilityChecker:(id)a4;
-- (HMDHH2AutoMigrationMonitor)initWithHomeManager:(id)a3 fmfHandler:(id)a4 backgroundTaskScheduler:(id)a5 eligibilityChecker:(id)a6 featuresDataSource:(id)a7 logEventSubmitter:(id)a8;
+- (HMDHH2AutoMigrationMonitor)initWithHomeManager:(id)manager eligibilityChecker:(id)checker;
+- (HMDHH2AutoMigrationMonitor)initWithHomeManager:(id)manager fmfHandler:(id)handler backgroundTaskScheduler:(id)scheduler eligibilityChecker:(id)checker featuresDataSource:(id)source logEventSubmitter:(id)submitter;
 - (id)homeManager;
-- (void)_attemptAutoMigrationWithCompletionHandler:(void *)a1;
+- (void)_attemptAutoMigrationWithCompletionHandler:(void *)handler;
 - (void)_registerForBackgroundTask;
 - (void)_unregisterForBackgroundTask;
-- (void)attemptAutoMigrationWithCompletionHandler:(id)a3;
-- (void)handleFMFStatusUpdatedNotification:(id)a3;
+- (void)attemptAutoMigrationWithCompletionHandler:(id)handler;
+- (void)handleFMFStatusUpdatedNotification:(id)notification;
 - (void)startMonitoring;
 - (void)stopMonitoring;
-- (void)submitEndMigrationEventWithAutoMigration:(void *)a3 error:;
-- (void)submitStartMigrationEventWithAutoMigration:(void *)a1;
+- (void)submitEndMigrationEventWithAutoMigration:(void *)migration error:;
+- (void)submitStartMigrationEventWithAutoMigration:(void *)migration;
 @end
 
 @implementation HMDHH2AutoMigrationMonitor
 
-- (void)handleFMFStatusUpdatedNotification:(id)a3
+- (void)handleFMFStatusUpdatedNotification:(id)notification
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 userInfo];
-  v6 = [HMDFMF fmfStatusWithDict:v5];
+  notificationCopy = notification;
+  userInfo = [notificationCopy userInfo];
+  v6 = [HMDFMF fmfStatusWithDict:userInfo];
 
   v7 = objc_autoreleasePoolPush();
-  v8 = self;
+  selfCopy = self;
   v9 = HMFGetOSLogHandle();
   v10 = v9;
   if (v6)
@@ -42,12 +42,12 @@
     objc_autoreleasePoolPop(v7);
     if ([v6 value] == 2)
     {
-      [(HMDHH2AutoMigrationMonitor *)v8 _registerForBackgroundTask];
+      [(HMDHH2AutoMigrationMonitor *)selfCopy _registerForBackgroundTask];
     }
 
     else
     {
-      [(HMDHH2AutoMigrationMonitor *)v8 _unregisterForBackgroundTask];
+      [(HMDHH2AutoMigrationMonitor *)selfCopy _unregisterForBackgroundTask];
     }
   }
 
@@ -56,11 +56,11 @@
     if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
     {
       v12 = HMFGetLogIdentifier();
-      v13 = [v4 userInfo];
+      userInfo2 = [notificationCopy userInfo];
       v15 = 138543618;
       v16 = v12;
       v17 = 2112;
-      v18 = v13;
+      v18 = userInfo2;
       _os_log_impl(&dword_2531F8000, v10, OS_LOG_TYPE_ERROR, "%{public}@Could not find FMF status in notification user info: %@", &v15, 0x16u);
     }
 
@@ -72,31 +72,31 @@
 
 - (void)_registerForBackgroundTask
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v3 = [WeakRetained workQueue];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    workQueue = [WeakRetained workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __56__HMDHH2AutoMigrationMonitor__registerForBackgroundTask__block_invoke;
     block[3] = &unk_279735D00;
-    block[4] = a1;
-    dispatch_async(v3, block);
+    block[4] = self;
+    dispatch_async(workQueue, block);
   }
 }
 
 - (void)_unregisterForBackgroundTask
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v3 = [WeakRetained workQueue];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    workQueue = [WeakRetained workQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __58__HMDHH2AutoMigrationMonitor__unregisterForBackgroundTask__block_invoke;
     block[3] = &unk_279735D00;
-    block[4] = a1;
-    dispatch_async(v3, block);
+    block[4] = self;
+    dispatch_async(workQueue, block);
   }
 }
 
@@ -305,14 +305,14 @@ void __56__HMDHH2AutoMigrationMonitor__registerForBackgroundTask__block_invoke_2
   [(HMDHH2AutoMigrationMonitor *)v7 _attemptAutoMigrationWithCompletionHandler:v9];
 }
 
-- (void)_attemptAutoMigrationWithCompletionHandler:(void *)a1
+- (void)_attemptAutoMigrationWithCompletionHandler:(void *)handler
 {
   v15 = *MEMORY[0x277D85DE8];
   v3 = a2;
-  if (a1)
+  if (handler)
   {
     v4 = objc_autoreleasePoolPush();
-    v5 = a1;
+    handlerCopy = handler;
     v6 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
@@ -323,12 +323,12 @@ void __56__HMDHH2AutoMigrationMonitor__registerForBackgroundTask__block_invoke_2
     }
 
     objc_autoreleasePoolPop(v4);
-    Property = objc_getProperty(v5, v8, 32, 1);
+    Property = objc_getProperty(handlerCopy, v8, 32, 1);
     v11[0] = MEMORY[0x277D85DD0];
     v11[1] = 3221225472;
     v11[2] = __73__HMDHH2AutoMigrationMonitor__attemptAutoMigrationWithCompletionHandler___block_invoke;
     v11[3] = &unk_27972F7F8;
-    v11[4] = v5;
+    v11[4] = handlerCopy;
     v12 = v3;
     [Property fetchIsCurrentUserEligibleForAutoMigrationWithCompletion:v11];
   }
@@ -610,25 +610,25 @@ LABEL_50:
   v72 = *MEMORY[0x277D85DE8];
 }
 
-- (void)submitStartMigrationEventWithAutoMigration:(void *)a1
+- (void)submitStartMigrationEventWithAutoMigration:(void *)migration
 {
-  if (a1)
+  if (migration)
   {
     v4 = [[HMDHH2MigrationDailyTotalsLogEvent alloc] initStartWithAutoMigration:a2 dryRun:a2 ^ 1 attemptCount:0];
-    [objc_getProperty(a1 v3];
+    [objc_getProperty(migration v3];
   }
 }
 
-- (void)submitEndMigrationEventWithAutoMigration:(void *)a3 error:
+- (void)submitEndMigrationEventWithAutoMigration:(void *)migration error:
 {
-  if (a1)
+  if (self)
   {
-    v5 = a3;
+    migrationCopy = migration;
     v6 = [HMDHH2MigrationDailyTotalsLogEvent alloc];
     v7 = +[HMDHH2MigrationStateLogger autoMigrationAttempt];
-    v9 = [(HMDHH2MigrationDailyTotalsLogEvent *)v6 initEndWithAutoMigration:a2 dryRun:a2 ^ 1 attemptCount:v7 error:v5];
+    v9 = [(HMDHH2MigrationDailyTotalsLogEvent *)v6 initEndWithAutoMigration:a2 dryRun:a2 ^ 1 attemptCount:v7 error:migrationCopy];
 
-    [objc_getProperty(a1 v8];
+    [objc_getProperty(self v8];
   }
 }
 
@@ -778,12 +778,12 @@ LABEL_21:
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)attemptAutoMigrationWithCompletionHandler:(id)a3
+- (void)attemptAutoMigrationWithCompletionHandler:(id)handler
 {
   v12 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  handlerCopy = handler;
   v5 = objc_autoreleasePoolPush();
-  v6 = self;
+  selfCopy = self;
   v7 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
   {
@@ -794,7 +794,7 @@ LABEL_21:
   }
 
   objc_autoreleasePoolPop(v5);
-  [(HMDHH2AutoMigrationMonitor *)v6 _attemptAutoMigrationWithCompletionHandler:v4];
+  [(HMDHH2AutoMigrationMonitor *)selfCopy _attemptAutoMigrationWithCompletionHandler:handlerCopy];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -803,7 +803,7 @@ LABEL_21:
 {
   v13 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -814,10 +814,10 @@ LABEL_21:
   }
 
   objc_autoreleasePoolPop(v3);
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  if (v4)
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v7, 16, 1);
+    Property = objc_getProperty(selfCopy, v7, 16, 1);
   }
 
   else
@@ -825,9 +825,9 @@ LABEL_21:
     Property = 0;
   }
 
-  [v8 removeObserver:v4 name:@"HMDFMFStatusUpdateNotification" object:Property];
+  [defaultCenter removeObserver:selfCopy name:@"HMDFMFStatusUpdateNotification" object:Property];
 
-  [(HMDHH2AutoMigrationMonitor *)v4 _unregisterForBackgroundTask];
+  [(HMDHH2AutoMigrationMonitor *)selfCopy _unregisterForBackgroundTask];
   v10 = *MEMORY[0x277D85DE8];
 }
 
@@ -835,7 +835,7 @@ LABEL_21:
 {
   v19 = *MEMORY[0x277D85DE8];
   v3 = objc_autoreleasePoolPush();
-  v4 = self;
+  selfCopy = self;
   v5 = HMFGetOSLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
@@ -846,9 +846,9 @@ LABEL_21:
   }
 
   objc_autoreleasePoolPop(v3);
-  if (v4)
+  if (selfCopy)
   {
-    Property = objc_getProperty(v4, v7, 16, 1);
+    Property = objc_getProperty(selfCopy, v7, 16, 1);
   }
 
   else
@@ -858,13 +858,13 @@ LABEL_21:
 
   if ([Property isThisDesignatedFMFDevice])
   {
-    [(HMDHH2AutoMigrationMonitor *)v4 _registerForBackgroundTask];
+    [(HMDHH2AutoMigrationMonitor *)selfCopy _registerForBackgroundTask];
   }
 
   else
   {
     v9 = objc_autoreleasePoolPush();
-    v10 = v4;
+    v10 = selfCopy;
     v11 = HMFGetOSLogHandle();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
@@ -877,10 +877,10 @@ LABEL_21:
     objc_autoreleasePoolPop(v9);
   }
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  if (v4)
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  if (selfCopy)
   {
-    v15 = objc_getProperty(v4, v13, 16, 1);
+    v15 = objc_getProperty(selfCopy, v13, 16, 1);
   }
 
   else
@@ -888,57 +888,57 @@ LABEL_21:
     v15 = 0;
   }
 
-  [v14 addObserver:v4 selector:sel_handleFMFStatusUpdatedNotification_ name:@"HMDFMFStatusUpdateNotification" object:v15];
+  [defaultCenter addObserver:selfCopy selector:sel_handleFMFStatusUpdatedNotification_ name:@"HMDFMFStatusUpdateNotification" object:v15];
 
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (HMDHH2AutoMigrationMonitor)initWithHomeManager:(id)a3 fmfHandler:(id)a4 backgroundTaskScheduler:(id)a5 eligibilityChecker:(id)a6 featuresDataSource:(id)a7 logEventSubmitter:(id)a8
+- (HMDHH2AutoMigrationMonitor)initWithHomeManager:(id)manager fmfHandler:(id)handler backgroundTaskScheduler:(id)scheduler eligibilityChecker:(id)checker featuresDataSource:(id)source logEventSubmitter:(id)submitter
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  obj = a7;
-  v18 = a7;
-  v29 = a8;
-  v19 = a8;
-  if (!v14)
+  managerCopy = manager;
+  handlerCopy = handler;
+  schedulerCopy = scheduler;
+  checkerCopy = checker;
+  obj = source;
+  sourceCopy = source;
+  submitterCopy = submitter;
+  submitterCopy2 = submitter;
+  if (!managerCopy)
   {
     _HMFPreconditionFailure();
     goto LABEL_11;
   }
 
-  if (!v15)
+  if (!handlerCopy)
   {
 LABEL_11:
     _HMFPreconditionFailure();
     goto LABEL_12;
   }
 
-  if (!v16)
+  if (!schedulerCopy)
   {
 LABEL_12:
     _HMFPreconditionFailure();
     goto LABEL_13;
   }
 
-  if (!v17)
+  if (!checkerCopy)
   {
 LABEL_13:
     _HMFPreconditionFailure();
     goto LABEL_14;
   }
 
-  if (!v18)
+  if (!sourceCopy)
   {
 LABEL_14:
     _HMFPreconditionFailure();
     goto LABEL_15;
   }
 
-  v20 = v19;
-  if (!v19)
+  v20 = submitterCopy2;
+  if (!submitterCopy2)
   {
 LABEL_15:
     v24 = _HMFPreconditionFailure();
@@ -951,26 +951,26 @@ LABEL_15:
   v22 = v21;
   if (v21)
   {
-    objc_storeWeak(&v21->_homeManager, v14);
-    objc_storeStrong(&v22->_fmfHandler, a4);
-    objc_storeStrong(&v22->_taskScheduler, a5);
-    objc_storeStrong(&v22->_eligibilityChecker, a6);
+    objc_storeWeak(&v21->_homeManager, managerCopy);
+    objc_storeStrong(&v22->_fmfHandler, handler);
+    objc_storeStrong(&v22->_taskScheduler, scheduler);
+    objc_storeStrong(&v22->_eligibilityChecker, checker);
     objc_storeStrong(&v22->_featuresDataSource, obj);
-    objc_storeStrong(&v22->_logEventSubmitter, v29);
+    objc_storeStrong(&v22->_logEventSubmitter, submitterCopy);
   }
 
   return v22;
 }
 
-- (HMDHH2AutoMigrationMonitor)initWithHomeManager:(id)a3 eligibilityChecker:(id)a4
+- (HMDHH2AutoMigrationMonitor)initWithHomeManager:(id)manager eligibilityChecker:(id)checker
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [v7 fmfHandler];
+  checkerCopy = checker;
+  managerCopy = manager;
+  fmfHandler = [managerCopy fmfHandler];
   v9 = objc_alloc_init(HMDBackgroundSystemTaskScheduler);
   v10 = objc_alloc_init(HMDFeaturesDataSource);
-  v11 = [v7 logEventSubmitter];
-  v12 = [(HMDHH2AutoMigrationMonitor *)self initWithHomeManager:v7 fmfHandler:v8 backgroundTaskScheduler:v9 eligibilityChecker:v6 featuresDataSource:v10 logEventSubmitter:v11];
+  logEventSubmitter = [managerCopy logEventSubmitter];
+  v12 = [(HMDHH2AutoMigrationMonitor *)self initWithHomeManager:managerCopy fmfHandler:fmfHandler backgroundTaskScheduler:v9 eligibilityChecker:checkerCopy featuresDataSource:v10 logEventSubmitter:logEventSubmitter];
 
   return v12;
 }

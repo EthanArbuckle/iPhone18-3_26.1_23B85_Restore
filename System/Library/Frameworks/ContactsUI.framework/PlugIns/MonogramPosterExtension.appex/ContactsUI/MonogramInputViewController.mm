@@ -1,15 +1,15 @@
 @interface MonogramInputViewController
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
-- (_TtC23MonogramPosterExtension27MonogramInputViewController)initWithCoder:(id)a3;
-- (_TtC23MonogramPosterExtension27MonogramInputViewController)initWithNibName:(id)a3 bundle:(id)a4;
-- (void)textFieldDidChange:(id)a3;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
+- (_TtC23MonogramPosterExtension27MonogramInputViewController)initWithCoder:(id)coder;
+- (_TtC23MonogramPosterExtension27MonogramInputViewController)initWithNibName:(id)name bundle:(id)bundle;
+- (void)textFieldDidChange:(id)change;
 - (void)viewDidLoad;
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4;
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear;
 @end
 
 @implementation MonogramInputViewController
 
-- (_TtC23MonogramPosterExtension27MonogramInputViewController)initWithCoder:(id)a3
+- (_TtC23MonogramPosterExtension27MonogramInputViewController)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC23MonogramPosterExtension27MonogramInputViewController_textField;
   *(&self->super.super.super.isa + v4) = [objc_allocWithZone(UITextField) init];
@@ -26,12 +26,12 @@
   v6.super_class = type metadata accessor for MonogramInputViewController();
   v2 = v6.receiver;
   [(MonogramInputViewController *)&v6 viewDidLoad];
-  v3 = [v2 view];
-  if (v3)
+  view = [v2 view];
+  if (view)
   {
-    v4 = v3;
-    v5 = [objc_opt_self() clearColor];
-    [v4 setBackgroundColor:v5];
+    v4 = view;
+    clearColor = [objc_opt_self() clearColor];
+    [v4 setBackgroundColor:clearColor];
 
     sub_1000119F0();
   }
@@ -42,36 +42,36 @@
   }
 }
 
-- (void)viewDidMoveToWindow:(id)a3 shouldAppearOrDisappear:(BOOL)a4
+- (void)viewDidMoveToWindow:(id)window shouldAppearOrDisappear:(BOOL)disappear
 {
-  if (a3)
+  if (window)
   {
-    v6 = self;
-    v5 = a3;
+    selfCopy = self;
+    windowCopy = window;
     sub_100011FA4();
   }
 }
 
-- (void)textFieldDidChange:(id)a3
+- (void)textFieldDidChange:(id)change
 {
-  v4 = a3;
-  v5 = self;
-  sub_100011CA4(v4);
+  changeCopy = change;
+  selfCopy = self;
+  sub_100011CA4(changeCopy);
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   sub_100026A20();
-  v9 = a3;
-  v10 = self;
-  LOBYTE(length) = sub_10001237C(v9, location, length);
+  fieldCopy = field;
+  selfCopy = self;
+  LOBYTE(length) = sub_10001237C(fieldCopy, location, length);
 
   return length & 1;
 }
 
-- (_TtC23MonogramPosterExtension27MonogramInputViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (_TtC23MonogramPosterExtension27MonogramInputViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

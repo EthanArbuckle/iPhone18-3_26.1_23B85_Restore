@@ -1,51 +1,51 @@
 @interface RCSSavedRecordingAccessToken
-+ (id)tokenWithName:(id)a3 accessIntent:(int64_t)a4 compositionAVURL:(id)a5;
-- (BOOL)isEqual:(id)a3;
-- (RCSSavedRecordingAccessToken)initWithCoder:(id)a3;
-- (RCSSavedRecordingAccessToken)initWithName:(id)a3 accessIntent:(int64_t)a4 compositionAVURL:(id)a5 identifier:(id)a6;
++ (id)tokenWithName:(id)name accessIntent:(int64_t)intent compositionAVURL:(id)l;
+- (BOOL)isEqual:(id)equal;
+- (RCSSavedRecordingAccessToken)initWithCoder:(id)coder;
+- (RCSSavedRecordingAccessToken)initWithName:(id)name accessIntent:(int64_t)intent compositionAVURL:(id)l identifier:(id)identifier;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation RCSSavedRecordingAccessToken
 
-+ (id)tokenWithName:(id)a3 accessIntent:(int64_t)a4 compositionAVURL:(id)a5
++ (id)tokenWithName:(id)name accessIntent:(int64_t)intent compositionAVURL:(id)l
 {
   v7 = MEMORY[0x277CCAD78];
-  v8 = a5;
-  v9 = a3;
-  v10 = [v7 UUID];
-  v11 = [objc_alloc(objc_opt_class()) initWithName:v9 accessIntent:a4 compositionAVURL:v8 identifier:v10];
+  lCopy = l;
+  nameCopy = name;
+  uUID = [v7 UUID];
+  v11 = [objc_alloc(objc_opt_class()) initWithName:nameCopy accessIntent:intent compositionAVURL:lCopy identifier:uUID];
 
   return v11;
 }
 
-- (RCSSavedRecordingAccessToken)initWithName:(id)a3 accessIntent:(int64_t)a4 compositionAVURL:(id)a5 identifier:(id)a6
+- (RCSSavedRecordingAccessToken)initWithName:(id)name accessIntent:(int64_t)intent compositionAVURL:(id)l identifier:(id)identifier
 {
-  v11 = a3;
-  v12 = a5;
-  v13 = a6;
+  nameCopy = name;
+  lCopy = l;
+  identifierCopy = identifier;
   v17.receiver = self;
   v17.super_class = RCSSavedRecordingAccessToken;
   v14 = [(RCSSavedRecordingAccessToken *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_accessIntent = a4;
-    v14->_exclusive = a4 == 3;
-    objc_storeStrong(&v14->_identifier, a6);
-    objc_storeStrong(&v15->_compositionAVURL, a5);
-    objc_storeStrong(&v15->_accessName, a3);
+    v14->_accessIntent = intent;
+    v14->_exclusive = intent == 3;
+    objc_storeStrong(&v14->_identifier, identifier);
+    objc_storeStrong(&v15->_compositionAVURL, l);
+    objc_storeStrong(&v15->_accessName, name);
   }
 
   return v15;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v7 = 1;
   }
@@ -55,9 +55,9 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = [(RCSSavedRecordingAccessToken *)self identifier];
-      v6 = [(RCSSavedRecordingAccessToken *)v4 identifier];
-      v7 = [v5 isEqual:v6];
+      identifier = [(RCSSavedRecordingAccessToken *)self identifier];
+      identifier2 = [(RCSSavedRecordingAccessToken *)equalCopy identifier];
+      v7 = [identifier isEqual:identifier2];
     }
 
     else
@@ -71,8 +71,8 @@
 
 - (unint64_t)hash
 {
-  v2 = [(RCSSavedRecordingAccessToken *)self identifier];
-  v3 = [v2 hash];
+  identifier = [(RCSSavedRecordingAccessToken *)self identifier];
+  v3 = [identifier hash];
 
   return v3;
 }
@@ -80,7 +80,7 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(NSUUID *)self->_identifier UUIDString];
+  uUIDString = [(NSUUID *)self->_identifier UUIDString];
   v5 = self->_accessIntent - 1;
   if (v5 > 2)
   {
@@ -93,46 +93,46 @@
   }
 
   accessName = self->_accessName;
-  v8 = [(NSURL *)self->_compositionAVURL path];
-  v9 = [v3 stringWithFormat:@"[RCSSavedRecordingAccessToken-%@ access=%@, name=%@, URL=%@]", v4, v6, accessName, v8];
+  path = [(NSURL *)self->_compositionAVURL path];
+  v9 = [v3 stringWithFormat:@"[RCSSavedRecordingAccessToken-%@ access=%@, name=%@, URL=%@]", uUIDString, v6, accessName, path];
 
   return v9;
 }
 
-- (RCSSavedRecordingAccessToken)initWithCoder:(id)a3
+- (RCSSavedRecordingAccessToken)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = RCSSavedRecordingAccessToken;
   v5 = [(RCSSavedRecordingAccessToken *)&v13 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectForKey:@"RCSIdentifier"];
+    v6 = [coderCopy decodeObjectForKey:@"RCSIdentifier"];
     identifier = v5->_identifier;
     v5->_identifier = v6;
 
-    v8 = [v4 decodeObjectForKey:@"RCSAccessName"];
+    v8 = [coderCopy decodeObjectForKey:@"RCSAccessName"];
     accessName = v5->_accessName;
     v5->_accessName = v8;
 
-    v10 = [v4 decodeObjectForKey:@"RCSCompositionAVURL"];
+    v10 = [coderCopy decodeObjectForKey:@"RCSCompositionAVURL"];
     compositionAVURL = v5->_compositionAVURL;
     v5->_compositionAVURL = v10;
 
-    v5->_accessIntent = [v4 decodeIntegerForKey:@"RCSAccessIntent"];
+    v5->_accessIntent = [coderCopy decodeIntegerForKey:@"RCSAccessIntent"];
   }
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   identifier = self->_identifier;
-  v5 = a3;
-  [v5 encodeObject:identifier forKey:@"RCSIdentifier"];
-  [v5 encodeObject:self->_accessName forKey:@"RCSAccessName"];
-  [v5 encodeObject:self->_compositionAVURL forKey:@"RCSCompositionAVURL"];
-  [v5 encodeInteger:self->_accessIntent forKey:@"RCSAccessIntent"];
+  coderCopy = coder;
+  [coderCopy encodeObject:identifier forKey:@"RCSIdentifier"];
+  [coderCopy encodeObject:self->_accessName forKey:@"RCSAccessName"];
+  [coderCopy encodeObject:self->_compositionAVURL forKey:@"RCSCompositionAVURL"];
+  [coderCopy encodeInteger:self->_accessIntent forKey:@"RCSAccessIntent"];
 }
 
 @end

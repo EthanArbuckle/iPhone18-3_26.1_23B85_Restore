@@ -44,8 +44,8 @@
   v13 = [v11 predicateWithFormat:@"%K != 0", v12];
   v14 = [v4 sectionWithRows:v10 title:@"Simulation" condition:v13];
   v28[1] = v14;
-  v15 = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
-  v28[2] = v15;
+  px_restoreDefaultsSection = [MEMORY[0x1E69C6638] px_restoreDefaultsSection];
+  v28[2] = px_restoreDefaultsSection;
   v16 = [MEMORY[0x1E695DEC8] arrayWithObjects:v28 count:3];
   v17 = [v19 moduleWithTitle:@"Media Provider" contents:v16];
 

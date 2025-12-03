@@ -1,11 +1,11 @@
 @interface ARCV3DPlaneDetectionSingleShotPlaneList
-- (ARCV3DPlaneDetectionSingleShotPlaneList)initWithDetectionResult:(CV3DPlaneDetectionSingleShotPlaneList *)a3;
+- (ARCV3DPlaneDetectionSingleShotPlaneList)initWithDetectionResult:(CV3DPlaneDetectionSingleShotPlaneList *)result;
 - (void)dealloc;
 @end
 
 @implementation ARCV3DPlaneDetectionSingleShotPlaneList
 
-- (ARCV3DPlaneDetectionSingleShotPlaneList)initWithDetectionResult:(CV3DPlaneDetectionSingleShotPlaneList *)a3
+- (ARCV3DPlaneDetectionSingleShotPlaneList)initWithDetectionResult:(CV3DPlaneDetectionSingleShotPlaneList *)result
 {
   v6.receiver = self;
   v6.super_class = ARCV3DPlaneDetectionSingleShotPlaneList;
@@ -13,7 +13,7 @@
   if (v4)
   {
     CV3DPlaneDetectionSingleShotPlaneListRetain();
-    v4->_cv3dPlaneDetections = a3;
+    v4->_cv3dPlaneDetections = result;
   }
 
   return v4;

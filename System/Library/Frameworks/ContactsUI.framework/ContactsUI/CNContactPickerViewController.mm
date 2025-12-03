@@ -1,36 +1,36 @@
 @interface CNContactPickerViewController
 + (id)descriptorForRequiredKeysForSuggestions;
 - (BOOL)_isDelayingPresentation;
-- (CNContactPickerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (CNContactPickerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIBarButtonItem)addContactBarButtonItem;
 - (UINavigationController)navigationController;
 - (UIScrollView)scrollView;
 - (_UIRemoteViewController)_containedRemoteViewController;
 - (id)_pickerPresentedViewController;
 - (id)delegate;
-- (void)_checkConsistencyFromOptions:(id)a3;
+- (void)_checkConsistencyFromOptions:(id)options;
 - (void)_endDelayingPresentation;
 - (void)_prepareViewController;
-- (void)_setViewController:(id)a3;
+- (void)_setViewController:(id)controller;
 - (void)_setupViewController;
 - (void)closePickerIfNeeded;
-- (void)contactListViewControllerShouldEditLimitedAccessSelection:(id)a3;
+- (void)contactListViewControllerShouldEditLimitedAccessSelection:(id)selection;
 - (void)dealloc;
-- (void)didUpdateLimitedAccessSelection:(id)a3 contactListViewController:(id)a4;
-- (void)invalidateSelectionAnimated:(BOOL)a3;
+- (void)didUpdateLimitedAccessSelection:(id)selection contactListViewController:(id)controller;
+- (void)invalidateSelectionAnimated:(BOOL)animated;
 - (void)loadView;
 - (void)notifyDelegateForCancellation;
 - (void)pickerDidCancel;
-- (void)pickerDidCompleteWithNewContact:(id)a3;
+- (void)pickerDidCompleteWithNewContact:(id)contact;
 - (void)pickerDidGoBack;
 - (void)pickerDidSelectAddNewContact;
-- (void)pickerDidSelectContact:(id)a3 property:(id)a4;
-- (void)pickerDidSelectContacts:(id)a3 properties:(id)a4;
-- (void)presentationControllerDidDismiss:(id)a3;
-- (void)scrollToClosestContactMatching:(id)a3;
-- (void)setBottomEdgeInsetForContentView:(double)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)pickerDidSelectContact:(id)contact property:(id)property;
+- (void)pickerDidSelectContacts:(id)contacts properties:(id)properties;
+- (void)presentationControllerDidDismiss:(id)dismiss;
+- (void)scrollToClosestContactMatching:(id)matching;
+- (void)setBottomEdgeInsetForContentView:(double)view;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation CNContactPickerViewController
@@ -70,13 +70,13 @@ id __68__CNContactPickerViewController__emitPickerAnalyticsDidSelectItems___bloc
   return v9;
 }
 
-- (void)contactListViewControllerShouldEditLimitedAccessSelection:(id)a3
+- (void)contactListViewControllerShouldEditLimitedAccessSelection:(id)selection
 {
-  v7 = a3;
-  v4 = [(CNContactPickerViewController *)self delegate];
-  if ([v4 conformsToProtocol:&unk_1F0DC22E8])
+  selectionCopy = selection;
+  delegate = [(CNContactPickerViewController *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0DC22E8])
   {
-    v5 = v4;
+    v5 = delegate;
   }
 
   else
@@ -88,18 +88,18 @@ id __68__CNContactPickerViewController__emitPickerAnalyticsDidSelectItems___bloc
 
   if (objc_opt_respondsToSelector())
   {
-    [v6 contactListViewControllerShouldEditLimitedAccessSelection:v7];
+    [v6 contactListViewControllerShouldEditLimitedAccessSelection:selectionCopy];
   }
 }
 
-- (void)didUpdateLimitedAccessSelection:(id)a3 contactListViewController:(id)a4
+- (void)didUpdateLimitedAccessSelection:(id)selection contactListViewController:(id)controller
 {
-  v10 = a3;
-  v6 = a4;
-  v7 = [(CNContactPickerViewController *)self delegate];
-  if ([v7 conformsToProtocol:&unk_1F0DC22E8])
+  selectionCopy = selection;
+  controllerCopy = controller;
+  delegate = [(CNContactPickerViewController *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0DC22E8])
   {
-    v8 = v7;
+    v8 = delegate;
   }
 
   else
@@ -111,17 +111,17 @@ id __68__CNContactPickerViewController__emitPickerAnalyticsDidSelectItems___bloc
 
   if (objc_opt_respondsToSelector())
   {
-    [v9 contactListViewController:v6 didUpdateLimitedAccessSelection:v10];
+    [v9 contactListViewController:controllerCopy didUpdateLimitedAccessSelection:selectionCopy];
   }
 }
 
 - (void)pickerDidGoBack
 {
   _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerViewController.m", 449, 7, @"picker did go back", v2, v3, v4, v5, v9);
-  v7 = [(CNContactPickerViewController *)self delegate];
-  if ([v7 conformsToProtocol:&unk_1F0DC22E8])
+  delegate = [(CNContactPickerViewController *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0DC22E8])
   {
-    v8 = v7;
+    v8 = delegate;
   }
 
   else
@@ -148,16 +148,16 @@ id __68__CNContactPickerViewController__emitPickerAnalyticsDidSelectItems___bloc
   [(CNContactPickerViewController *)self closePickerIfNeeded];
 }
 
-- (void)pickerDidCompleteWithNewContact:(id)a3
+- (void)pickerDidCompleteWithNewContact:(id)contact
 {
   v18[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerViewController.m", 422, 7, @"picker did finish with new contact: %@", v5, v6, v7, v8, v4);
+  contactCopy = contact;
+  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerViewController.m", 422, 7, @"picker did finish with new contact: %@", v5, v6, v7, v8, contactCopy);
   [(CNContactPickerViewController *)self _emitPickerAnalyticsDidSelectItems:1];
-  v9 = [(CNContactPickerViewController *)self delegate];
-  if ([v9 conformsToProtocol:&unk_1F0DC22E8])
+  delegate = [(CNContactPickerViewController *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0DC22E8])
   {
-    v10 = v9;
+    v10 = delegate;
   }
 
   else
@@ -169,14 +169,14 @@ id __68__CNContactPickerViewController__emitPickerAnalyticsDidSelectItems___bloc
 
   if ((objc_opt_respondsToSelector() & 1) == 0)
   {
-    v12 = [(CNContactPickerViewController *)self delegate];
+    delegate2 = [(CNContactPickerViewController *)self delegate];
     v13 = objc_opt_respondsToSelector();
 
-    v14 = [(CNContactPickerViewController *)self delegate];
-    v15 = v14;
+    delegate3 = [(CNContactPickerViewController *)self delegate];
+    v15 = delegate3;
     if (v13)
     {
-      [v14 contactPicker:self didSelectContact:v4];
+      [delegate3 contactPicker:self didSelectContact:contactCopy];
     }
 
     else
@@ -188,9 +188,9 @@ id __68__CNContactPickerViewController__emitPickerAnalyticsDidSelectItems___bloc
         goto LABEL_14;
       }
 
-      if (v4)
+      if (contactCopy)
       {
-        v18[0] = v4;
+        v18[0] = contactCopy;
         v15 = [MEMORY[0x1E695DEC8] arrayWithObjects:v18 count:1];
       }
 
@@ -199,27 +199,27 @@ id __68__CNContactPickerViewController__emitPickerAnalyticsDidSelectItems___bloc
         v15 = MEMORY[0x1E695E0F0];
       }
 
-      v17 = [(CNContactPickerViewController *)self delegate];
-      [v17 contactPicker:self didSelectContacts:v15];
+      delegate4 = [(CNContactPickerViewController *)self delegate];
+      [delegate4 contactPicker:self didSelectContacts:v15];
     }
 
     goto LABEL_14;
   }
 
-  [v11 contactPicker:self didCompleteWithNewContact:v4];
+  [v11 contactPicker:self didCompleteWithNewContact:contactCopy];
 LABEL_14:
   [(CNContactPickerViewController *)self closePickerIfNeeded];
 }
 
-- (void)pickerDidSelectContacts:(id)a3 properties:(id)a4
+- (void)pickerDidSelectContacts:(id)contacts properties:(id)properties
 {
-  v18 = a3;
-  v6 = a4;
-  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerViewController.m", 400, 7, @"picker did select contacts: %@, properties: %@", v7, v8, v9, v10, v18);
+  contactsCopy = contacts;
+  propertiesCopy = properties;
+  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerViewController.m", 400, 7, @"picker did select contacts: %@, properties: %@", v7, v8, v9, v10, contactsCopy);
   [(CNContactPickerViewController *)self _emitPickerAnalyticsDidSelectItems:1];
-  if (v6 || ([(CNContactPickerViewController *)self delegate], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_opt_respondsToSelector(), v11, (v12 & 1) == 0))
+  if (propertiesCopy || ([(CNContactPickerViewController *)self delegate], v11 = objc_claimAutoreleasedReturnValue(), v12 = objc_opt_respondsToSelector(), v11, (v12 & 1) == 0))
   {
-    v15 = [(CNContactPickerViewController *)self delegate];
+    delegate = [(CNContactPickerViewController *)self delegate];
     v16 = objc_opt_respondsToSelector();
 
     if ((v16 & 1) == 0)
@@ -227,34 +227,34 @@ LABEL_14:
       goto LABEL_7;
     }
 
-    v17 = [(CNContactPickerViewController *)self regulatoryLogger];
-    [v17 receivingContactsDataFromOOPContactPicker];
+    regulatoryLogger = [(CNContactPickerViewController *)self regulatoryLogger];
+    [regulatoryLogger receivingContactsDataFromOOPContactPicker];
 
-    v14 = [(CNContactPickerViewController *)self delegate];
-    [v14 contactPicker:self didSelectContactProperties:v6];
+    delegate2 = [(CNContactPickerViewController *)self delegate];
+    [delegate2 contactPicker:self didSelectContactProperties:propertiesCopy];
   }
 
   else
   {
-    v13 = [(CNContactPickerViewController *)self regulatoryLogger];
-    [v13 receivingContactsDataFromOOPContactPicker];
+    regulatoryLogger2 = [(CNContactPickerViewController *)self regulatoryLogger];
+    [regulatoryLogger2 receivingContactsDataFromOOPContactPicker];
 
-    v14 = [(CNContactPickerViewController *)self delegate];
-    [v14 contactPicker:self didSelectContacts:v18];
+    delegate2 = [(CNContactPickerViewController *)self delegate];
+    [delegate2 contactPicker:self didSelectContacts:contactsCopy];
   }
 
 LABEL_7:
   [(CNContactPickerViewController *)self closePickerIfNeeded];
 }
 
-- (void)pickerDidSelectContact:(id)a3 property:(id)a4
+- (void)pickerDidSelectContact:(id)contact property:(id)property
 {
-  v17 = a3;
-  v6 = a4;
-  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerViewController.m", 380, 7, @"picker did select contact %@, property %@", v7, v8, v9, v10, v17);
+  contactCopy = contact;
+  propertyCopy = property;
+  _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerViewController.m", 380, 7, @"picker did select contact %@, property %@", v7, v8, v9, v10, contactCopy);
   [(CNContactPickerViewController *)self _emitPickerAnalyticsDidSelectItems:1];
-  v11 = [(CNContactPickerViewController *)self delegate];
-  if (v6)
+  delegate = [(CNContactPickerViewController *)self delegate];
+  if (propertyCopy)
   {
     v12 = objc_opt_respondsToSelector();
 
@@ -263,11 +263,11 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v13 = [(CNContactPickerViewController *)self regulatoryLogger];
-    [v13 receivingContactsDataFromOOPContactPicker];
+    regulatoryLogger = [(CNContactPickerViewController *)self regulatoryLogger];
+    [regulatoryLogger receivingContactsDataFromOOPContactPicker];
 
-    v14 = [(CNContactPickerViewController *)self delegate];
-    [v14 contactPicker:self didSelectContactProperty:v6];
+    delegate2 = [(CNContactPickerViewController *)self delegate];
+    [delegate2 contactPicker:self didSelectContactProperty:propertyCopy];
   }
 
   else
@@ -279,11 +279,11 @@ LABEL_7:
       goto LABEL_7;
     }
 
-    v16 = [(CNContactPickerViewController *)self regulatoryLogger];
-    [v16 receivingContactsDataFromOOPContactPicker];
+    regulatoryLogger2 = [(CNContactPickerViewController *)self regulatoryLogger];
+    [regulatoryLogger2 receivingContactsDataFromOOPContactPicker];
 
-    v14 = [(CNContactPickerViewController *)self delegate];
-    [v14 contactPicker:self didSelectContact:v17];
+    delegate2 = [(CNContactPickerViewController *)self delegate];
+    [delegate2 contactPicker:self didSelectContact:contactCopy];
   }
 
 LABEL_7:
@@ -292,10 +292,10 @@ LABEL_7:
 
 - (void)pickerDidSelectAddNewContact
 {
-  v3 = [(CNContactPickerViewController *)self delegate];
-  if ([v3 conformsToProtocol:&unk_1F0DC22E8])
+  delegate = [(CNContactPickerViewController *)self delegate];
+  if ([delegate conformsToProtocol:&unk_1F0DC22E8])
   {
-    v4 = v3;
+    v4 = delegate;
   }
 
   else
@@ -307,14 +307,14 @@ LABEL_7:
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [(CNContactPickerViewController *)self regulatoryLogger];
-    [v5 receivingContactsDataFromOOPContactPicker];
+    regulatoryLogger = [(CNContactPickerViewController *)self regulatoryLogger];
+    [regulatoryLogger receivingContactsDataFromOOPContactPicker];
 
     [v6 pickerDidSelectAddNewContact:self];
   }
 }
 
-- (void)presentationControllerDidDismiss:(id)a3
+- (void)presentationControllerDidDismiss:(id)dismiss
 {
   _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerViewController.m", 361, 7, @"picker did cancel by dismiss", v3, v4, v5, v6, v8);
   [(CNContactPickerViewController *)self _emitPickerAnalyticsDidSelectItems:0];
@@ -325,10 +325,10 @@ LABEL_7:
 - (_UIRemoteViewController)_containedRemoteViewController
 {
   objc_opt_class();
-  v3 = [(CNContactPickerViewController *)self viewController];
+  viewController = [(CNContactPickerViewController *)self viewController];
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
+    v4 = viewController;
   }
 
   else
@@ -343,29 +343,29 @@ LABEL_7:
 
 - (UIBarButtonItem)addContactBarButtonItem
 {
-  v2 = [(CNContactPickerViewController *)self viewController];
-  v3 = [v2 addContactBarButtonItem];
+  viewController = [(CNContactPickerViewController *)self viewController];
+  addContactBarButtonItem = [viewController addContactBarButtonItem];
 
-  return v3;
+  return addContactBarButtonItem;
 }
 
 - (UINavigationController)navigationController
 {
-  v2 = [(CNContactPickerViewController *)self viewController];
-  v3 = [v2 navigationController];
+  viewController = [(CNContactPickerViewController *)self viewController];
+  navigationController = [viewController navigationController];
 
-  return v3;
+  return navigationController;
 }
 
 - (void)notifyDelegateForCancellation
 {
-  v3 = [(CNContactPickerViewController *)self delegate];
+  delegate = [(CNContactPickerViewController *)self delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNContactPickerViewController *)self delegate];
-    [v5 contactPickerDidCancel:self];
+    delegate2 = [(CNContactPickerViewController *)self delegate];
+    [delegate2 contactPickerDidCancel:self];
   }
 }
 
@@ -373,22 +373,22 @@ LABEL_7:
 {
   if ([(CNContactPickerViewController *)self autocloses])
   {
-    v3 = [(CNContactPickerViewController *)self _pickerPresentedViewController];
-    if (([v3 isBeingDismissed] & 1) == 0)
+    _pickerPresentedViewController = [(CNContactPickerViewController *)self _pickerPresentedViewController];
+    if (([_pickerPresentedViewController isBeingDismissed] & 1) == 0)
     {
-      [v3 dismissViewControllerAnimated:1 completion:0];
+      [_pickerPresentedViewController dismissViewControllerAnimated:1 completion:0];
     }
   }
 }
 
 - (void)_prepareViewController
 {
-  v3 = [(CNContactPickerViewController *)self _pickerPresentedViewController];
-  [v3 _beginDelayingPresentation:&__block_literal_global_57 cancellationHandler:10.0];
+  _pickerPresentedViewController = [(CNContactPickerViewController *)self _pickerPresentedViewController];
+  [_pickerPresentedViewController _beginDelayingPresentation:&__block_literal_global_57 cancellationHandler:10.0];
 
-  v4 = [(CNContactPickerViewController *)self viewController];
+  viewController = [(CNContactPickerViewController *)self viewController];
 
-  if (v4)
+  if (viewController)
   {
 
     [(CNContactPickerViewController *)self _setupViewController];
@@ -399,8 +399,8 @@ LABEL_7:
     v5 = [objc_alloc(MEMORY[0x1E6996800]) initWithAuditToken:0 assumedIdentity:0];
     [(CNContactPickerViewController *)self setRegulatoryLogger:v5];
 
-    v6 = [(CNContactPickerViewController *)self regulatoryLogger];
-    [v6 displayingOOPContactPicker];
+    regulatoryLogger = [(CNContactPickerViewController *)self regulatoryLogger];
+    [regulatoryLogger displayingOOPContactPicker];
 
     v9[0] = 0;
     v9[1] = v9;
@@ -448,133 +448,133 @@ uint64_t __55__CNContactPickerViewController__prepareViewController__block_invok
 - (void)_setupViewController
 {
   v64 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = MEMORY[0x1E696AD98];
-  v5 = [(CNContactPickerViewController *)self delegate];
+  delegate = [(CNContactPickerViewController *)self delegate];
   v6 = [v4 numberWithBool:objc_opt_respondsToSelector() & 1];
-  [v3 setObject:v6 forKeyedSubscript:@"ClientWantsSingleContact"];
+  [dictionary setObject:v6 forKeyedSubscript:@"ClientWantsSingleContact"];
 
   v7 = MEMORY[0x1E696AD98];
-  v8 = [(CNContactPickerViewController *)self delegate];
+  delegate2 = [(CNContactPickerViewController *)self delegate];
   v9 = [v7 numberWithBool:objc_opt_respondsToSelector() & 1];
-  [v3 setObject:v9 forKeyedSubscript:@"ClientWantsSingleProperty"];
+  [dictionary setObject:v9 forKeyedSubscript:@"ClientWantsSingleProperty"];
 
   v10 = MEMORY[0x1E696AD98];
-  v11 = [(CNContactPickerViewController *)self delegate];
+  delegate3 = [(CNContactPickerViewController *)self delegate];
   v12 = (objc_opt_respondsToSelector() & 1) != 0 && [(CNContactPickerViewController *)self limitedAccessPickerType]!= 5;
   v13 = [v10 numberWithInt:v12];
-  [v3 setObject:v13 forKeyedSubscript:@"ClientWantsMultipleContacts"];
+  [dictionary setObject:v13 forKeyedSubscript:@"ClientWantsMultipleContacts"];
 
   v14 = MEMORY[0x1E696AD98];
-  v15 = [(CNContactPickerViewController *)self delegate];
+  delegate4 = [(CNContactPickerViewController *)self delegate];
   v16 = [v14 numberWithBool:objc_opt_respondsToSelector() & 1];
-  [v3 setObject:v16 forKeyedSubscript:@"ClientWantsMultipleProperties"];
+  [dictionary setObject:v16 forKeyedSubscript:@"ClientWantsMultipleProperties"];
 
   v17 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(MEMORY[0x1E695CE18], "authorizationStatusForEntityType:", 0) == 3}];
-  [v3 setObject:v17 forKeyedSubscript:@"ClientHasContactsAccess"];
+  [dictionary setObject:v17 forKeyedSubscript:@"ClientHasContactsAccess"];
 
-  v18 = [(CNContactPickerViewController *)self familyMember];
-  [v3 setObject:v18 forKeyedSubscript:@"familyMember"];
+  familyMember = [(CNContactPickerViewController *)self familyMember];
+  [dictionary setObject:familyMember forKeyedSubscript:@"familyMember"];
 
-  v19 = [(CNContactPickerViewController *)self parentContainer];
-  [v3 setObject:v19 forKeyedSubscript:@"parentContainer"];
+  parentContainer = [(CNContactPickerViewController *)self parentContainer];
+  [dictionary setObject:parentContainer forKeyedSubscript:@"parentContainer"];
 
   v20 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactPickerViewController allowsDeletion](self, "allowsDeletion")}];
-  [v3 setObject:v20 forKeyedSubscript:@"allowsDeletion"];
+  [dictionary setObject:v20 forKeyedSubscript:@"allowsDeletion"];
 
   v21 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactPickerViewController shouldAllowSearchForMultiSelect](self, "shouldAllowSearchForMultiSelect")}];
-  [v3 setObject:v21 forKeyedSubscript:@"allowsSearchForMultiSelect"];
+  [dictionary setObject:v21 forKeyedSubscript:@"allowsSearchForMultiSelect"];
 
   v22 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactPickerViewController allowsNamePicking](self, "allowsNamePicking")}];
-  [v3 setObject:v22 forKeyedSubscript:@"allowsNamePicking"];
+  [dictionary setObject:v22 forKeyedSubscript:@"allowsNamePicking"];
 
   v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactPickerViewController shouldDisplaySuggestionsController](self, "shouldDisplaySuggestionsController")}];
-  [v3 setObject:v23 forKeyedSubscript:@"shouldDisplaySuggestionsController"];
+  [dictionary setObject:v23 forKeyedSubscript:@"shouldDisplaySuggestionsController"];
 
-  v24 = [(CNContactPickerViewController *)self suggestionsIgnoredContactIdentifiers];
-  [v3 setObject:v24 forKeyedSubscript:@"suggestionsIgnoredContactIdentifiers"];
+  suggestionsIgnoredContactIdentifiers = [(CNContactPickerViewController *)self suggestionsIgnoredContactIdentifiers];
+  [dictionary setObject:suggestionsIgnoredContactIdentifiers forKeyedSubscript:@"suggestionsIgnoredContactIdentifiers"];
 
-  v25 = [(CNContactPickerViewController *)self suggestionsInteractionDomains];
-  [v3 setObject:v25 forKeyedSubscript:@"suggestionsInteractionDomains"];
+  suggestionsInteractionDomains = [(CNContactPickerViewController *)self suggestionsInteractionDomains];
+  [dictionary setObject:suggestionsInteractionDomains forKeyedSubscript:@"suggestionsInteractionDomains"];
 
   v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactPickerViewController shouldDisplayAddNewContactRow](self, "shouldDisplayAddNewContactRow")}];
-  [v3 setObject:v26 forKeyedSubscript:@"shouldDisplayAddNewContactRow"];
+  [dictionary setObject:v26 forKeyedSubscript:@"shouldDisplayAddNewContactRow"];
 
-  v27 = [(CNContactPickerViewController *)self targetGroupIdentifier];
-  [v3 setObject:v27 forKeyedSubscript:@"targetGroupIdentifier"];
+  targetGroupIdentifier = [(CNContactPickerViewController *)self targetGroupIdentifier];
+  [dictionary setObject:targetGroupIdentifier forKeyedSubscript:@"targetGroupIdentifier"];
 
-  [v3 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"shouldHideDuplicates"];
+  [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"shouldHideDuplicates"];
   v28 = MEMORY[0x1E696AD98];
-  v29 = [(CNContactPickerViewController *)self traitCollection];
-  v30 = [v28 numberWithInteger:{objc_msgSend(v29, "userInterfaceIdiom")}];
-  [v3 setObject:v30 forKeyedSubscript:@"hostIdiom"];
+  traitCollection = [(CNContactPickerViewController *)self traitCollection];
+  v30 = [v28 numberWithInteger:{objc_msgSend(traitCollection, "userInterfaceIdiom")}];
+  [dictionary setObject:v30 forKeyedSubscript:@"hostIdiom"];
 
-  v31 = [(CNContactPickerViewController *)self limitedAccessContactSelection];
-  [v3 setObject:v31 forKeyedSubscript:@"limitedAccessContactSelection"];
+  limitedAccessContactSelection = [(CNContactPickerViewController *)self limitedAccessContactSelection];
+  [dictionary setObject:limitedAccessContactSelection forKeyedSubscript:@"limitedAccessContactSelection"];
 
   v32 = [MEMORY[0x1E696AD98] numberWithInt:{-[CNContactPickerViewController limitedAccessPickerType](self, "limitedAccessPickerType")}];
-  [v3 setObject:v32 forKeyedSubscript:@"limitedAccessPickerType"];
+  [dictionary setObject:v32 forKeyedSubscript:@"limitedAccessPickerType"];
 
-  v33 = [(CNContactPickerViewController *)self limitedAccessAppName];
-  [v3 setObject:v33 forKeyedSubscript:@"limitedAccessAppName"];
+  limitedAccessAppName = [(CNContactPickerViewController *)self limitedAccessAppName];
+  [dictionary setObject:limitedAccessAppName forKeyedSubscript:@"limitedAccessAppName"];
 
-  v34 = [(CNContactPickerViewController *)self limitedAccessAppBundleId];
-  if (v34)
+  limitedAccessAppBundleId = [(CNContactPickerViewController *)self limitedAccessAppBundleId];
+  if (limitedAccessAppBundleId)
   {
-    v35 = [(CNContactPickerViewController *)self limitedAccessAppBundleId];
-    [v3 setObject:v35 forKeyedSubscript:@"limitedAccessAppBundleId"];
+    limitedAccessAppBundleId2 = [(CNContactPickerViewController *)self limitedAccessAppBundleId];
+    [dictionary setObject:limitedAccessAppBundleId2 forKeyedSubscript:@"limitedAccessAppBundleId"];
   }
 
   else
   {
-    v35 = [(CNContactPickerViewController *)self nibBundle];
-    v36 = [v35 bundleIdentifier];
-    [v3 setObject:v36 forKeyedSubscript:@"limitedAccessAppBundleId"];
+    limitedAccessAppBundleId2 = [(CNContactPickerViewController *)self nibBundle];
+    bundleIdentifier = [limitedAccessAppBundleId2 bundleIdentifier];
+    [dictionary setObject:bundleIdentifier forKeyedSubscript:@"limitedAccessAppBundleId"];
   }
 
   v37 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactPickerViewController hasPickerPrivacyUI](self, "hasPickerPrivacyUI")}];
-  [v3 setObject:v37 forKeyedSubscript:@"hasPickerPrivacyUI"];
+  [dictionary setObject:v37 forKeyedSubscript:@"hasPickerPrivacyUI"];
 
-  v38 = [(CNContactPickerViewController *)self limitedAccessSearchQuery];
-  [v3 setObject:v38 forKeyedSubscript:@"limitedAccessSearchQuery"];
+  limitedAccessSearchQuery = [(CNContactPickerViewController *)self limitedAccessSearchQuery];
+  [dictionary setObject:limitedAccessSearchQuery forKeyedSubscript:@"limitedAccessSearchQuery"];
 
   v39 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:{-[CNContactPickerViewController limitedAccessCaption](self, "limitedAccessCaption")}];
-  [v3 setObject:v39 forKeyedSubscript:@"limitedAccessContactCaption"];
+  [dictionary setObject:v39 forKeyedSubscript:@"limitedAccessContactCaption"];
 
   if ([(CNContactPickerViewController *)self shouldDisplaySuggestionsController])
   {
-    v40 = [(CNContactPickerViewController *)self contactSuggestions];
+    contactSuggestions = [(CNContactPickerViewController *)self contactSuggestions];
 
-    if (v40)
+    if (contactSuggestions)
     {
-      v41 = [(CNContactPickerViewController *)self contactSuggestions];
-      [v3 setObject:v41 forKeyedSubscript:@"suggestedContacts"];
+      contactSuggestions2 = [(CNContactPickerViewController *)self contactSuggestions];
+      [dictionary setObject:contactSuggestions2 forKeyedSubscript:@"suggestedContacts"];
     }
   }
 
-  v42 = [MEMORY[0x1E69966E8] currentEnvironment];
-  v43 = [v42 entitlementVerifier];
-  v44 = [v43 currentProcessHasBooleanEntitlement:*MEMORY[0x1E69964E8] error:0];
+  currentEnvironment = [MEMORY[0x1E69966E8] currentEnvironment];
+  entitlementVerifier = [currentEnvironment entitlementVerifier];
+  v44 = [entitlementVerifier currentProcessHasBooleanEntitlement:*MEMORY[0x1E69964E8] error:0];
 
   if (v44)
   {
     v45 = [MEMORY[0x1E696AD98] numberWithBool:{-[CNContactPickerViewController ignoresParentalRestrictions](self, "ignoresParentalRestrictions")}];
-    [v3 setObject:v45 forKeyedSubscript:@"ignoresParentalRestrictions"];
+    [dictionary setObject:v45 forKeyedSubscript:@"ignoresParentalRestrictions"];
   }
 
-  v46 = [(CNContactPickerViewController *)self prohibitedPropertyKeys];
-  [v3 setObject:v46 forKeyedSubscript:@"prohibitedPropertyKeys"];
+  prohibitedPropertyKeys = [(CNContactPickerViewController *)self prohibitedPropertyKeys];
+  [dictionary setObject:prohibitedPropertyKeys forKeyedSubscript:@"prohibitedPropertyKeys"];
 
-  v47 = [(CNContactPickerViewController *)self scrollContact];
+  scrollContact = [(CNContactPickerViewController *)self scrollContact];
 
-  if (v47)
+  if (scrollContact)
   {
-    v48 = [(CNContactPickerViewController *)self scrollContact];
-    [v3 setObject:v48 forKeyedSubscript:@"ScrollContact"];
+    scrollContact2 = [(CNContactPickerViewController *)self scrollContact];
+    [dictionary setObject:scrollContact2 forKeyedSubscript:@"ScrollContact"];
   }
 
-  [(CNContactPickerViewController *)self _checkConsistencyFromOptions:v3];
-  v49 = [MEMORY[0x1E695DF90] dictionary];
+  [(CNContactPickerViewController *)self _checkConsistencyFromOptions:dictionary];
+  dictionary2 = [MEMORY[0x1E695DF90] dictionary];
   v59 = 0u;
   v60 = 0u;
   v61 = 0u;
@@ -598,7 +598,7 @@ uint64_t __55__CNContactPickerViewController__prepareViewController__block_invok
         v56 = [(CNContactPickerViewController *)self valueForKey:v55];
         if (v56)
         {
-          [v49 setObject:v56 forKeyedSubscript:v55];
+          [dictionary2 setObject:v56 forKeyedSubscript:v55];
         }
       }
 
@@ -608,14 +608,14 @@ uint64_t __55__CNContactPickerViewController__prepareViewController__block_invok
     while (v52);
   }
 
-  [v3 setObject:v49 forKeyedSubscript:@"Properties"];
-  v57 = [(CNContactPickerViewController *)self viewController];
+  [dictionary setObject:dictionary2 forKeyedSubscript:@"Properties"];
+  viewController = [(CNContactPickerViewController *)self viewController];
   v58[0] = MEMORY[0x1E69E9820];
   v58[1] = 3221225472;
   v58[2] = __53__CNContactPickerViewController__setupViewController__block_invoke;
   v58[3] = &unk_1E74E5200;
   v58[4] = self;
-  [v57 setupWithOptions:v3 readyBlock:v58];
+  [viewController setupWithOptions:dictionary readyBlock:v58];
 }
 
 void __53__CNContactPickerViewController__setupViewController__block_invoke(uint64_t a1, void *a2)
@@ -650,12 +650,12 @@ void __53__CNContactPickerViewController__setupViewController__block_invoke_2(ui
   }
 }
 
-- (void)_setViewController:(id)a3
+- (void)_setViewController:(id)controller
 {
-  v4 = a3;
-  [v4 setDelegate:self];
-  [(CNContactPickerViewController *)self setViewController:v4];
-  [(UIViewController *)self cnui_addChildViewController:v4];
+  controllerCopy = controller;
+  [controllerCopy setDelegate:self];
+  [(CNContactPickerViewController *)self setViewController:controllerCopy];
+  [(UIViewController *)self cnui_addChildViewController:controllerCopy];
 
   [(CNContactPickerViewController *)self _setupViewController];
 }
@@ -688,12 +688,12 @@ void __53__CNContactPickerViewController__setupViewController__block_invoke_2(ui
   return [(CNContactPickerViewController *)&v4 _isDelayingPresentation];
 }
 
-- (void)setBottomEdgeInsetForContentView:(double)a3
+- (void)setBottomEdgeInsetForContentView:(double)view
 {
   if (![(CNContactPickerViewController *)self _shouldBeOutOfProcess])
   {
-    v5 = [(CNContactPickerViewController *)self viewController];
-    [v5 setBottomEdgesInset:a3];
+    viewController = [(CNContactPickerViewController *)self viewController];
+    [viewController setBottomEdgesInset:view];
   }
 }
 
@@ -701,23 +701,23 @@ void __53__CNContactPickerViewController__setupViewController__block_invoke_2(ui
 {
   if ([(CNContactPickerViewController *)self _shouldBeOutOfProcess])
   {
-    v3 = 0;
+    scrollView = 0;
   }
 
   else
   {
-    v4 = [(CNContactPickerViewController *)self viewController];
-    v3 = [v4 scrollView];
+    viewController = [(CNContactPickerViewController *)self viewController];
+    scrollView = [viewController scrollView];
   }
 
-  return v3;
+  return scrollView;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = CNContactPickerViewController;
-  [(CNContactPickerViewController *)&v3 viewDidDisappear:a3];
+  [(CNContactPickerViewController *)&v3 viewDidDisappear:disappear];
   if ([*MEMORY[0x1E69DDA98] isPPTAvailable])
   {
     dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_36);
@@ -730,11 +730,11 @@ void __50__CNContactPickerViewController_viewDidDisappear___block_invoke()
   [v0 postNotificationName:@"PeoplePickerDidHide" object:0 userInfo:0 deliverImmediately:1];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
   v3.receiver = self;
   v3.super_class = CNContactPickerViewController;
-  [(CNContactPickerViewController *)&v3 viewDidAppear:a3];
+  [(CNContactPickerViewController *)&v3 viewDidAppear:appear];
   if ([*MEMORY[0x1E69DDA98] isPPTAvailable])
   {
     dispatch_async(MEMORY[0x1E69E96A0], &__block_literal_global_3971);
@@ -755,58 +755,58 @@ void __47__CNContactPickerViewController_viewDidAppear___block_invoke()
   [(CNContactPickerViewController *)self _viewWillBePresented];
 }
 
-- (void)invalidateSelectionAnimated:(BOOL)a3
+- (void)invalidateSelectionAnimated:(BOOL)animated
 {
-  v3 = a3;
-  v4 = [(CNContactPickerViewController *)self viewController];
-  [v4 invalidateSelectionAnimated:v3];
+  animatedCopy = animated;
+  viewController = [(CNContactPickerViewController *)self viewController];
+  [viewController invalidateSelectionAnimated:animatedCopy];
 }
 
-- (void)scrollToClosestContactMatching:(id)a3
+- (void)scrollToClosestContactMatching:(id)matching
 {
   v4 = MEMORY[0x1E695CF18];
-  v5 = a3;
+  matchingCopy = matching;
   v8 = objc_alloc_init(v4);
-  v6 = [v5 givenName];
-  [v8 setGivenName:v6];
+  givenName = [matchingCopy givenName];
+  [v8 setGivenName:givenName];
 
-  v7 = [v5 familyName];
+  familyName = [matchingCopy familyName];
 
-  [v8 setFamilyName:v7];
+  [v8 setFamilyName:familyName];
   [(CNContactPickerViewController *)self setScrollContact:v8];
 }
 
-- (void)_checkConsistencyFromOptions:(id)a3
+- (void)_checkConsistencyFromOptions:(id)options
 {
-  v21 = a3;
-  v4 = [v21 objectForKeyedSubscript:@"ClientWantsSingleContact"];
-  v5 = [v4 BOOLValue];
+  optionsCopy = options;
+  v4 = [optionsCopy objectForKeyedSubscript:@"ClientWantsSingleContact"];
+  bOOLValue = [v4 BOOLValue];
 
-  v6 = [v21 objectForKeyedSubscript:@"ClientWantsSingleProperty"];
-  v7 = [v6 BOOLValue];
+  v6 = [optionsCopy objectForKeyedSubscript:@"ClientWantsSingleProperty"];
+  bOOLValue2 = [v6 BOOLValue];
 
-  v8 = [v21 objectForKeyedSubscript:@"ClientWantsMultipleContacts"];
-  v9 = [v8 BOOLValue];
+  v8 = [optionsCopy objectForKeyedSubscript:@"ClientWantsMultipleContacts"];
+  bOOLValue3 = [v8 BOOLValue];
 
-  v10 = [v21 objectForKeyedSubscript:@"ClientWantsMultipleProperties"];
-  v11 = [v10 BOOLValue];
+  v10 = [optionsCopy objectForKeyedSubscript:@"ClientWantsMultipleProperties"];
+  bOOLValue4 = [v10 BOOLValue];
 
-  v12 = [(CNContactPickerViewController *)self predicateForSelectionOfContact];
+  predicateForSelectionOfContact = [(CNContactPickerViewController *)self predicateForSelectionOfContact];
 
-  v13 = [(CNContactPickerViewController *)self predicateForSelectionOfProperty];
+  predicateForSelectionOfProperty = [(CNContactPickerViewController *)self predicateForSelectionOfProperty];
 
   v14 = NSStringFromSelector(sel_contactPicker_didSelectContact_);
   v19 = NSStringFromSelector(sel_contactPicker_didSelectContactProperty_);
-  if ((v5 | v7) & 1) != 0 && ((v9 | v11))
+  if ((bOOLValue | bOOLValue2) & 1) != 0 && ((bOOLValue3 | bOOLValue4))
   {
     _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerViewController.m", 93, 4, @"Both single contact and multiple contacts delegate methods are implemented, the single variants will be ignored", v15, v16, v17, v18, v20);
-    [v21 removeObjectForKey:@"ClientWantsSingleContact"];
-    [v21 removeObjectForKey:@"ClientWantsSingleProperty"];
+    [optionsCopy removeObjectForKey:@"ClientWantsSingleContact"];
+    [optionsCopy removeObjectForKey:@"ClientWantsSingleProperty"];
   }
 
-  if (((v5 | v7 | v9 | v11) & 1) == 0)
+  if (((bOOLValue | bOOLValue2 | bOOLValue3 | bOOLValue4) & 1) == 0)
   {
-    if (!(v12 | v13))
+    if (!(predicateForSelectionOfContact | predicateForSelectionOfProperty))
     {
       goto LABEL_14;
     }
@@ -816,9 +816,9 @@ void __47__CNContactPickerViewController_viewDidAppear___block_invoke()
     goto LABEL_11;
   }
 
-  if ((v5 | v9 | v11))
+  if ((bOOLValue | bOOLValue3 | bOOLValue4))
   {
-    if (((v7 | v11) & 1) == 0 && v13)
+    if (((bOOLValue2 | bOOLValue4) & 1) == 0 && predicateForSelectionOfProperty)
     {
       _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerViewController.m", 114, 3, @"Property selection predicate is set but the delegate does not implement %@. The predicate will be ignored.", v15, v16, v17, v18, v19);
 LABEL_11:
@@ -826,7 +826,7 @@ LABEL_11:
     }
   }
 
-  else if (v12)
+  else if (predicateForSelectionOfContact)
   {
     _CNUILog("/Library/Caches/com.apple.xbs/Sources/ContactsUI/Framework/CNContactPickerViewController.m", 108, 3, @"Person selection predicate is set but the delegate does not implement %@. The predicate will be ignored.", v15, v16, v17, v18, v14);
     [(CNContactPickerViewController *)self setPredicateForSelectionOfContact:0];
@@ -837,36 +837,36 @@ LABEL_14:
 
 - (id)_pickerPresentedViewController
 {
-  v2 = self;
-  v3 = [(CNContactPickerViewController *)v2 delegate];
+  selfCopy = self;
+  delegate = [(CNContactPickerViewController *)selfCopy delegate];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(CNContactPickerViewController *)v2 delegate];
-    v6 = [v5 contactPickerPresentedViewController:v2];
+    delegate2 = [(CNContactPickerViewController *)selfCopy delegate];
+    v6 = [delegate2 contactPickerPresentedViewController:selfCopy];
 
-    v2 = v6;
+    selfCopy = v6;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (void)dealloc
 {
-  v3 = [(CNContactPickerViewController *)self viewController];
-  [v3 invalidate];
+  viewController = [(CNContactPickerViewController *)self viewController];
+  [viewController invalidate];
 
   v4.receiver = self;
   v4.super_class = CNContactPickerViewController;
   [(CNContactPickerViewController *)&v4 dealloc];
 }
 
-- (CNContactPickerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (CNContactPickerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
   v6.receiver = self;
   v6.super_class = CNContactPickerViewController;
-  v4 = [(CNContactPickerViewController *)&v6 initWithNibName:a3 bundle:a4];
+  v4 = [(CNContactPickerViewController *)&v6 initWithNibName:name bundle:bundle];
   [(CNContactPickerViewController *)v4 setAllowsCancel:1];
   [(CNContactPickerViewController *)v4 setAutocloses:1];
   [(CNContactPickerViewController *)v4 setCardActions:0];

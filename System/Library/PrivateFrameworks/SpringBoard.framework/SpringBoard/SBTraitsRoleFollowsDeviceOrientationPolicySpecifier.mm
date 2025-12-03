@@ -1,23 +1,23 @@
 @interface SBTraitsRoleFollowsDeviceOrientationPolicySpecifier
 - (NSString)targetRole;
-- (SBTraitsRoleFollowsDeviceOrientationPolicySpecifier)initWithComponentOrder:(id)a3;
-- (void)setDeviceOrientationStateTypes:(id)a3;
-- (void)updateStageParticipantsResolutionPolicies:(id)a3 context:(id)a4;
+- (SBTraitsRoleFollowsDeviceOrientationPolicySpecifier)initWithComponentOrder:(id)order;
+- (void)setDeviceOrientationStateTypes:(id)types;
+- (void)updateStageParticipantsResolutionPolicies:(id)policies context:(id)context;
 @end
 
 @implementation SBTraitsRoleFollowsDeviceOrientationPolicySpecifier
 
-- (SBTraitsRoleFollowsDeviceOrientationPolicySpecifier)initWithComponentOrder:(id)a3
+- (SBTraitsRoleFollowsDeviceOrientationPolicySpecifier)initWithComponentOrder:(id)order
 {
   v8.receiver = self;
   v8.super_class = SBTraitsRoleFollowsDeviceOrientationPolicySpecifier;
-  v3 = [(SBTraitsOrientationStageComponent *)&v8 initWithComponentOrder:a3];
+  v3 = [(SBTraitsOrientationStageComponent *)&v8 initWithComponentOrder:order];
   v4 = v3;
   if (v3)
   {
-    v5 = [(SBTraitsRoleFollowsDeviceOrientationPolicySpecifier *)v3 targetRole];
+    targetRole = [(SBTraitsRoleFollowsDeviceOrientationPolicySpecifier *)v3 targetRole];
     targetRole = v4->_targetRole;
-    v4->_targetRole = v5;
+    v4->_targetRole = targetRole;
 
     [(SBTraitsRoleFollowsDeviceOrientationPolicySpecifier *)v4 setDeviceOrientationStateTypes:0];
   }
@@ -27,36 +27,36 @@
 
 - (NSString)targetRole
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"SBTraitsOrientationStageComponents.m" lineNumber:496 description:{@"This class[%@] shouldn't be directly used, pick a subclass.", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"SBTraitsOrientationStageComponents.m" lineNumber:496 description:{@"This class[%@] shouldn't be directly used, pick a subclass.", v6}];
 
   return 0;
 }
 
-- (void)setDeviceOrientationStateTypes:(id)a3
+- (void)setDeviceOrientationStateTypes:(id)types
 {
-  v4 = a3;
+  typesCopy = types;
   v5 = &unk_28336EC28;
-  if (v4)
+  if (typesCopy)
   {
-    v5 = v4;
+    v5 = typesCopy;
   }
 
   deviceOrientationStateTypes = self->_deviceOrientationStateTypes;
   self->_deviceOrientationStateTypes = v5;
 }
 
-- (void)updateStageParticipantsResolutionPolicies:(id)a3 context:(id)a4
+- (void)updateStageParticipantsResolutionPolicies:(id)policies context:(id)context
 {
   v19 = *MEMORY[0x277D85DE8];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v5 = a3;
-  v6 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  policiesCopy = policies;
+  v6 = [policiesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v6)
   {
     v7 = v6;
@@ -67,12 +67,12 @@
       {
         if (*v15 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(policiesCopy);
         }
 
         v10 = *(*(&v14 + 1) + 8 * i);
-        v11 = [v10 role];
-        v12 = [v11 isEqualToString:self->_targetRole];
+        role = [v10 role];
+        v12 = [role isEqualToString:self->_targetRole];
 
         if (v12)
         {
@@ -83,7 +83,7 @@
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v7 = [policiesCopy countByEnumeratingWithState:&v14 objects:v18 count:16];
       if (v7)
       {
         continue;

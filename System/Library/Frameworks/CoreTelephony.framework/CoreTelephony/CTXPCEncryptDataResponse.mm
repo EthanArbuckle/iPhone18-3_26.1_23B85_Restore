@@ -1,20 +1,20 @@
 @interface CTXPCEncryptDataResponse
 + (id)allowedClassesForArguments;
-- (CTXPCEncryptDataResponse)initWithCipherText:(id)a3;
+- (CTXPCEncryptDataResponse)initWithCipherText:(id)text;
 - (NSString)cipherText;
 @end
 
 @implementation CTXPCEncryptDataResponse
 
-- (CTXPCEncryptDataResponse)initWithCipherText:(id)a3
+- (CTXPCEncryptDataResponse)initWithCipherText:(id)text
 {
   v13[1] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  textCopy = text;
+  v5 = textCopy;
+  if (textCopy)
   {
     v12 = @"cipherText";
-    v13[0] = v4;
+    v13[0] = textCopy;
     v6 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v13 forKeys:&v12 count:1];
     v10.receiver = self;
     v10.super_class = CTXPCEncryptDataResponse;
@@ -34,8 +34,8 @@
 
 - (NSString)cipherText
 {
-  v2 = [(CTXPCMessage *)self namedArguments];
-  v3 = [v2 objectForKey:@"cipherText"];
+  namedArguments = [(CTXPCMessage *)self namedArguments];
+  v3 = [namedArguments objectForKey:@"cipherText"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -52,7 +52,7 @@
 
 + (id)allowedClassesForArguments
 {
-  v5.receiver = a1;
+  v5.receiver = self;
   v5.super_class = &OBJC_METACLASS___CTXPCEncryptDataResponse;
   v2 = objc_msgSendSuper2(&v5, sel_allowedClassesForArguments);
   v3 = [v2 setByAddingObject:objc_opt_class()];

@@ -1,17 +1,17 @@
 @interface MapsDebugSwitchTableRow
 - (MapsDebugSwitchTableRow)init;
-- (id)_createToggleForIdiom:(int64_t)a3;
-- (void)_configureTapGesture:(id)a3;
-- (void)_didTapContent:(id)a3;
-- (void)_switchDidChangeValue:(id)a3;
-- (void)configureCell:(id)a3;
-- (void)configureCollectionViewCell:(id)a3;
+- (id)_createToggleForIdiom:(int64_t)idiom;
+- (void)_configureTapGesture:(id)gesture;
+- (void)_didTapContent:(id)content;
+- (void)_switchDidChangeValue:(id)value;
+- (void)configureCell:(id)cell;
+- (void)configureCollectionViewCell:(id)cell;
 - (void)invalidate;
 @end
 
 @implementation MapsDebugSwitchTableRow
 
-- (void)_didTapContent:(id)a3
+- (void)_didTapContent:(id)content
 {
   toggle = self->_toggle;
   if (toggle)
@@ -23,29 +23,29 @@
   }
 }
 
-- (void)_switchDidChangeValue:(id)a3
+- (void)_switchDidChangeValue:(id)value
 {
-  v4 = [a3 isOn];
+  isOn = [value isOn];
   v5 = [(MapsDebugSwitchTableRow *)self set];
 
   if (v5)
   {
     v6 = [(MapsDebugSwitchTableRow *)self set];
-    v6[2](v6, v4);
+    v6[2](v6, isOn);
   }
 }
 
-- (void)_configureTapGesture:(id)a3
+- (void)_configureTapGesture:(id)gesture
 {
-  v4 = a3;
-  if (v4)
+  gestureCopy = gesture;
+  if (gestureCopy)
   {
-    v9 = v4;
+    v9 = gestureCopy;
     tapGestureRecognizer = self->_tapGestureRecognizer;
     if (tapGestureRecognizer)
     {
-      v6 = [(UITapGestureRecognizer *)tapGestureRecognizer view];
-      [v6 removeGestureRecognizer:self->_tapGestureRecognizer];
+      view = [(UITapGestureRecognizer *)tapGestureRecognizer view];
+      [view removeGestureRecognizer:self->_tapGestureRecognizer];
     }
 
     v7 = [[UITapGestureRecognizer alloc] initWithTarget:self action:"_didTapContent:"];
@@ -54,23 +54,23 @@
 
     [v9 setUserInteractionEnabled:1];
     [v9 addGestureRecognizer:self->_tapGestureRecognizer];
-    v4 = v9;
+    gestureCopy = v9;
   }
 }
 
-- (void)configureCollectionViewCell:(id)a3
+- (void)configureCollectionViewCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v23.receiver = self;
   v23.super_class = MapsDebugSwitchTableRow;
-  [(MapsDebugTableRow *)&v23 configureCollectionViewCell:v4];
-  v5 = v4;
-  v6 = [v5 defaultContentConfiguration];
-  v7 = [(MapsDebugTableRow *)self title];
-  [v6 setText:v7];
+  [(MapsDebugTableRow *)&v23 configureCollectionViewCell:cellCopy];
+  v5 = cellCopy;
+  defaultContentConfiguration = [v5 defaultContentConfiguration];
+  title = [(MapsDebugTableRow *)self title];
+  [defaultContentConfiguration setText:title];
 
-  v8 = [(MapsDebugTableRow *)self subtitle];
-  [v6 setSecondaryText:v8];
+  subtitle = [(MapsDebugTableRow *)self subtitle];
+  [defaultContentConfiguration setSecondaryText:subtitle];
 
   if (self->_enabled)
   {
@@ -82,67 +82,67 @@
     +[UIColor secondaryLabelColor];
   }
   v9 = ;
-  v10 = [v6 textProperties];
-  [v10 setColor:v9];
+  textProperties = [defaultContentConfiguration textProperties];
+  [textProperties setColor:v9];
 
   if (!self->_enabled)
   {
-    v11 = [v6 image];
+    image = [defaultContentConfiguration image];
 
-    if (v11)
+    if (image)
     {
-      v12 = [v6 image];
-      v13 = [v12 _mapkit_imageWithAlpha:0.5];
-      [v6 setImage:v13];
+      image2 = [defaultContentConfiguration image];
+      v13 = [image2 _mapkit_imageWithAlpha:0.5];
+      [defaultContentConfiguration setImage:v13];
     }
   }
 
-  [v5 setContentConfiguration:v6];
-  v14 = [v5 traitCollection];
-  v15 = -[MapsDebugSwitchTableRow _createToggleForIdiom:](self, "_createToggleForIdiom:", [v14 userInterfaceIdiom]);
+  [v5 setContentConfiguration:defaultContentConfiguration];
+  traitCollection = [v5 traitCollection];
+  v15 = -[MapsDebugSwitchTableRow _createToggleForIdiom:](self, "_createToggleForIdiom:", [traitCollection userInterfaceIdiom]);
 
   toggle = self->_toggle;
   self->_toggle = v15;
   v17 = v15;
 
   v18 = [[_UICellAccessoryConfigurationCustomView alloc] initWithCustomView:v17];
-  v19 = [v5 traitCollection];
-  v20 = [v19 userInterfaceIdiom];
+  traitCollection2 = [v5 traitCollection];
+  userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
-  if (v20 == 5)
+  if (userInterfaceIdiom == 5)
   {
     v25 = v18;
     v21 = [NSArray arrayWithObjects:&v25 count:1];
 
     [v5 setLeadingAccessoryConfigurations:v21];
-    v22 = [v5 contentView];
-    [(MapsDebugSwitchTableRow *)self _configureTapGesture:v22];
+    contentView = [v5 contentView];
+    [(MapsDebugSwitchTableRow *)self _configureTapGesture:contentView];
   }
 
   else
   {
     v24 = v18;
-    v22 = [NSArray arrayWithObjects:&v24 count:1];
+    contentView = [NSArray arrayWithObjects:&v24 count:1];
 
-    [v5 setTrailingAccessoryConfigurations:v22];
+    [v5 setTrailingAccessoryConfigurations:contentView];
   }
 }
 
-- (void)configureCell:(id)a3
+- (void)configureCell:(id)cell
 {
-  v4 = a3;
+  cellCopy = cell;
   v15.receiver = self;
   v15.super_class = MapsDebugSwitchTableRow;
-  [(MapsDebugTableRow *)&v15 configureCell:v4];
-  v5 = [v4 traitCollection];
-  v6 = -[MapsDebugSwitchTableRow _createToggleForIdiom:](self, "_createToggleForIdiom:", [v5 userInterfaceIdiom]);
+  [(MapsDebugTableRow *)&v15 configureCell:cellCopy];
+  traitCollection = [cellCopy traitCollection];
+  v6 = -[MapsDebugSwitchTableRow _createToggleForIdiom:](self, "_createToggleForIdiom:", [traitCollection userInterfaceIdiom]);
 
-  [v4 setAccessoryView:v6];
+  [cellCopy setAccessoryView:v6];
   toggle = self->_toggle;
   self->_toggle = v6;
   v8 = v6;
 
-  v9 = [v4 contentConfiguration];
+  contentConfiguration = [cellCopy contentConfiguration];
   if (self->_enabled)
   {
     +[UIColor labelColor];
@@ -154,24 +154,24 @@
   }
   v10 = ;
 
-  v11 = [v9 textProperties];
-  [v11 setColor:v10];
+  textProperties = [contentConfiguration textProperties];
+  [textProperties setColor:v10];
 
-  [v4 setContentConfiguration:v9];
-  v12 = [v4 traitCollection];
-  v13 = [v12 userInterfaceIdiom];
+  [cellCopy setContentConfiguration:contentConfiguration];
+  traitCollection2 = [cellCopy traitCollection];
+  userInterfaceIdiom = [traitCollection2 userInterfaceIdiom];
 
-  if (v13 == 5)
+  if (userInterfaceIdiom == 5)
   {
-    v14 = [v4 contentView];
-    [(MapsDebugSwitchTableRow *)self _configureTapGesture:v14];
+    contentView = [cellCopy contentView];
+    [(MapsDebugSwitchTableRow *)self _configureTapGesture:contentView];
   }
 }
 
-- (id)_createToggleForIdiom:(int64_t)a3
+- (id)_createToggleForIdiom:(int64_t)idiom
 {
   v4 = off_1015F64D8;
-  if (a3 != 5)
+  if (idiom != 5)
   {
     v4 = UISwitch_ptr;
   }

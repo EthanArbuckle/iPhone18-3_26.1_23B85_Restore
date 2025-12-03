@@ -1,6 +1,6 @@
 @interface BKLibrarySupplementalAsset
-+ (id)newAssetFromJaliscoBookletItem:(id)a3 parentAsset:(id)a4 dataSourceIdentifier:(id)a5;
-- (BKLibrarySupplementalAsset)initWithParentAsset:(id)a3 dataSourceIdentifier:(id)a4 storeID:(id)a5 title:(id)a6 downloadParams:(id)a7 size:(id)a8;
++ (id)newAssetFromJaliscoBookletItem:(id)item parentAsset:(id)asset dataSourceIdentifier:(id)identifier;
+- (BKLibrarySupplementalAsset)initWithParentAsset:(id)asset dataSourceIdentifier:(id)identifier storeID:(id)d title:(id)title downloadParams:(id)params size:(id)size;
 - (NSDate)dataSourceInsertionDate;
 - (NSDate)expectedDate;
 - (NSDate)purchaseDate;
@@ -20,157 +20,157 @@
 
 - (NSString)storePlaylistID
 {
-  v2 = [(BKLibrarySupplementalAsset *)self parentAsset];
-  v3 = [v2 storeID];
+  parentAsset = [(BKLibrarySupplementalAsset *)self parentAsset];
+  storeID = [parentAsset storeID];
 
-  return v3;
+  return storeID;
 }
 
 - (NSString)author
 {
-  v2 = [(BKLibrarySupplementalAsset *)self parentAsset];
-  v3 = [v2 author];
+  parentAsset = [(BKLibrarySupplementalAsset *)self parentAsset];
+  author = [parentAsset author];
 
-  return v3;
+  return author;
 }
 
 - (NSString)sortAuthor
 {
-  v2 = [(BKLibrarySupplementalAsset *)self parentAsset];
-  v3 = [v2 sortAuthor];
+  parentAsset = [(BKLibrarySupplementalAsset *)self parentAsset];
+  sortAuthor = [parentAsset sortAuthor];
 
-  return v3;
+  return sortAuthor;
 }
 
 - (NSString)genre
 {
-  v2 = [(BKLibrarySupplementalAsset *)self parentAsset];
-  v3 = [v2 genre];
+  parentAsset = [(BKLibrarySupplementalAsset *)self parentAsset];
+  genre = [parentAsset genre];
 
-  return v3;
+  return genre;
 }
 
 - (NSString)comments
 {
-  v2 = [(BKLibrarySupplementalAsset *)self parentAsset];
-  v3 = [v2 comments];
+  parentAsset = [(BKLibrarySupplementalAsset *)self parentAsset];
+  comments = [parentAsset comments];
 
-  return v3;
+  return comments;
 }
 
 - (NSString)bookDescription
 {
-  v2 = [(BKLibrarySupplementalAsset *)self parentAsset];
-  v3 = [v2 bookDescription];
+  parentAsset = [(BKLibrarySupplementalAsset *)self parentAsset];
+  bookDescription = [parentAsset bookDescription];
 
-  return v3;
+  return bookDescription;
 }
 
 - (NSString)year
 {
-  v2 = [(BKLibrarySupplementalAsset *)self parentAsset];
-  v3 = [v2 year];
+  parentAsset = [(BKLibrarySupplementalAsset *)self parentAsset];
+  year = [parentAsset year];
 
-  return v3;
+  return year;
 }
 
 - (NSNumber)isExplicit
 {
-  v2 = [(BKLibrarySupplementalAsset *)self parentAsset];
-  v3 = [v2 isExplicit];
+  parentAsset = [(BKLibrarySupplementalAsset *)self parentAsset];
+  isExplicit = [parentAsset isExplicit];
 
-  return v3;
+  return isExplicit;
 }
 
 - (NSDate)purchaseDate
 {
-  v2 = [(BKLibrarySupplementalAsset *)self parentAsset];
-  v3 = [v2 purchaseDate];
+  parentAsset = [(BKLibrarySupplementalAsset *)self parentAsset];
+  purchaseDate = [parentAsset purchaseDate];
 
-  return v3;
+  return purchaseDate;
 }
 
 - (NSString)accountID
 {
-  v2 = [(BKLibrarySupplementalAsset *)self parentAsset];
-  v3 = [v2 accountID];
+  parentAsset = [(BKLibrarySupplementalAsset *)self parentAsset];
+  accountID = [parentAsset accountID];
 
-  return v3;
+  return accountID;
 }
 
 - (int64_t)fileSize
 {
   v2 = [(BKLibrarySupplementalAsset *)self size];
-  v3 = [v2 intValue];
+  intValue = [v2 intValue];
 
-  return v3;
+  return intValue;
 }
 
 - (NSDate)dataSourceInsertionDate
 {
-  v2 = [(BKLibrarySupplementalAsset *)self parentAsset];
-  v3 = [v2 dataSourceInsertionDate];
+  parentAsset = [(BKLibrarySupplementalAsset *)self parentAsset];
+  dataSourceInsertionDate = [parentAsset dataSourceInsertionDate];
 
-  return v3;
+  return dataSourceInsertionDate;
 }
 
 - (NSDate)expectedDate
 {
-  v2 = [(BKLibrarySupplementalAsset *)self parentAsset];
-  v3 = [v2 expectedDate];
+  parentAsset = [(BKLibrarySupplementalAsset *)self parentAsset];
+  expectedDate = [parentAsset expectedDate];
 
-  return v3;
+  return expectedDate;
 }
 
-- (BKLibrarySupplementalAsset)initWithParentAsset:(id)a3 dataSourceIdentifier:(id)a4 storeID:(id)a5 title:(id)a6 downloadParams:(id)a7 size:(id)a8
+- (BKLibrarySupplementalAsset)initWithParentAsset:(id)asset dataSourceIdentifier:(id)identifier storeID:(id)d title:(id)title downloadParams:(id)params size:(id)size
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
+  assetCopy = asset;
+  identifierCopy = identifier;
+  dCopy = d;
+  titleCopy = title;
+  paramsCopy = params;
+  sizeCopy = size;
   v32.receiver = self;
   v32.super_class = BKLibrarySupplementalAsset;
   v21 = [(BKLibrarySupplementalAsset *)&v32 init];
   v22 = v21;
   if (v21)
   {
-    objc_storeStrong(&v21->_parentAsset, a3);
-    v23 = [v17 copy];
+    objc_storeStrong(&v21->_parentAsset, asset);
+    v23 = [dCopy copy];
     storeID = v22->_storeID;
     v22->_storeID = v23;
 
-    v25 = [v18 copy];
+    v25 = [titleCopy copy];
     title = v22->_title;
     v22->_title = v25;
 
-    v27 = [v16 copy];
+    v27 = [identifierCopy copy];
     dataSourceIdentifier = v22->_dataSourceIdentifier;
     v22->_dataSourceIdentifier = v27;
 
-    v29 = [v19 copy];
+    v29 = [paramsCopy copy];
     storeDownloadParameters = v22->_storeDownloadParameters;
     v22->_storeDownloadParameters = v29;
 
-    objc_storeStrong(&v22->_size, a8);
+    objc_storeStrong(&v22->_size, size);
   }
 
   return v22;
 }
 
-+ (id)newAssetFromJaliscoBookletItem:(id)a3 parentAsset:(id)a4 dataSourceIdentifier:(id)a5
++ (id)newAssetFromJaliscoBookletItem:(id)item parentAsset:(id)asset dataSourceIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
+  identifierCopy = identifier;
+  assetCopy = asset;
+  itemCopy = item;
   v10 = [BKLibrarySupplementalAsset alloc];
-  v11 = [v9 storeID];
-  v12 = [v9 title];
-  v13 = [v9 storeDownloadParameters];
-  v14 = [v9 size];
+  storeID = [itemCopy storeID];
+  title = [itemCopy title];
+  storeDownloadParameters = [itemCopy storeDownloadParameters];
+  v14 = [itemCopy size];
 
-  v15 = [(BKLibrarySupplementalAsset *)v10 initWithParentAsset:v8 dataSourceIdentifier:v7 storeID:v11 title:v12 downloadParams:v13 size:v14];
+  v15 = [(BKLibrarySupplementalAsset *)v10 initWithParentAsset:assetCopy dataSourceIdentifier:identifierCopy storeID:storeID title:title downloadParams:storeDownloadParameters size:v14];
   return v15;
 }
 

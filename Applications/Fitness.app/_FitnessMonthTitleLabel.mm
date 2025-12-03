@@ -1,6 +1,6 @@
 @interface _FitnessMonthTitleLabel
 - (_FitnessMonthTitleLabel)init;
-- (void)setDate:(id)a3;
+- (void)setDate:(id)date;
 @end
 
 @implementation _FitnessMonthTitleLabel
@@ -25,12 +25,12 @@
   return v2;
 }
 
-- (void)setDate:(id)a3
+- (void)setDate:(id)date
 {
   v4 = HKLocalizedStringForDateAndTemplate();
-  v5 = [v4 localizedCapitalizedString];
+  localizedCapitalizedString = [v4 localizedCapitalizedString];
 
-  [(_FitnessMonthTitleLabel *)self setText:v5];
+  [(_FitnessMonthTitleLabel *)self setText:localizedCapitalizedString];
   [(_FitnessMonthTitleLabel *)self sizeToFit];
 }
 

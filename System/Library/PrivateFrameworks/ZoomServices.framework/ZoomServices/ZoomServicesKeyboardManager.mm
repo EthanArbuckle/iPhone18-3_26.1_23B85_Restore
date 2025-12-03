@@ -1,6 +1,6 @@
 @interface ZoomServicesKeyboardManager
 + (id)sharedInstance;
-- (int64_t)keyboardCommandForEvent:(id)a3;
+- (int64_t)keyboardCommandForEvent:(id)event;
 @end
 
 @implementation ZoomServicesKeyboardManager
@@ -11,7 +11,7 @@
   block[1] = 3221225472;
   block[2] = __45__ZoomServicesKeyboardManager_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_onceToken_0 != -1)
   {
     dispatch_once(&sharedInstance_onceToken_0, block);
@@ -29,45 +29,45 @@ uint64_t __45__ZoomServicesKeyboardManager_sharedInstance__block_invoke(uint64_t
   return MEMORY[0x2821F96F8]();
 }
 
-- (int64_t)keyboardCommandForEvent:(id)a3
+- (int64_t)keyboardCommandForEvent:(id)event
 {
-  v4 = a3;
-  v5 = [MEMORY[0x277CE7E20] sharedInstance];
-  v6 = [v5 zoomKeyboardShortcutsEnabled];
+  eventCopy = event;
+  mEMORY[0x277CE7E20] = [MEMORY[0x277CE7E20] sharedInstance];
+  zoomKeyboardShortcutsEnabled = [mEMORY[0x277CE7E20] zoomKeyboardShortcutsEnabled];
 
-  if (!v6)
+  if (!zoomKeyboardShortcutsEnabled)
   {
     goto LABEL_31;
   }
 
   if (![(ZoomServicesKeyboardManager *)self inUnitTestMode])
   {
-    v7 = [v4 keyInfo];
-    [v7 translateKeycode];
+    keyInfo = [eventCopy keyInfo];
+    [keyInfo translateKeycode];
   }
 
-  v8 = [v4 keyInfo];
-  v9 = [v8 keyDown];
+  keyInfo2 = [eventCopy keyInfo];
+  keyDown = [keyInfo2 keyDown];
 
-  v10 = [v4 keyInfo];
-  v11 = [v10 modifierState];
-  if (!v9)
+  keyInfo3 = [eventCopy keyInfo];
+  modifierState = [keyInfo3 modifierState];
+  if (!keyDown)
   {
     v20 = ZWCommandOptionShiftModifiers;
 
-    if (v11 == v20)
+    if (modifierState == v20)
     {
-      v21 = [v4 keyInfo];
-      v22 = [v21 keyCode];
+      keyInfo4 = [eventCopy keyInfo];
+      keyCode = [keyInfo4 keyCode];
 
-      if (v22 != 9)
+      if (keyCode != 9)
       {
         v16 = 15;
         goto LABEL_32;
       }
 
-      v17 = [MEMORY[0x277CE7E20] sharedInstance];
-      v18 = [v17 zoomSwitchZoomModeKbShortcutEnabled] == 0;
+      mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+      v18 = [mEMORY[0x277CE7E20]2 zoomSwitchZoomModeKbShortcutEnabled] == 0;
       v19 = 5;
 LABEL_27:
       if (v18)
@@ -90,71 +90,71 @@ LABEL_30:
 
   v12 = ZWCommandOptionModifiers;
 
-  v13 = [v4 keyInfo];
-  v14 = v13;
-  if (v11 != v12)
+  keyInfo5 = [eventCopy keyInfo];
+  v14 = keyInfo5;
+  if (modifierState != v12)
   {
-    v23 = [v13 modifierState];
+    modifierState2 = [keyInfo5 modifierState];
     v24 = ZWControlOptionModifiers;
 
-    if (v23 == v24)
+    if (modifierState2 == v24)
     {
-      v17 = [MEMORY[0x277CE7E20] sharedInstance];
-      v18 = [v17 zoomTempToggleZoomKbShortcutEnabled] == 0;
+      mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+      v18 = [mEMORY[0x277CE7E20]2 zoomTempToggleZoomKbShortcutEnabled] == 0;
       v19 = 3;
       goto LABEL_27;
     }
 
-    v25 = [v4 keyInfo];
-    v26 = [v25 modifierState];
+    keyInfo6 = [eventCopy keyInfo];
+    modifierState3 = [keyInfo6 modifierState];
     v27 = ZWCommandOptionControlModifiers;
 
-    if (v26 == v27)
+    if (modifierState3 == v27)
     {
-      v28 = [v4 keyInfo];
-      v29 = [v28 keyCode];
+      keyInfo7 = [eventCopy keyInfo];
+      keyCode2 = [keyInfo7 keyCode];
 
       v16 = 15;
-      if (v29 > 80)
+      if (keyCode2 > 80)
       {
-        if (v29 == 81)
+        if (keyCode2 == 81)
         {
-          v17 = [MEMORY[0x277CE7E20] sharedInstance];
-          v18 = [v17 zoomResizeZoomWindowKbShortcutEnabled] == 0;
+          mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+          v18 = [mEMORY[0x277CE7E20]2 zoomResizeZoomWindowKbShortcutEnabled] == 0;
           v19 = 13;
         }
 
         else
         {
-          if (v29 != 82)
+          if (keyCode2 != 82)
           {
             goto LABEL_32;
           }
 
-          v17 = [MEMORY[0x277CE7E20] sharedInstance];
-          v18 = [v17 zoomResizeZoomWindowKbShortcutEnabled] == 0;
+          mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+          v18 = [mEMORY[0x277CE7E20]2 zoomResizeZoomWindowKbShortcutEnabled] == 0;
           v19 = 11;
         }
 
         goto LABEL_27;
       }
 
-      if (v29 == 79)
+      if (keyCode2 == 79)
       {
-        v17 = [MEMORY[0x277CE7E20] sharedInstance];
-        v18 = [v17 zoomResizeZoomWindowKbShortcutEnabled] == 0;
+        mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+        v18 = [mEMORY[0x277CE7E20]2 zoomResizeZoomWindowKbShortcutEnabled] == 0;
         v19 = 10;
       }
 
       else
       {
-        if (v29 != 80)
+        if (keyCode2 != 80)
         {
           goto LABEL_32;
         }
 
-        v17 = [MEMORY[0x277CE7E20] sharedInstance];
-        v18 = [v17 zoomResizeZoomWindowKbShortcutEnabled] == 0;
+        mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+        v18 = [mEMORY[0x277CE7E20]2 zoomResizeZoomWindowKbShortcutEnabled] == 0;
         v19 = 12;
       }
 
@@ -162,14 +162,14 @@ LABEL_30:
     }
 
 LABEL_25:
-    v30 = [v4 keyInfo];
-    v31 = [v30 modifierState];
+    keyInfo8 = [eventCopy keyInfo];
+    modifierState4 = [keyInfo8 modifierState];
     v32 = ZWControlModifier;
 
-    if (v31 == v32)
+    if (modifierState4 == v32)
     {
-      v17 = [MEMORY[0x277CE7E20] sharedInstance];
-      v18 = [v17 zoomScrollWheelKbShortcutEnabled] == 0;
+      mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+      v18 = [mEMORY[0x277CE7E20]2 zoomScrollWheelKbShortcutEnabled] == 0;
       v19 = 14;
       goto LABEL_27;
     }
@@ -179,29 +179,29 @@ LABEL_31:
     goto LABEL_32;
   }
 
-  v15 = [v13 keyCode];
+  keyCode3 = [keyInfo5 keyCode];
 
   v16 = 15;
-  if (v15 > 78)
+  if (keyCode3 > 78)
   {
-    if (v15 > 80)
+    if (keyCode3 > 80)
     {
-      if (v15 == 81)
+      if (keyCode3 == 81)
       {
-        v17 = [MEMORY[0x277CE7E20] sharedInstance];
-        v18 = [v17 zoomPanZoomKbShortcutEnabled] == 0;
+        mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+        v18 = [mEMORY[0x277CE7E20]2 zoomPanZoomKbShortcutEnabled] == 0;
         v19 = 9;
       }
 
       else
       {
-        if (v15 != 82)
+        if (keyCode3 != 82)
         {
           goto LABEL_32;
         }
 
-        v17 = [MEMORY[0x277CE7E20] sharedInstance];
-        v18 = [v17 zoomPanZoomKbShortcutEnabled] == 0;
+        mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+        v18 = [mEMORY[0x277CE7E20]2 zoomPanZoomKbShortcutEnabled] == 0;
         v19 = 8;
       }
     }
@@ -209,15 +209,15 @@ LABEL_31:
     else
     {
       [MEMORY[0x277CE7E20] sharedInstance];
-      if (v15 == 79)
-        v17 = {;
-        v18 = [v17 zoomPanZoomKbShortcutEnabled] == 0;
+      if (keyCode3 == 79)
+        mEMORY[0x277CE7E20]2 = {;
+        v18 = [mEMORY[0x277CE7E20]2 zoomPanZoomKbShortcutEnabled] == 0;
         v19 = 7;
       }
 
       else
-        v17 = {;
-        v18 = [v17 zoomPanZoomKbShortcutEnabled] == 0;
+        mEMORY[0x277CE7E20]2 = {;
+        v18 = [mEMORY[0x277CE7E20]2 zoomPanZoomKbShortcutEnabled] == 0;
         v19 = 6;
       }
     }
@@ -225,12 +225,12 @@ LABEL_31:
     goto LABEL_27;
   }
 
-  if (v15 > 44)
+  if (keyCode3 > 44)
   {
-    if (v15 == 45)
+    if (keyCode3 == 45)
     {
-      v17 = [MEMORY[0x277CE7E20] sharedInstance];
-      if ([v17 zoomAdjustZoomLevelKbShortcutEnabled])
+      mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+      if ([mEMORY[0x277CE7E20]2 zoomAdjustZoomLevelKbShortcutEnabled])
       {
         v16 = 1;
       }
@@ -243,13 +243,13 @@ LABEL_31:
 
     else
     {
-      if (v15 != 46)
+      if (keyCode3 != 46)
       {
         goto LABEL_32;
       }
 
-      v17 = [MEMORY[0x277CE7E20] sharedInstance];
-      if ([v17 zoomAdjustZoomLevelKbShortcutEnabled])
+      mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+      if ([mEMORY[0x277CE7E20]2 zoomAdjustZoomLevelKbShortcutEnabled])
       {
         v16 = 0;
       }
@@ -263,18 +263,18 @@ LABEL_31:
     goto LABEL_30;
   }
 
-  if (v15 == 9)
+  if (keyCode3 == 9)
   {
-    v17 = [MEMORY[0x277CE7E20] sharedInstance];
-    v18 = [v17 zoomSwitchZoomModeKbShortcutEnabled] == 0;
+    mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+    v18 = [mEMORY[0x277CE7E20]2 zoomSwitchZoomModeKbShortcutEnabled] == 0;
     v19 = 4;
     goto LABEL_27;
   }
 
-  if (v15 == 37)
+  if (keyCode3 == 37)
   {
-    v17 = [MEMORY[0x277CE7E20] sharedInstance];
-    v18 = [v17 zoomToggleZoomKbShortcutEnabled] == 0;
+    mEMORY[0x277CE7E20]2 = [MEMORY[0x277CE7E20] sharedInstance];
+    v18 = [mEMORY[0x277CE7E20]2 zoomToggleZoomKbShortcutEnabled] == 0;
     v19 = 2;
     goto LABEL_27;
   }

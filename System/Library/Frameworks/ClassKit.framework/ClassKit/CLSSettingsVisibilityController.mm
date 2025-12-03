@@ -4,7 +4,7 @@
 - (CLSSettingsVisibilityController)init;
 - (id)cachedCurrentUserAppleID;
 - (id)currentUser;
-- (void)currentUserDidChange:(id)a3;
+- (void)currentUserDidChange:(id)change;
 - (void)dealloc;
 @end
 
@@ -57,11 +57,11 @@ LABEL_6:
   [(CLSSettingsVisibilityController *)&v6 dealloc];
 }
 
-- (void)currentUserDidChange:(id)a3
+- (void)currentUserDidChange:(id)change
 {
-  v4 = a3;
+  changeCopy = change;
   objc_msgSend_lock(self, v5, v6);
-  v9 = objc_msgSend_userInfo(v4, v7, v8);
+  v9 = objc_msgSend_userInfo(changeCopy, v7, v8);
 
   v11 = objc_msgSend_objectForKey_(v9, v10, @"CLSCurrentUserInfoKey");
   currentUser = self->_currentUser;

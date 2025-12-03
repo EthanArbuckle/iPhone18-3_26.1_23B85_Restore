@@ -1,14 +1,14 @@
 @interface SectionHeaderView
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (UILabel)accessibilitySectionHeaderLabel;
 - (void)layoutSubviews;
 @end
 
 @implementation SectionHeaderView
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  v3 = self;
+  selfCopy = self;
   v6 = SectionHeaderView.sizeThatFits(_:)(__PAIR128__(v5, v4));
 
   width = v6.width;
@@ -20,7 +20,7 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   SectionHeaderView.layoutSubviews()();
 }
 

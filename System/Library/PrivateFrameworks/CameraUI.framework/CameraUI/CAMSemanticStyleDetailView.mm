@@ -1,18 +1,18 @@
 @interface CAMSemanticStyleDetailView
-- (CAMSemanticStyleDetailView)initWithFrame:(CGRect)a3;
-- (id)_descriptionForSemanticStylePreset:(int64_t)a3;
+- (CAMSemanticStyleDetailView)initWithFrame:(CGRect)frame;
+- (id)_descriptionForSemanticStylePreset:(int64_t)preset;
 - (void)_updateTextForCurrentStyle;
-- (void)setSemanticStyle:(id)a3;
+- (void)setSemanticStyle:(id)style;
 @end
 
 @implementation CAMSemanticStyleDetailView
 
-- (CAMSemanticStyleDetailView)initWithFrame:(CGRect)a3
+- (CAMSemanticStyleDetailView)initWithFrame:(CGRect)frame
 {
   v92[17] = *MEMORY[0x1E69E9840];
   v91.receiver = self;
   v91.super_class = CAMSemanticStyleDetailView;
-  v3 = [(CAMSemanticStyleDetailView *)&v91 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(CAMSemanticStyleDetailView *)&v91 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = CEKFontOfSizeWeightStyle();
@@ -47,8 +47,8 @@
     [(UILabel *)v3->__toneTitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v3->__toneTitleLabel setNumberOfLines:1];
     [(UILabel *)v3->__toneTitleLabel setFont:v5];
-    v17 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v3->__toneTitleLabel setTextColor:v17];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v3->__toneTitleLabel setTextColor:secondaryLabelColor];
 
     [(CAMSemanticStyleDetailView *)v3 addSubview:v3->__toneTitleLabel];
     v18 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v7, v8, v9, v10}];
@@ -66,8 +66,8 @@
     [(UILabel *)v3->__warmthTitleLabel setTranslatesAutoresizingMaskIntoConstraints:0];
     [(UILabel *)v3->__warmthTitleLabel setNumberOfLines:1];
     [(UILabel *)v3->__warmthTitleLabel setFont:v5];
-    v22 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v3->__warmthTitleLabel setTextColor:v22];
+    secondaryLabelColor2 = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v3->__warmthTitleLabel setTextColor:secondaryLabelColor2];
 
     [(CAMSemanticStyleDetailView *)v3 addSubview:v3->__warmthTitleLabel];
     v23 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v7, v8, v9, v10}];
@@ -80,84 +80,84 @@
     [(UILabel *)v3->__warmthValueLabel setFont:v5];
     [(CAMSemanticStyleDetailView *)v3 addSubview:v3->__warmthValueLabel];
     v70 = MEMORY[0x1E696ACD8];
-    v88 = [(UILabel *)v3->__styleTitleLabel leadingAnchor];
-    v87 = [(CAMSemanticStyleDetailView *)v3 leadingAnchor];
-    v86 = [v88 constraintEqualToAnchor:v87 constant:17.0];
+    leadingAnchor = [(UILabel *)v3->__styleTitleLabel leadingAnchor];
+    leadingAnchor2 = [(CAMSemanticStyleDetailView *)v3 leadingAnchor];
+    v86 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2 constant:17.0];
     v92[0] = v86;
-    v85 = [(UILabel *)v3->__styleTitleLabel trailingAnchor];
-    v84 = [(CAMSemanticStyleDetailView *)v3 trailingAnchor];
-    v83 = [v85 constraintEqualToAnchor:v84 constant:-17.0];
+    trailingAnchor = [(UILabel *)v3->__styleTitleLabel trailingAnchor];
+    trailingAnchor2 = [(CAMSemanticStyleDetailView *)v3 trailingAnchor];
+    v83 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2 constant:-17.0];
     v92[1] = v83;
-    v82 = [(UILabel *)v3->__styleTitleLabel topAnchor];
-    v81 = [(CAMSemanticStyleDetailView *)v3 topAnchor];
-    v80 = [v82 constraintEqualToAnchor:v81 constant:12.0];
+    topAnchor = [(UILabel *)v3->__styleTitleLabel topAnchor];
+    topAnchor2 = [(CAMSemanticStyleDetailView *)v3 topAnchor];
+    v80 = [topAnchor constraintEqualToAnchor:topAnchor2 constant:12.0];
     v92[2] = v80;
-    v79 = [(UILabel *)v3->__styleDescriptionLabel leadingAnchor];
-    v78 = [(CAMSemanticStyleDetailView *)v3 leadingAnchor];
-    v77 = [v79 constraintEqualToAnchor:v78 constant:17.0];
+    leadingAnchor3 = [(UILabel *)v3->__styleDescriptionLabel leadingAnchor];
+    leadingAnchor4 = [(CAMSemanticStyleDetailView *)v3 leadingAnchor];
+    v77 = [leadingAnchor3 constraintEqualToAnchor:leadingAnchor4 constant:17.0];
     v92[3] = v77;
-    v76 = [(UILabel *)v3->__styleDescriptionLabel trailingAnchor];
-    v75 = [(CAMSemanticStyleDetailView *)v3 trailingAnchor];
-    v74 = [v76 constraintLessThanOrEqualToAnchor:v75 constant:-17.0];
+    trailingAnchor3 = [(UILabel *)v3->__styleDescriptionLabel trailingAnchor];
+    trailingAnchor4 = [(CAMSemanticStyleDetailView *)v3 trailingAnchor];
+    v74 = [trailingAnchor3 constraintLessThanOrEqualToAnchor:trailingAnchor4 constant:-17.0];
     v92[4] = v74;
-    v73 = [(UILabel *)v3->__styleDescriptionLabel topAnchor];
-    v72 = [(UILabel *)v3->__toneTitleLabel bottomAnchor];
-    v71 = [v73 constraintEqualToAnchor:v72 constant:6.0];
+    topAnchor3 = [(UILabel *)v3->__styleDescriptionLabel topAnchor];
+    bottomAnchor = [(UILabel *)v3->__toneTitleLabel bottomAnchor];
+    v71 = [topAnchor3 constraintEqualToAnchor:bottomAnchor constant:6.0];
     v92[5] = v71;
-    v69 = [(UILabel *)v3->__styleDescriptionLabel bottomAnchor];
-    v68 = [(CAMSemanticStyleDetailView *)v3 bottomAnchor];
-    v67 = [v69 constraintEqualToAnchor:v68 constant:-12.0];
+    bottomAnchor2 = [(UILabel *)v3->__styleDescriptionLabel bottomAnchor];
+    bottomAnchor3 = [(CAMSemanticStyleDetailView *)v3 bottomAnchor];
+    v67 = [bottomAnchor2 constraintEqualToAnchor:bottomAnchor3 constant:-12.0];
     v92[6] = v67;
-    v66 = [(UILabel *)v3->__toneTitleLabel leadingAnchor];
-    v65 = [(CAMSemanticStyleDetailView *)v3 leadingAnchor];
-    v64 = [v66 constraintEqualToAnchor:v65 constant:17.0];
+    leadingAnchor5 = [(UILabel *)v3->__toneTitleLabel leadingAnchor];
+    leadingAnchor6 = [(CAMSemanticStyleDetailView *)v3 leadingAnchor];
+    v64 = [leadingAnchor5 constraintEqualToAnchor:leadingAnchor6 constant:17.0];
     v92[7] = v64;
-    v63 = [(UILabel *)v3->__toneTitleLabel topAnchor];
-    v62 = [(UILabel *)v3->__styleTitleLabel bottomAnchor];
-    v61 = [v63 constraintEqualToAnchor:v62 constant:1.0];
+    topAnchor4 = [(UILabel *)v3->__toneTitleLabel topAnchor];
+    bottomAnchor4 = [(UILabel *)v3->__styleTitleLabel bottomAnchor];
+    v61 = [topAnchor4 constraintEqualToAnchor:bottomAnchor4 constant:1.0];
     v92[8] = v61;
-    v60 = [(UILabel *)v3->__toneValueLabel leadingAnchor];
-    v59 = [(UILabel *)v3->__toneTitleLabel trailingAnchor];
-    v58 = [v60 constraintEqualToAnchor:v59 constant:6.0];
+    leadingAnchor7 = [(UILabel *)v3->__toneValueLabel leadingAnchor];
+    trailingAnchor5 = [(UILabel *)v3->__toneTitleLabel trailingAnchor];
+    v58 = [leadingAnchor7 constraintEqualToAnchor:trailingAnchor5 constant:6.0];
     v92[9] = v58;
-    v57 = [(UILabel *)v3->__toneValueLabel widthAnchor];
-    v56 = [v57 constraintGreaterThanOrEqualToConstant:30.0];
+    widthAnchor = [(UILabel *)v3->__toneValueLabel widthAnchor];
+    v56 = [widthAnchor constraintGreaterThanOrEqualToConstant:30.0];
     v92[10] = v56;
-    v55 = [(UILabel *)v3->__toneValueLabel topAnchor];
-    v54 = [(UILabel *)v3->__styleTitleLabel bottomAnchor];
-    v53 = [v55 constraintEqualToAnchor:v54 constant:1.0];
+    topAnchor5 = [(UILabel *)v3->__toneValueLabel topAnchor];
+    bottomAnchor5 = [(UILabel *)v3->__styleTitleLabel bottomAnchor];
+    v53 = [topAnchor5 constraintEqualToAnchor:bottomAnchor5 constant:1.0];
     v92[11] = v53;
-    v52 = [(UILabel *)v3->__warmthTitleLabel leadingAnchor];
-    v51 = [(UILabel *)v3->__toneValueLabel trailingAnchor];
-    v50 = [v52 constraintEqualToAnchor:v51 constant:9.0];
+    leadingAnchor8 = [(UILabel *)v3->__warmthTitleLabel leadingAnchor];
+    trailingAnchor6 = [(UILabel *)v3->__toneValueLabel trailingAnchor];
+    v50 = [leadingAnchor8 constraintEqualToAnchor:trailingAnchor6 constant:9.0];
     v92[12] = v50;
-    v49 = [(UILabel *)v3->__warmthTitleLabel topAnchor];
-    v48 = [(UILabel *)v3->__styleTitleLabel bottomAnchor];
-    v47 = [v49 constraintEqualToAnchor:v48 constant:1.0];
+    topAnchor6 = [(UILabel *)v3->__warmthTitleLabel topAnchor];
+    bottomAnchor6 = [(UILabel *)v3->__styleTitleLabel bottomAnchor];
+    v47 = [topAnchor6 constraintEqualToAnchor:bottomAnchor6 constant:1.0];
     v92[13] = v47;
-    v25 = [(UILabel *)v3->__warmthValueLabel leadingAnchor];
-    v26 = [(UILabel *)v3->__warmthTitleLabel trailingAnchor];
-    v27 = [v25 constraintEqualToAnchor:v26 constant:6.0];
+    leadingAnchor9 = [(UILabel *)v3->__warmthValueLabel leadingAnchor];
+    trailingAnchor7 = [(UILabel *)v3->__warmthTitleLabel trailingAnchor];
+    v27 = [leadingAnchor9 constraintEqualToAnchor:trailingAnchor7 constant:6.0];
     v92[14] = v27;
-    v28 = [(UILabel *)v3->__warmthValueLabel widthAnchor];
-    v29 = [v28 constraintGreaterThanOrEqualToConstant:30.0];
+    widthAnchor2 = [(UILabel *)v3->__warmthValueLabel widthAnchor];
+    v29 = [widthAnchor2 constraintGreaterThanOrEqualToConstant:30.0];
     v92[15] = v29;
-    v30 = [(UILabel *)v3->__warmthValueLabel topAnchor];
-    v31 = [(UILabel *)v3->__styleTitleLabel bottomAnchor];
-    v32 = [v30 constraintEqualToAnchor:v31 constant:1.0];
+    topAnchor7 = [(UILabel *)v3->__warmthValueLabel topAnchor];
+    bottomAnchor7 = [(UILabel *)v3->__styleTitleLabel bottomAnchor];
+    v32 = [topAnchor7 constraintEqualToAnchor:bottomAnchor7 constant:1.0];
     v92[16] = v32;
     v33 = [MEMORY[0x1E695DEC8] arrayWithObjects:v92 count:17];
     [v70 activateConstraints:v33];
 
-    v34 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [(CAMSemanticStyleDetailView *)v3 setBackgroundColor:v34];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [(CAMSemanticStyleDetailView *)v3 setBackgroundColor:secondarySystemBackgroundColor];
 
-    v35 = [(CAMSemanticStyleDetailView *)v3 layer];
-    [v35 setCornerRadius:16.0];
+    layer = [(CAMSemanticStyleDetailView *)v3 layer];
+    [layer setCornerRadius:16.0];
 
     v36 = *MEMORY[0x1E69796E8];
-    v37 = [(CAMSemanticStyleDetailView *)v3 layer];
-    [v37 setCornerCurve:v36];
+    layer2 = [(CAMSemanticStyleDetailView *)v3 layer];
+    [layer2 setCornerCurve:v36];
 
     v38 = objc_alloc_init(MEMORY[0x1E696ADA0]);
     integerFormatter = v3->__integerFormatter;
@@ -168,11 +168,11 @@
     v40 = [(NSNumberFormatter *)v3->__integerFormatter stringFromNumber:&unk_1F16C7A90];
     [(NSNumberFormatter *)v3->__integerFormatter setZeroSymbol:v40];
 
-    v41 = [(NSNumberFormatter *)v3->__integerFormatter plusSign];
-    [(NSNumberFormatter *)v3->__integerFormatter setPositivePrefix:v41];
+    plusSign = [(NSNumberFormatter *)v3->__integerFormatter plusSign];
+    [(NSNumberFormatter *)v3->__integerFormatter setPositivePrefix:plusSign];
 
-    v42 = [(NSNumberFormatter *)v3->__integerFormatter minusSign];
-    v43 = [v42 isEqualToString:@"-"];
+    minusSign = [(NSNumberFormatter *)v3->__integerFormatter minusSign];
+    v43 = [minusSign isEqualToString:@"-"];
     v44 = v3->__integerFormatter;
     if (v43)
     {
@@ -181,8 +181,8 @@
 
     else
     {
-      v45 = [(NSNumberFormatter *)v44 minusSign];
-      [(NSNumberFormatter *)v3->__integerFormatter setNegativePrefix:v45];
+      minusSign2 = [(NSNumberFormatter *)v44 minusSign];
+      [(NSNumberFormatter *)v3->__integerFormatter setNegativePrefix:minusSign2];
     }
 
     [(CAMSemanticStyleDetailView *)v3 _updateTextForCurrentStyle];
@@ -191,71 +191,71 @@
   return v3;
 }
 
-- (void)setSemanticStyle:(id)a3
+- (void)setSemanticStyle:(id)style
 {
-  v5 = a3;
+  styleCopy = style;
   if (![(CAMSemanticStyle *)self->_semanticStyle isEqualToSemanticStyle:?])
   {
-    objc_storeStrong(&self->_semanticStyle, a3);
+    objc_storeStrong(&self->_semanticStyle, style);
     [(CAMSemanticStyleDetailView *)self _updateTextForCurrentStyle];
   }
 }
 
 - (void)_updateTextForCurrentStyle
 {
-  v29 = [(CAMSemanticStyleDetailView *)self semanticStyle];
+  semanticStyle = [(CAMSemanticStyleDetailView *)self semanticStyle];
   v3 = MEMORY[0x1E696AEC0];
   v4 = CAMLocalizedFrameworkString(@"SEMANTIC_STYLES_SETTINGS_DETAIL_TITLE", 0);
-  v5 = [v29 displayName];
-  v6 = [v3 stringWithValidatedFormat:v4 validFormatSpecifiers:@"%@" error:0, v5];
+  displayName = [semanticStyle displayName];
+  v6 = [v3 stringWithValidatedFormat:v4 validFormatSpecifiers:@"%@" error:0, displayName];
 
-  v7 = [v6 cam_uppercaseStringWithPreferredLocale];
-  v8 = [(CAMSemanticStyleDetailView *)self _styleTitleLabel];
-  [v8 setText:v7];
+  cam_uppercaseStringWithPreferredLocale = [v6 cam_uppercaseStringWithPreferredLocale];
+  _styleTitleLabel = [(CAMSemanticStyleDetailView *)self _styleTitleLabel];
+  [_styleTitleLabel setText:cam_uppercaseStringWithPreferredLocale];
 
-  v9 = -[CAMSemanticStyleDetailView _descriptionForSemanticStylePreset:](self, "_descriptionForSemanticStylePreset:", [v29 presetType]);
-  v10 = [(CAMSemanticStyleDetailView *)self _styleDescriptionLabel];
-  [v10 setText:v9];
+  v9 = -[CAMSemanticStyleDetailView _descriptionForSemanticStylePreset:](self, "_descriptionForSemanticStylePreset:", [semanticStyle presetType]);
+  _styleDescriptionLabel = [(CAMSemanticStyleDetailView *)self _styleDescriptionLabel];
+  [_styleDescriptionLabel setText:v9];
 
   v11 = CAMLocalizedFrameworkString(@"SEMANTIC_STYLES_CONTROL_TONE", 0);
-  v12 = [v11 cam_uppercaseStringWithPreferredLocale];
-  v13 = [(CAMSemanticStyleDetailView *)self _toneTitleLabel];
-  [v13 setText:v12];
+  cam_uppercaseStringWithPreferredLocale2 = [v11 cam_uppercaseStringWithPreferredLocale];
+  _toneTitleLabel = [(CAMSemanticStyleDetailView *)self _toneTitleLabel];
+  [_toneTitleLabel setText:cam_uppercaseStringWithPreferredLocale2];
 
-  v14 = [(CAMSemanticStyleDetailView *)self _integerFormatter];
+  _integerFormatter = [(CAMSemanticStyleDetailView *)self _integerFormatter];
   v15 = MEMORY[0x1E696AD98];
-  [v29 sceneBias];
+  [semanticStyle sceneBias];
   v17 = [v15 numberWithDouble:v16 * 100.0];
-  v18 = [v14 stringFromNumber:v17];
-  v19 = [(CAMSemanticStyleDetailView *)self _toneValueLabel];
-  [v19 setText:v18];
+  v18 = [_integerFormatter stringFromNumber:v17];
+  _toneValueLabel = [(CAMSemanticStyleDetailView *)self _toneValueLabel];
+  [_toneValueLabel setText:v18];
 
   v20 = CAMLocalizedFrameworkString(@"SEMANTIC_STYLES_CONTROL_WARMTH", 0);
-  v21 = [v20 cam_uppercaseStringWithPreferredLocale];
-  v22 = [(CAMSemanticStyleDetailView *)self _warmthTitleLabel];
-  [v22 setText:v21];
+  cam_uppercaseStringWithPreferredLocale3 = [v20 cam_uppercaseStringWithPreferredLocale];
+  _warmthTitleLabel = [(CAMSemanticStyleDetailView *)self _warmthTitleLabel];
+  [_warmthTitleLabel setText:cam_uppercaseStringWithPreferredLocale3];
 
-  v23 = [(CAMSemanticStyleDetailView *)self _integerFormatter];
+  _integerFormatter2 = [(CAMSemanticStyleDetailView *)self _integerFormatter];
   v24 = MEMORY[0x1E696AD98];
-  [v29 warmthBias];
+  [semanticStyle warmthBias];
   v26 = [v24 numberWithDouble:v25 * 100.0];
-  v27 = [v23 stringFromNumber:v26];
-  v28 = [(CAMSemanticStyleDetailView *)self _warmthValueLabel];
-  [v28 setText:v27];
+  v27 = [_integerFormatter2 stringFromNumber:v26];
+  _warmthValueLabel = [(CAMSemanticStyleDetailView *)self _warmthValueLabel];
+  [_warmthValueLabel setText:v27];
 
   [(CAMSemanticStyleDetailView *)self setNeedsLayout];
 }
 
-- (id)_descriptionForSemanticStylePreset:(int64_t)a3
+- (id)_descriptionForSemanticStylePreset:(int64_t)preset
 {
-  if (a3 > 4)
+  if (preset > 4)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = CAMLocalizedFrameworkString(off_1E76FAAD0[a3], 0);
+    v4 = CAMLocalizedFrameworkString(off_1E76FAAD0[preset], 0);
   }
 
   return v4;

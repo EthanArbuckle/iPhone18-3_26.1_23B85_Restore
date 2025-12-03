@@ -1,6 +1,6 @@
 @interface PXProtoFeatureEmptyPlaceholderView
 - (CGSize)intrinsicContentSize;
-- (PXProtoFeatureEmptyPlaceholderView)initWithFrame:(CGRect)a3;
+- (PXProtoFeatureEmptyPlaceholderView)initWithFrame:(CGRect)frame;
 - (void)_updateLabelText;
 - (void)statusDescriptionDidChange;
 @end
@@ -9,11 +9,11 @@
 
 - (void)_updateLabelText
 {
-  v3 = [(PXProtoFeaturePlaceholderView *)self statusDescription];
-  v5 = v3;
-  if (v3)
+  statusDescription = [(PXProtoFeaturePlaceholderView *)self statusDescription];
+  v5 = statusDescription;
+  if (statusDescription)
   {
-    v4 = v3;
+    v4 = statusDescription;
   }
 
   else
@@ -49,11 +49,11 @@
   return result;
 }
 
-- (PXProtoFeatureEmptyPlaceholderView)initWithFrame:(CGRect)a3
+- (PXProtoFeatureEmptyPlaceholderView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = PXProtoFeatureEmptyPlaceholderView;
-  v3 = [(PXProtoFeaturePlaceholderView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(PXProtoFeaturePlaceholderView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc(MEMORY[0x1E69DCC10]);

@@ -1,11 +1,11 @@
 @interface UserAlertController
-- (void)alertService:(id)a3 wantsDismissalForAlert:(id)a4;
-- (void)alertService:(id)a3 wantsPresentationForAlert:(id)a4 preferredPresentationStyle:(int64_t)a5;
+- (void)alertService:(id)service wantsDismissalForAlert:(id)alert;
+- (void)alertService:(id)service wantsPresentationForAlert:(id)alert preferredPresentationStyle:(int64_t)style;
 @end
 
 @implementation UserAlertController
 
-- (void)alertService:(id)a3 wantsPresentationForAlert:(id)a4 preferredPresentationStyle:(int64_t)a5
+- (void)alertService:(id)service wantsPresentationForAlert:(id)alert preferredPresentationStyle:(int64_t)style
 {
   v7 = sub_100004C60(&qword_10006F450, &qword_10004E198);
   v8 = *(*(v7 - 8) + 64);
@@ -14,10 +14,10 @@
   v11 = type metadata accessor for TaskPriority();
   (*(*(v11 - 8) + 56))(v10, 1, 1, v11);
   type metadata accessor for MainActor();
-  v12 = a4;
-  v13 = self;
-  v14 = v12;
-  v15 = v13;
+  alertCopy = alert;
+  selfCopy = self;
+  v14 = alertCopy;
+  v15 = selfCopy;
   v16 = static MainActor.shared.getter();
   v17 = swift_allocObject();
   v17[2] = v16;
@@ -27,7 +27,7 @@
   sub_10002D668(0, 0, v10, &unk_10004E348, v17);
 }
 
-- (void)alertService:(id)a3 wantsDismissalForAlert:(id)a4
+- (void)alertService:(id)service wantsDismissalForAlert:(id)alert
 {
   v6 = sub_100004C60(&qword_10006F450, &qword_10004E198);
   v7 = *(*(v6 - 8) + 64);
@@ -36,10 +36,10 @@
   v10 = type metadata accessor for TaskPriority();
   (*(*(v10 - 8) + 56))(v9, 1, 1, v10);
   type metadata accessor for MainActor();
-  v11 = a4;
-  v12 = self;
-  v13 = v11;
-  v14 = v12;
+  alertCopy = alert;
+  selfCopy = self;
+  v13 = alertCopy;
+  v14 = selfCopy;
   v15 = static MainActor.shared.getter();
   v16 = swift_allocObject();
   v16[2] = v15;

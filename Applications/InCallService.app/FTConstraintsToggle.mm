@@ -1,7 +1,7 @@
 @interface FTConstraintsToggle
 - (UIView)view;
-- (void)setUsingSecondaryConstraints:(BOOL)a3;
-- (void)setView:(id)a3;
+- (void)setUsingSecondaryConstraints:(BOOL)constraints;
+- (void)setView:(id)view;
 - (void)toggle;
 - (void)updateConstraints;
 @end
@@ -15,28 +15,28 @@
   return v2;
 }
 
-- (void)setView:(id)a3
+- (void)setView:(id)view
 {
-  v5 = a3;
-  v6 = self;
-  sub_1001D6DE8(a3);
+  viewCopy = view;
+  selfCopy = self;
+  sub_1001D6DE8(view);
 }
 
-- (void)setUsingSecondaryConstraints:(BOOL)a3
+- (void)setUsingSecondaryConstraints:(BOOL)constraints
 {
-  v4 = self;
-  sub_1001D71D4(a3);
+  selfCopy = self;
+  sub_1001D71D4(constraints);
 }
 
 - (void)updateConstraints
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D721C();
 }
 
 - (void)toggle
 {
-  v2 = self;
+  selfCopy = self;
   sub_1001D73F0();
 }
 

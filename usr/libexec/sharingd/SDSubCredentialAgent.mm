@@ -4,14 +4,14 @@
 - (SDSubCredentialAgent)init;
 - (void)_activate;
 - (void)_invalidate;
-- (void)_uiPresentWithParams:(id)a3 completion:(id)a4;
+- (void)_uiPresentWithParams:(id)params completion:(id)completion;
 - (void)activate;
 - (void)invalidate;
 - (void)prefsChanged;
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4;
-- (void)remoteAlertHandleDidActivate:(id)a3;
-- (void)remoteAlertHandleDidDeactivate:(id)a3;
-- (void)uiPresentWithParams:(id)a3 completion:(id)a4;
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error;
+- (void)remoteAlertHandleDidActivate:(id)activate;
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate;
+- (void)uiPresentWithParams:(id)params completion:(id)completion;
 @end
 
 @implementation SDSubCredentialAgent
@@ -138,66 +138,66 @@
   }
 }
 
-- (void)uiPresentWithParams:(id)a3 completion:(id)a4
+- (void)uiPresentWithParams:(id)params completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  completionCopy = completion;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F8B90;
   block[3] = &unk_1008CE730;
   block[4] = self;
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = paramsCopy;
+  v13 = completionCopy;
+  v9 = completionCopy;
+  v10 = paramsCopy;
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_uiPresentWithParams:(id)a3 completion:(id)a4
+- (void)_uiPresentWithParams:(id)params completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
+  paramsCopy = params;
+  completionCopy = completion;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v8 = [v6 adamIDs];
-  if (v8)
+  adamIDs = [paramsCopy adamIDs];
+  if (adamIDs)
   {
-    v9 = v8;
+    v9 = adamIDs;
     goto LABEL_4;
   }
 
-  v10 = [v6 adamID];
-  v31 = v10;
+  adamID = [paramsCopy adamID];
+  v31 = adamID;
   v9 = [NSArray arrayWithObjects:&v31 count:1];
 
   if (v9)
   {
 LABEL_4:
-    v11 = [v6 title];
-    if (!v11)
+    title = [paramsCopy title];
+    if (!title)
     {
       if (dword_100972A88 <= 90 && (dword_100972A88 != -1 || _LogCategory_Initialize()))
       {
         sub_1001F98B4();
       }
 
-      v12 = NSErrorWithOSStatusF();
-      if (v7)
+      subtitle = NSErrorWithOSStatusF();
+      if (completionCopy)
       {
-        v7[2](v7, v12);
+        completionCopy[2](completionCopy, subtitle);
       }
 
       goto LABEL_41;
     }
 
-    v12 = [v6 subtitle];
-    if (v12)
+    subtitle = [paramsCopy subtitle];
+    if (subtitle)
     {
-      v13 = [v6 issuerID];
-      if (v13 || ([v6 adamID], (v13 = objc_claimAutoreleasedReturnValue()) != 0))
+      issuerID = [paramsCopy issuerID];
+      if (issuerID || ([paramsCopy adamID], (issuerID = objc_claimAutoreleasedReturnValue()) != 0))
       {
-        v14 = v13;
+        v14 = issuerID;
         if (gSDProxCardsSuppressed == 1)
         {
           if (dword_100972A88 <= 90 && (dword_100972A88 != -1 || _LogCategory_Initialize()))
@@ -231,8 +231,8 @@ LABEL_4:
 
             v19 = objc_alloc_init(NSMutableDictionary);
             [v19 setObject:v9 forKeyedSubscript:@"adamIDs"];
-            [v19 setObject:v11 forKeyedSubscript:@"title"];
-            [v19 setObject:v12 forKeyedSubscript:@"subtitle"];
+            [v19 setObject:title forKeyedSubscript:@"title"];
+            [v19 setObject:subtitle forKeyedSubscript:@"subtitle"];
             [v19 setObject:v14 forKeyedSubscript:@"issuerID"];
             v20 = [NSNumber numberWithBool:self->_prefAppInfoDownload];
             [v19 setObject:v20 forKeyedSubscript:@"appInfoDownload"];
@@ -274,9 +274,9 @@ LABEL_4:
               }
 
               v29 = NSErrorWithOSStatusF();
-              if (v7)
+              if (completionCopy)
               {
-                v7[2](v7, v29);
+                completionCopy[2](completionCopy, v29);
               }
 
               v28 = self->_alertHandle;
@@ -284,9 +284,9 @@ LABEL_4:
 
             [(SBSRemoteAlertHandle *)v28 addObserver:self];
             [(SBSRemoteAlertHandle *)self->_alertHandle activateWithContext:0];
-            if (v7)
+            if (completionCopy)
             {
-              v7[2](v7, 0);
+              completionCopy[2](completionCopy, 0);
             }
 
             goto LABEL_40;
@@ -299,9 +299,9 @@ LABEL_4:
         }
 
         v18 = NSErrorWithOSStatusF();
-        if (v7)
+        if (completionCopy)
         {
-          v7[2](v7, v18);
+          completionCopy[2](completionCopy, v18);
         }
 
 LABEL_40:
@@ -322,9 +322,9 @@ LABEL_41:
     }
 
     v14 = NSErrorWithOSStatusF();
-    if (v7)
+    if (completionCopy)
     {
-      v7[2](v7, v14);
+      completionCopy[2](completionCopy, v14);
     }
 
     goto LABEL_40;
@@ -336,56 +336,56 @@ LABEL_41:
   }
 
   v9 = NSErrorWithOSStatusF();
-  if (v7)
+  if (completionCopy)
   {
-    v7[2](v7, v9);
+    completionCopy[2](completionCopy, v9);
   }
 
 LABEL_42:
 }
 
-- (void)remoteAlertHandleDidActivate:(id)a3
+- (void)remoteAlertHandleDidActivate:(id)activate
 {
-  v4 = a3;
+  activateCopy = activate;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001F9268;
   v7[3] = &unk_1008CE028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = activateCopy;
+  selfCopy = self;
+  v6 = activateCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)remoteAlertHandleDidDeactivate:(id)a3
+- (void)remoteAlertHandleDidDeactivate:(id)deactivate
 {
-  v4 = a3;
+  deactivateCopy = deactivate;
   dispatchQueue = self->_dispatchQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1001F93C0;
   v7[3] = &unk_1008CE028;
-  v8 = v4;
-  v9 = self;
-  v6 = v4;
+  v8 = deactivateCopy;
+  selfCopy = self;
+  v6 = deactivateCopy;
   dispatch_async(dispatchQueue, v7);
 }
 
-- (void)remoteAlertHandle:(id)a3 didInvalidateWithError:(id)a4
+- (void)remoteAlertHandle:(id)handle didInvalidateWithError:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  handleCopy = handle;
+  errorCopy = error;
   dispatchQueue = self->_dispatchQueue;
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = sub_1001F9544;
   block[3] = &unk_1008CE900;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = handleCopy;
+  selfCopy = self;
+  v14 = errorCopy;
+  v9 = errorCopy;
+  v10 = handleCopy;
   dispatch_async(dispatchQueue, block);
 }
 

@@ -1,14 +1,14 @@
 @interface APPBMediaFiles
 + (id)options;
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
 - (unint64_t)hash;
-- (void)addMediaAssets:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addMediaAssets:(id)assets;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation APPBMediaFiles
@@ -25,22 +25,22 @@
   return v3;
 }
 
-- (void)addMediaAssets:(id)a3
+- (void)addMediaAssets:(id)assets
 {
-  v4 = a3;
+  assetsCopy = assets;
   mediaAssets = self->_mediaAssets;
-  v8 = v4;
+  v8 = assetsCopy;
   if (!mediaAssets)
   {
     v6 = objc_alloc_init(NSMutableArray);
     v7 = self->_mediaAssets;
     self->_mediaAssets = v6;
 
-    v4 = v8;
+    assetsCopy = v8;
     mediaAssets = self->_mediaAssets;
   }
 
-  [(NSMutableArray *)mediaAssets addObject:v4];
+  [(NSMutableArray *)mediaAssets addObject:assetsCopy];
 }
 
 - (id)description
@@ -48,8 +48,8 @@
   v7.receiver = self;
   v7.super_class = APPBMediaFiles;
   v3 = [(APPBMediaFiles *)&v7 description];
-  v4 = [(APPBMediaFiles *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(APPBMediaFiles *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -85,8 +85,8 @@
             objc_enumerationMutation(v6);
           }
 
-          v11 = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
-          [v5 addObject:v11];
+          dictionaryRepresentation = [*(*(&v13 + 1) + 8 * i) dictionaryRepresentation];
+          [v5 addObject:dictionaryRepresentation];
         }
 
         v8 = [(NSMutableArray *)v6 countByEnumeratingWithState:&v13 objects:v17 count:16];
@@ -101,9 +101,9 @@
   return v3;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteDoubleField();
@@ -141,23 +141,23 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
-    v4[1] = *&self->_duration;
-    *(v4 + 24) |= 1u;
+    toCopy[1] = *&self->_duration;
+    *(toCopy + 24) |= 1u;
   }
 
-  v9 = v4;
+  v9 = toCopy;
   if ([(APPBMediaFiles *)self mediaAssetsCount])
   {
     [v9 clearMediaAssets];
-    v5 = [(APPBMediaFiles *)self mediaAssetsCount];
-    if (v5)
+    mediaAssetsCount = [(APPBMediaFiles *)self mediaAssetsCount];
+    if (mediaAssetsCount)
     {
-      v6 = v5;
+      v6 = mediaAssetsCount;
       for (i = 0; i != v6; ++i)
       {
         v8 = [(APPBMediaFiles *)self mediaAssetsAtIndex:i];
@@ -167,9 +167,9 @@
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   v6 = v5;
   if (*&self->_has)
   {
@@ -197,7 +197,7 @@
           objc_enumerationMutation(v7);
         }
 
-        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{a3, v14}];
+        v12 = [*(*(&v14 + 1) + 8 * v11) copyWithZone:{zone, v14}];
         [v6 addMediaAssets:v12];
 
         v11 = v11 + 1;
@@ -213,23 +213,23 @@
   return v6;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_9;
   }
 
   if (*&self->_has)
   {
-    if ((*(v4 + 24) & 1) == 0 || self->_duration != *(v4 + 1))
+    if ((*(equalCopy + 24) & 1) == 0 || self->_duration != *(equalCopy + 1))
     {
       goto LABEL_9;
     }
   }
 
-  else if (*(v4 + 24))
+  else if (*(equalCopy + 24))
   {
 LABEL_9:
     v6 = 0;
@@ -237,7 +237,7 @@ LABEL_9:
   }
 
   mediaAssets = self->_mediaAssets;
-  if (mediaAssets | *(v4 + 2))
+  if (mediaAssets | *(equalCopy + 2))
   {
     v6 = [(NSMutableArray *)mediaAssets isEqual:?];
   }
@@ -290,13 +290,13 @@ LABEL_10:
   return [(NSMutableArray *)self->_mediaAssets hash]^ v4;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = v4;
-  if (*(v4 + 24))
+  fromCopy = from;
+  v5 = fromCopy;
+  if (*(fromCopy + 24))
   {
-    self->_duration = *(v4 + 1);
+    self->_duration = *(fromCopy + 1);
     *&self->_has |= 1u;
   }
 
@@ -304,7 +304,7 @@ LABEL_10:
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = *(v4 + 2);
+  v6 = *(fromCopy + 2);
   v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {

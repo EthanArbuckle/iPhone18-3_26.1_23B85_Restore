@@ -1,48 +1,48 @@
 @interface PBFPosterSnapshotRequest
-+ (BOOL)isRequestFulfilled:(id)a3 forDefinition:(id)a4 modelCoordinatorProvider:(id)a5;
-+ (BOOL)isRequestFulfilled:(id)a3 modelCoordinatorProvider:(id)a4;
-+ (id)filterFulfilledSnapshotRequests:(id)a3 modelCoordinatorProvider:(id)a4;
-+ (id)snapshotRequestForConfiguration:(id)a3 context:(id)a4;
-+ (id)snapshotRequestForConfiguration:(id)a3 withinSwitcherConfiguration:(id)a4 variant:(int64_t)a5 snapshotDefinitions:(id)a6 displayContext:(id)a7;
-+ (id)snapshotRequestForPreview:(id)a3 context:(id)a4;
-+ (id)snapshotRequestForPreview:(id)a3 context:(id)a4 definition:(id)a5;
-- (BOOL)_isEqualToRequest:(id)a3 allowingOtherDefinitionsAreSubset:(BOOL)a4;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isValidWithError:(id *)a3;
-- (PBFPosterSnapshotRequest)initWithConfiguration:(id)a3 definitions:(id)a4 context:(id)a5;
-- (PBFPosterSnapshotRequest)initWithDescriptor:(id)a3 configuredProperties:(id)a4 definitions:(id)a5 context:(id)a6;
-- (PBFPosterSnapshotRequest)initWithPath:(id)a3 provider:(id)a4 configuredProperties:(id)a5 definitions:(id)a6 context:(id)a7;
-- (PBFPosterSnapshotRequest)requestWithDefinitions:(id)a3;
-- (PBFPosterSnapshotRequest)requestWithDisplayContext:(id)a3;
-- (PBFPosterSnapshotRequest)requestWithIntention:(unint64_t)a3;
-- (PBFPosterSnapshotRequest)requestWithLoadFromCacheIfAvailable:(BOOL)a3;
-- (PBFPosterSnapshotRequest)requestWithPowerLogReason:(int64_t)a3;
-- (PBFPosterSnapshotRequest)requestWithSignificantEventsCounter:(unint64_t)a3;
++ (BOOL)isRequestFulfilled:(id)fulfilled forDefinition:(id)definition modelCoordinatorProvider:(id)provider;
++ (BOOL)isRequestFulfilled:(id)fulfilled modelCoordinatorProvider:(id)provider;
++ (id)filterFulfilledSnapshotRequests:(id)requests modelCoordinatorProvider:(id)provider;
++ (id)snapshotRequestForConfiguration:(id)configuration context:(id)context;
++ (id)snapshotRequestForConfiguration:(id)configuration withinSwitcherConfiguration:(id)switcherConfiguration variant:(int64_t)variant snapshotDefinitions:(id)definitions displayContext:(id)context;
++ (id)snapshotRequestForPreview:(id)preview context:(id)context;
++ (id)snapshotRequestForPreview:(id)preview context:(id)context definition:(id)definition;
+- (BOOL)_isEqualToRequest:(id)request allowingOtherDefinitionsAreSubset:(BOOL)subset;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isValidWithError:(id *)error;
+- (PBFPosterSnapshotRequest)initWithConfiguration:(id)configuration definitions:(id)definitions context:(id)context;
+- (PBFPosterSnapshotRequest)initWithDescriptor:(id)descriptor configuredProperties:(id)properties definitions:(id)definitions context:(id)context;
+- (PBFPosterSnapshotRequest)initWithPath:(id)path provider:(id)provider configuredProperties:(id)properties definitions:(id)definitions context:(id)context;
+- (PBFPosterSnapshotRequest)requestWithDefinitions:(id)definitions;
+- (PBFPosterSnapshotRequest)requestWithDisplayContext:(id)context;
+- (PBFPosterSnapshotRequest)requestWithIntention:(unint64_t)intention;
+- (PBFPosterSnapshotRequest)requestWithLoadFromCacheIfAvailable:(BOOL)available;
+- (PBFPosterSnapshotRequest)requestWithPowerLogReason:(int64_t)reason;
+- (PBFPosterSnapshotRequest)requestWithSignificantEventsCounter:(unint64_t)counter;
 - (id)_buildPUIPosterSnapshotRequests;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (unint64_t)hash;
 @end
 
 @implementation PBFPosterSnapshotRequest
 
-+ (id)snapshotRequestForPreview:(id)a3 context:(id)a4
++ (id)snapshotRequestForPreview:(id)preview context:(id)context
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [PBFPosterSnapshotDefinition defaultPreviewDefinitionForPreview:v7];
-  v9 = [a1 snapshotRequestForPreview:v7 context:v6 definition:v8];
+  contextCopy = context;
+  previewCopy = preview;
+  v8 = [PBFPosterSnapshotDefinition defaultPreviewDefinitionForPreview:previewCopy];
+  v9 = [self snapshotRequestForPreview:previewCopy context:contextCopy definition:v8];
 
   return v9;
 }
 
-+ (id)snapshotRequestForPreview:(id)a3 context:(id)a4 definition:(id)a5
++ (id)snapshotRequestForPreview:(id)preview context:(id)context definition:(id)definition
 {
   v23[1] = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = v8;
+  previewCopy = preview;
+  contextCopy = context;
+  definitionCopy = definition;
+  v11 = previewCopy;
   if (!v11)
   {
     [PBFPosterSnapshotRequest snapshotRequestForPreview:a2 context:? definition:?];
@@ -54,7 +54,7 @@
     [PBFPosterSnapshotRequest snapshotRequestForPreview:a2 context:? definition:?];
   }
 
-  v13 = v10;
+  v13 = definitionCopy;
   NSClassFromString(&cfstr_Pbfpostersnaps_2.isa);
   if (!v13)
   {
@@ -66,26 +66,26 @@
     [PBFPosterSnapshotRequest snapshotRequestForPreview:a2 context:? definition:?];
   }
 
-  v14 = [v12 posterDescriptorLookupInfo];
-  v15 = [v14 posterDescriptorPath];
+  posterDescriptorLookupInfo = [v12 posterDescriptorLookupInfo];
+  posterDescriptorPath = [posterDescriptorLookupInfo posterDescriptorPath];
 
-  v16 = [v12 posterDescriptorLookupInfo];
-  v17 = [v16 posterDescriptorExtension];
-  v18 = [v17 posterExtensionBundleIdentifier];
+  posterDescriptorLookupInfo2 = [v12 posterDescriptorLookupInfo];
+  posterDescriptorExtension = [posterDescriptorLookupInfo2 posterDescriptorExtension];
+  posterExtensionBundleIdentifier = [posterDescriptorExtension posterExtensionBundleIdentifier];
 
   v19 = [MEMORY[0x277D3ED60] pbf_configuredPropertiesForPreview:v12];
   v23[0] = v13;
   v20 = [MEMORY[0x277CBEA60] arrayWithObjects:v23 count:1];
-  v21 = [[PBFPosterSnapshotRequest alloc] initWithPath:v15 provider:v18 configuredProperties:v19 definitions:v20 context:v9];
+  v21 = [[PBFPosterSnapshotRequest alloc] initWithPath:posterDescriptorPath provider:posterExtensionBundleIdentifier configuredProperties:v19 definitions:v20 context:contextCopy];
 
   return v21;
 }
 
-+ (id)snapshotRequestForConfiguration:(id)a3 context:(id)a4
++ (id)snapshotRequestForConfiguration:(id)configuration context:(id)context
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = v6;
+  configurationCopy = configuration;
+  contextCopy = context;
+  v8 = configurationCopy;
   NSClassFromString(&cfstr_Prposterconfig.isa);
   if (!v8)
   {
@@ -97,50 +97,50 @@
     [PBFPosterSnapshotRequest snapshotRequestForConfiguration:a2 context:?];
   }
 
-  v9 = [v8 _path];
-  if (([v9 isServerPosterPath] & 1) == 0)
+  _path = [v8 _path];
+  if (([_path isServerPosterPath] & 1) == 0)
   {
     [PBFPosterSnapshotRequest snapshotRequestForConfiguration:a2 context:?];
   }
 
-  v10 = [v9 identity];
-  v11 = [v10 type];
+  identity = [_path identity];
+  type = [identity type];
 
-  if (v11 != 3)
+  if (type != 3)
   {
     [PBFPosterSnapshotRequest snapshotRequestForConfiguration:a2 context:?];
   }
 
   v12 = [v8 loadConfiguredPropertiesWithError:0];
   v13 = [PBFPosterSnapshotRequest alloc];
-  v14 = [v9 serverIdentity];
-  v15 = [v14 provider];
+  serverIdentity = [_path serverIdentity];
+  provider = [serverIdentity provider];
   v16 = +[PBFPosterSnapshotDefinition defaultConfigurationDefinitions];
-  v17 = [(PBFPosterSnapshotRequest *)v13 initWithPath:v9 provider:v15 configuredProperties:v12 definitions:v16 context:v7];
+  v17 = [(PBFPosterSnapshotRequest *)v13 initWithPath:_path provider:provider configuredProperties:v12 definitions:v16 context:contextCopy];
 
   return v17;
 }
 
-+ (id)filterFulfilledSnapshotRequests:(id)a3 modelCoordinatorProvider:(id)a4
++ (id)filterFulfilledSnapshotRequests:(id)requests modelCoordinatorProvider:(id)provider
 {
-  v5 = a4;
+  providerCopy = provider;
   v6 = MEMORY[0x277CBEB58];
-  v7 = a3;
+  requestsCopy = requests;
   v8 = [v6 set];
   v9 = MEMORY[0x277CBEAC0];
-  v10 = [v7 allObjects];
+  allObjects = [requestsCopy allObjects];
 
-  v11 = [v9 pf_bucketizeArray:v10 keyMaker:&__block_literal_global_9];
+  v11 = [v9 pf_bucketizeArray:allObjects keyMaker:&__block_literal_global_9];
   v12 = [v11 mutableCopy];
 
   v18[0] = MEMORY[0x277D85DD0];
   v18[1] = 3221225472;
   v18[2] = __85__PBFPosterSnapshotRequest_filterFulfilledSnapshotRequests_modelCoordinatorProvider___block_invoke_2;
   v18[3] = &unk_2782C7C48;
-  v19 = v5;
+  v19 = providerCopy;
   v13 = v8;
   v20 = v13;
-  v14 = v5;
+  v14 = providerCopy;
   [v12 enumerateKeysAndObjectsWithOptions:0 usingBlock:v18];
   v15 = v20;
   v16 = v13;
@@ -194,23 +194,23 @@ void __85__PBFPosterSnapshotRequest_filterFulfilledSnapshotRequests_modelCoordin
   }
 }
 
-+ (BOOL)isRequestFulfilled:(id)a3 modelCoordinatorProvider:(id)a4
++ (BOOL)isRequestFulfilled:(id)fulfilled modelCoordinatorProvider:(id)provider
 {
   v21 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  if (v6)
+  fulfilledCopy = fulfilled;
+  providerCopy = provider;
+  if (fulfilledCopy)
   {
-    v8 = [v6 loadFromCacheIfAvailable];
+    loadFromCacheIfAvailable = [fulfilledCopy loadFromCacheIfAvailable];
     v9 = 0;
-    if (v7 && v8)
+    if (providerCopy && loadFromCacheIfAvailable)
     {
       v18 = 0u;
       v19 = 0u;
       v16 = 0u;
       v17 = 0u;
-      v10 = [v6 definitions];
-      v11 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+      definitions = [fulfilledCopy definitions];
+      v11 = [definitions countByEnumeratingWithState:&v16 objects:v20 count:16];
       if (v11)
       {
         v12 = v11;
@@ -221,17 +221,17 @@ void __85__PBFPosterSnapshotRequest_filterFulfilledSnapshotRequests_modelCoordin
           {
             if (*v17 != v13)
             {
-              objc_enumerationMutation(v10);
+              objc_enumerationMutation(definitions);
             }
 
-            if (![a1 isRequestFulfilled:v6 forDefinition:*(*(&v16 + 1) + 8 * i) modelCoordinatorProvider:v7])
+            if (![self isRequestFulfilled:fulfilledCopy forDefinition:*(*(&v16 + 1) + 8 * i) modelCoordinatorProvider:providerCopy])
             {
               v9 = 0;
               goto LABEL_15;
             }
           }
 
-          v12 = [v10 countByEnumeratingWithState:&v16 objects:v20 count:16];
+          v12 = [definitions countByEnumeratingWithState:&v16 objects:v20 count:16];
           if (v12)
           {
             continue;
@@ -254,23 +254,23 @@ LABEL_15:
   return v9;
 }
 
-+ (BOOL)isRequestFulfilled:(id)a3 forDefinition:(id)a4 modelCoordinatorProvider:(id)a5
++ (BOOL)isRequestFulfilled:(id)fulfilled forDefinition:(id)definition modelCoordinatorProvider:(id)provider
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  if (v7)
+  fulfilledCopy = fulfilled;
+  definitionCopy = definition;
+  providerCopy = provider;
+  if (fulfilledCopy)
   {
-    v10 = [v7 loadFromCacheIfAvailable];
+    loadFromCacheIfAvailable = [fulfilledCopy loadFromCacheIfAvailable];
     v11 = 0;
-    if (v9 && v10)
+    if (providerCopy && loadFromCacheIfAvailable)
     {
-      v12 = [v7 path];
-      v13 = [v12 serverIdentity];
-      v14 = [v9 pbf_posterSnapshotCoordinatorForIdentity:v13];
+      path = [fulfilledCopy path];
+      serverIdentity = [path serverIdentity];
+      v14 = [providerCopy pbf_posterSnapshotCoordinatorForIdentity:serverIdentity];
 
-      v15 = [v7 displayContext];
-      v16 = [PBFPosterSnapshotContext snapshotContextForDisplayContext:v15 definition:v8];
+      displayContext = [fulfilledCopy displayContext];
+      v16 = [PBFPosterSnapshotContext snapshotContextForDisplayContext:displayContext definition:definitionCopy];
 
       v11 = [v14 snapshotExistsForContext:v16];
     }
@@ -284,68 +284,68 @@ LABEL_15:
   return v11;
 }
 
-- (PBFPosterSnapshotRequest)initWithConfiguration:(id)a3 definitions:(id)a4 context:(id)a5
+- (PBFPosterSnapshotRequest)initWithConfiguration:(id)configuration definitions:(id)definitions context:(id)context
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v9 _path];
-  if (([v12 isServerPosterPath] & 1) == 0)
+  configurationCopy = configuration;
+  definitionsCopy = definitions;
+  contextCopy = context;
+  _path = [configurationCopy _path];
+  if (([_path isServerPosterPath] & 1) == 0)
   {
     [PBFPosterSnapshotRequest initWithConfiguration:a2 definitions:? context:?];
   }
 
-  v13 = [v12 identity];
-  v14 = [v13 type];
+  identity = [_path identity];
+  type = [identity type];
 
-  if (v14 != 3)
+  if (type != 3)
   {
     [PBFPosterSnapshotRequest initWithConfiguration:a2 definitions:? context:?];
   }
 
-  v15 = [v9 loadConfiguredPropertiesWithError:0];
-  v16 = [v12 serverIdentity];
-  v17 = [v16 provider];
-  v18 = [(PBFPosterSnapshotRequest *)self initWithPath:v12 provider:v17 configuredProperties:v15 definitions:v10 context:v11];
+  v15 = [configurationCopy loadConfiguredPropertiesWithError:0];
+  serverIdentity = [_path serverIdentity];
+  provider = [serverIdentity provider];
+  v18 = [(PBFPosterSnapshotRequest *)self initWithPath:_path provider:provider configuredProperties:v15 definitions:definitionsCopy context:contextCopy];
 
   return v18;
 }
 
-- (PBFPosterSnapshotRequest)initWithDescriptor:(id)a3 configuredProperties:(id)a4 definitions:(id)a5 context:(id)a6
+- (PBFPosterSnapshotRequest)initWithDescriptor:(id)descriptor configuredProperties:(id)properties definitions:(id)definitions context:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  v15 = [v11 _path];
-  if (([v15 isServerPosterPath] & 1) == 0)
+  descriptorCopy = descriptor;
+  propertiesCopy = properties;
+  definitionsCopy = definitions;
+  contextCopy = context;
+  _path = [descriptorCopy _path];
+  if (([_path isServerPosterPath] & 1) == 0)
   {
     [PBFPosterSnapshotRequest initWithDescriptor:a2 configuredProperties:? definitions:? context:?];
   }
 
-  v16 = [v15 identity];
-  v17 = [v16 type];
+  identity = [_path identity];
+  type = [identity type];
 
-  if (v17 != 3)
+  if (type != 3)
   {
     [PBFPosterSnapshotRequest initWithDescriptor:a2 configuredProperties:? definitions:? context:?];
   }
 
-  v18 = [v15 serverIdentity];
-  v19 = [v18 provider];
-  v20 = [(PBFPosterSnapshotRequest *)self initWithPath:v15 provider:v19 configuredProperties:v12 definitions:v13 context:v14];
+  serverIdentity = [_path serverIdentity];
+  provider = [serverIdentity provider];
+  v20 = [(PBFPosterSnapshotRequest *)self initWithPath:_path provider:provider configuredProperties:propertiesCopy definitions:definitionsCopy context:contextCopy];
 
   return v20;
 }
 
-- (PBFPosterSnapshotRequest)initWithPath:(id)a3 provider:(id)a4 configuredProperties:(id)a5 definitions:(id)a6 context:(id)a7
+- (PBFPosterSnapshotRequest)initWithPath:(id)path provider:(id)provider configuredProperties:(id)properties definitions:(id)definitions context:(id)context
 {
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = PBFPosterSnapshotRequestIdentifierForPath(v14);
+  pathCopy = path;
+  providerCopy = provider;
+  propertiesCopy = properties;
+  definitionsCopy = definitions;
+  contextCopy = context;
+  v19 = PBFPosterSnapshotRequestIdentifierForPath(pathCopy);
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v19)
   {
@@ -357,7 +357,7 @@ LABEL_15:
     [PBFPosterSnapshotRequest initWithPath:a2 provider:? configuredProperties:? definitions:? context:?];
   }
 
-  v20 = v15;
+  v20 = providerCopy;
   NSClassFromString(&cfstr_Nsstring.isa);
   if (!v20)
   {
@@ -369,7 +369,7 @@ LABEL_15:
     [PBFPosterSnapshotRequest initWithPath:a2 provider:? configuredProperties:? definitions:? context:?];
   }
 
-  v21 = v14;
+  v21 = pathCopy;
   NSClassFromString(&cfstr_Pfserverposter_0.isa);
   if (!v21)
   {
@@ -381,7 +381,7 @@ LABEL_15:
     [PBFPosterSnapshotRequest initWithPath:a2 provider:? configuredProperties:? definitions:? context:?];
   }
 
-  v22 = v16;
+  v22 = propertiesCopy;
   if (v22)
   {
     NSClassFromString(&cfstr_Prposterconfig_0.isa);
@@ -391,7 +391,7 @@ LABEL_15:
     }
   }
 
-  v23 = v17;
+  v23 = definitionsCopy;
   NSClassFromString(&cfstr_Nsarray.isa);
   if (!v23)
   {
@@ -403,7 +403,7 @@ LABEL_15:
     [PBFPosterSnapshotRequest initWithPath:a2 provider:? configuredProperties:? definitions:? context:?];
   }
 
-  v24 = v18;
+  v24 = contextCopy;
   if (!v24)
   {
     [PBFPosterSnapshotRequest initWithPath:a2 provider:? configuredProperties:? definitions:? context:?];
@@ -424,7 +424,7 @@ LABEL_15:
     identifier = v26->_identifier;
     v26->_identifier = v27;
 
-    objc_storeStrong(&v26->_path, a3);
+    objc_storeStrong(&v26->_path, path);
     v29 = [v22 copy];
     configuredProperties = v26->_configuredProperties;
     v26->_configuredProperties = v29;
@@ -440,7 +440,7 @@ LABEL_15:
     provider = v26->_provider;
     v26->_provider = v33;
 
-    objc_storeStrong(&v26->_displayContext, a7);
+    objc_storeStrong(&v26->_displayContext, context);
     v26->_loadFromCacheIfAvailable = 1;
     v26->_significantEventsCounter = 0;
   }
@@ -448,9 +448,9 @@ LABEL_15:
   return v26;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  result = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithPath:provider:configuredProperties:definitions:context:", self->_path, self->_provider, self->_configuredProperties, self->_definitions, self->_displayContext}];
+  result = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithPath:provider:configuredProperties:definitions:context:", self->_path, self->_provider, self->_configuredProperties, self->_definitions, self->_displayContext}];
   *(result + 8) = self->_intention;
   *(result + 10) = self->_powerLogReason;
   *(result + 24) = self->_loadFromCacheIfAvailable;
@@ -474,21 +474,21 @@ LABEL_15:
   v9 = NSStringFromPBFPosterSnapshotRequestIntention(self->_intention);
   [v3 appendString:v9 withName:@"intention"];
 
-  v10 = [v3 build];
+  build = [v3 build];
 
-  return v10;
+  return build;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (!equalCopy)
   {
     goto LABEL_5;
   }
 
-  if (self == v4)
+  if (self == equalCopy)
   {
     v6 = 1;
     goto LABEL_7;
@@ -511,24 +511,24 @@ LABEL_7:
   return v6;
 }
 
-- (BOOL)_isEqualToRequest:(id)a3 allowingOtherDefinitionsAreSubset:(BOOL)a4
+- (BOOL)_isEqualToRequest:(id)request allowingOtherDefinitionsAreSubset:(BOOL)subset
 {
-  v4 = a4;
-  v6 = a3;
-  v7 = v6;
-  if (v6 == self)
+  subsetCopy = subset;
+  requestCopy = request;
+  v7 = requestCopy;
+  if (requestCopy == self)
   {
     LOBYTE(v23) = 1;
     goto LABEL_18;
   }
 
-  if (!v6)
+  if (!requestCopy)
   {
     goto LABEL_17;
   }
 
-  v8 = [(PBFPosterSnapshotRequest *)self identifier];
-  v9 = [(PBFPosterSnapshotRequest *)v7 identifier];
+  identifier = [(PBFPosterSnapshotRequest *)self identifier];
+  identifier2 = [(PBFPosterSnapshotRequest *)v7 identifier];
   v10 = BSEqualObjects();
 
   if (!v10)
@@ -536,25 +536,25 @@ LABEL_7:
     goto LABEL_17;
   }
 
-  v11 = [(PBFPosterSnapshotRequest *)self path];
-  v12 = [v11 isServerPosterPath];
-  v13 = [(PBFPosterSnapshotRequest *)v7 path];
-  v14 = [v13 isServerPosterPath];
+  path = [(PBFPosterSnapshotRequest *)self path];
+  isServerPosterPath = [path isServerPosterPath];
+  path2 = [(PBFPosterSnapshotRequest *)v7 path];
+  isServerPosterPath2 = [path2 isServerPosterPath];
 
-  if (v12 != v14)
+  if (isServerPosterPath != isServerPosterPath2)
   {
     goto LABEL_17;
   }
 
-  v15 = [(PBFPosterSnapshotRequest *)self path];
-  if (([v15 isServerPosterPath] & 1) == 0)
+  path3 = [(PBFPosterSnapshotRequest *)self path];
+  if (([path3 isServerPosterPath] & 1) == 0)
   {
 
 LABEL_11:
-    v24 = [(PBFPosterSnapshotRequest *)self path];
-    v25 = [v24 contentsURL];
-    v26 = [(PBFPosterSnapshotRequest *)v7 path];
-    v27 = [v26 contentsURL];
+    path4 = [(PBFPosterSnapshotRequest *)self path];
+    contentsURL = [path4 contentsURL];
+    path5 = [(PBFPosterSnapshotRequest *)v7 path];
+    contentsURL2 = [path5 contentsURL];
     v28 = BSEqualObjects();
 
     if (!v28)
@@ -567,18 +567,18 @@ LABEL_17:
     goto LABEL_12;
   }
 
-  v16 = [(PBFPosterSnapshotRequest *)v7 path];
-  v17 = [v16 isServerPosterPath];
+  path6 = [(PBFPosterSnapshotRequest *)v7 path];
+  isServerPosterPath3 = [path6 isServerPosterPath];
 
-  if (!v17)
+  if (!isServerPosterPath3)
   {
     goto LABEL_11;
   }
 
-  v18 = [(PBFPosterSnapshotRequest *)self path];
-  v19 = [v18 identity];
-  v20 = [(PBFPosterSnapshotRequest *)v7 path];
-  v21 = [v20 identity];
+  path7 = [(PBFPosterSnapshotRequest *)self path];
+  identity = [path7 identity];
+  path8 = [(PBFPosterSnapshotRequest *)v7 path];
+  identity2 = [path8 identity];
   v22 = BSEqualObjects();
 
   if ((v22 & 1) == 0)
@@ -587,8 +587,8 @@ LABEL_17:
   }
 
 LABEL_12:
-  v29 = [(PBFPosterSnapshotRequest *)self displayContext];
-  v30 = [(PBFPosterSnapshotRequest *)v7 displayContext];
+  displayContext = [(PBFPosterSnapshotRequest *)self displayContext];
+  displayContext2 = [(PBFPosterSnapshotRequest *)v7 displayContext];
   v31 = BSEqualObjects();
 
   if (!v31)
@@ -596,15 +596,15 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  v32 = [(PBFPosterSnapshotRequest *)self significantEventsCounter];
-  if (v32 != [(PBFPosterSnapshotRequest *)v7 significantEventsCounter])
+  significantEventsCounter = [(PBFPosterSnapshotRequest *)self significantEventsCounter];
+  if (significantEventsCounter != [(PBFPosterSnapshotRequest *)v7 significantEventsCounter])
   {
     goto LABEL_17;
   }
 
-  v33 = [(PBFPosterSnapshotRequest *)self configuredProperties];
-  v34 = [(PBFPosterSnapshotRequest *)v7 configuredProperties];
-  v35 = [v33 isEqualToConfiguredProperties:v34 comparingPropertiesAffectingSnapshotsOnly:1];
+  configuredProperties = [(PBFPosterSnapshotRequest *)self configuredProperties];
+  configuredProperties2 = [(PBFPosterSnapshotRequest *)v7 configuredProperties];
+  v35 = [configuredProperties isEqualToConfiguredProperties:configuredProperties2 comparingPropertiesAffectingSnapshotsOnly:1];
 
   if (!v35)
   {
@@ -612,14 +612,14 @@ LABEL_12:
   }
 
   v36 = MEMORY[0x277CBEB98];
-  v37 = [(PBFPosterSnapshotRequest *)self definitions];
-  v38 = [v36 setWithArray:v37];
+  definitions = [(PBFPosterSnapshotRequest *)self definitions];
+  v38 = [v36 setWithArray:definitions];
 
   v39 = MEMORY[0x277CBEB98];
-  v40 = [(PBFPosterSnapshotRequest *)v7 definitions];
-  v41 = [v39 setWithArray:v40];
+  definitions2 = [(PBFPosterSnapshotRequest *)v7 definitions];
+  v41 = [v39 setWithArray:definitions2];
 
-  if (v4)
+  if (subsetCopy)
   {
     v43[0] = MEMORY[0x277D85DD0];
     v43[1] = 3221225472;
@@ -643,162 +643,162 @@ LABEL_18:
   cachedHash = self->_cachedHash;
   if (cachedHash == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v4 = [MEMORY[0x277CF0C40] builder];
-    v5 = [v4 appendString:self->_identifier];
-    v6 = [(PFServerPosterPath *)self->_path contentsURL];
-    v7 = [v4 appendObject:v6];
+    builder = [MEMORY[0x277CF0C40] builder];
+    v5 = [builder appendString:self->_identifier];
+    contentsURL = [(PFServerPosterPath *)self->_path contentsURL];
+    v7 = [builder appendObject:contentsURL];
 
-    v8 = [v4 appendObject:self->_definitions];
-    v9 = [(PBFPosterSnapshotRequest *)self displayContext];
-    v10 = [v4 appendObject:v9];
+    v8 = [builder appendObject:self->_definitions];
+    displayContext = [(PBFPosterSnapshotRequest *)self displayContext];
+    v10 = [builder appendObject:displayContext];
 
-    v11 = [v4 appendObject:self->_provider];
-    v12 = [v4 appendInteger:self->_significantEventsCounter];
-    cachedHash = [v4 hash];
+    v11 = [builder appendObject:self->_provider];
+    v12 = [builder appendInteger:self->_significantEventsCounter];
+    cachedHash = [builder hash];
     self->_cachedHash = cachedHash;
   }
 
   return cachedHash;
 }
 
-- (BOOL)isValidWithError:(id *)a3
+- (BOOL)isValidWithError:(id *)error
 {
   v12[1] = *MEMORY[0x277D85DE8];
   v4 = MEMORY[0x277D3EF30];
-  v5 = [(PBFPosterSnapshotRequest *)self path];
-  v6 = [v5 role];
-  v7 = [v4 snapshottingSupportedForRole:v6];
+  path = [(PBFPosterSnapshotRequest *)self path];
+  role = [path role];
+  v7 = [v4 snapshottingSupportedForRole:role];
 
-  if (a3 && (v7 & 1) == 0)
+  if (error && (v7 & 1) == 0)
   {
     v8 = MEMORY[0x277CCA9B8];
     v11 = *MEMORY[0x277CCA470];
     v12[0] = @"PBFPosterSnapshotManager only supports PFPosterRoleLockScreen currently.";
     v9 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v12 forKeys:&v11 count:1];
-    *a3 = [v8 pbf_generalErrorWithCode:1 userInfo:v9];
+    *error = [v8 pbf_generalErrorWithCode:1 userInfo:v9];
   }
 
   return v7;
 }
 
-- (PBFPosterSnapshotRequest)requestWithPowerLogReason:(int64_t)a3
+- (PBFPosterSnapshotRequest)requestWithPowerLogReason:(int64_t)reason
 {
-  if (self->_powerLogReason == a3)
+  if (self->_powerLogReason == reason)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [(PBFPosterSnapshotRequest *)self copy];
-    v3->_powerLogReason = a3;
+    selfCopy = [(PBFPosterSnapshotRequest *)self copy];
+    selfCopy->_powerLogReason = reason;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (PBFPosterSnapshotRequest)requestWithIntention:(unint64_t)a3
+- (PBFPosterSnapshotRequest)requestWithIntention:(unint64_t)intention
 {
-  if (self->_intention == a3)
+  if (self->_intention == intention)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [(PBFPosterSnapshotRequest *)self copy];
-    v3->_intention = a3;
+    selfCopy = [(PBFPosterSnapshotRequest *)self copy];
+    selfCopy->_intention = intention;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (PBFPosterSnapshotRequest)requestWithDisplayContext:(id)a3
+- (PBFPosterSnapshotRequest)requestWithDisplayContext:(id)context
 {
-  v5 = a3;
-  if ([(PBFDisplayContext *)self->_displayContext isEqualToDisplayContext:v5])
+  contextCopy = context;
+  if ([(PBFDisplayContext *)self->_displayContext isEqualToDisplayContext:contextCopy])
   {
-    v6 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v6 = [(PBFPosterSnapshotRequest *)self copy];
-    objc_storeStrong(&v6->_displayContext, a3);
+    selfCopy = [(PBFPosterSnapshotRequest *)self copy];
+    objc_storeStrong(&selfCopy->_displayContext, context);
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (PBFPosterSnapshotRequest)requestWithDefinitions:(id)a3
+- (PBFPosterSnapshotRequest)requestWithDefinitions:(id)definitions
 {
-  v4 = a3;
+  definitionsCopy = definitions;
   v5 = [MEMORY[0x277CBEB98] setWithArray:self->_definitions];
-  v6 = [MEMORY[0x277CBEB98] setWithArray:v4];
+  v6 = [MEMORY[0x277CBEB98] setWithArray:definitionsCopy];
   v7 = [v5 isEqualToSet:v6];
 
   if (v7)
   {
-    v8 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v8 = [(PBFPosterSnapshotRequest *)self copy];
-    v9 = [v4 copy];
-    definitions = v8->_definitions;
-    v8->_definitions = v9;
+    selfCopy = [(PBFPosterSnapshotRequest *)self copy];
+    v9 = [definitionsCopy copy];
+    definitions = selfCopy->_definitions;
+    selfCopy->_definitions = v9;
   }
 
-  return v8;
+  return selfCopy;
 }
 
-- (PBFPosterSnapshotRequest)requestWithLoadFromCacheIfAvailable:(BOOL)a3
+- (PBFPosterSnapshotRequest)requestWithLoadFromCacheIfAvailable:(BOOL)available
 {
-  if (self->_loadFromCacheIfAvailable == a3)
+  if (self->_loadFromCacheIfAvailable == available)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [(PBFPosterSnapshotRequest *)self copy];
-    v3->_loadFromCacheIfAvailable = a3;
+    selfCopy = [(PBFPosterSnapshotRequest *)self copy];
+    selfCopy->_loadFromCacheIfAvailable = available;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (PBFPosterSnapshotRequest)requestWithSignificantEventsCounter:(unint64_t)a3
+- (PBFPosterSnapshotRequest)requestWithSignificantEventsCounter:(unint64_t)counter
 {
-  if (self->_significantEventsCounter == a3)
+  if (self->_significantEventsCounter == counter)
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = [(PBFPosterSnapshotRequest *)self copy];
-    v3->_significantEventsCounter = a3;
+    selfCopy = [(PBFPosterSnapshotRequest *)self copy];
+    selfCopy->_significantEventsCounter = counter;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)_buildPUIPosterSnapshotRequests
 {
   v112 = *MEMORY[0x277D85DE8];
   v73 = objc_opt_new();
-  v75 = [(PBFPosterSnapshotRequest *)self path];
-  v87 = [(PBFPosterSnapshotRequest *)self configuredProperties];
+  path = [(PBFPosterSnapshotRequest *)self path];
+  configuredProperties = [(PBFPosterSnapshotRequest *)self configuredProperties];
   v3 = MEMORY[0x277CBEB58];
-  v4 = [(PBFPosterSnapshotRequest *)self definitions];
-  v5 = [v3 setWithArray:v4];
+  definitions = [(PBFPosterSnapshotRequest *)self definitions];
+  v5 = [v3 setWithArray:definitions];
 
-  v6 = [(PBFPosterSnapshotRequest *)self displayContext];
-  v72 = [(PBFPosterSnapshotRequest *)self significantEventsCounter];
-  v88 = v6;
-  v86 = [MEMORY[0x277D0ACE0] pbf_displayConfigurationForDisplayContext:v6];
+  displayContext = [(PBFPosterSnapshotRequest *)self displayContext];
+  significantEventsCounter = [(PBFPosterSnapshotRequest *)self significantEventsCounter];
+  v88 = displayContext;
+  v86 = [MEMORY[0x277D0ACE0] pbf_displayConfigurationForDisplayContext:displayContext];
   v106 = 0u;
   v107 = 0u;
   v108 = 0u;
@@ -842,9 +842,9 @@ LABEL_18:
         [v17 setSnapshotOptions:{objc_msgSend(MEMORY[0x277D3EE10], "snapshotOptionsForDefinition:", v9)}];
         [v17 setTraitCollection:v12];
         [v17 setDisplayConfiguration:v86];
-        v18 = [v88 pbf_interfaceOrientation];
+        pbf_interfaceOrientation = [v88 pbf_interfaceOrientation];
         v84 = v12;
-        if (v18)
+        if (pbf_interfaceOrientation)
         {
           if (PUIDynamicRotationIsActive())
           {
@@ -853,16 +853,16 @@ LABEL_18:
 
           else
           {
-            v19 = v18;
+            v19 = pbf_interfaceOrientation;
           }
 
-          v20 = v18;
+          v20 = pbf_interfaceOrientation;
         }
 
         else
         {
-          v21 = [v75 role];
-          v22 = [v21 isEqualToString:v69];
+          role = [path role];
+          v22 = [role isEqualToString:v69];
 
           if (v22)
           {
@@ -879,35 +879,35 @@ LABEL_18:
 
         [v17 setInterfaceOrientation:v19];
         [v17 setDeviceOrientation:v20];
-        v81 = [v9 renderingContent];
-        v79 = [v9 renderingMode];
-        v23 = [v9 isUnlocked];
+        renderingContent = [v9 renderingContent];
+        renderingMode = [v9 renderingMode];
+        isUnlocked = [v9 isUnlocked];
         v24 = 0.0;
-        if (v23)
+        if (isUnlocked)
         {
           v24 = 1.0;
         }
 
         v78 = v24;
-        v80 = [v9 includesHeaderElements];
-        v25 = [v87 complicationLayout];
-        v26 = [v25 inlineComplication];
+        includesHeaderElements = [v9 includesHeaderElements];
+        complicationLayout = [configuredProperties complicationLayout];
+        inlineComplication = [complicationLayout inlineComplication];
 
-        v27 = [v87 complicationLayout];
-        v28 = [v27 complications];
-        v29 = [v28 count];
+        complicationLayout2 = [configuredProperties complicationLayout];
+        complications = [complicationLayout2 complications];
+        v29 = [complications count];
         v30 = v29 != 0;
 
-        v31 = [v87 complicationLayout];
-        v32 = [v31 sidebarComplications];
-        v33 = [v32 count];
+        complicationLayout3 = [configuredProperties complicationLayout];
+        sidebarComplications = [complicationLayout3 sidebarComplications];
+        v33 = [sidebarComplications count];
 
-        v34 = [v87 titleStyleConfiguration];
-        [v34 prefersVerticalTitleLayout];
+        titleStyleConfiguration = [configuredProperties titleStyleConfiguration];
+        [titleStyleConfiguration prefersVerticalTitleLayout];
 
-        v35 = [v9 includesComplications];
-        v36 = v35 ^ 1;
-        if (v26)
+        includesComplications = [v9 includesComplications];
+        v36 = includesComplications ^ 1;
+        if (inlineComplication)
         {
           v36 = 1;
         }
@@ -915,29 +915,29 @@ LABEL_18:
         v37 = (v29 | v33) != 0;
         if (v36)
         {
-          v37 = v35;
+          v37 = includesComplications;
         }
 
         v76 = v37;
-        v77 = v26 != 0;
-        v38 = [v87 complicationLayout];
-        v39 = [v38 complicationsUseBottomLayout];
+        v77 = inlineComplication != 0;
+        complicationLayout4 = [configuredProperties complicationLayout];
+        complicationsUseBottomLayout = [complicationLayout4 complicationsUseBottomLayout];
 
-        v40 = [v87 renderingConfiguration];
+        renderingConfiguration = [configuredProperties renderingConfiguration];
         BSInterfaceOrientationIsPortrait();
-        v82 = v40;
-        if (v40)
+        v82 = renderingConfiguration;
+        if (renderingConfiguration)
         {
-          v41 = [v40 isDepthEffectDisabled];
+          isDepthEffectDisabled = [renderingConfiguration isDepthEffectDisabled];
         }
 
         else
         {
-          v41 = PRIsDepthEffectDisallowed();
+          isDepthEffectDisabled = PRIsDepthEffectDisallowed();
         }
 
-        v42 = v41;
-        v43 = [v9 isIdle];
+        v42 = isDepthEffectDisabled;
+        isIdle = [v9 isIdle];
         [v86 bounds];
         v45 = v44;
         v47 = v46;
@@ -950,23 +950,23 @@ LABEL_18:
         v91[2] = __59__PBFPosterSnapshotRequest__buildPUIPosterSnapshotRequests__block_invoke;
         v91[3] = &unk_2782C7C98;
         v91[4] = v9;
-        v93 = v72;
-        v94 = v79;
-        v95 = v81;
+        v93 = significantEventsCounter;
+        v94 = renderingMode;
+        v95 = renderingContent;
         v96 = v78;
-        v57 = v87;
+        v57 = configuredProperties;
         v92 = v57;
         v97 = v77;
         v98 = v30;
         v99 = v33 != 0;
-        v100 = v39;
+        v100 = complicationsUseBottomLayout;
         v101 = v76;
-        v102 = v80;
+        v102 = includesHeaderElements;
         v103 = v42;
-        v104 = v30 & (v39 ^ 1);
-        v105 = v43;
+        v104 = v30 & (complicationsUseBottomLayout ^ 1);
+        v105 = isIdle;
         [v17 applySceneSettings:v91];
-        v58 = [v17 buildWithPath:v75 configuredProperties:v57 snapshotDefinition:v9 sceneDescriptor:v56];
+        v58 = [v17 buildWithPath:path configuredProperties:v57 snapshotDefinition:v9 sceneDescriptor:v56];
         aBlock[0] = MEMORY[0x277D85DD0];
         aBlock[1] = 3221225472;
         aBlock[2] = __59__PBFPosterSnapshotRequest__buildPUIPosterSnapshotRequests__block_invoke_2;
@@ -974,16 +974,16 @@ LABEL_18:
         v90 = v58;
         v59 = v58;
         v60 = _Block_copy(aBlock);
-        v61 = [v9 levelSets];
-        v62 = [v61 bs_map:&__block_literal_global_253];
+        levelSets = [v9 levelSets];
+        v62 = [levelSets bs_map:&__block_literal_global_253];
 
         v63 = objc_alloc(MEMORY[0x277D3EFA8]);
-        v64 = [v9 uniqueIdentifier];
+        uniqueIdentifier = [v9 uniqueIdentifier];
         [v9 persistenceScale];
-        v65 = [v63 initWithLevelSets:v62 snapshotDefinitionIdentifier:v64 persistenceScale:?];
+        v65 = [v63 initWithLevelSets:v62 snapshotDefinitionIdentifier:uniqueIdentifier persistenceScale:?];
 
         v66 = [objc_alloc(MEMORY[0x277D3EF98]) initWithOutputDescriptor:v65 sceneDescriptor:v56 attachments:0 analysis:0];
-        v67 = [objc_alloc(MEMORY[0x277D3EFB0]) initWithPath:v75 sceneSettingsApplicator:v60 priority:0 snapshotDescriptor:v66 retryCount:0 timeout:20.0];
+        v67 = [objc_alloc(MEMORY[0x277D3EFB0]) initWithPath:path sceneSettingsApplicator:v60 priority:0 snapshotDescriptor:v66 retryCount:0 timeout:20.0];
         [v73 setObject:v67 forKey:v9];
 
         v8 = v85 + 1;
@@ -1042,40 +1042,40 @@ id __59__PBFPosterSnapshotRequest__buildPUIPosterSnapshotRequests__block_invoke_
   return v6;
 }
 
-+ (id)snapshotRequestForConfiguration:(id)a3 withinSwitcherConfiguration:(id)a4 variant:(int64_t)a5 snapshotDefinitions:(id)a6 displayContext:(id)a7
++ (id)snapshotRequestForConfiguration:(id)configuration withinSwitcherConfiguration:(id)switcherConfiguration variant:(int64_t)variant snapshotDefinitions:(id)definitions displayContext:(id)context
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a6;
-  v14 = a7;
-  if ((a5 + 1) < 2)
+  configurationCopy = configuration;
+  switcherConfigurationCopy = switcherConfiguration;
+  definitionsCopy = definitions;
+  contextCopy = context;
+  if ((variant + 1) < 2)
   {
-    v15 = v11;
+    v15 = configurationCopy;
     if (!v15)
     {
       goto LABEL_13;
     }
 
 LABEL_12:
-    v20 = [[PBFPosterSnapshotRequest alloc] initWithConfiguration:v15 definitions:v13 context:v14];
+    v20 = [[PBFPosterSnapshotRequest alloc] initWithConfiguration:v15 definitions:definitionsCopy context:contextCopy];
 
     goto LABEL_14;
   }
 
-  if (a5 == 1)
+  if (variant == 1)
   {
-    v16 = [v12 configuredPropertiesForPoster:v11];
-    v17 = [v16 homeScreenConfiguration];
+    v16 = [switcherConfigurationCopy configuredPropertiesForPoster:configurationCopy];
+    homeScreenConfiguration = [v16 homeScreenConfiguration];
 
-    v18 = [v17 selectedAppearanceType];
-    if (v18 == 3)
+    selectedAppearanceType = [homeScreenConfiguration selectedAppearanceType];
+    if (selectedAppearanceType == 3)
     {
-      v19 = [v12 _childPosterConfigurationForConfiguration:v11];
+      v19 = [switcherConfigurationCopy _childPosterConfigurationForConfiguration:configurationCopy];
     }
 
     else
     {
-      if (v18)
+      if (selectedAppearanceType)
       {
         v15 = 0;
 LABEL_11:
@@ -1088,7 +1088,7 @@ LABEL_11:
         goto LABEL_13;
       }
 
-      v19 = v11;
+      v19 = configurationCopy;
     }
 
     v15 = v19;

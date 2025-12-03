@@ -1,20 +1,20 @@
 @interface SRSensorsCache
 + (uint64_t)defaultCache;
 + (void)initialize;
-+ (void)setDefaultCache:(id)a3;
-- (SRSensorDescription)descriptionForSensor:(uint64_t)a1;
++ (void)setDefaultCache:(id)cache;
+- (SRSensorDescription)descriptionForSensor:(uint64_t)sensor;
 - (SRSensorsCache)init;
-- (SRSensorsCache)initWithDirectories:(id)a3;
+- (SRSensorsCache)initWithDirectories:(id)directories;
 - (void)allSensorDescriptions;
 - (void)dealloc;
 @end
 
 @implementation SRSensorsCache
 
-- (SRSensorDescription)descriptionForSensor:(uint64_t)a1
+- (SRSensorDescription)descriptionForSensor:(uint64_t)sensor
 {
   v39 = *MEMORY[0x1E69E9840];
-  if (!a1)
+  if (!sensor)
   {
     v6 = 0;
 LABEL_29:
@@ -22,9 +22,9 @@ LABEL_29:
     return v6;
   }
 
-  v4 = [a2 sr_sensorByDeletingDeletionRecord];
-  v5 = [v4 isEqualToString:a2];
-  v6 = [*(a1 + 8) objectForKey:v4];
+  sr_sensorByDeletingDeletionRecord = [a2 sr_sensorByDeletingDeletionRecord];
+  v5 = [sr_sensorByDeletingDeletionRecord isEqualToString:a2];
+  v6 = [*(sensor + 8) objectForKey:sr_sensorByDeletingDeletionRecord];
   if (!v6)
   {
     v27 = v5;
@@ -32,7 +32,7 @@ LABEL_29:
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
-    v7 = *(a1 + 16);
+    v7 = *(sensor + 16);
     v8 = [v7 countByEnumeratingWithState:&v29 objects:v34 count:16];
     if (v8)
     {
@@ -51,7 +51,7 @@ LABEL_5:
         }
 
         v13 = *(*(&v29 + 1) + 8 * v12);
-        v14 = [v4 stringByAppendingPathExtension:{@"plist", v26}];
+        v14 = [sr_sensorByDeletingDeletionRecord stringByAppendingPathExtension:{@"plist", v26}];
         if (!v14)
         {
           break;
@@ -63,18 +63,18 @@ LABEL_5:
         if (v16)
         {
           v6 = [[SRSensorDescription alloc] initWithDictionary:v16];
-          v17 = [(SRSensorDescription *)v6 name];
-          [*(a1 + 8) setObject:v6 forKey:v17];
+          name = [(SRSensorDescription *)v6 name];
+          [*(sensor + 8) setObject:v6 forKey:name];
           if ([(SRSensorDescription *)v6 legacyName])
           {
-            [*(a1 + 8) setObject:v6 forKey:{-[SRSensorDescription legacyName](v6, "legacyName")}];
+            [*(sensor + 8) setObject:v6 forKey:{-[SRSensorDescription legacyName](v6, "legacyName")}];
           }
 
           v18 = SRLogSensorsCache;
           if (os_log_type_enabled(SRLogSensorsCache, OS_LOG_TYPE_INFO))
           {
             *buf = 138543618;
-            v36 = v17;
+            v36 = name;
             v37 = 2114;
             v38 = v6;
             _os_log_impl(&dword_1C914D000, v18, OS_LOG_TYPE_INFO, "Cached description for %{public}@, %{public}@", buf, 0x16u);
@@ -129,9 +129,9 @@ LABEL_24:
       v21 = SRLogSensorsCache;
       if (os_log_type_enabled(SRLogSensorsCache, OS_LOG_TYPE_ERROR))
       {
-        v25 = *(a1 + 16);
+        v25 = *(sensor + 16);
         *buf = 138543618;
-        v36 = v4;
+        v36 = sr_sensorByDeletingDeletionRecord;
         v37 = 2114;
         v38 = v25;
         _os_log_error_impl(&dword_1C914D000, v21, OS_LOG_TYPE_ERROR, "Failed to find description for %{public}@ in %{public}@", buf, 0x16u);
@@ -155,7 +155,7 @@ LABEL_27:
 
 + (void)initialize
 {
-  if (objc_opt_class() == a1)
+  if (objc_opt_class() == self)
   {
     SRLogSensorsCache = os_log_create("com.apple.SensorKit", "SensorsCache");
   }
@@ -179,12 +179,12 @@ LABEL_27:
   return result;
 }
 
-+ (void)setDefaultCache:(id)a3
++ (void)setDefaultCache:(id)cache
 {
-  if (_MergedGlobals_1 != a3)
+  if (_MergedGlobals_1 != cache)
   {
 
-    _MergedGlobals_1 = a3;
+    _MergedGlobals_1 = cache;
   }
 }
 
@@ -202,8 +202,8 @@ SRSensorsCache *__29__SRSensorsCache_sharedCache__block_invoke()
   v4 = NSClassFromString(&cfstr_Srsensorreader.isa);
   if (!v4 || (v5 = [objc_msgSend(MEMORY[0x1E696AAE8] bundleForClass:{v4), "bundleURL"}]) == 0)
   {
-    v6 = [objc_msgSend(MEMORY[0x1E696AC08] defaultManager];
-    if (!v6)
+    defaultManager = [objc_msgSend(MEMORY[0x1E696AC08] defaultManager];
+    if (!defaultManager)
     {
       v7 = SRLogSensorsCache;
       if (os_log_type_enabled(SRLogSensorsCache, OS_LOG_TYPE_FAULT))
@@ -213,10 +213,10 @@ SRSensorsCache *__29__SRSensorsCache_sharedCache__block_invoke()
         _os_log_fault_impl(&dword_1C914D000, v7, OS_LOG_TYPE_FAULT, "Failed to locate the /System/Library directory because %{public}@", buf, 0xCu);
       }
 
-      v6 = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/System/Library"];
+      defaultManager = [MEMORY[0x1E695DFF8] fileURLWithPath:@"/System/Library"];
     }
 
-    v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:objc_msgSend(MEMORY[0x1E696AEC0] isDirectory:"pathWithComponents:" relativeToURL:{&unk_1F48CA3D0), 1, v6}];
+    v5 = [MEMORY[0x1E695DFF8] fileURLWithPath:objc_msgSend(MEMORY[0x1E696AEC0] isDirectory:"pathWithComponents:" relativeToURL:{&unk_1F48CA3D0), 1, defaultManager}];
   }
 
   v8 = [v3 fileURLWithPath:@"SensorDescriptions" isDirectory:1 relativeToURL:v5];
@@ -245,7 +245,7 @@ SRSensorsCache *__29__SRSensorsCache_sharedCache__block_invoke()
   return result;
 }
 
-- (SRSensorsCache)initWithDirectories:(id)a3
+- (SRSensorsCache)initWithDirectories:(id)directories
 {
   v6.receiver = self;
   v6.super_class = SRSensorsCache;
@@ -253,7 +253,7 @@ SRSensorsCache *__29__SRSensorsCache_sharedCache__block_invoke()
   if (v4)
   {
     v4->_sensorsCache = objc_alloc_init(MEMORY[0x1E695DEE0]);
-    v4->_sensorDescriptionsDirs = a3;
+    v4->_sensorDescriptionsDirs = directories;
   }
 
   return v4;

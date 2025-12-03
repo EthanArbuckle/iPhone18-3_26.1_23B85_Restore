@@ -1,13 +1,13 @@
 @interface _GCGamepadEventHID
-- (BOOL)hasValidValueForElement:(int64_t)a3;
-- (_GCGamepadEventHID)initWithHIDEvent:(__IOHIDEvent *)a3;
-- (float)floatValueForElement:(int64_t)a3;
+- (BOOL)hasValidValueForElement:(int64_t)element;
+- (_GCGamepadEventHID)initWithHIDEvent:(__IOHIDEvent *)event;
+- (float)floatValueForElement:(int64_t)element;
 - (void)dealloc;
 @end
 
 @implementation _GCGamepadEventHID
 
-- (_GCGamepadEventHID)initWithHIDEvent:(__IOHIDEvent *)a3
+- (_GCGamepadEventHID)initWithHIDEvent:(__IOHIDEvent *)event
 {
   v21 = *MEMORY[0x1E69E9840];
   v19.receiver = self;
@@ -15,7 +15,7 @@
   v4 = [(_GCGamepadEventHID *)&v19 init];
   if (v4)
   {
-    v4->_event = CFRetain(a3);
+    v4->_event = CFRetain(event);
     if (IOHIDEventGetType() == 35)
     {
       IOHIDEventGetChildren();
@@ -75,52 +75,52 @@ LABEL_14:
   [(_GCGamepadEventHID *)&v3 dealloc];
 }
 
-- (BOOL)hasValidValueForElement:(int64_t)a3
+- (BOOL)hasValidValueForElement:(int64_t)element
 {
   if (self->_extendedEvent)
   {
     LOBYTE(v3) = 1;
   }
 
-  else if (a3 >= 0x2F)
+  else if (element >= 0x2F)
   {
-    v6 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v6 handleFailureInMethod:a2 object:self file:@"_GCGamepadEventImpl.m" lineNumber:342 description:@"Unknown element"];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"_GCGamepadEventImpl.m" lineNumber:342 description:@"Unknown element"];
 
     LOBYTE(v3) = 0;
   }
 
   else
   {
-    v3 = 0x7E00003FFFFFuLL >> a3;
+    v3 = 0x7E00003FFFFFuLL >> element;
   }
 
   return v3 & 1;
 }
 
-- (float)floatValueForElement:(int64_t)a3
+- (float)floatValueForElement:(int64_t)element
 {
   if (self->_extendedEvent)
   {
     DataValue = IOHIDEventGetDataValue();
-    if (a3 > 46)
+    if (element > 46)
     {
-      v11 = [MEMORY[0x1E696AAA8] currentHandler];
-      [v11 handleFailureInMethod:a2 object:self file:@"_GCGamepadEventImpl.m" lineNumber:376 description:@"Unknown element"];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+      [currentHandler handleFailureInMethod:a2 object:self file:@"_GCGamepadEventImpl.m" lineNumber:376 description:@"Unknown element"];
 
       return 0.0;
     }
 
     else
     {
-      return *(DataValue + 4 * a3 + 8);
+      return *(DataValue + 4 * element + 8);
     }
   }
 
   else
   {
     v7 = 0.0;
-    switch(a3)
+    switch(element)
     {
       case 0:
         event = self->_event;
@@ -157,7 +157,7 @@ LABEL_14:
         v8 = self->_event;
         IOHIDEventGetFloatValue();
         v10 = v9;
-        if (a3 != 10)
+        if (element != 10)
         {
           goto LABEL_11;
         }
@@ -168,7 +168,7 @@ LABEL_14:
         v14 = self->_event;
         IOHIDEventGetFloatValue();
         v10 = v15;
-        if (a3 != 13)
+        if (element != 13)
         {
           goto LABEL_11;
         }
@@ -179,7 +179,7 @@ LABEL_14:
         v16 = self->_event;
         IOHIDEventGetFloatValue();
         v10 = v17;
-        if (a3 != 14)
+        if (element != 14)
         {
           goto LABEL_11;
         }
@@ -190,7 +190,7 @@ LABEL_14:
         v12 = self->_event;
         IOHIDEventGetFloatValue();
         v10 = v13;
-        if (a3 == 17)
+        if (element == 17)
         {
           return fmaxf(v10, 0.0);
         }
@@ -256,8 +256,8 @@ LABEL_31:
         v7 = v33;
         break;
       default:
-        v40 = [MEMORY[0x1E696AAA8] currentHandler];
-        [v40 handleFailureInMethod:a2 object:self file:@"_GCGamepadEventImpl.m" lineNumber:491 description:@"Unknown element"];
+        currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+        [currentHandler2 handleFailureInMethod:a2 object:self file:@"_GCGamepadEventImpl.m" lineNumber:491 description:@"Unknown element"];
 
         break;
     }

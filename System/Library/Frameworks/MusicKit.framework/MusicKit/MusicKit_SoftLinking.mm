@@ -1,151 +1,151 @@
 @interface MusicKit_SoftLinking
 + (BOOL)_isEntitledToUserDSID;
-+ (double)luminanceForColor:(CGColor *)a3;
-+ (id)_identifierSetWithCatalogID:(id)a3 libraryID:(id)a4 cloudAlbumLibraryID:(id)a5 cloudID:(id)a6 reportingAdamID:(id)a7 purchasedAdamID:(id)a8 assetAdamID:(id)a9 deviceLocalID:(id)a10 possibleDeviceLocalID:(id)a11 occurrenceID:(id)a12 containedDeviceLocalID:(id)a13 syncID:(id)a14 playbackID:(id)a15 formerIDs:(id)a16 modelObjectType:(int64_t)a17 source:(int64_t)a18;
-+ (id)artworkCatalogWithCoverArtworkToken:(id)a3;
-+ (id)artworkCatalogWithDataSourceShortDescription:(id)a3 dataSourceIdentifier:(id)a4 tokenParameters:(id)a5;
-+ (id)artworkCatalogWithStoreArtworkToken:(id)a3;
++ (double)luminanceForColor:(CGColor *)color;
++ (id)_identifierSetWithCatalogID:(id)d libraryID:(id)iD cloudAlbumLibraryID:(id)libraryID cloudID:(id)cloudID reportingAdamID:(id)adamID purchasedAdamID:(id)purchasedAdamID assetAdamID:(id)assetAdamID deviceLocalID:(id)self0 possibleDeviceLocalID:(id)self1 occurrenceID:(id)self2 containedDeviceLocalID:(id)self3 syncID:(id)self4 playbackID:(id)self5 formerIDs:(id)self6 modelObjectType:(int64_t)self7 source:(int64_t)self8;
++ (id)artworkCatalogWithCoverArtworkToken:(id)token;
++ (id)artworkCatalogWithDataSourceShortDescription:(id)description dataSourceIdentifier:(id)identifier tokenParameters:(id)parameters;
++ (id)artworkCatalogWithStoreArtworkToken:(id)token;
 + (id)emptyIdentifierSet;
-+ (id)identifierSetWithCatalogID:(id)a3 libraryID:(id)a4 cloudAlbumLibraryID:(id)a5 cloudID:(id)a6 reportingAdamID:(id)a7 purchasedAdamID:(id)a8 assetAdamID:(id)a9 deviceLocalID:(id)a10 occurrenceID:(id)a11 containedDeviceLocalID:(id)a12 syncID:(id)a13 playbackID:(id)a14 formerIDs:(id)a15 modelObjectType:(int64_t)a16 source:(int64_t)a17;
-+ (id)identifierSetWithIdentifier:(id)a3 modelObjectType:(int64_t)a4 specificLibraryDatabaseID:(id)a5 isPossibleLibraryPersistentID:(BOOL)a6 source:(int64_t)a7;
-+ (id)rawSourceFromSource:(int64_t)a3;
-+ (id)recentlySearchedArchivedDataForUnderlyingIdentifierSet:(id)a3 modelObjectType:(int64_t)a4 error:(id *)a5;
-+ (id)recentlySearchedUnarchiveUnderlyingIdentifierSetWithData:(id)a3 error:(id *)a4;
-+ (id)storeArtworkTokenWithImageArtworkInfo:(id)a3 cropStyle:(id)a4;
-+ (int64_t)audioTraitsForRawValue:(int64_t)a3;
-+ (int64_t)rawValueForAudioTraits:(int64_t)a3;
++ (id)identifierSetWithCatalogID:(id)d libraryID:(id)iD cloudAlbumLibraryID:(id)libraryID cloudID:(id)cloudID reportingAdamID:(id)adamID purchasedAdamID:(id)purchasedAdamID assetAdamID:(id)assetAdamID deviceLocalID:(id)self0 occurrenceID:(id)self1 containedDeviceLocalID:(id)self2 syncID:(id)self3 playbackID:(id)self4 formerIDs:(id)self5 modelObjectType:(int64_t)self6 source:(int64_t)self7;
++ (id)identifierSetWithIdentifier:(id)identifier modelObjectType:(int64_t)type specificLibraryDatabaseID:(id)d isPossibleLibraryPersistentID:(BOOL)iD source:(int64_t)source;
++ (id)rawSourceFromSource:(int64_t)source;
++ (id)recentlySearchedArchivedDataForUnderlyingIdentifierSet:(id)set modelObjectType:(int64_t)type error:(id *)error;
++ (id)recentlySearchedUnarchiveUnderlyingIdentifierSetWithData:(id)data error:(id *)error;
++ (id)storeArtworkTokenWithImageArtworkInfo:(id)info cropStyle:(id)style;
++ (int64_t)audioTraitsForRawValue:(int64_t)value;
++ (int64_t)rawValueForAudioTraits:(int64_t)traits;
 @end
 
 @implementation MusicKit_SoftLinking
 
-+ (id)_identifierSetWithCatalogID:(id)a3 libraryID:(id)a4 cloudAlbumLibraryID:(id)a5 cloudID:(id)a6 reportingAdamID:(id)a7 purchasedAdamID:(id)a8 assetAdamID:(id)a9 deviceLocalID:(id)a10 possibleDeviceLocalID:(id)a11 occurrenceID:(id)a12 containedDeviceLocalID:(id)a13 syncID:(id)a14 playbackID:(id)a15 formerIDs:(id)a16 modelObjectType:(int64_t)a17 source:(int64_t)a18
++ (id)_identifierSetWithCatalogID:(id)d libraryID:(id)iD cloudAlbumLibraryID:(id)libraryID cloudID:(id)cloudID reportingAdamID:(id)adamID purchasedAdamID:(id)purchasedAdamID assetAdamID:(id)assetAdamID deviceLocalID:(id)self0 possibleDeviceLocalID:(id)self1 occurrenceID:(id)self2 containedDeviceLocalID:(id)self3 syncID:(id)self4 playbackID:(id)self5 formerIDs:(id)self6 modelObjectType:(int64_t)self7 source:(int64_t)self8
 {
-  v52 = a3;
-  v23 = a4;
-  v50 = a5;
-  v49 = a6;
-  v54 = a7;
-  v53 = a8;
-  v24 = a9;
-  v46 = a10;
-  v25 = a11;
-  v26 = a12;
-  v27 = a13;
-  v28 = a14;
-  v29 = a15;
-  v30 = a16;
-  v31 = [MusicKit_SoftLinking_MPModelKind _modelKindForModelObjectType:a17];
-  v44 = v29;
-  v45 = v24;
-  v51 = v28;
+  dCopy = d;
+  iDCopy = iD;
+  libraryIDCopy = libraryID;
+  cloudIDCopy = cloudID;
+  adamIDCopy = adamID;
+  purchasedAdamIDCopy = purchasedAdamID;
+  assetAdamIDCopy = assetAdamID;
+  localIDCopy = localID;
+  deviceLocalIDCopy = deviceLocalID;
+  occurrenceIDCopy = occurrenceID;
+  containedDeviceLocalIDCopy = containedDeviceLocalID;
+  syncIDCopy = syncID;
+  playbackIDCopy = playbackID;
+  dsCopy = ds;
+  v31 = [MusicKit_SoftLinking_MPModelKind _modelKindForModelObjectType:type];
+  v44 = playbackIDCopy;
+  v45 = assetAdamIDCopy;
+  v51 = syncIDCopy;
   if (v31)
   {
-    v43 = [a1 rawSourceFromSource:a18];
+    v43 = [self rawSourceFromSource:source];
     v42 = objc_alloc(getMPIdentifierSetClass());
     v55[0] = MEMORY[0x277D85DD0];
     v55[1] = 3221225472;
     v55[2] = __295__MusicKit_SoftLinking_MusicKit_SoftLinking_MPIdentifierSet___identifierSetWithCatalogID_libraryID_cloudAlbumLibraryID_cloudID_reportingAdamID_purchasedAdamID_assetAdamID_deviceLocalID_possibleDeviceLocalID_occurrenceID_containedDeviceLocalID_syncID_playbackID_formerIDs_modelObjectType_source___block_invoke;
     v55[3] = &unk_278229B20;
-    v56 = v52;
-    v57 = v23;
-    v58 = v54;
-    v59 = v53;
-    v32 = v26;
-    v60 = v24;
-    v61 = v30;
-    v62 = v26;
-    v33 = v25;
-    v63 = v46;
-    v34 = v27;
-    v64 = v27;
-    v65 = v28;
-    v70 = a1;
-    v66 = v25;
-    v67 = v29;
-    v35 = v50;
-    v68 = v50;
-    v36 = v30;
-    v37 = v49;
-    v69 = v49;
-    v38 = v46;
+    v56 = dCopy;
+    v57 = iDCopy;
+    v58 = adamIDCopy;
+    v59 = purchasedAdamIDCopy;
+    v32 = occurrenceIDCopy;
+    v60 = assetAdamIDCopy;
+    v61 = dsCopy;
+    v62 = occurrenceIDCopy;
+    v33 = deviceLocalIDCopy;
+    v63 = localIDCopy;
+    v34 = containedDeviceLocalIDCopy;
+    v64 = containedDeviceLocalIDCopy;
+    v65 = syncIDCopy;
+    selfCopy = self;
+    v66 = deviceLocalIDCopy;
+    v67 = playbackIDCopy;
+    v35 = libraryIDCopy;
+    v68 = libraryIDCopy;
+    v36 = dsCopy;
+    v37 = cloudIDCopy;
+    v69 = cloudIDCopy;
+    v38 = localIDCopy;
     v39 = v32;
     v48 = [v42 initWithSource:v43 modelKind:v31 musicKitBlock:v55];
 
-    v40 = v52;
+    v40 = dCopy;
   }
 
   else
   {
-    [a1 emptyIdentifierSet];
-    v33 = v25;
-    v39 = v26;
-    v34 = v27;
-    v48 = v38 = v46;
-    v40 = v52;
-    v36 = v30;
-    v37 = v49;
-    v35 = v50;
+    [self emptyIdentifierSet];
+    v33 = deviceLocalIDCopy;
+    v39 = occurrenceIDCopy;
+    v34 = containedDeviceLocalIDCopy;
+    v48 = v38 = localIDCopy;
+    v40 = dCopy;
+    v36 = dsCopy;
+    v37 = cloudIDCopy;
+    v35 = libraryIDCopy;
   }
 
   return v48;
 }
 
-+ (id)identifierSetWithCatalogID:(id)a3 libraryID:(id)a4 cloudAlbumLibraryID:(id)a5 cloudID:(id)a6 reportingAdamID:(id)a7 purchasedAdamID:(id)a8 assetAdamID:(id)a9 deviceLocalID:(id)a10 occurrenceID:(id)a11 containedDeviceLocalID:(id)a12 syncID:(id)a13 playbackID:(id)a14 formerIDs:(id)a15 modelObjectType:(int64_t)a16 source:(int64_t)a17
++ (id)identifierSetWithCatalogID:(id)d libraryID:(id)iD cloudAlbumLibraryID:(id)libraryID cloudID:(id)cloudID reportingAdamID:(id)adamID purchasedAdamID:(id)purchasedAdamID assetAdamID:(id)assetAdamID deviceLocalID:(id)self0 occurrenceID:(id)self1 containedDeviceLocalID:(id)self2 syncID:(id)self3 playbackID:(id)self4 formerIDs:(id)self5 modelObjectType:(int64_t)self6 source:(int64_t)self7
 {
-  v37 = a15;
-  v34 = a14;
-  v32 = a13;
-  v29 = a12;
-  v31 = a11;
-  v41 = a10;
-  v19 = a9;
-  v30 = a8;
-  v20 = a7;
-  v21 = a6;
-  v36 = a5;
-  v39 = a4;
-  v22 = a3;
+  dsCopy = ds;
+  playbackIDCopy = playbackID;
+  syncIDCopy = syncID;
+  deviceLocalIDCopy = deviceLocalID;
+  occurrenceIDCopy = occurrenceID;
+  localIDCopy = localID;
+  assetAdamIDCopy = assetAdamID;
+  purchasedAdamIDCopy = purchasedAdamID;
+  adamIDCopy = adamID;
+  cloudIDCopy = cloudID;
+  libraryIDCopy = libraryID;
+  iDCopy = iD;
+  dCopy = d;
   v23 = objc_opt_class();
-  v24 = v21;
-  v25 = v21;
-  v26 = v20;
-  v27 = [v23 _identifierSetWithCatalogID:v22 libraryID:v39 cloudAlbumLibraryID:v36 cloudID:v24 reportingAdamID:v20 purchasedAdamID:v30 assetAdamID:v19 deviceLocalID:v41 possibleDeviceLocalID:0 occurrenceID:v31 containedDeviceLocalID:v29 syncID:v32 playbackID:v34 formerIDs:v37 modelObjectType:a16 source:a17];
+  v24 = cloudIDCopy;
+  v25 = cloudIDCopy;
+  v26 = adamIDCopy;
+  v27 = [v23 _identifierSetWithCatalogID:dCopy libraryID:iDCopy cloudAlbumLibraryID:libraryIDCopy cloudID:v24 reportingAdamID:adamIDCopy purchasedAdamID:purchasedAdamIDCopy assetAdamID:assetAdamIDCopy deviceLocalID:localIDCopy possibleDeviceLocalID:0 occurrenceID:occurrenceIDCopy containedDeviceLocalID:deviceLocalIDCopy syncID:syncIDCopy playbackID:playbackIDCopy formerIDs:dsCopy modelObjectType:type source:source];
 
   return v27;
 }
 
-+ (id)identifierSetWithIdentifier:(id)a3 modelObjectType:(int64_t)a4 specificLibraryDatabaseID:(id)a5 isPossibleLibraryPersistentID:(BOOL)a6 source:(int64_t)a7
++ (id)identifierSetWithIdentifier:(id)identifier modelObjectType:(int64_t)type specificLibraryDatabaseID:(id)d isPossibleLibraryPersistentID:(BOOL)iD source:(int64_t)source
 {
-  v8 = a6;
-  v12 = a3;
-  v13 = a5;
+  iDCopy = iD;
+  identifierCopy = identifier;
+  dCopy = d;
   v14 = objc_alloc_init(MEMORY[0x277CCABB8]);
-  v15 = [v14 numberFromString:v12];
+  v15 = [v14 numberFromString:identifierCopy];
 
   v38 = v14;
-  v39 = v12;
-  v36 = a7;
-  v37 = a1;
-  v35 = a4;
-  v34 = v8;
+  v39 = identifierCopy;
+  sourceCopy = source;
+  selfCopy = self;
+  typeCopy = type;
+  v34 = iDCopy;
   if (v15)
   {
-    v16 = v12;
-    if (a4 == 27)
+    v16 = identifierCopy;
+    if (type == 27)
     {
       v17 = [MusicKit_SoftLinking_CatalogID alloc];
       v18 = v16;
       v19 = 5;
     }
 
-    else if (a4 == 29)
+    else if (type == 29)
     {
       v17 = [MusicKit_SoftLinking_CatalogID alloc];
       v18 = v16;
       v19 = 3;
     }
 
-    else if (v8)
+    else if (iDCopy)
     {
       v17 = [MusicKit_SoftLinking_CatalogID alloc];
       v18 = v16;
@@ -156,7 +156,7 @@
     {
       v17 = [MusicKit_SoftLinking_CatalogID alloc];
       v18 = v16;
-      if (!a4)
+      if (!type)
       {
         v20 = [(MusicKit_SoftLinking_CatalogID *)v17 initWithValue:v16 kind:0];
         v21 = 0;
@@ -168,41 +168,41 @@
 
     v20 = [(MusicKit_SoftLinking_CatalogID *)v17 initWithValue:v18 kind:v19];
     v21 = 0;
-    a4 = 0;
+    type = 0;
 LABEL_19:
     v22 = 0;
     goto LABEL_26;
   }
 
   v20 = 0;
-  if (a4 > 20)
+  if (type > 20)
   {
     v21 = 0;
-    if ((a4 - 21) > 1)
+    if ((type - 21) > 1)
     {
 LABEL_25:
-      v22 = v12;
+      v22 = identifierCopy;
       v16 = 0;
-      a4 = 0;
+      type = 0;
       goto LABEL_26;
     }
 
     goto LABEL_14;
   }
 
-  if (a4)
+  if (type)
   {
-    if (a4 != 17)
+    if (type != 17)
     {
       v21 = 0;
-      if (a4 != 19)
+      if (type != 19)
       {
         goto LABEL_25;
       }
 
-      if ([v12 containsString:@"_"])
+      if ([identifierCopy containsString:@"_"])
       {
-        v21 = v12;
+        v21 = identifierCopy;
         v20 = 0;
         goto LABEL_25;
       }
@@ -211,9 +211,9 @@ LABEL_25:
     }
 
 LABEL_14:
-    if ([v12 hasPrefix:@"pl."])
+    if ([identifierCopy hasPrefix:@"pl."])
     {
-      v20 = [[MusicKit_SoftLinking_CatalogID alloc] initWithValue:v12 kind:2];
+      v20 = [[MusicKit_SoftLinking_CatalogID alloc] initWithValue:identifierCopy kind:2];
 LABEL_24:
       v21 = 0;
       goto LABEL_25;
@@ -224,17 +224,17 @@ LABEL_23:
     goto LABEL_24;
   }
 
-  a4 = v12;
+  type = identifierCopy;
   v16 = 0;
   v21 = 0;
   v22 = 0;
   v20 = 0;
 LABEL_26:
-  v23 = [v16 longLongValue];
-  v24 = v13;
-  if (v23)
+  longLongValue = [v16 longLongValue];
+  v24 = dCopy;
+  if (longLongValue)
   {
-    v25 = v13;
+    v25 = dCopy;
     if (![v25 length])
     {
       v41 = 0;
@@ -255,13 +255,13 @@ LABEL_26:
 
       v27 = v26;
       _Block_object_dispose(&v41, 8);
-      v28 = [v26 deviceMediaLibrary];
-      v29 = [v28 uniqueIdentifier];
+      deviceMediaLibrary = [v26 deviceMediaLibrary];
+      uniqueIdentifier = [deviceMediaLibrary uniqueIdentifier];
 
-      v25 = v29;
+      v25 = uniqueIdentifier;
     }
 
-    v30 = [[MusicKit_SoftLinking_DeviceLocalID alloc] initWithValue:v23 databaseID:v25];
+    v30 = [[MusicKit_SoftLinking_DeviceLocalID alloc] initWithValue:longLongValue databaseID:v25];
     if (v34)
     {
       v31 = 0;
@@ -274,12 +274,12 @@ LABEL_26:
 
     if (v34)
     {
-      v23 = v30;
+      longLongValue = v30;
     }
 
     else
     {
-      v23 = 0;
+      longLongValue = 0;
     }
   }
 
@@ -288,7 +288,7 @@ LABEL_26:
     v31 = 0;
   }
 
-  v32 = [v37 _identifierSetWithCatalogID:v20 libraryID:v22 cloudAlbumLibraryID:a4 cloudID:v16 reportingAdamID:0 purchasedAdamID:0 assetAdamID:0 deviceLocalID:v31 possibleDeviceLocalID:v23 occurrenceID:v21 containedDeviceLocalID:0 syncID:0 playbackID:0 formerIDs:0 modelObjectType:v35 source:v36];
+  v32 = [selfCopy _identifierSetWithCatalogID:v20 libraryID:v22 cloudAlbumLibraryID:type cloudID:v16 reportingAdamID:0 purchasedAdamID:0 assetAdamID:0 deviceLocalID:v31 possibleDeviceLocalID:longLongValue occurrenceID:v21 containedDeviceLocalID:0 syncID:0 playbackID:0 formerIDs:0 modelObjectType:typeCopy source:sourceCopy];
 
   return v32;
 }
@@ -310,32 +310,32 @@ LABEL_26:
   return _isEntitledToUserDSID_sIsEntitledToUserDSID;
 }
 
-+ (id)rawSourceFromSource:(int64_t)a3
++ (id)rawSourceFromSource:(int64_t)source
 {
-  if ((a3 - 1) > 0xE)
+  if ((source - 1) > 0xE)
   {
     return @"MusicKit_Unknown";
   }
 
   else
   {
-    return *(&off_278229B98 + a3 - 1);
+    return *(&off_278229B98 + source - 1);
   }
 }
 
-+ (id)recentlySearchedArchivedDataForUnderlyingIdentifierSet:(id)a3 modelObjectType:(int64_t)a4 error:(id *)a5
++ (id)recentlySearchedArchivedDataForUnderlyingIdentifierSet:(id)set modelObjectType:(int64_t)type error:(id *)error
 {
-  v7 = a3;
-  v8 = [MusicKit_SoftLinking_MPModelKind _modelKindForModelObjectType:a4];
-  v9 = v7;
+  setCopy = set;
+  v8 = [MusicKit_SoftLinking_MPModelKind _modelKindForModelObjectType:type];
+  v9 = setCopy;
   getMPIdentifierSetClass();
   v10 = v9;
   if (objc_opt_isKindOfClass())
   {
-    v11 = [v9 personalizedStore];
+    personalizedStore = [v9 personalizedStore];
 
     v10 = v9;
-    if (!v11)
+    if (!personalizedStore)
     {
       v10 = v9;
       if (v8)
@@ -347,40 +347,40 @@ LABEL_26:
     }
   }
 
-  v14 = [v10 archivedDataWithError:a5];
+  v14 = [v10 archivedDataWithError:error];
 
   return v14;
 }
 
-+ (id)recentlySearchedUnarchiveUnderlyingIdentifierSetWithData:(id)a3 error:(id *)a4
++ (id)recentlySearchedUnarchiveUnderlyingIdentifierSetWithData:(id)data error:(id *)error
 {
   v5 = MEMORY[0x277CCAAC8];
-  v6 = a3;
-  v7 = [v5 unarchivedObjectOfClass:getMPIdentifierSetClass() fromData:v6 error:a4];
+  dataCopy = data;
+  v7 = [v5 unarchivedObjectOfClass:getMPIdentifierSetClass() fromData:dataCopy error:error];
 
   return v7;
 }
 
-+ (int64_t)audioTraitsForRawValue:(int64_t)a3
++ (int64_t)audioTraitsForRawValue:(int64_t)value
 {
-  v3 = a3;
-  v4 = a3 >> 1;
-  [a1 _ensureConsistencyOfUnderlyingOptionSetsForAudioTraits];
-  return v3 & 0x31 | (4 * (v4 & 1)) | v4 & 2;
+  valueCopy = value;
+  v4 = value >> 1;
+  [self _ensureConsistencyOfUnderlyingOptionSetsForAudioTraits];
+  return valueCopy & 0x31 | (4 * (v4 & 1)) | v4 & 2;
 }
 
-+ (int64_t)rawValueForAudioTraits:(int64_t)a3
++ (int64_t)rawValueForAudioTraits:(int64_t)traits
 {
-  v3 = a3;
-  v4 = a3 >> 1;
-  [a1 _ensureConsistencyOfUnderlyingOptionSetsForAudioTraits];
-  return v3 & 0x31 | v4 & 2 | (4 * (v4 & 1));
+  traitsCopy = traits;
+  v4 = traits >> 1;
+  [self _ensureConsistencyOfUnderlyingOptionSetsForAudioTraits];
+  return traitsCopy & 0x31 | v4 & 2 | (4 * (v4 & 1));
 }
 
-+ (id)storeArtworkTokenWithImageArtworkInfo:(id)a3 cropStyle:(id)a4
++ (id)storeArtworkTokenWithImageArtworkInfo:(id)info cropStyle:(id)style
 {
-  v5 = a3;
-  v6 = a4;
+  infoCopy = info;
+  styleCopy = style;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2050000000;
@@ -399,29 +399,29 @@ LABEL_26:
 
   v8 = v7;
   _Block_object_dispose(&v13, 8);
-  v9 = [v7 tokenWithImageArtworkInfo:v5];
+  v9 = [v7 tokenWithImageArtworkInfo:infoCopy];
   v10 = v9;
-  if (v6)
+  if (styleCopy)
   {
-    [v9 setCropStyle:v6];
+    [v9 setCropStyle:styleCopy];
   }
 
   return v10;
 }
 
-+ (id)artworkCatalogWithDataSourceShortDescription:(id)a3 dataSourceIdentifier:(id)a4 tokenParameters:(id)a5
++ (id)artworkCatalogWithDataSourceShortDescription:(id)description dataSourceIdentifier:(id)identifier tokenParameters:(id)parameters
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [getMPArtworkCatalogClass_0() artworkCatalogWithDataSourceShortDescription:v9 dataSourceIdentifier:v8 tokenParameters:v7];
+  parametersCopy = parameters;
+  identifierCopy = identifier;
+  descriptionCopy = description;
+  v10 = [getMPArtworkCatalogClass_0() artworkCatalogWithDataSourceShortDescription:descriptionCopy dataSourceIdentifier:identifierCopy tokenParameters:parametersCopy];
 
   return v10;
 }
 
-+ (id)artworkCatalogWithStoreArtworkToken:(id)a3
++ (id)artworkCatalogWithStoreArtworkToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = objc_alloc(getMPArtworkCatalogClass_0());
   v11 = 0;
   v12 = &v11;
@@ -441,23 +441,23 @@ LABEL_26:
 
   v6 = v5;
   _Block_object_dispose(&v11, 8);
-  v7 = [v5 sharedStoreArtworkDataSource];
-  v8 = [v4 initWithToken:v3 dataSource:v7];
+  sharedStoreArtworkDataSource = [v5 sharedStoreArtworkDataSource];
+  v8 = [v4 initWithToken:tokenCopy dataSource:sharedStoreArtworkDataSource];
 
   return v8;
 }
 
-+ (id)artworkCatalogWithCoverArtworkToken:(id)a3
++ (id)artworkCatalogWithCoverArtworkToken:(id)token
 {
-  v3 = a3;
+  tokenCopy = token;
   v4 = objc_alloc(getMPArtworkCatalogClass_0());
   v5 = +[MusicKit_SoftLinking_CoverArtworkDataSource sharedDataSource];
-  v6 = [v4 initWithToken:v3 dataSource:v5];
+  v6 = [v4 initWithToken:tokenCopy dataSource:v5];
 
   return v6;
 }
 
-+ (double)luminanceForColor:(CGColor *)a3
++ (double)luminanceForColor:(CGColor *)color
 {
   v8 = 0;
   v9 = &v8;
@@ -483,7 +483,7 @@ LABEL_26:
     _Unwind_Resume(v6);
   }
 
-  v4(a3);
+  v4(color);
   return result;
 }
 

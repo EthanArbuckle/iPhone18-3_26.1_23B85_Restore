@@ -1,6 +1,6 @@
 @interface NanoRoutePlanningLocationUpdateState
-- (NanoRoutePlanningLocationUpdateState)initWithStateManager:(id)a3 isolationQueue:(id)a4;
-- (void)_handleLocation:(id)a3 error:(id)a4;
+- (NanoRoutePlanningLocationUpdateState)initWithStateManager:(id)manager isolationQueue:(id)queue;
+- (void)_handleLocation:(id)location error:(id)error;
 - (void)start;
 - (void)stop;
 @end
@@ -14,25 +14,25 @@
   self->_locationUpdater = 0;
 }
 
-- (void)_handleLocation:(id)a3 error:(id)a4
+- (void)_handleLocation:(id)location error:(id)error
 {
-  v6 = a3;
-  v7 = a4;
+  locationCopy = location;
+  errorCopy = error;
   if ([(NanoRoutePlanningState *)self isActive])
   {
     v8 = sub_100798A3C();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138478083;
-      v16 = v6;
+      v16 = locationCopy;
       v17 = 2112;
-      v18 = v7;
+      v18 = errorCopy;
       _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEBUG, "Handle location:%{private}@, error:%@", buf, 0x16u);
     }
 
-    if (v6)
+    if (locationCopy)
     {
-      v9 = [[GEOLocation alloc] initWithCLLocation:v6];
+      v9 = [[GEOLocation alloc] initWithCLLocation:locationCopy];
     }
 
     else
@@ -40,31 +40,31 @@
       v9 = 0;
     }
 
-    v10 = [(NanoRoutePlanningState *)self manager];
+    manager = [(NanoRoutePlanningState *)self manager];
     v12[0] = _NSConcreteStackBlock;
     v12[1] = 3221225472;
     v12[2] = sub_100C1B790;
     v12[3] = &unk_10164DEC8;
-    v13 = v7;
+    v13 = errorCopy;
     v14 = v9;
     v11 = v9;
-    [v10 updateWithBlock:v12];
+    [manager updateWithBlock:v12];
   }
 }
 
 - (void)start
 {
   objc_initWeak(&location, self);
-  v3 = [(NanoRoutePlanningState *)self manager];
-  v4 = [v3 request];
+  manager = [(NanoRoutePlanningState *)self manager];
+  request = [manager request];
 
-  v5 = [v4 traits];
-  v6 = [v5 deviceLocation];
+  traits = [request traits];
+  deviceLocation = [traits deviceLocation];
 
-  if (v6)
+  if (deviceLocation)
   {
-    v7 = [(NanoRoutePlanningState *)self manager];
-    [v7 updateWithBlock:&stru_10164DE78];
+    manager2 = [(NanoRoutePlanningState *)self manager];
+    [manager2 updateWithBlock:&stru_10164DE78];
   }
 
   else
@@ -82,11 +82,11 @@
   objc_destroyWeak(&location);
 }
 
-- (NanoRoutePlanningLocationUpdateState)initWithStateManager:(id)a3 isolationQueue:(id)a4
+- (NanoRoutePlanningLocationUpdateState)initWithStateManager:(id)manager isolationQueue:(id)queue
 {
   v8.receiver = self;
   v8.super_class = NanoRoutePlanningLocationUpdateState;
-  v4 = [(NanoRoutePlanningState *)&v8 initWithStateManager:a3 isolationQueue:a4];
+  v4 = [(NanoRoutePlanningState *)&v8 initWithStateManager:manager isolationQueue:queue];
   if (v4)
   {
     v5 = objc_alloc_init(SingleLocationUpdate);

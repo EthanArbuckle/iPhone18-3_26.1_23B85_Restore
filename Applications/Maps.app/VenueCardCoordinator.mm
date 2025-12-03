@@ -1,15 +1,15 @@
 @interface VenueCardCoordinator
-+ (id)searchResultForPlaceCardItem:(id)a3;
++ (id)searchResultForPlaceCardItem:(id)item;
 - (BOOL)isCardStackEmpty;
 - (BOOL)venuesStackContainsCategoryListCard;
 - (ContaineeProtocol)topViewController;
-- (VenueCardCoordinator)initWithActionCoordinator:(id)a3 venueChangeNotifier:(id)a4;
+- (VenueCardCoordinator)initWithActionCoordinator:(id)coordinator venueChangeNotifier:(id)notifier;
 - (VenueCardCoordinatorDataSource)dataSource;
-- (id)routePlanningOverviewViewControllerForCardFactory:(id)a3;
-- (id)shareDelegateForCardFactory:(id)a3;
-- (id)stateForNewCardItem:(id)a3 previousItemInStack:(id)a4 savePlaceCardSelectionState:(BOOL)a5;
-- (void)popVenueCardItem:(id)a3;
-- (void)venuesStack:(id)a3 reorderedStackAndRemovedCardItems:(id)a4;
+- (id)routePlanningOverviewViewControllerForCardFactory:(id)factory;
+- (id)shareDelegateForCardFactory:(id)factory;
+- (id)stateForNewCardItem:(id)item previousItemInStack:(id)stack savePlaceCardSelectionState:(BOOL)state;
+- (void)popVenueCardItem:(id)item;
+- (void)venuesStack:(id)stack reorderedStackAndRemovedCardItems:(id)items;
 @end
 
 @implementation VenueCardCoordinator
@@ -38,12 +38,12 @@
 
 - (ContaineeProtocol)topViewController
 {
-  v3 = [(VenuesStack *)self->_cardStack allItems];
-  v4 = [v3 lastObject];
+  allItems = [(VenuesStack *)self->_cardStack allItems];
+  lastObject = [allItems lastObject];
 
-  if (v4)
+  if (lastObject)
   {
-    v5 = [(VenueCardFactory *)self->_cardFactory existingViewControllerForCardItem:v4];
+    v5 = [(VenueCardFactory *)self->_cardFactory existingViewControllerForCardItem:lastObject];
   }
 
   else
@@ -54,38 +54,38 @@
   return v5;
 }
 
-- (void)popVenueCardItem:(id)a3
+- (void)popVenueCardItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   cardStack = self->_cardStack;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_100810728;
   v7[3] = &unk_10162B220;
-  v8 = v4;
-  v6 = v4;
+  v8 = itemCopy;
+  v6 = itemCopy;
   [(VenuesStack *)cardStack popVenueCard:v7];
 }
 
 - (BOOL)isCardStackEmpty
 {
-  v2 = [(VenuesStack *)self->_cardStack allItems];
-  v3 = [v2 count] == 0;
+  allItems = [(VenuesStack *)self->_cardStack allItems];
+  v3 = [allItems count] == 0;
 
   return v3;
 }
 
-- (VenueCardCoordinator)initWithActionCoordinator:(id)a3 venueChangeNotifier:(id)a4
+- (VenueCardCoordinator)initWithActionCoordinator:(id)coordinator venueChangeNotifier:(id)notifier
 {
-  v6 = a3;
-  v7 = a4;
+  coordinatorCopy = coordinator;
+  notifierCopy = notifier;
   v18.receiver = self;
   v18.super_class = VenueCardCoordinator;
   v8 = [(VenueCardCoordinator *)&v18 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeWeak(&v8->_actionCoordinator, v6);
+    objc_storeWeak(&v8->_actionCoordinator, coordinatorCopy);
     v10 = objc_alloc_init(VenueCardDealer);
     v11 = [[VenuesStack alloc] initWithCardDealer:v10];
     cardStack = v9->_cardStack;
@@ -93,64 +93,64 @@
 
     [(VenuesStack *)v9->_cardStack setDelegate:v9];
     [(VenuesStack *)v9->_cardStack setDataSource:v9];
-    v13 = [[VenueCardFactory alloc] initWithChangeNotifier:v7];
+    v13 = [[VenueCardFactory alloc] initWithChangeNotifier:notifierCopy];
     cardFactory = v9->_cardFactory;
     v9->_cardFactory = v13;
 
     [(VenueCardFactory *)v9->_cardFactory setDelegate:v9];
     [(VenuesStack *)v9->_cardStack addStackObserver:v9->_cardFactory];
     v15 = v9->_cardStack;
-    v16 = [v6 venuesManager];
-    [v16 setVenueCardStack:v15];
+    venuesManager = [coordinatorCopy venuesManager];
+    [venuesManager setVenueCardStack:v15];
   }
 
   return v9;
 }
 
-+ (id)searchResultForPlaceCardItem:(id)a3
++ (id)searchResultForPlaceCardItem:(id)item
 {
-  v3 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = v3;
-    v5 = [v4 mapItem];
+    v4 = itemCopy;
+    mapItem = [v4 mapItem];
 
-    if (v5)
+    if (mapItem)
     {
       v6 = [SearchResult alloc];
-      v7 = [v4 mapItem];
-      v8 = [(SearchResult *)v6 initWithMapItem:v7];
+      mapItem2 = [v4 mapItem];
+      searchResult = [(SearchResult *)v6 initWithMapItem:mapItem2];
     }
 
     else
     {
-      v8 = [v4 searchResult];
+      searchResult = [v4 searchResult];
     }
   }
 
   else
   {
-    v8 = 0;
+    searchResult = 0;
   }
 
-  return v8;
+  return searchResult;
 }
 
-- (void)venuesStack:(id)a3 reorderedStackAndRemovedCardItems:(id)a4
+- (void)venuesStack:(id)stack reorderedStackAndRemovedCardItems:(id)items
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v7 allObjects];
-  v9 = [VenuesStack cards:v8 lastCardConformingToProtocol:&OBJC_PROTOCOL___VenueCategoryCardItem];
+  stackCopy = stack;
+  itemsCopy = items;
+  allObjects = [itemsCopy allObjects];
+  v9 = [VenuesStack cards:allObjects lastCardConformingToProtocol:&OBJC_PROTOCOL___VenueCategoryCardItem];
   if (v9)
   {
   }
 
   else
   {
-    v10 = [v7 allObjects];
-    v11 = [VenuesStack cards:v10 lastCardConformingToProtocol:&OBJC_PROTOCOL___VenueAutoCompleteCategoryCardItem];
+    allObjects2 = [itemsCopy allObjects];
+    v11 = [VenuesStack cards:allObjects2 lastCardConformingToProtocol:&OBJC_PROTOCOL___VenueAutoCompleteCategoryCardItem];
 
     if (!v11)
     {
@@ -158,17 +158,17 @@
     }
   }
 
-  v12 = [v6 allItems];
-  v13 = [v12 lastObject];
+  allItems = [stackCopy allItems];
+  lastObject = [allItems lastObject];
 
-  v14 = [VenueCardCoordinator searchResultForPlaceCardItem:v13];
+  v14 = [VenueCardCoordinator searchResultForPlaceCardItem:lastObject];
   if (v14)
   {
     WeakRetained = objc_loadWeakRetained(&self->_actionCoordinator);
-    v16 = [WeakRetained searchPinsManager];
+    searchPinsManager = [WeakRetained searchPinsManager];
     v33 = v14;
     v17 = [NSArray arrayWithObjects:&v33 count:1];
-    [v16 setSearchPins:v17 selectedPin:v14 animated:1];
+    [searchPinsManager setSearchPins:v17 selectedPin:v14 animated:1];
   }
 
 LABEL_7:
@@ -176,7 +176,7 @@ LABEL_7:
   v31 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v18 = v7;
+  v18 = itemsCopy;
   v19 = [v18 countByEnumeratingWithState:&v28 objects:v32 count:16];
   if (v19)
   {
@@ -194,13 +194,13 @@ LABEL_7:
 
         v23 = [(VenueCardFactory *)self->_cardFactory existingViewControllerForCardItem:*(*(&v28 + 1) + 8 * v22), v28];
         v24 = objc_loadWeakRetained(&self->_actionCoordinator);
-        v25 = [v24 currentViewController];
+        currentViewController = [v24 currentViewController];
 
-        if (v23 != v25)
+        if (v23 != currentViewController)
         {
           v26 = objc_loadWeakRetained(&self->_actionCoordinator);
-          v27 = [v26 containerViewController];
-          [v27 removeControllerFromStack:v23];
+          containerViewController = [v26 containerViewController];
+          [containerViewController removeControllerFromStack:v23];
         }
 
         v22 = v22 + 1;
@@ -214,39 +214,39 @@ LABEL_7:
   }
 }
 
-- (id)stateForNewCardItem:(id)a3 previousItemInStack:(id)a4 savePlaceCardSelectionState:(BOOL)a5
+- (id)stateForNewCardItem:(id)item previousItemInStack:(id)stack savePlaceCardSelectionState:(BOOL)state
 {
-  v5 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(VenueCardCoordinator *)self dataSource];
-  v11 = [v10 mapSelectionStateForVenueCardItem:v9 savePlaceCardSelectionState:v5];
+  stateCopy = state;
+  stackCopy = stack;
+  itemCopy = item;
+  dataSource = [(VenueCardCoordinator *)self dataSource];
+  v11 = [dataSource mapSelectionStateForVenueCardItem:itemCopy savePlaceCardSelectionState:stateCopy];
 
-  v12 = [(VenueCardCoordinator *)self dataSource];
-  v13 = [v12 searchFieldItemForVenueCardItem:v9 previousItemInStack:v8];
+  dataSource2 = [(VenueCardCoordinator *)self dataSource];
+  v13 = [dataSource2 searchFieldItemForVenueCardItem:itemCopy previousItemInStack:stackCopy];
 
-  v14 = [(VenueCardCoordinator *)self dataSource];
-  v15 = [v14 searchInfoForVenueCardItem:v9 previousItemInStack:v8];
+  dataSource3 = [(VenueCardCoordinator *)self dataSource];
+  v15 = [dataSource3 searchInfoForVenueCardItem:itemCopy previousItemInStack:stackCopy];
 
   v16 = [VenueMapSearchState stateWithMapSelectionState:v11 searchFieldItem:v13 searchInfo:v15];
 
   return v16;
 }
 
-- (id)routePlanningOverviewViewControllerForCardFactory:(id)a3
+- (id)routePlanningOverviewViewControllerForCardFactory:(id)factory
 {
   WeakRetained = objc_loadWeakRetained(&self->_actionCoordinator);
-  v4 = [WeakRetained routePlanningOverviewViewController];
+  routePlanningOverviewViewController = [WeakRetained routePlanningOverviewViewController];
 
-  return v4;
+  return routePlanningOverviewViewController;
 }
 
-- (id)shareDelegateForCardFactory:(id)a3
+- (id)shareDelegateForCardFactory:(id)factory
 {
   WeakRetained = objc_loadWeakRetained(&self->_actionCoordinator);
-  v4 = [WeakRetained appCoordinator];
+  appCoordinator = [WeakRetained appCoordinator];
 
-  return v4;
+  return appCoordinator;
 }
 
 @end

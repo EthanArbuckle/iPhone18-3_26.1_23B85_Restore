@@ -1,40 +1,40 @@
 @interface SBUILockOverlayView
-- (SBUILockOverlayView)initWithFrame:(CGRect)a3 style:(unint64_t)a4;
+- (SBUILockOverlayView)initWithFrame:(CGRect)frame style:(unint64_t)style;
 - (SBUILockOverlayViewDelegate)delegate;
 - (id)_actionFont;
-- (id)_legibilitySettingsForStyle:(unint64_t)a3;
+- (id)_legibilitySettingsForStyle:(unint64_t)style;
 - (id)_titleFont;
-- (unint64_t)_numberOfLinesForText:(id)a3 font:(id)a4 size:(CGSize)a5;
+- (unint64_t)_numberOfLinesForText:(id)text font:(id)font size:(CGSize)size;
 - (void)_buttonPressed;
-- (void)_sizeView:(id)a3 forFixedWith:(BOOL)a4;
+- (void)_sizeView:(id)view forFixedWith:(BOOL)with;
 - (void)layoutSubviews;
 @end
 
 @implementation SBUILockOverlayView
 
-- (SBUILockOverlayView)initWithFrame:(CGRect)a3 style:(unint64_t)a4
+- (SBUILockOverlayView)initWithFrame:(CGRect)frame style:(unint64_t)style
 {
   v55.receiver = self;
   v55.super_class = SBUILockOverlayView;
-  v5 = [(SBUILockOverlayView *)&v55 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v5 = [(SBUILockOverlayView *)&v55 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   v6 = v5;
   if (v5)
   {
-    v5->_style = a4;
+    v5->_style = style;
     [(SBUILockOverlayView *)v5 _maxLabelWidth];
     v8 = v7;
-    v9 = [(SBUILockOverlayView *)v6 _actionFont];
-    [v9 pointSize];
+    _actionFont = [(SBUILockOverlayView *)v6 _actionFont];
+    [_actionFont pointSize];
     v11 = v10;
-    v12 = [(SBUILockOverlayView *)v6 _titleFont];
-    [v12 pointSize];
+    _titleFont = [(SBUILockOverlayView *)v6 _titleFont];
+    [_titleFont pointSize];
     v14 = v11 / v13;
 
-    v15 = [SBLockOverlayStylePropertiesFactory overlayPropertiesFactoryWithStyle:a4];
+    v15 = [SBLockOverlayStylePropertiesFactory overlayPropertiesFactoryWithStyle:style];
     underlayPropertiesFactory = v6->_underlayPropertiesFactory;
     v6->_underlayPropertiesFactory = v15;
 
-    v17 = [(SBUILockOverlayView *)v6 _legibilitySettingsForStyle:a4];
+    v17 = [(SBUILockOverlayView *)v6 _legibilitySettingsForStyle:style];
     legibilitySettings = v6->_legibilitySettings;
     v6->_legibilitySettings = v17;
 
@@ -48,8 +48,8 @@
     v6->_textContainerView = v24;
 
     v26 = v6->_textContainerView;
-    v27 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIResizableView *)v26 setBackgroundColor:v27];
+    clearColor = [MEMORY[0x1E69DC888] clearColor];
+    [(UIResizableView *)v26 setBackgroundColor:clearColor];
 
     [(SBUILockOverlayView *)v6 addSubview:v6->_textContainerView];
     v28 = [objc_alloc(MEMORY[0x1E69DCC10]) initWithFrame:{v20, v21, v22, v23}];
@@ -58,16 +58,16 @@
 
     [(UILabel *)v6->_titleLabel setTextAlignment:1];
     v30 = v6->_titleLabel;
-    v31 = [(SBUILockOverlayView *)v6 _titleFont];
-    [(UILabel *)v30 setFont:v31];
+    _titleFont2 = [(SBUILockOverlayView *)v6 _titleFont];
+    [(UILabel *)v30 setFont:_titleFont2];
 
     v32 = v6->_titleLabel;
-    v33 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v32 setTextColor:v33];
+    whiteColor = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v32 setTextColor:whiteColor];
 
     v34 = v6->_titleLabel;
-    v35 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v34 setBackgroundColor:v35];
+    clearColor2 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v34 setBackgroundColor:clearColor2];
 
     [(UILabel *)v6->_titleLabel setPreferredMaxLayoutWidth:v8];
     [(UILabel *)v6->_titleLabel setNumberOfLines:1];
@@ -80,16 +80,16 @@
 
     [(UILabel *)v6->_subtitleLabel setTextAlignment:1];
     v38 = v6->_subtitleLabel;
-    v39 = [(SBUILockOverlayView *)v6 _subtitleFont];
-    [(UILabel *)v38 setFont:v39];
+    _subtitleFont = [(SBUILockOverlayView *)v6 _subtitleFont];
+    [(UILabel *)v38 setFont:_subtitleFont];
 
     v40 = v6->_subtitleLabel;
-    v41 = [MEMORY[0x1E69DC888] whiteColor];
-    [(UILabel *)v40 setTextColor:v41];
+    whiteColor2 = [MEMORY[0x1E69DC888] whiteColor];
+    [(UILabel *)v40 setTextColor:whiteColor2];
 
     v42 = v6->_subtitleLabel;
-    v43 = [MEMORY[0x1E69DC888] clearColor];
-    [(UILabel *)v42 setBackgroundColor:v43];
+    clearColor3 = [MEMORY[0x1E69DC888] clearColor];
+    [(UILabel *)v42 setBackgroundColor:clearColor3];
 
     [(UILabel *)v6->_subtitleLabel setNumberOfLines:10];
     [(UIResizableView *)v6->_textContainerView addSubview:v6->_subtitleLabel];
@@ -98,19 +98,19 @@
     v6->_actionButton = v44;
 
     v46 = v6->_actionButton;
-    v47 = [MEMORY[0x1E69DC888] clearColor];
-    [(UIButton *)v46 setBackgroundColor:v47];
+    clearColor4 = [MEMORY[0x1E69DC888] clearColor];
+    [(UIButton *)v46 setBackgroundColor:clearColor4];
 
     [(UIButton *)v6->_actionButton addTarget:v6 action:sel__buttonPressed forControlEvents:64];
-    v48 = [(UIButton *)v6->_actionButton titleLabel];
-    [v48 setPreferredMaxLayoutWidth:v8];
+    titleLabel = [(UIButton *)v6->_actionButton titleLabel];
+    [titleLabel setPreferredMaxLayoutWidth:v8];
 
-    v49 = [(UIButton *)v6->_actionButton titleLabel];
-    [v49 setNumberOfLines:2];
+    titleLabel2 = [(UIButton *)v6->_actionButton titleLabel];
+    [titleLabel2 setNumberOfLines:2];
 
-    v50 = [(UIButton *)v6->_actionButton titleLabel];
-    v51 = [(SBUILockOverlayView *)v6 _actionFont];
-    [v50 setFont:v51];
+    titleLabel3 = [(UIButton *)v6->_actionButton titleLabel];
+    _actionFont2 = [(SBUILockOverlayView *)v6 _actionFont];
+    [titleLabel3 setFont:_actionFont2];
 
     v52 = v6->_actionButton;
     v53 = [MEMORY[0x1E69DC888] colorWithRed:0.203921569 green:0.666666667 blue:0.862745098 alpha:1.0];
@@ -122,9 +122,9 @@
   return v6;
 }
 
-- (id)_legibilitySettingsForStyle:(unint64_t)a3
+- (id)_legibilitySettingsForStyle:(unint64_t)style
 {
-  if (a3 == 4)
+  if (style == 4)
   {
     v3 = 2;
   }
@@ -150,18 +150,18 @@
   p_titleLabel = &self->_titleLabel;
   [(UILabel *)self->_titleLabel setNumberOfLines:1];
   titleLabel = self->_titleLabel;
-  v9 = [(SBUILockOverlayView *)self _titleFont];
-  [(UILabel *)titleLabel setFont:v9];
+  _titleFont = [(SBUILockOverlayView *)self _titleFont];
+  [(UILabel *)titleLabel setFont:_titleFont];
 
   [(UILabel *)self->_titleLabel setAdjustsFontSizeToFitWidth:1];
-  v10 = [(UILabel *)self->_titleLabel text];
-  v11 = [v10 length];
+  text = [(UILabel *)self->_titleLabel text];
+  v11 = [text length];
 
   if (v11)
   {
     [(SBUILockOverlayView *)self _sizeView:self->_titleLabel forFixedWith:1];
-    v12 = [(UILabel *)*p_titleLabel attributedText];
-    [v12 size];
+    attributedText = [(UILabel *)*p_titleLabel attributedText];
+    [attributedText size];
     v14 = v13;
     [(UILabel *)*p_titleLabel bounds];
     v16 = v15;
@@ -170,8 +170,8 @@
     {
       [(UILabel *)*p_titleLabel setNumberOfLines:2];
       v17 = *p_titleLabel;
-      v18 = [(SBUILockOverlayView *)self _actionFont];
-      [(UILabel *)v17 setFont:v18];
+      _actionFont = [(SBUILockOverlayView *)self _actionFont];
+      [(UILabel *)v17 setFont:_actionFont];
 
       [(UILabel *)*p_titleLabel setAdjustsFontSizeToFitWidth:0];
       [(SBUILockOverlayView *)self _sizeView:*p_titleLabel forFixedWith:1];
@@ -184,8 +184,8 @@
   }
 
   p_subtitleLabel = &self->_subtitleLabel;
-  v20 = [(UILabel *)self->_subtitleLabel text];
-  v21 = [v20 length];
+  text2 = [(UILabel *)self->_subtitleLabel text];
+  v21 = [text2 length];
 
   if (v21)
   {
@@ -244,8 +244,8 @@ LABEL_12:
 
     else
     {
-      v42 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v42 userInterfaceIdiom] == 1)
+      currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice userInterfaceIdiom] == 1)
       {
         v37 = 49.0;
       }
@@ -276,12 +276,12 @@ LABEL_12:
   [(UIButton *)self->_actionButton frame];
   if (v21 | v11 && (v21 ? (v48 = &self->_subtitleLabel) : (v48 = &self->_titleLabel), (v47 = *v48) != 0 ? (v49 = v25) : (v49 = 0), v49 == 1))
   {
-    v50 = [(UIButton *)self->_actionButton titleLabel];
+    titleLabel = [(UIButton *)self->_actionButton titleLabel];
     [(UILabel *)v47 _baselineOffsetFromBottom];
     v52 = v51;
-    [v50 _firstLineBaselineOffsetFromBoundsTop];
+    [titleLabel _firstLineBaselineOffsetFromBoundsTop];
     v54 = v53;
-    [v50 origin];
+    [titleLabel origin];
     v56 = v52 + v54 + v55;
     if (__sb__runningInSpringBoard())
     {
@@ -298,8 +298,8 @@ LABEL_12:
 
     else
     {
-      v58 = [MEMORY[0x1E69DC938] currentDevice];
-      if ([v58 userInterfaceIdiom] == 1)
+      currentDevice2 = [MEMORY[0x1E69DC938] currentDevice];
+      if ([currentDevice2 userInterfaceIdiom] == 1)
       {
         v57 = 48.0;
       }
@@ -332,8 +332,8 @@ LABEL_12:
   v67 = SBFloatFloorForScale(v4 * 0.5 - v63 * 0.5, 0.0);
   if (v11)
   {
-    v68 = [(UILabel *)*p_titleLabel font];
-    [v68 descender];
+    font = [(UILabel *)*p_titleLabel font];
+    [font descender];
     v70 = v69;
 
     if ((v25 & 1) == 0)
@@ -342,10 +342,10 @@ LABEL_12:
       {
         v71 = *p_titleLabel;
 LABEL_50:
-        v74 = [(UILabel *)v71 font];
+        font2 = [(UILabel *)v71 font];
 LABEL_54:
-        v78 = v74;
-        [v74 descender];
+        v78 = font2;
+        [font2 descender];
         v75 = v79;
 
         goto LABEL_55;
@@ -357,14 +357,14 @@ LABEL_49:
     }
 
 LABEL_53:
-    v74 = [(SBUILockOverlayView *)self _actionFont];
+    font2 = [(SBUILockOverlayView *)self _actionFont];
     goto LABEL_54;
   }
 
   if (v21)
   {
-    v72 = [(UILabel *)*p_subtitleLabel font];
-    [v72 descender];
+    font3 = [(UILabel *)*p_subtitleLabel font];
+    [font3 descender];
     v70 = v73;
 
     if ((v25 & 1) == 0)
@@ -379,8 +379,8 @@ LABEL_53:
   v70 = 0.0;
   if (v25)
   {
-    v76 = [(SBUILockOverlayView *)self _actionFont];
-    [v76 descender];
+    _actionFont2 = [(SBUILockOverlayView *)self _actionFont];
+    [_actionFont2 descender];
     v70 = v77;
 
     goto LABEL_53;
@@ -408,8 +408,8 @@ LABEL_55:
 
   else
   {
-    v2 = [MEMORY[0x1E69DC938] currentDevice];
-    v6 = [v2 userInterfaceIdiom] == 1;
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    v6 = [currentDevice userInterfaceIdiom] == 1;
   }
 
   v7 = 36.0;
@@ -442,8 +442,8 @@ LABEL_3:
 
   else
   {
-    v2 = [MEMORY[0x1E69DC938] currentDevice];
-    if ([v2 userInterfaceIdiom] != 1)
+    currentDevice = [MEMORY[0x1E69DC938] currentDevice];
+    if ([currentDevice userInterfaceIdiom] != 1)
     {
       goto LABEL_3;
     }
@@ -465,38 +465,38 @@ LABEL_6:
   [WeakRetained handleTapGestureFromView:self];
 }
 
-- (unint64_t)_numberOfLinesForText:(id)a3 font:(id)a4 size:(CGSize)a5
+- (unint64_t)_numberOfLinesForText:(id)text font:(id)font size:(CGSize)size
 {
   v16[1] = *MEMORY[0x1E69E9840];
-  if (!a3)
+  if (!text)
   {
     return 0;
   }
 
-  height = a5.height;
-  width = a5.width;
+  height = size.height;
+  width = size.width;
   v8 = MEMORY[0x1E69DB7E0];
-  v9 = a4;
-  v10 = a3;
+  fontCopy = font;
+  textCopy = text;
   v11 = objc_alloc_init(v8);
   [v11 setWantsNumberOfLineFragments:1];
   v15 = *MEMORY[0x1E69DB648];
-  v16[0] = v9;
+  v16[0] = fontCopy;
   v12 = [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:&v15 count:1];
 
-  [v10 boundingRectWithSize:33 options:v12 attributes:v11 context:{width, height}];
-  v13 = [v11 numberOfLineFragments];
+  [textCopy boundingRectWithSize:33 options:v12 attributes:v11 context:{width, height}];
+  numberOfLineFragments = [v11 numberOfLineFragments];
 
-  return v13;
+  return numberOfLineFragments;
 }
 
-- (void)_sizeView:(id)a3 forFixedWith:(BOOL)a4
+- (void)_sizeView:(id)view forFixedWith:(BOOL)with
 {
-  v5 = a3;
+  viewCopy = view;
   [(SBUILockOverlayView *)self _maxLabelWidth];
-  [v5 sizeThatFits:?];
-  [v5 frame];
-  [v5 setFrame:?];
+  [viewCopy sizeThatFits:?];
+  [viewCopy frame];
+  [viewCopy setFrame:?];
 }
 
 - (SBUILockOverlayViewDelegate)delegate

@@ -1,21 +1,21 @@
 @interface __HMDHomeAdministratorRemoteRelay
 + (id)logCategory;
-- (void)__handleXPCMessage:(id)a3;
+- (void)__handleXPCMessage:(id)message;
 @end
 
 @implementation __HMDHomeAdministratorRemoteRelay
 
-- (void)__handleXPCMessage:(id)a3
+- (void)__handleXPCMessage:(id)message
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(__HMDHomeAdministratorReceiver *)self receiver];
+  messageCopy = message;
+  receiver = [(__HMDHomeAdministratorReceiver *)self receiver];
 
-  if (v5)
+  if (receiver)
   {
-    v6 = [(__HMDHomeAdministratorReceiver *)self handler];
+    handler = [(__HMDHomeAdministratorReceiver *)self handler];
     v28 = 0;
-    v7 = [v6 operationForMessage:v4 error:&v28];
+    v7 = [handler operationForMessage:messageCopy error:&v28];
     v8 = v28;
     if (v7)
     {
@@ -24,9 +24,9 @@
       v25[1] = 3221225472;
       v25[2] = __56____HMDHomeAdministratorRemoteRelay___handleXPCMessage___block_invoke;
       v25[3] = &unk_2797358C8;
-      v9 = v6;
+      v9 = handler;
       v26 = v9;
-      v10 = v4;
+      v10 = messageCopy;
       v27 = v10;
       [v7 setSendCompletionBlock:v25];
       [v7 setResponseHandler:0];
@@ -36,21 +36,21 @@
       v20 = __56____HMDHomeAdministratorRemoteRelay___handleXPCMessage___block_invoke_2;
       v21 = &unk_279732670;
       objc_copyWeak(&v24, location);
-      v22 = self;
+      selfCopy = self;
       v23 = v10;
       [v7 setCompletionBlock:&v18];
-      [v9 addOperation:{v7, v18, v19, v20, v21, v22}];
+      [v9 addOperation:{v7, v18, v19, v20, v21, selfCopy}];
 
       objc_destroyWeak(&v24);
       objc_destroyWeak(location);
 
-      v11 = v26;
+      responseHandler2 = v26;
     }
 
     else
     {
       v12 = objc_autoreleasePoolPush();
-      v13 = self;
+      selfCopy2 = self;
       v14 = HMFGetOSLogHandle();
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
@@ -63,15 +63,15 @@
       }
 
       objc_autoreleasePoolPop(v12);
-      v16 = [v4 responseHandler];
+      responseHandler = [messageCopy responseHandler];
 
-      if (!v16)
+      if (!responseHandler)
       {
         goto LABEL_9;
       }
 
-      v11 = [v4 responseHandler];
-      (v11)[2](v11, v8, 0);
+      responseHandler2 = [messageCopy responseHandler];
+      (responseHandler2)[2](responseHandler2, v8, 0);
     }
 
 LABEL_9:

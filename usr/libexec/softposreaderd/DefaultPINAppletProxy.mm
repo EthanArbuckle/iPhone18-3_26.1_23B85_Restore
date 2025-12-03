@@ -1,15 +1,15 @@
 @interface DefaultPINAppletProxy
 - (_TtC14softposreaderd21DefaultPINAppletProxy)init;
-- (void)secureElementManagerSessionDidEndUnexpectedly:(id)a3;
+- (void)secureElementManagerSessionDidEndUnexpectedly:(id)unexpectedly;
 @end
 
 @implementation DefaultPINAppletProxy
 
-- (void)secureElementManagerSessionDidEndUnexpectedly:(id)a3
+- (void)secureElementManagerSessionDidEndUnexpectedly:(id)unexpectedly
 {
-  v4 = a3;
-  v5 = self;
-  sub_1000CCAD4(v4);
+  unexpectedlyCopy = unexpectedly;
+  selfCopy = self;
+  sub_1000CCAD4(unexpectedlyCopy);
 }
 
 - (_TtC14softposreaderd21DefaultPINAppletProxy)init

@@ -1,9 +1,9 @@
 @interface IMFocusStateManager
-+ (BOOL)focusConfiguration:(id)a3 matchesConversationWithHandleStrings:(id)a4;
-+ (BOOL)focusConfiguration:(id)a3 matchesConversationWithHandles:(id)a4;
++ (BOOL)focusConfiguration:(id)configuration matchesConversationWithHandleStrings:(id)strings;
++ (BOOL)focusConfiguration:(id)configuration matchesConversationWithHandles:(id)handles;
 + (IMFocusStateManager)sharedManager;
-- (BOOL)activeFocusModeMatchesConversationWithHandleStrings:(id)a3;
-- (BOOL)activeFocusModeMatchesConversationWithHandles:(id)a3;
+- (BOOL)activeFocusModeMatchesConversationWithHandleStrings:(id)strings;
+- (BOOL)activeFocusModeMatchesConversationWithHandles:(id)handles;
 - (BOOL)hasActiveFocusMode;
 - (BOOL)shouldDisplayFocusFilterBanner;
 - (BOOL)shouldFilterConversationsByFocus;
@@ -12,16 +12,16 @@
 - (IMFocusStateManager)init;
 - (id)activeFocusName;
 - (id)activeFocusSymbolName;
-- (void)_fetchInitialDNDStateSynchronously:(BOOL)a3;
+- (void)_fetchInitialDNDStateSynchronously:(BOOL)synchronously;
 - (void)_notifyDelegatesOfDNDStateChange;
-- (void)addDelegate:(id)a3;
+- (void)addDelegate:(id)delegate;
 - (void)dealloc;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)removeDelegate:(id)a3;
-- (void)setDndState:(id)a3;
-- (void)setFocusFilterActionIsEnabled:(BOOL)a3;
-- (void)setUserSwitchForFocusFilteringIsEnabled:(BOOL)a3;
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)removeDelegate:(id)delegate;
+- (void)setDndState:(id)state;
+- (void)setFocusFilterActionIsEnabled:(BOOL)enabled;
+- (void)setUserSwitchForFocusFilteringIsEnabled:(BOOL)enabled;
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update;
 @end
 
 @implementation IMFocusStateManager
@@ -40,16 +40,16 @@
 
 - (BOOL)shouldFilterUnreadMessageCount
 {
-  v2 = [(IMFocusStateManager *)self shouldDisplayFocusFilterBanner];
-  if (v2)
+  shouldDisplayFocusFilterBanner = [(IMFocusStateManager *)self shouldDisplayFocusFilterBanner];
+  if (shouldDisplayFocusFilterBanner)
   {
-    v3 = [MEMORY[0x1E695E000] messagesAppDomain];
-    v4 = [v3 userSwitchForFocusFilteringIsEnabled];
+    messagesAppDomain = [MEMORY[0x1E695E000] messagesAppDomain];
+    userSwitchForFocusFilteringIsEnabled = [messagesAppDomain userSwitchForFocusFilteringIsEnabled];
 
-    LOBYTE(v2) = v4;
+    LOBYTE(shouldDisplayFocusFilterBanner) = userSwitchForFocusFilteringIsEnabled;
   }
 
-  return v2;
+  return shouldDisplayFocusFilterBanner;
 }
 
 - (BOOL)shouldDisplayFocusFilterBanner
@@ -81,9 +81,9 @@
       }
     }
 
-    v4 = [MEMORY[0x1E696AC70] weakObjectsHashTable];
+    weakObjectsHashTable = [MEMORY[0x1E696AC70] weakObjectsHashTable];
     delegates = v2->_delegates;
-    v2->_delegates = v4;
+    v2->_delegates = weakObjectsHashTable;
 
     v2->_userSwitchForFocusFilteringIsEnabled = 1;
   }
@@ -108,14 +108,14 @@
 
 - (BOOL)shouldFilterConversationsByFocus
 {
-  v3 = [(IMFocusStateManager *)self shouldDisplayFocusFilterBanner];
-  if (v3)
+  shouldDisplayFocusFilterBanner = [(IMFocusStateManager *)self shouldDisplayFocusFilterBanner];
+  if (shouldDisplayFocusFilterBanner)
   {
 
-    LOBYTE(v3) = [(IMFocusStateManager *)self userSwitchForFocusFilteringIsEnabled];
+    LOBYTE(shouldDisplayFocusFilterBanner) = [(IMFocusStateManager *)self userSwitchForFocusFilteringIsEnabled];
   }
 
-  return v3;
+  return shouldDisplayFocusFilterBanner;
 }
 
 - (void)_notifyDelegatesOfDNDStateChange
@@ -185,7 +185,7 @@
     if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
     {
       *buf = 134217984;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&dword_1A85E5000, v3, OS_LOG_TYPE_INFO, "IMFocusStateManager dealloc: %p", buf, 0xCu);
     }
   }
@@ -195,70 +195,70 @@
   [(IMFocusStateManager *)&v4 dealloc];
 }
 
-- (void)setUserSwitchForFocusFilteringIsEnabled:(BOOL)a3
+- (void)setUserSwitchForFocusFilteringIsEnabled:(BOOL)enabled
 {
-  if (self->_userSwitchForFocusFilteringIsEnabled != a3)
+  if (self->_userSwitchForFocusFilteringIsEnabled != enabled)
   {
-    v4 = a3;
-    self->_userSwitchForFocusFilteringIsEnabled = a3;
-    v6 = [MEMORY[0x1E695E000] messagesAppDomain];
-    [v6 setUserSwitchForFocusFilteringIsEnabled:v4];
+    enabledCopy = enabled;
+    self->_userSwitchForFocusFilteringIsEnabled = enabled;
+    messagesAppDomain = [MEMORY[0x1E695E000] messagesAppDomain];
+    [messagesAppDomain setUserSwitchForFocusFilteringIsEnabled:enabledCopy];
 
     [(IMFocusStateManager *)self _notifyDelegatesOfDNDStateChange];
   }
 }
 
-- (void)setFocusFilterActionIsEnabled:(BOOL)a3
+- (void)setFocusFilterActionIsEnabled:(BOOL)enabled
 {
-  if (self->_focusFilterActionIsEnabled != a3)
+  if (self->_focusFilterActionIsEnabled != enabled)
   {
-    self->_focusFilterActionIsEnabled = a3;
+    self->_focusFilterActionIsEnabled = enabled;
     [(IMFocusStateManager *)self _notifyDelegatesOfDNDStateChange];
   }
 }
 
-- (void)setDndState:(id)a3
+- (void)setDndState:(id)state
 {
-  v11 = a3;
-  objc_storeStrong(&self->_dndState, a3);
-  v5 = [v11 activeModeConfiguration];
-  if (v5)
+  stateCopy = state;
+  objc_storeStrong(&self->_dndState, state);
+  activeModeConfiguration = [stateCopy activeModeConfiguration];
+  if (activeModeConfiguration)
   {
     v6 = [IMFocusStateSnapshot alloc];
-    v7 = [v11 activeModeConfiguration];
-    v8 = [v7 configuration];
-    v9 = [(IMFocusStateSnapshot *)v6 initWithConfiguration:v8];
+    activeModeConfiguration2 = [stateCopy activeModeConfiguration];
+    configuration = [activeModeConfiguration2 configuration];
+    v9 = [(IMFocusStateSnapshot *)v6 initWithConfiguration:configuration];
     focusSnapshot = self->_focusSnapshot;
     self->_focusSnapshot = v9;
   }
 
   else
   {
-    v7 = self->_focusSnapshot;
+    activeModeConfiguration2 = self->_focusSnapshot;
     self->_focusSnapshot = 0;
   }
 }
 
 - (id)activeFocusName
 {
-  v2 = [(IMFocusStateManager *)self dndState];
-  v3 = [v2 activeModeConfiguration];
-  v4 = [v3 mode];
-  v5 = [v4 name];
+  dndState = [(IMFocusStateManager *)self dndState];
+  activeModeConfiguration = [dndState activeModeConfiguration];
+  mode = [activeModeConfiguration mode];
+  name = [mode name];
 
-  return v5;
+  return name;
 }
 
 - (id)activeFocusSymbolName
 {
-  v2 = [(IMFocusStateManager *)self dndState];
-  v3 = [v2 activeModeConfiguration];
-  v4 = [v3 mode];
-  v5 = [v4 symbolImageName];
+  dndState = [(IMFocusStateManager *)self dndState];
+  activeModeConfiguration = [dndState activeModeConfiguration];
+  mode = [activeModeConfiguration mode];
+  symbolImageName = [mode symbolImageName];
 
-  if (v5)
+  if (symbolImageName)
   {
-    v6 = v5;
+    v6 = symbolImageName;
   }
 
   else
@@ -271,70 +271,70 @@
   return v6;
 }
 
-- (BOOL)activeFocusModeMatchesConversationWithHandleStrings:(id)a3
+- (BOOL)activeFocusModeMatchesConversationWithHandleStrings:(id)strings
 {
-  v4 = a3;
-  v5 = [(IMFocusStateManager *)self focusSnapshot];
-  v6 = [v5 matchesConversationWithHandleStrings:v4];
+  stringsCopy = strings;
+  focusSnapshot = [(IMFocusStateManager *)self focusSnapshot];
+  v6 = [focusSnapshot matchesConversationWithHandleStrings:stringsCopy];
 
   return v6;
 }
 
-- (BOOL)activeFocusModeMatchesConversationWithHandles:(id)a3
+- (BOOL)activeFocusModeMatchesConversationWithHandles:(id)handles
 {
-  v4 = a3;
-  v5 = [(IMFocusStateManager *)self focusSnapshot];
-  v6 = [v5 matchesConversationWithHandles:v4];
+  handlesCopy = handles;
+  focusSnapshot = [(IMFocusStateManager *)self focusSnapshot];
+  v6 = [focusSnapshot matchesConversationWithHandles:handlesCopy];
 
   return v6;
 }
 
-+ (BOOL)focusConfiguration:(id)a3 matchesConversationWithHandleStrings:(id)a4
++ (BOOL)focusConfiguration:(id)configuration matchesConversationWithHandleStrings:(id)strings
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[IMFocusStateSnapshot alloc] initWithConfiguration:v6];
+  stringsCopy = strings;
+  configurationCopy = configuration;
+  v7 = [[IMFocusStateSnapshot alloc] initWithConfiguration:configurationCopy];
 
-  LOBYTE(v6) = [(IMFocusStateSnapshot *)v7 matchesConversationWithHandleStrings:v5];
-  return v6;
+  LOBYTE(configurationCopy) = [(IMFocusStateSnapshot *)v7 matchesConversationWithHandleStrings:stringsCopy];
+  return configurationCopy;
 }
 
-+ (BOOL)focusConfiguration:(id)a3 matchesConversationWithHandles:(id)a4
++ (BOOL)focusConfiguration:(id)configuration matchesConversationWithHandles:(id)handles
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [[IMFocusStateSnapshot alloc] initWithConfiguration:v6];
+  handlesCopy = handles;
+  configurationCopy = configuration;
+  v7 = [[IMFocusStateSnapshot alloc] initWithConfiguration:configurationCopy];
 
-  LOBYTE(v6) = [(IMFocusStateSnapshot *)v7 matchesConversationWithHandles:v5];
-  return v6;
+  LOBYTE(configurationCopy) = [(IMFocusStateSnapshot *)v7 matchesConversationWithHandles:handlesCopy];
+  return configurationCopy;
 }
 
-- (void)addDelegate:(id)a3
+- (void)addDelegate:(id)delegate
 {
   v17 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v16 = v4;
+      v16 = delegateCopy;
       _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Adding IMFocusStateManagerDelegate: %@", buf, 0xCu);
     }
   }
 
-  [(NSHashTable *)self->_delegates addObject:v4];
+  [(NSHashTable *)self->_delegates addObject:delegateCopy];
   if (![(IMFocusStateManager *)self registeredAsStateUpdateListener])
   {
     objc_initWeak(buf, self);
-    v6 = [(IMFocusStateManager *)self dndStateService];
+    dndStateService = [(IMFocusStateManager *)self dndStateService];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_1A866E890;
     v13[3] = &unk_1E7828338;
     objc_copyWeak(&v14, buf);
-    [v6 addStateUpdateListener:self withCompletionHandler:v13];
+    [dndStateService addStateUpdateListener:self withCompletionHandler:v13];
 
     if (IMOSLoggingEnabled())
     {
@@ -346,24 +346,24 @@
       }
     }
 
-    v8 = [MEMORY[0x1E695E000] messagesAppDomain];
-    [v8 addObserver:self forKeyPath:@"conversationListFocusFilterActionEnabled" options:5 context:0];
+    messagesAppDomain = [MEMORY[0x1E695E000] messagesAppDomain];
+    [messagesAppDomain addObserver:self forKeyPath:@"conversationListFocusFilterActionEnabled" options:5 context:0];
 
-    v9 = [MEMORY[0x1E695E000] messagesAppDomain];
-    [v9 addObserver:self forKeyPath:@"userSwitchForFocusFilteringIsEnabled" options:5 context:0];
+    messagesAppDomain2 = [MEMORY[0x1E695E000] messagesAppDomain];
+    [messagesAppDomain2 addObserver:self forKeyPath:@"userSwitchForFocusFilteringIsEnabled" options:5 context:0];
 
-    v10 = [MEMORY[0x1E695E000] messagesAppDomain];
-    v11 = [v10 conversationListFocusFilterActionEnabled];
+    messagesAppDomain3 = [MEMORY[0x1E695E000] messagesAppDomain];
+    conversationListFocusFilterActionEnabled = [messagesAppDomain3 conversationListFocusFilterActionEnabled];
 
-    [(IMFocusStateManager *)self _fetchInitialDNDStateSynchronously:v11];
+    [(IMFocusStateManager *)self _fetchInitialDNDStateSynchronously:conversationListFocusFilterActionEnabled];
     objc_destroyWeak(&v14);
     objc_destroyWeak(buf);
   }
 }
 
-- (void)_fetchInitialDNDStateSynchronously:(BOOL)a3
+- (void)_fetchInitialDNDStateSynchronously:(BOOL)synchronously
 {
-  v3 = a3;
+  synchronouslyCopy = synchronously;
   objc_initWeak(&location, self);
   aBlock[0] = MEMORY[0x1E69E9820];
   aBlock[1] = 3221225472;
@@ -371,7 +371,7 @@
   aBlock[3] = &unk_1E7828360;
   objc_copyWeak(&v18, &location);
   v5 = _Block_copy(aBlock);
-  if (v3)
+  if (synchronouslyCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -383,9 +383,9 @@
       }
     }
 
-    v7 = [(IMFocusStateManager *)self dndStateService];
+    dndStateService = [(IMFocusStateManager *)self dndStateService];
     v15 = 0;
-    v8 = [v7 queryCurrentStateWithError:&v15];
+    v8 = [dndStateService queryCurrentStateWithError:&v15];
     v9 = v15;
 
     if (IMOSLoggingEnabled())
@@ -413,13 +413,13 @@
       }
     }
 
-    v12 = [(IMFocusStateManager *)self dndStateService];
+    dndStateService2 = [(IMFocusStateManager *)self dndStateService];
     v13[0] = MEMORY[0x1E69E9820];
     v13[1] = 3221225472;
     v13[2] = sub_1A866EE30;
     v13[3] = &unk_1E78283B0;
     v14 = v5;
-    [v12 queryCurrentStateWithCompletionHandler:v13];
+    [dndStateService2 queryCurrentStateWithCompletionHandler:v13];
 
     v9 = v14;
   }
@@ -428,12 +428,12 @@
   objc_destroyWeak(&location);
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if ([v10 isEqualToString:@"conversationListFocusFilterActionEnabled"])
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if ([pathCopy isEqualToString:@"conversationListFocusFilterActionEnabled"])
   {
     if (IMOSLoggingEnabled())
     {
@@ -456,11 +456,11 @@
 
   else
   {
-    if (![v10 isEqualToString:@"userSwitchForFocusFilteringIsEnabled"])
+    if (![pathCopy isEqualToString:@"userSwitchForFocusFilteringIsEnabled"])
     {
       v16.receiver = self;
       v16.super_class = IMFocusStateManager;
-      [(IMFocusStateManager *)&v16 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+      [(IMFocusStateManager *)&v16 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
       goto LABEL_11;
     }
 
@@ -477,45 +477,45 @@
 LABEL_11:
 }
 
-- (void)removeDelegate:(id)a3
+- (void)removeDelegate:(id)delegate
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  delegateCopy = delegate;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
     {
       v6 = 138412290;
-      v7 = v4;
+      v7 = delegateCopy;
       _os_log_impl(&dword_1A85E5000, v5, OS_LOG_TYPE_INFO, "Removing IMFocusStateManagerDelegate: %@", &v6, 0xCu);
     }
   }
 
-  [(NSHashTable *)self->_delegates removeObject:v4];
+  [(NSHashTable *)self->_delegates removeObject:delegateCopy];
 }
 
 - (BOOL)hasActiveFocusMode
 {
-  v2 = [(IMFocusStateManager *)self dndState];
-  v3 = [v2 activeModeConfiguration];
-  v4 = v3 != 0;
+  dndState = [(IMFocusStateManager *)self dndState];
+  activeModeConfiguration = [dndState activeModeConfiguration];
+  v4 = activeModeConfiguration != 0;
 
   return v4;
 }
 
-- (void)stateService:(id)a3 didReceiveDoNotDisturbStateUpdate:(id)a4
+- (void)stateService:(id)service didReceiveDoNotDisturbStateUpdate:(id)update
 {
   v14 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  serviceCopy = service;
+  updateCopy = update;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v13 = v7;
+      v13 = updateCopy;
       _os_log_impl(&dword_1A85E5000, v8, OS_LOG_TYPE_INFO, "Received dnd state update: %@", buf, 0xCu);
     }
   }
@@ -525,8 +525,8 @@ LABEL_11:
   v10[2] = sub_1A866F5F8;
   v10[3] = &unk_1E78260F0;
   v10[4] = self;
-  v11 = v7;
-  v9 = v7;
+  v11 = updateCopy;
+  v9 = updateCopy;
   dispatch_async(MEMORY[0x1E69E96A0], v10);
 }
 

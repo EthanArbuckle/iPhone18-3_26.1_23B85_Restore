@@ -1,17 +1,17 @@
 @interface RemoteAlertSceneDelegate
 - (_TtC13MediaRemoteUI24RemoteAlertSceneDelegate)init;
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5;
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options;
 @end
 
 @implementation RemoteAlertSceneDelegate
 
-- (void)scene:(id)a3 willConnectToSession:(id)a4 options:(id)a5
+- (void)scene:(id)scene willConnectToSession:(id)session options:(id)options
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = self;
-  sub_1000174B4(v8, v9, v10);
+  sceneCopy = scene;
+  sessionCopy = session;
+  optionsCopy = options;
+  selfCopy = self;
+  sub_1000174B4(sceneCopy, sessionCopy, optionsCopy);
 }
 
 - (_TtC13MediaRemoteUI24RemoteAlertSceneDelegate)init

@@ -1,35 +1,35 @@
 @interface ASCloudKitServerChangeTokenCache
-+ (id)changeTokenCacheFromUserDefaultsWithSerialQueue:(id)a3 cloudType:(unint64_t)a4;
-+ (id)databaseDefaultsKeyForCloudType:(unint64_t)a3;
-+ (id)timestampDefaultsKeyForCloudType:(unint64_t)a3;
-+ (id)zoneDefaultsKeyForCloudType:(unint64_t)a3;
-- (ASCloudKitServerChangeTokenCache)initWithSerialQueue:(id)a3 cloudType:(unint64_t)a4;
++ (id)changeTokenCacheFromUserDefaultsWithSerialQueue:(id)queue cloudType:(unint64_t)type;
++ (id)databaseDefaultsKeyForCloudType:(unint64_t)type;
++ (id)timestampDefaultsKeyForCloudType:(unint64_t)type;
++ (id)zoneDefaultsKeyForCloudType:(unint64_t)type;
+- (ASCloudKitServerChangeTokenCache)initWithSerialQueue:(id)queue cloudType:(unint64_t)type;
 - (BOOL)isExpired;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)emptyCopy;
-- (id)fetchDateForRecordZoneID:(id)a3;
-- (id)serverChangeTokenForDatabase:(id)a3;
-- (id)serverChangeTokenForRecordZoneID:(id)a3;
+- (id)fetchDateForRecordZoneID:(id)d;
+- (id)serverChangeTokenForDatabase:(id)database;
+- (id)serverChangeTokenForRecordZoneID:(id)d;
 - (void)persistToUserDefaults;
-- (void)setExpired:(BOOL)a3;
-- (void)setFetchDate:(id)a3 forRecordZoneID:(id)a4;
-- (void)setServerChangeToken:(id)a3 forDatabase:(id)a4;
-- (void)setServerChangeToken:(id)a3 forRecordZoneID:(id)a4;
+- (void)setExpired:(BOOL)expired;
+- (void)setFetchDate:(id)date forRecordZoneID:(id)d;
+- (void)setServerChangeToken:(id)token forDatabase:(id)database;
+- (void)setServerChangeToken:(id)token forRecordZoneID:(id)d;
 @end
 
 @implementation ASCloudKitServerChangeTokenCache
 
-+ (id)changeTokenCacheFromUserDefaultsWithSerialQueue:(id)a3 cloudType:(unint64_t)a4
++ (id)changeTokenCacheFromUserDefaultsWithSerialQueue:(id)queue cloudType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [objc_alloc(objc_opt_class()) initWithSerialQueue:v5 cloudType:a4];
+  queueCopy = queue;
+  v6 = [objc_alloc(objc_opt_class()) initWithSerialQueue:queueCopy cloudType:type];
 
   v7 = objc_alloc(MEMORY[0x277CBEBD0]);
   v8 = [v7 initWithSuiteName:*MEMORY[0x277CE91F8]];
-  v9 = [ASCloudKitServerChangeTokenCache databaseDefaultsKeyForCloudType:a4];
+  v9 = [ASCloudKitServerChangeTokenCache databaseDefaultsKeyForCloudType:type];
   v10 = [v8 dictionaryForKey:v9];
 
-  v11 = [ASCloudKitServerChangeTokenCache zoneDefaultsKeyForCloudType:a4];
+  v11 = [ASCloudKitServerChangeTokenCache zoneDefaultsKeyForCloudType:type];
   v12 = [v8 dictionaryForKey:v11];
 
   v13 = [v8 dictionaryForKey:*MEMORY[0x277CE9200]];
@@ -56,17 +56,17 @@
   v21 = v6[5];
   v6[5] = v20;
 
-  v22 = [ASCloudKitServerChangeTokenCache timestampDefaultsKeyForCloudType:a4];
+  v22 = [ASCloudKitServerChangeTokenCache timestampDefaultsKeyForCloudType:type];
   [v8 doubleForKey:v22];
   v6[3] = v23;
 
   return v6;
 }
 
-+ (id)databaseDefaultsKeyForCloudType:(unint64_t)a3
++ (id)databaseDefaultsKeyForCloudType:(unint64_t)type
 {
   v3 = MEMORY[0x277CE92F0];
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = MEMORY[0x277CE91E0];
   }
@@ -74,10 +74,10 @@
   return *v3;
 }
 
-+ (id)zoneDefaultsKeyForCloudType:(unint64_t)a3
++ (id)zoneDefaultsKeyForCloudType:(unint64_t)type
 {
   v3 = MEMORY[0x277CE9320];
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = MEMORY[0x277CE9338];
   }
@@ -85,10 +85,10 @@
   return *v3;
 }
 
-+ (id)timestampDefaultsKeyForCloudType:(unint64_t)a3
++ (id)timestampDefaultsKeyForCloudType:(unint64_t)type
 {
   v3 = MEMORY[0x277CE92E8];
-  if (a3 != 1)
+  if (type != 1)
   {
     v3 = MEMORY[0x277CE91B8];
   }
@@ -96,9 +96,9 @@
   return *v3;
 }
 
-- (ASCloudKitServerChangeTokenCache)initWithSerialQueue:(id)a3 cloudType:(unint64_t)a4
+- (ASCloudKitServerChangeTokenCache)initWithSerialQueue:(id)queue cloudType:(unint64_t)type
 {
-  v7 = a3;
+  queueCopy = queue;
   v17.receiver = self;
   v17.super_class = ASCloudKitServerChangeTokenCache;
   v8 = [(ASCloudKitServerChangeTokenCache *)&v17 init];
@@ -108,18 +108,18 @@
     databaseChangeTokensByDatabaseScope = v8->_databaseChangeTokensByDatabaseScope;
     v8->_databaseChangeTokensByDatabaseScope = v9;
 
-    v11 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     zoneChangeTokensByZoneID = v8->_zoneChangeTokensByZoneID;
-    v8->_zoneChangeTokensByZoneID = v11;
+    v8->_zoneChangeTokensByZoneID = dictionary;
 
-    v13 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
     zoneFetchDateByZoneID = v8->_zoneFetchDateByZoneID;
-    v8->_zoneFetchDateByZoneID = v13;
+    v8->_zoneFetchDateByZoneID = dictionary2;
 
     [MEMORY[0x277CBEAA8] timeIntervalSinceReferenceDate];
     v8->_timestamp = v15;
-    objc_storeStrong(&v8->_serialQueue, a3);
-    v8->_cloudType = a4;
+    objc_storeStrong(&v8->_serialQueue, queue);
+    v8->_cloudType = type;
   }
 
   return v8;
@@ -132,9 +132,9 @@
   return v2;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithSerialQueue:", self->_serialQueue}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithSerialQueue:", self->_serialQueue}];
   serialQueue = self->_serialQueue;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
@@ -142,7 +142,7 @@
   v9[3] = &unk_278C4B250;
   v6 = v4;
   v10 = v6;
-  v11 = self;
+  selfCopy = self;
   dispatch_sync(serialQueue, v9);
   v7 = v6;
 
@@ -213,7 +213,7 @@ uint64_t __45__ASCloudKitServerChangeTokenCache_isExpired__block_invoke(uint64_t
   return result;
 }
 
-- (void)setExpired:(BOOL)a3
+- (void)setExpired:(BOOL)expired
 {
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
@@ -272,11 +272,11 @@ void __57__ASCloudKitServerChangeTokenCache_persistToUserDefaults__block_invoke(
   [v6 synchronize];
 }
 
-- (id)serverChangeTokenForDatabase:(id)a3
+- (id)serverChangeTokenForDatabase:(id)database
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  databaseCopy = database;
+  v5 = databaseCopy;
+  if (databaseCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -291,7 +291,7 @@ void __57__ASCloudKitServerChangeTokenCache_persistToUserDefaults__block_invoke(
     block[3] = &unk_278C4BAD0;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = databaseCopy;
     dispatch_sync(serialQueue, block);
     v7 = v13[5];
 
@@ -316,20 +316,20 @@ void __65__ASCloudKitServerChangeTokenCache_serverChangeTokenForDatabase___block
   *(v4 + 40) = v3;
 }
 
-- (void)setServerChangeToken:(id)a3 forDatabase:(id)a4
+- (void)setServerChangeToken:(id)token forDatabase:(id)database
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  databaseCopy = database;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __69__ASCloudKitServerChangeTokenCache_setServerChangeToken_forDatabase___block_invoke;
   block[3] = &unk_278C4BB98;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = tokenCopy;
+  selfCopy = self;
+  v14 = databaseCopy;
+  v9 = databaseCopy;
+  v10 = tokenCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -350,11 +350,11 @@ void __69__ASCloudKitServerChangeTokenCache_setServerChangeToken_forDatabase___b
   }
 }
 
-- (id)serverChangeTokenForRecordZoneID:(id)a3
+- (id)serverChangeTokenForRecordZoneID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -369,7 +369,7 @@ void __69__ASCloudKitServerChangeTokenCache_setServerChangeToken_forDatabase___b
     block[3] = &unk_278C4BAD0;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = dCopy;
     dispatch_sync(serialQueue, block);
     v7 = v13[5];
 
@@ -394,20 +394,20 @@ void __69__ASCloudKitServerChangeTokenCache_serverChangeTokenForRecordZoneID___b
   *(v4 + 40) = v3;
 }
 
-- (void)setServerChangeToken:(id)a3 forRecordZoneID:(id)a4
+- (void)setServerChangeToken:(id)token forRecordZoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  tokenCopy = token;
+  dCopy = d;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __73__ASCloudKitServerChangeTokenCache_setServerChangeToken_forRecordZoneID___block_invoke;
   block[3] = &unk_278C4BB98;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = tokenCopy;
+  selfCopy = self;
+  v14 = dCopy;
+  v9 = dCopy;
+  v10 = tokenCopy;
   dispatch_async(serialQueue, block);
 }
 
@@ -428,11 +428,11 @@ void __73__ASCloudKitServerChangeTokenCache_setServerChangeToken_forRecordZoneID
   }
 }
 
-- (id)fetchDateForRecordZoneID:(id)a3
+- (id)fetchDateForRecordZoneID:(id)d
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4)
+  dCopy = d;
+  v5 = dCopy;
+  if (dCopy)
   {
     v12 = 0;
     v13 = &v12;
@@ -447,7 +447,7 @@ void __73__ASCloudKitServerChangeTokenCache_setServerChangeToken_forRecordZoneID
     block[3] = &unk_278C4BAD0;
     v11 = &v12;
     block[4] = self;
-    v10 = v4;
+    v10 = dCopy;
     dispatch_sync(serialQueue, block);
     v7 = v13[5];
 
@@ -472,20 +472,20 @@ void __61__ASCloudKitServerChangeTokenCache_fetchDateForRecordZoneID___block_inv
   *(v4 + 40) = v3;
 }
 
-- (void)setFetchDate:(id)a3 forRecordZoneID:(id)a4
+- (void)setFetchDate:(id)date forRecordZoneID:(id)d
 {
-  v6 = a3;
-  v7 = a4;
+  dateCopy = date;
+  dCopy = d;
   serialQueue = self->_serialQueue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__ASCloudKitServerChangeTokenCache_setFetchDate_forRecordZoneID___block_invoke;
   block[3] = &unk_278C4BB98;
-  v12 = v6;
-  v13 = self;
-  v14 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = dateCopy;
+  selfCopy = self;
+  v14 = dCopy;
+  v9 = dCopy;
+  v10 = dateCopy;
   dispatch_async(serialQueue, block);
 }
 

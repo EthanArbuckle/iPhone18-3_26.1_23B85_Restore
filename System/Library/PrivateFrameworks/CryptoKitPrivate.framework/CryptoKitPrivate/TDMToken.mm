@@ -1,18 +1,18 @@
 @interface TDMToken
-- (TDMToken)initWithTID:(id)a3;
+- (TDMToken)initWithTID:(id)d;
 @end
 
 @implementation TDMToken
 
-- (TDMToken)initWithTID:(id)a3
+- (TDMToken)initWithTID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v9.receiver = self;
   v9.super_class = TDMToken;
   v5 = [(TDMToken *)&v9 init];
   if (v5)
   {
-    v6 = [[_TtC16CryptoKitPrivate9TDMClient alloc] initWithTID:v4];
+    v6 = [[_TtC16CryptoKitPrivate9TDMClient alloc] initWithTID:dCopy];
     tdmClient = v5->_tdmClient;
     v5->_tdmClient = v6;
   }

@@ -1,22 +1,22 @@
 @interface PUPXPhotoKitCompositeVideoActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-- (void)activity:(id)a3 didFinishWithSuccess:(BOOL)a4 error:(id)a5;
-- (void)performActivity:(id)a3;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
+- (void)activity:(id)activity didFinishWithSuccess:(BOOL)success error:(id)error;
+- (void)performActivity:(id)activity;
 - (void)performUserInteractionTask;
 @end
 
 @implementation PUPXPhotoKitCompositeVideoActionPerformer
 
-- (void)activity:(id)a3 didFinishWithSuccess:(BOOL)a4 error:(id)a5
+- (void)activity:(id)activity didFinishWithSuccess:(BOOL)success error:(id)error
 {
-  v10 = a5;
-  v7 = [(PUCompositeVideoActivity *)self->_compositeVideoActivity activityViewController];
-  [(PXActionPerformer *)self dismissViewController:v7 completionHandler:0];
+  errorCopy = error;
+  activityViewController = [(PUCompositeVideoActivity *)self->_compositeVideoActivity activityViewController];
+  [(PXActionPerformer *)self dismissViewController:activityViewController completionHandler:0];
 
-  v8 = [v10 domain];
-  if ([v8 isEqualToString:*MEMORY[0x1E696A250]])
+  domain = [errorCopy domain];
+  if ([domain isEqualToString:*MEMORY[0x1E696A250]])
   {
-    v9 = [v10 code] == 3072;
+    v9 = [errorCopy code] == 3072;
   }
 
   else
@@ -24,10 +24,10 @@
     v9 = 0;
   }
 
-  [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:a4 || v9 error:v10];
+  [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:success || v9 error:errorCopy];
 }
 
-- (void)performActivity:(id)a3
+- (void)performActivity:(id)activity
 {
   v3 = PXAssertGetLog();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_FAULT))
@@ -45,27 +45,27 @@
 
   [(PXActivity *)self->_compositeVideoActivity setActionDelegate:self];
   v5 = self->_compositeVideoActivity;
-  v6 = [(PXActionPerformer *)self hostViewController];
-  v7 = [(PXPhotoKitAssetActionPerformer *)self assets];
-  [(PUCompositeVideoActivity *)v5 prepareWithViewController:v6 assets:v7];
+  hostViewController = [(PXActionPerformer *)self hostViewController];
+  assets = [(PXPhotoKitAssetActionPerformer *)self assets];
+  [(PUCompositeVideoActivity *)v5 prepareWithViewController:hostViewController assets:assets];
 
-  v8 = [(PUCompositeVideoActivity *)self->_compositeVideoActivity activityViewController];
-  LOBYTE(v6) = [(PXActionPerformer *)self presentViewController:v8];
+  activityViewController = [(PUCompositeVideoActivity *)self->_compositeVideoActivity activityViewController];
+  LOBYTE(hostViewController) = [(PXActionPerformer *)self presentViewController:activityViewController];
 
-  if ((v6 & 1) == 0)
+  if ((hostViewController & 1) == 0)
   {
 
     [(PXActionPerformer *)self completeUserInteractionTaskWithSuccess:0 error:0];
   }
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v7 = a4;
-  v8 = [MEMORY[0x1E695DFB8] orderedSetWithObjects:{a3, 0}];
+  collectionCopy = collection;
+  v8 = [MEMORY[0x1E695DFB8] orderedSetWithObjects:{asset, 0}];
   if ([PUCompositeVideoActivity canPerformWithAssets:v8])
   {
-    v9 = [v7 isTrashBin] ^ 1;
+    v9 = [collectionCopy isTrashBin] ^ 1;
   }
 
   else

@@ -1,6 +1,6 @@
 @interface ODXAlgorithm
 + (id)typeMap;
-+ (void)readNode:(_xmlNode *)a3 toAlgorithm:(id)a4;
++ (void)readNode:(_xmlNode *)node toAlgorithm:(id)algorithm;
 + (void)typeMap;
 @end
 
@@ -26,11 +26,11 @@
   return v2;
 }
 
-+ (void)readNode:(_xmlNode *)a3 toAlgorithm:(id)a4
++ (void)readNode:(_xmlNode *)node toAlgorithm:(id)algorithm
 {
-  v7 = a4;
-  v6 = [a1 typeMap];
-  [v7 setType:{objc_msgSend(v6, "readFromNode:ns:name:", a3, 0, "type")}];
+  algorithmCopy = algorithm;
+  typeMap = [self typeMap];
+  [algorithmCopy setType:{objc_msgSend(typeMap, "readFromNode:ns:name:", node, 0, "type")}];
 }
 
 + (void)typeMap

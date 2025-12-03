@@ -1,148 +1,148 @@
 @interface _INPBSetClimateSettingsInCarIntent
-- (BOOL)isEqual:(id)a3;
-- (_INPBSetClimateSettingsInCarIntent)initWithCoder:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (_INPBSetClimateSettingsInCarIntent)initWithCoder:(id)coder;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)dictionaryRepresentation;
-- (int)StringAsAirCirculationMode:(id)a3;
-- (int)StringAsClimateZone:(id)a3;
-- (int)StringAsRelativeFanSpeedSetting:(id)a3;
-- (int)StringAsRelativeTemperatureSetting:(id)a3;
+- (int)StringAsAirCirculationMode:(id)mode;
+- (int)StringAsClimateZone:(id)zone;
+- (int)StringAsRelativeFanSpeedSetting:(id)setting;
+- (int)StringAsRelativeTemperatureSetting:(id)setting;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAirCirculationMode:(int)a3;
-- (void)setClimateZone:(int)a3;
-- (void)setHasClimateZone:(BOOL)a3;
-- (void)setHasEnableAirConditioner:(BOOL)a3;
-- (void)setHasEnableAutoMode:(BOOL)a3;
-- (void)setHasEnableClimateControl:(BOOL)a3;
-- (void)setHasEnableFan:(BOOL)a3;
-- (void)setHasRelativeFanSpeedSetting:(BOOL)a3;
-- (void)setHasRelativeTemperatureSetting:(BOOL)a3;
-- (void)setRelativeFanSpeedSetting:(int)a3;
-- (void)setRelativeTemperatureSetting:(int)a3;
-- (void)writeTo:(id)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAirCirculationMode:(int)mode;
+- (void)setClimateZone:(int)zone;
+- (void)setHasClimateZone:(BOOL)zone;
+- (void)setHasEnableAirConditioner:(BOOL)conditioner;
+- (void)setHasEnableAutoMode:(BOOL)mode;
+- (void)setHasEnableClimateControl:(BOOL)control;
+- (void)setHasEnableFan:(BOOL)fan;
+- (void)setHasRelativeFanSpeedSetting:(BOOL)setting;
+- (void)setHasRelativeTemperatureSetting:(BOOL)setting;
+- (void)setRelativeFanSpeedSetting:(int)setting;
+- (void)setRelativeTemperatureSetting:(int)setting;
+- (void)writeTo:(id)to;
 @end
 
 @implementation _INPBSetClimateSettingsInCarIntent
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasAirCirculationMode])
   {
-    v4 = [(_INPBSetClimateSettingsInCarIntent *)self airCirculationMode];
-    if (v4 == 1)
+    airCirculationMode = [(_INPBSetClimateSettingsInCarIntent *)self airCirculationMode];
+    if (airCirculationMode == 1)
     {
       v5 = @"FRESH_AIR";
     }
 
-    else if (v4 == 2)
+    else if (airCirculationMode == 2)
     {
       v5 = @"RECIRCULATE_AIR";
     }
 
     else
     {
-      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v4];
+      v5 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", airCirculationMode];
     }
 
-    [v3 setObject:v5 forKeyedSubscript:@"airCirculationMode"];
+    [dictionary setObject:v5 forKeyedSubscript:@"airCirculationMode"];
   }
 
-  v6 = [(_INPBSetClimateSettingsInCarIntent *)self carName];
-  v7 = [v6 dictionaryRepresentation];
-  [v3 setObject:v7 forKeyedSubscript:@"carName"];
+  carName = [(_INPBSetClimateSettingsInCarIntent *)self carName];
+  dictionaryRepresentation = [carName dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"carName"];
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasClimateZone])
   {
-    v8 = [(_INPBSetClimateSettingsInCarIntent *)self climateZone];
-    v9 = v8 - 1;
-    if (v8 - 1) < 0x16 && ((0x3F8383u >> v9))
+    climateZone = [(_INPBSetClimateSettingsInCarIntent *)self climateZone];
+    v9 = climateZone - 1;
+    if (climateZone - 1) < 0x16 && ((0x3F8383u >> v9))
     {
       v10 = off_1E7280B08[v9];
     }
 
     else
     {
-      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v8];
+      v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", climateZone];
     }
 
-    [v3 setObject:v10 forKeyedSubscript:@"climateZone"];
+    [dictionary setObject:v10 forKeyedSubscript:@"climateZone"];
   }
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasEnableAirConditioner])
   {
     v11 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSetClimateSettingsInCarIntent enableAirConditioner](self, "enableAirConditioner")}];
-    [v3 setObject:v11 forKeyedSubscript:@"enableAirConditioner"];
+    [dictionary setObject:v11 forKeyedSubscript:@"enableAirConditioner"];
   }
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasEnableAutoMode])
   {
     v12 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSetClimateSettingsInCarIntent enableAutoMode](self, "enableAutoMode")}];
-    [v3 setObject:v12 forKeyedSubscript:@"enableAutoMode"];
+    [dictionary setObject:v12 forKeyedSubscript:@"enableAutoMode"];
   }
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasEnableClimateControl])
   {
     v13 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSetClimateSettingsInCarIntent enableClimateControl](self, "enableClimateControl")}];
-    [v3 setObject:v13 forKeyedSubscript:@"enableClimateControl"];
+    [dictionary setObject:v13 forKeyedSubscript:@"enableClimateControl"];
   }
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasEnableFan])
   {
     v14 = [MEMORY[0x1E696AD98] numberWithBool:{-[_INPBSetClimateSettingsInCarIntent enableFan](self, "enableFan")}];
-    [v3 setObject:v14 forKeyedSubscript:@"enableFan"];
+    [dictionary setObject:v14 forKeyedSubscript:@"enableFan"];
   }
 
-  v15 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedIndex];
-  v16 = [v15 dictionaryRepresentation];
-  [v3 setObject:v16 forKeyedSubscript:@"fanSpeedIndex"];
+  fanSpeedIndex = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedIndex];
+  dictionaryRepresentation2 = [fanSpeedIndex dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"fanSpeedIndex"];
 
-  v17 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedPercentage];
-  v18 = [v17 dictionaryRepresentation];
-  [v3 setObject:v18 forKeyedSubscript:@"fanSpeedPercentage"];
+  fanSpeedPercentage = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedPercentage];
+  dictionaryRepresentation3 = [fanSpeedPercentage dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"fanSpeedPercentage"];
 
-  v19 = [(_INPBSetClimateSettingsInCarIntent *)self intentMetadata];
-  v20 = [v19 dictionaryRepresentation];
-  [v3 setObject:v20 forKeyedSubscript:@"intentMetadata"];
+  intentMetadata = [(_INPBSetClimateSettingsInCarIntent *)self intentMetadata];
+  dictionaryRepresentation4 = [intentMetadata dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"intentMetadata"];
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasRelativeFanSpeedSetting])
   {
-    v21 = [(_INPBSetClimateSettingsInCarIntent *)self relativeFanSpeedSetting];
-    if ((v21 - 1) >= 4)
+    relativeFanSpeedSetting = [(_INPBSetClimateSettingsInCarIntent *)self relativeFanSpeedSetting];
+    if ((relativeFanSpeedSetting - 1) >= 4)
     {
-      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v21];
+      v22 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", relativeFanSpeedSetting];
     }
 
     else
     {
-      v22 = off_1E7280BB8[(v21 - 1)];
+      v22 = off_1E7280BB8[(relativeFanSpeedSetting - 1)];
     }
 
-    [v3 setObject:v22 forKeyedSubscript:@"relativeFanSpeedSetting"];
+    [dictionary setObject:v22 forKeyedSubscript:@"relativeFanSpeedSetting"];
   }
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasRelativeTemperatureSetting])
   {
-    v23 = [(_INPBSetClimateSettingsInCarIntent *)self relativeTemperatureSetting];
-    if ((v23 - 1) >= 4)
+    relativeTemperatureSetting = [(_INPBSetClimateSettingsInCarIntent *)self relativeTemperatureSetting];
+    if ((relativeTemperatureSetting - 1) >= 4)
     {
-      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", v23];
+      v24 = [MEMORY[0x1E696AEC0] stringWithFormat:@"(unknown: %i)", relativeTemperatureSetting];
     }
 
     else
     {
-      v24 = off_1E7280BB8[(v23 - 1)];
+      v24 = off_1E7280BB8[(relativeTemperatureSetting - 1)];
     }
 
-    [v3 setObject:v24 forKeyedSubscript:@"relativeTemperatureSetting"];
+    [dictionary setObject:v24 forKeyedSubscript:@"relativeTemperatureSetting"];
   }
 
-  v25 = [(_INPBSetClimateSettingsInCarIntent *)self temperature];
-  v26 = [v25 dictionaryRepresentation];
-  [v3 setObject:v26 forKeyedSubscript:@"temperature"];
+  temperature = [(_INPBSetClimateSettingsInCarIntent *)self temperature];
+  dictionaryRepresentation5 = [temperature dictionaryRepresentation];
+  [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"temperature"];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -234,46 +234,46 @@
   return v14 ^ v15 ^ v13 ^ v3 ^ v4 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10 ^ v11 ^ [(_INPBTemperature *)self->_temperature hash];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_59;
   }
 
-  v5 = [(_INPBSetClimateSettingsInCarIntent *)self hasAirCirculationMode];
-  if (v5 != [v4 hasAirCirculationMode])
+  hasAirCirculationMode = [(_INPBSetClimateSettingsInCarIntent *)self hasAirCirculationMode];
+  if (hasAirCirculationMode != [equalCopy hasAirCirculationMode])
   {
     goto LABEL_59;
   }
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasAirCirculationMode])
   {
-    if ([v4 hasAirCirculationMode])
+    if ([equalCopy hasAirCirculationMode])
     {
       airCirculationMode = self->_airCirculationMode;
-      if (airCirculationMode != [v4 airCirculationMode])
+      if (airCirculationMode != [equalCopy airCirculationMode])
       {
         goto LABEL_59;
       }
     }
   }
 
-  v7 = [(_INPBSetClimateSettingsInCarIntent *)self carName];
-  v8 = [v4 carName];
-  if ((v7 != 0) == (v8 == 0))
+  carName = [(_INPBSetClimateSettingsInCarIntent *)self carName];
+  carName2 = [equalCopy carName];
+  if ((carName != 0) == (carName2 == 0))
   {
     goto LABEL_58;
   }
 
-  v9 = [(_INPBSetClimateSettingsInCarIntent *)self carName];
-  if (v9)
+  carName3 = [(_INPBSetClimateSettingsInCarIntent *)self carName];
+  if (carName3)
   {
-    v10 = v9;
-    v11 = [(_INPBSetClimateSettingsInCarIntent *)self carName];
-    v12 = [v4 carName];
-    v13 = [v11 isEqual:v12];
+    v10 = carName3;
+    carName4 = [(_INPBSetClimateSettingsInCarIntent *)self carName];
+    carName5 = [equalCopy carName];
+    v13 = [carName4 isEqual:carName5];
 
     if (!v13)
     {
@@ -285,110 +285,110 @@
   {
   }
 
-  v14 = [(_INPBSetClimateSettingsInCarIntent *)self hasClimateZone];
-  if (v14 != [v4 hasClimateZone])
+  hasClimateZone = [(_INPBSetClimateSettingsInCarIntent *)self hasClimateZone];
+  if (hasClimateZone != [equalCopy hasClimateZone])
   {
     goto LABEL_59;
   }
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasClimateZone])
   {
-    if ([v4 hasClimateZone])
+    if ([equalCopy hasClimateZone])
     {
       climateZone = self->_climateZone;
-      if (climateZone != [v4 climateZone])
+      if (climateZone != [equalCopy climateZone])
       {
         goto LABEL_59;
       }
     }
   }
 
-  v16 = [(_INPBSetClimateSettingsInCarIntent *)self hasEnableAirConditioner];
-  if (v16 != [v4 hasEnableAirConditioner])
+  hasEnableAirConditioner = [(_INPBSetClimateSettingsInCarIntent *)self hasEnableAirConditioner];
+  if (hasEnableAirConditioner != [equalCopy hasEnableAirConditioner])
   {
     goto LABEL_59;
   }
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasEnableAirConditioner])
   {
-    if ([v4 hasEnableAirConditioner])
+    if ([equalCopy hasEnableAirConditioner])
     {
       enableAirConditioner = self->_enableAirConditioner;
-      if (enableAirConditioner != [v4 enableAirConditioner])
+      if (enableAirConditioner != [equalCopy enableAirConditioner])
       {
         goto LABEL_59;
       }
     }
   }
 
-  v18 = [(_INPBSetClimateSettingsInCarIntent *)self hasEnableAutoMode];
-  if (v18 != [v4 hasEnableAutoMode])
+  hasEnableAutoMode = [(_INPBSetClimateSettingsInCarIntent *)self hasEnableAutoMode];
+  if (hasEnableAutoMode != [equalCopy hasEnableAutoMode])
   {
     goto LABEL_59;
   }
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasEnableAutoMode])
   {
-    if ([v4 hasEnableAutoMode])
+    if ([equalCopy hasEnableAutoMode])
     {
       enableAutoMode = self->_enableAutoMode;
-      if (enableAutoMode != [v4 enableAutoMode])
+      if (enableAutoMode != [equalCopy enableAutoMode])
       {
         goto LABEL_59;
       }
     }
   }
 
-  v20 = [(_INPBSetClimateSettingsInCarIntent *)self hasEnableClimateControl];
-  if (v20 != [v4 hasEnableClimateControl])
+  hasEnableClimateControl = [(_INPBSetClimateSettingsInCarIntent *)self hasEnableClimateControl];
+  if (hasEnableClimateControl != [equalCopy hasEnableClimateControl])
   {
     goto LABEL_59;
   }
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasEnableClimateControl])
   {
-    if ([v4 hasEnableClimateControl])
+    if ([equalCopy hasEnableClimateControl])
     {
       enableClimateControl = self->_enableClimateControl;
-      if (enableClimateControl != [v4 enableClimateControl])
+      if (enableClimateControl != [equalCopy enableClimateControl])
       {
         goto LABEL_59;
       }
     }
   }
 
-  v22 = [(_INPBSetClimateSettingsInCarIntent *)self hasEnableFan];
-  if (v22 != [v4 hasEnableFan])
+  hasEnableFan = [(_INPBSetClimateSettingsInCarIntent *)self hasEnableFan];
+  if (hasEnableFan != [equalCopy hasEnableFan])
   {
     goto LABEL_59;
   }
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasEnableFan])
   {
-    if ([v4 hasEnableFan])
+    if ([equalCopy hasEnableFan])
     {
       enableFan = self->_enableFan;
-      if (enableFan != [v4 enableFan])
+      if (enableFan != [equalCopy enableFan])
       {
         goto LABEL_59;
       }
     }
   }
 
-  v7 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedIndex];
-  v8 = [v4 fanSpeedIndex];
-  if ((v7 != 0) == (v8 == 0))
+  carName = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedIndex];
+  carName2 = [equalCopy fanSpeedIndex];
+  if ((carName != 0) == (carName2 == 0))
   {
     goto LABEL_58;
   }
 
-  v24 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedIndex];
-  if (v24)
+  fanSpeedIndex = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedIndex];
+  if (fanSpeedIndex)
   {
-    v25 = v24;
-    v26 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedIndex];
-    v27 = [v4 fanSpeedIndex];
-    v28 = [v26 isEqual:v27];
+    v25 = fanSpeedIndex;
+    fanSpeedIndex2 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedIndex];
+    fanSpeedIndex3 = [equalCopy fanSpeedIndex];
+    v28 = [fanSpeedIndex2 isEqual:fanSpeedIndex3];
 
     if (!v28)
     {
@@ -400,20 +400,20 @@
   {
   }
 
-  v7 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedPercentage];
-  v8 = [v4 fanSpeedPercentage];
-  if ((v7 != 0) == (v8 == 0))
+  carName = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedPercentage];
+  carName2 = [equalCopy fanSpeedPercentage];
+  if ((carName != 0) == (carName2 == 0))
   {
     goto LABEL_58;
   }
 
-  v29 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedPercentage];
-  if (v29)
+  fanSpeedPercentage = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedPercentage];
+  if (fanSpeedPercentage)
   {
-    v30 = v29;
-    v31 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedPercentage];
-    v32 = [v4 fanSpeedPercentage];
-    v33 = [v31 isEqual:v32];
+    v30 = fanSpeedPercentage;
+    fanSpeedPercentage2 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedPercentage];
+    fanSpeedPercentage3 = [equalCopy fanSpeedPercentage];
+    v33 = [fanSpeedPercentage2 isEqual:fanSpeedPercentage3];
 
     if (!v33)
     {
@@ -425,20 +425,20 @@
   {
   }
 
-  v7 = [(_INPBSetClimateSettingsInCarIntent *)self intentMetadata];
-  v8 = [v4 intentMetadata];
-  if ((v7 != 0) == (v8 == 0))
+  carName = [(_INPBSetClimateSettingsInCarIntent *)self intentMetadata];
+  carName2 = [equalCopy intentMetadata];
+  if ((carName != 0) == (carName2 == 0))
   {
     goto LABEL_58;
   }
 
-  v34 = [(_INPBSetClimateSettingsInCarIntent *)self intentMetadata];
-  if (v34)
+  intentMetadata = [(_INPBSetClimateSettingsInCarIntent *)self intentMetadata];
+  if (intentMetadata)
   {
-    v35 = v34;
-    v36 = [(_INPBSetClimateSettingsInCarIntent *)self intentMetadata];
-    v37 = [v4 intentMetadata];
-    v38 = [v36 isEqual:v37];
+    v35 = intentMetadata;
+    intentMetadata2 = [(_INPBSetClimateSettingsInCarIntent *)self intentMetadata];
+    intentMetadata3 = [equalCopy intentMetadata];
+    v38 = [intentMetadata2 isEqual:intentMetadata3];
 
     if (!v38)
     {
@@ -450,48 +450,48 @@
   {
   }
 
-  v39 = [(_INPBSetClimateSettingsInCarIntent *)self hasRelativeFanSpeedSetting];
-  if (v39 != [v4 hasRelativeFanSpeedSetting])
+  hasRelativeFanSpeedSetting = [(_INPBSetClimateSettingsInCarIntent *)self hasRelativeFanSpeedSetting];
+  if (hasRelativeFanSpeedSetting != [equalCopy hasRelativeFanSpeedSetting])
   {
     goto LABEL_59;
   }
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasRelativeFanSpeedSetting])
   {
-    if ([v4 hasRelativeFanSpeedSetting])
+    if ([equalCopy hasRelativeFanSpeedSetting])
     {
       relativeFanSpeedSetting = self->_relativeFanSpeedSetting;
-      if (relativeFanSpeedSetting != [v4 relativeFanSpeedSetting])
+      if (relativeFanSpeedSetting != [equalCopy relativeFanSpeedSetting])
       {
         goto LABEL_59;
       }
     }
   }
 
-  v41 = [(_INPBSetClimateSettingsInCarIntent *)self hasRelativeTemperatureSetting];
-  if (v41 != [v4 hasRelativeTemperatureSetting])
+  hasRelativeTemperatureSetting = [(_INPBSetClimateSettingsInCarIntent *)self hasRelativeTemperatureSetting];
+  if (hasRelativeTemperatureSetting != [equalCopy hasRelativeTemperatureSetting])
   {
     goto LABEL_59;
   }
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasRelativeTemperatureSetting])
   {
-    if ([v4 hasRelativeTemperatureSetting])
+    if ([equalCopy hasRelativeTemperatureSetting])
     {
       relativeTemperatureSetting = self->_relativeTemperatureSetting;
-      if (relativeTemperatureSetting != [v4 relativeTemperatureSetting])
+      if (relativeTemperatureSetting != [equalCopy relativeTemperatureSetting])
       {
         goto LABEL_59;
       }
     }
   }
 
-  v7 = [(_INPBSetClimateSettingsInCarIntent *)self temperature];
-  v8 = [v4 temperature];
-  if ((v7 != 0) != (v8 == 0))
+  carName = [(_INPBSetClimateSettingsInCarIntent *)self temperature];
+  carName2 = [equalCopy temperature];
+  if ((carName != 0) != (carName2 == 0))
   {
-    v43 = [(_INPBSetClimateSettingsInCarIntent *)self temperature];
-    if (!v43)
+    temperature = [(_INPBSetClimateSettingsInCarIntent *)self temperature];
+    if (!temperature)
     {
 
 LABEL_62:
@@ -499,10 +499,10 @@ LABEL_62:
       goto LABEL_60;
     }
 
-    v44 = v43;
-    v45 = [(_INPBSetClimateSettingsInCarIntent *)self temperature];
-    v46 = [v4 temperature];
-    v47 = [v45 isEqual:v46];
+    v44 = temperature;
+    temperature2 = [(_INPBSetClimateSettingsInCarIntent *)self temperature];
+    temperature3 = [equalCopy temperature];
+    v47 = [temperature2 isEqual:temperature3];
 
     if (v47)
     {
@@ -522,7 +522,7 @@ LABEL_60:
   return v48;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = [+[_INPBSetClimateSettingsInCarIntent allocWithZone:](_INPBSetClimateSettingsInCarIntent init];
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasAirCirculationMode])
@@ -530,7 +530,7 @@ LABEL_60:
     [(_INPBSetClimateSettingsInCarIntent *)v5 setAirCirculationMode:[(_INPBSetClimateSettingsInCarIntent *)self airCirculationMode]];
   }
 
-  v6 = [(_INPBDataString *)self->_carName copyWithZone:a3];
+  v6 = [(_INPBDataString *)self->_carName copyWithZone:zone];
   [(_INPBSetClimateSettingsInCarIntent *)v5 setCarName:v6];
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasClimateZone])
@@ -558,13 +558,13 @@ LABEL_60:
     [(_INPBSetClimateSettingsInCarIntent *)v5 setEnableFan:[(_INPBSetClimateSettingsInCarIntent *)self enableFan]];
   }
 
-  v7 = [(_INPBInteger *)self->_fanSpeedIndex copyWithZone:a3];
+  v7 = [(_INPBInteger *)self->_fanSpeedIndex copyWithZone:zone];
   [(_INPBSetClimateSettingsInCarIntent *)v5 setFanSpeedIndex:v7];
 
-  v8 = [(_INPBDouble *)self->_fanSpeedPercentage copyWithZone:a3];
+  v8 = [(_INPBDouble *)self->_fanSpeedPercentage copyWithZone:zone];
   [(_INPBSetClimateSettingsInCarIntent *)v5 setFanSpeedPercentage:v8];
 
-  v9 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:a3];
+  v9 = [(_INPBIntentMetadata *)self->_intentMetadata copyWithZone:zone];
   [(_INPBSetClimateSettingsInCarIntent *)v5 setIntentMetadata:v9];
 
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasRelativeFanSpeedSetting])
@@ -577,50 +577,50 @@ LABEL_60:
     [(_INPBSetClimateSettingsInCarIntent *)v5 setRelativeTemperatureSetting:[(_INPBSetClimateSettingsInCarIntent *)self relativeTemperatureSetting]];
   }
 
-  v10 = [(_INPBTemperature *)self->_temperature copyWithZone:a3];
+  v10 = [(_INPBTemperature *)self->_temperature copyWithZone:zone];
   [(_INPBSetClimateSettingsInCarIntent *)v5 setTemperature:v10];
 
   return v5;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v6 = [(_INPBSetClimateSettingsInCarIntent *)self data];
+  coderCopy = coder;
+  data = [(_INPBSetClimateSettingsInCarIntent *)self data];
   v5 = NSStringFromSelector(sel_bytes);
-  [v4 if_encodeBytesNoCopy:v6 forKey:v5];
+  [coderCopy if_encodeBytesNoCopy:data forKey:v5];
 }
 
-- (_INPBSetClimateSettingsInCarIntent)initWithCoder:(id)a3
+- (_INPBSetClimateSettingsInCarIntent)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = NSStringFromSelector(sel_bytes);
-  v6 = [v4 if_decodeBytesNoCopyForKey:v5];
+  selfCopy = [coderCopy if_decodeBytesNoCopyForKey:v5];
 
-  if (v6 || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [v4 decodeObjectOfClass:v7 forKey:v8], v6 = objc_claimAutoreleasedReturnValue(), v8, v6))
+  if (selfCopy || (v7 = objc_opt_class(), NSStringFromSelector(sel_data), v8 = objc_claimAutoreleasedReturnValue(), [coderCopy decodeObjectOfClass:v7 forKey:v8], selfCopy = objc_claimAutoreleasedReturnValue(), v8, selfCopy))
   {
-    self = [(_INPBSetClimateSettingsInCarIntent *)self initWithData:v6];
+    self = [(_INPBSetClimateSettingsInCarIntent *)self initWithData:selfCopy];
 
-    v6 = self;
+    selfCopy = self;
   }
 
-  return v6;
+  return selfCopy;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v23 = a3;
+  toCopy = to;
   if ([(_INPBSetClimateSettingsInCarIntent *)self hasAirCirculationMode])
   {
     airCirculationMode = self->_airCirculationMode;
     PBDataWriterWriteInt32Field();
   }
 
-  v5 = [(_INPBSetClimateSettingsInCarIntent *)self carName];
+  carName = [(_INPBSetClimateSettingsInCarIntent *)self carName];
 
-  if (v5)
+  if (carName)
   {
-    v6 = [(_INPBSetClimateSettingsInCarIntent *)self carName];
+    carName2 = [(_INPBSetClimateSettingsInCarIntent *)self carName];
     PBDataWriterWriteSubmessage();
   }
 
@@ -654,27 +654,27 @@ LABEL_60:
     PBDataWriterWriteBOOLField();
   }
 
-  v12 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedIndex];
+  fanSpeedIndex = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedIndex];
 
-  if (v12)
+  if (fanSpeedIndex)
   {
-    v13 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedIndex];
+    fanSpeedIndex2 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedIndex];
     PBDataWriterWriteSubmessage();
   }
 
-  v14 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedPercentage];
+  fanSpeedPercentage = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedPercentage];
 
-  if (v14)
+  if (fanSpeedPercentage)
   {
-    v15 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedPercentage];
+    fanSpeedPercentage2 = [(_INPBSetClimateSettingsInCarIntent *)self fanSpeedPercentage];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(_INPBSetClimateSettingsInCarIntent *)self intentMetadata];
+  intentMetadata = [(_INPBSetClimateSettingsInCarIntent *)self intentMetadata];
 
-  if (v16)
+  if (intentMetadata)
   {
-    v17 = [(_INPBSetClimateSettingsInCarIntent *)self intentMetadata];
+    intentMetadata2 = [(_INPBSetClimateSettingsInCarIntent *)self intentMetadata];
     PBDataWriterWriteSubmessage();
   }
 
@@ -690,37 +690,37 @@ LABEL_60:
     PBDataWriterWriteInt32Field();
   }
 
-  v20 = [(_INPBSetClimateSettingsInCarIntent *)self temperature];
+  temperature = [(_INPBSetClimateSettingsInCarIntent *)self temperature];
 
-  v21 = v23;
-  if (v20)
+  v21 = toCopy;
+  if (temperature)
   {
-    v22 = [(_INPBSetClimateSettingsInCarIntent *)self temperature];
+    temperature2 = [(_INPBSetClimateSettingsInCarIntent *)self temperature];
     PBDataWriterWriteSubmessage();
 
-    v21 = v23;
+    v21 = toCopy;
   }
 }
 
-- (int)StringAsRelativeTemperatureSetting:(id)a3
+- (int)StringAsRelativeTemperatureSetting:(id)setting
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LOWEST"])
+  settingCopy = setting;
+  if ([settingCopy isEqualToString:@"LOWEST"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LOWER"])
+  else if ([settingCopy isEqualToString:@"LOWER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HIGHER"])
+  else if ([settingCopy isEqualToString:@"HIGHER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HIGHEST"])
+  else if ([settingCopy isEqualToString:@"HIGHEST"])
   {
     v4 = 4;
   }
@@ -733,9 +733,9 @@ LABEL_60:
   return v4;
 }
 
-- (void)setHasRelativeTemperatureSetting:(BOOL)a3
+- (void)setHasRelativeTemperatureSetting:(BOOL)setting
 {
-  if (a3)
+  if (setting)
   {
     v3 = 0x80;
   }
@@ -748,10 +748,10 @@ LABEL_60:
   *&self->_has = v3 & 0x80 | *&self->_has & 0x7F;
 }
 
-- (void)setRelativeTemperatureSetting:(int)a3
+- (void)setRelativeTemperatureSetting:(int)setting
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (setting == 0x7FFFFFFF)
   {
     *&self->_has = has & 0x7F;
   }
@@ -759,29 +759,29 @@ LABEL_60:
   else
   {
     *&self->_has = has | 0x80;
-    self->_relativeTemperatureSetting = a3;
+    self->_relativeTemperatureSetting = setting;
   }
 }
 
-- (int)StringAsRelativeFanSpeedSetting:(id)a3
+- (int)StringAsRelativeFanSpeedSetting:(id)setting
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"LOWEST"])
+  settingCopy = setting;
+  if ([settingCopy isEqualToString:@"LOWEST"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"LOWER"])
+  else if ([settingCopy isEqualToString:@"LOWER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"HIGHER"])
+  else if ([settingCopy isEqualToString:@"HIGHER"])
   {
     v4 = 3;
   }
 
-  else if ([v3 isEqualToString:@"HIGHEST"])
+  else if ([settingCopy isEqualToString:@"HIGHEST"])
   {
     v4 = 4;
   }
@@ -794,9 +794,9 @@ LABEL_60:
   return v4;
 }
 
-- (void)setHasRelativeFanSpeedSetting:(BOOL)a3
+- (void)setHasRelativeFanSpeedSetting:(BOOL)setting
 {
-  if (a3)
+  if (setting)
   {
     v3 = 64;
   }
@@ -809,10 +809,10 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xBF | v3;
 }
 
-- (void)setRelativeFanSpeedSetting:(int)a3
+- (void)setRelativeFanSpeedSetting:(int)setting
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (setting == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xBF;
   }
@@ -820,13 +820,13 @@ LABEL_60:
   else
   {
     *&self->_has = has | 0x40;
-    self->_relativeFanSpeedSetting = a3;
+    self->_relativeFanSpeedSetting = setting;
   }
 }
 
-- (void)setHasEnableFan:(BOOL)a3
+- (void)setHasEnableFan:(BOOL)fan
 {
-  if (a3)
+  if (fan)
   {
     v3 = 32;
   }
@@ -839,9 +839,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xDF | v3;
 }
 
-- (void)setHasEnableClimateControl:(BOOL)a3
+- (void)setHasEnableClimateControl:(BOOL)control
 {
-  if (a3)
+  if (control)
   {
     v3 = 16;
   }
@@ -854,9 +854,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)setHasEnableAutoMode:(BOOL)a3
+- (void)setHasEnableAutoMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 8;
   }
@@ -869,9 +869,9 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasEnableAirConditioner:(BOOL)a3
+- (void)setHasEnableAirConditioner:(BOOL)conditioner
 {
-  if (a3)
+  if (conditioner)
   {
     v3 = 4;
   }
@@ -884,65 +884,65 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (int)StringAsClimateZone:(id)a3
+- (int)StringAsClimateZone:(id)zone
 {
-  v3 = a3;
-  if ([v3 isEqualToString:@"DRIVER"])
+  zoneCopy = zone;
+  if ([zoneCopy isEqualToString:@"DRIVER"])
   {
     v4 = 1;
   }
 
-  else if ([v3 isEqualToString:@"PASSENGER"])
+  else if ([zoneCopy isEqualToString:@"PASSENGER"])
   {
     v4 = 2;
   }
 
-  else if ([v3 isEqualToString:@"FRONT_LEFT"])
+  else if ([zoneCopy isEqualToString:@"FRONT_LEFT"])
   {
     v4 = 8;
   }
 
-  else if ([v3 isEqualToString:@"FRONT_RIGHT"])
+  else if ([zoneCopy isEqualToString:@"FRONT_RIGHT"])
   {
     v4 = 9;
   }
 
-  else if ([v3 isEqualToString:@"FRONT"])
+  else if ([zoneCopy isEqualToString:@"FRONT"])
   {
     v4 = 10;
   }
 
-  else if ([v3 isEqualToString:@"REAR_LEFT"])
+  else if ([zoneCopy isEqualToString:@"REAR_LEFT"])
   {
     v4 = 16;
   }
 
-  else if ([v3 isEqualToString:@"REAR_RIGHT"])
+  else if ([zoneCopy isEqualToString:@"REAR_RIGHT"])
   {
     v4 = 17;
   }
 
-  else if ([v3 isEqualToString:@"REAR"])
+  else if ([zoneCopy isEqualToString:@"REAR"])
   {
     v4 = 18;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_ROW_LEFT"])
+  else if ([zoneCopy isEqualToString:@"THIRD_ROW_LEFT"])
   {
     v4 = 19;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_ROW_RIGHT"])
+  else if ([zoneCopy isEqualToString:@"THIRD_ROW_RIGHT"])
   {
     v4 = 20;
   }
 
-  else if ([v3 isEqualToString:@"THIRD_ROW"])
+  else if ([zoneCopy isEqualToString:@"THIRD_ROW"])
   {
     v4 = 21;
   }
 
-  else if ([v3 isEqualToString:@"ALL"])
+  else if ([zoneCopy isEqualToString:@"ALL"])
   {
     v4 = 22;
   }
@@ -955,9 +955,9 @@ LABEL_60:
   return v4;
 }
 
-- (void)setHasClimateZone:(BOOL)a3
+- (void)setHasClimateZone:(BOOL)zone
 {
-  if (a3)
+  if (zone)
   {
     v3 = 2;
   }
@@ -970,10 +970,10 @@ LABEL_60:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)setClimateZone:(int)a3
+- (void)setClimateZone:(int)zone
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (zone == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFD;
   }
@@ -981,17 +981,17 @@ LABEL_60:
   else
   {
     *&self->_has = has | 2;
-    self->_climateZone = a3;
+    self->_climateZone = zone;
   }
 }
 
-- (int)StringAsAirCirculationMode:(id)a3
+- (int)StringAsAirCirculationMode:(id)mode
 {
-  v3 = a3;
+  modeCopy = mode;
   v4 = 1;
-  if (([v3 isEqualToString:@"FRESH_AIR"] & 1) == 0)
+  if (([modeCopy isEqualToString:@"FRESH_AIR"] & 1) == 0)
   {
-    if ([v3 isEqualToString:@"RECIRCULATE_AIR"])
+    if ([modeCopy isEqualToString:@"RECIRCULATE_AIR"])
     {
       v4 = 2;
     }
@@ -1005,10 +1005,10 @@ LABEL_60:
   return v4;
 }
 
-- (void)setAirCirculationMode:(int)a3
+- (void)setAirCirculationMode:(int)mode
 {
   has = self->_has;
-  if (a3 == 0x7FFFFFFF)
+  if (mode == 0x7FFFFFFF)
   {
     *&self->_has = has & 0xFE;
   }
@@ -1016,7 +1016,7 @@ LABEL_60:
   else
   {
     *&self->_has = has | 1;
-    self->_airCirculationMode = a3;
+    self->_airCirculationMode = mode;
   }
 }
 

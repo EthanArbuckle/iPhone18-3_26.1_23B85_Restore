@@ -1,15 +1,15 @@
 @interface MFComposeSendLaterOnboardingView
-- (MFComposeSendLaterOnboardingView)initWithFrame:(CGRect)a3;
+- (MFComposeSendLaterOnboardingView)initWithFrame:(CGRect)frame;
 @end
 
 @implementation MFComposeSendLaterOnboardingView
 
-- (MFComposeSendLaterOnboardingView)initWithFrame:(CGRect)a3
+- (MFComposeSendLaterOnboardingView)initWithFrame:(CGRect)frame
 {
   v48[2] = *MEMORY[0x1E69E9840];
   v44.receiver = self;
   v44.super_class = MFComposeSendLaterOnboardingView;
-  v3 = [(MFComposeSendLaterOnboardingView *)&v44 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(MFComposeSendLaterOnboardingView *)&v44 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69DCAE0]);
@@ -39,28 +39,28 @@
     subtitleLabel = v3->_subtitleLabel;
     v3->_subtitleLabel = v12;
 
-    v14 = [MEMORY[0x1E69DC888] secondaryLabelColor];
-    [(UILabel *)v3->_subtitleLabel setTextColor:v14];
+    secondaryLabelColor = [MEMORY[0x1E69DC888] secondaryLabelColor];
+    [(UILabel *)v3->_subtitleLabel setTextColor:secondaryLabelColor];
 
     v15 = [MEMORY[0x1E69DB878] preferredFontForTextStyle:*MEMORY[0x1E69DDD80]];
     [(UILabel *)v3->_subtitleLabel setFont:v15];
 
     [(UILabel *)v3->_subtitleLabel setNumberOfLines:0];
     [(UILabel *)v3->_subtitleLabel setAdjustsFontForContentSizeCategory:1];
-    v43 = [MEMORY[0x1E69DC740] plainButtonConfiguration];
+    plainButtonConfiguration = [MEMORY[0x1E69DC740] plainButtonConfiguration];
     v16 = MEMORY[0x1E69DCAD8];
     v17 = [MEMORY[0x1E69DB878] _preferredFontForTextStyle:*MEMORY[0x1E69DDD28] weight:*MEMORY[0x1E69DB958]];
     v18 = [v16 configurationWithFont:v17];
-    [v43 setPreferredSymbolConfigurationForImage:v18];
+    [plainButtonConfiguration setPreferredSymbolConfigurationForImage:v18];
 
     v19 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"xmark"];
-    [v43 setImage:v19];
+    [plainButtonConfiguration setImage:v19];
 
-    v20 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [v43 setBaseForegroundColor:v20];
+    systemGrayColor = [MEMORY[0x1E69DC888] systemGrayColor];
+    [plainButtonConfiguration setBaseForegroundColor:systemGrayColor];
 
-    [v43 setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
-    v21 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v43 primaryAction:0];
+    [plainButtonConfiguration setContentInsets:{*MEMORY[0x1E69DC5C0], *(MEMORY[0x1E69DC5C0] + 8), *(MEMORY[0x1E69DC5C0] + 16), *(MEMORY[0x1E69DC5C0] + 24)}];
+    v21 = [MEMORY[0x1E69DC738] buttonWithConfiguration:plainButtonConfiguration primaryAction:0];
     cancelButton = v3->_cancelButton;
     v3->_cancelButton = v21;
 
@@ -97,32 +97,32 @@
     [v30 addSubview:v28];
     [(MFComposeSendLaterOnboardingView *)v3 addSubview:v30];
     [v28 mf_pinToView:v30 usingLayoutMargins:1];
-    v31 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [v30 setBackgroundColor:v31];
+    secondarySystemBackgroundColor = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [v30 setBackgroundColor:secondarySystemBackgroundColor];
 
-    v32 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
-    [v30 setBackgroundColor:v32];
+    secondarySystemBackgroundColor2 = [MEMORY[0x1E69DC888] secondarySystemBackgroundColor];
+    [v30 setBackgroundColor:secondarySystemBackgroundColor2];
 
-    v33 = [MEMORY[0x1E69DC888] systemGrayColor];
-    [(UIImageView *)v3->_sendLaterImageView setTintColor:v33];
+    systemGrayColor2 = [MEMORY[0x1E69DC888] systemGrayColor];
+    [(UIImageView *)v3->_sendLaterImageView setTintColor:systemGrayColor2];
 
     v34 = _EFLocalizedString();
     [(UILabel *)v3->_subtitleLabel setText:v34];
 
-    v35 = [v30 layer];
-    [v35 setCornerRadius:10.0];
+    layer = [v30 layer];
+    [layer setCornerRadius:10.0];
 
-    v36 = [v30 layer];
-    [v36 setMasksToBounds:1];
+    layer2 = [v30 layer];
+    [layer2 setMasksToBounds:1];
 
     [v30 setTranslatesAutoresizingMaskIntoConstraints:0];
     [v30 setDirectionalLayoutMargins:{8.0, 13.0, 8.0, 13.0}];
     [v30 mf_pinToView:v3 usingLayoutMargins:1];
     [(MFComposeSendLaterOnboardingView *)v3 setDirectionalLayoutMargins:0.0, 16.0, 16.0, 16.0];
     v37 = MEMORY[0x1E696ACD8];
-    v38 = [(UIImageView *)v3->_sendLaterImageView heightAnchor];
-    v39 = [(UIImageView *)v3->_sendLaterImageView widthAnchor];
-    v40 = [v38 constraintEqualToAnchor:v39];
+    heightAnchor = [(UIImageView *)v3->_sendLaterImageView heightAnchor];
+    widthAnchor = [(UIImageView *)v3->_sendLaterImageView widthAnchor];
+    v40 = [heightAnchor constraintEqualToAnchor:widthAnchor];
     v45 = v40;
     v41 = [MEMORY[0x1E695DEC8] arrayWithObjects:&v45 count:1];
     [v37 activateConstraints:v41];

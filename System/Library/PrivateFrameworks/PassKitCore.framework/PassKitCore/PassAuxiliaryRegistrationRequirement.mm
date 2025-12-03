@@ -1,56 +1,56 @@
 @interface PassAuxiliaryRegistrationRequirement
-+ (BOOL)updateAuxiliaryRegistrationRequirement:(id)a3 passPID:(int64_t)a4 isRegistered:(BOOL)a5 inDatabase:(id)a6;
-+ (BOOL)updateAuxiliaryRegistrationRequirementsForPassPID:(int64_t)a3 isRegistered:(BOOL)a4 inDatabase:(id)a5;
-+ (BOOL)updateRegistrationStatusTo:(BOOL)a3 role:(unint64_t)a4 type:(unint64_t)a5 inDatabase:(id)a6;
-+ (id)_predicateForPassPID:(int64_t)a3;
-+ (id)_predicateForRole:(unint64_t)a3 type:(unint64_t)a4;
-+ (id)_propertyValuesFor:(id)a3;
-+ (id)_statusForQuery:(id)a3 inDatabase:(id)a4;
-+ (id)auxiliaryRegistrationRequirementStatusForPassPID:(int64_t)a3 inDatabase:(id)a4;
-+ (id)auxiliaryRegistrationRequirementStatusForRequirement:(id)a3 passPID:(int64_t)a4 inDatabase:(id)a5;
-+ (id)unregisteredAuxiliaryRegistrationRequirementIdentifiersForPassPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)deleteAuxiliaryRegistrationRequirementsForPassPID:(int64_t)a3 inDatabase:(id)a4;
-+ (void)insertOrUpdateAuxiliaryRegistrationRequirements:(id)a3 passPID:(int64_t)a4 inDatabase:(id)a5;
-- (PassAuxiliaryRegistrationRequirement)initWithObject:(id)a3 forPassPID:(int64_t)a4 inDatabase:(id)a5;
-- (void)updateWithObject:(id)a3;
++ (BOOL)updateAuxiliaryRegistrationRequirement:(id)requirement passPID:(int64_t)d isRegistered:(BOOL)registered inDatabase:(id)database;
++ (BOOL)updateAuxiliaryRegistrationRequirementsForPassPID:(int64_t)d isRegistered:(BOOL)registered inDatabase:(id)database;
++ (BOOL)updateRegistrationStatusTo:(BOOL)to role:(unint64_t)role type:(unint64_t)type inDatabase:(id)database;
++ (id)_predicateForPassPID:(int64_t)d;
++ (id)_predicateForRole:(unint64_t)role type:(unint64_t)type;
++ (id)_propertyValuesFor:(id)for;
++ (id)_statusForQuery:(id)query inDatabase:(id)database;
++ (id)auxiliaryRegistrationRequirementStatusForPassPID:(int64_t)d inDatabase:(id)database;
++ (id)auxiliaryRegistrationRequirementStatusForRequirement:(id)requirement passPID:(int64_t)d inDatabase:(id)database;
++ (id)unregisteredAuxiliaryRegistrationRequirementIdentifiersForPassPID:(int64_t)d inDatabase:(id)database;
++ (void)deleteAuxiliaryRegistrationRequirementsForPassPID:(int64_t)d inDatabase:(id)database;
++ (void)insertOrUpdateAuxiliaryRegistrationRequirements:(id)requirements passPID:(int64_t)d inDatabase:(id)database;
+- (PassAuxiliaryRegistrationRequirement)initWithObject:(id)object forPassPID:(int64_t)d inDatabase:(id)database;
+- (void)updateWithObject:(id)object;
 @end
 
 @implementation PassAuxiliaryRegistrationRequirement
 
-- (PassAuxiliaryRegistrationRequirement)initWithObject:(id)a3 forPassPID:(int64_t)a4 inDatabase:(id)a5
+- (PassAuxiliaryRegistrationRequirement)initWithObject:(id)object forPassPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [objc_opt_class() _propertyValuesFor:v9];
+  databaseCopy = database;
+  objectCopy = object;
+  v10 = [objc_opt_class() _propertyValuesFor:objectCopy];
 
-  v11 = [NSNumber numberWithLongLong:a4];
+  v11 = [NSNumber numberWithLongLong:d];
   [v10 setObjectOrNull:v11 forKey:@"a"];
 
   [v10 setObjectOrNull:&__kCFBooleanFalse forKey:@"e"];
-  v12 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:v8];
+  v12 = [(SQLiteEntity *)self initWithPropertyValues:v10 inDatabase:databaseCopy];
 
   return v12;
 }
 
-- (void)updateWithObject:(id)a3
+- (void)updateWithObject:(id)object
 {
-  v4 = a3;
-  v5 = [objc_opt_class() _propertyValuesFor:v4];
+  objectCopy = object;
+  v5 = [objc_opt_class() _propertyValuesFor:objectCopy];
 
   [(SQLiteEntity *)self setValuesWithDictionary:v5];
 }
 
-+ (id)unregisteredAuxiliaryRegistrationRequirementIdentifiersForPassPID:(int64_t)a3 inDatabase:(id)a4
++ (id)unregisteredAuxiliaryRegistrationRequirementIdentifiersForPassPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForPassPID:a3];
+  databaseCopy = database;
+  v7 = [self _predicateForPassPID:d];
   v23[0] = v7;
-  v8 = [a1 _predicateForUnregistered];
-  v23[1] = v8;
+  _predicateForUnregistered = [self _predicateForUnregistered];
+  v23[1] = _predicateForUnregistered;
   v9 = [NSArray arrayWithObjects:v23 count:2];
   v10 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v9];
 
-  v11 = [a1 queryWithDatabase:v6 predicate:v10];
+  v11 = [self queryWithDatabase:databaseCopy predicate:v10];
 
   v12 = objc_alloc_init(NSMutableArray);
   v22[0] = @"d";
@@ -77,44 +77,44 @@
   return v15;
 }
 
-+ (id)auxiliaryRegistrationRequirementStatusForPassPID:(int64_t)a3 inDatabase:(id)a4
++ (id)auxiliaryRegistrationRequirementStatusForPassPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForPassPID:a3];
+  databaseCopy = database;
+  v7 = [self _predicateForPassPID:d];
   v13 = v7;
   v8 = [NSArray arrayWithObjects:&v13 count:1];
   v9 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v8];
 
-  v10 = [a1 queryWithDatabase:v6 predicate:v9];
-  v11 = [a1 _statusForQuery:v10 inDatabase:v6];
+  v10 = [self queryWithDatabase:databaseCopy predicate:v9];
+  v11 = [self _statusForQuery:v10 inDatabase:databaseCopy];
 
   return v11;
 }
 
-+ (id)auxiliaryRegistrationRequirementStatusForRequirement:(id)a3 passPID:(int64_t)a4 inDatabase:(id)a5
++ (id)auxiliaryRegistrationRequirementStatusForRequirement:(id)requirement passPID:(int64_t)d inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = a3;
-  v10 = [a1 _predicateForPassPID:a4];
+  databaseCopy = database;
+  requirementCopy = requirement;
+  v10 = [self _predicateForPassPID:d];
   v19[0] = v10;
-  v11 = [v9 identifier];
+  identifier = [requirementCopy identifier];
 
-  v12 = [a1 _predicateForIdentifier:v11];
+  v12 = [self _predicateForIdentifier:identifier];
   v19[1] = v12;
   v13 = [NSArray arrayWithObjects:v19 count:2];
   v14 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v13];
 
-  v15 = [a1 queryWithDatabase:v8 predicate:v14];
-  v16 = [a1 _statusForQuery:v15 inDatabase:v8];
+  v15 = [self queryWithDatabase:databaseCopy predicate:v14];
+  v16 = [self _statusForQuery:v15 inDatabase:databaseCopy];
 
-  v17 = [v16 firstObject];
+  firstObject = [v16 firstObject];
 
-  return v17;
+  return firstObject;
 }
 
-+ (id)_statusForQuery:(id)a3 inDatabase:(id)a4
++ (id)_statusForQuery:(id)query inDatabase:(id)database
 {
-  v4 = a3;
+  queryCopy = query;
   v5 = objc_alloc_init(NSMutableArray);
   v12[0] = @"d";
   v12[1] = @"e";
@@ -126,7 +126,7 @@
   v10[3] = &unk_1008409E0;
   v7 = v5;
   v11 = v7;
-  [v4 enumerateProperties:v6 usingBlock:v10];
+  [queryCopy enumerateProperties:v6 usingBlock:v10];
 
   if ([v7 count])
   {
@@ -141,20 +141,20 @@
   return v8;
 }
 
-+ (void)insertOrUpdateAuxiliaryRegistrationRequirements:(id)a3 passPID:(int64_t)a4 inDatabase:(id)a5
++ (void)insertOrUpdateAuxiliaryRegistrationRequirements:(id)requirements passPID:(int64_t)d inDatabase:(id)database
 {
-  v7 = a3;
-  v8 = a5;
+  requirementsCopy = requirements;
+  databaseCopy = database;
   v26 = objc_alloc_init(NSMutableSet);
   v28 = 0u;
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
-  obj = v7;
+  obj = requirementsCopy;
   v27 = [obj countByEnumeratingWithState:&v28 objects:v34 count:16];
   if (v27)
   {
-    v23 = a4;
+    dCopy = d;
     v24 = *v29;
     do
     {
@@ -166,28 +166,28 @@
         }
 
         v10 = *(*(&v28 + 1) + 8 * i);
-        v11 = [v10 identifier];
-        v12 = [a1 _predicateForPassPID:a4];
+        identifier = [v10 identifier];
+        v12 = [self _predicateForPassPID:d];
         v33[0] = v12;
-        v13 = [a1 _predicateForIdentifier:v11];
+        v13 = [self _predicateForIdentifier:identifier];
         v33[1] = v13;
         v14 = [NSArray arrayWithObjects:v33 count:2];
         v15 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v14];
-        v16 = [a1 anyInDatabase:v8 predicate:v15];
+        v16 = [self anyInDatabase:databaseCopy predicate:v15];
 
         if (v16)
         {
           [(PassAuxiliaryRegistrationRequirement *)v16 updateWithObject:v10];
-          a4 = v23;
+          d = dCopy;
         }
 
         else
         {
-          a4 = v23;
-          v16 = [[PassAuxiliaryRegistrationRequirement alloc] initWithObject:v10 forPassPID:v23 inDatabase:v8];
+          d = dCopy;
+          v16 = [[PassAuxiliaryRegistrationRequirement alloc] initWithObject:v10 forPassPID:dCopy inDatabase:databaseCopy];
         }
 
-        [v26 addObject:v11];
+        [v26 addObject:identifier];
       }
 
       v27 = [obj countByEnumeratingWithState:&v28 objects:v34 count:16];
@@ -198,47 +198,47 @@
 
   v17 = [SQLiteContainsPredicate doesNotContainPredicateWithProperty:@"d" values:v26];
   v32[0] = v17;
-  v18 = [a1 _predicateForPassPID:a4];
+  v18 = [self _predicateForPassPID:d];
   v32[1] = v18;
   v19 = [NSArray arrayWithObjects:v32 count:2];
   v20 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v19];
 
-  v21 = [a1 queryWithDatabase:v8 predicate:v20];
+  v21 = [self queryWithDatabase:databaseCopy predicate:v20];
   [v21 deleteAllEntities];
 }
 
-+ (void)deleteAuxiliaryRegistrationRequirementsForPassPID:(int64_t)a3 inDatabase:(id)a4
++ (void)deleteAuxiliaryRegistrationRequirementsForPassPID:(int64_t)d inDatabase:(id)database
 {
-  v6 = a4;
-  v7 = [a1 _predicateForPassPID:a3];
-  v8 = [a1 queryWithDatabase:v6 predicate:v7];
+  databaseCopy = database;
+  v7 = [self _predicateForPassPID:d];
+  v8 = [self queryWithDatabase:databaseCopy predicate:v7];
 
   [v8 deleteAllEntities];
 }
 
-+ (BOOL)updateAuxiliaryRegistrationRequirement:(id)a3 passPID:(int64_t)a4 isRegistered:(BOOL)a5 inDatabase:(id)a6
++ (BOOL)updateAuxiliaryRegistrationRequirement:(id)requirement passPID:(int64_t)d isRegistered:(BOOL)registered inDatabase:(id)database
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a6;
-  v12 = [a1 _predicateForPassPID:a4];
+  registeredCopy = registered;
+  requirementCopy = requirement;
+  databaseCopy = database;
+  v12 = [self _predicateForPassPID:d];
   v22[0] = v12;
-  v13 = [v10 identifier];
-  v14 = [a1 _predicateForIdentifier:v13];
+  identifier = [requirementCopy identifier];
+  v14 = [self _predicateForIdentifier:identifier];
   v22[1] = v14;
   v15 = [NSArray arrayWithObjects:v22 count:2];
   v16 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v15];
 
-  v17 = [a1 anyInDatabase:v11 predicate:v16];
+  v17 = [self anyInDatabase:databaseCopy predicate:v16];
   if (!v17)
   {
-    v17 = [[PassAuxiliaryRegistrationRequirement alloc] initWithObject:v10 forPassPID:a4 inDatabase:v11];
+    v17 = [[PassAuxiliaryRegistrationRequirement alloc] initWithObject:requirementCopy forPassPID:d inDatabase:databaseCopy];
   }
 
-  v18 = [NSNumber numberWithBool:v7];
+  v18 = [NSNumber numberWithBool:registeredCopy];
   if ([(SQLiteEntity *)v17 setValue:v18 forProperty:@"e"])
   {
-    v19 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v10 registrationBackoffCounter]);
+    v19 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [requirementCopy registrationBackoffCounter]);
     v20 = [(SQLiteEntity *)v17 setValue:v19 forProperty:@"f"];
   }
 
@@ -250,15 +250,15 @@
   return v20;
 }
 
-+ (BOOL)updateAuxiliaryRegistrationRequirementsForPassPID:(int64_t)a3 isRegistered:(BOOL)a4 inDatabase:(id)a5
++ (BOOL)updateAuxiliaryRegistrationRequirementsForPassPID:(int64_t)d isRegistered:(BOOL)registered inDatabase:(id)database
 {
-  v8 = a5;
-  v9 = [a1 _predicateForPassPID:a3];
+  databaseCopy = database;
+  v9 = [self _predicateForPassPID:d];
   v24 = v9;
   v10 = [NSArray arrayWithObjects:&v24 count:1];
   v11 = [SQLiteCompoundPredicate predicateMatchingAllPredicates:v10];
 
-  v12 = [a1 queryWithDatabase:v8 predicate:v11];
+  v12 = [self queryWithDatabase:databaseCopy predicate:v11];
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -267,10 +267,10 @@
   v16[1] = 3221225472;
   v16[2] = sub_100199E0C;
   v16[3] = &unk_10084AE48;
-  v13 = v8;
+  v13 = databaseCopy;
   v17 = v13;
   v18 = &v20;
-  v19 = a4;
+  registeredCopy = registered;
   [v12 enumeratePersistentIDsUsingBlock:v16];
   v14 = *(v21 + 24);
 
@@ -278,13 +278,13 @@
   return v14 & 1;
 }
 
-+ (BOOL)updateRegistrationStatusTo:(BOOL)a3 role:(unint64_t)a4 type:(unint64_t)a5 inDatabase:(id)a6
++ (BOOL)updateRegistrationStatusTo:(BOOL)to role:(unint64_t)role type:(unint64_t)type inDatabase:(id)database
 {
-  v10 = a6;
-  v11 = [a1 _predicateForRole:a4 type:a5];
+  databaseCopy = database;
+  v11 = [self _predicateForRole:role type:type];
   if (v11)
   {
-    v12 = [a1 queryWithDatabase:v10 predicate:v11];
+    v12 = [self queryWithDatabase:databaseCopy predicate:v11];
     v19 = 0;
     v20 = &v19;
     v21 = 0x2020000000;
@@ -293,9 +293,9 @@
     v15[1] = 3221225472;
     v15[2] = sub_10019A000;
     v15[3] = &unk_10084AE48;
-    v16 = v10;
+    v16 = databaseCopy;
     v17 = &v19;
-    v18 = a3;
+    toCopy = to;
     [v12 enumeratePersistentIDsUsingBlock:v15];
     v13 = *(v20 + 24);
 
@@ -310,19 +310,19 @@
   return v13 & 1;
 }
 
-+ (id)_predicateForPassPID:(int64_t)a3
++ (id)_predicateForPassPID:(int64_t)d
 {
-  v3 = [NSNumber numberWithLongLong:a3];
+  v3 = [NSNumber numberWithLongLong:d];
   v4 = [SQLiteComparisonPredicate predicateWithProperty:@"a" equalToValue:v3];
 
   return v4;
 }
 
-+ (id)_predicateForRole:(unint64_t)a3 type:(unint64_t)a4
++ (id)_predicateForRole:(unint64_t)role type:(unint64_t)type
 {
-  if (a3 != 2)
+  if (role != 2)
   {
-    if (a3 != 1)
+    if (role != 1)
     {
       goto LABEL_6;
     }
@@ -353,18 +353,18 @@ LABEL_7:
   return v11;
 }
 
-+ (id)_propertyValuesFor:(id)a3
++ (id)_propertyValuesFor:(id)for
 {
-  v3 = a3;
+  forCopy = for;
   v4 = objc_alloc_init(NSMutableDictionary);
-  [v3 role];
+  [forCopy role];
   v5 = PKAuxiliaryCapabilityRoleToString();
   [v4 setObjectOrNull:v5 forKey:@"b"];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v3 type];
+    [forCopy type];
     v6 = PKDeviceSignatureTypeToString();
   }
 
@@ -376,7 +376,7 @@ LABEL_7:
       goto LABEL_6;
     }
 
-    [v3 type];
+    [forCopy type];
     v6 = PKDeviceDecryptionTypeToString();
   }
 
@@ -384,10 +384,10 @@ LABEL_7:
   [v4 setObjectOrNull:v6 forKey:@"c"];
 
 LABEL_6:
-  v8 = [v3 identifier];
-  [v4 setObjectOrNull:v8 forKey:@"d"];
+  identifier = [forCopy identifier];
+  [v4 setObjectOrNull:identifier forKey:@"d"];
 
-  v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [v3 registrationBackoffCounter]);
+  v9 = +[NSNumber numberWithInteger:](NSNumber, "numberWithInteger:", [forCopy registrationBackoffCounter]);
   [v4 setObjectOrNull:v9 forKey:@"f"];
 
   return v4;

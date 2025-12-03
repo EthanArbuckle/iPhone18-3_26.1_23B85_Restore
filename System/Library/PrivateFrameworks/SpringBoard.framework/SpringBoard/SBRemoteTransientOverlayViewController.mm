@@ -1,63 +1,63 @@
 @interface SBRemoteTransientOverlayViewController
 + (id)identifiersForActiveDisplayLayoutElements;
-+ (void)requestViewControllersForAlertDefinition:(id)a3 sceneWorkspaceController:(id)a4 connectionHandler:(id)a5;
++ (void)requestViewControllersForAlertDefinition:(id)definition sceneWorkspaceController:(id)controller connectionHandler:(id)handler;
 - (BOOL)becomeFirstResponder;
 - (BOOL)canBecomeFirstResponder;
 - (BOOL)canResignFirstResponder;
 - (BOOL)handleDoubleHeightStatusBarTap;
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3;
+- (BOOL)handleHeadsetButtonPress:(BOOL)press;
 - (BOOL)handleHomeButtonDoublePress;
 - (BOOL)handleHomeButtonLongPress;
 - (BOOL)handleHomeButtonPress;
 - (BOOL)handleLockButtonPress;
 - (BOOL)handleVolumeDownButtonPress;
 - (BOOL)handleVolumeUpButtonPress;
-- (BOOL)isPresentedByBundleIdentifier:(id)a3;
-- (BOOL)isPresentedByProcess:(id)a3;
+- (BOOL)isPresentedByBundleIdentifier:(id)identifier;
+- (BOOL)isPresentedByProcess:(id)process;
 - (BOOL)prefersStatusBarActivityItemVisible;
 - (BOOL)resignFirstResponder;
 - (SBRemoteTransientOverlayViewController)pairedRemoteTransientOverlay;
 - (SBRemoteTransientOverlayViewControllerDelegate)delegate;
-- (id)_initWithHostContentAdapter:(id)a3;
+- (id)_initWithHostContentAdapter:(id)adapter;
 - (id)associatedBundleIdentifiersToSuppressInSystemAperture;
 - (id)associatedSceneIdentifiersToSuppressInSystemAperture;
 - (id)hostedSceneIdentityTokens;
 - (id)newTransientOverlayDismissalTransitionCoordinator;
 - (id)newTransientOverlayPresentationTransitionCoordinator;
-- (id)remoteTransientOverlayHostContentAdapter:(id)a3 requestsActionForHandlingButtonEvents:(unint64_t)a4;
+- (id)remoteTransientOverlayHostContentAdapter:(id)adapter requestsActionForHandlingButtonEvents:(unint64_t)events;
 - (id)representedDisplayItem;
 - (id)succinctDescriptionBuilder;
-- (int64_t)defaultPreferredInterfaceOrientationForPresentationForRemoteTransientOverlayHostContentAdapter:(id)a3;
+- (int64_t)defaultPreferredInterfaceOrientationForPresentationForRemoteTransientOverlayHostContentAdapter:(id)adapter;
 - (int64_t)preferredLockedGestureDismissalStyle;
 - (int64_t)preferredUnlockedGestureDismissalStyle;
-- (void)_configureWallpaperEffectViewWithAnimationSettings:(id)a3;
+- (void)_configureWallpaperEffectViewWithAnimationSettings:(id)settings;
 - (void)beginIgnoringAppearanceUpdates;
 - (void)beginIgnoringContentOverlayInsetUpdates;
 - (void)dealloc;
-- (void)didTransitionToAttachedToWindowedAccessory:(BOOL)a3 windowedAccessoryCutoutFrameInScreen:(CGRect)a4;
+- (void)didTransitionToAttachedToWindowedAccessory:(BOOL)accessory windowedAccessoryCutoutFrameInScreen:(CGRect)screen;
 - (void)endIgnoringAppearanceUpdates;
 - (void)endIgnoringContentOverlayInsetUpdates;
 - (void)handlePictureInPictureDidBegin;
-- (void)prepareForActivationWithContext:(id)a3 presentationMode:(int64_t)a4 presentEmbedded:(BOOL)a5 windowScene:(id)a6 completion:(id)a7;
-- (void)preserveInputViewsAnimated:(BOOL)a3;
-- (void)remoteTransientOverlayHostContentAdapter:(id)a3 didTerminateWithError:(id)a4;
-- (void)remoteTransientOverlayHostContentAdapter:(id)a3 needsStatusBarAppearanceUpdateWithAnimationSettings:(id)a4;
-- (void)remoteTransientOverlayHostContentAdapter:(id)a3 requestsWallpaperEffectUpdateWithAnimationSettings:(id)a4;
-- (void)remoteTransientOverlayHostContentAdapterDidChangeSupportedInterfaceOrientations:(id)a3;
-- (void)remoteTransientOverlayHostContentAdapterRequestsDeactivation:(id)a3;
-- (void)remoteTransientOverlayHostContentAdapterRequestsInvalidation:(id)a3;
-- (void)restoreInputViewsAnimated:(BOOL)a3;
-- (void)setContainerOrientation:(int64_t)a3;
-- (void)setDisplayLayoutElementActive:(BOOL)a3;
-- (void)setIdleTimerCoordinator:(id)a3;
-- (void)setPresentationEmbeddedInTargetScene:(BOOL)a3;
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)prepareForActivationWithContext:(id)context presentationMode:(int64_t)mode presentEmbedded:(BOOL)embedded windowScene:(id)scene completion:(id)completion;
+- (void)preserveInputViewsAnimated:(BOOL)animated;
+- (void)remoteTransientOverlayHostContentAdapter:(id)adapter didTerminateWithError:(id)error;
+- (void)remoteTransientOverlayHostContentAdapter:(id)adapter needsStatusBarAppearanceUpdateWithAnimationSettings:(id)settings;
+- (void)remoteTransientOverlayHostContentAdapter:(id)adapter requestsWallpaperEffectUpdateWithAnimationSettings:(id)settings;
+- (void)remoteTransientOverlayHostContentAdapterDidChangeSupportedInterfaceOrientations:(id)orientations;
+- (void)remoteTransientOverlayHostContentAdapterRequestsDeactivation:(id)deactivation;
+- (void)remoteTransientOverlayHostContentAdapterRequestsInvalidation:(id)invalidation;
+- (void)restoreInputViewsAnimated:(BOOL)animated;
+- (void)setContainerOrientation:(int64_t)orientation;
+- (void)setDisplayLayoutElementActive:(BOOL)active;
+- (void)setIdleTimerCoordinator:(id)coordinator;
+- (void)setPresentationEmbeddedInTargetScene:(BOOL)scene;
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLayoutSubviews;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation SBRemoteTransientOverlayViewController
@@ -81,9 +81,9 @@ void __83__SBRemoteTransientOverlayViewController_identifiersForActiveDisplayLay
   identifiersForActiveDisplayLayoutElements_identifiersForActiveDisplayLayoutElements = v0;
 }
 
-- (id)_initWithHostContentAdapter:(id)a3
+- (id)_initWithHostContentAdapter:(id)adapter
 {
-  v5 = a3;
+  adapterCopy = adapter;
   v11.receiver = self;
   v11.super_class = SBRemoteTransientOverlayViewController;
   v6 = [(SBRemoteTransientOverlayViewController *)&v11 init];
@@ -91,7 +91,7 @@ void __83__SBRemoteTransientOverlayViewController_identifiersForActiveDisplayLay
   if (v6)
   {
     v6->_presentationEmbeddedInTargetScene = 0;
-    objc_storeStrong(&v6->_hostContentAdapter, a3);
+    objc_storeStrong(&v6->_hostContentAdapter, adapter);
     [(SBRemoteTransientOverlayHostContentAdapter *)v7->_hostContentAdapter setDelegate:v7];
     v7->_lastWallpaperStyle = 0;
     v8 = [[SBIdleTimerCoordinatorHelper alloc] initWithSourceProvider:v7];
@@ -111,17 +111,17 @@ void __83__SBRemoteTransientOverlayViewController_identifiersForActiveDisplayLay
   [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter setIdleTimerCoordinator:0];
   if ([(SBRemoteTransientOverlayViewController *)self isViewLoaded])
   {
-    v3 = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
-    [(SBRemoteTransientOverlayViewController *)self bs_removeChildViewController:v3];
+    _hostContentViewController = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
+    [(SBRemoteTransientOverlayViewController *)self bs_removeChildViewController:_hostContentViewController];
   }
 
   if ([(SBTransientOverlayViewController *)self isDisplayLayoutElementActive])
   {
-    v4 = [(SBRemoteTransientOverlayViewController *)self preferredDisplayLayoutElementIdentifier];
-    if (v4)
+    preferredDisplayLayoutElementIdentifier = [(SBRemoteTransientOverlayViewController *)self preferredDisplayLayoutElementIdentifier];
+    if (preferredDisplayLayoutElementIdentifier)
     {
-      v5 = [objc_opt_class() identifiersForActiveDisplayLayoutElements];
-      [v5 removeObject:v4];
+      identifiersForActiveDisplayLayoutElements = [objc_opt_class() identifiersForActiveDisplayLayoutElements];
+      [identifiersForActiveDisplayLayoutElements removeObject:preferredDisplayLayoutElementIdentifier];
     }
   }
 
@@ -130,17 +130,17 @@ void __83__SBRemoteTransientOverlayViewController_identifiersForActiveDisplayLay
   [(SBTransientOverlayViewController *)&v6 dealloc];
 }
 
-+ (void)requestViewControllersForAlertDefinition:(id)a3 sceneWorkspaceController:(id)a4 connectionHandler:(id)a5
++ (void)requestViewControllersForAlertDefinition:(id)definition sceneWorkspaceController:(id)controller connectionHandler:(id)handler
 {
-  v8 = a5;
+  handlerCopy = handler;
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __126__SBRemoteTransientOverlayViewController_requestViewControllersForAlertDefinition_sceneWorkspaceController_connectionHandler___block_invoke;
   v10[3] = &unk_2783B1AA0;
-  v11 = v8;
-  v12 = a1;
-  v9 = v8;
-  [SBRemoteTransientOverlayHostContentAdapter requestContentAdaptersForAlertDefinition:a3 sceneWorkspaceController:a4 connectionHandler:v10];
+  v11 = handlerCopy;
+  selfCopy = self;
+  v9 = handlerCopy;
+  [SBRemoteTransientOverlayHostContentAdapter requestContentAdaptersForAlertDefinition:definition sceneWorkspaceController:controller connectionHandler:v10];
 }
 
 void __126__SBRemoteTransientOverlayViewController_requestViewControllersForAlertDefinition_sceneWorkspaceController_connectionHandler___block_invoke(uint64_t a1, void *a2, void *a3, void *a4)
@@ -175,56 +175,56 @@ LABEL_6:
 
 - (BOOL)becomeFirstResponder
 {
-  v2 = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
-  v3 = [v2 becomeFirstResponder];
+  _hostContentViewController = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
+  becomeFirstResponder = [_hostContentViewController becomeFirstResponder];
 
-  return v3;
+  return becomeFirstResponder;
 }
 
 - (BOOL)canBecomeFirstResponder
 {
-  v2 = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
-  v3 = [v2 canBecomeFirstResponder];
+  _hostContentViewController = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
+  canBecomeFirstResponder = [_hostContentViewController canBecomeFirstResponder];
 
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)canResignFirstResponder
 {
-  v2 = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
-  v3 = [v2 canResignFirstResponder];
+  _hostContentViewController = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
+  canResignFirstResponder = [_hostContentViewController canResignFirstResponder];
 
-  return v3;
+  return canResignFirstResponder;
 }
 
 - (BOOL)resignFirstResponder
 {
-  v2 = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
-  v3 = [v2 resignFirstResponder];
+  _hostContentViewController = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
+  resignFirstResponder = [_hostContentViewController resignFirstResponder];
 
-  return v3;
+  return resignFirstResponder;
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v17 = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = SBRemoteTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v12 viewDidAppear:?];
-  v6 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
-  v7 = SBLogTransientOverlay();
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  isIgnoringAppearanceUpdates = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
+  delegate = SBLogTransientOverlay();
+  v8 = os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT);
+  if (isIgnoringAppearanceUpdates)
   {
     if (v8)
     {
       v9 = NSStringFromSelector(a2);
       *buf = 138543618;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2114;
       v16 = v9;
-      _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_21ED4E000, delegate, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring %{public}@", buf, 0x16u);
     }
   }
 
@@ -234,48 +234,48 @@ LABEL_6:
     {
       v10 = NSStringFromSelector(a2);
       *buf = 138543618;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2114;
       v16 = v10;
-      _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Reacting to %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_21ED4E000, delegate, OS_LOG_TYPE_DEFAULT, "%{public}@: Reacting to %{public}@", buf, 0x16u);
     }
 
-    if (v3)
+    if (appearCopy)
     {
-      v3 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter shouldEnableFadeInAnimation];
+      appearCopy = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter shouldEnableFadeInAnimation];
     }
 
-    v11 = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
-    [v11 endAppearanceTransition];
+    _hostContentViewController = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
+    [_hostContentViewController endAppearanceTransition];
 
-    v7 = [(SBRemoteTransientOverlayViewController *)self delegate];
+    delegate = [(SBRemoteTransientOverlayViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 remoteTransientOverlayViewController:self didAppearAnimated:v3];
+      [delegate remoteTransientOverlayViewController:self didAppearAnimated:appearCopy];
     }
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v17 = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = SBRemoteTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v12 viewDidDisappear:?];
-  v6 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
-  v7 = SBLogTransientOverlay();
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  isIgnoringAppearanceUpdates = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
+  delegate = SBLogTransientOverlay();
+  v8 = os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT);
+  if (isIgnoringAppearanceUpdates)
   {
     if (v8)
     {
       v9 = NSStringFromSelector(a2);
       *buf = 138543618;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2114;
       v16 = v9;
-      _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_21ED4E000, delegate, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring %{public}@", buf, 0x16u);
     }
   }
 
@@ -285,24 +285,24 @@ LABEL_6:
     {
       v10 = NSStringFromSelector(a2);
       *buf = 138543618;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2114;
       v16 = v10;
-      _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Reacting to %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_21ED4E000, delegate, OS_LOG_TYPE_DEFAULT, "%{public}@: Reacting to %{public}@", buf, 0x16u);
     }
 
-    if (v3)
+    if (disappearCopy)
     {
-      v3 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter shouldEnableFadeOutAnimation];
+      disappearCopy = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter shouldEnableFadeOutAnimation];
     }
 
-    v11 = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
-    [v11 endAppearanceTransition];
+    _hostContentViewController = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
+    [_hostContentViewController endAppearanceTransition];
 
-    v7 = [(SBRemoteTransientOverlayViewController *)self delegate];
+    delegate = [(SBRemoteTransientOverlayViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 remoteTransientOverlayViewController:self didDisappearAnimated:v3];
+      [delegate remoteTransientOverlayViewController:self didDisappearAnimated:disappearCopy];
     }
   }
 }
@@ -312,16 +312,16 @@ LABEL_6:
   v7.receiver = self;
   v7.super_class = SBRemoteTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v7 viewDidLayoutSubviews];
-  v3 = [(SBTransientOverlayViewController *)self contentView];
-  [v3 bounds];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  [contentView bounds];
   [(UIView *)self->_contentViewWrapperView setFrame:?];
-  v4 = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
-  v5 = [v4 view];
+  _hostContentViewController = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
+  view = [_hostContentViewController view];
   [(UIView *)self->_contentViewWrapperView bounds];
-  [v5 setFrame:?];
+  [view setFrame:?];
 
-  v6 = [(SBTransientOverlayViewController *)self backgroundView];
-  [v6 bounds];
+  backgroundView = [(SBTransientOverlayViewController *)self backgroundView];
+  [backgroundView bounds];
   [(SBTransientOverlayWallpaperEffectView *)self->_wallpaperEffectView setFrame:?];
 }
 
@@ -330,40 +330,40 @@ LABEL_6:
   v12.receiver = self;
   v12.super_class = SBRemoteTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v12 viewDidLoad];
-  v3 = [(SBTransientOverlayViewController *)self contentView];
-  [v3 bounds];
+  contentView = [(SBTransientOverlayViewController *)self contentView];
+  [contentView bounds];
   v8 = [objc_alloc(MEMORY[0x277D75D18]) initWithFrame:{v4, v5, v6, v7}];
   contentViewWrapperView = self->_contentViewWrapperView;
   self->_contentViewWrapperView = v8;
 
-  [v3 addSubview:self->_contentViewWrapperView];
-  v10 = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
-  [(SBRemoteTransientOverlayViewController *)self addChildViewController:v10];
-  v11 = [v10 view];
-  [(UIView *)self->_contentViewWrapperView addSubview:v11];
-  [v10 didMoveToParentViewController:self];
+  [contentView addSubview:self->_contentViewWrapperView];
+  _hostContentViewController = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
+  [(SBRemoteTransientOverlayViewController *)self addChildViewController:_hostContentViewController];
+  view = [_hostContentViewController view];
+  [(UIView *)self->_contentViewWrapperView addSubview:view];
+  [_hostContentViewController didMoveToParentViewController:self];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v17 = *MEMORY[0x277D85DE8];
   v12.receiver = self;
   v12.super_class = SBRemoteTransientOverlayViewController;
   [(SBRemoteTransientOverlayViewController *)&v12 viewWillAppear:?];
-  v6 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
-  v7 = SBLogTransientOverlay();
-  v8 = os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT);
-  if (v6)
+  isIgnoringAppearanceUpdates = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
+  delegate = SBLogTransientOverlay();
+  v8 = os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT);
+  if (isIgnoringAppearanceUpdates)
   {
     if (v8)
     {
       v9 = NSStringFromSelector(a2);
       *buf = 138543618;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2114;
       v16 = v9;
-      _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_21ED4E000, delegate, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring %{public}@", buf, 0x16u);
     }
   }
 
@@ -373,74 +373,74 @@ LABEL_6:
     {
       v10 = NSStringFromSelector(a2);
       *buf = 138543618;
-      v14 = self;
+      selfCopy2 = self;
       v15 = 2114;
       v16 = v10;
-      _os_log_impl(&dword_21ED4E000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: Reacting to %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_21ED4E000, delegate, OS_LOG_TYPE_DEFAULT, "%{public}@: Reacting to %{public}@", buf, 0x16u);
     }
 
-    if (v3)
+    if (appearCopy)
     {
-      v3 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter shouldEnableFadeInAnimation];
+      appearCopy = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter shouldEnableFadeInAnimation];
     }
 
-    v11 = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
-    [v11 beginAppearanceTransition:1 animated:v3];
+    _hostContentViewController = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
+    [_hostContentViewController beginAppearanceTransition:1 animated:appearCopy];
 
-    v7 = [(SBRemoteTransientOverlayViewController *)self delegate];
+    delegate = [(SBRemoteTransientOverlayViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v7 remoteTransientOverlayViewController:self willAppearAnimated:v3];
+      [delegate remoteTransientOverlayViewController:self willAppearAnimated:appearCopy];
     }
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   v16 = *MEMORY[0x277D85DE8];
   v11.receiver = self;
   v11.super_class = SBRemoteTransientOverlayViewController;
   [(SBRemoteTransientOverlayViewController *)&v11 viewWillDisappear:?];
   if ([(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates])
   {
-    v6 = SBLogTransientOverlay();
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    delegate = SBLogTransientOverlay();
+    if (os_log_type_enabled(delegate, OS_LOG_TYPE_DEFAULT))
     {
       v7 = NSStringFromSelector(a2);
       *buf = 138543618;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2114;
       v15 = v7;
-      _os_log_impl(&dword_21ED4E000, v6, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring %{public}@", buf, 0x16u);
+      _os_log_impl(&dword_21ED4E000, delegate, OS_LOG_TYPE_DEFAULT, "%{public}@: Ignoring %{public}@", buf, 0x16u);
     }
   }
 
   else
   {
-    if (v3)
+    if (disappearCopy)
     {
-      v3 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter shouldEnableFadeOutAnimation];
+      disappearCopy = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter shouldEnableFadeOutAnimation];
     }
 
-    v8 = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
-    [v8 beginAppearanceTransition:0 animated:v3];
+    _hostContentViewController = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
+    [_hostContentViewController beginAppearanceTransition:0 animated:disappearCopy];
 
     v9 = SBLogTransientOverlay();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
       v10 = NSStringFromSelector(a2);
       *buf = 138543618;
-      v13 = self;
+      selfCopy2 = self;
       v14 = 2114;
       v15 = v10;
       _os_log_impl(&dword_21ED4E000, v9, OS_LOG_TYPE_DEFAULT, "%{public}@: Reacting to %{public}@", buf, 0x16u);
     }
 
-    v6 = [(SBRemoteTransientOverlayViewController *)self delegate];
+    delegate = [(SBRemoteTransientOverlayViewController *)self delegate];
     if (objc_opt_respondsToSelector())
     {
-      [v6 remoteTransientOverlayViewController:self willDisappearAnimated:v3];
+      [delegate remoteTransientOverlayViewController:self willDisappearAnimated:disappearCopy];
     }
   }
 }
@@ -449,13 +449,13 @@ LABEL_6:
 {
   v6.receiver = self;
   v6.super_class = SBRemoteTransientOverlayViewController;
-  v3 = [(SBTransientOverlayViewController *)&v6 succinctDescriptionBuilder];
-  v4 = [v3 appendObject:self->_hostContentAdapter withName:@"hostContentAdapter" skipIfNil:1];
+  succinctDescriptionBuilder = [(SBTransientOverlayViewController *)&v6 succinctDescriptionBuilder];
+  v4 = [succinctDescriptionBuilder appendObject:self->_hostContentAdapter withName:@"hostContentAdapter" skipIfNil:1];
 
-  return v3;
+  return succinctDescriptionBuilder;
 }
 
-- (void)remoteTransientOverlayHostContentAdapterDidChangeSupportedInterfaceOrientations:(id)a3
+- (void)remoteTransientOverlayHostContentAdapterDidChangeSupportedInterfaceOrientations:(id)orientations
 {
   if ([(SBRemoteTransientOverlayViewController *)self isViewLoaded])
   {
@@ -464,47 +464,47 @@ LABEL_6:
   }
 }
 
-- (void)remoteTransientOverlayHostContentAdapterRequestsDeactivation:(id)a3
+- (void)remoteTransientOverlayHostContentAdapterRequestsDeactivation:(id)deactivation
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained remoteTransientOverlayViewControllerRequestsDeactivation:self];
 }
 
-- (void)remoteTransientOverlayHostContentAdapterRequestsInvalidation:(id)a3
+- (void)remoteTransientOverlayHostContentAdapterRequestsInvalidation:(id)invalidation
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained remoteTransientOverlayViewControllerRequestsInvalidation:self];
 }
 
-- (void)remoteTransientOverlayHostContentAdapter:(id)a3 didTerminateWithError:(id)a4
+- (void)remoteTransientOverlayHostContentAdapter:(id)adapter didTerminateWithError:(id)error
 {
-  v5 = a4;
+  errorCopy = error;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  [WeakRetained remoteTransientOverlayViewController:self didTerminateWithError:v5];
+  [WeakRetained remoteTransientOverlayViewController:self didTerminateWithError:errorCopy];
 }
 
-- (void)remoteTransientOverlayHostContentAdapter:(id)a3 requestsWallpaperEffectUpdateWithAnimationSettings:(id)a4
+- (void)remoteTransientOverlayHostContentAdapter:(id)adapter requestsWallpaperEffectUpdateWithAnimationSettings:(id)settings
 {
-  v6 = a4;
-  v7 = v6;
+  settingsCopy = settings;
+  v7 = settingsCopy;
   if (self->_isPresented)
   {
-    [(SBRemoteTransientOverlayViewController *)self _configureWallpaperEffectViewWithAnimationSettings:v6];
+    [(SBRemoteTransientOverlayViewController *)self _configureWallpaperEffectViewWithAnimationSettings:settingsCopy];
   }
 
   else
   {
-    objc_storeStrong(&self->_pendingAnimationSettings, a4);
+    objc_storeStrong(&self->_pendingAnimationSettings, settings);
   }
 }
 
-- (void)remoteTransientOverlayHostContentAdapter:(id)a3 needsStatusBarAppearanceUpdateWithAnimationSettings:(id)a4
+- (void)remoteTransientOverlayHostContentAdapter:(id)adapter needsStatusBarAppearanceUpdateWithAnimationSettings:(id)settings
 {
-  v5 = a4;
+  settingsCopy = settings;
   if ([(SBRemoteTransientOverlayViewController *)self isViewLoaded])
   {
     v6 = MEMORY[0x277D75D18];
-    [v5 duration];
+    [settingsCopy duration];
     v7[0] = MEMORY[0x277D85DD0];
     v7[1] = 3221225472;
     v7[2] = __135__SBRemoteTransientOverlayViewController_remoteTransientOverlayHostContentAdapter_needsStatusBarAppearanceUpdateWithAnimationSettings___block_invoke;
@@ -514,17 +514,17 @@ LABEL_6:
   }
 }
 
-- (int64_t)defaultPreferredInterfaceOrientationForPresentationForRemoteTransientOverlayHostContentAdapter:(id)a3
+- (int64_t)defaultPreferredInterfaceOrientationForPresentationForRemoteTransientOverlayHostContentAdapter:(id)adapter
 {
   v4.receiver = self;
   v4.super_class = SBRemoteTransientOverlayViewController;
   return [(SBTransientOverlayViewController *)&v4 preferredInterfaceOrientationForPresentation];
 }
 
-- (id)remoteTransientOverlayHostContentAdapter:(id)a3 requestsActionForHandlingButtonEvents:(unint64_t)a4
+- (id)remoteTransientOverlayHostContentAdapter:(id)adapter requestsActionForHandlingButtonEvents:(unint64_t)events
 {
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
-  v7 = [WeakRetained remoteTransientOverlayViewController:self requestsActionForHandlingButtonEvents:a4];
+  v7 = [WeakRetained remoteTransientOverlayViewController:self requestsActionForHandlingButtonEvents:events];
 
   return v7;
 }
@@ -532,11 +532,11 @@ LABEL_6:
 - (id)hostedSceneIdentityTokens
 {
   v6[1] = *MEMORY[0x277D85DE8];
-  v2 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter clientSceneIdentityToken];
-  v3 = v2;
-  if (v2)
+  clientSceneIdentityToken = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter clientSceneIdentityToken];
+  v3 = clientSceneIdentityToken;
+  if (clientSceneIdentityToken)
   {
-    v6[0] = v2;
+    v6[0] = clientSceneIdentityToken;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v6 count:1];
   }
 
@@ -551,18 +551,18 @@ LABEL_6:
 - (void)beginIgnoringAppearanceUpdates
 {
   v9 = *MEMORY[0x277D85DE8];
-  v3 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
+  isIgnoringAppearanceUpdates = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
   v6.receiver = self;
   v6.super_class = SBRemoteTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v6 beginIgnoringAppearanceUpdates];
-  v4 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
-  if (!v3 && v4)
+  isIgnoringAppearanceUpdates2 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
+  if (!isIgnoringAppearanceUpdates && isIgnoringAppearanceUpdates2)
   {
     v5 = SBLogTransientOverlay();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543362;
-      v8 = self;
+      selfCopy = self;
       _os_log_impl(&dword_21ED4E000, v5, OS_LOG_TYPE_DEFAULT, "%{public}@: Begin ignoring appearance changes...", buf, 0xCu);
     }
   }
@@ -571,81 +571,81 @@ LABEL_6:
 - (void)endIgnoringAppearanceUpdates
 {
   v17 = *MEMORY[0x277D85DE8];
-  v3 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
+  isIgnoringAppearanceUpdates = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
   v10.receiver = self;
   v10.super_class = SBRemoteTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v10 endIgnoringAppearanceUpdates];
-  v4 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
-  if (v3 && !v4)
+  isIgnoringAppearanceUpdates2 = [(SBTransientOverlayViewController *)self isIgnoringAppearanceUpdates];
+  if (isIgnoringAppearanceUpdates && !isIgnoringAppearanceUpdates2)
   {
-    v5 = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
-    v6 = [v5 _appearState];
-    v7 = [(SBRemoteTransientOverlayViewController *)self _appearState];
+    _hostContentViewController = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
+    _appearState = [_hostContentViewController _appearState];
+    _appearState2 = [(SBRemoteTransientOverlayViewController *)self _appearState];
     v8 = SBLogTransientOverlay();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138543874;
-      v12 = self;
+      selfCopy = self;
       v13 = 2048;
-      v14 = v6;
+      v14 = _appearState;
       v15 = 2048;
-      v16 = v7;
+      v16 = _appearState2;
       _os_log_impl(&dword_21ED4E000, v8, OS_LOG_TYPE_DEFAULT, "%{public}@: Ended ignoring appearance changes. Content appear state: %td, container appear state: %td", buf, 0x20u);
     }
 
-    if (v7 == v6)
+    if (_appearState2 == _appearState)
     {
       goto LABEL_23;
     }
 
-    if (v7 - 1 < 2)
+    if (_appearState2 - 1 < 2)
     {
-      v9 = [(SBRemoteTransientOverlayViewController *)self delegate];
-      if (v6 - 3 <= 0xFFFFFFFD)
+      delegate = [(SBRemoteTransientOverlayViewController *)self delegate];
+      if (_appearState - 3 <= 0xFFFFFFFD)
       {
-        [v5 beginAppearanceTransition:1 animated:0];
+        [_hostContentViewController beginAppearanceTransition:1 animated:0];
         if (objc_opt_respondsToSelector())
         {
-          [v9 remoteTransientOverlayViewController:self willAppearAnimated:0];
+          [delegate remoteTransientOverlayViewController:self willAppearAnimated:0];
         }
       }
 
-      if (v7 == 2)
+      if (_appearState2 == 2)
       {
-        [v5 endAppearanceTransition];
+        [_hostContentViewController endAppearanceTransition];
         if (objc_opt_respondsToSelector())
         {
-          [v9 remoteTransientOverlayViewController:self didAppearAnimated:0];
+          [delegate remoteTransientOverlayViewController:self didAppearAnimated:0];
         }
       }
     }
 
     else
     {
-      if (v7 != 3 && v7)
+      if (_appearState2 != 3 && _appearState2)
       {
         goto LABEL_23;
       }
 
-      v9 = [(SBRemoteTransientOverlayViewController *)self delegate];
-      if (v6)
+      delegate = [(SBRemoteTransientOverlayViewController *)self delegate];
+      if (_appearState)
       {
-        if (v6 != 3)
+        if (_appearState != 3)
         {
-          [v5 beginAppearanceTransition:0 animated:0];
+          [_hostContentViewController beginAppearanceTransition:0 animated:0];
           if (objc_opt_respondsToSelector())
           {
-            [v9 remoteTransientOverlayViewController:self willDisappearAnimated:0];
+            [delegate remoteTransientOverlayViewController:self willDisappearAnimated:0];
           }
         }
       }
 
-      if (!v7)
+      if (!_appearState2)
       {
-        [v5 endAppearanceTransition];
+        [_hostContentViewController endAppearanceTransition];
         if (objc_opt_respondsToSelector())
         {
-          [v9 remoteTransientOverlayViewController:self didDisappearAnimated:0];
+          [delegate remoteTransientOverlayViewController:self didDisappearAnimated:0];
         }
       }
     }
@@ -682,9 +682,9 @@ LABEL_23:
   return [(SBTransientOverlayViewController *)&v4 handleDoubleHeightStatusBarTap];
 }
 
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3
+- (BOOL)handleHeadsetButtonPress:(BOOL)press
 {
-  v3 = a3;
+  pressCopy = press;
   if ([(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter handleHeadsetButtonPress:?])
   {
     return 1;
@@ -692,7 +692,7 @@ LABEL_23:
 
   v6.receiver = self;
   v6.super_class = SBRemoteTransientOverlayViewController;
-  return [(SBTransientOverlayViewController *)&v6 handleHeadsetButtonPress:v3];
+  return [(SBTransientOverlayViewController *)&v6 handleHeadsetButtonPress:pressCopy];
 }
 
 - (BOOL)handleHomeButtonPress
@@ -775,15 +775,15 @@ LABEL_23:
   return [(SBTransientOverlayViewController *)&v4 handleVolumeDownButtonPress];
 }
 
-- (BOOL)isPresentedByProcess:(id)a3
+- (BOOL)isPresentedByProcess:(id)process
 {
-  v4 = a3;
-  v5 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter serviceProcessIdentifier];
-  if (v5 == [v4 pid])
+  processCopy = process;
+  serviceProcessIdentifier = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter serviceProcessIdentifier];
+  if (serviceProcessIdentifier == [processCopy pid])
   {
-    v6 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter serviceBundleIdentifier];
-    v7 = [v4 bundleIdentifier];
-    v8 = [v6 isEqualToString:v7];
+    serviceBundleIdentifier = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter serviceBundleIdentifier];
+    bundleIdentifier = [processCopy bundleIdentifier];
+    v8 = [serviceBundleIdentifier isEqualToString:bundleIdentifier];
   }
 
   else
@@ -794,70 +794,70 @@ LABEL_23:
   return v8;
 }
 
-- (BOOL)isPresentedByBundleIdentifier:(id)a3
+- (BOOL)isPresentedByBundleIdentifier:(id)identifier
 {
   hostContentAdapter = self->_hostContentAdapter;
-  v4 = a3;
-  v5 = [(SBRemoteTransientOverlayHostContentAdapter *)hostContentAdapter serviceBundleIdentifier];
-  v6 = [v5 isEqualToString:v4];
+  identifierCopy = identifier;
+  serviceBundleIdentifier = [(SBRemoteTransientOverlayHostContentAdapter *)hostContentAdapter serviceBundleIdentifier];
+  v6 = [serviceBundleIdentifier isEqualToString:identifierCopy];
 
   return v6;
 }
 
-- (void)setDisplayLayoutElementActive:(BOOL)a3
+- (void)setDisplayLayoutElementActive:(BOOL)active
 {
-  v3 = a3;
+  activeCopy = active;
   v10.receiver = self;
   v10.super_class = SBRemoteTransientOverlayViewController;
-  if ([(SBTransientOverlayViewController *)&v10 isDisplayLayoutElementActive]!= a3)
+  if ([(SBTransientOverlayViewController *)&v10 isDisplayLayoutElementActive]!= active)
   {
-    v5 = [(SBRemoteTransientOverlayViewController *)self preferredDisplayLayoutElementIdentifier];
-    if (v5)
+    preferredDisplayLayoutElementIdentifier = [(SBRemoteTransientOverlayViewController *)self preferredDisplayLayoutElementIdentifier];
+    if (preferredDisplayLayoutElementIdentifier)
     {
-      v6 = [objc_opt_class() identifiersForActiveDisplayLayoutElements];
-      v7 = v6;
-      if (v3)
+      identifiersForActiveDisplayLayoutElements = [objc_opt_class() identifiersForActiveDisplayLayoutElements];
+      identifiersForActiveDisplayLayoutElements2 = identifiersForActiveDisplayLayoutElements;
+      if (activeCopy)
       {
-        v8 = [v6 containsObject:v5];
+        v8 = [identifiersForActiveDisplayLayoutElements containsObject:preferredDisplayLayoutElementIdentifier];
 
         if (v8)
         {
           goto LABEL_5;
         }
 
-        v7 = [objc_opt_class() identifiersForActiveDisplayLayoutElements];
-        [v7 addObject:v5];
+        identifiersForActiveDisplayLayoutElements2 = [objc_opt_class() identifiersForActiveDisplayLayoutElements];
+        [identifiersForActiveDisplayLayoutElements2 addObject:preferredDisplayLayoutElementIdentifier];
       }
 
       else
       {
-        [v6 removeObject:v5];
+        [identifiersForActiveDisplayLayoutElements removeObject:preferredDisplayLayoutElementIdentifier];
       }
 
       goto LABEL_9;
     }
 
 LABEL_5:
-    v3 = 0;
+    activeCopy = 0;
 LABEL_9:
     v9.receiver = self;
     v9.super_class = SBRemoteTransientOverlayViewController;
-    [(SBTransientOverlayViewController *)&v9 setDisplayLayoutElementActive:v3];
+    [(SBTransientOverlayViewController *)&v9 setDisplayLayoutElementActive:activeCopy];
   }
 }
 
-- (void)updateDisplayLayoutElementWithBuilder:(id)a3
+- (void)updateDisplayLayoutElementWithBuilder:(id)builder
 {
-  v4 = a3;
+  builderCopy = builder;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __80__SBRemoteTransientOverlayViewController_updateDisplayLayoutElementWithBuilder___block_invoke;
   v7[3] = &unk_2783B1AC8;
   v7[4] = self;
-  v8 = v4;
+  v8 = builderCopy;
   v6.receiver = self;
   v6.super_class = SBRemoteTransientOverlayViewController;
-  v5 = v4;
+  v5 = builderCopy;
   [(SBTransientOverlayViewController *)&v6 updateDisplayLayoutElementWithBuilder:v7];
 }
 
@@ -898,13 +898,13 @@ void __80__SBRemoteTransientOverlayViewController_updateDisplayLayoutElementWith
 - (id)newTransientOverlayDismissalTransitionCoordinator
 {
   v3 = objc_alloc_init(SBTransientOverlayBlockTransitionCoordinator);
-  v4 = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
+  _hostContentViewController = [(SBRemoteTransientOverlayViewController *)self _hostContentViewController];
   v11[0] = MEMORY[0x277D85DD0];
   v11[1] = 3221225472;
   v11[2] = __91__SBRemoteTransientOverlayViewController_newTransientOverlayDismissalTransitionCoordinator__block_invoke;
   v11[3] = &unk_2783B1AF0;
   v11[4] = self;
-  v5 = v4;
+  v5 = _hostContentViewController;
   v12 = v5;
   [(SBTransientOverlayBlockTransitionCoordinator *)v3 setStartTransitionHandler:v11];
   v8[0] = MEMORY[0x277D85DD0];
@@ -912,7 +912,7 @@ void __80__SBRemoteTransientOverlayViewController_updateDisplayLayoutElementWith
   v8[2] = __91__SBRemoteTransientOverlayViewController_newTransientOverlayDismissalTransitionCoordinator__block_invoke_5;
   v8[3] = &unk_2783B1AF0;
   v9 = v5;
-  v10 = self;
+  selfCopy = self;
   v6 = v5;
   [(SBTransientOverlayBlockTransitionCoordinator *)v3 setFinalizeTransitionHandler:v8];
 
@@ -1201,11 +1201,11 @@ uint64_t __94__SBRemoteTransientOverlayViewController_newTransientOverlayPresent
 
 - (BOOL)prefersStatusBarActivityItemVisible
 {
-  v3 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter serviceBundleIdentifier];
-  if (v3)
+  serviceBundleIdentifier = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter serviceBundleIdentifier];
+  if (serviceBundleIdentifier)
   {
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v5 = [WeakRetained remoteTransientOverlayViewController:self prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:v3];
+    v5 = [WeakRetained remoteTransientOverlayViewController:self prefersStatusBarActivityItemVisibleForServiceBundleIdentifier:serviceBundleIdentifier];
   }
 
   else
@@ -1216,62 +1216,62 @@ uint64_t __94__SBRemoteTransientOverlayViewController_newTransientOverlayPresent
   return v5;
 }
 
-- (void)preserveInputViewsAnimated:(BOOL)a3
+- (void)preserveInputViewsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5.receiver = self;
   v5.super_class = SBRemoteTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v5 preserveInputViewsAnimated:?];
-  [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter preserveInputViewsAnimated:v3];
+  [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter preserveInputViewsAnimated:animatedCopy];
 }
 
-- (void)restoreInputViewsAnimated:(BOOL)a3
+- (void)restoreInputViewsAnimated:(BOOL)animated
 {
-  v3 = a3;
+  animatedCopy = animated;
   v5.receiver = self;
   v5.super_class = SBRemoteTransientOverlayViewController;
   [(SBTransientOverlayViewController *)&v5 restoreInputViewsAnimated:?];
-  [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter restoreInputViewsAnimated:v3];
+  [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter restoreInputViewsAnimated:animatedCopy];
 }
 
-- (void)setContainerOrientation:(int64_t)a3
+- (void)setContainerOrientation:(int64_t)orientation
 {
   v4.receiver = self;
   v4.super_class = SBRemoteTransientOverlayViewController;
-  [(SBTransientOverlayViewController *)&v4 setContainerOrientation:a3];
+  [(SBTransientOverlayViewController *)&v4 setContainerOrientation:orientation];
   [(SBTransientOverlayWallpaperEffectView *)self->_wallpaperEffectView setContainerOrientation:[(SBTransientOverlayViewController *)self containerOrientation]];
 }
 
-- (void)setIdleTimerCoordinator:(id)a3
+- (void)setIdleTimerCoordinator:(id)coordinator
 {
   v5.receiver = self;
   v5.super_class = SBRemoteTransientOverlayViewController;
-  v4 = a3;
-  [(SBTransientOverlayViewController *)&v5 setIdleTimerCoordinator:v4];
-  [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper setTargetCoordinator:v4, v5.receiver, v5.super_class];
+  coordinatorCopy = coordinator;
+  [(SBTransientOverlayViewController *)&v5 setIdleTimerCoordinator:coordinatorCopy];
+  [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper setTargetCoordinator:coordinatorCopy, v5.receiver, v5.super_class];
 }
 
-- (void)didTransitionToAttachedToWindowedAccessory:(BOOL)a3 windowedAccessoryCutoutFrameInScreen:(CGRect)a4
+- (void)didTransitionToAttachedToWindowedAccessory:(BOOL)accessory windowedAccessoryCutoutFrameInScreen:(CGRect)screen
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
-  v8 = a3;
+  height = screen.size.height;
+  width = screen.size.width;
+  y = screen.origin.y;
+  x = screen.origin.x;
+  accessoryCopy = accessory;
   v10.receiver = self;
   v10.super_class = SBRemoteTransientOverlayViewController;
   [SBTransientOverlayViewController didTransitionToAttachedToWindowedAccessory:sel_didTransitionToAttachedToWindowedAccessory_windowedAccessoryCutoutFrameInScreen_ windowedAccessoryCutoutFrameInScreen:?];
-  [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter didTransitionToAttachedToWindowedAccessory:v8 windowedAccessoryCutoutFrameInScreen:x, y, width, height];
+  [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter didTransitionToAttachedToWindowedAccessory:accessoryCopy windowedAccessoryCutoutFrameInScreen:x, y, width, height];
 }
 
 - (id)associatedBundleIdentifiersToSuppressInSystemAperture
 {
-  v3 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter serviceBundleIdentifier];
-  if (v3)
+  serviceBundleIdentifier = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter serviceBundleIdentifier];
+  if (serviceBundleIdentifier)
   {
     v4 = MEMORY[0x277CBEB98];
-    v5 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter serviceBundleIdentifier];
-    v6 = [v4 setWithObject:v5];
+    serviceBundleIdentifier2 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter serviceBundleIdentifier];
+    v6 = [v4 setWithObject:serviceBundleIdentifier2];
   }
 
   else
@@ -1284,12 +1284,12 @@ uint64_t __94__SBRemoteTransientOverlayViewController_newTransientOverlayPresent
 
 - (id)associatedSceneIdentifiersToSuppressInSystemAperture
 {
-  v3 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter associatedSceneIdentifierToSuppressInSystemAperture];
-  if (v3)
+  associatedSceneIdentifierToSuppressInSystemAperture = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter associatedSceneIdentifierToSuppressInSystemAperture];
+  if (associatedSceneIdentifierToSuppressInSystemAperture)
   {
     v4 = MEMORY[0x277CBEB98];
-    v5 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter associatedSceneIdentifierToSuppressInSystemAperture];
-    v6 = [v4 setWithObject:v5];
+    associatedSceneIdentifierToSuppressInSystemAperture2 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter associatedSceneIdentifierToSuppressInSystemAperture];
+    v6 = [v4 setWithObject:associatedSceneIdentifierToSuppressInSystemAperture2];
   }
 
   else
@@ -1300,12 +1300,12 @@ uint64_t __94__SBRemoteTransientOverlayViewController_newTransientOverlayPresent
   return v6;
 }
 
-- (void)setPresentationEmbeddedInTargetScene:(BOOL)a3
+- (void)setPresentationEmbeddedInTargetScene:(BOOL)scene
 {
   presentationEmbeddedInTargetScene = self->_presentationEmbeddedInTargetScene;
-  if (presentationEmbeddedInTargetScene != a3)
+  if (presentationEmbeddedInTargetScene != scene)
   {
-    self->_presentationEmbeddedInTargetScene = a3;
+    self->_presentationEmbeddedInTargetScene = scene;
     if ([(SBRemoteTransientOverlayViewController *)self isViewLoaded])
     {
       if ([(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter shouldUpdateSceneBasedViewController])
@@ -1322,10 +1322,10 @@ uint64_t __94__SBRemoteTransientOverlayViewController_newTransientOverlayPresent
 
 - (id)representedDisplayItem
 {
-  v2 = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter serviceBundleIdentifier];
-  if (v2)
+  serviceBundleIdentifier = [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter serviceBundleIdentifier];
+  if (serviceBundleIdentifier)
   {
-    v3 = [SBDisplayItem remoteAlertDisplayItemWithServiceBundleIdentifier:v2];
+    v3 = [SBDisplayItem remoteAlertDisplayItemWithServiceBundleIdentifier:serviceBundleIdentifier];
   }
 
   else
@@ -1336,21 +1336,21 @@ uint64_t __94__SBRemoteTransientOverlayViewController_newTransientOverlayPresent
   return v3;
 }
 
-- (void)prepareForActivationWithContext:(id)a3 presentationMode:(int64_t)a4 presentEmbedded:(BOOL)a5 windowScene:(id)a6 completion:(id)a7
+- (void)prepareForActivationWithContext:(id)context presentationMode:(int64_t)mode presentEmbedded:(BOOL)embedded windowScene:(id)scene completion:(id)completion
 {
-  v8 = a5;
+  embeddedCopy = embedded;
   hostContentAdapter = self->_hostContentAdapter;
-  v13 = a7;
-  v14 = a6;
-  v15 = a3;
-  [(SBRemoteTransientOverlayHostContentAdapter *)hostContentAdapter setShouldPresentEmbeddedInTargetSceneIfRequested:v8];
-  -[SBRemoteTransientOverlayHostContentAdapter setShouldEmbedOverShieldedApps:](self->_hostContentAdapter, "setShouldEmbedOverShieldedApps:", [v15 shouldEmbedOverShieldedApps]);
-  [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter prepareForActivationWithContext:v15 presentationMode:a4 windowScene:v14 completion:v13];
+  completionCopy = completion;
+  sceneCopy = scene;
+  contextCopy = context;
+  [(SBRemoteTransientOverlayHostContentAdapter *)hostContentAdapter setShouldPresentEmbeddedInTargetSceneIfRequested:embeddedCopy];
+  -[SBRemoteTransientOverlayHostContentAdapter setShouldEmbedOverShieldedApps:](self->_hostContentAdapter, "setShouldEmbedOverShieldedApps:", [contextCopy shouldEmbedOverShieldedApps]);
+  [(SBRemoteTransientOverlayHostContentAdapter *)self->_hostContentAdapter prepareForActivationWithContext:contextCopy presentationMode:mode windowScene:sceneCopy completion:completionCopy];
 }
 
-- (void)_configureWallpaperEffectViewWithAnimationSettings:(id)a3
+- (void)_configureWallpaperEffectViewWithAnimationSettings:(id)settings
 {
-  v4 = a3;
+  settingsCopy = settings;
   if ([(SBRemoteTransientOverlayViewController *)self _needsWallpaperEffectView])
   {
     wallpaperEffectView = self->_wallpaperEffectView;
@@ -1370,7 +1370,7 @@ uint64_t __94__SBRemoteTransientOverlayViewController_newTransientOverlayPresent
     v31 = 0;
     PBUIWallpaperStyleTransitionStateMake();
     v6 = self->_wallpaperEffectView;
-    if (!v4)
+    if (!settingsCopy)
     {
       v23 = v30;
       v24 = v31;
@@ -1406,7 +1406,7 @@ uint64_t __94__SBRemoteTransientOverlayViewController_newTransientOverlayPresent
 
   else
   {
-    if (!v4)
+    if (!settingsCopy)
     {
       [(SBTransientOverlayWallpaperEffectView *)self->_wallpaperEffectView removeFromSuperview];
       v12 = self->_wallpaperEffectView;
@@ -1421,17 +1421,17 @@ uint64_t __94__SBRemoteTransientOverlayViewController_newTransientOverlayPresent
     v19 = 3221225472;
     v20 = __93__SBRemoteTransientOverlayViewController__configureWallpaperEffectViewWithAnimationSettings___block_invoke_4;
     v21 = &unk_2783A8C18;
-    v22 = self;
+    selfCopy = self;
     v13 = MEMORY[0x277D85DD0];
     v14 = 3221225472;
     v15 = __93__SBRemoteTransientOverlayViewController__configureWallpaperEffectViewWithAnimationSettings___block_invoke_5;
     v16 = &unk_2783A9398;
-    v17 = self;
+    selfCopy2 = self;
     v10 = &v18;
     v11 = &v13;
   }
 
-  [v9 animateWithSettings:v4 actions:v10 completion:{v11, v13, v14, v15, v16, v17, v18, v19, v20, v21, v22}];
+  [v9 animateWithSettings:settingsCopy actions:v10 completion:{v11, v13, v14, v15, v16, selfCopy2, v18, v19, v20, v21, selfCopy}];
 LABEL_14:
 }
 

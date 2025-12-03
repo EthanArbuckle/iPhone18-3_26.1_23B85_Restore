@@ -1,9 +1,9 @@
 @interface FigCaptureConnectionConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)smartCameraRequired;
 - (FigCaptureCameraCalibrationDataSinkConfiguration)cameraCalibrationDataSinkConfiguration;
 - (FigCaptureConnectionConfiguration)init;
-- (FigCaptureConnectionConfiguration)initWithXPCEncoding:(id)a3;
+- (FigCaptureConnectionConfiguration)initWithXPCEncoding:(id)encoding;
 - (FigCaptureDepthDataSinkConfiguration)depthDataSinkConfiguration;
 - (FigCaptureInternalSinkConfiguration)internalSinkConfiguration;
 - (FigCaptureIrisSinkConfiguration)irisSinkConfiguration;
@@ -13,7 +13,7 @@
 - (FigCaptureVideoDataSinkConfiguration)videoDataSinkConfiguration;
 - (FigCaptureVideoPreviewSinkConfiguration)videoPreviewSinkConfiguration;
 - (FigCaptureVideoThumbnailSinkConfiguration)thumbnailSinkConfiguration;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)copyXPCEncoding;
 - (void)dealloc;
 @end
@@ -22,10 +22,10 @@
 
 - (FigCaptureStillImageSinkConfiguration)stillImageSinkConfiguration
 {
-  v2 = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
-  if ([(FigCaptureStillImageSinkConfiguration *)v2 sinkType]== 3)
+  sinkConfiguration = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
+  if ([(FigCaptureStillImageSinkConfiguration *)sinkConfiguration sinkType]== 3)
   {
-    return v2;
+    return sinkConfiguration;
   }
 
   else
@@ -36,10 +36,10 @@
 
 - (FigCaptureMovieFileSinkConfiguration)movieFileSinkConfiguration
 {
-  v2 = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
-  if ([(FigCaptureMovieFileSinkConfiguration *)v2 sinkType]== 4)
+  sinkConfiguration = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
+  if ([(FigCaptureMovieFileSinkConfiguration *)sinkConfiguration sinkType]== 4)
   {
-    return v2;
+    return sinkConfiguration;
   }
 
   else
@@ -50,10 +50,10 @@
 
 - (FigCaptureVideoThumbnailSinkConfiguration)thumbnailSinkConfiguration
 {
-  v2 = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
-  if ([(FigCaptureVideoThumbnailSinkConfiguration *)v2 sinkType]== 12)
+  sinkConfiguration = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
+  if ([(FigCaptureVideoThumbnailSinkConfiguration *)sinkConfiguration sinkType]== 12)
   {
-    return v2;
+    return sinkConfiguration;
   }
 
   else
@@ -81,14 +81,14 @@
   v4 = objc_opt_class();
   Name = class_getName(v4);
   xpc_dictionary_set_string(v3, "class", Name);
-  v6 = [(FigCaptureSinkConfiguration *)[(FigCaptureConnectionConfiguration *)self sinkConfiguration] copyXPCEncoding];
+  copyXPCEncoding = [(FigCaptureSinkConfiguration *)[(FigCaptureConnectionConfiguration *)self sinkConfiguration] copyXPCEncoding];
   [(FigCaptureConnectionConfiguration *)self connectionID];
   FigXPCMessageSetCFString();
   xpc_dictionary_set_int64(v3, "mediaType", [(FigCaptureConnectionConfiguration *)self mediaType]);
   xpc_dictionary_set_int64(v3, "underlyingDeviceType", [(FigCaptureConnectionConfiguration *)self underlyingDeviceType]);
-  xpc_dictionary_set_value(v3, "sink", v6);
+  xpc_dictionary_set_value(v3, "sink", copyXPCEncoding);
   xpc_dictionary_set_BOOL(v3, "enabled", [(FigCaptureConnectionConfiguration *)self enabled]);
-  xpc_release(v6);
+  xpc_release(copyXPCEncoding);
   return v3;
 }
 
@@ -101,10 +101,10 @@
 
 - (FigCaptureVideoDataSinkConfiguration)videoDataSinkConfiguration
 {
-  v2 = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
-  if ([(FigCaptureVideoDataSinkConfiguration *)v2 sinkType]== 6)
+  sinkConfiguration = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
+  if ([(FigCaptureVideoDataSinkConfiguration *)sinkConfiguration sinkType]== 6)
   {
-    return v2;
+    return sinkConfiguration;
   }
 
   else
@@ -115,10 +115,10 @@
 
 - (FigCaptureVideoPreviewSinkConfiguration)videoPreviewSinkConfiguration
 {
-  v2 = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
-  if ([(FigCaptureVideoPreviewSinkConfiguration *)v2 sinkType]== 1)
+  sinkConfiguration = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
+  if ([(FigCaptureVideoPreviewSinkConfiguration *)sinkConfiguration sinkType]== 1)
   {
-    return v2;
+    return sinkConfiguration;
   }
 
   else
@@ -129,10 +129,10 @@
 
 - (FigCaptureIrisSinkConfiguration)irisSinkConfiguration
 {
-  v2 = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
-  if ([(FigCaptureIrisSinkConfiguration *)v2 sinkType]== 10)
+  sinkConfiguration = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
+  if ([(FigCaptureIrisSinkConfiguration *)sinkConfiguration sinkType]== 10)
   {
-    return v2;
+    return sinkConfiguration;
   }
 
   else
@@ -143,33 +143,33 @@
 
 - (BOOL)smartCameraRequired
 {
-  v3 = [(FigCaptureConnectionConfiguration *)self sourceConfiguration];
-  if (!v3)
+  sourceConfiguration = [(FigCaptureConnectionConfiguration *)self sourceConfiguration];
+  if (!sourceConfiguration)
   {
-    return v3;
+    return sourceConfiguration;
   }
 
-  v4 = v3;
-  LODWORD(v3) = FigCaptureSourceGetBoolAttribute([(FigCaptureSourceConfiguration *)v3 source], @"SmartCameraSupported", 0);
-  if (!v3)
+  v4 = sourceConfiguration;
+  LODWORD(sourceConfiguration) = FigCaptureSourceGetBoolAttribute([(FigCaptureSourceConfiguration *)sourceConfiguration source], @"SmartCameraSupported", 0);
+  if (!sourceConfiguration)
   {
-    return v3;
+    return sourceConfiguration;
   }
 
   v5 = [(NSArray *)[(FigCaptureSourceVideoFormat *)[(FigCaptureSourceConfiguration *)v4 requiredFormat] AVCaptureSessionPresets] containsObject:@"AVCaptureSessionPresetPhoto"];
-  v6 = [(FigCaptureSourceConfiguration *)v4 depthDataDeliveryEnabled];
-  v7 = [(FigCaptureSourceConfiguration *)v4 spatialOverCaptureEnabled];
+  depthDataDeliveryEnabled = [(FigCaptureSourceConfiguration *)v4 depthDataDeliveryEnabled];
+  spatialOverCaptureEnabled = [(FigCaptureSourceConfiguration *)v4 spatialOverCaptureEnabled];
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
-    v8 = 0;
+    portraitAutoSuggestEnabled = 0;
     if (!v5)
     {
       goto LABEL_10;
     }
 
 LABEL_7:
-    if ((v7 || !v6) | v8 & 1)
+    if ((spatialOverCaptureEnabled || !depthDataDeliveryEnabled) | portraitAutoSuggestEnabled & 1)
     {
       v5 = [(FigCaptureSourceConfiguration *)v4 imageControlMode]!= 4;
     }
@@ -182,7 +182,7 @@ LABEL_7:
     goto LABEL_10;
   }
 
-  v8 = [(FigCaptureConnectionConfiguration *)self portraitAutoSuggestEnabled];
+  portraitAutoSuggestEnabled = [(FigCaptureConnectionConfiguration *)self portraitAutoSuggestEnabled];
   if (v5)
   {
     goto LABEL_7;
@@ -200,21 +200,21 @@ LABEL_10:
     v9 = 0;
   }
 
-  v10 = [(FigCaptureSourceConfiguration *)v4 variableFrameRateVideoCaptureEnabled];
-  LOBYTE(v3) = 1;
-  if (((v5 | v9) & 1) == 0 && !v10)
+  variableFrameRateVideoCaptureEnabled = [(FigCaptureSourceConfiguration *)v4 variableFrameRateVideoCaptureEnabled];
+  LOBYTE(sourceConfiguration) = 1;
+  if (((v5 | v9) & 1) == 0 && !variableFrameRateVideoCaptureEnabled)
   {
 
-    LOBYTE(v3) = [(FigCaptureSourceConfiguration *)v4 lensSmudgeDetectionEnabled];
+    LOBYTE(sourceConfiguration) = [(FigCaptureSourceConfiguration *)v4 lensSmudgeDetectionEnabled];
   }
 
-  return v3;
+  return sourceConfiguration;
 }
 
-- (FigCaptureConnectionConfiguration)initWithXPCEncoding:(id)a3
+- (FigCaptureConnectionConfiguration)initWithXPCEncoding:(id)encoding
 {
-  v3 = self;
-  if (!a3)
+  selfCopy = self;
+  if (!encoding)
   {
     [FigCaptureConnectionConfiguration initWithXPCEncoding:];
     goto LABEL_10;
@@ -222,13 +222,13 @@ LABEL_10:
 
   v10.receiver = self;
   v10.super_class = FigCaptureConnectionConfiguration;
-  v3 = [(FigCaptureConnectionConfiguration *)&v10 init];
-  if (v3)
+  selfCopy = [(FigCaptureConnectionConfiguration *)&v10 init];
+  if (selfCopy)
   {
-    value = xpc_dictionary_get_value(a3, "sink");
+    value = xpc_dictionary_get_value(encoding, "sink");
     FigXPCMessageCopyCFString();
-    v3->_mediaType = xpc_dictionary_get_int64(a3, "mediaType");
-    v3->_underlyingDeviceType = xpc_dictionary_get_int64(a3, "underlyingDeviceType");
+    selfCopy->_mediaType = xpc_dictionary_get_int64(encoding, "mediaType");
+    selfCopy->_underlyingDeviceType = xpc_dictionary_get_int64(encoding, "underlyingDeviceType");
     string = xpc_dictionary_get_string(value, "class");
     if (string)
     {
@@ -236,11 +236,11 @@ LABEL_10:
       if ([(objc_class *)Class isSubclassOfClass:objc_opt_class()])
       {
         v8 = [[Class alloc] initWithXPCEncoding:value];
-        v3->_sinkConfiguration = v8;
+        selfCopy->_sinkConfiguration = v8;
         if (v8)
         {
-          v3->_enabled = xpc_dictionary_get_BOOL(a3, "enabled");
-          return v3;
+          selfCopy->_enabled = xpc_dictionary_get_BOOL(encoding, "enabled");
+          return selfCopy;
         }
 
         [FigCaptureConnectionConfiguration initWithXPCEncoding:];
@@ -252,12 +252,12 @@ LABEL_10:
     return 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v12) = 1;
   }
@@ -275,32 +275,32 @@ LABEL_8:
       return v12;
     }
 
-    v11 = [(FigCaptureConnectionConfiguration *)self connectionID];
-    if (v11 == [a3 connectionID] || (v12 = -[NSString isEqual:](-[FigCaptureConnectionConfiguration connectionID](self, "connectionID"), "isEqual:", objc_msgSend(a3, "connectionID"))) != 0)
+    connectionID = [(FigCaptureConnectionConfiguration *)self connectionID];
+    if (connectionID == [equal connectionID] || (v12 = -[NSString isEqual:](-[FigCaptureConnectionConfiguration connectionID](self, "connectionID"), "isEqual:", objc_msgSend(equal, "connectionID"))) != 0)
     {
       v13 = [(FigCaptureConnectionConfiguration *)self mediaType:v6];
-      if (v13 != [a3 mediaType])
+      if (v13 != [equal mediaType])
       {
         goto LABEL_8;
       }
 
-      v14 = [(FigCaptureConnectionConfiguration *)self underlyingDeviceType];
-      if (v14 != [a3 underlyingDeviceType])
+      underlyingDeviceType = [(FigCaptureConnectionConfiguration *)self underlyingDeviceType];
+      if (underlyingDeviceType != [equal underlyingDeviceType])
       {
         goto LABEL_8;
       }
 
-      v15 = [(FigCaptureConnectionConfiguration *)self enabled];
-      if (v15 != [a3 enabled])
+      enabled = [(FigCaptureConnectionConfiguration *)self enabled];
+      if (enabled != [equal enabled])
       {
         goto LABEL_8;
       }
 
-      v16 = [(FigCaptureConnectionConfiguration *)self sourceConfiguration];
-      if (v16 == [a3 sourceConfiguration] || (v12 = -[FigCaptureSourceConfiguration isEqual:](-[FigCaptureConnectionConfiguration sourceConfiguration](self, "sourceConfiguration"), "isEqual:", objc_msgSend(a3, "sourceConfiguration"))) != 0)
+      sourceConfiguration = [(FigCaptureConnectionConfiguration *)self sourceConfiguration];
+      if (sourceConfiguration == [equal sourceConfiguration] || (v12 = -[FigCaptureSourceConfiguration isEqual:](-[FigCaptureConnectionConfiguration sourceConfiguration](self, "sourceConfiguration"), "isEqual:", objc_msgSend(equal, "sourceConfiguration"))) != 0)
       {
-        v17 = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
-        if (v17 == [a3 sinkConfiguration] || (v12 = -[FigCaptureSinkConfiguration isEqual:](-[FigCaptureConnectionConfiguration sinkConfiguration](self, "sinkConfiguration"), "isEqual:", objc_msgSend(a3, "sinkConfiguration"))) != 0)
+        sinkConfiguration = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
+        if (sinkConfiguration == [equal sinkConfiguration] || (v12 = -[FigCaptureSinkConfiguration isEqual:](-[FigCaptureConnectionConfiguration sinkConfiguration](self, "sinkConfiguration"), "isEqual:", objc_msgSend(equal, "sinkConfiguration"))) != 0)
         {
           LOBYTE(v12) = 1;
         }
@@ -311,17 +311,17 @@ LABEL_8:
   return v12;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   [v5 setConnectionID:{-[FigCaptureConnectionConfiguration connectionID](self, "connectionID")}];
   [v5 setMediaType:{-[FigCaptureConnectionConfiguration mediaType](self, "mediaType")}];
   [v5 setUnderlyingDeviceType:{-[FigCaptureConnectionConfiguration underlyingDeviceType](self, "underlyingDeviceType")}];
   [v5 setEnabled:{-[FigCaptureConnectionConfiguration enabled](self, "enabled")}];
-  v6 = [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] copyWithZone:a3];
+  v6 = [(FigCaptureSourceConfiguration *)[(FigCaptureConnectionConfiguration *)self sourceConfiguration] copyWithZone:zone];
   [v5 setSourceConfiguration:v6];
 
-  v7 = [(FigCaptureSinkConfiguration *)[(FigCaptureConnectionConfiguration *)self sinkConfiguration] copyWithZone:a3];
+  v7 = [(FigCaptureSinkConfiguration *)[(FigCaptureConnectionConfiguration *)self sinkConfiguration] copyWithZone:zone];
   [v5 setSinkConfiguration:v7];
 
   return v5;
@@ -329,10 +329,10 @@ LABEL_8:
 
 - (FigCaptureDepthDataSinkConfiguration)depthDataSinkConfiguration
 {
-  v2 = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
-  if ([(FigCaptureDepthDataSinkConfiguration *)v2 sinkType]== 11)
+  sinkConfiguration = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
+  if ([(FigCaptureDepthDataSinkConfiguration *)sinkConfiguration sinkType]== 11)
   {
-    return v2;
+    return sinkConfiguration;
   }
 
   else
@@ -343,10 +343,10 @@ LABEL_8:
 
 - (FigCapturePointCloudDataSinkConfiguration)pointCloudDataSinkConfiguration
 {
-  v2 = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
-  if ([(FigCapturePointCloudDataSinkConfiguration *)v2 sinkType]== 15)
+  sinkConfiguration = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
+  if ([(FigCapturePointCloudDataSinkConfiguration *)sinkConfiguration sinkType]== 15)
   {
-    return v2;
+    return sinkConfiguration;
   }
 
   else
@@ -357,10 +357,10 @@ LABEL_8:
 
 - (FigCaptureCameraCalibrationDataSinkConfiguration)cameraCalibrationDataSinkConfiguration
 {
-  v2 = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
-  if ([(FigCaptureCameraCalibrationDataSinkConfiguration *)v2 sinkType]== 16)
+  sinkConfiguration = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
+  if ([(FigCaptureCameraCalibrationDataSinkConfiguration *)sinkConfiguration sinkType]== 16)
   {
-    return v2;
+    return sinkConfiguration;
   }
 
   else
@@ -371,10 +371,10 @@ LABEL_8:
 
 - (FigCaptureInternalSinkConfiguration)internalSinkConfiguration
 {
-  v2 = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
-  if ([(FigCaptureInternalSinkConfiguration *)v2 sinkType]== 14)
+  sinkConfiguration = [(FigCaptureConnectionConfiguration *)self sinkConfiguration];
+  if ([(FigCaptureInternalSinkConfiguration *)sinkConfiguration sinkType]== 14)
   {
-    return v2;
+    return sinkConfiguration;
   }
 
   else

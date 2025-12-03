@@ -1,30 +1,30 @@
 @interface SFCapsulePageLayoutTop
 - (NSArray)supplementaryIdentifiers;
 - (SFCapsulePageContainer)container;
-- (SFCapsulePageLayoutTop)initWithContainer:(id)a3;
+- (SFCapsulePageLayoutTop)initWithContainer:(id)container;
 - (double)pageWidth;
-- (double)spacingAboveLockdownStatusBarOnPage:(id)a3;
-- (double)spacingBelowLockdownStatusBarOnPage:(id)a3;
-- (id)bottomBackdropInfoForPage:(id)a3;
-- (id)capsuleInfoForPage:(id)a3;
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4;
-- (id)lockdownStatusBarFrameOnPage:(id)a3;
-- (id)toolbarFrameOnPage:(id)a3;
-- (id)topBackdropInfoForPage:(id)a3;
+- (double)spacingAboveLockdownStatusBarOnPage:(id)page;
+- (double)spacingBelowLockdownStatusBarOnPage:(id)page;
+- (id)bottomBackdropInfoForPage:(id)page;
+- (id)capsuleInfoForPage:(id)page;
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page;
+- (id)lockdownStatusBarFrameOnPage:(id)page;
+- (id)toolbarFrameOnPage:(id)page;
+- (id)topBackdropInfoForPage:(id)page;
 @end
 
 @implementation SFCapsulePageLayoutTop
 
-- (SFCapsulePageLayoutTop)initWithContainer:(id)a3
+- (SFCapsulePageLayoutTop)initWithContainer:(id)container
 {
-  v4 = a3;
+  containerCopy = container;
   v9.receiver = self;
   v9.super_class = SFCapsulePageLayoutTop;
   v5 = [(SFCapsulePageLayoutTop *)&v9 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_container, v4);
+    objc_storeWeak(&v5->_container, containerCopy);
     v7 = v6;
   }
 
@@ -40,9 +40,9 @@
   return Width;
 }
 
-- (id)capsuleInfoForPage:(id)a3
+- (id)capsuleInfoForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   [WeakRetained bounds];
   v7 = v6;
@@ -59,7 +59,7 @@
   v29.origin.y = v9 + v17;
   v29.size.width = v20;
   Width = CGRectGetWidth(v29);
-  [v4 capsuleHeightForWidth:0 defaultHeight:Width state:36.0];
+  [pageCopy capsuleHeightForWidth:0 defaultHeight:Width state:36.0];
   v24 = v23;
 
   v30.origin.x = v7;
@@ -74,7 +74,7 @@
   return v26;
 }
 
-- (id)bottomBackdropInfoForPage:(id)a3
+- (id)bottomBackdropInfoForPage:(id)page
 {
   WeakRetained = objc_loadWeakRetained(&self->_container);
   [WeakRetained safeAreaInsets];
@@ -101,27 +101,27 @@
   return v16;
 }
 
-- (id)topBackdropInfoForPage:(id)a3
+- (id)topBackdropInfoForPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_container);
-  v6 = [(SFCapsulePageLayoutTop *)self capsuleInfoForPage:v4];
+  v6 = [(SFCapsulePageLayoutTop *)self capsuleInfoForPage:pageCopy];
   [v6 frame];
   v8 = v7;
   v10 = v9;
   v12 = v11;
   v14 = v13;
 
-  v15 = [v4 lockdownStatusBar];
+  lockdownStatusBar = [pageCopy lockdownStatusBar];
 
-  if (v15)
+  if (lockdownStatusBar)
   {
-    [(SFCapsulePageLayoutTop *)self spacingAboveLockdownStatusBarOnPage:v4];
+    [(SFCapsulePageLayoutTop *)self spacingAboveLockdownStatusBarOnPage:pageCopy];
     v17 = v16 + 0.0;
-    [(SFCapsulePageLayoutTop *)self spacingBelowLockdownStatusBarOnPage:v4];
+    [(SFCapsulePageLayoutTop *)self spacingBelowLockdownStatusBarOnPage:pageCopy];
     v19 = v17 + v18;
-    v20 = [v4 lockdownStatusBar];
-    [v20 preferredSize];
+    lockdownStatusBar2 = [pageCopy lockdownStatusBar];
+    [lockdownStatusBar2 preferredSize];
     v22 = v19 + v21;
   }
 
@@ -159,18 +159,18 @@
   return v2;
 }
 
-- (id)infoForSupplementaryIdentifier:(id)a3 page:(id)a4
+- (id)infoForSupplementaryIdentifier:(id)identifier page:(id)page
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v6 isEqualToString:@"SFCapsuleSupplementaryViewToolbar"])
+  identifierCopy = identifier;
+  pageCopy = page;
+  if ([identifierCopy isEqualToString:@"SFCapsuleSupplementaryViewToolbar"])
   {
-    v8 = [(SFCapsulePageLayoutTop *)self toolbarFrameOnPage:v7];
+    v8 = [(SFCapsulePageLayoutTop *)self toolbarFrameOnPage:pageCopy];
   }
 
-  else if ([v6 isEqualToString:@"SFCapsuleSupplementaryViewLockdownStatusBar"])
+  else if ([identifierCopy isEqualToString:@"SFCapsuleSupplementaryViewLockdownStatusBar"])
   {
-    v8 = [(SFCapsulePageLayoutTop *)self lockdownStatusBarFrameOnPage:v7];
+    v8 = [(SFCapsulePageLayoutTop *)self lockdownStatusBarFrameOnPage:pageCopy];
   }
 
   else
@@ -183,9 +183,9 @@
   return v9;
 }
 
-- (id)toolbarFrameOnPage:(id)a3
+- (id)toolbarFrameOnPage:(id)page
 {
-  v3 = [(SFCapsulePageLayoutTop *)self bottomBackdropInfoForPage:a3];
+  v3 = [(SFCapsulePageLayoutTop *)self bottomBackdropInfoForPage:page];
   [v3 frame];
   v5 = v4;
   v7 = v6;
@@ -213,9 +213,9 @@
   return v12;
 }
 
-- (id)lockdownStatusBarFrameOnPage:(id)a3
+- (id)lockdownStatusBarFrameOnPage:(id)page
 {
-  v4 = a3;
+  pageCopy = page;
   WeakRetained = objc_loadWeakRetained(&self->_container);
   [WeakRetained bounds];
   v7 = v6;
@@ -223,8 +223,8 @@
   v11 = v10;
   v13 = v12;
 
-  v14 = [v4 lockdownStatusBar];
-  v15 = [(SFCapsulePageLayoutTop *)self capsuleInfoForPage:v4];
+  lockdownStatusBar = [pageCopy lockdownStatusBar];
+  v15 = [(SFCapsulePageLayoutTop *)self capsuleInfoForPage:pageCopy];
   [v15 frame];
   v17 = v16;
   v19 = v18;
@@ -237,7 +237,7 @@
   v32.size.width = v21;
   v32.size.height = v23;
   MaxY = CGRectGetMaxY(v32);
-  [(SFCapsulePageLayoutTop *)self spacingAboveLockdownStatusBarOnPage:v4];
+  [(SFCapsulePageLayoutTop *)self spacingAboveLockdownStatusBarOnPage:pageCopy];
   v27 = v26;
 
   v33.origin.x = v7;
@@ -245,25 +245,25 @@
   v33.size.width = v11;
   v33.size.height = v13;
   Width = CGRectGetWidth(v33);
-  [v14 preferredSize];
+  [lockdownStatusBar preferredSize];
   [(SFCapsulePageLayoutInfo *)v24 setFrame:0.0, MaxY + v27, Width, v29];
 
   return v24;
 }
 
-- (double)spacingAboveLockdownStatusBarOnPage:(id)a3
+- (double)spacingAboveLockdownStatusBarOnPage:(id)page
 {
-  v3 = [a3 lockdownStatusBar];
-  [v3 titleCapHeightInsetFromTop];
+  lockdownStatusBar = [page lockdownStatusBar];
+  [lockdownStatusBar titleCapHeightInsetFromTop];
   v5 = 10.0 - v4;
 
   return v5;
 }
 
-- (double)spacingBelowLockdownStatusBarOnPage:(id)a3
+- (double)spacingBelowLockdownStatusBarOnPage:(id)page
 {
-  v3 = [a3 lockdownStatusBar];
-  [v3 titleBaselineInsetFromBottom];
+  lockdownStatusBar = [page lockdownStatusBar];
+  [lockdownStatusBar titleBaselineInsetFromBottom];
   v5 = 10.0 - v4;
 
   return v5;

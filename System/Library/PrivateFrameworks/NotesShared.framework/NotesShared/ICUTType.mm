@@ -1,18 +1,18 @@
 @interface ICUTType
-+ (id)typeWithIdentifier:(id)a3;
++ (id)typeWithIdentifier:(id)identifier;
 @end
 
 @implementation ICUTType
 
-+ (id)typeWithIdentifier:(id)a3
++ (id)typeWithIdentifier:(id)identifier
 {
-  v3 = a3;
-  if (v3)
+  identifierCopy = identifier;
+  if (identifierCopy)
   {
-    v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:v3];
+    v4 = [MEMORY[0x277CE1CB8] typeWithIdentifier:identifierCopy];
     if (!v4)
     {
-      v4 = [MEMORY[0x277CE1CB8] exportedTypeWithIdentifier:v3];
+      v4 = [MEMORY[0x277CE1CB8] exportedTypeWithIdentifier:identifierCopy];
     }
   }
 

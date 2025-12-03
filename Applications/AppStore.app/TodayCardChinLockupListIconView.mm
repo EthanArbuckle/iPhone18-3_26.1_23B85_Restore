@@ -1,12 +1,12 @@
 @interface TodayCardChinLockupListIconView
-- (_TtC8AppStore31TodayCardChinLockupListIconView)initWithCoder:(id)a3;
+- (_TtC8AppStore31TodayCardChinLockupListIconView)initWithCoder:(id)coder;
 - (void)handleTap;
 - (void)layoutSubviews;
 @end
 
 @implementation TodayCardChinLockupListIconView
 
-- (_TtC8AppStore31TodayCardChinLockupListIconView)initWithCoder:(id)a3
+- (_TtC8AppStore31TodayCardChinLockupListIconView)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC8AppStore31TodayCardChinLockupListIconView_artworkView;
   type metadata accessor for ArtworkView();
@@ -31,7 +31,7 @@
 
 - (void)handleTap
 {
-  v2 = self;
+  selfCopy = self;
   sub_1000793FC();
 }
 

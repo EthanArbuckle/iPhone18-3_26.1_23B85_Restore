@@ -1,6 +1,6 @@
 @interface PVObject
-- (PVObject)initWithLocalIdentifier:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (PVObject)initWithLocalIdentifier:(id)identifier;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -14,17 +14,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   localIdentifier = self->_localIdentifier;
 
   return [v4 initWithLocalIdentifier:localIdentifier];
 }
 
-- (PVObject)initWithLocalIdentifier:(id)a3
+- (PVObject)initWithLocalIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v10.receiver = self;
   v10.super_class = PVObject;
   v5 = [(PVObject *)&v10 init];
@@ -37,7 +37,7 @@
       objc_exception_throw(v9);
     }
 
-    v6 = [v4 copy];
+    v6 = [identifierCopy copy];
     localIdentifier = v5->_localIdentifier;
     v5->_localIdentifier = v6;
   }

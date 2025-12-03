@@ -1,17 +1,17 @@
 @interface VGOEMApplicationFinder
-- (BOOL)_addOEMApplicationForApplicationRecordIfNeeded:(id)a3;
-- (BOOL)_removeOEMApplicationForBundleIdentifier:(id)a3;
+- (BOOL)_addOEMApplicationForApplicationRecordIfNeeded:(id)needed;
+- (BOOL)_removeOEMApplicationForBundleIdentifier:(id)identifier;
 - (NSDictionary)allowlist;
 - (NSSet)disabledAppIdentifiers;
 - (VGOEMApplicationFinder)init;
 - (VGOEMApplicationFinderUpdates)delegate;
 - (id)_allowlistPayload;
-- (id)_applicationRecordForBundleIdentifier:(id)a3;
-- (void)applicationsDidInstall:(id)a3;
-- (void)applicationsDidUninstall:(id)a3;
+- (id)_applicationRecordForBundleIdentifier:(id)identifier;
+- (void)applicationsDidInstall:(id)install;
+- (void)applicationsDidUninstall:(id)uninstall;
 - (void)dealloc;
 - (void)findOEMApplications;
-- (void)valueChangedForGEOConfigKey:(id)a3;
+- (void)valueChangedForGEOConfigKey:(id)key;
 @end
 
 @implementation VGOEMApplicationFinder
@@ -41,8 +41,8 @@
     requiredIntents = v2->_requiredIntents;
     v2->_requiredIntents = v13;
 
-    v15 = [MEMORY[0x277CC1E80] defaultWorkspace];
-    [v15 addObserver:v2];
+    defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+    [defaultWorkspace addObserver:v2];
 
     _GEOConfigAddDelegateListenerForKey();
   }
@@ -266,14 +266,14 @@ LABEL_44:
     goto LABEL_21;
   }
 
-  v21 = self;
-  v4 = [(VGOEMApplicationFinder *)self _allowlistPayload];
-  v22 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(v4, "count")}];
+  selfCopy = self;
+  _allowlistPayload = [(VGOEMApplicationFinder *)self _allowlistPayload];
+  v22 = [objc_alloc(MEMORY[0x277CBEB38]) initWithCapacity:{objc_msgSend(_allowlistPayload, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  v5 = v4;
+  v5 = _allowlistPayload;
   v6 = [v5 countByEnumeratingWithState:&v23 objects:v29 count:16];
   if (!v6)
   {
@@ -331,11 +331,11 @@ LABEL_14:
   while (v7);
 LABEL_16:
 
-  v15 = v21->_allowlist;
-  v21->_allowlist = v22;
+  v15 = selfCopy->_allowlist;
+  selfCopy->_allowlist = v22;
   v16 = v22;
 
-  v17 = [(NSDictionary *)v21->_allowlist count];
+  v17 = [(NSDictionary *)selfCopy->_allowlist count];
   if (!v17)
   {
     v18 = VGGetOEMApplicationLog();
@@ -346,7 +346,7 @@ LABEL_16:
     }
   }
 
-  allowlist = v21->_allowlist;
+  allowlist = selfCopy->_allowlist;
 LABEL_21:
   v19 = *MEMORY[0x277D85DE8];
 
@@ -391,8 +391,8 @@ LABEL_21:
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x277CC1E80] defaultWorkspace];
-  [v3 removeObserver:self];
+  defaultWorkspace = [MEMORY[0x277CC1E80] defaultWorkspace];
+  [defaultWorkspace removeObserver:self];
 
   GEOConfigRemoveDelegateListenerForAllKeys();
   v4.receiver = self;
@@ -400,10 +400,10 @@ LABEL_21:
   [(VGOEMApplicationFinder *)&v4 dealloc];
 }
 
-- (void)applicationsDidUninstall:(id)a3
+- (void)applicationsDidUninstall:(id)uninstall
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  uninstallCopy = uninstall;
   v6 = VGGetVirtualGarageLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -420,8 +420,8 @@ LABEL_21:
   v11[2] = __51__VGOEMApplicationFinder_applicationsDidUninstall___block_invoke;
   v11[3] = &unk_279E26F20;
   objc_copyWeak(&v13, buf);
-  v12 = v5;
-  v9 = v5;
+  v12 = uninstallCopy;
+  v9 = uninstallCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v13);
@@ -504,10 +504,10 @@ LABEL_16:
   v14 = *MEMORY[0x277D85DE8];
 }
 
-- (void)applicationsDidInstall:(id)a3
+- (void)applicationsDidInstall:(id)install
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  installCopy = install;
   v6 = VGGetVirtualGarageLog();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
   {
@@ -524,8 +524,8 @@ LABEL_16:
   v11[2] = __49__VGOEMApplicationFinder_applicationsDidInstall___block_invoke;
   v11[3] = &unk_279E26F20;
   objc_copyWeak(&v13, buf);
-  v12 = v5;
-  v9 = v5;
+  v12 = installCopy;
+  v9 = installCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v13);
@@ -609,12 +609,12 @@ LABEL_16:
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (BOOL)_removeOEMApplicationForBundleIdentifier:(id)a3
+- (BOOL)_removeOEMApplicationForBundleIdentifier:(id)identifier
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(VGOEMApplicationFinder *)self applications];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  identifierCopy = identifier;
+  applications = [(VGOEMApplicationFinder *)self applications];
+  v6 = [applications objectForKeyedSubscript:identifierCopy];
 
   if (v6)
   {
@@ -622,60 +622,60 @@ LABEL_16:
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
       v11 = 138412290;
-      v12 = v4;
+      v12 = identifierCopy;
       _os_log_impl(&dword_270EC1000, v7, OS_LOG_TYPE_INFO, "Removed application: %@", &v11, 0xCu);
     }
 
-    v8 = [(VGOEMApplicationFinder *)self applications];
-    [v8 setObject:0 forKeyedSubscript:v4];
+    applications2 = [(VGOEMApplicationFinder *)self applications];
+    [applications2 setObject:0 forKeyedSubscript:identifierCopy];
   }
 
   v9 = *MEMORY[0x277D85DE8];
   return v6 != 0;
 }
 
-- (BOOL)_addOEMApplicationForApplicationRecordIfNeeded:(id)a3
+- (BOOL)_addOEMApplicationForApplicationRecordIfNeeded:(id)needed
 {
   v31 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 bundleIdentifier];
-  if (v5)
+  neededCopy = needed;
+  bundleIdentifier = [neededCopy bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v6 = [(VGOEMApplicationFinder *)self applications];
-    v7 = [v6 objectForKeyedSubscript:v5];
+    applications = [(VGOEMApplicationFinder *)self applications];
+    v7 = [applications objectForKeyedSubscript:bundleIdentifier];
 
     if (!v7)
     {
-      v9 = [MEMORY[0x277CD3A68] appInfoWithApplicationRecord:v4];
-      v10 = [v9 supportedIntents];
+      v9 = [MEMORY[0x277CD3A68] appInfoWithApplicationRecord:neededCopy];
+      supportedIntents = [v9 supportedIntents];
 
-      v8 = [(NSSet *)self->_requiredIntents isSubsetOfSet:v10];
+      v8 = [(NSSet *)self->_requiredIntents isSubsetOfSet:supportedIntents];
       if (v8)
       {
-        v11 = [[VGOEMApplication alloc] initWithIdentifier:v5 applicationRecord:v4];
-        v12 = [(VGOEMApplicationFinder *)self allowlist];
-        v13 = [v12 objectForKeyedSubscript:v5];
+        v11 = [[VGOEMApplication alloc] initWithIdentifier:bundleIdentifier applicationRecord:neededCopy];
+        allowlist = [(VGOEMApplicationFinder *)self allowlist];
+        v13 = [allowlist objectForKeyedSubscript:bundleIdentifier];
         [(VGOEMApplication *)v11 setAllowedFormulaIDs:v13];
 
-        v14 = [(VGOEMApplicationFinder *)self disabledAppIdentifiers];
-        -[VGOEMApplication setEnabled:](v11, "setEnabled:", [v14 containsObject:v5] ^ 1);
+        disabledAppIdentifiers = [(VGOEMApplicationFinder *)self disabledAppIdentifiers];
+        -[VGOEMApplication setEnabled:](v11, "setEnabled:", [disabledAppIdentifiers containsObject:bundleIdentifier] ^ 1);
 
         v15 = VGGetOEMApplicationLog();
         if (os_log_type_enabled(v15, OS_LOG_TYPE_INFO))
         {
           v27 = 138412290;
-          v28 = v5;
+          v28 = bundleIdentifier;
           _os_log_impl(&dword_270EC1000, v15, OS_LOG_TYPE_INFO, "Added application: %@", &v27, 0xCu);
         }
 
-        v16 = [(VGOEMApplicationFinder *)self applications];
-        [v16 setObject:v11 forKeyedSubscript:v5];
+        applications2 = [(VGOEMApplicationFinder *)self applications];
+        [applications2 setObject:v11 forKeyedSubscript:bundleIdentifier];
 
         goto LABEL_14;
       }
 
-      v17 = [(VGOEMApplicationFinder *)self allowlist];
-      v18 = [v17 objectForKeyedSubscript:v5];
+      allowlist2 = [(VGOEMApplicationFinder *)self allowlist];
+      v18 = [allowlist2 objectForKeyedSubscript:bundleIdentifier];
 
       v19 = VGGetOEMApplicationLog();
       v11 = v19;
@@ -685,7 +685,7 @@ LABEL_16:
         {
           requiredIntents = self->_requiredIntents;
           v27 = 138412546;
-          v28 = v5;
+          v28 = bundleIdentifier;
           v29 = 2112;
           v30 = requiredIntents;
           v21 = "allowlisted application '%@' doesn't support our required intents: %@";
@@ -700,7 +700,7 @@ LABEL_13:
       {
         v24 = self->_requiredIntents;
         v27 = 138412546;
-        v28 = v5;
+        v28 = bundleIdentifier;
         v29 = 2112;
         v30 = v24;
         v21 = "application '%@' doesn't support our required intents: %@";
@@ -722,21 +722,21 @@ LABEL_15:
   return v8;
 }
 
-- (id)_applicationRecordForBundleIdentifier:(id)a3
+- (id)_applicationRecordForBundleIdentifier:(id)identifier
 {
   v22 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  if (!v4)
+  identifierCopy = identifier;
+  if (!identifierCopy)
   {
     goto LABEL_8;
   }
 
   v5 = *MEMORY[0x277D0EA90];
   v6 = *(MEMORY[0x277D0EA90] + 8);
-  if (!GEOConfigGetBOOL() || (-[VGOEMApplicationFinder allowlist](self, "allowlist"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:v4], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
+  if (!GEOConfigGetBOOL() || (-[VGOEMApplicationFinder allowlist](self, "allowlist"), v7 = objc_claimAutoreleasedReturnValue(), [v7 objectForKeyedSubscript:identifierCopy], v8 = objc_claimAutoreleasedReturnValue(), v8, v7, v8))
   {
-    v9 = [(VGOEMApplicationFinder *)self applications];
-    v10 = [v9 objectForKeyedSubscript:v4];
+    applications = [(VGOEMApplicationFinder *)self applications];
+    v10 = [applications objectForKeyedSubscript:identifierCopy];
 
     if (v10)
     {
@@ -744,7 +744,7 @@ LABEL_15:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEBUG))
       {
         *buf = 138412290;
-        v19 = v4;
+        v19 = identifierCopy;
         _os_log_impl(&dword_270EC1000, v11, OS_LOG_TYPE_DEBUG, "Won't create an LSAppRecord for bundleId: %@ as we already have this app saved.", buf, 0xCu);
       }
 
@@ -754,7 +754,7 @@ LABEL_15:
     else
     {
       v17 = 0;
-      v12 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:v4 allowPlaceholder:0 error:&v17];
+      v12 = [objc_alloc(MEMORY[0x277CC1E70]) initWithBundleIdentifier:identifierCopy allowPlaceholder:0 error:&v17];
       v11 = v17;
       if (v12)
       {
@@ -767,7 +767,7 @@ LABEL_15:
         if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v19 = v4;
+          v19 = identifierCopy;
           v20 = 2112;
           v21 = v11;
           _os_log_impl(&dword_270EC1000, v14, OS_LOG_TYPE_ERROR, "Failed making LSApplicationRecord for '%@': %@. App is not installed", buf, 0x16u);
@@ -787,10 +787,10 @@ LABEL_8:
   return v12;
 }
 
-- (void)valueChangedForGEOConfigKey:(id)a3
+- (void)valueChangedForGEOConfigKey:(id)key
 {
-  var1 = a3.var1;
-  v4 = *&a3.var0;
+  var1 = key.var1;
+  v4 = *&key.var0;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v7[0] = MEMORY[0x277D85DD0];

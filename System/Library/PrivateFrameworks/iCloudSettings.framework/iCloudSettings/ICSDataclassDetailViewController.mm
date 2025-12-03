@@ -1,21 +1,21 @@
 @interface ICSDataclassDetailViewController
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_initSpecifiers;
 - (void)cleanupDataclassSpecifiers;
-- (void)setAccountManager:(id)a3;
+- (void)setAccountManager:(id)manager;
 - (void)viewDidLoad;
 @end
 
 @implementation ICSDataclassDetailViewController
 
-- (void)setAccountManager:(id)a3
+- (void)setAccountManager:(id)manager
 {
   v7.receiver = self;
   v7.super_class = ICSDataclassDetailViewController;
-  [(ICSDataclassViewController *)&v7 setAccountManager:a3];
-  v4 = [(ICSDataclassDetailViewController *)self specifier];
-  v5 = [v4 objectForKeyedSubscript:*MEMORY[0x277D3FFB8]];
+  [(ICSDataclassViewController *)&v7 setAccountManager:manager];
+  specifier = [(ICSDataclassDetailViewController *)self specifier];
+  v5 = [specifier objectForKeyedSubscript:*MEMORY[0x277D3FFB8]];
   dataclass = self->_dataclass;
   self->_dataclass = v5;
 
@@ -25,12 +25,12 @@
 - (void)viewDidLoad
 {
   v11 = *MEMORY[0x277D85DE8];
-  v4 = *a1;
-  v5 = [a2 title];
+  v4 = *self;
+  title = [a2 title];
   v7 = 138412546;
   v8 = v4;
   v9 = 2112;
-  v10 = v5;
+  v10 = title;
   _os_log_debug_impl(&dword_275819000, a3, OS_LOG_TYPE_DEBUG, "Dataclass (%@) - title (%@)", &v7, 0x16u);
 
   v6 = *MEMORY[0x277D85DE8];
@@ -39,8 +39,8 @@
 - (void)_initSpecifiers
 {
   v3 = [ICSDataclassDetailSpecifierProvider alloc];
-  v4 = [(ICSDataclassViewController *)self accountManager];
-  v5 = [(ICSDataclassDetailSpecifierProvider *)v3 initWithAccountManager:v4 presenter:self];
+  accountManager = [(ICSDataclassViewController *)self accountManager];
+  v5 = [(ICSDataclassDetailSpecifierProvider *)v3 initWithAccountManager:accountManager presenter:self];
   specifierProvider = self->_specifierProvider;
   self->_specifierProvider = v5;
 
@@ -56,14 +56,14 @@
   v3 = *MEMORY[0x277D3FC48];
   if (!*(&self->super.super.super.super.super.super.super.super.isa + v3))
   {
-    v4 = [(ICSDataclassDetailSpecifierProvider *)self->_specifierProvider specifiers];
-    v5 = [v4 count];
+    specifiers = [(ICSDataclassDetailSpecifierProvider *)self->_specifierProvider specifiers];
+    v5 = [specifiers count];
 
     if (v5)
     {
       v6 = MEMORY[0x277CBEA60];
-      v7 = [(ICSDataclassDetailSpecifierProvider *)self->_specifierProvider specifiers];
-      v8 = [v6 arrayWithArray:v7];
+      specifiers2 = [(ICSDataclassDetailSpecifierProvider *)self->_specifierProvider specifiers];
+      v8 = [v6 arrayWithArray:specifiers2];
       v9 = *(&self->super.super.super.super.super.super.super.super.isa + v3);
       *(&self->super.super.super.super.super.super.super.super.isa + v3) = v8;
     }
@@ -74,21 +74,21 @@
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v11.receiver = self;
   v11.super_class = ICSDataclassDetailViewController;
-  v4 = [(ACUIDataclassConfigurationViewController *)&v11 tableView:a3 cellForRowAtIndexPath:a4];
-  v5 = [v4 specifier];
-  v6 = [v5 propertyForKey:*MEMORY[0x277D3FEA8]];
-  v7 = [v6 BOOLValue];
+  v4 = [(ACUIDataclassConfigurationViewController *)&v11 tableView:view cellForRowAtIndexPath:path];
+  specifier = [v4 specifier];
+  v6 = [specifier propertyForKey:*MEMORY[0x277D3FEA8]];
+  bOOLValue = [v6 BOOLValue];
 
-  if (v7)
+  if (bOOLValue)
   {
     v8 = LogSubsystem();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
     {
-      [ICSDataclassDetailViewController tableView:v5 cellForRowAtIndexPath:v8];
+      [ICSDataclassDetailViewController tableView:specifier cellForRowAtIndexPath:v8];
     }
 
     v9 = [objc_alloc(MEMORY[0x277D750E8]) initWithActivityIndicatorStyle:100];

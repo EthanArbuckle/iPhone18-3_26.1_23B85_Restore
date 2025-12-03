@@ -6,25 +6,25 @@
 + (NSError)paymentCouponCodeInvalidErrorWithLocalizedDescription:(NSString *)localizedDescription;
 + (NSError)paymentShippingAddressInvalidErrorWithKey:(NSString *)postalAddressKey localizedDescription:(NSString *)localizedDescription;
 + (NSError)paymentShippingAddressUnserviceableErrorWithLocalizedDescription:(NSString *)localizedDescription;
-+ (PKPaymentRequest)requestWithProtobuf:(id)a3;
-+ (id)errorFromDictionary:(id)a3;
++ (PKPaymentRequest)requestWithProtobuf:(id)protobuf;
++ (id)errorFromDictionary:(id)dictionary;
 - (BOOL)_isAMPApplePayClassicRequest;
 - (BOOL)_isAMPPayment;
 - (BOOL)_isPSD2StyleRequest;
 - (BOOL)_isPVKRequest;
 - (BOOL)_shouldSupportLandscapeOrientation;
 - (BOOL)_shouldUseAmpEnrollmentPinning;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToPaymentRequest:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToPaymentRequest:(id)request;
 - (BOOL)isVirtualCardEnrollmentRequest;
 - (BOOL)isVirtualCardRefreshRequest;
 - (BOOL)shouldUseMerchantSession;
 - (NSData)applicationData;
 - (NSString)hashedMerchantIdentifier;
 - (PKPaymentRequest)init;
-- (PKPaymentRequest)initWithCoder:(id)a3;
-- (PKPaymentRequest)initWithDictionary:(id)a3 error:(id *)a4;
-- (id)_addressFieldsToContactFields:(unint64_t)a3;
+- (PKPaymentRequest)initWithCoder:(id)coder;
+- (PKPaymentRequest)initWithDictionary:(id)dictionary error:(id *)error;
+- (id)_addressFieldsToContactFields:(unint64_t)fields;
 - (id)_transactionAmount;
 - (id)accountServiceTransferRequest;
 - (id)description;
@@ -33,10 +33,10 @@
 - (id)protobuf;
 - (id)serviceProviderPaymentRequest;
 - (id)virtualCardEnrollmentRequest;
-- (unint64_t)_contactFieldsToAddressFields:(id)a3;
+- (unint64_t)_contactFieldsToAddressFields:(id)fields;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)setAccesssControlRef:(__SecAccessControl *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)setAccesssControlRef:(__SecAccessControl *)ref;
 - (void)setBillingAddress:(ABRecordRef)billingAddress;
 - (void)setBillingContact:(PKContact *)billingContact;
 - (void)setMultiTokenContexts:(NSArray *)multiTokenContexts;
@@ -56,85 +56,85 @@
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
-+ (PKPaymentRequest)requestWithProtobuf:(id)a3
++ (PKPaymentRequest)requestWithProtobuf:(id)protobuf
 {
   v102 = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [v3 requestType] == 10;
-  v5 = [v3 summaryItems];
-  v6 = [v5 lastObject];
-  v7 = [v6 hasDisbursementSummaryItem];
+  protobufCopy = protobuf;
+  v4 = [protobufCopy requestType] == 10;
+  summaryItems = [protobufCopy summaryItems];
+  lastObject = [summaryItems lastObject];
+  hasDisbursementSummaryItem = [lastObject hasDisbursementSummaryItem];
 
   v8 = off_1E79BFA78;
-  if ((v4 & v7) == 0)
+  if ((v4 & hasDisbursementSummaryItem) == 0)
   {
     v8 = off_1E79C0B48;
   }
 
   v9 = objc_alloc_init(*v8);
-  [v9 setAPIType:{objc_msgSend(v3, "apiType")}];
-  v10 = [v3 merchantIdentifier];
-  [v9 setMerchantIdentifier:v10];
+  [v9 setAPIType:{objc_msgSend(protobufCopy, "apiType")}];
+  merchantIdentifier = [protobufCopy merchantIdentifier];
+  [v9 setMerchantIdentifier:merchantIdentifier];
 
-  v11 = [v3 attributionIdentifier];
-  [v9 setAttributionIdentifier:v11];
+  attributionIdentifier = [protobufCopy attributionIdentifier];
+  [v9 setAttributionIdentifier:attributionIdentifier];
 
-  v12 = [v3 countryCode];
-  [v9 setCountryCode:v12];
+  countryCode = [protobufCopy countryCode];
+  [v9 setCountryCode:countryCode];
 
-  v13 = [v3 currencyCode];
-  [v9 setCurrencyCode:v13];
+  currencyCode = [protobufCopy currencyCode];
+  [v9 setCurrencyCode:currencyCode];
 
-  v14 = [v3 supportedNetworks];
-  [v9 setSupportedNetworks:v14];
+  supportedNetworks = [protobufCopy supportedNetworks];
+  [v9 setSupportedNetworks:supportedNetworks];
 
-  [v9 setMerchantCapabilities:{objc_msgSend(v3, "merchantCapabilities")}];
-  [v9 setRequiredBillingAddressFields:{objc_msgSend(v3, "requiredBillingAddressFields")}];
-  [v9 setRequiredShippingAddressFields:{objc_msgSend(v3, "requiredShippingAddressFields")}];
+  [v9 setMerchantCapabilities:{objc_msgSend(protobufCopy, "merchantCapabilities")}];
+  [v9 setRequiredBillingAddressFields:{objc_msgSend(protobufCopy, "requiredBillingAddressFields")}];
+  [v9 setRequiredShippingAddressFields:{objc_msgSend(protobufCopy, "requiredShippingAddressFields")}];
   v15 = MEMORY[0x1E695DFD8];
-  v16 = [v3 requiredShippingContactFields];
-  v17 = [v15 setWithArray:v16];
+  requiredShippingContactFields = [protobufCopy requiredShippingContactFields];
+  v17 = [v15 setWithArray:requiredShippingContactFields];
   [v9 setRequiredShippingContactFields:v17];
 
   v18 = MEMORY[0x1E695DFD8];
-  v19 = [v3 requiredBillingContactFields];
-  v20 = [v18 setWithArray:v19];
+  requiredBillingContactFields = [protobufCopy requiredBillingContactFields];
+  v20 = [v18 setWithArray:requiredBillingContactFields];
   [v9 setRequiredBillingContactFields:v20];
 
-  v21 = [v3 applicationData];
-  [v9 setApplicationData:v21];
+  applicationData = [protobufCopy applicationData];
+  [v9 setApplicationData:applicationData];
 
   v22 = MEMORY[0x1E695DFF8];
-  v23 = [v3 originatingURL];
-  v24 = [v22 URLWithString:v23];
+  originatingURL = [protobufCopy originatingURL];
+  v24 = [v22 URLWithString:originatingURL];
   [v9 setOriginatingURL:v24];
 
   v25 = MEMORY[0x1E695DFD8];
-  v26 = [v3 supportedCountries];
-  v27 = [v25 setWithArray:v26];
+  supportedCountries = [protobufCopy supportedCountries];
+  v27 = [v25 setWithArray:supportedCountries];
   [v9 setSupportedCountries:v27];
 
-  v28 = [v3 userAgent];
-  [v9 setUserAgent:v28];
+  userAgent = [protobufCopy userAgent];
+  [v9 setUserAgent:userAgent];
 
   v29 = objc_alloc_init(MEMORY[0x1E695DF70]);
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
   v98 = 0u;
-  v30 = [v3 thumbnailURLs];
-  v31 = [v30 countByEnumeratingWithState:&v95 objects:v101 count:16];
+  thumbnailURLs = [protobufCopy thumbnailURLs];
+  v31 = [thumbnailURLs countByEnumeratingWithState:&v95 objects:v101 count:16];
   if (v31)
   {
     v32 = v31;
@@ -145,14 +145,14 @@
       {
         if (*v96 != v33)
         {
-          objc_enumerationMutation(v30);
+          objc_enumerationMutation(thumbnailURLs);
         }
 
         v35 = [MEMORY[0x1E695DFF8] URLWithString:*(*(&v95 + 1) + 8 * i)];
         [v29 addObject:v35];
       }
 
-      v32 = [v30 countByEnumeratingWithState:&v95 objects:v101 count:16];
+      v32 = [thumbnailURLs countByEnumeratingWithState:&v95 objects:v101 count:16];
     }
 
     while (v32);
@@ -164,20 +164,20 @@
     [v9 setThumbnailURLs:v36];
   }
 
-  if ([v3 hasMerchantSession])
+  if ([protobufCopy hasMerchantSession])
   {
-    v37 = [v3 merchantSession];
-    v38 = [PKPaymentMerchantSession paymentMerchantSessionWithProtobuf:v37];
+    merchantSession = [protobufCopy merchantSession];
+    v38 = [PKPaymentMerchantSession paymentMerchantSessionWithProtobuf:merchantSession];
     [v9 setMerchantSession:v38];
   }
 
-  v39 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v91 = 0u;
   v92 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v40 = [v3 summaryItems];
-  v41 = [v40 countByEnumeratingWithState:&v91 objects:v100 count:16];
+  summaryItems2 = [protobufCopy summaryItems];
+  v41 = [summaryItems2 countByEnumeratingWithState:&v91 objects:v100 count:16];
   if (v41)
   {
     v42 = v41;
@@ -188,31 +188,31 @@
       {
         if (*v92 != v43)
         {
-          objc_enumerationMutation(v40);
+          objc_enumerationMutation(summaryItems2);
         }
 
         v45 = [PKPaymentSummaryItem itemWithProtobuf:*(*(&v91 + 1) + 8 * j)];
-        [v39 addObject:v45];
+        [array addObject:v45];
       }
 
-      v42 = [v40 countByEnumeratingWithState:&v91 objects:v100 count:16];
+      v42 = [summaryItems2 countByEnumeratingWithState:&v91 objects:v100 count:16];
     }
 
     while (v42);
   }
 
-  [v9 setPaymentSummaryItems:v39];
-  if ([v3 hasAvailableShippingMethods])
+  [v9 setPaymentSummaryItems:array];
+  if ([protobufCopy hasAvailableShippingMethods])
   {
-    v46 = [v3 availableShippingMethods];
-    v47 = [PKShippingMethods shippingMethodsWithProtobuf:v46];
+    availableShippingMethods = [protobufCopy availableShippingMethods];
+    v47 = [PKShippingMethods shippingMethodsWithProtobuf:availableShippingMethods];
     [v9 setAvailableShippingMethods:v47];
   }
 
   else
   {
-    v48 = [v3 shippingMethods];
-    v49 = [v48 count];
+    shippingMethods = [protobufCopy shippingMethods];
+    v49 = [shippingMethods count];
 
     if (!v49)
     {
@@ -220,13 +220,13 @@
     }
 
     v86 = v9;
-    v46 = [MEMORY[0x1E695DF70] array];
+    availableShippingMethods = [MEMORY[0x1E695DF70] array];
     v87 = 0u;
     v88 = 0u;
     v89 = 0u;
     v90 = 0u;
-    v50 = [v3 shippingMethods];
-    v51 = [v50 countByEnumeratingWithState:&v87 objects:v99 count:16];
+    shippingMethods2 = [protobufCopy shippingMethods];
+    v51 = [shippingMethods2 countByEnumeratingWithState:&v87 objects:v99 count:16];
     if (v51)
     {
       v52 = v51;
@@ -237,48 +237,48 @@
         {
           if (*v88 != v53)
           {
-            objc_enumerationMutation(v50);
+            objc_enumerationMutation(shippingMethods2);
           }
 
           v55 = [PKShippingMethod shippingMethodWithProtobuf:*(*(&v87 + 1) + 8 * k)];
-          [v46 addObject:v55];
+          [availableShippingMethods addObject:v55];
         }
 
-        v52 = [v50 countByEnumeratingWithState:&v87 objects:v99 count:16];
+        v52 = [shippingMethods2 countByEnumeratingWithState:&v87 objects:v99 count:16];
       }
 
       while (v52);
     }
 
     v9 = v86;
-    [v86 setShippingMethods:v46];
+    [v86 setShippingMethods:availableShippingMethods];
   }
 
 LABEL_33:
-  v56 = [v3 billingContact];
+  billingContact = [protobufCopy billingContact];
 
-  if (v56)
+  if (billingContact)
   {
     v57 = MEMORY[0x1E696ACD0];
     v58 = objc_opt_class();
-    v59 = [v3 billingContact];
-    v60 = [v57 unarchivedObjectOfClass:v58 fromData:v59 error:0];
+    billingContact2 = [protobufCopy billingContact];
+    v60 = [v57 unarchivedObjectOfClass:v58 fromData:billingContact2 error:0];
     [v9 setBillingContact:v60];
   }
 
-  v61 = [v3 shippingContact];
+  shippingContact = [protobufCopy shippingContact];
 
-  if (v61)
+  if (shippingContact)
   {
     v62 = MEMORY[0x1E696ACD0];
     v63 = objc_opt_class();
-    v64 = [v3 shippingContact];
-    v65 = [v62 unarchivedObjectOfClass:v63 fromData:v64 error:0];
+    shippingContact2 = [protobufCopy shippingContact];
+    v65 = [v62 unarchivedObjectOfClass:v63 fromData:shippingContact2 error:0];
     [v9 setShippingContact:v65];
   }
 
-  v66 = [v3 multiTokenContexts];
-  v67 = [v66 pk_arrayByApplyingBlock:&__block_literal_global_141];
+  multiTokenContexts = [protobufCopy multiTokenContexts];
+  v67 = [multiTokenContexts pk_arrayByApplyingBlock:&__block_literal_global_141];
   v68 = v67;
   v69 = MEMORY[0x1E695E0F0];
   if (v67)
@@ -289,52 +289,52 @@ LABEL_33:
   v70 = v69;
 
   [v9 setMultiTokenContexts:v70];
-  v71 = [v3 recurringPaymentRequest];
+  recurringPaymentRequest = [protobufCopy recurringPaymentRequest];
 
-  if (v71)
+  if (recurringPaymentRequest)
   {
-    v72 = [v3 recurringPaymentRequest];
-    v73 = [PKRecurringPaymentRequest recurringPaymentRequestWithProtobuf:v72];
+    recurringPaymentRequest2 = [protobufCopy recurringPaymentRequest];
+    v73 = [PKRecurringPaymentRequest recurringPaymentRequestWithProtobuf:recurringPaymentRequest2];
     [v9 setRecurringPaymentRequest:v73];
   }
 
-  v74 = [v3 automaticReloadPaymentRequest];
+  automaticReloadPaymentRequest = [protobufCopy automaticReloadPaymentRequest];
 
-  if (v74)
+  if (automaticReloadPaymentRequest)
   {
-    v75 = [v3 automaticReloadPaymentRequest];
-    v76 = [PKAutomaticReloadPaymentRequest automaticReloadPaymentRequestWithProtobuf:v75];
+    automaticReloadPaymentRequest2 = [protobufCopy automaticReloadPaymentRequest];
+    v76 = [PKAutomaticReloadPaymentRequest automaticReloadPaymentRequestWithProtobuf:automaticReloadPaymentRequest2];
     [v9 setAutomaticReloadPaymentRequest:v76];
   }
 
-  v77 = [v3 deferredPaymentRequest];
+  deferredPaymentRequest = [protobufCopy deferredPaymentRequest];
 
-  if (v77)
+  if (deferredPaymentRequest)
   {
-    v78 = [v3 deferredPaymentRequest];
-    v79 = [PKDeferredPaymentRequest deferredPaymentRequestWithProtobuf:v78];
+    deferredPaymentRequest2 = [protobufCopy deferredPaymentRequest];
+    v79 = [PKDeferredPaymentRequest deferredPaymentRequestWithProtobuf:deferredPaymentRequest2];
     [v9 setDeferredPaymentRequest:v79];
   }
 
-  v80 = [v3 contentItems];
-  v81 = [v80 pk_arrayByApplyingBlock:&__block_literal_global_148];
+  contentItems = [protobufCopy contentItems];
+  v81 = [contentItems pk_arrayByApplyingBlock:&__block_literal_global_148];
 
   [v9 setPaymentContentItems:v81];
-  v82 = [v3 localizedNavigationTitle];
-  [v9 setLocalizedNavigationTitle:v82];
+  localizedNavigationTitle = [protobufCopy localizedNavigationTitle];
+  [v9 setLocalizedNavigationTitle:localizedNavigationTitle];
 
-  v83 = [v3 localizedSummaryItemsTitle];
-  [v9 setLocalizedSummaryItemsTitle:v83];
+  localizedSummaryItemsTitle = [protobufCopy localizedSummaryItemsTitle];
+  [v9 setLocalizedSummaryItemsTitle:localizedSummaryItemsTitle];
 
-  [v9 setSuppressTotal:{objc_msgSend(v3, "suppressTotal")}];
-  [v9 setSuppressLandscape:{objc_msgSend(v3, "suppressLandscape")}];
-  [v9 setPaymentSummaryPinned:{objc_msgSend(v3, "summaryPinned")}];
-  [v9 setRequestor:{objc_msgSend(v3, "requestor")}];
-  [v9 setConfirmationStyle:{objc_msgSend(v3, "confirmationStyle")}];
-  [v9 setRequestType:{objc_msgSend(v3, "requestType")}];
-  [v9 setRespectSupportedNetworksOrder:{objc_msgSend(v3, "respectSupportedNetworksOrder")}];
-  [v9 setRequestorDeviceType:{objc_msgSend(v3, "requestorDeviceType")}];
-  v84 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v3, "merchantCategoryCode")}];
+  [v9 setSuppressTotal:{objc_msgSend(protobufCopy, "suppressTotal")}];
+  [v9 setSuppressLandscape:{objc_msgSend(protobufCopy, "suppressLandscape")}];
+  [v9 setPaymentSummaryPinned:{objc_msgSend(protobufCopy, "summaryPinned")}];
+  [v9 setRequestor:{objc_msgSend(protobufCopy, "requestor")}];
+  [v9 setConfirmationStyle:{objc_msgSend(protobufCopy, "confirmationStyle")}];
+  [v9 setRequestType:{objc_msgSend(protobufCopy, "requestType")}];
+  [v9 setRespectSupportedNetworksOrder:{objc_msgSend(protobufCopy, "respectSupportedNetworksOrder")}];
+  [v9 setRequestorDeviceType:{objc_msgSend(protobufCopy, "requestorDeviceType")}];
+  v84 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(protobufCopy, "merchantCategoryCode")}];
   [v9 setMerchantCategoryCode:{objc_msgSend(v84, "shortValue")}];
 
   return v9;
@@ -345,57 +345,57 @@ LABEL_33:
   v102 = *MEMORY[0x1E69E9840];
   v3 = objc_alloc_init(PKProtobufPaymentRequest);
   [(PKProtobufPaymentRequest *)v3 setApiType:[(PKPaymentRequest *)self APIType]];
-  v4 = [(PKPaymentRequest *)self merchantIdentifier];
-  [(PKProtobufPaymentRequest *)v3 setMerchantIdentifier:v4];
+  merchantIdentifier = [(PKPaymentRequest *)self merchantIdentifier];
+  [(PKProtobufPaymentRequest *)v3 setMerchantIdentifier:merchantIdentifier];
 
-  v5 = [(PKPaymentRequest *)self attributionIdentifier];
-  [(PKProtobufPaymentRequest *)v3 setAttributionIdentifier:v5];
+  attributionIdentifier = [(PKPaymentRequest *)self attributionIdentifier];
+  [(PKProtobufPaymentRequest *)v3 setAttributionIdentifier:attributionIdentifier];
 
-  v6 = [(PKPaymentRequest *)self countryCode];
-  [(PKProtobufPaymentRequest *)v3 setCountryCode:v6];
+  countryCode = [(PKPaymentRequest *)self countryCode];
+  [(PKProtobufPaymentRequest *)v3 setCountryCode:countryCode];
 
-  v7 = [(PKPaymentRequest *)self currencyCode];
-  [(PKProtobufPaymentRequest *)v3 setCurrencyCode:v7];
+  currencyCode = [(PKPaymentRequest *)self currencyCode];
+  [(PKProtobufPaymentRequest *)v3 setCurrencyCode:currencyCode];
 
-  v8 = [(PKPaymentRequest *)self supportedNetworks];
-  v9 = [v8 mutableCopy];
+  supportedNetworks = [(PKPaymentRequest *)self supportedNetworks];
+  v9 = [supportedNetworks mutableCopy];
   [(PKProtobufPaymentRequest *)v3 setSupportedNetworks:v9];
 
   [(PKProtobufPaymentRequest *)v3 setMerchantCapabilities:[(PKPaymentRequest *)self merchantCapabilities]];
   [(PKProtobufPaymentRequest *)v3 setRequiredBillingAddressFields:[(PKPaymentRequest *)self requiredBillingAddressFields]];
   [(PKProtobufPaymentRequest *)v3 setRequiredShippingAddressFields:[(PKPaymentRequest *)self requiredShippingAddressFields]];
-  v10 = [(PKPaymentRequest *)self requiredBillingContactFields];
-  v11 = [v10 allObjects];
-  v12 = [v11 mutableCopy];
+  requiredBillingContactFields = [(PKPaymentRequest *)self requiredBillingContactFields];
+  allObjects = [requiredBillingContactFields allObjects];
+  v12 = [allObjects mutableCopy];
   [(PKProtobufPaymentRequest *)v3 setRequiredBillingContactFields:v12];
 
-  v13 = [(PKPaymentRequest *)self requiredShippingContactFields];
-  v14 = [v13 allObjects];
-  v15 = [v14 mutableCopy];
+  requiredShippingContactFields = [(PKPaymentRequest *)self requiredShippingContactFields];
+  allObjects2 = [requiredShippingContactFields allObjects];
+  v15 = [allObjects2 mutableCopy];
   [(PKProtobufPaymentRequest *)v3 setRequiredShippingContactFields:v15];
 
-  v16 = [(PKPaymentRequest *)self applicationData];
-  [(PKProtobufPaymentRequest *)v3 setApplicationData:v16];
+  applicationData = [(PKPaymentRequest *)self applicationData];
+  [(PKProtobufPaymentRequest *)v3 setApplicationData:applicationData];
 
-  v17 = [(PKPaymentRequest *)self originatingURL];
-  v18 = [v17 absoluteString];
-  [(PKProtobufPaymentRequest *)v3 setOriginatingURL:v18];
+  originatingURL = [(PKPaymentRequest *)self originatingURL];
+  absoluteString = [originatingURL absoluteString];
+  [(PKProtobufPaymentRequest *)v3 setOriginatingURL:absoluteString];
 
   [(PKProtobufPaymentRequest *)v3 setExpectsMerchantSession:[(PKPaymentRequest *)self shouldUseMerchantSession]];
-  v19 = [(PKPaymentRequest *)self supportedCountries];
-  v20 = [v19 allObjects];
-  v21 = [v20 mutableCopy];
+  supportedCountries = [(PKPaymentRequest *)self supportedCountries];
+  allObjects3 = [supportedCountries allObjects];
+  v21 = [allObjects3 mutableCopy];
   [(PKProtobufPaymentRequest *)v3 setSupportedCountries:v21];
 
-  v22 = [(PKPaymentRequest *)self userAgent];
-  [(PKProtobufPaymentRequest *)v3 setUserAgent:v22];
+  userAgent = [(PKPaymentRequest *)self userAgent];
+  [(PKProtobufPaymentRequest *)v3 setUserAgent:userAgent];
 
   v95 = 0u;
   v96 = 0u;
   v93 = 0u;
   v94 = 0u;
-  v23 = [(PKPaymentRequest *)self thumbnailURLs];
-  v24 = [v23 countByEnumeratingWithState:&v93 objects:v101 count:16];
+  thumbnailURLs = [(PKPaymentRequest *)self thumbnailURLs];
+  v24 = [thumbnailURLs countByEnumeratingWithState:&v93 objects:v101 count:16];
   if (v24)
   {
     v25 = v24;
@@ -406,34 +406,34 @@ LABEL_33:
       {
         if (*v94 != v26)
         {
-          objc_enumerationMutation(v23);
+          objc_enumerationMutation(thumbnailURLs);
         }
 
-        v28 = [*(*(&v93 + 1) + 8 * i) absoluteString];
-        [(PKProtobufPaymentRequest *)v3 addThumbnailURLs:v28];
+        absoluteString2 = [*(*(&v93 + 1) + 8 * i) absoluteString];
+        [(PKProtobufPaymentRequest *)v3 addThumbnailURLs:absoluteString2];
       }
 
-      v25 = [v23 countByEnumeratingWithState:&v93 objects:v101 count:16];
+      v25 = [thumbnailURLs countByEnumeratingWithState:&v93 objects:v101 count:16];
     }
 
     while (v25);
   }
 
-  v29 = [(PKPaymentRequest *)self merchantSession];
+  merchantSession = [(PKPaymentRequest *)self merchantSession];
 
-  if (v29)
+  if (merchantSession)
   {
-    v30 = [(PKPaymentRequest *)self merchantSession];
-    v31 = [v30 protobuf];
-    [(PKProtobufPaymentRequest *)v3 setMerchantSession:v31];
+    merchantSession2 = [(PKPaymentRequest *)self merchantSession];
+    protobuf = [merchantSession2 protobuf];
+    [(PKProtobufPaymentRequest *)v3 setMerchantSession:protobuf];
   }
 
   v91 = 0u;
   v92 = 0u;
   v89 = 0u;
   v90 = 0u;
-  v32 = [(PKPaymentRequest *)self paymentSummaryItems];
-  v33 = [v32 countByEnumeratingWithState:&v89 objects:v100 count:16];
+  paymentSummaryItems = [(PKPaymentRequest *)self paymentSummaryItems];
+  v33 = [paymentSummaryItems countByEnumeratingWithState:&v89 objects:v100 count:16];
   if (v33)
   {
     v34 = v33;
@@ -444,14 +444,14 @@ LABEL_33:
       {
         if (*v90 != v35)
         {
-          objc_enumerationMutation(v32);
+          objc_enumerationMutation(paymentSummaryItems);
         }
 
-        v37 = [*(*(&v89 + 1) + 8 * j) summaryItemProtobuf];
-        [(PKProtobufPaymentRequest *)v3 addSummaryItems:v37];
+        summaryItemProtobuf = [*(*(&v89 + 1) + 8 * j) summaryItemProtobuf];
+        [(PKProtobufPaymentRequest *)v3 addSummaryItems:summaryItemProtobuf];
       }
 
-      v34 = [v32 countByEnumeratingWithState:&v89 objects:v100 count:16];
+      v34 = [paymentSummaryItems countByEnumeratingWithState:&v89 objects:v100 count:16];
     }
 
     while (v34);
@@ -461,8 +461,8 @@ LABEL_33:
   v88 = 0u;
   v85 = 0u;
   v86 = 0u;
-  v38 = [(PKPaymentRequest *)self shippingMethods];
-  v39 = [v38 countByEnumeratingWithState:&v85 objects:v99 count:16];
+  shippingMethods = [(PKPaymentRequest *)self shippingMethods];
+  v39 = [shippingMethods countByEnumeratingWithState:&v85 objects:v99 count:16];
   if (v39)
   {
     v40 = v39;
@@ -473,45 +473,45 @@ LABEL_33:
       {
         if (*v86 != v41)
         {
-          objc_enumerationMutation(v38);
+          objc_enumerationMutation(shippingMethods);
         }
 
-        v43 = [*(*(&v85 + 1) + 8 * k) shippingMethodProtobuf];
-        [(PKProtobufPaymentRequest *)v3 addShippingMethods:v43];
+        shippingMethodProtobuf = [*(*(&v85 + 1) + 8 * k) shippingMethodProtobuf];
+        [(PKProtobufPaymentRequest *)v3 addShippingMethods:shippingMethodProtobuf];
       }
 
-      v40 = [v38 countByEnumeratingWithState:&v85 objects:v99 count:16];
+      v40 = [shippingMethods countByEnumeratingWithState:&v85 objects:v99 count:16];
     }
 
     while (v40);
   }
 
-  v44 = [(PKPaymentRequest *)self availableShippingMethods];
-  v45 = [v44 protobuf];
-  [(PKProtobufPaymentRequest *)v3 setAvailableShippingMethods:v45];
+  availableShippingMethods = [(PKPaymentRequest *)self availableShippingMethods];
+  protobuf2 = [availableShippingMethods protobuf];
+  [(PKProtobufPaymentRequest *)v3 setAvailableShippingMethods:protobuf2];
 
-  v46 = [(PKPaymentRequest *)self billingContact];
+  billingContact = [(PKPaymentRequest *)self billingContact];
 
-  if (v46)
+  if (billingContact)
   {
     v47 = MEMORY[0x1E696ACC8];
-    v48 = [(PKPaymentRequest *)self billingContact];
-    v49 = [v47 archivedDataWithRootObject:v48 requiringSecureCoding:1 error:0];
+    billingContact2 = [(PKPaymentRequest *)self billingContact];
+    v49 = [v47 archivedDataWithRootObject:billingContact2 requiringSecureCoding:1 error:0];
     [(PKProtobufPaymentRequest *)v3 setBillingContact:v49];
   }
 
-  v50 = [(PKPaymentRequest *)self shippingContact];
+  shippingContact = [(PKPaymentRequest *)self shippingContact];
 
-  if (v50)
+  if (shippingContact)
   {
     v51 = MEMORY[0x1E696ACC8];
-    v52 = [(PKPaymentRequest *)self shippingContact];
-    v53 = [v51 archivedDataWithRootObject:v52 requiringSecureCoding:1 error:0];
+    shippingContact2 = [(PKPaymentRequest *)self shippingContact];
+    v53 = [v51 archivedDataWithRootObject:shippingContact2 requiringSecureCoding:1 error:0];
     [(PKProtobufPaymentRequest *)v3 setShippingContact:v53];
   }
 
-  v54 = [(PKPaymentRequest *)self multiTokenContexts];
-  v55 = [v54 count];
+  multiTokenContexts = [(PKPaymentRequest *)self multiTokenContexts];
+  v55 = [multiTokenContexts count];
 
   if (v55)
   {
@@ -519,8 +519,8 @@ LABEL_33:
     v84 = 0u;
     v81 = 0u;
     v82 = 0u;
-    v56 = [(PKPaymentRequest *)self multiTokenContexts];
-    v57 = [v56 countByEnumeratingWithState:&v81 objects:v98 count:16];
+    multiTokenContexts2 = [(PKPaymentRequest *)self multiTokenContexts];
+    v57 = [multiTokenContexts2 countByEnumeratingWithState:&v81 objects:v98 count:16];
     if (v57)
     {
       v58 = v57;
@@ -531,38 +531,38 @@ LABEL_33:
         {
           if (*v82 != v59)
           {
-            objc_enumerationMutation(v56);
+            objc_enumerationMutation(multiTokenContexts2);
           }
 
-          v61 = [*(*(&v81 + 1) + 8 * m) protobuf];
-          [(PKProtobufPaymentRequest *)v3 addMultiTokenContexts:v61];
+          protobuf3 = [*(*(&v81 + 1) + 8 * m) protobuf];
+          [(PKProtobufPaymentRequest *)v3 addMultiTokenContexts:protobuf3];
         }
 
-        v58 = [v56 countByEnumeratingWithState:&v81 objects:v98 count:16];
+        v58 = [multiTokenContexts2 countByEnumeratingWithState:&v81 objects:v98 count:16];
       }
 
       while (v58);
     }
   }
 
-  v62 = [(PKPaymentRequest *)self recurringPaymentRequest];
-  v63 = [v62 protobuf];
-  [(PKProtobufPaymentRequest *)v3 setRecurringPaymentRequest:v63];
+  recurringPaymentRequest = [(PKPaymentRequest *)self recurringPaymentRequest];
+  protobuf4 = [recurringPaymentRequest protobuf];
+  [(PKProtobufPaymentRequest *)v3 setRecurringPaymentRequest:protobuf4];
 
-  v64 = [(PKPaymentRequest *)self automaticReloadPaymentRequest];
-  v65 = [v64 protobuf];
-  [(PKProtobufPaymentRequest *)v3 setAutomaticReloadPaymentRequest:v65];
+  automaticReloadPaymentRequest = [(PKPaymentRequest *)self automaticReloadPaymentRequest];
+  protobuf5 = [automaticReloadPaymentRequest protobuf];
+  [(PKProtobufPaymentRequest *)v3 setAutomaticReloadPaymentRequest:protobuf5];
 
-  v66 = [(PKPaymentRequest *)self deferredPaymentRequest];
-  v67 = [v66 protobuf];
-  [(PKProtobufPaymentRequest *)v3 setDeferredPaymentRequest:v67];
+  deferredPaymentRequest = [(PKPaymentRequest *)self deferredPaymentRequest];
+  protobuf6 = [deferredPaymentRequest protobuf];
+  [(PKProtobufPaymentRequest *)v3 setDeferredPaymentRequest:protobuf6];
 
   v79 = 0u;
   v80 = 0u;
   v77 = 0u;
   v78 = 0u;
-  v68 = [(PKPaymentRequest *)self paymentContentItems];
-  v69 = [v68 countByEnumeratingWithState:&v77 objects:v97 count:16];
+  paymentContentItems = [(PKPaymentRequest *)self paymentContentItems];
+  v69 = [paymentContentItems countByEnumeratingWithState:&v77 objects:v97 count:16];
   if (v69)
   {
     v70 = v69;
@@ -573,24 +573,24 @@ LABEL_33:
       {
         if (*v78 != v71)
         {
-          objc_enumerationMutation(v68);
+          objc_enumerationMutation(paymentContentItems);
         }
 
-        v73 = [*(*(&v77 + 1) + 8 * n) protobuf];
-        [(PKProtobufPaymentRequest *)v3 addContentItems:v73];
+        protobuf7 = [*(*(&v77 + 1) + 8 * n) protobuf];
+        [(PKProtobufPaymentRequest *)v3 addContentItems:protobuf7];
       }
 
-      v70 = [v68 countByEnumeratingWithState:&v77 objects:v97 count:16];
+      v70 = [paymentContentItems countByEnumeratingWithState:&v77 objects:v97 count:16];
     }
 
     while (v70);
   }
 
-  v74 = [(PKPaymentRequest *)self localizedNavigationTitle];
-  [(PKProtobufPaymentRequest *)v3 setLocalizedNavigationTitle:v74];
+  localizedNavigationTitle = [(PKPaymentRequest *)self localizedNavigationTitle];
+  [(PKProtobufPaymentRequest *)v3 setLocalizedNavigationTitle:localizedNavigationTitle];
 
-  v75 = [(PKPaymentRequest *)self localizedSummaryItemsTitle];
-  [(PKProtobufPaymentRequest *)v3 setLocalizedSummaryItemsTitle:v75];
+  localizedSummaryItemsTitle = [(PKPaymentRequest *)self localizedSummaryItemsTitle];
+  [(PKProtobufPaymentRequest *)v3 setLocalizedSummaryItemsTitle:localizedSummaryItemsTitle];
 
   [(PKProtobufPaymentRequest *)v3 setSuppressTotal:[(PKPaymentRequest *)self suppressTotal]];
   [(PKProtobufPaymentRequest *)v3 setSuppressLandscape:[(PKPaymentRequest *)self suppressLandscape]];
@@ -609,82 +609,82 @@ LABEL_33:
 {
   if ([(PKPaymentRequest *)self isServiceProviderPaymentRequest])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)accountServiceTransferRequest
 {
   if ([(PKPaymentRequest *)self isAccountServiceTransferRequest])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (id)peerPaymentRequest
 {
   if ([(PKPaymentRequest *)self isPeerPaymentRequest])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 - (BOOL)isVirtualCardEnrollmentRequest
 {
-  v3 = [(PKPaymentRequest *)self isVirtualCardRequest];
-  if (v3)
+  isVirtualCardRequest = [(PKPaymentRequest *)self isVirtualCardRequest];
+  if (isVirtualCardRequest)
   {
-    LOBYTE(v3) = [(PKPaymentRequest *)self requestType]== 12;
+    LOBYTE(isVirtualCardRequest) = [(PKPaymentRequest *)self requestType]== 12;
   }
 
-  return v3;
+  return isVirtualCardRequest;
 }
 
 - (BOOL)isVirtualCardRefreshRequest
 {
-  v3 = [(PKPaymentRequest *)self isVirtualCardRequest];
-  if (v3)
+  isVirtualCardRequest = [(PKPaymentRequest *)self isVirtualCardRequest];
+  if (isVirtualCardRequest)
   {
-    LOBYTE(v3) = [(PKPaymentRequest *)self requestType]== 14;
+    LOBYTE(isVirtualCardRequest) = [(PKPaymentRequest *)self requestType]== 14;
   }
 
-  return v3;
+  return isVirtualCardRequest;
 }
 
 - (id)virtualCardEnrollmentRequest
 {
   if ([(PKPaymentRequest *)self isVirtualCardEnrollmentRequest])
   {
-    v3 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v3 = 0;
+    selfCopy = 0;
   }
 
-  return v3;
+  return selfCopy;
 }
 
 + (NSArray)availableNetworks
@@ -753,48 +753,48 @@ LABEL_33:
   return v3;
 }
 
-- (PKPaymentRequest)initWithCoder:(id)a3
+- (PKPaymentRequest)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v168.receiver = self;
   v168.super_class = PKPaymentRequest;
   v5 = [(PKPaymentRequest *)&v168 init];
   if (v5)
   {
-    v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantIdentifier"];
+    v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantIdentifier"];
     merchantIdentifier = v5->_merchantIdentifier;
     v5->_merchantIdentifier = v6;
 
-    v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"attributionIdentifier"];
+    v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"attributionIdentifier"];
     attributionIdentifier = v5->_attributionIdentifier;
     v5->_attributionIdentifier = v8;
 
-    v10 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
+    v10 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"countryCode"];
     countryCode = v5->_countryCode;
     v5->_countryCode = v10;
 
     v12 = MEMORY[0x1E695DFD8];
     v13 = objc_opt_class();
     v14 = [v12 setWithObjects:{v13, objc_opt_class(), 0}];
-    v15 = [v4 decodeObjectOfClasses:v14 forKey:@"supportedNetworks"];
+    v15 = [coderCopy decodeObjectOfClasses:v14 forKey:@"supportedNetworks"];
     supportedNetworks = v5->_supportedNetworks;
     v5->_supportedNetworks = v15;
 
-    v5->_respectSupportedNetworksOrder = [v4 decodeBoolForKey:@"respectSupportedNetworksOrder"];
-    v17 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantCapabilities"];
+    v5->_respectSupportedNetworksOrder = [coderCopy decodeBoolForKey:@"respectSupportedNetworksOrder"];
+    v17 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantCapabilities"];
     v5->_merchantCapabilities = [v17 unsignedIntegerValue];
-    v18 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"automaticReloadPaymentRequest"];
+    v18 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"automaticReloadPaymentRequest"];
     automaticReloadPaymentRequest = v5->_automaticReloadPaymentRequest;
     v5->_automaticReloadPaymentRequest = v18;
 
-    v20 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"recurringPaymentRequest"];
+    v20 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"recurringPaymentRequest"];
     recurringPaymentRequest = v5->_recurringPaymentRequest;
     v5->_recurringPaymentRequest = v20;
 
     v22 = MEMORY[0x1E695DFD8];
     v23 = objc_opt_class();
     v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-    v25 = [v4 decodeObjectOfClasses:v24 forKey:@"multiTokenContexts"];
+    v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"multiTokenContexts"];
     v26 = v25;
     if (v25)
     {
@@ -808,260 +808,260 @@ LABEL_33:
 
     objc_storeStrong(&v5->_multiTokenContexts, v27);
 
-    v28 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"deferredPaymentRequest"];
+    v28 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"deferredPaymentRequest"];
     deferredPaymentRequest = v5->_deferredPaymentRequest;
     v5->_deferredPaymentRequest = v28;
 
-    v30 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
+    v30 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"currencyCode"];
     currencyCode = v5->_currencyCode;
     v5->_currencyCode = v30;
 
-    v32 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applicationData"];
+    v32 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applicationData"];
     applicationData = v5->_applicationData;
     v5->_applicationData = v32;
 
-    v5->_supportsCouponCode = [v4 decodeBoolForKey:@"supportsCouponCode"];
-    v34 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"couponCode"];
+    v5->_supportsCouponCode = [coderCopy decodeBoolForKey:@"supportsCouponCode"];
+    v34 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"couponCode"];
     couponCode = v5->_couponCode;
     v5->_couponCode = v34;
 
-    v36 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantCategoryCode"];
+    v36 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantCategoryCode"];
 
     v5->_merchantCategoryCode = [v36 shortValue];
     v37 = MEMORY[0x1E695DFD8];
     v38 = objc_opt_class();
     v39 = [v37 setWithObjects:{v38, objc_opt_class(), 0}];
-    v40 = [v4 decodeObjectOfClasses:v39 forKey:@"paymentSummaryItems"];
+    v40 = [coderCopy decodeObjectOfClasses:v39 forKey:@"paymentSummaryItems"];
     paymentSummaryItems = v5->_paymentSummaryItems;
     v5->_paymentSummaryItems = v40;
 
     v42 = MEMORY[0x1E695DFD8];
     v43 = objc_opt_class();
     v44 = [v42 setWithObjects:{v43, objc_opt_class(), 0}];
-    v45 = [v4 decodeObjectOfClasses:v44 forKey:@"requiredBillingContactFields"];
+    v45 = [coderCopy decodeObjectOfClasses:v44 forKey:@"requiredBillingContactFields"];
     requiredBillingContactFields = v5->_requiredBillingContactFields;
     v5->_requiredBillingContactFields = v45;
 
     v47 = MEMORY[0x1E695DFD8];
     v48 = objc_opt_class();
     v49 = [v47 setWithObjects:{v48, objc_opt_class(), 0}];
-    v50 = [v4 decodeObjectOfClasses:v49 forKey:@"requiredShippingContactFields"];
+    v50 = [coderCopy decodeObjectOfClasses:v49 forKey:@"requiredShippingContactFields"];
     requiredShippingContactFields = v5->_requiredShippingContactFields;
     v5->_requiredShippingContactFields = v50;
 
-    v52 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shippingType"];
+    v52 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shippingType"];
 
     v5->_shippingType = [v52 integerValue];
-    v53 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shippingEditableMessage"];
+    v53 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shippingEditableMessage"];
     shippingEditableMessage = v5->_shippingEditableMessage;
     v5->_shippingEditableMessage = v53;
 
-    v55 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shippingContactEditingMode"];
+    v55 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shippingContactEditingMode"];
 
     v5->_shippingContactEditingMode = [v55 integerValue];
-    v56 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shippingContact"];
+    v56 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shippingContact"];
     shippingContact = v5->_shippingContact;
     v5->_shippingContact = v56;
 
     [(PKContact *)v5->_shippingContact sanitizePostalAddressCountry];
-    v58 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"billingContact"];
+    v58 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"billingContact"];
     billingContact = v5->_billingContact;
     v5->_billingContact = v58;
 
     [(PKContact *)v5->_billingContact sanitizePostalAddressCountry];
-    v60 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applePayLaterAvailability"];
+    v60 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applePayLaterAvailability"];
 
     v5->_applePayLaterAvailability = [v60 integerValue];
-    v61 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteNetworkRequestPaymentTopicID"];
+    v61 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteNetworkRequestPaymentTopicID"];
     remoteNetworkRequestPaymentTopicID = v5->_remoteNetworkRequestPaymentTopicID;
     v5->_remoteNetworkRequestPaymentTopicID = v61;
 
-    v63 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"remoteNetworkRequestInitiationType"];
+    v63 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"remoteNetworkRequestInitiationType"];
     remoteNetworkRequestInitiationType = v5->_remoteNetworkRequestInitiationType;
     v5->_remoteNetworkRequestInitiationType = v63;
 
-    v65 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requiresAddressPrecision"];
+    v65 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requiresAddressPrecision"];
     v5->_requiresAddressPrecision = [v65 BOOLValue];
 
-    v66 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
+    v66 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passTypeIdentifier"];
     passTypeIdentifier = v5->_passTypeIdentifier;
     v5->_passTypeIdentifier = v66;
 
-    v68 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
+    v68 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"passSerialNumber"];
     passSerialNumber = v5->_passSerialNumber;
     v5->_passSerialNumber = v68;
 
-    v70 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"originatingURL"];
+    v70 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"originatingURL"];
     originatingURL = v5->_originatingURL;
     v5->_originatingURL = v70;
 
-    v72 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"merchantSession"];
+    v72 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"merchantSession"];
     merchantSession = v5->_merchantSession;
     v5->_merchantSession = v72;
 
     v74 = MEMORY[0x1E695DFD8];
     v75 = objc_opt_class();
     v76 = [v74 setWithObjects:{v75, objc_opt_class(), 0}];
-    v77 = [v4 decodeObjectOfClasses:v76 forKey:@"thumbnailURLs"];
+    v77 = [coderCopy decodeObjectOfClasses:v76 forKey:@"thumbnailURLs"];
     thumbnailURLs = v5->_thumbnailURLs;
     v5->_thumbnailURLs = v77;
 
-    v79 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"userAgent"];
+    v79 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"userAgent"];
     userAgent = v5->_userAgent;
     v5->_userAgent = v79;
 
-    [v4 decodeDoubleForKey:@"clientCallbackTimeout"];
+    [coderCopy decodeDoubleForKey:@"clientCallbackTimeout"];
     v5->_clientCallbackTimeout = v81;
-    v82 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"applePayTrustSignatureRequest"];
+    v82 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"applePayTrustSignatureRequest"];
     applePayTrustSignatureRequest = v5->_applePayTrustSignatureRequest;
     v5->_applePayTrustSignatureRequest = v82;
 
     v84 = MEMORY[0x1E695DFD8];
     v85 = objc_opt_class();
     v86 = [v84 setWithObjects:{v85, objc_opt_class(), 0}];
-    v87 = [v4 decodeObjectOfClasses:v86 forKey:@"bankAccounts"];
+    v87 = [coderCopy decodeObjectOfClasses:v86 forKey:@"bankAccounts"];
     bankAccounts = v5->_bankAccounts;
     v5->_bankAccounts = v87;
 
-    v5->_accountPaymentSupportsPeerPayment = [v4 decodeBoolForKey:@"accountPaymentSupportsPeerPayment"];
-    v5->_deviceSupportsPeerPaymentAccountPayment = [v4 decodeBoolForKey:@"deviceSupportsPeerPaymentAccountPayment"];
-    v5->_accountPaymentUsePeerPaymentBalance = [v4 decodeBoolForKey:@"accountPaymentUsePeerPaymentBalance"];
-    v5->_paymentFrequency = [v4 decodeIntegerForKey:@"paymentFrequency"];
-    v89 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentDate"];
+    v5->_accountPaymentSupportsPeerPayment = [coderCopy decodeBoolForKey:@"accountPaymentSupportsPeerPayment"];
+    v5->_deviceSupportsPeerPaymentAccountPayment = [coderCopy decodeBoolForKey:@"deviceSupportsPeerPaymentAccountPayment"];
+    v5->_accountPaymentUsePeerPaymentBalance = [coderCopy decodeBoolForKey:@"accountPaymentUsePeerPaymentBalance"];
+    v5->_paymentFrequency = [coderCopy decodeIntegerForKey:@"paymentFrequency"];
+    v89 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentDate"];
     paymentDate = v5->_paymentDate;
     v5->_paymentDate = v89;
 
-    v91 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentTimeZone"];
+    v91 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentTimeZone"];
     paymentTimeZone = v5->_paymentTimeZone;
     v5->_paymentTimeZone = v91;
 
-    v93 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationBundleIdentifier"];
+    v93 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationBundleIdentifier"];
     sourceApplicationBundleIdentifier = v5->_sourceApplicationBundleIdentifier;
     v5->_sourceApplicationBundleIdentifier = v93;
 
-    v95 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationSecondaryIdentifier"];
+    v95 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sourceApplicationSecondaryIdentifier"];
     sourceApplicationSecondaryIdentifier = v5->_sourceApplicationSecondaryIdentifier;
     v5->_sourceApplicationSecondaryIdentifier = v95;
 
-    v97 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"CTDataConnectionServiceType"];
+    v97 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"CTDataConnectionServiceType"];
     CTDataConnectionServiceType = v5->_CTDataConnectionServiceType;
     v5->_CTDataConnectionServiceType = v97;
 
-    v99 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"boundInterfaceIdentifier"];
+    v99 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"boundInterfaceIdentifier"];
     boundInterfaceIdentifier = v5->_boundInterfaceIdentifier;
     v5->_boundInterfaceIdentifier = v99;
 
     v101 = MEMORY[0x1E695DFD8];
     v102 = objc_opt_class();
     v103 = [v101 setWithObjects:{v102, objc_opt_class(), 0}];
-    v104 = [v4 decodeObjectOfClasses:v103 forKey:@"supportedCountries"];
+    v104 = [coderCopy decodeObjectOfClasses:v103 forKey:@"supportedCountries"];
     supportedCountries = v5->_supportedCountries;
     v5->_supportedCountries = v104;
 
     v106 = MEMORY[0x1E695DFD8];
     v107 = objc_opt_class();
     v108 = [v106 setWithObjects:{v107, objc_opt_class(), 0}];
-    v109 = [v4 decodeObjectOfClasses:v108 forKey:@"paymentContentItems"];
+    v109 = [coderCopy decodeObjectOfClasses:v108 forKey:@"paymentContentItems"];
     paymentContentItems = v5->_paymentContentItems;
     v5->_paymentContentItems = v109;
 
-    v111 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"externalizedContext"];
+    v111 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"externalizedContext"];
     externalizedContext = v5->_externalizedContext;
     v5->_externalizedContext = v111;
 
-    v113 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"appleIDAuthenticationContext"];
+    v113 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"appleIDAuthenticationContext"];
     appleIDAuthenticationContext = v5->_appleIDAuthenticationContext;
     v5->_appleIDAuthenticationContext = v113;
 
-    v115 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"clientViewSourceIdentifier"];
+    v115 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"clientViewSourceIdentifier"];
     clientViewSourceIdentifier = v5->_clientViewSourceIdentifier;
     v5->_clientViewSourceIdentifier = v115;
 
-    v117 = [v4 decodePropertyListForKey:@"clientViewSourceParameter"];
+    v117 = [coderCopy decodePropertyListForKey:@"clientViewSourceParameter"];
     clientViewSourceParameter = v5->_clientViewSourceParameter;
     v5->_clientViewSourceParameter = v117;
 
-    v119 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedNavigationTitle"];
+    v119 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedNavigationTitle"];
     localizedNavigationTitle = v5->_localizedNavigationTitle;
     v5->_localizedNavigationTitle = v119;
 
-    v121 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedConfirmationTitle"];
+    v121 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedConfirmationTitle"];
     localizedConfirmationTitle = v5->_localizedConfirmationTitle;
     v5->_localizedConfirmationTitle = v121;
 
-    v123 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedPhysicalButtonConfirmationTitle"];
+    v123 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedPhysicalButtonConfirmationTitle"];
     localizedPhysicalButtonConfirmationTitle = v5->_localizedPhysicalButtonConfirmationTitle;
     v5->_localizedPhysicalButtonConfirmationTitle = v123;
 
-    v125 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedPasswordButtonTitle"];
+    v125 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedPasswordButtonTitle"];
     localizedPasswordButtonTitle = v5->_localizedPasswordButtonTitle;
     v5->_localizedPasswordButtonTitle = v125;
 
-    v5->_suppressTotal = [v4 decodeBoolForKey:@"suppressTotal"];
-    v5->_suppressLandscape = [v4 decodeBoolForKey:@"suppressLandscape"];
-    v5->_paymentSummaryPinned = [v4 decodeBoolForKey:@"paymentSummaryPinned"];
-    v127 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"paymentSummaryItemsTitle"];
+    v5->_suppressTotal = [coderCopy decodeBoolForKey:@"suppressTotal"];
+    v5->_suppressLandscape = [coderCopy decodeBoolForKey:@"suppressLandscape"];
+    v5->_paymentSummaryPinned = [coderCopy decodeBoolForKey:@"paymentSummaryPinned"];
+    v127 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"paymentSummaryItemsTitle"];
     localizedSummaryItemsTitle = v5->_localizedSummaryItemsTitle;
     v5->_localizedSummaryItemsTitle = v127;
 
-    v5->_confirmationStyle = [v4 decodeIntegerForKey:@"confirmationStyle"];
-    v5->_APIType = [v4 decodeIntegerForKey:@"APIType"];
-    v5->_supportsInstantFundsIn = [v4 decodeBoolForKey:@"supportsInstantFundsIn"];
-    v129 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"installmentConfiguration"];
+    v5->_confirmationStyle = [coderCopy decodeIntegerForKey:@"confirmationStyle"];
+    v5->_APIType = [coderCopy decodeIntegerForKey:@"APIType"];
+    v5->_supportsInstantFundsIn = [coderCopy decodeBoolForKey:@"supportsInstantFundsIn"];
+    v129 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"installmentConfiguration"];
     installmentConfiguration = v5->_installmentConfiguration;
     v5->_installmentConfiguration = v129;
 
-    v131 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedErrorMessage"];
+    v131 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedErrorMessage"];
     localizedErrorMessage = v5->_localizedErrorMessage;
     v5->_localizedErrorMessage = v131;
 
-    v133 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedAutorizingTitle"];
+    v133 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedAutorizingTitle"];
     localizedAuthorizingTitle = v5->_localizedAuthorizingTitle;
     v5->_localizedAuthorizingTitle = v133;
 
-    v135 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedCallbackErrorTitle"];
+    v135 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedCallbackErrorTitle"];
     localizedCallbackErrorTitle = v5->_localizedCallbackErrorTitle;
     v5->_localizedCallbackErrorTitle = v135;
 
-    v137 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedCallbackErrorMessage"];
+    v137 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedCallbackErrorMessage"];
     localizedCallbackErrorMessage = v5->_localizedCallbackErrorMessage;
     v5->_localizedCallbackErrorMessage = v137;
 
-    v139 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedBiometricRetryMessage"];
+    v139 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedBiometricRetryMessage"];
     localizedBiometricRetryMessage = v5->_localizedBiometricRetryMessage;
     v5->_localizedBiometricRetryMessage = v139;
 
-    v141 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"localizedUnboundBiometricMessage"];
+    v141 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"localizedUnboundBiometricMessage"];
     localizedUnboundBiometricMessage = v5->_localizedUnboundBiometricMessage;
     v5->_localizedUnboundBiometricMessage = v141;
 
-    v5->_disablePasscodeFallback = [v4 decodeBoolForKey:@"disablePasscodeFallback"];
-    v5->_useLocationBasedAuthorization = [v4 decodeBoolForKey:@"useLocationBasedAuthorization"];
-    v143 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"hostProcessIdentifier"];
+    v5->_disablePasscodeFallback = [coderCopy decodeBoolForKey:@"disablePasscodeFallback"];
+    v5->_useLocationBasedAuthorization = [coderCopy decodeBoolForKey:@"useLocationBasedAuthorization"];
+    v143 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"hostProcessIdentifier"];
     hostProcessIdentifier = v5->_hostProcessIdentifier;
     v5->_hostProcessIdentifier = v143;
 
-    v145 = [v4 decodePropertyListForKey:@"clientAnalyticsParameters"];
+    v145 = [coderCopy decodePropertyListForKey:@"clientAnalyticsParameters"];
     clientAnalyticsParameters = v5->_clientAnalyticsParameters;
     v5->_clientAnalyticsParameters = v145;
 
-    v147 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestor"];
+    v147 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestor"];
 
     v5->_requestor = [v147 integerValue];
-    v148 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestType"];
+    v148 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestType"];
 
     v5->_requestType = [v148 integerValue];
-    v149 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"requestorDeviceType"];
+    v149 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"requestorDeviceType"];
 
     v5->_requestorDeviceType = [v149 integerValue];
-    v150 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"availableShippingMethods"];
+    v150 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"availableShippingMethods"];
     availableShippingMethods = v5->_availableShippingMethods;
     v5->_availableShippingMethods = v150;
 
     v152 = MEMORY[0x1E695DFD8];
     v153 = objc_opt_class();
     v154 = [v152 setWithObjects:{v153, objc_opt_class(), 0}];
-    v155 = [v4 decodeObjectOfClasses:v154 forKey:@"shippingMethods"];
+    v155 = [coderCopy decodeObjectOfClasses:v154 forKey:@"shippingMethods"];
 
     if (!v5->_availableShippingMethods && v155)
     {
@@ -1070,7 +1070,7 @@ LABEL_33:
       v5->_availableShippingMethods = v156;
     }
 
-    v158 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"accessControlRef"];
+    v158 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"accessControlRef"];
     if (v158)
     {
       v167 = 0;
@@ -1091,14 +1091,14 @@ LABEL_33:
       }
     }
 
-    v161 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"shippingAddress"];
+    v161 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"shippingAddress"];
     v162 = v161;
     if (v161)
     {
       v5->_shippingAddress = [v161 ABPerson];
     }
 
-    v163 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"billingAddress"];
+    v163 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"billingAddress"];
     v164 = v163;
     if (v163)
     {
@@ -1122,159 +1122,159 @@ LABEL_33:
   [(PKPaymentRequest *)&v4 dealloc];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v18 = a3;
-  [v18 encodeObject:self->_merchantIdentifier forKey:@"merchantIdentifier"];
-  [v18 encodeObject:self->_attributionIdentifier forKey:@"attributionIdentifier"];
-  [v18 encodeObject:self->_countryCode forKey:@"countryCode"];
-  [v18 encodeObject:self->_supportedNetworks forKey:@"supportedNetworks"];
-  [v18 encodeBool:self->_respectSupportedNetworksOrder forKey:@"respectSupportedNetworksOrder"];
+  coderCopy = coder;
+  [coderCopy encodeObject:self->_merchantIdentifier forKey:@"merchantIdentifier"];
+  [coderCopy encodeObject:self->_attributionIdentifier forKey:@"attributionIdentifier"];
+  [coderCopy encodeObject:self->_countryCode forKey:@"countryCode"];
+  [coderCopy encodeObject:self->_supportedNetworks forKey:@"supportedNetworks"];
+  [coderCopy encodeBool:self->_respectSupportedNetworksOrder forKey:@"respectSupportedNetworksOrder"];
   v4 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_merchantCapabilities];
-  [v18 encodeObject:v4 forKey:@"merchantCapabilities"];
+  [coderCopy encodeObject:v4 forKey:@"merchantCapabilities"];
 
-  [v18 encodeObject:self->_automaticReloadPaymentRequest forKey:@"automaticReloadPaymentRequest"];
-  [v18 encodeObject:self->_recurringPaymentRequest forKey:@"recurringPaymentRequest"];
-  [v18 encodeObject:self->_deferredPaymentRequest forKey:@"deferredPaymentRequest"];
-  [v18 encodeObject:self->_multiTokenContexts forKey:@"multiTokenContexts"];
-  [v18 encodeBool:self->_supportsCouponCode forKey:@"supportsCouponCode"];
-  [v18 encodeObject:self->_couponCode forKey:@"couponCode"];
-  [v18 encodeObject:self->_paymentSummaryItems forKey:@"paymentSummaryItems"];
-  [v18 encodeObject:self->_currencyCode forKey:@"currencyCode"];
+  [coderCopy encodeObject:self->_automaticReloadPaymentRequest forKey:@"automaticReloadPaymentRequest"];
+  [coderCopy encodeObject:self->_recurringPaymentRequest forKey:@"recurringPaymentRequest"];
+  [coderCopy encodeObject:self->_deferredPaymentRequest forKey:@"deferredPaymentRequest"];
+  [coderCopy encodeObject:self->_multiTokenContexts forKey:@"multiTokenContexts"];
+  [coderCopy encodeBool:self->_supportsCouponCode forKey:@"supportsCouponCode"];
+  [coderCopy encodeObject:self->_couponCode forKey:@"couponCode"];
+  [coderCopy encodeObject:self->_paymentSummaryItems forKey:@"paymentSummaryItems"];
+  [coderCopy encodeObject:self->_currencyCode forKey:@"currencyCode"];
   v5 = [MEMORY[0x1E696AD98] numberWithShort:self->_merchantCategoryCode];
-  [v18 encodeObject:v5 forKey:@"merchantCategoryCode"];
+  [coderCopy encodeObject:v5 forKey:@"merchantCategoryCode"];
 
-  [v18 encodeObject:self->_applicationData forKey:@"applicationData"];
-  [v18 encodeObject:self->_requiredShippingContactFields forKey:@"requiredShippingContactFields"];
-  [v18 encodeObject:self->_requiredBillingContactFields forKey:@"requiredBillingContactFields"];
-  v6 = [(PKShippingMethods *)self->_availableShippingMethods legacyShippingMethods];
-  [v18 encodeObject:v6 forKey:@"shippingMethods"];
+  [coderCopy encodeObject:self->_applicationData forKey:@"applicationData"];
+  [coderCopy encodeObject:self->_requiredShippingContactFields forKey:@"requiredShippingContactFields"];
+  [coderCopy encodeObject:self->_requiredBillingContactFields forKey:@"requiredBillingContactFields"];
+  legacyShippingMethods = [(PKShippingMethods *)self->_availableShippingMethods legacyShippingMethods];
+  [coderCopy encodeObject:legacyShippingMethods forKey:@"shippingMethods"];
 
-  [v18 encodeObject:self->_availableShippingMethods forKey:@"availableShippingMethods"];
+  [coderCopy encodeObject:self->_availableShippingMethods forKey:@"availableShippingMethods"];
   v7 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_shippingType];
-  [v18 encodeObject:v7 forKey:@"shippingType"];
+  [coderCopy encodeObject:v7 forKey:@"shippingType"];
 
-  [v18 encodeObject:self->_shippingEditableMessage forKey:@"shippingEditableMessage"];
+  [coderCopy encodeObject:self->_shippingEditableMessage forKey:@"shippingEditableMessage"];
   v8 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_shippingContactEditingMode];
-  [v18 encodeObject:v8 forKey:@"shippingContactEditingMode"];
+  [coderCopy encodeObject:v8 forKey:@"shippingContactEditingMode"];
 
-  [v18 encodeObject:self->_shippingContact forKey:@"shippingContact"];
-  [v18 encodeObject:self->_billingContact forKey:@"billingContact"];
+  [coderCopy encodeObject:self->_shippingContact forKey:@"shippingContact"];
+  [coderCopy encodeObject:self->_billingContact forKey:@"billingContact"];
   v9 = [MEMORY[0x1E696AD98] numberWithBool:{-[PKPaymentRequest requiresAddressPrecision](self, "requiresAddressPrecision")}];
-  [v18 encodeObject:v9 forKey:@"requiresAddressPrecision"];
+  [coderCopy encodeObject:v9 forKey:@"requiresAddressPrecision"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithUnsignedInteger:self->_applePayLaterAvailability];
-  [v18 encodeObject:v10 forKey:@"applePayLaterAvailability"];
+  [coderCopy encodeObject:v10 forKey:@"applePayLaterAvailability"];
 
-  [v18 encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
-  [v18 encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
-  [v18 encodeObject:self->_originatingURL forKey:@"originatingURL"];
-  [v18 encodeObject:self->_merchantSession forKey:@"merchantSession"];
-  [v18 encodeObject:self->_thumbnailURLs forKey:@"thumbnailURLs"];
-  [v18 encodeObject:self->_userAgent forKey:@"userAgent"];
-  [v18 encodeObject:self->_remoteNetworkRequestPaymentTopicID forKey:@"remoteNetworkRequestPaymentTopicID"];
-  [v18 encodeObject:self->_remoteNetworkRequestInitiationType forKey:@"remoteNetworkRequestInitiationType"];
-  [v18 encodeDouble:@"clientCallbackTimeout" forKey:self->_clientCallbackTimeout];
-  [v18 encodeObject:self->_applePayTrustSignatureRequest forKey:@"applePayTrustSignatureRequest"];
-  [v18 encodeObject:self->_bankAccounts forKey:@"bankAccounts"];
-  [v18 encodeBool:self->_accountPaymentSupportsPeerPayment forKey:@"accountPaymentSupportsPeerPayment"];
-  [v18 encodeBool:self->_deviceSupportsPeerPaymentAccountPayment forKey:@"deviceSupportsPeerPaymentAccountPayment"];
-  [v18 encodeBool:self->_accountPaymentUsePeerPaymentBalance forKey:@"accountPaymentUsePeerPaymentBalance"];
-  [v18 encodeInteger:self->_paymentFrequency forKey:@"paymentFrequency"];
-  [v18 encodeObject:self->_paymentDate forKey:@"paymentDate"];
-  [v18 encodeObject:self->_paymentTimeZone forKey:@"paymentTimeZone"];
-  [v18 encodeObject:self->_sourceApplicationBundleIdentifier forKey:@"sourceApplicationBundleIdentifier"];
-  [v18 encodeObject:self->_sourceApplicationSecondaryIdentifier forKey:@"sourceApplicationSecondaryIdentifier"];
-  [v18 encodeObject:self->_CTDataConnectionServiceType forKey:@"CTDataConnectionServiceType"];
-  [v18 encodeObject:self->_supportedCountries forKey:@"supportedCountries"];
-  [v18 encodeObject:self->_boundInterfaceIdentifier forKey:@"boundInterfaceIdentifier"];
-  [v18 encodeObject:self->_externalizedContext forKey:@"externalizedContext"];
-  [v18 encodeObject:self->_appleIDAuthenticationContext forKey:@"appleIDAuthenticationContext"];
-  [v18 encodeObject:self->_clientViewSourceIdentifier forKey:@"clientViewSourceIdentifier"];
-  [v18 encodeObject:self->_clientViewSourceParameter forKey:@"clientViewSourceParameter"];
-  [v18 encodeObject:self->_paymentContentItems forKey:@"paymentContentItems"];
-  [v18 encodeObject:self->_localizedNavigationTitle forKey:@"localizedNavigationTitle"];
-  [v18 encodeObject:self->_localizedConfirmationTitle forKey:@"localizedConfirmationTitle"];
-  [v18 encodeObject:self->_localizedPhysicalButtonConfirmationTitle forKey:@"localizedPhysicalButtonConfirmationTitle"];
-  [v18 encodeObject:self->_localizedPasswordButtonTitle forKey:@"localizedPasswordButtonTitle"];
-  [v18 encodeObject:self->_localizedSummaryItemsTitle forKey:@"paymentSummaryItemsTitle"];
-  [v18 encodeBool:self->_suppressTotal forKey:@"suppressTotal"];
-  [v18 encodeBool:self->_suppressTotal forKey:@"suppressLandscape"];
-  [v18 encodeBool:self->_paymentSummaryPinned forKey:@"paymentSummaryPinned"];
+  [coderCopy encodeObject:self->_passTypeIdentifier forKey:@"passTypeIdentifier"];
+  [coderCopy encodeObject:self->_passSerialNumber forKey:@"passSerialNumber"];
+  [coderCopy encodeObject:self->_originatingURL forKey:@"originatingURL"];
+  [coderCopy encodeObject:self->_merchantSession forKey:@"merchantSession"];
+  [coderCopy encodeObject:self->_thumbnailURLs forKey:@"thumbnailURLs"];
+  [coderCopy encodeObject:self->_userAgent forKey:@"userAgent"];
+  [coderCopy encodeObject:self->_remoteNetworkRequestPaymentTopicID forKey:@"remoteNetworkRequestPaymentTopicID"];
+  [coderCopy encodeObject:self->_remoteNetworkRequestInitiationType forKey:@"remoteNetworkRequestInitiationType"];
+  [coderCopy encodeDouble:@"clientCallbackTimeout" forKey:self->_clientCallbackTimeout];
+  [coderCopy encodeObject:self->_applePayTrustSignatureRequest forKey:@"applePayTrustSignatureRequest"];
+  [coderCopy encodeObject:self->_bankAccounts forKey:@"bankAccounts"];
+  [coderCopy encodeBool:self->_accountPaymentSupportsPeerPayment forKey:@"accountPaymentSupportsPeerPayment"];
+  [coderCopy encodeBool:self->_deviceSupportsPeerPaymentAccountPayment forKey:@"deviceSupportsPeerPaymentAccountPayment"];
+  [coderCopy encodeBool:self->_accountPaymentUsePeerPaymentBalance forKey:@"accountPaymentUsePeerPaymentBalance"];
+  [coderCopy encodeInteger:self->_paymentFrequency forKey:@"paymentFrequency"];
+  [coderCopy encodeObject:self->_paymentDate forKey:@"paymentDate"];
+  [coderCopy encodeObject:self->_paymentTimeZone forKey:@"paymentTimeZone"];
+  [coderCopy encodeObject:self->_sourceApplicationBundleIdentifier forKey:@"sourceApplicationBundleIdentifier"];
+  [coderCopy encodeObject:self->_sourceApplicationSecondaryIdentifier forKey:@"sourceApplicationSecondaryIdentifier"];
+  [coderCopy encodeObject:self->_CTDataConnectionServiceType forKey:@"CTDataConnectionServiceType"];
+  [coderCopy encodeObject:self->_supportedCountries forKey:@"supportedCountries"];
+  [coderCopy encodeObject:self->_boundInterfaceIdentifier forKey:@"boundInterfaceIdentifier"];
+  [coderCopy encodeObject:self->_externalizedContext forKey:@"externalizedContext"];
+  [coderCopy encodeObject:self->_appleIDAuthenticationContext forKey:@"appleIDAuthenticationContext"];
+  [coderCopy encodeObject:self->_clientViewSourceIdentifier forKey:@"clientViewSourceIdentifier"];
+  [coderCopy encodeObject:self->_clientViewSourceParameter forKey:@"clientViewSourceParameter"];
+  [coderCopy encodeObject:self->_paymentContentItems forKey:@"paymentContentItems"];
+  [coderCopy encodeObject:self->_localizedNavigationTitle forKey:@"localizedNavigationTitle"];
+  [coderCopy encodeObject:self->_localizedConfirmationTitle forKey:@"localizedConfirmationTitle"];
+  [coderCopy encodeObject:self->_localizedPhysicalButtonConfirmationTitle forKey:@"localizedPhysicalButtonConfirmationTitle"];
+  [coderCopy encodeObject:self->_localizedPasswordButtonTitle forKey:@"localizedPasswordButtonTitle"];
+  [coderCopy encodeObject:self->_localizedSummaryItemsTitle forKey:@"paymentSummaryItemsTitle"];
+  [coderCopy encodeBool:self->_suppressTotal forKey:@"suppressTotal"];
+  [coderCopy encodeBool:self->_suppressTotal forKey:@"suppressLandscape"];
+  [coderCopy encodeBool:self->_paymentSummaryPinned forKey:@"paymentSummaryPinned"];
   v11 = [MEMORY[0x1E696AD98] numberWithInteger:self->_requestType];
-  [v18 encodeObject:v11 forKey:@"requestType"];
+  [coderCopy encodeObject:v11 forKey:@"requestType"];
 
   v12 = [MEMORY[0x1E696AD98] numberWithInteger:self->_requestor];
-  [v18 encodeObject:v12 forKey:@"requestor"];
+  [coderCopy encodeObject:v12 forKey:@"requestor"];
 
   v13 = [MEMORY[0x1E696AD98] numberWithInteger:self->_requestorDeviceType];
-  [v18 encodeObject:v13 forKey:@"requestorDeviceType"];
+  [coderCopy encodeObject:v13 forKey:@"requestorDeviceType"];
 
-  [v18 encodeInteger:self->_confirmationStyle forKey:@"confirmationStyle"];
-  [v18 encodeInteger:self->_APIType forKey:@"APIType"];
-  [v18 encodeBool:self->_supportsInstantFundsIn forKey:@"supportsInstantFundsIn"];
-  [v18 encodeObject:self->_installmentConfiguration forKey:@"installmentConfiguration"];
-  [v18 encodeObject:self->_localizedErrorMessage forKey:@"localizedErrorMessage"];
-  [v18 encodeObject:self->_localizedAuthorizingTitle forKey:@"localizedAutorizingTitle"];
-  [v18 encodeObject:self->_localizedCallbackErrorTitle forKey:@"localizedCallbackErrorTitle"];
-  [v18 encodeObject:self->_localizedCallbackErrorMessage forKey:@"localizedCallbackErrorMessage"];
-  [v18 encodeObject:self->_localizedBiometricRetryMessage forKey:@"localizedBiometricRetryMessage"];
-  [v18 encodeObject:self->_localizedUnboundBiometricMessage forKey:@"localizedUnboundBiometricMessage"];
-  [v18 encodeBool:self->_disablePasscodeFallback forKey:@"disablePasscodeFallback"];
-  [v18 encodeBool:self->_useLocationBasedAuthorization forKey:@"useLocationBasedAuthorization"];
-  [v18 encodeObject:self->_hostProcessIdentifier forKey:@"hostProcessIdentifier"];
-  [v18 encodeObject:self->_clientAnalyticsParameters forKey:@"clientAnalyticsParameters"];
+  [coderCopy encodeInteger:self->_confirmationStyle forKey:@"confirmationStyle"];
+  [coderCopy encodeInteger:self->_APIType forKey:@"APIType"];
+  [coderCopy encodeBool:self->_supportsInstantFundsIn forKey:@"supportsInstantFundsIn"];
+  [coderCopy encodeObject:self->_installmentConfiguration forKey:@"installmentConfiguration"];
+  [coderCopy encodeObject:self->_localizedErrorMessage forKey:@"localizedErrorMessage"];
+  [coderCopy encodeObject:self->_localizedAuthorizingTitle forKey:@"localizedAutorizingTitle"];
+  [coderCopy encodeObject:self->_localizedCallbackErrorTitle forKey:@"localizedCallbackErrorTitle"];
+  [coderCopy encodeObject:self->_localizedCallbackErrorMessage forKey:@"localizedCallbackErrorMessage"];
+  [coderCopy encodeObject:self->_localizedBiometricRetryMessage forKey:@"localizedBiometricRetryMessage"];
+  [coderCopy encodeObject:self->_localizedUnboundBiometricMessage forKey:@"localizedUnboundBiometricMessage"];
+  [coderCopy encodeBool:self->_disablePasscodeFallback forKey:@"disablePasscodeFallback"];
+  [coderCopy encodeBool:self->_useLocationBasedAuthorization forKey:@"useLocationBasedAuthorization"];
+  [coderCopy encodeObject:self->_hostProcessIdentifier forKey:@"hostProcessIdentifier"];
+  [coderCopy encodeObject:self->_clientAnalyticsParameters forKey:@"clientAnalyticsParameters"];
   if (self->_accesssControlRef)
   {
     v14 = SecAccessControlCopyData();
     if (v14)
     {
-      [v18 encodeObject:v14 forKey:@"accessControlRef"];
+      [coderCopy encodeObject:v14 forKey:@"accessControlRef"];
     }
   }
 
   if (self->_shippingAddress)
   {
     v15 = [MEMORY[0x1E695CD58] contactWithABRecordRef:?];
-    [v18 encodeObject:v15 forKey:@"shippingAddress"];
+    [coderCopy encodeObject:v15 forKey:@"shippingAddress"];
   }
 
-  v16 = v18;
+  v16 = coderCopy;
   if (self->_billingAddress)
   {
     v17 = [MEMORY[0x1E695CD58] contactWithABRecordRef:?];
-    [v18 encodeObject:v17 forKey:@"billingAddress"];
+    [coderCopy encodeObject:v17 forKey:@"billingAddress"];
 
-    v16 = v18;
+    v16 = coderCopy;
   }
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentRequest *)self isEqualToPaymentRequest:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(PKPaymentRequest *)self isEqualToPaymentRequest:v5];
   }
 
   return v6;
 }
 
-- (BOOL)isEqualToPaymentRequest:(id)a3
+- (BOOL)isEqualToPaymentRequest:(id)request
 {
   v44[28] = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
+  requestCopy = request;
+  v5 = requestCopy;
   v40 = 0;
   v41 = &v40;
   v42 = 0x2020000000;
-  if (self->_merchantCapabilities != *(v4 + 7) || self->_shippingType != *(v4 + 15) || self->_shippingContactEditingMode != *(v4 + 16) || self->_requiresAddressPrecision != v4[16] || self->_requestor != *(v4 + 42) || self->_requestorDeviceType != *(v4 + 64) || self->_requestType != *(v4 + 41))
+  if (self->_merchantCapabilities != *(requestCopy + 7) || self->_shippingType != *(requestCopy + 15) || self->_shippingContactEditingMode != *(requestCopy + 16) || self->_requiresAddressPrecision != requestCopy[16] || self->_requestor != *(requestCopy + 42) || self->_requestorDeviceType != *(requestCopy + 64) || self->_requestType != *(requestCopy + 41))
   {
     goto LABEL_53;
   }
@@ -1519,10 +1519,10 @@ void __44__PKPaymentRequest_isEqualToPaymentRequest___block_invoke(uint64_t a1, 
   self->_multiTokenContexts = v4;
 }
 
-- (void)setAccesssControlRef:(__SecAccessControl *)a3
+- (void)setAccesssControlRef:(__SecAccessControl *)ref
 {
   accesssControlRef = self->_accesssControlRef;
-  if (accesssControlRef != a3)
+  if (accesssControlRef != ref)
   {
     if (accesssControlRef)
     {
@@ -1530,9 +1530,9 @@ void __44__PKPaymentRequest_isEqualToPaymentRequest___block_invoke(uint64_t a1, 
       self->_accesssControlRef = 0;
     }
 
-    if (a3)
+    if (ref)
     {
-      self->_accesssControlRef = CFRetain(a3);
+      self->_accesssControlRef = CFRetain(ref);
     }
   }
 }
@@ -1636,18 +1636,18 @@ void __44__PKPaymentRequest_isEqualToPaymentRequest___block_invoke(uint64_t a1, 
   self->_requiredShippingContactFields = v4;
 }
 
-- (id)_addressFieldsToContactFields:(unint64_t)a3
+- (id)_addressFieldsToContactFields:(unint64_t)fields
 {
-  v3 = a3;
+  fieldsCopy = fields;
   v4 = objc_alloc_init(MEMORY[0x1E695DFA8]);
   v5 = v4;
-  if (v3)
+  if (fieldsCopy)
   {
     [v4 addObject:@"post"];
-    if ((v3 & 8) == 0)
+    if ((fieldsCopy & 8) == 0)
     {
 LABEL_3:
-      if ((v3 & 4) == 0)
+      if ((fieldsCopy & 4) == 0)
       {
         goto LABEL_4;
       }
@@ -1656,16 +1656,16 @@ LABEL_3:
     }
   }
 
-  else if ((v3 & 8) == 0)
+  else if ((fieldsCopy & 8) == 0)
   {
     goto LABEL_3;
   }
 
   [v5 addObject:@"name"];
-  if ((v3 & 4) == 0)
+  if ((fieldsCopy & 4) == 0)
   {
 LABEL_4:
-    if ((v3 & 2) == 0)
+    if ((fieldsCopy & 2) == 0)
     {
       goto LABEL_6;
     }
@@ -1675,7 +1675,7 @@ LABEL_4:
 
 LABEL_11:
   [v5 addObject:@"email"];
-  if ((v3 & 2) != 0)
+  if ((fieldsCopy & 2) != 0)
   {
 LABEL_5:
     [v5 addObject:@"phone"];
@@ -1687,16 +1687,16 @@ LABEL_6:
   return v6;
 }
 
-- (unint64_t)_contactFieldsToAddressFields:(id)a3
+- (unint64_t)_contactFieldsToAddressFields:(id)fields
 {
-  v3 = a3;
-  v4 = [v3 containsObject:@"post"];
-  if ([v3 containsObject:@"name"])
+  fieldsCopy = fields;
+  v4 = [fieldsCopy containsObject:@"post"];
+  if ([fieldsCopy containsObject:@"name"])
   {
     v4 |= 8uLL;
   }
 
-  if ([v3 containsObject:@"email"])
+  if ([fieldsCopy containsObject:@"email"])
   {
     v5 = v4 | 4;
   }
@@ -1706,7 +1706,7 @@ LABEL_6:
     v5 = v4;
   }
 
-  v6 = [v3 containsObject:@"phone"];
+  v6 = [fieldsCopy containsObject:@"phone"];
 
   if (v6)
   {
@@ -1721,10 +1721,10 @@ LABEL_6:
 
 - (id)_transactionAmount
 {
-  v2 = [(NSArray *)self->_paymentSummaryItems lastObject];
-  v3 = [v2 amount];
+  lastObject = [(NSArray *)self->_paymentSummaryItems lastObject];
+  amount = [lastObject amount];
 
-  return v3;
+  return amount;
 }
 
 - (NSData)applicationData
@@ -1739,8 +1739,8 @@ LABEL_6:
     }
 
     v4 = [objc_alloc(MEMORY[0x1E695DF88]) initWithData:self->_applicationData];
-    v5 = [(PKPaymentMerchantSession *)self->_merchantSession ampEnrollmentPinning];
-    v6 = [v5 copy];
+    ampEnrollmentPinning = [(PKPaymentMerchantSession *)self->_merchantSession ampEnrollmentPinning];
+    v6 = [ampEnrollmentPinning copy];
     [(NSData *)v4 appendData:v6];
   }
 
@@ -1754,15 +1754,15 @@ LABEL_6:
 
 - (BOOL)_shouldUseAmpEnrollmentPinning
 {
-  v2 = [(PKPaymentMerchantSession *)self->_merchantSession initiative];
-  if ([v2 isEqualToString:@"amp_enrollment"] & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"amp_payment_token") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"amp_psd2") & 1) != 0 || (objc_msgSend(v2, "isEqualToString:", @"amp_applepay_classic"))
+  initiative = [(PKPaymentMerchantSession *)self->_merchantSession initiative];
+  if ([initiative isEqualToString:@"amp_enrollment"] & 1) != 0 || (objc_msgSend(initiative, "isEqualToString:", @"amp_payment_token") & 1) != 0 || (objc_msgSend(initiative, "isEqualToString:", @"amp_psd2") & 1) != 0 || (objc_msgSend(initiative, "isEqualToString:", @"amp_applepay_classic"))
   {
     v3 = 1;
   }
 
   else
   {
-    v3 = [v2 isEqualToString:@"amp_verification"];
+    v3 = [initiative isEqualToString:@"amp_verification"];
   }
 
   return v3;
@@ -1869,8 +1869,8 @@ LABEL_6:
   availableShippingMethods = self->_availableShippingMethods;
   if (availableShippingMethods)
   {
-    v19 = [(PKShippingMethods *)availableShippingMethods methods];
-    [v3 appendFormat:@"shippingMethods: %d, ", objc_msgSend(v19, "count")];
+    methods = [(PKShippingMethods *)availableShippingMethods methods];
+    [v3 appendFormat:@"shippingMethods: %d, ", objc_msgSend(methods, "count")];
   }
 
   applicationData = self->_applicationData;
@@ -1942,8 +1942,8 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(PKPaymentMerchantSession *)self->_merchantSession initiative];
-  v4 = [v3 isEqualToString:@"amp_psd2"];
+  initiative = [(PKPaymentMerchantSession *)self->_merchantSession initiative];
+  v4 = [initiative isEqualToString:@"amp_psd2"];
 
   return v4;
 }
@@ -1955,8 +1955,8 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(PKPaymentMerchantSession *)self->_merchantSession initiative];
-  v4 = [v3 isEqualToString:@"amp_applepay_classic"];
+  initiative = [(PKPaymentMerchantSession *)self->_merchantSession initiative];
+  v4 = [initiative isEqualToString:@"amp_applepay_classic"];
 
   return v4;
 }
@@ -1978,8 +1978,8 @@ LABEL_6:
     return 0;
   }
 
-  v3 = [(PKPaymentMerchantSession *)self->_merchantSession initiative];
-  v4 = [v3 isEqualToString:@"amp_verification"];
+  initiative = [(PKPaymentMerchantSession *)self->_merchantSession initiative];
+  v4 = [initiative isEqualToString:@"amp_verification"];
 
   return v4;
 }
@@ -2028,36 +2028,36 @@ LABEL_12:
 
 - (BOOL)shouldUseMerchantSession
 {
-  v3 = [(PKPaymentRequest *)self APIType];
-  if ((v3 - 1) < 4)
+  aPIType = [(PKPaymentRequest *)self APIType];
+  if ((aPIType - 1) < 4)
   {
     return 1;
   }
 
-  if (v3)
+  if (aPIType)
   {
     return 0;
   }
 
-  v5 = [(PKPaymentRequest *)self requestType];
-  if (v5 > 0xE)
+  requestType = [(PKPaymentRequest *)self requestType];
+  if (requestType > 0xE)
   {
     return 0;
   }
 
-  if (((1 << v5) & 0x5401) != 0)
+  if (((1 << requestType) & 0x5401) != 0)
   {
     return [(NSString *)self->_merchantIdentifier length]== 0;
   }
 
-  return v5 == 3;
+  return requestType == 3;
 }
 
 - (NSString)hashedMerchantIdentifier
 {
   if ([(PKPaymentRequest *)self shouldUseMerchantSession])
   {
-    v3 = [(PKPaymentMerchantSession *)self->_merchantSession merchantIdentifier];
+    merchantIdentifier = [(PKPaymentMerchantSession *)self->_merchantSession merchantIdentifier];
   }
 
   else
@@ -2066,26 +2066,26 @@ LABEL_12:
     if (merchantIdentifier)
     {
       v5 = [(NSString *)merchantIdentifier dataUsingEncoding:4];
-      v6 = [v5 SHA256Hash];
-      v3 = [v6 hexEncoding];
+      sHA256Hash = [v5 SHA256Hash];
+      merchantIdentifier = [sHA256Hash hexEncoding];
     }
 
     else
     {
-      v3 = 0;
+      merchantIdentifier = 0;
     }
   }
 
-  v7 = [v3 lowercaseString];
-  v8 = [v7 pk_stringIfNotEmpty];
+  lowercaseString = [merchantIdentifier lowercaseString];
+  pk_stringIfNotEmpty = [lowercaseString pk_stringIfNotEmpty];
 
-  return v8;
+  return pk_stringIfNotEmpty;
 }
 
-- (PKPaymentRequest)initWithDictionary:(id)a3 error:(id *)a4
+- (PKPaymentRequest)initWithDictionary:(id)dictionary error:(id *)error
 {
   v185 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  dictionaryCopy = dictionary;
   v7 = [(PKPaymentRequest *)self init];
 
   if (!v7)
@@ -2093,12 +2093,12 @@ LABEL_12:
     goto LABEL_110;
   }
 
-  v133 = a4;
-  v8 = [v6 PKDictionaryForKey:@"applePay"];
+  errorCopy = error;
+  v8 = [dictionaryCopy PKDictionaryForKey:@"applePay"];
   v134 = [v8 PKStringForKey:@"merchantIdentifier"];
   objc_storeStrong(&v7->_merchantIdentifier, v134);
-  v138 = v6;
-  v9 = [v6 PKStringForKey:@"attributionIdentifier"];
+  v138 = dictionaryCopy;
+  v9 = [dictionaryCopy PKStringForKey:@"attributionIdentifier"];
   attributionIdentifier = v7->_attributionIdentifier;
   v7->_attributionIdentifier = v9;
 
@@ -2512,7 +2512,7 @@ LABEL_64:
     v7->_requiredBillingContactFields = v95;
   }
 
-  v6 = v138;
+  dictionaryCopy = v138;
   v97 = [v138 PKDictionaryForKey:@"shippingContact"];
   if (v97)
   {
@@ -2544,13 +2544,13 @@ LABEL_64:
     v107 = v105;
     v112 = _PKEnumValueFromString(v105, v106, @"PKPaymentRequestAPIType", @"PKPaymentRequestAPITypeInApp, PKPaymentRequestAPITypeWebJS, PKPaymentRequestAPITypeWebPaymentRequest, PKPaymentRequestAPITypeWinterpeg, PKPaymentRequestAPITypeAMPEnrollment", v108, v109, v110, v111, 0);
 
-    v6 = v138;
+    dictionaryCopy = v138;
     v7->_APIType = v112;
   }
 
   v113 = v104;
   v114 = [PKPaymentRequestValidator validatorWithObject:v7];
-  v115 = [v114 isValidWithAPIType:v7->_APIType withError:v133];
+  v115 = [v114 isValidWithAPIType:v7->_APIType withError:errorCopy];
 
   if ((v115 & 1) == 0)
   {
@@ -2564,14 +2564,14 @@ LABEL_110:
   return v116;
 }
 
-+ (id)errorFromDictionary:(id)a3
++ (id)errorFromDictionary:(id)dictionary
 {
-  v3 = a3;
+  dictionaryCopy = dictionary;
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);
-  v5 = [v3 objectForKeyedSubscript:@"message"];
+  v5 = [dictionaryCopy objectForKeyedSubscript:@"message"];
   [v4 setObject:v5 forKeyedSubscript:*MEMORY[0x1E696A578]];
 
-  v6 = [v3 objectForKey:@"code"];
+  v6 = [dictionaryCopy objectForKey:@"code"];
   if ([v6 isEqualToString:@"shippingContactInvalid"])
   {
     v7 = 1;
@@ -2592,7 +2592,7 @@ LABEL_110:
     v7 = -1;
   }
 
-  v8 = [v3 objectForKey:@"contactField"];
+  v8 = [dictionaryCopy objectForKey:@"contactField"];
   if ([v8 isEqualToString:@"phoneNumber"])
   {
     v9 = 0;

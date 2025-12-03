@@ -1,19 +1,19 @@
 @interface WiFiUsageNetworkIPv6Details
-- (WiFiUsageNetworkIPv6Details)initWithDictionary:(id)a3;
+- (WiFiUsageNetworkIPv6Details)initWithDictionary:(id)dictionary;
 - (id)description;
 @end
 
 @implementation WiFiUsageNetworkIPv6Details
 
-- (WiFiUsageNetworkIPv6Details)initWithDictionary:(id)a3
+- (WiFiUsageNetworkIPv6Details)initWithDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v10.receiver = self;
   v10.super_class = WiFiUsageNetworkIPv6Details;
   v5 = [(WiFiUsageNetworkIPv6Details *)&v10 init];
   if (v5)
   {
-    v6 = [v4 objectForKey:*MEMORY[0x277CE1758]];
+    v6 = [dictionaryCopy objectForKey:*MEMORY[0x277CE1758]];
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) != 0 && [v6 count])
     {

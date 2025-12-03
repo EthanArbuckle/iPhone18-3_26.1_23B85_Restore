@@ -1,40 +1,40 @@
 @interface NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured
-- (BOOL)isEqual:(id)a3;
-- (NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured)initWithDictionary:(id)a3;
-- (NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured)initWithDictionary:(id)dictionary;
+- (NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured)initWithJSON:(id)n;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addPathGateways:(id)a3;
-- (void)addPathInterfaces:(id)a3;
-- (void)setHasHasIpv4:(BOOL)a3;
-- (void)setHasHasIpv6:(BOOL)a3;
-- (void)setHasIsConstrained:(BOOL)a3;
-- (void)setHasStatus:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)addPathGateways:(id)gateways;
+- (void)addPathInterfaces:(id)interfaces;
+- (void)setHasHasIpv4:(BOOL)ipv4;
+- (void)setHasHasIpv6:(BOOL)ipv6;
+- (void)setHasIsConstrained:(BOOL)constrained;
+- (void)setHasStatus:(BOOL)status;
+- (void)writeTo:(id)to;
 @end
 
 @implementation NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured
 
-- (NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured)initWithDictionary:(id)a3
+- (NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured)initWithDictionary:(id)dictionary
 {
   v49 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v46.receiver = self;
   v46.super_class = NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured;
   v5 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)&v46 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"isExpensive"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"isExpensive"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured setIsExpensive:](v5, "setIsExpensive:", [v6 BOOLValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"pathGateways"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"pathGateways"];
     objc_opt_class();
     v37 = v6;
     if (objc_opt_isKindOfClass())
@@ -78,7 +78,7 @@
       v7 = v8;
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"connectionInfo"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"connectionInfo"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -86,14 +86,14 @@
       [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)v5 setConnectionInfo:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"hasIpv6"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"hasIpv6"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured setHasIpv6:](v5, "setHasIpv6:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"hasIpv4"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"hasIpv4"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -101,7 +101,7 @@
     }
 
     v36 = v19;
-    v20 = [v4 objectForKeyedSubscript:@"isConstrained"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"isConstrained"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -109,7 +109,7 @@
     }
 
     v35 = v20;
-    v21 = [v4 objectForKeyedSubscript:@"pathInterfaces"];
+    v21 = [dictionaryCopy objectForKeyedSubscript:@"pathInterfaces"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -154,7 +154,7 @@
       v18 = v32;
     }
 
-    v29 = [v4 objectForKeyedSubscript:{@"status", v32, v33, v34}];
+    v29 = [dictionaryCopy objectForKeyedSubscript:{@"status", v32, v33, v34}];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -167,30 +167,30 @@
   return v5;
 }
 
-- (NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured)initWithJSON:(id)a3
+- (NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -204,19 +204,19 @@
 - (id)dictionaryRepresentation
 {
   v40 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   if (self->_connectionInfo)
   {
-    v4 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self connectionInfo];
-    v5 = [v4 copy];
-    [v3 setObject:v5 forKeyedSubscript:@"connectionInfo"];
+    connectionInfo = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self connectionInfo];
+    v5 = [connectionInfo copy];
+    [dictionary setObject:v5 forKeyedSubscript:@"connectionInfo"];
   }
 
   has = self->_has;
   if ((has & 4) != 0)
   {
     v26 = [MEMORY[0x1E696AD98] numberWithBool:{-[NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured hasIpv4](self, "hasIpv4")}];
-    [v3 setObject:v26 forKeyedSubscript:@"hasIpv4"];
+    [dictionary setObject:v26 forKeyedSubscript:@"hasIpv4"];
 
     has = self->_has;
     if ((has & 2) == 0)
@@ -237,7 +237,7 @@ LABEL_5:
   }
 
   v27 = [MEMORY[0x1E696AD98] numberWithBool:{-[NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured hasIpv6](self, "hasIpv6")}];
-  [v3 setObject:v27 forKeyedSubscript:@"hasIpv6"];
+  [dictionary setObject:v27 forKeyedSubscript:@"hasIpv6"];
 
   has = self->_has;
   if ((has & 8) == 0)
@@ -253,19 +253,19 @@ LABEL_6:
 
 LABEL_37:
   v28 = [MEMORY[0x1E696AD98] numberWithBool:{-[NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured isConstrained](self, "isConstrained")}];
-  [v3 setObject:v28 forKeyedSubscript:@"isConstrained"];
+  [dictionary setObject:v28 forKeyedSubscript:@"isConstrained"];
 
   if (*&self->_has)
   {
 LABEL_7:
     v7 = [MEMORY[0x1E696AD98] numberWithBool:{-[NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured isExpensive](self, "isExpensive")}];
-    [v3 setObject:v7 forKeyedSubscript:@"isExpensive"];
+    [dictionary setObject:v7 forKeyedSubscript:@"isExpensive"];
   }
 
 LABEL_8:
   if ([(NSArray *)self->_pathGateways count])
   {
-    v8 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v34 = 0u;
     v35 = 0u;
     v36 = 0u;
@@ -285,16 +285,16 @@ LABEL_8:
             objc_enumerationMutation(v9);
           }
 
-          v14 = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
-          if (v14)
+          dictionaryRepresentation = [*(*(&v34 + 1) + 8 * i) dictionaryRepresentation];
+          if (dictionaryRepresentation)
           {
-            [v8 addObject:v14];
+            [array addObject:dictionaryRepresentation];
           }
 
           else
           {
-            v15 = [MEMORY[0x1E695DFB0] null];
-            [v8 addObject:v15];
+            null = [MEMORY[0x1E695DFB0] null];
+            [array addObject:null];
           }
         }
 
@@ -304,12 +304,12 @@ LABEL_8:
       while (v11);
     }
 
-    [v3 setObject:v8 forKeyedSubscript:@"pathGateways"];
+    [dictionary setObject:array forKeyedSubscript:@"pathGateways"];
   }
 
   if ([(NSArray *)self->_pathInterfaces count])
   {
-    v16 = [MEMORY[0x1E695DF70] array];
+    array2 = [MEMORY[0x1E695DF70] array];
     v30 = 0u;
     v31 = 0u;
     v32 = 0u;
@@ -329,16 +329,16 @@ LABEL_8:
             objc_enumerationMutation(v17);
           }
 
-          v22 = [*(*(&v30 + 1) + 8 * j) dictionaryRepresentation];
-          if (v22)
+          dictionaryRepresentation2 = [*(*(&v30 + 1) + 8 * j) dictionaryRepresentation];
+          if (dictionaryRepresentation2)
           {
-            [v16 addObject:v22];
+            [array2 addObject:dictionaryRepresentation2];
           }
 
           else
           {
-            v23 = [MEMORY[0x1E695DFB0] null];
-            [v16 addObject:v23];
+            null2 = [MEMORY[0x1E695DFB0] null];
+            [array2 addObject:null2];
           }
         }
 
@@ -348,7 +348,7 @@ LABEL_8:
       while (v19);
     }
 
-    [v3 setObject:v16 forKeyedSubscript:@"pathInterfaces"];
+    [dictionary setObject:array2 forKeyedSubscript:@"pathInterfaces"];
   }
 
   if ((*&self->_has & 0x10) != 0)
@@ -364,12 +364,12 @@ LABEL_8:
       v25 = off_1E78DB0D0[v24];
     }
 
-    [v3 setObject:v25 forKeyedSubscript:@"status"];
+    [dictionary setObject:v25 forKeyedSubscript:@"status"];
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -436,15 +436,15 @@ LABEL_11:
   return v4 ^ v3 ^ v5 ^ v6 ^ v7 ^ v8 ^ v9 ^ v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_31;
   }
 
-  if ((*&self->_has & 1) != (v4[52] & 1))
+  if ((*&self->_has & 1) != (equalCopy[52] & 1))
   {
     goto LABEL_31;
   }
@@ -452,26 +452,26 @@ LABEL_11:
   if (*&self->_has)
   {
     isExpensive = self->_isExpensive;
-    if (isExpensive != [v4 isExpensive])
+    if (isExpensive != [equalCopy isExpensive])
     {
       goto LABEL_31;
     }
   }
 
-  v6 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathGateways];
-  v7 = [v4 pathGateways];
-  if ((v6 != 0) == (v7 == 0))
+  pathGateways = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathGateways];
+  pathGateways2 = [equalCopy pathGateways];
+  if ((pathGateways != 0) == (pathGateways2 == 0))
   {
     goto LABEL_30;
   }
 
-  v8 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathGateways];
-  if (v8)
+  pathGateways3 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathGateways];
+  if (pathGateways3)
   {
-    v9 = v8;
-    v10 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathGateways];
-    v11 = [v4 pathGateways];
-    v12 = [v10 isEqual:v11];
+    v9 = pathGateways3;
+    pathGateways4 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathGateways];
+    pathGateways5 = [equalCopy pathGateways];
+    v12 = [pathGateways4 isEqual:pathGateways5];
 
     if (!v12)
     {
@@ -483,20 +483,20 @@ LABEL_11:
   {
   }
 
-  v6 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self connectionInfo];
-  v7 = [v4 connectionInfo];
-  if ((v6 != 0) == (v7 == 0))
+  pathGateways = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self connectionInfo];
+  pathGateways2 = [equalCopy connectionInfo];
+  if ((pathGateways != 0) == (pathGateways2 == 0))
   {
     goto LABEL_30;
   }
 
-  v13 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self connectionInfo];
-  if (v13)
+  connectionInfo = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self connectionInfo];
+  if (connectionInfo)
   {
-    v14 = v13;
-    v15 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self connectionInfo];
-    v16 = [v4 connectionInfo];
-    v17 = [v15 isEqual:v16];
+    v14 = connectionInfo;
+    connectionInfo2 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self connectionInfo];
+    connectionInfo3 = [equalCopy connectionInfo];
+    v17 = [connectionInfo2 isEqual:connectionInfo3];
 
     if (!v17)
     {
@@ -510,7 +510,7 @@ LABEL_11:
 
   has = self->_has;
   v19 = (*&has >> 1) & 1;
-  v20 = v4[52];
+  v20 = equalCopy[52];
   if (v19 != ((v20 >> 1) & 1))
   {
     goto LABEL_31;
@@ -519,13 +519,13 @@ LABEL_11:
   if (v19)
   {
     hasIpv6 = self->_hasIpv6;
-    if (hasIpv6 != [v4 hasIpv6])
+    if (hasIpv6 != [equalCopy hasIpv6])
     {
       goto LABEL_31;
     }
 
     has = self->_has;
-    v20 = v4[52];
+    v20 = equalCopy[52];
   }
 
   v22 = (*&has >> 2) & 1;
@@ -537,13 +537,13 @@ LABEL_11:
   if (v22)
   {
     hasIpv4 = self->_hasIpv4;
-    if (hasIpv4 != [v4 hasIpv4])
+    if (hasIpv4 != [equalCopy hasIpv4])
     {
       goto LABEL_31;
     }
 
     has = self->_has;
-    v20 = v4[52];
+    v20 = equalCopy[52];
   }
 
   v24 = (*&has >> 3) & 1;
@@ -555,28 +555,28 @@ LABEL_11:
   if (v24)
   {
     isConstrained = self->_isConstrained;
-    if (isConstrained != [v4 isConstrained])
+    if (isConstrained != [equalCopy isConstrained])
     {
       goto LABEL_31;
     }
   }
 
-  v6 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathInterfaces];
-  v7 = [v4 pathInterfaces];
-  if ((v6 != 0) == (v7 == 0))
+  pathGateways = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathInterfaces];
+  pathGateways2 = [equalCopy pathInterfaces];
+  if ((pathGateways != 0) == (pathGateways2 == 0))
   {
 LABEL_30:
 
     goto LABEL_31;
   }
 
-  v26 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathInterfaces];
-  if (v26)
+  pathInterfaces = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathInterfaces];
+  if (pathInterfaces)
   {
-    v27 = v26;
-    v28 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathInterfaces];
-    v29 = [v4 pathInterfaces];
-    v30 = [v28 isEqual:v29];
+    v27 = pathInterfaces;
+    pathInterfaces2 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathInterfaces];
+    pathInterfaces3 = [equalCopy pathInterfaces];
+    v30 = [pathInterfaces2 isEqual:pathInterfaces3];
 
     if (!v30)
     {
@@ -589,9 +589,9 @@ LABEL_30:
   }
 
   v33 = (*&self->_has >> 4) & 1;
-  if (v33 == ((v4[52] >> 4) & 1))
+  if (v33 == ((equalCopy[52] >> 4) & 1))
   {
-    if (!v33 || (status = self->_status, status == [v4 status]))
+    if (!v33 || (status = self->_status, status == [equalCopy status]))
     {
       v31 = 1;
       goto LABEL_32;
@@ -605,10 +605,10 @@ LABEL_32:
   return v31;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v27 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (*&self->_has)
   {
     PBDataWriterWriteBOOLField();
@@ -642,9 +642,9 @@ LABEL_32:
     while (v7);
   }
 
-  v10 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self connectionInfo];
+  connectionInfo = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self connectionInfo];
 
-  if (v10)
+  if (connectionInfo)
   {
     PBDataWriterWriteStringField();
   }
@@ -713,9 +713,9 @@ LABEL_16:
   }
 }
 
-- (void)setHasStatus:(BOOL)a3
+- (void)setHasStatus:(BOOL)status
 {
-  if (a3)
+  if (status)
   {
     v3 = 16;
   }
@@ -728,27 +728,27 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xEF | v3;
 }
 
-- (void)addPathInterfaces:(id)a3
+- (void)addPathInterfaces:(id)interfaces
 {
-  v4 = a3;
+  interfacesCopy = interfaces;
   pathInterfaces = self->_pathInterfaces;
-  v8 = v4;
+  v8 = interfacesCopy;
   if (!pathInterfaces)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pathInterfaces;
-    self->_pathInterfaces = v6;
+    self->_pathInterfaces = array;
 
-    v4 = v8;
+    interfacesCopy = v8;
     pathInterfaces = self->_pathInterfaces;
   }
 
-  [(NSArray *)pathInterfaces addObject:v4];
+  [(NSArray *)pathInterfaces addObject:interfacesCopy];
 }
 
-- (void)setHasIsConstrained:(BOOL)a3
+- (void)setHasIsConstrained:(BOOL)constrained
 {
-  if (a3)
+  if (constrained)
   {
     v3 = 8;
   }
@@ -761,9 +761,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xF7 | v3;
 }
 
-- (void)setHasHasIpv4:(BOOL)a3
+- (void)setHasHasIpv4:(BOOL)ipv4
 {
-  if (a3)
+  if (ipv4)
   {
     v3 = 4;
   }
@@ -776,9 +776,9 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (void)setHasHasIpv6:(BOOL)a3
+- (void)setHasHasIpv6:(BOOL)ipv6
 {
-  if (a3)
+  if (ipv6)
   {
     v3 = 2;
   }
@@ -791,36 +791,36 @@ LABEL_16:
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (void)addPathGateways:(id)a3
+- (void)addPathGateways:(id)gateways
 {
-  v4 = a3;
+  gatewaysCopy = gateways;
   pathGateways = self->_pathGateways;
-  v8 = v4;
+  v8 = gatewaysCopy;
   if (!pathGateways)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_pathGateways;
-    self->_pathGateways = v6;
+    self->_pathGateways = array;
 
-    v4 = v8;
+    gatewaysCopy = v8;
     pathGateways = self->_pathGateways;
   }
 
-  [(NSArray *)pathGateways addObject:v4];
+  [(NSArray *)pathGateways addObject:gatewaysCopy];
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
   v11.receiver = self;
   v11.super_class = NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured;
-  v4 = a3;
-  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:v4];
+  policyCopy = policy;
+  v5 = [(SISchemaInstrumentationMessage *)&v11 applySensitiveConditionsPolicy:policyCopy];
   v6 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathGateways:v11.receiver];
-  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:v4];
+  v7 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v6 underConditions:policyCopy];
   [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self setPathGateways:v7];
 
-  v8 = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathInterfaces];
-  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:v8 underConditions:v4];
+  pathInterfaces = [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self pathInterfaces];
+  v9 = [(SISchemaInstrumentationMessage *)self _pruneSuppressedMessagesFromArray:pathInterfaces underConditions:policyCopy];
 
   [(NETSchemaNETDebugNetworkConnectionStatePreparationSnapshotCaptured *)self setPathInterfaces:v9];
 

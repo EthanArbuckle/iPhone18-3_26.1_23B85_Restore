@@ -1,10 +1,10 @@
 @interface VNHumanBodyRecognizedPoint3D
-- (BOOL)isEqual:(id)a3;
-- (VNHumanBodyRecognizedPoint3D)initWithCoder:(id)a3;
-- (__n128)initWithModelPosition:(double)a3 localPosition:(double)a4 jointName:(double)a5 parentJoint:(__n128)a6;
+- (BOOL)isEqual:(id)equal;
+- (VNHumanBodyRecognizedPoint3D)initWithCoder:(id)coder;
+- (__n128)initWithModelPosition:(double)position localPosition:(double)localPosition jointName:(double)name parentJoint:(__n128)joint;
 - (simd_float4x4)localPosition;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNHumanBodyRecognizedPoint3D
@@ -23,15 +23,15 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v13.receiver = self;
   v13.super_class = VNHumanBodyRecognizedPoint3D;
-  if ([(VNRecognizedPoint3D *)&v13 isEqual:v4]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  if ([(VNRecognizedPoint3D *)&v13 isEqual:equalCopy]&& (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v5 = v4;
-    v6 = [v5 parentJoint];
+    v5 = equalCopy;
+    parentJoint = [v5 parentJoint];
     if (VisionCoreEqualOrNilObjects())
     {
       [v5 localPosition];
@@ -52,32 +52,32 @@
   return v11;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = VNHumanBodyRecognizedPoint3D;
-  v4 = a3;
-  [(VNRecognizedPoint3D *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_parentJoint forKey:{@"parentJoint", v5.receiver, v5.super_class}];
-  [v4 vn_encode4x4Matrix:@"localPositionMatrix" forKey:{*&self[1].super.super.super.isa, *self[1].super._anon_10, *&self[1].super._anon_10[16], *&self[1].super._anon_10[32]}];
+  coderCopy = coder;
+  [(VNRecognizedPoint3D *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_parentJoint forKey:{@"parentJoint", v5.receiver, v5.super_class}];
+  [coderCopy vn_encode4x4Matrix:@"localPositionMatrix" forKey:{*&self[1].super.super.super.isa, *self[1].super._anon_10, *&self[1].super._anon_10[16], *&self[1].super._anon_10[32]}];
 }
 
-- (VNHumanBodyRecognizedPoint3D)initWithCoder:(id)a3
+- (VNHumanBodyRecognizedPoint3D)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v15.receiver = self;
   v15.super_class = VNHumanBodyRecognizedPoint3D;
-  v5 = [(VNRecognizedPoint3D *)&v15 initWithCoder:v4];
+  v5 = [(VNRecognizedPoint3D *)&v15 initWithCoder:coderCopy];
   v6 = v5;
   if (v5)
   {
     v7 = v5 + 1;
-    [v4 vn_decode4x4MatrixForKey:@"localPositionMatrix"];
+    [coderCopy vn_decode4x4MatrixForKey:@"localPositionMatrix"];
     v7->super.super = v8;
     *v6[1].super._anon_10 = v9;
     *&v6[1].super._anon_10[16] = v10;
     *&v6[1].super._anon_10[32] = v11;
-    v12 = [v4 decodeObjectForKey:@"parentJoint"];
+    v12 = [coderCopy decodeObjectForKey:@"parentJoint"];
     parentJoint = v6->_parentJoint;
     v6->_parentJoint = v12;
   }
@@ -93,17 +93,17 @@
   return VNHashMatrixFloat4x4(self[1].super.super, *self[1].super._anon_10, *&self[1].super._anon_10[16], *&self[1].super._anon_10[32]) ^ __ROR8__(v3, 51);
 }
 
-- (__n128)initWithModelPosition:(double)a3 localPosition:(double)a4 jointName:(double)a5 parentJoint:(__n128)a6
+- (__n128)initWithModelPosition:(double)position localPosition:(double)localPosition jointName:(double)name parentJoint:(__n128)joint
 {
   v15 = a12;
-  v28.receiver = a1;
+  v28.receiver = self;
   v28.super_class = VNHumanBodyRecognizedPoint3D;
-  v16 = [(VNRecognizedPoint3D *)&v28 initWithPosition:a11 identifier:a2, a3, a4, a5];
-  v17 = v16;
-  if (v16)
+  name = [(VNRecognizedPoint3D *)&v28 initWithPosition:a11 identifier:a2, position, localPosition, name];
+  v17 = name;
+  if (name)
   {
-    objc_storeStrong(&v16->_parentJoint, a12);
-    v17[6] = a6;
+    objc_storeStrong(&name->_parentJoint, a12);
+    v17[6] = joint;
     v17[7] = a7;
     v17[8] = a8;
     v17[9] = a9;

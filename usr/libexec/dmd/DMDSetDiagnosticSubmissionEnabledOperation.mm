@@ -1,6 +1,6 @@
 @interface DMDSetDiagnosticSubmissionEnabledOperation
 + (id)whitelistedClassesForRequest;
-- (void)runWithRequest:(id)a3;
+- (void)runWithRequest:(id)request;
 - (void)waitUntilFinished;
 @end
 
@@ -20,13 +20,13 @@
   return [NSSet setWithObject:v2];
 }
 
-- (void)runWithRequest:(id)a3
+- (void)runWithRequest:(id)request
 {
-  v4 = a3;
+  requestCopy = request;
   v5 = +[MCProfileConnection sharedConnection];
-  v6 = [v4 enabled];
+  enabled = [requestCopy enabled];
 
-  [v5 setBoolValue:v6 forSetting:MCFeatureDiagnosticsSubmissionAllowed];
+  [v5 setBoolValue:enabled forSetting:MCFeatureDiagnosticsSubmissionAllowed];
 
   [(DMDSetDiagnosticSubmissionEnabledOperation *)self endOperationWithResultObject:0];
 }

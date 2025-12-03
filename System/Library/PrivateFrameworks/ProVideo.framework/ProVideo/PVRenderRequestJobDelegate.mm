@@ -1,24 +1,24 @@
 @interface PVRenderRequestJobDelegate
-- (PVRenderRequestJobDelegate)initWithRequest:(id)a3 completionHandler:(id)a4 pvRenderer:(id)a5;
+- (PVRenderRequestJobDelegate)initWithRequest:(id)request completionHandler:(id)handler pvRenderer:(id)renderer;
 - (int)jobPriority;
 - (int)renderContextPriority;
 - (int)renderThreadPriority;
 - (unsigned)jobTypeTag;
 - (unsigned)outputCVPixelBufferFormat;
-- (void)buildGraph:(void *)a3 renderContext:(const void *)a4 frameStats:(void *)a5;
+- (void)buildGraph:(void *)graph renderContext:(const void *)context frameStats:(void *)stats;
 - (void)dealloc;
 - (void)finishCompletedJob;
-- (void)renderJobFinished:(HGRef<PVRenderJob>)a3;
-- (void)setupDestinationBuffers:(void *)a3 renderContext:(const void *)a4 frameStats:(void *)a5;
+- (void)renderJobFinished:(HGRef<PVRenderJob>)finished;
+- (void)setupDestinationBuffers:(void *)buffers renderContext:(const void *)context frameStats:(void *)stats;
 @end
 
 @implementation PVRenderRequestJobDelegate
 
-- (PVRenderRequestJobDelegate)initWithRequest:(id)a3 completionHandler:(id)a4 pvRenderer:(id)a5
+- (PVRenderRequestJobDelegate)initWithRequest:(id)request completionHandler:(id)handler pvRenderer:(id)renderer
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  requestCopy = request;
+  handlerCopy = handler;
+  rendererCopy = renderer;
   v22.receiver = self;
   v22.super_class = PVRenderRequestJobDelegate;
   v12 = [(PVRenderRequestJobDelegate *)&v22 init];
@@ -26,8 +26,8 @@
   v14 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->m_request, a3);
-    objc_storeStrong(&v13->m_pvRenderer, a5);
+    objc_storeStrong(&v12->m_request, request);
+    objc_storeStrong(&v13->m_pvRenderer, renderer);
     PVRenderManager::INSTANCE(v15, &v21);
     m_Obj = v14->m_renderManager.m_Obj;
     v17 = v21;
@@ -50,7 +50,7 @@
       v14->m_renderManager.m_Obj = v17;
     }
 
-    v18 = MEMORY[0x2666EAFC0](v10);
+    v18 = MEMORY[0x2666EAFC0](handlerCopy);
     m_completionHandler = v14->m_completionHandler;
     v14->m_completionHandler = v18;
 
@@ -84,9 +84,9 @@
 
 - (unsigned)outputCVPixelBufferFormat
 {
-  v3 = [(PVRenderRequest *)self->m_request outputCVPixelBufferFormat];
+  outputCVPixelBufferFormat = [(PVRenderRequest *)self->m_request outputCVPixelBufferFormat];
   v4 = 16;
-  if (!v3)
+  if (!outputCVPixelBufferFormat)
   {
     v4 = 8;
   }
@@ -96,13 +96,13 @@
   return [v5 outputCVPixelBufferFormat];
 }
 
-- (void)buildGraph:(void *)a3 renderContext:(const void *)a4 frameStats:(void *)a5
+- (void)buildGraph:(void *)graph renderContext:(const void *)context frameStats:(void *)stats
 {
   v89 = *MEMORY[0x277D85DE8];
   p_m_request = &self->m_request;
-  [(PVRenderer *)self->m_pvRenderer loadInstructionGraphEffects:self->m_request, a4, a5];
-  v7 = [(PVRenderRequest *)*p_m_request highQuality];
-  v8 = [(PVRenderRequest *)*(p_m_request - 1) compositingContext];
+  [(PVRenderer *)self->m_pvRenderer loadInstructionGraphEffects:self->m_request, context, stats];
+  highQuality = [(PVRenderRequest *)*p_m_request highQuality];
+  compositingContext = [(PVRenderRequest *)*(p_m_request - 1) compositingContext];
   [(PVRenderRequest *)*p_m_request outputSize];
   v10 = v9;
   v12 = v11;
@@ -121,7 +121,7 @@
   time = v87;
   v90.width = v10;
   v90.height = v12;
-  PVRendererInstructionGraphContext::PVRendererInstructionGraphContext(v14, v8, v90, v7, &time);
+  PVRendererInstructionGraphContext::PVRendererInstructionGraphContext(v14, compositingContext, v90, highQuality, &time);
 
   v15 = MEMORY[0x277CCACA8];
   m_request = self->m_request;
@@ -146,8 +146,8 @@
   v62 = [v15 stringWithFormat:@"RequestTime: %@", v20];
 
   v21 = v62;
-  v22 = [v62 UTF8String];
-  v23 = strlen(v22);
+  uTF8String = [v62 UTF8String];
+  v23 = strlen(uTF8String);
   if (v23 >= 0x7FFFFFFFFFFFFFF8)
   {
     std::string::__throw_length_error[abi:ne200100]();
@@ -162,7 +162,7 @@
   v86 = v23;
   if (v23)
   {
-    memmove(&__dst, v22, v23);
+    memmove(&__dst, uTF8String, v23);
   }
 
   *(&__dst + v24) = 0;
@@ -191,8 +191,8 @@
     if (v29)
     {
       v30 = v27;
-      v31 = [v28 UTF8String];
-      HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Current Time:           %s\n", v32, v33, v31);
+      uTF8String2 = [v28 UTF8String];
+      HGLogger::log("kPVInstructionGraphToHeliumGraphLogContext", 1, "Current Time:           %s\n", v32, v33, uTF8String2);
     }
 
     CFRelease(v28);
@@ -216,7 +216,7 @@
   v84[1] = 0;
   v83[1] = 0;
   v83[2] = v84;
-  Renderer = HGRenderContext::GetRenderer(a4);
+  Renderer = HGRenderContext::GetRenderer(context);
   v35 = Renderer;
   if (Renderer)
   {
@@ -228,7 +228,7 @@
   v74 = 0u;
   v75 = 0u;
   v76 = 0u;
-  v36 = self;
+  selfCopy2 = self;
   obj = [(PVRenderRequest *)self->m_request outputNodes];
   v37 = [obj countByEnumeratingWithState:&v73 objects:v88 count:16];
   if (v37)
@@ -245,7 +245,7 @@
         }
 
         v39 = *(*(&v73 + 1) + 8 * i);
-        v40 = v36->m_request;
+        v40 = selfCopy2->m_request;
         if (v40)
         {
           [(PVRenderRequest *)v40 time];
@@ -338,8 +338,8 @@
           NSLog(&cfstr_ConformError.isa, v44);
         }
 
-        v46 = [(PVRenderRequestJobDelegate *)self outputCVPixelBufferFormat];
-        if (PVIsMultiplaneCoreVideo420Format(v46) || PVIsMultiplaneCoreVideo422Format(v46))
+        outputCVPixelBufferFormat = [(PVRenderRequestJobDelegate *)self outputCVPixelBufferFormat];
+        if (PVIsMultiplaneCoreVideo420Format(outputCVPixelBufferFormat) || PVIsMultiplaneCoreVideo422Format(outputCVPixelBufferFormat))
         {
           [(PVRenderRequest *)self->m_request outputSize];
           v48 = v47;
@@ -355,17 +355,17 @@
           DOD = HGRenderer::GetDOD(v77, v72);
           v56 = v55;
           v57 = PVInstructionGraphContext::OutputColorSpace(v14);
-          v58 = [v57 nclcTriplet];
+          nclcTriplet = [v57 nclcTriplet];
 
-          PVCreateYUVPlanesWithBackfillBlackBackground(DOD, v56, v51, v53, &v72, v58, v46, a3);
+          PVCreateYUVPlanesWithBackfillBlackBackground(DOD, v56, v51, v53, &v72, nclcTriplet, outputCVPixelBufferFormat, graph);
         }
 
-        else if (v46 == 1380411457 || v46 == 1111970369)
+        else if (outputCVPixelBufferFormat == 1380411457 || outputCVPixelBufferFormat == 1111970369)
         {
-          v59 = *(a3 + 1);
-          if (v59 >= *(a3 + 2))
+          v59 = *(graph + 1);
+          if (v59 >= *(graph + 2))
           {
-            v61 = std::vector<HGRef<HGNode>>::__emplace_back_slow_path<HGRef<HGNode> const&>(a3, &v72);
+            v61 = std::vector<HGRef<HGNode>>::__emplace_back_slow_path<HGRef<HGNode> const&>(graph, &v72);
           }
 
           else
@@ -378,10 +378,10 @@
             }
 
             v61 = (v59 + 1);
-            *(a3 + 1) = v59 + 1;
+            *(graph + 1) = v59 + 1;
           }
 
-          *(a3 + 1) = v61;
+          *(graph + 1) = v61;
         }
 
         if (v72)
@@ -389,7 +389,7 @@
           (*(*v72 + 24))(v72);
         }
 
-        v36 = self;
+        selfCopy2 = self;
       }
 
       v37 = [obj countByEnumeratingWithState:&v73 objects:v88 count:16];
@@ -411,13 +411,13 @@
   }
 }
 
-- (void)setupDestinationBuffers:(void *)a3 renderContext:(const void *)a4 frameStats:(void *)a5
+- (void)setupDestinationBuffers:(void *)buffers renderContext:(const void *)context frameStats:(void *)stats
 {
   if (*(self->m_destinationBitmaps + 1) == *self->m_destinationBitmaps)
   {
-    v8 = [(PVRenderRequestJobDelegate *)self outputCVPixelBufferFormat:a3];
-    v9 = [(PVRenderRequest *)self->m_request outputNodes];
-    v10 = [v9 count];
+    v8 = [(PVRenderRequestJobDelegate *)self outputCVPixelBufferFormat:buffers];
+    outputNodes = [(PVRenderRequest *)self->m_request outputNodes];
+    v10 = [outputNodes count];
 
     for (; v10; --v10)
     {
@@ -437,12 +437,12 @@
       CVBitmapStorage = HGCVBitmap::getCVBitmapStorage(v14, v12);
       if (CVBitmapStorage)
       {
-        PVCreateOutputBufferForHGCVPixelBuffer(*(CVBitmapStorage[16] + 24), a4, a3);
+        PVCreateOutputBufferForHGCVPixelBuffer(*(CVBitmapStorage[16] + 24), context, buffers);
       }
 
       else
       {
-        std::vector<HGRef<HGBitmap>>::push_back[abi:ne200100](a3, &v14);
+        std::vector<HGRef<HGBitmap>>::push_back[abi:ne200100](buffers, &v14);
       }
 
       if (v14)
@@ -497,10 +497,10 @@
   (*(self->m_completionHandler + 2))();
 }
 
-- (void)renderJobFinished:(HGRef<PVRenderJob>)a3
+- (void)renderJobFinished:(HGRef<PVRenderJob>)finished
 {
   m_pvRenderer = self->m_pvRenderer;
-  v4 = *a3.var0;
+  v4 = *finished.var0;
   v5 = v4;
   if (v4)
   {
@@ -516,24 +516,24 @@
 
 - (int)jobPriority
 {
-  v2 = [(PVRenderRequest *)self->m_request priority];
-  if (v2 >= 3)
+  priority = [(PVRenderRequest *)self->m_request priority];
+  if (priority >= 3)
   {
     return 5;
   }
 
   else
   {
-    return 5 * v2;
+    return 5 * priority;
   }
 }
 
 - (int)renderThreadPriority
 {
-  v2 = [(PVRenderRequest *)self->m_request gcdPriority];
-  if (v2 <= 2)
+  gcdPriority = [(PVRenderRequest *)self->m_request gcdPriority];
+  if (gcdPriority <= 2)
   {
-    return v2 + 1;
+    return gcdPriority + 1;
   }
 
   else
@@ -544,15 +544,15 @@
 
 - (int)renderContextPriority
 {
-  v2 = [(PVRenderRequest *)self->m_request gpuPriority];
-  if (v2 >= 3)
+  gpuPriority = [(PVRenderRequest *)self->m_request gpuPriority];
+  if (gpuPriority >= 3)
   {
     return 5;
   }
 
   else
   {
-    return 5 * v2;
+    return 5 * gpuPriority;
   }
 }
 

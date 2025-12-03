@@ -1,12 +1,12 @@
 @interface WADetailedSnippetViewControllerAccessibility
-- (id)_accessibilityLabelForAnswerAtIndex:(unint64_t)a3;
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4;
+- (id)_accessibilityLabelForAnswerAtIndex:(unint64_t)index;
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path;
 - (void)loadView;
 @end
 
 @implementation WADetailedSnippetViewControllerAccessibility
 
-- (id)_accessibilityLabelForAnswerAtIndex:(unint64_t)a3
+- (id)_accessibilityLabelForAnswerAtIndex:(unint64_t)index
 {
   v10 = 0;
   v11 = &v10;
@@ -29,7 +29,7 @@
     v8[3] = &unk_29F31E5B8;
     v8[4] = v9;
     v8[5] = &v10;
-    v8[6] = a3;
+    v8[6] = index;
     [v5 enumerateObjectsUsingBlock:v8];
   }
 
@@ -118,14 +118,14 @@ void __56__WADetailedSnippetViewControllerAccessibility_loadView__block_invoke(u
   [v5 setAccessibilityLabel:v6];
 }
 
-- (id)collectionView:(id)a3 cellForItemAtIndexPath:(id)a4
+- (id)collectionView:(id)view cellForItemAtIndexPath:(id)path
 {
   v12.receiver = self;
   v12.super_class = WADetailedSnippetViewControllerAccessibility;
-  v6 = a4;
-  v7 = [(WADetailedSnippetViewControllerAccessibility *)&v12 collectionView:a3 cellForItemAtIndexPath:v6];
+  pathCopy = path;
+  v7 = [(WADetailedSnippetViewControllerAccessibility *)&v12 collectionView:view cellForItemAtIndexPath:pathCopy];
   [v7 setIsAccessibilityElement:{1, v12.receiver, v12.super_class}];
-  v8 = [v6 row];
+  v8 = [pathCopy row];
 
   v9 = [(WADetailedSnippetViewControllerAccessibility *)self _accessibilityLabelForAnswerAtIndex:v8];
   [v7 setAccessibilityLabel:v9];

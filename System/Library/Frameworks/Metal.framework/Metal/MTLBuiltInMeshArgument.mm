@@ -1,19 +1,19 @@
 @interface MTLBuiltInMeshArgument
-- (BOOL)isEqual:(id)a3;
-- (id)formattedDescription:(unint64_t)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)formattedDescription:(unint64_t)description;
 - (void)dealloc;
 @end
 
 @implementation MTLBuiltInMeshArgument
 
-- (id)formattedDescription:(unint64_t)a3
+- (id)formattedDescription:(unint64_t)description
 {
   v27[3] = *MEMORY[0x1E69E9840];
-  v5 = [@"\n" stringByPaddingToLength:a3 + 4 withString:@" " startingAtIndex:0];
+  v5 = [@"\n" stringByPaddingToLength:description + 4 withString:@" " startingAtIndex:0];
   v20 = MEMORY[0x1E696AEC0];
   v21.receiver = self;
   v21.super_class = MTLBuiltInMeshArgument;
-  v6 = [(MTLBindingInternal *)&v21 formattedDescription:a3];
+  v6 = [(MTLBindingInternal *)&v21 formattedDescription:description];
   v27[0] = v5;
   v27[1] = @"BuiltInArgumentType =";
   v27[2] = MTLBuiltInArgumentTypeString(self->_builtInType);
@@ -23,7 +23,7 @@
   meshVertexStruct = self->_meshVertexStruct;
   if (meshVertexStruct)
   {
-    v9 = [(MTLStructTypeInternal *)meshVertexStruct formattedDescription:a3 + 4];
+    v9 = [(MTLStructTypeInternal *)meshVertexStruct formattedDescription:description + 4];
   }
 
   else
@@ -38,7 +38,7 @@
   meshPrimitiveStruct = self->_meshPrimitiveStruct;
   if (meshPrimitiveStruct)
   {
-    v12 = [(MTLStructTypeInternal *)meshPrimitiveStruct formattedDescription:a3 + 4];
+    v12 = [(MTLStructTypeInternal *)meshPrimitiveStruct formattedDescription:description + 4];
   }
 
   else
@@ -85,22 +85,22 @@
   [(MTLBindingInternal *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3)
+  if (equal)
   {
     objc_opt_class();
-    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_builtInType == *(a3 + 84) && self->_builtInDataType == *(a3 + 85) && self->_meshVertexCount == *(a3 + 86) && self->_meshPrimitiveCount == *(a3 + 87) && self->_meshTopologyType == *(a3 + 88))
+    if ((objc_opt_isKindOfClass() & 1) != 0 && self->_builtInType == *(equal + 84) && self->_builtInDataType == *(equal + 85) && self->_meshVertexCount == *(equal + 86) && self->_meshPrimitiveCount == *(equal + 87) && self->_meshTopologyType == *(equal + 88))
     {
-      v5 = [(MTLStructTypeInternal *)self->_meshVertexStruct isEqual:*(a3 + 23)];
+      v5 = [(MTLStructTypeInternal *)self->_meshVertexStruct isEqual:*(equal + 23)];
       if (v5)
       {
-        v5 = [(MTLStructTypeInternal *)self->_meshPrimitiveStruct isEqual:*(a3 + 24)];
+        v5 = [(MTLStructTypeInternal *)self->_meshPrimitiveStruct isEqual:*(equal + 24)];
         if (v5)
         {
           v7.receiver = self;
           v7.super_class = MTLBuiltInMeshArgument;
-          LOBYTE(v5) = [(MTLBindingInternal *)&v7 isEqual:a3];
+          LOBYTE(v5) = [(MTLBindingInternal *)&v7 isEqual:equal];
         }
       }
     }

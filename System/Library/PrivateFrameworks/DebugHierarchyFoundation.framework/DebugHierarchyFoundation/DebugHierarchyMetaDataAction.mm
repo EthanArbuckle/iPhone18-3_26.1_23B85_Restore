@@ -1,8 +1,8 @@
 @interface DebugHierarchyMetaDataAction
-- (BOOL)matchesEnumsForProviderClass:(Class)a3;
-- (BOOL)matchesOptionsForProviderClass:(Class)a3;
+- (BOOL)matchesEnumsForProviderClass:(Class)class;
+- (BOOL)matchesOptionsForProviderClass:(Class)class;
 - (id)keysToArchiveViaKVC;
-- (void)performInContext:(id)a3;
+- (void)performInContext:(id)context;
 @end
 
 @implementation DebugHierarchyMetaDataAction
@@ -18,9 +18,9 @@
   return v2;
 }
 
-- (void)performInContext:(id)a3
+- (void)performInContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   DebugHierarchyMetaDataProviderClasses();
   v20 = 0u;
   v21 = 0u;
@@ -46,8 +46,8 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v10 = [v4 metaData];
-            v11 = [v10 objectForKeyedSubscript:@"metaDataEnums"];
+            metaData = [contextCopy metaData];
+            v11 = [metaData objectForKeyedSubscript:@"metaDataEnums"];
 
             if (v11)
             {
@@ -57,8 +57,8 @@
             else
             {
               v11 = [v9 mutableCopy];
-              v12 = [v4 metaData];
-              [v12 setObject:v11 forKeyedSubscript:@"metaDataEnums"];
+              metaData2 = [contextCopy metaData];
+              [metaData2 setObject:v11 forKeyedSubscript:@"metaDataEnums"];
             }
           }
         }
@@ -69,8 +69,8 @@
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v14 = [v4 metaData];
-            v15 = [v14 objectForKeyedSubscript:@"metaDataOptions"];
+            metaData3 = [contextCopy metaData];
+            v15 = [metaData3 objectForKeyedSubscript:@"metaDataOptions"];
 
             if (v15)
             {
@@ -80,8 +80,8 @@
             else
             {
               v15 = [v13 mutableCopy];
-              v16 = [v4 metaData];
-              [v16 setObject:v15 forKeyedSubscript:@"metaDataOptions"];
+              metaData4 = [contextCopy metaData];
+              [metaData4 setObject:v15 forKeyedSubscript:@"metaDataOptions"];
             }
           }
         }
@@ -94,34 +94,34 @@
   }
 }
 
-- (BOOL)matchesEnumsForProviderClass:(Class)a3
+- (BOOL)matchesEnumsForProviderClass:(Class)class
 {
-  v5 = [(DebugHierarchyMetaDataAction *)self metaDataProviderClassesForEnums];
+  metaDataProviderClassesForEnums = [(DebugHierarchyMetaDataAction *)self metaDataProviderClassesForEnums];
 
-  if (!v5)
+  if (!metaDataProviderClassesForEnums)
   {
     return 1;
   }
 
-  v6 = [(DebugHierarchyMetaDataAction *)self metaDataProviderClassesForEnums];
-  v7 = NSStringFromClass(a3);
-  v8 = [v6 containsObject:v7];
+  metaDataProviderClassesForEnums2 = [(DebugHierarchyMetaDataAction *)self metaDataProviderClassesForEnums];
+  v7 = NSStringFromClass(class);
+  v8 = [metaDataProviderClassesForEnums2 containsObject:v7];
 
   return v8 ^ [(DebugHierarchyMetaDataAction *)self metaDataProviderClassesForEnumsAreExclusive]^ 1;
 }
 
-- (BOOL)matchesOptionsForProviderClass:(Class)a3
+- (BOOL)matchesOptionsForProviderClass:(Class)class
 {
-  v5 = [(DebugHierarchyMetaDataAction *)self metaDataProviderClassesForOptions];
+  metaDataProviderClassesForOptions = [(DebugHierarchyMetaDataAction *)self metaDataProviderClassesForOptions];
 
-  if (!v5)
+  if (!metaDataProviderClassesForOptions)
   {
     return 1;
   }
 
-  v6 = [(DebugHierarchyMetaDataAction *)self metaDataProviderClassesForOptions];
-  v7 = NSStringFromClass(a3);
-  v8 = [v6 containsObject:v7];
+  metaDataProviderClassesForOptions2 = [(DebugHierarchyMetaDataAction *)self metaDataProviderClassesForOptions];
+  v7 = NSStringFromClass(class);
+  v8 = [metaDataProviderClassesForOptions2 containsObject:v7];
 
   return v8 ^ [(DebugHierarchyMetaDataAction *)self metaDataProviderClassesForOptionsAreExclusive]^ 1;
 }

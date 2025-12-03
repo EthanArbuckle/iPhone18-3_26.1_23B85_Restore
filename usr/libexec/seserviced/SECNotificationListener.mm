@@ -1,7 +1,7 @@
 @interface SECNotificationListener
 + (void)kickOff;
-- (void)onDarwinNotification:(id)a3;
-- (void)onEvent:(id)a3 eventPayload:(id)a4;
+- (void)onDarwinNotification:(id)notification;
+- (void)onEvent:(id)event eventPayload:(id)payload;
 @end
 
 @implementation SECNotificationListener
@@ -18,21 +18,21 @@
   v4 = String._bridgeToObjectiveC()();
 }
 
-- (void)onDarwinNotification:(id)a3
+- (void)onDarwinNotification:(id)notification
 {
   v4 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v6 = v5;
-  v7 = self;
+  selfCopy = self;
   sub_100190660(v4, v6);
 }
 
-- (void)onEvent:(id)a3 eventPayload:(id)a4
+- (void)onEvent:(id)event eventPayload:(id)payload
 {
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
   swift_unknownObjectRetain();
-  v9 = self;
-  sub_100190B1C(v6, v8, a4);
+  selfCopy = self;
+  sub_100190B1C(v6, v8, payload);
   swift_unknownObjectRelease();
 }
 

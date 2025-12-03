@@ -1,40 +1,40 @@
 @interface _HFObservedAccessorySettingState
 + (NAIdentity)na_identity;
-+ (id)stateWithSettings:(id)a3 forSetting:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)stateWithSettings:(id)settings forSetting:(id)setting;
+- (BOOL)isEqual:(id)equal;
 - (_HFObservedAccessorySettingState)init;
-- (_HFObservedAccessorySettingState)initWithSettings:(id)a3 setting:(id)a4;
+- (_HFObservedAccessorySettingState)initWithSettings:(id)settings setting:(id)setting;
 - (unint64_t)hash;
 @end
 
 @implementation _HFObservedAccessorySettingState
 
-+ (id)stateWithSettings:(id)a3 forSetting:(id)a4
++ (id)stateWithSettings:(id)settings forSetting:(id)setting
 {
-  v5 = a4;
-  v6 = a3;
-  v7 = [objc_alloc(objc_opt_class()) initWithSettings:v6 setting:v5];
+  settingCopy = setting;
+  settingsCopy = settings;
+  v7 = [objc_alloc(objc_opt_class()) initWithSettings:settingsCopy setting:settingCopy];
 
   return v7;
 }
 
 - (_HFObservedAccessorySettingState)init
 {
-  v4 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v5 = NSStringFromSelector(sel_initWithSettings_setting_);
-  [v4 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[_HFObservedAccessorySettingState init]", v5}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:36 description:{@"%s is unavailable; use %@ instead", "-[_HFObservedAccessorySettingState init]", v5}];
 
   return 0;
 }
 
-- (_HFObservedAccessorySettingState)initWithSettings:(id)a3 setting:(id)a4
+- (_HFObservedAccessorySettingState)initWithSettings:(id)settings setting:(id)setting
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = v9;
-  if (v8)
+  settingsCopy = settings;
+  settingCopy = setting;
+  v10 = settingCopy;
+  if (settingsCopy)
   {
-    if (v9)
+    if (settingCopy)
     {
       goto LABEL_3;
     }
@@ -42,8 +42,8 @@
 
   else
   {
-    v24 = [MEMORY[0x277CCA890] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"settings"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:41 description:{@"Invalid parameter not satisfying: %@", @"settings"}];
 
     if (v10)
     {
@@ -51,8 +51,8 @@
     }
   }
 
-  v25 = [MEMORY[0x277CCA890] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"setting"}];
+  currentHandler2 = [MEMORY[0x277CCA890] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"HFAccessorySettingAdapter.m" lineNumber:42 description:{@"Invalid parameter not satisfying: %@", @"setting"}];
 
 LABEL_3:
   v26.receiver = self;
@@ -61,8 +61,8 @@ LABEL_3:
   v12 = v11;
   if (v11)
   {
-    objc_storeStrong(&v11->_settings, a3);
-    objc_storeStrong(&v12->_setting, a4);
+    objc_storeStrong(&v11->_settings, settings);
+    objc_storeStrong(&v12->_setting, setting);
     objc_opt_class();
     v13 = v10;
     if (objc_opt_isKindOfClass())
@@ -78,8 +78,8 @@ LABEL_3:
     v15 = v14;
 
     v16 = MEMORY[0x277CBEB98];
-    v17 = [v15 items];
-    v18 = [v17 na_map:&__block_literal_global_38];
+    items = [v15 items];
+    v18 = [items na_map:&__block_literal_global_38];
     v19 = [v16 setWithArray:v18];
     v20 = v19;
     if (v19)
@@ -111,19 +111,19 @@ LABEL_3:
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = [objc_opt_class() na_identity];
-  LOBYTE(self) = [v5 isObject:self equalToObject:v4];
+  equalCopy = equal;
+  na_identity = [objc_opt_class() na_identity];
+  LOBYTE(self) = [na_identity isObject:self equalToObject:equalCopy];
 
   return self;
 }
 
 - (unint64_t)hash
 {
-  v3 = [objc_opt_class() na_identity];
-  v4 = [v3 hashOfObject:self];
+  na_identity = [objc_opt_class() na_identity];
+  v4 = [na_identity hashOfObject:self];
 
   return v4;
 }

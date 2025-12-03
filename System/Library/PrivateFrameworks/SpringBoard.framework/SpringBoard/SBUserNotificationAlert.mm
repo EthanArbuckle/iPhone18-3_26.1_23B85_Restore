@@ -1,90 +1,90 @@
 @interface SBUserNotificationAlert
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5;
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string;
 - (NSString)description;
-- (SBUserNotificationAlert)initWithMessage:(id)a3 replyPort:(unsigned int)a4 requestFlags:(int)a5 auditToken:(id)a6;
+- (SBUserNotificationAlert)initWithMessage:(id)message replyPort:(unsigned int)port requestFlags:(int)flags auditToken:(id)token;
 - (id)_attachmentImage;
 - (id)_createSystemApertureElement;
 - (id)_headerImage;
-- (id)_imageDefinitionForPath:(id)a3 catalogPath:(id)a4 catalogImageKey:(id)a5 graphicIconDefinition:(id)a6;
-- (id)_imageForDefinition:(id)a3;
-- (id)_parseAssetDefinition:(id)a3;
-- (id)_parseCustomButtonDefinitions:(id)a3 locBundle:(id)a4;
-- (id)_parseLegacyTextFieldDefinitions:(id)a3 locBundle:(id)a4;
-- (id)_parseSystemApertureContentDefinition:(id)a3;
-- (id)_parseTextFieldDefinitions:(id)a3 locBundle:(id)a4;
-- (id)_prepareNewAlertControllerWithLockedState:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (id)_imageDefinitionForPath:(id)path catalogPath:(id)catalogPath catalogImageKey:(id)key graphicIconDefinition:(id)definition;
+- (id)_imageForDefinition:(id)definition;
+- (id)_parseAssetDefinition:(id)definition;
+- (id)_parseCustomButtonDefinitions:(id)definitions locBundle:(id)bundle;
+- (id)_parseLegacyTextFieldDefinitions:(id)definitions locBundle:(id)bundle;
+- (id)_parseSystemApertureContentDefinition:(id)definition;
+- (id)_parseTextFieldDefinitions:(id)definitions locBundle:(id)bundle;
+- (id)_prepareNewAlertControllerWithLockedState:(BOOL)state requirePasscodeForActions:(BOOL)actions;
 - (id)_publicDescription;
-- (id)_safeLocalizedValue:(id)a3 withBundle:(id)a4;
+- (id)_safeLocalizedValue:(id)value withBundle:(id)bundle;
 - (id)clientIdentifier;
 - (id)elementIdentifier;
 - (id)iconImage;
-- (id)parseVisualStyleForMessage:(id)a3;
+- (id)parseVisualStyleForMessage:(id)message;
 - (id)sound;
-- (int64_t)_uiAlertActionLayoutDirectionFromSBUserNotificationButtonLayoutDirection:(unsigned int)a3;
-- (int64_t)_uiAlertActionStyleFromSBUserNotificationButtonPresentationStyle:(int)a3;
-- (void)_activateApplication:(id)a3 withURL:(id)a4;
+- (int64_t)_uiAlertActionLayoutDirectionFromSBUserNotificationButtonLayoutDirection:(unsigned int)direction;
+- (int64_t)_uiAlertActionStyleFromSBUserNotificationButtonPresentationStyle:(int)style;
+- (void)_activateApplication:(id)application withURL:(id)l;
 - (void)_cleanup;
 - (void)_cleanupCustomContentViewControllers;
 - (void)_clearRemoteViewControllerIfPresent;
 - (void)_noteSilencingHardwareButtonPressed;
-- (void)_sendResponseAndCleanUp:(int)a3 customButtonResponse:(int)a4;
-- (void)_setActivated:(BOOL)a3;
+- (void)_sendResponseAndCleanUp:(int)up customButtonResponse:(int)response;
+- (void)_setActivated:(BOOL)activated;
 - (void)cancel;
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4;
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions;
 - (void)dealloc;
-- (void)didDeactivateForReason:(int)a3;
+- (void)didDeactivateForReason:(int)reason;
 - (void)didFailToActivate;
-- (void)dismissIfNecessaryWithResponse:(int)a3 customButtonResponse:(int)a4;
+- (void)dismissIfNecessaryWithResponse:(int)response customButtonResponse:(int)buttonResponse;
 - (void)doCleanupAfterDeactivationAnimation;
 - (void)performUnlockAction;
-- (void)presentationStateDidChangeFromState:(unint64_t)a3 toState:(unint64_t)a4;
-- (void)updateWithMessage:(id)a3 requestFlags:(int)a4;
+- (void)presentationStateDidChangeFromState:(unint64_t)state toState:(unint64_t)toState;
+- (void)updateWithMessage:(id)message requestFlags:(int)flags;
 - (void)willActivate;
-- (void)willDeactivateForReason:(int)a3;
+- (void)willDeactivateForReason:(int)reason;
 @end
 
 @implementation SBUserNotificationAlert
 
 - (id)_headerImage
 {
-  v3 = [(SBUserNotificationAlert *)self headerImageDefinition];
-  v4 = [(SBUserNotificationAlert *)self _imageForDefinition:v3];
+  headerImageDefinition = [(SBUserNotificationAlert *)self headerImageDefinition];
+  v4 = [(SBUserNotificationAlert *)self _imageForDefinition:headerImageDefinition];
 
   return v4;
 }
 
 - (id)_attachmentImage
 {
-  v3 = [(SBUserNotificationAlert *)self attachmentImageDefinition];
-  v4 = [(SBUserNotificationAlert *)self _imageForDefinition:v3];
+  attachmentImageDefinition = [(SBUserNotificationAlert *)self attachmentImageDefinition];
+  v4 = [(SBUserNotificationAlert *)self _imageForDefinition:attachmentImageDefinition];
 
   return v4;
 }
 
 - (id)iconImage
 {
-  v3 = [(SBUserNotificationAlert *)self iconImageDefinition];
-  v4 = [(SBUserNotificationAlert *)self _imageForDefinition:v3];
+  iconImageDefinition = [(SBUserNotificationAlert *)self iconImageDefinition];
+  v4 = [(SBUserNotificationAlert *)self _imageForDefinition:iconImageDefinition];
 
   return v4;
 }
 
-- (id)_safeLocalizedValue:(id)a3 withBundle:(id)a4
+- (id)_safeLocalizedValue:(id)value withBundle:(id)bundle
 {
   v22 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  if (v5)
+  valueCopy = value;
+  bundleCopy = bundle;
+  if (valueCopy)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+      v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(valueCopy, "count")}];
       v17 = 0u;
       v18 = 0u;
       v19 = 0u;
       v20 = 0u;
-      v8 = v5;
+      v8 = valueCopy;
       v9 = [v8 countByEnumeratingWithState:&v17 objects:v21 count:16];
       if (v9)
       {
@@ -100,9 +100,9 @@
             }
 
             v13 = safeStringValue(*(*(&v17 + 1) + 8 * i));
-            if (v6)
+            if (bundleCopy)
             {
-              v14 = [v6 localizedStringForKey:v13 value:&stru_283094718 table:{0, v17}];
+              v14 = [bundleCopy localizedStringForKey:v13 value:&stru_283094718 table:{0, v17}];
 
               v13 = v14;
             }
@@ -119,11 +119,11 @@
 
     else
     {
-      v8 = safeStringValue(v5);
+      v8 = safeStringValue(valueCopy);
 
-      if (v6)
+      if (bundleCopy)
       {
-        v15 = [v6 localizedStringForKey:v8 value:&stru_283094718 table:0];
+        v15 = [bundleCopy localizedStringForKey:v8 value:&stru_283094718 table:0];
       }
 
       else
@@ -144,19 +144,19 @@
   return v7;
 }
 
-- (SBUserNotificationAlert)initWithMessage:(id)a3 replyPort:(unsigned int)a4 requestFlags:(int)a5 auditToken:(id)a6
+- (SBUserNotificationAlert)initWithMessage:(id)message replyPort:(unsigned int)port requestFlags:(int)flags auditToken:(id)token
 {
-  v7 = *&a5;
-  v10 = a3;
-  v11 = a6;
+  v7 = *&flags;
+  messageCopy = message;
+  tokenCopy = token;
   v37.receiver = self;
   v37.super_class = SBUserNotificationAlert;
   v12 = [(SBAlertItem *)&v37 init];
   if (v12)
   {
-    v12[30] = [v11 pid];
-    v12[31] = a4;
-    v13 = [v10 objectForKey:*MEMORY[0x277CBF1A8]];
+    v12[30] = [tokenCopy pid];
+    v12[31] = port;
+    v13 = [messageCopy objectForKey:*MEMORY[0x277CBF1A8]];
     v14 = *(v12 + 14);
     *(v12 + 14) = v13;
 
@@ -188,9 +188,9 @@
       }
 
       v22 = MEMORY[0x277D0AAF8];
-      if (v11)
+      if (tokenCopy)
       {
-        [v11 realToken];
+        [tokenCopy realToken];
       }
 
       else
@@ -202,15 +202,15 @@
       if ([v22 authenticateAuditToken:&v28 forEntitlement:@"com.apple.UIKit.vends-view-services" error:0])
       {
         v23 = objc_alloc(MEMORY[0x277CEEEA8]);
-        v24 = [v11 bundleID];
+        bundleID = [tokenCopy bundleID];
         v25 = [v12 description];
-        v26 = [v23 initWithBundleIdentifier:v24 flags:1 reason:9 name:v25];
+        v26 = [v23 initWithBundleIdentifier:bundleID flags:1 reason:9 name:v25];
         v27 = *(v12 + 58);
         *(v12 + 58) = v26;
       }
     }
 
-    [v12 updateWithMessage:v10 requestFlags:{v7, v28, v29, v30, v31, v32, v33}];
+    [v12 updateWithMessage:messageCopy requestFlags:{v7, v28, v29, v30, v31, v32, v33}];
   }
 
   return v12;
@@ -241,9 +241,9 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
   return result;
 }
 
-- (id)parseVisualStyleForMessage:(id)a3
+- (id)parseVisualStyleForMessage:(id)message
 {
-  v4 = [a3 bs_safeNumberForKey:*MEMORY[0x277D672D8]];
+  v4 = [message bs_safeNumberForKey:*MEMORY[0x277D672D8]];
   v5 = v4;
   if (v4)
   {
@@ -260,18 +260,18 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
   return v7;
 }
 
-- (void)updateWithMessage:(id)a3 requestFlags:(int)a4
+- (void)updateWithMessage:(id)message requestFlags:(int)flags
 {
   v187[9] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  self->_requestFlags = a4;
-  v7 = [v6 objectForKey:*MEMORY[0x277CBF248]];
+  messageCopy = message;
+  self->_requestFlags = flags;
+  v7 = [messageCopy objectForKey:*MEMORY[0x277CBF248]];
   self->_token = safeIntValue(v7);
 
-  v8 = [v6 objectForKey:*MEMORY[0x277CBF240]];
+  v8 = [messageCopy objectForKey:*MEMORY[0x277CBF240]];
   self->_timeout = safeIntValue(v8);
 
-  v9 = [v6 objectForKey:*MEMORY[0x277D67338]];
+  v9 = [messageCopy objectForKey:*MEMORY[0x277D67338]];
   if (isSafePlistTrueBoolean(v9))
   {
     v10 = 16;
@@ -284,7 +284,7 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
 
   *(self + 448) = *(self + 448) & 0xEF | v10;
 
-  v11 = [v6 objectForKey:*MEMORY[0x277D67340]];
+  v11 = [messageCopy objectForKey:*MEMORY[0x277D67340]];
   if (isSafePlistTrueBoolean(v11))
   {
     v12 = 64;
@@ -297,7 +297,7 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
 
   *(self + 448) = *(self + 448) & 0xBF | v12;
 
-  v13 = [v6 objectForKey:*MEMORY[0x277D672D0]];
+  v13 = [messageCopy objectForKey:*MEMORY[0x277D672D0]];
   if (isSafePlistTrueBoolean(v13))
   {
     v14 = 0x80;
@@ -310,10 +310,10 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
 
   *(self + 448) = v14 & 0x80 | *(self + 448) & 0x7F;
 
-  v15 = [v6 objectForKey:*MEMORY[0x277D67280]];
+  v15 = [messageCopy objectForKey:*MEMORY[0x277D67280]];
   *(self + 448) = *(self + 448) & 0xFE | isSafePlistTrueBoolean(v15);
 
-  v16 = [v6 objectForKey:*MEMORY[0x277D67318]];
+  v16 = [messageCopy objectForKey:*MEMORY[0x277D67318]];
   if (isSafePlistTrueBoolean(v16))
   {
     v17 = 16;
@@ -326,7 +326,7 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
 
   *(self + 449) = *(self + 449) & 0xEF | v17;
 
-  v18 = [v6 objectForKey:*MEMORY[0x277D67388]];
+  v18 = [messageCopy objectForKey:*MEMORY[0x277D67388]];
   if (isSafePlistTrueBoolean(v18))
   {
     v19 = 32;
@@ -339,34 +339,34 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
 
   *(self + 449) = *(self + 449) & 0xDF | v19;
 
-  v20 = [v6 objectForKey:*MEMORY[0x277D67288]];
+  v20 = [messageCopy objectForKey:*MEMORY[0x277D67288]];
   [(SBAlertItem *)self setAllowInSetup:isSafePlistTrueBoolean(v20)];
 
-  v21 = [v6 objectForKey:*MEMORY[0x277D673D8]];
+  v21 = [messageCopy objectForKey:*MEMORY[0x277D673D8]];
   [(SBAlertItem *)self setPendInSetupIfNotAllowed:isSafePlistTrueBoolean(v21)];
 
-  v22 = [v6 objectForKey:*MEMORY[0x277D673E0]];
+  v22 = [messageCopy objectForKey:*MEMORY[0x277D673E0]];
   [(SBAlertItem *)self setPendWhileKeyBagLocked:isSafePlistTrueBoolean(v22)];
 
-  v23 = [v6 objectForKey:*MEMORY[0x277D67278]];
+  v23 = [messageCopy objectForKey:*MEMORY[0x277D67278]];
   [(SBAlertItem *)self setAllowInCar:isSafePlistTrueBoolean(v23)];
 
-  v24 = [v6 objectForKey:*MEMORY[0x277D673B0]];
+  v24 = [messageCopy objectForKey:*MEMORY[0x277D673B0]];
   [(SBAlertItem *)self _setIgnoresQuietMode:isSafePlistTrueBoolean(v24)];
 
-  v25 = [v6 objectForKey:*MEMORY[0x277D672E8]];
+  v25 = [messageCopy objectForKey:*MEMORY[0x277D672E8]];
   [(SBAlertItem *)self setContactIdentifier:v25];
 
-  v26 = [v6 objectForKey:*MEMORY[0x277D672F0]];
+  v26 = [messageCopy objectForKey:*MEMORY[0x277D672F0]];
   [(SBAlertItem *)self setContentType:v26];
 
-  v27 = [v6 objectForKey:*MEMORY[0x277D67390]];
+  v27 = [messageCopy objectForKey:*MEMORY[0x277D67390]];
   [(SBAlertItem *)self setShouldMaskIcon:isSafePlistTrueBoolean(v27) ^ 1];
 
-  v28 = [v6 objectForKey:*MEMORY[0x277D67270]];
+  v28 = [messageCopy objectForKey:*MEMORY[0x277D67270]];
   [(SBAlertItem *)self setAllowDuringTransitionAnimations:isSafePlistTrueBoolean(v28)];
 
-  v29 = [v6 objectForKey:*MEMORY[0x277D672A8]];
+  v29 = [messageCopy objectForKey:*MEMORY[0x277D672A8]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -399,11 +399,11 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
     [(SBAlertItem *)self setAllowedBundleIDs:0];
   }
 
-  v35 = [(SBUserNotificationAlert *)self parseVisualStyleForMessage:v6];
+  v35 = [(SBUserNotificationAlert *)self parseVisualStyleForMessage:messageCopy];
   visualStyle = self->_visualStyle;
   self->_visualStyle = v35;
 
-  v37 = [v6 objectForKey:*MEMORY[0x277CBF1B0]];
+  v37 = [messageCopy objectForKey:*MEMORY[0x277CBF1B0]];
   if (isSafePlistTrueBoolean(v37))
   {
     v38 = 8;
@@ -416,7 +416,7 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
 
   *(self + 448) = *(self + 448) & 0xF7 | v38;
 
-  v39 = [v6 objectForKey:*MEMORY[0x277D67320]];
+  v39 = [messageCopy objectForKey:*MEMORY[0x277D67320]];
   if (isSafePlistTrueBoolean(v39))
   {
     v40 = 32;
@@ -429,10 +429,10 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
 
   *(self + 448) = *(self + 448) & 0xDF | v40;
 
-  v41 = [v6 objectForKey:*MEMORY[0x277D67298]];
+  v41 = [messageCopy objectForKey:*MEMORY[0x277D67298]];
   *(self + 449) = *(self + 449) & 0xFE | isSafePlistTrueBoolean(v41);
 
-  v42 = [v6 objectForKey:*MEMORY[0x277D67360]];
+  v42 = [messageCopy objectForKey:*MEMORY[0x277D67360]];
   if (isSafePlistTrueBoolean(v42))
   {
     v43 = 4;
@@ -445,7 +445,7 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
 
   *(self + 449) = *(self + 449) & 0xFB | v43;
 
-  v44 = [v6 objectForKey:*MEMORY[0x277D67330]];
+  v44 = [messageCopy objectForKey:*MEMORY[0x277D67330]];
   if (isSafePlistTrueBoolean(v44))
   {
     v45 = 8;
@@ -458,7 +458,7 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
 
   *(self + 449) = *(self + 449) & 0xF7 | v45;
 
-  v46 = [v6 objectForKey:*MEMORY[0x277D67300]];
+  v46 = [messageCopy objectForKey:*MEMORY[0x277D67300]];
   v47 = v46;
   if (v46)
   {
@@ -471,7 +471,7 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
   }
 
   self->_defaultButtonTag = v48;
-  v49 = [v6 objectForKey:*MEMORY[0x277D67290]];
+  v49 = [messageCopy objectForKey:*MEMORY[0x277D67290]];
 
   if (v49)
   {
@@ -484,8 +484,8 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
   }
 
   *(self + 472) = *(self + 472) & 0xFE | v50;
-  v178 = [v6 objectForKey:*MEMORY[0x277D67450]];
-  v174 = [v6 objectForKey:*MEMORY[0x277D67448]];
+  v178 = [messageCopy objectForKey:*MEMORY[0x277D67450]];
+  v174 = [messageCopy objectForKey:*MEMORY[0x277D67448]];
   v51 = v178;
   if (v178 || (v51 = v174) != 0)
   {
@@ -498,7 +498,7 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
   }
 
   *(self + 449) = v52;
-  v179 = [v6 objectForKey:*MEMORY[0x277D672E0]];
+  v179 = [messageCopy objectForKey:*MEMORY[0x277D672E0]];
 
   if (v179)
   {
@@ -511,11 +511,11 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
   }
 
   self->_unlockActionButtonTag = v53;
-  v54 = [v6 objectForKey:*MEMORY[0x277D67308]];
+  v54 = [messageCopy objectForKey:*MEMORY[0x277D67308]];
   v55 = safeStringValue(v54);
   [(SBUserNotificationAlert *)self setDefaultResponseLaunchBundleID:v55];
 
-  v56 = [v6 objectForKey:*MEMORY[0x277D67310]];
+  v56 = [messageCopy objectForKey:*MEMORY[0x277D67310]];
   v181 = safeStringValue(v56);
 
   if (v181)
@@ -524,72 +524,72 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
     [(SBUserNotificationAlert *)self setDefaultResponseLaunchURL:v57];
   }
 
-  v58 = [v6 objectForKey:*MEMORY[0x277D67380]];
+  v58 = [messageCopy objectForKey:*MEMORY[0x277D67380]];
   v59 = safeStringValue(v58);
-  v60 = [v6 objectForKey:*MEMORY[0x277D67378]];
+  v60 = [messageCopy objectForKey:*MEMORY[0x277D67378]];
   v61 = safeStringValue(v60);
-  v62 = [v6 objectForKey:*MEMORY[0x277D67370]];
+  v62 = [messageCopy objectForKey:*MEMORY[0x277D67370]];
   v63 = safeStringValue(v62);
   v64 = *MEMORY[0x277D67368];
-  v65 = [v6 bs_safeDictionaryForKey:*MEMORY[0x277D67368]];
+  v65 = [messageCopy bs_safeDictionaryForKey:*MEMORY[0x277D67368]];
   v66 = [(SBUserNotificationAlert *)self _imageDefinitionForPath:v59 catalogPath:v61 catalogImageKey:v63 graphicIconDefinition:v65];
   headerImageDefinition = self->_headerImageDefinition;
   self->_headerImageDefinition = v66;
 
-  v68 = [v6 objectForKey:*MEMORY[0x277D673A8]];
+  v68 = [messageCopy objectForKey:*MEMORY[0x277D673A8]];
   v69 = safeStringValue(v68);
-  v70 = [v6 objectForKey:*MEMORY[0x277D673A0]];
+  v70 = [messageCopy objectForKey:*MEMORY[0x277D673A0]];
   v71 = safeStringValue(v70);
-  v72 = [v6 objectForKey:*MEMORY[0x277D67398]];
+  v72 = [messageCopy objectForKey:*MEMORY[0x277D67398]];
   v73 = safeStringValue(v72);
-  v74 = [v6 bs_safeDictionaryForKey:v64];
+  v74 = [messageCopy bs_safeDictionaryForKey:v64];
   v75 = [(SBUserNotificationAlert *)self _imageDefinitionForPath:v69 catalogPath:v71 catalogImageKey:v73 graphicIconDefinition:v74];
   iconImageDefinition = self->_iconImageDefinition;
   self->_iconImageDefinition = v75;
 
-  v77 = [v6 objectForKey:*MEMORY[0x277D672C8]];
+  v77 = [messageCopy objectForKey:*MEMORY[0x277D672C8]];
   v78 = safeStringValue(v77);
-  v79 = [v6 objectForKey:*MEMORY[0x277D672C0]];
+  v79 = [messageCopy objectForKey:*MEMORY[0x277D672C0]];
   v80 = safeStringValue(v79);
-  v81 = [v6 objectForKey:*MEMORY[0x277D672B8]];
+  v81 = [messageCopy objectForKey:*MEMORY[0x277D672B8]];
   v82 = safeStringValue(v81);
   v83 = [(SBUserNotificationAlert *)self _imageDefinitionForPath:v78 catalogPath:v80 catalogImageKey:v82];
   attachmentImageDefinition = self->_attachmentImageDefinition;
   self->_attachmentImageDefinition = v83;
 
-  v85 = [v6 objectForKey:*MEMORY[0x277CBF220]];
+  v85 = [messageCopy objectForKey:*MEMORY[0x277CBF220]];
   v86 = safeStringValue(v85);
   [(SBUserNotificationAlert *)self setSoundPath:v86];
 
-  v87 = [v6 objectForKey:*MEMORY[0x277D67430]];
+  v87 = [messageCopy objectForKey:*MEMORY[0x277D67430]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v88 = [v87 unsignedIntValue];
+    unsignedIntValue = [v87 unsignedIntValue];
   }
 
   else
   {
-    v88 = 0;
+    unsignedIntValue = 0;
   }
 
-  [(SBUserNotificationAlert *)self setSoundID:v88];
-  v89 = [v6 objectForKey:*MEMORY[0x277D67428]];
+  [(SBUserNotificationAlert *)self setSoundID:unsignedIntValue];
+  v89 = [messageCopy objectForKey:*MEMORY[0x277D67428]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v90 = [v89 unsignedIntValue];
+    unsignedIntValue2 = [v89 unsignedIntValue];
   }
 
   else
   {
-    v90 = 1;
+    unsignedIntValue2 = 1;
   }
 
-  [(SBUserNotificationAlert *)self setSoundIDBehavior:v90];
-  v91 = [v6 objectForKey:*MEMORY[0x277D67410]];
+  [(SBUserNotificationAlert *)self setSoundIDBehavior:unsignedIntValue2];
+  v91 = [messageCopy objectForKey:*MEMORY[0x277D67410]];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -604,25 +604,25 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
   v93 = v92;
   [(SBUserNotificationAlert *)self setVibrationPattern:v93];
 
-  v180 = [v6 objectForKey:*MEMORY[0x277D67400]];
+  v180 = [messageCopy objectForKey:*MEMORY[0x277D67400]];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v94 = [v180 integerValue];
+    integerValue = [v180 integerValue];
   }
 
   else
   {
-    v94 = 0;
+    integerValue = 0;
   }
 
-  [(SBUserNotificationAlert *)self setSoundAlertType:v94];
-  v95 = [v6 objectForKey:*MEMORY[0x277D673F8]];
+  [(SBUserNotificationAlert *)self setSoundAlertType:integerValue];
+  v95 = [messageCopy objectForKey:*MEMORY[0x277D673F8]];
   v96 = safeStringValue(v95);
   [(SBUserNotificationAlert *)self setSoundAlertTopic:v96];
 
-  v97 = [v6 objectForKey:*MEMORY[0x277D67408]];
+  v97 = [messageCopy objectForKey:*MEMORY[0x277D67408]];
   v98 = objc_opt_respondsToSelector();
   v99 = 0.0;
   if (v98)
@@ -633,7 +633,7 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
 
   self->_soundRepeatDuration = v99;
 
-  v101 = [v6 objectForKey:*MEMORY[0x277CBF200]];
+  v101 = [messageCopy objectForKey:*MEMORY[0x277CBF200]];
   v177 = safeStringValue(v101);
 
   if (v177)
@@ -646,86 +646,86 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
     v102 = 0;
   }
 
-  v103 = [v6 objectForKey:*MEMORY[0x277CBF188]];
+  v103 = [messageCopy objectForKey:*MEMORY[0x277CBF188]];
   v104 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v103 withBundle:v102];
   v105 = safeStringValue(v104);
   [(SBUserNotificationAlert *)self setAlertHeader:v105];
 
-  v106 = [v6 objectForKey:*MEMORY[0x277CBF198]];
+  v106 = [messageCopy objectForKey:*MEMORY[0x277CBF198]];
   v107 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v106 withBundle:v102];
   [(SBUserNotificationAlert *)self setAlertMessage:v107];
 
-  v108 = [v6 objectForKey:*MEMORY[0x277D67268]];
+  v108 = [messageCopy objectForKey:*MEMORY[0x277D67268]];
   v109 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v108 withBundle:v102];
   v110 = safeStringValue(v109);
   [(SBUserNotificationAlert *)self setAlertMessageDelimiter:v110];
 
-  v111 = [v6 objectForKey:*MEMORY[0x277D673B8]];
+  v111 = [messageCopy objectForKey:*MEMORY[0x277D673B8]];
   v112 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v111 withBundle:v102];
   v113 = safeStringValue(v112);
   [(SBUserNotificationAlert *)self setLockScreenAlertHeader:v113];
 
-  v114 = [v6 objectForKey:*MEMORY[0x277D673C8]];
+  v114 = [messageCopy objectForKey:*MEMORY[0x277D673C8]];
   v115 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v114 withBundle:v102];
   [(SBUserNotificationAlert *)self setLockScreenAlertMessage:v115];
 
-  v116 = [v6 objectForKey:*MEMORY[0x277D673C0]];
+  v116 = [messageCopy objectForKey:*MEMORY[0x277D673C0]];
   v117 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v116 withBundle:v102];
   v118 = safeStringValue(v117);
   [(SBUserNotificationAlert *)self setLockScreenAlertMessageDelimiter:v118];
 
-  v119 = [v6 objectForKey:*MEMORY[0x277CBF1E8]];
+  v119 = [messageCopy objectForKey:*MEMORY[0x277CBF1E8]];
   v120 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v119 withBundle:v102];
   [(SBUserNotificationAlert *)self setDefaultButtonTitle:v120];
 
-  v121 = [v6 objectForKey:*MEMORY[0x277CBF1C0]];
+  v121 = [messageCopy objectForKey:*MEMORY[0x277CBF1C0]];
   v122 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v121 withBundle:v102];
   [(SBUserNotificationAlert *)self setAlternateButtonTitle:v122];
 
-  v123 = [v6 objectForKey:*MEMORY[0x277CBF218]];
+  v123 = [messageCopy objectForKey:*MEMORY[0x277CBF218]];
   v124 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v123 withBundle:v102];
   [(SBUserNotificationAlert *)self setOtherButtonTitle:v124];
 
-  v125 = [v6 objectForKey:*MEMORY[0x277CBF180]];
+  v125 = [messageCopy objectForKey:*MEMORY[0x277CBF180]];
   v126 = safeStringValue(v125);
   [(SBUserNotificationAlert *)self setAlertAccessibilityIdentifier:v126];
 
-  v127 = [v6 objectForKey:*MEMORY[0x277CBF1D8]];
+  v127 = [messageCopy objectForKey:*MEMORY[0x277CBF1D8]];
   v128 = safeStringValue(v127);
   [(SBUserNotificationAlert *)self setDefaultButtonAccessibilityIdentifier:v128];
 
-  v129 = [v6 objectForKey:*MEMORY[0x277CBF1B8]];
+  v129 = [messageCopy objectForKey:*MEMORY[0x277CBF1B8]];
   v130 = safeStringValue(v129);
   [(SBUserNotificationAlert *)self setAlternateButtonAccessibilityIdentifier:v130];
 
-  v131 = [v6 objectForKey:*MEMORY[0x277CBF210]];
+  v131 = [messageCopy objectForKey:*MEMORY[0x277CBF210]];
   v132 = safeStringValue(v131);
   [(SBUserNotificationAlert *)self setOtherButtonAccessibilityIdentifier:v132];
 
-  v133 = [v6 objectForKeyedSubscript:*MEMORY[0x277D67228]];
+  v133 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D67228]];
   v134 = [(SBUserNotificationAlert *)self _parseTextFieldDefinitions:v133 locBundle:v102];
   textFieldDefinitions = self->_textFieldDefinitions;
   self->_textFieldDefinitions = v134;
 
   if (!self->_textFieldDefinitions)
   {
-    v136 = [(SBUserNotificationAlert *)self _parseLegacyTextFieldDefinitions:v6 locBundle:v102];
+    v136 = [(SBUserNotificationAlert *)self _parseLegacyTextFieldDefinitions:messageCopy locBundle:v102];
     v137 = self->_textFieldDefinitions;
     self->_textFieldDefinitions = v136;
   }
 
-  v138 = [v6 objectForKeyedSubscript:*MEMORY[0x277D67220]];
+  v138 = [messageCopy objectForKeyedSubscript:*MEMORY[0x277D67220]];
   v139 = [(SBUserNotificationAlert *)self _parseCustomButtonDefinitions:v138 locBundle:v102];
   customButtonDefinitions = self->_customButtonDefinitions;
   self->_customButtonDefinitions = v139;
 
-  v141 = [v6 bs_safeNumberForKey:*MEMORY[0x277D672F8]];
+  v141 = [messageCopy bs_safeNumberForKey:*MEMORY[0x277D672F8]];
   self->_defaultButtonActionStyle = -[SBUserNotificationAlert _uiAlertActionStyleFromSBUserNotificationButtonPresentationStyle:](self, "_uiAlertActionStyleFromSBUserNotificationButtonPresentationStyle:", [v141 intValue]);
 
-  v142 = [v6 bs_safeNumberForKey:*MEMORY[0x277D673D0]];
+  v142 = [messageCopy bs_safeNumberForKey:*MEMORY[0x277D673D0]];
   self->_otherButtonActionStyle = -[SBUserNotificationAlert _uiAlertActionStyleFromSBUserNotificationButtonPresentationStyle:](self, "_uiAlertActionStyleFromSBUserNotificationButtonPresentationStyle:", [v142 intValue]);
 
-  v143 = [v6 bs_safeNumberForKey:*MEMORY[0x277D672B0]];
+  v143 = [messageCopy bs_safeNumberForKey:*MEMORY[0x277D672B0]];
   v176 = v143;
   if (v143)
   {
@@ -738,13 +738,13 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
   }
 
   self->_alternateButtonActionStyle = v144;
-  v145 = [v6 objectForKey:*MEMORY[0x277D67420]];
+  v145 = [messageCopy objectForKey:*MEMORY[0x277D67420]];
   v146 = isSafePlistTrueBoolean(v145);
 
   [(SBUserNotificationAlert *)self setPrefersSystemAperturePresentation:v146];
   if (v146)
   {
-    v147 = [v6 bs_safeDictionaryForKey:*MEMORY[0x277D67418]];
+    v147 = [messageCopy bs_safeDictionaryForKey:*MEMORY[0x277D67418]];
     v148 = [(SBUserNotificationAlert *)self _parseSystemApertureContentDefinition:v147];
     [(SBUserNotificationAlert *)self setSystemApertureContentDefinition:v148];
   }
@@ -755,11 +755,11 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
   v187[3] = &unk_2783A8C18;
   v187[4] = self;
   v175 = MEMORY[0x223D6F7F0](v187);
-  v149 = [v6 objectForKey:*MEMORY[0x277D673E8]];
+  v149 = [messageCopy objectForKey:*MEMORY[0x277D673E8]];
   v150 = safeStringValue(v149);
   [(SBUserNotificationAlert *)self setRemoteServiceBundleIdentifier:v150];
 
-  v151 = [v6 objectForKey:*MEMORY[0x277D673F0]];
+  v151 = [messageCopy objectForKey:*MEMORY[0x277D673F0]];
   v152 = safeStringValue(v151);
   [(SBUserNotificationAlert *)self setRemoteViewControllerClassName:v152];
 
@@ -768,7 +768,7 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
     [SBUserNotificationAlert updateWithMessage:requestFlags:];
   }
 
-  v153 = [v6 objectForKey:*MEMORY[0x277D67350]];
+  v153 = [messageCopy objectForKey:*MEMORY[0x277D67350]];
   v154 = safeStringValue(v153);
   [(SBUserNotificationAlert *)self setExtensionIdentifier:v154];
 
@@ -780,7 +780,7 @@ uint64_t __77__SBUserNotificationAlert_initWithMessage_replyPort_requestFlags_au
     v171 = v186;
     if (v156)
     {
-      v172 = [v6 objectForKey:*MEMORY[0x277D67358]];
+      v172 = [messageCopy objectForKey:*MEMORY[0x277D67358]];
       if (v172)
       {
         v157 = [objc_alloc(MEMORY[0x277CCAAC8]) initForReadingFromData:v172 error:0];
@@ -1011,7 +1011,7 @@ void __58__SBUserNotificationAlert_updateWithMessage_requestFlags___block_invoke
 - (void)dealloc
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:@"_cleanedUp == YES" object:? file:? lineNumber:? description:?];
 }
@@ -1035,9 +1035,9 @@ void __34__SBUserNotificationAlert_dealloc__block_invoke(uint64_t a1)
   v4 = [v3 appendObject:self->_alertHeader withName:@"title"];
   v5 = [v3 appendObject:self->_alertSource withName:@"source"];
   v6 = [v3 appendObject:self->_sound withName:@"sound" skipIfNil:1];
-  v7 = [v3 build];
+  build = [v3 build];
 
-  return v7;
+  return build;
 }
 
 - (id)_publicDescription
@@ -1047,9 +1047,9 @@ void __34__SBUserNotificationAlert_dealloc__block_invoke(uint64_t a1)
   v5 = [v3 appendObject:self->_alertSource withName:@"source"];
   v6 = [v3 appendInt:self->_originatingPID withName:@"pid"];
   v7 = [v3 appendObject:self->_sound withName:@"sound" skipIfNil:1];
-  v8 = [v3 build];
+  build = [v3 build];
 
-  return v8;
+  return build;
 }
 
 - (void)willActivate
@@ -1154,11 +1154,11 @@ void __34__SBUserNotificationAlert_dealloc__block_invoke(uint64_t a1)
   return v15;
 }
 
-- (void)configure:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (void)configure:(BOOL)configure requirePasscodeForActions:(BOOL)actions
 {
-  v4 = a3;
+  configureCopy = configure;
   v82 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (configure)
   {
     v6 = 64;
   }
@@ -1169,7 +1169,7 @@ void __34__SBUserNotificationAlert_dealloc__block_invoke(uint64_t a1)
   }
 
   *(self + 449) = *(self + 449) & 0xBF | v6;
-  if (a4)
+  if (actions)
   {
     v7 = 0x80;
   }
@@ -1180,13 +1180,13 @@ void __34__SBUserNotificationAlert_dealloc__block_invoke(uint64_t a1)
   }
 
   *(self + 449) = v7 & 0x80 | *(self + 449) & 0x7F;
-  v8 = [(SBAlertItem *)self alertController];
-  if (v4)
+  alertController = [(SBAlertItem *)self alertController];
+  if (configureCopy)
   {
     p_lockScreenAlertHeader = &self->_lockScreenAlertHeader;
     if (self->_lockScreenAlertHeader && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) || (p_lockScreenAlertHeader = &self->_alertHeader, self->_alertHeader) && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
     {
-      [v8 setTitle:*p_lockScreenAlertHeader];
+      [alertController setTitle:*p_lockScreenAlertHeader];
     }
 
     p_lockScreenAlertMessage = &self->_lockScreenAlertMessage;
@@ -1221,7 +1221,7 @@ LABEL_22:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      [v8 setTitle:self->_alertHeader];
+      [alertController setTitle:self->_alertHeader];
     }
   }
 
@@ -1239,7 +1239,7 @@ LABEL_22:
   }
 
 LABEL_25:
-  [v8 setMessage:*p_lockScreenAlertMessage];
+  [alertController setMessage:*p_lockScreenAlertMessage];
 LABEL_26:
   v77 = 0u;
   v78 = 0u;
@@ -1267,7 +1267,7 @@ LABEL_26:
         v74[3] = &unk_2783ADAE0;
         v74[4] = v22;
         v74[5] = self;
-        [v8 addTextFieldWithConfigurationHandler:v74];
+        [alertController addTextFieldWithConfigurationHandler:v74];
       }
 
       v19 = [(NSArray *)v17 countByEnumeratingWithState:&v75 objects:v81 count:16];
@@ -1302,7 +1302,7 @@ LABEL_26:
   if (!v28)
   {
     v29 = v27;
-    if (!v4 || [(SBUserNotificationAlert *)self _displayActionButtonOnLockScreen])
+    if (!configureCopy || [(SBUserNotificationAlert *)self _displayActionButtonOnLockScreen])
     {
       if (v29)
       {
@@ -1313,8 +1313,8 @@ LABEL_26:
           do
           {
             v32 = [(NSArray *)self->_customButtonDefinitions objectAtIndexedSubscript:v30];
-            v33 = [v32 title];
-            if ([v33 length])
+            title = [v32 title];
+            if ([title length])
             {
               v34 = *(v31 + 248);
               v35 = -[SBUserNotificationAlert _uiAlertActionStyleFromSBUserNotificationButtonPresentationStyle:](self, "_uiAlertActionStyleFromSBUserNotificationButtonPresentationStyle:", [v32 presentationStyle]);
@@ -1324,18 +1324,18 @@ LABEL_26:
               v73[3] = &unk_2783ADB08;
               v73[4] = self;
               v73[5] = v30;
-              v36 = [v34 actionWithTitle:v33 style:v35 handler:v73];
-              [v8 addAction:v36];
+              v36 = [v34 actionWithTitle:title style:v35 handler:v73];
+              [alertController addAction:v36];
               if ([v32 isPreferredButton])
               {
                 v37 = v31;
-                [v8 setPreferredAction:v36];
+                [alertController setPreferredAction:v36];
                 v38 = SBLogCFUserNotifications();
                 if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
                 {
-                  v39 = [v36 style];
+                  style = [v36 style];
                   *buf = 134217984;
-                  v80 = v39;
+                  v80 = style;
                   _os_log_impl(&dword_21ED4E000, v38, OS_LOG_TYPE_DEFAULT, "presenting defaultAction with style: %ld", buf, 0xCu);
                 }
 
@@ -1368,10 +1368,10 @@ LABEL_26:
             [v42 setAccessibilityIdentifier:?];
           }
 
-          [v8 addAction:v43];
+          [alertController addAction:v43];
           if (self->_defaultButtonTag == 1)
           {
-            [v8 setPreferredAction:v43];
+            [alertController setPreferredAction:v43];
           }
         }
 
@@ -1391,10 +1391,10 @@ LABEL_26:
             [v46 setAccessibilityIdentifier:?];
           }
 
-          [v8 addAction:v47];
+          [alertController addAction:v47];
           if (self->_defaultButtonTag == 2)
           {
-            [v8 setPreferredAction:v47];
+            [alertController setPreferredAction:v47];
           }
         }
 
@@ -1408,8 +1408,8 @@ LABEL_26:
 
           else
           {
-            v49 = [MEMORY[0x277CCA8D8] mainBundle];
-            v48 = [v49 localizedStringForKey:@"OK" value:&stru_283094718 table:@"SpringBoard"];
+            mainBundle = [MEMORY[0x277CCA8D8] mainBundle];
+            v48 = [mainBundle localizedStringForKey:@"OK" value:&stru_283094718 table:@"SpringBoard"];
           }
         }
 
@@ -1428,7 +1428,7 @@ LABEL_26:
             [v51 setAccessibilityIdentifier:?];
           }
 
-          [v8 addAction:v52];
+          [alertController addAction:v52];
           v53 = SBLogCFUserNotifications();
           if (os_log_type_enabled(v53, OS_LOG_TYPE_DEFAULT))
           {
@@ -1440,7 +1440,7 @@ LABEL_26:
 
           if (self->_defaultButtonTag <= 0)
           {
-            [v8 setPreferredAction:v52];
+            [alertController setPreferredAction:v52];
           }
         }
       }
@@ -1450,8 +1450,8 @@ LABEL_26:
   alertAccessibilityIdentifier = self->_alertAccessibilityIdentifier;
   if (alertAccessibilityIdentifier)
   {
-    v56 = [v8 view];
-    [v56 setAccessibilityIdentifier:alertAccessibilityIdentifier];
+    view = [alertController view];
+    [view setAccessibilityIdentifier:alertAccessibilityIdentifier];
   }
 
   extensionContentViewController = self->_extensionContentViewController;
@@ -1460,7 +1460,7 @@ LABEL_26:
     [(_UIRemoteViewController *)extensionContentViewController setServiceViewShouldShareTouchesWithHost:1];
     viewServiceContentViewController = self->_extensionContentViewController;
 LABEL_88:
-    [v8 setContentViewController:viewServiceContentViewController];
+    [alertController setContentViewController:viewServiceContentViewController];
     goto LABEL_89;
   }
 
@@ -1471,19 +1471,19 @@ LABEL_88:
   }
 
 LABEL_89:
-  v59 = [v8 title];
-  if (v59 || ([v8 message], (v59 = objc_claimAutoreleasedReturnValue()) != 0))
+  title2 = [alertController title];
+  if (title2 || ([alertController message], (title2 = objc_claimAutoreleasedReturnValue()) != 0))
   {
   }
 
   else
   {
-    v60 = [v8 actions];
-    if (![v60 count])
+    actions = [alertController actions];
+    if (![actions count])
     {
-      v61 = [v8 contentViewController];
+      contentViewController = [alertController contentViewController];
 
-      if (v61)
+      if (contentViewController)
       {
         goto LABEL_92;
       }
@@ -1500,12 +1500,12 @@ LABEL_89:
       if (os_variant_has_internal_content())
       {
         v64 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ trying to show malformed CFUserNotification. Please file Radar.", self->_alertSource];
-        [v8 setTitle:v64];
+        [alertController setTitle:v64];
       }
 
       v65 = MEMORY[0x277D750F8];
-      v60 = [MEMORY[0x277CCA8D8] mainBundle];
-      v66 = [v60 localizedStringForKey:@"OK" value:&stru_283094718 table:@"SpringBoard"];
+      actions = [MEMORY[0x277CCA8D8] mainBundle];
+      v66 = [actions localizedStringForKey:@"OK" value:&stru_283094718 table:@"SpringBoard"];
       v67 = self->_defaultButtonActionStyle;
       v69[0] = MEMORY[0x277D85DD0];
       v69[1] = 3221225472;
@@ -1513,7 +1513,7 @@ LABEL_89:
       v69[3] = &unk_2783A8A40;
       v69[4] = self;
       v68 = [v65 actionWithTitle:v66 style:v67 handler:v69];
-      [v8 addAction:v68];
+      [alertController addAction:v68];
     }
   }
 
@@ -1545,8 +1545,8 @@ void __63__SBUserNotificationAlert_configure_requirePasscodeForActions___block_i
 {
   v6.receiver = self;
   v6.super_class = SBUserNotificationAlert;
-  v3 = [(SBAlertItem *)&v6 elementIdentifier];
-  v4 = [v3 stringByAppendingFormat:@"-<%p>", self];
+  elementIdentifier = [(SBAlertItem *)&v6 elementIdentifier];
+  v4 = [elementIdentifier stringByAppendingFormat:@"-<%p>", self];
 
   return v4;
 }
@@ -1575,14 +1575,14 @@ void __63__SBUserNotificationAlert_configure_requirePasscodeForActions___block_i
     goto LABEL_46;
   }
 
-  v3 = [(SBUserNotificationAlert *)self systemApertureContentDefinition];
+  systemApertureContentDefinition = [(SBUserNotificationAlert *)self systemApertureContentDefinition];
   v4 = objc_alloc_init(MEMORY[0x277D67DF0]);
-  v5 = [v3 leadingAssetDefinition];
+  leadingAssetDefinition = [systemApertureContentDefinition leadingAssetDefinition];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
-    v7 = [(SBUserNotificationAlert *)self _imageForDefinition:v6];
+    caPackagePath = leadingAssetDefinition;
+    v7 = [(SBUserNotificationAlert *)self _imageForDefinition:caPackagePath];
     if (!v7)
     {
 LABEL_13:
@@ -1591,17 +1591,17 @@ LABEL_14:
       goto LABEL_15;
     }
 
-    v8 = v5;
+    v8 = leadingAssetDefinition;
     v9 = [objc_alloc(MEMORY[0x277D67E20]) initWithImage:v7];
-    v10 = [v6 sb_resolvedTintColor];
-    if (v10)
+    sb_resolvedTintColor = [caPackagePath sb_resolvedTintColor];
+    if (sb_resolvedTintColor)
     {
-      [v9 setContentColor:v10];
+      [v9 setContentColor:sb_resolvedTintColor];
     }
 
     [v4 setLeadingContentViewProvider:v9];
 
-    v5 = v8;
+    leadingAssetDefinition = v8;
 LABEL_12:
 
     goto LABEL_13;
@@ -1610,13 +1610,13 @@ LABEL_12:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v6 = [v5 caPackagePath];
-    if (!v6)
+    caPackagePath = [leadingAssetDefinition caPackagePath];
+    if (!caPackagePath)
     {
       goto LABEL_14;
     }
 
-    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:v6];
+    v12 = [MEMORY[0x277CBEBC0] fileURLWithPath:caPackagePath];
     if (!v12)
     {
       goto LABEL_14;
@@ -1629,11 +1629,11 @@ LABEL_12:
   }
 
 LABEL_15:
-  v13 = [v3 alertTextAlignment];
-  v49 = v13;
-  if (v13)
+  alertTextAlignment = [systemApertureContentDefinition alertTextAlignment];
+  v49 = alertTextAlignment;
+  if (alertTextAlignment)
   {
-    v14 = safeIntValue(v13);
+    v14 = safeIntValue(alertTextAlignment);
   }
 
   else
@@ -1641,35 +1641,35 @@ LABEL_15:
     v14 = 4;
   }
 
-  v15 = [v3 alertHeader];
-  v16 = v15;
+  alertHeader = [systemApertureContentDefinition alertHeader];
+  v16 = alertHeader;
   v52 = v4;
-  if (v15)
+  if (alertHeader)
   {
-    v17 = v15;
+    alertHeader2 = alertHeader;
   }
 
   else
   {
-    v17 = [(SBUserNotificationAlert *)self alertHeader];
+    alertHeader2 = [(SBUserNotificationAlert *)self alertHeader];
   }
 
-  v18 = v17;
+  v18 = alertHeader2;
 
-  v51 = [v3 alertMessage];
-  v19 = [v51 length];
+  alertMessage = [systemApertureContentDefinition alertMessage];
+  v19 = [alertMessage length];
   v20 = v18;
   if ([v18 length])
   {
     v21 = [objc_alloc(MEMORY[0x277D67E58]) initWithText:v18 style:v19 != 0];
     [v21 setTextAlignment:v14];
     [v21 setNumberOfLines:0];
-    v22 = [v3 alertHeaderColor];
-    v23 = [v22 sb_resolvedColor];
+    alertHeaderColor = [systemApertureContentDefinition alertHeaderColor];
+    sb_resolvedColor = [alertHeaderColor sb_resolvedColor];
 
-    if (v23)
+    if (sb_resolvedColor)
     {
-      [v21 setContentColor:v23];
+      [v21 setContentColor:sb_resolvedColor];
     }
 
     [v52 setPrimaryContentViewProvider:v21];
@@ -1677,16 +1677,16 @@ LABEL_15:
 
   if (v19)
   {
-    v24 = [objc_alloc(MEMORY[0x277D67E58]) initWithText:v51 style:3];
+    v24 = [objc_alloc(MEMORY[0x277D67E58]) initWithText:alertMessage style:3];
     [v24 setTextAlignment:v14];
     [v24 setNumberOfLines:0];
     [v52 setSecondaryContentViewProvider:v24];
   }
 
-  v25 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   objc_initWeak(&location, self);
-  v26 = [v3 defaultButtonTitle];
-  if ([v26 length])
+  defaultButtonTitle = [systemApertureContentDefinition defaultButtonTitle];
+  if ([defaultButtonTitle length])
   {
     v27 = objc_alloc(MEMORY[0x277D67DD8]);
     v28 = MEMORY[0x277D750C8];
@@ -1695,7 +1695,7 @@ LABEL_15:
     v55[2] = __55__SBUserNotificationAlert__createSystemApertureElement__block_invoke_2;
     v55[3] = &unk_2783ADB30;
     objc_copyWeak(&v56, &location);
-    v29 = [v28 actionWithTitle:v26 image:0 identifier:0 handler:v55];
+    v29 = [v28 actionWithTitle:defaultButtonTitle image:0 identifier:0 handler:v55];
     v30 = [v27 initWithDefaultTextActionConfigurationWithAction:v29];
 
     v32 = __55__SBUserNotificationAlert__createSystemApertureElement__block_invoke(v31, self->_defaultButtonActionStyle);
@@ -1704,25 +1704,25 @@ LABEL_15:
       [v30 setContentColor:v32];
     }
 
-    [v25 addObject:v30];
+    [array addObject:v30];
 
     objc_destroyWeak(&v56);
   }
 
-  v33 = [v3 alternateButtonTitle];
-  v34 = v33;
+  alternateButtonTitle = [systemApertureContentDefinition alternateButtonTitle];
+  v34 = alternateButtonTitle;
   v35 = v20;
-  if (v33)
+  if (alternateButtonTitle)
   {
-    v36 = v33;
+    alternateButtonTitle2 = alternateButtonTitle;
   }
 
   else
   {
-    v36 = [(SBUserNotificationAlert *)self alternateButtonTitle];
+    alternateButtonTitle2 = [(SBUserNotificationAlert *)self alternateButtonTitle];
   }
 
-  v37 = v36;
+  v37 = alternateButtonTitle2;
 
   if ([v37 length])
   {
@@ -1742,38 +1742,38 @@ LABEL_15:
       [v41 setContentColor:v43];
     }
 
-    [v25 addObject:v41];
+    [array addObject:v41];
 
     objc_destroyWeak(&v54);
     v35 = v20;
   }
 
-  v44 = [v25 count];
+  v44 = [array count];
   if (v44)
   {
     if (v44 == 1)
     {
-      v45 = [v25 firstObject];
+      firstObject = [array firstObject];
     }
 
     else
     {
-      v45 = [objc_alloc(MEMORY[0x277D67E50]) initWithContentViewProviders:v25];
+      firstObject = [objc_alloc(MEMORY[0x277D67E50]) initWithContentViewProviders:array];
     }
 
-    [v52 setActionContentViewProvider:v45];
+    [v52 setActionContentViewProvider:firstObject];
   }
 
   v11 = [(SBSystemApertureProvidedContentElement *)[_SBUserNotificationAlertElement alloc] initWithIdentifier:self contentProvider:v52];
-  v46 = [v3 keyColor];
-  v47 = [v46 sb_resolvedColor];
+  keyColor = [systemApertureContentDefinition keyColor];
+  sb_resolvedColor2 = [keyColor sb_resolvedColor];
 
-  if (v47)
+  if (sb_resolvedColor2)
   {
-    [(_SBUserNotificationAlertElement *)v11 setKeyColor:v47];
+    [(_SBUserNotificationAlertElement *)v11 setKeyColor:sb_resolvedColor2];
   }
 
-  -[_SBUserNotificationAlertElement setPreventsAutomaticDismissal:](v11, "setPreventsAutomaticDismissal:", [v3 preventsAutomaticDismissal]);
+  -[_SBUserNotificationAlertElement setPreventsAutomaticDismissal:](v11, "setPreventsAutomaticDismissal:", [systemApertureContentDefinition preventsAutomaticDismissal]);
 
   objc_destroyWeak(&location);
 LABEL_46:
@@ -1813,36 +1813,36 @@ void __55__SBUserNotificationAlert__createSystemApertureElement__block_invoke_3(
   [WeakRetained dismissIfNecessaryWithResponse:1];
 }
 
-- (id)_prepareNewAlertControllerWithLockedState:(BOOL)a3 requirePasscodeForActions:(BOOL)a4
+- (id)_prepareNewAlertControllerWithLockedState:(BOOL)state requirePasscodeForActions:(BOOL)actions
 {
-  v4 = a4;
-  v5 = a3;
+  actionsCopy = actions;
+  stateCopy = state;
   [(SBUserNotificationAlert *)self _clearRemoteViewControllerIfPresent];
   v9.receiver = self;
   v9.super_class = SBUserNotificationAlert;
-  v7 = [(SBAlertItem *)&v9 _prepareNewAlertControllerWithLockedState:v5 requirePasscodeForActions:v4];
+  v7 = [(SBAlertItem *)&v9 _prepareNewAlertControllerWithLockedState:stateCopy requirePasscodeForActions:actionsCopy];
 
   return v7;
 }
 
 - (void)_clearRemoteViewControllerIfPresent
 {
-  v3 = [(SBAlertItem *)self alertController];
+  alertController = [(SBAlertItem *)self alertController];
   if ((*(self + 448) & 4) == 0)
   {
-    if (v3)
+    if (alertController)
     {
       if (self->_extensionContentViewController)
       {
-        v8 = v3;
-        v4 = [v3 contentViewController];
+        v8 = alertController;
+        contentViewController = [alertController contentViewController];
         extensionContentViewController = self->_extensionContentViewController;
 
-        v3 = v8;
-        if (v4 == extensionContentViewController)
+        alertController = v8;
+        if (contentViewController == extensionContentViewController)
         {
           [v8 setContentViewController:0];
-          v3 = v8;
+          alertController = v8;
         }
       }
     }
@@ -1850,19 +1850,19 @@ void __55__SBUserNotificationAlert__createSystemApertureElement__block_invoke_3(
 
   if ((*(self + 448) & 4) == 0)
   {
-    if (v3)
+    if (alertController)
     {
       if (self->_viewServiceContentViewController)
       {
-        v9 = v3;
-        v6 = [v3 contentViewController];
+        v9 = alertController;
+        contentViewController2 = [alertController contentViewController];
         viewServiceContentViewController = self->_viewServiceContentViewController;
 
-        v3 = v9;
-        if (v6 == viewServiceContentViewController)
+        alertController = v9;
+        if (contentViewController2 == viewServiceContentViewController)
         {
           [v9 setContentViewController:0];
-          v3 = v9;
+          alertController = v9;
         }
       }
     }
@@ -1877,15 +1877,15 @@ void __55__SBUserNotificationAlert__createSystemApertureElement__block_invoke_3(
   [(SBUserNotificationAlert *)self _clearRemoteViewControllerIfPresent];
 }
 
-- (void)_setActivated:(BOOL)a3
+- (void)_setActivated:(BOOL)activated
 {
-  v3 = a3;
-  if (self->_cleanedUp && a3)
+  activatedCopy = activated;
+  if (self->_cleanedUp && activated)
   {
     [SBUserNotificationAlert _setActivated:];
   }
 
-  if (v3)
+  if (activatedCopy)
   {
     v6 = 4;
   }
@@ -1968,8 +1968,8 @@ void __41__SBUserNotificationAlert__setActivated___block_invoke(uint64_t a1)
       [(SBUserNotificationAlert *)self _cleanupCustomContentViewControllers];
     }
 
-    v7 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v7 postNotificationName:@"SBUserNotificationDoneNotification" object:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter postNotificationName:@"SBUserNotificationDoneNotification" object:self];
   }
 }
 
@@ -1984,53 +1984,53 @@ void __41__SBUserNotificationAlert__setActivated___block_invoke(uint64_t a1)
   [(SBAlertItem *)self deactivate];
 }
 
-- (void)_sendResponseAndCleanUp:(int)a3 customButtonResponse:(int)a4
+- (void)_sendResponseAndCleanUp:(int)up customButtonResponse:(int)response
 {
   v32 = *MEMORY[0x277D85DE8];
   if (!self->_sentResponse)
   {
-    v4 = *&a4;
+    v4 = *&response;
     self->_sentResponse = 1;
-    v7 = [(SBAlertItem *)self alertController];
-    self->_replyFlags = a3;
-    v8 = [v7 textFields];
-    v9 = [v8 count];
+    alertController = [(SBAlertItem *)self alertController];
+    self->_replyFlags = up;
+    textFields = [alertController textFields];
+    v9 = [textFields count];
 
     if (self->_replyFlags == 3 || v9 < 1)
     {
-      v11 = 0;
+      0x7FFFFFFF = 0;
     }
 
     else if (v9 == 1)
     {
-      v12 = [v7 textFields];
-      v13 = [v12 objectAtIndex:0];
-      v14 = [v13 text];
+      textFields2 = [alertController textFields];
+      v13 = [textFields2 objectAtIndex:0];
+      text = [v13 text];
 
-      if (v14)
+      if (text)
       {
-        v11 = v14;
+        0x7FFFFFFF = text;
       }
 
       else
       {
-        v11 = &stru_283094718;
+        0x7FFFFFFF = &stru_283094718;
       }
     }
 
     else
     {
-      v11 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v9 & 0x7FFFFFFF];
+      0x7FFFFFFF = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:v9 & 0x7FFFFFFF];
       v15 = 0;
       do
       {
-        v16 = [v7 textFields];
-        v17 = [v16 objectAtIndex:v15];
-        v18 = [v17 text];
+        textFields3 = [alertController textFields];
+        v17 = [textFields3 objectAtIndex:v15];
+        text2 = [v17 text];
 
-        if (v18)
+        if (text2)
         {
-          v19 = v18;
+          v19 = text2;
         }
 
         else
@@ -2038,7 +2038,7 @@ void __41__SBUserNotificationAlert__setActivated___block_invoke(uint64_t a1)
           v19 = &stru_283094718;
         }
 
-        [(__CFString *)v11 addObject:v19];
+        [(__CFString *)0x7FFFFFFF addObject:v19];
 
         ++v15;
       }
@@ -2055,13 +2055,13 @@ void __41__SBUserNotificationAlert__setActivated___block_invoke(uint64_t a1)
       _os_log_impl(&dword_21ED4E000, v20, OS_LOG_TYPE_INFO, "Sending back %d textField response(s) to alert item owner.", buf, 8u);
     }
 
-    if ((v4 & 0x80000000) == 0 || v11)
+    if ((v4 & 0x80000000) == 0 || 0x7FFFFFFF)
     {
       v23 = objc_alloc_init(MEMORY[0x277CBEB38]);
       v24 = v23;
-      if (v11)
+      if (0x7FFFFFFF)
       {
-        [v23 setObject:v11 forKey:*MEMORY[0x277CBF238]];
+        [v23 setObject:0x7FFFFFFF forKey:*MEMORY[0x277CBF238]];
       }
 
       if ((v4 & 0x80000000) == 0)
@@ -2149,10 +2149,10 @@ void __41__SBUserNotificationAlert__setActivated___block_invoke(uint64_t a1)
     unlockActionButtonTag = self->_unlockActionButtonTag;
     if ((unlockActionButtonTag + 1) <= 1)
     {
-      v8 = [SBApp authenticationController];
-      v9 = [v8 isAuthenticated];
+      authenticationController = [SBApp authenticationController];
+      isAuthenticated = [authenticationController isAuthenticated];
 
-      if (v9)
+      if (isAuthenticated)
       {
         defaultResponseLaunchURL = self->_defaultResponseLaunchURL;
         if (defaultResponseLaunchURL)
@@ -2205,11 +2205,11 @@ LABEL_16:
   }
 }
 
-- (void)dismissIfNecessaryWithResponse:(int)a3 customButtonResponse:(int)a4
+- (void)dismissIfNecessaryWithResponse:(int)response customButtonResponse:(int)buttonResponse
 {
-  v4 = *&a4;
-  v5 = *&a3;
-  if (!a3)
+  v4 = *&buttonResponse;
+  v5 = *&response;
+  if (!response)
   {
     defaultResponseLaunchBundleID = self->_defaultResponseLaunchBundleID;
     defaultResponseLaunchURL = self->_defaultResponseLaunchURL;
@@ -2241,10 +2241,10 @@ LABEL_11:
       }
 
 LABEL_8:
-      v12 = [SBApp authenticationController];
-      v13 = [v12 isAuthenticated];
+      authenticationController = [SBApp authenticationController];
+      isAuthenticated = [authenticationController isAuthenticated];
 
-      if ((v13 & 1) == 0)
+      if ((isAuthenticated & 1) == 0)
       {
         *(self + 450) |= 1u;
       }
@@ -2259,7 +2259,7 @@ LABEL_8:
       v17 = 3221225472;
       v18 = __79__SBUserNotificationAlert_dismissIfNecessaryWithResponse_customButtonResponse___block_invoke;
       v19 = &unk_2783ADB58;
-      v20 = self;
+      selfCopy = self;
       objc_copyWeak(&v23, &location);
       v21 = v10;
       v22 = v11;
@@ -2278,7 +2278,7 @@ LABEL_8:
   }
 
 LABEL_12:
-  [(SBUserNotificationAlert *)self _setActivated:0, v16, v17, v18, v19, v20];
+  [(SBUserNotificationAlert *)self _setActivated:0, v16, v17, v18, v19, selfCopy];
   [(SBUserNotificationAlert *)self _sendResponseAndCleanUp:v5 customButtonResponse:v4];
   [(SBAlertItem *)self deactivateForButton];
 }
@@ -2290,19 +2290,19 @@ void __79__SBUserNotificationAlert_dismissIfNecessaryWithResponse_customButtonRe
   [WeakRetained _activateApplication:*(a1 + 40) withURL:*(a1 + 48)];
 }
 
-- (void)_activateApplication:(id)a3 withURL:(id)a4
+- (void)_activateApplication:(id)application withURL:(id)l
 {
-  v5 = a3;
-  v6 = a4;
+  applicationCopy = application;
+  lCopy = l;
   v7 = +[SBWorkspace mainWorkspace];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __56__SBUserNotificationAlert__activateApplication_withURL___block_invoke;
   v10[3] = &unk_2783AAA48;
-  v11 = v5;
-  v12 = v6;
-  v8 = v6;
-  v9 = v5;
+  v11 = applicationCopy;
+  v12 = lCopy;
+  v8 = lCopy;
+  v9 = applicationCopy;
   [v7 requestTransitionWithBuilder:v10];
 }
 
@@ -2335,11 +2335,11 @@ void __56__SBUserNotificationAlert__activateApplication_withURL___block_invoke_2
 
 - (void)_noteSilencingHardwareButtonPressed
 {
-  v2 = [(SBUserNotificationAlert *)self sound];
-  [v2 stop];
+  sound = [(SBUserNotificationAlert *)self sound];
+  [sound stop];
 }
 
-- (void)willDeactivateForReason:(int)a3
+- (void)willDeactivateForReason:(int)reason
 {
   if ((*(self + 449) & 0x10) != 0)
   {
@@ -2352,19 +2352,19 @@ void __56__SBUserNotificationAlert__activateApplication_withURL___block_invoke_2
     }
   }
 
-  v6 = [(SBUserNotificationAlert *)self sound];
-  [v6 stop];
+  sound = [(SBUserNotificationAlert *)self sound];
+  [sound stop];
 }
 
-- (void)didDeactivateForReason:(int)a3
+- (void)didDeactivateForReason:(int)reason
 {
   if ((*(self + 450) & 2) == 0)
   {
-    v4 = *&a3;
+    v4 = *&reason;
     if ((*(self + 448) & 2) == 0)
     {
       v5 = *(self + 448);
-      switch(a3)
+      switch(reason)
       {
         case 6:
           if (*(self + 448) & 0x40) != 0 || (*(self + 450))
@@ -2417,24 +2417,24 @@ LABEL_18:
   [(SBAlertItem *)&v3 didFailToActivate];
 }
 
-- (void)presentationStateDidChangeFromState:(unint64_t)a3 toState:(unint64_t)a4
+- (void)presentationStateDidChangeFromState:(unint64_t)state toState:(unint64_t)toState
 {
   v6.receiver = self;
   v6.super_class = SBUserNotificationAlert;
-  [(SBAlertItem *)&v6 presentationStateDidChangeFromState:a3 toState:?];
-  if (a4 == 4 && self->_cleanedUp)
+  [(SBAlertItem *)&v6 presentationStateDidChangeFromState:state toState:?];
+  if (toState == 4 && self->_cleanedUp)
   {
     [(SBUserNotificationAlert *)self _cleanupCustomContentViewControllers];
   }
 }
 
-- (BOOL)textField:(id)a3 shouldChangeCharactersInRange:(_NSRange)a4 replacementString:(id)a5
+- (BOOL)textField:(id)field shouldChangeCharactersInRange:(_NSRange)range replacementString:(id)string
 {
-  length = a4.length;
-  v7 = a5;
-  v8 = a3;
-  v9 = [v8 text];
-  v10 = [v9 length];
+  length = range.length;
+  stringCopy = string;
+  fieldCopy = field;
+  text = [fieldCopy text];
+  v10 = [text length];
 
   if (v10 >= length)
   {
@@ -2446,34 +2446,34 @@ LABEL_18:
     v11 = 0;
   }
 
-  v12 = [v7 length];
+  v12 = [stringCopy length];
 
   v13 = v12 + v11;
-  v14 = [v8 sb_maxInputLength];
+  sb_maxInputLength = [fieldCopy sb_maxInputLength];
 
-  return v13 <= v14;
+  return v13 <= sb_maxInputLength;
 }
 
 - (void)_cleanupCustomContentViewControllers
 {
   OUTLINED_FUNCTION_1_2();
-  v1 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   OUTLINED_FUNCTION_0_3();
   [v0 handleFailureInMethod:? object:? file:? lineNumber:? description:?];
 }
 
-- (id)_parseLegacyTextFieldDefinitions:(id)a3 locBundle:(id)a4
+- (id)_parseLegacyTextFieldDefinitions:(id)definitions locBundle:(id)bundle
 {
   v44[1] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 objectForKey:*MEMORY[0x277CBF230]];
-  v9 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v8 withBundle:v7];
+  definitionsCopy = definitions;
+  bundleCopy = bundle;
+  v8 = [definitionsCopy objectForKey:*MEMORY[0x277CBF230]];
+  v9 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v8 withBundle:bundleCopy];
 
-  v10 = [v6 objectForKey:*MEMORY[0x277CBF238]];
-  v42 = self;
-  v40 = v7;
-  v11 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v10 withBundle:v7];
+  v10 = [definitionsCopy objectForKey:*MEMORY[0x277CBF238]];
+  selfCopy = self;
+  v40 = bundleCopy;
+  v11 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v10 withBundle:bundleCopy];
 
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
@@ -2523,13 +2523,13 @@ LABEL_11:
     goto LABEL_37;
   }
 
-  v20 = [v6 objectForKey:*MEMORY[0x277CBF1F8]];
+  v20 = [definitionsCopy objectForKey:*MEMORY[0x277CBF1F8]];
   v21 = safeArrayOfIntNumberValue(v20);
 
-  v22 = [v6 objectForKey:*MEMORY[0x277D67438]];
+  v22 = [definitionsCopy objectForKey:*MEMORY[0x277D67438]];
   v23 = safeArrayOfIntNumberValue(v22);
 
-  v24 = [v6 objectForKey:*MEMORY[0x277D67440]];
+  v24 = [definitionsCopy objectForKey:*MEMORY[0x277D67440]];
   v25 = safeArrayOfIntNumberValue(v24);
 
   if (![v15 count])
@@ -2539,7 +2539,7 @@ LABEL_37:
     goto LABEL_38;
   }
 
-  v37 = v6;
+  v37 = definitionsCopy;
   v26 = 0;
   v27 = 0;
   v41 = v19;
@@ -2569,7 +2569,7 @@ LABEL_37:
     v31 = objc_alloc_init(MEMORY[0x277D66B58]);
     [v31 setValue:v29];
     [v31 setTitle:v30];
-    if (((v42->_requestFlags >> v26) & 0x10000) != 0)
+    if (((selfCopy->_requestFlags >> v26) & 0x10000) != 0)
     {
       [v31 setSecure:1];
     }
@@ -2609,26 +2609,26 @@ LABEL_37:
   }
 
   while ([v15 count] > v26);
-  v6 = v37;
+  definitionsCopy = v37;
 LABEL_38:
   v35 = v27;
 
   return v27;
 }
 
-- (id)_parseTextFieldDefinitions:(id)a3 locBundle:(id)a4
+- (id)_parseTextFieldDefinitions:(id)definitions locBundle:(id)bundle
 {
   v34 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = v6;
-  if (!v5)
+  definitionsCopy = definitions;
+  bundleCopy = bundle;
+  v7 = bundleCopy;
+  if (!definitionsCopy)
   {
     v28 = 0;
     goto LABEL_27;
   }
 
-  v25 = v6;
+  v25 = bundleCopy;
   objc_opt_class();
   if ((objc_opt_isKindOfClass() & 1) == 0 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
@@ -2641,8 +2641,8 @@ LABEL_38:
   v32 = 0u;
   v29 = 0u;
   v30 = 0u;
-  v24 = v5;
-  obj = v5;
+  v24 = definitionsCopy;
+  obj = definitionsCopy;
   v8 = [obj countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (!v8)
   {
@@ -2669,16 +2669,16 @@ LABEL_38:
       if (objc_opt_isKindOfClass())
       {
         v13 = [objc_alloc(MEMORY[0x277D66B58]) _initWithDictionary:v12];
-        v14 = [v13 title];
-        v15 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v14 withBundle:v7];
+        title = [v13 title];
+        v15 = [(SBUserNotificationAlert *)self _safeLocalizedValue:title withBundle:v7];
 
-        v16 = [v13 value];
-        v17 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v16 withBundle:v7];
+        value = [v13 value];
+        v17 = [(SBUserNotificationAlert *)self _safeLocalizedValue:value withBundle:v7];
 
-        v18 = [v13 title];
+        title2 = [v13 title];
         if (BSEqualObjects())
         {
-          v19 = [v13 value];
+          value2 = [v13 value];
           v20 = BSEqualObjects();
 
           v7 = v25;
@@ -2718,21 +2718,21 @@ LABEL_15:
   while (v9);
 LABEL_26:
 
-  v5 = v24;
+  definitionsCopy = v24;
 LABEL_27:
 
   return v28;
 }
 
-- (id)_parseCustomButtonDefinitions:(id)a3 locBundle:(id)a4
+- (id)_parseCustomButtonDefinitions:(id)definitions locBundle:(id)bundle
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v22 = a4;
-  if (v5 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  definitionsCopy = definitions;
+  bundleCopy = bundle;
+  if (definitionsCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v20 = v5;
-    v6 = v5;
+    v20 = definitionsCopy;
+    v6 = definitionsCopy;
     v23 = 0u;
     v24 = 0u;
     v25 = 0u;
@@ -2757,10 +2757,10 @@ LABEL_27:
           if (objc_opt_isKindOfClass())
           {
             v13 = [objc_alloc(MEMORY[0x277D66B50]) _initWithDictionary:v12];
-            v14 = [v13 title];
-            v15 = [(SBUserNotificationAlert *)self _safeLocalizedValue:v14 withBundle:v22];
+            title = [v13 title];
+            v15 = [(SBUserNotificationAlert *)self _safeLocalizedValue:title withBundle:bundleCopy];
 
-            v16 = [v13 title];
+            title2 = [v13 title];
             v17 = BSEqualObjects();
 
             if ((v17 & 1) == 0)
@@ -2792,7 +2792,7 @@ LABEL_27:
       v9 = 0;
     }
 
-    v5 = v20;
+    definitionsCopy = v20;
   }
 
   else
@@ -2803,24 +2803,24 @@ LABEL_27:
   return v9;
 }
 
-- (int64_t)_uiAlertActionStyleFromSBUserNotificationButtonPresentationStyle:(int)a3
+- (int64_t)_uiAlertActionStyleFromSBUserNotificationButtonPresentationStyle:(int)style
 {
-  if (a3 == 2)
+  if (style == 2)
   {
     return 1;
   }
 
   else
   {
-    return 2 * (a3 == 1);
+    return 2 * (style == 1);
   }
 }
 
-- (int64_t)_uiAlertActionLayoutDirectionFromSBUserNotificationButtonLayoutDirection:(unsigned int)a3
+- (int64_t)_uiAlertActionLayoutDirectionFromSBUserNotificationButtonLayoutDirection:(unsigned int)direction
 {
-  if ((a3 & 3) != 0)
+  if ((direction & 3) != 0)
   {
-    return a3 & 3;
+    return direction & 3;
   }
 
   else
@@ -2829,12 +2829,12 @@ LABEL_27:
   }
 }
 
-- (id)_parseSystemApertureContentDefinition:(id)a3
+- (id)_parseSystemApertureContentDefinition:(id)definition
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  definitionCopy = definition;
+  if (definitionCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [objc_alloc(MEMORY[0x277D66CE0]) _initWithDictionary:v3];
+    v4 = [objc_alloc(MEMORY[0x277D66CE0]) _initWithDictionary:definitionCopy];
   }
 
   else
@@ -2845,12 +2845,12 @@ LABEL_27:
   return v4;
 }
 
-- (id)_parseAssetDefinition:(id)a3
+- (id)_parseAssetDefinition:(id)definition
 {
-  v3 = a3;
-  if (v3 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
+  definitionCopy = definition;
+  if (definitionCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0))
   {
-    v4 = [MEMORY[0x277D66CC0] _definitionFromSerializedDefinition:v3];
+    v4 = [MEMORY[0x277D66CC0] _definitionFromSerializedDefinition:definitionCopy];
   }
 
   else
@@ -2861,28 +2861,28 @@ LABEL_27:
   return v4;
 }
 
-- (id)_imageDefinitionForPath:(id)a3 catalogPath:(id)a4 catalogImageKey:(id)a5 graphicIconDefinition:(id)a6
+- (id)_imageDefinitionForPath:(id)path catalogPath:(id)catalogPath catalogImageKey:(id)key graphicIconDefinition:(id)definition
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = a6;
-  v13 = v12;
-  if (v9)
+  pathCopy = path;
+  catalogPathCopy = catalogPath;
+  keyCopy = key;
+  definitionCopy = definition;
+  v13 = definitionCopy;
+  if (pathCopy)
   {
-    v14 = [MEMORY[0x277D66CD8] definitionWithImagePath:v9];
+    v14 = [MEMORY[0x277D66CD8] definitionWithImagePath:pathCopy];
 LABEL_8:
     v15 = v14;
     goto LABEL_9;
   }
 
-  if (v10 && v11)
+  if (catalogPathCopy && keyCopy)
   {
-    v14 = [MEMORY[0x277D66CD8] definitionWithImageCatalogPath:v10 catalogImageKey:v11];
+    v14 = [MEMORY[0x277D66CD8] definitionWithImageCatalogPath:catalogPathCopy catalogImageKey:keyCopy];
     goto LABEL_8;
   }
 
-  if ([v12 count])
+  if ([definitionCopy count])
   {
     v14 = [objc_alloc(MEMORY[0x277D66A10]) _initWithDictionary:v13];
     goto LABEL_8;
@@ -2894,12 +2894,12 @@ LABEL_9:
   return v15;
 }
 
-- (id)_imageForDefinition:(id)a3
+- (id)_imageForDefinition:(id)definition
 {
-  v4 = a3;
-  if (v4)
+  definitionCopy = definition;
+  if (definitionCopy)
   {
-    v5 = [(NSMapTable *)self->_imagesByDefinition objectForKey:v4];
+    v5 = [(NSMapTable *)self->_imagesByDefinition objectForKey:definitionCopy];
     if (v5)
     {
 LABEL_7:
@@ -2908,21 +2908,21 @@ LABEL_7:
       goto LABEL_9;
     }
 
-    v6 = [v4 sb_resolvedImage];
-    if (v6)
+    sb_resolvedImage = [definitionCopy sb_resolvedImage];
+    if (sb_resolvedImage)
     {
-      v5 = v6;
+      v5 = sb_resolvedImage;
       imagesByDefinition = self->_imagesByDefinition;
       if (!imagesByDefinition)
       {
-        v8 = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
+        weakToStrongObjectsMapTable = [MEMORY[0x277CCAB00] weakToStrongObjectsMapTable];
         v9 = self->_imagesByDefinition;
-        self->_imagesByDefinition = v8;
+        self->_imagesByDefinition = weakToStrongObjectsMapTable;
 
         imagesByDefinition = self->_imagesByDefinition;
       }
 
-      [(NSMapTable *)imagesByDefinition setObject:v5 forKey:v4];
+      [(NSMapTable *)imagesByDefinition setObject:v5 forKey:definitionCopy];
       goto LABEL_7;
     }
   }

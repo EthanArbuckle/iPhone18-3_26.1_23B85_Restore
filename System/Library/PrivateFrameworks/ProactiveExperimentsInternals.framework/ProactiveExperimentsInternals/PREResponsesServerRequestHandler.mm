@@ -1,21 +1,21 @@
 @interface PREResponsesServerRequestHandler
-- (id)preResponseItemArrayFromQuickResponses:(id)a3;
-- (void)preResponseItemsForMessage:(id)a3 maximumResponses:(unint64_t)a4 conversationTurns:(id)a5 context:(id)a6 time:(id)a7 language:(id)a8 recipientHandles:(id)a9 modelFilePath:(id)a10 modelConfigPath:(id)a11 espressoBinFilePath:(id)a12 vocabFilePath:(id)a13 registerDisplayed:(BOOL)a14 includeCustomResponses:(BOOL)a15 includeResponsesToRobots:(BOOL)a16 completion:(id)a17;
-- (void)predictForMessage:(id)a3 conversationTurns:(id)a4 language:(id)a5 plistPath:(id)a6 espressoBinPath:(id)a7 vocabPath:(id)a8 heads:(id)a9 completion:(id)a10;
+- (id)preResponseItemArrayFromQuickResponses:(id)responses;
+- (void)preResponseItemsForMessage:(id)message maximumResponses:(unint64_t)responses conversationTurns:(id)turns context:(id)context time:(id)time language:(id)language recipientHandles:(id)handles modelFilePath:(id)self0 modelConfigPath:(id)self1 espressoBinFilePath:(id)self2 vocabFilePath:(id)self3 registerDisplayed:(BOOL)self4 includeCustomResponses:(BOOL)self5 includeResponsesToRobots:(BOOL)self6 completion:(id)self7;
+- (void)predictForMessage:(id)message conversationTurns:(id)turns language:(id)language plistPath:(id)path espressoBinPath:(id)binPath vocabPath:(id)vocabPath heads:(id)heads completion:(id)self0;
 @end
 
 @implementation PREResponsesServerRequestHandler
 
-- (id)preResponseItemArrayFromQuickResponses:(id)a3
+- (id)preResponseItemArrayFromQuickResponses:(id)responses
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v23 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v3, "count")}];
+  responsesCopy = responses;
+  v23 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(responsesCopy, "count")}];
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
-  v4 = v3;
+  v4 = responsesCopy;
   v5 = [v4 countByEnumeratingWithState:&v30 objects:v36 count:16];
   if (v5)
   {
@@ -39,16 +39,16 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v11 = [v9 proactiveTrigger];
+          proactiveTrigger = [v9 proactiveTrigger];
 
-          if (v11)
+          if (proactiveTrigger)
           {
             v12 = pre_sv_responses_handle();
             if (os_log_type_enabled(v12, OS_LOG_TYPE_FAULT))
             {
-              v13 = [v9 proactiveTrigger];
+              proactiveTrigger2 = [v9 proactiveTrigger];
               *buf = 138412290;
-              v35 = v13;
+              v35 = proactiveTrigger2;
               _os_log_fault_impl(&dword_260D12000, v12, OS_LOG_TYPE_FAULT, "PREInternal - Unexpected proactive trigger received %@", buf, 0xCu);
             }
           }
@@ -61,11 +61,11 @@
             v27 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v9, "semanticClassId")}];
             v25 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v9, "styleGroupId")}];
             v26 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v9, "replyTextId")}];
-            v16 = [v9 text];
-            v17 = [v9 lang];
+            text = [v9 text];
+            lang = [v9 lang];
             v18 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v9, "isCustomResponse")}];
             v19 = [MEMORY[0x277CCABB0] numberWithBool:{objc_msgSend(v9, "isRobotResponse")}];
-            v12 = [v14 initWithCategoryId:v15 modelId:v28 responseClassId:v27 replySubgroupId:v25 replyTextId:v26 replyText:v16 language:v17 isCustomResponse:v18 isRobotResponse:v19];
+            v12 = [v14 initWithCategoryId:v15 modelId:v28 responseClassId:v27 replySubgroupId:v25 replyTextId:v26 replyText:text language:lang isCustomResponse:v18 isRobotResponse:v19];
 
             v6 = v24;
             v4 = v22;
@@ -100,17 +100,17 @@
   return v23;
 }
 
-- (void)predictForMessage:(id)a3 conversationTurns:(id)a4 language:(id)a5 plistPath:(id)a6 espressoBinPath:(id)a7 vocabPath:(id)a8 heads:(id)a9 completion:(id)a10
+- (void)predictForMessage:(id)message conversationTurns:(id)turns language:(id)language plistPath:(id)path espressoBinPath:(id)binPath vocabPath:(id)vocabPath heads:(id)heads completion:(id)self0
 {
   v50 = *MEMORY[0x277D85DE8];
-  v29 = a3;
-  v30 = a4;
-  v31 = a5;
-  v32 = a6;
-  v33 = a7;
-  v34 = a8;
-  v35 = a9;
-  v28 = a10;
+  messageCopy = message;
+  turnsCopy = turns;
+  languageCopy = language;
+  pathCopy = path;
+  binPathCopy = binPath;
+  vocabPathCopy = vocabPath;
+  headsCopy = heads;
+  completionCopy = completion;
   v15 = pre_sv_responses_handle();
   if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
   {
@@ -136,7 +136,7 @@
 
   v17 = v16;
   _Block_object_dispose(&v45, 8);
-  v18 = [v16 predictForMessage:v29 conversationTurns:v30 localeIdentifier:v31 plistPath:v32 espressoBinPath:v33 vocabPath:v34 heads:v35];
+  v18 = [v16 predictForMessage:messageCopy conversationTurns:turnsCopy localeIdentifier:languageCopy plistPath:pathCopy espressoBinPath:binPathCopy vocabPath:vocabPathCopy heads:headsCopy];
   if (v18)
   {
     v19 = objc_opt_new();
@@ -170,12 +170,12 @@
       while (v21);
     }
 
-    v28[2](v28, v19, 0);
+    completionCopy[2](completionCopy, v19, 0);
   }
 
   else
   {
-    v28[2](v28, 0, 0);
+    completionCopy[2](completionCopy, 0, 0);
   }
 
   v27 = *MEMORY[0x277D85DE8];
@@ -194,19 +194,19 @@ id __134__PREResponsesServerRequestHandler_predictForMessage_conversationTurns_l
   return v7;
 }
 
-- (void)preResponseItemsForMessage:(id)a3 maximumResponses:(unint64_t)a4 conversationTurns:(id)a5 context:(id)a6 time:(id)a7 language:(id)a8 recipientHandles:(id)a9 modelFilePath:(id)a10 modelConfigPath:(id)a11 espressoBinFilePath:(id)a12 vocabFilePath:(id)a13 registerDisplayed:(BOOL)a14 includeCustomResponses:(BOOL)a15 includeResponsesToRobots:(BOOL)a16 completion:(id)a17
+- (void)preResponseItemsForMessage:(id)message maximumResponses:(unint64_t)responses conversationTurns:(id)turns context:(id)context time:(id)time language:(id)language recipientHandles:(id)handles modelFilePath:(id)self0 modelConfigPath:(id)self1 espressoBinFilePath:(id)self2 vocabFilePath:(id)self3 registerDisplayed:(BOOL)self4 includeCustomResponses:(BOOL)self5 includeResponsesToRobots:(BOOL)self6 completion:(id)self7
 {
-  v37 = a3;
-  v21 = a5;
-  v39 = a6;
-  v38 = a7;
-  v41 = a8;
-  v22 = a9;
-  v40 = a10;
-  v23 = a11;
-  v24 = a12;
-  v25 = a13;
-  v26 = a17;
+  messageCopy = message;
+  turnsCopy = turns;
+  contextCopy = context;
+  timeCopy = time;
+  languageCopy = language;
+  handlesCopy = handles;
+  pathCopy = path;
+  configPathCopy = configPath;
+  filePathCopy = filePath;
+  vocabFilePathCopy = vocabFilePath;
+  completionCopy = completion;
   v27 = pre_sv_responses_handle();
   if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
   {
@@ -214,22 +214,22 @@ id __134__PREResponsesServerRequestHandler_predictForMessage_conversationTurns_l
     _os_log_impl(&dword_260D12000, v27, OS_LOG_TYPE_DEFAULT, "PREInternal - Server responsesForMessage called", buf, 2u);
   }
 
-  if (v21)
+  if (turnsCopy)
   {
-    BYTE2(v33) = a16;
-    BYTE1(v33) = a15;
+    BYTE2(v33) = robots;
+    BYTE1(v33) = customResponses;
     LOBYTE(v33) = 1;
-    v28 = v37;
-    v29 = v22;
-    [MEMORY[0x277D02598] quickResponsesForMessage:v37 conversationTurns:v21 maxResponses:a4 localeIdentifier:v41 recipientHandles:v22 chunkPath:v40 plistPath:v23 espressoBinFilePath:v24 vocabFilePath:v25 useContactNames:v33 includeCustomResponses:? includeResponsesToRobots:?];
+    v28 = messageCopy;
+    v29 = handlesCopy;
+    [MEMORY[0x277D02598] quickResponsesForMessage:messageCopy conversationTurns:turnsCopy maxResponses:responses localeIdentifier:languageCopy recipientHandles:handlesCopy chunkPath:pathCopy plistPath:configPathCopy espressoBinFilePath:filePathCopy vocabFilePath:vocabFilePathCopy useContactNames:v33 includeCustomResponses:? includeResponsesToRobots:?];
   }
 
   else
   {
-    LOWORD(v34) = __PAIR16__(a16, a15);
-    v28 = v37;
-    v29 = v22;
-    [MEMORY[0x277D02598] quickResponsesForMessage:v37 context:v39 time:v38 maxResponses:a4 locale:v41 recipientHandles:v22 chunkPath:v40 plistPath:v23 espressoBinFilePath:v24 vocabFilePath:v25 includeCustomResponses:v34 includeResponsesToRobots:?];
+    LOWORD(v34) = __PAIR16__(robots, customResponses);
+    v28 = messageCopy;
+    v29 = handlesCopy;
+    [MEMORY[0x277D02598] quickResponsesForMessage:messageCopy context:contextCopy time:timeCopy maxResponses:responses locale:languageCopy recipientHandles:handlesCopy chunkPath:pathCopy plistPath:configPathCopy espressoBinFilePath:filePathCopy vocabFilePath:vocabFilePathCopy includeCustomResponses:v34 includeResponsesToRobots:?];
   }
   v30 = ;
   if (v30)
@@ -242,8 +242,8 @@ id __134__PREResponsesServerRequestHandler_predictForMessage_conversationTurns_l
     v31 = 0;
   }
 
-  v26[2](v26, v31, 0);
-  if (a14 && [v30 count])
+  completionCopy[2](completionCopy, v31, 0);
+  if (displayed && [v30 count])
   {
     v32 = pre_sv_responses_handle();
     if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
@@ -252,7 +252,7 @@ id __134__PREResponsesServerRequestHandler_predictForMessage_conversationTurns_l
       _os_log_impl(&dword_260D12000, v32, OS_LOG_TYPE_DEFAULT, "PREInternal - registerDisplayedQuickResponses", v42, 2u);
     }
 
-    [MEMORY[0x277D02598] registerDisplayedQuickResponses:v30 plistPath:v23 vocabPath:v25];
+    [MEMORY[0x277D02598] registerDisplayedQuickResponses:v30 plistPath:configPathCopy vocabPath:vocabFilePathCopy];
   }
 }
 

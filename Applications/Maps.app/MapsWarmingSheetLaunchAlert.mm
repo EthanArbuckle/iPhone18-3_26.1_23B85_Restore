@@ -1,6 +1,6 @@
 @interface MapsWarmingSheetLaunchAlert
 - (_TtC4Maps27MapsWarmingSheetLaunchAlert)init;
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3;
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler;
 @end
 
 @implementation MapsWarmingSheetLaunchAlert
@@ -17,12 +17,12 @@
   return [(MapsWarmingSheetLaunchAlert *)&v6 init];
 }
 
-- (void)displayAlertIfNecessaryWithCompletionHandler:(id)a3
+- (void)displayAlertIfNecessaryWithCompletionHandler:(id)handler
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(handler);
   v5 = swift_allocObject();
   *(v5 + 16) = v4;
-  v6 = self;
+  selfCopy = self;
   sub_100333CC4(sub_1000FA694, v5);
 }
 

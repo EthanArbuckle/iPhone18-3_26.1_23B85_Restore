@@ -1,39 +1,39 @@
 @interface NWNetworkAgentRegistration
-+ (BOOL)addActiveAssertionToNetworkAgent:(id)a3;
-+ (BOOL)removeActiveAssertionFromNetworkAgent:(id)a3;
-+ (BOOL)useNetworkAgent:(id)a3 returnUseCount:(unint64_t *)a4;
-- (BOOL)addNetworkAgentToInterfaceNamed:(id)a3;
-- (BOOL)addToken:(id)a3;
-- (BOOL)assignDiscoveredEndpoints:(id)a3 toClient:(id)a4;
-- (BOOL)assignNexusData:(id)a3 toClient:(id)a4;
-- (BOOL)assignResolvedEndpoints:(id)a3 toClient:(id)a4;
-- (BOOL)createReadSourceWithRegistrationSocket:(int)a3;
++ (BOOL)addActiveAssertionToNetworkAgent:(id)agent;
++ (BOOL)removeActiveAssertionFromNetworkAgent:(id)agent;
++ (BOOL)useNetworkAgent:(id)agent returnUseCount:(unint64_t *)count;
+- (BOOL)addNetworkAgentToInterfaceNamed:(id)named;
+- (BOOL)addToken:(id)token;
+- (BOOL)assignDiscoveredEndpoints:(id)endpoints toClient:(id)client;
+- (BOOL)assignNexusData:(id)data toClient:(id)client;
+- (BOOL)assignResolvedEndpoints:(id)endpoints toClient:(id)client;
+- (BOOL)createReadSourceWithRegistrationSocket:(int)socket;
 - (BOOL)flushTokens;
-- (BOOL)internalRegisterNetworkAgent:(id)a3 withFileDescriptor:(int)a4;
+- (BOOL)internalRegisterNetworkAgent:(id)agent withFileDescriptor:(int)descriptor;
 - (BOOL)isRegistered;
 - (BOOL)isRegisteredInternal;
-- (BOOL)registerNetworkAgent:(id)a3;
-- (BOOL)registerNetworkAgent:(id)a3 withFileDescriptor:(int)a4;
-- (BOOL)removeNetworkAgentFromInterfaceNamed:(id)a3;
+- (BOOL)registerNetworkAgent:(id)agent;
+- (BOOL)registerNetworkAgent:(id)agent withFileDescriptor:(int)descriptor;
+- (BOOL)removeNetworkAgentFromInterfaceNamed:(id)named;
 - (BOOL)resetError;
-- (BOOL)setLowWaterMark:(unsigned int)a3;
-- (BOOL)setRegisteredNetworkAgent:(id)a3 fileDescriptor:(int)a4;
+- (BOOL)setLowWaterMark:(unsigned int)mark;
+- (BOOL)setRegisteredNetworkAgent:(id)agent fileDescriptor:(int)descriptor;
 - (BOOL)unregisterNetworkAgent;
 - (BOOL)unregisterNetworkAgentInternal;
-- (BOOL)updateNetworkAgent:(id)a3;
-- (NWNetworkAgentRegistration)initWithNetworkAgentClass:(Class)a3;
-- (NWNetworkAgentRegistration)initWithNetworkAgentClass:(Class)a3 queue:(id)a4;
-- (NWNetworkAgentRegistration)initWithNetworkAgentClass:(Class)a3 session:(id)a4;
+- (BOOL)updateNetworkAgent:(id)agent;
+- (NWNetworkAgentRegistration)initWithNetworkAgentClass:(Class)class;
+- (NWNetworkAgentRegistration)initWithNetworkAgentClass:(Class)class queue:(id)queue;
+- (NWNetworkAgentRegistration)initWithNetworkAgentClass:(Class)class session:(id)session;
 - (id)description;
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4;
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content;
 - (int)agentFileDescriptor;
 - (int)dupRegistrationFileDescriptor;
 - (unint64_t)useCount;
-- (unsigned)tokenCountWithError:(int *)a3;
+- (unsigned)tokenCountWithError:(int *)error;
 - (void)dealloc;
 - (void)handleMessageFromAgent;
-- (void)handleMessageWithType:(unsigned __int8)a3 payload:(char *)a4 payloadLength:(unsigned int)a5;
-- (void)setUseCount:(unint64_t)a3;
+- (void)handleMessageWithType:(unsigned __int8)type payload:(char *)payload payloadLength:(unsigned int)length;
+- (void)setUseCount:(unint64_t)count;
 @end
 
 @implementation NWNetworkAgentRegistration
@@ -44,9 +44,9 @@
   v7 = 0;
   if ([(NWNetworkAgentRegistration *)self isRegisteredInternal])
   {
-    v3 = [(NWNetworkAgentRegistration *)self session];
+    session = [(NWNetworkAgentRegistration *)self session];
 
-    if (!v3)
+    if (!session)
     {
       v4 = nw_network_agent_ctl_copy_received_agent_message([(NWNetworkAgentRegistration *)self registrationSocket], &v7);
       if (v4)
@@ -74,20 +74,20 @@
 
 - (BOOL)isRegisteredInternal
 {
-  v3 = [(NWNetworkAgentRegistration *)self session];
+  session = [(NWNetworkAgentRegistration *)self session];
 
-  if (!v3)
+  if (!session)
   {
     return [(NWNetworkAgentRegistration *)self registrationSocket]!= -1;
   }
 
-  v4 = [(NWNetworkAgentRegistration *)self registeredUUID];
-  v5 = v4 != 0;
+  registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+  v5 = registeredUUID != 0;
 
   return v5;
 }
 
-- (unsigned)tokenCountWithError:(int *)a3
+- (unsigned)tokenCountWithError:(int *)error
 {
   v9[2] = *MEMORY[0x1E69E9840];
   result = [(NWNetworkAgentRegistration *)self isRegisteredInternal];
@@ -96,13 +96,13 @@
     v8 = 0;
     v9[0] = 0;
     v9[1] = 0;
-    v6 = [(NWNetworkAgentRegistration *)self registeredUUID];
-    [v6 getUUIDBytes:v9];
+    registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+    [registeredUUID getUUIDBytes:v9];
 
     token_count = nw_network_agent_get_token_count([(NWNetworkAgentRegistration *)self agentFileDescriptor], v9, &v8);
-    if (a3)
+    if (error)
     {
-      *a3 = token_count;
+      *error = token_count;
     }
 
     return v8;
@@ -111,17 +111,17 @@
   return result;
 }
 
-- (void)setUseCount:(unint64_t)a3
+- (void)setUseCount:(unint64_t)count
 {
   v6[2] = *MEMORY[0x1E69E9840];
   if ([(NWNetworkAgentRegistration *)self isRegisteredInternal])
   {
     v6[0] = 0;
     v6[1] = 0;
-    v5 = [(NWNetworkAgentRegistration *)self registeredUUID];
-    [v5 getUUIDBytes:v6];
+    registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+    [registeredUUID getUUIDBytes:v6];
 
-    nw_network_agent_set_use_count([(NWNetworkAgentRegistration *)self agentFileDescriptor], v6, a3);
+    nw_network_agent_set_use_count([(NWNetworkAgentRegistration *)self agentFileDescriptor], v6, count);
   }
 }
 
@@ -129,14 +129,14 @@
 {
   v7[2] = *MEMORY[0x1E69E9840];
   v6 = 0;
-  v3 = [(NWNetworkAgentRegistration *)self isRegisteredInternal];
+  isRegisteredInternal = [(NWNetworkAgentRegistration *)self isRegisteredInternal];
   result = 0;
-  if (v3)
+  if (isRegisteredInternal)
   {
     v7[0] = 0;
     v7[1] = 0;
-    v5 = [(NWNetworkAgentRegistration *)self registeredUUID];
-    [v5 getUUIDBytes:v7];
+    registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+    [registeredUUID getUUIDBytes:v7];
 
     nw_network_agent_get_use_count([(NWNetworkAgentRegistration *)self agentFileDescriptor], v7, &v6);
     return v6;
@@ -145,11 +145,11 @@
   return result;
 }
 
-- (BOOL)assignResolvedEndpoints:(id)a3 toClient:(id)a4
+- (BOOL)assignResolvedEndpoints:(id)endpoints toClient:(id)client
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  endpointsCopy = endpoints;
+  clientCopy = client;
   pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
   networkd_settings_init();
   v8 = gLogObj;
@@ -158,9 +158,9 @@
     *buf = 136446722;
     *&buf[4] = "[NWNetworkAgentRegistration assignResolvedEndpoints:toClient:]";
     v27 = 2112;
-    v28 = v6;
+    v28 = endpointsCopy;
     v29 = 2112;
-    v30 = v7;
+    v30 = clientCopy;
     _os_log_impl(&dword_181A37000, v8, OS_LOG_TYPE_INFO, "%{public}s Assigning resolved endpoints %@ to %@", buf, 0x20u);
   }
 
@@ -169,7 +169,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v6;
+  v10 = endpointsCopy;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
@@ -183,8 +183,8 @@
           objc_enumerationMutation(v10);
         }
 
-        v14 = [*(*(&v21 + 1) + 8 * i) internalEndpoint];
-        if (v14)
+        internalEndpoint = [*(*(&v21 + 1) + 8 * i) internalEndpoint];
+        if (internalEndpoint)
         {
           v15 = v9 == 0;
         }
@@ -196,7 +196,7 @@
 
         if (!v15)
         {
-          _nw_array_append(v9, v14);
+          _nw_array_append(v9, internalEndpoint);
         }
       }
 
@@ -212,22 +212,22 @@
   {
     v17 = objc_alloc(MEMORY[0x1E695DEF0]);
     v18 = [v17 initWithBytesNoCopy:endpoint_array_result length:*buf freeWhenDone:1];
-    v19 = [(NWNetworkAgentRegistration *)self assignNexusData:v18 toClient:v7];
+    v19 = [(NWNetworkAgentRegistration *)self assignNexusData:v18 toClient:clientCopy];
   }
 
   else
   {
-    v19 = [(NWNetworkAgentRegistration *)self assignNexusData:0 toClient:v7];
+    v19 = [(NWNetworkAgentRegistration *)self assignNexusData:0 toClient:clientCopy];
   }
 
   return v19;
 }
 
-- (BOOL)assignDiscoveredEndpoints:(id)a3 toClient:(id)a4
+- (BOOL)assignDiscoveredEndpoints:(id)endpoints toClient:(id)client
 {
   v31 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  endpointsCopy = endpoints;
+  clientCopy = client;
   pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
   networkd_settings_init();
   v8 = gLogObj;
@@ -236,9 +236,9 @@
     *buf = 136446722;
     *&buf[4] = "[NWNetworkAgentRegistration assignDiscoveredEndpoints:toClient:]";
     v27 = 2112;
-    v28 = v6;
+    v28 = endpointsCopy;
     v29 = 2112;
-    v30 = v7;
+    v30 = clientCopy;
     _os_log_impl(&dword_181A37000, v8, OS_LOG_TYPE_INFO, "%{public}s Assigning discovered endpoints %@ to %@", buf, 0x20u);
   }
 
@@ -247,7 +247,7 @@
   v24 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v10 = v6;
+  v10 = endpointsCopy;
   v11 = [v10 countByEnumeratingWithState:&v21 objects:v25 count:16];
   if (v11)
   {
@@ -261,8 +261,8 @@
           objc_enumerationMutation(v10);
         }
 
-        v14 = [*(*(&v21 + 1) + 8 * i) internalEndpoint];
-        if (v14)
+        internalEndpoint = [*(*(&v21 + 1) + 8 * i) internalEndpoint];
+        if (internalEndpoint)
         {
           v15 = v9 == 0;
         }
@@ -274,7 +274,7 @@
 
         if (!v15)
         {
-          _nw_array_append(v9, v14);
+          _nw_array_append(v9, internalEndpoint);
         }
       }
 
@@ -290,32 +290,32 @@
   {
     v17 = objc_alloc(MEMORY[0x1E695DEF0]);
     v18 = [v17 initWithBytesNoCopy:endpoint_array_result length:*buf freeWhenDone:1];
-    v19 = [(NWNetworkAgentRegistration *)self assignNexusData:v18 toClient:v7];
+    v19 = [(NWNetworkAgentRegistration *)self assignNexusData:v18 toClient:clientCopy];
   }
 
   else
   {
-    v19 = [(NWNetworkAgentRegistration *)self assignNexusData:0 toClient:v7];
+    v19 = [(NWNetworkAgentRegistration *)self assignNexusData:0 toClient:clientCopy];
   }
 
   return v19;
 }
 
-- (BOOL)assignNexusData:(id)a3 toClient:(id)a4
+- (BOOL)assignNexusData:(id)data toClient:(id)client
 {
   v39 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  dataCopy = data;
+  clientCopy = client;
   if (![(NWNetworkAgentRegistration *)self isRegisteredInternal])
   {
     goto LABEL_44;
   }
 
-  v8 = [(NWNetworkAgentRegistration *)self registeredUUID];
+  registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
 
-  if (v8)
+  if (registeredUUID)
   {
-    if ([v6 length] >= 0xFFFFFFF0)
+    if ([dataCopy length] >= 0xFFFFFFF0)
     {
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
@@ -323,7 +323,7 @@
       *buf = 136446466;
       *&buf[4] = "[NWNetworkAgentRegistration assignNexusData:toClient:]";
       *&buf[12] = 2048;
-      *&buf[14] = [v6 length];
+      *&buf[14] = [dataCopy length];
       LODWORD(v35) = 22;
       v10 = _os_log_send_and_compose_impl();
 
@@ -342,7 +342,7 @@
         v12 = type[0];
         if (os_log_type_enabled(v11, type[0]))
         {
-          v13 = [v6 length];
+          v13 = [dataCopy length];
           *buf = 136446466;
           *&buf[4] = "[NWNetworkAgentRegistration assignNexusData:toClient:]";
           *&buf[12] = 2048;
@@ -368,7 +368,7 @@ LABEL_24:
         {
           if (v20)
           {
-            v21 = [v6 length];
+            v21 = [dataCopy length];
             *buf = 136446722;
             *&buf[4] = "[NWNetworkAgentRegistration assignNexusData:toClient:]";
             *&buf[12] = 2048;
@@ -393,7 +393,7 @@ LABEL_43:
 
         if (v20)
         {
-          v33 = [v6 length];
+          v33 = [dataCopy length];
           *buf = 136446466;
           *&buf[4] = "[NWNetworkAgentRegistration assignNexusData:toClient:]";
           *&buf[12] = 2048;
@@ -413,7 +413,7 @@ LABEL_43:
         v12 = type[0];
         if (os_log_type_enabled(v11, type[0]))
         {
-          v27 = [v6 length];
+          v27 = [dataCopy length];
           *buf = 136446466;
           *&buf[4] = "[NWNetworkAgentRegistration assignNexusData:toClient:]";
           *&buf[12] = 2048;
@@ -426,25 +426,25 @@ LABEL_43:
       goto LABEL_26;
     }
 
-    LODWORD(v8) = [v6 length] + 16;
-    v15 = malloc_type_calloc(v8, 1uLL, 0xD86E156uLL);
+    LODWORD(registeredUUID) = [dataCopy length] + 16;
+    v15 = malloc_type_calloc(registeredUUID, 1uLL, 0xD86E156uLL);
     if (v15)
     {
       v16 = v15;
       *buf = 0;
       *&buf[8] = 0;
-      [v7 getUUIDBytes:buf];
+      [clientCopy getUUIDBytes:buf];
       *v16 = *buf;
-      if ([v6 length])
+      if ([dataCopy length])
       {
-        memcpy(v16 + 16, [v6 bytes], objc_msgSend(v6, "length"));
+        memcpy(v16 + 16, [dataCopy bytes], objc_msgSend(dataCopy, "length"));
       }
 
       memset(type, 0, sizeof(type));
-      v17 = [(NWNetworkAgentRegistration *)self registeredUUID];
-      [v17 getUUIDBytes:type];
+      registeredUUID2 = [(NWNetworkAgentRegistration *)self registeredUUID];
+      [registeredUUID2 getUUIDBytes:type];
 
-      LOBYTE(v8) = nw_network_agent_ctl_setsockopt_inner([(NWNetworkAgentRegistration *)self agentFileDescriptor], type, 11, v16, v8, 0, 0) >= 0;
+      LOBYTE(registeredUUID) = nw_network_agent_ctl_setsockopt_inner([(NWNetworkAgentRegistration *)self agentFileDescriptor], type, 11, v16, registeredUUID, 0, 0) >= 0;
       free(v16);
       goto LABEL_45;
     }
@@ -455,7 +455,7 @@ LABEL_43:
     *buf = 136446466;
     *&buf[4] = "[NWNetworkAgentRegistration assignNexusData:toClient:]";
     *&buf[12] = 1024;
-    *&buf[14] = v8;
+    *&buf[14] = registeredUUID;
     v23 = _os_log_send_and_compose_impl();
 
     type[0] = OS_LOG_TYPE_ERROR;
@@ -473,7 +473,7 @@ LABEL_43:
           *buf = 136446466;
           *&buf[4] = "[NWNetworkAgentRegistration assignNexusData:toClient:]";
           *&buf[12] = 1024;
-          *&buf[14] = v8;
+          *&buf[14] = registeredUUID;
           v26 = "%{public}s calloc(%u) failed";
 LABEL_39:
           _os_log_impl(&dword_181A37000, v24, v25, v26, buf, 0x12u);
@@ -492,7 +492,7 @@ LABEL_39:
           *buf = 136446466;
           *&buf[4] = "[NWNetworkAgentRegistration assignNexusData:toClient:]";
           *&buf[12] = 1024;
-          *&buf[14] = v8;
+          *&buf[14] = registeredUUID;
           v26 = "%{public}s calloc(%u) failed, backtrace limit exceeded";
           goto LABEL_39;
         }
@@ -513,7 +513,7 @@ LABEL_40:
           *buf = 136446466;
           *&buf[4] = "[NWNetworkAgentRegistration assignNexusData:toClient:]";
           *&buf[12] = 1024;
-          *&buf[14] = v8;
+          *&buf[14] = registeredUUID;
           v26 = "%{public}s calloc(%u) failed, no backtrace";
           goto LABEL_39;
         }
@@ -526,7 +526,7 @@ LABEL_40:
         *buf = 136446722;
         *&buf[4] = "[NWNetworkAgentRegistration assignNexusData:toClient:]";
         *&buf[12] = 1024;
-        *&buf[14] = v8;
+        *&buf[14] = registeredUUID;
         *&buf[18] = 2082;
         *&buf[20] = v31;
         _os_log_impl(&dword_181A37000, v24, v25, "%{public}s calloc(%u) failed, dumping backtrace:%{public}s", buf, 0x1Cu);
@@ -543,26 +543,26 @@ LABEL_41:
     }
 
 LABEL_44:
-    LOBYTE(v8) = 0;
+    LOBYTE(registeredUUID) = 0;
   }
 
 LABEL_45:
 
-  return v8;
+  return registeredUUID;
 }
 
-- (BOOL)removeNetworkAgentFromInterfaceNamed:(id)a3
+- (BOOL)removeNetworkAgentFromInterfaceNamed:(id)named
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  namedCopy = named;
   if ([(NWNetworkAgentRegistration *)self isRegisteredInternal]&& ([(NWNetworkAgentRegistration *)self registeredUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     *uu = 0;
     v10 = 0;
-    v6 = [(NWNetworkAgentRegistration *)self registeredUUID];
-    [v6 getUUIDBytes:uu];
+    registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+    [registeredUUID getUUIDBytes:uu];
 
-    v7 = nw_network_agent_remove_from_interface([v4 UTF8String], uu) == 0;
+    v7 = nw_network_agent_remove_from_interface([namedCopy UTF8String], uu) == 0;
   }
 
   else
@@ -573,18 +573,18 @@ LABEL_45:
   return v7;
 }
 
-- (BOOL)addNetworkAgentToInterfaceNamed:(id)a3
+- (BOOL)addNetworkAgentToInterfaceNamed:(id)named
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  namedCopy = named;
   if ([(NWNetworkAgentRegistration *)self isRegisteredInternal]&& ([(NWNetworkAgentRegistration *)self registeredUUID], v5 = objc_claimAutoreleasedReturnValue(), v5, v5))
   {
     *uu = 0;
     v10 = 0;
-    v6 = [(NWNetworkAgentRegistration *)self registeredUUID];
-    [v6 getUUIDBytes:uu];
+    registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+    [registeredUUID getUUIDBytes:uu];
 
-    v7 = nw_network_agent_add_to_interface([v4 UTF8String], uu) == 0;
+    v7 = nw_network_agent_add_to_interface([namedCopy UTF8String], uu) == 0;
   }
 
   else
@@ -595,61 +595,61 @@ LABEL_45:
   return v7;
 }
 
-- (BOOL)setLowWaterMark:(unsigned int)a3
+- (BOOL)setLowWaterMark:(unsigned int)mark
 {
   v10 = *MEMORY[0x1E69E9840];
-  v5 = [(NWNetworkAgentRegistration *)self isRegisteredInternal];
-  if (v5)
+  isRegisteredInternal = [(NWNetworkAgentRegistration *)self isRegisteredInternal];
+  if (isRegisteredInternal)
   {
     memset(v9, 0, sizeof(v9));
-    v6 = [(NWNetworkAgentRegistration *)self registeredUUID];
-    [v6 getUUIDBytes:v9];
+    registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+    [registeredUUID getUUIDBytes:v9];
 
-    *v8 = a3;
-    LOBYTE(v5) = nw_network_agent_ctl_setsockopt_inner([(NWNetworkAgentRegistration *)self agentFileDescriptor], v9, 24, v8, 4u, 0, 0) == 0;
+    *v8 = mark;
+    LOBYTE(isRegisteredInternal) = nw_network_agent_ctl_setsockopt_inner([(NWNetworkAgentRegistration *)self agentFileDescriptor], v9, 24, v8, 4u, 0, 0) == 0;
   }
 
-  return v5;
+  return isRegisteredInternal;
 }
 
 - (BOOL)resetError
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [(NWNetworkAgentRegistration *)self isRegisteredInternal];
-  if (v3)
+  isRegisteredInternal = [(NWNetworkAgentRegistration *)self isRegisteredInternal];
+  if (isRegisteredInternal)
   {
     memset(v6, 0, sizeof(v6));
-    v4 = [(NWNetworkAgentRegistration *)self registeredUUID];
-    [v4 getUUIDBytes:v6];
+    registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+    [registeredUUID getUUIDBytes:v6];
 
-    LOBYTE(v3) = nw_network_agent_ctl_setsockopt_inner([(NWNetworkAgentRegistration *)self agentFileDescriptor], v6, 27, 0, 0, 0, 0) == 0;
+    LOBYTE(isRegisteredInternal) = nw_network_agent_ctl_setsockopt_inner([(NWNetworkAgentRegistration *)self agentFileDescriptor], v6, 27, 0, 0, 0, 0) == 0;
   }
 
-  return v3;
+  return isRegisteredInternal;
 }
 
 - (BOOL)flushTokens
 {
   v7 = *MEMORY[0x1E69E9840];
-  v3 = [(NWNetworkAgentRegistration *)self isRegisteredInternal];
-  if (v3)
+  isRegisteredInternal = [(NWNetworkAgentRegistration *)self isRegisteredInternal];
+  if (isRegisteredInternal)
   {
     memset(v6, 0, sizeof(v6));
-    v4 = [(NWNetworkAgentRegistration *)self registeredUUID];
-    [v4 getUUIDBytes:v6];
+    registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+    [registeredUUID getUUIDBytes:v6];
 
-    LOBYTE(v3) = nw_network_agent_ctl_setsockopt_inner([(NWNetworkAgentRegistration *)self agentFileDescriptor], v6, 22, 0, 0, 0, 0) == 0;
+    LOBYTE(isRegisteredInternal) = nw_network_agent_ctl_setsockopt_inner([(NWNetworkAgentRegistration *)self agentFileDescriptor], v6, 22, 0, 0, 0, 0) == 0;
   }
 
-  return v3;
+  return isRegisteredInternal;
 }
 
-- (BOOL)addToken:(id)a3
+- (BOOL)addToken:(id)token
 {
   v22 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = v4;
-  if (!v4)
+  tokenCopy = token;
+  v5 = tokenCopy;
+  if (!tokenCopy)
   {
     v8 = __nwlog_obj();
     *buf = 136446210;
@@ -736,7 +736,7 @@ LABEL_22:
     goto LABEL_33;
   }
 
-  if ([v4 length] > 0x1000)
+  if ([tokenCopy length] > 0x1000)
   {
     v13 = __nwlog_obj();
     *buf = 136446210;
@@ -819,8 +819,8 @@ LABEL_35:
 
   *buf = 0;
   *&buf[8] = 0;
-  v6 = [(NWNetworkAgentRegistration *)self registeredUUID];
-  [v6 getUUIDBytes:buf];
+  registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+  [registeredUUID getUUIDBytes:buf];
 
   v7 = nw_network_agent_ctl_setsockopt_inner(-[NWNetworkAgentRegistration agentFileDescriptor](self, "agentFileDescriptor"), buf, 21, [v5 bytes], objc_msgSend(v5, "length"), 0, 0) == 0;
 LABEL_36:
@@ -830,33 +830,33 @@ LABEL_36:
 
 - (BOOL)unregisterNetworkAgent
 {
-  v3 = [(NWNetworkAgentRegistration *)self unregisterNetworkAgentInternal];
-  if (v3)
+  unregisterNetworkAgentInternal = [(NWNetworkAgentRegistration *)self unregisterNetworkAgentInternal];
+  if (unregisterNetworkAgentInternal)
   {
-    v4 = v3;
-    v5 = [(NWNetworkAgentRegistration *)self session];
+    v4 = unregisterNetworkAgentInternal;
+    session = [(NWNetworkAgentRegistration *)self session];
 
-    if (v5)
+    if (session)
     {
-      v6 = [(NWNetworkAgentRegistration *)self session];
-      [v6 removeRegistration:self];
+      session2 = [(NWNetworkAgentRegistration *)self session];
+      [session2 removeRegistration:self];
     }
 
     else
     {
-      v6 = [(NWNetworkAgentRegistration *)self queue];
+      session2 = [(NWNetworkAgentRegistration *)self queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __52__NWNetworkAgentRegistration_unregisterNetworkAgent__block_invoke;
       block[3] = &unk_1E6A3D868;
       block[4] = self;
-      dispatch_async(v6, block);
+      dispatch_async(session2, block);
     }
 
-    LOBYTE(v3) = v4;
+    LOBYTE(unregisterNetworkAgentInternal) = v4;
   }
 
-  return v3;
+  return unregisterNetworkAgentInternal;
 }
 
 void __52__NWNetworkAgentRegistration_unregisterNetworkAgent__block_invoke(uint64_t a1)
@@ -878,123 +878,123 @@ void __52__NWNetworkAgentRegistration_unregisterNetworkAgent__block_invoke(uint6
 - (BOOL)unregisterNetworkAgentInternal
 {
   v8 = *MEMORY[0x1E69E9840];
-  v3 = [(NWNetworkAgentRegistration *)self isRegisteredInternal];
-  if (v3)
+  isRegisteredInternal = [(NWNetworkAgentRegistration *)self isRegisteredInternal];
+  if (isRegisteredInternal)
   {
     memset(v7, 0, sizeof(v7));
-    v4 = v3;
-    v5 = [(NWNetworkAgentRegistration *)self registeredUUID];
-    [v5 getUUIDBytes:v7];
+    v4 = isRegisteredInternal;
+    registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+    [registeredUUID getUUIDBytes:v7];
 
     nw_network_agent_ctl_setsockopt_inner([(NWNetworkAgentRegistration *)self agentFileDescriptor], v7, 2, 0, 0, 0, 0);
     [(NWNetworkAgentRegistration *)self setNetworkAgent:0];
     [(NWNetworkAgentRegistration *)self setRegisteredUUID:0];
-    LOBYTE(v3) = v4;
+    LOBYTE(isRegisteredInternal) = v4;
   }
 
-  return v3;
+  return isRegisteredInternal;
 }
 
-- (BOOL)updateNetworkAgent:(id)a3
+- (BOOL)updateNetworkAgent:(id)agent
 {
   v26 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (-[NWNetworkAgentRegistration isRegisteredInternal](self, "isRegisteredInternal") && (-[NWNetworkAgentRegistration networkAgentClass](self, "networkAgentClass"), (objc_opt_isKindOfClass() & 1) != 0) && (-[NWNetworkAgentRegistration registeredUUID](self, "registeredUUID"), v5 = objc_claimAutoreleasedReturnValue(), [v4 agentUUID], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, v7))
+  agentCopy = agent;
+  if (-[NWNetworkAgentRegistration isRegisteredInternal](self, "isRegisteredInternal") && (-[NWNetworkAgentRegistration networkAgentClass](self, "networkAgentClass"), (objc_opt_isKindOfClass() & 1) != 0) && (-[NWNetworkAgentRegistration registeredUUID](self, "registeredUUID"), v5 = objc_claimAutoreleasedReturnValue(), [agentCopy agentUUID], v6 = objc_claimAutoreleasedReturnValue(), v7 = objc_msgSend(v5, "isEqual:", v6), v6, v5, v7))
   {
     memset(v25, 0, sizeof(v25));
-    v8 = [(NWNetworkAgentRegistration *)self registeredUUID];
-    [v8 getUUIDBytes:v25];
+    registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+    [registeredUUID getUUIDBytes:v25];
 
-    v24 = [v4 copyAgentData];
+    copyAgentData = [agentCopy copyAgentData];
     if (objc_opt_respondsToSelector())
     {
-      v23 = [v4 isSpecificUseOnly];
+      isSpecificUseOnly = [agentCopy isSpecificUseOnly];
     }
 
     else
     {
-      v23 = 0;
+      isSpecificUseOnly = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v22 = [v4 isNetworkProvider];
+      isNetworkProvider = [agentCopy isNetworkProvider];
     }
 
     else
     {
-      v22 = 0;
+      isNetworkProvider = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v21 = [v4 isNexusProvider];
+      isNexusProvider = [agentCopy isNexusProvider];
     }
 
     else
     {
-      v21 = 0;
+      isNexusProvider = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v20 = [v4 supportsListenRequests];
+      supportsListenRequests = [agentCopy supportsListenRequests];
     }
 
     else
     {
-      v20 = 0;
+      supportsListenRequests = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v19 = [v4 supportsBrowseRequests];
+      supportsBrowseRequests = [agentCopy supportsBrowseRequests];
     }
 
     else
     {
-      v19 = 0;
+      supportsBrowseRequests = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v18 = [v4 supportsResolveRequests];
+      supportsResolveRequests = [agentCopy supportsResolveRequests];
     }
 
     else
     {
-      v18 = 0;
+      supportsResolveRequests = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v16 = [v4 requiresAssert];
+      requiresAssert = [agentCopy requiresAssert];
     }
 
     else
     {
-      v16 = 0;
+      requiresAssert = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v15 = [v4 updateClientsImmediately];
+      updateClientsImmediately = [agentCopy updateClientsImmediately];
     }
 
     else
     {
-      v15 = 0;
+      updateClientsImmediately = 0;
     }
 
-    v11 = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentDomain];
-    v12 = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentType];
-    v13 = [v4 agentDescription];
-    v17 = v11;
-    v14 = nw_network_agent_ctl_setsockopt(-[NWNetworkAgentRegistration agentFileDescriptor](self, "agentFileDescriptor"), 3, v25, [v11 UTF8String], objc_msgSend(v12, "UTF8String"), objc_msgSend(v13, "UTF8String"), objc_msgSend(v4, "isActive"), objc_msgSend(v4, "isKernelActivated"), objc_msgSend(v4, "isUserActivated"), objc_msgSend(v4, "isVoluntary"), v23, v22, v21, v20, v19, v18, 0, v16, v15, objc_msgSend(v24, "bytes"), objc_msgSend(v24, "length"));
+    agentDomain = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentDomain];
+    agentType = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentType];
+    agentDescription = [agentCopy agentDescription];
+    v17 = agentDomain;
+    v14 = nw_network_agent_ctl_setsockopt(-[NWNetworkAgentRegistration agentFileDescriptor](self, "agentFileDescriptor"), 3, v25, [agentDomain UTF8String], objc_msgSend(agentType, "UTF8String"), objc_msgSend(agentDescription, "UTF8String"), objc_msgSend(agentCopy, "isActive"), objc_msgSend(agentCopy, "isKernelActivated"), objc_msgSend(agentCopy, "isUserActivated"), objc_msgSend(agentCopy, "isVoluntary"), isSpecificUseOnly, isNetworkProvider, isNexusProvider, supportsListenRequests, supportsBrowseRequests, supportsResolveRequests, 0, requiresAssert, updateClientsImmediately, objc_msgSend(copyAgentData, "bytes"), objc_msgSend(copyAgentData, "length"));
     v9 = v14 >= 0;
     if ((v14 & 0x80000000) == 0)
     {
-      [(NWNetworkAgentRegistration *)self setNetworkAgent:v4];
+      [(NWNetworkAgentRegistration *)self setNetworkAgent:agentCopy];
     }
   }
 
@@ -1006,21 +1006,21 @@ void __52__NWNetworkAgentRegistration_unregisterNetworkAgent__block_invoke(uint6
   return v9;
 }
 
-- (BOOL)setRegisteredNetworkAgent:(id)a3 fileDescriptor:(int)a4
+- (BOOL)setRegisteredNetworkAgent:(id)agent fileDescriptor:(int)descriptor
 {
-  v4 = *&a4;
+  v4 = *&descriptor;
   v17 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  agentCopy = agent;
   [(NWNetworkAgentRegistration *)self networkAgentClass];
   if (objc_opt_isKindOfClass())
   {
-    [(NWNetworkAgentRegistration *)self setNetworkAgent:v6];
-    v7 = [v6 agentUUID];
-    [(NWNetworkAgentRegistration *)self setRegisteredUUID:v7];
+    [(NWNetworkAgentRegistration *)self setNetworkAgent:agentCopy];
+    agentUUID = [agentCopy agentUUID];
+    [(NWNetworkAgentRegistration *)self setRegisteredUUID:agentUUID];
 
-    v8 = [(NWNetworkAgentRegistration *)self session];
+    session = [(NWNetworkAgentRegistration *)self session];
 
-    if (v8)
+    if (session)
     {
       pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
       networkd_settings_init();
@@ -1032,8 +1032,8 @@ void __52__NWNetworkAgentRegistration_unregisterNetworkAgent__block_invoke(uint6
         _os_log_impl(&dword_181A37000, v9, OS_LOG_TYPE_INFO, "%{public}s Agent registration updated with session", buf, 0xCu);
       }
 
-      v10 = [(NWNetworkAgentRegistration *)self session];
-      [v10 addRegistration:self];
+      session2 = [(NWNetworkAgentRegistration *)self session];
+      [session2 addRegistration:self];
     }
 
     else
@@ -1044,13 +1044,13 @@ void __52__NWNetworkAgentRegistration_unregisterNetworkAgent__block_invoke(uint6
         goto LABEL_12;
       }
 
-      v10 = [(NWNetworkAgentRegistration *)self queue];
+      session2 = [(NWNetworkAgentRegistration *)self queue];
       block[0] = MEMORY[0x1E69E9820];
       block[1] = 3221225472;
       block[2] = __71__NWNetworkAgentRegistration_setRegisteredNetworkAgent_fileDescriptor___block_invoke;
       block[3] = &unk_1E6A3D868;
       block[4] = self;
-      dispatch_async(v10, block);
+      dispatch_async(session2, block);
     }
 
     v12 = 1;
@@ -1076,12 +1076,12 @@ LABEL_12:
   return v12;
 }
 
-- (BOOL)registerNetworkAgent:(id)a3
+- (BOOL)registerNetworkAgent:(id)agent
 {
-  v4 = a3;
-  v5 = [(NWNetworkAgentRegistration *)self session];
+  agentCopy = agent;
+  session = [(NWNetworkAgentRegistration *)self session];
 
-  if (v5)
+  if (session)
   {
     v6 = 0xFFFFFFFFLL;
   }
@@ -1091,19 +1091,19 @@ LABEL_12:
     v6 = +[NWNetworkAgentRegistration newRegistrationFileDescriptor];
   }
 
-  v7 = [(NWNetworkAgentRegistration *)self internalRegisterNetworkAgent:v4 withFileDescriptor:v6];
+  v7 = [(NWNetworkAgentRegistration *)self internalRegisterNetworkAgent:agentCopy withFileDescriptor:v6];
 
   return v7;
 }
 
-- (BOOL)registerNetworkAgent:(id)a3 withFileDescriptor:(int)a4
+- (BOOL)registerNetworkAgent:(id)agent withFileDescriptor:(int)descriptor
 {
-  v4 = *&a4;
+  v4 = *&descriptor;
   v13 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = [(NWNetworkAgentRegistration *)self session];
+  agentCopy = agent;
+  session = [(NWNetworkAgentRegistration *)self session];
 
-  if (v7)
+  if (session)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -1120,26 +1120,26 @@ LABEL_12:
 
   else
   {
-    v9 = [(NWNetworkAgentRegistration *)self internalRegisterNetworkAgent:v6 withFileDescriptor:v4];
+    v9 = [(NWNetworkAgentRegistration *)self internalRegisterNetworkAgent:agentCopy withFileDescriptor:v4];
   }
 
   return v9;
 }
 
-- (BOOL)internalRegisterNetworkAgent:(id)a3 withFileDescriptor:(int)a4
+- (BOOL)internalRegisterNetworkAgent:(id)agent withFileDescriptor:(int)descriptor
 {
-  v4 = *&a4;
+  v4 = *&descriptor;
   v30 = *MEMORY[0x1E69E9840];
-  v6 = a3;
+  agentCopy = agent;
   [(NWNetworkAgentRegistration *)self networkAgentClass];
   if (objc_opt_isKindOfClass())
   {
-    v7 = [(NWNetworkAgentRegistration *)self session];
+    session = [(NWNetworkAgentRegistration *)self session];
 
-    if (v7)
+    if (session)
     {
-      v8 = [(NWNetworkAgentRegistration *)self session];
-      [v8 addRegistration:self];
+      session2 = [(NWNetworkAgentRegistration *)self session];
+      [session2 addRegistration:self];
     }
 
     else if (![(NWNetworkAgentRegistration *)self createReadSourceWithRegistrationSocket:v4])
@@ -1150,116 +1150,116 @@ LABEL_12:
 
     *buf = 0;
     *&buf[8] = 0;
-    v11 = [v6 agentUUID];
-    [v11 getUUIDBytes:buf];
+    agentUUID = [agentCopy agentUUID];
+    [agentUUID getUUIDBytes:buf];
 
-    v28 = [v6 copyAgentData];
+    copyAgentData = [agentCopy copyAgentData];
     if (objc_opt_respondsToSelector())
     {
-      v27 = [v6 isSpecificUseOnly];
+      isSpecificUseOnly = [agentCopy isSpecificUseOnly];
     }
 
     else
     {
-      v27 = 0;
+      isSpecificUseOnly = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v26 = [v6 isNetworkProvider];
+      isNetworkProvider = [agentCopy isNetworkProvider];
     }
 
     else
     {
-      v26 = 0;
+      isNetworkProvider = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v25 = [v6 isNexusProvider];
+      isNexusProvider = [agentCopy isNexusProvider];
     }
 
     else
     {
-      v25 = 0;
+      isNexusProvider = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v24 = [v6 supportsListenRequests];
+      supportsListenRequests = [agentCopy supportsListenRequests];
     }
 
     else
     {
-      v24 = 0;
+      supportsListenRequests = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v22 = [v6 supportsBrowseRequests];
+      supportsBrowseRequests = [agentCopy supportsBrowseRequests];
     }
 
     else
     {
-      v22 = 0;
+      supportsBrowseRequests = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v20 = [v6 supportsResolveRequests];
+      supportsResolveRequests = [agentCopy supportsResolveRequests];
     }
 
     else
     {
-      v20 = 0;
+      supportsResolveRequests = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v19 = [v6 requiresAssert];
+      requiresAssert = [agentCopy requiresAssert];
     }
 
     else
     {
-      v19 = 0;
+      requiresAssert = 0;
     }
 
     if (objc_opt_respondsToSelector())
     {
-      v18 = [v6 updateClientsImmediately];
+      updateClientsImmediately = [agentCopy updateClientsImmediately];
     }
 
     else
     {
-      v18 = 0;
+      updateClientsImmediately = 0;
     }
 
-    v12 = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentDomain];
-    v13 = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentType];
-    [v6 agentDescription];
-    v21 = v23 = v12;
-    v14 = nw_network_agent_ctl_setsockopt(-[NWNetworkAgentRegistration agentFileDescriptor](self, "agentFileDescriptor"), 1, buf, [v12 UTF8String], objc_msgSend(v13, "UTF8String"), objc_msgSend(v21, "UTF8String"), objc_msgSend(v6, "isActive"), objc_msgSend(v6, "isKernelActivated"), objc_msgSend(v6, "isUserActivated"), objc_msgSend(v6, "isVoluntary"), v27, v26, v25, v24, v22, v20, 0, v19, v18, objc_msgSend(v28, "bytes"), objc_msgSend(v28, "length"));
+    agentDomain = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentDomain];
+    agentType = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentType];
+    [agentCopy agentDescription];
+    v21 = v23 = agentDomain;
+    v14 = nw_network_agent_ctl_setsockopt(-[NWNetworkAgentRegistration agentFileDescriptor](self, "agentFileDescriptor"), 1, buf, [agentDomain UTF8String], objc_msgSend(agentType, "UTF8String"), objc_msgSend(v21, "UTF8String"), objc_msgSend(agentCopy, "isActive"), objc_msgSend(agentCopy, "isKernelActivated"), objc_msgSend(agentCopy, "isUserActivated"), objc_msgSend(agentCopy, "isVoluntary"), isSpecificUseOnly, isNetworkProvider, isNexusProvider, supportsListenRequests, supportsBrowseRequests, supportsResolveRequests, 0, requiresAssert, updateClientsImmediately, objc_msgSend(copyAgentData, "bytes"), objc_msgSend(copyAgentData, "length"));
     v10 = v14 >= 0;
     if (v14 < 0)
     {
-      v16 = [(NWNetworkAgentRegistration *)self session];
+      session3 = [(NWNetworkAgentRegistration *)self session];
 
-      if (!v16)
+      if (!session3)
       {
         close([(NWNetworkAgentRegistration *)self registrationSocket]);
         [(NWNetworkAgentRegistration *)self setRegistrationSocket:0xFFFFFFFFLL];
         goto LABEL_37;
       }
 
-      v15 = [(NWNetworkAgentRegistration *)self session];
-      [v15 removeRegistration:self];
+      session4 = [(NWNetworkAgentRegistration *)self session];
+      [session4 removeRegistration:self];
     }
 
     else
     {
-      [(NWNetworkAgentRegistration *)self setNetworkAgent:v6];
-      v15 = [v6 agentUUID];
-      [(NWNetworkAgentRegistration *)self setRegisteredUUID:v15];
+      [(NWNetworkAgentRegistration *)self setNetworkAgent:agentCopy];
+      session4 = [agentCopy agentUUID];
+      [(NWNetworkAgentRegistration *)self setRegisteredUUID:session4];
     }
 
 LABEL_37:
@@ -1282,10 +1282,10 @@ LABEL_38:
   return v10;
 }
 
-- (BOOL)createReadSourceWithRegistrationSocket:(int)a3
+- (BOOL)createReadSourceWithRegistrationSocket:(int)socket
 {
   v38 = *MEMORY[0x1E69E9840];
-  if (a3 < 0)
+  if (socket < 0)
   {
     pthread_once(&nwlog_legacy_init(void)::init_once, nwlog_legacy_init_once);
     networkd_settings_init();
@@ -1373,10 +1373,10 @@ LABEL_32:
     return 0;
   }
 
-  v3 = *&a3;
-  v5 = [(NWNetworkAgentRegistration *)self session];
+  v3 = *&socket;
+  session = [(NWNetworkAgentRegistration *)self session];
 
-  if (v5)
+  if (session)
   {
     return 0;
   }
@@ -1396,8 +1396,8 @@ LABEL_32:
     return 0;
   }
 
-  v14 = [(NWNetworkAgentRegistration *)self queue];
-  v15 = dispatch_source_create(MEMORY[0x1E69E96F8], v3, 0, v14);
+  queue = [(NWNetworkAgentRegistration *)self queue];
+  v15 = dispatch_source_create(MEMORY[0x1E69E96F8], v3, 0, queue);
 
   if (!v15)
   {
@@ -1522,25 +1522,25 @@ void __69__NWNetworkAgentRegistration_createReadSourceWithRegistrationSocket___b
   }
 }
 
-- (void)handleMessageWithType:(unsigned __int8)a3 payload:(char *)a4 payloadLength:(unsigned int)a5
+- (void)handleMessageWithType:(unsigned __int8)type payload:(char *)payload payloadLength:(unsigned int)length
 {
   v93 = *MEMORY[0x1E69E9840];
-  if (a3 > 0x1Au)
+  if (type > 0x1Au)
   {
     return;
   }
 
-  v6 = a3;
-  if (((1 << a3) & 0x400F400) == 0)
+  typeCopy = type;
+  if (((1 << type) & 0x400F400) == 0)
   {
-    if (((1 << a3) & 0x320) == 0)
+    if (((1 << type) & 0x320) == 0)
     {
-      if (a3 != 25)
+      if (type != 25)
       {
         return;
       }
 
-      v21 = [(NWNetworkAgentRegistration *)self networkAgent];
+      networkAgent = [(NWNetworkAgentRegistration *)self networkAgent];
       v22 = objc_opt_respondsToSelector();
 
       if ((v22 & 1) == 0)
@@ -1548,15 +1548,15 @@ void __69__NWNetworkAgentRegistration_createReadSourceWithRegistrationSocket___b
         return;
       }
 
-      v90 = [(NWNetworkAgentRegistration *)self networkAgent];
-      [v90 tokenLowWaterMarkReached];
+      networkAgent2 = [(NWNetworkAgentRegistration *)self networkAgent];
+      [networkAgent2 tokenLowWaterMarkReached];
       goto LABEL_82;
     }
 
-    if (a5 < 0x18)
+    if (length < 0x18)
     {
-      v11 = 0;
-      if (a3 != 5)
+      dictionary = 0;
+      if (type != 5)
       {
         goto LABEL_20;
       }
@@ -1564,17 +1564,17 @@ void __69__NWNetworkAgentRegistration_createReadSourceWithRegistrationSocket___b
       goto LABEL_34;
     }
 
-    v11 = [MEMORY[0x1E695DF90] dictionary];
-    if (*(a4 + 1))
+    dictionary = [MEMORY[0x1E695DF90] dictionary];
+    if (*(payload + 1))
     {
       v12 = [MEMORY[0x1E696AD98] numberWithInt:?];
-      [v11 setObject:v12 forKeyedSubscript:@"PID"];
+      [dictionary setObject:v12 forKeyedSubscript:@"PID"];
     }
 
-    if (uuid_is_null(a4 + 8))
+    if (uuid_is_null(payload + 8))
     {
-      v13 = *a4;
-      if ((*a4 & 2) == 0)
+      v13 = *payload;
+      if ((*payload & 2) == 0)
       {
         goto LABEL_18;
       }
@@ -1582,11 +1582,11 @@ void __69__NWNetworkAgentRegistration_createReadSourceWithRegistrationSocket___b
 
     else
     {
-      v72 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:a4 + 8];
-      [v11 setObject:v72 forKeyedSubscript:@"ProcessUUID"];
+      v72 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:payload + 8];
+      [dictionary setObject:v72 forKeyedSubscript:@"ProcessUUID"];
 
-      v13 = *a4;
-      if ((*a4 & 2) == 0)
+      v13 = *payload;
+      if ((*payload & 2) == 0)
       {
 LABEL_18:
         if ((v13 & 1) == 0)
@@ -1598,33 +1598,33 @@ LABEL_18:
       }
     }
 
-    [v11 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"FromKernel"];
-    if ((*a4 & 1) == 0)
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"FromKernel"];
+    if ((*payload & 1) == 0)
     {
 LABEL_19:
-      if (v6 != 5)
+      if (typeCopy != 5)
       {
 LABEL_20:
-        if (v6 == 9)
+        if (typeCopy == 9)
         {
-          v69 = [(NWNetworkAgentRegistration *)self networkAgent];
+          networkAgent3 = [(NWNetworkAgentRegistration *)self networkAgent];
           v70 = objc_opt_respondsToSelector();
 
           if (v70)
           {
-            v71 = [(NWNetworkAgentRegistration *)self networkAgent];
-            [v71 unassertAgentWithOptions:v11];
+            networkAgent4 = [(NWNetworkAgentRegistration *)self networkAgent];
+            [networkAgent4 unassertAgentWithOptions:dictionary];
           }
 
           goto LABEL_62;
         }
 
-        if (v6 != 8)
+        if (typeCopy != 8)
         {
           goto LABEL_37;
         }
 
-        v14 = [(NWNetworkAgentRegistration *)self networkAgent];
+        networkAgent5 = [(NWNetworkAgentRegistration *)self networkAgent];
         v15 = objc_opt_respondsToSelector();
 
         if ((v15 & 1) == 0)
@@ -1632,13 +1632,13 @@ LABEL_20:
           goto LABEL_37;
         }
 
-        v16 = [(NWNetworkAgentRegistration *)self networkAgent];
-        v17 = [v16 assertAgentWithOptions:v11];
+        networkAgent6 = [(NWNetworkAgentRegistration *)self networkAgent];
+        v17 = [networkAgent6 assertAgentWithOptions:dictionary];
         goto LABEL_36;
       }
 
 LABEL_34:
-      v23 = [(NWNetworkAgentRegistration *)self networkAgent];
+      networkAgent7 = [(NWNetworkAgentRegistration *)self networkAgent];
       v24 = objc_opt_respondsToSelector();
 
       if ((v24 & 1) == 0)
@@ -1646,8 +1646,8 @@ LABEL_34:
         goto LABEL_37;
       }
 
-      v16 = [(NWNetworkAgentRegistration *)self networkAgent];
-      v17 = [v16 startAgentWithOptions:v11];
+      networkAgent6 = [(NWNetworkAgentRegistration *)self networkAgent];
+      v17 = [networkAgent6 startAgentWithOptions:dictionary];
 LABEL_36:
       v25 = v17;
 
@@ -1659,151 +1659,151 @@ LABEL_62:
       }
 
 LABEL_37:
-      v26 = [(NWNetworkAgentRegistration *)self networkAgent];
-      v27 = [v26 copyAgentData];
+      networkAgent8 = [(NWNetworkAgentRegistration *)self networkAgent];
+      copyAgentData = [networkAgent8 copyAgentData];
 
       memset(v92, 0, sizeof(v92));
-      v28 = [(NWNetworkAgentRegistration *)self registeredUUID];
-      [v28 getUUIDBytes:v92];
+      registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+      [registeredUUID getUUIDBytes:v92];
 
-      v29 = [(NWNetworkAgentRegistration *)self networkAgent];
+      networkAgent9 = [(NWNetworkAgentRegistration *)self networkAgent];
       v30 = objc_opt_respondsToSelector();
 
       if (v30)
       {
-        v31 = [(NWNetworkAgentRegistration *)self networkAgent];
-        v89 = [v31 isSpecificUseOnly];
+        networkAgent10 = [(NWNetworkAgentRegistration *)self networkAgent];
+        isSpecificUseOnly = [networkAgent10 isSpecificUseOnly];
       }
 
       else
       {
-        v89 = 0;
+        isSpecificUseOnly = 0;
       }
 
-      v32 = [(NWNetworkAgentRegistration *)self networkAgent];
+      networkAgent11 = [(NWNetworkAgentRegistration *)self networkAgent];
       v33 = objc_opt_respondsToSelector();
 
       if (v33)
       {
-        v34 = [(NWNetworkAgentRegistration *)self networkAgent];
-        v88 = [v34 isNetworkProvider];
+        networkAgent12 = [(NWNetworkAgentRegistration *)self networkAgent];
+        isNetworkProvider = [networkAgent12 isNetworkProvider];
       }
 
       else
       {
-        v88 = 0;
+        isNetworkProvider = 0;
       }
 
-      v35 = [(NWNetworkAgentRegistration *)self networkAgent];
+      networkAgent13 = [(NWNetworkAgentRegistration *)self networkAgent];
       v36 = objc_opt_respondsToSelector();
 
       if (v36)
       {
-        v37 = [(NWNetworkAgentRegistration *)self networkAgent];
-        v87 = [v37 isNexusProvider];
+        networkAgent14 = [(NWNetworkAgentRegistration *)self networkAgent];
+        isNexusProvider = [networkAgent14 isNexusProvider];
       }
 
       else
       {
-        v87 = 0;
+        isNexusProvider = 0;
       }
 
-      v38 = [(NWNetworkAgentRegistration *)self networkAgent];
+      networkAgent15 = [(NWNetworkAgentRegistration *)self networkAgent];
       v39 = objc_opt_respondsToSelector();
 
       if (v39)
       {
-        v40 = [(NWNetworkAgentRegistration *)self networkAgent];
-        v86 = [v40 supportsListenRequests];
+        networkAgent16 = [(NWNetworkAgentRegistration *)self networkAgent];
+        supportsListenRequests = [networkAgent16 supportsListenRequests];
       }
 
       else
       {
-        v86 = 0;
+        supportsListenRequests = 0;
       }
 
-      v41 = [(NWNetworkAgentRegistration *)self networkAgent];
+      networkAgent17 = [(NWNetworkAgentRegistration *)self networkAgent];
       v42 = objc_opt_respondsToSelector();
 
       if (v42)
       {
-        v43 = [(NWNetworkAgentRegistration *)self networkAgent];
-        v85 = [v43 supportsBrowseRequests];
+        networkAgent18 = [(NWNetworkAgentRegistration *)self networkAgent];
+        supportsBrowseRequests = [networkAgent18 supportsBrowseRequests];
       }
 
       else
       {
-        v85 = 0;
+        supportsBrowseRequests = 0;
       }
 
-      v44 = [(NWNetworkAgentRegistration *)self networkAgent];
+      networkAgent19 = [(NWNetworkAgentRegistration *)self networkAgent];
       v45 = objc_opt_respondsToSelector();
 
       if (v45)
       {
-        v46 = [(NWNetworkAgentRegistration *)self networkAgent];
-        v84 = [v46 supportsResolveRequests];
+        networkAgent20 = [(NWNetworkAgentRegistration *)self networkAgent];
+        supportsResolveRequests = [networkAgent20 supportsResolveRequests];
       }
 
       else
       {
-        v84 = 0;
+        supportsResolveRequests = 0;
       }
 
-      v47 = [(NWNetworkAgentRegistration *)self networkAgent];
+      networkAgent21 = [(NWNetworkAgentRegistration *)self networkAgent];
       v48 = objc_opt_respondsToSelector();
 
       if (v48)
       {
-        v49 = [(NWNetworkAgentRegistration *)self networkAgent];
-        v83 = [v49 requiresAssert];
+        networkAgent22 = [(NWNetworkAgentRegistration *)self networkAgent];
+        requiresAssert = [networkAgent22 requiresAssert];
       }
 
       else
       {
-        v83 = 0;
+        requiresAssert = 0;
       }
 
-      v50 = [(NWNetworkAgentRegistration *)self networkAgent];
+      networkAgent23 = [(NWNetworkAgentRegistration *)self networkAgent];
       v51 = objc_opt_respondsToSelector();
 
-      v91 = v11;
+      v91 = dictionary;
       if (v51)
       {
-        v52 = [(NWNetworkAgentRegistration *)self networkAgent];
-        v81 = [v52 updateClientsImmediately];
+        networkAgent24 = [(NWNetworkAgentRegistration *)self networkAgent];
+        updateClientsImmediately = [networkAgent24 updateClientsImmediately];
       }
 
       else
       {
-        v81 = 0;
+        updateClientsImmediately = 0;
       }
 
-      v82 = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentDomain];
-      v80 = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentType];
-      v53 = [(NWNetworkAgentRegistration *)self networkAgent];
-      v79 = [v53 agentDescription];
+      agentDomain = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentDomain];
+      agentType = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentType];
+      networkAgent25 = [(NWNetworkAgentRegistration *)self networkAgent];
+      agentDescription = [networkAgent25 agentDescription];
 
-      v78 = [(NWNetworkAgentRegistration *)self agentFileDescriptor];
-      v77 = [v82 UTF8String];
-      v76 = [v80 UTF8String];
-      v75 = [v79 UTF8String];
-      v54 = [(NWNetworkAgentRegistration *)self networkAgent];
-      v55 = [v54 isActive];
-      v56 = [(NWNetworkAgentRegistration *)self networkAgent];
-      v57 = [v56 isKernelActivated];
-      v58 = [(NWNetworkAgentRegistration *)self networkAgent];
-      v59 = [v58 isUserActivated];
-      v60 = [(NWNetworkAgentRegistration *)self networkAgent];
-      nw_network_agent_ctl_setsockopt(v78, 3, v92, v77, v76, v75, v55, v57, v59, [v60 isVoluntary], v89, v88, v87, v86, v85, v84, 0, v83, v81, objc_msgSend(v27, "bytes"), objc_msgSend(v27, "length"));
+      agentFileDescriptor = [(NWNetworkAgentRegistration *)self agentFileDescriptor];
+      uTF8String = [agentDomain UTF8String];
+      uTF8String2 = [agentType UTF8String];
+      uTF8String3 = [agentDescription UTF8String];
+      networkAgent26 = [(NWNetworkAgentRegistration *)self networkAgent];
+      isActive = [networkAgent26 isActive];
+      networkAgent27 = [(NWNetworkAgentRegistration *)self networkAgent];
+      isKernelActivated = [networkAgent27 isKernelActivated];
+      networkAgent28 = [(NWNetworkAgentRegistration *)self networkAgent];
+      isUserActivated = [networkAgent28 isUserActivated];
+      networkAgent29 = [(NWNetworkAgentRegistration *)self networkAgent];
+      nw_network_agent_ctl_setsockopt(agentFileDescriptor, 3, v92, uTF8String, uTF8String2, uTF8String3, isActive, isKernelActivated, isUserActivated, [networkAgent29 isVoluntary], isSpecificUseOnly, isNetworkProvider, isNexusProvider, supportsListenRequests, supportsBrowseRequests, supportsResolveRequests, 0, requiresAssert, updateClientsImmediately, objc_msgSend(copyAgentData, "bytes"), objc_msgSend(copyAgentData, "length"));
 
-      v11 = v91;
+      dictionary = v91;
       goto LABEL_62;
     }
 
 LABEL_76:
-    [v11 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"FromUser"];
-    if (v6 != 5)
+    [dictionary setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"FromUser"];
+    if (typeCopy != 5)
     {
       goto LABEL_20;
     }
@@ -1811,19 +1811,19 @@ LABEL_76:
     goto LABEL_34;
   }
 
-  if (a5 < 0x10)
+  if (length < 0x10)
   {
-    v90 = 0;
-    if (a3 > 13)
+    networkAgent2 = 0;
+    if (type > 13)
     {
       goto LABEL_7;
     }
 
 LABEL_25:
-    switch(v6)
+    switch(typeCopy)
     {
       case 10:
-        v63 = [(NWNetworkAgentRegistration *)self networkAgent];
+        networkAgent30 = [(NWNetworkAgentRegistration *)self networkAgent];
         v64 = objc_opt_respondsToSelector();
 
         if ((v64 & 1) == 0)
@@ -1831,23 +1831,23 @@ LABEL_25:
           goto LABEL_82;
         }
 
-        v20 = [(NWNetworkAgentRegistration *)self networkAgent];
-        [v20 requestNexusWithOptions:v90];
+        networkAgent31 = [(NWNetworkAgentRegistration *)self networkAgent];
+        [networkAgent31 requestNexusWithOptions:networkAgent2];
         break;
       case 12:
-        v67 = [(NWNetworkAgentRegistration *)self networkAgent];
+        networkAgent32 = [(NWNetworkAgentRegistration *)self networkAgent];
         v68 = objc_opt_respondsToSelector();
 
         if (v68)
         {
-          v20 = [(NWNetworkAgentRegistration *)self networkAgent];
-          [v20 closeNexusWithOptions:v90];
+          networkAgent31 = [(NWNetworkAgentRegistration *)self networkAgent];
+          [networkAgent31 closeNexusWithOptions:networkAgent2];
           break;
         }
 
         goto LABEL_82;
       case 13:
-        v18 = [(NWNetworkAgentRegistration *)self networkAgent];
+        networkAgent33 = [(NWNetworkAgentRegistration *)self networkAgent];
         v19 = objc_opt_respondsToSelector();
 
         if ((v19 & 1) == 0)
@@ -1855,8 +1855,8 @@ LABEL_25:
           goto LABEL_82;
         }
 
-        v20 = [(NWNetworkAgentRegistration *)self networkAgent];
-        [v20 startAgentWithOptions:v90];
+        networkAgent31 = [(NWNetworkAgentRegistration *)self networkAgent];
+        [networkAgent31 startAgentWithOptions:networkAgent2];
         break;
       default:
         goto LABEL_82;
@@ -1867,25 +1867,25 @@ LABEL_81:
     goto LABEL_82;
   }
 
-  v8 = a5;
-  v90 = [MEMORY[0x1E695DF90] dictionary];
-  if (!uuid_is_null(a4))
+  lengthCopy = length;
+  networkAgent2 = [MEMORY[0x1E695DF90] dictionary];
+  if (!uuid_is_null(payload))
   {
-    v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:a4];
-    [v90 setObject:v9 forKeyedSubscript:@"ClientUUID"];
+    v9 = [objc_alloc(MEMORY[0x1E696AFB0]) initWithUUIDBytes:payload];
+    [networkAgent2 setObject:v9 forKeyedSubscript:@"ClientUUID"];
   }
 
-  [v90 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"FromUser"];
-  a5 = v8;
-  if (v6 <= 13)
+  [networkAgent2 setObject:MEMORY[0x1E695E118] forKeyedSubscript:@"FromUser"];
+  length = lengthCopy;
+  if (typeCopy <= 13)
   {
     goto LABEL_25;
   }
 
 LABEL_7:
-  if (v6 == 14)
+  if (typeCopy == 14)
   {
-    v61 = [(NWNetworkAgentRegistration *)self networkAgent];
+    networkAgent34 = [(NWNetworkAgentRegistration *)self networkAgent];
     v62 = objc_opt_respondsToSelector();
 
     if ((v62 & 1) == 0)
@@ -1893,20 +1893,20 @@ LABEL_7:
       goto LABEL_82;
     }
 
-    v20 = [(NWNetworkAgentRegistration *)self networkAgent];
-    [v20 assertAgentWithOptions:v90];
+    networkAgent31 = [(NWNetworkAgentRegistration *)self networkAgent];
+    [networkAgent31 assertAgentWithOptions:networkAgent2];
     goto LABEL_81;
   }
 
-  if (v6 != 15)
+  if (typeCopy != 15)
   {
-    if (v6 != 26)
+    if (typeCopy != 26)
     {
       goto LABEL_82;
     }
 
-    v10 = a5 < 0x14 ? 0 : *(a4 + 4);
-    v73 = [(NWNetworkAgentRegistration *)self networkAgent];
+    v10 = length < 0x14 ? 0 : *(payload + 4);
+    networkAgent35 = [(NWNetworkAgentRegistration *)self networkAgent];
     v74 = objc_opt_respondsToSelector();
 
     if ((v74 & 1) == 0)
@@ -1914,18 +1914,18 @@ LABEL_7:
       goto LABEL_82;
     }
 
-    v20 = [(NWNetworkAgentRegistration *)self networkAgent];
-    [v20 reportError:v10 withOptions:v90];
+    networkAgent31 = [(NWNetworkAgentRegistration *)self networkAgent];
+    [networkAgent31 reportError:v10 withOptions:networkAgent2];
     goto LABEL_81;
   }
 
-  v65 = [(NWNetworkAgentRegistration *)self networkAgent];
+  networkAgent36 = [(NWNetworkAgentRegistration *)self networkAgent];
   v66 = objc_opt_respondsToSelector();
 
   if (v66)
   {
-    v20 = [(NWNetworkAgentRegistration *)self networkAgent];
-    [v20 unassertAgentWithOptions:v90];
+    networkAgent31 = [(NWNetworkAgentRegistration *)self networkAgent];
+    [networkAgent31 unassertAgentWithOptions:networkAgent2];
     goto LABEL_81;
   }
 
@@ -1934,26 +1934,26 @@ LABEL_82:
 
 - (int)dupRegistrationFileDescriptor
 {
-  v3 = [(NWNetworkAgentRegistration *)self session];
+  session = [(NWNetworkAgentRegistration *)self session];
 
-  if (v3 || [(NWNetworkAgentRegistration *)self registrationSocket]< 0)
+  if (session || [(NWNetworkAgentRegistration *)self registrationSocket]< 0)
   {
     return -1;
   }
 
-  v5 = [(NWNetworkAgentRegistration *)self registrationSocket];
+  registrationSocket = [(NWNetworkAgentRegistration *)self registrationSocket];
 
-  return dup(v5);
+  return dup(registrationSocket);
 }
 
 - (BOOL)isRegistered
 {
-  v3 = [(NWNetworkAgentRegistration *)self session];
+  session = [(NWNetworkAgentRegistration *)self session];
 
-  if (v3)
+  if (session)
   {
-    v4 = [(NWNetworkAgentRegistration *)self registeredUUID];
-    v5 = v4 != 0;
+    registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+    v5 = registeredUUID != 0;
   }
 
   else if ([(NWNetworkAgentRegistration *)self registrationSocket]== -1)
@@ -1973,14 +1973,14 @@ LABEL_82:
 
 - (int)agentFileDescriptor
 {
-  v3 = [(NWNetworkAgentRegistration *)self session];
+  session = [(NWNetworkAgentRegistration *)self session];
 
-  if (v3)
+  if (session)
   {
-    v4 = [(NWNetworkAgentRegistration *)self session];
-    v5 = [v4 sessionFD];
+    session2 = [(NWNetworkAgentRegistration *)self session];
+    sessionFD = [session2 sessionFD];
 
-    return v5;
+    return sessionFD;
   }
 
   else
@@ -1997,30 +1997,30 @@ LABEL_82:
   return v2;
 }
 
-- (id)descriptionWithIndent:(int)a3 showFullContent:(BOOL)a4
+- (id)descriptionWithIndent:(int)indent showFullContent:(BOOL)content
 {
-  v4 = *&a3;
+  v4 = *&indent;
   v6 = objc_alloc_init(MEMORY[0x1E696AD60]);
-  v7 = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentDomain];
-  [v6 appendPrettyObject:v7 withName:@"Domain" indent:v4 showFullContent:1];
+  agentDomain = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentDomain];
+  [v6 appendPrettyObject:agentDomain withName:@"Domain" indent:v4 showFullContent:1];
 
-  v8 = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentType];
-  [v6 appendPrettyObject:v8 withName:@"Type" indent:v4 showFullContent:1];
+  agentType = [(objc_class *)[(NWNetworkAgentRegistration *)self networkAgentClass] agentType];
+  [v6 appendPrettyObject:agentType withName:@"Type" indent:v4 showFullContent:1];
 
-  v9 = [(NWNetworkAgentRegistration *)self registeredUUID];
-  [v6 appendPrettyObject:v9 withName:@"UUID" indent:v4 showFullContent:1];
+  registeredUUID = [(NWNetworkAgentRegistration *)self registeredUUID];
+  [v6 appendPrettyObject:registeredUUID withName:@"UUID" indent:v4 showFullContent:1];
 
   return v6;
 }
 
 - (void)dealloc
 {
-  v3 = [(NWNetworkAgentRegistration *)self readSource];
+  readSource = [(NWNetworkAgentRegistration *)self readSource];
 
-  if (v3)
+  if (readSource)
   {
-    v4 = [(NWNetworkAgentRegistration *)self readSource];
-    dispatch_source_cancel(v4);
+    readSource2 = [(NWNetworkAgentRegistration *)self readSource];
+    dispatch_source_cancel(readSource2);
 
     [(NWNetworkAgentRegistration *)self setReadSource:0];
   }
@@ -2030,12 +2030,12 @@ LABEL_82:
   [(NWNetworkAgentRegistration *)&v5 dealloc];
 }
 
-- (NWNetworkAgentRegistration)initWithNetworkAgentClass:(Class)a3 session:(id)a4
+- (NWNetworkAgentRegistration)initWithNetworkAgentClass:(Class)class session:(id)session
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (!a3)
+  sessionCopy = session;
+  v8 = sessionCopy;
+  if (!class)
   {
     v14 = __nwlog_obj();
     *buf = 136446210;
@@ -2122,7 +2122,7 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if (!v7)
+  if (!sessionCopy)
   {
     v19 = __nwlog_obj();
     *buf = 136446210;
@@ -2208,12 +2208,12 @@ LABEL_45:
   if (v9)
   {
     v10 = v9;
-    v9->_networkAgentClass = a3;
+    v9->_networkAgentClass = class;
     v9->_registrationSocket = -1;
-    objc_storeStrong(&v9->_session, a4);
-    v11 = [v8 queue];
+    objc_storeStrong(&v9->_session, session);
+    queue = [v8 queue];
     queue = v10->_queue;
-    v10->_queue = v11;
+    v10->_queue = queue;
 
     goto LABEL_5;
   }
@@ -2301,12 +2301,12 @@ LABEL_5:
   return v10;
 }
 
-- (NWNetworkAgentRegistration)initWithNetworkAgentClass:(Class)a3 queue:(id)a4
+- (NWNetworkAgentRegistration)initWithNetworkAgentClass:(Class)class queue:(id)queue
 {
   v37 = *MEMORY[0x1E69E9840];
-  v7 = a4;
-  v8 = v7;
-  if (!a3)
+  queueCopy = queue;
+  v8 = queueCopy;
+  if (!class)
   {
     v13 = __nwlog_obj();
     *buf = 136446210;
@@ -2393,7 +2393,7 @@ LABEL_45:
     goto LABEL_46;
   }
 
-  if (!v7)
+  if (!queueCopy)
   {
     v18 = __nwlog_obj();
     *buf = 136446210;
@@ -2479,9 +2479,9 @@ LABEL_45:
   if (v9)
   {
     v10 = v9;
-    v9->_networkAgentClass = a3;
+    v9->_networkAgentClass = class;
     v9->_registrationSocket = -1;
-    objc_storeStrong(&v9->_queue, a4);
+    objc_storeStrong(&v9->_queue, queue);
     session = v10->_session;
     v10->_session = 0;
 
@@ -2571,7 +2571,7 @@ LABEL_5:
   return v10;
 }
 
-- (NWNetworkAgentRegistration)initWithNetworkAgentClass:(Class)a3
+- (NWNetworkAgentRegistration)initWithNetworkAgentClass:(Class)class
 {
   v26 = *MEMORY[0x1E69E9840];
   v21.receiver = self;
@@ -2580,7 +2580,7 @@ LABEL_5:
   v5 = v4;
   if (v4)
   {
-    v4->_networkAgentClass = a3;
+    v4->_networkAgentClass = class;
     v4->_registrationSocket = -1;
     v6 = dispatch_queue_attr_make_with_autorelease_frequency(0, DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v7 = dispatch_queue_create("NWNetworkAgentRegistration queue", v6);
@@ -2676,13 +2676,13 @@ LABEL_3:
   return v5;
 }
 
-+ (BOOL)useNetworkAgent:(id)a3 returnUseCount:(unint64_t *)a4
++ (BOOL)useNetworkAgent:(id)agent returnUseCount:(unint64_t *)count
 {
   v13[2] = *MEMORY[0x1E69E9840];
   v13[0] = 0;
   v13[1] = 0;
-  v5 = [a3 agentUUID];
-  [v5 getUUIDBytes:v13];
+  agentUUID = [agent agentUUID];
+  [agentUUID getUUIDBytes:v13];
 
   v6 = sharedAssertionEvaluator;
   if (!sharedAssertionEvaluator)
@@ -2698,40 +2698,40 @@ LABEL_3:
     }
   }
 
-  v9 = [v6 path];
-  v10 = [v9 internalPath];
-  v11 = nw_path_increment_agent_use_count(v10, v13, a4);
+  path = [v6 path];
+  internalPath = [path internalPath];
+  v11 = nw_path_increment_agent_use_count(internalPath, v13, count);
 
   return v11;
 }
 
-+ (BOOL)removeActiveAssertionFromNetworkAgent:(id)a3
++ (BOOL)removeActiveAssertionFromNetworkAgent:(id)agent
 {
   v10 = *MEMORY[0x1E69E9840];
   *v8 = 0;
   v9 = 0;
-  v3 = [a3 agentUUID];
-  [v3 getUUIDBytes:v8];
+  agentUUID = [agent agentUUID];
+  [agentUUID getUUIDBytes:v8];
 
   if (!sharedAssertionEvaluator)
   {
     return 0;
   }
 
-  v4 = [sharedAssertionEvaluator path];
-  v5 = [v4 internalPath];
-  v6 = nw_path_agent_action(v5, v8, 132);
+  path = [sharedAssertionEvaluator path];
+  internalPath = [path internalPath];
+  v6 = nw_path_agent_action(internalPath, v8, 132);
 
   return v6;
 }
 
-+ (BOOL)addActiveAssertionToNetworkAgent:(id)a3
++ (BOOL)addActiveAssertionToNetworkAgent:(id)agent
 {
   v13 = *MEMORY[0x1E69E9840];
   *v11 = 0;
   v12 = 0;
-  v3 = [a3 agentUUID];
-  [v3 getUUIDBytes:v11];
+  agentUUID = [agent agentUUID];
+  [agentUUID getUUIDBytes:v11];
 
   v4 = sharedAssertionEvaluator;
   if (!sharedAssertionEvaluator)
@@ -2747,9 +2747,9 @@ LABEL_3:
     }
   }
 
-  v7 = [v4 path];
-  v8 = [v7 internalPath];
-  v9 = nw_path_agent_action(v8, v11, 131);
+  path = [v4 path];
+  internalPath = [path internalPath];
+  v9 = nw_path_agent_action(internalPath, v11, 131);
 
   return v9;
 }

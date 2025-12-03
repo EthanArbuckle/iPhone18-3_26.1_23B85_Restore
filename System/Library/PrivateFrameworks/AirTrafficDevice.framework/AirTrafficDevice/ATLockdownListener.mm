@@ -1,30 +1,30 @@
 @interface ATLockdownListener
-- (ATLockdownListener)initWithServiceName:(id)a3;
+- (ATLockdownListener)initWithServiceName:(id)name;
 - (BOOL)start;
-- (void)_handleNewConnection:(id)a3;
+- (void)_handleNewConnection:(id)connection;
 - (void)stop;
 @end
 
 @implementation ATLockdownListener
 
-- (void)_handleNewConnection:(id)a3
+- (void)_handleNewConnection:(id)connection
 {
-  v5 = a3;
+  connectionCopy = connection;
   v7[0] = 0;
   v7[1] = v7;
   v7[2] = 0x3032000000;
   v7[3] = __Block_byref_object_copy__3429;
   v7[4] = __Block_byref_object_dispose__3430;
-  v8 = self;
+  selfCopy = self;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
   handler[2] = __43__ATLockdownListener__handleNewConnection___block_invoke;
   handler[3] = &unk_2784E5080;
   handler[5] = v7;
   handler[6] = a2;
-  handler[4] = v8;
-  xpc_connection_set_event_handler(v5, handler);
-  xpc_connection_resume(v5);
+  handler[4] = selfCopy;
+  xpc_connection_set_event_handler(connectionCopy, handler);
+  xpc_connection_resume(connectionCopy);
   _Block_object_dispose(v7, 8);
 }
 
@@ -122,8 +122,8 @@ LABEL_15:
     _os_log_impl(&dword_223819000, v3, OS_LOG_TYPE_DEFAULT, "%{public}@ starting lockdown listener with service %{public}@", buf, 0x16u);
   }
 
-  v5 = [(NSString *)self->_serviceName UTF8String];
-  mach_service = xpc_connection_create_mach_service(v5, MEMORY[0x277D85CD0], 1uLL);
+  uTF8String = [(NSString *)self->_serviceName UTF8String];
+  mach_service = xpc_connection_create_mach_service(uTF8String, MEMORY[0x277D85CD0], 1uLL);
   connection = self->_connection;
   self->_connection = mach_service;
 
@@ -132,7 +132,7 @@ LABEL_15:
   *&buf[16] = 0x3032000000;
   v12 = __Block_byref_object_copy__3429;
   v13 = __Block_byref_object_dispose__3430;
-  v14 = self;
+  selfCopy = self;
   v8 = self->_connection;
   handler[0] = MEMORY[0x277D85DD0];
   handler[1] = 3221225472;
@@ -170,21 +170,21 @@ void __27__ATLockdownListener_start__block_invoke(uint64_t a1, void *a2)
   }
 }
 
-- (ATLockdownListener)initWithServiceName:(id)a3
+- (ATLockdownListener)initWithServiceName:(id)name
 {
-  v5 = a3;
+  nameCopy = name;
   v9.receiver = self;
   v9.super_class = ATLockdownListener;
   v6 = [(ATLockdownListener *)&v9 init];
   if (v6)
   {
-    if (([&unk_2836F5338 containsObject:v5] & 1) == 0)
+    if (([&unk_2836F5338 containsObject:nameCopy] & 1) == 0)
     {
       v8 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Unknown service name" userInfo:0];
       objc_exception_throw(v8);
     }
 
-    objc_storeStrong(&v6->_serviceName, a3);
+    objc_storeStrong(&v6->_serviceName, name);
   }
 
   return v6;

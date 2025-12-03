@@ -1,7 +1,7 @@
 @interface PDFExtensionContext
 + (void)initialize;
 - (PDFExtensionViewController)extensionViewController;
-- (void)hostToExtension:(id)a3;
+- (void)hostToExtension:(id)extension;
 @end
 
 @implementation PDFExtensionContext
@@ -13,10 +13,10 @@
   MEMORY[0x1EEDB8498](1);
 }
 
-- (void)hostToExtension:(id)a3
+- (void)hostToExtension:(id)extension
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"function"];
+  extensionCopy = extension;
+  v5 = [extensionCopy objectForKey:@"function"];
   v6 = v5;
   if (v5 && [v5 length])
   {
@@ -26,7 +26,7 @@
     block[3] = &unk_1E8151480;
     block[4] = self;
     v8 = v6;
-    v9 = v4;
+    v9 = extensionCopy;
     dispatch_async(MEMORY[0x1E69E96A0], block);
   }
 }

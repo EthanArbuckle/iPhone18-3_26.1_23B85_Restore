@@ -1,32 +1,32 @@
 @interface ABPredicate
-+ (id)newQueryFromABPredicate:(id)a3 withSortOrder:(unsigned int)a4 ranked:(BOOL)a5 addressBook:(void *)a6 propertyIndices:(const __CFDictionary *)a7;
-+ (id)newQueryFromCompoundPredicate:(id)a3 withSortOrder:(unsigned int)a4 ranked:(BOOL)a5 addressBook:(void *)a6 propertyIndices:(const __CFDictionary *)a7;
-+ (id)newQueryWithProperties:(id)a3 joins:(id)a4 whereString:(id)a5 sortOrder:(unsigned int)a6 rankString:(id)a7 groupByProperties:(id)a8 addressBook:(void *)a9 propertyIndices:(const __CFDictionary *)a10;
-+ (id)personPredicateWithAnyValueForProperty:(int)a3;
-+ (id)personPredicateWithGroup:(void *)a3 source:(void *)a4 account:(id)a5;
-+ (id)personPredicateWithName:(id)a3 addressBook:(void *)a4;
-+ (id)personPredicateWithNameLike:(id)a3 addressBook:(void *)a4;
-+ (id)personPredicateWithNameLike:(id)a3 group:(void *)a4 source:(void *)a5 account:(id)a6 includeSourceInResults:(BOOL)a7 addressBook:(void *)a8;
-+ (id)personPredicateWithNameLike:(id)a3 groups:(id)a4 sources:(id)a5 includeSourceInResults:(BOOL)a6 includePhotosInResults:(BOOL)a7 addressBook:(void *)a8;
-+ (id)personPredicateWithNameOnly:(id)a3 account:(id)a4 addressBook:(void *)a5;
-+ (id)personPredicateWithPhoneLike:(id)a3 countryHint:(id)a4 addressBook:(void *)a5;
-+ (id)personPredicateWithSmartDialerStringLike:(id)a3 addressBook:(void *)a4;
-+ (id)personPredicateWithValue:(id)a3 comparison:(int64_t)a4 forProperty:(int)a5;
-+ (void)searchPeopleWithPredicate:(id)a3 sortOrder:(unsigned int)a4 ranked:(BOOL)a5 inAddressBook:(void *)a6 withDelegate:(id)a7;
++ (id)newQueryFromABPredicate:(id)predicate withSortOrder:(unsigned int)order ranked:(BOOL)ranked addressBook:(void *)book propertyIndices:(const __CFDictionary *)indices;
++ (id)newQueryFromCompoundPredicate:(id)predicate withSortOrder:(unsigned int)order ranked:(BOOL)ranked addressBook:(void *)book propertyIndices:(const __CFDictionary *)indices;
++ (id)newQueryWithProperties:(id)properties joins:(id)joins whereString:(id)string sortOrder:(unsigned int)order rankString:(id)rankString groupByProperties:(id)byProperties addressBook:(void *)book propertyIndices:(const __CFDictionary *)self0;
++ (id)personPredicateWithAnyValueForProperty:(int)property;
++ (id)personPredicateWithGroup:(void *)group source:(void *)source account:(id)account;
++ (id)personPredicateWithName:(id)name addressBook:(void *)book;
++ (id)personPredicateWithNameLike:(id)like addressBook:(void *)book;
++ (id)personPredicateWithNameLike:(id)like group:(void *)group source:(void *)source account:(id)account includeSourceInResults:(BOOL)results addressBook:(void *)book;
++ (id)personPredicateWithNameLike:(id)like groups:(id)groups sources:(id)sources includeSourceInResults:(BOOL)results includePhotosInResults:(BOOL)inResults addressBook:(void *)book;
++ (id)personPredicateWithNameOnly:(id)only account:(id)account addressBook:(void *)book;
++ (id)personPredicateWithPhoneLike:(id)like countryHint:(id)hint addressBook:(void *)book;
++ (id)personPredicateWithSmartDialerStringLike:(id)like addressBook:(void *)book;
++ (id)personPredicateWithValue:(id)value comparison:(int64_t)comparison forProperty:(int)property;
++ (void)searchPeopleWithPredicate:(id)predicate sortOrder:(unsigned int)order ranked:(BOOL)ranked inAddressBook:(void *)book withDelegate:(id)delegate;
 - (ABPredicate)init;
-- (id)_querySelectStringForPredicateIdentifier:(int)a3;
-- (void)ab_addCallbackContextToArray:(id)a3;
-- (void)bindString:(id)a3 toStatement:(CPSqliteStatement *)a4 withBindingOffset:(int *)a5;
+- (id)_querySelectStringForPredicateIdentifier:(int)identifier;
+- (void)ab_addCallbackContextToArray:(id)array;
+- (void)bindString:(id)string toStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset;
 - (void)dealloc;
 @end
 
 @implementation ABPredicate
 
-+ (id)personPredicateWithNameLike:(id)a3 addressBook:(void *)a4
++ (id)personPredicateWithNameLike:(id)like addressBook:(void *)book
 {
   v6 = objc_opt_new();
-  [v6 setAddressBook:a4];
-  [v6 setName:a3];
+  [v6 setAddressBook:book];
+  [v6 setName:like];
   if (([v6 isValid] & 1) == 0)
   {
 
@@ -36,13 +36,13 @@
   return v6;
 }
 
-+ (id)personPredicateWithNameLike:(id)a3 group:(void *)a4 source:(void *)a5 account:(id)a6 includeSourceInResults:(BOOL)a7 addressBook:(void *)a8
++ (id)personPredicateWithNameLike:(id)like group:(void *)group source:(void *)source account:(id)account includeSourceInResults:(BOOL)results addressBook:(void *)book
 {
-  v9 = a7;
-  if (a4)
+  resultsCopy = results;
+  if (group)
   {
-    v14 = [MEMORY[0x1E695DEC8] arrayWithObject:a4];
-    if (a5)
+    v14 = [MEMORY[0x1E695DEC8] arrayWithObject:group];
+    if (source)
     {
       goto LABEL_3;
     }
@@ -51,11 +51,11 @@
   else
   {
     v14 = 0;
-    if (a5)
+    if (source)
     {
 LABEL_3:
-      v15 = [MEMORY[0x1E695DEC8] arrayWithObject:a5];
-      if (!a6)
+      v15 = [MEMORY[0x1E695DEC8] arrayWithObject:source];
+      if (!account)
       {
         goto LABEL_10;
       }
@@ -65,7 +65,7 @@ LABEL_3:
   }
 
   v15 = 0;
-  if (!a6)
+  if (!account)
   {
     goto LABEL_10;
   }
@@ -73,37 +73,37 @@ LABEL_3:
 LABEL_7:
   if (!v14 && !v15)
   {
-    v15 = ABAddressBookCopyArrayOfAllSourcesWithAccountIdentifier(a8, a6);
+    v15 = ABAddressBookCopyArrayOfAllSourcesWithAccountIdentifier(book, account);
   }
 
 LABEL_10:
 
-  return [a1 personPredicateWithNameLike:a3 groups:v14 sources:v15 includeSourceInResults:v9 addressBook:a8];
+  return [self personPredicateWithNameLike:like groups:v14 sources:v15 includeSourceInResults:resultsCopy addressBook:book];
 }
 
-+ (id)personPredicateWithNameLike:(id)a3 groups:(id)a4 sources:(id)a5 includeSourceInResults:(BOOL)a6 includePhotosInResults:(BOOL)a7 addressBook:(void *)a8
++ (id)personPredicateWithNameLike:(id)like groups:(id)groups sources:(id)sources includeSourceInResults:(BOOL)results includePhotosInResults:(BOOL)inResults addressBook:(void *)book
 {
-  v9 = a7;
-  v10 = a6;
-  if ([a5 count])
+  inResultsCopy = inResults;
+  resultsCopy = results;
+  if ([sources count])
   {
-    v15 = [a5 objectAtIndex:0];
+    v15 = [sources objectAtIndex:0];
   }
 
   else
   {
-    if (![a4 count])
+    if (![groups count])
     {
       v16 = 0;
       goto LABEL_6;
     }
 
-    v15 = ABGroupCopySource([a4 objectAtIndex:0]);
+    v15 = ABGroupCopySource([groups objectAtIndex:0]);
   }
 
   v16 = v15;
 LABEL_6:
-  if (!ABSourceIsRemote(v16) || (AccountForSource = ABAddressBookGetAccountForSource(a8, v16)) == 0 || (v18 = ABAccountCopyIdentifier(AccountForSource)) == 0)
+  if (!ABSourceIsRemote(v16) || (AccountForSource = ABAddressBookGetAccountForSource(book, v16)) == 0 || (v18 = ABAccountCopyIdentifier(AccountForSource)) == 0)
   {
     v20 = 0;
     if (!v16)
@@ -115,7 +115,7 @@ LABEL_6:
   }
 
   v19 = v18;
-  v20 = [[ABServerSearchPredicate alloc] initWithSearchString:a3 source:v16 account:v18 includeSourceInResults:v10 includePhotosInResults:v9];
+  v20 = [[ABServerSearchPredicate alloc] initWithSearchString:like source:v16 account:v18 includeSourceInResults:resultsCopy includePhotosInResults:inResultsCopy];
   CFRelease(v19);
   if (v16)
   {
@@ -126,30 +126,30 @@ LABEL_12:
 LABEL_13:
   if (!v20)
   {
-    v20 = [a1 personPredicateWithNameLike:a3 addressBook:a8];
-    [(ABServerSearchPredicate *)v20 setSources:a5];
-    [(ABServerSearchPredicate *)v20 setGroups:a4];
+    v20 = [self personPredicateWithNameLike:like addressBook:book];
+    [(ABServerSearchPredicate *)v20 setSources:sources];
+    [(ABServerSearchPredicate *)v20 setGroups:groups];
   }
 
   return v20;
 }
 
-+ (id)personPredicateWithName:(id)a3 addressBook:(void *)a4
++ (id)personPredicateWithName:(id)name addressBook:(void *)book
 {
-  v4 = [a1 personPredicateWithNameLike:a3 addressBook:a4];
+  v4 = [self personPredicateWithNameLike:name addressBook:book];
   [v4 setMatchWholeWords:1];
   return v4;
 }
 
-+ (id)personPredicateWithNameOnly:(id)a3 account:(id)a4 addressBook:(void *)a5
++ (id)personPredicateWithNameOnly:(id)only account:(id)account addressBook:(void *)book
 {
-  v6 = [a1 personPredicateWithNameLike:a3 addressBook:a5];
+  v6 = [self personPredicateWithNameLike:only addressBook:book];
   [v6 setMatchWholeWords:1];
   [v6 setMatchPersonOrCompanyNamesExclusively:1];
   [v6 setMatchPreferredName:0];
-  if (a4)
+  if (account)
   {
-    [v6 setAccountIdentifier:a4];
+    [v6 setAccountIdentifier:account];
     if (![objc_msgSend(v6 "sources")])
     {
       return 0;
@@ -159,20 +159,20 @@ LABEL_13:
   return v6;
 }
 
-+ (id)personPredicateWithSmartDialerStringLike:(id)a3 addressBook:(void *)a4
++ (id)personPredicateWithSmartDialerStringLike:(id)like addressBook:(void *)book
 {
-  v4 = [a1 personPredicateWithNameLike:a3 addressBook:a4];
+  v4 = [self personPredicateWithNameLike:like addressBook:book];
   [v4 setMatchSmartDialerFormatsExclusively:1];
   return v4;
 }
 
-+ (id)personPredicateWithValue:(id)a3 comparison:(int64_t)a4 forProperty:(int)a5
++ (id)personPredicateWithValue:(id)value comparison:(int64_t)comparison forProperty:(int)property
 {
-  v5 = *&a5;
+  v5 = *&property;
   v8 = objc_opt_new();
-  [v8 setValue:a3];
+  [v8 setValue:value];
   [v8 setProperty:v5];
-  [v8 setComparison:a4];
+  [v8 setComparison:comparison];
   if (([v8 isValid] & 1) == 0)
   {
 
@@ -182,9 +182,9 @@ LABEL_13:
   return v8;
 }
 
-+ (id)personPredicateWithAnyValueForProperty:(int)a3
++ (id)personPredicateWithAnyValueForProperty:(int)property
 {
-  v3 = *&a3;
+  v3 = *&property;
   v4 = objc_opt_new();
   [v4 setProperty:v3];
   if (([v4 isValid] & 1) == 0)
@@ -196,11 +196,11 @@ LABEL_13:
   return v4;
 }
 
-+ (id)personPredicateWithPhoneLike:(id)a3 countryHint:(id)a4 addressBook:(void *)a5
++ (id)personPredicateWithPhoneLike:(id)like countryHint:(id)hint addressBook:(void *)book
 {
   v7 = objc_opt_new();
-  [v7 setCountry:a4];
-  [v7 setPhoneNumber:a3];
+  [v7 setCountry:hint];
+  [v7 setPhoneNumber:like];
   if (([v7 isValid] & 1) == 0)
   {
 
@@ -210,12 +210,12 @@ LABEL_13:
   return v7;
 }
 
-+ (id)personPredicateWithGroup:(void *)a3 source:(void *)a4 account:(id)a5
++ (id)personPredicateWithGroup:(void *)group source:(void *)source account:(id)account
 {
   v8 = objc_opt_new();
-  [v8 setGroup:a3];
-  [v8 setStore:a4];
-  [v8 setAccountIdentifier:a5];
+  [v8 setGroup:group];
+  [v8 setStore:source];
+  [v8 setAccountIdentifier:account];
   if (([v8 isValid] & 1) == 0)
   {
 
@@ -225,24 +225,24 @@ LABEL_13:
   return v8;
 }
 
-+ (id)newQueryWithProperties:(id)a3 joins:(id)a4 whereString:(id)a5 sortOrder:(unsigned int)a6 rankString:(id)a7 groupByProperties:(id)a8 addressBook:(void *)a9 propertyIndices:(const __CFDictionary *)a10
++ (id)newQueryWithProperties:(id)properties joins:(id)joins whereString:(id)string sortOrder:(unsigned int)order rankString:(id)rankString groupByProperties:(id)byProperties addressBook:(void *)book propertyIndices:(const __CFDictionary *)self0
 {
   v38 = *MEMORY[0x1E69E9840];
   ColumnListWithAliasAndExtraColumns = CPRecordStoreCreateColumnListWithAliasAndExtraColumns();
   v17 = ColumnListWithAliasAndExtraColumns;
-  if (a3)
+  if (properties)
   {
-    [ColumnListWithAliasAndExtraColumns appendString:a3];
+    [ColumnListWithAliasAndExtraColumns appendString:properties];
   }
 
   [v17 appendString:@" FROM ABPerson abp "];
-  if (a4)
+  if (joins)
   {
     v35 = 0u;
     v36 = 0u;
     v33 = 0u;
     v34 = 0u;
-    v18 = [a4 countByEnumeratingWithState:&v33 objects:v37 count:16];
+    v18 = [joins countByEnumeratingWithState:&v33 objects:v37 count:16];
     if (v18)
     {
       v19 = v18;
@@ -253,34 +253,34 @@ LABEL_13:
         {
           if (*v34 != v20)
           {
-            objc_enumerationMutation(a4);
+            objc_enumerationMutation(joins);
           }
 
           [v17 appendString:*(*(&v33 + 1) + 8 * i)];
           [v17 appendString:@" "];
         }
 
-        v19 = [a4 countByEnumeratingWithState:&v33 objects:v37 count:16];
+        v19 = [joins countByEnumeratingWithState:&v33 objects:v37 count:16];
       }
 
       while (v19);
     }
   }
 
-  if (a5)
+  if (string)
   {
     [v17 appendString:@"WHERE "];
-    [v17 appendString:a5];
+    [v17 appendString:string];
   }
 
-  v22 = [a8 count];
+  v22 = [byProperties count];
   if (v22 >= 1)
   {
     v23 = v22;
     objc_msgSend(v17, "appendString:", @" GROUP BY (");
     for (j = 0; j != v23; ++j)
     {
-      v25 = [a8 objectAtIndex:j];
+      v25 = [byProperties objectAtIndex:j];
       if (j >= 2)
       {
         [v17 appendString:{@", "}];
@@ -292,9 +292,9 @@ LABEL_13:
     [v17 appendString:@""]);
   }
 
-  if (a6 != -1)
+  if (order != -1)
   {
-    if (a6)
+    if (order)
     {
       v26 = @" ORDER BY LastSortLanguageIndex, LastSortSection, LastSort";
     }
@@ -307,7 +307,7 @@ LABEL_13:
     [v17 appendString:v26];
   }
 
-  if ([a7 length])
+  if ([rankString length])
   {
     v27 = [v17 rangeOfString:@"ORDER BY" options:5];
     if (v27 == 0x7FFFFFFFFFFFFFFFLL)
@@ -324,22 +324,22 @@ LABEL_13:
       v31 = @" ";
     }
 
-    [v17 insertString:objc_msgSend(MEMORY[0x1E696AEC0] atIndex:{"stringWithFormat:", @"%@%@ DESC %@", v31, a7, v30), v29}];
+    [v17 insertString:objc_msgSend(MEMORY[0x1E696AEC0] atIndex:{"stringWithFormat:", @"%@%@ DESC %@", v31, rankString, v30), v29}];
   }
 
   return v17;
 }
 
-+ (id)newQueryFromABPredicate:(id)a3 withSortOrder:(unsigned int)a4 ranked:(BOOL)a5 addressBook:(void *)a6 propertyIndices:(const __CFDictionary *)a7
++ (id)newQueryFromABPredicate:(id)predicate withSortOrder:(unsigned int)order ranked:(BOOL)ranked addressBook:(void *)book propertyIndices:(const __CFDictionary *)indices
 {
-  v9 = a5;
-  v10 = *&a4;
-  v13 = [a3 _querySelectStringForPredicateIdentifier:0];
-  v14 = [a3 queryJoinsInCompound:0 predicateIdentifier:0];
-  v15 = [a3 queryWhereStringForPredicateIdentifier:0];
-  if (v9)
+  rankedCopy = ranked;
+  v10 = *&order;
+  v13 = [predicate _querySelectStringForPredicateIdentifier:0];
+  v14 = [predicate queryJoinsInCompound:0 predicateIdentifier:0];
+  v15 = [predicate queryWhereStringForPredicateIdentifier:0];
+  if (rankedCopy)
   {
-    v16 = [a3 queryRankStringForPredicateIdentifier:0];
+    v16 = [predicate queryRankStringForPredicateIdentifier:0];
   }
 
   else
@@ -347,24 +347,24 @@ LABEL_13:
     v16 = 0;
   }
 
-  return [a1 newQueryWithProperties:v13 joins:v14 whereString:v15 sortOrder:v10 rankString:v16 groupByProperties:objc_msgSend(a3 addressBook:"queryGroupByProperties") propertyIndices:{a6, a7}];
+  return [self newQueryWithProperties:v13 joins:v14 whereString:v15 sortOrder:v10 rankString:v16 groupByProperties:objc_msgSend(predicate addressBook:"queryGroupByProperties") propertyIndices:{book, indices}];
 }
 
-+ (id)newQueryFromCompoundPredicate:(id)a3 withSortOrder:(unsigned int)a4 ranked:(BOOL)a5 addressBook:(void *)a6 propertyIndices:(const __CFDictionary *)a7
++ (id)newQueryFromCompoundPredicate:(id)predicate withSortOrder:(unsigned int)order ranked:(BOOL)ranked addressBook:(void *)book propertyIndices:(const __CFDictionary *)indices
 {
-  v61 = a5;
+  rankedCopy = ranked;
   v105 = *MEMORY[0x1E69E9840];
   ColumnListWithAliasAndExtraColumns = CPRecordStoreCreateColumnListWithAliasAndExtraColumns();
-  v9 = [a3 compoundPredicateType];
+  compoundPredicateType = [predicate compoundPredicateType];
   v10 = @" OR ";
   v11 = @" AND ";
-  if (v9 != 1)
+  if (compoundPredicateType != 1)
   {
     v11 = 0;
   }
 
-  v12 = v9 == 2 || v9 == 1;
-  if (v9 != 2)
+  v12 = compoundPredicateType == 2 || compoundPredicateType == 1;
+  if (compoundPredicateType != 2)
   {
     v10 = v11;
   }
@@ -374,7 +374,7 @@ LABEL_13:
   v95 = 0u;
   v96 = 0u;
   v97 = 0u;
-  obj = [a3 subpredicates];
+  obj = [predicate subpredicates];
   v13 = [obj countByEnumeratingWithState:&v94 objects:v104 count:16];
   if (v13)
   {
@@ -513,15 +513,15 @@ LABEL_13:
     while (v29);
   }
 
-  if (v61)
+  if (rankedCopy)
   {
-    v35 = [MEMORY[0x1E696AD60] string];
+    string = [MEMORY[0x1E696AD60] string];
     v78 = 0u;
     v79 = 0u;
     v80 = 0u;
     v81 = 0u;
     v36 = [obj countByEnumeratingWithState:&v78 objects:v100 count:16];
-    v64 = v35;
+    v64 = string;
     if (v36)
     {
       v37 = v36;
@@ -543,10 +543,10 @@ LABEL_13:
             v43 = v42;
             if (v38)
             {
-              [v35 appendString:@" + "];
+              [string appendString:@" + "];
             }
 
-            [v35 appendString:v43];
+            [string appendString:v43];
           }
 
           v38 |= ColumnListWithAliasAndExtraColumns != 0;
@@ -583,12 +583,12 @@ LABEL_13:
           objc_enumerationMutation(obj);
         }
 
-        v46 = [*(*(&v74 + 1) + 8 * ii) queryGroupByProperties];
+        queryGroupByProperties = [*(*(&v74 + 1) + 8 * ii) queryGroupByProperties];
         v70 = 0u;
         v71 = 0u;
         v72 = 0u;
         v73 = 0u;
-        v47 = [v46 countByEnumeratingWithState:&v70 objects:v98 count:16];
+        v47 = [queryGroupByProperties countByEnumeratingWithState:&v70 objects:v98 count:16];
         if (v47)
         {
           v48 = v47;
@@ -599,7 +599,7 @@ LABEL_13:
             {
               if (*v71 != v49)
               {
-                objc_enumerationMutation(v46);
+                objc_enumerationMutation(queryGroupByProperties);
               }
 
               v51 = *(*(&v70 + 1) + 8 * jj);
@@ -621,7 +621,7 @@ LABEL_13:
               }
             }
 
-            v48 = [v46 countByEnumeratingWithState:&v70 objects:v98 count:16];
+            v48 = [queryGroupByProperties countByEnumeratingWithState:&v70 objects:v98 count:16];
           }
 
           while (v48);
@@ -634,9 +634,9 @@ LABEL_13:
     while (v68);
   }
 
-  if (a4 != -1)
+  if (order != -1)
   {
-    if (a4)
+    if (order)
     {
       v53 = @" ORDER BY LastSortLanguageIndex, LastSortSection, LastSort";
     }
@@ -672,11 +672,11 @@ LABEL_13:
   return ColumnListWithAliasAndExtraColumns;
 }
 
-+ (void)searchPeopleWithPredicate:(id)a3 sortOrder:(unsigned int)a4 ranked:(BOOL)a5 inAddressBook:(void *)a6 withDelegate:(id)a7
++ (void)searchPeopleWithPredicate:(id)predicate sortOrder:(unsigned int)order ranked:(BOOL)ranked inAddressBook:(void *)book withDelegate:(id)delegate
 {
-  v9 = a5;
-  v10 = *&a4;
-  if (a3)
+  rankedCopy = ranked;
+  v10 = *&order;
+  if (predicate)
   {
     objc_opt_class();
     if ((objc_opt_isKindOfClass() & 1) == 0)
@@ -684,12 +684,12 @@ LABEL_13:
       objc_opt_class();
       if ((objc_opt_isKindOfClass() & 1) == 0)
       {
-        [ABPredicate searchPeopleWithPredicate:a2 sortOrder:a1 ranked:? inAddressBook:? withDelegate:?];
+        [ABPredicate searchPeopleWithPredicate:a2 sortOrder:self ranked:? inAddressBook:? withDelegate:?];
       }
     }
   }
 
-  [a3 ab_runPredicateWithSortOrder:v10 ranked:v9 inAddressBook:a6 withDelegate:a7];
+  [predicate ab_runPredicateWithSortOrder:v10 ranked:rankedCopy inAddressBook:book withDelegate:delegate];
 }
 
 - (ABPredicate)init
@@ -706,9 +706,9 @@ LABEL_13:
   [(ABPredicate *)&v2 dealloc];
 }
 
-- (id)_querySelectStringForPredicateIdentifier:(int)a3
+- (id)_querySelectStringForPredicateIdentifier:(int)identifier
 {
-  v3 = [(ABPredicate *)self querySelectPropertiesForPredicateIdentifier:*&a3];
+  v3 = [(ABPredicate *)self querySelectPropertiesForPredicateIdentifier:*&identifier];
   result = [v3 count];
   if (result)
   {
@@ -718,29 +718,29 @@ LABEL_13:
   return result;
 }
 
-- (void)bindString:(id)a3 toStatement:(CPSqliteStatement *)a4 withBindingOffset:(int *)a5
+- (void)bindString:(id)string toStatement:(CPSqliteStatement *)statement withBindingOffset:(int *)offset
 {
   v7 = _CPCreateUTF8StringFromCFString();
-  v8 = sqlite3_bind_text(a4->var1, *a5, v7, -1, MEMORY[0x1E69E9B38]);
-  ++*a5;
+  v8 = sqlite3_bind_text(statement->var1, *offset, v7, -1, MEMORY[0x1E69E9B38]);
+  ++*offset;
   if (v8)
   {
     ABDiagnosticsEnabled();
-    _ABLog2(3, "[ABPredicate bindString:toStatement:withBindingOffset:]", 581, 0, @"Binding error at index %d", v9, v10, v11, *a5);
+    _ABLog2(3, "[ABPredicate bindString:toStatement:withBindingOffset:]", 581, 0, @"Binding error at index %d", v9, v10, v11, *offset);
   }
 }
 
-- (void)ab_addCallbackContextToArray:(id)a3
+- (void)ab_addCallbackContextToArray:(id)array
 {
-  v5 = [(ABPredicate *)self callbackContext];
-  if (!v5)
+  callbackContext = [(ABPredicate *)self callbackContext];
+  if (!callbackContext)
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
+    callbackContext = [MEMORY[0x1E695DFB0] null];
   }
 
-  [a3 addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithNonretainedObject:", self)}];
+  [array addObject:{objc_msgSend(MEMORY[0x1E696B098], "valueWithNonretainedObject:", self)}];
 
-  [a3 addObject:v5];
+  [array addObject:callbackContext];
 }
 
 + (uint64_t)searchPeopleWithPredicate:(uint64_t)a1 sortOrder:(uint64_t)a2 ranked:inAddressBook:withDelegate:.cold.1(uint64_t a1, uint64_t a2)

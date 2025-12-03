@@ -1,50 +1,50 @@
 @interface MGDaemon
 + (id)daemon;
-+ (id)daemonWithTopologyRequestHandler:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
++ (id)daemonWithTopologyRequestHandler:(id)handler;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (MGClientService)serviceForIngestion;
 - (MGDaemon)init;
-- (MGDaemon)initWithTopologyRequestHandler:(id)a3 serviceListenerProvider:(id)a4;
-- (id)startInternalQueryWithPredicate:(id)a3 handler:(id)a4;
-- (void)HomeKitAccessoryOfType:(id)a3 accessoryIdentifier:(id)a4 homeIdentifier:(id)a5 categoryType:(id)a6 name:(id)a7 properties:(id)a8 completion:(id)a9;
-- (void)_addHomeKitAccessoryWithoutHomeIngestion:(id)a3 fromHome:(id)a4;
-- (void)_fetchGroupInfo:(id)a3 completion:(id)a4;
-- (void)_homeTheaterGroupIdentifierForAudioDestination:(id)a3 fromHome:(id)a4 completion:(id)a5;
-- (void)_ingestHomeKitHome:(id)a3;
-- (void)addHomeKitAccessory:(id)a3 fromHome:(id)a4;
-- (void)addHomeKitHome:(id)a3;
-- (void)addHomeKitMediaSystem:(id)a3;
-- (void)addHomeKitMediaSystem:(id)a3 fromHome:(id)a4;
-- (void)addHomeKitRoom:(id)a3 fromHome:(id)a4;
-- (void)addHomeKitZone:(id)a3 fromHome:(id)a4;
-- (void)addMember:(id)a3 group:(id)a4 completion:(id)a5;
-- (void)createGroupWithType:(id)a3 name:(id)a4 members:(id)a5 completion:(id)a6;
-- (void)deleteGroup:(id)a3 completion:(id)a4;
-- (void)groupsQueryAgent:(id)a3 didFindResults:(id)a4 forQuery:(id)a5;
-- (void)removeHomeKitAccessory:(id)a3 fromHome:(id)a4;
-- (void)removeHomeKitHome:(id)a3;
-- (void)removeHomeKitMediaSystem:(id)a3;
-- (void)removeHomeKitMediaSystem:(id)a3 fromHome:(id)a4;
-- (void)removeHomeKitRoom:(id)a3 fromHome:(id)a4;
-- (void)removeHomeKitZone:(id)a3 fromHome:(id)a4;
-- (void)removeMember:(id)a3 group:(id)a4 completion:(id)a5;
-- (void)setName:(id)a3 group:(id)a4 completion:(id)a5;
-- (void)setTopologyRequestHandler:(id)a3;
-- (void)startOutstandingQueryWithPredicate:(id)a3 handler:(id)a4 completion:(id)a5;
-- (void)startQueryWithPredicate:(id)a3 completion:(id)a4;
-- (void)stopInternalQuery:(id)a3;
-- (void)stopOutstandingQuery:(id)a3;
-- (void)stopQuery:(id)a3;
-- (void)stopQuery:(id)a3 completion:(id)a4;
+- (MGDaemon)initWithTopologyRequestHandler:(id)handler serviceListenerProvider:(id)provider;
+- (id)startInternalQueryWithPredicate:(id)predicate handler:(id)handler;
+- (void)HomeKitAccessoryOfType:(id)type accessoryIdentifier:(id)identifier homeIdentifier:(id)homeIdentifier categoryType:(id)categoryType name:(id)name properties:(id)properties completion:(id)completion;
+- (void)_addHomeKitAccessoryWithoutHomeIngestion:(id)ingestion fromHome:(id)home;
+- (void)_fetchGroupInfo:(id)info completion:(id)completion;
+- (void)_homeTheaterGroupIdentifierForAudioDestination:(id)destination fromHome:(id)home completion:(id)completion;
+- (void)_ingestHomeKitHome:(id)home;
+- (void)addHomeKitAccessory:(id)accessory fromHome:(id)home;
+- (void)addHomeKitHome:(id)home;
+- (void)addHomeKitMediaSystem:(id)system;
+- (void)addHomeKitMediaSystem:(id)system fromHome:(id)home;
+- (void)addHomeKitRoom:(id)room fromHome:(id)home;
+- (void)addHomeKitZone:(id)zone fromHome:(id)home;
+- (void)addMember:(id)member group:(id)group completion:(id)completion;
+- (void)createGroupWithType:(id)type name:(id)name members:(id)members completion:(id)completion;
+- (void)deleteGroup:(id)group completion:(id)completion;
+- (void)groupsQueryAgent:(id)agent didFindResults:(id)results forQuery:(id)query;
+- (void)removeHomeKitAccessory:(id)accessory fromHome:(id)home;
+- (void)removeHomeKitHome:(id)home;
+- (void)removeHomeKitMediaSystem:(id)system;
+- (void)removeHomeKitMediaSystem:(id)system fromHome:(id)home;
+- (void)removeHomeKitRoom:(id)room fromHome:(id)home;
+- (void)removeHomeKitZone:(id)zone fromHome:(id)home;
+- (void)removeMember:(id)member group:(id)group completion:(id)completion;
+- (void)setName:(id)name group:(id)group completion:(id)completion;
+- (void)setTopologyRequestHandler:(id)handler;
+- (void)startOutstandingQueryWithPredicate:(id)predicate handler:(id)handler completion:(id)completion;
+- (void)startQueryWithPredicate:(id)predicate completion:(id)completion;
+- (void)stopInternalQuery:(id)query;
+- (void)stopOutstandingQuery:(id)query;
+- (void)stopQuery:(id)query;
+- (void)stopQuery:(id)query completion:(id)completion;
 @end
 
 @implementation MGDaemon
 
-- (MGDaemon)initWithTopologyRequestHandler:(id)a3 serviceListenerProvider:(id)a4
+- (MGDaemon)initWithTopologyRequestHandler:(id)handler serviceListenerProvider:(id)provider
 {
   v76 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  handlerCopy = handler;
+  providerCopy = provider;
   v71.receiver = self;
   v71.super_class = MGDaemon;
   v8 = [(MGDaemon *)&v71 init];
@@ -54,24 +54,24 @@
     clients = v8->_clients;
     v8->_clients = v9;
 
-    v11 = MEMORY[0x259C85F90](v6);
+    v11 = MEMORY[0x259C85F90](handlerCopy);
     topologyRequestHandler = v8->_topologyRequestHandler;
     v8->_topologyRequestHandler = v11;
 
     v13 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v14 = [MEMORY[0x277CCAC38] processInfo];
-    v15 = [v14 arguments];
+    processInfo = [MEMORY[0x277CCAC38] processInfo];
+    arguments = [processInfo arguments];
 
-    v16 = [v15 indexOfObject:@"--static"];
+    v16 = [arguments indexOfObject:@"--static"];
     v17 = &off_258662000;
     if (v16 != 0x7FFFFFFFFFFFFFFFLL)
     {
       v18 = v16 + 1;
-      if (v16 + 1 < [v15 count])
+      if (v16 + 1 < [arguments count])
       {
-        v19 = [v15 objectAtIndex:v18];
-        v20 = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
-        v21 = [v19 stringByTrimmingCharactersInSet:v20];
+        v19 = [arguments objectAtIndex:v18];
+        whitespaceAndNewlineCharacterSet = [MEMORY[0x277CCA900] whitespaceAndNewlineCharacterSet];
+        v21 = [v19 stringByTrimmingCharactersInSet:whitespaceAndNewlineCharacterSet];
 
         if ([(MGDaemon *)v21 length])
         {
@@ -90,7 +90,7 @@
           v59 = v23;
           if (v23)
           {
-            v56 = v20;
+            v56 = whitespaceAndNewlineCharacterSet;
             v25 = MEMORY[0x277CCAAC8];
             v26 = [MEMORY[0x277CBEB98] setWithObjects:{objc_opt_class(), 0}];
             v69 = v24;
@@ -108,7 +108,7 @@
               v68 = v13;
               [v68 enumerateKeysAndObjectsUsingBlock:v67];
               v28 = v68;
-              v20 = v56;
+              whitespaceAndNewlineCharacterSet = v56;
               v21 = v58;
             }
 
@@ -123,7 +123,7 @@
                 _os_log_error_impl(&dword_25863A000, v28, OS_LOG_TYPE_ERROR, "Failed to unarchive static groups file (%@)", buf, 0xCu);
               }
 
-              v20 = v56;
+              whitespaceAndNewlineCharacterSet = v56;
             }
 
             v24 = v57;
@@ -162,14 +162,14 @@
     internalQueries = v8->_internalQueries;
     v8->_internalQueries = v34;
 
-    objc_storeStrong(&v8->_listenerProvider, a4);
-    v36 = [(MGServiceListenerProvider *)v8->_listenerProvider dispatchQueue];
+    objc_storeStrong(&v8->_listenerProvider, provider);
+    dispatchQueue = [(MGServiceListenerProvider *)v8->_listenerProvider dispatchQueue];
     dispatchQueue = v8->_dispatchQueue;
-    v8->_dispatchQueue = v36;
+    v8->_dispatchQueue = dispatchQueue;
 
-    v38 = [(MGServiceListenerProvider *)v8->_listenerProvider serviceListener];
+    serviceListener = [(MGServiceListenerProvider *)v8->_listenerProvider serviceListener];
     listener = v8->_listener;
-    v8->_listener = v38;
+    v8->_listener = serviceListener;
 
     [(NSXPCListener *)v8->_listener _setQueue:v8->_dispatchQueue];
     [(NSXPCListener *)v8->_listener setDelegate:v8];
@@ -246,7 +246,7 @@
     block[2] = __67__MGDaemon_initWithTopologyRequestHandler_serviceListenerProvider___block_invoke_75;
     block[3] = &unk_27989F648;
     v61 = v8;
-    v62 = v7;
+    v62 = providerCopy;
     v63 = v40;
     v64 = v31;
     v52 = v31;
@@ -312,34 +312,34 @@ void __67__MGDaemon_initWithTopologyRequestHandler_serviceListenerProvider___blo
   return v4;
 }
 
-+ (id)daemonWithTopologyRequestHandler:(id)a3
++ (id)daemonWithTopologyRequestHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = [[MGServiceListenerProvider alloc] initWithServiceName:@"com.apple.MediaGroups.daemon" entitlement:@"com.apple.MediaGroups.client"];
-  v6 = [[a1 alloc] initWithTopologyRequestHandler:v4 serviceListenerProvider:v5];
+  v6 = [[self alloc] initWithTopologyRequestHandler:handlerCopy serviceListenerProvider:v5];
 
   return v6;
 }
 
 + (id)daemon
 {
-  v2 = objc_alloc_init(a1);
+  v2 = objc_alloc_init(self);
 
   return v2;
 }
 
-- (void)setTopologyRequestHandler:(id)a3
+- (void)setTopologyRequestHandler:(id)handler
 {
-  v4 = a3;
-  v5 = [(MGDaemon *)self dispatchQueue];
+  handlerCopy = handler;
+  dispatchQueue = [(MGDaemon *)self dispatchQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __38__MGDaemon_setTopologyRequestHandler___block_invoke;
   v7[3] = &unk_27989F6C0;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = handlerCopy;
+  v6 = handlerCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 void __38__MGDaemon_setTopologyRequestHandler___block_invoke(uint64_t a1)
@@ -459,7 +459,7 @@ uint64_t __38__MGDaemon_setTopologyRequestHandler___block_invoke_3(uint64_t a1, 
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134218240;
-      v10 = self;
+      selfCopy = self;
       v11 = 2048;
       v12 = v3;
       _os_log_impl(&dword_25863A000, v6, OS_LOG_TYPE_DEFAULT, "%p created service %p for ingestion", &v9, 0x16u);
@@ -471,17 +471,17 @@ uint64_t __38__MGDaemon_setTopologyRequestHandler___block_invoke_3(uint64_t a1, 
   return v3;
 }
 
-- (void)groupsQueryAgent:(id)a3 didFindResults:(id)a4 forQuery:(id)a5
+- (void)groupsQueryAgent:(id)agent didFindResults:(id)results forQuery:(id)query
 {
   v31 = *MEMORY[0x277D85DE8];
-  v7 = a4;
-  v8 = a5;
-  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v7, "count")}];
+  resultsCopy = results;
+  queryCopy = query;
+  v9 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(resultsCopy, "count")}];
   v26 = 0u;
   v27 = 0u;
   v28 = 0u;
   v29 = 0u;
-  v10 = v7;
+  v10 = resultsCopy;
   v11 = [v10 countByEnumeratingWithState:&v26 objects:v30 count:16];
   if (v11)
   {
@@ -497,8 +497,8 @@ uint64_t __38__MGDaemon_setTopologyRequestHandler___block_invoke_3(uint64_t a1, 
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v26 + 1) + 8 * v14) group];
-        [v9 addObject:v15];
+        group = [*(*(&v26 + 1) + 8 * v14) group];
+        [v9 addObject:group];
 
         ++v14;
       }
@@ -511,19 +511,19 @@ uint64_t __38__MGDaemon_setTopologyRequestHandler___block_invoke_3(uint64_t a1, 
   }
 
   v16 = [MEMORY[0x277CBEA60] arrayWithArray:v9];
-  v17 = [(MGDaemon *)self dispatchQueue];
+  dispatchQueue = [(MGDaemon *)self dispatchQueue];
   v22[0] = MEMORY[0x277D85DD0];
   v22[1] = 3221225472;
   v22[2] = __53__MGDaemon_groupsQueryAgent_didFindResults_forQuery___block_invoke;
   v22[3] = &unk_27989F648;
   v22[4] = self;
-  v23 = v8;
+  v23 = queryCopy;
   v24 = v16;
   v25 = v10;
   v18 = v10;
   v19 = v16;
-  v20 = v8;
-  dispatch_async(v17, v22);
+  v20 = queryCopy;
+  dispatch_async(dispatchQueue, v22);
 
   v21 = *MEMORY[0x277D85DE8];
 }
@@ -756,37 +756,37 @@ void __53__MGDaemon_groupsQueryAgent_didFindResults_forQuery___block_invoke_92(u
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_ingestHomeKitHome:(id)a3
+- (void)_ingestHomeKitHome:(id)home
 {
   v103 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MGDaemon *)self serviceForIngestion];
-  v6 = [(MGDaemon *)self homekitGroupsMediator];
-  v7 = [v4 accessories];
+  homeCopy = home;
+  serviceForIngestion = [(MGDaemon *)self serviceForIngestion];
+  homekitGroupsMediator = [(MGDaemon *)self homekitGroupsMediator];
+  accessories = [homeCopy accessories];
   v91[0] = MEMORY[0x277D85DD0];
   v91[1] = 3221225472;
   v91[2] = __31__MGDaemon__ingestHomeKitHome___block_invoke;
   v91[3] = &unk_27989F760;
   v91[4] = self;
-  v8 = v4;
+  v8 = homeCopy;
   v92 = v8;
-  [v7 enumerateObjectsUsingBlock:v91];
+  [accessories enumerateObjectsUsingBlock:v91];
 
-  v9 = [v8 mediaSystems];
+  mediaSystems = [v8 mediaSystems];
   v86[0] = MEMORY[0x277D85DD0];
   v86[1] = 3221225472;
   v86[2] = __31__MGDaemon__ingestHomeKitHome___block_invoke_2;
   v86[3] = &unk_27989F788;
-  v10 = v5;
+  v10 = serviceForIngestion;
   v87 = v10;
   v11 = v8;
   v88 = v11;
-  v89 = self;
-  v12 = v6;
+  selfCopy = self;
+  v12 = homekitGroupsMediator;
   v90 = v12;
-  [v9 enumerateObjectsUsingBlock:v86];
+  [mediaSystems enumerateObjectsUsingBlock:v86];
 
-  v13 = [v11 rooms];
+  rooms = [v11 rooms];
   v81[0] = MEMORY[0x277D85DD0];
   v81[1] = 3221225472;
   v81[2] = __31__MGDaemon__ingestHomeKitHome___block_invoke_96;
@@ -795,12 +795,12 @@ void __53__MGDaemon_groupsQueryAgent_didFindResults_forQuery___block_invoke_92(u
   v82 = v14;
   v15 = v11;
   v83 = v15;
-  v84 = self;
+  selfCopy2 = self;
   v16 = v12;
   v85 = v16;
-  [v13 enumerateObjectsUsingBlock:v81];
+  [rooms enumerateObjectsUsingBlock:v81];
 
-  v17 = [v15 zones];
+  zones = [v15 zones];
   v76[0] = MEMORY[0x277D85DD0];
   v76[1] = 3221225472;
   v76[2] = __31__MGDaemon__ingestHomeKitHome___block_invoke_99;
@@ -809,11 +809,11 @@ void __53__MGDaemon_groupsQueryAgent_didFindResults_forQuery___block_invoke_92(u
   v77 = v18;
   v19 = v15;
   v78 = v19;
-  v79 = self;
-  v64 = self;
+  selfCopy3 = self;
+  selfCopy4 = self;
   v68 = v16;
   v80 = v68;
-  [v17 enumerateObjectsUsingBlock:v76];
+  [zones enumerateObjectsUsingBlock:v76];
 
   v62 = v18;
   v20 = [objc_alloc(MEMORY[0x277D27470]) initWithClientService:v18 home:v19];
@@ -821,7 +821,7 @@ void __53__MGDaemon_groupsQueryAgent_didFindResults_forQuery___block_invoke_92(u
   if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v95 = self;
+    selfCopy5 = self;
     v96 = 2112;
     v97 = v20;
     _os_log_impl(&dword_25863A000, v21, OS_LOG_TYPE_DEFAULT, "%p adding home %@", buf, 0x16u);
@@ -833,8 +833,8 @@ void __53__MGDaemon_groupsQueryAgent_didFindResults_forQuery___block_invoke_92(u
   v75 = 0u;
   v72 = 0u;
   v73 = 0u;
-  v22 = [v19 accessories];
-  v23 = [v22 countByEnumeratingWithState:&v72 objects:v102 count:16];
+  accessories2 = [v19 accessories];
+  v23 = [accessories2 countByEnumeratingWithState:&v72 objects:v102 count:16];
   if (v23)
   {
     v24 = v23;
@@ -842,7 +842,7 @@ void __53__MGDaemon_groupsQueryAgent_didFindResults_forQuery___block_invoke_92(u
     v26 = *MEMORY[0x277CCE870];
     v63 = v19;
     v65 = *v73;
-    v66 = v22;
+    v66 = accessories2;
     v70 = *MEMORY[0x277CCE870];
     do
     {
@@ -852,23 +852,23 @@ void __53__MGDaemon_groupsQueryAgent_didFindResults_forQuery___block_invoke_92(u
       {
         if (*v73 != v25)
         {
-          objc_enumerationMutation(v22);
+          objc_enumerationMutation(accessories2);
         }
 
         v28 = *(*(&v72 + 1) + 8 * v27);
-        v29 = [v28 category];
-        v30 = [v29 categoryType];
-        v31 = [v30 isEqualToString:v26];
+        category = [v28 category];
+        categoryType = [category categoryType];
+        v31 = [categoryType isEqualToString:v26];
 
         if (v31)
         {
           v32 = MGGroupIdentifierForHomeTheaterWithAppleTVAccessoryInHome(v28, v19);
-          v33 = [v28 audioDestinationController];
-          v34 = [v33 destination];
-          v35 = v34;
-          if (v33)
+          audioDestinationController = [v28 audioDestinationController];
+          destination = [audioDestinationController destination];
+          v35 = destination;
+          if (audioDestinationController)
           {
-            v36 = v34 == 0;
+            v36 = destination == 0;
           }
 
           else
@@ -882,7 +882,7 @@ void __53__MGDaemon_groupsQueryAgent_didFindResults_forQuery___block_invoke_92(u
             if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134218242;
-              v95 = v64;
+              selfCopy5 = selfCopy4;
               v96 = 2112;
               v97 = v32;
               _os_log_impl(&dword_25863A000, v37, OS_LOG_TYPE_DEFAULT, "%p removing home theater %@", buf, 0x16u);
@@ -900,11 +900,11 @@ void __53__MGDaemon_groupsQueryAgent_didFindResults_forQuery___block_invoke_92(u
             if (isKindOfClass)
             {
               v39 = v35;
-              v40 = [v39 home];
-              v41 = [v40 uniqueIdentifier];
-              v42 = [v19 uniqueIdentifier];
+              home = [v39 home];
+              uniqueIdentifier = [home uniqueIdentifier];
+              uniqueIdentifier2 = [v19 uniqueIdentifier];
               v43 = v19;
-              v44 = [v41 isEqual:v42];
+              v44 = [uniqueIdentifier isEqual:uniqueIdentifier2];
 
               if (v44)
               {
@@ -917,9 +917,9 @@ void __53__MGDaemon_groupsQueryAgent_didFindResults_forQuery___block_invoke_92(u
               {
 LABEL_38:
                 *buf = 134218754;
-                v95 = v64;
+                selfCopy5 = selfCopy4;
                 v96 = 2112;
-                v97 = v40;
+                v97 = home;
                 v98 = 2112;
                 v99 = v39;
                 v100 = 2112;
@@ -927,7 +927,7 @@ LABEL_38:
                 v101 = v63;
                 _os_log_error_impl(&dword_25863A000, v58, OS_LOG_TYPE_ERROR, "%p the home %@ from audioDestination %@ doesn't match current home %@", buf, 0x2Au);
 LABEL_31:
-                v22 = v66;
+                accessories2 = v66;
                 v24 = v67;
                 v32 = v69;
 
@@ -937,7 +937,7 @@ LABEL_32:
                 if (os_log_type_enabled(v49, OS_LOG_TYPE_ERROR))
                 {
                   *buf = 134218498;
-                  v95 = v64;
+                  selfCopy5 = selfCopy4;
                   v96 = 2112;
                   v97 = v35;
                   v98 = 2112;
@@ -960,11 +960,11 @@ LABEL_30:
             }
 
             v39 = v35;
-            v40 = [v39 home];
-            v46 = [v40 uniqueIdentifier];
-            v47 = [v19 uniqueIdentifier];
+            home = [v39 home];
+            uniqueIdentifier3 = [home uniqueIdentifier];
+            uniqueIdentifier4 = [v19 uniqueIdentifier];
             v43 = v19;
-            v48 = [v46 isEqual:v47];
+            v48 = [uniqueIdentifier3 isEqual:uniqueIdentifier4];
 
             if (!v48)
             {
@@ -982,7 +982,7 @@ LABEL_23:
             v49 = v45;
             v19 = v43;
 
-            v22 = v66;
+            accessories2 = v66;
             v24 = v67;
             v25 = v65;
             v32 = v69;
@@ -995,19 +995,19 @@ LABEL_23:
             v93[1] = v49;
             v50 = [MEMORY[0x277CBEA60] arrayWithObjects:v93 count:2];
             v51 = objc_alloc_init(MEMORY[0x277CBEB38]);
-            v52 = [v33 identifier];
-            v53 = [v52 UUIDString];
-            [v51 setObject:v53 forKey:@"audioDestinationIdentifier"];
+            identifier = [audioDestinationController identifier];
+            uUIDString = [identifier UUIDString];
+            [v51 setObject:uUIDString forKey:@"audioDestinationIdentifier"];
 
             v54 = objc_alloc(MEMORY[0x277D27488]);
-            v55 = [v28 name];
-            v56 = [v54 initWithClientService:v62 type:@"com.apple.media-group.home-theater" identifier:v69 name:v55 properties:v51 memberIdentifiers:v50];
+            name = [v28 name];
+            v56 = [v54 initWithClientService:v62 type:@"com.apple.media-group.home-theater" identifier:v69 name:name properties:v51 memberIdentifiers:v50];
 
             v57 = MGLogForCategory(1);
             if (os_log_type_enabled(v57, OS_LOG_TYPE_DEFAULT))
             {
               *buf = 134218242;
-              v95 = v64;
+              selfCopy5 = selfCopy4;
               v96 = 2112;
               v97 = v56;
               _os_log_impl(&dword_25863A000, v57, OS_LOG_TYPE_DEFAULT, "%p adding home theater %@", buf, 0x16u);
@@ -1015,7 +1015,7 @@ LABEL_23:
 
             [v68 addGroup:v56];
             v19 = v63;
-            v22 = v66;
+            accessories2 = v66;
             v24 = v67;
             v25 = v65;
             v32 = v69;
@@ -1029,7 +1029,7 @@ LABEL_34:
       }
 
       while (v24 != v27);
-      v59 = [v22 countByEnumeratingWithState:&v72 objects:v102 count:16];
+      v59 = [accessories2 countByEnumeratingWithState:&v72 objects:v102 count:16];
       v24 = v59;
     }
 
@@ -1105,169 +1105,169 @@ void __31__MGDaemon__ingestHomeKitHome___block_invoke_99(uint64_t a1, void *a2)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addHomeKitHome:(id)a3
+- (void)addHomeKitHome:(id)home
 {
-  v4 = a3;
-  v6 = [(MGDaemon *)self homekitGroupsMediator];
-  v5 = [v6 startActivityWithName:@"Add HomeKit Home"];
-  [(MGDaemon *)self _ingestHomeKitHome:v4];
+  homeCopy = home;
+  homekitGroupsMediator = [(MGDaemon *)self homekitGroupsMediator];
+  v5 = [homekitGroupsMediator startActivityWithName:@"Add HomeKit Home"];
+  [(MGDaemon *)self _ingestHomeKitHome:homeCopy];
 
-  [v6 endActivity:v5];
+  [homekitGroupsMediator endActivity:v5];
 }
 
-- (void)removeHomeKitHome:(id)a3
+- (void)removeHomeKitHome:(id)home
 {
   v13 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = MGGroupIdentifierForHomeInHome(v4, v4);
+  homeCopy = home;
+  v5 = MGGroupIdentifierForHomeInHome(homeCopy, homeCopy);
   v6 = MGLogForCategory(1);
-  v7 = v6;
+  homekitGroupsMediator = v6;
   if (v5)
   {
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
     {
       v9 = 134218242;
-      v10 = self;
+      selfCopy2 = self;
       v11 = 2112;
       v12 = v5;
-      _os_log_impl(&dword_25863A000, v7, OS_LOG_TYPE_DEFAULT, "%p removing home %@", &v9, 0x16u);
+      _os_log_impl(&dword_25863A000, homekitGroupsMediator, OS_LOG_TYPE_DEFAULT, "%p removing home %@", &v9, 0x16u);
     }
 
-    v7 = [(MGDaemon *)self homekitGroupsMediator];
-    [v7 removeGroupWithIdentifier:v5];
+    homekitGroupsMediator = [(MGDaemon *)self homekitGroupsMediator];
+    [homekitGroupsMediator removeGroupWithIdentifier:v5];
   }
 
   else if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
   {
     v9 = 134218242;
-    v10 = self;
+    selfCopy2 = self;
     v11 = 2112;
-    v12 = v4;
-    _os_log_error_impl(&dword_25863A000, v7, OS_LOG_TYPE_ERROR, "%p no home identifier for %@", &v9, 0x16u);
+    v12 = homeCopy;
+    _os_log_error_impl(&dword_25863A000, homekitGroupsMediator, OS_LOG_TYPE_ERROR, "%p no home identifier for %@", &v9, 0x16u);
   }
 
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addHomeKitZone:(id)a3 fromHome:(id)a4
+- (void)addHomeKitZone:(id)zone fromHome:(id)home
 {
-  v5 = a4;
-  v7 = [(MGDaemon *)self homekitGroupsMediator];
-  v6 = [v7 startActivityWithName:@"Add HomeKit Zone"];
-  [(MGDaemon *)self _ingestHomeKitHome:v5];
+  homeCopy = home;
+  homekitGroupsMediator = [(MGDaemon *)self homekitGroupsMediator];
+  v6 = [homekitGroupsMediator startActivityWithName:@"Add HomeKit Zone"];
+  [(MGDaemon *)self _ingestHomeKitHome:homeCopy];
 
-  [v7 endActivity:v6];
+  [homekitGroupsMediator endActivity:v6];
 }
 
-- (void)removeHomeKitZone:(id)a3 fromHome:(id)a4
+- (void)removeHomeKitZone:(id)zone fromHome:(id)home
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = MGGroupIdentifierForZoneInHome(v6, a4);
+  zoneCopy = zone;
+  v7 = MGGroupIdentifierForZoneInHome(zoneCopy, home);
   v8 = MGLogForCategory(1);
-  v9 = v8;
+  homekitGroupsMediator = v8;
   if (v7)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134218242;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
       v14 = v7;
-      _os_log_impl(&dword_25863A000, v9, OS_LOG_TYPE_DEFAULT, "%p removing zone %@", &v11, 0x16u);
+      _os_log_impl(&dword_25863A000, homekitGroupsMediator, OS_LOG_TYPE_DEFAULT, "%p removing zone %@", &v11, 0x16u);
     }
 
-    v9 = [(MGDaemon *)self homekitGroupsMediator];
-    [v9 removeGroupWithIdentifier:v7];
+    homekitGroupsMediator = [(MGDaemon *)self homekitGroupsMediator];
+    [homekitGroupsMediator removeGroupWithIdentifier:v7];
   }
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v11 = 134218242;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2112;
-    v14 = v6;
-    _os_log_error_impl(&dword_25863A000, v9, OS_LOG_TYPE_ERROR, "%p no zone identifier for %@", &v11, 0x16u);
+    v14 = zoneCopy;
+    _os_log_error_impl(&dword_25863A000, homekitGroupsMediator, OS_LOG_TYPE_ERROR, "%p no zone identifier for %@", &v11, 0x16u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addHomeKitRoom:(id)a3 fromHome:(id)a4
+- (void)addHomeKitRoom:(id)room fromHome:(id)home
 {
-  v5 = a4;
-  v7 = [(MGDaemon *)self homekitGroupsMediator];
-  v6 = [v7 startActivityWithName:@"Add HomeKit Room"];
-  [(MGDaemon *)self _ingestHomeKitHome:v5];
+  homeCopy = home;
+  homekitGroupsMediator = [(MGDaemon *)self homekitGroupsMediator];
+  v6 = [homekitGroupsMediator startActivityWithName:@"Add HomeKit Room"];
+  [(MGDaemon *)self _ingestHomeKitHome:homeCopy];
 
-  [v7 endActivity:v6];
+  [homekitGroupsMediator endActivity:v6];
 }
 
-- (void)removeHomeKitRoom:(id)a3 fromHome:(id)a4
+- (void)removeHomeKitRoom:(id)room fromHome:(id)home
 {
   v15 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = MGGroupIdentifierForRoomInHome(v6, a4);
+  roomCopy = room;
+  v7 = MGGroupIdentifierForRoomInHome(roomCopy, home);
   v8 = MGLogForCategory(1);
-  v9 = v8;
+  homekitGroupsMediator = v8;
   if (v7)
   {
     if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
     {
       v11 = 134218242;
-      v12 = self;
+      selfCopy2 = self;
       v13 = 2112;
       v14 = v7;
-      _os_log_impl(&dword_25863A000, v9, OS_LOG_TYPE_DEFAULT, "%p removing room %@", &v11, 0x16u);
+      _os_log_impl(&dword_25863A000, homekitGroupsMediator, OS_LOG_TYPE_DEFAULT, "%p removing room %@", &v11, 0x16u);
     }
 
-    v9 = [(MGDaemon *)self homekitGroupsMediator];
-    [v9 removeGroupWithIdentifier:v7];
+    homekitGroupsMediator = [(MGDaemon *)self homekitGroupsMediator];
+    [homekitGroupsMediator removeGroupWithIdentifier:v7];
   }
 
   else if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
   {
     v11 = 134218242;
-    v12 = self;
+    selfCopy2 = self;
     v13 = 2112;
-    v14 = v6;
-    _os_log_error_impl(&dword_25863A000, v9, OS_LOG_TYPE_ERROR, "%p no room identifier for %@", &v11, 0x16u);
+    v14 = roomCopy;
+    _os_log_error_impl(&dword_25863A000, homekitGroupsMediator, OS_LOG_TYPE_ERROR, "%p no room identifier for %@", &v11, 0x16u);
   }
 
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addHomeKitMediaSystem:(id)a3 fromHome:(id)a4
+- (void)addHomeKitMediaSystem:(id)system fromHome:(id)home
 {
-  v5 = a4;
-  v7 = [(MGDaemon *)self homekitGroupsMediator];
-  v6 = [v7 startActivityWithName:@"Add HomeKit Media System"];
-  [(MGDaemon *)self _ingestHomeKitHome:v5];
+  homeCopy = home;
+  homekitGroupsMediator = [(MGDaemon *)self homekitGroupsMediator];
+  v6 = [homekitGroupsMediator startActivityWithName:@"Add HomeKit Media System"];
+  [(MGDaemon *)self _ingestHomeKitHome:homeCopy];
 
-  [v7 endActivity:v6];
+  [homekitGroupsMediator endActivity:v6];
 }
 
-- (void)removeHomeKitMediaSystem:(id)a3 fromHome:(id)a4
+- (void)removeHomeKitMediaSystem:(id)system fromHome:(id)home
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MGDaemon *)self homekitGroupsMediator];
-  v9 = [v8 startActivityWithName:@"Remove HomeKit Media System"];
+  systemCopy = system;
+  homeCopy = home;
+  homekitGroupsMediator = [(MGDaemon *)self homekitGroupsMediator];
+  v9 = [homekitGroupsMediator startActivityWithName:@"Remove HomeKit Media System"];
   v19 = 0;
   v20 = &v19;
   v21 = 0x3032000000;
   v22 = __Block_byref_object_copy__6;
   v23 = __Block_byref_object_dispose__6;
   v24 = 0;
-  if ([v6 supportsAudioDestination])
+  if ([systemCopy supportsAudioDestination])
   {
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __46__MGDaemon_removeHomeKitMediaSystem_fromHome___block_invoke;
     v18[3] = &unk_27989F800;
     v18[4] = &v19;
-    [(MGDaemon *)self _homeTheaterGroupIdentifierForAudioDestination:v6 fromHome:v7 completion:v18];
+    [(MGDaemon *)self _homeTheaterGroupIdentifierForAudioDestination:systemCopy fromHome:homeCopy completion:v18];
   }
 
   v10 = v20[5];
@@ -1279,15 +1279,15 @@ void __31__MGDaemon__ingestHomeKitHome___block_invoke_99(uint64_t a1, void *a2)
     {
       v13 = v20[5];
       *buf = 134218498;
-      v26 = self;
+      selfCopy4 = self;
       v27 = 2112;
       v28 = v13;
       v29 = 2112;
-      v30 = v6;
+      v30 = systemCopy;
       _os_log_impl(&dword_25863A000, v11, OS_LOG_TYPE_DEFAULT, "%p removing home theater %@ since media system %@ was part of it", buf, 0x20u);
     }
 
-    [v8 removeGroupWithIdentifier:v20[5]];
+    [homekitGroupsMediator removeGroupWithIdentifier:v20[5]];
   }
 
   else
@@ -1295,14 +1295,14 @@ void __31__MGDaemon__ingestHomeKitHome___block_invoke_99(uint64_t a1, void *a2)
     if (v12)
     {
       *buf = 134218242;
-      v26 = self;
+      selfCopy4 = self;
       v27 = 2112;
-      v28 = v6;
+      v28 = systemCopy;
       _os_log_impl(&dword_25863A000, v11, OS_LOG_TYPE_DEFAULT, "%p no home theater identifier for %@", buf, 0x16u);
     }
   }
 
-  v14 = MGGroupIdentifierForMediaSystemInHome(v6, v7);
+  v14 = MGGroupIdentifierForMediaSystemInHome(systemCopy, homeCopy);
   v15 = MGLogForCategory(1);
   v16 = v15;
   if (v14)
@@ -1310,13 +1310,13 @@ void __31__MGDaemon__ingestHomeKitHome___block_invoke_99(uint64_t a1, void *a2)
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v26 = self;
+      selfCopy4 = self;
       v27 = 2112;
       v28 = v14;
       _os_log_impl(&dword_25863A000, v16, OS_LOG_TYPE_DEFAULT, "%p removing media system %@", buf, 0x16u);
     }
 
-    [v8 removeGroupWithIdentifier:v14];
+    [homekitGroupsMediator removeGroupWithIdentifier:v14];
   }
 
   else
@@ -1324,102 +1324,102 @@ void __31__MGDaemon__ingestHomeKitHome___block_invoke_99(uint64_t a1, void *a2)
     if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v26 = self;
+      selfCopy4 = self;
       v27 = 2112;
-      v28 = v6;
+      v28 = systemCopy;
       _os_log_error_impl(&dword_25863A000, v16, OS_LOG_TYPE_ERROR, "%p no media system identifier for %@", buf, 0x16u);
     }
   }
 
-  [v8 endActivity:v9];
+  [homekitGroupsMediator endActivity:v9];
 
   _Block_object_dispose(&v19, 8);
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addHomeKitMediaSystem:(id)a3
+- (void)addHomeKitMediaSystem:(id)system
 {
-  v4 = a3;
-  v5 = [v4 home];
-  [(MGDaemon *)self addHomeKitMediaSystem:v4 fromHome:v5];
+  systemCopy = system;
+  home = [systemCopy home];
+  [(MGDaemon *)self addHomeKitMediaSystem:systemCopy fromHome:home];
 }
 
-- (void)removeHomeKitMediaSystem:(id)a3
+- (void)removeHomeKitMediaSystem:(id)system
 {
-  v4 = a3;
-  v5 = [v4 home];
-  [(MGDaemon *)self removeHomeKitMediaSystem:v4 fromHome:v5];
+  systemCopy = system;
+  home = [systemCopy home];
+  [(MGDaemon *)self removeHomeKitMediaSystem:systemCopy fromHome:home];
 }
 
-- (void)addHomeKitAccessory:(id)a3 fromHome:(id)a4
+- (void)addHomeKitAccessory:(id)accessory fromHome:(id)home
 {
-  v5 = a4;
-  v7 = [(MGDaemon *)self homekitGroupsMediator];
-  v6 = [v7 startActivityWithName:@"Add HomeKit Accessory"];
-  [(MGDaemon *)self _ingestHomeKitHome:v5];
+  homeCopy = home;
+  homekitGroupsMediator = [(MGDaemon *)self homekitGroupsMediator];
+  v6 = [homekitGroupsMediator startActivityWithName:@"Add HomeKit Accessory"];
+  [(MGDaemon *)self _ingestHomeKitHome:homeCopy];
 
-  [v7 endActivity:v6];
+  [homekitGroupsMediator endActivity:v6];
 }
 
-- (void)_addHomeKitAccessoryWithoutHomeIngestion:(id)a3 fromHome:(id)a4
+- (void)_addHomeKitAccessoryWithoutHomeIngestion:(id)ingestion fromHome:(id)home
 {
   v31 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MGDaemon *)self serviceForIngestion];
-  v9 = MGGroupIdentifierForAccessory(v6, v7);
+  ingestionCopy = ingestion;
+  homeCopy = home;
+  serviceForIngestion = [(MGDaemon *)self serviceForIngestion];
+  v9 = MGGroupIdentifierForAccessory(ingestionCopy, homeCopy);
 
   v10 = MGClassForGroupIdentifier(v9);
   if (v10)
   {
     v11 = v10;
     v12 = objc_alloc_init(MEMORY[0x277CBEB38]);
-    v13 = [v6 deviceIdentifier];
-    if (v13)
+    deviceIdentifier = [ingestionCopy deviceIdentifier];
+    if (deviceIdentifier)
     {
-      [v12 setObject:v13 forKey:@"deviceIdentifier"];
+      [v12 setObject:deviceIdentifier forKey:@"deviceIdentifier"];
     }
 
     else
     {
-      v14 = [v6 uniqueIdentifier];
-      v15 = [v14 UUIDString];
-      [v12 setObject:v15 forKey:@"deviceIdentifier"];
+      uniqueIdentifier = [ingestionCopy uniqueIdentifier];
+      uUIDString = [uniqueIdentifier UUIDString];
+      [v12 setObject:uUIDString forKey:@"deviceIdentifier"];
     }
 
     if (objc_opt_class() == v11)
     {
-      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(v6, "homePodVariant")}];
+      v16 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:{objc_msgSend(ingestionCopy, "homePodVariant")}];
       [v12 setObject:v16 forKey:@"HomePodVariant"];
 
-      v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v6, "productColor")}];
+      v17 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(ingestionCopy, "productColor")}];
       [v12 setObject:v17 forKey:@"productColor"];
     }
 
     v18 = [v11 alloc];
-    v19 = [(objc_class *)v11 type];
-    v20 = [v6 name];
-    v21 = [v18 initWithClientService:v8 type:v19 identifier:v9 name:v20 properties:v12 memberIdentifiers:MEMORY[0x277CBEBF8]];
+    type = [(objc_class *)v11 type];
+    name = [ingestionCopy name];
+    v21 = [v18 initWithClientService:serviceForIngestion type:type identifier:v9 name:name properties:v12 memberIdentifiers:MEMORY[0x277CBEBF8]];
 
     v22 = MGLogForCategory(1);
     if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
     {
       v27 = 134218242;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2112;
       v30 = v21;
       _os_log_impl(&dword_25863A000, v22, OS_LOG_TYPE_DEFAULT, "%p adding accessory %@", &v27, 0x16u);
     }
 
-    if ([v6 isCurrentAccessory])
+    if ([ingestionCopy isCurrentAccessory])
     {
-      v23 = [(MGDaemon *)self queryAgent];
-      v24 = [v21 identifier];
-      [v23 setCurrentDeviceIdentifier:v24];
+      queryAgent = [(MGDaemon *)self queryAgent];
+      identifier = [v21 identifier];
+      [queryAgent setCurrentDeviceIdentifier:identifier];
     }
 
-    v25 = [(MGDaemon *)self homekitGroupsMediator];
-    [v25 addGroup:v21];
+    homekitGroupsMediator = [(MGDaemon *)self homekitGroupsMediator];
+    [homekitGroupsMediator addGroup:v21];
   }
 
   else
@@ -1428,9 +1428,9 @@ void __31__MGDaemon__ingestHomeKitHome___block_invoke_99(uint64_t a1, void *a2)
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       v27 = 134218242;
-      v28 = self;
+      selfCopy2 = self;
       v29 = 2112;
-      v30 = v6;
+      v30 = ingestionCopy;
       _os_log_impl(&dword_25863A000, v12, OS_LOG_TYPE_DEFAULT, "%p no accessory class for %@", &v27, 0x16u);
     }
   }
@@ -1438,35 +1438,35 @@ void __31__MGDaemon__ingestHomeKitHome___block_invoke_99(uint64_t a1, void *a2)
   v26 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeHomeKitAccessory:(id)a3 fromHome:(id)a4
+- (void)removeHomeKitAccessory:(id)accessory fromHome:(id)home
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MGDaemon *)self homekitGroupsMediator];
-  v9 = [v8 startActivityWithName:@"Remove HomeKit Accessory"];
+  accessoryCopy = accessory;
+  homeCopy = home;
+  homekitGroupsMediator = [(MGDaemon *)self homekitGroupsMediator];
+  v9 = [homekitGroupsMediator startActivityWithName:@"Remove HomeKit Accessory"];
   v26 = 0;
   v27 = &v26;
   v28 = 0x3032000000;
   v29 = __Block_byref_object_copy__6;
   v30 = __Block_byref_object_dispose__6;
   v31 = 0;
-  v10 = [v6 audioDestinationController];
-  if (v10 && ([v6 category], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "categoryType"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", *MEMORY[0x277CCE870]), v12, v11, v13))
+  audioDestinationController = [accessoryCopy audioDestinationController];
+  if (audioDestinationController && ([accessoryCopy category], v11 = objc_claimAutoreleasedReturnValue(), objc_msgSend(v11, "categoryType"), v12 = objc_claimAutoreleasedReturnValue(), v13 = objc_msgSend(v12, "isEqualToString:", *MEMORY[0x277CCE870]), v12, v11, v13))
   {
-    v14 = MGGroupIdentifierForHomeTheaterWithAppleTVAccessoryInHome(v6, v7);
+    v14 = MGGroupIdentifierForHomeTheaterWithAppleTVAccessoryInHome(accessoryCopy, homeCopy);
     v15 = v27[5];
     v27[5] = v14;
   }
 
-  else if ([v6 supportsAudioDestination])
+  else if ([accessoryCopy supportsAudioDestination])
   {
     v25[0] = MEMORY[0x277D85DD0];
     v25[1] = 3221225472;
     v25[2] = __44__MGDaemon_removeHomeKitAccessory_fromHome___block_invoke;
     v25[3] = &unk_27989F800;
     v25[4] = &v26;
-    [(MGDaemon *)self _homeTheaterGroupIdentifierForAudioDestination:v6 fromHome:v7 completion:v25];
+    [(MGDaemon *)self _homeTheaterGroupIdentifierForAudioDestination:accessoryCopy fromHome:homeCopy completion:v25];
   }
 
   v16 = v27[5];
@@ -1478,15 +1478,15 @@ void __31__MGDaemon__ingestHomeKitHome___block_invoke_99(uint64_t a1, void *a2)
     {
       v19 = v27[5];
       *buf = 134218498;
-      v33 = self;
+      selfCopy4 = self;
       v34 = 2112;
       v35 = v19;
       v36 = 2112;
-      v37 = v6;
+      v37 = accessoryCopy;
       _os_log_impl(&dword_25863A000, v17, OS_LOG_TYPE_DEFAULT, "%p removing home theater %@ since accessory %@ was part of it", buf, 0x20u);
     }
 
-    [v8 removeGroupWithIdentifier:v27[5]];
+    [homekitGroupsMediator removeGroupWithIdentifier:v27[5]];
   }
 
   else
@@ -1494,14 +1494,14 @@ void __31__MGDaemon__ingestHomeKitHome___block_invoke_99(uint64_t a1, void *a2)
     if (v18)
     {
       *buf = 134218242;
-      v33 = self;
+      selfCopy4 = self;
       v34 = 2112;
-      v35 = v6;
+      v35 = accessoryCopy;
       _os_log_impl(&dword_25863A000, v17, OS_LOG_TYPE_DEFAULT, "%p no home theater identifier for %@", buf, 0x16u);
     }
   }
 
-  v20 = MGGroupIdentifierForAccessory(v6, v7);
+  v20 = MGGroupIdentifierForAccessory(accessoryCopy, homeCopy);
   v21 = MGLogForCategory(1);
   v22 = v21;
   if (v20)
@@ -1509,19 +1509,19 @@ void __31__MGDaemon__ingestHomeKitHome___block_invoke_99(uint64_t a1, void *a2)
     if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 134218242;
-      v33 = self;
+      selfCopy4 = self;
       v34 = 2112;
       v35 = v20;
       _os_log_impl(&dword_25863A000, v22, OS_LOG_TYPE_DEFAULT, "%p removing accessory %@", buf, 0x16u);
     }
 
-    if ([v6 isCurrentAccessory])
+    if ([accessoryCopy isCurrentAccessory])
     {
-      v23 = [(MGDaemon *)self queryAgent];
-      [v23 setCurrentDeviceIdentifier:0];
+      queryAgent = [(MGDaemon *)self queryAgent];
+      [queryAgent setCurrentDeviceIdentifier:0];
     }
 
-    [v8 removeGroupWithIdentifier:v20];
+    [homekitGroupsMediator removeGroupWithIdentifier:v20];
   }
 
   else
@@ -1529,26 +1529,26 @@ void __31__MGDaemon__ingestHomeKitHome___block_invoke_99(uint64_t a1, void *a2)
     if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v33 = self;
+      selfCopy4 = self;
       v34 = 2112;
-      v35 = v6;
+      v35 = accessoryCopy;
       _os_log_error_impl(&dword_25863A000, v22, OS_LOG_TYPE_ERROR, "%p no accessory identifier for %@", buf, 0x16u);
     }
   }
 
-  [v8 endActivity:v9];
+  [homekitGroupsMediator endActivity:v9];
 
   _Block_object_dispose(&v26, 8);
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_homeTheaterGroupIdentifierForAudioDestination:(id)a3 fromHome:(id)a4 completion:(id)a5
+- (void)_homeTheaterGroupIdentifierForAudioDestination:(id)destination fromHome:(id)home completion:(id)completion
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
-  v10 = [v7 audioDestinationIdentifier];
-  if (v10)
+  destinationCopy = destination;
+  homeCopy = home;
+  completionCopy = completion;
+  audioDestinationIdentifier = [destinationCopy audioDestinationIdentifier];
+  if (audioDestinationIdentifier)
   {
     v16 = 0;
     v17 = &v16;
@@ -1556,23 +1556,23 @@ void __31__MGDaemon__ingestHomeKitHome___block_invoke_99(uint64_t a1, void *a2)
     v19 = __Block_byref_object_copy__6;
     v20 = __Block_byref_object_dispose__6;
     v21 = 0;
-    v11 = [v8 accessories];
+    accessories = [homeCopy accessories];
     v12[0] = MEMORY[0x277D85DD0];
     v12[1] = 3221225472;
     v12[2] = __79__MGDaemon__homeTheaterGroupIdentifierForAudioDestination_fromHome_completion___block_invoke;
     v12[3] = &unk_27989F828;
-    v13 = v10;
+    v13 = audioDestinationIdentifier;
     v15 = &v16;
-    v14 = v8;
-    [v11 enumerateObjectsUsingBlock:v12];
+    v14 = homeCopy;
+    [accessories enumerateObjectsUsingBlock:v12];
 
-    v9[2](v9, v17[5]);
+    completionCopy[2](completionCopy, v17[5]);
     _Block_object_dispose(&v16, 8);
   }
 
   else
   {
-    v9[2](v9, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -1608,37 +1608,37 @@ void __79__MGDaemon__homeTheaterGroupIdentifierForAudioDestination_fromHome_comp
   }
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
   v27 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  listenerCopy = listener;
+  connectionCopy = connection;
   v8 = MGLogForCategory(0);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218240;
-    v24 = self;
+    selfCopy = self;
     v25 = 1024;
-    v26 = [v7 processIdentifier];
+    processIdentifier = [connectionCopy processIdentifier];
     _os_log_impl(&dword_25863A000, v8, OS_LOG_TYPE_DEFAULT, "%p received new connection from %d", buf, 0x12u);
   }
 
-  v9 = [(MGDaemon *)self listenerProvider];
-  v10 = [v9 serviceShouldAcceptNewConnection:v7];
+  listenerProvider = [(MGDaemon *)self listenerProvider];
+  v10 = [listenerProvider serviceShouldAcceptNewConnection:connectionCopy];
   if (v10)
   {
-    MGSetServiceXPCInterfacesOnConnection(v7, 1);
-    [v7 setExportedObject:self];
-    v11 = [(MGDaemon *)self dispatchQueue];
-    [v7 _setQueue:v11];
+    MGSetServiceXPCInterfacesOnConnection(connectionCopy, 1);
+    [connectionCopy setExportedObject:self];
+    dispatchQueue = [(MGDaemon *)self dispatchQueue];
+    [connectionCopy _setQueue:dispatchQueue];
 
-    v12 = [[MGServiceClient alloc] initWithConnection:v7];
-    v13 = [(MGDaemon *)self clients];
-    [v13 addClientService:v12];
+    v12 = [[MGServiceClient alloc] initWithConnection:connectionCopy];
+    clients = [(MGDaemon *)self clients];
+    [clients addClientService:v12];
 
     objc_initWeak(buf, self);
     objc_initWeak(&location, v12);
-    objc_initWeak(&from, v7);
+    objc_initWeak(&from, connectionCopy);
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __47__MGDaemon_listener_shouldAcceptNewConnection___block_invoke;
@@ -1647,9 +1647,9 @@ void __79__MGDaemon__homeTheaterGroupIdentifierForAudioDestination_fromHome_comp
     objc_copyWeak(&v19, &location);
     objc_copyWeak(&v20, &from);
     v14 = MEMORY[0x259C85F90](v17);
-    [v7 setInterruptionHandler:v14];
-    [v7 setInvalidationHandler:v14];
-    [v7 resume];
+    [connectionCopy setInterruptionHandler:v14];
+    [connectionCopy setInvalidationHandler:v14];
+    [connectionCopy resume];
 
     objc_destroyWeak(&v20);
     objc_destroyWeak(&v19);
@@ -1695,18 +1695,18 @@ void __47__MGDaemon_listener_shouldAcceptNewConnection___block_invoke(id *a1)
   v8 = *MEMORY[0x277D85DE8];
 }
 
-- (void)createGroupWithType:(id)a3 name:(id)a4 members:(id)a5 completion:(id)a6
+- (void)createGroupWithType:(id)type name:(id)name members:(id)members completion:(id)completion
 {
   v62 = *MEMORY[0x277D85DE8];
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
-  v14 = [MEMORY[0x277CCAE80] currentConnection];
-  v15 = v14;
-  if (v14)
+  typeCopy = type;
+  nameCopy = name;
+  membersCopy = members;
+  completionCopy = completion;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  v15 = currentConnection;
+  if (currentConnection)
   {
-    v16 = objc_getAssociatedObject(v14, "com.apple.MediaGroups.ClientService");
+    v16 = objc_getAssociatedObject(currentConnection, "com.apple.MediaGroups.ClientService");
   }
 
   else
@@ -1719,27 +1719,27 @@ void __47__MGDaemon_listener_shouldAcceptNewConnection___block_invoke(id *a1)
     dispatch_once(&qword_27F956E00, &__block_literal_global_134);
   }
 
-  v17 = [_MergedGlobals_1 objectForKey:v10];
+  v17 = [_MergedGlobals_1 objectForKey:typeCopy];
   if (v17)
   {
     v18 = v17;
-    v52 = v10;
-    v19 = self;
+    v52 = typeCopy;
+    selfCopy = self;
     v47 = v16;
     v48 = v15;
-    v49 = v13;
-    v20 = v11;
+    v49 = completionCopy;
+    v20 = nameCopy;
     v21 = MEMORY[0x277D27450];
-    v22 = [MEMORY[0x277CCAD78] UUID];
-    v51 = [v21 groupIdentifierWithUUID:v22];
+    uUID = [MEMORY[0x277CCAD78] UUID];
+    v51 = [v21 groupIdentifierWithUUID:uUID];
 
     v23 = objc_alloc_init(MEMORY[0x277CBEA60]);
     v53 = 0u;
     v54 = 0u;
     v55 = 0u;
     v56 = 0u;
-    v50 = v12;
-    v24 = v12;
+    v50 = membersCopy;
+    v24 = membersCopy;
     v25 = [v24 countByEnumeratingWithState:&v53 objects:v61 count:16];
     if (v25)
     {
@@ -1756,8 +1756,8 @@ void __47__MGDaemon_listener_shouldAcceptNewConnection___block_invoke(id *a1)
             objc_enumerationMutation(v24);
           }
 
-          v30 = [*(*(&v53 + 1) + 8 * v28) identifier];
-          v23 = [v29 arrayByAddingObject:v30];
+          identifier = [*(*(&v53 + 1) + 8 * v28) identifier];
+          v23 = [v29 arrayByAddingObject:identifier];
 
           ++v28;
           v29 = v23;
@@ -1771,7 +1771,7 @@ void __47__MGDaemon_listener_shouldAcceptNewConnection___block_invoke(id *a1)
     }
 
     v31 = v51;
-    v11 = v20;
+    nameCopy = v20;
     v32 = [v18 validateGroupSpecificationWithType:v52 identifier:v51 name:v20 properties:0 members:v24];
     if (v32)
     {
@@ -1781,7 +1781,7 @@ void __47__MGDaemon_listener_shouldAcceptNewConnection___block_invoke(id *a1)
       if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
       {
         *buf = 134218242;
-        v58 = v19;
+        selfCopy3 = selfCopy;
         v59 = 2112;
         v60 = v32;
         _os_log_error_impl(&dword_25863A000, v33, OS_LOG_TYPE_ERROR, "%p group validation failed: %@", buf, 0x16u);
@@ -1789,7 +1789,7 @@ void __47__MGDaemon_listener_shouldAcceptNewConnection___block_invoke(id *a1)
 
       v34 = v32;
       v35 = 0;
-      v12 = v50;
+      membersCopy = v50;
     }
 
     else
@@ -1799,24 +1799,24 @@ void __47__MGDaemon_listener_shouldAcceptNewConnection___block_invoke(id *a1)
       v15 = v48;
       if (v47)
       {
-        v43 = [v42 initWithClientService:v47 type:v52 identifier:v51 name:v11 properties:0 memberIdentifiers:v23];
+        v43 = [v42 initWithClientService:v47 type:v52 identifier:v51 name:nameCopy properties:0 memberIdentifiers:v23];
       }
 
       else
       {
-        v43 = [v42 initWithConnectionProvider:0 type:v52 identifier:v51 name:v11 properties:0 memberIdentifiers:v23];
+        v43 = [v42 initWithConnectionProvider:0 type:v52 identifier:v51 name:nameCopy properties:0 memberIdentifiers:v23];
       }
 
       v35 = v43;
-      v12 = v50;
-      v44 = [(MGDaemon *)v19 localGroupsMediator];
-      [v44 addGroup:v35];
+      membersCopy = v50;
+      localGroupsMediator = [(MGDaemon *)selfCopy localGroupsMediator];
+      [localGroupsMediator addGroup:v35];
 
       v45 = MGLogForCategory(3);
       if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 134218240;
-        v58 = v19;
+        selfCopy3 = selfCopy;
         v59 = 2048;
         v60 = v35;
         _os_log_impl(&dword_25863A000, v45, OS_LOG_TYPE_DEFAULT, "%p creation complete for %p", buf, 0x16u);
@@ -1825,13 +1825,13 @@ void __47__MGDaemon_listener_shouldAcceptNewConnection___block_invoke(id *a1)
       v31 = v51;
     }
 
-    v13 = v49;
-    v10 = v52;
+    completionCopy = v49;
+    typeCopy = v52;
   }
 
   else
   {
-    v36 = [qword_27F956DF8 objectForKey:v10];
+    v36 = [qword_27F956DF8 objectForKey:typeCopy];
     v37 = MGLogForCategory(3);
     v38 = os_log_type_enabled(v37, OS_LOG_TYPE_ERROR);
     if (v36)
@@ -1839,7 +1839,7 @@ void __47__MGDaemon_listener_shouldAcceptNewConnection___block_invoke(id *a1)
       if (v38)
       {
         *buf = 134217984;
-        v58 = self;
+        selfCopy3 = self;
         _os_log_error_impl(&dword_25863A000, v37, OS_LOG_TYPE_ERROR, "%p group type creation not allowed", buf, 0xCu);
       }
 
@@ -1853,7 +1853,7 @@ void __47__MGDaemon_listener_shouldAcceptNewConnection___block_invoke(id *a1)
       if (v38)
       {
         *buf = 134217984;
-        v58 = self;
+        selfCopy3 = self;
         _os_log_error_impl(&dword_25863A000, v37, OS_LOG_TYPE_ERROR, "%p group type creation not supported", buf, 0xCu);
       }
 
@@ -1866,7 +1866,7 @@ void __47__MGDaemon_listener_shouldAcceptNewConnection___block_invoke(id *a1)
     v35 = 0;
   }
 
-  v13[2](v13, v35, v32);
+  completionCopy[2](completionCopy, v35, v32);
 
   v46 = *MEMORY[0x277D85DE8];
 }
@@ -1917,11 +1917,11 @@ void __56__MGDaemon_createGroupWithType_name_members_completion___block_invoke()
   v12 = *MEMORY[0x277D85DE8];
 }
 
-- (void)deleteGroup:(id)a3 completion:(id)a4
+- (void)deleteGroup:(id)group completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   v7 = deleteGroup_completion__onceToken;
-  v8 = a3;
+  groupCopy = group;
   if (v7 != -1)
   {
     dispatch_once(&deleteGroup_completion__onceToken, &__block_literal_global_143);
@@ -1932,9 +1932,9 @@ void __56__MGDaemon_createGroupWithType_name_members_completion___block_invoke()
   v10[2] = __35__MGDaemon_deleteGroup_completion___block_invoke_2;
   v10[3] = &unk_27989F8A0;
   v10[4] = self;
-  v11 = v6;
-  v9 = v6;
-  [(MGDaemon *)self _fetchGroupInfo:v8 completion:v10];
+  v11 = completionCopy;
+  v9 = completionCopy;
+  [(MGDaemon *)self _fetchGroupInfo:groupCopy completion:v10];
 }
 
 void __35__MGDaemon_deleteGroup_completion___block_invoke()
@@ -2107,31 +2107,31 @@ LABEL_27:
   v25 = *MEMORY[0x277D85DE8];
 }
 
-- (void)HomeKitAccessoryOfType:(id)a3 accessoryIdentifier:(id)a4 homeIdentifier:(id)a5 categoryType:(id)a6 name:(id)a7 properties:(id)a8 completion:(id)a9
+- (void)HomeKitAccessoryOfType:(id)type accessoryIdentifier:(id)identifier homeIdentifier:(id)homeIdentifier categoryType:(id)categoryType name:(id)name properties:(id)properties completion:(id)completion
 {
   v42 = *MEMORY[0x277D85DE8];
-  v15 = a3;
-  v37 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
+  typeCopy = type;
+  identifierCopy = identifier;
+  homeIdentifierCopy = homeIdentifier;
+  categoryTypeCopy = categoryType;
+  nameCopy = name;
+  propertiesCopy = properties;
+  completionCopy = completion;
   if (qword_27F956E28 != -1)
   {
     dispatch_once(&qword_27F956E28, &__block_literal_global_146);
   }
 
-  v21 = [qword_27F956E18 objectForKey:v15];
+  v21 = [qword_27F956E18 objectForKey:typeCopy];
   if (!v21)
   {
     v31 = MGLogForCategory(3);
     if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v39 = self;
+      selfCopy3 = self;
       v40 = 2112;
-      v41 = v15;
+      v41 = typeCopy;
       _os_log_error_impl(&dword_25863A000, v31, OS_LOG_TYPE_ERROR, "%p group type %@ not supported", buf, 0x16u);
     }
 
@@ -2142,8 +2142,8 @@ LABEL_27:
   }
 
   v22 = v21;
-  v23 = [qword_27F956E20 objectForKey:v15];
-  v24 = [v23 isEqualToString:v17];
+  v23 = [qword_27F956E20 objectForKey:typeCopy];
+  v24 = [v23 isEqualToString:categoryTypeCopy];
 
   if (!v24)
   {
@@ -2151,9 +2151,9 @@ LABEL_27:
     if (os_log_type_enabled(v35, OS_LOG_TYPE_ERROR))
     {
       *buf = 134218242;
-      v39 = self;
+      selfCopy3 = self;
       v40 = 2112;
-      v41 = v17;
+      v41 = categoryTypeCopy;
       _os_log_error_impl(&dword_25863A000, v35, OS_LOG_TYPE_ERROR, "%p accessory category %@ is not supported", buf, 0x16u);
     }
 
@@ -2166,17 +2166,17 @@ LABEL_14:
     goto LABEL_15;
   }
 
-  v25 = MGGroupIdentifierForAccessoryIdentifierInHome(v37, v16, v17);
+  v25 = MGGroupIdentifierForAccessoryIdentifierInHome(identifierCopy, homeIdentifierCopy, categoryTypeCopy);
   v26 = [v22 alloc];
-  v27 = [v26 initWithConnectionProvider:0 type:v15 identifier:v25 name:v18 properties:v19 memberIdentifiers:MEMORY[0x277CBEBF8]];
-  v28 = [(MGDaemon *)self localGroupsMediator];
-  [v28 addGroup:v27];
+  v27 = [v26 initWithConnectionProvider:0 type:typeCopy identifier:v25 name:nameCopy properties:propertiesCopy memberIdentifiers:MEMORY[0x277CBEBF8]];
+  localGroupsMediator = [(MGDaemon *)self localGroupsMediator];
+  [localGroupsMediator addGroup:v27];
 
   v29 = MGLogForCategory(3);
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v39 = self;
+    selfCopy3 = self;
     v40 = 2112;
     v41 = v27;
     _os_log_impl(&dword_25863A000, v29, OS_LOG_TYPE_DEFAULT, "%p completed accessory %@", buf, 0x16u);
@@ -2184,7 +2184,7 @@ LABEL_14:
 
   v30 = 0;
 LABEL_15:
-  v20[2](v20, v27, v30);
+  completionCopy[2](completionCopy, v27, v30);
 
   v36 = *MEMORY[0x277D85DE8];
 }
@@ -2221,22 +2221,22 @@ void __110__MGDaemon_HomeKitAccessoryOfType_accessoryIdentifier_homeIdentifier_c
   v10 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setName:(id)a3 group:(id)a4 completion:(id)a5
+- (void)setName:(id)name group:(id)group completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  nameCopy = name;
+  groupCopy = group;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __37__MGDaemon_setName_group_completion___block_invoke;
   v14[3] = &unk_27989F8C8;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = groupCopy;
+  v16 = nameCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = nameCopy;
+  v13 = groupCopy;
   [(MGDaemon *)self _fetchGroupInfo:v13 completion:v14];
 }
 
@@ -2298,22 +2298,22 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)addMember:(id)a3 group:(id)a4 completion:(id)a5
+- (void)addMember:(id)member group:(id)group completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  memberCopy = member;
+  groupCopy = group;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __39__MGDaemon_addMember_group_completion___block_invoke;
   v14[3] = &unk_27989F8C8;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = groupCopy;
+  v16 = memberCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = memberCopy;
+  v13 = groupCopy;
   [(MGDaemon *)self _fetchGroupInfo:v13 completion:v14];
 }
 
@@ -2375,22 +2375,22 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)removeMember:(id)a3 group:(id)a4 completion:(id)a5
+- (void)removeMember:(id)member group:(id)group completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  memberCopy = member;
+  groupCopy = group;
+  completionCopy = completion;
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __42__MGDaemon_removeMember_group_completion___block_invoke;
   v14[3] = &unk_27989F8C8;
   v14[4] = self;
-  v15 = v9;
-  v16 = v8;
-  v17 = v10;
-  v11 = v10;
-  v12 = v8;
-  v13 = v9;
+  v15 = groupCopy;
+  v16 = memberCopy;
+  v17 = completionCopy;
+  v11 = completionCopy;
+  v12 = memberCopy;
+  v13 = groupCopy;
   [(MGDaemon *)self _fetchGroupInfo:v13 completion:v14];
 }
 
@@ -2452,17 +2452,17 @@ LABEL_10:
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startQueryWithPredicate:(id)a3 completion:(id)a4
+- (void)startQueryWithPredicate:(id)predicate completion:(id)completion
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v28 = a4;
-  v7 = [MEMORY[0x277CCAE80] currentConnection];
-  v8 = [(MGDaemon *)self clients];
-  v29 = [v8 serviceClientForXPCConnection:v7];
+  predicateCopy = predicate;
+  completionCopy = completion;
+  currentConnection = [MEMORY[0x277CCAE80] currentConnection];
+  clients = [(MGDaemon *)self clients];
+  v29 = [clients serviceClientForXPCConnection:currentConnection];
 
-  [v6 allowEvaluation];
-  v9 = [v7 valueForEntitlement:@"com.apple.MediaGroups.groups"];
+  [predicateCopy allowEvaluation];
+  v9 = [currentConnection valueForEntitlement:@"com.apple.MediaGroups.groups"];
   if (v9)
   {
     objc_opt_class();
@@ -2497,26 +2497,26 @@ LABEL_10:
   v16 = [MEMORY[0x277CCAC30] predicateWithFormat:@"SELF.type IN %@", v9];
   v17 = MEMORY[0x277CCA920];
   v34[0] = v16;
-  v34[1] = v6;
+  v34[1] = predicateCopy;
   v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v34 count:2];
   v19 = [v17 andPredicateWithSubpredicates:v18];
 
   v20 = [[MGOutstandingQuery alloc] initWithPredicate:v19];
-  v21 = [(MGOutstandingQuery *)v20 identifier];
-  v22 = [(MGDaemon *)self topologyRequestHandler];
-  if ([(MGOutstandingQuery *)v20 requiresTopology]&& v22)
+  identifier = [(MGOutstandingQuery *)v20 identifier];
+  topologyRequestHandler = [(MGDaemon *)self topologyRequestHandler];
+  if ([(MGOutstandingQuery *)v20 requiresTopology]&& topologyRequestHandler)
   {
     v23 = MGLogForCategory(3);
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEBUG))
     {
       *buf = 134218242;
-      v31 = self;
+      selfCopy2 = self;
       v32 = 2112;
-      v33 = v21;
+      v33 = identifier;
       _os_log_debug_impl(&dword_25863A000, v23, OS_LOG_TYPE_DEBUG, "%p requesting topology for query %@", buf, 0x16u);
     }
 
-    v22[2](v22);
+    topologyRequestHandler[2](topologyRequestHandler);
   }
 
   [v29 addQuery:v20];
@@ -2524,76 +2524,76 @@ LABEL_10:
   if (os_log_type_enabled(v24, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134218242;
-    v31 = self;
+    selfCopy2 = self;
     v32 = 2112;
-    v33 = v21;
+    v33 = identifier;
     _os_log_impl(&dword_25863A000, v24, OS_LOG_TYPE_DEFAULT, "%p starting query %@", buf, 0x16u);
   }
 
-  (*(v28 + 2))(v28, v21, 0, 0);
-  v25 = [(MGDaemon *)self queryAgent];
-  [v25 addOutstandingQuery:v20];
+  (*(completionCopy + 2))(completionCopy, identifier, 0, 0);
+  queryAgent = [(MGDaemon *)self queryAgent];
+  [queryAgent addOutstandingQuery:v20];
 
-  v26 = [(MGDaemon *)self remoteQueryClient];
-  [v26 addOutstandingQuery:v20];
+  remoteQueryClient = [(MGDaemon *)self remoteQueryClient];
+  [remoteQueryClient addOutstandingQuery:v20];
 
   v27 = *MEMORY[0x277D85DE8];
 }
 
-- (void)stopQuery:(id)a3 completion:(id)a4
+- (void)stopQuery:(id)query completion:(id)completion
 {
   v6 = MEMORY[0x277CCAE80];
-  v7 = a4;
-  v8 = a3;
-  v12 = [v6 currentConnection];
-  v9 = [(MGDaemon *)self clients];
-  v10 = [v9 serviceClientForXPCConnection:v12];
+  completionCopy = completion;
+  queryCopy = query;
+  currentConnection = [v6 currentConnection];
+  clients = [(MGDaemon *)self clients];
+  v10 = [clients serviceClientForXPCConnection:currentConnection];
 
-  v11 = [v10 outstandingQueryForIdentifier:v8];
+  v11 = [v10 outstandingQueryForIdentifier:queryCopy];
 
   [(MGDaemon *)self stopQuery:v11];
   [v10 removeQuery:v11];
-  v7[2](v7, 0);
+  completionCopy[2](completionCopy, 0);
 }
 
-- (void)stopQuery:(id)a3
+- (void)stopQuery:(id)query
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 identifier];
-  v6 = [(MGDaemon *)self queryAgent];
-  [v6 removeOutstandingQuery:v4];
+  queryCopy = query;
+  identifier = [queryCopy identifier];
+  queryAgent = [(MGDaemon *)self queryAgent];
+  [queryAgent removeOutstandingQuery:queryCopy];
 
-  v7 = [(MGDaemon *)self remoteQueryClient];
-  [v7 removeOutstandingQuery:v4];
+  remoteQueryClient = [(MGDaemon *)self remoteQueryClient];
+  [remoteQueryClient removeOutstandingQuery:queryCopy];
 
   v8 = MGLogForCategory(3);
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 134218242;
-    v11 = self;
+    selfCopy = self;
     v12 = 2112;
-    v13 = v5;
+    v13 = identifier;
     _os_log_impl(&dword_25863A000, v8, OS_LOG_TYPE_DEFAULT, "%p stopped query %@", &v10, 0x16u);
   }
 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (id)startInternalQueryWithPredicate:(id)a3 handler:(id)a4
+- (id)startInternalQueryWithPredicate:(id)predicate handler:(id)handler
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a4;
-  v7 = a3;
-  v8 = [(MGDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v8);
+  handlerCopy = handler;
+  predicateCopy = predicate;
+  dispatchQueue = [(MGDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v9 = [[MGOutstandingQuery alloc] initWithPredicate:v7];
-  v10 = [(MGOutstandingQuery *)v9 identifier];
-  v11 = [(MGDaemon *)self topologyRequestHandler];
+  v9 = [[MGOutstandingQuery alloc] initWithPredicate:predicateCopy];
+  identifier = [(MGOutstandingQuery *)v9 identifier];
+  topologyRequestHandler = [(MGDaemon *)self topologyRequestHandler];
   if ([(MGOutstandingQuery *)v9 requiresTopology])
   {
-    v12 = v11 == 0;
+    v12 = topologyRequestHandler == 0;
   }
 
   else
@@ -2607,75 +2607,75 @@ LABEL_10:
     if (os_log_type_enabled(v13, OS_LOG_TYPE_DEBUG))
     {
       v21 = 134218242;
-      v22 = self;
+      selfCopy2 = self;
       v23 = 2112;
-      v24 = v10;
+      v24 = identifier;
       _os_log_debug_impl(&dword_25863A000, v13, OS_LOG_TYPE_DEBUG, "%p requesting topology for local query %@", &v21, 0x16u);
     }
 
-    v11[2](v11);
+    topologyRequestHandler[2](topologyRequestHandler);
   }
 
   v14 = MGLogForCategory(3);
   if (os_log_type_enabled(v14, OS_LOG_TYPE_DEFAULT))
   {
     v21 = 134218242;
-    v22 = self;
+    selfCopy2 = self;
     v23 = 2112;
-    v24 = v10;
+    v24 = identifier;
     _os_log_impl(&dword_25863A000, v14, OS_LOG_TYPE_DEFAULT, "%p starting internal query %@", &v21, 0x16u);
   }
 
-  v15 = [(MGDaemon *)self internalQueries];
-  v16 = [v15 mutableCopy];
+  internalQueries = [(MGDaemon *)self internalQueries];
+  v16 = [internalQueries mutableCopy];
 
-  v17 = MEMORY[0x259C85F90](v6);
-  [v16 setObject:v17 forKey:v10];
+  v17 = MEMORY[0x259C85F90](handlerCopy);
+  [v16 setObject:v17 forKey:identifier];
 
   [(MGDaemon *)self setInternalQueries:v16];
-  v18 = [(MGDaemon *)self queryAgent];
-  [v18 addOutstandingQuery:v9];
+  queryAgent = [(MGDaemon *)self queryAgent];
+  [queryAgent addOutstandingQuery:v9];
 
   v19 = *MEMORY[0x277D85DE8];
 
   return v9;
 }
 
-- (void)stopInternalQuery:(id)a3
+- (void)stopInternalQuery:(id)query
 {
   v16 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(MGDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v5);
+  queryCopy = query;
+  dispatchQueue = [(MGDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
-  v6 = [v4 identifier];
-  v7 = [(MGDaemon *)self queryAgent];
-  [v7 removeOutstandingQuery:v4];
+  identifier = [queryCopy identifier];
+  queryAgent = [(MGDaemon *)self queryAgent];
+  [queryAgent removeOutstandingQuery:queryCopy];
 
-  v8 = [(MGDaemon *)self internalQueries];
-  v9 = [v8 mutableCopy];
+  internalQueries = [(MGDaemon *)self internalQueries];
+  v9 = [internalQueries mutableCopy];
 
-  [v9 removeObjectForKey:v6];
+  [v9 removeObjectForKey:identifier];
   [(MGDaemon *)self setInternalQueries:v9];
   v10 = MGLogForCategory(3);
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     v12 = 134218242;
-    v13 = self;
+    selfCopy = self;
     v14 = 2112;
-    v15 = v6;
+    v15 = identifier;
     _os_log_impl(&dword_25863A000, v10, OS_LOG_TYPE_DEFAULT, "%p stopped internal query %@", &v12, 0x16u);
   }
 
   v11 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_fetchGroupInfo:(id)a3 completion:(id)a4
+- (void)_fetchGroupInfo:(id)info completion:(id)completion
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(MGDaemon *)self dispatchQueue];
-  dispatch_assert_queue_V2(v8);
+  infoCopy = info;
+  completionCopy = completion;
+  dispatchQueue = [(MGDaemon *)self dispatchQueue];
+  dispatch_assert_queue_V2(dispatchQueue);
 
   objc_initWeak(&location, self);
   v20 = 0;
@@ -2684,17 +2684,17 @@ LABEL_10:
   v23 = __Block_byref_object_copy__6;
   v24 = __Block_byref_object_dispose__6;
   v25 = 0;
-  v9 = [MEMORY[0x277D27440] predicateForGroup:v6];
+  v9 = [MEMORY[0x277D27440] predicateForGroup:infoCopy];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __39__MGDaemon__fetchGroupInfo_completion___block_invoke;
   v14[3] = &unk_27989F918;
   objc_copyWeak(&v19, &location);
   v18 = &v20;
-  v10 = v6;
+  v10 = infoCopy;
   v15 = v10;
-  v16 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = completionCopy;
   v17 = v11;
   v12 = [(MGDaemon *)self startInternalQueryWithPredicate:v9 handler:v14];
   v13 = v21[5];
@@ -2913,31 +2913,31 @@ void __39__MGDaemon__fetchGroupInfo_completion___block_invoke_159(uint64_t a1, v
   v24 = *MEMORY[0x277D85DE8];
 }
 
-- (void)startOutstandingQueryWithPredicate:(id)a3 handler:(id)a4 completion:(id)a5
+- (void)startOutstandingQueryWithPredicate:(id)predicate handler:(id)handler completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  predicateCopy = predicate;
+  handlerCopy = handler;
+  completionCopy = completion;
   v21[0] = MEMORY[0x277D85DD0];
   v21[1] = 3221225472;
   v21[2] = __66__MGDaemon_startOutstandingQueryWithPredicate_handler_completion___block_invoke;
   v21[3] = &unk_27989F940;
-  v22 = v9;
-  v11 = v9;
+  v22 = handlerCopy;
+  v11 = handlerCopy;
   v12 = MEMORY[0x259C85F90](v21);
-  v13 = [(MGDaemon *)self dispatchQueue];
+  dispatchQueue = [(MGDaemon *)self dispatchQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __66__MGDaemon_startOutstandingQueryWithPredicate_handler_completion___block_invoke_2;
   block[3] = &unk_27989F968;
   block[4] = self;
-  v18 = v8;
+  v18 = predicateCopy;
   v19 = v12;
-  v20 = v10;
-  v14 = v10;
+  v20 = completionCopy;
+  v14 = completionCopy;
   v15 = v12;
-  v16 = v8;
-  dispatch_async(v13, block);
+  v16 = predicateCopy;
+  dispatch_async(dispatchQueue, block);
 }
 
 void __66__MGDaemon_startOutstandingQueryWithPredicate_handler_completion___block_invoke(uint64_t a1, void *a2, void *a3)
@@ -3000,18 +3000,18 @@ void __66__MGDaemon_startOutstandingQueryWithPredicate_handler_completion___bloc
   (*(*(a1 + 56) + 16))();
 }
 
-- (void)stopOutstandingQuery:(id)a3
+- (void)stopOutstandingQuery:(id)query
 {
-  v4 = a3;
-  v5 = [(MGDaemon *)self dispatchQueue];
+  queryCopy = query;
+  dispatchQueue = [(MGDaemon *)self dispatchQueue];
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __33__MGDaemon_stopOutstandingQuery___block_invoke;
   v7[3] = &unk_27989EE80;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
-  dispatch_async(v5, v7);
+  v8 = queryCopy;
+  v6 = queryCopy;
+  dispatch_async(dispatchQueue, v7);
 }
 
 @end

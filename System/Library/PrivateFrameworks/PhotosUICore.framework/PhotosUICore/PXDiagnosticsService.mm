@@ -1,6 +1,6 @@
 @interface PXDiagnosticsService
 - (NSString)title;
-- (PXDiagnosticsService)initWithItemProviders:(id)a3;
+- (PXDiagnosticsService)initWithItemProviders:(id)providers;
 - (UIViewController)contextualViewController;
 - (void)performAction;
 @end
@@ -9,10 +9,10 @@
 
 - (void)performAction
 {
-  v4 = [MEMORY[0x1E696AAA8] currentHandler];
+  currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
   v5 = objc_opt_class();
   v6 = NSStringFromClass(v5);
-  [v4 handleFailureInMethod:a2 object:self file:@"PXDiagnosticsService.m" lineNumber:51 description:{@"Method %s is a responsibility of subclass %@", "-[PXDiagnosticsService performAction]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"PXDiagnosticsService.m" lineNumber:51 description:{@"Method %s is a responsibility of subclass %@", "-[PXDiagnosticsService performAction]", v6}];
 
   abort();
 }
@@ -27,8 +27,8 @@
     v6[3] = &unk_1E774BB70;
     v6[4] = self;
     v3 = [MEMORY[0x1E69DD258] px_viewControllerWithOutput:v6];
-    v4 = [(PXDiagnosticsService *)self title];
-    [v3 setTitle:v4];
+    title = [(PXDiagnosticsService *)self title];
+    [v3 setTitle:title];
   }
 
   else
@@ -49,15 +49,15 @@
   return v5;
 }
 
-- (PXDiagnosticsService)initWithItemProviders:(id)a3
+- (PXDiagnosticsService)initWithItemProviders:(id)providers
 {
-  v4 = a3;
+  providersCopy = providers;
   v9.receiver = self;
   v9.super_class = PXDiagnosticsService;
   v5 = [(PXDiagnosticsService *)&v9 init];
   if (v5)
   {
-    v6 = [v4 copy];
+    v6 = [providersCopy copy];
     itemProviders = v5->_itemProviders;
     v5->_itemProviders = v6;
   }

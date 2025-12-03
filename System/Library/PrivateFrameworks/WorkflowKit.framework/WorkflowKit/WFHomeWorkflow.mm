@@ -1,5 +1,5 @@
 @interface WFHomeWorkflow
-+ (void)setCachedHomes:(id)a3;
++ (void)setCachedHomes:(id)homes;
 - (BOOL)requiresDeviceUnlock;
 - (BOOL)requiresDeviceUnlockEnsuringHomesAreLoaded;
 - (HFTriggerActionsSetsUISummary)actionSetsSummary;
@@ -8,12 +8,12 @@
 - (NSArray)summaryIconNames;
 - (NSString)summaryString;
 - (NSUUID)homeIdentifier;
-- (WFHomeWorkflow)initWithData:(id)a3;
-- (WFHomeWorkflow)workflowWithEnvironment:(int64_t)a3 error:(id *)a4;
-- (id)actionSetsFromTriggerActionSetsBuilders:(id)a3;
+- (WFHomeWorkflow)initWithData:(id)data;
+- (WFHomeWorkflow)workflowWithEnvironment:(int64_t)environment error:(id *)error;
+- (id)actionSetsFromTriggerActionSetsBuilders:(id)builders;
 - (id)debugDescription;
 - (id)triggerActionSetsBuilders;
-- (id)workflowRecordWithEnvironment:(int64_t)a3 error:(id *)a4;
+- (id)workflowRecordWithEnvironment:(int64_t)environment error:(id *)error;
 @end
 
 @implementation WFHomeWorkflow
@@ -21,8 +21,8 @@
 - (id)debugDescription
 {
   v3 = MEMORY[0x1E696AEC0];
-  v4 = [(WFHomeWorkflow *)self data];
-  v5 = [v3 stringWithFormat:@"data length = %lu", objc_msgSend(v4, "length")];
+  data = [(WFHomeWorkflow *)self data];
+  v5 = [v3 stringWithFormat:@"data length = %lu", objc_msgSend(data, "length")];
 
   v6 = MEMORY[0x1E696AEC0];
   v7 = objc_opt_class();
@@ -32,7 +32,7 @@
   return v9;
 }
 
-- (WFHomeWorkflow)workflowWithEnvironment:(int64_t)a3 error:(id *)a4
+- (WFHomeWorkflow)workflowWithEnvironment:(int64_t)environment error:(id *)error
 {
   cachedWorkflow = self->_cachedWorkflow;
   if (!cachedWorkflow)
@@ -44,7 +44,7 @@
     }
 
     v9 = v8;
-    v10 = [[WFWorkflow alloc] initWithRecord:v8 reference:0 storageProvider:0 migrateIfNecessary:1 environment:a3 error:a4];
+    v10 = [[WFWorkflow alloc] initWithRecord:v8 reference:0 storageProvider:0 migrateIfNecessary:1 environment:environment error:error];
     v11 = self->_cachedWorkflow;
     self->_cachedWorkflow = v10;
 
@@ -57,7 +57,7 @@ LABEL_5:
   return v8;
 }
 
-- (id)workflowRecordWithEnvironment:(int64_t)a3 error:(id *)a4
+- (id)workflowRecordWithEnvironment:(int64_t)environment error:(id *)error
 {
   cachedWorkflowRecord = self->_cachedWorkflowRecord;
   if (cachedWorkflowRecord)
@@ -66,12 +66,12 @@ LABEL_5:
   }
 
   v7 = [WFWorkflowFile alloc];
-  v8 = [(WFHomeWorkflow *)self data];
-  v9 = [(WFWorkflowFile *)v7 initWithFileData:v8 name:0 error:a4];
+  data = [(WFHomeWorkflow *)self data];
+  v9 = [(WFWorkflowFile *)v7 initWithFileData:data name:0 error:error];
 
   if (v9)
   {
-    v10 = [(WFWorkflowFile *)v9 recordRepresentationWithError:a4];
+    v10 = [(WFWorkflowFile *)v9 recordRepresentationWithError:error];
     v11 = self->_cachedWorkflowRecord;
     self->_cachedWorkflowRecord = v10;
 
@@ -87,9 +87,9 @@ LABEL_5:
   return v12;
 }
 
-- (id)actionSetsFromTriggerActionSetsBuilders:(id)a3
+- (id)actionSetsFromTriggerActionSetsBuilders:(id)builders
 {
-  v3 = [a3 if_map:&__block_literal_global_189_4494];
+  v3 = [builders if_map:&__block_literal_global_189_4494];
   v4 = [v3 valueForKeyPath:@"@unionOfArrays.self"];
 
   return v4;
@@ -103,8 +103,8 @@ LABEL_5:
   v3 = v9;
   if (v2)
   {
-    v4 = [v2 actions];
-    v5 = [v4 if_compactMap:&__block_literal_global_183];
+    actions = [v2 actions];
+    v5 = [actions if_compactMap:&__block_literal_global_183];
 
     if ([v5 count])
     {
@@ -175,15 +175,15 @@ id __43__WFHomeWorkflow_triggerActionSetsBuilders__block_invoke(uint64_t a1, voi
   actionSetsSummary = self->_actionSetsSummary;
   if (!actionSetsSummary)
   {
-    v4 = [(WFHomeWorkflow *)self triggerActionSetsBuilders];
-    v5 = [v4 firstObject];
-    v6 = [v5 home];
+    triggerActionSetsBuilders = [(WFHomeWorkflow *)self triggerActionSetsBuilders];
+    firstObject = [triggerActionSetsBuilders firstObject];
+    home = [firstObject home];
 
-    v7 = [(WFHomeWorkflow *)self actionSetsFromTriggerActionSetsBuilders:v4];
-    v8 = [objc_alloc(getHFTriggerActionSetsBuilderClass()) initWithActionSets:v7 inHome:v6];
-    v9 = [v8 actionSetsSummary];
+    v7 = [(WFHomeWorkflow *)self actionSetsFromTriggerActionSetsBuilders:triggerActionSetsBuilders];
+    v8 = [objc_alloc(getHFTriggerActionSetsBuilderClass()) initWithActionSets:v7 inHome:home];
+    actionSetsSummary = [v8 actionSetsSummary];
     v10 = self->_actionSetsSummary;
-    self->_actionSetsSummary = v9;
+    self->_actionSetsSummary = actionSetsSummary;
 
     actionSetsSummary = self->_actionSetsSummary;
   }
@@ -246,8 +246,8 @@ intptr_t __60__WFHomeWorkflow_requiresDeviceUnlockEnsuringHomesAreLoaded__block_
 - (BOOL)requiresDeviceUnlock
 {
   v22 = *MEMORY[0x1E69E9840];
-  v3 = [(WFHomeWorkflow *)self triggerActionSetsBuilders];
-  v4 = [(WFHomeWorkflow *)self actionSetsFromTriggerActionSetsBuilders:v3];
+  triggerActionSetsBuilders = [(WFHomeWorkflow *)self triggerActionSetsBuilders];
+  v4 = [(WFHomeWorkflow *)self actionSetsFromTriggerActionSetsBuilders:triggerActionSetsBuilders];
   v5 = getWFHomeLogObject();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
@@ -325,8 +325,8 @@ LABEL_15:
   v6 = v16;
   if (v5)
   {
-    v7 = [v5 actions];
-    v8 = [v7 if_compactMap:&__block_literal_global_176];
+    actions = [v5 actions];
+    v8 = [actions if_compactMap:&__block_literal_global_176];
 
     if ([v8 count])
     {
@@ -343,7 +343,7 @@ LABEL_15:
         v19 = 2112;
         v20 = v12;
         v21 = 2112;
-        v22 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1CA256000, v11, OS_LOG_TYPE_DEFAULT, "%s Got dictionary representations: %@ for workflow: %@", buf, 0x20u);
       }
 
@@ -414,14 +414,14 @@ id __52__WFHomeWorkflow_shortcutsDictionaryRepresentations__block_invoke(uint64_
   v6 = v15;
   if (v5)
   {
-    v7 = [v5 actions];
-    v8 = [v7 if_compactMap:&__block_literal_global_4521];
+    actions = [v5 actions];
+    v8 = [actions if_compactMap:&__block_literal_global_4521];
 
     if ([v8 count])
     {
       v9 = [v8 if_compactMap:&__block_literal_global_173];
-      v10 = [v9 firstObject];
-      v11 = [v10 copy];
+      firstObject = [v9 firstObject];
+      v11 = [firstObject copy];
 
       v12 = getWFHomeLogObject();
       if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
@@ -431,7 +431,7 @@ id __52__WFHomeWorkflow_shortcutsDictionaryRepresentations__block_invoke(uint64_
         v18 = 2112;
         v19 = v11;
         v20 = 2112;
-        v21 = self;
+        selfCopy = self;
         _os_log_impl(&dword_1CA256000, v12, OS_LOG_TYPE_DEFAULT, "%s Got home identifier: %@ for workflow: %@", buf, 0x20u);
       }
 
@@ -481,38 +481,38 @@ id __32__WFHomeWorkflow_homeIdentifier__block_invoke(uint64_t a1, void *a2)
 
 - (NSArray)summaryIconDescriptors
 {
-  v2 = [(WFHomeWorkflow *)self actionSetsSummary];
-  v3 = [v2 summaryIconDescriptors];
+  actionSetsSummary = [(WFHomeWorkflow *)self actionSetsSummary];
+  summaryIconDescriptors = [actionSetsSummary summaryIconDescriptors];
 
-  return v3;
+  return summaryIconDescriptors;
 }
 
 - (NSArray)summaryIconNames
 {
-  v2 = [(WFHomeWorkflow *)self actionSetsSummary];
-  v3 = [v2 summaryIcons];
+  actionSetsSummary = [(WFHomeWorkflow *)self actionSetsSummary];
+  summaryIcons = [actionSetsSummary summaryIcons];
 
-  return v3;
+  return summaryIcons;
 }
 
 - (NSString)summaryString
 {
-  v2 = [(WFHomeWorkflow *)self actionSetsSummary];
-  v3 = [v2 summaryText];
+  actionSetsSummary = [(WFHomeWorkflow *)self actionSetsSummary];
+  summaryText = [actionSetsSummary summaryText];
 
-  return v3;
+  return summaryText;
 }
 
-- (WFHomeWorkflow)initWithData:(id)a3
+- (WFHomeWorkflow)initWithData:(id)data
 {
   v15 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dataCopy = data;
   v12.receiver = self;
   v12.super_class = WFHomeWorkflow;
   v5 = [(WFHomeWorkflow *)&v12 init];
   if (v5)
   {
-    if (!v4)
+    if (!dataCopy)
     {
       v6 = getWFHomeLogObject();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -523,7 +523,7 @@ id __32__WFHomeWorkflow_homeIdentifier__block_invoke(uint64_t a1, void *a2)
       }
     }
 
-    v7 = [v4 copy];
+    v7 = [dataCopy copy];
     data = v5->_data;
     v5->_data = v7;
 
@@ -534,11 +534,11 @@ id __32__WFHomeWorkflow_homeIdentifier__block_invoke(uint64_t a1, void *a2)
   return v5;
 }
 
-+ (void)setCachedHomes:(id)a3
++ (void)setCachedHomes:(id)homes
 {
-  v3 = a3;
+  homesCopy = homes;
   v4 = +[WFHomeManager sharedManager];
-  [v4 _setHomes:v3];
+  [v4 _setHomes:homesCopy];
 }
 
 @end

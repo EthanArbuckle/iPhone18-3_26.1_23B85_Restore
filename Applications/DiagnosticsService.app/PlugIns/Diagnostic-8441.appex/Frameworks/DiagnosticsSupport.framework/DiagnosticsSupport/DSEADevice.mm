@@ -1,41 +1,41 @@
 @interface DSEADevice
-+ (id)deviceWithModelNumber:(id)a3;
-+ (id)deviceWithSerialNumber:(id)a3;
-+ (id)devicesWithModelNumbers:(id)a3;
-- (DSEADevice)initWithAccessory:(id)a3;
-- (DSEADevice)initWithModelNumber:(id)a3;
-- (DSEADevice)initWithSerialNumber:(id)a3;
++ (id)deviceWithModelNumber:(id)number;
++ (id)deviceWithSerialNumber:(id)number;
++ (id)devicesWithModelNumbers:(id)numbers;
+- (DSEADevice)initWithAccessory:(id)accessory;
+- (DSEADevice)initWithModelNumber:(id)number;
+- (DSEADevice)initWithSerialNumber:(id)number;
 - (id)information;
 @end
 
 @implementation DSEADevice
 
-+ (id)deviceWithSerialNumber:(id)a3
++ (id)deviceWithSerialNumber:(id)number
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithSerialNumber:v4];
+  numberCopy = number;
+  v5 = [[self alloc] initWithSerialNumber:numberCopy];
 
   return v5;
 }
 
-- (DSEADevice)initWithSerialNumber:(id)a3
+- (DSEADevice)initWithSerialNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v21.receiver = self;
   v21.super_class = DSEADevice;
   v5 = [(DSEADevice *)&v21 init];
   if (v5)
   {
     v6 = +[EAAccessoryManager sharedAccessoryManager];
-    v7 = [v6 connectedAccessories];
+    connectedAccessories = [v6 connectedAccessories];
 
-    if (v7)
+    if (connectedAccessories)
     {
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = v7;
+      v8 = connectedAccessories;
       v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v9)
       {
@@ -51,8 +51,8 @@
             }
 
             v13 = *(*(&v17 + 1) + 8 * i);
-            v14 = [v13 serialNumber];
-            v15 = [v14 isEqualToString:v4];
+            serialNumber = [v13 serialNumber];
+            v15 = [serialNumber isEqualToString:numberCopy];
 
             if (v15)
             {
@@ -84,32 +84,32 @@ LABEL_13:
   return v5;
 }
 
-+ (id)deviceWithModelNumber:(id)a3
++ (id)deviceWithModelNumber:(id)number
 {
-  v4 = a3;
-  v5 = [[a1 alloc] initWithModelNumber:v4];
+  numberCopy = number;
+  v5 = [[self alloc] initWithModelNumber:numberCopy];
 
   return v5;
 }
 
-- (DSEADevice)initWithModelNumber:(id)a3
+- (DSEADevice)initWithModelNumber:(id)number
 {
-  v4 = a3;
+  numberCopy = number;
   v21.receiver = self;
   v21.super_class = DSEADevice;
   v5 = [(DSEADevice *)&v21 init];
   if (v5)
   {
     v6 = +[EAAccessoryManager sharedAccessoryManager];
-    v7 = [v6 connectedAccessories];
+    connectedAccessories = [v6 connectedAccessories];
 
-    if (v7)
+    if (connectedAccessories)
     {
       v19 = 0u;
       v20 = 0u;
       v17 = 0u;
       v18 = 0u;
-      v8 = v7;
+      v8 = connectedAccessories;
       v9 = [v8 countByEnumeratingWithState:&v17 objects:v22 count:16];
       if (v9)
       {
@@ -125,8 +125,8 @@ LABEL_13:
             }
 
             v13 = *(*(&v17 + 1) + 8 * i);
-            v14 = [v13 modelNumber];
-            v15 = [v14 isEqualToString:v4];
+            modelNumber = [v13 modelNumber];
+            v15 = [modelNumber isEqualToString:numberCopy];
 
             if (v15)
             {
@@ -158,21 +158,21 @@ LABEL_13:
   return v5;
 }
 
-+ (id)devicesWithModelNumbers:(id)a3
++ (id)devicesWithModelNumbers:(id)numbers
 {
-  v3 = a3;
+  numbersCopy = numbers;
   v4 = objc_alloc_init(NSMutableArray);
   v5 = +[EAAccessoryManager sharedAccessoryManager];
-  v6 = [v5 connectedAccessories];
+  connectedAccessories = [v5 connectedAccessories];
 
-  if (v6)
+  if (connectedAccessories)
   {
     v21 = 0u;
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v18 = v6;
-    v7 = v6;
+    v18 = connectedAccessories;
+    v7 = connectedAccessories;
     v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
@@ -188,8 +188,8 @@ LABEL_13:
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 modelNumber];
-          v14 = [v3 containsObject:v13];
+          modelNumber = [v12 modelNumber];
+          v14 = [numbersCopy containsObject:modelNumber];
 
           if (v14)
           {
@@ -207,7 +207,7 @@ LABEL_13:
       while (v9);
     }
 
-    v6 = v18;
+    connectedAccessories = v18;
   }
 
   v16 = [v4 copy];
@@ -215,18 +215,18 @@ LABEL_13:
   return v16;
 }
 
-- (DSEADevice)initWithAccessory:(id)a3
+- (DSEADevice)initWithAccessory:(id)accessory
 {
-  v5 = a3;
+  accessoryCopy = accessory;
   v9.receiver = self;
   v9.super_class = DSEADevice;
   v6 = [(DSEADevice *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    if (v5)
+    if (accessoryCopy)
     {
-      objc_storeStrong(&v6->_device, a3);
+      objc_storeStrong(&v6->_device, accessory);
     }
 
     else
@@ -242,85 +242,85 @@ LABEL_13:
 - (id)information
 {
   v32[0] = @"capabilities";
-  v31 = [(DSEADevice *)self device];
-  v30 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [v31 accessoryCapabilities]);
+  device = [(DSEADevice *)self device];
+  v30 = +[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", [device accessoryCapabilities]);
   v33[0] = v30;
   v32[1] = @"firmwareRevision";
-  v29 = [(DSEADevice *)self device];
-  v3 = [v29 firmwareRevision];
-  v28 = v3;
-  if (!v3)
+  device2 = [(DSEADevice *)self device];
+  firmwareRevision = [device2 firmwareRevision];
+  v28 = firmwareRevision;
+  if (!firmwareRevision)
   {
-    v3 = +[NSNull null];
+    firmwareRevision = +[NSNull null];
   }
 
-  v22 = v3;
-  v33[1] = v3;
+  v22 = firmwareRevision;
+  v33[1] = firmwareRevision;
   v32[2] = @"hardwareRevision";
-  v27 = [(DSEADevice *)self device];
-  v4 = [v27 hardwareRevision];
-  v5 = v4;
-  if (!v4)
+  device3 = [(DSEADevice *)self device];
+  hardwareRevision = [device3 hardwareRevision];
+  v5 = hardwareRevision;
+  if (!hardwareRevision)
   {
-    v4 = +[NSNull null];
+    hardwareRevision = +[NSNull null];
   }
 
-  v21 = v4;
-  v33[2] = v4;
+  v21 = hardwareRevision;
+  v33[2] = hardwareRevision;
   v32[3] = @"MACAddress";
-  v25 = [(DSEADevice *)self device];
-  v6 = [v25 macAddress];
-  v7 = v6;
-  if (!v6)
+  device4 = [(DSEADevice *)self device];
+  macAddress = [device4 macAddress];
+  v7 = macAddress;
+  if (!macAddress)
   {
-    v6 = +[NSNull null];
+    macAddress = +[NSNull null];
   }
 
   v26 = v5;
-  v20 = v6;
-  v33[3] = v6;
+  v20 = macAddress;
+  v33[3] = macAddress;
   v32[4] = @"modelNumber";
-  v24 = [(DSEADevice *)self device];
-  v8 = [v24 modelNumber];
-  v9 = v8;
-  if (!v8)
+  device5 = [(DSEADevice *)self device];
+  modelNumber = [device5 modelNumber];
+  v9 = modelNumber;
+  if (!modelNumber)
   {
-    v8 = +[NSNull null];
+    modelNumber = +[NSNull null];
   }
 
-  v19 = v8;
-  v33[4] = v8;
+  v19 = modelNumber;
+  v33[4] = modelNumber;
   v32[5] = @"name";
-  v10 = [(DSEADevice *)self device];
-  v11 = [v10 name];
-  v12 = v11;
-  if (!v11)
+  device6 = [(DSEADevice *)self device];
+  name = [device6 name];
+  v12 = name;
+  if (!name)
   {
     v12 = +[NSNull null];
   }
 
   v33[5] = v12;
   v32[6] = @"serialNumber";
-  v13 = [(DSEADevice *)self device];
-  v14 = [v13 serialNumber];
-  v15 = v14;
-  if (!v14)
+  device7 = [(DSEADevice *)self device];
+  serialNumber = [device7 serialNumber];
+  v15 = serialNumber;
+  if (!serialNumber)
   {
     v15 = +[NSNull null];
   }
 
   v33[6] = v15;
   v32[7] = @"connectionID";
-  v16 = [(DSEADevice *)self device];
-  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [v16 connectionID]);
+  device8 = [(DSEADevice *)self device];
+  v17 = +[NSNumber numberWithUnsignedInteger:](NSNumber, "numberWithUnsignedInteger:", [device8 connectionID]);
   v33[7] = v17;
   v23 = [NSDictionary dictionaryWithObjects:v33 forKeys:v32 count:8];
 
-  if (!v14)
+  if (!serialNumber)
   {
   }
 
-  if (!v11)
+  if (!name)
   {
   }
 

@@ -1,38 +1,38 @@
 @interface PGMemoryTriggerRecentHighlights
-- (PGMemoryTriggerRecentHighlights)initWithLoggingConnection:(id)a3 momentNodesWithBlockedFeatureCache:(id)a4;
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5;
+- (PGMemoryTriggerRecentHighlights)initWithLoggingConnection:(id)connection momentNodesWithBlockedFeatureCache:(id)cache;
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter;
 @end
 
 @implementation PGMemoryTriggerRecentHighlights
 
-- (id)resultsTriggeredWithContext:(id)a3 inGraph:(id)a4 progressReporter:(id)a5
+- (id)resultsTriggeredWithContext:(id)context inGraph:(id)graph progressReporter:(id)reporter
 {
   v79 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  graphCopy = graph;
+  reporterCopy = reporter;
   v70 = 0;
   v71 = &v70;
   v72 = 0x2020000000;
   v73 = 0;
-  v11 = [v10 isCancelledWithProgress:0.0];
+  v11 = [reporterCopy isCancelledWithProgress:0.0];
   *(v71 + 24) = v11;
   if (!v11)
   {
-    v13 = [v8 localDate];
-    v62 = [v8 timeZone];
-    v66 = [v8 creationDateOfLastMemory];
-    v64 = [MEMORY[0x277D27690] dateByAddingDays:-92 toDate:v13];
+    localDate = [contextCopy localDate];
+    timeZone = [contextCopy timeZone];
+    creationDateOfLastMemory = [contextCopy creationDateOfLastMemory];
+    v64 = [MEMORY[0x277D27690] dateByAddingDays:-92 toDate:localDate];
     v14 = objc_alloc(MEMORY[0x277CCA970]);
     v15 = [MEMORY[0x277D27690] startOfDayForDate:v64];
-    v63 = [v14 initWithStartDate:v15 endDate:v13];
+    v63 = [v14 initWithStartDate:v15 endDate:localDate];
 
-    if (v66)
+    if (creationDateOfLastMemory)
     {
-      v16 = [[PGMemoryDate alloc] initWithLocalDate:v13];
+      v16 = [[PGMemoryDate alloc] initWithLocalDate:localDate];
       v17 = objc_alloc(MEMORY[0x277CCA970]);
-      v18 = [(PGMemoryDate *)v16 universalDateInTimeZone:v62];
-      v65 = [v17 initWithStartDate:v66 endDate:v18];
+      v18 = [(PGMemoryDate *)v16 universalDateInTimeZone:timeZone];
+      v65 = [v17 initWithStartDate:creationDateOfLastMemory endDate:v18];
 
       [v65 duration];
       v20 = (v19 / 86400.0);
@@ -47,40 +47,40 @@ LABEL_52:
       if (v20 <= 0x5C)
       {
         v21 = MEMORY[0x277D27690];
-        v22 = [MEMORY[0x277D27690] localDateFromUniversalDate:v66 inTimeZone:v62];
+        v22 = [MEMORY[0x277D27690] localDateFromUniversalDate:creationDateOfLastMemory inTimeZone:timeZone];
         v23 = [v21 startOfDayForDate:v22];
 
-        v24 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v23 endDate:v13];
+        v24 = [objc_alloc(MEMORY[0x277CCA970]) initWithStartDate:v23 endDate:localDate];
         v63 = v24;
       }
     }
 
-    v25 = [PGGraphMomentNodeCollection momentNodesForLocalDateInterval:v63 inGraph:v9];
-    v26 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:v9];
-    v60 = [v26 subsetHappeningAtSensitiveLocation];
-    [PGMemoryGeneratorUtils momentNodesAtHomeOrWorkOrFrequentLocationInGraph:v9];
+    v25 = [PGGraphMomentNodeCollection momentNodesForLocalDateInterval:v63 inGraph:graphCopy];
+    v26 = [(PGGraphNodeCollection *)PGGraphMomentNodeCollection nodesInGraph:graphCopy];
+    subsetHappeningAtSensitiveLocation = [v26 subsetHappeningAtSensitiveLocation];
+    [PGMemoryGeneratorUtils momentNodesAtHomeOrWorkOrFrequentLocationInGraph:graphCopy];
     v59 = v65 = v26;
-    v27 = [v60 collectionBySubtracting:?];
+    v27 = [subsetHappeningAtSensitiveLocation collectionBySubtracting:?];
     v16 = [v25 collectionBySubtracting:v27];
     v58 = v27;
 
-    v28 = [(PGMemoryDate *)v16 highlightNodes];
-    v61 = [v28 highlightGroupNodes];
+    highlightNodes = [(PGMemoryDate *)v16 highlightNodes];
+    highlightGroupNodes = [highlightNodes highlightGroupNodes];
 
-    if ([v61 count])
+    if ([highlightGroupNodes count])
     {
-      v29 = [PGGraphHighlightTypeNodeCollection longTripTypeNodesInGraph:v9];
-      v30 = [v29 highlightGroupNodes];
-      v31 = [v30 collectionByIntersecting:v61];
+      v29 = [PGGraphHighlightTypeNodeCollection longTripTypeNodesInGraph:graphCopy];
+      highlightGroupNodes2 = [v29 highlightGroupNodes];
+      v31 = [highlightGroupNodes2 collectionByIntersecting:highlightGroupNodes];
 
-      v32 = [v31 featureNodeCollection];
-      v33 = [v32 memoryNodes];
+      featureNodeCollection = [v31 featureNodeCollection];
+      memoryNodes = [featureNodeCollection memoryNodes];
 
-      v34 = [v33 subsetWithMemoryCategory:19];
+      v34 = [memoryNodes subsetWithMemoryCategory:19];
 
       if ([v34 count])
       {
-        v35 = [objc_opt_class() singleDayValidityIntervalWithContext:v8];
+        v35 = [objc_opt_class() singleDayValidityIntervalWithContext:contextCopy];
         if (v71[3])
         {
           *(v71 + 24) = 1;
@@ -88,7 +88,7 @@ LABEL_52:
 
         else
         {
-          v41 = [v10 isCancelledWithProgress:1.0];
+          v41 = [reporterCopy isCancelledWithProgress:1.0];
           *(v71 + 24) = v41;
           if ((v41 & 1) == 0)
           {
@@ -113,8 +113,8 @@ LABEL_36:
       }
     }
 
-    v36 = [(PGMemoryDate *)v16 numberOfAssets];
-    if ([(PGMemoryDate *)v16 count]>= 3 && v36 > 0xE)
+    numberOfAssets = [(PGMemoryDate *)v16 numberOfAssets];
+    if ([(PGMemoryDate *)v16 count]>= 3 && numberOfAssets > 0xE)
     {
       v37 = MEMORY[0x277D22C80];
       v67[0] = MEMORY[0x277D85DD0];
@@ -122,10 +122,10 @@ LABEL_36:
       v67[2] = __88__PGMemoryTriggerRecentHighlights_resultsTriggeredWithContext_inGraph_progressReporter___block_invoke;
       v67[3] = &unk_278889448;
       v69 = &v70;
-      v38 = v10;
+      v38 = reporterCopy;
       v68 = v38;
       v39 = [v37 progressReporterWithProgressBlock:v67];
-      v57 = [(PGMemoryMomentNodesWithBlockedFeatureCache *)self->_momentNodesWithBlockedFeatureCache momentNodesWithBlockedFeatureInGraph:v9 progressReporter:v39];
+      v57 = [(PGMemoryMomentNodesWithBlockedFeatureCache *)self->_momentNodesWithBlockedFeatureCache momentNodesWithBlockedFeatureInGraph:graphCopy progressReporter:v39];
       if (*(v71 + 24) == 1)
       {
         if (os_log_type_enabled(MEMORY[0x277D86220], OS_LOG_TYPE_INFO))
@@ -145,14 +145,14 @@ LABEL_42:
 
       v43 = [(PGMemoryDate *)v16 collectionBySubtracting:v57];
 
-      v44 = [v43 interestingForMemoriesSubset];
+      interestingForMemoriesSubset = [v43 interestingForMemoriesSubset];
 
-      v45 = [v44 momentNodesWithContentScoreAbove:0.5];
+      v45 = [interestingForMemoriesSubset momentNodesWithContentScoreAbove:0.5];
 
       v16 = [v45 momentNodesWithMinimumNumberOfPersons:1];
 
-      v46 = [(PGMemoryDate *)v16 numberOfAssets];
-      if ([(PGMemoryDate *)v16 count]< 3 || v46 <= 0xE)
+      numberOfAssets2 = [(PGMemoryDate *)v16 numberOfAssets];
+      if ([(PGMemoryDate *)v16 count]< 3 || numberOfAssets2 <= 0xE)
       {
         if (v71[3])
         {
@@ -187,10 +187,10 @@ LABEL_50:
       }
 
       v47 = [PGGraphMemory alloc];
-      v48 = [(PGMemoryDate *)v16 featureNodeCollection];
-      v49 = [(PGGraphMemory *)v47 initWithMemoryCategory:24 memoryCategorySubcategory:5002 momentNodes:v16 featureNodes:v48];
+      featureNodeCollection2 = [(PGMemoryDate *)v16 featureNodeCollection];
+      v49 = [(PGGraphMemory *)v47 initWithMemoryCategory:24 memoryCategorySubcategory:5002 momentNodes:v16 featureNodes:featureNodeCollection2];
 
-      v50 = [objc_opt_class() singleDayValidityIntervalWithContext:v8];
+      v50 = [objc_opt_class() singleDayValidityIntervalWithContext:contextCopy];
       if (v71[3])
       {
         *(v71 + 24) = 1;
@@ -232,7 +232,7 @@ LABEL_49:
 
     else
     {
-      v42 = [v10 isCancelledWithProgress:1.0];
+      v42 = [reporterCopy isCancelledWithProgress:1.0];
       *(v71 + 24) = v42;
       if ((v42 & 1) == 0)
       {
@@ -297,16 +297,16 @@ uint64_t __88__PGMemoryTriggerRecentHighlights_resultsTriggeredWithContext_inGra
   return result;
 }
 
-- (PGMemoryTriggerRecentHighlights)initWithLoggingConnection:(id)a3 momentNodesWithBlockedFeatureCache:(id)a4
+- (PGMemoryTriggerRecentHighlights)initWithLoggingConnection:(id)connection momentNodesWithBlockedFeatureCache:(id)cache
 {
-  v7 = a4;
+  cacheCopy = cache;
   v11.receiver = self;
   v11.super_class = PGMemoryTriggerRecentHighlights;
-  v8 = [(PGMemoryTrigger *)&v11 initWithLoggingConnection:a3];
+  v8 = [(PGMemoryTrigger *)&v11 initWithLoggingConnection:connection];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_momentNodesWithBlockedFeatureCache, a4);
+    objc_storeStrong(&v8->_momentNodesWithBlockedFeatureCache, cache);
   }
 
   return v9;

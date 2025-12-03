@@ -1,15 +1,15 @@
 @interface HDActivitySummaryQueryHelper
-- (HDActivitySummaryQueryHelper)initWithProfile:(id)a3 filter:(id)a4 batchedInitialResultsHandler:(id)a5 batchedUpdateHandler:(id)a6;
-- (void)_queue_deliverActivitySummariesMatchingPredicate:(uint64_t)a1;
-- (void)_queue_deliverActivitySummariesToClient:(char)a3 isFinalBatch:(char)a4 clearPendingBatches:;
-- (void)_queue_deliverErrorToClient:(uint64_t)a1;
+- (HDActivitySummaryQueryHelper)initWithProfile:(id)profile filter:(id)filter batchedInitialResultsHandler:(id)handler batchedUpdateHandler:(id)updateHandler;
+- (void)_queue_deliverActivitySummariesMatchingPredicate:(uint64_t)predicate;
+- (void)_queue_deliverActivitySummariesToClient:(char)client isFinalBatch:(char)batch clearPendingBatches:;
+- (void)_queue_deliverErrorToClient:(uint64_t)client;
 - (void)_queue_deliverUpdates;
 - (void)_queue_stop;
-- (void)_queue_updatePreviousActivityCachesWithNewCaches:(uint64_t)a1;
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4;
+- (void)_queue_updatePreviousActivityCachesWithNewCaches:(uint64_t)caches;
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available;
 - (void)dealloc;
 - (void)pause;
-- (void)samplesAdded:(id)a3 anchor:(id)a4;
+- (void)samplesAdded:(id)added anchor:(id)anchor;
 - (void)start;
 - (void)stop;
 @end
@@ -55,10 +55,10 @@ void __37__HDActivitySummaryQueryHelper_start__block_invoke(uint64_t a1)
 - (void)_queue_deliverUpdates
 {
   v24[1] = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (self)
   {
-    v2 = *(a1 + 56);
-    v3 = *(a1 + 16);
+    v2 = *(self + 56);
+    v3 = *(self + 16);
     v19 = 0;
     v4 = v3;
     v5 = MEMORY[0x277D10B70];
@@ -69,15 +69,15 @@ void __37__HDActivitySummaryQueryHelper_start__block_invoke(uint64_t a1)
     v9 = objc_alloc_init(MEMORY[0x277CBEB58]);
     v24[0] = @"cache_index";
     v10 = [MEMORY[0x277CBEA60] arrayWithObjects:v24 count:1];
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v12 = [WeakRetained database];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    database = [WeakRetained database];
     *&buf = MEMORY[0x277D85DD0];
     *(&buf + 1) = 3221225472;
     v21 = __85__HDActivitySummaryQueryHelper__fetchActivityCacheIndicesWithAnchor_predicate_error___block_invoke;
     v22 = &unk_278615128;
     v13 = v9;
     v23 = v13;
-    LOBYTE(v7) = [(HDHealthEntity *)HDActivityCacheEntity enumerateProperties:v10 withPredicate:v8 healthDatabase:v12 error:&v19 enumerationHandler:&buf];
+    LOBYTE(v7) = [(HDHealthEntity *)HDActivityCacheEntity enumerateProperties:v10 withPredicate:v8 healthDatabase:database error:&v19 enumerationHandler:&buf];
 
     if ((v7 & 1) == 0)
     {
@@ -88,7 +88,7 @@ void __37__HDActivitySummaryQueryHelper_start__block_invoke(uint64_t a1)
     v14 = v19;
     if ([v14 hk_isDatabaseAccessibilityError])
     {
-      *(a1 + 41) = 1;
+      *(self + 41) = 1;
     }
 
     else if (v14)
@@ -102,39 +102,39 @@ void __37__HDActivitySummaryQueryHelper_start__block_invoke(uint64_t a1)
         _os_log_error_impl(&dword_228986000, v15, OS_LOG_TYPE_ERROR, "Error fetching activity cache indices: %{public}@", &buf, 0xCu);
       }
 
-      [(HDActivitySummaryQueryHelper *)a1 _queue_deliverErrorToClient:v14];
+      [(HDActivitySummaryQueryHelper *)self _queue_deliverErrorToClient:v14];
     }
 
     else if ([v13 count])
     {
       v16 = HDActivityCacheEntityPredicateForCacheIndices(v13);
-      v17 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v16 otherPredicate:*(a1 + 16)];
-      [(HDActivitySummaryQueryHelper *)a1 _queue_deliverActivitySummariesMatchingPredicate:v17];
+      v17 = [MEMORY[0x277D10B20] compoundPredicateWithPredicate:v16 otherPredicate:*(self + 16)];
+      [(HDActivitySummaryQueryHelper *)self _queue_deliverActivitySummariesMatchingPredicate:v17];
     }
   }
 
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (HDActivitySummaryQueryHelper)initWithProfile:(id)a3 filter:(id)a4 batchedInitialResultsHandler:(id)a5 batchedUpdateHandler:(id)a6
+- (HDActivitySummaryQueryHelper)initWithProfile:(id)profile filter:(id)filter batchedInitialResultsHandler:(id)handler batchedUpdateHandler:(id)updateHandler
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  profileCopy = profile;
+  filterCopy = filter;
+  handlerCopy = handler;
+  updateHandlerCopy = updateHandler;
   v33.receiver = self;
   v33.super_class = HDActivitySummaryQueryHelper;
   v14 = [(HDActivitySummaryQueryHelper *)&v33 init];
   v15 = v14;
   if (v14)
   {
-    objc_storeWeak(&v14->_profile, v10);
-    objc_storeStrong(&v15->_filter, a4);
-    v16 = [(_HKFilter *)v15->_filter predicateWithProfile:v10];
+    objc_storeWeak(&v14->_profile, profileCopy);
+    objc_storeStrong(&v15->_filter, filter);
+    v16 = [(_HKFilter *)v15->_filter predicateWithProfile:profileCopy];
     predicate = v15->_predicate;
     v15->_predicate = v16;
 
-    v18 = [[HDActivitySummaryBuilder alloc] initWithProfile:v10 filter:v11];
+    v18 = [[HDActivitySummaryBuilder alloc] initWithProfile:profileCopy filter:filterCopy];
     activitySummaryBuilder = v15->_activitySummaryBuilder;
     v15->_activitySummaryBuilder = v18;
 
@@ -154,18 +154,18 @@ void __37__HDActivitySummaryQueryHelper_start__block_invoke(uint64_t a1)
     clientQueue = v15->_clientQueue;
     v15->_clientQueue = v24;
 
-    v26 = _Block_copy(v12);
+    v26 = _Block_copy(handlerCopy);
     batchedInitialResultsHandler = v15->_batchedInitialResultsHandler;
     v15->_batchedInitialResultsHandler = v26;
 
-    v28 = _Block_copy(v13);
+    v28 = _Block_copy(updateHandlerCopy);
     batchedUpdateHandler = v15->_batchedUpdateHandler;
     v15->_batchedUpdateHandler = v28;
 
     v15->_shouldBatchSummaries = 1;
     WeakRetained = objc_loadWeakRetained(&v15->_profile);
-    v31 = [WeakRetained database];
-    [v31 addProtectedDataObserver:v15 queue:v15->_queue];
+    database = [WeakRetained database];
+    [database addProtectedDataObserver:v15 queue:v15->_queue];
   }
 
   return v15;
@@ -174,13 +174,13 @@ void __37__HDActivitySummaryQueryHelper_start__block_invoke(uint64_t a1)
 - (void)dealloc
 {
   WeakRetained = objc_loadWeakRetained(&self->_profile);
-  v4 = [WeakRetained database];
-  [v4 removeProtectedDataObserver:self];
+  database = [WeakRetained database];
+  [database removeProtectedDataObserver:self];
 
   v5 = objc_loadWeakRetained(&self->_profile);
-  v6 = [v5 dataManager];
-  v7 = [MEMORY[0x277CCD720] activityCacheType];
-  [v6 removeObserver:self forDataType:v7];
+  dataManager = [v5 dataManager];
+  activityCacheType = [MEMORY[0x277CCD720] activityCacheType];
+  [dataManager removeObserver:self forDataType:activityCacheType];
 
   v8.receiver = self;
   v8.super_class = HDActivitySummaryQueryHelper;
@@ -220,42 +220,42 @@ void __37__HDActivitySummaryQueryHelper_pause__block_invoke(uint64_t a1)
 
 - (void)_queue_stop
 {
-  if (a1)
+  if (self)
   {
-    WeakRetained = objc_loadWeakRetained((a1 + 8));
-    v3 = [WeakRetained dataManager];
-    v4 = [MEMORY[0x277CCD720] activityCacheType];
-    [v3 removeObserver:a1 forDataType:v4];
+    WeakRetained = objc_loadWeakRetained((self + 8));
+    dataManager = [WeakRetained dataManager];
+    activityCacheType = [MEMORY[0x277CCD720] activityCacheType];
+    [dataManager removeObserver:self forDataType:activityCacheType];
 
-    v5 = *(a1 + 48);
-    *(a1 + 48) = 0;
+    v5 = *(self + 48);
+    *(self + 48) = 0;
 
-    v6 = *(a1 + 80);
-    *(a1 + 80) = 0;
+    v6 = *(self + 80);
+    *(self + 80) = 0;
 
-    v7 = *(a1 + 88);
-    *(a1 + 88) = 0;
+    v7 = *(self + 88);
+    *(self + 88) = 0;
   }
 }
 
-- (void)_queue_deliverErrorToClient:(uint64_t)a1
+- (void)_queue_deliverErrorToClient:(uint64_t)client
 {
   v3 = a2;
-  if (a1)
+  if (client)
   {
-    v4 = _Block_copy(*(a1 + 88));
-    if ((*(a1 + 40) & 1) == 0)
+    v4 = _Block_copy(*(client + 88));
+    if ((*(client + 40) & 1) == 0)
     {
-      v5 = _Block_copy(*(a1 + 80));
+      v5 = _Block_copy(*(client + 80));
 
       v4 = v5;
     }
 
-    *(a1 + 40) = 1;
-    [(HDActivitySummaryQueryHelper *)a1 _queue_stop];
+    *(client + 40) = 1;
+    [(HDActivitySummaryQueryHelper *)client _queue_stop];
     if (v4)
     {
-      v6 = *(a1 + 72);
+      v6 = *(client + 72);
       v7[0] = MEMORY[0x277D85DD0];
       v7[1] = 3221225472;
       v7[2] = __60__HDActivitySummaryQueryHelper__queue_deliverErrorToClient___block_invoke;
@@ -267,52 +267,52 @@ void __37__HDActivitySummaryQueryHelper_pause__block_invoke(uint64_t a1)
   }
 }
 
-- (void)_queue_deliverActivitySummariesToClient:(char)a3 isFinalBatch:(char)a4 clearPendingBatches:
+- (void)_queue_deliverActivitySummariesToClient:(char)client isFinalBatch:(char)batch clearPendingBatches:
 {
   v7 = a2;
-  if (a1)
+  if (self)
   {
-    v8 = _Block_copy(*(a1 + 88));
-    if ((*(a1 + 40) & 1) == 0)
+    v8 = _Block_copy(*(self + 88));
+    if ((*(self + 40) & 1) == 0)
     {
-      v9 = _Block_copy(*(a1 + 80));
+      v9 = _Block_copy(*(self + 80));
 
       v8 = v9;
     }
 
-    *(a1 + 40) = 1;
-    if (!*(a1 + 88))
+    *(self + 40) = 1;
+    if (!*(self + 88))
     {
-      [(HDActivitySummaryQueryHelper *)a1 _queue_stop];
+      [(HDActivitySummaryQueryHelper *)self _queue_stop];
     }
 
     if (v8)
     {
-      v10 = *(a1 + 72);
+      v10 = *(self + 72);
       block[0] = MEMORY[0x277D85DD0];
       block[1] = 3221225472;
       block[2] = __105__HDActivitySummaryQueryHelper__queue_deliverActivitySummariesToClient_isFinalBatch_clearPendingBatches___block_invoke;
       block[3] = &unk_27862C228;
       v13 = v8;
       v12 = v7;
-      v14 = a3;
-      v15 = a4;
+      clientCopy = client;
+      batchCopy = batch;
       dispatch_async(v10, block);
     }
   }
 }
 
-- (void)_queue_deliverActivitySummariesMatchingPredicate:(uint64_t)a1
+- (void)_queue_deliverActivitySummariesMatchingPredicate:(uint64_t)predicate
 {
   v3 = a2;
-  v4 = *(a1 + 32);
-  if (*(a1 + 42) == 1)
+  v4 = *(predicate + 32);
+  if (*(predicate + 42) == 1)
   {
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __81__HDActivitySummaryQueryHelper__queue_deliverActivitySummariesMatchingPredicate___block_invoke;
     v6[3] = &unk_27862C250;
-    v6[4] = a1;
+    v6[4] = predicate;
     [v4 batchedActivitySummariesWithPredicate:v3 maxBatchSize:200 handler:v6];
   }
 
@@ -322,7 +322,7 @@ void __37__HDActivitySummaryQueryHelper_pause__block_invoke(uint64_t a1)
     v5[1] = 3221225472;
     v5[2] = __81__HDActivitySummaryQueryHelper__queue_deliverActivitySummariesMatchingPredicate___block_invoke_2;
     v5[3] = &unk_27862C278;
-    v5[4] = a1;
+    v5[4] = predicate;
     [v4 activitySummariesWithPredicate:v3 handler:v5];
   }
 }
@@ -368,19 +368,19 @@ void __81__HDActivitySummaryQueryHelper__queue_deliverActivitySummariesMatchingP
   }
 }
 
-- (void)_queue_updatePreviousActivityCachesWithNewCaches:(uint64_t)a1
+- (void)_queue_updatePreviousActivityCachesWithNewCaches:(uint64_t)caches
 {
   v19 = *MEMORY[0x277D85DE8];
-  if (a1)
+  if (caches)
   {
     v17[0] = MEMORY[0x277D85DD0];
     v17[1] = 3221225472;
     v17[2] = __81__HDActivitySummaryQueryHelper__queue_updatePreviousActivityCachesWithNewCaches___block_invoke;
     v17[3] = &unk_27862C2A0;
-    v17[4] = a1;
+    v17[4] = caches;
     [a2 enumerateKeysAndObjectsUsingBlock:v17];
-    v3 = [*(a1 + 48) allKeys];
-    v4 = [v3 mutableCopy];
+    allKeys = [*(caches + 48) allKeys];
+    v4 = [allKeys mutableCopy];
 
     [v4 sortUsingSelector:sel_compare_];
     v5 = objc_alloc_init(MEMORY[0x277CBEB18]);
@@ -388,8 +388,8 @@ void __81__HDActivitySummaryQueryHelper__queue_deliverActivitySummariesMatchingP
     {
       do
       {
-        v6 = [v4 firstObject];
-        [v5 addObject:v6];
+        firstObject = [v4 firstObject];
+        [v5 addObject:firstObject];
 
         [v4 removeObjectAtIndex:0];
       }
@@ -417,7 +417,7 @@ void __81__HDActivitySummaryQueryHelper__queue_deliverActivitySummariesMatchingP
             objc_enumerationMutation(v7);
           }
 
-          [*(a1 + 48) removeObjectForKey:{*(*(&v13 + 1) + 8 * v11++), v13}];
+          [*(caches + 48) removeObjectForKey:{*(*(&v13 + 1) + 8 * v11++), v13}];
         }
 
         while (v9 != v11);
@@ -527,20 +527,20 @@ uint64_t __71__HDActivitySummaryQueryHelper__queue_addActivityCacheToCachedSampl
   return v5;
 }
 
-- (void)samplesAdded:(id)a3 anchor:(id)a4
+- (void)samplesAdded:(id)added anchor:(id)anchor
 {
-  v6 = a3;
-  v7 = a4;
+  addedCopy = added;
+  anchorCopy = anchor;
   queue = self->_queue;
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __52__HDActivitySummaryQueryHelper_samplesAdded_anchor___block_invoke;
   block[3] = &unk_278613830;
   block[4] = self;
-  v12 = v7;
-  v13 = v6;
-  v9 = v6;
-  v10 = v7;
+  v12 = anchorCopy;
+  v13 = addedCopy;
+  v9 = addedCopy;
+  v10 = anchorCopy;
   dispatch_async(queue, block);
 }
 
@@ -805,11 +805,11 @@ LABEL_29:
   v57 = *MEMORY[0x277D85DE8];
 }
 
-- (void)database:(id)a3 protectedDataDidBecomeAvailable:(BOOL)a4
+- (void)database:(id)database protectedDataDidBecomeAvailable:(BOOL)available
 {
-  v4 = a4;
+  availableCopy = available;
   dispatch_assert_queue_V2(self->_queue);
-  if (v4 && self->_needsUpdateAfterUnlock)
+  if (availableCopy && self->_needsUpdateAfterUnlock)
   {
     self->_needsUpdateAfterUnlock = 0;
 

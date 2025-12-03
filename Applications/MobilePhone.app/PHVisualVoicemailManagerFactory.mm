@@ -1,17 +1,17 @@
 @interface PHVisualVoicemailManagerFactory
-+ (id)getVisualVoiceMailWithVisualVoicemailManager:(id)a3 onVoicemailsChanged:(id)a4;
++ (id)getVisualVoiceMailWithVisualVoicemailManager:(id)manager onVoicemailsChanged:(id)changed;
 - (PHVisualVoicemailManagerFactory)init;
 @end
 
 @implementation PHVisualVoicemailManagerFactory
 
-+ (id)getVisualVoiceMailWithVisualVoicemailManager:(id)a3 onVoicemailsChanged:(id)a4
++ (id)getVisualVoiceMailWithVisualVoicemailManager:(id)manager onVoicemailsChanged:(id)changed
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(changed);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   v7 = objc_allocWithZone(type metadata accessor for VisualVoicemailManager());
-  v8 = VisualVoicemailManager.init(visualVoicemailManager:onVoicemailsChanged:)(a3, partial apply for thunk for @escaping @callee_unowned @convention(block) () -> (), v6);
+  v8 = VisualVoicemailManager.init(visualVoicemailManager:onVoicemailsChanged:)(manager, partial apply for thunk for @escaping @callee_unowned @convention(block) () -> (), v6);
 
   return v8;
 }

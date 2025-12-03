@@ -1,17 +1,17 @@
 @interface TSCEWrappedRangeRef
 + (id)invalidRangeRef;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSUUID)tableID;
 - (TSCERangeCoordinate)rangeCoord;
 - (TSCERangeRef)rangeRef;
 - (TSCEWrappedRangeRef)init;
-- (TSCEWrappedRangeRef)initWithRangeCoord:(TSCERangeCoordinate)a3 tableID:(id)a4;
-- (TSCEWrappedRangeRef)initWithRangeCoord:(TSCERangeCoordinate)a3 tableUID:(TSKUIDStruct)a4;
-- (TSCEWrappedRangeRef)initWithRangeRef:(const TSCERangeRef *)a3;
-- (TSCEWrappedRangeRef)initWithRangeRefRect:(TSUCellRect)a3 tableID:(id)a4;
+- (TSCEWrappedRangeRef)initWithRangeCoord:(TSCERangeCoordinate)coord tableID:(id)d;
+- (TSCEWrappedRangeRef)initWithRangeCoord:(TSCERangeCoordinate)coord tableUID:(TSKUIDStruct)d;
+- (TSCEWrappedRangeRef)initWithRangeRef:(const TSCERangeRef *)ref;
+- (TSCEWrappedRangeRef)initWithRangeRefRect:(TSUCellRect)rect tableID:(id)d;
 - (TSKUIDStruct)tableUID;
 - (id).cxx_construct;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation TSCEWrappedRangeRef
@@ -23,15 +23,15 @@
   return v2;
 }
 
-- (TSCEWrappedRangeRef)initWithRangeRef:(const TSCERangeRef *)a3
+- (TSCEWrappedRangeRef)initWithRangeRef:(const TSCERangeRef *)ref
 {
   v6.receiver = self;
   v6.super_class = TSCEWrappedRangeRef;
   result = [(TSCEWrappedRangeRef *)&v6 init];
   if (result)
   {
-    range = a3->range;
-    result->_rangeRef._tableUID = a3->_tableUID;
+    range = ref->range;
+    result->_rangeRef._tableUID = ref->_tableUID;
     result->_rangeRef.range = range;
   }
 
@@ -46,18 +46,18 @@
   return objc_msgSend_initWithRangeRef_(self, a2, &v5, v2, v3);
 }
 
-- (TSCEWrappedRangeRef)initWithRangeCoord:(TSCERangeCoordinate)a3 tableUID:(TSKUIDStruct)a4
+- (TSCEWrappedRangeRef)initWithRangeCoord:(TSCERangeCoordinate)coord tableUID:(TSKUIDStruct)d
 {
-  v5[0] = a3;
-  v5[1] = a4;
-  return objc_msgSend_initWithRangeRef_(self, a2, v5, *&a3._bottomRight, a4._lower);
+  v5[0] = coord;
+  v5[1] = d;
+  return objc_msgSend_initWithRangeRef_(self, a2, v5, *&coord._bottomRight, d._lower);
 }
 
-- (TSCEWrappedRangeRef)initWithRangeCoord:(TSCERangeCoordinate)a3 tableID:(id)a4
+- (TSCEWrappedRangeRef)initWithRangeCoord:(TSCERangeCoordinate)coord tableID:(id)d
 {
-  bottomRight = a3._bottomRight;
-  topLeft = a3._topLeft;
-  v7 = a4;
+  bottomRight = coord._bottomRight;
+  topLeft = coord._topLeft;
+  dCopy = d;
   v13[0] = topLeft;
   v13[1] = bottomRight;
   v13[2] = TSKMakeUIDStructFromNSUUID();
@@ -67,11 +67,11 @@
   return v11;
 }
 
-- (TSCEWrappedRangeRef)initWithRangeRefRect:(TSUCellRect)a3 tableID:(id)a4
+- (TSCEWrappedRangeRef)initWithRangeRefRect:(TSUCellRect)rect tableID:(id)d
 {
-  size = a3.size;
-  origin = a3.origin;
-  v7 = a4;
+  size = rect.size;
+  origin = rect.origin;
+  dCopy = d;
   v16[2] = TSKMakeUIDStructFromNSUUID();
   v16[3] = v8;
   v9 = origin;
@@ -83,7 +83,7 @@
   return v14;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc(objc_opt_class());
 
@@ -125,13 +125,13 @@
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v9 = v4;
-  if (v4)
+  equalCopy = equal;
+  v9 = equalCopy;
+  if (equalCopy)
   {
-    objc_msgSend_rangeRef(v4, v5, v6, v7, v8);
+    objc_msgSend_rangeRef(equalCopy, v5, v6, v7, v8);
     v10 = TSCERangeRef::operator==(&self->_rangeRef.range._topLeft, v12);
   }
 

@@ -1,7 +1,7 @@
 @interface FCReadablePrivateDataStorage
 - (FCReadablePrivateDataStorage)init;
-- (FCReadablePrivateDataStorage)initWithDropbox:(id)a3 transactionQueue:(id)a4;
-- (void)readPrivateDataSyncWithAccessor:(id)a3;
+- (FCReadablePrivateDataStorage)initWithDropbox:(id)dropbox transactionQueue:(id)queue;
+- (void)readPrivateDataSyncWithAccessor:(id)accessor;
 @end
 
 @implementation FCReadablePrivateDataStorage
@@ -32,12 +32,12 @@
   objc_exception_throw(v6);
 }
 
-- (FCReadablePrivateDataStorage)initWithDropbox:(id)a3 transactionQueue:(id)a4
+- (FCReadablePrivateDataStorage)initWithDropbox:(id)dropbox transactionQueue:(id)queue
 {
   v24 = *MEMORY[0x1E69E9840];
-  v7 = a3;
-  v8 = a4;
-  if (!v7 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  dropboxCopy = dropbox;
+  queueCopy = queue;
+  if (!dropboxCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v13 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "dropbox"];
     *buf = 136315906;
@@ -50,13 +50,13 @@
     v23 = v13;
     _os_log_error_impl(&dword_1B63EF000, MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR, "*** Assertion failure (Identifier: catch-all) : %s %s:%d %{public}@", buf, 0x26u);
 
-    if (v8)
+    if (queueCopy)
     {
       goto LABEL_6;
     }
   }
 
-  else if (v8)
+  else if (queueCopy)
   {
     goto LABEL_6;
   }
@@ -82,19 +82,19 @@ LABEL_6:
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_dropbox, a3);
-    objc_storeStrong(&v10->_transactionQueue, a4);
+    objc_storeStrong(&v9->_dropbox, dropbox);
+    objc_storeStrong(&v10->_transactionQueue, queue);
   }
 
   v11 = *MEMORY[0x1E69E9840];
   return v10;
 }
 
-- (void)readPrivateDataSyncWithAccessor:(id)a3
+- (void)readPrivateDataSyncWithAccessor:(id)accessor
 {
   v29 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (!v4 && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
+  accessorCopy = accessor;
+  if (!accessorCopy && os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
     v12 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"Invalid parameter not satisfying %s", "accessor"];
     *buf = 136315906;
@@ -120,21 +120,21 @@ LABEL_6:
   v22 = __Block_byref_object_copy__7;
   v23 = __Block_byref_object_dispose__7;
   v24 = 0;
-  v5 = [(FCReadablePrivateDataStorage *)self dropbox];
+  dropbox = [(FCReadablePrivateDataStorage *)self dropbox];
   v18[0] = MEMORY[0x1E69E9820];
   v18[1] = 3221225472;
   v18[2] = __64__FCReadablePrivateDataStorage_readPrivateDataSyncWithAccessor___block_invoke;
   v18[3] = &unk_1E7C380C8;
   v18[4] = buf;
-  [v5 peekSyncWithAccessor:v18];
+  [dropbox peekSyncWithAccessor:v18];
 
-  v6 = [(FCReadablePrivateDataStorage *)self transactionQueue];
+  transactionQueue = [(FCReadablePrivateDataStorage *)self transactionQueue];
   v17[0] = MEMORY[0x1E69E9820];
   v17[1] = 3221225472;
   v17[2] = __64__FCReadablePrivateDataStorage_readPrivateDataSyncWithAccessor___block_invoke_2;
   v17[3] = &unk_1E7C380F0;
   v17[4] = &v19;
-  [v6 peekAtTransactionsSyncWithAccessor:v17];
+  [transactionQueue peekAtTransactionsSyncWithAccessor:v17];
 
   v15 = 0u;
   v16 = 0u;
@@ -163,7 +163,7 @@ LABEL_6:
     while (v8);
   }
 
-  v4[2](v4, *(*&buf[8] + 40));
+  accessorCopy[2](accessorCopy, *(*&buf[8] + 40));
   _Block_object_dispose(&v19, 8);
 
   _Block_object_dispose(buf, 8);

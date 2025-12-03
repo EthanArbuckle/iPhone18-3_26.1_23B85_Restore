@@ -4,23 +4,23 @@
 - (BOOL)controllerNeedsToRun;
 - (BYRunState)runState;
 - (BuddyFeatureFlags)featureFlags;
-- (_TtC5Setup19BuddyChildSetupFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6;
-- (void)childSetupPresenter:(id)a3 didFail:(id)a4;
-- (void)didSucceedWithChildSetupPresenter:(id)a3;
-- (void)flowItemDone:(id)a3 nextItem:(id)a4;
-- (void)setChildSetupPresenter:(id)a3;
-- (void)setManagedConfiguration:(id)a3;
-- (void)setupLocationServicesWithNextTaskInfo:(BuddyAISFlowTaskInfo *)a3 completion:(id)a4;
-- (void)setupPasscodeWithNextTaskInfo:(BuddyAISFlowTaskInfo *)a3 completion:(id)a4;
-- (void)setupPerformAIDASignInWith:(NSDictionary *)a3 completion:(id)a4;
-- (void)startFlowAnimated:(BOOL)a3;
+- (_TtC5Setup19BuddyChildSetupFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector;
+- (void)childSetupPresenter:(id)presenter didFail:(id)fail;
+- (void)didSucceedWithChildSetupPresenter:(id)presenter;
+- (void)flowItemDone:(id)done nextItem:(id)item;
+- (void)setChildSetupPresenter:(id)presenter;
+- (void)setManagedConfiguration:(id)configuration;
+- (void)setupLocationServicesWithNextTaskInfo:(BuddyAISFlowTaskInfo *)info completion:(id)completion;
+- (void)setupPasscodeWithNextTaskInfo:(BuddyAISFlowTaskInfo *)info completion:(id)completion;
+- (void)setupPerformAIDASignInWith:(NSDictionary *)with completion:(id)completion;
+- (void)startFlowAnimated:(BOOL)animated;
 @end
 
 @implementation BuddyChildSetupFlow
 
-- (_TtC5Setup19BuddyChildSetupFlow)initWithNavigationController:(id)a3 flowDelegate:(id)a4 flowStarter:(id)a5 dependencyInjector:(id)a6
+- (_TtC5Setup19BuddyChildSetupFlow)initWithNavigationController:(id)controller flowDelegate:(id)delegate flowStarter:(id)starter dependencyInjector:(id)injector
 {
-  v9 = _Block_copy(a6);
+  v9 = _Block_copy(injector);
   if (v9)
   {
     v10 = swift_allocObject();
@@ -33,17 +33,17 @@
     v10 = 0;
   }
 
-  v11 = a3;
+  controllerCopy = controller;
   swift_unknownObjectRetain();
-  v12 = a5;
-  return sub_10005F110(a3, a4, a5, v9, v10);
+  starterCopy = starter;
+  return sub_10005F110(controller, delegate, starter, v9, v10);
 }
 
-- (void)setManagedConfiguration:(id)a3
+- (void)setManagedConfiguration:(id)configuration
 {
   v4 = *(&self->managedConfiguration + OBJC_IVAR____TtC5Setup19BuddyChildSetupFlow_managedConfiguration);
-  *(&self->managedConfiguration + OBJC_IVAR____TtC5Setup19BuddyChildSetupFlow_managedConfiguration) = a3;
-  v3 = a3;
+  *(&self->managedConfiguration + OBJC_IVAR____TtC5Setup19BuddyChildSetupFlow_managedConfiguration) = configuration;
+  configurationCopy = configuration;
 }
 
 - (BuddyFeatureFlags)featureFlags
@@ -60,11 +60,11 @@
   return v2;
 }
 
-- (void)setChildSetupPresenter:(id)a3
+- (void)setChildSetupPresenter:(id)presenter
 {
   v4 = *(&self->managedConfiguration + OBJC_IVAR____TtC5Setup19BuddyChildSetupFlow_childSetupPresenter);
-  *(&self->managedConfiguration + OBJC_IVAR____TtC5Setup19BuddyChildSetupFlow_childSetupPresenter) = a3;
-  v3 = a3;
+  *(&self->managedConfiguration + OBJC_IVAR____TtC5Setup19BuddyChildSetupFlow_childSetupPresenter) = presenter;
+  presenterCopy = presenter;
 }
 
 + (id)allowedFlowItems
@@ -90,36 +90,36 @@
 
 - (BOOL)controllerNeedsToRun
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_10005F624();
 
   return v3 & 1;
 }
 
-- (void)startFlowAnimated:(BOOL)a3
+- (void)startFlowAnimated:(BOOL)animated
 {
-  v3 = self;
+  selfCopy = self;
   sub_100064ACC();
 }
 
-- (void)flowItemDone:(id)a3 nextItem:(id)a4
+- (void)flowItemDone:(id)done nextItem:(id)item
 {
   swift_unknownObjectRetain();
   swift_unknownObjectRetain();
-  v7 = self;
-  sub_10005F704(a3, a4);
+  selfCopy = self;
+  sub_10005F704(done, item);
   swift_unknownObjectRelease();
   swift_unknownObjectRelease();
 }
 
-- (void)setupPasscodeWithNextTaskInfo:(BuddyAISFlowTaskInfo *)a3 completion:(id)a4
+- (void)setupPasscodeWithNextTaskInfo:(BuddyAISFlowTaskInfo *)info completion:(id)completion
 {
   v7 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = info;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -134,19 +134,19 @@
   v14[3] = 0;
   v14[4] = &unk_1002991F8;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  infoCopy = info;
+  selfCopy = self;
   sub_100063A28(0, 0, v9, &unk_100299200, v14);
 }
 
-- (void)setupLocationServicesWithNextTaskInfo:(BuddyAISFlowTaskInfo *)a3 completion:(id)a4
+- (void)setupLocationServicesWithNextTaskInfo:(BuddyAISFlowTaskInfo *)info completion:(id)completion
 {
   v7 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = info;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -161,19 +161,19 @@
   v14[3] = 0;
   v14[4] = &unk_1002991D8;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  infoCopy = info;
+  selfCopy = self;
   sub_100063A28(0, 0, v9, &unk_1002991E0, v14);
 }
 
-- (void)setupPerformAIDASignInWith:(NSDictionary *)a3 completion:(id)a4
+- (void)setupPerformAIDASignInWith:(NSDictionary *)with completion:(id)completion
 {
   v7 = sub_100006410(&qword_1003A0110);
   __chkstk_darwin(v7 - 8);
   v9 = &v17 - v8;
-  v10 = _Block_copy(a4);
+  v10 = _Block_copy(completion);
   v11 = swift_allocObject();
-  v11[2] = a3;
+  v11[2] = with;
   v11[3] = v10;
   v11[4] = self;
   v12 = type metadata accessor for TaskPriority();
@@ -188,23 +188,23 @@
   v14[3] = 0;
   v14[4] = &unk_100297310;
   v14[5] = v13;
-  v15 = a3;
-  v16 = self;
+  withCopy = with;
+  selfCopy = self;
   sub_100063A28(0, 0, v9, &unk_1002979A0, v14);
 }
 
-- (void)didSucceedWithChildSetupPresenter:(id)a3
+- (void)didSucceedWithChildSetupPresenter:(id)presenter
 {
-  v4 = a3;
-  v5 = self;
+  presenterCopy = presenter;
+  selfCopy = self;
   sub_100064CDC();
 }
 
-- (void)childSetupPresenter:(id)a3 didFail:(id)a4
+- (void)childSetupPresenter:(id)presenter didFail:(id)fail
 {
-  v6 = a3;
-  v8 = a4;
-  v7 = self;
+  presenterCopy = presenter;
+  failCopy = fail;
+  selfCopy = self;
   sub_100064E60();
 }
 

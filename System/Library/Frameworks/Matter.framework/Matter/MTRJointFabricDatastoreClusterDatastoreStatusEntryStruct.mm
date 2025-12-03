@@ -1,6 +1,6 @@
 @interface MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct
 - (MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct)init;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 @end
 
@@ -27,17 +27,17 @@
   return v3;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct);
-  v5 = [(MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct *)self state];
-  [(MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct *)v4 setState:v5];
+  state = [(MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct *)self state];
+  [(MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct *)v4 setState:state];
 
-  v6 = [(MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct *)self updateTimestamp];
-  [(MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct *)v4 setUpdateTimestamp:v6];
+  updateTimestamp = [(MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct *)self updateTimestamp];
+  [(MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct *)v4 setUpdateTimestamp:updateTimestamp];
 
-  v7 = [(MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct *)self failureCode];
-  [(MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct *)v4 setFailureCode:v7];
+  failureCode = [(MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct *)self failureCode];
+  [(MTRJointFabricDatastoreClusterDatastoreStatusEntryStruct *)v4 setFailureCode:failureCode];
 
   return v4;
 }

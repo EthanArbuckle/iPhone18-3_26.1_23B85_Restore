@@ -1,69 +1,69 @@
 @interface PUPXPhotoKitAddToSharedCollectionActionPerformer
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6;
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5;
-- (id)_addAssetsActionForAssets:(id)a3 assetCollection:(id)a4;
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group;
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager;
+- (id)_addAssetsActionForAssets:(id)assets assetCollection:(id)collection;
 @end
 
 @implementation PUPXPhotoKitAddToSharedCollectionActionPerformer
 
-+ (id)createBarButtonItemWithTarget:(id)a3 action:(SEL)a4 actionManager:(id)a5
++ (id)createBarButtonItemWithTarget:(id)target action:(SEL)action actionManager:(id)manager
 {
   v6 = MEMORY[0x1E69DC708];
-  v7 = a3;
+  targetCopy = target;
   v8 = [v6 alloc];
   v9 = PULocalizedString(@"ADD_TO_SHARED_ALBUM_BUTTON_TITLE");
-  v10 = [v8 initWithTitle:v9 style:0 target:v7 action:a4];
+  v10 = [v8 initWithTitle:v9 style:0 target:targetCopy action:action];
 
   return v10;
 }
 
-+ (BOOL)canPerformOnAsset:(id)a3 inAssetCollection:(id)a4 person:(id)a5 socialGroup:(id)a6
++ (BOOL)canPerformOnAsset:(id)asset inAssetCollection:(id)collection person:(id)person socialGroup:(id)group
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  assetCopy = asset;
+  collectionCopy = collection;
+  personCopy = person;
+  groupCopy = group;
   if (_os_feature_enabled_impl())
   {
-    v14 = [v10 photoLibrary];
-    v15 = v14;
-    if (v14)
+    photoLibrary = [assetCopy photoLibrary];
+    v15 = photoLibrary;
+    if (photoLibrary)
     {
-      v16 = v14;
+      v16 = photoLibrary;
     }
 
     else
     {
-      v18 = [v11 photoLibrary];
-      v19 = v18;
-      if (v18)
+      photoLibrary2 = [collectionCopy photoLibrary];
+      v19 = photoLibrary2;
+      if (photoLibrary2)
       {
-        v16 = v18;
+        v16 = photoLibrary2;
       }
 
       else
       {
-        v20 = [v12 photoLibrary];
-        v21 = v20;
-        if (v20)
+        photoLibrary3 = [personCopy photoLibrary];
+        v21 = photoLibrary3;
+        if (photoLibrary3)
         {
-          v22 = v20;
+          photoLibrary4 = photoLibrary3;
         }
 
         else
         {
-          v22 = [v13 photoLibrary];
+          photoLibrary4 = [groupCopy photoLibrary];
         }
 
-        v16 = v22;
+        v16 = photoLibrary4;
       }
     }
 
     if ([MEMORY[0x1E69C39E8] sharedAlbumsEnabledForPhotoLibrary:v16])
     {
-      v24.receiver = a1;
+      v24.receiver = self;
       v24.super_class = &OBJC_METACLASS___PUPXPhotoKitAddToSharedCollectionActionPerformer;
-      v17 = objc_msgSendSuper2(&v24, sel_canPerformOnAsset_inAssetCollection_person_socialGroup_, v10, v11, v12, v13);
+      v17 = objc_msgSendSuper2(&v24, sel_canPerformOnAsset_inAssetCollection_person_socialGroup_, assetCopy, collectionCopy, personCopy, groupCopy);
     }
 
     else
@@ -80,12 +80,12 @@
   return v17;
 }
 
-- (id)_addAssetsActionForAssets:(id)a3 assetCollection:(id)a4
+- (id)_addAssetsActionForAssets:(id)assets assetCollection:(id)collection
 {
   v5 = MEMORY[0x1E69C3328];
-  v6 = a4;
-  v7 = a3;
-  v8 = [[v5 alloc] initWithAssets:v7 assetCollection:v6];
+  collectionCopy = collection;
+  assetsCopy = assets;
+  v8 = [[v5 alloc] initWithAssets:assetsCopy assetCollection:collectionCopy];
 
   [v8 setShouldSortAssetsByCreationDate:1];
 

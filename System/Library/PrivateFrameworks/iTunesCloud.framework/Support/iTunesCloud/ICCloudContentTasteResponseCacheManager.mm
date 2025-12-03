@@ -1,29 +1,29 @@
 @interface ICCloudContentTasteResponseCacheManager
 + (id)sharedCloudContentTasteResponseCacheManager;
-- (BOOL)setCachedContentTasteUpdateResponse:(id)a3 forConnectionConfiguration:(id)a4;
+- (BOOL)setCachedContentTasteUpdateResponse:(id)response forConnectionConfiguration:(id)configuration;
 - (ICCloudContentTasteResponseCacheManager)init;
 - (id)_init;
-- (id)_mediaContentTasteCacheFilePathForAccount:(id)a3;
-- (id)_prepareArchiveWithContentTasteReponse:(id)a3;
-- (id)_prepareCachedResponseFromArchiveAtPath:(id)a3;
-- (id)getCachedContentTasteResponseForConnectionConfiguration:(id)a3;
+- (id)_mediaContentTasteCacheFilePathForAccount:(id)account;
+- (id)_prepareArchiveWithContentTasteReponse:(id)reponse;
+- (id)_prepareCachedResponseFromArchiveAtPath:(id)path;
+- (id)getCachedContentTasteResponseForConnectionConfiguration:(id)configuration;
 - (void)removeAllCachedContentTasteResponses;
-- (void)removeCachedContentTasteResponseForConnectionConfiguration:(id)a3;
+- (void)removeCachedContentTasteResponseForConnectionConfiguration:(id)configuration;
 @end
 
 @implementation ICCloudContentTasteResponseCacheManager
 
-- (id)_prepareCachedResponseFromArchiveAtPath:(id)a3
+- (id)_prepareCachedResponseFromArchiveAtPath:(id)path
 {
-  v3 = a3;
-  if (v3)
+  pathCopy = path;
+  if (pathCopy)
   {
     v4 = +[NSFileManager defaultManager];
-    v5 = [v4 fileExistsAtPath:v3];
+    v5 = [v4 fileExistsAtPath:pathCopy];
 
     if (v5)
     {
-      v6 = [NSData dataWithContentsOfFile:v3];
+      v6 = [NSData dataWithContentsOfFile:pathCopy];
       if ([v6 length])
       {
         v7 = objc_opt_class();
@@ -57,12 +57,12 @@ LABEL_10:
   return v11;
 }
 
-- (id)_prepareArchiveWithContentTasteReponse:(id)a3
+- (id)_prepareArchiveWithContentTasteReponse:(id)reponse
 {
-  v3 = a3;
-  if (v3)
+  reponseCopy = reponse;
+  if (reponseCopy)
   {
-    v4 = [NSKeyedArchiver archivedDataWithRootObject:v3 requiringSecureCoding:1 error:0];
+    v4 = [NSKeyedArchiver archivedDataWithRootObject:reponseCopy requiringSecureCoding:1 error:0];
   }
 
   else
@@ -73,13 +73,13 @@ LABEL_10:
   return v4;
 }
 
-- (id)_mediaContentTasteCacheFilePathForAccount:(id)a3
+- (id)_mediaContentTasteCacheFilePathForAccount:(id)account
 {
-  v4 = a3;
-  v5 = [v4 userIdentityStore];
-  v6 = [v4 userIdentity];
+  accountCopy = account;
+  userIdentityStore = [accountCopy userIdentityStore];
+  userIdentity = [accountCopy userIdentity];
   v13 = 0;
-  v7 = [v5 DSIDForUserIdentity:v6 outError:&v13];
+  v7 = [userIdentityStore DSIDForUserIdentity:userIdentity outError:&v13];
   v8 = v13;
 
   if (v8 || !v7)
@@ -88,9 +88,9 @@ LABEL_10:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       *buf = 138543874;
-      v15 = self;
+      selfCopy = self;
       v16 = 2048;
-      v17 = v4;
+      v17 = accountCopy;
       v18 = 2114;
       v19 = v8;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "%{public}@ Could not get DSID for configuration=%p. error=%{public}@", buf, 0x20u);
@@ -109,17 +109,17 @@ LABEL_10:
   return v11;
 }
 
-- (void)removeCachedContentTasteResponseForConnectionConfiguration:(id)a3
+- (void)removeCachedContentTasteResponseForConnectionConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   accessQueue = self->_accessQueue;
   v7[0] = _NSConcreteStackBlock;
   v7[1] = 3221225472;
   v7[2] = sub_1000C6E70;
   v7[3] = &unk_1001DF618;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = configurationCopy;
+  v6 = configurationCopy;
   dispatch_sync(accessQueue, v7);
 }
 
@@ -134,10 +134,10 @@ LABEL_10:
   dispatch_sync(accessQueue, block);
 }
 
-- (BOOL)setCachedContentTasteUpdateResponse:(id)a3 forConnectionConfiguration:(id)a4
+- (BOOL)setCachedContentTasteUpdateResponse:(id)response forConnectionConfiguration:(id)configuration
 {
-  v6 = a3;
-  v7 = a4;
+  responseCopy = response;
+  configurationCopy = configuration;
   v16 = 0;
   v17 = &v16;
   v18 = 0x2020000000;
@@ -148,21 +148,21 @@ LABEL_10:
   v12[2] = sub_1000C73BC;
   v12[3] = &unk_1001DCFD0;
   v12[4] = self;
-  v13 = v7;
-  v14 = v6;
+  v13 = configurationCopy;
+  v14 = responseCopy;
   v15 = &v16;
-  v9 = v6;
-  v10 = v7;
+  v9 = responseCopy;
+  v10 = configurationCopy;
   dispatch_sync(accessQueue, v12);
-  LOBYTE(v6) = *(v17 + 24);
+  LOBYTE(responseCopy) = *(v17 + 24);
 
   _Block_object_dispose(&v16, 8);
-  return v6;
+  return responseCopy;
 }
 
-- (id)getCachedContentTasteResponseForConnectionConfiguration:(id)a3
+- (id)getCachedContentTasteResponseForConnectionConfiguration:(id)configuration
 {
-  v4 = a3;
+  configurationCopy = configuration;
   v12 = 0;
   v13 = &v12;
   v14 = 0x3032000000;
@@ -175,9 +175,9 @@ LABEL_10:
   block[2] = sub_1000C7744;
   block[3] = &unk_1001DCFA8;
   block[4] = self;
-  v10 = v4;
+  v10 = configurationCopy;
   v11 = &v12;
-  v6 = v4;
+  v6 = configurationCopy;
   dispatch_sync(accessQueue, block);
   v7 = v13[5];
 

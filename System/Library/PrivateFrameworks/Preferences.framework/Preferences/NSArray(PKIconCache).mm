@@ -11,9 +11,9 @@
   v5 = a4;
   if ([MEMORY[0x1E696AF00] isMainThread])
   {
-    v6 = [MEMORY[0x1E69DCEB0] mainScreen];
-    v7 = [v6 traitCollection];
-    v8 = [v7 layoutDirection] == 1;
+    mainScreen = [MEMORY[0x1E69DCEB0] mainScreen];
+    traitCollection = [mainScreen traitCollection];
+    v8 = [traitCollection layoutDirection] == 1;
   }
 
   else
@@ -29,8 +29,8 @@
   v41 = *MEMORY[0x1E69E9840];
   v7 = a3;
   v8 = a4;
-  v9 = [MEMORY[0x1E695DF58] currentLocale];
-  v32 = [v9 _calendarDirection];
+  currentLocale = [MEMORY[0x1E695DF58] currentLocale];
+  _calendarDirection = [currentLocale _calendarDirection];
 
   v36 = 0u;
   v37 = 0u;
@@ -58,10 +58,10 @@
         v15 = *(*(&v34 + 1) + 8 * v14);
         v16 = [v15 propertyForKey:{@"iconCache", v30}];
         v17 = [v15 propertyForKey:@"iconImageShouldFlipForRightToLeft"];
-        v18 = [v17 BOOLValue];
+        bOOLValue = [v17 BOOLValue];
 
         v19 = [v15 propertyForKey:@"iconImageShouldFlipForRightToLeftCalendarKey"];
-        v20 = [v19 BOOLValue];
+        bOOLValue2 = [v19 BOOLValue];
 
         if (v16)
         {
@@ -71,9 +71,9 @@
             v22 = v8;
             v23 = a5;
             v24 = [v15 propertyForKey:@"iconImageShouldLoadAlternateImageForRightToLeftKey"];
-            v25 = [v24 BOOLValue];
+            bOOLValue3 = [v24 BOOLValue];
 
-            if (v25)
+            if (bOOLValue3)
             {
               v26 = [@"RTL-" stringByAppendingString:v16];
 
@@ -90,11 +90,11 @@
           if (v27)
           {
             v28 = v27;
-            if ((v18 | v20 & (v32 == 1)) == 1)
+            if ((bOOLValue | bOOLValue2 & (_calendarDirection == 1)) == 1)
             {
-              v29 = [v27 imageFlippedForRightToLeftLayoutDirection];
+              imageFlippedForRightToLeftLayoutDirection = [v27 imageFlippedForRightToLeftLayoutDirection];
 
-              v28 = v29;
+              v28 = imageFlippedForRightToLeftLayoutDirection;
             }
 
             [v15 setProperty:v28 forKey:@"iconImage"];

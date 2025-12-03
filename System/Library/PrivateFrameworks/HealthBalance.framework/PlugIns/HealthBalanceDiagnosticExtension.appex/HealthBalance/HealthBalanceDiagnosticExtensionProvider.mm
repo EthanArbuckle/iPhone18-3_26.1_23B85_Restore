@@ -1,13 +1,13 @@
 @interface HealthBalanceDiagnosticExtensionProvider
 - (_TtC32HealthBalanceDiagnosticExtension40HealthBalanceDiagnosticExtensionProvider)init;
-- (id)attachmentsForParameters:(id)a3;
+- (id)attachmentsForParameters:(id)parameters;
 @end
 
 @implementation HealthBalanceDiagnosticExtensionProvider
 
-- (id)attachmentsForParameters:(id)a3
+- (id)attachmentsForParameters:(id)parameters
 {
-  if (a3)
+  if (parameters)
   {
     v4 = sub_1000051F4();
   }
@@ -17,7 +17,7 @@
     v4 = 0;
   }
 
-  v5 = self;
+  selfCopy = self;
   v6 = sub_100001628(v4);
 
   if (v6)

@@ -1,6 +1,6 @@
 @interface PBUIWallpaperPrototypeSettings
 + (id)settingsControllerModule;
-- (id)parallaxSettingsForVariant:(int64_t)a3;
+- (id)parallaxSettingsForVariant:(int64_t)variant;
 - (void)setDefaultValues;
 @end
 
@@ -11,22 +11,22 @@
   v36.receiver = self;
   v36.super_class = PBUIWallpaperPrototypeSettings;
   [(PTSettings *)&v36 setDefaultValues];
-  v3 = [MEMORY[0x277D75418] currentDevice];
-  v4 = [v3 userInterfaceIdiom];
+  currentDevice = [MEMORY[0x277D75418] currentDevice];
+  userInterfaceIdiom = [currentDevice userInterfaceIdiom];
 
-  v5 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
-  [v5 setSlideEnabled:1];
+  homeScreenParallaxSettings = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
+  [homeScreenParallaxSettings setSlideEnabled:1];
 
-  v6 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
-  [v6 setSlideDirectionX:-1];
+  homeScreenParallaxSettings2 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
+  [homeScreenParallaxSettings2 setSlideDirectionX:-1];
 
-  v7 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
-  [v7 setSlideDirectionY:-1];
+  homeScreenParallaxSettings3 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
+  [homeScreenParallaxSettings3 setSlideDirectionY:-1];
 
-  v8 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
-  v9 = v8;
+  homeScreenParallaxSettings4 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
+  v9 = homeScreenParallaxSettings4;
   v10 = 10.0;
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v10 = 30.0;
     v11 = 40.0;
@@ -37,7 +37,7 @@
     v11 = 12.0;
   }
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v12 = 60.0;
   }
@@ -47,7 +47,7 @@
     v12 = 30.0;
   }
 
-  if (v4 == 1)
+  if (userInterfaceIdiom == 1)
   {
     v13 = 80.0;
   }
@@ -57,85 +57,85 @@
     v13 = 40.0;
   }
 
-  [v8 setSlidePixelsX:v10];
+  [homeScreenParallaxSettings4 setSlidePixelsX:v10];
 
-  v14 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
-  [v14 setSlidePixelsY:v11];
+  homeScreenParallaxSettings5 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
+  [homeScreenParallaxSettings5 setSlidePixelsY:v11];
 
-  v15 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
-  [v15 setTiltEnabled:1];
+  homeScreenParallaxSettings6 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
+  [homeScreenParallaxSettings6 setTiltEnabled:1];
 
-  v16 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
-  [v16 setTiltDirectionX:-1];
+  homeScreenParallaxSettings7 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
+  [homeScreenParallaxSettings7 setTiltDirectionX:-1];
 
-  v17 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
-  [v17 setTiltDirectionY:-1];
+  homeScreenParallaxSettings8 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
+  [homeScreenParallaxSettings8 setTiltDirectionY:-1];
 
-  v18 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
-  [v18 setTiltDegreesX:3.3];
+  homeScreenParallaxSettings9 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
+  [homeScreenParallaxSettings9 setTiltDegreesX:3.3];
 
-  v19 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
-  [v19 setTiltDegreesY:5.7];
+  homeScreenParallaxSettings10 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
+  [homeScreenParallaxSettings10 setTiltDegreesY:5.7];
 
-  v20 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
-  [v20 setDistanceFromScreen:-100];
+  homeScreenParallaxSettings11 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
+  [homeScreenParallaxSettings11 setDistanceFromScreen:-100];
 
-  v21 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
-  [v21 setIncreaseEnabled:1];
+  homeScreenParallaxSettings12 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
+  [homeScreenParallaxSettings12 setIncreaseEnabled:1];
 
-  v22 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
-  [v22 setSlideIncreaseY:50.0];
+  homeScreenParallaxSettings13 = [(PBUIWallpaperPrototypeSettings *)self homeScreenParallaxSettings];
+  [homeScreenParallaxSettings13 setSlideIncreaseY:50.0];
 
-  v23 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
-  [v23 setSlideEnabled:1];
+  lockScreenParallaxSettings = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
+  [lockScreenParallaxSettings setSlideEnabled:1];
 
-  v24 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
-  [v24 setSlideDirectionX:-1];
+  lockScreenParallaxSettings2 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
+  [lockScreenParallaxSettings2 setSlideDirectionX:-1];
 
-  v25 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
-  [v25 setSlideDirectionY:-1];
+  lockScreenParallaxSettings3 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
+  [lockScreenParallaxSettings3 setSlideDirectionY:-1];
 
-  v26 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
-  [v26 setSlidePixelsX:v12];
+  lockScreenParallaxSettings4 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
+  [lockScreenParallaxSettings4 setSlidePixelsX:v12];
 
-  v27 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
-  [v27 setSlidePixelsY:v13];
+  lockScreenParallaxSettings5 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
+  [lockScreenParallaxSettings5 setSlidePixelsY:v13];
 
-  v28 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
-  [v28 setTiltEnabled:1];
+  lockScreenParallaxSettings6 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
+  [lockScreenParallaxSettings6 setTiltEnabled:1];
 
-  v29 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
-  [v29 setTiltDirectionX:-1];
+  lockScreenParallaxSettings7 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
+  [lockScreenParallaxSettings7 setTiltDirectionX:-1];
 
-  v30 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
-  [v30 setTiltDirectionY:-1];
+  lockScreenParallaxSettings8 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
+  [lockScreenParallaxSettings8 setTiltDirectionY:-1];
 
-  v31 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
-  [v31 setTiltDegreesX:3.3];
+  lockScreenParallaxSettings9 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
+  [lockScreenParallaxSettings9 setTiltDegreesX:3.3];
 
-  v32 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
-  [v32 setTiltDegreesY:5.7];
+  lockScreenParallaxSettings10 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
+  [lockScreenParallaxSettings10 setTiltDegreesY:5.7];
 
-  v33 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
-  [v33 setDistanceFromScreen:-100];
+  lockScreenParallaxSettings11 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
+  [lockScreenParallaxSettings11 setDistanceFromScreen:-100];
 
-  v34 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
-  [v34 setIncreaseEnabled:1];
+  lockScreenParallaxSettings12 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
+  [lockScreenParallaxSettings12 setIncreaseEnabled:1];
 
-  v35 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
-  [v35 setSlideIncreaseY:50.0];
+  lockScreenParallaxSettings13 = [(PBUIWallpaperPrototypeSettings *)self lockScreenParallaxSettings];
+  [lockScreenParallaxSettings13 setSlideIncreaseY:50.0];
 }
 
-- (id)parallaxSettingsForVariant:(int64_t)a3
+- (id)parallaxSettingsForVariant:(int64_t)variant
 {
-  if ((a3 + 1) > 2)
+  if ((variant + 1) > 2)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = *(&self->super.super.isa + *off_2783643D8[a3 + 1]);
+    v4 = *(&self->super.super.isa + *off_2783643D8[variant + 1]);
   }
 
   return v4;
@@ -152,8 +152,8 @@
 
   v5 = [MEMORY[0x277D43218] sectionWithRows:v4];
   v6 = MEMORY[0x277D431A8];
-  v7 = [MEMORY[0x277D43238] action];
-  v8 = [v6 rowWithTitle:@"Restore Defaults" action:v7];
+  action = [MEMORY[0x277D43238] action];
+  v8 = [v6 rowWithTitle:@"Restore Defaults" action:action];
   v17[0] = v8;
   v9 = [MEMORY[0x277D431A8] rowWithTitle:@"Set Default Wallpaper (Kills SpringBoard)" outletKeyPath:@"resetWallpaperOutlet"];
   v17[1] = v9;

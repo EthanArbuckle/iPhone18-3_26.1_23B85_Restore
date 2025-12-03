@@ -1,35 +1,35 @@
 @interface BPSWatchView
-- (BPSWatchView)initWithStyle:(unint64_t)a3 versionModifier:(id)a4 allowsMaterialFallback:(BOOL)a5;
+- (BPSWatchView)initWithStyle:(unint64_t)style versionModifier:(id)modifier allowsMaterialFallback:(BOOL)fallback;
 - (CGRect)watchScreenInsetGuide;
 - (CGSize)intrinsicContentSize;
 - (CGSize)screenImageSize;
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (id)screenBackground:(CGSize)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (id)screenBackground:(CGSize)background;
 - (unint64_t)deviceSize;
-- (void)_cleanedImageName:(id *)a3 withFallbackImage:(id *)a4;
+- (void)_cleanedImageName:(id *)name withFallbackImage:(id *)image;
 - (void)layoutSubviews;
 - (void)layoutWatchScreenImageView;
-- (void)overrideMaterial:(unint64_t)a3 size:(unint64_t)a4;
-- (void)setScreenImageName:(id)a3;
+- (void)overrideMaterial:(unint64_t)material size:(unint64_t)size;
+- (void)setScreenImageName:(id)name;
 @end
 
 @implementation BPSWatchView
 
-- (BPSWatchView)initWithStyle:(unint64_t)a3 versionModifier:(id)a4 allowsMaterialFallback:(BOOL)a5
+- (BPSWatchView)initWithStyle:(unint64_t)style versionModifier:(id)modifier allowsMaterialFallback:(BOOL)fallback
 {
-  v5 = a5;
-  v8 = a4;
+  fallbackCopy = fallback;
+  modifierCopy = modifier;
   v44.receiver = self;
   v44.super_class = BPSWatchView;
   v9 = [(BPSWatchView *)&v44 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   if (v9)
   {
-    v10 = [v8 copy];
+    v10 = [modifierCopy copy];
     styleVersionSuffix = v9->_styleVersionSuffix;
     v9->_styleVersionSuffix = v10;
 
-    v9->_style = a3;
-    v12 = _WatchImageNameForStyle(a3, 0);
+    v9->_style = style;
+    v12 = _WatchImageNameForStyle(style, 0);
     v13 = _WatchImageNameForStyle(v9->_style, 1);
     v43 = v13;
     if (v9->_styleVersionSuffix)
@@ -45,9 +45,9 @@
     }
 
     v16 = v15;
-    v17 = [MEMORY[0x277D37A78] sharedDeviceController];
-    v18 = v17;
-    if (v5 && ![v17 material])
+    mEMORY[0x277D37A78] = [MEMORY[0x277D37A78] sharedDeviceController];
+    v18 = mEMORY[0x277D37A78];
+    if (fallbackCopy && ![mEMORY[0x277D37A78] material])
     {
       v33 = BPSGetActiveSetupCompletedDevice();
       v34 = [MEMORY[0x277D37A78] materialFromDevice:v33];
@@ -131,11 +131,11 @@
   return v9;
 }
 
-- (void)setScreenImageName:(id)a3
+- (void)setScreenImageName:(id)name
 {
   v34[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 copy];
+  nameCopy = name;
+  v5 = [nameCopy copy];
   screenImageName = self->_screenImageName;
   self->_screenImageName = v5;
 
@@ -149,16 +149,16 @@
 
     else
     {
-      v9 = [MEMORY[0x277D37A78] sharedDeviceController];
-      v8 = [v9 resourceString:self->_screenImageName forAttributes:4];
+      mEMORY[0x277D37A78] = [MEMORY[0x277D37A78] sharedDeviceController];
+      v8 = [mEMORY[0x277D37A78] resourceString:self->_screenImageName forAttributes:4];
     }
 
-    if (!self->_screenImageSearchBundleIdentifier || ([MEMORY[0x277CCA8D8] bundleWithIdentifier:?], (v10 = objc_claimAutoreleasedReturnValue()) == 0))
+    if (!self->_screenImageSearchBundleIdentifier || ([MEMORY[0x277CCA8D8] bundleWithIdentifier:?], (watchAssetBundle = objc_claimAutoreleasedReturnValue()) == 0))
     {
-      v10 = [(BPSWatchView *)self watchAssetBundle];
+      watchAssetBundle = [(BPSWatchView *)self watchAssetBundle];
     }
 
-    v11 = [MEMORY[0x277D755B8] imageNamed:v8 inBundle:v10 compatibleWithTraitCollection:0];
+    v11 = [MEMORY[0x277D755B8] imageNamed:v8 inBundle:watchAssetBundle compatibleWithTraitCollection:0];
     if (self->_wantsLightenBlendedScreen)
     {
       v12 = [objc_alloc(MEMORY[0x277CBF758]) initWithImage:v11];
@@ -177,11 +177,11 @@
         [MEMORY[0x277CBEAC0] dictionaryWithObjects:v34 forKeys:v33 count:2];
         v17 = v31 = v13;
         v18 = [v16 filterWithName:@"CILightenBlendMode" withInputParameters:v17];
-        v19 = [v18 outputImage];
+        outputImage = [v18 outputImage];
 
         v20 = [objc_alloc(MEMORY[0x277CBF740]) initWithOptions:0];
-        [v19 extent];
-        v21 = [v20 createCGImage:v19 fromRect:?];
+        [outputImage extent];
+        v21 = [v20 createCGImage:outputImage fromRect:?];
         v22 = objc_alloc(MEMORY[0x277D755B8]);
         [v11 scale];
         v23 = v21;
@@ -194,7 +194,7 @@
 
       else
       {
-        NSLog(&cfstr_ErrorUnableToC.isa, v4);
+        NSLog(&cfstr_ErrorUnableToC.isa, nameCopy);
       }
     }
 
@@ -209,12 +209,12 @@
       v28 = [MEMORY[0x277D74300] boldSystemFontOfSize:10.0];
       [v26 setFont:v28];
 
-      v29 = [MEMORY[0x277D75348] systemGreenColor];
-      [v26 setTextColor:v29];
+      systemGreenColor = [MEMORY[0x277D75348] systemGreenColor];
+      [v26 setTextColor:systemGreenColor];
 
       [v26 setNumberOfLines:0];
-      v30 = [MEMORY[0x277CCACA8] stringWithFormat:@"FPO [No Radars Please] %@", v4];
-      [v26 setText:v30];
+      nameCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"FPO [No Radars Please] %@", nameCopy];
+      [v26 setText:nameCopy];
 
       [(UIImageView *)self->_watchScreenImageView addSubview:v26];
     }
@@ -231,23 +231,23 @@
   [(BPSWatchView *)self applyScreenStyle];
 }
 
-- (id)screenBackground:(CGSize)a3
+- (id)screenBackground:(CGSize)background
 {
-  height = a3.height;
-  width = a3.width;
-  if (a3.width == *MEMORY[0x277CBF3A8] && a3.height == *(MEMORY[0x277CBF3A8] + 8))
+  height = background.height;
+  width = background.width;
+  if (background.width == *MEMORY[0x277CBF3A8] && background.height == *(MEMORY[0x277CBF3A8] + 8))
   {
     v10 = 0;
   }
 
   else
   {
-    v7 = [(BPSWatchView *)self image];
+    image = [(BPSWatchView *)self image];
     v13.width = width;
     v13.height = height;
     UIGraphicsBeginImageContextWithOptions(v13, 1, 0.0);
     v8 = _ScreenInsets(self->_style, [(BPSWatchView *)self deviceSize]);
-    [v7 drawAtPoint:{-v8, -v9}];
+    [image drawAtPoint:{-v8, -v9}];
     v10 = UIGraphicsGetImageFromCurrentImageContext();
     UIGraphicsEndImageContext();
   }
@@ -271,9 +271,9 @@
   return result;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(BPSRemoteImageView *)self->_watchImageView sizeThatFits:a3.width, a3.height];
+  [(BPSRemoteImageView *)self->_watchImageView sizeThatFits:fits.width, fits.height];
   result.height = v4;
   result.width = v3;
   return result;
@@ -299,25 +299,25 @@
 
 - (void)layoutWatchScreenImageView
 {
-  v3 = [(BPSWatchView *)self deviceSize];
+  deviceSize = [(BPSWatchView *)self deviceSize];
   [(BPSWatchView *)self screenImageSize];
-  v4 = _ScreenInsets(self->_style, v3);
+  v4 = _ScreenInsets(self->_style, deviceSize);
   watchScreenImageView = self->_watchScreenImageView;
 
   [(UIImageView *)watchScreenImageView setFrame:v4];
 }
 
-- (void)_cleanedImageName:(id *)a3 withFallbackImage:(id *)a4
+- (void)_cleanedImageName:(id *)name withFallbackImage:(id *)image
 {
   if (PBIsInternalInstall())
   {
-    [*a4 rangeOfString:@"448h"];
+    [*image rangeOfString:@"448h"];
     v7 = v6;
-    [*a4 rangeOfString:@"394h"];
+    [*image rangeOfString:@"394h"];
     if (v8 | v7)
     {
       v9 = [MEMORY[0x277CCA8D8] bundleForClass:objc_opt_class()];
-      v16 = [v9 pathForResource:*a4 ofType:@"png"];
+      v16 = [v9 pathForResource:*image ofType:@"png"];
 
       v10 = v16;
       if (!v16)
@@ -332,22 +332,22 @@
           v11 = @"394h";
         }
 
-        v12 = *a4;
+        v12 = *image;
         v13 = v11;
-        *a4 = [v12 stringByReplacingOccurrencesOfString:v13 withString:@"regular"];
-        v14 = [*a3 stringByReplacingOccurrencesOfString:v13 withString:@"regular"];
+        *image = [v12 stringByReplacingOccurrencesOfString:v13 withString:@"regular"];
+        v14 = [*name stringByReplacingOccurrencesOfString:v13 withString:@"regular"];
 
         v15 = v14;
         v10 = 0;
-        *a3 = v14;
+        *name = v14;
       }
     }
   }
 }
 
-- (void)overrideMaterial:(unint64_t)a3 size:(unint64_t)a4
+- (void)overrideMaterial:(unint64_t)material size:(unint64_t)size
 {
-  self->_sizeOverride = a4;
+  self->_sizeOverride = size;
   v17 = _WatchImageNameForStyle(self->_style, 0);
   v7 = _WatchImageNameForStyle(self->_style, 1);
   if (self->_styleVersionSuffix)
@@ -363,24 +363,24 @@
   }
 
   v10 = v9;
-  v11 = [MEMORY[0x277D37A78] resourceString:v8 material:a3 size:self->_sizeOverride forAttributes:6];
+  v11 = [MEMORY[0x277D37A78] resourceString:v8 material:material size:self->_sizeOverride forAttributes:6];
   v12 = MEMORY[0x277D37A78];
-  v13 = [MEMORY[0x277D37A78] sharedDeviceController];
-  v14 = [v12 resourceString:v10 material:objc_msgSend(v13 size:"fallbackMaterialForSize:" forAttributes:{a4), a4, 6}];
+  mEMORY[0x277D37A78] = [MEMORY[0x277D37A78] sharedDeviceController];
+  v14 = [v12 resourceString:v10 material:objc_msgSend(mEMORY[0x277D37A78] size:"fallbackMaterialForSize:" forAttributes:{size), size, 6}];
 
-  v15 = [(BPSWatchView *)self watchImageView];
-  [v15 setDesiredImageName:v11];
+  watchImageView = [(BPSWatchView *)self watchImageView];
+  [watchImageView setDesiredImageName:v11];
 
-  v16 = [(BPSWatchView *)self watchImageView];
-  [v16 setFallbackImageName:v14];
+  watchImageView2 = [(BPSWatchView *)self watchImageView];
+  [watchImageView2 setFallbackImageName:v14];
 
   [(BPSRemoteImageView *)self->_watchImageView updateImagesWithAnimation:0];
 }
 
 - (unint64_t)deviceSize
 {
-  v3 = [MEMORY[0x277D37A78] sharedDeviceController];
-  v4 = [v3 size];
+  mEMORY[0x277D37A78] = [MEMORY[0x277D37A78] sharedDeviceController];
+  v4 = [mEMORY[0x277D37A78] size];
 
   if (self->_sizeOverride)
   {
@@ -395,18 +395,18 @@
 
 - (CGSize)screenImageSize
 {
-  v3 = [(BPSWatchView *)self deviceSize];
+  deviceSize = [(BPSWatchView *)self deviceSize];
   [(UIImageView *)self->_watchScreenImageView sizeThatFits:*MEMORY[0x277CBF3A8], *(MEMORY[0x277CBF3A8] + 8)];
   v5 = v4;
   v7 = v6;
   style = self->_style;
   if (style == 3 || style == 7)
   {
-    v10 = [MEMORY[0x277D759A0] mainScreen];
-    [v10 scale];
+    mainScreen = [MEMORY[0x277D759A0] mainScreen];
+    [mainScreen scale];
     v12 = v11;
 
-    v13 = v3 - 1;
+    v13 = deviceSize - 1;
     if (v12 <= 2.0)
     {
       if (v13 < 0x19 && ((0x11C30C3u >> v13) & 1) != 0)
@@ -429,8 +429,8 @@ LABEL_17:
 
   else if (style == 6)
   {
-    v13 = v3 - 1;
-    if (v3 - 1 < 8 && ((0xC3u >> v13) & 1) != 0)
+    v13 = deviceSize - 1;
+    if (deviceSize - 1 < 8 && ((0xC3u >> v13) & 1) != 0)
     {
       v14 = (&unk_241EAEC48 + 8 * v13);
       v15 = &unk_241EAEC88;

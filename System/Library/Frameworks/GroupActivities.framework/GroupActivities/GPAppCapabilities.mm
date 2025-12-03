@@ -8,7 +8,7 @@
 
 - (BOOL)supportsSharePlay
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AppCapabilities.supportsSharePlay.getter();
 
   return v3 & 1;
@@ -16,7 +16,7 @@
 
 - (BOOL)supportsStartFromApp
 {
-  v2 = self;
+  selfCopy = self;
   v3 = AppCapabilities.supportsStartFromApp.getter();
 
   return v3 & 1;

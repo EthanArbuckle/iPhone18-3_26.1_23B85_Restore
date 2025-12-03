@@ -1,21 +1,21 @@
 @interface LNAssistantAppEntityMetadata
-- (BOOL)isEqual:(id)a3;
-- (LNAssistantAppEntityMetadata)initWithCoder:(id)a3;
-- (LNAssistantAppEntityMetadata)initWithEntityIdentifier:(id)a3 kind:(int64_t)a4 phraseTemplates:(id)a5;
+- (BOOL)isEqual:(id)equal;
+- (LNAssistantAppEntityMetadata)initWithCoder:(id)coder;
+- (LNAssistantAppEntityMetadata)initWithEntityIdentifier:(id)identifier kind:(int64_t)kind phraseTemplates:(id)templates;
 - (id)description;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation LNAssistantAppEntityMetadata
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (self != v4)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (self != equalCopy)
   {
-    v6 = v4;
+    v6 = equalCopy;
     if (!v6 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
     {
       LOBYTE(v12) = 0;
@@ -24,10 +24,10 @@ LABEL_22:
       goto LABEL_23;
     }
 
-    v7 = [(LNAssistantAppEntityMetadata *)self entityIdentifier];
-    v8 = [(LNAssistantAppEntityMetadata *)v6 entityIdentifier];
-    v9 = v7;
-    v10 = v8;
+    entityIdentifier = [(LNAssistantAppEntityMetadata *)self entityIdentifier];
+    entityIdentifier2 = [(LNAssistantAppEntityMetadata *)v6 entityIdentifier];
+    v9 = entityIdentifier;
+    v10 = entityIdentifier2;
     v11 = v10;
     if (v9 == v10)
     {
@@ -51,8 +51,8 @@ LABEL_22:
       }
     }
 
-    v15 = [(LNAssistantAppEntityMetadata *)self kind];
-    if (v15 != [(LNAssistantAppEntityMetadata *)v6 kind])
+    kind = [(LNAssistantAppEntityMetadata *)self kind];
+    if (kind != [(LNAssistantAppEntityMetadata *)v6 kind])
     {
       LOBYTE(v12) = 0;
 LABEL_21:
@@ -60,10 +60,10 @@ LABEL_21:
       goto LABEL_22;
     }
 
-    v16 = [(LNAssistantAppEntityMetadata *)self phraseTemplates];
-    v17 = [(LNAssistantAppEntityMetadata *)v6 phraseTemplates];
-    v14 = v16;
-    v18 = v17;
+    phraseTemplates = [(LNAssistantAppEntityMetadata *)self phraseTemplates];
+    phraseTemplates2 = [(LNAssistantAppEntityMetadata *)v6 phraseTemplates];
+    v14 = phraseTemplates;
+    v18 = phraseTemplates2;
     v13 = v18;
     if (v14 == v18)
     {
@@ -91,11 +91,11 @@ LABEL_23:
 
 - (unint64_t)hash
 {
-  v3 = [(LNAssistantAppEntityMetadata *)self entityIdentifier];
-  v4 = [v3 hash];
+  entityIdentifier = [(LNAssistantAppEntityMetadata *)self entityIdentifier];
+  v4 = [entityIdentifier hash];
   v5 = [(LNAssistantAppEntityMetadata *)self kind]^ v4;
-  v6 = [(LNAssistantAppEntityMetadata *)self phraseTemplates];
-  v7 = [v6 hash];
+  phraseTemplates = [(LNAssistantAppEntityMetadata *)self phraseTemplates];
+  v7 = [phraseTemplates hash];
 
   return v5 ^ v7;
 }
@@ -105,38 +105,38 @@ LABEL_23:
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(LNAssistantAppEntityMetadata *)self entityIdentifier];
-  v7 = [(LNAssistantAppEntityMetadata *)self kind];
-  v8 = [(LNAssistantAppEntityMetadata *)self phraseTemplates];
-  v9 = [v3 stringWithFormat:@"<%@: %p, entityIdentifier: %@, kind: %ld, phraseTemplates: %@>", v5, self, v6, v7, v8];
+  entityIdentifier = [(LNAssistantAppEntityMetadata *)self entityIdentifier];
+  kind = [(LNAssistantAppEntityMetadata *)self kind];
+  phraseTemplates = [(LNAssistantAppEntityMetadata *)self phraseTemplates];
+  v9 = [v3 stringWithFormat:@"<%@: %p, entityIdentifier: %@, kind: %ld, phraseTemplates: %@>", v5, self, entityIdentifier, kind, phraseTemplates];
 
   return v9;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [(LNAssistantAppEntityMetadata *)self entityIdentifier];
-  [v4 encodeObject:v5 forKey:@"entityIdentifier"];
+  coderCopy = coder;
+  entityIdentifier = [(LNAssistantAppEntityMetadata *)self entityIdentifier];
+  [coderCopy encodeObject:entityIdentifier forKey:@"entityIdentifier"];
 
-  [v4 encodeInteger:-[LNAssistantAppEntityMetadata kind](self forKey:{"kind"), @"kind"}];
-  v6 = [(LNAssistantAppEntityMetadata *)self phraseTemplates];
-  [v4 encodeObject:v6 forKey:@"phraseTemplates"];
+  [coderCopy encodeInteger:-[LNAssistantAppEntityMetadata kind](self forKey:{"kind"), @"kind"}];
+  phraseTemplates = [(LNAssistantAppEntityMetadata *)self phraseTemplates];
+  [coderCopy encodeObject:phraseTemplates forKey:@"phraseTemplates"];
 }
 
-- (LNAssistantAppEntityMetadata)initWithCoder:(id)a3
+- (LNAssistantAppEntityMetadata)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"entityIdentifier"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"entityIdentifier"];
   if (v5)
   {
-    v6 = [v4 decodeIntegerForKey:@"kind"];
+    v6 = [coderCopy decodeIntegerForKey:@"kind"];
     if (v6)
     {
       v7 = MEMORY[0x1E695DFD8];
       v8 = objc_opt_class();
       v9 = [v7 setWithObjects:{v8, objc_opt_class(), 0}];
-      v10 = [v4 decodeObjectOfClasses:v9 forKey:@"phraseTemplates"];
+      v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"phraseTemplates"];
 
       if (v10)
       {
@@ -158,14 +158,14 @@ LABEL_23:
   return v6;
 }
 
-- (LNAssistantAppEntityMetadata)initWithEntityIdentifier:(id)a3 kind:(int64_t)a4 phraseTemplates:(id)a5
+- (LNAssistantAppEntityMetadata)initWithEntityIdentifier:(id)identifier kind:(int64_t)kind phraseTemplates:(id)templates
 {
-  v9 = a3;
-  v10 = a5;
-  v11 = v10;
-  if (v9)
+  identifierCopy = identifier;
+  templatesCopy = templates;
+  v11 = templatesCopy;
+  if (identifierCopy)
   {
-    if (v10)
+    if (templatesCopy)
     {
       goto LABEL_3;
     }
@@ -173,8 +173,8 @@ LABEL_23:
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v19 handleFailureInMethod:a2 object:self file:@"LNAssistantAppEntityMetadata.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"entityIdentifier"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNAssistantAppEntityMetadata.m" lineNumber:21 description:{@"Invalid parameter not satisfying: %@", @"entityIdentifier"}];
 
     if (v11)
     {
@@ -182,8 +182,8 @@ LABEL_23:
     }
   }
 
-  v20 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v20 handleFailureInMethod:a2 object:self file:@"LNAssistantAppEntityMetadata.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"phraseTemplates"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNAssistantAppEntityMetadata.m" lineNumber:22 description:{@"Invalid parameter not satisfying: %@", @"phraseTemplates"}];
 
 LABEL_3:
   v21.receiver = self;
@@ -191,11 +191,11 @@ LABEL_3:
   v12 = [(LNAssistantAppEntityMetadata *)&v21 init];
   if (v12)
   {
-    v13 = [v9 copy];
+    v13 = [identifierCopy copy];
     entityIdentifier = v12->_entityIdentifier;
     v12->_entityIdentifier = v13;
 
-    v12->_kind = a4;
+    v12->_kind = kind;
     v15 = [v11 copy];
     phraseTemplates = v12->_phraseTemplates;
     v12->_phraseTemplates = v15;

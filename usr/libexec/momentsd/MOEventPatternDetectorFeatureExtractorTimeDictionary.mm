@@ -1,7 +1,7 @@
 @interface MOEventPatternDetectorFeatureExtractorTimeDictionary
-- (BOOL)configure:(id)a3;
+- (BOOL)configure:(id)configure;
 - (MOEventPatternDetectorFeatureExtractorTimeDictionary)init;
-- (id)extractFeaturesFromEvents:(id)a3;
+- (id)extractFeaturesFromEvents:(id)events;
 @end
 
 @implementation MOEventPatternDetectorFeatureExtractorTimeDictionary
@@ -21,16 +21,16 @@
   return v3;
 }
 
-- (id)extractFeaturesFromEvents:(id)a3
+- (id)extractFeaturesFromEvents:(id)events
 {
-  v3 = a3;
+  eventsCopy = events;
   v56 = objc_opt_new();
   v64 = [[NSCalendar alloc] initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
   v77 = 0u;
   v78 = 0u;
   v79 = 0u;
   v80 = 0u;
-  obj = v3;
+  obj = eventsCopy;
   v57 = [obj countByEnumeratingWithState:&v77 objects:v86 count:16];
   if (v57)
   {
@@ -69,35 +69,35 @@
               }
 
               v9 = *(*(&v73 + 1) + 8 * i);
-              v10 = [v9 startDate];
-              v11 = [v64 components:96 fromDate:v10];
+              startDate = [v9 startDate];
+              v11 = [v64 components:96 fromDate:startDate];
 
               v12 = v4[190];
-              v13 = [v11 hour];
+              hour = [v11 hour];
               v70 = v11;
-              *&v14 = ([v11 minute] / 60.0) + v13;
+              *&v14 = ([v11 minute] / 60.0) + hour;
               v15 = [v12 numberWithFloat:v14];
               v16 = v4[190];
-              v17 = [v9 startDate];
-              *&v18 = [v64 component:0x2000 fromDate:v17];
+              startDate2 = [v9 startDate];
+              *&v18 = [v64 component:0x2000 fromDate:startDate2];
               v19 = [v16 numberWithFloat:v18];
 
               v20 = v4[190];
               v21 = +[NSCalendar currentCalendar];
-              v22 = [v9 startDate];
-              *&v23 = [v21 component:512 fromDate:v22];
+              startDate3 = [v9 startDate];
+              *&v23 = [v21 component:512 fromDate:startDate3];
               v24 = [v20 numberWithFloat:v23];
 
               v83[0] = @"eventIdentifier";
-              v25 = [v9 eventIdentifier];
-              v26 = [v25 UUIDString];
-              v84[0] = v26;
+              eventIdentifier = [v9 eventIdentifier];
+              uUIDString = [eventIdentifier UUIDString];
+              v84[0] = uUIDString;
               v83[1] = @"startDate";
-              v27 = [v9 startDate];
-              v84[1] = v27;
+              startDate4 = [v9 startDate];
+              v84[1] = startDate4;
               v83[2] = @"endDate";
-              v28 = [v9 endDate];
-              v84[2] = v28;
+              endDate = [v9 endDate];
+              v84[2] = endDate;
               v84[3] = v15;
               v83[3] = @"hrFromMidnight";
               v83[4] = @"weekOfYear";
@@ -108,13 +108,13 @@
 
               if ([v9 category] == 2)
               {
-                v30 = [v9 workoutType];
+                workoutType = [v9 workoutType];
 
-                if (v30)
+                if (workoutType)
                 {
                   v31 = [[NSMutableDictionary alloc] initWithDictionary:v29];
-                  v32 = [v9 workoutType];
-                  [v31 setObject:v32 forKeyedSubscript:@"workoutType"];
+                  workoutType2 = [v9 workoutType];
+                  [v31 setObject:workoutType2 forKeyedSubscript:@"workoutType"];
 
                   v33 = [v31 copy];
                   v29 = v33;
@@ -206,14 +206,14 @@
   return v56;
 }
 
-- (BOOL)configure:(id)a3
+- (BOOL)configure:(id)configure
 {
-  v4 = a3;
-  v5 = [v4 objectForKey:@"LastWindowEnd"];
+  configureCopy = configure;
+  v5 = [configureCopy objectForKey:@"LastWindowEnd"];
 
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"LastWindowEnd"];
+    v6 = [configureCopy objectForKeyedSubscript:@"LastWindowEnd"];
     [v6 doubleValue];
     self->_lastWindowEnd = v7;
   }

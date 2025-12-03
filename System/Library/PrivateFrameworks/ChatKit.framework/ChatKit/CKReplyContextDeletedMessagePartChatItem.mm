@@ -1,6 +1,6 @@
 @interface CKReplyContextDeletedMessagePartChatItem
 - (BOOL)isFromMe;
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4;
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets;
 - (CKBalloonDescriptor_t)balloonDescriptor;
 - (char)transcriptOrientation;
 - (id)contact;
@@ -29,17 +29,17 @@
   return v2;
 }
 
-- (CGSize)loadSizeThatFits:(CGSize)a3 textAlignmentInsets:(UIEdgeInsets *)a4
+- (CGSize)loadSizeThatFits:(CGSize)fits textAlignmentInsets:(UIEdgeInsets *)insets
 {
-  if (a4)
+  if (insets)
   {
-    a3 = *MEMORY[0x1E69DDCE0];
-    *&a3.height = *(MEMORY[0x1E69DDCE0] + 16);
-    *&a4->top = *MEMORY[0x1E69DDCE0];
-    *&a4->bottom = *&a3.height;
+    fits = *MEMORY[0x1E69DDCE0];
+    *&fits.height = *(MEMORY[0x1E69DDCE0] + 16);
+    *&insets->top = *MEMORY[0x1E69DDCE0];
+    *&insets->bottom = *&fits.height;
   }
 
-  v4 = [CKUIBehavior sharedBehaviors:a3.width];
+  v4 = [CKUIBehavior sharedBehaviors:fits.width];
   [v4 deletedReplyBalloonMaskSizeWithTailShape:1];
   v6 = v5;
   v8 = v7;
@@ -72,10 +72,10 @@ void __51__CKReplyContextDeletedMessagePartChatItem_contact__block_invoke()
 
 - (BOOL)isFromMe
 {
-  v2 = [(CKReplyContextDeletedMessagePartChatItem *)self imReplyContextDeletedMessageChatItem];
-  v3 = [v2 deletedMessageIsFromMe];
+  imReplyContextDeletedMessageChatItem = [(CKReplyContextDeletedMessagePartChatItem *)self imReplyContextDeletedMessageChatItem];
+  deletedMessageIsFromMe = [imReplyContextDeletedMessageChatItem deletedMessageIsFromMe];
 
-  return v3;
+  return deletedMessageIsFromMe;
 }
 
 - (CKBalloonDescriptor_t)balloonDescriptor

@@ -1,5 +1,5 @@
 @interface _SCDASessionMutation
-- (_SCDASessionMutation)initWithBase:(id)a3;
+- (_SCDASessionMutation)initWithBase:(id)base;
 - (id)getCurrentElectionAdvertisementData;
 - (id)getCurrentElectionAdvertisementId;
 - (id)getElectionAdvertisementDataByIds;
@@ -26,72 +26,72 @@
 {
   if ((*&self->_mutationFlags & 4) != 0)
   {
-    v2 = self->_sessionId;
+    sessionId = self->_sessionId;
   }
 
   else
   {
-    v2 = [(SCDASession *)self->_base sessionId];
+    sessionId = [(SCDASession *)self->_base sessionId];
   }
 
-  return v2;
+  return sessionId;
 }
 
 - (id)getCurrentElectionAdvertisementId
 {
   if ((*&self->_mutationFlags & 8) != 0)
   {
-    v2 = self->_currentElectionAdvertisementId;
+    currentElectionAdvertisementId = self->_currentElectionAdvertisementId;
   }
 
   else
   {
-    v2 = [(SCDASession *)self->_base currentElectionAdvertisementId];
+    currentElectionAdvertisementId = [(SCDASession *)self->_base currentElectionAdvertisementId];
   }
 
-  return v2;
+  return currentElectionAdvertisementId;
 }
 
 - (id)getCurrentElectionAdvertisementData
 {
   if ((*&self->_mutationFlags & 0x10) != 0)
   {
-    v2 = self->_currentElectionAdvertisementData;
+    currentElectionAdvertisementData = self->_currentElectionAdvertisementData;
   }
 
   else
   {
-    v2 = [(SCDASession *)self->_base currentElectionAdvertisementData];
+    currentElectionAdvertisementData = [(SCDASession *)self->_base currentElectionAdvertisementData];
   }
 
-  return v2;
+  return currentElectionAdvertisementData;
 }
 
 - (id)getElectionAdvertisementDataByIds
 {
   if ((*&self->_mutationFlags & 0x20) != 0)
   {
-    v2 = self->_electionAdvertisementDataByIds;
+    electionAdvertisementDataByIds = self->_electionAdvertisementDataByIds;
   }
 
   else
   {
-    v2 = [(SCDASession *)self->_base electionAdvertisementDataByIds];
+    electionAdvertisementDataByIds = [(SCDASession *)self->_base electionAdvertisementDataByIds];
   }
 
-  return v2;
+  return electionAdvertisementDataByIds;
 }
 
-- (_SCDASessionMutation)initWithBase:(id)a3
+- (_SCDASessionMutation)initWithBase:(id)base
 {
-  v5 = a3;
+  baseCopy = base;
   v9.receiver = self;
   v9.super_class = _SCDASessionMutation;
   v6 = [(_SCDASessionMutation *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_base, a3);
+    objc_storeStrong(&v6->_base, base);
   }
 
   return v7;

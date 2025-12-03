@@ -1,13 +1,13 @@
 @interface GKFriendRequestViewController
-+ (void)addFriends:(id)a3 recipients:(id)a4;
-+ (void)presentAlertControllerOn:(id)a3 withMessage:(id)a4 andTitle:(id)a5;
-+ (void)presentFriendRequestOn:(id)a3 forRecipients:(id)a4 withFriendCode:(id)a5 andFriendSupportPageURL:(id)a6;
++ (void)addFriends:(id)friends recipients:(id)recipients;
++ (void)presentAlertControllerOn:(id)on withMessage:(id)message andTitle:(id)title;
++ (void)presentFriendRequestOn:(id)on forRecipients:(id)recipients withFriendCode:(id)code andFriendSupportPageURL:(id)l;
 - (GKFriendRequestViewController)init;
 - (GKFriendRequestViewControllerDelegate)delegate;
 - (UIViewController)requestingViewController;
 - (id)_presentingViewController;
 - (void)notifyDelegateOnWillFinish;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)viewDidDisappear:(BOOL)disappear;
 @end
 
 @implementation GKFriendRequestViewController
@@ -19,29 +19,29 @@
   v2 = [(GKHostedViewController *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x277D0C048] currentGame];
-    v4 = [v3 bundleIdentifier];
-    [(GKFriendRequestViewController *)v2 setHostApp:v4];
+    currentGame = [MEMORY[0x277D0C048] currentGame];
+    bundleIdentifier = [currentGame bundleIdentifier];
+    [(GKFriendRequestViewController *)v2 setHostApp:bundleIdentifier];
   }
 
   return v2;
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = GKFriendRequestViewController;
-  [(GKHostedViewController *)&v4 viewDidDisappear:a3];
-  v3 = [MEMORY[0x277D0C138] local];
-  [v3 setIsShowingFriendRequestUI:0];
+  [(GKHostedViewController *)&v4 viewDidDisappear:disappear];
+  local = [MEMORY[0x277D0C138] local];
+  [local setIsShowingFriendRequestUI:0];
 }
 
 - (void)notifyDelegateOnWillFinish
 {
-  v3 = [(GKFriendRequestViewController *)self delegate];
+  delegate = [(GKFriendRequestViewController *)self delegate];
   if (objc_opt_respondsToSelector())
   {
-    [v3 friendRequestControllerDidFinish:self];
+    [delegate friendRequestControllerDidFinish:self];
   }
 }
 
@@ -52,40 +52,40 @@
   return WeakRetained;
 }
 
-+ (void)addFriends:(id)a3 recipients:(id)a4
++ (void)addFriends:(id)friends recipients:(id)recipients
 {
-  v5 = a3;
-  v6 = a4;
-  if (!v5)
+  friendsCopy = friends;
+  recipientsCopy = recipients;
+  if (!friendsCopy)
   {
-    v7 = [MEMORY[0x277D75128] sharedApplication];
-    v8 = [v7 keyWindow];
-    v5 = [v8 rootViewController];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
+    friendsCopy = [keyWindow rootViewController];
   }
 
   if (![MEMORY[0x277CD6888] canSendText])
   {
-    v13 = [MEMORY[0x277D0C1F8] reporter];
-    [v13 reportEvent:*MEMORY[0x277D0BE88] type:*MEMORY[0x277D0BA90]];
+    reporter = [MEMORY[0x277D0C1F8] reporter];
+    [reporter reportEvent:*MEMORY[0x277D0BE88] type:*MEMORY[0x277D0BA90]];
 
     v12 = GKGameCenterUIFrameworkBundle();
     goto LABEL_7;
   }
 
-  v9 = [MEMORY[0x277D0C1D8] shared];
-  v10 = [v9 isAddingFriendsRestricted];
+  mEMORY[0x277D0C1D8] = [MEMORY[0x277D0C1D8] shared];
+  isAddingFriendsRestricted = [mEMORY[0x277D0C1D8] isAddingFriendsRestricted];
 
-  if (v10)
+  if (isAddingFriendsRestricted)
   {
-    v11 = [MEMORY[0x277D0C1F8] reporter];
-    [v11 reportEvent:*MEMORY[0x277D0BE88] type:*MEMORY[0x277D0BAB0]];
+    reporter2 = [MEMORY[0x277D0C1F8] reporter];
+    [reporter2 reportEvent:*MEMORY[0x277D0BE88] type:*MEMORY[0x277D0BAB0]];
 
     v12 = GKGameCenterUIFrameworkBundle();
 LABEL_7:
     v14 = GKGetLocalizedStringFromTableInBundle();
     v15 = GKGameCenterUIFrameworkBundle();
     v16 = GKGetLocalizedStringFromTableInBundle();
-    [GKFriendRequestViewController presentAlertControllerOn:v5 withMessage:v14 andTitle:v16];
+    [GKFriendRequestViewController presentAlertControllerOn:friendsCopy withMessage:v14 andTitle:v16];
 
     goto LABEL_12;
   }
@@ -94,12 +94,12 @@ LABEL_7:
   v18 = [MEMORY[0x277CCACA8] stringWithFormat:@"%s:%d %s", "GKFriendRequestViewController.m", 86, "+[GKFriendRequestViewController addFriends:recipients:]"];
   v19 = [v17 dispatchGroupWithName:v18];
 
-  v20 = [MEMORY[0x277D0C1D8] shared];
-  v21 = [v20 fetchFriendCodeInExtensionEnabled];
+  mEMORY[0x277D0C1D8]2 = [MEMORY[0x277D0C1D8] shared];
+  fetchFriendCodeInExtensionEnabled = [mEMORY[0x277D0C1D8]2 fetchFriendCodeInExtensionEnabled];
 
-  if (v21)
+  if (fetchFriendCodeInExtensionEnabled)
   {
-    [GKFriendRequestViewController presentFriendRequestOn:v5 forRecipients:v6 withFriendCode:0 andFriendSupportPageURL:0];
+    [GKFriendRequestViewController presentFriendRequestOn:friendsCopy forRecipients:recipientsCopy withFriendCode:0 andFriendSupportPageURL:0];
   }
 
   else
@@ -117,8 +117,8 @@ LABEL_7:
   v23[2] = __55__GKFriendRequestViewController_addFriends_recipients___block_invoke_26;
   v23[3] = &unk_27966A9A8;
   v24 = v19;
-  v25 = v5;
-  v26 = v6;
+  v25 = friendsCopy;
+  v26 = recipientsCopy;
   v22 = v19;
   [v22 notifyOnMainQueueWithBlock:v23];
 
@@ -199,31 +199,31 @@ void __55__GKFriendRequestViewController_addFriends_recipients___block_invoke_26
   }
 }
 
-+ (void)presentFriendRequestOn:(id)a3 forRecipients:(id)a4 withFriendCode:(id)a5 andFriendSupportPageURL:(id)a6
++ (void)presentFriendRequestOn:(id)on forRecipients:(id)recipients withFriendCode:(id)code andFriendSupportPageURL:(id)l
 {
-  v13 = a3;
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
+  onCopy = on;
+  lCopy = l;
+  codeCopy = code;
+  recipientsCopy = recipients;
   v12 = objc_alloc_init(GKFriendRequestViewController);
-  [(GKFriendRequestViewController *)v12 setRequestingViewController:v13];
-  [(GKFriendRequestViewController *)v12 setFriendCode:v10];
+  [(GKFriendRequestViewController *)v12 setRequestingViewController:onCopy];
+  [(GKFriendRequestViewController *)v12 setFriendCode:codeCopy];
 
-  [(GKFriendRequestViewController *)v12 setFriendSupportPageURL:v9];
-  [(GKFriendRequestViewController *)v12 setRecipients:v11];
+  [(GKFriendRequestViewController *)v12 setFriendSupportPageURL:lCopy];
+  [(GKFriendRequestViewController *)v12 setRecipients:recipientsCopy];
 
-  if ([v13 conformsToProtocol:&unk_286226E78])
+  if ([onCopy conformsToProtocol:&unk_286226E78])
   {
-    [(GKFriendRequestViewController *)v12 setDelegate:v13];
+    [(GKFriendRequestViewController *)v12 setDelegate:onCopy];
   }
 
-  [v13 _gkPresentViewController:v12 animated:1];
+  [onCopy _gkPresentViewController:v12 animated:1];
 }
 
-+ (void)presentAlertControllerOn:(id)a3 withMessage:(id)a4 andTitle:(id)a5
++ (void)presentAlertControllerOn:(id)on withMessage:(id)message andTitle:(id)title
 {
-  v15 = a3;
-  v7 = [MEMORY[0x277D75110] alertControllerWithTitle:a5 message:a4 preferredStyle:1];
+  onCopy = on;
+  v7 = [MEMORY[0x277D75110] alertControllerWithTitle:title message:message preferredStyle:1];
   v8 = MEMORY[0x277D750F8];
   v9 = GKGameCenterUIFrameworkBundle();
   v10 = GKGetLocalizedStringFromTableInBundle();
@@ -233,16 +233,16 @@ void __55__GKFriendRequestViewController_addFriends_recipients___block_invoke_26
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    [v15 presentViewController:v7 animated:1 completion:0];
+    [onCopy presentViewController:v7 animated:1 completion:0];
   }
 
   else
   {
-    v12 = [MEMORY[0x277D75128] sharedApplication];
-    v13 = [v12 keyWindow];
-    v14 = [v13 rootViewController];
+    mEMORY[0x277D75128] = [MEMORY[0x277D75128] sharedApplication];
+    keyWindow = [mEMORY[0x277D75128] keyWindow];
+    rootViewController = [keyWindow rootViewController];
 
-    [v14 presentViewController:v7 animated:1 completion:0];
+    [rootViewController presentViewController:v7 animated:1 completion:0];
   }
 }
 

@@ -1,32 +1,32 @@
 @interface MTMetricsDataPredicate
-+ (id)predicateWithConfigData:(id)a3;
-+ (id)predicateWithType:(id)a3 argument:(id)a4;
-- (BOOL)evaluateWithMetricsData:(id)a3;
-- (MTMetricsDataPredicate)initWithConfigDictionary:(id)a3;
-- (MTMetricsDataPredicate)initWithFormat:(id)a3;
++ (id)predicateWithConfigData:(id)data;
++ (id)predicateWithType:(id)type argument:(id)argument;
+- (BOOL)evaluateWithMetricsData:(id)data;
+- (MTMetricsDataPredicate)initWithConfigDictionary:(id)dictionary;
+- (MTMetricsDataPredicate)initWithFormat:(id)format;
 @end
 
 @implementation MTMetricsDataPredicate
 
-+ (id)predicateWithType:(id)a3 argument:(id)a4
++ (id)predicateWithType:(id)type argument:(id)argument
 {
-  v5 = a3;
-  v6 = a4;
-  if ([v5 isEqualToString:@"valueMatches"])
+  typeCopy = type;
+  argumentCopy = argument;
+  if ([typeCopy isEqualToString:@"valueMatches"])
   {
     v7 = MEMORY[0x277CCAC30];
-    v12 = v6;
+    v12 = argumentCopy;
     v8 = @"self in %@";
 LABEL_3:
     v9 = [v7 predicateWithFormat:v8, v12];
     goto LABEL_8;
   }
 
-  if ([v5 isEqualToString:@"nonEmpty"])
+  if ([typeCopy isEqualToString:@"nonEmpty"])
   {
-    v10 = [v6 BOOLValue];
+    bOOLValue = [argumentCopy BOOLValue];
     v7 = MEMORY[0x277CCAC30];
-    if (v10)
+    if (bOOLValue)
     {
       v8 = @"self != nil && self != ''";
     }
@@ -45,13 +45,13 @@ LABEL_8:
   return v9;
 }
 
-+ (id)predicateWithConfigData:(id)a3
++ (id)predicateWithConfigData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[MTMetricsDataPredicate alloc] initWithConfigDictionary:v3];
+    v4 = [[MTMetricsDataPredicate alloc] initWithConfigDictionary:dataCopy];
 LABEL_5:
     v5 = v4;
     goto LABEL_7;
@@ -60,7 +60,7 @@ LABEL_5:
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v4 = [[MTMetricsDataPredicate alloc] initWithFormat:v3];
+    v4 = [[MTMetricsDataPredicate alloc] initWithFormat:dataCopy];
     goto LABEL_5;
   }
 
@@ -70,17 +70,17 @@ LABEL_7:
   return v5;
 }
 
-- (MTMetricsDataPredicate)initWithFormat:(id)a3
+- (MTMetricsDataPredicate)initWithFormat:(id)format
 {
   v14[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  formatCopy = format;
   v11.receiver = self;
   v11.super_class = MTMetricsDataPredicate;
   v5 = [(MTMetricsDataPredicate *)&v11 init];
   if (v5)
   {
     v13 = @"_";
-    v6 = [MEMORY[0x277CCAC30] predicateWithFormat:v4];
+    v6 = [MEMORY[0x277CCAC30] predicateWithFormat:formatCopy];
     v12 = v6;
     v7 = [MEMORY[0x277CBEA60] arrayWithObjects:&v12 count:1];
     v14[0] = v7;
@@ -92,22 +92,22 @@ LABEL_7:
   return v5;
 }
 
-- (MTMetricsDataPredicate)initWithConfigDictionary:(id)a3
+- (MTMetricsDataPredicate)initWithConfigDictionary:(id)dictionary
 {
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v12.receiver = self;
   v12.super_class = MTMetricsDataPredicate;
   v5 = [(MTMetricsDataPredicate *)&v12 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(v4, "count")}];
+    v6 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:{objc_msgSend(dictionaryCopy, "count")}];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __51__MTMetricsDataPredicate_initWithConfigDictionary___block_invoke;
     v10[3] = &unk_2798CD0B8;
     v11 = v6;
     v7 = v6;
-    [v4 enumerateKeysAndObjectsUsingBlock:v10];
+    [dictionaryCopy enumerateKeysAndObjectsUsingBlock:v10];
     v8 = [v7 copy];
     [(MTMetricsDataPredicate *)v5 setFieldPredicates:v8];
   }
@@ -170,27 +170,27 @@ uint64_t __51__MTMetricsDataPredicate_initWithConfigDictionary___block_invoke_2(
   return MEMORY[0x2821F96F8]();
 }
 
-- (BOOL)evaluateWithMetricsData:(id)a3
+- (BOOL)evaluateWithMetricsData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v11 = 0;
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 1;
-  v5 = [(MTMetricsDataPredicate *)self fieldPredicates];
+  fieldPredicates = [(MTMetricsDataPredicate *)self fieldPredicates];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __50__MTMetricsDataPredicate_evaluateWithMetricsData___block_invoke;
   v8[3] = &unk_2798CD0E0;
-  v6 = v4;
+  v6 = dataCopy;
   v9 = v6;
   v10 = &v11;
-  [v5 enumerateKeysAndObjectsUsingBlock:v8];
+  [fieldPredicates enumerateKeysAndObjectsUsingBlock:v8];
 
-  LOBYTE(v5) = *(v12 + 24);
+  LOBYTE(fieldPredicates) = *(v12 + 24);
   _Block_object_dispose(&v11, 8);
 
-  return v5;
+  return fieldPredicates;
 }
 
 void __50__MTMetricsDataPredicate_evaluateWithMetricsData___block_invoke(uint64_t a1, void *a2, void *a3, _BYTE *a4)

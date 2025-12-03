@@ -1,5 +1,5 @@
 @interface InactiveWatchScanner
-- (InactiveWatchScanner)initWithDelegate:(id)a3;
+- (InactiveWatchScanner)initWithDelegate:(id)delegate;
 - (InactiveWatchScannerDelegate)delegate;
 - (NSArray)inactiveWatches;
 - (unsigned)activeWatchWristState;
@@ -8,18 +8,18 @@
 - (void)invalidate;
 - (void)scheduleHighDutyCycleScanningTimer;
 - (void)shouldRollAdvertisingIdentifier;
-- (void)startRunningWithInactiveWatches:(id)a3 activeWatchWristState:(unsigned __int8)a4;
+- (void)startRunningWithInactiveWatches:(id)watches activeWatchWristState:(unsigned __int8)state;
 - (void)startScanning;
 - (void)stopRunning;
 - (void)updateScanningState;
-- (void)wiProxScannerFoundDevice:(id)a3 withData:(id)a4;
+- (void)wiProxScannerFoundDevice:(id)device withData:(id)data;
 @end
 
 @implementation InactiveWatchScanner
 
-- (InactiveWatchScanner)initWithDelegate:(id)a3
+- (InactiveWatchScanner)initWithDelegate:(id)delegate
 {
-  v4 = a3;
+  delegateCopy = delegate;
   v10.receiver = self;
   v10.super_class = InactiveWatchScanner;
   v5 = [(InactiveWatchScanner *)&v10 init];
@@ -33,7 +33,7 @@
       _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "InactiveWatchScanner --- Initializing (%p)", buf, 0xCu);
     }
 
-    objc_storeWeak(&v5->_delegate, v4);
+    objc_storeWeak(&v5->_delegate, delegateCopy);
     v7 = [[WiProxScanner alloc] initWithDelegate:v5];
     wiProxScanner = v5->_wiProxScanner;
     v5->_wiProxScanner = v7;
@@ -62,7 +62,7 @@
     if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
     {
       v5 = 134217984;
-      v6 = self;
+      selfCopy = self;
       _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_DEFAULT, "InactiveWatchScanner --- Invalidating (%p)", &v5, 0xCu);
     }
 
@@ -79,9 +79,9 @@
   }
 }
 
-- (void)startRunningWithInactiveWatches:(id)a3 activeWatchWristState:(unsigned __int8)a4
+- (void)startRunningWithInactiveWatches:(id)watches activeWatchWristState:(unsigned __int8)state
 {
-  v6 = a3;
+  watchesCopy = watches;
   if (self->_isRunning)
   {
     v7 = qword_100021420;
@@ -101,15 +101,15 @@
   if (os_log_type_enabled(qword_100021420, OS_LOG_TYPE_DEFAULT))
   {
     v10 = 138412290;
-    v11 = v6;
+    v11 = watchesCopy;
     _os_log_impl(&_mh_execute_header, v8, OS_LOG_TYPE_DEFAULT, "InactiveWatchScanner --- Starting scanning for inactive watches: %@", &v10, 0xCu);
   }
 
   self->_isRunning = 1;
   inactiveWatches = self->_inactiveWatches;
-  self->_inactiveWatches = v6;
+  self->_inactiveWatches = watchesCopy;
 
-  self->_activeWatchWristState = a4;
+  self->_activeWatchWristState = state;
   [(InactiveWatchScanner *)self scheduleHighDutyCycleScanningTimer];
   [(InactiveWatchScanner *)self updateScanningState];
 }
@@ -166,11 +166,11 @@
 
 - (void)updateScanningState
 {
-  v3 = [(WiProxScanner *)self->_wiProxScanner isScanning];
-  v4 = [(WiProxScanner *)self->_wiProxScanner isPoweredOn];
-  if (self->_isRunning && (v4 & 1) != 0)
+  isScanning = [(WiProxScanner *)self->_wiProxScanner isScanning];
+  isPoweredOn = [(WiProxScanner *)self->_wiProxScanner isPoweredOn];
+  if (self->_isRunning && (isPoweredOn & 1) != 0)
   {
-    if ((v3 & 1) == 0)
+    if ((isScanning & 1) == 0)
     {
 
       [(InactiveWatchScanner *)self startScanning];
@@ -179,7 +179,7 @@
 
   else
   {
-    if (v3)
+    if (isScanning)
     {
       [(WiProxScanner *)self->_wiProxScanner stopScanning];
     }
@@ -307,8 +307,8 @@
 
   v10 = self->_activeWatchWristState + 1;
   v11 = self->_highDutyCycleScanningTimer != 0;
-  v12 = [(AdvertisingIdentifierManager *)advertisingIdentifierManager advertisingIdentifier];
-  [v12 getBytes:&v17 length:2];
+  advertisingIdentifier = [(AdvertisingIdentifierManager *)advertisingIdentifierManager advertisingIdentifier];
+  [advertisingIdentifier getBytes:&v17 length:2];
   LOBYTE(v17) = v17 & 0xFE;
   v18 = v10;
   v13 = [NSData dataWithBytes:&v17 length:3];
@@ -318,18 +318,18 @@
   [(WiProxScanner *)self->_wiProxScanner startScanningWithHighDutyCycle:v11 filteredPeers:self->_inactiveWatches filteringBlob:v13 filteringMask:v14];
 }
 
-- (void)wiProxScannerFoundDevice:(id)a3 withData:(id)a4
+- (void)wiProxScannerFoundDevice:(id)device withData:(id)data
 {
-  v6 = a3;
-  v7 = a4;
-  if ([v7 length] >= 3)
+  deviceCopy = device;
+  dataCopy = data;
+  if ([dataCopy length] >= 3)
   {
     v9 = 0;
-    [v7 getBytes:&v9 range:{2, 1}];
+    [dataCopy getBytes:&v9 range:{2, 1}];
     if (v9 > self->_activeWatchWristState)
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      [WeakRetained didDiscoverInactiveWatch:v6 withWristState:v9];
+      [WeakRetained didDiscoverInactiveWatch:deviceCopy withWristState:v9];
     }
   }
 }

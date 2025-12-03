@@ -7,9 +7,9 @@
 
 - (_NSRange)range
 {
-  v3 = [(WFSyntaxHighlightToken *)self start];
+  start = [(WFSyntaxHighlightToken *)self start];
   v4 = [(WFSyntaxHighlightToken *)self length];
-  v5 = v3;
+  v5 = start;
   result.length = v4;
   result.location = v5;
   return result;

@@ -1,11 +1,11 @@
 @interface STInspectDB
-- (BOOL)runWithOptions:(id)a3;
-- (id)_convertDateToString:(id)a3;
-- (id)_fetchBlueprints:(id)a3;
-- (id)_fetchCommunicationPoliciesMatchingAppleID:(id)a3;
-- (id)_fetchFamilySettingsMatchingAppleID:(id)a3;
+- (BOOL)runWithOptions:(id)options;
+- (id)_convertDateToString:(id)string;
+- (id)_fetchBlueprints:(id)blueprints;
+- (id)_fetchCommunicationPoliciesMatchingAppleID:(id)d;
+- (id)_fetchFamilySettingsMatchingAppleID:(id)d;
 - (id)_schemaData;
-- (id)_usageData:(id)a3;
+- (id)_usageData:(id)data;
 - (id)options;
 @end
 
@@ -24,30 +24,30 @@
   return v3;
 }
 
-- (BOOL)runWithOptions:(id)a3
+- (BOOL)runWithOptions:(id)options
 {
-  v4 = a3;
-  v5 = [v4 dictionaryWithOptionsAndValues];
-  [v4 finishArguments];
+  optionsCopy = options;
+  dictionaryWithOptionsAndValues = [optionsCopy dictionaryWithOptionsAndValues];
+  [optionsCopy finishArguments];
 
-  v6 = [v5 objectForKeyedSubscript:@"verbose"];
+  v6 = [dictionaryWithOptionsAndValues objectForKeyedSubscript:@"verbose"];
   byte_1000157B8 = v6 != 0;
 
   v7 = +[STAdminPersistenceController sharedController];
-  v8 = [v7 persistentContainer];
+  persistentContainer = [v7 persistentContainer];
 
-  if (!v8)
+  if (!persistentContainer)
   {
     sub_100007B94();
   }
 
-  v9 = [v8 newBackgroundContext];
+  newBackgroundContext = [persistentContainer newBackgroundContext];
   v11[0] = _NSConcreteStackBlock;
   v11[1] = 3221225472;
   v11[2] = sub_100001F40;
   v11[3] = &unk_1000103C0;
   v11[4] = self;
-  [v9 performBlockAndWait:v11];
+  [newBackgroundContext performBlockAndWait:v11];
 
   return 1;
 }
@@ -87,18 +87,18 @@
           v10 = *(*(&v58 + 1) + 8 * i);
           v11 = objc_alloc_init(v3[104]);
           v12 = +[NSBundle mainBundle];
-          v13 = [v12 bundleIdentifier];
+          bundleIdentifier = [v12 bundleIdentifier];
 
-          v14 = [v10 givenName];
-          v15 = [v10 familyName];
-          v16 = [NSString stringWithFormat:@"%@ %@", v14, v15];
+          givenName = [v10 givenName];
+          familyName = [v10 familyName];
+          v16 = [NSString stringWithFormat:@"%@ %@", givenName, familyName];
           [v11 setObject:v16 forKeyedSubscript:@"user"];
 
-          v17 = [v10 dsid];
-          v18 = v17;
-          if (v17)
+          dsid = [v10 dsid];
+          v18 = dsid;
+          if (dsid)
           {
-            v19 = v17;
+            v19 = dsid;
           }
 
           else
@@ -108,13 +108,13 @@
 
           [v11 setObject:v19 forKeyedSubscript:@"identifier"];
 
-          v20 = [v10 altDSID];
-          [v11 setObject:v20 forKeyedSubscript:@"alternateIdentifier"];
+          altDSID = [v10 altDSID];
+          [v11 setObject:altDSID forKeyedSubscript:@"alternateIdentifier"];
 
-          v21 = [v10 organizationIdentifier];
-          [v11 setObject:v21 forKeyedSubscript:@"organizationIdentifier"];
+          organizationIdentifier = [v10 organizationIdentifier];
+          [v11 setObject:organizationIdentifier forKeyedSubscript:@"organizationIdentifier"];
 
-          [v13 UTF8String];
+          [bundleIdentifier UTF8String];
           if ((os_variant_has_internal_ui() & 1) == 0)
           {
             [v11 setObject:off_100015688 forKeyedSubscript:@"user"];
@@ -129,11 +129,11 @@
           v24 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 isManaged]);
           [v22 setObject:v24 forKeyedSubscript:@"managed"];
 
-          v25 = [v10 isAppAndWebsiteActivityEnabled];
-          v26 = v25;
-          if (v25)
+          isAppAndWebsiteActivityEnabled = [v10 isAppAndWebsiteActivityEnabled];
+          v26 = isAppAndWebsiteActivityEnabled;
+          if (isAppAndWebsiteActivityEnabled)
           {
-            v27 = v25;
+            v27 = isAppAndWebsiteActivityEnabled;
           }
 
           else
@@ -152,15 +152,15 @@
           v30 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 shareWebUsage]);
           [v22 setObject:v30 forKeyedSubscript:@"shareWebUsage"];
 
-          v31 = [v10 effectivePasscode];
-          v32 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v31 length] != 0);
+          effectivePasscode = [v10 effectivePasscode];
+          v32 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [effectivePasscode length] != 0);
           [v22 setObject:v32 forKeyedSubscript:@"isPasscodeSet"];
 
           v33 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v10 needsToSetPasscode]);
           [v22 setObject:v33 forKeyedSubscript:@"needsToSetPasscode"];
 
-          v34 = [v10 unmodeledManagingOrganizationSettings];
-          [v34 modificationDate];
+          unmodeledManagingOrganizationSettings = [v10 unmodeledManagingOrganizationSettings];
+          [unmodeledManagingOrganizationSettings modificationDate];
           v36 = v35 = v3;
           v37 = [(STInspectDB *)self _convertDateToString:v36];
 
@@ -175,31 +175,31 @@
           }
 
           [v22 setObject:v38 forKeyedSubscript:@"settingsModificationDate"];
-          v39 = [v10 appleID];
-          v40 = [(STInspectDB *)self _fetchCommunicationPoliciesMatchingAppleID:v39];
+          appleID = [v10 appleID];
+          v40 = [(STInspectDB *)self _fetchCommunicationPoliciesMatchingAppleID:appleID];
           [v22 setObject:v40 forKeyedSubscript:@"communicationPolicies"];
 
           [v11 setObject:v22 forKeyedSubscript:@"settings"];
-          v41 = [v10 appleID];
-          v42 = [(STInspectDB *)self _fetchFamilySettingsMatchingAppleID:v41];
+          appleID2 = [v10 appleID];
+          v42 = [(STInspectDB *)self _fetchFamilySettingsMatchingAppleID:appleID2];
           [v11 setObject:v42 forKeyedSubscript:@"familySettings"];
 
-          v43 = [v10 appleID];
-          v44 = [(STInspectDB *)self _usageData:v43];
+          appleID3 = [v10 appleID];
+          v44 = [(STInspectDB *)self _usageData:appleID3];
           [v11 setObject:v44 forKeyedSubscript:@"aggregateUsage"];
 
-          v45 = [v10 appleID];
-          v46 = sub_100003548(v45);
+          appleID4 = [v10 appleID];
+          v46 = sub_100003548(appleID4);
           [v11 setObject:v46 forKeyedSubscript:@"perDeviceState"];
 
-          v47 = [v10 appleID];
-          v48 = [(STInspectDB *)self _fetchBlueprints:v47];
+          appleID5 = [v10 appleID];
+          v48 = [(STInspectDB *)self _fetchBlueprints:appleID5];
           [v11 setObject:v48 forKeyedSubscript:@"blueprints"];
 
           v3 = v35;
-          v49 = [v10 localUserDeviceState];
+          localUserDeviceState = [v10 localUserDeviceState];
 
-          if (v49)
+          if (localUserDeviceState)
           {
             v50 = @"localUser";
           }
@@ -228,9 +228,9 @@
   return v8;
 }
 
-- (id)_fetchBlueprints:(id)a3
+- (id)_fetchBlueprints:(id)blueprints
 {
-  v4 = [STCoreUser fetchRequestMatchingAppleID:a3];
+  v4 = [STCoreUser fetchRequestMatchingAppleID:blueprints];
   v57 = 0;
   v5 = [v4 execute:&v57];
   v6 = v57;
@@ -240,8 +240,8 @@
     v40 = v4;
     v39 = v5;
     v7 = [v5 objectAtIndexedSubscript:0];
-    v8 = [v7 blueprints];
-    v44 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v8 count]);
+    blueprints = [v7 blueprints];
+    v44 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [blueprints count]);
 
     v55 = 0u;
     v56 = 0u;
@@ -253,7 +253,7 @@
     if (v45)
     {
       v42 = *v54;
-      v43 = self;
+      selfCopy = self;
       do
       {
         v9 = 0;
@@ -266,16 +266,16 @@
 
           v48 = v9;
           v10 = *(*(&v53 + 1) + 8 * v9);
-          v11 = [v10 configurations];
-          v12 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [v11 count]);
+          configurations = [v10 configurations];
+          v12 = +[NSMutableDictionary dictionaryWithCapacity:](NSMutableDictionary, "dictionaryWithCapacity:", [configurations count]);
 
           v51 = 0u;
           v52 = 0u;
           v49 = 0u;
           v50 = 0u;
           v47 = v10;
-          v13 = [v10 configurations];
-          v14 = [v13 countByEnumeratingWithState:&v49 objects:v62 count:16];
+          configurations2 = [v10 configurations];
+          v14 = [configurations2 countByEnumeratingWithState:&v49 objects:v62 count:16];
           if (v14)
           {
             v15 = v14;
@@ -286,43 +286,43 @@
               {
                 if (*v50 != v16)
                 {
-                  objc_enumerationMutation(v13);
+                  objc_enumerationMutation(configurations2);
                 }
 
                 v18 = *(*(&v49 + 1) + 8 * i);
-                v19 = [v18 identifier];
+                identifier = [v18 identifier];
                 v60[0] = @"identifier";
-                v20 = [v18 identifier];
+                identifier2 = [v18 identifier];
                 v60[1] = @"type";
-                v61[0] = v20;
-                v21 = [v18 type];
-                v61[1] = v21;
+                v61[0] = identifier2;
+                type = [v18 type];
+                v61[1] = type;
                 v22 = [NSDictionary dictionaryWithObjects:v61 forKeys:v60 count:2];
-                [v12 setObject:v22 forKeyedSubscript:v19];
+                [v12 setObject:v22 forKeyedSubscript:identifier];
               }
 
-              v15 = [v13 countByEnumeratingWithState:&v49 objects:v62 count:16];
+              v15 = [configurations2 countByEnumeratingWithState:&v49 objects:v62 count:16];
             }
 
             while (v15);
           }
 
-          v46 = [v47 identifier];
-          v23 = [v47 modificationDate];
-          v24 = [(STInspectDB *)v43 _convertDateToString:v23];
+          identifier3 = [v47 identifier];
+          modificationDate = [v47 modificationDate];
+          v24 = [(STInspectDB *)selfCopy _convertDateToString:modificationDate];
 
-          v25 = [v47 expiration];
-          v26 = [(STInspectDB *)v43 _convertDateToString:v25];
+          expiration = [v47 expiration];
+          v26 = [(STInspectDB *)selfCopy _convertDateToString:expiration];
 
-          v27 = [v47 minimumInstallationDate];
-          v28 = [(STInspectDB *)v43 _convertDateToString:v27];
+          minimumInstallationDate = [v47 minimumInstallationDate];
+          v28 = [(STInspectDB *)selfCopy _convertDateToString:minimumInstallationDate];
 
           v58[0] = @"identifier";
-          v29 = [v47 identifier];
-          v59[0] = v29;
+          identifier4 = [v47 identifier];
+          v59[0] = identifier4;
           v58[1] = @"type";
-          v30 = [v47 type];
-          v59[1] = v30;
+          type2 = [v47 type];
+          v59[1] = type2;
           v58[2] = @"enabled";
           v31 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v47 enabled]);
           v32 = v31;
@@ -362,7 +362,7 @@
           v58[6] = @"configurations";
           v59[6] = v12;
           v36 = [NSDictionary dictionaryWithObjects:v59 forKeys:v58 count:7];
-          [v44 setObject:v36 forKeyedSubscript:v46];
+          [v44 setObject:v36 forKeyedSubscript:identifier3];
 
           v9 = v48 + 1;
         }
@@ -382,11 +382,11 @@
   return v44;
 }
 
-- (id)_usageData:(id)a3
+- (id)_usageData:(id)data
 {
-  v3 = a3;
+  dataCopy = data;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [STCoreUser fetchRequestMatchingAppleID:v3];
+  v5 = [STCoreUser fetchRequestMatchingAppleID:dataCopy];
   v34 = 0;
   v6 = [v5 execute:&v34];
   v7 = v34;
@@ -398,7 +398,7 @@
   else
   {
     v28 = v5;
-    v29 = v3;
+    v29 = dataCopy;
     v27 = v6;
     v9 = [v6 objectAtIndexedSubscript:0];
     v10 = +[NSCalendar currentCalendar];
@@ -415,8 +415,8 @@
     v30 = 0u;
     v31 = 0u;
     v26 = v9;
-    v16 = [v9 usages];
-    v17 = [v16 countByEnumeratingWithState:&v30 objects:v35 count:16];
+    usages = [v9 usages];
+    v17 = [usages countByEnumeratingWithState:&v30 objects:v35 count:16];
     if (v17)
     {
       v18 = v17;
@@ -427,13 +427,13 @@
         {
           if (*v31 != v19)
           {
-            objc_enumerationMutation(v16);
+            objc_enumerationMutation(usages);
           }
 
           v21 = *(*(&v30 + 1) + 8 * i);
-          v22 = [v21 device];
+          device = [v21 device];
 
-          if (!v22)
+          if (!device)
           {
             v23 = sub_100001684(v21, v13, v15);
 
@@ -441,7 +441,7 @@
           }
         }
 
-        v18 = [v16 countByEnumeratingWithState:&v30 objects:v35 count:16];
+        v18 = [usages countByEnumeratingWithState:&v30 objects:v35 count:16];
       }
 
       while (v18);
@@ -450,18 +450,18 @@
     v4 = v4;
     v8 = v4;
     v5 = v28;
-    v3 = v29;
+    dataCopy = v29;
     v6 = v27;
   }
 
   return v8;
 }
 
-- (id)_fetchCommunicationPoliciesMatchingAppleID:(id)a3
+- (id)_fetchCommunicationPoliciesMatchingAppleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [STCoreUser fetchRequestMatchingAppleID:v3];
+  v5 = [STCoreUser fetchRequestMatchingAppleID:dCopy];
 
   v17 = 0;
   v6 = [v5 execute:&v17];
@@ -494,11 +494,11 @@
   return v8;
 }
 
-- (id)_fetchFamilySettingsMatchingAppleID:(id)a3
+- (id)_fetchFamilySettingsMatchingAppleID:(id)d
 {
-  v3 = a3;
+  dCopy = d;
   v4 = objc_alloc_init(NSMutableDictionary);
-  v5 = [STCoreUser fetchRequestMatchingAppleID:v3];
+  v5 = [STCoreUser fetchRequestMatchingAppleID:dCopy];
 
   v17 = 0;
   v6 = [v5 execute:&v17];
@@ -507,11 +507,11 @@
   if (!v17)
   {
     v9 = [v6 objectAtIndexedSubscript:0];
-    v10 = [v9 familyMemberType];
-    v11 = v10;
-    if (v10)
+    familyMemberType = [v9 familyMemberType];
+    v11 = familyMemberType;
+    if (familyMemberType)
     {
-      v12 = v10;
+      v12 = familyMemberType;
     }
 
     else
@@ -536,13 +536,13 @@
   return v8;
 }
 
-- (id)_convertDateToString:(id)a3
+- (id)_convertDateToString:(id)string
 {
-  if (a3)
+  if (string)
   {
-    v3 = a3;
+    stringCopy = string;
     v4 = objc_opt_new();
-    v5 = [v4 stringFromDate:v3];
+    v5 = [v4 stringFromDate:stringCopy];
   }
 
   else

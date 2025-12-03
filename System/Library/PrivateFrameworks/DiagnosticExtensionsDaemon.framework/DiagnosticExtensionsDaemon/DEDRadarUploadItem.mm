@@ -1,26 +1,26 @@
 @interface DEDRadarUploadItem
-- (DEDRadarUploadItem)initWithUploadTask:(id)a3 andAttachment:(id)a4;
+- (DEDRadarUploadItem)initWithUploadTask:(id)task andAttachment:(id)attachment;
 - (id)description;
 @end
 
 @implementation DEDRadarUploadItem
 
-- (DEDRadarUploadItem)initWithUploadTask:(id)a3 andAttachment:(id)a4
+- (DEDRadarUploadItem)initWithUploadTask:(id)task andAttachment:(id)attachment
 {
-  v6 = a3;
-  v7 = a4;
+  taskCopy = task;
+  attachmentCopy = attachment;
   v14.receiver = self;
   v14.super_class = DEDRadarUploadItem;
   v8 = [(DEDRadarUploadItem *)&v14 init];
   if (v8)
   {
-    -[DEDRadarUploadItem setTaskIdentifier:](v8, "setTaskIdentifier:", [v6 taskIdentifier]);
-    [(DEDAttachmentItem *)v8 setAttachedPath:v7];
+    -[DEDRadarUploadItem setTaskIdentifier:](v8, "setTaskIdentifier:", [taskCopy taskIdentifier]);
+    [(DEDAttachmentItem *)v8 setAttachedPath:attachmentCopy];
     [(DEDRadarUploadItem *)v8 setTotalBytesSent:0];
-    v9 = [MEMORY[0x277CCAA00] defaultManager];
-    v10 = [(DEDAttachmentItem *)v8 attachedPath];
-    v11 = [v10 path];
-    v12 = [v9 attributesOfItemAtPath:v11 error:0];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    attachedPath = [(DEDAttachmentItem *)v8 attachedPath];
+    path = [attachedPath path];
+    v12 = [defaultManager attributesOfItemAtPath:path error:0];
     -[DEDRadarUploadItem setTotalBytesExpectedToSend:](v8, "setTotalBytesExpectedToSend:", [v12 fileSize]);
 
     [(DEDRadarUploadItem *)v8 setIsUploaded:0];
@@ -36,8 +36,8 @@
   v3 = [objc_alloc(MEMORY[0x277CCABB0]) initWithInteger:{-[DEDRadarUploadItem taskIdentifier](self, "taskIdentifier")}];
   v16[0] = v3;
   v15[1] = @"attachedPath";
-  v4 = [(DEDAttachmentItem *)self attachedPath];
-  v16[1] = v4;
+  attachedPath = [(DEDAttachmentItem *)self attachedPath];
+  v16[1] = attachedPath;
   v15[2] = @"totalBytesSent";
   v5 = [objc_alloc(MEMORY[0x277CCABB0]) initWithLongLong:{-[DEDRadarUploadItem totalBytesSent](self, "totalBytesSent")}];
   v16[2] = v5;

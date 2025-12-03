@@ -1,23 +1,23 @@
 @interface CloudBookmarkDebugHierarchyChecker
-- (BOOL)_verifyHierarchyIntegrityInDatabase:(void *)a3;
-- (BOOL)_verifySyncDataForItem:(void *)a3 recordName:(id)a4 expectingSyncData:(BOOL)a5 expectingCloudKitData:(BOOL)a6;
+- (BOOL)_verifyHierarchyIntegrityInDatabase:(void *)database;
+- (BOOL)_verifySyncDataForItem:(void *)item recordName:(id)name expectingSyncData:(BOOL)data expectingCloudKitData:(BOOL)kitData;
 - (BOOL)performHierarchyCheck;
-- (CloudBookmarkDebugHierarchyChecker)initWithDatabaseAccessor:(id)a3;
-- (int64_t)_serverSyncIDTypeForServerSyncID:(id)a3;
+- (CloudBookmarkDebugHierarchyChecker)initWithDatabaseAccessor:(id)accessor;
+- (int64_t)_serverSyncIDTypeForServerSyncID:(id)d;
 @end
 
 @implementation CloudBookmarkDebugHierarchyChecker
 
-- (CloudBookmarkDebugHierarchyChecker)initWithDatabaseAccessor:(id)a3
+- (CloudBookmarkDebugHierarchyChecker)initWithDatabaseAccessor:(id)accessor
 {
-  v5 = a3;
+  accessorCopy = accessor;
   v10.receiver = self;
   v10.super_class = CloudBookmarkDebugHierarchyChecker;
   v6 = [(CloudBookmarkDebugHierarchyChecker *)&v10 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_databaseAccessor, a3);
+    objc_storeStrong(&v6->_databaseAccessor, accessor);
     v8 = v7;
   }
 
@@ -26,25 +26,25 @@
 
 - (BOOL)performHierarchyCheck
 {
-  v3 = [(WBSBookmarkDBAccess *)self->_databaseAccessor createDatabaseWithoutLock];
-  [(WBSBookmarkDBAccess *)self->_databaseAccessor openDatabase:v3];
-  v4 = [(CloudBookmarkDebugHierarchyChecker *)self _verifyHierarchyIntegrityInDatabase:v3];
+  createDatabaseWithoutLock = [(WBSBookmarkDBAccess *)self->_databaseAccessor createDatabaseWithoutLock];
+  [(WBSBookmarkDBAccess *)self->_databaseAccessor openDatabase:createDatabaseWithoutLock];
+  v4 = [(CloudBookmarkDebugHierarchyChecker *)self _verifyHierarchyIntegrityInDatabase:createDatabaseWithoutLock];
   if (v4)
   {
-    [(WBSBookmarkDBAccess *)self->_databaseAccessor saveBackupOfDatabase:v3 withName:@"Bookmarks-Backup-for-31802262"];
+    [(WBSBookmarkDBAccess *)self->_databaseAccessor saveBackupOfDatabase:createDatabaseWithoutLock withName:@"Bookmarks-Backup-for-31802262"];
   }
 
-  [(WBSBookmarkDBAccess *)self->_databaseAccessor closeDatabase:v3 shouldSave:0];
-  CFRelease(v3);
+  [(WBSBookmarkDBAccess *)self->_databaseAccessor closeDatabase:createDatabaseWithoutLock shouldSave:0];
+  CFRelease(createDatabaseWithoutLock);
   return v4;
 }
 
-- (int64_t)_serverSyncIDTypeForServerSyncID:(id)a3
+- (int64_t)_serverSyncIDTypeForServerSyncID:(id)d
 {
-  v3 = a3;
-  if ([v3 length])
+  dCopy = d;
+  if ([dCopy length])
   {
-    if ([v3 hasPrefix:@"http"])
+    if ([dCopy hasPrefix:@"http"])
     {
       v4 = 1;
     }
@@ -63,9 +63,9 @@
   return v4;
 }
 
-- (BOOL)_verifyHierarchyIntegrityInDatabase:(void *)a3
+- (BOOL)_verifyHierarchyIntegrityInDatabase:(void *)database
 {
-  v4 = self;
+  selfCopy = self;
   v5 = [(WBSBookmarkDBAccess *)self->_databaseAccessor localCloudKitMigrationState:?];
   v37 = v5 - 1;
   v6 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
@@ -82,22 +82,22 @@
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_INFO, "Migration state: %ld, expect DAV IDs: %d, expect CloudKit IDs for all records: %d, expect parsable sync data: %d", buf, 0x1Eu);
   }
 
-  v7 = [(WBSBookmarkDBAccess *)v4->_databaseAccessor copyLocalIDsInFolderWithLocalID:0 database:a3];
-  v8 = [v7 allObjects];
-  v9 = [v8 mutableCopy];
+  v7 = [(WBSBookmarkDBAccess *)selfCopy->_databaseAccessor copyLocalIDsInFolderWithLocalID:0 database:database];
+  allObjects = [v7 allObjects];
+  v9 = [allObjects mutableCopy];
 
-  v10 = [v9 firstObject];
-  if (v10)
+  firstObject = [v9 firstObject];
+  if (firstObject)
   {
-    v12 = v10;
+    v12 = firstObject;
     v13 = 1;
     *&v11 = 138543362;
     v36 = v11;
-    p_isa = &v4->super.isa;
+    p_isa = &selfCopy->super.isa;
     while (1)
     {
       [v9 removeObjectAtIndex:{0, v36}];
-      v14 = [(WBSBookmarkDBAccess *)v4->_databaseAccessor copyItemWithLocalID:v12 database:a3];
+      v14 = [(WBSBookmarkDBAccess *)selfCopy->_databaseAccessor copyItemWithLocalID:v12 database:database];
       v15 = objc_alloc_init(WBSScopeExitHandler);
       v50[0] = _NSConcreteStackBlock;
       v50[1] = 3221225472;
@@ -106,19 +106,19 @@
       v50[4] = v14;
       v40 = v15;
       [v15 setHandler:v50];
-      v41 = [(WBSBookmarkDBAccess *)v4->_databaseAccessor copyServerIdWithItem:v14];
-      v16 = [(WBSBookmarkDBAccess *)v4->_databaseAccessor itemTypeWithItem:v14];
-      databaseAccessor = v4->_databaseAccessor;
+      v41 = [(WBSBookmarkDBAccess *)selfCopy->_databaseAccessor copyServerIdWithItem:v14];
+      v16 = [(WBSBookmarkDBAccess *)selfCopy->_databaseAccessor itemTypeWithItem:v14];
+      databaseAccessor = selfCopy->_databaseAccessor;
       if (v16 == 1)
       {
         v39 = [(WBSBookmarkDBAccess *)databaseAccessor folderTypeWithFolder:v14];
-        v18 = [(WBSBookmarkDBAccess *)v4->_databaseAccessor copyLocalIDsInFolderWithLocalID:v12 database:a3];
+        v18 = [(WBSBookmarkDBAccess *)selfCopy->_databaseAccessor copyLocalIDsInFolderWithLocalID:v12 database:database];
         [v18 allObjects];
         v19 = v5;
-        v21 = v20 = a3;
+        v21 = v20 = database;
         [v9 addObjectsFromArray:v21];
 
-        a3 = v20;
+        database = v20;
         v5 = v19;
       }
 
@@ -141,7 +141,7 @@
         _os_log_impl(&_mh_execute_header, v22, OS_LOG_TYPE_INFO, "Checking record with local ID: %{public}@, server ID: %{public}@, item type: %ld, subtype: %ld", buf, 0x2Au);
       }
 
-      v4 = p_isa;
+      selfCopy = p_isa;
       v23 = v41;
       v24 = [p_isa _serverSyncIDTypeForServerSyncID:v41];
       if (v24 == 2)
@@ -195,10 +195,10 @@ LABEL_33:
 LABEL_37:
       v13 &= [p_isa _verifySyncDataForItem:v14 recordName:v23 expectingSyncData:v37 > 1 expectingCloudKitData:v5 == 3];
 
-      v34 = [v9 firstObject];
+      firstObject2 = [v9 firstObject];
 
-      v12 = v34;
-      if (!v34)
+      v12 = firstObject2;
+      if (!firstObject2)
       {
         goto LABEL_40;
       }
@@ -263,13 +263,13 @@ LABEL_40:
   return v13;
 }
 
-- (BOOL)_verifySyncDataForItem:(void *)a3 recordName:(id)a4 expectingSyncData:(BOOL)a5 expectingCloudKitData:(BOOL)a6
+- (BOOL)_verifySyncDataForItem:(void *)item recordName:(id)name expectingSyncData:(BOOL)data expectingCloudKitData:(BOOL)kitData
 {
-  v6 = a6;
-  v10 = a4;
-  v11 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copySyncDataWithItem:a3];
+  kitDataCopy = kitData;
+  nameCopy = name;
+  v11 = [(WBSBookmarkDBAccess *)self->_databaseAccessor copySyncDataWithItem:item];
   v12 = v11;
-  if (v11 && !a5)
+  if (v11 && !data)
   {
     v13 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -284,7 +284,7 @@ LABEL_5:
 
   if ([v11 length])
   {
-    if (!v6)
+    if (!kitDataCopy)
     {
       v14 = 1;
       goto LABEL_51;
@@ -303,27 +303,27 @@ LABEL_5:
       goto LABEL_50;
     }
 
-    v16 = [(WBSBookmarkDBAccess *)self->_databaseAccessor itemTypeWithItem:a3];
-    v17 = [v15 record];
-    v18 = v17;
-    if (v17)
+    v16 = [(WBSBookmarkDBAccess *)self->_databaseAccessor itemTypeWithItem:item];
+    record = [v15 record];
+    v18 = record;
+    if (record)
     {
-      v19 = [v17 safari_recordName];
-      v20 = [v19 isEqualToString:v10];
+      safari_recordName = [record safari_recordName];
+      v20 = [safari_recordName isEqualToString:nameCopy];
 
       if ((v20 & 1) == 0)
       {
         v21 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
         if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
         {
-          sub_10002D554(v21, v18, v10);
+          sub_10002D554(v21, v18, nameCopy);
         }
       }
 
       if (v16 == 1)
       {
-        v27 = [v18 recordType];
-        v28 = [v27 isEqualToString:@"BookmarkList"];
+        recordType = [v18 recordType];
+        v28 = [recordType isEqualToString:@"BookmarkList"];
 
         if ((v28 & 1) == 0)
         {
@@ -337,8 +337,8 @@ LABEL_5:
 
       else if (!v16)
       {
-        v22 = [v18 recordType];
-        v23 = [v22 isEqualToString:@"BookmarkLeaf"];
+        recordType2 = [v18 recordType];
+        v23 = [recordType2 isEqualToString:@"BookmarkLeaf"];
 
         if ((v23 & 1) == 0)
         {
@@ -350,8 +350,8 @@ LABEL_5:
         }
       }
 
-      v30 = [v18 recordChangeTag];
-      v31 = [v30 length];
+      recordChangeTag = [v18 recordChangeTag];
+      v31 = [recordChangeTag length];
 
       if (!v31)
       {
@@ -362,12 +362,12 @@ LABEL_5:
         }
       }
 
-      v33 = [v15 position];
-      if (v33)
+      position = [v15 position];
+      if (position)
       {
       }
 
-      else if (![CKRecord safari_folderTypeForRecordName:v10])
+      else if (![CKRecord safari_folderTypeForRecordName:nameCopy])
       {
         v34 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
         if (os_log_type_enabled(v34, OS_LOG_TYPE_ERROR))
@@ -424,7 +424,7 @@ LABEL_48:
   }
 
   v14 = 1;
-  if ([v10 length] && v6)
+  if ([nameCopy length] && kitDataCopy)
   {
     v25 = [CloudTabGroupSyncCoordinator _bookmarksLog]_0();
     if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))

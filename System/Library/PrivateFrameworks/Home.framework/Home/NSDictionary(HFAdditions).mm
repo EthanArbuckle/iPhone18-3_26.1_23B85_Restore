@@ -9,16 +9,16 @@
 {
   v33 = *MEMORY[0x277D85DE8];
   v4 = a3;
-  v5 = [MEMORY[0x277CCAA00] defaultManager];
-  v6 = [v4 URLByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  uRLByDeletingLastPathComponent = [v4 URLByDeletingLastPathComponent];
   v30 = 0;
-  [v5 createDirectoryAtURL:v6 withIntermediateDirectories:1 attributes:0 error:&v30];
+  [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v30];
   v7 = v30;
 
   if (!v7)
   {
     v29 = 0;
-    v10 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a1 options:0 error:&v29];
+    v10 = [MEMORY[0x277CCAAA0] dataWithJSONObject:self options:0 error:&v29];
     v8 = v29;
     if (v8)
     {
@@ -38,8 +38,8 @@
     v12 = [@"\n" dataUsingEncoding:4];
     [v11 appendData:v12];
 
-    v13 = [v4 path];
-    v14 = [v5 fileExistsAtPath:v13];
+    path = [v4 path];
+    v14 = [defaultManager fileExistsAtPath:path];
 
     if (v14)
     {
@@ -72,8 +72,8 @@ LABEL_29:
 
     else
     {
-      v20 = [v4 path];
-      [v5 createFileAtPath:v20 contents:0 attributes:0];
+      path2 = [v4 path];
+      [defaultManager createFileAtPath:path2 contents:0 attributes:0];
 
       v27 = 0;
       v15 = [MEMORY[0x277CCA9F8] fileHandleForWritingToURL:v4 error:&v27];
@@ -81,12 +81,12 @@ LABEL_29:
       if (v21)
       {
         v17 = v21;
-        v22 = [v21 domain];
-        if ([v22 isEqualToString:*MEMORY[0x277CCA050]])
+        domain = [v21 domain];
+        if ([domain isEqualToString:*MEMORY[0x277CCA050]])
         {
-          v23 = [v17 code];
+          code = [v17 code];
 
-          if (v23 == 260)
+          if (code == 260)
           {
             v9 = 0;
 LABEL_25:
@@ -118,9 +118,9 @@ LABEL_26:
     v18 = HFLogForCategory(0x17uLL);
     if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
     {
-      v26 = [v4 path];
+      path3 = [v4 path];
       *buf = 138412290;
-      v32 = v26;
+      v32 = path3;
       _os_log_error_impl(&dword_20D9BF000, v18, OS_LOG_TYPE_ERROR, "Appended JSONL to '%@'", buf, 0xCu);
     }
 
@@ -148,16 +148,16 @@ LABEL_27:
 {
   v29 = *MEMORY[0x277D85DE8];
   v6 = a3;
-  v7 = [MEMORY[0x277CCAA00] defaultManager];
-  v8 = [v6 URLByDeletingLastPathComponent];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  uRLByDeletingLastPathComponent = [v6 URLByDeletingLastPathComponent];
   v26 = 0;
-  [v7 createDirectoryAtURL:v8 withIntermediateDirectories:1 attributes:0 error:&v26];
+  [defaultManager createDirectoryAtURL:uRLByDeletingLastPathComponent withIntermediateDirectories:1 attributes:0 error:&v26];
   v9 = v26;
 
   if (!v9)
   {
     v25 = 0;
-    v13 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a1 options:1 error:&v25];
+    v13 = [MEMORY[0x277CCAAA0] dataWithJSONObject:self options:1 error:&v25];
     v14 = v25;
     if (v14)
     {
@@ -199,9 +199,9 @@ LABEL_21:
         goto LABEL_22;
       }
 
-      v20 = [v6 path];
+      path = [v6 path];
       *buf = 138412290;
-      v28 = v20;
+      v28 = path;
       _os_log_impl(&dword_20D9BF000, v19, OS_LOG_TYPE_DEFAULT, "Wrote JSON to '%@'", buf, 0xCu);
     }
 
@@ -219,9 +219,9 @@ LABEL_21:
         goto LABEL_20;
       }
 
-      v20 = [v18 localizedDescription];
+      path = [v18 localizedDescription];
       *buf = 138412290;
-      v28 = v20;
+      v28 = path;
       _os_log_error_impl(&dword_20D9BF000, v19, OS_LOG_TYPE_ERROR, "Write failed: %@", buf, 0xCu);
     }
 

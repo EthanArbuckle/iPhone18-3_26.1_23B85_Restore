@@ -1,13 +1,13 @@
 @interface WFMicaWorkflowRunnerClient
-- (WFMicaWorkflowRunnerClient)initWithWorkflowName:(id)a3;
+- (WFMicaWorkflowRunnerClient)initWithWorkflowName:(id)name;
 @end
 
 @implementation WFMicaWorkflowRunnerClient
 
-- (WFMicaWorkflowRunnerClient)initWithWorkflowName:(id)a3
+- (WFMicaWorkflowRunnerClient)initWithWorkflowName:(id)name
 {
-  v4 = a3;
-  v5 = [[WFWorkflowDatabaseRunDescriptor alloc] initWithName:v4];
+  nameCopy = name;
+  v5 = [[WFWorkflowDatabaseRunDescriptor alloc] initWithName:nameCopy];
 
   v6 = [[WFWorkflowRunRequest alloc] initWithInput:0 presentationMode:0];
   [(WFWorkflowRunRequest *)v6 setRunSource:@"mica"];

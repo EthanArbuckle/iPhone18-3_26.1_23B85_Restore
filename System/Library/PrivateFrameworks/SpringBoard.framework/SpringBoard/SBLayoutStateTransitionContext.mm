@@ -1,7 +1,7 @@
 @interface SBLayoutStateTransitionContext
 - (BOOL)isInterrupted;
 - (SBLayoutStateTransitionContext)init;
-- (SBLayoutStateTransitionContext)initWithWorkspaceTransaction:(id)a3;
+- (SBLayoutStateTransitionContext)initWithWorkspaceTransaction:(id)transaction;
 - (SBWorkspaceApplicationSceneTransitionContext)applicationTransitionContext;
 - (SBWorkspaceTransaction)workspaceTransaction;
 @end
@@ -24,44 +24,44 @@
 
 - (BOOL)isInterrupted
 {
-  v3 = [(SBLayoutStateTransitionContext *)self workspaceTransaction];
-  if ([v3 isInterrupted])
+  workspaceTransaction = [(SBLayoutStateTransitionContext *)self workspaceTransaction];
+  if ([workspaceTransaction isInterrupted])
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(SBLayoutStateTransitionContext *)self error];
-    v4 = v5 != 0;
+    error = [(SBLayoutStateTransitionContext *)self error];
+    v4 = error != 0;
   }
 
   return v4;
 }
 
-- (SBLayoutStateTransitionContext)initWithWorkspaceTransaction:(id)a3
+- (SBLayoutStateTransitionContext)initWithWorkspaceTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v14.receiver = self;
   v14.super_class = SBLayoutStateTransitionContext;
   v5 = [(SBLayoutStateTransitionContext *)&v14 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_workspaceTransaction, v4);
-    v7 = [v4 transitionRequest];
-    v8 = [v7 applicationContext];
+    objc_storeWeak(&v5->_workspaceTransaction, transactionCopy);
+    transitionRequest = [transactionCopy transitionRequest];
+    applicationContext = [transitionRequest applicationContext];
 
-    v9 = [v8 previousLayoutState];
+    previousLayoutState = [applicationContext previousLayoutState];
     fromLayoutState = v6->_fromLayoutState;
-    v6->_fromLayoutState = v9;
+    v6->_fromLayoutState = previousLayoutState;
 
-    v11 = [v8 layoutState];
+    layoutState = [applicationContext layoutState];
     toLayoutState = v6->_toLayoutState;
-    v6->_toLayoutState = v11;
+    v6->_toLayoutState = layoutState;
 
-    objc_storeWeak(&v6->_applicationTransitionContext, v8);
-    v6->_animationsDisabled = [v8 animationDisabled];
+    objc_storeWeak(&v6->_applicationTransitionContext, applicationContext);
+    v6->_animationsDisabled = [applicationContext animationDisabled];
   }
 
   return v6;

@@ -1,19 +1,19 @@
 @interface DDAddToRecentsDelegate
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 @end
 
 @implementation DDAddToRecentsDelegate
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v4 = a4;
+  connectionCopy = connection;
   v5 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___DDAddToRecentsInterface];
-  [v4 setExportedInterface:v5];
+  [connectionCopy setExportedInterface:v5];
 
-  v6 = -[DDAddToRecentsService initWithClientProcessIdentifier:]([DDAddToRecentsService alloc], "initWithClientProcessIdentifier:", [v4 processIdentifier]);
-  [v4 setExportedObject:v6];
+  v6 = -[DDAddToRecentsService initWithClientProcessIdentifier:]([DDAddToRecentsService alloc], "initWithClientProcessIdentifier:", [connectionCopy processIdentifier]);
+  [connectionCopy setExportedObject:v6];
 
-  [v4 resume];
+  [connectionCopy resume];
   return 1;
 }
 

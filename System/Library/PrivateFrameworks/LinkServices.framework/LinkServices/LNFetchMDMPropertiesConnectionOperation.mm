@@ -1,28 +1,28 @@
 @interface LNFetchMDMPropertiesConnectionOperation
-- (LNFetchMDMPropertiesConnectionOperation)initWithConnectionInterface:(id)a3 action:(id)a4 queue:(id)a5 completionHandler:(id)a6;
-- (void)finishWithError:(id)a3;
+- (LNFetchMDMPropertiesConnectionOperation)initWithConnectionInterface:(id)interface action:(id)action queue:(id)queue completionHandler:(id)handler;
+- (void)finishWithError:(id)error;
 - (void)start;
 @end
 
 @implementation LNFetchMDMPropertiesConnectionOperation
 
-- (void)finishWithError:(id)a3
+- (void)finishWithError:(id)error
 {
-  v4 = a3;
-  v5 = [(LNFetchMDMPropertiesConnectionOperation *)self completionHandler];
+  errorCopy = error;
+  completionHandler = [(LNFetchMDMPropertiesConnectionOperation *)self completionHandler];
 
-  if (v5)
+  if (completionHandler)
   {
-    v6 = [(LNFetchMDMPropertiesConnectionOperation *)self completionHandler];
-    v7 = [(LNFetchMDMPropertiesConnectionOperation *)self accountIdentifier];
-    (v6)[2](v6, v7, v4);
+    completionHandler2 = [(LNFetchMDMPropertiesConnectionOperation *)self completionHandler];
+    accountIdentifier = [(LNFetchMDMPropertiesConnectionOperation *)self accountIdentifier];
+    (completionHandler2)[2](completionHandler2, accountIdentifier, errorCopy);
 
     [(LNFetchMDMPropertiesConnectionOperation *)self setCompletionHandler:0];
   }
 
   v8.receiver = self;
   v8.super_class = LNFetchMDMPropertiesConnectionOperation;
-  [(LNConnectionOperation *)&v8 finishWithError:v4];
+  [(LNConnectionOperation *)&v8 finishWithError:errorCopy];
 }
 
 - (void)start
@@ -34,20 +34,20 @@
   v3 = getLNLogCategoryConnection();
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(LNFetchMDMPropertiesConnectionOperation *)self action];
+    action = [(LNFetchMDMPropertiesConnectionOperation *)self action];
     *buf = 138412290;
-    v11 = v4;
+    v11 = action;
     _os_log_impl(&dword_19763D000, v3, OS_LOG_TYPE_INFO, "Fetching MDM properties for action %@", buf, 0xCu);
   }
 
-  v5 = [(LNInterfaceConnectionOperation *)self connectionInterface];
-  v6 = [(LNFetchMDMPropertiesConnectionOperation *)self action];
+  connectionInterface = [(LNInterfaceConnectionOperation *)self connectionInterface];
+  action2 = [(LNFetchMDMPropertiesConnectionOperation *)self action];
   v8[0] = MEMORY[0x1E69E9820];
   v8[1] = 3221225472;
   v8[2] = __48__LNFetchMDMPropertiesConnectionOperation_start__block_invoke;
   v8[3] = &unk_1E74B0BE8;
   v8[4] = self;
-  [v5 fetchDestinationMDMAccountIdentifierForAction:v6 completionHandler:v8];
+  [connectionInterface fetchDestinationMDMAccountIdentifierForAction:action2 completionHandler:v8];
 
   v7 = *MEMORY[0x1E69E9840];
 }
@@ -64,24 +64,24 @@ void __48__LNFetchMDMPropertiesConnectionOperation_start__block_invoke(uint64_t 
   os_activity_scope_leave(&v8);
 }
 
-- (LNFetchMDMPropertiesConnectionOperation)initWithConnectionInterface:(id)a3 action:(id)a4 queue:(id)a5 completionHandler:(id)a6
+- (LNFetchMDMPropertiesConnectionOperation)initWithConnectionInterface:(id)interface action:(id)action queue:(id)queue completionHandler:(id)handler
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  interfaceCopy = interface;
+  actionCopy = action;
+  queueCopy = queue;
+  handlerCopy = handler;
+  if (interfaceCopy)
   {
-    if (v12)
+    if (actionCopy)
     {
       goto LABEL_3;
     }
 
 LABEL_8:
-    v24 = [MEMORY[0x1E696AAA8] currentHandler];
-    [v24 handleFailureInMethod:a2 object:self file:@"LNFetchMDMPropertiesConnectionOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"action"}];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"LNFetchMDMPropertiesConnectionOperation.m" lineNumber:29 description:{@"Invalid parameter not satisfying: %@", @"action"}];
 
-    if (v14)
+    if (handlerCopy)
     {
       goto LABEL_4;
     }
@@ -89,37 +89,37 @@ LABEL_8:
     goto LABEL_9;
   }
 
-  v23 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v23 handleFailureInMethod:a2 object:self file:@"LNFetchMDMPropertiesConnectionOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
+  currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler2 handleFailureInMethod:a2 object:self file:@"LNFetchMDMPropertiesConnectionOperation.m" lineNumber:28 description:{@"Invalid parameter not satisfying: %@", @"connectionInterface"}];
 
-  if (!v12)
+  if (!actionCopy)
   {
     goto LABEL_8;
   }
 
 LABEL_3:
-  if (v14)
+  if (handlerCopy)
   {
     goto LABEL_4;
   }
 
 LABEL_9:
-  v25 = [MEMORY[0x1E696AAA8] currentHandler];
-  [v25 handleFailureInMethod:a2 object:self file:@"LNFetchMDMPropertiesConnectionOperation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
+  currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
+  [currentHandler3 handleFailureInMethod:a2 object:self file:@"LNFetchMDMPropertiesConnectionOperation.m" lineNumber:30 description:{@"Invalid parameter not satisfying: %@", @"completionHandler"}];
 
 LABEL_4:
-  v15 = [MEMORY[0x1E696AFB0] UUID];
+  uUID = [MEMORY[0x1E696AFB0] UUID];
   v26.receiver = self;
   v26.super_class = LNFetchMDMPropertiesConnectionOperation;
-  v16 = [(LNInterfaceConnectionOperation *)&v26 initWithIdentifier:v15 connectionInterface:v11 priority:1 queue:v13 activity:&__block_literal_global_3108];
+  v16 = [(LNInterfaceConnectionOperation *)&v26 initWithIdentifier:uUID connectionInterface:interfaceCopy priority:1 queue:queueCopy activity:&__block_literal_global_3108];
 
   if (v16)
   {
-    v17 = [v12 copy];
+    v17 = [actionCopy copy];
     action = v16->_action;
     v16->_action = v17;
 
-    v19 = [v14 copy];
+    v19 = [handlerCopy copy];
     completionHandler = v16->_completionHandler;
     v16->_completionHandler = v19;
 

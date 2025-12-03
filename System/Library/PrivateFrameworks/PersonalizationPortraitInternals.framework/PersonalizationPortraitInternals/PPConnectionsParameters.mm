@@ -1,16 +1,16 @@
 @interface PPConnectionsParameters
 + (PPConnectionsParameters)sharedInstance;
 - (PPConnectionsParameters)init;
-- (double)doubleValueForKey:(unint64_t)a3 default:;
-- (id)assetValueForKey:(id *)a1;
+- (double)doubleValueForKey:(unint64_t)key default:;
+- (id)assetValueForKey:(id *)key;
 - (id)donationAllowedApps;
 - (id)donationAllowedWebsites;
 - (id)donationBlockedApps;
 - (id)donationBlockedWebsites;
 - (id)locationPredictionBlockedApps;
-- (uint64_t)BOOLValueForKey:(id *)a1 default:(void *)a2;
-- (uint64_t)integerValueForKey:(uint64_t)a3 default:;
-- (uint64_t)unsignedIntegerValueForKey:(id *)a1 default:(void *)a2;
+- (uint64_t)BOOLValueForKey:(id *)key default:(void *)default;
+- (uint64_t)integerValueForKey:(uint64_t)key default:;
+- (uint64_t)unsignedIntegerValueForKey:(id *)key default:(void *)default;
 @end
 
 @implementation PPConnectionsParameters
@@ -46,19 +46,19 @@
   return v4;
 }
 
-- (id)assetValueForKey:(id *)a1
+- (id)assetValueForKey:(id *)key
 {
-  v2 = a1;
-  if (a1)
+  keyCopy = key;
+  if (key)
   {
     v3 = a2;
     pthread_mutex_lock(&_PPConnectionsParametersAssetMutex);
-    v2 = [v2[1] objectForKeyedSubscript:v3];
+    keyCopy = [keyCopy[1] objectForKeyedSubscript:v3];
 
     pthread_mutex_unlock(&_PPConnectionsParametersAssetMutex);
   }
 
-  return v2;
+  return keyCopy;
 }
 
 - (id)donationAllowedApps
@@ -137,88 +137,88 @@
   return v4;
 }
 
-- (uint64_t)BOOLValueForKey:(id *)a1 default:(void *)a2
+- (uint64_t)BOOLValueForKey:(id *)key default:(void *)default
 {
-  if (!a1)
+  if (!key)
   {
     return 0;
   }
 
-  v2 = [(PPConnectionsParameters *)a1 assetValueForKey:a2];
+  v2 = [(PPConnectionsParameters *)key assetValueForKey:default];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 BOOLValue];
+    bOOLValue = [v2 BOOLValue];
   }
 
   else
   {
-    v4 = 0;
+    bOOLValue = 0;
   }
 
-  return v4;
+  return bOOLValue;
 }
 
-- (double)doubleValueForKey:(unint64_t)a3 default:
+- (double)doubleValueForKey:(unint64_t)key default:
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v4 = [(PPConnectionsParameters *)a1 assetValueForKey:a2];
+  v4 = [(PPConnectionsParameters *)self assetValueForKey:a2];
   v5 = v4;
   if (v4)
   {
     [v4 doubleValue];
-    v7 = v6;
+    keyCopy = v6;
   }
 
   else
   {
-    v7 = a3;
+    keyCopy = key;
   }
 
-  return v7;
+  return keyCopy;
 }
 
-- (uint64_t)integerValueForKey:(uint64_t)a3 default:
+- (uint64_t)integerValueForKey:(uint64_t)key default:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
 
-  v4 = [(PPConnectionsParameters *)a1 assetValueForKey:a2];
+  v4 = [(PPConnectionsParameters *)self assetValueForKey:a2];
   v5 = v4;
   if (v4)
   {
-    a3 = [v4 integerValue];
+    key = [v4 integerValue];
   }
 
-  return a3;
+  return key;
 }
 
-- (uint64_t)unsignedIntegerValueForKey:(id *)a1 default:(void *)a2
+- (uint64_t)unsignedIntegerValueForKey:(id *)key default:(void *)default
 {
-  if (!a1)
+  if (!key)
   {
     return 0;
   }
 
-  v2 = [(PPConnectionsParameters *)a1 assetValueForKey:a2];
+  v2 = [(PPConnectionsParameters *)key assetValueForKey:default];
   v3 = v2;
   if (v2)
   {
-    v4 = [v2 unsignedIntegerValue];
+    unsignedIntegerValue = [v2 unsignedIntegerValue];
   }
 
   else
   {
-    v4 = 1;
+    unsignedIntegerValue = 1;
   }
 
-  return v4;
+  return unsignedIntegerValue;
 }
 
 - (PPConnectionsParameters)init

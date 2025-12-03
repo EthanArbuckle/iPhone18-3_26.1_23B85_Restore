@@ -3,7 +3,7 @@
 - (BOOL)canAddStop;
 - (BOOL)inACustomRouteRegion;
 - (BOOL)isSuspended;
-- (BOOL)updateTiming:(id)a3;
+- (BOOL)updateTiming:(id)timing;
 - (CyclePreferences)cyclePreferences;
 - (DirectionItem)directionItemForCurrentSession;
 - (DrivePreferences)drivePreferences;
@@ -18,7 +18,7 @@
 - (NSUUID)originalHistoryEntryIdentifier;
 - (RideBookingRideOptionStateObserverProxy)rideOptionStateObserver;
 - (RouteCollection)routeCollection;
-- (RoutePlanningDataCoordinator)initWithPlatformController:(id)a3;
+- (RoutePlanningDataCoordinator)initWithPlatformController:(id)controller;
 - (RoutePlanningDataCoordinatorPresentationDelegate)delegate;
 - (RoutePlanningError)routePlanningError;
 - (RoutePlanningWaypointRequest)destinationWaypointRequest;
@@ -29,62 +29,62 @@
 - (int64_t)desiredTransportType;
 - (int64_t)requestState;
 - (int64_t)transportType;
-- (void)RideBookingPlanningSession:(id)a3 didFinishResolvingWaypointSet:(id)a4;
-- (void)RideBookingPlanningSession:(id)a3 rideOptionStateDidChange:(id)a4;
+- (void)RideBookingPlanningSession:(id)session didFinishResolvingWaypointSet:(id)set;
+- (void)RideBookingPlanningSession:(id)session rideOptionStateDidChange:(id)change;
 - (void)_applicationWillEnterForeground;
-- (void)_notifyDidUpdateAutomaticSharingContacts:(id)a3;
-- (void)_notifyDidUpdateCurrentRouteDisplayedMapRect:(id)a3;
-- (void)_notifyDidUpdateCyclePreferences:(id)a3;
-- (void)_notifyDidUpdateDrivePreferences:(id)a3;
+- (void)_notifyDidUpdateAutomaticSharingContacts:(id)contacts;
+- (void)_notifyDidUpdateCurrentRouteDisplayedMapRect:(id)rect;
+- (void)_notifyDidUpdateCyclePreferences:(id)preferences;
+- (void)_notifyDidUpdateDrivePreferences:(id)preferences;
 - (void)_notifyDidUpdateEnabled;
 - (void)_notifyDidUpdateOriginDestinationNames;
 - (void)_notifyDidUpdateOriginDestinationWaypointRequest;
-- (void)_notifyDidUpdateRequestState:(int64_t)a3;
-- (void)_notifyDidUpdateRouteCollection:(id)a3;
-- (void)_notifyDidUpdateRoutes:(id)a3;
+- (void)_notifyDidUpdateRequestState:(int64_t)state;
+- (void)_notifyDidUpdateRouteCollection:(id)collection;
+- (void)_notifyDidUpdateRoutes:(id)routes;
 - (void)_notifyDidUpdateTiming;
-- (void)_notifyDidUpdateTransitPreferences:(id)a3;
+- (void)_notifyDidUpdateTransitPreferences:(id)preferences;
 - (void)_notifyDidUpdateTransportType;
 - (void)_notifyDidUpdateVirtualGarage;
-- (void)_notifyDidUpdateWalkPreferences:(id)a3;
+- (void)_notifyDidUpdateWalkPreferences:(id)preferences;
 - (void)_notifyDidUpdateWaypointSet;
 - (void)_notifyResultRouteCollectionChangeForCurrentTransportType;
-- (void)_reloadUsingNewCyclePreferences:(id)a3;
-- (void)_reloadUsingNewDrivePreferences:(id)a3;
-- (void)_reloadUsingNewTransitPreferences:(id)a3;
-- (void)_reloadUsingNewWalkPreferences:(id)a3;
+- (void)_reloadUsingNewCyclePreferences:(id)preferences;
+- (void)_reloadUsingNewDrivePreferences:(id)preferences;
+- (void)_reloadUsingNewTransitPreferences:(id)preferences;
+- (void)_reloadUsingNewWalkPreferences:(id)preferences;
 - (void)_updateIsEnabled;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)mapsSession:(id)a3 didChangeState:(unint64_t)a4;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5;
+- (void)mapsSession:(id)session didChangeState:(unint64_t)state;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession;
 - (void)refreshRidesharingOptionsIfVisible;
 - (void)refreshVirtualGarage;
-- (void)removeObserver:(id)a3;
+- (void)removeObserver:(id)observer;
 - (void)resume;
-- (void)routePlanningSession:(id)a3 didChangeRouteCreationRegion:(BOOL)a4;
-- (void)routePlanningSession:(id)a3 didFinishResolvingWaypointSet:(id)a4;
-- (void)routePlanningSession:(id)a3 didReceiveUpdates:(id)a4 forRoutesResult:(id)a5;
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5;
-- (void)setNavigationSession:(id)a3;
-- (void)setRideBookingPlanningSession:(id)a3;
-- (void)setRoutePlanningSession:(id)a3;
+- (void)routePlanningSession:(id)session didChangeRouteCreationRegion:(BOOL)region;
+- (void)routePlanningSession:(id)session didFinishResolvingWaypointSet:(id)set;
+- (void)routePlanningSession:(id)session didReceiveUpdates:(id)updates forRoutesResult:(id)result;
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type;
+- (void)setNavigationSession:(id)session;
+- (void)setRideBookingPlanningSession:(id)session;
+- (void)setRoutePlanningSession:(id)session;
 - (void)setupDataForCurrentObservers;
-- (void)setupDataForObserver:(id)a3;
-- (void)startWithDirectionItem:(id)a3 traits:(id)a4 userInfo:(id)a5;
+- (void)setupDataForObserver:(id)observer;
+- (void)startWithDirectionItem:(id)item traits:(id)traits userInfo:(id)info;
 - (void)stop;
 - (void)suspend;
-- (void)updateCurrentRoute:(id)a3;
-- (void)updateCurrentRouteDisplayedMapRect:(id)a3;
-- (void)updateCurrentRouteIndex:(unint64_t)a3;
-- (void)updateCyclePreferences:(id)a3;
-- (void)updateDrivePreferences:(id)a3;
-- (void)updateTransitPreferences:(id)a3;
-- (void)updateTransportType:(int64_t)a3;
-- (void)updateVirtualGarage:(id)a3;
-- (void)updateWalkPreferences:(id)a3;
-- (void)virtualGarageDidUpdate:(id)a3;
+- (void)updateCurrentRoute:(id)route;
+- (void)updateCurrentRouteDisplayedMapRect:(id)rect;
+- (void)updateCurrentRouteIndex:(unint64_t)index;
+- (void)updateCyclePreferences:(id)preferences;
+- (void)updateDrivePreferences:(id)preferences;
+- (void)updateTransitPreferences:(id)preferences;
+- (void)updateTransportType:(int64_t)type;
+- (void)updateVirtualGarage:(id)garage;
+- (void)updateWalkPreferences:(id)preferences;
+- (void)virtualGarageDidUpdate:(id)update;
 @end
 
 @implementation RoutePlanningDataCoordinator
@@ -100,20 +100,20 @@
 
 - (int64_t)transportType
 {
-  v3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v3)
+  if (routePlanningSession)
   {
-    v4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-    v5 = [v4 currentTransportType];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    currentTransportType = [routePlanningSession2 currentTransportType];
 
-    return v5;
+    return currentTransportType;
   }
 
   else
   {
-    v7 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
-    v8 = v7 != 0;
+    rideBookingPlanningSession = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    v8 = rideBookingPlanningSession != 0;
 
     return 4 * v8;
   }
@@ -126,27 +126,27 @@
   return WeakRetained;
 }
 
-- (void)virtualGarageDidUpdate:(id)a3
+- (void)virtualGarageDidUpdate:(id)update
 {
   v4[0] = _NSConcreteStackBlock;
   v4[1] = 3221225472;
   v4[2] = sub_100DDD24C;
   v4[3] = &unk_101661A90;
   v4[4] = self;
-  v5 = a3;
-  v3 = v5;
+  updateCopy = update;
+  v3 = updateCopy;
   dispatch_async(&_dispatch_main_q, v4);
 }
 
-- (void)_notifyDidUpdateAutomaticSharingContacts:(id)a3
+- (void)_notifyDidUpdateAutomaticSharingContacts:(id)contacts
 {
-  v4 = a3;
+  contactsCopy = contacts;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v5 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v6 = [v5 copy];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v6 = [observersIfEnabled copy];
 
   v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v7)
@@ -165,7 +165,7 @@
         v11 = *(*(&v12 + 1) + 8 * i);
         if (([v11 observedRoutePlanningData] & 0x20000) != 0)
         {
-          [v11 routePlanningDataCoordinator:self didUpdateAutomaticSharingContacts:v4];
+          [v11 routePlanningDataCoordinator:self didUpdateAutomaticSharingContacts:contactsCopy];
         }
       }
 
@@ -179,12 +179,12 @@
 - (void)_notifyResultRouteCollectionChangeForCurrentTransportType
 {
   [(RoutePlanningDataCoordinator *)self updateCurrentRouteDisplayedMapRect:MKMapRectNull.origin.x, MKMapRectNull.origin.y, MKMapRectNull.size.width, MKMapRectNull.size.height];
-  v3 = [(RoutePlanningDataCoordinator *)self routeCollection];
-  [(RoutePlanningDataCoordinator *)self _notifyDidUpdateRouteCollection:v3];
+  routeCollection = [(RoutePlanningDataCoordinator *)self routeCollection];
+  [(RoutePlanningDataCoordinator *)self _notifyDidUpdateRouteCollection:routeCollection];
 
-  v4 = [(RoutePlanningDataCoordinator *)self requestState];
+  requestState = [(RoutePlanningDataCoordinator *)self requestState];
 
-  [(RoutePlanningDataCoordinator *)self _notifyDidUpdateRequestState:v4];
+  [(RoutePlanningDataCoordinator *)self _notifyDidUpdateRequestState:requestState];
 }
 
 - (void)_notifyDidUpdateOriginDestinationNames
@@ -193,8 +193,8 @@
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v3 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v4 = [v3 copy];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v4 = [observersIfEnabled copy];
 
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
@@ -213,9 +213,9 @@
         v9 = *(*(&v12 + 1) + 8 * i);
         if (([v9 observedRoutePlanningData] & 8) != 0)
         {
-          v10 = [(RoutePlanningDataCoordinator *)self originName];
-          v11 = [(RoutePlanningDataCoordinator *)self destinationName];
-          [v9 routePlanningDataCoordinator:self didUpdateOriginName:v10 destinationName:v11];
+          originName = [(RoutePlanningDataCoordinator *)self originName];
+          destinationName = [(RoutePlanningDataCoordinator *)self destinationName];
+          [v9 routePlanningDataCoordinator:self didUpdateOriginName:originName destinationName:destinationName];
         }
       }
 
@@ -232,8 +232,8 @@
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v4 = [observersIfEnabled countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -244,18 +244,18 @@
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observersIfEnabled);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
         if (([v8 observedRoutePlanningData] & 0x4000) != 0)
         {
-          v9 = [(RoutePlanningDataCoordinator *)self timing];
-          [v8 routePlanningDataCoordinator:self didUpdateTiming:v9];
+          timing = [(RoutePlanningDataCoordinator *)self timing];
+          [v8 routePlanningDataCoordinator:self didUpdateTiming:timing];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [observersIfEnabled countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
@@ -268,8 +268,8 @@
   v25 = 0u;
   v26 = 0u;
   v27 = 0u;
-  v3 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v4 = [v3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v4 = [observersIfEnabled countByEnumeratingWithState:&v24 objects:v28 count:16];
   if (v4)
   {
     v5 = v4;
@@ -280,55 +280,55 @@
       {
         if (*v25 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observersIfEnabled);
         }
 
         v8 = *(*(&v24 + 1) + 8 * i);
         if (([v8 observedRoutePlanningData] & 4) != 0)
         {
-          v9 = [(RoutePlanningDataCoordinator *)self resolvedWaypointSet];
-          [v8 routePlanningDataCoordinator:self didUpdateResolvedWaypointSet:v9];
+          resolvedWaypointSet = [(RoutePlanningDataCoordinator *)self resolvedWaypointSet];
+          [v8 routePlanningDataCoordinator:self didUpdateResolvedWaypointSet:resolvedWaypointSet];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v24 objects:v28 count:16];
+      v5 = [observersIfEnabled countByEnumeratingWithState:&v24 objects:v28 count:16];
     }
 
     while (v5);
   }
 
-  v10 = [(RoutePlanningDataCoordinator *)self resolvedWaypointSet];
-  v11 = [v10 origin];
-  v12 = [v11 geoMapItem];
-  v13 = [v12 timezone];
+  resolvedWaypointSet2 = [(RoutePlanningDataCoordinator *)self resolvedWaypointSet];
+  origin = [resolvedWaypointSet2 origin];
+  geoMapItem = [origin geoMapItem];
+  timezone = [geoMapItem timezone];
 
-  v14 = [(RoutePlanningDataCoordinator *)self resolvedWaypointSet];
-  v15 = [v14 destination];
-  v16 = [v15 geoMapItem];
-  v17 = [v16 timezone];
+  resolvedWaypointSet3 = [(RoutePlanningDataCoordinator *)self resolvedWaypointSet];
+  destination = [resolvedWaypointSet3 destination];
+  geoMapItem2 = [destination geoMapItem];
+  timezone2 = [geoMapItem2 timezone];
 
-  v18 = [(RoutePlanningTiming *)self->_timing arrivalDate];
+  arrivalDate = [(RoutePlanningTiming *)self->_timing arrivalDate];
 
-  if (v18)
+  if (arrivalDate)
   {
     timing = [(RoutePlanningTiming *)self->_timing arrivalDate];
-    v20 = [RoutePlanningTiming timingWithArrivalDate:timing departureTimeZone:v13 arrivalTimeZone:v17];
+    v20 = [RoutePlanningTiming timingWithArrivalDate:timing departureTimeZone:timezone arrivalTimeZone:timezone2];
   }
 
   else
   {
-    v21 = [(RoutePlanningTiming *)self->_timing departureDate];
+    departureDate = [(RoutePlanningTiming *)self->_timing departureDate];
 
-    if (!v21)
+    if (!departureDate)
     {
-      v23 = [RoutePlanningTiming timingWithArrivalDate:0 departureTimeZone:v13 arrivalTimeZone:v17];
+      v23 = [RoutePlanningTiming timingWithArrivalDate:0 departureTimeZone:timezone arrivalTimeZone:timezone2];
       timing = self->_timing;
       self->_timing = v23;
       goto LABEL_15;
     }
 
     timing = [(RoutePlanningTiming *)self->_timing departureDate];
-    v20 = [RoutePlanningTiming timingWithDepartureDate:timing departureTimeZone:v13 arrivalTimeZone:v17];
+    v20 = [RoutePlanningTiming timingWithDepartureDate:timing departureTimeZone:timezone arrivalTimeZone:timezone2];
   }
 
   v22 = self->_timing;
@@ -345,8 +345,8 @@ LABEL_15:
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v3 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v4 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v4 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v4)
   {
     v5 = v4;
@@ -357,19 +357,19 @@ LABEL_15:
       {
         if (*v12 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observersIfEnabled);
         }
 
         v8 = *(*(&v11 + 1) + 8 * i);
         if ([v8 observedRoutePlanningData])
         {
-          v9 = [(RoutePlanningDataCoordinator *)self originWaypointRequest];
-          v10 = [(RoutePlanningDataCoordinator *)self destinationWaypointRequest];
-          [v8 routePlanningDataCoordinator:self didUpdateOriginWaypointRequest:v9 destinationWaypointRequest:v10];
+          originWaypointRequest = [(RoutePlanningDataCoordinator *)self originWaypointRequest];
+          destinationWaypointRequest = [(RoutePlanningDataCoordinator *)self destinationWaypointRequest];
+          [v8 routePlanningDataCoordinator:self didUpdateOriginWaypointRequest:originWaypointRequest destinationWaypointRequest:destinationWaypointRequest];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v5 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v5);
@@ -378,14 +378,14 @@ LABEL_15:
   [(RoutePlanningDataCoordinator *)self _notifyDidUpdateOriginDestinationNames];
 }
 
-- (void)_notifyDidUpdateRequestState:(int64_t)a3
+- (void)_notifyDidUpdateRequestState:(int64_t)state
 {
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v6 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -396,17 +396,17 @@ LABEL_15:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observersIfEnabled);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         if (([v10 observedRoutePlanningData] & 0x20) != 0)
         {
-          [v10 routePlanningDataCoordinator:self didUpdateRequestState:a3];
+          [v10 routePlanningDataCoordinator:self didUpdateRequestState:state];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -419,8 +419,8 @@ LABEL_15:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v3 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v4 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v4 = [observersIfEnabled countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v4)
   {
     v5 = v4;
@@ -431,33 +431,33 @@ LABEL_15:
       {
         if (*v11 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observersIfEnabled);
         }
 
         v8 = *(*(&v10 + 1) + 8 * i);
         if (([v8 observedRoutePlanningData] & 0x2000) != 0)
         {
-          v9 = [(RoutePlanningDataCoordinator *)self virtualGarage];
-          [v8 routePlanningDataCoordinator:self didUpdateVirtualGarage:v9];
+          virtualGarage = [(RoutePlanningDataCoordinator *)self virtualGarage];
+          [v8 routePlanningDataCoordinator:self didUpdateVirtualGarage:virtualGarage];
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v5 = [observersIfEnabled countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)_notifyDidUpdateCyclePreferences:(id)a3
+- (void)_notifyDidUpdateCyclePreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v6 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -468,32 +468,32 @@ LABEL_15:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observersIfEnabled);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         if (([v10 observedRoutePlanningData] & 0x1000) != 0)
         {
-          [v10 routePlanningDataCoordinator:self didUpdateCyclePreferences:v4];
+          [v10 routePlanningDataCoordinator:self didUpdateCyclePreferences:preferencesCopy];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyDidUpdateTransitPreferences:(id)a3
+- (void)_notifyDidUpdateTransitPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v6 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -504,32 +504,32 @@ LABEL_15:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observersIfEnabled);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         if (([v10 observedRoutePlanningData] & 0x100) != 0)
         {
-          [v10 routePlanningDataCoordinator:self didUpdateTransitPreferences:v4];
+          [v10 routePlanningDataCoordinator:self didUpdateTransitPreferences:preferencesCopy];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyDidUpdateWalkPreferences:(id)a3
+- (void)_notifyDidUpdateWalkPreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v6 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -540,32 +540,32 @@ LABEL_15:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observersIfEnabled);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         if (([v10 observedRoutePlanningData] & 0x10000) != 0)
         {
-          [v10 routePlanningDataCoordinator:self didUpdateWalkPreferences:v4];
+          [v10 routePlanningDataCoordinator:self didUpdateWalkPreferences:preferencesCopy];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyDidUpdateDrivePreferences:(id)a3
+- (void)_notifyDidUpdateDrivePreferences:(id)preferences
 {
-  v4 = a3;
+  preferencesCopy = preferences;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v6 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -576,17 +576,17 @@ LABEL_15:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observersIfEnabled);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         if (([v10 observedRoutePlanningData] & 0x80) != 0)
         {
-          [v10 routePlanningDataCoordinator:self didUpdateDrivePreferences:v4];
+          [v10 routePlanningDataCoordinator:self didUpdateDrivePreferences:preferencesCopy];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -599,8 +599,8 @@ LABEL_15:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v3 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v4 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v4 = [observersIfEnabled countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v4)
   {
     v5 = v4;
@@ -611,7 +611,7 @@ LABEL_15:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observersIfEnabled);
         }
 
         v8 = *(*(&v9 + 1) + 8 * i);
@@ -621,7 +621,7 @@ LABEL_15:
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [observersIfEnabled countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v5);
@@ -631,18 +631,18 @@ LABEL_15:
   [(RoutePlanningDataCoordinator *)self _notifyDidUpdateOriginDestinationNames];
 }
 
-- (void)_notifyDidUpdateCurrentRouteDisplayedMapRect:(id)a3
+- (void)_notifyDidUpdateCurrentRouteDisplayedMapRect:(id)rect
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v5 = a3.var0.var1;
-  v6 = a3.var0.var0;
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v5 = rect.var0.var1;
+  v6 = rect.var0.var0;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v8 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v9 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v9 = [observersIfEnabled countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v9)
   {
     v10 = v9;
@@ -653,7 +653,7 @@ LABEL_15:
       {
         if (*v15 != v11)
         {
-          objc_enumerationMutation(v8);
+          objc_enumerationMutation(observersIfEnabled);
         }
 
         v13 = *(*(&v14 + 1) + 8 * i);
@@ -663,22 +663,22 @@ LABEL_15:
         }
       }
 
-      v10 = [v8 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v10 = [observersIfEnabled countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v10);
   }
 }
 
-- (void)_notifyDidUpdateRoutes:(id)a3
+- (void)_notifyDidUpdateRoutes:(id)routes
 {
-  v4 = a3;
+  routesCopy = routes;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v6 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -689,32 +689,32 @@ LABEL_15:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observersIfEnabled);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         if (([v10 observedRoutePlanningData] & 0x800) != 0)
         {
-          [v10 routePlanningDataCoordinator:self didUpdateRoutes:v4];
+          [v10 routePlanningDataCoordinator:self didUpdateRoutes:routesCopy];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
   }
 }
 
-- (void)_notifyDidUpdateRouteCollection:(id)a3
+- (void)_notifyDidUpdateRouteCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v5 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-  v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+  v6 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
   {
     v7 = v6;
@@ -725,17 +725,17 @@ LABEL_15:
       {
         if (*v12 != v8)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(observersIfEnabled);
         }
 
         v10 = *(*(&v11 + 1) + 8 * i);
         if (([v10 observedRoutePlanningData] & 0x40) != 0)
         {
-          [v10 routePlanningDataCoordinator:self didUpdateRouteCollection:v4];
+          [v10 routePlanningDataCoordinator:self didUpdateRouteCollection:collectionCopy];
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v7 = [observersIfEnabled countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v7);
@@ -744,13 +744,13 @@ LABEL_15:
 
 - (void)_notifyDidUpdateEnabled
 {
-  v3 = [(RoutePlanningDataCoordinator *)self isEnabled];
+  isEnabled = [(RoutePlanningDataCoordinator *)self isEnabled];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(RoutePlanningDataCoordinator *)self observers];
-  v5 = [v4 copy];
+  observers = [(RoutePlanningDataCoordinator *)self observers];
+  v5 = [observers copy];
 
   v6 = [v5 countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v6)
@@ -769,7 +769,7 @@ LABEL_15:
         v10 = *(*(&v11 + 1) + 8 * i);
         if (([v10 observedRoutePlanningData] & 0x8000) != 0)
         {
-          [v10 routePlanningDataCoordinator:self didEnable:v3];
+          [v10 routePlanningDataCoordinator:self didEnable:isEnabled];
         }
       }
 
@@ -782,14 +782,14 @@ LABEL_15:
 
 - (void)stop
 {
-  v3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  if (v3 || ([(RoutePlanningDataCoordinator *)self rideBookingPlanningSession], (v3 = objc_claimAutoreleasedReturnValue()) != 0))
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  if (routePlanningSession || ([(RoutePlanningDataCoordinator *)self rideBookingPlanningSession], (routePlanningSession = objc_claimAutoreleasedReturnValue()) != 0))
   {
-    v4 = v3;
-    v5 = [(RoutePlanningDataCoordinator *)self platformController];
-    v6 = [v5 currentSession];
+    v4 = routePlanningSession;
+    platformController = [(RoutePlanningDataCoordinator *)self platformController];
+    currentSession = [platformController currentSession];
 
-    if (v6 != v4)
+    if (currentSession != v4)
     {
       v8 = sub_10006D178();
       if (os_log_type_enabled(v8, OS_LOG_TYPE_ERROR))
@@ -818,8 +818,8 @@ LABEL_15:
       }
     }
 
-    v7 = [(RoutePlanningDataCoordinator *)self platformController];
-    [v7 clearIfCurrentSession:v4];
+    platformController2 = [(RoutePlanningDataCoordinator *)self platformController];
+    [platformController2 clearIfCurrentSession:v4];
   }
 }
 
@@ -827,39 +827,39 @@ LABEL_15:
 {
   if ([(RoutePlanningDataCoordinator *)self isSuspended])
   {
-    v4 = [(RoutePlanningDataCoordinator *)self platformController];
-    v3 = [(RoutePlanningDataCoordinator *)self stashedRoutePlanningSession];
-    [v4 replaceCurrentSessionWithSession:v3];
+    platformController = [(RoutePlanningDataCoordinator *)self platformController];
+    stashedRoutePlanningSession = [(RoutePlanningDataCoordinator *)self stashedRoutePlanningSession];
+    [platformController replaceCurrentSessionWithSession:stashedRoutePlanningSession];
   }
 }
 
 - (void)suspend
 {
-  v3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  if (v3)
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  if (routePlanningSession)
   {
-    v4 = v3;
-    v5 = [(RoutePlanningDataCoordinator *)self isSuspended];
+    v4 = routePlanningSession;
+    isSuspended = [(RoutePlanningDataCoordinator *)self isSuspended];
 
-    if ((v5 & 1) == 0)
+    if ((isSuspended & 1) == 0)
     {
-      v6 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-      [(RoutePlanningDataCoordinator *)self setStashedRoutePlanningSession:v6];
+      routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+      [(RoutePlanningDataCoordinator *)self setStashedRoutePlanningSession:routePlanningSession2];
 
-      v8 = [(RoutePlanningDataCoordinator *)self platformController];
-      v7 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-      [v8 popIfCurrentSession:v7];
+      platformController = [(RoutePlanningDataCoordinator *)self platformController];
+      routePlanningSession3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+      [platformController popIfCurrentSession:routePlanningSession3];
     }
   }
 }
 
 - (BOOL)isSuspended
 {
-  v3 = [(RoutePlanningDataCoordinator *)self stashedRoutePlanningSession];
-  if (v3)
+  stashedRoutePlanningSession = [(RoutePlanningDataCoordinator *)self stashedRoutePlanningSession];
+  if (stashedRoutePlanningSession)
   {
-    v4 = [(RoutePlanningDataCoordinator *)self stashedRoutePlanningSession];
-    v5 = [v4 sessionState] == 2;
+    stashedRoutePlanningSession2 = [(RoutePlanningDataCoordinator *)self stashedRoutePlanningSession];
+    v5 = [stashedRoutePlanningSession2 sessionState] == 2;
   }
 
   else
@@ -892,8 +892,8 @@ LABEL_15:
 {
   if ([(RoutePlanningDataCoordinator *)self transportType]== 4 && sub_100016C50() && [(RoutePlanningDataCoordinator *)self isEnabled])
   {
-    v3 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
-    if (!v3)
+    rideBookingPlanningSession = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    if (!rideBookingPlanningSession)
     {
       v4 = sub_10006D178();
       if (os_log_type_enabled(v4, OS_LOG_TYPE_ERROR))
@@ -922,45 +922,45 @@ LABEL_15:
       }
     }
 
-    [v3 refresh];
+    [rideBookingPlanningSession refresh];
   }
 }
 
 - (DirectionItem)directionItemForCurrentSession
 {
-  v3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v3)
+  if (routePlanningSession)
   {
-    v4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-    v5 = [DirectionItem directionItemWithRoutePlanningSession:v4];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    v5 = [DirectionItem directionItemWithRoutePlanningSession:routePlanningSession2];
   }
 
   else
   {
-    v6 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    rideBookingPlanningSession = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
 
-    if (!v6)
+    if (!rideBookingPlanningSession)
     {
       goto LABEL_6;
     }
 
-    v4 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
-    v5 = [DirectionItem directionItemWithRideBookingSession:v4];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    v5 = [DirectionItem directionItemWithRideBookingSession:routePlanningSession2];
   }
 
-  v6 = v5;
+  rideBookingPlanningSession = v5;
 
 LABEL_6:
 
-  return v6;
+  return rideBookingPlanningSession;
 }
 
 - (BOOL)canAddStop
 {
-  v3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (!v3)
+  if (!routePlanningSession)
   {
     LOBYTE(v6) = 0;
     return v6;
@@ -970,21 +970,21 @@ LABEL_6:
   v12 = &v11;
   v13 = 0x2020000000;
   v14 = 0;
-  v4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
   v10[0] = _NSConcreteStackBlock;
   v10[1] = 3221225472;
   v10[2] = sub_100DDF0C8;
   v10[3] = &unk_101655138;
   v10[4] = &v11;
-  [v4 enumerateRequestsOrWaypointsUsingBlock:v10];
+  [routePlanningSession2 enumerateRequestsOrWaypointsUsingBlock:v10];
 
-  v5 = [(RoutePlanningDataCoordinator *)self transportType];
+  transportType = [(RoutePlanningDataCoordinator *)self transportType];
   v6 = 0;
-  if (v5 <= 1)
+  if (transportType <= 1)
   {
-    if (v5)
+    if (transportType)
     {
-      if (v5 == 1)
+      if (transportType == 1)
       {
         IsEnabled_DrivingMultiWaypointRoutes = MapsFeature_IsEnabled_DrivingMultiWaypointRoutes();
 LABEL_14:
@@ -1006,12 +1006,12 @@ LABEL_13:
     goto LABEL_14;
   }
 
-  if (v5 == 2)
+  if (transportType == 2)
   {
     goto LABEL_13;
   }
 
-  if (v5 == 5)
+  if (transportType == 5)
   {
     IsEnabled_DrivingMultiWaypointRoutes = MapsFeature_IsEnabled_Maps420();
     goto LABEL_14;
@@ -1036,31 +1036,31 @@ LABEL_15:
   return v6;
 }
 
-- (void)startWithDirectionItem:(id)a3 traits:(id)a4 userInfo:(id)a5
+- (void)startWithDirectionItem:(id)item traits:(id)traits userInfo:(id)info
 {
-  v19 = a3;
-  v8 = a5;
-  v9 = a4;
-  v10 = [v8 objectForKeyedSubscript:@"DisableNotReachableErrorInRoutePlanning"];
+  itemCopy = item;
+  infoCopy = info;
+  traitsCopy = traits;
+  v10 = [infoCopy objectForKeyedSubscript:@"DisableNotReachableErrorInRoutePlanning"];
   -[RoutePlanningDataCoordinator setDisableNotReachableError:](self, "setDisableNotReachableError:", [v10 BOOLValue]);
 
-  if (v8)
+  if (infoCopy)
   {
-    v11 = [RoutePlanningTiming timingWithUserInfo:v8];
+    v11 = [RoutePlanningTiming timingWithUserInfo:infoCopy];
     v12 = v11;
     if (v11)
     {
-      v13 = v11;
+      timing = v11;
     }
 
     else
     {
-      v13 = [v19 timing];
+      timing = [itemCopy timing];
     }
 
-    v14 = v13;
+    timing2 = timing;
 
-    if (!v14)
+    if (!timing2)
     {
       goto LABEL_9;
     }
@@ -1068,31 +1068,31 @@ LABEL_15:
     goto LABEL_8;
   }
 
-  v14 = [v19 timing];
-  if (v14)
+  timing2 = [itemCopy timing];
+  if (timing2)
   {
 LABEL_8:
-    objc_storeStrong(&self->_timing, v14);
+    objc_storeStrong(&self->_timing, timing2);
   }
 
 LABEL_9:
-  v15 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  v16 = [v15 waypointRequestResults];
-  v17 = sub_100D506E0(v19, v9, v16, v8);
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  waypointRequestResults = [routePlanningSession waypointRequestResults];
+  v17 = sub_100D506E0(itemCopy, traitsCopy, waypointRequestResults, infoCopy);
 
-  v18 = [(RoutePlanningDataCoordinator *)self platformController];
-  [v18 replaceCurrentSessionWithSession:v17];
+  platformController = [(RoutePlanningDataCoordinator *)self platformController];
+  [platformController replaceCurrentSessionWithSession:v17];
 }
 
 - (NSArray)automaticSharingContacts
 {
-  v2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  v3 = [v2 configuration];
-  v4 = [v3 automaticSharingContacts];
-  v5 = v4;
-  if (v4)
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  configuration = [routePlanningSession configuration];
+  automaticSharingContacts = [configuration automaticSharingContacts];
+  v5 = automaticSharingContacts;
+  if (automaticSharingContacts)
   {
-    v6 = v4;
+    v6 = automaticSharingContacts;
   }
 
   else
@@ -1107,68 +1107,68 @@ LABEL_9:
 
 - (NSUUID)originalHistoryEntryIdentifier
 {
-  v3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v3)
+  if (routePlanningSession)
   {
-    v4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-    v5 = [v4 configuration];
-    v6 = [v5 originalHistoryEntryIdentifier];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    configuration = [routePlanningSession2 configuration];
+    originalHistoryEntryIdentifier = [configuration originalHistoryEntryIdentifier];
   }
 
   else
   {
-    v6 = 0;
+    originalHistoryEntryIdentifier = 0;
   }
 
-  return v6;
+  return originalHistoryEntryIdentifier;
 }
 
-- (void)_reloadUsingNewTransitPreferences:(id)a3
+- (void)_reloadUsingNewTransitPreferences:(id)preferences
 {
-  v16 = a3;
-  v4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  preferencesCopy = preferences;
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v4)
+  if (routePlanningSession)
   {
-    v5 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-    v6 = [v5 configuration];
-    v7 = [v6 routeLoadingTaskFactory];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    configuration = [routePlanningSession2 configuration];
+    routeLoadingTaskFactory = [configuration routeLoadingTaskFactory];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if ([(RoutePlanningDataCoordinator *)self transportType]== 3)
       {
-        v8 = [v7 factoryByModifyingTransitPreferences:v16 timing:self->_timing];
-        v9 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-        v10 = [v9 configuration];
-        v11 = [v9 waypointRequestResults];
-        v12 = [v10 configurationByModifyingRouteLoadingTaskFactory:v8 andDedupingWaypointRequests:v11];
+        routePlanningSession4 = [routeLoadingTaskFactory factoryByModifyingTransitPreferences:preferencesCopy timing:self->_timing];
+        routePlanningSession3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+        configuration2 = [routePlanningSession3 configuration];
+        waypointRequestResults = [routePlanningSession3 waypointRequestResults];
+        v12 = [configuration2 configurationByModifyingRouteLoadingTaskFactory:routePlanningSession4 andDedupingWaypointRequests:waypointRequestResults];
 
         [v12 setInitialTransportType:{-[RoutePlanningDataCoordinator transportType](self, "transportType")}];
         [v12 setInitialRoutesBeingFetchedExternally:0];
         v13 = [[RoutePlanningSession alloc] initWithInitiator:1 configuration:v12];
-        v14 = [(RoutePlanningDataCoordinator *)self platformController];
-        [v14 replaceCurrentSessionWithSession:v13];
+        platformController = [(RoutePlanningDataCoordinator *)self platformController];
+        [platformController replaceCurrentSessionWithSession:v13];
 
-        v15 = [(RoutePlanningDataCoordinator *)self transitPreferences];
-        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateTransitPreferences:v15];
+        transitPreferences = [(RoutePlanningDataCoordinator *)self transitPreferences];
+        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateTransitPreferences:transitPreferences];
       }
 
       else
       {
-        v8 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-        [v8 purgeRouteCollectionForTransportType:3];
+        routePlanningSession4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+        [routePlanningSession4 purgeRouteCollectionForTransportType:3];
       }
     }
   }
 }
 
-- (void)_reloadUsingNewCyclePreferences:(id)a3
+- (void)_reloadUsingNewCyclePreferences:(id)preferences
 {
-  v4 = a3;
-  if (!v4)
+  preferencesCopy = preferences;
+  if (!preferencesCopy)
   {
     v17 = sub_10006D178();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1197,64 +1197,64 @@ LABEL_9:
     }
   }
 
-  v5 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v5)
+  if (routePlanningSession)
   {
-    v6 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-    v7 = [v6 configuration];
-    v8 = [v7 routeLoadingTaskFactory];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    configuration = [routePlanningSession2 configuration];
+    routeLoadingTaskFactory = [configuration routeLoadingTaskFactory];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if ([(RoutePlanningDataCoordinator *)self transportType]== 5)
       {
-        v9 = [v8 factoryByModifyingCyclePreferences:v4 timing:self->_timing];
-        v10 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-        v11 = [v10 configuration];
-        v12 = [v10 waypointRequestResults];
-        v13 = [v11 configurationByModifyingRouteLoadingTaskFactory:v9 andDedupingWaypointRequests:v12];
+        routePlanningSession4 = [routeLoadingTaskFactory factoryByModifyingCyclePreferences:preferencesCopy timing:self->_timing];
+        routePlanningSession3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+        configuration2 = [routePlanningSession3 configuration];
+        waypointRequestResults = [routePlanningSession3 waypointRequestResults];
+        v13 = [configuration2 configurationByModifyingRouteLoadingTaskFactory:routePlanningSession4 andDedupingWaypointRequests:waypointRequestResults];
 
         [v13 setInitialTransportType:{-[RoutePlanningDataCoordinator transportType](self, "transportType")}];
         [v13 setInitialRoutesBeingFetchedExternally:0];
         v14 = [[RoutePlanningSession alloc] initWithInitiator:1 configuration:v13];
-        v15 = [(RoutePlanningDataCoordinator *)self platformController];
-        [v15 replaceCurrentSessionWithSession:v14];
+        platformController = [(RoutePlanningDataCoordinator *)self platformController];
+        [platformController replaceCurrentSessionWithSession:v14];
 
-        v16 = [(RoutePlanningDataCoordinator *)self cyclePreferences];
-        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateCyclePreferences:v16];
+        cyclePreferences = [(RoutePlanningDataCoordinator *)self cyclePreferences];
+        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateCyclePreferences:cyclePreferences];
       }
 
       else
       {
-        v9 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-        [v9 purgeRouteCollectionForTransportType:5];
+        routePlanningSession4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+        [routePlanningSession4 purgeRouteCollectionForTransportType:5];
       }
     }
   }
 }
 
-- (void)updateCyclePreferences:(id)a3
+- (void)updateCyclePreferences:(id)preferences
 {
-  v4 = a3;
-  if (v4)
+  preferencesCopy = preferences;
+  if (preferencesCopy)
   {
-    v5 = [(RoutePlanningDataCoordinator *)self cyclePreferences];
-    v6 = [v4 isEqual:v5];
+    cyclePreferences = [(RoutePlanningDataCoordinator *)self cyclePreferences];
+    v6 = [preferencesCopy isEqual:cyclePreferences];
 
     if ((v6 & 1) == 0)
     {
-      [v4 synchronize];
+      [preferencesCopy synchronize];
       v7 = +[NSUserDefaults standardUserDefaults];
       [MapsAnalyticStateProvider updateCycleOptionsInformation:v7];
 
-      v8 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+      routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-      if (!v8)
+      if (!routePlanningSession)
       {
-        v9 = [(RoutePlanningDataCoordinator *)self cyclePreferences];
-        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateCyclePreferences:v9];
+        cyclePreferences2 = [(RoutePlanningDataCoordinator *)self cyclePreferences];
+        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateCyclePreferences:cyclePreferences2];
       }
     }
   }
@@ -1289,9 +1289,9 @@ LABEL_9:
   }
 }
 
-- (void)updateVirtualGarage:(id)a3
+- (void)updateVirtualGarage:(id)garage
 {
-  v4 = a3;
+  garageCopy = garage;
   label = dispatch_queue_get_label(&_dispatch_main_q);
   v6 = dispatch_queue_get_label(0);
   if (label != v6)
@@ -1332,29 +1332,29 @@ LABEL_9:
   }
 
   virtualGarage = self->_virtualGarage;
-  self->_virtualGarage = v4;
+  self->_virtualGarage = garageCopy;
 
   [(RoutePlanningDataCoordinator *)self _notifyDidUpdateVirtualGarage];
 }
 
-- (void)updateTransitPreferences:(id)a3
+- (void)updateTransitPreferences:(id)preferences
 {
-  v4 = a3;
-  v5 = [(RoutePlanningDataCoordinator *)self transitPreferences];
-  v6 = v4;
-  if (v6 | v5)
+  preferencesCopy = preferences;
+  transitPreferences = [(RoutePlanningDataCoordinator *)self transitPreferences];
+  v6 = preferencesCopy;
+  if (v6 | transitPreferences)
   {
     v9 = v6;
-    v7 = [v5 isEqual:v6];
+    v7 = [transitPreferences isEqual:v6];
 
     v6 = v9;
     if ((v7 & 1) == 0)
     {
       [v9 synchronize];
-      v8 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+      routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
       v6 = v9;
-      if (!v8)
+      if (!routePlanningSession)
       {
         [(RoutePlanningDataCoordinator *)self _notifyDidUpdateTransitPreferences:v9];
         v6 = v9;
@@ -1363,10 +1363,10 @@ LABEL_9:
   }
 }
 
-- (void)_reloadUsingNewWalkPreferences:(id)a3
+- (void)_reloadUsingNewWalkPreferences:(id)preferences
 {
-  v4 = a3;
-  if (!v4)
+  preferencesCopy = preferences;
+  if (!preferencesCopy)
   {
     v17 = sub_10006D178();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1395,48 +1395,48 @@ LABEL_9:
     }
   }
 
-  v5 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v5)
+  if (routePlanningSession)
   {
-    v6 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-    v7 = [v6 configuration];
-    v8 = [v7 routeLoadingTaskFactory];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    configuration = [routePlanningSession2 configuration];
+    routeLoadingTaskFactory = [configuration routeLoadingTaskFactory];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if ([(RoutePlanningDataCoordinator *)self transportType]== 2)
       {
-        v9 = [v8 factoryByModifyingWalkPreferences:v4 timing:self->_timing];
-        v10 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-        v11 = [v10 configuration];
-        v12 = [v10 waypointRequestResults];
-        v13 = [v11 configurationByModifyingRouteLoadingTaskFactory:v9 andDedupingWaypointRequests:v12];
+        routePlanningSession4 = [routeLoadingTaskFactory factoryByModifyingWalkPreferences:preferencesCopy timing:self->_timing];
+        routePlanningSession3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+        configuration2 = [routePlanningSession3 configuration];
+        waypointRequestResults = [routePlanningSession3 waypointRequestResults];
+        v13 = [configuration2 configurationByModifyingRouteLoadingTaskFactory:routePlanningSession4 andDedupingWaypointRequests:waypointRequestResults];
 
         [v13 setInitialTransportType:{-[RoutePlanningDataCoordinator transportType](self, "transportType")}];
         [v13 setInitialRoutesBeingFetchedExternally:0];
         v14 = [[RoutePlanningSession alloc] initWithInitiator:1 configuration:v13];
-        v15 = [(RoutePlanningDataCoordinator *)self platformController];
-        [v15 replaceCurrentSessionWithSession:v14];
+        platformController = [(RoutePlanningDataCoordinator *)self platformController];
+        [platformController replaceCurrentSessionWithSession:v14];
 
-        v16 = [(RoutePlanningDataCoordinator *)self walkPreferences];
-        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateWalkPreferences:v16];
+        walkPreferences = [(RoutePlanningDataCoordinator *)self walkPreferences];
+        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateWalkPreferences:walkPreferences];
       }
 
       else
       {
-        v9 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-        [v9 purgeRouteCollectionForTransportType:2];
+        routePlanningSession4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+        [routePlanningSession4 purgeRouteCollectionForTransportType:2];
       }
     }
   }
 }
 
-- (void)_reloadUsingNewDrivePreferences:(id)a3
+- (void)_reloadUsingNewDrivePreferences:(id)preferences
 {
-  v4 = a3;
-  if (!v4)
+  preferencesCopy = preferences;
+  if (!preferencesCopy)
   {
     v17 = sub_10006D178();
     if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
@@ -1465,64 +1465,64 @@ LABEL_9:
     }
   }
 
-  v5 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v5)
+  if (routePlanningSession)
   {
-    v6 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-    v7 = [v6 configuration];
-    v8 = [v7 routeLoadingTaskFactory];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    configuration = [routePlanningSession2 configuration];
+    routeLoadingTaskFactory = [configuration routeLoadingTaskFactory];
 
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       if ([(RoutePlanningDataCoordinator *)self transportType]== 1)
       {
-        v9 = [v8 factoryByModifyingDrivePreferences:v4 timing:self->_timing];
-        v10 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-        v11 = [v10 configuration];
-        v12 = [v10 waypointRequestResults];
-        v13 = [v11 configurationByModifyingRouteLoadingTaskFactory:v9 andDedupingWaypointRequests:v12];
+        routePlanningSession4 = [routeLoadingTaskFactory factoryByModifyingDrivePreferences:preferencesCopy timing:self->_timing];
+        routePlanningSession3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+        configuration2 = [routePlanningSession3 configuration];
+        waypointRequestResults = [routePlanningSession3 waypointRequestResults];
+        v13 = [configuration2 configurationByModifyingRouteLoadingTaskFactory:routePlanningSession4 andDedupingWaypointRequests:waypointRequestResults];
 
         [v13 setInitialTransportType:{-[RoutePlanningDataCoordinator transportType](self, "transportType")}];
         [v13 setInitialRoutesBeingFetchedExternally:0];
         v14 = [[RoutePlanningSession alloc] initWithInitiator:1 configuration:v13];
-        v15 = [(RoutePlanningDataCoordinator *)self platformController];
-        [v15 replaceCurrentSessionWithSession:v14];
+        platformController = [(RoutePlanningDataCoordinator *)self platformController];
+        [platformController replaceCurrentSessionWithSession:v14];
 
-        v16 = [(RoutePlanningDataCoordinator *)self drivePreferences];
-        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateDrivePreferences:v16];
+        drivePreferences = [(RoutePlanningDataCoordinator *)self drivePreferences];
+        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateDrivePreferences:drivePreferences];
       }
 
       else
       {
-        v9 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-        [v9 purgeRouteCollectionForTransportType:1];
+        routePlanningSession4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+        [routePlanningSession4 purgeRouteCollectionForTransportType:1];
       }
     }
   }
 }
 
-- (void)updateWalkPreferences:(id)a3
+- (void)updateWalkPreferences:(id)preferences
 {
-  v4 = a3;
-  if (v4)
+  preferencesCopy = preferences;
+  if (preferencesCopy)
   {
-    v5 = [(RoutePlanningDataCoordinator *)self walkPreferences];
-    v6 = [v4 isEqual:v5];
+    walkPreferences = [(RoutePlanningDataCoordinator *)self walkPreferences];
+    v6 = [preferencesCopy isEqual:walkPreferences];
 
     if ((v6 & 1) == 0)
     {
-      [v4 synchronize];
+      [preferencesCopy synchronize];
       v7 = +[NSUserDefaults standardUserDefaults];
       [MapsAnalyticStateProvider updateWalkOptionsInformation:v7];
 
-      v8 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+      routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-      if (!v8)
+      if (!routePlanningSession)
       {
-        v9 = [(RoutePlanningDataCoordinator *)self walkPreferences];
-        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateWalkPreferences:v9];
+        walkPreferences2 = [(RoutePlanningDataCoordinator *)self walkPreferences];
+        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateWalkPreferences:walkPreferences2];
       }
     }
   }
@@ -1557,26 +1557,26 @@ LABEL_9:
   }
 }
 
-- (void)updateDrivePreferences:(id)a3
+- (void)updateDrivePreferences:(id)preferences
 {
-  v4 = a3;
-  if (v4)
+  preferencesCopy = preferences;
+  if (preferencesCopy)
   {
-    v5 = [(RoutePlanningDataCoordinator *)self drivePreferences];
-    v6 = [v4 isEqual:v5];
+    drivePreferences = [(RoutePlanningDataCoordinator *)self drivePreferences];
+    v6 = [preferencesCopy isEqual:drivePreferences];
 
     if ((v6 & 1) == 0)
     {
-      [v4 synchronize];
+      [preferencesCopy synchronize];
       v7 = +[NSUserDefaults standardUserDefaults];
       [MapsAnalyticStateProvider updateDriveOptionsInformation:v7];
 
-      v8 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+      routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-      if (!v8)
+      if (!routePlanningSession)
       {
-        v9 = [(RoutePlanningDataCoordinator *)self drivePreferences];
-        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateDrivePreferences:v9];
+        drivePreferences2 = [(RoutePlanningDataCoordinator *)self drivePreferences];
+        [(RoutePlanningDataCoordinator *)self _notifyDidUpdateDrivePreferences:drivePreferences2];
       }
     }
   }
@@ -1611,11 +1611,11 @@ LABEL_9:
   }
 }
 
-- (BOOL)updateTiming:(id)a3
+- (BOOL)updateTiming:(id)timing
 {
-  v5 = a3;
+  timingCopy = timing;
   v6 = self->_timing;
-  v7 = v5;
+  v7 = timingCopy;
   if (v7 | v6 && (v8 = [v6 isEqual:v7], v7, v6, (v8 & 1) == 0))
   {
     v10 = sub_100035E6C();
@@ -1623,18 +1623,18 @@ LABEL_9:
     {
       timing = self->_timing;
       v15 = 138412546;
-      v16 = timing;
+      timingCopy2 = timing;
       v17 = 2112;
       v18 = v7;
       _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_ERROR, "Changing timing from %@ to %@", &v15, 0x16u);
     }
 
-    objc_storeStrong(&self->_timing, a3);
-    v12 = [(RoutePlanningDataCoordinator *)self drivePreferences];
-    [(RoutePlanningDataCoordinator *)self _reloadUsingNewDrivePreferences:v12];
+    objc_storeStrong(&self->_timing, timing);
+    drivePreferences = [(RoutePlanningDataCoordinator *)self drivePreferences];
+    [(RoutePlanningDataCoordinator *)self _reloadUsingNewDrivePreferences:drivePreferences];
 
-    v13 = [(RoutePlanningDataCoordinator *)self transitPreferences];
-    [(RoutePlanningDataCoordinator *)self _reloadUsingNewTransitPreferences:v13];
+    transitPreferences = [(RoutePlanningDataCoordinator *)self transitPreferences];
+    [(RoutePlanningDataCoordinator *)self _reloadUsingNewTransitPreferences:transitPreferences];
 
     [(RoutePlanningDataCoordinator *)self _notifyDidUpdateTiming];
     v9 = 1;
@@ -1648,11 +1648,11 @@ LABEL_9:
   return v9;
 }
 
-- (void)updateTransportType:(int64_t)a3
+- (void)updateTransportType:(int64_t)type
 {
   [(RoutePlanningDataCoordinator *)self setDesiredTransportType:?];
   v5 = sub_100016C50();
-  if (a3 == 4)
+  if (type == 4)
   {
     v6 = v5;
   }
@@ -1664,46 +1664,46 @@ LABEL_9:
 
   if (v6)
   {
-    v7 = a3;
+    typeCopy = type;
   }
 
   else
   {
-    v7 = 1;
+    typeCopy = 1;
   }
 
-  if (v7 != [(RoutePlanningDataCoordinator *)self transportType])
+  if (typeCopy != [(RoutePlanningDataCoordinator *)self transportType])
   {
-    v8 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    rideBookingPlanningSession = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
 
-    if (v8)
+    if (rideBookingPlanningSession)
     {
-      v9 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
-      v10 = [v9 waypointRequests];
+      rideBookingPlanningSession2 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+      waypointRequests = [rideBookingPlanningSession2 waypointRequests];
 
-      v11 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
-      v12 = [v11 traits];
-      v13 = [v12 copyByIncrementingSessionCounters];
+      rideBookingPlanningSession3 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+      traits = [rideBookingPlanningSession3 traits];
+      copyByIncrementingSessionCounters = [traits copyByIncrementingSessionCounters];
 
-      v14 = [(RoutePlanningDataCoordinator *)self platformController];
-      v15 = [v14 sessionStack];
-      v16 = sub_1000282CC(v15, &stru_101655110);
-      v17 = [v16 lastObject];
+      platformController = [(RoutePlanningDataCoordinator *)self platformController];
+      sessionStack = [platformController sessionStack];
+      v16 = sub_1000282CC(sessionStack, &stru_101655110);
+      lastObject = [v16 lastObject];
 
-      v18 = [v17 configuration];
-      v19 = [v18 isResumingMultipointRoute];
+      configuration = [lastObject configuration];
+      isResumingMultipointRoute = [configuration isResumingMultipointRoute];
 
-      v20 = [v17 configuration];
-      v21 = [v20 resumeRouteHandle];
+      configuration2 = [lastObject configuration];
+      resumeRouteHandle = [configuration2 resumeRouteHandle];
 
-      v22 = [v17 configuration];
-      v23 = [v22 persistentData];
+      configuration3 = [lastObject configuration];
+      persistentData = [configuration3 persistentData];
 
-      v55 = v10;
-      v24 = [[RoutePlanningSessionConfiguration alloc] initWithWaypointRequests:v10 traits:v13 existingTiming:self->_timing isResumingMultipointRoute:v19 resumeRouteHandle:v21 persistentData:v23];
-      if ([(RoutePlanningSessionConfiguration *)v24 hasTransportType:v7])
+      v55 = waypointRequests;
+      v24 = [[RoutePlanningSessionConfiguration alloc] initWithWaypointRequests:waypointRequests traits:copyByIncrementingSessionCounters existingTiming:self->_timing isResumingMultipointRoute:isResumingMultipointRoute resumeRouteHandle:resumeRouteHandle persistentData:persistentData];
+      if ([(RoutePlanningSessionConfiguration *)v24 hasTransportType:typeCopy])
       {
-        [(RoutePlanningSessionConfiguration *)v24 setInitialTransportType:v7];
+        [(RoutePlanningSessionConfiguration *)v24 setInitialTransportType:typeCopy];
       }
 
       else
@@ -1734,75 +1734,75 @@ LABEL_9:
       }
 
       v38 = [[RoutePlanningSession alloc] initWithInitiator:1 configuration:v24];
-      v39 = [(RoutePlanningDataCoordinator *)self platformController];
-      v40 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
-      [v39 popIfCurrentSession:v40];
+      platformController2 = [(RoutePlanningDataCoordinator *)self platformController];
+      rideBookingPlanningSession4 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+      [platformController2 popIfCurrentSession:rideBookingPlanningSession4];
 
-      v41 = [(RoutePlanningDataCoordinator *)self platformController];
-      v42 = [v41 currentSession];
+      platformController3 = [(RoutePlanningDataCoordinator *)self platformController];
+      currentSession = [platformController3 currentSession];
       objc_opt_class();
       isKindOfClass = objc_opt_isKindOfClass();
 
-      v44 = [(RoutePlanningDataCoordinator *)self platformController];
-      v45 = v44;
+      platformController4 = [(RoutePlanningDataCoordinator *)self platformController];
+      v45 = platformController4;
       if (isKindOfClass)
       {
-        v46 = [v44 currentSession];
+        currentSession2 = [platformController4 currentSession];
 
-        v47 = [v46 shortcutIdentifier];
-        [(RoutePlanningSession *)v38 setShortcutIdentifier:v47];
-        v48 = [(RoutePlanningDataCoordinator *)self platformController];
-        [v48 replaceCurrentSessionWithSession:v38];
+        shortcutIdentifier = [currentSession2 shortcutIdentifier];
+        [(RoutePlanningSession *)v38 setShortcutIdentifier:shortcutIdentifier];
+        platformController5 = [(RoutePlanningDataCoordinator *)self platformController];
+        [platformController5 replaceCurrentSessionWithSession:v38];
 
-        v45 = v46;
+        v45 = currentSession2;
       }
 
       else
       {
-        [v44 pushSession:v38];
+        [platformController4 pushSession:v38];
       }
     }
 
     else
     {
-      v25 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+      routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-      if (v25)
+      if (routePlanningSession)
       {
-        v26 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-        v27 = [v26 configuration];
-        v28 = v27;
-        if (v7 == 4)
+        routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+        configuration4 = [routePlanningSession2 configuration];
+        v28 = configuration4;
+        if (typeCopy == 4)
         {
 
-          v29 = [v28 traits];
-          v30 = [v29 copyByIncrementingSessionCounters];
+          traits2 = [v28 traits];
+          copyByIncrementingSessionCounters2 = [traits2 copyByIncrementingSessionCounters];
 
           v31 = [RideBookingPlanningSession alloc];
-          v32 = [v28 waypointRequests];
-          v33 = [(RideBookingPlanningSession *)v31 initWithInitiator:1 waypointRequests:v32 traits:v30];
+          waypointRequests2 = [v28 waypointRequests];
+          v33 = [(RideBookingPlanningSession *)v31 initWithInitiator:1 waypointRequests:waypointRequests2 traits:copyByIncrementingSessionCounters2];
 
-          v34 = [(RoutePlanningDataCoordinator *)self platformController];
-          [v34 pushSession:v33];
+          platformController6 = [(RoutePlanningDataCoordinator *)self platformController];
+          [platformController6 pushSession:v33];
         }
 
         else
         {
-          v49 = [v27 hasTransportType:v7];
+          v49 = [configuration4 hasTransportType:typeCopy];
 
-          v50 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-          v28 = v50;
+          routePlanningSession3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+          v28 = routePlanningSession3;
           if (v49)
           {
-            [v50 safelySetCurrentTransportType:v7];
+            [routePlanningSession3 safelySetCurrentTransportType:typeCopy];
           }
 
           else
           {
-            v51 = [v50 configuration];
-            v52 = [v51 isNavigationTracePlayback];
+            configuration5 = [routePlanningSession3 configuration];
+            isNavigationTracePlayback = [configuration5 isNavigationTracePlayback];
 
-            if (v52)
+            if (isNavigationTracePlayback)
             {
               goto LABEL_27;
             }
@@ -1842,26 +1842,26 @@ LABEL_27:
   }
 }
 
-- (void)updateCurrentRouteDisplayedMapRect:(id)a3
+- (void)updateCurrentRouteDisplayedMapRect:(id)rect
 {
-  var1 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  v5 = a3.var0.var1;
-  v6 = a3.var0.var0;
-  v8 = self->_currentRouteDisplayedMapRect.origin.x == a3.var0.var0 && self->_currentRouteDisplayedMapRect.origin.y == a3.var0.var1;
-  if (!v8 || (self->_currentRouteDisplayedMapRect.size.width == a3.var1.var0 ? (v9 = self->_currentRouteDisplayedMapRect.size.height == a3.var1.var1) : (v9 = 0), !v9))
+  var1 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  v5 = rect.var0.var1;
+  v6 = rect.var0.var0;
+  v8 = self->_currentRouteDisplayedMapRect.origin.x == rect.var0.var0 && self->_currentRouteDisplayedMapRect.origin.y == rect.var0.var1;
+  if (!v8 || (self->_currentRouteDisplayedMapRect.size.width == rect.var1.var0 ? (v9 = self->_currentRouteDisplayedMapRect.size.height == rect.var1.var1) : (v9 = 0), !v9))
   {
-    [(RoutePlanningDataCoordinator *)self setCurrentRouteDisplayedMapRect:a3.var0.var0, a3.var0.var1, a3.var1.var0, a3.var1.var1];
+    [(RoutePlanningDataCoordinator *)self setCurrentRouteDisplayedMapRect:rect.var0.var0, rect.var0.var1, rect.var1.var0, rect.var1.var1];
 
     [(RoutePlanningDataCoordinator *)self _notifyDidUpdateCurrentRouteDisplayedMapRect:v6, v5, var0, var1];
   }
 }
 
-- (void)updateCurrentRouteIndex:(unint64_t)a3
+- (void)updateCurrentRouteIndex:(unint64_t)index
 {
-  v6 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (!v6)
+  if (!routePlanningSession)
   {
     v13 = sub_10006D178();
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -1894,19 +1894,19 @@ LABEL_27:
     }
   }
 
-  v7 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v7)
+  if (routePlanningSession2)
   {
-    v8 = [(RoutePlanningDataCoordinator *)self routeCollection];
-    v9 = [v8 count];
+    routeCollection = [(RoutePlanningDataCoordinator *)self routeCollection];
+    v9 = [routeCollection count];
 
-    if (v9 <= a3)
+    if (v9 <= index)
     {
       v18 = sub_10006D178();
       if (os_log_type_enabled(v18, OS_LOG_TYPE_ERROR))
       {
-        v19 = [NSString stringWithFormat:@"routeIndex (%lu) is not part of the current routeCollection", a3];
+        index = [NSString stringWithFormat:@"routeIndex (%lu) is not part of the current routeCollection", index];
         *buf = 136316162;
         v23 = "[RoutePlanningDataCoordinator updateCurrentRouteIndex:]";
         v24 = 2080;
@@ -1916,7 +1916,7 @@ LABEL_27:
         v28 = 2080;
         v29 = "routeIndex < self.routeCollection.count";
         v30 = 2112;
-        v31 = v19;
+        v31 = index;
         _os_log_impl(&_mh_execute_header, v18, OS_LOG_TYPE_ERROR, "%s [%s:%d] Assertion: (%s) '%@'", buf, 0x30u);
       }
 
@@ -1933,202 +1933,202 @@ LABEL_27:
       }
     }
 
-    v10 = [(RoutePlanningDataCoordinator *)self routeCollection];
-    v11 = [v10 count];
+    routeCollection2 = [(RoutePlanningDataCoordinator *)self routeCollection];
+    v11 = [routeCollection2 count];
 
-    if (v11 > a3)
+    if (v11 > index)
     {
-      v12 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-      [v12 setSelectedRouteIndex:a3 forTransportType:{-[RoutePlanningDataCoordinator transportType](self, "transportType")}];
+      routePlanningSession3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+      [routePlanningSession3 setSelectedRouteIndex:index forTransportType:{-[RoutePlanningDataCoordinator transportType](self, "transportType")}];
     }
   }
 }
 
-- (void)updateCurrentRoute:(id)a3
+- (void)updateCurrentRoute:(id)route
 {
-  v4 = a3;
-  v5 = [(RoutePlanningDataCoordinator *)self routeCollection];
-  v6 = [v5 indexOfRoute:v4];
+  routeCopy = route;
+  routeCollection = [(RoutePlanningDataCoordinator *)self routeCollection];
+  v6 = [routeCollection indexOfRoute:routeCopy];
 
   [(RoutePlanningDataCoordinator *)self updateCurrentRouteIndex:v6];
 }
 
 - (NSString)destinationName
 {
-  v3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v3)
+  if (routePlanningSession)
   {
-    v4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
   }
 
   else
   {
-    v5 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    rideBookingPlanningSession = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
 
-    if (!v5)
+    if (!rideBookingPlanningSession)
     {
       goto LABEL_6;
     }
 
-    v4 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
   }
 
-  v6 = v4;
-  v5 = [v4 destinationName];
+  v6 = routePlanningSession2;
+  rideBookingPlanningSession = [routePlanningSession2 destinationName];
 
 LABEL_6:
 
-  return v5;
+  return rideBookingPlanningSession;
 }
 
 - (NSString)originName
 {
-  v3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v3)
+  if (routePlanningSession)
   {
-    v4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
   }
 
   else
   {
-    v5 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    rideBookingPlanningSession = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
 
-    if (!v5)
+    if (!rideBookingPlanningSession)
     {
       goto LABEL_6;
     }
 
-    v4 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
   }
 
-  v6 = v4;
-  v5 = [v4 originName];
+  v6 = routePlanningSession2;
+  rideBookingPlanningSession = [routePlanningSession2 originName];
 
 LABEL_6:
 
-  return v5;
+  return rideBookingPlanningSession;
 }
 
 - (RideBookingRideOptionStateObserverProxy)rideOptionStateObserver
 {
-  v2 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
-  v3 = [v2 rideOptionStateObserver];
+  rideBookingPlanningSession = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+  rideOptionStateObserver = [rideBookingPlanningSession rideOptionStateObserver];
 
-  return v3;
+  return rideOptionStateObserver;
 }
 
 - (WaypointSet)resolvedWaypointSet
 {
-  v3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v3)
+  if (routePlanningSession)
   {
-    v4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
   }
 
   else
   {
-    v5 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    rideBookingPlanningSession = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
 
-    if (!v5)
+    if (!rideBookingPlanningSession)
     {
       goto LABEL_6;
     }
 
-    v4 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
   }
 
-  v6 = v4;
-  v5 = [v4 resolvedWaypoints];
+  v6 = routePlanningSession2;
+  rideBookingPlanningSession = [routePlanningSession2 resolvedWaypoints];
 
 LABEL_6:
 
-  return v5;
+  return rideBookingPlanningSession;
 }
 
 - (RoutePlanningWaypointRequest)destinationWaypointRequest
 {
-  v2 = [(RoutePlanningDataCoordinator *)self waypointRequests];
-  v3 = [v2 lastObject];
+  waypointRequests = [(RoutePlanningDataCoordinator *)self waypointRequests];
+  lastObject = [waypointRequests lastObject];
 
-  return v3;
+  return lastObject;
 }
 
 - (RoutePlanningWaypointRequest)originWaypointRequest
 {
-  v2 = [(RoutePlanningDataCoordinator *)self waypointRequests];
-  v3 = [v2 firstObject];
+  waypointRequests = [(RoutePlanningDataCoordinator *)self waypointRequests];
+  firstObject = [waypointRequests firstObject];
 
-  return v3;
+  return firstObject;
 }
 
 - (NSArray)waypointRequests
 {
-  v3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v3)
+  if (routePlanningSession)
   {
-    v4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-    v5 = [v4 configuration];
-    v6 = [v5 waypointRequests];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    configuration = [routePlanningSession2 configuration];
+    waypointRequests = [configuration waypointRequests];
 LABEL_5:
 
     goto LABEL_6;
   }
 
-  v7 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+  rideBookingPlanningSession = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
 
-  if (v7)
+  if (rideBookingPlanningSession)
   {
-    v4 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
-    v5 = [v4 originRequest];
-    v11[0] = v5;
-    v8 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
-    v9 = [v8 destinationRequest];
-    v11[1] = v9;
-    v6 = [NSArray arrayWithObjects:v11 count:2];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    configuration = [routePlanningSession2 originRequest];
+    v11[0] = configuration;
+    rideBookingPlanningSession2 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    destinationRequest = [rideBookingPlanningSession2 destinationRequest];
+    v11[1] = destinationRequest;
+    waypointRequests = [NSArray arrayWithObjects:v11 count:2];
 
     goto LABEL_5;
   }
 
-  v6 = 0;
+  waypointRequests = 0;
 LABEL_6:
 
-  return v6;
+  return waypointRequests;
 }
 
 - (RoutePlanningError)routePlanningError
 {
-  v3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  v4 = [v3 resolvedWaypoints];
-  v5 = [v4 origin];
-  v6 = [v5 mapItemStorage];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  resolvedWaypoints = [routePlanningSession resolvedWaypoints];
+  origin = [resolvedWaypoints origin];
+  mapItemStorage = [origin mapItemStorage];
 
-  v7 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  v8 = [v7 resolvedWaypoints];
-  v9 = [v8 destination];
-  v10 = [v9 mapItemStorage];
+  routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  resolvedWaypoints2 = [routePlanningSession2 resolvedWaypoints];
+  destination = [resolvedWaypoints2 destination];
+  mapItemStorage2 = [destination mapItemStorage];
 
-  v11 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v11)
+  if (routePlanningSession3)
   {
-    v12 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-    v13 = [v12 routeCollectionResultForTransportType:{-[RoutePlanningDataCoordinator transportType](self, "transportType")}];
+    routePlanningSession4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    rideOptionStateObserverResult = [routePlanningSession4 routeCollectionResultForTransportType:{-[RoutePlanningDataCoordinator transportType](self, "transportType")}];
 LABEL_5:
-    v14 = v13;
+    rideBookingPlanningSession = rideOptionStateObserverResult;
 
     goto LABEL_6;
   }
 
-  v14 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+  rideBookingPlanningSession = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
 
-  if (v14)
+  if (rideBookingPlanningSession)
   {
-    v12 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
-    v13 = [v12 rideOptionStateObserverResult];
+    routePlanningSession4 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    rideOptionStateObserverResult = [routePlanningSession4 rideOptionStateObserverResult];
     goto LABEL_5;
   }
 
@@ -2144,13 +2144,13 @@ LABEL_6:
   v21 = sub_100DE19D0;
   v22 = &unk_1016550D0;
   v26 = &v27;
-  v23 = self;
-  v15 = v6;
+  selfCopy = self;
+  v15 = mapItemStorage;
   v24 = v15;
-  v16 = v10;
+  v16 = mapItemStorage2;
   v25 = v16;
-  [v14 withValue:&stru_1016550A8 orError:&v19];
-  if (-[RoutePlanningDataCoordinator disableNotReachableError](self, "disableNotReachableError", v19, v20, v21, v22, v23) && [v28[5] errorCode] == 16)
+  [rideBookingPlanningSession withValue:&stru_1016550A8 orError:&v19];
+  if (-[RoutePlanningDataCoordinator disableNotReachableError](self, "disableNotReachableError", v19, v20, v21, v22, selfCopy) && [v28[5] errorCode] == 16)
   {
     [v28[5] setErrorCode:1];
   }
@@ -2164,23 +2164,23 @@ LABEL_6:
 
 - (int64_t)requestState
 {
-  v3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v3)
+  if (routePlanningSession)
   {
-    v4 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 LABEL_5:
-    v6 = v4;
-    v7 = [v4 requestState];
+    v6 = routePlanningSession2;
+    requestState = [routePlanningSession2 requestState];
 
-    return v7;
+    return requestState;
   }
 
-  v5 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+  rideBookingPlanningSession = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
 
-  if (v5)
+  if (rideBookingPlanningSession)
   {
-    v4 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+    routePlanningSession2 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
     goto LABEL_5;
   }
 
@@ -2200,12 +2200,12 @@ LABEL_5:
 
 - (CyclePreferences)cyclePreferences
 {
-  v2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  v3 = [v2 cyclePreferences];
-  v4 = v3;
-  if (v3)
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  cyclePreferences = [routePlanningSession cyclePreferences];
+  v4 = cyclePreferences;
+  if (cyclePreferences)
   {
-    v5 = v3;
+    v5 = cyclePreferences;
   }
 
   else
@@ -2220,20 +2220,20 @@ LABEL_5:
 
 - (GEORouteDisplayHints)displayHints
 {
-  v2 = [(RoutePlanningDataCoordinator *)self currentRoute];
-  v3 = [v2 displayHints];
+  currentRoute = [(RoutePlanningDataCoordinator *)self currentRoute];
+  displayHints = [currentRoute displayHints];
 
-  return v3;
+  return displayHints;
 }
 
 - (TransitPreferences)transitPreferences
 {
-  v2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  v3 = [v2 transitPreferences];
-  v4 = v3;
-  if (v3)
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  transitPreferences = [routePlanningSession transitPreferences];
+  v4 = transitPreferences;
+  if (transitPreferences)
   {
-    v5 = v3;
+    v5 = transitPreferences;
   }
 
   else
@@ -2248,12 +2248,12 @@ LABEL_5:
 
 - (WalkPreferences)walkPreferences
 {
-  v2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  v3 = [v2 walkPreferences];
-  v4 = v3;
-  if (v3)
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  walkPreferences = [routePlanningSession walkPreferences];
+  v4 = walkPreferences;
+  if (walkPreferences)
   {
-    v5 = v3;
+    v5 = walkPreferences;
   }
 
   else
@@ -2268,12 +2268,12 @@ LABEL_5:
 
 - (DrivePreferences)drivePreferences
 {
-  v2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  v3 = [v2 drivePreferences];
-  v4 = v3;
-  if (v3)
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  drivePreferences = [routePlanningSession drivePreferences];
+  v4 = drivePreferences;
+  if (drivePreferences)
   {
-    v5 = v3;
+    v5 = drivePreferences;
   }
 
   else
@@ -2301,24 +2301,24 @@ LABEL_5:
 
 - (GEOComposedRoute)currentRoute
 {
-  v2 = [(RoutePlanningDataCoordinator *)self routeCollection];
-  v3 = [v2 currentRoute];
+  routeCollection = [(RoutePlanningDataCoordinator *)self routeCollection];
+  currentRoute = [routeCollection currentRoute];
 
-  return v3;
+  return currentRoute;
 }
 
 - (GEOAdvisoriesInfo)advisoriesInfo
 {
-  v2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  v3 = [v2 advisoriesInfo];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  advisoriesInfo = [routePlanningSession advisoriesInfo];
 
-  return v3;
+  return advisoriesInfo;
 }
 
 - (RouteCollection)routeCollection
 {
-  v3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  v4 = [v3 routeCollectionForTransportType:{-[RoutePlanningDataCoordinator transportType](self, "transportType")}];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  v4 = [routePlanningSession routeCollectionForTransportType:{-[RoutePlanningDataCoordinator transportType](self, "transportType")}];
 
   return v4;
 }
@@ -2329,8 +2329,8 @@ LABEL_5:
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v3 = [(RoutePlanningDataCoordinator *)self observers];
-  v4 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  observers = [(RoutePlanningDataCoordinator *)self observers];
+  v4 = [observers countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v4)
   {
     v5 = v4;
@@ -2342,7 +2342,7 @@ LABEL_5:
       {
         if (*v9 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(observers);
         }
 
         [(RoutePlanningDataCoordinator *)self setupDataForObserver:*(*(&v8 + 1) + 8 * v7)];
@@ -2350,25 +2350,25 @@ LABEL_5:
       }
 
       while (v5 != v7);
-      v5 = [v3 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v5 = [observers countByEnumeratingWithState:&v8 objects:v12 count:16];
     }
 
     while (v5);
   }
 }
 
-- (void)setupDataForObserver:(id)a3
+- (void)setupDataForObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [v4 observedRoutePlanningData];
-  if (!v5)
+  observerCopy = observer;
+  observedRoutePlanningData = [observerCopy observedRoutePlanningData];
+  if (!observedRoutePlanningData)
   {
     goto LABEL_18;
   }
 
-  v6 = v5;
-  v7 = [(RoutePlanningDataCoordinator *)self observers];
-  v8 = [v7 containsObject:v4];
+  v6 = observedRoutePlanningData;
+  observers = [(RoutePlanningDataCoordinator *)self observers];
+  v8 = [observers containsObject:observerCopy];
 
   if ((v8 & 1) == 0)
   {
@@ -2401,9 +2401,9 @@ LABEL_5:
 
   if (v6)
   {
-    v11 = [(RoutePlanningDataCoordinator *)self originWaypointRequest];
-    v12 = [(RoutePlanningDataCoordinator *)self destinationWaypointRequest];
-    [v4 routePlanningDataCoordinator:self didUpdateOriginWaypointRequest:v11 destinationWaypointRequest:v12];
+    originWaypointRequest = [(RoutePlanningDataCoordinator *)self originWaypointRequest];
+    destinationWaypointRequest = [(RoutePlanningDataCoordinator *)self destinationWaypointRequest];
+    [observerCopy routePlanningDataCoordinator:self didUpdateOriginWaypointRequest:originWaypointRequest destinationWaypointRequest:destinationWaypointRequest];
 
     if ((v6 & 0x10) == 0)
     {
@@ -2422,7 +2422,7 @@ LABEL_5:
     goto LABEL_5;
   }
 
-  [v4 routePlanningDataCoordinator:self didUpdateTransportType:{-[RoutePlanningDataCoordinator transportType](self, "transportType")}];
+  [observerCopy routePlanningDataCoordinator:self didUpdateTransportType:{-[RoutePlanningDataCoordinator transportType](self, "transportType")}];
   if ((v6 & 0x20) == 0)
   {
 LABEL_6:
@@ -2435,7 +2435,7 @@ LABEL_6:
   }
 
 LABEL_21:
-  [v4 routePlanningDataCoordinator:self didUpdateRequestState:{-[RoutePlanningDataCoordinator requestState](self, "requestState")}];
+  [observerCopy routePlanningDataCoordinator:self didUpdateRequestState:{-[RoutePlanningDataCoordinator requestState](self, "requestState")}];
   if ((v6 & 0x40) == 0)
   {
 LABEL_7:
@@ -2448,8 +2448,8 @@ LABEL_7:
   }
 
 LABEL_22:
-  v13 = [(RoutePlanningDataCoordinator *)self routeCollection];
-  [v4 routePlanningDataCoordinator:self didUpdateRouteCollection:v13];
+  routeCollection = [(RoutePlanningDataCoordinator *)self routeCollection];
+  [observerCopy routePlanningDataCoordinator:self didUpdateRouteCollection:routeCollection];
 
   if ((v6 & 0x80) == 0)
   {
@@ -2463,8 +2463,8 @@ LABEL_8:
   }
 
 LABEL_23:
-  v14 = [(RoutePlanningDataCoordinator *)self drivePreferences];
-  [v4 routePlanningDataCoordinator:self didUpdateDrivePreferences:v14];
+  drivePreferences = [(RoutePlanningDataCoordinator *)self drivePreferences];
+  [observerCopy routePlanningDataCoordinator:self didUpdateDrivePreferences:drivePreferences];
 
   if ((v6 & 0x10000) == 0)
   {
@@ -2478,8 +2478,8 @@ LABEL_9:
   }
 
 LABEL_24:
-  v15 = [(RoutePlanningDataCoordinator *)self walkPreferences];
-  [v4 routePlanningDataCoordinator:self didUpdateWalkPreferences:v15];
+  walkPreferences = [(RoutePlanningDataCoordinator *)self walkPreferences];
+  [observerCopy routePlanningDataCoordinator:self didUpdateWalkPreferences:walkPreferences];
 
   if ((v6 & 0x100) == 0)
   {
@@ -2493,8 +2493,8 @@ LABEL_10:
   }
 
 LABEL_25:
-  v16 = [(RoutePlanningDataCoordinator *)self transitPreferences];
-  [v4 routePlanningDataCoordinator:self didUpdateTransitPreferences:v16];
+  transitPreferences = [(RoutePlanningDataCoordinator *)self transitPreferences];
+  [observerCopy routePlanningDataCoordinator:self didUpdateTransitPreferences:transitPreferences];
 
   if ((v6 & 0x1000) == 0)
   {
@@ -2508,8 +2508,8 @@ LABEL_11:
   }
 
 LABEL_26:
-  v17 = [(RoutePlanningDataCoordinator *)self cyclePreferences];
-  [v4 routePlanningDataCoordinator:self didUpdateCyclePreferences:v17];
+  cyclePreferences = [(RoutePlanningDataCoordinator *)self cyclePreferences];
+  [observerCopy routePlanningDataCoordinator:self didUpdateCyclePreferences:cyclePreferences];
 
   if ((v6 & 0x2000) == 0)
   {
@@ -2523,8 +2523,8 @@ LABEL_12:
   }
 
 LABEL_27:
-  v18 = [(RoutePlanningDataCoordinator *)self virtualGarage];
-  [v4 routePlanningDataCoordinator:self didUpdateVirtualGarage:v18];
+  virtualGarage = [(RoutePlanningDataCoordinator *)self virtualGarage];
+  [observerCopy routePlanningDataCoordinator:self didUpdateVirtualGarage:virtualGarage];
 
   if ((v6 & 4) == 0)
   {
@@ -2538,8 +2538,8 @@ LABEL_13:
   }
 
 LABEL_28:
-  v19 = [(RoutePlanningDataCoordinator *)self resolvedWaypointSet];
-  [v4 routePlanningDataCoordinator:self didUpdateResolvedWaypointSet:v19];
+  resolvedWaypointSet = [(RoutePlanningDataCoordinator *)self resolvedWaypointSet];
+  [observerCopy routePlanningDataCoordinator:self didUpdateResolvedWaypointSet:resolvedWaypointSet];
 
   if ((v6 & 8) == 0)
   {
@@ -2553,9 +2553,9 @@ LABEL_14:
   }
 
 LABEL_29:
-  v20 = [(RoutePlanningDataCoordinator *)self originName];
-  v21 = [(RoutePlanningDataCoordinator *)self destinationName];
-  [v4 routePlanningDataCoordinator:self didUpdateOriginName:v20 destinationName:v21];
+  originName = [(RoutePlanningDataCoordinator *)self originName];
+  destinationName = [(RoutePlanningDataCoordinator *)self destinationName];
+  [observerCopy routePlanningDataCoordinator:self didUpdateOriginName:originName destinationName:destinationName];
 
   if ((v6 & 0x200) == 0)
   {
@@ -2566,8 +2566,8 @@ LABEL_15:
     }
 
 LABEL_31:
-    v22 = [(RoutePlanningDataCoordinator *)self timing];
-    [v4 routePlanningDataCoordinator:self didUpdateTiming:v22];
+    timing = [(RoutePlanningDataCoordinator *)self timing];
+    [observerCopy routePlanningDataCoordinator:self didUpdateTiming:timing];
 
     if ((v6 & 0x20000) == 0)
     {
@@ -2579,7 +2579,7 @@ LABEL_31:
 
 LABEL_30:
   [(RoutePlanningDataCoordinator *)self currentRouteDisplayedMapRect];
-  [v4 routePlanningDataCoordinator:self didUpdateCurrentRouteDisplayedMapRect:?];
+  [observerCopy routePlanningDataCoordinator:self didUpdateCurrentRouteDisplayedMapRect:?];
   if ((v6 & 0x4000) != 0)
   {
     goto LABEL_31;
@@ -2589,9 +2589,9 @@ LABEL_16:
   if ((v6 & 0x20000) != 0)
   {
 LABEL_17:
-    v9 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-    v10 = [v9 automaticSharingContacts];
-    [v4 routePlanningDataCoordinator:self didUpdateAutomaticSharingContacts:v10];
+    routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    automaticSharingContacts = [routePlanningSession automaticSharingContacts];
+    [observerCopy routePlanningDataCoordinator:self didUpdateAutomaticSharingContacts:automaticSharingContacts];
   }
 
 LABEL_18:
@@ -2601,8 +2601,8 @@ LABEL_18:
 {
   if ([(RoutePlanningDataCoordinator *)self _shouldNotifyObservers])
   {
-    v3 = [(RoutePlanningDataCoordinator *)self observers];
-    v4 = [v3 copy];
+    observers = [(RoutePlanningDataCoordinator *)self observers];
+    v4 = [observers copy];
   }
 
   else
@@ -2613,37 +2613,37 @@ LABEL_18:
   return v4;
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v4 = a3;
-  v5 = [(RoutePlanningDataCoordinator *)self observers];
-  [v5 removeObject:v4];
+  observerCopy = observer;
+  observers = [(RoutePlanningDataCoordinator *)self observers];
+  [observers removeObject:observerCopy];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v5 = a3;
-  if ([v5 observedRoutePlanningData])
+  observerCopy = observer;
+  if ([observerCopy observedRoutePlanningData])
   {
-    v4 = [(RoutePlanningDataCoordinator *)self observers];
-    [v4 addObject:v5];
+    observers = [(RoutePlanningDataCoordinator *)self observers];
+    [observers addObject:observerCopy];
   }
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  if (off_101937378 == a6)
+  pathCopy = path;
+  objectCopy = object;
+  changeCopy = change;
+  if (off_101937378 == context)
   {
     v13 = &_dispatch_main_q;
     v19[0] = _NSConcreteStackBlock;
     v19[1] = 3221225472;
     v20 = sub_100DE26C8;
     v21 = &unk_101661A90;
-    v22 = v10;
-    v23 = self;
+    v22 = pathCopy;
+    selfCopy = self;
     v14 = &_dispatch_main_q;
     v15 = v19;
     label = dispatch_queue_get_label(&_dispatch_main_q);
@@ -2665,22 +2665,22 @@ LABEL_18:
   {
     v24.receiver = self;
     v24.super_class = RoutePlanningDataCoordinator;
-    [(RoutePlanningDataCoordinator *)&v24 observeValueForKeyPath:v10 ofObject:v11 change:v12 context:a6];
+    [(RoutePlanningDataCoordinator *)&v24 observeValueForKeyPath:pathCopy ofObject:objectCopy change:changeCopy context:context];
   }
 }
 
-- (void)RideBookingPlanningSession:(id)a3 rideOptionStateDidChange:(id)a4
+- (void)RideBookingPlanningSession:(id)session rideOptionStateDidChange:(id)change
 {
-  v5 = a4;
+  changeCopy = change;
   [(RoutePlanningDataCoordinator *)self _notifyDidUpdateRequestState:[(RoutePlanningDataCoordinator *)self requestState]];
-  if (![v5 noRideOptionsAvailable] || (objc_msgSend(v5, "loadingAppStoreSuggestions") & 1) == 0)
+  if (![changeCopy noRideOptionsAvailable] || (objc_msgSend(changeCopy, "loadingAppStoreSuggestions") & 1) == 0)
   {
     v14 = 0u;
     v15 = 0u;
     v12 = 0u;
     v13 = 0u;
-    v6 = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
-    v7 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+    observersIfEnabled = [(RoutePlanningDataCoordinator *)self observersIfEnabled];
+    v7 = [observersIfEnabled countByEnumeratingWithState:&v12 objects:v16 count:16];
     if (v7)
     {
       v8 = v7;
@@ -2691,17 +2691,17 @@ LABEL_18:
         {
           if (*v13 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(observersIfEnabled);
           }
 
           v11 = *(*(&v12 + 1) + 8 * i);
           if (([v11 observedRoutePlanningData] & 0x400) != 0)
           {
-            [v11 routePlanningDataCoordinator:self didUpdateRideBookingRideOptionState:v5];
+            [v11 routePlanningDataCoordinator:self didUpdateRideBookingRideOptionState:changeCopy];
           }
         }
 
-        v8 = [v6 countByEnumeratingWithState:&v12 objects:v16 count:16];
+        v8 = [observersIfEnabled countByEnumeratingWithState:&v12 objects:v16 count:16];
       }
 
       while (v8);
@@ -2709,7 +2709,7 @@ LABEL_18:
   }
 }
 
-- (void)RideBookingPlanningSession:(id)a3 didFinishResolvingWaypointSet:(id)a4
+- (void)RideBookingPlanningSession:(id)session didFinishResolvingWaypointSet:(id)set
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -2721,43 +2721,43 @@ LABEL_18:
   v4[2] = sub_100DE2B38;
   v4[3] = &unk_10165F7B8;
   v4[4] = self;
-  [a4 withValue:v5 orError:v4];
+  [set withValue:v5 orError:v4];
 }
 
-- (void)routePlanningSession:(id)a3 didChangeRouteCreationRegion:(BOOL)a4
+- (void)routePlanningSession:(id)session didChangeRouteCreationRegion:(BOOL)region
 {
-  v5 = [(RoutePlanningDataCoordinator *)self routeCollection:a3];
+  v5 = [(RoutePlanningDataCoordinator *)self routeCollection:session];
   [(RoutePlanningDataCoordinator *)self _notifyDidUpdateRouteCollection:v5];
 }
 
 - (BOOL)inACustomRouteRegion
 {
-  v2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  v3 = [v2 inACustomRouteRegion];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  inACustomRouteRegion = [routePlanningSession inACustomRouteRegion];
 
-  return v3;
+  return inACustomRouteRegion;
 }
 
-- (void)routePlanningSession:(id)a3 didReceiveUpdates:(id)a4 forRoutesResult:(id)a5
+- (void)routePlanningSession:(id)session didReceiveUpdates:(id)updates forRoutesResult:(id)result
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100DE2C50;
   v5[3] = &unk_101655400;
   v5[4] = self;
-  [a5 withValue:v5 orError:&stru_101655088];
+  [result withValue:v5 orError:&stru_101655088];
 }
 
-- (void)routePlanningSession:(id)a3 didUpdateRouteCollectionResult:(id)a4 forTransportType:(int64_t)a5
+- (void)routePlanningSession:(id)session didUpdateRouteCollectionResult:(id)result forTransportType:(int64_t)type
 {
-  if ([(RoutePlanningDataCoordinator *)self transportType:a3]== a5)
+  if ([(RoutePlanningDataCoordinator *)self transportType:session]== type)
   {
 
     [(RoutePlanningDataCoordinator *)self _notifyResultRouteCollectionChangeForCurrentTransportType];
   }
 }
 
-- (void)routePlanningSession:(id)a3 didFinishResolvingWaypointSet:(id)a4
+- (void)routePlanningSession:(id)session didFinishResolvingWaypointSet:(id)set
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
@@ -2769,43 +2769,43 @@ LABEL_18:
   v4[2] = sub_100DE2D70;
   v4[3] = &unk_10165F7B8;
   v4[4] = self;
-  [a4 withValue:v5 orError:v4];
+  [set withValue:v5 orError:v4];
 }
 
-- (void)mapsSession:(id)a3 didChangeState:(unint64_t)a4
+- (void)mapsSession:(id)session didChangeState:(unint64_t)state
 {
   [(RoutePlanningDataCoordinator *)self _updateIsEnabled];
-  if (a4 == 1)
+  if (state == 1)
   {
-    v6 = [(RoutePlanningDataCoordinator *)self requestState];
+    requestState = [(RoutePlanningDataCoordinator *)self requestState];
 
-    [(RoutePlanningDataCoordinator *)self _notifyDidUpdateRequestState:v6];
+    [(RoutePlanningDataCoordinator *)self _notifyDidUpdateRequestState:requestState];
   }
 }
 
 - (void)_updateIsEnabled
 {
-  v3 = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
-  if (v3)
+  rideBookingPlanningSession = [(RoutePlanningDataCoordinator *)self rideBookingPlanningSession];
+  if (rideBookingPlanningSession)
   {
     v4 = 1;
   }
 
   else
   {
-    v5 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-    if (v5)
+    routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+    if (routePlanningSession)
     {
       v4 = 1;
     }
 
     else
     {
-      v6 = [(RoutePlanningDataCoordinator *)self navigationSession];
-      if (v6)
+      navigationSession = [(RoutePlanningDataCoordinator *)self navigationSession];
+      if (navigationSession)
       {
-        v7 = [(RoutePlanningDataCoordinator *)self navigationSession];
-        v4 = [v7 sessionState] == 0;
+        navigationSession2 = [(RoutePlanningDataCoordinator *)self navigationSession];
+        v4 = [navigationSession2 sessionState] == 0;
       }
 
       else
@@ -2823,57 +2823,57 @@ LABEL_18:
   }
 }
 
-- (void)setNavigationSession:(id)a3
+- (void)setNavigationSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   navigationSession = self->_navigationSession;
-  if (navigationSession != v5)
+  if (navigationSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [(NavigationSession *)navigationSession unregisterObserver:self];
-    objc_storeStrong(&self->_navigationSession, a3);
+    objc_storeStrong(&self->_navigationSession, session);
     [(NavigationSession *)self->_navigationSession registerObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
-- (void)setRideBookingPlanningSession:(id)a3
+- (void)setRideBookingPlanningSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   rideBookingPlanningSession = self->_rideBookingPlanningSession;
-  if (rideBookingPlanningSession != v5)
+  if (rideBookingPlanningSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [(RideBookingPlanningSession *)rideBookingPlanningSession unregisterObserver:self];
-    objc_storeStrong(&self->_rideBookingPlanningSession, a3);
+    objc_storeStrong(&self->_rideBookingPlanningSession, session);
     [(RideBookingPlanningSession *)self->_rideBookingPlanningSession registerObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
-- (void)setRoutePlanningSession:(id)a3
+- (void)setRoutePlanningSession:(id)session
 {
-  v5 = a3;
+  sessionCopy = session;
   routePlanningSession = self->_routePlanningSession;
-  if (routePlanningSession != v5)
+  if (routePlanningSession != sessionCopy)
   {
-    v7 = v5;
+    v7 = sessionCopy;
     [(RoutePlanningSession *)routePlanningSession unregisterObserver:self];
-    objc_storeStrong(&self->_routePlanningSession, a3);
+    objc_storeStrong(&self->_routePlanningSession, session);
     [(RoutePlanningSession *)self->_routePlanningSession registerObserver:self];
-    v5 = v7;
+    sessionCopy = v7;
   }
 }
 
-- (void)platformController:(id)a3 didChangeCurrentSessionFromSession:(id)a4 toSession:(id)a5
+- (void)platformController:(id)controller didChangeCurrentSessionFromSession:(id)session toSession:(id)toSession
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  sessionCopy = session;
+  toSessionCopy = toSession;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = toSessionCopy;
   }
 
   else
@@ -2884,7 +2884,7 @@ LABEL_18:
   v12 = v11;
   [(RoutePlanningDataCoordinator *)self setRideBookingPlanningSession:v12];
 
-  v13 = v10;
+  v13 = toSessionCopy;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -2922,9 +2922,9 @@ LABEL_18:
     self->_timing = v19;
   }
 
-  v21 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  routePlanningSession = [(RoutePlanningDataCoordinator *)self routePlanningSession];
 
-  if (v21)
+  if (routePlanningSession)
   {
     [(RoutePlanningDataCoordinator *)self setStashedRoutePlanningSession:0];
   }
@@ -2939,8 +2939,8 @@ LABEL_18:
       v50 = 0u;
       v47 = 0u;
       v48 = 0u;
-      v22 = [v8 sessionStack];
-      v23 = [v22 countByEnumeratingWithState:&v47 objects:v51 count:16];
+      sessionStack = [controllerCopy sessionStack];
+      v23 = [sessionStack countByEnumeratingWithState:&v47 objects:v51 count:16];
       if (v23)
       {
         v24 = *v48;
@@ -2951,7 +2951,7 @@ LABEL_18:
           {
             if (*v48 != v24)
             {
-              objc_enumerationMutation(v22);
+              objc_enumerationMutation(sessionStack);
             }
 
             v26 = *(*(&v47 + 1) + 8 * v25);
@@ -2965,7 +2965,7 @@ LABEL_18:
           }
 
           while (v23 != v25);
-          v23 = [v22 countByEnumeratingWithState:&v47 objects:v51 count:16];
+          v23 = [sessionStack countByEnumeratingWithState:&v47 objects:v51 count:16];
         }
 
         while (v23);
@@ -2974,28 +2974,28 @@ LABEL_18:
   }
 
   [(RoutePlanningDataCoordinator *)self _updateIsEnabled];
-  v27 = [v8 chromeViewController];
-  v28 = [v27 contexts];
-  v29 = [v28 lastObject];
+  chromeViewController = [controllerCopy chromeViewController];
+  contexts = [chromeViewController contexts];
+  lastObject = [contexts lastObject];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
-  v31 = [(RoutePlanningDataCoordinator *)self navigationSession];
-  LODWORD(v27) = v31 != 0;
+  navigationSession = [(RoutePlanningDataCoordinator *)self navigationSession];
+  LODWORD(chromeViewController) = navigationSession != 0;
 
-  if (((v27 | isKindOfClass) & 1) == 0)
+  if (((chromeViewController | isKindOfClass) & 1) == 0)
   {
-    v32 = [(RoutePlanningDataCoordinator *)self delegate];
-    [v32 routePlanningDataCoordinator:self isEnabled:{-[RoutePlanningDataCoordinator isEnabled](self, "isEnabled")}];
+    delegate = [(RoutePlanningDataCoordinator *)self delegate];
+    [delegate routePlanningDataCoordinator:self isEnabled:{-[RoutePlanningDataCoordinator isEnabled](self, "isEnabled")}];
 
     [(RoutePlanningDataCoordinator *)self _notifyDidUpdateOriginDestinationWaypointRequest];
     [(RoutePlanningDataCoordinator *)self updateCurrentRouteDisplayedMapRect:MKMapRectNull.origin.x, MKMapRectNull.origin.y, MKMapRectNull.size.width, MKMapRectNull.size.height];
-    v33 = [(RoutePlanningDataCoordinator *)self routeCollection];
-    [(RoutePlanningDataCoordinator *)self _notifyDidUpdateRouteCollection:v33];
+    routeCollection = [(RoutePlanningDataCoordinator *)self routeCollection];
+    [(RoutePlanningDataCoordinator *)self _notifyDidUpdateRouteCollection:routeCollection];
   }
 
-  v34 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-  v35 = v34 == 0;
+  routePlanningSession2 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+  v35 = routePlanningSession2 == 0;
 
   if (v35)
   {
@@ -3005,7 +3005,7 @@ LABEL_18:
 
   else
   {
-    v36 = v9;
+    v36 = sessionCopy;
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -3021,9 +3021,9 @@ LABEL_18:
 
     if (v38)
     {
-      v39 = [v38 currentTransportType];
-      v40 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
-      v41 = v39 != [v40 currentTransportType];
+      currentTransportType = [v38 currentTransportType];
+      routePlanningSession3 = [(RoutePlanningDataCoordinator *)self routePlanningSession];
+      v41 = currentTransportType != [routePlanningSession3 currentTransportType];
     }
 
     else
@@ -3105,10 +3105,10 @@ LABEL_18:
   [(RoutePlanningDataCoordinator *)&v11 dealloc];
 }
 
-- (RoutePlanningDataCoordinator)initWithPlatformController:(id)a3
+- (RoutePlanningDataCoordinator)initWithPlatformController:(id)controller
 {
-  v5 = a3;
-  if (!v5)
+  controllerCopy = controller;
+  if (!controllerCopy)
   {
     v23 = sub_10006D178();
     if (os_log_type_enabled(v23, OS_LOG_TYPE_ERROR))
@@ -3143,7 +3143,7 @@ LABEL_18:
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_platformController, a3);
+    objc_storeStrong(&v6->_platformController, controller);
     [(PlatformController *)v7->_platformController registerObserver:v7];
     v8 = +[NSHashTable weakObjectsHashTable];
     observers = v7->_observers;

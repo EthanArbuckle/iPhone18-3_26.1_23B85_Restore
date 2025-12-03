@@ -1,23 +1,23 @@
 @interface NRBabelInterfaceSocket
-- (BOOL)handlePathUpdate:(id)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)setupLocalAddressCheckAgainst:(const in6_addr *)a3;
+- (BOOL)handlePathUpdate:(id)update;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)setupLocalAddressCheckAgainst:(const in6_addr *)against;
 - (id)description;
-- (void)addToProhibited:(id)a3;
+- (void)addToProhibited:(id)prohibited;
 - (void)dealloc;
 - (void)readPackets;
-- (void)sendPacket:(iovec *)a3 iovLen:(unsigned int)a4 toAddr:(const in6_addr *)a5;
+- (void)sendPacket:(iovec *)packet iovLen:(unsigned int)len toAddr:(const in6_addr *)addr;
 @end
 
 @implementation NRBabelInterfaceSocket
 
-- (void)addToProhibited:(id)a3
+- (void)addToProhibited:(id)prohibited
 {
-  v17 = a3;
+  prohibitedCopy = prohibited;
   v5 = nw_parameters_copy_prohibited_interfaces();
   if (!v5)
   {
-    v6 = &v17;
+    v6 = &prohibitedCopy;
     v7 = xpc_array_create(0, 0);
     if (!v7)
     {
@@ -31,7 +31,7 @@
       }
 
       v5 = _os_log_pack_size();
-      self = (&v17 - ((__chkstk_darwin() + 15) & 0xFFFFFFFFFFFFFFF0));
+      self = (&prohibitedCopy - ((__chkstk_darwin() + 15) & 0xFFFFFFFFFFFFFFF0));
       v13 = *__error();
       v14 = _os_log_pack_fill();
       sub_10006BF98(v14, "nr_xpc_array_create");
@@ -75,16 +75,16 @@ LABEL_7:
 
 LABEL_11:
 
-  v9 = v17;
+  v9 = prohibitedCopy;
 }
 
-- (BOOL)handlePathUpdate:(id)a3
+- (BOOL)handlePathUpdate:(id)update
 {
-  v4 = a3;
-  v5 = [(NRBabelInterface *)self instance];
-  if (v5)
+  updateCopy = update;
+  instance = [(NRBabelInterface *)self instance];
+  if (instance)
   {
-    if (nw_path_get_status(v4) == nw_path_status_satisfied)
+    if (nw_path_get_status(updateCopy) == nw_path_status_satisfied)
     {
       if (![(NRBabelInterface *)self viable])
       {
@@ -101,18 +101,18 @@ LABEL_11:
           }
 
           v22 = 1207;
-          v25 = self;
+          selfCopy2 = self;
           v16 = "";
           v19 = "[NRBabelInterfaceSocket handlePathUpdate:]";
           _NRLogWithArgs();
         }
       }
 
-      [(NRBabelInterface *)self setViable:1, v16, v19, v22, v25];
+      [(NRBabelInterface *)self setViable:1, v16, v19, v22, selfCopy2];
       v6 = [NSString alloc];
       ifName = self->_ifName;
-      v8 = [v5 addrStr];
-      v9 = [v6 initWithFormat:@"for addr in $(ifconfig %@ | grep 'inet6 fdfd:' | sed -e 's/^[[:space:]]*//' | cut -d' ' -f2); do ifconfig %@ inet6 -alias $addr ; done ; ifconfig %@ inet6 %@/128", ifName, ifName, ifName, v8];
+      addrStr = [instance addrStr];
+      v9 = [v6 initWithFormat:@"for addr in $(ifconfig %@ | grep 'inet6 fdfd:' | sed -e 's/^[[:space:]]*//' | cut -d' ' -f2); do ifconfig %@ inet6 -alias $addr ; done ; ifconfig %@ inet6 %@/128", ifName, ifName, ifName, addrStr];
 
       system([v9 UTF8String]);
       mtu = nw_path_get_mtu();
@@ -214,16 +214,16 @@ LABEL_11:
         }
 
         v13 = qword_1002290F8;
-        v25 = self;
-        status = nw_path_get_status(v4);
+        selfCopy2 = self;
+        status = nw_path_get_status(updateCopy);
         v22 = 1201;
         v16 = "";
         v19 = "[NRBabelInterfaceSocket handlePathUpdate:]";
         _NRLogWithArgs();
       }
 
-      [(NRBabelInterface *)self setViable:0, v16, v19, v22, v25, status];
-      [v5 purgeInterface:self];
+      [(NRBabelInterface *)self setViable:0, v16, v19, v22, selfCopy2, status];
+      [instance purgeInterface:self];
       v12 = 0;
     }
   }
@@ -236,7 +236,7 @@ LABEL_11:
   return v12;
 }
 
-- (BOOL)setupLocalAddressCheckAgainst:(const in6_addr *)a3
+- (BOOL)setupLocalAddressCheckAgainst:(const in6_addr *)against
 {
   v31 = 0;
   if (getifaddrs(&v31))
@@ -286,7 +286,7 @@ LABEL_37:
       goto LABEL_13;
     }
 
-    v10 = self;
+    selfCopy = self;
     if (v7[32] != -1)
     {
       dispatch_once(&qword_100229100, &stru_1001FB6C8);
@@ -304,10 +304,10 @@ LABEL_37:
       v13 = v8;
       IPv6AddrString = createIPv6AddrString();
       v15 = createIPv6AddrString();
-      [(NRBabelInterface *)v10 localAddress];
+      [(NRBabelInterface *)selfCopy localAddress];
       v29 = v15;
       v30 = createIPv6AddrString();
-      v27 = v10;
+      v27 = selfCopy;
       v28 = IPv6AddrString;
       v26 = 990;
       v24 = "";
@@ -318,7 +318,7 @@ LABEL_37:
       v7 = &qword_100229000;
     }
 
-    v16 = [(NRBabelInterfaceSocket *)v10 ifName:v24];
+    v16 = [(NRBabelInterfaceSocket *)selfCopy ifName:v24];
     v17 = [v16 hasPrefix:@"ipsec"];
 
     if ((v17 & 1) == 0)
@@ -342,21 +342,21 @@ LABEL_13:
     }
   }
 
-  if (*&ifa_addr[1].sa_data[6] != v10->_ifIndex || ifa_addr->sa_data[6] != 254 || (ifa_addr->sa_data[7] & 0xC0) != 0x80)
+  if (*&ifa_addr[1].sa_data[6] != selfCopy->_ifIndex || ifa_addr->sa_data[6] != 254 || (ifa_addr->sa_data[7] & 0xC0) != 0x80)
   {
     goto LABEL_12;
   }
 
 LABEL_28:
-  if (a3)
+  if (against)
   {
-    if (*a3->__u6_addr8 != *&ifa_addr->sa_data[6] || *&a3->__u6_addr32[2] != *&ifa_addr[1].sa_len)
+    if (*against->__u6_addr8 != *&ifa_addr->sa_data[6] || *&against->__u6_addr32[2] != *&ifa_addr[1].sa_len)
     {
       goto LABEL_12;
     }
   }
 
-  if (![(NRBabelInterface *)v10 isLocalAddressEqualTo:&ifa_addr->sa_data[6]])
+  if (![(NRBabelInterface *)selfCopy isLocalAddressEqualTo:&ifa_addr->sa_data[6]])
   {
     if (v7[32] != -1)
     {
@@ -372,21 +372,21 @@ LABEL_28:
       }
 
       v22 = v8[31];
-      [(NRBabelInterface *)v10 localAddress];
+      [(NRBabelInterface *)selfCopy localAddress];
       v28 = createIPv6AddrString();
       v29 = createIPv6AddrString();
       v26 = 1010;
-      v27 = v10;
+      v27 = selfCopy;
       v24 = "";
       v25 = "[NRBabelInterfaceSocket setupLocalAddressCheckAgainst:]";
       _NRLogWithArgs();
     }
   }
 
-  [(NRBabelInterface *)v10 setLocalAddress:&ifa_addr->sa_data[6], v24, v25, v26, v27, v28, v29];
+  [(NRBabelInterface *)selfCopy setLocalAddress:&ifa_addr->sa_data[6], v24, v25, v26, v27, v28, v29];
 
   freeifaddrs(v31);
-  if (!a3 || (v20 = [(NRBabelInterface *)v10 isLocalAddressEqualTo:a3]) != 0)
+  if (!against || (v20 = [(NRBabelInterface *)selfCopy isLocalAddressEqualTo:against]) != 0)
   {
     LOBYTE(v20) = 1;
   }
@@ -394,14 +394,14 @@ LABEL_28:
   return v20;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     ifIndex = self->_ifIndex;
-    v6 = ifIndex == [v4 ifIndex];
+    v6 = ifIndex == [equalCopy ifIndex];
   }
 
   else
@@ -416,9 +416,9 @@ LABEL_28:
 {
   v3 = [NSString alloc];
   ifName = self->_ifName;
-  v5 = [(NRBabelInterface *)self dtlsEnabled];
+  dtlsEnabled = [(NRBabelInterface *)self dtlsEnabled];
   v6 = "";
-  if (v5)
+  if (dtlsEnabled)
   {
     v6 = "_DTLS";
   }
@@ -430,20 +430,20 @@ LABEL_28:
 
 - (void)readPackets
 {
-  v2 = self;
-  v3 = [(NRBabelInterface *)self instance];
-  if (!v3)
+  selfCopy = self;
+  instance = [(NRBabelInterface *)self instance];
+  if (!instance)
   {
     goto LABEL_102;
   }
 
-  fd = v2->_fd;
+  fd = selfCopy->_fd;
   memset(v56, 0, sizeof(v56));
   memset(v51, 0, sizeof(v51));
   v52 = 0;
   v50[0] = v55;
   v50[1] = 2000;
-  v44 = v2;
+  v44 = selfCopy;
 LABEL_4:
   while (1)
   {
@@ -492,7 +492,7 @@ LABEL_4:
 
         v7 = v5;
         v8 = v49.msg_name + 8;
-        if (*(v49.msg_name + 8) == 254 && (*(v49.msg_name + 9) & 0xC0) == 0x80 || (-[NRBabelInterfaceSocket ifName](v2, "ifName", v36, v37, v38, IPv6AddrString, msg_control, v41, v42), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 hasPrefix:@"ipsec"], v9, v2 = v44, (v10 & 1) != 0))
+        if (*(v49.msg_name + 8) == 254 && (*(v49.msg_name + 9) & 0xC0) == 0x80 || (-[NRBabelInterfaceSocket ifName](selfCopy, "ifName", v36, v37, v38, IPv6AddrString, msg_control, v41, v42), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 hasPrefix:@"ipsec"], v9, selfCopy = v44, (v10 & 1) != 0))
         {
           if (*(msg_name + 1) == 10266)
           {
@@ -500,9 +500,9 @@ LABEL_4:
             {
               if (DWORD2(v56[0]) == 46)
               {
-                if (HIDWORD(v56[1]) == v2->_ifIndex)
+                if (HIDWORD(v56[1]) == selfCopy->_ifIndex)
                 {
-                  if ([(NRBabelInterface *)v2 isLocalAddressEqualTo:v56 | 0xC])
+                  if ([(NRBabelInterface *)selfCopy isLocalAddressEqualTo:v56 | 0xC])
                   {
                     goto LABEL_3;
                   }
@@ -530,11 +530,11 @@ LABEL_4:
                     _NRLogWithArgs();
                   }
 
-                  v2 = v44;
+                  selfCopy = v44;
                   if ([v44 setupLocalAddressCheckAgainst:{v56 | 0xC, v36, v37}])
                   {
 LABEL_3:
-                    [v3 handlePacket:v55 length:v7 remoteAddr:v8 localAddr:v56 | 0xC babelInterface:v2 dtls:{0, v36, v37}];
+                    [instance handlePacket:v55 length:v7 remoteAddr:v8 localAddr:v56 | 0xC babelInterface:selfCopy dtls:{0, v36, v37}];
                   }
 
                   else
@@ -542,7 +542,7 @@ LABEL_3:
                     v15 = sub_1000CB9A8();
                     v16 = _NRLogIsLevelEnabled();
 
-                    v2 = v44;
+                    selfCopy = v44;
                     if (v16)
                     {
                       v17 = sub_1000CB9A8();
@@ -552,20 +552,20 @@ LABEL_3:
                       v37 = "[NRBabelInterfaceSocket readPackets]";
                       _NRLogWithArgs();
 
-                      v2 = v44;
+                      selfCopy = v44;
                     }
                   }
 
                   continue;
                 }
 
-                v43 = v3;
+                v43 = instance;
                 v47 = 0u;
                 v48 = 0u;
                 v45 = 0u;
                 v46 = 0u;
-                v19 = [v3 interfaces];
-                v20 = [v19 countByEnumeratingWithState:&v45 objects:v53 count:16];
+                interfaces = [instance interfaces];
+                v20 = [interfaces countByEnumeratingWithState:&v45 objects:v53 count:16];
                 if (!v20)
                 {
 LABEL_87:
@@ -575,8 +575,8 @@ LABEL_87:
                     dispatch_once(&qword_100229100, &stru_1001FB6C8);
                   }
 
-                  v2 = v44;
-                  v3 = v43;
+                  selfCopy = v44;
+                  instance = v43;
                   if (_NRLogIsLevelEnabled())
                   {
                     if (qword_100229100 != -1)
@@ -596,7 +596,7 @@ LABEL_87:
                     v37 = "[NRBabelInterfaceSocket readPackets]";
                     _NRLogWithArgs();
 
-                    v2 = v44;
+                    selfCopy = v44;
                   }
 
                   continue;
@@ -610,7 +610,7 @@ LABEL_74:
                 {
                   if (*v46 != v22)
                   {
-                    objc_enumerationMutation(v19);
+                    objc_enumerationMutation(interfaces);
                   }
 
                   v24 = *(*(&v45 + 1) + 8 * v23);
@@ -618,10 +618,10 @@ LABEL_74:
                   if (objc_opt_isKindOfClass())
                   {
                     v25 = v24;
-                    v26 = [v25 ifIndex];
-                    if (v26 == HIDWORD(v56[1]))
+                    ifIndex = [v25 ifIndex];
+                    if (ifIndex == HIDWORD(v56[1]))
                     {
-                      v3 = v43;
+                      instance = v43;
                       [v43 handlePacket:v55 length:v7 remoteAddr:v8 localAddr:v56 | 0xC babelInterface:v25 dtls:0];
 
                       if (qword_100229100 != -1)
@@ -632,7 +632,7 @@ LABEL_74:
                       v27 = qword_1002290F8;
                       v28 = _NRLogIsLevelEnabled();
 
-                      v2 = v44;
+                      selfCopy = v44;
                       if (v28)
                       {
                         if (qword_100229100 != -1)
@@ -652,7 +652,7 @@ LABEL_74:
                         v37 = "[NRBabelInterfaceSocket readPackets]";
                         _NRLogWithArgs();
 
-                        v2 = v44;
+                        selfCopy = v44;
                       }
 
                       goto LABEL_4;
@@ -661,7 +661,7 @@ LABEL_74:
 
                   if (v21 == ++v23)
                   {
-                    v21 = [v19 countByEnumeratingWithState:&v45 objects:v53 count:16];
+                    v21 = [interfaces countByEnumeratingWithState:&v45 objects:v53 count:16];
                     if (!v21)
                     {
                       goto LABEL_87;
@@ -761,7 +761,7 @@ LABEL_74:
             v37 = "[NRBabelInterfaceSocket readPackets]";
             _NRLogWithArgs();
 
-            v2 = v44;
+            selfCopy = v44;
           }
         }
       }
@@ -864,20 +864,20 @@ LABEL_102:
   [(NRBabelInterface *)&v5 dealloc];
 }
 
-- (void)sendPacket:(iovec *)a3 iovLen:(unsigned int)a4 toAddr:(const in6_addr *)a5
+- (void)sendPacket:(iovec *)packet iovLen:(unsigned int)len toAddr:(const in6_addr *)addr
 {
   if ([(NRBabelInterface *)self viable])
   {
     fd = self->_fd;
     v33 = 672800284;
     ifIndex = self->_ifIndex;
-    v34 = *a5;
+    v34 = *addr;
     v32.msg_name = &v33;
     *(&v32.msg_namelen + 1) = 0;
     v32.msg_namelen = 28;
-    v32.msg_iov = a3;
+    v32.msg_iov = packet;
     memset(&v32.msg_iovlen + 1, 0, 20);
-    v32.msg_iovlen = a4;
+    v32.msg_iovlen = len;
     v10 = sendmsg(fd, &v32, 0);
     if (v10 < 0)
     {
@@ -905,19 +905,19 @@ LABEL_102:
 
     else
     {
-      if (a4)
+      if (len)
       {
-        v11 = a4;
-        if (a4 > 8)
+        lenCopy = len;
+        if (len > 8)
         {
-          v14 = a4 & 7;
+          v14 = len & 7;
           if (!v14)
           {
             v14 = 8;
           }
 
-          v12 = a4 - v14;
-          p_iov_len = &a3[4].iov_len;
+          v12 = len - v14;
+          p_iov_len = &packet[4].iov_len;
           v16 = 0uLL;
           v17 = v12;
           v18 = 0uLL;
@@ -938,29 +938,29 @@ LABEL_102:
           }
 
           while (v17);
-          a4 = vaddvq_s32(vaddq_s32(v18, v16));
+          len = vaddvq_s32(vaddq_s32(v18, v16));
         }
 
         else
         {
           v12 = 0;
-          a4 = 0;
+          len = 0;
         }
 
-        v27 = v11 - v12;
-        v28 = &a3[v12].iov_len;
+        v27 = lenCopy - v12;
+        v28 = &packet[v12].iov_len;
         do
         {
           v29 = *v28;
           v28 += 2;
-          a4 += v29;
+          len += v29;
           --v27;
         }
 
         while (v27);
       }
 
-      if (a4 != v10)
+      if (len != v10)
       {
         if (qword_100229100 != -1)
         {

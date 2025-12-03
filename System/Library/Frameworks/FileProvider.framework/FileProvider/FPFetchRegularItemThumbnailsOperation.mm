@@ -1,23 +1,23 @@
 @interface FPFetchRegularItemThumbnailsOperation
-- (FPFetchRegularItemThumbnailsOperation)initWithDictionary:(id)a3 desiredSizeToScale:(CGSize)a4 itemManager:(id)a5;
+- (FPFetchRegularItemThumbnailsOperation)initWithDictionary:(id)dictionary desiredSizeToScale:(CGSize)scale itemManager:(id)manager;
 - (FPOperationProgressDelegate)delegate;
 - (void)main;
-- (void)operationDidProgressWithInfo:(id)a3 error:(id)a4 completionHandler:(id)a5;
+- (void)operationDidProgressWithInfo:(id)info error:(id)error completionHandler:(id)handler;
 @end
 
 @implementation FPFetchRegularItemThumbnailsOperation
 
-- (FPFetchRegularItemThumbnailsOperation)initWithDictionary:(id)a3 desiredSizeToScale:(CGSize)a4 itemManager:(id)a5
+- (FPFetchRegularItemThumbnailsOperation)initWithDictionary:(id)dictionary desiredSizeToScale:(CGSize)scale itemManager:(id)manager
 {
-  height = a4.height;
-  width = a4.width;
-  v11 = a3;
-  v12 = a5;
-  v13 = [v11 allKeys];
-  v14 = [v13 copy];
+  height = scale.height;
+  width = scale.width;
+  dictionaryCopy = dictionary;
+  managerCopy = manager;
+  allKeys = [dictionaryCopy allKeys];
+  v14 = [allKeys copy];
 
   v15 = [v14 count];
-  if (v12 && v15 && width >= 1.0 && height >= 1.0)
+  if (managerCopy && v15 && width >= 1.0 && height >= 1.0)
   {
     v24.receiver = self;
     v24.super_class = FPFetchRegularItemThumbnailsOperation;
@@ -25,37 +25,37 @@
     v17 = v16;
     if (v16)
     {
-      objc_storeStrong(&v16->_dictionary, a3);
+      objc_storeStrong(&v16->_dictionary, dictionary);
       v17->_desiredSizeToScale.width = width;
       v17->_desiredSizeToScale.height = height;
-      objc_storeStrong(&v17->_itemManager, a5);
+      objc_storeStrong(&v17->_itemManager, manager);
     }
 
     self = v17;
-    v18 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v19 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
     v20 = objc_opt_class();
-    v21 = [v11 allKeys];
+    allKeys2 = [dictionaryCopy allKeys];
     v25.width = width;
     v25.height = height;
     v22 = NSStringFromSize(v25);
-    [v19 handleFailureInMethod:a2 object:self file:@"FPFetchThumbnailsOperation.m" lineNumber:206 description:{@"invalid parameter to initialize %@ (regularItems:%@, desiredSizeToScale:%@, itemManager:%@)", v20, v21, v22, v12}];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"FPFetchThumbnailsOperation.m" lineNumber:206 description:{@"invalid parameter to initialize %@ (regularItems:%@, desiredSizeToScale:%@, itemManager:%@)", v20, allKeys2, v22, managerCopy}];
 
-    v18 = 0;
+    selfCopy = 0;
   }
 
-  return v18;
+  return selfCopy;
 }
 
 - (void)main
 {
   v9 = *MEMORY[0x1E69E9840];
-  v1 = [*(a1 + 304) allKeys];
-  v2 = [v1 fp_shortDescriptionExpandingAtMost:4];
+  allKeys = [*(self + 304) allKeys];
+  v2 = [allKeys fp_shortDescriptionExpandingAtMost:4];
   OUTLINED_FUNCTION_2();
   OUTLINED_FUNCTION_20();
   _os_log_debug_impl(v3, v4, v5, v6, v7, 0xCu);
@@ -81,15 +81,15 @@ void __45__FPFetchRegularItemThumbnailsOperation_main__block_invoke(uint64_t a1,
   }
 }
 
-- (void)operationDidProgressWithInfo:(id)a3 error:(id)a4 completionHandler:(id)a5
+- (void)operationDidProgressWithInfo:(id)info error:(id)error completionHandler:(id)handler
 {
-  v11 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [(FPFetchRegularItemThumbnailsOperation *)self delegate];
-  [v10 operation:self didReceiveProgressInfo:v9 error:v8];
+  handlerCopy = handler;
+  errorCopy = error;
+  infoCopy = info;
+  delegate = [(FPFetchRegularItemThumbnailsOperation *)self delegate];
+  [delegate operation:self didReceiveProgressInfo:infoCopy error:errorCopy];
 
-  v11[2]();
+  handlerCopy[2]();
 }
 
 - (FPOperationProgressDelegate)delegate

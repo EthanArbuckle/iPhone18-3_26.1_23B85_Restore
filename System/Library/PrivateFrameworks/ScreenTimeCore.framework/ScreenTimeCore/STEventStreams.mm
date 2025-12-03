@@ -1,12 +1,12 @@
 @interface STEventStreams
-+ (id)fetchAllURLsForBundleIdentifier:(id)a3 profileIdentifier:(id)a4;
-+ (id)fetchURLsDuringInterval:(id)a3 bundleIdentifier:(id)a4 profileIdentifier:(id)a5;
++ (id)fetchAllURLsForBundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier;
++ (id)fetchURLsDuringInterval:(id)interval bundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier;
 - (_TtC15ScreenTimeAgent14STEventStreams)init;
 @end
 
 @implementation STEventStreams
 
-+ (id)fetchURLsDuringInterval:(id)a3 bundleIdentifier:(id)a4 profileIdentifier:(id)a5
++ (id)fetchURLsDuringInterval:(id)interval bundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier
 {
   v6 = type metadata accessor for DateInterval();
   v7 = *(v6 - 8);
@@ -15,7 +15,7 @@
   v10 = &v13 - ((v9 + 15) & 0xFFFFFFFFFFFFFFF0);
   static DateInterval._unconditionallyBridgeFromObjectiveC(_:)();
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a5)
+  if (profileIdentifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -30,7 +30,7 @@
   return v11.super.isa;
 }
 
-+ (id)fetchAllURLsForBundleIdentifier:(id)a3 profileIdentifier:(id)a4
++ (id)fetchAllURLsForBundleIdentifier:(id)identifier profileIdentifier:(id)profileIdentifier
 {
   v5 = type metadata accessor for Date();
   v6 = *(*(v5 - 8) + 64);
@@ -42,7 +42,7 @@
   __chkstk_darwin(v8);
   v12 = &v15 - ((v11 + 15) & 0xFFFFFFFFFFFFFFF0);
   static String._unconditionallyBridgeFromObjectiveC(_:)();
-  if (a4)
+  if (profileIdentifier)
   {
     static String._unconditionallyBridgeFromObjectiveC(_:)();
   }

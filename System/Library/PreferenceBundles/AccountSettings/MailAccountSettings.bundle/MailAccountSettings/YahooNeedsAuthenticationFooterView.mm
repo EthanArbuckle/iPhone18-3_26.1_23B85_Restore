@@ -1,20 +1,20 @@
 @interface YahooNeedsAuthenticationFooterView
-- (YahooNeedsAuthenticationFooterView)initWithSpecifier:(id)a3;
-- (double)_heightForMessageConstrainedToWidth:(double)a3;
+- (YahooNeedsAuthenticationFooterView)initWithSpecifier:(id)specifier;
+- (double)_heightForMessageConstrainedToWidth:(double)width;
 - (void)layoutSubviews;
 @end
 
 @implementation YahooNeedsAuthenticationFooterView
 
-- (YahooNeedsAuthenticationFooterView)initWithSpecifier:(id)a3
+- (YahooNeedsAuthenticationFooterView)initWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v20.receiver = self;
   v20.super_class = YahooNeedsAuthenticationFooterView;
   v5 = [(YahooNeedsAuthenticationFooterView *)&v20 init];
   if (v5)
   {
-    v6 = [v4 propertyForKey:@"YahooNameForAccountToAuthenticate"];
+    v6 = [specifierCopy propertyForKey:@"YahooNameForAccountToAuthenticate"];
     v7 = [NSBundle bundleForClass:objc_opt_class()];
     v8 = [v7 localizedStringForKey:@"ACCOUNT_NOT_AUTHENTICATED %@" value:&stru_B9FC8 table:@"AccountPreferences"];
     v9 = [NSString stringWithFormat:v8, v6];
@@ -36,8 +36,8 @@
     [(UILabel *)v15 setTextColor:v16];
 
     v17 = v5->_verificationMessageLabel;
-    v18 = [(YahooNeedsAuthenticationFooterView *)v5 _font];
-    [(UILabel *)v17 setFont:v18];
+    _font = [(YahooNeedsAuthenticationFooterView *)v5 _font];
+    [(UILabel *)v17 setFont:_font];
 
     [(YahooNeedsAuthenticationFooterView *)v5 addSubview:v5->_verificationMessageLabel];
   }
@@ -57,14 +57,14 @@
   [(UILabel *)self->_verificationMessageLabel setFrame:14.0, 0.0, v4, v6];
 }
 
-- (double)_heightForMessageConstrainedToWidth:(double)a3
+- (double)_heightForMessageConstrainedToWidth:(double)width
 {
   verificationMessage = self->_verificationMessage;
   v10 = NSFontAttributeName;
-  v5 = [(YahooNeedsAuthenticationFooterView *)self _font];
-  v11 = v5;
+  _font = [(YahooNeedsAuthenticationFooterView *)self _font];
+  v11 = _font;
   v6 = [NSDictionary dictionaryWithObjects:&v11 forKeys:&v10 count:1];
-  [(NSString *)verificationMessage boundingRectWithSize:1 options:v6 attributes:0 context:a3, 1.79769313e308];
+  [(NSString *)verificationMessage boundingRectWithSize:1 options:v6 attributes:0 context:width, 1.79769313e308];
   v8 = v7;
 
   return v8;

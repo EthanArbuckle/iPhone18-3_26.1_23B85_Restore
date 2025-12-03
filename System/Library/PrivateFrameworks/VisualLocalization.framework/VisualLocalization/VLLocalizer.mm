@@ -1,32 +1,32 @@
 @interface VLLocalizer
 + (BOOL)isVisualLocalizationSupported;
 + (id)_debugInfoRecorder;
-+ (void)_setDebugInfoRecorder:(id)a3;
++ (void)_setDebugInfoRecorder:(id)recorder;
 - (BOOL)shouldCacheMetadata;
-- (VLLocalizationResult)_locateWithPixelBuffer:(float64_t)a3 deviceLocation:(int32x4_t)a4 heading:(int32x4_t)a5 gravity:(int32x4_t)a6 transform:(int8x16_t)a7 cameraIntrinsics:(uint64_t)a8 radialDistortion:(void *)a9 exposureTargetOffset:(void *)a10 timestamp:(float64x2_t *)a11 calculationBlock:(void *)a12 error:(unint64_t)a13;
-- (VLLocalizer)initWithAuditToken:(id)a3;
-- (VLLocalizer)initWithDataProvider:(id)a3;
-- (id)_altitudesAtLocation:(id *)a3 error:(id *)a4;
-- (id)_clLocationFrom:(id)a3;
-- (id)_fileURLForTile:(const vl_tile_t *)a3 error:(id *)a4;
-- (id)locateWithPixelBuffer:(double)a3 location:(double)a4 heading:(double)a5 gravity:(double)a6 transform:(double)a7 cameraIntrinsics:(uint64_t)a8 radialDistortion:(uint64_t)a9 timestamp:(__int128 *)a10 error:(__int128 *)a11;
-- (id)locateWithPixelBuffer:(double)a3 timestamp:(double)a4 location:(double)a5 gravity:(__n128)a6 transform:(__n128)a7 cameraIntrinsics:(__n128)a8 radialDistortion:(double)a9 error:(uint64_t)a10;
-- (id)locateWithPixelBuffer:(uint64_t)a3 deviceLocation:(uint64_t)a4 heading:(_OWORD *)a5 gravity:(uint64_t)a6 transform:(uint64_t)a7 cameraIntrinsics:(uint64_t)a8 radialDistortion:(__int128)a9 ambientLightIntensity:(__int128)a10 timestamp:(__int128)a11 error:(uint64_t)a12;
-- (id)locateWithPixelBuffer:(uint64_t)a3 deviceLocation:(uint64_t)a4 heading:(_OWORD *)a5 gravity:(uint64_t)a6 transform:(uint64_t)a7 cameraIntrinsics:(uint64_t)a8 radialDistortion:(__int128)a9 exposureTargetOffset:(__int128)a10 timestamp:(__int128)a11 error:(uint64_t)a12;
-- (id)locateWithPixelBuffer:(uint64_t)a3 timestamp:(unint64_t)a4 location:(uint64_t)a5 heading:(uint64_t)a6 gravity:(uint64_t)a7 transform:(uint64_t)a8 cameraIntrinsics:(__int128)a9 radialDistortion:(__int128)a10 error:(__int128)a11;
+- (VLLocalizationResult)_locateWithPixelBuffer:(float64_t)buffer deviceLocation:(int32x4_t)location heading:(int32x4_t)heading gravity:(int32x4_t)gravity transform:(int8x16_t)transform cameraIntrinsics:(uint64_t)intrinsics radialDistortion:(void *)distortion exposureTargetOffset:(void *)self0 timestamp:(float64x2_t *)self1 calculationBlock:(void *)self2 error:(unint64_t)self3;
+- (VLLocalizer)initWithAuditToken:(id)token;
+- (VLLocalizer)initWithDataProvider:(id)provider;
+- (id)_altitudesAtLocation:(id *)location error:(id *)error;
+- (id)_clLocationFrom:(id)from;
+- (id)_fileURLForTile:(const vl_tile_t *)tile error:(id *)error;
+- (id)locateWithPixelBuffer:(double)buffer location:(double)location heading:(double)heading gravity:(double)gravity transform:(double)transform cameraIntrinsics:(uint64_t)intrinsics radialDistortion:(uint64_t)distortion timestamp:(__int128 *)self0 error:(__int128 *)self1;
+- (id)locateWithPixelBuffer:(double)buffer timestamp:(double)timestamp location:(double)location gravity:(__n128)gravity transform:(__n128)transform cameraIntrinsics:(__n128)intrinsics radialDistortion:(double)distortion error:(uint64_t)self0;
+- (id)locateWithPixelBuffer:(uint64_t)buffer deviceLocation:(uint64_t)location heading:(_OWORD *)heading gravity:(uint64_t)gravity transform:(uint64_t)transform cameraIntrinsics:(uint64_t)intrinsics radialDistortion:(__int128)distortion ambientLightIntensity:(__int128)self0 timestamp:(__int128)self1 error:(uint64_t)self2;
+- (id)locateWithPixelBuffer:(uint64_t)buffer deviceLocation:(uint64_t)location heading:(_OWORD *)heading gravity:(uint64_t)gravity transform:(uint64_t)transform cameraIntrinsics:(uint64_t)intrinsics radialDistortion:(__int128)distortion exposureTargetOffset:(__int128)self0 timestamp:(__int128)self1 error:(uint64_t)self2;
+- (id)locateWithPixelBuffer:(uint64_t)buffer timestamp:(unint64_t)timestamp location:(uint64_t)location heading:(uint64_t)heading gravity:(uint64_t)gravity transform:(uint64_t)transform cameraIntrinsics:(__int128)intrinsics radialDistortion:(__int128)self0 error:(__int128)self1;
 - (vl_t)_vlHandle;
 - (void)_commonInit;
-- (void)_deterministicLocateWithPixelBuffer:(double)a3 deviceLocation:(__n128)a4 heading:(__n128)a5 gravity:(__n128)a6 transform:(__n128)a7 cameraIntrinsics:(uint64_t)a8 radialDistortion:(uint64_t)a9 exposureTargetOffset:(void *)a10 timestamp:(__int128 *)a11 completionHandler:(void *)a12;
+- (void)_deterministicLocateWithPixelBuffer:(double)buffer deviceLocation:(__n128)location heading:(__n128)heading gravity:(__n128)gravity transform:(__n128)transform cameraIntrinsics:(uint64_t)intrinsics radialDistortion:(uint64_t)distortion exposureTargetOffset:(void *)self0 timestamp:(__int128 *)self1 completionHandler:(void *)self2;
 - (void)_resolveCurrentAltitudeQuery;
-- (void)_setAlgorithmVersion:(int)a3;
-- (void)dataProvider:(id)a3 didChangeFormatVersion:(unsigned int)a4;
+- (void)_setAlgorithmVersion:(int)version;
+- (void)dataProvider:(id)provider didChangeFormatVersion:(unsigned int)version;
 - (void)dealloc;
-- (void)determineAltitudesAtLocation:(id)a3 callbackQueue:(id)a4 callback:(id)a5;
-- (void)determineAvailabilityAtLocation:(id)a3 callbackQueue:(id)a4 callback:(id)a5;
-- (void)determineAvailabilityAtLocation:(id)a3 purpose:(int64_t)a4 callbackQueue:(id)a5 callback:(id)a6;
-- (void)prepareWithDeviceLocation:(id)a3;
-- (void)prepareWithLocation:(id)a3;
-- (void)setShouldCacheMetadata:(BOOL)a3;
+- (void)determineAltitudesAtLocation:(id)location callbackQueue:(id)queue callback:(id)callback;
+- (void)determineAvailabilityAtLocation:(id)location callbackQueue:(id)queue callback:(id)callback;
+- (void)determineAvailabilityAtLocation:(id)location purpose:(int64_t)purpose callbackQueue:(id)queue callback:(id)callback;
+- (void)prepareWithDeviceLocation:(id)location;
+- (void)prepareWithLocation:(id)location;
+- (void)setShouldCacheMetadata:(BOOL)metadata;
 @end
 
 @implementation VLLocalizer
@@ -64,17 +64,17 @@ void __44__VLLocalizer_isVisualLocalizationSupported__block_invoke()
   return v2;
 }
 
-+ (void)_setDebugInfoRecorder:(id)a3
++ (void)_setDebugInfoRecorder:(id)recorder
 {
-  qword_281181CA0 = [a3 copy];
+  qword_281181CA0 = [recorder copy];
 
   MEMORY[0x2821F96F8]();
 }
 
-- (VLLocalizer)initWithAuditToken:(id)a3
+- (VLLocalizer)initWithAuditToken:(id)token
 {
   v25[2] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tokenCopy = token;
   v24.receiver = self;
   v24.super_class = VLLocalizer;
   v5 = [(VLLocalizer *)&v24 init];
@@ -101,14 +101,14 @@ void __44__VLLocalizer_isVisualLocalizationSupported__block_invoke()
     v13 = [MEMORY[0x277CCABB0] numberWithInt:dword_280875548];
     [v7 addObject:v13];
 
-    v14 = [[VLTileDataProvider alloc] initWithAuditToken:v4 supportedFormatVersions:v7];
+    v14 = [[VLTileDataProvider alloc] initWithAuditToken:tokenCopy supportedFormatVersions:v7];
     dataProvider = v6->_dataProvider;
     v6->_dataProvider = v14;
 
     [(VLLocalizationDataProvider *)v6->_dataProvider setDelegate:v6];
     v16 = MEMORY[0x277CBEBC0];
-    v17 = [MEMORY[0x277D0EB20] geoServicesCacheDirectoryPath];
-    v25[0] = v17;
+    geoServicesCacheDirectoryPath = [MEMORY[0x277D0EB20] geoServicesCacheDirectoryPath];
+    v25[0] = geoServicesCacheDirectoryPath;
     v25[1] = @"VisualLocalization";
     v18 = [MEMORY[0x277CBEA60] arrayWithObjects:v25 count:2];
     v19 = [v16 fileURLWithPathComponents:v18];
@@ -123,9 +123,9 @@ void __44__VLLocalizer_isVisualLocalizationSupported__block_invoke()
   return v6;
 }
 
-- (VLLocalizer)initWithDataProvider:(id)a3
+- (VLLocalizer)initWithDataProvider:(id)provider
 {
-  v5 = a3;
+  providerCopy = provider;
   v10.receiver = self;
   v10.super_class = VLLocalizer;
   v6 = [(VLLocalizer *)&v10 init];
@@ -133,7 +133,7 @@ void __44__VLLocalizer_isVisualLocalizationSupported__block_invoke()
   if (v6)
   {
     [(VLLocalizer *)v6 _commonInit];
-    objc_storeStrong(&v7->_dataProvider, a3);
+    objc_storeStrong(&v7->_dataProvider, provider);
     [(VLLocalizationDataProvider *)v7->_dataProvider setDelegate:v7];
     v8 = v7;
   }
@@ -168,8 +168,8 @@ void __44__VLLocalizer_isVisualLocalizationSupported__block_invoke()
   self->_vlOnce.didRun = 0;
   self->_algorithmVersion = GEOConfigGetInteger();
   v6 = MEMORY[0x277CBEBC0];
-  v7 = [MEMORY[0x277D0EB20] geoServicesCacheDirectoryPath];
-  v19[0] = v7;
+  geoServicesCacheDirectoryPath = [MEMORY[0x277D0EB20] geoServicesCacheDirectoryPath];
+  v19[0] = geoServicesCacheDirectoryPath;
   v19[1] = @"VisualLocalization";
   v8 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:2];
   v9 = [v6 fileURLWithPathComponents:v8];
@@ -222,7 +222,7 @@ void __44__VLLocalizer_isVisualLocalizationSupported__block_invoke()
   v5[1] = 3221225472;
   v6 = __24__VLLocalizer__vlHandle__block_invoke;
   v7 = &unk_279E2DA70;
-  v8 = self;
+  selfCopy = self;
   v3 = v5;
   os_unfair_lock_lock(&self->_vlOnce);
   if (!self->_vlOnce.didRun)
@@ -265,42 +265,42 @@ void __24__VLLocalizer__vlHandle__block_invoke(uint64_t a1)
   return [(VLLocalizationDataProvider *)dataProvider shouldCacheMetadata];
 }
 
-- (void)setShouldCacheMetadata:(BOOL)a3
+- (void)setShouldCacheMetadata:(BOOL)metadata
 {
-  v3 = a3;
+  metadataCopy = metadata;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     dataProvider = self->_dataProvider;
 
-    [(VLLocalizationDataProvider *)dataProvider setShouldCacheMetadata:v3];
+    [(VLLocalizationDataProvider *)dataProvider setShouldCacheMetadata:metadataCopy];
   }
 }
 
-- (void)_setAlgorithmVersion:(int)a3
+- (void)_setAlgorithmVersion:(int)version
 {
-  self->_algorithmVersion = a3;
+  self->_algorithmVersion = version;
   self->_hasExplicitAlgorithmVersion = 1;
-  v4 = [(VLLocalizer *)self _vlHandle];
-  vl_par_version(a3, v5);
-  memcpy(v4, v5, 0x3F0uLL);
-  v4->var1 = a3;
+  _vlHandle = [(VLLocalizer *)self _vlHandle];
+  vl_par_version(version, v5);
+  memcpy(_vlHandle, v5, 0x3F0uLL);
+  _vlHandle->var1 = version;
 }
 
-- (void)determineAvailabilityAtLocation:(id)a3 callbackQueue:(id)a4 callback:(id)a5
+- (void)determineAvailabilityAtLocation:(id)location callbackQueue:(id)queue callback:(id)callback
 {
   v8 = *MEMORY[0x277D85DE8];
-  v6 = *(a4 + 1);
-  v7[0] = *a4;
+  v6 = *(queue + 1);
+  v7[0] = *queue;
   v7[1] = v6;
-  v7[2] = *(a4 + 2);
-  [(VLLocalizer *)self determineAvailabilityAtLocation:v7 purpose:0 callbackQueue:a5 callback:v5];
+  v7[2] = *(queue + 2);
+  [(VLLocalizer *)self determineAvailabilityAtLocation:v7 purpose:0 callbackQueue:callback callback:v5];
 }
 
-- (void)determineAvailabilityAtLocation:(id)a3 purpose:(int64_t)a4 callbackQueue:(id)a5 callback:(id)a6
+- (void)determineAvailabilityAtLocation:(id)location purpose:(int64_t)purpose callbackQueue:(id)queue callback:(id)callback
 {
   v11 = v6;
-  v12 = a6;
+  callbackCopy = callback;
   if (([objc_opt_class() isVisualLocalizationSupported] & 1) == 0)
   {
     if (qword_281181CD8 == -1)
@@ -314,7 +314,7 @@ LABEL_17:
         block[2] = __78__VLLocalizer_determineAvailabilityAtLocation_purpose_callbackQueue_callback___block_invoke;
         block[3] = &unk_279E2DAC0;
         v34 = v11;
-        dispatch_async(v12, block);
+        dispatch_async(callbackCopy, block);
 
         goto LABEL_18;
       }
@@ -335,9 +335,9 @@ LABEL_17:
     goto LABEL_17;
   }
 
-  v13 = *a4;
-  v14 = *(a4 + 8);
-  v15 = sqrt(vmuld_lane_f64(v14, *a4, 1) + v13.f64[0] * v13.f64[0]);
+  v13 = *purpose;
+  v14 = *(purpose + 8);
+  v15 = sqrt(vmuld_lane_f64(v14, *purpose, 1) + v13.f64[0] * v13.f64[0]);
   v16 = v15 * 0.99330562;
   v30 = 1.57079633;
   if (v15 * 0.99330562 == 0.0)
@@ -345,10 +345,10 @@ LABEL_17:
     goto LABEL_13;
   }
 
-  v28 = *(a4 + 8);
-  v29 = *a4;
+  v28 = *(purpose + 8);
+  v29 = *purpose;
   v17 = 0;
-  __y = *(a4 + 16);
+  __y = *(purpose + 16);
   v18 = 0.0;
   v19 = 0.0;
   while (1)
@@ -393,32 +393,32 @@ LABEL_13:
   v26.f64[0] = v30;
   v26.f64[1] = v25;
   *buf = vdivq_f64(v26, vdupq_n_s64(0x3F91DF46A2529D39uLL));
-  [(VLLocalizationDataProvider *)self->_dataProvider determineAvailabilityForCoordinate:buf horizontalAccuracy:a5 purpose:v12 callbackQueue:v11 callback:*(a4 + 32)];
+  [(VLLocalizationDataProvider *)self->_dataProvider determineAvailabilityForCoordinate:buf horizontalAccuracy:queue purpose:callbackCopy callbackQueue:v11 callback:*(purpose + 32)];
 
 LABEL_18:
 }
 
-- (void)determineAltitudesAtLocation:(id)a3 callbackQueue:(id)a4 callback:(id)a5
+- (void)determineAltitudesAtLocation:(id)location callbackQueue:(id)queue callback:(id)callback
 {
   v42 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  [v8 coordinate];
+  locationCopy = location;
+  queueCopy = queue;
+  callbackCopy = callback;
+  [locationCopy coordinate];
   v12 = v11;
-  [v8 coordinate];
+  [locationCopy coordinate];
   v14 = v13;
-  v15 = [[_VLLocalizerAltitudeQuery alloc] initWithLocation:v8 callbackQueue:v9 callback:v10];
+  v15 = [[_VLLocalizerAltitudeQuery alloc] initWithLocation:locationCopy callbackQueue:queueCopy callback:callbackCopy];
   if (qword_281181CD8 != -1)
   {
     dispatch_once(&qword_281181CD8, &__block_literal_global_225);
   }
 
   v16 = qword_281181CD0;
-  v17 = [(_VLLocalizerAltitudeQuery *)v15 signpostID];
-  if ((v17 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
+  signpostID = [(_VLLocalizerAltitudeQuery *)v15 signpostID];
+  if ((signpostID - 1) <= 0xFFFFFFFFFFFFFFFDLL)
   {
-    v18 = v17;
+    v18 = signpostID;
     if (os_signpost_enabled(v16))
     {
       *buf = 0;
@@ -443,9 +443,9 @@ LABEL_18:
   {
 LABEL_8:
     v20 = v19;
-    [v8 coordinate];
+    [locationCopy coordinate];
     v22 = v21;
-    [v8 coordinate];
+    [locationCopy coordinate];
     *buf = 134218240;
     *&buf[4] = v22;
     *&buf[12] = 2048;
@@ -465,19 +465,19 @@ LABEL_9:
   v34[2] = __67__VLLocalizer_determineAltitudesAtLocation_callbackQueue_callback___block_invoke;
   v34[3] = &unk_279E2DB10;
   v34[4] = self;
-  v35 = v8;
+  v35 = locationCopy;
   v36 = v15;
-  v37 = v9;
-  v38 = v10;
+  v37 = queueCopy;
+  v38 = callbackCopy;
   *&v29 = v25.__sinval * (v26 * 0.99330562 + 0.0);
   *buf = vmulq_n_f64(v27, v25.__cosval * (v26 + 0.0));
   *&buf[16] = v29;
   v40 = 0;
   v41 = 0;
-  v30 = v10;
-  v31 = v9;
+  v30 = callbackCopy;
+  v31 = queueCopy;
   v32 = v15;
-  v33 = v8;
+  v33 = locationCopy;
   [(VLLocalizer *)self determineAvailabilityAtLocation:buf callbackQueue:altitudeCalculationQueue callback:v34];
 }
 
@@ -653,11 +653,11 @@ LABEL_24:
 LABEL_5:
         v22 = 0;
         memset(buf, 0, sizeof(buf));
-        v11 = [(_VLLocalizerAltitudeQuery *)v3 location];
-        VLLocationFromCLLocation(v11, buf);
+        location = [(_VLLocalizerAltitudeQuery *)v3 location];
+        VLLocationFromCLLocation(location, buf);
 
         LODWORD(v22) = 1;
-        v12 = [(VLLocalizer *)self _vlHandle];
+        _vlHandle = [(VLLocalizer *)self _vlHandle];
         altitudeCalculationQueue = self->_altitudeCalculationQueue;
         v16[0] = MEMORY[0x277D85DD0];
         v16[1] = 3221225472;
@@ -671,7 +671,7 @@ LABEL_5:
         v14[0] = *buf;
         v14[1] = *&buf[16];
         v15 = v22;
-        _prepareAltitudeQuery(v12, v14, 0, altitudeCalculationQueue, v16);
+        _prepareAltitudeQuery(_vlHandle, v14, 0, altitudeCalculationQueue, v16);
 
         goto LABEL_6;
       }
@@ -688,11 +688,11 @@ LABEL_5:
     }
 
     v5 = v4;
-    v6 = [(_VLLocalizerAltitudeQuery *)v3 location];
-    [v6 coordinate];
+    location2 = [(_VLLocalizerAltitudeQuery *)v3 location];
+    [location2 coordinate];
     v8 = v7;
-    v9 = [(_VLLocalizerAltitudeQuery *)v3 location];
-    [v9 coordinate];
+    location3 = [(_VLLocalizerAltitudeQuery *)v3 location];
+    [location3 coordinate];
     *buf = 134218240;
     *&buf[4] = v8;
     *&buf[12] = 2048;
@@ -855,16 +855,16 @@ void __43__VLLocalizer__resolveCurrentAltitudeQuery__block_invoke_26(uint64_t a1
   (*(v2 + 2))(v2, *(a1 + 40), *(a1 + 48));
 }
 
-- (id)_altitudesAtLocation:(id *)a3 error:(id *)a4
+- (id)_altitudesAtLocation:(id *)location error:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3->var0[0];
-  v7 = a3->var0[1];
-  v8 = a3->var0[2];
+  v6 = location->var0[0];
+  v7 = location->var0[1];
+  v8 = location->var0[2];
   v9 = sqrt(v7 * v7 + v6 * v6);
   if (v9 >= 0.001)
   {
-    v10 = atan2(a3->var0[2], v9 * 0.996647189);
+    v10 = atan2(location->var0[2], v9 * 0.996647189);
   }
 
   else
@@ -878,10 +878,10 @@ void __43__VLLocalizer__resolveCurrentAltitudeQuery__block_invoke_26(uint64_t a1
   v13 = atan2(v8 + v11.__sinval * (v11.__sinval * v11.__sinval) * 42841.3115, v9 + v11.__cosval * (v11.__cosval * v11.__cosval) * -42697.6727);
   v34 = 0;
   v33 = 0;
-  v14 = [(VLLocalizer *)self _vlHandle];
+  _vlHandle = [(VLLocalizer *)self _vlHandle];
   v15 = v13;
   v16 = v12;
-  altitudes = vl_get_altitudes(v14, &v33, &v34, v15, v16);
+  altitudes = vl_get_altitudes(_vlHandle, &v33, &v34, v15, v16);
   if (altitudes)
   {
     v18 = altitudes;
@@ -901,7 +901,7 @@ void __43__VLLocalizer__resolveCurrentAltitudeQuery__block_invoke_26(uint64_t a1
       if (!os_log_type_enabled(qword_281181CD0, OS_LOG_TYPE_DEFAULT))
       {
 LABEL_8:
-        if (!a4)
+        if (!error)
         {
           goto LABEL_33;
         }
@@ -926,7 +926,7 @@ LABEL_8:
 LABEL_14:
             v23 = -1;
 LABEL_32:
-            *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:@"VLAltitudeDataProviderError" code:v23 userInfo:0];
+            *error = [MEMORY[0x277CCA9B8] errorWithDomain:@"VLAltitudeDataProviderError" code:v23 userInfo:0];
 LABEL_33:
             if (v34)
             {
@@ -950,9 +950,9 @@ LABEL_35:
         }
 
         v21 = v20;
-        v22 = [(VLLocalizer *)self _vlHandle];
+        _vlHandle2 = [(VLLocalizer *)self _vlHandle];
         *buf = 134217984;
-        v36 = v22;
+        v36 = _vlHandle2;
         _os_log_impl(&dword_27103D000, v21, OS_LOG_TYPE_FAULT, "vl_get_altitudes returned error vl_not_init with vlHandle: %p", buf, 0xCu);
 
         goto LABEL_14;
@@ -990,10 +990,10 @@ LABEL_26:
           free(v25);
         }
 
-        if (a4)
+        if (error)
         {
           [MEMORY[0x277CCA9B8] errorWithDomain:@"VLAltitudeDataProviderError" code:-1 userInfo:0];
-          *a4 = v27 = 0;
+          *error = v27 = 0;
           goto LABEL_36;
         }
 
@@ -1046,9 +1046,9 @@ LABEL_36:
   return v27;
 }
 
-- (id)_fileURLForTile:(const vl_tile_t *)a3 error:(id *)a4
+- (id)_fileURLForTile:(const vl_tile_t *)tile error:(id *)error
 {
-  v13 = *a3;
+  v13 = *tile;
   v6 = [(VLLocalizationDataProvider *)self->_dataProvider fileURLForKey:&v13 error:?];
   if (v6)
   {
@@ -1057,16 +1057,16 @@ LABEL_36:
 
   else
   {
-    v7 = [(VLLocalizationDataProvider *)self->_backupDataProvider fileURLForKey:&v13 error:a4];
+    v7 = [(VLLocalizationDataProvider *)self->_backupDataProvider fileURLForKey:&v13 error:error];
     if (!v7)
     {
       goto LABEL_8;
     }
   }
 
-  v8 = [MEMORY[0x277CCAA00] defaultManager];
-  v9 = [v7 path];
-  v10 = [v8 fileExistsAtPath:v9];
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [v7 path];
+  v10 = [defaultManager fileExistsAtPath:path];
 
   if (v10)
   {
@@ -1075,10 +1075,10 @@ LABEL_36:
     goto LABEL_9;
   }
 
-  if (a4)
+  if (error)
   {
     [MEMORY[0x277CCA9B8] errorWithDomain:@"VLLocalizationDataProviderErrorDomain" code:2 userInfo:0];
-    *a4 = v11 = 0;
+    *error = v11 = 0;
     goto LABEL_9;
   }
 
@@ -1089,7 +1089,7 @@ LABEL_9:
   return v11;
 }
 
-- (void)prepareWithLocation:(id)a3
+- (void)prepareWithLocation:(id)location
 {
   v4 = v3;
   v37 = *MEMORY[0x277D85DE8];
@@ -1235,10 +1235,10 @@ LABEL_25:
   vl_update([(VLLocalizer *)self _vlHandle], buf);
 }
 
-- (void)prepareWithDeviceLocation:(id)a3
+- (void)prepareWithDeviceLocation:(id)location
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  locationCopy = location;
   if (([objc_opt_class() isVisualLocalizationSupported] & 1) == 0)
   {
     if (qword_281181CD8 == -1)
@@ -1282,11 +1282,11 @@ LABEL_25:
     }
   }
 
-  [v4 coordinate];
+  [locationCopy coordinate];
   v6 = v5;
-  [v4 coordinate];
+  [locationCopy coordinate];
   v8 = v7;
-  [v4 altitude];
+  [locationCopy altitude];
   v10 = v9;
   v11 = __sincos_stret(v6 * 0.0174532925);
   v12 = __sincos_stret(v8 * 0.0174532925);
@@ -1340,33 +1340,33 @@ LABEL_9:
 
   *v23 = 0;
   memset(v22, 0, sizeof(v22));
-  VLLocationFromCLLocation(v4, v22);
+  VLLocationFromCLLocation(locationCopy, v22);
   vl_update([(VLLocalizer *)self _vlHandle], v22);
 LABEL_17:
 }
 
-- (id)locateWithPixelBuffer:(double)a3 timestamp:(double)a4 location:(double)a5 gravity:(__n128)a6 transform:(__n128)a7 cameraIntrinsics:(__n128)a8 radialDistortion:(double)a9 error:(uint64_t)a10
+- (id)locateWithPixelBuffer:(double)buffer timestamp:(double)timestamp location:(double)location gravity:(__n128)gravity transform:(__n128)transform cameraIntrinsics:(__n128)intrinsics radialDistortion:(double)distortion error:(uint64_t)self0
 {
   v12 = a2;
   if (qword_281181CB8 != -1)
   {
-    v15 = a1;
-    v16 = a9;
+    selfCopy = self;
+    distortionCopy = distortion;
     v17 = a12;
-    v21 = a6;
-    v19 = a8;
-    v20 = a7;
+    gravityCopy = gravity;
+    intrinsicsCopy = intrinsics;
+    transformCopy = transform;
     dispatch_once(&qword_281181CB8, &__block_literal_global_29);
     v12 = a2;
-    a8 = v19;
-    a7 = v20;
-    a6 = v21;
+    intrinsics = intrinsicsCopy;
+    transform = transformCopy;
+    gravity = gravityCopy;
     a12 = v17;
-    a9 = v16;
-    a1 = v15;
+    distortion = distortionCopy;
+    self = selfCopy;
   }
 
-  v13 = [a1 locateWithPixelBuffer:-1.0 location:-1.0 heading:v12 gravity:*&a6 transform:*&a7 cameraIntrinsics:*&a8 radialDistortion:*&a9 timestamp:*&qword_281181CB0 * a12 error:?];
+  v13 = [self locateWithPixelBuffer:-1.0 location:-1.0 heading:v12 gravity:*&gravity transform:*&transform cameraIntrinsics:*&intrinsics radialDistortion:*&distortion timestamp:*&qword_281181CB0 * a12 error:?];
 
   return v13;
 }
@@ -1385,24 +1385,24 @@ double __114__VLLocalizer_locateWithPixelBuffer_timestamp_location_gravity_trans
   return result;
 }
 
-- (id)locateWithPixelBuffer:(uint64_t)a3 timestamp:(unint64_t)a4 location:(uint64_t)a5 heading:(uint64_t)a6 gravity:(uint64_t)a7 transform:(uint64_t)a8 cameraIntrinsics:(__int128)a9 radialDistortion:(__int128)a10 error:(__int128)a11
+- (id)locateWithPixelBuffer:(uint64_t)buffer timestamp:(unint64_t)timestamp location:(uint64_t)location heading:(uint64_t)heading gravity:(uint64_t)gravity transform:(uint64_t)transform cameraIntrinsics:(__int128)intrinsics radialDistortion:(__int128)self0 error:(__int128)self1
 {
-  v12 = a10;
-  v13 = a11;
-  v14 = a9;
+  distortionCopy2 = distortion;
+  errorCopy2 = error;
+  intrinsicsCopy2 = intrinsics;
   if (qword_281181CC8 != -1)
   {
-    v17 = a1;
-    v18 = a4;
+    selfCopy = self;
+    timestampCopy = timestamp;
     dispatch_once(&qword_281181CC8, &__block_literal_global_31);
-    v13 = a11;
-    v12 = a10;
-    v14 = a9;
-    a4 = v18;
-    a1 = v17;
+    errorCopy2 = error;
+    distortionCopy2 = distortion;
+    intrinsicsCopy2 = intrinsics;
+    timestamp = timestampCopy;
+    self = selfCopy;
   }
 
-  v15 = [a1 locateWithPixelBuffer:v14 location:v12 heading:v13 gravity:a12 transform:*&qword_281181CC0 * a4 cameraIntrinsics:? radialDistortion:? timestamp:? error:?];
+  v15 = [self locateWithPixelBuffer:intrinsicsCopy2 location:distortionCopy2 heading:errorCopy2 gravity:a12 transform:*&qword_281181CC0 * timestamp cameraIntrinsics:? radialDistortion:? timestamp:? error:?];
 
   return v15;
 }
@@ -1421,16 +1421,16 @@ double __122__VLLocalizer_locateWithPixelBuffer_timestamp_location_heading_gravi
   return result;
 }
 
-- (id)locateWithPixelBuffer:(double)a3 location:(double)a4 heading:(double)a5 gravity:(double)a6 transform:(double)a7 cameraIntrinsics:(uint64_t)a8 radialDistortion:(uint64_t)a9 timestamp:(__int128 *)a10 error:(__int128 *)a11
+- (id)locateWithPixelBuffer:(double)buffer location:(double)location heading:(double)heading gravity:(double)gravity transform:(double)transform cameraIntrinsics:(uint64_t)intrinsics radialDistortion:(uint64_t)distortion timestamp:(__int128 *)self0 error:(__int128 *)self1
 {
   v55 = *MEMORY[0x277D85DE8];
-  v31 = a11[1];
-  v32 = *a11;
-  v24 = a10[1];
-  v46 = *a10;
+  v31 = error[1];
+  v32 = *error;
+  v24 = timestamp[1];
+  v46 = *timestamp;
   v47 = v24;
-  v48 = a10[2];
-  v25 = [a1 _clLocationFrom:&v46];
+  v48 = timestamp[2];
+  v25 = [self _clLocationFrom:&v46];
   v26 = v25;
   v53 = 0u;
   memset(v54, 0, 28);
@@ -1462,39 +1462,39 @@ double __122__VLLocalizer_locateWithPixelBuffer_timestamp_location_heading_gravi
 
   v37 = v32;
   v38 = v31;
-  v29 = [a1 locateWithPixelBuffer:a9 deviceLocation:v28 heading:&v37 gravity:a12 transform:a2 cameraIntrinsics:a3 radialDistortion:a4 exposureTargetOffset:a5 timestamp:a6 error:{a7, a15, a16, a17, a18, 0xBFF0000000000000, a19}];
+  v29 = [self locateWithPixelBuffer:distortion deviceLocation:v28 heading:&v37 gravity:a12 transform:a2 cameraIntrinsics:buffer radialDistortion:location exposureTargetOffset:heading timestamp:gravity error:{transform, a15, a16, a17, a18, 0xBFF0000000000000, a19}];
 
   return v29;
 }
 
-- (id)locateWithPixelBuffer:(uint64_t)a3 deviceLocation:(uint64_t)a4 heading:(_OWORD *)a5 gravity:(uint64_t)a6 transform:(uint64_t)a7 cameraIntrinsics:(uint64_t)a8 radialDistortion:(__int128)a9 ambientLightIntensity:(__int128)a10 timestamp:(__int128)a11 error:(uint64_t)a12
+- (id)locateWithPixelBuffer:(uint64_t)buffer deviceLocation:(uint64_t)location heading:(_OWORD *)heading gravity:(uint64_t)gravity transform:(uint64_t)transform cameraIntrinsics:(uint64_t)intrinsics radialDistortion:(__int128)distortion ambientLightIntensity:(__int128)self0 timestamp:(__int128)self1 error:(uint64_t)self2
 {
-  v14 = a5[1];
-  v17[0] = *a5;
+  v14 = heading[1];
+  v17[0] = *heading;
   v17[1] = v14;
-  v15 = [a1 locateWithPixelBuffer:a3 deviceLocation:a4 heading:v17 gravity:a9 transform:a10 cameraIntrinsics:a11 radialDistortion:a12 exposureTargetOffset:a13 timestamp:a14 error:?];
+  v15 = [self locateWithPixelBuffer:buffer deviceLocation:location heading:v17 gravity:distortion transform:intensity cameraIntrinsics:timestamp radialDistortion:error exposureTargetOffset:a13 timestamp:a14 error:?];
 
   return v15;
 }
 
-- (id)locateWithPixelBuffer:(uint64_t)a3 deviceLocation:(uint64_t)a4 heading:(_OWORD *)a5 gravity:(uint64_t)a6 transform:(uint64_t)a7 cameraIntrinsics:(uint64_t)a8 radialDistortion:(__int128)a9 exposureTargetOffset:(__int128)a10 timestamp:(__int128)a11 error:(uint64_t)a12
+- (id)locateWithPixelBuffer:(uint64_t)buffer deviceLocation:(uint64_t)location heading:(_OWORD *)heading gravity:(uint64_t)gravity transform:(uint64_t)transform cameraIntrinsics:(uint64_t)intrinsics radialDistortion:(__int128)distortion exposureTargetOffset:(__int128)self0 timestamp:(__int128)self1 error:(uint64_t)self2
 {
-  v14 = a5[1];
-  v17[0] = *a5;
+  v14 = heading[1];
+  v17[0] = *heading;
   v17[1] = v14;
-  v15 = [a1 _locateWithPixelBuffer:a3 deviceLocation:a4 heading:v17 gravity:&__block_literal_global_34 transform:a6 cameraIntrinsics:a9 radialDistortion:a10 exposureTargetOffset:a11 timestamp:a12 calculationBlock:a13 error:a14];
+  v15 = [self _locateWithPixelBuffer:buffer deviceLocation:location heading:v17 gravity:&__block_literal_global_34 transform:gravity cameraIntrinsics:distortion radialDistortion:offset exposureTargetOffset:timestamp timestamp:error calculationBlock:a13 error:a14];
 
   return v15;
 }
 
-- (VLLocalizationResult)_locateWithPixelBuffer:(float64_t)a3 deviceLocation:(int32x4_t)a4 heading:(int32x4_t)a5 gravity:(int32x4_t)a6 transform:(int8x16_t)a7 cameraIntrinsics:(uint64_t)a8 radialDistortion:(void *)a9 exposureTargetOffset:(void *)a10 timestamp:(float64x2_t *)a11 calculationBlock:(void *)a12 error:(unint64_t)a13
+- (VLLocalizationResult)_locateWithPixelBuffer:(float64_t)buffer deviceLocation:(int32x4_t)location heading:(int32x4_t)heading gravity:(int32x4_t)gravity transform:(int8x16_t)transform cameraIntrinsics:(uint64_t)intrinsics radialDistortion:(void *)distortion exposureTargetOffset:(void *)self0 timestamp:(float64x2_t *)self1 calculationBlock:(void *)self2 error:(unint64_t)self3
 {
   v23 = a22;
   v275[2] = *MEMORY[0x277D85DE8];
-  v151 = a11[1];
-  v152 = *a11;
-  v24 = a10;
-  v162 = a12;
+  v151 = timestamp[1];
+  v152 = *timestamp;
+  offsetCopy = offset;
+  blockCopy = block;
   if (qword_281181CD8 != -1)
   {
     dispatch_once(&qword_281181CD8, &__block_literal_global_225);
@@ -1505,11 +1505,11 @@ double __122__VLLocalizer_locateWithPixelBuffer_timestamp_location_heading_gravi
 
   if (v26)
   {
-    [v24 coordinate];
+    [offsetCopy coordinate];
     v28 = v27;
-    [v24 coordinate];
+    [offsetCopy coordinate];
     v30 = v29;
-    [v24 altitude];
+    [offsetCopy altitude];
     v32 = v31;
     v33 = __sincos_stret(v28 * 0.0174532925);
     v34 = __sincos_stret(v30 * 0.0174532925);
@@ -1561,11 +1561,11 @@ LABEL_8:
   v216 = 0;
   v215 = 0u;
   v214 = 0u;
-  VLLocationFromCLLocation(v24, &v214);
+  VLLocationFromCLLocation(offsetCopy, &v214);
   v164 = [qword_281181CA0 copy];
   if ([objc_opt_class() isVisualLocalizationSupported])
   {
-    if (*(a1 + 64))
+    if (*(self + 64))
     {
       v40 = 1;
     }
@@ -1591,7 +1591,7 @@ LABEL_8:
     }
 
     v53 = qword_281181CD0;
-    spid = os_signpost_id_make_with_pointer(v53, a9);
+    spid = os_signpost_id_make_with_pointer(v53, distortion);
 
     if (qword_281181CD8 != -1)
     {
@@ -1603,7 +1603,7 @@ LABEL_8:
     v148 = spid - 1;
     if (spid - 1 <= 0xFFFFFFFFFFFFFFFDLL && os_signpost_enabled(v54))
     {
-      v56 = *(a1 + 40);
+      v56 = *(self + 40);
       *buf = 134217984;
       *&buf[4] = v56;
       _os_signpost_emit_with_name_impl(&dword_27103D000, v55, OS_SIGNPOST_INTERVAL_BEGIN, spid, "Locate", "parent_signpost=%llu", buf, 0xCu);
@@ -1612,7 +1612,7 @@ LABEL_8:
     v209 = 0;
     BaseAddress = 0;
     v210 = 0;
-    PixelFormatType = CVPixelBufferGetPixelFormatType(a9);
+    PixelFormatType = CVPixelBufferGetPixelFormatType(distortion);
     v58 = PixelFormatType;
     if (PixelFormatType <= 1278226487)
     {
@@ -1711,7 +1711,7 @@ LABEL_254:
 
             v68 = v67;
             _Block_object_dispose(&v187, 8);
-            v69 = [[v67 alloc] initWithCVPixelBuffer:a9];
+            v69 = [[v67 alloc] initWithCVPixelBuffer:distortion];
             [v69 extent];
             v71 = v70;
             [v69 extent];
@@ -1770,8 +1770,8 @@ LABEL_254:
 LABEL_79:
                 v91 = v76;
                 _Block_object_dispose(&v187, 8);
-                v92 = [v76 context];
-                [v92 render:v69 toCVPixelBuffer:pixelBufferOut];
+                context = [v76 context];
+                [context render:v69 toCVPixelBuffer:pixelBufferOut];
 
                 CVPixelBufferLockBaseAddress(pixelBufferOut, 1uLL);
                 BaseAddress = CVPixelBufferGetBaseAddress(pixelBufferOut);
@@ -1837,20 +1837,20 @@ LABEL_87:
                     v192 = v215;
                     v193 = v216;
                     v95.f64[0] = a2;
-                    v95.f64[1] = a3;
+                    v95.f64[1] = buffer;
                     v195 = vcvt_hight_f32_f64(vcvt_f32_f64(v95), v152);
                     *v95.f64 = v151.f64[0];
                     v196 = LODWORD(v95.f64[0]);
-                    *&v95.f64[0] = vtrn1q_s32(a4, a5).u64[0];
-                    *&v95.f64[1] = __PAIR64__(a4.u32[1], a6.u32[0]);
+                    *&v95.f64[0] = vtrn1q_s32(location, heading).u64[0];
+                    *&v95.f64[1] = __PAIR64__(location.u32[1], gravity.u32[0]);
                     v194 = v23;
                     v197 = v95;
-                    v97 = vuzp1q_s32(vuzp2q_s32(a5, a6), a5);
-                    v97.i32[2] = a4.i32[2];
+                    v97 = vuzp1q_s32(vuzp2q_s32(heading, gravity), heading);
+                    v97.i32[2] = location.i32[2];
                     v198 = v97;
-                    v199 = vextq_s8(vuzp1q_s32(a6, a6), a7, 0xCuLL);
+                    v199 = vextq_s8(vuzp1q_s32(gravity, gravity), transform, 0xCuLL);
                     v200 = -1;
-                    v98 = [a1 _vlHandle];
+                    _vlHandle = [self _vlHandle];
                     v186 = 0;
                     v184 = 0u;
                     v185 = 0u;
@@ -1867,7 +1867,7 @@ LABEL_87:
                     v172 = 0u;
                     v173 = 0u;
                     v171 = 0u;
-                    v99 = v162[2](v162, v98, &BaseAddress, &v187, &v171);
+                    v99 = blockCopy[2](blockCopy, _vlHandle, &BaseAddress, &v187, &v171);
                     v62[2](v62);
                     v269 = 0;
                     v268 = 0u;
@@ -1898,7 +1898,7 @@ LABEL_87:
                     v243 = 0u;
                     v242 = 0u;
                     memset(buf, 0, sizeof(buf));
-                    vl_stats_get(v98, buf);
+                    vl_stats_get(_vlHandle, buf);
                     if (v99 == 1)
                     {
                       v100 = [VLLocalizationDebugInfo alloc];
@@ -1909,8 +1909,8 @@ LABEL_87:
                       v240 = v151;
                       *v239 = v152;
                       LOBYTE(v146) = v147;
-                      v102 = [(VLLocalizationDebugInfo *)v100 initWithPixelBuffer:a9 monotonicTimestamp:v226 timestamp:v24 duration:v239 location:buf clLocation:1 heading:v39 gravity:v23 transform:v101 - v39 cameraIntrinsics:a2 radialDistortion:a3 exposureTargetOffset:*&a4 statistics:*&a5 resultStatus:*&a6 resultPose:*&a7 preserveImageData:*&a17, *&a18, *&a19, *&a20, a21, &v171, v146];
-                      v51 = [[VLLocalizationResult alloc] initWithTimestamp:&v171 pose:v102 debugInfo:v23];
+                      v146 = [(VLLocalizationDebugInfo *)v100 initWithPixelBuffer:distortion monotonicTimestamp:v226 timestamp:offsetCopy duration:v239 location:buf clLocation:1 heading:v39 gravity:v23 transform:v101 - v39 cameraIntrinsics:a2 radialDistortion:buffer exposureTargetOffset:*&location statistics:*&heading resultStatus:*&gravity resultPose:*&transform preserveImageData:*&a17, *&a18, *&a19, *&a20, a21, &v171, v146];
+                      v51 = [[VLLocalizationResult alloc] initWithTimestamp:&v171 pose:v146 debugInfo:v23];
                       if (qword_281181CD8 == -1)
                       {
                         if (!os_log_type_enabled(qword_281181CD0, OS_LOG_TYPE_INFO))
@@ -1928,8 +1928,8 @@ LABEL_87:
                         }
                       }
 
-                      [v24 coordinate];
-                      [v24 coordinate];
+                      [offsetCopy coordinate];
+                      [offsetCopy coordinate];
                       if (v51)
                       {
                         [(VLLocalizationResult *)v51 location];
@@ -2070,7 +2070,7 @@ LABEL_141:
 LABEL_143:
                           if (os_signpost_enabled(v132))
                           {
-                            v133 = *(a1 + 40);
+                            v133 = *(self + 40);
                             *v226 = 134217984;
                             *&v226[4] = v133;
                             _os_signpost_emit_with_name_impl(&dword_27103D000, v132, OS_SIGNPOST_INTERVAL_END, spid, "Locate", "parent_signpost=%llu", v226, 0xCu);
@@ -2086,7 +2086,7 @@ LABEL_222:
                           goto LABEL_223;
                         }
 
-                        v134 = *(a1 + 56);
+                        v134 = *(self + 56);
                         v168[0] = MEMORY[0x277D85DD0];
                         v168[1] = 3221225472;
                         v168[2] = __167__VLLocalizer__locateWithPixelBuffer_deviceLocation_heading_gravity_transform_cameraIntrinsics_radialDistortion_exposureTargetOffset_timestamp_calculationBlock_error___block_invoke_49;
@@ -2094,8 +2094,8 @@ LABEL_222:
                         v135 = &v170;
                         v170 = v164;
                         v136 = &v169;
-                        v102 = v102;
-                        v169 = v102;
+                        v146 = v146;
+                        v169 = v146;
                         dispatch_async(v134, v168);
 LABEL_221:
 
@@ -2150,7 +2150,7 @@ LABEL_95:
 
                         if (os_signpost_enabled(v105))
                         {
-                          v106 = *(a1 + 40);
+                          v106 = *(self + 40);
                           *v226 = 134217984;
                           *&v226[4] = v106;
                           _os_signpost_emit_with_name_impl(&dword_27103D000, v105, OS_SIGNPOST_INTERVAL_END, spid, "Locate", "parent_signpost=%llu", v226, 0xCu);
@@ -2158,7 +2158,7 @@ LABEL_95:
 
 LABEL_99:
 
-                        if (!(a13 | v164))
+                        if (!(error | v164))
                         {
                           v51 = 0;
 LABEL_223:
@@ -2175,15 +2175,15 @@ LABEL_223:
                         v240 = v151;
                         *v239 = v152;
                         LOBYTE(v146) = v147;
-                        v110 = [(VLLocalizationDebugInfo *)v107 initWithPixelBuffer:a9 monotonicTimestamp:v226 timestamp:v24 duration:v239 location:buf clLocation:v99 heading:v39 gravity:v23 transform:v108 - v39 cameraIntrinsics:a2 radialDistortion:a3 exposureTargetOffset:*&a4 statistics:*&a5 resultStatus:*&a6 resultPose:*&a7 preserveImageData:*&a17, *&a18, *&a19, *&a20, a21, 0, v146];
-                        v102 = v110;
-                        if (!a13)
+                        v1462 = [(VLLocalizationDebugInfo *)v107 initWithPixelBuffer:distortion monotonicTimestamp:v226 timestamp:offsetCopy duration:v239 location:buf clLocation:v99 heading:v39 gravity:v23 transform:v108 - v39 cameraIntrinsics:a2 radialDistortion:buffer exposureTargetOffset:*&location statistics:*&heading resultStatus:*&gravity resultPose:*&transform preserveImageData:*&a17, *&a18, *&a19, *&a20, a21, 0, v146];
+                        v146 = v1462;
+                        if (!error)
                         {
                           goto LABEL_219;
                         }
 
                         v111 = MEMORY[0x277CCA9B8];
-                        if (v110)
+                        if (v1462)
                         {
                           if (v99 <= 1023)
                           {
@@ -2195,7 +2195,7 @@ LABEL_223:
                                 {
                                   if (v99 == 16)
                                   {
-                                    v112 = a13;
+                                    errorCopy18 = error;
                                     v109 = 101;
                                     goto LABEL_206;
                                   }
@@ -2208,7 +2208,7 @@ LABEL_223:
                               {
                                 if (v99 == 2)
                                 {
-                                  v112 = a13;
+                                  errorCopy18 = error;
                                   goto LABEL_206;
                                 }
 
@@ -2218,7 +2218,7 @@ LABEL_223:
                                 }
                               }
 
-                              v112 = a13;
+                              errorCopy18 = error;
                               v109 = 100;
                               goto LABEL_206;
                             }
@@ -2227,14 +2227,14 @@ LABEL_223:
                             {
                               if (v99 == 32)
                               {
-                                v112 = a13;
+                                errorCopy18 = error;
                                 v109 = 200;
                                 goto LABEL_206;
                               }
 
                               if (v99 == 64)
                               {
-                                v112 = a13;
+                                errorCopy18 = error;
                                 v109 = 201;
                                 goto LABEL_206;
                               }
@@ -2245,15 +2245,15 @@ LABEL_223:
                               switch(v99)
                               {
                                 case 0x80:
-                                  v112 = a13;
+                                  errorCopy18 = error;
                                   v109 = 202;
                                   goto LABEL_206;
                                 case 0x100:
-                                  v112 = a13;
+                                  errorCopy18 = error;
                                   v109 = 203;
                                   goto LABEL_206;
                                 case 0x200:
-                                  v112 = a13;
+                                  errorCopy18 = error;
                                   v109 = 204;
                                   goto LABEL_206;
                               }
@@ -2264,7 +2264,7 @@ LABEL_223:
                           {
                             if (v99 <= 16386)
                             {
-                              v112 = a13;
+                              errorCopy18 = error;
                               if (v99 == 16385)
                               {
                                 v109 = 401;
@@ -2281,15 +2281,15 @@ LABEL_223:
                             switch(v99)
                             {
                               case 0x4003:
-                                v112 = a13;
+                                errorCopy18 = error;
                                 v109 = 403;
                                 goto LABEL_206;
                               case 0x4004:
-                                v112 = a13;
+                                errorCopy18 = error;
                                 v109 = 404;
                                 goto LABEL_206;
                               case 0x8000:
-                                v112 = a13;
+                                errorCopy18 = error;
                                 v109 = 405;
                                 goto LABEL_206;
                             }
@@ -2299,14 +2299,14 @@ LABEL_223:
                           {
                             if (v99 == 1024)
                             {
-                              v112 = a13;
+                              errorCopy18 = error;
                               v109 = 205;
                               goto LABEL_206;
                             }
 
                             if (v99 == 2048)
                             {
-                              v112 = a13;
+                              errorCopy18 = error;
                               v109 = 300;
                               goto LABEL_206;
                             }
@@ -2317,22 +2317,22 @@ LABEL_223:
                             switch(v99)
                             {
                               case 0x1000:
-                                v112 = a13;
+                                errorCopy18 = error;
                                 v109 = 206;
                                 goto LABEL_206;
                               case 0x2000:
-                                v112 = a13;
+                                errorCopy18 = error;
                                 v109 = 207;
                                 goto LABEL_206;
                               case 0x4000:
-                                v112 = a13;
+                                errorCopy18 = error;
                                 v109 = 400;
 LABEL_206:
                                 v239[0] = @"UnderlyingVLStatus";
                                 v137 = MEMORY[0x277CCABB0];
-                                v138 = v110;
+                                v138 = v1462;
                                 v139 = [v137 numberWithUnsignedInt:v99];
-                                a13 = v112;
+                                error = errorCopy18;
                                 v239[1] = @"VLLocalizerDebugInfo";
                                 *v226 = v139;
                                 *&v226[8] = v138;
@@ -2342,7 +2342,7 @@ LABEL_218:
                                 v142 = v141;
 
                                 v143 = v142;
-                                *a13 = v142;
+                                *error = v142;
 LABEL_219:
                                 if (!v164)
                                 {
@@ -2350,7 +2350,7 @@ LABEL_219:
                                   goto LABEL_222;
                                 }
 
-                                v144 = *(a1 + 56);
+                                v144 = *(self + 56);
                                 v165[0] = MEMORY[0x277D85DD0];
                                 v165[1] = 3221225472;
                                 v165[2] = __167__VLLocalizer__locateWithPixelBuffer_deviceLocation_heading_gravity_transform_cameraIntrinsics_radialDistortion_exposureTargetOffset_timestamp_calculationBlock_error___block_invoke_50;
@@ -2358,8 +2358,8 @@ LABEL_219:
                                 v135 = &v167;
                                 v167 = v164;
                                 v136 = &v166;
-                                v102 = v102;
-                                v166 = v102;
+                                v146 = v146;
+                                v166 = v146;
                                 dispatch_async(v144, v165);
                                 v51 = 0;
                                 goto LABEL_221;
@@ -2367,7 +2367,7 @@ LABEL_219:
                           }
 
 LABEL_205:
-                          v112 = a13;
+                          errorCopy18 = error;
                           v109 = 1000;
                           goto LABEL_206;
                         }
@@ -2548,11 +2548,11 @@ LABEL_216:
               if (os_log_type_enabled(qword_281181CD0, OS_LOG_TYPE_FAULT))
               {
 LABEL_66:
-                v78 = a13;
+                errorCopy19 = error;
                 v79 = pixelBufferOut;
                 v80 = v77;
                 v81 = v79;
-                a13 = v78;
+                error = errorCopy19;
                 BytesPerRow = CVPixelBufferGetBytesPerRow(v81);
                 *buf = 134349312;
                 *&buf[4] = BytesPerRow;
@@ -2563,7 +2563,7 @@ LABEL_66:
             }
 
 LABEL_67:
-            if (a13 | v164)
+            if (error | v164)
             {
               v83 = [VLLocalizationDebugInfo alloc];
               GEOGetMonotonicTime();
@@ -2573,30 +2573,30 @@ LABEL_67:
               v171 = v152;
               v172 = v151;
               LOBYTE(v146) = v147;
-              v85 = [(VLLocalizationDebugInfo *)v83 initWithPixelBuffer:a9 monotonicTimestamp:buf timestamp:v24 duration:&v171 location:0 clLocation:0 heading:v39 gravity:v23 transform:v84 - v39 cameraIntrinsics:a2 radialDistortion:a3 exposureTargetOffset:*&a4 statistics:*&a5 resultStatus:*&a6 resultPose:*&a7 preserveImageData:*&a17, *&a18, *&a19, *&a20, a21, 0, v146];
+              v1463 = [(VLLocalizationDebugInfo *)v83 initWithPixelBuffer:distortion monotonicTimestamp:buf timestamp:offsetCopy duration:&v171 location:0 clLocation:0 heading:v39 gravity:v23 transform:v84 - v39 cameraIntrinsics:a2 radialDistortion:buffer exposureTargetOffset:*&location statistics:*&heading resultStatus:*&gravity resultPose:*&transform preserveImageData:*&a17, *&a18, *&a19, *&a20, a21, 0, v146];
               v86 = MEMORY[0x277CCA9B8];
               v270[0] = *MEMORY[0x277CBEE28];
               v270[1] = @"VLLocalizerDebugInfo";
               v271[0] = @"Failed to convert image format";
-              v271[1] = v85;
+              v271[1] = v1463;
               v87 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v271 forKeys:v270 count:2];
               v88 = [v86 errorWithDomain:@"VLLocalizerError" code:2 userInfo:v87];
 
-              if (a13)
+              if (error)
               {
                 v89 = v88;
-                *a13 = v88;
+                *error = v88;
               }
 
               if (v164)
               {
-                v90 = *(a1 + 56);
+                v90 = *(self + 56);
                 v202[0] = MEMORY[0x277D85DD0];
                 v202[1] = 3221225472;
                 v202[2] = __167__VLLocalizer__locateWithPixelBuffer_deviceLocation_heading_gravity_transform_cameraIntrinsics_radialDistortion_exposureTargetOffset_timestamp_calculationBlock_error___block_invoke_46;
                 v202[3] = &unk_279E2DAE8;
                 v204 = v164;
-                v203 = v85;
+                v203 = v1463;
                 dispatch_async(v90, v202);
               }
             }
@@ -2624,25 +2624,25 @@ LABEL_67:
     {
       if (PixelFormatType == 1278226488)
       {
-        CVPixelBufferLockBaseAddress(a9, 1uLL);
-        Width = CVPixelBufferGetWidth(a9);
-        Height = CVPixelBufferGetHeight(a9);
-        if (CVPixelBufferGetBytesPerRow(a9) == Width)
+        CVPixelBufferLockBaseAddress(distortion, 1uLL);
+        Width = CVPixelBufferGetWidth(distortion);
+        Height = CVPixelBufferGetHeight(distortion);
+        if (CVPixelBufferGetBytesPerRow(distortion) == Width)
         {
-          BaseAddress = CVPixelBufferGetBaseAddress(a9);
+          BaseAddress = CVPixelBufferGetBaseAddress(distortion);
           v209 = __PAIR64__(Height, Width);
           LODWORD(v210) = 0;
           v206[0] = MEMORY[0x277D85DD0];
           v206[1] = 3221225472;
           v206[2] = __167__VLLocalizer__locateWithPixelBuffer_deviceLocation_heading_gravity_transform_cameraIntrinsics_radialDistortion_exposureTargetOffset_timestamp_calculationBlock_error___block_invoke_3;
           v206[3] = &__block_descriptor_40_e5_v8__0l;
-          v206[4] = a9;
+          v206[4] = distortion;
           v61 = _Block_copy(v206);
           goto LABEL_40;
         }
 
 LABEL_43:
-        CVPixelBufferUnlockBaseAddress(a9, 1uLL);
+        CVPixelBufferUnlockBaseAddress(distortion, 1uLL);
         goto LABEL_44;
       }
 
@@ -2652,19 +2652,19 @@ LABEL_43:
       }
     }
 
-    CVPixelBufferLockBaseAddress(a9, 1uLL);
-    WidthOfPlane = CVPixelBufferGetWidthOfPlane(a9, 0);
-    HeightOfPlane = CVPixelBufferGetHeightOfPlane(a9, 0);
-    if (CVPixelBufferGetBytesPerRowOfPlane(a9, 0) == WidthOfPlane)
+    CVPixelBufferLockBaseAddress(distortion, 1uLL);
+    WidthOfPlane = CVPixelBufferGetWidthOfPlane(distortion, 0);
+    HeightOfPlane = CVPixelBufferGetHeightOfPlane(distortion, 0);
+    if (CVPixelBufferGetBytesPerRowOfPlane(distortion, 0) == WidthOfPlane)
     {
-      BaseAddress = CVPixelBufferGetBaseAddressOfPlane(a9, 0);
+      BaseAddress = CVPixelBufferGetBaseAddressOfPlane(distortion, 0);
       v209 = __PAIR64__(HeightOfPlane, WidthOfPlane);
       LODWORD(v210) = 0;
       aBlock[0] = MEMORY[0x277D85DD0];
       aBlock[1] = 3221225472;
       aBlock[2] = __167__VLLocalizer__locateWithPixelBuffer_deviceLocation_heading_gravity_transform_cameraIntrinsics_radialDistortion_exposureTargetOffset_timestamp_calculationBlock_error___block_invoke_2;
       aBlock[3] = &__block_descriptor_40_e5_v8__0l;
-      aBlock[4] = a9;
+      aBlock[4] = distortion;
       v61 = _Block_copy(aBlock);
 LABEL_40:
       v62 = v61;
@@ -2697,7 +2697,7 @@ LABEL_13:
   }
 
 LABEL_14:
-  if (!(a13 | v41))
+  if (!(error | v41))
   {
     v51 = 0;
     goto LABEL_225;
@@ -2711,30 +2711,30 @@ LABEL_14:
   v171 = v152;
   v172 = v151;
   LOBYTE(v146) = 0;
-  v45 = [(VLLocalizationDebugInfo *)v43 initWithPixelBuffer:0 monotonicTimestamp:buf timestamp:v24 duration:&v171 location:0 clLocation:0 heading:v39 gravity:v23 transform:v44 - v39 cameraIntrinsics:a2 radialDistortion:a3 exposureTargetOffset:*&a4 statistics:*&a5 resultStatus:*&a6 resultPose:*&a7 preserveImageData:*&a17, *&a18, *&a19, *&a20, a21, 0, v146];
+  v1464 = [(VLLocalizationDebugInfo *)v43 initWithPixelBuffer:0 monotonicTimestamp:buf timestamp:offsetCopy duration:&v171 location:0 clLocation:0 heading:v39 gravity:v23 transform:v44 - v39 cameraIntrinsics:a2 radialDistortion:buffer exposureTargetOffset:*&location statistics:*&heading resultStatus:*&gravity resultPose:*&transform preserveImageData:*&a17, *&a18, *&a19, *&a20, a21, 0, v146];
   v46 = MEMORY[0x277CCA9B8];
   v274[0] = *MEMORY[0x277CBEE28];
   v274[1] = @"VLLocalizerDebugInfo";
   v275[0] = @"Not supported";
-  v275[1] = v45;
+  v275[1] = v1464;
   v47 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:v275 forKeys:v274 count:2];
   v48 = [v46 errorWithDomain:@"VLLocalizerError" code:1 userInfo:v47];
 
-  if (a13)
+  if (error)
   {
     v49 = v48;
-    *a13 = v48;
+    *error = v48;
   }
 
   if (v164)
   {
-    v50 = *(a1 + 56);
+    v50 = *(self + 56);
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __167__VLLocalizer__locateWithPixelBuffer_deviceLocation_heading_gravity_transform_cameraIntrinsics_radialDistortion_exposureTargetOffset_timestamp_calculationBlock_error___block_invoke;
     block[3] = &unk_279E2DAE8;
     v213 = v164;
-    v212 = v45;
+    v212 = v1464;
     dispatch_async(v50, block);
   }
 
@@ -2754,38 +2754,38 @@ void __167__VLLocalizer__locateWithPixelBuffer_deviceLocation_heading_gravity_tr
   CVPixelBufferRelease(v2);
 }
 
-- (void)_deterministicLocateWithPixelBuffer:(double)a3 deviceLocation:(__n128)a4 heading:(__n128)a5 gravity:(__n128)a6 transform:(__n128)a7 cameraIntrinsics:(uint64_t)a8 radialDistortion:(uint64_t)a9 exposureTargetOffset:(void *)a10 timestamp:(__int128 *)a11 completionHandler:(void *)a12
+- (void)_deterministicLocateWithPixelBuffer:(double)buffer deviceLocation:(__n128)location heading:(__n128)heading gravity:(__n128)gravity transform:(__n128)transform cameraIntrinsics:(uint64_t)intrinsics radialDistortion:(uint64_t)distortion exposureTargetOffset:(void *)self0 timestamp:(__int128 *)self1 completionHandler:(void *)self2
 {
-  v32 = *a11;
-  v31 = a11[1];
-  v25 = a10;
-  v26 = a12;
+  v32 = *timestamp;
+  v31 = timestamp[1];
+  offsetCopy = offset;
+  handlerCopy = handler;
   v27 = qos_class_self();
   v28 = dispatch_get_global_queue(v27, 0);
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __175__VLLocalizer__deterministicLocateWithPixelBuffer_deviceLocation_heading_gravity_transform_cameraIntrinsics_radialDistortion_exposureTargetOffset_timestamp_completionHandler___block_invoke;
   block[3] = &unk_279E2DBA8;
-  v47 = a1;
-  v48 = v25;
+  selfCopy = self;
+  v48 = offsetCopy;
   v51 = a2;
-  v52 = a3;
+  bufferCopy = buffer;
   v38 = v32;
   v39 = v31;
-  v40 = a4;
-  v41 = a5;
-  v42 = a6;
-  v43 = a7;
+  locationCopy = location;
+  headingCopy = heading;
+  gravityCopy = gravity;
+  transformCopy = transform;
   v44 = a15;
   v45 = a16;
   v46 = a17;
   v53 = a18;
   v54 = a19;
   v55 = a20;
-  v49 = v26;
-  v50 = a9;
-  v29 = v26;
-  v30 = v25;
+  v49 = handlerCopy;
+  distortionCopy = distortion;
+  v29 = handlerCopy;
+  v30 = offsetCopy;
   dispatch_async(v28, block);
 }
 
@@ -2821,7 +2821,7 @@ uint64_t __175__VLLocalizer__deterministicLocateWithPixelBuffer_deviceLocation_h
   return vl_locate(a2, a3, a4, a5);
 }
 
-- (id)_clLocationFrom:(id)a3
+- (id)_clLocationFrom:(id)from
 {
   v4 = v3;
   v5 = *v3;
@@ -2877,45 +2877,45 @@ LABEL_12:
   v18 = v10 / 0.0174532925;
   v19 = objc_alloc(getCLLocationClass());
   v20 = v4[2].f64[0];
-  v21 = [MEMORY[0x277CBEAA8] date];
-  v22 = [v19 initWithCoordinate:v21 altitude:v18 horizontalAccuracy:v17 verticalAccuracy:v9 timestamp:{v20, 0.0}];
+  date = [MEMORY[0x277CBEAA8] date];
+  v22 = [v19 initWithCoordinate:date altitude:v18 horizontalAccuracy:v17 verticalAccuracy:v9 timestamp:{v20, 0.0}];
 
   return v22;
 }
 
-- (void)dataProvider:(id)a3 didChangeFormatVersion:(unsigned int)a4
+- (void)dataProvider:(id)provider didChangeFormatVersion:(unsigned int)version
 {
   v10 = *MEMORY[0x277D85DE8];
   if (!self->_hasExplicitAlgorithmVersion)
   {
-    if (vl_argo_support_data_ver == a4)
+    if (vl_argo_support_data_ver == version)
     {
       v5 = 0;
     }
 
-    else if (dword_280875538 == a4)
+    else if (dword_280875538 == version)
     {
       v5 = 1;
     }
 
-    else if (dword_28087553C == a4)
+    else if (dword_28087553C == version)
     {
       v5 = 2;
     }
 
-    else if (dword_280875540 == a4)
+    else if (dword_280875540 == version)
     {
       v5 = 3;
     }
 
-    else if (dword_280875544 == a4)
+    else if (dword_280875544 == version)
     {
       v5 = 4;
     }
 
     else
     {
-      if (dword_280875548 != a4)
+      if (dword_280875548 != version)
       {
         v6 = -1;
         if (qword_281181CD8 == -1)
@@ -2926,10 +2926,10 @@ LABEL_15:
           {
 LABEL_17:
             self->_algorithmVersion = v6;
-            v8 = [(VLLocalizer *)self _vlHandle];
+            _vlHandle = [(VLLocalizer *)self _vlHandle];
             vl_par_version(v6, v9);
-            memcpy(v8, v9, 0x3F0uLL);
-            v8->var1 = v6;
+            memcpy(_vlHandle, v9, 0x3F0uLL);
+            _vlHandle->var1 = v6;
             return;
           }
 

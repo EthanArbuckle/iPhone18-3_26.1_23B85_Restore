@@ -1,17 +1,17 @@
 @interface CHDAxis
-- (CHDAxis)initWithResources:(id)a3;
+- (CHDAxis)initWithResources:(id)resources;
 - (NSString)description;
 - (id)contentFormat;
 - (id)defaultDateTimeContentFormat;
 - (id)font;
 - (id)tickLabelColor;
-- (void)setAxisGraphicProperties:(id)a3;
-- (void)setContentFormat:(id)a3;
-- (void)setFont:(id)a3;
-- (void)setLabelEffects:(id)a3;
-- (void)setMajorGridLinesGraphicProperties:(id)a3;
-- (void)setMinorGridLinesGraphicProperties:(id)a3;
-- (void)setTitle:(id)a3;
+- (void)setAxisGraphicProperties:(id)properties;
+- (void)setContentFormat:(id)format;
+- (void)setFont:(id)font;
+- (void)setLabelEffects:(id)effects;
+- (void)setMajorGridLinesGraphicProperties:(id)properties;
+- (void)setMinorGridLinesGraphicProperties:(id)properties;
+- (void)setTitle:(id)title;
 @end
 
 @implementation CHDAxis
@@ -19,8 +19,8 @@
 - (id)contentFormat
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained contentFormats];
-  v5 = [v4 objectWithKey:self->mContentFormatId];
+  contentFormats = [WeakRetained contentFormats];
+  v5 = [contentFormats objectWithKey:self->mContentFormatId];
 
   return v5;
 }
@@ -28,22 +28,22 @@
 - (id)font
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained fonts];
-  v5 = [v4 objectAtIndex:self->mFontIndex];
+  fonts = [WeakRetained fonts];
+  v5 = [fonts objectAtIndex:self->mFontIndex];
 
   return v5;
 }
 
-- (CHDAxis)initWithResources:(id)a3
+- (CHDAxis)initWithResources:(id)resources
 {
-  v4 = a3;
+  resourcesCopy = resources;
   v8.receiver = self;
   v8.super_class = CHDAxis;
   v5 = [(CHDAxis *)&v8 init];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->mResources, v4);
+    objc_storeWeak(&v5->mResources, resourcesCopy);
     *&v6->mAutoCrossValue = 1;
     *&v6->mReverseOrder = 0x101000100000000;
     v6->mContentFormatId = -1;
@@ -64,104 +64,104 @@
   return v6;
 }
 
-- (void)setFont:(id)a3
+- (void)setFont:(id)font
 {
-  v6 = a3;
+  fontCopy = font;
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v5 = [WeakRetained fonts];
-  self->mFontIndex = [v5 addOrEquivalentObject:v6];
+  fonts = [WeakRetained fonts];
+  self->mFontIndex = [fonts addOrEquivalentObject:fontCopy];
 }
 
 - (id)defaultDateTimeContentFormat
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v3 = [WeakRetained contentFormats];
-  v4 = [v3 objectWithKey:14];
+  contentFormats = [WeakRetained contentFormats];
+  v4 = [contentFormats objectWithKey:14];
 
   return v4;
 }
 
-- (void)setContentFormat:(id)a3
+- (void)setContentFormat:(id)format
 {
-  v8 = a3;
-  v4 = [v8 formatId];
-  if (v4 == -1)
+  formatCopy = format;
+  formatId = [formatCopy formatId];
+  if (formatId == -1)
   {
     WeakRetained = objc_loadWeakRetained(&self->mResources);
-    v6 = [WeakRetained contentFormats];
+    contentFormats = [WeakRetained contentFormats];
 
-    v7 = [v6 objectAtIndex:{objc_msgSend(v6, "addOrEquivalentObject:", v8)}];
+    v7 = [contentFormats objectAtIndex:{objc_msgSend(contentFormats, "addOrEquivalentObject:", formatCopy)}];
     self->mContentFormatId = [v7 formatId];
   }
 
   else
   {
-    self->mContentFormatId = v4;
+    self->mContentFormatId = formatId;
   }
 }
 
-- (void)setTitle:(id)a3
+- (void)setTitle:(id)title
 {
-  v5 = a3;
+  titleCopy = title;
   mTitle = self->mTitle;
   p_mTitle = &self->mTitle;
-  if (mTitle != v5)
+  if (mTitle != titleCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mTitle, a3);
-    v5 = v8;
+    v8 = titleCopy;
+    objc_storeStrong(p_mTitle, title);
+    titleCopy = v8;
   }
 }
 
-- (void)setMinorGridLinesGraphicProperties:(id)a3
+- (void)setMinorGridLinesGraphicProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   mMinorGridLinesGraphicProperties = self->mMinorGridLinesGraphicProperties;
   p_mMinorGridLinesGraphicProperties = &self->mMinorGridLinesGraphicProperties;
-  if (mMinorGridLinesGraphicProperties != v5)
+  if (mMinorGridLinesGraphicProperties != propertiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mMinorGridLinesGraphicProperties, a3);
-    v5 = v8;
+    v8 = propertiesCopy;
+    objc_storeStrong(p_mMinorGridLinesGraphicProperties, properties);
+    propertiesCopy = v8;
   }
 }
 
-- (void)setMajorGridLinesGraphicProperties:(id)a3
+- (void)setMajorGridLinesGraphicProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   mMajorGridLinesGraphicProperties = self->mMajorGridLinesGraphicProperties;
   p_mMajorGridLinesGraphicProperties = &self->mMajorGridLinesGraphicProperties;
-  if (mMajorGridLinesGraphicProperties != v5)
+  if (mMajorGridLinesGraphicProperties != propertiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mMajorGridLinesGraphicProperties, a3);
-    v5 = v8;
+    v8 = propertiesCopy;
+    objc_storeStrong(p_mMajorGridLinesGraphicProperties, properties);
+    propertiesCopy = v8;
   }
 }
 
-- (void)setAxisGraphicProperties:(id)a3
+- (void)setAxisGraphicProperties:(id)properties
 {
-  v5 = a3;
+  propertiesCopy = properties;
   mAxisGraphicProperties = self->mAxisGraphicProperties;
   p_mAxisGraphicProperties = &self->mAxisGraphicProperties;
-  if (mAxisGraphicProperties != v5)
+  if (mAxisGraphicProperties != propertiesCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mAxisGraphicProperties, a3);
-    v5 = v8;
+    v8 = propertiesCopy;
+    objc_storeStrong(p_mAxisGraphicProperties, properties);
+    propertiesCopy = v8;
   }
 }
 
-- (void)setLabelEffects:(id)a3
+- (void)setLabelEffects:(id)effects
 {
-  v5 = a3;
+  effectsCopy = effects;
   mLabelEffects = self->mLabelEffects;
   p_mLabelEffects = &self->mLabelEffects;
-  if (mLabelEffects != v5)
+  if (mLabelEffects != effectsCopy)
   {
-    v8 = v5;
-    objc_storeStrong(p_mLabelEffects, a3);
-    v5 = v8;
+    v8 = effectsCopy;
+    objc_storeStrong(p_mLabelEffects, effects);
+    effectsCopy = v8;
   }
 }
 
@@ -177,8 +177,8 @@
 - (id)tickLabelColor
 {
   WeakRetained = objc_loadWeakRetained(&self->mResources);
-  v4 = [WeakRetained colors];
-  v5 = [v4 objectAtIndex:self->mTickLabelColorIndex];
+  colors = [WeakRetained colors];
+  v5 = [colors objectAtIndex:self->mTickLabelColorIndex];
 
   return v5;
 }

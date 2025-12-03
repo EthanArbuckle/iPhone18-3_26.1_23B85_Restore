@@ -3,17 +3,17 @@
 + (id)allowedCategoryIndexes;
 + (id)categories;
 + (id)categoriesByType;
-+ (id)categoryForType:(int64_t)a3;
-+ (id)displayName:(int64_t)a3;
-+ (id)emojiCategoryStringForCategoryType:(int64_t)a3;
++ (id)categoryForType:(int64_t)type;
++ (id)displayName:(int64_t)name;
++ (id)emojiCategoryStringForCategoryType:(int64_t)type;
 + (id)enabledCategoryIndexes;
-+ (id)fallbackDisplayName:(int64_t)a3;
-+ (id)localizedStringForKey:(id)a3;
-+ (id)professionSkinToneEmojiBaseKey:(id)a3;
++ (id)fallbackDisplayName:(int64_t)name;
++ (id)localizedStringForKey:(id)key;
++ (id)professionSkinToneEmojiBaseKey:(id)key;
 + (id)sharedManager;
-+ (int64_t)categoryTypeForCategoryIndex:(unint64_t)a3;
-+ (int64_t)emojiCategoryTypeForCategoryString:(id)a3;
-+ (unint64_t)categoryIndexForCategoryType:(int64_t)a3;
++ (int64_t)categoryTypeForCategoryIndex:(unint64_t)index;
++ (int64_t)emojiCategoryTypeForCategoryString:(id)string;
++ (unint64_t)categoryIndexForCategoryType:(int64_t)type;
 - (NSString)name;
 - (void)dealloc;
 - (void)localeDidChange;
@@ -28,7 +28,7 @@
   block[1] = 3221225472;
   block[2] = __40__UIKeyboardEmojiCategory_sharedManager__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_MergedGlobals_1187 != -1)
   {
     dispatch_once(&_MergedGlobals_1187, block);
@@ -58,30 +58,30 @@ void __40__UIKeyboardEmojiCategory_sharedManager__block_invoke(uint64_t a1)
 - (void)localeDidChange
 {
   v2 = +[UIKeyboardEmojiCategory sharedManager];
-  v3 = [v2 localizedNames];
-  [v3 removeAllObjects];
+  localizedNames = [v2 localizedNames];
+  [localizedNames removeAllObjects];
 
   v5 = +[UIKeyboardEmojiCategory sharedManager];
-  v4 = [v5 shortLocalizedNames];
-  [v4 removeAllObjects];
+  shortLocalizedNames = [v5 shortLocalizedNames];
+  [shortLocalizedNames removeAllObjects];
 }
 
 + (id)enabledCategoryIndexes
 {
   v3 = +[UIKeyboardEmojiPreferences sharedInstance];
-  v4 = [v3 shouldShowRecents];
+  shouldShowRecents = [v3 shouldShowRecents];
 
-  if (v4)
+  if (shouldShowRecents)
   {
-    v5 = [a1 allowedCategoryIndexes];
+    allowedCategoryIndexes = [self allowedCategoryIndexes];
   }
 
   else
   {
-    v5 = &unk_1EFE2CBB0;
+    allowedCategoryIndexes = &unk_1EFE2CBB0;
   }
 
-  return v5;
+  return allowedCategoryIndexes;
 }
 
 + (id)allowedCategoryIndexes
@@ -97,28 +97,28 @@ void __40__UIKeyboardEmojiCategory_sharedManager__block_invoke(uint64_t a1)
   }
 }
 
-+ (int64_t)categoryTypeForCategoryIndex:(unint64_t)a3
++ (int64_t)categoryTypeForCategoryIndex:(unint64_t)index
 {
-  v5 = [a1 enabledCategoryIndexes];
-  v6 = [v5 count];
+  enabledCategoryIndexes = [self enabledCategoryIndexes];
+  v6 = [enabledCategoryIndexes count];
 
-  if (v6 <= a3)
+  if (v6 <= index)
   {
     return 7;
   }
 
-  v7 = [a1 enabledCategoryIndexes];
-  v8 = [v7 objectAtIndex:a3];
-  v9 = [v8 integerValue];
+  enabledCategoryIndexes2 = [self enabledCategoryIndexes];
+  v8 = [enabledCategoryIndexes2 objectAtIndex:index];
+  integerValue = [v8 integerValue];
 
-  return v9;
+  return integerValue;
 }
 
-+ (unint64_t)categoryIndexForCategoryType:(int64_t)a3
++ (unint64_t)categoryIndexForCategoryType:(int64_t)type
 {
-  v4 = [a1 enabledCategoryIndexes];
-  v5 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v6 = [v4 indexOfObject:v5];
+  enabledCategoryIndexes = [self enabledCategoryIndexes];
+  v5 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v6 = [enabledCategoryIndexes indexOfObject:v5];
 
   if (v6 == 0x7FFFFFFFFFFFFFFFLL)
   {
@@ -136,7 +136,7 @@ void __40__UIKeyboardEmojiCategory_sharedManager__block_invoke(uint64_t a1)
   v2 = categories_categories;
   if (!categories_categories)
   {
-    v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(a1, "numberOfCategories")}];
+    v3 = [MEMORY[0x1E695DF70] arrayWithCapacity:{objc_msgSend(self, "numberOfCategories")}];
     v4 = categories_categories;
     categories_categories = v3;
 
@@ -167,8 +167,8 @@ void __40__UIKeyboardEmojiCategory_sharedManager__block_invoke(uint64_t a1)
     v18 = 0u;
     v15 = 0u;
     v16 = 0u;
-    v6 = [a1 allowedCategoryIndexes];
-    v7 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+    allowedCategoryIndexes = [self allowedCategoryIndexes];
+    v7 = [allowedCategoryIndexes countByEnumeratingWithState:&v15 objects:v19 count:16];
     if (v7)
     {
       v8 = v7;
@@ -180,7 +180,7 @@ void __40__UIKeyboardEmojiCategory_sharedManager__block_invoke(uint64_t a1)
         {
           if (*v16 != v9)
           {
-            objc_enumerationMutation(v6);
+            objc_enumerationMutation(allowedCategoryIndexes);
           }
 
           v11 = *(*(&v15 + 1) + 8 * v10);
@@ -192,7 +192,7 @@ void __40__UIKeyboardEmojiCategory_sharedManager__block_invoke(uint64_t a1)
         }
 
         while (v8 != v10);
-        v8 = [v6 countByEnumeratingWithState:&v15 objects:v19 count:16];
+        v8 = [allowedCategoryIndexes countByEnumeratingWithState:&v15 objects:v19 count:16];
       }
 
       while (v8);
@@ -214,61 +214,61 @@ void __40__UIKeyboardEmojiCategory_sharedManager__block_invoke(uint64_t a1)
   [v2 removeAllObjects];
 }
 
-+ (id)professionSkinToneEmojiBaseKey:(id)a3
++ (id)professionSkinToneEmojiBaseKey:(id)key
 {
-  v3 = a3;
-  if ([v3 _containsSubstring:@"🏻"])
+  keyCopy = key;
+  if ([keyCopy _containsSubstring:@"🏻"])
   {
-    v4 = [v3 length];
+    v4 = [keyCopy length];
     v5 = @"🏻";
 LABEL_11:
-    v6 = [v3 stringByReplacingOccurrencesOfString:v5 withString:&stru_1EFB14550 options:2 range:{0, v4}];
+    v6 = [keyCopy stringByReplacingOccurrencesOfString:v5 withString:&stru_1EFB14550 options:2 range:{0, v4}];
     goto LABEL_12;
   }
 
-  if ([v3 _containsSubstring:@"🏼"])
+  if ([keyCopy _containsSubstring:@"🏼"])
   {
-    v4 = [v3 length];
+    v4 = [keyCopy length];
     v5 = @"🏼";
     goto LABEL_11;
   }
 
-  if ([v3 _containsSubstring:@"🏽"])
+  if ([keyCopy _containsSubstring:@"🏽"])
   {
-    v4 = [v3 length];
+    v4 = [keyCopy length];
     v5 = @"🏽";
     goto LABEL_11;
   }
 
-  if ([v3 _containsSubstring:@"🏾"])
+  if ([keyCopy _containsSubstring:@"🏾"])
   {
-    v4 = [v3 length];
+    v4 = [keyCopy length];
     v5 = @"🏾";
     goto LABEL_11;
   }
 
-  if ([v3 _containsSubstring:@"🏿"])
+  if ([keyCopy _containsSubstring:@"🏿"])
   {
-    v4 = [v3 length];
+    v4 = [keyCopy length];
     v5 = @"🏿";
     goto LABEL_11;
   }
 
-  v6 = v3;
+  v6 = keyCopy;
 LABEL_12:
   v7 = v6;
 
   return v7;
 }
 
-+ (id)emojiCategoryStringForCategoryType:(int64_t)a3
++ (id)emojiCategoryStringForCategoryType:(int64_t)type
 {
   v3 = 0;
-  if (a3 > 6)
+  if (type > 6)
   {
-    if (a3 <= 10)
+    if (type <= 10)
     {
-      switch(a3)
+      switch(type)
       {
         case 7:
           v3 = getEMFEmojiCategoryFlags();
@@ -284,7 +284,7 @@ LABEL_12:
       goto LABEL_32;
     }
 
-    switch(a3)
+    switch(type)
     {
       case 11:
         v3 = getEMFEmojiCategorySymbols();
@@ -303,9 +303,9 @@ LABEL_12:
     goto LABEL_32;
   }
 
-  if (a3 > 2)
+  if (type > 2)
   {
-    switch(a3)
+    switch(type)
     {
       case 3:
         v3 = getEMFEmojiCategoryFoodAndDrink();
@@ -319,14 +319,14 @@ LABEL_12:
     }
   }
 
-  else if (a3)
+  else if (type)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v3 = getEMFEmojiCategoryPeople();
     }
 
-    else if (a3 == 2)
+    else if (type == 2)
     {
       v3 = getEMFEmojiCategoryNature();
     }
@@ -350,9 +350,9 @@ LABEL_12:
     _Block_object_dispose(&v10, 8);
     if (!v5)
     {
-      v8 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v9 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSString *getEMFEmojiCategoryRecents(void)"];
-      [v8 handleFailureInFunction:v9 file:@"UIKeyboardEmojiCategory.m" lineNumber:33 description:{@"%s", dlerror()}];
+      [currentHandler handleFailureInFunction:v9 file:@"UIKeyboardEmojiCategory.m" lineNumber:33 description:{@"%s", dlerror()}];
 
       __break(1u);
       return result;
@@ -366,11 +366,11 @@ LABEL_32:
   return v3;
 }
 
-+ (int64_t)emojiCategoryTypeForCategoryString:(id)a3
++ (int64_t)emojiCategoryTypeForCategoryString:(id)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = getEMFEmojiCategoryPrepopulated();
-  v5 = [v3 isEqualToString:v4];
+  v5 = [stringCopy isEqualToString:v4];
 
   if (v5)
   {
@@ -380,7 +380,7 @@ LABEL_32:
   else
   {
     v7 = getEMFEmojiCategoryPeople();
-    v8 = [v3 isEqualToString:v7];
+    v8 = [stringCopy isEqualToString:v7];
 
     if (v8)
     {
@@ -390,7 +390,7 @@ LABEL_32:
     else
     {
       v9 = getEMFEmojiCategoryNature();
-      v10 = [v3 isEqualToString:v9];
+      v10 = [stringCopy isEqualToString:v9];
 
       if (v10)
       {
@@ -400,7 +400,7 @@ LABEL_32:
       else
       {
         v11 = getEMFEmojiCategoryFoodAndDrink();
-        v12 = [v3 isEqualToString:v11];
+        v12 = [stringCopy isEqualToString:v11];
 
         if (v12)
         {
@@ -410,7 +410,7 @@ LABEL_32:
         else
         {
           v13 = getEMFEmojiCategoryActivity();
-          v14 = [v3 isEqualToString:v13];
+          v14 = [stringCopy isEqualToString:v13];
 
           if (v14)
           {
@@ -420,7 +420,7 @@ LABEL_32:
           else
           {
             v15 = getEMFEmojiCategoryTravelAndPlaces();
-            v16 = [v3 isEqualToString:v15];
+            v16 = [stringCopy isEqualToString:v15];
 
             if (v16)
             {
@@ -430,7 +430,7 @@ LABEL_32:
             else
             {
               v17 = getEMFEmojiCategoryObjects();
-              v18 = [v3 isEqualToString:v17];
+              v18 = [stringCopy isEqualToString:v17];
 
               if (v18)
               {
@@ -440,7 +440,7 @@ LABEL_32:
               else
               {
                 v19 = getEMFEmojiCategorySymbols();
-                v20 = [v3 isEqualToString:v19];
+                v20 = [stringCopy isEqualToString:v19];
 
                 if (v20)
                 {
@@ -450,19 +450,19 @@ LABEL_32:
                 else
                 {
                   v21 = getEMFEmojiCategoryFlags();
-                  v22 = [v3 isEqualToString:v21];
+                  v22 = [stringCopy isEqualToString:v21];
 
                   if (v22)
                   {
                     v6 = 7;
                   }
 
-                  else if ([v3 isEqualToString:@"UIKeyboardEmojiCategoryMemoji"])
+                  else if ([stringCopy isEqualToString:@"UIKeyboardEmojiCategoryMemoji"])
                   {
                     v6 = 13;
                   }
 
-                  else if ([v3 isEqualToString:@"UIKeyboardEmojiCategoryStickers"])
+                  else if ([stringCopy isEqualToString:@"UIKeyboardEmojiCategoryStickers"])
                   {
                     v6 = 14;
                   }
@@ -483,18 +483,18 @@ LABEL_32:
   return v6;
 }
 
-+ (id)categoryForType:(int64_t)a3
++ (id)categoryForType:(int64_t)type
 {
   v28 = *MEMORY[0x1E69E9840];
-  v5 = [a1 emojiCategoryStringForCategoryType:?];
-  v6 = [a1 categoriesByType];
-  v7 = [MEMORY[0x1E696AD98] numberWithInteger:a3];
-  v8 = [v6 objectForKey:v7];
+  v5 = [self emojiCategoryStringForCategoryType:?];
+  categoriesByType = [self categoriesByType];
+  v7 = [MEMORY[0x1E696AD98] numberWithInteger:type];
+  v8 = [categoriesByType objectForKey:v7];
 
-  v9 = [v8 emoji];
-  v10 = [v9 count];
+  emoji = [v8 emoji];
+  v10 = [emoji count];
 
-  if (!a3 || !v10)
+  if (!type || !v10)
   {
     v11 = [getEMFEmojiCategoryClass() _emojiSetForIdentifier:v5];
     v12 = v11;
@@ -553,15 +553,15 @@ LABEL_32:
 
   if (v2)
   {
-    v3 = +[UIKeyboardImpl activeInstance];
-    v4 = +[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", [v3 semanticContentAttribute]) == UIUserInterfaceLayoutDirectionRightToLeft;
+    _deviceLanguage = +[UIKeyboardImpl activeInstance];
+    v4 = +[UIView userInterfaceLayoutDirectionForSemanticContentAttribute:](UIView, "userInterfaceLayoutDirectionForSemanticContentAttribute:", [_deviceLanguage semanticContentAttribute]) == UIUserInterfaceLayoutDirectionRightToLeft;
   }
 
   else
   {
     v5 = MEMORY[0x1E695DF58];
-    v3 = [MEMORY[0x1E695DF58] _deviceLanguage];
-    v4 = [v5 characterDirectionForLanguage:v3] == 2;
+    _deviceLanguage = [MEMORY[0x1E695DF58] _deviceLanguage];
+    v4 = [v5 characterDirectionForLanguage:_deviceLanguage] == 2;
   }
 
   v6 = v4;
@@ -578,71 +578,71 @@ LABEL_32:
   [(UIKeyboardEmojiCategory *)&v3 dealloc];
 }
 
-+ (id)localizedStringForKey:(id)a3
++ (id)localizedStringForKey:(id)key
 {
-  v3 = a3;
+  keyCopy = key;
   v4 = TIBundleForInputMode();
-  v5 = [v4 localizedStringForKey:v3 value:0 table:0];
+  v5 = [v4 localizedStringForKey:keyCopy value:0 table:0];
 
   return v5;
 }
 
 - (NSString)name
 {
-  v2 = [(UIKeyboardEmojiCategory *)self categoryType];
-  if (v2 > 0xE)
+  categoryType = [(UIKeyboardEmojiCategory *)self categoryType];
+  if (categoryType > 0xE)
   {
     return 0;
   }
 
   else
   {
-    return &off_1E7115CB0[v2]->isa;
+    return &off_1E7115CB0[categoryType]->isa;
   }
 }
 
-+ (id)displayName:(int64_t)a3
++ (id)displayName:(int64_t)name
 {
-  v3 = [a1 emojiCategoryStringForCategoryType:a3];
+  v3 = [self emojiCategoryStringForCategoryType:name];
   v4 = +[UIKeyboardEmojiCategory sharedManager];
-  v5 = [v4 localizedNames];
-  v6 = [v5 objectForKey:v3];
+  localizedNames = [v4 localizedNames];
+  v6 = [localizedNames objectForKey:v3];
 
   if (!v6)
   {
     v7 = [getEMFEmojiCategoryClass() categoryWithIdentifier:v3];
     v8 = +[UIKeyboardEmojiCategory sharedManager];
-    v9 = [v8 localizedNames];
-    v10 = [v7 localizedName];
-    [v9 setObject:v10 forKey:v3];
+    localizedNames2 = [v8 localizedNames];
+    localizedName = [v7 localizedName];
+    [localizedNames2 setObject:localizedName forKey:v3];
   }
 
   v11 = +[UIKeyboardEmojiCategory sharedManager];
-  v12 = [v11 localizedNames];
-  v13 = [v12 objectForKey:v3];
+  localizedNames3 = [v11 localizedNames];
+  v13 = [localizedNames3 objectForKey:v3];
 
   return v13;
 }
 
-+ (id)fallbackDisplayName:(int64_t)a3
++ (id)fallbackDisplayName:(int64_t)name
 {
-  v3 = [a1 emojiCategoryStringForCategoryType:a3];
+  v3 = [self emojiCategoryStringForCategoryType:name];
   v4 = +[UIKeyboardEmojiCategory sharedManager];
-  v5 = [v4 shortLocalizedNames];
-  v6 = [v5 objectForKey:v3];
+  shortLocalizedNames = [v4 shortLocalizedNames];
+  v6 = [shortLocalizedNames objectForKey:v3];
 
   if (!v6)
   {
     v7 = [getEMFEmojiCategoryClass() categoryWithIdentifier:v3];
     v8 = +[UIKeyboardEmojiCategory sharedManager];
-    v9 = [v8 shortLocalizedNames];
-    v10 = [v7 shortLocalizedName];
-    [v9 setObject:v10 forKey:v3];
+    shortLocalizedNames2 = [v8 shortLocalizedNames];
+    shortLocalizedName = [v7 shortLocalizedName];
+    [shortLocalizedNames2 setObject:shortLocalizedName forKey:v3];
   }
 
   v11 = +[UIKeyboardEmojiCategory sharedManager];
-  v12 = [v11 shortLocalizedNames];
-  v13 = [v12 objectForKey:v3];
+  shortLocalizedNames3 = [v11 shortLocalizedNames];
+  v13 = [shortLocalizedNames3 objectForKey:v3];
 
   return v13;
 }

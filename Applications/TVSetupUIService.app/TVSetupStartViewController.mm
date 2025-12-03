@@ -1,24 +1,24 @@
 @interface TVSetupStartViewController
-- (_TtC16TVSetupUIService26TVSetupStartViewController)initWithContentView:(id)a3;
+- (_TtC16TVSetupUIService26TVSetupStartViewController)initWithContentView:(id)view;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation TVSetupStartViewController
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_100002504();
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v4 = self;
-  sub_100002FA8(a3);
+  selfCopy = self;
+  sub_100002FA8(appear);
 }
 
-- (_TtC16TVSetupUIService26TVSetupStartViewController)initWithContentView:(id)a3
+- (_TtC16TVSetupUIService26TVSetupStartViewController)initWithContentView:(id)view
 {
   *&self->delegate[OBJC_IVAR____TtC16TVSetupUIService26TVSetupStartViewController_delegate] = 0;
   swift_unknownObjectWeakInit();
@@ -29,7 +29,7 @@
   self->PRXCardContentViewController_opaque[OBJC_IVAR____TtC16TVSetupUIService26TVSetupStartViewController_isStarted] = 0;
   v7.receiver = self;
   v7.super_class = type metadata accessor for TVSetupStartViewController();
-  return [(TVSetupStartViewController *)&v7 initWithContentView:a3];
+  return [(TVSetupStartViewController *)&v7 initWithContentView:view];
 }
 
 @end

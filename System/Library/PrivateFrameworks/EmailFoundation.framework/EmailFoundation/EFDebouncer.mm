@@ -1,9 +1,9 @@
 @interface EFDebouncer
 + (id)log;
-- (EFDebouncer)initWithTimeInterval:(double)a3 scheduler:(id)a4 startAfter:(unint64_t)a5 block:(id)a6;
+- (EFDebouncer)initWithTimeInterval:(double)interval scheduler:(id)scheduler startAfter:(unint64_t)after block:(id)block;
 - (void)cancel;
 - (void)dealloc;
-- (void)debounceResult:(id)a3;
+- (void)debounceResult:(id)result;
 @end
 
 @implementation EFDebouncer
@@ -14,7 +14,7 @@
   block[1] = 3221225472;
   block[2] = __18__EFDebouncer_log__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (log_onceToken_0 != -1)
   {
     dispatch_once(&log_onceToken_0, block);
@@ -35,8 +35,8 @@ void __18__EFDebouncer_log__block_invoke(uint64_t a1)
 
 - (void)cancel
 {
-  v2 = [(EFDebouncer *)self cancelable];
-  [v2 cancel];
+  cancelable = [(EFDebouncer *)self cancelable];
+  [cancelable cancel];
 }
 
 - (void)dealloc
@@ -47,11 +47,11 @@ void __18__EFDebouncer_log__block_invoke(uint64_t a1)
   [(EFDebouncer *)&v3 dealloc];
 }
 
-- (EFDebouncer)initWithTimeInterval:(double)a3 scheduler:(id)a4 startAfter:(unint64_t)a5 block:(id)a6
+- (EFDebouncer)initWithTimeInterval:(double)interval scheduler:(id)scheduler startAfter:(unint64_t)after block:(id)block
 {
   v40[2] = *MEMORY[0x1E69E9840];
-  v10 = a4;
-  v11 = a6;
+  schedulerCopy = scheduler;
+  blockCopy = block;
   v33.receiver = self;
   v33.super_class = EFDebouncer;
   v12 = [(EFDebouncer *)&v33 init];
@@ -62,27 +62,27 @@ void __18__EFDebouncer_log__block_invoke(uint64_t a1)
     v12->_observable = v13;
 
     v15 = v12->_observable;
-    if (a5)
+    if (after)
     {
-      v16 = [(EFObserver *)v15 take:a5];
+      v16 = [(EFObserver *)v15 take:after];
       v17 = v16;
-      if (v10)
+      if (schedulerCopy)
       {
-        v18 = [v16 observeOn:v10];
+        v18 = [v16 observeOn:schedulerCopy];
 
         v17 = v18;
       }
 
-      v19 = [(EFObserver *)v12->_observable skip:a5];
-      v20 = v10;
-      if (v10)
+      v19 = [(EFObserver *)v12->_observable skip:after];
+      v20 = schedulerCopy;
+      if (schedulerCopy)
       {
-        [v19 debounceWithTimeInterval:v20 scheduler:a3];
+        [v19 debounceWithTimeInterval:v20 scheduler:interval];
       }
 
       else
       {
-        [v19 debounceWithTimeInterval:a3];
+        [v19 debounceWithTimeInterval:interval];
       }
       v23 = ;
 
@@ -107,15 +107,15 @@ void __18__EFDebouncer_log__block_invoke(uint64_t a1)
     else
     {
       v21 = v15;
-      v22 = v10;
+      v22 = schedulerCopy;
       if (v22)
       {
-        [(EFObserver *)v21 debounceWithTimeInterval:v22 scheduler:a3];
+        [(EFObserver *)v21 debounceWithTimeInterval:v22 scheduler:interval];
       }
 
       else
       {
-        [(EFObserver *)v21 debounceWithTimeInterval:a3];
+        [(EFObserver *)v21 debounceWithTimeInterval:interval];
       }
       v25 = ;
 
@@ -130,7 +130,7 @@ void __18__EFDebouncer_log__block_invoke(uint64_t a1)
     v31[1] = 3221225472;
     v31[2] = __63__EFDebouncer_initWithTimeInterval_scheduler_startAfter_block___block_invoke;
     v31[3] = &unk_1E8248620;
-    v32 = v11;
+    v32 = blockCopy;
     v27 = [v25 subscribeWithResultBlock:v31];
     cancelable = v12->_cancelable;
     v12->_cancelable = v27;
@@ -158,30 +158,30 @@ void __63__EFDebouncer_initWithTimeInterval_scheduler_startAfter_block___block_i
   (*(v3 + 16))(v3, v5);
 }
 
-- (void)debounceResult:(id)a3
+- (void)debounceResult:(id)result
 {
   v14 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  resultCopy = result;
   v5 = +[EFDebouncer log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(EFDebouncer *)self observable];
+    observable = [(EFDebouncer *)self observable];
     v10 = 138412546;
-    v11 = v6;
+    v11 = observable;
     v12 = 2112;
-    v13 = v4;
+    v13 = resultCopy;
     _os_log_impl(&dword_1C6152000, v5, OS_LOG_TYPE_DEFAULT, "Observer: %@ received result: %@", &v10, 0x16u);
   }
 
-  v7 = [(EFDebouncer *)self observable];
-  v8 = v4;
-  if (!v4)
+  observable2 = [(EFDebouncer *)self observable];
+  null = resultCopy;
+  if (!resultCopy)
   {
-    v8 = [MEMORY[0x1E695DFB0] null];
+    null = [MEMORY[0x1E695DFB0] null];
   }
 
-  [v7 observerDidReceiveResult:v8];
-  if (!v4)
+  [observable2 observerDidReceiveResult:null];
+  if (!resultCopy)
   {
   }
 

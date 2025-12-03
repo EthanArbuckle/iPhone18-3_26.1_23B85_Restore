@@ -1,15 +1,15 @@
 @interface GuidanceManeuverViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (id)accessibilityLabel;
 @end
 
 @implementation GuidanceManeuverViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"GuidanceManeuverView" hasInstanceMethod:@"maneuverArtwork" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"GuidanceManeuverArtwork" hasInstanceMethod:@"maneuver" withFullSignature:{"i", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"GuidanceManeuverView" hasInstanceMethod:@"maneuverArtwork" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"GuidanceManeuverArtwork" hasInstanceMethod:@"maneuver" withFullSignature:{"i", 0}];
 }
 
 - (id)accessibilityLabel

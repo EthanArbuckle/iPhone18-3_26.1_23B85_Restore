@@ -1,14 +1,14 @@
 @interface GQUQuicklookOutputBundle
-- (BOOL)setData:(__CFData *)a3 mimeType:(__CFString *)a4 forNamedResource:(__CFString *)a5;
-- (BOOL)setDataForMainHtmlResource:(__CFData *)a3;
-- (GQUQuicklookOutputBundle)initWithUriScheme:(__CFString *)a3;
+- (BOOL)setData:(__CFData *)data mimeType:(__CFString *)type forNamedResource:(__CFString *)resource;
+- (BOOL)setDataForMainHtmlResource:(__CFData *)resource;
+- (GQUQuicklookOutputBundle)initWithUriScheme:(__CFString *)scheme;
 - (void)dealloc;
-- (void)setDocumentSize:(CGSize)a3;
+- (void)setDocumentSize:(CGSize)size;
 @end
 
 @implementation GQUQuicklookOutputBundle
 
-- (GQUQuicklookOutputBundle)initWithUriScheme:(__CFString *)a3
+- (GQUQuicklookOutputBundle)initWithUriScheme:(__CFString *)scheme
 {
   v8.receiver = self;
   v8.super_class = GQUQuicklookOutputBundle;
@@ -21,8 +21,8 @@
     CFDictionarySetValue(Mutable, kQLPreviewPropertyAttachmentsKey, v4->mAttachments);
     CFDictionarySetValue(v4->mQuicklookProperties, kQLPreviewPropertyTextEncodingNameKey, @"UTF-8");
     CFDictionarySetValue(v4->mQuicklookProperties, kQLPreviewPropertyAllowJavascriptKey, kCFBooleanTrue);
-    v4->mUriScheme = a3;
-    CFRetain(a3);
+    v4->mUriScheme = scheme;
+    CFRetain(scheme);
     v6 = CFUUIDCreate(0);
     v4->mUuidStr = CFUUIDCreateString(0, v6);
     CFRelease(v6);
@@ -68,35 +68,35 @@
   [(GQUQuicklookOutputBundle *)&v8 dealloc];
 }
 
-- (BOOL)setDataForMainHtmlResource:(__CFData *)a3
+- (BOOL)setDataForMainHtmlResource:(__CFData *)resource
 {
-  self->mMainHtmlData = a3;
-  CFRetain(a3);
+  self->mMainHtmlData = resource;
+  CFRetain(resource);
   return 1;
 }
 
-- (BOOL)setData:(__CFData *)a3 mimeType:(__CFString *)a4 forNamedResource:(__CFString *)a5
+- (BOOL)setData:(__CFData *)data mimeType:(__CFString *)type forNamedResource:(__CFString *)resource
 {
   Mutable = CFDictionaryCreateMutable(0, 0, &kCFTypeDictionaryKeyCallBacks, &kCFTypeDictionaryValueCallBacks);
   v10 = Mutable;
-  if (a4)
+  if (type)
   {
-    CFDictionarySetValue(Mutable, kQLPreviewPropertyMIMETypeKey, a4);
+    CFDictionarySetValue(Mutable, kQLPreviewPropertyMIMETypeKey, type);
   }
 
   CFDictionarySetValue(v10, kQLPreviewPropertyTextEncodingNameKey, @"UTF-8");
-  CFDictionarySetValue(v10, kQLPreviewPropertyAttachmentDataKey, a3);
-  v11 = CFStringCreateWithFormat(0, 0, @"%@-%@", self->mUuidStr, a5);
+  CFDictionarySetValue(v10, kQLPreviewPropertyAttachmentDataKey, data);
+  v11 = CFStringCreateWithFormat(0, 0, @"%@-%@", self->mUuidStr, resource);
   CFDictionarySetValue(self->mAttachments, v11, v10);
   CFRelease(v11);
   CFRelease(v10);
   return 1;
 }
 
-- (void)setDocumentSize:(CGSize)a3
+- (void)setDocumentSize:(CGSize)size
 {
-  height = a3.height;
-  valuePtr = a3.width;
+  height = size.height;
+  valuePtr = size.width;
   v5 = CFNumberCreate(0, kCFNumberCGFloatType, &valuePtr);
   CFDictionarySetValue(self->mQuicklookProperties, kQLPreviewPropertyWidthKey, v5);
   CFRelease(v5);

@@ -1,22 +1,22 @@
 @interface UIStatusBarAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)_shouldSeekHigherPriorityTouchTarget;
 - (BOOL)accessibilityPerformEscape;
 - (void)_adjustDoubleHeightTextVisibility;
-- (void)_finishedSettingStyleWithOldHeight:(double)a3 newHeight:(double)a4 animation:(int)a5;
-- (void)_setDoubleHeightStatusString:(id)a3;
+- (void)_finishedSettingStyleWithOldHeight:(double)height newHeight:(double)newHeight animation:(int)animation;
+- (void)_setDoubleHeightStatusString:(id)string;
 @end
 
 @implementation UIStatusBarAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v6 = location;
   v5 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v4 = @"UIStatusBar";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
   v3 = "v";
@@ -42,9 +42,9 @@
   if ([v12 canSendResponse])
   {
     v3 = v15[0];
-    v4 = [MEMORY[0x29EDBFBD0] response];
+    response = [MEMORY[0x29EDBFBD0] response];
     [v3 sendResponse:?];
-    MEMORY[0x29EDC9740](v4);
+    MEMORY[0x29EDC9740](response);
     v11 = accessibilityUIKitLocalizedString();
     notification = *MEMORY[0x29EDC7EA8];
     v6 = MEMORY[0x29EDBA0F8];
@@ -67,17 +67,17 @@
   return v16 & 1;
 }
 
-- (void)_setDoubleHeightStatusString:(id)a3
+- (void)_setDoubleHeightStatusString:(id)string
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = [(UIStatusBarAccessibility *)v7 safeValueForKey:?];
-  v4.receiver = v7;
+  objc_storeStrong(location, string);
+  v5 = [(UIStatusBarAccessibility *)selfCopy safeValueForKey:?];
+  v4.receiver = selfCopy;
   v4.super_class = UIStatusBarAccessibility;
   [(UIStatusBarAccessibility *)&v4 _setDoubleHeightStatusString:location[0]];
-  v3 = [(UIStatusBarAccessibility *)v7 safeValueForKey:@"_doubleHeightLabel"];
+  v3 = [(UIStatusBarAccessibility *)selfCopy safeValueForKey:@"_doubleHeightLabel"];
   if (v3)
   {
     [v3 accessibilitySetIdentification:@"doubleHeightLabel"];
@@ -96,11 +96,11 @@
 
 - (void)_adjustDoubleHeightTextVisibility
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   v15 = 0;
   objc_opt_class();
-  v6 = [(UIStatusBarAccessibility *)v18 safeValueForKey:@"_doubleHeightLabel"];
+  v6 = [(UIStatusBarAccessibility *)selfCopy safeValueForKey:@"_doubleHeightLabel"];
   v14 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v6);
   v13 = MEMORY[0x29EDC9748](v14);
@@ -109,12 +109,12 @@
   v4 = v2;
   MEMORY[0x29EDC9740](v13);
   v16 = v4;
-  v12.receiver = v18;
+  v12.receiver = selfCopy;
   v12.super_class = UIStatusBarAccessibility;
   [(UIStatusBarAccessibility *)&v12 _adjustDoubleHeightTextVisibility];
   v10 = 0;
   objc_opt_class();
-  v5 = [(UIStatusBarAccessibility *)v18 safeValueForKey:@"_doubleHeightLabel"];
+  v5 = [(UIStatusBarAccessibility *)selfCopy safeValueForKey:@"_doubleHeightLabel"];
   v9 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v5);
   v8 = MEMORY[0x29EDC9748](v9);
@@ -131,19 +131,19 @@
   objc_storeStrong(&v11, 0);
 }
 
-- (void)_finishedSettingStyleWithOldHeight:(double)a3 newHeight:(double)a4 animation:(int)a5
+- (void)_finishedSettingStyleWithOldHeight:(double)height newHeight:(double)newHeight animation:(int)animation
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
-  v11 = a3;
-  v10 = a4;
-  v9 = a5;
+  heightCopy = height;
+  newHeightCopy = newHeight;
+  animationCopy = animation;
   [(UIStatusBarAccessibility *)self safeCGFloatForKey:@"currentHeight"];
   v8 = v5;
-  v7 = v5 != v10;
-  v6.receiver = v13;
+  v7 = v5 != newHeightCopy;
+  v6.receiver = selfCopy;
   v6.super_class = UIStatusBarAccessibility;
-  [(UIStatusBarAccessibility *)&v6 _finishedSettingStyleWithOldHeight:v9 newHeight:v11 animation:v10];
+  [(UIStatusBarAccessibility *)&v6 _finishedSettingStyleWithOldHeight:animationCopy newHeight:heightCopy animation:newHeightCopy];
   if (v7)
   {
     UIAccessibilityPostNotification(*MEMORY[0x29EDC7ED8], 0);
@@ -152,14 +152,14 @@
 
 - (BOOL)_shouldSeekHigherPriorityTouchTarget
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   if (UIAccessibilityIsVoiceOverRunning())
   {
     return 0;
   }
 
-  v3.receiver = v5;
+  v3.receiver = selfCopy;
   v3.super_class = UIStatusBarAccessibility;
   return [(UIStatusBarAccessibility *)&v3 _shouldSeekHigherPriorityTouchTarget];
 }

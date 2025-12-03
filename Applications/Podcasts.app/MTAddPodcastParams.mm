@@ -1,6 +1,6 @@
 @interface MTAddPodcastParams
 - (MTAddPodcastParams)init;
-- (void)setUrl:(id)a3;
+- (void)setUrl:(id)url;
 @end
 
 @implementation MTAddPodcastParams
@@ -19,27 +19,27 @@
   return v3;
 }
 
-- (void)setUrl:(id)a3
+- (void)setUrl:(id)url
 {
-  v17 = [NSURL URLWithString:a3];
-  v4 = [v17 scheme];
-  v5 = [v4 lowercaseString];
-  if ([v5 isEqualToString:@"pcast"])
+  v17 = [NSURL URLWithString:url];
+  scheme = [v17 scheme];
+  lowercaseString = [scheme lowercaseString];
+  if ([lowercaseString isEqualToString:@"pcast"])
   {
     v6 = @"http:%@";
 LABEL_3:
 
 LABEL_6:
-    v9 = [v17 resourceSpecifier];
-    v10 = [NSString stringWithFormat:v6, v9];
+    resourceSpecifier = [v17 resourceSpecifier];
+    v10 = [NSString stringWithFormat:v6, resourceSpecifier];
     v11 = [NSURL URLWithString:v10];
 
     v12 = v11;
     goto LABEL_7;
   }
 
-  v7 = [v4 lowercaseString];
-  v8 = [v7 isEqualToString:@"feed"];
+  lowercaseString2 = [scheme lowercaseString];
+  v8 = [lowercaseString2 isEqualToString:@"feed"];
 
   if (v8)
   {
@@ -47,15 +47,15 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v5 = [v4 lowercaseString];
-  if ([v5 isEqualToString:@"pcasts"])
+  lowercaseString = [scheme lowercaseString];
+  if ([lowercaseString isEqualToString:@"pcasts"])
   {
     v6 = @"https:%@";
     goto LABEL_3;
   }
 
-  v15 = [v4 lowercaseString];
-  v16 = [v15 isEqualToString:@"feeds"];
+  lowercaseString3 = [scheme lowercaseString];
+  v16 = [lowercaseString3 isEqualToString:@"feeds"];
 
   if (v16)
   {
@@ -66,9 +66,9 @@ LABEL_6:
   v12 = v17;
 LABEL_7:
   v18 = v12;
-  v13 = [v12 absoluteString];
+  absoluteString = [v12 absoluteString];
   url = self->_url;
-  self->_url = v13;
+  self->_url = absoluteString;
 }
 
 @end

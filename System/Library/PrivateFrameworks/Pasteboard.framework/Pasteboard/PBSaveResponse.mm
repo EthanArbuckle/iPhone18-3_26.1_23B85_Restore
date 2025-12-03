@@ -1,46 +1,46 @@
 @interface PBSaveResponse
-- (PBSaveResponse)initWithCoder:(id)a3;
-- (PBSaveResponse)initWithNotificationState:(unint64_t)a3 changeCount:(int64_t)a4 sharingToken:(id)a5;
-- (void)encodeWithCoder:(id)a3;
+- (PBSaveResponse)initWithCoder:(id)coder;
+- (PBSaveResponse)initWithNotificationState:(unint64_t)state changeCount:(int64_t)count sharingToken:(id)token;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation PBSaveResponse
 
-- (PBSaveResponse)initWithNotificationState:(unint64_t)a3 changeCount:(int64_t)a4 sharingToken:(id)a5
+- (PBSaveResponse)initWithNotificationState:(unint64_t)state changeCount:(int64_t)count sharingToken:(id)token
 {
-  v9 = a5;
+  tokenCopy = token;
   v13.receiver = self;
   v13.super_class = PBSaveResponse;
   v10 = [(PBSaveResponse *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_notificationState = a3;
-    v10->_changeCount = a4;
-    objc_storeStrong(&v10->_sharingToken, a5);
+    v10->_notificationState = state;
+    v10->_changeCount = count;
+    objc_storeStrong(&v10->_sharingToken, token);
   }
 
   return v11;
 }
 
-- (PBSaveResponse)initWithCoder:(id)a3
+- (PBSaveResponse)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeInt64ForKey:@"notificationState"];
-  v6 = [v4 decodeIntegerForKey:@"changeCount"];
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"sharingToken"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeInt64ForKey:@"notificationState"];
+  v6 = [coderCopy decodeIntegerForKey:@"changeCount"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"sharingToken"];
 
   v8 = [(PBSaveResponse *)self initWithNotificationState:v5 changeCount:v6 sharingToken:v7];
   return v8;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   notificationState = self->_notificationState;
-  v5 = a3;
-  [v5 encodeInt64:notificationState forKey:@"notificationState"];
-  [v5 encodeInteger:self->_changeCount forKey:@"changeCount"];
-  [v5 encodeObject:self->_sharingToken forKey:@"sharingToken"];
+  coderCopy = coder;
+  [coderCopy encodeInt64:notificationState forKey:@"notificationState"];
+  [coderCopy encodeInteger:self->_changeCount forKey:@"changeCount"];
+  [coderCopy encodeObject:self->_sharingToken forKey:@"sharingToken"];
 }
 
 @end

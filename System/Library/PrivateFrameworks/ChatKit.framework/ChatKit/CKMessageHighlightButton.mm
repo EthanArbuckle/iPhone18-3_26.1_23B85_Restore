@@ -1,45 +1,45 @@
 @interface CKMessageHighlightButton
 - (CGRect)balloonViewFrame;
 - (CGRect)calculateFrameRelativeToBalloonViewFrame;
-- (CGRect)calculateFrameRelativeToBalloonViewFrame:(CGRect)a3 transcriptHighlightFrame:(CGRect)a4;
-- (CGRect)calculateTranscriptHighlightFrameRelativeToBalloonFrame:(CGRect)a3;
+- (CGRect)calculateFrameRelativeToBalloonViewFrame:(CGRect)frame transcriptHighlightFrame:(CGRect)highlightFrame;
+- (CGRect)calculateTranscriptHighlightFrameRelativeToBalloonFrame:(CGRect)frame;
 - (CGRect)replyButtonFrame;
 - (CGSize)buttonSize;
 - (CGSize)buttonSizeWithInsets;
 - (CGSize)transcriptHighlightSize;
-- (CKMessageHighlightButton)initWithInitialState:(BOOL)a3;
+- (CKMessageHighlightButton)initWithInitialState:(BOOL)state;
 - (CKMessageHighlightButtonDelegate)delegate;
 - (char)transcriptOrientation;
-- (void)buttonWasPressed:(id)a3;
+- (void)buttonWasPressed:(id)pressed;
 - (void)layoutSubviews;
-- (void)performFadeoutAnimationWithDuration:(double)a3 completion:(id)a4;
-- (void)performHideAnimationWithDuration:(double)a3 completion:(id)a4;
-- (void)performSelectedAnimation:(id)a3;
-- (void)performShowAnimation:(id)a3;
-- (void)performUnselectedDismissAnimationWithDuration:(double)a3 completion:(id)a4;
+- (void)performFadeoutAnimationWithDuration:(double)duration completion:(id)completion;
+- (void)performHideAnimationWithDuration:(double)duration completion:(id)completion;
+- (void)performSelectedAnimation:(id)animation;
+- (void)performShowAnimation:(id)animation;
+- (void)performUnselectedDismissAnimationWithDuration:(double)duration completion:(id)completion;
 @end
 
 @implementation CKMessageHighlightButton
 
-- (CKMessageHighlightButton)initWithInitialState:(BOOL)a3
+- (CKMessageHighlightButton)initWithInitialState:(BOOL)state
 {
-  v3 = a3;
+  stateCopy = state;
   v44.receiver = self;
   v44.super_class = CKMessageHighlightButton;
   v4 = [(CKMessageHighlightButton *)&v44 initWithFrame:0.0, 0.0, 0.0, 0.0];
   if (v4)
   {
     v5 = +[CKUIBehavior sharedBehaviors];
-    v6 = [v5 messageHighlightButtonUnselectedBackgroundColor];
+    messageHighlightButtonUnselectedBackgroundColor = [v5 messageHighlightButtonUnselectedBackgroundColor];
 
     v7 = +[CKUIBehavior sharedBehaviors];
-    v43 = [v7 messageHighlightButtonSelectedBackgroundColor];
+    messageHighlightButtonSelectedBackgroundColor = [v7 messageHighlightButtonSelectedBackgroundColor];
 
     v8 = +[CKUIBehavior sharedBehaviors];
-    v42 = [v8 messageHighlightButtonImageHighlightOn];
+    messageHighlightButtonImageHighlightOn = [v8 messageHighlightButtonImageHighlightOn];
 
     v9 = +[CKUIBehavior sharedBehaviors];
-    v10 = [v9 messageHighlightButtonImageHighlightOff];
+    messageHighlightButtonImageHighlightOff = [v9 messageHighlightButtonImageHighlightOff];
 
     v11 = objc_alloc(MEMORY[0x1E69DD250]);
     v12 = *MEMORY[0x1E695F058];
@@ -60,43 +60,43 @@
     blurEffectView = v4->_blurEffectView;
     v4->_blurEffectView = v21;
 
-    v23 = [MEMORY[0x1E69794A0] layer];
+    layer = [MEMORY[0x1E69794A0] layer];
     blurEffectMaskLayer = v4->_blurEffectMaskLayer;
-    v4->_blurEffectMaskLayer = v23;
+    v4->_blurEffectMaskLayer = layer;
 
-    [(UIVisualEffectView *)v4->_blurEffectView setBackgroundColor:v6];
+    [(UIVisualEffectView *)v4->_blurEffectView setBackgroundColor:messageHighlightButtonUnselectedBackgroundColor];
     [(UIView *)v4->_backgroundColorView addSubview:v4->_blurEffectView];
-    v25 = [(UIView *)v4->_backgroundColorView layer];
-    [v25 setMask:v4->_blurEffectMaskLayer];
+    layer2 = [(UIView *)v4->_backgroundColorView layer];
+    [layer2 setMask:v4->_blurEffectMaskLayer];
 
     v26 = [objc_alloc(MEMORY[0x1E69DD250]) initWithFrame:{v12, v13, v14, v15}];
     backgroundColorViewForCrossFade = v4->_backgroundColorViewForCrossFade;
     v4->_backgroundColorViewForCrossFade = v26;
 
-    v28 = [(UIView *)v4->_backgroundColorViewForCrossFade layer];
-    [v28 setOpacity:0.0];
+    layer3 = [(UIView *)v4->_backgroundColorViewForCrossFade layer];
+    [layer3 setOpacity:0.0];
 
-    if (v3)
+    if (stateCopy)
     {
-      v29 = v6;
+      v29 = messageHighlightButtonUnselectedBackgroundColor;
     }
 
     else
     {
-      v29 = v43;
+      v29 = messageHighlightButtonSelectedBackgroundColor;
     }
 
-    if (v3)
+    if (stateCopy)
     {
-      v30 = v42;
+      v30 = messageHighlightButtonImageHighlightOn;
     }
 
     else
     {
-      v30 = v10;
+      v30 = messageHighlightButtonImageHighlightOff;
     }
 
-    v31 = v10;
+    v31 = messageHighlightButtonImageHighlightOff;
     [(UIView *)v4->_backgroundColorViewForCrossFade setBackgroundColor:v29];
     [(CKMessageHighlightButton *)v4 addSubview:v4->_backgroundColorViewForCrossFade];
     v32 = [objc_alloc(MEMORY[0x1E69DCAE0]) initWithImage:v30];
@@ -109,8 +109,8 @@
     glyphViewForCrossFade = v4->_glyphViewForCrossFade;
     v4->_glyphViewForCrossFade = v34;
 
-    v36 = [(UIImageView *)v4->_glyphViewForCrossFade layer];
-    [v36 setOpacity:0.0];
+    layer4 = [(UIImageView *)v4->_glyphViewForCrossFade layer];
+    [layer4 setOpacity:0.0];
 
     [(CKMessageHighlightButton *)v4 addSubview:v4->_glyphViewForCrossFade];
     v37 = [MEMORY[0x1E69DC738] buttonWithType:0];
@@ -125,7 +125,7 @@
     [(UIButton *)v4->_button addTarget:v4 action:sel_buttonWasPressed_ forControlEvents:64];
     [(UIButton *)v4->_button setEnabled:1];
     [(CKMessageHighlightButton *)v4 addSubview:v4->_button];
-    v4->_isHighlighted = v3;
+    v4->_isHighlighted = stateCopy;
     [(CKMessageHighlightButton *)v4 setUserInteractionEnabled:1];
   }
 
@@ -158,12 +158,12 @@
 
   v16 = floor((v8 + (v12 - v4) * 0.5) * v15) / v15;
   v17 = floor((v10 + (v14 - v6) * 0.5) * v15) / v15;
-  v18 = [(UIView *)self->_backgroundColorView layer];
-  [v18 setCornerRadius:v6 * 0.5];
+  layer = [(UIView *)self->_backgroundColorView layer];
+  [layer setCornerRadius:v6 * 0.5];
 
   [(UIView *)self->_backgroundColorView setFrame:v16, v17, v4, v6];
-  v19 = [(UIView *)self->_backgroundColorViewForCrossFade layer];
-  [v19 setCornerRadius:v6 * 0.5];
+  layer2 = [(UIView *)self->_backgroundColorViewForCrossFade layer];
+  [layer2 setCornerRadius:v6 * 0.5];
 
   [(UIView *)self->_backgroundColorViewForCrossFade setFrame:v16, v17, v4, v6];
   v20 = +[CKUIBehavior sharedBehaviors];
@@ -190,13 +190,13 @@
   v35 = v34;
   v37 = v36;
   v39 = v38;
-  v40 = [(UIView *)self->_backgroundColorView layer];
-  [v40 cornerRadius];
+  layer3 = [(UIView *)self->_backgroundColorView layer];
+  [layer3 cornerRadius];
   v42 = [v31 bezierPathWithRoundedRect:v33 cornerRadius:{v35, v37, v39, v41}];
   -[CAShapeLayer setPath:](blurEffectMaskLayer, "setPath:", [v42 CGPath]);
 }
 
-- (void)buttonWasPressed:(id)a3
+- (void)buttonWasPressed:(id)pressed
 {
   self->_didUpdate = 1;
   self->_isHighlighted ^= 1u;
@@ -206,12 +206,12 @@
   v6[3] = &unk_1E72EBA18;
   v6[4] = self;
   [(CKMessageHighlightButton *)self performSelectedAnimation:v6];
-  v4 = [(CKMessageHighlightButton *)self delegate];
+  delegate = [(CKMessageHighlightButton *)self delegate];
 
-  if (v4)
+  if (delegate)
   {
-    v5 = [(CKMessageHighlightButton *)self delegate];
-    [v5 messageHightlightButtonWasClicked:self];
+    delegate2 = [(CKMessageHighlightButton *)self delegate];
+    [delegate2 messageHightlightButtonWasClicked:self];
   }
 }
 
@@ -256,8 +256,8 @@ void __45__CKMessageHighlightButton_buttonWasPressed___block_invoke(uint64_t a1)
   [(CKMessageHighlightButton *)self buttonSize];
   v4 = v3;
   v6 = v5;
-  v7 = [(CKMessageHighlightButton *)self button];
-  [v7 contentEdgeInsets];
+  button = [(CKMessageHighlightButton *)self button];
+  [button contentEdgeInsets];
   v9 = v8;
   v11 = v10;
   v13 = v12;
@@ -272,17 +272,17 @@ void __45__CKMessageHighlightButton_buttonWasPressed___block_invoke(uint64_t a1)
 
 - (char)transcriptOrientation
 {
-  v2 = self;
-  v3 = [(CKMessageHighlightButton *)self delegate];
-  LOBYTE(v2) = [v3 messageHightlightButtonTranscriptOrientation:v2];
+  selfCopy = self;
+  delegate = [(CKMessageHighlightButton *)self delegate];
+  LOBYTE(selfCopy) = [delegate messageHightlightButtonTranscriptOrientation:selfCopy];
 
-  return v2;
+  return selfCopy;
 }
 
 - (CGRect)balloonViewFrame
 {
-  v3 = [(CKMessageHighlightButton *)self delegate];
-  [v3 messageHightlightButtonBalloonViewFrame:self];
+  delegate = [(CKMessageHighlightButton *)self delegate];
+  [delegate messageHightlightButtonBalloonViewFrame:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -301,8 +301,8 @@ void __45__CKMessageHighlightButton_buttonWasPressed___block_invoke(uint64_t a1)
 
 - (CGRect)replyButtonFrame
 {
-  v3 = [(CKMessageHighlightButton *)self delegate];
-  [v3 messageHightlightButtonReplyButtonFrame:self];
+  delegate = [(CKMessageHighlightButton *)self delegate];
+  [delegate messageHightlightButtonReplyButtonFrame:self];
   v5 = v4;
   v7 = v6;
   v9 = v8;
@@ -337,12 +337,12 @@ void __45__CKMessageHighlightButton_buttonWasPressed___block_invoke(uint64_t a1)
   return result;
 }
 
-- (CGRect)calculateTranscriptHighlightFrameRelativeToBalloonFrame:(CGRect)a3
+- (CGRect)calculateTranscriptHighlightFrameRelativeToBalloonFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   [(CKMessageHighlightButton *)self transcriptHighlightSize];
   v9 = v8;
   v11 = v10;
@@ -351,8 +351,8 @@ void __45__CKMessageHighlightButton_buttonWasPressed___block_invoke(uint64_t a1)
   v14 = v13;
   v16 = v15;
 
-  v17 = [(CKMessageHighlightButton *)self transcriptOrientation];
-  if (v17 == 2)
+  transcriptOrientation = [(CKMessageHighlightButton *)self transcriptOrientation];
+  if (transcriptOrientation == 2)
   {
     v28.origin.x = x;
     v28.origin.y = y;
@@ -368,7 +368,7 @@ void __45__CKMessageHighlightButton_buttonWasPressed___block_invoke(uint64_t a1)
     goto LABEL_10;
   }
 
-  if (v17 == 1)
+  if (transcriptOrientation == 1)
   {
     v20 = IMLogHandleForCategory();
     if (os_log_type_enabled(v20, OS_LOG_TYPE_ERROR))
@@ -377,7 +377,7 @@ void __45__CKMessageHighlightButton_buttonWasPressed___block_invoke(uint64_t a1)
     }
   }
 
-  else if (!v17)
+  else if (!transcriptOrientation)
   {
     v26.origin.x = x;
     v26.origin.y = y;
@@ -426,12 +426,12 @@ LABEL_11:
   return result;
 }
 
-- (CGRect)calculateFrameRelativeToBalloonViewFrame:(CGRect)a3 transcriptHighlightFrame:(CGRect)a4
+- (CGRect)calculateFrameRelativeToBalloonViewFrame:(CGRect)frame transcriptHighlightFrame:(CGRect)highlightFrame
 {
-  height = a4.size.height;
-  y = a4.origin.y;
-  width = a4.size.width;
-  x = a4.origin.x;
+  height = highlightFrame.size.height;
+  y = highlightFrame.origin.y;
+  width = highlightFrame.size.width;
+  x = highlightFrame.origin.x;
   v6 = MEMORY[0x1E695F058];
   v7 = *(MEMORY[0x1E695F058] + 16);
   v8 = *(MEMORY[0x1E695F058] + 24);
@@ -466,13 +466,13 @@ LABEL_11:
 
   else
   {
-    v16 = [(CKMessageHighlightButton *)self button];
-    [v16 contentEdgeInsets];
+    button = [(CKMessageHighlightButton *)self button];
+    [button contentEdgeInsets];
     v15 = v14 - v17;
   }
 
-  v18 = [(CKMessageHighlightButton *)self traitCollection];
-  [v18 displayScale];
+  traitCollection = [(CKMessageHighlightButton *)self traitCollection];
+  [traitCollection displayScale];
   v20 = round((floor((x + (width - v7) * 0.5) * v9) / v9 - v11 * 0.5) * v19) / v19;
   v21 = round(v15 * v19) / v19;
   v22 = round(v11 * v19) / v19;
@@ -489,10 +489,10 @@ LABEL_11:
   return result;
 }
 
-- (void)performShowAnimation:(id)a3
+- (void)performShowAnimation:(id)animation
 {
   v58[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  animationCopy = animation;
   [(CKMessageHighlightButton *)self balloonViewFrame];
   v6 = v5;
   v8 = v7;
@@ -522,7 +522,7 @@ LABEL_11:
   v55[3] = &unk_1E72F48F8;
   v55[4] = self;
   v57 = v29;
-  v31 = v4;
+  v31 = animationCopy;
   v56 = v31;
   [v30 setCompletionBlock:v55];
   v32 = [MEMORY[0x1E6979318] animationWithKeyPath:@"position"];
@@ -583,11 +583,11 @@ LABEL_11:
   [v44 setAutoreverses:0];
   [v44 setFillMode:*MEMORY[0x1E69797E8]];
   [v44 setRemovedOnCompletion:1];
-  v49 = [(CKMessageHighlightButton *)self layer];
-  [v49 addAnimation:v44 forKey:@"transform.scale.xy"];
+  layer = [(CKMessageHighlightButton *)self layer];
+  [layer addAnimation:v44 forKey:@"transform.scale.xy"];
 
-  v50 = [(CKMessageHighlightButton *)self layer];
-  [v50 addAnimation:v32 forKey:@"position"];
+  layer2 = [(CKMessageHighlightButton *)self layer];
+  [layer2 addAnimation:v32 forKey:@"position"];
 
   if (!self->_isHighlighted)
   {
@@ -598,8 +598,8 @@ LABEL_11:
     [v51 setFillMode:*MEMORY[0x1E69797E0]];
     [v51 setBeginTime:0.100000001];
     [v51 setBeginTimeMode:*MEMORY[0x1E69795C0]];
-    v52 = [(CKMessageHighlightButton *)self layer];
-    [v52 addAnimation:v51 forKey:@"opacity"];
+    layer3 = [(CKMessageHighlightButton *)self layer];
+    [layer3 addAnimation:v51 forKey:@"opacity"];
   }
 
   [MEMORY[0x1E6979518] commit];
@@ -619,41 +619,41 @@ uint64_t __49__CKMessageHighlightButton_performShowAnimation___block_invoke(uint
   return result;
 }
 
-- (void)performFadeoutAnimationWithDuration:(double)a3 completion:(id)a4
+- (void)performFadeoutAnimationWithDuration:(double)duration completion:(id)completion
 {
-  v6 = a4;
+  completionCopy = completion;
   [MEMORY[0x1E6979518] begin];
-  [MEMORY[0x1E6979518] setAnimationDuration:a3];
+  [MEMORY[0x1E6979518] setAnimationDuration:duration];
   v7 = MEMORY[0x1E6979518];
   v15 = MEMORY[0x1E69E9820];
   v16 = 3221225472;
   v17 = __75__CKMessageHighlightButton_performFadeoutAnimationWithDuration_completion___block_invoke;
   v18 = &unk_1E72ED1C8;
-  v19 = self;
-  v20 = v6;
-  v8 = v6;
+  selfCopy = self;
+  v20 = completionCopy;
+  v8 = completionCopy;
   [v7 setCompletionBlock:&v15];
-  v9 = [MEMORY[0x1E69794A8] animationWithKeyPath:{@"transform.scale.xy", v15, v16, v17, v18, v19}];
+  v9 = [MEMORY[0x1E69794A8] animationWithKeyPath:{@"transform.scale.xy", v15, v16, v17, v18, selfCopy}];
   [v9 setToValue:&unk_1F04E8958];
   LODWORD(v10) = 1.5;
   [v9 setSpeed:v10];
   [v9 setMass:1.0];
   [v9 setStiffness:350.0];
   [v9 setDamping:40.0];
-  [v9 setDuration:a3];
+  [v9 setDuration:duration];
   [v9 setRemovedOnCompletion:0];
   v11 = *MEMORY[0x1E69797E0];
   [v9 setFillMode:*MEMORY[0x1E69797E0]];
   v12 = [MEMORY[0x1E6979318] animationWithKeyPath:@"opacity"];
   [v12 setToValue:&unk_1F04E8968];
-  [v12 setDuration:a3];
+  [v12 setDuration:duration];
   [v12 setRemovedOnCompletion:0];
   [v12 setFillMode:v11];
-  v13 = [(CKMessageHighlightButton *)self layer];
-  [v13 addAnimation:v9 forKey:@"transform.scale.xy"];
+  layer = [(CKMessageHighlightButton *)self layer];
+  [layer addAnimation:v9 forKey:@"transform.scale.xy"];
 
-  v14 = [(CKMessageHighlightButton *)self layer];
-  [v14 addAnimation:v12 forKey:@"opacity"];
+  layer2 = [(CKMessageHighlightButton *)self layer];
+  [layer2 addAnimation:v12 forKey:@"opacity"];
 
   [MEMORY[0x1E6979518] commit];
 }
@@ -673,23 +673,23 @@ uint64_t __75__CKMessageHighlightButton_performFadeoutAnimationWithDuration_comp
   return result;
 }
 
-- (void)performHideAnimationWithDuration:(double)a3 completion:(id)a4
+- (void)performHideAnimationWithDuration:(double)duration completion:(id)completion
 {
   if (self->_isHighlighted)
   {
-    [(CKMessageHighlightButton *)self performUnselectedDismissAnimationWithDuration:a4 completion:a3];
+    [(CKMessageHighlightButton *)self performUnselectedDismissAnimationWithDuration:completion completion:duration];
   }
 
   else
   {
-    [(CKMessageHighlightButton *)self performFadeoutAnimationWithDuration:a4 completion:a3];
+    [(CKMessageHighlightButton *)self performFadeoutAnimationWithDuration:completion completion:duration];
   }
 }
 
-- (void)performSelectedAnimation:(id)a3
+- (void)performSelectedAnimation:(id)animation
 {
   v63[3] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  animationCopy = animation;
   [(CKMessageHighlightButton *)self balloonViewFrame];
   [(CKMessageHighlightButton *)self calculateTranscriptHighlightFrameRelativeToBalloonFrame:?];
   v58 = v6;
@@ -714,7 +714,7 @@ uint64_t __75__CKMessageHighlightButton_performFadeoutAnimationWithDuration_comp
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [MEMORY[0x1E6979518] setAnimationDuration:0.3];
-  [MEMORY[0x1E6979518] setCompletionBlock:v4];
+  [MEMORY[0x1E6979518] setCompletionBlock:animationCopy];
 
   v64.origin.x = v12;
   v64.origin.y = v14;
@@ -819,36 +819,36 @@ uint64_t __75__CKMessageHighlightButton_performFadeoutAnimationWithDuration_comp
     [v47 setAutoreverses:0];
     [v47 setFillMode:v35];
     [v47 setRemovedOnCompletion:0];
-    v50 = [(CKMessageHighlightButton *)self layer];
-    [v50 addAnimation:v47 forKey:@"opacity"];
+    layer = [(CKMessageHighlightButton *)self layer];
+    [layer addAnimation:v47 forKey:@"opacity"];
   }
 
-  v51 = [(CKMessageHighlightButton *)self layer];
-  [v51 addAnimation:v29 forKey:@"position"];
+  layer2 = [(CKMessageHighlightButton *)self layer];
+  [layer2 addAnimation:v29 forKey:@"position"];
 
-  v52 = [(UIView *)self->_backgroundColorView layer];
-  [v52 addAnimation:v41 forKey:@"opacity"];
+  layer3 = [(UIView *)self->_backgroundColorView layer];
+  [layer3 addAnimation:v41 forKey:@"opacity"];
 
-  v53 = [(UIView *)self->_backgroundColorViewForCrossFade layer];
-  [v53 addAnimation:v44 forKey:@"opacity"];
+  layer4 = [(UIView *)self->_backgroundColorViewForCrossFade layer];
+  [layer4 addAnimation:v44 forKey:@"opacity"];
 
-  v54 = [(UIImageView *)self->_glyphView layer];
-  [v54 addAnimation:v41 forKey:@"opacity"];
+  layer5 = [(UIImageView *)self->_glyphView layer];
+  [layer5 addAnimation:v41 forKey:@"opacity"];
 
-  v55 = [(UIImageView *)self->_glyphViewForCrossFade layer];
-  [v55 addAnimation:v44 forKey:@"opacity"];
+  layer6 = [(UIImageView *)self->_glyphViewForCrossFade layer];
+  [layer6 addAnimation:v44 forKey:@"opacity"];
 
-  v56 = [(CKMessageHighlightButton *)self layer];
-  [v56 addAnimation:v36 forKey:@"bounds"];
+  layer7 = [(CKMessageHighlightButton *)self layer];
+  [layer7 addAnimation:v36 forKey:@"bounds"];
 
   [MEMORY[0x1E6979518] setDisableActions:0];
   [MEMORY[0x1E6979518] commit];
 }
 
-- (void)performUnselectedDismissAnimationWithDuration:(double)a3 completion:(id)a4
+- (void)performUnselectedDismissAnimationWithDuration:(double)duration completion:(id)completion
 {
   v49[3] = *MEMORY[0x1E69E9840];
-  v6 = a4;
+  completionCopy = completion;
   [(CKMessageHighlightButton *)self balloonViewFrame];
   [(CKMessageHighlightButton *)self calculateTranscriptHighlightFrameRelativeToBalloonFrame:?];
   v46 = v7;
@@ -860,7 +860,7 @@ uint64_t __75__CKMessageHighlightButton_performFadeoutAnimationWithDuration_comp
   v16 = v15;
   v18 = v17;
   v20 = v19;
-  v44 = fmax(a3, 0.3);
+  v44 = fmax(duration, 0.3);
   v21 = +[CKUIBehavior sharedBehaviors];
   [v21 messageHighlightButtonInsets];
   v23 = v22;
@@ -869,7 +869,7 @@ uint64_t __75__CKMessageHighlightButton_performFadeoutAnimationWithDuration_comp
   [MEMORY[0x1E6979518] begin];
   [MEMORY[0x1E6979518] setDisableActions:1];
   [MEMORY[0x1E6979518] setAnimationDuration:v44];
-  [MEMORY[0x1E6979518] setCompletionBlock:v6];
+  [MEMORY[0x1E6979518] setCompletionBlock:completionCopy];
 
   v50.origin.x = v14;
   v50.origin.y = v16;
@@ -932,11 +932,11 @@ uint64_t __75__CKMessageHighlightButton_performFadeoutAnimationWithDuration_comp
   [v36 setAutoreverses:0];
   [v36 setFillMode:v35];
   [v36 setRemovedOnCompletion:0];
-  v41 = [(CKMessageHighlightButton *)self layer];
-  [v41 addAnimation:v29 forKey:@"position"];
+  layer = [(CKMessageHighlightButton *)self layer];
+  [layer addAnimation:v29 forKey:@"position"];
 
-  v42 = [(CKMessageHighlightButton *)self layer];
-  [v42 addAnimation:v36 forKey:@"bounds"];
+  layer2 = [(CKMessageHighlightButton *)self layer];
+  [layer2 addAnimation:v36 forKey:@"bounds"];
 
   [MEMORY[0x1E6979518] setDisableActions:0];
   [MEMORY[0x1E6979518] commit];

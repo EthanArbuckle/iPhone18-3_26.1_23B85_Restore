@@ -9,16 +9,16 @@
 - (unsigned)findingStatus;
 - (unsigned)handOrFaceDetection;
 - (unsigned)regionPresenceDetection;
-- (void)addPayloadChangeObserver:(id)a3;
+- (void)addPayloadChangeObserver:(id)observer;
 - (void)commitChange;
-- (void)removePayloadChangeObserver:(id)a3;
-- (void)setFindingConfig2:(unsigned __int8)a3;
-- (void)setFindingConfig:(unsigned __int8)a3;
-- (void)setFindingEnabled:(BOOL)a3;
-- (void)setFindingStatus:(unsigned __int8)a3;
-- (void)setHandOrFaceDetection:(unsigned __int8)a3;
-- (void)setPresenceConfigEnabled:(BOOL)a3;
-- (void)setRegionPresenceDetection:(unsigned __int8)a3;
+- (void)removePayloadChangeObserver:(id)observer;
+- (void)setFindingConfig2:(unsigned __int8)config2;
+- (void)setFindingConfig:(unsigned __int8)config;
+- (void)setFindingEnabled:(BOOL)enabled;
+- (void)setFindingStatus:(unsigned __int8)status;
+- (void)setHandOrFaceDetection:(unsigned __int8)detection;
+- (void)setPresenceConfigEnabled:(BOOL)enabled;
+- (void)setRegionPresenceDetection:(unsigned __int8)detection;
 @end
 
 @implementation NIServerSpatialInteractionPayloadAggregator
@@ -29,7 +29,7 @@
   block[1] = 3221225472;
   block[2] = sub_1002729B0;
   block[3] = &unk_10098AD98;
-  block[4] = a1;
+  block[4] = self;
   if (qword_1009F2658 != -1)
   {
     dispatch_once(&qword_1009F2658, block);
@@ -146,13 +146,13 @@ LABEL_13:
           }
 
           v30 = *(*(&v37 + 1) + 8 * i);
-          v31 = [v30 payloadChangeObserverQueue];
+          payloadChangeObserverQueue = [v30 payloadChangeObserverQueue];
           block[0] = _NSConcreteStackBlock;
           block[1] = 3221225472;
           block[2] = sub_100272DAC;
           block[3] = &unk_10098BD28;
           block[4] = v30;
-          dispatch_async(v31, block);
+          dispatch_async(payloadChangeObserverQueue, block);
         }
 
         v27 = [(NSHashTable *)v26 countByEnumeratingWithState:&v37 objects:v44 count:16];
@@ -239,76 +239,76 @@ LABEL_21:
   return handOrFaceDetection;
 }
 
-- (void)setFindingEnabled:(BOOL)a3
+- (void)setFindingEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_findingEnabled = a3;
+  self->_findingEnabled = enabled;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setPresenceConfigEnabled:(BOOL)a3
+- (void)setPresenceConfigEnabled:(BOOL)enabled
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_presenceConfigEnabled = a3;
+  self->_presenceConfigEnabled = enabled;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setFindingStatus:(unsigned __int8)a3
+- (void)setFindingStatus:(unsigned __int8)status
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_findingStatus = a3;
+  self->_findingStatus = status;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setFindingConfig2:(unsigned __int8)a3
+- (void)setFindingConfig2:(unsigned __int8)config2
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_findingConfig2 = a3;
+  self->_findingConfig2 = config2;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setFindingConfig:(unsigned __int8)a3
+- (void)setFindingConfig:(unsigned __int8)config
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_findingConfig = a3;
+  self->_findingConfig = config;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setRegionPresenceDetection:(unsigned __int8)a3
+- (void)setRegionPresenceDetection:(unsigned __int8)detection
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_regionPresenceDetection = a3;
+  self->_regionPresenceDetection = detection;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)setHandOrFaceDetection:(unsigned __int8)a3
+- (void)setHandOrFaceDetection:(unsigned __int8)detection
 {
   os_unfair_lock_lock(&self->_lock);
-  self->_handOrFaceDetection = a3;
+  self->_handOrFaceDetection = detection;
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)addPayloadChangeObserver:(id)a3
+- (void)addPayloadChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_payloadChangeObservers addObject:v4];
+  [(NSHashTable *)self->_payloadChangeObservers addObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }
 
-- (void)removePayloadChangeObserver:(id)a3
+- (void)removePayloadChangeObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   os_unfair_lock_lock(&self->_lock);
-  [(NSHashTable *)self->_payloadChangeObservers removeObject:v4];
+  [(NSHashTable *)self->_payloadChangeObservers removeObject:observerCopy];
 
   os_unfair_lock_unlock(&self->_lock);
 }

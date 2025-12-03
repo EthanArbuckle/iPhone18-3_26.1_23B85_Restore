@@ -1,11 +1,11 @@
 @interface HKRatioValue
-+ (id)ratioValueWithNumerator:(id)a3 andDenominator:(id)a4;
-- (BOOL)isEqual:(id)a3;
++ (id)ratioValueWithNumerator:(id)numerator andDenominator:(id)denominator;
+- (BOOL)isEqual:(id)equal;
 - (HKRatioValue)init;
-- (HKRatioValue)initWithCoder:(id)a3;
-- (id)_initWithNumerator:(id)a3 denominator:(id)a4;
+- (HKRatioValue)initWithCoder:(id)coder;
+- (id)_initWithNumerator:(id)numerator denominator:(id)denominator;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation HKRatioValue
@@ -20,29 +20,29 @@
   return 0;
 }
 
-+ (id)ratioValueWithNumerator:(id)a3 andDenominator:(id)a4
++ (id)ratioValueWithNumerator:(id)numerator andDenominator:(id)denominator
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [[a1 alloc] _initWithNumerator:v7 denominator:v6];
+  denominatorCopy = denominator;
+  numeratorCopy = numerator;
+  v8 = [[self alloc] _initWithNumerator:numeratorCopy denominator:denominatorCopy];
 
   return v8;
 }
 
-- (id)_initWithNumerator:(id)a3 denominator:(id)a4
+- (id)_initWithNumerator:(id)numerator denominator:(id)denominator
 {
-  v6 = a3;
-  v7 = a4;
+  numeratorCopy = numerator;
+  denominatorCopy = denominator;
   v14.receiver = self;
   v14.super_class = HKRatioValue;
   v8 = [(HKRatioValue *)&v14 init];
   if (v8)
   {
-    v9 = [v6 copy];
+    v9 = [numeratorCopy copy];
     numerator = v8->_numerator;
     v8->_numerator = v9;
 
-    v11 = [v7 copy];
+    v11 = [denominatorCopy copy];
     denominator = v8->_denominator;
     v8->_denominator = v11;
   }
@@ -55,17 +55,17 @@
   v3 = MEMORY[0x1E696AEC0];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(HKRatioValue *)self numerator];
-  v7 = [(HKRatioValue *)self denominator];
-  v8 = [v3 stringWithFormat:@"<%@:%p numerator = %@, denominator = %@>", v5, self, v6, v7];
+  numerator = [(HKRatioValue *)self numerator];
+  denominator = [(HKRatioValue *)self denominator];
+  v8 = [v3 stringWithFormat:@"<%@:%p numerator = %@, denominator = %@>", v5, self, numerator, denominator];
 
   return v8;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (v4 == self)
+  equalCopy = equal;
+  if (equalCopy == self)
   {
     v14 = 1;
   }
@@ -75,26 +75,26 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
-      v6 = [(HKRatioValue *)self numerator];
-      v7 = [(HKRatioValue *)v5 numerator];
-      v8 = v7;
-      if (v6 == v7)
+      v5 = equalCopy;
+      numerator = [(HKRatioValue *)self numerator];
+      numerator2 = [(HKRatioValue *)v5 numerator];
+      v8 = numerator2;
+      if (numerator == numerator2)
       {
       }
 
       else
       {
-        v9 = [(HKRatioValue *)v5 numerator];
-        if (!v9)
+        numerator3 = [(HKRatioValue *)v5 numerator];
+        if (!numerator3)
         {
           goto LABEL_14;
         }
 
-        v10 = v9;
-        v11 = [(HKRatioValue *)self numerator];
-        v12 = [(HKRatioValue *)v5 numerator];
-        v13 = [v11 isEqual:v12];
+        v10 = numerator3;
+        numerator4 = [(HKRatioValue *)self numerator];
+        numerator5 = [(HKRatioValue *)v5 numerator];
+        v13 = [numerator4 isEqual:numerator5];
 
         if (!v13)
         {
@@ -102,10 +102,10 @@
         }
       }
 
-      v6 = [(HKRatioValue *)self denominator];
-      v15 = [(HKRatioValue *)v5 denominator];
-      v8 = v15;
-      if (v6 == v15)
+      numerator = [(HKRatioValue *)self denominator];
+      denominator = [(HKRatioValue *)v5 denominator];
+      v8 = denominator;
+      if (numerator == denominator)
       {
 
 LABEL_17:
@@ -113,13 +113,13 @@ LABEL_17:
         goto LABEL_18;
       }
 
-      v16 = [(HKRatioValue *)v5 denominator];
-      if (v16)
+      denominator2 = [(HKRatioValue *)v5 denominator];
+      if (denominator2)
       {
-        v17 = v16;
-        v18 = [(HKRatioValue *)self denominator];
-        v19 = [(HKRatioValue *)v5 denominator];
-        v20 = [v18 isEqual:v19];
+        v17 = denominator2;
+        denominator3 = [(HKRatioValue *)self denominator];
+        denominator4 = [(HKRatioValue *)v5 denominator];
+        v20 = [denominator3 isEqual:denominator4];
 
         if (v20)
         {
@@ -146,9 +146,9 @@ LABEL_19:
   return v14;
 }
 
-- (HKRatioValue)initWithCoder:(id)a3
+- (HKRatioValue)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v12.receiver = self;
   v12.super_class = HKRatioValue;
   v5 = [(HKRatioValue *)&v12 init];
@@ -157,7 +157,7 @@ LABEL_19:
     goto LABEL_4;
   }
 
-  v6 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"NumeratorKey"];
+  v6 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"NumeratorKey"];
   numerator = v5->_numerator;
   v5->_numerator = v6;
 
@@ -166,7 +166,7 @@ LABEL_19:
     goto LABEL_5;
   }
 
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"DenominatorKey"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"DenominatorKey"];
   denominator = v5->_denominator;
   v5->_denominator = v8;
 
@@ -185,12 +185,12 @@ LABEL_5:
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   numerator = self->_numerator;
-  v5 = a3;
-  [v5 encodeObject:numerator forKey:@"NumeratorKey"];
-  [v5 encodeObject:self->_denominator forKey:@"DenominatorKey"];
+  coderCopy = coder;
+  [coderCopy encodeObject:numerator forKey:@"NumeratorKey"];
+  [coderCopy encodeObject:self->_denominator forKey:@"DenominatorKey"];
 }
 
 @end

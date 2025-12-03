@@ -1,12 +1,12 @@
 @interface COSRemoteUIStyle
-- (void)applyToNavigationController:(id)a3;
+- (void)applyToNavigationController:(id)controller;
 @end
 
 @implementation COSRemoteUIStyle
 
-- (void)applyToNavigationController:(id)a3
+- (void)applyToNavigationController:(id)controller
 {
-  v3 = [a3 navigationBar];
+  navigationBar = [controller navigationBar];
   BPSApplyStyleToNavBar();
 }
 

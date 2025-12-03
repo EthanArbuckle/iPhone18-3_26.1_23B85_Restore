@@ -1,33 +1,33 @@
 @interface GKAggregateMapping
-- (GKAggregateMapping)initWithGlobalToLocalMapping:(id)a3;
-- (id)_gkDescriptionWithChildren:(int64_t)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (GKAggregateMapping)initWithGlobalToLocalMapping:(id)mapping;
+- (id)_gkDescriptionWithChildren:(int64_t)children;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)globalIndexPathForLocalIndexPath:(id)a3;
-- (id)localIndexPathForGlobalIndexPath:(id)a3;
-- (id)tagForGlobalSection:(int64_t)a3;
-- (unint64_t)globalSectionForLocalSection:(unint64_t)a3;
-- (unint64_t)localSectionForGlobalSection:(unint64_t)a3;
-- (unint64_t)updateMappingsStartingWithGlobalSection:(unint64_t)a3;
-- (void)addMappingFromGlobalSection:(unint64_t)a3 toLocalSection:(unint64_t)a4 withTag:(id)a5;
+- (id)globalIndexPathForLocalIndexPath:(id)path;
+- (id)localIndexPathForGlobalIndexPath:(id)path;
+- (id)tagForGlobalSection:(int64_t)section;
+- (unint64_t)globalSectionForLocalSection:(unint64_t)section;
+- (unint64_t)localSectionForGlobalSection:(unint64_t)section;
+- (unint64_t)updateMappingsStartingWithGlobalSection:(unint64_t)section;
+- (void)addMappingFromGlobalSection:(unint64_t)section toLocalSection:(unint64_t)localSection withTag:(id)tag;
 @end
 
 @implementation GKAggregateMapping
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v4 = [[GKAggregateMapping allocWithZone:?]];
-  v5 = [(GKAggregateMapping *)self dataSource];
-  [(GKAggregateMapping *)v4 setDataSource:v5];
+  dataSource = [(GKAggregateMapping *)self dataSource];
+  [(GKAggregateMapping *)v4 setDataSource:dataSource];
 
-  v6 = [(GKAggregateMapping *)self globalToLocalSections];
-  [(GKAggregateMapping *)v4 setGlobalToLocalSections:v6];
+  globalToLocalSections = [(GKAggregateMapping *)self globalToLocalSections];
+  [(GKAggregateMapping *)v4 setGlobalToLocalSections:globalToLocalSections];
 
-  v7 = [(GKAggregateMapping *)self localToGlobalSections];
-  [(GKAggregateMapping *)v4 setLocalToGlobalSections:v7];
+  localToGlobalSections = [(GKAggregateMapping *)self localToGlobalSections];
+  [(GKAggregateMapping *)v4 setLocalToGlobalSections:localToGlobalSections];
 
-  v8 = [(GKAggregateMapping *)self globalSectionsToTags];
-  [(GKAggregateMapping *)v4 setGlobalSectionsToTags:v8];
+  globalSectionsToTags = [(GKAggregateMapping *)self globalSectionsToTags];
+  [(GKAggregateMapping *)v4 setGlobalSectionsToTags:globalSectionsToTags];
 
   return v4;
 }
@@ -35,11 +35,11 @@
 - (id)description
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v19.receiver = self;
   v19.super_class = GKAggregateMapping;
   v4 = [(GKAggregateMapping *)&v19 description];
-  objc_msgSend(v3, "appendFormat:", @"%@ ("), v4;
+  objc_msgSend(string, "appendFormat:", @"%@ ("), v4;
 
   v17 = 0u;
   v18 = 0u;
@@ -66,10 +66,10 @@
         v12 = [(NSMutableDictionary *)self->_globalSectionsToTags objectForKeyedSubscript:v10];
         if ((v8 & 1) == 0)
         {
-          [v3 appendString:{@", "}];
+          [string appendString:{@", "}];
         }
 
-        [v3 appendFormat:@"%@ -> %@[%@]", v10, v12, v11];
+        [string appendFormat:@"%@ -> %@[%@]", v10, v12, v11];
 
         v8 = 0;
       }
@@ -81,26 +81,26 @@
     while (v6);
   }
 
-  [v3 appendString:@""]);
+  [string appendString:@""]);
 
-  return v3;
+  return string;
 }
 
-- (id)_gkDescriptionWithChildren:(int64_t)a3
+- (id)_gkDescriptionWithChildren:(int64_t)children
 {
-  v5 = [MEMORY[0x277CCAB68] string];
+  string = [MEMORY[0x277CCAB68] string];
   v6 = _gkTabStringForTabLevel();
-  v7 = [(GKAggregateMapping *)self _gkDescription];
-  [v5 appendFormat:@"%@%@", v6, v7];
+  _gkDescription = [(GKAggregateMapping *)self _gkDescription];
+  [string appendFormat:@"%@%@", v6, _gkDescription];
 
   v8 = _gkUnicodifyDescription();
-  v9 = [(GKCollectionViewDataSource *)self->_dataSource _gkDescriptionWithChildren:a3 + 1];
-  [v5 appendFormat:@"%@", v9];
+  v9 = [(GKCollectionViewDataSource *)self->_dataSource _gkDescriptionWithChildren:children + 1];
+  [string appendFormat:@"%@", v9];
 
-  return v5;
+  return string;
 }
 
-- (unint64_t)localSectionForGlobalSection:(unint64_t)a3
+- (unint64_t)localSectionForGlobalSection:(unint64_t)section
 {
   globalToLocalSections = self->_globalToLocalSections;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
@@ -109,20 +109,20 @@
   if (!v7)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"globalSection %ld not found in globalToLocalSections: %@", a3, self->_globalToLocalSections];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"globalSection %ld not found in globalToLocalSections: %@", section, self->_globalToLocalSections];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewAggregateDataSourcePrivate.m"];
-    v11 = [v10 lastPathComponent];
-    v12 = [v8 stringWithFormat:@"%@ (localSection != nil)\n[%s (%s:%d)]", v9, "-[GKAggregateMapping localSectionForGlobalSection:]", objc_msgSend(v11, "UTF8String"), 100];
+    lastPathComponent = [v10 lastPathComponent];
+    v12 = [v8 stringWithFormat:@"%@ (localSection != nil)\n[%s (%s:%d)]", v9, "-[GKAggregateMapping localSectionForGlobalSection:]", objc_msgSend(lastPathComponent, "UTF8String"), 100];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v12}];
   }
 
-  v13 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  return v13;
+  return unsignedIntegerValue;
 }
 
-- (unint64_t)globalSectionForLocalSection:(unint64_t)a3
+- (unint64_t)globalSectionForLocalSection:(unint64_t)section
 {
   localToGlobalSections = self->_localToGlobalSections;
   v6 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:?];
@@ -131,52 +131,52 @@
   if (!v7)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"localSection %ld not found in localToGlobalSections:%@", a3, self->_localToGlobalSections];
+    v9 = [MEMORY[0x277CCACA8] stringWithFormat:@"localSection %ld not found in localToGlobalSections:%@", section, self->_localToGlobalSections];
     v10 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewAggregateDataSourcePrivate.m"];
-    v11 = [v10 lastPathComponent];
-    v12 = [v8 stringWithFormat:@"%@ (globalSection != nil)\n[%s (%s:%d)]", v9, "-[GKAggregateMapping globalSectionForLocalSection:]", objc_msgSend(v11, "UTF8String"), 107];
+    lastPathComponent = [v10 lastPathComponent];
+    v12 = [v8 stringWithFormat:@"%@ (globalSection != nil)\n[%s (%s:%d)]", v9, "-[GKAggregateMapping globalSectionForLocalSection:]", objc_msgSend(lastPathComponent, "UTF8String"), 107];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v12}];
   }
 
-  v13 = [v7 unsignedIntegerValue];
+  unsignedIntegerValue = [v7 unsignedIntegerValue];
 
-  return v13;
+  return unsignedIntegerValue;
 }
 
-- (id)localIndexPathForGlobalIndexPath:(id)a3
+- (id)localIndexPathForGlobalIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[GKAggregateMapping localSectionForGlobalSection:](self, "localSectionForGlobalSection:", [v4 section]);
-  v6 = [v4 item];
+  pathCopy = path;
+  v5 = -[GKAggregateMapping localSectionForGlobalSection:](self, "localSectionForGlobalSection:", [pathCopy section]);
+  item = [pathCopy item];
   globalSectionsToTags = self->_globalSectionsToTags;
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(v4, "section")}];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:{objc_msgSend(pathCopy, "section")}];
   v9 = [(NSMutableDictionary *)globalSectionsToTags objectForKeyedSubscript:v8];
-  v10 = [GKMappedIndexPath indexPathForItem:v6 inSection:v5 fromSourceIndexPath:v4 withTag:v9];
+  v10 = [GKMappedIndexPath indexPathForItem:item inSection:v5 fromSourceIndexPath:pathCopy withTag:v9];
 
   return v10;
 }
 
-- (id)globalIndexPathForLocalIndexPath:(id)a3
+- (id)globalIndexPathForLocalIndexPath:(id)path
 {
-  v4 = a3;
-  v5 = -[GKAggregateMapping globalSectionForLocalSection:](self, "globalSectionForLocalSection:", [v4 section]);
+  pathCopy = path;
+  v5 = -[GKAggregateMapping globalSectionForLocalSection:](self, "globalSectionForLocalSection:", [pathCopy section]);
   v6 = MEMORY[0x277CCAA70];
-  v7 = [v4 item];
+  item = [pathCopy item];
 
-  return [v6 indexPathForItem:v7 inSection:v5];
+  return [v6 indexPathForItem:item inSection:v5];
 }
 
-- (GKAggregateMapping)initWithGlobalToLocalMapping:(id)a3
+- (GKAggregateMapping)initWithGlobalToLocalMapping:(id)mapping
 {
   v26 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  mappingCopy = mapping;
   v24.receiver = self;
   v24.super_class = GKAggregateMapping;
   v5 = [(GKAggregateMapping *)&v24 init];
   if (v5)
   {
-    v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:v4];
+    v6 = [objc_alloc(MEMORY[0x277CBEB38]) initWithDictionary:mappingCopy];
     globalToLocalSections = v5->_globalToLocalSections;
     v5->_globalToLocalSections = v6;
 
@@ -222,20 +222,20 @@
   return v5;
 }
 
-- (id)tagForGlobalSection:(int64_t)a3
+- (id)tagForGlobalSection:(int64_t)section
 {
   globalSectionsToTags = self->_globalSectionsToTags;
-  v4 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v4 = [MEMORY[0x277CCABB0] numberWithInteger:section];
   v5 = [(NSMutableDictionary *)globalSectionsToTags objectForKeyedSubscript:v4];
 
   return v5;
 }
 
-- (void)addMappingFromGlobalSection:(unint64_t)a3 toLocalSection:(unint64_t)a4 withTag:(id)a5
+- (void)addMappingFromGlobalSection:(unint64_t)section toLocalSection:(unint64_t)localSection withTag:(id)tag
 {
-  v23 = a5;
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a3];
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:a4];
+  tagCopy = tag;
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:section];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedInteger:localSection];
   v10 = [(NSMutableDictionary *)self->_localToGlobalSections objectForKeyedSubscript:v9];
 
   if (v10)
@@ -243,8 +243,8 @@
     v11 = MEMORY[0x277CCACA8];
     v12 = [MEMORY[0x277CCACA8] stringWithFormat:@"collision while trying to add to a GKAggregateMapping"];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewAggregateDataSourcePrivate.m"];
-    v14 = [v13 lastPathComponent];
-    v15 = [v11 stringWithFormat:@"%@ (_localToGlobalSections[localNum] == nil)\n[%s (%s:%d)]", v12, "-[GKAggregateMapping addMappingFromGlobalSection:toLocalSection:withTag:]", objc_msgSend(v14, "UTF8String"), 156];
+    lastPathComponent = [v13 lastPathComponent];
+    v15 = [v11 stringWithFormat:@"%@ (_localToGlobalSections[localNum] == nil)\n[%s (%s:%d)]", v12, "-[GKAggregateMapping addMappingFromGlobalSection:toLocalSection:withTag:]", objc_msgSend(lastPathComponent, "UTF8String"), 156];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v15}];
   }
@@ -253,23 +253,23 @@
   [(NSMutableDictionary *)self->_localToGlobalSections setObject:v8 forKeyedSubscript:v9];
   v16 = [(NSMutableDictionary *)self->_globalSectionsToTags objectForKeyedSubscript:v8];
 
-  v17 = v23;
+  v17 = tagCopy;
   if (v16)
   {
     v18 = MEMORY[0x277CCACA8];
-    v19 = [MEMORY[0x277CCACA8] stringWithFormat:@"you must define a unique tag. %@ is already being used.", v23];
+    tagCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"you must define a unique tag. %@ is already being used.", tagCopy];
     v20 = [MEMORY[0x277CCACA8] stringWithUTF8String:"/Library/Caches/com.apple.xbs/Sources/GameCenter/Frameworks/GameCenterUI/iOS/Framework/GKCollectionViewAggregateDataSourcePrivate.m"];
-    v21 = [v20 lastPathComponent];
-    v22 = [v18 stringWithFormat:@"%@ (_globalSectionsToTags[globalNum] == nil)\n[%s (%s:%d)]", v19, "-[GKAggregateMapping addMappingFromGlobalSection:toLocalSection:withTag:]", objc_msgSend(v21, "UTF8String"), 160];
+    lastPathComponent2 = [v20 lastPathComponent];
+    v22 = [v18 stringWithFormat:@"%@ (_globalSectionsToTags[globalNum] == nil)\n[%s (%s:%d)]", tagCopy, "-[GKAggregateMapping addMappingFromGlobalSection:toLocalSection:withTag:]", objc_msgSend(lastPathComponent2, "UTF8String"), 160];
 
     [MEMORY[0x277CBEAD8] raise:@"GameKit Exception" format:{@"%@", v22}];
-    v17 = v23;
+    v17 = tagCopy;
   }
 
   [(NSMutableDictionary *)self->_globalSectionsToTags setObject:v17 forKeyedSubscript:v8];
 }
 
-- (unint64_t)updateMappingsStartingWithGlobalSection:(unint64_t)a3
+- (unint64_t)updateMappingsStartingWithGlobalSection:(unint64_t)section
 {
   self->_sectionCount = [(GKCollectionViewDataSource *)self->_dataSource numberOfSectionsInCollectionView:0];
   [(NSMutableDictionary *)self->_globalToLocalSections removeAllObjects];
@@ -281,16 +281,16 @@
     do
     {
       v6 = [MEMORY[0x277CCACA8] stringWithFormat:@"%@ %ld", self->_dynamicTag, v5];
-      [(GKAggregateMapping *)self addMappingFromGlobalSection:a3 + v5 toLocalSection:v5 withTag:v6];
+      [(GKAggregateMapping *)self addMappingFromGlobalSection:section + v5 toLocalSection:v5 withTag:v6];
 
       ++v5;
     }
 
     while (v5 < self->_sectionCount);
-    a3 += v5;
+    section += v5;
   }
 
-  return a3;
+  return section;
 }
 
 @end

@@ -1,8 +1,8 @@
 @interface SCKAsyncSerialQueue
 - (BOOL)isSuspended;
 - (SCKAsyncSerialQueue)init;
-- (void)enqueueBlock:(id)a3;
-- (void)setSuspended:(BOOL)a3;
+- (void)enqueueBlock:(id)block;
+- (void)setSuspended:(BOOL)suspended;
 - (void)waitUntilEmpty;
 @end
 
@@ -27,37 +27,37 @@
   return v2;
 }
 
-- (void)enqueueBlock:(id)a3
+- (void)enqueueBlock:(id)block
 {
-  if (a3)
+  if (block)
   {
-    v4 = a3;
-    v6 = [[SCKAsyncBlockOperation alloc] initWithBlock:v4];
+    blockCopy = block;
+    v6 = [[SCKAsyncBlockOperation alloc] initWithBlock:blockCopy];
 
-    v5 = [(SCKAsyncSerialQueue *)self serialOperationQueue];
-    [v5 addOperation:v6];
+    serialOperationQueue = [(SCKAsyncSerialQueue *)self serialOperationQueue];
+    [serialOperationQueue addOperation:v6];
   }
 }
 
 - (void)waitUntilEmpty
 {
-  v2 = [(SCKAsyncSerialQueue *)self serialOperationQueue];
-  [v2 waitUntilAllOperationsAreFinished];
+  serialOperationQueue = [(SCKAsyncSerialQueue *)self serialOperationQueue];
+  [serialOperationQueue waitUntilAllOperationsAreFinished];
 }
 
 - (BOOL)isSuspended
 {
-  v2 = [(SCKAsyncSerialQueue *)self serialOperationQueue];
-  v3 = [v2 isSuspended];
+  serialOperationQueue = [(SCKAsyncSerialQueue *)self serialOperationQueue];
+  isSuspended = [serialOperationQueue isSuspended];
 
-  return v3;
+  return isSuspended;
 }
 
-- (void)setSuspended:(BOOL)a3
+- (void)setSuspended:(BOOL)suspended
 {
-  v3 = a3;
-  v4 = [(SCKAsyncSerialQueue *)self serialOperationQueue];
-  [v4 setSuspended:v3];
+  suspendedCopy = suspended;
+  serialOperationQueue = [(SCKAsyncSerialQueue *)self serialOperationQueue];
+  [serialOperationQueue setSuspended:suspendedCopy];
 }
 
 @end

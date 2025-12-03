@@ -1,25 +1,25 @@
 @interface _OSDH9Camera
-- (BOOL)_enableMultiVideoOutput:(id)a3 error:(id *)a4;
-- (BOOL)_setStreamHandlers:(id)a3 error:(id *)a4;
-- (BOOL)enableTestPatternPN9:(BOOL)a3 error:(id *)a4;
-- (BOOL)getDeviceAndStreams:(id *)a3;
-- (BOOL)setFormatIndex:(id)a3 error:(id *)a4;
-- (BOOL)syncSlave:(id)a3 skipFrames:(BOOL)a4 enableOutput:(BOOL)a5 error:(id *)a6;
-- (_OSDH9Camera)initWithCaptureDevice:(id)a3 cameraSource:(unint64_t)a4 error:(id *)a5;
-- (id)errorCountForType:(unint64_t)a3 error:(id *)a4;
-- (id)supportedFormats:(id *)a3;
-- (id)useMaxAvailableDataRate:(id *)a3;
-- (void)_processBuffer:(__CVBuffer *)a3;
-- (void)_receivedPixelBuffer:(__CVBuffer *)a3 time:(id *)a4;
+- (BOOL)_enableMultiVideoOutput:(id)output error:(id *)error;
+- (BOOL)_setStreamHandlers:(id)handlers error:(id *)error;
+- (BOOL)enableTestPatternPN9:(BOOL)n9 error:(id *)error;
+- (BOOL)getDeviceAndStreams:(id *)streams;
+- (BOOL)setFormatIndex:(id)index error:(id *)error;
+- (BOOL)syncSlave:(id)slave skipFrames:(BOOL)frames enableOutput:(BOOL)output error:(id *)error;
+- (_OSDH9Camera)initWithCaptureDevice:(id)device cameraSource:(unint64_t)source error:(id *)error;
+- (id)errorCountForType:(unint64_t)type error:(id *)error;
+- (id)supportedFormats:(id *)formats;
+- (id)useMaxAvailableDataRate:(id *)rate;
+- (void)_processBuffer:(__CVBuffer *)buffer;
+- (void)_receivedPixelBuffer:(__CVBuffer *)buffer time:(id *)time;
 @end
 
 @implementation _OSDH9Camera
 
-- (_OSDH9Camera)initWithCaptureDevice:(id)a3 cameraSource:(unint64_t)a4 error:(id *)a5
+- (_OSDH9Camera)initWithCaptureDevice:(id)device cameraSource:(unint64_t)source error:(id *)error
 {
   v11.receiver = self;
   v11.super_class = _OSDH9Camera;
-  v5 = [(_OSDHxCamera *)&v11 initWithCaptureDevice:a3 cameraSource:a4 error:a5];
+  v5 = [(_OSDHxCamera *)&v11 initWithCaptureDevice:device cameraSource:source error:error];
   if (v5)
   {
     v6 = dispatch_queue_attr_make_with_qos_class(0, QOS_CLASS_USER_INTERACTIVE, 0);
@@ -33,7 +33,7 @@
   return v5;
 }
 
-- (BOOL)getDeviceAndStreams:(id *)a3
+- (BOOL)getDeviceAndStreams:(id *)streams
 {
   v10.receiver = self;
   v10.super_class = _OSDH9Camera;
@@ -42,29 +42,29 @@
     return 0;
   }
 
-  v5 = [(_OSDHxCamera *)self captureStream];
-  v6 = [(_OSDH9Camera *)self _enableMultiVideoOutput:v5 error:a3];
+  captureStream = [(_OSDHxCamera *)self captureStream];
+  v6 = [(_OSDH9Camera *)self _enableMultiVideoOutput:captureStream error:streams];
 
   if (!v6)
   {
     return 0;
   }
 
-  v7 = [(_OSDHxCamera *)self captureStream];
-  v8 = [(_OSDH9Camera *)self _setStreamHandlers:v7 error:a3];
+  captureStream2 = [(_OSDHxCamera *)self captureStream];
+  v8 = [(_OSDH9Camera *)self _setStreamHandlers:captureStream2 error:streams];
 
   return v8;
 }
 
-- (BOOL)_enableMultiVideoOutput:(id)a3 error:(id *)a4
+- (BOOL)_enableMultiVideoOutput:(id)output error:(id *)error
 {
-  v5 = a3;
-  if ([v5 setProperty:kFigCaptureStreamProperty_MultipleOutputSupportEnabled BOOLean:1 error:a4])
+  outputCopy = output;
+  if ([outputCopy setProperty:kFigCaptureStreamProperty_MultipleOutputSupportEnabled BOOLean:1 error:error])
   {
     v9 = kFigCaptureStreamVideoOutputID_PrimaryScaler;
     v10 = &__kCFBooleanTrue;
     v6 = [NSDictionary dictionaryWithObjects:&v10 forKeys:&v9 count:1];
-    v7 = [v5 setProperty:kFigCaptureStreamProperty_VideoOutputsEnabled value:v6 error:a4];
+    v7 = [outputCopy setProperty:kFigCaptureStreamProperty_VideoOutputsEnabled value:v6 error:error];
   }
 
   else
@@ -75,9 +75,9 @@
   return v7;
 }
 
-- (BOOL)_setStreamHandlers:(id)a3 error:(id *)a4
+- (BOOL)_setStreamHandlers:(id)handlers error:(id *)error
 {
-  v6 = a3;
+  handlersCopy = handlers;
   objc_initWeak(&location, self);
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
@@ -102,41 +102,41 @@
   v19 = kFigCaptureStreamVideoOutputID_PrimaryScaler;
   v20 = v11;
   v12 = [NSDictionary dictionaryWithObjects:&v20 forKeys:&v19 count:1];
-  LOBYTE(a4) = [v6 setProperty:kFigCaptureStreamProperty_VideoOutputHandlers value:v12 error:a4];
+  LOBYTE(error) = [handlersCopy setProperty:kFigCaptureStreamProperty_VideoOutputHandlers value:v12 error:error];
 
   objc_destroyWeak(&v15);
   objc_destroyWeak(&v17);
   objc_destroyWeak(&location);
 
-  return a4;
+  return error;
 }
 
-- (BOOL)setFormatIndex:(id)a3 error:(id *)a4
+- (BOOL)setFormatIndex:(id)index error:(id *)error
 {
-  v6 = a3;
-  v7 = [(_OSDHxCamera *)self captureStream];
-  v8 = [v7 setProperty:kFigCaptureStreamProperty_FormatIndex number:v6 error:a4];
+  indexCopy = index;
+  captureStream = [(_OSDHxCamera *)self captureStream];
+  v8 = [captureStream setProperty:kFigCaptureStreamProperty_FormatIndex number:indexCopy error:error];
 
   if (v8)
   {
-    [(_OSDH9Camera *)self setFormatIndex:v6];
+    [(_OSDH9Camera *)self setFormatIndex:indexCopy];
   }
 
   return v8;
 }
 
-- (id)errorCountForType:(unint64_t)a3 error:(id *)a4
+- (id)errorCountForType:(unint64_t)type error:(id *)error
 {
-  if (a3 <= 2)
+  if (type <= 2)
   {
-    if (a3 == 1)
+    if (type == 1)
     {
       v5 = &kFigCaptureStreamPropertyValue_MIPIErrorCount;
     }
 
     else
     {
-      if (a3 != 2)
+      if (type != 2)
       {
         goto LABEL_17;
       }
@@ -148,7 +148,7 @@
     goto LABEL_13;
   }
 
-  switch(a3)
+  switch(type)
   {
     case 3uLL:
       v4 = @"SIFErrorCount";
@@ -159,30 +159,30 @@
     case 5uLL:
       v4 = @"LPDPErrorCount";
 LABEL_13:
-      v6 = [(_OSDHxCamera *)self _getStreamErrorFor:v4 error:a4];
+      v6 = [(_OSDHxCamera *)self _getStreamErrorFor:v4 error:error];
       goto LABEL_14;
   }
 
 LABEL_17:
-  [OSDError setError:a4 withDomain:@"com.apple.DiagnosticsService.Diagnostic-4009.OSDCameraCenter" withCode:1 format:@"%@ >> Camera has no error for type %lu", self, a3];
+  [OSDError setError:error withDomain:@"com.apple.DiagnosticsService.Diagnostic-4009.OSDCameraCenter" withCode:1 format:@"%@ >> Camera has no error for type %lu", self, type];
   v6 = 0;
 LABEL_14:
 
   return v6;
 }
 
-- (id)supportedFormats:(id *)a3
+- (id)supportedFormats:(id *)formats
 {
-  v4 = [(_OSDHxCamera *)self captureStream];
-  v5 = [v4 copyProperty:kFigCaptureStreamProperty_SupportedFormatsArray error:a3];
+  captureStream = [(_OSDHxCamera *)self captureStream];
+  v5 = [captureStream copyProperty:kFigCaptureStreamProperty_SupportedFormatsArray error:formats];
 
   return v5;
 }
 
-- (id)useMaxAvailableDataRate:(id *)a3
+- (id)useMaxAvailableDataRate:(id *)rate
 {
-  v5 = [(_OSDHxCamera *)self captureStream];
-  v6 = [v5 copyProperty:@"SupportedLinkFrequencies" error:a3];
+  captureStream = [(_OSDHxCamera *)self captureStream];
+  v6 = [captureStream copyProperty:@"SupportedLinkFrequencies" error:rate];
 
   v21 = 0;
   v22 = &v21;
@@ -219,9 +219,9 @@ LABEL_14:
     _os_log_impl(&_mh_execute_header, v9, OS_LOG_TYPE_INFO, "Greatest index is %lu", buf, 0xCu);
   }
 
-  v11 = [(_OSDHxCamera *)self captureStream];
+  captureStream2 = [(_OSDHxCamera *)self captureStream];
   v12 = [NSNumber numberWithUnsignedInteger:v22[3]];
-  v13 = [v11 setProperty:@"LinkFrequencyIndex" number:v12 error:a3];
+  v13 = [captureStream2 setProperty:@"LinkFrequencyIndex" number:v12 error:rate];
 
   if (v13)
   {
@@ -239,36 +239,36 @@ LABEL_14:
   return v14;
 }
 
-- (BOOL)syncSlave:(id)a3 skipFrames:(BOOL)a4 enableOutput:(BOOL)a5 error:(id *)a6
+- (BOOL)syncSlave:(id)slave skipFrames:(BOOL)frames enableOutput:(BOOL)output error:(id *)error
 {
-  v7 = a5;
-  v8 = a4;
-  v10 = a3;
-  v11 = [(_OSDHxCamera *)self captureStream];
-  v26[0] = [v11 streamRef];
-  v12 = [v10 captureStream];
-  v26[1] = [v12 streamRef];
+  outputCopy = output;
+  framesCopy = frames;
+  slaveCopy = slave;
+  captureStream = [(_OSDHxCamera *)self captureStream];
+  v26[0] = [captureStream streamRef];
+  captureStream2 = [slaveCopy captureStream];
+  v26[1] = [captureStream2 streamRef];
   v13 = [NSArray arrayWithObjects:v26 count:2];
 
-  v14 = [(_OSDHxCamera *)self captureDevice];
-  LODWORD(v12) = [v14 setProperty:kFigCaptureSynchronizedStreamsGroupProperty_ActiveStreams value:v13 error:a6];
+  captureDevice = [(_OSDHxCamera *)self captureDevice];
+  LODWORD(captureStream2) = [captureDevice setProperty:kFigCaptureSynchronizedStreamsGroupProperty_ActiveStreams value:v13 error:error];
 
-  if (!v12)
+  if (!captureStream2)
   {
     goto LABEL_9;
   }
 
-  v15 = [(_OSDHxCamera *)self captureDevice];
+  captureDevice2 = [(_OSDHxCamera *)self captureDevice];
   v16 = kFigCaptureSynchronizedStreamsGroupProperty_MasterConfiguration;
-  v17 = [(_OSDHxCamera *)self captureStream];
-  LODWORD(v16) = [v15 setProperty:v16 value:objc_msgSend(v17 error:{"streamRef"), a6}];
+  captureStream3 = [(_OSDHxCamera *)self captureStream];
+  LODWORD(v16) = [captureDevice2 setProperty:v16 value:objc_msgSend(captureStream3 error:{"streamRef"), error}];
 
   if (v16)
   {
     v18 = &__kCFBooleanFalse;
     v24[0] = kFigCaptureStreamSynchronizedStreamsSlaveConfigurationKey_FrameSkippingEnabled;
     v24[1] = kFigCaptureStreamSynchronizedStreamsSlaveConfigurationKey_StreamingOutputsEnabled;
-    if (v8)
+    if (framesCopy)
     {
       v19 = &__kCFBooleanTrue;
     }
@@ -278,7 +278,7 @@ LABEL_14:
       v19 = &__kCFBooleanFalse;
     }
 
-    if (v7)
+    if (outputCopy)
     {
       v18 = &__kCFBooleanTrue;
     }
@@ -286,8 +286,8 @@ LABEL_14:
     v25[0] = v19;
     v25[1] = v18;
     v20 = [NSDictionary dictionaryWithObjects:v25 forKeys:v24 count:2];
-    v21 = [v10 captureStream];
-    v22 = [v21 setProperty:kFigCaptureStreamProperty_SynchronizedStreamsSlaveConfiguration value:v20 error:a6];
+    captureStream4 = [slaveCopy captureStream];
+    v22 = [captureStream4 setProperty:kFigCaptureStreamProperty_SynchronizedStreamsSlaveConfiguration value:v20 error:error];
   }
 
   else
@@ -299,12 +299,12 @@ LABEL_9:
   return v22;
 }
 
-- (BOOL)enableTestPatternPN9:(BOOL)a3 error:(id *)a4
+- (BOOL)enableTestPatternPN9:(BOOL)n9 error:(id *)error
 {
-  v5 = a3;
-  v6 = [(_OSDHxCamera *)self captureStream];
-  v7 = v6;
-  if (v5)
+  n9Copy = n9;
+  captureStream = [(_OSDHxCamera *)self captureStream];
+  v7 = captureStream;
+  if (n9Copy)
   {
     v8 = @"TestPatternPN9";
   }
@@ -314,47 +314,47 @@ LABEL_9:
     v8 = @"TestPatternNone";
   }
 
-  v9 = [v6 setProperty:@"TestPattern" value:v8 error:a4];
+  v9 = [captureStream setProperty:@"TestPattern" value:v8 error:error];
 
   return v9;
 }
 
-- (void)_receivedPixelBuffer:(__CVBuffer *)a3 time:(id *)a4
+- (void)_receivedPixelBuffer:(__CVBuffer *)buffer time:(id *)time
 {
-  if ([(_OSDHxCamera *)self isStreaming:a3])
+  if ([(_OSDHxCamera *)self isStreaming:buffer])
   {
-    CVPixelBufferRetain(a3);
-    v6 = [(_OSDH9Camera *)self workQueue];
+    CVPixelBufferRetain(buffer);
+    workQueue = [(_OSDH9Camera *)self workQueue];
     v7[0] = _NSConcreteStackBlock;
     v7[1] = 3221225472;
     v7[2] = sub_100007E0C;
     v7[3] = &unk_1000106C8;
     v7[4] = self;
-    v7[5] = a3;
-    dispatch_async(v6, v7);
+    v7[5] = buffer;
+    dispatch_async(workQueue, v7);
   }
 }
 
-- (void)_processBuffer:(__CVBuffer *)a3
+- (void)_processBuffer:(__CVBuffer *)buffer
 {
   [(_OSDHxCamera *)self set_frameCounter:[(_OSDHxCamera *)self _frameCounter]+ 1];
-  v5 = [(_OSDHxCamera *)self previewLayer];
+  previewLayer = [(_OSDHxCamera *)self previewLayer];
 
-  if (v5)
+  if (previewLayer)
   {
-    [(_OSDHxCamera *)self _showFrameOnPreviewLayer:a3];
+    [(_OSDHxCamera *)self _showFrameOnPreviewLayer:buffer];
   }
 
-  v6 = [(_OSDHxCamera *)self frameHandler];
+  frameHandler = [(_OSDHxCamera *)self frameHandler];
 
-  if (v6)
+  if (frameHandler)
   {
-    v9 = CVBufferCopyAttachment(a3, kFigCaptureSampleBufferAttachmentKey_MetadataDictionary, 0);
+    v9 = CVBufferCopyAttachment(buffer, kFigCaptureSampleBufferAttachmentKey_MetadataDictionary, 0);
     v7 = objc_opt_new();
-    [v7 setBuffer:a3];
+    [v7 setBuffer:buffer];
     [v7 setMetadata:v9];
-    v8 = [(_OSDHxCamera *)self frameHandler];
-    (v8)[2](v8, v7);
+    frameHandler2 = [(_OSDHxCamera *)self frameHandler];
+    (frameHandler2)[2](frameHandler2, v7);
   }
 }
 

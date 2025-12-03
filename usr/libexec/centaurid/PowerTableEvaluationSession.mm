@@ -1,8 +1,8 @@
 @interface PowerTableEvaluationSession
-+ (id)voteSetAsString:(unint64_t)a3;
-- (BOOL)setReadiness:(BOOL)a3 forClient:(int64_t)a4 session:(id)a5;
-- (BOOL)setVote:(BOOL)a3 forClient:(int64_t)a4 session:(id)a5;
-- (PowerTableEvaluationSession)initWithQueue:(id)a3 newAssetVersions:(id)a4 previousAssetVersions:(id)a5 delegate:(id)a6;
++ (id)voteSetAsString:(unint64_t)string;
+- (BOOL)setReadiness:(BOOL)readiness forClient:(int64_t)client session:(id)session;
+- (BOOL)setVote:(BOOL)vote forClient:(int64_t)client session:(id)session;
+- (PowerTableEvaluationSession)initWithQueue:(id)queue newAssetVersions:(id)versions previousAssetVersions:(id)assetVersions delegate:(id)delegate;
 - (void)activate;
 - (void)cancelTimer;
 - (void)handleTimeout;
@@ -11,18 +11,18 @@
 - (void)performChipLevelValidation;
 - (void)sessionDidEnd;
 - (void)sessionWillEnd;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 - (void)startTimer;
 @end
 
 @implementation PowerTableEvaluationSession
 
-- (PowerTableEvaluationSession)initWithQueue:(id)a3 newAssetVersions:(id)a4 previousAssetVersions:(id)a5 delegate:(id)a6
+- (PowerTableEvaluationSession)initWithQueue:(id)queue newAssetVersions:(id)versions previousAssetVersions:(id)assetVersions delegate:(id)delegate
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  queueCopy = queue;
+  versionsCopy = versions;
+  assetVersionsCopy = assetVersions;
+  delegateCopy = delegate;
   v22.receiver = self;
   v22.super_class = PowerTableEvaluationSession;
   v15 = [(PowerTableEvaluationSession *)&v22 init];
@@ -31,20 +31,20 @@
     goto LABEL_5;
   }
 
-  if ([v12 count] == 2)
+  if ([versionsCopy count] == 2)
   {
-    if ([v13 count] == 2)
+    if ([assetVersionsCopy count] == 2)
     {
       v15->_state = 0;
-      objc_storeStrong(&v15->_dispatchQueue, a3);
+      objc_storeStrong(&v15->_dispatchQueue, queue);
       v16 = +[NSUUID UUID];
-      v17 = [v16 UUIDString];
+      uUIDString = [v16 UUIDString];
       identifier = v15->_identifier;
-      v15->_identifier = v17;
+      v15->_identifier = uUIDString;
 
-      objc_storeStrong(&v15->_assetVersionsUnderEvaluation, a4);
-      objc_storeStrong(&v15->_previousKnownGoodAssetVersions, a5);
-      objc_storeWeak(&v15->_delegate, v14);
+      objc_storeStrong(&v15->_assetVersionsUnderEvaluation, versions);
+      objc_storeStrong(&v15->_previousKnownGoodAssetVersions, assetVersions);
+      objc_storeWeak(&v15->_delegate, delegateCopy);
 LABEL_5:
 
       return v15;
@@ -76,15 +76,15 @@ LABEL_5:
   [(PowerTableEvaluationSession *)self setState:1];
 }
 
-- (BOOL)setReadiness:(BOOL)a3 forClient:(int64_t)a4 session:(id)a5
+- (BOOL)setReadiness:(BOOL)readiness forClient:(int64_t)client session:(id)session
 {
-  v6 = a3;
-  v9 = a5;
+  readinessCopy = readiness;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v10 = 1 << a4;
+  v10 = 1 << client;
   v11 = sub_100025204();
   v12 = v11;
-  if (((1 << a4) & 3) == 0)
+  if (((1 << client) & 3) == 0)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -95,7 +95,7 @@ LABEL_5:
       v37 = 2114;
       v38 = v29;
       v39 = 2048;
-      v40 = a4;
+      clientCopy = client;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: invalid client %ld", buf, 0x20u);
     }
 
@@ -106,26 +106,26 @@ LABEL_5:
   {
     v13 = [objc_opt_class() description];
     v14 = NSStringFromSelector(a2);
-    v15 = sub_1000107CC(a4);
+    v15 = sub_1000107CC(client);
     v16 = v15;
     v17 = "not ready";
     *buf = 138544130;
     v37 = 2114;
     v36 = v13;
-    if (v6)
+    if (readinessCopy)
     {
       v17 = "ready";
     }
 
     v38 = v14;
     v39 = 2112;
-    v40 = v15;
+    clientCopy = v15;
     v41 = 2080;
     v42 = v17;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %@ %s", buf, 0x2Au);
   }
 
-  if (([v9 isEqual:self->_identifier] & 1) == 0)
+  if (([sessionCopy isEqual:self->_identifier] & 1) == 0)
   {
     v27 = sub_100025204();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -138,7 +138,7 @@ LABEL_5:
       v37 = 2114;
       v38 = v31;
       v39 = 2114;
-      v40 = v9;
+      clientCopy = sessionCopy;
       v41 = 2114;
       v42 = identifier;
       _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: session mismatch: received %{public}@, active %{public}@", buf, 0x2Au);
@@ -163,9 +163,9 @@ LABEL_23:
   }
 
   self->_clientReadinessReceived = clientReadinessReceived | v10;
-  if (!v6)
+  if (!readinessCopy)
   {
-    v22 = sub_1000107CC(a4);
+    v22 = sub_1000107CC(client);
     v23 = [NSString stringWithFormat:@"client%@NotReady", v22];
     sessionEndReason = self->_sessionEndReason;
     self->_sessionEndReason = v23;
@@ -204,15 +204,15 @@ LABEL_15:
   return v25;
 }
 
-- (BOOL)setVote:(BOOL)a3 forClient:(int64_t)a4 session:(id)a5
+- (BOOL)setVote:(BOOL)vote forClient:(int64_t)client session:(id)session
 {
-  v6 = a3;
-  v9 = a5;
+  voteCopy = vote;
+  sessionCopy = session;
   dispatch_assert_queue_V2(self->_dispatchQueue);
-  v10 = 1 << a4;
+  v10 = 1 << client;
   v11 = sub_100025204();
   v12 = v11;
-  if (((1 << a4) & 3) == 0)
+  if (((1 << client) & 3) == 0)
   {
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
@@ -223,7 +223,7 @@ LABEL_15:
       v37 = 2114;
       v38 = v29;
       v39 = 2048;
-      v40 = a4;
+      clientCopy = client;
       _os_log_error_impl(&_mh_execute_header, v12, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: invalid client %ld", buf, 0x20u);
     }
 
@@ -234,26 +234,26 @@ LABEL_15:
   {
     v13 = [objc_opt_class() description];
     v14 = NSStringFromSelector(a2);
-    v15 = sub_1000107CC(a4);
+    v15 = sub_1000107CC(client);
     v16 = v15;
     v17 = "reject";
     *buf = 138544130;
     v37 = 2114;
     v36 = v13;
-    if (v6)
+    if (voteCopy)
     {
       v17 = "accept";
     }
 
     v38 = v14;
     v39 = 2112;
-    v40 = v15;
+    clientCopy = v15;
     v41 = 2080;
     v42 = v17;
     _os_log_impl(&_mh_execute_header, v12, OS_LOG_TYPE_DEFAULT, "%{public}@::%{public}@: %@ votes to %s", buf, 0x2Au);
   }
 
-  if (([v9 isEqual:self->_identifier] & 1) == 0)
+  if (([sessionCopy isEqual:self->_identifier] & 1) == 0)
   {
     v27 = sub_100025204();
     if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
@@ -266,7 +266,7 @@ LABEL_15:
       v37 = 2114;
       v38 = v31;
       v39 = 2114;
-      v40 = v9;
+      clientCopy = sessionCopy;
       v41 = 2114;
       v42 = identifier;
       _os_log_error_impl(&_mh_execute_header, v27, OS_LOG_TYPE_ERROR, "%{public}@::%{public}@: session mismatch: received %{public}@, active %{public}@", buf, 0x2Au);
@@ -291,9 +291,9 @@ LABEL_23:
   }
 
   self->_clientVotesReceived = clientVotesReceived | v10;
-  if (!v6)
+  if (!voteCopy)
   {
-    v22 = sub_1000107CC(a4);
+    v22 = sub_1000107CC(client);
     v23 = [NSString stringWithFormat:@"client%@VotedToReject", v22];
     sessionEndReason = self->_sessionEndReason;
     self->_sessionEndReason = v23;
@@ -384,7 +384,7 @@ LABEL_15:
   }
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   dispatch_assert_queue_V2(self->_dispatchQueue);
   v6 = sub_100025204();
@@ -394,7 +394,7 @@ LABEL_15:
     v8 = NSStringFromSelector(a2);
     identifier = self->_identifier;
     v10 = sub_1000107A4(self->_state);
-    v11 = sub_1000107A4(a3);
+    v11 = sub_1000107A4(state);
     v16 = 138544386;
     v17 = v7;
     v18 = 2114;
@@ -409,8 +409,8 @@ LABEL_15:
   }
 
   [(PowerTableEvaluationSession *)self cancelTimer];
-  self->_state = a3;
-  if ((a3 - 4) <= 2)
+  self->_state = state;
+  if ((state - 4) <= 2)
   {
     [(PowerTableEvaluationSession *)self sessionWillEnd];
   }
@@ -631,7 +631,7 @@ LABEL_20:
     self->_sessionEndReason = v12;
 
     self->_acceptingClientVotes = 0;
-    v9 = self;
+    selfCopy2 = self;
     v10 = 4;
     goto LABEL_9;
   }
@@ -661,10 +661,10 @@ LABEL_20:
     self->_sessionEndReason = v7;
 
     self->_acceptingClientReadiness = 0;
-    v9 = self;
+    selfCopy2 = self;
     v10 = 6;
 LABEL_9:
-    [(PowerTableEvaluationSession *)v9 setState:v10];
+    [(PowerTableEvaluationSession *)selfCopy2 setState:v10];
     goto LABEL_10;
   }
 
@@ -718,7 +718,7 @@ LABEL_9:
       self->_sessionEndReason = v11;
     }
 
-    v7 = self;
+    selfCopy3 = self;
     v8 = 6;
     goto LABEL_15;
   }
@@ -735,7 +735,7 @@ LABEL_9:
       self->_sessionEndReason = v14;
     }
 
-    v7 = self;
+    selfCopy3 = self;
     v8 = 4;
     goto LABEL_15;
   }
@@ -743,10 +743,10 @@ LABEL_9:
   if (!v5)
   {
     self->_acceptingClientVotes = 1;
-    v7 = self;
+    selfCopy3 = self;
     v8 = 3;
 LABEL_15:
-    [(PowerTableEvaluationSession *)v7 setState:v8];
+    [(PowerTableEvaluationSession *)selfCopy3 setState:v8];
   }
 }
 
@@ -814,16 +814,16 @@ LABEL_15:
   }
 }
 
-+ (id)voteSetAsString:(unint64_t)a3
++ (id)voteSetAsString:(unint64_t)string
 {
-  v3 = a3;
+  stringCopy = string;
   v4 = objc_alloc_init(NSMutableString);
   v5 = 0;
   v6 = 1;
   do
   {
     v7 = v6;
-    if (((1 << v5) & v3) != 0)
+    if (((1 << v5) & stringCopy) != 0)
     {
       if ([v4 length])
       {

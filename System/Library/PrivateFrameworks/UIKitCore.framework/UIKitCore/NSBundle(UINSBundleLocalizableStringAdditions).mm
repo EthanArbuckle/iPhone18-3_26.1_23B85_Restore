@@ -18,17 +18,17 @@
 + (void)currentNibPath
 {
   v0 = UICurrentNibPaths();
-  v1 = [v0 lastObject];
+  lastObject = [v0 lastObject];
 
-  v2 = [MEMORY[0x1E695DFB0] null];
-  if (v1 == v2)
+  null = [MEMORY[0x1E695DFB0] null];
+  if (lastObject == null)
   {
     v3 = 0;
   }
 
   else
   {
-    v3 = v1;
+    v3 = lastObject;
   }
 
   v4 = v3;
@@ -39,9 +39,9 @@
 + (id)currentNibLoadingBundle
 {
   v0 = UICurrentNibLoadingBundles();
-  v1 = [v0 lastObject];
+  lastObject = [v0 lastObject];
 
-  return v1;
+  return lastObject;
 }
 
 + (void)popNibLoadingBundle
@@ -62,8 +62,8 @@
 
   else
   {
-    v5 = [MEMORY[0x1E695DFB0] null];
-    [v4 addObject:v5];
+    null = [MEMORY[0x1E695DFB0] null];
+    [v4 addObject:null];
   }
 }
 

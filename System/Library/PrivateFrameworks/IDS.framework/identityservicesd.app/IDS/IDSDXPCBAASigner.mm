@@ -1,27 +1,27 @@
 @interface IDSDXPCBAASigner
-- (IDSDXPCBAASigner)initWithTopic:(id)a3 queue:(id)a4 connection:(id)a5;
-- (void)baaHeadersBySigningData:(id)a3 serverTimestamp:(id)a4 completion:(id)a5;
-- (void)purgeBAACertWithCompletion:(id)a3;
+- (IDSDXPCBAASigner)initWithTopic:(id)topic queue:(id)queue connection:(id)connection;
+- (void)baaHeadersBySigningData:(id)data serverTimestamp:(id)timestamp completion:(id)completion;
+- (void)purgeBAACertWithCompletion:(id)completion;
 @end
 
 @implementation IDSDXPCBAASigner
 
-- (IDSDXPCBAASigner)initWithTopic:(id)a3 queue:(id)a4 connection:(id)a5
+- (IDSDXPCBAASigner)initWithTopic:(id)topic queue:(id)queue connection:(id)connection
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
-  v12 = [v11 valueForEntitlement:kIDSRegistrationEntitlement];
+  topicCopy = topic;
+  queueCopy = queue;
+  connectionCopy = connection;
+  v12 = [connectionCopy valueForEntitlement:kIDSRegistrationEntitlement];
   objc_opt_class();
-  v41 = a3;
-  v42 = self;
-  obj = a4;
+  topicCopy2 = topic;
+  selfCopy = self;
+  obj = queue;
   if ((objc_opt_isKindOfClass() & 1) == 0)
   {
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v20 = [v12 isEqualToString:v9];
+      bOOLValue = [v12 isEqualToString:topicCopy];
     }
 
     else
@@ -33,14 +33,14 @@
         goto LABEL_19;
       }
 
-      v20 = [v12 BOOLValue];
+      bOOLValue = [v12 BOOLValue];
     }
 
-    v16 = v20;
+    v16 = bOOLValue;
     goto LABEL_19;
   }
 
-  v38 = v11;
+  v38 = connectionCopy;
   v50 = 0u;
   v51 = 0u;
   v48 = 0u;
@@ -65,7 +65,7 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v16 |= [v19 isEqualToString:v9];
+          v16 |= [v19 isEqualToString:topicCopy];
         }
       }
 
@@ -80,14 +80,14 @@
     v16 = 0;
   }
 
-  v11 = v38;
+  connectionCopy = v38;
 LABEL_19:
-  v21 = [v11 valueForEntitlement:kIDSMessagingEntitlement];
+  v21 = [connectionCopy valueForEntitlement:kIDSMessagingEntitlement];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
     v37 = v12;
-    v39 = v10;
+    v39 = queueCopy;
     v46 = 0u;
     v47 = 0u;
     v44 = 0u;
@@ -97,7 +97,7 @@ LABEL_19:
     if (v23)
     {
       v24 = v23;
-      v25 = v11;
+      v25 = connectionCopy;
       v26 = *v45;
       do
       {
@@ -112,7 +112,7 @@ LABEL_19:
           objc_opt_class();
           if (objc_opt_isKindOfClass())
           {
-            v16 |= [v28 isEqualToString:v9];
+            v16 |= [v28 isEqualToString:topicCopy];
           }
         }
 
@@ -124,12 +124,12 @@ LABEL_19:
 
     else
     {
-      v25 = v11;
+      v25 = connectionCopy;
     }
 
-    v11 = v25;
+    connectionCopy = v25;
     v12 = v37;
-    v10 = v39;
+    queueCopy = v39;
   }
 
   else
@@ -137,7 +137,7 @@ LABEL_19:
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      if (v16 & 1) != 0 || ([v21 isEqualToString:v9])
+      if (v16 & 1) != 0 || ([v21 isEqualToString:topicCopy])
       {
         goto LABEL_43;
       }
@@ -160,14 +160,14 @@ LABEL_19:
   if (v16)
   {
 LABEL_43:
-    v43.receiver = v42;
+    v43.receiver = selfCopy;
     v43.super_class = IDSDXPCBAASigner;
     v32 = [(IDSDXPCBAASigner *)&v43 init];
     v33 = v32;
     if (v32)
     {
       objc_storeStrong(&v32->_queue, obj);
-      objc_storeStrong(&v33->_topic, v41);
+      objc_storeStrong(&v33->_topic, topicCopy2);
       v34 = [[IDSBAASigner alloc] initWithQueue:v33->_queue];
       baaSigner = v33->_baaSigner;
       v33->_baaSigner = v34;
@@ -183,27 +183,27 @@ LABEL_37:
   if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v53 = v11;
+    v53 = connectionCopy;
     _os_log_impl(&_mh_execute_header, v29, OS_LOG_TYPE_DEFAULT, "Missing IDS Registration entitlement -- failing creation of IDSDXPCBAASigner collaborator {connection: %@}", buf, 0xCu);
   }
 
   v30 = 0;
-  v31 = v42;
+  v31 = selfCopy;
 LABEL_46:
 
   return v30;
 }
 
-- (void)baaHeadersBySigningData:(id)a3 serverTimestamp:(id)a4 completion:(id)a5
+- (void)baaHeadersBySigningData:(id)data serverTimestamp:(id)timestamp completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (v10)
+  dataCopy = data;
+  timestampCopy = timestamp;
+  completionCopy = completion;
+  if (completionCopy)
   {
-    v11 = [(IDSDXPCBAASigner *)self baaSigner];
-    v12 = [(IDSDXPCBAASigner *)self topic];
-    [v11 headersBySigningData:v8 serverTimestamp:v9 topic:v12 completion:v10];
+    baaSigner = [(IDSDXPCBAASigner *)self baaSigner];
+    topic = [(IDSDXPCBAASigner *)self topic];
+    [baaSigner headersBySigningData:dataCopy serverTimestamp:timestampCopy topic:topic completion:completionCopy];
   }
 
   else
@@ -216,12 +216,12 @@ LABEL_46:
   }
 }
 
-- (void)purgeBAACertWithCompletion:(id)a3
+- (void)purgeBAACertWithCompletion:(id)completion
 {
-  v4 = a3;
-  v6 = [(IDSDXPCBAASigner *)self baaSigner];
-  v5 = [(IDSDXPCBAASigner *)self topic];
-  [v6 purgeBAACertForTopic:v5 completion:v4];
+  completionCopy = completion;
+  baaSigner = [(IDSDXPCBAASigner *)self baaSigner];
+  topic = [(IDSDXPCBAASigner *)self topic];
+  [baaSigner purgeBAACertForTopic:topic completion:completionCopy];
 }
 
 @end

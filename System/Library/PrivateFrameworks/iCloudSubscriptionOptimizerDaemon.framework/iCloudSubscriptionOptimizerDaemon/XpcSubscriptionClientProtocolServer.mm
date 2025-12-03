@@ -1,16 +1,16 @@
 @interface XpcSubscriptionClientProtocolServer
-- (void)request:(id)a3 withReply:(id)a4;
+- (void)request:(id)request withReply:(id)reply;
 @end
 
 @implementation XpcSubscriptionClientProtocolServer
 
-- (void)request:(id)a3 withReply:(id)a4
+- (void)request:(id)request withReply:(id)reply
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(reply);
   v6 = swift_allocObject();
   *(v6 + 16) = v5;
   v7 = qword_280A32E50;
-  v8 = a3;
+  requestCopy = request;
 
   if (v7 != -1)
   {
@@ -25,7 +25,7 @@
   *(v11 + 16) = sub_275B76E44;
   *(v11 + 24) = v6;
 
-  XpcSubscriptionClientProtocolServer.request(_:withReply:)(v8 + v10, sub_275B77D70, v11);
+  XpcSubscriptionClientProtocolServer.request(_:withReply:)(requestCopy + v10, sub_275B77D70, v11);
 }
 
 @end

@@ -9,9 +9,9 @@
 - (id)ska_sha256Hash
 {
   v9 = *MEMORY[0x277D85DE8];
-  v1 = [a1 UTF8String];
-  v2 = strlen(v1);
-  CC_SHA256(v1, v2, md);
+  uTF8String = [self UTF8String];
+  v2 = strlen(uTF8String);
+  CC_SHA256(uTF8String, v2, md);
   v3 = [MEMORY[0x277CCAB68] stringWithCapacity:64];
   for (i = 0; i != 32; ++i)
   {
@@ -46,10 +46,10 @@
 
 - (id)clientIDFromPresenceIdentifier
 {
-  v1 = [a1 componentsSeparatedByString:@"-"];
-  v2 = [v1 firstObject];
+  v1 = [self componentsSeparatedByString:@"-"];
+  firstObject = [v1 firstObject];
 
-  return v2;
+  return firstObject;
 }
 
 @end

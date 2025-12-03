@@ -1,27 +1,27 @@
 @interface CKDPShareMetadata
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (id)_participantPermissionCKLogValue;
 - (id)_participantStateCKLogValue;
 - (id)_participantTypeCKLogValue;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)participantPermissionAsString:(int)a3;
-- (id)participantStateAsString:(int)a3;
-- (id)participantTypeAsString:(int)a3;
-- (int)StringAsParticipantPermission:(id)a3;
-- (int)StringAsParticipantState:(id)a3;
-- (int)StringAsParticipantType:(id)a3;
+- (id)participantPermissionAsString:(int)string;
+- (id)participantStateAsString:(int)string;
+- (id)participantTypeAsString:(int)string;
+- (int)StringAsParticipantPermission:(id)permission;
+- (int)StringAsParticipantState:(id)state;
+- (int)StringAsParticipantType:(id)type;
 - (int)participantPermission;
 - (int)participantState;
 - (int)participantType;
 - (unint64_t)hash;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)setHasDenyAccessRequests:(BOOL)a3;
-- (void)setHasParticipantState:(BOOL)a3;
-- (void)setHasParticipantType:(BOOL)a3;
-- (void)writeTo:(id)a3;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)setHasDenyAccessRequests:(BOOL)requests;
+- (void)setHasParticipantState:(BOOL)state;
+- (void)setHasParticipantType:(BOOL)type;
+- (void)writeTo:(id)to;
 @end
 
 @implementation CKDPShareMetadata
@@ -87,35 +87,35 @@
   }
 }
 
-- (id)participantPermissionAsString:(int)a3
+- (id)participantPermissionAsString:(int)string
 {
-  if ((a3 - 1) >= 3)
+  if ((string - 1) >= 3)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CCA0[a3 - 1];
+    v4 = off_27854CCA0[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsParticipantPermission:(id)a3
+- (int)StringAsParticipantPermission:(id)permission
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"none"))
+  permissionCopy = permission;
+  if (objc_msgSend_isEqualToString_(permissionCopy, v4, @"none"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"readOnly"))
+  else if (objc_msgSend_isEqualToString_(permissionCopy, v5, @"readOnly"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"readWrite"))
+  else if (objc_msgSend_isEqualToString_(permissionCopy, v7, @"readWrite"))
   {
     v6 = 3;
   }
@@ -141,9 +141,9 @@
   }
 }
 
-- (void)setHasParticipantState:(BOOL)a3
+- (void)setHasParticipantState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 2;
   }
@@ -156,40 +156,40 @@
   *&self->_has = *&self->_has & 0xFD | v3;
 }
 
-- (id)participantStateAsString:(int)a3
+- (id)participantStateAsString:(int)string
 {
-  if ((a3 - 1) >= 4)
+  if ((string - 1) >= 4)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CCB8[a3 - 1];
+    v4 = off_27854CCB8[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsParticipantState:(id)a3
+- (int)StringAsParticipantState:(id)state
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"invited"))
+  stateCopy = state;
+  if (objc_msgSend_isEqualToString_(stateCopy, v4, @"invited"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"accepted"))
+  else if (objc_msgSend_isEqualToString_(stateCopy, v5, @"accepted"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"removed"))
+  else if (objc_msgSend_isEqualToString_(stateCopy, v7, @"removed"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"unsubscribed"))
+  else if (objc_msgSend_isEqualToString_(stateCopy, v8, @"unsubscribed"))
   {
     v6 = 4;
   }
@@ -215,9 +215,9 @@
   }
 }
 
-- (void)setHasParticipantType:(BOOL)a3
+- (void)setHasParticipantType:(BOOL)type
 {
-  if (a3)
+  if (type)
   {
     v3 = 4;
   }
@@ -230,40 +230,40 @@
   *&self->_has = *&self->_has & 0xFB | v3;
 }
 
-- (id)participantTypeAsString:(int)a3
+- (id)participantTypeAsString:(int)string
 {
-  if ((a3 - 1) >= 4)
+  if ((string - 1) >= 4)
   {
-    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", a3);
+    v4 = objc_msgSend_stringWithFormat_(MEMORY[0x277CCACA8], a2, @"(unknown: %i)", string);
   }
 
   else
   {
-    v4 = off_27854CCD8[a3 - 1];
+    v4 = off_27854CCD8[string - 1];
   }
 
   return v4;
 }
 
-- (int)StringAsParticipantType:(id)a3
+- (int)StringAsParticipantType:(id)type
 {
-  v3 = a3;
-  if (objc_msgSend_isEqualToString_(v3, v4, @"owner"))
+  typeCopy = type;
+  if (objc_msgSend_isEqualToString_(typeCopy, v4, @"owner"))
   {
     v6 = 1;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v5, @"administrator"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v5, @"administrator"))
   {
     v6 = 2;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v7, @"user"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v7, @"user"))
   {
     v6 = 3;
   }
 
-  else if (objc_msgSend_isEqualToString_(v3, v8, @"publicUser"))
+  else if (objc_msgSend_isEqualToString_(typeCopy, v8, @"publicUser"))
   {
     v6 = 4;
   }
@@ -276,9 +276,9 @@
   return v6;
 }
 
-- (void)setHasDenyAccessRequests:(BOOL)a3
+- (void)setHasDenyAccessRequests:(BOOL)requests
 {
-  if (a3)
+  if (requests)
   {
     v3 = 8;
   }
@@ -421,32 +421,32 @@ LABEL_25:
   return v6;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
-  v10 = v4;
+  toCopy = to;
+  v10 = toCopy;
   if (self->_routingKey)
   {
     PBDataWriterWriteStringField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_protectedFullToken)
   {
     PBDataWriterWriteDataField();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_ownerParticipant)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_callerParticipant)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   has = self->_has;
@@ -454,7 +454,7 @@ LABEL_25:
   {
     participantPermission = self->_participantPermission;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -475,73 +475,73 @@ LABEL_11:
 
   participantState = self->_participantState;
   PBDataWriterWriteInt32Field();
-  v4 = v10;
+  toCopy = v10;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
     participantType = self->_participantType;
     PBDataWriterWriteInt32Field();
-    v4 = v10;
+    toCopy = v10;
   }
 
 LABEL_13:
   if (self->_rootRecordType)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if (self->_signedCryptoRequirements)
   {
     PBDataWriterWriteSubmessage();
-    v4 = v10;
+    toCopy = v10;
   }
 
   if ((*&self->_has & 8) != 0)
   {
     denyAccessRequests = self->_denyAccessRequests;
     PBDataWriterWriteBOOLField();
-    v4 = v10;
+    toCopy = v10;
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   routingKey = self->_routingKey;
-  v13 = v4;
+  v13 = toCopy;
   if (routingKey)
   {
-    objc_msgSend_setRoutingKey_(v4, v5, routingKey);
-    v4 = v13;
+    objc_msgSend_setRoutingKey_(toCopy, v5, routingKey);
+    toCopy = v13;
   }
 
   protectedFullToken = self->_protectedFullToken;
   if (protectedFullToken)
   {
     objc_msgSend_setProtectedFullToken_(v13, v5, protectedFullToken);
-    v4 = v13;
+    toCopy = v13;
   }
 
   ownerParticipant = self->_ownerParticipant;
   if (ownerParticipant)
   {
     objc_msgSend_setOwnerParticipant_(v13, v5, ownerParticipant);
-    v4 = v13;
+    toCopy = v13;
   }
 
   callerParticipant = self->_callerParticipant;
   if (callerParticipant)
   {
     objc_msgSend_setCallerParticipant_(v13, v5, callerParticipant);
-    v4 = v13;
+    toCopy = v13;
   }
 
   has = self->_has;
   if (has)
   {
-    *(v4 + 6) = self->_participantPermission;
-    *(v4 + 76) |= 1u;
+    *(toCopy + 6) = self->_participantPermission;
+    *(toCopy + 76) |= 1u;
     has = self->_has;
     if ((has & 2) == 0)
     {
@@ -560,13 +560,13 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  *(v4 + 7) = self->_participantState;
-  *(v4 + 76) |= 2u;
+  *(toCopy + 7) = self->_participantState;
+  *(toCopy + 76) |= 2u;
   if ((*&self->_has & 4) != 0)
   {
 LABEL_12:
-    *(v4 + 8) = self->_participantType;
-    *(v4 + 76) |= 4u;
+    *(toCopy + 8) = self->_participantType;
+    *(toCopy + 76) |= 4u;
   }
 
 LABEL_13:
@@ -574,41 +574,41 @@ LABEL_13:
   if (rootRecordType)
   {
     objc_msgSend_setRootRecordType_(v13, v5, rootRecordType);
-    v4 = v13;
+    toCopy = v13;
   }
 
   signedCryptoRequirements = self->_signedCryptoRequirements;
   if (signedCryptoRequirements)
   {
     objc_msgSend_setSignedCryptoRequirements_(v13, v5, signedCryptoRequirements);
-    v4 = v13;
+    toCopy = v13;
   }
 
   if ((*&self->_has & 8) != 0)
   {
-    *(v4 + 72) = self->_denyAccessRequests;
-    *(v4 + 76) |= 8u;
+    *(toCopy + 72) = self->_denyAccessRequests;
+    *(toCopy + 76) |= 8u;
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v5 = objc_opt_class();
-  v7 = objc_msgSend_allocWithZone_(v5, v6, a3);
+  v7 = objc_msgSend_allocWithZone_(v5, v6, zone);
   v10 = objc_msgSend_init(v7, v8, v9);
-  v12 = objc_msgSend_copyWithZone_(self->_routingKey, v11, a3);
+  v12 = objc_msgSend_copyWithZone_(self->_routingKey, v11, zone);
   v13 = *(v10 + 56);
   *(v10 + 56) = v12;
 
-  v15 = objc_msgSend_copyWithZone_(self->_protectedFullToken, v14, a3);
+  v15 = objc_msgSend_copyWithZone_(self->_protectedFullToken, v14, zone);
   v16 = *(v10 + 40);
   *(v10 + 40) = v15;
 
-  v18 = objc_msgSend_copyWithZone_(self->_ownerParticipant, v17, a3);
+  v18 = objc_msgSend_copyWithZone_(self->_ownerParticipant, v17, zone);
   v19 = *(v10 + 16);
   *(v10 + 16) = v18;
 
-  v21 = objc_msgSend_copyWithZone_(self->_callerParticipant, v20, a3);
+  v21 = objc_msgSend_copyWithZone_(self->_callerParticipant, v20, zone);
   v22 = *(v10 + 8);
   *(v10 + 8) = v21;
 
@@ -645,11 +645,11 @@ LABEL_4:
   }
 
 LABEL_5:
-  v25 = objc_msgSend_copyWithZone_(self->_rootRecordType, v23, a3);
+  v25 = objc_msgSend_copyWithZone_(self->_rootRecordType, v23, zone);
   v26 = *(v10 + 48);
   *(v10 + 48) = v25;
 
-  v28 = objc_msgSend_copyWithZone_(self->_signedCryptoRequirements, v27, a3);
+  v28 = objc_msgSend_copyWithZone_(self->_signedCryptoRequirements, v27, zone);
   v29 = *(v10 + 64);
   *(v10 + 64) = v28;
 
@@ -662,17 +662,17 @@ LABEL_5:
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   v5 = objc_opt_class();
-  if (!objc_msgSend_isMemberOfClass_(v4, v6, v5))
+  if (!objc_msgSend_isMemberOfClass_(equalCopy, v6, v5))
   {
     goto LABEL_31;
   }
 
   routingKey = self->_routingKey;
-  v9 = v4[7];
+  v9 = equalCopy[7];
   if (routingKey | v9)
   {
     if (!objc_msgSend_isEqual_(routingKey, v7, v9))
@@ -682,7 +682,7 @@ LABEL_5:
   }
 
   protectedFullToken = self->_protectedFullToken;
-  v11 = v4[5];
+  v11 = equalCopy[5];
   if (protectedFullToken | v11)
   {
     if (!objc_msgSend_isEqual_(protectedFullToken, v7, v11))
@@ -692,7 +692,7 @@ LABEL_5:
   }
 
   ownerParticipant = self->_ownerParticipant;
-  v13 = v4[2];
+  v13 = equalCopy[2];
   if (ownerParticipant | v13)
   {
     if (!objc_msgSend_isEqual_(ownerParticipant, v7, v13))
@@ -702,7 +702,7 @@ LABEL_5:
   }
 
   callerParticipant = self->_callerParticipant;
-  v15 = v4[1];
+  v15 = equalCopy[1];
   if (callerParticipant | v15)
   {
     if (!objc_msgSend_isEqual_(callerParticipant, v7, v15))
@@ -711,55 +711,55 @@ LABEL_5:
     }
   }
 
-  v16 = *(v4 + 76);
+  v16 = *(equalCopy + 76);
   if (*&self->_has)
   {
-    if ((*(v4 + 76) & 1) == 0 || self->_participantPermission != *(v4 + 6))
+    if ((*(equalCopy + 76) & 1) == 0 || self->_participantPermission != *(equalCopy + 6))
     {
       goto LABEL_31;
     }
   }
 
-  else if (*(v4 + 76))
+  else if (*(equalCopy + 76))
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 2) != 0)
   {
-    if ((*(v4 + 76) & 2) == 0 || self->_participantState != *(v4 + 7))
+    if ((*(equalCopy + 76) & 2) == 0 || self->_participantState != *(equalCopy + 7))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 76) & 2) != 0)
+  else if ((*(equalCopy + 76) & 2) != 0)
   {
     goto LABEL_31;
   }
 
   if ((*&self->_has & 4) != 0)
   {
-    if ((*(v4 + 76) & 4) == 0 || self->_participantType != *(v4 + 8))
+    if ((*(equalCopy + 76) & 4) == 0 || self->_participantType != *(equalCopy + 8))
     {
       goto LABEL_31;
     }
   }
 
-  else if ((*(v4 + 76) & 4) != 0)
+  else if ((*(equalCopy + 76) & 4) != 0)
   {
     goto LABEL_31;
   }
 
   rootRecordType = self->_rootRecordType;
-  v18 = v4[6];
+  v18 = equalCopy[6];
   if (rootRecordType | v18 && !objc_msgSend_isEqual_(rootRecordType, v7, v18))
   {
     goto LABEL_31;
   }
 
   signedCryptoRequirements = self->_signedCryptoRequirements;
-  v20 = v4[8];
+  v20 = equalCopy[8];
   if (signedCryptoRequirements | v20)
   {
     if (!objc_msgSend_isEqual_(signedCryptoRequirements, v7, v20))
@@ -768,10 +768,10 @@ LABEL_5:
     }
   }
 
-  v21 = (*(v4 + 76) & 8) == 0;
+  v21 = (*(equalCopy + 76) & 8) == 0;
   if ((*&self->_has & 8) != 0)
   {
-    if ((*(v4 + 76) & 8) == 0)
+    if ((*(equalCopy + 76) & 8) == 0)
     {
 LABEL_31:
       v21 = 0;
@@ -780,13 +780,13 @@ LABEL_31:
 
     if (self->_denyAccessRequests)
     {
-      if ((v4[9] & 1) == 0)
+      if ((equalCopy[9] & 1) == 0)
       {
         goto LABEL_31;
       }
     }
 
-    else if (*(v4 + 72))
+    else if (*(equalCopy + 72))
     {
       goto LABEL_31;
     }
@@ -856,26 +856,26 @@ LABEL_8:
   return v6 ^ v24 ^ v9 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v21 ^ v22;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  v4 = a3;
-  v5 = *(v4 + 7);
-  v16 = v4;
+  fromCopy = from;
+  v5 = *(fromCopy + 7);
+  v16 = fromCopy;
   if (v5)
   {
-    objc_msgSend_setRoutingKey_(self, v4, v5);
-    v4 = v16;
+    objc_msgSend_setRoutingKey_(self, fromCopy, v5);
+    fromCopy = v16;
   }
 
-  v6 = *(v4 + 5);
+  v6 = *(fromCopy + 5);
   if (v6)
   {
-    objc_msgSend_setProtectedFullToken_(self, v4, v6);
-    v4 = v16;
+    objc_msgSend_setProtectedFullToken_(self, fromCopy, v6);
+    fromCopy = v16;
   }
 
   ownerParticipant = self->_ownerParticipant;
-  v8 = *(v4 + 2);
+  v8 = *(fromCopy + 2);
   if (ownerParticipant)
   {
     if (!v8)
@@ -883,7 +883,7 @@ LABEL_8:
       goto LABEL_11;
     }
 
-    objc_msgSend_mergeFrom_(ownerParticipant, v4, v8);
+    objc_msgSend_mergeFrom_(ownerParticipant, fromCopy, v8);
   }
 
   else
@@ -893,13 +893,13 @@ LABEL_8:
       goto LABEL_11;
     }
 
-    objc_msgSend_setOwnerParticipant_(self, v4, v8);
+    objc_msgSend_setOwnerParticipant_(self, fromCopy, v8);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_11:
   callerParticipant = self->_callerParticipant;
-  v10 = *(v4 + 1);
+  v10 = *(fromCopy + 1);
   if (callerParticipant)
   {
     if (!v10)
@@ -907,7 +907,7 @@ LABEL_11:
       goto LABEL_17;
     }
 
-    objc_msgSend_mergeFrom_(callerParticipant, v4, v10);
+    objc_msgSend_mergeFrom_(callerParticipant, fromCopy, v10);
   }
 
   else
@@ -917,17 +917,17 @@ LABEL_11:
       goto LABEL_17;
     }
 
-    objc_msgSend_setCallerParticipant_(self, v4, v10);
+    objc_msgSend_setCallerParticipant_(self, fromCopy, v10);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_17:
-  v11 = *(v4 + 76);
+  v11 = *(fromCopy + 76);
   if (v11)
   {
-    self->_participantPermission = *(v4 + 6);
+    self->_participantPermission = *(fromCopy + 6);
     *&self->_has |= 1u;
-    v11 = *(v4 + 76);
+    v11 = *(fromCopy + 76);
     if ((v11 & 2) == 0)
     {
 LABEL_19:
@@ -940,23 +940,23 @@ LABEL_19:
     }
   }
 
-  else if ((*(v4 + 76) & 2) == 0)
+  else if ((*(fromCopy + 76) & 2) == 0)
   {
     goto LABEL_19;
   }
 
-  self->_participantState = *(v4 + 7);
+  self->_participantState = *(fromCopy + 7);
   *&self->_has |= 2u;
-  if ((*(v4 + 76) & 4) != 0)
+  if ((*(fromCopy + 76) & 4) != 0)
   {
 LABEL_20:
-    self->_participantType = *(v4 + 8);
+    self->_participantType = *(fromCopy + 8);
     *&self->_has |= 4u;
   }
 
 LABEL_21:
   rootRecordType = self->_rootRecordType;
-  v13 = *(v4 + 6);
+  v13 = *(fromCopy + 6);
   if (rootRecordType)
   {
     if (!v13)
@@ -964,7 +964,7 @@ LABEL_21:
       goto LABEL_30;
     }
 
-    objc_msgSend_mergeFrom_(rootRecordType, v4, v13);
+    objc_msgSend_mergeFrom_(rootRecordType, fromCopy, v13);
   }
 
   else
@@ -974,13 +974,13 @@ LABEL_21:
       goto LABEL_30;
     }
 
-    objc_msgSend_setRootRecordType_(self, v4, v13);
+    objc_msgSend_setRootRecordType_(self, fromCopy, v13);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_30:
   signedCryptoRequirements = self->_signedCryptoRequirements;
-  v15 = *(v4 + 8);
+  v15 = *(fromCopy + 8);
   if (signedCryptoRequirements)
   {
     if (!v15)
@@ -988,7 +988,7 @@ LABEL_30:
       goto LABEL_36;
     }
 
-    objc_msgSend_mergeFrom_(signedCryptoRequirements, v4, v15);
+    objc_msgSend_mergeFrom_(signedCryptoRequirements, fromCopy, v15);
   }
 
   else
@@ -998,14 +998,14 @@ LABEL_30:
       goto LABEL_36;
     }
 
-    objc_msgSend_setSignedCryptoRequirements_(self, v4, v15);
+    objc_msgSend_setSignedCryptoRequirements_(self, fromCopy, v15);
   }
 
-  v4 = v16;
+  fromCopy = v16;
 LABEL_36:
-  if ((*(v4 + 76) & 8) != 0)
+  if ((*(fromCopy + 76) & 8) != 0)
   {
-    self->_denyAccessRequests = *(v4 + 72);
+    self->_denyAccessRequests = *(fromCopy + 72);
     *&self->_has |= 8u;
   }
 

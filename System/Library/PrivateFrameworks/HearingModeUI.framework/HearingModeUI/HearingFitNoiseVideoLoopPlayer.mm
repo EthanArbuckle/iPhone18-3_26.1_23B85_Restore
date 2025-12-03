@@ -1,18 +1,18 @@
 @interface HearingFitNoiseVideoLoopPlayer
-- (_TtC13HearingModeUI30HearingFitNoiseVideoLoopPlayer)initWithCoder:(id)a3;
+- (_TtC13HearingModeUI30HearingFitNoiseVideoLoopPlayer)initWithCoder:(id)coder;
 - (void)layoutSubviews;
-- (void)traitCollectionDidChange:(id)a3;
+- (void)traitCollectionDidChange:(id)change;
 @end
 
 @implementation HearingFitNoiseVideoLoopPlayer
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   sub_252034754();
 }
 
-- (_TtC13HearingModeUI30HearingFitNoiseVideoLoopPlayer)initWithCoder:(id)a3
+- (_TtC13HearingModeUI30HearingFitNoiseVideoLoopPlayer)initWithCoder:(id)coder
 {
   v4 = OBJC_IVAR____TtC13HearingModeUI30HearingFitNoiseVideoLoopPlayer_videoContainerLayoutGuide;
   *(&self->super.super.super.super.isa + v4) = [objc_allocWithZone(MEMORY[0x277D756D0]) init];
@@ -23,11 +23,11 @@
   return result;
 }
 
-- (void)traitCollectionDidChange:(id)a3
+- (void)traitCollectionDidChange:(id)change
 {
-  v5 = a3;
-  v6 = self;
-  sub_252034AD4(a3);
+  changeCopy = change;
+  selfCopy = self;
+  sub_252034AD4(change);
 }
 
 @end

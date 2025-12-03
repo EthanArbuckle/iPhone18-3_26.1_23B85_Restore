@@ -1,5 +1,5 @@
 @interface _CTSplicedFontKey
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (void)dealloc;
 @end
 
@@ -12,9 +12,9 @@
   [(_CTSplicedFontKey *)&v3 dealloc];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (self == a3)
+  if (self == equal)
   {
     LOBYTE(v16) = 1;
     return v16;
@@ -23,7 +23,7 @@
   v34 = v5;
   v35 = v4;
   v36 = v3;
-  if (!a3)
+  if (!equal)
   {
     goto LABEL_21;
   }
@@ -35,68 +35,68 @@
   }
 
   hash = self->_hash;
-  if (hash != [a3 hash])
+  if (hash != [equal hash])
   {
     goto LABEL_21;
   }
 
   name = self->_name;
-  if (name == [a3 name] || (v16 = -[NSString isEqualToString:](self->_name, "isEqualToString:", objc_msgSend(a3, "name"))))
+  if (name == [equal name] || (v16 = -[NSString isEqualToString:](self->_name, "isEqualToString:", objc_msgSend(equal, "name"))))
   {
     language = self->_language;
-    if (language == [a3 language] || (v16 = -[NSString isEqualToString:](self->_language, "isEqualToString:", objc_msgSend(a3, "language"))))
+    if (language == [equal language] || (v16 = -[NSString isEqualToString:](self->_language, "isEqualToString:", objc_msgSend(equal, "language"))))
     {
       lineHeightRatio = self->_lineHeightRatio;
-      [a3 lineHeightRatio];
+      [equal lineHeightRatio];
       if (lineHeightRatio != v19)
       {
         goto LABEL_21;
       }
 
       lineSpacingOverride = self->_lineSpacingOverride;
-      [a3 lineSpacingOverride];
+      [equal lineSpacingOverride];
       if (lineSpacingOverride != v21)
       {
         goto LABEL_21;
       }
 
       legibilityWeight = self->_legibilityWeight;
-      if (legibilityWeight != [a3 legibilityWeight])
+      if (legibilityWeight != [equal legibilityWeight])
       {
         goto LABEL_21;
       }
 
       ignoreLegibilityWeight = self->_ignoreLegibilityWeight;
-      if (ignoreLegibilityWeight != [a3 ignoreLegibilityWeight])
+      if (ignoreLegibilityWeight != [equal ignoreLegibilityWeight])
       {
         goto LABEL_21;
       }
 
       sizeCategory = self->_sizeCategory;
-      if (sizeCategory != [a3 sizeCategory])
+      if (sizeCategory != [equal sizeCategory])
       {
         goto LABEL_21;
       }
 
       design = self->_design;
-      if (design == [a3 design] || (v16 = -[NSString isEqualToString:](self->_design, "isEqualToString:", objc_msgSend(a3, "design"))))
+      if (design == [equal design] || (v16 = -[NSString isEqualToString:](self->_design, "isEqualToString:", objc_msgSend(equal, "design"))))
       {
         weight = self->_weight;
-        [a3 weight];
+        [equal weight];
         if (weight == v27)
         {
           width = self->_width;
-          [a3 width];
+          [equal width];
           if (width == v29)
           {
             grade = self->_grade;
-            if (grade == [a3 grade])
+            if (grade == [equal grade])
             {
               platform = self->_platform;
-              if (platform == [a3 platform])
+              if (platform == [equal platform])
               {
                 modifier = self->_modifier;
-                LOBYTE(v16) = modifier == [a3 modifier];
+                LOBYTE(v16) = modifier == [equal modifier];
                 return v16;
               }
             }

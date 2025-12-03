@@ -4,33 +4,33 @@
 - (ACAccount)account;
 - (AMSBagProtocol)bag;
 - (AMSProcessInfo)clientInfo;
-- (AMSUISubscriptionsViewController)initWithAccount:(id)a3 bag:(id)a4 clientInfo:(id)a5;
+- (AMSUISubscriptionsViewController)initWithAccount:(id)account bag:(id)bag clientInfo:(id)info;
 - (NSDictionary)metricsOverlay;
-- (void)_setChildViewController:(id)a3;
+- (void)_setChildViewController:(id)controller;
 - (void)_setupChildViewController;
 - (void)_setupLayout;
 - (void)_startLoading;
-- (void)setAccount:(id)a3;
-- (void)setBag:(id)a3;
-- (void)setClientInfo:(id)a3;
-- (void)setMetricsOverlay:(id)a3;
+- (void)setAccount:(id)account;
+- (void)setBag:(id)bag;
+- (void)setClientInfo:(id)info;
+- (void)setMetricsOverlay:(id)overlay;
 - (void)viewDidLoad;
 - (void)viewWillLayoutSubviews;
 @end
 
 @implementation AMSUISubscriptionsViewController
 
-- (AMSUISubscriptionsViewController)initWithAccount:(id)a3 bag:(id)a4 clientInfo:(id)a5
+- (AMSUISubscriptionsViewController)initWithAccount:(id)account bag:(id)bag clientInfo:(id)info
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  accountCopy = account;
+  bagCopy = bag;
+  infoCopy = info;
   v15.receiver = self;
   v15.super_class = AMSUISubscriptionsViewController;
   v11 = [(AMSUISubscriptionsViewController *)&v15 init];
   if (v11)
   {
-    v12 = [[AMSUIWebViewController alloc] initWithBag:v9 account:v8 clientInfo:v10];
+    v12 = [[AMSUIWebViewController alloc] initWithBag:bagCopy account:accountCopy clientInfo:infoCopy];
     webViewController = v11->_webViewController;
     v11->_webViewController = v12;
   }
@@ -40,62 +40,62 @@
 
 - (ACAccount)account
 {
-  v2 = [(AMSUISubscriptionsViewController *)self webViewController];
-  v3 = [v2 account];
+  webViewController = [(AMSUISubscriptionsViewController *)self webViewController];
+  account = [webViewController account];
 
-  return v3;
+  return account;
 }
 
 - (AMSBagProtocol)bag
 {
-  v2 = [(AMSUISubscriptionsViewController *)self webViewController];
-  v3 = [v2 bag];
+  webViewController = [(AMSUISubscriptionsViewController *)self webViewController];
+  v3 = [webViewController bag];
 
   return v3;
 }
 
 - (AMSProcessInfo)clientInfo
 {
-  v2 = [(AMSUISubscriptionsViewController *)self webViewController];
-  v3 = [v2 clientInfo];
+  webViewController = [(AMSUISubscriptionsViewController *)self webViewController];
+  clientInfo = [webViewController clientInfo];
 
-  return v3;
+  return clientInfo;
 }
 
 - (NSDictionary)metricsOverlay
 {
-  v2 = [(AMSUISubscriptionsViewController *)self webViewController];
-  v3 = [v2 metricsOverlay];
+  webViewController = [(AMSUISubscriptionsViewController *)self webViewController];
+  metricsOverlay = [webViewController metricsOverlay];
 
-  return v3;
+  return metricsOverlay;
 }
 
-- (void)setAccount:(id)a3
+- (void)setAccount:(id)account
 {
-  v4 = a3;
-  v5 = [(AMSUISubscriptionsViewController *)self webViewController];
-  [v5 setAccount:v4];
+  accountCopy = account;
+  webViewController = [(AMSUISubscriptionsViewController *)self webViewController];
+  [webViewController setAccount:accountCopy];
 }
 
-- (void)setBag:(id)a3
+- (void)setBag:(id)bag
 {
-  v4 = a3;
-  v5 = [(AMSUISubscriptionsViewController *)self webViewController];
-  [v5 setBag:v4];
+  bagCopy = bag;
+  webViewController = [(AMSUISubscriptionsViewController *)self webViewController];
+  [webViewController setBag:bagCopy];
 }
 
-- (void)setClientInfo:(id)a3
+- (void)setClientInfo:(id)info
 {
-  v4 = a3;
-  v5 = [(AMSUISubscriptionsViewController *)self webViewController];
-  [v5 setClientInfo:v4];
+  infoCopy = info;
+  webViewController = [(AMSUISubscriptionsViewController *)self webViewController];
+  [webViewController setClientInfo:infoCopy];
 }
 
-- (void)setMetricsOverlay:(id)a3
+- (void)setMetricsOverlay:(id)overlay
 {
-  v4 = a3;
-  v5 = [(AMSUISubscriptionsViewController *)self webViewController];
-  [v5 setMetricsOverlay:v4];
+  overlayCopy = overlay;
+  webViewController = [(AMSUISubscriptionsViewController *)self webViewController];
+  [webViewController setMetricsOverlay:overlayCopy];
 }
 
 - (void)viewDidLoad
@@ -127,47 +127,47 @@
 + (id)createBagForSubProfile
 {
   v3 = MEMORY[0x1E698C7E0];
-  v4 = [a1 bagKeySet];
-  v5 = [a1 bagSubProfile];
-  v6 = [a1 bagSubProfileVersion];
-  [v3 registerBagKeySet:v4 forProfile:v5 profileVersion:v6];
+  bagKeySet = [self bagKeySet];
+  bagSubProfile = [self bagSubProfile];
+  bagSubProfileVersion = [self bagSubProfileVersion];
+  [v3 registerBagKeySet:bagKeySet forProfile:bagSubProfile profileVersion:bagSubProfileVersion];
 
   v7 = MEMORY[0x1E698C7D8];
-  v8 = [a1 bagSubProfile];
-  v9 = [a1 bagSubProfileVersion];
-  v10 = [v7 bagForProfile:v8 profileVersion:v9];
+  bagSubProfile2 = [self bagSubProfile];
+  bagSubProfileVersion2 = [self bagSubProfileVersion];
+  v10 = [v7 bagForProfile:bagSubProfile2 profileVersion:bagSubProfileVersion2];
 
   return v10;
 }
 
 - (void)_setupChildViewController
 {
-  v3 = [(AMSUISubscriptionsViewController *)self webViewController];
-  [(AMSUISubscriptionsViewController *)self _setChildViewController:v3];
+  webViewController = [(AMSUISubscriptionsViewController *)self webViewController];
+  [(AMSUISubscriptionsViewController *)self _setChildViewController:webViewController];
 }
 
-- (void)_setChildViewController:(id)a3
+- (void)_setChildViewController:(id)controller
 {
-  v6 = a3;
-  [(AMSUISubscriptionsViewController *)self addChildViewController:v6];
-  v4 = [(AMSUISubscriptionsViewController *)self view];
-  v5 = [v6 view];
-  [v4 addSubview:v5];
+  controllerCopy = controller;
+  [(AMSUISubscriptionsViewController *)self addChildViewController:controllerCopy];
+  view = [(AMSUISubscriptionsViewController *)self view];
+  view2 = [controllerCopy view];
+  [view addSubview:view2];
 
-  [v6 ams_didMoveToParentViewController:self];
+  [controllerCopy ams_didMoveToParentViewController:self];
 }
 
 - (void)_setupLayout
 {
-  v13 = [(AMSUISubscriptionsViewController *)self view];
-  [v13 bounds];
+  view = [(AMSUISubscriptionsViewController *)self view];
+  [view bounds];
   v4 = v3;
   v6 = v5;
   v8 = v7;
   v10 = v9;
-  v11 = [(AMSUISubscriptionsViewController *)self webViewController];
-  v12 = [v11 view];
-  [v12 setFrame:{v4, v6, v8, v10}];
+  webViewController = [(AMSUISubscriptionsViewController *)self webViewController];
+  view2 = [webViewController view];
+  [view2 setFrame:{v4, v6, v8, v10}];
 }
 
 - (void)_startLoading

@@ -7,9 +7,9 @@
 - (id)accessibilityLabel
 {
   v2 = [(SKUILabelViewElementAccessibility *)self safeValueForKey:@"_text"];
-  v3 = [v2 accessibilityLabel];
+  accessibilityLabel = [v2 accessibilityLabel];
 
-  return v3;
+  return accessibilityLabel;
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface AVSampleBufferVideoOutput
 - (AVSampleBufferVideoOutput)init;
-- (BOOL)_configureWithVideoQueue:(OpaqueFigVideoQueue *)a3;
-- (BOOL)hasNewPixelBufferForSourceTime:(id *)a3;
-- (BOOL)setUpWithOutputSettings:(id)a3 outputSettingsArePixelBufferAttributes:(BOOL)a4 withExceptionReason:(id *)a5;
-- (__CVBuffer)_copyPixelBufferForItemTimeWithOptions:(id *)a3 itemTimeForDisplay:(id *)a4 options:(unsigned int)a5;
-- (__CVBuffer)copyLastPixelBuffer:(id *)a3;
+- (BOOL)_configureWithVideoQueue:(OpaqueFigVideoQueue *)queue;
+- (BOOL)hasNewPixelBufferForSourceTime:(id *)time;
+- (BOOL)setUpWithOutputSettings:(id)settings outputSettingsArePixelBufferAttributes:(BOOL)attributes withExceptionReason:(id *)reason;
+- (__CVBuffer)_copyPixelBufferForItemTimeWithOptions:(id *)options itemTimeForDisplay:(id *)display options:(unsigned int)a5;
+- (__CVBuffer)copyLastPixelBuffer:(id *)buffer;
 - (id)_weakReference;
 - (void)_dispatchOutputSequenceWasFlushed;
 - (void)_resetLastImageTime;
 - (void)dealloc;
-- (void)setOutputDelegate:(id)a3 queue:(id)a4;
+- (void)setOutputDelegate:(id)delegate queue:(id)queue;
 @end
 
 @implementation AVSampleBufferVideoOutput
 
-- (BOOL)setUpWithOutputSettings:(id)a3 outputSettingsArePixelBufferAttributes:(BOOL)a4 withExceptionReason:(id *)a5
+- (BOOL)setUpWithOutputSettings:(id)settings outputSettingsArePixelBufferAttributes:(BOOL)attributes withExceptionReason:(id *)reason
 {
   self->_videoOutputInternal->lastImageTime = **&MEMORY[0x1E6960C70];
   if (VTPixelBufferConformerCreateWithAttributes())
@@ -29,7 +29,7 @@
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:0.015];
   [MEMORY[0x1E695DF20] dictionaryWithObjectsAndKeys:{v7, *MEMORY[0x1E6973EF8], 0}];
-  v8 = [(AVSampleBufferVideoOutput *)self _weakReference];
+  _weakReference = [(AVSampleBufferVideoOutput *)self _weakReference];
   if (FigVisualContextCreateRemote())
   {
     return 0;
@@ -42,7 +42,7 @@
   }
 
   v10 = *(*(CMBaseObjectGetVTable() + 16) + 8);
-  if (!v10 || v10(vc, AVSampleBufferVideoOutput_figVCAvailableImmediate, v8))
+  if (!v10 || v10(vc, AVSampleBufferVideoOutput_figVCAvailableImmediate, _weakReference))
   {
     return 0;
   }
@@ -138,11 +138,11 @@
   }
 }
 
-- (void)setOutputDelegate:(id)a3 queue:(id)a4
+- (void)setOutputDelegate:(id)delegate queue:(id)queue
 {
-  if (a3)
+  if (delegate)
   {
-    if (!a4)
+    if (!queue)
     {
       v8 = MEMORY[0x1E695DF30];
       v9 = *MEMORY[0x1E695D940];
@@ -151,13 +151,13 @@
     }
   }
 
-  else if (a4)
+  else if (queue)
   {
     v8 = MEMORY[0x1E695DF30];
     v9 = *MEMORY[0x1E695D940];
     v10 = "delegateQueue == NULL";
 LABEL_9:
-    v12 = [v8 exceptionWithName:v9 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", a4, v4, v5, v6, v7, v10), 0}];
+    v12 = [v8 exceptionWithName:v9 reason:AVMethodExceptionReasonWithObjectAndSelector(self userInfo:{a2, @"invalid parameter not satisfying: %s", queue, v4, v5, v6, v7, v10), 0}];
     objc_exception_throw(v12);
   }
 
@@ -166,7 +166,7 @@ LABEL_9:
   [AVWeakReferencingDelegateStorage setDelegate:"setDelegate:queue:" queue:?];
 }
 
-- (__CVBuffer)_copyPixelBufferForItemTimeWithOptions:(id *)a3 itemTimeForDisplay:(id *)a4 options:(unsigned int)a5
+- (__CVBuffer)_copyPixelBufferForItemTimeWithOptions:(id *)options itemTimeForDisplay:(id *)display options:(unsigned int)a5
 {
   v5 = *&a5;
   v14 = 0;
@@ -174,7 +174,7 @@ LABEL_9:
   v13 = *(MEMORY[0x1E6960C70] + 16);
   v12 = *MEMORY[0x1E6960C70];
   vc = self->_videoOutputInternal->vc;
-  v11 = *a3;
+  v11 = *options;
   v8 = *(*(CMBaseObjectGetVTable() + 16) + 48);
   if (v8)
   {
@@ -182,15 +182,15 @@ LABEL_9:
     v16 = v11;
     if (!v8(vc, v9, &v16, v5, &cf, 0, &v12))
     {
-      if (a4)
+      if (display)
       {
         if ((BYTE12(v12) & 0x1D) != 1)
         {
           goto LABEL_8;
         }
 
-        *&a4->var0 = v12;
-        a4->var3 = v13;
+        *&display->var0 = v12;
+        display->var3 = v13;
       }
 
       if (VTPixelBufferConformerCopyConformedPixelBuffer())
@@ -209,9 +209,9 @@ LABEL_8:
   return v14;
 }
 
-- (BOOL)hasNewPixelBufferForSourceTime:(id *)a3
+- (BOOL)hasNewPixelBufferForSourceTime:(id *)time
 {
-  if ((a3->var2 & 0x1D) != 1)
+  if ((time->var2 & 0x1D) != 1)
   {
     return 0;
   }
@@ -219,7 +219,7 @@ LABEL_8:
   v10 = v3;
   v11 = v4;
   vc = self->_videoOutputInternal->vc;
-  v8 = *a3;
+  v8 = *time;
   v6 = *(*(CMBaseObjectGetVTable() + 16) + 40);
   if (!v6)
   {
@@ -230,7 +230,7 @@ LABEL_8:
   return v6(vc, &v9) != 0;
 }
 
-- (__CVBuffer)copyLastPixelBuffer:(id *)a3
+- (__CVBuffer)copyLastPixelBuffer:(id *)buffer
 {
   v18 = *MEMORY[0x1E6960C70];
   v19 = *(MEMORY[0x1E6960C70] + 16);
@@ -255,12 +255,12 @@ LABEL_8:
     v10 = v13[6];
     v7 = [(AVSampleBufferVideoOutput *)self copyPixelBufferForSourceTime:&v9 sourceTimeForDisplay:&v18];
     v6 = v7;
-    if (a3)
+    if (buffer)
     {
       if (v7 && (BYTE12(v18) & 0x1D) == 1)
       {
-        *&a3->var0 = v18;
-        a3->var3 = v19;
+        *&buffer->var0 = v18;
+        buffer->var3 = v19;
       }
     }
   }
@@ -279,7 +279,7 @@ __n128 __49__AVSampleBufferVideoOutput_copyLastPixelBuffer___block_invoke(uint64
   return result;
 }
 
-- (BOOL)_configureWithVideoQueue:(OpaqueFigVideoQueue *)a3
+- (BOOL)_configureWithVideoQueue:(OpaqueFigVideoQueue *)queue
 {
   v3 = *MEMORY[0x1E695E480];
   v4 = CFArrayCreate(*MEMORY[0x1E695E480], &self->_videoOutputInternal->vc, 1, MEMORY[0x1E695E9C0]);

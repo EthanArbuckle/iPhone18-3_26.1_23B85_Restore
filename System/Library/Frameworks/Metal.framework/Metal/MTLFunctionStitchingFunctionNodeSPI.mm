@@ -1,33 +1,33 @@
 @interface MTLFunctionStitchingFunctionNodeSPI
-- (BOOL)isEqual:(id)a3;
-- (MTLFunctionStitchingFunctionNodeSPI)initWithName:(id)a3 arguments:(id)a4 controlDependencies:(id)a5 isEarlyReturn:(BOOL)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (MTLFunctionStitchingFunctionNodeSPI)initWithName:(id)name arguments:(id)arguments controlDependencies:(id)dependencies isEarlyReturn:(BOOL)return;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
 @end
 
 @implementation MTLFunctionStitchingFunctionNodeSPI
 
-- (MTLFunctionStitchingFunctionNodeSPI)initWithName:(id)a3 arguments:(id)a4 controlDependencies:(id)a5 isEarlyReturn:(BOOL)a6
+- (MTLFunctionStitchingFunctionNodeSPI)initWithName:(id)name arguments:(id)arguments controlDependencies:(id)dependencies isEarlyReturn:(BOOL)return
 {
   v8.receiver = self;
   v8.super_class = MTLFunctionStitchingFunctionNodeSPI;
-  result = [(MTLFunctionStitchingFunctionNode *)&v8 initWithName:a3 arguments:a4 controlDependencies:a5];
-  result->_isEarlyReturn = a6;
+  result = [(MTLFunctionStitchingFunctionNode *)&v8 initWithName:name arguments:arguments controlDependencies:dependencies];
+  result->_isEarlyReturn = return;
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = MTLFunctionStitchingFunctionNodeSPI;
-  v4 = [(MTLFunctionStitchingFunctionNode *)&v6 copyWithZone:a3];
+  v4 = [(MTLFunctionStitchingFunctionNode *)&v6 copyWithZone:zone];
   [v4 setIsEarlyReturn:self->_isEarlyReturn];
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v8) = 1;
   }
@@ -37,15 +37,15 @@
     v12 = v3;
     v13 = v4;
     Class = object_getClass(self);
-    if (Class == object_getClass(a3))
+    if (Class == object_getClass(equal))
     {
       v11.receiver = self;
       v11.super_class = MTLFunctionStitchingFunctionNodeSPI;
-      v8 = [(MTLFunctionStitchingFunctionNode *)&v11 isEqual:a3];
+      v8 = [(MTLFunctionStitchingFunctionNode *)&v11 isEqual:equal];
       if (v8)
       {
-        v9 = [(MTLFunctionStitchingFunctionNodeSPI *)self isEarlyReturn];
-        LOBYTE(v8) = v9 ^ [a3 isEarlyReturn] ^ 1;
+        isEarlyReturn = [(MTLFunctionStitchingFunctionNodeSPI *)self isEarlyReturn];
+        LOBYTE(v8) = isEarlyReturn ^ [equal isEarlyReturn] ^ 1;
       }
     }
 

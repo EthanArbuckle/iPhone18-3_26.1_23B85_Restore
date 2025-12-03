@@ -1,12 +1,12 @@
 @interface OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery_$1
-- (OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery_$1)initWithOrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery:(id)a3 withOrgApacheLuceneSearchQuery:(id)a4;
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3;
+- (OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery_$1)initWithOrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery:(id)query withOrgApacheLuceneSearchQuery:(id)searchQuery;
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context;
 - (void)dealloc;
 @end
 
 @implementation OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery_$1
 
-- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)a3
+- (id)scorerWithOrgApacheLuceneIndexLeafReaderContext:(id)context
 {
   v4 = *(&self->this$0_->super.boost_ + 1);
   if (!v4)
@@ -15,18 +15,18 @@ LABEL_18:
     JreThrowNullPointerException();
   }
 
-  v6 = [v4 getDocIdSetWithOrgApacheLuceneIndexLeafReaderContext:a3 withOrgApacheLuceneUtilBits:0];
+  v6 = [v4 getDocIdSetWithOrgApacheLuceneIndexLeafReaderContext:context withOrgApacheLuceneUtilBits:0];
   if (!v6)
   {
     return 0;
   }
 
   v7 = v6;
-  v8 = [v6 bits];
-  if (!v8)
+  bits = [v6 bits];
+  if (!bits)
   {
-    v13 = [v7 iterator];
-    if (v13)
+    iterator = [v7 iterator];
+    if (iterator)
     {
       goto LABEL_13;
     }
@@ -34,7 +34,7 @@ LABEL_18:
     return 0;
   }
 
-  v9 = v8;
+  v9 = bits;
   v10 = *(&self->this$0_->filter_ + 4);
   if (!v10)
   {
@@ -46,8 +46,8 @@ LABEL_18:
     goto LABEL_9;
   }
 
-  v11 = [v7 iterator];
-  if (!v11)
+  iterator2 = [v7 iterator];
+  if (!iterator2)
   {
     return 0;
   }
@@ -58,27 +58,27 @@ LABEL_18:
     goto LABEL_18;
   }
 
-  v13 = v11;
-  if (![v12 useRandomAccessWithOrgApacheLuceneUtilBits:v9 withLong:{objc_msgSend(v11, "cost")}])
+  iterator = iterator2;
+  if (![v12 useRandomAccessWithOrgApacheLuceneUtilBits:v9 withLong:{objc_msgSend(iterator2, "cost")}])
   {
 LABEL_13:
-    v17 = new_OrgApacheLuceneSearchConstantScoreScorer_initWithOrgApacheLuceneSearchWeight_withFloat_withOrgApacheLuceneSearchDocIdSetIterator_(self, v13, 0.0);
+    v17 = new_OrgApacheLuceneSearchConstantScoreScorer_initWithOrgApacheLuceneSearchWeight_withFloat_withOrgApacheLuceneSearchDocIdSetIterator_(self, iterator, 0.0);
     goto LABEL_14;
   }
 
 LABEL_9:
-  if (!a3)
+  if (!context)
   {
     goto LABEL_18;
   }
 
-  v14 = [a3 reader];
-  if (!v14)
+  reader = [context reader];
+  if (!reader)
   {
     goto LABEL_18;
   }
 
-  v15 = OrgApacheLuceneSearchDocIdSetIterator_allWithInt_([v14 maxDoc]);
+  v15 = OrgApacheLuceneSearchDocIdSetIterator_allWithInt_([reader maxDoc]);
   v16 = [OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery__1__1 alloc];
   JreStrongAssign(&v16->val$bits_, v9);
   OrgApacheLuceneSearchTwoPhaseIterator_initWithOrgApacheLuceneSearchDocIdSetIterator_(v16, v15);
@@ -88,10 +88,10 @@ LABEL_14:
   return v17;
 }
 
-- (OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery_$1)initWithOrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery:(id)a3 withOrgApacheLuceneSearchQuery:(id)a4
+- (OrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery_$1)initWithOrgApacheLuceneSearchFilteredQuery_RandomAccessFilterWrapperQuery:(id)query withOrgApacheLuceneSearchQuery:(id)searchQuery
 {
-  JreStrongAssign(&self->this$0_, a3);
-  OrgApacheLuceneSearchWeight_initWithOrgApacheLuceneSearchQuery_(self, a4);
+  JreStrongAssign(&self->this$0_, query);
+  OrgApacheLuceneSearchWeight_initWithOrgApacheLuceneSearchQuery_(self, searchQuery);
   return self;
 }
 

@@ -1,24 +1,24 @@
 @interface COSApplicationLinkCell
-- (COSApplicationLinkCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4;
+- (COSApplicationLinkCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier;
 - (id)cachedInstalledProgressByAppID;
 - (id)device;
 - (void)dealloc;
 - (void)installApp;
-- (void)installNanoBundle:(id)a3 forDevice:(id)a4;
+- (void)installNanoBundle:(id)bundle forDevice:(id)device;
 - (void)layoutSubviews;
 - (void)prepareForReuse;
-- (void)refreshCellContentsWithSpecifier:(id)a3;
+- (void)refreshCellContentsWithSpecifier:(id)specifier;
 - (void)stopInstallation;
-- (void)updateProgress:(id)a3;
+- (void)updateProgress:(id)progress;
 @end
 
 @implementation COSApplicationLinkCell
 
-- (COSApplicationLinkCell)initWithStyle:(int64_t)a3 reuseIdentifier:(id)a4
+- (COSApplicationLinkCell)initWithStyle:(int64_t)style reuseIdentifier:(id)identifier
 {
   v36.receiver = self;
   v36.super_class = COSApplicationLinkCell;
-  v4 = [(COSApplicationLinkCell *)&v36 initWithStyle:a3 reuseIdentifier:a4];
+  v4 = [(COSApplicationLinkCell *)&v36 initWithStyle:style reuseIdentifier:identifier];
   v5 = v4;
   if (v4)
   {
@@ -29,8 +29,8 @@
     labelAccessoryView = v5->_labelAccessoryView;
     v5->_labelAccessoryView = v7;
 
-    v9 = [(COSApplicationLinkCell *)v5 contentView];
-    [v9 addSubview:v5->_labelAccessoryView];
+    contentView = [(COSApplicationLinkCell *)v5 contentView];
+    [contentView addSubview:v5->_labelAccessoryView];
 
     v10 = +[UIColor systemOrangeColor];
     enabledColor = v5->_enabledColor;
@@ -54,11 +54,11 @@
     installButton = v5->_installButton;
     v5->_installButton = v19;
 
-    v21 = [(UIButton *)v5->_installButton layer];
-    [v21 setBorderWidth:1.0];
+    layer = [(UIButton *)v5->_installButton layer];
+    [layer setBorderWidth:1.0];
 
-    v22 = [(UIButton *)v5->_installButton layer];
-    [v22 setCornerRadius:3.0];
+    layer2 = [(UIButton *)v5->_installButton layer];
+    [layer2 setCornerRadius:3.0];
 
     v23 = v5->_installButton;
     v24 = +[NSBundle mainBundle];
@@ -69,21 +69,21 @@
     [(UIButton *)v5->_installButton setTitleColor:v5->_disabledColor forState:2];
     [(UIButton *)v5->_installButton setContentEdgeInsets:5.0, 5.0, 5.0, 5.0];
     [(UIButton *)v5->_installButton setAlpha:1.0];
-    v26 = [(UIButton *)v5->_installButton titleLabel];
+    titleLabel = [(UIButton *)v5->_installButton titleLabel];
     v27 = [UIFont systemFontOfSize:14.0];
-    [v26 setFont:v27];
+    [titleLabel setFont:v27];
 
     [(UIButton *)v5->_installButton addTarget:v5 action:"installApp" forEvents:64];
-    v28 = [(COSApplicationLinkCell *)v5 contentView];
-    [v28 addSubview:v5->_installButton];
+    contentView2 = [(COSApplicationLinkCell *)v5 contentView];
+    [contentView2 addSubview:v5->_installButton];
 
     v29 = objc_alloc_init(COSInstallSpinnerButton);
     installSpinnerButton = v5->_installSpinnerButton;
     v5->_installSpinnerButton = v29;
 
     [(COSInstallSpinnerButton *)v5->_installSpinnerButton addTarget:v5 action:"stopInstallation" forEvents:64];
-    v31 = [(COSApplicationLinkCell *)v5 contentView];
-    [v31 addSubview:v5->_installSpinnerButton];
+    contentView3 = [(COSApplicationLinkCell *)v5 contentView];
+    [contentView3 addSubview:v5->_installSpinnerButton];
   }
 
   return v5;
@@ -102,15 +102,15 @@
 - (id)device
 {
   v2 = +[UIApplication sharedApplication];
-  v3 = [v2 activeWatch];
+  activeWatch = [v2 activeWatch];
 
-  return v3;
+  return activeWatch;
 }
 
-- (void)installNanoBundle:(id)a3 forDevice:(id)a4
+- (void)installNanoBundle:(id)bundle forDevice:(id)device
 {
-  v6 = a3;
-  v7 = a4;
+  bundleCopy = bundle;
+  deviceCopy = device;
   v8 = pbb_bridge_log();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -124,10 +124,10 @@
   v11[1] = 3221225472;
   v11[2] = sub_100030060;
   v11[3] = &unk_1002685E8;
-  v12 = v6;
-  v13 = self;
-  v10 = v6;
-  [v9 installApplication:v10 onPairedDevice:v7 completion:v11];
+  v12 = bundleCopy;
+  selfCopy = self;
+  v10 = bundleCopy;
+  [v9 installApplication:v10 onPairedDevice:deviceCopy completion:v11];
 }
 
 - (void)installApp
@@ -143,9 +143,9 @@
   v4 = OBJC_IVAR___PSTableCell__specifier;
   WeakRetained = objc_loadWeakRetained(&self->BPSLinkCell_opaque[OBJC_IVAR___PSTableCell__specifier]);
   v6 = [WeakRetained propertyForKey:BPSNotificationAppBBSectionInfo];
-  v7 = [v6 sectionID];
+  sectionID = [v6 sectionID];
 
-  v8 = [(COSApplicationLinkCell *)self device];
+  device = [(COSApplicationLinkCell *)self device];
   v9 = objc_loadWeakRetained(&self->BPSLinkCell_opaque[v4]);
   [v9 setProperty:&off_100281990 forKey:@"COSSockPuppetInstallationState"];
 
@@ -157,9 +157,9 @@
     if (v12)
     {
       *buf = 138412546;
-      v31 = v7;
+      v31 = sectionID;
       v32 = 2112;
-      v33 = v8;
+      v33 = device;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "Check if app %@ needs update for %@", buf, 0x16u);
     }
 
@@ -170,8 +170,8 @@
     v26[2] = sub_1000306DC;
     v26[3] = &unk_100268D48;
     objc_copyWeak(&v29, buf);
-    v27 = v7;
-    v28 = v8;
+    v27 = sectionID;
+    v28 = device;
     [v13 fetchLocallyAvailableApplicationWithBundleID:v27 forPairedDevice:v28 completion:v26];
 
     objc_destroyWeak(&v29);
@@ -186,25 +186,25 @@
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_DEFAULT, "app update check not needed", buf, 2u);
     }
 
-    [(COSApplicationLinkCell *)self installNanoBundle:v7 forDevice:v8];
+    [(COSApplicationLinkCell *)self installNanoBundle:sectionID forDevice:device];
   }
 
   v14 = objc_loadWeakRetained(&self->BPSLinkCell_opaque[v4]);
-  v15 = [v14 target];
+  target = [v14 target];
   v16 = objc_opt_respondsToSelector();
 
   if (v16)
   {
     v17 = objc_loadWeakRetained(&self->BPSLinkCell_opaque[v4]);
     v18 = [v17 propertyForKey:@"COSSockPuppetAppSectionKey"];
-    v19 = [v18 integerValue];
+    integerValue = [v18 integerValue];
 
-    v20 = v19 == 1;
+    v20 = integerValue == 1;
     v21 = objc_loadWeakRetained(&self->BPSLinkCell_opaque[v4]);
-    v22 = [v21 target];
+    target2 = [v21 target];
     v23 = objc_loadWeakRetained(&self->BPSLinkCell_opaque[v4]);
     v24 = [v23 propertyForKey:@"COSSockPuppetAppBundleIDKey"];
-    [v22 registerRecentlyInstallingAppID:v24 isSuggested:v20];
+    [target2 registerRecentlyInstallingAppID:v24 isSuggested:v20];
   }
 
   v25 = objc_loadWeakRetained(&self->BPSLinkCell_opaque[v4]);
@@ -218,10 +218,10 @@
   v3 = OBJC_IVAR___PSTableCell__specifier;
   WeakRetained = objc_loadWeakRetained(&self->BPSLinkCell_opaque[OBJC_IVAR___PSTableCell__specifier]);
   v5 = [WeakRetained propertyForKey:BPSNotificationAppBBSectionInfo];
-  v6 = [v5 sectionID];
+  sectionID = [v5 sectionID];
 
   v7 = +[ACXDeviceConnection sharedDeviceConnection];
-  v8 = [(COSApplicationLinkCell *)self device];
+  device = [(COSApplicationLinkCell *)self device];
   v9 = objc_loadWeakRetained(&self->BPSLinkCell_opaque[v3]);
   [v9 setProperty:&off_1002819A8 forKey:@"COSSockPuppetInstallationState"];
 
@@ -229,9 +229,9 @@
   v12[1] = 3221225472;
   v12[2] = sub_100030B90;
   v12[3] = &unk_100268D70;
-  v13 = v6;
-  v10 = v6;
-  [v7 removeApplication:v10 fromPairedDevice:v8 completionWithError:v12];
+  v13 = sectionID;
+  v10 = sectionID;
+  [v7 removeApplication:v10 fromPairedDevice:device completionWithError:v12];
   v11 = objc_loadWeakRetained(&self->BPSLinkCell_opaque[v3]);
   [(COSApplicationLinkCell *)self refreshCellContentsWithSpecifier:v11];
 
@@ -248,24 +248,24 @@
   v88 = v3;
   v85 = v6;
   v86 = v5;
-  v7 = [(COSApplicationLinkCell *)self textLabel];
-  v8 = [(COSApplicationLinkCell *)self detailTextLabel];
-  [v7 frame];
+  textLabel = [(COSApplicationLinkCell *)self textLabel];
+  detailTextLabel = [(COSApplicationLinkCell *)self detailTextLabel];
+  [textLabel frame];
   v10 = v9;
   v90 = v11;
   v13 = v12;
   v15 = v14;
-  v16 = [(COSApplicationLinkCell *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(COSApplicationLinkCell *)self _shouldReverseLayoutDirection];
   labelAccessoryView = self->_labelAccessoryView;
   if (labelAccessoryView)
   {
     [(COSApplicationLabelAccessoryView *)labelAccessoryView frame];
     v19 = v18;
     v21 = v20;
-    if (v16)
+    if (_shouldReverseLayoutDirection)
     {
-      v22 = [(COSApplicationLinkCell *)self iconImageView];
-      [v22 frame];
+      iconImageView = [(COSApplicationLinkCell *)self iconImageView];
+      [iconImageView frame];
       v23 = CGRectGetMinX(v92) - v19 + -6.0;
 
       v24 = v10 + -6.0;
@@ -283,8 +283,8 @@
     v93.size.width = v13;
     v93.size.height = v15;
     MaxX = CGRectGetMaxX(v93);
-    v26 = [(COSApplicationLinkCell *)self contentView];
-    [v26 frame];
+    contentView = [(COSApplicationLinkCell *)self contentView];
+    [contentView frame];
     v27 = CGRectGetMaxX(v94);
 
     if (MaxX >= v27)
@@ -298,12 +298,12 @@
   v89 = v15;
   if (self->_useInlineInstallButtonUI)
   {
-    v83 = v8;
+    v83 = detailTextLabel;
     v28 = OBJC_IVAR___PSTableCell__specifier;
     WeakRetained = objc_loadWeakRetained(&self->BPSLinkCell_opaque[OBJC_IVAR___PSTableCell__specifier]);
     v30 = [WeakRetained propertyForKey:@"COSSockPuppetInstallationState"];
 
-    v31 = [v30 integerValue];
+    integerValue = [v30 integerValue];
     p_installButton = &self->_installButton;
     [(UIButton *)self->_installButton sizeToFit];
     [(UIButton *)self->_installButton frame];
@@ -315,7 +315,7 @@
     v95.size.width = v86;
     v37 = (CGRectGetHeight(v95) - v36) * 0.5;
     v38 = 15.0;
-    if ((v16 & 1) == 0)
+    if ((_shouldReverseLayoutDirection & 1) == 0)
     {
       v96.origin.y = v87;
       v96.origin.x = v88;
@@ -325,8 +325,8 @@
     }
 
     [(UIButton *)*p_installButton setFrame:v38, v37, v34, v36];
-    v39 = [(COSApplicationLinkCell *)self iconImageView];
-    [v39 frame];
+    iconImageView2 = [(COSApplicationLinkCell *)self iconImageView];
+    [iconImageView2 frame];
     p_installSpinnerButton = &self->_installSpinnerButton;
     [(COSInstallSpinnerButton *)self->_installSpinnerButton setFrame:?];
 
@@ -337,7 +337,7 @@
     v44 = v43;
     v46 = v45;
     [(UIButton *)*p_installButton frame];
-    if (v16)
+    if (_shouldReverseLayoutDirection)
     {
       MinX = CGRectGetMinX(*&v47);
     }
@@ -348,26 +348,26 @@
     }
 
     [*p_installSpinnerButton setFrame:{MinX, v42, v44, v46}];
-    v52 = [(COSApplicationLinkCell *)self iconImageView];
-    [v52 frame];
+    iconImageView3 = [(COSApplicationLinkCell *)self iconImageView];
+    [iconImageView3 frame];
 
-    if (v31 == 2 || v31 == 4)
+    if (integerValue == 2 || integerValue == 4)
     {
       [(UIButton *)*p_installButton setHidden:1];
       [*p_installSpinnerButton setHidden:1];
-      if (v31 == 2)
+      if (integerValue == 2)
       {
         v53 = objc_loadWeakRetained(&self->BPSLinkCell_opaque[v28]);
         v54 = [v53 propertyForKey:@"COSSockPuppetAppSectionKey"];
-        v55 = [v54 integerValue];
+        integerValue2 = [v54 integerValue];
 
-        if (v55 == 1)
+        if (integerValue2 == 1)
         {
           [(COSApplicationLinkCell *)self setAccessoryType:0];
         }
       }
 
-      v8 = v83;
+      detailTextLabel = v83;
     }
 
     else
@@ -375,9 +375,9 @@
       v76 = objc_loadWeakRetained(&self->BPSLinkCell_opaque[v28]);
       v77 = [v76 propertyForKey:@"COSSockPuppetInstallationState"];
 
-      v78 = [v77 integerValue];
+      integerValue3 = [v77 integerValue];
       v79 = *p_installButton;
-      if (v78 == 1)
+      if (integerValue3 == 1)
       {
         [(UIButton *)v79 setHidden:1];
         [*p_installSpinnerButton setHidden:0];
@@ -392,7 +392,7 @@
         p_installSpinnerButton = &self->_installButton;
       }
 
-      v8 = v83;
+      detailTextLabel = v83;
       v57 = *p_installSpinnerButton;
       [(COSApplicationLinkCell *)self setAccessoryType:0];
 
@@ -413,7 +413,7 @@
   }
 
   v56 = v10;
-  v57 = v8;
+  v57 = detailTextLabel;
   [v57 sizeThatFits:{CGSizeZero.width, CGSizeZero.height}];
   v59 = v58;
   v60 = 35.0;
@@ -423,9 +423,9 @@ LABEL_22:
   v64 = v63;
   v66 = v65;
   v68 = v67;
-  v69 = [(COSApplicationLinkCell *)self traitCollection];
-  v70 = [v69 preferredContentSizeCategory];
-  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(v70);
+  traitCollection = [(COSApplicationLinkCell *)self traitCollection];
+  preferredContentSizeCategory = [traitCollection preferredContentSizeCategory];
+  IsAccessibilityCategory = UIContentSizeCategoryIsAccessibilityCategory(preferredContentSizeCategory);
 
   if (!v57 || (v97.origin.x = v62, v97.origin.y = v64, v97.size.width = v66, v97.size.height = v68, CGRectGetWidth(v97) <= 0.0 || IsAccessibilityCategory))
   {
@@ -434,7 +434,7 @@ LABEL_24:
     goto LABEL_25;
   }
 
-  if (!v16)
+  if (!_shouldReverseLayoutDirection)
   {
     v84 = v60;
     v100.origin.x = v62;
@@ -481,33 +481,33 @@ LABEL_24:
 
 LABEL_25:
   [v57 setFrame:{v62, v64, v66, v68}];
-  [v7 setFrame:{v56, v90, v13, v72}];
+  [textLabel setFrame:{v56, v90, v13, v72}];
 }
 
-- (void)refreshCellContentsWithSpecifier:(id)a3
+- (void)refreshCellContentsWithSpecifier:(id)specifier
 {
-  v4 = a3;
+  specifierCopy = specifier;
   v32.receiver = self;
   v32.super_class = COSApplicationLinkCell;
-  [(COSApplicationLinkCell *)&v32 refreshCellContentsWithSpecifier:v4];
-  v31 = [v4 propertyForKey:@"COSApplicationIsBeta"];
+  [(COSApplicationLinkCell *)&v32 refreshCellContentsWithSpecifier:specifierCopy];
+  v31 = [specifierCopy propertyForKey:@"COSApplicationIsBeta"];
   -[COSApplicationLabelAccessoryView setHidden:](self->_labelAccessoryView, "setHidden:", [v31 BOOLValue] ^ 1);
-  v5 = [v4 propertyForKey:BPSNotificationAppBBSectionInfo];
-  v6 = [v5 sectionID];
+  v5 = [specifierCopy propertyForKey:BPSNotificationAppBBSectionInfo];
+  sectionID = [v5 sectionID];
   appID = self->_appID;
-  self->_appID = v6;
+  self->_appID = sectionID;
 
   if (!self->_appID)
   {
     self->_appID = @"none";
   }
 
-  v8 = [v4 propertyForKey:@"COSSockPuppetAppSectionKey"];
+  v8 = [specifierCopy propertyForKey:@"COSSockPuppetAppSectionKey"];
   self->_useInlineInstallButtonUI = v8 != 0;
 
-  v30 = [v4 propertyForKey:@"COSSockPuppetInstallationState"];
-  v9 = [v30 integerValue];
-  v10 = [v4 propertyForKey:PSEnabledKey];
+  v30 = [specifierCopy propertyForKey:@"COSSockPuppetInstallationState"];
+  integerValue = [v30 integerValue];
+  v10 = [specifierCopy propertyForKey:PSEnabledKey];
   -[UIButton setEnabled:](self->_installButton, "setEnabled:", [v10 BOOLValue]);
 
   if ([(UIButton *)self->_installButton isEnabled])
@@ -521,9 +521,9 @@ LABEL_25:
   }
 
   v12 = [(COSApplicationLinkCell *)self _accessibilityHigherContrastTintColorForColor:*&self->BPSLinkCell_opaque[*v11]];
-  v13 = [v12 CGColor];
-  v14 = [(UIButton *)self->_installButton layer];
-  [v14 setBorderColor:v13];
+  cGColor = [v12 CGColor];
+  layer = [(UIButton *)self->_installButton layer];
+  [layer setBorderColor:cGColor];
 
   installButton = self->_installButton;
   v16 = [(COSApplicationLinkCell *)self _accessibilityHigherContrastTintColorForColor:self->_enabledColor];
@@ -533,7 +533,7 @@ LABEL_25:
   v18 = [(COSApplicationLinkCell *)self _accessibilityHigherContrastTintColorForColor:self->_disabledColor];
   [(UIButton *)v17 setTitleColor:v18 forState:2];
 
-  if (v9 == 1)
+  if (integerValue == 1)
   {
     if (self->_useInlineInstallButtonUI)
     {
@@ -546,11 +546,11 @@ LABEL_25:
       v19 = [v24 localizedStringForKey:@"GIZMO_APP_INSTALLING" value:&stru_10026E598 table:@"Localizable"];
     }
 
-    v23 = +[NSNotificationCenter defaultCenter];
-    [v23 removeObserver:self name:@"COSInstallProgressNotificationName" object:0];
-    [v23 addObserver:self selector:"updateProgress:" name:@"COSInstallProgressNotificationName" object:0];
-    v25 = [(COSApplicationLinkCell *)self cachedInstalledProgressByAppID];
-    v26 = [v25 objectForKey:self->_appID];
+    cachedInstalledProgressByAppID2 = +[NSNotificationCenter defaultCenter];
+    [cachedInstalledProgressByAppID2 removeObserver:self name:@"COSInstallProgressNotificationName" object:0];
+    [cachedInstalledProgressByAppID2 addObserver:self selector:"updateProgress:" name:@"COSInstallProgressNotificationName" object:0];
+    cachedInstalledProgressByAppID = [(COSApplicationLinkCell *)self cachedInstalledProgressByAppID];
+    v26 = [cachedInstalledProgressByAppID objectForKey:self->_appID];
     [v26 floatValue];
     v28 = v27;
 
@@ -559,7 +559,7 @@ LABEL_25:
 
   else
   {
-    if (v9 == 4)
+    if (integerValue == 4)
     {
       v20 = +[NSBundle mainBundle];
       v21 = v20;
@@ -567,14 +567,14 @@ LABEL_25:
       goto LABEL_18;
     }
 
-    if (v9 == 2)
+    if (integerValue == 2)
     {
       if (self->_useInlineInstallButtonUI)
       {
         v19 = &stru_10026E598;
 LABEL_19:
-        v23 = [(COSApplicationLinkCell *)self cachedInstalledProgressByAppID];
-        [v23 removeObjectForKey:self->_appID];
+        cachedInstalledProgressByAppID2 = [(COSApplicationLinkCell *)self cachedInstalledProgressByAppID];
+        [cachedInstalledProgressByAppID2 removeObjectForKey:self->_appID];
         goto LABEL_20;
       }
 
@@ -587,15 +587,15 @@ LABEL_18:
       goto LABEL_19;
     }
 
-    v23 = [(COSApplicationLinkCell *)self cachedInstalledProgressByAppID];
-    [v23 removeObjectForKey:self->_appID];
+    cachedInstalledProgressByAppID2 = [(COSApplicationLinkCell *)self cachedInstalledProgressByAppID];
+    [cachedInstalledProgressByAppID2 removeObjectForKey:self->_appID];
     v19 = 0;
   }
 
 LABEL_20:
 
-  v29 = [(COSApplicationLinkCell *)self detailTextLabel];
-  [v29 setText:v19];
+  detailTextLabel = [(COSApplicationLinkCell *)self detailTextLabel];
+  [detailTextLabel setText:v19];
 
   [(COSApplicationLinkCell *)self setNeedsLayout];
 }
@@ -623,25 +623,25 @@ LABEL_20:
   return v3;
 }
 
-- (void)updateProgress:(id)a3
+- (void)updateProgress:(id)progress
 {
-  v11 = [a3 object];
-  v4 = [v11 objectForKeyedSubscript:@"appid"];
-  v5 = [(COSApplicationLinkCell *)self appID];
-  v6 = [v4 isEqualToString:v5];
+  object = [progress object];
+  v4 = [object objectForKeyedSubscript:@"appid"];
+  appID = [(COSApplicationLinkCell *)self appID];
+  v6 = [v4 isEqualToString:appID];
 
   if (v6)
   {
-    v7 = [v11 objectForKeyedSubscript:@"progress"];
+    v7 = [object objectForKeyedSubscript:@"progress"];
     installSpinnerButton = self->_installSpinnerButton;
     [v7 doubleValue];
     [(COSInstallSpinnerButton *)installSpinnerButton setProgress:1 animated:?];
-    v9 = [(COSApplicationLinkCell *)self cachedInstalledProgressByAppID];
-    v10 = [(COSApplicationLinkCell *)self appID];
-    [v9 setObject:v7 forKey:v10];
+    cachedInstalledProgressByAppID = [(COSApplicationLinkCell *)self cachedInstalledProgressByAppID];
+    appID2 = [(COSApplicationLinkCell *)self appID];
+    [cachedInstalledProgressByAppID setObject:v7 forKey:appID2];
   }
 
-  if (!v11)
+  if (!object)
   {
     [(COSApplicationLinkCell *)self setNeedsLayout];
   }

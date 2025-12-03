@@ -1,24 +1,24 @@
 @interface PKTextInputWindowFirstResponder
 - (BOOL)isEditableTextInputWithPencilTextInputSource;
-- (PKTextInputWindowFirstResponder)initWithIsVisible:(BOOL)a3 isEditableTextInput:(BOOL)a4 hasScribbleInteraction:(BOOL)a5 textInputSource:(int64_t)a6 inputAssistantItem:(id)a7;
+- (PKTextInputWindowFirstResponder)initWithIsVisible:(BOOL)visible isEditableTextInput:(BOOL)input hasScribbleInteraction:(BOOL)interaction textInputSource:(int64_t)source inputAssistantItem:(id)item;
 @end
 
 @implementation PKTextInputWindowFirstResponder
 
-- (PKTextInputWindowFirstResponder)initWithIsVisible:(BOOL)a3 isEditableTextInput:(BOOL)a4 hasScribbleInteraction:(BOOL)a5 textInputSource:(int64_t)a6 inputAssistantItem:(id)a7
+- (PKTextInputWindowFirstResponder)initWithIsVisible:(BOOL)visible isEditableTextInput:(BOOL)input hasScribbleInteraction:(BOOL)interaction textInputSource:(int64_t)source inputAssistantItem:(id)item
 {
-  v13 = a7;
+  itemCopy = item;
   v17.receiver = self;
   v17.super_class = PKTextInputWindowFirstResponder;
   v14 = [(PKTextInputWindowFirstResponder *)&v17 init];
   v15 = v14;
   if (v14)
   {
-    v14->_isVisible = a3;
-    v14->_editableTextInput = a4;
-    v14->_hasScribbleInteraction = a5;
-    v14->_textInputSource = a6;
-    objc_storeStrong(&v14->_inputAssistantItem, a7);
+    v14->_isVisible = visible;
+    v14->_editableTextInput = input;
+    v14->_hasScribbleInteraction = interaction;
+    v14->_textInputSource = source;
+    objc_storeStrong(&v14->_inputAssistantItem, item);
   }
 
   return v15;
@@ -26,14 +26,14 @@
 
 - (BOOL)isEditableTextInputWithPencilTextInputSource
 {
-  v3 = [(PKTextInputWindowFirstResponder *)self isPencilTextInputSource];
-  if (v3)
+  isPencilTextInputSource = [(PKTextInputWindowFirstResponder *)self isPencilTextInputSource];
+  if (isPencilTextInputSource)
   {
 
-    LOBYTE(v3) = [(PKTextInputWindowFirstResponder *)self isEditableTextInput];
+    LOBYTE(isPencilTextInputSource) = [(PKTextInputWindowFirstResponder *)self isEditableTextInput];
   }
 
-  return v3;
+  return isPencilTextInputSource;
 }
 
 @end

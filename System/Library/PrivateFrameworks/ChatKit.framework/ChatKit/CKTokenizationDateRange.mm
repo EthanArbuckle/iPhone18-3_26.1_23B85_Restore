@@ -1,22 +1,22 @@
 @interface CKTokenizationDateRange
-- (CKTokenizationDateRange)initWithStartDate:(id)a3 endDate:(id)a4;
+- (CKTokenizationDateRange)initWithStartDate:(id)date endDate:(id)endDate;
 - (id)serializeToStringArray;
 @end
 
 @implementation CKTokenizationDateRange
 
-- (CKTokenizationDateRange)initWithStartDate:(id)a3 endDate:(id)a4
+- (CKTokenizationDateRange)initWithStartDate:(id)date endDate:(id)endDate
 {
-  v7 = a3;
-  v8 = a4;
+  dateCopy = date;
+  endDateCopy = endDate;
   v12.receiver = self;
   v12.super_class = CKTokenizationDateRange;
   v9 = [(CKTokenizationDateRange *)&v12 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_startDate, a3);
-    objc_storeStrong(&v10->_endDate, a4);
+    objc_storeStrong(&v9->_startDate, date);
+    objc_storeStrong(&v10->_endDate, endDate);
   }
 
   return v10;

@@ -1,21 +1,21 @@
 @interface BuddyLanguageControllerAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_selectLanguage:(id)a3;
+- (void)_selectLanguage:(id)language;
 @end
 
 @implementation BuddyLanguageControllerAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"BuddyLanguageController" isKindOfClass:@"UIViewController"];
-  [v3 validateClass:@"BuddyLanguageLocaleCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyLanguageController" hasInstanceMethod:@"languageComposite" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyLanguageComposite" hasInstanceMethod:@"languageCodes" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"BuddyLanguageController" hasInstanceMethod:@"tableView: cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
-  [v3 validateClass:@"BuddyLanguageController" hasInstanceMethod:@"_selectLanguage:" withFullSignature:{"v", "@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"BuddyLanguageController" isKindOfClass:@"UIViewController"];
+  [validationsCopy validateClass:@"BuddyLanguageLocaleCell" hasInstanceMethod:@"titleLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyLanguageController" hasInstanceMethod:@"languageComposite" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyLanguageComposite" hasInstanceMethod:@"languageCodes" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"BuddyLanguageController" hasInstanceMethod:@"tableView: cellForRowAtIndexPath:" withFullSignature:{"@", "@", "@", 0}];
+  [validationsCopy validateClass:@"BuddyLanguageController" hasInstanceMethod:@"_selectLanguage:" withFullSignature:{"v", "@", 0}];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -27,42 +27,42 @@
   [v3 reloadData];
 }
 
-- (void)_selectLanguage:(id)a3
+- (void)_selectLanguage:(id)language
 {
-  v4 = a3;
+  languageCopy = language;
   v10.receiver = self;
   v10.super_class = BuddyLanguageControllerAccessibility;
-  [(BuddyLanguageControllerAccessibility *)&v10 _selectLanguage:v4];
+  [(BuddyLanguageControllerAccessibility *)&v10 _selectLanguage:languageCopy];
   objc_opt_class();
   v5 = __UIAccessibilityCastAsClass();
-  v6 = [v5 navigationItem];
-  v7 = [v6 existingBackButtonView];
-  if (v7)
+  navigationItem = [v5 navigationItem];
+  existingBackButtonView = [navigationItem existingBackButtonView];
+  if (existingBackButtonView)
   {
-    v8 = [v6 backButtonTitle];
-    v9 = AXAttributedStringForLanguage(v8, v4);
+    backButtonTitle = [navigationItem backButtonTitle];
+    v9 = AXAttributedStringForLanguage(backButtonTitle, languageCopy);
 
     if (v9)
     {
-      [v7 setAccessibilityLabel:v9];
+      [existingBackButtonView setAccessibilityLabel:v9];
     }
   }
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   v24.receiver = self;
   v24.super_class = BuddyLanguageControllerAccessibility;
-  v8 = [(BuddyLanguageControllerAccessibility *)&v24 tableView:v6 cellForRowAtIndexPath:v7];
+  v8 = [(BuddyLanguageControllerAccessibility *)&v24 tableView:viewCopy cellForRowAtIndexPath:pathCopy];
   v18 = 0;
   v19 = &v18;
   v20 = 0x3032000000;
   v21 = __Block_byref_object_copy_;
   v22 = __Block_byref_object_dispose_;
   v23 = 0;
-  v9 = v7;
+  v9 = pathCopy;
   AXPerformSafeBlock();
   v10 = v19[5];
 
@@ -79,9 +79,9 @@
     abort();
   }
 
-  v15 = [v14 text];
+  text = [v14 text];
 
-  v16 = AXAttributedStringForLanguage(v15, v10);
+  v16 = AXAttributedStringForLanguage(text, v10);
   if (v16)
   {
     [v8 setAccessibilityLabel:v16];

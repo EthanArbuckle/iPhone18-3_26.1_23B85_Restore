@@ -1,6 +1,6 @@
 @interface PXCuratedLibraryShowAllActionPerformer
 - (PXGLayout)layout;
-- (void)performActionWithCompletionHandler:(id)a3;
+- (void)performActionWithCompletionHandler:(id)handler;
 @end
 
 @implementation PXCuratedLibraryShowAllActionPerformer
@@ -12,15 +12,15 @@
   return WeakRetained;
 }
 
-- (void)performActionWithCompletionHandler:(id)a3
+- (void)performActionWithCompletionHandler:(id)handler
 {
   v24 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  v5 = [(PXCuratedLibraryShowAllActionPerformer *)self layout];
-  v6 = [v5 rootLayout];
-  v7 = [v5 spriteReferenceForObjectReference:self];
-  v8 = [(PXCuratedLibraryActionPerformer *)self viewModel];
-  v9 = [v8 zoomLevelInDirection:1 fromZoomLevel:{-[PXCuratedLibraryActionPerformer actionZoomLevel](self, "actionZoomLevel")}];
+  handlerCopy = handler;
+  layout = [(PXCuratedLibraryShowAllActionPerformer *)self layout];
+  rootLayout = [layout rootLayout];
+  v7 = [layout spriteReferenceForObjectReference:self];
+  viewModel = [(PXCuratedLibraryActionPerformer *)self viewModel];
+  v9 = [viewModel zoomLevelInDirection:1 fromZoomLevel:{-[PXCuratedLibraryActionPerformer actionZoomLevel](self, "actionZoomLevel")}];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -33,22 +33,22 @@
 
     if ((v9 - 5) > 0xFFFFFFFFFFFFFFFBLL)
     {
-      [v6 clearLastVisibleAreaAnchoringInformation];
-      [v6 setLastHitSpriteReference:v7];
-      v15 = [(PXCuratedLibraryActionPerformer *)self viewModel];
+      [rootLayout clearLastVisibleAreaAnchoringInformation];
+      [rootLayout setLastHitSpriteReference:v7];
+      viewModel2 = [(PXCuratedLibraryActionPerformer *)self viewModel];
       v17[0] = MEMORY[0x1E69E9820];
       v17[1] = 3221225472;
       v17[2] = __77__PXCuratedLibraryShowAllActionPerformer_performActionWithCompletionHandler___block_invoke;
       v17[3] = &unk_1E7737140;
-      v18 = v15;
+      v18 = viewModel2;
       v19 = v9;
-      v16 = v15;
+      v16 = viewModel2;
       [v16 performChanges:v17];
 
       v13 = 0;
       v11 = 0;
       v14 = 1;
-      if (!v4)
+      if (!handlerCopy)
       {
         goto LABEL_14;
       }
@@ -61,7 +61,7 @@
 
   else
   {
-    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unexpected libraryLayout %@", v6];
+    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unexpected libraryLayout %@", rootLayout];
   }
 
   if (v10)
@@ -79,7 +79,7 @@ LABEL_10:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412546;
-    v21 = self;
+    selfCopy = self;
     v22 = 2112;
     v23 = v11;
     _os_log_impl(&dword_1A3C1C000, v12, OS_LOG_TYPE_DEFAULT, "%@ didn't perform because of %@", buf, 0x16u);
@@ -87,10 +87,10 @@ LABEL_10:
 
   v13 = [MEMORY[0x1E696ABC0] px_errorWithDomain:@"PXCuratedLibraryErrorDomain" code:1 debugDescription:{@"%@ didn't perform because of %@", self, v11}];
   v14 = 0;
-  if (v4)
+  if (handlerCopy)
   {
 LABEL_13:
-    v4[2](v4, v14, v13);
+    handlerCopy[2](handlerCopy, v14, v13);
   }
 
 LABEL_14:

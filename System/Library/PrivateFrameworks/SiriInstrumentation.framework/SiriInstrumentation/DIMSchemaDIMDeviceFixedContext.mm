@@ -1,56 +1,56 @@
 @interface DIMSchemaDIMDeviceFixedContext
-- (BOOL)isEqual:(id)a3;
-- (DIMSchemaDIMDeviceFixedContext)initWithDictionary:(id)a3;
-- (DIMSchemaDIMDeviceFixedContext)initWithJSON:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (DIMSchemaDIMDeviceFixedContext)initWithDictionary:(id)dictionary;
+- (DIMSchemaDIMDeviceFixedContext)initWithJSON:(id)n;
 - (DIMSchemaDIMWatchDeviceAttributes)watchDeviceAttributes;
 - (NSData)jsonData;
-- (id)applySensitiveConditionsPolicy:(id)a3;
+- (id)applySensitiveConditionsPolicy:(id)policy;
 - (id)dictionaryRepresentation;
 - (id)suppressMessageUnderConditions;
 - (unint64_t)hash;
-- (void)addPreferredLanguages:(id)a3;
+- (void)addPreferredLanguages:(id)languages;
 - (void)deleteWatchDeviceAttributes;
-- (void)setHasAvailableDictationKeyboards:(BOOL)a3;
-- (void)setHasCountryCode:(BOOL)a3;
-- (void)setHasDataSharingOptInState:(BOOL)a3;
-- (void)setHasHomeKitConfiguration:(BOOL)a3;
-- (void)setHasIsLongLivedIDUploadDisabled:(BOOL)a3;
-- (void)setHasIsLowPowerModeEnabled:(BOOL)a3;
-- (void)setHasIsStoreDemoMode:(BOOL)a3;
-- (void)setHasProgramCode:(BOOL)a3;
-- (void)setHasSearchDataOptOutState:(BOOL)a3;
-- (void)setHasSiriInputLocale:(BOOL)a3;
-- (void)setHasTimeIntervalSince1970:(BOOL)a3;
-- (void)setWatchDeviceAttributes:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)setHasAvailableDictationKeyboards:(BOOL)keyboards;
+- (void)setHasCountryCode:(BOOL)code;
+- (void)setHasDataSharingOptInState:(BOOL)state;
+- (void)setHasHomeKitConfiguration:(BOOL)configuration;
+- (void)setHasIsLongLivedIDUploadDisabled:(BOOL)disabled;
+- (void)setHasIsLowPowerModeEnabled:(BOOL)enabled;
+- (void)setHasIsStoreDemoMode:(BOOL)mode;
+- (void)setHasProgramCode:(BOOL)code;
+- (void)setHasSearchDataOptOutState:(BOOL)state;
+- (void)setHasSiriInputLocale:(BOOL)locale;
+- (void)setHasTimeIntervalSince1970:(BOOL)since1970;
+- (void)setWatchDeviceAttributes:(id)attributes;
+- (void)writeTo:(id)to;
 @end
 
 @implementation DIMSchemaDIMDeviceFixedContext
 
-- (DIMSchemaDIMDeviceFixedContext)initWithDictionary:(id)a3
+- (DIMSchemaDIMDeviceFixedContext)initWithDictionary:(id)dictionary
 {
   v72 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  dictionaryCopy = dictionary;
   v70.receiver = self;
   v70.super_class = DIMSchemaDIMDeviceFixedContext;
   v5 = [(DIMSchemaDIMDeviceFixedContext *)&v70 init];
   if (v5)
   {
-    v6 = [v4 objectForKeyedSubscript:@"systemLocale"];
+    v6 = [dictionaryCopy objectForKeyedSubscript:@"systemLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DIMSchemaDIMDeviceFixedContext setSystemLocale:](v5, "setSystemLocale:", [v6 intValue]);
     }
 
-    v7 = [v4 objectForKeyedSubscript:@"siriInputLocale"];
+    v7 = [dictionaryCopy objectForKeyedSubscript:@"siriInputLocale"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DIMSchemaDIMDeviceFixedContext setSiriInputLocale:](v5, "setSiriInputLocale:", [v7 intValue]);
     }
 
-    v8 = [v4 objectForKeyedSubscript:@"siriVoiceSettings"];
+    v8 = [dictionaryCopy objectForKeyedSubscript:@"siriVoiceSettings"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -58,14 +58,14 @@
       [(DIMSchemaDIMDeviceFixedContext *)v5 setSiriVoiceSettings:v9];
     }
 
-    v10 = [v4 objectForKeyedSubscript:@"dataSharingOptInState"];
+    v10 = [dictionaryCopy objectForKeyedSubscript:@"dataSharingOptInState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DIMSchemaDIMDeviceFixedContext setDataSharingOptInState:](v5, "setDataSharingOptInState:", [v10 intValue]);
     }
 
-    v11 = [v4 objectForKeyedSubscript:@"timezoneOffset"];
+    v11 = [dictionaryCopy objectForKeyedSubscript:@"timezoneOffset"];
     objc_opt_class();
     v65 = v11;
     if (objc_opt_isKindOfClass())
@@ -74,7 +74,7 @@
       [(DIMSchemaDIMDeviceFixedContext *)v5 setTimezoneOffset:v12];
     }
 
-    v13 = [v4 objectForKeyedSubscript:@"countryCode"];
+    v13 = [dictionaryCopy objectForKeyedSubscript:@"countryCode"];
     objc_opt_class();
     v64 = v13;
     if (objc_opt_isKindOfClass())
@@ -82,7 +82,7 @@
       -[DIMSchemaDIMDeviceFixedContext setCountryCode:](v5, "setCountryCode:", [v13 intValue]);
     }
 
-    v14 = [v4 objectForKeyedSubscript:@"deviceType"];
+    v14 = [dictionaryCopy objectForKeyedSubscript:@"deviceType"];
     objc_opt_class();
     v63 = v14;
     if (objc_opt_isKindOfClass())
@@ -91,7 +91,7 @@
       [(DIMSchemaDIMDeviceFixedContext *)v5 setDeviceType:v15];
     }
 
-    v16 = [v4 objectForKeyedSubscript:@"systemBuild"];
+    v16 = [dictionaryCopy objectForKeyedSubscript:@"systemBuild"];
     objc_opt_class();
     v62 = v16;
     if (objc_opt_isKindOfClass())
@@ -100,7 +100,7 @@
       [(DIMSchemaDIMDeviceFixedContext *)v5 setSystemBuild:v17];
     }
 
-    v18 = [v4 objectForKeyedSubscript:@"isStoreDemoMode"];
+    v18 = [dictionaryCopy objectForKeyedSubscript:@"isStoreDemoMode"];
     objc_opt_class();
     v61 = v18;
     if (objc_opt_isKindOfClass())
@@ -108,7 +108,7 @@
       -[DIMSchemaDIMDeviceFixedContext setIsStoreDemoMode:](v5, "setIsStoreDemoMode:", [v18 BOOLValue]);
     }
 
-    v19 = [v4 objectForKeyedSubscript:@"timeIntervalSince1970"];
+    v19 = [dictionaryCopy objectForKeyedSubscript:@"timeIntervalSince1970"];
     objc_opt_class();
     v60 = v19;
     if (objc_opt_isKindOfClass())
@@ -117,7 +117,7 @@
       [(DIMSchemaDIMDeviceFixedContext *)v5 setTimeIntervalSince1970:?];
     }
 
-    v20 = [v4 objectForKeyedSubscript:@"watchDeviceAttributes"];
+    v20 = [dictionaryCopy objectForKeyedSubscript:@"watchDeviceAttributes"];
     objc_opt_class();
     v59 = v20;
     if (objc_opt_isKindOfClass())
@@ -126,7 +126,7 @@
       [(DIMSchemaDIMDeviceFixedContext *)v5 setWatchDeviceAttributes:v21];
     }
 
-    v22 = [v4 objectForKeyedSubscript:@"isLowPowerModeEnabled"];
+    v22 = [dictionaryCopy objectForKeyedSubscript:@"isLowPowerModeEnabled"];
     objc_opt_class();
     v58 = v22;
     if (objc_opt_isKindOfClass())
@@ -134,7 +134,7 @@
       -[DIMSchemaDIMDeviceFixedContext setIsLowPowerModeEnabled:](v5, "setIsLowPowerModeEnabled:", [v22 BOOLValue]);
     }
 
-    v23 = [v4 objectForKeyedSubscript:@"systemLocaleV2"];
+    v23 = [dictionaryCopy objectForKeyedSubscript:@"systemLocaleV2"];
     objc_opt_class();
     v57 = v23;
     if (objc_opt_isKindOfClass())
@@ -143,7 +143,7 @@
       [(DIMSchemaDIMDeviceFixedContext *)v5 setSystemLocaleV2:v24];
     }
 
-    v25 = [v4 objectForKeyedSubscript:@"siriInputLocaleV2"];
+    v25 = [dictionaryCopy objectForKeyedSubscript:@"siriInputLocaleV2"];
     objc_opt_class();
     v56 = v25;
     if (objc_opt_isKindOfClass())
@@ -152,7 +152,7 @@
       [(DIMSchemaDIMDeviceFixedContext *)v5 setSiriInputLocaleV2:v26];
     }
 
-    v27 = [v4 objectForKeyedSubscript:@"programCode"];
+    v27 = [dictionaryCopy objectForKeyedSubscript:@"programCode"];
     objc_opt_class();
     v55 = v27;
     if (objc_opt_isKindOfClass())
@@ -161,7 +161,7 @@
     }
 
     v54 = v6;
-    v28 = [v4 objectForKeyedSubscript:@"dataCollectionId"];
+    v28 = [dictionaryCopy objectForKeyedSubscript:@"dataCollectionId"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -171,7 +171,7 @@
 
     v50 = v28;
     v53 = v7;
-    v30 = [v4 objectForKeyedSubscript:@"effectiveSystemLanguage"];
+    v30 = [dictionaryCopy objectForKeyedSubscript:@"effectiveSystemLanguage"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -181,7 +181,7 @@
 
     v51 = v10;
     v52 = v8;
-    v32 = [v4 objectForKeyedSubscript:@"preferredLanguages"];
+    v32 = [dictionaryCopy objectForKeyedSubscript:@"preferredLanguages"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -220,14 +220,14 @@
       }
     }
 
-    v40 = [v4 objectForKeyedSubscript:@"homeKitConfiguration"];
+    v40 = [dictionaryCopy objectForKeyedSubscript:@"homeKitConfiguration"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DIMSchemaDIMDeviceFixedContext setHomeKitConfiguration:](v5, "setHomeKitConfiguration:", [v40 intValue]);
     }
 
-    v41 = [v4 objectForKeyedSubscript:@"entitySyncSettings"];
+    v41 = [dictionaryCopy objectForKeyedSubscript:@"entitySyncSettings"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -235,7 +235,7 @@
       [(DIMSchemaDIMDeviceFixedContext *)v5 setEntitySyncSettings:v42];
     }
 
-    v43 = [v4 objectForKeyedSubscript:@"dataSharingSettings"];
+    v43 = [dictionaryCopy objectForKeyedSubscript:@"dataSharingSettings"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -243,21 +243,21 @@
       [(DIMSchemaDIMDeviceFixedContext *)v5 setDataSharingSettings:v44];
     }
 
-    v45 = [v4 objectForKeyedSubscript:@"availableDictationKeyboards"];
+    v45 = [dictionaryCopy objectForKeyedSubscript:@"availableDictationKeyboards"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DIMSchemaDIMDeviceFixedContext setAvailableDictationKeyboards:](v5, "setAvailableDictationKeyboards:", [v45 unsignedIntValue]);
     }
 
-    v46 = [v4 objectForKeyedSubscript:@"searchDataOptOutState"];
+    v46 = [dictionaryCopy objectForKeyedSubscript:@"searchDataOptOutState"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
       -[DIMSchemaDIMDeviceFixedContext setSearchDataOptOutState:](v5, "setSearchDataOptOutState:", [v46 intValue]);
     }
 
-    v47 = [v4 objectForKeyedSubscript:@"isLongLivedIDUploadDisabled"];
+    v47 = [dictionaryCopy objectForKeyedSubscript:@"isLongLivedIDUploadDisabled"];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
@@ -270,30 +270,30 @@
   return v5;
 }
 
-- (DIMSchemaDIMDeviceFixedContext)initWithJSON:(id)a3
+- (DIMSchemaDIMDeviceFixedContext)initWithJSON:(id)n
 {
   v7 = 0;
-  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:a3 options:0 error:&v7];
+  v4 = [MEMORY[0x1E696ACB0] JSONObjectWithData:n options:0 error:&v7];
   if (v7 || (objc_opt_class(), (objc_opt_isKindOfClass() & 1) == 0))
   {
-    v5 = 0;
+    selfCopy = 0;
   }
 
   else
   {
     self = [(DIMSchemaDIMDeviceFixedContext *)self initWithDictionary:v4];
-    v5 = self;
+    selfCopy = self;
   }
 
-  return v5;
+  return selfCopy;
 }
 
 - (NSData)jsonData
 {
-  v2 = [(DIMSchemaDIMDeviceFixedContext *)self dictionaryRepresentation];
-  if ([MEMORY[0x1E696ACB0] isValidJSONObject:v2])
+  dictionaryRepresentation = [(DIMSchemaDIMDeviceFixedContext *)self dictionaryRepresentation];
+  if ([MEMORY[0x1E696ACB0] isValidJSONObject:dictionaryRepresentation])
   {
-    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:v2 options:0 error:0];
+    v3 = [MEMORY[0x1E696ACB0] dataWithJSONObject:dictionaryRepresentation options:0 error:0];
   }
 
   else
@@ -306,12 +306,12 @@
 
 - (id)dictionaryRepresentation
 {
-  v3 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   v4 = *(&self->_isLongLivedIDUploadDisabled + 1);
   if ((v4 & 0x200) != 0)
   {
     v5 = [MEMORY[0x1E696AD98] numberWithUnsignedInt:{-[DIMSchemaDIMDeviceFixedContext availableDictationKeyboards](self, "availableDictationKeyboards")}];
-    [v3 setObject:v5 forKeyedSubscript:@"availableDictationKeyboards"];
+    [dictionary setObject:v5 forKeyedSubscript:@"availableDictationKeyboards"];
 
     v4 = *(&self->_isLongLivedIDUploadDisabled + 1);
   }
@@ -329,14 +329,14 @@
       v7 = off_1E78D37E0[v6];
     }
 
-    [v3 setObject:v7 forKeyedSubscript:@"countryCode"];
+    [dictionary setObject:v7 forKeyedSubscript:@"countryCode"];
   }
 
   if (self->_dataCollectionId)
   {
-    v8 = [(DIMSchemaDIMDeviceFixedContext *)self dataCollectionId];
-    v9 = [v8 copy];
-    [v3 setObject:v9 forKeyedSubscript:@"dataCollectionId"];
+    dataCollectionId = [(DIMSchemaDIMDeviceFixedContext *)self dataCollectionId];
+    v9 = [dataCollectionId copy];
+    [dictionary setObject:v9 forKeyedSubscript:@"dataCollectionId"];
   }
 
   if ((*(&self->_isLongLivedIDUploadDisabled + 1) & 4) != 0)
@@ -352,66 +352,66 @@
       v11 = off_1E78D3FB0[v10];
     }
 
-    [v3 setObject:v11 forKeyedSubscript:@"dataSharingOptInState"];
+    [dictionary setObject:v11 forKeyedSubscript:@"dataSharingOptInState"];
   }
 
   if (self->_dataSharingSettings)
   {
-    v12 = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
-    v13 = [v12 dictionaryRepresentation];
-    if (v13)
+    dataSharingSettings = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
+    dictionaryRepresentation = [dataSharingSettings dictionaryRepresentation];
+    if (dictionaryRepresentation)
     {
-      [v3 setObject:v13 forKeyedSubscript:@"dataSharingSettings"];
+      [dictionary setObject:dictionaryRepresentation forKeyedSubscript:@"dataSharingSettings"];
     }
 
     else
     {
-      v14 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v14 forKeyedSubscript:@"dataSharingSettings"];
+      null = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null forKeyedSubscript:@"dataSharingSettings"];
     }
   }
 
   if (self->_deviceType)
   {
-    v15 = [(DIMSchemaDIMDeviceFixedContext *)self deviceType];
-    v16 = [v15 copy];
-    [v3 setObject:v16 forKeyedSubscript:@"deviceType"];
+    deviceType = [(DIMSchemaDIMDeviceFixedContext *)self deviceType];
+    v16 = [deviceType copy];
+    [dictionary setObject:v16 forKeyedSubscript:@"deviceType"];
   }
 
   if (self->_effectiveSystemLanguage)
   {
-    v17 = [(DIMSchemaDIMDeviceFixedContext *)self effectiveSystemLanguage];
-    v18 = [v17 copy];
-    [v3 setObject:v18 forKeyedSubscript:@"effectiveSystemLanguage"];
+    effectiveSystemLanguage = [(DIMSchemaDIMDeviceFixedContext *)self effectiveSystemLanguage];
+    v18 = [effectiveSystemLanguage copy];
+    [dictionary setObject:v18 forKeyedSubscript:@"effectiveSystemLanguage"];
   }
 
   if (self->_entitySyncSettings)
   {
-    v19 = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
-    v20 = [v19 dictionaryRepresentation];
-    if (v20)
+    entitySyncSettings = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
+    dictionaryRepresentation2 = [entitySyncSettings dictionaryRepresentation];
+    if (dictionaryRepresentation2)
     {
-      [v3 setObject:v20 forKeyedSubscript:@"entitySyncSettings"];
+      [dictionary setObject:dictionaryRepresentation2 forKeyedSubscript:@"entitySyncSettings"];
     }
 
     else
     {
-      v21 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v21 forKeyedSubscript:@"entitySyncSettings"];
+      null2 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null2 forKeyedSubscript:@"entitySyncSettings"];
     }
   }
 
   v22 = *(&self->_isLongLivedIDUploadDisabled + 1);
   if ((v22 & 0x100) != 0)
   {
-    v27 = [(DIMSchemaDIMDeviceFixedContext *)self homeKitConfiguration];
+    homeKitConfiguration = [(DIMSchemaDIMDeviceFixedContext *)self homeKitConfiguration];
     v28 = @"HOMEKITCONFIGURATION_UNKNOWN";
-    if (v27 == 1)
+    if (homeKitConfiguration == 1)
     {
       v28 = @"HOMEKITCONFIGURATION_HH1";
     }
 
-    if (v27 == 2)
+    if (homeKitConfiguration == 2)
     {
       v29 = @"HOMEKITCONFIGURATION_HH2";
     }
@@ -421,7 +421,7 @@
       v29 = v28;
     }
 
-    [v3 setObject:v29 forKeyedSubscript:@"homeKitConfiguration"];
+    [dictionary setObject:v29 forKeyedSubscript:@"homeKitConfiguration"];
     v22 = *(&self->_isLongLivedIDUploadDisabled + 1);
     if ((v22 & 0x800) == 0)
     {
@@ -441,7 +441,7 @@ LABEL_31:
   }
 
   v30 = [MEMORY[0x1E696AD98] numberWithBool:{-[DIMSchemaDIMDeviceFixedContext isLongLivedIDUploadDisabled](self, "isLongLivedIDUploadDisabled")}];
-  [v3 setObject:v30 forKeyedSubscript:@"isLongLivedIDUploadDisabled"];
+  [dictionary setObject:v30 forKeyedSubscript:@"isLongLivedIDUploadDisabled"];
 
   v22 = *(&self->_isLongLivedIDUploadDisabled + 1);
   if ((v22 & 0x40) == 0)
@@ -457,21 +457,21 @@ LABEL_32:
 
 LABEL_47:
   v31 = [MEMORY[0x1E696AD98] numberWithBool:{-[DIMSchemaDIMDeviceFixedContext isLowPowerModeEnabled](self, "isLowPowerModeEnabled")}];
-  [v3 setObject:v31 forKeyedSubscript:@"isLowPowerModeEnabled"];
+  [dictionary setObject:v31 forKeyedSubscript:@"isLowPowerModeEnabled"];
 
   if ((*(&self->_isLongLivedIDUploadDisabled + 1) & 0x10) != 0)
   {
 LABEL_33:
     v23 = [MEMORY[0x1E696AD98] numberWithBool:{-[DIMSchemaDIMDeviceFixedContext isStoreDemoMode](self, "isStoreDemoMode")}];
-    [v3 setObject:v23 forKeyedSubscript:@"isStoreDemoMode"];
+    [dictionary setObject:v23 forKeyedSubscript:@"isStoreDemoMode"];
   }
 
 LABEL_34:
   if (self->_preferredLanguages)
   {
-    v24 = [(DIMSchemaDIMDeviceFixedContext *)self preferredLanguages];
-    v25 = [v24 copy];
-    [v3 setObject:v25 forKeyedSubscript:@"preferredLanguages"];
+    preferredLanguages = [(DIMSchemaDIMDeviceFixedContext *)self preferredLanguages];
+    v25 = [preferredLanguages copy];
+    [dictionary setObject:v25 forKeyedSubscript:@"preferredLanguages"];
   }
 
   v26 = *(&self->_isLongLivedIDUploadDisabled + 1);
@@ -488,7 +488,7 @@ LABEL_34:
       v33 = off_1E78D3FC8[v32];
     }
 
-    [v3 setObject:v33 forKeyedSubscript:@"programCode"];
+    [dictionary setObject:v33 forKeyedSubscript:@"programCode"];
     v26 = *(&self->_isLongLivedIDUploadDisabled + 1);
     if ((v26 & 0x400) == 0)
     {
@@ -507,14 +507,14 @@ LABEL_38:
     goto LABEL_38;
   }
 
-  v34 = [(DIMSchemaDIMDeviceFixedContext *)self searchDataOptOutState];
+  searchDataOptOutState = [(DIMSchemaDIMDeviceFixedContext *)self searchDataOptOutState];
   v35 = @"SEARCHDATAOPTOUTSTATE_UNKNOWN";
-  if (v34 == 1)
+  if (searchDataOptOutState == 1)
   {
     v35 = @"SEARCHDATAOPTOUTSTATE_OPTED_IN";
   }
 
-  if (v34 == 2)
+  if (searchDataOptOutState == 2)
   {
     v36 = @"SEARCHDATAOPTOUTSTATE_OPTED_OUT";
   }
@@ -524,7 +524,7 @@ LABEL_38:
     v36 = v35;
   }
 
-  [v3 setObject:v36 forKeyedSubscript:@"searchDataOptOutState"];
+  [dictionary setObject:v36 forKeyedSubscript:@"searchDataOptOutState"];
   if ((*(&self->_isLongLivedIDUploadDisabled + 1) & 2) != 0)
   {
 LABEL_59:
@@ -539,47 +539,47 @@ LABEL_59:
       v38 = off_1E78D3FF0[v37];
     }
 
-    [v3 setObject:v38 forKeyedSubscript:@"siriInputLocale"];
+    [dictionary setObject:v38 forKeyedSubscript:@"siriInputLocale"];
   }
 
 LABEL_63:
   if (self->_siriInputLocaleV2)
   {
-    v39 = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
-    v40 = [v39 dictionaryRepresentation];
-    if (v40)
+    siriInputLocaleV2 = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
+    dictionaryRepresentation3 = [siriInputLocaleV2 dictionaryRepresentation];
+    if (dictionaryRepresentation3)
     {
-      [v3 setObject:v40 forKeyedSubscript:@"siriInputLocaleV2"];
+      [dictionary setObject:dictionaryRepresentation3 forKeyedSubscript:@"siriInputLocaleV2"];
     }
 
     else
     {
-      v41 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v41 forKeyedSubscript:@"siriInputLocaleV2"];
+      null3 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null3 forKeyedSubscript:@"siriInputLocaleV2"];
     }
   }
 
   if (self->_siriVoiceSettings)
   {
-    v42 = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
-    v43 = [v42 dictionaryRepresentation];
-    if (v43)
+    siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
+    dictionaryRepresentation4 = [siriVoiceSettings dictionaryRepresentation];
+    if (dictionaryRepresentation4)
     {
-      [v3 setObject:v43 forKeyedSubscript:@"siriVoiceSettings"];
+      [dictionary setObject:dictionaryRepresentation4 forKeyedSubscript:@"siriVoiceSettings"];
     }
 
     else
     {
-      v44 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v44 forKeyedSubscript:@"siriVoiceSettings"];
+      null4 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null4 forKeyedSubscript:@"siriVoiceSettings"];
     }
   }
 
   if (self->_systemBuild)
   {
-    v45 = [(DIMSchemaDIMDeviceFixedContext *)self systemBuild];
-    v46 = [v45 copy];
-    [v3 setObject:v46 forKeyedSubscript:@"systemBuild"];
+    systemBuild = [(DIMSchemaDIMDeviceFixedContext *)self systemBuild];
+    v46 = [systemBuild copy];
+    [dictionary setObject:v46 forKeyedSubscript:@"systemBuild"];
   }
 
   if (*(&self->_isLongLivedIDUploadDisabled + 1))
@@ -595,22 +595,22 @@ LABEL_63:
       v48 = off_1E78D3FF0[v47];
     }
 
-    [v3 setObject:v48 forKeyedSubscript:@"systemLocale"];
+    [dictionary setObject:v48 forKeyedSubscript:@"systemLocale"];
   }
 
   if (self->_systemLocaleV2)
   {
-    v49 = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
-    v50 = [v49 dictionaryRepresentation];
-    if (v50)
+    systemLocaleV2 = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
+    dictionaryRepresentation5 = [systemLocaleV2 dictionaryRepresentation];
+    if (dictionaryRepresentation5)
     {
-      [v3 setObject:v50 forKeyedSubscript:@"systemLocaleV2"];
+      [dictionary setObject:dictionaryRepresentation5 forKeyedSubscript:@"systemLocaleV2"];
     }
 
     else
     {
-      v51 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v51 forKeyedSubscript:@"systemLocaleV2"];
+      null5 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null5 forKeyedSubscript:@"systemLocaleV2"];
     }
   }
 
@@ -619,36 +619,36 @@ LABEL_63:
     v52 = MEMORY[0x1E696AD98];
     [(DIMSchemaDIMDeviceFixedContext *)self timeIntervalSince1970];
     v53 = [v52 numberWithDouble:?];
-    [v3 setObject:v53 forKeyedSubscript:@"timeIntervalSince1970"];
+    [dictionary setObject:v53 forKeyedSubscript:@"timeIntervalSince1970"];
   }
 
   if (self->_timezoneOffset)
   {
-    v54 = [(DIMSchemaDIMDeviceFixedContext *)self timezoneOffset];
-    v55 = [v54 copy];
-    [v3 setObject:v55 forKeyedSubscript:@"timezoneOffset"];
+    timezoneOffset = [(DIMSchemaDIMDeviceFixedContext *)self timezoneOffset];
+    v55 = [timezoneOffset copy];
+    [dictionary setObject:v55 forKeyedSubscript:@"timezoneOffset"];
   }
 
   if (self->_watchDeviceAttributes)
   {
-    v56 = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
-    v57 = [v56 dictionaryRepresentation];
-    if (v57)
+    watchDeviceAttributes = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
+    dictionaryRepresentation6 = [watchDeviceAttributes dictionaryRepresentation];
+    if (dictionaryRepresentation6)
     {
-      [v3 setObject:v57 forKeyedSubscript:@"watchDeviceAttributes"];
+      [dictionary setObject:dictionaryRepresentation6 forKeyedSubscript:@"watchDeviceAttributes"];
     }
 
     else
     {
-      v58 = [MEMORY[0x1E695DFB0] null];
-      [v3 setObject:v58 forKeyedSubscript:@"watchDeviceAttributes"];
+      null6 = [MEMORY[0x1E695DFB0] null];
+      [dictionary setObject:null6 forKeyedSubscript:@"watchDeviceAttributes"];
     }
   }
 
-  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:v3];
-  v59 = v3;
+  [(SISchemaInstrumentationMessage *)self willProduceDictionaryRepresentation:dictionary];
+  v59 = dictionary;
 
-  return v3;
+  return dictionary;
 }
 
 - (unint64_t)hash
@@ -824,22 +824,22 @@ LABEL_32:
   return v34 ^ v35 ^ v32 ^ v33 ^ v31 ^ v30 ^ v29 ^ v28 ^ v27 ^ v26 ^ v25 ^ v24 ^ v23 ^ v11 ^ v12 ^ v13 ^ v14 ^ v15 ^ v16 ^ v17 ^ v18 ^ v19 ^ v20 ^ v21;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (![v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if (![equalCopy isMemberOfClass:objc_opt_class()])
   {
     goto LABEL_92;
   }
 
   v5 = *&self->_hasEffectiveSystemLanguage;
-  if (v5 != [v4 whichDeviceattributes])
+  if (v5 != [equalCopy whichDeviceattributes])
   {
     goto LABEL_92;
   }
 
   v6 = *(&self->_isLongLivedIDUploadDisabled + 1);
-  v7 = *(v4 + 177);
+  v7 = *(equalCopy + 177);
   if ((v6 & 1) != (v7 & 1))
   {
     goto LABEL_92;
@@ -848,13 +848,13 @@ LABEL_32:
   if (v6)
   {
     systemLocale = self->_systemLocale;
-    if (systemLocale != [v4 systemLocale])
+    if (systemLocale != [equalCopy systemLocale])
     {
       goto LABEL_92;
     }
 
     v6 = *(&self->_isLongLivedIDUploadDisabled + 1);
-    v7 = *(v4 + 177);
+    v7 = *(equalCopy + 177);
   }
 
   v9 = (v6 >> 1) & 1;
@@ -866,26 +866,26 @@ LABEL_32:
   if (v9)
   {
     siriInputLocale = self->_siriInputLocale;
-    if (siriInputLocale != [v4 siriInputLocale])
+    if (siriInputLocale != [equalCopy siriInputLocale])
     {
       goto LABEL_92;
     }
   }
 
-  v11 = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
-  v12 = [v4 siriVoiceSettings];
-  if ((v11 != 0) == (v12 == 0))
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
+  siriVoiceSettings2 = [equalCopy siriVoiceSettings];
+  if ((siriVoiceSettings != 0) == (siriVoiceSettings2 == 0))
   {
     goto LABEL_91;
   }
 
-  v13 = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
-  if (v13)
+  siriVoiceSettings3 = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
+  if (siriVoiceSettings3)
   {
-    v14 = v13;
-    v15 = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
-    v16 = [v4 siriVoiceSettings];
-    v17 = [v15 isEqual:v16];
+    v14 = siriVoiceSettings3;
+    siriVoiceSettings4 = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
+    siriVoiceSettings5 = [equalCopy siriVoiceSettings];
+    v17 = [siriVoiceSettings4 isEqual:siriVoiceSettings5];
 
     if (!v17)
     {
@@ -898,7 +898,7 @@ LABEL_32:
   }
 
   v18 = (*(&self->_isLongLivedIDUploadDisabled + 1) >> 2) & 1;
-  if (v18 != ((*(v4 + 177) >> 2) & 1))
+  if (v18 != ((*(equalCopy + 177) >> 2) & 1))
   {
     goto LABEL_92;
   }
@@ -906,26 +906,26 @@ LABEL_32:
   if (v18)
   {
     dataSharingOptInState = self->_dataSharingOptInState;
-    if (dataSharingOptInState != [v4 dataSharingOptInState])
+    if (dataSharingOptInState != [equalCopy dataSharingOptInState])
     {
       goto LABEL_92;
     }
   }
 
-  v11 = [(DIMSchemaDIMDeviceFixedContext *)self timezoneOffset];
-  v12 = [v4 timezoneOffset];
-  if ((v11 != 0) == (v12 == 0))
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self timezoneOffset];
+  siriVoiceSettings2 = [equalCopy timezoneOffset];
+  if ((siriVoiceSettings != 0) == (siriVoiceSettings2 == 0))
   {
     goto LABEL_91;
   }
 
-  v20 = [(DIMSchemaDIMDeviceFixedContext *)self timezoneOffset];
-  if (v20)
+  timezoneOffset = [(DIMSchemaDIMDeviceFixedContext *)self timezoneOffset];
+  if (timezoneOffset)
   {
-    v21 = v20;
-    v22 = [(DIMSchemaDIMDeviceFixedContext *)self timezoneOffset];
-    v23 = [v4 timezoneOffset];
-    v24 = [v22 isEqual:v23];
+    v21 = timezoneOffset;
+    timezoneOffset2 = [(DIMSchemaDIMDeviceFixedContext *)self timezoneOffset];
+    timezoneOffset3 = [equalCopy timezoneOffset];
+    v24 = [timezoneOffset2 isEqual:timezoneOffset3];
 
     if (!v24)
     {
@@ -938,7 +938,7 @@ LABEL_32:
   }
 
   v25 = (*(&self->_isLongLivedIDUploadDisabled + 1) >> 3) & 1;
-  if (v25 != ((*(v4 + 177) >> 3) & 1))
+  if (v25 != ((*(equalCopy + 177) >> 3) & 1))
   {
     goto LABEL_92;
   }
@@ -946,26 +946,26 @@ LABEL_32:
   if (v25)
   {
     countryCode = self->_countryCode;
-    if (countryCode != [v4 countryCode])
+    if (countryCode != [equalCopy countryCode])
     {
       goto LABEL_92;
     }
   }
 
-  v11 = [(DIMSchemaDIMDeviceFixedContext *)self deviceType];
-  v12 = [v4 deviceType];
-  if ((v11 != 0) == (v12 == 0))
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self deviceType];
+  siriVoiceSettings2 = [equalCopy deviceType];
+  if ((siriVoiceSettings != 0) == (siriVoiceSettings2 == 0))
   {
     goto LABEL_91;
   }
 
-  v27 = [(DIMSchemaDIMDeviceFixedContext *)self deviceType];
-  if (v27)
+  deviceType = [(DIMSchemaDIMDeviceFixedContext *)self deviceType];
+  if (deviceType)
   {
-    v28 = v27;
-    v29 = [(DIMSchemaDIMDeviceFixedContext *)self deviceType];
-    v30 = [v4 deviceType];
-    v31 = [v29 isEqual:v30];
+    v28 = deviceType;
+    deviceType2 = [(DIMSchemaDIMDeviceFixedContext *)self deviceType];
+    deviceType3 = [equalCopy deviceType];
+    v31 = [deviceType2 isEqual:deviceType3];
 
     if (!v31)
     {
@@ -977,20 +977,20 @@ LABEL_32:
   {
   }
 
-  v11 = [(DIMSchemaDIMDeviceFixedContext *)self systemBuild];
-  v12 = [v4 systemBuild];
-  if ((v11 != 0) == (v12 == 0))
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self systemBuild];
+  siriVoiceSettings2 = [equalCopy systemBuild];
+  if ((siriVoiceSettings != 0) == (siriVoiceSettings2 == 0))
   {
     goto LABEL_91;
   }
 
-  v32 = [(DIMSchemaDIMDeviceFixedContext *)self systemBuild];
-  if (v32)
+  systemBuild = [(DIMSchemaDIMDeviceFixedContext *)self systemBuild];
+  if (systemBuild)
   {
-    v33 = v32;
-    v34 = [(DIMSchemaDIMDeviceFixedContext *)self systemBuild];
-    v35 = [v4 systemBuild];
-    v36 = [v34 isEqual:v35];
+    v33 = systemBuild;
+    systemBuild2 = [(DIMSchemaDIMDeviceFixedContext *)self systemBuild];
+    systemBuild3 = [equalCopy systemBuild];
+    v36 = [systemBuild2 isEqual:systemBuild3];
 
     if (!v36)
     {
@@ -1004,7 +1004,7 @@ LABEL_32:
 
   v37 = *(&self->_isLongLivedIDUploadDisabled + 1);
   v38 = (v37 >> 4) & 1;
-  v39 = *(v4 + 177);
+  v39 = *(equalCopy + 177);
   if (v38 != ((v39 >> 4) & 1))
   {
     goto LABEL_92;
@@ -1013,13 +1013,13 @@ LABEL_32:
   if (v38)
   {
     isStoreDemoMode = self->_isStoreDemoMode;
-    if (isStoreDemoMode != [v4 isStoreDemoMode])
+    if (isStoreDemoMode != [equalCopy isStoreDemoMode])
     {
       goto LABEL_92;
     }
 
     v37 = *(&self->_isLongLivedIDUploadDisabled + 1);
-    v39 = *(v4 + 177);
+    v39 = *(equalCopy + 177);
   }
 
   v41 = (v37 >> 5) & 1;
@@ -1031,27 +1031,27 @@ LABEL_32:
   if (v41)
   {
     timeIntervalSince1970 = self->_timeIntervalSince1970;
-    [v4 timeIntervalSince1970];
+    [equalCopy timeIntervalSince1970];
     if (timeIntervalSince1970 != v43)
     {
       goto LABEL_92;
     }
   }
 
-  v11 = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
-  v12 = [v4 watchDeviceAttributes];
-  if ((v11 != 0) == (v12 == 0))
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
+  siriVoiceSettings2 = [equalCopy watchDeviceAttributes];
+  if ((siriVoiceSettings != 0) == (siriVoiceSettings2 == 0))
   {
     goto LABEL_91;
   }
 
-  v44 = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
-  if (v44)
+  watchDeviceAttributes = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
+  if (watchDeviceAttributes)
   {
-    v45 = v44;
-    v46 = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
-    v47 = [v4 watchDeviceAttributes];
-    v48 = [v46 isEqual:v47];
+    v45 = watchDeviceAttributes;
+    watchDeviceAttributes2 = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
+    watchDeviceAttributes3 = [equalCopy watchDeviceAttributes];
+    v48 = [watchDeviceAttributes2 isEqual:watchDeviceAttributes3];
 
     if (!v48)
     {
@@ -1064,7 +1064,7 @@ LABEL_32:
   }
 
   v49 = (*(&self->_isLongLivedIDUploadDisabled + 1) >> 6) & 1;
-  if (v49 != ((*(v4 + 177) >> 6) & 1))
+  if (v49 != ((*(equalCopy + 177) >> 6) & 1))
   {
     goto LABEL_92;
   }
@@ -1072,26 +1072,26 @@ LABEL_32:
   if (v49)
   {
     isLowPowerModeEnabled = self->_isLowPowerModeEnabled;
-    if (isLowPowerModeEnabled != [v4 isLowPowerModeEnabled])
+    if (isLowPowerModeEnabled != [equalCopy isLowPowerModeEnabled])
     {
       goto LABEL_92;
     }
   }
 
-  v11 = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
-  v12 = [v4 systemLocaleV2];
-  if ((v11 != 0) == (v12 == 0))
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
+  siriVoiceSettings2 = [equalCopy systemLocaleV2];
+  if ((siriVoiceSettings != 0) == (siriVoiceSettings2 == 0))
   {
     goto LABEL_91;
   }
 
-  v51 = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
-  if (v51)
+  systemLocaleV2 = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
+  if (systemLocaleV2)
   {
-    v52 = v51;
-    v53 = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
-    v54 = [v4 systemLocaleV2];
-    v55 = [v53 isEqual:v54];
+    v52 = systemLocaleV2;
+    systemLocaleV22 = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
+    systemLocaleV23 = [equalCopy systemLocaleV2];
+    v55 = [systemLocaleV22 isEqual:systemLocaleV23];
 
     if (!v55)
     {
@@ -1103,20 +1103,20 @@ LABEL_32:
   {
   }
 
-  v11 = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
-  v12 = [v4 siriInputLocaleV2];
-  if ((v11 != 0) == (v12 == 0))
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
+  siriVoiceSettings2 = [equalCopy siriInputLocaleV2];
+  if ((siriVoiceSettings != 0) == (siriVoiceSettings2 == 0))
   {
     goto LABEL_91;
   }
 
-  v56 = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
-  if (v56)
+  siriInputLocaleV2 = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
+  if (siriInputLocaleV2)
   {
-    v57 = v56;
-    v58 = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
-    v59 = [v4 siriInputLocaleV2];
-    v60 = [v58 isEqual:v59];
+    v57 = siriInputLocaleV2;
+    siriInputLocaleV22 = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
+    siriInputLocaleV23 = [equalCopy siriInputLocaleV2];
+    v60 = [siriInputLocaleV22 isEqual:siriInputLocaleV23];
 
     if (!v60)
     {
@@ -1129,7 +1129,7 @@ LABEL_32:
   }
 
   v61 = (*(&self->_isLongLivedIDUploadDisabled + 1) >> 7) & 1;
-  if (v61 != ((*(v4 + 177) >> 7) & 1))
+  if (v61 != ((*(equalCopy + 177) >> 7) & 1))
   {
     goto LABEL_92;
   }
@@ -1137,26 +1137,26 @@ LABEL_32:
   if (v61)
   {
     programCode = self->_programCode;
-    if (programCode != [v4 programCode])
+    if (programCode != [equalCopy programCode])
     {
       goto LABEL_92;
     }
   }
 
-  v11 = [(DIMSchemaDIMDeviceFixedContext *)self dataCollectionId];
-  v12 = [v4 dataCollectionId];
-  if ((v11 != 0) == (v12 == 0))
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self dataCollectionId];
+  siriVoiceSettings2 = [equalCopy dataCollectionId];
+  if ((siriVoiceSettings != 0) == (siriVoiceSettings2 == 0))
   {
     goto LABEL_91;
   }
 
-  v63 = [(DIMSchemaDIMDeviceFixedContext *)self dataCollectionId];
-  if (v63)
+  dataCollectionId = [(DIMSchemaDIMDeviceFixedContext *)self dataCollectionId];
+  if (dataCollectionId)
   {
-    v64 = v63;
-    v65 = [(DIMSchemaDIMDeviceFixedContext *)self dataCollectionId];
-    v66 = [v4 dataCollectionId];
-    v67 = [v65 isEqual:v66];
+    v64 = dataCollectionId;
+    dataCollectionId2 = [(DIMSchemaDIMDeviceFixedContext *)self dataCollectionId];
+    dataCollectionId3 = [equalCopy dataCollectionId];
+    v67 = [dataCollectionId2 isEqual:dataCollectionId3];
 
     if (!v67)
     {
@@ -1168,20 +1168,20 @@ LABEL_32:
   {
   }
 
-  v11 = [(DIMSchemaDIMDeviceFixedContext *)self effectiveSystemLanguage];
-  v12 = [v4 effectiveSystemLanguage];
-  if ((v11 != 0) == (v12 == 0))
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self effectiveSystemLanguage];
+  siriVoiceSettings2 = [equalCopy effectiveSystemLanguage];
+  if ((siriVoiceSettings != 0) == (siriVoiceSettings2 == 0))
   {
     goto LABEL_91;
   }
 
-  v68 = [(DIMSchemaDIMDeviceFixedContext *)self effectiveSystemLanguage];
-  if (v68)
+  effectiveSystemLanguage = [(DIMSchemaDIMDeviceFixedContext *)self effectiveSystemLanguage];
+  if (effectiveSystemLanguage)
   {
-    v69 = v68;
-    v70 = [(DIMSchemaDIMDeviceFixedContext *)self effectiveSystemLanguage];
-    v71 = [v4 effectiveSystemLanguage];
-    v72 = [v70 isEqual:v71];
+    v69 = effectiveSystemLanguage;
+    effectiveSystemLanguage2 = [(DIMSchemaDIMDeviceFixedContext *)self effectiveSystemLanguage];
+    effectiveSystemLanguage3 = [equalCopy effectiveSystemLanguage];
+    v72 = [effectiveSystemLanguage2 isEqual:effectiveSystemLanguage3];
 
     if (!v72)
     {
@@ -1193,20 +1193,20 @@ LABEL_32:
   {
   }
 
-  v11 = [(DIMSchemaDIMDeviceFixedContext *)self preferredLanguages];
-  v12 = [v4 preferredLanguages];
-  if ((v11 != 0) == (v12 == 0))
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self preferredLanguages];
+  siriVoiceSettings2 = [equalCopy preferredLanguages];
+  if ((siriVoiceSettings != 0) == (siriVoiceSettings2 == 0))
   {
     goto LABEL_91;
   }
 
-  v73 = [(DIMSchemaDIMDeviceFixedContext *)self preferredLanguages];
-  if (v73)
+  preferredLanguages = [(DIMSchemaDIMDeviceFixedContext *)self preferredLanguages];
+  if (preferredLanguages)
   {
-    v74 = v73;
-    v75 = [(DIMSchemaDIMDeviceFixedContext *)self preferredLanguages];
-    v76 = [v4 preferredLanguages];
-    v77 = [v75 isEqual:v76];
+    v74 = preferredLanguages;
+    preferredLanguages2 = [(DIMSchemaDIMDeviceFixedContext *)self preferredLanguages];
+    preferredLanguages3 = [equalCopy preferredLanguages];
+    v77 = [preferredLanguages2 isEqual:preferredLanguages3];
 
     if (!v77)
     {
@@ -1219,7 +1219,7 @@ LABEL_32:
   }
 
   v78 = HIBYTE(*(&self->_isLongLivedIDUploadDisabled + 1)) & 1;
-  if (v78 != (HIBYTE(*(v4 + 177)) & 1))
+  if (v78 != (HIBYTE(*(equalCopy + 177)) & 1))
   {
     goto LABEL_92;
   }
@@ -1227,26 +1227,26 @@ LABEL_32:
   if (v78)
   {
     homeKitConfiguration = self->_homeKitConfiguration;
-    if (homeKitConfiguration != [v4 homeKitConfiguration])
+    if (homeKitConfiguration != [equalCopy homeKitConfiguration])
     {
       goto LABEL_92;
     }
   }
 
-  v11 = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
-  v12 = [v4 entitySyncSettings];
-  if ((v11 != 0) == (v12 == 0))
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
+  siriVoiceSettings2 = [equalCopy entitySyncSettings];
+  if ((siriVoiceSettings != 0) == (siriVoiceSettings2 == 0))
   {
     goto LABEL_91;
   }
 
-  v80 = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
-  if (v80)
+  entitySyncSettings = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
+  if (entitySyncSettings)
   {
-    v81 = v80;
-    v82 = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
-    v83 = [v4 entitySyncSettings];
-    v84 = [v82 isEqual:v83];
+    v81 = entitySyncSettings;
+    entitySyncSettings2 = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
+    entitySyncSettings3 = [equalCopy entitySyncSettings];
+    v84 = [entitySyncSettings2 isEqual:entitySyncSettings3];
 
     if (!v84)
     {
@@ -1258,22 +1258,22 @@ LABEL_32:
   {
   }
 
-  v11 = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
-  v12 = [v4 dataSharingSettings];
-  if ((v11 != 0) == (v12 == 0))
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
+  siriVoiceSettings2 = [equalCopy dataSharingSettings];
+  if ((siriVoiceSettings != 0) == (siriVoiceSettings2 == 0))
   {
 LABEL_91:
 
     goto LABEL_92;
   }
 
-  v85 = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
-  if (v85)
+  dataSharingSettings = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
+  if (dataSharingSettings)
   {
-    v86 = v85;
-    v87 = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
-    v88 = [v4 dataSharingSettings];
-    v89 = [v87 isEqual:v88];
+    v86 = dataSharingSettings;
+    dataSharingSettings2 = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
+    dataSharingSettings3 = [equalCopy dataSharingSettings];
+    v89 = [dataSharingSettings2 isEqual:dataSharingSettings3];
 
     if (!v89)
     {
@@ -1287,19 +1287,19 @@ LABEL_91:
 
   v92 = *(&self->_isLongLivedIDUploadDisabled + 1);
   v93 = (v92 >> 9) & 1;
-  v94 = *(v4 + 177);
+  v94 = *(equalCopy + 177);
   if (v93 == ((v94 >> 9) & 1))
   {
     if (v93)
     {
       availableDictationKeyboards = self->_availableDictationKeyboards;
-      if (availableDictationKeyboards != [v4 availableDictationKeyboards])
+      if (availableDictationKeyboards != [equalCopy availableDictationKeyboards])
       {
         goto LABEL_92;
       }
 
       v92 = *(&self->_isLongLivedIDUploadDisabled + 1);
-      v94 = *(v4 + 177);
+      v94 = *(equalCopy + 177);
     }
 
     v96 = (v92 >> 10) & 1;
@@ -1308,19 +1308,19 @@ LABEL_91:
       if (v96)
       {
         searchDataOptOutState = self->_searchDataOptOutState;
-        if (searchDataOptOutState != [v4 searchDataOptOutState])
+        if (searchDataOptOutState != [equalCopy searchDataOptOutState])
         {
           goto LABEL_92;
         }
 
         v92 = *(&self->_isLongLivedIDUploadDisabled + 1);
-        v94 = *(v4 + 177);
+        v94 = *(equalCopy + 177);
       }
 
       v98 = (v92 >> 11) & 1;
       if (v98 == ((v94 >> 11) & 1))
       {
-        if (!v98 || (isLongLivedIDUploadDisabled = self->_isLongLivedIDUploadDisabled, isLongLivedIDUploadDisabled == [v4 isLongLivedIDUploadDisabled]))
+        if (!v98 || (isLongLivedIDUploadDisabled = self->_isLongLivedIDUploadDisabled, isLongLivedIDUploadDisabled == [equalCopy isLongLivedIDUploadDisabled]))
         {
           v90 = 1;
           goto LABEL_93;
@@ -1336,10 +1336,10 @@ LABEL_93:
   return v90;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v35 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   v5 = *(&self->_isLongLivedIDUploadDisabled + 1);
   if (v5)
   {
@@ -1352,11 +1352,11 @@ LABEL_93:
     PBDataWriterWriteInt32Field();
   }
 
-  v6 = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
 
-  if (v6)
+  if (siriVoiceSettings)
   {
-    v7 = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
+    siriVoiceSettings2 = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1365,9 +1365,9 @@ LABEL_93:
     PBDataWriterWriteInt32Field();
   }
 
-  v8 = [(DIMSchemaDIMDeviceFixedContext *)self timezoneOffset];
+  timezoneOffset = [(DIMSchemaDIMDeviceFixedContext *)self timezoneOffset];
 
-  if (v8)
+  if (timezoneOffset)
   {
     PBDataWriterWriteStringField();
   }
@@ -1377,16 +1377,16 @@ LABEL_93:
     PBDataWriterWriteInt32Field();
   }
 
-  v9 = [(DIMSchemaDIMDeviceFixedContext *)self deviceType];
+  deviceType = [(DIMSchemaDIMDeviceFixedContext *)self deviceType];
 
-  if (v9)
+  if (deviceType)
   {
     PBDataWriterWriteStringField();
   }
 
-  v10 = [(DIMSchemaDIMDeviceFixedContext *)self systemBuild];
+  systemBuild = [(DIMSchemaDIMDeviceFixedContext *)self systemBuild];
 
-  if (v10)
+  if (systemBuild)
   {
     PBDataWriterWriteStringField();
   }
@@ -1403,11 +1403,11 @@ LABEL_93:
     PBDataWriterWriteDoubleField();
   }
 
-  v12 = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
+  watchDeviceAttributes = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
 
-  if (v12)
+  if (watchDeviceAttributes)
   {
-    v13 = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
+    watchDeviceAttributes2 = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1416,19 +1416,19 @@ LABEL_93:
     PBDataWriterWriteBOOLField();
   }
 
-  v14 = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
+  systemLocaleV2 = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
 
-  if (v14)
+  if (systemLocaleV2)
   {
-    v15 = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
+    systemLocaleV22 = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
     PBDataWriterWriteSubmessage();
   }
 
-  v16 = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
+  siriInputLocaleV2 = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
 
-  if (v16)
+  if (siriInputLocaleV2)
   {
-    v17 = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
+    siriInputLocaleV22 = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1437,16 +1437,16 @@ LABEL_93:
     PBDataWriterWriteInt32Field();
   }
 
-  v18 = [(DIMSchemaDIMDeviceFixedContext *)self dataCollectionId];
+  dataCollectionId = [(DIMSchemaDIMDeviceFixedContext *)self dataCollectionId];
 
-  if (v18)
+  if (dataCollectionId)
   {
     PBDataWriterWriteStringField();
   }
 
-  v19 = [(DIMSchemaDIMDeviceFixedContext *)self effectiveSystemLanguage];
+  effectiveSystemLanguage = [(DIMSchemaDIMDeviceFixedContext *)self effectiveSystemLanguage];
 
-  if (v19)
+  if (effectiveSystemLanguage)
   {
     PBDataWriterWriteStringField();
   }
@@ -1484,19 +1484,19 @@ LABEL_93:
     PBDataWriterWriteInt32Field();
   }
 
-  v25 = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
+  entitySyncSettings = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
 
-  if (v25)
+  if (entitySyncSettings)
   {
-    v26 = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
+    entitySyncSettings2 = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
     PBDataWriterWriteSubmessage();
   }
 
-  v27 = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
+  dataSharingSettings = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
 
-  if (v27)
+  if (dataSharingSettings)
   {
-    v28 = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
+    dataSharingSettings2 = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
     PBDataWriterWriteSubmessage();
   }
 
@@ -1535,9 +1535,9 @@ LABEL_51:
 LABEL_52:
 }
 
-- (void)setHasIsLongLivedIDUploadDisabled:(BOOL)a3
+- (void)setHasIsLongLivedIDUploadDisabled:(BOOL)disabled
 {
-  if (a3)
+  if (disabled)
   {
     v3 = 2048;
   }
@@ -1550,9 +1550,9 @@ LABEL_52:
   *(&self->_isLongLivedIDUploadDisabled + 1) = *(&self->_isLongLivedIDUploadDisabled + 1) & 0xF7FF | v3;
 }
 
-- (void)setHasSearchDataOptOutState:(BOOL)a3
+- (void)setHasSearchDataOptOutState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 1024;
   }
@@ -1565,9 +1565,9 @@ LABEL_52:
   *(&self->_isLongLivedIDUploadDisabled + 1) = *(&self->_isLongLivedIDUploadDisabled + 1) & 0xFBFF | v3;
 }
 
-- (void)setHasAvailableDictationKeyboards:(BOOL)a3
+- (void)setHasAvailableDictationKeyboards:(BOOL)keyboards
 {
-  if (a3)
+  if (keyboards)
   {
     v3 = 512;
   }
@@ -1580,9 +1580,9 @@ LABEL_52:
   *(&self->_isLongLivedIDUploadDisabled + 1) = *(&self->_isLongLivedIDUploadDisabled + 1) & 0xFDFF | v3;
 }
 
-- (void)setHasHomeKitConfiguration:(BOOL)a3
+- (void)setHasHomeKitConfiguration:(BOOL)configuration
 {
-  if (a3)
+  if (configuration)
   {
     v3 = 256;
   }
@@ -1595,27 +1595,27 @@ LABEL_52:
   *(&self->_isLongLivedIDUploadDisabled + 1) = *(&self->_isLongLivedIDUploadDisabled + 1) & 0xFEFF | v3;
 }
 
-- (void)addPreferredLanguages:(id)a3
+- (void)addPreferredLanguages:(id)languages
 {
-  v4 = a3;
+  languagesCopy = languages;
   preferredLanguages = self->_preferredLanguages;
-  v8 = v4;
+  v8 = languagesCopy;
   if (!preferredLanguages)
   {
-    v6 = [MEMORY[0x1E695DF70] array];
+    array = [MEMORY[0x1E695DF70] array];
     v7 = self->_preferredLanguages;
-    self->_preferredLanguages = v6;
+    self->_preferredLanguages = array;
 
-    v4 = v8;
+    languagesCopy = v8;
     preferredLanguages = self->_preferredLanguages;
   }
 
-  [(NSArray *)preferredLanguages addObject:v4];
+  [(NSArray *)preferredLanguages addObject:languagesCopy];
 }
 
-- (void)setHasProgramCode:(BOOL)a3
+- (void)setHasProgramCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 128;
   }
@@ -1628,9 +1628,9 @@ LABEL_52:
   *(&self->_isLongLivedIDUploadDisabled + 1) = *(&self->_isLongLivedIDUploadDisabled + 1) & 0xFF7F | v3;
 }
 
-- (void)setHasIsLowPowerModeEnabled:(BOOL)a3
+- (void)setHasIsLowPowerModeEnabled:(BOOL)enabled
 {
-  if (a3)
+  if (enabled)
   {
     v3 = 64;
   }
@@ -1668,21 +1668,21 @@ LABEL_52:
   return v3;
 }
 
-- (void)setWatchDeviceAttributes:(id)a3
+- (void)setWatchDeviceAttributes:(id)attributes
 {
   v3 = 100;
-  if (!a3)
+  if (!attributes)
   {
     v3 = 0;
   }
 
   *&self->_hasEffectiveSystemLanguage = v3;
-  objc_storeStrong(&self->_watchDeviceAttributes, a3);
+  objc_storeStrong(&self->_watchDeviceAttributes, attributes);
 }
 
-- (void)setHasTimeIntervalSince1970:(BOOL)a3
+- (void)setHasTimeIntervalSince1970:(BOOL)since1970
 {
-  if (a3)
+  if (since1970)
   {
     v3 = 32;
   }
@@ -1695,9 +1695,9 @@ LABEL_52:
   *(&self->_isLongLivedIDUploadDisabled + 1) = *(&self->_isLongLivedIDUploadDisabled + 1) & 0xFFDF | v3;
 }
 
-- (void)setHasIsStoreDemoMode:(BOOL)a3
+- (void)setHasIsStoreDemoMode:(BOOL)mode
 {
-  if (a3)
+  if (mode)
   {
     v3 = 16;
   }
@@ -1710,9 +1710,9 @@ LABEL_52:
   *(&self->_isLongLivedIDUploadDisabled + 1) = *(&self->_isLongLivedIDUploadDisabled + 1) & 0xFFEF | v3;
 }
 
-- (void)setHasCountryCode:(BOOL)a3
+- (void)setHasCountryCode:(BOOL)code
 {
-  if (a3)
+  if (code)
   {
     v3 = 8;
   }
@@ -1725,9 +1725,9 @@ LABEL_52:
   *(&self->_isLongLivedIDUploadDisabled + 1) = *(&self->_isLongLivedIDUploadDisabled + 1) & 0xFFF7 | v3;
 }
 
-- (void)setHasDataSharingOptInState:(BOOL)a3
+- (void)setHasDataSharingOptInState:(BOOL)state
 {
-  if (a3)
+  if (state)
   {
     v3 = 4;
   }
@@ -1740,9 +1740,9 @@ LABEL_52:
   *(&self->_isLongLivedIDUploadDisabled + 1) = *(&self->_isLongLivedIDUploadDisabled + 1) & 0xFFFB | v3;
 }
 
-- (void)setHasSiriInputLocale:(BOOL)a3
+- (void)setHasSiriInputLocale:(BOOL)locale
 {
-  if (a3)
+  if (locale)
   {
     v3 = 2;
   }
@@ -1755,62 +1755,62 @@ LABEL_52:
   *(&self->_isLongLivedIDUploadDisabled + 1) = *(&self->_isLongLivedIDUploadDisabled + 1) & 0xFFFD | v3;
 }
 
-- (id)applySensitiveConditionsPolicy:(id)a3
+- (id)applySensitiveConditionsPolicy:(id)policy
 {
-  v4 = a3;
+  policyCopy = policy;
   v25.receiver = self;
   v25.super_class = DIMSchemaDIMDeviceFixedContext;
-  v5 = [(SISchemaInstrumentationMessage *)&v25 applySensitiveConditionsPolicy:v4];
-  v6 = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
-  v7 = [v6 applySensitiveConditionsPolicy:v4];
-  v8 = [v7 suppressMessage];
+  v5 = [(SISchemaInstrumentationMessage *)&v25 applySensitiveConditionsPolicy:policyCopy];
+  siriVoiceSettings = [(DIMSchemaDIMDeviceFixedContext *)self siriVoiceSettings];
+  v7 = [siriVoiceSettings applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage = [v7 suppressMessage];
 
-  if (v8)
+  if (suppressMessage)
   {
     [(DIMSchemaDIMDeviceFixedContext *)self deleteSiriVoiceSettings];
   }
 
-  v9 = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
-  v10 = [v9 applySensitiveConditionsPolicy:v4];
-  v11 = [v10 suppressMessage];
+  watchDeviceAttributes = [(DIMSchemaDIMDeviceFixedContext *)self watchDeviceAttributes];
+  v10 = [watchDeviceAttributes applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage2 = [v10 suppressMessage];
 
-  if (v11)
+  if (suppressMessage2)
   {
     [(DIMSchemaDIMDeviceFixedContext *)self deleteWatchDeviceAttributes];
   }
 
-  v12 = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
-  v13 = [v12 applySensitiveConditionsPolicy:v4];
-  v14 = [v13 suppressMessage];
+  systemLocaleV2 = [(DIMSchemaDIMDeviceFixedContext *)self systemLocaleV2];
+  v13 = [systemLocaleV2 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage3 = [v13 suppressMessage];
 
-  if (v14)
+  if (suppressMessage3)
   {
     [(DIMSchemaDIMDeviceFixedContext *)self deleteSystemLocaleV2];
   }
 
-  v15 = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
-  v16 = [v15 applySensitiveConditionsPolicy:v4];
-  v17 = [v16 suppressMessage];
+  siriInputLocaleV2 = [(DIMSchemaDIMDeviceFixedContext *)self siriInputLocaleV2];
+  v16 = [siriInputLocaleV2 applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage4 = [v16 suppressMessage];
 
-  if (v17)
+  if (suppressMessage4)
   {
     [(DIMSchemaDIMDeviceFixedContext *)self deleteSiriInputLocaleV2];
   }
 
-  v18 = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
-  v19 = [v18 applySensitiveConditionsPolicy:v4];
-  v20 = [v19 suppressMessage];
+  entitySyncSettings = [(DIMSchemaDIMDeviceFixedContext *)self entitySyncSettings];
+  v19 = [entitySyncSettings applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage5 = [v19 suppressMessage];
 
-  if (v20)
+  if (suppressMessage5)
   {
     [(DIMSchemaDIMDeviceFixedContext *)self deleteEntitySyncSettings];
   }
 
-  v21 = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
-  v22 = [v21 applySensitiveConditionsPolicy:v4];
-  v23 = [v22 suppressMessage];
+  dataSharingSettings = [(DIMSchemaDIMDeviceFixedContext *)self dataSharingSettings];
+  v22 = [dataSharingSettings applySensitiveConditionsPolicy:policyCopy];
+  suppressMessage6 = [v22 suppressMessage];
 
-  if (v23)
+  if (suppressMessage6)
   {
     [(DIMSchemaDIMDeviceFixedContext *)self deleteDataSharingSettings];
   }

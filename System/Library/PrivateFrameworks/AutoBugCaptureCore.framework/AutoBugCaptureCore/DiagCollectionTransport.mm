@@ -1,7 +1,7 @@
 @interface DiagCollectionTransport
 - (DiagCollectionTransport)init;
 - (void)dealloc;
-- (void)setListeningPort:(const char *)a3;
+- (void)setListeningPort:(const char *)port;
 - (void)shutdown;
 @end
 
@@ -40,14 +40,14 @@
   [(DiagCollectionTransport *)&v4 dealloc];
 }
 
-- (void)setListeningPort:(const char *)a3
+- (void)setListeningPort:(const char *)port
 {
   v21 = *MEMORY[0x277D85DE8];
   v5 = xpcLogHandle();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v19 = 136315138;
-    v20 = a3;
+    portCopy3 = port;
     _os_log_impl(&dword_241804000, v5, OS_LOG_TYPE_DEFAULT, "DiagCollectionTransport started for service %s", &v19, 0xCu);
   }
 
@@ -58,7 +58,7 @@
     {
       listener = self->listener;
       v19 = 134217984;
-      v20 = listener;
+      portCopy3 = listener;
       v8 = "listener already initialized: %p";
       v9 = v6;
       v10 = OS_LOG_TYPE_INFO;
@@ -70,7 +70,7 @@ LABEL_12:
   else
   {
     v11 = objc_alloc(MEMORY[0x277CCAE98]);
-    v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:a3];
+    v12 = [MEMORY[0x277CCACA8] stringWithUTF8String:port];
     v13 = [v11 initWithMachServiceName:v12];
     v14 = self->listener;
     self->listener = v13;
@@ -88,7 +88,7 @@ LABEL_12:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
       {
         v19 = 136315138;
-        v20 = a3;
+        portCopy3 = port;
         v8 = "started listener for service %s";
         v9 = v6;
         v10 = OS_LOG_TYPE_DEFAULT;
@@ -104,7 +104,7 @@ LABEL_12:
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
       {
         v19 = 136315138;
-        v20 = a3;
+        portCopy3 = port;
         v8 = "failed to create listener for service %s";
         v9 = v6;
         v10 = OS_LOG_TYPE_ERROR;

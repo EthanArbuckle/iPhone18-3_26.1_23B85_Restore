@@ -1,51 +1,51 @@
 @interface SearchUISection
-+ (id)sectionWithResultSection:(id)a3 collectionCardSection:(id)a4 sectionIdentifier:(id)a5;
-+ (id)sectionWithResultSection:(id)a3 sectionIdentifier:(id)a4;
++ (id)sectionWithResultSection:(id)section collectionCardSection:(id)cardSection sectionIdentifier:(id)identifier;
++ (id)sectionWithResultSection:(id)section sectionIdentifier:(id)identifier;
 - (BOOL)isBrowseSection;
-- (SearchUISection)initWithResultSection:(id)a3 collectionSection:(id)a4 sectionIdentifier:(id)a5;
+- (SearchUISection)initWithResultSection:(id)section collectionSection:(id)collectionSection sectionIdentifier:(id)identifier;
 @end
 
 @implementation SearchUISection
 
-+ (id)sectionWithResultSection:(id)a3 sectionIdentifier:(id)a4
++ (id)sectionWithResultSection:(id)section sectionIdentifier:(id)identifier
 {
-  v4 = a3;
-  if (a3)
+  sectionCopy = section;
+  if (section)
   {
-    v5 = a4;
-    v6 = v4;
-    v4 = [[SearchUISection alloc] initWithResultSection:v6 collectionSection:0 sectionIdentifier:v5];
+    identifierCopy = identifier;
+    v6 = sectionCopy;
+    sectionCopy = [[SearchUISection alloc] initWithResultSection:v6 collectionSection:0 sectionIdentifier:identifierCopy];
   }
 
-  return v4;
+  return sectionCopy;
 }
 
-+ (id)sectionWithResultSection:(id)a3 collectionCardSection:(id)a4 sectionIdentifier:(id)a5
++ (id)sectionWithResultSection:(id)section collectionCardSection:(id)cardSection sectionIdentifier:(id)identifier
 {
-  v7 = a5;
-  v8 = a4;
-  v9 = a3;
-  v10 = [[SearchUISection alloc] initWithResultSection:v9 collectionSection:v8 sectionIdentifier:v7];
+  identifierCopy = identifier;
+  cardSectionCopy = cardSection;
+  sectionCopy = section;
+  v10 = [[SearchUISection alloc] initWithResultSection:sectionCopy collectionSection:cardSectionCopy sectionIdentifier:identifierCopy];
 
   return v10;
 }
 
-- (SearchUISection)initWithResultSection:(id)a3 collectionSection:(id)a4 sectionIdentifier:(id)a5
+- (SearchUISection)initWithResultSection:(id)section collectionSection:(id)collectionSection sectionIdentifier:(id)identifier
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  sectionCopy = section;
+  collectionSectionCopy = collectionSection;
+  identifierCopy = identifier;
   v18.receiver = self;
   v18.super_class = SearchUISection;
   v12 = [(SearchUISection *)&v18 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_resultSection, a3);
-    objc_storeStrong(&v13->_collectionSection, a4);
-    objc_storeStrong(&v13->_sectionIdentifier, a5);
+    objc_storeStrong(&v12->_resultSection, section);
+    objc_storeStrong(&v13->_collectionSection, collectionSection);
+    objc_storeStrong(&v13->_sectionIdentifier, identifier);
     v14 = objc_opt_class();
-    if (v10)
+    if (collectionSectionCopy)
     {
       [v14 reuseIdentifierForCollectionSection];
     }
@@ -64,8 +64,8 @@
 
 - (BOOL)isBrowseSection
 {
-  v2 = [(SFResultSection *)self->_resultSection identifier];
-  v3 = [v2 hasPrefix:@"com.apple.spotlight.zkw"];
+  identifier = [(SFResultSection *)self->_resultSection identifier];
+  v3 = [identifier hasPrefix:@"com.apple.spotlight.zkw"];
 
   return v3;
 }

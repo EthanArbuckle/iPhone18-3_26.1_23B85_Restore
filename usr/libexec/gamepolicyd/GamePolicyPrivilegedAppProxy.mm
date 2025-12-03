@@ -1,8 +1,8 @@
 @interface GamePolicyPrivilegedAppProxy
 - (void)ping;
-- (void)requestInstalledGamesWithAdamIDs:(id)a3 withReply:(id)a4;
-- (void)requestInstalledGamesWithBundleIDs:(id)a3 withReply:(id)a4;
-- (void)requestInstalledGamesWithReply:(id)a3;
+- (void)requestInstalledGamesWithAdamIDs:(id)ds withReply:(id)reply;
+- (void)requestInstalledGamesWithBundleIDs:(id)ds withReply:(id)reply;
+- (void)requestInstalledGamesWithReply:(id)reply;
 @end
 
 @implementation GamePolicyPrivilegedAppProxy
@@ -13,9 +13,9 @@
   sub_10000C4B8();
 }
 
-- (void)requestInstalledGamesWithReply:(id)a3
+- (void)requestInstalledGamesWithReply:(id)reply
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(reply);
   v5 = *self->gameStore;
 
   sub_100006910();
@@ -32,9 +32,9 @@
   _Block_release(v4);
 }
 
-- (void)requestInstalledGamesWithBundleIDs:(id)a3 withReply:(id)a4
+- (void)requestInstalledGamesWithBundleIDs:(id)ds withReply:(id)reply
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(reply);
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = *self->gameStore;
 
@@ -48,9 +48,9 @@
   _Block_release(v5);
 }
 
-- (void)requestInstalledGamesWithAdamIDs:(id)a3 withReply:(id)a4
+- (void)requestInstalledGamesWithAdamIDs:(id)ds withReply:(id)reply
 {
-  v5 = _Block_copy(a4);
+  v5 = _Block_copy(reply);
   sub_10000CCA8();
   v6 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   v7 = *self->gameStore;

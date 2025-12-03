@@ -1,19 +1,19 @@
 @interface UISwipeActionPullViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)_accessibilityLoadAccessibilityInformation;
 - (void)layoutSubviews;
 @end
 
 @implementation UISwipeActionPullViewAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v5 = location;
   obj = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v3 = @"UISwipeActionPullView";
   [location[0] validateClass:0 hasInstanceMethod:? withFullSignature:?];
   [location[0] validateClass:v3 hasInstanceVariable:@"_buttons" withType:"NSMutableArray"];
@@ -23,14 +23,14 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v21 = self;
+  selfCopy = self;
   v20 = a2;
   v19.receiver = self;
   v19.super_class = UISwipeActionPullViewAccessibility;
   [(UISwipeActionPullViewAccessibility *)&v19 _accessibilityLoadAccessibilityInformation];
   v17 = 0;
   objc_opt_class();
-  v4 = [(UISwipeActionPullViewAccessibility *)v21 safeValueForKey:@"_buttons"];
+  v4 = [(UISwipeActionPullViewAccessibility *)selfCopy safeValueForKey:@"_buttons"];
   v16 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v4);
   v15 = MEMORY[0x29EDC9748](v16);
@@ -38,7 +38,7 @@
   v18 = v15;
   v13 = 0;
   objc_opt_class();
-  v3 = [(UISwipeActionPullViewAccessibility *)v21 safeValueForKey:@"_actions"];
+  v3 = [(UISwipeActionPullViewAccessibility *)selfCopy safeValueForKey:@"_actions"];
   v12 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v3);
   v11 = MEMORY[0x29EDC9748](v12);
@@ -101,12 +101,12 @@ void __80__UISwipeActionPullViewAccessibility__accessibilityLoadAccessibilityInf
 
 - (void)layoutSubviews
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UISwipeActionPullViewAccessibility;
   [(UISwipeActionPullViewAccessibility *)&v2 layoutSubviews];
-  [(UISwipeActionPullViewAccessibility *)v4 _accessibilityLoadAccessibilityInformation];
+  [(UISwipeActionPullViewAccessibility *)selfCopy _accessibilityLoadAccessibilityInformation];
 }
 
 @end

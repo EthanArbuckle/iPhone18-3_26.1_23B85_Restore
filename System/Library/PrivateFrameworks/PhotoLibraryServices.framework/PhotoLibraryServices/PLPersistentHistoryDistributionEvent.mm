@@ -1,15 +1,15 @@
 @interface PLPersistentHistoryDistributionEvent
 - (NSString)eventDescription;
 - (void)reset;
-- (void)startDistributionWithReason:(id)a3;
+- (void)startDistributionWithReason:(id)reason;
 @end
 
 @implementation PLPersistentHistoryDistributionEvent
 
 - (NSString)eventDescription
 {
-  v3 = [(PLPersistentHistoryDistributionEvent *)self reason];
-  if (v3)
+  reason = [(PLPersistentHistoryDistributionEvent *)self reason];
+  if (reason)
   {
     v4 = objc_alloc(MEMORY[0x1E69BDD70]);
     [(PFAbstractStateCaptureEvent *)self startTimestamp];
@@ -21,7 +21,7 @@
     v9 = [v8 appendQoSClass:{-[PFAbstractStateCaptureEvent qosClass](self, "qosClass")}];
 
     v10 = [v5 appendString:@" distribute: "];
-    v11 = [v10 appendString:v3];
+    v11 = [v10 appendString:reason];
 
     v12 = [v5 appendString:@" obs: "];
     v13 = [v12 appendUnsignedInteger:{-[PLPersistentHistoryDistributionEvent observerCount](self, "observerCount")}];
@@ -30,8 +30,8 @@
     v15 = [v14 appendBool:{-[PLPersistentHistoryDistributionEvent shouldDistributeTransactions](self, "shouldDistributeTransactions")}];
 
     v16 = [v5 appendString:@" last tx#: "];
-    v17 = [(PLPersistentHistoryDistributionEvent *)self lastTransaction];
-    v18 = [v16 appendNumber:v17];
+    lastTransaction = [(PLPersistentHistoryDistributionEvent *)self lastTransaction];
+    v18 = [v16 appendNumber:lastTransaction];
 
     v19 = [v5 appendString:@" itr: "];
     v20 = [v19 appendPointer:{-[PLPersistentHistoryDistributionEvent iteratorPointer](self, "iteratorPointer")}];
@@ -49,8 +49,8 @@
     v28 = [v27 appendBool:{-[PLPersistentHistoryDistributionEvent unknownMergeEvent](self, "unknownMergeEvent")}];
 
     v29 = [v5 appendString:@" itr tx#: "];
-    v30 = [(PLPersistentHistoryDistributionEvent *)self iteratedTransaction];
-    v31 = [v29 appendNumber:v30];
+    iteratedTransaction = [(PLPersistentHistoryDistributionEvent *)self iteratedTransaction];
+    v31 = [v29 appendNumber:iteratedTransaction];
 
     [(PLPersistentHistoryDistributionEvent *)self mergeTimestamp];
     if (v32 > 0.0)
@@ -112,11 +112,11 @@
   [(PLPersistentHistoryDistributionEvent *)self setPostTimestamp:0.0];
 }
 
-- (void)startDistributionWithReason:(id)a3
+- (void)startDistributionWithReason:(id)reason
 {
-  v4 = a3;
+  reasonCopy = reason;
   [(PFAbstractStateCaptureEvent *)self setInitialValues];
-  [(PLPersistentHistoryDistributionEvent *)self setReason:v4];
+  [(PLPersistentHistoryDistributionEvent *)self setReason:reasonCopy];
 }
 
 @end

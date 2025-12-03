@@ -1,52 +1,52 @@
 @interface FKFoundInMailItemRowViewModel
-- (FKFoundInMailItemRowViewModel)initWithMessageID:(id)a3 fromEmailAddress:(id)a4 dateSent:(id)a5 fromDisplayName:(id)a6 subject:(id)a7 deeplinkURL:(id)a8 orderDetails:(id)a9;
+- (FKFoundInMailItemRowViewModel)initWithMessageID:(id)d fromEmailAddress:(id)address dateSent:(id)sent fromDisplayName:(id)name subject:(id)subject deeplinkURL:(id)l orderDetails:(id)details;
 - (NSString)rowSubjectText;
 - (NSString)rowSubtitleText;
 - (NSString)rowTitleText;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation FKFoundInMailItemRowViewModel
 
-- (FKFoundInMailItemRowViewModel)initWithMessageID:(id)a3 fromEmailAddress:(id)a4 dateSent:(id)a5 fromDisplayName:(id)a6 subject:(id)a7 deeplinkURL:(id)a8 orderDetails:(id)a9
+- (FKFoundInMailItemRowViewModel)initWithMessageID:(id)d fromEmailAddress:(id)address dateSent:(id)sent fromDisplayName:(id)name subject:(id)subject deeplinkURL:(id)l orderDetails:(id)details
 {
-  v15 = a3;
-  v16 = a4;
-  v17 = a5;
-  v18 = a6;
-  v19 = a7;
-  v20 = a8;
-  v21 = a9;
+  dCopy = d;
+  addressCopy = address;
+  sentCopy = sent;
+  nameCopy = name;
+  subjectCopy = subject;
+  lCopy = l;
+  detailsCopy = details;
   v38.receiver = self;
   v38.super_class = FKFoundInMailItemRowViewModel;
   v22 = [(FKFoundInMailItemRowViewModel *)&v38 init];
   if (v22)
   {
-    v23 = [v15 copy];
+    v23 = [dCopy copy];
     messageID = v22->_messageID;
     v22->_messageID = v23;
 
-    v25 = [v16 copy];
+    v25 = [addressCopy copy];
     fromEmailAddress = v22->_fromEmailAddress;
     v22->_fromEmailAddress = v25;
 
-    v27 = [v17 copy];
+    v27 = [sentCopy copy];
     dateSent = v22->_dateSent;
     v22->_dateSent = v27;
 
-    v29 = [v18 copy];
+    v29 = [nameCopy copy];
     fromDisplayName = v22->_fromDisplayName;
     v22->_fromDisplayName = v29;
 
-    v31 = [v19 copy];
+    v31 = [subjectCopy copy];
     subject = v22->_subject;
     v22->_subject = v31;
 
-    v33 = [v20 copy];
+    v33 = [lCopy copy];
     deeplinkURL = v22->_deeplinkURL;
     v22->_deeplinkURL = v33;
 
-    v35 = [v21 copy];
+    v35 = [detailsCopy copy];
     orderDetails = v22->_orderDetails;
     v22->_orderDetails = v35;
   }
@@ -54,9 +54,9 @@
   return v22;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   v5 = [(NSString *)self->_messageID copy];
   v6 = v4[4];
   v4[4] = v5;
@@ -129,7 +129,7 @@
   {
     if (self->_orderDetails)
     {
-      v4 = [MEMORY[0x277CBEB18] array];
+      array = [MEMORY[0x277CBEB18] array];
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
@@ -150,12 +150,12 @@
             }
 
             v10 = *(*(&v24 + 1) + 8 * i);
-            v11 = [v10 orderNumber];
+            orderNumber = [v10 orderNumber];
 
-            if (v11)
+            if (orderNumber)
             {
-              v12 = [v10 orderNumber];
-              [v4 addObject:v12];
+              orderNumber2 = [v10 orderNumber];
+              [array addObject:orderNumber2];
             }
           }
 
@@ -165,10 +165,10 @@
         while (v7);
       }
 
-      if ([v4 count])
+      if ([array count])
       {
-        [v4 sortUsingSelector:sel_compare_];
-        v13 = [v4 componentsJoinedByString:{@", "}];
+        [array sortUsingSelector:sel_compare_];
+        v13 = [array componentsJoinedByString:{@", "}];
         v20 = FKUILocalizedStringWithFormat(@"EXTRACTED_ORDERS_ORDER_NUMBER_FORMAT", @"FinanceKitUI_Localizable", v14, v15, v16, v17, v18, v19, v13);
         v21 = self->_rowSubtitleText;
         self->_rowSubtitleText = v20;

@@ -1,6 +1,6 @@
 @interface PLAnalyticsServiceMaintenance
 - (PLAnalyticsServiceMaintenance)init;
-- (void)performMaintenanceWithCompletion:(id)a3;
+- (void)performMaintenanceWithCompletion:(id)completion;
 @end
 
 @implementation PLAnalyticsServiceMaintenance
@@ -14,9 +14,9 @@
   return [(PLAnalyticsServiceMaintenance *)&v4 init];
 }
 
-- (void)performMaintenanceWithCompletion:(id)a3
+- (void)performMaintenanceWithCompletion:(id)completion
 {
-  v4 = _Block_copy(a3);
+  v4 = _Block_copy(completion);
   if (v4)
   {
     v5 = v4;
@@ -31,7 +31,7 @@
     v6 = 0;
   }
 
-  v8 = self;
+  selfCopy = self;
   sub_14DC(v7, v6);
   sub_28A0(v7);
 }

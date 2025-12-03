@@ -1,24 +1,24 @@
 @interface TFDataAggregator
-- (TFDataAggregator)initWithSessionDataContainer:(id)a3;
+- (TFDataAggregator)initWithSessionDataContainer:(id)container;
 - (TFDataAggregatorDelegate)delegate;
-- (id)_loadAndExtractDataForTasks:(id)a3 intoDataContainer:(id)a4;
-- (void)_finishUpdatingDataContainer:(id)a3 byMergingDataContainer:(id)a4 forTasks:(id)a5;
-- (void)_prepareDestinationDataContainer:(id)a3 forTasks:(id)a4;
-- (void)runTasks:(id)a3;
+- (id)_loadAndExtractDataForTasks:(id)tasks intoDataContainer:(id)container;
+- (void)_finishUpdatingDataContainer:(id)container byMergingDataContainer:(id)dataContainer forTasks:(id)tasks;
+- (void)_prepareDestinationDataContainer:(id)container forTasks:(id)tasks;
+- (void)runTasks:(id)tasks;
 @end
 
 @implementation TFDataAggregator
 
-- (TFDataAggregator)initWithSessionDataContainer:(id)a3
+- (TFDataAggregator)initWithSessionDataContainer:(id)container
 {
-  v5 = a3;
+  containerCopy = container;
   v11.receiver = self;
   v11.super_class = TFDataAggregator;
   v6 = [(TFDataAggregator *)&v11 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_sessionDataContainer, a3);
+    objc_storeStrong(&v6->_sessionDataContainer, container);
     v8 = dispatch_get_global_queue(0, 0);
     aggregationQueue = v7->_aggregationQueue;
     v7->_aggregationQueue = v8;
@@ -27,40 +27,40 @@
   return v7;
 }
 
-- (void)runTasks:(id)a3
+- (void)runTasks:(id)tasks
 {
   v24 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  tasksCopy = tasks;
   v5 = AMSGenerateLogCorrelationKey();
   v6 = +[TFLogConfiguration defaultConfiguration];
-  v7 = [v6 generatedLogger];
-  if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
+  generatedLogger = [v6 generatedLogger];
+  if (os_log_type_enabled(generatedLogger, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543874;
     v19 = objc_opt_class();
     v20 = 2114;
     v21 = v5;
     v22 = 2112;
-    v23 = v4;
-    _os_log_impl(&dword_26D2C7000, v7, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] runTasks: tasks=%@", buf, 0x20u);
+    v23 = tasksCopy;
+    _os_log_impl(&dword_26D2C7000, generatedLogger, OS_LOG_TYPE_DEFAULT, "%{public}@: [%{public}@] runTasks: tasks=%@", buf, 0x20u);
   }
 
-  [(TFDataAggregator *)self _validateProvidedIdentifiersForTasks:v4];
-  v8 = [(TFDataAggregator *)self sessionDataContainer];
-  [(TFDataAggregator *)self _prepareDestinationDataContainer:v8 forTasks:v4];
+  [(TFDataAggregator *)self _validateProvidedIdentifiersForTasks:tasksCopy];
+  sessionDataContainer = [(TFDataAggregator *)self sessionDataContainer];
+  [(TFDataAggregator *)self _prepareDestinationDataContainer:sessionDataContainer forTasks:tasksCopy];
 
   v9 = [[TFFeedbackDataContainer alloc] initWithName:@"tasks"];
-  v10 = [(TFDataAggregator *)self _loadAndExtractDataForTasks:v4 intoDataContainer:v9];
+  v10 = [(TFDataAggregator *)self _loadAndExtractDataForTasks:tasksCopy intoDataContainer:v9];
   v14[0] = MEMORY[0x277D85DD0];
   v14[1] = 3221225472;
   v14[2] = __29__TFDataAggregator_runTasks___block_invoke;
   v14[3] = &unk_279D98130;
   v14[4] = self;
   v15 = v9;
-  v16 = v4;
+  v16 = tasksCopy;
   v17 = v5;
   v11 = v5;
-  v12 = v4;
+  v12 = tasksCopy;
   v13 = v9;
   [v10 addFinishBlock:v14];
 }
@@ -96,16 +96,16 @@ void __29__TFDataAggregator_runTasks___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_prepareDestinationDataContainer:(id)a3 forTasks:(id)a4
+- (void)_prepareDestinationDataContainer:(id)container forTasks:(id)tasks
 {
-  v5 = a4;
+  tasksCopy = tasks;
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __62__TFDataAggregator__prepareDestinationDataContainer_forTasks___block_invoke;
   v7[3] = &unk_279D980C8;
-  v8 = v5;
-  v6 = v5;
-  [a3 performBatchUpdates:v7];
+  v8 = tasksCopy;
+  v6 = tasksCopy;
+  [container performBatchUpdates:v7];
 }
 
 void __62__TFDataAggregator__prepareDestinationDataContainer_forTasks___block_invoke(uint64_t a1, void *a2)
@@ -174,19 +174,19 @@ void __62__TFDataAggregator__prepareDestinationDataContainer_forTasks___block_in
   }
 }
 
-- (void)_finishUpdatingDataContainer:(id)a3 byMergingDataContainer:(id)a4 forTasks:(id)a5
+- (void)_finishUpdatingDataContainer:(id)container byMergingDataContainer:(id)dataContainer forTasks:(id)tasks
 {
-  v8 = a4;
-  v9 = a5;
+  dataContainerCopy = dataContainer;
+  tasksCopy = tasks;
   v15[0] = MEMORY[0x277D85DD0];
   v15[1] = 3221225472;
   v15[2] = __81__TFDataAggregator__finishUpdatingDataContainer_byMergingDataContainer_forTasks___block_invoke;
   v15[3] = &unk_279D98158;
-  v10 = v9;
+  v10 = tasksCopy;
   v16 = v10;
-  v17 = v8;
-  v11 = v8;
-  [a3 performBatchUpdates:v15];
+  v17 = dataContainerCopy;
+  v11 = dataContainerCopy;
+  [container performBatchUpdates:v15];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __81__TFDataAggregator__finishUpdatingDataContainer_byMergingDataContainer_forTasks___block_invoke_2;
@@ -271,17 +271,17 @@ void __81__TFDataAggregator__finishUpdatingDataContainer_byMergingDataContainer_
   [v2 dataAggregator:*(a1 + 32) didCompleteTasks:*(a1 + 40)];
 }
 
-- (id)_loadAndExtractDataForTasks:(id)a3 intoDataContainer:(id)a4
+- (id)_loadAndExtractDataForTasks:(id)tasks intoDataContainer:(id)container
 {
   v28 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v6, "count")}];
+  tasksCopy = tasks;
+  containerCopy = container;
+  v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(tasksCopy, "count")}];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v6;
+  obj = tasksCopy;
   v9 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v9)
   {
@@ -299,16 +299,16 @@ void __81__TFDataAggregator__finishUpdatingDataContainer_byMergingDataContainer_
         v13 = *(*(&v23 + 1) + 8 * i);
         v14 = objc_alloc_init(MEMORY[0x277CEE630]);
         [v8 addObject:v14];
-        v15 = [(TFDataAggregator *)self aggregationQueue];
+        aggregationQueue = [(TFDataAggregator *)self aggregationQueue];
         v20[0] = MEMORY[0x277D85DD0];
         v20[1] = 3221225472;
         v20[2] = __66__TFDataAggregator__loadAndExtractDataForTasks_intoDataContainer___block_invoke;
         v20[3] = &unk_279D981A8;
         v20[4] = v13;
-        v21 = v7;
+        v21 = containerCopy;
         v22 = v14;
         v16 = v14;
-        [v13 loadDataOnQueue:v15 withCompletionHandler:v20];
+        [v13 loadDataOnQueue:aggregationQueue withCompletionHandler:v20];
       }
 
       v10 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];

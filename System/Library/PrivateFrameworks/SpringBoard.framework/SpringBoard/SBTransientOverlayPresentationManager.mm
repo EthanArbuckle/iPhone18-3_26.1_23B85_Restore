@@ -2,7 +2,7 @@
 - (BOOL)activePresentationPreventsDragAndDrop;
 - (BOOL)canActivePresentationBecomeFirstResponder;
 - (BOOL)canActivePresentationBecomeLocalFirstResponder;
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3;
+- (BOOL)handleHeadsetButtonPress:(BOOL)press;
 - (BOOL)handleHomeButtonDoublePress;
 - (BOOL)handleHomeButtonLongPress;
 - (BOOL)handleHomeButtonPress;
@@ -11,38 +11,38 @@
 - (BOOL)handleVolumeDownButtonPress;
 - (BOOL)handleVolumeUpButtonPress;
 - (BOOL)hasActivePresentation;
-- (BOOL)hasActivePresentationForWindowScene:(id)a3;
-- (BOOL)hasActivePresentationFromBundleIdentifier:(id)a3;
-- (BOOL)hasActivePresentationFromProcess:(id)a3;
+- (BOOL)hasActivePresentationForWindowScene:(id)scene;
+- (BOOL)hasActivePresentationFromBundleIdentifier:(id)identifier;
+- (BOOL)hasActivePresentationFromProcess:(id)process;
 - (BOOL)hasActiveSpotlightPresentation;
 - (BOOL)hasIdleTimerBehaviors;
-- (BOOL)hasPresentationAboveWindowLevel:(double)a3;
-- (BOOL)isPresentingViewController:(id)a3;
-- (BOOL)isTopmostPresentationFromSceneWithIdentityTokenString:(id)a3;
-- (BOOL)isTopmostPresentedViewController:(id)a3;
+- (BOOL)hasPresentationAboveWindowLevel:(double)level;
+- (BOOL)isPresentingViewController:(id)controller;
+- (BOOL)isTopmostPresentationFromSceneWithIdentityTokenString:(id)string;
+- (BOOL)isTopmostPresentedViewController:(id)controller;
 - (BOOL)prefersStatusBarActivityItemVisible;
 - (BOOL)shouldDisableControlCenter;
 - (BOOL)shouldDisableCoverSheetGesture;
 - (BOOL)shouldDisableSiri;
 - (BOOL)shouldUseSceneBasedKeyboardFocusForActivePresentation;
-- (SBTransientOverlayPresentationManager)initWithWindowSceneManager:(id)a3 alertItemsController:(id)a4 lockStateAggregator:(id)a5 reachabilityManager:(id)a6;
+- (SBTransientOverlayPresentationManager)initWithWindowSceneManager:(id)manager alertItemsController:(id)controller lockStateAggregator:(id)aggregator reachabilityManager:(id)reachabilityManager;
 - (SBTransientOverlayScenePresenterDelegate)presenterDelegate;
-- (id)coordinatorRequestedIdleTimerBehavior:(id)a3;
+- (id)coordinatorRequestedIdleTimerBehavior:(id)behavior;
 - (id)defaultDisplayConfigurationForTransientOverlayPresentation;
-- (id)idleTimerProvider:(id)a3 didProposeBehavior:(id)a4 forReason:(id)a5;
-- (id)keyboardFocusTargetForSBWindowScene:(id)a3;
+- (id)idleTimerProvider:(id)provider didProposeBehavior:(id)behavior forReason:(id)reason;
+- (id)keyboardFocusTargetForSBWindowScene:(id)scene;
 - (id)topmostPresentedViewController;
 - (int64_t)presentedViewControllerCount;
-- (void)addObserver:(id)a3;
+- (void)addObserver:(id)observer;
 - (void)dealloc;
-- (void)performDismissalRequest:(id)a3;
-- (void)performPresentationRequest:(id)a3;
-- (void)removeObserver:(id)a3;
-- (void)setCoverSheetPresentationManager:(id)a3;
-- (void)transientOverlayScenePresenter:(id)a3 didDismissViewController:(id)a4 wasTopmostPresentation:(BOOL)a5;
-- (void)transientOverlayScenePresenter:(id)a3 willPresentViewController:(id)a4;
-- (void)windowSceneDidConnect:(id)a3;
-- (void)windowSceneDidDisconnect:(id)a3;
+- (void)performDismissalRequest:(id)request;
+- (void)performPresentationRequest:(id)request;
+- (void)removeObserver:(id)observer;
+- (void)setCoverSheetPresentationManager:(id)manager;
+- (void)transientOverlayScenePresenter:(id)presenter didDismissViewController:(id)controller wasTopmostPresentation:(BOOL)presentation;
+- (void)transientOverlayScenePresenter:(id)presenter willPresentViewController:(id)controller;
+- (void)windowSceneDidConnect:(id)connect;
+- (void)windowSceneDidDisconnect:(id)disconnect;
 @end
 
 @implementation SBTransientOverlayPresentationManager
@@ -54,8 +54,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -65,7 +65,7 @@
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) hasIdleTimerBehaviors])
@@ -75,7 +75,7 @@
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -97,8 +97,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -108,7 +108,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) hasActivePresentation])
@@ -118,7 +118,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -133,22 +133,22 @@ LABEL_11:
   return v3;
 }
 
-- (SBTransientOverlayPresentationManager)initWithWindowSceneManager:(id)a3 alertItemsController:(id)a4 lockStateAggregator:(id)a5 reachabilityManager:(id)a6
+- (SBTransientOverlayPresentationManager)initWithWindowSceneManager:(id)manager alertItemsController:(id)controller lockStateAggregator:(id)aggregator reachabilityManager:(id)reachabilityManager
 {
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
+  managerCopy = manager;
+  controllerCopy = controller;
+  aggregatorCopy = aggregator;
+  reachabilityManagerCopy = reachabilityManager;
   v20.receiver = self;
   v20.super_class = SBTransientOverlayPresentationManager;
   v15 = [(SBTransientOverlayPresentationManager *)&v20 init];
   v16 = v15;
   if (v15)
   {
-    objc_storeStrong(&v15->_windowSceneManager, a3);
-    objc_storeStrong(&v16->_alertItemsController, a4);
-    objc_storeStrong(&v16->_lockStateAggregator, a5);
-    objc_storeStrong(&v16->_reachabilityManager, a6);
+    objc_storeStrong(&v15->_windowSceneManager, manager);
+    objc_storeStrong(&v16->_alertItemsController, controller);
+    objc_storeStrong(&v16->_lockStateAggregator, aggregator);
+    objc_storeStrong(&v16->_reachabilityManager, reachabilityManager);
     v17 = [[SBIdleTimerCoordinatorHelper alloc] initWithSourceProvider:v16];
     idleTimerCoordinatorHelper = v16->_idleTimerCoordinatorHelper;
     v16->_idleTimerCoordinatorHelper = v17;
@@ -165,38 +165,38 @@ LABEL_11:
   [(SBTransientOverlayPresentationManager *)&v3 dealloc];
 }
 
-- (void)addObserver:(id)a3
+- (void)addObserver:(id)observer
 {
-  v4 = a3;
-  if (v4)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    v9 = v4;
-    v5 = [(NSHashTable *)self->_observers containsObject:v4];
-    v4 = v9;
+    v9 = observerCopy;
+    v5 = [(NSHashTable *)self->_observers containsObject:observerCopy];
+    observerCopy = v9;
     if (!v5)
     {
       observers = self->_observers;
       if (!observers)
       {
-        v7 = [MEMORY[0x277CCAA50] weakObjectsHashTable];
+        weakObjectsHashTable = [MEMORY[0x277CCAA50] weakObjectsHashTable];
         v8 = self->_observers;
-        self->_observers = v7;
+        self->_observers = weakObjectsHashTable;
 
         observers = self->_observers;
       }
 
       [(NSHashTable *)observers addObject:v9];
-      v4 = v9;
+      observerCopy = v9;
     }
   }
 }
 
-- (void)removeObserver:(id)a3
+- (void)removeObserver:(id)observer
 {
-  v5 = a3;
-  if (v5)
+  observerCopy = observer;
+  if (observerCopy)
   {
-    [(NSHashTable *)self->_observers removeObject:v5];
+    [(NSHashTable *)self->_observers removeObject:observerCopy];
   }
 
   if (![(NSHashTable *)self->_observers count])
@@ -206,17 +206,17 @@ LABEL_11:
   }
 }
 
-- (void)setCoverSheetPresentationManager:(id)a3
+- (void)setCoverSheetPresentationManager:(id)manager
 {
   v16 = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  objc_storeStrong(&self->_coverSheetPresentationManager, a3);
+  managerCopy = manager;
+  objc_storeStrong(&self->_coverSheetPresentationManager, manager);
   v13 = 0u;
   v14 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v6 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v7 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v7 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v7)
   {
     v8 = v7;
@@ -228,14 +228,14 @@ LABEL_11:
       {
         if (*v12 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        [*(*(&v11 + 1) + 8 * v10++) setCoverSheetPresentationManager:v5];
+        [*(*(&v11 + 1) + 8 * v10++) setCoverSheetPresentationManager:managerCopy];
       }
 
       while (v8 != v10);
-      v8 = [v6 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v8 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
     }
 
     while (v8);
@@ -249,8 +249,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -260,7 +260,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) shouldDisableControlCenter])
@@ -270,7 +270,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -292,8 +292,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -303,7 +303,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) shouldDisableCoverSheetGesture])
@@ -313,7 +313,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -335,8 +335,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -346,7 +346,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) shouldDisableSiri])
@@ -356,7 +356,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -378,8 +378,8 @@ LABEL_11:
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v3)
   {
     v4 = v3;
@@ -390,18 +390,18 @@ LABEL_11:
       {
         if (*v11 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        v7 = [*(*(&v10 + 1) + 8 * i) topmostPresentedViewController];
-        if (v7)
+        topmostPresentedViewController = [*(*(&v10 + 1) + 8 * i) topmostPresentedViewController];
+        if (topmostPresentedViewController)
         {
-          v8 = v7;
+          v8 = topmostPresentedViewController;
           goto LABEL_11;
         }
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v4)
       {
         continue;
@@ -419,36 +419,36 @@ LABEL_11:
 
 - (id)defaultDisplayConfigurationForTransientOverlayPresentation
 {
-  v2 = [(SBWindowSceneManager *)self->_windowSceneManager activeDisplayWindowScene];
-  v3 = [v2 _fbsDisplayConfiguration];
+  activeDisplayWindowScene = [(SBWindowSceneManager *)self->_windowSceneManager activeDisplayWindowScene];
+  _fbsDisplayConfiguration = [activeDisplayWindowScene _fbsDisplayConfiguration];
 
-  return v3;
+  return _fbsDisplayConfiguration;
 }
 
-- (void)windowSceneDidConnect:(id)a3
+- (void)windowSceneDidConnect:(id)connect
 {
-  v4 = a3;
+  connectCopy = connect;
   presentersByWindowScene = self->_presentersByWindowScene;
-  v17 = v4;
+  v17 = connectCopy;
   if (!presentersByWindowScene)
   {
-    v6 = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
+    strongToStrongObjectsMapTable = [MEMORY[0x277CCAB00] strongToStrongObjectsMapTable];
     v7 = self->_presentersByWindowScene;
-    self->_presentersByWindowScene = v6;
+    self->_presentersByWindowScene = strongToStrongObjectsMapTable;
 
-    v4 = v17;
+    connectCopy = v17;
     presentersByWindowScene = self->_presentersByWindowScene;
   }
 
-  v8 = [(NSMapTable *)presentersByWindowScene objectForKey:v4];
+  v8 = [(NSMapTable *)presentersByWindowScene objectForKey:connectCopy];
 
   if (!v8)
   {
     v9 = [SBTransientOverlayScenePresenter alloc];
     alertItemsController = self->_alertItemsController;
     lockStateAggregator = self->_lockStateAggregator;
-    v12 = [v17 zStackResolver];
-    v13 = [(SBTransientOverlayScenePresenter *)v9 initWithWindowScene:v17 alertItemsController:alertItemsController lockStateAggregator:lockStateAggregator zStackResolver:v12 reachabilityManager:self->_reachabilityManager];
+    zStackResolver = [v17 zStackResolver];
+    v13 = [(SBTransientOverlayScenePresenter *)v9 initWithWindowScene:v17 alertItemsController:alertItemsController lockStateAggregator:lockStateAggregator zStackResolver:zStackResolver reachabilityManager:self->_reachabilityManager];
 
     [(SBTransientOverlayScenePresenter *)v13 addObserver:self];
     [(SBTransientOverlayScenePresenter *)v13 setCoverSheetPresentationManager:self->_coverSheetPresentationManager];
@@ -457,34 +457,34 @@ LABEL_11:
 
     [(SBTransientOverlayScenePresenter *)v13 setBannerManager:self->_bannerManager];
     v15 = +[SBWorkspace mainWorkspace];
-    v16 = [v15 inCallPresentationManager];
-    [(SBTransientOverlayScenePresenter *)v13 setInCallPresentationManager:v16];
+    inCallPresentationManager = [v15 inCallPresentationManager];
+    [(SBTransientOverlayScenePresenter *)v13 setInCallPresentationManager:inCallPresentationManager];
 
     [(SBTransientOverlayScenePresenter *)v13 setIdleTimerCoordinator:self];
     [(NSMapTable *)self->_presentersByWindowScene setObject:v13 forKey:v17];
   }
 }
 
-- (void)windowSceneDidDisconnect:(id)a3
+- (void)windowSceneDidDisconnect:(id)disconnect
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:v4];
+  disconnectCopy = disconnect;
+  v5 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:disconnectCopy];
   if (v5)
   {
     v6 = v5;
-    v7 = [v5 presentedViewControllers];
-    v8 = [(SBTransientOverlayDismissalRequest *)SBMutableTransientOverlayDismissalRequest dismissalRequestForAllViewControllersInWindowScene:v4];
+    presentedViewControllers = [v5 presentedViewControllers];
+    v8 = [(SBTransientOverlayDismissalRequest *)SBMutableTransientOverlayDismissalRequest dismissalRequestForAllViewControllersInWindowScene:disconnectCopy];
     [v8 setAnimated:0];
-    v24 = v4;
-    [(NSMapTable *)self->_presentersByWindowScene removeObjectForKey:v4];
+    v24 = disconnectCopy;
+    [(NSMapTable *)self->_presentersByWindowScene removeObjectForKey:disconnectCopy];
     v25 = v8;
     [v6 performDismissalRequest:v8 outerCompletionHandler:0];
     v29 = 0u;
     v30 = 0u;
     v27 = 0u;
     v28 = 0u;
-    obj = v7;
+    obj = presentedViewControllers;
     v9 = [obj countByEnumeratingWithState:&v27 objects:v31 count:16];
     if (v9)
     {
@@ -506,14 +506,14 @@ LABEL_11:
           v16 = v15;
           if (v15)
           {
-            v17 = [v15 pairedRemoteTransientOverlay];
-            v18 = v17;
-            if (v17)
+            pairedRemoteTransientOverlay = [v15 pairedRemoteTransientOverlay];
+            v18 = pairedRemoteTransientOverlay;
+            if (pairedRemoteTransientOverlay)
             {
-              v19 = self;
+              selfCopy = self;
               presentersByWindowScene = self->_presentersByWindowScene;
-              v21 = [v17 _sbWindowScene];
-              v22 = [(NSMapTable *)presentersByWindowScene objectForKey:v21];
+              _sbWindowScene = [pairedRemoteTransientOverlay _sbWindowScene];
+              v22 = [(NSMapTable *)presentersByWindowScene objectForKey:_sbWindowScene];
 
               if (v22)
               {
@@ -529,7 +529,7 @@ LABEL_11:
                 v6 = 0;
               }
 
-              self = v19;
+              self = selfCopy;
             }
           }
 
@@ -543,19 +543,19 @@ LABEL_11:
       while (v10);
     }
 
-    v4 = v24;
+    disconnectCopy = v24;
   }
 }
 
-- (BOOL)hasPresentationAboveWindowLevel:(double)a3
+- (BOOL)hasPresentationAboveWindowLevel:(double)level
 {
   v14 = *MEMORY[0x277D85DE8];
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v4 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v5)
   {
     v6 = *v10;
@@ -565,17 +565,17 @@ LABEL_11:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        if ([*(*(&v9 + 1) + 8 * i) hasPresentationAboveWindowLevel:a3])
+        if ([*(*(&v9 + 1) + 8 * i) hasPresentationAboveWindowLevel:level])
         {
           LOBYTE(v5) = 1;
           goto LABEL_11;
         }
       }
 
-      v5 = [v4 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v5 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
       if (v5)
       {
         continue;
@@ -592,41 +592,41 @@ LABEL_11:
 
 - (BOOL)canActivePresentationBecomeLocalFirstResponder
 {
-  v3 = [(SBWindowSceneManager *)self->_windowSceneManager activeDisplayWindowScene];
-  if (v3)
+  activeDisplayWindowScene = [(SBWindowSceneManager *)self->_windowSceneManager activeDisplayWindowScene];
+  if (activeDisplayWindowScene)
   {
-    v4 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:v3];
-    v5 = [v4 canActivePresentationBecomeLocalFirstResponder];
+    v4 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:activeDisplayWindowScene];
+    canActivePresentationBecomeLocalFirstResponder = [v4 canActivePresentationBecomeLocalFirstResponder];
   }
 
   else
   {
-    v5 = 0;
+    canActivePresentationBecomeLocalFirstResponder = 0;
   }
 
-  return v5;
+  return canActivePresentationBecomeLocalFirstResponder;
 }
 
 - (BOOL)canActivePresentationBecomeFirstResponder
 {
-  v2 = [(SBTransientOverlayPresentationManager *)self topmostPresentedViewController];
-  v3 = [v2 canBecomeFirstResponder];
+  topmostPresentedViewController = [(SBTransientOverlayPresentationManager *)self topmostPresentedViewController];
+  canBecomeFirstResponder = [topmostPresentedViewController canBecomeFirstResponder];
 
-  return v3;
+  return canBecomeFirstResponder;
 }
 
 - (BOOL)activePresentationPreventsDragAndDrop
 {
-  v3 = [(SBTransientOverlayPresentationManager *)self hasActivePresentation];
-  if (v3)
+  hasActivePresentation = [(SBTransientOverlayPresentationManager *)self hasActivePresentation];
+  if (hasActivePresentation)
   {
-    v4 = [(SBTransientOverlayPresentationManager *)self topmostPresentedViewController];
-    v5 = [v4 shouldPreventDragAndDrop];
+    topmostPresentedViewController = [(SBTransientOverlayPresentationManager *)self topmostPresentedViewController];
+    shouldPreventDragAndDrop = [topmostPresentedViewController shouldPreventDragAndDrop];
 
-    LOBYTE(v3) = v5;
+    LOBYTE(hasActivePresentation) = shouldPreventDragAndDrop;
   }
 
-  return v3;
+  return hasActivePresentation;
 }
 
 - (int64_t)presentedViewControllerCount
@@ -636,8 +636,8 @@ LABEL_11:
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
   if (v3)
   {
     v4 = v3;
@@ -649,13 +649,13 @@ LABEL_11:
       {
         if (*v10 != v6)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         v5 += [*(*(&v9 + 1) + 8 * i) presentedViewControllerCount];
       }
 
-      v4 = [v2 countByEnumeratingWithState:&v9 objects:v13 count:16];
+      v4 = [objectEnumerator countByEnumeratingWithState:&v9 objects:v13 count:16];
     }
 
     while (v4);
@@ -671,31 +671,31 @@ LABEL_11:
 
 - (BOOL)shouldUseSceneBasedKeyboardFocusForActivePresentation
 {
-  v3 = [(SBWindowSceneManager *)self->_windowSceneManager activeDisplayWindowScene];
-  if (v3)
+  activeDisplayWindowScene = [(SBWindowSceneManager *)self->_windowSceneManager activeDisplayWindowScene];
+  if (activeDisplayWindowScene)
   {
-    v4 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:v3];
-    v5 = [v4 shouldUseSceneBasedKeyboardFocusForActivePresentation];
+    v4 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:activeDisplayWindowScene];
+    shouldUseSceneBasedKeyboardFocusForActivePresentation = [v4 shouldUseSceneBasedKeyboardFocusForActivePresentation];
   }
 
   else
   {
-    v5 = 0;
+    shouldUseSceneBasedKeyboardFocusForActivePresentation = 0;
   }
 
-  return v5;
+  return shouldUseSceneBasedKeyboardFocusForActivePresentation;
 }
 
-- (BOOL)isPresentingViewController:(id)a3
+- (BOOL)isPresentingViewController:(id)controller
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -705,17 +705,17 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) isPresentingViewController:v4])
+        if ([*(*(&v10 + 1) + 8 * i) isPresentingViewController:controllerCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -730,16 +730,16 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)isTopmostPresentedViewController:(id)a3
+- (BOOL)isTopmostPresentedViewController:(id)controller
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  controllerCopy = controller;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -749,17 +749,17 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        if (v4 && ([*(*(&v10 + 1) + 8 * i) isTopmostPresentedViewController:v4] & 1) != 0)
+        if (controllerCopy && ([*(*(&v10 + 1) + 8 * i) isTopmostPresentedViewController:controllerCopy] & 1) != 0)
         {
           LOBYTE(v6) = 1;
           goto LABEL_12;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -774,16 +774,16 @@ LABEL_12:
   return v6;
 }
 
-- (BOOL)hasActivePresentationFromProcess:(id)a3
+- (BOOL)hasActivePresentationFromProcess:(id)process
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  processCopy = process;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -793,17 +793,17 @@ LABEL_12:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) hasActivePresentationFromProcess:v4])
+        if ([*(*(&v10 + 1) + 8 * i) hasActivePresentationFromProcess:processCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -818,16 +818,16 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)hasActivePresentationFromBundleIdentifier:(id)a3
+- (BOOL)hasActivePresentationFromBundleIdentifier:(id)identifier
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  identifierCopy = identifier;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -837,17 +837,17 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) hasActivePresentationFromBundleIdentifier:v4])
+        if ([*(*(&v10 + 1) + 8 * i) hasActivePresentationFromBundleIdentifier:identifierCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -862,24 +862,24 @@ LABEL_11:
   return v6;
 }
 
-- (BOOL)hasActivePresentationForWindowScene:(id)a3
+- (BOOL)hasActivePresentationForWindowScene:(id)scene
 {
-  v3 = [(SBTransientOverlayPresentationManager *)self transientOverlayPresenterForWindowScene:a3];
-  v4 = [v3 hasActivePresentation];
+  v3 = [(SBTransientOverlayPresentationManager *)self transientOverlayPresenterForWindowScene:scene];
+  hasActivePresentation = [v3 hasActivePresentation];
 
-  return v4;
+  return hasActivePresentation;
 }
 
-- (BOOL)isTopmostPresentationFromSceneWithIdentityTokenString:(id)a3
+- (BOOL)isTopmostPresentationFromSceneWithIdentityTokenString:(id)string
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stringCopy = string;
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v6)
   {
     v7 = *v11;
@@ -889,17 +889,17 @@ LABEL_11:
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        if ([*(*(&v10 + 1) + 8 * i) isTopmostPresentationFromSceneWithIdentityTokenString:v4])
+        if ([*(*(&v10 + 1) + 8 * i) isTopmostPresentationFromSceneWithIdentityTokenString:stringCopy])
         {
           LOBYTE(v6) = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v5 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v10 objects:v14 count:16];
       if (v6)
       {
         continue;
@@ -914,12 +914,12 @@ LABEL_11:
   return v6;
 }
 
-- (id)keyboardFocusTargetForSBWindowScene:(id)a3
+- (id)keyboardFocusTargetForSBWindowScene:(id)scene
 {
-  v3 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:a3];
-  v4 = [v3 keyboardFocusTargetForTopmostPresentingScene];
+  v3 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:scene];
+  keyboardFocusTargetForTopmostPresentingScene = [v3 keyboardFocusTargetForTopmostPresentingScene];
 
-  return v4;
+  return keyboardFocusTargetForTopmostPresentingScene;
 }
 
 - (BOOL)hasActiveSpotlightPresentation
@@ -929,8 +929,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -940,7 +940,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) hasActiveSpotlightPresentation])
@@ -950,7 +950,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -972,8 +972,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -983,7 +983,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) prefersStatusBarActivityItemVisible])
@@ -993,7 +993,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1008,22 +1008,22 @@ LABEL_11:
   return v3;
 }
 
-- (void)performDismissalRequest:(id)a3
+- (void)performDismissalRequest:(id)request
 {
   v28 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [v4 requestType];
-  if (v5 > 1)
+  requestCopy = request;
+  requestType = [requestCopy requestType];
+  if (requestType > 1)
   {
-    if (v5 == 2)
+    if (requestType == 2)
     {
-      v6 = dispatch_group_create();
+      windowScene = dispatch_group_create();
       v23 = 0u;
       v24 = 0u;
       v25 = 0u;
       v26 = 0u;
-      v11 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-      v12 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+      objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+      v12 = [objectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
       if (v12)
       {
         v13 = v12;
@@ -1034,20 +1034,20 @@ LABEL_11:
           {
             if (*v24 != v14)
             {
-              objc_enumerationMutation(v11);
+              objc_enumerationMutation(objectEnumerator);
             }
 
             v16 = *(*(&v23 + 1) + 8 * i);
-            dispatch_group_enter(v6);
+            dispatch_group_enter(windowScene);
             v21[0] = MEMORY[0x277D85DD0];
             v21[1] = 3221225472;
             v21[2] = __65__SBTransientOverlayPresentationManager_performDismissalRequest___block_invoke;
             v21[3] = &unk_2783A8C18;
-            v22 = v6;
-            [v16 performDismissalRequest:v4 outerCompletionHandler:v21];
+            v22 = windowScene;
+            [v16 performDismissalRequest:requestCopy outerCompletionHandler:v21];
           }
 
-          v13 = [v11 countByEnumeratingWithState:&v23 objects:v27 count:16];
+          v13 = [objectEnumerator countByEnumeratingWithState:&v23 objects:v27 count:16];
         }
 
         while (v13);
@@ -1057,28 +1057,28 @@ LABEL_11:
       v19[1] = 3221225472;
       v19[2] = __65__SBTransientOverlayPresentationManager_performDismissalRequest___block_invoke_2;
       v19[3] = &unk_2783A8C18;
-      v20 = v4;
-      dispatch_group_notify(v6, MEMORY[0x277D85CD0], v19);
+      v20 = requestCopy;
+      dispatch_group_notify(windowScene, MEMORY[0x277D85CD0], v19);
 
       goto LABEL_26;
     }
 
-    if (v5 == 3)
+    if (requestType == 3)
     {
-      v6 = [v4 windowScene];
-      if (v6)
+      windowScene = [requestCopy windowScene];
+      if (windowScene)
       {
-        v9 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:v6];
-        [v9 performDismissalRequest:v4 outerCompletionHandler:0];
+        v9 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:windowScene];
+        [v9 performDismissalRequest:requestCopy outerCompletionHandler:0];
       }
 
       else
       {
-        v18 = [v4 completionHandler];
-        v9 = v18;
-        if (v18)
+        completionHandler = [requestCopy completionHandler];
+        v9 = completionHandler;
+        if (completionHandler)
         {
-          (*(v18 + 16))(v18);
+          (*(completionHandler + 16))(completionHandler);
         }
       }
 
@@ -1088,35 +1088,35 @@ LABEL_11:
 
   else
   {
-    if (!v5)
+    if (!requestType)
     {
-      v10 = [v4 completionHandler];
-      v6 = v10;
-      if (v10)
+      completionHandler2 = [requestCopy completionHandler];
+      windowScene = completionHandler2;
+      if (completionHandler2)
       {
-        (*(v10 + 16))(v10);
+        (*(completionHandler2 + 16))(completionHandler2);
       }
 
       goto LABEL_26;
     }
 
-    if (v5 == 1)
+    if (requestType == 1)
     {
-      v6 = [v4 viewController];
-      v7 = [v6 _sbWindowScene];
-      if (v7)
+      windowScene = [requestCopy viewController];
+      _sbWindowScene = [windowScene _sbWindowScene];
+      if (_sbWindowScene)
       {
-        v8 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:v7];
-        [v8 performDismissalRequest:v4 outerCompletionHandler:0];
+        v8 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:_sbWindowScene];
+        [v8 performDismissalRequest:requestCopy outerCompletionHandler:0];
       }
 
       else
       {
-        v17 = [v4 completionHandler];
-        v8 = v17;
-        if (v17)
+        completionHandler3 = [requestCopy completionHandler];
+        v8 = completionHandler3;
+        if (completionHandler3)
         {
-          (*(v17 + 16))(v17);
+          (*(completionHandler3 + 16))(completionHandler3);
         }
       }
 
@@ -1136,34 +1136,34 @@ void __65__SBTransientOverlayPresentationManager_performDismissalRequest___block
   }
 }
 
-- (void)performPresentationRequest:(id)a3
+- (void)performPresentationRequest:(id)request
 {
-  v7 = a3;
+  requestCopy = request;
   if (![(NSMapTable *)self->_presentersByWindowScene count])
   {
     [(SBTransientOverlayPresentationManager *)a2 performPresentationRequest:?];
   }
 
-  v5 = [v7 windowScene];
-  if (!v5)
+  windowScene = [requestCopy windowScene];
+  if (!windowScene)
   {
-    v5 = [(SBWindowSceneManager *)self->_windowSceneManager activeDisplayWindowScene];
+    windowScene = [(SBWindowSceneManager *)self->_windowSceneManager activeDisplayWindowScene];
   }
 
-  v6 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:v5];
-  [v6 performPresentationRequest:v7];
+  v6 = [(NSMapTable *)self->_presentersByWindowScene objectForKey:windowScene];
+  [v6 performPresentationRequest:requestCopy];
 }
 
-- (BOOL)handleHeadsetButtonPress:(BOOL)a3
+- (BOOL)handleHeadsetButtonPress:(BOOL)press
 {
-  v3 = a3;
+  pressCopy = press;
   v16 = *MEMORY[0x277D85DE8];
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
-  v4 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v5 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v5 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
   if (v5)
   {
     v6 = v5;
@@ -1174,17 +1174,17 @@ void __65__SBTransientOverlayPresentationManager_performDismissalRequest___block
       {
         if (*v12 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        if ([*(*(&v11 + 1) + 8 * i) handleHeadsetButtonPress:v3])
+        if ([*(*(&v11 + 1) + 8 * i) handleHeadsetButtonPress:pressCopy])
         {
           v9 = 1;
           goto LABEL_11;
         }
       }
 
-      v6 = [v4 countByEnumeratingWithState:&v11 objects:v15 count:16];
+      v6 = [objectEnumerator countByEnumeratingWithState:&v11 objects:v15 count:16];
       if (v6)
       {
         continue;
@@ -1207,8 +1207,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1218,7 +1218,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) handleHomeButtonPress])
@@ -1228,7 +1228,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1250,8 +1250,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1261,7 +1261,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) handleHomeButtonDoublePress])
@@ -1271,7 +1271,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1293,8 +1293,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1304,7 +1304,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) handleHomeButtonLongPress])
@@ -1314,7 +1314,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1336,8 +1336,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1347,7 +1347,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) handleLockButtonPress])
@@ -1357,7 +1357,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1379,8 +1379,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1390,7 +1390,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) handleVoiceCommandButtonPress])
@@ -1400,7 +1400,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1422,8 +1422,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1433,7 +1433,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) handleVolumeUpButtonPress])
@@ -1443,7 +1443,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1465,8 +1465,8 @@ LABEL_11:
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = *v8;
@@ -1476,7 +1476,7 @@ LABEL_11:
       {
         if (*v8 != v4)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(objectEnumerator);
         }
 
         if ([*(*(&v7 + 1) + 8 * i) handleVolumeDownButtonPress])
@@ -1486,7 +1486,7 @@ LABEL_11:
         }
       }
 
-      v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v3 = [objectEnumerator countByEnumeratingWithState:&v7 objects:v11 count:16];
       if (v3)
       {
         continue;
@@ -1501,18 +1501,18 @@ LABEL_11:
   return v3;
 }
 
-- (id)idleTimerProvider:(id)a3 didProposeBehavior:(id)a4 forReason:(id)a5
+- (id)idleTimerProvider:(id)provider didProposeBehavior:(id)behavior forReason:(id)reason
 {
   v24 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  providerCopy = provider;
+  behaviorCopy = behavior;
+  reasonCopy = reason;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
-  v11 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
-  v12 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+  objectEnumerator = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator];
+  v12 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
   if (v12)
   {
     v13 = v12;
@@ -1523,18 +1523,18 @@ LABEL_11:
       {
         if (*v20 != v14)
         {
-          objc_enumerationMutation(v11);
+          objc_enumerationMutation(objectEnumerator);
         }
 
-        if (*(*(&v19 + 1) + 8 * i) == v8)
+        if (*(*(&v19 + 1) + 8 * i) == providerCopy)
         {
 
-          v16 = [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper proposeIdleTimerBehavior:v9 fromProvider:v8 reason:v10];
+          v16 = [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper proposeIdleTimerBehavior:behaviorCopy fromProvider:providerCopy reason:reasonCopy];
           goto LABEL_11;
         }
       }
 
-      v13 = [v11 countByEnumeratingWithState:&v19 objects:v23 count:16];
+      v13 = [objectEnumerator countByEnumeratingWithState:&v19 objects:v23 count:16];
       if (v13)
       {
         continue;
@@ -1544,21 +1544,21 @@ LABEL_11:
     }
   }
 
-  v16 = [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper updateProvider:v8 behavior:v9 reason:v10];
+  v16 = [(SBIdleTimerCoordinatorHelper *)self->_idleTimerCoordinatorHelper updateProvider:providerCopy behavior:behaviorCopy reason:reasonCopy];
 LABEL_11:
   v17 = v16;
 
   return v17;
 }
 
-- (id)coordinatorRequestedIdleTimerBehavior:(id)a3
+- (id)coordinatorRequestedIdleTimerBehavior:(id)behavior
 {
   v17 = *MEMORY[0x277D85DE8];
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
   v15 = 0u;
-  v4 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator:a3];
+  v4 = [(NSMapTable *)self->_presentersByWindowScene objectEnumerator:behavior];
   v5 = [v4 countByEnumeratingWithState:&v12 objects:v16 count:16];
   if (v5)
   {
@@ -1598,10 +1598,10 @@ LABEL_11:
   return v10;
 }
 
-- (void)transientOverlayScenePresenter:(id)a3 willPresentViewController:(id)a4
+- (void)transientOverlayScenePresenter:(id)presenter willPresentViewController:(id)controller
 {
   v17 = *MEMORY[0x277D85DE8];
-  v5 = a4;
+  controllerCopy = controller;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -1625,7 +1625,7 @@ LABEL_11:
         v11 = *(*(&v12 + 1) + 8 * v10);
         if (objc_opt_respondsToSelector())
         {
-          [v11 transientOverlayPresentationManager:self willPresentViewController:v5];
+          [v11 transientOverlayPresentationManager:self willPresentViewController:controllerCopy];
         }
 
         ++v10;
@@ -1639,11 +1639,11 @@ LABEL_11:
   }
 }
 
-- (void)transientOverlayScenePresenter:(id)a3 didDismissViewController:(id)a4 wasTopmostPresentation:(BOOL)a5
+- (void)transientOverlayScenePresenter:(id)presenter didDismissViewController:(id)controller wasTopmostPresentation:(BOOL)presentation
 {
-  v5 = a5;
+  presentationCopy = presentation;
   v19 = *MEMORY[0x277D85DE8];
-  v7 = a4;
+  controllerCopy = controller;
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
@@ -1667,7 +1667,7 @@ LABEL_11:
         v13 = *(*(&v14 + 1) + 8 * v12);
         if (objc_opt_respondsToSelector())
         {
-          [v13 transientOverlayPresentationManager:self didDismissViewController:v7 wasTopmostPresentation:v5];
+          [v13 transientOverlayPresentationManager:self didDismissViewController:controllerCopy wasTopmostPresentation:presentationCopy];
         }
 
         ++v12;

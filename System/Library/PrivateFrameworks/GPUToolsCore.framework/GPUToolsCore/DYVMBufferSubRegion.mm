@@ -1,23 +1,23 @@
 @interface DYVMBufferSubRegion
-- (DYVMBufferSubRegion)initWithDYVMBuffer:(id)a3 range:(_NSRange)a4;
+- (DYVMBufferSubRegion)initWithDYVMBuffer:(id)buffer range:(_NSRange)range;
 - (const)bytes;
 - (id)DYGPUToolsData;
-- (id)subdataWithRange:(_NSRange)a3;
+- (id)subdataWithRange:(_NSRange)range;
 - (void)dealloc;
 @end
 
 @implementation DYVMBufferSubRegion
 
-- (DYVMBufferSubRegion)initWithDYVMBuffer:(id)a3 range:(_NSRange)a4
+- (DYVMBufferSubRegion)initWithDYVMBuffer:(id)buffer range:(_NSRange)range
 {
-  length = a4.length;
-  location = a4.location;
+  length = range.length;
+  location = range.location;
   v9.receiver = self;
   v9.super_class = DYVMBufferSubRegion;
   v7 = [(DYVMBufferSubRegion *)&v9 init];
   if (v7)
   {
-    v7->_parent = a3;
+    v7->_parent = buffer;
     v7->_range.location = location;
     v7->_range.length = length;
   }
@@ -43,11 +43,11 @@
   return result;
 }
 
-- (id)subdataWithRange:(_NSRange)a3
+- (id)subdataWithRange:(_NSRange)range
 {
-  length = a3.length;
-  location = a3.location;
-  if (a3.location + a3.length > [(DYVMBufferSubRegion *)self length])
+  length = range.length;
+  location = range.location;
+  if (range.location + range.length > [(DYVMBufferSubRegion *)self length])
   {
     return 0;
   }
@@ -59,11 +59,11 @@
 
 - (id)DYGPUToolsData
 {
-  v3 = [(DYVMBufferSubRegion *)self bytes];
-  if (v3)
+  bytes = [(DYVMBufferSubRegion *)self bytes];
+  if (bytes)
   {
-    v4 = v3;
-    v5 = self;
+    v4 = bytes;
+    selfCopy = self;
     v6 = objc_alloc(MEMORY[0x277CBEA90]);
     v7 = [(DYVMBufferSubRegion *)self length];
     v10[0] = MEMORY[0x277D85DD0];

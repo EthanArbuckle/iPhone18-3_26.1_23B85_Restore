@@ -1,20 +1,20 @@
 @interface WidgetGalleryManager.IconViewProvider
-- (id)dequeueReusableIconViewOfClass:(Class)a3;
-- (void)configureIconView:(id)a3 forIcon:(id)a4;
+- (id)dequeueReusableIconViewOfClass:(Class)class;
+- (void)configureIconView:(id)view forIcon:(id)icon;
 @end
 
 @implementation WidgetGalleryManager.IconViewProvider
 
-- (id)dequeueReusableIconViewOfClass:(Class)a3
+- (id)dequeueReusableIconViewOfClass:(Class)class
 {
-  v3 = [*self->iconViewMap dequeueReusableViewOfClass_];
+  dequeueReusableViewOfClass_ = [*self->iconViewMap dequeueReusableViewOfClass_];
 
-  return v3;
+  return dequeueReusableViewOfClass_;
 }
 
-- (void)configureIconView:(id)a3 forIcon:(id)a4
+- (void)configureIconView:(id)view forIcon:(id)icon
 {
-  [a3 setDelegate_];
+  [view setDelegate_];
 
   swift_unknownObjectRelease();
 }

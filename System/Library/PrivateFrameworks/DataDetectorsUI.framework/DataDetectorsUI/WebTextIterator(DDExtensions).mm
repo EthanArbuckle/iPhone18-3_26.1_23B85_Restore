@@ -40,7 +40,7 @@
           v14 = FragmentMetaData - v6;
           do
           {
-            [a1 advance];
+            [self advance];
             --v14;
           }
 
@@ -48,11 +48,11 @@
           v6 = v13;
         }
 
-        v15 = [a1 currentRange];
-        v16 = [DDRange rangeWithDOMRange:v15];
+        currentRange = [self currentRange];
+        v16 = [DDRange rangeWithDOMRange:currentRange];
 
         v17 = [objc_alloc(MEMORY[0x277CBEB18]) initWithObjects:{v16, 0}];
-        v18 = [v16 node];
+        node = [v16 node];
         objc_opt_class();
         isKindOfClass = objc_opt_isKindOfClass();
 
@@ -69,7 +69,7 @@
               v23 = v21 - v6;
               do
               {
-                [a1 advance];
+                [self advance];
                 --v23;
               }
 
@@ -77,13 +77,13 @@
               v6 = v22;
             }
 
-            v24 = [a1 currentRange];
-            v25 = [DDRange rangeWithDOMRange:v24];
+            currentRange2 = [self currentRange];
+            v25 = [DDRange rangeWithDOMRange:currentRange2];
             [v17 addObject:v25];
 
             if (isKindOfClass)
             {
-              v26 = [v16 node];
+              node2 = [v16 node];
               objc_opt_class();
               isKindOfClass = objc_opt_isKindOfClass();
             }
@@ -104,8 +104,8 @@
 
         else
         {
-          v27 = [MEMORY[0x277CBEB68] null];
-          [v34 addObject:v27];
+          null = [MEMORY[0x277CBEB68] null];
+          [v34 addObject:null];
         }
       }
 

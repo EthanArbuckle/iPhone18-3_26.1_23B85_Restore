@@ -2,12 +2,12 @@
 + (BDSJaliscoDAAPServiceImpl)sharedClient;
 - (BDSJaliscoDAAPServiceImpl)init;
 - (BLJaliscoDAAPClientDelegate)daapClientDelegate;
-- (void)deleteItemsWithStoreIDs:(id)a3 completion:(id)a4;
-- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)a3;
-- (void)hideItemsWithStoreIDs:(id)a3 completion:(id)a4;
-- (void)resetPurchasedTokenForStoreIDs:(id)a3 completion:(id)a4;
-- (void)resetStaleJaliscoDatabaseWithCompletion:(id)a3;
-- (void)setDaapClientDelegate:(id)a3;
+- (void)deleteItemsWithStoreIDs:(id)ds completion:(id)completion;
+- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)completion;
+- (void)hideItemsWithStoreIDs:(id)ds completion:(id)completion;
+- (void)resetPurchasedTokenForStoreIDs:(id)ds completion:(id)completion;
+- (void)resetStaleJaliscoDatabaseWithCompletion:(id)completion;
+- (void)setDaapClientDelegate:(id)delegate;
 @end
 
 @implementation BDSJaliscoDAAPServiceImpl
@@ -23,9 +23,9 @@
     jaliscoClient = v2->_jaliscoClient;
     v2->_jaliscoClient = v3;
 
-    v5 = [(BDSJaliscoDAAPServiceImpl *)v2 jaliscoClient];
+    jaliscoClient = [(BDSJaliscoDAAPServiceImpl *)v2 jaliscoClient];
 
-    if (!v5)
+    if (!jaliscoClient)
     {
       v6 = sub_1000023E8();
       if (os_log_type_enabled(v6, OS_LOG_TYPE_ERROR))
@@ -58,55 +58,55 @@
 
 - (BLJaliscoDAAPClientDelegate)daapClientDelegate
 {
-  v2 = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
-  v3 = [v2 delegate];
+  jaliscoClient = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
+  delegate = [jaliscoClient delegate];
 
-  return v3;
+  return delegate;
 }
 
-- (void)setDaapClientDelegate:(id)a3
+- (void)setDaapClientDelegate:(id)delegate
 {
-  v4 = a3;
-  v5 = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
-  [v5 setDelegate:v4];
+  delegateCopy = delegate;
+  jaliscoClient = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
+  [jaliscoClient setDelegate:delegateCopy];
 }
 
-- (void)resetPurchasedTokenForStoreIDs:(id)a3 completion:(id)a4
+- (void)resetPurchasedTokenForStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
-  [v8 resetPurchasedTokenForStoreIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  jaliscoClient = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
+  [jaliscoClient resetPurchasedTokenForStoreIDs:dsCopy completion:completionCopy];
 }
 
-- (void)hideItemsWithStoreIDs:(id)a3 completion:(id)a4
+- (void)hideItemsWithStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
-  [v8 hideItemsWithStoreIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  jaliscoClient = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
+  [jaliscoClient hideItemsWithStoreIDs:dsCopy completion:completionCopy];
 }
 
-- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)a3
+- (void)fetchAllHiddenItemStoreIDsWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
-  [v5 fetchAllHiddenItemStoreIDsWithCompletion:v4];
+  completionCopy = completion;
+  jaliscoClient = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
+  [jaliscoClient fetchAllHiddenItemStoreIDsWithCompletion:completionCopy];
 }
 
-- (void)deleteItemsWithStoreIDs:(id)a3 completion:(id)a4
+- (void)deleteItemsWithStoreIDs:(id)ds completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
-  [v8 deleteItemsWithStoreIDs:v7 completion:v6];
+  completionCopy = completion;
+  dsCopy = ds;
+  jaliscoClient = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
+  [jaliscoClient deleteItemsWithStoreIDs:dsCopy completion:completionCopy];
 }
 
-- (void)resetStaleJaliscoDatabaseWithCompletion:(id)a3
+- (void)resetStaleJaliscoDatabaseWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
-  [v5 resetStaleJaliscoDatabaseWithCompletion:v4];
+  completionCopy = completion;
+  jaliscoClient = [(BDSJaliscoDAAPServiceImpl *)self jaliscoClient];
+  [jaliscoClient resetStaleJaliscoDatabaseWithCompletion:completionCopy];
 }
 
 @end

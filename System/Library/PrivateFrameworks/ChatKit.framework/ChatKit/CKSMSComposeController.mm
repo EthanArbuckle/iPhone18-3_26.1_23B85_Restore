@@ -1,23 +1,23 @@
 @interface CKSMSComposeController
-+ (BOOL)canSendPhotos:(int)a3 videos:(int)a4 audioClips:(int)a5;
-- (BOOL)canInsertMessageWithExtensionBundleIdentifier:(id)a3;
-- (BOOL)insertAttachmentWithURL:(id)a3 andDescription:(id)a4;
-- (BOOL)insertCKShareForCollaboration:(id)a3 containerSetupInfo:(id)a4 collaborationShareOptions:(id)a5 isCollaboration:(BOOL)a6;
-- (BOOL)insertCKShareForCollaboration:(id)a3 containerSetupInfo:(id)a4 collaborationShareOptions:(id)a5 isCollaboration:(BOOL)a6 completionHandler:(id)a7;
-- (BOOL)insertData:(id)a3 MIMEType:(id)a4 exportedFilename:(id)a5;
-- (BOOL)insertFileURLForCollaboration:(id)a3 collaborationShareOptions:(id)a4 metadata:(id)a5 isCollaboration:(BOOL)a6;
-- (BOOL)insertFileURLForCollaboration:(id)a3 collaborationShareOptions:(id)a4 metadata:(id)a5 sendAsCopyURL:(id)a6 isCollaboration:(BOOL)a7;
-- (BOOL)insertFileURLForCollaboration:(id)a3 collaborationShareOptions:(id)a4 metadata:(id)a5 sendAsCopyURL:(id)a6 isCollaboration:(BOOL)a7 completionHandler:(id)a8;
-- (BOOL)insertFilename:(id)a3 MIMEType:(id)a4 exportedFilename:(id)a5 options:(id)a6;
-- (BOOL)insertGroupActivity:(id)a3;
-- (BOOL)insertMessage:(id)a3 extensionBundleIdentifier:(id)a4;
-- (BOOL)insertRichLinkWithURL:(id)a3 andData:(id)a4;
-- (BOOL)insertSWYPendingCollaboration:(id)a3 collaborationShareOptions:(id)a4 collaborationMetadata:(id)a5;
-- (BOOL)insertSWYPendingCollaboration:(id)a3 collaborationShareOptions:(id)a4 collaborationMetadata:(id)a5 completionHandler:(id)a6;
-- (BOOL)insertSWYPendingCollaboration:(id)a3 collaborationShareOptions:(id)a4 collaborationMetadata:(id)a5 sendAsCopyURL:(id)a6 isCollaboration:(BOOL)a7 completionHandler:(id)a8;
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3;
++ (BOOL)canSendPhotos:(int)photos videos:(int)videos audioClips:(int)clips;
+- (BOOL)canInsertMessageWithExtensionBundleIdentifier:(id)identifier;
+- (BOOL)insertAttachmentWithURL:(id)l andDescription:(id)description;
+- (BOOL)insertCKShareForCollaboration:(id)collaboration containerSetupInfo:(id)info collaborationShareOptions:(id)options isCollaboration:(BOOL)isCollaboration;
+- (BOOL)insertCKShareForCollaboration:(id)collaboration containerSetupInfo:(id)info collaborationShareOptions:(id)options isCollaboration:(BOOL)isCollaboration completionHandler:(id)handler;
+- (BOOL)insertData:(id)data MIMEType:(id)type exportedFilename:(id)filename;
+- (BOOL)insertFileURLForCollaboration:(id)collaboration collaborationShareOptions:(id)options metadata:(id)metadata isCollaboration:(BOOL)isCollaboration;
+- (BOOL)insertFileURLForCollaboration:(id)collaboration collaborationShareOptions:(id)options metadata:(id)metadata sendAsCopyURL:(id)l isCollaboration:(BOOL)isCollaboration;
+- (BOOL)insertFileURLForCollaboration:(id)collaboration collaborationShareOptions:(id)options metadata:(id)metadata sendAsCopyURL:(id)l isCollaboration:(BOOL)isCollaboration completionHandler:(id)handler;
+- (BOOL)insertFilename:(id)filename MIMEType:(id)type exportedFilename:(id)exportedFilename options:(id)options;
+- (BOOL)insertGroupActivity:(id)activity;
+- (BOOL)insertMessage:(id)message extensionBundleIdentifier:(id)identifier;
+- (BOOL)insertRichLinkWithURL:(id)l andData:(id)data;
+- (BOOL)insertSWYPendingCollaboration:(id)collaboration collaborationShareOptions:(id)options collaborationMetadata:(id)metadata;
+- (BOOL)insertSWYPendingCollaboration:(id)collaboration collaborationShareOptions:(id)options collaborationMetadata:(id)metadata completionHandler:(id)handler;
+- (BOOL)insertSWYPendingCollaboration:(id)collaboration collaborationShareOptions:(id)options collaborationMetadata:(id)metadata sendAsCopyURL:(id)l isCollaboration:(BOOL)isCollaboration completionHandler:(id)handler;
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation;
 - (CKSMSComposeController)init;
-- (CKSMSComposeController)initWithNavigationController:(id)a3;
+- (CKSMSComposeController)initWithNavigationController:(id)controller;
 - (id)delegate;
 - (void)_addRemoteVCIfNeeded;
 - (void)configureForDeviceValidation;
@@ -25,41 +25,41 @@
 - (void)disableCameraAttachments;
 - (void)forceCancelComposition;
 - (void)forceMMS;
-- (void)insertItemForSendingAndCalculateEntryViewFrame:(id)a3 withAlternateFilename:(id)a4 completion:(id)a5;
-- (void)setCanEditRecipients:(BOOL)a3;
-- (void)setCloudPhotoIDs:(id)a3;
-- (void)setContentText:(id)a3;
-- (void)setContentURLs:(id)a3;
-- (void)setGameCenterModeWithPickerBlock:(id)a3;
-- (void)setGameCenterPickedHandles:(id)a3 playerNames:(id)a4;
-- (void)setNavBarTitle:(id)a3;
-- (void)setPendingAddresses:(id)a3;
-- (void)setPhotoIDs:(id)a3;
-- (void)setServiceId:(id)a3;
-- (void)setShareSheetSessionID:(id)a3;
-- (void)setShouldDisableEntryField:(BOOL)a3;
-- (void)setShouldIgnoreEmailsWhenSending:(BOOL)a3;
-- (void)setSuggestions:(id)a3;
-- (void)setText:(id)a3 subject:(id)a4 addresses:(id)a5;
-- (void)setText:(id)a3 subject:(id)a4 addresses:(id)a5 chatGUID:(id)a6 groupName:(id)a7;
-- (void)setText:(id)a3 subject:(id)a4 addresses:(id)a5 shouldHideClearPluginButton:(BOOL)a6;
-- (void)setText:(id)a3 subject:(id)a4 addresses:(id)a5 shouldHideClearPluginButton:(BOOL)a6 chatGUID:(id)a7;
-- (void)setTextEntryContentsVisible:(BOOL)a3;
-- (void)setUICustomizationData:(id)a3;
-- (void)setUTIs:(id)a3;
+- (void)insertItemForSendingAndCalculateEntryViewFrame:(id)frame withAlternateFilename:(id)filename completion:(id)completion;
+- (void)setCanEditRecipients:(BOOL)recipients;
+- (void)setCloudPhotoIDs:(id)ds;
+- (void)setContentText:(id)text;
+- (void)setContentURLs:(id)ls;
+- (void)setGameCenterModeWithPickerBlock:(id)block;
+- (void)setGameCenterPickedHandles:(id)handles playerNames:(id)names;
+- (void)setNavBarTitle:(id)title;
+- (void)setPendingAddresses:(id)addresses;
+- (void)setPhotoIDs:(id)ds;
+- (void)setServiceId:(id)id;
+- (void)setShareSheetSessionID:(id)d;
+- (void)setShouldDisableEntryField:(BOOL)field;
+- (void)setShouldIgnoreEmailsWhenSending:(BOOL)sending;
+- (void)setSuggestions:(id)suggestions;
+- (void)setText:(id)text subject:(id)subject addresses:(id)addresses;
+- (void)setText:(id)text subject:(id)subject addresses:(id)addresses chatGUID:(id)d groupName:(id)name;
+- (void)setText:(id)text subject:(id)subject addresses:(id)addresses shouldHideClearPluginButton:(BOOL)button;
+- (void)setText:(id)text subject:(id)subject addresses:(id)addresses shouldHideClearPluginButton:(BOOL)button chatGUID:(id)d;
+- (void)setTextEntryContentsVisible:(BOOL)visible;
+- (void)setUICustomizationData:(id)data;
+- (void)setUTIs:(id)is;
 - (void)showInsertedItemInEntryView;
 - (void)smsComposeControllerAppeared;
 - (void)smsComposeControllerCancelled;
 - (void)smsComposeControllerDataInserted;
 - (void)smsComposeControllerEntryViewContentInserted;
-- (void)smsComposeControllerSendStartedWithText:(id)a3 messageGUID:(id)a4;
-- (void)smsComposeControllerShouldSendMessageWithText:(id)a3 toRecipients:(id)a4 completion:(id)a5;
-- (void)viewDidAppear:(BOOL)a3;
-- (void)viewDidDisappear:(BOOL)a3;
+- (void)smsComposeControllerSendStartedWithText:(id)text messageGUID:(id)d;
+- (void)smsComposeControllerShouldSendMessageWithText:(id)text toRecipients:(id)recipients completion:(id)completion;
+- (void)viewDidAppear:(BOOL)appear;
+- (void)viewDidDisappear:(BOOL)disappear;
 - (void)viewDidLoad;
-- (void)viewServiceDidTerminateWithError:(id)a3;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewServiceDidTerminateWithError:(id)error;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 @end
 
 @implementation CKSMSComposeController
@@ -154,9 +154,9 @@ void __30__CKSMSComposeController_init__block_invoke_2(uint64_t a1, void *a2, vo
   *(v13 + 1032) = 0;
 }
 
-- (CKSMSComposeController)initWithNavigationController:(id)a3
+- (CKSMSComposeController)initWithNavigationController:(id)controller
 {
-  objc_storeStrong(&self->_clientNavigationController, a3);
+  objc_storeStrong(&self->_clientNavigationController, controller);
 
   return [(CKSMSComposeController *)self init];
 }
@@ -164,15 +164,15 @@ void __30__CKSMSComposeController_init__block_invoke_2(uint64_t a1, void *a2, vo
 - (void)dealloc
 {
   [(CKSMSComposeController *)self setRemoteViewControllerProxy:0];
-  v3 = [(CKSMSComposeController *)self remoteViewController];
-  v4 = [v3 view];
-  [v4 removeFromSuperview];
+  remoteViewController = [(CKSMSComposeController *)self remoteViewController];
+  view = [remoteViewController view];
+  [view removeFromSuperview];
 
-  v5 = [(CKSMSComposeController *)self remoteViewController];
-  [v5 removeFromParentViewController];
+  remoteViewController2 = [(CKSMSComposeController *)self remoteViewController];
+  [remoteViewController2 removeFromParentViewController];
 
-  v6 = [(CKSMSComposeController *)self remoteViewController];
-  [v6 setDelegate:0];
+  remoteViewController3 = [(CKSMSComposeController *)self remoteViewController];
+  [remoteViewController3 setDelegate:0];
 
   [(CKSMSComposeController *)self setRemoteViewController:0];
   v7.receiver = self;
@@ -180,12 +180,12 @@ void __30__CKSMSComposeController_init__block_invoke_2(uint64_t a1, void *a2, vo
   [(CKSMSComposeController *)&v7 dealloc];
 }
 
-- (void)viewServiceDidTerminateWithError:(id)a3
+- (void)viewServiceDidTerminateWithError:(id)error
 {
   cancellationInvocation = self->_cancellationInvocation;
   if (cancellationInvocation)
   {
-    v5 = [(_UIAsyncInvocation *)cancellationInvocation invoke];
+    invoke = [(_UIAsyncInvocation *)cancellationInvocation invoke];
     v6 = self->_cancellationInvocation;
     self->_cancellationInvocation = 0;
   }
@@ -193,49 +193,49 @@ void __30__CKSMSComposeController_init__block_invoke_2(uint64_t a1, void *a2, vo
   [(CKSMSComposeController *)self smsComposeControllerCancelled];
 }
 
-+ (BOOL)canSendPhotos:(int)a3 videos:(int)a4 audioClips:(int)a5
++ (BOOL)canSendPhotos:(int)photos videos:(int)videos audioClips:(int)clips
 {
   v7 = *MEMORY[0x1E69E9840];
   v6[0] = 0;
   memset(&v6[4], 0, 28);
-  v6[2] = a4;
-  v6[3] = a3;
-  v6[1] = a5;
+  v6[2] = videos;
+  v6[3] = photos;
+  v6[1] = clips;
   return CKClientComposeCanSendMediaObjectTypes(v6);
 }
 
-- (BOOL)insertFilename:(id)a3 MIMEType:(id)a4 exportedFilename:(id)a5 options:(id)a6
+- (BOOL)insertFilename:(id)filename MIMEType:(id)type exportedFilename:(id)exportedFilename options:(id)options
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v14 insertFilename:v13 MIMEType:v12 exportedFilename:v11 options:v10];
+  optionsCopy = options;
+  exportedFilenameCopy = exportedFilename;
+  typeCopy = type;
+  filenameCopy = filename;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy insertFilename:filenameCopy MIMEType:typeCopy exportedFilename:exportedFilenameCopy options:optionsCopy];
 
   return 1;
 }
 
-- (BOOL)insertData:(id)a3 MIMEType:(id)a4 exportedFilename:(id)a5
+- (BOOL)insertData:(id)data MIMEType:(id)type exportedFilename:(id)filename
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v11 insertData:v10 MIMEType:v9 exportedFilename:v8];
+  filenameCopy = filename;
+  typeCopy = type;
+  dataCopy = data;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy insertData:dataCopy MIMEType:typeCopy exportedFilename:filenameCopy];
 
   return 1;
 }
 
-- (BOOL)insertAttachmentWithURL:(id)a3 andDescription:(id)a4
+- (BOOL)insertAttachmentWithURL:(id)l andDescription:(id)description
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [[CKRemoteItemForSending alloc] initWithAttachmentURL:v6 description:v7 blockOnPreviewCreation:!self->_firstItemWasInserted];
+  lCopy = l;
+  descriptionCopy = description;
+  v8 = [[CKRemoteItemForSending alloc] initWithAttachmentURL:lCopy description:descriptionCopy blockOnPreviewCreation:!self->_firstItemWasInserted];
   if (v8)
   {
-    v9 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-    [v9 insertRemoteItemForSending:v8];
+    remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+    [remoteViewControllerProxy insertRemoteItemForSending:v8];
 
     if (!self->_firstItemWasInserted)
     {
@@ -256,19 +256,19 @@ void __30__CKSMSComposeController_init__block_invoke_2(uint64_t a1, void *a2, vo
   return 1;
 }
 
-- (BOOL)insertRichLinkWithURL:(id)a3 andData:(id)a4
+- (BOOL)insertRichLinkWithURL:(id)l andData:(id)data
 {
   v19 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  v7 = a4;
+  lCopy = l;
+  dataCopy = data;
   if (IMOSLoggingEnabled())
   {
     v8 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v8, OS_LOG_TYPE_INFO))
     {
-      v9 = [v7 length];
+      v9 = [dataCopy length];
       v10 = @"YES";
-      if (!v6)
+      if (!lCopy)
       {
         v10 = @"NO";
       }
@@ -281,11 +281,11 @@ void __30__CKSMSComposeController_init__block_invoke_2(uint64_t a1, void *a2, vo
     }
   }
 
-  v11 = [[CKRemoteItemForSending alloc] initWithRichLinkWithURL:v6 data:v7];
+  v11 = [[CKRemoteItemForSending alloc] initWithRichLinkWithURL:lCopy data:dataCopy];
   if (v11)
   {
-    v12 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-    [v12 insertRemoteItemForSending:v11];
+    remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+    [remoteViewControllerProxy insertRemoteItemForSending:v11];
   }
 
   else if (IMOSLoggingEnabled())
@@ -301,21 +301,21 @@ void __30__CKSMSComposeController_init__block_invoke_2(uint64_t a1, void *a2, vo
   return 1;
 }
 
-- (void)insertItemForSendingAndCalculateEntryViewFrame:(id)a3 withAlternateFilename:(id)a4 completion:(id)a5
+- (void)insertItemForSendingAndCalculateEntryViewFrame:(id)frame withAlternateFilename:(id)filename completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [[CKRemoteItemForSending alloc] initWithAttachmentURL:v8 description:v9 blockOnPreviewCreation:0];
+  frameCopy = frame;
+  filenameCopy = filename;
+  completionCopy = completion;
+  v11 = [[CKRemoteItemForSending alloc] initWithAttachmentURL:frameCopy description:filenameCopy blockOnPreviewCreation:0];
   if (v11)
   {
-    v12 = [(CKSMSComposeController *)self remoteViewControllerProxy];
+    remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
     v15[0] = MEMORY[0x1E69E9820];
     v15[1] = 3221225472;
     v15[2] = __106__CKSMSComposeController_insertItemForSendingAndCalculateEntryViewFrame_withAlternateFilename_completion___block_invoke;
     v15[3] = &unk_1E72F5BA8;
-    v16 = v10;
-    [v12 insertRemoteItemForSendingAndCalculateEntryViewFrame:v11 completion:v15];
+    v16 = completionCopy;
+    [remoteViewControllerProxy insertRemoteItemForSendingAndCalculateEntryViewFrame:v11 completion:v15];
   }
 
   else if (IMOSLoggingEnabled())
@@ -350,26 +350,26 @@ void __106__CKSMSComposeController_insertItemForSendingAndCalculateEntryViewFram
 
 - (void)showInsertedItemInEntryView
 {
-  v2 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v2 showInsertedItemInEntryView];
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy showInsertedItemInEntryView];
 }
 
-- (BOOL)canInsertMessageWithExtensionBundleIdentifier:(id)a3
+- (BOOL)canInsertMessageWithExtensionBundleIdentifier:(id)identifier
 {
   v37[3] = *MEMORY[0x1E69E9840];
-  v3 = a3;
-  v4 = [MEMORY[0x1E6963618] bundleProxyForCurrentProcess];
+  identifierCopy = identifier;
+  bundleProxyForCurrentProcess = [MEMORY[0x1E6963618] bundleProxyForCurrentProcess];
   v5 = objc_opt_class();
-  v6 = [v4 entitlementValueForKey:@"com.apple.private.messages.associated-message-extension-bundle-identifiers" ofClass:v5 valuesOfClass:objc_opt_class()];
-  v7 = [v3 length];
-  v8 = [v3 hasPrefix:@"com.apple."];
-  v9 = [v6 containsObject:v3];
+  v6 = [bundleProxyForCurrentProcess entitlementValueForKey:@"com.apple.private.messages.associated-message-extension-bundle-identifiers" ofClass:v5 valuesOfClass:objc_opt_class()];
+  v7 = [identifierCopy length];
+  v8 = [identifierCopy hasPrefix:@"com.apple."];
+  v9 = [v6 containsObject:identifierCopy];
   v10 = *MEMORY[0x1E69A68E0];
   v37[0] = *MEMORY[0x1E69A6930];
   v37[1] = v10;
   v37[2] = *MEMORY[0x1E69A6920];
   v11 = [MEMORY[0x1E695DEC8] arrayWithObjects:v37 count:3];
-  if ((v9 & [v11 containsObject:v3]) == 1)
+  if ((v9 & [v11 containsObject:identifierCopy]) == 1)
   {
     if (IMOSLoggingEnabled())
     {
@@ -377,7 +377,7 @@ void __106__CKSMSComposeController_insertItemForSendingAndCalculateEntryViewFram
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v36 = v3;
+        v36 = identifierCopy;
         _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "Overriding pluginKitProxy identifier with %@ from a bundle app", buf, 0xCu);
       }
     }
@@ -394,12 +394,12 @@ LABEL_6:
       if (os_log_type_enabled(v14, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v36 = v3;
+        v36 = identifierCopy;
         _os_log_impl(&dword_19020E000, v14, OS_LOG_TYPE_INFO, "Overriding pluginKitProxy identifier with %@", buf, 0xCu);
       }
     }
 
-    v15 = [MEMORY[0x1E6963678] pluginKitProxyForIdentifier:v3];
+    v15 = [MEMORY[0x1E6963678] pluginKitProxyForIdentifier:identifierCopy];
     LOBYTE(v13) = IMIsPlugInProxyAMessagesExtensionPoint() != 0;
   }
 
@@ -422,8 +422,8 @@ LABEL_6:
       v32 = 0u;
       v29 = 0u;
       v30 = 0u;
-      v16 = [v4 plugInKitPlugins];
-      v17 = [v16 countByEnumeratingWithState:&v29 objects:v34 count:16];
+      plugInKitPlugins = [bundleProxyForCurrentProcess plugInKitPlugins];
+      v17 = [plugInKitPlugins countByEnumeratingWithState:&v29 objects:v34 count:16];
       if (v17)
       {
         v18 = *v30;
@@ -433,7 +433,7 @@ LABEL_6:
           {
             if (*v30 != v18)
             {
-              objc_enumerationMutation(v16);
+              objc_enumerationMutation(plugInKitPlugins);
             }
 
             if (IMIsPlugInProxyAMessagesExtensionPoint())
@@ -443,7 +443,7 @@ LABEL_6:
             }
           }
 
-          v17 = [v16 countByEnumeratingWithState:&v29 objects:v34 count:16];
+          v17 = [plugInKitPlugins countByEnumeratingWithState:&v29 objects:v34 count:16];
           if (v17)
           {
             continue;
@@ -507,26 +507,26 @@ LABEL_36:
   return v13;
 }
 
-- (BOOL)insertMessage:(id)a3 extensionBundleIdentifier:(id)a4
+- (BOOL)insertMessage:(id)message extensionBundleIdentifier:(id)identifier
 {
-  v6 = a3;
-  v7 = a4;
-  if ([(CKSMSComposeController *)self canInsertMessageWithExtensionBundleIdentifier:v7])
+  messageCopy = message;
+  identifierCopy = identifier;
+  if ([(CKSMSComposeController *)self canInsertMessageWithExtensionBundleIdentifier:identifierCopy])
   {
-    v8 = [[CKRemoteItemForSending alloc] initWithMSMessage:v6];
+    v8 = [[CKRemoteItemForSending alloc] initWithMSMessage:messageCopy];
     v9 = v8 != 0;
     if (v8)
     {
-      v10 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-      v11 = v10;
-      if (v7)
+      remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+      v11 = remoteViewControllerProxy;
+      if (identifierCopy)
       {
-        [v10 insertRemoteItemForSending:v8 extensionBundleIdentifier:v7];
+        [remoteViewControllerProxy insertRemoteItemForSending:v8 extensionBundleIdentifier:identifierCopy];
       }
 
       else
       {
-        [v10 insertRemoteItemForSending:v8];
+        [remoteViewControllerProxy insertRemoteItemForSending:v8];
       }
     }
 
@@ -556,165 +556,165 @@ LABEL_12:
   return v9;
 }
 
-- (void)setText:(id)a3 subject:(id)a4 addresses:(id)a5
+- (void)setText:(id)text subject:(id)subject addresses:(id)addresses
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v11 setText:v10 subject:v9 addresses:v8];
+  addressesCopy = addresses;
+  subjectCopy = subject;
+  textCopy = text;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setText:textCopy subject:subjectCopy addresses:addressesCopy];
 }
 
-- (void)setText:(id)a3 subject:(id)a4 addresses:(id)a5 chatGUID:(id)a6 groupName:(id)a7
+- (void)setText:(id)text subject:(id)subject addresses:(id)addresses chatGUID:(id)d groupName:(id)name
 {
-  v12 = a7;
-  v13 = a6;
-  v14 = a5;
-  v15 = a4;
-  v16 = a3;
-  v17 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v17 setText:v16 subject:v15 addresses:v14 chatGUID:v13 groupName:v12];
+  nameCopy = name;
+  dCopy = d;
+  addressesCopy = addresses;
+  subjectCopy = subject;
+  textCopy = text;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setText:textCopy subject:subjectCopy addresses:addressesCopy chatGUID:dCopy groupName:nameCopy];
 }
 
-- (void)setText:(id)a3 subject:(id)a4 addresses:(id)a5 shouldHideClearPluginButton:(BOOL)a6
+- (void)setText:(id)text subject:(id)subject addresses:(id)addresses shouldHideClearPluginButton:(BOOL)button
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v13 setText:v12 subject:v11 addresses:v10 shouldHideClearPluginButton:v6];
+  buttonCopy = button;
+  addressesCopy = addresses;
+  subjectCopy = subject;
+  textCopy = text;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setText:textCopy subject:subjectCopy addresses:addressesCopy shouldHideClearPluginButton:buttonCopy];
 }
 
-- (void)setText:(id)a3 subject:(id)a4 addresses:(id)a5 shouldHideClearPluginButton:(BOOL)a6 chatGUID:(id)a7
+- (void)setText:(id)text subject:(id)subject addresses:(id)addresses shouldHideClearPluginButton:(BOOL)button chatGUID:(id)d
 {
-  v7 = a6;
-  v12 = a7;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v16 setText:v15 subject:v14 addresses:v13 shouldHideClearPluginButton:v7 chatGUID:v12];
+  buttonCopy = button;
+  dCopy = d;
+  addressesCopy = addresses;
+  subjectCopy = subject;
+  textCopy = text;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setText:textCopy subject:subjectCopy addresses:addressesCopy shouldHideClearPluginButton:buttonCopy chatGUID:dCopy];
 }
 
-- (void)setPendingAddresses:(id)a3
+- (void)setPendingAddresses:(id)addresses
 {
-  v4 = a3;
-  v5 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v5 setPendingAddresses:v4];
+  addressesCopy = addresses;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setPendingAddresses:addressesCopy];
 }
 
 - (void)configureForDeviceValidation
 {
-  v2 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v2 configureForDeviceValidation];
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy configureForDeviceValidation];
 }
 
-- (void)setCanEditRecipients:(BOOL)a3
+- (void)setCanEditRecipients:(BOOL)recipients
 {
-  v3 = a3;
-  v4 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v4 setCanEditRecipients:v3];
+  recipientsCopy = recipients;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setCanEditRecipients:recipientsCopy];
 }
 
-- (void)setShouldDisableEntryField:(BOOL)a3
+- (void)setShouldDisableEntryField:(BOOL)field
 {
-  v3 = a3;
-  v4 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v4 setShouldDisableEntryField:v3];
+  fieldCopy = field;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setShouldDisableEntryField:fieldCopy];
 }
 
-- (void)setShouldIgnoreEmailsWhenSending:(BOOL)a3
+- (void)setShouldIgnoreEmailsWhenSending:(BOOL)sending
 {
-  v3 = a3;
-  v4 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v4 setShouldIgnoreEmailsWhenSending:v3];
+  sendingCopy = sending;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setShouldIgnoreEmailsWhenSending:sendingCopy];
 }
 
-- (BOOL)insertFileURLForCollaboration:(id)a3 collaborationShareOptions:(id)a4 metadata:(id)a5 isCollaboration:(BOOL)a6
+- (BOOL)insertFileURLForCollaboration:(id)collaboration collaborationShareOptions:(id)options metadata:(id)metadata isCollaboration:(BOOL)isCollaboration
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v13 insertFileURLForCollaboration:v12 collaborationShareOptions:v11 metadata:v10 sendAsCopyURL:0 isCollaboration:v6];
+  isCollaborationCopy = isCollaboration;
+  metadataCopy = metadata;
+  optionsCopy = options;
+  collaborationCopy = collaboration;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy insertFileURLForCollaboration:collaborationCopy collaborationShareOptions:optionsCopy metadata:metadataCopy sendAsCopyURL:0 isCollaboration:isCollaborationCopy];
 
   return 1;
 }
 
-- (BOOL)insertFileURLForCollaboration:(id)a3 collaborationShareOptions:(id)a4 metadata:(id)a5 sendAsCopyURL:(id)a6 isCollaboration:(BOOL)a7
+- (BOOL)insertFileURLForCollaboration:(id)collaboration collaborationShareOptions:(id)options metadata:(id)metadata sendAsCopyURL:(id)l isCollaboration:(BOOL)isCollaboration
 {
-  v7 = a7;
-  v12 = a6;
-  v13 = a5;
-  v14 = a4;
-  v15 = a3;
-  v16 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v16 insertFileURLForCollaboration:v15 collaborationShareOptions:v14 metadata:v13 sendAsCopyURL:v12 isCollaboration:v7];
+  isCollaborationCopy = isCollaboration;
+  lCopy = l;
+  metadataCopy = metadata;
+  optionsCopy = options;
+  collaborationCopy = collaboration;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy insertFileURLForCollaboration:collaborationCopy collaborationShareOptions:optionsCopy metadata:metadataCopy sendAsCopyURL:lCopy isCollaboration:isCollaborationCopy];
 
   return 1;
 }
 
-- (BOOL)insertFileURLForCollaboration:(id)a3 collaborationShareOptions:(id)a4 metadata:(id)a5 sendAsCopyURL:(id)a6 isCollaboration:(BOOL)a7 completionHandler:(id)a8
+- (BOOL)insertFileURLForCollaboration:(id)collaboration collaborationShareOptions:(id)options metadata:(id)metadata sendAsCopyURL:(id)l isCollaboration:(BOOL)isCollaboration completionHandler:(id)handler
 {
-  v8 = a7;
-  v14 = a8;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v19 insertFileURLForCollaboration:v18 collaborationShareOptions:v17 metadata:v16 sendAsCopyURL:v15 isCollaboration:v8 completionHandler:v14];
+  isCollaborationCopy = isCollaboration;
+  handlerCopy = handler;
+  lCopy = l;
+  metadataCopy = metadata;
+  optionsCopy = options;
+  collaborationCopy = collaboration;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy insertFileURLForCollaboration:collaborationCopy collaborationShareOptions:optionsCopy metadata:metadataCopy sendAsCopyURL:lCopy isCollaboration:isCollaborationCopy completionHandler:handlerCopy];
 
   return 1;
 }
 
-- (BOOL)insertSWYPendingCollaboration:(id)a3 collaborationShareOptions:(id)a4 collaborationMetadata:(id)a5
+- (BOOL)insertSWYPendingCollaboration:(id)collaboration collaborationShareOptions:(id)options collaborationMetadata:(id)metadata
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
-  v11 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v11 insertSWYPendingCollaboration:v10 collaborationShareOptions:v9 collaborationMetadata:v8];
+  metadataCopy = metadata;
+  optionsCopy = options;
+  collaborationCopy = collaboration;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy insertSWYPendingCollaboration:collaborationCopy collaborationShareOptions:optionsCopy collaborationMetadata:metadataCopy];
 
   return 1;
 }
 
-- (BOOL)insertSWYPendingCollaboration:(id)a3 collaborationShareOptions:(id)a4 collaborationMetadata:(id)a5 completionHandler:(id)a6
+- (BOOL)insertSWYPendingCollaboration:(id)collaboration collaborationShareOptions:(id)options collaborationMetadata:(id)metadata completionHandler:(id)handler
 {
-  v10 = a6;
-  v11 = a5;
-  v12 = a4;
-  v13 = a3;
-  v14 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v14 insertSWYPendingCollaboration:v13 collaborationShareOptions:v12 collaborationMetadata:v11 completionHandler:v10];
+  handlerCopy = handler;
+  metadataCopy = metadata;
+  optionsCopy = options;
+  collaborationCopy = collaboration;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy insertSWYPendingCollaboration:collaborationCopy collaborationShareOptions:optionsCopy collaborationMetadata:metadataCopy completionHandler:handlerCopy];
 
   return 1;
 }
 
-- (BOOL)insertSWYPendingCollaboration:(id)a3 collaborationShareOptions:(id)a4 collaborationMetadata:(id)a5 sendAsCopyURL:(id)a6 isCollaboration:(BOOL)a7 completionHandler:(id)a8
+- (BOOL)insertSWYPendingCollaboration:(id)collaboration collaborationShareOptions:(id)options collaborationMetadata:(id)metadata sendAsCopyURL:(id)l isCollaboration:(BOOL)isCollaboration completionHandler:(id)handler
 {
-  v8 = a7;
-  v14 = a8;
-  v15 = a6;
-  v16 = a5;
-  v17 = a4;
-  v18 = a3;
-  v19 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v19 insertSWYPendingCollaboration:v18 collaborationShareOptions:v17 collaborationMetadata:v16 sendAsCopyURL:v15 isCollaboration:v8 completionHandler:v14];
+  isCollaborationCopy = isCollaboration;
+  handlerCopy = handler;
+  lCopy = l;
+  metadataCopy = metadata;
+  optionsCopy = options;
+  collaborationCopy = collaboration;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy insertSWYPendingCollaboration:collaborationCopy collaborationShareOptions:optionsCopy collaborationMetadata:metadataCopy sendAsCopyURL:lCopy isCollaboration:isCollaborationCopy completionHandler:handlerCopy];
 
   return 1;
 }
 
-- (BOOL)insertCKShareForCollaboration:(id)a3 containerSetupInfo:(id)a4 collaborationShareOptions:(id)a5 isCollaboration:(BOOL)a6 completionHandler:(id)a7
+- (BOOL)insertCKShareForCollaboration:(id)collaboration containerSetupInfo:(id)info collaborationShareOptions:(id)options isCollaboration:(BOOL)isCollaboration completionHandler:(id)handler
 {
-  v8 = a6;
+  isCollaborationCopy = isCollaboration;
   v25 = *MEMORY[0x1E69E9840];
-  v12 = a3;
-  v13 = a4;
-  v14 = a5;
-  v15 = a7;
+  collaborationCopy = collaboration;
+  infoCopy = info;
+  optionsCopy = options;
+  handlerCopy = handler;
   if (IMOSLoggingEnabled())
   {
     v16 = OSLogHandleForIMFoundationCategory();
@@ -722,43 +722,43 @@ LABEL_12:
     {
       v17 = @"NO";
       *v20 = 138413058;
-      *&v20[4] = v12;
-      if (v8)
+      *&v20[4] = collaborationCopy;
+      if (isCollaborationCopy)
       {
         v17 = @"YES";
       }
 
       *&v20[12] = 2112;
-      *&v20[14] = v13;
+      *&v20[14] = infoCopy;
       v21 = 2112;
-      v22 = v14;
+      v22 = optionsCopy;
       v23 = 2112;
       v24 = v17;
       _os_log_impl(&dword_19020E000, v16, OS_LOG_TYPE_INFO, "insertCKShareForCollaboration called with share: %@, containerSetupInfo = %@, collaborationShareOptions = %@, isCollaboration = %@", v20, 0x2Au);
     }
   }
 
-  v18 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v18 insertCKShareForCollaboration:v12 containerSetupInfo:v13 collaborationShareOptions:v14 isCollaboration:v8 completionHandler:v15];
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy insertCKShareForCollaboration:collaborationCopy containerSetupInfo:infoCopy collaborationShareOptions:optionsCopy isCollaboration:isCollaborationCopy completionHandler:handlerCopy];
 
   return 1;
 }
 
-- (BOOL)insertCKShareForCollaboration:(id)a3 containerSetupInfo:(id)a4 collaborationShareOptions:(id)a5 isCollaboration:(BOOL)a6
+- (BOOL)insertCKShareForCollaboration:(id)collaboration containerSetupInfo:(id)info collaborationShareOptions:(id)options isCollaboration:(BOOL)isCollaboration
 {
-  v6 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v13 insertCKShareForCollaboration:v12 containerSetupInfo:v11 collaborationShareOptions:v10 isCollaboration:v6];
+  isCollaborationCopy = isCollaboration;
+  optionsCopy = options;
+  infoCopy = info;
+  collaborationCopy = collaboration;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy insertCKShareForCollaboration:collaborationCopy containerSetupInfo:infoCopy collaborationShareOptions:optionsCopy isCollaboration:isCollaborationCopy];
 
   return 1;
 }
 
-- (BOOL)insertGroupActivity:(id)a3
+- (BOOL)insertGroupActivity:(id)activity
 {
-  v4 = a3;
+  activityCopy = activity;
   if (IMOSLoggingEnabled())
   {
     v5 = OSLogHandleForIMFoundationCategory();
@@ -769,116 +769,116 @@ LABEL_12:
     }
   }
 
-  v6 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v6 insertGroupActivity:v4];
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy insertGroupActivity:activityCopy];
 
   return 1;
 }
 
-- (void)setNavBarTitle:(id)a3
+- (void)setNavBarTitle:(id)title
 {
-  v4 = a3;
-  v5 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v5 setNavBarTitle:v4];
+  titleCopy = title;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setNavBarTitle:titleCopy];
 }
 
 - (void)disableCameraAttachments
 {
-  v2 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v2 disableCameraAttachments];
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy disableCameraAttachments];
 }
 
 - (void)forceCancelComposition
 {
-  v2 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v2 forceCancelComposition];
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy forceCancelComposition];
 }
 
 - (void)forceMMS
 {
-  v2 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v2 forceMMS];
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy forceMMS];
 }
 
-- (void)setGameCenterModeWithPickerBlock:(id)a3
+- (void)setGameCenterModeWithPickerBlock:(id)block
 {
-  v4 = a3;
-  v5 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v5 setGameCenterModeWithPickerBlock:v4];
+  blockCopy = block;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setGameCenterModeWithPickerBlock:blockCopy];
 }
 
-- (void)setGameCenterPickedHandles:(id)a3 playerNames:(id)a4
+- (void)setGameCenterPickedHandles:(id)handles playerNames:(id)names
 {
-  v6 = a4;
-  v7 = a3;
-  v8 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v8 setGameCenterPickedHandles:v7 playerNames:v6];
+  namesCopy = names;
+  handlesCopy = handles;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setGameCenterPickedHandles:handlesCopy playerNames:namesCopy];
 }
 
-- (void)setUICustomizationData:(id)a3
+- (void)setUICustomizationData:(id)data
 {
-  v5 = a3;
+  dataCopy = data;
   if ((_UIApplicationUsesLegacyUI() & 1) == 0)
   {
-    v4 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-    [v4 setUICustomizationData:v5];
+    remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+    [remoteViewControllerProxy setUICustomizationData:dataCopy];
   }
 }
 
-- (void)setUTIs:(id)a3
+- (void)setUTIs:(id)is
 {
-  v4 = a3;
-  v5 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v5 setUTIs:v4];
+  isCopy = is;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setUTIs:isCopy];
 }
 
-- (void)setContentURLs:(id)a3
+- (void)setContentURLs:(id)ls
 {
-  v4 = a3;
-  v5 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v5 setContentURLs:v4];
+  lsCopy = ls;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setContentURLs:lsCopy];
 }
 
-- (void)setPhotoIDs:(id)a3
+- (void)setPhotoIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v5 setPhotoIDs:v4];
+  dsCopy = ds;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setPhotoIDs:dsCopy];
 }
 
-- (void)setCloudPhotoIDs:(id)a3
+- (void)setCloudPhotoIDs:(id)ds
 {
-  v4 = a3;
-  v5 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v5 setCloudPhotoIDs:v4];
+  dsCopy = ds;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setCloudPhotoIDs:dsCopy];
 }
 
-- (void)setContentText:(id)a3
+- (void)setContentText:(id)text
 {
-  v4 = a3;
-  v5 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v5 setContentText:v4];
+  textCopy = text;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setContentText:textCopy];
 }
 
-- (void)setShareSheetSessionID:(id)a3
+- (void)setShareSheetSessionID:(id)d
 {
-  v4 = a3;
-  v5 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v5 setShareSheetSessionID:v4];
+  dCopy = d;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setShareSheetSessionID:dCopy];
 }
 
-- (void)setServiceId:(id)a3
+- (void)setServiceId:(id)id
 {
-  v4 = a3;
-  v5 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v5 setServiceId:v4];
+  idCopy = id;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setServiceId:idCopy];
 }
 
-- (void)setSuggestions:(id)a3
+- (void)setSuggestions:(id)suggestions
 {
-  v4 = a3;
-  v5 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v5 setSuggestions:v4];
+  suggestionsCopy = suggestions;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setSuggestions:suggestionsCopy];
 }
 
 - (void)smsComposeControllerDataInserted
@@ -889,8 +889,8 @@ LABEL_12:
 
 - (void)smsComposeControllerAppeared
 {
-  v3 = [MEMORY[0x1E69A6160] sharedInstance];
-  [v3 _forceResumed];
+  mEMORY[0x1E69A6160] = [MEMORY[0x1E69A6160] sharedInstance];
+  [mEMORY[0x1E69A6160] _forceResumed];
 
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   [WeakRetained smsComposeControllerAppeared:self];
@@ -908,30 +908,30 @@ LABEL_12:
   [WeakRetained smsComposeControllerDataInserted:self];
 }
 
-- (void)smsComposeControllerShouldSendMessageWithText:(id)a3 toRecipients:(id)a4 completion:(id)a5
+- (void)smsComposeControllerShouldSendMessageWithText:(id)text toRecipients:(id)recipients completion:(id)completion
 {
-  v13 = a3;
-  v8 = a4;
-  v9 = a5;
+  textCopy = text;
+  recipientsCopy = recipients;
+  completionCopy = completion;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
     v12 = objc_loadWeakRetained(&self->_delegate);
-    [v12 smsComposeControllerShouldSendMessageWithText:v13 toRecipients:v8 completion:v9];
+    [v12 smsComposeControllerShouldSendMessageWithText:textCopy toRecipients:recipientsCopy completion:completionCopy];
   }
 
   else
   {
-    v9[2](v9, 1);
+    completionCopy[2](completionCopy, 1);
   }
 }
 
-- (void)smsComposeControllerSendStartedWithText:(id)a3 messageGUID:(id)a4
+- (void)smsComposeControllerSendStartedWithText:(id)text messageGUID:(id)d
 {
-  v13 = a3;
-  v6 = a4;
+  textCopy = text;
+  dCopy = d;
   WeakRetained = objc_loadWeakRetained(&self->_delegate);
   v8 = objc_opt_respondsToSelector();
 
@@ -939,7 +939,7 @@ LABEL_12:
   v10 = v9;
   if (v8)
   {
-    [v9 smsComposeControllerSendStarted:self withText:v13 messageGUID:v6];
+    [v9 smsComposeControllerSendStarted:self withText:textCopy messageGUID:dCopy];
   }
 
   else
@@ -950,7 +950,7 @@ LABEL_12:
     v10 = v12;
     if (v11)
     {
-      [v12 smsComposeControllerSendStarted:self withText:v13];
+      [v12 smsComposeControllerSendStarted:self withText:textCopy];
     }
 
     else
@@ -960,19 +960,19 @@ LABEL_12:
   }
 }
 
-- (void)setTextEntryContentsVisible:(BOOL)a3
+- (void)setTextEntryContentsVisible:(BOOL)visible
 {
-  v3 = a3;
-  v4 = [(CKSMSComposeController *)self remoteViewControllerProxy];
-  [v4 setTextEntryContentsVisible:v3];
+  visibleCopy = visible;
+  remoteViewControllerProxy = [(CKSMSComposeController *)self remoteViewControllerProxy];
+  [remoteViewControllerProxy setTextEntryContentsVisible:visibleCopy];
 }
 
 - (void)_addRemoteVCIfNeeded
 {
   if (self->_safeToAdd)
   {
-    v3 = [(CKSMSComposeController *)self remoteViewController];
-    v4 = v3 != 0;
+    remoteViewController = [(CKSMSComposeController *)self remoteViewController];
+    v4 = remoteViewController != 0;
   }
 
   else
@@ -980,31 +980,31 @@ LABEL_12:
     v4 = 0;
   }
 
-  v5 = [(CKSMSComposeController *)self remoteViewController];
-  v6 = [v5 parentViewController];
+  remoteViewController2 = [(CKSMSComposeController *)self remoteViewController];
+  parentViewController = [remoteViewController2 parentViewController];
 
-  if (v4 && !v6)
+  if (v4 && !parentViewController)
   {
-    v7 = [(CKSMSComposeController *)self remoteViewController];
-    [(CKSMSComposeController *)self addChildViewController:v7];
+    remoteViewController3 = [(CKSMSComposeController *)self remoteViewController];
+    [(CKSMSComposeController *)self addChildViewController:remoteViewController3];
 
-    v8 = [(CKSMSComposeController *)self view];
-    [v8 bounds];
+    view = [(CKSMSComposeController *)self view];
+    [view bounds];
     v10 = v9;
     v12 = v11;
     v14 = v13;
     v16 = v15;
-    v17 = [(CKSMSComposeController *)self remoteViewController];
-    v18 = [v17 view];
-    [v18 setFrame:{v10, v12, v14, v16}];
+    remoteViewController4 = [(CKSMSComposeController *)self remoteViewController];
+    view2 = [remoteViewController4 view];
+    [view2 setFrame:{v10, v12, v14, v16}];
 
-    v19 = [(CKSMSComposeController *)self view];
-    v20 = [(CKSMSComposeController *)self remoteViewController];
-    v21 = [v20 view];
-    [v19 addSubview:v21];
+    view3 = [(CKSMSComposeController *)self view];
+    remoteViewController5 = [(CKSMSComposeController *)self remoteViewController];
+    view4 = [remoteViewController5 view];
+    [view3 addSubview:view4];
 
-    v22 = [(CKSMSComposeController *)self remoteViewController];
-    [v22 didMoveToParentViewController:self];
+    remoteViewController6 = [(CKSMSComposeController *)self remoteViewController];
+    [remoteViewController6 didMoveToParentViewController:self];
   }
 }
 
@@ -1013,68 +1013,68 @@ LABEL_12:
   v7.receiver = self;
   v7.super_class = CKSMSComposeController;
   [(CKSMSComposeController *)&v7 viewDidLoad];
-  v3 = [(CKSMSComposeController *)self view];
+  view = [(CKSMSComposeController *)self view];
   v4 = +[CKUIBehavior sharedBehaviors];
-  v5 = [v4 theme];
-  v6 = [v5 transcriptBackgroundColor];
-  [v3 setBackgroundColor:v6];
+  theme = [v4 theme];
+  transcriptBackgroundColor = [theme transcriptBackgroundColor];
+  [view setBackgroundColor:transcriptBackgroundColor];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   self->_safeToAdd = 0;
-  v5 = [(CKSMSComposeController *)self navigationController];
-  [v5 setNavigationBarHidden:1 animated:0];
+  navigationController = [(CKSMSComposeController *)self navigationController];
+  [navigationController setNavigationBarHidden:1 animated:0];
 
   v6.receiver = self;
   v6.super_class = CKSMSComposeController;
-  [(CKSMSComposeController *)&v6 viewWillAppear:v3];
+  [(CKSMSComposeController *)&v6 viewWillAppear:appearCopy];
 }
 
-- (void)viewDidAppear:(BOOL)a3
+- (void)viewDidAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   self->_safeToAdd = 1;
   [(CKSMSComposeController *)self _addRemoteVCIfNeeded];
   v6.receiver = self;
   v6.super_class = CKSMSComposeController;
-  [(CKSMSComposeController *)&v6 viewDidAppear:v3];
-  v5 = [MEMORY[0x1E69DC668] sharedApplication];
-  if ([v5 statusBarStyle])
+  [(CKSMSComposeController *)&v6 viewDidAppear:appearCopy];
+  mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+  if ([mEMORY[0x1E69DC668] statusBarStyle])
   {
     self->_didChangeStatusBarStyle = 1;
-    self->_savedStatusBarStyle = [v5 statusBarStyle];
-    [v5 setStatusBarStyle:0];
+    self->_savedStatusBarStyle = [mEMORY[0x1E69DC668] statusBarStyle];
+    [mEMORY[0x1E69DC668] setStatusBarStyle:0];
   }
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v6.receiver = self;
   v6.super_class = CKSMSComposeController;
-  [(CKSMSComposeController *)&v6 viewWillDisappear:a3];
+  [(CKSMSComposeController *)&v6 viewWillDisappear:disappear];
   if (self->_didChangeStatusBarStyle)
   {
     savedStatusBarStyle = self->_savedStatusBarStyle;
-    v5 = [MEMORY[0x1E69DC668] sharedApplication];
-    [v5 setStatusBarStyle:savedStatusBarStyle];
+    mEMORY[0x1E69DC668] = [MEMORY[0x1E69DC668] sharedApplication];
+    [mEMORY[0x1E69DC668] setStatusBarStyle:savedStatusBarStyle];
   }
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
   v3.receiver = self;
   v3.super_class = CKSMSComposeController;
-  [(CKSMSComposeController *)&v3 viewDidDisappear:a3];
+  [(CKSMSComposeController *)&v3 viewDidDisappear:disappear];
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)a3
+- (BOOL)shouldAutorotateToInterfaceOrientation:(int64_t)orientation
 {
-  v4 = [(CKSMSComposeController *)self remoteViewController];
-  LOBYTE(a3) = [v4 shouldAutorotateToInterfaceOrientation:a3];
+  remoteViewController = [(CKSMSComposeController *)self remoteViewController];
+  LOBYTE(orientation) = [remoteViewController shouldAutorotateToInterfaceOrientation:orientation];
 
-  return a3;
+  return orientation;
 }
 
 - (id)delegate

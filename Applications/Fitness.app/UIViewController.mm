@@ -6,19 +6,19 @@
 
 - (id)ch_rootViewController
 {
-  v2 = [(UIViewController *)self parentViewController];
+  parentViewController = [(UIViewController *)self parentViewController];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v3 = v2;
+    ch_rootViewController = parentViewController;
   }
 
   else
   {
-    v3 = [v2 ch_rootViewController];
+    ch_rootViewController = [parentViewController ch_rootViewController];
   }
 
-  v4 = v3;
+  v4 = ch_rootViewController;
 
   return v4;
 }

@@ -1,16 +1,16 @@
 @interface ATFileBufferedPipe
 + (id)pipe;
 - (ATFileBufferedPipe)init;
-- (id)_bufferedWrite:(id)a3;
-- (void)_inputReadyForReading:(unint64_t)a3;
-- (void)_outputReadyForWriting:(unint64_t)a3;
+- (id)_bufferedWrite:(id)write;
+- (void)_inputReadyForReading:(unint64_t)reading;
+- (void)_outputReadyForWriting:(unint64_t)writing;
 @end
 
 @implementation ATFileBufferedPipe
 
-- (id)_bufferedWrite:(id)a3
+- (id)_bufferedWrite:(id)write
 {
-  v4 = [MEMORY[0x277CBEB28] dataWithData:a3];
+  v4 = [MEMORY[0x277CBEB28] dataWithData:write];
   while (self->_readyForData)
   {
     if (![v4 length])
@@ -18,8 +18,8 @@
       break;
     }
 
-    v5 = [(NSPipe *)self->_outputPipe fileHandleForWriting];
-    v6 = write([v5 fileDescriptor], objc_msgSend(v4, "bytes"), objc_msgSend(v4, "length"));
+    fileHandleForWriting = [(NSPipe *)self->_outputPipe fileHandleForWriting];
+    v6 = write([fileHandleForWriting fileDescriptor], objc_msgSend(v4, "bytes"), objc_msgSend(v4, "length"));
 
     if (v6 < 1)
     {
@@ -38,22 +38,22 @@
   return v4;
 }
 
-- (void)_inputReadyForReading:(unint64_t)a3
+- (void)_inputReadyForReading:(unint64_t)reading
 {
-  if (a3)
+  if (reading)
   {
-    v5 = [(NSPipe *)self->_inputPipe fileHandleForReading];
-    v7 = [v5 readDataOfLength:a3];
+    fileHandleForReading = [(NSPipe *)self->_inputPipe fileHandleForReading];
+    fileHandleForWriting = [fileHandleForReading readDataOfLength:reading];
 
     if (self->_readyForData)
     {
-      v6 = [(ATFileBufferedPipe *)self _bufferedWrite:v7];
+      v6 = [(ATFileBufferedPipe *)self _bufferedWrite:fileHandleForWriting];
       [(ATFileBuffer *)self->_buffer appendData:v6];
     }
 
     else
     {
-      [(ATFileBuffer *)self->_buffer appendData:v7];
+      [(ATFileBuffer *)self->_buffer appendData:fileHandleForWriting];
     }
   }
 
@@ -66,14 +66,14 @@
       return;
     }
 
-    v7 = [(NSPipe *)self->_outputPipe fileHandleForWriting];
-    [v7 closeFile];
+    fileHandleForWriting = [(NSPipe *)self->_outputPipe fileHandleForWriting];
+    [fileHandleForWriting closeFile];
   }
 }
 
-- (void)_outputReadyForWriting:(unint64_t)a3
+- (void)_outputReadyForWriting:(unint64_t)writing
 {
-  if (!a3)
+  if (!writing)
   {
     dispatch_source_cancel(self->_writeSource);
   }
@@ -81,7 +81,7 @@
   self->_readyForData = 1;
   if ([(ATFileBuffer *)self->_buffer length])
   {
-    v6 = [(ATFileBuffer *)self->_buffer readDataOfLength:a3];
+    fileHandleForWriting = [(ATFileBuffer *)self->_buffer readDataOfLength:writing];
     v5 = [(ATFileBufferedPipe *)self _bufferedWrite:?];
     [(ATFileBuffer *)self->_buffer rewindData:v5];
   }
@@ -93,8 +93,8 @@
       return;
     }
 
-    v6 = [(NSPipe *)self->_outputPipe fileHandleForWriting];
-    [v6 closeFile];
+    fileHandleForWriting = [(NSPipe *)self->_outputPipe fileHandleForWriting];
+    [fileHandleForWriting closeFile];
   }
 }
 
@@ -115,32 +115,32 @@
     v8 = *(v2 + 1);
     *(v2 + 1) = v7;
 
-    v9 = [MEMORY[0x277CCAC10] pipe];
+    pipe = [MEMORY[0x277CCAC10] pipe];
     v10 = *(v2 + 3);
-    *(v2 + 3) = v9;
+    *(v2 + 3) = pipe;
 
-    v11 = [MEMORY[0x277CCAC10] pipe];
+    pipe2 = [MEMORY[0x277CCAC10] pipe];
     v12 = *(v2 + 4);
-    *(v2 + 4) = v11;
+    *(v2 + 4) = pipe2;
 
-    v13 = [*(v2 + 4) fileHandleForReading];
+    fileHandleForReading = [*(v2 + 4) fileHandleForReading];
     v14 = *(v2 + 8);
-    *(v2 + 8) = v13;
+    *(v2 + 8) = fileHandleForReading;
 
-    v15 = [*(v2 + 3) fileHandleForWriting];
+    fileHandleForWriting = [*(v2 + 3) fileHandleForWriting];
     v16 = *(v2 + 9);
-    *(v2 + 9) = v15;
+    *(v2 + 9) = fileHandleForWriting;
 
-    v17 = [*(v2 + 4) fileHandleForWriting];
-    v18 = [v17 fileDescriptor];
+    fileHandleForWriting2 = [*(v2 + 4) fileHandleForWriting];
+    fileDescriptor = [fileHandleForWriting2 fileDescriptor];
 
-    v19 = fcntl(v18, 3);
-    fcntl(v18, 4, v19 | 4u);
+    v19 = fcntl(fileDescriptor, 3);
+    fcntl(fileDescriptor, 4, v19 | 4u);
     *(v2 + 28) = 0;
     objc_initWeak(&location, v2);
-    v20 = [*(v2 + 4) fileHandleForWriting];
-    v21 = [v20 fileDescriptor];
-    v22 = dispatch_source_create(MEMORY[0x277D85D50], v21, 0, *(v2 + 2));
+    fileHandleForWriting3 = [*(v2 + 4) fileHandleForWriting];
+    fileDescriptor2 = [fileHandleForWriting3 fileDescriptor];
+    v22 = dispatch_source_create(MEMORY[0x277D85D50], fileDescriptor2, 0, *(v2 + 2));
 
     handler[0] = MEMORY[0x277D85DD0];
     handler[1] = 3221225472;
@@ -152,9 +152,9 @@
     dispatch_source_set_event_handler(v23, handler);
     objc_storeStrong(v2 + 5, v22);
     dispatch_resume(*(v2 + 5));
-    v24 = [*(v2 + 3) fileHandleForReading];
-    v25 = [v24 fileDescriptor];
-    v26 = dispatch_source_create(MEMORY[0x277D85D28], v25, 0, *(v2 + 2));
+    fileHandleForReading2 = [*(v2 + 3) fileHandleForReading];
+    fileDescriptor3 = [fileHandleForReading2 fileDescriptor];
+    v26 = dispatch_source_create(MEMORY[0x277D85D28], fileDescriptor3, 0, *(v2 + 2));
 
     v31[0] = MEMORY[0x277D85DD0];
     v31[1] = 3221225472;

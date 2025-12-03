@@ -1,10 +1,10 @@
 @interface FMFIDSSupportProtoDeviceInformation
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation FMFIDSSupportProtoDeviceInformation
@@ -14,8 +14,8 @@
   v7.receiver = self;
   v7.super_class = FMFIDSSupportProtoDeviceInformation;
   v3 = [(FMFIDSSupportProtoDeviceInformation *)&v7 description];
-  v4 = [(FMFIDSSupportProtoDeviceInformation *)self dictionaryRepresentation];
-  v5 = [NSString stringWithFormat:@"%@ %@", v3, v4];
+  dictionaryRepresentation = [(FMFIDSSupportProtoDeviceInformation *)self dictionaryRepresentation];
+  v5 = [NSString stringWithFormat:@"%@ %@", v3, dictionaryRepresentation];
 
   return v5;
 }
@@ -33,35 +33,35 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
-  v4 = a3;
+  toCopy = to;
   if (!self->_udid)
   {
     sub_100038F70();
   }
 
-  v5 = v4;
+  v5 = toCopy;
   PBDataWriterWriteStringField();
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_udid copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_udid copyWithZone:zone];
   v7 = v5[1];
   v5[1] = v6;
 
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()])
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()])
   {
     udid = self->_udid;
-    if (udid | v4[1])
+    if (udid | equalCopy[1])
     {
       v6 = [(NSString *)udid isEqual:?];
     }
@@ -80,9 +80,9 @@
   return v6;
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
-  if (*(a3 + 1))
+  if (*(from + 1))
   {
     [(FMFIDSSupportProtoDeviceInformation *)self setUdid:?];
   }

@@ -1,11 +1,11 @@
 @interface MFConditionLock
-- (BOOL)lockBeforeDate:(id)a3;
-- (BOOL)lockWhenCondition:(int64_t)a3 beforeDate:(id)a4;
-- (MFConditionLock)initWithName:(id)a3 condition:(int64_t)a4 andDelegate:(id)a5;
+- (BOOL)lockBeforeDate:(id)date;
+- (BOOL)lockWhenCondition:(int64_t)condition beforeDate:(id)date;
+- (MFConditionLock)initWithName:(id)name condition:(int64_t)condition andDelegate:(id)delegate;
 - (id)description;
 - (void)dealloc;
 - (void)unlock;
-- (void)unlockWithCondition:(int64_t)a3;
+- (void)unlockWithCondition:(int64_t)condition;
 @end
 
 @implementation MFConditionLock
@@ -18,21 +18,21 @@
   [(NSConditionLock *)&v3 unlock];
 }
 
-- (MFConditionLock)initWithName:(id)a3 condition:(int64_t)a4 andDelegate:(id)a5
+- (MFConditionLock)initWithName:(id)name condition:(int64_t)condition andDelegate:(id)delegate
 {
   v9.receiver = self;
   v9.super_class = MFConditionLock;
-  v7 = [(NSConditionLock *)&v9 initWithCondition:a4];
+  v7 = [(NSConditionLock *)&v9 initWithCondition:condition];
   if (v7)
   {
-    v7->_name = [a3 copy];
-    v7->_delegate = a5;
+    v7->_name = [name copy];
+    v7->_delegate = delegate;
   }
 
   return v7;
 }
 
-- (BOOL)lockBeforeDate:(id)a3
+- (BOOL)lockBeforeDate:(id)date
 {
   delegate = self->_delegate;
   if (delegate)
@@ -42,7 +42,7 @@
 
   v8.receiver = self;
   v8.super_class = MFConditionLock;
-  v6 = [(NSConditionLock *)&v8 lockBeforeDate:a3];
+  v6 = [(NSConditionLock *)&v8 lockBeforeDate:date];
   if (v6)
   {
     _mfRegisterLockOnThisThread(self);
@@ -51,7 +51,7 @@
   return v6;
 }
 
-- (BOOL)lockWhenCondition:(int64_t)a3 beforeDate:(id)a4
+- (BOOL)lockWhenCondition:(int64_t)condition beforeDate:(id)date
 {
   delegate = self->_delegate;
   if (delegate)
@@ -61,7 +61,7 @@
 
   v10.receiver = self;
   v10.super_class = MFConditionLock;
-  v8 = [(NSConditionLock *)&v10 lockWhenCondition:a3 beforeDate:a4];
+  v8 = [(NSConditionLock *)&v10 lockWhenCondition:condition beforeDate:date];
   if (v8)
   {
     _mfRegisterLockOnThisThread(self);
@@ -70,12 +70,12 @@
   return v8;
 }
 
-- (void)unlockWithCondition:(int64_t)a3
+- (void)unlockWithCondition:(int64_t)condition
 {
   _mfUnregisterLockOnThisThread(self);
   v5.receiver = self;
   v5.super_class = MFConditionLock;
-  [(NSConditionLock *)&v5 unlockWithCondition:a3];
+  [(NSConditionLock *)&v5 unlockWithCondition:condition];
 }
 
 - (id)description

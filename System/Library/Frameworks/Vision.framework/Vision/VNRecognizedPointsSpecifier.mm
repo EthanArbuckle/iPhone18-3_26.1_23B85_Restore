@@ -1,53 +1,53 @@
 @interface VNRecognizedPointsSpecifier
-- (BOOL)isEqual:(id)a3;
-- (VNRecognizedPointsSpecifier)initWithCoder:(id)a3;
-- (VNRecognizedPointsSpecifier)initWithOriginatingRequestSpecifier:(id)a3 allRecognizedPoints:(id)a4;
-- (id)populatedMLMultiArrayAndReturnError:(id *)a3;
-- (id)recognizedPointForKey:(id)a3 error:(id *)a4;
-- (id)recognizedPointsForGroupKey:(id)a3 error:(id *)a4;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (VNRecognizedPointsSpecifier)initWithCoder:(id)coder;
+- (VNRecognizedPointsSpecifier)initWithOriginatingRequestSpecifier:(id)specifier allRecognizedPoints:(id)points;
+- (id)populatedMLMultiArrayAndReturnError:(id *)error;
+- (id)recognizedPointForKey:(id)key error:(id *)error;
+- (id)recognizedPointsForGroupKey:(id)key error:(id *)error;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation VNRecognizedPointsSpecifier
 
-- (VNRecognizedPointsSpecifier)initWithCoder:(id)a3
+- (VNRecognizedPointsSpecifier)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"Req"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"Req"];
   v6 = objc_alloc(MEMORY[0x1E695DFD8]);
   v7 = objc_opt_class();
   v8 = objc_opt_class();
   v9 = [v6 initWithObjects:{v7, v8, objc_opt_class(), 0}];
-  v10 = [v4 decodeObjectOfClasses:v9 forKey:@"AllPoints"];
+  v10 = [coderCopy decodeObjectOfClasses:v9 forKey:@"AllPoints"];
   if (v10)
   {
     self = [(VNRecognizedPointsSpecifier *)self initWithOriginatingRequestSpecifier:v5 allRecognizedPoints:v10];
-    v11 = self;
+    selfCopy = self;
   }
 
   else
   {
     v12 = [VNError errorForDataUnavailableWithLocalizedDescription:@"recognized points are not available"];
-    [v4 failWithError:v12];
+    [coderCopy failWithError:v12];
 
-    v11 = 0;
+    selfCopy = 0;
   }
 
-  return v11;
+  return selfCopy;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   originatingRequestSpecifier = self->_originatingRequestSpecifier;
-  v5 = a3;
-  [v5 encodeObject:originatingRequestSpecifier forKey:@"Req"];
-  [v5 encodeObject:self->_allRecognizedPoints forKey:@"AllPoints"];
+  coderCopy = coder;
+  [coderCopy encodeObject:originatingRequestSpecifier forKey:@"Req"];
+  [coderCopy encodeObject:self->_allRecognizedPoints forKey:@"AllPoints"];
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v9 = 1;
   }
@@ -57,10 +57,10 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       originatingRequestSpecifier = self->_originatingRequestSpecifier;
-      v7 = [(VNRecognizedPointsSpecifier *)v5 originatingRequestSpecifier];
-      LODWORD(originatingRequestSpecifier) = [(VNRequestSpecifier *)originatingRequestSpecifier isEqual:v7];
+      originatingRequestSpecifier = [(VNRecognizedPointsSpecifier *)v5 originatingRequestSpecifier];
+      LODWORD(originatingRequestSpecifier) = [(VNRequestSpecifier *)originatingRequestSpecifier isEqual:originatingRequestSpecifier];
 
       if (originatingRequestSpecifier)
       {
@@ -83,41 +83,41 @@
   return v9;
 }
 
-- (id)recognizedPointForKey:(id)a3 error:(id *)a4
+- (id)recognizedPointForKey:(id)key error:(id *)error
 {
-  v6 = a3;
-  v7 = [(NSDictionary *)self->_allRecognizedPoints objectForKey:v6];
+  keyCopy = key;
+  v7 = [(NSDictionary *)self->_allRecognizedPoints objectForKey:keyCopy];
   v8 = v7;
   if (v7)
   {
     v9 = v7;
   }
 
-  else if (a4)
+  else if (error)
   {
-    v10 = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unable to locate point '%@'", v6];
-    *a4 = [VNError errorForInvalidArgumentWithLocalizedDescription:v10];
+    keyCopy = [objc_alloc(MEMORY[0x1E696AEC0]) initWithFormat:@"unable to locate point '%@'", keyCopy];
+    *error = [VNError errorForInvalidArgumentWithLocalizedDescription:keyCopy];
   }
 
   return v8;
 }
 
-- (id)recognizedPointsForGroupKey:(id)a3 error:(id *)a4
+- (id)recognizedPointsForGroupKey:(id)key error:(id *)error
 {
   v24 = *MEMORY[0x1E69E9840];
-  v6 = a3;
-  if ([v6 isEqualToString:@"VNIPOAll"])
+  keyCopy = key;
+  if ([keyCopy isEqualToString:@"VNIPOAll"])
   {
     v7 = self->_allRecognizedPoints;
   }
 
   else
   {
-    v8 = [(VNRecognizedPointsSpecifier *)self pointKeyGroupLabelsMapping];
-    v9 = [v8 objectForKey:v6];
+    pointKeyGroupLabelsMapping = [(VNRecognizedPointsSpecifier *)self pointKeyGroupLabelsMapping];
+    v9 = [pointKeyGroupLabelsMapping objectForKey:keyCopy];
     if (v9)
     {
-      v18 = v8;
+      v18 = pointKeyGroupLabelsMapping;
       v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
       v19 = 0u;
       v20 = 0u;
@@ -149,13 +149,13 @@
         while (v12);
       }
 
-      v8 = v18;
+      pointKeyGroupLabelsMapping = v18;
     }
 
-    else if (a4)
+    else if (error)
     {
-      [VNError errorForInvalidArgument:v6 named:@"groupKey"];
-      *a4 = v7 = 0;
+      [VNError errorForInvalidArgument:keyCopy named:@"groupKey"];
+      *error = v7 = 0;
     }
 
     else
@@ -167,28 +167,28 @@
   return v7;
 }
 
-- (id)populatedMLMultiArrayAndReturnError:(id *)a3
+- (id)populatedMLMultiArrayAndReturnError:(id *)error
 {
-  if (a3)
+  if (error)
   {
-    *a3 = [VNError errorForUnimplementedMethod:a2 ofObject:self];
+    *error = [VNError errorForUnimplementedMethod:a2 ofObject:self];
   }
 
   return 0;
 }
 
-- (VNRecognizedPointsSpecifier)initWithOriginatingRequestSpecifier:(id)a3 allRecognizedPoints:(id)a4
+- (VNRecognizedPointsSpecifier)initWithOriginatingRequestSpecifier:(id)specifier allRecognizedPoints:(id)points
 {
-  v7 = a3;
-  v8 = a4;
+  specifierCopy = specifier;
+  pointsCopy = points;
   v14.receiver = self;
   v14.super_class = VNRecognizedPointsSpecifier;
   v9 = [(VNRecognizedPointsSpecifier *)&v14 init];
   v10 = v9;
   if (v9)
   {
-    objc_storeStrong(&v9->_originatingRequestSpecifier, a3);
-    v11 = [v8 copy];
+    objc_storeStrong(&v9->_originatingRequestSpecifier, specifier);
+    v11 = [pointsCopy copy];
     allRecognizedPoints = v10->_allRecognizedPoints;
     v10->_allRecognizedPoints = v11;
   }

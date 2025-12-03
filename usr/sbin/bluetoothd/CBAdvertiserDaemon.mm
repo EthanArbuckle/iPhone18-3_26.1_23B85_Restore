@@ -1,52 +1,52 @@
 @interface CBAdvertiserDaemon
-+ (void)buildSafetyAlertsAdvertisingData:(id)a3 advertisingAddresses:(id *)a4 advertisingData:(id *)a5 advertiseRate:(int *)a6 error:(id *)a7;
-- (BOOL)_wiProxUpdateLinger:(id *)a3 active:(BOOL)a4;
++ (void)buildSafetyAlertsAdvertisingData:(id)data advertisingAddresses:(id *)addresses advertisingData:(id *)advertisingData advertiseRate:(int *)rate error:(id *)error;
+- (BOOL)_wiProxUpdateLinger:(id *)linger active:(BOOL)active;
 - (BOOL)needsToRun;
 - (CBAdvertiserDaemon)init;
-- (id)_encryptNearbyInfoV2Payload:(const void *)a3 payloadLength:(unint64_t)a4 authTag:(id)a5 irkData:(id)a6 keyInfo:(const void *)a7 keyInfoLength:(unint64_t)a8;
-- (id)descriptionWithLevel:(int)a3;
-- (void)_activateWithCompletion:(id)a3;
+- (id)_encryptNearbyInfoV2Payload:(const void *)payload payloadLength:(unint64_t)length authTag:(id)tag irkData:(id)data keyInfo:(const void *)info keyInfoLength:(unint64_t)infoLength;
+- (id)descriptionWithLevel:(int)level;
+- (void)_activateWithCompletion:(id)completion;
 - (void)_invalidate;
 - (void)_invalidated;
-- (void)_stackAppleTypeUpdateAdvertising:(id *)a3;
+- (void)_stackAppleTypeUpdateAdvertising:(id *)advertising;
 - (void)_update;
-- (void)_updateAirDropPayload:(id *)a3;
-- (void)_updateAirPlaySourcePayload:(id *)a3;
-- (void)_updateAirPlayTargetPayload:(id *)a3;
-- (void)_updateDSInfoPayload:(id *)a3;
+- (void)_updateAirDropPayload:(id *)payload;
+- (void)_updateAirPlaySourcePayload:(id *)payload;
+- (void)_updateAirPlayTargetPayload:(id *)payload;
+- (void)_updateDSInfoPayload:(id *)payload;
 - (void)_updateFIDOAdvertising;
 - (void)_updateFIDOPayload;
-- (void)_updateHeySiriPayload:(id *)a3;
-- (void)_updateIfNeededWithBlock:(id)a3;
-- (void)_updateNearbyActionNoWakePayload:(id *)a3;
-- (void)_updateNearbyActionV1Payload:(id *)a3;
-- (void)_updateNearbyActionV2Payload:(id *)a3;
-- (void)_updateNearbyInfoPayload:(id *)a3;
-- (void)_updateNearbyInfoV2Payload:(id *)a3;
+- (void)_updateHeySiriPayload:(id *)payload;
+- (void)_updateIfNeededWithBlock:(id)block;
+- (void)_updateNearbyActionNoWakePayload:(id *)payload;
+- (void)_updateNearbyActionV1Payload:(id *)payload;
+- (void)_updateNearbyActionV2Payload:(id *)payload;
+- (void)_updateNearbyInfoPayload:(id *)payload;
+- (void)_updateNearbyInfoV2Payload:(id *)payload;
 - (void)_updateProximityServiceAdvertising;
 - (void)_updateProximityServicePayload;
 - (void)_updateSafetyAlertsAdvertising;
 - (void)_updateSafetyAlertsPayload;
 - (void)_updateSoftwareUpdateAdvertising;
 - (void)_updateSoftwareUpdatePayload;
-- (void)_updateSpatialInteractionAdvertising:(id *)a3;
-- (void)_updateSpatialInteractionPayload:(id *)a3;
+- (void)_updateSpatialInteractionAdvertising:(id *)advertising;
+- (void)_updateSpatialInteractionPayload:(id *)payload;
 - (void)_updateWatchSetupAdvertising;
 - (void)_updateWatchSetupPayload;
-- (void)_wiProxInvalidate:(id *)a3;
-- (void)_wiProxUpdateAdvertising:(id *)a3;
-- (void)_wiProxUpdatePayload:(id *)a3 payloadData:(id)a4 advertiseRate:(int)a5 advertiseEnableEPA:(BOOL)a6;
-- (void)_wiproxAppendDescription:(id *)a3 context:(id *)a4 verbose:(BOOL)a5;
-- (void)_wiproxChanged:(id)a3;
-- (void)activateWithCompletion:(id)a3;
+- (void)_wiProxInvalidate:(id *)invalidate;
+- (void)_wiProxUpdateAdvertising:(id *)advertising;
+- (void)_wiProxUpdatePayload:(id *)payload payloadData:(id)data advertiseRate:(int)rate advertiseEnableEPA:(BOOL)a;
+- (void)_wiproxAppendDescription:(id *)description context:(id *)context verbose:(BOOL)verbose;
+- (void)_wiproxChanged:(id)changed;
+- (void)activateWithCompletion:(id)completion;
 - (void)advertisingAddressChanged;
 - (void)invalidate;
-- (void)setAdvertiserArray:(id)a3;
-- (void)setSpatialInteractionAdvertiseRate:(int)a3;
-- (void)setSpatialInteractionFlags:(unsigned __int8)a3;
-- (void)setSpatialInteractionIdentifiers:(id)a3;
-- (void)setSpatialInteractionPresenceConfigData:(id)a3;
-- (void)setSpatialInteractionUWBConfigData:(id)a3;
+- (void)setAdvertiserArray:(id)array;
+- (void)setSpatialInteractionAdvertiseRate:(int)rate;
+- (void)setSpatialInteractionFlags:(unsigned __int8)flags;
+- (void)setSpatialInteractionIdentifiers:(id)identifiers;
+- (void)setSpatialInteractionPresenceConfigData:(id)data;
+- (void)setSpatialInteractionUWBConfigData:(id)data;
 @end
 
 @implementation CBAdvertiserDaemon
@@ -115,9 +115,9 @@
   return v2;
 }
 
-- (id)descriptionWithLevel:(int)a3
+- (id)descriptionWithLevel:(int)level
 {
-  v4 = a3;
+  levelCopy = level;
   v5 = [objc_opt_class() description];
   clientID = self->_clientID;
   v42 = [(NSArray *)self->_advertiserArray count];
@@ -203,17 +203,17 @@ LABEL_22:
   }
 
 LABEL_23:
-  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_airdropWiProxContext verbose:v4 < 0x1F, v33, clientID, v42];
-  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_airplaySourceWiProxContext verbose:v4 < 0x1F];
-  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_airplayTargetWiProxContext verbose:v4 < 0x1F];
-  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_dsInfoWiProxContext verbose:v4 < 0x1F];
-  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_heySiriWiProxContext verbose:v4 < 0x1F];
-  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_nearbyActionV1WiProxContext verbose:v4 < 0x1F];
-  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_nearbyActionV2WiProxContext verbose:v4 < 0x1F];
-  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_nearbyInfoWiProxContext verbose:v4 < 0x1F];
-  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_nearbyInfoV2WiProxContext verbose:v4 < 0x1F];
-  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_nearbyActionNoWakeWiProxContext verbose:v4 < 0x1F];
-  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_spatialInteractionWiProxContext verbose:v4 < 0x1F];
+  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_airdropWiProxContext verbose:levelCopy < 0x1F, v33, clientID, v42];
+  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_airplaySourceWiProxContext verbose:levelCopy < 0x1F];
+  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_airplayTargetWiProxContext verbose:levelCopy < 0x1F];
+  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_dsInfoWiProxContext verbose:levelCopy < 0x1F];
+  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_heySiriWiProxContext verbose:levelCopy < 0x1F];
+  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_nearbyActionV1WiProxContext verbose:levelCopy < 0x1F];
+  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_nearbyActionV2WiProxContext verbose:levelCopy < 0x1F];
+  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_nearbyInfoWiProxContext verbose:levelCopy < 0x1F];
+  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_nearbyInfoV2WiProxContext verbose:levelCopy < 0x1F];
+  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_nearbyActionNoWakeWiProxContext verbose:levelCopy < 0x1F];
+  [(CBAdvertiserDaemon *)self _wiproxAppendDescription:&location context:&self->_spatialInteractionWiProxContext verbose:levelCopy < 0x1F];
   proximityServicePayload = self->_proximityServicePayload;
   if (proximityServicePayload)
   {
@@ -300,7 +300,7 @@ LABEL_23:
     objc_storeStrong(&location, v45);
   }
 
-  if (v4 <= 0x1E)
+  if (levelCopy <= 0x1E)
   {
     spatialInteractionWiProxUUID = self->_spatialInteractionWiProxUUID;
     if (spatialInteractionWiProxUUID)
@@ -339,80 +339,80 @@ LABEL_23:
   [(CBAdvertiserDaemon *)self _updateIfNeededWithBlock:&stru_100AE0F98];
 }
 
-- (void)setAdvertiserArray:(id)a3
+- (void)setAdvertiserArray:(id)array
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100121B28;
   v5[3] = &unk_100AE0FC0;
-  v6 = [a3 copy];
-  v7 = self;
+  v6 = [array copy];
+  selfCopy = self;
   v4 = v6;
   [(CBAdvertiserDaemon *)self _updateIfNeededWithBlock:v5];
 }
 
-- (void)setSpatialInteractionAdvertiseRate:(int)a3
+- (void)setSpatialInteractionAdvertiseRate:(int)rate
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100121C50;
   v3[3] = &unk_100AE0FE8;
-  v4 = a3;
+  rateCopy = rate;
   v3[4] = self;
   [(CBAdvertiserDaemon *)self _updateIfNeededWithBlock:v3];
 }
 
-- (void)setSpatialInteractionFlags:(unsigned __int8)a3
+- (void)setSpatialInteractionFlags:(unsigned __int8)flags
 {
   v3[0] = _NSConcreteStackBlock;
   v3[1] = 3221225472;
   v3[2] = sub_100121CF0;
   v3[3] = &unk_100AE1010;
-  v4 = a3;
+  flagsCopy = flags;
   v3[4] = self;
   [(CBAdvertiserDaemon *)self _updateIfNeededWithBlock:v3];
 }
 
-- (void)setSpatialInteractionIdentifiers:(id)a3
+- (void)setSpatialInteractionIdentifiers:(id)identifiers
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100121DAC;
   v5[3] = &unk_100AE0FC0;
-  v6 = [a3 copy];
-  v7 = self;
+  v6 = [identifiers copy];
+  selfCopy = self;
   v4 = v6;
   [(CBAdvertiserDaemon *)self _updateIfNeededWithBlock:v5];
 }
 
-- (void)setSpatialInteractionUWBConfigData:(id)a3
+- (void)setSpatialInteractionUWBConfigData:(id)data
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_100121EFC;
   v5[3] = &unk_100AE0FC0;
-  v6 = [a3 copy];
-  v7 = self;
+  v6 = [data copy];
+  selfCopy = self;
   v4 = v6;
   [(CBAdvertiserDaemon *)self _updateIfNeededWithBlock:v5];
 }
 
-- (void)setSpatialInteractionPresenceConfigData:(id)a3
+- (void)setSpatialInteractionPresenceConfigData:(id)data
 {
   v5[0] = _NSConcreteStackBlock;
   v5[1] = 3221225472;
   v5[2] = sub_10012204C;
   v5[3] = &unk_100AE0FC0;
-  v6 = [a3 copy];
-  v7 = self;
+  v6 = [data copy];
+  selfCopy = self;
   v4 = v6;
   [(CBAdvertiserDaemon *)self _updateIfNeededWithBlock:v5];
 }
 
-- (void)activateWithCompletion:(id)a3
+- (void)activateWithCompletion:(id)completion
 {
-  v4 = a3;
-  v5 = v4;
+  completionCopy = completion;
+  v5 = completionCopy;
   if (!self->_activateCalled)
   {
     self->_activateCalled = 1;
@@ -422,14 +422,14 @@ LABEL_23:
     v7[2] = sub_1001221B8;
     v7[3] = &unk_100AE1038;
     v7[4] = self;
-    v8 = v4;
+    v8 = completionCopy;
     dispatch_async(dispatchQueue, v7);
   }
 }
 
-- (void)_activateWithCompletion:(id)a3
+- (void)_activateWithCompletion:(id)completion
 {
-  v6 = a3;
+  completionCopy = completion;
   if (self->_invalidateCalled)
   {
     v4 = CBErrorF();
@@ -438,7 +438,7 @@ LABEL_23:
       sub_100807D20();
     }
 
-    v6[2](v6, v4);
+    completionCopy[2](completionCopy, v4);
   }
 
   else
@@ -456,7 +456,7 @@ LABEL_23:
     }
 
     [(CBAdvertiserDaemon *)self _update];
-    v6[2](v6, 0);
+    completionCopy[2](completionCopy, 0);
   }
 }
 
@@ -480,7 +480,7 @@ LABEL_23:
     self->_wiproxObservering = 0;
   }
 
-  v13 = [qword_100BC7DB0 advertisingManager];
+  advertisingManager = [qword_100BC7DB0 advertisingManager];
   [(CBStackBLEAdvertiser *)self->_fidoStackAdvertiser invalidate];
   fidoStackAdvertiser = self->_fidoStackAdvertiser;
   self->_fidoStackAdvertiser = 0;
@@ -515,14 +515,14 @@ LABEL_23:
   v9 = self->_spatialInteractionAdvertisingRequest;
   if (v9)
   {
-    if (v13 && v8)
+    if (advertisingManager && v8)
     {
       if (dword_100B50E30 <= 30 && (dword_100B50E30 != -1 || _LogCategory_Initialize()))
       {
         sub_100807DD8();
       }
 
-      [v13 removeAdvertisingRequest:v9 forDaemon:v8];
+      [advertisingManager removeAdvertisingRequest:v9 forDaemon:v8];
     }
 
     spatialInteractionAdvertisingRequest = self->_spatialInteractionAdvertisingRequest;
@@ -581,9 +581,9 @@ LABEL_23:
   return self->_airplaySourceWiProxContext.payloadData || self->_airplayTargetWiProxContext.payloadData || self->_nearbyActionV1WiProxContext.payloadData || self->_nearbyActionV2WiProxContext.payloadData || self->_nearbyInfoWiProxContext.payloadData || self->_nearbyInfoV2WiProxContext.payloadData || self->_nearbyActionNoWakeWiProxContext.payloadData || [(NSArray *)self->_saPayloadSegments count]|| _os_feature_enabled_impl() && [(NSArray *)self->_swupPayloadDataArray count];
 }
 
-- (void)_updateIfNeededWithBlock:(id)a3
+- (void)_updateIfNeededWithBlock:(id)block
 {
-  if ((*(a3 + 2))(a3, a2) && self->_activateCalled && !self->_changesPending)
+  if ((*(block + 2))(block, a2) && self->_activateCalled && !self->_changesPending)
   {
     self->_changesPending = 1;
     dispatchQueue = self->_dispatchQueue;
@@ -668,9 +668,9 @@ LABEL_23:
   }
 }
 
-- (void)_stackAppleTypeUpdateAdvertising:(id *)a3
+- (void)_stackAppleTypeUpdateAdvertising:(id *)advertising
 {
-  v5 = a3->var10;
+  v5 = advertising->var10;
   p_appleTypeStackAdvertiser = &self->_appleTypeStackAdvertiser;
   appleTypeStackAdvertiser = self->_appleTypeStackAdvertiser;
   v11 = v5;
@@ -679,7 +679,7 @@ LABEL_23:
     if (!appleTypeStackAdvertiser)
     {
 LABEL_21:
-      a3->var7 = 0;
+      advertising->var7 = 0;
       goto LABEL_22;
     }
 
@@ -721,9 +721,9 @@ LABEL_20:
     objc_storeStrong(&self->_appleTypeStackAdvertiser, v10);
     [(CBStackBLEAdvertiser *)v9 setDispatchQueue:self->_dispatchQueue];
 LABEL_17:
-    [(CBStackBLEAdvertiser *)v9 setAdvertiseRate:a3->var5];
-    [(CBStackBLEAdvertiser *)v9 setAdvertiseEnableEPA:a3->var4];
-    if (a3->var3 == 15)
+    [(CBStackBLEAdvertiser *)v9 setAdvertiseRate:advertising->var5];
+    [(CBStackBLEAdvertiser *)v9 setAdvertiseEnableEPA:advertising->var4];
+    if (advertising->var3 == 15)
     {
       [(CBStackBLEAdvertiser *)v9 setNearbyActionData:v11];
     }
@@ -736,21 +736,21 @@ LABEL_17:
 LABEL_22:
 }
 
-- (void)_wiproxAppendDescription:(id *)a3 context:(id *)a4 verbose:(BOOL)a5
+- (void)_wiproxAppendDescription:(id *)description context:(id *)context verbose:(BOOL)verbose
 {
-  v5 = a5;
-  v8 = a4->var10;
+  verboseCopy = verbose;
+  v8 = context->var10;
   if (v8)
   {
-    v16 = *a3;
-    v9 = *a3;
+    v16 = *description;
+    v9 = *description;
     v10 = CUPrintNSDataHex();
     NSAppendPrintF_safe();
     v11 = v16;
 
-    if (v5)
+    if (verboseCopy)
     {
-      var11 = a4->var11;
+      var11 = context->var11;
       if (var11)
       {
         v15 = var11;
@@ -761,14 +761,14 @@ LABEL_22:
       }
     }
 
-    v14 = *a3;
-    *a3 = v11;
+    v14 = *description;
+    *description = v11;
   }
 }
 
-- (void)_wiproxChanged:(id)a3
+- (void)_wiproxChanged:(id)changed
 {
-  v4 = a3;
+  changedCopy = changed;
   if (dword_100B50E30 <= 30 && (dword_100B50E30 != -1 || _LogCategory_Initialize()))
   {
     sub_100808130();
@@ -783,29 +783,29 @@ LABEL_22:
   dispatch_async(dispatchQueue, block);
 }
 
-- (void)_wiProxInvalidate:(id *)a3
+- (void)_wiProxInvalidate:(id *)invalidate
 {
-  if (a3->var8 && dword_100B50E30 <= 30 && (dword_100B50E30 != -1 || _LogCategory_Initialize()))
+  if (invalidate->var8 && dword_100B50E30 <= 30 && (dword_100B50E30 != -1 || _LogCategory_Initialize()))
   {
     sub_10080814C();
   }
 
-  a3->var8 = 0;
-  var9 = a3->var9;
+  invalidate->var8 = 0;
+  var9 = invalidate->var9;
   if (var9)
   {
     v5 = var9;
     dispatch_source_cancel(v5);
-    v6 = a3->var9;
-    a3->var9 = 0;
+    v6 = invalidate->var9;
+    invalidate->var9 = 0;
   }
 
-  v12 = a3->var11;
-  v7 = a3->var6;
+  v12 = invalidate->var11;
+  v7 = invalidate->var6;
   if (v7)
   {
-    v8 = [qword_100BC7DB0 advertisingManager];
-    if (v8)
+    advertisingManager = [qword_100BC7DB0 advertisingManager];
+    if (advertisingManager)
     {
       v9 = v12 == 0;
     }
@@ -822,37 +822,37 @@ LABEL_22:
         sub_10080818C();
       }
 
-      [v8 removeAdvertisingRequest:v7 forDaemon:v12];
+      [advertisingManager removeAdvertisingRequest:v7 forDaemon:v12];
     }
 
-    var6 = a3->var6;
-    a3->var6 = 0;
+    var6 = invalidate->var6;
+    invalidate->var6 = 0;
 
-    var12 = a3->var12;
-    a3->var12 = 0;
+    var12 = invalidate->var12;
+    invalidate->var12 = 0;
   }
 }
 
-- (void)_wiProxUpdateAdvertising:(id *)a3
+- (void)_wiProxUpdateAdvertising:(id *)advertising
 {
-  if (a3->var7 || self->_addressChanged)
+  if (advertising->var7 || self->_addressChanged)
   {
     if (-[CBDaemonServer prefWiProxAdvertising](self->_daemonServer, "prefWiProxAdvertising") && ([qword_100BC7DB0 advertisingManager], (v5 = objc_claimAutoreleasedReturnValue()) != 0))
     {
       v27 = v5;
-      v6 = [v5 state];
-      if (v6 == 3)
+      state = [v5 state];
+      if (state == 3)
       {
-        v7 = a3->var11;
+        v7 = advertising->var11;
         if (!v7)
         {
           v7 = +[NSUUID UUID];
-          objc_storeStrong(&a3->var11, v7);
+          objc_storeStrong(&advertising->var11, v7);
         }
 
-        v8 = a3->var10;
-        p_var6 = &a3->var6;
-        v10 = a3->var6;
+        v8 = advertising->var10;
+        p_var6 = &advertising->var6;
+        v10 = advertising->var6;
         if (v10)
         {
           if (v8)
@@ -877,7 +877,7 @@ LABEL_22:
               v12 = v11;
             }
 
-            var2 = a3->var2;
+            var2 = advertising->var2;
             v26 = v12;
             LogPrintF_safe();
           }
@@ -889,10 +889,10 @@ LABEL_22:
 
         if (v8)
         {
-          v15 = [WPAdvertisingRequest requestForClientType:a3->var3];
-          objc_storeStrong(&a3->var6, v15);
+          v15 = [WPAdvertisingRequest requestForClientType:advertising->var3];
+          objc_storeStrong(&advertising->var6, v15);
           [v15 setAdvertisingData:v8];
-          var5 = a3->var5;
+          var5 = advertising->var5;
           v17 = 290;
           v18 = 48;
           v19 = 32;
@@ -961,36 +961,36 @@ LABEL_22:
           }
 
           [v15 setAdvertisingRate:v24];
-          [v15 setConnectable:a3->var0];
-          [v15 setIsRanging:a3->var1];
-          [v15 setEnableEPAForAdvertising:a3->var4];
+          [v15 setConnectable:advertising->var0];
+          [v15 setIsRanging:advertising->var1];
+          [v15 setEnableEPAForAdvertising:advertising->var4];
           [v15 setStopOnAdvertisingAddressChange:1];
-          [v15 setAdvertisingRandomData:a3->var12];
+          [v15 setAdvertisingRandomData:advertising->var12];
           if (dword_100B50E30 <= 30 && (dword_100B50E30 != -1 || _LogCategory_Initialize()))
           {
-            sub_100808268(a3, v8, v15);
+            sub_100808268(advertising, v8, v15);
           }
 
           [v27 addAdvertisingRequest:v15 forDaemon:v7];
         }
 
-        a3->var7 = 0;
+        advertising->var7 = 0;
 
         v13 = v27;
       }
 
       else
       {
-        sub_1008081D0(a3, v6, v27, &v28);
+        sub_1008081D0(advertising, state, v27, &v28);
         v13 = v28;
       }
     }
 
     else
     {
-      if (a3->var3 == 15)
+      if (advertising->var3 == 15)
       {
-        [(CBAdvertiserDaemon *)self _stackAppleTypeUpdateAdvertising:a3];
+        [(CBAdvertiserDaemon *)self _stackAppleTypeUpdateAdvertising:advertising];
       }
 
       v13 = 0;
@@ -998,31 +998,31 @@ LABEL_22:
   }
 }
 
-- (BOOL)_wiProxUpdateLinger:(id *)a3 active:(BOOL)a4
+- (BOOL)_wiProxUpdateLinger:(id *)linger active:(BOOL)active
 {
-  if (a4)
+  if (active)
   {
-    if (a3->var8 && dword_100B50E30 <= 30 && (dword_100B50E30 != -1 || _LogCategory_Initialize()))
+    if (linger->var8 && dword_100B50E30 <= 30 && (dword_100B50E30 != -1 || _LogCategory_Initialize()))
     {
       sub_100808384();
     }
 
-    a3->var8 = 0;
-    var9 = a3->var9;
+    linger->var8 = 0;
+    var9 = linger->var9;
     if (var9)
     {
       v6 = var9;
       dispatch_source_cancel(v6);
-      v7 = a3->var9;
-      a3->var9 = 0;
+      v7 = linger->var9;
+      linger->var9 = 0;
     }
 
     return 0;
   }
 
-  if (a3->var8)
+  if (linger->var8)
   {
-    if (!a3->var9)
+    if (!linger->var9)
     {
       if (dword_100B50E30 <= 30 && (dword_100B50E30 != -1 || _LogCategory_Initialize()))
       {
@@ -1030,7 +1030,7 @@ LABEL_22:
       }
 
       v9 = 0;
-      a3->var8 = 0;
+      linger->var8 = 0;
       self->_stateChanged = 1;
       return v9;
     }
@@ -1038,12 +1038,12 @@ LABEL_22:
     return 1;
   }
 
-  if (!a3->var10)
+  if (!linger->var10)
   {
     return 0;
   }
 
-  if (a3->var9)
+  if (linger->var9)
   {
     return 1;
   }
@@ -1054,10 +1054,10 @@ LABEL_22:
   }
 
   v9 = 1;
-  a3->var8 = 1;
+  linger->var8 = 1;
   v11 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, self->_dispatchQueue);
-  v12 = a3->var9;
-  a3->var9 = v11;
+  v12 = linger->var9;
+  linger->var9 = v11;
   v13 = v11;
 
   handler[0] = _NSConcreteStackBlock;
@@ -1065,7 +1065,7 @@ LABEL_22:
   handler[2] = sub_100123644;
   handler[3] = &unk_100AE1060;
   handler[5] = self;
-  handler[6] = a3;
+  handler[6] = linger;
   handler[4] = v13;
   dispatch_source_set_event_handler(v13, handler);
   CUDispatchTimerSet();
@@ -1074,11 +1074,11 @@ LABEL_22:
   return v9;
 }
 
-- (void)_wiProxUpdatePayload:(id *)a3 payloadData:(id)a4 advertiseRate:(int)a5 advertiseEnableEPA:(BOOL)a6
+- (void)_wiProxUpdatePayload:(id *)payload payloadData:(id)data advertiseRate:(int)rate advertiseEnableEPA:(BOOL)a
 {
-  v10 = a4;
-  var10 = a3->var10;
-  v14 = v10;
+  dataCopy = data;
+  var10 = payload->var10;
+  v14 = dataCopy;
   v12 = var10;
   if (v12 == v14)
   {
@@ -1102,15 +1102,15 @@ LABEL_12:
         sub_1008083C4();
       }
 
-      a3->var5 = a5;
-      objc_storeStrong(&a3->var10, a4);
-      a3->var7 = 1;
-      a3->var4 = a6;
+      payload->var5 = rate;
+      objc_storeStrong(&payload->var10, data);
+      payload->var7 = 1;
+      payload->var4 = a;
       goto LABEL_16;
     }
   }
 
-  if (a3->var5 != a5)
+  if (payload->var5 != rate)
   {
     goto LABEL_12;
   }
@@ -1123,7 +1123,7 @@ LABEL_12:
 LABEL_16:
 }
 
-- (void)_updateAirPlaySourcePayload:(id *)a3
+- (void)_updateAirPlaySourcePayload:(id *)payload
 {
   v22 = 0u;
   v23 = 0u;
@@ -1145,16 +1145,16 @@ LABEL_16:
         }
 
         v10 = *(*(&v22 + 1) + 8 * i);
-        v11 = [v10 airplaySourceFlags];
-        if (v11)
+        airplaySourceFlags = [v10 airplaySourceFlags];
+        if (airplaySourceFlags)
         {
-          v17 = v11;
-          v15 = [v10 airplaySourceUWBConfigData];
-          v13 = [v10 advertiseRate];
-          v14 = [v10 airplaySourceAuthTagData];
+          v17 = airplaySourceFlags;
+          airplaySourceUWBConfigData = [v10 airplaySourceUWBConfigData];
+          advertiseRate = [v10 advertiseRate];
+          airplaySourceAuthTagData = [v10 airplaySourceAuthTagData];
 
           v16 = objc_alloc_init(NSMutableData);
-          if ([v14 length] == 3)
+          if ([airplaySourceAuthTagData length] == 3)
           {
             v18 = v17 | 0x10;
           }
@@ -1166,14 +1166,14 @@ LABEL_16:
 
           v21 = v18;
           [v16 appendBytes:&v21 length:1];
-          if ((v18 & 8) != 0 && [v15 length] == 1)
+          if ((v18 & 8) != 0 && [airplaySourceUWBConfigData length] == 1)
           {
-            [v16 appendData:v15];
+            [v16 appendData:airplaySourceUWBConfigData];
           }
 
-          if ([v14 length] == 3)
+          if ([airplaySourceAuthTagData length] == 3)
           {
-            [v16 appendData:v14];
+            [v16 appendData:airplaySourceAuthTagData];
           }
 
           v12 = 1;
@@ -1192,12 +1192,12 @@ LABEL_16:
   }
 
   v12 = 0;
-  v13 = 0;
-  v14 = 0;
-  v15 = 0;
+  advertiseRate = 0;
+  airplaySourceAuthTagData = 0;
+  airplaySourceUWBConfigData = 0;
   v16 = 0;
 LABEL_19:
-  if ([(CBAdvertiserDaemon *)self _wiProxUpdateLinger:a3 active:v12])
+  if ([(CBAdvertiserDaemon *)self _wiProxUpdateLinger:payload active:v12])
   {
     v20 = 0x80;
     v19 = [[NSData alloc] initWithBytes:&v20 length:1];
@@ -1205,10 +1205,10 @@ LABEL_19:
     v16 = v19;
   }
 
-  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:a3 payloadData:v16 advertiseRate:v13 advertiseEnableEPA:0];
+  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:payload payloadData:v16 advertiseRate:advertiseRate advertiseEnableEPA:0];
 }
 
-- (void)_updateAirPlayTargetPayload:(id *)a3
+- (void)_updateAirPlayTargetPayload:(id *)payload
 {
   v21 = 0u;
   v22 = 0u;
@@ -1230,24 +1230,24 @@ LABEL_19:
         }
 
         v10 = *(*(&v21 + 1) + 8 * i);
-        v11 = [v10 airplayTargetFlags];
-        if (v11)
+        airplayTargetFlags = [v10 airplayTargetFlags];
+        if (airplayTargetFlags)
         {
-          v15 = v11;
-          v16 = [v10 airplayTargetConfigSeed];
-          v17 = [v10 airplayTargetIPv4];
-          v18 = [v10 airplayTargetPort];
-          v13 = [v10 advertiseRate];
+          v15 = airplayTargetFlags;
+          airplayTargetConfigSeed = [v10 airplayTargetConfigSeed];
+          airplayTargetIPv4 = [v10 airplayTargetIPv4];
+          airplayTargetPort = [v10 airplayTargetPort];
+          advertiseRate = [v10 advertiseRate];
 
           v25 = v15;
-          BYTE1(v25) = v16;
-          BYTE2(v25) = HIBYTE(v17);
-          BYTE3(v25) = BYTE2(v17);
-          BYTE4(v25) = BYTE1(v17);
-          BYTE5(v25) = v17;
+          BYTE1(v25) = airplayTargetConfigSeed;
+          BYTE2(v25) = HIBYTE(airplayTargetIPv4);
+          BYTE3(v25) = BYTE2(airplayTargetIPv4);
+          BYTE4(v25) = BYTE1(airplayTargetIPv4);
+          BYTE5(v25) = airplayTargetIPv4;
           if ((v15 & 0x10) != 0)
           {
-            HIWORD(v25) = __rev16(v18);
+            HIWORD(v25) = __rev16(airplayTargetPort);
             v19 = 8;
           }
 
@@ -1273,10 +1273,10 @@ LABEL_19:
   }
 
   v12 = 0;
-  v13 = 0;
+  advertiseRate = 0;
   v14 = 0;
 LABEL_14:
-  if ([(CBAdvertiserDaemon *)self _wiProxUpdateLinger:a3 active:v12, v21])
+  if ([(CBAdvertiserDaemon *)self _wiProxUpdateLinger:payload active:v12, v21])
   {
     LOBYTE(v25) = 0x80;
     v20 = [[NSData alloc] initWithBytes:&v25 length:1];
@@ -1284,23 +1284,23 @@ LABEL_14:
     v14 = v20;
   }
 
-  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:a3 payloadData:v14 advertiseRate:v13 advertiseEnableEPA:0];
+  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:payload payloadData:v14 advertiseRate:advertiseRate advertiseEnableEPA:0];
 }
 
-- (void)_updateDSInfoPayload:(id *)a3
+- (void)_updateDSInfoPayload:(id *)payload
 {
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v5 = self->_advertiserArray;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
-  if (v6)
+  advertiseRate = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+  if (advertiseRate)
   {
     v7 = *v16;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != advertiseRate; i = i + 1)
       {
         if (*v16 != v7)
         {
@@ -1308,18 +1308,18 @@ LABEL_14:
         }
 
         v9 = *(*(&v15 + 1) + 8 * i);
-        v10 = [v9 dsInfoVehicleConfidence];
-        v11 = [v9 dsInfoVehicleState];
-        if (v10 | v11)
+        dsInfoVehicleConfidence = [v9 dsInfoVehicleConfidence];
+        dsInfoVehicleState = [v9 dsInfoVehicleState];
+        if (dsInfoVehicleConfidence | dsInfoVehicleState)
         {
-          v12 = v11;
-          v6 = [v9 advertiseRate];
+          v12 = dsInfoVehicleState;
+          advertiseRate = [v9 advertiseRate];
           goto LABEL_11;
         }
       }
 
-      v6 = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
-      if (v6)
+      advertiseRate = [(NSArray *)v5 countByEnumeratingWithState:&v15 objects:v19 count:16];
+      if (advertiseRate)
       {
         continue;
       }
@@ -1328,13 +1328,13 @@ LABEL_14:
     }
   }
 
-  v10 = 0;
+  dsInfoVehicleConfidence = 0;
   v12 = 0;
 LABEL_11:
 
-  if (v10 | v12)
+  if (dsInfoVehicleConfidence | v12)
   {
-    v14 = v12 & 3 | (4 * (v10 & 0xF));
+    v14 = v12 & 3 | (4 * (dsInfoVehicleConfidence & 0xF));
     v13 = [[NSData alloc] initWithBytes:&v14 length:1];
   }
 
@@ -1343,7 +1343,7 @@ LABEL_11:
     v13 = 0;
   }
 
-  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:a3 payloadData:v13 advertiseRate:v6 advertiseEnableEPA:0];
+  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:payload payloadData:v13 advertiseRate:advertiseRate advertiseEnableEPA:0];
 }
 
 - (void)_updateFIDOAdvertising
@@ -1432,10 +1432,10 @@ LABEL_19:
         }
 
         v7 = *(*(&v15 + 1) + 8 * i);
-        v8 = [v7 fidoPayloadData];
-        if (v8)
+        fidoPayloadData = [v7 fidoPayloadData];
+        if (fidoPayloadData)
         {
-          v9 = v8;
+          v9 = fidoPayloadData;
           LODWORD(v4) = [v7 advertiseRate];
           goto LABEL_11;
         }
@@ -1500,7 +1500,7 @@ LABEL_22:
 LABEL_26:
 }
 
-- (void)_updateHeySiriPayload:(id *)a3
+- (void)_updateHeySiriPayload:(id *)payload
 {
   v20 = 0u;
   v21 = 0u;
@@ -1522,25 +1522,25 @@ LABEL_26:
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 heySiriDeviceClass];
-        if (v11)
+        heySiriDeviceClass = [v10 heySiriDeviceClass];
+        if (heySiriDeviceClass)
         {
-          v14 = v11;
-          v12 = [v10 advertiseRate];
-          v15 = [v10 heySiriConfidence];
-          v16 = [v10 heySiriPerceptualHash];
-          v17 = [v10 heySiriProductType];
-          v18 = [v10 heySiriRandom];
-          v19 = [v10 heySiriSNR];
+          v14 = heySiriDeviceClass;
+          advertiseRate = [v10 advertiseRate];
+          heySiriConfidence = [v10 heySiriConfidence];
+          heySiriPerceptualHash = [v10 heySiriPerceptualHash];
+          heySiriProductType = [v10 heySiriProductType];
+          heySiriRandom = [v10 heySiriRandom];
+          heySiriSNR = [v10 heySiriSNR];
 
-          v24[0] = HIBYTE(v16);
-          v24[1] = v16;
-          v24[2] = v19;
-          v24[3] = v15;
+          v24[0] = HIBYTE(heySiriPerceptualHash);
+          v24[1] = heySiriPerceptualHash;
+          v24[2] = heySiriSNR;
+          v24[3] = heySiriConfidence;
           v24[4] = HIBYTE(v14);
           v24[5] = v14;
-          v24[6] = v18;
-          v24[7] = v17;
+          v24[6] = heySiriRandom;
+          v24[7] = heySiriProductType;
           v13 = [[NSData alloc] initWithBytes:v24 length:8];
           goto LABEL_11;
         }
@@ -1556,35 +1556,35 @@ LABEL_26:
     }
   }
 
-  v12 = 0;
+  advertiseRate = 0;
   v13 = 0;
 LABEL_11:
-  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:a3 payloadData:v13 advertiseRate:v12 advertiseEnableEPA:0, v20];
+  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:payload payloadData:v13 advertiseRate:advertiseRate advertiseEnableEPA:0, v20];
 }
 
-- (void)_updateNearbyActionV1Payload:(id *)a3
+- (void)_updateNearbyActionV1Payload:(id *)payload
 {
   v44 = 0;
   v40 = 0u;
   v41 = 0u;
   v42 = 0u;
   v43 = 0u;
-  v5 = self->_advertiserArray;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v40 objects:v45 count:16];
+  nearbyActionExtraData = self->_advertiserArray;
+  v6 = [(NSArray *)nearbyActionExtraData countByEnumeratingWithState:&v40 objects:v45 count:16];
   if (!v6)
   {
     v12 = 0;
-    v13 = 0;
+    advertiseRate = 0;
     v14 = 0;
     v15 = 0;
     v16 = 0;
-    v32 = 0;
+    watchSetupData = 0;
     v17 = 0;
     goto LABEL_31;
   }
 
   v7 = v6;
-  v31 = a3;
+  payloadCopy = payload;
   v8 = *v41;
   while (2)
   {
@@ -1592,34 +1592,34 @@ LABEL_11:
     {
       if (*v41 != v8)
       {
-        objc_enumerationMutation(v5);
+        objc_enumerationMutation(nearbyActionExtraData);
       }
 
       v10 = *(*(&v40 + 1) + 8 * i);
-      v11 = [v10 nearbyActionType];
-      if (v11)
+      nearbyActionType = [v10 nearbyActionType];
+      if (nearbyActionType)
       {
-        v18 = v11;
-        v19 = [v10 nearbyActionFlags];
-        v20 = v19;
-        v21 = (v19 >> 8) & 0xF;
+        v18 = nearbyActionType;
+        nearbyActionFlags = [v10 nearbyActionFlags];
+        v20 = nearbyActionFlags;
+        v21 = (nearbyActionFlags >> 8) & 0xF;
         v44 = v21;
-        v13 = [v10 advertiseRate];
-        v22 = [v10 nearbyActionAuthTagData];
-        if ([v22 length] == 3)
+        advertiseRate = [v10 advertiseRate];
+        nearbyActionAuthTagData = [v10 nearbyActionAuthTagData];
+        if ([nearbyActionAuthTagData length] == 3)
         {
-          v23 = v22;
+          selfAuthTag = nearbyActionAuthTagData;
         }
 
         else
         {
-          v23 = [(CBAdvertiserDaemon *)self selfAuthTag];
+          selfAuthTag = [(CBAdvertiserDaemon *)self selfAuthTag];
         }
 
-        v14 = v23;
-        v29 = [v10 nearbyActionTargetData];
+        v14 = selfAuthTag;
+        nearbyActionTargetData = [v10 nearbyActionTargetData];
         v16 = v10;
-        v32 = [v16 watchSetupData];
+        watchSetupData = [v16 watchSetupData];
 
         v17 = objc_alloc_init(NSMutableData);
         v39 = v20;
@@ -1651,26 +1651,26 @@ LABEL_19:
 
           if (v24 == 17)
           {
-            v36 = [v16 dsActionFlags];
-            [v17 appendBytes:&v36 length:1];
-            v35 = [v16 dsActionMeasuredPower];
-            [v17 appendBytes:&v35 length:1];
-            v34 = [v16 dsActionTieBreaker];
-            v27 = &v34;
+            dsActionFlags = [v16 dsActionFlags];
+            [v17 appendBytes:&dsActionFlags length:1];
+            dsActionMeasuredPower = [v16 dsActionMeasuredPower];
+            [v17 appendBytes:&dsActionMeasuredPower length:1];
+            dsActionTieBreaker = [v16 dsActionTieBreaker];
+            v27 = &dsActionTieBreaker;
 LABEL_22:
-            [v17 appendBytes:v27 length:{1, v29}];
+            [v17 appendBytes:v27 length:{1, nearbyActionTargetData}];
 LABEL_23:
-            v5 = [v16 nearbyActionExtraData];
-            if (v5)
+            nearbyActionExtraData = [v16 nearbyActionExtraData];
+            if (nearbyActionExtraData)
             {
-              [v17 appendData:v5];
+              [v17 appendData:nearbyActionExtraData];
             }
 
             v12 = 1;
             if (v21 && ([v17 appendBytes:&v44 length:1], v18 == 56))
             {
               v15 = v30;
-              a3 = v31;
+              payload = payloadCopy;
               if ((v20 & 0x200) != 0 && v30)
               {
                 [v17 appendData:v30];
@@ -1681,7 +1681,7 @@ LABEL_23:
             else
             {
               v15 = v30;
-              a3 = v31;
+              payload = payloadCopy;
             }
 
             goto LABEL_31;
@@ -1690,9 +1690,9 @@ LABEL_23:
 
         if (v18 != 2)
         {
-          if (v18 == 5 && v32)
+          if (v18 == 5 && watchSetupData)
           {
-            [v17 appendData:v32];
+            [v17 appendData:watchSetupData];
           }
 
           goto LABEL_23;
@@ -1702,7 +1702,7 @@ LABEL_23:
       }
     }
 
-    v7 = [(NSArray *)v5 countByEnumeratingWithState:&v40 objects:v45 count:16];
+    v7 = [(NSArray *)nearbyActionExtraData countByEnumeratingWithState:&v40 objects:v45 count:16];
     if (v7)
     {
       continue;
@@ -1712,30 +1712,30 @@ LABEL_23:
   }
 
   v12 = 0;
-  v13 = 0;
+  advertiseRate = 0;
   v14 = 0;
   v15 = 0;
   v16 = 0;
-  v32 = 0;
+  watchSetupData = 0;
   v17 = 0;
-  a3 = v31;
+  payload = payloadCopy;
 LABEL_31:
 
-  if ([(CBAdvertiserDaemon *)self _wiProxUpdateLinger:a3 active:v12])
+  if ([(CBAdvertiserDaemon *)self _wiProxUpdateLinger:payload active:v12])
   {
     v33 = 13312;
     v28 = [[NSData alloc] initWithBytes:&v33 length:2];
 
-    v13 = 50;
+    advertiseRate = 50;
     v17 = v28;
   }
 
-  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:a3 payloadData:v17 advertiseRate:v13 advertiseEnableEPA:0];
+  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:payload payloadData:v17 advertiseRate:advertiseRate advertiseEnableEPA:0];
 }
 
-- (void)_updateNearbyActionV2Payload:(id *)a3
+- (void)_updateNearbyActionV2Payload:(id *)payload
 {
-  v31 = a3;
+  payloadCopy = payload;
   v42 = 0;
   v38 = 0u;
   v39 = 0u;
@@ -1758,12 +1758,12 @@ LABEL_31:
           objc_enumerationMutation(v4);
         }
 
-        v11 = [*(*(&v38 + 1) + 8 * i) nearbyActionV2Type];
-        v12 = v11;
-        v42 = v11;
-        if (v11)
+        nearbyActionV2Type = [*(*(&v38 + 1) + 8 * i) nearbyActionV2Type];
+        v12 = nearbyActionV2Type;
+        v42 = nearbyActionV2Type;
+        if (nearbyActionV2Type)
         {
-          if (v11 == 41)
+          if (nearbyActionV2Type == 41)
           {
             v7 = 1;
           }
@@ -1810,17 +1810,17 @@ LABEL_31:
         }
 
         v19 = *(*(&v34 + 1) + 8 * v18);
-        v20 = [v19 nearbyActionV2Type];
-        v12 = v20;
-        v42 = v20;
-        if (v20)
+        nearbyActionV2Type2 = [v19 nearbyActionV2Type];
+        v12 = nearbyActionV2Type2;
+        v42 = nearbyActionV2Type2;
+        if (nearbyActionV2Type2)
         {
-          if ((v17 & (v20 == 41)) != 1)
+          if ((v17 & (nearbyActionV2Type2 == 41)) != 1)
           {
-            v27 = [v19 nearbyActionV2Flags];
-            v23 = [v19 advertiseRate];
-            v24 = [v19 nearbyActionV2TargetData];
-            v22 = v27 & 0xFE;
+            nearbyActionV2Flags = [v19 nearbyActionV2Flags];
+            advertiseRate = [v19 advertiseRate];
+            nearbyActionV2TargetData = [v19 nearbyActionV2TargetData];
+            v22 = nearbyActionV2Flags & 0xFE;
 
             v26 = 1;
             goto LABEL_31;
@@ -1844,15 +1844,15 @@ LABEL_31:
   }
 
   v22 = 0;
-  v23 = 0;
-  v24 = 0;
+  advertiseRate = 0;
+  nearbyActionV2TargetData = 0;
   v25 = 0;
   v26 = v12 != 0;
   if (v12)
   {
 LABEL_31:
     v25 = objc_alloc_init(NSMutableData);
-    if ([v24 length] == 3)
+    if ([nearbyActionV2TargetData length] == 3)
     {
       v28 = v22 + 1;
     }
@@ -1863,42 +1863,42 @@ LABEL_31:
     }
 
     v33 = v28;
-    [v25 appendBytes:&v33 length:{1, v31}];
+    [v25 appendBytes:&v33 length:{1, payloadCopy}];
     [v25 appendBytes:&v42 length:1];
-    if ([v24 length] == 3)
+    if ([nearbyActionV2TargetData length] == 3)
     {
-      [v25 appendData:v24];
+      [v25 appendData:nearbyActionV2TargetData];
     }
   }
 
-  v29 = v31;
-  if ([(CBAdvertiserDaemon *)self _wiProxUpdateLinger:v31 active:v26, v31])
+  v29 = payloadCopy;
+  if ([(CBAdvertiserDaemon *)self _wiProxUpdateLinger:payloadCopy active:v26, payloadCopy])
   {
     v32 = 13312;
     v30 = [[NSData alloc] initWithBytes:&v32 length:2];
 
-    v23 = 50;
+    advertiseRate = 50;
     v25 = v30;
   }
 
-  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:v29 payloadData:v25 advertiseRate:v23 advertiseEnableEPA:0];
+  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:v29 payloadData:v25 advertiseRate:advertiseRate advertiseEnableEPA:0];
 }
 
-- (void)_updateNearbyInfoPayload:(id *)a3
+- (void)_updateNearbyInfoPayload:(id *)payload
 {
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
   v5 = self->_advertiserArray;
-  v6 = [(NSArray *)v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  advertiseRate = [(NSArray *)v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
   v7 = 0.0;
-  if (v6)
+  if (advertiseRate)
   {
     v8 = *v21;
     while (2)
     {
-      for (i = 0; i != v6; i = i + 1)
+      for (i = 0; i != advertiseRate; i = i + 1)
       {
         if (*v21 != v8)
         {
@@ -1906,21 +1906,21 @@ LABEL_31:
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 nearbyInfoFlags];
-        v12 = [v10 nearbyInfoStatusType];
-        if (v11 | v12)
+        nearbyInfoFlags = [v10 nearbyInfoFlags];
+        nearbyInfoStatusType = [v10 nearbyInfoStatusType];
+        if (nearbyInfoFlags | nearbyInfoStatusType)
         {
-          v14 = v12;
-          v6 = [v10 advertiseRate];
+          v14 = nearbyInfoStatusType;
+          advertiseRate = [v10 advertiseRate];
           [v10 nearbyInfoStatusProgress];
           v7 = v15;
-          v13 = [v10 nearbyInfoStatusTime];
+          nearbyInfoStatusTime = [v10 nearbyInfoStatusTime];
           goto LABEL_11;
         }
       }
 
-      v6 = [(NSArray *)v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
-      if (v6)
+      advertiseRate = [(NSArray *)v5 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      if (advertiseRate)
       {
         continue;
       }
@@ -1929,20 +1929,20 @@ LABEL_31:
     }
   }
 
-  v13 = 0;
+  nearbyInfoStatusTime = 0;
   v14 = 0;
-  v11 = 0;
+  nearbyInfoFlags = 0;
 LABEL_11:
 
-  if (v11 | v14)
+  if (nearbyInfoFlags | v14)
   {
     v16 = objc_alloc_init(NSMutableData);
-    LOBYTE(v19) = __rbit32(v11 & 7) >> 25;
+    LOBYTE(v19) = __rbit32(nearbyInfoFlags & 7) >> 25;
     [v16 appendBytes:&v19 length:1];
-    LOBYTE(v19) = (4 * v11) & 0x40 | ((v11 >> 3) << 7) | v11 & 0x20 | (v11 >> 4) & 8 | (v11 >> 6) & 4;
+    LOBYTE(v19) = (4 * nearbyInfoFlags) & 0x40 | ((nearbyInfoFlags >> 3) << 7) | nearbyInfoFlags & 0x20 | (nearbyInfoFlags >> 4) & 8 | (nearbyInfoFlags >> 6) & 4;
     if (v14)
     {
-      LOBYTE(v19) = (4 * v11) & 0x40 | ((v11 >> 3) << 7) | v11 & 0x20 | (v11 >> 4) & 8 | (v11 >> 6) & 4 | 1;
+      LOBYTE(v19) = (4 * nearbyInfoFlags) & 0x40 | ((nearbyInfoFlags >> 3) << 7) | nearbyInfoFlags & 0x20 | (nearbyInfoFlags >> 4) & 8 | (nearbyInfoFlags >> 6) & 4 | 1;
       [v16 appendBytes:&v19 length:1];
       LOBYTE(v19) = 4;
       [v16 appendBytes:&v19 length:1];
@@ -1961,7 +1961,7 @@ LABEL_11:
 
       LOBYTE(v19) = (v17 * 100.0);
       [v16 appendBytes:&v19 length:1];
-      LOBYTE(v19) = v13;
+      LOBYTE(v19) = nearbyInfoStatusTime;
     }
 
     [v16 appendBytes:&v19 length:1];
@@ -1972,7 +1972,7 @@ LABEL_11:
     v16 = 0;
   }
 
-  if ([(CBAdvertiserDaemon *)self _wiProxUpdateLinger:a3 active:(v11 | v14) != 0])
+  if ([(CBAdvertiserDaemon *)self _wiProxUpdateLinger:payload active:(nearbyInfoFlags | v14) != 0])
   {
     v19 = 0;
     v18 = [[NSData alloc] initWithBytes:&v19 length:2];
@@ -1980,12 +1980,12 @@ LABEL_11:
     v16 = v18;
   }
 
-  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:a3 payloadData:v16 advertiseRate:v6 advertiseEnableEPA:0];
+  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:payload payloadData:v16 advertiseRate:advertiseRate advertiseEnableEPA:0];
 }
 
-- (void)_updateAirDropPayload:(id *)a3
+- (void)_updateAirDropPayload:(id *)payload
 {
-  v4 = self;
+  selfCopy = self;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
@@ -2006,67 +2006,67 @@ LABEL_11:
         }
 
         v10 = *(*(&v33 + 1) + 8 * i);
-        v11 = [v10 airdropVersion];
-        if (v11)
+        airdropVersion = [v10 airdropVersion];
+        if (airdropVersion)
         {
-          v15 = v11;
-          v31 = v4;
-          v32 = a3;
-          v16 = [v10 airdropFlags];
-          v12 = [v10 airdropTempAuthTagData];
-          v17 = [v10 airdropModel];
-          v18 = [v10 airdropHash1];
-          v19 = [v10 airdropHash2];
-          v20 = [v10 airdropHash3];
-          v21 = [v10 airdropHash4];
-          v30 = [v10 advertiseRate];
-          v22 = [v10 airdropConfigData];
+          v15 = airdropVersion;
+          v31 = selfCopy;
+          payloadCopy = payload;
+          airdropFlags = [v10 airdropFlags];
+          airdropTempAuthTagData = [v10 airdropTempAuthTagData];
+          airdropModel = [v10 airdropModel];
+          airdropHash1 = [v10 airdropHash1];
+          airdropHash2 = [v10 airdropHash2];
+          airdropHash3 = [v10 airdropHash3];
+          airdropHash4 = [v10 airdropHash4];
+          advertiseRate = [v10 advertiseRate];
+          airdropConfigData = [v10 airdropConfigData];
 
           memset(&v37[1], 0, 7);
-          v23 = [v12 length];
-          v24 = v16 | 0x40;
+          v23 = [airdropTempAuthTagData length];
+          v24 = airdropFlags | 0x40;
           if (v23 != 3)
           {
-            v24 = v16 & 0xBF;
+            v24 = airdropFlags & 0xBF;
           }
 
           v25 = v24 | 0x80;
           v26 = v24 & 0x7F;
-          if (v17)
+          if (airdropModel)
           {
             v26 = v25;
           }
 
           v37[0] = v26;
-          if ([v12 length] == 3)
+          if ([airdropTempAuthTagData length] == 3)
           {
-            v27 = [v12 bytes];
-            v28 = v27[2];
-            *&v37[1] = *v27;
+            bytes = [airdropTempAuthTagData bytes];
+            v28 = bytes[2];
+            *&v37[1] = *bytes;
             v37[3] = v28;
           }
 
-          v37[4] = v17;
+          v37[4] = airdropModel;
           v37[8] = v15;
-          v37[9] = HIBYTE(v18);
-          v37[10] = v18;
-          v37[11] = HIBYTE(v19);
-          v37[12] = v19;
-          v37[13] = HIBYTE(v20);
-          v37[14] = v20;
-          v37[15] = HIBYTE(v21);
-          v37[16] = v21;
-          v29 = v22 | 1;
-          if (!v22)
+          v37[9] = HIBYTE(airdropHash1);
+          v37[10] = airdropHash1;
+          v37[11] = HIBYTE(airdropHash2);
+          v37[12] = airdropHash2;
+          v37[13] = HIBYTE(airdropHash3);
+          v37[14] = airdropHash3;
+          v37[15] = HIBYTE(airdropHash4);
+          v37[16] = airdropHash4;
+          v29 = airdropConfigData | 1;
+          if (!airdropConfigData)
           {
             v29 = 0;
           }
 
           v37[17] = v29;
           v14 = [[NSData alloc] initWithBytes:v37 length:18];
-          v4 = v31;
-          a3 = v32;
-          v13 = v30;
+          selfCopy = v31;
+          payload = payloadCopy;
+          v13 = advertiseRate;
           goto LABEL_19;
         }
       }
@@ -2081,11 +2081,11 @@ LABEL_11:
     }
   }
 
-  v12 = 0;
+  airdropTempAuthTagData = 0;
   v13 = 0;
   v14 = 0;
 LABEL_19:
-  [(CBAdvertiserDaemon *)v4 _wiProxUpdatePayload:a3 payloadData:v14 advertiseRate:v13 advertiseEnableEPA:0];
+  [(CBAdvertiserDaemon *)selfCopy _wiProxUpdatePayload:payload payloadData:v14 advertiseRate:v13 advertiseEnableEPA:0];
 }
 
 - (void)_updateProximityServiceAdvertising
@@ -2187,22 +2187,22 @@ LABEL_19:
         }
 
         v8 = *(*(&v18 + 1) + 8 * i);
-        v9 = [v8 proximityServiceSubType];
-        if (v9)
+        proximityServiceSubType = [v8 proximityServiceSubType];
+        if (proximityServiceSubType)
         {
-          v10 = [v8 proximityServicePayload];
+          proximityServicePayload = [v8 proximityServicePayload];
 
-          if (v10)
+          if (proximityServicePayload)
           {
-            v11 = [v8 useCase];
-            if (v11)
+            useCase = [v8 useCase];
+            if (useCase)
             {
-              v12 = v11;
+              v12 = useCase;
               LODWORD(v4) = [v8 advertiseRate];
               goto LABEL_16;
             }
 
-            v5 = v10;
+            v5 = proximityServicePayload;
           }
 
           else
@@ -2222,25 +2222,25 @@ LABEL_19:
     }
 
     v12 = 0;
-    v10 = v5;
+    proximityServicePayload = v5;
   }
 
   else
   {
-    v9 = 0;
-    v10 = 0;
+    proximityServiceSubType = 0;
+    proximityServicePayload = 0;
     v12 = 0;
   }
 
 LABEL_16:
 
-  if (v9 != self->_proximityServiceSubType)
+  if (proximityServiceSubType != self->_proximityServiceSubType)
   {
     goto LABEL_29;
   }
 
   proximityServicePayload = self->_proximityServicePayload;
-  v14 = v10;
+  v14 = proximityServicePayload;
   v15 = proximityServicePayload;
   v16 = v15;
   if (v14 == v15)
@@ -2266,8 +2266,8 @@ LABEL_29:
       }
 
       self->_proximityServiceAdvertiseRate = v4;
-      objc_storeStrong(&self->_proximityServicePayload, v10);
-      self->_proximityServiceSubType = v9;
+      objc_storeStrong(&self->_proximityServicePayload, proximityServicePayload);
+      self->_proximityServiceSubType = proximityServiceSubType;
       self->_proximityServiceUseCase = v12;
       self->_proximityServiceChanged = 1;
       goto LABEL_33;
@@ -2479,35 +2479,35 @@ LABEL_14:
 LABEL_24:
 }
 
-+ (void)buildSafetyAlertsAdvertisingData:(id)a3 advertisingAddresses:(id *)a4 advertisingData:(id *)a5 advertiseRate:(int *)a6 error:(id *)a7
++ (void)buildSafetyAlertsAdvertisingData:(id)data advertisingAddresses:(id *)addresses advertisingData:(id *)advertisingData advertiseRate:(int *)rate error:(id *)error
 {
   v50 = 0u;
   v51 = 0u;
   v52 = 0u;
   v53 = 0u;
-  v9 = a3;
-  v10 = [v9 countByEnumeratingWithState:&v50 objects:v54 count:16];
+  dataCopy = data;
+  v10 = [dataCopy countByEnumeratingWithState:&v50 objects:v54 count:16];
   if (!v10)
   {
-    v12 = 0;
-    v13 = 0;
+    safetyAlertsSignature = 0;
+    safetyAlertsAlertID = 0;
     v14 = 0;
     goto LABEL_34;
   }
 
   v11 = v10;
-  v42 = a7;
-  v44 = a6;
-  v12 = 0;
-  v13 = 0;
+  errorCopy = error;
+  rateCopy = rate;
+  safetyAlertsSignature = 0;
+  safetyAlertsAlertID = 0;
   v14 = 0;
   v15 = *v51;
-  obj = v9;
+  obj = dataCopy;
   while (2)
   {
     v16 = 0;
-    v17 = v12;
-    v18 = v13;
+    v17 = safetyAlertsSignature;
+    v18 = safetyAlertsAlertID;
     do
     {
       if (*v51 != v15)
@@ -2516,16 +2516,16 @@ LABEL_24:
       }
 
       v19 = *(*(&v50 + 1) + 8 * v16);
-      v20 = [v19 safetyAlertsAlertData];
+      safetyAlertsAlertData = [v19 safetyAlertsAlertData];
 
-      v13 = [v19 safetyAlertsAlertID];
+      safetyAlertsAlertID = [v19 safetyAlertsAlertID];
 
-      v12 = [v19 safetyAlertsSignature];
+      safetyAlertsSignature = [v19 safetyAlertsSignature];
 
-      v21 = [v19 safetyAlertsVersion];
-      if (v20)
+      safetyAlertsVersion = [v19 safetyAlertsVersion];
+      if (safetyAlertsAlertData)
       {
-        v22 = v13 == 0;
+        v22 = safetyAlertsAlertID == 0;
       }
 
       else
@@ -2533,49 +2533,49 @@ LABEL_24:
         v22 = 1;
       }
 
-      if (!v22 && v12 != 0 && v21 != 0)
+      if (!v22 && safetyAlertsSignature != 0 && safetyAlertsVersion != 0)
       {
-        v25 = v21;
-        *v44 = [v19 advertiseRate];
-        v9 = obj;
+        v25 = safetyAlertsVersion;
+        *rateCopy = [v19 advertiseRate];
+        dataCopy = obj;
 
-        v40 = v20;
-        if ([v20 length] >= 0x1D)
+        v40 = safetyAlertsAlertData;
+        if ([safetyAlertsAlertData length] >= 0x1D)
         {
-          v39 = v42;
-          if (!v42)
+          v39 = errorCopy;
+          if (!errorCopy)
           {
             goto LABEL_35;
           }
         }
 
-        else if ([v13 length] == 3)
+        else if ([safetyAlertsAlertID length] == 3)
         {
-          if ([v12 length] == 56)
+          if ([safetyAlertsSignature length] == 56)
           {
             if (v25 - 32 > 0xFFFFFFE0)
             {
-              *a4 = objc_alloc_init(NSMutableArray);
-              *a5 = objc_alloc_init(NSMutableArray);
-              v26 = [v20 bytes];
-              v45 = [v20 length] + v26;
-              v27 = [v12 bytes];
-              v43 = [v12 length] + v27;
+              *addresses = objc_alloc_init(NSMutableArray);
+              *advertisingData = objc_alloc_init(NSMutableArray);
+              bytes = [safetyAlertsAlertData bytes];
+              v45 = [safetyAlertsAlertData length] + bytes;
+              bytes2 = [safetyAlertsSignature bytes];
+              v43 = [safetyAlertsSignature length] + bytes2;
               v28 = 1;
               do
               {
-                v29 = [NSMutableData dataWithBytes:v27 length:6];
-                v30 = v27 + 6;
-                v31 = [v29 mutableBytes];
-                v32 = *v31 & 0xC0;
-                *v31 |= 0xC0u;
-                [*a4 addObject:v29];
+                v29 = [NSMutableData dataWithBytes:bytes2 length:6];
+                v30 = bytes2 + 6;
+                mutableBytes = [v29 mutableBytes];
+                v32 = *mutableBytes & 0xC0;
+                *mutableBytes |= 0xC0u;
+                [*addresses addObject:v29];
                 v33 = objc_alloc_init(NSMutableData);
                 v49 = v32 | v25;
                 [v33 appendBytes:&v49 length:1];
                 v48 = (16 * v28) | 3;
                 [v33 appendBytes:&v48 length:1];
-                [v33 appendBytes:objc_msgSend(v13 length:{"bytes"), 3}];
+                [v33 appendBytes:objc_msgSend(safetyAlertsAlertID length:{"bytes"), 3}];
                 if ((v43 - v30) >= 0xDu)
                 {
                   v34 = 13;
@@ -2588,26 +2588,26 @@ LABEL_24:
 
                 [v33 appendBytes:v30 length:v34];
                 v35 = [v33 length];
-                LOBYTE(v36) = v45 - v26;
-                if (27 - v35 < (v45 - v26))
+                LOBYTE(v36) = v45 - bytes;
+                if (27 - v35 < (v45 - bytes))
                 {
                   v36 = 27 - [v33 length];
                 }
 
                 v37 = v36;
-                v27 = &v30[v34];
-                [v33 appendBytes:v26 length:v36];
-                v26 += v37;
-                [*a5 addObject:v33];
+                bytes2 = &v30[v34];
+                [v33 appendBytes:bytes length:v36];
+                bytes += v37;
+                [*advertisingData addObject:v33];
               }
 
               while (v28++ < 3);
-              v9 = obj;
+              dataCopy = obj;
               goto LABEL_35;
             }
 
-            v39 = v42;
-            if (!v42)
+            v39 = errorCopy;
+            if (!errorCopy)
             {
               goto LABEL_35;
             }
@@ -2615,8 +2615,8 @@ LABEL_24:
 
           else
           {
-            v39 = v42;
-            if (!v42)
+            v39 = errorCopy;
+            if (!errorCopy)
             {
               goto LABEL_35;
             }
@@ -2625,8 +2625,8 @@ LABEL_24:
 
         else
         {
-          v39 = v42;
-          if (!v42)
+          v39 = errorCopy;
+          if (!errorCopy)
           {
             goto LABEL_35;
           }
@@ -2637,15 +2637,15 @@ LABEL_24:
       }
 
       v16 = v16 + 1;
-      v17 = v12;
-      v18 = v13;
-      v14 = v20;
+      v17 = safetyAlertsSignature;
+      v18 = safetyAlertsAlertID;
+      v14 = safetyAlertsAlertData;
     }
 
     while (v11 != v16);
-    v9 = obj;
+    dataCopy = obj;
     v11 = [obj countByEnumeratingWithState:&v50 objects:v54 count:16];
-    v14 = v20;
+    v14 = safetyAlertsAlertData;
     if (v11)
     {
       continue;
@@ -2660,15 +2660,15 @@ LABEL_34:
 LABEL_35:
 }
 
-- (void)_updateSpatialInteractionAdvertising:(id *)a3
+- (void)_updateSpatialInteractionAdvertising:(id *)advertising
 {
   if (self->_spatialInteractionChanged)
   {
-    v6 = [qword_100BC7DB0 advertisingManager];
-    v22 = v6;
-    if (v6)
+    advertisingManager = [qword_100BC7DB0 advertisingManager];
+    v22 = advertisingManager;
+    if (advertisingManager)
     {
-      if ([v6 state] == 3)
+      if ([advertisingManager state] == 3)
       {
         v7 = self->_spatialInteractionWiProxUUID;
         if (!v7)
@@ -2769,7 +2769,7 @@ LABEL_35:
           [v12 setConnectable:0];
           [v12 setIsRanging:1];
           [v12 setStopOnAdvertisingAddressChange:1];
-          [v12 setEnableEPAForAdvertising:a3->var4];
+          [v12 setEnableEPAForAdvertising:advertising->var4];
           if (dword_100B50E30 <= 30 && (dword_100B50E30 != -1 || _LogCategory_Initialize()))
           {
             sub_100809498(v12);
@@ -2794,7 +2794,7 @@ LABEL_35:
   }
 }
 
-- (void)_updateSpatialInteractionPayload:(id *)a3
+- (void)_updateSpatialInteractionPayload:(id *)payload
 {
   advertiserEnableEPA = self->_advertiserEnableEPA;
   v6 = self->_spatialInteractionIdentifiers;
@@ -2888,7 +2888,7 @@ LABEL_37:
 
             objc_storeStrong(&self->_spatialInteractionPayloadData, v7);
             self->_spatialInteractionChanged = 1;
-            [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:a3 payloadData:v18 advertiseRate:0 advertiseEnableEPA:advertiserEnableEPA];
+            [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:payload payloadData:v18 advertiseRate:0 advertiseEnableEPA:advertiserEnableEPA];
 LABEL_42:
 
             goto LABEL_43;
@@ -2941,7 +2941,7 @@ LABEL_42:
 LABEL_43:
 }
 
-- (void)_updateNearbyActionNoWakePayload:(id *)a3
+- (void)_updateNearbyActionNoWakePayload:(id *)payload
 {
   v24 = 0;
   v20 = 0u;
@@ -2964,19 +2964,19 @@ LABEL_43:
         }
 
         v10 = *(*(&v20 + 1) + 8 * i);
-        v11 = [v10 nearbyActionNoWakeType];
-        LOBYTE(v24) = v11;
-        if (v11)
+        nearbyActionNoWakeType = [v10 nearbyActionNoWakeType];
+        LOBYTE(v24) = nearbyActionNoWakeType;
+        if (nearbyActionNoWakeType)
         {
-          v17 = [v10 nearbyActionNWPrecisionFindingStatus];
-          v12 = [v10 nearbyActionNoWakeAuthTagData];
-          v15 = [v10 nearbyActionNoWakeConfigData];
-          v14 = [v10 advertiseRate];
-          v13 = [v10 enableEPAForLEAdvertisement];
-          v18 = v17 & 0xFE;
+          nearbyActionNWPrecisionFindingStatus = [v10 nearbyActionNWPrecisionFindingStatus];
+          nearbyActionNoWakeAuthTagData = [v10 nearbyActionNoWakeAuthTagData];
+          nearbyActionNoWakeConfigData = [v10 nearbyActionNoWakeConfigData];
+          advertiseRate = [v10 advertiseRate];
+          enableEPAForLEAdvertisement = [v10 enableEPAForLEAdvertisement];
+          v18 = nearbyActionNWPrecisionFindingStatus & 0xFE;
 
           v16 = objc_alloc_init(NSMutableData);
-          if ([v15 length] == 1)
+          if ([nearbyActionNoWakeConfigData length] == 1)
           {
             v19 = v18 + 1;
           }
@@ -2989,14 +2989,14 @@ LABEL_43:
           HIBYTE(v24) = v19;
           [v16 appendBytes:&v24 length:1];
           [v16 appendBytes:&v24 + 1 length:1];
-          if ([v12 length] == 3)
+          if ([nearbyActionNoWakeAuthTagData length] == 3)
           {
-            [v16 appendData:v12];
+            [v16 appendData:nearbyActionNoWakeAuthTagData];
           }
 
-          if ([v15 length] == 1)
+          if ([nearbyActionNoWakeConfigData length] == 1)
           {
-            [v16 appendData:v15];
+            [v16 appendData:nearbyActionNoWakeConfigData];
           }
 
           goto LABEL_17;
@@ -3013,20 +3013,20 @@ LABEL_43:
     }
   }
 
-  v12 = 0;
-  v13 = 0;
-  v14 = 0;
-  v15 = 0;
+  nearbyActionNoWakeAuthTagData = 0;
+  enableEPAForLEAdvertisement = 0;
+  advertiseRate = 0;
+  nearbyActionNoWakeConfigData = 0;
   v16 = 0;
 LABEL_17:
-  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:a3 payloadData:v16 advertiseRate:v14 advertiseEnableEPA:v13, v20];
+  [(CBAdvertiserDaemon *)self _wiProxUpdatePayload:payload payloadData:v16 advertiseRate:advertiseRate advertiseEnableEPA:enableEPAForLEAdvertisement, v20];
 }
 
 - (void)_updateSoftwareUpdatePayload
 {
   if (_os_feature_enabled_impl())
   {
-    v36 = 0;
+    softwareUpdateActionType = 0;
     v32 = 0u;
     v33 = 0u;
     v34 = 0u;
@@ -3036,12 +3036,12 @@ LABEL_17:
     if (v4)
     {
       v5 = v4;
-      v6 = 0;
+      softwareUpdateDataArray = 0;
       v7 = *v33;
       while (2)
       {
         v8 = 0;
-        v9 = v6;
+        v9 = softwareUpdateDataArray;
         do
         {
           if (*v33 != v7)
@@ -3050,17 +3050,17 @@ LABEL_17:
           }
 
           v10 = *(*(&v32 + 1) + 8 * v8);
-          v36 = [v10 softwareUpdateActionType];
-          v6 = [v10 softwareUpdateDataArray];
+          softwareUpdateActionType = [v10 softwareUpdateActionType];
+          softwareUpdateDataArray = [v10 softwareUpdateDataArray];
 
-          if (v36 && [v6 count])
+          if (softwareUpdateActionType && [softwareUpdateDataArray count])
           {
-            v11 = [v10 advertiseRate];
+            advertiseRate = [v10 advertiseRate];
             goto LABEL_15;
           }
 
           v8 = v8 + 1;
-          v9 = v6;
+          v9 = softwareUpdateDataArray;
         }
 
         while (v5 != v8);
@@ -3076,10 +3076,10 @@ LABEL_17:
 
     else
     {
-      v6 = 0;
+      softwareUpdateDataArray = 0;
     }
 
-    v11 = 40;
+    advertiseRate = 40;
 LABEL_15:
 
     v12 = objc_alloc_init(NSMutableData);
@@ -3088,7 +3088,7 @@ LABEL_15:
     v29 = 0u;
     v30 = 0u;
     v31 = 0u;
-    v14 = v6;
+    v14 = softwareUpdateDataArray;
     v15 = [v14 countByEnumeratingWithState:&v28 objects:v37 count:16];
     if (v15)
     {
@@ -3105,7 +3105,7 @@ LABEL_15:
 
           v19 = *(*(&v28 + 1) + 8 * i);
           [v12 setLength:0];
-          [v12 appendBytes:&v36 length:1];
+          [v12 appendBytes:&softwareUpdateActionType length:1];
           [v12 appendData:v19];
           v20 = [v12 copy];
           [v13 addObject:v20];
@@ -3145,9 +3145,9 @@ LABEL_33:
           LogPrintF_safe();
         }
 
-        self->_swupActionType = v36;
+        self->_swupActionType = softwareUpdateActionType;
         objc_storeStrong(&self->_swupPayloadDataArray, v13);
-        self->_swupAdvertiseRate = v11;
+        self->_swupAdvertiseRate = advertiseRate;
         self->_swupChanged = 1;
 LABEL_38:
 
@@ -3155,7 +3155,7 @@ LABEL_38:
       }
     }
 
-    if (v11 == self->_swupAdvertiseRate)
+    if (advertiseRate == self->_swupAdvertiseRate)
     {
       if (dword_100B50E30 <= 10 && (dword_100B50E30 != -1 || _LogCategory_Initialize()))
       {
@@ -3322,10 +3322,10 @@ LABEL_19:
         v7 = *(*(&v15 + 1) + 8 * i);
         if ([v7 nearbyActionType] != 5)
         {
-          v8 = [v7 watchSetupData];
-          if (v8)
+          watchSetupData = [v7 watchSetupData];
+          if (watchSetupData)
           {
-            v9 = v8;
+            v9 = watchSetupData;
             LODWORD(v4) = [v7 advertiseRate];
             goto LABEL_12;
           }
@@ -3391,33 +3391,33 @@ LABEL_23:
 LABEL_27:
 }
 
-- (id)_encryptNearbyInfoV2Payload:(const void *)a3 payloadLength:(unint64_t)a4 authTag:(id)a5 irkData:(id)a6 keyInfo:(const void *)a7 keyInfoLength:(unint64_t)a8
+- (id)_encryptNearbyInfoV2Payload:(const void *)payload payloadLength:(unint64_t)length authTag:(id)tag irkData:(id)data keyInfo:(const void *)info keyInfoLength:(unint64_t)infoLength
 {
-  v11 = a5;
-  v12 = a6;
+  tagCopy = tag;
+  dataCopy = data;
   v13 = 0;
-  if (a3 && a4)
+  if (payload && length)
   {
-    if ([v11 length])
+    if ([tagCopy length])
     {
-      if ([v12 length])
+      if ([dataCopy length])
       {
-        if (a4 >= 7)
+        if (length >= 7)
         {
-          v14 = 7;
+          lengthCopy = 7;
         }
 
         else
         {
-          v14 = a4;
+          lengthCopy = length;
         }
 
         v20 = 0u;
         v21 = 0u;
-        [v12 bytes];
-        [v12 length];
-        [v11 bytes];
-        [v11 length];
+        [dataCopy bytes];
+        [dataCopy length];
+        [tagCopy bytes];
+        [tagCopy length];
         CryptoHKDF();
         *(v19 + 3) = 0;
         v19[0] = 0;
@@ -3451,7 +3451,7 @@ LABEL_27:
             {
               ccecb_context_size();
               cc_clear();
-              v13 = [NSData dataWithBytes:v19 length:v14];
+              v13 = [NSData dataWithBytes:v19 length:lengthCopy];
               goto LABEL_12;
             }
 
@@ -3489,9 +3489,9 @@ LABEL_12:
   return v13;
 }
 
-- (void)_updateNearbyInfoV2Payload:(id *)a3
+- (void)_updateNearbyInfoV2Payload:(id *)payload
 {
-  v37 = a3;
+  payloadCopy = payload;
   v50 = 0;
   v49 = 0;
   v45 = 0u;
@@ -3503,7 +3503,7 @@ LABEL_12:
   if (v5)
   {
     v6 = v5;
-    v7 = 0;
+    nearbyInfoV2InvitationRouteType = 0;
     v8 = 0;
     v9 = 0;
     v10 = 0;
@@ -3533,46 +3533,46 @@ LABEL_12:
           continue;
         }
 
-        if ([v12 advertiseRate] > v43)
+        if ([v12 advertiseRate] > advertiseRate)
         {
-          v43 = [v12 advertiseRate];
+          advertiseRate = [v12 advertiseRate];
         }
 
-        v13 = [v12 nearbyInfoV2AuthTagData];
-        v14 = [v13 length];
+        nearbyInfoV2AuthTagData = [v12 nearbyInfoV2AuthTagData];
+        v14 = [nearbyInfoV2AuthTagData length];
 
-        if (!v4 && v14 == 3)
+        if (!nearbyInfoV2AuthTagData2 && v14 == 3)
         {
-          v4 = [v12 nearbyInfoV2AuthTagData];
+          nearbyInfoV2AuthTagData2 = [v12 nearbyInfoV2AuthTagData];
         }
 
-        v15 = [v12 nearbyInfoV2AuthIntegrityTagData];
-        v16 = [v15 length];
+        nearbyInfoV2AuthIntegrityTagData = [v12 nearbyInfoV2AuthIntegrityTagData];
+        v16 = [nearbyInfoV2AuthIntegrityTagData length];
 
-        if (!v3 && v16 == 3)
+        if (!nearbyInfoV2AuthIntegrityTagData2 && v16 == 3)
         {
-          v3 = [v12 nearbyInfoV2AuthIntegrityTagData];
+          nearbyInfoV2AuthIntegrityTagData2 = [v12 nearbyInfoV2AuthIntegrityTagData];
         }
 
-        if (!v42)
+        if (!nearbyInfoV2RapportIRKData2)
         {
-          v17 = [v12 nearbyInfoV2RapportIRKData];
-          v18 = [v17 length];
+          nearbyInfoV2RapportIRKData = [v12 nearbyInfoV2RapportIRKData];
+          v18 = [nearbyInfoV2RapportIRKData length];
 
           if (v18)
           {
-            v42 = [v12 nearbyInfoV2RapportIRKData];
+            nearbyInfoV2RapportIRKData2 = [v12 nearbyInfoV2RapportIRKData];
           }
 
           else
           {
-            v42 = 0;
+            nearbyInfoV2RapportIRKData2 = 0;
           }
         }
 
         if (HIBYTE(v49))
         {
-          if (!v7)
+          if (!nearbyInfoV2InvitationRouteType)
           {
             goto LABEL_26;
           }
@@ -3581,43 +3581,43 @@ LABEL_12:
         else
         {
           HIBYTE(v49) = [v12 nearbyInfoV2InvitationCounter];
-          if (!v7)
+          if (!nearbyInfoV2InvitationRouteType)
           {
 LABEL_26:
             if ([v12 nearbyInfoV2InvitationRouteType])
             {
-              v7 = [v12 nearbyInfoV2InvitationRouteType];
-              LOBYTE(v49) = v7;
+              nearbyInfoV2InvitationRouteType = [v12 nearbyInfoV2InvitationRouteType];
+              LOBYTE(v49) = nearbyInfoV2InvitationRouteType;
             }
 
             else
             {
-              v7 = 0;
+              nearbyInfoV2InvitationRouteType = 0;
             }
           }
         }
 
-        if (!v44 && v4 && v3)
+        if (!nearbyInfoV2NearbyFaceTimeData && nearbyInfoV2AuthTagData2 && nearbyInfoV2AuthIntegrityTagData2)
         {
-          v44 = [v12 nearbyInfoV2NearbyFaceTimeData];
+          nearbyInfoV2NearbyFaceTimeData = [v12 nearbyInfoV2NearbyFaceTimeData];
         }
 
-        if (!v41)
+        if (!randomData2)
         {
-          v19 = [v12 randomData];
+          randomData = [v12 randomData];
 
-          if (v19)
+          if (randomData)
           {
-            v41 = [v12 randomData];
+            randomData2 = [v12 randomData];
           }
 
           else
           {
-            v41 = 0;
+            randomData2 = 0;
           }
         }
 
-        v10 = v7;
+        v10 = nearbyInfoV2InvitationRouteType;
       }
 
       v6 = [(NSArray *)obj countByEnumeratingWithState:&v45 objects:v51 count:16];
@@ -3639,20 +3639,20 @@ LABEL_42:
   {
     v22 = 0;
     v31 = 0;
-    v25 = v3;
-    v32 = v37;
-    v33 = self;
+    v25 = nearbyInfoV2AuthIntegrityTagData2;
+    v32 = payloadCopy;
+    selfCopy2 = self;
 LABEL_52:
-    [(CBAdvertiserDaemon *)v33 _wiProxUpdatePayload:v32 payloadData:v22 advertiseRate:v43 advertiseEnableEPA:0, v37];
+    [(CBAdvertiserDaemon *)selfCopy2 _wiProxUpdatePayload:v32 payloadData:v22 advertiseRate:advertiseRate advertiseEnableEPA:0, payloadCopy];
     goto LABEL_53;
   }
 
   v21 = objc_alloc_init(NSMutableData);
   v22 = v21;
   v23 = HIBYTE(v49) != 0 && v20;
-  v24 = v4 != 0;
-  v25 = v3;
-  v26 = v3 != 0;
+  v24 = nearbyInfoV2AuthTagData2 != 0;
+  v25 = nearbyInfoV2AuthIntegrityTagData2;
+  v26 = nearbyInfoV2AuthIntegrityTagData2 != 0;
   if ((v24 & (v9 >> 1) & v26) != 0)
   {
     v27 = 2;
@@ -3675,7 +3675,7 @@ LABEL_52:
   }
 
   v30 = v28 | v29;
-  if ((v30 & 8) == 0 || (v30 & 0x10) == 0 || !v4 || !v3)
+  if ((v30 & 8) == 0 || (v30 & 0x10) == 0 || !nearbyInfoV2AuthTagData2 || !nearbyInfoV2AuthIntegrityTagData2)
   {
     v30 &= ~0x10u;
   }
@@ -3684,48 +3684,48 @@ LABEL_52:
   if (v8 | v30)
   {
     [v21 appendBytes:&v50 length:1];
-    v33 = self;
-    v31 = [(CBAdvertiserDaemon *)self _encryptNearbyInfoV2Payload:&v50 + 1 payloadLength:1 authTag:v4 irkData:v42 keyInfo:"BT_CBNearbyInfoV2EncryptedFlagsV1" keyInfoLength:33];
+    selfCopy2 = self;
+    v31 = [(CBAdvertiserDaemon *)self _encryptNearbyInfoV2Payload:&v50 + 1 payloadLength:1 authTag:nearbyInfoV2AuthTagData2 irkData:nearbyInfoV2RapportIRKData2 keyInfo:"BT_CBNearbyInfoV2EncryptedFlagsV1" keyInfoLength:33];
     if (!v31)
     {
       goto LABEL_53;
     }
 
     [v22 appendData:v31];
-    if (v4)
+    if (nearbyInfoV2AuthTagData2)
     {
-      [v22 appendData:v4];
+      [v22 appendData:nearbyInfoV2AuthTagData2];
     }
 
-    if (v3)
+    if (nearbyInfoV2AuthIntegrityTagData2)
     {
-      [v22 appendData:v3];
+      [v22 appendData:nearbyInfoV2AuthIntegrityTagData2];
     }
 
-    v32 = v37;
+    v32 = payloadCopy;
     if (HIBYTE(v49))
     {
       v34 = [NSMutableData dataWithCapacity:2];
       [v34 appendBytes:&v49 + 1 length:1];
       [v34 appendBytes:&v49 length:1];
-      v35 = -[CBAdvertiserDaemon _encryptNearbyInfoV2Payload:payloadLength:authTag:irkData:keyInfo:keyInfoLength:](self, "_encryptNearbyInfoV2Payload:payloadLength:authTag:irkData:keyInfo:keyInfoLength:", [v34 bytes], 2, v4, v42, "BT_CBNearbyInfoV2EncryptedPayloadV1", 35);
+      v35 = -[CBAdvertiserDaemon _encryptNearbyInfoV2Payload:payloadLength:authTag:irkData:keyInfo:keyInfoLength:](self, "_encryptNearbyInfoV2Payload:payloadLength:authTag:irkData:keyInfo:keyInfoLength:", [v34 bytes], 2, nearbyInfoV2AuthTagData2, nearbyInfoV2RapportIRKData2, "BT_CBNearbyInfoV2EncryptedPayloadV1", 35);
       [v22 appendData:v35];
 
-      v25 = v3;
+      v25 = nearbyInfoV2AuthIntegrityTagData2;
     }
 
-    if ((v50 & 0x1000) != 0 && v44)
+    if ((v50 & 0x1000) != 0 && nearbyInfoV2NearbyFaceTimeData)
     {
-      v36 = -[CBAdvertiserDaemon _encryptNearbyInfoV2Payload:payloadLength:authTag:irkData:keyInfo:keyInfoLength:](self, "_encryptNearbyInfoV2Payload:payloadLength:authTag:irkData:keyInfo:keyInfoLength:", [v44 bytes], 5, v4, v42, "BT_CBNearbyInfoV2EncryptedNearbyFaceTimePayloadV1", 49);
+      v36 = -[CBAdvertiserDaemon _encryptNearbyInfoV2Payload:payloadLength:authTag:irkData:keyInfo:keyInfoLength:](self, "_encryptNearbyInfoV2Payload:payloadLength:authTag:irkData:keyInfo:keyInfoLength:", [nearbyInfoV2NearbyFaceTimeData bytes], 5, nearbyInfoV2AuthTagData2, nearbyInfoV2RapportIRKData2, "BT_CBNearbyInfoV2EncryptedNearbyFaceTimePayloadV1", 49);
       [v22 appendData:v36];
 
-      v25 = v3;
+      v25 = nearbyInfoV2AuthIntegrityTagData2;
     }
 
-    if (v41 && (v50 & 0x800) != 0)
+    if (randomData2 && (v50 & 0x800) != 0)
     {
-      objc_storeStrong(&v37->var12, v41);
-      [v22 appendData:v41];
+      objc_storeStrong(&payloadCopy->var12, randomData2);
+      [v22 appendData:randomData2];
     }
 
     goto LABEL_52;

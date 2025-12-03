@@ -1,19 +1,19 @@
 @interface BWSmartFramingSceneMonitor
-- (BWSmartFramingSceneMonitor)initWithDynamicFieldOfViewRectsEnabled:(BOOL)a3;
-- (__CFString)_getOptimalFieldOfViewKeyFromCumulativeFieldOfViewWeights:(int)a3 significantFaceOrBodyCount:;
-- (int)resolveSuggestedFieldOfViewRectWithSampleBuffer:(opaqueCMSampleBuffer *)a3 fromFieldOfViewRects:(id)a4 suggestedFieldOfViewRectOut:(CGRect *)a5;
-- (int)resolveSuggestedFieldOfViewWithSampleBuffer:(opaqueCMSampleBuffer *)a3 suggestedFieldOfViewOut:(int *)a4;
-- (int)setSmartFramingFieldOfViewRects:(id)a3;
+- (BWSmartFramingSceneMonitor)initWithDynamicFieldOfViewRectsEnabled:(BOOL)enabled;
+- (__CFString)_getOptimalFieldOfViewKeyFromCumulativeFieldOfViewWeights:(int)weights significantFaceOrBodyCount:;
+- (int)resolveSuggestedFieldOfViewRectWithSampleBuffer:(opaqueCMSampleBuffer *)buffer fromFieldOfViewRects:(id)rects suggestedFieldOfViewRectOut:(CGRect *)out;
+- (int)resolveSuggestedFieldOfViewWithSampleBuffer:(opaqueCMSampleBuffer *)buffer suggestedFieldOfViewOut:(int *)out;
+- (int)setSmartFramingFieldOfViewRects:(id)rects;
 - (uint64_t)_reset;
-- (uint64_t)_resolveSuggestedFieldOfViewWithSampleBuffer:(void *)a3 usingFieldsOfView:(uint64_t)a4 suggestedFieldOfViewOut:(uint64_t)a5 suggestedFieldOfViewRectOut:;
-- (uint64_t)_updateFieldOfViewWeightsUsingFaceRect:(void *)a3 cumulativeFieldOfViewWeights:(CGFloat)a4 fieldsOfView:(CGFloat)a5;
+- (uint64_t)_resolveSuggestedFieldOfViewWithSampleBuffer:(void *)buffer usingFieldsOfView:(uint64_t)view suggestedFieldOfViewOut:(uint64_t)out suggestedFieldOfViewRectOut:;
+- (uint64_t)_updateFieldOfViewWeightsUsingFaceRect:(void *)rect cumulativeFieldOfViewWeights:(CGFloat)weights fieldsOfView:(CGFloat)view;
 - (void)dealloc;
-- (void)setSmartFramingCamGazeProbabilitiesByFaceGroupID:(id)a3;
+- (void)setSmartFramingCamGazeProbabilitiesByFaceGroupID:(id)d;
 @end
 
 @implementation BWSmartFramingSceneMonitor
 
-- (BWSmartFramingSceneMonitor)initWithDynamicFieldOfViewRectsEnabled:(BOOL)a3
+- (BWSmartFramingSceneMonitor)initWithDynamicFieldOfViewRectsEnabled:(BOOL)enabled
 {
   v10.receiver = self;
   v10.super_class = BWSmartFramingSceneMonitor;
@@ -24,7 +24,7 @@
     v4->_optimalFOVHistoryPTS = objc_alloc_init(MEMORY[0x1E695DF70]);
     v4->_faceTracks = objc_alloc_init(MEMORY[0x1E695DF90]);
     v4->_gazeProbabilitiesByFaceGroupID = objc_alloc_init(MEMORY[0x1E695DF90]);
-    LOBYTE(v4->_lastSuggestedFieldOfViewChangePTS.epoch) = a3;
+    LOBYTE(v4->_lastSuggestedFieldOfViewChangePTS.epoch) = enabled;
     v9[0] = @"FieldOfViewNone";
     v9[1] = @"FieldOfViewPortrait";
     v9[2] = @"FieldOfViewZoomedOutPortrait";
@@ -58,7 +58,7 @@
   return v4;
 }
 
-- (int)setSmartFramingFieldOfViewRects:(id)a3
+- (int)setSmartFramingFieldOfViewRects:(id)rects
 {
   if (LOBYTE(self->_lastSuggestedFieldOfViewChangePTS.epoch) == 1)
   {
@@ -67,11 +67,11 @@
 
   else
   {
-    if ([a3 count] < 5)
+    if ([rects count] < 5)
     {
       [(BWSmartFramingSceneMonitor *)self _reset];
 
-      v5 = [a3 copy];
+      v5 = [rects copy];
       result = 0;
       self->_fieldsOfView = v5;
       return result;
@@ -90,7 +90,7 @@
   [(BWSmartFramingSceneMonitor *)&v3 dealloc];
 }
 
-- (int)resolveSuggestedFieldOfViewWithSampleBuffer:(opaqueCMSampleBuffer *)a3 suggestedFieldOfViewOut:(int *)a4
+- (int)resolveSuggestedFieldOfViewWithSampleBuffer:(opaqueCMSampleBuffer *)buffer suggestedFieldOfViewOut:(int *)out
 {
   if (LOBYTE(self->_lastSuggestedFieldOfViewChangePTS.epoch) == 1)
   {
@@ -102,11 +102,11 @@
   {
     fieldsOfView = self->_fieldsOfView;
 
-    return [(BWSmartFramingSceneMonitor *)self _resolveSuggestedFieldOfViewWithSampleBuffer:a3 usingFieldsOfView:fieldsOfView suggestedFieldOfViewOut:a4 suggestedFieldOfViewRectOut:0];
+    return [(BWSmartFramingSceneMonitor *)self _resolveSuggestedFieldOfViewWithSampleBuffer:buffer usingFieldsOfView:fieldsOfView suggestedFieldOfViewOut:out suggestedFieldOfViewRectOut:0];
   }
 }
 
-- (int)resolveSuggestedFieldOfViewRectWithSampleBuffer:(opaqueCMSampleBuffer *)a3 fromFieldOfViewRects:(id)a4 suggestedFieldOfViewRectOut:(CGRect *)a5
+- (int)resolveSuggestedFieldOfViewRectWithSampleBuffer:(opaqueCMSampleBuffer *)buffer fromFieldOfViewRects:(id)rects suggestedFieldOfViewRectOut:(CGRect *)out
 {
   if ((self->_lastSuggestedFieldOfViewChangePTS.epoch & 1) == 0)
   {
@@ -114,7 +114,7 @@
     return -1;
   }
 
-  if ([a4 count] != 2)
+  if ([rects count] != 2)
   {
     [BWSmartFramingSceneMonitor resolveSuggestedFieldOfViewRectWithSampleBuffer:fromFieldOfViewRects:suggestedFieldOfViewRectOut:];
     return -1;
@@ -142,10 +142,10 @@
     v11 = 1;
   }
 
-  v16[0] = [a4 objectAtIndexedSubscript:{v11, *&v12, @"FieldOfViewPortrait"}];
+  v16[0] = [rects objectAtIndexedSubscript:{v11, *&v12, @"FieldOfViewPortrait"}];
   v15[1] = @"FieldOfViewZoomedOutPortrait";
-  v16[1] = [a4 objectAtIndexedSubscript:v10];
-  return -[BWSmartFramingSceneMonitor _resolveSuggestedFieldOfViewWithSampleBuffer:usingFieldsOfView:suggestedFieldOfViewOut:suggestedFieldOfViewRectOut:](self, a3, [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2], 0, a5);
+  v16[1] = [rects objectAtIndexedSubscript:v10];
+  return -[BWSmartFramingSceneMonitor _resolveSuggestedFieldOfViewWithSampleBuffer:usingFieldsOfView:suggestedFieldOfViewOut:suggestedFieldOfViewRectOut:](self, buffer, [MEMORY[0x1E695DF20] dictionaryWithObjects:v16 forKeys:v15 count:2], 0, out);
 }
 
 uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampleBuffer_usingFieldsOfView_suggestedFieldOfViewOut_suggestedFieldOfViewRectOut___block_invoke(uint64_t a1, uint64_t a2)
@@ -185,7 +185,7 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
   return result;
 }
 
-- (uint64_t)_resolveSuggestedFieldOfViewWithSampleBuffer:(void *)a3 usingFieldsOfView:(uint64_t)a4 suggestedFieldOfViewOut:(uint64_t)a5 suggestedFieldOfViewRectOut:
+- (uint64_t)_resolveSuggestedFieldOfViewWithSampleBuffer:(void *)buffer usingFieldsOfView:(uint64_t)view suggestedFieldOfViewOut:(uint64_t)out suggestedFieldOfViewRectOut:
 {
   if (!result)
   {
@@ -193,8 +193,8 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
   }
 
   v9 = result;
-  v187 = [MEMORY[0x1E695DF90] dictionary];
-  if (!a2 || ![a3 count])
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  if (!a2 || ![buffer count])
   {
     return 4294954516;
   }
@@ -203,7 +203,7 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
   CMSampleBufferGetPresentationTimeStamp(&v263, a2);
   v10 = CMGetAttachment(a2, *off_1E798A5A8, 0);
   v11 = *(v9 + 144);
-  v165 = a5;
+  outCopy = out;
   if (v10)
   {
     v12 = v10;
@@ -226,7 +226,7 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
   v13 = [v12 objectForKeyedSubscript:{*off_1E798ACB8, a2}];
   v14 = *off_1E798ACE8;
   obj = [v13 objectForKeyedSubscript:*off_1E798ACE8];
-  v183 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v15 = MEMORY[0x1E695F050];
   v256 = 0u;
   v257 = 0u;
@@ -244,10 +244,10 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
       {
         if (*v257 != v25)
         {
-          objc_enumerationMutation(a3);
+          objc_enumerationMutation(buffer);
         }
 
-        [v187 setObject:&unk_1F224CBA0 forKeyedSubscript:*(*(&v256 + 1) + 8 * v26++)];
+        [dictionary setObject:&unk_1F224CBA0 forKeyedSubscript:*(*(&v256 + 1) + 8 * v26++)];
       }
 
       while (v24 != v26);
@@ -266,7 +266,7 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
   v254 = 0u;
   v253 = 0u;
   v252 = 0u;
-  v30 = OUTLINED_FUNCTION_7_79(v16, v17, v18, v19, v20, v21, v22, v23, sbuf, a4, v165, v168, a3, v175, v179, v183, v187, v191, obj);
+  v30 = OUTLINED_FUNCTION_7_79(v16, v17, v18, v19, v20, v21, v22, v23, sbuf, view, outCopy, v168, buffer, v175, v179, array, dictionary, v191, obj);
   if (v30)
   {
     v31 = v30;
@@ -315,7 +315,7 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
     v35 = 0.0;
   }
 
-  v200 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v55 = [objc_msgSend(v169 objectForKeyedSubscript:{*off_1E798ACB0), "objectForKeyedSubscript:", v14}];
   v248 = 0u;
   v249 = 0u;
@@ -339,7 +339,7 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
         }
 
         v63 = [objc_msgSend(*(*(&v248 + 1) + 8 * j) objectForKeyedSubscript:{v61), "stringValue"}];
-        v64 = [v200 addObject:v63];
+        isPersistentlySignificant = [array2 addObject:v63];
         if (v58)
         {
           v58 = 1;
@@ -347,11 +347,11 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
 
         else
         {
-          v64 = [*(v9 + 8) objectForKeyedSubscript:v63];
-          if (v64)
+          isPersistentlySignificant = [*(v9 + 8) objectForKeyedSubscript:v63];
+          if (isPersistentlySignificant)
           {
-            v64 = [v64 isPersistentlySignificant];
-            v58 = v64;
+            isPersistentlySignificant = [isPersistentlySignificant isPersistentlySignificant];
+            v58 = isPersistentlySignificant;
           }
 
           else
@@ -361,7 +361,7 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
         }
       }
 
-      v57 = OUTLINED_FUNCTION_1_18(v64, v65, &v248, v247);
+      v57 = OUTLINED_FUNCTION_1_18(isPersistentlySignificant, v65, &v248, v247);
     }
 
     while (v57);
@@ -411,18 +411,18 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
     v193 = v73;
     [v74 updateStatesIfNeededUsingFaceRect:v66 faceSize:v67 gazeProbabilitiesData:v70 largestFaceTrack:v27 largestFaceSize:v29 totalDetectedFaceCount:v28 currentPTS:v71 isSignificantOut:v72];
     HIDWORD(v176) = 0;
-    v75 = [MEMORY[0x1E695DF70] array];
+    array3 = [MEMORY[0x1E695DF70] array];
     v76 = *(v9 + 8);
     v245[0] = MEMORY[0x1E69E9820];
     v245[1] = 3221225472;
     v245[2] = __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampleBuffer_usingFieldsOfView_suggestedFieldOfViewOut_suggestedFieldOfViewRectOut___block_invoke;
     v245[3] = &unk_1E799D4A8;
     v245[4] = v184;
-    v245[5] = v200;
+    v245[5] = array2;
     v245[6] = v169;
-    v245[7] = v75;
+    v245[7] = array3;
     [v76 enumerateKeysAndObjectsUsingBlock:v245];
-    v77 = [*(v9 + 8) removeObjectsForKeys:v75];
+    v77 = [*(v9 + 8) removeObjectsForKeys:array3];
     v243 = 0u;
     v244 = 0u;
     v241 = 0u;
@@ -444,8 +444,8 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
           }
 
           v97 = [objc_msgSend(*(*(&v241 + 1) + 8 * v96) objectForKeyedSubscript:{v95), "stringValue"}];
-          v98 = [v97 isEqualToString:v32];
-          if ((v98 & 1) == 0)
+          v114 = [v97 isEqualToString:v32];
+          if ((v114 & 1) == 0)
           {
             if (![*(v9 + 8) objectForKeyedSubscript:v97])
             {
@@ -460,10 +460,10 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
             v114 = v113;
             [*(v9 + 40) objectForKeyedSubscript:v97];
             v115 = OUTLINED_FUNCTION_2_120();
-            v98 = [v116 updateStatesIfNeededUsingFaceRect:v115 faceSize:v110 gazeProbabilitiesData:v112 largestFaceTrack:v114 largestFaceSize:? totalDetectedFaceCount:? currentPTS:? isSignificantOut:?];
+            v114 = [v116 updateStatesIfNeededUsingFaceRect:v115 faceSize:v110 gazeProbabilitiesData:v112 largestFaceTrack:v114 largestFaceSize:? totalDetectedFaceCount:? currentPTS:? isSignificantOut:?];
             if (v246 == 1)
             {
-              v98 = [(BWSmartFramingSceneMonitor *)v9 _updateFieldOfViewWeightsUsingFaceRect:v189 cumulativeFieldOfViewWeights:v173 fieldsOfView:v108, v110, v112, v114];
+              v114 = [(BWSmartFramingSceneMonitor *)v9 _updateFieldOfViewWeightsUsingFaceRect:v189 cumulativeFieldOfViewWeights:v173 fieldsOfView:v108, v110, v112, v114];
               ++HIDWORD(v177);
             }
           }
@@ -472,7 +472,7 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
         }
 
         while (v93 != v96);
-        v85 = OUTLINED_FUNCTION_8_61(v98, v99, v100, v101, v102, v103, v104, v105, sbufb, v164, v167, v170, v173, v177, v181, v185, v189, v194, objb);
+        v85 = OUTLINED_FUNCTION_8_61(v114, v99, v100, v101, v102, v103, v104, v105, sbufb, v164, v167, v170, v173, v177, v181, v185, v189, v194, objb);
         v93 = v85;
       }
 
@@ -483,7 +483,7 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
     v240 = 0u;
     v237 = 0u;
     v238 = 0u;
-    v117 = OUTLINED_FUNCTION_10_55(v85, v86, v87, v88, v89, v90, v91, v92, sbufb, v164, v167, v170, v173, v177, v181, v185, v189, v194, objb, v200, time1.value, *&time1.timescale, time1.epoch, v203.value, *&v203.timescale, v203.epoch, v204, v205, v206, v207, v208, v209, v210, v211, v212, v213, v214, v215, v216, v217, v218, v219, v220, *(&v220 + 1), v221, *(&v221 + 1), v222, *(&v222 + 1), v223, *(&v223 + 1), v224, v225, v226, v227, v228, v229, v230, v231, v232, v233, v234, v235, v236);
+    v117 = OUTLINED_FUNCTION_10_55(v85, v86, v87, v88, v89, v90, v91, v92, sbufb, v164, v167, v170, v173, v177, v181, v185, v189, v194, objb, array2, time1.value, *&time1.timescale, time1.epoch, v203.value, *&v203.timescale, v203.epoch, v204, v205, v206, v207, v208, v209, v210, v211, v212, v213, v214, v215, v216, v217, v218, v219, v220, *(&v220 + 1), v221, *(&v221 + 1), v222, *(&v222 + 1), v223, *(&v223 + 1), v224, v225, v226, v227, v228, v229, v230, v231, v232, v233, v234, v235, v236);
     if (v117)
     {
       v119 = v117;
@@ -500,20 +500,20 @@ uint64_t __145__BWSmartFramingSceneMonitor__resolveSuggestedFieldOfViewWithSampl
           }
 
           v123 = *(*(&v237 + 1) + 8 * k);
-          v124 = [*(v9 + 8) objectForKeyedSubscript:v123];
-          if (v124)
+          isPersistentlySignificant2 = [*(v9 + 8) objectForKeyedSubscript:v123];
+          if (isPersistentlySignificant2)
           {
-            v132 = v124;
-            v124 = [v121 containsObject:v123];
-            if ((v124 & 1) == 0)
+            v132 = isPersistentlySignificant2;
+            isPersistentlySignificant2 = [v121 containsObject:v123];
+            if ((isPersistentlySignificant2 & 1) == 0)
             {
-              v124 = [v132 isPersistentlySignificant];
-              v118 += v124;
+              isPersistentlySignificant2 = [v132 isPersistentlySignificant];
+              v118 += isPersistentlySignificant2;
             }
           }
         }
 
-        v119 = OUTLINED_FUNCTION_10_55(v124, v125, v126, v127, v128, v129, v130, v131, sbufc, v163, v166, v171, v174, v178, v182, v186, v190, v195, objc, v201, time1.value, *&time1.timescale, time1.epoch, v203.value, *&v203.timescale, v203.epoch, v204, v205, v206, v207, v208, v209, v210, v211, v212, v213, v214, v215, v216, v217, v218, v219, v220, *(&v220 + 1), v221, *(&v221 + 1), v222, *(&v222 + 1), v223, *(&v223 + 1), v224, v225, v226, v227, v228, v229, v230, v231, v232, v233, v234, v235, v236);
+        v119 = OUTLINED_FUNCTION_10_55(isPersistentlySignificant2, v125, v126, v127, v128, v129, v130, v131, sbufc, v163, v166, v171, v174, v178, v182, v186, v190, v195, objc, v201, time1.value, *&time1.timescale, time1.epoch, v203.value, *&v203.timescale, v203.epoch, v204, v205, v206, v207, v208, v209, v210, v211, v212, v213, v214, v215, v216, v217, v218, v219, v220, *(&v220 + 1), v221, *(&v221 + 1), v222, *(&v222 + 1), v223, *(&v223 + 1), v224, v225, v226, v227, v228, v229, v230, v231, v232, v233, v234, v235, v236);
       }
 
       while (v119);
@@ -691,16 +691,16 @@ LABEL_108:
   return result;
 }
 
-- (void)setSmartFramingCamGazeProbabilitiesByFaceGroupID:(id)a3
+- (void)setSmartFramingCamGazeProbabilitiesByFaceGroupID:(id)d
 {
   if (self)
   {
 
-    self->_gazeProbabilitiesByFaceGroupID = [a3 mutableCopy];
+    self->_gazeProbabilitiesByFaceGroupID = [d mutableCopy];
   }
 }
 
-- (uint64_t)_updateFieldOfViewWeightsUsingFaceRect:(void *)a3 cumulativeFieldOfViewWeights:(CGFloat)a4 fieldsOfView:(CGFloat)a5
+- (uint64_t)_updateFieldOfViewWeightsUsingFaceRect:(void *)rect cumulativeFieldOfViewWeights:(CGFloat)weights fieldsOfView:(CGFloat)view
 {
   if (result)
   {
@@ -722,15 +722,15 @@ LABEL_108:
         {
           if (*v26 != v14)
           {
-            objc_enumerationMutation(a3);
+            objc_enumerationMutation(rect);
           }
 
           v16 = *(*(&v25 + 1) + 8 * v15);
           FigCFDictionaryGetCGRectIfPresent();
           v31.origin = v23;
           v31.size = v22;
-          v29.origin.x = a4;
-          v29.origin.y = a5;
+          v29.origin.x = weights;
+          v29.origin.y = view;
           v29.size.width = a6;
           v29.size.height = a7;
           v30 = CGRectIntersection(v29, v31);
@@ -754,9 +754,9 @@ LABEL_108:
   return result;
 }
 
-- (__CFString)_getOptimalFieldOfViewKeyFromCumulativeFieldOfViewWeights:(int)a3 significantFaceOrBodyCount:
+- (__CFString)_getOptimalFieldOfViewKeyFromCumulativeFieldOfViewWeights:(int)weights significantFaceOrBodyCount:
 {
-  if (!a1)
+  if (!self)
   {
     return 0;
   }
@@ -765,8 +765,8 @@ LABEL_108:
   v164 = 0u;
   v161 = 0u;
   v162 = 0u;
-  v6 = [a2 allKeys];
-  v7 = [v6 countByEnumeratingWithState:&v161 objects:v160 count:16];
+  allKeys = [a2 allKeys];
+  v7 = [allKeys countByEnumeratingWithState:&v161 objects:v160 count:16];
   if (v7)
   {
     v8 = v7;
@@ -777,14 +777,14 @@ LABEL_108:
       {
         if (*v162 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v161 + 1) + 8 * i);
         v12 = MEMORY[0x1E696AD98];
         [objc_msgSend(a2 objectForKeyedSubscript:{v11), "doubleValue"}];
         v14 = v13;
-        if ([objc_msgSend(*(a1 + 136) objectForKeyedSubscript:{v11), "intValue"}] > a3)
+        if ([objc_msgSend(*(self + 136) objectForKeyedSubscript:{v11), "intValue"}] > weights)
         {
           v15 = 0.0;
         }
@@ -796,14 +796,14 @@ LABEL_108:
 
         [v12 numberWithDouble:v14 * v15];
         [OUTLINED_FUNCTION_4() setObject:? forKeyedSubscript:?];
-        v16 = [*(a1 + 128) indexOfObject:v11];
-        if (v16 < [*(a1 + 128) indexOfObject:BWSmartFramingSceneMonitorFieldOfViewKeyFromType(*(a1 + 36))] && objc_msgSend(objc_msgSend(*(a1 + 136), "objectForKeyedSubscript:", BWSmartFramingSceneMonitorFieldOfViewKeyFromType(*(a1 + 36))), "intValue") <= a3)
+        v16 = [*(self + 128) indexOfObject:v11];
+        if (v16 < [*(self + 128) indexOfObject:BWSmartFramingSceneMonitorFieldOfViewKeyFromType(*(self + 36))] && objc_msgSend(objc_msgSend(*(self + 136), "objectForKeyedSubscript:", BWSmartFramingSceneMonitorFieldOfViewKeyFromType(*(self + 36))), "intValue") <= weights)
         {
           [a2 setObject:&unk_1F224CBA0 forKeyedSubscript:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v161 objects:v160 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v161 objects:v160 count:16];
     }
 
     while (v8);
@@ -817,8 +817,8 @@ LABEL_108:
     return @"FieldOfViewNone";
   }
 
-  v19 = [MEMORY[0x1E695DF70] array];
-  v27 = OUTLINED_FUNCTION_11_54(v19, v20, v21, v22, v23, v24, v25, v26, v62, v65, v68, v71, v74, v77, v80, v83, v86, v89, v92, v95, v98, v101, v104, v107, v110, v113, v115, v117, v119, v121, v123, v125, v127, v129, v131, v133, v135, v137, v139, v141, v143, v145, v147, v149, v151, v153, v155, v157, 0);
+  array = [MEMORY[0x1E695DF70] array];
+  v27 = OUTLINED_FUNCTION_11_54(array, v20, v21, v22, v23, v24, v25, v26, v62, v65, v68, v71, v74, v77, v80, v83, v86, v89, v92, v95, v98, v101, v104, v107, v110, v113, v115, v117, v119, v121, v123, v125, v127, v129, v131, v133, v135, v137, v139, v141, v143, v145, v147, v149, v151, v153, v155, v157, 0);
   if (v27)
   {
     v35 = v27;
@@ -837,7 +837,7 @@ LABEL_108:
         v39 = [objc_msgSend(a2 objectForKeyedSubscript:{v38), "isEqualToNumber:", v17}];
         if (v39)
         {
-          v39 = [v19 addObject:v38];
+          v39 = [array addObject:v38];
         }
 
         ++v37;
@@ -851,7 +851,7 @@ LABEL_108:
     while (v27);
   }
 
-  v47 = *(a1 + 128);
+  v47 = *(self + 128);
   v48 = OUTLINED_FUNCTION_2_0(v27, v28, v29, v30, v31, v32, v33, v34, v63, v66, v69, v72, v75, v78, v81, v84, v87, v90, v93, v96, v99, v102, v105, v108, 0);
   if (!v48)
   {
@@ -870,7 +870,7 @@ LABEL_27:
     }
 
     v52 = *(8 * v51);
-    v53 = [v19 containsObject:v52];
+    v53 = [array containsObject:v52];
     if (v53)
     {
       return v52;

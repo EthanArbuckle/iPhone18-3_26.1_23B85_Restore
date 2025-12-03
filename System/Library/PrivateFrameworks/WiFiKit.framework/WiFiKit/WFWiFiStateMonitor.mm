@@ -1,36 +1,36 @@
 @interface WFWiFiStateMonitor
 - (NSString)identifier;
-- (WFWiFiStateMonitor)initWithClient:(id)a3 handler:(id)a4;
+- (WFWiFiStateMonitor)initWithClient:(id)client handler:(id)handler;
 - (id)description;
-- (void)_asyncGetCurrentNetwork:(id)a3;
-- (void)_autoJoinStateChanged:(id)a3;
-- (void)_carPlayNetworkTypeDidChange:(id)a3;
-- (void)_clientConnectionRestarted:(id)a3;
-- (void)_hostAPStateChanged:(id)a3;
-- (void)_interfaceBecameAvailable:(id)a3;
-- (void)_linkDidChange:(id)a3;
-- (void)_linkQualityDidChange:(id)a3;
-- (void)_notifyStateChanged:(int64_t)a3 newState:(int64_t)a4;
-- (void)_outrankStateDidChange:(id)a3;
-- (void)_powerStateDidChange:(id)a3;
-- (void)_registerInterfaceObserversForInterface:(id)a3;
+- (void)_asyncGetCurrentNetwork:(id)network;
+- (void)_autoJoinStateChanged:(id)changed;
+- (void)_carPlayNetworkTypeDidChange:(id)change;
+- (void)_clientConnectionRestarted:(id)restarted;
+- (void)_hostAPStateChanged:(id)changed;
+- (void)_interfaceBecameAvailable:(id)available;
+- (void)_linkDidChange:(id)change;
+- (void)_linkQualityDidChange:(id)change;
+- (void)_notifyStateChanged:(int64_t)changed newState:(int64_t)state;
+- (void)_outrankStateDidChange:(id)change;
+- (void)_powerStateDidChange:(id)change;
+- (void)_registerInterfaceObserversForInterface:(id)interface;
 - (void)_runManagerCallbackThread;
 - (void)_spawnManagerCallbackThread;
-- (void)_updateState:(id)a3;
-- (void)_updateWiFiUIState:(id)a3;
-- (void)_wifiUIFlagsStateChanged:(id)a3;
+- (void)_updateState:(id)state;
+- (void)_updateWiFiUIState:(id)state;
+- (void)_wifiUIFlagsStateChanged:(id)changed;
 - (void)dealloc;
-- (void)setState:(int64_t)a3;
+- (void)setState:(int64_t)state;
 - (void)startMonitoring;
 - (void)stopMonitoring;
 @end
 
 @implementation WFWiFiStateMonitor
 
-- (WFWiFiStateMonitor)initWithClient:(id)a3 handler:(id)a4
+- (WFWiFiStateMonitor)initWithClient:(id)client handler:(id)handler
 {
-  v7 = a3;
-  v8 = a4;
+  clientCopy = client;
+  handlerCopy = handler;
   v21.receiver = self;
   v21.super_class = WFWiFiStateMonitor;
   v9 = [(WFWiFiStateMonitor *)&v21 init];
@@ -41,7 +41,7 @@
     goto LABEL_10;
   }
 
-  objc_storeStrong(&v9->_client, a3);
+  objc_storeStrong(&v9->_client, client);
   v11 = WFCopyProcessIdentifier();
   if (![(__CFString *)v11 isEqualToString:@"com.apple.TVRemote"])
   {
@@ -59,7 +59,7 @@
       {
         objc_storeStrong(v10 + 12, v11);
         *(v10 + 2) = 0;
-        v17 = _Block_copy(v8);
+        v17 = _Block_copy(handlerCopy);
         v18 = *(v10 + 3);
         *(v10 + 3) = v17;
 
@@ -77,7 +77,7 @@ LABEL_10:
     goto LABEL_7;
   }
 
-  v12 = [[WFMobileWiFiStateMonitor alloc] initWithHandler:v8];
+  v12 = [[WFMobileWiFiStateMonitor alloc] initWithHandler:handlerCopy];
 LABEL_8:
   v19 = v12;
 
@@ -94,41 +94,41 @@ LABEL_8:
     if (WFCurrentLogLevel() && v3 && os_log_type_enabled(v3, v4))
     {
       *buf = 138412290;
-      v19 = self;
+      selfCopy = self;
       _os_log_impl(&dword_273ECD000, v3, v4, "%@: already monitoring", buf, 0xCu);
     }
 
     goto LABEL_12;
   }
 
-  v5 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v5 addObserver:self selector:sel__powerStateDidChange_ name:@"WFClientPowerStateChangedNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__powerStateDidChange_ name:@"WFClientPowerStateChangedNotification" object:0];
 
-  v6 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v6 addObserver:self selector:sel__wifiUIFlagsStateChanged_ name:@"WFClientWiFiUIFlagsStateChangedNotification" object:0];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__wifiUIFlagsStateChanged_ name:@"WFClientWiFiUIFlagsStateChangedNotification" object:0];
 
-  v7 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v7 addObserver:self selector:sel__clientConnectionRestarted_ name:@"WFClientServerRestartedNotification" object:0];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__clientConnectionRestarted_ name:@"WFClientServerRestartedNotification" object:0];
 
-  v8 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v8 addObserver:self selector:sel__interfaceBecameAvailable_ name:@"WFClientInterfaceAvailableNotification" object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__interfaceBecameAvailable_ name:@"WFClientInterfaceAvailableNotification" object:0];
 
-  v9 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v9 addObserver:self selector:sel__autoJoinStateChanged_ name:@"WFClientUserAutoJoinStateChangedNotification" object:0];
+  defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel__autoJoinStateChanged_ name:@"WFClientUserAutoJoinStateChangedNotification" object:0];
 
-  v10 = [(WFWiFiStateMonitor *)self client];
+  client = [(WFWiFiStateMonitor *)self client];
 
-  if (!v10)
+  if (!client)
   {
     objc_initWeak(buf, self);
-    v14 = [(WFWiFiStateMonitor *)self internalQueue];
+    internalQueue = [(WFWiFiStateMonitor *)self internalQueue];
     v16[0] = MEMORY[0x277D85DD0];
     v16[1] = 3221225472;
     v16[2] = __37__WFWiFiStateMonitor_startMonitoring__block_invoke;
     v16[3] = &unk_279EBCDE8;
     objc_copyWeak(&v17, buf);
     v16[4] = self;
-    dispatch_async(v14, v16);
+    dispatch_async(internalQueue, v16);
 
     objc_destroyWeak(&v17);
     objc_destroyWeak(buf);
@@ -137,9 +137,9 @@ LABEL_12:
     return;
   }
 
-  v11 = [(WFWiFiStateMonitor *)self client];
-  v12 = [v11 interface];
-  [(WFWiFiStateMonitor *)self _registerInterfaceObserversForInterface:v12];
+  client2 = [(WFWiFiStateMonitor *)self client];
+  interface = [client2 interface];
+  [(WFWiFiStateMonitor *)self _registerInterfaceObserversForInterface:interface];
 
   [(WFWiFiStateMonitor *)self _updateState];
   v13 = *MEMORY[0x277D85DE8];
@@ -210,35 +210,35 @@ uint64_t __37__WFWiFiStateMonitor_startMonitoring__block_invoke_15(uint64_t a1)
 - (void)_runManagerCallbackThread
 {
   v3 = objc_autoreleasePoolPush();
-  v4 = [MEMORY[0x277CCACC8] currentThread];
-  [v4 setName:@"WFWiFiStateMonitor callback thread"];
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  [currentThread setName:@"WFWiFiStateMonitor callback thread"];
 
   self->_callbackRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
-  v5 = [MEMORY[0x277CBEB00] port];
-  v6 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v5 scheduleInRunLoop:v6 forMode:*MEMORY[0x277CBE738]];
+  port = [MEMORY[0x277CBEB00] port];
+  currentRunLoop = [MEMORY[0x277CBEB88] currentRunLoop];
+  [port scheduleInRunLoop:currentRunLoop forMode:*MEMORY[0x277CBE738]];
 
   objc_autoreleasePoolPop(v3);
-  v7 = [MEMORY[0x277CBEB88] currentRunLoop];
-  [v7 run];
+  currentRunLoop2 = [MEMORY[0x277CBEB88] currentRunLoop];
+  [currentRunLoop2 run];
 }
 
-- (void)_registerInterfaceObserversForInterface:(id)a3
+- (void)_registerInterfaceObserversForInterface:(id)interface
 {
   v21 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  interfaceCopy = interface;
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v5 && os_log_type_enabled(v5, v6))
   {
     v17 = 138412546;
-    v18 = self;
+    selfCopy2 = self;
     v19 = 2112;
-    v20 = v4;
+    v20 = interfaceCopy;
     _os_log_impl(&dword_273ECD000, v5, v6, "%@: using interface %@", &v17, 0x16u);
   }
 
-  if (!v4)
+  if (!interfaceCopy)
   {
     v7 = WFLogForCategory(0);
     v8 = OSLogForWFLogLevel(1uLL);
@@ -247,30 +247,30 @@ uint64_t __37__WFWiFiStateMonitor_startMonitoring__block_invoke_15(uint64_t a1)
       v9 = v7;
       if (os_log_type_enabled(v9, v8))
       {
-        v10 = [(WFWiFiStateMonitor *)self client];
+        client = [(WFWiFiStateMonitor *)self client];
         v17 = 138412546;
-        v18 = self;
+        selfCopy2 = self;
         v19 = 2112;
-        v20 = v10;
+        v20 = client;
         _os_log_impl(&dword_273ECD000, v9, v8, "%@: nil interface (client %@)", &v17, 0x16u);
       }
     }
   }
 
-  v11 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v11 addObserver:self selector:sel__hostAPStateChanged_ name:@"WFInterfaceHostAPStateChangeNotification" object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__hostAPStateChanged_ name:@"WFInterfaceHostAPStateChangeNotification" object:0];
 
-  v12 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v12 addObserver:self selector:sel__linkDidChange_ name:@"WFInterfaceNetworkChangedNotification" object:v4];
+  defaultCenter2 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter2 addObserver:self selector:sel__linkDidChange_ name:@"WFInterfaceNetworkChangedNotification" object:interfaceCopy];
 
-  v13 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v13 addObserver:self selector:sel__linkQualityDidChange_ name:@"WFInterfaceLinkQualityNotification" object:v4];
+  defaultCenter3 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter3 addObserver:self selector:sel__linkQualityDidChange_ name:@"WFInterfaceLinkQualityNotification" object:interfaceCopy];
 
-  v14 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v14 addObserver:self selector:sel__outrankStateDidChange_ name:@"WFClientCellularOutrankWiFiNotification" object:0];
+  defaultCenter4 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter4 addObserver:self selector:sel__outrankStateDidChange_ name:@"WFClientCellularOutrankWiFiNotification" object:0];
 
-  v15 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v15 addObserver:self selector:sel__carPlayNetworkTypeDidChange_ name:@"WFInterfaceCarPlayNetworkTypeDidChangeNotification" object:0];
+  defaultCenter5 = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter5 addObserver:self selector:sel__carPlayNetworkTypeDidChange_ name:@"WFInterfaceCarPlayNetworkTypeDidChangeNotification" object:0];
 
   v16 = *MEMORY[0x277D85DE8];
 }
@@ -280,8 +280,8 @@ uint64_t __37__WFWiFiStateMonitor_startMonitoring__block_invoke_15(uint64_t a1)
   v10 = *MEMORY[0x277D85DE8];
   if ([(WFWiFiStateMonitor *)self monitoring])
   {
-    v3 = [MEMORY[0x277CCAB98] defaultCenter];
-    [v3 removeObserver:self];
+    defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+    [defaultCenter removeObserver:self];
 
     self->_state = 0;
     v4 = *MEMORY[0x277D85DE8];
@@ -296,7 +296,7 @@ uint64_t __37__WFWiFiStateMonitor_startMonitoring__block_invoke_15(uint64_t a1)
     if (WFCurrentLogLevel() >= 3 && v5 && os_log_type_enabled(v5, v6))
     {
       v8 = 138412290;
-      v9 = self;
+      selfCopy = self;
       _os_log_impl(&dword_273ECD000, v5, v6, "%@: not monitoring", &v8, 0xCu);
     }
 
@@ -307,51 +307,51 @@ uint64_t __37__WFWiFiStateMonitor_startMonitoring__block_invoke_15(uint64_t a1)
 - (void)dealloc
 {
   [(WFWiFiStateMonitor *)self stopMonitoring];
-  v3 = [(WFWiFiStateMonitor *)self callbackThread];
-  [v3 cancel];
+  callbackThread = [(WFWiFiStateMonitor *)self callbackThread];
+  [callbackThread cancel];
 
   v4.receiver = self;
   v4.super_class = WFWiFiStateMonitor;
   [(WFWiFiStateMonitor *)&v4 dealloc];
 }
 
-- (void)_updateState:(id)a3
+- (void)_updateState:(id)state
 {
   v19 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v5 && os_log_type_enabled(v5, v6))
   {
     *buf = 138412290;
-    v18 = self;
+    selfCopy3 = self;
     _os_log_impl(&dword_273ECD000, v5, v6, "%@: updating state", buf, 0xCu);
   }
 
-  v7 = [(WFWiFiStateMonitor *)self client];
-  v8 = [v7 cInterface];
+  client = [(WFWiFiStateMonitor *)self client];
+  cInterface = [client cInterface];
 
-  if (v8)
+  if (cInterface)
   {
-    v9 = [(WFWiFiStateMonitor *)self client];
+    client2 = [(WFWiFiStateMonitor *)self client];
 
-    if (v9)
+    if (client2)
     {
       if (_os_feature_enabled_impl())
       {
-        [(WFWiFiStateMonitor *)self _updateWiFiUIState:v4];
+        [(WFWiFiStateMonitor *)self _updateWiFiUIState:stateCopy];
       }
 
       else
       {
-        v13 = [(WFWiFiStateMonitor *)self client];
+        client3 = [(WFWiFiStateMonitor *)self client];
         v15[0] = MEMORY[0x277D85DD0];
         v15[1] = 3221225472;
         v15[2] = __35__WFWiFiStateMonitor__updateState___block_invoke;
         v15[3] = &unk_279EBE0B0;
         v15[4] = self;
-        v16 = v4;
-        [v13 asyncPowered:v15];
+        v16 = stateCopy;
+        [client3 asyncPowered:v15];
       }
 
       goto LABEL_21;
@@ -362,7 +362,7 @@ uint64_t __37__WFWiFiStateMonitor_startMonitoring__block_invoke_15(uint64_t a1)
     if (WFCurrentLogLevel() && v10 && os_log_type_enabled(v10, v11))
     {
       *buf = 138412290;
-      v18 = self;
+      selfCopy3 = self;
       v12 = "%@: client is unavailable";
       goto LABEL_17;
     }
@@ -375,7 +375,7 @@ uint64_t __37__WFWiFiStateMonitor_startMonitoring__block_invoke_15(uint64_t a1)
     if (WFCurrentLogLevel() && v10 && os_log_type_enabled(v10, v11))
     {
       *buf = 138412290;
-      v18 = self;
+      selfCopy3 = self;
       v12 = "%@: interface is unavailable";
 LABEL_17:
       _os_log_impl(&dword_273ECD000, v10, v11, v12, buf, 0xCu);
@@ -384,9 +384,9 @@ LABEL_17:
 
   [(WFWiFiStateMonitor *)self setState:0];
   [(WFWiFiStateMonitor *)self setAssociatedToCarPlayOnly:0];
-  if (v4)
+  if (stateCopy)
   {
-    (*(v4 + 2))(v4, [(WFWiFiStateMonitor *)self state]);
+    (*(stateCopy + 2))(stateCopy, [(WFWiFiStateMonitor *)self state]);
   }
 
 LABEL_21:
@@ -848,28 +848,28 @@ void __35__WFWiFiStateMonitor__updateState___block_invoke_44(uint64_t a1, int a2
   v18 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_updateWiFiUIState:(id)a3
+- (void)_updateWiFiUIState:(id)state
 {
   v35 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  stateCopy = state;
   v26 = 0;
   v27 = &v26;
   v28 = 0x2020000000;
   v29 = 0;
-  v5 = [(WFWiFiStateMonitor *)self client];
-  v6 = [v5 cInterface];
+  client = [(WFWiFiStateMonitor *)self client];
+  cInterface = [client cInterface];
 
-  if (v6)
+  if (cInterface)
   {
-    v7 = [(WFWiFiStateMonitor *)self wifiUIStateFlagsQueue];
+    wifiUIStateFlagsQueue = [(WFWiFiStateMonitor *)self wifiUIStateFlagsQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __41__WFWiFiStateMonitor__updateWiFiUIState___block_invoke_2;
     block[3] = &unk_279EBE100;
     v23[2] = &v26;
-    v23[0] = v6;
+    v23[0] = cInterface;
     v23[1] = self;
-    dispatch_sync(v7, block);
+    dispatch_sync(wifiUIStateFlagsQueue, block);
 
     if ((v27[3] & 2) != 0)
     {
@@ -886,7 +886,7 @@ void __35__WFWiFiStateMonitor__updateState___block_invoke_44(uint64_t a1, int a2
       v18[4] = self;
       p_buf = &buf;
       v21 = &v26;
-      v19 = v4;
+      v19 = stateCopy;
       [(WFWiFiStateMonitor *)self _asyncGetCurrentNetwork:v18];
 
       _Block_object_dispose(&buf, 8);
@@ -913,8 +913,8 @@ void __35__WFWiFiStateMonitor__updateState___block_invoke_44(uint64_t a1, int a2
     v16[2] = __41__WFWiFiStateMonitor__updateWiFiUIState___block_invoke_50;
     v16[3] = &unk_279EBDA98;
     v16[4] = self;
-    v17 = v4;
-    v14 = v4;
+    v17 = stateCopy;
+    v14 = stateCopy;
     dispatch_async(MEMORY[0x277D85CD0], v16);
 
     v12 = v23;
@@ -939,8 +939,8 @@ void __35__WFWiFiStateMonitor__updateState___block_invoke_44(uint64_t a1, int a2
     v24[3] = &unk_279EBDA98;
     v12 = &v25;
     v24[4] = self;
-    v25 = v4;
-    v13 = v4;
+    v25 = stateCopy;
+    v13 = stateCopy;
     dispatch_async(MEMORY[0x277D85CD0], v24);
   }
 
@@ -1341,17 +1341,17 @@ uint64_t __41__WFWiFiStateMonitor__updateWiFiUIState___block_invoke_50(uint64_t 
   return result;
 }
 
-- (void)_asyncGetCurrentNetwork:(id)a3
+- (void)_asyncGetCurrentNetwork:(id)network
 {
-  v4 = a3;
+  networkCopy = network;
   v5 = dispatch_get_global_queue(21, 0);
   v7[0] = MEMORY[0x277D85DD0];
   v7[1] = 3221225472;
   v7[2] = __46__WFWiFiStateMonitor__asyncGetCurrentNetwork___block_invoke;
   v7[3] = &unk_279EBD9A8;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = networkCopy;
+  v6 = networkCopy;
   dispatch_async(v5, v7);
 }
 
@@ -1412,7 +1412,7 @@ void __46__WFWiFiStateMonitor__asyncGetCurrentNetwork___block_invoke_3(uint64_t 
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
   internalQueue = self->_internalQueue;
   v4[0] = MEMORY[0x277D85DD0];
@@ -1420,7 +1420,7 @@ void __46__WFWiFiStateMonitor__asyncGetCurrentNetwork___block_invoke_3(uint64_t 
   v4[2] = __31__WFWiFiStateMonitor_setState___block_invoke;
   v4[3] = &unk_279EBCFB8;
   v4[4] = self;
-  v4[5] = a3;
+  v4[5] = state;
   dispatch_sync(internalQueue, v4);
 }
 
@@ -1489,20 +1489,20 @@ void __31__WFWiFiStateMonitor_setState___block_invoke(uint64_t a1)
   v17 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_notifyStateChanged:(int64_t)a3 newState:(int64_t)a4
+- (void)_notifyStateChanged:(int64_t)changed newState:(int64_t)state
 {
   v14 = *MEMORY[0x277D85DE8];
-  v7 = [(WFWiFiStateMonitor *)self handler];
+  handler = [(WFWiFiStateMonitor *)self handler];
 
-  if (v7)
+  if (handler)
   {
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __51__WFWiFiStateMonitor__notifyStateChanged_newState___block_invoke;
     block[3] = &unk_279EBE178;
     block[4] = self;
-    block[5] = a3;
-    block[6] = a4;
+    block[5] = changed;
+    block[6] = state;
     dispatch_async(MEMORY[0x277D85CD0], block);
   }
 
@@ -1513,7 +1513,7 @@ void __31__WFWiFiStateMonitor_setState___block_invoke(uint64_t a1)
     if (WFCurrentLogLevel() && v8 && os_log_type_enabled(v8, v9))
     {
       *buf = 138412290;
-      v13 = self;
+      selfCopy = self;
       _os_log_impl(&dword_273ECD000, v8, v9, "%@: handler is nil, can't call state changed handler", buf, 0xCu);
     }
   }
@@ -1564,10 +1564,10 @@ void __51__WFWiFiStateMonitor__notifyStateChanged_newState___block_invoke(uint64
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_powerStateDidChange:(id)a3
+- (void)_powerStateDidChange:(id)change
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changeCopy = change;
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v5)
@@ -1575,11 +1575,11 @@ void __51__WFWiFiStateMonitor__notifyStateChanged_newState___block_invoke(uint64
     v7 = v5;
     if (os_log_type_enabled(v7, v6))
     {
-      v8 = [v4 object];
+      object = [changeCopy object];
       v10 = 138412546;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v8;
+      v13 = object;
       _os_log_impl(&dword_273ECD000, v7, v6, "%@: (sender: %@) power state changed", &v10, 0x16u);
     }
   }
@@ -1588,10 +1588,10 @@ void __51__WFWiFiStateMonitor__notifyStateChanged_newState___block_invoke(uint64
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_wifiUIFlagsStateChanged:(id)a3
+- (void)_wifiUIFlagsStateChanged:(id)changed
 {
   v14 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  changedCopy = changed;
   v5 = WFLogForCategory(0);
   v6 = OSLogForWFLogLevel(1uLL);
   if (WFCurrentLogLevel() && v5)
@@ -1599,11 +1599,11 @@ void __51__WFWiFiStateMonitor__notifyStateChanged_newState___block_invoke(uint64
     v7 = v5;
     if (os_log_type_enabled(v7, v6))
     {
-      v8 = [v4 object];
+      object = [changedCopy object];
       v10 = 138412546;
-      v11 = self;
+      selfCopy = self;
       v12 = 2112;
-      v13 = v8;
+      v13 = object;
       _os_log_impl(&dword_273ECD000, v7, v6, "%@: (sender: %@) wifi ui flags state changed", &v10, 0x16u);
     }
   }
@@ -1616,7 +1616,7 @@ void __51__WFWiFiStateMonitor__notifyStateChanged_newState___block_invoke(uint64
   v9 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_linkDidChange:(id)a3
+- (void)_linkDidChange:(id)change
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = WFLogForCategory(0);
@@ -1624,7 +1624,7 @@ void __51__WFWiFiStateMonitor__notifyStateChanged_newState___block_invoke(uint64
   if (WFCurrentLogLevel() && v4 && os_log_type_enabled(v4, v5))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_273ECD000, v4, v5, "%@: link change", &v7, 0xCu);
   }
 
@@ -1632,17 +1632,17 @@ void __51__WFWiFiStateMonitor__notifyStateChanged_newState___block_invoke(uint64
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_linkQualityDidChange:(id)a3
+- (void)_linkQualityDidChange:(id)change
 {
   v23 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [MEMORY[0x277CCACC8] currentThread];
-  v6 = [(WFWiFiStateMonitor *)self callbackThread];
+  changeCopy = change;
+  currentThread = [MEMORY[0x277CCACC8] currentThread];
+  callbackThread = [(WFWiFiStateMonitor *)self callbackThread];
 
-  if (v5 == v6)
+  if (currentThread == callbackThread)
   {
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKey:@"WFInterfaceLinkQualityKey"];
+    userInfo = [changeCopy userInfo];
+    v8 = [userInfo objectForKey:@"WFInterfaceLinkQualityKey"];
     v9 = [v8 copy];
     linkQuality = self->_linkQuality;
     self->_linkQuality = v9;
@@ -1654,12 +1654,12 @@ void __51__WFWiFiStateMonitor__notifyStateChanged_newState___block_invoke(uint64
       v13 = v11;
       if (os_log_type_enabled(v13, v12))
       {
-        v14 = [(WFWiFiStateMonitor *)self linkQuality];
+        linkQuality = [(WFWiFiStateMonitor *)self linkQuality];
         v15 = WFWiFiStateMonitorStringForState([(WFWiFiStateMonitor *)self state]);
         v17 = 138412802;
-        v18 = self;
+        selfCopy = self;
         v19 = 2112;
-        v20 = v14;
+        v20 = linkQuality;
         v21 = 2112;
         v22 = v15;
         _os_log_impl(&dword_273ECD000, v13, v12, "%@: link quality changed %@ (current state %@)", &v17, 0x20u);
@@ -1670,7 +1670,7 @@ void __51__WFWiFiStateMonitor__notifyStateChanged_newState___block_invoke(uint64
   v16 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_clientConnectionRestarted:(id)a3
+- (void)_clientConnectionRestarted:(id)restarted
 {
   v11 = *MEMORY[0x277D85DE8];
   v4 = WFLogForCategory(0);
@@ -1678,17 +1678,17 @@ void __51__WFWiFiStateMonitor__notifyStateChanged_newState___block_invoke(uint64
   if (WFCurrentLogLevel() && v4 && os_log_type_enabled(v4, v5))
   {
     *buf = 138412290;
-    v10 = self;
+    selfCopy = self;
     _os_log_impl(&dword_273ECD000, v4, v5, "%@: client connection restarted", buf, 0xCu);
   }
 
-  v6 = [(WFWiFiStateMonitor *)self state];
+  state = [(WFWiFiStateMonitor *)self state];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __49__WFWiFiStateMonitor__clientConnectionRestarted___block_invoke;
   v8[3] = &unk_279EBE1A0;
   v8[4] = self;
-  v8[5] = v6;
+  v8[5] = state;
   [(WFWiFiStateMonitor *)self _updateState:v8];
   v7 = *MEMORY[0x277D85DE8];
 }
@@ -1702,7 +1702,7 @@ uint64_t __49__WFWiFiStateMonitor__clientConnectionRestarted___block_invoke(uint
   return [v1 _notifyStateChanged:v2 newState:v3];
 }
 
-- (void)_hostAPStateChanged:(id)a3
+- (void)_hostAPStateChanged:(id)changed
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = WFLogForCategory(0);
@@ -1710,7 +1710,7 @@ uint64_t __49__WFWiFiStateMonitor__clientConnectionRestarted___block_invoke(uint
   if (WFCurrentLogLevel() && v4 && os_log_type_enabled(v4, v5))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_273ECD000, v4, v5, "%@: host ap state change", &v7, 0xCu);
   }
 
@@ -1718,7 +1718,7 @@ uint64_t __49__WFWiFiStateMonitor__clientConnectionRestarted___block_invoke(uint
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_interfaceBecameAvailable:(id)a3
+- (void)_interfaceBecameAvailable:(id)available
 {
   v13 = *MEMORY[0x277D85DE8];
   v4 = WFLogForCategory(0);
@@ -1726,21 +1726,21 @@ uint64_t __49__WFWiFiStateMonitor__clientConnectionRestarted___block_invoke(uint
   if (WFCurrentLogLevel() && v4 && os_log_type_enabled(v4, v5))
   {
     *buf = 138412290;
-    v12 = self;
+    selfCopy = self;
     _os_log_impl(&dword_273ECD000, v4, v5, "%@: interface became available", buf, 0xCu);
   }
 
-  v6 = [(WFWiFiStateMonitor *)self state];
+  state = [(WFWiFiStateMonitor *)self state];
   v10[0] = MEMORY[0x277D85DD0];
   v10[1] = 3221225472;
   v10[2] = __48__WFWiFiStateMonitor__interfaceBecameAvailable___block_invoke;
   v10[3] = &unk_279EBE1A0;
   v10[4] = self;
-  v10[5] = v6;
+  v10[5] = state;
   [(WFWiFiStateMonitor *)self _updateState:v10];
-  v7 = [(WFWiFiStateMonitor *)self client];
-  v8 = [v7 interface];
-  [(WFWiFiStateMonitor *)self _registerInterfaceObserversForInterface:v8];
+  client = [(WFWiFiStateMonitor *)self client];
+  interface = [client interface];
+  [(WFWiFiStateMonitor *)self _registerInterfaceObserversForInterface:interface];
 
   v9 = *MEMORY[0x277D85DE8];
 }
@@ -1754,7 +1754,7 @@ uint64_t __48__WFWiFiStateMonitor__interfaceBecameAvailable___block_invoke(uint6
   return [v1 _notifyStateChanged:v2 newState:v3];
 }
 
-- (void)_autoJoinStateChanged:(id)a3
+- (void)_autoJoinStateChanged:(id)changed
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = WFLogForCategory(0);
@@ -1762,7 +1762,7 @@ uint64_t __48__WFWiFiStateMonitor__interfaceBecameAvailable___block_invoke(uint6
   if (WFCurrentLogLevel() && v4 && os_log_type_enabled(v4, v5))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_273ECD000, v4, v5, "%@: auto join state changed", &v7, 0xCu);
   }
 
@@ -1770,7 +1770,7 @@ uint64_t __48__WFWiFiStateMonitor__interfaceBecameAvailable___block_invoke(uint6
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_outrankStateDidChange:(id)a3
+- (void)_outrankStateDidChange:(id)change
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = WFLogForCategory(0);
@@ -1778,7 +1778,7 @@ uint64_t __48__WFWiFiStateMonitor__interfaceBecameAvailable___block_invoke(uint6
   if (WFCurrentLogLevel() && v4 && os_log_type_enabled(v4, v5))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_273ECD000, v4, v5, "%@: cellular outrank state changed", &v7, 0xCu);
   }
 
@@ -1786,7 +1786,7 @@ uint64_t __48__WFWiFiStateMonitor__interfaceBecameAvailable___block_invoke(uint6
   v6 = *MEMORY[0x277D85DE8];
 }
 
-- (void)_carPlayNetworkTypeDidChange:(id)a3
+- (void)_carPlayNetworkTypeDidChange:(id)change
 {
   v9 = *MEMORY[0x277D85DE8];
   v4 = WFLogForCategory(0);
@@ -1794,7 +1794,7 @@ uint64_t __48__WFWiFiStateMonitor__interfaceBecameAvailable___block_invoke(uint6
   if (WFCurrentLogLevel() && v4 && os_log_type_enabled(v4, v5))
   {
     v7 = 138412290;
-    v8 = self;
+    selfCopy = self;
     _os_log_impl(&dword_273ECD000, v4, v5, "%@: car play network type did change", &v7, 0xCu);
   }
 
@@ -1807,25 +1807,25 @@ uint64_t __48__WFWiFiStateMonitor__interfaceBecameAvailable___block_invoke(uint6
   identifier = self->_identifier;
   if (identifier)
   {
-    v3 = identifier;
+    bundleIdentifier2 = identifier;
   }
 
   else
   {
-    v5 = [(WFWiFiStateMonitor *)self bundleIdentifier];
+    bundleIdentifier = [(WFWiFiStateMonitor *)self bundleIdentifier];
 
-    if (v5)
+    if (bundleIdentifier)
     {
-      v3 = [(WFWiFiStateMonitor *)self bundleIdentifier];
+      bundleIdentifier2 = [(WFWiFiStateMonitor *)self bundleIdentifier];
     }
 
     else
     {
-      v3 = @"UNKNOWN";
+      bundleIdentifier2 = @"UNKNOWN";
     }
   }
 
-  return v3;
+  return bundleIdentifier2;
 }
 
 - (id)description
@@ -1833,20 +1833,20 @@ uint64_t __48__WFWiFiStateMonitor__interfaceBecameAvailable___block_invoke(uint6
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(WFWiFiStateMonitor *)self identifier];
+  identifier = [(WFWiFiStateMonitor *)self identifier];
   v7 = WFWiFiStateMonitorStringForState([(WFWiFiStateMonitor *)self state]);
-  v8 = [(WFWiFiStateMonitor *)self currentNetwork];
-  v9 = [v8 networkName];
-  if (v9)
+  currentNetwork = [(WFWiFiStateMonitor *)self currentNetwork];
+  networkName = [currentNetwork networkName];
+  if (networkName)
   {
-    v10 = [(WFWiFiStateMonitor *)self currentNetwork];
-    v11 = [v10 networkName];
-    v12 = [v3 stringWithFormat:@"<%@ : %p identifier='%@' state='%@' network='%@'>", v5, self, v6, v7, v11];
+    currentNetwork2 = [(WFWiFiStateMonitor *)self currentNetwork];
+    networkName2 = [currentNetwork2 networkName];
+    v12 = [v3 stringWithFormat:@"<%@ : %p identifier='%@' state='%@' network='%@'>", v5, self, identifier, v7, networkName2];
   }
 
   else
   {
-    v12 = [v3 stringWithFormat:@"<%@ : %p identifier='%@' state='%@' network='%@'>", v5, self, v6, v7, &stru_2882E4AD8];
+    v12 = [v3 stringWithFormat:@"<%@ : %p identifier='%@' state='%@' network='%@'>", v5, self, identifier, v7, &stru_2882E4AD8];
   }
 
   return v12;

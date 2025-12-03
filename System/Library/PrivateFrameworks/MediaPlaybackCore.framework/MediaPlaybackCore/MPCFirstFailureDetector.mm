@@ -1,14 +1,14 @@
 @interface MPCFirstFailureDetector
-- (BOOL)processSample:(id)a3;
-- (MPCFirstFailureDetector)initWithSamplingTime:(double)a3 renderingLimit:(double)a4;
+- (BOOL)processSample:(id)sample;
+- (MPCFirstFailureDetector)initWithSamplingTime:(double)time renderingLimit:(double)limit;
 @end
 
 @implementation MPCFirstFailureDetector
 
-- (BOOL)processSample:(id)a3
+- (BOOL)processSample:(id)sample
 {
-  v4 = a3;
-  v5 = v4;
+  sampleCopy = sample;
+  v5 = sampleCopy;
   v6 = 0;
   ++self->_currentSample;
   state = self->_state;
@@ -27,7 +27,7 @@
       self->_state = 1;
     }
 
-    [v4 time];
+    [sampleCopy time];
     if (v15 > self->_limit)
     {
       currentSample = self->_currentSample;
@@ -49,7 +49,7 @@
   switch(state)
   {
     case 2:
-      [v4 time];
+      [sampleCopy time];
       if (v9 >= self->_limit)
       {
         v10 = self->_currentSample;
@@ -104,7 +104,7 @@ LABEL_34:
       v6 = 0;
       break;
     case 3:
-      [v4 time];
+      [sampleCopy time];
       if (v12 >= self->_limit)
       {
         v13 = self->_currentSample;
@@ -141,7 +141,7 @@ LABEL_31:
 
       goto LABEL_34;
     case 4:
-      [v4 time];
+      [sampleCopy time];
       v6 = v8 > self->_limit;
       break;
   }
@@ -151,15 +151,15 @@ LABEL_35:
   return v6;
 }
 
-- (MPCFirstFailureDetector)initWithSamplingTime:(double)a3 renderingLimit:(double)a4
+- (MPCFirstFailureDetector)initWithSamplingTime:(double)time renderingLimit:(double)limit
 {
   v7.receiver = self;
   v7.super_class = MPCFirstFailureDetector;
   result = [(MPCFirstFailureDetector *)&v7 init];
   if (result)
   {
-    result->_dT = a3;
-    result->_limit = a4;
+    result->_dT = time;
+    result->_limit = limit;
     result->_currentFailureStartSample = -1;
   }
 

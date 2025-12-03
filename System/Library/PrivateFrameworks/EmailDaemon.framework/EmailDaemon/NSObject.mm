@@ -1,22 +1,22 @@
 @interface NSObject
-- (id)mf_andOperations:(id)a3;
-- (id)mf_orOperations:(id)a3;
+- (id)mf_andOperations:(id)operations;
+- (id)mf_orOperations:(id)operations;
 @end
 
 @implementation NSObject
 
-- (id)mf_andOperations:(id)a3
+- (id)mf_andOperations:(id)operations
 {
-  v3 = a3;
-  v4 = [[_CollectingInvocationTrampoline alloc] initWithCollection:v3 allMustMatch:1];
+  operationsCopy = operations;
+  v4 = [[_CollectingInvocationTrampoline alloc] initWithCollection:operationsCopy allMustMatch:1];
 
   return v4;
 }
 
-- (id)mf_orOperations:(id)a3
+- (id)mf_orOperations:(id)operations
 {
-  v3 = a3;
-  v4 = [[_CollectingInvocationTrampoline alloc] initWithCollection:v3 allMustMatch:0];
+  operationsCopy = operations;
+  v4 = [[_CollectingInvocationTrampoline alloc] initWithCollection:operationsCopy allMustMatch:0];
 
   return v4;
 }

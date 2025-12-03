@@ -1,13 +1,13 @@
 @interface CarMultiButtonStackView
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4;
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event;
 @end
 
 @implementation CarMultiButtonStackView
 
-- (BOOL)pointInside:(CGPoint)a3 withEvent:(id)a4
+- (BOOL)pointInside:(CGPoint)inside withEvent:(id)event
 {
-  y = a3.y;
-  x = a3.x;
+  y = inside.y;
+  x = inside.x;
   [(CarMultiButtonStackView *)self bounds];
   v11 = CGRectInset(v10, -4.0, -4.0);
   v6 = x;

@@ -1,13 +1,13 @@
 @interface HDCloudSyncIgnoredErrorsPipelineStage
-- (HDCloudSyncIgnoredErrorsPipelineStage)initWithConfiguration:(id)a3 cloudState:(id)a4;
-- (HDCloudSyncIgnoredErrorsPipelineStage)initWithConfiguration:(id)a3 cloudState:(id)a4 stage:(id)a5;
+- (HDCloudSyncIgnoredErrorsPipelineStage)initWithConfiguration:(id)configuration cloudState:(id)state;
+- (HDCloudSyncIgnoredErrorsPipelineStage)initWithConfiguration:(id)configuration cloudState:(id)state stage:(id)stage;
 - (id)description;
 - (void)main;
 @end
 
 @implementation HDCloudSyncIgnoredErrorsPipelineStage
 
-- (HDCloudSyncIgnoredErrorsPipelineStage)initWithConfiguration:(id)a3 cloudState:(id)a4
+- (HDCloudSyncIgnoredErrorsPipelineStage)initWithConfiguration:(id)configuration cloudState:(id)state
 {
   v5 = MEMORY[0x277CBEAD8];
   v6 = *MEMORY[0x277CBE660];
@@ -17,16 +17,16 @@
   return 0;
 }
 
-- (HDCloudSyncIgnoredErrorsPipelineStage)initWithConfiguration:(id)a3 cloudState:(id)a4 stage:(id)a5
+- (HDCloudSyncIgnoredErrorsPipelineStage)initWithConfiguration:(id)configuration cloudState:(id)state stage:(id)stage
 {
-  v8 = a5;
+  stageCopy = stage;
   v12.receiver = self;
   v12.super_class = HDCloudSyncIgnoredErrorsPipelineStage;
-  v9 = [(HDCloudSyncPipelineStage *)&v12 initWithConfiguration:a3 cloudState:a4];
+  v9 = [(HDCloudSyncPipelineStage *)&v12 initWithConfiguration:configuration cloudState:state];
   v10 = v9;
   if (v9)
   {
-    [(HDCloudSyncIgnoredErrorsPipelineStage *)v9 setStage:v8];
+    [(HDCloudSyncIgnoredErrorsPipelineStage *)v9 setStage:stageCopy];
   }
 
   return v10;
@@ -34,11 +34,11 @@
 
 - (void)main
 {
-  v4 = [(HDCloudSyncIgnoredErrorsPipelineStage *)self stage];
-  if (!v4)
+  stage = [(HDCloudSyncIgnoredErrorsPipelineStage *)self stage];
+  if (!stage)
   {
-    v12 = [MEMORY[0x277CCA890] currentHandler];
-    [v12 handleFailureInMethod:a2 object:self file:@"HDCloudSyncIgnoredErrorsPipelineStage.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"stage != nil"}];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
+    [currentHandler handleFailureInMethod:a2 object:self file:@"HDCloudSyncIgnoredErrorsPipelineStage.m" lineNumber:33 description:{@"Invalid parameter not satisfying: %@", @"stage != nil"}];
   }
 
   v14[0] = MEMORY[0x277D85DD0];
@@ -46,27 +46,27 @@
   v14[2] = __45__HDCloudSyncIgnoredErrorsPipelineStage_main__block_invoke;
   v14[3] = &unk_278628780;
   v14[4] = self;
-  [v4 setOnSuccess:v14];
+  [stage setOnSuccess:v14];
   v13[0] = MEMORY[0x277D85DD0];
   v13[1] = 3221225472;
   v13[2] = __45__HDCloudSyncIgnoredErrorsPipelineStage_main__block_invoke_2;
   v13[3] = &unk_2786287A8;
   v13[4] = self;
-  [v4 setOnError:v13];
-  v5 = [v4 progress];
-  v6 = [v5 totalUnitCount];
-  v7 = [(HDCloudSyncOperation *)self progress];
-  [v7 setTotalUnitCount:v6];
+  [stage setOnError:v13];
+  progress = [stage progress];
+  totalUnitCount = [progress totalUnitCount];
+  progress2 = [(HDCloudSyncOperation *)self progress];
+  [progress2 setTotalUnitCount:totalUnitCount];
 
-  v8 = [(HDCloudSyncOperation *)self progress];
-  [v8 setCompletedUnitCount:0];
+  progress3 = [(HDCloudSyncOperation *)self progress];
+  [progress3 setCompletedUnitCount:0];
 
-  v9 = [(HDCloudSyncOperation *)self progress];
-  v10 = [v4 progress];
-  v11 = [v4 progress];
-  [v9 addChild:v10 withPendingUnitCount:{objc_msgSend(v11, "totalUnitCount")}];
+  progress4 = [(HDCloudSyncOperation *)self progress];
+  progress5 = [stage progress];
+  progress6 = [stage progress];
+  [progress4 addChild:progress5 withPendingUnitCount:{objc_msgSend(progress6, "totalUnitCount")}];
 
-  [v4 start];
+  [stage start];
 }
 
 void __45__HDCloudSyncIgnoredErrorsPipelineStage_main__block_invoke_2(uint64_t a1, uint64_t a2, void *a3)
@@ -93,8 +93,8 @@ void __45__HDCloudSyncIgnoredErrorsPipelineStage_main__block_invoke_2(uint64_t a
 - (id)description
 {
   v2 = MEMORY[0x277CCACA8];
-  v3 = [(HDCloudSyncIgnoredErrorsPipelineStage *)self stage];
-  v4 = [v2 stringWithFormat:@"[! %@]", v3];
+  stage = [(HDCloudSyncIgnoredErrorsPipelineStage *)self stage];
+  v4 = [v2 stringWithFormat:@"[! %@]", stage];
 
   return v4;
 }

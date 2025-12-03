@@ -1,13 +1,13 @@
 @interface AvatarViewFactoryObjC
-+ (id)makeAccountAvatarViewWithExisting:(id)a3;
++ (id)makeAccountAvatarViewWithExisting:(id)existing;
 @end
 
 @implementation AvatarViewFactoryObjC
 
-+ (id)makeAccountAvatarViewWithExisting:(id)a3
++ (id)makeAccountAvatarViewWithExisting:(id)existing
 {
-  v4 = a3;
-  v5 = static AvatarViewFactoryObjC.makeAccountAvatarView(existing:)(a3);
+  existingCopy = existing;
+  v5 = static AvatarViewFactoryObjC.makeAccountAvatarView(existing:)(existing);
 
   return v5;
 }

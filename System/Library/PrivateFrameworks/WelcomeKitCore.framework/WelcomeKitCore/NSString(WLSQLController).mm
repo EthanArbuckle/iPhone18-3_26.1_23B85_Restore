@@ -7,7 +7,7 @@
 - (id)wl_sqlIDComponentsSeparatedByString:()WLSQLController
 {
   v16 = *MEMORY[0x277D85DE8];
-  v1 = [a1 componentsSeparatedByString:?];
+  v1 = [self componentsSeparatedByString:?];
   v2 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:{objc_msgSend(v1, "count")}];
   v11 = 0u;
   v12 = 0u;

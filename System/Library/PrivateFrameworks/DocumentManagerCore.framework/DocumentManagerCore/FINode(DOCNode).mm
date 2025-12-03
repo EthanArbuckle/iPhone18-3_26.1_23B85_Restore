@@ -58,11 +58,11 @@
 
 - (id)domainDisplayName
 {
-  v1 = [a1 cachedDomain];
-  v2 = v1;
-  if (v1)
+  cachedDomain = [self cachedDomain];
+  v2 = cachedDomain;
+  if (cachedDomain)
   {
-    v3 = DOCLocalizedDisplayName(v1);
+    v3 = DOCLocalizedDisplayName(cachedDomain);
   }
 
   else
@@ -75,67 +75,67 @@
 
 - (id)providerDomainID
 {
-  v2 = [a1 fpDomain];
-  v3 = [v2 identifier];
+  fpDomain = [self fpDomain];
+  identifier = [fpDomain identifier];
 
-  if (!v3)
+  if (!identifier)
   {
-    v4 = [a1 fpItem];
-    v3 = [v4 providerDomainID];
+    fpItem = [self fpItem];
+    identifier = [fpItem providerDomainID];
 
-    if (!v3)
+    if (!identifier)
     {
-      v5 = [a1 domainFromFileURL];
-      v6 = v5;
-      if (v5)
+      domainFromFileURL = [self domainFromFileURL];
+      v6 = domainFromFileURL;
+      if (domainFromFileURL)
       {
-        v3 = [v5 identifier];
+        identifier = [domainFromFileURL identifier];
       }
 
       else
       {
-        v3 = 0;
+        identifier = 0;
       }
     }
   }
 
-  return v3;
+  return identifier;
 }
 
 - (uint64_t)doc_isCollaborationInvitation
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (!v2)
+  if (!fpItem)
   {
     return 0;
   }
 
-  v3 = [a1 fpItem];
-  v4 = [v3 isCollaborationInvitation];
+  fpItem2 = [self fpItem];
+  isCollaborationInvitation = [fpItem2 isCollaborationInvitation];
 
-  return v4;
+  return isCollaborationInvitation;
 }
 
 - (id)customizedFolderIdentifier
 {
   v23 = *MEMORY[0x277D85DE8];
-  if ([a1 isFolder])
+  if ([self isFolder])
   {
-    v2 = [a1 tags];
-    v3 = FolderTagColorForTags(v2);
+    tags = [self tags];
+    v3 = FolderTagColorForTags(tags);
 
-    v4 = [a1 propertyAsNSObject:1668638316];
+    v4 = [self propertyAsNSObject:1668638316];
     objc_opt_class();
     if (((objc_opt_isKindOfClass() & 1) != 0 || v3 >= 1) && ((v5 = v4, (v6 = v5) != 0) || v3 >= 1))
     {
-      v8 = [v5 allValues];
-      v9 = [v8 count];
+      allValues = [v5 allValues];
+      v9 = [allValues count];
       if (v9)
       {
         if (v9 == 1)
         {
-          v10 = [v8 objectAtIndexedSubscript:0];
+          v10 = [allValues objectAtIndexedSubscript:0];
           v11 = [v10 description];
         }
 
@@ -146,7 +146,7 @@
           v19 = 0u;
           v20 = 0u;
           v21 = 0u;
-          v10 = v8;
+          v10 = allValues;
           v12 = [v10 countByEnumeratingWithState:&v18 objects:v22 count:16];
           if (v12)
           {
@@ -199,84 +199,84 @@
 - (DOCNodeThumbnailIdentifier)thumbnailIdentifier
 {
   v2 = [DOCNodeThumbnailIdentifier alloc];
-  v3 = [a1 identifier];
-  v4 = [a1 modificationDate];
-  v5 = [a1 folderType];
-  v6 = [a1 isTopLevelSharedItem];
-  v7 = [a1 isDownloaded];
-  v8 = [a1 filename];
-  v9 = [v8 pathExtension];
-  v10 = [a1 customizedFolderIdentifier];
-  LOBYTE(v13) = [a1 isActionable];
-  v11 = [(DOCNodeThumbnailIdentifier *)v2 initWithNodeIdentifier:v3 modificationDate:v4 contentVersion:0 folderType:v5 isTopLevelSharedItem:v6 isDownloaded:v7 fileExtension:v9 customFolder:v10 isActionable:v13];
+  identifier = [self identifier];
+  modificationDate = [self modificationDate];
+  folderType = [self folderType];
+  isTopLevelSharedItem = [self isTopLevelSharedItem];
+  isDownloaded = [self isDownloaded];
+  filename = [self filename];
+  pathExtension = [filename pathExtension];
+  customizedFolderIdentifier = [self customizedFolderIdentifier];
+  LOBYTE(v13) = [self isActionable];
+  v11 = [(DOCNodeThumbnailIdentifier *)v2 initWithNodeIdentifier:identifier modificationDate:modificationDate contentVersion:0 folderType:folderType isTopLevelSharedItem:isTopLevelSharedItem isDownloaded:isDownloaded fileExtension:pathExtension customFolder:customizedFolderIdentifier isActionable:v13];
 
   return v11;
 }
 
 - (id)fileSize
 {
-  v2 = [a1 documentSize];
-  v3 = v2;
-  if (v2)
+  documentSize = [self documentSize];
+  v3 = documentSize;
+  if (documentSize)
   {
-    v4 = v2;
+    documentSize2 = documentSize;
   }
 
   else
   {
-    v5 = [a1 fpItem];
-    v4 = [v5 documentSize];
+    fpItem = [self fpItem];
+    documentSize2 = [fpItem documentSize];
   }
 
-  return v4;
+  return documentSize2;
 }
 
 - (uint64_t)deepItemCount
 {
-  v2 = [MEMORY[0x277CCACC8] isMainThread];
+  isMainThread = [MEMORY[0x277CCACC8] isMainThread];
 
-  return [a1 propertyAsNumber:1684237940 async:v2 options:4 error:0];
+  return [self propertyAsNumber:1684237940 async:isMainThread options:4 error:0];
 }
 
 - (uint64_t)folderType
 {
-  v1 = [a1 fpItem];
-  v2 = v1;
-  if (v1)
+  fpItem = [self fpItem];
+  v2 = fpItem;
+  if (fpItem)
   {
-    v3 = [v1 folderType];
+    folderType = [fpItem folderType];
   }
 
   else
   {
-    v3 = 0;
+    folderType = 0;
   }
 
-  return v3;
+  return folderType;
 }
 
 - (id)folderIcon
 {
   v2 = +[DOCFeature folderOverlays];
-  v3 = [v2 isEnabled];
+  isEnabled = [v2 isEnabled];
 
-  if ((v3 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
     v7 = objc_alloc(MEMORY[0x277D1B1A8]);
-    v5 = [*MEMORY[0x277CE1D80] identifier];
-    v6 = [v7 initWithType:v5];
+    identifier = [*MEMORY[0x277CE1D80] identifier];
+    folderIcon = [v7 initWithType:identifier];
     goto LABEL_6;
   }
 
-  v4 = [a1 doc_folderIconType];
-  if (v4 != 4)
+  doc_folderIconType = [self doc_folderIconType];
+  if (doc_folderIconType != 4)
   {
-    if (v4 == 6)
+    if (doc_folderIconType == 6)
     {
-      v5 = [a1 fpItem];
-      v6 = [v5 folderIcon];
+      identifier = [self fpItem];
+      folderIcon = [identifier folderIcon];
 LABEL_6:
-      v8 = v6;
+      v8 = folderIcon;
 
       goto LABEL_15;
     }
@@ -284,34 +284,34 @@ LABEL_6:
     goto LABEL_13;
   }
 
-  v9 = [a1 fpItem];
-  if (v9)
+  fpItem = [self fpItem];
+  if (fpItem)
   {
     goto LABEL_8;
   }
 
   v10 = +[DOCFeature dsEnumerationLocal];
-  v11 = [v10 isEnabled];
+  isEnabled2 = [v10 isEnabled];
 
-  if (!v11)
+  if (!isEnabled2)
   {
     goto LABEL_13;
   }
 
-  v9 = [a1 filename];
-  if (![v9 isEqual:@"Downloads"])
+  fpItem = [self filename];
+  if (![fpItem isEqual:@"Downloads"])
   {
 LABEL_8:
 
 LABEL_13:
-    v14 = [a1 propertyAsNSObject:1769171299];
+    v14 = [self propertyAsNSObject:1769171299];
     goto LABEL_14;
   }
 
-  v12 = [a1 parent];
-  v13 = [v12 isRootItem];
+  parent = [self parent];
+  isRootItem = [parent isRootItem];
 
-  if (!v13)
+  if (!isRootItem)
   {
     goto LABEL_13;
   }
@@ -327,37 +327,37 @@ LABEL_15:
 - (id)simplifiedFolderIcon
 {
   v2 = +[DOCFeature folderOverlays];
-  v3 = [v2 isEnabled];
+  isEnabled = [v2 isEnabled];
 
-  if ((v3 & 1) == 0)
+  if ((isEnabled & 1) == 0)
   {
     v7 = objc_alloc(MEMORY[0x277D1B1A8]);
-    v5 = [*MEMORY[0x277CE1D80] identifier];
-    v6 = [v7 initWithType:v5];
+    identifier = [*MEMORY[0x277CE1D80] identifier];
+    simplifiedFolderIcon = [v7 initWithType:identifier];
     goto LABEL_6;
   }
 
-  v4 = [a1 doc_folderIconType];
-  if (v4 == 4)
+  doc_folderIconType = [self doc_folderIconType];
+  if (doc_folderIconType == 4)
   {
-    v9 = [a1 fpItem];
-    if (!v9)
+    fpItem = [self fpItem];
+    if (!fpItem)
     {
       v10 = +[DOCFeature dsEnumerationLocal];
-      v11 = [v10 isEnabled];
+      isEnabled2 = [v10 isEnabled];
 
-      if (!v11)
+      if (!isEnabled2)
       {
         goto LABEL_13;
       }
 
-      v9 = [a1 filename];
-      if ([v9 isEqual:@"Downloads"])
+      fpItem = [self filename];
+      if ([fpItem isEqual:@"Downloads"])
       {
-        v12 = [a1 parent];
-        v13 = [v12 isRootItem];
+        parent = [self parent];
+        isRootItem = [parent isRootItem];
 
-        if (v13)
+        if (isRootItem)
         {
           v8 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithType:@"com.apple.downloads-folder"];
           goto LABEL_18;
@@ -368,17 +368,17 @@ LABEL_15:
     }
 
 LABEL_13:
-    v5 = [*MEMORY[0x277CE1D80] identifier];
+    identifier = [*MEMORY[0x277CE1D80] identifier];
     v14 = objc_alloc_init(MEMORY[0x277D1B190]);
-    v15 = [a1 tags];
-    v16 = FolderTagColorForTags(v15);
+    tags = [self tags];
+    v16 = FolderTagColorForTags(tags);
 
     [v14 setSystemTintColor:{objc_msgSend(MEMORY[0x277D046B0], "folderTintColorForLabel:", v16)}];
-    v17 = [a1 childItemCount];
-    if (v17)
+    childItemCount = [self childItemCount];
+    if (childItemCount)
     {
-      v18 = [a1 childItemCount];
-      [v14 setFolderEmpty:{objc_msgSend(v18, "intValue") == 0}];
+      childItemCount2 = [self childItemCount];
+      [v14 setFolderEmpty:{objc_msgSend(childItemCount2, "intValue") == 0}];
     }
 
     else
@@ -388,20 +388,20 @@ LABEL_13:
 
     [v14 setSymbolName:0];
     [v14 setEmoji:0];
-    v8 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithType:v5 iconConfiguration:v14];
+    v8 = [objc_alloc(MEMORY[0x277D1B1A8]) initWithType:identifier iconConfiguration:v14];
 
     goto LABEL_17;
   }
 
-  if (v4 != 6)
+  if (doc_folderIconType != 6)
   {
     goto LABEL_13;
   }
 
-  v5 = [a1 fpItem];
-  v6 = [v5 simplifiedFolderIcon];
+  identifier = [self fpItem];
+  simplifiedFolderIcon = [identifier simplifiedFolderIcon];
 LABEL_6:
-  v8 = v6;
+  v8 = simplifiedFolderIcon;
 LABEL_17:
 
 LABEL_18:
@@ -411,60 +411,60 @@ LABEL_18:
 
 - (id)iconsFromIconPackage
 {
-  if ([a1 doc_folderIconType] == 1 || (objc_msgSend(a1, "fpItem"), v2 = objc_claimAutoreleasedReturnValue(), v2, !v2))
+  if ([self doc_folderIconType] == 1 || (objc_msgSend(self, "fpItem"), v2 = objc_claimAutoreleasedReturnValue(), v2, !v2))
   {
-    v3 = [a1 propertyAsNSObject:1769173095];
-    v4 = [v3 icons];
+    fpItem = [self propertyAsNSObject:1769173095];
+    icons = [fpItem icons];
   }
 
   else
   {
-    v3 = [a1 fpItem];
-    v4 = [v3 iconsFromIconPackage];
+    fpItem = [self fpItem];
+    icons = [fpItem iconsFromIconPackage];
   }
 
-  v5 = v4;
+  v5 = icons;
 
   return v5;
 }
 
 - (uint64_t)doc_isSMBSharepoint
 {
-  v2 = [a1 providerDomainID];
-  if (DOCProviderDomainIDIsSharedServerDomainID(v2, v3) && [a1 isRootItem])
+  providerDomainID = [self providerDomainID];
+  if (DOCProviderDomainIDIsSharedServerDomainID(providerDomainID, v3) && [self isRootItem])
   {
-    v4 = [a1 parent];
-    v5 = [v4 isRootItem];
+    parent = [self parent];
+    isRootItem = [parent isRootItem];
   }
 
   else
   {
-    v5 = 0;
+    isRootItem = 0;
   }
 
-  return v5;
+  return isRootItem;
 }
 
 - (uint64_t)doc_folderIconType
 {
-  v2 = [a1 fpItem];
-  v3 = v2;
-  if (!v2)
+  fpItem = [self fpItem];
+  v3 = fpItem;
+  if (!fpItem)
   {
     v5 = +[DOCFeature dsEnumerationLocal];
-    v6 = [v5 isEnabled];
+    isEnabled = [v5 isEnabled];
 
-    if (v6)
+    if (isEnabled)
     {
-      v7 = [a1 filename];
-      if ([v7 isEqual:@"Downloads"])
+      filename = [self filename];
+      if ([filename isEqual:@"Downloads"])
       {
-        v8 = [a1 parent];
-        v9 = [v8 isRootItem];
+        parent = [self parent];
+        isRootItem = [parent isRootItem];
 
-        if (v9)
+        if (isRootItem)
         {
-          v4 = 4;
+          doc_folderIconType = 4;
           goto LABEL_9;
         }
       }
@@ -474,30 +474,30 @@ LABEL_18:
       }
     }
 
-    v4 = 0;
+    doc_folderIconType = 0;
     goto LABEL_9;
   }
 
-  v4 = [v2 doc_folderIconType];
+  doc_folderIconType = [fpItem doc_folderIconType];
 LABEL_9:
 
-  return v4;
+  return doc_folderIconType;
 }
 
 - (id)domainFromFileURL
 {
   v25 = *MEMORY[0x277D85DE8];
-  v2 = [a1 fileURL];
-  v3 = [v2 path];
-  v4 = [v3 stringByStandardizingPath];
+  fileURL = [self fileURL];
+  path = [fileURL path];
+  stringByStandardizingPath = [path stringByStandardizingPath];
 
   v5 = +[DOCFeature dsEnumerationLocal];
-  v6 = [v5 isEnabled];
+  isEnabled = [v5 isEnabled];
 
-  if (v6)
+  if (isEnabled)
   {
-    v7 = [MEMORY[0x277D046F0] containerNodePathPrefix];
-    v8 = [v4 hasPrefix:v7];
+    containerNodePathPrefix = [MEMORY[0x277D046F0] containerNodePathPrefix];
+    v8 = [stringByStandardizingPath hasPrefix:containerNodePathPrefix];
 
     if (v8)
     {
@@ -505,11 +505,11 @@ LABEL_9:
       goto LABEL_18;
     }
 
-    if (([v4 hasSuffix:@"/"] & 1) == 0 && objc_msgSend(a1, "isContainer"))
+    if (([stringByStandardizingPath hasSuffix:@"/"] & 1) == 0 && objc_msgSend(self, "isContainer"))
     {
-      v10 = [v4 stringByAppendingString:@"/"];
+      v10 = [stringByStandardizingPath stringByAppendingString:@"/"];
 
-      v4 = v10;
+      stringByStandardizingPath = v10;
     }
   }
 
@@ -517,10 +517,10 @@ LABEL_9:
   v23 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v11 = [MEMORY[0x277CC6420] domainPathCache];
-  v12 = [v11 allKeys];
+  domainPathCache = [MEMORY[0x277CC6420] domainPathCache];
+  allKeys = [domainPathCache allKeys];
 
-  v9 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+  v9 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v9)
   {
     v13 = *v21;
@@ -530,14 +530,14 @@ LABEL_9:
       {
         if (*v21 != v13)
         {
-          objc_enumerationMutation(v12);
+          objc_enumerationMutation(allKeys);
         }
 
         v15 = *(*(&v20 + 1) + 8 * i);
-        v16 = [MEMORY[0x277CC6420] domainPathCache];
-        v17 = [v16 objectForKeyedSubscript:v15];
+        domainPathCache2 = [MEMORY[0x277CC6420] domainPathCache];
+        v17 = [domainPathCache2 objectForKeyedSubscript:v15];
 
-        if ([v4 hasPrefix:v17])
+        if ([stringByStandardizingPath hasPrefix:v17])
         {
           v9 = [MEMORY[0x277CC6420] providerDomainWithID:v15 cachePolicy:3 error:0];
 
@@ -545,7 +545,7 @@ LABEL_9:
         }
       }
 
-      v9 = [v12 countByEnumeratingWithState:&v20 objects:v24 count:16];
+      v9 = [allKeys countByEnumeratingWithState:&v20 objects:v24 count:16];
       if (v9)
       {
         continue;
@@ -565,52 +565,52 @@ LABEL_18:
 
 - (id)providerID
 {
-  v2 = [a1 fpDomain];
-  v3 = [v2 providerID];
+  fpDomain = [self fpDomain];
+  providerID = [fpDomain providerID];
 
-  if (!v3)
+  if (!providerID)
   {
-    v4 = [a1 fpItem];
-    v3 = [v4 providerID];
+    fpItem = [self fpItem];
+    providerID = [fpItem providerID];
 
-    if (!v3)
+    if (!providerID)
     {
-      v5 = [a1 domainFromFileURL];
-      v6 = v5;
-      if (v5)
+      domainFromFileURL = [self domainFromFileURL];
+      v6 = domainFromFileURL;
+      if (domainFromFileURL)
       {
-        v3 = [v5 providerID];
+        providerID = [domainFromFileURL providerID];
       }
 
       else
       {
-        v3 = 0;
+        providerID = 0;
       }
     }
   }
 
-  return v3;
+  return providerID;
 }
 
 - (id)cachedDomain:()DOCNode
 {
   v23 = *MEMORY[0x277D85DE8];
-  v5 = [a1 fpDomain];
-  if (v5)
+  fpDomain = [self fpDomain];
+  if (fpDomain)
   {
-    v6 = v5;
+    v6 = fpDomain;
     goto LABEL_13;
   }
 
-  v7 = [a1 providerDomainID];
-  if (![v7 length])
+  providerDomainID = [self providerDomainID];
+  if (![providerDomainID length])
   {
     v8 = 0;
     goto LABEL_12;
   }
 
   v16 = 0;
-  v8 = [MEMORY[0x277CC6420] providerDomainWithID:v7 cachePolicy:3 error:&v16];
+  v8 = [MEMORY[0x277CC6420] providerDomainWithID:providerDomainID cachePolicy:3 error:&v16];
   v9 = v16;
   if (v9)
   {
@@ -624,13 +624,13 @@ LABEL_18:
     if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
     {
       v14 = v10;
-      v15 = [v9 localizedDescription];
+      localizedDescription = [v9 localizedDescription];
       *buf = 138543874;
-      v18 = a1;
+      selfCopy = self;
       v19 = 2114;
-      v20 = v7;
+      v20 = providerDomainID;
       v21 = 2114;
-      v22 = v15;
+      v22 = localizedDescription;
       _os_log_error_impl(&dword_249340000, v14, OS_LOG_TYPE_ERROR, "Error getting domain for node %{public}@ from domainID: %{public}@, domain error: %{public}@", buf, 0x20u);
 
       if (!a3)
@@ -662,34 +662,34 @@ LABEL_13:
 
 - (id)doc_lastUsedDate
 {
-  v2 = [a1 lastUsedDate];
-  v3 = [MEMORY[0x277CBEAA8] distantPast];
-  v4 = [v2 isEqualToDate:v3];
+  lastUsedDate = [self lastUsedDate];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v4 = [lastUsedDate isEqualToDate:distantPast];
 
   if (v4)
   {
-    v5 = 0;
+    lastUsedDate2 = 0;
   }
 
   else
   {
-    v5 = [a1 lastUsedDate];
+    lastUsedDate2 = [self lastUsedDate];
   }
 
-  return v5;
+  return lastUsedDate2;
 }
 
 - (id)dateForSortingByRecents
 {
-  v2 = [a1 doc_lastUsedDate];
-  if (v2)
+  doc_lastUsedDate = [self doc_lastUsedDate];
+  if (doc_lastUsedDate)
   {
-    [a1 doc_lastUsedDate];
+    [self doc_lastUsedDate];
   }
 
   else
   {
-    [a1 modificationDate];
+    [self modificationDate];
   }
   v3 = ;
 
@@ -698,7 +698,7 @@ LABEL_13:
 
 - (BOOL)isWritable
 {
-  if ([a1 isContainer])
+  if ([self isContainer])
   {
     v2 = 53252;
   }
@@ -708,15 +708,15 @@ LABEL_13:
     v2 = 0x8000;
   }
 
-  return [a1 nodePermissions:v2] != 0;
+  return [self nodePermissions:v2] != 0;
 }
 
 - (uint64_t)isBrowsable
 {
-  result = [a1 isContainer];
+  result = [self isContainer];
   if (result)
   {
-    return [a1 nodePermissions:2048] != 0;
+    return [self nodePermissions:2048] != 0;
   }
 
   return result;
@@ -724,246 +724,246 @@ LABEL_13:
 
 - (uint64_t)isExternalDownloadPlaceholder
 {
-  v1 = [a1 typeIdentifier];
-  v2 = [v1 isEqualToString:@"com.apple.safari.download"];
+  typeIdentifier = [self typeIdentifier];
+  v2 = [typeIdentifier isEqualToString:@"com.apple.safari.download"];
 
   return v2;
 }
 
 - (uint64_t)isCloudItem
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (!v2)
+  if (!fpItem)
   {
     return 0;
   }
 
-  v3 = [a1 fpItem];
-  v4 = [v3 isCloudItem];
+  fpItem2 = [self fpItem];
+  isCloudItem = [fpItem2 isCloudItem];
 
-  return v4;
+  return isCloudItem;
 }
 
 - (uint64_t)isRootItem
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (!v2)
+  if (!fpItem)
   {
     return 0;
   }
 
-  v3 = [a1 fpItem];
-  v4 = [v3 isRootItem];
+  fpItem2 = [self fpItem];
+  isRootItem = [fpItem2 isRootItem];
 
-  return v4;
+  return isRootItem;
 }
 
 - (uint64_t)isAppContainer
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (!v2)
+  if (!fpItem)
   {
     return 0;
   }
 
-  v3 = [a1 fpItem];
-  v4 = [v3 isContainer];
+  fpItem2 = [self fpItem];
+  isContainer = [fpItem2 isContainer];
 
-  return v4;
+  return isContainer;
 }
 
 - (uint64_t)isDownloading
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (v2)
+  if (fpItem)
   {
-    v3 = [a1 fpItem];
-    v4 = [v3 isDownloading];
+    fpItem2 = [self fpItem];
+    isDownloading = [fpItem2 isDownloading];
   }
 
   else
   {
-    v5 = [a1 downloadProgress];
-    v3 = v5;
-    if (v5)
+    downloadProgress = [self downloadProgress];
+    fpItem2 = downloadProgress;
+    if (downloadProgress)
     {
-      v4 = [v5 isFinished] ^ 1;
+      isDownloading = [downloadProgress isFinished] ^ 1;
     }
 
     else
     {
-      v4 = 0;
+      isDownloading = 0;
     }
   }
 
-  return v4;
+  return isDownloading;
 }
 
 - (uint64_t)isDownloaded
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (v2)
+  if (fpItem)
   {
-    v3 = [a1 fpItem];
-    v4 = [v3 isDownloaded];
+    fpItem2 = [self fpItem];
+    isDownloaded = [fpItem2 isDownloaded];
 
-    return v4;
+    return isDownloaded;
   }
 
   else
   {
 
-    return [a1 propertyAsBool:1685548132];
+    return [self propertyAsBool:1685548132];
   }
 }
 
 - (uint64_t)isRecursivelyDownloaded
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (!v2)
+  if (!fpItem)
   {
     return 1;
   }
 
-  v3 = [a1 fpItem];
-  v4 = [v3 isRecursivelyDownloaded];
+  fpItem2 = [self fpItem];
+  isRecursivelyDownloaded = [fpItem2 isRecursivelyDownloaded];
 
-  return v4;
+  return isRecursivelyDownloaded;
 }
 
 - (id)downloadingProgress
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (v2)
+  if (fpItem)
   {
-    v3 = [a1 fpItem];
-    v4 = [v3 downloadingProgress];
+    fpItem2 = [self fpItem];
+    downloadingProgress = [fpItem2 downloadingProgress];
   }
 
   else
   {
-    v4 = [a1 downloadProgress];
+    downloadingProgress = [self downloadProgress];
   }
 
-  return v4;
+  return downloadingProgress;
 }
 
 - (id)downloadingError
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (v2)
+  if (fpItem)
   {
-    v3 = [a1 fpItem];
-    v4 = [v3 downloadingError];
+    fpItem2 = [self fpItem];
+    downloadingError = [fpItem2 downloadingError];
   }
 
   else
   {
-    v4 = 0;
+    downloadingError = 0;
   }
 
-  return v4;
+  return downloadingError;
 }
 
 - (uint64_t)isUploading
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (!v2)
+  if (!fpItem)
   {
     return 0;
   }
 
-  v3 = [a1 fpItem];
-  v4 = [v3 isUploading];
+  fpItem2 = [self fpItem];
+  isUploading = [fpItem2 isUploading];
 
-  return v4;
+  return isUploading;
 }
 
 - (uint64_t)isUploaded
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (!v2)
+  if (!fpItem)
   {
     return 1;
   }
 
-  v3 = [a1 fpItem];
-  v4 = [v3 isUploaded];
+  fpItem2 = [self fpItem];
+  isUploaded = [fpItem2 isUploaded];
 
-  return v4;
+  return isUploaded;
 }
 
 - (id)uploadingProgress
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (v2)
+  if (fpItem)
   {
-    v3 = [a1 fpItem];
-    v4 = [v3 uploadingProgress];
+    fpItem2 = [self fpItem];
+    uploadingProgress = [fpItem2 uploadingProgress];
   }
 
   else
   {
-    v4 = 0;
+    uploadingProgress = 0;
   }
 
-  return v4;
+  return uploadingProgress;
 }
 
 - (id)uploadingError
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (v2)
+  if (fpItem)
   {
-    v3 = [a1 fpItem];
-    v4 = [v3 uploadingError];
+    fpItem2 = [self fpItem];
+    uploadingError = [fpItem2 uploadingError];
   }
 
   else
   {
-    v4 = 0;
+    uploadingError = 0;
   }
 
-  return v4;
+  return uploadingError;
 }
 
 - (id)copyingProgress
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (v2)
+  if (fpItem)
   {
-    v3 = [a1 fpItem];
-    v4 = [v3 copyingProgress];
+    fpItem2 = [self fpItem];
+    copyingProgress = [fpItem2 copyingProgress];
   }
 
   else
   {
-    v4 = [a1 copyProgress];
+    copyingProgress = [self copyProgress];
   }
 
-  return v4;
+  return copyingProgress;
 }
 
 - (uint64_t)isCopying
 {
-  v1 = [a1 copyingProgress];
-  v2 = v1;
-  if (v1)
+  copyingProgress = [self copyingProgress];
+  v2 = copyingProgress;
+  if (copyingProgress)
   {
-    v3 = [v1 isFinished] ^ 1;
+    v3 = [copyingProgress isFinished] ^ 1;
   }
 
   else
@@ -976,66 +976,66 @@ LABEL_13:
 
 - (uint64_t)isItemPinned
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (!v2)
+  if (!fpItem)
   {
     return 0;
   }
 
-  v3 = [a1 fpItem];
-  v4 = [v3 isItemPinned];
+  fpItem2 = [self fpItem];
+  isItemPinned = [fpItem2 isItemPinned];
 
-  return v4;
+  return isItemPinned;
 }
 
 - (uint64_t)isPinnedSubitem
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (!v2)
+  if (!fpItem)
   {
     return 0;
   }
 
-  v3 = [a1 fpItem];
-  v4 = [v3 isPinnedSubitem];
+  fpItem2 = [self fpItem];
+  isPinnedSubitem = [fpItem2 isPinnedSubitem];
 
-  return v4;
+  return isPinnedSubitem;
 }
 
 - (uint64_t)isExcludedFromSync
 {
-  v2 = [a1 fpItem];
+  fpItem = [self fpItem];
 
-  if (!v2)
+  if (!fpItem)
   {
     return 0;
   }
 
-  v3 = [a1 fpItem];
-  v4 = [v3 isExcludedFromSync];
+  fpItem2 = [self fpItem];
+  isExcludedFromSync = [fpItem2 isExcludedFromSync];
 
-  return v4;
+  return isExcludedFromSync;
 }
 
 - (uint64_t)_doc_fileTypeCompare:()DOCNode
 {
   v4 = a3;
-  v5 = [a1 contentType];
-  v6 = [v4 contentType];
+  contentType = [self contentType];
+  contentType2 = [v4 contentType];
 
-  v7 = [v5 _doc_fileTypeCompare:v6];
+  v7 = [contentType _doc_fileTypeCompare:contentType2];
   return v7;
 }
 
 - (uint64_t)localizedStandardTagsCompareNode:()DOCNode
 {
   v4 = a3;
-  v5 = [a1 fpItem];
-  v6 = [v4 fpfs_fpItem];
+  fpItem = [self fpItem];
+  fpfs_fpItem = [v4 fpfs_fpItem];
 
-  v7 = [v5 localizedStandardTagsCompare:v6];
+  v7 = [fpItem localizedStandardTagsCompare:fpfs_fpItem];
   return v7;
 }
 
@@ -1043,23 +1043,23 @@ LABEL_13:
 {
   v4 = a3;
   [v4 encodeInt:1 forKey:@"DOCNodeEncodedTypeKey"];
-  [v4 encodeObject:a1 forKey:@"DOCNodeEncodedObjectKey"];
+  [v4 encodeObject:self forKey:@"DOCNodeEncodedObjectKey"];
 }
 
 - (void)fetchParent:()DOCNode
 {
   v5 = a3;
-  v6 = [a1 parent];
-  (a3)[2](v5, v6, 0);
+  parent = [self parent];
+  (a3)[2](v5, parent, 0);
 }
 
 - (void)fetchParents:()DOCNode
 {
   v8 = a3;
-  v4 = [a1 parent];
-  if (v4)
+  parent = [self parent];
+  if (parent)
   {
-    v5 = v4;
+    v5 = parent;
     v6 = objc_alloc_init(MEMORY[0x277CBEB18]);
     do
     {
@@ -1069,12 +1069,12 @@ LABEL_13:
       }
 
       [v6 addObject:v5];
-      v7 = [v5 parent];
+      parent2 = [v5 parent];
 
-      v5 = v7;
+      v5 = parent2;
     }
 
-    while (v7);
+    while (parent2);
     if ([v5 isRootItem])
     {
       [v6 addObject:v5];
@@ -1092,68 +1092,68 @@ LABEL_13:
 - (void)fetchURL:()DOCNode
 {
   v9 = a3;
-  v4 = [a1 nodeURL];
-  if (v4)
+  nodeURL = [self nodeURL];
+  if (nodeURL)
   {
-    v9[2](v9, v4, 0);
+    v9[2](v9, nodeURL, 0);
   }
 
   else
   {
-    v5 = [a1 fpfs_fpItem];
-    v6 = [a1 cachedDomain];
-    v7 = v6;
-    if (v5 && v6 && ([v6 isUsingFPFS] & 1) == 0)
+    fpfs_fpItem = [self fpfs_fpItem];
+    cachedDomain = [self cachedDomain];
+    v7 = cachedDomain;
+    if (fpfs_fpItem && cachedDomain && ([cachedDomain isUsingFPFS] & 1) == 0)
     {
-      v8 = [MEMORY[0x277CC6408] defaultManager];
-      [v8 fetchURLForItem:v5 completionHandler:v9];
+      defaultManager = [MEMORY[0x277CC6408] defaultManager];
+      [defaultManager fetchURLForItem:fpfs_fpItem completionHandler:v9];
     }
   }
 }
 
 - (id)resolvedNode
 {
-  if (![a1 nodeIsAny:48] || (v2 = objc_msgSend(a1, "copyFromAlias:allowUI:followAliasChain:", 0x40000000, 0, 1)) == 0)
+  if (![self nodeIsAny:48] || (selfCopy = objc_msgSend(self, "copyFromAlias:allowUI:followAliasChain:", 0x40000000, 0, 1)) == 0)
   {
-    v2 = a1;
+    selfCopy = self;
   }
 
-  return v2;
+  return selfCopy;
 }
 
 - (uint64_t)isOrIsAncestorOf:()DOCNode
 {
   v4 = a3;
   v5 = v4;
-  if (a1 == v4)
+  if (self == v4)
   {
-    v7 = 1;
+    parent2 = 1;
   }
 
   else if (v4)
   {
-    v6 = [a1 parent];
-    v7 = [v5 parent];
-    if (v7)
+    parent = [self parent];
+    parent2 = [v5 parent];
+    if (parent2)
     {
       while (1)
       {
-        if (v7 == v6)
+        if (parent2 == parent)
         {
-          LODWORD(v8) = 0;
+          LODWORD(v7Parent) = 0;
           v9 = 1;
           goto LABEL_12;
         }
 
-        if (v7 == a1)
+        if (parent2 == self)
         {
           break;
         }
 
-        v8 = [v7 parent];
+        v7Parent = [parent2 parent];
 
-        v7 = v8;
-        if (!v8)
+        parent2 = v7Parent;
+        if (!v7Parent)
         {
           v9 = 0;
           goto LABEL_12;
@@ -1161,19 +1161,19 @@ LABEL_13:
       }
 
       v9 = 1;
-      LODWORD(v8) = 1;
+      LODWORD(v7Parent) = 1;
 LABEL_12:
 
-      v7 = v9 & v8;
+      parent2 = v9 & v7Parent;
     }
   }
 
   else
   {
-    v7 = 0;
+    parent2 = 0;
   }
 
-  return v7;
+  return parent2;
 }
 
 - (id)_buildFetchError
@@ -1182,7 +1182,7 @@ LABEL_12:
   v2 = MEMORY[0x277CCACA8];
   v3 = _DocumentManagerBundle();
   v4 = [v3 localizedStringForKey:@"FINode (%@) has no fpItem nor fileURL value:impossible to fetch a corresponding FPItem" table:{@"FINode (%@) has no fpItem nor fileURL, impossible to fetch a corresponding FPItem", @"Localizable"}];
-  v5 = [v2 localizedStringWithFormat:v4, a1];
+  v5 = [v2 localizedStringWithFormat:v4, self];
 
   v6 = MEMORY[0x277CCA9B8];
   v12 = *MEMORY[0x277CCA450];
@@ -1210,59 +1210,59 @@ LABEL_12:
 - (void)fetchFPItem:()DOCNode
 {
   v4 = a3;
-  v5 = [a1 fpItem];
-  v6 = [a1 fileURL];
-  v7 = v6;
-  if (v5)
+  fpItem = [self fpItem];
+  fileURL = [self fileURL];
+  v7 = fileURL;
+  if (fpItem)
   {
-    v4[2](v4, v5, 0);
+    v4[2](v4, fpItem, 0);
   }
 
-  else if (v6)
+  else if (fileURL)
   {
-    v8 = [MEMORY[0x277CC6408] defaultManager];
+    defaultManager = [MEMORY[0x277CC6408] defaultManager];
     v10[0] = MEMORY[0x277D85DD0];
     v10[1] = 3221225472;
     v10[2] = __31__FINode_DOCNode__fetchFPItem___block_invoke;
     v10[3] = &unk_278F9B570;
     v11 = v4;
-    [v8 fetchItemForURL:v7 completionHandler:v10];
+    [defaultManager fetchItemForURL:v7 completionHandler:v10];
   }
 
   else
   {
-    v9 = [a1 _buildFetchError];
-    (v4)[2](v4, 0, v9);
+    _buildFetchError = [self _buildFetchError];
+    (v4)[2](v4, 0, _buildFetchError);
   }
 }
 
 - (id)syncFetchFPItem:()DOCNode
 {
-  v5 = [a1 fpItem];
-  v6 = v5;
-  if (v5)
+  fpItem = [self fpItem];
+  v6 = fpItem;
+  if (fpItem)
   {
-    v7 = v5;
+    v7 = fpItem;
   }
 
   else
   {
-    v8 = [a1 fileURL];
-    if (v8)
+    fileURL = [self fileURL];
+    if (fileURL)
     {
-      v9 = [MEMORY[0x277CC6408] defaultManager];
-      v7 = [v9 itemForURL:v8 error:a3];
+      defaultManager = [MEMORY[0x277CC6408] defaultManager];
+      v7 = [defaultManager itemForURL:fileURL error:a3];
     }
 
     else
     {
-      v10 = [a1 _buildFetchError];
-      v9 = v10;
+      _buildFetchError = [self _buildFetchError];
+      defaultManager = _buildFetchError;
       if (a3)
       {
-        v11 = v10;
+        v11 = _buildFetchError;
         v7 = 0;
-        *a3 = v9;
+        *a3 = defaultManager;
       }
 
       else
@@ -1278,18 +1278,18 @@ LABEL_12:
 - (id)doc_eligibleActions
 {
   v10[1] = *MEMORY[0x277D85DE8];
-  v2 = [a1 fpItem];
-  if (v2)
+  fpItem = [self fpItem];
+  if (fpItem)
   {
-    v3 = [MEMORY[0x277CC6408] defaultManager];
-    v10[0] = v2;
+    defaultManager = [MEMORY[0x277CC6408] defaultManager];
+    v10[0] = fpItem;
     v4 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:1];
-    v5 = [v3 eligibleActionsForItems:v4];
+    v5 = [defaultManager eligibleActionsForItems:v4];
 
     goto LABEL_17;
   }
 
-  if ([a1 isContainer])
+  if ([self isContainer])
   {
     v6 = 53252;
   }
@@ -1300,7 +1300,7 @@ LABEL_12:
   }
 
   v5 = objc_alloc_init(MEMORY[0x277CBEB58]);
-  v7 = [a1 nodePermissions:0x7FFFFFFFLL];
+  v7 = [self nodePermissions:0x7FFFFFFFLL];
   if ((v7 & v6) != 0)
   {
     [v5 addObject:*MEMORY[0x277CC6028]];
@@ -1458,7 +1458,7 @@ LABEL_17:
           v14 = *(*(&v44 + 1) + 8 * v13);
           if ([v14 isEqualToString:{v11, v22}])
           {
-            if ([a1 isContainer])
+            if ([self isContainer])
             {
               v15 = 53252;
             }
@@ -1527,7 +1527,7 @@ LABEL_17:
               *buf = 138543618;
               v49 = v14;
               v50 = 2114;
-              v51 = a1;
+              selfCopy2 = self;
               _os_log_error_impl(&dword_249340000, log, OS_LOG_TYPE_ERROR, "Unsupported action: %{public}@. Falling back to FPItem: %{public}@", buf, 0x16u);
             }
           }
@@ -1541,7 +1541,7 @@ LABEL_17:
               *buf = 138543618;
               v49 = v14;
               v50 = 2114;
-              v51 = a1;
+              selfCopy2 = self;
               _os_log_error_impl(&dword_249340000, loga, OS_LOG_TYPE_ERROR, "Unknown/Unexpected action: %{public}@. Falling back to FPItem: %{public}@", buf, 0x16u);
             }
           }
@@ -1558,7 +1558,7 @@ LABEL_17:
 
       if (v9)
       {
-        v18 = [a1 nodePermissions:v9] == v9;
+        v18 = [self nodePermissions:v9] == v9;
       }
 
       else
@@ -1578,8 +1578,8 @@ LABEL_17:
 
     if ([v5 count])
     {
-      v19 = [a1 fpfs_fpItem];
-      v18 = v18 & [v19 canPerformActions:v5];
+      fpfs_fpItem = [self fpfs_fpItem];
+      v18 = v18 & [fpfs_fpItem canPerformActions:v5];
     }
   }
 
@@ -1595,7 +1595,7 @@ LABEL_17:
 - (uint64_t)canPerform:()DOCNode
 {
   v2 = [MEMORY[0x277CBEB98] setWithObject:?];
-  v3 = [a1 canPerformActions:v2];
+  v3 = [self canPerformActions:v2];
 
   return v3;
 }
@@ -1603,11 +1603,11 @@ LABEL_17:
 - (void)_buildFetchError
 {
   v8 = *MEMORY[0x277D85DE8];
-  v3 = a1;
-  v4 = [a2 localizedDescription];
+  selfCopy = self;
+  localizedDescription = [a2 localizedDescription];
   v6 = 138543362;
-  v7 = v4;
-  _os_log_fault_impl(&dword_249340000, v3, OS_LOG_TYPE_FAULT, "FPItem bridging error: %{public}@", &v6, 0xCu);
+  v7 = localizedDescription;
+  _os_log_fault_impl(&dword_249340000, selfCopy, OS_LOG_TYPE_FAULT, "FPItem bridging error: %{public}@", &v6, 0xCu);
 
   v5 = *MEMORY[0x277D85DE8];
 }

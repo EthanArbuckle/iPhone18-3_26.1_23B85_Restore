@@ -1,8 +1,8 @@
 @interface LACUILockView
 - (LACUILockView)init;
 - (void)_setup;
-- (void)setColor:(id)a3;
-- (void)setState:(int64_t)a3;
+- (void)setColor:(id)color;
+- (void)setState:(int64_t)state;
 @end
 
 @implementation LACUILockView
@@ -21,19 +21,19 @@
     packagedView = v2->_packagedView;
     v2->_packagedView = v5;
 
-    v7 = [(LACUIPackagedView *)v2->_packagedView layer];
-    v8 = LACUILayerFindSublayerWithName(v7, @"body");
+    layer = [(LACUIPackagedView *)v2->_packagedView layer];
+    v8 = LACUILayerFindSublayerWithName(layer, @"body");
     body = v2->_body;
     v2->_body = v8;
 
-    v10 = [(LACUIPackagedView *)v2->_packagedView layer];
-    v11 = LACUILayerFindSublayerWithName(v10, @"shackle");
+    layer2 = [(LACUIPackagedView *)v2->_packagedView layer];
+    v11 = LACUILayerFindSublayerWithName(layer2, @"shackle");
     shackle = v2->_shackle;
     v2->_shackle = v11;
 
-    v13 = [MEMORY[0x277D75348] whiteColor];
+    whiteColor = [MEMORY[0x277D75348] whiteColor];
     color = v2->_color;
-    v2->_color = v13;
+    v2->_color = whiteColor;
 
     [(LACUILockView *)v2 _setup];
   }
@@ -41,31 +41,31 @@
   return v2;
 }
 
-- (void)setColor:(id)a3
+- (void)setColor:(id)color
 {
-  objc_storeStrong(&self->_color, a3);
-  v9 = a3;
+  objc_storeStrong(&self->_color, color);
+  colorCopy = color;
   body = self->_body;
-  v6 = v9;
-  -[CAShapeLayer setFillColor:](body, "setFillColor:", [v9 CGColor]);
+  v6 = colorCopy;
+  -[CAShapeLayer setFillColor:](body, "setFillColor:", [colorCopy CGColor]);
   shackle = self->_shackle;
-  v8 = v9;
-  -[CAShapeLayer setStrokeColor:](shackle, "setStrokeColor:", [v9 CGColor]);
+  v8 = colorCopy;
+  -[CAShapeLayer setStrokeColor:](shackle, "setStrokeColor:", [colorCopy CGColor]);
 }
 
-- (void)setState:(int64_t)a3
+- (void)setState:(int64_t)state
 {
-  self->_state = a3;
+  self->_state = state;
   objc_initWeak(&location, self);
   packagedView = self->_packagedView;
-  if (a3 > 2)
+  if (state > 2)
   {
     v6 = @"Invalid";
   }
 
   else
   {
-    v6 = off_27981E828[a3];
+    v6 = off_27981E828[state];
   }
 
   v7[0] = MEMORY[0x277D85DD0];
@@ -73,7 +73,7 @@
   v7[2] = __26__LACUILockView_setState___block_invoke;
   v7[3] = &unk_27981E808;
   objc_copyWeak(v8, &location);
-  v8[1] = a3;
+  v8[1] = state;
   [(LACUIPackagedView *)packagedView setStateNamed:v6 animated:1 completion:v7];
   objc_destroyWeak(v8);
   objc_destroyWeak(&location);
@@ -96,21 +96,21 @@ void __26__LACUILockView_setState___block_invoke(uint64_t a1)
   [(LACUILockView *)self addSubview:self->_packagedView];
   [(LACUIPackagedView *)self->_packagedView setTranslatesAutoresizingMaskIntoConstraints:0];
   v14 = MEMORY[0x277CCAAD0];
-  v17 = [(LACUIPackagedView *)self->_packagedView leadingAnchor];
-  v16 = [(LACUILockView *)self leadingAnchor];
-  v15 = [v17 constraintEqualToAnchor:v16];
+  leadingAnchor = [(LACUIPackagedView *)self->_packagedView leadingAnchor];
+  leadingAnchor2 = [(LACUILockView *)self leadingAnchor];
+  v15 = [leadingAnchor constraintEqualToAnchor:leadingAnchor2];
   v18[0] = v15;
-  v3 = [(LACUIPackagedView *)self->_packagedView trailingAnchor];
-  v4 = [(LACUILockView *)self trailingAnchor];
-  v5 = [v3 constraintEqualToAnchor:v4];
+  trailingAnchor = [(LACUIPackagedView *)self->_packagedView trailingAnchor];
+  trailingAnchor2 = [(LACUILockView *)self trailingAnchor];
+  v5 = [trailingAnchor constraintEqualToAnchor:trailingAnchor2];
   v18[1] = v5;
-  v6 = [(LACUIPackagedView *)self->_packagedView topAnchor];
-  v7 = [(LACUILockView *)self topAnchor];
-  v8 = [v6 constraintEqualToAnchor:v7];
+  topAnchor = [(LACUIPackagedView *)self->_packagedView topAnchor];
+  topAnchor2 = [(LACUILockView *)self topAnchor];
+  v8 = [topAnchor constraintEqualToAnchor:topAnchor2];
   v18[2] = v8;
-  v9 = [(LACUIPackagedView *)self->_packagedView bottomAnchor];
-  v10 = [(LACUILockView *)self bottomAnchor];
-  v11 = [v9 constraintEqualToAnchor:v10];
+  bottomAnchor = [(LACUIPackagedView *)self->_packagedView bottomAnchor];
+  bottomAnchor2 = [(LACUILockView *)self bottomAnchor];
+  v11 = [bottomAnchor constraintEqualToAnchor:bottomAnchor2];
   v18[3] = v11;
   v12 = [MEMORY[0x277CBEA60] arrayWithObjects:v18 count:4];
   [v14 activateConstraints:v12];

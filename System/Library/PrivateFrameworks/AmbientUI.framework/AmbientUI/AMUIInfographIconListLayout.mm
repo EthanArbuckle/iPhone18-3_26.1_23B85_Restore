@@ -1,46 +1,46 @@
 @interface AMUIInfographIconListLayout
 + (BOOL)_shouldUseLegacyContentMargins;
 - (AMUIInfographIconListLayout)init;
-- (AMUIInfographIconListLayout)initWithRootFolderVisualConfiguration:(id)a3;
-- (AMUIInfographIconListLayout)initWithRootFolderVisualConfiguration:(id)a3 screenType:(unint64_t)a4;
-- (CGSize)iconSpacingForOrientation:(int64_t)a3;
+- (AMUIInfographIconListLayout)initWithRootFolderVisualConfiguration:(id)configuration;
+- (AMUIInfographIconListLayout)initWithRootFolderVisualConfiguration:(id)configuration screenType:(unint64_t)type;
+- (CGSize)iconSpacingForOrientation:(int64_t)orientation;
 - (SBHIconAccessoryVisualConfiguration)iconAccessoryVisualConfiguration;
 - (SBHIconGridSizeClassSet)supportedIconGridSizeClasses;
 - (SBHRootFolderVisualConfiguration)rootFolderVisualConfiguration;
 - (SBIconImageInfo)_defaultSmallWidgetIconImageInfo;
-- (UIEdgeInsets)_contentMarginsForMarginRatio:(double)a3;
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3;
+- (UIEdgeInsets)_contentMarginsForMarginRatio:(double)ratio;
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation;
 - (UIEdgeInsets)widgetContentMargins;
 - (UIEdgeInsets)widgetContentMarginsWithBackgroundRemoved;
 - (double)_widgetCornerRadius;
-- (double)_widgetDimensionForScreenType:(unint64_t)a3;
+- (double)_widgetDimensionForScreenType:(unint64_t)type;
 - (double)widgetScaleFactor;
 - (id)_defaultIconListLayout;
-- (void)iconListView:(id)a3 willLayoutIconView:(id)a4;
+- (void)iconListView:(id)view willLayoutIconView:(id)iconView;
 @end
 
 @implementation AMUIInfographIconListLayout
 
-- (AMUIInfographIconListLayout)initWithRootFolderVisualConfiguration:(id)a3 screenType:(unint64_t)a4
+- (AMUIInfographIconListLayout)initWithRootFolderVisualConfiguration:(id)configuration screenType:(unint64_t)type
 {
-  v7 = a3;
+  configurationCopy = configuration;
   v11.receiver = self;
   v11.super_class = AMUIInfographIconListLayout;
   v8 = [(AMUIInfographIconListLayout *)&v11 init];
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_visualConfiguration, a3);
-    v9->_screenType = a4;
+    objc_storeStrong(&v8->_visualConfiguration, configuration);
+    v9->_screenType = type;
   }
 
   return v9;
 }
 
-- (AMUIInfographIconListLayout)initWithRootFolderVisualConfiguration:(id)a3
+- (AMUIInfographIconListLayout)initWithRootFolderVisualConfiguration:(id)configuration
 {
-  v4 = a3;
-  v5 = [(AMUIInfographIconListLayout *)self initWithRootFolderVisualConfiguration:v4 screenType:SBHScreenTypeForCurrentDevice()];
+  configurationCopy = configuration;
+  v5 = [(AMUIInfographIconListLayout *)self initWithRootFolderVisualConfiguration:configurationCopy screenType:SBHScreenTypeForCurrentDevice()];
 
   return v5;
 }
@@ -60,7 +60,7 @@
   return v2;
 }
 
-- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)a3
+- (UIEdgeInsets)layoutInsetsForOrientation:(int64_t)orientation
 {
   p_screenType = &self->_screenType;
   screenType = self->_screenType;
@@ -93,20 +93,20 @@
 
 - (SBHIconAccessoryVisualConfiguration)iconAccessoryVisualConfiguration
 {
-  v3 = [(AMUIInfographIconListLayout *)self _defaultIconListLayout];
-  v4 = [v3 iconAccessoryVisualConfiguration];
+  _defaultIconListLayout = [(AMUIInfographIconListLayout *)self _defaultIconListLayout];
+  iconAccessoryVisualConfiguration = [_defaultIconListLayout iconAccessoryVisualConfiguration];
   [(AMUIInfographIconListLayout *)self widgetScaleFactor];
   v6 = v5;
-  [v4 size];
+  [iconAccessoryVisualConfiguration size];
   v10 = v8;
   v11 = v7;
   CGAffineTransformMakeScale(&v12, v6, v6);
-  [v4 setSize:{vmlaq_n_f64(vmulq_n_f64(*&v12.c, v10), *&v12.a, v11)}];
+  [iconAccessoryVisualConfiguration setSize:{vmlaq_n_f64(vmulq_n_f64(*&v12.c, v10), *&v12.a, v11)}];
 
-  return v4;
+  return iconAccessoryVisualConfiguration;
 }
 
-- (double)_widgetDimensionForScreenType:(unint64_t)a3
+- (double)_widgetDimensionForScreenType:(unint64_t)type
 {
   SBHGetScreenSpecification();
   [(AMUIInfographIconListLayout *)self layoutInsetsForOrientation:3];
@@ -131,8 +131,8 @@
 
 - (SBIconImageInfo)_defaultSmallWidgetIconImageInfo
 {
-  v3 = [(AMUIInfographIconListLayout *)self _defaultIconListLayout];
-  [v3 iconImageInfoForGridSizeClass:*MEMORY[0x277D66548]];
+  _defaultIconListLayout = [(AMUIInfographIconListLayout *)self _defaultIconListLayout];
+  [_defaultIconListLayout iconImageInfoForGridSizeClass:*MEMORY[0x277D66548]];
 
   return result;
 }
@@ -173,7 +173,7 @@
   return result;
 }
 
-- (UIEdgeInsets)_contentMarginsForMarginRatio:(double)a3
+- (UIEdgeInsets)_contentMarginsForMarginRatio:(double)ratio
 {
   if ([objc_opt_class() _shouldUseLegacyContentMargins])
   {
@@ -186,7 +186,7 @@
   else
   {
     [(AMUIInfographIconListLayout *)self _widgetDimensionForScreenType:self->_screenType];
-    v6 = v7 * a3;
+    v6 = v7 * ratio;
   }
 
   v8 = v6;
@@ -199,7 +199,7 @@
   return result;
 }
 
-- (CGSize)iconSpacingForOrientation:(int64_t)a3
+- (CGSize)iconSpacingForOrientation:(int64_t)orientation
 {
   p_screenType = &self->_screenType;
   screenType = self->_screenType;
@@ -225,11 +225,11 @@
   return result;
 }
 
-- (void)iconListView:(id)a3 willLayoutIconView:(id)a4
+- (void)iconListView:(id)view willLayoutIconView:(id)iconView
 {
-  v4 = a4;
-  v10 = [v4 icon];
-  if ([v10 isPlaceholder])
+  iconViewCopy = iconView;
+  icon = [iconViewCopy icon];
+  if ([icon isPlaceholder])
   {
     [MEMORY[0x277D75348] clearColor];
   }
@@ -239,16 +239,16 @@
     [MEMORY[0x277D75348] blackColor];
   }
   v5 = ;
-  v6 = [v4 contentContainerView];
-  [v6 setBackgroundColor:v5];
+  contentContainerView = [iconViewCopy contentContainerView];
+  [contentContainerView setBackgroundColor:v5];
 
-  v7 = [v4 contentContainerView];
-  [v4 iconImageInfo];
-  [v7 _setContinuousCornerRadius:v8];
+  contentContainerView2 = [iconViewCopy contentContainerView];
+  [iconViewCopy iconImageInfo];
+  [contentContainerView2 _setContinuousCornerRadius:v8];
 
-  v9 = [v4 contentContainerView];
+  contentContainerView3 = [iconViewCopy contentContainerView];
 
-  [v9 setNeedsLayout];
+  [contentContainerView3 setNeedsLayout];
 }
 
 + (BOOL)_shouldUseLegacyContentMargins

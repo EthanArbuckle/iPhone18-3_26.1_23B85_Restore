@@ -1,28 +1,28 @@
 @interface HUFaceRecognitionUserPhotosLibrarySettingsModuleController
-- (HUFaceRecognitionUserPhotosLibrarySettingsModuleController)initWithModule:(id)a3;
-- (HUFaceRecognitionUserPhotosLibrarySettingsModuleController)initWithModule:(id)a3 host:(id)a4;
-- (unint64_t)didSelectItem:(id)a3;
-- (void)setupCell:(id)a3 forItem:(id)a4;
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5;
+- (HUFaceRecognitionUserPhotosLibrarySettingsModuleController)initWithModule:(id)module;
+- (HUFaceRecognitionUserPhotosLibrarySettingsModuleController)initWithModule:(id)module host:(id)host;
+- (unint64_t)didSelectItem:(id)item;
+- (void)setupCell:(id)cell forItem:(id)item;
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated;
 @end
 
 @implementation HUFaceRecognitionUserPhotosLibrarySettingsModuleController
 
-- (HUFaceRecognitionUserPhotosLibrarySettingsModuleController)initWithModule:(id)a3
+- (HUFaceRecognitionUserPhotosLibrarySettingsModuleController)initWithModule:(id)module
 {
-  v5 = [MEMORY[0x277CCA890] currentHandler];
+  currentHandler = [MEMORY[0x277CCA890] currentHandler];
   v6 = NSStringFromSelector(sel_initWithModule_host_);
-  [v5 handleFailureInMethod:a2 object:self file:@"HUFaceRecognitionUserPhotosLibrarySettingsModuleController.m" lineNumber:23 description:{@"%s is unavailable; use %@ instead", "-[HUFaceRecognitionUserPhotosLibrarySettingsModuleController initWithModule:]", v6}];
+  [currentHandler handleFailureInMethod:a2 object:self file:@"HUFaceRecognitionUserPhotosLibrarySettingsModuleController.m" lineNumber:23 description:{@"%s is unavailable; use %@ instead", "-[HUFaceRecognitionUserPhotosLibrarySettingsModuleController initWithModule:]", v6}];
 
   return 0;
 }
 
-- (HUFaceRecognitionUserPhotosLibrarySettingsModuleController)initWithModule:(id)a3 host:(id)a4
+- (HUFaceRecognitionUserPhotosLibrarySettingsModuleController)initWithModule:(id)module host:(id)host
 {
-  v6 = a3;
-  v7 = a4;
+  moduleCopy = module;
+  hostCopy = host;
   v8 = objc_opt_class();
-  v9 = v6;
+  v9 = moduleCopy;
   if (v9)
   {
     if (objc_opt_isKindOfClass())
@@ -41,9 +41,9 @@
       goto LABEL_8;
     }
 
-    v12 = [MEMORY[0x277CCA890] currentHandler];
+    currentHandler = [MEMORY[0x277CCA890] currentHandler];
     v13 = [MEMORY[0x277CCACA8] stringWithUTF8String:{"id  _Nullable NAAssertCast(Class  _Nonnull __unsafe_unretained, id  _Nonnull __strong)"}];
-    [v12 handleFailureInFunction:v13 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
+    [currentHandler handleFailureInFunction:v13 file:@"NSObject+NAAdditions.h" lineNumber:54 description:{@"Expected class of %@ but was %@", v8, objc_opt_class()}];
   }
 
   v11 = 0;
@@ -55,20 +55,20 @@ LABEL_8:
   v15 = v14;
   if (v14)
   {
-    [(HUItemModuleController *)v14 setHost:v7];
+    [(HUItemModuleController *)v14 setHost:hostCopy];
   }
 
   return v15;
 }
 
-- (void)setupCell:(id)a3 forItem:(id)a4
+- (void)setupCell:(id)cell forItem:(id)item
 {
-  v6 = a3;
+  cellCopy = cell;
   v17.receiver = self;
   v17.super_class = HUFaceRecognitionUserPhotosLibrarySettingsModuleController;
-  [(HUItemModuleController *)&v17 setupCell:v6 forItem:a4];
+  [(HUItemModuleController *)&v17 setupCell:cellCopy forItem:item];
   objc_opt_class();
-  v7 = v6;
+  v7 = cellCopy;
   if (objc_opt_isKindOfClass())
   {
     v8 = v7;
@@ -88,10 +88,10 @@ LABEL_8:
   }
 
   objc_opt_class();
-  v10 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v11 = v10;
+    v11 = module;
   }
 
   else
@@ -101,29 +101,29 @@ LABEL_8:
 
   v12 = v11;
 
-  v13 = [v12 shouldUseProxCardPresentationStyle];
-  if (v13)
+  shouldUseProxCardPresentationStyle = [v12 shouldUseProxCardPresentationStyle];
+  if (shouldUseProxCardPresentationStyle)
   {
     v14 = objc_opt_new();
     [v7 setBackgroundView:v14];
 
-    v15 = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
-    v16 = [v7 backgroundView];
-    [v16 setBackgroundColor:v15];
+    secondarySystemBackgroundColor = [MEMORY[0x277D75348] secondarySystemBackgroundColor];
+    backgroundView = [v7 backgroundView];
+    [backgroundView setBackgroundColor:secondarySystemBackgroundColor];
   }
 }
 
-- (void)updateCell:(id)a3 forItem:(id)a4 animated:(BOOL)a5
+- (void)updateCell:(id)cell forItem:(id)item animated:(BOOL)animated
 {
-  v5 = a5;
+  animatedCopy = animated;
   v12.receiver = self;
   v12.super_class = HUFaceRecognitionUserPhotosLibrarySettingsModuleController;
-  v7 = a4;
-  v8 = a3;
-  [(HUItemModuleController *)&v12 updateCell:v8 forItem:v7 animated:v5];
-  v9 = [v7 latestResults];
+  itemCopy = item;
+  cellCopy = cell;
+  [(HUItemModuleController *)&v12 updateCell:cellCopy forItem:itemCopy animated:animatedCopy];
+  latestResults = [itemCopy latestResults];
 
-  v10 = [v9 objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
+  v10 = [latestResults objectForKeyedSubscript:*MEMORY[0x277D13FE8]];
   if ([v10 BOOLValue])
   {
     v11 = 3;
@@ -134,17 +134,17 @@ LABEL_8:
     v11 = 0;
   }
 
-  [v8 setAccessoryType:v11];
+  [cellCopy setAccessoryType:v11];
 }
 
-- (unint64_t)didSelectItem:(id)a3
+- (unint64_t)didSelectItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
-  v5 = [(HUItemModuleController *)self module];
+  module = [(HUItemModuleController *)self module];
   if (objc_opt_isKindOfClass())
   {
-    v6 = v5;
+    v6 = module;
   }
 
   else
@@ -156,36 +156,36 @@ LABEL_8:
 
   if (([MEMORY[0x277D14CE8] isCloudPhotosOn] & 1) == 0)
   {
-    v8 = [v7 photoLibraryAccessNever];
-    v9 = [v4 isEqual:v8];
+    photoLibraryAccessNever = [v7 photoLibraryAccessNever];
+    v9 = [itemCopy isEqual:photoLibraryAccessNever];
 
     if ((v9 & 1) == 0)
     {
       v14 = MEMORY[0x277D75110];
       v15 = _HULocalizedStringWithDefaultValue(@"HUFaceRecognitionTurnOniCloudPhotosAlertTitle", @"HUFaceRecognitionTurnOniCloudPhotosAlertTitle", 1);
       v16 = _HULocalizedStringWithDefaultValue(@"HUFaceRecognitionTurnOniCloudPhotosAlertMessage", @"HUFaceRecognitionTurnOniCloudPhotosAlertMessage", 1);
-      v12 = [v14 alertControllerWithTitle:v15 message:v16 preferredStyle:1];
+      module3 = [v14 alertControllerWithTitle:v15 message:v16 preferredStyle:1];
 
       v17 = MEMORY[0x277D750F8];
       v18 = _HULocalizedStringWithDefaultValue(@"HUOkTitle", @"HUOkTitle", 1);
       v19 = [v17 actionWithTitle:v18 style:1 handler:0];
-      [v12 addAction:v19];
+      [module3 addAction:v19];
 
-      v20 = [HUViewControllerPresentationRequest requestWithViewController:v12];
-      v21 = [(HUItemModuleController *)self host];
-      v22 = [v21 moduleController:self presentViewControllerForRequest:v20];
+      v20 = [HUViewControllerPresentationRequest requestWithViewController:module3];
+      host = [(HUItemModuleController *)self host];
+      v22 = [host moduleController:self presentViewControllerForRequest:v20];
 
       goto LABEL_9;
     }
   }
 
-  v10 = [(HUItemModuleController *)self module];
+  module2 = [(HUItemModuleController *)self module];
   v11 = objc_opt_respondsToSelector();
 
   if (v11)
   {
-    v12 = [(HUItemModuleController *)self module];
-    v13 = [v12 didSelectItem:v4];
+    module3 = [(HUItemModuleController *)self module];
+    v13 = [module3 didSelectItem:itemCopy];
 LABEL_9:
   }
 

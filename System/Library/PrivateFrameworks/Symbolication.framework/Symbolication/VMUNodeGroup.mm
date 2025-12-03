@@ -1,20 +1,20 @@
 @interface VMUNodeGroup
-- (VMUNodeGroup)initWithName:(id)a3 graph:(id)a4;
+- (VMUNodeGroup)initWithName:(id)name graph:(id)graph;
 - (void)_createGroup;
-- (void)addNode:(unsigned int)a3;
+- (void)addNode:(unsigned int)node;
 - (void)dealloc;
-- (void)enumerateNodesWithBlock:(id)a3;
+- (void)enumerateNodesWithBlock:(id)block;
 @end
 
 @implementation VMUNodeGroup
 
-- (VMUNodeGroup)initWithName:(id)a3 graph:(id)a4
+- (VMUNodeGroup)initWithName:(id)name graph:(id)graph
 {
-  objc_storeStrong(&self->_name, a3);
-  v6 = a4;
-  v7 = [v6 nodeNamespaceSize];
+  objc_storeStrong(&self->_name, name);
+  graphCopy = graph;
+  nodeNamespaceSize = [graphCopy nodeNamespaceSize];
 
-  self->_nodeNamespaceSize = v7;
+  self->_nodeNamespaceSize = nodeNamespaceSize;
   self->_singleNode = -1;
   return self;
 }
@@ -57,7 +57,7 @@
   }
 }
 
-- (void)addNode:(unsigned int)a3
+- (void)addNode:(unsigned int)node
 {
   if (!self->_group)
   {
@@ -71,7 +71,7 @@
         while (1)
         {
           v8 = *inlineNodes++;
-          if (v8 == a3)
+          if (v8 == node)
           {
             return;
           }
@@ -89,18 +89,18 @@ LABEL_14:
       self->_count = count + 1;
       p_singleNode = &self->_inlineNodes[v9];
 LABEL_15:
-      *p_singleNode = a3;
+      *p_singleNode = node;
       return;
     }
   }
 
   [(VMUNodeGroup *)self _createGroup];
   group = self->_group;
-  if (*group > a3)
+  if (*group > node)
   {
-    v11 = group + (a3 >> 3);
+    v11 = group + (node >> 3);
     v12 = v11[4];
-    v13 = 1 << (a3 & 7);
+    v13 = 1 << (node & 7);
     if ((v13 & v12) != 0)
     {
       return;
@@ -118,10 +118,10 @@ LABEL_15:
   }
 }
 
-- (void)enumerateNodesWithBlock:(id)a3
+- (void)enumerateNodesWithBlock:(id)block
 {
-  v4 = a3;
-  v5 = v4;
+  blockCopy = block;
+  v5 = blockCopy;
   group = self->_group;
   if (group)
   {
@@ -129,7 +129,7 @@ LABEL_15:
     v17[1] = 3221225472;
     v18 = __40__VMUNodeGroup_enumerateNodesWithBlock___block_invoke;
     v19 = &unk_1E8279DB8;
-    v20 = v4;
+    v20 = blockCopy;
     v7 = v17;
     v10 = *group;
     v8 = group + 1;

@@ -1,33 +1,33 @@
 @interface WFNextHourPrecipitationMinute
-- (WFNextHourPrecipitationMinute)initWithCoder:(id)a3;
-- (WFNextHourPrecipitationMinute)initWithIntensity:(double)a3 chance:(double)a4 perceivedIntensity:(double)a5 date:(id)a6;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
+- (WFNextHourPrecipitationMinute)initWithCoder:(id)coder;
+- (WFNextHourPrecipitationMinute)initWithIntensity:(double)intensity chance:(double)chance perceivedIntensity:(double)perceivedIntensity date:(id)date;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation WFNextHourPrecipitationMinute
 
-- (WFNextHourPrecipitationMinute)initWithIntensity:(double)a3 chance:(double)a4 perceivedIntensity:(double)a5 date:(id)a6
+- (WFNextHourPrecipitationMinute)initWithIntensity:(double)intensity chance:(double)chance perceivedIntensity:(double)perceivedIntensity date:(id)date
 {
-  v11 = a6;
+  dateCopy = date;
   v15.receiver = self;
   v15.super_class = WFNextHourPrecipitationMinute;
   v12 = [(WFNextHourPrecipitationMinute *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    v12->_intensity = a3;
-    v12->_chance = a4;
-    v12->_perceivedIntensity = a5;
-    objc_storeStrong(&v12->_date, a6);
+    v12->_intensity = intensity;
+    v12->_chance = chance;
+    v12->_perceivedIntensity = perceivedIntensity;
+    objc_storeStrong(&v12->_date, date);
   }
 
   return v13;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
   *(v4 + 8) = self->_intensity;
   *(v4 + 16) = self->_chance;
   *(v4 + 24) = self->_perceivedIntensity;
@@ -38,29 +38,29 @@
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   [(WFNextHourPrecipitationMinute *)self intensity];
-  [v4 encodeDouble:@"WFNextHourPrecipitationMinuteIntensityKey" forKey:?];
+  [coderCopy encodeDouble:@"WFNextHourPrecipitationMinuteIntensityKey" forKey:?];
   [(WFNextHourPrecipitationMinute *)self chance];
-  [v4 encodeDouble:@"WFNextHourPrecipitationMinuteChanceKey" forKey:?];
+  [coderCopy encodeDouble:@"WFNextHourPrecipitationMinuteChanceKey" forKey:?];
   [(WFNextHourPrecipitationMinute *)self perceivedIntensity];
-  [v4 encodeDouble:@"WFNextHourPrecipitationMinutePerceivedIntensityKey" forKey:?];
-  v5 = [(WFNextHourPrecipitationMinute *)self date];
-  [v4 encodeObject:v5 forKey:@"WFNextHourPrecipitationMinuteDateKey"];
+  [coderCopy encodeDouble:@"WFNextHourPrecipitationMinutePerceivedIntensityKey" forKey:?];
+  date = [(WFNextHourPrecipitationMinute *)self date];
+  [coderCopy encodeObject:date forKey:@"WFNextHourPrecipitationMinuteDateKey"];
 }
 
-- (WFNextHourPrecipitationMinute)initWithCoder:(id)a3
+- (WFNextHourPrecipitationMinute)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"WFNextHourPrecipitationMinuteIntensityKey"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"WFNextHourPrecipitationMinuteIntensityKey"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"WFNextHourPrecipitationMinuteChanceKey"];
+  [coderCopy decodeDoubleForKey:@"WFNextHourPrecipitationMinuteChanceKey"];
   v8 = v7;
-  [v4 decodeDoubleForKey:@"WFNextHourPrecipitationMinutePerceivedIntensityKey"];
+  [coderCopy decodeDoubleForKey:@"WFNextHourPrecipitationMinutePerceivedIntensityKey"];
   v10 = v9;
-  v11 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"WFNextHourPrecipitationMinuteDateKey"];
+  v11 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"WFNextHourPrecipitationMinuteDateKey"];
 
   v12 = [(WFNextHourPrecipitationMinute *)self initWithIntensity:v11 chance:v6 perceivedIntensity:v8 date:v10];
   return v12;

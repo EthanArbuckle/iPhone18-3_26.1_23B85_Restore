@@ -1,10 +1,10 @@
 @interface PerformUpdatesTask
 - (NSArray)jobResults;
 - (_TtC9appstored18PerformUpdatesTask)init;
-- (_TtC9appstored18PerformUpdatesTask)initWithLogKey:(id)a3;
-- (_TtC9appstored18PerformUpdatesTask)initWithOrderedBundleIDs:(id)a3 context:(id)a4 bag:(id)a5;
+- (_TtC9appstored18PerformUpdatesTask)initWithLogKey:(id)key;
+- (_TtC9appstored18PerformUpdatesTask)initWithOrderedBundleIDs:(id)ds context:(id)context bag:(id)bag;
 - (_TtC9appstored18PerformUpdatesTask)initWithoutKeepAlive;
-- (void)mainWithCompletionHandler:(id)a3;
+- (void)mainWithCompletionHandler:(id)handler;
 @end
 
 @implementation PerformUpdatesTask
@@ -12,7 +12,7 @@
 - (NSArray)jobResults
 {
   v2 = (self + OBJC_IVAR____TtC9appstored18PerformUpdatesTask_output);
-  v3 = self;
+  selfCopy = self;
   os_unfair_lock_lock(v2);
 
   os_unfair_lock_unlock(v2);
@@ -23,9 +23,9 @@
   return v4.super.isa;
 }
 
-- (_TtC9appstored18PerformUpdatesTask)initWithOrderedBundleIDs:(id)a3 context:(id)a4 bag:(id)a5
+- (_TtC9appstored18PerformUpdatesTask)initWithOrderedBundleIDs:(id)ds context:(id)context bag:(id)bag
 {
-  if (a3)
+  if (ds)
   {
     v7 = static Array._unconditionallyBridgeFromObjectiveC(_:)();
   }
@@ -35,15 +35,15 @@
     v7 = 0;
   }
 
-  return sub_1000A81D4(v7, a4, a5);
+  return sub_1000A81D4(v7, context, bag);
 }
 
-- (void)mainWithCompletionHandler:(id)a3
+- (void)mainWithCompletionHandler:(id)handler
 {
   v5 = sub_100085D40(&qword_10059C3E0);
   __chkstk_darwin(v5 - 8);
   v7 = &v14 - v6;
-  v8 = _Block_copy(a3);
+  v8 = _Block_copy(handler);
   v9 = swift_allocObject();
   *(v9 + 16) = v8;
   *(v9 + 24) = self;
@@ -59,7 +59,7 @@
   v12[3] = 0;
   v12[4] = &unk_1004366D0;
   v12[5] = v11;
-  v13 = self;
+  selfCopy = self;
   sub_1001BD9B4(0, 0, v7, &unk_1004344E0, v12);
 }
 
@@ -70,7 +70,7 @@
   return result;
 }
 
-- (_TtC9appstored18PerformUpdatesTask)initWithLogKey:(id)a3
+- (_TtC9appstored18PerformUpdatesTask)initWithLogKey:(id)key
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

@@ -1,13 +1,13 @@
 @interface AXHapticMusicController
 - (BOOL)_showUserStudySpecifiers;
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4;
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4;
-- (id)enhancedPercussionEnabled:(id)a3;
-- (id)enhancedVocalsEnabled:(id)a3;
-- (id)hapticMusicEnabled:(id)a3;
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path;
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path;
+- (id)enhancedPercussionEnabled:(id)enabled;
+- (id)enhancedVocalsEnabled:(id)enabled;
+- (id)hapticMusicEnabled:(id)enabled;
 - (id)specifiers;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point;
 - (void)_endNowPlayingSession;
 - (void)_fetchUpdatePlayingInformation;
 - (void)_generateAppSpecifiers;
@@ -15,23 +15,23 @@
 - (void)_playHapticIntensitySample;
 - (void)_startSample;
 - (void)_stopSample;
-- (void)_toggleSample:(id)a3;
+- (void)_toggleSample:(id)sample;
 - (void)_updateNowPlayingGroup;
-- (void)_updateNowPlayingGroupWithInfo:(id)a3;
-- (void)_updateNowPlayingInfo:(double)a3;
-- (void)_updatePlaySampleString:(id)a3 reload:(BOOL)a4;
+- (void)_updateNowPlayingGroupWithInfo:(id)info;
+- (void)_updateNowPlayingInfo:(double)info;
+- (void)_updatePlaySampleString:(id)string reload:(BOOL)reload;
 - (void)dealloc;
-- (void)doneButtonTapped:(id)a3;
-- (void)setEnhancedPercussionEnabled:(id)a3 specifier:(id)a4;
-- (void)setEnhancedVocalsEnabled:(id)a3 specifier:(id)a4;
-- (void)setHapticMusicEnabled:(id)a3 specifier:(id)a4;
+- (void)doneButtonTapped:(id)tapped;
+- (void)setEnhancedPercussionEnabled:(id)enabled specifier:(id)specifier;
+- (void)setEnhancedVocalsEnabled:(id)enabled specifier:(id)specifier;
+- (void)setHapticMusicEnabled:(id)enabled specifier:(id)specifier;
 - (void)showHapticMusicLearnMore;
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4;
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5;
-- (void)toggleSample:(id)a3;
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path;
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path;
+- (void)toggleSample:(id)sample;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
-- (void)viewWillDisappear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
+- (void)viewWillDisappear:(BOOL)disappear;
 - (void)willResignActive;
 @end
 
@@ -90,11 +90,11 @@ void __38__AXHapticMusicController_viewDidLoad__block_invoke(uint64_t a1, void *
   [WeakRetained _fetchUpdatePlayingInformation];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
   v4.receiver = self;
   v4.super_class = AXHapticMusicController;
-  [(AccessibilitySettingsBaseController *)&v4 viewWillAppear:a3];
+  [(AccessibilitySettingsBaseController *)&v4 viewWillAppear:appear];
   [(AXHapticMusicController *)self _updateNowPlayingGroup];
 }
 
@@ -201,12 +201,12 @@ void __38__AXHapticMusicController_viewDidLoad__block_invoke(uint64_t a1, void *
 
             v21 = *(*(&v66 + 1) + 8 * i);
             v74[0] = @"headerLabel";
-            v22 = [v21 itemTitle];
-            v75[0] = v22;
+            itemTitle = [v21 itemTitle];
+            v75[0] = itemTitle;
             v74[1] = @"contentLabel";
-            v23 = [v21 itemDescription];
+            itemDescription = [v21 itemDescription];
             v74[2] = @"alreadyLocalized";
-            v75[1] = v23;
+            v75[1] = itemDescription;
             v75[2] = &__kCFBooleanTrue;
             v24 = [NSDictionary dictionaryWithObjects:v75 forKeys:v74 count:3];
             [v14 addObject:v24];
@@ -247,9 +247,9 @@ void __38__AXHapticMusicController_viewDidLoad__block_invoke(uint64_t a1, void *
         v30 = [PSSpecifier groupSpecifierWithName:v29];
 
         v31 = +[AXSettings sharedInstance];
-        v32 = [v31 hapticMusicAlgorithmSelections];
+        hapticMusicAlgorithmSelections = [v31 hapticMusicAlgorithmSelections];
 
-        [v32 containsObject:SHHapticPatternAlgorithmVocals];
+        [hapticMusicAlgorithmSelections containsObject:SHHapticPatternAlgorithmVocals];
         v33 = AXUILocalizedStringForKeyWithTable();
         [v30 setProperty:v33 forKey:PSFooterTextGroupKey];
 
@@ -488,8 +488,8 @@ LABEL_20:
     if (!self->_client)
     {
       v3 = [AXUIClient alloc];
-      v4 = [(AXHapticMusicController *)self _serviceName];
-      v5 = [v3 initWithIdentifier:@"HapticMusicClient-Settings" serviceBundleName:v4];
+      _serviceName = [(AXHapticMusicController *)self _serviceName];
+      v5 = [v3 initWithIdentifier:@"HapticMusicClient-Settings" serviceBundleName:_serviceName];
       client = self->_client;
       self->_client = v5;
     }
@@ -548,14 +548,14 @@ void __57__AXHapticMusicController__fetchUpdatePlayingInformation__block_invoke(
   }
 }
 
-- (void)_updateNowPlayingGroupWithInfo:(id)a3
+- (void)_updateNowPlayingGroupWithInfo:(id)info
 {
-  v28 = a3;
-  v4 = [(AXHapticMusicController *)self specifiers];
-  v5 = [v4 ax_filteredArrayUsingBlock:&__block_literal_global_434];
+  infoCopy = info;
+  specifiers = [(AXHapticMusicController *)self specifiers];
+  v5 = [specifiers ax_filteredArrayUsingBlock:&__block_literal_global_434];
 
   [(AXHapticMusicController *)self setSpecifiers:v5];
-  if ([v28 count])
+  if ([infoCopy count])
   {
     v6 = +[NSMutableArray array];
     v26 = [PSSpecifier groupSpecifierWithName:@"Track Information (INTERNAL)"];
@@ -563,21 +563,21 @@ void __57__AXHapticMusicController__fetchUpdatePlayingInformation__block_invoke(
     [v26 setProperty:@"NowPlayingGroup" forKey:@"Group"];
     [v6 addObject:v26];
     v7 = [PSSpecifier preferenceSpecifierNamed:@"Title" target:self set:0 get:"_nowPlayingValue:" detail:0 cell:4 edit:0];
-    v8 = [v28 objectForKeyedSubscript:@"title"];
+    v8 = [infoCopy objectForKeyedSubscript:@"title"];
     [v7 setProperty:v8 forKey:@"titleValue"];
 
     [v7 setProperty:@"NowPlayingGroup" forKey:@"Group"];
     [v6 addObject:v7];
     v9 = [PSSpecifier preferenceSpecifierNamed:@"Artist" target:self set:0 get:"_nowPlayingValue:" detail:0 cell:4 edit:0];
 
-    v10 = [v28 objectForKeyedSubscript:@"artist"];
+    v10 = [infoCopy objectForKeyedSubscript:@"artist"];
     [v9 setProperty:v10 forKey:@"titleValue"];
 
     [v9 setProperty:@"NowPlayingGroup" forKey:@"Group"];
     [v6 addObject:v9];
     v11 = [PSSpecifier preferenceSpecifierNamed:@"Adam ID" target:self set:0 get:"_nowPlayingValue:" detail:0 cell:4 edit:0];
 
-    [v28 objectForKeyedSubscript:@"adamID"];
+    [infoCopy objectForKeyedSubscript:@"adamID"];
     v12 = v27 = v5;
     v13 = [NSString stringWithFormat:@"%@", v12];
     [v11 setProperty:v13 forKey:@"titleValue"];
@@ -586,38 +586,38 @@ void __57__AXHapticMusicController__fetchUpdatePlayingInformation__block_invoke(
     [v6 addObject:v11];
     v14 = [PSSpecifier preferenceSpecifierNamed:@"Haptics Version" target:self set:0 get:"_nowPlayingValue:" detail:0 cell:4 edit:0];
 
-    v15 = [v28 objectForKeyedSubscript:@"version"];
+    v15 = [infoCopy objectForKeyedSubscript:@"version"];
     [v14 setProperty:v15 forKey:@"titleValue"];
 
     [v14 setProperty:@"NowPlayingGroup" forKey:@"Group"];
     [v6 addObject:v14];
     v16 = [PSSpecifier preferenceSpecifierNamed:@"Created On" target:self set:0 get:"_nowPlayingValue:" detail:0 cell:4 edit:0];
 
-    v17 = [v28 objectForKeyedSubscript:@"createdDate"];
+    v17 = [infoCopy objectForKeyedSubscript:@"createdDate"];
     [v16 setProperty:v17 forKey:@"titleValue"];
 
     [v16 setProperty:@"NowPlayingGroup" forKey:@"Group"];
     [v6 addObject:v16];
     v18 = [PSSpecifier preferenceSpecifierNamed:@"Variant" target:self set:0 get:"_nowPlayingValue:" detail:0 cell:4 edit:0];
 
-    v19 = [v28 objectForKeyedSubscript:@"variant"];
+    v19 = [infoCopy objectForKeyedSubscript:@"variant"];
     [v18 setProperty:v19 forKey:@"titleValue"];
 
     [v18 setProperty:@"NowPlayingGroup" forKey:@"Group"];
     [v6 addObject:v18];
     v20 = [PSSpecifier preferenceSpecifierNamed:@"Event Counts" target:self set:0 get:"_nowPlayingValue:" detail:0 cell:4 edit:0];
 
-    v21 = [v28 objectForKeyedSubscript:@"transientEventCount"];
-    v22 = [v28 objectForKeyedSubscript:@"continuousEventCount"];
+    v21 = [infoCopy objectForKeyedSubscript:@"transientEventCount"];
+    v22 = [infoCopy objectForKeyedSubscript:@"continuousEventCount"];
     v23 = [NSString stringWithFormat:@"%@ Transients / %@ Continuous", v21, v22];
     [v20 setProperty:v23 forKey:@"titleValue"];
 
     [v20 setProperty:@"NowPlayingGroup" forKey:@"Group"];
     [v6 addObject:v20];
     [(AXHapticMusicController *)self setupLongTitleSpecifiers:v6];
-    v24 = [(AXHapticMusicController *)self specifiers];
-    v25 = [v24 lastObject];
-    [(AXHapticMusicController *)self insertContiguousSpecifiers:v6 afterSpecifier:v25 animated:1];
+    specifiers2 = [(AXHapticMusicController *)self specifiers];
+    lastObject = [specifiers2 lastObject];
+    [(AXHapticMusicController *)self insertContiguousSpecifiers:v6 afterSpecifier:lastObject animated:1];
 
     v5 = v27;
   }
@@ -631,17 +631,17 @@ BOOL __58__AXHapticMusicController__updateNowPlayingGroupWithInfo___block_invoke
   return v5 ^ 1;
 }
 
-- (void)tableView:(id)a3 didSelectRowAtIndexPath:(id)a4
+- (void)tableView:(id)view didSelectRowAtIndexPath:(id)path
 {
   v17.receiver = self;
   v17.super_class = AXHapticMusicController;
-  v6 = a4;
-  [(AXHapticMusicController *)&v17 tableView:a3 didSelectRowAtIndexPath:v6];
-  v7 = [(AXHapticMusicController *)self specifierForIndexPath:v6, v17.receiver, v17.super_class];
+  pathCopy = path;
+  [(AXHapticMusicController *)&v17 tableView:view didSelectRowAtIndexPath:pathCopy];
+  v7 = [(AXHapticMusicController *)self specifierForIndexPath:pathCopy, v17.receiver, v17.super_class];
 
   v8 = +[AXSettings sharedInstance];
-  v9 = [v8 hapticMusicAlgorithmSelections];
-  v10 = [v9 mutableCopy];
+  hapticMusicAlgorithmSelections = [v8 hapticMusicAlgorithmSelections];
+  v10 = [hapticMusicAlgorithmSelections mutableCopy];
 
   if (!v10)
   {
@@ -685,15 +685,15 @@ LABEL_10:
   [(AXHapticMusicController *)self reloadSpecifiers];
 }
 
-- (void)tableView:(id)a3 willDisplayCell:(id)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view willDisplayCell:(id)cell forRowAtIndexPath:(id)path
 {
-  v7 = a4;
-  v8 = a5;
+  cellCopy = cell;
+  pathCopy = path;
   v9 = +[AXSettings sharedInstance];
-  v10 = [v9 hapticMusicAlgorithmSelections];
+  hapticMusicAlgorithmSelections = [v9 hapticMusicAlgorithmSelections];
 
-  v22 = v7;
-  v11 = [(AXHapticMusicController *)self specifierForIndexPath:v8];
+  v22 = cellCopy;
+  v11 = [(AXHapticMusicController *)self specifierForIndexPath:pathCopy];
 
   objc_opt_class();
   if (objc_opt_isKindOfClass())
@@ -702,7 +702,7 @@ LABEL_10:
     v13 = [v11 propertyForKey:PSIDKey];
     if ([v13 isEqualToString:@"Default"])
     {
-      v14 = [v10 count];
+      v14 = [hapticMusicAlgorithmSelections count];
 
       if (!v14)
       {
@@ -717,7 +717,7 @@ LABEL_10:
     v15 = [v11 propertyForKey:v12];
     if ([v15 isEqualToString:@"Vocals"])
     {
-      v16 = [v10 containsObject:SHHapticPatternAlgorithmVocals];
+      v16 = [hapticMusicAlgorithmSelections containsObject:SHHapticPatternAlgorithmVocals];
 
       if (v16)
       {
@@ -732,7 +732,7 @@ LABEL_10:
     v17 = [v11 propertyForKey:v12];
     if ([v17 isEqualToString:@"Percussive"])
     {
-      v18 = [v10 containsObject:SHHapticPatternAlgorithmPercussive];
+      v18 = [hapticMusicAlgorithmSelections containsObject:SHHapticPatternAlgorithmPercussive];
 
       if (v18)
       {
@@ -747,7 +747,7 @@ LABEL_10:
     v19 = [v11 propertyForKey:v12];
     if ([v19 isEqualToString:@"Instrumentals"])
     {
-      v20 = [v10 containsObject:SHHapticPatternAlgorithmInstrumental];
+      v20 = [hapticMusicAlgorithmSelections containsObject:SHHapticPatternAlgorithmInstrumental];
 
       if (v20)
       {
@@ -770,11 +770,11 @@ LABEL_19:
 LABEL_20:
 }
 
-- (double)tableView:(id)a3 heightForRowAtIndexPath:(id)a4
+- (double)tableView:(id)view heightForRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXHapticMusicController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AXHapticMusicController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:PSIDKey];
   v10 = [v9 isEqualToString:@"AXHapticMusicPlaybackView"];
 
@@ -787,28 +787,28 @@ LABEL_20:
   {
     v14.receiver = self;
     v14.super_class = AXHapticMusicController;
-    [(AXHapticMusicController *)&v14 tableView:v6 heightForRowAtIndexPath:v7];
+    [(AXHapticMusicController *)&v14 tableView:viewCopy heightForRowAtIndexPath:pathCopy];
     v11 = v12;
   }
 
   return v11;
 }
 
-- (void)_updatePlaySampleString:(id)a3 reload:(BOOL)a4
+- (void)_updatePlaySampleString:(id)string reload:(BOOL)reload
 {
-  v4 = a4;
-  v7 = a3;
+  reloadCopy = reload;
+  stringCopy = string;
   [(AXHapticMusicController *)self isPlayingSample];
   v6 = AXUILocalizedStringForKeyWithTable();
-  [v7 setProperty:v6 forKey:PSTitleKey];
-  [v7 setName:v6];
-  if (v4)
+  [stringCopy setProperty:v6 forKey:PSTitleKey];
+  [stringCopy setName:v6];
+  if (reloadCopy)
   {
-    [(AXHapticMusicController *)self reloadSpecifier:v7];
+    [(AXHapticMusicController *)self reloadSpecifier:stringCopy];
   }
 }
 
-- (void)toggleSample:(id)a3
+- (void)toggleSample:(id)sample
 {
   v4 = [NSBundle bundleForClass:objc_opt_class()];
   v5 = [v4 URLForResource:@"MusicHaptics_SampleTrack" withExtension:@"wav"];
@@ -825,16 +825,16 @@ LABEL_20:
   v3 = +[UIApplication sharedApplication];
   [v3 endReceivingRemoteControlEvents];
 
-  v4 = [(MPNowPlayingSession *)self->_nowPlayingSession nowPlayingInfoCenter];
-  [v4 setNowPlayingInfo:0];
+  nowPlayingInfoCenter = [(MPNowPlayingSession *)self->_nowPlayingSession nowPlayingInfoCenter];
+  [nowPlayingInfoCenter setNowPlayingInfo:0];
 
   v5 = +[MPRemoteCommandCenter sharedCommandCenter];
-  v6 = [v5 pauseCommand];
-  [v6 removeTarget:self->_pauseToken];
+  pauseCommand = [v5 pauseCommand];
+  [pauseCommand removeTarget:self->_pauseToken];
 
   v8 = +[MPRemoteCommandCenter sharedCommandCenter];
-  v7 = [v8 playCommand];
-  [v7 removeTarget:self->_playToken];
+  playCommand = [v8 playCommand];
+  [playCommand removeTarget:self->_playToken];
 }
 
 - (void)willResignActive
@@ -846,11 +846,11 @@ LABEL_20:
   [(AXHapticMusicController *)self _endNowPlayingSession];
 }
 
-- (void)viewWillDisappear:(BOOL)a3
+- (void)viewWillDisappear:(BOOL)disappear
 {
   v4.receiver = self;
   v4.super_class = AXHapticMusicController;
-  [(AXHapticMusicController *)&v4 viewWillDisappear:a3];
+  [(AXHapticMusicController *)&v4 viewWillDisappear:disappear];
   [(AXHapticMusicController *)self _stopSample];
   [(AXHapticMusicController *)self _endNowPlayingSession];
 }
@@ -864,18 +864,18 @@ LABEL_20:
   [(AXHapticMusicController *)self _updatePlaySampleString:v3 reload:1];
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
   v13.receiver = self;
   v13.super_class = AXHapticMusicController;
-  v6 = a4;
-  v7 = [(AXHapticMusicController *)&v13 tableView:a3 cellForRowAtIndexPath:v6];
-  v8 = [(AXHapticMusicController *)self specifierForIndexPath:v6, v13.receiver, v13.super_class];
+  pathCopy = path;
+  v7 = [(AXHapticMusicController *)&v13 tableView:view cellForRowAtIndexPath:pathCopy];
+  v8 = [(AXHapticMusicController *)self specifierForIndexPath:pathCopy, v13.receiver, v13.super_class];
 
   v9 = [v8 propertyForKey:PSIDKey];
-  LODWORD(v6) = [v9 isEqualToString:@"HapticMusicIntensity"];
+  LODWORD(pathCopy) = [v9 isEqualToString:@"HapticMusicIntensity"];
 
-  if (v6)
+  if (pathCopy)
   {
     v10 = [[AXHapticMusicIntensityCell alloc] initWithStyle:0 reuseIdentifier:@"Intensity" specifier:v8];
   }
@@ -890,12 +890,12 @@ LABEL_20:
   return v11;
 }
 
-- (void)_toggleSample:(id)a3
+- (void)_toggleSample:(id)sample
 {
-  v4 = a3;
+  sampleCopy = sample;
   if (!self->_samplePlayer)
   {
-    v5 = [[AVPlayer alloc] initWithURL:v4];
+    v5 = [[AVPlayer alloc] initWithURL:sampleCopy];
     samplePlayer = self->_samplePlayer;
     self->_samplePlayer = v5;
 
@@ -903,14 +903,14 @@ LABEL_20:
     {
       objc_initWeak(&location, self);
       v7 = +[NSNotificationCenter defaultCenter];
-      v8 = [(AVPlayer *)self->_samplePlayer currentItem];
+      currentItem = [(AVPlayer *)self->_samplePlayer currentItem];
       v9 = +[NSOperationQueue mainQueue];
       v35[0] = _NSConcreteStackBlock;
       v35[1] = 3221225472;
       v35[2] = __41__AXHapticMusicController__toggleSample___block_invoke;
       v35[3] = &unk_2581B0;
       objc_copyWeak(&v36, &location);
-      v10 = [v7 addObserverForName:AVPlayerItemDidPlayToEndTimeNotification object:v8 queue:v9 usingBlock:v35];
+      v10 = [v7 addObserverForName:AVPlayerItemDidPlayToEndTimeNotification object:currentItem queue:v9 usingBlock:v35];
       notificationToken = self->_notificationToken;
       self->_notificationToken = v10;
 
@@ -945,7 +945,7 @@ LABEL_20:
     v29 = __41__AXHapticMusicController__toggleSample___block_invoke_2;
     v30 = &unk_255818;
     objc_copyWeak(&v32, &from);
-    v31 = self;
+    selfCopy = self;
     v20 = [(AVPlayer *)v16 addBoundaryTimeObserverForTimes:v18 queue:&_dispatch_main_q usingBlock:&v27];
 
     v21 = [MPNowPlayingSession alloc];
@@ -959,9 +959,9 @@ LABEL_20:
     objc_destroyWeak(&from);
   }
 
-  v25 = [(AXHapticMusicController *)self isPlayingSample];
+  isPlayingSample = [(AXHapticMusicController *)self isPlayingSample];
   v26 = self->_auxiliarySession;
-  if (v25)
+  if (isPlayingSample)
   {
     [(AVAudioSession *)v26 setActive:0 error:0];
     [(AXHapticMusicController *)self _stopSample];
@@ -1004,7 +1004,7 @@ void __41__AXHapticMusicController__toggleSample___block_invoke_2(uint64_t a1)
 {
   v3 = objc_alloc_init(NSMutableArray);
   appSpecifiers = self->_appSpecifiers;
-  v26 = self;
+  selfCopy = self;
   self->_appSpecifiers = v3;
 
   v5 = AXInstalledApps();
@@ -1034,39 +1034,39 @@ void __41__AXHapticMusicController__toggleSample___block_invoke_2(uint64_t a1)
         v11 = *(*(&v27 + 1) + 8 * i);
         if (AXApplicationSupportsHapticMusic())
         {
-          v12 = [v11 bundleIdentifier];
-          v13 = [v12 isEqualToString:v9];
+          bundleIdentifier = [v11 bundleIdentifier];
+          v13 = [bundleIdentifier isEqualToString:v9];
 
           if ((v13 & 1) == 0)
           {
-            v14 = [v11 localizedName];
-            v15 = [PSSpecifier preferenceSpecifierNamed:v14 target:0 set:0 get:0 detail:0 cell:3 edit:0];
+            localizedName = [v11 localizedName];
+            v15 = [PSSpecifier preferenceSpecifierNamed:localizedName target:0 set:0 get:0 detail:0 cell:3 edit:0];
 
-            v16 = [v11 bundleIdentifier];
-            [v15 setProperty:v16 forKey:v25];
+            bundleIdentifier2 = [v11 bundleIdentifier];
+            [v15 setProperty:bundleIdentifier2 forKey:v25];
 
-            v17 = [v11 bundleIdentifier];
-            [v15 setProperty:v17 forKey:@"BundleIdentifier"];
+            bundleIdentifier3 = [v11 bundleIdentifier];
+            [v15 setProperty:bundleIdentifier3 forKey:@"BundleIdentifier"];
 
-            v18 = [v11 bundleIdentifier];
-            LODWORD(v14) = AXFlipsIconRightToLeftForAppID(v18);
+            bundleIdentifier4 = [v11 bundleIdentifier];
+            LODWORD(localizedName) = AXFlipsIconRightToLeftForAppID(bundleIdentifier4);
 
-            v19 = [v11 bundleIdentifier];
-            v20 = v19;
-            if (v14)
+            bundleIdentifier5 = [v11 bundleIdentifier];
+            v20 = bundleIdentifier5;
+            if (localizedName)
             {
-              v21 = AXImageIconForAppID(v19);
+              v21 = AXImageIconForAppID(bundleIdentifier5);
               [v15 setProperty:v21 forKey:v22];
             }
 
             else
             {
-              [v15 setProperty:v19 forKey:v24];
+              [v15 setProperty:bundleIdentifier5 forKey:v24];
 
               [v15 setProperty:&__kCFBooleanTrue forKey:v23];
             }
 
-            [(NSMutableArray *)v26->_appSpecifiers addObject:v15];
+            [(NSMutableArray *)selfCopy->_appSpecifiers addObject:v15];
           }
         }
       }
@@ -1077,15 +1077,15 @@ void __41__AXHapticMusicController__toggleSample___block_invoke_2(uint64_t a1)
     while (v7);
   }
 
-  [(AXHapticMusicController *)v26 reloadSpecifiers];
+  [(AXHapticMusicController *)selfCopy reloadSpecifiers];
 }
 
 - (void)_startSample
 {
   v3 = +[AXSettings sharedInstance];
-  v4 = [v3 hapticMusicActive];
+  hapticMusicActive = [v3 hapticMusicActive];
 
-  if ((v4 & 1) == 0)
+  if ((hapticMusicActive & 1) == 0)
   {
     v5 = +[AXSettings sharedInstance];
     [v5 setHapticMusicActive:1];
@@ -1100,8 +1100,8 @@ void __41__AXHapticMusicController__toggleSample___block_invoke_2(uint64_t a1)
 
   [(AXHapticMusicController *)self setIsPlayingSample:1];
   MRMediaRemoteSetCanBeNowPlayingApplication();
-  v7 = [(MPNowPlayingSession *)self->_nowPlayingSession nowPlayingInfoCenter];
-  [v7 setNowPlayingInfo:0];
+  nowPlayingInfoCenter = [(MPNowPlayingSession *)self->_nowPlayingSession nowPlayingInfoCenter];
+  [nowPlayingInfoCenter setNowPlayingInfo:0];
 
   v8 = +[UIApplication sharedApplication];
   [v8 beginReceivingRemoteControlEvents];
@@ -1149,29 +1149,29 @@ void __39__AXHapticMusicController__startSample__block_invoke(uint64_t a1, uint6
   }
 }
 
-- (void)_updateNowPlayingInfo:(double)a3
+- (void)_updateNowPlayingInfo:(double)info
 {
   v5 = AXLogHapticMusic();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [NSNumber numberWithDouble:a3];
+    v6 = [NSNumber numberWithDouble:info];
     LODWORD(v13.value) = 138412290;
     *(&v13.value + 4) = v6;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "Posting now playing info: %@", &v13, 0xCu);
   }
 
-  v7 = [(MPNowPlayingSession *)self->_nowPlayingSession nowPlayingInfoCenter];
+  nowPlayingInfoCenter = [(MPNowPlayingSession *)self->_nowPlayingSession nowPlayingInfoCenter];
   v14[0] = MPNowPlayingInfoPropertyElapsedPlaybackTime;
-  v8 = [NSNumber numberWithDouble:a3];
+  v8 = [NSNumber numberWithDouble:info];
   v15[0] = v8;
   v15[1] = &off_27D190;
   v14[1] = MPNowPlayingInfoPropertyPlaybackRate;
   v14[2] = MPMediaItemPropertyPlaybackDuration;
-  v9 = [(AVPlayer *)self->_samplePlayer currentItem];
-  v10 = v9;
-  if (v9)
+  currentItem = [(AVPlayer *)self->_samplePlayer currentItem];
+  v10 = currentItem;
+  if (currentItem)
   {
-    [v9 duration];
+    [currentItem duration];
   }
 
   else
@@ -1192,47 +1192,47 @@ void __39__AXHapticMusicController__startSample__block_invoke(uint64_t a1, uint6
   v15[6] = kAXHapticMusicSampleTrackISRCCode;
   v15[7] = kAXHapticMusicSampleTrackISRCCode;
   v12 = [NSDictionary dictionaryWithObjects:v15 forKeys:v14 count:8];
-  [v7 setNowPlayingInfo:v12];
+  [nowPlayingInfoCenter setNowPlayingInfo:v12];
 }
 
 - (void)_handleNowPlayingActivation
 {
   objc_initWeak(&location, self);
   v3 = +[MPRemoteCommandCenter sharedCommandCenter];
-  v4 = [v3 previousTrackCommand];
-  [v4 setEnabled:0];
+  previousTrackCommand = [v3 previousTrackCommand];
+  [previousTrackCommand setEnabled:0];
 
   v5 = +[MPRemoteCommandCenter sharedCommandCenter];
-  v6 = [v5 nextTrackCommand];
-  [v6 setEnabled:0];
+  nextTrackCommand = [v5 nextTrackCommand];
+  [nextTrackCommand setEnabled:0];
 
   v7 = +[MPRemoteCommandCenter sharedCommandCenter];
-  v8 = [v7 pauseCommand];
-  [v8 setEnabled:1];
+  pauseCommand = [v7 pauseCommand];
+  [pauseCommand setEnabled:1];
 
   v9 = +[MPRemoteCommandCenter sharedCommandCenter];
-  v10 = [v9 pauseCommand];
+  pauseCommand2 = [v9 pauseCommand];
   v22[0] = _NSConcreteStackBlock;
   v22[1] = 3221225472;
   v22[2] = __54__AXHapticMusicController__handleNowPlayingActivation__block_invoke;
   v22[3] = &unk_2583B8;
   objc_copyWeak(&v23, &location);
-  v11 = [v10 addTargetWithHandler:v22];
+  v11 = [pauseCommand2 addTargetWithHandler:v22];
   pauseToken = self->_pauseToken;
   self->_pauseToken = v11;
 
   v13 = +[MPRemoteCommandCenter sharedCommandCenter];
-  v14 = [v13 playCommand];
-  [v14 setEnabled:1];
+  playCommand = [v13 playCommand];
+  [playCommand setEnabled:1];
 
   v15 = +[MPRemoteCommandCenter sharedCommandCenter];
-  v16 = [v15 playCommand];
+  playCommand2 = [v15 playCommand];
   v20[0] = _NSConcreteStackBlock;
   v20[1] = 3221225472;
   v20[2] = __54__AXHapticMusicController__handleNowPlayingActivation__block_invoke_2;
   v20[3] = &unk_2583B8;
   objc_copyWeak(&v21, &location);
-  v17 = [v16 addTargetWithHandler:v20];
+  v17 = [playCommand2 addTargetWithHandler:v20];
   playToken = self->_playToken;
   self->_playToken = v17;
 
@@ -1273,14 +1273,14 @@ void __54__AXHapticMusicController__handleNowPlayingActivation__block_invoke_3(i
   }
 }
 
-- (void)setEnhancedPercussionEnabled:(id)a3 specifier:(id)a4
+- (void)setEnhancedPercussionEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setHapticMusicEnhancedPercussion:v4];
+  [v5 setHapticMusicEnhancedPercussion:bOOLValue];
 }
 
-- (id)enhancedPercussionEnabled:(id)a3
+- (id)enhancedPercussionEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 hapticMusicEnhancedPercussion]);
@@ -1288,14 +1288,14 @@ void __54__AXHapticMusicController__handleNowPlayingActivation__block_invoke_3(i
   return v4;
 }
 
-- (void)setEnhancedVocalsEnabled:(id)a3 specifier:(id)a4
+- (void)setEnhancedVocalsEnabled:(id)enabled specifier:(id)specifier
 {
-  v4 = [a3 BOOLValue];
+  bOOLValue = [enabled BOOLValue];
   v5 = +[AXSettings sharedInstance];
-  [v5 setHapticMusicEnhancedVocals:v4];
+  [v5 setHapticMusicEnhancedVocals:bOOLValue];
 }
 
-- (id)enhancedVocalsEnabled:(id)a3
+- (id)enhancedVocalsEnabled:(id)enabled
 {
   v3 = +[AXSettings sharedInstance];
   v4 = +[NSNumber numberWithBool:](NSNumber, "numberWithBool:", [v3 hapticMusicEnhancedVocals]);
@@ -1346,13 +1346,13 @@ void __54__AXHapticMusicController__handleNowPlayingActivation__block_invoke_3(i
   self->_learnMoreNavigationController = v18;
 
   v20 = [[UIBarButtonItem alloc] initWithBarButtonSystemItem:0 target:self action:"doneButtonTapped:"];
-  v21 = [v22 navigationItem];
-  [v21 setRightBarButtonItem:v20];
+  navigationItem = [v22 navigationItem];
+  [navigationItem setRightBarButtonItem:v20];
 
   [(AXHapticMusicController *)self presentViewController:self->_learnMoreNavigationController animated:1 completion:0];
 }
 
-- (void)doneButtonTapped:(id)a3
+- (void)doneButtonTapped:(id)tapped
 {
   learnMoreNavigationController = self->_learnMoreNavigationController;
   v4[0] = _NSConcreteStackBlock;
@@ -1370,26 +1370,26 @@ void __44__AXHapticMusicController_doneButtonTapped___block_invoke(uint64_t a1)
   *(v1 + 160) = 0;
 }
 
-- (void)setHapticMusicEnabled:(id)a3 specifier:(id)a4
+- (void)setHapticMusicEnabled:(id)enabled specifier:(id)specifier
 {
-  v5 = a3;
+  enabledCopy = enabled;
   v6 = AXLogHapticMusic();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     v9 = 138412290;
-    v10 = v5;
+    v10 = enabledCopy;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "Setting haptic music: %@", &v9, 0xCu);
   }
 
-  [v5 BOOLValue];
+  [enabledCopy BOOLValue];
   _AXSSetHapticMusicEnabled();
-  if ([v5 BOOLValue])
+  if ([enabledCopy BOOLValue])
   {
     v7 = +[AXSettings sharedInstance];
     [v7 setHapticMusicActive:1];
   }
 
-  if (([v5 BOOLValue] & 1) == 0)
+  if (([enabledCopy BOOLValue] & 1) == 0)
   {
     [(AXHapticMusicController *)self _stopSample];
   }
@@ -1398,16 +1398,16 @@ void __44__AXHapticMusicController_doneButtonTapped___block_invoke(uint64_t a1)
   [v8 setHapticMusicToggledInPreferences:1];
 }
 
-- (id)hapticMusicEnabled:(id)a3
+- (id)hapticMusicEnabled:(id)enabled
 {
   v3 = _AXSHapticMusicEnabled();
 
   return [NSNumber numberWithUnsignedChar:v3];
 }
 
-- (id)tableView:(id)a3 contextMenuConfigurationForRowAtIndexPath:(id)a4 point:(CGPoint)a5
+- (id)tableView:(id)view contextMenuConfigurationForRowAtIndexPath:(id)path point:(CGPoint)point
 {
-  v5 = [(AXHapticMusicController *)self specifierForIndexPath:a4, a5.x, a5.y];
+  v5 = [(AXHapticMusicController *)self specifierForIndexPath:path, point.x, point.y];
   v6 = [v5 propertyForKey:@"Group"];
   v7 = [v6 isEqualToString:@"NowPlayingGroup"];
 
@@ -1454,11 +1454,11 @@ void __85__AXHapticMusicController_tableView_contextMenuConfigurationForRowAtInd
   [v3 setString:v2];
 }
 
-- (BOOL)tableView:(id)a3 shouldHighlightRowAtIndexPath:(id)a4
+- (BOOL)tableView:(id)view shouldHighlightRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(AXHapticMusicController *)self specifierForIndexPath:v7];
+  viewCopy = view;
+  pathCopy = path;
+  v8 = [(AXHapticMusicController *)self specifierForIndexPath:pathCopy];
   v9 = [v8 propertyForKey:@"BundleIdentifier"];
   if (v9)
   {
@@ -1473,7 +1473,7 @@ void __85__AXHapticMusicController_tableView_contextMenuConfigurationForRowAtInd
     {
       v14.receiver = self;
       v14.super_class = AXHapticMusicController;
-      v12 = [(AXHapticMusicController *)&v14 tableView:v6 shouldHighlightRowAtIndexPath:v7];
+      v12 = [(AXHapticMusicController *)&v14 tableView:viewCopy shouldHighlightRowAtIndexPath:pathCopy];
       goto LABEL_5;
     }
   }

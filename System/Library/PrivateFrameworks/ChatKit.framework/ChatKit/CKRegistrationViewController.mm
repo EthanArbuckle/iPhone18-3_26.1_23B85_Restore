@@ -5,16 +5,16 @@
 + (id)_inProgressRegisteringNonPhoneAccount;
 - (CKRegistrationViewController)init;
 - (id)accountRegistrar;
-- (void)_handleRegistrarCompletion:(BOOL)a3 errorAlertController:(id)a4;
+- (void)_handleRegistrarCompletion:(BOOL)completion errorAlertController:(id)controller;
 - (void)dealloc;
-- (void)keyboardDidShow:(id)a3;
-- (void)keyboardWillHide:(id)a3;
-- (void)keyboardWillShow:(id)a3;
-- (void)setErrorPresentationViewController:(id)a3;
-- (void)tapToSignInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5;
-- (void)updateInsetsForKeyboardFrame:(CGRect)a3;
+- (void)keyboardDidShow:(id)show;
+- (void)keyboardWillHide:(id)hide;
+- (void)keyboardWillShow:(id)show;
+- (void)setErrorPresentationViewController:(id)controller;
+- (void)tapToSignInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error;
+- (void)updateInsetsForKeyboardFrame:(CGRect)frame;
 - (void)viewDidLoad;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation CKRegistrationViewController
@@ -97,18 +97,18 @@
 + (BOOL)_refreshAccountKeyCDPSyncingOrWaitingForUser
 {
   v14 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69A5A80] sharedInstance];
-  v3 = [MEMORY[0x1E69A5CA0] iMessageService];
-  v4 = [v2 bestAccountForService:v3];
+  mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
+  iMessageService = [MEMORY[0x1E69A5CA0] iMessageService];
+  v4 = [mEMORY[0x1E69A5A80] bestAccountForService:iMessageService];
 
-  v5 = [v4 registrationFailureReason];
+  registrationFailureReason = [v4 registrationFailureReason];
   if (IMOSLoggingEnabled())
   {
     v6 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
       v7 = @"NO";
-      if (v5 == 29)
+      if (registrationFailureReason == 29)
       {
         v8 = @"YES";
       }
@@ -118,7 +118,7 @@
         v8 = @"NO";
       }
 
-      if (v5 == 28)
+      if (registrationFailureReason == 28)
       {
         v7 = @"YES";
       }
@@ -131,15 +131,15 @@
     }
   }
 
-  return (v5 & 0xFFFFFFFE) == 28;
+  return (registrationFailureReason & 0xFFFFFFFE) == 28;
 }
 
 + (BOOL)_shouldShowAuthKitSignIn
 {
   v27 = *MEMORY[0x1E69E9840];
-  v2 = [MEMORY[0x1E69A5A80] sharedInstance];
-  v3 = [MEMORY[0x1E69A5C90] iMessageService];
-  v4 = [v2 accountsForService:v3];
+  mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
+  iMessageService = [MEMORY[0x1E69A5C90] iMessageService];
+  v4 = [mEMORY[0x1E69A5A80] accountsForService:iMessageService];
 
   v18 = 0u;
   v19 = 0u;
@@ -209,9 +209,9 @@
 + (id)_inProgressRegisteringNonPhoneAccount
 {
   v21 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69A5A80] sharedInstance];
-  v4 = [MEMORY[0x1E69A5C90] iMessageService];
-  v5 = [v3 accountsForService:v4];
+  mEMORY[0x1E69A5A80] = [MEMORY[0x1E69A5A80] sharedInstance];
+  iMessageService = [MEMORY[0x1E69A5C90] iMessageService];
+  v5 = [mEMORY[0x1E69A5A80] accountsForService:iMessageService];
 
   v18 = 0u;
   v19 = 0u;
@@ -232,9 +232,9 @@
         }
 
         v10 = *(*(&v16 + 1) + 8 * i);
-        v11 = [v10 accountType];
-        v12 = [v10 registrationStatus];
-        if (v12 != 5 && v11 != 2 && (v12 - 2) <= 2)
+        accountType = [v10 accountType];
+        registrationStatus = [v10 registrationStatus];
+        if (registrationStatus != 5 && accountType != 2 && (registrationStatus - 2) <= 2)
         {
           v7 = v10;
           goto LABEL_14;
@@ -253,7 +253,7 @@ LABEL_14:
   block[1] = 3221225472;
   block[2] = __69__CKRegistrationViewController__inProgressRegisteringNonPhoneAccount__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (_inProgressRegisteringNonPhoneAccount_onceToken != -1)
   {
     dispatch_once(&_inProgressRegisteringNonPhoneAccount_onceToken, block);
@@ -282,8 +282,8 @@ void __69__CKRegistrationViewController__inProgressRegisteringNonPhoneAccount__b
   {
     v3 = [CKRegistrationView alloc];
     v4 = [(CKRegistrationView *)v3 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
-    v5 = [MEMORY[0x1E69DC888] systemBackgroundColor];
-    [(CKRegistrationView *)v4 setBackgroundColor:v5];
+    systemBackgroundColor = [MEMORY[0x1E69DC888] systemBackgroundColor];
+    [(CKRegistrationView *)v4 setBackgroundColor:systemBackgroundColor];
 
     [(CKRegistrationView *)v4 setAccessibilityIdentifier:@"MadridRegistrationView"];
     [(CKRegistrationViewController *)v2 setView:v4];
@@ -297,36 +297,36 @@ void __69__CKRegistrationViewController__inProgressRegisteringNonPhoneAccount__b
     [v8 setServiceType:4];
     [v8 setPresentingViewController:v2];
     v9 = objc_alloc_init(MEMORY[0x193AF5EC0](@"ACAccountStore", @"Accounts"));
-    v10 = [v9 aa_primaryAppleAccount];
-    v11 = [v10 username];
-    if ([v11 length])
+    aa_primaryAppleAccount = [v9 aa_primaryAppleAccount];
+    username = [aa_primaryAppleAccount username];
+    if ([username length])
     {
-      [v8 setUsername:v11];
+      [v8 setUsername:username];
     }
 
     [(AKTapToSignInViewController *)v2->_akSignInVC setContext:v8];
-    v12 = [(AKTapToSignInViewController *)v2->_akSignInVC view];
-    [(CKRegistrationView *)v4 setAuthKitSignInView:v12];
+    view = [(AKTapToSignInViewController *)v2->_akSignInVC view];
+    [(CKRegistrationView *)v4 setAuthKitSignInView:view];
 
-    v13 = [MEMORY[0x1E696AD88] defaultCenter];
-    [v13 addObserver:v2 selector:sel_keyboardDidShow_ name:*MEMORY[0x1E69DDF78] object:0];
-    [v13 addObserver:v2 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
-    [v13 addObserver:v2 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+    [defaultCenter addObserver:v2 selector:sel_keyboardDidShow_ name:*MEMORY[0x1E69DDF78] object:0];
+    [defaultCenter addObserver:v2 selector:sel_keyboardWillShow_ name:*MEMORY[0x1E69DE080] object:0];
+    [defaultCenter addObserver:v2 selector:sel_keyboardWillHide_ name:*MEMORY[0x1E69DE078] object:0];
     v14 = [MEMORY[0x1E69B7D50] linkWithBundleIdentifier:@"com.apple.onboarding.messages"];
     privacyLinkController = v2->_privacyLinkController;
     v2->_privacyLinkController = v14;
 
     v16 = +[CKUIBehavior sharedBehaviors];
-    v17 = [v16 signInTintColor];
+    signInTintColor = [v16 signInTintColor];
 
-    if (v17)
+    if (signInTintColor)
     {
-      [(OBPrivacyLinkController *)v2->_privacyLinkController setCustomTintColor:v17];
+      [(OBPrivacyLinkController *)v2->_privacyLinkController setCustomTintColor:signInTintColor];
     }
 
     [(CKRegistrationViewController *)v2 addChildViewController:v2->_privacyLinkController];
-    v18 = [(OBPrivacyLinkController *)v2->_privacyLinkController view];
-    [(CKRegistrationView *)v4 setPrivacyLinkView:v18];
+    view2 = [(OBPrivacyLinkController *)v2->_privacyLinkController view];
+    [(CKRegistrationView *)v4 setPrivacyLinkView:view2];
 
     [(OBPrivacyLinkController *)v2->_privacyLinkController didMoveToParentViewController:v2];
     [(CKRegistrationViewController *)v2 setModalInPresentation:1];
@@ -337,8 +337,8 @@ void __69__CKRegistrationViewController__inProgressRegisteringNonPhoneAccount__b
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4.receiver = self;
   v4.super_class = CKRegistrationViewController;
@@ -372,9 +372,9 @@ uint64_t __48__CKRegistrationViewController_accountRegistrar__block_invoke()
   [(CKRegistrationViewController *)self becomeFirstResponder];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   v5 = +[CKRegistrationViewController _inProgressRegisteringNonPhoneAccount];
   if (v5)
   {
@@ -384,18 +384,18 @@ uint64_t __48__CKRegistrationViewController_accountRegistrar__block_invoke()
     block[3] = &unk_1E72EBA18;
     block[4] = self;
     dispatch_async(MEMORY[0x1E69E96A0], block);
-    v6 = [(CKRegistrationViewController *)self accountRegistrar];
+    accountRegistrar = [(CKRegistrationViewController *)self accountRegistrar];
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __47__CKRegistrationViewController_viewWillAppear___block_invoke_2;
     v8[3] = &unk_1E72ECA10;
     v8[4] = self;
-    [v6 continueRegistrationForAccount:v5 completionBlock:v8];
+    [accountRegistrar continueRegistrationForAccount:v5 completionBlock:v8];
   }
 
   v7.receiver = self;
   v7.super_class = CKRegistrationViewController;
-  [(CKRegistrationViewController *)&v7 viewWillAppear:v3];
+  [(CKRegistrationViewController *)&v7 viewWillAppear:appearCopy];
 }
 
 void __47__CKRegistrationViewController_viewWillAppear___block_invoke(uint64_t a1)
@@ -404,10 +404,10 @@ void __47__CKRegistrationViewController_viewWillAppear___block_invoke(uint64_t a
   [v1 setSigningIn:1];
 }
 
-- (void)keyboardWillShow:(id)a3
+- (void)keyboardWillShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v5 rectValue];
   v7 = v6;
   v9 = v8;
@@ -417,10 +417,10 @@ void __47__CKRegistrationViewController_viewWillAppear___block_invoke(uint64_t a
   [(CKRegistrationViewController *)self updateInsetsForKeyboardFrame:v7, v9, v11, v13];
 }
 
-- (void)keyboardDidShow:(id)a3
+- (void)keyboardDidShow:(id)show
 {
-  v4 = [a3 userInfo];
-  v5 = [v4 objectForKey:*MEMORY[0x1E69DDFA0]];
+  userInfo = [show userInfo];
+  v5 = [userInfo objectForKey:*MEMORY[0x1E69DDFA0]];
   [v5 rectValue];
   v7 = v6;
   v9 = v8;
@@ -430,22 +430,22 @@ void __47__CKRegistrationViewController_viewWillAppear___block_invoke(uint64_t a
   [(CKRegistrationViewController *)self updateInsetsForKeyboardFrame:v7, v9, v11, v13];
 }
 
-- (void)updateInsetsForKeyboardFrame:(CGRect)a3
+- (void)updateInsetsForKeyboardFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v8 = MEMORY[0x1E69DCEB0];
-  v9 = [(CKRegistrationViewController *)self view];
-  [v8 convertRect:v9 toView:{x, y, width, height}];
+  view = [(CKRegistrationViewController *)self view];
+  [v8 convertRect:view toView:{x, y, width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(CKRegistrationViewController *)self view];
-  [v18 bounds];
+  view2 = [(CKRegistrationViewController *)self view];
+  [view2 bounds];
   v29.origin.x = v19;
   v29.origin.y = v20;
   v29.size.width = v21;
@@ -457,40 +457,40 @@ void __47__CKRegistrationViewController_viewWillAppear___block_invoke(uint64_t a
   v28 = CGRectIntersection(v27, v29);
   v23 = v28.size.height;
 
-  v24 = [(CKRegistrationViewController *)self view];
-  [v24 setContentInset:{0.0, 0.0, v23, 0.0}];
+  view3 = [(CKRegistrationViewController *)self view];
+  [view3 setContentInset:{0.0, 0.0, v23, 0.0}];
 
-  v25 = [(CKRegistrationViewController *)self view];
-  [v25 setScrollIndicatorInsets:{0.0, 0.0, v23, 0.0}];
+  view4 = [(CKRegistrationViewController *)self view];
+  [view4 setScrollIndicatorInsets:{0.0, 0.0, v23, 0.0}];
 }
 
-- (void)keyboardWillHide:(id)a3
+- (void)keyboardWillHide:(id)hide
 {
-  v4 = [(CKRegistrationViewController *)self view];
-  [v4 setContentInset:{0.0, 0.0, 0.0, 0.0}];
+  view = [(CKRegistrationViewController *)self view];
+  [view setContentInset:{0.0, 0.0, 0.0, 0.0}];
 
-  v5 = [(CKRegistrationViewController *)self view];
-  [v5 setScrollIndicatorInsets:{0.0, 0.0, 0.0, 0.0}];
+  view2 = [(CKRegistrationViewController *)self view];
+  [view2 setScrollIndicatorInsets:{0.0, 0.0, 0.0, 0.0}];
 }
 
-- (void)tapToSignInViewController:(id)a3 didAuthenticateWithResults:(id)a4 error:(id)a5
+- (void)tapToSignInViewController:(id)controller didAuthenticateWithResults:(id)results error:(id)error
 {
   v32 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  controllerCopy = controller;
+  resultsCopy = results;
+  errorCopy = error;
   if (IMOSLoggingEnabled())
   {
     v11 = OSLogHandleForIMFoundationCategory();
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
       *buf = 138412290;
-      v31 = v10;
+      v31 = errorCopy;
       _os_log_impl(&dword_19020E000, v11, OS_LOG_TYPE_INFO, "AKTapToSignInViewController callback with error: %@", buf, 0xCu);
     }
   }
 
-  if (v10)
+  if (errorCopy)
   {
     block[0] = MEMORY[0x1E69E9820];
     block[1] = 3221225472;
@@ -504,7 +504,7 @@ void __47__CKRegistrationViewController_viewWillAppear___block_invoke(uint64_t a
       if (os_log_type_enabled(v12, OS_LOG_TYPE_INFO))
       {
         *buf = 138412290;
-        v31 = v10;
+        v31 = errorCopy;
         _os_log_impl(&dword_19020E000, v12, OS_LOG_TYPE_INFO, "Could not authenticate: %@", buf, 0xCu);
       }
     }
@@ -554,8 +554,8 @@ void __47__CKRegistrationViewController_viewWillAppear___block_invoke(uint64_t a
       objc_storeStrong(&tapToSignInViewController_didAuthenticateWithResults_error___AKAuthenticationPasswordKey, v17);
     }
 
-    v18 = [v9 objectForKey:tapToSignInViewController_didAuthenticateWithResults_error___AKAuthenticationUsernameKey];
-    v19 = [v9 objectForKey:tapToSignInViewController_didAuthenticateWithResults_error___AKAuthenticationPasswordKey];
+    v18 = [resultsCopy objectForKey:tapToSignInViewController_didAuthenticateWithResults_error___AKAuthenticationUsernameKey];
+    v19 = [resultsCopy objectForKey:tapToSignInViewController_didAuthenticateWithResults_error___AKAuthenticationPasswordKey];
     v20 = v19;
     if (v18 && v19)
     {
@@ -585,14 +585,14 @@ void __47__CKRegistrationViewController_viewWillAppear___block_invoke(uint64_t a
         }
       }
 
-      v23 = [(CKRegistrationViewController *)self accountRegistrar];
-      v24 = [MEMORY[0x1E69A5CA0] iMessageService];
+      accountRegistrar = [(CKRegistrationViewController *)self accountRegistrar];
+      iMessageService = [MEMORY[0x1E69A5CA0] iMessageService];
       v27[0] = MEMORY[0x1E69E9820];
       v27[1] = 3221225472;
       v27[2] = __91__CKRegistrationViewController_tapToSignInViewController_didAuthenticateWithResults_error___block_invoke_97;
       v27[3] = &unk_1E72ECA10;
       v27[4] = self;
-      [v23 registerAccountWithUsername:v18 password:v20 service:v24 completionBlock:v27];
+      [accountRegistrar registerAccountWithUsername:v18 password:v20 service:iMessageService completionBlock:v27];
     }
 
     else
@@ -634,10 +634,10 @@ void __91__CKRegistrationViewController_tapToSignInViewController_didAuthenticat
   [v1 setSigningIn:0];
 }
 
-- (void)_handleRegistrarCompletion:(BOOL)a3 errorAlertController:(id)a4
+- (void)_handleRegistrarCompletion:(BOOL)completion errorAlertController:(id)controller
 {
-  v4 = a3;
-  v6 = a4;
+  completionCopy = completion;
+  controllerCopy = controller;
   if (IMOSLoggingEnabled())
   {
     v7 = OSLogHandleForIMFoundationCategory();
@@ -648,7 +648,7 @@ void __91__CKRegistrationViewController_tapToSignInViewController_didAuthenticat
     }
   }
 
-  if (v4)
+  if (completionCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -660,16 +660,16 @@ void __91__CKRegistrationViewController_tapToSignInViewController_didAuthenticat
       }
     }
 
-    v9 = [(CKRegistrationViewController *)self completionBlock];
+    completionBlock = [(CKRegistrationViewController *)self completionBlock];
 
-    if (v9)
+    if (completionBlock)
     {
-      v10 = [(CKRegistrationViewController *)self completionBlock];
-      v10[2](v10, 1);
+      completionBlock2 = [(CKRegistrationViewController *)self completionBlock];
+      completionBlock2[2](completionBlock2, 1);
     }
   }
 
-  else if (v6)
+  else if (controllerCopy)
   {
     if (IMOSLoggingEnabled())
     {
@@ -681,7 +681,7 @@ void __91__CKRegistrationViewController_tapToSignInViewController_didAuthenticat
       }
     }
 
-    [(CKRegistrationViewController *)self presentViewController:v6 animated:1 completion:0];
+    [(CKRegistrationViewController *)self presentViewController:controllerCopy animated:1 completion:0];
   }
 
   block[0] = MEMORY[0x1E69E9820];
@@ -698,12 +698,12 @@ void __80__CKRegistrationViewController__handleRegistrarCompletion_errorAlertCon
   [v1 setSigningIn:0];
 }
 
-- (void)setErrorPresentationViewController:(id)a3
+- (void)setErrorPresentationViewController:(id)controller
 {
   akSignInVC = self->_akSignInVC;
-  v4 = a3;
-  v5 = [(AKTapToSignInViewController *)akSignInVC context];
-  [v5 setPresentingViewController:v4];
+  controllerCopy = controller;
+  context = [(AKTapToSignInViewController *)akSignInVC context];
+  [context setPresentingViewController:controllerCopy];
 }
 
 @end

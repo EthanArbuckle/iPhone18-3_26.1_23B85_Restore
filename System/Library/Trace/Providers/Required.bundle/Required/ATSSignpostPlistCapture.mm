@@ -1,27 +1,27 @@
 @interface ATSSignpostPlistCapture
-- (ATSSignpostPlistCapture)initWithLogger:(id)a3;
-- (id)describeChunkWithTag:(unsigned int)a3;
-- (void)addChunksToFile:(ktrace_file *)a3;
+- (ATSSignpostPlistCapture)initWithLogger:(id)logger;
+- (id)describeChunkWithTag:(unsigned int)tag;
+- (void)addChunksToFile:(ktrace_file *)file;
 @end
 
 @implementation ATSSignpostPlistCapture
 
-- (ATSSignpostPlistCapture)initWithLogger:(id)a3
+- (ATSSignpostPlistCapture)initWithLogger:(id)logger
 {
-  v5 = a3;
+  loggerCopy = logger;
   v9.receiver = self;
   v9.super_class = ATSSignpostPlistCapture;
   v6 = [(ATSSignpostPlistCapture *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_logger, a3);
+    objc_storeStrong(&v6->_logger, logger);
   }
 
   return v7;
 }
 
-- (void)addChunksToFile:(ktrace_file *)a3
+- (void)addChunksToFile:(ktrace_file *)file
 {
   v4 = +[NSMutableDictionary dictionary];
   v5 = [NSURL fileURLWithPath:@"/AppleInternal/Library/Ariadne/Plists/"];
@@ -61,8 +61,8 @@
   v15 = v14;
   if (!v13)
   {
-    v18 = [v14 localizedDescription];
-    v17 = [NSString stringWithFormat:@"Failed to serialize signposts to a plist. Error: %@", v18];
+    localizedDescription = [v14 localizedDescription];
+    v17 = [NSString stringWithFormat:@"Failed to serialize signposts to a plist. Error: %@", localizedDescription];
 
     goto LABEL_12;
   }
@@ -78,9 +78,9 @@ LABEL_12:
   }
 }
 
-- (id)describeChunkWithTag:(unsigned int)a3
+- (id)describeChunkWithTag:(unsigned int)tag
 {
-  if (a3 == 20986)
+  if (tag == 20986)
   {
     return @"KDebug Signpost Plists";
   }

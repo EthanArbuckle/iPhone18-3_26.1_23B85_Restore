@@ -1,73 +1,73 @@
 @interface VUIFeaturedCellOverlayView
-- (CGRect)getRTLFrame:(CGRect)a3;
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4;
+- (CGRect)getRTLFrame:(CGRect)frame;
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only;
 - (void)_layoutSubviews;
-- (void)setAppleTVChannelLogoView:(id)a3;
-- (void)setButtons:(id)a3;
-- (void)setDisclaimerLabel:(id)a3;
-- (void)setSubtitleLabel:(id)a3;
-- (void)setTitleLabel:(id)a3;
+- (void)setAppleTVChannelLogoView:(id)view;
+- (void)setButtons:(id)buttons;
+- (void)setDisclaimerLabel:(id)label;
+- (void)setSubtitleLabel:(id)label;
+- (void)setTitleLabel:(id)label;
 @end
 
 @implementation VUIFeaturedCellOverlayView
 
-- (void)setAppleTVChannelLogoView:(id)a3
+- (void)setAppleTVChannelLogoView:(id)view
 {
-  v5 = a3;
-  if (self->_appleTVChannelLogoView != v5)
+  viewCopy = view;
+  if (self->_appleTVChannelLogoView != viewCopy)
   {
-    v6 = v5;
-    [(VUIFeaturedCellOverlayView *)self vui_addSubview:v5 oldView:?];
-    objc_storeStrong(&self->_appleTVChannelLogoView, a3);
+    v6 = viewCopy;
+    [(VUIFeaturedCellOverlayView *)self vui_addSubview:viewCopy oldView:?];
+    objc_storeStrong(&self->_appleTVChannelLogoView, view);
     [(VUIFeaturedCellOverlayView *)self vui_setNeedsLayout];
-    v5 = v6;
+    viewCopy = v6;
   }
 }
 
-- (void)setTitleLabel:(id)a3
+- (void)setTitleLabel:(id)label
 {
-  v5 = a3;
-  if (self->_titleLabel != v5)
+  labelCopy = label;
+  if (self->_titleLabel != labelCopy)
   {
-    v6 = v5;
-    [(VUIFeaturedCellOverlayView *)self vui_addSubview:v5 oldView:?];
-    objc_storeStrong(&self->_titleLabel, a3);
+    v6 = labelCopy;
+    [(VUIFeaturedCellOverlayView *)self vui_addSubview:labelCopy oldView:?];
+    objc_storeStrong(&self->_titleLabel, label);
     [(VUIFeaturedCellOverlayView *)self vui_setNeedsLayout];
-    v5 = v6;
+    labelCopy = v6;
   }
 }
 
-- (void)setSubtitleLabel:(id)a3
+- (void)setSubtitleLabel:(id)label
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_subtitleLabel != v5)
+  labelCopy = label;
+  v6 = labelCopy;
+  if (self->_subtitleLabel != labelCopy)
   {
-    [(VUIFeaturedCellOverlayView *)self vui_addSubview:v5 oldView:?];
-    objc_storeStrong(&self->_subtitleLabel, a3);
+    [(VUIFeaturedCellOverlayView *)self vui_addSubview:labelCopy oldView:?];
+    objc_storeStrong(&self->_subtitleLabel, label);
   }
 
   [(VUIFeaturedCellOverlayView *)self vui_setNeedsLayout];
 }
 
-- (void)setDisclaimerLabel:(id)a3
+- (void)setDisclaimerLabel:(id)label
 {
-  v5 = a3;
-  v6 = v5;
-  if (self->_disclaimerLabel != v5)
+  labelCopy = label;
+  v6 = labelCopy;
+  if (self->_disclaimerLabel != labelCopy)
   {
-    [(VUIFeaturedCellOverlayView *)self vui_addSubview:v5 oldView:?];
-    objc_storeStrong(&self->_disclaimerLabel, a3);
+    [(VUIFeaturedCellOverlayView *)self vui_addSubview:labelCopy oldView:?];
+    objc_storeStrong(&self->_disclaimerLabel, label);
   }
 
   [(VUIFeaturedCellOverlayView *)self vui_setNeedsLayout];
 }
 
-- (void)setButtons:(id)a3
+- (void)setButtons:(id)buttons
 {
   v27 = *MEMORY[0x1E69E9840];
-  v5 = a3;
-  if ([v5 count] || -[NSArray count](self->_buttons, "count"))
+  buttonsCopy = buttons;
+  if ([buttonsCopy count] || -[NSArray count](self->_buttons, "count"))
   {
     v23 = 0u;
     v24 = 0u;
@@ -97,7 +97,7 @@
       while (v8);
     }
 
-    objc_storeStrong(&self->_buttons, a3);
+    objc_storeStrong(&self->_buttons, buttons);
     v19 = 0u;
     v20 = 0u;
     v17 = 0u;
@@ -132,14 +132,14 @@
   }
 }
 
-- (CGSize)vui_layoutSubviews:(CGSize)a3 computationOnly:(BOOL)a4
+- (CGSize)vui_layoutSubviews:(CGSize)subviews computationOnly:(BOOL)only
 {
   v12.receiver = self;
   v12.super_class = VUIFeaturedCellOverlayView;
-  [(VUIFeaturedCellOverlayView *)&v12 vui_layoutSubviews:a3.width computationOnly:a3.height];
+  [(VUIFeaturedCellOverlayView *)&v12 vui_layoutSubviews:subviews.width computationOnly:subviews.height];
   v7 = v6;
   v9 = v8;
-  if (!a4)
+  if (!only)
   {
     [(VUIFeaturedCellOverlayView *)self _layoutSubviews];
   }
@@ -154,12 +154,12 @@
 - (void)_layoutSubviews
 {
   v200 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E69DD2E8] vui_currentSizeClass];
+  vui_currentSizeClass = [MEMORY[0x1E69DD2E8] vui_currentSizeClass];
   [MEMORY[0x1E69DD2E8] vui_padding];
   v5 = v4;
   v7 = v6;
-  v8 = [MEMORY[0x1E69DD2E8] vui_keyWindow];
-  [v8 bounds];
+  vui_keyWindow = [MEMORY[0x1E69DD2E8] vui_keyWindow];
+  [vui_keyWindow bounds];
   Width = CGRectGetWidth(v201);
 
   [(VUIFeaturedCellOverlayView *)self bounds];
@@ -168,12 +168,12 @@
   Height = CGRectGetHeight(v203);
   v12 = 28.0;
   v13 = 16.0;
-  if (v3 == 7)
+  if (vui_currentSizeClass == 7)
   {
     v12 = 16.0;
   }
 
-  if (v3 < 3)
+  if (vui_currentSizeClass < 3)
   {
     v12 = 24.0;
   }
@@ -181,7 +181,7 @@
   v179 = v12;
   if (!self->_usesDefaultOverlayType)
   {
-    if (v3 < 3)
+    if (vui_currentSizeClass < 3)
     {
       v151 = 0.0;
       v17 = 18.0;
@@ -199,7 +199,7 @@ LABEL_25:
     }
 
     v151 = 0.0;
-    if (v3 == 7)
+    if (vui_currentSizeClass == 7)
     {
       v18 = 1;
       v20 = 62.0;
@@ -224,9 +224,9 @@ LABEL_25:
     goto LABEL_23;
   }
 
-  if (v3 > 2)
+  if (vui_currentSizeClass > 2)
   {
-    if (v3 == 7)
+    if (vui_currentSizeClass == 7)
     {
       if (v10 == Width)
       {
@@ -317,7 +317,7 @@ LABEL_34:
     goto LABEL_34;
   }
 
-  if (v3 == 7)
+  if (vui_currentSizeClass == 7)
   {
     v26 = 0;
     v153 = 24.0;
@@ -328,13 +328,13 @@ LABEL_34:
   else
   {
     v26 = 0;
-    if (v3 >= 3)
+    if (vui_currentSizeClass >= 3)
     {
       v20 = 34.0;
     }
 
     v81 = v154;
-    if (v3 >= 3)
+    if (vui_currentSizeClass >= 3)
     {
       v81 = 34.0;
     }
@@ -386,8 +386,8 @@ LABEL_35:
   if (disclaimerLabel)
   {
     v33 = v26;
-    v34 = [(VUILabel *)disclaimerLabel vuiText];
-    if ([v34 length])
+    vuiText = [(VUILabel *)disclaimerLabel vuiText];
+    if ([vuiText length])
     {
       v35 = v174;
     }
@@ -439,29 +439,29 @@ LABEL_35:
     v166 = v27[2];
   }
 
-  v178 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v42 = self->_buttons;
-  v184 = self;
+  selfCopy = self;
   if (v42 && [(NSArray *)v42 count])
   {
     v43 = _os_feature_enabled_impl();
     v44 = self->_buttons;
     if (v43)
     {
-      v45 = v44;
+      allObjects = v44;
     }
 
     else
     {
-      v46 = [(NSArray *)v44 reverseObjectEnumerator];
-      v45 = [v46 allObjects];
+      reverseObjectEnumerator = [(NSArray *)v44 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
     }
 
     v195 = 0u;
     v196 = 0u;
     v193 = 0u;
     v194 = 0u;
-    obj = v45;
+    obj = allObjects;
     v47 = [(NSArray *)obj countByEnumeratingWithState:&v193 objects:v199 count:16];
     if (v47)
     {
@@ -536,16 +536,16 @@ LABEL_35:
             {
               if ([v63 buttonType])
               {
-                if ([v63 buttonType] == 3 && v3 < 3)
+                if ([v63 buttonType] == 3 && vui_currentSizeClass < 3)
                 {
                   goto LABEL_79;
                 }
               }
 
-              else if (v3 <= 2)
+              else if (vui_currentSizeClass <= 2)
               {
 LABEL_79:
-                [(VUIFeaturedCellOverlayView *)v184 bounds];
+                [(VUIFeaturedCellOverlayView *)selfCopy bounds];
                 v67 = (CGRectGetWidth(v207) - v60) * 0.5;
                 goto LABEL_84;
               }
@@ -565,9 +565,9 @@ LABEL_79:
 
           if (isKindOfClass)
           {
-            v65 = [MEMORY[0x1E69DF6F0] isTV];
+            isTV = [MEMORY[0x1E69DF6F0] isTV];
             v66 = 12.0;
-            if (v65)
+            if (isTV)
             {
               v66 = 24.0;
             }
@@ -602,7 +602,7 @@ LABEL_87:
           {
             if (_os_feature_enabled_impl())
             {
-              v68 = v184->_disclaimerLabel;
+              v68 = selfCopy->_disclaimerLabel;
               if (v68)
               {
                 [(VUILabel *)v68 sizeThatFits:v50, 1.79769313e308];
@@ -639,7 +639,7 @@ LABEL_92:
           v36 = v54;
 
           v80 = [MEMORY[0x1E696B098] valueWithCGRect:{v67, Height, v50, v62}];
-          [v178 addObject:v80];
+          [array addObject:v80];
 
           ++v52;
           v38 = v179;
@@ -652,7 +652,7 @@ LABEL_92:
         if (!v48)
         {
           v38 = v179;
-          self = v184;
+          self = selfCopy;
           v16 = v157;
           v13 = v159;
           v19 = v150;
@@ -679,8 +679,8 @@ LABEL_101:
     goto LABEL_108;
   }
 
-  v83 = [(VUILabel *)v82 vuiText];
-  v84 = [v83 length];
+  vuiText2 = [(VUILabel *)v82 vuiText];
+  v84 = [vuiText2 length];
 
   v85 = v174 ^ 1;
   if (!v84)
@@ -819,7 +819,7 @@ LABEL_108:
     [(UIView *)appleTVChannelLogoView vui_sizeThatFits:v156, 0.0];
     v31 = v103;
     v167 = v104;
-    if (!_os_feature_enabled_impl() || v3 <= 2)
+    if (!_os_feature_enabled_impl() || vui_currentSizeClass <= 2)
     {
       v214.origin.x = v164;
       v214.origin.y = rect;
@@ -867,16 +867,16 @@ LABEL_108:
     v111 = v112;
   }
 
-  v113 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v114 = 0.0;
   v115 = v165;
   recta = v110;
-  if ((([v178 count] != 0) & v26) == 1 && v3 <= 2 && MaxX >= 0.0)
+  if ((([array count] != 0) & v26) == 1 && vui_currentSizeClass <= 2 && MaxX >= 0.0)
   {
     [(VUIFeaturedCellOverlayView *)self bounds];
     v116 = (CGRectGetWidth(v216) - (MaxX - v168)) * 0.5;
-    v117 = [v178 firstObject];
-    [v117 CGRectValue];
+    firstObject = [array firstObject];
+    [firstObject CGRectValue];
     v119 = v118;
     v121 = v120;
     v122 = v31;
@@ -898,7 +898,7 @@ LABEL_108:
   v192 = 0u;
   v189 = 0u;
   v190 = 0u;
-  v128 = v178;
+  v128 = array;
   v129 = [v128 countByEnumeratingWithState:&v189 objects:v198 count:16];
   if (v129)
   {
@@ -915,7 +915,7 @@ LABEL_108:
 
         [*(*(&v189 + 1) + 8 * i) CGRectValue];
         v135 = [MEMORY[0x1E696B098] valueWithCGRect:{v114 + v134, v133 - v111}];
-        [v113 addObject:v135];
+        [array2 addObject:v135];
       }
 
       v130 = [v128 countByEnumeratingWithState:&v189 objects:v198 count:16];
@@ -924,15 +924,15 @@ LABEL_108:
     while (v130);
   }
 
-  v136 = [v113 copy];
-  v137 = v184->_appleTVChannelLogoView;
-  [(VUIFeaturedCellOverlayView *)v184 getRTLFrame:v160, recta - v111, v31, v167];
+  v136 = [array2 copy];
+  v137 = selfCopy->_appleTVChannelLogoView;
+  [(VUIFeaturedCellOverlayView *)selfCopy getRTLFrame:v160, recta - v111, v31, v167];
   [(UIView *)v137 setFrame:?];
-  titleLabel = v184->_titleLabel;
-  [(VUIFeaturedCellOverlayView *)v184 getRTLFrame:v158, v155 - v111, v19, v162];
+  titleLabel = selfCopy->_titleLabel;
+  [(VUIFeaturedCellOverlayView *)selfCopy getRTLFrame:v158, v155 - v111, v19, v162];
   [(VUILabel *)titleLabel setFrame:?];
-  subtitleLabel = v184->_subtitleLabel;
-  [(VUIFeaturedCellOverlayView *)v184 getRTLFrame:v175, v172 - v111, v177, v180];
+  subtitleLabel = selfCopy->_subtitleLabel;
+  [(VUIFeaturedCellOverlayView *)selfCopy getRTLFrame:v175, v172 - v111, v177, v180];
   [(VUILabel *)subtitleLabel setFrame:?];
   v187 = 0u;
   v188 = 0u;
@@ -957,7 +957,7 @@ LABEL_108:
         v146 = *(*(&v185 + 1) + 8 * j);
         v147 = [v136 objectAtIndex:v143];
         [v147 CGRectValue];
-        [(VUIFeaturedCellOverlayView *)v184 getRTLFrame:?];
+        [(VUIFeaturedCellOverlayView *)selfCopy getRTLFrame:?];
         [v146 setFrame:?];
         ++v143;
       }
@@ -968,12 +968,12 @@ LABEL_108:
     while (v142);
   }
 
-  v148 = v184->_disclaimerLabel;
-  [(VUIFeaturedCellOverlayView *)v184 getRTLFrame:v115, v170 - v111, v166, v169];
+  v148 = selfCopy->_disclaimerLabel;
+  [(VUIFeaturedCellOverlayView *)selfCopy getRTLFrame:v115, v170 - v111, v166, v169];
   [(VUILabel *)v148 setFrame:?];
 }
 
-- (CGRect)getRTLFrame:(CGRect)a3
+- (CGRect)getRTLFrame:(CGRect)frame
 {
   [(VUIFeaturedCellOverlayView *)self bounds];
   [(VUIFeaturedCellOverlayView *)self vuiIsRTL];

@@ -1,11 +1,11 @@
 @interface UIScrollViewAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_accessibilityContentOffsetForScrollDirection:(int)a3 newContentOffset:(CGPoint *)a4 distanceMultiplier:(double)a5;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_accessibilityContentOffsetForScrollDirection:(int)direction newContentOffset:(CGPoint *)offset distanceMultiplier:(double)multiplier;
 - (BOOL)_accessibilityIsGroupedParent;
 - (BOOL)_accessibilityIsScrollAncestor;
 - (BOOL)_accessibilityRemembersLastFocusedChild;
-- (BOOL)_accessibilityScrollPageInDirection:(int)a3;
-- (BOOL)_accessibilityScrollToFrame:(CGRect)a3 forView:(id)a4;
+- (BOOL)_accessibilityScrollPageInDirection:(int)direction;
+- (BOOL)_accessibilityScrollToFrame:(CGRect)frame forView:(id)view;
 - (BOOL)_accessibilityScrollingEnabled;
 - (BOOL)_accessibilityShouldAnimateScroll;
 - (BOOL)_accessibilityShouldUseFallbackForVisibleContentInset;
@@ -15,17 +15,17 @@
 - (BOOL)_axBaseScrollUpPageSupported;
 - (BOOL)_axShowsHorizontalScrollBar;
 - (BOOL)_axShowsVerticalScrollBar;
-- (BOOL)accessibilityShouldEnableScrollIndicator:(id)a3;
-- (CGFloat)_axPageAlignedContentOffsetForPoint:(double)a3 forValidation:(double)a4;
-- (CGFloat)accessibilityValidateScrollContentOffset:(CGFloat)a3;
+- (BOOL)accessibilityShouldEnableScrollIndicator:(id)indicator;
+- (CGFloat)_axPageAlignedContentOffsetForPoint:(double)point forValidation:(double)validation;
+- (CGFloat)accessibilityValidateScrollContentOffset:(CGFloat)offset;
 - (CGPoint)_accessibilityContentOffset;
-- (CGPoint)_accessibilityVisibleScrollArea:(BOOL)a3;
-- (CGPoint)_newScrollOffsetForScrubReturningAnimated:(BOOL *)a3;
+- (CGPoint)_accessibilityVisibleScrollArea:(BOOL)area;
+- (CGPoint)_newScrollOffsetForScrubReturningAnimated:(BOOL *)animated;
 - (CGRect)_accessibilityContentFrame;
 - (CGRect)_accessibilityScrollViewVisibleFrame;
 - (CGRect)_defaultFocusRegionFrame;
 - (CGRect)accessibilityFrame;
-- (CGRect)accessibilityFrameForScrollIndicator:(id)a3;
+- (CGRect)accessibilityFrameForScrollIndicator:(id)indicator;
 - (CGSize)_axPageSize;
 - (UIEdgeInsets)_accessibilityContentInset;
 - (UIEdgeInsets)_accessibilityNavigationControllerInset;
@@ -34,22 +34,22 @@
 - (double)_accessibilityScrollHeightDistance;
 - (double)_accessibilityScrollWidthDistance;
 - (double)_axAllowedPagingOverlap;
-- (double)_axAnnounceScrubForDirection:(void *)a1;
-- (double)_axContentOffsetForAddedProgress:(double)a3 inDirection:;
+- (double)_axAnnounceScrubForDirection:(void *)direction;
+- (double)_axContentOffsetForAddedProgress:(double)progress inDirection:;
 - (double)_axMaximumContentOffset;
 - (double)_axMinimumContentOffset;
-- (double)_axProgressForDirection:(void *)a1;
-- (double)accessibilityProgressForScrollIndicator:(id)a3;
+- (double)_axProgressForDirection:(void *)direction;
+- (double)accessibilityProgressForScrollIndicator:(id)indicator;
 - (id)_accessibilityDelegateScrollStatus;
-- (id)_accessibilityElementsFilteredByPagingScrollView:(void *)a1;
+- (id)_accessibilityElementsFilteredByPagingScrollView:(void *)view;
 - (id)_accessibilityFindRefreshControl;
 - (id)_accessibilityFirstLastOpaqueElement:(id)obj options:;
 - (id)_accessibilityFirstOpaqueElement;
-- (id)_accessibilityFirstOpaqueElementWithOptions:(id)a3;
-- (id)_accessibilityFocusAbsoluteFirstLastOpaqueElement:(BOOL)a3 technology:(id)a4 honorsGroups:(BOOL)a5 shouldAlwaysScroll:(BOOL)a6;
+- (id)_accessibilityFirstOpaqueElementWithOptions:(id)options;
+- (id)_accessibilityFocusAbsoluteFirstLastOpaqueElement:(BOOL)element technology:(id)technology honorsGroups:(BOOL)groups shouldAlwaysScroll:(BOOL)scroll;
 - (id)_accessibilityHorizontalScrollBarElement;
 - (id)_accessibilityLastOpaqueElement;
-- (id)_accessibilityLastOpaqueElementWithOptions:(id)a3;
+- (id)_accessibilityLastOpaqueElementWithOptions:(id)options;
 - (id)_accessibilityScrollStatus;
 - (id)_accessibilitySubviews;
 - (id)_accessibilityUIViewAccessibilityFrame;
@@ -62,103 +62,103 @@
 - (int64_t)_accessibilityPageCount;
 - (int64_t)_accessibilityPageIndex;
 - (int64_t)accessibilityContainerType;
-- (int64_t)accessibilityNumberOfPagesForScrollIndicator:(id)a3;
+- (int64_t)accessibilityNumberOfPagesForScrollIndicator:(id)indicator;
 - (uint64_t)_accessibilityCanHandleContentPullDown;
 - (uint64_t)_axScrollViewPagingEnabled;
 - (unint64_t)_accessibilityBoundaryEdges;
-- (void)_accessibilityCurrentPage:(uint64_t *)a3 totalPages:(char)a4 forVerticalDirection:;
-- (void)_accessibilityCurrentPage:(uint64_t *)a3 totalPages:(int)a4 type:;
+- (void)_accessibilityCurrentPage:(uint64_t *)page totalPages:(char)pages forVerticalDirection:;
+- (void)_accessibilityCurrentPage:(uint64_t *)page totalPages:(int)pages type:;
 - (void)_accessibilityLoadAccessibilityInformation;
-- (void)_accessibilityScrollToTopWithAnnouncement:(id)obj touchLocation:(double)a4 originalHandler:(double)a5;
+- (void)_accessibilityScrollToTopWithAnnouncement:(id)obj touchLocation:(double)location originalHandler:(double)handler;
 - (void)_accessibilitySendScrollStatus;
-- (void)_accessibilitySetNavigationControllerInset:(UIEdgeInsets)a3;
-- (void)_accessibilitySetScrollStatus:(id)a3;
-- (void)_accessibilitySetShouldUseFallbackForVisibleContentInset:(BOOL)a3;
-- (void)_accessibilitySetStoredShouldUseFallbackForVisibleContentInset:(uint64_t)a1;
-- (void)_accessibilitySetStoredVisibleContentInset:(uint64_t)a1;
-- (void)_accessibilitySetVisibleContentInset:(UIEdgeInsets)a3;
-- (void)_accessibilityZoomAtPoint:(CGPoint)a3 zoomIn:(BOOL)a4;
-- (void)_adjustScrollerIndicators:(BOOL)a3 alwaysShowingThem:(BOOL)a4;
+- (void)_accessibilitySetNavigationControllerInset:(UIEdgeInsets)inset;
+- (void)_accessibilitySetScrollStatus:(id)status;
+- (void)_accessibilitySetShouldUseFallbackForVisibleContentInset:(BOOL)inset;
+- (void)_accessibilitySetStoredShouldUseFallbackForVisibleContentInset:(uint64_t)inset;
+- (void)_accessibilitySetStoredVisibleContentInset:(uint64_t)inset;
+- (void)_accessibilitySetVisibleContentInset:(UIEdgeInsets)inset;
+- (void)_accessibilityZoomAtPoint:(CGPoint)point zoomIn:(BOOL)in;
+- (void)_adjustScrollerIndicators:(BOOL)indicators alwaysShowingThem:(BOOL)them;
 - (void)_axAnnotateScrollBars;
-- (void)_axManipulateWithRefreshControl:(void *)a1;
-- (void)_axSetHorizontalScrollBar:(id)a3;
-- (void)_axSetLastEdgeBoundaries:(id)a3;
-- (void)_axSetLastScrubAnnouncementDate:(id)a3;
-- (void)_axSetOverrideShowsHorizontallScrollBars:(id)a3;
-- (void)_axSetOverrideShowsVerticalScrollBars:(id)a3;
-- (void)_axSetVerticalScrollBar:(id)a3;
-- (void)_didEndDirectManipulationWithScrubbingDirection:(int64_t)a3;
+- (void)_axManipulateWithRefreshControl:(void *)control;
+- (void)_axSetHorizontalScrollBar:(id)bar;
+- (void)_axSetLastEdgeBoundaries:(id)boundaries;
+- (void)_axSetLastScrubAnnouncementDate:(id)date;
+- (void)_axSetOverrideShowsHorizontallScrollBars:(id)bars;
+- (void)_axSetOverrideShowsVerticalScrollBars:(id)bars;
+- (void)_axSetVerticalScrollBar:(id)bar;
+- (void)_didEndDirectManipulationWithScrubbingDirection:(int64_t)direction;
 - (void)_hideScrollIndicators;
 - (void)_notifyDidScroll;
-- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)a3 resultHandler:(id)a4;
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4;
+- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)location resultHandler:(id)handler;
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished;
 - (void)_scrollViewDidEndDeceleratingForDelegate;
-- (void)accessibilityApplyScrollContent:(CGPoint)a3 sendScrollStatus:(BOOL)a4 animated:(BOOL)a5;
-- (void)accessibilityApplyScrollContent:(int)a3 sendScrollStatus:(CGFloat)a4 animateWithDuration:(CGFloat)a5 animationCurve:(double)a6;
-- (void)accessibilityScrollIndicator:(id)a3 addProgress:(double)a4;
-- (void)accessibilityScrollIndicator:(id)a3 didBecomeFocused:(BOOL)a4;
+- (void)accessibilityApplyScrollContent:(CGPoint)content sendScrollStatus:(BOOL)status animated:(BOOL)animated;
+- (void)accessibilityApplyScrollContent:(int)content sendScrollStatus:(CGFloat)status animateWithDuration:(CGFloat)duration animationCurve:(double)curve;
+- (void)accessibilityScrollIndicator:(id)indicator addProgress:(double)progress;
+- (void)accessibilityScrollIndicator:(id)indicator didBecomeFocused:(BOOL)focused;
 @end
 
 @implementation UIScrollViewAccessibility
 
-- (void)_axSetVerticalScrollBar:(id)a3
+- (void)_axSetVerticalScrollBar:(id)bar
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, bar);
   __UIAccessibilitySetAssociatedObject();
   objc_storeStrong(location, 0);
 }
 
-- (void)_axSetHorizontalScrollBar:(id)a3
+- (void)_axSetHorizontalScrollBar:(id)bar
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, bar);
   __UIAccessibilitySetAssociatedObject();
   objc_storeStrong(location, 0);
 }
 
-- (void)_axSetOverrideShowsVerticalScrollBars:(id)a3
+- (void)_axSetOverrideShowsVerticalScrollBars:(id)bars
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, bars);
   __UIAccessibilitySetAssociatedObject();
   objc_storeStrong(location, 0);
 }
 
-- (void)_axSetOverrideShowsHorizontallScrollBars:(id)a3
+- (void)_axSetOverrideShowsHorizontallScrollBars:(id)bars
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, bars);
   __UIAccessibilitySetAssociatedObject();
   objc_storeStrong(location, 0);
 }
 
-- (void)_axSetLastEdgeBoundaries:(id)a3
+- (void)_axSetLastEdgeBoundaries:(id)boundaries
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, boundaries);
   __UIAccessibilitySetAssociatedObject();
   objc_storeStrong(location, 0);
 }
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  location[2] = a1;
+  location[2] = self;
   location[1] = a2;
   v13 = location;
   v12 = 0;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, validations);
   v10 = @"UIScrollView";
   v4 = @"_staticScrollBar";
   [location[0] validateClass:? hasInstanceVariable:? withType:?];
@@ -196,39 +196,39 @@
 
 - (void)_accessibilityLoadAccessibilityInformation
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIScrollViewAccessibility;
   [(UIScrollViewAccessibility *)&v2 _accessibilityLoadAccessibilityInformation];
-  [(UIScrollViewAccessibility *)v4 _axAnnotateScrollBars];
+  [(UIScrollViewAccessibility *)selfCopy _axAnnotateScrollBars];
 }
 
 - (void)_axAnnotateScrollBars
 {
-  v3 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    v2 = [(UIScrollViewAccessibility *)v3 _axVerticalScrollIndicator];
-    [_UIScrollViewScrollIndicatorAccessibility setAccessibilityScrollDirection:v2];
-    [(_UIScrollViewScrollIndicatorAccessibility *)v2 setAccessibilityScrollIndicatorDelegate:v3];
-    v1 = [(UIScrollViewAccessibility *)v3 _axHorizontalScrollIndicator];
-    [_UIScrollViewScrollIndicatorAccessibility setAccessibilityScrollDirection:v1];
-    [(_UIScrollViewScrollIndicatorAccessibility *)v1 setAccessibilityScrollIndicatorDelegate:v3];
-    objc_storeStrong(&v1, 0);
-    objc_storeStrong(&v2, 0);
+    _axVerticalScrollIndicator = [(UIScrollViewAccessibility *)selfCopy _axVerticalScrollIndicator];
+    [_UIScrollViewScrollIndicatorAccessibility setAccessibilityScrollDirection:_axVerticalScrollIndicator];
+    [(_UIScrollViewScrollIndicatorAccessibility *)_axVerticalScrollIndicator setAccessibilityScrollIndicatorDelegate:selfCopy];
+    _axHorizontalScrollIndicator = [(UIScrollViewAccessibility *)selfCopy _axHorizontalScrollIndicator];
+    [_UIScrollViewScrollIndicatorAccessibility setAccessibilityScrollDirection:_axHorizontalScrollIndicator];
+    [(_UIScrollViewScrollIndicatorAccessibility *)_axHorizontalScrollIndicator setAccessibilityScrollIndicatorDelegate:selfCopy];
+    objc_storeStrong(&_axHorizontalScrollIndicator, 0);
+    objc_storeStrong(&_axVerticalScrollIndicator, 0);
   }
 }
 
 - (BOOL)_axShowsVerticalScrollBar
 {
-  v7 = [(UIScrollViewAccessibility *)self _axOverrideShowsVerticalScrollBars];
-  *&v2 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-  if (v7)
+  _axOverrideShowsVerticalScrollBars = [(UIScrollViewAccessibility *)self _axOverrideShowsVerticalScrollBars];
+  *&v2 = MEMORY[0x29EDC9740](_axOverrideShowsVerticalScrollBars).n128_u64[0];
+  if (_axOverrideShowsVerticalScrollBars)
   {
-    v6 = [(UIScrollViewAccessibility *)self _axOverrideShowsVerticalScrollBars];
-    v9 = [v6 BOOLValue] & 1;
-    MEMORY[0x29EDC9740](v6);
+    _axOverrideShowsVerticalScrollBars2 = [(UIScrollViewAccessibility *)self _axOverrideShowsVerticalScrollBars];
+    v9 = [_axOverrideShowsVerticalScrollBars2 BOOLValue] & 1;
+    MEMORY[0x29EDC9740](_axOverrideShowsVerticalScrollBars2);
   }
 
   else
@@ -253,23 +253,23 @@
 
 - (BOOL)_axBaseScrollUpPageSupported
 {
-  if (a1)
+  if (self)
   {
-    v5 = [(UIScrollViewAccessibility *)a1 _accessibilityFindRefreshControl];
-    *&v1 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-    if (v5)
+    _accessibilityFindRefreshControl = [(UIScrollViewAccessibility *)self _accessibilityFindRefreshControl];
+    *&v1 = MEMORY[0x29EDC9740](_accessibilityFindRefreshControl).n128_u64[0];
+    if (_accessibilityFindRefreshControl)
     {
       return 1;
     }
 
     else
     {
-      [a1 contentOffset];
+      [self contentOffset];
       v7 = v2;
       v6 = 0.0;
-      if ([a1 _accessibilityUseContentInset])
+      if ([self _accessibilityUseContentInset])
       {
-        [a1 _accessibilityContentInset];
+        [self _accessibilityContentInset];
         v6 = 0.0 - v3;
       }
 
@@ -285,21 +285,21 @@
 
 - (BOOL)_axBaseScrollDownPageSupported
 {
-  v12 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    [v12 _accessibilityContentSize];
+    [selfCopy _accessibilityContentSize];
     location[1] = v1;
     v11 = v2;
-    location[0] = MEMORY[0x29EDC9748](v12);
+    location[0] = MEMORY[0x29EDC9748](selfCopy);
     [location[0] contentOffset];
     v9 = v3;
     [location[0] visibleBounds];
     v8 = v4;
     v7 = v11;
-    if ([v12 _accessibilityUseContentInset])
+    if ([selfCopy _accessibilityUseContentInset])
     {
-      [v12 _accessibilityContentInset];
+      [selfCopy _accessibilityContentInset];
       v7 = v11 + v5;
     }
 
@@ -317,13 +317,13 @@
 
 - (BOOL)_axShowsHorizontalScrollBar
 {
-  v7 = [(UIScrollViewAccessibility *)self _axOverrideShowsHorizontallScrollBars];
-  *&v2 = MEMORY[0x29EDC9740](v7).n128_u64[0];
-  if (v7)
+  _axOverrideShowsHorizontallScrollBars = [(UIScrollViewAccessibility *)self _axOverrideShowsHorizontallScrollBars];
+  *&v2 = MEMORY[0x29EDC9740](_axOverrideShowsHorizontallScrollBars).n128_u64[0];
+  if (_axOverrideShowsHorizontallScrollBars)
   {
-    v6 = [(UIScrollViewAccessibility *)self _axOverrideShowsHorizontallScrollBars];
-    v9 = [v6 BOOLValue] & 1;
-    MEMORY[0x29EDC9740](v6);
+    _axOverrideShowsHorizontallScrollBars2 = [(UIScrollViewAccessibility *)self _axOverrideShowsHorizontallScrollBars];
+    v9 = [_axOverrideShowsHorizontallScrollBars2 BOOLValue] & 1;
+    MEMORY[0x29EDC9740](_axOverrideShowsHorizontallScrollBars2);
   }
 
   else
@@ -348,10 +348,10 @@
 
 - (BOOL)_axBaseScrollLeftPageSupported
 {
-  if (a1)
+  if (self)
   {
-    [a1 contentOffset];
-    return v1 < [(UIScrollViewAccessibility *)a1 _axMaximumContentOffset];
+    [self contentOffset];
+    return v1 < [(UIScrollViewAccessibility *)self _axMaximumContentOffset];
   }
 
   else
@@ -362,10 +362,10 @@
 
 - (BOOL)_axBaseScrollRightPageSupported
 {
-  if (a1)
+  if (self)
   {
-    [a1 contentOffset];
-    return v1 > [(UIScrollViewAccessibility *)a1 _axMinimumContentOffset];
+    [self contentOffset];
+    return v1 > [(UIScrollViewAccessibility *)self _axMinimumContentOffset];
   }
 
   else
@@ -376,20 +376,20 @@
 
 - (id)_accessibilityVerticalScrollBarElement
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
-  v6 = [(UIScrollViewAccessibility *)self _axVerticalScrollBar];
-  *&v2 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-  if (v6)
+  _axVerticalScrollBar = [(UIScrollViewAccessibility *)self _axVerticalScrollBar];
+  *&v2 = MEMORY[0x29EDC9740](_axVerticalScrollBar).n128_u64[0];
+  if (_axVerticalScrollBar)
   {
-    v16 = [(UIScrollViewAccessibility *)v15 _axVerticalScrollBar];
+    _axVerticalScrollBar2 = [(UIScrollViewAccessibility *)selfCopy _axVerticalScrollBar];
   }
 
-  else if ([(UIScrollViewAccessibility *)v15 _axShowsVerticalScrollBar])
+  else if ([(UIScrollViewAccessibility *)selfCopy _axShowsVerticalScrollBar])
   {
-    v14[0] = [[UIScrollBarIndicatorAccessibilityElement alloc] initWithAccessibilityContainer:v15];
+    v14[0] = [[UIScrollBarIndicatorAccessibilityElement alloc] initWithAccessibilityContainer:selfCopy];
     [(UIScrollBarIndicatorAccessibilityElement *)v14[0] setOrientation:?];
-    objc_initWeak(&location, v15);
+    objc_initWeak(&location, selfCopy);
     v5 = v14[0];
     v7 = MEMORY[0x29EDCA5F8];
     v8 = -1073741824;
@@ -398,8 +398,8 @@
     v11 = &unk_29F30CAE8;
     objc_copyWeak(&v12, &location);
     [v5 _setAccessibilityFrameBlock:&v7];
-    [(UIScrollViewAccessibility *)v15 _axSetVerticalScrollBar:v14[0]];
-    v16 = MEMORY[0x29EDC9748](v14[0]);
+    [(UIScrollViewAccessibility *)selfCopy _axSetVerticalScrollBar:v14[0]];
+    _axVerticalScrollBar2 = MEMORY[0x29EDC9748](v14[0]);
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
     objc_storeStrong(v14, 0);
@@ -407,10 +407,10 @@
 
   else
   {
-    v16 = 0;
+    _axVerticalScrollBar2 = 0;
   }
 
-  v3 = v16;
+  v3 = _axVerticalScrollBar2;
 
   return v3;
 }
@@ -428,20 +428,20 @@ double __67__UIScrollViewAccessibility__accessibilityVerticalScrollBarElement__b
 
 - (id)_accessibilityHorizontalScrollBarElement
 {
-  v15 = self;
+  selfCopy = self;
   v14[1] = a2;
-  v6 = [(UIScrollViewAccessibility *)self _axHorizontalScrollBar];
-  *&v2 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-  if (v6)
+  _axHorizontalScrollBar = [(UIScrollViewAccessibility *)self _axHorizontalScrollBar];
+  *&v2 = MEMORY[0x29EDC9740](_axHorizontalScrollBar).n128_u64[0];
+  if (_axHorizontalScrollBar)
   {
-    v16 = [(UIScrollViewAccessibility *)v15 _axHorizontalScrollBar];
+    _axHorizontalScrollBar2 = [(UIScrollViewAccessibility *)selfCopy _axHorizontalScrollBar];
   }
 
-  else if ([(UIScrollViewAccessibility *)v15 _axShowsHorizontalScrollBar])
+  else if ([(UIScrollViewAccessibility *)selfCopy _axShowsHorizontalScrollBar])
   {
-    v14[0] = [[UIScrollBarIndicatorAccessibilityElement alloc] initWithAccessibilityContainer:v15];
+    v14[0] = [[UIScrollBarIndicatorAccessibilityElement alloc] initWithAccessibilityContainer:selfCopy];
     [(UIScrollBarIndicatorAccessibilityElement *)v14[0] setOrientation:?];
-    objc_initWeak(&location, v15);
+    objc_initWeak(&location, selfCopy);
     v5 = v14[0];
     v7 = MEMORY[0x29EDCA5F8];
     v8 = -1073741824;
@@ -450,8 +450,8 @@ double __67__UIScrollViewAccessibility__accessibilityVerticalScrollBarElement__b
     v11 = &unk_29F30CAE8;
     objc_copyWeak(&v12, &location);
     [v5 _setAccessibilityFrameBlock:&v7];
-    [(UIScrollViewAccessibility *)v15 _axSetHorizontalScrollBar:v14[0]];
-    v16 = MEMORY[0x29EDC9748](v14[0]);
+    [(UIScrollViewAccessibility *)selfCopy _axSetHorizontalScrollBar:v14[0]];
+    _axHorizontalScrollBar2 = MEMORY[0x29EDC9748](v14[0]);
     objc_destroyWeak(&v12);
     objc_destroyWeak(&location);
     objc_storeStrong(v14, 0);
@@ -459,10 +459,10 @@ double __67__UIScrollViewAccessibility__accessibilityVerticalScrollBarElement__b
 
   else
   {
-    v16 = 0;
+    _axHorizontalScrollBar2 = 0;
   }
 
-  v3 = v16;
+  v3 = _axHorizontalScrollBar2;
 
   return v3;
 }
@@ -478,28 +478,28 @@ double __69__UIScrollViewAccessibility__accessibilityHorizontalScrollBarElement_
   return v5;
 }
 
-- (void)_accessibilityScrollToTopWithAnnouncement:(id)obj touchLocation:(double)a4 originalHandler:(double)a5
+- (void)_accessibilityScrollToTopWithAnnouncement:(id)obj touchLocation:(double)location originalHandler:(double)handler
 {
-  v19 = a4;
-  v20 = a5;
-  v18 = a1;
+  locationCopy = location;
+  handlerCopy = handler;
+  selfCopy = self;
   v17 = a2;
   location = 0;
   objc_storeStrong(&location, obj);
-  if (v18)
+  if (selfCopy)
   {
-    v5 = v18;
+    v5 = selfCopy;
     v7 = MEMORY[0x29EDCA5F8];
     v8 = -1073741824;
     v9 = 0;
     v10 = __101__UIScrollViewAccessibility__accessibilityScrollToTopWithAnnouncement_touchLocation_originalHandler___block_invoke;
     v11 = &unk_29F30DA70;
     v14 = v17 & 1;
-    v12 = MEMORY[0x29EDC9748](v18);
+    v12 = MEMORY[0x29EDC9748](selfCopy);
     v13 = MEMORY[0x29EDC9748](location);
     v6.receiver = v5;
     v6.super_class = UIScrollViewAccessibility;
-    objc_msgSendSuper2(&v6, sel__scrollToTopFromTouchAtScreenLocation_resultHandler_, &v7, v19, v20);
+    objc_msgSendSuper2(&v6, sel__scrollToTopFromTouchAtScreenLocation_resultHandler_, &v7, locationCopy, handlerCopy);
     objc_storeStrong(&v13, 0);
     objc_storeStrong(&v12, 0);
     v15 = 0;
@@ -550,34 +550,34 @@ void __101__UIScrollViewAccessibility__accessibilityScrollToTopWithAnnouncement_
 
 - (double)_accessibilityAnnounceDelayedStatus
 {
-  if (a1)
+  if (self)
   {
     notification = *MEMORY[0x29EDC7EA8];
-    v3 = [a1 _accessibilityScrollStatus];
-    UIAccessibilityPostNotification(notification, v3);
-    *&result = MEMORY[0x29EDC9740](v3).n128_u64[0];
+    _accessibilityScrollStatus = [self _accessibilityScrollStatus];
+    UIAccessibilityPostNotification(notification, _accessibilityScrollStatus);
+    *&result = MEMORY[0x29EDC9740](_accessibilityScrollStatus).n128_u64[0];
   }
 
   return result;
 }
 
-- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)a3 resultHandler:(id)a4
+- (void)_scrollToTopFromTouchAtScreenLocation:(CGPoint)location resultHandler:(id)handler
 {
-  v7 = a3;
-  v6 = self;
+  locationCopy = location;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
+  objc_storeStrong(location, handler);
   if (UIAccessibilityIsVoiceOverRunning())
   {
-    [(UIScrollViewAccessibility *)v6 _accessibilityScrollToTopWithAnnouncement:location[0] touchLocation:v7.x originalHandler:v7.y];
+    [(UIScrollViewAccessibility *)selfCopy _accessibilityScrollToTopWithAnnouncement:location[0] touchLocation:locationCopy.x originalHandler:locationCopy.y];
   }
 
   else
   {
-    v4.receiver = v6;
+    v4.receiver = selfCopy;
     v4.super_class = UIScrollViewAccessibility;
-    [(UIScrollViewAccessibility *)&v4 _scrollToTopFromTouchAtScreenLocation:location[0] resultHandler:v7.x, v7.y];
+    [(UIScrollViewAccessibility *)&v4 _scrollToTopFromTouchAtScreenLocation:location[0] resultHandler:locationCopy.x, locationCopy.y];
   }
 
   objc_storeStrong(location, 0);
@@ -585,7 +585,7 @@ void __101__UIScrollViewAccessibility__accessibilityScrollToTopWithAnnouncement_
 
 - (BOOL)_accessibilityScrollingEnabled
 {
-  v5 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UIScrollViewAccessibility *)self _accessibilityUserDefinedScrollingEnabled];
   if (location[0])
@@ -595,7 +595,7 @@ void __101__UIScrollViewAccessibility__accessibilityScrollToTopWithAnnouncement_
 
   else
   {
-    v3 = [(UIScrollViewAccessibility *)v5 safeValueForKey:@"isScrollEnabled"];
+    v3 = [(UIScrollViewAccessibility *)selfCopy safeValueForKey:@"isScrollEnabled"];
     v6 = [v3 BOOLValue] & 1;
     MEMORY[0x29EDC9740](v3);
   }
@@ -606,16 +606,16 @@ void __101__UIScrollViewAccessibility__accessibilityScrollToTopWithAnnouncement_
 
 - (BOOL)_accessibilityIsScrollAncestor
 {
-  v5 = [(UIScrollViewAccessibility *)self isAccessibilityUserDefinedScrollAncestor];
-  *&v2 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  if (!v5)
+  isAccessibilityUserDefinedScrollAncestor = [(UIScrollViewAccessibility *)self isAccessibilityUserDefinedScrollAncestor];
+  *&v2 = MEMORY[0x29EDC9740](isAccessibilityUserDefinedScrollAncestor).n128_u64[0];
+  if (!isAccessibilityUserDefinedScrollAncestor)
   {
     return [(UIScrollViewAccessibility *)self _accessibilityScrollingEnabled];
   }
 
-  v4 = [(UIScrollViewAccessibility *)self isAccessibilityUserDefinedScrollAncestor];
-  v7 = [v4 BOOLValue] & 1;
-  MEMORY[0x29EDC9740](v4);
+  isAccessibilityUserDefinedScrollAncestor2 = [(UIScrollViewAccessibility *)self isAccessibilityUserDefinedScrollAncestor];
+  v7 = [isAccessibilityUserDefinedScrollAncestor2 BOOLValue] & 1;
+  MEMORY[0x29EDC9740](isAccessibilityUserDefinedScrollAncestor2);
   return v7;
 }
 
@@ -632,13 +632,13 @@ void __101__UIScrollViewAccessibility__accessibilityScrollToTopWithAnnouncement_
 
 - (id)_accessibilityFirstOpaqueElement
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
-  v5 = MEMORY[0x29EDC9748](v7);
+  v5 = MEMORY[0x29EDC9748](selfCopy);
   if ((__61__UIScrollViewAccessibility__accessibilityFirstOpaqueElement__block_invoke)())
   {
-    v8 = [(UIScrollViewAccessibility *)v7 _accessibilityFirstLastOpaqueElement:location[0] options:?];
+    v8 = [(UIScrollViewAccessibility *)selfCopy _accessibilityFirstLastOpaqueElement:location[0] options:?];
     v4 = 1;
   }
 
@@ -650,7 +650,7 @@ void __101__UIScrollViewAccessibility__accessibilityScrollToTopWithAnnouncement_
   objc_storeStrong(&v5, 0);
   if (!v4)
   {
-    v8 = [(UIScrollViewAccessibility *)v7 _accessibilityFirstOpaqueElementWithOptions:location[0]];
+    v8 = [(UIScrollViewAccessibility *)selfCopy _accessibilityFirstOpaqueElementWithOptions:location[0]];
   }
 
   objc_storeStrong(location, 0);
@@ -750,20 +750,20 @@ void __61__UIScrollViewAccessibility__accessibilityFirstOpaqueElement__block_inv
 - (id)_accessibilityFirstLastOpaqueElement:(id)obj options:
 {
   v39 = *MEMORY[0x29EDCA608];
-  v36 = a1;
+  selfCopy = self;
   v35 = a2;
   location = 0;
   objc_storeStrong(&location, obj);
-  if (v36)
+  if (selfCopy)
   {
-    v24 = 1;
-    if (([(UIView *)v36 _accessibilityOpaqueElementScrollsContentIntoView]& 1) == 0)
+    _axAlwaysScrollsContentIntoView = 1;
+    if (([(UIView *)selfCopy _accessibilityOpaqueElementScrollsContentIntoView]& 1) == 0)
     {
-      v24 = [(UIView *)v36 _axAlwaysScrollsContentIntoView];
+      _axAlwaysScrollsContentIntoView = [(UIView *)selfCopy _axAlwaysScrollsContentIntoView];
     }
 
-    v32 = v24 & 1;
-    if ([(UIView *)v36 _accessibilityShouldPreventOpaqueScrolling]& 1) == 0 && (v32)
+    v32 = _axAlwaysScrollsContentIntoView & 1;
+    if ([(UIView *)selfCopy _accessibilityShouldPreventOpaqueScrolling]& 1) == 0 && (v32)
     {
       if (v35)
       {
@@ -775,23 +775,23 @@ void __61__UIScrollViewAccessibility__accessibilityFirstOpaqueElement__block_inv
         v3 = 2;
       }
 
-      [(UIView *)v36 _accessibilityScrollOpaqueElementIntoView:v3 previousScroller:0];
+      [(UIView *)selfCopy _accessibilityScrollOpaqueElementIntoView:v3 previousScroller:0];
     }
 
-    v31 = [(UIView *)v36 _accessibilitySortedElementsWithinWithOptions:location];
+    v31 = [(UIView *)selfCopy _accessibilitySortedElementsWithinWithOptions:location];
     if ((v35 & 1) == 0)
     {
-      v23 = [v31 reverseObjectEnumerator];
-      v4 = [v23 allObjects];
+      reverseObjectEnumerator = [v31 reverseObjectEnumerator];
+      allObjects = [reverseObjectEnumerator allObjects];
       v5 = v31;
-      v31 = v4;
+      v31 = allObjects;
       MEMORY[0x29EDC9740](v5);
-      MEMORY[0x29EDC9740](v23);
+      MEMORY[0x29EDC9740](reverseObjectEnumerator);
     }
 
-    [(UIView *)v36 visibleBounds];
+    [(UIView *)selfCopy visibleBounds];
     rect = v41;
-    v30 = UIAccessibilityConvertFrameToScreenCoordinates(v41, v36);
+    v30 = UIAccessibilityConvertFrameToScreenCoordinates(v41, selfCopy);
     memset(__b, 0, sizeof(__b));
     obja = MEMORY[0x29EDC9748](v31);
     v22 = [obja countByEnumeratingWithState:__b objects:v38 count:16];
@@ -823,14 +823,14 @@ void __61__UIScrollViewAccessibility__accessibilityFirstOpaqueElement__block_inv
           {
             [v28 accessibilityFrame];
             v16 = v10;
-            [(UIView *)v36 _accessibilityVisibleItemDenominator];
+            [(UIView *)selfCopy _accessibilityVisibleItemDenominator];
             if (height > v16 / v11)
             {
               break;
             }
 
             v15 = v30.size.height;
-            [(UIView *)v36 _accessibilityVisibleItemDenominator];
+            [(UIView *)selfCopy _accessibilityVisibleItemDenominator];
             if (height > v15 / v12)
             {
               break;
@@ -882,35 +882,35 @@ LABEL_24:
   return v13;
 }
 
-- (id)_accessibilityFirstOpaqueElementWithOptions:(id)a3
+- (id)_accessibilityFirstOpaqueElementWithOptions:(id)options
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v7 = MEMORY[0x29EDCA5F8];
   v8 = -1073741824;
   v9 = 0;
   v10 = __73__UIScrollViewAccessibility__accessibilityFirstOpaqueElementWithOptions___block_invoke;
   v11 = &unk_29F30CEB0;
-  v12 = MEMORY[0x29EDC9748](v15);
+  v12 = MEMORY[0x29EDC9748](selfCopy);
   v13 = (__73__UIScrollViewAccessibility__accessibilityFirstOpaqueElementWithOptions___block_invoke)();
-  v5 = MEMORY[0x29EDC9748](v15);
+  v5 = MEMORY[0x29EDC9748](selfCopy);
   v6 = (__73__UIScrollViewAccessibility__accessibilityFirstOpaqueElementWithOptions___block_invoke_433)();
   if (v13 & 1) == 0 || (v6)
   {
-    v16 = [(UIScrollViewAccessibility *)v15 _accessibilityFirstLastOpaqueElement:location[0] options:?];
+    _accessibilityFirstOpaqueElement = [(UIScrollViewAccessibility *)selfCopy _accessibilityFirstLastOpaqueElement:location[0] options:?];
   }
 
   else
   {
-    v16 = [(UIScrollViewAccessibility *)v15 _accessibilityFirstOpaqueElement];
+    _accessibilityFirstOpaqueElement = [(UIScrollViewAccessibility *)selfCopy _accessibilityFirstOpaqueElement];
   }
 
   objc_storeStrong(&v5, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
-  v3 = v16;
+  v3 = _accessibilityFirstOpaqueElement;
 
   return v3;
 }
@@ -1093,13 +1093,13 @@ void __73__UIScrollViewAccessibility__accessibilityFirstOpaqueElementWithOptions
 
 - (id)_accessibilityLastOpaqueElement
 {
-  v7 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [MEMORY[0x29EDC7328] defaultVoiceOverOptions];
-  v5 = MEMORY[0x29EDC9748](v7);
+  v5 = MEMORY[0x29EDC9748](selfCopy);
   if ((__60__UIScrollViewAccessibility__accessibilityLastOpaqueElement__block_invoke)())
   {
-    v8 = [(UIScrollViewAccessibility *)v7 _accessibilityFirstLastOpaqueElement:location[0] options:?];
+    v8 = [(UIScrollViewAccessibility *)selfCopy _accessibilityFirstLastOpaqueElement:location[0] options:?];
     v4 = 1;
   }
 
@@ -1111,7 +1111,7 @@ void __73__UIScrollViewAccessibility__accessibilityFirstOpaqueElementWithOptions
   objc_storeStrong(&v5, 0);
   if (!v4)
   {
-    v8 = [(UIScrollViewAccessibility *)v7 _accessibilityLastOpaqueElementWithOptions:location[0]];
+    v8 = [(UIScrollViewAccessibility *)selfCopy _accessibilityLastOpaqueElementWithOptions:location[0]];
   }
 
   objc_storeStrong(location, 0);
@@ -1208,35 +1208,35 @@ void __60__UIScrollViewAccessibility__accessibilityLastOpaqueElement__block_invo
   }
 }
 
-- (id)_accessibilityLastOpaqueElementWithOptions:(id)a3
+- (id)_accessibilityLastOpaqueElementWithOptions:(id)options
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, options);
   v7 = MEMORY[0x29EDCA5F8];
   v8 = -1073741824;
   v9 = 0;
   v10 = __72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions___block_invoke;
   v11 = &unk_29F30CEB0;
-  v12 = MEMORY[0x29EDC9748](v15);
+  v12 = MEMORY[0x29EDC9748](selfCopy);
   v13 = (__72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions___block_invoke)();
-  v5 = MEMORY[0x29EDC9748](v15);
+  v5 = MEMORY[0x29EDC9748](selfCopy);
   v6 = (__72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions___block_invoke_445)();
   if (v13 & 1) == 0 || (v6)
   {
-    v16 = [(UIScrollViewAccessibility *)v15 _accessibilityFirstLastOpaqueElement:location[0] options:?];
+    _accessibilityLastOpaqueElement = [(UIScrollViewAccessibility *)selfCopy _accessibilityFirstLastOpaqueElement:location[0] options:?];
   }
 
   else
   {
-    v16 = [(UIScrollViewAccessibility *)v15 _accessibilityLastOpaqueElement];
+    _accessibilityLastOpaqueElement = [(UIScrollViewAccessibility *)selfCopy _accessibilityLastOpaqueElement];
   }
 
   objc_storeStrong(&v5, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
-  v3 = v16;
+  v3 = _accessibilityLastOpaqueElement;
 
   return v3;
 }
@@ -1417,20 +1417,20 @@ void __72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions_
   }
 }
 
-- (id)_accessibilityFocusAbsoluteFirstLastOpaqueElement:(BOOL)a3 technology:(id)a4 honorsGroups:(BOOL)a5 shouldAlwaysScroll:(BOOL)a6
+- (id)_accessibilityFocusAbsoluteFirstLastOpaqueElement:(BOOL)element technology:(id)technology honorsGroups:(BOOL)groups shouldAlwaysScroll:(BOOL)scroll
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  elementCopy = element;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v13 = a5;
-  v12 = a6;
-  [(UIScrollViewAccessibility *)v17 _axSetAlwaysScrollsContentIntoView:a6];
-  v10.receiver = v17;
+  objc_storeStrong(&location, technology);
+  groupsCopy = groups;
+  scrollCopy = scroll;
+  [(UIScrollViewAccessibility *)selfCopy _axSetAlwaysScrollsContentIntoView:scroll];
+  v10.receiver = selfCopy;
   v10.super_class = UIScrollViewAccessibility;
-  v11 = [(UIScrollViewAccessibility *)&v10 _accessibilityFocusAbsoluteFirstLastOpaqueElement:v15 technology:location honorsGroups:a5 shouldAlwaysScroll:a6];
-  [(UIScrollViewAccessibility *)v17 _axSetAlwaysScrollsContentIntoView:0];
+  v11 = [(UIScrollViewAccessibility *)&v10 _accessibilityFocusAbsoluteFirstLastOpaqueElement:elementCopy technology:location honorsGroups:groups shouldAlwaysScroll:scroll];
+  [(UIScrollViewAccessibility *)selfCopy _axSetAlwaysScrollsContentIntoView:0];
   v9 = MEMORY[0x29EDC9748](v11);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&location, 0);
@@ -1448,20 +1448,20 @@ void __72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions_
 
 - (uint64_t)_axScrollViewPagingEnabled
 {
-  if (a1)
+  if (self)
   {
-    v4 = [a1 _accessibilityPagingEnabled];
-    *&v1 = MEMORY[0x29EDC9740](v4).n128_u64[0];
-    if (v4)
+    _accessibilityPagingEnabled = [self _accessibilityPagingEnabled];
+    *&v1 = MEMORY[0x29EDC9740](_accessibilityPagingEnabled).n128_u64[0];
+    if (_accessibilityPagingEnabled)
     {
-      v3 = [a1 _accessibilityPagingEnabled];
-      v6 = [v3 BOOLValue] & 1;
-      MEMORY[0x29EDC9740](v3);
+      _accessibilityPagingEnabled2 = [self _accessibilityPagingEnabled];
+      v6 = [_accessibilityPagingEnabled2 BOOLValue] & 1;
+      MEMORY[0x29EDC9740](_accessibilityPagingEnabled2);
     }
 
     else
     {
-      v6 = [a1 isPagingEnabled] & 1;
+      v6 = [self isPagingEnabled] & 1;
     }
   }
 
@@ -1473,15 +1473,15 @@ void __72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions_
   return v6 & 1;
 }
 
-- (BOOL)_accessibilityScrollToFrame:(CGRect)a3 forView:(id)a4
+- (BOOL)_accessibilityScrollToFrame:(CGRect)frame forView:(id)view
 {
   v129 = *MEMORY[0x29EDCA608];
-  v121 = a3;
-  v120 = self;
+  frameCopy = frame;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a4);
-  [(UIScrollViewAccessibility *)v120 visibleBounds];
+  objc_storeStrong(location, view);
+  [(UIScrollViewAccessibility *)selfCopy visibleBounds];
   recta.origin.x = v4;
   recta.origin.y = v5;
   recta.size.width = v6;
@@ -1492,7 +1492,7 @@ void __72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions_
   {
     log = oslog;
     v76 = type;
-    v78 = NSStringFromCGRect(v121);
+    v78 = NSStringFromCGRect(frameCopy);
     v73 = MEMORY[0x29EDC9748](v78);
     v115 = v73;
     v74 = location[0];
@@ -1507,7 +1507,7 @@ void __72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions_
   }
 
   objc_storeStrong(&oslog, 0);
-  if (location[0] == v120)
+  if (location[0] == selfCopy)
   {
     v113 = AXLogScrollToVisible();
     v112 = OS_LOG_TYPE_DEBUG;
@@ -1529,7 +1529,7 @@ void __72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions_
     v110.origin.y = v9;
     v110.size.width = v10;
     v110.size.height = v11;
-    v121 = v110;
+    frameCopy = v110;
   }
 
   v109 = AXLogScrollToVisible();
@@ -1538,9 +1538,9 @@ void __72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions_
   {
     v68 = v109;
     v69 = v108;
-    v70 = NSStringFromCGRect(v121);
+    v70 = NSStringFromCGRect(frameCopy);
     v107 = MEMORY[0x29EDC9748](v70);
-    __os_log_helper_16_2_2_8_66_8_66(v127, v107, v120);
+    __os_log_helper_16_2_2_8_66_8_66(v127, v107, selfCopy);
     _os_log_debug_impl(&dword_29C4D6000, v68, v69, "Will scroll to frame %{public}@ in bounds for %{public}@", v127, 0x16u);
     MEMORY[0x29EDC9740](v70);
     objc_storeStrong(&v107, 0);
@@ -1548,7 +1548,7 @@ void __72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions_
 
   objc_storeStrong(&v109, 0);
   v106 = 0;
-  [(UIScrollViewAccessibility *)v120 _accessibilityVisibleContentInset];
+  [(UIScrollViewAccessibility *)selfCopy _accessibilityVisibleContentInset];
   insets.top = v12;
   insets.left = v13;
   insets.bottom = v14;
@@ -1572,34 +1572,34 @@ void __72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions_
   insets.left = CGFloatMin_0(0.0, -insets.left);
   insets.bottom = CGFloatMin_0(0.0, -insets.bottom);
   insets.right = CGFloatMin_0(0.0, -insets.right);
-  origin = v121.origin;
-  v100.origin.x = UIEdgeInsetsInsetRect_0(v121.origin.x, v121.origin.y, v121.size.width, v121.size.height, insets.top, insets.left);
+  origin = frameCopy.origin;
+  v100.origin.x = UIEdgeInsetsInsetRect_0(frameCopy.origin.x, frameCopy.origin.y, frameCopy.size.width, frameCopy.size.height, insets.top, insets.left);
   v100.origin.y = v16;
   v100.size.width = v17;
   v100.size.height = v18;
-  v121 = v100;
-  if (([(UIScrollViewAccessibility *)v120 _axScrollViewPagingEnabled]& 1) == 0)
+  frameCopy = v100;
+  if (([(UIScrollViewAccessibility *)selfCopy _axScrollViewPagingEnabled]& 1) == 0)
   {
-    v99 = CGRectInset(v121, -*&_accessibilityScrollToFrame_forView__FingerSizeInsetPadding, -*&_accessibilityScrollToFrame_forView__FingerSizeInsetPadding);
-    v121 = v99;
+    v99 = CGRectInset(frameCopy, -*&_accessibilityScrollToFrame_forView__FingerSizeInsetPadding, -*&_accessibilityScrollToFrame_forView__FingerSizeInsetPadding);
+    frameCopy = v99;
     v98 = CGRectInset(recta, *&_accessibilityScrollToFrame_forView__FingerSizeInsetPadding, *&_accessibilityScrollToFrame_forView__FingerSizeInsetPadding);
     recta = v98;
   }
 
-  MinX = CGRectGetMinX(v121);
-  if (MinX >= CGRectGetMinX(recta) || (v62 = CGRectGetMinX(v121), v19 = CGRectGetMinX(recta), v63 = 1, AXCGFAbs_0(v62 - v19) < 0.001))
+  MinX = CGRectGetMinX(frameCopy);
+  if (MinX >= CGRectGetMinX(recta) || (v62 = CGRectGetMinX(frameCopy), v19 = CGRectGetMinX(recta), v63 = 1, AXCGFAbs_0(v62 - v19) < 0.001))
   {
-    MinY = CGRectGetMinY(v121);
-    if (MinY >= CGRectGetMinY(recta) || (v60 = CGRectGetMinY(v121), v20 = CGRectGetMinY(recta), v63 = 1, AXCGFAbs_0(v60 - v20) < 0.001))
+    MinY = CGRectGetMinY(frameCopy);
+    if (MinY >= CGRectGetMinY(recta) || (v60 = CGRectGetMinY(frameCopy), v20 = CGRectGetMinY(recta), v63 = 1, AXCGFAbs_0(v60 - v20) < 0.001))
     {
-      MaxX = CGRectGetMaxX(v121);
-      if (MaxX <= CGRectGetMaxX(recta) || (v58 = CGRectGetMaxX(v121), v21 = CGRectGetMaxX(recta), v63 = 1, AXCGFAbs_0(v58 - v21) < 0.001))
+      MaxX = CGRectGetMaxX(frameCopy);
+      if (MaxX <= CGRectGetMaxX(recta) || (v58 = CGRectGetMaxX(frameCopy), v21 = CGRectGetMaxX(recta), v63 = 1, AXCGFAbs_0(v58 - v21) < 0.001))
       {
-        MaxY = CGRectGetMaxY(v121);
+        MaxY = CGRectGetMaxY(frameCopy);
         v57 = 0;
         if (MaxY > CGRectGetMaxY(recta))
         {
-          v55 = CGRectGetMaxY(v121);
+          v55 = CGRectGetMaxY(frameCopy);
           v22 = CGRectGetMaxY(recta);
           v57 = AXCGFAbs_0(v55 - v22) >= 0.001;
         }
@@ -1616,7 +1616,7 @@ void __72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions_
   {
     v52 = v97;
     v53 = v96;
-    v54 = NSStringFromCGRect(v121);
+    v54 = NSStringFromCGRect(frameCopy);
     v95 = MEMORY[0x29EDC9748](v54);
     __os_log_helper_16_2_2_8_66_4_0(v125, v95, v106 & 1);
     _os_log_debug_impl(&dword_29C4D6000, v52, v53, "After insetting, frame is %{public}@.  Should scroll: %i", v125, 0x12u);
@@ -1630,10 +1630,10 @@ void __72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions_
     goto LABEL_47;
   }
 
-  [(UIScrollViewAccessibility *)v120 bounds];
+  [(UIScrollViewAccessibility *)selfCopy bounds];
   v93 = CGRectInset(v130, *&_accessibilityScrollToFrame_forView__FingerSizeInsetPadding, *&_accessibilityScrollToFrame_forView__FingerSizeInsetPadding);
   rect1 = v93;
-  if (CGRectContainsRect(v93, v121))
+  if (CGRectContainsRect(v93, frameCopy))
   {
     v82 = AXLogScrollToVisible();
     v81 = OS_LOG_TYPE_DEBUG;
@@ -1644,7 +1644,7 @@ void __72__UIScrollViewAccessibility__accessibilityLastOpaqueElementWithOptions_
       v35 = NSStringFromCGRect(rect1);
       v31 = MEMORY[0x29EDC9748](v35);
       v80 = v31;
-      v34 = NSStringFromCGRect(v121);
+      v34 = NSStringFromCGRect(frameCopy);
       v79 = MEMORY[0x29EDC9748](v34);
       __os_log_helper_16_2_2_8_66_8_66(v123, v31, v79);
       _os_log_debug_impl(&dword_29C4D6000, v32, v33, "Real bounds %{public}@ already contained frame %{public}@, so doing nothing.", v123, 0x16u);
@@ -1661,12 +1661,12 @@ LABEL_47:
     goto LABEL_48;
   }
 
-  [(UIScrollViewAccessibility *)v120 contentOffset];
+  [(UIScrollViewAccessibility *)selfCopy contentOffset];
   point.x = v23;
   point.y = v24;
-  if ([(UIScrollViewAccessibility *)v120 _axShouldScrollToAlignWithPage])
+  if ([(UIScrollViewAccessibility *)selfCopy _axShouldScrollToAlignWithPage])
   {
-    v91.x = [(UIScrollViewAccessibility *)v120 _axPageAlignedContentOffsetForPoint:origin.x forValidation:origin.y];
+    v91.x = [(UIScrollViewAccessibility *)selfCopy _axPageAlignedContentOffsetForPoint:origin.x forValidation:origin.y];
     v91.y = v25;
     point = v91;
     v90 = AXLogScrollToVisible();
@@ -1683,16 +1683,16 @@ LABEL_47:
     goto LABEL_41;
   }
 
-  Width = UIRectGetWidth(v121.origin.x, v121.origin.y, v121.size.width);
+  Width = UIRectGetWidth(frameCopy.origin.x, frameCopy.origin.y, frameCopy.size.width);
   if (Width > UIRectGetWidth(rect1.origin.x, rect1.origin.y, rect1.size.width))
   {
     goto LABEL_35;
   }
 
-  v48 = UIRectGetMaxX(v121.origin.x, v121.origin.y, v121.size.width);
+  v48 = UIRectGetMaxX(frameCopy.origin.x, frameCopy.origin.y, frameCopy.size.width);
   if (v48 >= UIRectGetMaxX(rect1.origin.x, rect1.origin.y, rect1.size.width))
   {
-    v47 = UIRectGetMaxX(v121.origin.x, v121.origin.y, v121.size.width);
+    v47 = UIRectGetMaxX(frameCopy.origin.x, frameCopy.origin.y, frameCopy.size.width);
     point.x = v47 - UIRectGetWidth(rect1.origin.x, rect1.origin.y, rect1.size.width);
     goto LABEL_36;
   }
@@ -1708,27 +1708,27 @@ LABEL_35:
   }
 
 LABEL_36:
-  Height = UIRectGetHeight(v121.origin.x, v121.origin.y, v121.size.width, v121.size.height);
+  Height = UIRectGetHeight(frameCopy.origin.x, frameCopy.origin.y, frameCopy.size.width, frameCopy.size.height);
   if (Height > UIRectGetHeight(rect1.origin.x, rect1.origin.y, rect1.size.width, rect1.size.height))
   {
     goto LABEL_40;
   }
 
-  v44 = UIRectGetMaxY(v121.origin.x, v121.origin.y, v121.size.width, v121.size.height);
+  v44 = UIRectGetMaxY(frameCopy.origin.x, frameCopy.origin.y, frameCopy.size.width, frameCopy.size.height);
   if (v44 < UIRectGetMaxY(rect1.origin.x, rect1.origin.y, rect1.size.width, rect1.size.height))
   {
-    v42 = UIRectGetMinY(v121.origin.x, v121.origin.y);
+    v42 = UIRectGetMinY(frameCopy.origin.x, frameCopy.origin.y);
     if (v42 >= UIRectGetMinY(rect1.origin.x, rect1.origin.y))
     {
       goto LABEL_41;
     }
 
 LABEL_40:
-    point.y = UIRectGetMinY(v121.origin.x, v121.origin.y);
+    point.y = UIRectGetMinY(frameCopy.origin.x, frameCopy.origin.y);
     goto LABEL_41;
   }
 
-  v43 = UIRectGetMaxY(v121.origin.x, v121.origin.y, v121.size.width, v121.size.height);
+  v43 = UIRectGetMaxY(frameCopy.origin.x, frameCopy.origin.y, frameCopy.size.width, frameCopy.size.height);
   point.y = v43 - UIRectGetHeight(rect1.origin.x, rect1.origin.y, rect1.size.width, rect1.size.height);
 LABEL_41:
   v87 = AXLogScrollToVisible();
@@ -1751,9 +1751,9 @@ LABEL_41:
   }
 
   objc_storeStrong(&v87, 0);
-  v36 = v120;
-  v29 = [(UIScrollViewAccessibility *)v120 _accessibilityShouldAnimateScrollToVisible];
-  [(UIScrollViewAccessibility *)v36 accessibilityApplyScrollContent:0 sendScrollStatus:v29 animated:point];
+  v36 = selfCopy;
+  _accessibilityShouldAnimateScrollToVisible = [(UIScrollViewAccessibility *)selfCopy _accessibilityShouldAnimateScrollToVisible];
+  [(UIScrollViewAccessibility *)v36 accessibilityApplyScrollContent:0 sendScrollStatus:_accessibilityShouldAnimateScrollToVisible animated:point];
   v122 = 1;
   v83 = 1;
 LABEL_48:
@@ -1761,23 +1761,23 @@ LABEL_48:
   return v122 & 1;
 }
 
-- (CGFloat)_axPageAlignedContentOffsetForPoint:(double)a3 forValidation:(double)a4
+- (CGFloat)_axPageAlignedContentOffsetForPoint:(double)point forValidation:(double)validation
 {
   v42 = *MEMORY[0x29EDCA608];
-  v32 = a3;
-  v33 = a4;
-  v31 = a1;
+  pointCopy = point;
+  validationCopy = validation;
+  selfCopy = self;
   v30 = a2;
-  if (a1)
+  if (self)
   {
-    [v31 _axPageSize];
+    [selfCopy _axPageSize];
     v28 = v4;
     v29 = v5;
-    v27 = MEMORY[0x29EDC9748](v31);
+    v27 = MEMORY[0x29EDC9748](selfCopy);
     [v27 _pagingOrigin];
     point.x = v6;
     point.y = v7;
-    v34 = point;
+    pointCopy2 = point;
     oslog = AXLogScrollToVisible();
     type = OS_LOG_TYPE_DEBUG;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
@@ -1799,51 +1799,51 @@ LABEL_48:
       v8 = 0.02;
     }
 
-    v22 = (v32 - point.x) / v28;
-    v21 = (v33 - point.y) / v29;
+    v22 = (pointCopy - point.x) / v28;
+    v21 = (validationCopy - point.y) / v29;
     v38 = v22;
     if (ceil(v22) - v22 >= v8)
     {
-      v40 = (v32 - point.x) / v28;
+      v40 = (pointCopy - point.x) / v28;
       v13 = floor(v22);
     }
 
     else
     {
-      v37 = (v32 - point.x) / v28;
+      v37 = (pointCopy - point.x) / v28;
       v13 = ceil(v22);
     }
 
-    v34.x = v34.x + v13 * v28;
-    v36 = (v33 - point.y) / v29;
+    pointCopy2.x = pointCopy2.x + v13 * v28;
+    v36 = (validationCopy - point.y) / v29;
     if (ceil(v21) - v21 >= v8)
     {
-      v39 = (v33 - point.y) / v29;
+      v39 = (validationCopy - point.y) / v29;
       v12 = floor(v21);
     }
 
     else
     {
-      v35 = (v33 - point.y) / v29;
+      v35 = (validationCopy - point.y) / v29;
       v12 = ceil(v21);
     }
 
-    v34.y = v34.y + v12 * v29;
-    v19 = [(UIScrollViewAccessibility *)v31 _axMinimumContentOffset];
+    pointCopy2.y = pointCopy2.y + v12 * v29;
+    _axMinimumContentOffset = [(UIScrollViewAccessibility *)selfCopy _axMinimumContentOffset];
     v20 = v9;
-    v17 = [(UIScrollViewAccessibility *)v31 _axMaximumContentOffset];
+    _axMaximumContentOffset = [(UIScrollViewAccessibility *)selfCopy _axMaximumContentOffset];
     v18 = v10;
-    v34.x = CGFloatMinMax_0(v34.x, v19, v17);
-    v34.y = CGFloatMinMax_0(v34.y, v20, v18);
+    pointCopy2.x = CGFloatMinMax_0(pointCopy2.x, _axMinimumContentOffset, _axMaximumContentOffset);
+    pointCopy2.y = CGFloatMinMax_0(pointCopy2.y, v20, v18);
     objc_storeStrong(&v27, 0);
   }
 
   else
   {
-    v34 = 0;
+    pointCopy2 = 0;
   }
 
-  return v34.x;
+  return pointCopy2.x;
 }
 
 - (int64_t)accessibilityContainerType
@@ -1853,26 +1853,26 @@ LABEL_48:
   location[0] = [(UIScrollViewAccessibility *)self storedAccessibilityContainerType];
   if (location[0])
   {
-    v4 = [location[0] integerValue];
+    integerValue = [location[0] integerValue];
   }
 
   else
   {
-    v4 = 12;
+    integerValue = 12;
   }
 
   objc_storeStrong(location, 0);
-  return v4;
+  return integerValue;
 }
 
 - (BOOL)_accessibilityShouldAnimateScroll
 {
-  if (a1)
+  if (self)
   {
-    v2 = [MEMORY[0x29EDC7938] sharedApplication];
-    v3 = [v2 applicationState];
-    MEMORY[0x29EDC9740](v2);
-    return v3 != 2;
+    mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+    applicationState = [mEMORY[0x29EDC7938] applicationState];
+    MEMORY[0x29EDC9740](mEMORY[0x29EDC7938]);
+    return applicationState != 2;
   }
 
   else
@@ -1897,29 +1897,29 @@ LABEL_48:
   return v6 - v3 - v4;
 }
 
-- (void)_accessibilityCurrentPage:(uint64_t *)a3 totalPages:(int)a4 type:
+- (void)_accessibilityCurrentPage:(uint64_t *)page totalPages:(int)pages type:
 {
-  if (a1)
+  if (self)
   {
-    v8 = 1;
-    v6 = [a1 _accessibilityValueForKey:@"kUIScrollViewScrollVerticalStorageKey"];
-    v7 = [v6 intValue];
+    pagesCopy = 1;
+    v6 = [self _accessibilityValueForKey:@"kUIScrollViewScrollVerticalStorageKey"];
+    intValue = [v6 intValue];
     *&v4 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-    if (v7)
+    if (intValue)
     {
-      v8 = v7;
+      pagesCopy = intValue;
     }
 
-    if (v8 == 3 || a4 == 3)
+    if (pagesCopy == 3 || pages == 3)
     {
-      if (a4 == 2 || a4 == 1)
+      if (pages == 2 || pages == 1)
       {
-        v8 = a4;
+        pagesCopy = pages;
       }
 
       else
       {
-        if ([a1 _accessibilityScrollStatusPrefersVertical])
+        if ([self _accessibilityScrollStatusPrefersVertical])
         {
           v5 = 1;
         }
@@ -1929,36 +1929,36 @@ LABEL_48:
           v5 = 2;
         }
 
-        v8 = v5;
+        pagesCopy = v5;
       }
     }
 
-    [(UIScrollViewAccessibility *)a1 _accessibilityCurrentPage:a2 totalPages:a3 forVerticalDirection:v8 == 1];
+    [(UIScrollViewAccessibility *)self _accessibilityCurrentPage:a2 totalPages:page forVerticalDirection:pagesCopy == 1];
   }
 }
 
-- (void)_accessibilityCurrentPage:(uint64_t *)a3 totalPages:(char)a4 forVerticalDirection:
+- (void)_accessibilityCurrentPage:(uint64_t *)page totalPages:(char)pages forVerticalDirection:
 {
-  if (a1)
+  if (self)
   {
-    [a1 visibleBounds];
+    [self visibleBounds];
     v28 = v4;
     v29 = v5;
     v30 = v6;
     v31 = v7;
-    [a1 _accessibilityScrollHeightDistance];
+    [self _accessibilityScrollHeightDistance];
     v27 = v8;
-    [a1 _accessibilityScrollWidthDistance];
+    [self _accessibilityScrollWidthDistance];
     v26 = v9;
-    [a1 _accessibilityContentSize];
+    [self _accessibilityContentSize];
     v24 = v10;
     v25 = v11;
-    [a1 _accessibilityVisibleContentInset];
+    [self _accessibilityVisibleContentInset];
     v23.origin.x = UIEdgeInsetsInsetRect_0(v28, v29, v30, v31, v12, v13);
     v23.origin.y = v14;
     v23.size.width = v15;
     v23.size.height = v16;
-    if ((a4 & 1) == 0 || v25 == v27)
+    if ((pages & 1) == 0 || v25 == v27)
     {
       if (v24 > v26)
       {
@@ -2001,9 +2001,9 @@ LABEL_48:
       v33 = 1;
     }
 
-    if (a3)
+    if (page)
     {
-      *a3 = v32;
+      *page = v32;
     }
 
     if (a2)
@@ -2015,36 +2015,36 @@ LABEL_48:
 
 - (double)_axMinimumContentOffset
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [a1 safeCGPointForKey:@"_minimumContentOffset"];
+  [self safeCGPointForKey:@"_minimumContentOffset"];
   return v1;
 }
 
 - (double)_axMaximumContentOffset
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  [a1 safeCGPointForKey:@"_maximumContentOffset"];
+  [self safeCGPointForKey:@"_maximumContentOffset"];
   return v1;
 }
 
 - (id)_accessibilityFindRefreshControl
 {
   v16 = *MEMORY[0x29EDCA608];
-  v13 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
-    location = [v13 safeValueForKey:@"_refreshControl"];
+    location = [selfCopy safeValueForKey:@"_refreshControl"];
     if (!location)
     {
-      v11 = [v13 safeValueForKey:@"subviews"];
+      v11 = [selfCopy safeValueForKey:@"subviews"];
       memset(__b, 0, sizeof(__b));
       obj = MEMORY[0x29EDC9748](v11);
       v8 = [obj countByEnumeratingWithState:__b objects:v15 count:16];
@@ -2104,7 +2104,7 @@ LABEL_12:
 
 - (void)_scrollViewDidEndDeceleratingForDelegate
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   v2.receiver = self;
   v2.super_class = UIScrollViewAccessibility;
@@ -2114,7 +2114,7 @@ LABEL_12:
 
 - (void)_notifyDidScroll
 {
-  v18 = self;
+  selfCopy = self;
   v17 = a2;
   v16.receiver = self;
   v16.super_class = UIScrollViewAccessibility;
@@ -2137,35 +2137,35 @@ LABEL_12:
     UIAccessibilityPostNotification(*MEMORY[0x29EDC75C0], 0);
   }
 
-  location = MEMORY[0x29EDC9748](v18);
+  location = MEMORY[0x29EDC9748](selfCopy);
   if ([location isFirstResponder])
   {
-    v12 = [(UIScrollViewAccessibility *)v18 _accessibilityBoundaryEdges];
-    v7 = [(UIScrollViewAccessibility *)v18 _axLastEdgeBoundaries];
+    _accessibilityBoundaryEdges = [(UIScrollViewAccessibility *)selfCopy _accessibilityBoundaryEdges];
+    _axLastEdgeBoundaries = [(UIScrollViewAccessibility *)selfCopy _axLastEdgeBoundaries];
     v10 = 0;
     v8 = 1;
-    if (v7)
+    if (_axLastEdgeBoundaries)
     {
-      v11 = [(UIScrollViewAccessibility *)v18 _axLastEdgeBoundaries];
+      _axLastEdgeBoundaries2 = [(UIScrollViewAccessibility *)selfCopy _axLastEdgeBoundaries];
       v10 = 1;
-      v8 = v12 != [v11 unsignedIntegerValue];
+      v8 = _accessibilityBoundaryEdges != [_axLastEdgeBoundaries2 unsignedIntegerValue];
     }
 
     if (v10)
     {
-      MEMORY[0x29EDC9740](v11);
+      MEMORY[0x29EDC9740](_axLastEdgeBoundaries2);
     }
 
-    *&v2 = MEMORY[0x29EDC9740](v7).n128_u64[0];
+    *&v2 = MEMORY[0x29EDC9740](_axLastEdgeBoundaries).n128_u64[0];
     if (v8)
     {
-      v5 = v18;
-      v6 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{v12, v2}];
+      v5 = selfCopy;
+      v6 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{_accessibilityBoundaryEdges, v2}];
       [(UIScrollViewAccessibility *)v5 _axSetLastEdgeBoundaries:?];
       *&v3 = MEMORY[0x29EDC9740](v6).n128_u64[0];
-      if (v12)
+      if (_accessibilityBoundaryEdges)
       {
-        v4 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{v12, v3}];
+        v4 = [MEMORY[0x29EDBA070] numberWithUnsignedInteger:{_accessibilityBoundaryEdges, v3}];
         UIAccessibilityPostNotification(0x434u, v4);
         MEMORY[0x29EDC9740](v4);
       }
@@ -2180,21 +2180,21 @@ LABEL_12:
   [(UIScrollViewAccessibility *)self contentOffset];
   v11 = v2;
   v12 = v3;
-  v9 = [(UIScrollViewAccessibility *)self _axMinimumContentOffset];
+  _axMinimumContentOffset = [(UIScrollViewAccessibility *)self _axMinimumContentOffset];
   v10 = v4;
-  v8 = [(UIScrollViewAccessibility *)self _axMaximumContentOffset];
+  _axMaximumContentOffset = [(UIScrollViewAccessibility *)self _axMaximumContentOffset];
   v7 = v12 <= v10;
   if (v12 >= v5)
   {
     v7 |= 4uLL;
   }
 
-  if (v11 <= v9)
+  if (v11 <= _axMinimumContentOffset)
   {
     v7 |= 2uLL;
   }
 
-  if (v11 >= v8)
+  if (v11 >= _axMaximumContentOffset)
   {
     v7 |= 8uLL;
   }
@@ -2204,10 +2204,10 @@ LABEL_12:
 
 - (id)_accessibilityDelegateScrollStatus
 {
-  v8 = self;
+  selfCopy = self;
   v7[1] = a2;
   v7[0] = [(UIScrollViewAccessibility *)self _accessibilityRetrieveDelegate];
-  v6 = MEMORY[0x29EDC9748](v8);
+  v6 = MEMORY[0x29EDC9748](selfCopy);
   if ((objc_opt_respondsToSelector() & 1) == 0 || ((location = [v7[0] accessibilityAttributedScrollStatusForScrollView:v6]) == 0 ? (v4 = 0) : (v9 = objc_msgSend(objc_alloc(MEMORY[0x29EDBD7E8]), "initWithCFAttributedString:", location), v4 = 1), objc_storeStrong(&location, 0), !v4))
   {
     if (objc_opt_respondsToSelector())
@@ -2230,35 +2230,35 @@ LABEL_12:
 
 - (double)_axAllowedPagingOverlap
 {
-  if (!a1)
+  if (!self)
   {
     return 0.0;
   }
 
-  v5 = [a1 _accessibilityAllowedPagingOverlap];
-  *&v1 = MEMORY[0x29EDC9740](v5).n128_u64[0];
-  if (!v5)
+  _accessibilityAllowedPagingOverlap = [self _accessibilityAllowedPagingOverlap];
+  *&v1 = MEMORY[0x29EDC9740](_accessibilityAllowedPagingOverlap).n128_u64[0];
+  if (!_accessibilityAllowedPagingOverlap)
   {
     return 0.0;
   }
 
-  v4 = [a1 _accessibilityAllowedPagingOverlap];
-  [v4 doubleValue];
+  _accessibilityAllowedPagingOverlap2 = [self _accessibilityAllowedPagingOverlap];
+  [_accessibilityAllowedPagingOverlap2 doubleValue];
   v7 = v2;
-  MEMORY[0x29EDC9740](v4);
+  MEMORY[0x29EDC9740](_accessibilityAllowedPagingOverlap2);
   return v7;
 }
 
-- (id)_accessibilityElementsFilteredByPagingScrollView:(void *)a1
+- (id)_accessibilityElementsFilteredByPagingScrollView:(void *)view
 {
   v43 = *MEMORY[0x29EDCA608];
-  v40 = a1;
+  viewCopy = view;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v40)
+  if (viewCopy)
   {
     v37 = [MEMORY[0x29EDB8DE8] arrayWithCapacity:{objc_msgSend(location, "count")}];
-    if (-[UIScrollViewAccessibility _axScrollViewPagingEnabled](v40) & 1) == 0 || ([v40 _accessibilityScrollAcrossPageBoundaries])
+    if (-[UIScrollViewAccessibility _axScrollViewPagingEnabled](viewCopy) & 1) == 0 || ([viewCopy _accessibilityScrollAcrossPageBoundaries])
     {
       v41 = 0;
       v38 = 1;
@@ -2266,17 +2266,17 @@ LABEL_12:
 
     else
     {
-      v36 = 0;
-      v29 = [v40 _accessibilityPagingEnabled];
-      *&v2 = MEMORY[0x29EDC9740](v29).n128_u64[0];
-      if (v29)
+      bOOLValue = 0;
+      _accessibilityPagingEnabled = [viewCopy _accessibilityPagingEnabled];
+      *&v2 = MEMORY[0x29EDC9740](_accessibilityPagingEnabled).n128_u64[0];
+      if (_accessibilityPagingEnabled)
       {
-        v28 = [v40 _accessibilityPagingEnabled];
-        v36 = [v28 BOOLValue];
-        MEMORY[0x29EDC9740](v28);
+        _accessibilityPagingEnabled2 = [viewCopy _accessibilityPagingEnabled];
+        bOOLValue = [_accessibilityPagingEnabled2 BOOLValue];
+        MEMORY[0x29EDC9740](_accessibilityPagingEnabled2);
       }
 
-      [v40 visibleBounds];
+      [viewCopy visibleBounds];
       v35.origin.x = v3;
       v35.origin.y = v4;
       v35.size.width = v5;
@@ -2300,16 +2300,16 @@ LABEL_12:
           v34 = *(__b[1] + 8 * v24);
           v21 = v34;
           [v34 bounds];
-          [v21 convertRect:v40 toView:{v7, v8, v9, v10}];
+          [v21 convertRect:viewCopy toView:{v7, v8, v9, v10}];
           r2.origin.x = v11;
           r2.origin.y = v12;
           r2.size.width = v13;
           r2.size.height = v14;
-          if (v36)
+          if (bOOLValue)
           {
             v45 = CGRectIntersection(v35, r2);
             height = v45.size.height;
-            if (v45.size.width >= [(UIScrollViewAccessibility *)v40 _axAllowedPagingOverlap]&& height >= [(UIScrollViewAccessibility *)v40 _axAllowedPagingOverlap])
+            if (v45.size.width >= [(UIScrollViewAccessibility *)viewCopy _axAllowedPagingOverlap]&& height >= [(UIScrollViewAccessibility *)viewCopy _axAllowedPagingOverlap])
             {
               [v37 addObject:{v34, height}];
             }
@@ -2363,18 +2363,18 @@ LABEL_12:
 
 - (id)_accessibilitySubviews
 {
-  v11 = self;
+  selfCopy = self;
   v10[1] = a2;
-  v8 = [(UIScrollViewAccessibility *)self subviews];
-  v10[0] = [(UIScrollViewAccessibility *)self _accessibilityElementsFilteredByPagingScrollView:v8];
-  *&v2 = MEMORY[0x29EDC9740](v8).n128_u64[0];
+  subviews = [(UIScrollViewAccessibility *)self subviews];
+  v10[0] = [(UIScrollViewAccessibility *)self _accessibilityElementsFilteredByPagingScrollView:subviews];
+  *&v2 = MEMORY[0x29EDC9740](subviews).n128_u64[0];
   if (!v10[0])
   {
-    v9.receiver = v11;
+    v9.receiver = selfCopy;
     v9.super_class = UIScrollViewAccessibility;
-    v3 = [(UIScrollViewAccessibility *)&v9 _accessibilitySubviews];
+    _accessibilitySubviews = [(UIScrollViewAccessibility *)&v9 _accessibilitySubviews];
     v4 = v10[0];
-    v10[0] = v3;
+    v10[0] = _accessibilitySubviews;
     MEMORY[0x29EDC9740](v4);
   }
 
@@ -2404,26 +2404,26 @@ LABEL_12:
   return v3;
 }
 
-- (void)_accessibilitySetScrollStatus:(id)a3
+- (void)_accessibilitySetScrollStatus:(id)status
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(UIScrollViewAccessibility *)v4 _accessibilitySetValue:location[0] forKey:@"accessibilityScrollStatus" storageMode:0];
+  objc_storeStrong(location, status);
+  [(UIScrollViewAccessibility *)selfCopy _accessibilitySetValue:location[0] forKey:@"accessibilityScrollStatus" storageMode:0];
   objc_storeStrong(location, 0);
 }
 
 - (id)_accessibilityScrollStatus
 {
-  v21 = self;
+  selfCopy = self;
   v20[1] = a2;
   v20[0] = [(UIScrollViewAccessibility *)self _accessibilityValueForKey:@"accessibilityScrollStatus"];
   if (![v20[0] length])
   {
-    v2 = [(UIScrollViewAccessibility *)v21 _accessibilityDelegateScrollStatus];
+    _accessibilityDelegateScrollStatus = [(UIScrollViewAccessibility *)selfCopy _accessibilityDelegateScrollStatus];
     v3 = v20[0];
-    v20[0] = v2;
+    v20[0] = _accessibilityDelegateScrollStatus;
     MEMORY[0x29EDC9740](v3);
   }
 
@@ -2431,23 +2431,23 @@ LABEL_12:
   {
     v19 = 0;
     v18 = 0;
-    v12 = [(UIScrollViewAccessibility *)v21 _accessibilityValueForKey:?];
-    v13 = [v12 intValue];
+    v12 = [(UIScrollViewAccessibility *)selfCopy _accessibilityValueForKey:?];
+    intValue = [v12 intValue];
     *&v4 = MEMORY[0x29EDC9740](v12).n128_u64[0];
-    [(UIScrollViewAccessibility *)v21 _accessibilitySetIntegerValue:3 forKey:@"kUIScrollViewScrollVerticalStorageKey", v4];
-    [(UIScrollViewAccessibility *)v21 _accessibilityCurrentPage:&v19 totalPages:v13 type:?];
+    [(UIScrollViewAccessibility *)selfCopy _accessibilitySetIntegerValue:3 forKey:@"kUIScrollViewScrollVerticalStorageKey", v4];
+    [(UIScrollViewAccessibility *)selfCopy _accessibilityCurrentPage:&v19 totalPages:intValue type:?];
     v14 = MEMORY[0x29EDBA0F8];
-    v17 = [(UIScrollViewAccessibility *)v21 _accessibilityScrollStatusFormatString];
+    _accessibilityScrollStatusFormatString = [(UIScrollViewAccessibility *)selfCopy _accessibilityScrollStatusFormatString];
     v16 = AXFormatInteger();
     v15 = AXFormatInteger();
-    v5 = [v14 stringWithFormat:v17, v16, v15];
+    v5 = [v14 stringWithFormat:_accessibilityScrollStatusFormatString, v16, v15];
     v6 = v20[0];
     v20[0] = v5;
     MEMORY[0x29EDC9740](v6);
     MEMORY[0x29EDC9740](v15);
     MEMORY[0x29EDC9740](v16);
-    MEMORY[0x29EDC9740](v17);
-    if (([(UIScrollViewAccessibility *)v21 _axScrollViewPagingEnabled]& 1) != 0 && v13 == 2)
+    MEMORY[0x29EDC9740](_accessibilityScrollStatusFormatString);
+    if (([(UIScrollViewAccessibility *)selfCopy _axScrollViewPagingEnabled]& 1) != 0 && intValue == 2)
     {
       v7 = [MEMORY[0x29EDBD7E8] axAttributedStringWithString:v20[0]];
       v8 = v20[0];
@@ -2456,7 +2456,7 @@ LABEL_12:
       [v20[0] setAttribute:MEMORY[0x29EDB8EB0] forKey:{*MEMORY[0x29EDBDB20], v9}];
     }
 
-    [(UIScrollViewAccessibility *)v21 _accessibilitySetIntegerValue:v13 forKey:@"kUIScrollViewScrollVerticalStorageKey"];
+    [(UIScrollViewAccessibility *)selfCopy _accessibilitySetIntegerValue:intValue forKey:@"kUIScrollViewScrollVerticalStorageKey"];
   }
 
   v11 = MEMORY[0x29EDC9748](v20[0]);
@@ -2474,18 +2474,18 @@ LABEL_12:
   objc_storeStrong(argument, 0);
 }
 
-- (void)_accessibilityZoomAtPoint:(CGPoint)a3 zoomIn:(BOOL)a4
+- (void)_accessibilityZoomAtPoint:(CGPoint)point zoomIn:(BOOL)in
 {
-  v19 = a3;
-  v18 = self;
+  pointCopy = point;
+  selfCopy = self;
   v17 = a2;
-  v16 = a4;
+  inCopy = in;
   v15 = MEMORY[0x29EDC9748](self);
   [v15 maximumZoomScale];
   v13 = v4;
   [v15 minimumZoomScale];
   v14 = (v13 - v5) / 10.0;
-  if (!v16)
+  if (!inCopy)
   {
     v14 = -v14;
   }
@@ -2509,15 +2509,15 @@ LABEL_12:
 
 - (uint64_t)_accessibilityCanHandleContentPullDown
 {
-  if (a1)
+  if (self)
   {
     if ((_accessibilityCanHandleContentPullDown__kAXCanHandleContentPullDownInitialized & 1) == 0)
     {
-      v3 = [MEMORY[0x29EDB9F48] mainBundle];
-      v2 = [v3 bundleIdentifier];
-      _accessibilityCanHandleContentPullDown__kAXCanHandleContentPullDown = ([v2 hasPrefix:@"com.apple."] ^ 1) & 1;
-      MEMORY[0x29EDC9740](v2);
-      MEMORY[0x29EDC9740](v3);
+      mainBundle = [MEMORY[0x29EDB9F48] mainBundle];
+      bundleIdentifier = [mainBundle bundleIdentifier];
+      _accessibilityCanHandleContentPullDown__kAXCanHandleContentPullDown = ([bundleIdentifier hasPrefix:@"com.apple."] ^ 1) & 1;
+      MEMORY[0x29EDC9740](bundleIdentifier);
+      MEMORY[0x29EDC9740](mainBundle);
       _accessibilityCanHandleContentPullDown__kAXCanHandleContentPullDownInitialized = 1;
     }
 
@@ -2532,17 +2532,17 @@ LABEL_12:
   return v4 & 1;
 }
 
-- (void)_axManipulateWithRefreshControl:(void *)a1
+- (void)_axManipulateWithRefreshControl:(void *)control
 {
-  v21 = a1;
+  controlCopy = control;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v21)
+  if (controlCopy)
   {
     [location beginRefreshing];
     [location sendActionsForControlEvents:4096];
-    v12 = v21;
-    [v21 contentOffset];
+    v12 = controlCopy;
+    [controlCopy contentOffset];
     v18[1] = v2;
     v18[2] = v3;
     v13 = [location safeValueForKey:@"_refreshControlHeight"];
@@ -2553,13 +2553,13 @@ LABEL_12:
     [v12 setContentOffset:1 animated:{*&v4, *&v5}];
     *&v6 = MEMORY[0x29EDC9740](v13).n128_u64[0];
     v18[0] = [location _accessibilityAXAttributedLabel];
-    v17 = [location _accessibilityAXAttributedHint];
+    _accessibilityAXAttributedHint = [location _accessibilityAXAttributedHint];
     if (!v18[0])
     {
-      v11 = [location attributedTitle];
-      v18[0] = [v11 string];
+      attributedTitle = [location attributedTitle];
+      v18[0] = [attributedTitle string];
       MEMORY[0x29EDC9740](0);
-      MEMORY[0x29EDC9740](v11);
+      MEMORY[0x29EDC9740](attributedTitle);
     }
 
     v7 = __UIAXStringForVariables();
@@ -2588,7 +2588,7 @@ LABEL_12:
     v14 = MEMORY[0x29EDC9748](location);
     AXPerformBlockOnMainThreadAfterDelay();
     objc_storeStrong(&v14, 0);
-    objc_storeStrong(&v17, 0);
+    objc_storeStrong(&_accessibilityAXAttributedHint, 0);
     objc_storeStrong(v18, 0);
     v19 = 0;
   }
@@ -2601,27 +2601,27 @@ LABEL_12:
   objc_storeStrong(&location, 0);
 }
 
-- (BOOL)_accessibilityContentOffsetForScrollDirection:(int)a3 newContentOffset:(CGPoint *)a4 distanceMultiplier:(double)a5
+- (BOOL)_accessibilityContentOffsetForScrollDirection:(int)direction newContentOffset:(CGPoint *)offset distanceMultiplier:(double)multiplier
 {
-  v71 = self;
+  selfCopy = self;
   v70 = a2;
-  v69 = a3;
-  v68 = a4;
-  v67 = a5;
+  directionCopy = direction;
+  offsetCopy = offset;
+  multiplierCopy = multiplier;
   [(UIScrollViewAccessibility *)self visibleBounds];
   v66.origin.x = v5;
   v66.origin.y = v6;
   v66.size.width = v7;
   v66.size.height = v8;
-  [(UIScrollViewAccessibility *)v71 _accessibilityScrollHeightDistance];
-  v65 = v9 * v67;
-  [(UIScrollViewAccessibility *)v71 _accessibilityScrollWidthDistance];
-  v64 = v10 * v67;
-  if (v69)
+  [(UIScrollViewAccessibility *)selfCopy _accessibilityScrollHeightDistance];
+  v65 = v9 * multiplierCopy;
+  [(UIScrollViewAccessibility *)selfCopy _accessibilityScrollWidthDistance];
+  v64 = v10 * multiplierCopy;
+  if (directionCopy)
   {
-    if (v69 == 1)
+    if (directionCopy == 1)
     {
-      [(UIScrollViewAccessibility *)v71 _accessibilityContentSize];
+      [(UIScrollViewAccessibility *)selfCopy _accessibilityContentSize];
       v47 = v18;
       if (v18 == v66.size.height)
       {
@@ -2629,9 +2629,9 @@ LABEL_12:
         return v72 & 1;
       }
 
-      if ([(UIScrollViewAccessibility *)v71 _accessibilityUseContentInset])
+      if ([(UIScrollViewAccessibility *)selfCopy _accessibilityUseContentInset])
       {
-        [(UIScrollViewAccessibility *)v71 _accessibilityContentInset];
+        [(UIScrollViewAccessibility *)selfCopy _accessibilityContentInset];
         *&v45 = v19;
         *&v46 = v20;
       }
@@ -2645,17 +2645,17 @@ LABEL_12:
       if (v47 + *&v45 + *&v46 > v66.size.height)
       {
         CGRectGetMinY(v66);
-        [(UIScrollViewAccessibility *)v71 _accessibilityUseContentInset];
+        [(UIScrollViewAccessibility *)selfCopy _accessibilityUseContentInset];
         CGPointMake_6();
         v44.x = v21;
         v44.y = v22;
-        *v68 = v44;
+        *offsetCopy = v44;
       }
     }
 
-    else if (v69 == 2)
+    else if (directionCopy == 2)
     {
-      [(UIScrollViewAccessibility *)v71 _accessibilityContentSize];
+      [(UIScrollViewAccessibility *)selfCopy _accessibilityContentSize];
       v43 = v23;
       if (v23 == v66.size.width)
       {
@@ -2663,9 +2663,9 @@ LABEL_12:
         return v72 & 1;
       }
 
-      if ([(UIScrollViewAccessibility *)v71 _accessibilityUseContentInset])
+      if ([(UIScrollViewAccessibility *)selfCopy _accessibilityUseContentInset])
       {
-        [(UIScrollViewAccessibility *)v71 _accessibilityContentInset];
+        [(UIScrollViewAccessibility *)selfCopy _accessibilityContentInset];
         *(&v41 + 1) = v24;
         *(&v42 + 1) = v25;
       }
@@ -2679,38 +2679,38 @@ LABEL_12:
       if (v43 + *(&v41 + 1) + *(&v42 + 1) > v66.size.width)
       {
         CGRectGetMinX(v66);
-        [(UIScrollViewAccessibility *)v71 _accessibilityUseContentInset];
+        [(UIScrollViewAccessibility *)selfCopy _accessibilityUseContentInset];
         CGPointMake_6();
         v40.x = v26;
         v40.y = v27;
-        *v68 = v40;
+        *offsetCopy = v40;
       }
     }
 
     else
     {
-      [(UIScrollViewAccessibility *)v71 _accessibilityContentSize];
+      [(UIScrollViewAccessibility *)selfCopy _accessibilityContentSize];
       if (v28 == v66.size.width)
       {
         v72 = 0;
         return v72 & 1;
       }
 
-      if ([(UIScrollViewAccessibility *)v71 _accessibilityUseContentInset])
+      if ([(UIScrollViewAccessibility *)selfCopy _accessibilityUseContentInset])
       {
-        [(UIScrollViewAccessibility *)v71 _accessibilityContentInset];
+        [(UIScrollViewAccessibility *)selfCopy _accessibilityContentInset];
       }
 
       CGPointMake_6();
       v39.x = v29;
       v39.y = v30;
-      *v68 = v39;
+      *offsetCopy = v39;
     }
 
     goto LABEL_44;
   }
 
-  [(UIScrollViewAccessibility *)v71 _accessibilityContentSize];
+  [(UIScrollViewAccessibility *)selfCopy _accessibilityContentSize];
   v62 = v11;
   v63 = v12;
   if (v12 == v66.size.height)
@@ -2725,11 +2725,11 @@ LABEL_12:
     goto LABEL_17;
   }
 
-  v60 = [(UIScrollViewAccessibility *)v71 _accessibilityFindRefreshControl];
-  if (v60)
+  _accessibilityFindRefreshControl = [(UIScrollViewAccessibility *)selfCopy _accessibilityFindRefreshControl];
+  if (_accessibilityFindRefreshControl)
   {
-    [(UIScrollViewAccessibility *)v71 _axManipulateWithRefreshControl:v60];
-    p_x = &v68->x;
+    [(UIScrollViewAccessibility *)selfCopy _axManipulateWithRefreshControl:_accessibilityFindRefreshControl];
+    p_x = &offsetCopy->x;
     v53 = 0;
     v54 = &v53;
     v55 = 0x10000000;
@@ -2738,15 +2738,15 @@ LABEL_12:
     v58 = 0;
     v59 = 0;
     v52[1] = &v53;
-    v52[0] = MEMORY[0x29EDC9748](v71);
+    v52[0] = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     *p_x = *(v54 + 2);
     objc_storeStrong(v52, 0);
     _Block_object_dispose(&v53, 8);
-    if (__CGPointEqualToPoint_1(v68->x, v68->y, *MEMORY[0x29EDB90B8], *(MEMORY[0x29EDB90B8] + 8)))
+    if (__CGPointEqualToPoint_1(offsetCopy->x, offsetCopy->y, *MEMORY[0x29EDB90B8], *(MEMORY[0x29EDB90B8] + 8)))
     {
-      v37 = &v68->x;
-      [(UIScrollViewAccessibility *)v71 contentOffset];
+      v37 = &offsetCopy->x;
+      [(UIScrollViewAccessibility *)selfCopy contentOffset];
       *&v51 = v13;
       *(&v51 + 1) = v14;
       *v37 = v51;
@@ -2756,7 +2756,7 @@ LABEL_12:
     v50 = 1;
   }
 
-  else if (([(UIScrollViewAccessibility *)v71 _accessibilityCanHandleContentPullDown]& 1) != 0 && ([(UIScrollViewAccessibility *)v71 safeBoolForKey:@"bouncesZoom"]& 1) != 0)
+  else if (([(UIScrollViewAccessibility *)selfCopy _accessibilityCanHandleContentPullDown]& 1) != 0 && ([(UIScrollViewAccessibility *)selfCopy safeBoolForKey:@"bouncesZoom"]& 1) != 0)
   {
     [UIScrollViewAccessibility _axHandleScrollViewPullDown];
     v72 = 1;
@@ -2768,14 +2768,14 @@ LABEL_12:
     v50 = 0;
   }
 
-  objc_storeStrong(&v60, 0);
+  objc_storeStrong(&_accessibilityFindRefreshControl, 0);
   if (!v50)
   {
 LABEL_17:
     v49 = 0.0;
-    if ([(UIScrollViewAccessibility *)v71 _accessibilityUseContentInset])
+    if ([(UIScrollViewAccessibility *)selfCopy _accessibilityUseContentInset])
     {
-      [(UIScrollViewAccessibility *)v71 _accessibilityContentInset];
+      [(UIScrollViewAccessibility *)selfCopy _accessibilityContentInset];
       v49 = 0.0 - v15;
     }
 
@@ -2790,18 +2790,18 @@ LABEL_17:
     }
 
     v61 = v36;
-    v35 = &v68->x;
+    v35 = &offsetCopy->x;
     CGPointMake_6();
     *&v48 = v16;
     *(&v48 + 1) = v17;
     *v35 = v48;
 LABEL_44:
-    [(UIScrollViewAccessibility *)v71 contentOffset];
+    [(UIScrollViewAccessibility *)selfCopy contentOffset];
     v34 = 0;
-    if (AXCGFAbs_0(v31 - v68->x) < 0.001)
+    if (AXCGFAbs_0(v31 - offsetCopy->x) < 0.001)
     {
-      [(UIScrollViewAccessibility *)v71 contentOffset];
-      v34 = AXCGFAbs_0(v32 - v68->y) < 0.001;
+      [(UIScrollViewAccessibility *)selfCopy contentOffset];
+      v34 = AXCGFAbs_0(v32 - offsetCopy->y) < 0.001;
     }
 
     v72 = !v34;
@@ -2820,15 +2820,15 @@ __n128 __111__UIScrollViewAccessibility__accessibilityContentOffsetForScrollDire
   return result;
 }
 
-- (BOOL)_accessibilityScrollPageInDirection:(int)a3
+- (BOOL)_accessibilityScrollPageInDirection:(int)direction
 {
-  v22 = self;
+  selfCopy = self;
   v21 = a2;
-  v20 = a3;
+  directionCopy = direction;
   v19 = 0;
-  if (a3)
+  if (direction)
   {
-    switch(a3)
+    switch(direction)
     {
       case 1:
         v19 = 2006;
@@ -2847,16 +2847,16 @@ __n128 __111__UIScrollViewAccessibility__accessibilityContentOffsetForScrollDire
     v19 = 2007;
   }
 
-  if (([(UIScrollViewAccessibility *)v22 _accessibilityHasActionBlockForKey:v19]& 1) == 0 || ((v18 = 0, v17 = 0, v16 = 0, v15 = 0, [(UIScrollViewAccessibility *)v22 _accessibilityActionBlock:&v16 andValue:&v15 forKey:v19], v3 = MEMORY[0x29ED3E4C0](v16), v4 = v18, v18 = v3, MEMORY[0x29EDC9740](v4), objc_storeStrong(&v17, v15), !v18) ? (v14 = 0) : (v23 = (*(v18 + 2))(v18, v17) & 1, v14 = 1), objc_storeStrong(&v17, 0), objc_storeStrong(&v18, 0), !v14))
+  if (([(UIScrollViewAccessibility *)selfCopy _accessibilityHasActionBlockForKey:v19]& 1) == 0 || ((v18 = 0, v17 = 0, v16 = 0, v15 = 0, [(UIScrollViewAccessibility *)selfCopy _accessibilityActionBlock:&v16 andValue:&v15 forKey:v19], v3 = MEMORY[0x29ED3E4C0](v16), v4 = v18, v18 = v3, MEMORY[0x29EDC9740](v4), objc_storeStrong(&v17, v15), !v18) ? (v14 = 0) : (v23 = (*(v18 + 2))(v18, v17) & 1, v14 = 1), objc_storeStrong(&v17, 0), objc_storeStrong(&v18, 0), !v14))
   {
     v11 = 1;
-    if (v20)
+    if (directionCopy)
     {
-      v11 = v20 == 1;
+      v11 = directionCopy == 1;
     }
 
     v13 = v11;
-    v9 = v22;
+    v9 = selfCopy;
     if (v11)
     {
       v5 = 1;
@@ -2870,14 +2870,14 @@ __n128 __111__UIScrollViewAccessibility__accessibilityContentOffsetForScrollDire
     v10 = [MEMORY[0x29EDBA070] numberWithInt:v5];
     [UIScrollViewAccessibility _accessibilitySetRetainedValue:v9 forKey:"_accessibilitySetRetainedValue:forKey:"];
     *&v6 = MEMORY[0x29EDC9740](v10).n128_u64[0];
-    if ([(UIScrollViewAccessibility *)v22 _accessibilityScrollingEnabled])
+    if ([(UIScrollViewAccessibility *)selfCopy _accessibilityScrollingEnabled])
     {
       v12 = 0uLL;
       v12 = *MEMORY[0x29EDB90B8];
-      if ([(UIScrollViewAccessibility *)v22 _accessibilityContentOffsetForScrollDirection:v20 newContentOffset:&v12 distanceMultiplier:1.0])
+      if ([(UIScrollViewAccessibility *)selfCopy _accessibilityContentOffsetForScrollDirection:directionCopy newContentOffset:&v12 distanceMultiplier:1.0])
       {
-        ShouldAnimate = [(UIScrollViewAccessibility *)v22 _accessibilityShouldAnimateScroll];
-        [(UIScrollViewAccessibility *)v22 accessibilityApplyScrollContent:1 sendScrollStatus:ShouldAnimate animated:v12];
+        ShouldAnimate = [(UIScrollViewAccessibility *)selfCopy _accessibilityShouldAnimateScroll];
+        [(UIScrollViewAccessibility *)selfCopy accessibilityApplyScrollContent:1 sendScrollStatus:ShouldAnimate animated:v12];
         v23 = 1;
       }
 
@@ -2945,23 +2945,23 @@ __n128 __111__UIScrollViewAccessibility__accessibilityContentOffsetForScrollDire
   return result;
 }
 
-- (CGFloat)accessibilityValidateScrollContentOffset:(CGFloat)a3
+- (CGFloat)accessibilityValidateScrollContentOffset:(CGFloat)offset
 {
   v28 = *MEMORY[0x29EDCA608];
   v25.x = a2;
-  v25.y = a3;
-  v24 = a1;
-  if (a1)
+  v25.y = offset;
+  selfCopy = self;
+  if (self)
   {
-    if ([v24 _axShouldScrollToAlignWithPage])
+    if ([selfCopy _axShouldScrollToAlignWithPage])
     {
-      [v24 _axPageSize];
+      [selfCopy _axPageSize];
       v22 = v3;
       v23 = v4;
       CGPointMake_6();
       oslog[1] = v5;
       oslog[2] = v6;
-      v21.x = [(UIScrollViewAccessibility *)v24 _axPageAlignedContentOffsetForPoint:*&v5 forValidation:*&v6];
+      v21.x = [(UIScrollViewAccessibility *)selfCopy _axPageAlignedContentOffsetForPoint:*&v5 forValidation:*&v6];
       v21.y = v7;
       v25 = v21;
       oslog[0] = AXLogScrollToVisible();
@@ -2983,11 +2983,11 @@ __n128 __111__UIScrollViewAccessibility__accessibilityContentOffsetForScrollDire
 
     else
     {
-      v16 = [(UIScrollViewAccessibility *)v24 _axMinimumContentOffset];
+      _axMinimumContentOffset = [(UIScrollViewAccessibility *)selfCopy _axMinimumContentOffset];
       v17 = v8;
-      v14 = [(UIScrollViewAccessibility *)v24 _axMaximumContentOffset];
+      _axMaximumContentOffset = [(UIScrollViewAccessibility *)selfCopy _axMaximumContentOffset];
       v15 = v9;
-      v25.x = CGFloatMinMax_0(v25.x, v16, v14);
+      v25.x = CGFloatMinMax_0(v25.x, _axMinimumContentOffset, _axMaximumContentOffset);
       v25.y = CGFloatMinMax_0(v25.y, v17, v15);
     }
 
@@ -3002,35 +3002,35 @@ __n128 __111__UIScrollViewAccessibility__accessibilityContentOffsetForScrollDire
   return v26.x;
 }
 
-- (void)accessibilityApplyScrollContent:(CGPoint)a3 sendScrollStatus:(BOOL)a4 animated:(BOOL)a5
+- (void)accessibilityApplyScrollContent:(CGPoint)content sendScrollStatus:(BOOL)status animated:(BOOL)animated
 {
   v5 = 0.0;
-  if (a5)
+  if (animated)
   {
     if (UIAccessibilityIsSwitchControlRunning())
     {
-      [(UIScrollViewAccessibility *)self accessibilityApplyScrollContent:a4 sendScrollStatus:1 animateWithDuration:a3.x animationCurve:a3.y, 1.0];
+      [(UIScrollViewAccessibility *)self accessibilityApplyScrollContent:status sendScrollStatus:1 animateWithDuration:content.x animationCurve:content.y, 1.0];
       return;
     }
 
     v5 = 0.15;
   }
 
-  [(UIScrollViewAccessibility *)self accessibilityApplyScrollContent:a4 sendScrollStatus:0 animateWithDuration:a3.x animationCurve:a3.y, v5];
+  [(UIScrollViewAccessibility *)self accessibilityApplyScrollContent:status sendScrollStatus:0 animateWithDuration:content.x animationCurve:content.y, v5];
 }
 
-- (void)accessibilityApplyScrollContent:(int)a3 sendScrollStatus:(CGFloat)a4 animateWithDuration:(CGFloat)a5 animationCurve:(double)a6
+- (void)accessibilityApplyScrollContent:(int)content sendScrollStatus:(CGFloat)status animateWithDuration:(CGFloat)duration animationCurve:(double)curve
 {
   v50 = *MEMORY[0x29EDCA608];
-  v48.x = a4;
-  v48.y = a5;
-  v47 = a1;
+  v48.x = status;
+  v48.y = duration;
+  selfCopy = self;
   v46 = a2;
-  v45 = a6;
-  v44 = a3;
-  if (a1)
+  curveCopy = curve;
+  contentCopy = content;
+  if (self)
   {
-    v43 = v45 > 0.0;
+    v43 = curveCopy > 0.0;
     v42 = AXLogScrollToVisible();
     v41 = 2;
     if (os_log_type_enabled(v42, OS_LOG_TYPE_DEBUG))
@@ -3047,24 +3047,24 @@ __n128 __111__UIScrollViewAccessibility__accessibilityContentOffsetForScrollDire
     }
 
     objc_storeStrong(&v42, 0);
-    v39.x = [(UIScrollViewAccessibility *)v47 accessibilityValidateScrollContentOffset:v48.y];
+    v39.x = [(UIScrollViewAccessibility *)selfCopy accessibilityValidateScrollContentOffset:v48.y];
     v39.y = v6;
     v48 = v39;
-    [v47 contentOffset];
+    [selfCopy contentOffset];
     v37 = v7;
     v38 = v8;
     if (!__CGPointEqualToPoint_1(v7, v8, v48.x, v48.y))
     {
-      v36 = [v47 safeValueForKey:@"delegate"];
+      v36 = [selfCopy safeValueForKey:@"delegate"];
       if (objc_opt_respondsToSelector())
       {
-        [v36 scrollViewWillBeginDragging:v47];
+        [v36 scrollViewWillBeginDragging:selfCopy];
       }
 
       if (objc_opt_respondsToSelector())
       {
         v35 = v48;
-        [v36 scrollViewWillEndDragging:v47 withVelocity:&v48 targetContentOffset:{*MEMORY[0x29EDB90B8], *(MEMORY[0x29EDB90B8] + 8)}];
+        [v36 scrollViewWillEndDragging:selfCopy withVelocity:&v48 targetContentOffset:{*MEMORY[0x29EDB90B8], *(MEMORY[0x29EDB90B8] + 8)}];
         if (AXCGFAbs_0(v37 - v48.x) >= 0.001 || AXCGFAbs_0(v38 - v48.y) >= 0.001)
         {
           if (AXCGFAbs_0(v35.x - v48.x) >= 0.001 || AXCGFAbs_0(v35.y - v48.y) >= 0.001)
@@ -3088,19 +3088,19 @@ __n128 __111__UIScrollViewAccessibility__accessibilityContentOffsetForScrollDire
       v27 = MEMORY[0x29EDC9748](v28);
       objc_storeStrong(&v28, 0);
       v30 = v27;
-      v26 = [v27 _contentOffsetRoundingEnabled];
+      _contentOffsetRoundingEnabled = [v27 _contentOffsetRoundingEnabled];
       [v30 _setContentOffsetRoundingEnabled:0];
       v17[1] = MEMORY[0x29EDCA5F8];
       v18 = -1073741824;
       v19 = 0;
       v20 = __113__UIScrollViewAccessibility_accessibilityApplyScrollContent_sendScrollStatus_animateWithDuration_animationCurve___block_invoke;
       v21 = &unk_29F30DA98;
-      v22 = MEMORY[0x29EDC9748](v47);
+      v22 = MEMORY[0x29EDC9748](selfCopy);
       v23 = v48;
-      v24 = v45;
-      v25 = v44;
+      v24 = curveCopy;
+      v25 = contentCopy;
       AXPerformSafeBlock();
-      v17[0] = [v47 safeValueForKey:@"_animation"];
+      v17[0] = [selfCopy safeValueForKey:@"_animation"];
       if (v43 && !v17[0])
       {
         v43 = 0;
@@ -3108,17 +3108,17 @@ __n128 __111__UIScrollViewAccessibility__accessibilityContentOffsetForScrollDire
 
       if (v43)
       {
-        [v47 _accessibilitySetBoolValue:v46 & 1 forKey:@"_accessibilityScrollViewSendScrollStatus"];
-        [v47 _accessibilitySetBoolValue:1 forKey:@"_accessibilityScrollViewAnimationEndedShouldHandleDelegateCallbacks"];
-        [v30 _setContentOffsetRoundingEnabled:v26 & 1];
+        [selfCopy _accessibilitySetBoolValue:v46 & 1 forKey:@"_accessibilityScrollViewSendScrollStatus"];
+        [selfCopy _accessibilitySetBoolValue:1 forKey:@"_accessibilityScrollViewAnimationEndedShouldHandleDelegateCallbacks"];
+        [v30 _setContentOffsetRoundingEnabled:_contentOffsetRoundingEnabled & 1];
       }
 
       else
       {
-        v13 = MEMORY[0x29EDC9748](v47);
+        v13 = MEMORY[0x29EDC9748](selfCopy);
         v15 = v46 & 1;
         v14 = MEMORY[0x29EDC9748](v30);
-        v16 = v26 & 1;
+        v16 = _contentOffsetRoundingEnabled & 1;
         AXPerformBlockOnMainThreadAfterDelay();
         objc_storeStrong(&v14, 0);
         objc_storeStrong(&v13, 0);
@@ -3188,38 +3188,38 @@ uint64_t __113__UIScrollViewAccessibility_accessibilityApplyScrollContent_sendSc
   return result;
 }
 
-- (void)_scrollViewAnimationEnded:(id)a3 finished:(BOOL)a4
+- (void)_scrollViewAnimationEnded:(id)ended finished:(BOOL)finished
 {
-  v34 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v32 = a4;
-  v31 = [(UIScrollViewAccessibility *)v34 _accessibilityBoolValueForKey:@"_accessibilityScrollViewAnimationEndedShouldHandleDelegateCallbacks"];
+  objc_storeStrong(location, ended);
+  finishedCopy = finished;
+  v31 = [(UIScrollViewAccessibility *)selfCopy _accessibilityBoolValueForKey:@"_accessibilityScrollViewAnimationEndedShouldHandleDelegateCallbacks"];
   if (v31)
   {
-    v30 = [(UIScrollViewAccessibility *)v34 _accessibilityBoolValueForKey:?];
-    [(UIScrollViewAccessibility *)v34 _accessibilitySetBoolValue:0 forKey:@"_accessibilityScrollViewSendScrollStatus"];
-    [(UIScrollViewAccessibility *)v34 _accessibilitySetBoolValue:0 forKey:@"_accessibilityScrollViewAnimationEndedShouldHandleDelegateCallbacks"];
-    v29 = [(UIScrollViewAccessibility *)v34 safeValueForKey:@"delegate"];
+    v30 = [(UIScrollViewAccessibility *)selfCopy _accessibilityBoolValueForKey:?];
+    [(UIScrollViewAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"_accessibilityScrollViewSendScrollStatus"];
+    [(UIScrollViewAccessibility *)selfCopy _accessibilitySetBoolValue:0 forKey:@"_accessibilityScrollViewAnimationEndedShouldHandleDelegateCallbacks"];
+    v29 = [(UIScrollViewAccessibility *)selfCopy safeValueForKey:@"delegate"];
     if (objc_opt_respondsToSelector())
     {
       v27 = 0;
       v28 = 0;
-      [(UIScrollViewAccessibility *)v34 contentOffset];
+      [(UIScrollViewAccessibility *)selfCopy contentOffset];
       v27 = v4;
       v28 = v5;
-      [v29 scrollViewWillEndDragging:v34 withVelocity:&v27 targetContentOffset:{*MEMORY[0x29EDB90B8], *(MEMORY[0x29EDB90B8] + 8)}];
+      [v29 scrollViewWillEndDragging:selfCopy withVelocity:&v27 targetContentOffset:{*MEMORY[0x29EDB90B8], *(MEMORY[0x29EDB90B8] + 8)}];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v29 scrollViewDidEndDragging:v34 willDecelerate:1];
+      [v29 scrollViewDidEndDragging:selfCopy willDecelerate:1];
     }
 
     if (objc_opt_respondsToSelector())
     {
-      [v29 scrollViewWillBeginDecelerating:v34];
+      [v29 scrollViewWillBeginDecelerating:selfCopy];
     }
 
     v21[1] = MEMORY[0x29EDCA5F8];
@@ -3227,7 +3227,7 @@ uint64_t __113__UIScrollViewAccessibility_accessibilityApplyScrollContent_sendSc
     v23 = 0;
     v24 = __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_invoke;
     v25 = &unk_29F30C7C8;
-    v26 = MEMORY[0x29EDC9748](v34);
+    v26 = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     v6 = MEMORY[0x29EDC7DA0];
     v16 = MEMORY[0x29EDCA5F8];
@@ -3235,14 +3235,14 @@ uint64_t __113__UIScrollViewAccessibility_accessibilityApplyScrollContent_sendSc
     v18 = 0;
     v19 = __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_invoke_2;
     v20 = &unk_29F30C7C8;
-    v21[0] = MEMORY[0x29EDC9748](v34);
+    v21[0] = MEMORY[0x29EDC9748](selfCopy);
     v9 = MEMORY[0x29EDCA5F8];
     v10 = -1073741824;
     v11 = 0;
     v12 = __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_invoke_3;
     v13 = &unk_29F30DAE8;
     v15 = v30 & 1;
-    v14 = MEMORY[0x29EDC9748](v34);
+    v14 = MEMORY[0x29EDC9748](selfCopy);
     [v6 animateWithDuration:&v16 animations:&v9 completion:0.15];
     objc_storeStrong(&v14, 0);
     objc_storeStrong(v21, 0);
@@ -3252,9 +3252,9 @@ uint64_t __113__UIScrollViewAccessibility_accessibilityApplyScrollContent_sendSc
 
   else
   {
-    v8.receiver = v34;
+    v8.receiver = selfCopy;
     v8.super_class = UIScrollViewAccessibility;
-    [(UIScrollViewAccessibility *)&v8 _scrollViewAnimationEnded:location[0] finished:v32];
+    [(UIScrollViewAccessibility *)&v8 _scrollViewAnimationEnded:location[0] finished:finishedCopy];
   }
 
   objc_storeStrong(location, 0);
@@ -3281,7 +3281,7 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
   }
 }
 
-- (CGPoint)_accessibilityVisibleScrollArea:(BOOL)a3
+- (CGPoint)_accessibilityVisibleScrollArea:(BOOL)area
 {
   [(UIScrollViewAccessibility *)self visibleBounds];
   [(UIScrollViewAccessibility *)self _accessibilityContentSize];
@@ -3293,15 +3293,15 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
 
 - (BOOL)_accessibilityIsGroupedParent
 {
-  v3 = [(UIScrollViewAccessibility *)self accessibilityLabel];
-  v4 = [v3 length];
-  MEMORY[0x29EDC9740](v3);
+  accessibilityLabel = [(UIScrollViewAccessibility *)self accessibilityLabel];
+  v4 = [accessibilityLabel length];
+  MEMORY[0x29EDC9740](accessibilityLabel);
   return v4 != 0;
 }
 
 - (CGRect)accessibilityFrame
 {
-  v13 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = [(UIScrollViewAccessibility *)self accessibilityUserDefinedFrame];
   if (location[0])
@@ -3311,7 +3311,7 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
 
   else
   {
-    v10.receiver = v13;
+    v10.receiver = selfCopy;
     v10.super_class = UIScrollViewAccessibility;
     [(UIScrollViewAccessibility *)&v10 accessibilityFrame];
   }
@@ -3384,13 +3384,13 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
 
 - (BOOL)_accessibilityShouldUseFallbackForVisibleContentInset
 {
-  v14 = [(UIScrollViewAccessibility *)self _accessibilityStoredShouldUseFallbackForVisibleContentInset];
-  *&v2 = MEMORY[0x29EDC9740](v14).n128_u64[0];
-  if (v14)
+  _accessibilityStoredShouldUseFallbackForVisibleContentInset = [(UIScrollViewAccessibility *)self _accessibilityStoredShouldUseFallbackForVisibleContentInset];
+  *&v2 = MEMORY[0x29EDC9740](_accessibilityStoredShouldUseFallbackForVisibleContentInset).n128_u64[0];
+  if (_accessibilityStoredShouldUseFallbackForVisibleContentInset)
   {
-    v13 = [(UIScrollViewAccessibility *)self _accessibilityStoredShouldUseFallbackForVisibleContentInset];
-    v20 = [v13 BOOLValue] & 1;
-    MEMORY[0x29EDC9740](v13);
+    _accessibilityStoredShouldUseFallbackForVisibleContentInset2 = [(UIScrollViewAccessibility *)self _accessibilityStoredShouldUseFallbackForVisibleContentInset];
+    v20 = [_accessibilityStoredShouldUseFallbackForVisibleContentInset2 BOOLValue] & 1;
+    MEMORY[0x29EDC9740](_accessibilityStoredShouldUseFallbackForVisibleContentInset2);
   }
 
   else
@@ -3422,12 +3422,12 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
   return v20;
 }
 
-- (void)_accessibilitySetStoredShouldUseFallbackForVisibleContentInset:(uint64_t)a1
+- (void)_accessibilitySetStoredShouldUseFallbackForVisibleContentInset:(uint64_t)inset
 {
-  v3 = a1;
+  insetCopy = inset;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (insetCopy)
   {
     __UIAccessibilitySetAssociatedObject();
   }
@@ -3435,19 +3435,19 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
   objc_storeStrong(&location, 0);
 }
 
-- (void)_accessibilitySetShouldUseFallbackForVisibleContentInset:(BOOL)a3
+- (void)_accessibilitySetShouldUseFallbackForVisibleContentInset:(BOOL)inset
 {
-  v4 = [MEMORY[0x29EDBA070] numberWithBool:a3];
+  v4 = [MEMORY[0x29EDBA070] numberWithBool:inset];
   [(UIScrollViewAccessibility *)self _accessibilitySetStoredShouldUseFallbackForVisibleContentInset:v4];
   MEMORY[0x29EDC9740](v4);
 }
 
-- (void)_accessibilitySetStoredVisibleContentInset:(uint64_t)a1
+- (void)_accessibilitySetStoredVisibleContentInset:(uint64_t)inset
 {
-  v3 = a1;
+  insetCopy = inset;
   location = 0;
   objc_storeStrong(&location, a2);
-  if (v3)
+  if (insetCopy)
   {
     __UIAccessibilitySetAssociatedObject();
   }
@@ -3457,7 +3457,7 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
 
 - (UIEdgeInsets)_accessibilityVisibleContentInset
 {
-  v38 = self;
+  selfCopy = self;
   location[1] = a2;
   v39 = 0u;
   v40 = 0u;
@@ -3477,29 +3477,29 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
 
   else
   {
-    [(UIScrollViewAccessibility *)v38 _accessibilityContentInset];
+    [(UIScrollViewAccessibility *)selfCopy _accessibilityContentInset];
     *&v33 = v6;
     *(&v33 + 1) = v7;
     *&v34 = v8;
     *(&v34 + 1) = v9;
     v39 = v33;
     v40 = v34;
-    [(UIScrollViewAccessibility *)v38 bounds];
+    [(UIScrollViewAccessibility *)selfCopy bounds];
     v32.origin.x = v10;
     v32.origin.y = v11;
     v32.size.width = v12;
     v32.size.height = v13;
-    if ([(UIScrollViewAccessibility *)v38 _accessibilityShouldUseFallbackForVisibleContentInset])
+    if ([(UIScrollViewAccessibility *)selfCopy _accessibilityShouldUseFallbackForVisibleContentInset])
     {
-      [(UIScrollViewAccessibility *)v38 _accessibilityNavigationControllerInset];
+      [(UIScrollViewAccessibility *)selfCopy _accessibilityNavigationControllerInset];
       *&v30 = v14;
       *(&v30 + 1) = v15;
       *&v31 = v16;
       *(&v31 + 1) = v17;
       v39 = v30;
       v40 = v31;
-      [(UIScrollViewAccessibility *)v38 _accessibilityContentInset];
-      if (v18 > *&v31 && ([*MEMORY[0x29EDC8008] _accessibilitySoftwareKeyboardCoversElement:{v38, v18}] & 1) != 0)
+      [(UIScrollViewAccessibility *)selfCopy _accessibilityContentInset];
+      if (v18 > *&v31 && ([*MEMORY[0x29EDC8008] _accessibilitySoftwareKeyboardCoversElement:{selfCopy, v18}] & 1) != 0)
       {
         [*MEMORY[0x29EDC8008] _accessibilitySoftwareKeyboardAccessibilityFrame];
         UIAccessibilityFrameToBounds();
@@ -3539,16 +3539,16 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
   return result;
 }
 
-- (void)_accessibilitySetVisibleContentInset:(UIEdgeInsets)a3
+- (void)_accessibilitySetVisibleContentInset:(UIEdgeInsets)inset
 {
-  v4 = [MEMORY[0x29EDBA168] valueWithUIEdgeInsets:{a3.top, a3.left, a3.bottom, a3.right}];
+  v4 = [MEMORY[0x29EDBA168] valueWithUIEdgeInsets:{inset.top, inset.left, inset.bottom, inset.right}];
   [(UIScrollViewAccessibility *)self _accessibilitySetStoredVisibleContentInset:v4];
   MEMORY[0x29EDC9740](v4);
 }
 
-- (void)_accessibilitySetNavigationControllerInset:(UIEdgeInsets)a3
+- (void)_accessibilitySetNavigationControllerInset:(UIEdgeInsets)inset
 {
-  v4 = [MEMORY[0x29EDBA168] valueWithUIEdgeInsets:{a3.top, a3.left, a3.bottom, a3.right}];
+  v4 = [MEMORY[0x29EDBA168] valueWithUIEdgeInsets:{inset.top, inset.left, inset.bottom, inset.right}];
   objc_setAssociatedObject(self, &_NavigationControllerInsetStorage, v4, 0x301);
   MEMORY[0x29EDC9740](v4);
 }
@@ -3575,7 +3575,7 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
 
 - (id)_accessibilityUIViewAccessibilityFrame
 {
-  v14 = self;
+  selfCopy = self;
   v13 = a2;
   v7 = MEMORY[0x29EDBA168];
   v8.receiver = self;
@@ -3604,12 +3604,12 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
 
 - (id)automationElements
 {
-  v20 = self;
+  selfCopy = self;
   v19[1] = a2;
   v18.receiver = self;
   v18.super_class = UIScrollViewAccessibility;
-  v14 = [(UIScrollViewAccessibility *)&v18 automationElements];
-  v15 = [v14 mutableCopy];
+  automationElements = [(UIScrollViewAccessibility *)&v18 automationElements];
+  v15 = [automationElements mutableCopy];
   v16 = 0;
   if (v15)
   {
@@ -3618,29 +3618,29 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
 
   else
   {
-    v17 = [MEMORY[0x29EDB8DE8] array];
+    array = [MEMORY[0x29EDB8DE8] array];
     v16 = 1;
-    v2 = MEMORY[0x29EDC9748](v17);
+    v2 = MEMORY[0x29EDC9748](array);
   }
 
   v19[0] = v2;
   if (v16)
   {
-    MEMORY[0x29EDC9740](v17);
+    MEMORY[0x29EDC9740](array);
   }
 
   MEMORY[0x29EDC9740](v15);
-  *&v3 = MEMORY[0x29EDC9740](v14).n128_u64[0];
+  *&v3 = MEMORY[0x29EDC9740](automationElements).n128_u64[0];
   v7 = v19[0];
-  v8 = [(UIScrollViewAccessibility *)v20 safeValueForKey:@"_staticScrollBar", v3];
+  v8 = [(UIScrollViewAccessibility *)selfCopy safeValueForKey:@"_staticScrollBar", v3];
   [v7 axSafelyAddObject:?];
   *&v4 = MEMORY[0x29EDC9740](v8).n128_u64[0];
   v9 = v19[0];
-  v10 = [(UIScrollViewAccessibility *)v20 safeValueForKey:@"_verticalScrollIndicator", v4];
+  v10 = [(UIScrollViewAccessibility *)selfCopy safeValueForKey:@"_verticalScrollIndicator", v4];
   [v9 axSafelyAddObject:?];
   *&v5 = MEMORY[0x29EDC9740](v10).n128_u64[0];
   v11 = v19[0];
-  v12 = [(UIScrollViewAccessibility *)v20 safeValueForKey:@"_horizontalScrollIndicator", v5];
+  v12 = [(UIScrollViewAccessibility *)selfCopy safeValueForKey:@"_horizontalScrollIndicator", v5];
   [v11 axSafelyAddObject:?];
   MEMORY[0x29EDC9740](v12);
   v13 = MEMORY[0x29EDC9748](v19[0]);
@@ -3652,16 +3652,16 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
 - (id)accessibilityPath
 {
   v103[4] = *MEMORY[0x29EDCA608];
-  v101 = self;
+  selfCopy = self;
   v100[1] = a2;
   v99 = 0;
   objc_opt_class();
-  v56 = [(UIScrollViewAccessibility *)v101 _accessibilityFindAncestor:&__block_literal_global_538 startWithSelf:1];
-  v55 = [v56 _accessibilityViewController];
-  v54 = [v55 safeValueForKey:@"popoverPresentationController"];
+  v56 = [(UIScrollViewAccessibility *)selfCopy _accessibilityFindAncestor:&__block_literal_global_538 startWithSelf:1];
+  _accessibilityViewController = [v56 _accessibilityViewController];
+  v54 = [_accessibilityViewController safeValueForKey:@"popoverPresentationController"];
   v98 = __UIAccessibilityCastAsClass();
   MEMORY[0x29EDC9740](v54);
-  MEMORY[0x29EDC9740](v55);
+  MEMORY[0x29EDC9740](_accessibilityViewController);
   MEMORY[0x29EDC9740](v56);
   v97 = MEMORY[0x29EDC9748](v98);
   objc_storeStrong(&v98, 0);
@@ -3699,10 +3699,10 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
   }
 
   v80 = 44.0;
-  [(UIScrollViewAccessibility *)v101 accessibilityFrame];
+  [(UIScrollViewAccessibility *)selfCopy accessibilityFrame];
   v78 = v105;
   v79 = CGRectIntegral(v105);
-  [(UIScrollViewAccessibility *)v101 safeAreaInsets];
+  [(UIScrollViewAccessibility *)selfCopy safeAreaInsets];
   v74 = v2;
   v75 = v3;
   v76 = v4;
@@ -3757,8 +3757,8 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
   v73.size.height = v8;
   v79 = v73;
   v72 = MEMORY[0x29ED3E4C0](&__block_literal_global_545);
-  v71 = [(UIScrollViewAccessibility *)v101 _accessibilityWindow];
-  [v71 accessibilityFrame];
+  _accessibilityWindow = [(UIScrollViewAccessibility *)selfCopy _accessibilityWindow];
+  [_accessibilityWindow accessibilityFrame];
   v70.origin.x = v9;
   v70.origin.y = v10;
   v70.size.width = v11;
@@ -3768,7 +3768,7 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
   *v68 = *MEMORY[0x29EDB90E8];
   if (!(*(v72 + 2))(v73.origin.x, v73.origin.y, v73.size.width, v73.size.height, v70.origin.x, v70.origin.y, v70.size.width, v70.size.height))
   {
-    v63 = [(UIScrollViewAccessibility *)v101 _accessibilityFindViewAncestor:&__block_literal_global_549 startWithSelf:0];
+    v63 = [(UIScrollViewAccessibility *)selfCopy _accessibilityFindViewAncestor:&__block_literal_global_549 startWithSelf:0];
     if (v63)
     {
       [v63 accessibilityFrame];
@@ -3793,19 +3793,19 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
       }
 
       v69 = (*(v72 + 2))(v79.origin.x, v79.origin.y, v79.size.width, v79.size.height, v62.origin.x, v62.origin.y, v62.size.width, v62.size.height);
-      v44 = [v63 layer];
-      [v44 cornerRadius];
+      layer = [v63 layer];
+      [layer cornerRadius];
       v45 = v22;
-      MEMORY[0x29EDC9740](v44);
+      MEMORY[0x29EDC9740](layer);
       if (v45 <= 0.0)
       {
         v39 = MEMORY[0x29EDC7948];
         v40 = v69;
         v41 = MEMORY[0x29EDBA168];
-        v38 = [v63 layer];
-        if (v38)
+        layer2 = [v63 layer];
+        if (layer2)
         {
-          [v38 cornerRadii];
+          [layer2 cornerRadii];
         }
 
         else
@@ -3817,10 +3817,10 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
         v36 = [v41 valueWithCGSize:{*&v58[18], *(&v58[18] + 1)}];
         v103[0] = v36;
         v37 = MEMORY[0x29EDBA168];
-        v35 = [v63 layer];
-        if (v35)
+        layer3 = [v63 layer];
+        if (layer3)
         {
-          [v35 cornerRadii];
+          [layer3 cornerRadii];
         }
 
         else
@@ -3832,10 +3832,10 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
         v33 = [v37 valueWithCGSize:{*&v58[12], *(&v58[12] + 1)}];
         v103[1] = v33;
         v34 = MEMORY[0x29EDBA168];
-        v32 = [v63 layer];
-        if (v32)
+        layer4 = [v63 layer];
+        if (layer4)
         {
-          [v32 cornerRadii];
+          [layer4 cornerRadii];
         }
 
         else
@@ -3847,10 +3847,10 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
         v30 = [v34 valueWithCGSize:v58[5]];
         v103[2] = v30;
         v31 = MEMORY[0x29EDBA168];
-        v29 = [v63 layer];
-        if (v29)
+        layer5 = [v63 layer];
+        if (layer5)
         {
-          [v29 cornerRadii];
+          [layer5 cornerRadii];
         }
 
         else
@@ -3865,13 +3865,13 @@ void __64__UIScrollViewAccessibility__scrollViewAnimationEnded_finished___block_
         v102 = [v39 roundedRectBezierPath:v40 withRoundedCorners:v79.origin.x withCornerRadii:{v79.origin.y, v79.size.width, v79.size.height}];
         MEMORY[0x29EDC9740](v27);
         MEMORY[0x29EDC9740](v28);
-        MEMORY[0x29EDC9740](v29);
+        MEMORY[0x29EDC9740](layer5);
         MEMORY[0x29EDC9740](v30);
-        MEMORY[0x29EDC9740](v32);
+        MEMORY[0x29EDC9740](layer4);
         MEMORY[0x29EDC9740](v33);
-        MEMORY[0x29EDC9740](v35);
+        MEMORY[0x29EDC9740](layer3);
         MEMORY[0x29EDC9740](v36);
-        MEMORY[0x29EDC9740](v38);
+        MEMORY[0x29EDC9740](layer2);
         v57 = 1;
 LABEL_44:
         objc_storeStrong(&v63, 0);
@@ -3883,35 +3883,35 @@ LABEL_44:
         goto LABEL_45;
       }
 
-      v43 = [v63 layer];
-      [v43 cornerRadius];
-      v42 = [v63 layer];
-      [v42 cornerRadius];
+      layer6 = [v63 layer];
+      [layer6 cornerRadius];
+      layer7 = [v63 layer];
+      [layer7 cornerRadius];
       CGSizeMake_2();
       *&v59 = v23;
       *(&v59 + 1) = v24;
       *v68 = v59;
-      MEMORY[0x29EDC9740](v42);
-      MEMORY[0x29EDC9740](v43);
+      MEMORY[0x29EDC9740](layer7);
+      MEMORY[0x29EDC9740](layer6);
     }
 
     v57 = 0;
     goto LABEL_44;
   }
 
-  v49 = [MEMORY[0x29EDC7C40] mainScreen];
-  [v49 bounds];
+  mainScreen = [MEMORY[0x29EDC7C40] mainScreen];
+  [mainScreen bounds];
   v66 = v106;
   Height = CGRectGetHeight(v106);
   v47 = CGRectGetHeight(v70);
-  *&v13 = MEMORY[0x29EDC9740](v49).n128_u64[0];
+  *&v13 = MEMORY[0x29EDC9740](mainScreen).n128_u64[0];
   v67 = Height != v47;
   v64 = 0;
   if (Height == v47)
   {
-    v65 = [(UIScrollViewAccessibility *)v101 traitCollection];
+    traitCollection = [(UIScrollViewAccessibility *)selfCopy traitCollection];
     v64 = 1;
-    [v65 displayCornerRadius];
+    [traitCollection displayCornerRadius];
     v46 = v14;
   }
 
@@ -3923,14 +3923,14 @@ LABEL_44:
   v68[0] = v46;
   if (v64)
   {
-    MEMORY[0x29EDC9740](v65);
+    MEMORY[0x29EDC9740](traitCollection);
   }
 
   v68[1] = v68[0];
 LABEL_45:
   v102 = [MEMORY[0x29EDC7948] bezierPathWithRoundedRect:v69 byRoundingCorners:v79.origin.x cornerRadii:{v79.origin.y, v79.size.width, v79.size.height, v68[0], v68[1]}];
 LABEL_46:
-  objc_storeStrong(&v71, 0);
+  objc_storeStrong(&_accessibilityWindow, 0);
   objc_storeStrong(&v72, 0);
   objc_storeStrong(v100, 0);
   v25 = v102;
@@ -4072,7 +4072,7 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
 
 - (CGRect)_defaultFocusRegionFrame
 {
-  v19 = self;
+  selfCopy = self;
   v18 = a2;
   v20 = 0u;
   v21 = 0u;
@@ -4083,9 +4083,9 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
   *(&v20 + 1) = v3;
   *&v21 = v4;
   *(&v21 + 1) = v5;
-  if (([(UIScrollViewAccessibility *)v19 _accessibilityIsFKARunningForFocusItem]& 1) != 0)
+  if (([(UIScrollViewAccessibility *)selfCopy _accessibilityIsFKARunningForFocusItem]& 1) != 0)
   {
-    [(UIScrollViewAccessibility *)v19 safeAreaInsets];
+    [(UIScrollViewAccessibility *)selfCopy safeAreaInsets];
     *&v15 = UIEdgeInsetsInsetRect_0(*&v20, *(&v20 + 1), *&v21, *(&v21 + 1), v6, v7);
     *(&v15 + 1) = v8;
     *&v16 = v9;
@@ -4107,20 +4107,20 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
 
 - (BOOL)_accessibilityRemembersLastFocusedChild
 {
-  v2 = [(UIScrollViewAccessibility *)self focusGroupIdentifier];
-  v4 = v2 != 0;
-  MEMORY[0x29EDC9740](v2);
+  focusGroupIdentifier = [(UIScrollViewAccessibility *)self focusGroupIdentifier];
+  v4 = focusGroupIdentifier != 0;
+  MEMORY[0x29EDC9740](focusGroupIdentifier);
   return v4;
 }
 
 - (id)_axVerticalScrollIndicator
 {
-  v7 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v6 = 0;
     objc_opt_class();
-    v3 = [v7 safeValueForKey:@"_verticalScrollIndicator"];
+    v3 = [selfCopy safeValueForKey:@"_verticalScrollIndicator"];
     v5 = __UIAccessibilityCastAsSafeCategory();
     MEMORY[0x29EDC9740](v3);
     v4 = MEMORY[0x29EDC9748](v5);
@@ -4140,12 +4140,12 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
 
 - (id)_axHorizontalScrollIndicator
 {
-  v7 = a1;
-  if (a1)
+  selfCopy = self;
+  if (self)
   {
     v6 = 0;
     objc_opt_class();
-    v3 = [v7 safeValueForKey:@"_horizontalScrollIndicator"];
+    v3 = [selfCopy safeValueForKey:@"_horizontalScrollIndicator"];
     v5 = __UIAccessibilityCastAsSafeCategory();
     MEMORY[0x29EDC9740](v3);
     v4 = MEMORY[0x29EDC9748](v5);
@@ -4163,46 +4163,46 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
   return v1;
 }
 
-- (void)_adjustScrollerIndicators:(BOOL)a3 alwaysShowingThem:(BOOL)a4
+- (void)_adjustScrollerIndicators:(BOOL)indicators alwaysShowingThem:(BOOL)them
 {
-  v8 = self;
+  selfCopy = self;
   v7 = a2;
-  v6 = a3;
-  v5 = a4;
+  indicatorsCopy = indicators;
+  themCopy = them;
   v4.receiver = self;
   v4.super_class = UIScrollViewAccessibility;
-  [(UIScrollViewAccessibility *)&v4 _adjustScrollerIndicators:a3 alwaysShowingThem:a4];
-  [(UIScrollViewAccessibility *)v8 _axAnnotateScrollBars];
+  [(UIScrollViewAccessibility *)&v4 _adjustScrollerIndicators:indicators alwaysShowingThem:them];
+  [(UIScrollViewAccessibility *)selfCopy _axAnnotateScrollBars];
 }
 
 - (void)_hideScrollIndicators
 {
-  v9 = self;
+  selfCopy = self;
   v8 = a2;
-  v5 = [(UIScrollViewAccessibility *)self _axVerticalScrollIndicator];
-  v6 = [(_UIScrollViewScrollIndicatorAccessibility *)v5 accessibilityScrollIndicatorIsFocused];
-  MEMORY[0x29EDC9740](v5);
-  if ((v6 & 1) == 0)
+  _axVerticalScrollIndicator = [(UIScrollViewAccessibility *)self _axVerticalScrollIndicator];
+  accessibilityScrollIndicatorIsFocused = [(_UIScrollViewScrollIndicatorAccessibility *)_axVerticalScrollIndicator accessibilityScrollIndicatorIsFocused];
+  MEMORY[0x29EDC9740](_axVerticalScrollIndicator);
+  if ((accessibilityScrollIndicatorIsFocused & 1) == 0)
   {
-    v3 = [(UIScrollViewAccessibility *)v9 _axHorizontalScrollIndicator];
-    v4 = [(_UIScrollViewScrollIndicatorAccessibility *)v3 accessibilityScrollIndicatorIsFocused];
-    *&v2 = MEMORY[0x29EDC9740](v3).n128_u64[0];
-    if ((v4 & 1) == 0)
+    _axHorizontalScrollIndicator = [(UIScrollViewAccessibility *)selfCopy _axHorizontalScrollIndicator];
+    accessibilityScrollIndicatorIsFocused2 = [(_UIScrollViewScrollIndicatorAccessibility *)_axHorizontalScrollIndicator accessibilityScrollIndicatorIsFocused];
+    *&v2 = MEMORY[0x29EDC9740](_axHorizontalScrollIndicator).n128_u64[0];
+    if ((accessibilityScrollIndicatorIsFocused2 & 1) == 0)
     {
-      v7.receiver = v9;
+      v7.receiver = selfCopy;
       v7.super_class = UIScrollViewAccessibility;
       [(UIScrollViewAccessibility *)&v7 _hideScrollIndicators];
     }
   }
 }
 
-- (BOOL)accessibilityShouldEnableScrollIndicator:(id)a3
+- (BOOL)accessibilityShouldEnableScrollIndicator:(id)indicator
 {
   v13 = *MEMORY[0x29EDCA608];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, indicator);
   if (MEMORY[0x29ED3DD50]())
   {
     if (UIAccessibilityIsWidgetExtension())
@@ -4213,16 +4213,16 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
 
     else
     {
-      v7 = 0;
-      v5 = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
-      if (v5 == 1)
+      _axShowsVerticalScrollBar = 0;
+      accessibilityScrollDirection = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
+      if (accessibilityScrollDirection == 1)
       {
-        v7 = [(UIScrollViewAccessibility *)v10 _axShowsVerticalScrollBar];
+        _axShowsVerticalScrollBar = [(UIScrollViewAccessibility *)selfCopy _axShowsVerticalScrollBar];
       }
 
-      else if (v5 == 2)
+      else if (accessibilityScrollDirection == 2)
       {
-        v7 = [(UIScrollViewAccessibility *)v10 _axShowsHorizontalScrollBar];
+        _axShowsVerticalScrollBar = [(UIScrollViewAccessibility *)selfCopy _axShowsHorizontalScrollBar];
       }
 
       else
@@ -4230,20 +4230,20 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
         oslog = AXLogAppAccessibility();
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
         {
-          v3 = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
-          __os_log_helper_16_0_1_8_0(v12, v3);
+          accessibilityScrollDirection2 = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
+          __os_log_helper_16_0_1_8_0(v12, accessibilityScrollDirection2);
           _os_log_fault_impl(&dword_29C4D6000, oslog, OS_LOG_TYPE_FAULT, "Unexpected direction for indicator: %ld", v12, 0xCu);
         }
 
         objc_storeStrong(&oslog, 0);
       }
 
-      if (v7)
+      if (_axShowsVerticalScrollBar)
       {
-        v7 = [(UIScrollViewAccessibility *)v10 accessibilityNumberOfPagesForScrollIndicator:location[0]]>= 5;
+        _axShowsVerticalScrollBar = [(UIScrollViewAccessibility *)selfCopy accessibilityNumberOfPagesForScrollIndicator:location[0]]>= 5;
       }
 
-      v11 = v7;
+      v11 = _axShowsVerticalScrollBar;
       v8 = 1;
     }
   }
@@ -4258,22 +4258,22 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
   return v11;
 }
 
-- (void)accessibilityScrollIndicator:(id)a3 didBecomeFocused:(BOOL)a4
+- (void)accessibilityScrollIndicator:(id)indicator didBecomeFocused:(BOOL)focused
 {
-  v9 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = a4;
-  v6 = MEMORY[0x29EDC9748](v9);
-  if (a4)
+  objc_storeStrong(location, indicator);
+  focusedCopy = focused;
+  v6 = MEMORY[0x29EDC9748](selfCopy);
+  if (focused)
   {
     [v6 flashScrollIndicators];
   }
 
   else
   {
-    v5 = MEMORY[0x29EDC9748](v9);
+    v5 = MEMORY[0x29EDC9748](selfCopy);
     AXPerformSafeBlock();
     objc_storeStrong(&v5, 0);
   }
@@ -4282,43 +4282,43 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
   objc_storeStrong(location, 0);
 }
 
-- (void)accessibilityScrollIndicator:(id)a3 addProgress:(double)a4
+- (void)accessibilityScrollIndicator:(id)indicator addProgress:(double)progress
 {
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v7 = v10;
-  v4 = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
-  v8 = [(UIScrollViewAccessibility *)v7 _axContentOffsetForAddedProgress:v4 inDirection:a4];
-  [(UIScrollViewAccessibility *)v10 setContentOffset:v8, v5];
+  objc_storeStrong(location, indicator);
+  v7 = selfCopy;
+  accessibilityScrollDirection = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
+  v8 = [(UIScrollViewAccessibility *)v7 _axContentOffsetForAddedProgress:accessibilityScrollDirection inDirection:progress];
+  [(UIScrollViewAccessibility *)selfCopy setContentOffset:v8, v5];
   objc_storeStrong(location, 0);
 }
 
-- (double)_axContentOffsetForAddedProgress:(double)a3 inDirection:
+- (double)_axContentOffsetForAddedProgress:(double)progress inDirection:
 {
   v36 = *MEMORY[0x29EDCA608];
-  v33 = a1;
-  v32 = a3;
+  selfCopy = self;
+  progressCopy = progress;
   v31 = a2;
-  if (a1)
+  if (self)
   {
-    location = MEMORY[0x29EDC9748](v33);
+    location = MEMORY[0x29EDC9748](selfCopy);
     [location contentOffset];
     *&v29 = v3;
     *(&v29 + 1) = v4;
     v34 = v29;
     if (v31 == 1)
     {
-      v26 = [(UIScrollViewAccessibility *)v33 _axMinimumContentOffset];
+      _axMinimumContentOffset = [(UIScrollViewAccessibility *)selfCopy _axMinimumContentOffset];
       v27 = v5;
       v28 = v5;
-      v23 = [(UIScrollViewAccessibility *)v33 _axMaximumContentOffset];
+      _axMaximumContentOffset = [(UIScrollViewAccessibility *)selfCopy _axMaximumContentOffset];
       v24 = v6;
       v25 = v6;
       if (v28 < v6)
       {
-        v7 = CGFloatMin_0(*(&v29 + 1) + v32 * (v25 - v28), v25);
+        v7 = CGFloatMin_0(*(&v29 + 1) + progressCopy * (v25 - v28), v25);
         v22 = CGFloatMax_0(v7, v28);
         *(&v34 + 1) = v22;
       }
@@ -4326,23 +4326,23 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
 
     else if (v31 == 2)
     {
-      v12 = [MEMORY[0x29EDC7938] sharedApplication];
-      v13 = [v12 userInterfaceLayoutDirection];
-      MEMORY[0x29EDC9740](v12);
-      if (v13 == 1)
+      mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+      userInterfaceLayoutDirection = [mEMORY[0x29EDC7938] userInterfaceLayoutDirection];
+      MEMORY[0x29EDC9740](mEMORY[0x29EDC7938]);
+      if (userInterfaceLayoutDirection == 1)
       {
-        v32 = v32 * -1.0;
+        progressCopy = progressCopy * -1.0;
       }
 
-      v19 = [(UIScrollViewAccessibility *)v33 _axMinimumContentOffset];
+      _axMinimumContentOffset2 = [(UIScrollViewAccessibility *)selfCopy _axMinimumContentOffset];
       v20 = v8;
-      v21 = v19;
-      v16 = [(UIScrollViewAccessibility *)v33 _axMaximumContentOffset];
+      v21 = _axMinimumContentOffset2;
+      _axMaximumContentOffset2 = [(UIScrollViewAccessibility *)selfCopy _axMaximumContentOffset];
       v17 = v9;
-      v18 = v16;
-      if (v19 < v16)
+      v18 = _axMaximumContentOffset2;
+      if (_axMinimumContentOffset2 < _axMaximumContentOffset2)
       {
-        v10 = CGFloatMin_0(*&v29 + v32 * (v18 - v21), v18);
+        v10 = CGFloatMin_0(*&v29 + progressCopy * (v18 - v21), v18);
         v15 = CGFloatMax_0(v10, v21);
         *&v34 = v15;
       }
@@ -4371,23 +4371,23 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
   return *&v34;
 }
 
-- (int64_t)accessibilityNumberOfPagesForScrollIndicator:(id)a3
+- (int64_t)accessibilityNumberOfPagesForScrollIndicator:(id)indicator
 {
   v12 = *MEMORY[0x29EDCA608];
-  v10 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, indicator);
   v8 = 0;
-  v6 = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
-  if (v6 == 1)
+  accessibilityScrollDirection = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
+  if (accessibilityScrollDirection == 1)
   {
-    [(UIScrollViewAccessibility *)v10 _accessibilityCurrentPage:&v8 totalPages:1 forVerticalDirection:?];
+    [(UIScrollViewAccessibility *)selfCopy _accessibilityCurrentPage:&v8 totalPages:1 forVerticalDirection:?];
   }
 
-  else if (v6 == 2)
+  else if (accessibilityScrollDirection == 2)
   {
-    [(UIScrollViewAccessibility *)v10 _accessibilityCurrentPage:&v8 totalPages:0 forVerticalDirection:?];
+    [(UIScrollViewAccessibility *)selfCopy _accessibilityCurrentPage:&v8 totalPages:0 forVerticalDirection:?];
   }
 
   else
@@ -4395,8 +4395,8 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
     oslog = AXLogAppAccessibility();
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_FAULT))
     {
-      v3 = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
-      __os_log_helper_16_0_1_8_0(v11, v3);
+      accessibilityScrollDirection2 = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
+      __os_log_helper_16_0_1_8_0(v11, accessibilityScrollDirection2);
       _os_log_fault_impl(&dword_29C4D6000, oslog, OS_LOG_TYPE_FAULT, "Unexpected direction for indicator: %ld", v11, 0xCu);
     }
 
@@ -4408,25 +4408,25 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
   return v5;
 }
 
-- (double)accessibilityProgressForScrollIndicator:(id)a3
+- (double)accessibilityProgressForScrollIndicator:(id)indicator
 {
-  v8 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v5 = v8;
-  v3 = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
-  v6 = [(UIScrollViewAccessibility *)v5 _axProgressForDirection:v3];
+  objc_storeStrong(location, indicator);
+  v5 = selfCopy;
+  accessibilityScrollDirection = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
+  v6 = [(UIScrollViewAccessibility *)v5 _axProgressForDirection:accessibilityScrollDirection];
   objc_storeStrong(location, 0);
   return v6;
 }
 
-- (double)_axProgressForDirection:(void *)a1
+- (double)_axProgressForDirection:(void *)direction
 {
   v31 = *MEMORY[0x29EDCA608];
-  v28 = a1;
+  directionCopy = direction;
   v27 = a2;
-  if (!a1)
+  if (!direction)
   {
     return 0.0;
   }
@@ -4435,17 +4435,17 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
   v25 = 0.0;
   v24 = 0.0;
   v23 = 0.0;
-  location = MEMORY[0x29EDC9748](v28);
+  location = MEMORY[0x29EDC9748](directionCopy);
   [location contentOffset];
   v20 = v2;
   v21 = v3;
   v19 = 0;
   if (v27 == 1)
   {
-    v17 = [(UIScrollViewAccessibility *)v28 _axMinimumContentOffset];
+    _axMinimumContentOffset = [(UIScrollViewAccessibility *)directionCopy _axMinimumContentOffset];
     v18 = v4;
     v25 = v4;
-    v15 = [(UIScrollViewAccessibility *)v28 _axMaximumContentOffset];
+    _axMaximumContentOffset = [(UIScrollViewAccessibility *)directionCopy _axMaximumContentOffset];
     v16 = v5;
     v24 = v5;
     v23 = v21;
@@ -4453,16 +4453,16 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
 
   else if (v27 == 2)
   {
-    v13 = [(UIScrollViewAccessibility *)v28 _axMinimumContentOffset];
+    _axMinimumContentOffset2 = [(UIScrollViewAccessibility *)directionCopy _axMinimumContentOffset];
     v14 = v6;
-    v25 = v13;
-    v11 = [(UIScrollViewAccessibility *)v28 _axMaximumContentOffset];
+    v25 = _axMinimumContentOffset2;
+    _axMaximumContentOffset2 = [(UIScrollViewAccessibility *)directionCopy _axMaximumContentOffset];
     v12 = v7;
-    v24 = v11;
+    v24 = _axMaximumContentOffset2;
     v23 = v20;
-    v9 = [MEMORY[0x29EDC7938] sharedApplication];
-    v19 = [v9 userInterfaceLayoutDirection] == 1;
-    MEMORY[0x29EDC9740](v9);
+    mEMORY[0x29EDC7938] = [MEMORY[0x29EDC7938] sharedApplication];
+    v19 = [mEMORY[0x29EDC7938] userInterfaceLayoutDirection] == 1;
+    MEMORY[0x29EDC9740](mEMORY[0x29EDC7938]);
   }
 
   else
@@ -4508,13 +4508,13 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
   return v29;
 }
 
-- (CGRect)accessibilityFrameForScrollIndicator:(id)a3
+- (CGRect)accessibilityFrameForScrollIndicator:(id)indicator
 {
-  v89 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v87 = MEMORY[0x29EDC9748](v89);
+  objc_storeStrong(location, indicator);
+  v87 = MEMORY[0x29EDC9748](selfCopy);
   v85 = 0;
   objc_opt_class();
   v84 = __UIAccessibilityCastAsClass();
@@ -4533,8 +4533,8 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
   v82.size.height = v10;
   v77 = 30.0;
   v76 = 0.5;
-  v33 = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
-  if (v33 == 1)
+  accessibilityScrollDirection = [(_UIScrollViewScrollIndicatorAccessibility *)location[0] accessibilityScrollDirection];
+  if (accessibilityScrollDirection == 1)
   {
     v74 = 0u;
     v75 = 0u;
@@ -4576,7 +4576,7 @@ uint64_t __46__UIScrollViewAccessibility_accessibilityPath__block_invoke_4(void 
     v82.size.width = v52;
   }
 
-  else if (v33 == 2)
+  else if (accessibilityScrollDirection == 2)
   {
     v50 = 0u;
     v51 = 0u;
@@ -4659,22 +4659,22 @@ __n128 __66__UIScrollViewAccessibility_accessibilityFrameForScrollIndicator___bl
   return result;
 }
 
-- (void)_axSetLastScrubAnnouncementDate:(id)a3
+- (void)_axSetLastScrubAnnouncementDate:(id)date
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, date);
   __UIAccessibilitySetAssociatedObject();
   objc_storeStrong(location, 0);
 }
 
-- (double)_axAnnounceScrubForDirection:(void *)a1
+- (double)_axAnnounceScrubForDirection:(void *)direction
 {
-  if (a1)
+  if (direction)
   {
     notification = *MEMORY[0x29EDC7EA8];
-    [(UIScrollViewAccessibility *)a1 _axProgressForDirection:a2];
+    [(UIScrollViewAccessibility *)direction _axProgressForDirection:a2];
     v4 = AXFormatFloatWithPercentage();
     UIAccessibilityPostNotification(notification, v4);
     *&result = MEMORY[0x29EDC9740](v4).n128_u64[0];
@@ -4683,21 +4683,21 @@ __n128 __66__UIScrollViewAccessibility_accessibilityFrameForScrollIndicator___bl
   return result;
 }
 
-- (CGPoint)_newScrollOffsetForScrubReturningAnimated:(BOOL *)a3
+- (CGPoint)_newScrollOffsetForScrubReturningAnimated:(BOOL *)animated
 {
-  v17 = self;
+  selfCopy = self;
   v16 = a2;
-  v15 = a3;
+  animatedCopy = animated;
   v18 = 0.0;
   v19 = 0.0;
   v14.receiver = self;
   v14.super_class = UIScrollViewAccessibility;
-  [(UIScrollViewAccessibility *)&v14 _newScrollOffsetForScrubReturningAnimated:a3];
+  [(UIScrollViewAccessibility *)&v14 _newScrollOffsetForScrubReturningAnimated:animated];
   v18 = v3;
   v19 = v4;
-  v13 = [MEMORY[0x29EDB8DB0] date];
-  location = [(UIScrollViewAccessibility *)v17 _axLastScrubAnnouncementDate];
-  [(UIScrollViewAccessibility *)v17 contentOffset];
+  date = [MEMORY[0x29EDB8DB0] date];
+  location = [(UIScrollViewAccessibility *)selfCopy _axLastScrubAnnouncementDate];
+  [(UIScrollViewAccessibility *)selfCopy contentOffset];
   v11 = v6;
   v7 = v18;
   if (v18 == v11)
@@ -4713,15 +4713,15 @@ __n128 __66__UIScrollViewAccessibility_accessibilityFrameForScrollIndicator___bl
 
   if (v10)
   {
-    if (!location || ([v13 timeIntervalSinceDate:{location, v7}], v7 > 1.0))
+    if (!location || ([date timeIntervalSinceDate:{location, v7}], v7 > 1.0))
     {
-      [(UIScrollViewAccessibility *)v17 _axSetLastScrubAnnouncementDate:v13, v7];
-      [(UIScrollViewAccessibility *)v17 _axAnnounceScrubForDirection:v10];
+      [(UIScrollViewAccessibility *)selfCopy _axSetLastScrubAnnouncementDate:date, v7];
+      [(UIScrollViewAccessibility *)selfCopy _axAnnounceScrubForDirection:v10];
     }
   }
 
   objc_storeStrong(&location, 0);
-  objc_storeStrong(&v13, 0);
+  objc_storeStrong(&date, 0);
   v8 = v18;
   v9 = v19;
   result.y = v9;
@@ -4729,17 +4729,17 @@ __n128 __66__UIScrollViewAccessibility_accessibilityFrameForScrollIndicator___bl
   return result;
 }
 
-- (void)_didEndDirectManipulationWithScrubbingDirection:(int64_t)a3
+- (void)_didEndDirectManipulationWithScrubbingDirection:(int64_t)direction
 {
-  v7 = self;
+  selfCopy = self;
   v6 = a2;
-  v5 = a3;
+  directionCopy = direction;
   v4.receiver = self;
   v4.super_class = UIScrollViewAccessibility;
-  [(UIScrollViewAccessibility *)&v4 _didEndDirectManipulationWithScrubbingDirection:a3];
-  if (v5 == 2 || v5 == 1)
+  [(UIScrollViewAccessibility *)&v4 _didEndDirectManipulationWithScrubbingDirection:direction];
+  if (directionCopy == 2 || directionCopy == 1)
   {
-    if (v5 == 2)
+    if (directionCopy == 2)
     {
       v3 = 2;
     }
@@ -4749,7 +4749,7 @@ __n128 __66__UIScrollViewAccessibility_accessibilityFrameForScrollIndicator___bl
       v3 = 1;
     }
 
-    [(UIScrollViewAccessibility *)v7 _axAnnounceScrubForDirection:v3];
+    [(UIScrollViewAccessibility *)selfCopy _axAnnounceScrubForDirection:v3];
   }
 }
 

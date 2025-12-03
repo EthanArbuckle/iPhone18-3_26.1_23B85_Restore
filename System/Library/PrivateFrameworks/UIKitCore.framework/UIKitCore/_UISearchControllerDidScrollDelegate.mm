@@ -2,33 +2,33 @@
 - (UIScrollView)scrollView;
 - (_UIScrollViewScrollObserver_Internal)controller;
 - (void)_didScroll;
-- (void)_observeScrollViewDidScroll:(id)a3;
+- (void)_observeScrollViewDidScroll:(id)scroll;
 @end
 
 @implementation _UISearchControllerDidScrollDelegate
 
 - (void)_didScroll
 {
-  v3 = [(_UISearchControllerDidScrollDelegate *)self controller];
+  controller = [(_UISearchControllerDidScrollDelegate *)self controller];
   v4 = objc_opt_respondsToSelector();
 
   if (v4)
   {
-    v5 = [(_UISearchControllerDidScrollDelegate *)self controller];
-    [v5 _didScroll];
+    controller2 = [(_UISearchControllerDidScrollDelegate *)self controller];
+    [controller2 _didScroll];
   }
 }
 
-- (void)_observeScrollViewDidScroll:(id)a3
+- (void)_observeScrollViewDidScroll:(id)scroll
 {
-  v7 = a3;
-  v4 = [(_UISearchControllerDidScrollDelegate *)self controller];
+  scrollCopy = scroll;
+  controller = [(_UISearchControllerDidScrollDelegate *)self controller];
   v5 = objc_opt_respondsToSelector();
 
   if (v5)
   {
-    v6 = [(_UISearchControllerDidScrollDelegate *)self controller];
-    [v6 _observeScrollViewDidScroll:v7];
+    controller2 = [(_UISearchControllerDidScrollDelegate *)self controller];
+    [controller2 _observeScrollViewDidScroll:scrollCopy];
   }
 }
 

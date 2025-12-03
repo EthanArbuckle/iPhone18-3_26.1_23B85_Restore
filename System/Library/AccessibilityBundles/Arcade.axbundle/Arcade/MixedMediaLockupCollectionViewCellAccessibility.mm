@@ -1,5 +1,5 @@
 @interface MixedMediaLockupCollectionViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (BOOL)isAccessibilityElement;
 - (CGPoint)accessibilityActivationPoint;
 - (id)_accessibilitySupplementaryFooterViews;
@@ -8,57 +8,57 @@
 
 @implementation MixedMediaLockupCollectionViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"Arcade.MixedMediaLockupCollectionViewCell" hasInstanceMethod:@"accessibilityLockupView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Arcade.MixedMediaLockupCollectionViewCell" hasInstanceMethod:@"accessibilityTaglineLabel" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Arcade.MixedMediaLockupCollectionViewCell" hasInstanceMethod:@"accessibilityVideoView" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"Arcade.MixedMediaLockupCollectionViewCell" hasInstanceMethod:@"accessibilityMediaView" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"Arcade.MixedMediaLockupCollectionViewCell" hasInstanceMethod:@"accessibilityLockupView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Arcade.MixedMediaLockupCollectionViewCell" hasInstanceMethod:@"accessibilityTaglineLabel" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Arcade.MixedMediaLockupCollectionViewCell" hasInstanceMethod:@"accessibilityVideoView" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"Arcade.MixedMediaLockupCollectionViewCell" hasInstanceMethod:@"accessibilityMediaView" withFullSignature:{"@", 0}];
 }
 
 - (BOOL)isAccessibilityElement
 {
-  v2 = [(MixedMediaLockupCollectionViewCellAccessibility *)self _axLockupView];
-  v3 = [v2 isAccessibilityElement];
+  _axLockupView = [(MixedMediaLockupCollectionViewCellAccessibility *)self _axLockupView];
+  isAccessibilityElement = [_axLockupView isAccessibilityElement];
 
-  return v3;
+  return isAccessibilityElement;
 }
 
 - (unint64_t)accessibilityTraits
 {
-  v2 = [(MixedMediaLockupCollectionViewCellAccessibility *)self _axLockupView];
-  v3 = [v2 accessibilityTraits];
+  _axLockupView = [(MixedMediaLockupCollectionViewCellAccessibility *)self _axLockupView];
+  accessibilityTraits = [_axLockupView accessibilityTraits];
 
-  return v3;
+  return accessibilityTraits;
 }
 
 - (id)_accessibilitySupplementaryFooterViews
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(MixedMediaLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityVideoView"];
   if ([v4 _accessibilityViewIsVisible])
   {
-    [v3 axSafelyAddObject:v4];
+    [array axSafelyAddObject:v4];
   }
 
   v5 = [(MixedMediaLockupCollectionViewCellAccessibility *)self safeValueForKey:@"accessibilityMediaView"];
   if ([v5 _accessibilityViewIsVisible])
   {
-    [v3 axSafelyAddObject:v5];
+    [array axSafelyAddObject:v5];
   }
 
-  v6 = [(MixedMediaLockupCollectionViewCellAccessibility *)self _axLockupView];
-  v7 = [v6 _accessibilitySupplementaryFooterViews];
-  [v3 axSafelyAddObjectsFromArray:v7];
+  _axLockupView = [(MixedMediaLockupCollectionViewCellAccessibility *)self _axLockupView];
+  _accessibilitySupplementaryFooterViews = [_axLockupView _accessibilitySupplementaryFooterViews];
+  [array axSafelyAddObjectsFromArray:_accessibilitySupplementaryFooterViews];
 
-  return v3;
+  return array;
 }
 
 - (CGPoint)accessibilityActivationPoint
 {
-  v2 = [(MixedMediaLockupCollectionViewCellAccessibility *)self _axLockupView];
-  [v2 accessibilityActivationPoint];
+  _axLockupView = [(MixedMediaLockupCollectionViewCellAccessibility *)self _axLockupView];
+  [_axLockupView accessibilityActivationPoint];
   v4 = v3;
   v6 = v5;
 

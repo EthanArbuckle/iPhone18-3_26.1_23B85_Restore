@@ -1,16 +1,16 @@
 @interface ASVHitTestHistory
-- (ASVHitTestHistory)initWithResultCapacity:(unint64_t)a3 decisionCapacity:(unint64_t)a4;
-- (id)recentDecisionsForCount:(unint64_t)a3;
-- (id)recentResultsForCount:(unint64_t)a3;
-- (void)addDecision:(id)a3;
-- (void)addResult:(id)a3;
+- (ASVHitTestHistory)initWithResultCapacity:(unint64_t)capacity decisionCapacity:(unint64_t)decisionCapacity;
+- (id)recentDecisionsForCount:(unint64_t)count;
+- (id)recentResultsForCount:(unint64_t)count;
+- (void)addDecision:(id)decision;
+- (void)addResult:(id)result;
 - (void)clearHistory;
-- (void)reinitializeDecisionHistoryWithDecision:(id)a3;
+- (void)reinitializeDecisionHistoryWithDecision:(id)decision;
 @end
 
 @implementation ASVHitTestHistory
 
-- (ASVHitTestHistory)initWithResultCapacity:(unint64_t)a3 decisionCapacity:(unint64_t)a4
+- (ASVHitTestHistory)initWithResultCapacity:(unint64_t)capacity decisionCapacity:(unint64_t)decisionCapacity
 {
   v13.receiver = self;
   v13.super_class = ASVHitTestHistory;
@@ -18,13 +18,13 @@
   v7 = v6;
   if (v6)
   {
-    v6->_resultCapacity = a3;
-    v6->_decisionCapacity = a4;
-    v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a3];
+    v6->_resultCapacity = capacity;
+    v6->_decisionCapacity = decisionCapacity;
+    v8 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:capacity];
     results = v7->_results;
     v7->_results = v8;
 
-    v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:a4];
+    v10 = [objc_alloc(MEMORY[0x277CBEB18]) initWithCapacity:decisionCapacity];
     decisions = v7->_decisions;
     v7->_decisions = v10;
   }
@@ -32,57 +32,57 @@
   return v7;
 }
 
-- (void)addResult:(id)a3
+- (void)addResult:(id)result
 {
-  v4 = a3;
-  v5 = [(ASVHitTestHistory *)self results];
-  [v5 addObject:v4];
+  resultCopy = result;
+  results = [(ASVHitTestHistory *)self results];
+  [results addObject:resultCopy];
 
-  v6 = [(ASVHitTestHistory *)self results];
-  v7 = [v6 count];
-  v8 = [(ASVHitTestHistory *)self resultCapacity];
+  results2 = [(ASVHitTestHistory *)self results];
+  v7 = [results2 count];
+  resultCapacity = [(ASVHitTestHistory *)self resultCapacity];
 
-  if (v7 > v8)
+  if (v7 > resultCapacity)
   {
-    v9 = [(ASVHitTestHistory *)self results];
-    [v9 removeObjectAtIndex:0];
+    results3 = [(ASVHitTestHistory *)self results];
+    [results3 removeObjectAtIndex:0];
   }
 }
 
-- (void)addDecision:(id)a3
+- (void)addDecision:(id)decision
 {
-  v4 = a3;
-  v5 = [(ASVHitTestHistory *)self decisions];
-  [v5 addObject:v4];
+  decisionCopy = decision;
+  decisions = [(ASVHitTestHistory *)self decisions];
+  [decisions addObject:decisionCopy];
 
-  v6 = [(ASVHitTestHistory *)self decisions];
-  v7 = [v6 count];
-  v8 = [(ASVHitTestHistory *)self decisionCapacity];
+  decisions2 = [(ASVHitTestHistory *)self decisions];
+  v7 = [decisions2 count];
+  decisionCapacity = [(ASVHitTestHistory *)self decisionCapacity];
 
-  if (v7 > v8)
+  if (v7 > decisionCapacity)
   {
-    v9 = [(ASVHitTestHistory *)self decisions];
-    [v9 removeObjectAtIndex:0];
+    decisions3 = [(ASVHitTestHistory *)self decisions];
+    [decisions3 removeObjectAtIndex:0];
   }
 }
 
-- (id)recentResultsForCount:(unint64_t)a3
+- (id)recentResultsForCount:(unint64_t)count
 {
-  v5 = [(ASVHitTestHistory *)self results];
-  v6 = [v5 count];
+  results = [(ASVHitTestHistory *)self results];
+  v6 = [results count];
 
-  if (v6 < a3)
+  if (v6 < count)
   {
-    a3 = v6;
+    count = v6;
   }
 
-  if (a3)
+  if (count)
   {
-    v7 = [(ASVHitTestHistory *)self results];
-    v8 = [v7 count] - a3;
+    results2 = [(ASVHitTestHistory *)self results];
+    v8 = [results2 count] - count;
 
-    v9 = [(ASVHitTestHistory *)self results];
-    v10 = [v9 subarrayWithRange:{v8, a3}];
+    results3 = [(ASVHitTestHistory *)self results];
+    v10 = [results3 subarrayWithRange:{v8, count}];
   }
 
   else
@@ -93,31 +93,31 @@
   return v10;
 }
 
-- (id)recentDecisionsForCount:(unint64_t)a3
+- (id)recentDecisionsForCount:(unint64_t)count
 {
-  v5 = [(ASVHitTestHistory *)self decisions];
-  v6 = [v5 count];
+  decisions = [(ASVHitTestHistory *)self decisions];
+  v6 = [decisions count];
 
   if (!v6)
   {
     goto LABEL_6;
   }
 
-  v7 = [(ASVHitTestHistory *)self decisions];
-  v8 = [v7 count] - 1;
+  decisions2 = [(ASVHitTestHistory *)self decisions];
+  v8 = [decisions2 count] - 1;
 
-  if (v8 < a3)
+  if (v8 < count)
   {
-    a3 = v8;
+    count = v8;
   }
 
-  if (a3)
+  if (count)
   {
-    v9 = [(ASVHitTestHistory *)self decisions];
-    v10 = [v9 count] - a3;
+    decisions3 = [(ASVHitTestHistory *)self decisions];
+    v10 = [decisions3 count] - count;
 
-    v11 = [(ASVHitTestHistory *)self decisions];
-    v12 = [v11 subarrayWithRange:{v10, a3}];
+    decisions4 = [(ASVHitTestHistory *)self decisions];
+    v12 = [decisions4 subarrayWithRange:{v10, count}];
   }
 
   else
@@ -131,21 +131,21 @@ LABEL_6:
 
 - (void)clearHistory
 {
-  v3 = [(ASVHitTestHistory *)self results];
-  [v3 removeAllObjects];
+  results = [(ASVHitTestHistory *)self results];
+  [results removeAllObjects];
 
-  v4 = [(ASVHitTestHistory *)self decisions];
-  [v4 removeAllObjects];
+  decisions = [(ASVHitTestHistory *)self decisions];
+  [decisions removeAllObjects];
 }
 
-- (void)reinitializeDecisionHistoryWithDecision:(id)a3
+- (void)reinitializeDecisionHistoryWithDecision:(id)decision
 {
-  v4 = a3;
-  v5 = [(ASVHitTestHistory *)self decisions];
-  [v5 removeAllObjects];
+  decisionCopy = decision;
+  decisions = [(ASVHitTestHistory *)self decisions];
+  [decisions removeAllObjects];
 
-  v6 = [(ASVHitTestHistory *)self decisions];
-  [v6 addObject:v4];
+  decisions2 = [(ASVHitTestHistory *)self decisions];
+  [decisions2 addObject:decisionCopy];
 }
 
 @end

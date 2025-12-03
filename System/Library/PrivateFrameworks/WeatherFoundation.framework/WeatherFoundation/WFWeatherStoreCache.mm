@@ -1,32 +1,32 @@
 @interface WFWeatherStoreCache
-+ (BOOL)removeObjectsFromCache:(id)a3 passingTest:(id)a4;
-+ (id)createCacheIfNecessary:(id)a3 error:(id *)a4;
++ (BOOL)removeObjectsFromCache:(id)cache passingTest:(id)test;
++ (id)createCacheIfNecessary:(id)necessary error:(id *)error;
 + (id)wf_mainDomains;
-- (BOOL)_concurrentQueue_barrier_loadDomain:(id)a3;
-- (BOOL)_loadDomain:(id)a3;
+- (BOOL)_concurrentQueue_barrier_loadDomain:(id)domain;
+- (BOOL)_loadDomain:(id)domain;
 - (WFWeatherStoreCache)init;
-- (WFWeatherStoreCache)initWithURL:(id)a3;
+- (WFWeatherStoreCache)initWithURL:(id)l;
 - (id)_dirtyCacheDomains;
 - (id)_loadedCacheDomains;
-- (id)cachedObjectWithinDomain:(id)a3 forKey:(id)a4 staleness:(unint64_t)a5;
+- (id)cachedObjectWithinDomain:(id)domain forKey:(id)key staleness:(unint64_t)staleness;
 - (void)_concurrentQueue_barrier_deleteOldDataFromCache;
-- (void)_concurrentQueue_barrier_deleteOldDataFromCache:(id)a3 allowedStaleness:(unint64_t)a4;
-- (void)_concurrentQueue_barrier_removeObjectWithinDomain:(id)a3 forKey:(id)a4;
-- (void)_concurrentQueue_barrier_shrinkDomain:(id)a3;
+- (void)_concurrentQueue_barrier_deleteOldDataFromCache:(id)cache allowedStaleness:(unint64_t)staleness;
+- (void)_concurrentQueue_barrier_removeObjectWithinDomain:(id)domain forKey:(id)key;
+- (void)_concurrentQueue_barrier_shrinkDomain:(id)domain;
 - (void)_concurrentQueue_barrier_writeCacheDictionaryToFile;
-- (void)_ensureDomainIsLoaded:(id)a3;
-- (void)_markDomainDirty:(id)a3;
-- (void)_shrinkDomain:(id)a3;
+- (void)_ensureDomainIsLoaded:(id)loaded;
+- (void)_markDomainDirty:(id)dirty;
+- (void)_shrinkDomain:(id)domain;
 - (void)_startCacheStoreTimer;
 - (void)_stopCacheStoreTimer;
-- (void)cache:(id)a3 withinDomain:(id)a4 date:(id)a5 forKey:(id)a6 expiration:(id)a7 synchronous:(BOOL)a8;
-- (void)cache:(id)a3 withinDomain:(id)a4 forKey:(id)a5;
-- (void)cache:(id)a3 withinDomain:(id)a4 forKey:(id)a5 expiration:(id)a6;
+- (void)cache:(id)cache withinDomain:(id)domain date:(id)date forKey:(id)key expiration:(id)expiration synchronous:(BOOL)synchronous;
+- (void)cache:(id)cache withinDomain:(id)domain forKey:(id)key;
+- (void)cache:(id)cache withinDomain:(id)domain forKey:(id)key expiration:(id)expiration;
 - (void)dealloc;
-- (void)deleteOldDataFromCache:(id)a3 allowedStaleness:(unint64_t)a4;
-- (void)executeTransaction:(id)a3;
+- (void)deleteOldDataFromCache:(id)cache allowedStaleness:(unint64_t)staleness;
+- (void)executeTransaction:(id)transaction;
 - (void)removeAllObjects;
-- (void)removeObjectWithinDomain:(id)a3 forKey:(id)a4;
+- (void)removeObjectWithinDomain:(id)domain forKey:(id)key;
 - (void)writeCacheDictionaryToFile;
 @end
 
@@ -57,18 +57,18 @@ void __37__WFWeatherStoreCache_wf_mainDomains__block_invoke()
   wf_mainDomains_mainDomains = v2;
 }
 
-+ (id)createCacheIfNecessary:(id)a3 error:(id *)a4
++ (id)createCacheIfNecessary:(id)necessary error:(id *)error
 {
-  v5 = a3;
+  necessaryCopy = necessary;
   v6 = WFLogForCategory(5uLL);
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     +[WFWeatherStoreCache createCacheIfNecessary:error:];
   }
 
-  if (v5)
+  if (necessaryCopy)
   {
-    if ([v5 wf_isInMemoryAddress])
+    if ([necessaryCopy wf_isInMemoryAddress])
     {
       v7 = WFLogForCategory(5uLL);
       if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
@@ -76,13 +76,13 @@ void __37__WFWeatherStoreCache_wf_mainDomains__block_invoke()
         [WFWeatherStoreCache createCacheIfNecessary:v7 error:?];
       }
 
-      v8 = [objc_alloc(objc_opt_class()) initWithURL:v5];
+      v8 = [objc_alloc(objc_opt_class()) initWithURL:necessaryCopy];
       goto LABEL_33;
     }
 
-    v10 = [MEMORY[0x277CCAA00] defaultManager];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
     v26 = 0;
-    v11 = [v10 createDirectoryAtURL:v5 withIntermediateDirectories:1 attributes:0 error:&v26];
+    v11 = [defaultManager createDirectoryAtURL:necessaryCopy withIntermediateDirectories:1 attributes:0 error:&v26];
     v12 = v26;
 
     if ((v11 & 1) == 0)
@@ -93,21 +93,21 @@ void __37__WFWeatherStoreCache_wf_mainDomains__block_invoke()
         +[WFWeatherStoreCache createCacheIfNecessary:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v14 = v12;
-        *a4 = v12;
+        *error = v12;
       }
     }
 
     v25 = 0;
-    v15 = [v5 checkResourceIsReachableAndReturnError:&v25];
+    v15 = [necessaryCopy checkResourceIsReachableAndReturnError:&v25];
     v16 = v25;
     if (v15)
     {
-      v17 = [MEMORY[0x277CCAA00] defaultManager];
-      v18 = [v5 path];
-      v19 = [v17 isWritableFileAtPath:v18];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      path = [necessaryCopy path];
+      v19 = [defaultManager2 isWritableFileAtPath:path];
 
       v20 = WFLogForCategory(5uLL);
       v21 = v20;
@@ -118,7 +118,7 @@ void __37__WFWeatherStoreCache_wf_mainDomains__block_invoke()
           +[WFWeatherStoreCache createCacheIfNecessary:error:];
         }
 
-        v8 = [objc_alloc(objc_opt_class()) initWithURL:v5];
+        v8 = [objc_alloc(objc_opt_class()) initWithURL:necessaryCopy];
         goto LABEL_32;
       }
 
@@ -127,10 +127,10 @@ void __37__WFWeatherStoreCache_wf_mainDomains__block_invoke()
         +[WFWeatherStoreCache createCacheIfNecessary:error:];
       }
 
-      if (a4)
+      if (error)
       {
         [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:513 userInfo:0];
-        *a4 = v8 = 0;
+        *error = v8 = 0;
         goto LABEL_32;
       }
     }
@@ -143,11 +143,11 @@ void __37__WFWeatherStoreCache_wf_mainDomains__block_invoke()
         +[WFWeatherStoreCache createCacheIfNecessary:error:];
       }
 
-      if (a4)
+      if (error)
       {
         v23 = v16;
         v8 = 0;
-        *a4 = v16;
+        *error = v16;
 LABEL_32:
 
         goto LABEL_33;
@@ -158,9 +158,9 @@ LABEL_32:
     goto LABEL_32;
   }
 
-  if (a4)
+  if (error)
   {
-    *a4 = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:513 userInfo:0];
+    *error = [MEMORY[0x277CCA9B8] errorWithDomain:*MEMORY[0x277CCA050] code:513 userInfo:0];
   }
 
   v9 = WFLogForCategory(5uLL);
@@ -181,10 +181,10 @@ LABEL_33:
   objc_exception_throw(v2);
 }
 
-- (WFWeatherStoreCache)initWithURL:(id)a3
+- (WFWeatherStoreCache)initWithURL:(id)l
 {
-  v5 = a3;
-  if (!v5 || (v6 = v5, ([v5 isFileURL] & 1) == 0) && (objc_msgSend(v6, "wf_isInMemoryAddress") & 1) == 0)
+  lCopy = l;
+  if (!lCopy || (v6 = lCopy, ([lCopy isFileURL] & 1) == 0) && (objc_msgSend(v6, "wf_isInMemoryAddress") & 1) == 0)
   {
     v24 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"URL was invalid" userInfo:0];
     objc_exception_throw(v24);
@@ -197,9 +197,9 @@ LABEL_33:
     v7 = v26;
     if (v18)
     {
-      v19 = [MEMORY[0x277CCAA00] defaultManager];
-      v20 = [v6 path];
-      v21 = [v19 isWritableFileAtPath:v20];
+      defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+      path = [v6 path];
+      v21 = [defaultManager isWritableFileAtPath:path];
 
       if (v21)
       {
@@ -222,7 +222,7 @@ LABEL_33:
       }
     }
 
-    v17 = 0;
+    selfCopy = 0;
     goto LABEL_16;
   }
 
@@ -234,7 +234,7 @@ LABEL_6:
   v9 = v8;
   if (v8)
   {
-    objc_storeStrong(&v8->_URL, a3);
+    objc_storeStrong(&v8->_URL, l);
     v10 = dispatch_queue_attr_make_with_autorelease_frequency(MEMORY[0x277D85CD8], DISPATCH_AUTORELEASE_FREQUENCY_WORK_ITEM);
     v11 = dispatch_queue_create("com.apple.WeatherFoundation.cacheReadWriteQueue", v10);
     cacheConcurrentQueue = v9->_cacheConcurrentQueue;
@@ -252,10 +252,10 @@ LABEL_6:
   }
 
   self = v9;
-  v17 = self;
+  selfCopy = self;
 LABEL_16:
 
-  return v17;
+  return selfCopy;
 }
 
 - (void)dealloc
@@ -309,21 +309,21 @@ uint64_t __43__WFWeatherStoreCache__stopCacheStoreTimer__block_invoke(uint64_t a
   return [v3 setCacheStoreTimer:0];
 }
 
-- (void)deleteOldDataFromCache:(id)a3 allowedStaleness:(unint64_t)a4
+- (void)deleteOldDataFromCache:(id)cache allowedStaleness:(unint64_t)staleness
 {
-  v6 = a3;
-  if (v6)
+  cacheCopy = cache;
+  if (cacheCopy)
   {
     objc_initWeak(&location, self);
-    v7 = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
+    cacheConcurrentQueue = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
     v8[0] = MEMORY[0x277D85DD0];
     v8[1] = 3221225472;
     v8[2] = __63__WFWeatherStoreCache_deleteOldDataFromCache_allowedStaleness___block_invoke;
     v8[3] = &unk_279E6D9D0;
     objc_copyWeak(v10, &location);
-    v9 = v6;
-    v10[1] = a4;
-    dispatch_barrier_sync(v7, v8);
+    v9 = cacheCopy;
+    v10[1] = staleness;
+    dispatch_barrier_sync(cacheConcurrentQueue, v8);
 
     objc_destroyWeak(v10);
     objc_destroyWeak(&location);
@@ -345,13 +345,13 @@ void __63__WFWeatherStoreCache_deleteOldDataFromCache_allowedStaleness___block_i
     _os_log_impl(&dword_272B94000, v3, OS_LOG_TYPE_INFO, "write cache to file", buf, 2u);
   }
 
-  v4 = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
+  cacheConcurrentQueue = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __49__WFWeatherStoreCache_writeCacheDictionaryToFile__block_invoke;
   block[3] = &unk_279E6D9A8;
   block[4] = self;
-  dispatch_barrier_sync(v4, block);
+  dispatch_barrier_sync(cacheConcurrentQueue, block);
 }
 
 - (void)_concurrentQueue_barrier_writeCacheDictionaryToFile
@@ -370,16 +370,16 @@ void __63__WFWeatherStoreCache_deleteOldDataFromCache_allowedStaleness___block_i
     v13[2] = 0x3032000000;
     v13[3] = __Block_byref_object_copy_;
     v13[4] = __Block_byref_object_dispose_;
-    v14 = [(WFWeatherStoreCache *)self cacheForDomain];
+    cacheForDomain = [(WFWeatherStoreCache *)self cacheForDomain];
     [(WFWeatherStoreCache *)self _concurrentQueue_barrier_deleteOldDataFromCache];
-    v5 = [(WFWeatherStoreCache *)self dirtyCacheDomains];
+    dirtyCacheDomains = [(WFWeatherStoreCache *)self dirtyCacheDomains];
     v7 = MEMORY[0x277D85DD0];
     v8 = 3221225472;
     v9 = __74__WFWeatherStoreCache__concurrentQueue_barrier_writeCacheDictionaryToFile__block_invoke;
     v10 = &unk_279E6D9F8;
     v12 = v13;
     v11 = v3;
-    [v5 enumerateObjectsUsingBlock:&v7];
+    [dirtyCacheDomains enumerateObjectsUsingBlock:&v7];
 
     v6 = [(WFWeatherStoreCache *)self dirtyCacheDomains:v7];
     [v6 removeAllObjects];
@@ -415,19 +415,19 @@ void __74__WFWeatherStoreCache__concurrentQueue_barrier_writeCacheDictionaryToFi
   }
 }
 
-+ (BOOL)removeObjectsFromCache:(id)a3 passingTest:(id)a4
++ (BOOL)removeObjectsFromCache:(id)cache passingTest:(id)test
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 objectForKey:@"values"];
+  cacheCopy = cache;
+  testCopy = test;
+  v7 = [cacheCopy objectForKey:@"values"];
   v20 = MEMORY[0x277D85DD0];
   v21 = 3221225472;
   v22 = __58__WFWeatherStoreCache_removeObjectsFromCache_passingTest___block_invoke;
   v23 = &unk_279E6DA20;
-  v25 = v6;
-  v8 = v5;
+  v25 = testCopy;
+  v8 = cacheCopy;
   v24 = v8;
-  v9 = v6;
+  v9 = testCopy;
   v10 = [v7 keysOfEntriesPassingTest:&v20];
 
   v11 = [v10 count];
@@ -440,16 +440,16 @@ void __74__WFWeatherStoreCache__concurrentQueue_barrier_writeCacheDictionaryToFi
     }
 
     v13 = [v8 objectForKeyedSubscript:@"values"];
-    v14 = [v10 allObjects];
-    [v13 removeObjectsForKeys:v14];
+    allObjects = [v10 allObjects];
+    [v13 removeObjectsForKeys:allObjects];
 
     v15 = [v8 objectForKeyedSubscript:@"dates"];
-    v16 = [v10 allObjects];
-    [v15 removeObjectsForKeys:v16];
+    allObjects2 = [v10 allObjects];
+    [v15 removeObjectsForKeys:allObjects2];
 
     v17 = [v8 objectForKeyedSubscript:@"WFWeatherStoreCacheRecordExpirationDate"];
-    v18 = [v10 allObjects];
-    [v17 removeObjectsForKeys:v18];
+    allObjects3 = [v10 allObjects];
+    [v17 removeObjectsForKeys:allObjects3];
   }
 
   return v11 != 0;
@@ -481,42 +481,42 @@ uint64_t __58__WFWeatherStoreCache_removeObjectsFromCache_passingTest___block_in
   return v10;
 }
 
-- (id)cachedObjectWithinDomain:(id)a3 forKey:(id)a4 staleness:(unint64_t)a5
+- (id)cachedObjectWithinDomain:(id)domain forKey:(id)key staleness:(unint64_t)staleness
 {
-  v8 = a3;
-  v9 = a4;
+  domainCopy = domain;
+  keyCopy = key;
   v34 = 0;
   v35 = &v34;
   v36 = 0x3032000000;
   v37 = __Block_byref_object_copy_;
   v38 = __Block_byref_object_dispose_;
   v39 = 0;
-  [(WFWeatherStoreCache *)self _ensureDomainIsLoaded:v8];
+  [(WFWeatherStoreCache *)self _ensureDomainIsLoaded:domainCopy];
   v10 = self->_cacheForDomain;
   v30 = 0;
   v31 = &v30;
   v32 = 0x2020000000;
   v33 = 0;
-  v11 = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
+  cacheConcurrentQueue = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __65__WFWeatherStoreCache_cachedObjectWithinDomain_forKey_staleness___block_invoke;
   block[3] = &unk_279E6DA48;
   v12 = v10;
   v24 = v12;
-  v13 = v8;
+  v13 = domainCopy;
   v25 = v13;
   v27 = &v34;
-  v14 = v9;
+  v14 = keyCopy;
   v26 = v14;
   v28 = &v30;
-  v29 = a5;
-  dispatch_sync(v11, block);
+  stalenessCopy = staleness;
+  dispatch_sync(cacheConcurrentQueue, block);
 
   if (*(v31 + 24) == 1)
   {
     objc_initWeak(&location, self);
-    v15 = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
+    cacheConcurrentQueue2 = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
     v18[0] = MEMORY[0x277D85DD0];
     v18[1] = 3221225472;
     v18[2] = __65__WFWeatherStoreCache_cachedObjectWithinDomain_forKey_staleness___block_invoke_67;
@@ -524,7 +524,7 @@ uint64_t __58__WFWeatherStoreCache_removeObjectsFromCache_passingTest___block_in
     objc_copyWeak(&v21, &location);
     v19 = v13;
     v20 = v14;
-    dispatch_barrier_async(v15, v18);
+    dispatch_barrier_async(cacheConcurrentQueue2, v18);
 
     objc_destroyWeak(&v21);
     objc_destroyWeak(&location);
@@ -625,11 +625,11 @@ void __65__WFWeatherStoreCache_cachedObjectWithinDomain_forKey_staleness___block
   [WeakRetained _concurrentQueue_barrier_removeObjectWithinDomain:*(a1 + 32) forKey:*(a1 + 40)];
 }
 
-- (void)cache:(id)a3 withinDomain:(id)a4 forKey:(id)a5
+- (void)cache:(id)cache withinDomain:(id)domain forKey:(id)key
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  keyCopy = key;
+  domainCopy = domain;
+  cacheCopy = cache;
   v11 = WFLogForCategory(5uLL);
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
@@ -637,46 +637,46 @@ void __65__WFWeatherStoreCache_cachedObjectWithinDomain_forKey_staleness___block
     _os_log_impl(&dword_272B94000, v11, OS_LOG_TYPE_INFO, "caching weather objects", v13, 2u);
   }
 
-  v12 = [MEMORY[0x277CBEAA8] date];
-  [(WFWeatherStoreCache *)self cache:v10 withinDomain:v9 date:v12 forKey:v8 expiration:0 synchronous:0];
+  date = [MEMORY[0x277CBEAA8] date];
+  [(WFWeatherStoreCache *)self cache:cacheCopy withinDomain:domainCopy date:date forKey:keyCopy expiration:0 synchronous:0];
 }
 
-- (void)cache:(id)a3 withinDomain:(id)a4 forKey:(id)a5 expiration:(id)a6
+- (void)cache:(id)cache withinDomain:(id)domain forKey:(id)key expiration:(id)expiration
 {
   v10 = MEMORY[0x277CBEAA8];
-  v11 = a6;
-  v12 = a5;
-  v13 = a4;
-  v14 = a3;
-  v15 = [v10 date];
-  [(WFWeatherStoreCache *)self cache:v14 withinDomain:v13 date:v15 forKey:v12 expiration:v11 synchronous:0];
+  expirationCopy = expiration;
+  keyCopy = key;
+  domainCopy = domain;
+  cacheCopy = cache;
+  date = [v10 date];
+  [(WFWeatherStoreCache *)self cache:cacheCopy withinDomain:domainCopy date:date forKey:keyCopy expiration:expirationCopy synchronous:0];
 }
 
-- (void)cache:(id)a3 withinDomain:(id)a4 date:(id)a5 forKey:(id)a6 expiration:(id)a7 synchronous:(BOOL)a8
+- (void)cache:(id)cache withinDomain:(id)domain date:(id)date forKey:(id)key expiration:(id)expiration synchronous:(BOOL)synchronous
 {
-  v8 = a8;
+  synchronousCopy = synchronous;
   v44 = *MEMORY[0x277D85DE8];
-  v14 = a3;
-  v15 = a4;
-  v16 = a5;
-  v17 = a6;
-  v18 = a7;
-  if (!v16)
+  cacheCopy = cache;
+  domainCopy = domain;
+  dateCopy = date;
+  keyCopy = key;
+  expirationCopy = expiration;
+  if (!dateCopy)
   {
     v29 = [MEMORY[0x277CBEAD8] exceptionWithName:*MEMORY[0x277CBE660] reason:@"Cannot cache w/o date" userInfo:0];
     objc_exception_throw(v29);
   }
 
-  v19 = v18;
-  if (v18 && ([MEMORY[0x277CBEAA8] date], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "compare:", v20), v20, v21 == -1))
+  v19 = expirationCopy;
+  if (expirationCopy && ([MEMORY[0x277CBEAA8] date], v20 = objc_claimAutoreleasedReturnValue(), v21 = objc_msgSend(v19, "compare:", v20), v20, v21 == -1))
   {
     v25 = WFLogForCategory(5uLL);
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEBUG))
     {
       *buf = 138412802;
-      v39 = v17;
+      v39 = keyCopy;
       v40 = 2112;
-      v41 = v15;
+      v41 = domainCopy;
       v42 = 2112;
       v43 = v19;
       _os_log_debug_impl(&dword_272B94000, v25, OS_LOG_TYPE_DEBUG, "Unable to cache key '%@' within domain '%@':  Expiration date '%@' is already expired.", buf, 0x20u);
@@ -685,33 +685,33 @@ void __65__WFWeatherStoreCache_cachedObjectWithinDomain_forKey_staleness___block
 
   else
   {
-    [(WFWeatherStoreCache *)self _ensureDomainIsLoaded:v15];
-    v22 = [(WFWeatherStoreCache *)self dirtyCacheDomains];
-    v23 = [(WFWeatherStoreCache *)self cacheForDomain];
+    [(WFWeatherStoreCache *)self _ensureDomainIsLoaded:domainCopy];
+    dirtyCacheDomains = [(WFWeatherStoreCache *)self dirtyCacheDomains];
+    cacheForDomain = [(WFWeatherStoreCache *)self cacheForDomain];
     v30[0] = MEMORY[0x277D85DD0];
     v30[1] = 3221225472;
     v30[2] = __77__WFWeatherStoreCache_cache_withinDomain_date_forKey_expiration_synchronous___block_invoke;
     v30[3] = &unk_279E6DA98;
-    v31 = v23;
-    v32 = v15;
+    v31 = cacheForDomain;
+    v32 = domainCopy;
     v33 = v19;
-    v34 = v17;
-    v35 = v16;
-    v36 = v14;
-    v37 = v22;
-    v24 = v22;
-    v25 = v23;
+    v34 = keyCopy;
+    v35 = dateCopy;
+    v36 = cacheCopy;
+    v37 = dirtyCacheDomains;
+    v24 = dirtyCacheDomains;
+    v25 = cacheForDomain;
     v26 = MEMORY[0x2743D5580](v30);
-    v27 = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
-    v28 = v27;
-    if (v8)
+    cacheConcurrentQueue = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
+    v28 = cacheConcurrentQueue;
+    if (synchronousCopy)
     {
-      dispatch_barrier_sync(v27, v26);
+      dispatch_barrier_sync(cacheConcurrentQueue, v26);
     }
 
     else
     {
-      dispatch_barrier_async(v27, v26);
+      dispatch_barrier_async(cacheConcurrentQueue, v26);
     }
   }
 }
@@ -757,11 +757,11 @@ void __77__WFWeatherStoreCache_cache_withinDomain_date_forKey_expiration_synchro
   [*(a1 + 80) addObject:*(a1 + 40)];
 }
 
-- (void)removeObjectWithinDomain:(id)a3 forKey:(id)a4
+- (void)removeObjectWithinDomain:(id)domain forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  [(WFWeatherStoreCache *)self _ensureDomainIsLoaded:v6];
+  domainCopy = domain;
+  keyCopy = key;
+  [(WFWeatherStoreCache *)self _ensureDomainIsLoaded:domainCopy];
   objc_initWeak(&location, self);
   cacheConcurrentQueue = self->_cacheConcurrentQueue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -769,10 +769,10 @@ void __77__WFWeatherStoreCache_cache_withinDomain_date_forKey_expiration_synchro
   v11[2] = __55__WFWeatherStoreCache_removeObjectWithinDomain_forKey___block_invoke;
   v11[3] = &unk_279E6DA70;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = domainCopy;
+  v13 = keyCopy;
+  v9 = keyCopy;
+  v10 = domainCopy;
   dispatch_barrier_sync(cacheConcurrentQueue, v11);
 
   objc_destroyWeak(&v14);
@@ -787,13 +787,13 @@ void __55__WFWeatherStoreCache_removeObjectWithinDomain_forKey___block_invoke(ui
 
 - (void)removeAllObjects
 {
-  v3 = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
+  cacheConcurrentQueue = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
   block[0] = MEMORY[0x277D85DD0];
   block[1] = 3221225472;
   block[2] = __39__WFWeatherStoreCache_removeAllObjects__block_invoke;
   block[3] = &unk_279E6D9A8;
   block[4] = self;
-  dispatch_barrier_async(v3, block);
+  dispatch_barrier_async(cacheConcurrentQueue, block);
 }
 
 uint64_t __39__WFWeatherStoreCache_removeAllObjects__block_invoke(uint64_t a1)
@@ -809,9 +809,9 @@ uint64_t __39__WFWeatherStoreCache_removeAllObjects__block_invoke(uint64_t a1)
   return [v4 _concurrentQueue_barrier_writeCacheDictionaryToFile];
 }
 
-- (void)executeTransaction:(id)a3
+- (void)executeTransaction:(id)transaction
 {
-  (*(a3 + 2))(a3, self);
+  (*(transaction + 2))(transaction, self);
   v4 = WFLogForCategory(5uLL);
   if (os_log_type_enabled(v4, OS_LOG_TYPE_DEBUG))
   {
@@ -821,20 +821,20 @@ uint64_t __39__WFWeatherStoreCache_removeAllObjects__block_invoke(uint64_t a1)
   [(WFWeatherStoreCache *)self writeCacheDictionaryToFile];
 }
 
-- (void)_shrinkDomain:(id)a3
+- (void)_shrinkDomain:(id)domain
 {
-  v4 = a3;
-  if (v4)
+  domainCopy = domain;
+  if (domainCopy)
   {
     objc_initWeak(&location, self);
-    v5 = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
+    cacheConcurrentQueue = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
     block[0] = MEMORY[0x277D85DD0];
     block[1] = 3221225472;
     block[2] = __37__WFWeatherStoreCache__shrinkDomain___block_invoke;
     block[3] = &unk_279E6DAC0;
     objc_copyWeak(&v8, &location);
-    v7 = v4;
-    dispatch_barrier_sync(v5, block);
+    v7 = domainCopy;
+    dispatch_barrier_sync(cacheConcurrentQueue, block);
 
     objc_destroyWeak(&v8);
     objc_destroyWeak(&location);
@@ -847,13 +847,13 @@ void __37__WFWeatherStoreCache__shrinkDomain___block_invoke(uint64_t a1)
   [WeakRetained _concurrentQueue_barrier_shrinkDomain:*(a1 + 32)];
 }
 
-- (void)_concurrentQueue_barrier_shrinkDomain:(id)a3
+- (void)_concurrentQueue_barrier_shrinkDomain:(id)domain
 {
-  v4 = a3;
-  if (v4)
+  domainCopy = domain;
+  if (domainCopy)
   {
-    v5 = [(WFWeatherStoreCache *)self cacheForDomain];
-    v6 = [v5 objectForKeyedSubscript:v4];
+    cacheForDomain = [(WFWeatherStoreCache *)self cacheForDomain];
+    v6 = [cacheForDomain objectForKeyedSubscript:domainCopy];
 
     v7 = [v6 objectForKeyedSubscript:@"values"];
     v8 = [v6 objectForKeyedSubscript:@"dates"];
@@ -868,8 +868,8 @@ void __37__WFWeatherStoreCache__shrinkDomain___block_invoke(uint64_t a1)
       }
 
       v12 = MEMORY[0x277CBEB18];
-      v13 = [v8 allValues];
-      v11 = [v12 arrayWithArray:v13];
+      allValues = [v8 allValues];
+      v11 = [v12 arrayWithArray:allValues];
 
       [v11 sortUsingSelector:sel_compare_];
       v14 = [v11 objectAtIndexedSubscript:[v11 count]- 250];
@@ -888,7 +888,7 @@ void __37__WFWeatherStoreCache__shrinkDomain___block_invoke(uint64_t a1)
           [WFWeatherStoreCache _concurrentQueue_barrier_shrinkDomain:];
         }
 
-        [(NSMutableSet *)self->_dirtyCacheDomains addObject:v4];
+        [(NSMutableSet *)self->_dirtyCacheDomains addObject:domainCopy];
       }
     }
 
@@ -899,30 +899,30 @@ void __37__WFWeatherStoreCache__shrinkDomain___block_invoke(uint64_t a1)
   }
 }
 
-- (BOOL)_loadDomain:(id)a3
+- (BOOL)_loadDomain:(id)domain
 {
-  v4 = a3;
+  domainCopy = domain;
   v13 = 0;
   v14 = &v13;
   v15 = 0x2020000000;
   v16 = 0;
   objc_initWeak(&location, self);
-  v5 = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
+  cacheConcurrentQueue = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
   v8[0] = MEMORY[0x277D85DD0];
   v8[1] = 3221225472;
   v8[2] = __35__WFWeatherStoreCache__loadDomain___block_invoke;
   v8[3] = &unk_279E6DB10;
   v10 = &v13;
   objc_copyWeak(&v11, &location);
-  v9 = v4;
-  v6 = v4;
-  dispatch_barrier_sync(v5, v8);
+  v9 = domainCopy;
+  v6 = domainCopy;
+  dispatch_barrier_sync(cacheConcurrentQueue, v8);
 
-  LOBYTE(v5) = *(v14 + 24);
+  LOBYTE(cacheConcurrentQueue) = *(v14 + 24);
   objc_destroyWeak(&v11);
   objc_destroyWeak(&location);
   _Block_object_dispose(&v13, 8);
-  return v5;
+  return cacheConcurrentQueue;
 }
 
 void __35__WFWeatherStoreCache__loadDomain___block_invoke(uint64_t a1)
@@ -931,17 +931,17 @@ void __35__WFWeatherStoreCache__loadDomain___block_invoke(uint64_t a1)
   *(*(*(a1 + 40) + 8) + 24) = [WeakRetained _concurrentQueue_barrier_loadDomain:*(a1 + 32)];
 }
 
-- (BOOL)_concurrentQueue_barrier_loadDomain:(id)a3
+- (BOOL)_concurrentQueue_barrier_loadDomain:(id)domain
 {
-  v4 = a3;
-  if ([v4 length])
+  domainCopy = domain;
+  if ([domainCopy length])
   {
     v5 = [(WFWeatherStoreCache *)self URL];
-    v6 = [v5 URLByAppendingPathComponent:v4];
+    v6 = [v5 URLByAppendingPathComponent:domainCopy];
     v7 = [v6 URLByAppendingPathExtension:@"plist"];
-    v8 = [v7 path];
+    path = [v7 path];
 
-    v9 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:v8];
+    v9 = [MEMORY[0x277CBEA90] dataWithContentsOfFile:path];
     if (v9)
     {
       v10 = WFLogForCategory(5uLL);
@@ -965,31 +965,31 @@ void __35__WFWeatherStoreCache__loadDomain___block_invoke(uint64_t a1)
         if (v11)
         {
           v23 = [v11 objectForKeyedSubscript:@"Version"];
-          v24 = [v23 unsignedIntegerValue];
+          unsignedIntegerValue = [v23 unsignedIntegerValue];
 
-          if (v24 == 18)
+          if (unsignedIntegerValue == 18)
           {
             v20 = 0;
 LABEL_16:
-            v21 = [(WFWeatherStoreCache *)self cacheForDomain];
-            [v21 setObject:v11 forKeyedSubscript:v4];
+            cacheForDomain = [(WFWeatherStoreCache *)self cacheForDomain];
+            [cacheForDomain setObject:v11 forKeyedSubscript:domainCopy];
 
             goto LABEL_20;
           }
         }
 
 LABEL_13:
-        v15 = [MEMORY[0x277CBEB38] dictionary];
+        dictionary = [MEMORY[0x277CBEB38] dictionary];
 
-        [v15 setObject:&unk_288254598 forKeyedSubscript:@"Version"];
+        [dictionary setObject:&unk_288254598 forKeyedSubscript:@"Version"];
         v16 = objc_opt_new();
-        [v15 setObject:v16 forKeyedSubscript:@"values"];
+        [dictionary setObject:v16 forKeyedSubscript:@"values"];
 
         v17 = objc_opt_new();
-        [v15 setObject:v17 forKeyedSubscript:@"dates"];
+        [dictionary setObject:v17 forKeyedSubscript:@"dates"];
 
         v18 = objc_opt_new();
-        [v15 setObject:v18 forKeyedSubscript:@"WFWeatherStoreCacheRecordExpirationDate"];
+        [dictionary setObject:v18 forKeyedSubscript:@"WFWeatherStoreCacheRecordExpirationDate"];
 
         v19 = WFLogForCategory(5uLL);
         if (os_log_type_enabled(v19, OS_LOG_TYPE_DEBUG))
@@ -998,7 +998,7 @@ LABEL_13:
         }
 
         v20 = 1;
-        v11 = v15;
+        v11 = dictionary;
         goto LABEL_16;
       }
 
@@ -1036,23 +1036,23 @@ uint64_t __59__WFWeatherStoreCache__concurrentQueue_barrier_loadDomain___block_i
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_markDomainDirty:(id)a3
+- (void)_markDomainDirty:(id)dirty
 {
-  v4 = a3;
-  if (v4)
+  dirtyCopy = dirty;
+  if (dirtyCopy)
   {
     v9[0] = 0;
     v9[1] = v9;
     v9[2] = 0x3032000000;
     v9[3] = __Block_byref_object_copy_;
     v9[4] = __Block_byref_object_dispose_;
-    v10 = [(WFWeatherStoreCache *)self dirtyCacheDomains];
+    dirtyCacheDomains = [(WFWeatherStoreCache *)self dirtyCacheDomains];
     cacheConcurrentQueue = self->_cacheConcurrentQueue;
     v6[0] = MEMORY[0x277D85DD0];
     v6[1] = 3221225472;
     v6[2] = __40__WFWeatherStoreCache__markDomainDirty___block_invoke;
     v6[3] = &unk_279E6DB38;
-    v7 = v4;
+    v7 = dirtyCopy;
     v8 = v9;
     dispatch_barrier_async(cacheConcurrentQueue, v6);
 
@@ -1079,14 +1079,14 @@ uint64_t __40__WFWeatherStoreCache__markDomainDirty___block_invoke(uint64_t a1)
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
+  cacheConcurrentQueue = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __42__WFWeatherStoreCache__loadedCacheDomains__block_invoke;
   v6[3] = &unk_279E6DB60;
   v6[4] = self;
   v6[5] = &v7;
-  dispatch_sync(v3, v6);
+  dispatch_sync(cacheConcurrentQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1110,21 +1110,21 @@ void __42__WFWeatherStoreCache__loadedCacheDomains__block_invoke(uint64_t a1)
   v13[2] = 0x3032000000;
   v13[3] = __Block_byref_object_copy_;
   v13[4] = __Block_byref_object_dispose_;
-  v14 = [(WFWeatherStoreCache *)self dirtyCacheDomains];
+  dirtyCacheDomains = [(WFWeatherStoreCache *)self dirtyCacheDomains];
   v7 = 0;
   v8 = &v7;
   v9 = 0x3032000000;
   v10 = __Block_byref_object_copy_;
   v11 = __Block_byref_object_dispose_;
   v12 = 0;
-  v3 = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
+  cacheConcurrentQueue = [(WFWeatherStoreCache *)self cacheConcurrentQueue];
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __41__WFWeatherStoreCache__dirtyCacheDomains__block_invoke;
   v6[3] = &unk_279E6DB88;
   v6[4] = &v7;
   v6[5] = v13;
-  dispatch_sync(v3, v6);
+  dispatch_sync(cacheConcurrentQueue, v6);
 
   v4 = v8[5];
   _Block_object_dispose(&v7, 8);
@@ -1141,11 +1141,11 @@ uint64_t __41__WFWeatherStoreCache__dirtyCacheDomains__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (void)_ensureDomainIsLoaded:(id)a3
+- (void)_ensureDomainIsLoaded:(id)loaded
 {
-  v4 = a3;
-  v5 = [(WFWeatherStoreCache *)self _loadedCacheDomains];
-  if ([v5 containsObject:v4])
+  loadedCopy = loaded;
+  _loadedCacheDomains = [(WFWeatherStoreCache *)self _loadedCacheDomains];
+  if ([_loadedCacheDomains containsObject:loadedCopy])
   {
     v6 = WFLogForCategory(5uLL);
     if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
@@ -1156,7 +1156,7 @@ uint64_t __41__WFWeatherStoreCache__dirtyCacheDomains__block_invoke(uint64_t a1)
 
   else
   {
-    [(WFWeatherStoreCache *)self _loadDomain:v4];
+    [(WFWeatherStoreCache *)self _loadDomain:loadedCopy];
   }
 }
 
@@ -1166,13 +1166,13 @@ uint64_t __41__WFWeatherStoreCache__dirtyCacheDomains__block_invoke(uint64_t a1)
   [(WFWeatherStoreCache *)self _concurrentQueue_barrier_deleteOldDataFromCache:@"almanac_data" allowedStaleness:2628000];
   [(WFWeatherStoreCache *)self _concurrentQueue_barrier_deleteOldDataFromCache:@"historical_data" allowedStaleness:26280000];
   objc_initWeak(&location, self);
-  v3 = [(NSMutableDictionary *)self->_cacheForDomain allKeys];
+  allKeys = [(NSMutableDictionary *)self->_cacheForDomain allKeys];
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __70__WFWeatherStoreCache__concurrentQueue_barrier_deleteOldDataFromCache__block_invoke;
   v4[3] = &unk_279E6DBB0;
   objc_copyWeak(&v5, &location);
-  [v3 enumerateObjectsUsingBlock:v4];
+  [allKeys enumerateObjectsUsingBlock:v4];
 
   objc_destroyWeak(&v5);
   objc_destroyWeak(&location);
@@ -1185,30 +1185,30 @@ void __70__WFWeatherStoreCache__concurrentQueue_barrier_deleteOldDataFromCache__
   [WeakRetained _concurrentQueue_barrier_shrinkDomain:v3];
 }
 
-- (void)_concurrentQueue_barrier_deleteOldDataFromCache:(id)a3 allowedStaleness:(unint64_t)a4
+- (void)_concurrentQueue_barrier_deleteOldDataFromCache:(id)cache allowedStaleness:(unint64_t)staleness
 {
-  v6 = a3;
-  v7 = [(WFWeatherStoreCache *)self cacheForDomain];
-  v8 = [v7 objectForKeyedSubscript:v6];
+  cacheCopy = cache;
+  cacheForDomain = [(WFWeatherStoreCache *)self cacheForDomain];
+  v8 = [cacheForDomain objectForKeyedSubscript:cacheCopy];
 
   v9 = objc_opt_class();
   v12[0] = MEMORY[0x277D85DD0];
   v12[1] = 3221225472;
   v12[2] = __88__WFWeatherStoreCache__concurrentQueue_barrier_deleteOldDataFromCache_allowedStaleness___block_invoke;
   v12[3] = &__block_descriptor_40_e34_B32__0_8__NSDate_16___NSCoding__24l;
-  v12[4] = a4;
-  LODWORD(v7) = [v9 removeObjectsFromCache:v8 passingTest:v12];
-  v10 = WFLogForCategory(5uLL);
-  v11 = os_log_type_enabled(v10, OS_LOG_TYPE_DEBUG);
-  if (v7)
+  v12[4] = staleness;
+  LODWORD(cacheForDomain) = [v9 removeObjectsFromCache:v8 passingTest:v12];
+  dirtyCacheDomains = WFLogForCategory(5uLL);
+  v11 = os_log_type_enabled(dirtyCacheDomains, OS_LOG_TYPE_DEBUG);
+  if (cacheForDomain)
   {
     if (v11)
     {
       [WFWeatherStoreCache _concurrentQueue_barrier_deleteOldDataFromCache:allowedStaleness:];
     }
 
-    v10 = [(WFWeatherStoreCache *)self dirtyCacheDomains];
-    [v10 addObject:v6];
+    dirtyCacheDomains = [(WFWeatherStoreCache *)self dirtyCacheDomains];
+    [dirtyCacheDomains addObject:cacheCopy];
   }
 
   else if (v11)
@@ -1231,24 +1231,24 @@ BOOL __88__WFWeatherStoreCache__concurrentQueue_barrier_deleteOldDataFromCache_a
   return result;
 }
 
-- (void)_concurrentQueue_barrier_removeObjectWithinDomain:(id)a3 forKey:(id)a4
+- (void)_concurrentQueue_barrier_removeObjectWithinDomain:(id)domain forKey:(id)key
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(WFWeatherStoreCache *)self cacheForDomain];
-  v9 = [v8 objectForKeyedSubscript:v6];
+  domainCopy = domain;
+  keyCopy = key;
+  cacheForDomain = [(WFWeatherStoreCache *)self cacheForDomain];
+  v9 = [cacheForDomain objectForKeyedSubscript:domainCopy];
 
   v10 = [v9 objectForKeyedSubscript:@"values"];
   v11 = [v9 objectForKeyedSubscript:@"dates"];
-  [v11 removeObjectForKey:v7];
-  [v10 removeObjectForKey:v7];
+  [v11 removeObjectForKey:keyCopy];
+  [v10 removeObjectForKey:keyCopy];
   v12 = WFLogForCategory(5uLL);
   if (os_log_type_enabled(v12, OS_LOG_TYPE_DEBUG))
   {
     [WFWeatherStoreCache _concurrentQueue_barrier_removeObjectWithinDomain:forKey:];
   }
 
-  [(NSMutableSet *)self->_dirtyCacheDomains addObject:v6];
+  [(NSMutableSet *)self->_dirtyCacheDomains addObject:domainCopy];
 }
 
 void __65__WFWeatherStoreCache_cachedObjectWithinDomain_forKey_staleness___block_invoke_cold_1(void *a1, void *a2, NSObject *a3)

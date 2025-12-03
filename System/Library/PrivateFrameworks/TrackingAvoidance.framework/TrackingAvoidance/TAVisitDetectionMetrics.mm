@@ -1,27 +1,27 @@
 @interface TAVisitDetectionMetrics
-- (BOOL)isEqual:(id)a3;
-- (TAVisitDetectionMetrics)initWithCoder:(id)a3;
-- (TAVisitDetectionMetrics)initWithDistance:(double)a3 residualDistance:(double)a4 nSigma:(unint64_t)a5;
-- (void)encodeWithCoder:(id)a3;
+- (BOOL)isEqual:(id)equal;
+- (TAVisitDetectionMetrics)initWithCoder:(id)coder;
+- (TAVisitDetectionMetrics)initWithDistance:(double)distance residualDistance:(double)residualDistance nSigma:(unint64_t)sigma;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation TAVisitDetectionMetrics
 
-- (TAVisitDetectionMetrics)initWithDistance:(double)a3 residualDistance:(double)a4 nSigma:(unint64_t)a5
+- (TAVisitDetectionMetrics)initWithDistance:(double)distance residualDistance:(double)residualDistance nSigma:(unint64_t)sigma
 {
   v9.receiver = self;
   v9.super_class = TAVisitDetectionMetrics;
   result = [(TAVisitDetectionMetrics *)&v9 init];
-  result->_distanceToPreviousVisit = a3;
-  result->_residualDistanceToPreviousVisit = a4;
-  result->_nSigmaBetweenVisits = a5;
+  result->_distanceToPreviousVisit = distance;
+  result->_residualDistanceToPreviousVisit = residualDistance;
+  result->_nSigmaBetweenVisits = sigma;
   return result;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v13 = 1;
   }
@@ -31,14 +31,14 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
       [(TAVisitDetectionMetrics *)self distanceToPreviousVisit];
       v7 = v6;
       [(TAVisitDetectionMetrics *)v5 distanceToPreviousVisit];
       if (v7 == v8 && ([(TAVisitDetectionMetrics *)self residualDistanceToPreviousVisit], v10 = v9, [(TAVisitDetectionMetrics *)v5 residualDistanceToPreviousVisit], v10 == v11))
       {
-        v12 = [(TAVisitDetectionMetrics *)self nSigmaBetweenVisits];
-        v13 = v12 == [(TAVisitDetectionMetrics *)v5 nSigmaBetweenVisits];
+        nSigmaBetweenVisits = [(TAVisitDetectionMetrics *)self nSigmaBetweenVisits];
+        v13 = nSigmaBetweenVisits == [(TAVisitDetectionMetrics *)v5 nSigmaBetweenVisits];
       }
 
       else
@@ -56,25 +56,25 @@
   return v13;
 }
 
-- (TAVisitDetectionMetrics)initWithCoder:(id)a3
+- (TAVisitDetectionMetrics)initWithCoder:(id)coder
 {
-  v4 = a3;
-  [v4 decodeDoubleForKey:@"VDistancePrevVisit"];
+  coderCopy = coder;
+  [coderCopy decodeDoubleForKey:@"VDistancePrevVisit"];
   v6 = v5;
-  [v4 decodeDoubleForKey:@"VResidualDistance"];
+  [coderCopy decodeDoubleForKey:@"VResidualDistance"];
   v8 = v7;
-  v9 = [v4 decodeIntegerForKey:@"VNSigma"];
+  v9 = [coderCopy decodeIntegerForKey:@"VNSigma"];
 
   return [(TAVisitDetectionMetrics *)self initWithDistance:v9 residualDistance:v6 nSigma:v8];
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   distanceToPreviousVisit = self->_distanceToPreviousVisit;
-  v5 = a3;
-  [v5 encodeDouble:@"VDistancePrevVisit" forKey:distanceToPreviousVisit];
-  [v5 encodeDouble:@"VResidualDistance" forKey:self->_residualDistanceToPreviousVisit];
-  [v5 encodeInteger:self->_nSigmaBetweenVisits forKey:@"VNSigma"];
+  coderCopy = coder;
+  [coderCopy encodeDouble:@"VDistancePrevVisit" forKey:distanceToPreviousVisit];
+  [coderCopy encodeDouble:@"VResidualDistance" forKey:self->_residualDistanceToPreviousVisit];
+  [coderCopy encodeInteger:self->_nSigmaBetweenVisits forKey:@"VNSigma"];
 }
 
 @end

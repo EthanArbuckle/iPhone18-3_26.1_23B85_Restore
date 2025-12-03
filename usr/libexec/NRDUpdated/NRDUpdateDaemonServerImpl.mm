@@ -1,14 +1,14 @@
 @interface NRDUpdateDaemonServerImpl
 + (id)sharedInstance;
-- (BOOL)_isBrainRelaunchRequired:(id)a3;
-- (BOOL)isConnectionEntitled:(id)a3;
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4;
+- (BOOL)_isBrainRelaunchRequired:(id)required;
+- (BOOL)isConnectionEntitled:(id)entitled;
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection;
 - (NRDUpdateDaemonServerImpl)init;
-- (void)getNRDUpdateBrainEndpoint:(id)a3;
-- (void)requestExit:(int)a3 reason:(id)a4 relaunchError:(id)a5;
+- (void)getNRDUpdateBrainEndpoint:(id)endpoint;
+- (void)requestExit:(int)exit reason:(id)reason relaunchError:(id)error;
 - (void)runUntilExit;
-- (void)updateCompleted:(id)a3;
-- (void)updateHelper:(id)a3 callback:(id)a4;
+- (void)updateCompleted:(id)completed;
+- (void)updateHelper:(id)helper callback:(id)callback;
 @end
 
 @implementation NRDUpdateDaemonServerImpl
@@ -37,7 +37,7 @@ void __43__NRDUpdateDaemonServerImpl_sharedInstance__block_invoke(id a1)
 
 - (void)runUntilExit
 {
-  v3 = [(NRDUpdateDaemonServerImpl *)self allowBackgroundActivity];
+  allowBackgroundActivity = [(NRDUpdateDaemonServerImpl *)self allowBackgroundActivity];
   v4 = objc_autoreleasePoolPush();
   +[NSXPCListener enableTransactions];
   v5 = dispatch_queue_create("com.apple.NRDUpdated.connectionQueue", &_dispatch_queue_attr_concurrent);
@@ -57,7 +57,7 @@ void __43__NRDUpdateDaemonServerImpl_sharedInstance__block_invoke(id a1)
   v27[1] = 3221225472;
   v27[2] = __41__NRDUpdateDaemonServerImpl_runUntilExit__block_invoke;
   v27[3] = &unk_100018890;
-  v28 = v3;
+  v28 = allowBackgroundActivity;
   v27[4] = self;
   v11 = objc_retainBlock(v27);
   v24[0] = _NSConcreteStackBlock;
@@ -68,7 +68,7 @@ void __43__NRDUpdateDaemonServerImpl_sharedInstance__block_invoke(id a1)
   v25 = v12;
   v26 = @"com.apple.mobile.NRDUpdated-RecoveryOSUpdateBrain_download";
   [v9 setCheckInHandler:v24];
-  if (v3)
+  if (allowBackgroundActivity)
   {
     v20[0] = _NSConcreteStackBlock;
     v20[1] = 3221225472;
@@ -349,21 +349,21 @@ void __41__NRDUpdateDaemonServerImpl_runUntilExit__block_invoke_312(uint64_t a1)
   return v2;
 }
 
-- (void)updateHelper:(id)a3 callback:(id)a4
+- (void)updateHelper:(id)helper callback:(id)callback
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NRDUpdateDaemonServerImpl *)self updateQueue];
+  helperCopy = helper;
+  callbackCopy = callback;
+  updateQueue = [(NRDUpdateDaemonServerImpl *)self updateQueue];
   block[0] = _NSConcreteStackBlock;
   block[1] = 3221225472;
   block[2] = __51__NRDUpdateDaemonServerImpl_updateHelper_callback___block_invoke;
   block[3] = &unk_100018930;
-  v12 = v6;
-  v13 = v7;
+  v12 = helperCopy;
+  v13 = callbackCopy;
   block[4] = self;
-  v9 = v6;
-  v10 = v7;
-  dispatch_async(v8, block);
+  v9 = helperCopy;
+  v10 = callbackCopy;
+  dispatch_async(updateQueue, block);
 }
 
 void __51__NRDUpdateDaemonServerImpl_updateHelper_callback___block_invoke(uint64_t a1)
@@ -390,23 +390,23 @@ void __51__NRDUpdateDaemonServerImpl_updateHelper_callback___block_invoke(uint64
   }
 }
 
-- (BOOL)_isBrainRelaunchRequired:(id)a3
+- (BOOL)_isBrainRelaunchRequired:(id)required
 {
-  v3 = a3;
-  if (!v3)
+  requiredCopy = required;
+  if (!requiredCopy)
   {
     return 0;
   }
 
-  v4 = v3;
+  v4 = requiredCopy;
   do
   {
-    v5 = [v4 domain];
-    if ([v5 isEqualToString:@"NRDUpdateErrorDomain"])
+    domain = [v4 domain];
+    if ([domain isEqualToString:@"NRDUpdateErrorDomain"])
     {
-      v6 = [v4 code];
+      code = [v4 code];
 
-      if (v6 == 112)
+      if (code == 112)
       {
         v9 = 1;
         goto LABEL_10;
@@ -417,8 +417,8 @@ void __51__NRDUpdateDaemonServerImpl_updateHelper_callback___block_invoke(uint64
     {
     }
 
-    v7 = [v4 userInfo];
-    v8 = [v7 objectForKeyedSubscript:NSUnderlyingErrorKey];
+    userInfo = [v4 userInfo];
+    v8 = [userInfo objectForKeyedSubscript:NSUnderlyingErrorKey];
 
     v4 = v8;
   }
@@ -430,13 +430,13 @@ LABEL_10:
   return v9;
 }
 
-- (void)updateCompleted:(id)a3
+- (void)updateCompleted:(id)completed
 {
-  v4 = a3;
-  [(NRDUpdateDaemonServerImpl *)self setCompletedWithError:v4];
+  completedCopy = completed;
+  [(NRDUpdateDaemonServerImpl *)self setCompletedWithError:completedCopy];
   v5 = nrdSharedLogger();
   v6 = v5;
-  if (v4)
+  if (completedCopy)
   {
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
     {
@@ -450,40 +450,40 @@ LABEL_10:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "update completed successfully", v7, 2u);
   }
 
-  if ([(NRDUpdateDaemonServerImpl *)self _isBrainRelaunchRequired:v4])
+  if ([(NRDUpdateDaemonServerImpl *)self _isBrainRelaunchRequired:completedCopy])
   {
-    [(NRDUpdateDaemonServerImpl *)self requestExit:0 reason:@"NRD brain has downloaded a new brain (via NSError)" relaunchError:v4];
+    [(NRDUpdateDaemonServerImpl *)self requestExit:0 reason:@"NRD brain has downloaded a new brain (via NSError)" relaunchError:completedCopy];
   }
 
   dispatch_semaphore_signal(self->_updateSemaphore);
 }
 
-- (void)requestExit:(int)a3 reason:(id)a4 relaunchError:(id)a5
+- (void)requestExit:(int)exit reason:(id)reason relaunchError:(id)error
 {
-  v8 = a4;
-  v9 = a5;
+  reasonCopy = reason;
+  errorCopy = error;
   v10 = nrdSharedLogger();
   if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138543362;
-    v17 = v8;
+    v17 = reasonCopy;
     _os_log_impl(&_mh_execute_header, v10, OS_LOG_TYPE_DEFAULT, "Daemon exit requested for reason: %{public}@", buf, 0xCu);
   }
 
-  if (v9)
+  if (errorCopy)
   {
-    [(NRDUpdateDaemonServerImpl *)self setNeedsRelaunchError:v9];
+    [(NRDUpdateDaemonServerImpl *)self setNeedsRelaunchError:errorCopy];
   }
 
-  v11 = [(NRDUpdateDaemonServerImpl *)self updateQueue];
+  updateQueue = [(NRDUpdateDaemonServerImpl *)self updateQueue];
   v13[0] = _NSConcreteStackBlock;
   v13[1] = 3221225472;
   v13[2] = __62__NRDUpdateDaemonServerImpl_requestExit_reason_relaunchError___block_invoke;
   v13[3] = &unk_100018958;
-  v15 = a3;
-  v14 = v8;
-  v12 = v8;
-  dispatch_async(v11, v13);
+  exitCopy = exit;
+  v14 = reasonCopy;
+  v12 = reasonCopy;
+  dispatch_async(updateQueue, v13);
 }
 
 void __62__NRDUpdateDaemonServerImpl_requestExit_reason_relaunchError___block_invoke(uint64_t a1)
@@ -504,12 +504,12 @@ void __62__NRDUpdateDaemonServerImpl_requestExit_reason_relaunchError___block_in
   exit(*(a1 + 40));
 }
 
-- (void)getNRDUpdateBrainEndpoint:(id)a3
+- (void)getNRDUpdateBrainEndpoint:(id)endpoint
 {
-  v4 = a3;
-  v5 = [(NRDUpdateDaemonServerImpl *)self core];
+  endpointCopy = endpoint;
+  core = [(NRDUpdateDaemonServerImpl *)self core];
 
-  if (!v5)
+  if (!core)
   {
     v15 = NSDebugDescriptionErrorKey;
     v16 = @"core is not initialized";
@@ -517,15 +517,15 @@ void __62__NRDUpdateDaemonServerImpl_requestExit_reason_relaunchError___block_in
     v11 = 604;
 LABEL_6:
     v12 = [NSError errorWithDomain:@"NRDUpdatedDomain" code:v11 userInfo:v10];
-    v4[2](v4, 0, v12);
+    endpointCopy[2](endpointCopy, 0, v12);
 
     goto LABEL_7;
   }
 
-  v6 = [(NRDUpdateDaemonServerImpl *)self core];
-  v7 = [v6 runningBrain];
+  core2 = [(NRDUpdateDaemonServerImpl *)self core];
+  runningBrain = [core2 runningBrain];
 
-  if (!v7)
+  if (!runningBrain)
   {
     v13 = NSDebugDescriptionErrorKey;
     v14 = @"no running brain";
@@ -534,16 +534,16 @@ LABEL_6:
     goto LABEL_6;
   }
 
-  v8 = [(NRDUpdateDaemonServerImpl *)self core];
-  v9 = [v8 runningBrain];
-  [v9 getListenerEndpoint:v4];
+  core3 = [(NRDUpdateDaemonServerImpl *)self core];
+  runningBrain2 = [core3 runningBrain];
+  [runningBrain2 getListenerEndpoint:endpointCopy];
 
 LABEL_7:
 }
 
-- (BOOL)isConnectionEntitled:(id)a3
+- (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.private.allow-NRDUpdated"];
+  v3 = [entitled valueForEntitlement:@"com.apple.private.allow-NRDUpdated"];
   if (!v3)
   {
     v5 = nrdSharedLogger();
@@ -587,9 +587,9 @@ LABEL_12:
   return v4;
 }
 
-- (BOOL)listener:(id)a3 shouldAcceptNewConnection:(id)a4
+- (BOOL)listener:(id)listener shouldAcceptNewConnection:(id)connection
 {
-  v5 = a4;
+  connectionCopy = connection;
   v6 = nrdSharedLogger();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
@@ -597,16 +597,16 @@ LABEL_12:
     _os_log_impl(&_mh_execute_header, v6, OS_LOG_TYPE_DEFAULT, "shouldAcceptNewConnection", buf, 2u);
   }
 
-  v7 = [(NRDUpdateDaemonServerImpl *)self isConnectionEntitled:v5];
+  v7 = [(NRDUpdateDaemonServerImpl *)self isConnectionEntitled:connectionCopy];
   if (v7)
   {
-    [v5 _setQueue:__connectionQueue];
-    [v5 setInterruptionHandler:&__block_literal_global_337];
-    [v5 setInvalidationHandler:&__block_literal_global_340];
+    [connectionCopy _setQueue:__connectionQueue];
+    [connectionCopy setInterruptionHandler:&__block_literal_global_337];
+    [connectionCopy setInvalidationHandler:&__block_literal_global_340];
     v8 = [NSXPCInterface interfaceWithProtocol:&OBJC_PROTOCOL___NRDUpdatedProtocol];
-    [v5 setExportedInterface:v8];
-    [v5 setExportedObject:self];
-    [v5 resume];
+    [connectionCopy setExportedInterface:v8];
+    [connectionCopy setExportedObject:self];
+    [connectionCopy resume];
     v9 = nrdSharedLogger();
     if (os_log_type_enabled(v9, OS_LOG_TYPE_DEFAULT))
     {
@@ -623,7 +623,7 @@ LABEL_12:
       [NRDUpdateDaemonServerImpl listener:shouldAcceptNewConnection:];
     }
 
-    [v5 invalidate];
+    [connectionCopy invalidate];
   }
 
   return v7;

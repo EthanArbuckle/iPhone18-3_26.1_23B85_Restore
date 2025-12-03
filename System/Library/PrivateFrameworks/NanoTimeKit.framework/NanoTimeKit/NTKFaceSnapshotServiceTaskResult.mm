@@ -1,37 +1,37 @@
 @interface NTKFaceSnapshotServiceTaskResult
-+ (id)rootTaskNamed:(id)a3;
-- (BOOL)_lock_finishWithError:(id *)a3;
-- (BOOL)_lock_isEqualToFaceSnapshotServiceTaskResult:(id)a3;
-- (BOOL)finishWithError:(id *)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToFaceSnapshotServiceTaskResult:(id)a3;
-- (NTKFaceSnapshotServiceTaskResult)initWithCoder:(id)a3;
-- (NTKFaceSnapshotServiceTaskResult)initWithName:(id)a3 startDate:(id)a4;
-- (id)_lock_childTaskNamed:(id)a3 error:(id *)a4;
-- (id)_lock_copyWithZone:(_NSZone *)a3;
-- (id)_prettyDescriptionWithPrefix:(id)a3;
-- (id)childTaskNamed:(id)a3 error:(id *)a4;
-- (id)copyWithZone:(_NSZone *)a3;
-- (void)encodeWithCoder:(id)a3;
++ (id)rootTaskNamed:(id)named;
+- (BOOL)_lock_finishWithError:(id *)error;
+- (BOOL)_lock_isEqualToFaceSnapshotServiceTaskResult:(id)result;
+- (BOOL)finishWithError:(id *)error;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToFaceSnapshotServiceTaskResult:(id)result;
+- (NTKFaceSnapshotServiceTaskResult)initWithCoder:(id)coder;
+- (NTKFaceSnapshotServiceTaskResult)initWithName:(id)name startDate:(id)date;
+- (id)_lock_childTaskNamed:(id)named error:(id *)error;
+- (id)_lock_copyWithZone:(_NSZone *)zone;
+- (id)_prettyDescriptionWithPrefix:(id)prefix;
+- (id)childTaskNamed:(id)named error:(id *)error;
+- (id)copyWithZone:(_NSZone *)zone;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation NTKFaceSnapshotServiceTaskResult
 
-+ (id)rootTaskNamed:(id)a3
++ (id)rootTaskNamed:(id)named
 {
   v4 = MEMORY[0x277CBEAA8];
-  v5 = a3;
-  v6 = [v4 date];
-  v7 = [[a1 alloc] initWithName:v5 startDate:v6];
+  namedCopy = named;
+  date = [v4 date];
+  v7 = [[self alloc] initWithName:namedCopy startDate:date];
 
   return v7;
 }
 
-- (NTKFaceSnapshotServiceTaskResult)initWithName:(id)a3 startDate:(id)a4
+- (NTKFaceSnapshotServiceTaskResult)initWithName:(id)name startDate:(id)date
 {
-  v6 = a3;
-  v7 = a4;
-  if (!v6)
+  nameCopy = name;
+  dateCopy = date;
+  if (!nameCopy)
   {
     v8 = [MEMORY[0x277CBEAD8] exceptionWithName:@"NilNameString" reason:@"name is nil" userInfo:0];
     [v8 raise];
@@ -44,11 +44,11 @@
   if (v9)
   {
     v9->_lock._os_unfair_lock_opaque = 0;
-    v11 = [v6 copy];
+    v11 = [nameCopy copy];
     name = v10->_name;
     v10->_name = v11;
 
-    v13 = [v7 copy];
+    v13 = [dateCopy copy];
     startDate = v10->_startDate;
     v10->_startDate = v13;
 
@@ -59,41 +59,41 @@
   return v10;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v6 = v4 && (v5 = objc_opt_class(), [v5 isEqual:objc_opt_class()]) && -[NTKFaceSnapshotServiceTaskResult isEqualToFaceSnapshotServiceTaskResult:](self, "isEqualToFaceSnapshotServiceTaskResult:", v4);
+  equalCopy = equal;
+  v6 = equalCopy && (v5 = objc_opt_class(), [v5 isEqual:objc_opt_class()]) && -[NTKFaceSnapshotServiceTaskResult isEqualToFaceSnapshotServiceTaskResult:](self, "isEqualToFaceSnapshotServiceTaskResult:", equalCopy);
 
   return v6;
 }
 
-- (id)childTaskNamed:(id)a3 error:(id *)a4
+- (id)childTaskNamed:(id)named error:(id *)error
 {
-  v6 = a3;
+  namedCopy = named;
   os_unfair_lock_lock(&self->_lock);
-  v7 = [(NTKFaceSnapshotServiceTaskResult *)self _lock_childTaskNamed:v6 error:a4];
+  v7 = [(NTKFaceSnapshotServiceTaskResult *)self _lock_childTaskNamed:namedCopy error:error];
 
   os_unfair_lock_unlock(&self->_lock);
 
   return v7;
 }
 
-- (BOOL)finishWithError:(id *)a3
+- (BOOL)finishWithError:(id *)error
 {
   os_unfair_lock_lock(&self->_lock);
-  LOBYTE(a3) = [(NTKFaceSnapshotServiceTaskResult *)self _lock_finishWithError:a3];
+  LOBYTE(error) = [(NTKFaceSnapshotServiceTaskResult *)self _lock_finishWithError:error];
   os_unfair_lock_unlock(&self->_lock);
-  return a3;
+  return error;
 }
 
-- (id)_lock_childTaskNamed:(id)a3 error:(id *)a4
+- (id)_lock_childTaskNamed:(id)named error:(id *)error
 {
-  v6 = a3;
+  namedCopy = named;
   os_unfair_lock_assert_owner(&self->_lock);
-  v7 = [MEMORY[0x277CBEAA8] date];
-  if (v6)
+  date = [MEMORY[0x277CBEAA8] date];
+  if (namedCopy)
   {
-    v8 = [[NTKFaceSnapshotServiceTaskResult alloc] initWithName:v6 startDate:v7];
+    v8 = [[NTKFaceSnapshotServiceTaskResult alloc] initWithName:namedCopy startDate:date];
     v9 = [(NSArray *)self->_subTaskResults mutableCopy];
     [v9 addObject:v8];
     [(NTKFaceSnapshotServiceTaskResult *)self setSubTaskResults:v9];
@@ -102,11 +102,11 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (a4)
+  if (error)
   {
     v9 = [MEMORY[0x277CCA9B8] errorWithDomain:@"FaceSnapshotServiceMetricsErrorDomain" code:111 userInfo:0];
     v8 = 0;
-    *a4 = v9;
+    *error = v9;
     goto LABEL_5;
   }
 
@@ -116,17 +116,17 @@ LABEL_6:
   return v8;
 }
 
-- (BOOL)_lock_finishWithError:(id *)a3
+- (BOOL)_lock_finishWithError:(id *)error
 {
   v23 = *MEMORY[0x277D85DE8];
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(NTKFaceSnapshotServiceTaskResult *)self endDate];
-  if (v5)
+  endDate = [(NTKFaceSnapshotServiceTaskResult *)self endDate];
+  if (endDate)
   {
-    if (a3)
+    if (error)
     {
       v6 = [MEMORY[0x277CCA9B8] errorWithDomain:@"FaceSnapshotServiceMetricsErrorDomain" code:800 userInfo:0];
-      *a3 = v6;
+      *error = v6;
     }
 
     v7 = 0;
@@ -154,9 +154,9 @@ LABEL_7:
         }
 
         v13 = *(*(&v18 + 1) + 8 * v12);
-        v14 = [v13 endDate];
+        endDate2 = [v13 endDate];
 
-        if (!v14)
+        if (!endDate2)
         {
           break;
         }
@@ -180,11 +180,11 @@ LABEL_7:
         goto LABEL_17;
       }
 
-      if (a3)
+      if (error)
       {
-        v16 = [MEMORY[0x277CCA9B8] errorWithDomain:@"FaceSnapshotServiceMetricsErrorDomain" code:810 userInfo:0];
+        date = [MEMORY[0x277CCA9B8] errorWithDomain:@"FaceSnapshotServiceMetricsErrorDomain" code:810 userInfo:0];
         v7 = 0;
-        *a3 = v16;
+        *error = date;
         goto LABEL_18;
       }
 
@@ -196,8 +196,8 @@ LABEL_7:
 LABEL_13:
 
 LABEL_17:
-      v16 = [MEMORY[0x277CBEAA8] date];
-      [(NTKFaceSnapshotServiceTaskResult *)self setEndDate:v16];
+      date = [MEMORY[0x277CBEAA8] date];
+      [(NTKFaceSnapshotServiceTaskResult *)self setEndDate:date];
       v15 = 0;
       v7 = 1;
 LABEL_18:
@@ -207,27 +207,27 @@ LABEL_18:
   return v7;
 }
 
-- (id)_prettyDescriptionWithPrefix:(id)a3
+- (id)_prettyDescriptionWithPrefix:(id)prefix
 {
   v32 = *MEMORY[0x277D85DE8];
-  v4 = a3;
-  v5 = [(NTKFaceSnapshotServiceTaskResult *)self name];
-  v6 = [(NTKFaceSnapshotServiceTaskResult *)self startDate];
-  v7 = [(NTKFaceSnapshotServiceTaskResult *)self endDate];
-  v8 = [(NTKFaceSnapshotServiceTaskResult *)self endDate];
+  prefixCopy = prefix;
+  name = [(NTKFaceSnapshotServiceTaskResult *)self name];
+  startDate = [(NTKFaceSnapshotServiceTaskResult *)self startDate];
+  endDate = [(NTKFaceSnapshotServiceTaskResult *)self endDate];
+  endDate2 = [(NTKFaceSnapshotServiceTaskResult *)self endDate];
 
-  v25 = v6;
-  v26 = v5;
-  v24 = v7;
-  if (v8)
+  v25 = startDate;
+  v26 = name;
+  v24 = endDate;
+  if (endDate2)
   {
-    [v7 timeIntervalSinceDate:v6];
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@ Task %@: Start: %@, Finished: %@, Length: %.03f", v4, v5, v6, v7, v9];
+    [endDate timeIntervalSinceDate:startDate];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@ Task %@: Start: %@, Finished: %@, Length: %.03f", prefixCopy, name, startDate, endDate, v9];
   }
 
   else
   {
-    [MEMORY[0x277CCACA8] stringWithFormat:@"%@ Task %@: Start: %@ (Running)", v4, v5, v6, v21, v22];
+    [MEMORY[0x277CCACA8] stringWithFormat:@"%@ Task %@: Start: %@ (Running)", prefixCopy, name, startDate, v21, v22];
   }
   v23 = ;
   v10 = [MEMORY[0x277CBEB18] arrayWithObject:v23];
@@ -251,8 +251,8 @@ LABEL_18:
         }
 
         v16 = *(*(&v27 + 1) + 8 * i);
-        v17 = [MEMORY[0x277CCACA8] stringWithFormat:@"    %@", v4];
-        v18 = [v16 _prettyDescriptionWithPrefix:v17];
+        prefixCopy = [MEMORY[0x277CCACA8] stringWithFormat:@"    %@", prefixCopy];
+        v18 = [v16 _prettyDescriptionWithPrefix:prefixCopy];
 
         [v10 addObject:v18];
       }
@@ -268,9 +268,9 @@ LABEL_18:
   return v19;
 }
 
-- (BOOL)isEqualToFaceSnapshotServiceTaskResult:(id)a3
+- (BOOL)isEqualToFaceSnapshotServiceTaskResult:(id)result
 {
-  v4 = [a3 copy];
+  v4 = [result copy];
   os_unfair_lock_lock(&self->_lock);
   v5 = [(NTKFaceSnapshotServiceTaskResult *)self _lock_isEqualToFaceSnapshotServiceTaskResult:v4];
   os_unfair_lock_unlock(&self->_lock);
@@ -278,37 +278,37 @@ LABEL_18:
   return v5;
 }
 
-- (BOOL)_lock_isEqualToFaceSnapshotServiceTaskResult:(id)a3
+- (BOOL)_lock_isEqualToFaceSnapshotServiceTaskResult:(id)result
 {
-  v4 = a3;
+  resultCopy = result;
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [v4 name];
-  v6 = [v4 startDate];
-  v7 = [v4 endDate];
-  v8 = [v4 subTaskResults];
+  name = [resultCopy name];
+  startDate = [resultCopy startDate];
+  endDate = [resultCopy endDate];
+  subTaskResults = [resultCopy subTaskResults];
 
-  v9 = [(NTKFaceSnapshotServiceTaskResult *)self name];
-  v10 = v9;
-  if (v9 == v5 || [v9 isEqual:v5])
+  name2 = [(NTKFaceSnapshotServiceTaskResult *)self name];
+  v10 = name2;
+  if (name2 == name || [name2 isEqual:name])
   {
-    v11 = [(NTKFaceSnapshotServiceTaskResult *)self startDate];
-    v12 = v11;
-    if (v11 == v6 || [v11 isEqual:v6])
+    startDate2 = [(NTKFaceSnapshotServiceTaskResult *)self startDate];
+    v12 = startDate2;
+    if (startDate2 == startDate || [startDate2 isEqual:startDate])
     {
-      v13 = [(NTKFaceSnapshotServiceTaskResult *)self endDate];
-      v14 = v13;
-      if (v13 == v7 || [v13 isEqual:v7])
+      endDate2 = [(NTKFaceSnapshotServiceTaskResult *)self endDate];
+      v14 = endDate2;
+      if (endDate2 == endDate || [endDate2 isEqual:endDate])
       {
-        v15 = [(NTKFaceSnapshotServiceTaskResult *)self subTaskResults];
-        v16 = v15;
-        if (v15 == v8)
+        subTaskResults2 = [(NTKFaceSnapshotServiceTaskResult *)self subTaskResults];
+        v16 = subTaskResults2;
+        if (subTaskResults2 == subTaskResults)
         {
           v17 = 1;
         }
 
         else
         {
-          v17 = [v15 isEqual:v8];
+          v17 = [subTaskResults2 isEqual:subTaskResults];
         }
       }
 
@@ -332,48 +332,48 @@ LABEL_18:
   return v17;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_lock(&self->_lock);
-  v5 = [(NTKFaceSnapshotServiceTaskResult *)self _lock_copyWithZone:a3];
+  v5 = [(NTKFaceSnapshotServiceTaskResult *)self _lock_copyWithZone:zone];
   os_unfair_lock_unlock(&self->_lock);
   return v5;
 }
 
-- (id)_lock_copyWithZone:(_NSZone *)a3
+- (id)_lock_copyWithZone:(_NSZone *)zone
 {
   os_unfair_lock_assert_owner(&self->_lock);
-  v5 = [(NTKFaceSnapshotServiceTaskResult *)self name];
-  v6 = [(NTKFaceSnapshotServiceTaskResult *)self startDate];
-  v7 = [(NTKFaceSnapshotServiceTaskResult *)self endDate];
-  v8 = [(NTKFaceSnapshotServiceTaskResult *)self subTaskResults];
-  v9 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "initWithName:startDate:", v5, v6}];
-  [v9 setSubTaskResults:v8];
-  [v9 setEndDate:v7];
+  name = [(NTKFaceSnapshotServiceTaskResult *)self name];
+  startDate = [(NTKFaceSnapshotServiceTaskResult *)self startDate];
+  endDate = [(NTKFaceSnapshotServiceTaskResult *)self endDate];
+  subTaskResults = [(NTKFaceSnapshotServiceTaskResult *)self subTaskResults];
+  v9 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "initWithName:startDate:", name, startDate}];
+  [v9 setSubTaskResults:subTaskResults];
+  [v9 setEndDate:endDate];
 
   return v9;
 }
 
-- (NTKFaceSnapshotServiceTaskResult)initWithCoder:(id)a3
+- (NTKFaceSnapshotServiceTaskResult)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v5 = objc_opt_class();
   v6 = NSStringFromSelector(sel_name);
-  v7 = [v4 decodeObjectOfClass:v5 forKey:v6];
+  v7 = [coderCopy decodeObjectOfClass:v5 forKey:v6];
 
   v8 = objc_opt_class();
   v9 = NSStringFromSelector(sel_startDate);
-  v10 = [v4 decodeObjectOfClass:v8 forKey:v9];
+  v10 = [coderCopy decodeObjectOfClass:v8 forKey:v9];
 
   v11 = objc_opt_class();
   v12 = NSStringFromSelector(sel_endDate);
-  v13 = [v4 decodeObjectOfClass:v11 forKey:v12];
+  v13 = [coderCopy decodeObjectOfClass:v11 forKey:v12];
 
   v14 = MEMORY[0x277CBEB98];
   v15 = objc_opt_class();
   v16 = [v14 setWithObjects:{v15, objc_opt_class(), 0}];
   v17 = NSStringFromSelector(sel_subTaskResults);
-  v18 = [v4 decodeObjectOfClasses:v16 forKey:v17];
+  v18 = [coderCopy decodeObjectOfClasses:v16 forKey:v17];
 
   v19 = [(NTKFaceSnapshotServiceTaskResult *)self initWithName:v7 startDate:v10];
   v20 = v19;
@@ -386,25 +386,25 @@ LABEL_18:
   return v20;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   subTaskResults = self->_subTaskResults;
-  v5 = a3;
+  coderCopy = coder;
   v6 = [(NSArray *)subTaskResults copy];
   v7 = NSStringFromSelector(sel_subTaskResults);
-  [v5 encodeObject:v6 forKey:v7];
+  [coderCopy encodeObject:v6 forKey:v7];
 
   v8 = [(NSDate *)self->_startDate copy];
   v9 = NSStringFromSelector(sel_startDate);
-  [v5 encodeObject:v8 forKey:v9];
+  [coderCopy encodeObject:v8 forKey:v9];
 
   v10 = [(NSDate *)self->_endDate copy];
   v11 = NSStringFromSelector(sel_endDate);
-  [v5 encodeObject:v10 forKey:v11];
+  [coderCopy encodeObject:v10 forKey:v11];
 
   v13 = [(NSString *)self->_name copy];
   v12 = NSStringFromSelector(sel_name);
-  [v5 encodeObject:v13 forKey:v12];
+  [coderCopy encodeObject:v13 forKey:v12];
 }
 
 @end

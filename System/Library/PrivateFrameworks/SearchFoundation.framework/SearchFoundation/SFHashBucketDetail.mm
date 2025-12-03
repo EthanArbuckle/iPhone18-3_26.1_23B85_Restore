@@ -1,42 +1,42 @@
 @interface SFHashBucketDetail
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSData)jsonData;
 - (NSDictionary)dictionaryRepresentation;
-- (SFHashBucketDetail)initWithCoder:(id)a3;
-- (SFHashBucketDetail)initWithProtobuf:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SFHashBucketDetail)initWithCoder:(id)coder;
+- (SFHashBucketDetail)initWithProtobuf:(id)protobuf;
+- (id)copyWithZone:(_NSZone *)zone;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SFHashBucketDetail
 
 - (unint64_t)hash
 {
-  v3 = [(SFHashBucketDetail *)self hash_prefix];
-  v4 = [v3 hash];
-  v5 = [(SFHashBucketDetail *)self hash_details];
-  v6 = [v5 hash];
+  hash_prefix = [(SFHashBucketDetail *)self hash_prefix];
+  v4 = [hash_prefix hash];
+  hash_details = [(SFHashBucketDetail *)self hash_details];
+  v6 = [hash_details hash];
 
   return v6 ^ v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v5 = a3;
-  if (self == v5)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v11 = 1;
   }
 
   else
   {
-    if ([(SFHashBucketDetail *)v5 isMemberOfClass:objc_opt_class()])
+    if ([(SFHashBucketDetail *)equalCopy isMemberOfClass:objc_opt_class()])
     {
-      v6 = v5;
-      v7 = [(SFHashBucketDetail *)self hash_prefix];
-      v8 = [(SFHashBucketDetail *)v6 hash_prefix];
-      if ((v7 != 0) == (v8 == 0))
+      v6 = equalCopy;
+      hash_prefix = [(SFHashBucketDetail *)self hash_prefix];
+      hash_prefix2 = [(SFHashBucketDetail *)v6 hash_prefix];
+      if ((hash_prefix != 0) == (hash_prefix2 == 0))
       {
         v11 = 0;
 LABEL_19:
@@ -44,12 +44,12 @@ LABEL_19:
         goto LABEL_20;
       }
 
-      v9 = [(SFHashBucketDetail *)self hash_prefix];
-      if (v9)
+      hash_prefix3 = [(SFHashBucketDetail *)self hash_prefix];
+      if (hash_prefix3)
       {
-        v3 = [(SFHashBucketDetail *)self hash_prefix];
-        v10 = [(SFHashBucketDetail *)v6 hash_prefix];
-        if (![v3 isEqual:v10])
+        hash_prefix4 = [(SFHashBucketDetail *)self hash_prefix];
+        hash_prefix5 = [(SFHashBucketDetail *)v6 hash_prefix];
+        if (![hash_prefix4 isEqual:hash_prefix5])
         {
           v11 = 0;
 LABEL_17:
@@ -58,13 +58,13 @@ LABEL_18:
           goto LABEL_19;
         }
 
-        v21 = v10;
+        v21 = hash_prefix5;
       }
 
-      v12 = [(SFHashBucketDetail *)self hash_details];
-      v13 = [(SFHashBucketDetail *)v6 hash_details];
-      v14 = v13;
-      if ((v12 != 0) == (v13 == 0))
+      hash_details = [(SFHashBucketDetail *)self hash_details];
+      hash_details2 = [(SFHashBucketDetail *)v6 hash_details];
+      v14 = hash_details2;
+      if ((hash_details != 0) == (hash_details2 == 0))
       {
 
         v11 = 0;
@@ -72,16 +72,16 @@ LABEL_18:
 
       else
       {
-        v15 = [(SFHashBucketDetail *)self hash_details];
-        if (v15)
+        hash_details3 = [(SFHashBucketDetail *)self hash_details];
+        if (hash_details3)
         {
-          v16 = v15;
-          v19 = [(SFHashBucketDetail *)self hash_details];
+          v16 = hash_details3;
+          hash_details4 = [(SFHashBucketDetail *)self hash_details];
           [(SFHashBucketDetail *)v6 hash_details];
-          v17 = v20 = v3;
-          v11 = [v19 isEqual:v17];
+          v17 = v20 = hash_prefix4;
+          v11 = [hash_details4 isEqual:v17];
 
-          v3 = v20;
+          hash_prefix4 = v20;
         }
 
         else
@@ -91,8 +91,8 @@ LABEL_18:
         }
       }
 
-      v10 = v21;
-      if (!v9)
+      hash_prefix5 = v21;
+      if (!hash_prefix3)
       {
         goto LABEL_18;
       }
@@ -108,15 +108,15 @@ LABEL_20:
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v5 = [(SFHashBucketDetail *)self hash_prefix];
-  v6 = [v5 copy];
+  v4 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  hash_prefix = [(SFHashBucketDetail *)self hash_prefix];
+  v6 = [hash_prefix copy];
   [v4 setHash_prefix:v6];
 
-  v7 = [(SFHashBucketDetail *)self hash_details];
-  v8 = [v7 copy];
+  hash_details = [(SFHashBucketDetail *)self hash_details];
+  v8 = [hash_details copy];
   [v4 setHash_details:v8];
 
   return v4;
@@ -125,31 +125,31 @@ LABEL_20:
 - (NSData)jsonData
 {
   v2 = [[_SFPBHashBucketDetail alloc] initWithFacade:self];
-  v3 = [(_SFPBHashBucketDetail *)v2 jsonData];
+  jsonData = [(_SFPBHashBucketDetail *)v2 jsonData];
 
-  return v3;
+  return jsonData;
 }
 
 - (NSDictionary)dictionaryRepresentation
 {
   v2 = [[_SFPBHashBucketDetail alloc] initWithFacade:self];
-  v3 = [(_SFPBHashBucketDetail *)v2 dictionaryRepresentation];
+  dictionaryRepresentation = [(_SFPBHashBucketDetail *)v2 dictionaryRepresentation];
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v6 = [[_SFPBHashBucketDetail alloc] initWithFacade:self];
-  v5 = [(_SFPBHashBucketDetail *)v6 data];
-  [v4 encodeObject:v5 forKey:@"_backingStore"];
+  data = [(_SFPBHashBucketDetail *)v6 data];
+  [coderCopy encodeObject:data forKey:@"_backingStore"];
 }
 
-- (SFHashBucketDetail)initWithCoder:(id)a3
+- (SFHashBucketDetail)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"_backingStore"];
 
   v6 = [[_SFPBHashBucketDetail alloc] initWithData:v5];
   v7 = [(SFHashBucketDetail *)self initWithProtobuf:v6];
@@ -157,25 +157,25 @@ LABEL_20:
   return v7;
 }
 
-- (SFHashBucketDetail)initWithProtobuf:(id)a3
+- (SFHashBucketDetail)initWithProtobuf:(id)protobuf
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  protobufCopy = protobuf;
   v23.receiver = self;
   v23.super_class = SFHashBucketDetail;
   v5 = [(SFHashBucketDetail *)&v23 init];
   if (v5)
   {
-    v6 = [v4 hash_prefix];
+    hash_prefix = [protobufCopy hash_prefix];
 
-    if (v6)
+    if (hash_prefix)
     {
-      v7 = [v4 hash_prefix];
-      [(SFHashBucketDetail *)v5 setHash_prefix:v7];
+      hash_prefix2 = [protobufCopy hash_prefix];
+      [(SFHashBucketDetail *)v5 setHash_prefix:hash_prefix2];
     }
 
-    v8 = [v4 hash_details];
-    if (v8)
+    hash_details = [protobufCopy hash_details];
+    if (hash_details)
     {
       v9 = objc_alloc_init(MEMORY[0x1E695DF70]);
     }
@@ -189,8 +189,8 @@ LABEL_20:
     v22 = 0u;
     v19 = 0u;
     v20 = 0u;
-    v10 = [v4 hash_details];
-    v11 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+    hash_details2 = [protobufCopy hash_details];
+    v11 = [hash_details2 countByEnumeratingWithState:&v19 objects:v24 count:16];
     if (v11)
     {
       v12 = v11;
@@ -201,7 +201,7 @@ LABEL_20:
         {
           if (*v20 != v13)
           {
-            objc_enumerationMutation(v10);
+            objc_enumerationMutation(hash_details2);
           }
 
           v15 = [[SFHashDetail alloc] initWithProtobuf:*(*(&v19 + 1) + 8 * i)];
@@ -211,7 +211,7 @@ LABEL_20:
           }
         }
 
-        v12 = [v10 countByEnumeratingWithState:&v19 objects:v24 count:16];
+        v12 = [hash_details2 countByEnumeratingWithState:&v19 objects:v24 count:16];
       }
 
       while (v12);

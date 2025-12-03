@@ -1,17 +1,17 @@
 @interface MusicKit_SoftLinking_MPCloudController
-+ (MusicKit_SoftLinking_MPCloudController)controllerWithUserIdentity:(id)a3;
++ (MusicKit_SoftLinking_MPCloudController)controllerWithUserIdentity:(id)identity;
 + (MusicKit_SoftLinking_MPCloudController)sharedCloudController;
 + (id)instanceManager;
-- (id)_initWithUnderlyingCloudController:(id)a3;
+- (id)_initWithUnderlyingCloudController:(id)controller;
 - (int64_t)cloudAddToPlaylistBehavior;
 - (int64_t)maximumAllowedPins;
-- (void)_handleCanShowCloudDownloadButtonsDidChangeNotification:(id)a3;
-- (void)_handleIsUpdateInProgressDidChangeNotificationName:(id)a3;
+- (void)_handleCanShowCloudDownloadButtonsDidChangeNotification:(id)notification;
+- (void)_handleIsUpdateInProgressDidChangeNotificationName:(id)name;
 - (void)dealloc;
-- (void)enableCloudLibraryWithCompletionHandler:(id)a3;
-- (void)resetInvitationURLForCollaborationWithPersistentID:(id)a3 completion:(id)a4;
-- (void)setCloudAddToPlaylistBehavior:(int64_t)a3 completionHandler:(id)a4;
-- (void)updateSharingMode:(int64_t)a3 onCollaborationWithPersistentID:(id)a4 completion:(id)a5;
+- (void)enableCloudLibraryWithCompletionHandler:(id)handler;
+- (void)resetInvitationURLForCollaborationWithPersistentID:(id)d completion:(id)completion;
+- (void)setCloudAddToPlaylistBehavior:(int64_t)behavior completionHandler:(id)handler;
+- (void)updateSharingMode:(int64_t)mode onCollaborationWithPersistentID:(id)d completion:(id)completion;
 @end
 
 @implementation MusicKit_SoftLinking_MPCloudController
@@ -40,31 +40,31 @@
   return v3;
 }
 
-+ (MusicKit_SoftLinking_MPCloudController)controllerWithUserIdentity:(id)a3
++ (MusicKit_SoftLinking_MPCloudController)controllerWithUserIdentity:(id)identity
 {
-  v4 = a3;
-  v5 = [a1 instanceManager];
-  v6 = [v5 sharedInstanceForKey:v4];
+  identityCopy = identity;
+  instanceManager = [self instanceManager];
+  v6 = [instanceManager sharedInstanceForKey:identityCopy];
 
   return v6;
 }
 
-- (id)_initWithUnderlyingCloudController:(id)a3
+- (id)_initWithUnderlyingCloudController:(id)controller
 {
-  v5 = a3;
+  controllerCopy = controller;
   v12.receiver = self;
   v12.super_class = MusicKit_SoftLinking_MPCloudController;
   v6 = [(MusicKit_SoftLinking_MPCloudController *)&v12 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_underlyingCloudController, a3);
-    v8 = [MEMORY[0x1E696AD88] defaultCenter];
+    objc_storeStrong(&v6->_underlyingCloudController, controller);
+    defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
     v9 = getMPCloudControllerCanShowCloudDownloadButtonsDidChangeNotification();
-    [v8 addObserver:v7 selector:sel__handleCanShowCloudDownloadButtonsDidChangeNotification_ name:v9 object:v7->_underlyingCloudController];
+    [defaultCenter addObserver:v7 selector:sel__handleCanShowCloudDownloadButtonsDidChangeNotification_ name:v9 object:v7->_underlyingCloudController];
 
     v10 = getMPCloudControllerIsUpdateInProgressDidChangeNotification();
-    [v8 addObserver:v7 selector:sel__handleIsUpdateInProgressDidChangeNotificationName_ name:v10 object:v7->_underlyingCloudController];
+    [defaultCenter addObserver:v7 selector:sel__handleIsUpdateInProgressDidChangeNotificationName_ name:v10 object:v7->_underlyingCloudController];
   }
 
   return v7;
@@ -72,12 +72,12 @@
 
 - (void)dealloc
 {
-  v3 = [MEMORY[0x1E696AD88] defaultCenter];
+  defaultCenter = [MEMORY[0x1E696AD88] defaultCenter];
   v4 = getMPCloudControllerCanShowCloudDownloadButtonsDidChangeNotification();
-  [v3 removeObserver:self name:v4 object:self->_underlyingCloudController];
+  [defaultCenter removeObserver:self name:v4 object:self->_underlyingCloudController];
 
   v5 = getMPCloudControllerIsUpdateInProgressDidChangeNotification();
-  [v3 removeObserver:self name:v5 object:self->_underlyingCloudController];
+  [defaultCenter removeObserver:self name:v5 object:self->_underlyingCloudController];
 
   v6.receiver = self;
   v6.super_class = MusicKit_SoftLinking_MPCloudController;
@@ -86,7 +86,7 @@
 
 - (int64_t)maximumAllowedPins
 {
-  v2 = [(MPCloudController *)self->_underlyingCloudController userIdentity];
+  userIdentity = [(MPCloudController *)self->_underlyingCloudController userIdentity];
   v8 = 0;
   v9 = &v8;
   v10 = 0x2020000000;
@@ -108,19 +108,19 @@
     _Unwind_Resume(v7);
   }
 
-  v5 = v3(v2);
+  v5 = v3(userIdentity);
 
   return v5;
 }
 
-- (void)setCloudAddToPlaylistBehavior:(int64_t)a3 completionHandler:(id)a4
+- (void)setCloudAddToPlaylistBehavior:(int64_t)behavior completionHandler:(id)handler
 {
-  if (a3 != 2)
+  if (behavior != 2)
   {
-    a3 = a3 == 1;
+    behavior = behavior == 1;
   }
 
-  [(MPCloudController *)self->_underlyingCloudController setCloudAddToPlaylistBehavior:a3 completionHandler:a4];
+  [(MPCloudController *)self->_underlyingCloudController setCloudAddToPlaylistBehavior:behavior completionHandler:handler];
 }
 
 - (int64_t)cloudAddToPlaylistBehavior
@@ -134,10 +134,10 @@
   return result;
 }
 
-- (void)enableCloudLibraryWithCompletionHandler:(id)a3
+- (void)enableCloudLibraryWithCompletionHandler:(id)handler
 {
   v21[2] = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  handlerCopy = handler;
   v15 = 0;
   v16 = &v15;
   v17 = 0x2020000000;
@@ -188,47 +188,47 @@ LABEL_8:
   v12 = v20;
   v13 = [v11 dictionaryWithObjects:v21 forKeys:&v19 count:2];
 
-  [(MPCloudController *)self->_underlyingCloudController enableCloudLibraryWithOptions:v13 completionHandler:v4];
+  [(MPCloudController *)self->_underlyingCloudController enableCloudLibraryWithOptions:v13 completionHandler:handlerCopy];
   v14 = *MEMORY[0x1E69E9840];
 }
 
-- (void)updateSharingMode:(int64_t)a3 onCollaborationWithPersistentID:(id)a4 completion:(id)a5
+- (void)updateSharingMode:(int64_t)mode onCollaborationWithPersistentID:(id)d completion:(id)completion
 {
   v8 = MEMORY[0x1E6977648];
-  v13 = a5;
-  v9 = a4;
-  v10 = [v8 _underlyingMediaSharingModeForSharingMode:a3];
+  completionCopy = completion;
+  dCopy = d;
+  v10 = [v8 _underlyingMediaSharingModeForSharingMode:mode];
   underlyingCloudController = self->_underlyingCloudController;
-  v12 = [v9 longLongValue];
+  longLongValue = [dCopy longLongValue];
 
-  [(MPCloudController *)underlyingCloudController updateSharingMode:v10 onCollaboratinWithPersistentID:v12 completion:v13];
+  [(MPCloudController *)underlyingCloudController updateSharingMode:v10 onCollaboratinWithPersistentID:longLongValue completion:completionCopy];
 }
 
-- (void)resetInvitationURLForCollaborationWithPersistentID:(id)a3 completion:(id)a4
+- (void)resetInvitationURLForCollaborationWithPersistentID:(id)d completion:(id)completion
 {
   underlyingCloudController = self->_underlyingCloudController;
-  v6 = a4;
-  -[MPCloudController resetInvitationURLForCollaborationWithPersistentID:completion:](underlyingCloudController, "resetInvitationURLForCollaborationWithPersistentID:completion:", [a3 longLongValue], v6);
+  completionCopy = completion;
+  -[MPCloudController resetInvitationURLForCollaborationWithPersistentID:completion:](underlyingCloudController, "resetInvitationURLForCollaborationWithPersistentID:completion:", [d longLongValue], completionCopy);
 }
 
-- (void)_handleCanShowCloudDownloadButtonsDidChangeNotification:(id)a3
+- (void)_handleCanShowCloudDownloadButtonsDidChangeNotification:(id)notification
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  v6 = [v5 userInfo];
+  notificationCopy = notification;
+  defaultCenter = [v4 defaultCenter];
+  userInfo = [notificationCopy userInfo];
 
-  [v7 postNotificationName:@"MusicKit_SoftLinking_MPCloudControllerCanShowCloudDownloadButtonsDidChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"MusicKit_SoftLinking_MPCloudControllerCanShowCloudDownloadButtonsDidChangeNotification" object:self userInfo:userInfo];
 }
 
-- (void)_handleIsUpdateInProgressDidChangeNotificationName:(id)a3
+- (void)_handleIsUpdateInProgressDidChangeNotificationName:(id)name
 {
   v4 = MEMORY[0x1E696AD88];
-  v5 = a3;
-  v7 = [v4 defaultCenter];
-  v6 = [v5 userInfo];
+  nameCopy = name;
+  defaultCenter = [v4 defaultCenter];
+  userInfo = [nameCopy userInfo];
 
-  [v7 postNotificationName:@"MusicKit_SoftLinking_MPCloudControllerIsUpdateInProgressDidChangeNotification" object:self userInfo:v6];
+  [defaultCenter postNotificationName:@"MusicKit_SoftLinking_MPCloudControllerIsUpdateInProgressDidChangeNotification" object:self userInfo:userInfo];
 }
 
 @end

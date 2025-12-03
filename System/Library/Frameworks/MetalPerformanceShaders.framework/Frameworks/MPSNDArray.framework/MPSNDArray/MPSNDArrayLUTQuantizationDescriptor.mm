@@ -1,26 +1,26 @@
 @interface MPSNDArrayLUTQuantizationDescriptor
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (void)dealloc;
-- (void)setVectorAxes:(id)a3;
+- (void)setVectorAxes:(id)axes;
 @end
 
 @implementation MPSNDArrayLUTQuantizationDescriptor
 
-- (void)setVectorAxes:(id)a3
+- (void)setVectorAxes:(id)axes
 {
   vectorAxes = self->_vectorAxes;
-  if (vectorAxes != a3)
+  if (vectorAxes != axes)
   {
     v5 = vectorAxes;
-    self->_vectorAxes = [a3 copy];
+    self->_vectorAxes = [axes copy];
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v8.receiver = self;
   v8.super_class = MPSNDArrayLUTQuantizationDescriptor;
-  result = [(MPSNDArrayQuantizationDescriptor *)&v8 copyWithZone:a3];
+  result = [(MPSNDArrayQuantizationDescriptor *)&v8 copyWithZone:zone];
   if (result)
   {
     vectorAxes = self->_vectorAxes;

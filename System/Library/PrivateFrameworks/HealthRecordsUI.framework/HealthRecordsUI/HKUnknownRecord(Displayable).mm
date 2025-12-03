@@ -11,10 +11,10 @@
   v9[1] = 3221225472;
   v9[2] = __95__HKUnknownRecord_Displayable__fetchDetailItemsWithHealthRecordsStore_conceptStore_completion___block_invoke;
   v9[3] = &unk_1E83DCEF0;
-  v9[4] = a1;
+  v9[4] = self;
   v10 = v7;
   v8 = v7;
-  [a3 stringifyExtractionFailureReasonsForRecord:a1 completion:v9];
+  [a3 stringifyExtractionFailureReasonsForRecord:self completion:v9];
 }
 
 @end

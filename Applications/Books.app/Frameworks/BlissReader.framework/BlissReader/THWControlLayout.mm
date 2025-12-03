@@ -1,5 +1,5 @@
 @interface THWControlLayout
-- (THWControlLayout)initWithTag:(unint64_t)a3 index:(unint64_t)a4;
+- (THWControlLayout)initWithTag:(unint64_t)tag index:(unint64_t)index;
 - (id)computeLayoutGeometry;
 - (void)dealloc;
 - (void)invalidateControl;
@@ -8,7 +8,7 @@
 
 @implementation THWControlLayout
 
-- (THWControlLayout)initWithTag:(unint64_t)a3 index:(unint64_t)a4
+- (THWControlLayout)initWithTag:(unint64_t)tag index:(unint64_t)index
 {
   v7.receiver = self;
   v7.super_class = THWControlLayout;
@@ -16,8 +16,8 @@
   if (result)
   {
     result->_invalidControlFlag = 1;
-    result->_tag = a3;
-    result->_index = a4;
+    result->_tag = tag;
+    result->_index = index;
   }
 
   return result;
@@ -41,9 +41,9 @@
 
 - (id)computeLayoutGeometry
 {
-  v3 = [(THWControlLayout *)self i_layoutGeometryProvider];
+  i_layoutGeometryProvider = [(THWControlLayout *)self i_layoutGeometryProvider];
 
-  return [v3 layoutGeometryForLayout:self];
+  return [i_layoutGeometryProvider layoutGeometryForLayout:self];
 }
 
 - (void)invalidateControl

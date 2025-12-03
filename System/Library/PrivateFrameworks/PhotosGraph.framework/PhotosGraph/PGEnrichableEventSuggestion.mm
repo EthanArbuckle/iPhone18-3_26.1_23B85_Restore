@@ -1,7 +1,7 @@
 @interface PGEnrichableEventSuggestion
 - (NSString)description;
-- (PGEnrichableEventSuggestion)initWithType:(unsigned __int16)a3 subtype:(unsigned __int16)a4 enrichableEvent:(id)a5 sharingSuggestionResults:(id)a6 photoLibrary:(id)a7 curationManager:(id)a8 curationContext:(id)a9 loggingConnection:(id)a10 titleGenerationContext:(id)a11;
-- (id)assetCollectionToShareForAssetCollection:(id)a3 loggingConnection:(id)a4;
+- (PGEnrichableEventSuggestion)initWithType:(unsigned __int16)type subtype:(unsigned __int16)subtype enrichableEvent:(id)event sharingSuggestionResults:(id)results photoLibrary:(id)library curationManager:(id)manager curationContext:(id)context loggingConnection:(id)self0 titleGenerationContext:(id)self1;
+- (id)assetCollectionToShareForAssetCollection:(id)collection loggingConnection:(id)connection;
 @end
 
 @implementation PGEnrichableEventSuggestion
@@ -15,27 +15,27 @@
   v5 = PHSuggestionStringWithType();
   subtype = self->_subtype;
   v7 = PHSuggestionStringWithSubtype();
-  v8 = [(PGEnrichableEventSuggestion *)self keyAssets];
-  v9 = [(PGEnrichableEventSuggestion *)self representativeAssets];
-  v10 = [v3 stringByAppendingFormat:@": type=%@, subtype=%@, keyAssets=%@, representativeAssets=%lu, features=%@", v5, v7, v8, objc_msgSend(v9, "count"), self->_features];
+  keyAssets = [(PGEnrichableEventSuggestion *)self keyAssets];
+  representativeAssets = [(PGEnrichableEventSuggestion *)self representativeAssets];
+  v10 = [v3 stringByAppendingFormat:@": type=%@, subtype=%@, keyAssets=%@, representativeAssets=%lu, features=%@", v5, v7, keyAssets, objc_msgSend(representativeAssets, "count"), self->_features];
 
   return v10;
 }
 
-- (id)assetCollectionToShareForAssetCollection:(id)a3 loggingConnection:(id)a4
+- (id)assetCollectionToShareForAssetCollection:(id)collection loggingConnection:(id)connection
 {
   v37[2] = *MEMORY[0x277D85DE8];
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 photoLibrary];
-  v8 = [v7 librarySpecificFetchOptions];
+  collectionCopy = collection;
+  connectionCopy = connection;
+  photoLibrary = [collectionCopy photoLibrary];
+  librarySpecificFetchOptions = [photoLibrary librarySpecificFetchOptions];
 
   v9 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"creationDate" ascending:1];
   v37[0] = v9;
   v10 = [MEMORY[0x277CCAC98] sortDescriptorWithKey:@"uuid" ascending:1];
   v37[1] = v10;
   v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v37 count:2];
-  [v8 setSortDescriptors:v11];
+  [librarySpecificFetchOptions setSortDescriptors:v11];
 
   v12 = [MEMORY[0x277D3B248] predicateForExcludeMask:objc_msgSend(MEMORY[0x277D3B248] useIndex:{"maskForGuestAsset"), 1}];
   v13 = [MEMORY[0x277CCAC30] predicateWithFormat:@"(additionalAttributes.importedBy != %d) && kindSubtype != %d && kindSubtype != %d", 7, 10, 103];
@@ -44,9 +44,9 @@
   v36[1] = v12;
   v15 = [MEMORY[0x277CBEA60] arrayWithObjects:v36 count:2];
   v16 = [v14 andPredicateWithSubpredicates:v15];
-  [v8 setInternalPredicate:v16];
+  [librarySpecificFetchOptions setInternalPredicate:v16];
 
-  v17 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v5 options:v8];
+  v17 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:collectionCopy options:librarySpecificFetchOptions];
   if ([v17 count])
   {
     v31 = 0u;
@@ -88,20 +88,20 @@
       }
     }
 
-    if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v35 = v5;
+      v35 = collectionCopy;
       v25 = "Asset collection %@ only contains junk assets.";
 LABEL_15:
-      _os_log_impl(&dword_22F0FC000, v6, OS_LOG_TYPE_DEFAULT, v25, buf, 0xCu);
+      _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_DEFAULT, v25, buf, 0xCu);
     }
   }
 
-  else if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
+  else if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v35 = v5;
+    v35 = collectionCopy;
     v25 = "Asset collection %@ only contains received assets from moment share(s).";
     goto LABEL_15;
   }
@@ -114,16 +114,16 @@ LABEL_17:
   return v26;
 }
 
-- (PGEnrichableEventSuggestion)initWithType:(unsigned __int16)a3 subtype:(unsigned __int16)a4 enrichableEvent:(id)a5 sharingSuggestionResults:(id)a6 photoLibrary:(id)a7 curationManager:(id)a8 curationContext:(id)a9 loggingConnection:(id)a10 titleGenerationContext:(id)a11
+- (PGEnrichableEventSuggestion)initWithType:(unsigned __int16)type subtype:(unsigned __int16)subtype enrichableEvent:(id)event sharingSuggestionResults:(id)results photoLibrary:(id)library curationManager:(id)manager curationContext:(id)context loggingConnection:(id)self0 titleGenerationContext:(id)self1
 {
   v75 = *MEMORY[0x277D85DE8];
-  v17 = a5;
-  v68 = a6;
-  v18 = a7;
-  v19 = a8;
-  v20 = a9;
-  v21 = a10;
-  v22 = a11;
+  eventCopy = event;
+  resultsCopy = results;
+  libraryCopy = library;
+  managerCopy = manager;
+  contextCopy = context;
+  connectionCopy = connection;
+  generationContextCopy = generationContext;
   v69.receiver = self;
   v69.super_class = PGEnrichableEventSuggestion;
   v23 = [(PGEnrichableEventSuggestion *)&v69 init];
@@ -135,28 +135,28 @@ LABEL_21:
     goto LABEL_22;
   }
 
-  v67 = v20;
-  v23->_type = a3;
-  v23->_subtype = a4;
-  v25 = [v17 universalStartDate];
+  v67 = contextCopy;
+  v23->_type = type;
+  v23->_subtype = subtype;
+  universalStartDate = [eventCopy universalStartDate];
   universalStartDate = v24->_universalStartDate;
-  v24->_universalStartDate = v25;
+  v24->_universalStartDate = universalStartDate;
 
-  v27 = [v17 universalEndDate];
+  universalEndDate = [eventCopy universalEndDate];
   universalEndDate = v24->_universalEndDate;
-  v24->_universalEndDate = v27;
+  v24->_universalEndDate = universalEndDate;
 
-  v29 = [v17 fetchAssetCollectionInPhotoLibrary:v18];
-  v30 = [(PGEnrichableEventSuggestion *)v24 assetCollectionToShareForAssetCollection:v29 loggingConnection:v21];
+  v29 = [eventCopy fetchAssetCollectionInPhotoLibrary:libraryCopy];
+  v30 = [(PGEnrichableEventSuggestion *)v24 assetCollectionToShareForAssetCollection:v29 loggingConnection:connectionCopy];
   if (v30)
   {
     v31 = v30;
-    v32 = [v18 librarySpecificFetchOptions];
-    [v32 setIncludeGuestAssets:0];
+    librarySpecificFetchOptions = [libraryCopy librarySpecificFetchOptions];
+    [librarySpecificFetchOptions setIncludeGuestAssets:0];
     v33 = [MEMORY[0x277CCAC30] predicateWithFormat:@"%K == nil", @"additionalAttributes.syndicationIdentifier"];
-    [v32 setInternalPredicate:v33];
+    [librarySpecificFetchOptions setInternalPredicate:v33];
 
-    v34 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v31 options:v32];
+    v34 = [MEMORY[0x277CD97A8] fetchAssetsInAssetCollection:v31 options:librarySpecificFetchOptions];
     if ([v34 count] <= 0x100)
     {
       [v34 fetchedObjects];
@@ -173,55 +173,55 @@ LABEL_21:
     v66 = [(NSArray *)v24->_representativeAssets count];
     if (v66)
     {
-      v65 = v22;
-      v38 = [v19 curatedKeyAssetForAssetCollection:v31 curatedAssetCollection:0 options:0 criteria:0 curationContext:v67];
-      if (!v38)
+      v65 = generationContextCopy;
+      firstObject = [managerCopy curatedKeyAssetForAssetCollection:v31 curatedAssetCollection:0 options:0 criteria:0 curationContext:v67];
+      if (!firstObject)
       {
-        v38 = [(NSArray *)v24->_representativeAssets firstObject];
-        if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+        firstObject = [(NSArray *)v24->_representativeAssets firstObject];
+        if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          v72 = v17;
+          v72 = eventCopy;
           v73 = 2112;
-          v74 = v38;
-          _os_log_error_impl(&dword_22F0FC000, v21, OS_LOG_TYPE_ERROR, "No key asset found for creating suggestions with enrichableEvent %@. Taking the first representative asset %@.", buf, 0x16u);
+          v74 = firstObject;
+          _os_log_error_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_ERROR, "No key asset found for creating suggestions with enrichableEvent %@. Taking the first representative asset %@.", buf, 0x16u);
         }
       }
 
-      v61 = v38;
+      v61 = firstObject;
       v62 = v34;
-      v70 = v38;
+      v70 = firstObject;
       v39 = [MEMORY[0x277CBEA60] arrayWithObjects:&v70 count:1];
       keyAssets = v24->_keyAssets;
       v24->_keyAssets = v39;
 
       v41 = [PGCollectionTitleGenerator alloc];
-      v42 = [(PGEnrichableEventSuggestion *)v24 _whitelistedMeaningLabels];
-      v43 = [(PGCollectionTitleGenerator *)v41 initWithCollection:v17 whitelistedMeaningLabels:v42 titleGenerationContext:v65];
+      _whitelistedMeaningLabels = [(PGEnrichableEventSuggestion *)v24 _whitelistedMeaningLabels];
+      v43 = [(PGCollectionTitleGenerator *)v41 initWithCollection:eventCopy whitelistedMeaningLabels:_whitelistedMeaningLabels titleGenerationContext:v65];
 
       v60 = v43;
-      v44 = [(PGCollectionTitleGenerator *)v43 titleTuple];
-      v45 = v44;
+      titleTuple = [(PGCollectionTitleGenerator *)v43 titleTuple];
+      v45 = titleTuple;
       v63 = v29;
-      v64 = v19;
-      if (v44)
+      v64 = managerCopy;
+      if (titleTuple)
       {
-        v46 = [v44 title];
-        v47 = [v46 stringValue];
+        title = [titleTuple title];
+        stringValue = [title stringValue];
         title = v24->_title;
-        v24->_title = v47;
+        v24->_title = stringValue;
 
-        v49 = [v45 subtitle];
-        v50 = [v49 stringValue];
+        subtitle = [v45 subtitle];
+        stringValue2 = [subtitle stringValue];
         subtitle = v24->_subtitle;
-        v24->_subtitle = v50;
+        v24->_subtitle = stringValue2;
       }
 
-      else if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+      else if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_ERROR))
       {
         *buf = 138412290;
-        v72 = v17;
-        _os_log_error_impl(&dword_22F0FC000, v21, OS_LOG_TYPE_ERROR, "Failed to generate title/subtitle for %@.", buf, 0xCu);
+        v72 = eventCopy;
+        _os_log_error_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_ERROR, "Failed to generate title/subtitle for %@.", buf, 0xCu);
       }
 
       v52 = [MEMORY[0x277CBEB98] set];
@@ -229,28 +229,28 @@ LABEL_21:
       v24->_features = v52;
 
       buf[0] = 0;
-      v54 = [v17 eventEnrichmentMomentNodes];
-      v55 = [v54 array];
-      v56 = [PGAbstractSuggester suggestedPersonLocalIdentifiersFromSharingSuggestionResults:v68 forMomentNodes:v55 containsUnverifiedPersons:buf];
+      eventEnrichmentMomentNodes = [eventCopy eventEnrichmentMomentNodes];
+      array = [eventEnrichmentMomentNodes array];
+      v56 = [PGAbstractSuggester suggestedPersonLocalIdentifiersFromSharingSuggestionResults:resultsCopy forMomentNodes:array containsUnverifiedPersons:buf];
 
       suggestedPersonLocalIdentifiers = v24->_suggestedPersonLocalIdentifiers;
       v24->_suggestedPersonLocalIdentifiers = v56;
 
       v24->_containsUnverifiedPersons = buf[0];
-      v19 = v64;
-      v22 = v65;
+      managerCopy = v64;
+      generationContextCopy = v65;
       v34 = v62;
       v29 = v63;
     }
 
-    else if (os_log_type_enabled(v21, OS_LOG_TYPE_ERROR))
+    else if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_ERROR))
     {
       *buf = 138412290;
-      v72 = v17;
-      _os_log_error_impl(&dword_22F0FC000, v21, OS_LOG_TYPE_ERROR, "No representative assets for creating suggestions with enrichableEvent %@", buf, 0xCu);
+      v72 = eventCopy;
+      _os_log_error_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_ERROR, "No representative assets for creating suggestions with enrichableEvent %@", buf, 0xCu);
     }
 
-    v20 = v67;
+    contextCopy = v67;
     if (!v66)
     {
       v36 = 0;
@@ -260,11 +260,11 @@ LABEL_21:
     goto LABEL_21;
   }
 
-  if (os_log_type_enabled(v21, OS_LOG_TYPE_DEFAULT))
+  if (os_log_type_enabled(connectionCopy, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v72 = v17;
-    _os_log_impl(&dword_22F0FC000, v21, OS_LOG_TYPE_DEFAULT, "No shareable assets found in %@", buf, 0xCu);
+    v72 = eventCopy;
+    _os_log_impl(&dword_22F0FC000, connectionCopy, OS_LOG_TYPE_DEFAULT, "No shareable assets found in %@", buf, 0xCu);
   }
 
   v36 = 0;

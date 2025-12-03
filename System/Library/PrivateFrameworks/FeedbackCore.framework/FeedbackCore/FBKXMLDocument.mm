@@ -1,53 +1,53 @@
 @interface FBKXMLDocument
-- (FBKXMLDocument)initWithHTMLData:(id)a3;
-- (FBKXMLDocument)initWithHTMLString:(id)a3;
-- (FBKXMLDocument)initWithXMLData:(id)a3;
-- (FBKXMLDocument)initWithXMLString:(id)a3;
-- (id)performXPathQuery:(id)a3;
+- (FBKXMLDocument)initWithHTMLData:(id)data;
+- (FBKXMLDocument)initWithHTMLString:(id)string;
+- (FBKXMLDocument)initWithXMLData:(id)data;
+- (FBKXMLDocument)initWithXMLString:(id)string;
+- (id)performXPathQuery:(id)query;
 - (void)dealloc;
 @end
 
 @implementation FBKXMLDocument
 
-- (FBKXMLDocument)initWithXMLString:(id)a3
+- (FBKXMLDocument)initWithXMLString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:4 allowLossyConversion:1];
+  v4 = [string dataUsingEncoding:4 allowLossyConversion:1];
   v5 = [(FBKXMLDocument *)self initWithXMLData:v4];
 
   return v5;
 }
 
-- (FBKXMLDocument)initWithXMLData:(id)a3
+- (FBKXMLDocument)initWithXMLData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7.receiver = self;
   v7.super_class = FBKXMLDocument;
   v5 = [(FBKXMLDocument *)&v7 init];
   if (v5)
   {
-    v5->_document = xmlReadMemory([v4 bytes], objc_msgSend(v4, "length"), "", 0, 18529);
+    v5->_document = xmlReadMemory([dataCopy bytes], objc_msgSend(dataCopy, "length"), "", 0, 18529);
   }
 
   return v5;
 }
 
-- (FBKXMLDocument)initWithHTMLString:(id)a3
+- (FBKXMLDocument)initWithHTMLString:(id)string
 {
-  v4 = [a3 dataUsingEncoding:4 allowLossyConversion:1];
+  v4 = [string dataUsingEncoding:4 allowLossyConversion:1];
   v5 = [(FBKXMLDocument *)self initWithHTMLData:v4];
 
   return v5;
 }
 
-- (FBKXMLDocument)initWithHTMLData:(id)a3
+- (FBKXMLDocument)initWithHTMLData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   v7.receiver = self;
   v7.super_class = FBKXMLDocument;
   v5 = [(FBKXMLDocument *)&v7 init];
   if (v5)
   {
-    v5->_document = htmlReadMemory([v4 bytes], objc_msgSend(v4, "length"), "", 0, 10337);
+    v5->_document = htmlReadMemory([dataCopy bytes], objc_msgSend(dataCopy, "length"), "", 0, 10337);
   }
 
   return v5;
@@ -61,14 +61,14 @@
   [(FBKXMLDocument *)&v3 dealloc];
 }
 
-- (id)performXPathQuery:(id)a3
+- (id)performXPathQuery:(id)query
 {
-  v4 = a3;
+  queryCopy = query;
   document = self->_document;
   if (document)
   {
     v6 = xmlXPathNewContext(document);
-    v7 = xmlCharStrdup([v4 cStringUsingEncoding:4]);
+    v7 = xmlCharStrdup([queryCopy cStringUsingEncoding:4]);
     v8 = v7;
     if (v6 && v7)
     {

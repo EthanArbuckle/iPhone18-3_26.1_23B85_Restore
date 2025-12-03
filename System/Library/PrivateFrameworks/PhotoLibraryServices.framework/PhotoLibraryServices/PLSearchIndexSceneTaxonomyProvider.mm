@@ -3,18 +3,18 @@
 - (PLSearchIndexSceneTaxonomy)latestSceneTaxonomy;
 - (PLSearchIndexSceneTaxonomy)previousSceneTaxonomy;
 - (id)description;
-- (id)searchIndexSceneTaxonomyForSceneAnalysisVersion:(signed __int16)a3;
+- (id)searchIndexSceneTaxonomyForSceneAnalysisVersion:(signed __int16)version;
 @end
 
 @implementation PLSearchIndexSceneTaxonomyProvider
 
 - (id)description
 {
-  v3 = [(PLSearchIndexSceneTaxonomyProvider *)self latestSceneTaxonomy];
-  v4 = [v3 description];
+  latestSceneTaxonomy = [(PLSearchIndexSceneTaxonomyProvider *)self latestSceneTaxonomy];
+  v4 = [latestSceneTaxonomy description];
 
-  v5 = [(PLSearchIndexSceneTaxonomyProvider *)self previousSceneTaxonomy];
-  v6 = [v5 description];
+  previousSceneTaxonomy = [(PLSearchIndexSceneTaxonomyProvider *)self previousSceneTaxonomy];
+  v6 = [previousSceneTaxonomy description];
 
   v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"latestTaxonomy: %@\npreviousTaxonomy: %@", v4, v6];
 
@@ -23,64 +23,64 @@
 
 - (NSString)digests
 {
-  v3 = [(PLSearchIndexSceneTaxonomyProvider *)self latestSceneTaxonomy];
-  v4 = [v3 digest];
+  latestSceneTaxonomy = [(PLSearchIndexSceneTaxonomyProvider *)self latestSceneTaxonomy];
+  digest = [latestSceneTaxonomy digest];
 
-  v5 = [(PLSearchIndexSceneTaxonomyProvider *)self previousSceneTaxonomy];
-  v6 = [v5 digest];
+  previousSceneTaxonomy = [(PLSearchIndexSceneTaxonomyProvider *)self previousSceneTaxonomy];
+  digest2 = [previousSceneTaxonomy digest];
 
-  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %@", v4, v6];
+  v7 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%@, %@", digest, digest2];
 
   return v7;
 }
 
-- (id)searchIndexSceneTaxonomyForSceneAnalysisVersion:(signed __int16)a3
+- (id)searchIndexSceneTaxonomyForSceneAnalysisVersion:(signed __int16)version
 {
   v8 = *MEMORY[0x1E69E9840];
-  if (a3 < 99)
+  if (version < 99)
   {
-    v4 = a3;
-    if (a3 < 84)
+    versionCopy = version;
+    if (version < 84)
     {
       v5 = PLSearchBackendSceneTaxonomyGetLog();
       if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
       {
         v7[0] = 67109120;
-        v7[1] = v4;
+        v7[1] = versionCopy;
         _os_log_impl(&dword_19BF1F000, v5, OS_LOG_TYPE_INFO, "Unable to instantiate scene taxonomy for scene analysis version: %i", v7, 8u);
       }
 
-      v3 = 0;
+      previousSceneTaxonomy = 0;
     }
 
     else
     {
-      v3 = [(PLSearchIndexSceneTaxonomyProvider *)self previousSceneTaxonomy];
+      previousSceneTaxonomy = [(PLSearchIndexSceneTaxonomyProvider *)self previousSceneTaxonomy];
     }
   }
 
   else
   {
-    v3 = [(PLSearchIndexSceneTaxonomyProvider *)self latestSceneTaxonomy];
+    previousSceneTaxonomy = [(PLSearchIndexSceneTaxonomyProvider *)self latestSceneTaxonomy];
   }
 
-  return v3;
+  return previousSceneTaxonomy;
 }
 
 - (PLSearchIndexSceneTaxonomy)previousSceneTaxonomy
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  previousSceneTaxonomy = v2->_previousSceneTaxonomy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  previousSceneTaxonomy = selfCopy->_previousSceneTaxonomy;
   if (!previousSceneTaxonomy)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%i", 84];
     v11 = 0;
     v5 = [[PLSearchIndexSceneTaxonomy alloc] initWithIdentifier:v4 error:&v11];
     v6 = v11;
-    v7 = v2->_previousSceneTaxonomy;
-    v2->_previousSceneTaxonomy = v5;
+    v7 = selfCopy->_previousSceneTaxonomy;
+    selfCopy->_previousSceneTaxonomy = v5;
 
     if (v6)
     {
@@ -95,11 +95,11 @@
       }
     }
 
-    previousSceneTaxonomy = v2->_previousSceneTaxonomy;
+    previousSceneTaxonomy = selfCopy->_previousSceneTaxonomy;
   }
 
   v9 = previousSceneTaxonomy;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }
@@ -107,17 +107,17 @@
 - (PLSearchIndexSceneTaxonomy)latestSceneTaxonomy
 {
   v16 = *MEMORY[0x1E69E9840];
-  v2 = self;
-  objc_sync_enter(v2);
-  latestSceneTaxonomy = v2->_latestSceneTaxonomy;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  latestSceneTaxonomy = selfCopy->_latestSceneTaxonomy;
   if (!latestSceneTaxonomy)
   {
     v4 = [MEMORY[0x1E696AEC0] stringWithFormat:@"%i", 99];
     v11 = 0;
     v5 = [[PLSearchIndexSceneTaxonomy alloc] initWithIdentifier:v4 error:&v11];
     v6 = v11;
-    v7 = v2->_latestSceneTaxonomy;
-    v2->_latestSceneTaxonomy = v5;
+    v7 = selfCopy->_latestSceneTaxonomy;
+    selfCopy->_latestSceneTaxonomy = v5;
 
     if (v6)
     {
@@ -132,11 +132,11 @@
       }
     }
 
-    latestSceneTaxonomy = v2->_latestSceneTaxonomy;
+    latestSceneTaxonomy = selfCopy->_latestSceneTaxonomy;
   }
 
   v9 = latestSceneTaxonomy;
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return v9;
 }

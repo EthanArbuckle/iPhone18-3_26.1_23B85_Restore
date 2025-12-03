@@ -1,5 +1,5 @@
 @interface AMSDPaymentViewService
-+ (BOOL)isConnectionEntitled:(id)a3;
++ (BOOL)isConnectionEntitled:(id)entitled;
 + (id)sharedService;
 @end
 
@@ -17,9 +17,9 @@
   return v3;
 }
 
-+ (BOOL)isConnectionEntitled:(id)a3
++ (BOOL)isConnectionEntitled:(id)entitled
 {
-  v3 = [a3 valueForEntitlement:@"com.apple.private.applemediaservices"];
+  v3 = [entitled valueForEntitlement:@"com.apple.private.applemediaservices"];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -31,8 +31,8 @@
     v4 = 0;
   }
 
-  v5 = [v4 BOOLValue];
-  return v5;
+  bOOLValue = [v4 BOOLValue];
+  return bOOLValue;
 }
 
 @end

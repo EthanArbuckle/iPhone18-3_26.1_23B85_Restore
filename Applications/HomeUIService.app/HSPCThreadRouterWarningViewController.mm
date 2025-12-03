@@ -1,26 +1,26 @@
 @interface HSPCThreadRouterWarningViewController
-- (HSPCThreadRouterWarningViewController)initWithCoordinator:(id)a3 config:(id)a4;
+- (HSPCThreadRouterWarningViewController)initWithCoordinator:(id)coordinator config:(id)config;
 - (id)_handleLearnMoreURL;
 - (id)iconDescriptor;
 @end
 
 @implementation HSPCThreadRouterWarningViewController
 
-- (HSPCThreadRouterWarningViewController)initWithCoordinator:(id)a3 config:(id)a4
+- (HSPCThreadRouterWarningViewController)initWithCoordinator:(id)coordinator config:(id)config
 {
-  v6 = a4;
+  configCopy = config;
   v28.receiver = self;
   v28.super_class = HSPCThreadRouterWarningViewController;
-  v7 = [(HSPCCenterIconViewController *)&v28 initWithCoordinator:a3 config:v6];
+  v7 = [(HSPCCenterIconViewController *)&v28 initWithCoordinator:coordinator config:configCopy];
   if (v7)
   {
     v8 = HULocalizedString();
     [(HSPCThreadRouterWarningViewController *)v7 setTitle:v8];
 
     v9 = HULocalizedString();
-    v10 = [v6 home];
-    v11 = [v10 residentDevices];
-    v12 = [v11 count];
+    home = [configCopy home];
+    residentDevices = [home residentDevices];
+    v12 = [residentDevices count];
 
     if (v12)
     {
@@ -43,13 +43,13 @@
     [v20 appendAttributedString:v19];
     [(HSPCThreadRouterWarningViewController *)v7 setAttributedSubtitle:v20];
     v21 = [[HUStringInLabelTapGestureRecognizer alloc] initWithTarget:v7 action:"_handleLearnMoreURL" hitBoxString:v15 userInfo:&__NSDictionary0__struct];
-    v22 = [(HSPCThreadRouterWarningViewController *)v7 contentView];
-    v23 = [v22 subtitleLabel];
-    [v23 setUserInteractionEnabled:1];
+    contentView = [(HSPCThreadRouterWarningViewController *)v7 contentView];
+    subtitleLabel = [contentView subtitleLabel];
+    [subtitleLabel setUserInteractionEnabled:1];
 
-    v24 = [(HSPCThreadRouterWarningViewController *)v7 contentView];
-    v25 = [v24 subtitleLabel];
-    [v25 addGestureRecognizer:v21];
+    contentView2 = [(HSPCThreadRouterWarningViewController *)v7 contentView];
+    subtitleLabel2 = [contentView2 subtitleLabel];
+    [subtitleLabel2 addGestureRecognizer:v21];
 
     v26 = [(HSPCThreadRouterWarningViewController *)v7 addProminentButtonWithTitleKey:@"HUContinueTitle" target:v7 futureSelector:"handleContinue"];
   }

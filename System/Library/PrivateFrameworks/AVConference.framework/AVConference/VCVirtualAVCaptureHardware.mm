@@ -1,19 +1,19 @@
 @interface VCVirtualAVCaptureHardware
-- ($2825F4736939C4A6D3AD43837233062D)highResolutionStillImageDimensionsWithFormatDict:(id)a3;
+- ($2825F4736939C4A6D3AD43837233062D)highResolutionStillImageDimensionsWithFormatDict:(id)dict;
 - (NSDictionary)devices;
-- (id)defaultFormatForDeviceID:(id)a3;
-- (id)initForDevice:(id)a3;
-- (id)newDeviceFormatsFromJsonList:(id)a3;
-- (id)newVirtualHardwareForDevice:(id)a3;
-- (id)supportedMaxPhotoDimensionsWithFormatDict:(id)a3;
-- (id)videoSupportedFrameRateRangesWithFormatDict:(id)a3;
-- (opaqueCMFormatDescription)newFormatDescription:(id)a3;
+- (id)defaultFormatForDeviceID:(id)d;
+- (id)initForDevice:(id)device;
+- (id)newDeviceFormatsFromJsonList:(id)list;
+- (id)newVirtualHardwareForDevice:(id)device;
+- (id)supportedMaxPhotoDimensionsWithFormatDict:(id)dict;
+- (id)videoSupportedFrameRateRangesWithFormatDict:(id)dict;
+- (opaqueCMFormatDescription)newFormatDescription:(id)description;
 - (void)dealloc;
 @end
 
 @implementation VCVirtualAVCaptureHardware
 
-- (id)initForDevice:(id)a3
+- (id)initForDevice:(id)device
 {
   v9 = *MEMORY[0x1E69E9840];
   v8.receiver = self;
@@ -28,7 +28,7 @@ LABEL_6:
     return 0;
   }
 
-  v6 = [(VCVirtualAVCaptureHardware *)v4 newVirtualHardwareForDevice:a3];
+  v6 = [(VCVirtualAVCaptureHardware *)v4 newVirtualHardwareForDevice:device];
   v5->_virtualHardware = v6;
   if (!v6)
   {
@@ -48,9 +48,9 @@ LABEL_6:
   [(VCVirtualAVCaptureHardware *)&v3 dealloc];
 }
 
-- (id)defaultFormatForDeviceID:(id)a3
+- (id)defaultFormatForDeviceID:(id)d
 {
-  v3 = [(NSDictionary *)self->_virtualHardware objectForKeyedSubscript:a3];
+  v3 = [(NSDictionary *)self->_virtualHardware objectForKeyedSubscript:d];
 
   return [v3 firstObject];
 }
@@ -62,11 +62,11 @@ LABEL_6:
   return v2;
 }
 
-- (opaqueCMFormatDescription)newFormatDescription:(id)a3
+- (opaqueCMFormatDescription)newFormatDescription:(id)description
 {
   v11[1] = *MEMORY[0x1E69E9840];
   v11[0] = 0;
-  v4 = [a3 objectForKeyedSubscript:kVCVirtualDeviceFormatPixelFormat];
+  v4 = [description objectForKeyedSubscript:kVCVirtualDeviceFormatPixelFormat];
   if (v4)
   {
     v5 = [objc_msgSend(v4 "description")];
@@ -78,8 +78,8 @@ LABEL_6:
   }
 
   v6 = CStrToFourcc(v5);
-  v7 = [objc_msgSend(a3 objectForKeyedSubscript:{kVCVirtualDeviceFormatCaptureWidth), "intValue"}];
-  v8 = [objc_msgSend(a3 objectForKeyedSubscript:{kVCVirtualDeviceFormatCaptureHeight), "intValue"}];
+  v7 = [objc_msgSend(description objectForKeyedSubscript:{kVCVirtualDeviceFormatCaptureWidth), "intValue"}];
+  v8 = [objc_msgSend(description objectForKeyedSubscript:{kVCVirtualDeviceFormatCaptureHeight), "intValue"}];
   CMVideoFormatDescriptionCreate(*MEMORY[0x1E695E480], v6, v7, v8, 0, v11);
   if (!v11[0] && VRTraceGetErrorLogLevelForModule() >= 3)
   {
@@ -93,32 +93,32 @@ LABEL_6:
   return v11[0];
 }
 
-- (id)videoSupportedFrameRateRangesWithFormatDict:(id)a3
+- (id)videoSupportedFrameRateRangesWithFormatDict:(id)dict
 {
   v8[1] = *MEMORY[0x1E69E9840];
-  [objc_msgSend(a3 objectForKeyedSubscript:{kVCVirtualDeviceFormatMinFrameRate), "floatValue"}];
+  [objc_msgSend(dict objectForKeyedSubscript:{kVCVirtualDeviceFormatMinFrameRate), "floatValue"}];
   v5 = v4;
-  [objc_msgSend(a3 objectForKeyedSubscript:{kVCVirtualDeviceFormatMaxFrameRate), "floatValue"}];
+  [objc_msgSend(dict objectForKeyedSubscript:{kVCVirtualDeviceFormatMaxFrameRate), "floatValue"}];
   v8[0] = [[VCVirtualAVFrameRateRange alloc] initWithMinFrameRate:v5 maxFrameRate:v6];
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v8 count:1];
 }
 
-- ($2825F4736939C4A6D3AD43837233062D)highResolutionStillImageDimensionsWithFormatDict:(id)a3
+- ($2825F4736939C4A6D3AD43837233062D)highResolutionStillImageDimensionsWithFormatDict:(id)dict
 {
-  v3 = [objc_msgSend(a3 objectForKeyedSubscript:{kVCVirtualDeviceFormatPhotoDimensions), "lastObject"}];
+  v3 = [objc_msgSend(dict objectForKeyedSubscript:{kVCVirtualDeviceFormatPhotoDimensions), "lastObject"}];
   v4 = [objc_msgSend(v3 objectAtIndexedSubscript:{0), "intValue"}];
   return (v4 | ([objc_msgSend(v3 objectAtIndexedSubscript:{1), "intValue"}] << 32));
 }
 
-- (id)supportedMaxPhotoDimensionsWithFormatDict:(id)a3
+- (id)supportedMaxPhotoDimensionsWithFormatDict:(id)dict
 {
   v5[1] = *MEMORY[0x1E69E9840];
-  v4 = [(VCVirtualAVCaptureHardware *)self highResolutionStillImageDimensionsWithFormatDict:a3];
+  v4 = [(VCVirtualAVCaptureHardware *)self highResolutionStillImageDimensionsWithFormatDict:dict];
   v5[0] = [MEMORY[0x1E696B098] valueWithBytes:&v4 objCType:"{?=ii}"];
   return [MEMORY[0x1E695DEC8] arrayWithObjects:v5 count:1];
 }
 
-- (id)newDeviceFormatsFromJsonList:(id)a3
+- (id)newDeviceFormatsFromJsonList:(id)list
 {
   v36 = *MEMORY[0x1E69E9840];
   v26 = objc_alloc_init(MEMORY[0x1E695DF70]);
@@ -128,7 +128,7 @@ LABEL_6:
     v35 = 0u;
     v32 = 0u;
     v33 = 0u;
-    v5 = [a3 countByEnumeratingWithState:&v32 objects:v31 count:16];
+    v5 = [list countByEnumeratingWithState:&v32 objects:v31 count:16];
     if (v5)
     {
       v6 = v5;
@@ -141,7 +141,7 @@ LABEL_6:
       v20 = *MEMORY[0x1E69868B0];
       v8 = MEMORY[0x1E6960C70];
       v9 = MEMORY[0x1E695E0F0];
-      obj = a3;
+      obj = list;
       while (2)
       {
         for (i = 0; i != v6; ++i)
@@ -243,7 +243,7 @@ LABEL_16:
   return v26;
 }
 
-- (id)newVirtualHardwareForDevice:(id)a3
+- (id)newVirtualHardwareForDevice:(id)device
 {
   v26 = *MEMORY[0x1E69E9840];
   v4 = objc_alloc_init(MEMORY[0x1E695DF90]);

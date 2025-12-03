@@ -1,7 +1,7 @@
 @interface NSValueTransformer
 + (NSArray)valueTransformerNames;
 + (NSValueTransformer)valueTransformerForName:(NSValueTransformerName)name;
-+ (void)_warnAboutInscureArchiverCitingOffender:(uint64_t)a1;
++ (void)_warnAboutInscureArchiverCitingOffender:(uint64_t)offender;
 + (void)setValueTransformer:(NSValueTransformer *)transformer forName:(NSValueTransformerName)name;
 - (id)_initForFoundationOnly;
 - (id)reverseTransformedValue:(id)value;
@@ -57,7 +57,7 @@
   os_unfair_lock_unlock(&stru_1ED43FC64);
 }
 
-+ (void)_warnAboutInscureArchiverCitingOffender:(uint64_t)a1
++ (void)_warnAboutInscureArchiverCitingOffender:(uint64_t)offender
 {
   v3[5] = *MEMORY[0x1E69E9840];
   objc_opt_self();
@@ -136,7 +136,7 @@ void __62__NSValueTransformer__warnAboutInscureArchiverCitingOffender___block_in
         if (os_log_type_enabled(v9, OS_LOG_TYPE_ERROR))
         {
           v10 = 138543618;
-          v11 = _NSMethodExceptionProem(a1, a2);
+          v11 = _NSMethodExceptionProem(self, a2);
           v12 = 2114;
           v13 = name;
           _os_log_error_impl(&dword_18075C000, v9, OS_LOG_TYPE_ERROR, "%{public}@: '%{public}@' is not a subclass of NSValueTransformer.", &v10, 0x16u);
@@ -153,7 +153,7 @@ void __62__NSValueTransformer__warnAboutInscureArchiverCitingOffender___block_in
     }
 
     v7 = objc_alloc_init(v7);
-    [a1 setValueTransformer:v7 forName:name];
+    [self setValueTransformer:v7 forName:name];
     return v7;
   }
 

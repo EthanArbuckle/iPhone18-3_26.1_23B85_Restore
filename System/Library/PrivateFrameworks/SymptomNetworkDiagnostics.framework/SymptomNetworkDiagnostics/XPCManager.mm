@@ -1,22 +1,22 @@
 @interface XPCManager
-- (void)didReceiveEvent:(id)a3;
-- (void)didReceiveMessage:(id)a3;
+- (void)didReceiveEvent:(id)event;
+- (void)didReceiveMessage:(id)message;
 @end
 
 @implementation XPCManager
 
-- (void)didReceiveMessage:(id)a3
+- (void)didReceiveMessage:(id)message
 {
-  v4 = a3;
-  v5 = self;
-  sub_22B1025B0(v4);
+  messageCopy = message;
+  selfCopy = self;
+  sub_22B1025B0(messageCopy);
 }
 
-- (void)didReceiveEvent:(id)a3
+- (void)didReceiveEvent:(id)event
 {
-  v4 = a3;
-  v5 = self;
-  sub_22B1027A8(v4);
+  eventCopy = event;
+  selfCopy = self;
+  sub_22B1027A8(eventCopy);
 }
 
 @end

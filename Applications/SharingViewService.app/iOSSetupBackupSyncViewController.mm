@@ -1,9 +1,9 @@
 @interface iOSSetupBackupSyncViewController
 - (void)_handleTestTimerFired;
-- (void)handleHideButton:(id)a3;
-- (void)handleProgressEvent:(unsigned int)a3 info:(id)a4;
-- (void)viewDidDisappear:(BOOL)a3;
-- (void)viewWillAppear:(BOOL)a3;
+- (void)handleHideButton:(id)button;
+- (void)handleProgressEvent:(unsigned int)event info:(id)info;
+- (void)viewDidDisappear:(BOOL)disappear;
+- (void)viewWillAppear:(BOOL)appear;
 @end
 
 @implementation iOSSetupBackupSyncViewController
@@ -41,7 +41,7 @@ LABEL_11:
     handler[2] = sub_1000F6048;
     handler[3] = &unk_100195A70;
     v15 = dispatch_source_create(&_dispatch_source_type_timer, 0, 0, &_dispatch_main_q);
-    v16 = self;
+    selfCopy = self;
     v10 = v15;
     dispatch_source_set_event_handler(v10, handler);
     SFDispatchTimerSet();
@@ -66,9 +66,9 @@ LABEL_11:
     goto LABEL_11;
   }
 
-  v11 = [self->super.super._mainController testMode];
+  testMode = [self->super.super._mainController testMode];
   v12 = self->super.super._mainController;
-  if (v11 == 1)
+  if (testMode == 1)
   {
 
     [v12 showDoneUI:0];
@@ -81,17 +81,17 @@ LABEL_11:
   }
 }
 
-- (void)handleProgressEvent:(unsigned int)a3 info:(id)a4
+- (void)handleProgressEvent:(unsigned int)event info:(id)info
 {
-  v50 = a4;
+  infoCopy = info;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
-    v47 = sub_1000F0C00(a3);
-    v49 = v50;
+    v47 = sub_1000F0C00(event);
+    v49 = infoCopy;
     LogPrintF();
   }
 
-  if (a3 == 310)
+  if (event == 310)
   {
     if (*(&self->_progressLabel + 1) != 310)
     {
@@ -107,7 +107,7 @@ LABEL_11:
 
   else
   {
-    if (a3 != 300)
+    if (event != 300)
     {
       goto LABEL_27;
     }
@@ -198,9 +198,9 @@ LABEL_11:
 LABEL_27:
 }
 
-- (void)handleHideButton:(id)a3
+- (void)handleHideButton:(id)button
 {
-  v4 = a3;
+  buttonCopy = button;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -209,9 +209,9 @@ LABEL_27:
   [self->super.super._mainController dismiss:5];
 }
 
-- (void)viewDidDisappear:(BOOL)a3
+- (void)viewDidDisappear:(BOOL)disappear
 {
-  v3 = a3;
+  disappearCopy = disappear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -219,12 +219,12 @@ LABEL_27:
 
   v5.receiver = self;
   v5.super_class = iOSSetupBackupSyncViewController;
-  [(iOSSetupBackupSyncViewController *)&v5 viewDidDisappear:v3];
+  [(iOSSetupBackupSyncViewController *)&v5 viewDidDisappear:disappearCopy];
 }
 
-- (void)viewWillAppear:(BOOL)a3
+- (void)viewWillAppear:(BOOL)appear
 {
-  v3 = a3;
+  appearCopy = appear;
   if (dword_1001BE6C8 <= 30 && (dword_1001BE6C8 != -1 || _LogCategory_Initialize()))
   {
     LogPrintF();
@@ -232,7 +232,7 @@ LABEL_27:
 
   v21.receiver = self;
   v21.super_class = iOSSetupBackupSyncViewController;
-  [(SVSBaseViewController *)&v21 viewWillAppear:v3];
+  [(SVSBaseViewController *)&v21 viewWillAppear:appearCopy];
   v5 = +[NSBundle mainBundle];
   v6 = [v5 localizedStringForKey:@"IOS_SETUP_BACKUP_TITLE" value:&stru_100195CA8 table:@"Localizable"];
   [*(&self->super.super._didReactivateContainerViewAfterLayingOut + 1) setText:v6];

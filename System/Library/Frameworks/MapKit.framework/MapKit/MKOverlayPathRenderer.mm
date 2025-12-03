@@ -1,24 +1,24 @@
 @interface MKOverlayPathRenderer
 + (BOOL)_externalSubclassOverridesDrawingMethods;
-- (BOOL)canDrawMapRect:(id)a3 zoomScale:(double)a4;
+- (BOOL)canDrawMapRect:(id)rect zoomScale:(double)scale;
 - (CGFloat)lineDashPhase;
 - (CGFloat)lineWidth;
 - (CGFloat)miterLimit;
 - (CGLineCap)lineCap;
 - (CGLineJoin)lineJoin;
 - (CGPathRef)path;
-- (MKOverlayPathRenderer)initWithOverlay:(id)a3;
+- (MKOverlayPathRenderer)initWithOverlay:(id)overlay;
 - (MKUsageCounter)_usageCounter;
 - (NSArray)lineDashPattern;
 - (UIColor)fillColor;
 - (UIColor)strokeColor;
-- (void)_animateVectorGeometryIfNecessaryForKey:(id)a3 withStepHandler:(id)a4;
-- (void)_decodePropertiesWithCoder:(id)a3;
-- (void)_encodePropertiesWithCoder:(id)a3;
+- (void)_animateVectorGeometryIfNecessaryForKey:(id)key withStepHandler:(id)handler;
+- (void)_decodePropertiesWithCoder:(id)coder;
+- (void)_encodePropertiesWithCoder:(id)coder;
 - (void)applyFillPropertiesToContext:(CGContextRef)context atZoomScale:(MKZoomScale)zoomScale;
 - (void)applyStrokePropertiesToContext:(CGContextRef)context atZoomScale:(MKZoomScale)zoomScale;
 - (void)dealloc;
-- (void)drawMapRect:(id)a3 zoomScale:(double)a4 inContext:(CGContext *)a5;
+- (void)drawMapRect:(id)rect zoomScale:(double)scale inContext:(CGContext *)context;
 - (void)fillPath:(CGPathRef)path inContext:(CGContextRef)context;
 - (void)invalidatePath;
 - (void)setFillColor:(UIColor *)fillColor;
@@ -51,27 +51,27 @@
   [(MKOverlayRenderer *)&v3 dealloc];
 }
 
-- (BOOL)canDrawMapRect:(id)a3 zoomScale:(double)a4
+- (BOOL)canDrawMapRect:(id)rect zoomScale:(double)scale
 {
-  rect2 = a3.var1.var1;
-  var0 = a3.var1.var0;
-  var1 = a3.var0.var1;
-  v7 = a3.var0.var0;
-  v9 = [(MKOverlayRenderer *)self overlay];
-  [v9 boundingMapRect];
+  rect2 = rect.var1.var1;
+  var0 = rect.var1.var0;
+  var1 = rect.var0.var1;
+  v7 = rect.var0.var0;
+  overlay = [(MKOverlayRenderer *)self overlay];
+  [overlay boundingMapRect];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(MKOverlayPathRenderer *)self strokeColor];
+  strokeColor = [(MKOverlayPathRenderer *)self strokeColor];
 
-  if (v18)
+  if (strokeColor)
   {
     [(MKOverlayPathRenderer *)self lineWidth];
     if (v19 <= 0.0)
     {
-      v20 = vcvtmd_s64_f64(log2(a4) + 0.5);
+      v20 = vcvtmd_s64_f64(log2(scale) + 0.5);
       if (v20 >= -21)
       {
         v21 = (v20 & (v20 >> 63)) + 21;
@@ -88,7 +88,7 @@
     v22 = INFINITY;
     if (v11 != INFINITY || (v23 = INFINITY, v13 != INFINITY))
     {
-      v24 = v19 / a4;
+      v24 = v19 / scale;
       v23 = v11 - v24;
       v22 = v13 - v24;
       v15 = v15 + v24 * 2.0;
@@ -113,11 +113,11 @@
   return MKMapRectIntersectsRect(*(&v22 - 1), *&v28);
 }
 
-- (void)drawMapRect:(id)a3 zoomScale:(double)a4 inContext:(CGContext *)a5
+- (void)drawMapRect:(id)rect zoomScale:(double)scale inContext:(CGContext *)context
 {
-  v7 = self;
-  objc_sync_enter(v7);
-  if (v7->_path || ([(MKOverlayPathRenderer *)v7 createPath], v7->_path))
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_path || ([(MKOverlayPathRenderer *)selfCopy createPath], selfCopy->_path))
   {
     v8 = MEMORY[0x1A58E8C40]();
     v9 = 0;
@@ -129,14 +129,14 @@
     v9 = 1;
   }
 
-  objc_sync_exit(v7);
+  objc_sync_exit(selfCopy);
 
   if ((v9 & 1) == 0 && v8)
   {
-    [(MKOverlayPathRenderer *)v7 applyFillPropertiesToContext:a5 atZoomScale:a4];
-    [(MKOverlayPathRenderer *)v7 fillPath:v8 inContext:a5];
-    [(MKOverlayPathRenderer *)v7 applyStrokePropertiesToContext:a5 atZoomScale:a4];
-    [(MKOverlayPathRenderer *)v7 strokePath:v8 inContext:a5];
+    [(MKOverlayPathRenderer *)selfCopy applyFillPropertiesToContext:context atZoomScale:scale];
+    [(MKOverlayPathRenderer *)selfCopy fillPath:v8 inContext:context];
+    [(MKOverlayPathRenderer *)selfCopy applyStrokePropertiesToContext:context atZoomScale:scale];
+    [(MKOverlayPathRenderer *)selfCopy strokePath:v8 inContext:context];
 
     CGPathRelease(v8);
   }
@@ -166,32 +166,32 @@
 
 - (void)applyFillPropertiesToContext:(CGContextRef)context atZoomScale:(MKZoomScale)zoomScale
 {
-  v6 = [(MKOverlayPathRenderer *)self fillColor];
+  fillColor = [(MKOverlayPathRenderer *)self fillColor];
 
-  if (v6)
+  if (fillColor)
   {
-    v8 = [(MKOverlayPathRenderer *)self fillColor];
-    v7 = v8;
-    CGContextSetFillColorWithColor(context, [v8 CGColor]);
+    fillColor2 = [(MKOverlayPathRenderer *)self fillColor];
+    v7 = fillColor2;
+    CGContextSetFillColorWithColor(context, [fillColor2 CGColor]);
   }
 }
 
 - (void)applyStrokePropertiesToContext:(CGContextRef)context atZoomScale:(MKZoomScale)zoomScale
 {
   v38 = *MEMORY[0x1E69E9840];
-  v7 = [(MKOverlayPathRenderer *)self strokeColor];
+  strokeColor = [(MKOverlayPathRenderer *)self strokeColor];
 
-  if (v7)
+  if (strokeColor)
   {
-    v8 = [(MKOverlayPathRenderer *)self strokeColor];
-    CGContextSetStrokeColorWithColor(context, [v8 CGColor]);
+    strokeColor2 = [(MKOverlayPathRenderer *)self strokeColor];
+    CGContextSetStrokeColorWithColor(context, [strokeColor2 CGColor]);
 
     [(MKOverlayRenderer *)self contentScaleFactor];
     v10 = v9;
     [(MKOverlayPathRenderer *)self lineWidth];
     v12 = v11;
-    v13 = [(MKOverlayPathRenderer *)self lineJoin];
-    v14 = [(MKOverlayPathRenderer *)self lineCap];
+    lineJoin = [(MKOverlayPathRenderer *)self lineJoin];
+    lineCap = [(MKOverlayPathRenderer *)self lineCap];
     [(MKOverlayPathRenderer *)self miterLimit];
     if (v15 <= 0.0)
     {
@@ -215,7 +215,7 @@
 
     [(MKOverlayPathRenderer *)self lineDashPhase];
     v19 = v18;
-    v20 = [(MKOverlayPathRenderer *)self lineDashPattern];
+    lineDashPattern = [(MKOverlayPathRenderer *)self lineDashPattern];
     if (v12 <= 0.0)
     {
       v21 = vcvtmd_s64_f64(log2(zoomScale) + 0.5);
@@ -233,19 +233,19 @@
     }
 
     CGContextSetLineWidth(context, v10 * (v12 / zoomScale));
-    CGContextSetLineJoin(context, v13);
-    CGContextSetLineCap(context, v14);
+    CGContextSetLineJoin(context, lineJoin);
+    CGContextSetLineCap(context, lineCap);
     CGContextSetMiterLimit(context, v10 * v17);
-    if (v20)
+    if (lineDashPattern)
     {
       v23 = v19 / zoomScale;
-      v24 = [v20 count];
+      v24 = [lineDashPattern count];
       v25 = malloc_type_malloc(8 * v24, 0x100004000313F17uLL);
       v33 = 0u;
       v34 = 0u;
       v35 = 0u;
       v36 = 0u;
-      v26 = v20;
+      v26 = lineDashPattern;
       v27 = [v26 countByEnumeratingWithState:&v33 objects:v37 count:16];
       if (v27)
       {
@@ -283,28 +283,28 @@
 - (void)setLineDashPattern:(NSArray *)lineDashPattern
 {
   v7 = lineDashPattern;
-  v4 = self;
-  objc_sync_enter(v4);
-  if (v4->_lineDashPattern != v7)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_lineDashPattern != v7)
   {
-    [(MKOverlayPathRenderer *)v4 willChangeValueForKey:@"lineDashPattern"];
+    [(MKOverlayPathRenderer *)selfCopy willChangeValueForKey:@"lineDashPattern"];
     v5 = [(NSArray *)v7 copy];
-    v6 = v4->_lineDashPattern;
-    v4->_lineDashPattern = v5;
+    v6 = selfCopy->_lineDashPattern;
+    selfCopy->_lineDashPattern = v5;
 
-    [(MKOverlayRenderer *)v4 setNeedsDisplay];
-    [(MKOverlayPathRenderer *)v4 didChangeValueForKey:@"lineDashPattern"];
+    [(MKOverlayRenderer *)selfCopy setNeedsDisplay];
+    [(MKOverlayPathRenderer *)selfCopy didChangeValueForKey:@"lineDashPattern"];
   }
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 }
 
 - (NSArray)lineDashPattern
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_lineDashPattern;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_lineDashPattern;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -335,25 +335,25 @@
 
 - (CGPathRef)path
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  path = v2->_path;
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  path = selfCopy->_path;
   if (!path)
   {
-    [(MKOverlayPathRenderer *)v2 createPath];
-    path = v2->_path;
+    [(MKOverlayPathRenderer *)selfCopy createPath];
+    path = selfCopy->_path;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
   return path;
 }
 
-- (MKOverlayPathRenderer)initWithOverlay:(id)a3
+- (MKOverlayPathRenderer)initWithOverlay:(id)overlay
 {
   v6.receiver = self;
   v6.super_class = MKOverlayPathRenderer;
-  v3 = [(MKOverlayRenderer *)&v6 initWithOverlay:a3];
+  v3 = [(MKOverlayRenderer *)&v6 initWithOverlay:overlay];
   v4 = v3;
   if (v3)
   {
@@ -367,10 +367,10 @@
 
 - (CGFloat)lineDashPhase
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  lineDashPhase = v2->_lineDashPhase;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lineDashPhase = selfCopy->_lineDashPhase;
+  objc_sync_exit(selfCopy);
 
   return lineDashPhase;
 }
@@ -383,8 +383,8 @@
   {
     [(MKOverlayPathRenderer *)obj willChangeValueForKey:@"setLineDashPhase"];
     obj->_lineDashPhase = lineDashPhase;
-    v4 = [(MKOverlayRenderer *)obj _renderer];
-    [v4 setNeedsDisplayForReason:2];
+    _renderer = [(MKOverlayRenderer *)obj _renderer];
+    [_renderer setNeedsDisplayForReason:2];
 
     [(MKOverlayPathRenderer *)obj didChangeValueForKey:@"setLineDashPhase"];
   }
@@ -394,10 +394,10 @@
 
 - (CGFloat)miterLimit
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  miterLimit = v2->_miterLimit;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  miterLimit = selfCopy->_miterLimit;
+  objc_sync_exit(selfCopy);
 
   return miterLimit;
 }
@@ -410,8 +410,8 @@
   {
     [(MKOverlayPathRenderer *)obj willChangeValueForKey:@"setMiterLimit"];
     obj->_miterLimit = miterLimit;
-    v4 = [(MKOverlayRenderer *)obj _renderer];
-    [v4 setNeedsDisplayForReason:2];
+    _renderer = [(MKOverlayRenderer *)obj _renderer];
+    [_renderer setNeedsDisplayForReason:2];
 
     [(MKOverlayPathRenderer *)obj didChangeValueForKey:@"setMiterLimit"];
   }
@@ -421,10 +421,10 @@
 
 - (CGLineCap)lineCap
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  lineCap = v2->_lineCap;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lineCap = selfCopy->_lineCap;
+  objc_sync_exit(selfCopy);
 
   return lineCap;
 }
@@ -437,8 +437,8 @@
   {
     [(MKOverlayPathRenderer *)obj willChangeValueForKey:@"setLineCap"];
     obj->_lineCap = lineCap;
-    v4 = [(MKOverlayRenderer *)obj _renderer];
-    [v4 setNeedsDisplayForReason:2];
+    _renderer = [(MKOverlayRenderer *)obj _renderer];
+    [_renderer setNeedsDisplayForReason:2];
 
     [(MKOverlayPathRenderer *)obj didChangeValueForKey:@"setLineCap"];
   }
@@ -448,10 +448,10 @@
 
 - (CGLineJoin)lineJoin
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  lineJoin = v2->_lineJoin;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lineJoin = selfCopy->_lineJoin;
+  objc_sync_exit(selfCopy);
 
   return lineJoin;
 }
@@ -464,8 +464,8 @@
   {
     [(MKOverlayPathRenderer *)obj willChangeValueForKey:@"setLineJoin"];
     obj->_lineJoin = lineJoin;
-    v4 = [(MKOverlayRenderer *)obj _renderer];
-    [v4 setNeedsDisplayForReason:2];
+    _renderer = [(MKOverlayRenderer *)obj _renderer];
+    [_renderer setNeedsDisplayForReason:2];
 
     [(MKOverlayPathRenderer *)obj didChangeValueForKey:@"setLineJoin"];
   }
@@ -475,10 +475,10 @@
 
 - (CGFloat)lineWidth
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  lineWidth = v2->_lineWidth;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  lineWidth = selfCopy->_lineWidth;
+  objc_sync_exit(selfCopy);
 
   return lineWidth;
 }
@@ -491,8 +491,8 @@
   {
     [(MKOverlayPathRenderer *)obj willChangeValueForKey:@"setLineWidth"];
     obj->_lineWidth = lineWidth;
-    v4 = [(MKOverlayRenderer *)obj _renderer];
-    [v4 setNeedsDisplayForReason:2];
+    _renderer = [(MKOverlayRenderer *)obj _renderer];
+    [_renderer setNeedsDisplayForReason:2];
 
     [(MKOverlayPathRenderer *)obj didChangeValueForKey:@"setLineWidth"];
   }
@@ -502,10 +502,10 @@
 
 - (UIColor)strokeColor
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_strokeColor;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_strokeColor;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -513,27 +513,27 @@
 - (void)setStrokeColor:(UIColor *)strokeColor
 {
   v7 = strokeColor;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_strokeColor != v7)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_strokeColor != v7)
   {
-    [(MKOverlayPathRenderer *)v5 willChangeValueForKey:@"setStrokeColor"];
-    objc_storeStrong(&v5->_strokeColor, strokeColor);
-    v6 = [(MKOverlayRenderer *)v5 _renderer];
-    [v6 setNeedsDisplayForReason:2];
+    [(MKOverlayPathRenderer *)selfCopy willChangeValueForKey:@"setStrokeColor"];
+    objc_storeStrong(&selfCopy->_strokeColor, strokeColor);
+    _renderer = [(MKOverlayRenderer *)selfCopy _renderer];
+    [_renderer setNeedsDisplayForReason:2];
 
-    [(MKOverlayPathRenderer *)v5 didChangeValueForKey:@"setStrokeColor"];
+    [(MKOverlayPathRenderer *)selfCopy didChangeValueForKey:@"setStrokeColor"];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
 - (UIColor)fillColor
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  v3 = v2->_fillColor;
-  objc_sync_exit(v2);
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v3 = selfCopy->_fillColor;
+  objc_sync_exit(selfCopy);
 
   return v3;
 }
@@ -541,76 +541,76 @@
 - (void)setFillColor:(UIColor *)fillColor
 {
   v7 = fillColor;
-  v5 = self;
-  objc_sync_enter(v5);
-  if (v5->_fillColor != v7)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (selfCopy->_fillColor != v7)
   {
-    [(MKOverlayPathRenderer *)v5 willChangeValueForKey:@"setFillColor"];
-    objc_storeStrong(&v5->_fillColor, fillColor);
-    v6 = [(MKOverlayRenderer *)v5 _renderer];
-    [v6 setNeedsDisplayForReason:2];
+    [(MKOverlayPathRenderer *)selfCopy willChangeValueForKey:@"setFillColor"];
+    objc_storeStrong(&selfCopy->_fillColor, fillColor);
+    _renderer = [(MKOverlayRenderer *)selfCopy _renderer];
+    [_renderer setNeedsDisplayForReason:2];
 
-    [(MKOverlayPathRenderer *)v5 didChangeValueForKey:@"setFillColor"];
+    [(MKOverlayPathRenderer *)selfCopy didChangeValueForKey:@"setFillColor"];
   }
 
-  objc_sync_exit(v5);
+  objc_sync_exit(selfCopy);
 }
 
-- (void)_encodePropertiesWithCoder:(id)a3
+- (void)_encodePropertiesWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v13.receiver = self;
   v13.super_class = MKOverlayPathRenderer;
-  [(MKOverlayRenderer *)&v13 _encodePropertiesWithCoder:v4];
+  [(MKOverlayRenderer *)&v13 _encodePropertiesWithCoder:coderCopy];
   strokeColor = self->_strokeColor;
   if (strokeColor)
   {
-    [v4 encodeObject:strokeColor forKey:@"MKOverlayPathRendererStrokeColor"];
+    [coderCopy encodeObject:strokeColor forKey:@"MKOverlayPathRendererStrokeColor"];
   }
 
   fillColor = self->_fillColor;
   if (fillColor)
   {
-    [v4 encodeObject:fillColor forKey:@"MKOverlayPathRendererFillColor"];
+    [coderCopy encodeObject:fillColor forKey:@"MKOverlayPathRendererFillColor"];
   }
 
   v7 = [MEMORY[0x1E696AD98] numberWithDouble:self->_lineWidth];
-  [v4 encodeObject:v7 forKey:@"MKOverlayPathLineWidth"];
+  [coderCopy encodeObject:v7 forKey:@"MKOverlayPathLineWidth"];
 
   v8 = [MEMORY[0x1E696AD98] numberWithInt:self->_lineJoin];
-  [v4 encodeObject:v8 forKey:@"MKOverlayPathRendererLineJoin"];
+  [coderCopy encodeObject:v8 forKey:@"MKOverlayPathRendererLineJoin"];
 
   v9 = [MEMORY[0x1E696AD98] numberWithInt:self->_lineCap];
-  [v4 encodeObject:v9 forKey:@"MKOverlayPathRendererLineCap"];
+  [coderCopy encodeObject:v9 forKey:@"MKOverlayPathRendererLineCap"];
 
   v10 = [MEMORY[0x1E696AD98] numberWithDouble:self->_miterLimit];
-  [v4 encodeObject:v10 forKey:@"MKOverlayPathRendererMiterLimit"];
+  [coderCopy encodeObject:v10 forKey:@"MKOverlayPathRendererMiterLimit"];
 
   v11 = [MEMORY[0x1E696AD98] numberWithDouble:self->_lineDashPhase];
-  [v4 encodeObject:v11 forKey:@"MKOverlayPathRendererLineDashPhase"];
+  [coderCopy encodeObject:v11 forKey:@"MKOverlayPathRendererLineDashPhase"];
 
   lineDashPattern = self->_lineDashPattern;
   if (lineDashPattern)
   {
-    [v4 encodeObject:lineDashPattern forKey:@"MKOverlayPathRendererLineDashPattern"];
+    [coderCopy encodeObject:lineDashPattern forKey:@"MKOverlayPathRendererLineDashPattern"];
   }
 }
 
-- (void)_decodePropertiesWithCoder:(id)a3
+- (void)_decodePropertiesWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v26.receiver = self;
   v26.super_class = MKOverlayPathRenderer;
-  [(MKOverlayRenderer *)&v26 _decodePropertiesWithCoder:v4];
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathRendererStrokeColor"];
+  [(MKOverlayRenderer *)&v26 _decodePropertiesWithCoder:coderCopy];
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathRendererStrokeColor"];
   strokeColor = self->_strokeColor;
   self->_strokeColor = v5;
 
-  v7 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathRendererFillColor"];
+  v7 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathRendererFillColor"];
   fillColor = self->_fillColor;
   self->_fillColor = v7;
 
-  v9 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathLineWidth"];
+  v9 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathLineWidth"];
   v10 = v9;
   if (v9)
   {
@@ -618,21 +618,21 @@
     self->_lineWidth = v11;
   }
 
-  v12 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathRendererLineJoin"];
+  v12 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathRendererLineJoin"];
   v13 = v12;
   if (v12)
   {
     self->_lineJoin = [v12 integerValue];
   }
 
-  v14 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathRendererLineCap"];
+  v14 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathRendererLineCap"];
   v15 = v14;
   if (v14)
   {
     self->_lineCap = [v14 integerValue];
   }
 
-  v16 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathRendererMiterLimit"];
+  v16 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathRendererMiterLimit"];
   v17 = v16;
   if (v16)
   {
@@ -640,7 +640,7 @@
     self->_miterLimit = v18;
   }
 
-  v19 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathRendererLineDashPhase"];
+  v19 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"MKOverlayPathRendererLineDashPhase"];
   v20 = v19;
   if (v19)
   {
@@ -651,25 +651,25 @@
   v22 = MEMORY[0x1E695DFD8];
   v23 = objc_opt_class();
   v24 = [v22 setWithObjects:{v23, objc_opt_class(), 0}];
-  v25 = [v4 decodeObjectOfClasses:v24 forKey:@"MKOverlayPathRendererLineDashPattern"];
+  v25 = [coderCopy decodeObjectOfClasses:v24 forKey:@"MKOverlayPathRendererLineDashPattern"];
   if (v25)
   {
     objc_storeStrong(&self->_lineDashPattern, v25);
   }
 }
 
-- (void)_animateVectorGeometryIfNecessaryForKey:(id)a3 withStepHandler:(id)a4
+- (void)_animateVectorGeometryIfNecessaryForKey:(id)key withStepHandler:(id)handler
 {
-  v7 = a3;
-  v6 = a4;
+  keyCopy = key;
+  handlerCopy = handler;
   if ([(MKOverlayPathRenderer *)self _canProvideVectorGeometry])
   {
-    [(MKOverlayRenderer *)self _animateIfNecessaryForKey:v7 withStepHandler:v6];
+    [(MKOverlayRenderer *)self _animateIfNecessaryForKey:keyCopy withStepHandler:handlerCopy];
   }
 
   else
   {
-    v6[2](v6, 1.0);
+    handlerCopy[2](handlerCopy, 1.0);
   }
 }
 
@@ -700,13 +700,13 @@
 
 + (BOOL)_externalSubclassOverridesDrawingMethods
 {
-  v3 = [a1 _mapkitLeafClass];
-  if ([a1 _mapkit_instanceImplementationOfSelector:sel_drawMapRect_zoomScale_inContext_ isFromSubclassOfClass:v3] & 1) != 0 || (objc_msgSend(a1, "_mapkit_instanceImplementationOfSelector:isFromSubclassOfClass:", sel_applyStrokePropertiesToContext_atZoomScale_, v3) & 1) != 0 || (objc_msgSend(a1, "_mapkit_instanceImplementationOfSelector:isFromSubclassOfClass:", sel_applyFillPropertiesToContext_atZoomScale_, v3) & 1) != 0 || (objc_msgSend(a1, "_mapkit_instanceImplementationOfSelector:isFromSubclassOfClass:", sel_strokePath_inContext_, v3))
+  _mapkitLeafClass = [self _mapkitLeafClass];
+  if ([self _mapkit_instanceImplementationOfSelector:sel_drawMapRect_zoomScale_inContext_ isFromSubclassOfClass:_mapkitLeafClass] & 1) != 0 || (objc_msgSend(self, "_mapkit_instanceImplementationOfSelector:isFromSubclassOfClass:", sel_applyStrokePropertiesToContext_atZoomScale_, _mapkitLeafClass) & 1) != 0 || (objc_msgSend(self, "_mapkit_instanceImplementationOfSelector:isFromSubclassOfClass:", sel_applyFillPropertiesToContext_atZoomScale_, _mapkitLeafClass) & 1) != 0 || (objc_msgSend(self, "_mapkit_instanceImplementationOfSelector:isFromSubclassOfClass:", sel_strokePath_inContext_, _mapkitLeafClass))
   {
     return 1;
   }
 
-  return [a1 _mapkit_instanceImplementationOfSelector:sel_fillPath_inContext_ isFromSubclassOfClass:v3];
+  return [self _mapkit_instanceImplementationOfSelector:sel_fillPath_inContext_ isFromSubclassOfClass:_mapkitLeafClass];
 }
 
 @end

@@ -1,20 +1,20 @@
 @interface SBSUIStatusBarSceneHostComponent
 - (SBSUIStatusBarSceneHostComponentDelegate)delegate;
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4;
-- (void)scene:(id)a3 willUpdateSettings:(id)a4;
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings;
+- (void)scene:(id)scene willUpdateSettings:(id)settings;
 @end
 
 @implementation SBSUIStatusBarSceneHostComponent
 
-- (void)scene:(id)a3 willUpdateSettings:(id)a4
+- (void)scene:(id)scene willUpdateSettings:(id)settings
 {
-  v9 = [a4 mutableSettings];
-  if ([v9 isUISubclass])
+  mutableSettings = [settings mutableSettings];
+  if ([mutableSettings isUISubclass])
   {
-    v5 = v9;
-    v6 = [v5 displayConfiguration];
+    v5 = mutableSettings;
+    displayConfiguration = [v5 displayConfiguration];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
-    v8 = [WeakRetained statusBarForDisplayConfiguration:v6 statusBarSceneHostComponent:self];
+    v8 = [WeakRetained statusBarForDisplayConfiguration:displayConfiguration statusBarSceneHostComponent:self];
 
     [v8 heightForOrientation:1];
     [v5 setDefaultStatusBarHeight:1 forOrientation:?];
@@ -27,17 +27,17 @@
   }
 }
 
-- (void)scene:(id)a3 didUpdateClientSettings:(id)a4
+- (void)scene:(id)scene didUpdateClientSettings:(id)settings
 {
-  v6 = a4;
-  v7 = a3;
-  v18 = [v6 previousSettings];
-  v8 = [v6 transitionContext];
+  settingsCopy = settings;
+  sceneCopy = scene;
+  previousSettings = [settingsCopy previousSettings];
+  transitionContext = [settingsCopy transitionContext];
 
-  v9 = [v7 clientSettings];
+  clientSettings = [sceneCopy clientSettings];
 
   v10 = objc_opt_class();
-  v11 = v9;
+  v11 = clientSettings;
   if (v10)
   {
     if (objc_opt_isKindOfClass())
@@ -60,13 +60,13 @@
 
   if (v13)
   {
-    v14 = v18;
-    v15 = [v13 statusBarHidden];
-    if (v15 != [v14 statusBarHidden])
+    v14 = previousSettings;
+    statusBarHidden = [v13 statusBarHidden];
+    if (statusBarHidden != [v14 statusBarHidden])
     {
       WeakRetained = objc_loadWeakRetained(&self->_delegate);
-      v17 = [v8 animationSettings];
-      [WeakRetained statusBarSceneHostComponent:self didChangePreferredStatusBarVisibilityWithAnimationSettings:v17];
+      animationSettings = [transitionContext animationSettings];
+      [WeakRetained statusBarSceneHostComponent:self didChangePreferredStatusBarVisibilityWithAnimationSettings:animationSettings];
     }
   }
 }

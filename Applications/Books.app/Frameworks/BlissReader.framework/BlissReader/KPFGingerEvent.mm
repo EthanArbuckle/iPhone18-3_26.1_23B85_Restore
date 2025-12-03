@@ -1,22 +1,22 @@
 @interface KPFGingerEvent
 - (BOOL)containsMovie;
 - (BOOL)isMoviePlaying;
-- (CATransform3D)p_transformFromArray:(SEL)a3;
-- (CGAffineTransform)p_affineTransformFromArray:(SEL)a3;
-- (CGRect)p_rectFromDictionary:(id)a3;
-- (KPFGingerEvent)initWithDictionary:(id)a3;
-- (KPFGingerEvent)initWithEffectsDictionary:(id)a3;
+- (CATransform3D)p_transformFromArray:(SEL)array;
+- (CGAffineTransform)p_affineTransformFromArray:(SEL)array;
+- (CGRect)p_rectFromDictionary:(id)dictionary;
+- (KPFGingerEvent)initWithDictionary:(id)dictionary;
+- (KPFGingerEvent)initWithEffectsDictionary:(id)dictionary;
 - (id)accessibilityArray;
-- (id)hyperlinkAtLocation:(CGPoint)a3;
+- (id)hyperlinkAtLocation:(CGPoint)location;
 - (id)hyperlinksRectArray;
 - (id)p_effectsArray;
 - (id)p_hyperlinksArray;
-- (id)p_newLayerFromDict:(id)a3;
-- (void)animateWithSession:(id)a3;
+- (id)p_newLayerFromDict:(id)dict;
+- (void)animateWithSession:(id)session;
 - (void)dealloc;
 - (void)p_AnimationEnded;
 - (void)pauseMoviePlayback;
-- (void)renderEventWithSession:(id)a3;
+- (void)renderEventWithSession:(id)session;
 - (void)resumeMoviePlayback;
 - (void)stopMoviePlayback;
 - (void)tearDown;
@@ -24,28 +24,28 @@
 
 @implementation KPFGingerEvent
 
-- (KPFGingerEvent)initWithDictionary:(id)a3
+- (KPFGingerEvent)initWithDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = KPFGingerEvent;
   v4 = [(KPFGingerEvent *)&v6 init];
   if (v4)
   {
-    v4->mEventsDictionary = a3;
-    v4->_isAutomatic = [objc_msgSend(a3 objectForKey:{@"automaticPlay", "BOOLValue"}];
+    v4->mEventsDictionary = dictionary;
+    v4->_isAutomatic = [objc_msgSend(dictionary objectForKey:{@"automaticPlay", "BOOLValue"}];
   }
 
   return v4;
 }
 
-- (KPFGingerEvent)initWithEffectsDictionary:(id)a3
+- (KPFGingerEvent)initWithEffectsDictionary:(id)dictionary
 {
   v6.receiver = self;
   v6.super_class = KPFGingerEvent;
   v4 = [(KPFGingerEvent *)&v6 init];
   if (v4)
   {
-    v4->mEffectsDictionary = a3;
+    v4->mEffectsDictionary = dictionary;
     v4->mEventsDictionary = 0;
   }
 
@@ -61,23 +61,23 @@
   [(KPFGingerEvent *)&v3 dealloc];
 }
 
-- (void)renderEventWithSession:(id)a3
+- (void)renderEventWithSession:(id)session
 {
   self->mAnimationDict = objc_alloc_init(NSMutableDictionary);
 
   self->mSwappableLayersDict = objc_alloc_init(NSMutableDictionary);
   self->mMovietoLayerMap = objc_alloc_init(NSMutableDictionary);
-  self->mKPFSession = a3;
+  self->mKPFSession = session;
   +[CATransaction begin];
   [CATransaction setDisableActions:1];
   [(CALayer *)[self->mKPFSession showLayer] setSublayers:0];
   v5 = [(KPFGingerEvent *)self p_newLayerFromDict:[(NSDictionary *)self->mEventsDictionary objectForKey:@"baseLayer"]];
-  v6 = [(NSMutableDictionary *)self->mMovietoLayerMap allKeys];
+  allKeys = [(NSMutableDictionary *)self->mMovietoLayerMap allKeys];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  v7 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -88,24 +88,24 @@
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(allKeys);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
         v12 = [-[NSMutableDictionary objectForKeyedSubscript:](self->mMovietoLayerMap objectForKeyedSubscript:{v11), "playerLayer"}];
-        v13 = [v11 nonretainedObjectValue];
-        if ([objc_msgSend(v13 "sublayers")])
+        nonretainedObjectValue = [v11 nonretainedObjectValue];
+        if ([objc_msgSend(nonretainedObjectValue "sublayers")])
         {
-          [v13 insertSublayer:v12 atIndex:1];
+          [nonretainedObjectValue insertSublayer:v12 atIndex:1];
         }
 
         else
         {
-          [v13 addSublayer:v12];
+          [nonretainedObjectValue addSublayer:v12];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [allKeys countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -125,13 +125,13 @@
   }
 }
 
-- (id)p_newLayerFromDict:(id)a3
+- (id)p_newLayerFromDict:(id)dict
 {
   v5 = +[CALayer layer];
-  v6 = [a3 objectForKey:@"texture"];
-  v7 = [a3 objectForKey:@"initialState"];
-  v8 = [a3 objectForKey:@"layers"];
-  v9 = [objc_msgSend(a3 objectForKey:{@"objectID", "stringValue"}];
+  v6 = [dict objectForKey:@"texture"];
+  v7 = [dict objectForKey:@"initialState"];
+  v8 = [dict objectForKey:@"layers"];
+  v9 = [objc_msgSend(dict objectForKey:{@"objectID", "stringValue"}];
   -[CALayer setMasksToBounds:](v5, "setMasksToBounds:", [objc_msgSend(v7 objectForKey:{@"masksToBounds", "BOOLValue"}]);
   -[CALayer setHidden:](v5, "setHidden:", [objc_msgSend(v7 objectForKey:{@"hidden", "BOOLValue"}]);
   [objc_msgSend(v7 objectForKey:{@"zIndex", "floatValue"}];
@@ -221,11 +221,11 @@
     if (v31)
     {
       v32 = v31;
-      v33 = [v31 superlayer];
-      v34 = [v32 superlayer];
-      if (v33)
+      superlayer = [v31 superlayer];
+      superlayer2 = [v32 superlayer];
+      if (superlayer)
       {
-        [v34 replaceSublayer:v32 with:v5];
+        [superlayer2 replaceSublayer:v32 with:v5];
       }
     }
 
@@ -272,7 +272,7 @@
   return v5;
 }
 
-- (void)animateWithSession:(id)a3
+- (void)animateWithSession:(id)session
 {
   if ([-[KPFGingerEvent p_effectsArray](self "p_effectsArray")])
   {
@@ -280,8 +280,8 @@
     v16 = 0u;
     v13 = 0u;
     v14 = 0u;
-    v5 = [(KPFGingerEvent *)self p_effectsArray];
-    v6 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+    p_effectsArray = [(KPFGingerEvent *)self p_effectsArray];
+    v6 = [p_effectsArray countByEnumeratingWithState:&v13 objects:v17 count:16];
     if (v6)
     {
       v7 = v6;
@@ -292,22 +292,22 @@
         {
           if (*v14 != v8)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(p_effectsArray);
           }
 
           v10 = *(*(&v13 + 1) + 8 * i);
-          [v10 renderEffectWithSession:a3 withSwappableLayersDict:self->mSwappableLayersDict];
+          [v10 renderEffectWithSession:session withSwappableLayersDict:self->mSwappableLayersDict];
           v12[0] = _NSConcreteStackBlock;
           v12[1] = 3221225472;
           v12[2] = sub_121A5C;
           v12[3] = &unk_45AE00;
           v12[4] = self;
           [v10 setAnimationEndHandler:v12];
-          [v10 animateWithSession:a3];
+          [v10 animateWithSession:session];
           ++self->mAnimationsStarted;
         }
 
-        v7 = [v5 countByEnumeratingWithState:&v13 objects:v17 count:16];
+        v7 = [p_effectsArray countByEnumeratingWithState:&v13 objects:v17 count:16];
       }
 
       while (v7);
@@ -325,12 +325,12 @@
 - (id)hyperlinksRectArray
 {
   v3 = +[NSMutableArray array];
-  v4 = [(KPFGingerEvent *)self p_hyperlinksArray];
+  p_hyperlinksArray = [(KPFGingerEvent *)self p_hyperlinksArray];
   v10 = 0u;
   v11 = 0u;
   v12 = 0u;
   v13 = 0u;
-  v5 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+  v5 = [p_hyperlinksArray countByEnumeratingWithState:&v10 objects:v14 count:16];
   if (v5)
   {
     v6 = v5;
@@ -342,7 +342,7 @@
       {
         if (*v11 != v7)
         {
-          objc_enumerationMutation(v4);
+          objc_enumerationMutation(p_hyperlinksArray);
         }
 
         -[KPFGingerEvent p_rectFromDictionary:](self, "p_rectFromDictionary:", [*(*(&v10 + 1) + 8 * v8) objectForKeyedSubscript:@"targetRectangle"]);
@@ -351,7 +351,7 @@
       }
 
       while (v6 != v8);
-      v6 = [v4 countByEnumeratingWithState:&v10 objects:v14 count:16];
+      v6 = [p_hyperlinksArray countByEnumeratingWithState:&v10 objects:v14 count:16];
     }
 
     while (v6);
@@ -360,10 +360,10 @@
   return v3;
 }
 
-- (id)hyperlinkAtLocation:(CGPoint)a3
+- (id)hyperlinkAtLocation:(CGPoint)location
 {
-  y = a3.y;
-  x = a3.x;
+  y = location.y;
+  x = location.x;
   v12 = 0u;
   v13 = 0u;
   v14 = 0u;
@@ -465,8 +465,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(KPFGingerEvent *)self p_effectsArray];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  p_effectsArray = [(KPFGingerEvent *)self p_effectsArray];
+  v3 = [p_effectsArray countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -478,7 +478,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(p_effectsArray);
         }
 
         if ([*(*(&v8 + 1) + 8 * v6) containsMovie])
@@ -491,7 +491,7 @@
       }
 
       while (v4 != v6);
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [p_effectsArray countByEnumeratingWithState:&v8 objects:v12 count:16];
       v4 = v3;
       if (v3)
       {
@@ -511,8 +511,8 @@
   v9 = 0u;
   v10 = 0u;
   v11 = 0u;
-  v2 = [(KPFGingerEvent *)self p_effectsArray];
-  v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+  p_effectsArray = [(KPFGingerEvent *)self p_effectsArray];
+  v3 = [p_effectsArray countByEnumeratingWithState:&v8 objects:v12 count:16];
   if (v3)
   {
     v4 = v3;
@@ -524,7 +524,7 @@
       {
         if (*v9 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(p_effectsArray);
         }
 
         if ([*(*(&v8 + 1) + 8 * v6) isMoviePlaying])
@@ -537,7 +537,7 @@
       }
 
       while (v4 != v6);
-      v3 = [v2 countByEnumeratingWithState:&v8 objects:v12 count:16];
+      v3 = [p_effectsArray countByEnumeratingWithState:&v8 objects:v12 count:16];
       v4 = v3;
       if (v3)
       {
@@ -557,8 +557,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(KPFGingerEvent *)self p_effectsArray];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  p_effectsArray = [(KPFGingerEvent *)self p_effectsArray];
+  v3 = [p_effectsArray countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -570,7 +570,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(p_effectsArray);
         }
 
         [*(*(&v7 + 1) + 8 * v6) pauseMoviePlayback];
@@ -578,7 +578,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [p_effectsArray countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -591,8 +591,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(KPFGingerEvent *)self p_effectsArray];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  p_effectsArray = [(KPFGingerEvent *)self p_effectsArray];
+  v3 = [p_effectsArray countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -604,7 +604,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(p_effectsArray);
         }
 
         [*(*(&v7 + 1) + 8 * v6) resumeMoviePlayback];
@@ -612,7 +612,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [p_effectsArray countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -625,8 +625,8 @@
   v8 = 0u;
   v9 = 0u;
   v10 = 0u;
-  v2 = [(KPFGingerEvent *)self p_effectsArray];
-  v3 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+  p_effectsArray = [(KPFGingerEvent *)self p_effectsArray];
+  v3 = [p_effectsArray countByEnumeratingWithState:&v7 objects:v11 count:16];
   if (v3)
   {
     v4 = v3;
@@ -638,7 +638,7 @@
       {
         if (*v8 != v5)
         {
-          objc_enumerationMutation(v2);
+          objc_enumerationMutation(p_effectsArray);
         }
 
         [*(*(&v7 + 1) + 8 * v6) stopMoviePlayback];
@@ -646,7 +646,7 @@
       }
 
       while (v4 != v6);
-      v4 = [v2 countByEnumeratingWithState:&v7 objects:v11 count:16];
+      v4 = [p_effectsArray countByEnumeratingWithState:&v7 objects:v11 count:16];
     }
 
     while (v4);
@@ -689,15 +689,15 @@
   self->mMovietoLayerMap = 0;
 }
 
-- (CGRect)p_rectFromDictionary:(id)a3
+- (CGRect)p_rectFromDictionary:(id)dictionary
 {
-  [objc_msgSend(a3 objectForKey:{@"x", "floatValue"}];
+  [objc_msgSend(dictionary objectForKey:{@"x", "floatValue"}];
   v5 = v4;
-  [objc_msgSend(a3 objectForKey:{@"y", "floatValue"}];
+  [objc_msgSend(dictionary objectForKey:{@"y", "floatValue"}];
   v7 = v6;
-  [objc_msgSend(a3 objectForKey:{@"width", "floatValue"}];
+  [objc_msgSend(dictionary objectForKey:{@"width", "floatValue"}];
   v9 = v8;
-  [objc_msgSend(a3 objectForKey:{@"height", "floatValue"}];
+  [objc_msgSend(dictionary objectForKey:{@"height", "floatValue"}];
   v11 = v10;
   v12 = v5;
   v13 = v7;
@@ -720,7 +720,7 @@
   return result;
 }
 
-- (CGAffineTransform)p_affineTransformFromArray:(SEL)a3
+- (CGAffineTransform)p_affineTransformFromArray:(SEL)array
 {
   [objc_msgSend(a4 objectAtIndex:{0), "floatValue"}];
   v7 = v6;
@@ -742,7 +742,7 @@
   return result;
 }
 
-- (CATransform3D)p_transformFromArray:(SEL)a3
+- (CATransform3D)p_transformFromArray:(SEL)array
 {
   v5 = *&CATransform3DIdentity.m33;
   *&retstr->m31 = *&CATransform3DIdentity.m31;

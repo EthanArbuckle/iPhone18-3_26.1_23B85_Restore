@@ -1,28 +1,28 @@
 @interface SharingBTLESuggestedItem
-+ (id)cornerActionBTLEItemWithPayload:(id)a3 device:(id)a4 options:(id)a5 optionBits:(unsigned int)a6 scanner:(id)a7 receiver:(id)a8;
++ (id)cornerActionBTLEItemWithPayload:(id)payload device:(id)device options:(id)options optionBits:(unsigned int)bits scanner:(id)scanner receiver:(id)receiver;
 + (id)statusString;
-- (BOOL)requestPayloadWithCompletionHandler:(id)a3;
-- (BOOL)updateFromSFAdvertisement:(id)a3;
-- (SharingBTLESuggestedItem)initWithPayload:(id)a3 device:(id)a4 options:(id)a5 optionBits:(unsigned int)a6 type:(unint64_t)a7 activityType:(id)a8 bundleIdentifier:(id)a9 teamIDs:(id)a10 advertisingOptions:(id)a11 scanner:(id)a12 receiver:(id)a13;
+- (BOOL)requestPayloadWithCompletionHandler:(id)handler;
+- (BOOL)updateFromSFAdvertisement:(id)advertisement;
+- (SharingBTLESuggestedItem)initWithPayload:(id)payload device:(id)device options:(id)options optionBits:(unsigned int)bits type:(unint64_t)type activityType:(id)activityType bundleIdentifier:(id)identifier teamIDs:(id)self0 advertisingOptions:(id)self1 scanner:(id)self2 receiver:(id)self3;
 - (id)description;
 - (id)statusString;
 - (id)when;
 - (void)clearPayload;
 - (void)resignCurrent;
-- (void)setWhen:(id)a3;
+- (void)setWhen:(id)when;
 @end
 
 @implementation SharingBTLESuggestedItem
 
-+ (id)cornerActionBTLEItemWithPayload:(id)a3 device:(id)a4 options:(id)a5 optionBits:(unsigned int)a6 scanner:(id)a7 receiver:(id)a8
++ (id)cornerActionBTLEItemWithPayload:(id)payload device:(id)device options:(id)options optionBits:(unsigned int)bits scanner:(id)scanner receiver:(id)receiver
 {
-  v13 = a3;
-  v14 = a4;
-  v15 = a5;
-  v16 = a7;
-  v17 = a8;
+  payloadCopy = payload;
+  deviceCopy = device;
+  optionsCopy = options;
+  scannerCopy = scanner;
+  receiverCopy = receiver;
   v18 = +[NSMutableSet set];
-  v19 = [NSMutableDictionary dictionaryWithDictionary:v15];
+  v19 = [NSMutableDictionary dictionaryWithDictionary:optionsCopy];
   v20 = _LSAdvertisementBytesKind();
   if (v20 == 3)
   {
@@ -34,17 +34,17 @@
     v21 = 1;
   }
 
-  if (!v13)
+  if (!payloadCopy)
   {
     v51 = 0;
     goto LABEL_110;
   }
 
   v22 = v20;
-  v125 = v15;
-  v126 = v14;
+  v125 = optionsCopy;
+  v126 = deviceCopy;
   v123 = v21;
-  if ((a6 & 4) != 0)
+  if ((bits & 4) != 0)
   {
     v52 = v19;
     v53 = v18;
@@ -74,11 +74,11 @@
   }
 
   v23 = +[LSApplicationWorkspace defaultWorkspace];
-  v124 = v13;
+  v124 = payloadCopy;
   v24 = _LSCreateDatabaseLookupStringFromHashedBytesForAdvertising();
   v25 = v24;
-  v13 = 0;
-  v122 = a6;
+  payloadCopy = 0;
+  bitsCopy = bits;
   v121 = v24;
   if (v22 <= 2)
   {
@@ -100,11 +100,11 @@
         {
           v108 = v19;
           v109 = v23;
-          v110 = v16;
-          v113 = v17;
+          v110 = scannerCopy;
+          v113 = receiverCopy;
           v27 = objc_alloc_init(NSMutableSet);
           sub_100051988(v130, v27);
-          v28 = [v130 bundleIdentifier];
+          bundleIdentifier = [v130 bundleIdentifier];
           v29 = _LSCopyUserActivityDomainNamesForBundleID();
           v30 = [NSMutableArray arrayWithArray:v29];
 
@@ -131,8 +131,8 @@
                 objc_opt_class();
                 if (objc_opt_isKindOfClass())
                 {
-                  v37 = [v130 bundleIdentifier];
-                  v38 = [v36 stringByAppendingFormat:@".%@", v37];
+                  bundleIdentifier2 = [v130 bundleIdentifier];
+                  v38 = [v36 stringByAppendingFormat:@".%@", bundleIdentifier2];
 
                   v39 = _LSCopyUserActivityDomainNamesForBundleID();
                   v40 = sub_100001A30(0);
@@ -163,8 +163,8 @@
             _os_log_impl(&_mh_execute_header, v41, OS_LOG_TYPE_DEBUG, " -- Domain name strings: %{private}@", buf, 0xCu);
           }
 
-          v16 = v110;
-          v17 = v113;
+          scannerCopy = v110;
+          receiverCopy = v113;
           v19 = v108;
           v23 = v109;
           if ([v30 count])
@@ -189,13 +189,13 @@
             if (os_log_type_enabled(v74, OS_LOG_TYPE_DEFAULT))
             {
               v75 = sub_100006EF4(v46);
-              v76 = [v130 bundleIdentifier];
+              bundleIdentifier3 = [v130 bundleIdentifier];
               *buf = 138543875;
               v140 = v75;
               v141 = 2113;
               v142 = v45;
               v143 = 2113;
-              v144 = v76;
+              v144 = bundleIdentifier3;
               _os_log_impl(&_mh_execute_header, v74, OS_LOG_TYPE_DEFAULT, " -- MATCHED, adverising bytes %{public}@ to domain name %{private}@, from application %{private}@", buf, 0x20u);
 
               v23 = v109;
@@ -203,13 +203,13 @@
 
             v18 = v117;
             sub_100051988(v130, v117);
-            v13 = [v130 bundleIdentifier];
+            payloadCopy = [v130 bundleIdentifier];
 
             v48 = v130;
             v49 = 0;
             v50 = @"NSUserActivityTypeBrowsingWeb";
-            v16 = v110;
-            v17 = v113;
+            scannerCopy = v110;
+            receiverCopy = v113;
             goto LABEL_103;
           }
 
@@ -225,13 +225,13 @@ LABEL_29:
 
         v48 = sub_10006224C();
 
-        v13 = [v48 bundleIdentifier];
+        payloadCopy = [v48 bundleIdentifier];
         v18 = v117;
         sub_100051988(v48, v117);
         v49 = 0;
         v50 = @"NSUserActivityTypeBrowsingWeb";
 LABEL_103:
-        if (v13 && v50)
+        if (payloadCopy && v50)
         {
           v100 = sub_100001A30(0);
           if (os_log_type_enabled(v100, OS_LOG_TYPE_INFO))
@@ -244,7 +244,7 @@ LABEL_103:
             *buf = 138478595;
             v140 = v50;
             v141 = 2113;
-            v142 = v13;
+            v142 = payloadCopy;
             v143 = 2113;
             v144 = v126;
             v145 = 2114;
@@ -279,14 +279,14 @@ LABEL_103:
       v66 = 0;
       v49 = 0;
       v50 = 0;
-      v13 = 0;
+      payloadCopy = 0;
     }
 
     else
     {
-      v114 = v17;
+      v114 = receiverCopy;
       v119 = v18;
-      v111 = v16;
+      v111 = scannerCopy;
       v68 = [NSUserDefaults alloc];
       v69 = [v68 initWithSuiteName:kUADynamicUserActivitesPreferences];
       v70 = [v69 objectForKey:kUADynamicUserActivitiesKey];
@@ -297,7 +297,7 @@ LABEL_103:
         v127 = [v71 objectForKey:kUADynamicUserActivityHashKey];
         v73 = [v23 applicationForUserActivityType:?];
         v49 = [v72 objectForKey:kUADynamicUserActivityDynamicActivityKey];
-        v13 = [v73 bundleIdentifier];
+        payloadCopy = [v73 bundleIdentifier];
         v50 = [v72 objectForKey:kUADynamicUserActivityAppActivityKey];
         v48 = v73;
         sub_100051988(v73, v119);
@@ -309,11 +309,11 @@ LABEL_103:
         v48 = 0;
         v49 = 0;
         v50 = 0;
-        v13 = 0;
+        payloadCopy = 0;
       }
 
-      v16 = v111;
-      v17 = v114;
+      scannerCopy = v111;
+      receiverCopy = v114;
       v18 = v119;
       v66 = v127;
       if (v49)
@@ -321,7 +321,7 @@ LABEL_103:
 LABEL_95:
         if (!v48)
         {
-          if (v122)
+          if (bitsCopy)
           {
             v48 = sub_10006224C();
             if (v48)
@@ -336,10 +336,10 @@ LABEL_95:
               }
 
               sub_100051988(v48, v18);
-              v99 = [v48 bundleIdentifier];
+              bundleIdentifier4 = [v48 bundleIdentifier];
 
               v50 = @"NSUserActivityTypeBrowsingWeb";
-              v13 = v99;
+              payloadCopy = bundleIdentifier4;
               v66 = v129;
             }
           }
@@ -357,24 +357,24 @@ LABEL_95:
     if (v48)
     {
       v132 = v48;
-      v86 = [v48 activityTypes];
-      if ([v86 count])
+      activityTypes = [v48 activityTypes];
+      if ([activityTypes count])
       {
         v128 = v66;
-        v116 = v17;
+        v116 = receiverCopy;
         v120 = v18;
-        v112 = v16;
+        v112 = scannerCopy;
         v87 = 0;
         while (1)
         {
-          v88 = [v86 objectAtIndex:v87];
+          v88 = [activityTypes objectAtIndex:v87];
           v89 = _LSCreateHashedBytesForAdvertisingFromString();
           if (!_LSCompareHashedBytesFromAdvertisingStrings())
           {
             break;
           }
 
-          if (++v87 >= [v86 count])
+          if (++v87 >= [activityTypes count])
           {
             goto LABEL_91;
           }
@@ -383,18 +383,18 @@ LABEL_95:
         v90 = sub_100001A30(0);
         if (os_log_type_enabled(v90, OS_LOG_TYPE_DEFAULT))
         {
-          v91 = [v132 bundleIdentifier];
+          bundleIdentifier5 = [v132 bundleIdentifier];
           *buf = 138543875;
           v140 = v89;
           v141 = 2113;
           v142 = v88;
           v143 = 2113;
-          v144 = v91;
+          v144 = bundleIdentifier5;
           _os_log_impl(&_mh_execute_header, v90, OS_LOG_TYPE_DEFAULT, " -- MATCHED, adverising bytes %{public}@ to activityType %{private}@, from application %{private}@", buf, 0x20u);
         }
 
         sub_100051988(v132, v120);
-        v92 = [v132 bundleIdentifier];
+        bundleIdentifier6 = [v132 bundleIdentifier];
 
         v93 = [v88 rangeOfString:@":"];
         if (v94 && (v95 = v93 + 1, v93 + 1 < [v88 length]))
@@ -410,15 +410,15 @@ LABEL_95:
         v97 = v96;
 
         v50 = v97;
-        v13 = v92;
+        payloadCopy = bundleIdentifier6;
 LABEL_91:
-        v16 = v112;
-        v17 = v116;
+        scannerCopy = v112;
+        receiverCopy = v116;
         v18 = v120;
         v66 = v128;
       }
 
-      if (!v13)
+      if (!payloadCopy)
       {
 
         v132 = 0;
@@ -436,7 +436,7 @@ LABEL_91:
     v67 = UAUserActivityTypeSiri;
     if ([v50 isEqualToString:UAUserActivityTypeSiri])
     {
-      v13 = v67;
+      payloadCopy = v67;
 
       v48 = 0;
       v49 = 0;
@@ -444,7 +444,7 @@ LABEL_91:
       goto LABEL_103;
     }
 
-    v13 = 0;
+    payloadCopy = 0;
     v49 = 0;
     v48 = 0;
   }
@@ -472,31 +472,31 @@ LABEL_49:
     v48 = v59;
     if (v59)
     {
-      v60 = [v59 activityTypes];
-      if ([v60 count])
+      activityTypes2 = [v59 activityTypes];
+      if ([activityTypes2 count])
       {
         v131 = v48;
         v118 = v18;
         v61 = 0;
         while (1)
         {
-          v62 = [v60 objectAtIndex:v61];
+          v62 = [activityTypes2 objectAtIndex:v61];
           v63 = _LSCreateHashedBytesForAdvertisingFromString();
           if (!_LSCompareHashedBytesFromAdvertisingStrings())
           {
             break;
           }
 
-          if (++v61 >= [v60 count])
+          if (++v61 >= [activityTypes2 count])
           {
             v50 = 0;
-            v13 = 0;
+            payloadCopy = 0;
             v18 = v118;
             goto LABEL_87;
           }
         }
 
-        v115 = v17;
+        v115 = receiverCopy;
         v77 = sub_100001A30(0);
         if (os_log_type_enabled(v77, OS_LOG_TYPE_DEFAULT))
         {
@@ -514,7 +514,7 @@ LABEL_49:
           v23 = v79;
         }
 
-        v13 = [v131 bundleIdentifier];
+        payloadCopy = [v131 bundleIdentifier];
         sub_100051988(v131, v118);
         if ([v62 hasPrefix:@"NOTIFICATION#"])
         {
@@ -525,7 +525,7 @@ LABEL_49:
           v62 = v81;
         }
 
-        v17 = v115;
+        receiverCopy = v115;
         v82 = [v62 rangeOfString:@":"];
         if (v83 && (v84 = v82 + 1, v82 + 1 < [v62 length]))
         {
@@ -547,14 +547,14 @@ LABEL_87:
       else
       {
         v50 = 0;
-        v13 = 0;
+        payloadCopy = 0;
       }
 
       v49 = 0;
       goto LABEL_103;
     }
 
-    v13 = 0;
+    payloadCopy = 0;
     v50 = 0;
     v49 = 0;
   }
@@ -566,104 +566,104 @@ LABEL_108:
   v53 = v18;
   v106 = v18;
   v57 = v124;
-  v51 = [[SharingBTLESuggestedItem alloc] initWithPayload:v124 device:v126 options:v125 optionBits:v122 type:v123 activityType:v50 bundleIdentifier:v13 teamIDs:v106 advertisingOptions:v107 scanner:v16 receiver:v17 dynamicIdentifier:v49];
+  v51 = [[SharingBTLESuggestedItem alloc] initWithPayload:v124 device:v126 options:v125 optionBits:bitsCopy type:v123 activityType:v50 bundleIdentifier:payloadCopy teamIDs:v106 advertisingOptions:v107 scanner:scannerCopy receiver:receiverCopy dynamicIdentifier:v49];
 
 LABEL_109:
   v18 = v53;
   v19 = v52;
-  v15 = v125;
-  v14 = v126;
+  optionsCopy = v125;
+  deviceCopy = v126;
 LABEL_110:
 
   return v51;
 }
 
-- (SharingBTLESuggestedItem)initWithPayload:(id)a3 device:(id)a4 options:(id)a5 optionBits:(unsigned int)a6 type:(unint64_t)a7 activityType:(id)a8 bundleIdentifier:(id)a9 teamIDs:(id)a10 advertisingOptions:(id)a11 scanner:(id)a12 receiver:(id)a13
+- (SharingBTLESuggestedItem)initWithPayload:(id)payload device:(id)device options:(id)options optionBits:(unsigned int)bits type:(unint64_t)type activityType:(id)activityType bundleIdentifier:(id)identifier teamIDs:(id)self0 advertisingOptions:(id)self1 scanner:(id)self2 receiver:(id)self3
 {
-  v91 = a3;
-  v88 = a4;
-  v87 = a5;
-  v16 = a8;
-  v93 = a9;
-  v17 = a10;
-  v18 = a11;
-  v19 = a12;
-  v86 = a13;
+  payloadCopy = payload;
+  deviceCopy = device;
+  optionsCopy = options;
+  activityTypeCopy = activityType;
+  identifierCopy = identifier;
+  dsCopy = ds;
+  advertisingOptionsCopy = advertisingOptions;
+  scannerCopy = scanner;
+  receiverCopy = receiver;
   v20 = sub_100001A30(0);
   if (os_log_type_enabled(v20, OS_LOG_TYPE_DEBUG))
   {
-    v21 = sub_100009EC4(a7);
-    v22 = [v17 description];
+    v21 = sub_100009EC4(type);
+    v22 = [dsCopy description];
     v23 = sub_100009684(v22);
-    [v18 description];
-    v83 = v19;
-    v24 = v18;
-    v25 = v17;
-    v27 = v26 = v16;
+    [advertisingOptionsCopy description];
+    v83 = scannerCopy;
+    v24 = advertisingOptionsCopy;
+    v25 = dsCopy;
+    v27 = v26 = activityTypeCopy;
     v28 = sub_100009684(v27);
     *buf = 138479363;
-    v96 = v91;
+    v96 = payloadCopy;
     v97 = 2048;
-    v98 = a6;
+    bitsCopy = bits;
     v99 = 2113;
     v100 = v21;
     v101 = 2113;
     v102 = v26;
     v103 = 2113;
-    v104 = v93;
+    v104 = identifierCopy;
     v105 = 2113;
     v106 = v23;
     v107 = 2114;
     v108 = v28;
     _os_log_impl(&_mh_execute_header, v20, OS_LOG_TYPE_DEBUG, "Creating CornerActionBTLEItem, advertisementPayload=%{private}@ optionBit=%ld type=%{private}@ activityType=%{private}@ bundleID=%{private}@ teamID=%{private}@ advertisingOptions=%{public}@", buf, 0x48u);
 
-    v16 = v26;
-    v17 = v25;
-    v18 = v24;
-    v19 = v83;
+    activityTypeCopy = v26;
+    dsCopy = v25;
+    advertisingOptionsCopy = v24;
+    scannerCopy = v83;
   }
 
-  if (!v16)
+  if (!activityTypeCopy)
   {
-    v90 = v18;
-    v37 = v17;
+    v90 = advertisingOptionsCopy;
+    v37 = dsCopy;
     v38 = sub_100001A30(0);
-    v31 = v91;
-    v32 = v88;
+    v31 = payloadCopy;
+    v32 = deviceCopy;
     if (os_log_type_enabled(v38, OS_LOG_TYPE_DEFAULT))
     {
-      v39 = sub_100006EF4(v91);
+      v39 = sub_100006EF4(payloadCopy);
       *buf = 138543362;
       v96 = v39;
       _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_DEFAULT, "Unable to determine application on this device for advertisement %{public}@, so ignoring this received activity.", buf, 0xCu);
     }
 
     v30 = 0;
-    v35 = v87;
+    v35 = optionsCopy;
     goto LABEL_41;
   }
 
   v29 = +[NSUUID UUID];
   v94.receiver = self;
   v94.super_class = SharingBTLESuggestedItem;
-  v30 = [(SharingBTLESuggestedItem *)&v94 initWithUUID:v29 type:a7 options:v18];
+  v30 = [(SharingBTLESuggestedItem *)&v94 initWithUUID:v29 type:type options:advertisingOptionsCopy];
 
-  v31 = v91;
-  v32 = v88;
+  v31 = payloadCopy;
+  v32 = deviceCopy;
   if (v30)
   {
-    v81 = v16;
-    objc_storeStrong(&v30->_scanner, a12);
-    objc_storeStrong(&v30->_receiver, a13);
-    v33 = [[SharingBTLEAdvertisementPayload alloc] initWithAdvertisedBytes:v91];
+    v81 = activityTypeCopy;
+    objc_storeStrong(&v30->_scanner, scanner);
+    objc_storeStrong(&v30->_receiver, receiver);
+    v33 = [[SharingBTLEAdvertisementPayload alloc] initWithAdvertisedBytes:payloadCopy];
     advertisementPayload = v30->_advertisementPayload;
     v30->_advertisementPayload = v33;
 
-    v30->_optionBits = a6;
-    v35 = v87;
-    if (v87)
+    v30->_optionBits = bits;
+    v35 = optionsCopy;
+    if (optionsCopy)
     {
-      v36 = [v87 mutableCopy];
+      v36 = [optionsCopy mutableCopy];
     }
 
     else
@@ -672,13 +672,13 @@ LABEL_110:
     }
 
     v40 = v36;
-    if (a6)
+    if (bits)
     {
       [(SharingBTLESuggestedItem *)v36 setObject:&__kCFBooleanTrue forKey:UAUserActivityHasWebPageURLOptionKey];
-      if ((a6 & 2) == 0)
+      if ((bits & 2) == 0)
       {
 LABEL_14:
-        if ((a6 & 0x40) == 0)
+        if ((bits & 0x40) == 0)
         {
           goto LABEL_15;
         }
@@ -687,16 +687,16 @@ LABEL_14:
       }
     }
 
-    else if ((a6 & 2) == 0)
+    else if ((bits & 2) == 0)
     {
       goto LABEL_14;
     }
 
-    [(SharingBTLESuggestedItem *)v40 setObject:&__kCFBooleanTrue forKey:_LSUserActivityContainsFileProviderURLKey, v16];
-    if ((a6 & 0x40) == 0)
+    [(SharingBTLESuggestedItem *)v40 setObject:&__kCFBooleanTrue forKey:_LSUserActivityContainsFileProviderURLKey, activityTypeCopy];
+    if ((bits & 0x40) == 0)
     {
 LABEL_15:
-      if ((a6 & 0x80) == 0)
+      if ((bits & 0x80) == 0)
       {
         goto LABEL_16;
       }
@@ -706,25 +706,25 @@ LABEL_15:
 
 LABEL_22:
     [(SharingBTLESuggestedItem *)v40 setObject:&__kCFBooleanTrue forKey:@"UAUserActivityAdvertiserHasMoreActivities", v81];
-    if ((a6 & 0x80) == 0)
+    if ((bits & 0x80) == 0)
     {
 LABEL_16:
-      if ((a6 & 0x20) == 0)
+      if ((bits & 0x20) == 0)
       {
 LABEL_18:
-        v90 = v18;
+        v90 = advertisingOptionsCopy;
         self = v40;
         v41 = [(SharingBTLESuggestedItem *)v40 copy];
         [(SharingBTLESuggestedItem *)v30 setOptions:v41];
 
         [(SharingBTLESuggestedItem *)v30 setActivityType:v82];
-        [(SharingBTLESuggestedItem *)v30 setBundleIdentifier:v93];
-        [(SharingBTLESuggestedItem *)v30 setPeerDevice:v88];
-        v84 = v19;
-        if (v17)
+        [(SharingBTLESuggestedItem *)v30 setBundleIdentifier:identifierCopy];
+        [(SharingBTLESuggestedItem *)v30 setPeerDevice:deviceCopy];
+        v84 = scannerCopy;
+        if (dsCopy)
         {
-          v37 = v17;
-          v42 = [v17 copy];
+          v37 = dsCopy;
+          v42 = [dsCopy copy];
           [(SharingBTLESuggestedItem *)v30 setTeamIDs:v42];
         }
 
@@ -734,58 +734,58 @@ LABEL_18:
           [(SharingBTLESuggestedItem *)v30 setTeamIDs:0];
         }
 
-        v43 = [(SharingBTLESuggestedItem *)v30 advertisementPayload];
-        v44 = [v43 time];
-        [(SharingBTLESuggestedItem *)v30 setWhen:v44];
+        advertisementPayload = [(SharingBTLESuggestedItem *)v30 advertisementPayload];
+        time = [advertisementPayload time];
+        [(SharingBTLESuggestedItem *)v30 setWhen:time];
 
         v45 = +[NSDate date];
         [(SharingBTLESuggestedItem *)v30 setLastInterestingTime:v45];
 
-        v46 = [(SharingBTLESuggestedItem *)v30 advertisementPayload];
-        v47 = [v46 currentUntil];
-        [(SharingBTLESuggestedItem *)v30 setCurrentUntilDate:v47];
+        advertisementPayload2 = [(SharingBTLESuggestedItem *)v30 advertisementPayload];
+        currentUntil = [advertisementPayload2 currentUntil];
+        [(SharingBTLESuggestedItem *)v30 setCurrentUntilDate:currentUntil];
 
-        v48 = [(SharingBTLESuggestedItem *)v30 currentUntilDate];
-        v49 = NSDate;
+        currentUntilDate = [(SharingBTLESuggestedItem *)v30 currentUntilDate];
+        webpageURL = NSDate;
         v50 = +[UAUserActivityDefaults sharedDefaults];
         v51 = v50;
-        if (v48)
+        if (currentUntilDate)
         {
           [v50 cornerActionItemAdditionalTimeToLiveAfterValidIntervalExpires];
           v53 = v52;
-          v54 = [(SharingBTLEAdvertisementPayload *)v30->_advertisementPayload validUntil];
-          v49 = [NSDate dateWithTimeInterval:v54 sinceDate:v53];
-          [(SharingBTLESuggestedItem *)v30 setRemoveAfter:v49];
+          validUntil = [(SharingBTLEAdvertisementPayload *)v30->_advertisementPayload validUntil];
+          webpageURL = [NSDate dateWithTimeInterval:validUntil sinceDate:v53];
+          [(SharingBTLESuggestedItem *)v30 setRemoveAfter:webpageURL];
         }
 
         else
         {
           [v50 cornerActionItemMaximumTimeForBTLEItemToLive];
-          v54 = [NSDate dateWithTimeIntervalSinceNow:?];
-          [(SharingBTLESuggestedItem *)v30 setRemoveAfter:v54];
+          validUntil = [NSDate dateWithTimeIntervalSinceNow:?];
+          [(SharingBTLESuggestedItem *)v30 setRemoveAfter:validUntil];
         }
 
         v55 = objc_alloc_init(UAUserActivityAnalyticsInfo);
         [(SharingBTLESuggestedItem *)v30 setWasContinuedInfo:v55];
 
-        v56 = [v88 isDefaultPairedDevice];
-        v57 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
-        [v57 setFromPairedDevice:v56];
+        isDefaultPairedDevice = [deviceCopy isDefaultPairedDevice];
+        wasContinuedInfo = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
+        [wasContinuedInfo setFromPairedDevice:isDefaultPairedDevice];
 
-        v58 = [(SharingBTLESuggestedItem *)v30 bundleIdentifier];
-        v59 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
-        [v59 setBundleIdentifier:v58];
+        bundleIdentifier = [(SharingBTLESuggestedItem *)v30 bundleIdentifier];
+        wasContinuedInfo2 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
+        [wasContinuedInfo2 setBundleIdentifier:bundleIdentifier];
 
-        v60 = [(SharingBTLESuggestedItem *)v30 activityType];
-        v61 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
-        [v61 setActivityType:v60];
+        activityType = [(SharingBTLESuggestedItem *)v30 activityType];
+        wasContinuedInfo3 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
+        [wasContinuedInfo3 setActivityType:activityType];
 
-        v62 = [(SharingBTLESuggestedItem *)v30 type];
-        v63 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
-        [v63 setSuggestedActionType:v62];
+        type = [(SharingBTLESuggestedItem *)v30 type];
+        wasContinuedInfo4 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
+        [wasContinuedInfo4 setSuggestedActionType:type];
 
-        v64 = [(SharingBTLESuggestedItem *)v30 activityType];
-        v65 = [v64 isEqual:@"NSUserActivityTypeBrowsingWeb"];
+        activityType2 = [(SharingBTLESuggestedItem *)v30 activityType];
+        v65 = [activityType2 isEqual:@"NSUserActivityTypeBrowsingWeb"];
         if (v65)
         {
           v66 = 1;
@@ -793,58 +793,58 @@ LABEL_18:
 
         else
         {
-          v49 = [(SharingBTLESuggestedItem *)v30 webpageURL];
-          v66 = v49 != 0;
+          webpageURL = [(SharingBTLESuggestedItem *)v30 webpageURL];
+          v66 = webpageURL != 0;
         }
 
-        v67 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
-        [v67 setBrowserFallback:v66];
+        wasContinuedInfo5 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
+        [wasContinuedInfo5 setBrowserFallback:v66];
 
         if ((v65 & 1) == 0)
         {
         }
 
-        v68 = [(SharingBTLESuggestedItem *)v30 peerDevice];
-        v69 = [v68 modelIdentifier];
-        v70 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
-        [v70 setRemoteDeviceType:v69];
+        peerDevice = [(SharingBTLESuggestedItem *)v30 peerDevice];
+        modelIdentifier = [peerDevice modelIdentifier];
+        wasContinuedInfo6 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
+        [wasContinuedInfo6 setRemoteDeviceType:modelIdentifier];
 
-        v71 = [(SharingBTLESuggestedItem *)v30 uuid];
-        v72 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
-        [v72 setUuid:v71];
+        uuid = [(SharingBTLESuggestedItem *)v30 uuid];
+        wasContinuedInfo7 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
+        [wasContinuedInfo7 setUuid:uuid];
 
-        v73 = [(SharingBTLESuggestedItem *)v30 activityType];
-        LODWORD(v72) = [v73 isEqual:@"NSUserActivityTypeBrowsingWeb"];
+        activityType3 = [(SharingBTLESuggestedItem *)v30 activityType];
+        LODWORD(wasContinuedInfo7) = [activityType3 isEqual:@"NSUserActivityTypeBrowsingWeb"];
 
-        if (v72)
+        if (wasContinuedInfo7)
         {
           v74 = sub_10006224C();
-          v75 = [v74 bundleIdentifier];
-          v76 = [(SharingBTLESuggestedItem *)v30 bundleIdentifier];
-          v77 = [v75 isEqual:v76];
+          bundleIdentifier2 = [v74 bundleIdentifier];
+          bundleIdentifier3 = [(SharingBTLESuggestedItem *)v30 bundleIdentifier];
+          v77 = [bundleIdentifier2 isEqual:bundleIdentifier3];
 
           if ((v77 & 1) == 0)
           {
-            v78 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
-            [v78 setWebToNative:1];
+            wasContinuedInfo8 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
+            [wasContinuedInfo8 setWebToNative:1];
           }
         }
 
         v38 = sub_100001A30(@"Diagnostic");
-        v16 = v82;
+        activityTypeCopy = v82;
         if (os_log_type_enabled(v38, OS_LOG_TYPE_INFO))
         {
-          v79 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
+          wasContinuedInfo9 = [(SharingBTLESuggestedItem *)v30 wasContinuedInfo];
           *buf = 138477827;
-          v96 = v79;
+          v96 = wasContinuedInfo9;
           _os_log_impl(&_mh_execute_header, v38, OS_LOG_TYPE_INFO, "Created wasContinuedInfo for BTLEAd: %{private}@", buf, 0xCu);
         }
 
-        v19 = v84;
+        scannerCopy = v84;
 LABEL_41:
 
-        v17 = v37;
-        v18 = v90;
+        dsCopy = v37;
+        advertisingOptionsCopy = v90;
         goto LABEL_42;
       }
 
@@ -856,7 +856,7 @@ LABEL_17:
 LABEL_23:
     [(SharingBTLESuggestedItem *)v40 setObject:&__kCFBooleanTrue forKey:@"UAUserActivityItemIsNotActiveKey", v81];
     [(SharingBTLESuggestedItem *)v30 setActive:0];
-    if ((a6 & 0x20) == 0)
+    if ((bits & 0x20) == 0)
     {
       goto LABEL_18;
     }
@@ -864,35 +864,35 @@ LABEL_23:
     goto LABEL_17;
   }
 
-  v35 = v87;
+  v35 = optionsCopy;
 LABEL_42:
 
   return v30;
 }
 
-- (BOOL)updateFromSFAdvertisement:(id)a3
+- (BOOL)updateFromSFAdvertisement:(id)advertisement
 {
-  v4 = a3;
+  advertisementCopy = advertisement;
   v5 = sub_100001A30(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
   {
-    v6 = [v4 advertisementPayload];
-    v7 = sub_100006EF4(v6);
-    v8 = [(SharingBTLESuggestedItem *)self uuid];
-    v9 = [v8 UUIDString];
+    advertisementPayload = [advertisementCopy advertisementPayload];
+    v7 = sub_100006EF4(advertisementPayload);
+    uuid = [(SharingBTLESuggestedItem *)self uuid];
+    uUIDString = [uuid UUIDString];
     v40 = 138543618;
     v41 = v7;
     v42 = 2114;
-    v43 = v9;
+    v43 = uUIDString;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "RECEIVED advertisement, %{public}@, matched against existing corner item %{public}@ so merely update it from the flags & options", &v40, 0x16u);
   }
 
-  if (v4)
+  if (advertisementCopy)
   {
-    v10 = [v4 advertisementPayload];
-    v11 = [(SharingBTLESuggestedItem *)self advertisementPayload];
-    v12 = [v11 advertisementPayload];
-    v13 = [v10 isEqual:v12];
+    advertisementPayload2 = [advertisementCopy advertisementPayload];
+    advertisementPayload3 = [(SharingBTLESuggestedItem *)self advertisementPayload];
+    v11AdvertisementPayload = [advertisementPayload3 advertisementPayload];
+    v13 = [advertisementPayload2 isEqual:v11AdvertisementPayload];
   }
 
   else
@@ -900,11 +900,11 @@ LABEL_42:
     v13 = 0;
   }
 
-  v14 = [(SharingBTLESuggestedItem *)self advertisementPayload];
-  if (v14)
+  advertisementPayload4 = [(SharingBTLESuggestedItem *)self advertisementPayload];
+  if (advertisementPayload4)
   {
-    v15 = [(SharingBTLESuggestedItem *)self advertisementPayload];
-    v16 = [v15 isCurrent] ^ 1;
+    advertisementPayload5 = [(SharingBTLESuggestedItem *)self advertisementPayload];
+    v16 = [advertisementPayload5 isCurrent] ^ 1;
   }
 
   else
@@ -913,21 +913,21 @@ LABEL_42:
   }
 
   v17 = [SharingBTLEAdvertisementPayload alloc];
-  v18 = [v4 advertisementPayload];
-  v19 = [(SharingBTLEAdvertisementPayload *)v17 initWithAdvertisedBytes:v18];
+  advertisementPayload6 = [advertisementCopy advertisementPayload];
+  v19 = [(SharingBTLEAdvertisementPayload *)v17 initWithAdvertisedBytes:advertisementPayload6];
   [(SharingBTLESuggestedItem *)self setAdvertisementPayload:v19];
 
-  v20 = [(SharingBTLESuggestedItem *)self advertisementPayload];
-  v21 = [v20 time];
+  advertisementPayload7 = [(SharingBTLESuggestedItem *)self advertisementPayload];
+  time = [advertisementPayload7 time];
 
   if ((v13 & 1) == 0)
   {
-    v22 = [(SharingBTLESuggestedItem *)self advertisementPayload];
-    v23 = [v22 isCurrent];
+    advertisementPayload8 = [(SharingBTLESuggestedItem *)self advertisementPayload];
+    isCurrent = [advertisementPayload8 isCurrent];
 
     if (v16)
     {
-      if (v23)
+      if (isCurrent)
       {
 LABEL_15:
         v26 = +[NSDate date];
@@ -937,15 +937,15 @@ LABEL_15:
       }
     }
 
-    else if ((v23 & 1) == 0)
+    else if ((isCurrent & 1) == 0)
     {
       goto LABEL_16;
     }
 
-    v24 = [(SharingBTLESuggestedItem *)self advertisementPayload];
-    v25 = [v24 isCurrent];
+    advertisementPayload9 = [(SharingBTLESuggestedItem *)self advertisementPayload];
+    isCurrent2 = [advertisementPayload9 isCurrent];
 
-    if (!v25)
+    if (!isCurrent2)
     {
       goto LABEL_16;
     }
@@ -954,47 +954,47 @@ LABEL_15:
   }
 
 LABEL_16:
-  [(SharingBTLESuggestedItem *)self setWhen:v21];
-  v27 = [(SharingBTLESuggestedItem *)self advertisementPayload];
-  v28 = [v27 currentUntil];
-  [(SharingBTLESuggestedItem *)self setCurrentUntilDate:v28];
+  [(SharingBTLESuggestedItem *)self setWhen:time];
+  advertisementPayload10 = [(SharingBTLESuggestedItem *)self advertisementPayload];
+  currentUntil = [advertisementPayload10 currentUntil];
+  [(SharingBTLESuggestedItem *)self setCurrentUntilDate:currentUntil];
 
-  v29 = [v4 advertisementPayload];
-  v30 = (sub_100064DA0(v29) & 0x80) == 0;
+  advertisementPayload11 = [advertisementCopy advertisementPayload];
+  v30 = (sub_100064DA0(advertisementPayload11) & 0x80) == 0;
 
   [(SharingBTLESuggestedItem *)self setActive:v30];
-  v31 = [(SharingBTLESuggestedItem *)self currentUntilDate];
+  currentUntilDate = [(SharingBTLESuggestedItem *)self currentUntilDate];
 
   v32 = +[UAUserActivityDefaults sharedDefaults];
   v33 = v32;
-  if (v31)
+  if (currentUntilDate)
   {
     [v32 cornerActionItemAdditionalTimeToLiveAfterValidIntervalExpires];
     v35 = v34;
-    v36 = [(SharingBTLESuggestedItem *)self advertisementPayload];
-    v37 = [v36 validUntil];
-    v38 = [NSDate dateWithTimeInterval:v37 sinceDate:v35];
+    advertisementPayload12 = [(SharingBTLESuggestedItem *)self advertisementPayload];
+    validUntil = [advertisementPayload12 validUntil];
+    v38 = [NSDate dateWithTimeInterval:validUntil sinceDate:v35];
     [(SharingBTLESuggestedItem *)self setRemoveAfter:v38];
   }
 
   else
   {
     [v32 cornerActionItemMaximumTimeForBTLEItemToLive];
-    v36 = [NSDate dateWithTimeIntervalSinceNow:?];
-    [(SharingBTLESuggestedItem *)self setRemoveAfter:v36];
+    advertisementPayload12 = [NSDate dateWithTimeIntervalSinceNow:?];
+    [(SharingBTLESuggestedItem *)self setRemoveAfter:advertisementPayload12];
   }
 
   return 1;
 }
 
-- (BOOL)requestPayloadWithCompletionHandler:(id)a3
+- (BOOL)requestPayloadWithCompletionHandler:(id)handler
 {
-  v4 = a3;
+  handlerCopy = handler;
   v5 = sub_100001A30(0);
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEBUG))
   {
-    v6 = [(SharingBTLESuggestedItem *)self uuid];
-    v7 = [v6 UUIDString];
+    uuid = [(SharingBTLESuggestedItem *)self uuid];
+    uUIDString = [uuid UUIDString];
     if ([(SharingBTLESuggestedItem *)self isPayloadRequested])
     {
       v8 = @"YES";
@@ -1016,7 +1016,7 @@ LABEL_16:
       v9 = @"NO";
     }
 
-    v51 = v7;
+    v51 = uUIDString;
     v52 = 2114;
     v53 = v8;
     v54 = 2114;
@@ -1024,59 +1024,59 @@ LABEL_16:
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEBUG, "for item %{public}@ requested=%{public}@ available=%{public}@", buf, 0x20u);
   }
 
-  v10 = self;
-  objc_sync_enter(v10);
-  if ([(SharingBTLESuggestedItem *)v10 isPayloadAvailable])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(SharingBTLESuggestedItem *)selfCopy isPayloadAvailable])
   {
     v11 = sub_100001A30(0);
     if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
     {
-      v12 = [(SharingBTLESuggestedItem *)v10 uuid];
-      v13 = [v12 UUIDString];
+      uuid2 = [(SharingBTLESuggestedItem *)selfCopy uuid];
+      uUIDString2 = [uuid2 UUIDString];
       *buf = 138543362;
-      v51 = v13;
+      v51 = uUIDString2;
       _os_log_impl(&_mh_execute_header, v11, OS_LOG_TYPE_INFO, "Requesting payload for item %{public}@ payload, but it is already present, so dispatching directly.", buf, 0xCu);
     }
 
-    v4[2](v4, 0);
+    handlerCopy[2](handlerCopy, 0);
   }
 
-  else if ([(SharingBTLESuggestedItem *)v10 isPayloadRequested])
+  else if ([(SharingBTLESuggestedItem *)selfCopy isPayloadRequested])
   {
-    if (v4)
+    if (handlerCopy)
     {
-      payloadRequestedCompletions = v10->_payloadRequestedCompletions;
-      v15 = objc_retainBlock(v4);
+      payloadRequestedCompletions = selfCopy->_payloadRequestedCompletions;
+      v15 = objc_retainBlock(handlerCopy);
       [(NSMutableSet *)payloadRequestedCompletions addObject:v15];
     }
   }
 
   else
   {
-    v16 = [(SharingBTLESuggestedItem *)v10 payloadRequestedCompletions];
-    v17 = v16 == 0;
+    payloadRequestedCompletions = [(SharingBTLESuggestedItem *)selfCopy payloadRequestedCompletions];
+    v17 = payloadRequestedCompletions == 0;
 
     if (v17)
     {
       v18 = +[NSMutableSet set];
-      [(SharingBTLESuggestedItem *)v10 setPayloadRequestedCompletions:v18];
+      [(SharingBTLESuggestedItem *)selfCopy setPayloadRequestedCompletions:v18];
     }
 
-    if (v4)
+    if (handlerCopy)
     {
-      v19 = [(SharingBTLESuggestedItem *)v10 payloadRequestedCompletions];
-      v20 = objc_retainBlock(v4);
-      [v19 addObject:v20];
+      payloadRequestedCompletions2 = [(SharingBTLESuggestedItem *)selfCopy payloadRequestedCompletions];
+      v20 = objc_retainBlock(handlerCopy);
+      [payloadRequestedCompletions2 addObject:v20];
     }
 
-    [(SharingBTLESuggestedItem *)v10 setPayloadRequested:1];
-    v21 = [(SharingBTLESuggestedItem *)v10 wasContinuedInfo];
-    [v21 setPayloadRequested:1];
+    [(SharingBTLESuggestedItem *)selfCopy setPayloadRequested:1];
+    wasContinuedInfo = [(SharingBTLESuggestedItem *)selfCopy wasContinuedInfo];
+    [wasContinuedInfo setPayloadRequested:1];
 
-    v22 = [(SharingBTLESuggestedItem *)v10 peerDevice];
-    v23 = [v22 modelIdentifier];
-    v24 = [(SharingBTLESuggestedItem *)v10 wasContinuedInfo];
-    [v24 setRemoteDeviceType:v23];
+    peerDevice = [(SharingBTLESuggestedItem *)selfCopy peerDevice];
+    modelIdentifier = [peerDevice modelIdentifier];
+    wasContinuedInfo2 = [(SharingBTLESuggestedItem *)selfCopy wasContinuedInfo];
+    [wasContinuedInfo2 setRemoteDeviceType:modelIdentifier];
 
     v25 = +[UAUserActivityDefaults sharedDefaults];
     [v25 handoffPayloadRequestTimout];
@@ -1085,19 +1085,19 @@ LABEL_16:
     v28 = sub_100001A30(0);
     if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
     {
-      v29 = [(SharingBTLESuggestedItem *)v10 uuid];
-      v30 = [v29 UUIDString];
-      v31 = [(SharingBTLESuggestedItem *)v10 advertisementPayload];
-      v32 = [v31 payloadBytes];
-      v33 = sub_100006EF4(v32);
-      v34 = [(SharingBTLESuggestedItem *)v10 bundleIdentifier];
+      uuid3 = [(SharingBTLESuggestedItem *)selfCopy uuid];
+      uUIDString3 = [uuid3 UUIDString];
+      advertisementPayload = [(SharingBTLESuggestedItem *)selfCopy advertisementPayload];
+      payloadBytes = [advertisementPayload payloadBytes];
+      v33 = sub_100006EF4(payloadBytes);
+      bundleIdentifier = [(SharingBTLESuggestedItem *)selfCopy bundleIdentifier];
       v35 = [NSNumber numberWithDouble:v27];
       *buf = 138544131;
-      v51 = v30;
+      v51 = uUIDString3;
       v52 = 2114;
       v53 = v33;
       v54 = 2113;
-      v55 = v34;
+      v55 = bundleIdentifier;
       v56 = 2114;
       v57 = v35;
       _os_log_impl(&_mh_execute_header, v28, OS_LOG_TYPE_DEFAULT, "Requesting payload for item %{public}@ advertisementPayload=%{public}@ bundleIdentifier=%{private}@ with timeout: %{public}@", buf, 0x2Au);
@@ -1105,9 +1105,9 @@ LABEL_16:
 
     Current = CFAbsoluteTimeGetCurrent();
     v37 = sub_1000620EC();
-    v38 = [(SharingBTLESuggestedItem *)v10 uuid];
+    uuid4 = [(SharingBTLESuggestedItem *)selfCopy uuid];
     v39 = qword_1000E5DC8;
-    qword_1000E5DC8 = v38;
+    qword_1000E5DC8 = uuid4;
 
     v40 = objc_alloc_init(NSDate);
     v41 = qword_1000E5DD0;
@@ -1116,37 +1116,37 @@ LABEL_16:
     kdebug_trace();
     v42 = sub_100001A30(@"signposts");
     v43 = v42;
-    if (&v10->UAUserActivityInfo_opaque[1] >= 2 && os_signpost_enabled(v42))
+    if (&selfCopy->UAUserActivityInfo_opaque[1] >= 2 && os_signpost_enabled(v42))
     {
       *buf = 0;
-      _os_signpost_emit_with_name_impl(&_mh_execute_header, v43, OS_SIGNPOST_INTERVAL_BEGIN, v10, "sharingFetch", "", buf, 2u);
+      _os_signpost_emit_with_name_impl(&_mh_execute_header, v43, OS_SIGNPOST_INTERVAL_BEGIN, selfCopy, "sharingFetch", "", buf, 2u);
     }
 
-    v44 = [(SharingBTLESuggestedItem *)v10 scanner];
-    v45 = [(SharingBTLESuggestedItem *)v10 peerDevice];
-    v46 = [(SharingBTLESuggestedItem *)v10 advertisementPayload];
-    v47 = [v46 payloadBytes];
+    scanner = [(SharingBTLESuggestedItem *)selfCopy scanner];
+    peerDevice2 = [(SharingBTLESuggestedItem *)selfCopy peerDevice];
+    advertisementPayload2 = [(SharingBTLESuggestedItem *)selfCopy advertisementPayload];
+    payloadBytes2 = [advertisementPayload2 payloadBytes];
     v49[0] = _NSConcreteStackBlock;
     v49[1] = 3221225472;
     v49[2] = sub_100053064;
     v49[3] = &unk_1000C5E68;
-    v49[4] = v10;
+    v49[4] = selfCopy;
     *&v49[5] = v37;
     *&v49[6] = Current;
-    [v44 activityPayloadFromDevice:v45 forAdvertisementPayload:v47 command:@"HANDOFF" timeout:v27 withCompletionHandler:v49];
+    [scanner activityPayloadFromDevice:peerDevice2 forAdvertisementPayload:payloadBytes2 command:@"HANDOFF" timeout:v27 withCompletionHandler:v49];
   }
 
-  objc_sync_exit(v10);
+  objc_sync_exit(selfCopy);
 
   return 1;
 }
 
 - (void)resignCurrent
 {
-  v3 = [(SharingBTLESuggestedItem *)self when];
+  when = [(SharingBTLESuggestedItem *)self when];
   v4.receiver = self;
   v4.super_class = SharingBTLESuggestedItem;
-  [(SharingBTLESuggestedItem *)&v4 setWhen:v3];
+  [(SharingBTLESuggestedItem *)&v4 setWhen:when];
 
   [(SharingBTLESuggestedItem *)self setCurrentUntilDate:0];
 }
@@ -1156,45 +1156,45 @@ LABEL_16:
   v3 = sub_100001A30(0);
   if (os_log_type_enabled(v3, OS_LOG_TYPE_INFO))
   {
-    v4 = [(SharingBTLESuggestedItem *)self uuid];
-    v5 = [v4 UUIDString];
+    uuid = [(SharingBTLESuggestedItem *)self uuid];
+    uUIDString = [uuid UUIDString];
     *buf = 138543619;
-    v12 = v5;
+    v12 = uUIDString;
     v13 = 2113;
-    v14 = self;
+    selfCopy = self;
     _os_log_impl(&_mh_execute_header, v3, OS_LOG_TYPE_INFO, "PAYLOAD: clearing payload for activity %{public}@, self=%{private}@", buf, 0x16u);
   }
 
-  v6 = self;
-  objc_sync_enter(v6);
-  v10.receiver = v6;
+  selfCopy2 = self;
+  objc_sync_enter(selfCopy2);
+  v10.receiver = selfCopy2;
   v10.super_class = SharingBTLESuggestedItem;
   [(SharingBTLESuggestedItem *)&v10 clearPayload];
-  if ([(SharingBTLESuggestedItem *)v6 isPayloadAvailable])
+  if ([(SharingBTLESuggestedItem *)selfCopy2 isPayloadAvailable])
   {
     v7 = sub_100001A30(0);
     if (os_log_type_enabled(v7, OS_LOG_TYPE_INFO))
     {
-      v8 = [(SharingBTLESuggestedItem *)v6 uuid];
-      v9 = [v8 UUIDString];
+      uuid2 = [(SharingBTLESuggestedItem *)selfCopy2 uuid];
+      uUIDString2 = [uuid2 UUIDString];
       *buf = 138543362;
-      v12 = v9;
+      v12 = uUIDString2;
       _os_log_impl(&_mh_execute_header, v7, OS_LOG_TYPE_INFO, "--- item %{public}@ payload already present, so nil-ing it out.", buf, 0xCu);
     }
 
-    [(SharingBTLESuggestedItem *)v6 setPayloadAvailable:0];
+    [(SharingBTLESuggestedItem *)selfCopy2 setPayloadAvailable:0];
   }
 
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy2);
 }
 
 - (id)statusString
 {
-  v31 = [(SharingBTLESuggestedItem *)self uuid];
-  v36 = [v31 UUIDString];
-  v35 = [(SharingBTLESuggestedItem *)self advertisementPayload];
-  v30 = [(SharingBTLESuggestedItem *)self optionBits];
-  if (v30)
+  uuid = [(SharingBTLESuggestedItem *)self uuid];
+  uUIDString = [uuid UUIDString];
+  advertisementPayload = [(SharingBTLESuggestedItem *)self advertisementPayload];
+  optionBits = [(SharingBTLESuggestedItem *)self optionBits];
+  if (optionBits)
   {
     v3 = "";
     if (([(SharingBTLESuggestedItem *)self optionBits]& 1) != 0)
@@ -1240,14 +1240,14 @@ LABEL_16:
     v32 = &stru_1000C67D0;
   }
 
-  v34 = [(SharingBTLESuggestedItem *)self bundleIdentifier];
-  v29 = [(SharingBTLESuggestedItem *)self when];
-  v33 = sub_100009AC0(v29);
-  v7 = [(SharingBTLESuggestedItem *)self removeAfter];
-  if (v7)
+  bundleIdentifier = [(SharingBTLESuggestedItem *)self bundleIdentifier];
+  when = [(SharingBTLESuggestedItem *)self when];
+  v33 = sub_100009AC0(when);
+  removeAfter = [(SharingBTLESuggestedItem *)self removeAfter];
+  if (removeAfter)
   {
-    v28 = [(SharingBTLESuggestedItem *)self removeAfter];
-    v27 = sub_100009AC0(v28);
+    removeAfter2 = [(SharingBTLESuggestedItem *)self removeAfter];
+    v27 = sub_100009AC0(removeAfter2);
     v8 = [NSString stringWithFormat:@"remove:%@ ", v27];
   }
 
@@ -1256,29 +1256,29 @@ LABEL_16:
     v8 = &stru_1000C67D0;
   }
 
-  v9 = [(SharingBTLESuggestedItem *)self peerDevice];
-  v10 = [v9 name];
-  v11 = [(SharingBTLESuggestedItem *)self peerDevice];
-  v12 = [v11 modelIdentifier];
-  v13 = [(SharingBTLESuggestedItem *)self peerDevice];
-  v14 = [v13 deviceType];
-  v15 = [NSMutableString stringWithFormat:@"BTLEItem:%@ %@%@ id=%@ when=%@ %@device=%@ modelCode=%@ deviceType=%@", v36, v35, v32, v34, v33, v8, v10, v12, v14];
+  peerDevice = [(SharingBTLESuggestedItem *)self peerDevice];
+  name = [peerDevice name];
+  peerDevice2 = [(SharingBTLESuggestedItem *)self peerDevice];
+  modelIdentifier = [peerDevice2 modelIdentifier];
+  peerDevice3 = [(SharingBTLESuggestedItem *)self peerDevice];
+  deviceType = [peerDevice3 deviceType];
+  v15 = [NSMutableString stringWithFormat:@"BTLEItem:%@ %@%@ id=%@ when=%@ %@device=%@ modelCode=%@ deviceType=%@", uUIDString, advertisementPayload, v32, bundleIdentifier, v33, v8, name, modelIdentifier, deviceType];
 
-  if (v7)
+  if (removeAfter)
   {
   }
 
-  if (v30)
+  if (optionBits)
   {
   }
 
-  v16 = [(SharingBTLESuggestedItem *)self options];
-  v17 = [v16 count];
+  options = [(SharingBTLESuggestedItem *)self options];
+  v17 = [options count];
 
   if (v17)
   {
-    v18 = [(SharingBTLESuggestedItem *)self options];
-    v19 = [NSJSONSerialization dataWithJSONObject:v18 options:0 error:0];
+    options2 = [(SharingBTLESuggestedItem *)self options];
+    v19 = [NSJSONSerialization dataWithJSONObject:options2 options:0 error:0];
 
     v20 = [[NSString alloc] initWithData:v19 encoding:4];
     [v15 appendFormat:@" options=%@", v20];
@@ -1316,12 +1316,12 @@ LABEL_16:
 {
   v10.receiver = self;
   v10.super_class = SharingBTLESuggestedItem;
-  v3 = [(SharingBTLESuggestedItem *)&v10 when];
-  v4 = [(SharingBTLESuggestedItem *)self currentUntilDate];
-  v5 = v4;
-  if (v3)
+  when = [(SharingBTLESuggestedItem *)&v10 when];
+  currentUntilDate = [(SharingBTLESuggestedItem *)self currentUntilDate];
+  v5 = currentUntilDate;
+  if (when)
   {
-    v6 = v4 == 0;
+    v6 = currentUntilDate == 0;
   }
 
   else
@@ -1336,25 +1336,25 @@ LABEL_16:
     {
       v8 = v7;
 
-      v3 = v8;
+      when = v8;
     }
   }
 
-  return v3;
+  return when;
 }
 
-- (void)setWhen:(id)a3
+- (void)setWhen:(id)when
 {
-  v4 = a3;
-  v5 = [(SharingBTLESuggestedItem *)self currentUntilDate];
-  if (!v4 || v5)
+  whenCopy = when;
+  currentUntilDate = [(SharingBTLESuggestedItem *)self currentUntilDate];
+  if (!whenCopy || currentUntilDate)
   {
   }
 
   else
   {
-    v6 = [(SharingBTLESuggestedItem *)self when];
-    v7 = [v4 isEqual:v6];
+    when = [(SharingBTLESuggestedItem *)self when];
+    v7 = [whenCopy isEqual:when];
 
     if (v7)
     {
@@ -1365,33 +1365,33 @@ LABEL_16:
   [(SharingBTLESuggestedItem *)self setCurrentUntilDate:0];
   v9.receiver = self;
   v9.super_class = SharingBTLESuggestedItem;
-  [(SharingBTLESuggestedItem *)&v9 setWhen:v4];
-  v8 = [(SharingBTLESuggestedItem *)self manager];
-  [v8 scheduleBestAppDetermination];
+  [(SharingBTLESuggestedItem *)&v9 setWhen:whenCopy];
+  manager = [(SharingBTLESuggestedItem *)self manager];
+  [manager scheduleBestAppDetermination];
 
 LABEL_7:
 }
 
 - (id)description
 {
-  v3 = [(SharingBTLESuggestedItem *)self uuid];
-  v4 = [v3 UUIDString];
-  v5 = [(SharingBTLESuggestedItem *)self activityType];
-  v6 = [(SharingBTLESuggestedItem *)self bundleIdentifier];
-  if (v6)
+  uuid = [(SharingBTLESuggestedItem *)self uuid];
+  uUIDString = [uuid UUIDString];
+  activityType = [(SharingBTLESuggestedItem *)self activityType];
+  bundleIdentifier = [(SharingBTLESuggestedItem *)self bundleIdentifier];
+  if (bundleIdentifier)
   {
-    v7 = [(SharingBTLESuggestedItem *)self bundleIdentifier];
+    bundleIdentifier2 = [(SharingBTLESuggestedItem *)self bundleIdentifier];
   }
 
   else
   {
-    v7 = @"-";
+    bundleIdentifier2 = @"-";
   }
 
-  v8 = [(SharingBTLESuggestedItem *)self when];
-  v9 = [NSString stringWithFormat:@"UASharingBTLEItem:%@ %@/%@ %@", v4, v5, v7, v8];
+  when = [(SharingBTLESuggestedItem *)self when];
+  v9 = [NSString stringWithFormat:@"UASharingBTLEItem:%@ %@/%@ %@", uUIDString, activityType, bundleIdentifier2, when];
 
-  if (v6)
+  if (bundleIdentifier)
   {
   }
 
@@ -1402,8 +1402,8 @@ LABEL_7:
 {
   if (qword_1000E5DC8)
   {
-    v2 = [qword_1000E5DC8 UUIDString];
-    v3 = [NSString stringWithFormat:@"Last BTLE payload fetched for item %@, at %@, from %@\n", v2, qword_1000E5DD0, 0];
+    uUIDString = [qword_1000E5DC8 UUIDString];
+    v3 = [NSString stringWithFormat:@"Last BTLE payload fetched for item %@, at %@, from %@\n", uUIDString, qword_1000E5DD0, 0];
   }
 
   else

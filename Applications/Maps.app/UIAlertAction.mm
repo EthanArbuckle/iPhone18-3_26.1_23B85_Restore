@@ -1,17 +1,17 @@
 @interface UIAlertAction
-+ (id)_maps_actionWithTitle:(id)a3 style:(int64_t)a4 timeout:(double)a5 handler:(id)a6;
-+ (id)_maps_alertActionsForTransitLines:(id)a3 selectionHandlers:(id)a4;
-+ (id)_maps_alertActionsForTransitLinesWithNames:(id)a3 artworks:(id)a4 selectionHandlers:(id)a5;
++ (id)_maps_actionWithTitle:(id)title style:(int64_t)style timeout:(double)timeout handler:(id)handler;
++ (id)_maps_alertActionsForTransitLines:(id)lines selectionHandlers:(id)handlers;
++ (id)_maps_alertActionsForTransitLinesWithNames:(id)names artworks:(id)artworks selectionHandlers:(id)handlers;
 @end
 
 @implementation UIAlertAction
 
-+ (id)_maps_alertActionsForTransitLines:(id)a3 selectionHandlers:(id)a4
++ (id)_maps_alertActionsForTransitLines:(id)lines selectionHandlers:(id)handlers
 {
-  v5 = a3;
-  v6 = a4;
-  v7 = [v5 count];
-  if (v7 == [v6 count])
+  linesCopy = lines;
+  handlersCopy = handlers;
+  v7 = [linesCopy count];
+  if (v7 == [handlersCopy count])
   {
     v28[0] = 0;
     v28[1] = v28;
@@ -21,16 +21,16 @@
     [v8 scale];
     v10 = v9;
 
-    v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+    v11 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(linesCopy, "count")}];
     v24[0] = _NSConcreteStackBlock;
     v24[1] = 3221225472;
     v24[2] = sub_1009F8BD4;
     v24[3] = &unk_1016319C0;
     v27 = v10;
-    v12 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(v5, "count")}];
+    v12 = [[NSMutableArray alloc] initWithCapacity:{objc_msgSend(linesCopy, "count")}];
     v25 = v12;
     v26 = v28;
-    [v5 enumerateObjectsUsingBlock:v24];
+    [linesCopy enumerateObjectsUsingBlock:v24];
     v18[0] = _NSConcreteStackBlock;
     v18[1] = 3221225472;
     v18[2] = sub_1009F8CEC;
@@ -39,10 +39,10 @@
     v19 = v13;
     v22 = v28;
     v23 = v10;
-    v20 = v6;
+    v20 = handlersCopy;
     v14 = v11;
     v21 = v14;
-    [v5 enumerateObjectsUsingBlock:v18];
+    [linesCopy enumerateObjectsUsingBlock:v18];
     v15 = v21;
     v16 = v14;
 
@@ -57,22 +57,22 @@
   return v16;
 }
 
-+ (id)_maps_alertActionsForTransitLinesWithNames:(id)a3 artworks:(id)a4 selectionHandlers:(id)a5
++ (id)_maps_alertActionsForTransitLinesWithNames:(id)names artworks:(id)artworks selectionHandlers:(id)handlers
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [v8 count];
-  if (v11 == [v9 count] && (v12 = objc_msgSend(v8, "count"), v12 == objc_msgSend(v10, "count")))
+  namesCopy = names;
+  artworksCopy = artworks;
+  handlersCopy = handlers;
+  v11 = [namesCopy count];
+  if (v11 == [artworksCopy count] && (v12 = objc_msgSend(namesCopy, "count"), v12 == objc_msgSend(handlersCopy, "count")))
   {
-    v25 = a1;
-    v13 = [v8 count];
+    selfCopy = self;
+    v13 = [namesCopy count];
     v14 = [[NSMutableArray alloc] initWithCapacity:v13];
     if (v13)
     {
       for (i = 0; i != v13; ++i)
       {
-        v16 = [v8 objectAtIndexedSubscript:i];
+        v16 = [namesCopy objectAtIndexedSubscript:i];
         v17 = +[NSNull null];
         if ([v16 isEqual:v17])
         {
@@ -81,10 +81,10 @@
 
         else
         {
-          v18 = [v8 objectAtIndexedSubscript:i];
+          v18 = [namesCopy objectAtIndexedSubscript:i];
         }
 
-        v19 = [v9 objectAtIndexedSubscript:i];
+        v19 = [artworksCopy objectAtIndexedSubscript:i];
         v20 = +[NSNull null];
         if ([v19 isEqual:v20])
         {
@@ -93,7 +93,7 @@
 
         else
         {
-          v21 = [v9 objectAtIndexedSubscript:i];
+          v21 = [artworksCopy objectAtIndexedSubscript:i];
         }
 
         v22 = [[_GEOTransitLineWrapper alloc] initWithName:v18 artwork:v21];
@@ -101,7 +101,7 @@
       }
     }
 
-    v23 = [v25 _maps_alertActionsForTransitLines:v14 selectionHandlers:v10];
+    v23 = [selfCopy _maps_alertActionsForTransitLines:v14 selectionHandlers:handlersCopy];
   }
 
   else
@@ -112,25 +112,25 @@
   return v23;
 }
 
-+ (id)_maps_actionWithTitle:(id)a3 style:(int64_t)a4 timeout:(double)a5 handler:(id)a6
++ (id)_maps_actionWithTitle:(id)title style:(int64_t)style timeout:(double)timeout handler:(id)handler
 {
-  v9 = a3;
-  v10 = a6;
+  titleCopy = title;
+  handlerCopy = handler;
   if (([UIAlertAction instancesRespondToSelector:"setTitle:"]& 1) != 0)
   {
     v33[0] = 0;
     v33[1] = v33;
     v33[2] = 0x2020000000;
     v34 = 0;
-    v11 = [v9 stringByAppendingFormat:@" (%ds)", a5];
+    timeout = [titleCopy stringByAppendingFormat:@" (%ds)", timeout];
     v30[0] = _NSConcreteStackBlock;
     v30[1] = 3221225472;
     v30[2] = sub_100F97D14;
     v30[3] = &unk_10165F800;
     v32 = v33;
-    v12 = v10;
+    v12 = handlerCopy;
     v31 = v12;
-    v13 = [UIAlertAction actionWithTitle:v11 style:a4 handler:v30];
+    v13 = [UIAlertAction actionWithTitle:timeout style:style handler:v30];
 
     +[NSDate timeIntervalSinceReferenceDate];
     v15 = v14;
@@ -147,12 +147,12 @@
     v23[2] = sub_100F97D54;
     v23[3] = &unk_10165F828;
     v28[1] = v15;
-    v28[2] = *&a5;
+    v28[2] = *&timeout;
     v26 = buf;
     objc_copyWeak(v28, &location);
     v25 = v12;
     v27 = v33;
-    v24 = v9;
+    v24 = titleCopy;
     v17 = [GCDTimer scheduledTimerWithTimeInterval:&_dispatch_main_q queue:1 repeating:v23 block:1.0];
     v18 = *(*&buf[8] + 40);
     *(*&buf[8] + 40) = v17;
@@ -192,7 +192,7 @@
       }
     }
 
-    v13 = [UIAlertAction actionWithTitle:v9 style:a4 handler:v10];
+    v13 = [UIAlertAction actionWithTitle:titleCopy style:style handler:handlerCopy];
   }
 
   return v13;

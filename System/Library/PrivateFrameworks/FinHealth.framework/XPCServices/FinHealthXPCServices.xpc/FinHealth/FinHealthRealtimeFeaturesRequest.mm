@@ -1,13 +1,13 @@
 @interface FinHealthRealtimeFeaturesRequest
 - (FinHealthRealtimeFeaturesRequest)init;
-- (id)_getLocalSearchResponse:(id)a3 transactionLocation:(id)a4;
-- (id)_getPointsOfInterestFromMapKit:(double)a3 longitude:(double)a4 horizontalAccuracy:(double)a5 verticalAccuracy:(double)a6;
+- (id)_getLocalSearchResponse:(id)response transactionLocation:(id)location;
+- (id)_getPointsOfInterestFromMapKit:(double)kit longitude:(double)longitude horizontalAccuracy:(double)accuracy verticalAccuracy:(double)verticalAccuracy;
 - (id)getEvents;
-- (id)queryPPEvents:(id)a3 fromDate:(id)a4 toDate:(id)a5;
-- (id)realtimeFeaturesForTransaction:(id)a3;
+- (id)queryPPEvents:(id)events fromDate:(id)date toDate:(id)toDate;
+- (id)realtimeFeaturesForTransaction:(id)transaction;
 - (id)textSimilarityFeatures;
-- (id)tripEventTitleNomalization:(id)a3;
-- (void)evaluateEventTagging:(id)a3 bypassMapService:(BOOL)a4 completion:(id)a5;
+- (id)tripEventTitleNomalization:(id)nomalization;
+- (void)evaluateEventTagging:(id)tagging bypassMapService:(BOOL)service completion:(id)completion;
 @end
 
 @implementation FinHealthRealtimeFeaturesRequest
@@ -32,44 +32,44 @@
   return v2;
 }
 
-- (void)evaluateEventTagging:(id)a3 bypassMapService:(BOOL)a4 completion:(id)a5
+- (void)evaluateEventTagging:(id)tagging bypassMapService:(BOOL)service completion:(id)completion
 {
-  v33 = a3;
-  v7 = a5;
+  taggingCopy = tagging;
+  completionCopy = completion;
   v37 = objc_opt_new();
-  v32 = v7;
-  if (!v7 || a4)
+  v32 = completionCopy;
+  if (!completionCopy || service)
   {
-    if (v7)
+    if (completionCopy)
     {
       v26 = [NSDictionary dictionaryWithDictionary:v37];
-      (*(v7 + 2))(v7, v26);
+      (*(completionCopy + 2))(completionCopy, v26);
     }
   }
 
   else
   {
-    v8 = [(FinHealthRealtimeFeaturesRequest *)self getEvents];
-    v9 = [v33 firstObject];
-    v31 = [v9 transactionDate];
+    getEvents = [(FinHealthRealtimeFeaturesRequest *)self getEvents];
+    firstObject = [taggingCopy firstObject];
+    transactionDate = [firstObject transactionDate];
 
-    v10 = [v33 lastObject];
-    v30 = [v10 transactionDate];
+    lastObject = [taggingCopy lastObject];
+    transactionDate2 = [lastObject transactionDate];
 
-    v29 = [NSPredicate predicateWithFormat:@"NOT (SELF.%K < %@)", @"endDate", v30];
-    v28 = [NSPredicate predicateWithFormat:@"NOT (SELF.%K > %@)", @"startDate", v31];
+    v29 = [NSPredicate predicateWithFormat:@"NOT (SELF.%K < %@)", @"endDate", transactionDate2];
+    v28 = [NSPredicate predicateWithFormat:@"NOT (SELF.%K > %@)", @"startDate", transactionDate];
     v59[0] = v29;
     v59[1] = v28;
     v11 = [NSArray arrayWithObjects:v59 count:2];
     v27 = [NSCompoundPredicate andPredicateWithSubpredicates:v11];
 
-    v39 = [v8 filteredArrayUsingPredicate:v27];
+    v39 = [getEvents filteredArrayUsingPredicate:v27];
 
     v56 = 0u;
     v57 = 0u;
     v54 = 0u;
     v55 = 0u;
-    obj = v33;
+    obj = taggingCopy;
     v12 = [obj countByEnumeratingWithState:&v54 objects:v58 count:16];
     if (v12)
     {
@@ -99,9 +99,9 @@
           v45 = sub_100011A64;
           v46 = sub_100011A74;
           v47 = objc_opt_new();
-          v16 = [v14 transactionDate];
-          v17 = [v14 transactionDate];
-          v18 = [NSPredicate predicateWithFormat:@"(SELF.%K <= %@) AND (%@ <= SELF.%K)", @"startDate", v16, v17, @"endDate"];
+          transactionDate3 = [v14 transactionDate];
+          transactionDate4 = [v14 transactionDate];
+          v18 = [NSPredicate predicateWithFormat:@"(SELF.%K <= %@) AND (%@ <= SELF.%K)", @"startDate", transactionDate3, transactionDate4, @"endDate"];
 
           v19 = [v39 filteredArrayUsingPredicate:v18];
           v41[0] = _NSConcreteStackBlock;
@@ -129,8 +129,8 @@
           if ([v20 count])
           {
             v23 = [NSDictionary dictionaryWithDictionary:v20];
-            v24 = [v14 identifier];
-            [v37 setObject:v23 forKey:v24];
+            identifier = [v14 identifier];
+            [v37 setObject:v23 forKey:identifier];
           }
 
           _Block_object_dispose(&v42, 8);
@@ -150,16 +150,16 @@
   }
 }
 
-- (id)tripEventTitleNomalization:(id)a3
+- (id)tripEventTitleNomalization:(id)nomalization
 {
-  v3 = a3;
-  v4 = [v3 title];
+  nomalizationCopy = nomalization;
+  title = [nomalizationCopy title];
   v29 = 0u;
   v30 = 0u;
   v31 = 0u;
   v32 = 0u;
-  v5 = [v3 tripParts];
-  v6 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
+  tripParts = [nomalizationCopy tripParts];
+  v6 = [tripParts countByEnumeratingWithState:&v29 objects:v33 count:16];
   if (v6)
   {
     v7 = v6;
@@ -171,20 +171,20 @@
       {
         if (*v30 != v9)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(tripParts);
         }
 
         v11 = *(*(&v29 + 1) + 8 * i);
         if ([v11 tripMode] == 2)
         {
-          v12 = [v11 mainLocation];
-          v13 = [v12 locality];
+          mainLocation = [v11 mainLocation];
+          locality = [mainLocation locality];
 
-          v8 = v13;
+          v8 = locality;
         }
       }
 
-      v7 = [v5 countByEnumeratingWithState:&v29 objects:v33 count:16];
+      v7 = [tripParts countByEnumeratingWithState:&v29 objects:v33 count:16];
     }
 
     while (v7);
@@ -200,12 +200,12 @@
   }
 
   v14 = [NSRegularExpression regularExpressionWithPattern:@"Trip to (.*?)( options:.*?)? \\- (.*?) to (.*?)$" error:0, 0];
-  v15 = [v14 firstMatchInString:v4 options:0 range:{0, objc_msgSend(v4, "length")}];
+  v15 = [v14 firstMatchInString:title options:0 range:{0, objc_msgSend(title, "length")}];
   v16 = v15;
   if (v15)
   {
     v17 = [v15 rangeAtIndex:1];
-    v19 = [v4 substringWithRange:{v17, v18}];
+    v19 = [title substringWithRange:{v17, v18}];
     v20 = +[NSCharacterSet whitespaceCharacterSet];
     v21 = [v19 stringByTrimmingCharactersInSet:v20];
     v22 = [v21 length];
@@ -232,29 +232,29 @@ LABEL_20:
     v23 = objc_alloc_init(NSDateIntervalFormatter);
     [v23 setDateTemplate:tripEventsDateTemplate];
     [v23 setBoundaryStyle:2];
-    v24 = [v3 startDate];
-    v25 = [v3 endDate];
-    v26 = [v23 stringFromDate:v24 toDate:v25];
+    startDate = [nomalizationCopy startDate];
+    endDate = [nomalizationCopy endDate];
+    v26 = [v23 stringFromDate:startDate toDate:endDate];
     v27 = [NSString stringWithFormat:@"%@ %@", v8, v26];
 
-    v4 = v27;
-    v8 = v4;
+    title = v27;
+    v8 = title;
   }
 
   return v8;
 }
 
-- (id)realtimeFeaturesForTransaction:(id)a3
+- (id)realtimeFeaturesForTransaction:(id)transaction
 {
-  v4 = a3;
+  transactionCopy = transaction;
   v5 = +[NSCalendar currentCalendar];
-  v6 = [v4 timeZone];
-  [v5 setTimeZone:v6];
+  timeZone = [transactionCopy timeZone];
+  [v5 setTimeZone:timeZone];
 
-  v7 = [v4 transactionDate];
-  v8 = [v5 components:636 fromDate:v7];
+  transactionDate = [transactionCopy transactionDate];
+  v8 = [v5 components:636 fromDate:transactionDate];
 
-  v9 = [v8 hour];
+  hour = [v8 hour];
   [v8 setHour:0];
   [v8 setMinute:0];
   [v8 setSecond:0];
@@ -263,29 +263,29 @@ LABEL_20:
   [v11 timeIntervalSinceReferenceDate];
   [v10 setTransactionDateAtZerothHour:v12];
 
-  v13 = [v4 timeZone];
-  if (v13 && (v14 = v13, [v4 timeZone], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "secondsFromGMT"), v15, v14, v16))
+  timeZone2 = [transactionCopy timeZone];
+  if (timeZone2 && (v14 = timeZone2, [transactionCopy timeZone], v15 = objc_claimAutoreleasedReturnValue(), v16 = objc_msgSend(v15, "secondsFromGMT"), v15, v14, v16))
   {
     v17 = 2;
     v18 = 3;
     v19 = 4;
-    if ((v9 & 0xFFFFFFFFFFFFFFFCLL) != 0x10)
+    if ((hour & 0xFFFFFFFFFFFFFFFCLL) != 0x10)
     {
       v19 = 5;
     }
 
-    if ((v9 & 0xFFFFFFFFFFFFFFFCLL) != 0xC)
+    if ((hour & 0xFFFFFFFFFFFFFFFCLL) != 0xC)
     {
       v18 = v19;
     }
 
-    if (v9 - 6 >= 6)
+    if (hour - 6 >= 6)
     {
       v17 = v18;
     }
 
     v45 = 0;
-    if (v9 >= 6)
+    if (hour >= 6)
     {
       v20 = v17;
     }
@@ -303,11 +303,11 @@ LABEL_20:
   }
 
   [v10 setTimeOfDay:v20];
-  v21 = [v4 country];
-  if (v21)
+  country = [transactionCopy country];
+  if (country)
   {
-    v22 = [v4 country];
-    [v10 setIsInternationalSpend:{objc_msgSend(v22, "isEqualToString:", @"USA"}];
+    country2 = [transactionCopy country];
+    [v10 setIsInternationalSpend:{objc_msgSend(country2, "isEqualToString:", @"USA"}];
   }
 
   else
@@ -315,16 +315,16 @@ LABEL_20:
     [v10 setIsInternationalSpend:0];
   }
 
-  [v10 setIsTapToPay:{objc_msgSend(v4, "transactionSource") == 1}];
-  [v10 setMerchantCategory:{objc_msgSend(v4, "category")}];
-  v23 = [v4 country];
-  [v10 setCountry:v23];
+  [v10 setIsTapToPay:{objc_msgSend(transactionCopy, "transactionSource") == 1}];
+  [v10 setMerchantCategory:{objc_msgSend(transactionCopy, "category")}];
+  country3 = [transactionCopy country];
+  [v10 setCountry:country3];
 
-  v24 = [v4 displayName];
-  [v10 setMerchantDisplayName:v24];
+  displayName = [transactionCopy displayName];
+  [v10 setMerchantDisplayName:displayName];
 
-  [v10 setMapsMerchantID:{objc_msgSend(v4, "mapsMerchantID")}];
-  [v10 setMapsMerchantBrandID:{objc_msgSend(v4, "mapsMerchantBrandID")}];
+  [v10 setMapsMerchantID:{objc_msgSend(transactionCopy, "mapsMerchantID")}];
+  [v10 setMapsMerchantBrandID:{objc_msgSend(transactionCopy, "mapsMerchantBrandID")}];
   v49 = 0;
   v50 = &v49;
   v51 = 0x3032000000;
@@ -332,46 +332,46 @@ LABEL_20:
   v53 = sub_100011A74;
   v54 = objc_opt_new();
   v25 = objc_alloc_init(FinHealthLostSavingsTag);
-  v26 = [v4 displayName];
-  v27 = [(FinHealthLostSavingsTag *)v25 cashbackPercentForMerchant:v26];
+  displayName2 = [transactionCopy displayName];
+  v27 = [(FinHealthLostSavingsTag *)v25 cashbackPercentForMerchant:displayName2];
 
   v28 = &off_100018000;
   if (v27 >= 1)
   {
-    v44 = self;
-    v29 = v9;
+    selfCopy = self;
+    v29 = hour;
     v30 = v5;
-    v31 = [v4 amount];
-    v32 = [NSString stringWithFormat:@"%@", v31];
+    amount = [transactionCopy amount];
+    v32 = [NSString stringWithFormat:@"%@", amount];
     v33 = [NSDecimalNumber decimalNumberWithString:v32];
 
-    v34 = [v4 transactionSource];
-    v35 = [v4 displayName];
+    transactionSource = [transactionCopy transactionSource];
+    displayName3 = [transactionCopy displayName];
     v48[0] = _NSConcreteStackBlock;
     v48[1] = 3221225472;
     v48[2] = sub_100012690;
     v48[3] = &unk_1000210D8;
     v48[4] = &v49;
-    [(FinHealthLostSavingsTag *)v25 lostSavingsTagComputationForTransaction:v33 transactionSource:v34 cashbackPercent:v27 merchantName:v35 completion:v48];
+    [(FinHealthLostSavingsTag *)v25 lostSavingsTagComputationForTransaction:v33 transactionSource:transactionSource cashbackPercent:v27 merchantName:displayName3 completion:v48];
 
     v5 = v30;
-    v9 = v29;
-    self = v44;
+    hour = v29;
+    self = selfCopy;
     v28 = &off_100018000;
   }
 
-  v36 = [(FinHealthRealtimeFeaturesRequest *)self textSimilarityFeatures];
-  v37 = [v4 displayName];
+  textSimilarityFeatures = [(FinHealthRealtimeFeaturesRequest *)self textSimilarityFeatures];
+  displayName4 = [transactionCopy displayName];
   v47[0] = _NSConcreteStackBlock;
   v38 = *(v28 + 117);
   v47[1] = v38;
   v47[2] = sub_100012718;
   v47[3] = &unk_1000210D8;
   v47[4] = &v49;
-  [v36 neighborsForText:v37 completion:v47];
+  [textSimilarityFeatures neighborsForText:displayName4 completion:v47];
 
-  v39 = [v4 displayName];
-  v40 = [v4 merchantDetailedCategory];
+  displayName5 = [transactionCopy displayName];
+  merchantDetailedCategory = [transactionCopy merchantDetailedCategory];
   if (v45)
   {
     v41 = 0;
@@ -379,7 +379,7 @@ LABEL_20:
 
   else
   {
-    v41 = [NSNumber numberWithInteger:v9];
+    v41 = [NSNumber numberWithInteger:hour];
   }
 
   v46[0] = _NSConcreteStackBlock;
@@ -387,7 +387,7 @@ LABEL_20:
   v46[2] = sub_1000127A0;
   v46[3] = &unk_1000210D8;
   v46[4] = &v49;
-  [v36 semanticTagsForMerchant:v39 detailedCategory:v40 dateHour:v41 completion:v46];
+  [textSimilarityFeatures semanticTagsForMerchant:displayName5 detailedCategory:merchantDetailedCategory dateHour:v41 completion:v46];
   if ((v45 & 1) == 0)
   {
   }
@@ -405,10 +405,10 @@ LABEL_20:
   return v10;
 }
 
-- (id)_getLocalSearchResponse:(id)a3 transactionLocation:(id)a4
+- (id)_getLocalSearchResponse:(id)response transactionLocation:(id)location
 {
-  v5 = a3;
-  v6 = a4;
+  responseCopy = response;
+  locationCopy = location;
   v29 = 0;
   v30 = &v29;
   v31 = 0x3032000000;
@@ -430,19 +430,19 @@ LABEL_20:
   v22 = &v23;
   v8 = v7;
   v21 = v8;
-  [v5 startWithCompletionHandler:v20];
+  [responseCopy startWithCompletionHandler:v20];
   dispatch_group_wait(v8, 0xFFFFFFFFFFFFFFFFLL);
   v9 = v24[5];
   v14 = _NSConcreteStackBlock;
   v15 = 3221225472;
   v16 = sub_100012BC4;
   v17 = &unk_100021150;
-  v10 = v6;
+  v10 = locationCopy;
   v18 = v10;
   v19 = &v29;
   [v9 enumerateObjectsUsingBlock:&v14];
-  v11 = [v30[5] allValues];
-  v12 = [NSArray arrayWithArray:v11];
+  allValues = [v30[5] allValues];
+  v12 = [NSArray arrayWithArray:allValues];
 
   _Block_object_dispose(&v23, 8);
   _Block_object_dispose(&v29, 8);
@@ -450,16 +450,16 @@ LABEL_20:
   return v12;
 }
 
-- (id)_getPointsOfInterestFromMapKit:(double)a3 longitude:(double)a4 horizontalAccuracy:(double)a5 verticalAccuracy:(double)a6
+- (id)_getPointsOfInterestFromMapKit:(double)kit longitude:(double)longitude horizontalAccuracy:(double)accuracy verticalAccuracy:(double)verticalAccuracy
 {
   v6 = 0;
-  if (a3 != 0.0 && a4 != 0.0)
+  if (kit != 0.0 && longitude != 0.0)
   {
     v10 = objc_opt_new();
-    v11 = [[CLLocation alloc] initWithLatitude:a3 longitude:a4];
-    v12 = CLLocationCoordinate2DMake(a3, a4);
+    v11 = [[CLLocation alloc] initWithLatitude:kit longitude:longitude];
+    v12 = CLLocationCoordinate2DMake(kit, longitude);
     v13 = objc_alloc_init(MKLocalSearchRequest);
-    v14 = [NSString stringWithFormat:@"%f, %f", *&a3, *&a4];
+    v14 = [NSString stringWithFormat:@"%f, %f", *&kit, *&longitude];
     [v13 setNaturalLanguageQuery:v14];
 
     v51 = MKCoordinateRegionMakeWithDistance(v12, 1000.0, 1000.0);
@@ -502,31 +502,31 @@ LABEL_20:
           }
 
           v25 = *(*(&v43 + 1) + 8 * i);
-          v26 = [v25 featureLabel];
-          v27 = [v10 objectForKey:v26];
+          featureLabel = [v25 featureLabel];
+          v27 = [v10 objectForKey:featureLabel];
 
           if (v27)
           {
-            v28 = [v25 featureRank];
-            v29 = [v27 featureRank];
-            v30 = [v28 compare:v29];
+            featureRank = [v25 featureRank];
+            featureRank2 = [v27 featureRank];
+            v30 = [featureRank compare:featureRank2];
 
-            v31 = [v27 featureRank];
+            featureRank3 = [v27 featureRank];
             if (v30 == -1)
             {
-              v32 = [v25 featureRank];
+              featureRank4 = [v25 featureRank];
 
-              v33 = [v25 featureLabel];
-              [v10 setValue:v25 forKey:v33];
+              featureLabel2 = [v25 featureLabel];
+              [v10 setValue:v25 forKey:featureLabel2];
 
-              v31 = v32;
+              featureRank3 = featureRank4;
             }
           }
 
           else
           {
-            v31 = [v25 featureLabel];
-            [v10 setValue:v25 forKey:v31];
+            featureRank3 = [v25 featureLabel];
+            [v10 setValue:v25 forKey:featureRank3];
           }
         }
 
@@ -545,8 +545,8 @@ LABEL_20:
     }
 
     v35 = [NSDictionary alloc];
-    v36 = [v10 allValues];
-    v6 = [v35 initWithObjectsAndKeys:{v36, FHSmartFeatureCompoundTypePointsOfInterest, 0}];
+    allValues = [v10 allValues];
+    v6 = [v35 initWithObjectsAndKeys:{allValues, FHSmartFeatureCompoundTypePointsOfInterest, 0}];
   }
 
   return v6;
@@ -615,9 +615,9 @@ LABEL_20:
           }
 
           v20 = *(*(&v32 + 1) + 8 * i);
-          v21 = [v20 firstObject];
-          v22 = [v20 lastObject];
-          v23 = [(FinHealthRealtimeFeaturesRequest *)self queryPPEvents:v4 fromDate:v21 toDate:v22];
+          firstObject = [v20 firstObject];
+          lastObject = [v20 lastObject];
+          v23 = [(FinHealthRealtimeFeaturesRequest *)self queryPPEvents:v4 fromDate:firstObject toDate:lastObject];
           [v5 addObjectsFromArray:v23];
         }
 
@@ -642,9 +642,9 @@ LABEL_20:
     }
 
     v27 = [NSSet setWithArray:v5];
-    v28 = [v27 allObjects];
+    allObjects = [v27 allObjects];
     v29 = self->_events;
-    self->_events = v28;
+    self->_events = allObjects;
 
     events = self->_events;
   }
@@ -652,15 +652,15 @@ LABEL_20:
   return events;
 }
 
-- (id)queryPPEvents:(id)a3 fromDate:(id)a4 toDate:(id)a5
+- (id)queryPPEvents:(id)events fromDate:(id)date toDate:(id)toDate
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = a5;
+  eventsCopy = events;
+  dateCopy = date;
+  toDateCopy = toDate;
   v10 = objc_opt_new();
   v11 = objc_opt_new();
-  [v11 setFromDate:v8];
-  [v11 setToDate:v9];
+  [v11 setFromDate:dateCopy];
+  [v11 setToDate:toDateCopy];
   v30 = 0;
   v28[0] = _NSConcreteStackBlock;
   v28[1] = 3221225472;
@@ -668,7 +668,7 @@ LABEL_20:
   v28[3] = &unk_100021178;
   v12 = v10;
   v29 = v12;
-  LOBYTE(v10) = [v7 iterScoredEventsWithQuery:v11 error:&v30 block:v28];
+  LOBYTE(v10) = [eventsCopy iterScoredEventsWithQuery:v11 error:&v30 block:v28];
   v13 = v30;
   if ((v10 & 1) == 0)
   {
@@ -682,8 +682,8 @@ LABEL_20:
   }
 
   v15 = objc_opt_new();
-  [v15 setFromDate:v8];
-  [v15 setToDate:v9];
+  [v15 setFromDate:dateCopy];
+  [v15 setToDate:toDateCopy];
 
   v27 = 0;
   v22 = _NSConcreteStackBlock;
@@ -692,7 +692,7 @@ LABEL_20:
   v25 = &unk_100021178;
   v16 = v12;
   v26 = v16;
-  v17 = [v7 iterScoredEventsWithQuery:v15 error:&v27 block:&v22];
+  v17 = [eventsCopy iterScoredEventsWithQuery:v15 error:&v27 block:&v22];
   v18 = v27;
   if ((v17 & 1) == 0)
   {

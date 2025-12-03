@@ -1,30 +1,30 @@
 @interface VOTUISonificationViewController
 - (AXUIService)axuiService;
-- (CGRect)convertFrameToViewSpace:(CGRect)a3;
+- (CGRect)convertFrameToViewSpace:(CGRect)space;
 - (CGRect)playbackBounds;
-- (CGRect)playheadFrameFromPosition:(double)a3;
-- (VOTUISonificationViewController)initWithAXUIService:(id)a3;
+- (CGRect)playheadFrameFromPosition:(double)position;
+- (VOTUISonificationViewController)initWithAXUIService:(id)service;
 - (void)handleUpdatePlayheadPositionFromLink;
 - (void)pausePlayback;
-- (void)resumePlaybackFromPosition:(double)a3 startTime:(double)a4 totalDuration:(double)a5;
-- (void)setPlaybackBounds:(CGRect)a3;
-- (void)setPlayheadHidden:(BOOL)a3;
-- (void)setPlayheadProgress:(double)a3;
+- (void)resumePlaybackFromPosition:(double)position startTime:(double)time totalDuration:(double)duration;
+- (void)setPlaybackBounds:(CGRect)bounds;
+- (void)setPlayheadHidden:(BOOL)hidden;
+- (void)setPlayheadProgress:(double)progress;
 - (void)viewDidLoad;
 @end
 
 @implementation VOTUISonificationViewController
 
-- (VOTUISonificationViewController)initWithAXUIService:(id)a3
+- (VOTUISonificationViewController)initWithAXUIService:(id)service
 {
-  v4 = a3;
+  serviceCopy = service;
   v8.receiver = self;
   v8.super_class = VOTUISonificationViewController;
   v5 = [(VOTUISonificationViewController *)&v8 initWithNibName:0 bundle:0];
   v6 = v5;
   if (v5)
   {
-    objc_storeWeak(&v5->_axuiService, v4);
+    objc_storeWeak(&v5->_axuiService, serviceCopy);
   }
 
   return v6;
@@ -39,34 +39,34 @@
   v7 = [v3 initWithFrame:{CGRectZero.origin.x, y, width, height}];
   [(VOTUISonificationViewController *)self setView:v7];
 
-  v8 = [[VOTUISonificationPlayheadView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
-  [(VOTUISonificationViewController *)self setPlayheadView:v8];
+  height = [[VOTUISonificationPlayheadView alloc] initWithFrame:CGRectZero.origin.x, y, width, height];
+  [(VOTUISonificationViewController *)self setPlayheadView:height];
 
-  v9 = [(VOTUISonificationViewController *)self view];
-  v10 = [(VOTUISonificationViewController *)self playheadView];
-  [v9 addSubview:v10];
+  view = [(VOTUISonificationViewController *)self view];
+  playheadView = [(VOTUISonificationViewController *)self playheadView];
+  [view addSubview:playheadView];
 
   v11.receiver = self;
   v11.super_class = VOTUISonificationViewController;
   [(VOTUISonificationViewController *)&v11 viewDidLoad];
 }
 
-- (CGRect)convertFrameToViewSpace:(CGRect)a3
+- (CGRect)convertFrameToViewSpace:(CGRect)space
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
-  v8 = [(VOTUISonificationViewController *)self view];
-  v9 = [v8 window];
-  [v9 _convertRectFromSceneReferenceSpace:{x, y, width, height}];
+  height = space.size.height;
+  width = space.size.width;
+  y = space.origin.y;
+  x = space.origin.x;
+  view = [(VOTUISonificationViewController *)self view];
+  window = [view window];
+  [window _convertRectFromSceneReferenceSpace:{x, y, width, height}];
   v11 = v10;
   v13 = v12;
   v15 = v14;
   v17 = v16;
 
-  v18 = [(VOTUISonificationViewController *)self view];
-  [v18 convertRect:0 fromView:{v11, v13, v15, v17}];
+  view2 = [(VOTUISonificationViewController *)self view];
+  [view2 convertRect:0 fromView:{v11, v13, v15, v17}];
   v20 = v19;
   v22 = v21;
   v24 = v23;
@@ -83,37 +83,37 @@
   return result;
 }
 
-- (void)setPlayheadHidden:(BOOL)a3
+- (void)setPlayheadHidden:(BOOL)hidden
 {
-  self->_playheadHidden = a3;
+  self->_playheadHidden = hidden;
   if ([(VOTUISonificationViewController *)self isPlayheadHidden])
   {
     y = CGRectZero.origin.y;
     width = CGRectZero.size.width;
     height = CGRectZero.size.height;
-    v7 = [(VOTUISonificationViewController *)self playheadView];
-    [v7 setFrame:{CGRectZero.origin.x, y, width, height}];
+    playheadView = [(VOTUISonificationViewController *)self playheadView];
+    [playheadView setFrame:{CGRectZero.origin.x, y, width, height}];
 
-    v8 = [(VOTUISonificationViewController *)self playheadUpdateDisplayLink];
-    [v8 invalidate];
+    playheadUpdateDisplayLink = [(VOTUISonificationViewController *)self playheadUpdateDisplayLink];
+    [playheadUpdateDisplayLink invalidate];
   }
 }
 
-- (void)setPlaybackBounds:(CGRect)a3
+- (void)setPlaybackBounds:(CGRect)bounds
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   p_playbackBounds = &self->_playbackBounds;
-  if (!CGRectEqualToRect(a3, self->_playbackBounds))
+  if (!CGRectEqualToRect(bounds, self->_playbackBounds))
   {
     p_playbackBounds->origin.x = x;
     p_playbackBounds->origin.y = y;
     p_playbackBounds->size.width = width;
     p_playbackBounds->size.height = height;
-    v9 = [(VOTUISonificationViewController *)self playheadView];
-    [v9 setNeedsLayout];
+    playheadView = [(VOTUISonificationViewController *)self playheadView];
+    [playheadView setNeedsLayout];
 
     v12.origin.x = CGRectZero.origin.x;
     v12.origin.y = CGRectZero.origin.y;
@@ -129,23 +129,23 @@
   }
 }
 
-- (void)resumePlaybackFromPosition:(double)a3 startTime:(double)a4 totalDuration:(double)a5
+- (void)resumePlaybackFromPosition:(double)position startTime:(double)time totalDuration:(double)duration
 {
-  [(VOTUISonificationViewController *)self setPlaybackStartTime:a4];
-  [(VOTUISonificationViewController *)self setPlaybackDuration:a5];
-  [(VOTUISonificationViewController *)self setPlaybackStartPosition:a3];
-  v8 = [(VOTUISonificationViewController *)self playheadUpdateDisplayLink];
-  [v8 invalidate];
+  [(VOTUISonificationViewController *)self setPlaybackStartTime:time];
+  [(VOTUISonificationViewController *)self setPlaybackDuration:duration];
+  [(VOTUISonificationViewController *)self setPlaybackStartPosition:position];
+  playheadUpdateDisplayLink = [(VOTUISonificationViewController *)self playheadUpdateDisplayLink];
+  [playheadUpdateDisplayLink invalidate];
 
   v9 = [CADisplayLink displayLinkWithTarget:self selector:"handleUpdatePlayheadPositionFromLink"];
   [(VOTUISonificationViewController *)self setPlayheadUpdateDisplayLink:v9];
 
-  v11 = [(VOTUISonificationViewController *)self playheadUpdateDisplayLink];
+  playheadUpdateDisplayLink2 = [(VOTUISonificationViewController *)self playheadUpdateDisplayLink];
   v10 = +[NSRunLoop currentRunLoop];
-  [v11 addToRunLoop:v10 forMode:NSDefaultRunLoopMode];
+  [playheadUpdateDisplayLink2 addToRunLoop:v10 forMode:NSDefaultRunLoopMode];
 }
 
-- (CGRect)playheadFrameFromPosition:(double)a3
+- (CGRect)playheadFrameFromPosition:(double)position
 {
   [(VOTUISonificationViewController *)self playbackBounds];
   x = v20.origin.x;
@@ -157,14 +157,14 @@
   v21.origin.y = y;
   v21.size.width = width;
   v21.size.height = height;
-  v10 = MinX + a3 * CGRectGetWidth(v21);
+  v10 = MinX + position * CGRectGetWidth(v21);
   v22.origin.x = x;
   v22.origin.y = y;
   v22.size.width = width;
   v22.size.height = height;
   MinY = CGRectGetMinY(v22);
-  v12 = [(VOTUISonificationViewController *)self playheadView];
-  [v12 lineWidth];
+  playheadView = [(VOTUISonificationViewController *)self playheadView];
+  [playheadView lineWidth];
   v14 = v13;
   v23.origin.x = x;
   v23.origin.y = y;
@@ -183,17 +183,17 @@
   return result;
 }
 
-- (void)setPlayheadProgress:(double)a3
+- (void)setPlayheadProgress:(double)progress
 {
-  self->_playheadProgress = a3;
+  self->_playheadProgress = progress;
   [(VOTUISonificationViewController *)self playheadProgress];
   [(VOTUISonificationViewController *)self playheadFrameFromPosition:?];
   v5 = v4;
   v7 = v6;
   v9 = v8;
   v11 = v10;
-  v12 = [(VOTUISonificationViewController *)self playheadView];
-  [v12 setFrame:{v5, v7, v9, v11}];
+  playheadView = [(VOTUISonificationViewController *)self playheadView];
+  [playheadView setFrame:{v5, v7, v9, v11}];
 }
 
 - (void)handleUpdatePlayheadPositionFromLink
@@ -209,14 +209,14 @@
   v10 = v9;
   v12 = v11;
   v14 = v13;
-  v15 = [(VOTUISonificationViewController *)self playheadView];
-  [v15 setFrame:{v8, v10, v12, v14}];
+  playheadView = [(VOTUISonificationViewController *)self playheadView];
+  [playheadView setFrame:{v8, v10, v12, v14}];
 }
 
 - (void)pausePlayback
 {
-  v2 = [(VOTUISonificationViewController *)self playheadUpdateDisplayLink];
-  [v2 invalidate];
+  playheadUpdateDisplayLink = [(VOTUISonificationViewController *)self playheadUpdateDisplayLink];
+  [playheadUpdateDisplayLink invalidate];
 }
 
 - (AXUIService)axuiService

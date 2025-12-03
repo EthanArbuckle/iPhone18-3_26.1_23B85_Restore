@@ -6,10 +6,10 @@
 
 - (BOOL)accessibilityAppliesInvertColorsInDarkUI
 {
-  v2 = self;
-  v3 = [(UIViewFreeformInvertColorsAccessibility *)v2 subviews];
-  v4 = [v3 firstObject];
-  v5 = [v4 backgroundColor];
+  selfCopy = self;
+  subviews = [(UIViewFreeformInvertColorsAccessibility *)selfCopy subviews];
+  firstObject = [subviews firstObject];
+  backgroundColor = [firstObject backgroundColor];
   AXColorGetLuma();
   v7 = v6;
 
@@ -20,7 +20,7 @@
 
   else
   {
-    v8 = v2;
+    v8 = selfCopy;
     if (v8)
     {
       while (1)
@@ -34,10 +34,10 @@
           break;
         }
 
-        v11 = [(UIViewFreeformInvertColorsAccessibility *)v8 superview];
+        superview = [(UIViewFreeformInvertColorsAccessibility *)v8 superview];
 
-        v8 = v11;
-        if (!v11)
+        v8 = superview;
+        if (!superview)
         {
           goto LABEL_8;
         }

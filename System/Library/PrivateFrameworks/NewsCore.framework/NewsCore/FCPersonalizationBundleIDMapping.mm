@@ -1,32 +1,32 @@
 @interface FCPersonalizationBundleIDMapping
-+ (id)decendingSpecificityBundleIDsForBundleID:(id)a3;
-- (FCPersonalizationBundleIDMapping)initWithCoder:(id)a3;
-- (FCPersonalizationBundleIDMapping)initWithPBBundleIDMapping:(id)a3;
++ (id)decendingSpecificityBundleIDsForBundleID:(id)d;
+- (FCPersonalizationBundleIDMapping)initWithCoder:(id)coder;
+- (FCPersonalizationBundleIDMapping)initWithPBBundleIDMapping:(id)mapping;
 - (id)jsonEncodableObject;
-- (id)tagScoresForBundleID:(id)a3;
+- (id)tagScoresForBundleID:(id)d;
 - (unint64_t)count;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation FCPersonalizationBundleIDMapping
 
-+ (id)decendingSpecificityBundleIDsForBundleID:(id)a3
++ (id)decendingSpecificityBundleIDsForBundleID:(id)d
 {
-  v3 = a3;
-  v4 = [v3 componentsSeparatedByString:@"."];
+  dCopy = d;
+  v4 = [dCopy componentsSeparatedByString:@"."];
   v5 = MEMORY[0x1E695DEC8];
   v11 = MEMORY[0x1E69E9820];
   v12 = 3221225472;
   v13 = __77__FCPersonalizationBundleIDMapping_decendingSpecificityBundleIDsForBundleID___block_invoke;
   v14 = &unk_1E7C3B110;
   v15 = v4;
-  v16 = v3;
-  v6 = v3;
+  v16 = dCopy;
+  v6 = dCopy;
   v7 = v4;
   v8 = [v5 fc_array:&v11];
-  v9 = [v8 fc_arrayByReversingObjects];
+  fc_arrayByReversingObjects = [v8 fc_arrayByReversingObjects];
 
-  return v9;
+  return fc_arrayByReversingObjects;
 }
 
 void __77__FCPersonalizationBundleIDMapping_decendingSpecificityBundleIDsForBundleID___block_invoke(uint64_t a1, void *a2)
@@ -63,22 +63,22 @@ void __77__FCPersonalizationBundleIDMapping_decendingSpecificityBundleIDsForBund
   }
 }
 
-- (FCPersonalizationBundleIDMapping)initWithPBBundleIDMapping:(id)a3
+- (FCPersonalizationBundleIDMapping)initWithPBBundleIDMapping:(id)mapping
 {
-  v5 = a3;
+  mappingCopy = mapping;
   v14.receiver = self;
   v14.super_class = FCPersonalizationBundleIDMapping;
   v6 = [(FCPersonalizationBundleIDMapping *)&v14 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_pbBundleIDMapping, a3);
+    objc_storeStrong(&v6->_pbBundleIDMapping, mapping);
     v8 = MEMORY[0x1E695DF20];
     v12[0] = MEMORY[0x1E69E9820];
     v12[1] = 3221225472;
     v12[2] = __62__FCPersonalizationBundleIDMapping_initWithPBBundleIDMapping___block_invoke;
     v12[3] = &unk_1E7C36EC8;
-    v13 = v5;
+    v13 = mappingCopy;
     v9 = [v8 fc_dictionary:v12];
     bundleIDMapping = v7->_bundleIDMapping;
     v7->_bundleIDMapping = v9;
@@ -255,23 +255,23 @@ void __62__FCPersonalizationBundleIDMapping_initWithPBBundleIDMapping___block_in
 
 - (unint64_t)count
 {
-  v2 = [(FCPersonalizationBundleIDMapping *)self bundleIDMapping];
-  v3 = [v2 count];
+  bundleIDMapping = [(FCPersonalizationBundleIDMapping *)self bundleIDMapping];
+  v3 = [bundleIDMapping count];
 
   return v3;
 }
 
-- (id)tagScoresForBundleID:(id)a3
+- (id)tagScoresForBundleID:(id)d
 {
-  v4 = a3;
+  dCopy = d;
   v5 = MEMORY[0x1E695DF20];
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __57__FCPersonalizationBundleIDMapping_tagScoresForBundleID___block_invoke;
   v9[3] = &unk_1E7C37D00;
   v9[4] = self;
-  v10 = v4;
-  v6 = v4;
+  v10 = dCopy;
+  v6 = dCopy;
   v7 = [v5 fc_dictionary:v9];
 
   return v7;
@@ -365,30 +365,30 @@ uint64_t __57__FCPersonalizationBundleIDMapping_tagScoresForBundleID___block_inv
   return [v4 numberWithDouble:v7 + v9];
 }
 
-- (FCPersonalizationBundleIDMapping)initWithCoder:(id)a3
+- (FCPersonalizationBundleIDMapping)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"bundleIDMapping"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"bundleIDMapping"];
 
   v6 = [(FCPersonalizationBundleIDMapping *)self initWithPBBundleIDMapping:v5];
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   pbBundleIDMapping = self->_pbBundleIDMapping;
   if (pbBundleIDMapping)
   {
-    [a3 encodeObject:pbBundleIDMapping forKey:@"bundleIDMapping"];
+    [coder encodeObject:pbBundleIDMapping forKey:@"bundleIDMapping"];
   }
 }
 
 - (id)jsonEncodableObject
 {
-  v2 = [(FCPersonalizationBundleIDMapping *)self bundleIDMapping];
-  v3 = [v2 fc_jsonEncodableDictionary];
+  bundleIDMapping = [(FCPersonalizationBundleIDMapping *)self bundleIDMapping];
+  fc_jsonEncodableDictionary = [bundleIDMapping fc_jsonEncodableDictionary];
 
-  return v3;
+  return fc_jsonEncodableDictionary;
 }
 
 @end

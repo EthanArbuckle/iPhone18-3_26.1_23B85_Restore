@@ -1,50 +1,50 @@
 @interface ICSearchSuggestionsQuery
-- (ICSearchSuggestionsQuery)initWithSearchString:(id)a3 additionalLiteralSearchString:(id)a4 searchTokens:(id)a5 filterQueries:(id)a6 rankingQueriesDefinition:(id)a7 modernResultsOnly:(BOOL)a8 suggestionsResponder:(id)a9;
+- (ICSearchSuggestionsQuery)initWithSearchString:(id)string additionalLiteralSearchString:(id)searchString searchTokens:(id)tokens filterQueries:(id)queries rankingQueriesDefinition:(id)definition modernResultsOnly:(BOOL)only suggestionsResponder:(id)responder;
 - (NSMutableArray)foundSuggestions;
 - (id)newSearchQueryContext;
-- (id)newSearchQueryWithContext:(id)a3;
-- (id)queryResultsToAddFromBatch:(id)a3;
-- (void)queryFinishedRunningWithError:(id)a3;
+- (id)newSearchQueryWithContext:(id)context;
+- (id)queryResultsToAddFromBatch:(id)batch;
+- (void)queryFinishedRunningWithError:(id)error;
 @end
 
 @implementation ICSearchSuggestionsQuery
 
-- (ICSearchSuggestionsQuery)initWithSearchString:(id)a3 additionalLiteralSearchString:(id)a4 searchTokens:(id)a5 filterQueries:(id)a6 rankingQueriesDefinition:(id)a7 modernResultsOnly:(BOOL)a8 suggestionsResponder:(id)a9
+- (ICSearchSuggestionsQuery)initWithSearchString:(id)string additionalLiteralSearchString:(id)searchString searchTokens:(id)tokens filterQueries:(id)queries rankingQueriesDefinition:(id)definition modernResultsOnly:(BOOL)only suggestionsResponder:(id)responder
 {
-  v15 = a9;
-  v16 = a3;
-  v17 = a4;
-  v31 = a5;
-  v30 = a6;
-  v18 = a7;
-  v19 = a9;
+  responderCopy3 = responder;
+  stringCopy = string;
+  searchStringCopy = searchString;
+  tokensCopy = tokens;
+  queriesCopy = queries;
+  definitionCopy = definition;
+  responderCopy2 = responder;
   if (!+[ICSearchSuggestionsContext supportsSearchSuggestions])
   {
-    v20 = v19;
-    v21 = v17;
-    v22 = v16;
+    v20 = responderCopy2;
+    v21 = searchStringCopy;
+    v22 = stringCopy;
     v23 = MEMORY[0x277D36198];
     v28 = objc_opt_class();
     v24 = v23;
-    v16 = v22;
-    v17 = v21;
-    v19 = v20;
-    v15 = a9;
+    stringCopy = v22;
+    searchStringCopy = v21;
+    responderCopy2 = v20;
+    responderCopy3 = responder;
     [v24 handleFailedAssertWithCondition:"ICSearchSuggestionsContext.supportsSearchSuggestions" functionName:"-[ICSearchSuggestionsQuery initWithSearchString:additionalLiteralSearchString:searchTokens:filterQueries:rankingQueriesDefinition:modernResultsOnly:suggestionsResponder:]" simulateCrash:1 showAlert:0 format:{@"%@ is only supported to use if search suggestions are supported.", v28}];
   }
 
   v32.receiver = self;
   v32.super_class = ICSearchSuggestionsQuery;
-  v25 = [(ICSearchQuery *)&v32 initWithRankingQueriesDefinition:v18];
+  v25 = [(ICSearchQuery *)&v32 initWithRankingQueriesDefinition:definitionCopy];
   v26 = v25;
   if (v25)
   {
-    objc_storeStrong(&v25->_userSearchString, a3);
-    objc_storeStrong(&v26->_literalSearchString, a4);
-    objc_storeStrong(&v26->_searchTokens, a5);
-    objc_storeStrong(&v26->_filterQueries, a6);
-    v26->_modernResultsOnly = a8;
-    objc_storeStrong(&v26->_suggestionsResponder, v15);
+    objc_storeStrong(&v25->_userSearchString, string);
+    objc_storeStrong(&v26->_literalSearchString, searchString);
+    objc_storeStrong(&v26->_searchTokens, tokens);
+    objc_storeStrong(&v26->_filterQueries, queries);
+    v26->_modernResultsOnly = only;
+    objc_storeStrong(&v26->_suggestionsResponder, responderCopy3);
   }
 
   return v26;
@@ -55,9 +55,9 @@
   foundSuggestions = self->_foundSuggestions;
   if (!foundSuggestions)
   {
-    v4 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     v5 = self->_foundSuggestions;
-    self->_foundSuggestions = v4;
+    self->_foundSuggestions = array;
 
     foundSuggestions = self->_foundSuggestions;
   }
@@ -68,23 +68,23 @@
 - (id)newSearchQueryContext
 {
   v19[1] = *MEMORY[0x277D85DE8];
-  v3 = [(ICSearchSuggestionsQuery *)self suggestionsResponder];
-  v4 = [v3 searchContext];
-  v5 = [v4 searchSuggestion];
+  suggestionsResponder = [(ICSearchSuggestionsQuery *)self suggestionsResponder];
+  searchContext = [suggestionsResponder searchContext];
+  searchSuggestion = [searchContext searchSuggestion];
 
-  v6 = [(ICSearchSuggestionsQuery *)self searchTokens];
-  v7 = [v6 ic_compactMap:&__block_literal_global_65];
+  searchTokens = [(ICSearchSuggestionsQuery *)self searchTokens];
+  v7 = [searchTokens ic_compactMap:&__block_literal_global_65];
 
   v8 = MEMORY[0x277CC34D8];
-  v9 = [(ICSearchSuggestionsQuery *)self userSearchString];
-  v10 = [v8 updatedSuggestionWithCurrentSuggestion:v5 userString:v9 tokens:v7];
+  userSearchString = [(ICSearchSuggestionsQuery *)self userSearchString];
+  v10 = [v8 updatedSuggestionWithCurrentSuggestion:searchSuggestion userString:userSearchString tokens:v7];
 
   v11 = [MEMORY[0x277CC3508] userQueryContextWithCurrentSuggestion:v10];
-  v12 = [(ICSearchSuggestionsQuery *)self literalSearchString];
-  if (v12)
+  literalSearchString = [(ICSearchSuggestionsQuery *)self literalSearchString];
+  if (literalSearchString)
   {
-    v13 = [(ICSearchSuggestionsQuery *)self literalSearchString];
-    v19[0] = v13;
+    literalSearchString2 = [(ICSearchSuggestionsQuery *)self literalSearchString];
+    v19[0] = literalSearchString2;
     v14 = [MEMORY[0x277CBEA60] arrayWithObjects:v19 count:1];
     [v11 setAdditionalQueries:v14];
   }
@@ -94,11 +94,11 @@
     [v11 setAdditionalQueries:0];
   }
 
-  v15 = [(ICSearchSuggestionsQuery *)self filterQueries];
-  v16 = v15;
-  if (v15)
+  filterQueries = [(ICSearchSuggestionsQuery *)self filterQueries];
+  v16 = filterQueries;
+  if (filterQueries)
   {
-    v17 = v15;
+    v17 = filterQueries;
   }
 
   else
@@ -117,14 +117,14 @@
   return v11;
 }
 
-- (id)newSearchQueryWithContext:(id)a3
+- (id)newSearchQueryWithContext:(id)context
 {
-  v4 = a3;
+  contextCopy = context;
   objc_opt_class();
   v5 = ICCheckedDynamicCast();
   v6 = objc_alloc(MEMORY[0x277CC3500]);
-  v7 = [(ICSearchSuggestionsQuery *)self userSearchString];
-  v8 = [v6 initWithUserQueryString:v7 userQueryContext:v5];
+  userSearchString = [(ICSearchSuggestionsQuery *)self userSearchString];
+  v8 = [v6 initWithUserQueryString:userSearchString userQueryContext:v5];
 
   objc_initWeak(&location, self);
   v10[0] = MEMORY[0x277D85DD0];
@@ -176,38 +176,38 @@ ICSearchSuggestion *__54__ICSearchSuggestionsQuery_newSearchQueryWithContext___b
   return v3;
 }
 
-- (id)queryResultsToAddFromBatch:(id)a3
+- (id)queryResultsToAddFromBatch:(id)batch
 {
-  v4 = a3;
-  v5 = [(ICSearchSuggestionsQuery *)self topHits];
+  batchCopy = batch;
+  topHits = [(ICSearchSuggestionsQuery *)self topHits];
 
-  if (v5)
+  if (topHits)
   {
-    v6 = v4;
+    secondObject = batchCopy;
   }
 
-  else if ([v4 count] > 2)
+  else if ([batchCopy count] > 2)
   {
-    v7 = [v4 ic_arrayBySplittingIntoTwoArraysWithMaxPrefixCount:2 prefixMatchingPredicate:&__block_literal_global_20];
-    v8 = [v7 firstObject];
-    v9 = [v8 count];
+    v7 = [batchCopy ic_arrayBySplittingIntoTwoArraysWithMaxPrefixCount:2 prefixMatchingPredicate:&__block_literal_global_20];
+    firstObject = [v7 firstObject];
+    v9 = [firstObject count];
 
     if (v9)
     {
-      v10 = [v7 firstObject];
-      [(ICSearchSuggestionsQuery *)self setTopHits:v10];
+      firstObject2 = [v7 firstObject];
+      [(ICSearchSuggestionsQuery *)self setTopHits:firstObject2];
     }
 
-    v6 = [v7 secondObject];
+    secondObject = [v7 secondObject];
   }
 
   else
   {
-    [(ICSearchSuggestionsQuery *)self setTopHits:v4];
-    v6 = MEMORY[0x277CBEBF8];
+    [(ICSearchSuggestionsQuery *)self setTopHits:batchCopy];
+    secondObject = MEMORY[0x277CBEBF8];
   }
 
-  return v6;
+  return secondObject;
 }
 
 BOOL __55__ICSearchSuggestionsQuery_queryResultsToAddFromBatch___block_invoke(uint64_t a1, void *a2)
@@ -218,17 +218,17 @@ BOOL __55__ICSearchSuggestionsQuery_queryResultsToAddFromBatch___block_invoke(ui
   return v3;
 }
 
-- (void)queryFinishedRunningWithError:(id)a3
+- (void)queryFinishedRunningWithError:(id)error
 {
-  if (a3)
+  if (error)
   {
     v3 = MEMORY[0x277CBEBF8];
   }
 
   else
   {
-    v4 = [(ICSearchSuggestionsQuery *)self foundSuggestions];
-    v3 = [v4 copy];
+    foundSuggestions = [(ICSearchSuggestionsQuery *)self foundSuggestions];
+    v3 = [foundSuggestions copy];
   }
 
   v5 = v3;

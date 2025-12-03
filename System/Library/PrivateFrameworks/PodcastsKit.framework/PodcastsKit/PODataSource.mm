@@ -6,26 +6,26 @@
 - (NSMutableArray)podcastRevisions;
 - (NSMutableDictionary)podcastCollectionsByUUID;
 - (NSMutableDictionary)podcastStationsByUUID;
-- (PODataSource)initWithPlistPath:(id)a3;
-- (id)arrayFromPlistURL:(id)a3;
-- (id)constructModelObjectOfClass:(Class)a3 fromDictionary:(id)a4;
-- (id)constructModelObjectsFromDictionaries:(id)a3 withIndexPath:(id)a4 modelObjectClass:(Class)a5;
+- (PODataSource)initWithPlistPath:(id)path;
+- (id)arrayFromPlistURL:(id)l;
+- (id)constructModelObjectOfClass:(Class)class fromDictionary:(id)dictionary;
+- (id)constructModelObjectsFromDictionaries:(id)dictionaries withIndexPath:(id)path modelObjectClass:(Class)class;
 - (id)description;
-- (id)domainObjectWithUUID:(id)a3;
-- (id)podcastCollectionWithUUID:(id)a3;
+- (id)domainObjectWithUUID:(id)d;
+- (id)podcastCollectionWithUUID:(id)d;
 - (id)podcastCollections;
-- (id)podcastCollectionsMatchingString:(id)a3 maxResults:(int64_t)a4;
-- (id)podcastModelObjectsInArray:(id)a3 matchingString:(id)a4 maxResults:(int64_t)a5;
-- (id)podcastRevisionsSinceAnchor:(unint64_t)a3;
-- (id)podcastStationWithUUID:(id)a3;
+- (id)podcastCollectionsMatchingString:(id)string maxResults:(int64_t)results;
+- (id)podcastModelObjectsInArray:(id)array matchingString:(id)string maxResults:(int64_t)results;
+- (id)podcastRevisionsSinceAnchor:(unint64_t)anchor;
+- (id)podcastStationWithUUID:(id)d;
 - (id)podcastStations;
-- (id)podcastStationsMatchingString:(id)a3 maxResults:(int64_t)a4;
+- (id)podcastStationsMatchingString:(id)string maxResults:(int64_t)results;
 - (id)validity;
-- (void)_withExtensionParseDataDictionary:(id)a3 revisionDictionary:(id)a4;
-- (void)getContainerURL:(id)a3;
-- (void)getDatabaseURL:(id)a3;
-- (void)getRevisionURL:(id)a3;
-- (void)getURLs:(id)a3;
+- (void)_withExtensionParseDataDictionary:(id)dictionary revisionDictionary:(id)revisionDictionary;
+- (void)getContainerURL:(id)l;
+- (void)getDatabaseURL:(id)l;
+- (void)getRevisionURL:(id)l;
+- (void)getURLs:(id)ls;
 - (void)initializeDataFromDictionary;
 @end
 
@@ -37,7 +37,7 @@
   block[1] = 3221225472;
   block[2] = __30__PODataSource_sharedInstance__block_invoke;
   block[3] = &__block_descriptor_40_e5_v8__0l;
-  block[4] = a1;
+  block[4] = self;
   if (sharedInstance_predicate != -1)
   {
     dispatch_once(&sharedInstance_predicate, block);
@@ -56,25 +56,25 @@ uint64_t __30__PODataSource_sharedInstance__block_invoke(uint64_t a1)
   return MEMORY[0x2821F96F8]();
 }
 
-- (PODataSource)initWithPlistPath:(id)a3
+- (PODataSource)initWithPlistPath:(id)path
 {
   v15 = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  pathCopy = path;
   v12.receiver = self;
   v12.super_class = PODataSource;
   v5 = [(PODataSource *)&v12 init];
   if (v5)
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
-    [(PODataSource *)v5 setPodcastCollectionsByUUID:v6];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
+    [(PODataSource *)v5 setPodcastCollectionsByUUID:dictionary];
 
-    v7 = [MEMORY[0x277CBEB38] dictionary];
-    [(PODataSource *)v5 setPodcastStationsByUUID:v7];
+    dictionary2 = [MEMORY[0x277CBEB38] dictionary];
+    [(PODataSource *)v5 setPodcastStationsByUUID:dictionary2];
 
-    v8 = [MEMORY[0x277CBEB18] array];
-    [(PODataSource *)v5 setPodcastRevisions:v8];
+    array = [MEMORY[0x277CBEB18] array];
+    [(PODataSource *)v5 setPodcastRevisions:array];
 
-    [(PODataSource *)v5 setPlistBasePath:v4];
+    [(PODataSource *)v5 setPlistBasePath:pathCopy];
     [(PODataSource *)v5 initializeDataFromDictionary];
   }
 
@@ -100,12 +100,12 @@ uint64_t __30__PODataSource_sharedInstance__block_invoke(uint64_t a1)
   return v5;
 }
 
-- (id)arrayFromPlistURL:(id)a3
+- (id)arrayFromPlistURL:(id)l
 {
-  v3 = a3;
-  v4 = [MEMORY[0x277CCAA00] defaultManager];
-  v5 = [v3 path];
-  v6 = [v4 contentsAtPath:v5];
+  lCopy = l;
+  defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+  path = [lCopy path];
+  v6 = [defaultManager contentsAtPath:path];
 
   if (v6)
   {
@@ -187,20 +187,20 @@ LABEL_14:
   return v2 != 0;
 }
 
-- (void)getURLs:(id)a3
+- (void)getURLs:(id)ls
 {
-  v4 = a3;
-  v5 = [(PODataSource *)self plistBasePath];
+  lsCopy = ls;
+  plistBasePath = [(PODataSource *)self plistBasePath];
 
-  if (v5)
+  if (plistBasePath)
   {
-    v6 = [(PODataSource *)self plistBasePath];
-    v7 = [v6 URLByAppendingPathComponent:@"PodcastsDB.plist"];
+    plistBasePath2 = [(PODataSource *)self plistBasePath];
+    v7 = [plistBasePath2 URLByAppendingPathComponent:@"PodcastsDB.plist"];
 
-    v8 = [(PODataSource *)self plistBasePath];
-    v9 = [v8 URLByAppendingPathComponent:@"PodcastsDiff.plist"];
+    plistBasePath3 = [(PODataSource *)self plistBasePath];
+    v9 = [plistBasePath3 URLByAppendingPathComponent:@"PodcastsDiff.plist"];
 
-    v4[2](v4, v7, v9, 0);
+    lsCopy[2](lsCopy, v7, v9, 0);
   }
 
   else
@@ -209,7 +209,7 @@ LABEL_14:
     v10[1] = 3221225472;
     v10[2] = __24__PODataSource_getURLs___block_invoke;
     v10[3] = &unk_279A44C50;
-    v11 = v4;
+    v11 = lsCopy;
     [(PODataSource *)self getContainerURL:v10];
   }
 }
@@ -224,35 +224,35 @@ void __24__PODataSource_getURLs___block_invoke(uint64_t a1, void *a2, void *a3)
   (*(*(a1 + 32) + 16))();
 }
 
-- (void)getDatabaseURL:(id)a3
+- (void)getDatabaseURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __31__PODataSource_getDatabaseURL___block_invoke;
   v6[3] = &unk_279A44C78;
-  v7 = v4;
-  v5 = v4;
+  v7 = lCopy;
+  v5 = lCopy;
   [(PODataSource *)self getURLs:v6];
 }
 
-- (void)getRevisionURL:(id)a3
+- (void)getRevisionURL:(id)l
 {
-  v4 = a3;
+  lCopy = l;
   v6[0] = MEMORY[0x277D85DD0];
   v6[1] = 3221225472;
   v6[2] = __31__PODataSource_getRevisionURL___block_invoke;
   v6[3] = &unk_279A44C78;
-  v7 = v4;
-  v5 = v4;
+  v7 = lCopy;
+  v5 = lCopy;
   [(PODataSource *)self getURLs:v6];
 }
 
-- (void)getContainerURL:(id)a3
+- (void)getContainerURL:(id)l
 {
   v31[1] = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  lCopy = l;
+  if (lCopy)
   {
     v4 = container_query_create();
     container_query_set_class();
@@ -297,7 +297,7 @@ void __24__PODataSource_getURLs___block_invoke(uint64_t a1, void *a2, void *a3)
       }
 
       v26 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PODataSourceErrorDomain" code:1 userInfo:v21];
-      v3[2](v3, 0, v26);
+      lCopy[2](lCopy, 0, v26);
 
       goto LABEL_39;
     }
@@ -332,7 +332,7 @@ void __24__PODataSource_getURLs___block_invoke(uint64_t a1, void *a2, void *a3)
         }
 
         v24 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PODataSourceErrorDomain" code:2 userInfo:0];
-        v3[2](v3, 0, v24);
+        lCopy[2](lCopy, 0, v24);
 
         if (!v4)
         {
@@ -376,7 +376,7 @@ LABEL_9:
 
       v15 = [MEMORY[0x277CCACA8] stringWithUTF8String:v11];
       v16 = [MEMORY[0x277CBEBC0] fileURLWithPath:v15 isDirectory:1];
-      (v3)[2](v3, v16, 0);
+      (lCopy)[2](lCopy, v16, 0);
     }
 
     else
@@ -388,7 +388,7 @@ LABEL_9:
       }
 
       v15 = [MEMORY[0x277CCA9B8] errorWithDomain:@"PODataSourceErrorDomain" code:1 userInfo:0];
-      v3[2](v3, 0, v15);
+      lCopy[2](lCopy, 0, v15);
     }
 
     if ((v8 - 1) <= 0xFFFFFFFFFFFFFFFDLL)
@@ -590,9 +590,9 @@ void __34__PODataSource_isPodcastDataStale__block_invoke(uint64_t a1, void *a2, 
 - (id)validity
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(PODataSource *)self databaseUUID];
-  v5 = [(PODataSource *)self firstRevisionUUID];
-  v6 = [v3 stringWithFormat:@"%@-%@", v4, v5];
+  databaseUUID = [(PODataSource *)self databaseUUID];
+  firstRevisionUUID = [(PODataSource *)self firstRevisionUUID];
+  v6 = [v3 stringWithFormat:@"%@-%@", databaseUUID, firstRevisionUUID];
 
   return v6;
 }
@@ -692,13 +692,13 @@ void __44__PODataSource_initializeDataFromDictionary__block_invoke(uint64_t a1, 
   }
 }
 
-- (void)_withExtensionParseDataDictionary:(id)a3 revisionDictionary:(id)a4
+- (void)_withExtensionParseDataDictionary:(id)dictionary revisionDictionary:(id)revisionDictionary
 {
   v77 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = [(PODataSource *)self arrayFromPlistURL:v6];
-  v9 = [(PODataSource *)self arrayFromPlistURL:v7];
+  dictionaryCopy = dictionary;
+  revisionDictionaryCopy = revisionDictionary;
+  v8 = [(PODataSource *)self arrayFromPlistURL:dictionaryCopy];
+  v9 = [(PODataSource *)self arrayFromPlistURL:revisionDictionaryCopy];
   POLogInitIfNeeded();
   v10 = MEMORY[0x277D86220];
   if (POLogContextSync)
@@ -714,11 +714,11 @@ void __44__PODataSource_initializeDataFromDictionary__block_invoke(uint64_t a1, 
   if (os_log_type_enabled(v11, OS_LOG_TYPE_INFO))
   {
     *buf = 138412290;
-    v76 = v6;
+    v76 = dictionaryCopy;
     _os_log_impl(&dword_25E9F0000, v11, OS_LOG_TYPE_INFO, "Constructing data source from %@", buf, 0xCu);
   }
 
-  v64 = v7;
+  v64 = revisionDictionaryCopy;
   if (!v8)
   {
     goto LABEL_38;
@@ -770,12 +770,12 @@ void __44__PODataSource_initializeDataFromDictionary__block_invoke(uint64_t a1, 
 
     [(NSMutableDictionary *)self->_podcastStationsByUUID removeAllObjects];
     [(NSMutableDictionary *)self->_podcastStationsByUUID addEntriesFromDictionary:v22];
-    v23 = [MEMORY[0x277CCAA00] defaultManager];
-    v24 = v6;
-    v25 = [(NSMutableArray *)v6 path];
-    v26 = [v23 attributesOfItemAtPath:v25 error:0];
-    v27 = [v26 fileModificationDate];
-    [(PODataSource *)self setPodcastDataPlistLastModified:v27];
+    defaultManager = [MEMORY[0x277CCAA00] defaultManager];
+    v24 = dictionaryCopy;
+    path = [(NSMutableArray *)dictionaryCopy path];
+    v26 = [defaultManager attributesOfItemAtPath:path error:0];
+    fileModificationDate = [v26 fileModificationDate];
+    [(PODataSource *)self setPodcastDataPlistLastModified:fileModificationDate];
 
     v10 = MEMORY[0x277D86220];
     POLogInitIfNeeded();
@@ -792,13 +792,13 @@ void __44__PODataSource_initializeDataFromDictionary__block_invoke(uint64_t a1, 
     if (os_log_type_enabled(v28, OS_LOG_TYPE_INFO))
     {
       v29 = v28;
-      v30 = [(PODataSource *)self podcastDataPlistLastModified];
+      podcastDataPlistLastModified = [(PODataSource *)self podcastDataPlistLastModified];
       *buf = 138412290;
-      v76 = v30;
+      v76 = podcastDataPlistLastModified;
       _os_log_impl(&dword_25E9F0000, v29, OS_LOG_TYPE_INFO, "Podcast data last modified is %@", buf, 0xCu);
     }
 
-    v6 = v24;
+    dictionaryCopy = v24;
     v9 = v60;
     v8 = v62;
 LABEL_20:
@@ -849,12 +849,12 @@ LABEL_20:
       }
     }
 
-    v7 = v64;
+    revisionDictionaryCopy = v64;
 LABEL_38:
     if (v9)
     {
       v63 = v8;
-      v59 = v6;
+      v59 = dictionaryCopy;
       [(NSMutableArray *)self->_podcastRevisions removeAllObjects];
       v72 = 0u;
       v73 = 0u;
@@ -898,9 +898,9 @@ LABEL_38:
                 if (os_log_type_enabled(v46, OS_LOG_TYPE_INFO))
                 {
                   v47 = v46;
-                  v48 = [(PODataSource *)self firstRevisionUUID];
+                  firstRevisionUUID = [(PODataSource *)self firstRevisionUUID];
                   *buf = 138412290;
-                  v76 = v48;
+                  v76 = firstRevisionUUID;
                   _os_log_impl(&dword_25E9F0000, v47, OS_LOG_TYPE_INFO, "First Revision UUID is %@", buf, 0xCu);
 
                   v10 = MEMORY[0x277D86220];
@@ -949,12 +949,12 @@ LABEL_38:
         while (v40);
       }
 
-      v52 = [MEMORY[0x277CCAA00] defaultManager];
-      v7 = v64;
-      v53 = [v64 path];
-      v54 = [v52 attributesOfItemAtPath:v53 error:0];
-      v55 = [v54 fileModificationDate];
-      [(PODataSource *)self setRevisionsDataPlistLastModified:v55];
+      defaultManager2 = [MEMORY[0x277CCAA00] defaultManager];
+      revisionDictionaryCopy = v64;
+      path2 = [v64 path];
+      v54 = [defaultManager2 attributesOfItemAtPath:path2 error:0];
+      fileModificationDate2 = [v54 fileModificationDate];
+      [(PODataSource *)self setRevisionsDataPlistLastModified:fileModificationDate2];
 
       POLogInitIfNeeded();
       if (POLogContextSync)
@@ -967,7 +967,7 @@ LABEL_38:
         v56 = v10;
       }
 
-      v6 = v59;
+      dictionaryCopy = v59;
       v9 = v61;
       v8 = v63;
       if (os_log_type_enabled(v56, OS_LOG_TYPE_INFO))
@@ -998,43 +998,43 @@ LABEL_38:
     [PODataSource _withExtensionParseDataDictionary:revisionDictionary:];
   }
 
-  v7 = v64;
+  revisionDictionaryCopy = v64;
 LABEL_68:
 
   v58 = *MEMORY[0x277D85DE8];
 }
 
-- (id)constructModelObjectOfClass:(Class)a3 fromDictionary:(id)a4
+- (id)constructModelObjectOfClass:(Class)class fromDictionary:(id)dictionary
 {
-  v5 = a4;
-  v6 = objc_alloc_init(a3);
-  v7 = [v5 objectForKey:@"uuid"];
+  dictionaryCopy = dictionary;
+  v6 = objc_alloc_init(class);
+  v7 = [dictionaryCopy objectForKey:@"uuid"];
   [v6 setUuid:v7];
 
-  v8 = [v5 objectForKey:@"title"];
+  v8 = [dictionaryCopy objectForKey:@"title"];
   [v6 setTitle:v8];
 
-  v9 = [v5 objectForKey:@"feedUrl"];
+  v9 = [dictionaryCopy objectForKey:@"feedUrl"];
   [v6 setFeedUrl:v9];
 
-  v10 = [v5 objectForKey:@"storeId"];
+  v10 = [dictionaryCopy objectForKey:@"storeId"];
 
   [v6 setStoreId:v10];
 
   return v6;
 }
 
-- (id)constructModelObjectsFromDictionaries:(id)a3 withIndexPath:(id)a4 modelObjectClass:(Class)a5
+- (id)constructModelObjectsFromDictionaries:(id)dictionaries withIndexPath:(id)path modelObjectClass:(Class)class
 {
   v28 = *MEMORY[0x277D85DE8];
-  v8 = a3;
-  v9 = a4;
-  v10 = [MEMORY[0x277CBEB38] dictionary];
+  dictionariesCopy = dictionaries;
+  pathCopy = path;
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v23 = 0u;
   v24 = 0u;
   v25 = 0u;
   v26 = 0u;
-  obj = v8;
+  obj = dictionariesCopy;
   v11 = [obj countByEnumeratingWithState:&v23 objects:v27 count:16];
   if (v11)
   {
@@ -1052,13 +1052,13 @@ LABEL_68:
           objc_enumerationMutation(obj);
         }
 
-        v17 = [(PODataSource *)self constructModelObjectOfClass:a5 fromDictionary:*(*(&v23 + 1) + 8 * v15)];
+        v17 = [(PODataSource *)self constructModelObjectOfClass:class fromDictionary:*(*(&v23 + 1) + 8 * v15)];
         v13 = v16 + 1;
-        v18 = [v9 indexPathByAddingIndex:v16];
+        v18 = [pathCopy indexPathByAddingIndex:v16];
         [v17 setIndexPath:v18];
 
-        v19 = [v17 uuid];
-        [v10 setObject:v17 forKeyedSubscript:v19];
+        uuid = [v17 uuid];
+        [dictionary setObject:v17 forKeyedSubscript:uuid];
 
         ++v15;
         v16 = v13;
@@ -1073,20 +1073,20 @@ LABEL_68:
 
   v20 = *MEMORY[0x277D85DE8];
 
-  return v10;
+  return dictionary;
 }
 
-- (id)podcastModelObjectsInArray:(id)a3 matchingString:(id)a4 maxResults:(int64_t)a5
+- (id)podcastModelObjectsInArray:(id)array matchingString:(id)string maxResults:(int64_t)results
 {
   v25 = *MEMORY[0x277D85DE8];
-  v7 = a3;
-  v8 = a4;
-  v9 = [MEMORY[0x277CBEB18] array];
+  arrayCopy = array;
+  stringCopy = string;
+  array = [MEMORY[0x277CBEB18] array];
   v20 = 0u;
   v21 = 0u;
   v22 = 0u;
   v23 = 0u;
-  v10 = v7;
+  v10 = arrayCopy;
   v11 = [v10 countByEnumeratingWithState:&v20 objects:v24 count:16];
   if (v11)
   {
@@ -1102,15 +1102,15 @@ LABEL_3:
       }
 
       v15 = *(*(&v20 + 1) + 8 * v14);
-      v16 = [v15 title];
-      v17 = [v16 rangeOfString:v8 options:1];
+      title = [v15 title];
+      v17 = [title rangeOfString:stringCopy options:1];
 
       if (v17 != 0x7FFFFFFFFFFFFFFFLL)
       {
-        [v9 addObject:v15];
+        [array addObject:v15];
       }
 
-      if (a5 >= 1 && [v9 count] == a5)
+      if (results >= 1 && [array count] == results)
       {
         break;
       }
@@ -1130,71 +1130,71 @@ LABEL_3:
 
   v18 = *MEMORY[0x277D85DE8];
 
-  return v9;
+  return array;
 }
 
-- (id)podcastCollectionsMatchingString:(id)a3 maxResults:(int64_t)a4
+- (id)podcastCollectionsMatchingString:(id)string maxResults:(int64_t)results
 {
-  v6 = a3;
-  v7 = [(PODataSource *)self podcastCollections];
-  v8 = [(PODataSource *)self podcastModelObjectsInArray:v7 matchingString:v6 maxResults:a4];
+  stringCopy = string;
+  podcastCollections = [(PODataSource *)self podcastCollections];
+  v8 = [(PODataSource *)self podcastModelObjectsInArray:podcastCollections matchingString:stringCopy maxResults:results];
 
   return v8;
 }
 
-- (id)podcastStationsMatchingString:(id)a3 maxResults:(int64_t)a4
+- (id)podcastStationsMatchingString:(id)string maxResults:(int64_t)results
 {
-  v6 = a3;
-  v7 = [(PODataSource *)self podcastStations];
-  v8 = [(PODataSource *)self podcastModelObjectsInArray:v7 matchingString:v6 maxResults:a4];
+  stringCopy = string;
+  podcastStations = [(PODataSource *)self podcastStations];
+  v8 = [(PODataSource *)self podcastModelObjectsInArray:podcastStations matchingString:stringCopy maxResults:results];
 
   return v8;
 }
 
-- (id)podcastCollectionWithUUID:(id)a3
+- (id)podcastCollectionWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PODataSource *)self podcastCollectionsByUUID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  podcastCollectionsByUUID = [(PODataSource *)self podcastCollectionsByUUID];
+  v6 = [podcastCollectionsByUUID objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
 - (id)podcastCollections
 {
-  v2 = [(PODataSource *)self podcastCollectionsByUUID];
-  v3 = [v2 allValues];
+  podcastCollectionsByUUID = [(PODataSource *)self podcastCollectionsByUUID];
+  allValues = [podcastCollectionsByUUID allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)podcastStationWithUUID:(id)a3
+- (id)podcastStationWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PODataSource *)self podcastStationsByUUID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  podcastStationsByUUID = [(PODataSource *)self podcastStationsByUUID];
+  v6 = [podcastStationsByUUID objectForKeyedSubscript:dCopy];
 
   return v6;
 }
 
 - (id)podcastStations
 {
-  v2 = [(PODataSource *)self podcastStationsByUUID];
-  v3 = [v2 allValues];
+  podcastStationsByUUID = [(PODataSource *)self podcastStationsByUUID];
+  allValues = [podcastStationsByUUID allValues];
 
-  return v3;
+  return allValues;
 }
 
-- (id)podcastRevisionsSinceAnchor:(unint64_t)a3
+- (id)podcastRevisionsSinceAnchor:(unint64_t)anchor
 {
   v19 = *MEMORY[0x277D85DE8];
-  v5 = [MEMORY[0x277CBEB18] array];
+  array = [MEMORY[0x277CBEB18] array];
   v14 = 0u;
   v15 = 0u;
   v16 = 0u;
   v17 = 0u;
-  v6 = [(PODataSource *)self podcastRevisions];
-  v7 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+  podcastRevisions = [(PODataSource *)self podcastRevisions];
+  v7 = [podcastRevisions countByEnumeratingWithState:&v14 objects:v18 count:16];
   if (v7)
   {
     v8 = v7;
@@ -1205,17 +1205,17 @@ LABEL_3:
       {
         if (*v15 != v9)
         {
-          objc_enumerationMutation(v6);
+          objc_enumerationMutation(podcastRevisions);
         }
 
         v11 = *(*(&v14 + 1) + 8 * i);
-        if ([v11 revisionID] >= a3)
+        if ([v11 revisionID] >= anchor)
         {
-          [v5 addObject:v11];
+          [array addObject:v11];
         }
       }
 
-      v8 = [v6 countByEnumeratingWithState:&v14 objects:v18 count:16];
+      v8 = [podcastRevisions countByEnumeratingWithState:&v14 objects:v18 count:16];
     }
 
     while (v8);
@@ -1223,24 +1223,24 @@ LABEL_3:
 
   v12 = *MEMORY[0x277D85DE8];
 
-  return v5;
+  return array;
 }
 
-- (id)domainObjectWithUUID:(id)a3
+- (id)domainObjectWithUUID:(id)d
 {
-  v4 = a3;
-  v5 = [(PODataSource *)self podcastCollectionsByUUID];
-  v6 = [v5 objectForKeyedSubscript:v4];
+  dCopy = d;
+  podcastCollectionsByUUID = [(PODataSource *)self podcastCollectionsByUUID];
+  v6 = [podcastCollectionsByUUID objectForKeyedSubscript:dCopy];
 
   if (!v6)
   {
-    v7 = [(PODataSource *)self podcastStationsByUUID];
-    v6 = [v7 objectForKeyedSubscript:v4];
+    podcastStationsByUUID = [(PODataSource *)self podcastStationsByUUID];
+    v6 = [podcastStationsByUUID objectForKeyedSubscript:dCopy];
   }
 
-  v8 = [v6 SAMPCollection];
+  sAMPCollection = [v6 SAMPCollection];
 
-  return v8;
+  return sAMPCollection;
 }
 
 - (id)description
@@ -1248,9 +1248,9 @@ LABEL_3:
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
   v5 = NSStringFromClass(v4);
-  v6 = [(PODataSource *)self podcastCollectionsByUUID];
-  v7 = [(PODataSource *)self podcastStationsByUUID];
-  v8 = [v3 stringWithFormat:@"%@ (%p) podcast collections: %@, podcast stations: %@", v5, self, v6, v7];
+  podcastCollectionsByUUID = [(PODataSource *)self podcastCollectionsByUUID];
+  podcastStationsByUUID = [(PODataSource *)self podcastStationsByUUID];
+  v8 = [v3 stringWithFormat:@"%@ (%p) podcast collections: %@, podcast stations: %@", v5, self, podcastCollectionsByUUID, podcastStationsByUUID];
 
   return v8;
 }

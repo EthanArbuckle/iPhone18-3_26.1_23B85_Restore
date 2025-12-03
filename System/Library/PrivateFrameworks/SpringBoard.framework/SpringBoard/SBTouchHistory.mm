@@ -1,13 +1,13 @@
 @interface SBTouchHistory
-- (CGPoint)averageTouchVelocityOverTimeDuration:(double)a3;
-- (SBTouchHistory)initWithDepth:(unint64_t)a3;
-- (double)averageTouchPathAngleOverTimeDuration:(double)a3;
-- (double)historyAtIndex:(void *)a1;
-- (int)touchHistoryDepthForTimeDuration:(double)a3 forComputingDerivative:(BOOL)a4;
+- (CGPoint)averageTouchVelocityOverTimeDuration:(double)duration;
+- (SBTouchHistory)initWithDepth:(unint64_t)depth;
+- (double)averageTouchPathAngleOverTimeDuration:(double)duration;
+- (double)historyAtIndex:(void *)index;
+- (int)touchHistoryDepthForTimeDuration:(double)duration forComputingDerivative:(BOOL)derivative;
 - (void)dealloc;
 - (void)reset;
-- (void)updateWithLocation:(CGPoint)a3 timestamp:(double)a4;
-- (void)updateWithLocation:(CGPoint)a3 timestamp:(double)a4 touchLatency:(double)a5;
+- (void)updateWithLocation:(CGPoint)location timestamp:(double)timestamp;
+- (void)updateWithLocation:(CGPoint)location timestamp:(double)timestamp touchLatency:(double)latency;
 @end
 
 @implementation SBTouchHistory
@@ -19,7 +19,7 @@
   self->_start = 0;
 }
 
-- (SBTouchHistory)initWithDepth:(unint64_t)a3
+- (SBTouchHistory)initWithDepth:(unint64_t)depth
 {
   v7.receiver = self;
   v7.super_class = SBTouchHistory;
@@ -27,8 +27,8 @@
   v5 = v4;
   if (v4)
   {
-    v4->_depth = a3;
-    v4->_history = malloc_type_malloc(24 * a3, 0x1000040504FFAC1uLL);
+    v4->_depth = depth;
+    v4->_history = malloc_type_malloc(24 * depth, 0x1000040504FFAC1uLL);
     v5->_peakSpeed = 0.0;
   }
 
@@ -43,22 +43,22 @@
   [(SBTouchHistory *)&v3 dealloc];
 }
 
-- (void)updateWithLocation:(CGPoint)a3 timestamp:(double)a4
+- (void)updateWithLocation:(CGPoint)location timestamp:(double)timestamp
 {
-  y = a3.y;
-  x = a3.x;
-  v8 = CACurrentMediaTime() - a4;
+  y = location.y;
+  x = location.x;
+  v8 = CACurrentMediaTime() - timestamp;
 
-  [(SBTouchHistory *)self updateWithLocation:x timestamp:y touchLatency:a4, v8];
+  [(SBTouchHistory *)self updateWithLocation:x timestamp:y touchLatency:timestamp, v8];
 }
 
-- (void)updateWithLocation:(CGPoint)a3 timestamp:(double)a4 touchLatency:(double)a5
+- (void)updateWithLocation:(CGPoint)location timestamp:(double)timestamp touchLatency:(double)latency
 {
   count = self->_count;
   if (count)
   {
     depth = self->_depth;
-    if ((a4 - self->_history[(count + self->_start - 1) % depth].var1) * 1000.0 < 1.0)
+    if ((timestamp - self->_history[(count + self->_start - 1) % depth].var1) * 1000.0 < 1.0)
     {
       return;
     }
@@ -69,7 +69,7 @@
     depth = self->_depth;
   }
 
-  self->_lastTouchLatency = a5;
+  self->_lastTouchLatency = latency;
   start = self->_start;
   if (count == depth - 1)
   {
@@ -81,8 +81,8 @@
   history = self->_history;
   self->_count = count + 1;
   p_var0 = &history[(count + start) % depth].var0;
-  *p_var0 = a3;
-  p_var0[1].x = a4;
+  *p_var0 = location;
+  p_var0[1].x = timestamp;
   [(SBTouchHistory *)self averageTouchVelocityOverTimeDuration:0.04];
   v13 = hypot(v11, v12);
   if (v13 > self->_peakSpeed)
@@ -91,15 +91,15 @@
   }
 }
 
-- (CGPoint)averageTouchVelocityOverTimeDuration:(double)a3
+- (CGPoint)averageTouchVelocityOverTimeDuration:(double)duration
 {
-  v4 = [(SBTouchHistory *)self touchHistoryDepthForTimeDuration:1 forComputingDerivative:self->_lastTouchLatency + a3];
+  duration = [(SBTouchHistory *)self touchHistoryDepthForTimeDuration:1 forComputingDerivative:self->_lastTouchLatency + duration];
   v6 = *MEMORY[0x277CBF348];
   v5 = *(MEMORY[0x277CBF348] + 8);
-  if (v4)
+  if (duration)
   {
-    v7 = v4;
-    if (v4 >= 1)
+    v7 = duration;
+    if (duration >= 1)
     {
       v8 = -1;
       do
@@ -137,9 +137,9 @@
   return result;
 }
 
-- (double)averageTouchPathAngleOverTimeDuration:(double)a3
+- (double)averageTouchPathAngleOverTimeDuration:(double)duration
 {
-  v4 = [(SBTouchHistory *)self touchHistoryDepthForTimeDuration:1 forComputingDerivative:a3];
+  v4 = [(SBTouchHistory *)self touchHistoryDepthForTimeDuration:1 forComputingDerivative:duration];
   if (!v4)
   {
     return 0.0;
@@ -156,9 +156,9 @@
   return v6 / v5;
 }
 
-- (int)touchHistoryDepthForTimeDuration:(double)a3 forComputingDerivative:(BOOL)a4
+- (int)touchHistoryDepthForTimeDuration:(double)duration forComputingDerivative:(BOOL)derivative
 {
-  v4 = a4;
+  derivativeCopy = derivative;
   v7 = CACurrentMediaTime();
   count = self->_count;
   if (!count)
@@ -178,8 +178,8 @@
     v11 = v7 - self->_history[(v10 + v9-- + self->_start) % self->_depth].var1;
   }
 
-  while (v11 < a3);
-  if (v4)
+  while (v11 < duration);
+  if (derivativeCopy)
   {
     return -v9;
   }
@@ -190,11 +190,11 @@
   }
 }
 
-- (double)historyAtIndex:(void *)a1
+- (double)historyAtIndex:(void *)index
 {
-  if (a1)
+  if (index)
   {
-    return *(a1[4] + 24 * ((a1[3] + ~a2 + a1[2]) % a1[1]));
+    return *(index[4] + 24 * ((index[3] + ~a2 + index[2]) % index[1]));
   }
 
   else

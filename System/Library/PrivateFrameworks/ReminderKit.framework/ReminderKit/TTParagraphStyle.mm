@@ -1,65 +1,65 @@
 @interface TTParagraphStyle
 + (id)defaultParagraphStyle;
-+ (int)paragraphStyleAlignmentForTextAlignment:(int64_t)a3;
-+ (int64_t)textAlignmentForParagraphStyleAlignment:(int)a3;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToModelComparable:(id)a3;
-- (BOOL)isEqualToModelParagraphStyle:(id)a3;
-- (BOOL)isEqualToParagraphStyle:(id)a3;
++ (int)paragraphStyleAlignmentForTextAlignment:(int64_t)alignment;
++ (int64_t)textAlignmentForParagraphStyleAlignment:(int)alignment;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToModelComparable:(id)comparable;
+- (BOOL)isEqualToModelParagraphStyle:(id)style;
+- (BOOL)isEqualToParagraphStyle:(id)style;
 - (BOOL)isHeader;
 - (BOOL)isList;
 - (BOOL)preferSingleLine;
 - (NSString)description;
 - (TTParagraphStyle)init;
-- (TTParagraphStyle)initWithArchive:(const void *)a3;
-- (TTParagraphStyle)initWithCoder:(id)a3;
-- (TTParagraphStyle)initWithData:(id)a3;
-- (id)listBulletInAttributedString:(id)a3 atIndex:(unint64_t)a4;
-- (id)mutableCopyWithZone:(_NSZone *)a3;
+- (TTParagraphStyle)initWithArchive:(const void *)archive;
+- (TTParagraphStyle)initWithCoder:(id)coder;
+- (TTParagraphStyle)initWithData:(id)data;
+- (id)listBulletInAttributedString:(id)string atIndex:(unint64_t)index;
+- (id)mutableCopyWithZone:(_NSZone *)zone;
 - (id)serialize;
 - (unint64_t)hash;
-- (void)encodeWithCoder:(id)a3;
-- (void)saveToArchive:(void *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)saveToArchive:(void *)archive;
 @end
 
 @implementation TTParagraphStyle
 
-+ (int64_t)textAlignmentForParagraphStyleAlignment:(int)a3
++ (int64_t)textAlignmentForParagraphStyleAlignment:(int)alignment
 {
-  if (a3 >= 4)
+  if (alignment >= 4)
   {
     return 4;
   }
 
   else
   {
-    return a3;
+    return alignment;
   }
 }
 
-+ (int)paragraphStyleAlignmentForTextAlignment:(int64_t)a3
++ (int)paragraphStyleAlignmentForTextAlignment:(int64_t)alignment
 {
-  if (a3 >= 4)
+  if (alignment >= 4)
   {
     return 4;
   }
 
   else
   {
-    return a3;
+    return alignment;
   }
 }
 
-- (TTParagraphStyle)initWithData:(id)a3
+- (TTParagraphStyle)initWithData:(id)data
 {
-  v4 = a3;
+  dataCopy = data;
   topotext::ParagraphStyle::ParagraphStyle(v10);
-  v5 = [v4 bytes];
-  v6 = TTBoundedCheckedCastNSUIntegerToUInt32([v4 length]);
-  if (google::protobuf::MessageLite::ParseFromArray(v10, v5, v6))
+  bytes = [dataCopy bytes];
+  v6 = TTBoundedCheckedCastNSUIntegerToUInt32([dataCopy length]);
+  if (google::protobuf::MessageLite::ParseFromArray(v10, bytes, v6))
   {
     self = [(TTParagraphStyle *)self initWithArchive:v10];
-    v7 = self;
+    selfCopy = self;
   }
 
   else
@@ -70,23 +70,23 @@
       [TTParagraphStyle(TTParagraphStylePersistenceAdditions) initWithData:v8];
     }
 
-    v7 = 0;
+    selfCopy = 0;
   }
 
   topotext::ParagraphStyle::~ParagraphStyle(v10);
 
-  return v7;
+  return selfCopy;
 }
 
-- (TTParagraphStyle)initWithArchive:(const void *)a3
+- (TTParagraphStyle)initWithArchive:(const void *)archive
 {
   v4 = [(TTParagraphStyle *)self init];
   v5 = v4;
   if (v4)
   {
-    if (*(a3 + 8))
+    if (*(archive + 8))
     {
-      v6 = *(a3 + 10);
+      v6 = *(archive + 10);
     }
 
     else
@@ -95,9 +95,9 @@
     }
 
     [(TTParagraphStyle *)v4 setStyle:v6];
-    if ((*(a3 + 32) & 2) != 0)
+    if ((*(archive + 32) & 2) != 0)
     {
-      v7 = [TTParagraphStyle textAlignmentForParagraphStyleAlignment:*(a3 + 11)];
+      v7 = [TTParagraphStyle textAlignmentForParagraphStyleAlignment:*(archive + 11)];
     }
 
     else
@@ -106,9 +106,9 @@
     }
 
     [(TTParagraphStyle *)v5 setAlignment:v7];
-    if ((*(a3 + 32) & 4) != 0)
+    if ((*(archive + 32) & 4) != 0)
     {
-      v8 = [TTMergeableAttributedString writingDirectionForAttribute:*(a3 + 12)];
+      v8 = [TTMergeableAttributedString writingDirectionForAttribute:*(archive + 12)];
     }
 
     else
@@ -117,35 +117,35 @@
     }
 
     [(TTParagraphStyle *)v5 setWritingDirection:v8];
-    v9 = *(a3 + 8);
+    v9 = *(archive + 8);
     if ((v9 & 8) != 0)
     {
-      [(TTParagraphStyle *)v5 setIndent:*(a3 + 13)];
-      v9 = *(a3 + 8);
+      [(TTParagraphStyle *)v5 setIndent:*(archive + 13)];
+      v9 = *(archive + 8);
     }
 
     if ((v9 & 0x40) != 0)
     {
-      [(TTParagraphStyle *)v5 setStartingItemNumber:*(a3 + 17)];
-      v9 = *(a3 + 8);
+      [(TTParagraphStyle *)v5 setStartingItemNumber:*(archive + 17)];
+      v9 = *(archive + 8);
     }
 
     if ((v9 & 0x20) != 0)
     {
-      [(TTParagraphStyle *)v5 setHints:*(a3 + 16)];
+      [(TTParagraphStyle *)v5 setHints:*(archive + 16)];
     }
   }
 
   return v5;
 }
 
-- (void)saveToArchive:(void *)a3
+- (void)saveToArchive:(void *)archive
 {
   if ([(TTParagraphStyle *)self style]!= 3)
   {
-    v5 = [(TTParagraphStyle *)self style];
-    *(a3 + 8) |= 1u;
-    *(a3 + 10) = v5;
+    style = [(TTParagraphStyle *)self style];
+    *(archive + 8) |= 1u;
+    *(archive + 10) = style;
   }
 
   if ([(TTParagraphStyle *)self alignment]!= 4)
@@ -157,8 +157,8 @@
       [TTParagraphStyle(TTParagraphStylePersistenceAdditions) saveToArchive:];
     }
 
-    *(a3 + 8) |= 2u;
-    *(a3 + 11) = v7;
+    *(archive + 8) |= 2u;
+    *(archive + 11) = v7;
   }
 
   if ([(TTParagraphStyle *)self writingDirection]!= -1)
@@ -170,29 +170,29 @@
       [TTParagraphStyle(TTParagraphStylePersistenceAdditions) saveToArchive:];
     }
 
-    *(a3 + 8) |= 4u;
-    *(a3 + 12) = v9;
+    *(archive + 8) |= 4u;
+    *(archive + 12) = v9;
   }
 
   if ([(TTParagraphStyle *)self indent])
   {
-    v10 = [(TTParagraphStyle *)self indent];
-    *(a3 + 8) |= 8u;
-    *(a3 + 13) = v10;
+    indent = [(TTParagraphStyle *)self indent];
+    *(archive + 8) |= 8u;
+    *(archive + 13) = indent;
   }
 
   if ([(TTParagraphStyle *)self startingItemNumber])
   {
-    v11 = [(TTParagraphStyle *)self startingItemNumber];
-    *(a3 + 8) |= 0x40u;
-    *(a3 + 17) = v11;
+    startingItemNumber = [(TTParagraphStyle *)self startingItemNumber];
+    *(archive + 8) |= 0x40u;
+    *(archive + 17) = startingItemNumber;
   }
 
   if ([(TTParagraphStyle *)self hints])
   {
-    v12 = [(TTParagraphStyle *)self hints];
-    *(a3 + 8) |= 0x20u;
-    *(a3 + 16) = v12;
+    hints = [(TTParagraphStyle *)self hints];
+    *(archive + 8) |= 0x20u;
+    *(archive + 16) = hints;
   }
 }
 
@@ -200,30 +200,30 @@
 {
   [(TTParagraphStyle *)self saveToArchive:v6, topotext::ParagraphStyle::ParagraphStyle(v6)];
   v2 = [objc_alloc(MEMORY[0x1E695DF88]) initWithLength:topotext::ParagraphStyle::ByteSize(v6)];
-  v3 = [v2 mutableBytes];
+  mutableBytes = [v2 mutableBytes];
   v4 = TTBoundedCheckedCastNSUIntegerToUInt32([v2 length]);
-  google::protobuf::MessageLite::SerializeToArray(v6, v3, v4);
+  google::protobuf::MessageLite::SerializeToArray(v6, mutableBytes, v4);
   topotext::ParagraphStyle::~ParagraphStyle(v6);
 
   return v2;
 }
 
-- (TTParagraphStyle)initWithCoder:(id)a3
+- (TTParagraphStyle)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"protobufArchiveKey"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"protobufArchiveKey"];
   v6 = [(TTParagraphStyle *)self initWithData:v5];
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v5 = a3;
-  v4 = [(TTParagraphStyle *)self serialize];
-  if (v4)
+  coderCopy = coder;
+  serialize = [(TTParagraphStyle *)self serialize];
+  if (serialize)
   {
-    [v5 encodeObject:v4 forKey:@"protobufArchiveKey"];
+    [coderCopy encodeObject:serialize forKey:@"protobufArchiveKey"];
   }
 }
 
@@ -260,7 +260,7 @@ uint64_t __41__TTParagraphStyle_defaultParagraphStyle__block_invoke()
   return result;
 }
 
-- (id)mutableCopyWithZone:(_NSZone *)a3
+- (id)mutableCopyWithZone:(_NSZone *)zone
 {
   v4 = objc_alloc_init(TTMutableParagraphStyle);
   [(TTParagraphStyle *)v4 setStyle:[(TTParagraphStyle *)self style]];
@@ -274,22 +274,22 @@ uint64_t __41__TTParagraphStyle_defaultParagraphStyle__block_invoke()
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TTParagraphStyle *)self isEqualToParagraphStyle:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TTParagraphStyle *)self isEqualToParagraphStyle:equalCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToParagraphStyle:(id)a3
+- (BOOL)isEqualToParagraphStyle:(id)style
 {
-  v4 = a3;
-  if (-[TTParagraphStyle isEqualToModelParagraphStyle:](self, "isEqualToModelParagraphStyle:", v4) && (v5 = -[TTParagraphStyle needsListCleanup](self, "needsListCleanup"), v5 == [v4 needsListCleanup]))
+  styleCopy = style;
+  if (-[TTParagraphStyle isEqualToModelParagraphStyle:](self, "isEqualToModelParagraphStyle:", styleCopy) && (v5 = -[TTParagraphStyle needsListCleanup](self, "needsListCleanup"), v5 == [styleCopy needsListCleanup]))
   {
-    v7 = [(TTParagraphStyle *)self needsParagraphCleanup];
-    v6 = v7 ^ [v4 needsParagraphCleanup] ^ 1;
+    needsParagraphCleanup = [(TTParagraphStyle *)self needsParagraphCleanup];
+    v6 = needsParagraphCleanup ^ [styleCopy needsParagraphCleanup] ^ 1;
   }
 
   else
@@ -300,23 +300,23 @@ uint64_t __41__TTParagraphStyle_defaultParagraphStyle__block_invoke()
   return v6;
 }
 
-- (BOOL)isEqualToModelComparable:(id)a3
+- (BOOL)isEqualToModelComparable:(id)comparable
 {
-  v4 = a3;
+  comparableCopy = comparable;
   objc_opt_class();
-  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TTParagraphStyle *)self isEqualToModelParagraphStyle:v4];
+  v5 = (objc_opt_isKindOfClass() & 1) != 0 && [(TTParagraphStyle *)self isEqualToModelParagraphStyle:comparableCopy];
 
   return v5;
 }
 
-- (BOOL)isEqualToModelParagraphStyle:(id)a3
+- (BOOL)isEqualToModelParagraphStyle:(id)style
 {
-  v4 = a3;
-  v5 = [(TTParagraphStyle *)self style];
-  if (v5 == [v4 style] && (v6 = -[TTParagraphStyle alignment](self, "alignment"), v6 == objc_msgSend(v4, "alignment")) && (v7 = -[TTParagraphStyle writingDirection](self, "writingDirection"), v7 == objc_msgSend(v4, "writingDirection")) && (v8 = -[TTParagraphStyle indent](self, "indent"), v8 == objc_msgSend(v4, "indent")) && (v9 = -[TTParagraphStyle startingItemNumber](self, "startingItemNumber"), v9 == objc_msgSend(v4, "startingItemNumber")))
+  styleCopy = style;
+  style = [(TTParagraphStyle *)self style];
+  if (style == [styleCopy style] && (v6 = -[TTParagraphStyle alignment](self, "alignment"), v6 == objc_msgSend(styleCopy, "alignment")) && (v7 = -[TTParagraphStyle writingDirection](self, "writingDirection"), v7 == objc_msgSend(styleCopy, "writingDirection")) && (v8 = -[TTParagraphStyle indent](self, "indent"), v8 == objc_msgSend(styleCopy, "indent")) && (v9 = -[TTParagraphStyle startingItemNumber](self, "startingItemNumber"), v9 == objc_msgSend(styleCopy, "startingItemNumber")))
   {
-    v10 = [(TTParagraphStyle *)self hints];
-    v11 = v10 == [v4 hints];
+    hints = [(TTParagraphStyle *)self hints];
+    v11 = hints == [styleCopy hints];
   }
 
   else
@@ -329,8 +329,8 @@ uint64_t __41__TTParagraphStyle_defaultParagraphStyle__block_invoke()
 
 - (unint64_t)hash
 {
-  v3 = [(TTParagraphStyle *)self style];
-  v4 = v3 ^ (16 * [(TTParagraphStyle *)self indent]);
+  style = [(TTParagraphStyle *)self style];
+  v4 = style ^ (16 * [(TTParagraphStyle *)self indent]);
   v5 = v4 ^ ([(TTParagraphStyle *)self alignment]<< 6);
   v6 = v5 ^ ([(TTParagraphStyle *)self writingDirection]<< 8);
   return v6 ^ [(TTParagraphStyle *)self hints];
@@ -353,13 +353,13 @@ uint64_t __41__TTParagraphStyle_defaultParagraphStyle__block_invoke()
 
 - (BOOL)isHeader
 {
-  v3 = [(TTParagraphStyle *)self style];
-  if (v3 != 1)
+  style = [(TTParagraphStyle *)self style];
+  if (style != 1)
   {
-    LOBYTE(v3) = [(TTParagraphStyle *)self style]== 2 || [(TTParagraphStyle *)self style]== 0;
+    LOBYTE(style) = [(TTParagraphStyle *)self style]== 2 || [(TTParagraphStyle *)self style]== 0;
   }
 
-  return v3;
+  return style;
 }
 
 - (BOOL)preferSingleLine
@@ -382,39 +382,39 @@ uint64_t __41__TTParagraphStyle_defaultParagraphStyle__block_invoke()
   return v3;
 }
 
-- (id)listBulletInAttributedString:(id)a3 atIndex:(unint64_t)a4
+- (id)listBulletInAttributedString:(id)string atIndex:(unint64_t)index
 {
-  v6 = a3;
-  v7 = [(TTParagraphStyle *)self style];
-  if (v7 == 101)
+  stringCopy = string;
+  style = [(TTParagraphStyle *)self style];
+  if (style == 101)
   {
     v11 = @"–";
   }
 
-  else if (v7 == 102)
+  else if (style == 102)
   {
-    v8 = [v6 attribute:TTPresentationAttributeNameItemNumber atIndex:a4 effectiveRange:0];
+    v8 = [stringCopy attribute:TTPresentationAttributeNameItemNumber atIndex:index effectiveRange:0];
     v9 = v8;
-    if (a4 && !v8)
+    if (index && !v8)
     {
-      v9 = [v6 attribute:TTPresentationAttributeNameItemNumber atIndex:a4 - 1 effectiveRange:0];
+      v9 = [stringCopy attribute:TTPresentationAttributeNameItemNumber atIndex:index - 1 effectiveRange:0];
     }
 
-    v10 = [v9 unsignedIntegerValue];
-    v11 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld.", v10];
+    unsignedIntegerValue = [v9 unsignedIntegerValue];
+    v11 = [MEMORY[0x1E696AEC0] localizedStringWithFormat:@"%ld.", unsignedIntegerValue];
   }
 
   else
   {
-    v12 = [(TTParagraphStyle *)self indent];
-    if (v12 >= 2)
+    indent = [(TTParagraphStyle *)self indent];
+    if (indent >= 2)
     {
       v13 = 2;
     }
 
     else
     {
-      v13 = v12;
+      v13 = indent;
     }
 
     v11 = [&unk_1F0D99A60 objectAtIndexedSubscript:v13];
@@ -427,9 +427,9 @@ uint64_t __41__TTParagraphStyle_defaultParagraphStyle__block_invoke()
 {
   if ([(TTParagraphStyle *)self writingDirection])
   {
-    v3 = [(TTParagraphStyle *)self writingDirection];
+    writingDirection = [(TTParagraphStyle *)self writingDirection];
     v4 = @"Natural";
-    if (v3 == 1)
+    if (writingDirection == 1)
     {
       v4 = @"RTL";
     }
@@ -441,9 +441,9 @@ uint64_t __41__TTParagraphStyle_defaultParagraphStyle__block_invoke()
   }
 
   v5 = v4;
-  v6 = [(TTParagraphStyle *)self needsParagraphCleanup];
+  needsParagraphCleanup = [(TTParagraphStyle *)self needsParagraphCleanup];
   v7 = @" needsParagraphCleanup";
-  if (!v6)
+  if (!needsParagraphCleanup)
   {
     v7 = &stru_1F0D67F00;
   }
@@ -452,17 +452,17 @@ uint64_t __41__TTParagraphStyle_defaultParagraphStyle__block_invoke()
   v9 = v7;
   v10 = objc_opt_class();
   v11 = NSStringFromClass(v10);
-  v12 = [(TTParagraphStyle *)self style];
-  v13 = [(TTParagraphStyle *)self alignment];
-  v14 = [(TTParagraphStyle *)self indent];
-  v15 = [(TTParagraphStyle *)self needsListCleanup];
+  style = [(TTParagraphStyle *)self style];
+  alignment = [(TTParagraphStyle *)self alignment];
+  indent = [(TTParagraphStyle *)self indent];
+  needsListCleanup = [(TTParagraphStyle *)self needsListCleanup];
   v16 = @" needsListCleanup";
-  if (!v15)
+  if (!needsListCleanup)
   {
     v16 = &stru_1F0D67F00;
   }
 
-  v17 = [v8 stringWithFormat:@"<%@: %p style=%lu alignment=%lu indent=%ld %@%@%@%@>", v11, self, v12, v13, v14, v5, &stru_1F0D67F00, v9, v16];
+  v17 = [v8 stringWithFormat:@"<%@: %p style=%lu alignment=%lu indent=%ld %@%@%@%@>", v11, self, style, alignment, indent, v5, &stru_1F0D67F00, v9, v16];
 
   return v17;
 }

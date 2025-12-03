@@ -1,8 +1,8 @@
 @interface WFMediaPickerParameter
-- (BOOL)parameterStateIsValid:(id)a3;
+- (BOOL)parameterStateIsValid:(id)valid;
 - (WFAction)action;
-- (id)localizedLabelForState:(id)a3;
-- (void)setAction:(id)a3;
+- (id)localizedLabelForState:(id)state;
+- (void)setAction:(id)action;
 @end
 
 @implementation WFMediaPickerParameter
@@ -14,16 +14,16 @@
   return WeakRetained;
 }
 
-- (BOOL)parameterStateIsValid:(id)a3
+- (BOOL)parameterStateIsValid:(id)valid
 {
-  v4 = a3;
-  v5 = [v4 variable];
+  validCopy = valid;
+  variable = [validCopy variable];
 
-  if (v5)
+  if (variable)
   {
     v8.receiver = self;
     v8.super_class = WFMediaPickerParameter;
-    v6 = [(WFParameter *)&v8 parameterStateIsValid:v4];
+    v6 = [(WFParameter *)&v8 parameterStateIsValid:validCopy];
   }
 
   else
@@ -34,17 +34,17 @@
   return v6;
 }
 
-- (id)localizedLabelForState:(id)a3
+- (id)localizedLabelForState:(id)state
 {
-  v3 = [a3 value];
-  v4 = [v3 itemName];
+  value = [state value];
+  itemName = [value itemName];
 
-  return v4;
+  return itemName;
 }
 
-- (void)setAction:(id)a3
+- (void)setAction:(id)action
 {
-  obj = a3;
+  obj = action;
   WeakRetained = objc_loadWeakRetained(&self->_action);
 
   v5 = obj;

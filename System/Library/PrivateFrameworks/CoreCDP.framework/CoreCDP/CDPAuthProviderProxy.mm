@@ -1,25 +1,25 @@
 @interface CDPAuthProviderProxy
-+ (id)proxyWithAuthProvider:(id)a3;
-- (void)cdpContext:(id)a3 performSilentRecoveryTokenRenewal:(id)a4;
-- (void)cdpContext:(id)a3 verifyMasterKey:(id)a4 completion:(id)a5;
++ (id)proxyWithAuthProvider:(id)provider;
+- (void)cdpContext:(id)context performSilentRecoveryTokenRenewal:(id)renewal;
+- (void)cdpContext:(id)context verifyMasterKey:(id)key completion:(id)completion;
 @end
 
 @implementation CDPAuthProviderProxy
 
-+ (id)proxyWithAuthProvider:(id)a3
++ (id)proxyWithAuthProvider:(id)provider
 {
-  v3 = a3;
+  providerCopy = provider;
   v4 = objc_alloc_init(CDPAuthProviderProxy);
   authProvider = v4->_authProvider;
-  v4->_authProvider = v3;
+  v4->_authProvider = providerCopy;
 
   return v4;
 }
 
-- (void)cdpContext:(id)a3 performSilentRecoveryTokenRenewal:(id)a4
+- (void)cdpContext:(id)context performSilentRecoveryTokenRenewal:(id)renewal
 {
-  v6 = a3;
-  v7 = a4;
+  contextCopy = context;
+  renewalCopy = renewal;
   v8 = _CDPLogSystem();
   if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
   {
@@ -35,18 +35,18 @@
     v12[1] = 3221225472;
     v12[2] = __69__CDPAuthProviderProxy_cdpContext_performSilentRecoveryTokenRenewal___block_invoke;
     v12[3] = &unk_1E869D600;
-    v13 = v7;
-    [(CDPAuthProvider *)v10 cdpContext:v6 performSilentRecoveryTokenRenewal:v12];
+    v13 = renewalCopy;
+    [(CDPAuthProvider *)v10 cdpContext:contextCopy performSilentRecoveryTokenRenewal:v12];
     v11 = v13;
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if (v7)
+  if (renewalCopy)
   {
     v11 = _CDPStateError(-5200, 0);
-    (*(v7 + 2))(v7, 0, v11);
+    (*(renewalCopy + 2))(renewalCopy, 0, v11);
     goto LABEL_7;
   }
 
@@ -70,18 +70,18 @@ void __69__CDPAuthProviderProxy_cdpContext_performSilentRecoveryTokenRenewal___b
   }
 }
 
-- (void)cdpContext:(id)a3 verifyMasterKey:(id)a4 completion:(id)a5
+- (void)cdpContext:(id)context verifyMasterKey:(id)key completion:(id)completion
 {
   v21 = *MEMORY[0x1E69E9840];
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  contextCopy = context;
+  keyCopy = key;
+  completionCopy = completion;
   v11 = _CDPLogSystem();
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
-    v12 = [v8 altDSID];
+    altDSID = [contextCopy altDSID];
     *buf = 138739971;
-    v20 = v12;
+    v20 = altDSID;
     _os_log_impl(&dword_1DED99000, v11, OS_LOG_TYPE_DEFAULT, "Starting MRK verification for %{sensitive}@", buf, 0xCu);
   }
 
@@ -93,18 +93,18 @@ void __69__CDPAuthProviderProxy_cdpContext_performSilentRecoveryTokenRenewal___b
     v17[1] = 3221225472;
     v17[2] = __62__CDPAuthProviderProxy_cdpContext_verifyMasterKey_completion___block_invoke;
     v17[3] = &unk_1E869D628;
-    v18 = v10;
-    [(CDPAuthProvider *)v14 cdpContext:v8 verifyMasterKey:v9 completion:v17];
+    v18 = completionCopy;
+    [(CDPAuthProvider *)v14 cdpContext:contextCopy verifyMasterKey:keyCopy completion:v17];
     v15 = v18;
 LABEL_7:
 
     goto LABEL_8;
   }
 
-  if (v10)
+  if (completionCopy)
   {
     v15 = _CDPStateError(-5200, 0);
-    (*(v10 + 2))(v10, 0, v15);
+    (*(completionCopy + 2))(completionCopy, 0, v15);
     goto LABEL_7;
   }
 

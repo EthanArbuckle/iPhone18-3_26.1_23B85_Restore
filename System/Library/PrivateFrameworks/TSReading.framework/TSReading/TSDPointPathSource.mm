@@ -1,12 +1,12 @@
 @interface TSDPointPathSource
-+ (id)pathSourceWithType:(int)a3 point:(CGPoint)a4 naturalSize:(CGSize)a5;
-- (BOOL)isEqual:(id)a3;
++ (id)pathSourceWithType:(int)type point:(CGPoint)point naturalSize:(CGSize)size;
+- (BOOL)isEqual:(id)equal;
 - (BOOL)p_isRightFacingArrow;
-- (CGPath)newFeedbackPathForKnob:(unint64_t)a3;
+- (CGPath)newFeedbackPathForKnob:(unint64_t)knob;
 - (CGPath)p_newArrowPath;
 - (CGPath)p_newPlusPath;
 - (CGPath)p_newStarPath;
-- (CGPoint)getControlKnobPosition:(unint64_t)a3;
+- (CGPoint)getControlKnobPosition:(unint64_t)position;
 - (CGPoint)maxPointValue;
 - (CGPoint)minPointValue;
 - (CGPoint)p_getControlKnobPointForArrow;
@@ -16,41 +16,41 @@
 - (CGPoint)point;
 - (CGSize)naturalSize;
 - (CGSize)scaleFactorForInscribedRectangle;
-- (TSDPointPathSource)initWithType:(int)a3 point:(CGPoint)a4 naturalSize:(CGSize)a5;
+- (TSDPointPathSource)initWithType:(int)type point:(CGPoint)point naturalSize:(CGSize)size;
 - (id)bezierPathWithoutFlips;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
-- (id)getFeedbackStringForKnob:(unint64_t)a3;
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4;
-- (id)valueForSetSelector:(SEL)a3;
-- (int64_t)mixingTypeWithObject:(id)a3;
+- (id)getFeedbackStringForKnob:(unint64_t)knob;
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object;
+- (id)valueForSetSelector:(SEL)selector;
+- (int64_t)mixingTypeWithObject:(id)object;
 - (unint64_t)hash;
 - (unint64_t)numberOfControlKnobs;
-- (void)p_setControlKnobPointForArrow:(CGPoint)a3;
-- (void)p_setControlKnobPointForPlus:(CGPoint)a3;
-- (void)p_setControlKnobPointForStarInnerRadius:(CGPoint)a3;
-- (void)p_setControlKnobPointForStarPoints:(CGPoint)a3;
-- (void)scaleToNaturalSize:(CGSize)a3;
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4;
-- (void)setPointValue:(id)a3;
+- (void)p_setControlKnobPointForArrow:(CGPoint)arrow;
+- (void)p_setControlKnobPointForPlus:(CGPoint)plus;
+- (void)p_setControlKnobPointForStarInnerRadius:(CGPoint)radius;
+- (void)p_setControlKnobPointForStarPoints:(CGPoint)points;
+- (void)scaleToNaturalSize:(CGSize)size;
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point;
+- (void)setPointValue:(id)value;
 @end
 
 @implementation TSDPointPathSource
 
-+ (id)pathSourceWithType:(int)a3 point:(CGPoint)a4 naturalSize:(CGSize)a5
++ (id)pathSourceWithType:(int)type point:(CGPoint)point naturalSize:(CGSize)size
 {
-  v5 = [[a1 alloc] initWithType:*&a3 point:a4.x naturalSize:{a4.y, a5.width, a5.height}];
+  v5 = [[self alloc] initWithType:*&type point:point.x naturalSize:{point.y, size.width, size.height}];
 
   return v5;
 }
 
-- (TSDPointPathSource)initWithType:(int)a3 point:(CGPoint)a4 naturalSize:(CGSize)a5
+- (TSDPointPathSource)initWithType:(int)type point:(CGPoint)point naturalSize:(CGSize)size
 {
-  height = a5.height;
-  width = a5.width;
-  y = a4.y;
-  x = a4.x;
-  v9 = *&a3;
+  height = size.height;
+  width = size.width;
+  y = point.y;
+  x = point.x;
+  v9 = *&type;
   v13.receiver = self;
   v13.super_class = TSDPointPathSource;
   v10 = [(TSDPointPathSource *)&v13 init];
@@ -65,11 +65,11 @@
   return v11;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v6.receiver = self;
   v6.super_class = TSDPointPathSource;
-  v4 = [(TSDPathSource *)&v6 copyWithZone:a3];
+  v4 = [(TSDPathSource *)&v6 copyWithZone:zone];
   [v4 setType:{-[TSDPointPathSource type](self, "type")}];
   [(TSDPointPathSource *)self point];
   [v4 setPoint:?];
@@ -78,9 +78,9 @@
   return v4;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  if (a3 == self)
+  if (equal == self)
   {
     LOBYTE(v9) = 1;
   }
@@ -96,20 +96,20 @@
     v9 = [(TSDPathSource *)&v24 isEqual:?];
     if (v9)
     {
-      v10 = [(TSDPointPathSource *)self type];
-      if (v10 == [a3 type])
+      type = [(TSDPointPathSource *)self type];
+      if (type == [equal type])
       {
         [(TSDPointPathSource *)self point];
         v12 = v11;
         v14 = v13;
-        [a3 point];
+        [equal point];
         LOBYTE(v9) = 0;
         if (v12 == v16 && v14 == v15)
         {
           [(TSDPointPathSource *)self naturalSize];
           v18 = v17;
           v20 = v19;
-          [a3 naturalSize];
+          [equal naturalSize];
           LOBYTE(v9) = v20 == v22 && v18 == v21;
         }
       }
@@ -138,11 +138,11 @@
   v8.super_class = TSDPointPathSource;
   v3 = [-[TSDPointPathSource description](&v8 description)];
   v4 = MEMORY[0x277CCACA8];
-  v5 = [(TSDPointPathSource *)self type];
+  type = [(TSDPointPathSource *)self type];
   [(TSDPointPathSource *)self point];
   v6 = NSStringFromCGPoint(v9);
   [(TSDPointPathSource *)self naturalSize];
-  [v3 appendString:{objc_msgSend(v4, "stringWithFormat:", @"; type=%d; point=%@; natural size=%@", v5, v6, NSStringFromCGSize(v10))}];
+  [v3 appendString:{objc_msgSend(v4, "stringWithFormat:", @"; type=%d; point=%@; natural size=%@", type, v6, NSStringFromCGSize(v10))}];
   return v3;
 }
 
@@ -150,8 +150,8 @@
 {
   v2 = *MEMORY[0x277CBF348];
   v3 = *(MEMORY[0x277CBF348] + 8);
-  v4 = [(TSDPointPathSource *)self type];
-  if (v4 == 100)
+  type = [(TSDPointPathSource *)self type];
+  if (type == 100)
   {
     v5 = 0.1;
   }
@@ -162,7 +162,7 @@
   }
 
   v6 = 3.0;
-  if (v4 != 100)
+  if (type != 100)
   {
     v6 = v2;
   }
@@ -176,16 +176,16 @@
 {
   v4 = *MEMORY[0x277CBF348];
   v3 = *(MEMORY[0x277CBF348] + 8);
-  v5 = [(TSDPointPathSource *)self type];
-  if (v5 > 99)
+  type = [(TSDPointPathSource *)self type];
+  if (type > 99)
   {
-    if (v5 == 100)
+    if (type == 100)
     {
       v3 = 1.0;
       v4 = 100.0;
     }
 
-    else if (v5 == 200)
+    else if (type == 200)
     {
       [(TSDPointPathSource *)self naturalSize];
       v4 = v7 * 0.5;
@@ -193,9 +193,9 @@
     }
   }
 
-  else if (v5 >= 2)
+  else if (type >= 2)
   {
-    if (v5 == 10)
+    if (type == 10)
     {
       [(TSDPointPathSource *)self naturalSize];
       v3 = 0.5;
@@ -217,12 +217,12 @@
   return result;
 }
 
-- (void)scaleToNaturalSize:(CGSize)a3
+- (void)scaleToNaturalSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(TSDPointPathSource *)self type];
-  if (v6 <= 0xA && ((1 << v6) & 0x403) != 0 || v6 == 200)
+  height = size.height;
+  width = size.width;
+  type = [(TSDPointPathSource *)self type];
+  if (type <= 0xA && ((1 << type) & 0x403) != 0 || type == 200)
   {
     [(TSDPathSource *)self uniformScaleForScalingToNaturalSize:width, height];
     *&self->mType = v7 * *&self->mType;
@@ -232,9 +232,9 @@
   self->mNaturalSize.width = height;
 }
 
-- (void)setPointValue:(id)a3
+- (void)setPointValue:(id)value
 {
-  [a3 CGPointValue];
+  [value CGPointValue];
 
   [(TSDPointPathSource *)self setPoint:?];
 }
@@ -252,17 +252,17 @@
   }
 }
 
-- (CGPoint)getControlKnobPosition:(unint64_t)a3
+- (CGPoint)getControlKnobPosition:(unint64_t)position
 {
-  v5 = [(TSDPointPathSource *)self type];
-  if (v5 <= 0xA && ((1 << v5) & 0x403) != 0)
+  type = [(TSDPointPathSource *)self type];
+  if (type <= 0xA && ((1 << type) & 0x403) != 0)
   {
     [(TSDPointPathSource *)self p_getControlKnobPointForArrow];
   }
 
-  else if (v5 == 100)
+  else if (type == 100)
   {
-    if (a3 == 12)
+    if (position == 12)
     {
       [(TSDPointPathSource *)self p_getControlKnobPointForStarPoints];
     }
@@ -273,7 +273,7 @@
     }
   }
 
-  else if (v5 == 200)
+  else if (type == 200)
   {
     [(TSDPointPathSource *)self p_getControlKnobPointForPlus];
   }
@@ -289,20 +289,20 @@
   return result;
 }
 
-- (void)setControlKnobPosition:(unint64_t)a3 toPoint:(CGPoint)a4
+- (void)setControlKnobPosition:(unint64_t)position toPoint:(CGPoint)point
 {
-  y = a4.y;
-  x = a4.x;
-  v8 = [(TSDPointPathSource *)self type];
-  if (v8 <= 0xA && ((1 << v8) & 0x403) != 0)
+  y = point.y;
+  x = point.x;
+  type = [(TSDPointPathSource *)self type];
+  if (type <= 0xA && ((1 << type) & 0x403) != 0)
   {
 
     [(TSDPointPathSource *)self p_setControlKnobPointForArrow:x, y];
   }
 
-  else if (v8 == 100)
+  else if (type == 100)
   {
-    if (a3 == 12)
+    if (position == 12)
     {
 
       [(TSDPointPathSource *)self p_setControlKnobPointForStarPoints:x, y];
@@ -315,14 +315,14 @@
     }
   }
 
-  else if (v8 == 200)
+  else if (type == 200)
   {
 
     [(TSDPointPathSource *)self p_setControlKnobPointForPlus:x, y];
   }
 }
 
-- (id)getFeedbackStringForKnob:(unint64_t)a3
+- (id)getFeedbackStringForKnob:(unint64_t)knob
 {
   if ([(TSDPointPathSource *)self type]!= 100)
   {
@@ -331,7 +331,7 @@
 
   v5 = MEMORY[0x277CCACA8];
   v6 = TSDBundle();
-  if (a3 == 12)
+  if (knob == 12)
   {
     v7 = [v6 localizedStringForKey:@"Points: %d" value:&stru_287D36338 table:@"TSDrawables"];
     [(TSDPointPathSource *)self point];
@@ -347,11 +347,11 @@
   return [v5 stringWithFormat:v7, v8];
 }
 
-- (CGPath)newFeedbackPathForKnob:(unint64_t)a3
+- (CGPath)newFeedbackPathForKnob:(unint64_t)knob
 {
-  v5 = [(TSDPointPathSource *)self type];
+  type = [(TSDPointPathSource *)self type];
   Mutable = 0;
-  if (a3 == 12 && v5 == 100)
+  if (knob == 12 && type == 100)
   {
     [-[TSDPathSource bezierPath](self "bezierPath")];
     v8 = v7;
@@ -374,9 +374,9 @@
   return Mutable;
 }
 
-- (id)valueForSetSelector:(SEL)a3
+- (id)valueForSetSelector:(SEL)selector
 {
-  if (sel_setPointValue_ == a3)
+  if (sel_setPointValue_ == selector)
   {
     v4 = MEMORY[0x277CCAE60];
     [(TSDPointPathSource *)self point];
@@ -394,29 +394,29 @@
 
 - (id)bezierPathWithoutFlips
 {
-  v3 = [(TSDPointPathSource *)self type];
-  if (v3 <= 0xA && ((1 << v3) & 0x403) != 0)
+  type = [(TSDPointPathSource *)self type];
+  if (type <= 0xA && ((1 << type) & 0x403) != 0)
   {
-    v4 = [(TSDPointPathSource *)self p_newArrowPath];
+    p_newArrowPath = [(TSDPointPathSource *)self p_newArrowPath];
   }
 
-  else if (v3 == 100)
+  else if (type == 100)
   {
-    v4 = [(TSDPointPathSource *)self p_newStarPath];
+    p_newArrowPath = [(TSDPointPathSource *)self p_newStarPath];
   }
 
   else
   {
-    if (v3 != 200)
+    if (type != 200)
     {
       v5 = 0;
       goto LABEL_9;
     }
 
-    v4 = [(TSDPointPathSource *)self p_newPlusPath];
+    p_newArrowPath = [(TSDPointPathSource *)self p_newPlusPath];
   }
 
-  v5 = v4;
+  v5 = p_newArrowPath;
 LABEL_9:
   v6 = [TSDBezierPath bezierPathWithCGPath:v5];
   CGPathRelease(v5);
@@ -426,18 +426,18 @@ LABEL_9:
 - (CGSize)scaleFactorForInscribedRectangle
 {
   v28[6] = *MEMORY[0x277D85DE8];
-  v3 = [(TSDPointPathSource *)self type];
+  type = [(TSDPointPathSource *)self type];
   v4 = 1.0;
-  if (v3 > 0xA)
+  if (type > 0xA)
   {
     v6 = 1.0;
   }
 
   else
   {
-    v5 = v3;
+    v5 = type;
     v6 = 1.0;
-    if (((1 << v3) & 0x403) != 0)
+    if (((1 << type) & 0x403) != 0)
     {
       [(TSDPointPathSource *)self naturalSize:1.0];
       v8 = v7;
@@ -528,15 +528,15 @@ LABEL_17:
   return result;
 }
 
-- (int64_t)mixingTypeWithObject:(id)a3
+- (int64_t)mixingTypeWithObject:(id)object
 {
   v4[0] = MEMORY[0x277D85DD0];
   v4[1] = 3221225472;
   v4[2] = __43__TSDPointPathSource_mixingTypeWithObject___block_invoke;
   v4[3] = &unk_279D48738;
-  v4[4] = a3;
+  v4[4] = object;
   v4[5] = self;
-  return TSDMixingTypeWithObject(self, a3, v4);
+  return TSDMixingTypeWithObject(self, object, v4);
 }
 
 uint64_t __43__TSDPointPathSource_mixingTypeWithObject___block_invoke(uint64_t a1)
@@ -591,16 +591,16 @@ uint64_t __43__TSDPointPathSource_mixingTypeWithObject___block_invoke(uint64_t a
   }
 }
 
-- (id)mixedObjectWithFraction:(double)a3 ofObject:(id)a4
+- (id)mixedObjectWithFraction:(double)fraction ofObject:(id)object
 {
   v5[0] = MEMORY[0x277D85DD0];
   v5[1] = 3221225472;
   v5[2] = __55__TSDPointPathSource_mixedObjectWithFraction_ofObject___block_invoke;
   v5[3] = &unk_279D48760;
-  v5[4] = a4;
+  v5[4] = object;
   v5[5] = self;
-  *&v5[6] = a3;
-  return TSDMixingMixedObjectWithFraction(self, a4, v5);
+  *&v5[6] = fraction;
+  return TSDMixingMixedObjectWithFraction(self, object, v5);
 }
 
 TSDPointPathSource *__55__TSDPointPathSource_mixedObjectWithFraction_ofObject___block_invoke(uint64_t a1)
@@ -884,7 +884,7 @@ LABEL_12:
   return Mutable;
 }
 
-- (void)p_setControlKnobPointForArrow:(CGPoint)a3
+- (void)p_setControlKnobPointForArrow:(CGPoint)arrow
 {
   [(TSDPointPathSource *)self naturalSize];
   v5 = v4;
@@ -914,16 +914,16 @@ LABEL_12:
   return result;
 }
 
-- (void)p_setControlKnobPointForStarPoints:(CGPoint)a3
+- (void)p_setControlKnobPointForStarPoints:(CGPoint)points
 {
-  y = a3.y;
-  x = a3.x;
+  y = points.y;
+  x = points.x;
   [(TSDPointPathSource *)self naturalSize];
   v7 = v6;
   v9 = v8;
-  v10 = [(TSDPathSource *)self hasVerticalFlip];
+  hasVerticalFlip = [(TSDPathSource *)self hasVerticalFlip];
   v11 = v9 - y;
-  if (!v10)
+  if (!hasVerticalFlip)
   {
     v11 = y;
   }
@@ -975,10 +975,10 @@ LABEL_12:
   TSDOriginRotate(&v14, v9, v10);
   v14 = v8 + v14;
   v15 = v7 * 0.5 + v7 / v5 * v15;
-  v11 = [(TSDPathSource *)self hasVerticalFlip];
+  hasVerticalFlip = [(TSDPathSource *)self hasVerticalFlip];
   v12 = v14;
   v13 = v15;
-  if (v11)
+  if (hasVerticalFlip)
   {
     v13 = v7 - v15;
   }
@@ -988,10 +988,10 @@ LABEL_12:
   return result;
 }
 
-- (void)p_setControlKnobPointForStarInnerRadius:(CGPoint)a3
+- (void)p_setControlKnobPointForStarInnerRadius:(CGPoint)radius
 {
-  y = a3.y;
-  x = a3.x;
+  y = radius.y;
+  x = radius.x;
   [(TSDPointPathSource *)self naturalSize];
   v7 = v6;
   v9 = v8;
@@ -1033,10 +1033,10 @@ LABEL_12:
   TSDOriginRotate(&v15, v10, v11);
   v15 = v9 + v15;
   v16 = v8 * 0.5 + v8 / v6 * v16;
-  v12 = [(TSDPathSource *)self hasVerticalFlip];
+  hasVerticalFlip = [(TSDPathSource *)self hasVerticalFlip];
   v13 = v15;
   v14 = v16;
-  if (v12)
+  if (hasVerticalFlip)
   {
     v14 = v8 - v16;
   }
@@ -1046,7 +1046,7 @@ LABEL_12:
   return result;
 }
 
-- (void)p_setControlKnobPointForPlus:(CGPoint)a3
+- (void)p_setControlKnobPointForPlus:(CGPoint)plus
 {
   [(TSDPointPathSource *)self naturalSize];
   TSUClamp();

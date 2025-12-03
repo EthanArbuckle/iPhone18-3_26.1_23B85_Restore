@@ -1,5 +1,5 @@
 @interface MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (unint64_t)hash;
 @end
 
@@ -196,9 +196,9 @@
 
     else
     {
-      v38 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler = [MEMORY[0x1E696AAA8] currentHandler];
       v39 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v38 handleFailureInFunction:v39 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler handleFailureInFunction:v39 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -231,8 +231,8 @@
     }
   }
 
-  v58 = [(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration *)self isCollectionType];
-  LODWORD(data[0]) = v58;
+  isCollectionType = [(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration *)self isCollectionType];
+  LODWORD(data[0]) = isCollectionType;
   if (v245 <= 3000)
   {
     if (v245 > 1999)
@@ -247,7 +247,7 @@
             v65 = 0;
             v63 = v246.count[1];
             v62 = HIBYTE(LOWORD(v246.count[1]));
-            v64 = v58;
+            v64 = isCollectionType;
           }
 
           else
@@ -260,7 +260,7 @@
               v63 = v246.count[1];
               v62 = HIBYTE(LOWORD(v246.count[1]));
               v64 = BYTE2(v246.count[1]);
-              if (v58)
+              if (isCollectionType)
               {
                 v65 = 256;
               }
@@ -283,7 +283,7 @@
             v64 = 0;
             v65 = 0;
             v63 = v246.count[1];
-            v62 = v58;
+            v62 = isCollectionType;
           }
         }
 
@@ -292,7 +292,7 @@
           v62 = 0;
           v64 = 0;
           v65 = 0;
-          v63 = v58;
+          v63 = isCollectionType;
         }
 
         v74 = v63 | (v62 << 8) | ((v65 | v64) << 16);
@@ -348,7 +348,7 @@
         if ((v246.hash[2] & 0x400000000000000) != 0)
         {
           v66 = 0x100000000;
-          if (!v58)
+          if (!isCollectionType)
           {
             v66 = 0;
           }
@@ -369,7 +369,7 @@
 
         else
         {
-          v59 = v246.hash[2] | v58 | 0x400000000000000;
+          v59 = v246.hash[2] | isCollectionType | 0x400000000000000;
         }
 
         v246.hash[2] = v59;
@@ -378,9 +378,9 @@
 
     else
     {
-      v60 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler2 = [MEMORY[0x1E696AAA8] currentHandler];
       v61 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend32(MSVHasher * _Nonnull, uint32_t)"}];
-      [v60 handleFailureInFunction:v61 file:@"MSVHasher+Algorithms.h" lineNumber:192 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler2 handleFailureInFunction:v61 file:@"MSVHasher+Algorithms.h" lineNumber:192 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -413,8 +413,8 @@
     }
   }
 
-  v81 = [(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration *)self isStoreRedownloadable];
-  LODWORD(data[0]) = v81;
+  isStoreRedownloadable = [(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration *)self isStoreRedownloadable];
+  LODWORD(data[0]) = isStoreRedownloadable;
   if (v245 <= 3000)
   {
     if (v245 > 1999)
@@ -429,7 +429,7 @@
             v88 = 0;
             v86 = v246.count[1];
             v85 = HIBYTE(LOWORD(v246.count[1]));
-            v87 = v81;
+            v87 = isStoreRedownloadable;
           }
 
           else
@@ -442,7 +442,7 @@
               v86 = v246.count[1];
               v85 = HIBYTE(LOWORD(v246.count[1]));
               v87 = BYTE2(v246.count[1]);
-              if (v81)
+              if (isStoreRedownloadable)
               {
                 v88 = 256;
               }
@@ -465,7 +465,7 @@
             v87 = 0;
             v88 = 0;
             v86 = v246.count[1];
-            v85 = v81;
+            v85 = isStoreRedownloadable;
           }
         }
 
@@ -474,7 +474,7 @@
           v85 = 0;
           v87 = 0;
           v88 = 0;
-          v86 = v81;
+          v86 = isStoreRedownloadable;
         }
 
         v97 = v86 | (v85 << 8) | ((v88 | v87) << 16);
@@ -530,7 +530,7 @@
         if ((v246.hash[2] & 0x400000000000000) != 0)
         {
           v89 = 0x100000000;
-          if (!v81)
+          if (!isStoreRedownloadable)
           {
             v89 = 0;
           }
@@ -551,7 +551,7 @@
 
         else
         {
-          v82 = v246.hash[2] | v81 | 0x400000000000000;
+          v82 = v246.hash[2] | isStoreRedownloadable | 0x400000000000000;
         }
 
         v246.hash[2] = v82;
@@ -560,9 +560,9 @@
 
     else
     {
-      v83 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler3 = [MEMORY[0x1E696AAA8] currentHandler];
       v84 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend32(MSVHasher * _Nonnull, uint32_t)"}];
-      [v83 handleFailureInFunction:v84 file:@"MSVHasher+Algorithms.h" lineNumber:192 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler3 handleFailureInFunction:v84 file:@"MSVHasher+Algorithms.h" lineNumber:192 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -728,9 +728,9 @@
 
     else
     {
-      v106 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler4 = [MEMORY[0x1E696AAA8] currentHandler];
       v107 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend32(MSVHasher * _Nonnull, uint32_t)"}];
-      [v106 handleFailureInFunction:v107 file:@"MSVHasher+Algorithms.h" lineNumber:192 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler4 handleFailureInFunction:v107 file:@"MSVHasher+Algorithms.h" lineNumber:192 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -935,9 +935,9 @@
 
     else
     {
-      v147 = [MEMORY[0x1E696AAA8] currentHandler];
+      currentHandler5 = [MEMORY[0x1E696AAA8] currentHandler];
       v148 = [MEMORY[0x1E696AEC0] stringWithUTF8String:{"void _MSVHasherAppend64(MSVHasher * _Nonnull, uint64_t)"}];
-      [v147 handleFailureInFunction:v148 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
+      [currentHandler5 handleFailureInFunction:v148 file:@"MSVHasher+Algorithms.h" lineNumber:227 description:@"Cannot append to unknown hasher algorithm"];
     }
   }
 
@@ -1136,9 +1136,9 @@ LABEL_255:
 
   else
   {
-    v199 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler6 = [MEMORY[0x1E696AAA8] currentHandler];
     v200 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"MSVHash _MSVHasherFinalize(MSVHasher * _Nonnull)"];
-    [v199 handleFailureInFunction:v200 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
+    [currentHandler6 handleFailureInFunction:v200 file:@"MSVHasher+Algorithms.h" lineNumber:156 description:@"Cannot finalize unknown hasher algorithm"];
   }
 
 LABEL_256:
@@ -1263,9 +1263,9 @@ LABEL_256:
   if (*&data[0] != 3001)
   {
 LABEL_284:
-    v242 = [MEMORY[0x1E696AAA8] currentHandler];
+    currentHandler7 = [MEMORY[0x1E696AAA8] currentHandler];
     v243 = [MEMORY[0x1E696AEC0] stringWithUTF8String:"NSUInteger _MSVHashGetHash(MSVHash)"];
-    [v242 handleFailureInFunction:v243 file:@"MSVHasher+Algorithms.h" lineNumber:301 description:@"Cannot obtain hash from unknown hasher algorithm"];
+    [currentHandler7 handleFailureInFunction:v243 file:@"MSVHasher+Algorithms.h" lineNumber:301 description:@"Cannot obtain hash from unknown hasher algorithm"];
 
     return 0;
   }
@@ -1273,17 +1273,17 @@ LABEL_284:
   return *(&data[0] + 1);
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v8 = 1;
   }
 
-  else if ([(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration *)v4 isMemberOfClass:objc_opt_class()])
+  else if ([(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration *)equalCopy isMemberOfClass:objc_opt_class()])
   {
-    v5 = v4;
+    v5 = equalCopy;
     v10.receiver = self;
     v10.super_class = MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration;
     v8 = [(MPLibraryKeepLocalStatusObserverConfiguration *)&v10 isEqual:v5]&& (v6 = [(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration *)self isCollectionType], v6 == [(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration *)v5 isCollectionType]) && self->_hasNonPurgeableAsset == v5->_hasNonPurgeableAsset && (v7 = [(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration *)self isStoreRedownloadable], v7 == [(MPLibraryKeepLocalStatusObserverIndividualEntityConfiguration *)v5 isStoreRedownloadable]) && self->_managedStatus == v5->_managedStatus;

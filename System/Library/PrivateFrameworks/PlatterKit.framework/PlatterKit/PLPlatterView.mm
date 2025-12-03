@@ -1,27 +1,27 @@
 @interface PLPlatterView
-+ (id)platterViewWithBlurEffectStyle:(int64_t)a3;
-+ (id)platterViewWithStyle:(id)a3 inBundle:(id)a4;
++ (id)platterViewWithBlurEffectStyle:(int64_t)style;
++ (id)platterViewWithStyle:(id)style inBundle:(id)bundle;
 - ($2162B30EF87954972E631D01CBA5CFD1)shadowAttributes;
 - (BOOL)_configureGlassIfNecessary;
 - (BOOL)_shouldConfigureGlass;
 - (BOOL)isHighlighted;
-- (CGSize)contentSizeForSize:(CGSize)a3;
-- (CGSize)sizeThatFits:(CGSize)a3;
+- (CGSize)contentSizeForSize:(CGSize)size;
+- (CGSize)sizeThatFits:(CGSize)fits;
 - (MTMaterialView)backgroundMaterialView;
-- (PLPlatterView)initWithFrame:(CGRect)a3;
+- (PLPlatterView)initWithFrame:(CGRect)frame;
 - (UIEdgeInsets)shadowOutsets;
 - (UIView)customContentView;
 - (id)_contentLight;
-- (id)_initWithBlurEffectStyle:(int64_t)a3;
+- (id)_initWithBlurEffectStyle:(int64_t)style;
 - (id)_initWithCarPlayBannerStyle;
 - (id)_initWithNavigationBannerStyle;
 - (id)_initWithNotificationsBannerStyle;
-- (id)_initWithRecipe:(int64_t)a3 orRecipeNamesByTraitCollection:(id)a4 inBundle:(id)a5;
+- (id)_initWithRecipe:(int64_t)recipe orRecipeNamesByTraitCollection:(id)collection inBundle:(id)bundle;
 - (id)_innerEdgeLight;
 - (id)_newDefaultBackgroundView;
 - (id)_outerEdgeLight;
-- (id)visualStylingProviderForCategory:(int64_t)a3;
-- (void)_configureBackgroundView:(id)a3;
+- (id)visualStylingProviderForCategory:(int64_t)category;
+- (void)_configureBackgroundView:(id)view;
 - (void)_configureBackgroundViewIfNecessary;
 - (void)_configureCustomContentView;
 - (void)_configureCustomContentViewIfNecessary;
@@ -29,17 +29,17 @@
 - (void)_configureShadowViewIfNecessary;
 - (void)_invalidateShadowView;
 - (void)_layoutShadowView;
-- (void)_setBackground:(id)a3;
-- (void)_setContinuousCornerRadius:(double)a3;
+- (void)_setBackground:(id)background;
+- (void)_setContinuousCornerRadius:(double)radius;
 - (void)layoutSubviews;
-- (void)setBackgroundView:(id)a3;
-- (void)setHasShadow:(BOOL)a3;
-- (void)setHighlighted:(BOOL)a3;
-- (void)setMaterialGroupNameBase:(id)a3;
-- (void)setMaterialRecipe:(int64_t)a3;
-- (void)setRecipeDynamic:(BOOL)a3;
-- (void)setShadowAttributes:(id *)a3;
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4;
+- (void)setBackgroundView:(id)view;
+- (void)setHasShadow:(BOOL)shadow;
+- (void)setHighlighted:(BOOL)highlighted;
+- (void)setMaterialGroupNameBase:(id)base;
+- (void)setMaterialRecipe:(int64_t)recipe;
+- (void)setRecipeDynamic:(BOOL)dynamic;
+- (void)setShadowAttributes:(id *)attributes;
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category;
 - (void)startLightEffect;
 - (void)stopLightEffect;
 @end
@@ -77,13 +77,13 @@
 
 - (BOOL)_configureGlassIfNecessary
 {
-  v3 = [(PLPlatterView *)self _shouldConfigureGlass];
-  self->_wantsAutomaticGlass = v3;
-  if (v3)
+  _shouldConfigureGlass = [(PLPlatterView *)self _shouldConfigureGlass];
+  self->_wantsAutomaticGlass = _shouldConfigureGlass;
+  if (_shouldConfigureGlass)
   {
-    v4 = [(MTShadowView *)self->_shadowView superview];
+    superview = [(MTShadowView *)self->_shadowView superview];
 
-    if (v4 == self)
+    if (superview == self)
     {
       [(MTShadowView *)self->_shadowView removeFromSuperview];
     }
@@ -91,9 +91,9 @@
     shadowView = self->_shadowView;
     self->_shadowView = 0;
 
-    v6 = [(UIView *)self->_backgroundView superview];
+    superview2 = [(UIView *)self->_backgroundView superview];
 
-    if (v6 == self)
+    if (superview2 == self)
     {
       [(UIView *)self->_backgroundView removeFromSuperview];
     }
@@ -101,9 +101,9 @@
     backgroundView = self->_backgroundView;
     self->_backgroundView = 0;
 
-    v8 = [(UIVisualEffectView *)self->_contentLightView superview];
+    superview3 = [(UIVisualEffectView *)self->_contentLightView superview];
 
-    if (v8 == self)
+    if (superview3 == self)
     {
       [(UIVisualEffectView *)self->_contentLightView removeFromSuperview];
     }
@@ -111,9 +111,9 @@
     contentLightView = self->_contentLightView;
     self->_contentLightView = 0;
 
-    v10 = [(UIVisualEffectView *)self->_edgeLightView superview];
+    superview4 = [(UIVisualEffectView *)self->_edgeLightView superview];
 
-    if (v10 == self)
+    if (superview4 == self)
     {
       [(UIVisualEffectView *)self->_edgeLightView removeFromSuperview];
     }
@@ -135,8 +135,8 @@
     {
       [(PLPlatterView *)self _continuousCornerRadius];
       v15 = v14;
-      v16 = [(PLPlatterView *)self layer];
-      [v16 setCornerRadius:v15];
+      layer = [(PLPlatterView *)self layer];
+      [layer setCornerRadius:v15];
     }
   }
 
@@ -171,8 +171,8 @@
 {
   if (![(PLPlatterView *)self _configureGlassIfNecessary]&& !self->_backgroundView && self->_usesBackgroundView && [(PLPlatterView *)self _isMaterialViewSufficientlySpecified])
   {
-    v3 = [(PLPlatterView *)self _newDefaultBackgroundView];
-    [(PLPlatterView *)self setBackgroundView:v3];
+    _newDefaultBackgroundView = [(PLPlatterView *)self _newDefaultBackgroundView];
+    [(PLPlatterView *)self setBackgroundView:_newDefaultBackgroundView];
   }
 }
 
@@ -331,7 +331,7 @@
   return v3;
 }
 
-- (id)_initWithBlurEffectStyle:(int64_t)a3
+- (id)_initWithBlurEffectStyle:(int64_t)style
 {
   v3 = [(PLPlatterView *)self initWithRecipe:MTMaterialRecipeForUIBlurEffectStyle()];
   v4 = v3;
@@ -344,50 +344,50 @@
   return v4;
 }
 
-+ (id)platterViewWithBlurEffectStyle:(int64_t)a3
++ (id)platterViewWithBlurEffectStyle:(int64_t)style
 {
-  v3 = [[PLPlatterView alloc] _initWithBlurEffectStyle:a3];
+  v3 = [[PLPlatterView alloc] _initWithBlurEffectStyle:style];
 
   return v3;
 }
 
-- (void)setBackgroundView:(id)a3
+- (void)setBackgroundView:(id)view
 {
-  v5 = a3;
-  if (self->_backgroundView != v5)
+  viewCopy = view;
+  if (self->_backgroundView != viewCopy)
   {
-    v7 = v5;
-    self->_usesBackgroundView |= v5 != 0;
-    v6 = [(UIView *)self->_backgroundView superview];
+    v7 = viewCopy;
+    self->_usesBackgroundView |= viewCopy != 0;
+    superview = [(UIView *)self->_backgroundView superview];
 
-    if (v6 == self)
+    if (superview == self)
     {
       [(UIView *)self->_backgroundView removeFromSuperview];
     }
 
-    objc_storeStrong(&self->_backgroundView, a3);
+    objc_storeStrong(&self->_backgroundView, view);
     [(PLPlatterView *)self _configureBackgroundView:self->_backgroundView];
     [(PLPlatterView *)self setNeedsLayout];
-    v5 = v7;
+    viewCopy = v7;
   }
 }
 
-- (void)setMaterialRecipe:(int64_t)a3
+- (void)setMaterialRecipe:(int64_t)recipe
 {
-  if (self->_materialRecipe != a3)
+  if (self->_materialRecipe != recipe)
   {
-    self->_materialRecipe = a3;
-    v4 = [(PLPlatterView *)self backgroundMaterialView];
-    [v4 setRecipe:self->_materialRecipe];
+    self->_materialRecipe = recipe;
+    backgroundMaterialView = [(PLPlatterView *)self backgroundMaterialView];
+    [backgroundMaterialView setRecipe:self->_materialRecipe];
   }
 }
 
-- (void)setShadowAttributes:(id *)a3
+- (void)setShadowAttributes:(id *)attributes
 {
-  if (a3->var0 != self->_shadowAttributes.opacity || (a3->var1.width == self->_shadowAttributes.offset.width ? (v3 = a3->var1.height == self->_shadowAttributes.offset.height) : (v3 = 0), v3 ? (v4 = a3->var2 == self->_shadowAttributes.radius) : (v4 = 0), !v4))
+  if (attributes->var0 != self->_shadowAttributes.opacity || (attributes->var1.width == self->_shadowAttributes.offset.width ? (v3 = attributes->var1.height == self->_shadowAttributes.offset.height) : (v3 = 0), v3 ? (v4 = attributes->var2 == self->_shadowAttributes.radius) : (v4 = 0), !v4))
   {
-    v5 = *&a3->var1.height;
-    *&self->_shadowAttributes.opacity = *&a3->var0;
+    v5 = *&attributes->var1.height;
+    *&self->_shadowAttributes.opacity = *&attributes->var0;
     *&self->_shadowAttributes.offset.height = v5;
     [(PLPlatterView *)self _invalidateShadowView];
   }
@@ -428,15 +428,15 @@
 {
   v11[1] = *MEMORY[0x277D85DE8];
   contentLightView = self->_contentLightView;
-  v4 = [(PLPlatterView *)self _contentLight];
-  v11[0] = v4;
+  _contentLight = [(PLPlatterView *)self _contentLight];
+  v11[0] = _contentLight;
   v5 = [MEMORY[0x277CBEA60] arrayWithObjects:v11 count:1];
   [(UIVisualEffectView *)contentLightView setBackgroundEffects:v5];
 
   edgeLightView = self->_edgeLightView;
-  v7 = [(PLPlatterView *)self _innerEdgeLight];
-  v8 = [(PLPlatterView *)self _outerEdgeLight];
-  v10[1] = v8;
+  _innerEdgeLight = [(PLPlatterView *)self _innerEdgeLight];
+  _outerEdgeLight = [(PLPlatterView *)self _outerEdgeLight];
+  v10[1] = _outerEdgeLight;
   v9 = [MEMORY[0x277CBEA60] arrayWithObjects:v10 count:2];
   [(UIVisualEffectView *)edgeLightView setBackgroundEffects:v9];
 
@@ -452,12 +452,12 @@
   [(PLPlatterView *)self setAccessibilityIdentifier:0];
 }
 
-- (PLPlatterView)initWithFrame:(CGRect)a3
+- (PLPlatterView)initWithFrame:(CGRect)frame
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = frame.size.height;
+  width = frame.size.width;
+  y = frame.origin.y;
+  x = frame.origin.x;
   v7 = [(PLPlatterView *)self initWithRecipe:0];
   v8 = v7;
   if (v7)
@@ -468,9 +468,9 @@
   return v8;
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  [(PLPlatterView *)self contentSizeForSize:a3.width, a3.height];
+  [(PLPlatterView *)self contentSizeForSize:fits.width, fits.height];
 
   [(PLPlatterView *)self sizeThatFitsContentWithSize:?];
   result.height = v5;
@@ -478,11 +478,11 @@
   return result;
 }
 
-- (void)_setContinuousCornerRadius:(double)a3
+- (void)_setContinuousCornerRadius:(double)radius
 {
-  if (self->_cornerRadius != a3)
+  if (self->_cornerRadius != radius)
   {
-    self->_cornerRadius = a3;
+    self->_cornerRadius = radius;
     [(UIView *)self->_backgroundView _setContinuousCornerRadius:?];
     [(PLPlatterView *)self _invalidateShadowView];
 
@@ -490,10 +490,10 @@
   }
 }
 
-- (CGSize)contentSizeForSize:(CGSize)a3
+- (CGSize)contentSizeForSize:(CGSize)size
 {
-  height = a3.height;
-  width = a3.width;
+  height = size.height;
+  width = size.width;
   v5 = *MEMORY[0x277CBF3A8];
   v6 = *(MEMORY[0x277CBF3A8] + 8);
   if (width > 0.0 && height > 0.0)
@@ -508,9 +508,9 @@
   return result;
 }
 
-- (void)setHasShadow:(BOOL)a3
+- (void)setHasShadow:(BOOL)shadow
 {
-  if (a3)
+  if (shadow)
   {
     if ([(PLPlatterView *)self hasShadow])
     {
@@ -542,29 +542,29 @@
   [(PLPlatterView *)self setNeedsLayout];
 }
 
-- (void)_configureBackgroundView:(id)a3
+- (void)_configureBackgroundView:(id)view
 {
-  v5 = a3;
-  if (v5)
+  viewCopy = view;
+  if (viewCopy)
   {
-    [v5 setUserInteractionEnabled:0];
+    [viewCopy setUserInteractionEnabled:0];
     [(PLPlatterView *)self _continuousCornerRadius];
     if (v4 > 0.0)
     {
-      [v5 _setContinuousCornerRadius:?];
+      [viewCopy _setContinuousCornerRadius:?];
     }
 
     [(PLPlatterView *)self bounds];
-    [v5 setFrame:?];
-    [v5 setAutoresizingMask:18];
+    [viewCopy setFrame:?];
+    [viewCopy setAutoresizingMask:18];
     if (self->_shadowView)
     {
-      [(PLPlatterView *)self insertSubview:v5 aboveSubview:?];
+      [(PLPlatterView *)self insertSubview:viewCopy aboveSubview:?];
     }
 
     else
     {
-      [(PLPlatterView *)self insertSubview:v5 atIndex:?];
+      [(PLPlatterView *)self insertSubview:viewCopy atIndex:?];
     }
   }
 }
@@ -586,32 +586,32 @@
   v5 = MEMORY[0x277D26718];
   if (materialRecipe)
   {
-    v6 = [(PLPlatterView *)self traitCollection];
-    [v5 materialViewWithRecipe:materialRecipe options:v3 compatibleWithTraitCollection:v6];
+    traitCollection = [(PLPlatterView *)self traitCollection];
+    [v5 materialViewWithRecipe:materialRecipe options:v3 compatibleWithTraitCollection:traitCollection];
   }
 
   else
   {
     recipeNamesByTraitCollection = self->_recipeNamesByTraitCollection;
     recipeBundle = self->_recipeBundle;
-    v6 = [(PLPlatterView *)self traitCollection];
-    [v5 materialViewWithRecipeNamesByTraitCollection:recipeNamesByTraitCollection inBundle:recipeBundle options:v3 initialWeighting:0 scaleAdjustment:v6 compatibleWithTraitCollection:1.0];
+    traitCollection = [(PLPlatterView *)self traitCollection];
+    [v5 materialViewWithRecipeNamesByTraitCollection:recipeNamesByTraitCollection inBundle:recipeBundle options:v3 initialWeighting:0 scaleAdjustment:traitCollection compatibleWithTraitCollection:1.0];
   }
   v7 = ;
 
   [v7 setRecipeDynamic:self->_recipeDynamic];
-  v10 = [(PLPlatterView *)self materialGroupNameBase];
-  [v7 setGroupNameBase:v10];
+  materialGroupNameBase = [(PLPlatterView *)self materialGroupNameBase];
+  [v7 setGroupNameBase:materialGroupNameBase];
 
   return v7;
 }
 
-- (void)_setBackground:(id)a3
+- (void)_setBackground:(id)background
 {
   self->_hasClientSpecifiedBackground = 1;
   v3.receiver = self;
   v3.super_class = PLPlatterView;
-  [(PLPlatterView *)&v3 _setBackground:a3];
+  [(PLPlatterView *)&v3 _setBackground:background];
 }
 
 - (BOOL)_shouldConfigureGlass
@@ -646,8 +646,8 @@
 - (id)_innerEdgeLight
 {
   v2 = objc_alloc(MEMORY[0x277D76030]);
-  v3 = [MEMORY[0x277D76040] sharedShimmeringLight];
-  v4 = [v2 initWithLightSource:v3 radius:0 region:3.0];
+  mEMORY[0x277D76040] = [MEMORY[0x277D76040] sharedShimmeringLight];
+  v4 = [v2 initWithLightSource:mEMORY[0x277D76040] radius:0 region:3.0];
 
   [v4 setActivationTransitionDirection:2];
 
@@ -657,8 +657,8 @@
 - (id)_outerEdgeLight
 {
   v2 = objc_alloc(MEMORY[0x277D76030]);
-  v3 = [MEMORY[0x277D76040] sharedShimmeringLight];
-  v4 = [v2 initWithLightSource:v3 radius:1 region:10.0];
+  mEMORY[0x277D76040] = [MEMORY[0x277D76040] sharedShimmeringLight];
+  v4 = [v2 initWithLightSource:mEMORY[0x277D76040] radius:1 region:10.0];
 
   [v4 setActivationTransitionDirection:2];
 
@@ -668,8 +668,8 @@
 - (id)_contentLight
 {
   v2 = objc_alloc(MEMORY[0x277D76028]);
-  v3 = [MEMORY[0x277D76040] sharedLight];
-  v4 = [v2 initWithLightSource:v3];
+  mEMORY[0x277D76040] = [MEMORY[0x277D76040] sharedLight];
+  v4 = [v2 initWithLightSource:mEMORY[0x277D76040]];
 
   [v4 setActivationTransitionDirection:2];
   [v4 setDeactivationTransitionDirection:0];
@@ -677,7 +677,7 @@
   return v4;
 }
 
-- (id)visualStylingProviderForCategory:(int64_t)a3
+- (id)visualStylingProviderForCategory:(int64_t)category
 {
   categoriesToProviders = self->_categoriesToProviders;
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:?];
@@ -686,16 +686,16 @@
   if (!v7)
   {
     [(PLPlatterView *)self _configureBackgroundViewIfNecessary];
-    v8 = [(PLPlatterView *)self backgroundMaterialView];
-    v7 = [v8 visualStylingProviderForCategory:a3];
+    backgroundMaterialView = [(PLPlatterView *)self backgroundMaterialView];
+    v7 = [backgroundMaterialView visualStylingProviderForCategory:category];
   }
 
   return v7;
 }
 
-- (void)setVisualStylingProvider:(id)a3 forCategory:(int64_t)a4
+- (void)setVisualStylingProvider:(id)provider forCategory:(int64_t)category
 {
-  v10 = a3;
+  providerCopy = provider;
   if (!self->_categoriesToProviders)
   {
     v6 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -703,11 +703,11 @@
     self->_categoriesToProviders = v6;
   }
 
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a4];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:category];
   v9 = self->_categoriesToProviders;
-  if (v10)
+  if (providerCopy)
   {
-    [(NSMutableDictionary *)v9 setObject:v10 forKey:v8];
+    [(NSMutableDictionary *)v9 setObject:providerCopy forKey:v8];
   }
 
   else
@@ -716,17 +716,17 @@
   }
 }
 
-- (void)setMaterialGroupNameBase:(id)a3
+- (void)setMaterialGroupNameBase:(id)base
 {
-  v7 = a3;
-  if (([v7 isEqualToString:self->_materialGroupNameBase] & 1) == 0)
+  baseCopy = base;
+  if (([baseCopy isEqualToString:self->_materialGroupNameBase] & 1) == 0)
   {
-    v4 = [v7 copy];
+    v4 = [baseCopy copy];
     materialGroupNameBase = self->_materialGroupNameBase;
     self->_materialGroupNameBase = v4;
 
-    v6 = [(PLPlatterView *)self backgroundMaterialView];
-    [v6 setGroupNameBase:self->_materialGroupNameBase];
+    backgroundMaterialView = [(PLPlatterView *)self backgroundMaterialView];
+    [backgroundMaterialView setGroupNameBase:self->_materialGroupNameBase];
   }
 }
 
@@ -738,30 +738,30 @@
   return self;
 }
 
-+ (id)platterViewWithStyle:(id)a3 inBundle:(id)a4
++ (id)platterViewWithStyle:(id)style inBundle:(id)bundle
 {
-  v4 = a3;
-  if ([v4 isEqualToString:@"navigationBanner"])
+  styleCopy = style;
+  if ([styleCopy isEqualToString:@"navigationBanner"])
   {
-    v5 = [[PLPlatterView alloc] _initWithNavigationBannerStyle];
+    _initWithNavigationBannerStyle = [[PLPlatterView alloc] _initWithNavigationBannerStyle];
   }
 
-  else if ([v4 isEqualToString:@"carPlayBanner"])
+  else if ([styleCopy isEqualToString:@"carPlayBanner"])
   {
-    v5 = [[PLPlatterView alloc] _initWithCarPlayBannerStyle];
+    _initWithNavigationBannerStyle = [[PLPlatterView alloc] _initWithCarPlayBannerStyle];
   }
 
-  else if ([v4 isEqualToString:@"notificationBanner"])
+  else if ([styleCopy isEqualToString:@"notificationBanner"])
   {
-    v5 = [[PLPlatterView alloc] _initWithNotificationsBannerStyle];
+    _initWithNavigationBannerStyle = [[PLPlatterView alloc] _initWithNotificationsBannerStyle];
   }
 
   else
   {
-    v5 = objc_alloc_init(PLPlatterView);
+    _initWithNavigationBannerStyle = objc_alloc_init(PLPlatterView);
   }
 
-  v6 = v5;
+  v6 = _initWithNavigationBannerStyle;
 
   return v6;
 }
@@ -778,40 +778,40 @@
   return [(UIView *)backgroundView isHighlighted];
 }
 
-- (void)setHighlighted:(BOOL)a3
+- (void)setHighlighted:(BOOL)highlighted
 {
-  v3 = a3;
+  highlightedCopy = highlighted;
   if (objc_opt_respondsToSelector())
   {
     backgroundView = self->_backgroundView;
 
-    [(UIView *)backgroundView setHighlighted:v3];
+    [(UIView *)backgroundView setHighlighted:highlightedCopy];
   }
 }
 
-- (void)setRecipeDynamic:(BOOL)a3
+- (void)setRecipeDynamic:(BOOL)dynamic
 {
-  if (self->_recipeDynamic != a3)
+  if (self->_recipeDynamic != dynamic)
   {
-    v4 = a3;
-    self->_recipeDynamic = a3;
-    v5 = [(PLPlatterView *)self backgroundMaterialView];
-    [v5 setRecipeDynamic:v4];
+    dynamicCopy = dynamic;
+    self->_recipeDynamic = dynamic;
+    backgroundMaterialView = [(PLPlatterView *)self backgroundMaterialView];
+    [backgroundMaterialView setRecipeDynamic:dynamicCopy];
   }
 }
 
-- (id)_initWithRecipe:(int64_t)a3 orRecipeNamesByTraitCollection:(id)a4 inBundle:(id)a5
+- (id)_initWithRecipe:(int64_t)recipe orRecipeNamesByTraitCollection:(id)collection inBundle:(id)bundle
 {
-  v9 = a4;
-  v10 = a5;
+  collectionCopy = collection;
+  bundleCopy = bundle;
   v15.receiver = self;
   v15.super_class = PLPlatterView;
   v11 = [(PLPlatterView *)&v15 initWithFrame:*MEMORY[0x277CBF3A0], *(MEMORY[0x277CBF3A0] + 8), *(MEMORY[0x277CBF3A0] + 16), *(MEMORY[0x277CBF3A0] + 24)];
   v12 = v11;
   if (v11)
   {
-    v11->_materialRecipe = a3;
-    objc_storeStrong(&v11->_recipeNamesByTraitCollection, a4);
+    v11->_materialRecipe = recipe;
+    objc_storeStrong(&v11->_recipeNamesByTraitCollection, collection);
     if (*(v12 + 504))
     {
       if (*(v12 + 456))
@@ -824,7 +824,7 @@
       }
     }
 
-    objc_storeStrong((v12 + 464), a5);
+    objc_storeStrong((v12 + 464), bundle);
     *(v12 + 483) = 1;
     [v12 _setContinuousCornerRadius:13.0];
     *(v12 + 482) = 1;

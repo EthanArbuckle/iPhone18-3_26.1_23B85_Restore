@@ -1,24 +1,24 @@
 @interface ICASHistogramItemData
-- (ICASHistogramItemData)initWithLeftBound:(id)a3 rightBound:(id)a4 count:(id)a5;
+- (ICASHistogramItemData)initWithLeftBound:(id)bound rightBound:(id)rightBound count:(id)count;
 - (id)toDict;
 @end
 
 @implementation ICASHistogramItemData
 
-- (ICASHistogramItemData)initWithLeftBound:(id)a3 rightBound:(id)a4 count:(id)a5
+- (ICASHistogramItemData)initWithLeftBound:(id)bound rightBound:(id)rightBound count:(id)count
 {
-  v9 = a3;
-  v10 = a4;
-  v11 = a5;
+  boundCopy = bound;
+  rightBoundCopy = rightBound;
+  countCopy = count;
   v15.receiver = self;
   v15.super_class = ICASHistogramItemData;
   v12 = [(ICASHistogramItemData *)&v15 init];
   v13 = v12;
   if (v12)
   {
-    objc_storeStrong(&v12->_leftBound, a3);
-    objc_storeStrong(&v13->_rightBound, a4);
-    objc_storeStrong(&v13->_count, a5);
+    objc_storeStrong(&v12->_leftBound, bound);
+    objc_storeStrong(&v13->_rightBound, rightBound);
+    objc_storeStrong(&v13->_count, count);
   }
 
   return v13;
@@ -28,33 +28,33 @@
 {
   v16[3] = *MEMORY[0x277D85DE8];
   v15[0] = @"leftBound";
-  v3 = [(ICASHistogramItemData *)self leftBound];
-  if (v3)
+  leftBound = [(ICASHistogramItemData *)self leftBound];
+  if (leftBound)
   {
-    v4 = [(ICASHistogramItemData *)self leftBound];
+    leftBound2 = [(ICASHistogramItemData *)self leftBound];
   }
 
   else
   {
-    v4 = objc_opt_new();
+    leftBound2 = objc_opt_new();
   }
 
-  v5 = v4;
-  v16[0] = v4;
+  v5 = leftBound2;
+  v16[0] = leftBound2;
   v15[1] = @"rightBound";
-  v6 = [(ICASHistogramItemData *)self rightBound];
-  if (v6)
+  rightBound = [(ICASHistogramItemData *)self rightBound];
+  if (rightBound)
   {
-    v7 = [(ICASHistogramItemData *)self rightBound];
+    rightBound2 = [(ICASHistogramItemData *)self rightBound];
   }
 
   else
   {
-    v7 = objc_opt_new();
+    rightBound2 = objc_opt_new();
   }
 
-  v8 = v7;
-  v16[1] = v7;
+  v8 = rightBound2;
+  v16[1] = rightBound2;
   v15[2] = @"count";
   v9 = [(ICASHistogramItemData *)self count];
   if (v9)

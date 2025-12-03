@@ -1,8 +1,8 @@
 @interface UIPreviewInteraction
-- (BOOL)respondsToSelector:(SEL)a3;
+- (BOOL)respondsToSelector:(SEL)selector;
 - (UIPreviewInteraction)initWithView:(UIView *)view;
-- (id)initClickBasedImplementationWithView:(id)a3;
-- (id)methodSignatureForSelector:(SEL)a3;
+- (id)initClickBasedImplementationWithView:(id)view;
+- (id)methodSignatureForSelector:(SEL)selector;
 @end
 
 @implementation UIPreviewInteraction
@@ -61,15 +61,15 @@ LABEL_5:
   return v5;
 }
 
-- (id)initClickBasedImplementationWithView:(id)a3
+- (id)initClickBasedImplementationWithView:(id)view
 {
-  v4 = a3;
+  viewCopy = view;
   v9.receiver = self;
   v9.super_class = UIPreviewInteraction;
   v5 = [(UIPreviewInteraction *)&v9 init];
   if (v5)
   {
-    v6 = [[_UIPreviewInteractionClickImpl alloc] initWithView:v4 previewInteraction:v5];
+    v6 = [[_UIPreviewInteractionClickImpl alloc] initWithView:viewCopy previewInteraction:v5];
     interactionImpl = v5->_interactionImpl;
     v5->_interactionImpl = v6;
   }
@@ -77,7 +77,7 @@ LABEL_5:
   return v5;
 }
 
-- (BOOL)respondsToSelector:(SEL)a3
+- (BOOL)respondsToSelector:(SEL)selector
 {
   v5.receiver = self;
   v5.super_class = UIPreviewInteraction;
@@ -94,14 +94,14 @@ LABEL_5:
   return v3 & 1;
 }
 
-- (id)methodSignatureForSelector:(SEL)a3
+- (id)methodSignatureForSelector:(SEL)selector
 {
   v7.receiver = self;
   v7.super_class = UIPreviewInteraction;
   v5 = [(UIPreviewInteraction *)&v7 methodSignatureForSelector:?];
   if (!v5)
   {
-    v5 = [(_UIPreviewInteractionImpl *)self->_interactionImpl methodSignatureForSelector:a3];
+    v5 = [(_UIPreviewInteractionImpl *)self->_interactionImpl methodSignatureForSelector:selector];
   }
 
   return v5;

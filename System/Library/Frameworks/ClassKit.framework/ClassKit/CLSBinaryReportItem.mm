@@ -1,21 +1,21 @@
 @interface CLSBinaryReportItem
-- (CLSBinaryReportItem)initWithCoder:(id)a3;
-- (id)convertToItemCompatibleWithItem:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (CLSBinaryReportItem)initWithCoder:(id)coder;
+- (id)convertToItemCompatibleWithItem:(id)item;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (int64_t)compare:(id)a3;
-- (void)add:(id)a3;
-- (void)encodeWithCoder:(id)a3;
+- (int64_t)compare:(id)compare;
+- (void)add:(id)add;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation CLSBinaryReportItem
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v14.receiver = self;
   v14.super_class = CLSBinaryReportItem;
-  v4 = [(CLSActivityReportItem *)&v14 copyWithZone:a3];
+  v4 = [(CLSActivityReportItem *)&v14 copyWithZone:zone];
   v7 = objc_msgSend_value(self, v5, v6);
   objc_msgSend_setValue_(v4, v8, v7);
   v11 = objc_msgSend_valueType(self, v9, v10);
@@ -23,9 +23,9 @@
   return v4;
 }
 
-- (id)convertToItemCompatibleWithItem:(id)a3
+- (id)convertToItemCompatibleWithItem:(id)item
 {
-  v4 = a3;
+  itemCopy = item;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -40,7 +40,7 @@
     if (objc_opt_isKindOfClass())
     {
       v5 = objc_opt_new();
-      objc_msgSend_maxValue(v4, v9, v10);
+      objc_msgSend_maxValue(itemCopy, v9, v10);
       objc_msgSend_setMaxValue_(v5, v11, v12);
       LOBYTE(v13) = self->_value;
       v14 = v13;
@@ -52,41 +52,41 @@
     {
       v21.receiver = self;
       v21.super_class = CLSBinaryReportItem;
-      v5 = [(CLSReportItem *)&v21 convertToItemCompatibleWithItem:v4];
+      v5 = [(CLSReportItem *)&v21 convertToItemCompatibleWithItem:itemCopy];
     }
   }
 
   return v5;
 }
 
-- (CLSBinaryReportItem)initWithCoder:(id)a3
+- (CLSBinaryReportItem)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v9.receiver = self;
   v9.super_class = CLSBinaryReportItem;
-  v6 = [(CLSActivityReportItem *)&v9 initWithCoder:v4];
+  v6 = [(CLSActivityReportItem *)&v9 initWithCoder:coderCopy];
   if (v6)
   {
-    v6->_value = objc_msgSend_decodeBoolForKey_(v4, v5, @"value");
-    v6->_valueType = objc_msgSend_decodeIntForKey_(v4, v7, @"valueType");
+    v6->_value = objc_msgSend_decodeBoolForKey_(coderCopy, v5, @"value");
+    v6->_valueType = objc_msgSend_decodeIntForKey_(coderCopy, v7, @"valueType");
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v7.receiver = self;
   v7.super_class = CLSBinaryReportItem;
-  v4 = a3;
-  [(CLSActivityReportItem *)&v7 encodeWithCoder:v4];
-  objc_msgSend_encodeBool_forKey_(v4, v5, self->_value, @"value", v7.receiver, v7.super_class);
-  objc_msgSend_encodeInt_forKey_(v4, v6, LODWORD(self->_valueType), @"valueType");
+  coderCopy = coder;
+  [(CLSActivityReportItem *)&v7 encodeWithCoder:coderCopy];
+  objc_msgSend_encodeBool_forKey_(coderCopy, v5, self->_value, @"value", v7.receiver, v7.super_class);
+  objc_msgSend_encodeInt_forKey_(coderCopy, v6, LODWORD(self->_valueType), @"valueType");
 }
 
-- (int64_t)compare:(id)a3
+- (int64_t)compare:(id)compare
 {
-  v4 = objc_msgSend_convertToItemCompatibleWithItem_copyIfSameType_(a3, a2, self, 0);
+  v4 = objc_msgSend_convertToItemCompatibleWithItem_copyIfSameType_(compare, a2, self, 0);
   value = self->_value;
   if (value == objc_msgSend_value(v4, v6, v7))
   {
@@ -106,9 +106,9 @@
   return v10;
 }
 
-- (void)add:(id)a3
+- (void)add:(id)add
 {
-  v4 = objc_msgSend_convertToItemCompatibleWithItem_(a3, a2, self);
+  v4 = objc_msgSend_convertToItemCompatibleWithItem_(add, a2, self);
   v7 = v4;
   if (self->_value)
   {
@@ -148,17 +148,17 @@
 {
   v17.receiver = self;
   v17.super_class = CLSBinaryReportItem;
-  v3 = [(CLSActivityReportItem *)&v17 dictionaryRepresentation];
+  dictionaryRepresentation = [(CLSActivityReportItem *)&v17 dictionaryRepresentation];
   v4 = MEMORY[0x277CCABB0];
   v7 = objc_msgSend_value(self, v5, v6);
   v9 = objc_msgSend_numberWithBool_(v4, v8, v7);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v10, v9, @"value");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v10, v9, @"value");
 
   v13 = objc_msgSend_valueType(self, v11, v12);
   v14 = NSStringFromBinaryValueType(v13);
-  objc_msgSend_setObject_forKeyedSubscript_(v3, v15, v14, @"valueType");
+  objc_msgSend_setObject_forKeyedSubscript_(dictionaryRepresentation, v15, v14, @"valueType");
 
-  return v3;
+  return dictionaryRepresentation;
 }
 
 @end

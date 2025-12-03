@@ -1,30 +1,30 @@
 @interface NTKPeopleComplicationContactsCache
 + (id)sharedCache;
-- (BOOL)checkValidityOfContact:(id)a3 block:(id)a4;
-- (BOOL)contactIdentifierIsFavorited:(id)a3;
+- (BOOL)checkValidityOfContact:(id)contact block:(id)block;
+- (BOOL)contactIdentifierIsFavorited:(id)favorited;
 - (NTKPeopleComplicationContactsCache)init;
 - (id)_contactKeysToFetchWithThumbnail;
 - (id)_contactKeysToFetchWithoutThumbnail;
 - (id)_favoritesMappingLocked;
-- (id)_fetchContactForId:(id)a3;
+- (id)_fetchContactForId:(id)id;
 - (id)_fetchMyCard;
 - (id)_mappedFavoriteContacts;
-- (id)abbreviatedNameForContact:(id)a3;
-- (id)computeNonFavoriteAllContactsWithCount:(unint64_t)a3;
-- (id)contactForId:(id)a3;
+- (id)abbreviatedNameForContact:(id)contact;
+- (id)computeNonFavoriteAllContactsWithCount:(unint64_t)count;
+- (id)contactForId:(id)id;
 - (id)favoriteContacts;
 - (id)firstNonFavoriteAllContact;
-- (id)fullNameForContact:(id)a3;
+- (id)fullNameForContact:(id)contact;
 - (id)myCard;
-- (id)nonFavoriteAllContactsWithCount:(unint64_t)a3;
-- (id)shortNameForContact:(id)a3;
+- (id)nonFavoriteAllContactsWithCount:(unint64_t)count;
+- (id)shortNameForContact:(id)contact;
 - (void)_didReceiveContactStoreChangedNotification;
 - (void)_didReceiveDeviceLockStateDidChangeNotification;
 - (void)_didReceiveFavoritesChangeRelatedNotification;
 - (void)_favoritesEntriesChangedExternally;
 - (void)_fetchMyCard;
 - (void)_locked_createFavorites;
-- (void)_queue_findContactWithFullName:(id)a3 block:(id)a4;
+- (void)_queue_findContactWithFullName:(id)name block:(id)block;
 - (void)_queue_flushCNFavoritesReload;
 - (void)_queue_reloadContacts;
 - (void)_queued_flushCNFavorites;
@@ -34,7 +34,7 @@
 - (void)_setupNotifications;
 - (void)_tearDownNotifications;
 - (void)dealloc;
-- (void)findContactWithFullName:(id)a3 block:(id)a4;
+- (void)findContactWithFullName:(id)name block:(id)block;
 - (void)setupNotificationsIfNecessary;
 @end
 
@@ -135,9 +135,9 @@ void __49__NTKPeopleComplicationContactsCache_sharedCache__block_invoke()
   myCard = self->_myCard;
   if (!myCard)
   {
-    v4 = [(NTKPeopleComplicationContactsCache *)self _fetchMyCard];
+    _fetchMyCard = [(NTKPeopleComplicationContactsCache *)self _fetchMyCard];
     v5 = self->_myCard;
-    self->_myCard = v4;
+    self->_myCard = _fetchMyCard;
 
     myCard = self->_myCard;
   }
@@ -152,11 +152,11 @@ void __49__NTKPeopleComplicationContactsCache_sharedCache__block_invoke()
 {
   [(NTKPeopleComplicationContactsCache *)self setupNotificationsIfNecessary];
   [(NSLock *)self->_favoritesMappingLock lock];
-  v3 = [(NTKPeopleComplicationContactsCache *)self _favoritesMappingLocked];
-  v4 = [(NSDictionary *)self->_favoritesMapping allValues];
+  _favoritesMappingLocked = [(NTKPeopleComplicationContactsCache *)self _favoritesMappingLocked];
+  allValues = [(NSDictionary *)self->_favoritesMapping allValues];
   [(NSLock *)self->_favoritesMappingLock unlock];
 
-  return v4;
+  return allValues;
 }
 
 - (id)_favoritesMappingLocked
@@ -166,11 +166,11 @@ void __49__NTKPeopleComplicationContactsCache_sharedCache__block_invoke()
   if (!favoritesMapping)
   {
     [(NSLock *)self->_favoritesMappingLock unlock];
-    v5 = [(NTKPeopleComplicationContactsCache *)self _mappedFavoriteContacts];
+    _mappedFavoriteContacts = [(NTKPeopleComplicationContactsCache *)self _mappedFavoriteContacts];
     [(NSLock *)self->_favoritesMappingLock lock];
     if (!self->_favoritesMapping)
     {
-      objc_storeStrong(p_favoritesMapping, v5);
+      objc_storeStrong(p_favoritesMapping, _mappedFavoriteContacts);
     }
 
     favoritesMapping = *p_favoritesMapping;
@@ -190,20 +190,20 @@ void __49__NTKPeopleComplicationContactsCache_sharedCache__block_invoke()
     self->_nonFavoriteValidAllContacts = v4;
   }
 
-  v6 = [(NSArray *)self->_nonFavoriteValidAllContacts firstObject];
+  firstObject = [(NSArray *)self->_nonFavoriteValidAllContacts firstObject];
   [(NSLock *)self->_allContactsEntriesLock unlock];
 
-  return v6;
+  return firstObject;
 }
 
-- (id)nonFavoriteAllContactsWithCount:(unint64_t)a3
+- (id)nonFavoriteAllContactsWithCount:(unint64_t)count
 {
   [(NTKPeopleComplicationContactsCache *)self setupNotificationsIfNecessary];
   [(NSLock *)self->_allContactsEntriesLock lock];
   nonFavoriteValidAllContacts = self->_nonFavoriteValidAllContacts;
-  if (!nonFavoriteValidAllContacts || [(NSArray *)nonFavoriteValidAllContacts count]< a3)
+  if (!nonFavoriteValidAllContacts || [(NSArray *)nonFavoriteValidAllContacts count]< count)
   {
-    v6 = [(NTKPeopleComplicationContactsCache *)self computeNonFavoriteAllContactsWithCount:a3];
+    v6 = [(NTKPeopleComplicationContactsCache *)self computeNonFavoriteAllContactsWithCount:count];
     v7 = self->_nonFavoriteValidAllContacts;
     self->_nonFavoriteValidAllContacts = v6;
   }
@@ -214,17 +214,17 @@ void __49__NTKPeopleComplicationContactsCache_sharedCache__block_invoke()
   return v8;
 }
 
-- (id)shortNameForContact:(id)a3
+- (id)shortNameForContact:(id)contact
 {
   v3 = shortNameForContact__onceToken;
-  v4 = a3;
+  contactCopy = contact;
   if (v3 != -1)
   {
     [NTKPeopleComplicationContactsCache shortNameForContact:];
   }
 
   [shortNameForContact__nameFormatterLock lock];
-  v5 = [shortNameForContact__nameFormatter stringFromContact:v4];
+  v5 = [shortNameForContact__nameFormatter stringFromContact:contactCopy];
 
   [shortNameForContact__nameFormatterLock unlock];
 
@@ -246,17 +246,17 @@ uint64_t __58__NTKPeopleComplicationContactsCache_shortNameForContact___block_in
   return [v4 setStyle:1000];
 }
 
-- (id)fullNameForContact:(id)a3
+- (id)fullNameForContact:(id)contact
 {
   v3 = fullNameForContact__onceToken;
-  v4 = a3;
+  contactCopy = contact;
   if (v3 != -1)
   {
     [NTKPeopleComplicationContactsCache fullNameForContact:];
   }
 
   [fullNameForContact__nameFormatterLock lock];
-  v5 = [fullNameForContact__nameFormatter stringFromContact:v4];
+  v5 = [fullNameForContact__nameFormatter stringFromContact:contactCopy];
 
   [fullNameForContact__nameFormatterLock unlock];
 
@@ -278,34 +278,34 @@ uint64_t __57__NTKPeopleComplicationContactsCache_fullNameForContact___block_inv
   return [v4 setStyle:0];
 }
 
-- (id)abbreviatedNameForContact:(id)a3
+- (id)abbreviatedNameForContact:(id)contact
 {
-  v4 = a3;
+  contactCopy = contact;
   if (abbreviatedNameForContact__onceToken != -1)
   {
     [NTKPeopleComplicationContactsCache abbreviatedNameForContact:];
   }
 
   [abbreviatedNameForContact__nameFormatterLock lock];
-  v5 = [abbreviatedNameForContact__nameFormatter stringFromContact:v4];
+  v5 = [abbreviatedNameForContact__nameFormatter stringFromContact:contactCopy];
   [abbreviatedNameForContact__nameFormatterLock unlock];
   if (!v5)
   {
-    v6 = [v4 givenName];
-    if (![v6 isEqualToString:&stru_284110E98])
+    givenName = [contactCopy givenName];
+    if (![givenName isEqualToString:&stru_284110E98])
     {
       goto LABEL_8;
     }
 
-    v7 = [v4 familyName];
-    v8 = [v7 isEqualToString:&stru_284110E98];
+    familyName = [contactCopy familyName];
+    v8 = [familyName isEqualToString:&stru_284110E98];
 
     if (v8)
     {
-      v6 = [(NTKPeopleComplicationContactsCache *)self fullNameForContact:v4];
-      if ([v6 length] && (CNStringContainsNonLatinCharacters() & 1) == 0)
+      givenName = [(NTKPeopleComplicationContactsCache *)self fullNameForContact:contactCopy];
+      if ([givenName length] && (CNStringContainsNonLatinCharacters() & 1) == 0)
       {
-        v10 = [v6 length];
+        v10 = [givenName length];
         if (v10 >= 2)
         {
           v11 = 2;
@@ -316,10 +316,10 @@ uint64_t __57__NTKPeopleComplicationContactsCache_fullNameForContact___block_inv
           v11 = v10;
         }
 
-        v12 = [v6 rangeOfComposedCharacterSequencesForRange:{0, v11}];
-        v14 = [v6 substringWithRange:{v12, v13}];
-        v15 = [MEMORY[0x277CBEAF8] currentLocale];
-        v5 = [v14 uppercaseStringWithLocale:v15];
+        v12 = [givenName rangeOfComposedCharacterSequencesForRange:{0, v11}];
+        v14 = [givenName substringWithRange:{v12, v13}];
+        currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+        v5 = [v14 uppercaseStringWithLocale:currentLocale];
 
         goto LABEL_9;
       }
@@ -354,13 +354,13 @@ uint64_t __64__NTKPeopleComplicationContactsCache_abbreviatedNameForContact___bl
   return [v4 setStyle:1002];
 }
 
-- (BOOL)checkValidityOfContact:(id)a3 block:(id)a4
+- (BOOL)checkValidityOfContact:(id)contact block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [(NTKPeopleComplicationContactsCache *)self fullNameForContact:v6];
-  v9 = [(NTKPeopleComplicationContactsCache *)self abbreviatedNameForContact:v6];
-  v10 = [(NTKPeopleComplicationContactsCache *)self shortNameForContact:v6];
+  contactCopy = contact;
+  blockCopy = block;
+  v8 = [(NTKPeopleComplicationContactsCache *)self fullNameForContact:contactCopy];
+  v9 = [(NTKPeopleComplicationContactsCache *)self abbreviatedNameForContact:contactCopy];
+  v10 = [(NTKPeopleComplicationContactsCache *)self shortNameForContact:contactCopy];
   v11 = v10;
   if (v8)
   {
@@ -394,20 +394,20 @@ uint64_t __64__NTKPeopleComplicationContactsCache_abbreviatedNameForContact___bl
       v14 = &stru_284110E98;
     }
 
-    v7[2](v7, v6, v8, v14, v10);
+    blockCopy[2](blockCopy, contactCopy, v8, v14, v10);
   }
 
   return v13;
 }
 
-- (id)contactForId:(id)a3
+- (id)contactForId:(id)id
 {
-  v4 = a3;
+  idCopy = id;
   [(NTKPeopleComplicationContactsCache *)self setupNotificationsIfNecessary];
-  v5 = [MEMORY[0x277CBBAE8] currentDevice];
-  v6 = [v5 isLocked];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  isLocked = [currentDevice isLocked];
 
-  if (v6)
+  if (isLocked)
   {
     v7 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
     if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
@@ -421,22 +421,22 @@ uint64_t __64__NTKPeopleComplicationContactsCache_abbreviatedNameForContact___bl
   else
   {
     [(NSLock *)self->_favoritesMappingLock lock];
-    v9 = [(NTKPeopleComplicationContactsCache *)self _favoritesMappingLocked];
-    v8 = [v9 objectForKeyedSubscript:v4];
+    _favoritesMappingLocked = [(NTKPeopleComplicationContactsCache *)self _favoritesMappingLocked];
+    v8 = [_favoritesMappingLocked objectForKeyedSubscript:idCopy];
     [(NSLock *)self->_favoritesMappingLock unlock];
     if (!v8)
     {
-      v8 = [(NTKPeopleComplicationContactsCache *)self _fetchContactForId:v4];
+      v8 = [(NTKPeopleComplicationContactsCache *)self _fetchContactForId:idCopy];
     }
   }
 
   return v8;
 }
 
-- (void)findContactWithFullName:(id)a3 block:(id)a4
+- (void)findContactWithFullName:(id)name block:(id)block
 {
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  blockCopy = block;
   objc_initWeak(&location, self);
   queue = self->_queue;
   v11[0] = MEMORY[0x277D85DD0];
@@ -444,10 +444,10 @@ uint64_t __64__NTKPeopleComplicationContactsCache_abbreviatedNameForContact___bl
   v11[2] = __68__NTKPeopleComplicationContactsCache_findContactWithFullName_block___block_invoke;
   v11[3] = &unk_2787863A0;
   objc_copyWeak(&v14, &location);
-  v12 = v6;
-  v13 = v7;
-  v9 = v7;
-  v10 = v6;
+  v12 = nameCopy;
+  v13 = blockCopy;
+  v9 = blockCopy;
+  v10 = nameCopy;
   dispatch_async(queue, v11);
 
   objc_destroyWeak(&v14);
@@ -465,13 +465,13 @@ void __68__NTKPeopleComplicationContactsCache_findContactWithFullName_block___bl
   }
 }
 
-- (BOOL)contactIdentifierIsFavorited:(id)a3
+- (BOOL)contactIdentifierIsFavorited:(id)favorited
 {
   favoritesMappingLock = self->_favoritesMappingLock;
-  v5 = a3;
+  favoritedCopy = favorited;
   [(NSLock *)favoritesMappingLock lock];
-  v6 = [(NTKPeopleComplicationContactsCache *)self _favoritesMappingLocked];
-  v7 = [v6 objectForKeyedSubscript:v5];
+  _favoritesMappingLocked = [(NTKPeopleComplicationContactsCache *)self _favoritesMappingLocked];
+  v7 = [_favoritesMappingLocked objectForKeyedSubscript:favoritedCopy];
 
   [(NSLock *)self->_favoritesMappingLock unlock];
   return v7 != 0;
@@ -526,13 +526,13 @@ void __73__NTKPeopleComplicationContactsCache__contactKeysToFetchWithoutThumbnai
   _contactKeysToFetchWithoutThumbnail_keysToFetch = v3;
 }
 
-- (id)_fetchContactForId:(id)a3
+- (id)_fetchContactForId:(id)id
 {
   contactStore = self->_contactStore;
-  v5 = a3;
-  v6 = [(NTKPeopleComplicationContactsCache *)self _contactKeysToFetchWithThumbnail];
+  idCopy = id;
+  _contactKeysToFetchWithThumbnail = [(NTKPeopleComplicationContactsCache *)self _contactKeysToFetchWithThumbnail];
   v13 = 0;
-  v7 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:v5 keysToFetch:v6 error:&v13];
+  v7 = [(CNContactStore *)contactStore unifiedContactWithIdentifier:idCopy keysToFetch:_contactKeysToFetchWithThumbnail error:&v13];
 
   v8 = v13;
   if (v8)
@@ -567,10 +567,10 @@ void __73__NTKPeopleComplicationContactsCache__contactKeysToFetchWithoutThumbnai
 - (id)_mappedFavoriteContacts
 {
   v31 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v4 = [v3 isLocked];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  isLocked = [currentDevice isLocked];
 
-  if (v4)
+  if (isLocked)
   {
     v5 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
@@ -578,15 +578,15 @@ void __73__NTKPeopleComplicationContactsCache__contactKeysToFetchWithoutThumbnai
       [NTKPeopleComplicationContactsCache _mappedFavoriteContacts];
     }
 
-    v6 = MEMORY[0x277CBEC10];
+    dictionary = MEMORY[0x277CBEC10];
   }
 
   else
   {
-    v6 = [MEMORY[0x277CBEB38] dictionary];
+    dictionary = [MEMORY[0x277CBEB38] dictionary];
     [(NSLock *)self->_favoritesEntriesLock lock];
-    v7 = [(CNFavorites *)self->_favorites entries];
-    v8 = [v7 copy];
+    entries = [(CNFavorites *)self->_favorites entries];
+    v8 = [entries copy];
 
     v26 = 0u;
     v27 = 0u;
@@ -609,30 +609,30 @@ void __73__NTKPeopleComplicationContactsCache__contactKeysToFetchWithoutThumbnai
             objc_enumerationMutation(v5);
           }
 
-          v14 = [*(*(&v24 + 1) + 8 * i) contactProperty];
-          v15 = [v14 contact];
-          v16 = v15;
-          if (v15)
+          contactProperty = [*(*(&v24 + 1) + 8 * i) contactProperty];
+          contact = [contactProperty contact];
+          v16 = contact;
+          if (contact)
           {
-            v17 = [v15 identifier];
-            v18 = [(NTKPeopleComplicationContactsCache *)self _fetchContactForId:v17];
+            identifier = [contact identifier];
+            v18 = [(NTKPeopleComplicationContactsCache *)self _fetchContactForId:identifier];
 
             if (!v18)
             {
               v19 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
               if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
               {
-                v20 = [0 identifier];
+                identifier2 = [0 identifier];
                 *buf = v23;
-                v29 = v20;
+                v29 = identifier2;
                 _os_log_impl(&dword_22D9C5000, v19, OS_LOG_TYPE_DEFAULT, "favorite[%@] not linked to database so reverting to favorite.", buf, 0xCu);
               }
 
               v18 = [v16 copy];
             }
 
-            v21 = [v18 identifier];
-            [v6 setObject:v18 forKeyedSubscript:v21];
+            identifier3 = [v18 identifier];
+            [dictionary setObject:v18 forKeyedSubscript:identifier3];
           }
 
           else
@@ -655,15 +655,15 @@ void __73__NTKPeopleComplicationContactsCache__contactKeysToFetchWithoutThumbnai
     [(NSLock *)self->_favoritesEntriesLock unlock];
   }
 
-  return v6;
+  return dictionary;
 }
 
 - (id)_fetchMyCard
 {
   contactStore = self->_contactStore;
-  v3 = [(NTKPeopleComplicationContactsCache *)self _contactKeysToFetchWithoutThumbnail];
+  _contactKeysToFetchWithoutThumbnail = [(NTKPeopleComplicationContactsCache *)self _contactKeysToFetchWithoutThumbnail];
   v8 = 0;
-  v4 = [(CNContactStore *)contactStore _crossPlatformUnifiedMeContactWithKeysToFetch:v3 error:&v8];
+  v4 = [(CNContactStore *)contactStore _crossPlatformUnifiedMeContactWithKeysToFetch:_contactKeysToFetchWithoutThumbnail error:&v8];
   v5 = v8;
 
   if (v5)
@@ -678,28 +678,28 @@ void __73__NTKPeopleComplicationContactsCache__contactKeysToFetchWithoutThumbnai
   return v4;
 }
 
-- (id)computeNonFavoriteAllContactsWithCount:(unint64_t)a3
+- (id)computeNonFavoriteAllContactsWithCount:(unint64_t)count
 {
-  v5 = [(NTKPeopleComplicationContactsCache *)self _contactKeysToFetchWithoutThumbnail];
-  v6 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:v5];
+  _contactKeysToFetchWithoutThumbnail = [(NTKPeopleComplicationContactsCache *)self _contactKeysToFetchWithoutThumbnail];
+  v6 = [objc_alloc(MEMORY[0x277CBDA70]) initWithKeysToFetch:_contactKeysToFetchWithoutThumbnail];
   [v6 setSortOrder:1];
-  v7 = [MEMORY[0x277CBEB18] array];
-  v8 = [(NTKPeopleComplicationContactsCache *)self favoriteContacts];
+  array = [MEMORY[0x277CBEB18] array];
+  favoriteContacts = [(NTKPeopleComplicationContactsCache *)self favoriteContacts];
   contactStore = self->_contactStore;
   v21 = 0;
   v16[0] = MEMORY[0x277D85DD0];
   v16[1] = 3221225472;
   v16[2] = __77__NTKPeopleComplicationContactsCache_computeNonFavoriteAllContactsWithCount___block_invoke;
   v16[3] = &unk_2787863F0;
-  v10 = v8;
+  v10 = favoriteContacts;
   v17 = v10;
-  v18 = self;
-  v11 = v7;
+  selfCopy = self;
+  v11 = array;
   v19 = v11;
-  v20 = a3;
-  LOBYTE(v7) = [(CNContactStore *)contactStore enumerateContactsWithFetchRequest:v6 error:&v21 usingBlock:v16];
+  countCopy = count;
+  LOBYTE(array) = [(CNContactStore *)contactStore enumerateContactsWithFetchRequest:v6 error:&v21 usingBlock:v16];
   v12 = v21;
-  if ((v7 & 1) == 0)
+  if ((array & 1) == 0)
   {
     v13 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
     if (os_log_type_enabled(v13, OS_LOG_TYPE_ERROR))
@@ -733,10 +733,10 @@ void __77__NTKPeopleComplicationContactsCache_computeNonFavoriteAllContactsWithC
 - (void)_queue_reloadContacts
 {
   v12 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CBBAE8] currentDevice];
-  v4 = [v3 isLocked];
+  currentDevice = [MEMORY[0x277CBBAE8] currentDevice];
+  isLocked = [currentDevice isLocked];
 
-  if (v4)
+  if (isLocked)
   {
     v5 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
     if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -858,9 +858,9 @@ void __67__NTKPeopleComplicationContactsCache__queue_flushCNFavoritesReload__blo
 {
   dispatch_assert_queue_V2(self->_queue);
   [(NSLock *)self->_myCardEntryLock lock];
-  v3 = [(NTKPeopleComplicationContactsCache *)self _fetchMyCard];
+  _fetchMyCard = [(NTKPeopleComplicationContactsCache *)self _fetchMyCard];
   myCard = self->_myCard;
-  self->_myCard = v3;
+  self->_myCard = _fetchMyCard;
 
   myCardEntryLock = self->_myCardEntryLock;
 
@@ -870,11 +870,11 @@ void __67__NTKPeopleComplicationContactsCache__queue_flushCNFavoritesReload__blo
 - (void)_queued_loadFavoriteContacts
 {
   dispatch_assert_queue_V2(self->_queue);
-  v3 = [(NTKPeopleComplicationContactsCache *)self _mappedFavoriteContacts];
+  _mappedFavoriteContacts = [(NTKPeopleComplicationContactsCache *)self _mappedFavoriteContacts];
   [(NSLock *)self->_favoritesMappingLock lock];
   favoritesMapping = self->_favoritesMapping;
-  self->_favoritesMapping = v3;
-  v5 = v3;
+  self->_favoritesMapping = _mappedFavoriteContacts;
+  v5 = _mappedFavoriteContacts;
 
   [(NSLock *)self->_favoritesMappingLock unlock];
 }
@@ -904,14 +904,14 @@ void __67__NTKPeopleComplicationContactsCache__queue_flushCNFavoritesReload__blo
   [(NSLock *)self->_allContactsEntriesLock unlock];
 }
 
-- (void)_queue_findContactWithFullName:(id)a3 block:(id)a4
+- (void)_queue_findContactWithFullName:(id)name block:(id)block
 {
   v38 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
+  nameCopy = name;
+  blockCopy = block;
   [(NSLock *)self->_favoritesEntriesLock lock];
-  v8 = [(CNFavorites *)self->_favorites entries];
-  v9 = [v8 copy];
+  entries = [(CNFavorites *)self->_favorites entries];
+  v9 = [entries copy];
 
   v26 = 0;
   v27 = &v26;
@@ -924,7 +924,7 @@ void __67__NTKPeopleComplicationContactsCache__queue_flushCNFavoritesReload__blo
   v23[2] = __75__NTKPeopleComplicationContactsCache__queue_findContactWithFullName_block___block_invoke;
   v23[3] = &unk_278786418;
   v23[4] = self;
-  v10 = v6;
+  v10 = nameCopy;
   v24 = v10;
   v25 = &v26;
   [v9 enumerateObjectsUsingBlock:v23];
@@ -932,27 +932,27 @@ void __67__NTKPeopleComplicationContactsCache__queue_flushCNFavoritesReload__blo
   v11 = v27[5];
   if (!v11)
   {
-    v12 = [(NTKPeopleComplicationContactsCache *)self _contactKeysToFetchWithThumbnail];
+    _contactKeysToFetchWithThumbnail = [(NTKPeopleComplicationContactsCache *)self _contactKeysToFetchWithThumbnail];
     contactStore = self->_contactStore;
     v14 = [MEMORY[0x277CBDA58] predicateForContactsMatchingName:v10];
     v22 = 0;
-    v15 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v14 keysToFetch:v12 error:&v22];
+    v15 = [(CNContactStore *)contactStore unifiedContactsMatchingPredicate:v14 keysToFetch:_contactKeysToFetchWithThumbnail error:&v22];
     v16 = v22;
-    v17 = [v15 firstObject];
+    firstObject = [v15 firstObject];
     v18 = v27[5];
-    v27[5] = v17;
+    v27[5] = firstObject;
 
     if (v27[5])
     {
       v19 = _NTKLoggingObjectForDomain(18, "NTKLoggingDomainComplication");
       if (os_log_type_enabled(v19, OS_LOG_TYPE_DEFAULT))
       {
-        v20 = [v27[5] identifier];
+        identifier = [v27[5] identifier];
         v21 = v27[5];
         *buf = 138412802;
         v33 = v10;
         v34 = 2112;
-        v35 = v20;
+        v35 = identifier;
         v36 = 2112;
         v37 = v21;
         _os_log_impl(&dword_22D9C5000, v19, OS_LOG_TYPE_DEFAULT, "NTKPeopleComplicationContactsCache _queue_findContactWithFullName found all contacts for name[%@] with id[%@] [%@]", buf, 0x20u);
@@ -962,7 +962,7 @@ void __67__NTKPeopleComplicationContactsCache__queue_flushCNFavoritesReload__blo
     v11 = v27[5];
   }
 
-  v7[2](v7, v11);
+  blockCopy[2](blockCopy, v11);
 
   _Block_object_dispose(&v26, 8);
 }
@@ -1003,9 +1003,9 @@ void __75__NTKPeopleComplicationContactsCache__queue_findContactWithFullName_blo
 - (void)_setupNotifications
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 addObserver:self selector:sel__didReceiveContactStoreChangedNotification name:*MEMORY[0x277CBD140] object:0];
-  [v3 addObserver:self selector:sel__didReceiveFavoritesChangeRelatedNotification name:*MEMORY[0x277CBD1C8] object:0];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter addObserver:self selector:sel__didReceiveContactStoreChangedNotification name:*MEMORY[0x277CBD140] object:0];
+  [defaultCenter addObserver:self selector:sel__didReceiveFavoritesChangeRelatedNotification name:*MEMORY[0x277CBD1C8] object:0];
   v4 = +[NTKDarwinNotificationCenter defaultCenter];
   [v4 addObserver:self notificationName:*MEMORY[0x277CBD1C0] selector:sel__favoritesEntriesChangedExternally];
 
@@ -1023,8 +1023,8 @@ void __75__NTKPeopleComplicationContactsCache__queue_findContactWithFullName_blo
 - (void)_tearDownNotifications
 {
   v10 = *MEMORY[0x277D85DE8];
-  v3 = [MEMORY[0x277CCAB98] defaultCenter];
-  [v3 removeObserver:self];
+  defaultCenter = [MEMORY[0x277CCAB98] defaultCenter];
+  [defaultCenter removeObserver:self];
 
   v4 = +[NTKDarwinNotificationCenter defaultCenter];
   [v4 removeObserver:self notificationName:*MEMORY[0x277CBD1C0]];

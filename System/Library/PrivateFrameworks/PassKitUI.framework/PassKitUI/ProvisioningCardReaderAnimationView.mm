@@ -1,6 +1,6 @@
 @interface ProvisioningCardReaderAnimationView
-- (CGSize)sizeThatFits:(CGSize)a3;
-- (_TtC9PassKitUI35ProvisioningCardReaderAnimationView)initWithFrame:(CGRect)a3;
+- (CGSize)sizeThatFits:(CGSize)fits;
+- (_TtC9PassKitUI35ProvisioningCardReaderAnimationView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
@@ -8,13 +8,13 @@
 
 - (void)layoutSubviews
 {
-  v2 = self;
+  selfCopy = self;
   ProvisioningCardReaderAnimationView.layoutSubviews()();
 }
 
-- (CGSize)sizeThatFits:(CGSize)a3
+- (CGSize)sizeThatFits:(CGSize)fits
 {
-  width = a3.width;
+  width = fits.width;
   PKFloatRoundToPixel();
   v5 = v4;
   v6 = width;
@@ -23,7 +23,7 @@
   return result;
 }
 
-- (_TtC9PassKitUI35ProvisioningCardReaderAnimationView)initWithFrame:(CGRect)a3
+- (_TtC9PassKitUI35ProvisioningCardReaderAnimationView)initWithFrame:(CGRect)frame
 {
   result = _swift_stdlib_reportUnimplementedInitializer();
   __break(1u);

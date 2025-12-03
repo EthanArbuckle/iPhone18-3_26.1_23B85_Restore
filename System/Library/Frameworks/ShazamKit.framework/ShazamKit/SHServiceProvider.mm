@@ -1,9 +1,9 @@
 @interface SHServiceProvider
 + (id)availableServices;
 - (_TtC7shazamd17SHServiceProvider)init;
-- (_TtC7shazamd17SHServiceProvider)initWithService:(Class)a3;
+- (_TtC7shazamd17SHServiceProvider)initWithService:(Class)service;
 - (id)buildListener;
-- (id)handleForConnection:(id)a3 withClientCredentials:(id)a4;
+- (id)handleForConnection:(id)connection withClientCredentials:(id)credentials;
 @end
 
 @implementation SHServiceProvider
@@ -28,11 +28,11 @@
   return v6;
 }
 
-- (_TtC7shazamd17SHServiceProvider)initWithService:(Class)a3
+- (_TtC7shazamd17SHServiceProvider)initWithService:(Class)service
 {
   ObjectType = swift_getObjectType();
   swift_getObjCClassMetadata();
-  v5 = [swift_getObjCClassFromMetadata() machServiceName];
+  machServiceName = [swift_getObjCClassFromMetadata() machServiceName];
   v6 = static String._unconditionallyBridgeFromObjectiveC(_:)();
   v8 = v7;
 
@@ -49,20 +49,20 @@
   v3 = *(&self->super.isa + OBJC_IVAR____TtC7shazamd17SHServiceProvider_machServiceName);
   v4 = *&self->machServiceName[OBJC_IVAR____TtC7shazamd17SHServiceProvider_machServiceName];
   v5 = objc_allocWithZone(NSXPCListener);
-  v6 = self;
+  selfCopy = self;
   v7 = String._bridgeToObjectiveC()();
   v8 = [v5 initWithMachServiceName:v7];
 
   return v8;
 }
 
-- (id)handleForConnection:(id)a3 withClientCredentials:(id)a4
+- (id)handleForConnection:(id)connection withClientCredentials:(id)credentials
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = self;
-  v12.super.isa = v7;
-  v9 = SHServiceProvider.handle(for:with:)(v6, v12);
+  connectionCopy = connection;
+  credentialsCopy = credentials;
+  selfCopy = self;
+  v12.super.isa = credentialsCopy;
+  v9 = SHServiceProvider.handle(for:with:)(connectionCopy, v12);
 
   return v9;
 }

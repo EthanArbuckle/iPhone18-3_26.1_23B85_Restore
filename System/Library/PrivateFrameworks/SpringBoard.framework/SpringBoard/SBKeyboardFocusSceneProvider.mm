@@ -1,12 +1,12 @@
 @interface SBKeyboardFocusSceneProvider
-- (BOOL)anyConnectedSBWindowSceneContainsSceneIdentity:(id)a3;
-- (BOOL)isOverlayUIScene:(id)a3;
-- (BOOL)isSystemUISceneIdentityToken:(id)a3;
+- (BOOL)anyConnectedSBWindowSceneContainsSceneIdentity:(id)identity;
+- (BOOL)isOverlayUIScene:(id)scene;
+- (BOOL)isSystemUISceneIdentityToken:(id)token;
 - (FBScene)spotlightScene;
-- (id)deviceApplicationSceneHandleForSceneIdentity:(id)a3;
-- (id)sceneForFocusTarget:(id)a3;
-- (id)sceneForIdentityToken:(id)a3;
-- (id)sceneForIdentityTokenStringRepresentation:(id)a3;
+- (id)deviceApplicationSceneHandleForSceneIdentity:(id)identity;
+- (id)sceneForFocusTarget:(id)target;
+- (id)sceneForIdentityToken:(id)token;
+- (id)sceneForIdentityTokenStringRepresentation:(id)representation;
 @end
 
 @implementation SBKeyboardFocusSceneProvider
@@ -14,11 +14,11 @@
 - (FBScene)spotlightScene
 {
   v2 = +[SBSpotlightMultiplexingViewController sharedRemoteSearchViewController];
-  v3 = [v2 sceneIdentifier];
-  if (v3)
+  sceneIdentifier = [v2 sceneIdentifier];
+  if (sceneIdentifier)
   {
-    v4 = [MEMORY[0x277D0AAD8] sharedInstance];
-    v5 = [v4 sceneWithIdentifier:v3];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+    v5 = [mEMORY[0x277D0AAD8] sceneWithIdentifier:sceneIdentifier];
   }
 
   else
@@ -29,26 +29,26 @@
   return v5;
 }
 
-- (id)sceneForIdentityToken:(id)a3
+- (id)sceneForIdentityToken:(id)token
 {
-  v4 = [a3 stringRepresentation];
-  v5 = [(SBKeyboardFocusSceneProvider *)self sceneForIdentityTokenStringRepresentation:v4];
+  stringRepresentation = [token stringRepresentation];
+  v5 = [(SBKeyboardFocusSceneProvider *)self sceneForIdentityTokenStringRepresentation:stringRepresentation];
 
   return v5;
 }
 
-- (id)sceneForIdentityTokenStringRepresentation:(id)a3
+- (id)sceneForIdentityTokenStringRepresentation:(id)representation
 {
-  v3 = a3;
-  if (v3)
+  representationCopy = representation;
+  if (representationCopy)
   {
-    v4 = [MEMORY[0x277D0AAD8] sharedInstance];
-    v5 = [v4 sceneFromIdentityTokenStringRepresentation:v3];
+    mEMORY[0x277D0AAD8] = [MEMORY[0x277D0AAD8] sharedInstance];
+    v5 = [mEMORY[0x277D0AAD8] sceneFromIdentityTokenStringRepresentation:representationCopy];
 
     if (!v5)
     {
-      v6 = [SBApp systemUIScenesCoordinator];
-      v5 = [v6 sceneFromIdentityTokenStringRepresentation:v3];
+      systemUIScenesCoordinator = [SBApp systemUIScenesCoordinator];
+      v5 = [systemUIScenesCoordinator sceneFromIdentityTokenStringRepresentation:representationCopy];
     }
   }
 
@@ -60,57 +60,57 @@
   return v5;
 }
 
-- (id)sceneForFocusTarget:(id)a3
+- (id)sceneForFocusTarget:(id)target
 {
-  v4 = [a3 sceneIdentityToken];
-  v5 = [(SBKeyboardFocusSceneProvider *)self sceneForIdentityToken:v4];
+  sceneIdentityToken = [target sceneIdentityToken];
+  v5 = [(SBKeyboardFocusSceneProvider *)self sceneForIdentityToken:sceneIdentityToken];
 
   return v5;
 }
 
-- (BOOL)isOverlayUIScene:(id)a3
+- (BOOL)isOverlayUIScene:(id)scene
 {
   v3 = SBApp;
-  v4 = a3;
-  v5 = [v3 systemUIScenesCoordinator];
-  v6 = [v5 overlayUISceneController];
-  v7 = [v6 jobLabel];
-  v8 = [v4 clientHandle];
+  sceneCopy = scene;
+  systemUIScenesCoordinator = [v3 systemUIScenesCoordinator];
+  overlayUISceneController = [systemUIScenesCoordinator overlayUISceneController];
+  jobLabel = [overlayUISceneController jobLabel];
+  clientHandle = [sceneCopy clientHandle];
 
-  v9 = [v8 processHandle];
-  v10 = [v9 consistentJobLabel];
-  v11 = [v7 isEqualToString:v10];
+  processHandle = [clientHandle processHandle];
+  consistentJobLabel = [processHandle consistentJobLabel];
+  v11 = [jobLabel isEqualToString:consistentJobLabel];
 
   return v11;
 }
 
-- (BOOL)isSystemUISceneIdentityToken:(id)a3
+- (BOOL)isSystemUISceneIdentityToken:(id)token
 {
   v3 = SBApp;
-  v4 = a3;
-  v5 = [v3 systemUIScenesCoordinator];
-  v6 = [v5 overlayUISceneController];
-  v7 = [v6 sceneFromIdentityToken:v4];
+  tokenCopy = token;
+  systemUIScenesCoordinator = [v3 systemUIScenesCoordinator];
+  overlayUISceneController = [systemUIScenesCoordinator overlayUISceneController];
+  v7 = [overlayUISceneController sceneFromIdentityToken:tokenCopy];
 
   return v7 != 0;
 }
 
-- (id)deviceApplicationSceneHandleForSceneIdentity:(id)a3
+- (id)deviceApplicationSceneHandleForSceneIdentity:(id)identity
 {
   v37 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  identityCopy = identity;
   v31 = 0u;
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
-  v4 = [SBApp windowSceneManager];
-  v5 = [v4 connectedWindowScenes];
+  windowSceneManager = [SBApp windowSceneManager];
+  connectedWindowScenes = [windowSceneManager connectedWindowScenes];
 
-  v25 = [v5 countByEnumeratingWithState:&v31 objects:v36 count:16];
+  v25 = [connectedWindowScenes countByEnumeratingWithState:&v31 objects:v36 count:16];
   if (v25)
   {
     v6 = *v32;
-    v26 = v5;
+    v26 = connectedWindowScenes;
     v24 = *v32;
     do
     {
@@ -118,7 +118,7 @@
       {
         if (*v32 != v6)
         {
-          objc_enumerationMutation(v5);
+          objc_enumerationMutation(connectedWindowScenes);
         }
 
         v8 = *(*(&v31 + 1) + 8 * i);
@@ -126,10 +126,10 @@
         v28 = 0u;
         v29 = 0u;
         v30 = 0u;
-        v9 = [v8 sceneManager];
-        v10 = [v9 externalApplicationSceneHandles];
+        sceneManager = [v8 sceneManager];
+        externalApplicationSceneHandles = [sceneManager externalApplicationSceneHandles];
 
-        v11 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+        v11 = [externalApplicationSceneHandles countByEnumeratingWithState:&v27 objects:v35 count:16];
         if (v11)
         {
           v12 = v11;
@@ -140,12 +140,12 @@
             {
               if (*v28 != v13)
               {
-                objc_enumerationMutation(v10);
+                objc_enumerationMutation(externalApplicationSceneHandles);
               }
 
               v15 = *(*(&v27 + 1) + 8 * j);
-              v16 = [v15 sceneIfExists];
-              v17 = [v16 identityToken];
+              sceneIfExists = [v15 sceneIfExists];
+              identityToken = [sceneIfExists identityToken];
               v18 = BSEqualObjects();
 
               if (v18)
@@ -170,14 +170,14 @@
                   v22 = 0;
                 }
 
-                v5 = v26;
+                connectedWindowScenes = v26;
                 v19 = v22;
 
                 goto LABEL_24;
               }
             }
 
-            v12 = [v10 countByEnumeratingWithState:&v27 objects:v35 count:16];
+            v12 = [externalApplicationSceneHandles countByEnumeratingWithState:&v27 objects:v35 count:16];
             if (v12)
             {
               continue;
@@ -187,7 +187,7 @@
           }
         }
 
-        v5 = v26;
+        connectedWindowScenes = v26;
         v6 = v24;
       }
 
@@ -208,20 +208,20 @@ LABEL_24:
   return v19;
 }
 
-- (BOOL)anyConnectedSBWindowSceneContainsSceneIdentity:(id)a3
+- (BOOL)anyConnectedSBWindowSceneContainsSceneIdentity:(id)identity
 {
   v32 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  if (v3)
+  identityCopy = identity;
+  if (identityCopy)
   {
     v28 = 0u;
     v29 = 0u;
     v26 = 0u;
     v27 = 0u;
-    v4 = [SBApp windowSceneManager];
-    v5 = [v4 connectedWindowScenes];
+    windowSceneManager = [SBApp windowSceneManager];
+    connectedWindowScenes = [windowSceneManager connectedWindowScenes];
 
-    v21 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+    v21 = [connectedWindowScenes countByEnumeratingWithState:&v26 objects:v31 count:16];
     if (v21)
     {
       v6 = *v27;
@@ -232,7 +232,7 @@ LABEL_24:
         {
           if (*v27 != v6)
           {
-            objc_enumerationMutation(v5);
+            objc_enumerationMutation(connectedWindowScenes);
           }
 
           v8 = *(*(&v26 + 1) + 8 * i);
@@ -240,10 +240,10 @@ LABEL_24:
           v23 = 0u;
           v24 = 0u;
           v25 = 0u;
-          v9 = [v8 sceneManager];
-          v10 = [v9 externalApplicationSceneHandles];
+          sceneManager = [v8 sceneManager];
+          externalApplicationSceneHandles = [sceneManager externalApplicationSceneHandles];
 
-          v11 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+          v11 = [externalApplicationSceneHandles countByEnumeratingWithState:&v22 objects:v30 count:16];
           if (v11)
           {
             v12 = v11;
@@ -254,11 +254,11 @@ LABEL_24:
               {
                 if (*v23 != v13)
                 {
-                  objc_enumerationMutation(v10);
+                  objc_enumerationMutation(externalApplicationSceneHandles);
                 }
 
-                v15 = [*(*(&v22 + 1) + 8 * j) sceneIfExists];
-                v16 = [v15 identityToken];
+                sceneIfExists = [*(*(&v22 + 1) + 8 * j) sceneIfExists];
+                identityToken = [sceneIfExists identityToken];
                 v17 = BSEqualObjects();
 
                 if (v17)
@@ -269,7 +269,7 @@ LABEL_24:
                 }
               }
 
-              v12 = [v10 countByEnumeratingWithState:&v22 objects:v30 count:16];
+              v12 = [externalApplicationSceneHandles countByEnumeratingWithState:&v22 objects:v30 count:16];
               if (v12)
               {
                 continue;
@@ -283,7 +283,7 @@ LABEL_24:
         }
 
         v18 = 0;
-        v21 = [v5 countByEnumeratingWithState:&v26 objects:v31 count:16];
+        v21 = [connectedWindowScenes countByEnumeratingWithState:&v26 objects:v31 count:16];
       }
 
       while (v21);

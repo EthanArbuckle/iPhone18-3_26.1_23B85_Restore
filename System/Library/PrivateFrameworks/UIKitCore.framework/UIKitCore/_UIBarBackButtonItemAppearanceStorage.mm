@@ -1,21 +1,21 @@
 @interface _UIBarBackButtonItemAppearanceStorage
-- (double)backgroundVerticalAdjustmentForBarMetrics:(int64_t)a3;
+- (double)backgroundVerticalAdjustmentForBarMetrics:(int64_t)metrics;
 - (id)anyBackgroundImage;
-- (id)backgroundImageForState:(unint64_t)a3 isMini:(BOOL)a4;
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4 isMini:(BOOL)a5;
-- (void)setBackgroundVerticalAdjustment:(double)a3 forBarMetrics:(int64_t)a4;
+- (id)backgroundImageForState:(unint64_t)state isMini:(BOOL)mini;
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state isMini:(BOOL)mini;
+- (void)setBackgroundVerticalAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics;
 @end
 
 @implementation _UIBarBackButtonItemAppearanceStorage
 
-- (void)setBackgroundImage:(id)a3 forState:(unint64_t)a4 isMini:(BOOL)a5
+- (void)setBackgroundImage:(id)image forState:(unint64_t)state isMini:(BOOL)mini
 {
-  v5 = a5;
-  v17 = a3;
+  miniCopy = mini;
+  imageCopy = image;
   p_miniBackgroundImages = &self->miniBackgroundImages;
   p_backgroundImages = &self->backgroundImages;
   v10 = 8;
-  if (v5)
+  if (miniCopy)
   {
     v10 = 16;
     v11 = &self->miniBackgroundImages;
@@ -27,9 +27,9 @@
   }
 
   v12 = *(&self->super.isa + v10);
-  if (v17 | v12)
+  if (imageCopy | v12)
   {
-    if (v17)
+    if (imageCopy)
     {
       if (!v12)
       {
@@ -40,17 +40,17 @@
         v12 = *v11;
       }
 
-      v15 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
-      [v12 setObject:v17 forKey:v15];
+      v15 = [MEMORY[0x1E696AD98] numberWithInteger:state];
+      [v12 setObject:imageCopy forKey:v15];
       goto LABEL_9;
     }
 
-    v16 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+    v16 = [MEMORY[0x1E696AD98] numberWithInteger:state];
     [v12 removeObjectForKey:v16];
 
     if (![v12 count])
     {
-      if (v5)
+      if (miniCopy)
       {
         v15 = *p_miniBackgroundImages;
         *p_miniBackgroundImages = 0;
@@ -72,17 +72,17 @@ LABEL_9:
   }
 }
 
-- (id)backgroundImageForState:(unint64_t)a3 isMini:(BOOL)a4
+- (id)backgroundImageForState:(unint64_t)state isMini:(BOOL)mini
 {
   v5 = 8;
-  if (a4)
+  if (mini)
   {
     v5 = 16;
   }
 
   v6 = MEMORY[0x1E696AD98];
   v7 = *(&self->super.isa + v5);
-  v8 = [v6 numberWithInteger:a3];
+  v8 = [v6 numberWithInteger:state];
   v9 = [v7 objectForKey:v8];
 
   return v9;
@@ -94,37 +94,37 @@ LABEL_9:
   v4 = [(NSMutableDictionary *)self->backgroundImages objectForKey:v3];
   if (v4)
   {
-    v5 = v4;
+    lastObject = v4;
   }
 
   else
   {
-    v6 = [(NSMutableDictionary *)self->backgroundImages allValues];
-    v5 = [v6 lastObject];
+    allValues = [(NSMutableDictionary *)self->backgroundImages allValues];
+    lastObject = [allValues lastObject];
 
-    if (!v5)
+    if (!lastObject)
     {
       v7 = [(NSMutableDictionary *)self->miniBackgroundImages objectForKey:v3];
       v8 = v7;
       if (v7)
       {
-        v5 = v7;
+        lastObject = v7;
       }
 
       else
       {
-        v9 = [(NSMutableDictionary *)self->miniBackgroundImages allValues];
-        v5 = [v9 lastObject];
+        allValues2 = [(NSMutableDictionary *)self->miniBackgroundImages allValues];
+        lastObject = [allValues2 lastObject];
       }
     }
   }
 
-  return v5;
+  return lastObject;
 }
 
-- (void)setBackgroundVerticalAdjustment:(double)a3 forBarMetrics:(int64_t)a4
+- (void)setBackgroundVerticalAdjustment:(double)adjustment forBarMetrics:(int64_t)metrics
 {
-  v5 = a3;
+  adjustmentCopy = adjustment;
   if (!self->backgroundVerticalAdjustmentsForBarMetrics)
   {
     v7 = objc_alloc_init(MEMORY[0x1E695DF90]);
@@ -132,13 +132,13 @@ LABEL_9:
     self->backgroundVerticalAdjustmentsForBarMetrics = v7;
   }
 
-  *&a3 = v5;
-  v10 = [MEMORY[0x1E696AD98] numberWithFloat:a3];
-  v9 = [MEMORY[0x1E696AD98] numberWithInteger:a4];
+  *&adjustment = adjustmentCopy;
+  v10 = [MEMORY[0x1E696AD98] numberWithFloat:adjustment];
+  v9 = [MEMORY[0x1E696AD98] numberWithInteger:metrics];
   [(NSMutableDictionary *)self->backgroundVerticalAdjustmentsForBarMetrics setObject:v10 forKey:v9];
 }
 
-- (double)backgroundVerticalAdjustmentForBarMetrics:(int64_t)a3
+- (double)backgroundVerticalAdjustmentForBarMetrics:(int64_t)metrics
 {
   backgroundVerticalAdjustmentsForBarMetrics = self->backgroundVerticalAdjustmentsForBarMetrics;
   v6 = [MEMORY[0x1E696AD98] numberWithInteger:?];
@@ -146,7 +146,7 @@ LABEL_9:
 
   if (!v7)
   {
-    if ((a3 - 101) > 1)
+    if ((metrics - 101) > 1)
     {
       v7 = 0;
     }
@@ -154,7 +154,7 @@ LABEL_9:
     else
     {
       v8 = self->backgroundVerticalAdjustmentsForBarMetrics;
-      v9 = [MEMORY[0x1E696AD98] numberWithInteger:a3 == 102];
+      v9 = [MEMORY[0x1E696AD98] numberWithInteger:metrics == 102];
       v7 = [(NSMutableDictionary *)v8 objectForKey:v9];
     }
   }

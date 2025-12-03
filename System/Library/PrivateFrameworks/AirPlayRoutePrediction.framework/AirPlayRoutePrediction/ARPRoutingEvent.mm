@@ -1,56 +1,56 @@
 @interface ARPRoutingEvent
-+ (id)mostRecentRoutingEventInDateInterval:(id)a3 knowledgeStore:(id)a4 eventLimit:(unint64_t)a5 longFormVideoFilter:(id)a6;
-- (ARPRoutingEvent)initWithBundleID:(id)a3 outputDeviceID:(id)a4 interval:(id)a5 probabilityVector:(id)a6;
++ (id)mostRecentRoutingEventInDateInterval:(id)interval knowledgeStore:(id)store eventLimit:(unint64_t)limit longFormVideoFilter:(id)filter;
+- (ARPRoutingEvent)initWithBundleID:(id)d outputDeviceID:(id)iD interval:(id)interval probabilityVector:(id)vector;
 - (id)description;
 @end
 
 @implementation ARPRoutingEvent
 
-- (ARPRoutingEvent)initWithBundleID:(id)a3 outputDeviceID:(id)a4 interval:(id)a5 probabilityVector:(id)a6
+- (ARPRoutingEvent)initWithBundleID:(id)d outputDeviceID:(id)iD interval:(id)interval probabilityVector:(id)vector
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a5;
-  v13 = a6;
+  dCopy = d;
+  iDCopy = iD;
+  intervalCopy = interval;
+  vectorCopy = vector;
   v22.receiver = self;
   v22.super_class = ARPRoutingEvent;
   v14 = [(ARPRoutingEvent *)&v22 init];
   if (v14)
   {
-    v15 = [v10 copy];
+    v15 = [dCopy copy];
     bundleID = v14->_bundleID;
     v14->_bundleID = v15;
 
-    v17 = [v11 copy];
+    v17 = [iDCopy copy];
     outputDeviceID = v14->_outputDeviceID;
     v14->_outputDeviceID = v17;
 
-    v19 = [v12 copy];
+    v19 = [intervalCopy copy];
     interval = v14->_interval;
     v14->_interval = v19;
 
-    objc_storeStrong(&v14->_probabilityVector, a6);
+    objc_storeStrong(&v14->_probabilityVector, vector);
   }
 
   return v14;
 }
 
-+ (id)mostRecentRoutingEventInDateInterval:(id)a3 knowledgeStore:(id)a4 eventLimit:(unint64_t)a5 longFormVideoFilter:(id)a6
++ (id)mostRecentRoutingEventInDateInterval:(id)interval knowledgeStore:(id)store eventLimit:(unint64_t)limit longFormVideoFilter:(id)filter
 {
   v134[3] = *MEMORY[0x277D85DE8];
-  v9 = a3;
-  v10 = a4;
-  v98 = a6;
+  intervalCopy = interval;
+  storeCopy = store;
+  filterCopy = filter;
   v94 = objc_autoreleasePoolPush();
   v11 = [MEMORY[0x277CFE260] startDateSortDescriptorAscending:0];
   v12 = MEMORY[0x277CFE260];
-  v13 = [v9 startDate];
-  v14 = [v9 endDate];
-  v15 = [v12 predicateForEventsWithEndInDateRangeFrom:v13 to:v14];
+  startDate = [intervalCopy startDate];
+  endDate = [intervalCopy endDate];
+  v15 = [v12 predicateForEventsWithEndInDateRangeFrom:startDate to:endDate];
 
   v16 = MEMORY[0x277CFE260];
-  v17 = [MEMORY[0x277CFE248] playing];
-  v18 = [v16 predicateForObjectsWithMetadataKey:v17 andIntegerValue:1];
+  playing = [MEMORY[0x277CFE248] playing];
+  v18 = [v16 predicateForObjectsWithMetadataKey:playing andIntegerValue:1];
 
   +[ARPRoutingSession minimumRoutingEventDuration];
   v19 = [MEMORY[0x277CFE260] predicateForEventsWithMinimumDuration:?];
@@ -65,14 +65,14 @@
   v22 = [v20 andPredicateWithSubpredicates:v21];
 
   v23 = MEMORY[0x277CFE1E0];
-  v24 = [MEMORY[0x277CFE298] nowPlayingStream];
-  v133 = v24;
+  nowPlayingStream = [MEMORY[0x277CFE298] nowPlayingStream];
+  v133 = nowPlayingStream;
   v25 = [MEMORY[0x277CBEA60] arrayWithObjects:&v133 count:1];
   v93 = v11;
   v132 = v11;
   v26 = [MEMORY[0x277CBEA60] arrayWithObjects:&v132 count:1];
   v89 = v22;
-  v27 = [v23 eventQueryWithPredicate:v22 eventStreams:v25 offset:0 limit:a5 sortDescriptors:v26];
+  v27 = [v23 eventQueryWithPredicate:v22 eventStreams:v25 offset:0 limit:limit sortDescriptors:v26];
 
   v28 = [MEMORY[0x277CCACA8] stringWithUTF8String:"ARPRoutingSession.m"];
   v29 = [v28 stringByAppendingFormat:@":%d", 85];
@@ -80,9 +80,9 @@
 
   [v27 setTracker:&__block_literal_global_1];
   v121 = 0;
-  v99 = v10;
+  v99 = storeCopy;
   v30 = v27;
-  v31 = [v10 executeQuery:v27 error:&v121];
+  v31 = [storeCopy executeQuery:v27 error:&v121];
   v32 = v121;
   v33 = ARPLog();
   v34 = v33;
@@ -100,8 +100,8 @@
   oslog = v34;
 
   v36 = MEMORY[0x277CFE1E0];
-  v37 = [MEMORY[0x277CFE298] microLocationVisitStream];
-  v131 = v37;
+  microLocationVisitStream = [MEMORY[0x277CFE298] microLocationVisitStream];
+  v131 = microLocationVisitStream;
   v38 = [MEMORY[0x277CBEA60] arrayWithObjects:&v131 count:1];
   v39 = [v36 eventQueryWithPredicate:0 eventStreams:v38 offset:0 limit:1 sortDescriptors:0];
 
@@ -111,20 +111,20 @@
 
   v97 = v39;
   [v39 setTracker:&__block_literal_global_17];
-  if (!v98)
+  if (!filterCopy)
   {
-    v42 = [getAVSystemControllerClass() sharedAVSystemController];
+    sharedAVSystemController = [getAVSystemControllerClass() sharedAVSystemController];
     v119[0] = MEMORY[0x277D85DD0];
     v119[1] = 3221225472;
     v119[2] = __102__ARPRoutingEvent_mostRecentRoutingEventInDateInterval_knowledgeStore_eventLimit_longFormVideoFilter___block_invoke_2;
     v119[3] = &unk_278C64550;
-    v120 = v42;
-    v43 = v42;
-    v98 = MEMORY[0x23EF1CFE0](v119);
+    v120 = sharedAVSystemController;
+    v43 = sharedAVSystemController;
+    filterCopy = MEMORY[0x23EF1CFE0](v119);
   }
 
   v86 = v27;
-  v87 = v9;
+  v87 = intervalCopy;
   +[ARPRoutingSession microLocationCorrelationGracePeriod];
   v45 = v44;
   v107 = objc_alloc_init(MEMORY[0x277CBEB38]);
@@ -155,57 +155,57 @@
 
         v49 = *(*(&v115 + 1) + 8 * v48);
         context = objc_autoreleasePoolPush();
-        v50 = [v49 metadata];
-        v51 = [*(v47 + 584) outputDeviceIDs];
-        v52 = [v50 objectForKeyedSubscript:v51];
+        metadata = [v49 metadata];
+        outputDeviceIDs = [*(v47 + 584) outputDeviceIDs];
+        v52 = [metadata objectForKeyedSubscript:outputDeviceIDs];
 
         v53 = ARPExtractLongFormVideoOutputDeviceIDs(v52);
         if ([v53 count] == 1)
         {
-          v54 = [v53 firstObject];
+          firstObject = [v53 firstObject];
         }
 
         else
         {
-          v54 = 0;
+          firstObject = 0;
         }
 
         v34 = oslog;
-        v55 = [v49 stringValue];
+        stringValue = [v49 stringValue];
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEBUG))
         {
-          v80 = [v49 startDate];
-          v81 = [v49 endDate];
+          startDate2 = [v49 startDate];
+          endDate2 = [v49 endDate];
           *buf = 138413058;
-          v123 = v55;
+          v123 = stringValue;
           v124 = 2112;
-          v125 = v54;
+          v125 = firstObject;
           v126 = 2112;
-          v127 = v80;
+          v127 = startDate2;
           v128 = 2112;
-          v129 = v81;
+          v129 = endDate2;
           _os_log_debug_impl(&dword_23EB15000, oslog, OS_LOG_TYPE_DEBUG, "Evaluating candiate event %@ -> %@. %@ - %@", buf, 0x2Au);
 
           v34 = oslog;
         }
 
-        if (v54)
+        if (firstObject)
         {
-          v56 = [v107 objectForKeyedSubscript:v55];
+          v56 = [v107 objectForKeyedSubscript:stringValue];
           if (!v56)
           {
-            v56 = [MEMORY[0x277CCABB0] numberWithBool:{v98[2](v98, v55)}];
-            [v107 setObject:v56 forKeyedSubscript:v55];
+            v56 = [MEMORY[0x277CCABB0] numberWithBool:{filterCopy[2](filterCopy, stringValue)}];
+            [v107 setObject:v56 forKeyedSubscript:stringValue];
           }
 
           if ([v56 BOOLValue])
           {
             v101 = v52;
-            v57 = [v49 startDate];
-            v58 = [v57 dateByAddingTimeInterval:-v45];
+            startDate3 = [v49 startDate];
+            v58 = [startDate3 dateByAddingTimeInterval:-v45];
 
-            v59 = [v49 startDate];
-            v60 = [v59 dateByAddingTimeInterval:v45];
+            startDate4 = [v49 startDate];
+            v60 = [startDate4 dateByAddingTimeInterval:v45];
 
             v102 = v58;
             v104 = v60;
@@ -215,9 +215,9 @@
             v61 = [v99 executeQuery:v97 error:&v112];
             v62 = v112;
 
-            v63 = [v61 firstObject];
+            firstObject2 = [v61 firstObject];
 
-            v106 = v63;
+            v106 = firstObject2;
             if (v62)
             {
               v64 = 0;
@@ -227,26 +227,26 @@
               goto LABEL_36;
             }
 
-            if (v63)
+            if (firstObject2)
             {
-              v67 = [v63 metadata];
-              v68 = [MEMORY[0x277CFE230] probabilityVector];
-              v69 = [v67 objectForKeyedSubscript:v68];
+              metadata2 = [firstObject2 metadata];
+              probabilityVector = [MEMORY[0x277CFE230] probabilityVector];
+              v69 = [metadata2 objectForKeyedSubscript:probabilityVector];
 
               if (v69)
               {
-                v70 = [v63 metadata];
-                v71 = [MEMORY[0x277CFE230] probabilityVector];
-                v88 = [v70 objectForKeyedSubscript:v71];
+                metadata3 = [firstObject2 metadata];
+                probabilityVector2 = [MEMORY[0x277CFE230] probabilityVector];
+                v88 = [metadata3 objectForKeyedSubscript:probabilityVector2];
 
                 v72 = objc_alloc(MEMORY[0x277CCA970]);
-                v73 = [v49 startDate];
-                v74 = [v49 endDate];
-                v75 = [v72 initWithStartDate:v73 endDate:v74];
+                startDate5 = [v49 startDate];
+                endDate3 = [v49 endDate];
+                v75 = [v72 initWithStartDate:startDate5 endDate:endDate3];
 
                 v76 = [ARPRoutingEvent alloc];
-                v77 = [v49 stringValue];
-                v78 = [(ARPRoutingEvent *)v76 initWithBundleID:v77 outputDeviceID:v54 interval:v75 probabilityVector:v88];
+                stringValue2 = [v49 stringValue];
+                v78 = [(ARPRoutingEvent *)v76 initWithBundleID:stringValue2 outputDeviceID:firstObject interval:v75 probabilityVector:v88];
 
                 v79 = v75;
                 v64 = 0;
@@ -300,12 +300,12 @@ LABEL_36:
             if (os_log_type_enabled(v34, OS_LOG_TYPE_DEBUG))
             {
               *buf = 138412290;
-              v123 = v55;
+              v123 = stringValue;
               _os_log_debug_impl(&dword_23EB15000, v34, OS_LOG_TYPE_DEBUG, "Skipping candidate because %@ is not a long form video app.", buf, 0xCu);
             }
           }
 
-          v66 = v55;
+          v66 = stringValue;
           v47 = 0x277CFE000;
           goto LABEL_39;
         }
@@ -316,7 +316,7 @@ LABEL_36:
         }
 
         v66 = v34;
-        v54 = v55;
+        firstObject = stringValue;
 LABEL_39:
 
         objc_autoreleasePoolPop(context);
@@ -344,14 +344,14 @@ LABEL_47:
   if (!v105)
   {
     v30 = v86;
-    v9 = v87;
+    intervalCopy = v87;
     v31 = v85;
     v35 = v96;
     goto LABEL_52;
   }
 
   v30 = v86;
-  v9 = v87;
+  intervalCopy = v87;
   v31 = v85;
   v35 = v96;
 LABEL_49:
@@ -372,11 +372,11 @@ LABEL_52:
 {
   v3 = MEMORY[0x277CCACA8];
   v4 = objc_opt_class();
-  v5 = [(ARPRoutingEvent *)self bundleID];
-  v6 = [(ARPRoutingEvent *)self outputDeviceID];
-  v7 = [(ARPRoutingEvent *)self interval];
-  v8 = [(ARPRoutingEvent *)self probabilityVector];
-  v9 = [v3 stringWithFormat:@"<%@ %p> bundleID: %@, outputDeviceID: %@, interval: %@, microLocationProbabilityVector: %@", v4, self, v5, v6, v7, v8];
+  bundleID = [(ARPRoutingEvent *)self bundleID];
+  outputDeviceID = [(ARPRoutingEvent *)self outputDeviceID];
+  interval = [(ARPRoutingEvent *)self interval];
+  probabilityVector = [(ARPRoutingEvent *)self probabilityVector];
+  v9 = [v3 stringWithFormat:@"<%@ %p> bundleID: %@, outputDeviceID: %@, interval: %@, microLocationProbabilityVector: %@", v4, self, bundleID, outputDeviceID, interval, probabilityVector];
 
   return v9;
 }

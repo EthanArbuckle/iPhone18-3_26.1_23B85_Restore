@@ -3,11 +3,11 @@
 - (double)_rightAdditionalInset;
 - (double)_sharpRightAdditionalInset;
 - (double)preferredLeadingPadding;
-- (id)initForDetached:(BOOL)a3;
+- (id)initForDetached:(BOOL)detached;
 - (void)layoutSubviews;
-- (void)setIsRerouting:(BOOL)a3;
-- (void)setManeuverArtwork:(id)a3;
-- (void)setTransportType:(int)a3;
+- (void)setIsRerouting:(BOOL)rerouting;
+- (void)setManeuverArtwork:(id)artwork;
+- (void)setTransportType:(int)type;
 @end
 
 @implementation ManeuverAccessoryView
@@ -100,21 +100,21 @@
     v3 = 4.0;
   }
 
-  v9 = [(GuidanceManeuverView *)self->_maneuverView maneuverArtwork];
-  v10 = [v9 junction];
+  maneuverArtwork = [(GuidanceManeuverView *)self->_maneuverView maneuverArtwork];
+  junction = [maneuverArtwork junction];
 
-  if (!v10)
+  if (!junction)
   {
-    v9 = [(GuidanceManeuverView *)self->_maneuverView maneuverArtwork];
-    if ([v9 maneuver] == 61)
+    maneuverArtwork = [(GuidanceManeuverView *)self->_maneuverView maneuverArtwork];
+    if ([maneuverArtwork maneuver] == 61)
     {
 
 LABEL_24:
       [(ManeuverAccessoryView *)self _sharpRightAdditionalInset];
       v3 = v15 + v3;
 LABEL_25:
-      v9 = [(GuidanceManeuverView *)self->_maneuverView maneuverArtwork];
-      if ([v9 maneuver] == 2)
+      maneuverArtwork = [(GuidanceManeuverView *)self->_maneuverView maneuverArtwork];
+      if ([maneuverArtwork maneuver] == 2)
       {
 
         goto LABEL_29;
@@ -124,14 +124,14 @@ LABEL_25:
     }
   }
 
-  v11 = [(GuidanceManeuverView *)self->_maneuverView maneuverArtwork];
-  v12 = [v11 junction];
-  v13 = [v12 willSnapToSharpRight];
+  maneuverArtwork2 = [(GuidanceManeuverView *)self->_maneuverView maneuverArtwork];
+  junction2 = [maneuverArtwork2 junction];
+  willSnapToSharpRight = [junction2 willSnapToSharpRight];
 
-  if (!v10)
+  if (!junction)
   {
 
-    if (!v13)
+    if (!willSnapToSharpRight)
     {
       goto LABEL_25;
     }
@@ -139,21 +139,21 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  if (v13)
+  if (willSnapToSharpRight)
   {
     [(ManeuverAccessoryView *)self _sharpRightAdditionalInset];
     v3 = v14 + v3;
   }
 
 LABEL_27:
-  v16 = [(GuidanceManeuverView *)self->_maneuverView maneuverArtwork];
-  v17 = [v16 junction];
-  v18 = [v17 willSnapToRightHandTurn];
+  maneuverArtwork3 = [(GuidanceManeuverView *)self->_maneuverView maneuverArtwork];
+  junction3 = [maneuverArtwork3 junction];
+  willSnapToRightHandTurn = [junction3 willSnapToRightHandTurn];
 
-  if (!v10)
+  if (!junction)
   {
 
-    if ((v18 & 1) == 0)
+    if ((willSnapToRightHandTurn & 1) == 0)
     {
       return v3;
     }
@@ -161,7 +161,7 @@ LABEL_27:
     goto LABEL_29;
   }
 
-  if (v18)
+  if (willSnapToRightHandTurn)
   {
 LABEL_29:
     [(ManeuverAccessoryView *)self _rightAdditionalInset];
@@ -173,11 +173,11 @@ LABEL_29:
 
 - (CGSize)intrinsicContentSize
 {
-  v3 = [(ManeuverAccessoryView *)self isRerouting];
+  isRerouting = [(ManeuverAccessoryView *)self isRerouting];
   v4 = 20.0;
   v5 = 20.0;
   v6 = 20.0;
-  if ((v3 & 1) == 0)
+  if ((isRerouting & 1) == 0)
   {
     maneuverView = self->_maneuverView;
     if (maneuverView)
@@ -298,9 +298,9 @@ LABEL_29:
   v7 = 20.0;
   if ((v6 & 1) == 0)
   {
-    v8 = [(ManeuverAccessoryView *)self usesArrowMetricsReferenceSize];
+    usesArrowMetricsReferenceSize = [(ManeuverAccessoryView *)self usesArrowMetricsReferenceSize];
     v7 = v5;
-    if ((v8 & 1) == 0)
+    if ((usesArrowMetricsReferenceSize & 1) == 0)
     {
       [(GuidanceManeuverView *)self->_maneuverView intrinsicContentSize];
     }
@@ -313,39 +313,39 @@ LABEL_29:
 
   v9 = (v5 - v7) * -0.5;
   v10 = v7 * 0.5 + -10.0;
-  v11 = [(ManeuverAccessoryView *)self maneuverView];
-  [v11 setFrame:{v9, 0.0, v5, v4}];
+  maneuverView = [(ManeuverAccessoryView *)self maneuverView];
+  [maneuverView setFrame:{v9, 0.0, v5, v4}];
 
-  v12 = [(ManeuverAccessoryView *)self transportTypeImageView];
-  [v12 setFrame:{v10, 0.0, 20.0, 20.0}];
+  transportTypeImageView = [(ManeuverAccessoryView *)self transportTypeImageView];
+  [transportTypeImageView setFrame:{v10, 0.0, 20.0, 20.0}];
 }
 
-- (void)setIsRerouting:(BOOL)a3
+- (void)setIsRerouting:(BOOL)rerouting
 {
-  v3 = a3;
-  self->_isRerouting = a3;
-  v5 = [(ManeuverAccessoryView *)self maneuverView];
-  [v5 setHidden:v3];
+  reroutingCopy = rerouting;
+  self->_isRerouting = rerouting;
+  maneuverView = [(ManeuverAccessoryView *)self maneuverView];
+  [maneuverView setHidden:reroutingCopy];
 
-  v6 = [(ManeuverAccessoryView *)self transportTypeImageView];
-  [v6 setHidden:v3 ^ 1];
+  transportTypeImageView = [(ManeuverAccessoryView *)self transportTypeImageView];
+  [transportTypeImageView setHidden:reroutingCopy ^ 1];
 
   [(ManeuverAccessoryView *)self invalidateIntrinsicContentSize];
 
   [(ManeuverAccessoryView *)self setNeedsLayout];
 }
 
-- (void)setTransportType:(int)a3
+- (void)setTransportType:(int)type
 {
-  self->_transportType = a3;
-  if (a3 > 3)
+  self->_transportType = type;
+  if (type > 3)
   {
     v4 = 0;
   }
 
   else
   {
-    v4 = [UIImage systemImageNamed:*(&off_10162CDC8 + a3)];
+    v4 = [UIImage systemImageNamed:*(&off_10162CDC8 + type)];
   }
 
   v5 = v4;
@@ -354,11 +354,11 @@ LABEL_29:
   [(ManeuverAccessoryView *)self setNeedsLayout];
 }
 
-- (void)setManeuverArtwork:(id)a3
+- (void)setManeuverArtwork:(id)artwork
 {
-  v8 = a3;
-  objc_storeStrong(&self->_maneuverArtwork, a3);
-  if ([v8 isRoundaboutManeuver])
+  artworkCopy = artwork;
+  objc_storeStrong(&self->_maneuverArtwork, artwork);
+  if ([artworkCopy isRoundaboutManeuver])
   {
     +[MapsTheme apertureKeyColor];
   }
@@ -371,8 +371,8 @@ LABEL_29:
   [(GuidanceManeuverView *)self->_maneuverView setAccentColor:v5];
 
   maneuverArtwork = self->_maneuverArtwork;
-  v7 = [(ManeuverAccessoryView *)self maneuverView];
-  [v7 setManeuverArtwork:maneuverArtwork];
+  maneuverView = [(ManeuverAccessoryView *)self maneuverView];
+  [maneuverView setManeuverArtwork:maneuverArtwork];
 
   [(ManeuverAccessoryView *)self invalidateIntrinsicContentSize];
   [(ManeuverAccessoryView *)self setNeedsLayout];
@@ -398,60 +398,60 @@ LABEL_29:
   return *&qword_10195DAF8;
 }
 
-- (id)initForDetached:(BOOL)a3
+- (id)initForDetached:(BOOL)detached
 {
   v23.receiver = self;
   v23.super_class = ManeuverAccessoryView;
   y = CGRectZero.origin.y;
   width = CGRectZero.size.width;
   height = CGRectZero.size.height;
-  v7 = [(ManeuverAccessoryView *)&v23 initWithFrame:CGRectZero.origin.x, y, width, height];
-  if (v7)
+  height = [(ManeuverAccessoryView *)&v23 initWithFrame:CGRectZero.origin.x, y, width, height];
+  if (height)
   {
     v8 = objc_opt_class();
     v9 = NSStringFromClass(v8);
-    [(ManeuverAccessoryView *)v7 setAccessibilityIdentifier:v9];
+    [(ManeuverAccessoryView *)height setAccessibilityIdentifier:v9];
 
-    v7->_isDetached = a3;
-    v10 = [[GuidanceManeuverView alloc] initWithFrame:0 textureProvider:CGRectZero.origin.x, y, width, height];
-    maneuverView = v7->_maneuverView;
-    v7->_maneuverView = v10;
+    height->_isDetached = detached;
+    height2 = [[GuidanceManeuverView alloc] initWithFrame:0 textureProvider:CGRectZero.origin.x, y, width, height];
+    maneuverView = height->_maneuverView;
+    height->_maneuverView = height2;
 
     MKDefaultCompactManeuverMetrics();
-    v12 = v7->_maneuverView;
+    v12 = height->_maneuverView;
     memcpy(__dst, __src, sizeof(__dst));
     [(GuidanceManeuverView *)v12 setArrowMetrics:__dst];
     memset(__dst, 0, sizeof(__dst));
     MKDefaultJunctionManeuverMetrics();
     BYTE2(__dst[21]) = 1;
-    v13 = v7->_maneuverView;
+    v13 = height->_maneuverView;
     memcpy(v20, __dst, sizeof(v20));
     [(GuidanceManeuverView *)v13 setJunctionArrowMetrics:v20];
-    [(GuidanceManeuverView *)v7->_maneuverView setUsesCompactImages:1];
-    [(GuidanceManeuverView *)v7->_maneuverView setFraming:1];
+    [(GuidanceManeuverView *)height->_maneuverView setUsesCompactImages:1];
+    [(GuidanceManeuverView *)height->_maneuverView setFraming:1];
     v14 = +[UIColor clearColor];
-    [(GuidanceManeuverView *)v7->_maneuverView setAccentColor:v14];
+    [(GuidanceManeuverView *)height->_maneuverView setAccentColor:v14];
 
-    [(GuidanceManeuverView *)v7->_maneuverView setContentMode:1];
-    [(ManeuverAccessoryView *)v7 addSubview:v7->_maneuverView];
+    [(GuidanceManeuverView *)height->_maneuverView setContentMode:1];
+    [(ManeuverAccessoryView *)height addSubview:height->_maneuverView];
     v15 = [[UIImageView alloc] initWithFrame:{CGRectZero.origin.x, y, width, height}];
-    transportTypeImageView = v7->_transportTypeImageView;
-    v7->_transportTypeImageView = v15;
+    transportTypeImageView = height->_transportTypeImageView;
+    height->_transportTypeImageView = v15;
 
-    [(UIImageView *)v7->_transportTypeImageView setAccessibilityIdentifier:@"TransportTypeImageView"];
-    [(UIImageView *)v7->_transportTypeImageView setContentMode:1];
-    [(UIImageView *)v7->_transportTypeImageView setHidden:1];
-    [(ManeuverAccessoryView *)v7 addSubview:v7->_transportTypeImageView];
+    [(UIImageView *)height->_transportTypeImageView setAccessibilityIdentifier:@"TransportTypeImageView"];
+    [(UIImageView *)height->_transportTypeImageView setContentMode:1];
+    [(UIImageView *)height->_transportTypeImageView setHidden:1];
+    [(ManeuverAccessoryView *)height addSubview:height->_transportTypeImageView];
     v17 = +[MapsTheme apertureKeyColor];
-    [(GuidanceManeuverView *)v7->_maneuverView setArrowColor:v17];
+    [(GuidanceManeuverView *)height->_maneuverView setArrowColor:v17];
 
     v18 = +[MapsTheme apertureKeyColor];
-    [(UIImageView *)v7->_transportTypeImageView setTintColor:v18];
+    [(UIImageView *)height->_transportTypeImageView setTintColor:v18];
 
-    v7->_usesArrowMetricsReferenceSize = 1;
+    height->_usesArrowMetricsReferenceSize = 1;
   }
 
-  return v7;
+  return height;
 }
 
 @end

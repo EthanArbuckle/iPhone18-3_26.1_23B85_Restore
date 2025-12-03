@@ -1,19 +1,19 @@
 @interface EXContentFormat
-+ (id)edContentFormatFromXmlContentFormatElement:(_xmlNode *)a3;
++ (id)edContentFormatFromXmlContentFormatElement:(_xmlNode *)element;
 @end
 
 @implementation EXContentFormat
 
-+ (id)edContentFormatFromXmlContentFormatElement:(_xmlNode *)a3
++ (id)edContentFormatFromXmlContentFormatElement:(_xmlNode *)element
 {
-  if (a3)
+  if (element)
   {
     v9 = 0;
     v4 = 0;
-    if (CXOptionalUnsignedLongAttribute(a3, CXNoNamespace, "numFmtId", &v9))
+    if (CXOptionalUnsignedLongAttribute(element, CXNoNamespace, "numFmtId", &v9))
     {
       v8 = 0;
-      CXOptionalStringAttribute(a3, CXNoNamespace, "formatCode", &v8);
+      CXOptionalStringAttribute(element, CXNoNamespace, "formatCode", &v8);
       v5 = v8;
       v6 = [EDString edStringWithString:v5];
       v4 = [EDContentFormat contentFormatWithFormatString:v6 formatId:v9];

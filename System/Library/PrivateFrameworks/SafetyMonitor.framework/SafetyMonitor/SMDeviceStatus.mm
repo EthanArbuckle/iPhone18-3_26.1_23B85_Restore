@@ -1,12 +1,12 @@
 @interface SMDeviceStatus
 - (SMDeviceStatus)init;
-- (SMDeviceStatus)initWithCoder:(id)a3;
-- (SMDeviceStatus)initWithDictionary:(id)a3;
-- (SMDeviceStatus)initWithIdentifier:(id)a3 batteryRemaining:(int64_t)a4 cellularStrength:(unint64_t)a5 date:(id)a6 wifiStrength:(unint64_t)a7;
-- (id)copyWithZone:(_NSZone *)a3;
+- (SMDeviceStatus)initWithCoder:(id)coder;
+- (SMDeviceStatus)initWithDictionary:(id)dictionary;
+- (SMDeviceStatus)initWithIdentifier:(id)identifier batteryRemaining:(int64_t)remaining cellularStrength:(unint64_t)strength date:(id)date wifiStrength:(unint64_t)wifiStrength;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)outputToDictionary;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SMDeviceStatus
@@ -14,17 +14,17 @@
 - (SMDeviceStatus)init
 {
   v3 = objc_opt_new();
-  v4 = [MEMORY[0x277CBEAA8] distantPast];
-  v5 = [(SMDeviceStatus *)self initWithIdentifier:v3 batteryRemaining:0 cellularStrength:0 date:v4 wifiStrength:0];
+  distantPast = [MEMORY[0x277CBEAA8] distantPast];
+  v5 = [(SMDeviceStatus *)self initWithIdentifier:v3 batteryRemaining:0 cellularStrength:0 date:distantPast wifiStrength:0];
 
   return v5;
 }
 
-- (SMDeviceStatus)initWithIdentifier:(id)a3 batteryRemaining:(int64_t)a4 cellularStrength:(unint64_t)a5 date:(id)a6 wifiStrength:(unint64_t)a7
+- (SMDeviceStatus)initWithIdentifier:(id)identifier batteryRemaining:(int64_t)remaining cellularStrength:(unint64_t)strength date:(id)date wifiStrength:(unint64_t)wifiStrength
 {
-  v13 = a3;
-  v14 = a6;
-  if (v13)
+  identifierCopy = identifier;
+  dateCopy = date;
+  if (identifierCopy)
   {
     v20.receiver = self;
     v20.super_class = SMDeviceStatus;
@@ -32,15 +32,15 @@
     v16 = v15;
     if (v15)
     {
-      objc_storeStrong(&v15->_identifier, a3);
-      v16->_batteryRemaining = a4;
-      v16->_cellularStrength = a5;
-      objc_storeStrong(&v16->_date, a6);
-      v16->_wifiStrength = a7;
+      objc_storeStrong(&v15->_identifier, identifier);
+      v16->_batteryRemaining = remaining;
+      v16->_cellularStrength = strength;
+      objc_storeStrong(&v16->_date, date);
+      v16->_wifiStrength = wifiStrength;
     }
 
     self = v16;
-    v17 = self;
+    selfCopy = self;
   }
 
   else
@@ -52,35 +52,35 @@
       _os_log_error_impl(&dword_26455D000, v18, OS_LOG_TYPE_ERROR, "Invalid parameter not satisfying: identifier", buf, 2u);
     }
 
-    v17 = 0;
+    selfCopy = 0;
   }
 
-  return v17;
+  return selfCopy;
 }
 
-- (SMDeviceStatus)initWithDictionary:(id)a3
+- (SMDeviceStatus)initWithDictionary:(id)dictionary
 {
   v4 = MEMORY[0x277CCAD78];
-  v5 = a3;
-  v6 = [v4 UUID];
-  v7 = [v5 valueForKey:@"identifier"];
-  v8 = [v6 initWithUUIDString:v7];
+  dictionaryCopy = dictionary;
+  uUID = [v4 UUID];
+  v7 = [dictionaryCopy valueForKey:@"identifier"];
+  v8 = [uUID initWithUUIDString:v7];
 
-  v9 = [v5 valueForKey:@"batteryRemaining"];
-  v10 = [v9 integerValue];
+  v9 = [dictionaryCopy valueForKey:@"batteryRemaining"];
+  integerValue = [v9 integerValue];
 
-  v11 = [v5 valueForKey:@"cellularStrength"];
-  v12 = [v11 integerValue];
+  v11 = [dictionaryCopy valueForKey:@"cellularStrength"];
+  integerValue2 = [v11 integerValue];
 
-  v13 = [v5 valueForKey:@"timeOfCollection"];
+  v13 = [dictionaryCopy valueForKey:@"timeOfCollection"];
   [v13 doubleValue];
   v15 = v14;
 
   v16 = [MEMORY[0x277CBEAA8] dateWithTimeIntervalSince1970:v15];
-  v17 = [v5 valueForKey:@"wifiStrength"];
+  v17 = [dictionaryCopy valueForKey:@"wifiStrength"];
 
-  v18 = [v17 integerValue];
-  v19 = [(SMDeviceStatus *)self initWithIdentifier:v8 batteryRemaining:v10 cellularStrength:v12 date:v16 wifiStrength:v18];
+  integerValue3 = [v17 integerValue];
+  v19 = [(SMDeviceStatus *)self initWithIdentifier:v8 batteryRemaining:integerValue cellularStrength:integerValue2 date:v16 wifiStrength:integerValue3];
 
   return v19;
 }
@@ -88,9 +88,9 @@
 - (id)outputToDictionary
 {
   v3 = objc_alloc_init(MEMORY[0x277CBEB38]);
-  v4 = [(SMDeviceStatus *)self identifier];
-  v5 = [v4 UUIDString];
-  [v3 setObject:v5 forKey:@"identifier"];
+  identifier = [(SMDeviceStatus *)self identifier];
+  uUIDString = [identifier UUIDString];
+  [v3 setObject:uUIDString forKey:@"identifier"];
 
   v6 = [MEMORY[0x277CCABB0] numberWithInteger:{-[SMDeviceStatus batteryRemaining](self, "batteryRemaining")}];
   [v3 setObject:v6 forKey:@"batteryRemaining"];
@@ -99,8 +99,8 @@
   [v3 setObject:v7 forKey:@"cellularStrength"];
 
   v8 = MEMORY[0x277CCABB0];
-  v9 = [(SMDeviceStatus *)self date];
-  [v9 timeIntervalSince1970];
+  date = [(SMDeviceStatus *)self date];
+  [date timeIntervalSince1970];
   v10 = [v8 numberWithDouble:?];
   [v3 setObject:v10 forKey:@"timeOfCollection"];
 
@@ -110,36 +110,36 @@
   return v3;
 }
 
-- (SMDeviceStatus)initWithCoder:(id)a3
+- (SMDeviceStatus)initWithCoder:(id)coder
 {
-  v4 = a3;
-  v5 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
-  v6 = [v4 decodeIntegerForKey:@"batteryRemaining"];
-  v7 = [v4 decodeIntegerForKey:@"cellularStrength"];
-  v8 = [v4 decodeObjectOfClass:objc_opt_class() forKey:@"timeOfCollection"];
-  v9 = [v4 decodeIntegerForKey:@"wifiStrength"];
+  coderCopy = coder;
+  v5 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"identifier"];
+  v6 = [coderCopy decodeIntegerForKey:@"batteryRemaining"];
+  v7 = [coderCopy decodeIntegerForKey:@"cellularStrength"];
+  v8 = [coderCopy decodeObjectOfClass:objc_opt_class() forKey:@"timeOfCollection"];
+  v9 = [coderCopy decodeIntegerForKey:@"wifiStrength"];
 
   v10 = [(SMDeviceStatus *)self initWithIdentifier:v5 batteryRemaining:v6 cellularStrength:v7 date:v8 wifiStrength:v9];
   return v10;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  v6 = a3;
-  v4 = [(SMDeviceStatus *)self identifier];
-  [v6 encodeObject:v4 forKey:@"identifier"];
+  coderCopy = coder;
+  identifier = [(SMDeviceStatus *)self identifier];
+  [coderCopy encodeObject:identifier forKey:@"identifier"];
 
-  [v6 encodeInteger:-[SMDeviceStatus batteryRemaining](self forKey:{"batteryRemaining"), @"batteryRemaining"}];
-  [v6 encodeInteger:-[SMDeviceStatus cellularStrength](self forKey:{"cellularStrength"), @"cellularStrength"}];
-  v5 = [(SMDeviceStatus *)self date];
-  [v6 encodeObject:v5 forKey:@"timeOfCollection"];
+  [coderCopy encodeInteger:-[SMDeviceStatus batteryRemaining](self forKey:{"batteryRemaining"), @"batteryRemaining"}];
+  [coderCopy encodeInteger:-[SMDeviceStatus cellularStrength](self forKey:{"cellularStrength"), @"cellularStrength"}];
+  date = [(SMDeviceStatus *)self date];
+  [coderCopy encodeObject:date forKey:@"timeOfCollection"];
 
-  [v6 encodeInteger:-[SMDeviceStatus wifiStrength](self forKey:{"wifiStrength"), @"wifiStrength"}];
+  [coderCopy encodeInteger:-[SMDeviceStatus wifiStrength](self forKey:{"wifiStrength"), @"wifiStrength"}];
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v4 = [objc_opt_class() allocWithZone:a3];
+  v4 = [objc_opt_class() allocWithZone:zone];
   identifier = self->_identifier;
   batteryRemaining = self->_batteryRemaining;
   cellularStrength = self->_cellularStrength;
@@ -152,11 +152,11 @@
 - (id)description
 {
   v3 = MEMORY[0x277CCACA8];
-  v4 = [(SMDeviceStatus *)self identifier];
-  v5 = [(SMDeviceStatus *)self batteryRemaining];
-  v6 = [(SMDeviceStatus *)self cellularStrength];
-  v7 = [(SMDeviceStatus *)self date];
-  v8 = [v3 stringWithFormat:@"identifier, %@, batteryRemaining, %d, cellularStrength, %d, date, %@, wifiStrength, %d", v4, v5, v6, v7, -[SMDeviceStatus wifiStrength](self, "wifiStrength")];
+  identifier = [(SMDeviceStatus *)self identifier];
+  batteryRemaining = [(SMDeviceStatus *)self batteryRemaining];
+  cellularStrength = [(SMDeviceStatus *)self cellularStrength];
+  date = [(SMDeviceStatus *)self date];
+  v8 = [v3 stringWithFormat:@"identifier, %@, batteryRemaining, %d, cellularStrength, %d, date, %@, wifiStrength, %d", identifier, batteryRemaining, cellularStrength, date, -[SMDeviceStatus wifiStrength](self, "wifiStrength")];
 
   return v8;
 }

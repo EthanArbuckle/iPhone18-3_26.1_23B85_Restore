@@ -4,10 +4,10 @@
 - (UIColor)containerBackgroundColor;
 - (UIViewController)contentViewController;
 - (WFWidgetConfigurationContainerViewControllerProtocolDelegate)containerDelegate;
-- (WFWidgetConfigurationHostContainerViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (WFWidgetConfigurationHostContainerViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (WFWidgetConfigurationRequest)request;
-- (void)setContainerBackgroundColor:(id)a3;
-- (void)setContainerDelegate:(id)a3;
+- (void)setContainerBackgroundColor:(id)color;
+- (void)setContainerDelegate:(id)delegate;
 - (void)viewDidLoad;
 @end
 
@@ -20,10 +20,10 @@
   return v2;
 }
 
-- (void)setContainerDelegate:(id)a3
+- (void)setContainerDelegate:(id)delegate
 {
   swift_unknownObjectRetain();
-  v4 = self;
+  selfCopy = self;
   sub_1C83C939C();
 }
 
@@ -48,16 +48,16 @@
   return v2;
 }
 
-- (void)setContainerBackgroundColor:(id)a3
+- (void)setContainerBackgroundColor:(id)color
 {
-  v5 = a3;
-  v6 = self;
-  sub_1C83C9524(a3);
+  colorCopy = color;
+  selfCopy = self;
+  sub_1C83C9524(color);
 }
 
 - (MTVisualStylingProvider)strokeProvider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C83C957C();
 
   return v3;
@@ -65,7 +65,7 @@
 
 - (MTVisualStylingProvider)fillProvider
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1C83C95C8();
 
   return v3;
@@ -73,18 +73,18 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   sub_1C83C97C4();
 }
 
-- (WFWidgetConfigurationHostContainerViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (WFWidgetConfigurationHostContainerViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     sub_1C840CDDC();
   }
 
-  v5 = a4;
+  bundleCopy = bundle;
   sub_1C83CA318();
 }
 

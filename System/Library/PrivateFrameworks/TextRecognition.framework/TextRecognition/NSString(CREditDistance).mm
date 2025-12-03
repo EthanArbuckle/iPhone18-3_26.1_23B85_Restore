@@ -9,7 +9,7 @@
 {
   v6 = MEMORY[0x1E696AEC0];
   v7 = a3;
-  v8 = [a1 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F2BB4348];
+  v8 = [self stringByReplacingOccurrencesOfString:@" " withString:&stru_1F2BB4348];
   v9 = [v7 stringByReplacingOccurrencesOfString:@" " withString:&stru_1F2BB4348];
 
   v10 = [v6 editDistance:v8 string:v9 threshold:a4];

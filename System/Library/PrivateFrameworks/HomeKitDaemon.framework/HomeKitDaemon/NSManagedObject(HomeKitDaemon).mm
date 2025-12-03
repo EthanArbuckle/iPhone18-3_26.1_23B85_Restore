@@ -24,10 +24,10 @@
   v10 = a5;
   v11 = NSProtocolFromString(v9);
   v12 = [HMCContext managedObjectClassFromProtocol:v11];
-  v13 = [(objc_class *)v12 entity];
-  v14 = __keyNameForEntity(v13);
+  entity = [(objc_class *)v12 entity];
+  v14 = __keyNameForEntity(entity);
 
-  v15 = [a1 valueForKey:v8];
+  v15 = [self valueForKey:v8];
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
@@ -59,13 +59,13 @@
 {
   v9 = a3;
   v6 = a4;
-  v7 = [a1 valueForKey:v9];
+  v7 = [self valueForKey:v9];
   v8 = [v7 mutableCopy];
 
   if (v8)
   {
     [v8 removeObject:v6];
-    [a1 setValue:v8 forKey:v9];
+    [self setValue:v8 forKey:v9];
   }
 }
 
@@ -73,7 +73,7 @@
 {
   v21 = a3;
   v6 = a4;
-  v7 = [a1 valueForKey:v21];
+  v7 = [self valueForKey:v21];
   v8 = [v7 mutableCopy];
   v9 = v8;
   if (v8)
@@ -98,13 +98,13 @@
     goto LABEL_11;
   }
 
-  v14 = [a1 entity];
-  v15 = [v14 relationshipsByName];
-  v16 = [v15 objectForKey:v21];
+  entity = [self entity];
+  relationshipsByName = [entity relationshipsByName];
+  v16 = [relationshipsByName objectForKey:v21];
 
-  v17 = [v16 destinationEntity];
-  v18 = [v17 managedObjectClassName];
-  NSClassFromString(v18);
+  destinationEntity = [v16 destinationEntity];
+  managedObjectClassName = [destinationEntity managedObjectClassName];
+  NSClassFromString(managedObjectClassName);
   v19 = objc_opt_isKindOfClass();
 
   if ((v19 & 1) == 0)
@@ -116,16 +116,16 @@ LABEL_11:
   }
 
   [v12 addObject:v6];
-  [a1 setValue:v12 forKey:v21];
+  [self setValue:v12 forKey:v21];
 }
 
 - (uint64_t)mkf_synchronizeRelation:()HomeKitDaemon items:allowCreation:
 {
   v8 = a3;
   v9 = a4;
-  v10 = [a1 entity];
-  v11 = [v10 relationshipsByName];
-  v12 = [v11 objectForKey:v8];
+  entity = [self entity];
+  relationshipsByName = [entity relationshipsByName];
+  v12 = [relationshipsByName objectForKey:v8];
 
   if (!v12 || ([v12 isToMany] & 1) == 0)
   {
@@ -133,7 +133,7 @@ LABEL_11:
     goto LABEL_14;
   }
 
-  v13 = [a1 valueForKey:v8];
+  v13 = [self valueForKey:v8];
   if (!v13)
   {
     v13 = [MEMORY[0x277CBEB98] set];
@@ -162,12 +162,12 @@ LABEL_14:
   }
 
   v17 = [MEMORY[0x277CBEB58] set];
-  v18 = [MEMORY[0x277CBEB38] dictionary];
+  dictionary = [MEMORY[0x277CBEB38] dictionary];
   v41[0] = MEMORY[0x277D85DD0];
   v41[1] = 3221225472;
   v41[2] = __78__NSManagedObject_HomeKitDaemon__mkf_synchronizeRelation_items_allowCreation___block_invoke;
   v41[3] = &unk_27867D4B0;
-  v19 = v18;
+  v19 = dictionary;
   v42 = v19;
   [v16 hmf_enumerateWithAutoreleasePoolUsingBlock:v41];
   v37 = 0;
@@ -181,7 +181,7 @@ LABEL_14:
   v20 = v19;
   v36 = a5;
   v31 = v20;
-  v32 = a1;
+  selfCopy = self;
   v21 = v12;
   v33 = v21;
   v35 = &v37;
@@ -191,12 +191,12 @@ LABEL_14:
   v23 = *(v38 + 24);
   if (*(v38 + 24))
   {
-    v24 = [v20 allValues];
-    [v24 hmf_enumerateWithAutoreleasePoolUsingBlock:&__block_literal_global_53324];
+    allValues = [v20 allValues];
+    [allValues hmf_enumerateWithAutoreleasePoolUsingBlock:&__block_literal_global_53324];
 
     if (([v22 isEqualToSet:v16] & 1) == 0)
     {
-      [a1 setValue:v22 forKey:v8];
+      [self setValue:v22 forKey:v8];
     }
   }
 
@@ -209,9 +209,9 @@ LABEL_14:
   v10 = a3;
   v11 = a4;
   v12 = a5;
-  v13 = [a1 entity];
-  v14 = [v13 relationshipsByName];
-  v15 = [v14 objectForKey:v10];
+  entity = [self entity];
+  relationshipsByName = [entity relationshipsByName];
+  v15 = [relationshipsByName objectForKey:v10];
 
   if (!v15)
   {
@@ -226,7 +226,7 @@ LABEL_14:
 
   v16 = NSProtocolFromString(v11);
   v17 = [HMCContext managedObjectClassFromProtocol:v16];
-  v18 = [a1 valueForKey:v10];
+  v18 = [self valueForKey:v10];
   if (![v15 isToMany])
   {
     if (!v12)
@@ -235,7 +235,7 @@ LABEL_14:
       {
         if (objc_opt_respondsToSelector())
         {
-          v32 = [(objc_class *)v17 modelIDForParentRelationshipTo:a1];
+          v32 = [(objc_class *)v17 modelIDForParentRelationshipTo:self];
           if (v32)
           {
             v12 = v32;
@@ -272,8 +272,8 @@ LABEL_34:
     }
 
     v26 = v16;
-    v27 = [v18 entity];
-    v28 = __keyNameForEntity(v27);
+    entity2 = [v18 entity];
+    v28 = __keyNameForEntity(entity2);
 
     v29 = [v18 valueForKey:v28];
     v30 = [v29 isEqual:v12];
@@ -322,8 +322,8 @@ LABEL_32:
   v34 = a6;
   v21 = v10;
   v22 = v16;
-  v23 = [(objc_class *)v17 entity];
-  v24 = __keyNameForEntity(v23);
+  entity3 = [(objc_class *)v17 entity];
+  v24 = __keyNameForEntity(entity3);
   v25 = __findObjectInSet(v20, v24, v12, v17);
 
   if (!v25)
@@ -336,7 +336,7 @@ LABEL_21:
     if (!a6)
     {
 LABEL_23:
-      v25 = [a1 mkf_createRelationOnProperty:v10 modelProtocol:v11 keyValue:v12 relationship:v15 relation:v18];
+      v25 = [self mkf_createRelationOnProperty:v10 modelProtocol:v11 keyValue:v12 relationship:v15 relation:v18];
 
       goto LABEL_24;
     }
@@ -372,9 +372,9 @@ LABEL_24:
 
   else
   {
-    v22 = [a1 entity];
-    v23 = [v22 relationshipsByName];
-    v15 = [v23 objectForKey:v12];
+    entity = [self entity];
+    relationshipsByName = [entity relationshipsByName];
+    v15 = [relationshipsByName objectForKey:v12];
 
     if (v17)
     {
@@ -382,10 +382,10 @@ LABEL_24:
     }
   }
 
-  v17 = [a1 valueForKey:v12];
+  v17 = [self valueForKey:v12];
 LABEL_3:
   v18 = NSProtocolFromString(v13);
-  v19 = __createNewObject(a1, [HMCContext managedObjectClassFromProtocol:v18], v15, v14);
+  v19 = __createNewObject(self, [HMCContext managedObjectClassFromProtocol:v18], v15, v14);
   if ([v15 isToMany])
   {
     if (!v17)
@@ -402,12 +402,12 @@ LABEL_3:
 
     v20 = [v17 mutableCopy];
     [v20 addObject:v19];
-    [a1 setValue:v20 forKey:v12];
+    [self setValue:v20 forKey:v12];
   }
 
   else
   {
-    [a1 setValue:v19 forKey:v12];
+    [self setValue:v19 forKey:v12];
   }
 
   return v19;
@@ -415,10 +415,10 @@ LABEL_3:
 
 - (id)hmd_debugIdentifier
 {
-  v1 = [a1 objectID];
-  v2 = [v1 hmd_debugIdentifier];
+  objectID = [self objectID];
+  hmd_debugIdentifier = [objectID hmd_debugIdentifier];
 
-  return v2;
+  return hmd_debugIdentifier;
 }
 
 - (uint64_t)hmd_validateCharacteristicValue:()HomeKitDaemon key:error:
@@ -456,7 +456,7 @@ LABEL_3:
   v11 = v10;
   if (a5 && (v10 & 1) == 0)
   {
-    *a5 = [a1 hmd_errorForInvalidValue:v8 key:v9];
+    *a5 = [self hmd_errorForInvalidValue:v8 key:v9];
   }
 
   return v11;
@@ -470,7 +470,7 @@ LABEL_3:
   v10 = objc_opt_isKindOfClass() & (v8 != 0);
   if (a5 && (v10 & 1) == 0)
   {
-    *a5 = [a1 hmd_errorForInvalidValue:v8 key:v9];
+    *a5 = [self hmd_errorForInvalidValue:v8 key:v9];
   }
 
   return v10;
@@ -484,7 +484,7 @@ LABEL_3:
   v10 = objc_opt_isKindOfClass() & (v8 != 0);
   if (a5 && (v10 & 1) == 0)
   {
-    *a5 = [a1 hmd_errorForInvalidValue:v8 key:v9];
+    *a5 = [self hmd_errorForInvalidValue:v8 key:v9];
   }
 
   return v10;
@@ -495,7 +495,7 @@ LABEL_3:
   v6 = MEMORY[0x277CCACA8];
   v7 = a4;
   v8 = a3;
-  v9 = NSStringFromClass(a1);
+  v9 = NSStringFromClass(self);
   v10 = [v6 stringWithFormat:@"%@.%@ is invalid: %@", v9, v7, v8];
 
   v11 = [MEMORY[0x277CCA9B8] hmfErrorWithCode:3 reason:v10];

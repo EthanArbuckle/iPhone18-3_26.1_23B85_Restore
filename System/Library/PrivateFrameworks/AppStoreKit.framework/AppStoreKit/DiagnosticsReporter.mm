@@ -1,11 +1,11 @@
 @interface DiagnosticsReporter
-- (void)errorDidOccur:(id)a3;
-- (void)incidentsDidOccur:(id)a3;
+- (void)errorDidOccur:(id)occur;
+- (void)incidentsDidOccur:(id)occur;
 @end
 
 @implementation DiagnosticsReporter
 
-- (void)errorDidOccur:(id)a3
+- (void)errorDidOccur:(id)occur
 {
   v3 = sub_1E1AEF55C();
   v4 = *(v3 - 8);
@@ -23,7 +23,7 @@
   (*(v4 + 8))(v6, v3);
 }
 
-- (void)incidentsDidOccur:(id)a3
+- (void)incidentsDidOccur:(id)occur
 {
   v3 = sub_1E1AEF55C();
   v4 = *(v3 - 8);

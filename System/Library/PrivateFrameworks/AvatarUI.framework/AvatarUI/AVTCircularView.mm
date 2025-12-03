@@ -1,15 +1,15 @@
 @interface AVTCircularView
-- (AVTCircularView)initWithFrame:(CGRect)a3;
+- (AVTCircularView)initWithFrame:(CGRect)frame;
 - (void)layoutSubviews;
 @end
 
 @implementation AVTCircularView
 
-- (AVTCircularView)initWithFrame:(CGRect)a3
+- (AVTCircularView)initWithFrame:(CGRect)frame
 {
   v9.receiver = self;
   v9.super_class = AVTCircularView;
-  v3 = [(AVTCircularView *)&v9 initWithFrame:a3.origin.x, a3.origin.y, a3.size.width, a3.size.height];
+  v3 = [(AVTCircularView *)&v9 initWithFrame:frame.origin.x, frame.origin.y, frame.size.width, frame.size.height];
   if (v3)
   {
     v4 = objc_alloc_init(MEMORY[0x1E69794A0]);
@@ -17,8 +17,8 @@
     v3->_clippingLayer = v4;
 
     v6 = v3->_clippingLayer;
-    v7 = [(AVTCircularView *)v3 layer];
-    [v7 setMask:v6];
+    layer = [(AVTCircularView *)v3 layer];
+    [layer setMask:v6];
   }
 
   return v3;

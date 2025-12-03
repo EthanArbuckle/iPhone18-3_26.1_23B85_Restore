@@ -1,21 +1,21 @@
 @interface RKResponseCountTimestampRecipient
-- (RKResponseCountTimestampRecipient)initWithCount:(int)a3 timestamp:(id)a4 hasSameRecipient:(BOOL)a5;
+- (RKResponseCountTimestampRecipient)initWithCount:(int)count timestamp:(id)timestamp hasSameRecipient:(BOOL)recipient;
 @end
 
 @implementation RKResponseCountTimestampRecipient
 
-- (RKResponseCountTimestampRecipient)initWithCount:(int)a3 timestamp:(id)a4 hasSameRecipient:(BOOL)a5
+- (RKResponseCountTimestampRecipient)initWithCount:(int)count timestamp:(id)timestamp hasSameRecipient:(BOOL)recipient
 {
-  v9 = a4;
+  timestampCopy = timestamp;
   v13.receiver = self;
   v13.super_class = RKResponseCountTimestampRecipient;
   v10 = [(RKResponseCountTimestampRecipient *)&v13 init];
   v11 = v10;
   if (v10)
   {
-    v10->_count = a3;
-    objc_storeStrong(&v10->_timestamp, a4);
-    v11->_hasSameRecipient = a5;
+    v10->_count = count;
+    objc_storeStrong(&v10->_timestamp, timestamp);
+    v11->_hasSameRecipient = recipient;
   }
 
   return v11;

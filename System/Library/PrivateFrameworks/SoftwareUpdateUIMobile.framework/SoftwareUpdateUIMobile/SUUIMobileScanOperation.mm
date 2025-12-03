@@ -1,46 +1,46 @@
 @interface SUUIMobileScanOperation
 + (id)_generateStateTable;
 - (BOOL)isActive;
-- (BOOL)shouldConsiderErrorAsSuccessfulCase:(id)a3;
+- (BOOL)shouldConsiderErrorAsSuccessfulCase:(id)case;
 - (SUUIMobileScanOperation)init;
-- (SUUIMobileScanOperation)initWithIdentifier:(id)a3 options:(id)a4 usingSUManagerClient:(id)a5 andBetaManager:(id)a6 withCompletionQueue:(id)a7;
+- (SUUIMobileScanOperation)initWithIdentifier:(id)identifier options:(id)options usingSUManagerClient:(id)client andBetaManager:(id)manager withCompletionQueue:(id)queue;
 - (id)baseDomain;
 - (id)cachedScanResults;
-- (id)cachedScanResults:(BOOL *)a3;
+- (id)cachedScanResults:(BOOL *)results;
 - (id)currentOSVersionIdentifier;
 - (id)readScanResultsCacheExpectedTTLValue;
 - (id)scanResultsCacheExpectedTTLDuration;
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4;
-- (int64_t)action_CheckForAvailableUpdate:(id)a3 error:(id *)a4;
-- (int64_t)action_ObserveConcurrentQueries:(id)a3 error:(id *)a4;
-- (int64_t)action_QueryCurrentDownload:(id)a3 error:(id *)a4;
-- (int64_t)action_QueryFullScanMetadata:(id)a3 error:(id *)a4;
-- (int64_t)action_QueryUpdatesInfo:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportScanCanceled:(id)a3 error:(id *)a4;
-- (int64_t)action_ReportScanOutcome:(id)a3 error:(id *)a4;
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8;
-- (void)cacheDiscoveredScanResults:(id)a3;
-- (void)cancel:(id)a3;
-- (void)checkForAvailableUpdatesWithCompletionHandler:(id)a3;
-- (void)checkForAvailableUpdatesWithContext:(id)a3 completionHandler:(id)a4;
-- (void)checkForBetaPrograms:(id)a3 withReplyHandler:(id)a4;
-- (void)checkForMDMRestrictions:(id)a3 withReplyHandler:(id)a4;
-- (void)checkIfAutoUpdateScheduled:(id)a3 withReplyHandler:(id)a4;
-- (void)checkIsEligibleForRollback:(id)a3 withReplyHandler:(id)a4;
-- (void)controllerCurrentlyScanning:(id)a3;
+- (int64_t)actionUnknownAction:(id)action error:(id *)error;
+- (int64_t)action_CheckForAvailableUpdate:(id)update error:(id *)error;
+- (int64_t)action_ObserveConcurrentQueries:(id)queries error:(id *)error;
+- (int64_t)action_QueryCurrentDownload:(id)download error:(id *)error;
+- (int64_t)action_QueryFullScanMetadata:(id)metadata error:(id *)error;
+- (int64_t)action_QueryUpdatesInfo:(id)info error:(id *)error;
+- (int64_t)action_ReportScanCanceled:(id)canceled error:(id *)error;
+- (int64_t)action_ReportScanOutcome:(id)outcome error:(id *)error;
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error;
+- (void)cacheDiscoveredScanResults:(id)results;
+- (void)cancel:(id)cancel;
+- (void)checkForAvailableUpdatesWithCompletionHandler:(id)handler;
+- (void)checkForAvailableUpdatesWithContext:(id)context completionHandler:(id)handler;
+- (void)checkForBetaPrograms:(id)programs withReplyHandler:(id)handler;
+- (void)checkForMDMRestrictions:(id)restrictions withReplyHandler:(id)handler;
+- (void)checkIfAutoUpdateScheduled:(id)scheduled withReplyHandler:(id)handler;
+- (void)checkIsEligibleForRollback:(id)rollback withReplyHandler:(id)handler;
+- (void)controllerCurrentlyScanning:(id)scanning;
 - (void)dealloc;
-- (void)handleDiscoveredScanResults:(id)a3 withError:(id)a4 usingEventInfo:(id)a5 isCachedResults:(BOOL)a6 activity:(suui_activity_s *)a7;
-- (void)handleDiscoveredScanResults:(id)a3 withError:(id)a4 usingEventInfo:(id)a5 isCachedResults:(BOOL)a6 activity:(suui_activity_s *)a7 beforePostEvent:(id)a8;
-- (void)hasScanResultsCacheWithCompletion:(id)a3;
+- (void)handleDiscoveredScanResults:(id)results withError:(id)error usingEventInfo:(id)info isCachedResults:(BOOL)cachedResults activity:(suui_activity_s *)activity;
+- (void)handleDiscoveredScanResults:(id)results withError:(id)error usingEventInfo:(id)info isCachedResults:(BOOL)cachedResults activity:(suui_activity_s *)activity beforePostEvent:(id)event;
+- (void)hasScanResultsCacheWithCompletion:(id)completion;
 - (void)invalidateMachine;
-- (void)invalidateScanResultsCache:(id)a3;
-- (void)queryDDMDeclaration:(id)a3 withReplyHandler:(id)a4;
-- (void)queryRollbackStatus:(id)a3 withReplyHandler:(id)a4;
-- (void)refreshScanResultsWithPreferredUpdate:(id)a3 alternateUpdate:(id)a4 completionHandler:(id)a5;
-- (void)refreshScanResultsWithPreferredUpdate:(id)a3 alternateUpdate:(id)a4 context:(id)a5 completionHandler:(id)a6;
+- (void)invalidateScanResultsCache:(id)cache;
+- (void)queryDDMDeclaration:(id)declaration withReplyHandler:(id)handler;
+- (void)queryRollbackStatus:(id)status withReplyHandler:(id)handler;
+- (void)refreshScanResultsWithPreferredUpdate:(id)update alternateUpdate:(id)alternateUpdate completionHandler:(id)handler;
+- (void)refreshScanResultsWithPreferredUpdate:(id)update alternateUpdate:(id)alternateUpdate context:(id)context completionHandler:(id)handler;
 - (void)removeCachedScanResults;
-- (void)scanForDeviceEligibleBetaPrograms:(id)a3 withReplyHandler:(id)a4;
-- (void)scheduleConcurrentActionWithSelector:(SEL)a3 eventInfo:(id)a4;
+- (void)scanForDeviceEligibleBetaPrograms:(id)programs withReplyHandler:(id)handler;
+- (void)scheduleConcurrentActionWithSelector:(SEL)selector eventInfo:(id)info;
 @end
 
 @implementation SUUIMobileScanOperation
@@ -48,7 +48,7 @@
 + (id)_generateStateTable
 {
   v110[6] = *MEMORY[0x277D85DE8];
-  v50[2] = a1;
+  v50[2] = self;
   v50[1] = a2;
   v15 = MEMORY[0x277D64E88];
   v109[0] = *MEMORY[0x277D64E88];
@@ -282,67 +282,67 @@
 
 - (void)dealloc
 {
-  v4 = self;
+  selfCopy = self;
   v3 = a2;
   if (self->_activity)
   {
-    if (v4->_activity->var2)
+    if (selfCopy->_activity->var2)
     {
-      os_activity_scope_leave(&v4->_activity->var0);
+      os_activity_scope_leave(&selfCopy->_activity->var0);
     }
 
-    free(v4->_activity);
-    v4->_activity = 0;
+    free(selfCopy->_activity);
+    selfCopy->_activity = 0;
   }
 
-  v2.receiver = v4;
+  v2.receiver = selfCopy;
   v2.super_class = SUUIMobileScanOperation;
   [(SUUIMobileScanOperation *)&v2 dealloc];
 }
 
-- (int64_t)performAction:(id)a3 onEvent:(id)a4 inState:(id)a5 withInfo:(id)a6 nextState:(id)a7 error:(id *)a8
+- (int64_t)performAction:(id)action onEvent:(id)event inState:(id)state withInfo:(id)info nextState:(id)nextState error:(id *)error
 {
   v44 = *MEMORY[0x277D85DE8];
-  v36 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, action);
   v34 = 0;
-  objc_storeStrong(&v34, a4);
+  objc_storeStrong(&v34, event);
   v33 = 0;
-  objc_storeStrong(&v33, a5);
+  objc_storeStrong(&v33, state);
   v32 = 0;
-  objc_storeStrong(&v32, a6);
+  objc_storeStrong(&v32, info);
   v31 = 0;
-  objc_storeStrong(&v31, a7);
-  v30 = a8;
-  v17 = [(SUUIMobileScanOperation *)v36 scanFSM];
-  v16 = [(SUCoreFSM *)v17 extendedStateQueue];
-  dispatch_assert_queue_V2(v16);
-  MEMORY[0x277D82BD8](v16);
-  MEMORY[0x277D82BD8](v17);
+  objc_storeStrong(&v31, nextState);
+  errorCopy = error;
+  scanFSM = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   v29[0] = 3;
-  p_lock = &v36->_lock;
+  p_lock = &selfCopy->_lock;
   v38 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v29[1] = p_lock;
-  if (!v36->_canceled || ([location[0] isEqualToString:*MEMORY[0x277D64CD0]] & 1) != 0)
+  if (!selfCopy->_canceled || ([location[0] isEqualToString:*MEMORY[0x277D64CD0]] & 1) != 0)
   {
     v28 = 2;
   }
 
   else
   {
-    v15 = [MEMORY[0x277D64B58] scanOperationLogger];
-    v27 = [v15 oslog];
-    MEMORY[0x277D82BD8](v15);
+    scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+    oslog = [scanOperationLogger oslog];
+    MEMORY[0x277D82BD8](scanOperationLogger);
     v26 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v13 = [(SUUIMobileScanOperation *)v36 identifier];
-      v14 = MEMORY[0x277D82BE0](v13);
+      identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+      v14 = MEMORY[0x277D82BE0](identifier);
       v25 = v14;
-      operationType = v36->_operationType;
+      operationType = selfCopy->_operationType;
       if (operationType)
       {
         if (operationType == 1)
@@ -371,14 +371,14 @@
       v11 = v12;
       v24 = MEMORY[0x277D82BE0](v11);
       __os_log_helper_16_2_4_8_32_8_66_8_66_8_64(v43, "[SUUIMobileScanOperation performAction:onEvent:inState:withInfo:nextState:error:]", v14, v24, location[0]);
-      _os_log_impl(&dword_26B0B9000, v27, v26, "%s [%{public}@|%{public}@]: Cancel has been requested. Skipping on %@", v43, 0x2Au);
+      _os_log_impl(&dword_26B0B9000, oslog, v26, "%s [%{public}@|%{public}@]: Cancel has been requested. Skipping on %@", v43, 0x2Au);
       MEMORY[0x277D82BD8](v11);
-      MEMORY[0x277D82BD8](v13);
+      MEMORY[0x277D82BD8](identifier);
       objc_storeStrong(&v24, 0);
       objc_storeStrong(&v25, 0);
     }
 
-    objc_storeStrong(&v27, 0);
+    objc_storeStrong(&oslog, 0);
     v37 = 0;
     v28 = 1;
   }
@@ -407,42 +407,42 @@
 
     else if ([location[0] isEqualToString:*MEMORY[0x277D64CC0]])
     {
-      v23 = [(SUUIMobileScanOperation *)v36 action_QueryFullScanMetadata:v32 error:v30];
+      v23 = [(SUUIMobileScanOperation *)selfCopy action_QueryFullScanMetadata:v32 error:errorCopy];
     }
 
     else if ([location[0] isEqualToString:*MEMORY[0x277D64C78]])
     {
-      v23 = [(SUUIMobileScanOperation *)v36 action_CheckForAvailableUpdate:v32 error:v30];
+      v23 = [(SUUIMobileScanOperation *)selfCopy action_CheckForAvailableUpdate:v32 error:errorCopy];
     }
 
     else if ([location[0] isEqualToString:*MEMORY[0x277D64CB8]])
     {
-      v23 = [(SUUIMobileScanOperation *)v36 action_QueryCurrentDownload:v32 error:v30];
+      v23 = [(SUUIMobileScanOperation *)selfCopy action_QueryCurrentDownload:v32 error:errorCopy];
     }
 
     else if ([location[0] isEqualToString:*MEMORY[0x277D64CC8]])
     {
-      v23 = [(SUUIMobileScanOperation *)v36 action_QueryUpdatesInfo:v32 error:v30];
+      v23 = [(SUUIMobileScanOperation *)selfCopy action_QueryUpdatesInfo:v32 error:errorCopy];
     }
 
     else if ([location[0] isEqualToString:*MEMORY[0x277D64C90]])
     {
-      v23 = [(SUUIMobileScanOperation *)v36 action_ObserveConcurrentQueries:v32 error:v30];
+      v23 = [(SUUIMobileScanOperation *)selfCopy action_ObserveConcurrentQueries:v32 error:errorCopy];
     }
 
     else if ([location[0] isEqualToString:*MEMORY[0x277D64CD8]])
     {
-      v23 = [(SUUIMobileScanOperation *)v36 action_ReportScanOutcome:v32 error:v30];
+      v23 = [(SUUIMobileScanOperation *)selfCopy action_ReportScanOutcome:v32 error:errorCopy];
     }
 
     else if ([location[0] isEqualToString:*MEMORY[0x277D64CD0]])
     {
-      v23 = [(SUUIMobileScanOperation *)v36 action_ReportScanCanceled:v32 error:v30];
+      v23 = [(SUUIMobileScanOperation *)selfCopy action_ReportScanCanceled:v32 error:errorCopy];
     }
 
     else
     {
-      v23 = [(SUUIMobileScanOperation *)v36 actionUnknownAction:location[0] error:v30];
+      v23 = [(SUUIMobileScanOperation *)selfCopy actionUnknownAction:location[0] error:errorCopy];
     }
 
     v37 = v23;
@@ -458,18 +458,18 @@
   return v37;
 }
 
-- (int64_t)action_QueryFullScanMetadata:(id)a3 error:(id *)a4
+- (int64_t)action_QueryFullScanMetadata:(id)metadata error:(id *)error
 {
-  v90 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v88 = a4;
-  v34 = [(SUUIMobileScanOperation *)v90 scanFSM];
-  v33 = [(SUCoreFSM *)v34 extendedStateQueue];
-  dispatch_assert_queue_V2(v33);
-  MEMORY[0x277D82BD8](v33);
-  MEMORY[0x277D82BD8](v34);
+  objc_storeStrong(location, metadata);
+  errorCopy = error;
+  scanFSM = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   if (location[0])
   {
     v84 = malloc_type_calloc(1uLL, 0x20uLL, 0x1080040925F9CD7uLL);
@@ -483,19 +483,19 @@
 
     else
     {
-      v29 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
-      v82 = [v29 oslog];
-      MEMORY[0x277D82BD8](v29);
+      softwareUpdateUILogger = [MEMORY[0x277D64B58] softwareUpdateUILogger];
+      oslog = [softwareUpdateUILogger oslog];
+      MEMORY[0x277D82BD8](softwareUpdateUILogger);
       v81 = 16;
-      if (os_log_type_enabled(v82, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        log = v82;
+        log = oslog;
         type = v81;
         __os_log_helper_16_0_0(v80);
         _os_log_error_impl(&dword_26B0B9000, log, type, "Failed to create an activity for: com.apple.SoftwareUpdateUI.StatefulUI.ScanOperation.State.ScheduleConcurrentActions", v80, 2u);
       }
 
-      objc_storeStrong(&v82, 0);
+      objc_storeStrong(&oslog, 0);
     }
 
     v79 = v84;
@@ -519,19 +519,19 @@
 
     else
     {
-      v26 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
-      v73 = [v26 oslog];
-      MEMORY[0x277D82BD8](v26);
+      softwareUpdateUILogger2 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
+      oslog2 = [softwareUpdateUILogger2 oslog];
+      MEMORY[0x277D82BD8](softwareUpdateUILogger2);
       v72 = 16;
-      if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
       {
-        v24 = v73;
+        v24 = oslog2;
         v25 = v72;
         __os_log_helper_16_0_0(v71);
         _os_log_error_impl(&dword_26B0B9000, v24, v25, "Failed to create an activity for: com.apple.SoftwareUpdateUI.StatefulUI.ScanOperation.State.ScheduleConcurrentActions: queryDDMDeclaration:withReplyHandler:", v71, 2u);
       }
 
-      objc_storeStrong(&v73, 0);
+      objc_storeStrong(&oslog2, 0);
     }
 
     v70 = v75;
@@ -544,7 +544,7 @@
 
     v69 = v76;
     v77 = v76;
-    [(SUUIMobileScanOperation *)v90 scheduleConcurrentActionWithSelector:sel_queryDDMDeclaration_withReplyHandler_ eventInfo:location[0]];
+    [(SUUIMobileScanOperation *)selfCopy scheduleConcurrentActionWithSelector:sel_queryDDMDeclaration_withReplyHandler_ eventInfo:location[0]];
     if (v77)
     {
       if (LOBYTE(v77[1].opaque[1]))
@@ -567,19 +567,19 @@
 
     else
     {
-      v23 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
-      v64 = [v23 oslog];
-      MEMORY[0x277D82BD8](v23);
+      softwareUpdateUILogger3 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
+      oslog3 = [softwareUpdateUILogger3 oslog];
+      MEMORY[0x277D82BD8](softwareUpdateUILogger3);
       v63 = 16;
-      if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_ERROR))
       {
-        v21 = v64;
+        v21 = oslog3;
         v22 = v63;
         __os_log_helper_16_0_0(v62);
         _os_log_error_impl(&dword_26B0B9000, v21, v22, "Failed to create an activity for: com.apple.SoftwareUpdateUI.StatefulUI.ScanOperation.State.ScheduleConcurrentActions: checkForMDMRestrictions:withReplyHandler:", v62, 2u);
       }
 
-      objc_storeStrong(&v64, 0);
+      objc_storeStrong(&oslog3, 0);
     }
 
     v61 = v66;
@@ -592,7 +592,7 @@
 
     v60 = v67;
     v68 = v67;
-    [(SUUIMobileScanOperation *)v90 scheduleConcurrentActionWithSelector:sel_checkForMDMRestrictions_withReplyHandler_ eventInfo:location[0]];
+    [(SUUIMobileScanOperation *)selfCopy scheduleConcurrentActionWithSelector:sel_checkForMDMRestrictions_withReplyHandler_ eventInfo:location[0]];
     if (v68)
     {
       if (LOBYTE(v68[1].opaque[1]))
@@ -615,9 +615,9 @@
 
     else
     {
-      v20 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
-      oslog = [v20 oslog];
-      MEMORY[0x277D82BD8](v20);
+      softwareUpdateUILogger4 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
+      oslog = [softwareUpdateUILogger4 oslog];
+      MEMORY[0x277D82BD8](softwareUpdateUILogger4);
       v54 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
@@ -640,7 +640,7 @@
 
     v51 = state;
     v59 = state;
-    [(SUUIMobileScanOperation *)v90 scheduleConcurrentActionWithSelector:sel_checkForBetaPrograms_withReplyHandler_ eventInfo:location[0]];
+    [(SUUIMobileScanOperation *)selfCopy scheduleConcurrentActionWithSelector:sel_checkForBetaPrograms_withReplyHandler_ eventInfo:location[0]];
     if (v59)
     {
       if (LOBYTE(v59[1].opaque[1]))
@@ -663,19 +663,19 @@
 
     else
     {
-      v17 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
-      v46 = [v17 oslog];
-      MEMORY[0x277D82BD8](v17);
+      softwareUpdateUILogger5 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
+      oslog4 = [softwareUpdateUILogger5 oslog];
+      MEMORY[0x277D82BD8](softwareUpdateUILogger5);
       v45 = OS_LOG_TYPE_ERROR;
-      if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog4, OS_LOG_TYPE_ERROR))
       {
-        v15 = v46;
+        v15 = oslog4;
         v16 = v45;
         __os_log_helper_16_0_0(v44);
         _os_log_error_impl(&dword_26B0B9000, v15, v16, "Failed to create an activity for: com.apple.SoftwareUpdateUI.StatefulUI.ScanOperation.State.ScheduleConcurrentActions: queryRollbackStatus:withReplyHandler:", v44, 2u);
       }
 
-      objc_storeStrong(&v46, 0);
+      objc_storeStrong(&oslog4, 0);
     }
 
     v43 = v48;
@@ -688,7 +688,7 @@
 
     v42 = v49;
     v50 = v49;
-    [(SUUIMobileScanOperation *)v90 scheduleConcurrentActionWithSelector:sel_queryRollbackStatus_withReplyHandler_ eventInfo:location[0]];
+    [(SUUIMobileScanOperation *)selfCopy scheduleConcurrentActionWithSelector:sel_queryRollbackStatus_withReplyHandler_ eventInfo:location[0]];
     if (v50)
     {
       if (LOBYTE(v50[1].opaque[1]))
@@ -711,19 +711,19 @@
 
     else
     {
-      v14 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
-      v37 = [v14 oslog];
-      MEMORY[0x277D82BD8](v14);
+      softwareUpdateUILogger6 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
+      oslog5 = [softwareUpdateUILogger6 oslog];
+      MEMORY[0x277D82BD8](softwareUpdateUILogger6);
       v36 = OS_LOG_TYPE_ERROR;
-      if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog5, OS_LOG_TYPE_ERROR))
       {
-        v12 = v37;
+        v12 = oslog5;
         v13 = v36;
         __os_log_helper_16_0_0(v35);
         _os_log_error_impl(&dword_26B0B9000, v12, v13, "Failed to create an activity for: com.apple.SoftwareUpdateUI.StatefulUI.ScanOperation.State.ScheduleConcurrentActions: checkIsEligibleForRollback:withReplyHandler:", v35, 2u);
       }
 
-      objc_storeStrong(&v37, 0);
+      objc_storeStrong(&oslog5, 0);
     }
 
     v40 = v39;
@@ -734,7 +734,7 @@
     }
 
     v41 = v40;
-    [(SUUIMobileScanOperation *)v90 scheduleConcurrentActionWithSelector:sel_checkIsEligibleForRollback_withReplyHandler_ eventInfo:location[0]];
+    [(SUUIMobileScanOperation *)selfCopy scheduleConcurrentActionWithSelector:sel_checkIsEligibleForRollback_withReplyHandler_ eventInfo:location[0]];
     if (v41)
     {
       if (LOBYTE(v41[1].opaque[1]))
@@ -746,9 +746,9 @@
       v41 = 0;
     }
 
-    v11 = [(SUUIMobileScanOperation *)v90 scanFSM];
-    [(SUCoreFSM *)v11 followupEvent:*MEMORY[0x277D64D88] withInfo:location[0]];
-    MEMORY[0x277D82BD8](v11);
+    scanFSM2 = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+    [(SUCoreFSM *)scanFSM2 followupEvent:*MEMORY[0x277D64D88] withInfo:location[0]];
+    MEMORY[0x277D82BD8](scanFSM2);
     v91 = 0;
     v87 = 1;
     _SUUIActivityCleanup(&v86);
@@ -756,11 +756,11 @@
 
   else
   {
-    v31 = [(SUUIMobileScanOperation *)v90 scanFSM];
-    v30 = [(SUCoreFSM *)v31 diag];
-    [v30 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
-    MEMORY[0x277D82BD8](v30);
-    MEMORY[0x277D82BD8](v31);
+    scanFSM3 = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+    diag = [(SUCoreFSM *)scanFSM3 diag];
+    [diag trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:? withError:?];
+    MEMORY[0x277D82BD8](diag);
+    MEMORY[0x277D82BD8](scanFSM3);
     v91 = 8102;
     v87 = 1;
   }
@@ -769,19 +769,19 @@
   return v91;
 }
 
-- (int64_t)action_CheckForAvailableUpdate:(id)a3 error:(id *)a4
+- (int64_t)action_CheckForAvailableUpdate:(id)update error:(id *)error
 {
   v92 = *MEMORY[0x277D85DE8];
-  v85 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v83 = a4;
-  v40 = [(SUUIMobileScanOperation *)v85 scanFSM];
-  v39 = [(SUCoreFSM *)v40 extendedStateQueue];
-  dispatch_assert_queue_V2(v39);
-  MEMORY[0x277D82BD8](v39);
-  MEMORY[0x277D82BD8](v40);
+  objc_storeStrong(location, update);
+  errorCopy = error;
+  scanFSM = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   if (location[0])
   {
     v77 = 0;
@@ -800,19 +800,19 @@
 
     else
     {
-      v36 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
-      v73 = [v36 oslog];
-      MEMORY[0x277D82BD8](v36);
+      softwareUpdateUILogger = [MEMORY[0x277D64B58] softwareUpdateUILogger];
+      oslog = [softwareUpdateUILogger oslog];
+      MEMORY[0x277D82BD8](softwareUpdateUILogger);
       v72 = 16;
-      if (os_log_type_enabled(v73, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        log = v73;
+        log = oslog;
         type = v72;
         __os_log_helper_16_0_0(v71);
         _os_log_error_impl(&dword_26B0B9000, log, type, "Failed to create an activity for: com.apple.SoftwareUpdateUI.StatefulUI.ScanOperation.State.CheckForUpdates", v71, 2u);
       }
 
-      objc_storeStrong(&v73, 0);
+      objc_storeStrong(&oslog, 0);
     }
 
     v70 = v75;
@@ -826,28 +826,28 @@
     v69 = v76;
     v78[3] = v76;
     v67 = 0;
-    v32 = [location[0] options];
+    options = [location[0] options];
     v33 = 1;
-    if (v32)
+    if (options)
     {
-      v68 = [location[0] options];
+      options2 = [location[0] options];
       v67 = 1;
-      v33 = v68 == 0;
+      v33 = options2 == 0;
     }
 
     if (v67)
     {
-      MEMORY[0x277D82BD8](v68);
+      MEMORY[0x277D82BD8](options2);
     }
 
-    MEMORY[0x277D82BD8](v32);
+    MEMORY[0x277D82BD8](options);
     if (v33)
     {
-      v31 = [(SUUIMobileScanOperation *)v85 scanFSM];
-      v30 = [(SUCoreFSM *)v31 diag];
-      [v30 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"Missing eventInfo parameter: scanOptions." withResult:8102 withError:0];
-      MEMORY[0x277D82BD8](v30);
-      MEMORY[0x277D82BD8](v31);
+      scanFSM2 = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+      diag = [(SUCoreFSM *)scanFSM2 diag];
+      [diag trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"Missing eventInfo parameter: scanOptions." withResult:8102 withError:0];
+      MEMORY[0x277D82BD8](diag);
+      MEMORY[0x277D82BD8](scanFSM2);
       if (v78[3])
       {
         if (*(v78[3] + 24))
@@ -865,44 +865,44 @@
     }
 
     v65 = 0;
-    v28 = [location[0] thirdPartyDiscoveredScanResults];
+    thirdPartyDiscoveredScanResults = [location[0] thirdPartyDiscoveredScanResults];
     v29 = 0;
-    if (!v28)
+    if (!thirdPartyDiscoveredScanResults)
     {
-      v66 = [location[0] thirdPartyDiscoveredScanError];
+      thirdPartyDiscoveredScanError = [location[0] thirdPartyDiscoveredScanError];
       v65 = 1;
-      v29 = v66 == 0;
+      v29 = thirdPartyDiscoveredScanError == 0;
     }
 
     if (v65)
     {
-      MEMORY[0x277D82BD8](v66);
+      MEMORY[0x277D82BD8](thirdPartyDiscoveredScanError);
     }
 
-    MEMORY[0x277D82BD8](v28);
+    MEMORY[0x277D82BD8](thirdPartyDiscoveredScanResults);
     if (v29)
     {
       v63 = 0;
-      v27 = 0;
+      supportScanResultsCaching = 0;
       if (([location[0] forceReloadScanResults] & 1) == 0)
       {
-        v64 = [(SUUIMobileScanOperation *)v85 options];
+        options3 = [(SUUIMobileScanOperation *)selfCopy options];
         v63 = 1;
-        v27 = [(SUUIMobileScanOperationOptions *)v64 supportScanResultsCaching];
+        supportScanResultsCaching = [(SUUIMobileScanOperationOptions *)options3 supportScanResultsCaching];
       }
 
       if (v63)
       {
-        MEMORY[0x277D82BD8](v64);
+        MEMORY[0x277D82BD8](options3);
       }
 
-      if (v27)
+      if (supportScanResultsCaching)
       {
         v62 = 0;
-        v61 = [(SUUIMobileScanOperation *)v85 cachedScanResults:&v62];
+        v61 = [(SUUIMobileScanOperation *)selfCopy cachedScanResults:&v62];
         if (v61 || (v62 & 1) != 0)
         {
-          [(SUUIMobileScanOperation *)v85 handleDiscoveredScanResults:v61 withError:0 usingEventInfo:location[0] isCachedResults:1 activity:v78[3]];
+          [(SUUIMobileScanOperation *)selfCopy handleDiscoveredScanResults:v61 withError:0 usingEventInfo:location[0] isCachedResults:1 activity:v78[3]];
           v86 = 0;
           v82 = 1;
         }
@@ -921,80 +921,80 @@
 
       else if ([location[0] forceReloadScanResults])
       {
-        [(SUUIMobileScanOperation *)v85 removeCachedScanResults];
+        [(SUUIMobileScanOperation *)selfCopy removeCachedScanResults];
       }
 
       v60 = 0uLL;
-      v26 = [MEMORY[0x277D64B58] scanOperationLogger];
-      v24 = [v26 oslog];
+      scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+      oslog2 = [scanOperationLogger oslog];
       *&v25 = _SUUISignpostCreate();
       *(&v25 + 1) = v5;
       v59 = v25;
-      MEMORY[0x277D82BD8](v24);
-      MEMORY[0x277D82BD8](v26);
+      MEMORY[0x277D82BD8](oslog2);
+      MEMORY[0x277D82BD8](scanOperationLogger);
       if (v25)
       {
-        v23 = [MEMORY[0x277D64B58] scanOperationLogger];
-        v58 = [v23 oslog];
-        MEMORY[0x277D82BD8](v23);
+        scanOperationLogger2 = [MEMORY[0x277D64B58] scanOperationLogger];
+        oslog3 = [scanOperationLogger2 oslog];
+        MEMORY[0x277D82BD8](scanOperationLogger2);
         v57 = OS_SIGNPOST_INTERVAL_BEGIN;
         v56 = v59;
-        if (v59 != -1 && os_signpost_enabled(v58))
+        if (v59 != -1 && os_signpost_enabled(oslog3))
         {
-          v22 = [(SUUIMobileScanOperation *)v85 identifier];
-          __os_log_helper_16_2_1_8_66(v91, v22);
-          _os_signpost_emit_with_name_impl(&dword_26B0B9000, v58, v57, v56, "CheckForAvailableUpdates", "Begins scanForUpdates  ScanIdentifier=%{public,signpost.telemetry:string1,name=ScanIdentifier}@  enableTelemetry=YES ", v91, 0xCu);
-          MEMORY[0x277D82BD8](v22);
+          identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+          __os_log_helper_16_2_1_8_66(v91, identifier);
+          _os_signpost_emit_with_name_impl(&dword_26B0B9000, oslog3, v57, v56, "CheckForAvailableUpdates", "Begins scanForUpdates  ScanIdentifier=%{public,signpost.telemetry:string1,name=ScanIdentifier}@  enableTelemetry=YES ", v91, 0xCu);
+          MEMORY[0x277D82BD8](identifier);
         }
 
-        objc_storeStrong(&v58, 0);
-        v21 = [MEMORY[0x277D64B58] scanOperationLogger];
-        oslog = [v21 oslog];
-        MEMORY[0x277D82BD8](v21);
+        objc_storeStrong(&oslog3, 0);
+        scanOperationLogger3 = [MEMORY[0x277D64B58] scanOperationLogger];
+        oslog = [scanOperationLogger3 oslog];
+        MEMORY[0x277D82BD8](scanOperationLogger3);
         v54 = OS_LOG_TYPE_DEFAULT;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
           v20 = v59;
-          v19 = [(SUUIMobileScanOperation *)v85 identifier];
-          __os_log_helper_16_2_2_8_0_8_66(v90, v20, v19);
+          identifier2 = [(SUUIMobileScanOperation *)selfCopy identifier];
+          __os_log_helper_16_2_2_8_0_8_66(v90, v20, identifier2);
           _os_log_impl(&dword_26B0B9000, oslog, v54, "BEGIN [%lld]: CheckForAvailableUpdates Begins scanForUpdates  ScanIdentifier=%{public,signpost.telemetry:string1,name=ScanIdentifier}@  enableTelemetry=YES ", v90, 0x16u);
-          MEMORY[0x277D82BD8](v19);
+          MEMORY[0x277D82BD8](identifier2);
         }
 
         objc_storeStrong(&oslog, 0);
       }
 
       v60 = v59;
-      v18 = [(SUUIMobileScanOperation *)v85 suClient];
-      v17 = [location[0] options];
+      suClient = [(SUUIMobileScanOperation *)selfCopy suClient];
+      options4 = [location[0] options];
       v46 = MEMORY[0x277D85DD0];
       v47 = -1073741824;
       v48 = 0;
       v49 = __64__SUUIMobileScanOperation_action_CheckForAvailableUpdate_error___block_invoke;
       v50 = &unk_279CCCCE0;
       v53 = v60;
-      v51 = MEMORY[0x277D82BE0](v85);
+      v51 = MEMORY[0x277D82BE0](selfCopy);
       v52[0] = MEMORY[0x277D82BE0](location[0]);
       v52[1] = &v77;
-      [(SUManagerClient *)v18 scanForUpdates:v17 withScanResults:&v46];
-      MEMORY[0x277D82BD8](v17);
-      MEMORY[0x277D82BD8](v18);
+      [(SUManagerClient *)suClient scanForUpdates:options4 withScanResults:&v46];
+      MEMORY[0x277D82BD8](options4);
+      MEMORY[0x277D82BD8](suClient);
       objc_storeStrong(v52, 0);
       objc_storeStrong(&v51, 0);
     }
 
     else
     {
-      v16 = [MEMORY[0x277D64B58] scanOperationLogger];
-      v45 = [v16 oslog];
-      MEMORY[0x277D82BD8](v16);
+      scanOperationLogger4 = [MEMORY[0x277D64B58] scanOperationLogger];
+      oslog4 = [scanOperationLogger4 oslog];
+      MEMORY[0x277D82BD8](scanOperationLogger4);
       v44 = OS_LOG_TYPE_DEFAULT;
-      if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
       {
-        v14 = [(SUUIMobileScanOperation *)v85 identifier];
-        v15 = MEMORY[0x277D82BE0](v14);
+        identifier3 = [(SUUIMobileScanOperation *)selfCopy identifier];
+        v15 = MEMORY[0x277D82BE0](identifier3);
         v43 = v15;
-        operationType = v85->_operationType;
+        operationType = selfCopy->_operationType;
         if (operationType)
         {
           if (operationType == 1)
@@ -1023,21 +1023,21 @@
         v12 = v13;
         v42 = MEMORY[0x277D82BE0](v12);
         __os_log_helper_16_2_3_8_32_8_66_8_66(v89, "[SUUIMobileScanOperation action_CheckForAvailableUpdate:error:]", v15, v42);
-        _os_log_impl(&dword_26B0B9000, v45, v44, "%s [%{public}@|%{public}@]: Got third-party discovered scan results. Using them instead of performing a new scan.", v89, 0x20u);
+        _os_log_impl(&dword_26B0B9000, oslog4, v44, "%s [%{public}@|%{public}@]: Got third-party discovered scan results. Using them instead of performing a new scan.", v89, 0x20u);
         MEMORY[0x277D82BD8](v12);
-        MEMORY[0x277D82BD8](v14);
+        MEMORY[0x277D82BD8](identifier3);
         objc_storeStrong(&v42, 0);
         objc_storeStrong(&v43, 0);
       }
 
-      objc_storeStrong(&v45, 0);
-      v11 = v85;
-      v10 = [location[0] thirdPartyDiscoveredScanResults];
-      v9 = [location[0] thirdPartyDiscoveredScanError];
+      objc_storeStrong(&oslog4, 0);
+      v11 = selfCopy;
+      thirdPartyDiscoveredScanResults2 = [location[0] thirdPartyDiscoveredScanResults];
+      thirdPartyDiscoveredScanError2 = [location[0] thirdPartyDiscoveredScanError];
       v7 = v78[3];
-      [SUUIMobileScanOperation handleDiscoveredScanResults:v11 withError:"handleDiscoveredScanResults:withError:usingEventInfo:isCachedResults:activity:" usingEventInfo:v10 isCachedResults:? activity:?];
-      MEMORY[0x277D82BD8](v9);
-      MEMORY[0x277D82BD8](v10);
+      [SUUIMobileScanOperation handleDiscoveredScanResults:v11 withError:"handleDiscoveredScanResults:withError:usingEventInfo:isCachedResults:activity:" usingEventInfo:thirdPartyDiscoveredScanResults2 isCachedResults:? activity:?];
+      MEMORY[0x277D82BD8](thirdPartyDiscoveredScanError2);
+      MEMORY[0x277D82BD8](thirdPartyDiscoveredScanResults2);
     }
 
     v86 = 0;
@@ -1047,11 +1047,11 @@ LABEL_57:
     goto LABEL_58;
   }
 
-  v38 = [(SUUIMobileScanOperation *)v85 scanFSM];
-  v37 = [(SUCoreFSM *)v38 diag];
-  [v37 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-  MEMORY[0x277D82BD8](v37);
-  MEMORY[0x277D82BD8](v38);
+  scanFSM3 = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+  diag2 = [(SUCoreFSM *)scanFSM3 diag];
+  [diag2 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+  MEMORY[0x277D82BD8](diag2);
+  MEMORY[0x277D82BD8](scanFSM3);
   v86 = 8102;
   v82 = 1;
 LABEL_58:
@@ -1362,19 +1362,19 @@ void __64__SUUIMobileScanOperation_action_CheckForAvailableUpdate_error___block_
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)action_QueryCurrentDownload:(id)a3 error:(id *)a4
+- (int64_t)action_QueryCurrentDownload:(id)download error:(id *)error
 {
   v63 = *MEMORY[0x277D85DE8];
-  v58 = self;
+  selfCopy = self;
   v57 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v55 = a4;
-  v27 = [(SUUIMobileScanOperation *)v58 scanFSM];
-  v26 = [(SUCoreFSM *)v27 extendedStateQueue];
-  dispatch_assert_queue_V2(v26);
-  MEMORY[0x277D82BD8](v26);
-  MEMORY[0x277D82BD8](v27);
+  objc_storeStrong(&location, download);
+  errorCopy = error;
+  scanFSM = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   if (location)
   {
     v49 = 0;
@@ -1393,19 +1393,19 @@ void __64__SUUIMobileScanOperation_action_CheckForAvailableUpdate_error___block_
 
     else
     {
-      v23 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
-      v45 = [v23 oslog];
-      MEMORY[0x277D82BD8](v23);
+      softwareUpdateUILogger = [MEMORY[0x277D64B58] softwareUpdateUILogger];
+      oslog = [softwareUpdateUILogger oslog];
+      MEMORY[0x277D82BD8](softwareUpdateUILogger);
       v44 = 16;
-      if (os_log_type_enabled(v45, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        log = v45;
+        log = oslog;
         type = v44;
         __os_log_helper_16_0_0(v43);
         _os_log_error_impl(&dword_26B0B9000, log, type, "Failed to create an activity for: com.apple.SoftwareUpdateUI.StatefulUI.ScanOperation.State.QueryCurrentDownload", v43, 2u);
       }
 
-      objc_storeStrong(&v45, 0);
+      objc_storeStrong(&oslog, 0);
     }
 
     from[2] = v47;
@@ -1418,7 +1418,7 @@ void __64__SUUIMobileScanOperation_action_CheckForAvailableUpdate_error___block_
 
     from[1] = v48;
     v50[3] = v48;
-    objc_initWeak(from, v58);
+    objc_initWeak(from, selfCopy);
     v34 = MEMORY[0x277D85DD0];
     v35 = -1073741824;
     v36 = 0;
@@ -1429,20 +1429,20 @@ void __64__SUUIMobileScanOperation_action_CheckForAvailableUpdate_error___block_
     v39[1] = &v49;
     v39[0] = MEMORY[0x277D82BE0](location);
     v41 = MEMORY[0x26D66ED00](&v34);
-    v20 = [location currentDownload];
-    MEMORY[0x277D82BD8](v20);
-    if (v20)
+    currentDownload = [location currentDownload];
+    MEMORY[0x277D82BD8](currentDownload);
+    if (currentDownload)
     {
-      v18 = [MEMORY[0x277D64B58] scanOperationLogger];
-      oslog = [v18 oslog];
-      MEMORY[0x277D82BD8](v18);
+      scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+      oslog = [scanOperationLogger oslog];
+      MEMORY[0x277D82BD8](scanOperationLogger);
       v32 = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
-        v16 = [(SUUIMobileScanOperation *)v58 identifier];
-        v17 = MEMORY[0x277D82BE0](v16);
+        identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+        v17 = MEMORY[0x277D82BE0](identifier);
         v31 = v17;
-        operationType = v58->_operationType;
+        operationType = selfCopy->_operationType;
         if (operationType)
         {
           if (operationType == 1)
@@ -1470,19 +1470,19 @@ void __64__SUUIMobileScanOperation_action_CheckForAvailableUpdate_error___block_
         v5 = v61;
         v14 = v15;
         v30 = MEMORY[0x277D82BE0](v14);
-        v13 = [location currentDownload];
-        v12 = [v13 descriptor];
-        v11 = [v12 humanReadableUpdateName];
-        v29 = MEMORY[0x277D82BE0](v11);
-        v10 = [location currentDownload];
-        __os_log_helper_16_2_5_8_32_8_66_8_66_8_66_8_0(v62, "[SUUIMobileScanOperation action_QueryCurrentDownload:error:]", v17, v30, v29, v10);
+        currentDownload2 = [location currentDownload];
+        descriptor = [currentDownload2 descriptor];
+        humanReadableUpdateName = [descriptor humanReadableUpdateName];
+        v29 = MEMORY[0x277D82BE0](humanReadableUpdateName);
+        currentDownload3 = [location currentDownload];
+        __os_log_helper_16_2_5_8_32_8_66_8_66_8_66_8_0(v62, "[SUUIMobileScanOperation action_QueryCurrentDownload:error:]", v17, v30, v29, currentDownload3);
         _os_log_impl(&dword_26B0B9000, oslog, v32, "%s [%{public}@|%{public}@]: Scan operation has already been given a download (%{public}@, %p) - skipping on the download lookup.", v62, 0x34u);
-        MEMORY[0x277D82BD8](v10);
-        MEMORY[0x277D82BD8](v11);
-        MEMORY[0x277D82BD8](v12);
-        MEMORY[0x277D82BD8](v13);
+        MEMORY[0x277D82BD8](currentDownload3);
+        MEMORY[0x277D82BD8](humanReadableUpdateName);
+        MEMORY[0x277D82BD8](descriptor);
+        MEMORY[0x277D82BD8](currentDownload2);
         MEMORY[0x277D82BD8](v14);
-        MEMORY[0x277D82BD8](v16);
+        MEMORY[0x277D82BD8](identifier);
         objc_storeStrong(&v29, 0);
         objc_storeStrong(&v30, 0);
         objc_storeStrong(&v31, 0);
@@ -1490,18 +1490,18 @@ void __64__SUUIMobileScanOperation_action_CheckForAvailableUpdate_error___block_
 
       objc_storeStrong(&oslog, 0);
       v9 = v41;
-      v8 = [location currentDownload];
-      v7 = [location operationError];
-      v9[2](v9, v8);
-      MEMORY[0x277D82BD8](v7);
-      MEMORY[0x277D82BD8](v8);
+      currentDownload4 = [location currentDownload];
+      operationError = [location operationError];
+      v9[2](v9, currentDownload4);
+      MEMORY[0x277D82BD8](operationError);
+      MEMORY[0x277D82BD8](currentDownload4);
     }
 
     else
     {
-      v19 = [(SUUIMobileScanOperation *)v58 suClient];
-      [(SUManagerClient *)v19 download:v41];
-      MEMORY[0x277D82BD8](v19);
+      suClient = [(SUUIMobileScanOperation *)selfCopy suClient];
+      [(SUManagerClient *)suClient download:v41];
+      MEMORY[0x277D82BD8](suClient);
     }
 
     v59 = 0;
@@ -1515,11 +1515,11 @@ void __64__SUUIMobileScanOperation_action_CheckForAvailableUpdate_error___block_
 
   else
   {
-    v25 = [(SUUIMobileScanOperation *)v58 scanFSM];
-    v24 = [(SUCoreFSM *)v25 diag];
-    [v24 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v24);
-    MEMORY[0x277D82BD8](v25);
+    scanFSM2 = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+    diag = [(SUCoreFSM *)scanFSM2 diag];
+    [diag trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
+    MEMORY[0x277D82BD8](scanFSM2);
     v59 = 8102;
     v54 = 1;
   }
@@ -2079,19 +2079,19 @@ void __61__SUUIMobileScanOperation_action_QueryCurrentDownload_error___block_inv
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)action_QueryUpdatesInfo:(id)a3 error:(id *)a4
+- (int64_t)action_QueryUpdatesInfo:(id)info error:(id *)error
 {
   v73 = *MEMORY[0x277D85DE8];
-  v68 = self;
+  selfCopy = self;
   v67 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v65 = a4;
-  v31 = [(SUUIMobileScanOperation *)v68 scanFSM];
-  v30 = [(SUCoreFSM *)v31 extendedStateQueue];
-  dispatch_assert_queue_V2(v30);
-  MEMORY[0x277D82BD8](v30);
-  MEMORY[0x277D82BD8](v31);
+  objc_storeStrong(&location, info);
+  errorCopy = error;
+  scanFSM = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   if (location)
   {
     v59 = 0;
@@ -2110,19 +2110,19 @@ void __61__SUUIMobileScanOperation_action_QueryCurrentDownload_error___block_inv
 
     else
     {
-      v27 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
-      v55 = [v27 oslog];
-      MEMORY[0x277D82BD8](v27);
+      softwareUpdateUILogger = [MEMORY[0x277D64B58] softwareUpdateUILogger];
+      oslog = [softwareUpdateUILogger oslog];
+      MEMORY[0x277D82BD8](softwareUpdateUILogger);
       v54 = 16;
-      if (os_log_type_enabled(v55, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        log = v55;
+        log = oslog;
         type = v54;
         __os_log_helper_16_0_0(v53);
         _os_log_error_impl(&dword_26B0B9000, log, type, "Failed to create an activity for: com.apple.SoftwareUpdateUI.StatefulUI.ScanOperation.State.QueryUpdateInfo", v53, 2u);
       }
 
-      objc_storeStrong(&v55, 0);
+      objc_storeStrong(&oslog, 0);
     }
 
     v52 = v57;
@@ -2137,17 +2137,17 @@ void __61__SUUIMobileScanOperation_action_QueryCurrentDownload_error___block_inv
     v60[3] = v58;
     v49 = 0;
     v47 = 0;
-    v24 = [location preferredDescriptor];
-    if (v24 || (v50 = [location alternateDescriptor], v49 = 1, v23 = 1, v50))
+    preferredDescriptor = [location preferredDescriptor];
+    if (preferredDescriptor || (v50 = [location alternateDescriptor], v49 = 1, v23 = 1, v50))
     {
-      v48 = [location agreementStatusRegistry];
+      agreementStatusRegistry = [location agreementStatusRegistry];
       v47 = 1;
-      v23 = v48 == 0;
+      v23 = agreementStatusRegistry == 0;
     }
 
     if (v47)
     {
-      MEMORY[0x277D82BD8](v48);
+      MEMORY[0x277D82BD8](agreementStatusRegistry);
     }
 
     if (v49)
@@ -2155,19 +2155,19 @@ void __61__SUUIMobileScanOperation_action_QueryCurrentDownload_error___block_inv
       MEMORY[0x277D82BD8](v50);
     }
 
-    MEMORY[0x277D82BD8](v24);
+    MEMORY[0x277D82BD8](preferredDescriptor);
     if (v23)
     {
-      v22 = [MEMORY[0x277D64B58] scanOperationLogger];
-      oslog = [v22 oslog];
-      MEMORY[0x277D82BD8](v22);
+      scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+      oslog = [scanOperationLogger oslog];
+      MEMORY[0x277D82BD8](scanOperationLogger);
       v45 = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        v20 = [(SUUIMobileScanOperation *)v68 identifier];
-        v21 = MEMORY[0x277D82BE0](v20);
+        identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+        v21 = MEMORY[0x277D82BE0](identifier);
         v44 = v21;
-        operationType = v68->_operationType;
+        operationType = selfCopy->_operationType;
         if (operationType)
         {
           if (operationType == 1)
@@ -2198,7 +2198,7 @@ void __61__SUUIMobileScanOperation_action_QueryCurrentDownload_error___block_inv
         __os_log_helper_16_2_3_8_32_8_66_8_66(v72, "[SUUIMobileScanOperation action_QueryUpdatesInfo:error:]", v21, v43);
         _os_log_error_impl(&dword_26B0B9000, oslog, v45, "%s [%{public}@|%{public}@]: Both the preferredUpdate and alternateUpdate are empty, or agreementStatusRegistry is missing - yet there is a download. Trying to recovery by querying for downloadability.", v72, 0x20u);
         MEMORY[0x277D82BD8](v18);
-        MEMORY[0x277D82BD8](v20);
+        MEMORY[0x277D82BD8](identifier);
         objc_storeStrong(&v43, 0);
         objc_storeStrong(&v44, 0);
       }
@@ -2207,27 +2207,27 @@ void __61__SUUIMobileScanOperation_action_QueryCurrentDownload_error___block_inv
     }
 
     v17 = objc_alloc(MEMORY[0x277D64890]);
-    v16 = [location preferredDescriptor];
+    preferredDescriptor2 = [location preferredDescriptor];
     v42 = [v17 initWithDescriptor:?];
-    MEMORY[0x277D82BD8](v16);
-    [v42 setAllowUnrestrictedCellularDownload:{-[SUUIMobileScanOperationOptions doesAllowUnrestrictedCellularDownload](v68->_options, "doesAllowUnrestrictedCellularDownload")}];
-    v15 = [location agreementStatusRegistry];
-    v14 = [location preferredDescriptor];
-    [v42 setDownloadFeeAgreementStatus:{objc_msgSend(v15, "agreementStatusForType:descriptor:", 1)}];
-    MEMORY[0x277D82BD8](v14);
-    MEMORY[0x277D82BD8](v15);
+    MEMORY[0x277D82BD8](preferredDescriptor2);
+    [v42 setAllowUnrestrictedCellularDownload:{-[SUUIMobileScanOperationOptions doesAllowUnrestrictedCellularDownload](selfCopy->_options, "doesAllowUnrestrictedCellularDownload")}];
+    agreementStatusRegistry2 = [location agreementStatusRegistry];
+    preferredDescriptor3 = [location preferredDescriptor];
+    [v42 setDownloadFeeAgreementStatus:{objc_msgSend(agreementStatusRegistry2, "agreementStatusForType:descriptor:", 1)}];
+    MEMORY[0x277D82BD8](preferredDescriptor3);
+    MEMORY[0x277D82BD8](agreementStatusRegistry2);
     v13 = objc_alloc(MEMORY[0x277D64890]);
-    v12 = [location alternateDescriptor];
+    alternateDescriptor = [location alternateDescriptor];
     v41 = [v13 initWithDescriptor:?];
-    MEMORY[0x277D82BD8](v12);
-    [v41 setAllowUnrestrictedCellularDownload:{-[SUUIMobileScanOperationOptions doesAllowUnrestrictedCellularDownload](v68->_options, "doesAllowUnrestrictedCellularDownload")}];
-    v11 = [location agreementStatusRegistry];
-    v10 = [location alternateDescriptor];
-    [v41 setDownloadFeeAgreementStatus:{objc_msgSend(v11, "agreementStatusForType:descriptor:", 1)}];
-    MEMORY[0x277D82BD8](v10);
-    MEMORY[0x277D82BD8](v11);
-    objc_initWeak(&from, v68);
-    v7 = [(SUUIMobileScanOperation *)v68 suClient];
+    MEMORY[0x277D82BD8](alternateDescriptor);
+    [v41 setAllowUnrestrictedCellularDownload:{-[SUUIMobileScanOperationOptions doesAllowUnrestrictedCellularDownload](selfCopy->_options, "doesAllowUnrestrictedCellularDownload")}];
+    agreementStatusRegistry3 = [location agreementStatusRegistry];
+    alternateDescriptor2 = [location alternateDescriptor];
+    [v41 setDownloadFeeAgreementStatus:{objc_msgSend(agreementStatusRegistry3, "agreementStatusForType:descriptor:", 1)}];
+    MEMORY[0x277D82BD8](alternateDescriptor2);
+    MEMORY[0x277D82BD8](agreementStatusRegistry3);
+    objc_initWeak(&from, selfCopy);
+    suClient = [(SUUIMobileScanOperation *)selfCopy suClient];
     v8 = v42;
     v9 = v41;
     v33 = MEMORY[0x277D85DD0];
@@ -2239,8 +2239,8 @@ void __61__SUUIMobileScanOperation_action_QueryCurrentDownload_error___block_inv
     v39[1] = v67;
     v38[0] = MEMORY[0x277D82BE0](location);
     v38[1] = &v59;
-    [(SUManagerClient *)v7 updatesDownloadableWithOptions:v8 alternateDownloadOptions:v9 replyHandler:&v33];
-    MEMORY[0x277D82BD8](v7);
+    [(SUManagerClient *)suClient updatesDownloadableWithOptions:v8 alternateDownloadOptions:v9 replyHandler:&v33];
+    MEMORY[0x277D82BD8](suClient);
     v69 = 0;
     v64 = 1;
     objc_storeStrong(v38, 0);
@@ -2253,11 +2253,11 @@ void __61__SUUIMobileScanOperation_action_QueryCurrentDownload_error___block_inv
 
   else
   {
-    v29 = [(SUUIMobileScanOperation *)v68 scanFSM];
-    v28 = [(SUCoreFSM *)v29 diag];
-    [v28 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v28);
-    MEMORY[0x277D82BD8](v29);
+    scanFSM2 = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+    diag = [(SUCoreFSM *)scanFSM2 diag];
+    [diag trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
+    MEMORY[0x277D82BD8](scanFSM2);
     v69 = 8102;
     v64 = 1;
   }
@@ -2701,19 +2701,19 @@ void __57__SUUIMobileScanOperation_action_QueryUpdatesInfo_error___block_invoke_
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)action_ObserveConcurrentQueries:(id)a3 error:(id *)a4
+- (int64_t)action_ObserveConcurrentQueries:(id)queries error:(id *)error
 {
   v112 = *MEMORY[0x277D85DE8];
   val = self;
   v94 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v92 = a4;
-  v39 = [val scanFSM];
-  v38 = [v39 extendedStateQueue];
-  dispatch_assert_queue_V2(v38);
-  MEMORY[0x277D82BD8](v38);
-  MEMORY[0x277D82BD8](v39);
+  objc_storeStrong(&location, queries);
+  errorCopy = error;
+  scanFSM = [val scanFSM];
+  extendedStateQueue = [scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   if (location)
   {
     v86 = 0;
@@ -2732,9 +2732,9 @@ void __57__SUUIMobileScanOperation_action_QueryUpdatesInfo_error___block_invoke_
 
     else
     {
-      v35 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
-      oslog = [v35 oslog];
-      MEMORY[0x277D82BD8](v35);
+      softwareUpdateUILogger = [MEMORY[0x277D64B58] softwareUpdateUILogger];
+      oslog = [softwareUpdateUILogger oslog];
+      MEMORY[0x277D82BD8](softwareUpdateUILogger);
       type = OS_LOG_TYPE_ERROR;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
@@ -2774,12 +2774,12 @@ void __57__SUUIMobileScanOperation_action_QueryUpdatesInfo_error___block_invoke_
     v76 = *(val + 41) & 1;
     if (v77)
     {
-      v32 = [*(val + 19) allObjects];
-      v5 = [v32 componentsJoinedByString:{@", "}];
+      allObjects = [*(val + 19) allObjects];
+      v5 = [allObjects componentsJoinedByString:{@", "}];
       v6 = v75;
       v75 = v5;
       MEMORY[0x277D82BD8](v6);
-      MEMORY[0x277D82BD8](v32);
+      MEMORY[0x277D82BD8](allObjects);
     }
 
     v91 = 9;
@@ -2805,14 +2805,14 @@ void __57__SUUIMobileScanOperation_action_QueryUpdatesInfo_error___block_invoke_
     {
       if (v76)
       {
-        v26 = [MEMORY[0x277D64B58] scanOperationLogger];
-        v68 = [v26 oslog];
-        MEMORY[0x277D82BD8](v26);
+        scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+        oslog = [scanOperationLogger oslog];
+        MEMORY[0x277D82BD8](scanOperationLogger);
         v67 = OS_LOG_TYPE_DEFAULT;
-        if (os_log_type_enabled(v68, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = [val identifier];
-          v25 = MEMORY[0x277D82BE0](v24);
+          identifier = [val identifier];
+          v25 = MEMORY[0x277D82BE0](identifier);
           v66 = v25;
           v105 = *(val + 18);
           if (v105)
@@ -2843,14 +2843,14 @@ void __57__SUUIMobileScanOperation_action_QueryUpdatesInfo_error___block_invoke_
           v22 = v23;
           v65 = MEMORY[0x277D82BE0](v22);
           __os_log_helper_16_2_3_8_32_8_66_8_66(v110, "[SUUIMobileScanOperation action_ObserveConcurrentQueries:error:]", v25, v65);
-          _os_log_impl(&dword_26B0B9000, v68, v67, "%s [%{public}@|%{public}@]: One or more of the concurrent operations have been failed/timed out.", v110, 0x20u);
+          _os_log_impl(&dword_26B0B9000, oslog, v67, "%s [%{public}@|%{public}@]: One or more of the concurrent operations have been failed/timed out.", v110, 0x20u);
           MEMORY[0x277D82BD8](v22);
-          MEMORY[0x277D82BD8](v24);
+          MEMORY[0x277D82BD8](identifier);
           objc_storeStrong(&v65, 0);
           objc_storeStrong(&v66, 0);
         }
 
-        objc_storeStrong(&v68, 0);
+        objc_storeStrong(&oslog, 0);
         [*(val + 7) postEvent:*MEMORY[0x277D64D28] withInfo:location endingActivity:v87 + 3];
         v96 = 0;
         v91 = 1;
@@ -2858,14 +2858,14 @@ void __57__SUUIMobileScanOperation_action_QueryUpdatesInfo_error___block_invoke_
 
       else
       {
-        v21 = [MEMORY[0x277D64B58] scanOperationLogger];
-        v64 = [v21 oslog];
-        MEMORY[0x277D82BD8](v21);
+        scanOperationLogger2 = [MEMORY[0x277D64B58] scanOperationLogger];
+        oslog2 = [scanOperationLogger2 oslog];
+        MEMORY[0x277D82BD8](scanOperationLogger2);
         v63 = OS_LOG_TYPE_DEFAULT;
-        if (os_log_type_enabled(v64, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
         {
-          v19 = [val identifier];
-          v20 = MEMORY[0x277D82BE0](v19);
+          identifier2 = [val identifier];
+          v20 = MEMORY[0x277D82BE0](identifier2);
           v62 = v20;
           v103 = *(val + 18);
           if (v103)
@@ -2896,14 +2896,14 @@ void __57__SUUIMobileScanOperation_action_QueryUpdatesInfo_error___block_invoke_
           v17 = v18;
           v61 = MEMORY[0x277D82BE0](v17);
           __os_log_helper_16_2_5_8_32_8_66_8_66_8_0_8_66(v109, "[SUUIMobileScanOperation action_ObserveConcurrentQueries:error:]", v20, v61, v77, v75);
-          _os_log_impl(&dword_26B0B9000, v64, v63, "%s [%{public}@|%{public}@]: Waiting for %lu concurrent operations to complete: %{public}@", v109, 0x34u);
+          _os_log_impl(&dword_26B0B9000, oslog2, v63, "%s [%{public}@|%{public}@]: Waiting for %lu concurrent operations to complete: %{public}@", v109, 0x34u);
           MEMORY[0x277D82BD8](v17);
-          MEMORY[0x277D82BD8](v19);
+          MEMORY[0x277D82BD8](identifier2);
           objc_storeStrong(&v61, 0);
           objc_storeStrong(&v62, 0);
         }
 
-        objc_storeStrong(&v64, 0);
+        objc_storeStrong(&oslog2, 0);
         objc_initWeak(&from, val);
         v56[0] = 0;
         v56[1] = v56;
@@ -2926,8 +2926,8 @@ void __57__SUUIMobileScanOperation_action_QueryUpdatesInfo_error___block_invoke_
         MEMORY[0x277D82BD8](group);
         v48 = dispatch_time(0, 300000000000);
         when = v48;
-        v13 = [val scanFSM];
-        v12 = [v13 extendedStateQueue];
+        scanFSM2 = [val scanFSM];
+        extendedStateQueue2 = [scanFSM2 extendedStateQueue];
         v41 = MEMORY[0x277D85DD0];
         v42 = -1073741824;
         v43 = 0;
@@ -2938,9 +2938,9 @@ void __57__SUUIMobileScanOperation_action_QueryUpdatesInfo_error___block_invoke_
         v46[1] = v56;
         v46[0] = MEMORY[0x277D82BE0](location);
         v46[2] = &v86;
-        dispatch_after(when, v12, &v41);
-        MEMORY[0x277D82BD8](v12);
-        MEMORY[0x277D82BD8](v13);
+        dispatch_after(when, extendedStateQueue2, &v41);
+        MEMORY[0x277D82BD8](extendedStateQueue2);
+        MEMORY[0x277D82BD8](scanFSM2);
         v96 = 0;
         v91 = 1;
         objc_storeStrong(v46, 0);
@@ -2954,14 +2954,14 @@ void __57__SUUIMobileScanOperation_action_QueryUpdatesInfo_error___block_invoke_
 
     else
     {
-      v31 = [MEMORY[0x277D64B58] scanOperationLogger];
-      v72 = [v31 oslog];
-      MEMORY[0x277D82BD8](v31);
+      scanOperationLogger3 = [MEMORY[0x277D64B58] scanOperationLogger];
+      oslog3 = [scanOperationLogger3 oslog];
+      MEMORY[0x277D82BD8](scanOperationLogger3);
       v71 = OS_LOG_TYPE_DEFAULT;
-      if (os_log_type_enabled(v72, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
       {
-        v29 = [val identifier];
-        v30 = MEMORY[0x277D82BE0](v29);
+        identifier3 = [val identifier];
+        v30 = MEMORY[0x277D82BE0](identifier3);
         v70 = v30;
         v107 = *(val + 18);
         if (v107)
@@ -2992,14 +2992,14 @@ void __57__SUUIMobileScanOperation_action_QueryUpdatesInfo_error___block_invoke_
         v27 = v28;
         v69 = MEMORY[0x277D82BE0](v27);
         __os_log_helper_16_2_3_8_32_8_66_8_66(v111, "[SUUIMobileScanOperation action_ObserveConcurrentQueries:error:]", v30, v69);
-        _os_log_impl(&dword_26B0B9000, v72, v71, "%s [%{public}@|%{public}@]: No concurrent operations are running, proceeding immediately.", v111, 0x20u);
+        _os_log_impl(&dword_26B0B9000, oslog3, v71, "%s [%{public}@|%{public}@]: No concurrent operations are running, proceeding immediately.", v111, 0x20u);
         MEMORY[0x277D82BD8](v27);
-        MEMORY[0x277D82BD8](v29);
+        MEMORY[0x277D82BD8](identifier3);
         objc_storeStrong(&v69, 0);
         objc_storeStrong(&v70, 0);
       }
 
-      objc_storeStrong(&v72, 0);
+      objc_storeStrong(&oslog3, 0);
       [*(val + 7) postEvent:*MEMORY[0x277D64CF8] withInfo:location endingActivity:v87 + 3];
       v96 = 0;
       v91 = 1;
@@ -3011,11 +3011,11 @@ void __57__SUUIMobileScanOperation_action_QueryUpdatesInfo_error___block_invoke_
 
   else
   {
-    v37 = [val scanFSM];
-    v36 = [v37 diag];
-    [v36 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v36);
-    MEMORY[0x277D82BD8](v37);
+    scanFSM3 = [val scanFSM];
+    diag = [scanFSM3 diag];
+    [diag trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
+    MEMORY[0x277D82BD8](scanFSM3);
     v96 = 8102;
     v91 = 1;
   }
@@ -3487,36 +3487,36 @@ void __65__SUUIMobileScanOperation_action_ObserveConcurrentQueries_error___block
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)action_ReportScanOutcome:(id)a3 error:(id *)a4
+- (int64_t)action_ReportScanOutcome:(id)outcome error:(id *)error
 {
   v58 = *MEMORY[0x277D85DE8];
-  v50 = self;
+  selfCopy = self;
   v49 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v47[2] = a4;
-  v24 = [(SUUIMobileScanOperation *)v50 scanFSM];
-  v23 = [(SUCoreFSM *)v24 extendedStateQueue];
-  dispatch_assert_queue_V2(v23);
-  MEMORY[0x277D82BD8](v23);
-  MEMORY[0x277D82BD8](v24);
+  objc_storeStrong(&location, outcome);
+  v47[2] = error;
+  scanFSM = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   v47[0] = 3;
-  p_lock = &v50->_lock;
+  p_lock = &selfCopy->_lock;
   v52 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v47[1] = p_lock;
   if (location)
   {
-    v20 = [MEMORY[0x277D64B58] scanOperationLogger];
-    v45 = [v20 oslog];
-    MEMORY[0x277D82BD8](v20);
+    scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+    oslog = [scanOperationLogger oslog];
+    MEMORY[0x277D82BD8](scanOperationLogger);
     v44 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v45, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v18 = [(SUUIMobileScanOperation *)v50 identifier];
-      v19 = MEMORY[0x277D82BE0](v18);
+      identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+      v19 = MEMORY[0x277D82BE0](identifier);
       v43 = v19;
-      operationType = v50->_operationType;
+      operationType = selfCopy->_operationType;
       if (operationType)
       {
         if (operationType == 1)
@@ -3545,41 +3545,41 @@ void __65__SUUIMobileScanOperation_action_ObserveConcurrentQueries_error___block
       v15 = v17;
       v16 = MEMORY[0x277D82BE0](v15);
       v42 = v16;
-      v13 = [location operationError];
+      operationError = [location operationError];
       v5 = "successful";
-      if (v13)
+      if (operationError)
       {
         v5 = "failed";
       }
 
       v14 = v5;
-      v12 = SUUIMobileScanOperationTypeToString(v50->_operationType);
+      v12 = SUUIMobileScanOperationTypeToString(selfCopy->_operationType);
       v41 = MEMORY[0x277D82BE0](v12);
       __os_log_helper_16_2_5_8_32_8_66_8_66_8_32_8_66(v57, "[SUUIMobileScanOperation action_ReportScanOutcome:error:]", v19, v16, v14, v41);
-      _os_log_impl(&dword_26B0B9000, v45, v44, "%s [%{public}@|%{public}@]: Reporting a %s scan of type: %{public}@", v57, 0x34u);
+      _os_log_impl(&dword_26B0B9000, oslog, v44, "%s [%{public}@|%{public}@]: Reporting a %s scan of type: %{public}@", v57, 0x34u);
       MEMORY[0x277D82BD8](v12);
-      MEMORY[0x277D82BD8](v13);
+      MEMORY[0x277D82BD8](operationError);
       MEMORY[0x277D82BD8](v15);
-      MEMORY[0x277D82BD8](v18);
+      MEMORY[0x277D82BD8](identifier);
       objc_storeStrong(&v41, 0);
       objc_storeStrong(&v42, 0);
       objc_storeStrong(&v43, 0);
     }
 
-    objc_storeStrong(&v45, 0);
-    if (v50->_activity && v50->_activity->var2)
+    objc_storeStrong(&oslog, 0);
+    if (selfCopy->_activity && selfCopy->_activity->var2)
     {
-      os_activity_scope_leave(&v50->_activity->var0);
-      v50->_activity->var2 = 0;
+      os_activity_scope_leave(&selfCopy->_activity->var0);
+      selfCopy->_activity->var2 = 0;
     }
 
-    objc_initWeak(&from, v50);
-    v11 = v50->_operationType;
+    objc_initWeak(&from, selfCopy);
+    v11 = selfCopy->_operationType;
     if (v11)
     {
       if (v11 == 1)
       {
-        queue = v50->_clientCompletionQueue;
+        queue = selfCopy->_clientCompletionQueue;
         v33 = MEMORY[0x277D85DD0];
         v34 = -1073741824;
         v35 = 0;
@@ -3595,7 +3595,7 @@ void __65__SUUIMobileScanOperation_action_ObserveConcurrentQueries_error___block
 
       else if (v11 == 2)
       {
-        clientCompletionQueue = v50->_clientCompletionQueue;
+        clientCompletionQueue = selfCopy->_clientCompletionQueue;
         v26 = MEMORY[0x277D85DD0];
         v27 = -1073741824;
         v28 = 0;
@@ -3612,10 +3612,10 @@ void __65__SUUIMobileScanOperation_action_ObserveConcurrentQueries_error___block
 
     else
     {
-      v10 = [(SUCoreFSM *)v50->_scanFSM diag];
-      [v10 dumpTracked:@"Could not invoke a completion handler for a 'None' operation type." dumpingTo:5 usingFilename:0 clearingStatistics:0 clearingHistory:0];
-      MEMORY[0x277D82BD8](v10);
-      [(SUUIMobileScanOperation *)v50 invalidateMachine];
+      diag = [(SUCoreFSM *)selfCopy->_scanFSM diag];
+      [diag dumpTracked:@"Could not invoke a completion handler for a 'None' operation type." dumpingTo:5 usingFilename:0 clearingStatistics:0 clearingHistory:0];
+      MEMORY[0x277D82BD8](diag);
+      [(SUUIMobileScanOperation *)selfCopy invalidateMachine];
     }
 
     objc_destroyWeak(&from);
@@ -3624,11 +3624,11 @@ void __65__SUUIMobileScanOperation_action_ObserveConcurrentQueries_error___block
 
   else
   {
-    v22 = [(SUUIMobileScanOperation *)v50 scanFSM];
-    v21 = [(SUCoreFSM *)v22 diag];
-    [v21 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v21);
-    MEMORY[0x277D82BD8](v22);
+    scanFSM2 = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+    diag2 = [(SUCoreFSM *)scanFSM2 diag];
+    [diag2 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag2);
+    MEMORY[0x277D82BD8](scanFSM2);
     v51 = 8102;
     v46 = 1;
   }
@@ -3875,36 +3875,36 @@ void __58__SUUIMobileScanOperation_action_ReportScanOutcome_error___block_invoke
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)action_ReportScanCanceled:(id)a3 error:(id *)a4
+- (int64_t)action_ReportScanCanceled:(id)canceled error:(id *)error
 {
   v42 = *MEMORY[0x277D85DE8];
-  v34 = self;
+  selfCopy = self;
   v33 = a2;
   location = 0;
-  objc_storeStrong(&location, a3);
-  v31 = a4;
-  v16 = [(SUUIMobileScanOperation *)v34 scanFSM];
-  v15 = [(SUCoreFSM *)v16 extendedStateQueue];
-  dispatch_assert_queue_V2(v15);
-  MEMORY[0x277D82BD8](v15);
-  MEMORY[0x277D82BD8](v16);
+  objc_storeStrong(&location, canceled);
+  errorCopy = error;
+  scanFSM = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+  extendedStateQueue = [(SUCoreFSM *)scanFSM extendedStateQueue];
+  dispatch_assert_queue_V2(extendedStateQueue);
+  MEMORY[0x277D82BD8](extendedStateQueue);
+  MEMORY[0x277D82BD8](scanFSM);
   if (location)
   {
     v29[0] = 3;
-    p_lock = &v34->_lock;
+    p_lock = &selfCopy->_lock;
     v36 = 0;
     os_unfair_recursive_lock_lock_with_options();
     v29[1] = p_lock;
-    v12 = [MEMORY[0x277D64B58] scanOperationLogger];
-    v28 = [v12 oslog];
-    MEMORY[0x277D82BD8](v12);
+    scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+    oslog = [scanOperationLogger oslog];
+    MEMORY[0x277D82BD8](scanOperationLogger);
     v27 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v28, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v10 = [(SUUIMobileScanOperation *)v34 identifier];
-      v11 = MEMORY[0x277D82BE0](v10);
+      identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+      v11 = MEMORY[0x277D82BE0](identifier);
       v26 = v11;
-      operationType = v34->_operationType;
+      operationType = selfCopy->_operationType;
       if (operationType)
       {
         if (operationType == 1)
@@ -3933,24 +3933,24 @@ void __58__SUUIMobileScanOperation_action_ReportScanOutcome_error___block_invoke
       v8 = v9;
       v25 = MEMORY[0x277D82BE0](v8);
       __os_log_helper_16_2_3_8_32_8_66_8_66(v41, "[SUUIMobileScanOperation action_ReportScanCanceled:error:]", v11, v25);
-      _os_log_impl(&dword_26B0B9000, v28, v27, "%s [%{public}@|%{public}@]: The scan was canceled. Calling the cancelation handler.", v41, 0x20u);
+      _os_log_impl(&dword_26B0B9000, oslog, v27, "%s [%{public}@|%{public}@]: The scan was canceled. Calling the cancelation handler.", v41, 0x20u);
       MEMORY[0x277D82BD8](v8);
-      MEMORY[0x277D82BD8](v10);
+      MEMORY[0x277D82BD8](identifier);
       objc_storeStrong(&v25, 0);
       objc_storeStrong(&v26, 0);
     }
 
-    objc_storeStrong(&v28, 0);
-    if (v34->_activity && v34->_activity->var2)
+    objc_storeStrong(&oslog, 0);
+    if (selfCopy->_activity && selfCopy->_activity->var2)
     {
-      os_activity_scope_leave(&v34->_activity->var0);
-      v34->_activity->var2 = 0;
+      os_activity_scope_leave(&selfCopy->_activity->var0);
+      selfCopy->_activity->var2 = 0;
     }
 
-    if (v34->_cancelHandler)
+    if (selfCopy->_cancelHandler)
     {
-      objc_initWeak(&from, v34);
-      queue = v34->_clientCompletionQueue;
+      objc_initWeak(&from, selfCopy);
+      queue = selfCopy->_clientCompletionQueue;
       block = MEMORY[0x277D85DD0];
       v19 = -1073741824;
       v20 = 0;
@@ -3965,7 +3965,7 @@ void __58__SUUIMobileScanOperation_action_ReportScanOutcome_error___block_invoke
 
     else
     {
-      [(SUUIMobileScanOperation *)v34 invalidateMachine];
+      [(SUUIMobileScanOperation *)selfCopy invalidateMachine];
     }
 
     v30 = 4;
@@ -3990,11 +3990,11 @@ void __58__SUUIMobileScanOperation_action_ReportScanOutcome_error___block_invoke
 
   else
   {
-    v14 = [(SUUIMobileScanOperation *)v34 scanFSM];
-    v13 = [(SUCoreFSM *)v14 diag];
-    [v13 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v13);
-    MEMORY[0x277D82BD8](v14);
+    scanFSM2 = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+    diag = [(SUCoreFSM *)scanFSM2 diag];
+    [diag trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"The given eventInfo parameter must not be nil." withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
+    MEMORY[0x277D82BD8](scanFSM2);
     v35 = 8102;
     v30 = 1;
   }
@@ -4056,32 +4056,32 @@ void __59__SUUIMobileScanOperation_action_ReportScanCanceled_error___block_invok
   *MEMORY[0x277D85DE8];
 }
 
-- (int64_t)actionUnknownAction:(id)a3 error:(id *)a4
+- (int64_t)actionUnknownAction:(id)action error:(id *)error
 {
-  v18 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v16[1] = a4;
+  objc_storeStrong(location, action);
+  v16[1] = error;
   v4 = objc_alloc(MEMORY[0x277CCACA8]);
   v16[0] = [v4 initWithFormat:location[0]];
-  v11 = [(SUUIMobileScanOperation *)v18 scanFSM];
-  v10 = [(SUCoreFSM *)v11 diag];
+  scanFSM = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+  diag = [(SUCoreFSM *)scanFSM diag];
   v5 = objc_alloc(MEMORY[0x277CCACA8]);
   v9 = [v5 initWithFormat:@"unknown action(%@)", location[0]];
-  [v10 dumpTracked:? dumpingTo:? usingFilename:? clearingStatistics:? clearingHistory:?];
+  [diag dumpTracked:? dumpingTo:? usingFilename:? clearingStatistics:? clearingHistory:?];
   MEMORY[0x277D82BD8](v9);
-  MEMORY[0x277D82BD8](v10);
-  MEMORY[0x277D82BD8](v11);
-  v12 = [MEMORY[0x277D643F8] sharedCore];
-  v15 = [v12 buildError:8116 underlying:0 description:v16[0]];
-  MEMORY[0x277D82BD8](v12);
-  v14 = [(SUUIMobileScanOperation *)v18 scanFSM];
-  v13 = [(SUCoreFSM *)v14 diag];
-  v6 = [v15 code];
-  [v13 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"Scan FSM has reported an anomaly" withResult:v6 withError:v15];
-  MEMORY[0x277D82BD8](v13);
-  MEMORY[0x277D82BD8](v14);
+  MEMORY[0x277D82BD8](diag);
+  MEMORY[0x277D82BD8](scanFSM);
+  mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+  v15 = [mEMORY[0x277D643F8] buildError:8116 underlying:0 description:v16[0]];
+  MEMORY[0x277D82BD8](mEMORY[0x277D643F8]);
+  scanFSM2 = [(SUUIMobileScanOperation *)selfCopy scanFSM];
+  diag2 = [(SUCoreFSM *)scanFSM2 diag];
+  code = [v15 code];
+  [diag2 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"Scan FSM has reported an anomaly" withResult:code withError:v15];
+  MEMORY[0x277D82BD8](diag2);
+  MEMORY[0x277D82BD8](scanFSM2);
   objc_storeStrong(&v15, 0);
   objc_storeStrong(v16, 0);
   objc_storeStrong(location, 0);
@@ -4095,28 +4095,28 @@ void __59__SUUIMobileScanOperation_action_ReportScanCanceled_error___block_invok
   objc_exception_throw(exception);
 }
 
-- (SUUIMobileScanOperation)initWithIdentifier:(id)a3 options:(id)a4 usingSUManagerClient:(id)a5 andBetaManager:(id)a6 withCompletionQueue:(id)a7
+- (SUUIMobileScanOperation)initWithIdentifier:(id)identifier options:(id)options usingSUManagerClient:(id)client andBetaManager:(id)manager withCompletionQueue:(id)queue
 {
   v51 = *MEMORY[0x277D85DE8];
-  v46 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, identifier);
   v44 = 0;
-  objc_storeStrong(&v44, a4);
+  objc_storeStrong(&v44, options);
   v43 = 0;
-  objc_storeStrong(&v43, a5);
+  objc_storeStrong(&v43, client);
   v42 = 0;
-  objc_storeStrong(&v42, a6);
+  objc_storeStrong(&v42, manager);
   v41 = 0;
-  objc_storeStrong(&v41, a7);
-  v7 = v46;
-  v46 = 0;
+  objc_storeStrong(&v41, queue);
+  v7 = selfCopy;
+  selfCopy = 0;
   v40.receiver = v7;
   v40.super_class = SUUIMobileScanOperation;
   v34 = [(SUUIMobileScanOperation *)&v40 init];
-  v46 = v34;
-  objc_storeStrong(&v46, v34);
+  selfCopy = v34;
+  objc_storeStrong(&selfCopy, v34);
   if (!v34)
   {
     goto LABEL_8;
@@ -4135,49 +4135,49 @@ void __59__SUUIMobileScanOperation_action_ReportScanCanceled_error___block_invok
   v28 = NSStringFromClass(v10);
   v37 = [v27 initWithFormat:@"%@:%@(%@, %@)", v28, v39, v38, location[0]];
   MEMORY[0x277D82BD8](v28);
-  objc_storeStrong(v46 + 6, location[0]);
-  objc_storeStrong(v46 + 9, v44);
-  objc_storeStrong(v46 + 8, v43);
-  objc_storeStrong(v46 + 10, v42);
+  objc_storeStrong(selfCopy + 6, location[0]);
+  objc_storeStrong(selfCopy + 9, v44);
+  objc_storeStrong(selfCopy + 8, v43);
+  objc_storeStrong(selfCopy + 10, v42);
   v36[2] = 0;
-  *(v46 + 1) = 0;
+  *(selfCopy + 1) = 0;
   v36[1] = 0;
-  *(v46 + 2) = 0;
-  v11 = [objc_opt_class() _generateStateTable];
-  v12 = *(v46 + 11);
-  *(v46 + 11) = v11;
+  *(selfCopy + 2) = 0;
+  _generateStateTable = [objc_opt_class() _generateStateTable];
+  v12 = *(selfCopy + 11);
+  *(selfCopy + 11) = _generateStateTable;
   MEMORY[0x277D82BD8](v12);
-  *(v46 + 18) = 0;
+  *(selfCopy + 18) = 0;
   v13 = objc_alloc(MEMORY[0x277CBEBD0]);
   v14 = [v13 initWithSuiteName:*MEMORY[0x277D64C60]];
-  v15 = *(v46 + 3);
-  *(v46 + 3) = v14;
+  v15 = *(selfCopy + 3);
+  *(selfCopy + 3) = v14;
   MEMORY[0x277D82BD8](v15);
   v29 = objc_alloc(MEMORY[0x277D64458]);
-  v16 = [v29 initMachine:v37 withTable:*(v46 + 11) startingIn:*MEMORY[0x277D64E88] usingDelegate:v46 registeringAllInfoClass:objc_opt_class()];
-  v17 = *(v46 + 7);
-  *(v46 + 7) = v16;
+  v16 = [v29 initMachine:v37 withTable:*(selfCopy + 11) startingIn:*MEMORY[0x277D64E88] usingDelegate:selfCopy registeringAllInfoClass:objc_opt_class()];
+  v17 = *(selfCopy + 7);
+  *(selfCopy + 7) = v16;
   MEMORY[0x277D82BD8](v17);
-  if (*(v46 + 7))
+  if (*(selfCopy + 7))
   {
-    v23 = [MEMORY[0x277D643F8] sharedCore];
-    v18 = [v23 selectCompletionQueue:v41];
-    v19 = *(v46 + 12);
-    *(v46 + 12) = v18;
+    mEMORY[0x277D643F8] = [MEMORY[0x277D643F8] sharedCore];
+    v18 = [mEMORY[0x277D643F8] selectCompletionQueue:v41];
+    v19 = *(selfCopy + 12);
+    *(selfCopy + 12) = v18;
     MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v23);
+    MEMORY[0x277D82BD8](mEMORY[0x277D643F8]);
     v20 = objc_opt_new();
-    v21 = *(v46 + 19);
-    *(v46 + 19) = v20;
+    v21 = *(selfCopy + 19);
+    *(selfCopy + 19) = v20;
     MEMORY[0x277D82BD8](v21);
     v35 = 0;
   }
 
   else
   {
-    v24 = [MEMORY[0x277D64B58] scanOperationLogger];
-    v36[0] = [v24 oslog];
-    MEMORY[0x277D82BD8](v24);
+    scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+    v36[0] = [scanOperationLogger oslog];
+    MEMORY[0x277D82BD8](scanOperationLogger);
     if (os_log_type_enabled(v36[0], OS_LOG_TYPE_FAULT))
     {
       __os_log_helper_16_2_1_8_32(v50, "[SUUIMobileScanOperation initWithIdentifier:options:usingSUManagerClient:andBetaManager:withCompletionQueue:]");
@@ -4195,7 +4195,7 @@ void __59__SUUIMobileScanOperation_action_ReportScanCanceled_error___block_invok
   if (!v35)
   {
 LABEL_8:
-    v47 = MEMORY[0x277D82BE0](v46);
+    v47 = MEMORY[0x277D82BE0](selfCopy);
   }
 
   objc_storeStrong(&v41, 0);
@@ -4203,42 +4203,42 @@ LABEL_8:
   objc_storeStrong(&v43, 0);
   objc_storeStrong(&v44, 0);
   objc_storeStrong(location, 0);
-  objc_storeStrong(&v46, 0);
+  objc_storeStrong(&selfCopy, 0);
   *MEMORY[0x277D85DE8];
   return v47;
 }
 
-- (void)checkForAvailableUpdatesWithCompletionHandler:(id)a3
+- (void)checkForAvailableUpdatesWithCompletionHandler:(id)handler
 {
-  v6 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = v6;
+  objc_storeStrong(location, handler);
+  v3 = selfCopy;
   v4 = objc_opt_new();
   [SUUIMobileScanOperation checkForAvailableUpdatesWithContext:v3 completionHandler:"checkForAvailableUpdatesWithContext:completionHandler:"];
   MEMORY[0x277D82BD8](v4);
   objc_storeStrong(location, 0);
 }
 
-- (void)checkForAvailableUpdatesWithContext:(id)a3 completionHandler:(id)a4
+- (void)checkForAvailableUpdatesWithContext:(id)context completionHandler:(id)handler
 {
-  v41 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, context);
   v39 = 0;
-  objc_storeStrong(&v39, a4);
+  objc_storeStrong(&v39, handler);
   v38[0] = 3;
-  p_lock = &v41->_lock;
+  p_lock = &selfCopy->_lock;
   v42 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v38[1] = p_lock;
-  if (v41->_operationType)
+  if (selfCopy->_operationType)
   {
-    v26 = [(SUCoreFSM *)v41->_scanFSM diag];
-    [v26 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"There is no active search to cancel" withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v26);
+    diag = [(SUCoreFSM *)selfCopy->_scanFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"There is no active search to cancel" withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
     v37 = 1;
   }
 
@@ -4255,19 +4255,19 @@ LABEL_8:
 
     else
     {
-      v25 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
-      v33 = [v25 oslog];
-      MEMORY[0x277D82BD8](v25);
+      softwareUpdateUILogger = [MEMORY[0x277D64B58] softwareUpdateUILogger];
+      oslog = [softwareUpdateUILogger oslog];
+      MEMORY[0x277D82BD8](softwareUpdateUILogger);
       v32 = 16;
-      if (os_log_type_enabled(v33, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        log = v33;
+        log = oslog;
         type = v32;
         __os_log_helper_16_0_0(v31);
         _os_log_error_impl(&dword_26B0B9000, log, type, "Failed to create an activity for: com.apple.SoftwareUpdateUI.StatefulUI.ScanOperation.FullScan", v31, 2u);
       }
 
-      objc_storeStrong(&v33, 0);
+      objc_storeStrong(&oslog, 0);
     }
 
     v30[2] = v35;
@@ -4279,33 +4279,33 @@ LABEL_8:
     }
 
     v30[1] = v36;
-    v41->_activity = v36;
+    selfCopy->_activity = v36;
     v5 = MEMORY[0x26D66ED00](v39);
-    fullScanCompletionHandler = v41->_fullScanCompletionHandler;
-    v41->_fullScanCompletionHandler = v5;
+    fullScanCompletionHandler = selfCopy->_fullScanCompletionHandler;
+    selfCopy->_fullScanCompletionHandler = v5;
     MEMORY[0x277D82BD8](fullScanCompletionHandler);
-    v41->_operationType = 1;
+    selfCopy->_operationType = 1;
     v7 = dispatch_group_create();
-    scanGroup = v41->_scanGroup;
-    v41->_scanGroup = v7;
+    scanGroup = selfCopy->_scanGroup;
+    selfCopy->_scanGroup = v7;
     MEMORY[0x277D82BD8](scanGroup);
     v22 = MEMORY[0x277CCACA8];
-    v21 = [(SUUIMobileScanOperation *)v41 baseDomain];
-    v19 = [v22 stringWithFormat:@"%@.concurrent-queue", v21];
+    baseDomain = [(SUUIMobileScanOperation *)selfCopy baseDomain];
+    v19 = [v22 stringWithFormat:@"%@.concurrent-queue", baseDomain];
     v9 = v19;
     label = [v19 UTF8String];
     v10 = dispatch_queue_create(label, MEMORY[0x277D85CD8]);
-    concurrentQueue = v41->_concurrentQueue;
-    v41->_concurrentQueue = v10;
+    concurrentQueue = selfCopy->_concurrentQueue;
+    selfCopy->_concurrentQueue = v10;
     MEMORY[0x277D82BD8](concurrentQueue);
     MEMORY[0x277D82BD8](v19);
-    MEMORY[0x277D82BD8](v21);
-    v41->_concurrentActionsFailed = 0;
-    v41->_canceled = 0;
-    [(SUCoreFSM *)v41->_scanFSM activateMachine];
+    MEMORY[0x277D82BD8](baseDomain);
+    selfCopy->_concurrentActionsFailed = 0;
+    selfCopy->_canceled = 0;
+    [(SUCoreFSM *)selfCopy->_scanFSM activateMachine];
     v18 = objc_opt_new();
-    concurrentRunningActionsNames = v41->_concurrentRunningActionsNames;
-    v41->_concurrentRunningActionsNames = v18;
+    concurrentRunningActionsNames = selfCopy->_concurrentRunningActionsNames;
+    selfCopy->_concurrentRunningActionsNames = v18;
     MEMORY[0x277D82BD8](concurrentRunningActionsNames);
     v29 = MEMORY[0x277D82BE0](location[0]);
     objc_opt_class();
@@ -4319,7 +4319,7 @@ LABEL_8:
     v28 = MEMORY[0x277D82BE0](v29);
     objc_storeStrong(&v29, 0);
     v30[0] = v28;
-    scanFSM = v41->_scanFSM;
+    scanFSM = selfCopy->_scanFSM;
     v16 = *MEMORY[0x277D64D18];
     v17 = [SUUIMobileScanOperationParam alloc];
     v14 = [(SUUIMobileScanOperationParam *)v17 initWithFullScanContext:v30[0]];
@@ -4353,21 +4353,21 @@ LABEL_8:
   objc_storeStrong(location, 0);
 }
 
-- (void)controllerCurrentlyScanning:(id)a3
+- (void)controllerCurrentlyScanning:(id)scanning
 {
-  v11 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  v3 = [(SUUIMobileScanOperation *)v11 suClient];
+  objc_storeStrong(location, scanning);
+  suClient = [(SUUIMobileScanOperation *)selfCopy suClient];
   v4 = MEMORY[0x277D85DD0];
   v5 = -1073741824;
   v6 = 0;
   v7 = __55__SUUIMobileScanOperation_controllerCurrentlyScanning___block_invoke;
   v8 = &unk_279CCC968;
   v9 = MEMORY[0x277D82BE0](location[0]);
-  [(SUManagerClient *)v3 isScanning:?];
-  MEMORY[0x277D82BD8](v3);
+  [(SUManagerClient *)suClient isScanning:?];
+  MEMORY[0x277D82BD8](suClient);
   objc_storeStrong(&v9, 0);
   objc_storeStrong(location, 0);
 }
@@ -4402,17 +4402,17 @@ void __55__SUUIMobileScanOperation_controllerCurrentlyScanning___block_invoke(ui
   objc_storeStrong(&location, 0);
 }
 
-- (void)refreshScanResultsWithPreferredUpdate:(id)a3 alternateUpdate:(id)a4 completionHandler:(id)a5
+- (void)refreshScanResultsWithPreferredUpdate:(id)update alternateUpdate:(id)alternateUpdate completionHandler:(id)handler
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, alternateUpdate);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  v9 = v14;
+  objc_storeStrong(&v11, handler);
+  v9 = selfCopy;
   v7 = location[0];
   v8 = v12;
   v10 = objc_opt_new();
@@ -4423,28 +4423,28 @@ void __55__SUUIMobileScanOperation_controllerCurrentlyScanning___block_invoke(ui
   objc_storeStrong(location, 0);
 }
 
-- (void)refreshScanResultsWithPreferredUpdate:(id)a3 alternateUpdate:(id)a4 context:(id)a5 completionHandler:(id)a6
+- (void)refreshScanResultsWithPreferredUpdate:(id)update alternateUpdate:(id)alternateUpdate context:(id)context completionHandler:(id)handler
 {
-  v47 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, update);
   v45 = 0;
-  objc_storeStrong(&v45, a4);
+  objc_storeStrong(&v45, alternateUpdate);
   v44 = 0;
-  objc_storeStrong(&v44, a5);
+  objc_storeStrong(&v44, context);
   v43 = 0;
-  objc_storeStrong(&v43, a6);
+  objc_storeStrong(&v43, handler);
   v42[0] = 3;
-  p_lock = &v47->_lock;
+  p_lock = &selfCopy->_lock;
   v48 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v42[1] = p_lock;
-  if (v47->_operationType)
+  if (selfCopy->_operationType)
   {
-    v27 = [(SUCoreFSM *)v47->_scanFSM diag];
-    [v27 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"There is no active search to cancel" withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v27);
+    diag = [(SUCoreFSM *)selfCopy->_scanFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"There is no active search to cancel" withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
     v41 = 1;
   }
 
@@ -4461,19 +4461,19 @@ void __55__SUUIMobileScanOperation_controllerCurrentlyScanning___block_invoke(ui
 
     else
     {
-      v26 = [MEMORY[0x277D64B58] softwareUpdateUILogger];
-      v37 = [v26 oslog];
-      MEMORY[0x277D82BD8](v26);
+      softwareUpdateUILogger = [MEMORY[0x277D64B58] softwareUpdateUILogger];
+      oslog = [softwareUpdateUILogger oslog];
+      MEMORY[0x277D82BD8](softwareUpdateUILogger);
       v36 = 16;
-      if (os_log_type_enabled(v37, OS_LOG_TYPE_ERROR))
+      if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
       {
-        log = v37;
+        log = oslog;
         type = v36;
         __os_log_helper_16_0_0(v35);
         _os_log_error_impl(&dword_26B0B9000, log, type, "Failed to create an activity for: com.apple.SoftwareUpdateUI.StatefulUI.ScanOperation.RefreshScan", v35, 2u);
       }
 
-      objc_storeStrong(&v37, 0);
+      objc_storeStrong(&oslog, 0);
     }
 
     v34[2] = v39;
@@ -4485,32 +4485,32 @@ void __55__SUUIMobileScanOperation_controllerCurrentlyScanning___block_invoke(ui
     }
 
     v34[1] = v40;
-    v47->_activity = v40;
+    selfCopy->_activity = v40;
     v7 = MEMORY[0x26D66ED00](v43);
-    refreshScanCompletionHandler = v47->_refreshScanCompletionHandler;
-    v47->_refreshScanCompletionHandler = v7;
+    refreshScanCompletionHandler = selfCopy->_refreshScanCompletionHandler;
+    selfCopy->_refreshScanCompletionHandler = v7;
     MEMORY[0x277D82BD8](refreshScanCompletionHandler);
-    v47->_operationType = 2;
+    selfCopy->_operationType = 2;
     v9 = dispatch_group_create();
-    scanGroup = v47->_scanGroup;
-    v47->_scanGroup = v9;
+    scanGroup = selfCopy->_scanGroup;
+    selfCopy->_scanGroup = v9;
     MEMORY[0x277D82BD8](scanGroup);
     v23 = MEMORY[0x277CCACA8];
-    v22 = [(SUUIMobileScanOperation *)v47 baseDomain];
-    v20 = [v23 stringWithFormat:@"%@.concurrent-queue", v22];
+    baseDomain = [(SUUIMobileScanOperation *)selfCopy baseDomain];
+    v20 = [v23 stringWithFormat:@"%@.concurrent-queue", baseDomain];
     v11 = v20;
     label = [v20 UTF8String];
     v12 = dispatch_queue_create(label, MEMORY[0x277D85CD8]);
-    concurrentQueue = v47->_concurrentQueue;
-    v47->_concurrentQueue = v12;
+    concurrentQueue = selfCopy->_concurrentQueue;
+    selfCopy->_concurrentQueue = v12;
     MEMORY[0x277D82BD8](concurrentQueue);
     MEMORY[0x277D82BD8](v20);
-    MEMORY[0x277D82BD8](v22);
-    v47->_concurrentActionsFailed = 0;
-    v47->_canceled = 0;
+    MEMORY[0x277D82BD8](baseDomain);
+    selfCopy->_concurrentActionsFailed = 0;
+    selfCopy->_canceled = 0;
     v19 = objc_opt_new();
-    concurrentRunningActionsNames = v47->_concurrentRunningActionsNames;
-    v47->_concurrentRunningActionsNames = v19;
+    concurrentRunningActionsNames = selfCopy->_concurrentRunningActionsNames;
+    selfCopy->_concurrentRunningActionsNames = v19;
     MEMORY[0x277D82BD8](concurrentRunningActionsNames);
     v33 = MEMORY[0x277D82BE0](v44);
     objc_opt_class();
@@ -4525,13 +4525,13 @@ void __55__SUUIMobileScanOperation_controllerCurrentlyScanning___block_invoke(ui
     objc_storeStrong(&v33, 0);
     v34[0] = v32;
     v18 = [SUUIMobileScanOperationParam alloc];
-    v17 = [location[0] underlyingDescriptor];
-    v16 = [v45 underlyingDescriptor];
-    v31 = [SUUIMobileScanOperationParam initWithPreferredDescriptor:v18 alternateDescriptor:"initWithPreferredDescriptor:alternateDescriptor:andRefreshContext:" andRefreshContext:v17];
-    MEMORY[0x277D82BD8](v16);
-    MEMORY[0x277D82BD8](v17);
-    [(SUCoreFSM *)v47->_scanFSM activateMachine];
-    [(SUCoreFSM *)v47->_scanFSM postEvent:*MEMORY[0x277D64DD8] withInfo:v31];
+    underlyingDescriptor = [location[0] underlyingDescriptor];
+    underlyingDescriptor2 = [v45 underlyingDescriptor];
+    v31 = [SUUIMobileScanOperationParam initWithPreferredDescriptor:v18 alternateDescriptor:"initWithPreferredDescriptor:alternateDescriptor:andRefreshContext:" andRefreshContext:underlyingDescriptor];
+    MEMORY[0x277D82BD8](underlyingDescriptor2);
+    MEMORY[0x277D82BD8](underlyingDescriptor);
+    [(SUCoreFSM *)selfCopy->_scanFSM activateMachine];
+    [(SUCoreFSM *)selfCopy->_scanFSM postEvent:*MEMORY[0x277D64DD8] withInfo:v31];
     objc_storeStrong(&v31, 0);
     objc_storeStrong(v34, 0);
     v41 = 2;
@@ -4569,9 +4569,9 @@ void __55__SUUIMobileScanOperation_controllerCurrentlyScanning___block_invoke(ui
   location[1] = a2;
   if (_os_feature_enabled_impl())
   {
-    v4 = [MEMORY[0x277D64BD8] sharedDefaults];
-    location[0] = [v4 scanResultsCachingDuration];
-    MEMORY[0x277D82BD8](v4);
+    mEMORY[0x277D64BD8] = [MEMORY[0x277D64BD8] sharedDefaults];
+    location[0] = [mEMORY[0x277D64BD8] scanResultsCachingDuration];
+    MEMORY[0x277D82BD8](mEMORY[0x277D64BD8]);
     if (location[0])
     {
       v5 = (60 * [location[0] intValue]);
@@ -4603,35 +4603,35 @@ void __55__SUUIMobileScanOperation_controllerCurrentlyScanning___block_invoke(ui
 
 - (id)readScanResultsCacheExpectedTTLValue
 {
-  v13 = self;
+  selfCopy = self;
   v12 = a2;
   if (_os_feature_enabled_impl())
   {
-    v5 = [MEMORY[0x277D64BD8] sharedDefaults];
-    v2 = [v5 defaultsContainsKey:*MEMORY[0x277D64C68]];
+    mEMORY[0x277D64BD8] = [MEMORY[0x277D64BD8] sharedDefaults];
+    v2 = [mEMORY[0x277D64BD8] defaultsContainsKey:*MEMORY[0x277D64C68]];
     v10 = 0;
     v8 = 0;
     v6 = 0;
     if (v2)
     {
-      v11 = [MEMORY[0x277D64BD8] sharedDefaults];
+      mEMORY[0x277D64BD8]2 = [MEMORY[0x277D64BD8] sharedDefaults];
       v10 = 1;
-      v9 = [v11 scanResultsCachingDuration];
+      scanResultsCachingDuration = [mEMORY[0x277D64BD8]2 scanResultsCachingDuration];
       v8 = 1;
-      v6 = [v9 intValue] == 0;
+      v6 = [scanResultsCachingDuration intValue] == 0;
     }
 
     if (v8)
     {
-      MEMORY[0x277D82BD8](v9);
+      MEMORY[0x277D82BD8](scanResultsCachingDuration);
     }
 
     if (v10)
     {
-      MEMORY[0x277D82BD8](v11);
+      MEMORY[0x277D82BD8](mEMORY[0x277D64BD8]2);
     }
 
-    MEMORY[0x277D82BD8](v5);
+    MEMORY[0x277D82BD8](mEMORY[0x277D64BD8]);
     if (v6)
     {
       v14 = 0;
@@ -4639,7 +4639,7 @@ void __55__SUUIMobileScanOperation_controllerCurrentlyScanning___block_invoke(ui
 
     else
     {
-      v7 = [(NSUserDefaults *)v13->_userDefaultsSuite objectForKey:@"SUCachedScanResultsTTL"];
+      v7 = [(NSUserDefaults *)selfCopy->_userDefaultsSuite objectForKey:@"SUCachedScanResultsTTL"];
       v14 = MEMORY[0x277D82BE0](v7);
       objc_storeStrong(&v7, 0);
     }
@@ -4655,43 +4655,43 @@ void __55__SUUIMobileScanOperation_controllerCurrentlyScanning___block_invoke(ui
   return v3;
 }
 
-- (void)hasScanResultsCacheWithCompletion:(id)a3
+- (void)hasScanResultsCacheWithCompletion:(id)completion
 {
   v113 = *MEMORY[0x277D85DE8];
-  v94 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, completion);
   if ((_os_feature_enabled_impl() & 1) == 0)
   {
     goto LABEL_2;
   }
 
-  v56 = [MEMORY[0x277D64BD8] sharedDefaults];
-  v3 = [v56 defaultsContainsKey:*MEMORY[0x277D64C68]];
+  mEMORY[0x277D64BD8] = [MEMORY[0x277D64BD8] sharedDefaults];
+  v3 = [mEMORY[0x277D64BD8] defaultsContainsKey:*MEMORY[0x277D64C68]];
   v90 = 0;
   v88 = 0;
   v57 = 0;
   if (v3)
   {
-    v91 = [MEMORY[0x277D64BD8] sharedDefaults];
+    mEMORY[0x277D64BD8]2 = [MEMORY[0x277D64BD8] sharedDefaults];
     v90 = 1;
-    v89 = [v91 scanResultsCachingDuration];
+    scanResultsCachingDuration = [mEMORY[0x277D64BD8]2 scanResultsCachingDuration];
     v88 = 1;
-    v57 = [v89 intValue] == 0;
+    v57 = [scanResultsCachingDuration intValue] == 0;
   }
 
   if (v88)
   {
-    MEMORY[0x277D82BD8](v89);
+    MEMORY[0x277D82BD8](scanResultsCachingDuration);
   }
 
   if (v90)
   {
-    MEMORY[0x277D82BD8](v91);
+    MEMORY[0x277D82BD8](mEMORY[0x277D64BD8]2);
   }
 
-  MEMORY[0x277D82BD8](v56);
+  MEMORY[0x277D82BD8](mEMORY[0x277D64BD8]);
   if (v57)
   {
 LABEL_2:
@@ -4701,30 +4701,30 @@ LABEL_2:
 
   else
   {
-    v87 = [(NSUserDefaults *)v94->_userDefaultsSuite objectForKey:@"SUCachedScanResultsTTL"];
-    v86 = [(NSUserDefaults *)v94->_userDefaultsSuite stringForKey:@"SUCachedAudience"];
-    v85 = [(NSUserDefaults *)v94->_userDefaultsSuite stringForKey:@"SUCachedOSVersion"];
+    v87 = [(NSUserDefaults *)selfCopy->_userDefaultsSuite objectForKey:@"SUCachedScanResultsTTL"];
+    v86 = [(NSUserDefaults *)selfCopy->_userDefaultsSuite stringForKey:@"SUCachedAudience"];
+    v85 = [(NSUserDefaults *)selfCopy->_userDefaultsSuite stringForKey:@"SUCachedOSVersion"];
     if (v87 || v86 || v85)
     {
       if (v87 && v86 && v85)
       {
-        v40 = [MEMORY[0x277CBEAA8] date];
-        v41 = [v40 compare:v87];
-        MEMORY[0x277D82BD8](v40);
+        date = [MEMORY[0x277CBEAA8] date];
+        v41 = [date compare:v87];
+        MEMORY[0x277D82BD8](date);
         if (v41 == 1)
         {
-          v39 = [MEMORY[0x277D64B58] scanOperationLogger];
-          v76 = [v39 oslog];
-          MEMORY[0x277D82BD8](v39);
+          scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+          oslog = [scanOperationLogger oslog];
+          MEMORY[0x277D82BD8](scanOperationLogger);
           v75 = OS_LOG_TYPE_DEFAULT;
-          if (os_log_type_enabled(v76, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
           {
-            v35 = v76;
+            v35 = oslog;
             v36 = v75;
-            v37 = [(SUUIMobileScanOperation *)v94 identifier];
-            v38 = MEMORY[0x277D82BE0](v37);
+            identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+            v38 = MEMORY[0x277D82BE0](identifier);
             v74 = v38;
-            operationType = v94->_operationType;
+            operationType = selfCopy->_operationType;
             if (operationType)
             {
               if (operationType == 1)
@@ -4753,43 +4753,43 @@ LABEL_2:
             v34 = v31;
             v32 = MEMORY[0x277D82BE0](v34);
             v73 = v32;
-            v33 = [MEMORY[0x277CBEAA8] date];
-            v72 = MEMORY[0x277D82BE0](v33);
+            date2 = [MEMORY[0x277CBEAA8] date];
+            v72 = MEMORY[0x277D82BE0](date2);
             __os_log_helper_16_2_5_8_32_8_66_8_66_8_66_8_66(v110, "[SUUIMobileScanOperation hasScanResultsCacheWithCompletion:]", v38, v32, v72, v87);
             _os_log_impl(&dword_26B0B9000, v35, v36, "%s [%{public}@|%{public}@]: The cached version of SUScanResults has been expired. Assuming that cache doesn't exists.\n\t- Now: %{public}@\n\t- TTL: %{public}@", v110, 0x34u);
-            MEMORY[0x277D82BD8](v33);
+            MEMORY[0x277D82BD8](date2);
             MEMORY[0x277D82BD8](v34);
-            MEMORY[0x277D82BD8](v37);
+            MEMORY[0x277D82BD8](identifier);
             objc_storeStrong(&v72, 0);
             objc_storeStrong(&v73, 0);
             objc_storeStrong(&v74, 0);
           }
 
-          objc_storeStrong(&v76, 0);
+          objc_storeStrong(&oslog, 0);
           (*(location[0] + 2))(location[0], 0, 0);
           v92 = 1;
         }
 
         else
         {
-          v71 = [(SUUIMobileScanOperation *)v94 pallasAudience];
-          if ([v71 isEqualToString:v86])
+          pallasAudience = [(SUUIMobileScanOperation *)selfCopy pallasAudience];
+          if ([pallasAudience isEqualToString:v86])
           {
-            v66 = [(SUUIMobileScanOperation *)v94 currentOSVersionIdentifier];
-            if ([v66 isEqualToString:v85])
+            currentOSVersionIdentifier = [(SUUIMobileScanOperation *)selfCopy currentOSVersionIdentifier];
+            if ([currentOSVersionIdentifier isEqualToString:v85])
             {
-              v16 = [MEMORY[0x277D64B58] scanOperationLogger];
-              v61 = [v16 oslog];
-              MEMORY[0x277D82BD8](v16);
+              scanOperationLogger2 = [MEMORY[0x277D64B58] scanOperationLogger];
+              oslog2 = [scanOperationLogger2 oslog];
+              MEMORY[0x277D82BD8](scanOperationLogger2);
               v60 = OS_LOG_TYPE_DEFAULT;
-              if (os_log_type_enabled(v61, OS_LOG_TYPE_DEFAULT))
+              if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
               {
-                v12 = v61;
+                v12 = oslog2;
                 v13 = v60;
-                v14 = [(SUUIMobileScanOperation *)v94 identifier];
-                v15 = MEMORY[0x277D82BE0](v14);
+                identifier2 = [(SUUIMobileScanOperation *)selfCopy identifier];
+                v15 = MEMORY[0x277D82BE0](identifier2);
                 v59 = v15;
-                v95 = v94->_operationType;
+                v95 = selfCopy->_operationType;
                 if (v95)
                 {
                   if (v95 == 1)
@@ -4820,30 +4820,30 @@ LABEL_2:
                 __os_log_helper_16_2_4_8_32_8_66_8_66_8_66(v107, "[SUUIMobileScanOperation hasScanResultsCacheWithCompletion:]", v15, v58, v87);
                 _os_log_impl(&dword_26B0B9000, v12, v13, "%s [%{public}@|%{public}@]: Found a valid SUScanResults cache: %{public}@", v107, 0x2Au);
                 MEMORY[0x277D82BD8](v11);
-                MEMORY[0x277D82BD8](v14);
+                MEMORY[0x277D82BD8](identifier2);
                 objc_storeStrong(&v58, 0);
                 objc_storeStrong(&v59, 0);
               }
 
-              objc_storeStrong(&v61, 0);
+              objc_storeStrong(&oslog2, 0);
               (*(location[0] + 2))(location[0], 1, 0);
               v92 = 0;
             }
 
             else
             {
-              v23 = [MEMORY[0x277D64B58] scanOperationLogger];
-              v65 = [v23 oslog];
-              MEMORY[0x277D82BD8](v23);
+              scanOperationLogger3 = [MEMORY[0x277D64B58] scanOperationLogger];
+              oslog3 = [scanOperationLogger3 oslog];
+              MEMORY[0x277D82BD8](scanOperationLogger3);
               v64 = OS_LOG_TYPE_DEFAULT;
-              if (os_log_type_enabled(v65, OS_LOG_TYPE_DEFAULT))
+              if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
               {
-                v19 = v65;
+                v19 = oslog3;
                 v20 = v64;
-                v21 = [(SUUIMobileScanOperation *)v94 identifier];
-                v22 = MEMORY[0x277D82BE0](v21);
+                identifier3 = [(SUUIMobileScanOperation *)selfCopy identifier];
+                v22 = MEMORY[0x277D82BE0](identifier3);
                 v63 = v22;
-                v97 = v94->_operationType;
+                v97 = selfCopy->_operationType;
                 if (v97)
                 {
                   if (v97 == 1)
@@ -4871,36 +4871,36 @@ LABEL_2:
                 v8 = v98;
                 v18 = v17;
                 v62 = MEMORY[0x277D82BE0](v18);
-                __os_log_helper_16_2_5_8_32_8_66_8_66_8_66_8_66(v108, "[SUUIMobileScanOperation hasScanResultsCacheWithCompletion:]", v22, v62, v66, v85);
+                __os_log_helper_16_2_5_8_32_8_66_8_66_8_66_8_66(v108, "[SUUIMobileScanOperation hasScanResultsCacheWithCompletion:]", v22, v62, currentOSVersionIdentifier, v85);
                 _os_log_impl(&dword_26B0B9000, v19, v20, "%s [%{public}@|%{public}@]: The cached SUScanResults OS Version is different than the current one. Assuming that cache doesn't exists.\n\t- Now: %{public}@\n\t- OS Version: %{public}@", v108, 0x34u);
                 MEMORY[0x277D82BD8](v18);
-                MEMORY[0x277D82BD8](v21);
+                MEMORY[0x277D82BD8](identifier3);
                 objc_storeStrong(&v62, 0);
                 objc_storeStrong(&v63, 0);
               }
 
-              objc_storeStrong(&v65, 0);
+              objc_storeStrong(&oslog3, 0);
               (*(location[0] + 2))(location[0], 0, 0);
               v92 = 1;
             }
 
-            objc_storeStrong(&v66, 0);
+            objc_storeStrong(&currentOSVersionIdentifier, 0);
           }
 
           else
           {
-            v30 = [MEMORY[0x277D64B58] scanOperationLogger];
-            v70 = [v30 oslog];
-            MEMORY[0x277D82BD8](v30);
+            scanOperationLogger4 = [MEMORY[0x277D64B58] scanOperationLogger];
+            oslog4 = [scanOperationLogger4 oslog];
+            MEMORY[0x277D82BD8](scanOperationLogger4);
             v69 = OS_LOG_TYPE_DEFAULT;
-            if (os_log_type_enabled(v70, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
             {
-              v26 = v70;
+              v26 = oslog4;
               v27 = v69;
-              v28 = [(SUUIMobileScanOperation *)v94 identifier];
-              v29 = MEMORY[0x277D82BE0](v28);
+              identifier4 = [(SUUIMobileScanOperation *)selfCopy identifier];
+              v29 = MEMORY[0x277D82BE0](identifier4);
               v68 = v29;
-              v99 = v94->_operationType;
+              v99 = selfCopy->_operationType;
               if (v99)
               {
                 if (v99 == 1)
@@ -4928,37 +4928,37 @@ LABEL_2:
               v7 = v100;
               v25 = v24;
               v67 = MEMORY[0x277D82BE0](v25);
-              __os_log_helper_16_2_5_8_32_8_66_8_66_8_66_8_66(v109, "[SUUIMobileScanOperation hasScanResultsCacheWithCompletion:]", v29, v67, v71, v86);
+              __os_log_helper_16_2_5_8_32_8_66_8_66_8_66_8_66(v109, "[SUUIMobileScanOperation hasScanResultsCacheWithCompletion:]", v29, v67, pallasAudience, v86);
               _os_log_impl(&dword_26B0B9000, v26, v27, "%s [%{public}@|%{public}@]: The cached SUScanResults audience is different than the current one. Assuming that cache doesn't exists.\n\t- Now: %{public}@\n\t- Audience: %{public}@", v109, 0x34u);
               MEMORY[0x277D82BD8](v25);
-              MEMORY[0x277D82BD8](v28);
+              MEMORY[0x277D82BD8](identifier4);
               objc_storeStrong(&v67, 0);
               objc_storeStrong(&v68, 0);
             }
 
-            objc_storeStrong(&v70, 0);
+            objc_storeStrong(&oslog4, 0);
             (*(location[0] + 2))(location[0], 0, 0);
             v92 = 1;
           }
 
-          objc_storeStrong(&v71, 0);
+          objc_storeStrong(&pallasAudience, 0);
         }
       }
 
       else
       {
-        v48 = [MEMORY[0x277D64B58] scanOperationLogger];
-        v80 = [v48 oslog];
-        MEMORY[0x277D82BD8](v48);
+        scanOperationLogger5 = [MEMORY[0x277D64B58] scanOperationLogger];
+        oslog5 = [scanOperationLogger5 oslog];
+        MEMORY[0x277D82BD8](scanOperationLogger5);
         v79 = OS_LOG_TYPE_ERROR;
-        if (os_log_type_enabled(v80, OS_LOG_TYPE_ERROR))
+        if (os_log_type_enabled(oslog5, OS_LOG_TYPE_ERROR))
         {
-          v44 = v80;
+          v44 = oslog5;
           v45 = v79;
-          v46 = [(SUUIMobileScanOperation *)v94 identifier];
-          v47 = MEMORY[0x277D82BE0](v46);
+          identifier5 = [(SUUIMobileScanOperation *)selfCopy identifier];
+          v47 = MEMORY[0x277D82BE0](identifier5);
           v78 = v47;
-          v103 = v94->_operationType;
+          v103 = selfCopy->_operationType;
           if (v103)
           {
             if (v103 == 1)
@@ -4989,12 +4989,12 @@ LABEL_2:
           __os_log_helper_16_2_6_8_32_8_66_8_66_8_66_8_66_8_66(v111, "[SUUIMobileScanOperation hasScanResultsCacheWithCompletion:]", v47, v77, v87, v86, v85);
           _os_log_error_impl(&dword_26B0B9000, v44, v45, "%s [%{public}@|%{public}@]: One of the required cached fields is/are missing. Assuming that cache doesn't exists.\n\t- TTL: %{public}@\n\t- Audience: %{public}@\n\t- OS Version: %{public}@", v111, 0x3Eu);
           MEMORY[0x277D82BD8](v43);
-          MEMORY[0x277D82BD8](v46);
+          MEMORY[0x277D82BD8](identifier5);
           objc_storeStrong(&v77, 0);
           objc_storeStrong(&v78, 0);
         }
 
-        objc_storeStrong(&v80, 0);
+        objc_storeStrong(&oslog5, 0);
         (*(location[0] + 2))(location[0], 0, 0);
         v92 = 1;
       }
@@ -5002,18 +5002,18 @@ LABEL_2:
 
     else
     {
-      v55 = [MEMORY[0x277D64B58] scanOperationLogger];
-      oslog = [v55 oslog];
-      MEMORY[0x277D82BD8](v55);
+      scanOperationLogger6 = [MEMORY[0x277D64B58] scanOperationLogger];
+      oslog = [scanOperationLogger6 oslog];
+      MEMORY[0x277D82BD8](scanOperationLogger6);
       type = OS_LOG_TYPE_DEFAULT;
       if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
       {
         log = oslog;
         v52 = type;
-        v53 = [(SUUIMobileScanOperation *)v94 identifier];
-        v54 = MEMORY[0x277D82BE0](v53);
+        identifier6 = [(SUUIMobileScanOperation *)selfCopy identifier];
+        v54 = MEMORY[0x277D82BE0](identifier6);
         v82 = v54;
-        v105 = v94->_operationType;
+        v105 = selfCopy->_operationType;
         if (v105)
         {
           if (v105 == 1)
@@ -5044,7 +5044,7 @@ LABEL_2:
         __os_log_helper_16_2_3_8_32_8_66_8_66(v112, "[SUUIMobileScanOperation hasScanResultsCacheWithCompletion:]", v54, v81);
         _os_log_impl(&dword_26B0B9000, log, v52, "%s [%{public}@|%{public}@]: No cached version of SUScanResults has been found.", v112, 0x20u);
         MEMORY[0x277D82BD8](v50);
-        MEMORY[0x277D82BD8](v53);
+        MEMORY[0x277D82BD8](identifier6);
         objc_storeStrong(&v81, 0);
         objc_storeStrong(&v82, 0);
       }
@@ -5063,38 +5063,38 @@ LABEL_2:
   *MEMORY[0x277D85DE8];
 }
 
-- (void)invalidateScanResultsCache:(id)a3
+- (void)invalidateScanResultsCache:(id)cache
 {
-  v4 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
-  [(SUUIMobileScanOperation *)v4 removeCachedScanResults];
+  objc_storeStrong(location, cache);
+  [(SUUIMobileScanOperation *)selfCopy removeCachedScanResults];
   (*(location[0] + 2))(location[0], 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)cancel:(id)a3
+- (void)cancel:(id)cancel
 {
-  v12 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, cancel);
   v10[0] = 3;
-  p_lock = &v12->_lock;
+  p_lock = &selfCopy->_lock;
   v13 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v10[1] = p_lock;
-  if (v12->_operationType)
+  if (selfCopy->_operationType)
   {
-    if (!v12->_canceled)
+    if (!selfCopy->_canceled)
     {
-      v12->_canceled = 1;
+      selfCopy->_canceled = 1;
       v3 = MEMORY[0x26D66ED00](location[0]);
-      cancelHandler = v12->_cancelHandler;
-      v12->_cancelHandler = v3;
+      cancelHandler = selfCopy->_cancelHandler;
+      selfCopy->_cancelHandler = v3;
       MEMORY[0x277D82BD8](cancelHandler);
-      scanFSM = v12->_scanFSM;
+      scanFSM = selfCopy->_scanFSM;
       v7 = *MEMORY[0x277D64D08];
       v8 = objc_alloc_init(SUUIMobileScanOperationParam);
       [(SUCoreFSM *)scanFSM postEvent:v7 withInfo:v8];
@@ -5104,9 +5104,9 @@ LABEL_2:
 
   else
   {
-    v9 = [(SUCoreFSM *)v12->_scanFSM diag];
-    [v9 trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"There is no active search to cancel" withResult:8102 withError:0];
-    MEMORY[0x277D82BD8](v9);
+    diag = [(SUCoreFSM *)selfCopy->_scanFSM diag];
+    [diag trackAnomaly:@"[SUUIMobileScanOperation]" forReason:@"There is no active search to cancel" withResult:8102 withError:0];
+    MEMORY[0x277D82BD8](diag);
   }
 
   v15 = v10;
@@ -5129,50 +5129,50 @@ LABEL_2:
 
 - (BOOL)isActive
 {
-  v4 = self;
+  selfCopy = self;
   v3[2] = a2;
   v3[0] = 3;
   p_lock = &self->_lock;
   *&v5[1] = 0;
   os_unfair_recursive_lock_lock_with_options();
   v3[1] = p_lock;
-  *v5 = v4->_operationType != 0;
+  *v5 = selfCopy->_operationType != 0;
   v7 = v3;
   os_unfair_recursive_lock_unlock();
   return v5[0] & 1;
 }
 
-- (void)scheduleConcurrentActionWithSelector:(SEL)a3 eventInfo:(id)a4
+- (void)scheduleConcurrentActionWithSelector:(SEL)selector eventInfo:(id)info
 {
   v57 = *MEMORY[0x277D85DE8];
-  v44 = self;
+  selfCopy = self;
   v43 = a2;
-  v42 = a3;
+  selectorCopy = selector;
   location = 0;
-  objc_storeStrong(&location, a4);
-  v40 = NSStringFromSelector(v42);
+  objc_storeStrong(&location, info);
+  v40 = NSStringFromSelector(selectorCopy);
   v39[0] = 3;
-  p_lock = &v44->_lock;
+  p_lock = &selfCopy->_lock;
   v47 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v39[1] = p_lock;
   v37[0] = 3;
-  p_concurrentLock = &v44->_concurrentLock;
+  p_concurrentLock = &selfCopy->_concurrentLock;
   v45 = 0;
   os_unfair_recursive_lock_lock_with_options();
   v37[1] = p_concurrentLock;
-  if (!v44->_concurrentQueue)
+  if (!selfCopy->_concurrentQueue)
   {
-    v19 = [MEMORY[0x277D64B58] scanOperationLogger];
-    oslog = [v19 oslog];
-    MEMORY[0x277D82BD8](v19);
+    scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+    oslog = [scanOperationLogger oslog];
+    MEMORY[0x277D82BD8](scanOperationLogger);
     type = OS_LOG_TYPE_ERROR;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
     {
-      v17 = [(SUUIMobileScanOperation *)v44 identifier];
-      v18 = MEMORY[0x277D82BE0](v17);
+      identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+      v18 = MEMORY[0x277D82BE0](identifier);
       v34 = v18;
-      operationType = v44->_operationType;
+      operationType = selfCopy->_operationType;
       if (operationType)
       {
         if (operationType == 1)
@@ -5203,27 +5203,27 @@ LABEL_2:
       __os_log_helper_16_2_4_8_32_8_66_8_66_8_66(v56, "[SUUIMobileScanOperation scheduleConcurrentActionWithSelector:eventInfo:]", v18, v33, v40);
       _os_log_error_impl(&dword_26B0B9000, oslog, type, "%s [%{public}@|%{public}@]: Concurrent queue is nil, cannot dispatch action %{public}@", v56, 0x2Au);
       MEMORY[0x277D82BD8](v15);
-      MEMORY[0x277D82BD8](v17);
+      MEMORY[0x277D82BD8](identifier);
       objc_storeStrong(&v33, 0);
       objc_storeStrong(&v34, 0);
     }
 
     objc_storeStrong(&oslog, 0);
-    v44->_concurrentActionsFailed = 1;
+    selfCopy->_concurrentActionsFailed = 1;
   }
 
-  if (v44->_concurrentActionsFailed)
+  if (selfCopy->_concurrentActionsFailed)
   {
-    v14 = [MEMORY[0x277D64B58] scanOperationLogger];
-    v32 = [v14 oslog];
-    MEMORY[0x277D82BD8](v14);
+    scanOperationLogger2 = [MEMORY[0x277D64B58] scanOperationLogger];
+    oslog = [scanOperationLogger2 oslog];
+    MEMORY[0x277D82BD8](scanOperationLogger2);
     v31 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v32, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      v12 = [(SUUIMobileScanOperation *)v44 identifier];
-      v13 = MEMORY[0x277D82BE0](v12);
+      identifier2 = [(SUUIMobileScanOperation *)selfCopy identifier];
+      v13 = MEMORY[0x277D82BE0](identifier2);
       v30 = v13;
-      v51 = v44->_operationType;
+      v51 = selfCopy->_operationType;
       if (v51)
       {
         if (v51 == 1)
@@ -5252,20 +5252,20 @@ LABEL_2:
       v10 = v11;
       v29 = MEMORY[0x277D82BE0](v10);
       __os_log_helper_16_2_4_8_32_8_66_8_66_8_66(v55, "[SUUIMobileScanOperation scheduleConcurrentActionWithSelector:eventInfo:]", v13, v29, v40);
-      _os_log_impl(&dword_26B0B9000, v32, v31, "%s [%{public}@|%{public}@]: Not scheduling action %{public}@ because a previous action has already failed or timed out", v55, 0x2Au);
+      _os_log_impl(&dword_26B0B9000, oslog, v31, "%s [%{public}@|%{public}@]: Not scheduling action %{public}@ because a previous action has already failed or timed out", v55, 0x2Au);
       MEMORY[0x277D82BD8](v10);
-      MEMORY[0x277D82BD8](v12);
+      MEMORY[0x277D82BD8](identifier2);
       objc_storeStrong(&v29, 0);
       objc_storeStrong(&v30, 0);
     }
 
-    objc_storeStrong(&v32, 0);
+    objc_storeStrong(&oslog, 0);
     v38 = 1;
   }
 
   else
   {
-    [(NSMutableSet *)v44->_concurrentRunningActionsNames addObject:v40];
+    [(NSMutableSet *)selfCopy->_concurrentRunningActionsNames addObject:v40];
     v38 = 5;
   }
 
@@ -5306,11 +5306,11 @@ LABEL_2:
 
   if (v38 == 2)
   {
-    v9 = [(SUUIMobileScanOperation *)v44 scanGroup];
-    dispatch_group_enter(v9);
-    MEMORY[0x277D82BD8](v9);
-    objc_initWeak(&from, v44);
-    queue = [(SUUIMobileScanOperation *)v44 concurrentQueue];
+    scanGroup = [(SUUIMobileScanOperation *)selfCopy scanGroup];
+    dispatch_group_enter(scanGroup);
+    MEMORY[0x277D82BD8](scanGroup);
+    objc_initWeak(&from, selfCopy);
+    queue = [(SUUIMobileScanOperation *)selfCopy concurrentQueue];
     v20 = MEMORY[0x277D85DD0];
     v21 = -1073741824;
     v22 = 0;
@@ -5320,7 +5320,7 @@ LABEL_2:
     v27[1] = v43;
     v25 = MEMORY[0x277D82BE0](v40);
     v26 = MEMORY[0x277D82BE0](location);
-    v27[2] = v42;
+    v27[2] = selectorCopy;
     dispatch_async(queue, &v20);
     MEMORY[0x277D82BD8](queue);
     objc_storeStrong(&v26, 0);
@@ -7373,25 +7373,25 @@ void __74__SUUIMobileScanOperation_scheduleConcurrentActionWithSelector_eventInf
   *MEMORY[0x277D85DE8];
 }
 
-- (void)checkForMDMRestrictions:(id)a3 withReplyHandler:(id)a4
+- (void)checkForMDMRestrictions:(id)restrictions withReplyHandler:(id)handler
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, restrictions);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v5 = [(SUUIMobileScanOperation *)v16 suClient];
+  objc_storeStrong(&v14, handler);
+  suClient = [(SUUIMobileScanOperation *)selfCopy suClient];
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __68__SUUIMobileScanOperation_checkForMDMRestrictions_withReplyHandler___block_invoke;
   v10 = &unk_279CCCE20;
-  v11 = MEMORY[0x277D82BE0](v16);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v13 = MEMORY[0x277D82BE0](v14);
   v12 = MEMORY[0x277D82BE0](location[0]);
-  [(SUManagerClient *)v5 softwareUpdatePathRestriction:?];
-  MEMORY[0x277D82BD8](v5);
+  [(SUManagerClient *)suClient softwareUpdatePathRestriction:?];
+  MEMORY[0x277D82BD8](suClient);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v11, 0);
@@ -7557,15 +7557,15 @@ void __68__SUUIMobileScanOperation_checkForMDMRestrictions_withReplyHandler___bl
   *MEMORY[0x277D85DE8];
 }
 
-- (void)queryDDMDeclaration:(id)a3 withReplyHandler:(id)a4
+- (void)queryDDMDeclaration:(id)declaration withReplyHandler:(id)handler
 {
-  v15 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, declaration);
   v13 = 0;
-  objc_storeStrong(&v13, a4);
-  v5 = [(SUUIMobileScanOperation *)v15 suClient];
+  objc_storeStrong(&v13, handler);
+  suClient = [(SUUIMobileScanOperation *)selfCopy suClient];
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
@@ -7573,8 +7573,8 @@ void __68__SUUIMobileScanOperation_checkForMDMRestrictions_withReplyHandler___bl
   v10 = &unk_279CCCE48;
   v12 = MEMORY[0x277D82BE0](v13);
   v11 = MEMORY[0x277D82BE0](location[0]);
-  [(SUManagerClient *)v5 getDDMDeclarationWithHandler:?];
-  MEMORY[0x277D82BD8](v5);
+  [(SUManagerClient *)suClient getDDMDeclarationWithHandler:?];
+  MEMORY[0x277D82BD8](suClient);
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
@@ -7618,35 +7618,35 @@ void __64__SUUIMobileScanOperation_queryDDMDeclaration_withReplyHandler___block_
   objc_storeStrong(location, 0);
 }
 
-- (void)checkForBetaPrograms:(id)a3 withReplyHandler:(id)a4
+- (void)checkForBetaPrograms:(id)programs withReplyHandler:(id)handler
 {
   v95 = *MEMORY[0x277D85DE8];
-  v79 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, programs);
   v77 = 0;
-  objc_storeStrong(&v77, a4);
+  objc_storeStrong(&v77, handler);
   if (_os_feature_enabled_impl())
   {
-    v39 = [(SUUIMobileScanOperation *)v79 seedingBetaManager];
-    MEMORY[0x277D82BD8](v39);
-    if (v39)
+    seedingBetaManager = [(SUUIMobileScanOperation *)selfCopy seedingBetaManager];
+    MEMORY[0x277D82BD8](seedingBetaManager);
+    if (seedingBetaManager)
     {
-      if ([(SUUIMobileScanOperationOptions *)v79->_options clientIsBuddy])
+      if ([(SUUIMobileScanOperationOptions *)selfCopy->_options clientIsBuddy])
       {
-        v31 = [MEMORY[0x277D64B58] scanOperationLogger];
-        v67 = [v31 oslog];
-        MEMORY[0x277D82BD8](v31);
+        scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+        oslog = [scanOperationLogger oslog];
+        MEMORY[0x277D82BD8](scanOperationLogger);
         v66 = OS_LOG_TYPE_DEFAULT;
-        if (os_log_type_enabled(v67, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          v27 = v67;
+          v27 = oslog;
           v28 = v66;
-          v29 = [(SUUIMobileScanOperation *)v79 identifier];
-          v30 = MEMORY[0x277D82BE0](v29);
+          identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+          v30 = MEMORY[0x277D82BE0](identifier);
           v65 = v30;
-          operationType = v79->_operationType;
+          operationType = selfCopy->_operationType;
           if (operationType)
           {
             if (operationType == 1)
@@ -7677,34 +7677,34 @@ void __64__SUUIMobileScanOperation_queryDDMDeclaration_withReplyHandler___block_
           __os_log_helper_16_2_3_8_32_8_66_8_66(v92, "[SUUIMobileScanOperation checkForBetaPrograms:withReplyHandler:]", v30, v64);
           _os_log_impl(&dword_26B0B9000, v27, v28, "%s [%{public}@|%{public}@]: The client is Buddy - skipping on the Seeding feature.", v92, 0x20u);
           MEMORY[0x277D82BD8](v26);
-          MEMORY[0x277D82BD8](v29);
+          MEMORY[0x277D82BD8](identifier);
           objc_storeStrong(&v64, 0);
           objc_storeStrong(&v65, 0);
         }
 
-        objc_storeStrong(&v67, 0);
+        objc_storeStrong(&oslog, 0);
         (*(v77 + 2))(v77, 1, 0);
         v72 = 1;
       }
 
       else
       {
-        v24 = [location[0] currentSeedingDevice];
-        MEMORY[0x277D82BD8](v24);
-        if (v24)
+        currentSeedingDevice = [location[0] currentSeedingDevice];
+        MEMORY[0x277D82BD8](currentSeedingDevice);
+        if (currentSeedingDevice)
         {
-          v23 = [MEMORY[0x277D64B58] scanOperationLogger];
-          v63 = [v23 oslog];
-          MEMORY[0x277D82BD8](v23);
+          scanOperationLogger2 = [MEMORY[0x277D64B58] scanOperationLogger];
+          oslog2 = [scanOperationLogger2 oslog];
+          MEMORY[0x277D82BD8](scanOperationLogger2);
           v62 = OS_LOG_TYPE_DEFAULT;
-          if (os_log_type_enabled(v63, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
           {
-            v19 = v63;
+            v19 = oslog2;
             v20 = v62;
-            v21 = [(SUUIMobileScanOperation *)v79 identifier];
-            v22 = MEMORY[0x277D82BE0](v21);
+            identifier2 = [(SUUIMobileScanOperation *)selfCopy identifier];
+            v22 = MEMORY[0x277D82BE0](identifier2);
             v61 = v22;
-            v82 = v79->_operationType;
+            v82 = selfCopy->_operationType;
             if (v82)
             {
               if (v82 == 1)
@@ -7735,29 +7735,29 @@ void __64__SUUIMobileScanOperation_queryDDMDeclaration_withReplyHandler___block_
             __os_log_helper_16_2_3_8_32_8_66_8_66(v91, "[SUUIMobileScanOperation checkForBetaPrograms:withReplyHandler:]", v22, v60);
             _os_log_impl(&dword_26B0B9000, v19, v20, "%s [%{public}@|%{public}@]: A seeding device has been provided, using it.", v91, 0x20u);
             MEMORY[0x277D82BD8](v18);
-            MEMORY[0x277D82BD8](v21);
+            MEMORY[0x277D82BD8](identifier2);
             objc_storeStrong(&v60, 0);
             objc_storeStrong(&v61, 0);
           }
 
-          objc_storeStrong(&v63, 0);
-          [(SUUIMobileScanOperation *)v79 scanForDeviceEligibleBetaPrograms:location[0] withReplyHandler:v77];
+          objc_storeStrong(&oslog2, 0);
+          [(SUUIMobileScanOperation *)selfCopy scanForDeviceEligibleBetaPrograms:location[0] withReplyHandler:v77];
         }
 
         else
         {
-          v16 = [MEMORY[0x277D64B58] scanOperationLogger];
-          v59 = [v16 oslog];
-          MEMORY[0x277D82BD8](v16);
+          scanOperationLogger3 = [MEMORY[0x277D64B58] scanOperationLogger];
+          oslog3 = [scanOperationLogger3 oslog];
+          MEMORY[0x277D82BD8](scanOperationLogger3);
           v58 = OS_LOG_TYPE_DEFAULT;
-          if (os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT))
+          if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
           {
-            v12 = v59;
+            v12 = oslog3;
             v13 = v58;
-            v14 = [(SUUIMobileScanOperation *)v79 identifier];
-            v15 = MEMORY[0x277D82BE0](v14);
+            identifier3 = [(SUUIMobileScanOperation *)selfCopy identifier];
+            v15 = MEMORY[0x277D82BE0](identifier3);
             v57 = v15;
-            v80 = v79->_operationType;
+            v80 = selfCopy->_operationType;
             if (v80)
             {
               if (v80 == 1)
@@ -7788,12 +7788,12 @@ void __64__SUUIMobileScanOperation_queryDDMDeclaration_withReplyHandler___block_
             __os_log_helper_16_2_3_8_32_8_66_8_66(v90, "[SUUIMobileScanOperation checkForBetaPrograms:withReplyHandler:]", v15, v56);
             _os_log_impl(&dword_26B0B9000, v12, v13, "%s [%{public}@|%{public}@]: A seeding device has not been provided, attempting to find one.", v90, 0x20u);
             MEMORY[0x277D82BD8](v11);
-            MEMORY[0x277D82BD8](v14);
+            MEMORY[0x277D82BD8](identifier3);
             objc_storeStrong(&v56, 0);
             objc_storeStrong(&v57, 0);
           }
 
-          objc_storeStrong(&v59, 0);
+          objc_storeStrong(&oslog3, 0);
           v9 = MEMORY[0x277D4D320];
           v48 = MEMORY[0x277D85DD0];
           v49 = -1073741824;
@@ -7801,7 +7801,7 @@ void __64__SUUIMobileScanOperation_queryDDMDeclaration_withReplyHandler___block_
           v51 = __65__SUUIMobileScanOperation_checkForBetaPrograms_withReplyHandler___block_invoke;
           v52 = &unk_279CCCE70;
           v53 = MEMORY[0x277D82BE0](location[0]);
-          v54 = MEMORY[0x277D82BE0](v79);
+          v54 = MEMORY[0x277D82BE0](selfCopy);
           v55 = MEMORY[0x277D82BE0](v77);
           [v9 getCurrentDevice:&v48];
           objc_storeStrong(&v55, 0);
@@ -7815,18 +7815,18 @@ void __64__SUUIMobileScanOperation_queryDDMDeclaration_withReplyHandler___block_
 
     else
     {
-      v38 = [MEMORY[0x277D64B58] scanOperationLogger];
-      v71 = [v38 oslog];
-      MEMORY[0x277D82BD8](v38);
+      scanOperationLogger4 = [MEMORY[0x277D64B58] scanOperationLogger];
+      oslog4 = [scanOperationLogger4 oslog];
+      MEMORY[0x277D82BD8](scanOperationLogger4);
       v70 = OS_LOG_TYPE_DEFAULT;
-      if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
       {
-        v34 = v71;
+        v34 = oslog4;
         v35 = v70;
-        v36 = [(SUUIMobileScanOperation *)v79 identifier];
-        v37 = MEMORY[0x277D82BE0](v36);
+        identifier4 = [(SUUIMobileScanOperation *)selfCopy identifier];
+        v37 = MEMORY[0x277D82BE0](identifier4);
         v69 = v37;
-        v86 = v79->_operationType;
+        v86 = selfCopy->_operationType;
         if (v86)
         {
           if (v86 == 1)
@@ -7857,12 +7857,12 @@ void __64__SUUIMobileScanOperation_queryDDMDeclaration_withReplyHandler___block_
         __os_log_helper_16_2_3_8_32_8_66_8_66(v93, "[SUUIMobileScanOperation checkForBetaPrograms:withReplyHandler:]", v37, v68);
         _os_log_impl(&dword_26B0B9000, v34, v35, "%s [%{public}@|%{public}@]: The seeding beta manager was not configured for this scan operation. Skipping.", v93, 0x20u);
         MEMORY[0x277D82BD8](v33);
-        MEMORY[0x277D82BD8](v36);
+        MEMORY[0x277D82BD8](identifier4);
         objc_storeStrong(&v68, 0);
         objc_storeStrong(&v69, 0);
       }
 
-      objc_storeStrong(&v71, 0);
+      objc_storeStrong(&oslog4, 0);
       (*(v77 + 2))(v77, 1, 0);
       v72 = 1;
     }
@@ -7870,18 +7870,18 @@ void __64__SUUIMobileScanOperation_queryDDMDeclaration_withReplyHandler___block_
 
   else
   {
-    v46 = [MEMORY[0x277D64B58] scanOperationLogger];
-    oslog = [v46 oslog];
-    MEMORY[0x277D82BD8](v46);
+    scanOperationLogger5 = [MEMORY[0x277D64B58] scanOperationLogger];
+    oslog = [scanOperationLogger5 oslog];
+    MEMORY[0x277D82BD8](scanOperationLogger5);
     type = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       log = oslog;
       v43 = type;
-      v44 = [(SUUIMobileScanOperation *)v79 identifier];
-      v45 = MEMORY[0x277D82BE0](v44);
+      identifier5 = [(SUUIMobileScanOperation *)selfCopy identifier];
+      v45 = MEMORY[0x277D82BE0](identifier5);
       v74 = v45;
-      v88 = v79->_operationType;
+      v88 = selfCopy->_operationType;
       if (v88)
       {
         if (v88 == 1)
@@ -7912,7 +7912,7 @@ void __64__SUUIMobileScanOperation_queryDDMDeclaration_withReplyHandler___block_
       __os_log_helper_16_2_3_8_32_8_66_8_66(v94, "[SUUIMobileScanOperation checkForBetaPrograms:withReplyHandler:]", v45, v73);
       _os_log_impl(&dword_26B0B9000, log, v43, "%s [%{public}@|%{public}@]: The Seeding feature is unavailable.", v94, 0x20u);
       MEMORY[0x277D82BD8](v41);
-      MEMORY[0x277D82BD8](v44);
+      MEMORY[0x277D82BD8](identifier5);
       objc_storeStrong(&v73, 0);
       objc_storeStrong(&v74, 0);
     }
@@ -7937,33 +7937,33 @@ void __65__SUUIMobileScanOperation_checkForBetaPrograms_withReplyHandler___block
   objc_storeStrong(location, 0);
 }
 
-- (void)scanForDeviceEligibleBetaPrograms:(id)a3 withReplyHandler:(id)a4
+- (void)scanForDeviceEligibleBetaPrograms:(id)programs withReplyHandler:(id)handler
 {
   v36 = *MEMORY[0x277D85DE8];
-  v32 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, programs);
   v30 = 0;
-  objc_storeStrong(&v30, a4);
-  v16 = [location[0] currentSeedingDevice];
-  MEMORY[0x277D82BD8](v16);
-  if (v16)
+  objc_storeStrong(&v30, handler);
+  currentSeedingDevice = [location[0] currentSeedingDevice];
+  MEMORY[0x277D82BD8](currentSeedingDevice);
+  if (currentSeedingDevice)
   {
-    v7 = [(SUUIMobileScanOperation *)v32 seedingBetaManager];
-    v6 = [location[0] currentSeedingDevice];
-    v5 = [v6 platform];
+    seedingBetaManager = [(SUUIMobileScanOperation *)selfCopy seedingBetaManager];
+    currentSeedingDevice2 = [location[0] currentSeedingDevice];
+    platform = [currentSeedingDevice2 platform];
     v17 = MEMORY[0x277D85DD0];
     v18 = -1073741824;
     v19 = 0;
     v20 = __78__SUUIMobileScanOperation_scanForDeviceEligibleBetaPrograms_withReplyHandler___block_invoke;
     v21 = &unk_279CCCEC0;
     v22 = MEMORY[0x277D82BE0](location[0]);
-    v23 = MEMORY[0x277D82BE0](v32);
+    v23 = MEMORY[0x277D82BE0](selfCopy);
     v24 = MEMORY[0x277D82BE0](v30);
-    [(SDBetaManager *)v7 queryProgramsForSystemAccountsWithPlatforms:v5 completion:&v17];
-    MEMORY[0x277D82BD8](v6);
-    MEMORY[0x277D82BD8](v7);
+    [(SDBetaManager *)seedingBetaManager queryProgramsForSystemAccountsWithPlatforms:platform completion:&v17];
+    MEMORY[0x277D82BD8](currentSeedingDevice2);
+    MEMORY[0x277D82BD8](seedingBetaManager);
     objc_storeStrong(&v24, 0);
     objc_storeStrong(&v23, 0);
     objc_storeStrong(&v22, 0);
@@ -7972,18 +7972,18 @@ void __65__SUUIMobileScanOperation_checkForBetaPrograms_withReplyHandler___block
 
   else
   {
-    v14 = [MEMORY[0x277D64B58] scanOperationLogger];
-    v29 = [v14 oslog];
-    MEMORY[0x277D82BD8](v14);
+    scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+    oslog = [scanOperationLogger oslog];
+    MEMORY[0x277D82BD8](scanOperationLogger);
     v28 = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v29, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      log = v29;
+      log = oslog;
       type = v28;
-      v12 = [(SUUIMobileScanOperation *)v32 identifier];
-      v13 = MEMORY[0x277D82BE0](v12);
+      identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+      v13 = MEMORY[0x277D82BE0](identifier);
       v27 = v13;
-      operationType = v32->_operationType;
+      operationType = selfCopy->_operationType;
       if (operationType)
       {
         if (operationType == 1)
@@ -8014,12 +8014,12 @@ void __65__SUUIMobileScanOperation_checkForBetaPrograms_withReplyHandler___block
       __os_log_helper_16_2_3_8_32_8_66_8_66(v35, "[SUUIMobileScanOperation scanForDeviceEligibleBetaPrograms:withReplyHandler:]", v13, v26);
       _os_log_impl(&dword_26B0B9000, log, type, "%s [%{public}@|%{public}@]: Tried to scan for beta programs without a seeding device.", v35, 0x20u);
       MEMORY[0x277D82BD8](v9);
-      MEMORY[0x277D82BD8](v12);
+      MEMORY[0x277D82BD8](identifier);
       objc_storeStrong(&v26, 0);
       objc_storeStrong(&v27, 0);
     }
 
-    objc_storeStrong(&v29, 0);
+    objc_storeStrong(&oslog, 0);
     (*(v30 + 2))(v30, 0, 0);
     v25 = 1;
   }
@@ -8251,25 +8251,25 @@ void __78__SUUIMobileScanOperation_scanForDeviceEligibleBetaPrograms_withReplyHa
   *MEMORY[0x277D85DE8];
 }
 
-- (void)queryRollbackStatus:(id)a3 withReplyHandler:(id)a4
+- (void)queryRollbackStatus:(id)status withReplyHandler:(id)handler
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, status);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v5 = [(SUUIMobileScanOperation *)v16 suClient];
+  objc_storeStrong(&v14, handler);
+  suClient = [(SUUIMobileScanOperation *)selfCopy suClient];
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __64__SUUIMobileScanOperation_queryRollbackStatus_withReplyHandler___block_invoke;
   v10 = &unk_279CCCF10;
-  v11 = MEMORY[0x277D82BE0](v16);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v13 = MEMORY[0x277D82BE0](v14);
   v12 = MEMORY[0x277D82BE0](location[0]);
-  [(SUManagerClient *)v5 isRollingBack:?];
-  MEMORY[0x277D82BD8](v5);
+  [(SUManagerClient *)suClient isRollingBack:?];
+  MEMORY[0x277D82BD8](suClient);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v11, 0);
@@ -8436,25 +8436,25 @@ uint64_t __64__SUUIMobileScanOperation_queryRollbackStatus_withReplyHandler___bl
   return result;
 }
 
-- (void)checkIsEligibleForRollback:(id)a3 withReplyHandler:(id)a4
+- (void)checkIsEligibleForRollback:(id)rollback withReplyHandler:(id)handler
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, rollback);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v5 = [(SUUIMobileScanOperation *)v16 suClient];
+  objc_storeStrong(&v14, handler);
+  suClient = [(SUUIMobileScanOperation *)selfCopy suClient];
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __71__SUUIMobileScanOperation_checkIsEligibleForRollback_withReplyHandler___block_invoke;
   v10 = &unk_279CCCF38;
-  v11 = MEMORY[0x277D82BE0](v16);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v13 = MEMORY[0x277D82BE0](v14);
   v12 = MEMORY[0x277D82BE0](location[0]);
-  [(SUManagerClient *)v5 eligibleRollbackWithOptions:0 withResult:?];
-  MEMORY[0x277D82BD8](v5);
+  [(SUManagerClient *)suClient eligibleRollbackWithOptions:0 withResult:?];
+  MEMORY[0x277D82BD8](suClient);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v11, 0);
@@ -8619,25 +8619,25 @@ uint64_t __71__SUUIMobileScanOperation_checkIsEligibleForRollback_withReplyHandl
   return result;
 }
 
-- (void)checkIfAutoUpdateScheduled:(id)a3 withReplyHandler:(id)a4
+- (void)checkIfAutoUpdateScheduled:(id)scheduled withReplyHandler:(id)handler
 {
-  v16 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, scheduled);
   v14 = 0;
-  objc_storeStrong(&v14, a4);
-  v5 = [(SUUIMobileScanOperation *)v16 suClient];
+  objc_storeStrong(&v14, handler);
+  suClient = [(SUUIMobileScanOperation *)selfCopy suClient];
   v6 = MEMORY[0x277D85DD0];
   v7 = -1073741824;
   v8 = 0;
   v9 = __71__SUUIMobileScanOperation_checkIfAutoUpdateScheduled_withReplyHandler___block_invoke;
   v10 = &unk_279CCCF88;
-  v11 = MEMORY[0x277D82BE0](v16);
+  v11 = MEMORY[0x277D82BE0](selfCopy);
   v13 = MEMORY[0x277D82BE0](v14);
   v12 = MEMORY[0x277D82BE0](location[0]);
-  [(SUManagerClient *)v5 isAutoUpdateScheduled:?];
-  MEMORY[0x277D82BD8](v5);
+  [(SUManagerClient *)suClient isAutoUpdateScheduled:?];
+  MEMORY[0x277D82BD8](suClient);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(&v13, 0);
   objc_storeStrong(&v11, 0);
@@ -8799,51 +8799,51 @@ void __71__SUUIMobileScanOperation_checkIfAutoUpdateScheduled_withReplyHandler__
   *MEMORY[0x277D85DE8];
 }
 
-- (void)handleDiscoveredScanResults:(id)a3 withError:(id)a4 usingEventInfo:(id)a5 isCachedResults:(BOOL)a6 activity:(suui_activity_s *)a7
+- (void)handleDiscoveredScanResults:(id)results withError:(id)error usingEventInfo:(id)info isCachedResults:(BOOL)cachedResults activity:(suui_activity_s *)activity
 {
-  v14 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v12 = 0;
-  objc_storeStrong(&v12, a4);
+  objc_storeStrong(&v12, error);
   v11 = 0;
-  objc_storeStrong(&v11, a5);
-  [(SUUIMobileScanOperation *)v14 handleDiscoveredScanResults:location[0] withError:v12 usingEventInfo:v11 isCachedResults:a6 activity:a7 beforePostEvent:0];
+  objc_storeStrong(&v11, info);
+  [(SUUIMobileScanOperation *)selfCopy handleDiscoveredScanResults:location[0] withError:v12 usingEventInfo:v11 isCachedResults:cachedResults activity:activity beforePostEvent:0];
   objc_storeStrong(&v11, 0);
   objc_storeStrong(&v12, 0);
   objc_storeStrong(location, 0);
 }
 
-- (void)handleDiscoveredScanResults:(id)a3 withError:(id)a4 usingEventInfo:(id)a5 isCachedResults:(BOOL)a6 activity:(suui_activity_s *)a7 beforePostEvent:(id)a8
+- (void)handleDiscoveredScanResults:(id)results withError:(id)error usingEventInfo:(id)info isCachedResults:(BOOL)cachedResults activity:(suui_activity_s *)activity beforePostEvent:(id)event
 {
   v87 = *MEMORY[0x277D85DE8];
-  v78 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   v76 = 0;
-  objc_storeStrong(&v76, a4);
+  objc_storeStrong(&v76, error);
   v75 = 0;
-  objc_storeStrong(&v75, a5);
-  v74 = a6;
-  v73 = a7;
+  objc_storeStrong(&v75, info);
+  cachedResultsCopy = cachedResults;
+  activityCopy = activity;
   v72 = 0;
-  objc_storeStrong(&v72, a8);
-  if (v78->_canceled)
+  objc_storeStrong(&v72, event);
+  if (selfCopy->_canceled)
   {
-    v46 = [MEMORY[0x277D64B58] scanOperationLogger];
-    v71 = [v46 oslog];
-    MEMORY[0x277D82BD8](v46);
+    scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+    oslog = [scanOperationLogger oslog];
+    MEMORY[0x277D82BD8](scanOperationLogger);
     type = OS_LOG_TYPE_DEFAULT;
-    if (os_log_type_enabled(v71, OS_LOG_TYPE_DEFAULT))
+    if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
-      log = v71;
+      log = oslog;
       v43 = type;
-      v44 = [(SUUIMobileScanOperation *)v78 identifier];
-      v45 = MEMORY[0x277D82BE0](v44);
+      identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+      v45 = MEMORY[0x277D82BE0](identifier);
       v69 = v45;
-      operationType = v78->_operationType;
+      operationType = selfCopy->_operationType;
       if (operationType)
       {
         if (operationType == 1)
@@ -8874,29 +8874,29 @@ void __71__SUUIMobileScanOperation_checkIfAutoUpdateScheduled_withReplyHandler__
       __os_log_helper_16_2_3_8_32_8_66_8_66(v86, "[SUUIMobileScanOperation handleDiscoveredScanResults:withError:usingEventInfo:isCachedResults:activity:beforePostEvent:]", v45, v68);
       _os_log_impl(&dword_26B0B9000, log, v43, "%s [%{public}@|%{public}@]: The task has already been canceled. Stopping.", v86, 0x20u);
       MEMORY[0x277D82BD8](v41);
-      MEMORY[0x277D82BD8](v44);
+      MEMORY[0x277D82BD8](identifier);
       objc_storeStrong(&v68, 0);
       objc_storeStrong(&v69, 0);
     }
 
-    objc_storeStrong(&v71, 0);
+    objc_storeStrong(&oslog, 0);
     v67 = 1;
   }
 
   else
   {
-    v39 = [MEMORY[0x277D64B58] scanOperationLogger];
-    oslog = [v39 oslog];
-    MEMORY[0x277D82BD8](v39);
+    scanOperationLogger2 = [MEMORY[0x277D64B58] scanOperationLogger];
+    oslog = [scanOperationLogger2 oslog];
+    MEMORY[0x277D82BD8](scanOperationLogger2);
     v65 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       v35 = oslog;
       v36 = v65;
-      v37 = [(SUUIMobileScanOperation *)v78 identifier];
-      v38 = MEMORY[0x277D82BE0](v37);
+      identifier2 = [(SUUIMobileScanOperation *)selfCopy identifier];
+      v38 = MEMORY[0x277D82BE0](identifier2);
       v64 = v38;
-      v79 = v78->_operationType;
+      v79 = selfCopy->_operationType;
       if (v79)
       {
         if (v79 == 1)
@@ -8926,8 +8926,8 @@ void __71__SUUIMobileScanOperation_checkIfAutoUpdateScheduled_withReplyHandler__
       v29 = MEMORY[0x277D82BE0](v34);
       v63 = v29;
       v30 = v76;
-      v84 = v74;
-      if (v74)
+      v84 = cachedResultsCopy;
+      if (cachedResultsCopy)
       {
         v10 = @"YES";
       }
@@ -8942,8 +8942,8 @@ void __71__SUUIMobileScanOperation_checkIfAutoUpdateScheduled_withReplyHandler__
       v33 = v27;
       v31 = MEMORY[0x277D82BE0](v33);
       v62 = v31;
-      v83 = [v75 forceReloadScanResults];
-      if (v83)
+      forceReloadScanResults = [v75 forceReloadScanResults];
+      if (forceReloadScanResults)
       {
         v12 = @"YES";
       }
@@ -8962,7 +8962,7 @@ void __71__SUUIMobileScanOperation_checkIfAutoUpdateScheduled_withReplyHandler__
       MEMORY[0x277D82BD8](v32);
       MEMORY[0x277D82BD8](v33);
       MEMORY[0x277D82BD8](v34);
-      MEMORY[0x277D82BD8](v37);
+      MEMORY[0x277D82BD8](identifier2);
       objc_storeStrong(&v61, 0);
       objc_storeStrong(&v62, 0);
       objc_storeStrong(&v63, 0);
@@ -8971,7 +8971,7 @@ void __71__SUUIMobileScanOperation_checkIfAutoUpdateScheduled_withReplyHandler__
 
     objc_storeStrong(&oslog, 0);
     [v75 setScanError:v76];
-    if (v76 && ![(SUUIMobileScanOperation *)v78 shouldConsiderErrorAsSuccessfulCase:v76])
+    if (v76 && ![(SUUIMobileScanOperation *)selfCopy shouldConsiderErrorAsSuccessfulCase:v76])
     {
       v60 = MEMORY[0x26D66ED00](v72);
       if (v60)
@@ -8986,7 +8986,7 @@ void __71__SUUIMobileScanOperation_checkIfAutoUpdateScheduled_withReplyHandler__
       }
 
       objc_storeStrong(&v60, 0);
-      scanFSM = v78->_scanFSM;
+      scanFSM = selfCopy->_scanFSM;
       v23 = *MEMORY[0x277D64D20];
       v14 = [SUUIMobileScanOperationParam alloc];
       v25 = [(SUUIMobileScanOperationParam *)v14 initWithError:v76];
@@ -8996,46 +8996,46 @@ void __71__SUUIMobileScanOperation_checkIfAutoUpdateScheduled_withReplyHandler__
       goto LABEL_52;
     }
 
-    v21 = [(SUUIMobileScanOperation *)v78 options];
+    options = [(SUUIMobileScanOperation *)selfCopy options];
     v22 = 0;
-    if ([(SUUIMobileScanOperationOptions *)v21 supportScanResultsCaching])
+    if ([(SUUIMobileScanOperationOptions *)options supportScanResultsCaching])
     {
-      v22 = !v74;
+      v22 = !cachedResultsCopy;
     }
 
-    MEMORY[0x277D82BD8](v21);
+    MEMORY[0x277D82BD8](options);
     if (v22)
     {
-      [(SUUIMobileScanOperation *)v78 cacheDiscoveredScanResults:location[0]];
+      [(SUUIMobileScanOperation *)selfCopy cacheDiscoveredScanResults:location[0]];
     }
 
     if (location[0])
     {
       [v75 setEmptyScanResults:0];
       v15 = v75;
-      v16 = [location[0] preferredDescriptor];
+      preferredDescriptor = [location[0] preferredDescriptor];
       [v15 setPreferredDescriptor:?];
-      MEMORY[0x277D82BD8](v16);
+      MEMORY[0x277D82BD8](preferredDescriptor);
       v17 = v75;
-      v18 = [location[0] alternateDescriptor];
+      alternateDescriptor = [location[0] alternateDescriptor];
       [v17 setAlternateDescriptor:?];
-      MEMORY[0x277D82BD8](v18);
-      v19 = [location[0] preferredDescriptor];
+      MEMORY[0x277D82BD8](alternateDescriptor);
+      preferredDescriptor2 = [location[0] preferredDescriptor];
       v56 = 0;
       v20 = 1;
-      if (!v19)
+      if (!preferredDescriptor2)
       {
-        v57 = [location[0] alternateDescriptor];
+        alternateDescriptor2 = [location[0] alternateDescriptor];
         v56 = 1;
-        v20 = v57 != 0;
+        v20 = alternateDescriptor2 != 0;
       }
 
       if (v56)
       {
-        MEMORY[0x277D82BD8](v57);
+        MEMORY[0x277D82BD8](alternateDescriptor2);
       }
 
-      MEMORY[0x277D82BD8](v19);
+      MEMORY[0x277D82BD8](preferredDescriptor2);
       if (v20)
       {
         v55 = MEMORY[0x26D66ED00](v72);
@@ -9051,7 +9051,7 @@ void __71__SUUIMobileScanOperation_checkIfAutoUpdateScheduled_withReplyHandler__
         }
 
         objc_storeStrong(&v55, 0);
-        [(SUCoreFSM *)v78->_scanFSM postEvent:*MEMORY[0x277D64E70] withInfo:v75 endingActivity:&v73];
+        [(SUCoreFSM *)selfCopy->_scanFSM postEvent:*MEMORY[0x277D64E70] withInfo:v75 endingActivity:&activityCopy];
         v67 = 1;
         goto LABEL_52;
       }
@@ -9069,7 +9069,7 @@ void __71__SUUIMobileScanOperation_checkIfAutoUpdateScheduled_withReplyHandler__
     }
 
     objc_storeStrong(&v52, 0);
-    [(SUCoreFSM *)v78->_scanFSM postEvent:*MEMORY[0x277D64D80] withInfo:v75 endingActivity:&v73];
+    [(SUCoreFSM *)selfCopy->_scanFSM postEvent:*MEMORY[0x277D64D80] withInfo:v75 endingActivity:&activityCopy];
     v67 = 0;
   }
 
@@ -9083,33 +9083,33 @@ LABEL_52:
 
 - (id)cachedScanResults
 {
-  v5 = self;
+  selfCopy = self;
   v4 = a2;
   v3 = 0;
   return [(SUUIMobileScanOperation *)self cachedScanResults:&v3];
 }
 
-- (id)cachedScanResults:(BOOL *)a3
+- (id)cachedScanResults:(BOOL *)results
 {
   v168 = *MEMORY[0x277D85DE8];
-  v139 = self;
+  selfCopy = self;
   v138 = a2;
-  v137 = a3;
-  *a3 = 0;
+  resultsCopy = results;
+  *results = 0;
   if (_os_feature_enabled_impl())
   {
-    v85 = [MEMORY[0x277D64B58] scanOperationLogger];
-    oslog = [v85 oslog];
-    MEMORY[0x277D82BD8](v85);
+    scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+    oslog = [scanOperationLogger oslog];
+    MEMORY[0x277D82BD8](scanOperationLogger);
     type = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
     {
       log = oslog;
       v82 = type;
-      v83 = [(SUUIMobileScanOperation *)v139 identifier];
-      v84 = MEMORY[0x277D82BE0](v83);
+      identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+      v84 = MEMORY[0x277D82BE0](identifier);
       v134 = v84;
-      operationType = v139->_operationType;
+      operationType = selfCopy->_operationType;
       if (operationType)
       {
         if (operationType == 1)
@@ -9139,37 +9139,37 @@ LABEL_52:
       __os_log_helper_16_2_3_8_32_8_66_8_66(v167, "[SUUIMobileScanOperation cachedScanResults:]", v84, v133);
       _os_log_impl(&dword_26B0B9000, log, v82, "%s [%{public}@|%{public}@]: Looking for a previously cached version of SUScanResults", v167, 0x20u);
       MEMORY[0x277D82BD8](v80);
-      MEMORY[0x277D82BD8](v83);
+      MEMORY[0x277D82BD8](identifier);
       objc_storeStrong(&v133, 0);
       objc_storeStrong(&v134, 0);
     }
 
     objc_storeStrong(&oslog, 0);
-    v78 = [MEMORY[0x277D64BD8] sharedDefaults];
-    v4 = [v78 defaultsContainsKey:*MEMORY[0x277D64C68]];
+    mEMORY[0x277D64BD8] = [MEMORY[0x277D64BD8] sharedDefaults];
+    v4 = [mEMORY[0x277D64BD8] defaultsContainsKey:*MEMORY[0x277D64C68]];
     v131 = 0;
     v129 = 0;
     v79 = 0;
     if (v4)
     {
-      v132 = [MEMORY[0x277D64BD8] sharedDefaults];
+      mEMORY[0x277D64BD8]2 = [MEMORY[0x277D64BD8] sharedDefaults];
       v131 = 1;
-      v130 = [v132 scanResultsCachingDuration];
+      scanResultsCachingDuration = [mEMORY[0x277D64BD8]2 scanResultsCachingDuration];
       v129 = 1;
-      v79 = [v130 intValue] == 0;
+      v79 = [scanResultsCachingDuration intValue] == 0;
     }
 
     if (v129)
     {
-      MEMORY[0x277D82BD8](v130);
+      MEMORY[0x277D82BD8](scanResultsCachingDuration);
     }
 
     if (v131)
     {
-      MEMORY[0x277D82BD8](v132);
+      MEMORY[0x277D82BD8](mEMORY[0x277D64BD8]2);
     }
 
-    MEMORY[0x277D82BD8](v78);
+    MEMORY[0x277D82BD8](mEMORY[0x277D64BD8]);
     if (v79)
     {
       v140 = 0;
@@ -9177,31 +9177,31 @@ LABEL_52:
 
     else
     {
-      v128 = [(NSUserDefaults *)v139->_userDefaultsSuite objectForKey:@"SUCachedScanResults"];
-      v127 = [(NSUserDefaults *)v139->_userDefaultsSuite objectForKey:@"SUCachedScanResultsTTL"];
-      v126 = [(NSUserDefaults *)v139->_userDefaultsSuite stringForKey:@"SUCachedAudience"];
-      v125 = [(NSUserDefaults *)v139->_userDefaultsSuite stringForKey:@"SUCachedOSVersion"];
+      v128 = [(NSUserDefaults *)selfCopy->_userDefaultsSuite objectForKey:@"SUCachedScanResults"];
+      v127 = [(NSUserDefaults *)selfCopy->_userDefaultsSuite objectForKey:@"SUCachedScanResultsTTL"];
+      v126 = [(NSUserDefaults *)selfCopy->_userDefaultsSuite stringForKey:@"SUCachedAudience"];
+      v125 = [(NSUserDefaults *)selfCopy->_userDefaultsSuite stringForKey:@"SUCachedOSVersion"];
       if (v127 || v126 || v125)
       {
         if (v127 && v126 && v125)
         {
-          v62 = [MEMORY[0x277CBEAA8] date];
-          v63 = [v62 compare:v127];
-          MEMORY[0x277D82BD8](v62);
+          date = [MEMORY[0x277CBEAA8] date];
+          v63 = [date compare:v127];
+          MEMORY[0x277D82BD8](date);
           if (v63 == 1)
           {
-            v61 = [MEMORY[0x277D64B58] scanOperationLogger];
-            v115 = [v61 oslog];
-            MEMORY[0x277D82BD8](v61);
+            scanOperationLogger2 = [MEMORY[0x277D64B58] scanOperationLogger];
+            oslog = [scanOperationLogger2 oslog];
+            MEMORY[0x277D82BD8](scanOperationLogger2);
             v114 = OS_LOG_TYPE_DEFAULT;
-            if (os_log_type_enabled(v115, OS_LOG_TYPE_DEFAULT))
+            if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
             {
-              v57 = v115;
+              v57 = oslog;
               v58 = v114;
-              v59 = [(SUUIMobileScanOperation *)v139 identifier];
-              v60 = MEMORY[0x277D82BE0](v59);
+              identifier2 = [(SUUIMobileScanOperation *)selfCopy identifier];
+              v60 = MEMORY[0x277D82BE0](identifier2);
               v113 = v60;
-              v151 = v139->_operationType;
+              v151 = selfCopy->_operationType;
               if (v151)
               {
                 if (v151 == 1)
@@ -9230,31 +9230,31 @@ LABEL_52:
               v56 = v53;
               v54 = MEMORY[0x277D82BE0](v56);
               v112 = v54;
-              v55 = [MEMORY[0x277CBEAA8] date];
-              v111 = MEMORY[0x277D82BE0](v55);
+              date2 = [MEMORY[0x277CBEAA8] date];
+              v111 = MEMORY[0x277D82BE0](date2);
               __os_log_helper_16_2_5_8_32_8_66_8_66_8_66_8_66(v164, "[SUUIMobileScanOperation cachedScanResults:]", v60, v54, v111, v127);
               _os_log_impl(&dword_26B0B9000, v57, v58, "%s [%{public}@|%{public}@]: The cached version of SUScanResults has been expired. Skipping.\n\t- Now: %{public}@\n\t- TTL: %{public}@", v164, 0x34u);
-              MEMORY[0x277D82BD8](v55);
+              MEMORY[0x277D82BD8](date2);
               MEMORY[0x277D82BD8](v56);
-              MEMORY[0x277D82BD8](v59);
+              MEMORY[0x277D82BD8](identifier2);
               objc_storeStrong(&v111, 0);
               objc_storeStrong(&v112, 0);
               objc_storeStrong(&v113, 0);
             }
 
-            objc_storeStrong(&v115, 0);
-            [(SUUIMobileScanOperation *)v139 removeCachedScanResults];
+            objc_storeStrong(&oslog, 0);
+            [(SUUIMobileScanOperation *)selfCopy removeCachedScanResults];
             v140 = 0;
             v120 = 1;
           }
 
           else
           {
-            v110 = [(SUUIMobileScanOperation *)v139 pallasAudience];
-            if ([v110 isEqualToString:v126])
+            pallasAudience = [(SUUIMobileScanOperation *)selfCopy pallasAudience];
+            if ([pallasAudience isEqualToString:v126])
             {
-              v105 = [(SUUIMobileScanOperation *)v139 currentOSVersionIdentifier];
-              if ([v105 isEqualToString:v125])
+              currentOSVersionIdentifier = [(SUUIMobileScanOperation *)selfCopy currentOSVersionIdentifier];
+              if ([currentOSVersionIdentifier isEqualToString:v125])
               {
                 if (v128)
                 {
@@ -9267,18 +9267,18 @@ LABEL_52:
                   v95 = v31;
                   if (v96)
                   {
-                    v29 = [MEMORY[0x277D64B58] scanOperationLogger];
-                    v93 = [v29 oslog];
-                    MEMORY[0x277D82BD8](v29);
+                    scanOperationLogger3 = [MEMORY[0x277D64B58] scanOperationLogger];
+                    oslog2 = [scanOperationLogger3 oslog];
+                    MEMORY[0x277D82BD8](scanOperationLogger3);
                     v92 = OS_LOG_TYPE_ERROR;
-                    if (os_log_type_enabled(v93, OS_LOG_TYPE_ERROR))
+                    if (os_log_type_enabled(oslog2, OS_LOG_TYPE_ERROR))
                     {
-                      v25 = v93;
+                      v25 = oslog2;
                       v26 = v92;
-                      v27 = [(SUUIMobileScanOperation *)v139 identifier];
-                      v28 = MEMORY[0x277D82BE0](v27);
+                      identifier3 = [(SUUIMobileScanOperation *)selfCopy identifier];
+                      v28 = MEMORY[0x277D82BE0](identifier3);
                       v91 = v28;
-                      v143 = v139->_operationType;
+                      v143 = selfCopy->_operationType;
                       if (v143)
                       {
                         if (v143 == 1)
@@ -9309,31 +9309,31 @@ LABEL_52:
                       __os_log_helper_16_2_4_8_32_8_66_8_66_8_66(v160, "[SUUIMobileScanOperation cachedScanResults:]", v28, v90, v96);
                       _os_log_error_impl(&dword_26B0B9000, v25, v26, "%s [%{public}@|%{public}@]: Failed to unarchive SUScanResults: %{public}@", v160, 0x2Au);
                       MEMORY[0x277D82BD8](v24);
-                      MEMORY[0x277D82BD8](v27);
+                      MEMORY[0x277D82BD8](identifier3);
                       objc_storeStrong(&v90, 0);
                       objc_storeStrong(&v91, 0);
                     }
 
-                    objc_storeStrong(&v93, 0);
-                    [(SUUIMobileScanOperation *)v139 removeCachedScanResults];
+                    objc_storeStrong(&oslog2, 0);
+                    [(SUUIMobileScanOperation *)selfCopy removeCachedScanResults];
                     v140 = 0;
                     v120 = 1;
                   }
 
                   else
                   {
-                    v22 = [MEMORY[0x277D64B58] scanOperationLogger];
-                    v89 = [v22 oslog];
-                    MEMORY[0x277D82BD8](v22);
+                    scanOperationLogger4 = [MEMORY[0x277D64B58] scanOperationLogger];
+                    oslog3 = [scanOperationLogger4 oslog];
+                    MEMORY[0x277D82BD8](scanOperationLogger4);
                     v88 = OS_LOG_TYPE_DEFAULT;
-                    if (os_log_type_enabled(v89, OS_LOG_TYPE_DEFAULT))
+                    if (os_log_type_enabled(oslog3, OS_LOG_TYPE_DEFAULT))
                     {
-                      v18 = v89;
+                      v18 = oslog3;
                       v19 = v88;
-                      v20 = [(SUUIMobileScanOperation *)v139 identifier];
-                      v21 = MEMORY[0x277D82BE0](v20);
+                      identifier4 = [(SUUIMobileScanOperation *)selfCopy identifier];
+                      v21 = MEMORY[0x277D82BE0](identifier4);
                       v87 = v21;
-                      v141 = v139->_operationType;
+                      v141 = selfCopy->_operationType;
                       if (v141)
                       {
                         if (v141 == 1)
@@ -9364,12 +9364,12 @@ LABEL_52:
                       __os_log_helper_16_2_5_8_32_8_66_8_66_8_2_8_66(v159, "[SUUIMobileScanOperation cachedScanResults:]", v21, v86, v95, v127);
                       _os_log_impl(&dword_26B0B9000, v18, v19, "%s [%{public}@|%{public}@]: Found cached version of SUScanResults. Using them.\n\t- SUScanResults: %{public}p\n\t- TTL: %{public}@", v159, 0x34u);
                       MEMORY[0x277D82BD8](v17);
-                      MEMORY[0x277D82BD8](v20);
+                      MEMORY[0x277D82BD8](identifier4);
                       objc_storeStrong(&v86, 0);
                       objc_storeStrong(&v87, 0);
                     }
 
-                    objc_storeStrong(&v89, 0);
+                    objc_storeStrong(&oslog3, 0);
                     v140 = MEMORY[0x277D82BE0](v95);
                     v120 = 1;
                   }
@@ -9380,19 +9380,19 @@ LABEL_52:
 
                 else
                 {
-                  *v137 = 1;
-                  v38 = [MEMORY[0x277D64B58] scanOperationLogger];
-                  v100 = [v38 oslog];
-                  MEMORY[0x277D82BD8](v38);
+                  *resultsCopy = 1;
+                  scanOperationLogger5 = [MEMORY[0x277D64B58] scanOperationLogger];
+                  oslog4 = [scanOperationLogger5 oslog];
+                  MEMORY[0x277D82BD8](scanOperationLogger5);
                   v99 = OS_LOG_TYPE_DEFAULT;
-                  if (os_log_type_enabled(v100, OS_LOG_TYPE_DEFAULT))
+                  if (os_log_type_enabled(oslog4, OS_LOG_TYPE_DEFAULT))
                   {
-                    v34 = v100;
+                    v34 = oslog4;
                     v35 = v99;
-                    v36 = [(SUUIMobileScanOperation *)v139 identifier];
-                    v37 = MEMORY[0x277D82BE0](v36);
+                    identifier5 = [(SUUIMobileScanOperation *)selfCopy identifier];
+                    v37 = MEMORY[0x277D82BE0](identifier5);
                     v98 = v37;
-                    v145 = v139->_operationType;
+                    v145 = selfCopy->_operationType;
                     if (v145)
                     {
                       if (v145 == 1)
@@ -9423,12 +9423,12 @@ LABEL_52:
                     __os_log_helper_16_2_4_8_32_8_66_8_66_8_66(v161, "[SUUIMobileScanOperation cachedScanResults:]", v37, v97, v127);
                     _os_log_impl(&dword_26B0B9000, v34, v35, "%s [%{public}@|%{public}@]: Found cached version of nil SUScanResults - OS is up to date. Using them.\n\t- TTL: %{public}@", v161, 0x2Au);
                     MEMORY[0x277D82BD8](v33);
-                    MEMORY[0x277D82BD8](v36);
+                    MEMORY[0x277D82BD8](identifier5);
                     objc_storeStrong(&v97, 0);
                     objc_storeStrong(&v98, 0);
                   }
 
-                  objc_storeStrong(&v100, 0);
+                  objc_storeStrong(&oslog4, 0);
                   v140 = 0;
                   v120 = 1;
                 }
@@ -9436,18 +9436,18 @@ LABEL_52:
 
               else
               {
-                v45 = [MEMORY[0x277D64B58] scanOperationLogger];
-                v104 = [v45 oslog];
-                MEMORY[0x277D82BD8](v45);
+                scanOperationLogger6 = [MEMORY[0x277D64B58] scanOperationLogger];
+                oslog5 = [scanOperationLogger6 oslog];
+                MEMORY[0x277D82BD8](scanOperationLogger6);
                 v103 = OS_LOG_TYPE_DEFAULT;
-                if (os_log_type_enabled(v104, OS_LOG_TYPE_DEFAULT))
+                if (os_log_type_enabled(oslog5, OS_LOG_TYPE_DEFAULT))
                 {
-                  v41 = v104;
+                  v41 = oslog5;
                   v42 = v103;
-                  v43 = [(SUUIMobileScanOperation *)v139 identifier];
-                  v44 = MEMORY[0x277D82BE0](v43);
+                  identifier6 = [(SUUIMobileScanOperation *)selfCopy identifier];
+                  v44 = MEMORY[0x277D82BE0](identifier6);
                   v102 = v44;
-                  v147 = v139->_operationType;
+                  v147 = selfCopy->_operationType;
                   if (v147)
                   {
                     if (v147 == 1)
@@ -9475,37 +9475,37 @@ LABEL_52:
                   v9 = v148;
                   v40 = v39;
                   v101 = MEMORY[0x277D82BE0](v40);
-                  __os_log_helper_16_2_5_8_32_8_66_8_66_8_66_8_66(v162, "[SUUIMobileScanOperation cachedScanResults:]", v44, v101, v105, v125);
+                  __os_log_helper_16_2_5_8_32_8_66_8_66_8_66_8_66(v162, "[SUUIMobileScanOperation cachedScanResults:]", v44, v101, currentOSVersionIdentifier, v125);
                   _os_log_impl(&dword_26B0B9000, v41, v42, "%s [%{public}@|%{public}@]: The cached SUScanResults OS Version is different than the current one. Skipping.\n\t- Now: %{public}@\n\t- OS Version: %{public}@", v162, 0x34u);
                   MEMORY[0x277D82BD8](v40);
-                  MEMORY[0x277D82BD8](v43);
+                  MEMORY[0x277D82BD8](identifier6);
                   objc_storeStrong(&v101, 0);
                   objc_storeStrong(&v102, 0);
                 }
 
-                objc_storeStrong(&v104, 0);
-                [(SUUIMobileScanOperation *)v139 removeCachedScanResults];
+                objc_storeStrong(&oslog5, 0);
+                [(SUUIMobileScanOperation *)selfCopy removeCachedScanResults];
                 v140 = 0;
                 v120 = 1;
               }
 
-              objc_storeStrong(&v105, 0);
+              objc_storeStrong(&currentOSVersionIdentifier, 0);
             }
 
             else
             {
-              v52 = [MEMORY[0x277D64B58] scanOperationLogger];
-              v109 = [v52 oslog];
-              MEMORY[0x277D82BD8](v52);
+              scanOperationLogger7 = [MEMORY[0x277D64B58] scanOperationLogger];
+              oslog6 = [scanOperationLogger7 oslog];
+              MEMORY[0x277D82BD8](scanOperationLogger7);
               v108 = OS_LOG_TYPE_DEFAULT;
-              if (os_log_type_enabled(v109, OS_LOG_TYPE_DEFAULT))
+              if (os_log_type_enabled(oslog6, OS_LOG_TYPE_DEFAULT))
               {
-                v48 = v109;
+                v48 = oslog6;
                 v49 = v108;
-                v50 = [(SUUIMobileScanOperation *)v139 identifier];
-                v51 = MEMORY[0x277D82BE0](v50);
+                identifier7 = [(SUUIMobileScanOperation *)selfCopy identifier];
+                v51 = MEMORY[0x277D82BE0](identifier7);
                 v107 = v51;
-                v149 = v139->_operationType;
+                v149 = selfCopy->_operationType;
                 if (v149)
                 {
                   if (v149 == 1)
@@ -9533,38 +9533,38 @@ LABEL_52:
                 v8 = v150;
                 v47 = v46;
                 v106 = MEMORY[0x277D82BE0](v47);
-                __os_log_helper_16_2_5_8_32_8_66_8_66_8_66_8_66(v163, "[SUUIMobileScanOperation cachedScanResults:]", v51, v106, v110, v126);
+                __os_log_helper_16_2_5_8_32_8_66_8_66_8_66_8_66(v163, "[SUUIMobileScanOperation cachedScanResults:]", v51, v106, pallasAudience, v126);
                 _os_log_impl(&dword_26B0B9000, v48, v49, "%s [%{public}@|%{public}@]: The cached SUScanResults audience is different than the current one. Skipping.\n\t- Now: %{public}@\n\t- Audience: %{public}@", v163, 0x34u);
                 MEMORY[0x277D82BD8](v47);
-                MEMORY[0x277D82BD8](v50);
+                MEMORY[0x277D82BD8](identifier7);
                 objc_storeStrong(&v106, 0);
                 objc_storeStrong(&v107, 0);
               }
 
-              objc_storeStrong(&v109, 0);
-              [(SUUIMobileScanOperation *)v139 removeCachedScanResults];
+              objc_storeStrong(&oslog6, 0);
+              [(SUUIMobileScanOperation *)selfCopy removeCachedScanResults];
               v140 = 0;
               v120 = 1;
             }
 
-            objc_storeStrong(&v110, 0);
+            objc_storeStrong(&pallasAudience, 0);
           }
         }
 
         else
         {
-          v70 = [MEMORY[0x277D64B58] scanOperationLogger];
-          v119 = [v70 oslog];
-          MEMORY[0x277D82BD8](v70);
+          scanOperationLogger8 = [MEMORY[0x277D64B58] scanOperationLogger];
+          oslog7 = [scanOperationLogger8 oslog];
+          MEMORY[0x277D82BD8](scanOperationLogger8);
           v118 = OS_LOG_TYPE_ERROR;
-          if (os_log_type_enabled(v119, OS_LOG_TYPE_ERROR))
+          if (os_log_type_enabled(oslog7, OS_LOG_TYPE_ERROR))
           {
-            v66 = v119;
+            v66 = oslog7;
             v67 = v118;
-            v68 = [(SUUIMobileScanOperation *)v139 identifier];
-            v69 = MEMORY[0x277D82BE0](v68);
+            identifier8 = [(SUUIMobileScanOperation *)selfCopy identifier];
+            v69 = MEMORY[0x277D82BE0](identifier8);
             v117 = v69;
-            v153 = v139->_operationType;
+            v153 = selfCopy->_operationType;
             if (v153)
             {
               if (v153 == 1)
@@ -9595,13 +9595,13 @@ LABEL_52:
             __os_log_helper_16_2_6_8_32_8_66_8_66_8_66_8_66_8_66(v165, "[SUUIMobileScanOperation cachedScanResults:]", v69, v116, v127, v126, v125);
             _os_log_error_impl(&dword_26B0B9000, v66, v67, "%s [%{public}@|%{public}@]: One of the required cached fields is/are missing. Skipping on using the cached SUScanResults version.\n\t- TTL: %{public}@\n\t- Audience: %{public}@\n\t- OS Version: %{public}@", v165, 0x3Eu);
             MEMORY[0x277D82BD8](v65);
-            MEMORY[0x277D82BD8](v68);
+            MEMORY[0x277D82BD8](identifier8);
             objc_storeStrong(&v116, 0);
             objc_storeStrong(&v117, 0);
           }
 
-          objc_storeStrong(&v119, 0);
-          [(SUUIMobileScanOperation *)v139 removeCachedScanResults];
+          objc_storeStrong(&oslog7, 0);
+          [(SUUIMobileScanOperation *)selfCopy removeCachedScanResults];
           v140 = 0;
           v120 = 1;
         }
@@ -9609,18 +9609,18 @@ LABEL_52:
 
       else
       {
-        v77 = [MEMORY[0x277D64B58] scanOperationLogger];
-        v124 = [v77 oslog];
-        MEMORY[0x277D82BD8](v77);
+        scanOperationLogger9 = [MEMORY[0x277D64B58] scanOperationLogger];
+        oslog8 = [scanOperationLogger9 oslog];
+        MEMORY[0x277D82BD8](scanOperationLogger9);
         v123 = OS_LOG_TYPE_DEFAULT;
-        if (os_log_type_enabled(v124, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog8, OS_LOG_TYPE_DEFAULT))
         {
-          v73 = v124;
+          v73 = oslog8;
           v74 = v123;
-          v75 = [(SUUIMobileScanOperation *)v139 identifier];
-          v76 = MEMORY[0x277D82BE0](v75);
+          identifier9 = [(SUUIMobileScanOperation *)selfCopy identifier];
+          v76 = MEMORY[0x277D82BE0](identifier9);
           v122 = v76;
-          v155 = v139->_operationType;
+          v155 = selfCopy->_operationType;
           if (v155)
           {
             if (v155 == 1)
@@ -9651,12 +9651,12 @@ LABEL_52:
           __os_log_helper_16_2_3_8_32_8_66_8_66(v166, "[SUUIMobileScanOperation cachedScanResults:]", v76, v121);
           _os_log_impl(&dword_26B0B9000, v73, v74, "%s [%{public}@|%{public}@]: No cached version of SUScanResults has been found.", v166, 0x20u);
           MEMORY[0x277D82BD8](v72);
-          MEMORY[0x277D82BD8](v75);
+          MEMORY[0x277D82BD8](identifier9);
           objc_storeStrong(&v121, 0);
           objc_storeStrong(&v122, 0);
         }
 
-        objc_storeStrong(&v124, 0);
+        objc_storeStrong(&oslog8, 0);
         v140 = 0;
         v120 = 1;
       }
@@ -9679,58 +9679,58 @@ LABEL_52:
   return v14;
 }
 
-- (void)cacheDiscoveredScanResults:(id)a3
+- (void)cacheDiscoveredScanResults:(id)results
 {
   v74 = *MEMORY[0x277D85DE8];
-  v64 = self;
+  selfCopy = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, results);
   if (_os_feature_enabled_impl())
   {
     v61 = 0;
-    v44 = [MEMORY[0x277D64BD8] sharedDefaults];
-    v60 = [v44 scanResultsCachingDuration];
-    MEMORY[0x277D82BD8](v44);
-    if (v60)
+    mEMORY[0x277D64BD8] = [MEMORY[0x277D64BD8] sharedDefaults];
+    scanResultsCachingDuration = [mEMORY[0x277D64BD8] scanResultsCachingDuration];
+    MEMORY[0x277D82BD8](mEMORY[0x277D64BD8]);
+    if (scanResultsCachingDuration)
     {
-      v43 = [MEMORY[0x277CBEAA8] date];
-      v3 = [v43 dateByAddingTimeInterval:{(60 * objc_msgSend(v60, "intValue"))}];
+      date = [MEMORY[0x277CBEAA8] date];
+      v3 = [date dateByAddingTimeInterval:{(60 * objc_msgSend(scanResultsCachingDuration, "intValue"))}];
       v4 = v61;
       v61 = v3;
       MEMORY[0x277D82BD8](v4);
-      MEMORY[0x277D82BD8](v43);
+      MEMORY[0x277D82BD8](date);
     }
 
     else if (os_variant_has_internal_content())
     {
-      v42 = [MEMORY[0x277CBEAA8] date];
-      v5 = [v42 dateByAddingTimeInterval:(60 * *MEMORY[0x277D64C50])];
+      date2 = [MEMORY[0x277CBEAA8] date];
+      v5 = [date2 dateByAddingTimeInterval:(60 * *MEMORY[0x277D64C50])];
       v6 = v61;
       v61 = v5;
       MEMORY[0x277D82BD8](v6);
-      MEMORY[0x277D82BD8](v42);
+      MEMORY[0x277D82BD8](date2);
     }
 
     else
     {
-      v41 = [MEMORY[0x277CBEAA8] date];
-      v7 = [v41 dateByAddingTimeInterval:(60 * *MEMORY[0x277D64C58])];
+      date3 = [MEMORY[0x277CBEAA8] date];
+      v7 = [date3 dateByAddingTimeInterval:(60 * *MEMORY[0x277D64C58])];
       v8 = v61;
       v61 = v7;
       MEMORY[0x277D82BD8](v8);
-      MEMORY[0x277D82BD8](v41);
+      MEMORY[0x277D82BD8](date3);
     }
 
-    [(NSUserDefaults *)v64->_userDefaultsSuite setObject:v61 forKey:@"SUCachedScanResultsTTL"];
-    userDefaultsSuite = v64->_userDefaultsSuite;
-    v38 = [(SUUIMobileScanOperation *)v64 pallasAudience];
+    [(NSUserDefaults *)selfCopy->_userDefaultsSuite setObject:v61 forKey:@"SUCachedScanResultsTTL"];
+    userDefaultsSuite = selfCopy->_userDefaultsSuite;
+    pallasAudience = [(SUUIMobileScanOperation *)selfCopy pallasAudience];
     [NSUserDefaults setObject:"setObject:forKey:" forKey:?];
-    MEMORY[0x277D82BD8](v38);
-    v39 = v64->_userDefaultsSuite;
-    v40 = [(SUUIMobileScanOperation *)v64 currentOSVersionIdentifier];
+    MEMORY[0x277D82BD8](pallasAudience);
+    v39 = selfCopy->_userDefaultsSuite;
+    currentOSVersionIdentifier = [(SUUIMobileScanOperation *)selfCopy currentOSVersionIdentifier];
     [NSUserDefaults setObject:v39 forKey:"setObject:forKey:"];
-    MEMORY[0x277D82BD8](v40);
+    MEMORY[0x277D82BD8](currentOSVersionIdentifier);
     if (location[0])
     {
       v59 = 0;
@@ -9740,19 +9740,19 @@ LABEL_52:
       v58 = v36;
       if (!v59 && v58)
       {
-        [(NSUserDefaults *)v64->_userDefaultsSuite setObject:v58 forKey:@"SUCachedScanResults"];
-        v28 = [MEMORY[0x277D64B58] scanOperationLogger];
-        v52 = [v28 oslog];
-        MEMORY[0x277D82BD8](v28);
+        [(NSUserDefaults *)selfCopy->_userDefaultsSuite setObject:v58 forKey:@"SUCachedScanResults"];
+        scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+        oslog = [scanOperationLogger oslog];
+        MEMORY[0x277D82BD8](scanOperationLogger);
         v51 = OS_LOG_TYPE_DEFAULT;
-        if (os_log_type_enabled(v52, OS_LOG_TYPE_DEFAULT))
+        if (os_log_type_enabled(oslog, OS_LOG_TYPE_DEFAULT))
         {
-          v24 = v52;
+          v24 = oslog;
           v25 = v51;
-          v26 = [(SUUIMobileScanOperation *)v64 identifier];
-          v27 = MEMORY[0x277D82BE0](v26);
+          identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+          v27 = MEMORY[0x277D82BE0](identifier);
           v50 = v27;
-          operationType = v64->_operationType;
+          operationType = selfCopy->_operationType;
           if (operationType)
           {
             if (operationType == 1)
@@ -9786,29 +9786,29 @@ LABEL_52:
           __os_log_helper_16_2_6_8_32_8_66_8_66_8_2_8_2_8_66(v72, "[SUUIMobileScanOperation cacheDiscoveredScanResults:]", v27, v21, v22, v11, v61);
           _os_log_impl(&dword_26B0B9000, v24, v25, "%s [%{public}@|%{public}@]: Caching the discovered SUScanResults %{public}p (data length: %{public}lu) with TTL: %{public}@", v72, 0x3Eu);
           MEMORY[0x277D82BD8](v23);
-          MEMORY[0x277D82BD8](v26);
+          MEMORY[0x277D82BD8](identifier);
           objc_storeStrong(&v49, 0);
           objc_storeStrong(&v50, 0);
         }
 
-        objc_storeStrong(&v52, 0);
+        objc_storeStrong(&oslog, 0);
         v62 = 0;
       }
 
       else
       {
-        v35 = [MEMORY[0x277D64B58] scanOperationLogger];
-        oslog = [v35 oslog];
-        MEMORY[0x277D82BD8](v35);
+        scanOperationLogger2 = [MEMORY[0x277D64B58] scanOperationLogger];
+        oslog = [scanOperationLogger2 oslog];
+        MEMORY[0x277D82BD8](scanOperationLogger2);
         type = OS_LOG_TYPE_ERROR;
         if (os_log_type_enabled(oslog, OS_LOG_TYPE_ERROR))
         {
           log = oslog;
           v32 = type;
-          v33 = [(SUUIMobileScanOperation *)v64 identifier];
-          v34 = MEMORY[0x277D82BE0](v33);
+          identifier2 = [(SUUIMobileScanOperation *)selfCopy identifier];
+          v34 = MEMORY[0x277D82BE0](identifier2);
           v54 = v34;
-          v69 = v64->_operationType;
+          v69 = selfCopy->_operationType;
           if (v69)
           {
             if (v69 == 1)
@@ -9839,13 +9839,13 @@ LABEL_52:
           __os_log_helper_16_2_5_8_32_8_66_8_66_8_2_8_66(v73, "[SUUIMobileScanOperation cacheDiscoveredScanResults:]", v34, v53, location[0], v59);
           _os_log_error_impl(&dword_26B0B9000, log, v32, "%s [%{public}@|%{public}@]: Failed to archive SUScanResults (%{public}p): %{public}@", v73, 0x34u);
           MEMORY[0x277D82BD8](v30);
-          MEMORY[0x277D82BD8](v33);
+          MEMORY[0x277D82BD8](identifier2);
           objc_storeStrong(&v53, 0);
           objc_storeStrong(&v54, 0);
         }
 
         objc_storeStrong(&oslog, 0);
-        [(SUUIMobileScanOperation *)v64 removeCachedScanResults];
+        [(SUUIMobileScanOperation *)selfCopy removeCachedScanResults];
         v62 = 1;
       }
 
@@ -9859,18 +9859,18 @@ LABEL_52:
 
     else
     {
-      v19 = [MEMORY[0x277D64B58] scanOperationLogger];
-      v48 = [v19 oslog];
-      MEMORY[0x277D82BD8](v19);
+      scanOperationLogger3 = [MEMORY[0x277D64B58] scanOperationLogger];
+      oslog2 = [scanOperationLogger3 oslog];
+      MEMORY[0x277D82BD8](scanOperationLogger3);
       v47 = OS_LOG_TYPE_DEFAULT;
-      if (os_log_type_enabled(v48, OS_LOG_TYPE_DEFAULT))
+      if (os_log_type_enabled(oslog2, OS_LOG_TYPE_DEFAULT))
       {
-        v15 = v48;
+        v15 = oslog2;
         v16 = v47;
-        v17 = [(SUUIMobileScanOperation *)v64 identifier];
-        v18 = MEMORY[0x277D82BE0](v17);
+        identifier3 = [(SUUIMobileScanOperation *)selfCopy identifier];
+        v18 = MEMORY[0x277D82BE0](identifier3);
         v46 = v18;
-        v65 = v64->_operationType;
+        v65 = selfCopy->_operationType;
         if (v65)
         {
           if (v65 == 1)
@@ -9901,17 +9901,17 @@ LABEL_52:
         __os_log_helper_16_2_4_8_32_8_66_8_66_8_66(v71, "[SUUIMobileScanOperation cacheDiscoveredScanResults:]", v18, v45, v61);
         _os_log_impl(&dword_26B0B9000, v15, v16, "%s [%{public}@|%{public}@]: Caching an up-to-date SUScanResults with TTL: %{public}@", v71, 0x2Au);
         MEMORY[0x277D82BD8](v14);
-        MEMORY[0x277D82BD8](v17);
+        MEMORY[0x277D82BD8](identifier3);
         objc_storeStrong(&v45, 0);
         objc_storeStrong(&v46, 0);
       }
 
-      objc_storeStrong(&v48, 0);
+      objc_storeStrong(&oslog2, 0);
     }
 
     v62 = 0;
 LABEL_44:
-    objc_storeStrong(&v60, 0);
+    objc_storeStrong(&scanResultsCachingDuration, 0);
     objc_storeStrong(&v61, 0);
     goto LABEL_45;
   }
@@ -9925,22 +9925,22 @@ LABEL_45:
 - (void)removeCachedScanResults
 {
   v17 = *MEMORY[0x277D85DE8];
-  v13 = self;
+  selfCopy = self;
   v12[1] = a2;
   if (_os_feature_enabled_impl())
   {
-    v8 = [MEMORY[0x277D64B58] scanOperationLogger];
-    v12[0] = [v8 oslog];
-    MEMORY[0x277D82BD8](v8);
+    scanOperationLogger = [MEMORY[0x277D64B58] scanOperationLogger];
+    v12[0] = [scanOperationLogger oslog];
+    MEMORY[0x277D82BD8](scanOperationLogger);
     v11 = OS_LOG_TYPE_DEFAULT;
     if (os_log_type_enabled(v12[0], OS_LOG_TYPE_DEFAULT))
     {
       log = v12[0];
       type = v11;
-      v6 = [(SUUIMobileScanOperation *)v13 identifier];
-      v7 = MEMORY[0x277D82BE0](v6);
+      identifier = [(SUUIMobileScanOperation *)selfCopy identifier];
+      v7 = MEMORY[0x277D82BE0](identifier);
       v10 = v7;
-      operationType = v13->_operationType;
+      operationType = selfCopy->_operationType;
       if (operationType)
       {
         if (operationType == 1)
@@ -9970,16 +9970,16 @@ LABEL_45:
       __os_log_helper_16_2_3_8_32_8_66_8_66(v16, "[SUUIMobileScanOperation removeCachedScanResults]", v7, v9);
       _os_log_impl(&dword_26B0B9000, log, type, "%s [%{public}@|%{public}@]: Removing the currently stored cached SUScanResults", v16, 0x20u);
       MEMORY[0x277D82BD8](v3);
-      MEMORY[0x277D82BD8](v6);
+      MEMORY[0x277D82BD8](identifier);
       objc_storeStrong(&v9, 0);
       objc_storeStrong(&v10, 0);
     }
 
     objc_storeStrong(v12, 0);
-    [(NSUserDefaults *)v13->_userDefaultsSuite removeObjectForKey:@"SUCachedScanResults"];
-    [(NSUserDefaults *)v13->_userDefaultsSuite removeObjectForKey:@"SUCachedScanResultsTTL"];
-    [(NSUserDefaults *)v13->_userDefaultsSuite removeObjectForKey:@"SUCachedAudience"];
-    [(NSUserDefaults *)v13->_userDefaultsSuite removeObjectForKey:@"SUCachedOSVersion"];
+    [(NSUserDefaults *)selfCopy->_userDefaultsSuite removeObjectForKey:@"SUCachedScanResults"];
+    [(NSUserDefaults *)selfCopy->_userDefaultsSuite removeObjectForKey:@"SUCachedScanResultsTTL"];
+    [(NSUserDefaults *)selfCopy->_userDefaultsSuite removeObjectForKey:@"SUCachedAudience"];
+    [(NSUserDefaults *)selfCopy->_userDefaultsSuite removeObjectForKey:@"SUCachedOSVersion"];
   }
 
   *MEMORY[0x277D85DE8];
@@ -9995,30 +9995,30 @@ LABEL_45:
     v11 = [v13[0] objectForKeyedSubscript:*MEMORY[0x277CBEC70]];
     v10 = [v13[0] objectForKeyedSubscript:*MEMORY[0x277CBEC88]];
     v9 = [v13[0] objectForKeyedSubscript:*MEMORY[0x277CBEC80]];
-    v8 = [MEMORY[0x277CBEB18] array];
+    array = [MEMORY[0x277CBEB18] array];
     if (v11)
     {
-      [v8 addObject:v11];
+      [array addObject:v11];
     }
 
     if (v10)
     {
-      [v8 addObject:v10];
+      [array addObject:v10];
     }
 
     if (v9)
     {
-      [v8 addObject:v9];
+      [array addObject:v9];
     }
 
     if (os_variant_has_internal_content())
     {
-      [v8 addObject:@"Internal"];
+      [array addObject:@"Internal"];
     }
 
-    v14 = [v8 componentsJoinedByString:@"|"];
+    v14 = [array componentsJoinedByString:@"|"];
     v12 = 1;
-    objc_storeStrong(&v8, 0);
+    objc_storeStrong(&array, 0);
     objc_storeStrong(&v9, 0);
     objc_storeStrong(&v10, 0);
     objc_storeStrong(&v11, 0);
@@ -10045,33 +10045,33 @@ LABEL_45:
   return v4;
 }
 
-- (BOOL)shouldConsiderErrorAsSuccessfulCase:(id)a3
+- (BOOL)shouldConsiderErrorAsSuccessfulCase:(id)case
 {
   location[2] = self;
   location[1] = a2;
   location[0] = 0;
-  objc_storeStrong(location, a3);
+  objc_storeStrong(location, case);
   if (location[0])
   {
-    v5 = [location[0] domain];
-    v6 = [v5 isEqualToString:*MEMORY[0x277D64910]];
-    MEMORY[0x277D82BD8](v5);
+    domain = [location[0] domain];
+    v6 = [domain isEqualToString:*MEMORY[0x277D64910]];
+    MEMORY[0x277D82BD8](domain);
     if (v6)
     {
-      v7 = [location[0] code];
+      code = [location[0] code];
       v4 = 1;
-      if (v7 != 3)
+      if (code != 3)
       {
         v4 = 1;
-        if (v7 != 55)
+        if (code != 55)
         {
           v4 = 1;
-          if (v7 != 13)
+          if (code != 13)
           {
             v4 = 1;
-            if (v7 != 11)
+            if (code != 11)
             {
-              v4 = v7 == 14;
+              v4 = code == 14;
             }
           }
         }

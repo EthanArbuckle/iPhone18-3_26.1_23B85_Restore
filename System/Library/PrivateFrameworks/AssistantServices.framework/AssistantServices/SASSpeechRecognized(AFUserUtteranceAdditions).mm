@@ -7,21 +7,21 @@
 
 - (id)af_bestTextInterpretation
 {
-  v1 = [a1 af_userUtteranceValue];
-  v2 = [v1 bestTextInterpretation];
+  af_userUtteranceValue = [self af_userUtteranceValue];
+  bestTextInterpretation = [af_userUtteranceValue bestTextInterpretation];
 
-  return v2;
+  return bestTextInterpretation;
 }
 
 - (AFUserUtterance)af_userUtteranceValue
 {
-  v2 = [a1 recognition];
+  recognition = [self recognition];
   v3 = [AFUserUtterance alloc];
-  v4 = [v2 af_speechPhrases];
-  v5 = [v2 sentenceConfidence];
-  v6 = [v2 af_speechUtterances];
-  v7 = [a1 af_correctionContext];
-  v8 = [(AFUserUtterance *)v3 initWithPhrases:v4 sentenceConfidence:v5 utterances:v6 correctionIdentifier:v7];
+  af_speechPhrases = [recognition af_speechPhrases];
+  sentenceConfidence = [recognition sentenceConfidence];
+  af_speechUtterances = [recognition af_speechUtterances];
+  af_correctionContext = [self af_correctionContext];
+  v8 = [(AFUserUtterance *)v3 initWithPhrases:af_speechPhrases sentenceConfidence:sentenceConfidence utterances:af_speechUtterances correctionIdentifier:af_correctionContext];
 
   return v8;
 }

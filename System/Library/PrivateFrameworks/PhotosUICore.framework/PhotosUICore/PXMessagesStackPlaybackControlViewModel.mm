@@ -1,37 +1,37 @@
 @interface PXMessagesStackPlaybackControlViewModel
-- (void)setCurrentItem:(int64_t)a3;
-- (void)setSettled:(BOOL)a3;
-- (void)setVideoController:(id)a3;
+- (void)setCurrentItem:(int64_t)item;
+- (void)setSettled:(BOOL)settled;
+- (void)setVideoController:(id)controller;
 @end
 
 @implementation PXMessagesStackPlaybackControlViewModel
 
-- (void)setVideoController:(id)a3
+- (void)setVideoController:(id)controller
 {
-  v5 = a3;
-  if (self->_videoController != v5)
+  controllerCopy = controller;
+  if (self->_videoController != controllerCopy)
   {
-    v6 = v5;
-    objc_storeStrong(&self->_videoController, a3);
+    v6 = controllerCopy;
+    objc_storeStrong(&self->_videoController, controller);
     [(PXMessagesStackPlaybackControlViewModel *)self signalChange:4];
-    v5 = v6;
+    controllerCopy = v6;
   }
 }
 
-- (void)setCurrentItem:(int64_t)a3
+- (void)setCurrentItem:(int64_t)item
 {
-  if (self->_currentItem != a3)
+  if (self->_currentItem != item)
   {
-    self->_currentItem = a3;
+    self->_currentItem = item;
     [(PXMessagesStackPlaybackControlViewModel *)self signalChange:2];
   }
 }
 
-- (void)setSettled:(BOOL)a3
+- (void)setSettled:(BOOL)settled
 {
-  if (self->_settled != a3)
+  if (self->_settled != settled)
   {
-    self->_settled = a3;
+    self->_settled = settled;
     [(PXMessagesStackPlaybackControlViewModel *)self signalChange:1];
   }
 }

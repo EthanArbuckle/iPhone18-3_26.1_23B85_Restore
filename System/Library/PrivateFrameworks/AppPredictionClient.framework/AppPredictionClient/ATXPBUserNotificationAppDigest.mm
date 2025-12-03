@@ -1,54 +1,54 @@
 @interface ATXPBUserNotificationAppDigest
-- (BOOL)isEqual:(id)a3;
-- (id)copyWithZone:(_NSZone *)a3;
+- (BOOL)isEqual:(id)equal;
+- (id)copyWithZone:(_NSZone *)zone;
 - (id)description;
 - (id)dictionaryRepresentation;
-- (id)initFromJSON:(id)a3;
+- (id)initFromJSON:(id)n;
 - (id)jsonRepresentation;
 - (unint64_t)hash;
-- (void)addAppMarqueeGroups:(id)a3;
-- (void)addNonAppMarqueeGroups:(id)a3;
-- (void)copyTo:(id)a3;
-- (void)mergeFrom:(id)a3;
-- (void)writeTo:(id)a3;
+- (void)addAppMarqueeGroups:(id)groups;
+- (void)addNonAppMarqueeGroups:(id)groups;
+- (void)copyTo:(id)to;
+- (void)mergeFrom:(id)from;
+- (void)writeTo:(id)to;
 @end
 
 @implementation ATXPBUserNotificationAppDigest
 
-- (void)addAppMarqueeGroups:(id)a3
+- (void)addAppMarqueeGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   appMarqueeGroups = self->_appMarqueeGroups;
-  v8 = v4;
+  v8 = groupsCopy;
   if (!appMarqueeGroups)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_appMarqueeGroups;
     self->_appMarqueeGroups = v6;
 
-    v4 = v8;
+    groupsCopy = v8;
     appMarqueeGroups = self->_appMarqueeGroups;
   }
 
-  [(NSMutableArray *)appMarqueeGroups addObject:v4];
+  [(NSMutableArray *)appMarqueeGroups addObject:groupsCopy];
 }
 
-- (void)addNonAppMarqueeGroups:(id)a3
+- (void)addNonAppMarqueeGroups:(id)groups
 {
-  v4 = a3;
+  groupsCopy = groups;
   nonAppMarqueeGroups = self->_nonAppMarqueeGroups;
-  v8 = v4;
+  v8 = groupsCopy;
   if (!nonAppMarqueeGroups)
   {
     v6 = objc_alloc_init(MEMORY[0x1E695DF70]);
     v7 = self->_nonAppMarqueeGroups;
     self->_nonAppMarqueeGroups = v6;
 
-    v4 = v8;
+    groupsCopy = v8;
     nonAppMarqueeGroups = self->_nonAppMarqueeGroups;
   }
 
-  [(NSMutableArray *)nonAppMarqueeGroups addObject:v4];
+  [(NSMutableArray *)nonAppMarqueeGroups addObject:groupsCopy];
 }
 
 - (id)description
@@ -57,8 +57,8 @@
   v8.receiver = self;
   v8.super_class = ATXPBUserNotificationAppDigest;
   v4 = [(ATXPBUserNotificationAppDigest *)&v8 description];
-  v5 = [(ATXPBUserNotificationAppDigest *)self dictionaryRepresentation];
-  v6 = [v3 stringWithFormat:@"%@ %@", v4, v5];
+  dictionaryRepresentation = [(ATXPBUserNotificationAppDigest *)self dictionaryRepresentation];
+  v6 = [v3 stringWithFormat:@"%@ %@", v4, dictionaryRepresentation];
 
   return v6;
 }
@@ -66,12 +66,12 @@
 - (id)dictionaryRepresentation
 {
   v31 = *MEMORY[0x1E69E9840];
-  v3 = [MEMORY[0x1E695DF90] dictionary];
-  v4 = v3;
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
+  v4 = dictionary;
   bundleId = self->_bundleId;
   if (bundleId)
   {
-    [v3 setObject:bundleId forKey:@"bundleId"];
+    [dictionary setObject:bundleId forKey:@"bundleId"];
   }
 
   if ([(NSMutableArray *)self->_appMarqueeGroups count])
@@ -96,8 +96,8 @@
             objc_enumerationMutation(v7);
           }
 
-          v12 = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
-          [v6 addObject:v12];
+          dictionaryRepresentation = [*(*(&v25 + 1) + 8 * i) dictionaryRepresentation];
+          [v6 addObject:dictionaryRepresentation];
         }
 
         v9 = [(NSMutableArray *)v7 countByEnumeratingWithState:&v25 objects:v30 count:16];
@@ -131,8 +131,8 @@
             objc_enumerationMutation(v14);
           }
 
-          v19 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
-          [v13 addObject:v19];
+          dictionaryRepresentation2 = [*(*(&v21 + 1) + 8 * j) dictionaryRepresentation];
+          [v13 addObject:dictionaryRepresentation2];
         }
 
         v16 = [(NSMutableArray *)v14 countByEnumeratingWithState:&v21 objects:v29 count:16];
@@ -147,10 +147,10 @@
   return v4;
 }
 
-- (void)writeTo:(id)a3
+- (void)writeTo:(id)to
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  toCopy = to;
   if (self->_bundleId)
   {
     PBDataWriterWriteStringField();
@@ -219,50 +219,50 @@
   }
 }
 
-- (void)copyTo:(id)a3
+- (void)copyTo:(id)to
 {
-  v12 = a3;
+  toCopy = to;
   if (self->_bundleId)
   {
-    [v12 setBundleId:?];
+    [toCopy setBundleId:?];
   }
 
   if ([(ATXPBUserNotificationAppDigest *)self appMarqueeGroupsCount])
   {
-    [v12 clearAppMarqueeGroups];
-    v4 = [(ATXPBUserNotificationAppDigest *)self appMarqueeGroupsCount];
-    if (v4)
+    [toCopy clearAppMarqueeGroups];
+    appMarqueeGroupsCount = [(ATXPBUserNotificationAppDigest *)self appMarqueeGroupsCount];
+    if (appMarqueeGroupsCount)
     {
-      v5 = v4;
+      v5 = appMarqueeGroupsCount;
       for (i = 0; i != v5; ++i)
       {
         v7 = [(ATXPBUserNotificationAppDigest *)self appMarqueeGroupsAtIndex:i];
-        [v12 addAppMarqueeGroups:v7];
+        [toCopy addAppMarqueeGroups:v7];
       }
     }
   }
 
   if ([(ATXPBUserNotificationAppDigest *)self nonAppMarqueeGroupsCount])
   {
-    [v12 clearNonAppMarqueeGroups];
-    v8 = [(ATXPBUserNotificationAppDigest *)self nonAppMarqueeGroupsCount];
-    if (v8)
+    [toCopy clearNonAppMarqueeGroups];
+    nonAppMarqueeGroupsCount = [(ATXPBUserNotificationAppDigest *)self nonAppMarqueeGroupsCount];
+    if (nonAppMarqueeGroupsCount)
     {
-      v9 = v8;
+      v9 = nonAppMarqueeGroupsCount;
       for (j = 0; j != v9; ++j)
       {
         v11 = [(ATXPBUserNotificationAppDigest *)self nonAppMarqueeGroupsAtIndex:j];
-        [v12 addNonAppMarqueeGroups:v11];
+        [toCopy addNonAppMarqueeGroups:v11];
       }
     }
   }
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
   v31 = *MEMORY[0x1E69E9840];
-  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{a3), "init"}];
-  v6 = [(NSString *)self->_bundleId copyWithZone:a3];
+  v5 = [objc_msgSend(objc_opt_class() allocWithZone:{zone), "init"}];
+  v6 = [(NSString *)self->_bundleId copyWithZone:zone];
   v7 = v5[2];
   v5[2] = v6;
 
@@ -286,7 +286,7 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v25 + 1) + 8 * v12) copyWithZone:a3];
+        v13 = [*(*(&v25 + 1) + 8 * v12) copyWithZone:zone];
         [v5 addAppMarqueeGroups:v13];
 
         ++v12;
@@ -319,7 +319,7 @@
           objc_enumerationMutation(v14);
         }
 
-        v19 = [*(*(&v21 + 1) + 8 * v18) copyWithZone:{a3, v21}];
+        v19 = [*(*(&v21 + 1) + 8 * v18) copyWithZone:{zone, v21}];
         [v5 addNonAppMarqueeGroups:v19];
 
         ++v18;
@@ -335,13 +335,13 @@
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if ([v4 isMemberOfClass:objc_opt_class()] && ((bundleId = self->_bundleId, !(bundleId | v4[2])) || -[NSString isEqual:](bundleId, "isEqual:")) && ((appMarqueeGroups = self->_appMarqueeGroups, !(appMarqueeGroups | v4[1])) || -[NSMutableArray isEqual:](appMarqueeGroups, "isEqual:")))
+  equalCopy = equal;
+  if ([equalCopy isMemberOfClass:objc_opt_class()] && ((bundleId = self->_bundleId, !(bundleId | equalCopy[2])) || -[NSString isEqual:](bundleId, "isEqual:")) && ((appMarqueeGroups = self->_appMarqueeGroups, !(appMarqueeGroups | equalCopy[1])) || -[NSMutableArray isEqual:](appMarqueeGroups, "isEqual:")))
   {
     nonAppMarqueeGroups = self->_nonAppMarqueeGroups;
-    if (nonAppMarqueeGroups | v4[3])
+    if (nonAppMarqueeGroups | equalCopy[3])
     {
       v8 = [(NSMutableArray *)nonAppMarqueeGroups isEqual:?];
     }
@@ -367,11 +367,11 @@
   return v4 ^ [(NSMutableArray *)self->_nonAppMarqueeGroups hash];
 }
 
-- (void)mergeFrom:(id)a3
+- (void)mergeFrom:(id)from
 {
   v25 = *MEMORY[0x1E69E9840];
-  v4 = a3;
-  if (*(v4 + 2))
+  fromCopy = from;
+  if (*(fromCopy + 2))
   {
     [(ATXPBUserNotificationAppDigest *)self setBundleId:?];
   }
@@ -380,7 +380,7 @@
   v22 = 0u;
   v19 = 0u;
   v20 = 0u;
-  v5 = *(v4 + 1);
+  v5 = *(fromCopy + 1);
   v6 = [v5 countByEnumeratingWithState:&v19 objects:v24 count:16];
   if (v6)
   {
@@ -408,7 +408,7 @@
   v18 = 0u;
   v15 = 0u;
   v16 = 0u;
-  v10 = *(v4 + 3);
+  v10 = *(fromCopy + 3);
   v11 = [v10 countByEnumeratingWithState:&v15 objects:v23 count:16];
   if (v11)
   {
@@ -433,14 +433,14 @@
   }
 }
 
-- (id)initFromJSON:(id)a3
+- (id)initFromJSON:(id)n
 {
   v33 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  nCopy = n;
   v5 = [(ATXPBUserNotificationAppDigest *)self init];
   if (v5)
   {
-    v6 = v4;
+    v6 = nCopy;
     v7 = [v6 objectForKeyedSubscript:@"bundleId"];
     v8 = [ATXJSONHelper unwrapObject:v7];
     bundleId = v5->_bundleId;

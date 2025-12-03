@@ -1,21 +1,21 @@
 @interface TCSettingsViewController
-- (BOOL)_contactIsUnknown:(id)a3;
+- (BOOL)_contactIsUnknown:(id)unknown;
 - (BOOL)_hasWalkieTalkieContacts;
-- (BOOL)_specifierAtIndexPathIsContact:(id)a3;
+- (BOOL)_specifierAtIndexPathIsContact:(id)contact;
 - (TCSettingsViewController)init;
 - (id)_allContactSpecifiers;
 - (id)applicationGroupSpecifiers;
 - (id)localizedPaneTitle;
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4;
-- (void)_displayContactForSpecifier:(id)a3;
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path;
+- (void)_displayContactForSpecifier:(id)specifier;
 - (void)_reload;
-- (void)_removeContactFromSpecifier:(id)a3;
+- (void)_removeContactFromSpecifier:(id)specifier;
 - (void)_updateEditDoneButton;
-- (void)_updateFooterTextForAllowlistGroupSpecifier:(id)a3;
+- (void)_updateFooterTextForAllowlistGroupSpecifier:(id)specifier;
 - (void)_updateForEditingState;
 - (void)dealloc;
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5;
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path;
 - (void)viewDidLoad;
 @end
 
@@ -67,8 +67,8 @@
   v4.receiver = self;
   v4.super_class = TCSettingsViewController;
   [(TCSettingsViewController *)&v4 viewDidLoad];
-  v3 = [(TCSettingsViewController *)self table];
-  [v3 setAllowsSelectionDuringEditing:1];
+  table = [(TCSettingsViewController *)self table];
+  [table setAllowsSelectionDuringEditing:1];
 
   [(TCSettingsViewController *)self _updateEditDoneButton];
 }
@@ -85,20 +85,20 @@
 {
   if ([(TCSettingsViewController *)self settingsMode]== &dword_0 + 1)
   {
-    v3 = 0;
+    _allContactSpecifiers = 0;
   }
 
   else
   {
-    v3 = [(TCSettingsViewController *)self _allContactSpecifiers];
+    _allContactSpecifiers = [(TCSettingsViewController *)self _allContactSpecifiers];
   }
 
-  return v3;
+  return _allContactSpecifiers;
 }
 
-- (id)tableView:(id)a3 titleForDeleteConfirmationButtonForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view titleForDeleteConfirmationButtonForRowAtIndexPath:(id)path
 {
-  if ([(TCSettingsViewController *)self _specifierAtIndexPathIsContact:a4])
+  if ([(TCSettingsViewController *)self _specifierAtIndexPathIsContact:path])
   {
     v4 = [NSBundle bundleForClass:objc_opt_class()];
     v5 = [v4 localizedStringForKey:@"TINCAN_ALLOWLIST_REMOVE" value:&stru_82A8 table:0];
@@ -112,13 +112,13 @@
   return v5;
 }
 
-- (id)tableView:(id)a3 willSelectRowAtIndexPath:(id)a4
+- (id)tableView:(id)view willSelectRowAtIndexPath:(id)path
 {
-  v6 = a3;
-  v7 = a4;
+  viewCopy = view;
+  pathCopy = path;
   if (self->_editing)
   {
-    if ([(TCSettingsViewController *)self _specifierAtIndexPathIsContact:v7])
+    if ([(TCSettingsViewController *)self _specifierAtIndexPathIsContact:pathCopy])
     {
       v8 = 0;
       goto LABEL_6;
@@ -127,17 +127,17 @@
     [(TCSettingsViewController *)self _editDoneButtonTapped:self];
   }
 
-  v8 = v7;
+  v8 = pathCopy;
 LABEL_6:
 
   return v8;
 }
 
-- (void)tableView:(id)a3 commitEditingStyle:(int64_t)a4 forRowAtIndexPath:(id)a5
+- (void)tableView:(id)view commitEditingStyle:(int64_t)style forRowAtIndexPath:(id)path
 {
-  if (a4 == 1)
+  if (style == 1)
   {
-    v7 = [(TCSettingsViewController *)self specifierAtIndexPath:a5];
+    v7 = [(TCSettingsViewController *)self specifierAtIndexPath:path];
     if (v7)
     {
       [(TCSettingsViewController *)self _removeContactFromSpecifier:v7];
@@ -161,14 +161,14 @@ LABEL_6:
 - (id)_allContactSpecifiers
 {
   v51 = [(TCSettingsViewController *)self loadSpecifiersFromPlistName:@"TinCanSettings" target:self];
-  v3 = [(TCSContactsDataSource *)self->_contactsDataSource sortedContacts];
-  v4 = [v3 copy];
+  sortedContacts = [(TCSContactsDataSource *)self->_contactsDataSource sortedContacts];
+  v4 = [sortedContacts copy];
 
-  v5 = [(TCSContactsDataSource *)self->_contactsDataSource sortedInviters];
-  v6 = [v5 copy];
+  sortedInviters = [(TCSContactsDataSource *)self->_contactsDataSource sortedInviters];
+  v6 = [sortedInviters copy];
 
-  v7 = [(TCSContactsDataSource *)self->_contactsDataSource sortedInvitees];
-  v8 = [v7 copy];
+  sortedInvitees = [(TCSContactsDataSource *)self->_contactsDataSource sortedInvitees];
+  v8 = [sortedInvitees copy];
 
   v9 = [NSBundle bundleForClass:objc_opt_class()];
   v10 = [v9 localizedStringForKey:@"GROUP_TITLE_FRIENDS" value:&stru_82A8 table:0];
@@ -362,7 +362,7 @@ LABEL_6:
       v6 = @"TINCAN_ALLOWLIST_EDIT";
     }
 
-    v10 = [v4 localizedStringForKey:v6 value:&stru_82A8 table:0];
+    navigationItem2 = [v4 localizedStringForKey:v6 value:&stru_82A8 table:0];
 
     if (self->_editing)
     {
@@ -374,53 +374,53 @@ LABEL_6:
       v7 = 0;
     }
 
-    v8 = [[UIBarButtonItem alloc] initWithTitle:v10 style:v7 target:self action:"_editDoneButtonTapped:"];
-    v9 = [(TCSettingsViewController *)self navigationItem];
-    [v9 setRightBarButtonItem:v8];
+    v8 = [[UIBarButtonItem alloc] initWithTitle:navigationItem2 style:v7 target:self action:"_editDoneButtonTapped:"];
+    navigationItem = [(TCSettingsViewController *)self navigationItem];
+    [navigationItem setRightBarButtonItem:v8];
   }
 
   else
   {
-    v10 = [(TCSettingsViewController *)self navigationItem];
-    [v10 setRightBarButtonItem:0];
+    navigationItem2 = [(TCSettingsViewController *)self navigationItem];
+    [navigationItem2 setRightBarButtonItem:0];
   }
 }
 
 - (void)_updateForEditingState
 {
   [(TCSettingsViewController *)self _updateEditDoneButton];
-  v3 = [(TCSettingsViewController *)self navigationItem];
-  [v3 setHidesBackButton:self->_editing animated:1];
+  navigationItem = [(TCSettingsViewController *)self navigationItem];
+  [navigationItem setHidesBackButton:self->_editing animated:1];
 
-  v4 = [(TCSettingsViewController *)self table];
-  [v4 setEditing:self->_editing animated:1];
+  table = [(TCSettingsViewController *)self table];
+  [table setEditing:self->_editing animated:1];
 }
 
-- (BOOL)_specifierAtIndexPathIsContact:(id)a3
+- (BOOL)_specifierAtIndexPathIsContact:(id)contact
 {
-  v3 = [(TCSettingsViewController *)self specifierAtIndexPath:a3];
-  v4 = [v3 userInfo];
+  v3 = [(TCSettingsViewController *)self specifierAtIndexPath:contact];
+  userInfo = [v3 userInfo];
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_removeContactFromSpecifier:(id)a3
+- (void)_removeContactFromSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [v4 objectForKeyedSubscript:@"TCSContactsDataSourceSectionType"];
-  v6 = [v5 integerValue];
+  specifierCopy = specifier;
+  v5 = [specifierCopy objectForKeyedSubscript:@"TCSContactsDataSourceSectionType"];
+  integerValue = [v5 integerValue];
 
   contactsDataSource = self->_contactsDataSource;
-  v8 = [v4 userInfo];
-  [(TCSContactsDataSource *)contactsDataSource removeContact:v8 inSection:v6];
+  userInfo = [specifierCopy userInfo];
+  [(TCSContactsDataSource *)contactsDataSource removeContact:userInfo inSection:integerValue];
 
-  [(TCSettingsViewController *)self removeSpecifier:v4 animated:1];
-  if (v6 == &dword_0 + 2)
+  [(TCSettingsViewController *)self removeSpecifier:specifierCopy animated:1];
+  if (integerValue == &dword_0 + 2)
   {
-    v12 = [(TCSContactsDataSource *)self->_contactsDataSource sortedInvitees];
-    v13 = [v12 count];
+    sortedInvitees = [(TCSContactsDataSource *)self->_contactsDataSource sortedInvitees];
+    v13 = [sortedInvitees count];
 
     if (v13)
     {
@@ -431,10 +431,10 @@ LABEL_6:
     goto LABEL_7;
   }
 
-  if (v6 == &dword_0 + 1)
+  if (integerValue == &dword_0 + 1)
   {
-    v9 = [(TCSContactsDataSource *)self->_contactsDataSource sortedInviters];
-    v10 = [v9 count];
+    sortedInviters = [(TCSContactsDataSource *)self->_contactsDataSource sortedInviters];
+    v10 = [sortedInviters count];
 
     if (!v10)
     {
@@ -455,21 +455,21 @@ LABEL_8:
   [(TCSettingsViewController *)self _updateForEditingState];
 }
 
-- (BOOL)_contactIsUnknown:(id)a3
+- (BOOL)_contactIsUnknown:(id)unknown
 {
-  v3 = a3;
+  unknownCopy = unknown;
   objc_opt_class();
   isKindOfClass = objc_opt_isKindOfClass();
 
   return isKindOfClass & 1;
 }
 
-- (void)_displayContactForSpecifier:(id)a3
+- (void)_displayContactForSpecifier:(id)specifier
 {
-  v4 = [a3 userInfo];
-  if ([(TCSettingsViewController *)self _contactIsUnknown:v4])
+  userInfo = [specifier userInfo];
+  if ([(TCSettingsViewController *)self _contactIsUnknown:userInfo])
   {
-    v5 = [CNContactViewController viewControllerForUnknownContact:v4];
+    v5 = [CNContactViewController viewControllerForUnknownContact:userInfo];
     if (!v5)
     {
       goto LABEL_12;
@@ -481,17 +481,17 @@ LABEL_8:
   v6 = +[CNContactViewController descriptorForRequiredKeys];
   v22 = v6;
   v7 = [NSArray arrayWithObjects:&v22 count:1];
-  v8 = [v4 areKeysAvailable:v7];
+  v8 = [userInfo areKeysAvailable:v7];
 
   if ((v8 & 1) == 0)
   {
-    v9 = [(TCSettingsViewController *)self contactStore];
-    v10 = [v4 identifier];
+    contactStore = [(TCSettingsViewController *)self contactStore];
+    identifier = [userInfo identifier];
     v11 = +[CNContactViewController descriptorForRequiredKeys];
     v21 = v11;
     v12 = [NSArray arrayWithObjects:&v21 count:1];
     v20 = 0;
-    v13 = [v9 unifiedContactWithIdentifier:v10 keysToFetch:v12 error:&v20];
+    v13 = [contactStore unifiedContactWithIdentifier:identifier keysToFetch:v12 error:&v20];
     v14 = v20;
 
     if (v14)
@@ -504,25 +504,25 @@ LABEL_8:
       }
     }
 
-    v4 = v13;
+    userInfo = v13;
   }
 
-  if (v4)
+  if (userInfo)
   {
-    v5 = [CNContactViewController viewControllerForContact:v4];
+    v5 = [CNContactViewController viewControllerForContact:userInfo];
     [v5 setAllowsEditing:0];
     if (v5)
     {
 LABEL_11:
-      v16 = [(TCSettingsViewController *)self contactStore];
-      [v5 setContactStore:v16];
+      contactStore2 = [(TCSettingsViewController *)self contactStore];
+      [v5 setContactStore:contactStore2];
 
       v17 = BPSBridgeTintColor();
-      v18 = [v5 view];
-      [v18 setTintColor:v17];
+      view = [v5 view];
+      [view setTintColor:v17];
 
-      v19 = [(TCSettingsViewController *)self rootController];
-      [v19 pushViewController:v5 animated:1];
+      rootController = [(TCSettingsViewController *)self rootController];
+      [rootController pushViewController:v5 animated:1];
     }
   }
 
@@ -531,25 +531,25 @@ LABEL_12:
 
 - (BOOL)_hasWalkieTalkieContacts
 {
-  v3 = [(TCSContactsDataSource *)self->_contactsDataSource sortedContacts];
-  v4 = [v3 count];
-  v5 = [(TCSContactsDataSource *)self->_contactsDataSource sortedInviters];
-  v6 = &v4[[v5 count]];
-  v7 = [(TCSContactsDataSource *)self->_contactsDataSource sortedInvitees];
-  LOBYTE(v6) = [v7 count] + v6 != 0;
+  sortedContacts = [(TCSContactsDataSource *)self->_contactsDataSource sortedContacts];
+  v4 = [sortedContacts count];
+  sortedInviters = [(TCSContactsDataSource *)self->_contactsDataSource sortedInviters];
+  v6 = &v4[[sortedInviters count]];
+  sortedInvitees = [(TCSContactsDataSource *)self->_contactsDataSource sortedInvitees];
+  LOBYTE(v6) = [sortedInvitees count] + v6 != 0;
 
   return v6;
 }
 
-- (void)_updateFooterTextForAllowlistGroupSpecifier:(id)a3
+- (void)_updateFooterTextForAllowlistGroupSpecifier:(id)specifier
 {
-  v4 = a3;
-  v5 = [(TCSContactsDataSource *)self->_contactsDataSource sortedContacts];
-  v6 = [v5 count];
+  specifierCopy = specifier;
+  sortedContacts = [(TCSContactsDataSource *)self->_contactsDataSource sortedContacts];
+  v6 = [sortedContacts count];
 
   if (v6)
   {
-    [v4 removePropertyForKey:PSFooterTextGroupKey];
+    [specifierCopy removePropertyForKey:PSFooterTextGroupKey];
   }
 
   else
@@ -580,7 +580,7 @@ LABEL_12:
     }
     v10 = ;
 
-    [v4 setProperty:v10 forKey:PSFooterTextGroupKey];
+    [specifierCopy setProperty:v10 forKey:PSFooterTextGroupKey];
     _Block_object_dispose(&v12, 8);
   }
 }

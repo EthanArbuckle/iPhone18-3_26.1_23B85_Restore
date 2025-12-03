@@ -1,5 +1,5 @@
 @interface PHAudioCallBackgroundGradientViewController
-- (PHAudioCallBackgroundGradientViewController)initWithNibName:(id)a3 bundle:(id)a4;
+- (PHAudioCallBackgroundGradientViewController)initWithNibName:(id)name bundle:(id)bundle;
 - (UIView)backgroundContentView;
 - (void)viewDidLoad;
 @end
@@ -8,7 +8,7 @@
 
 - (UIView)backgroundContentView
 {
-  v2 = self;
+  selfCopy = self;
   v3 = sub_1001E8CC4();
 
   return v3;
@@ -16,13 +16,13 @@
 
 - (void)viewDidLoad
 {
-  v2 = self;
+  selfCopy = self;
   AudioCallBackgroundGradientViewController.viewDidLoad()();
 }
 
-- (PHAudioCallBackgroundGradientViewController)initWithNibName:(id)a3 bundle:(id)a4
+- (PHAudioCallBackgroundGradientViewController)initWithNibName:(id)name bundle:(id)bundle
 {
-  if (a3)
+  if (name)
   {
     v5 = static String._unconditionallyBridgeFromObjectiveC(_:)();
     v7 = v6;
@@ -34,8 +34,8 @@
     v7 = 0;
   }
 
-  v8 = a4;
-  return AudioCallBackgroundGradientViewController.init(nibName:bundle:)(v5, v7, a4);
+  bundleCopy = bundle;
+  return AudioCallBackgroundGradientViewController.init(nibName:bundle:)(v5, v7, bundle);
 }
 
 @end

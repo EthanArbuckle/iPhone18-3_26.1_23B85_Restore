@@ -1,44 +1,44 @@
 @interface DEDSharingOutbound
 - (DEDSharingConnection)connection;
-- (DEDSharingOutbound)initWithID:(id)a3 withSFSession:(id)a4 connection:(id)a5;
-- (id)basePayloadForCommand:(id)a3;
-- (void)addSessionData:(id)a3 withFilename:(id)a4 forSession:(id)a5;
-- (void)adoptFiles:(id)a3 forSession:(id)a4;
-- (void)cancelSession:(id)a3;
-- (void)commitSession:(id)a3;
-- (void)compressionProgress:(unint64_t)a3 total:(unint64_t)a4 sessionID:(id)a5;
-- (void)deviceSupportsDiagnosticExtensions:(id)a3 session:(id)a4;
-- (void)didAdoptFilesWithError:(id)a3 forSession:(id)a4;
-- (void)didCancelSession:(id)a3;
-- (void)didCommitSession:(id)a3;
-- (void)didFinishUploadingWithError:(id)a3 sessionID:(id)a4;
-- (void)didGetState:(int64_t)a3 info:(id)a4 sessionID:(id)a5;
-- (void)didLoadTextDataForExtensions:(id)a3 localization:(id)a4 session:(id)a5;
-- (void)finishedDiagnosticWithIdentifier:(id)a3 result:(id)a4 session:(id)a5;
-- (void)getSessionStateWithSession:(id)a3;
-- (void)getSessionStatusWithSession:(id)a3;
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 inSession:(id)a5;
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 withIdentifiers:(id)a5 inSession:(id)a6;
-- (void)listAvailableExtensionsForSession:(id)a3;
-- (void)loadTextDataForExtensions:(id)a3 localization:(id)a4 sessionID:(id)a5;
-- (void)pingSession:(id)a3;
-- (void)pongSession:(id)a3;
-- (void)scheduleNotificationForSession:(id)a3;
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 deferRunUntil:(id)a5 session:(id)a6;
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5;
-- (void)syncSessionStatusWithSession:(id)a3;
-- (void)terminateExtension:(id)a3 info:(id)a4 session:(id)a5;
-- (void)unscheduleNotificationForSession:(id)a3;
-- (void)uploadProgress:(unint64_t)a3 total:(unint64_t)a4 sessionID:(id)a5;
+- (DEDSharingOutbound)initWithID:(id)d withSFSession:(id)session connection:(id)connection;
+- (id)basePayloadForCommand:(id)command;
+- (void)addSessionData:(id)data withFilename:(id)filename forSession:(id)session;
+- (void)adoptFiles:(id)files forSession:(id)session;
+- (void)cancelSession:(id)session;
+- (void)commitSession:(id)session;
+- (void)compressionProgress:(unint64_t)progress total:(unint64_t)total sessionID:(id)d;
+- (void)deviceSupportsDiagnosticExtensions:(id)extensions session:(id)session;
+- (void)didAdoptFilesWithError:(id)error forSession:(id)session;
+- (void)didCancelSession:(id)session;
+- (void)didCommitSession:(id)session;
+- (void)didFinishUploadingWithError:(id)error sessionID:(id)d;
+- (void)didGetState:(int64_t)state info:(id)info sessionID:(id)d;
+- (void)didLoadTextDataForExtensions:(id)extensions localization:(id)localization session:(id)session;
+- (void)finishedDiagnosticWithIdentifier:(id)identifier result:(id)result session:(id)session;
+- (void)getSessionStateWithSession:(id)session;
+- (void)getSessionStatusWithSession:(id)session;
+- (void)hasCollected:(id)collected isCollecting:(id)collecting inSession:(id)session;
+- (void)hasCollected:(id)collected isCollecting:(id)collecting withIdentifiers:(id)identifiers inSession:(id)session;
+- (void)listAvailableExtensionsForSession:(id)session;
+- (void)loadTextDataForExtensions:(id)extensions localization:(id)localization sessionID:(id)d;
+- (void)pingSession:(id)session;
+- (void)pongSession:(id)session;
+- (void)scheduleNotificationForSession:(id)session;
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters deferRunUntil:(id)until session:(id)session;
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session;
+- (void)syncSessionStatusWithSession:(id)session;
+- (void)terminateExtension:(id)extension info:(id)info session:(id)session;
+- (void)unscheduleNotificationForSession:(id)session;
+- (void)uploadProgress:(unint64_t)progress total:(unint64_t)total sessionID:(id)d;
 @end
 
 @implementation DEDSharingOutbound
 
-- (DEDSharingOutbound)initWithID:(id)a3 withSFSession:(id)a4 connection:(id)a5
+- (DEDSharingOutbound)initWithID:(id)d withSFSession:(id)session connection:(id)connection
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  dCopy = d;
+  sessionCopy = session;
+  connectionCopy = connection;
   v15.receiver = self;
   v15.super_class = DEDSharingOutbound;
   v11 = [(DEDSharingOutbound *)&v15 init];
@@ -48,102 +48,102 @@
     v13 = os_log_create([v12 loggingSubsystem], "sharing-outbound");
     [(DEDSharingOutbound *)v11 setLog:v13];
 
-    [(DEDSharingOutbound *)v11 setIdentifier:v8];
-    [(DEDSharingOutbound *)v11 setSession:v9];
-    [(DEDSharingOutbound *)v11 setConnection:v10];
+    [(DEDSharingOutbound *)v11 setIdentifier:dCopy];
+    [(DEDSharingOutbound *)v11 setSession:sessionCopy];
+    [(DEDSharingOutbound *)v11 setConnection:connectionCopy];
   }
 
   return v11;
 }
 
-- (id)basePayloadForCommand:(id)a3
+- (id)basePayloadForCommand:(id)command
 {
   v4 = MEMORY[0x277CBEB38];
-  v5 = a3;
+  commandCopy = command;
   v6 = [v4 dictionaryWithCapacity:3];
   v7 = +[DEDDevice currentDevice];
-  v8 = [v7 serialize];
-  [v6 setObject:v8 forKeyedSubscript:@"callingDevice"];
+  serialize = [v7 serialize];
+  [v6 setObject:serialize forKeyedSubscript:@"callingDevice"];
 
-  v9 = [(DEDSharingOutbound *)self identifier];
-  [v6 setObject:v9 forKeyedSubscript:@"sessionID"];
+  identifier = [(DEDSharingOutbound *)self identifier];
+  [v6 setObject:identifier forKeyedSubscript:@"sessionID"];
 
-  [v6 setObject:v5 forKeyedSubscript:@"session"];
+  [v6 setObject:commandCopy forKeyedSubscript:@"session"];
 
   return v6;
 }
 
-- (void)pingSession:(id)a3
+- (void)pingSession:(id)session
 {
-  v5 = [(DEDSharingOutbound *)self session];
+  session = [(DEDSharingOutbound *)self session];
   v4 = [(DEDSharingOutbound *)self basePayloadForCommand:@"ping"];
-  [v5 sendWithFlags:0 object:v4];
+  [session sendWithFlags:0 object:v4];
 }
 
-- (void)pongSession:(id)a3
+- (void)pongSession:(id)session
 {
-  v5 = [(DEDSharingOutbound *)self session];
+  session = [(DEDSharingOutbound *)self session];
   v4 = [(DEDSharingOutbound *)self basePayloadForCommand:@"pong"];
-  [v5 sendWithFlags:0 object:v4];
+  [session sendWithFlags:0 object:v4];
 }
 
-- (void)listAvailableExtensionsForSession:(id)a3
+- (void)listAvailableExtensionsForSession:(id)session
 {
-  v5 = [(DEDSharingOutbound *)self session];
+  session = [(DEDSharingOutbound *)self session];
   v4 = [(DEDSharingOutbound *)self basePayloadForCommand:@"listExtensions"];
-  [v5 sendWithFlags:0 object:v4];
+  [session sendWithFlags:0 object:v4];
 }
 
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 session:(id)a5
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters session:(id)session
 {
-  v7 = a4;
-  v8 = a3;
+  parametersCopy = parameters;
+  identifierCopy = identifier;
   v10 = [(DEDSharingOutbound *)self basePayloadForCommand:@"startDiagnostic"];
-  [v10 setObject:v8 forKeyedSubscript:@"identifier"];
+  [v10 setObject:identifierCopy forKeyedSubscript:@"identifier"];
 
-  [v10 setObject:v7 forKeyedSubscript:@"parameters"];
-  v9 = [(DEDSharingOutbound *)self session];
-  [v9 sendWithFlags:0 object:v10];
+  [v10 setObject:parametersCopy forKeyedSubscript:@"parameters"];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v10];
 }
 
-- (void)startDiagnosticWithIdentifier:(id)a3 parameters:(id)a4 deferRunUntil:(id)a5 session:(id)a6
+- (void)startDiagnosticWithIdentifier:(id)identifier parameters:(id)parameters deferRunUntil:(id)until session:(id)session
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  untilCopy = until;
+  parametersCopy = parameters;
+  identifierCopy = identifier;
   v13 = [(DEDSharingOutbound *)self basePayloadForCommand:@"startDiagnostic"];
-  [v13 setObject:v11 forKeyedSubscript:@"identifier"];
+  [v13 setObject:identifierCopy forKeyedSubscript:@"identifier"];
 
-  [v13 setObject:v10 forKeyedSubscript:@"parameters"];
-  [v13 setObject:v9 forKeyedSubscript:@"deferDate"];
+  [v13 setObject:parametersCopy forKeyedSubscript:@"parameters"];
+  [v13 setObject:untilCopy forKeyedSubscript:@"deferDate"];
 
-  v12 = [(DEDSharingOutbound *)self session];
-  [v12 sendWithFlags:0 object:v13];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v13];
 }
 
-- (void)terminateExtension:(id)a3 info:(id)a4 session:(id)a5
+- (void)terminateExtension:(id)extension info:(id)info session:(id)session
 {
-  v7 = a4;
-  v8 = a3;
+  infoCopy = info;
+  extensionCopy = extension;
   v10 = [(DEDSharingOutbound *)self basePayloadForCommand:@"terminateExtension"];
-  [v10 setObject:v8 forKeyedSubscript:@"identifier"];
+  [v10 setObject:extensionCopy forKeyedSubscript:@"identifier"];
 
-  [v10 setObject:v7 forKeyedSubscript:@"info"];
-  v9 = [(DEDSharingOutbound *)self session];
-  [v9 sendWithFlags:0 object:v10];
+  [v10 setObject:infoCopy forKeyedSubscript:@"info"];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v10];
 }
 
-- (void)deviceSupportsDiagnosticExtensions:(id)a3 session:(id)a4
+- (void)deviceSupportsDiagnosticExtensions:(id)extensions session:(id)session
 {
   v21 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  extensionsCopy = extensions;
   v6 = [(DEDSharingOutbound *)self basePayloadForCommand:@"supportsExtensions"];
-  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v5, "count")}];
+  v7 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(extensionsCopy, "count")}];
   v16 = 0u;
   v17 = 0u;
   v18 = 0u;
   v19 = 0u;
-  v8 = v5;
+  v8 = extensionsCopy;
   v9 = [v8 countByEnumeratingWithState:&v16 objects:v20 count:16];
   if (v9)
   {
@@ -159,8 +159,8 @@
           objc_enumerationMutation(v8);
         }
 
-        v13 = [*(*(&v16 + 1) + 8 * v12) serialize];
-        [v7 addObject:v13];
+        serialize = [*(*(&v16 + 1) + 8 * v12) serialize];
+        [v7 addObject:serialize];
 
         ++v12;
       }
@@ -173,50 +173,50 @@
   }
 
   [v6 setObject:v7 forKeyedSubscript:@"extensions"];
-  v14 = [(DEDSharingOutbound *)self session];
-  [v14 sendWithFlags:0 object:v6];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v6];
 
   v15 = *MEMORY[0x277D85DE8];
 }
 
-- (void)finishedDiagnosticWithIdentifier:(id)a3 result:(id)a4 session:(id)a5
+- (void)finishedDiagnosticWithIdentifier:(id)identifier result:(id)result session:(id)session
 {
-  v7 = a4;
-  v8 = a3;
+  resultCopy = result;
+  identifierCopy = identifier;
   v11 = [(DEDSharingOutbound *)self basePayloadForCommand:@"finishedDiagnostic"];
-  [v11 setObject:v8 forKeyedSubscript:@"identifier"];
+  [v11 setObject:identifierCopy forKeyedSubscript:@"identifier"];
 
-  v9 = [v7 serialize];
+  serialize = [resultCopy serialize];
 
-  [v11 setObject:v9 forKeyedSubscript:@"group"];
-  v10 = [(DEDSharingOutbound *)self session];
-  [v10 sendWithFlags:0 object:v11];
+  [v11 setObject:serialize forKeyedSubscript:@"group"];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v11];
 }
 
-- (void)getSessionStatusWithSession:(id)a3
+- (void)getSessionStatusWithSession:(id)session
 {
   v5 = [(DEDSharingOutbound *)self basePayloadForCommand:@"getStatus"];
-  v4 = [(DEDSharingOutbound *)self session];
-  [v4 sendWithFlags:0 object:v5];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v5];
 }
 
-- (void)getSessionStateWithSession:(id)a3
+- (void)getSessionStateWithSession:(id)session
 {
   v5 = [(DEDSharingOutbound *)self basePayloadForCommand:@"getState"];
-  v4 = [(DEDSharingOutbound *)self session];
-  [v4 sendWithFlags:0 object:v5];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v5];
 }
 
-- (void)didGetState:(int64_t)a3 info:(id)a4 sessionID:(id)a5
+- (void)didGetState:(int64_t)state info:(id)info sessionID:(id)d
 {
-  v7 = a4;
+  infoCopy = info;
   v11 = [(DEDSharingOutbound *)self basePayloadForCommand:@"didGetState"];
-  v8 = [MEMORY[0x277CCABB0] numberWithInteger:a3];
+  v8 = [MEMORY[0x277CCABB0] numberWithInteger:state];
   [v11 setObject:v8 forKeyedSubscript:@"state"];
 
-  if (v7)
+  if (infoCopy)
   {
-    v9 = v7;
+    v9 = infoCopy;
   }
 
   else
@@ -226,183 +226,183 @@
 
   [v11 setObject:v9 forKeyedSubscript:@"info"];
 
-  v10 = [(DEDSharingOutbound *)self session];
-  [v10 sendWithFlags:0 object:v11];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v11];
 }
 
-- (void)syncSessionStatusWithSession:(id)a3
+- (void)syncSessionStatusWithSession:(id)session
 {
   v5 = [(DEDSharingOutbound *)self basePayloadForCommand:@"syncStatus"];
-  v4 = [(DEDSharingOutbound *)self session];
-  [v4 sendWithFlags:0 object:v5];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v5];
 }
 
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 inSession:(id)a5
+- (void)hasCollected:(id)collected isCollecting:(id)collecting inSession:(id)session
 {
-  v7 = a4;
-  v8 = a3;
+  collectingCopy = collecting;
+  collectedCopy = collected;
   v12 = [(DEDSharingOutbound *)self basePayloadForCommand:@"didGetStatus"];
-  v9 = [v7 ded_mapWithBlock:&__block_literal_global_34];
+  v9 = [collectingCopy ded_mapWithBlock:&__block_literal_global_34];
 
   [v12 setObject:v9 forKeyedSubscript:@"extensions"];
-  v10 = [v8 ded_mapWithBlock:&__block_literal_global_83];
+  v10 = [collectedCopy ded_mapWithBlock:&__block_literal_global_83];
 
   [v12 setObject:v10 forKeyedSubscript:@"groups"];
-  v11 = [(DEDSharingOutbound *)self session];
-  [v11 sendWithFlags:0 object:v12];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v12];
 }
 
-- (void)hasCollected:(id)a3 isCollecting:(id)a4 withIdentifiers:(id)a5 inSession:(id)a6
+- (void)hasCollected:(id)collected isCollecting:(id)collecting withIdentifiers:(id)identifiers inSession:(id)session
 {
-  v9 = a5;
-  v10 = a4;
-  v11 = a3;
+  identifiersCopy = identifiers;
+  collectingCopy = collecting;
+  collectedCopy = collected;
   v16 = [(DEDSharingOutbound *)self basePayloadForCommand:@"didSyncStatus"];
-  v12 = [v10 ded_mapWithBlock:&__block_literal_global_91];
+  v12 = [collectingCopy ded_mapWithBlock:&__block_literal_global_91];
 
   [v16 setObject:v12 forKeyedSubscript:@"extensions"];
-  v13 = [v11 ded_mapWithBlock:&__block_literal_global_93];
+  v13 = [collectedCopy ded_mapWithBlock:&__block_literal_global_93];
 
   [v16 setObject:v13 forKeyedSubscript:@"groups"];
-  v14 = [v9 ded_mapWithBlock:&__block_literal_global_95];
+  v14 = [identifiersCopy ded_mapWithBlock:&__block_literal_global_95];
 
   [v16 setObject:v14 forKeyedSubscript:@"identifiers"];
-  v15 = [(DEDSharingOutbound *)self session];
-  [v15 sendWithFlags:0 object:v16];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v16];
 }
 
-- (void)adoptFiles:(id)a3 forSession:(id)a4
+- (void)adoptFiles:(id)files forSession:(id)session
 {
-  v5 = a3;
+  filesCopy = files;
   v7 = [(DEDSharingOutbound *)self basePayloadForCommand:@"adoptFiles"];
-  [v7 setObject:v5 forKeyedSubscript:@"filesForAdopt"];
+  [v7 setObject:filesCopy forKeyedSubscript:@"filesForAdopt"];
 
-  v6 = [(DEDSharingOutbound *)self session];
-  [v6 sendWithFlags:0 object:v7];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v7];
 }
 
-- (void)didAdoptFilesWithError:(id)a3 forSession:(id)a4
+- (void)didAdoptFilesWithError:(id)error forSession:(id)session
 {
-  v7 = a3;
+  errorCopy = error;
   v5 = [(DEDSharingOutbound *)self basePayloadForCommand:@"didAdoptFiles"];
-  if (v7)
+  if (errorCopy)
   {
-    [v5 setObject:v7 forKeyedSubscript:@"error"];
+    [v5 setObject:errorCopy forKeyedSubscript:@"error"];
   }
 
-  v6 = [(DEDSharingOutbound *)self session];
-  [v6 sendWithFlags:0 object:v5];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v5];
 }
 
-- (void)compressionProgress:(unint64_t)a3 total:(unint64_t)a4 sessionID:(id)a5
+- (void)compressionProgress:(unint64_t)progress total:(unint64_t)total sessionID:(id)d
 {
-  v11 = [(DEDSharingOutbound *)self basePayloadForCommand:@"compressionProgress", a4, a5];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v11 = [(DEDSharingOutbound *)self basePayloadForCommand:@"compressionProgress", total, d];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:progress];
   [v11 setObject:v8 forKeyedSubscript:@"compressed"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:total];
   [v11 setObject:v9 forKeyedSubscript:@"total"];
 
-  v10 = [(DEDSharingOutbound *)self session];
-  [v10 sendWithFlags:0 object:v11];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v11];
 }
 
-- (void)uploadProgress:(unint64_t)a3 total:(unint64_t)a4 sessionID:(id)a5
+- (void)uploadProgress:(unint64_t)progress total:(unint64_t)total sessionID:(id)d
 {
-  v11 = [(DEDSharingOutbound *)self basePayloadForCommand:@"uploadProgress", a4, a5];
-  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a3];
+  v11 = [(DEDSharingOutbound *)self basePayloadForCommand:@"uploadProgress", total, d];
+  v8 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:progress];
   [v11 setObject:v8 forKeyedSubscript:@"uploaded"];
 
-  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:a4];
+  v9 = [MEMORY[0x277CCABB0] numberWithUnsignedLongLong:total];
   [v11 setObject:v9 forKeyedSubscript:@"total"];
 
-  v10 = [(DEDSharingOutbound *)self session];
-  [v10 sendWithFlags:0 object:v11];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v11];
 }
 
-- (void)didFinishUploadingWithError:(id)a3 sessionID:(id)a4
+- (void)didFinishUploadingWithError:(id)error sessionID:(id)d
 {
-  v7 = a3;
+  errorCopy = error;
   v5 = [(DEDSharingOutbound *)self basePayloadForCommand:@"uploadFinished"];
-  if (v7)
+  if (errorCopy)
   {
-    [v5 setObject:v7 forKeyedSubscript:@"error"];
+    [v5 setObject:errorCopy forKeyedSubscript:@"error"];
   }
 
-  v6 = [(DEDSharingOutbound *)self session];
-  [v6 sendWithFlags:0 object:v5];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v5];
 }
 
-- (void)commitSession:(id)a3
+- (void)commitSession:(id)session
 {
   v5 = [(DEDSharingOutbound *)self basePayloadForCommand:@"commitSession"];
-  v4 = [(DEDSharingOutbound *)self session];
-  [v4 sendWithFlags:0 object:v5];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v5];
 }
 
-- (void)didCommitSession:(id)a3
+- (void)didCommitSession:(id)session
 {
   v5 = [(DEDSharingOutbound *)self basePayloadForCommand:@"didCommitSession"];
-  v4 = [(DEDSharingOutbound *)self session];
-  [v4 sendWithFlags:0 object:v5];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v5];
 }
 
-- (void)cancelSession:(id)a3
+- (void)cancelSession:(id)session
 {
   v5 = [(DEDSharingOutbound *)self basePayloadForCommand:@"cancelSession"];
-  v4 = [(DEDSharingOutbound *)self session];
-  [v4 sendWithFlags:0 object:v5];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v5];
 }
 
-- (void)scheduleNotificationForSession:(id)a3
+- (void)scheduleNotificationForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = [(DEDSharingOutbound *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(DEDSharingOutbound *)v4 scheduleNotificationForSession:v5, v6, v7, v8, v9, v10, v11];
+    [(DEDSharingOutbound *)sessionCopy scheduleNotificationForSession:v5, v6, v7, v8, v9, v10, v11];
   }
 }
 
-- (void)unscheduleNotificationForSession:(id)a3
+- (void)unscheduleNotificationForSession:(id)session
 {
-  v4 = a3;
+  sessionCopy = session;
   v5 = [(DEDSharingOutbound *)self log];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
-    [(DEDSharingOutbound *)v4 scheduleNotificationForSession:v5, v6, v7, v8, v9, v10, v11];
+    [(DEDSharingOutbound *)sessionCopy scheduleNotificationForSession:v5, v6, v7, v8, v9, v10, v11];
   }
 }
 
-- (void)addSessionData:(id)a3 withFilename:(id)a4 forSession:(id)a5
+- (void)addSessionData:(id)data withFilename:(id)filename forSession:(id)session
 {
-  v6 = a5;
+  sessionCopy = session;
   v7 = [(DEDSharingOutbound *)self log];
   if (os_log_type_enabled(v7, OS_LOG_TYPE_ERROR))
   {
-    [(DEDSharingOutbound *)v6 addSessionData:v7 withFilename:v8 forSession:v9, v10, v11, v12, v13];
+    [(DEDSharingOutbound *)sessionCopy addSessionData:v7 withFilename:v8 forSession:v9, v10, v11, v12, v13];
   }
 }
 
-- (void)didCancelSession:(id)a3
+- (void)didCancelSession:(id)session
 {
   v5 = [(DEDSharingOutbound *)self basePayloadForCommand:@"didCancelSession"];
-  v4 = [(DEDSharingOutbound *)self session];
-  [v4 sendWithFlags:0 object:v5];
+  session = [(DEDSharingOutbound *)self session];
+  [session sendWithFlags:0 object:v5];
 }
 
-- (void)loadTextDataForExtensions:(id)a3 localization:(id)a4 sessionID:(id)a5
+- (void)loadTextDataForExtensions:(id)extensions localization:(id)localization sessionID:(id)d
 {
-  v5 = [(DEDSharingOutbound *)self log:a3];
+  v5 = [(DEDSharingOutbound *)self log:extensions];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [(DEDSharingOutbound *)v5 loadTextDataForExtensions:v6 localization:v7 sessionID:v8, v9, v10, v11, v12];
   }
 }
 
-- (void)didLoadTextDataForExtensions:(id)a3 localization:(id)a4 session:(id)a5
+- (void)didLoadTextDataForExtensions:(id)extensions localization:(id)localization session:(id)session
 {
-  v5 = [(DEDSharingOutbound *)self log:a3];
+  v5 = [(DEDSharingOutbound *)self log:extensions];
   if (os_log_type_enabled(v5, OS_LOG_TYPE_ERROR))
   {
     [(DEDSharingOutbound *)v5 didLoadTextDataForExtensions:v6 localization:v7 session:v8, v9, v10, v11, v12];

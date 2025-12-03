@@ -1,12 +1,12 @@
 @interface SGDateComponents
-+ (id)dateComponents:(id)a3 label:(id)a4 extractionInfo:(id)a5 withRecordId:(id)a6;
-- (BOOL)isEqual:(id)a3;
-- (BOOL)isEqualToDateComponents:(id)a3;
-- (SGDateComponents)initWithCoder:(id)a3;
-- (SGDateComponents)initWithDateComponents:(id)a3 label:(id)a4 extractionInfo:(id)a5 recordId:(id)a6;
++ (id)dateComponents:(id)components label:(id)label extractionInfo:(id)info withRecordId:(id)id;
+- (BOOL)isEqual:(id)equal;
+- (BOOL)isEqualToDateComponents:(id)components;
+- (SGDateComponents)initWithCoder:(id)coder;
+- (SGDateComponents)initWithDateComponents:(id)components label:(id)label extractionInfo:(id)info recordId:(id)id;
 - (id)dateString;
 - (id)description;
-- (void)encodeWithCoder:(id)a3;
+- (void)encodeWithCoder:(id)coder;
 @end
 
 @implementation SGDateComponents
@@ -14,38 +14,38 @@
 - (id)description
 {
   v3 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v4 = [(SGLabeledObject *)self label];
-  v5 = [v4 length];
+  label = [(SGLabeledObject *)self label];
+  v5 = [label length];
   if (v5)
   {
-    v6 = [(SGLabeledObject *)self label];
+    label2 = [(SGLabeledObject *)self label];
   }
 
   else
   {
-    v6 = @"unlabeled";
+    label2 = @"unlabeled";
   }
 
   v7 = self->_dateComponents;
-  v8 = [(NSDateComponents *)v7 year];
+  year = [(NSDateComponents *)v7 year];
   v9 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v10 = [(NSDateComponents *)v7 month];
+  month = [(NSDateComponents *)v7 month];
   v11 = [(NSDateComponents *)v7 day];
-  if (v8 == 0x7FFFFFFFFFFFFFFFLL)
+  if (year == 0x7FFFFFFFFFFFFFFFLL)
   {
 
-    v12 = [v9 initWithFormat:@"%ld/%ld", v10, v11, v17];
+    v12 = [v9 initWithFormat:@"%ld/%ld", month, v11, v17];
   }
 
   else
   {
-    v13 = [(NSDateComponents *)v7 year];
+    year2 = [(NSDateComponents *)v7 year];
 
-    v12 = [v9 initWithFormat:@"%ld/%ld/%ld", v10, v11, v13];
+    v12 = [v9 initWithFormat:@"%ld/%ld/%ld", month, v11, year2];
   }
 
   v14 = v12;
-  v15 = [v3 initWithFormat:@"%@/'%@'", v6, v12];
+  v15 = [v3 initWithFormat:@"%@/'%@'", label2, v12];
 
   if (v5)
   {
@@ -56,31 +56,31 @@
 
 - (id)dateString
 {
-  v3 = [(NSDateComponents *)self->_dateComponents year];
+  year = [(NSDateComponents *)self->_dateComponents year];
   v4 = objc_alloc(MEMORY[0x1E696AEC0]);
-  v5 = [(NSDateComponents *)self->_dateComponents month];
+  month = [(NSDateComponents *)self->_dateComponents month];
   v6 = [(NSDateComponents *)self->_dateComponents day];
-  if (v3 == 0x7FFFFFFFFFFFFFFFLL)
+  if (year == 0x7FFFFFFFFFFFFFFFLL)
   {
-    v7 = [v4 initWithFormat:@"%ld/%ld", v5, v6, v9];
+    v7 = [v4 initWithFormat:@"%ld/%ld", month, v6, v9];
   }
 
   else
   {
-    v7 = [v4 initWithFormat:@"%ld/%ld/%ld", v5, v6, -[NSDateComponents year](self->_dateComponents, "year")];
+    v7 = [v4 initWithFormat:@"%ld/%ld/%ld", month, v6, -[NSDateComponents year](self->_dateComponents, "year")];
   }
 
   return v7;
 }
 
-- (BOOL)isEqualToDateComponents:(id)a3
+- (BOOL)isEqualToDateComponents:(id)components
 {
-  v4 = a3;
-  if ([(SGObject *)self isEqualToSuggestion:v4])
+  componentsCopy = components;
+  if ([(SGObject *)self isEqualToSuggestion:componentsCopy])
   {
     v5 = self->_dateComponents;
     v6 = v5;
-    if (v5 == v4[5])
+    if (v5 == componentsCopy[5])
     {
       v7 = 1;
     }
@@ -99,42 +99,42 @@
   return v7;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  v5 = v4;
-  if (v4 == self)
+  equalCopy = equal;
+  v5 = equalCopy;
+  if (equalCopy == self)
   {
     v6 = 1;
   }
 
   else
   {
-    v6 = v4 && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGDateComponents *)self isEqualToDateComponents:v5];
+    v6 = equalCopy && (objc_opt_class(), (objc_opt_isKindOfClass() & 1) != 0) && [(SGDateComponents *)self isEqualToDateComponents:v5];
   }
 
   return v6;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
   v5.receiver = self;
   v5.super_class = SGDateComponents;
-  v4 = a3;
-  [(SGLabeledObject *)&v5 encodeWithCoder:v4];
-  [v4 encodeObject:self->_dateComponents forKey:{@"dateComponents", v5.receiver, v5.super_class}];
+  coderCopy = coder;
+  [(SGLabeledObject *)&v5 encodeWithCoder:coderCopy];
+  [coderCopy encodeObject:self->_dateComponents forKey:{@"dateComponents", v5.receiver, v5.super_class}];
 }
 
-- (SGDateComponents)initWithCoder:(id)a3
+- (SGDateComponents)initWithCoder:(id)coder
 {
-  v4 = a3;
+  coderCopy = coder;
   v10.receiver = self;
   v10.super_class = SGDateComponents;
-  v5 = [(SGLabeledObject *)&v10 initWithCoder:v4];
+  v5 = [(SGLabeledObject *)&v10 initWithCoder:coderCopy];
   if (v5)
   {
     v6 = [objc_alloc(MEMORY[0x1E695DFD8]) initWithObjects:{objc_opt_class(), 0}];
-    v7 = [v4 decodeObjectOfClasses:v6 forKey:@"dateComponents"];
+    v7 = [coderCopy decodeObjectOfClasses:v6 forKey:@"dateComponents"];
     dateComponents = v5->_dateComponents;
     v5->_dateComponents = v7;
   }
@@ -142,15 +142,15 @@
   return v5;
 }
 
-- (SGDateComponents)initWithDateComponents:(id)a3 label:(id)a4 extractionInfo:(id)a5 recordId:(id)a6
+- (SGDateComponents)initWithDateComponents:(id)components label:(id)label extractionInfo:(id)info recordId:(id)id
 {
-  v10 = a3;
+  componentsCopy = components;
   v15.receiver = self;
   v15.super_class = SGDateComponents;
-  v11 = [(SGLabeledObject *)&v15 initWithLabel:a4 extractionInfo:a5 recordId:a6];
+  v11 = [(SGLabeledObject *)&v15 initWithLabel:label extractionInfo:info recordId:id];
   if (v11)
   {
-    v12 = [v10 copy];
+    v12 = [componentsCopy copy];
     dateComponents = v11->_dateComponents;
     v11->_dateComponents = v12;
   }
@@ -158,13 +158,13 @@
   return v11;
 }
 
-+ (id)dateComponents:(id)a3 label:(id)a4 extractionInfo:(id)a5 withRecordId:(id)a6
++ (id)dateComponents:(id)components label:(id)label extractionInfo:(id)info withRecordId:(id)id
 {
-  v9 = a6;
-  v10 = a5;
-  v11 = a4;
-  v12 = a3;
-  v13 = [[SGDateComponents alloc] initWithDateComponents:v12 label:v11 extractionInfo:v10 recordId:v9];
+  idCopy = id;
+  infoCopy = info;
+  labelCopy = label;
+  componentsCopy = components;
+  v13 = [[SGDateComponents alloc] initWithDateComponents:componentsCopy label:labelCopy extractionInfo:infoCopy recordId:idCopy];
 
   return v13;
 }

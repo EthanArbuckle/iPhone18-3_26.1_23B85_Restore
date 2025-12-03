@@ -1,14 +1,14 @@
 @interface MapsAstronomicalConditionMonitor
 + (id)sharedMonitor;
 - (MapsAstronomicalConditionMonitor)init;
-- (int64_t)_computeOnQueueAstronomicalConditionForTime:(double)a3 currentLocation:(id)a4 isBeforeSolarTransit:(BOOL *)a5;
+- (int64_t)_computeOnQueueAstronomicalConditionForTime:(double)time currentLocation:(id)location isBeforeSolarTransit:(BOOL *)transit;
 - (int64_t)astronomicalCondition;
-- (void)_setMonitoring:(BOOL)a3;
-- (void)computeAstronomicalConditionForTime:(double)a3 currentLocation:(id)a4;
-- (void)locationManagerUpdatedLocation:(id)a3;
+- (void)_setMonitoring:(BOOL)monitoring;
+- (void)computeAstronomicalConditionForTime:(double)time currentLocation:(id)location;
+- (void)locationManagerUpdatedLocation:(id)location;
 - (void)scheduleTimeCheck;
-- (void)setAstronomicalCondition:(int64_t)a3;
-- (void)setCurrentLocation:(id)a3;
+- (void)setAstronomicalCondition:(int64_t)condition;
+- (void)setCurrentLocation:(id)location;
 - (void)timeDidChangeSignificantly;
 @end
 
@@ -74,18 +74,18 @@
 
   if (objc_opt_respondsToSelector())
   {
-    v5 = [v4 integerValue];
+    integerValue = [v4 integerValue];
     v6 = sub_100014EFC();
     if (os_log_type_enabled(v6, OS_LOG_TYPE_INFO))
     {
-      if (v5 >= 4)
+      if (integerValue >= 4)
       {
-        v7 = [NSString stringWithFormat:@"<Unknown: %ld>", v5];
+        v7 = [NSString stringWithFormat:@"<Unknown: %ld>", integerValue];
       }
 
       else
       {
-        v7 = off_10164FC58[v5];
+        v7 = off_10164FC58[integerValue];
       }
 
       *buf = 138412290;
@@ -96,18 +96,18 @@
 
   else
   {
-    v5 = *(&self->_isBeforeSolarTransit + 1);
+    integerValue = *(&self->_isBeforeSolarTransit + 1);
   }
 
-  return v5;
+  return integerValue;
 }
 
 - (void)timeDidChangeSignificantly
 {
-  v3 = [(MapsAstronomicalConditionMonitor *)self currentLocation];
-  if (v3)
+  currentLocation = [(MapsAstronomicalConditionMonitor *)self currentLocation];
+  if (currentLocation)
   {
-    [(MapsAstronomicalConditionMonitor *)self computeAstronomicalConditionForTime:v3 currentLocation:CFAbsoluteTimeGetCurrent()];
+    [(MapsAstronomicalConditionMonitor *)self computeAstronomicalConditionForTime:currentLocation currentLocation:CFAbsoluteTimeGetCurrent()];
   }
 
   else
@@ -121,42 +121,42 @@
   }
 }
 
-- (int64_t)_computeOnQueueAstronomicalConditionForTime:(double)a3 currentLocation:(id)a4 isBeforeSolarTransit:(BOOL *)a5
+- (int64_t)_computeOnQueueAstronomicalConditionForTime:(double)time currentLocation:(id)location isBeforeSolarTransit:(BOOL *)transit
 {
-  v45 = a4;
-  [v45 coordinate];
+  locationCopy = location;
+  [locationCopy coordinate];
   v9 = v8;
   v11 = v10;
   v12 = *(&self->super._monitoring + 1);
   GEOConfigGetDouble();
-  [v12 calculateAstronomicalTimeForLocation:v9 time:v11 altitudeInDegrees:{a3, v13}];
+  [v12 calculateAstronomicalTimeForLocation:v9 time:v11 altitudeInDegrees:{time, v13}];
   v14 = *(&self->_daylightAlmanac + 1);
   GEOConfigGetDouble();
-  [v14 calculateAstronomicalTimeForLocation:v9 time:v11 altitudeInDegrees:{a3, v15}];
-  v16 = [NSDate dateWithTimeIntervalSinceReferenceDate:a3];
+  [v14 calculateAstronomicalTimeForLocation:v9 time:v11 altitudeInDegrees:{time, v15}];
+  v16 = [NSDate dateWithTimeIntervalSinceReferenceDate:time];
   v17 = objc_opt_new();
-  v18 = [*(&self->super._monitoring + 1) previousTransit];
+  previousTransit = [*(&self->super._monitoring + 1) previousTransit];
 
-  if (v18)
+  if (previousTransit)
   {
-    v19 = [*(&self->super._monitoring + 1) previousTransit];
-    [v17 addObject:v19];
+    previousTransit2 = [*(&self->super._monitoring + 1) previousTransit];
+    [v17 addObject:previousTransit2];
   }
 
-  v20 = [*(&self->super._monitoring + 1) transit];
+  transit = [*(&self->super._monitoring + 1) transit];
 
-  if (v20)
+  if (transit)
   {
-    v21 = [*(&self->super._monitoring + 1) transit];
-    [v17 addObject:v21];
+    transit2 = [*(&self->super._monitoring + 1) transit];
+    [v17 addObject:transit2];
   }
 
-  v22 = [*(&self->super._monitoring + 1) nextTransit];
+  nextTransit = [*(&self->super._monitoring + 1) nextTransit];
 
-  if (v22)
+  if (nextTransit)
   {
-    v23 = [*(&self->super._monitoring + 1) nextTransit];
-    [v17 addObject:v23];
+    nextTransit2 = [*(&self->super._monitoring + 1) nextTransit];
+    [v17 addObject:nextTransit2];
   }
 
   v48 = 0u;
@@ -212,18 +212,18 @@
 
   v35 = 0;
 LABEL_20:
-  *a5 = v35;
+  *transit = v35;
   v36 = sub_100014EFC();
   if (os_log_type_enabled(v36, OS_LOG_TYPE_INFO))
   {
     v37 = *(&self->super._monitoring + 1);
     v43 = *(&self->_daylightAlmanac + 1);
-    v44 = *a5;
-    v38 = [v37 previousTransit];
-    v39 = [*(&self->super._monitoring + 1) transit];
-    v40 = [*(&self->super._monitoring + 1) nextTransit];
+    v44 = *transit;
+    previousTransit3 = [v37 previousTransit];
+    transit3 = [*(&self->super._monitoring + 1) transit];
+    nextTransit3 = [*(&self->super._monitoring + 1) nextTransit];
     *buf = 138414082;
-    v51 = v45;
+    v51 = locationCopy;
     v52 = 2112;
     v53 = v16;
     v54 = 2112;
@@ -233,20 +233,20 @@ LABEL_20:
     v58 = 1024;
     v59 = v44;
     v60 = 2112;
-    v61 = v38;
+    v61 = previousTransit3;
     v62 = 2112;
-    v63 = v39;
+    v63 = transit3;
     v64 = 2112;
-    v65 = v40;
+    v65 = nextTransit3;
     _os_log_impl(&_mh_execute_header, v36, OS_LOG_TYPE_INFO, "computeAstronomicalCondition updated conditions for %@ at %@; daylightAlmanac: %@ twilightAlamanac: %@; isBeforeSolarTransit: %d; transits: %@ %@ %@", buf, 0x4Eu);
   }
 
-  if ([*(&self->super._monitoring + 1) isDayLightForTime:a3])
+  if ([*(&self->super._monitoring + 1) isDayLightForTime:time])
   {
     v41 = 3;
   }
 
-  else if ([*(&self->_daylightAlmanac + 1) isDayLightForTime:a3])
+  else if ([*(&self->_daylightAlmanac + 1) isDayLightForTime:time])
   {
     v41 = 2;
   }
@@ -259,9 +259,9 @@ LABEL_20:
   return v41;
 }
 
-- (void)computeAstronomicalConditionForTime:(double)a3 currentLocation:(id)a4
+- (void)computeAstronomicalConditionForTime:(double)time currentLocation:(id)location
 {
-  v6 = a4;
+  locationCopy = location;
   objc_initWeak(&location, self);
   v7 = *(&self->_twilightAlmanac + 1);
   v9[0] = _NSConcreteStackBlock;
@@ -269,24 +269,24 @@ LABEL_20:
   v9[2] = sub_100C90BEC;
   v9[3] = &unk_101651D38;
   objc_copyWeak(v11, &location);
-  v11[1] = *&a3;
-  v10 = v6;
-  v8 = v6;
+  v11[1] = *&time;
+  v10 = locationCopy;
+  v8 = locationCopy;
   dispatch_async(v7, v9);
 
   objc_destroyWeak(v11);
   objc_destroyWeak(&location);
 }
 
-- (void)locationManagerUpdatedLocation:(id)a3
+- (void)locationManagerUpdatedLocation:(id)location
 {
-  v4 = [a3 lastLocation];
-  [(MapsAstronomicalConditionMonitor *)self setCurrentLocation:v4];
+  lastLocation = [location lastLocation];
+  [(MapsAstronomicalConditionMonitor *)self setCurrentLocation:lastLocation];
 }
 
-- (void)setAstronomicalCondition:(int64_t)a3
+- (void)setAstronomicalCondition:(int64_t)condition
 {
-  if (*(&self->_isBeforeSolarTransit + 1) != a3)
+  if (*(&self->_isBeforeSolarTransit + 1) != condition)
   {
     v5 = sub_100014EFC();
     if (os_log_type_enabled(v5, OS_LOG_TYPE_INFO))
@@ -303,40 +303,40 @@ LABEL_20:
       }
 
       v8 = v7;
-      if (a3 >= 4)
+      if (condition >= 4)
       {
-        v9 = [NSString stringWithFormat:@"<Unknown: %ld>", a3];
+        condition = [NSString stringWithFormat:@"<Unknown: %ld>", condition];
       }
 
       else
       {
-        v9 = off_10164FC58[a3];
+        condition = off_10164FC58[condition];
       }
 
       *buf = 138412546;
       v11 = v8;
       v12 = 2112;
-      v13 = v9;
+      v13 = condition;
       _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_INFO, "Changing condition from %@ to %@", buf, 0x16u);
     }
 
-    *(&self->_isBeforeSolarTransit + 1) = a3;
+    *(&self->_isBeforeSolarTransit + 1) = condition;
     [(MapsBaseLightMonitor *)self _notifyDidChange];
   }
 }
 
-- (void)_setMonitoring:(BOOL)a3
+- (void)_setMonitoring:(BOOL)monitoring
 {
-  v3 = a3;
-  v5 = [(MapsBaseLightMonitor *)self _isMonitoring];
+  monitoringCopy = monitoring;
+  _isMonitoring = [(MapsBaseLightMonitor *)self _isMonitoring];
   v12.receiver = self;
   v12.super_class = MapsAstronomicalConditionMonitor;
-  [(MapsBaseLightMonitor *)&v12 _setMonitoring:v3];
-  if (v5 != v3)
+  [(MapsBaseLightMonitor *)&v12 _setMonitoring:monitoringCopy];
+  if (_isMonitoring != monitoringCopy)
   {
     v6 = +[MKLocationManager sharedLocationManager];
     v7 = v6;
-    if (v3)
+    if (monitoringCopy)
     {
       [v6 listenForLocationUpdates:self];
 
@@ -344,8 +344,8 @@ LABEL_20:
       [v8 addObserver:self selector:"timeDidChangeSignificantly" name:UIApplicationSignificantTimeChangeNotification object:0];
 
       v9 = +[MKLocationManager sharedLocationManager];
-      v10 = [v9 lastLocation];
-      [(MapsAstronomicalConditionMonitor *)self setCurrentLocation:v10];
+      lastLocation = [v9 lastLocation];
+      [(MapsAstronomicalConditionMonitor *)self setCurrentLocation:lastLocation];
 
       [(MapsAstronomicalConditionMonitor *)self scheduleTimeCheck];
     }
@@ -364,14 +364,14 @@ LABEL_20:
   }
 }
 
-- (void)setCurrentLocation:(id)a3
+- (void)setCurrentLocation:(id)location
 {
-  v5 = a3;
-  v6 = v5;
+  locationCopy = location;
+  v6 = locationCopy;
   v7 = *(&self->_astronomicalCondition + 1);
-  if (v7 != v5)
+  if (v7 != locationCopy)
   {
-    if (v5)
+    if (locationCopy)
     {
       if (!v7)
       {
@@ -388,12 +388,12 @@ LABEL_20:
 
 LABEL_11:
 
-        objc_storeStrong((&self->_astronomicalCondition + 1), a3);
+        objc_storeStrong((&self->_astronomicalCondition + 1), location);
         [(MapsAstronomicalConditionMonitor *)self computeAstronomicalConditionForTime:v6 currentLocation:CFAbsoluteTimeGetCurrent()];
         goto LABEL_12;
       }
 
-      [v5 distanceFromLocation:?];
+      [locationCopy distanceFromLocation:?];
       if (v8 > 3000.0)
       {
         v9 = sub_100014EFC();

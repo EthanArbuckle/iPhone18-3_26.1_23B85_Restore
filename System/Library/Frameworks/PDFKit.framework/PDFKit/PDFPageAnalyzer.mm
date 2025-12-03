@@ -1,19 +1,19 @@
 @interface PDFPageAnalyzer
-+ (CGAffineTransform)_normalizedToPageTransformForPageWithBounds:(SEL)a3;
++ (CGAffineTransform)_normalizedToPageTransformForPageWithBounds:(SEL)bounds;
 + (PDFPageAnalyzer)sharedInstance;
-- (BOOL)_addTableFromAnalysis:(id)a3 bounds:(CGRect)a4 toPDFPage:(id)a5;
-- (CGPoint)_testPixelsFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 compare:(id)a5;
+- (BOOL)_addTableFromAnalysis:(id)analysis bounds:(CGRect)bounds toPDFPage:(id)page;
+- (CGPoint)_testPixelsFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint compare:(id)compare;
 - (PDFPageAnalyzer)init;
-- (UIEdgeInsets)_computeEdgeInsetsForQuad:(id)a3 inImage:(CGImage *)a4 background:(unsigned __int8)a5 glyphCount:(unint64_t)a6;
+- (UIEdgeInsets)_computeEdgeInsetsForQuad:(id)quad inImage:(CGImage *)image background:(unsigned __int8)background glyphCount:(unint64_t)count;
 - (id).cxx_construct;
-- (id)_detectedAnnotationWithBounds:(CGRect)a3 intersectsAnnotationOnPage:(id)a4;
-- (void)_addFormElementsFromAnalysis:(id)a3 bounds:(CGRect)a4 toPage:(id)a5;
-- (void)_addFormElementsUsingDetectorToPage:(id)a3 displayBox:(int64_t)a4;
-- (void)_addTextFromAnalysis:(id)a3 ofImage:(id)a4 bounds:(CGRect)a5 toPage:(id)a6;
-- (void)_callCompletionBlock:(id)a3 onQueue:(id)a4 analysis:(id)a5 error:(id)a6 foundTable:(BOOL)a7;
-- (void)_drawTextFromAnalysis:(id)a3 ofImage:(id)a4 intoContext:(CGContext *)a5 withBounds:(CGRect)a6;
-- (void)analyzePage:(id)a3 analysisTypes:(unint64_t)a4 completionQueue:(id)a5 completionBlock:(id)a6;
-- (void)proposedFormFieldBoundsNearestPoint:(CGPoint)a3 onPage:(id)a4 completionBlock:(id)a5;
+- (id)_detectedAnnotationWithBounds:(CGRect)bounds intersectsAnnotationOnPage:(id)page;
+- (void)_addFormElementsFromAnalysis:(id)analysis bounds:(CGRect)bounds toPage:(id)page;
+- (void)_addFormElementsUsingDetectorToPage:(id)page displayBox:(int64_t)box;
+- (void)_addTextFromAnalysis:(id)analysis ofImage:(id)image bounds:(CGRect)bounds toPage:(id)page;
+- (void)_callCompletionBlock:(id)block onQueue:(id)queue analysis:(id)analysis error:(id)error foundTable:(BOOL)table;
+- (void)_drawTextFromAnalysis:(id)analysis ofImage:(id)image intoContext:(CGContext *)context withBounds:(CGRect)bounds;
+- (void)analyzePage:(id)page analysisTypes:(unint64_t)types completionQueue:(id)queue completionBlock:(id)block;
+- (void)proposedFormFieldBoundsNearestPoint:(CGPoint)point onPage:(id)page completionBlock:(id)block;
 @end
 
 @implementation PDFPageAnalyzer
@@ -94,36 +94,36 @@ uint64_t __33__PDFPageAnalyzer_sharedInstance__block_invoke()
   return v2;
 }
 
-- (void)analyzePage:(id)a3 analysisTypes:(unint64_t)a4 completionQueue:(id)a5 completionBlock:(id)a6
+- (void)analyzePage:(id)page analysisTypes:(unint64_t)types completionQueue:(id)queue completionBlock:(id)block
 {
-  v10 = a3;
-  v11 = a5;
-  v12 = a6;
-  if (v10)
+  pageCopy = page;
+  queueCopy = queue;
+  blockCopy = block;
+  if (pageCopy)
   {
     std::mutex::lock((self + 48));
-    v13 = [v10 document];
-    v14 = [v13 indexForPage:v10];
+    document = [pageCopy document];
+    v14 = [document indexForPage:pageCopy];
 
     Current = CFAbsoluteTimeGetCurrent();
     v16 = (v14 + 1);
     _PDFLog(OS_LOG_TYPE_DEBUG, "PageAnalysis", "analyzePage: (page #%lu) START", v17, v18, v19, v20, v21, v16);
-    LODWORD(v13) = [v10 didPerformOCR];
-    v22 = [v10 didPerformFormDetection];
-    v23 = a4 & 0xFFFFFFFFFFFFFFFELL;
-    if (!v13)
+    LODWORD(document) = [pageCopy didPerformOCR];
+    didPerformFormDetection = [pageCopy didPerformFormDetection];
+    typesCopy = types & 0xFFFFFFFFFFFFFFFELL;
+    if (!document)
     {
-      v23 = a4;
+      typesCopy = types;
     }
 
-    if (v22)
+    if (didPerformFormDetection)
     {
-      v24 = (v23 & 0xFFFFFFFFFFFFFFFDLL);
+      v24 = (typesCopy & 0xFFFFFFFFFFFFFFFDLL);
     }
 
     else
     {
-      v24 = v23;
+      v24 = typesCopy;
     }
 
     if (v24)
@@ -132,9 +132,9 @@ uint64_t __33__PDFPageAnalyzer_sharedInstance__block_invoke()
       v39[1] = v39;
       v39[2] = 0x2020000000;
       v40 = 0;
-      if (([*(self + 5) containsObject:v10] & 1) == 0)
+      if (([*(self + 5) containsObject:pageCopy] & 1) == 0)
       {
-        [*(self + 5) addObject:v10];
+        [*(self + 5) addObject:pageCopy];
         objc_initWeak(&location, self);
         v25 = *(self + 1);
         block[0] = MEMORY[0x1E69E9820];
@@ -144,12 +144,12 @@ uint64_t __33__PDFPageAnalyzer_sharedInstance__block_invoke()
         objc_copyWeak(v37, &location);
         v37[1] = v16;
         v37[2] = *&Current;
-        v26 = v10;
+        v26 = pageCopy;
         v37[3] = v24;
         v33 = v26;
         v36 = v39;
-        v35 = v12;
-        v34 = v11;
+        v35 = blockCopy;
+        v34 = queueCopy;
         dispatch_async(v25, block);
 
         objc_destroyWeak(v37);
@@ -161,7 +161,7 @@ uint64_t __33__PDFPageAnalyzer_sharedInstance__block_invoke()
 
     else
     {
-      [(PDFPageAnalyzer *)self _callCompletionBlock:v12 onQueue:v11 analysis:0 error:0 foundTable:0];
+      [(PDFPageAnalyzer *)self _callCompletionBlock:blockCopy onQueue:queueCopy analysis:0 error:0 foundTable:0];
       CFAbsoluteTimeGetCurrent();
       _PDFLog(OS_LOG_TYPE_DEBUG, "PageAnalysis", "analyzePage (page #%lu): (analysisTypes == 0), DONE (+%g secs)", v27, v28, v29, v30, v31, v16);
     }
@@ -336,12 +336,12 @@ void __77__PDFPageAnalyzer_analyzePage_analysisTypes_completionQueue_completionB
   std::mutex::unlock((v45 + 48));
 }
 
-- (void)proposedFormFieldBoundsNearestPoint:(CGPoint)a3 onPage:(id)a4 completionBlock:(id)a5
+- (void)proposedFormFieldBoundsNearestPoint:(CGPoint)point onPage:(id)page completionBlock:(id)block
 {
-  y = a3.y;
-  x = a3.x;
-  v9 = a4;
-  v10 = a5;
+  y = point.y;
+  x = point.x;
+  pageCopy = page;
+  blockCopy = block;
   v21[0] = 0;
   v21[1] = v21;
   v21[2] = 0x5012000000;
@@ -355,14 +355,14 @@ void __77__PDFPageAnalyzer_analyzePage_analysisTypes_completionQueue_completionB
   v14[1] = 3221225472;
   v14[2] = __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completionBlock___block_invoke;
   v14[3] = &unk_1E8150E30;
-  v15 = v9;
-  v16 = self;
+  v15 = pageCopy;
+  selfCopy = self;
   v19 = x;
   v20 = y;
-  v17 = v10;
+  v17 = blockCopy;
   v18 = v21;
-  v12 = v10;
-  v13 = v9;
+  v12 = blockCopy;
+  v13 = pageCopy;
   [(PDFPageAnalyzer *)self analyzePage:v13 analysisTypes:4 completionQueue:0 completionBlock:v14];
 
   _Block_object_dispose(v21, 8);
@@ -449,49 +449,49 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
   dispatch_async(MEMORY[0x1E69E96A0], block);
 }
 
-- (void)_callCompletionBlock:(id)a3 onQueue:(id)a4 analysis:(id)a5 error:(id)a6 foundTable:(BOOL)a7
+- (void)_callCompletionBlock:(id)block onQueue:(id)queue analysis:(id)analysis error:(id)error foundTable:(BOOL)table
 {
-  v7 = a7;
-  v11 = a3;
-  v12 = a4;
-  v13 = a5;
-  v14 = a6;
-  if (v11)
+  tableCopy = table;
+  blockCopy = block;
+  queueCopy = queue;
+  analysisCopy = analysis;
+  errorCopy = error;
+  if (blockCopy)
   {
-    if (v12)
+    if (queueCopy)
     {
       v15[0] = MEMORY[0x1E69E9820];
       v15[1] = 3221225472;
       v15[2] = __74__PDFPageAnalyzer__callCompletionBlock_onQueue_analysis_error_foundTable___block_invoke;
       v15[3] = &unk_1E8150E58;
-      v18 = v11;
-      v16 = v13;
-      v17 = v14;
-      v19 = v7;
-      dispatch_async(v12, v15);
+      v18 = blockCopy;
+      v16 = analysisCopy;
+      v17 = errorCopy;
+      v19 = tableCopy;
+      dispatch_async(queueCopy, v15);
     }
 
     else
     {
-      (*(v11 + 2))(v11, v13, v14, v7);
+      (*(blockCopy + 2))(blockCopy, analysisCopy, errorCopy, tableCopy);
     }
   }
 }
 
-- (void)_addTextFromAnalysis:(id)a3 ofImage:(id)a4 bounds:(CGRect)a5 toPage:(id)a6
+- (void)_addTextFromAnalysis:(id)analysis ofImage:(id)image bounds:(CGRect)bounds toPage:(id)page
 {
-  height = a5.size.height;
-  width = a5.size.width;
-  y = a5.origin.y;
-  x = a5.origin.x;
-  v13 = a3;
-  v14 = a4;
-  v15 = a6;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
+  analysisCopy = analysis;
+  imageCopy = image;
+  pageCopy = page;
   v16 = CGDisplayListCreate();
   value[7] = v16;
   v17 = CGDisplayListContextCreate();
   value[6] = v17;
-  [(PDFPageAnalyzer *)self _drawTextFromAnalysis:v13 ofImage:v14 intoContext:v17 withBounds:x, y, width, height];
+  [(PDFPageAnalyzer *)self _drawTextFromAnalysis:analysisCopy ofImage:imageCopy intoContext:v17 withBounds:x, y, width, height];
   CGContextFlush(v17);
   Mutable = CFDataCreateMutable(*MEMORY[0x1E695E480], 0);
   value[5] = Mutable;
@@ -519,7 +519,7 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
       if (CGPDFDictionaryGetStream(dict, "Fm1", &stream))
       {
         CGPDFStreamGetDictionary(stream);
-        [v15 setExtraContentStream:stream steamDocument:v22];
+        [pageCopy setExtraContentStream:stream steamDocument:v22];
       }
     }
   }
@@ -560,15 +560,15 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
   }
 }
 
-- (BOOL)_addTableFromAnalysis:(id)a3 bounds:(CGRect)a4 toPDFPage:(id)a5
+- (BOOL)_addTableFromAnalysis:(id)analysis bounds:(CGRect)bounds toPDFPage:(id)page
 {
-  height = a4.size.height;
-  width = a4.size.width;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v75 = *MEMORY[0x1E69E9840];
-  v56 = a3;
-  v55 = a5;
+  analysisCopy = analysis;
+  pageCopy = page;
   memset(&v72, 0, sizeof(v72));
   v10 = objc_opt_class();
   if (v10)
@@ -581,13 +581,13 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
     memset(&v72, 0, sizeof(v72));
   }
 
-  v54 = [v56 layoutComponents];
+  layoutComponents = [analysisCopy layoutComponents];
   v57 = objc_opt_new();
   v70 = 0u;
   v71 = 0u;
   v68 = 0u;
   v69 = 0u;
-  obj = v54;
+  obj = layoutComponents;
   v60 = [obj countByEnumeratingWithState:&v68 objects:v74 count:16];
   if (v60)
   {
@@ -604,8 +604,8 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
         v11 = *(*(&v68 + 1) + 8 * i);
         if ([v11 type] == 64)
         {
-          v12 = [v11 boundingQuad];
-          [v12 boundingBox];
+          boundingQuad = [v11 boundingQuad];
+          [boundingQuad boundingBox];
           v14 = v13;
           v16 = v15;
           v18 = v17;
@@ -627,8 +627,8 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
           v66 = 0u;
           v63 = 0u;
           v64 = 0u;
-          v26 = [v11 children];
-          v27 = [v26 countByEnumeratingWithState:&v63 objects:v73 count:16];
+          children = [v11 children];
+          v27 = [children countByEnumeratingWithState:&v63 objects:v73 count:16];
           if (v27)
           {
             v28 = *v64;
@@ -638,7 +638,7 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
               {
                 if (*v64 != v28)
                 {
-                  objc_enumerationMutation(v26);
+                  objc_enumerationMutation(children);
                 }
 
                 v30 = *(*(&v63 + 1) + 8 * j);
@@ -646,8 +646,8 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
                 v32 = [MEMORY[0x1E696AD98] numberWithInt:{objc_msgSend(v30, "rowRange")}];
                 [v31 setValue:v32 forKey:@"Row Index"];
 
-                v33 = [v30 boundingQuad];
-                [v33 boundingBox];
+                boundingQuad2 = [v30 boundingQuad];
+                [boundingQuad2 boundingBox];
                 v35 = v34;
                 v37 = v36;
                 v39 = v38;
@@ -665,7 +665,7 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
                 [v25 addObject:v31];
               }
 
-              v27 = [v26 countByEnumeratingWithState:&v63 objects:v73 count:16];
+              v27 = [children countByEnumeratingWithState:&v63 objects:v73 count:16];
             }
 
             while (v27);
@@ -688,11 +688,11 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
   if ([v57 count])
   {
     CFAbsoluteTimeGetCurrent();
-    [v55 pageRef];
+    [pageCopy pageRef];
     v44 = v57;
     inserted = CGPDFPageInsertTableDescriptions();
-    v46 = [v55 document];
-    v47 = [v46 indexForPage:v55];
+    document = [pageCopy document];
+    v47 = [document indexForPage:pageCopy];
     CFAbsoluteTimeGetCurrent();
     _PDFLog(OS_LOG_TYPE_DEBUG, "PageAnalysis", "table insertion for page: (page #%lu) COMPLETED (+%g secs)", v48, v49, v50, v51, v52, v47 + 1);
   }
@@ -705,16 +705,16 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
   return inserted;
 }
 
-- (void)_drawTextFromAnalysis:(id)a3 ofImage:(id)a4 intoContext:(CGContext *)a5 withBounds:(CGRect)a6
+- (void)_drawTextFromAnalysis:(id)analysis ofImage:(id)image intoContext:(CGContext *)context withBounds:(CGRect)bounds
 {
-  height = a6.size.height;
-  width = a6.size.width;
-  y = a6.origin.y;
-  x = a6.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v115 = *MEMORY[0x1E69E9840];
-  v79 = a3;
-  v80 = a4;
-  [v80 size];
+  analysisCopy = analysis;
+  imageCopy = image;
+  [imageCopy size];
   v14 = v13;
   v16 = v15;
   CGAffineTransformMakeTranslation(&v110, 0.0, v15);
@@ -733,15 +733,15 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
     memset(&v109, 0, sizeof(v109));
   }
 
-  v97 = self;
-  v18 = v80;
-  v91 = [v80 CGImage];
-  CGContextSaveGState(a5);
+  selfCopy = self;
+  v18 = imageCopy;
+  cGImage = [imageCopy CGImage];
+  CGContextSaveGState(context);
   SRGB = CGColorCreateSRGB(1.0, 0.0, 0.0, 0.0);
   v108.b = 0.0;
   v108.c = 0.0;
   *&v108.a = &v108.b;
-  [v79 allLines];
+  [analysisCopy allLines];
   v106 = 0u;
   v107 = 0u;
   v104 = 0u;
@@ -763,10 +763,10 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
         }
 
         v19 = *(*(&v104 + 1) + 8 * i);
-        v84 = [v19 children];
-        v95 = [v84 lastObject];
-        v20 = [v19 quad];
-        v85 = quadTransformedWithAffineTransform(v20, &v109.a);
+        children = [v19 children];
+        lastObject = [children lastObject];
+        quad = [v19 quad];
+        v85 = quadTransformedWithAffineTransform(quad, &v109.a);
 
         [v85 bottomLeft];
         v22 = v21;
@@ -777,7 +777,7 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
         v101 = 0u;
         v102 = 0u;
         v103 = 0u;
-        v87 = v84;
+        v87 = children;
         v27 = [v87 countByEnumeratingWithState:&v100 objects:v113 count:16];
         if (v27)
         {
@@ -793,8 +793,8 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
               }
 
               v29 = *(*(&v100 + 1) + 8 * j);
-              v30 = [v29 quad];
-              v31 = quadTransformedWithAffineTransform(v30, &v109.a);
+              quad2 = [v29 quad];
+              v31 = quadTransformedWithAffineTransform(quad2, &v109.a);
 
               [v31 bottomLeft];
               v33 = v32;
@@ -806,14 +806,14 @@ void __78__PDFPageAnalyzer_proposedFormFieldBoundsNearestPoint_onPage_completion
               v41 = v40;
               v44 = (v42 + v43) * 0.5;
               v99 = round(v44 * 10.0) / 10.0;
-              v45 = [v29 string];
-              v46 = [v45 length];
+              string = [v29 string];
+              v46 = [string length];
 
-              v47 = [v29 quad];
-              v48 = quadTransformedWithAffineTransform(v47, &v110.a);
+              quad3 = [v29 quad];
+              v48 = quadTransformedWithAffineTransform(quad3, &v110.a);
 
-              [(PDFPageAnalyzer *)v97 _computeEdgeInsetsForQuad:v48 inImage:v91 background:0 glyphCount:v46];
-              PDFRectScale(v49, v50, v51, v52, 1.0 / *(v97 + 14));
+              [(PDFPageAnalyzer *)selfCopy _computeEdgeInsetsForQuad:v48 inImage:cGImage background:0 glyphCount:v46];
+              PDFRectScale(v49, v50, v51, v52, 1.0 / *(selfCopy + 14));
               v54 = v53;
               v56 = v55;
               b = v108.b;
@@ -852,9 +852,9 @@ LABEL_21:
                 }
               }
 
-              v61 = [v29 string];
-              v62 = v61;
-              if (v29 == v95)
+              string2 = [v29 string];
+              v62 = string2;
+              if (v29 == lastObject)
               {
                 v63 = @"\n";
               }
@@ -864,7 +864,7 @@ LABEL_21:
                 v63 = @" ";
               }
 
-              v64 = [v61 stringByAppendingString:v63];
+              v64 = [string2 stringByAppendingString:v63];
 
               v111[0] = v90;
               v111[1] = v89;
@@ -874,11 +874,11 @@ LABEL_21:
               v66 = CFAttributedStringCreate(alloc, v64, v65);
               v67 = CTLineCreateWithAttributedString(v66);
               JustifiedLine = CTLineCreateJustifiedLine(v67, 1.0, v41 - (v54 + v56));
-              CGContextSaveGState(a5);
-              CGContextTranslateCTM(a5, v33, v35);
-              CGContextRotateCTM(a5, angle);
-              CGContextTranslateCTM(a5, v54, v44 * 0.18);
-              CGContextSetTextPosition(a5, 0.0, 0.0);
+              CGContextSaveGState(context);
+              CGContextTranslateCTM(context, v33, v35);
+              CGContextRotateCTM(context, angle);
+              CGContextTranslateCTM(context, v54, v44 * 0.18);
+              CGContextSetTextPosition(context, 0.0, 0.0);
               if (JustifiedLine)
               {
                 v69 = JustifiedLine;
@@ -889,9 +889,9 @@ LABEL_21:
                 v69 = v67;
               }
 
-              CTLineDraw(v69, a5);
-              CGContextRestoreGState(a5);
-              if (*(v97 + 120) == 1)
+              CTLineDraw(v69, context);
+              CGContextRestoreGState(context);
+              if (*(selfCopy + 120) == 1)
               {
                 [v31 topLeft];
                 v71 = v70;
@@ -905,10 +905,10 @@ LABEL_21:
                 CGPathAddLineToPoint(Mutable, 0, v37, v39);
                 CGPathAddLineToPoint(Mutable, 0, v33, v35);
                 CGPathCloseSubpath(Mutable);
-                CGContextAddPath(a5, Mutable);
-                CGContextSaveGState(a5);
-                CGContextStrokePath(a5);
-                CGContextRestoreGState(a5);
+                CGContextAddPath(context, Mutable);
+                CGContextSaveGState(context);
+                CGContextStrokePath(context);
+                CGContextRestoreGState(context);
                 if (Mutable)
                 {
                   CFRelease(Mutable);
@@ -944,7 +944,7 @@ LABEL_21:
     while (v83);
   }
 
-  CGContextRestoreGState(a5);
+  CGContextRestoreGState(context);
   std::__tree<std::__value_type<double,applesauce::CF::ObjectRef<__CTFont const*>>,std::__map_value_compare<double,std::__value_type<double,applesauce::CF::ObjectRef<__CTFont const*>>,std::less<double>,true>,std::allocator<std::__value_type<double,applesauce::CF::ObjectRef<__CTFont const*>>>>::destroy(&v108, *&v108.b);
   if (SRGB)
   {
@@ -952,13 +952,13 @@ LABEL_21:
   }
 }
 
-- (CGPoint)_testPixelsFromPoint:(CGPoint)a3 toPoint:(CGPoint)a4 compare:(id)a5
+- (CGPoint)_testPixelsFromPoint:(CGPoint)point toPoint:(CGPoint)toPoint compare:(id)compare
 {
-  y = a4.y;
-  x = a4.x;
-  v7 = a3.y;
-  v8 = a3.x;
-  v9 = a5;
+  y = toPoint.y;
+  x = toPoint.x;
+  v7 = point.y;
+  v8 = point.x;
+  compareCopy = compare;
   v10 = v8;
   v11 = v7;
   v12 = x;
@@ -1006,7 +1006,7 @@ LABEL_21:
 
   v18 = -v17;
   v19 = v15 - v17;
-  while ((v9[2](v9, v10, v11) & 1) != 0)
+  while ((compareCopy[2](compareCopy, v10, v11) & 1) != 0)
   {
     if (v10 == v12 && v11 == y)
     {
@@ -1068,11 +1068,11 @@ LABEL_30:
   return result;
 }
 
-- (UIEdgeInsets)_computeEdgeInsetsForQuad:(id)a3 inImage:(CGImage *)a4 background:(unsigned __int8)a5 glyphCount:(unint64_t)a6
+- (UIEdgeInsets)_computeEdgeInsetsForQuad:(id)quad inImage:(CGImage *)image background:(unsigned __int8)background glyphCount:(unint64_t)count
 {
   v64 = *MEMORY[0x1E69E9840];
-  v9 = a3;
-  CGBuf::CGBuf(v60, a4);
+  quadCopy = quad;
+  CGBuf::CGBuf(v60, image);
   v10 = v63 <= 1u && v62 == 8;
   if (!v10 || (v61 & 0x1Fu) - 1 <= 3)
   {
@@ -1091,7 +1091,7 @@ LABEL_8:
     goto LABEL_8;
   }
 
-  Height = CGImageGetHeight(a4);
+  Height = CGImageGetHeight(image);
   v20 = *MEMORY[0x1E69DDCE0];
   v21 = *(MEMORY[0x1E69DDCE0] + 8);
   v13 = *(MEMORY[0x1E69DDCE0] + 16);
@@ -1101,13 +1101,13 @@ LABEL_8:
   v58[2] = __75__PDFPageAnalyzer__computeEdgeInsetsForQuad_inImage_background_glyphCount___block_invoke;
   v58[3] = &__block_descriptor_361_ea8_32c10_ZTS5CGBuf_e11_B16__0i8i12l;
   CGBuf::CGBuf(v59, v60);
-  v59[328] = a5;
+  v59[328] = background;
   v23 = _Block_copy(v58);
   v57 = v21;
   MEMORY[0x1EEE9AC00]();
-  divideQuadSideIntoSegments(v9, 0, &v53);
+  divideQuadSideIntoSegments(quadCopy, 0, &v53);
   MEMORY[0x1EEE9AC00]();
-  divideQuadSideIntoSegments(v9, 1, &v51);
+  divideQuadSideIntoSegments(quadCopy, 1, &v51);
   v56 = v22;
   v24 = Height;
   v25 = v54;
@@ -1235,19 +1235,19 @@ BOOL __75__PDFPageAnalyzer__computeEdgeInsetsForQuad_inImage_background_glyphCou
   return v6 > 0x7F;
 }
 
-- (id)_detectedAnnotationWithBounds:(CGRect)a3 intersectsAnnotationOnPage:(id)a4
+- (id)_detectedAnnotationWithBounds:(CGRect)bounds intersectsAnnotationOnPage:(id)page
 {
-  height = a3.size.height;
-  width = a3.size.width;
-  y = a3.origin.y;
-  x = a3.origin.x;
+  height = bounds.size.height;
+  width = bounds.size.width;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v39 = *MEMORY[0x1E69E9840];
-  v8 = a4;
+  pageCopy = page;
   v35 = 0;
   v36 = 0;
   v9 = &v35;
   v34 = &v35;
-  [v8 annotations];
+  [pageCopy annotations];
   v32 = 0u;
   v33 = 0u;
   v30 = 0u;
@@ -1340,22 +1340,22 @@ LABEL_16:
   return v27;
 }
 
-- (void)_addFormElementsFromAnalysis:(id)a3 bounds:(CGRect)a4 toPage:(id)a5
+- (void)_addFormElementsFromAnalysis:(id)analysis bounds:(CGRect)bounds toPage:(id)page
 {
-  width = a4.size.width;
-  height = a4.size.height;
-  y = a4.origin.y;
-  x = a4.origin.x;
+  width = bounds.size.width;
+  height = bounds.size.height;
+  y = bounds.origin.y;
+  x = bounds.origin.x;
   v97 = *MEMORY[0x1E69E9840];
-  v54 = a3;
-  v7 = a5;
-  v53 = [v7 annotations];
-  v55 = [MEMORY[0x1E695DF70] array];
+  analysisCopy = analysis;
+  pageCopy = page;
+  annotations = [pageCopy annotations];
+  array = [MEMORY[0x1E695DF70] array];
   v92 = 0u;
   v93 = 0u;
   v90 = 0u;
   v91 = 0u;
-  obj = v53;
+  obj = annotations;
   v8 = [obj countByEnumeratingWithState:&v90 objects:v96 count:16];
   if (v8)
   {
@@ -1372,12 +1372,12 @@ LABEL_16:
         v11 = *(*(&v90 + 1) + 8 * i);
         if ([v11 isSynthesizedFormField])
         {
-          v12 = [v11 contents];
-          v13 = [v12 length] == 0;
+          contents = [v11 contents];
+          v13 = [contents length] == 0;
 
           if (v13)
           {
-            [v55 addObject:v11];
+            [array addObject:v11];
           }
         }
       }
@@ -1392,7 +1392,7 @@ LABEL_16:
   v89 = 0u;
   v86 = 0u;
   v87 = 0u;
-  v62 = v55;
+  v62 = array;
   v14 = [v62 countByEnumeratingWithState:&v86 objects:v95 count:16];
   if (v14)
   {
@@ -1406,7 +1406,7 @@ LABEL_16:
           objc_enumerationMutation(v62);
         }
 
-        [v7 removeAnnotation:*(*(&v86 + 1) + 8 * j)];
+        [pageCopy removeAnnotation:*(*(&v86 + 1) + 8 * j)];
       }
 
       v14 = [v62 countByEnumeratingWithState:&v86 objects:v95 count:16];
@@ -1415,13 +1415,13 @@ LABEL_16:
     while (v14);
   }
 
-  v17 = [v54 recognitionConfidence];
-  if (v17 < 3)
+  recognitionConfidence = [analysisCopy recognitionConfidence];
+  if (recognitionConfidence < 3)
   {
-    [v7 setDetectedFormFieldsRecognitionConfidence:v17 + 1];
+    [pageCopy setDetectedFormFieldsRecognitionConfidence:recognitionConfidence + 1];
   }
 
-  v61 = [MEMORY[0x1E695DF70] array];
+  array2 = [MEMORY[0x1E695DF70] array];
   v84 = 0u;
   v85 = 0u;
   v83 = 0u;
@@ -1446,8 +1446,8 @@ LABEL_16:
   v21 = MEMORY[0x1E69DB878];
   +[PDFAnnotation detectedFormFieldDefaultFontSize];
   v60 = [v21 monospacedSystemFontOfSize:? weight:?];
-  v22 = [v7 annotations];
-  v23 = [v54 formRegionsExcluding:v22 updateExcludedFields:1];
+  annotations2 = [pageCopy annotations];
+  v23 = [analysisCopy formRegionsExcluding:annotations2 updateExcludedFields:1];
 
   v81 = 0u;
   v82 = 0u;
@@ -1469,17 +1469,17 @@ LABEL_16:
         }
 
         v28 = *(*(&v79 + 1) + 8 * v27);
-        v29 = [v28 quad];
-        [v29 topLeft];
+        quad = [v28 quad];
+        [quad topLeft];
         v31 = v30;
         v33 = v32;
-        [v29 topRight];
+        [quad topRight];
         v35 = v34;
         v37 = v36;
-        [v29 bottomLeft];
+        [quad bottomLeft];
         v39 = v38;
         v41 = v40;
-        [v29 bottomRight];
+        [quad bottomRight];
         if (v33 != v37 || v41 != v43)
         {
 
@@ -1504,9 +1504,9 @@ LABEL_41:
           v76 = y;
           v77 = width;
           v78 = height;
-          v46 = v7;
+          v46 = pageCopy;
           v70 = v46;
-          v71 = v61;
+          v71 = array2;
           v47 = _Block_copy(aBlock);
           if ([v28 fieldType] == 1 || objc_msgSend(v28, "fieldType") == 2)
           {
@@ -1515,7 +1515,7 @@ LABEL_41:
 
           else if (![v28 fieldType])
           {
-            v49 = [v28 children];
+            children = [v28 children];
             v50 = objc_alloc_init(MEMORY[0x1E695DFA0]);
             v64[0] = MEMORY[0x1E69E9820];
             v64[1] = 3221225472;
@@ -1524,14 +1524,14 @@ LABEL_41:
             v66 = v47;
             v51 = v50;
             v65 = v51;
-            [v49 enumerateObjectsUsingBlock:v64];
+            [children enumerateObjectsUsingBlock:v64];
             if ([v51 count])
             {
               [v46 addFormFieldGroup:v51];
             }
           }
 
-          v29 = v68;
+          quad = v68;
           goto LABEL_41;
         }
 
@@ -1547,9 +1547,9 @@ LABEL_42:
     while (v52);
   }
 
-  if ([v61 count] && objc_msgSend(v61, "count"))
+  if ([array2 count] && objc_msgSend(array2, "count"))
   {
-    [v7 addDetectedAnnotations:v61];
+    [pageCopy addDetectedAnnotations:array2];
   }
 }
 
@@ -1637,23 +1637,23 @@ void __62__PDFPageAnalyzer__addFormElementsFromAnalysis_bounds_toPage___block_in
   }
 }
 
-- (void)_addFormElementsUsingDetectorToPage:(id)a3 displayBox:(int64_t)a4
+- (void)_addFormElementsUsingDetectorToPage:(id)page displayBox:(int64_t)box
 {
-  v31 = a3;
-  v6 = [[PDFDetectedForm alloc] initWithPage:v31 displayBox:a4];
+  pageCopy = page;
+  v6 = [[PDFDetectedForm alloc] initWithPage:pageCopy displayBox:box];
   v7 = MEMORY[0x1E69DB878];
   v8 = +[PDFAnnotation detectedFormFieldDefaultFontName];
   +[PDFAnnotation detectedFormFieldDefaultFontSize];
   v9 = [v7 fontWithName:v8 size:?];
 
-  v10 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   v11 = [(PDFDetectedForm *)v6 count];
   if (v11)
   {
     for (i = 0; i != v11; ++i)
     {
-      v13 = [(PDFDetectedForm *)v6 detectedFormFieldAtIndex:i, v31];
-      [v13 rect];
+      pageCopy = [(PDFDetectedForm *)v6 detectedFormFieldAtIndex:i, pageCopy];
+      [pageCopy rect];
       x = v35.origin.x;
       y = v35.origin.y;
       width = v35.size.width;
@@ -1673,7 +1673,7 @@ void __62__PDFPageAnalyzer__addFormElementsFromAnalysis_bounds_toPage___block_in
       [v9 ascender];
       v25 = ceil(v20 - v22 + v24);
       v27 = MinY + v26 - v25;
-      if ([v13 kind] == 2 || objc_msgSend(v13, "kind") == 3)
+      if ([pageCopy kind] == 2 || objc_msgSend(pageCopy, "kind") == 3)
       {
         v37.origin.x = x;
         v37.origin.y = y;
@@ -1687,29 +1687,29 @@ void __62__PDFPageAnalyzer__addFormElementsFromAnalysis_bounds_toPage___block_in
         v27 = y + (v28 - CGRectGetHeight(v38)) * 0.5;
       }
 
-      v29 = [(PDFPageAnalyzer *)self _detectedAnnotationWithBounds:v31 intersectsAnnotationOnPage:x, v27 + -2.0, rect, v25];
+      v29 = [(PDFPageAnalyzer *)self _detectedAnnotationWithBounds:pageCopy intersectsAnnotationOnPage:x, v27 + -2.0, rect, v25];
 
       if (!v29)
       {
-        v30 = [PDFAnnotation createDetectedTextFieldWithBounds:v9 font:0 textContentType:v31 page:x, v27 + -2.0, rect, v25];
-        if ([v13 kind] == 3)
+        v30 = [PDFAnnotation createDetectedTextFieldWithBounds:v9 font:0 textContentType:pageCopy page:x, v27 + -2.0, rect, v25];
+        if ([pageCopy kind] == 3)
         {
           [v30 setComb:1];
-          [v30 setMaximumLength:{objc_msgSend(v13, "numberOfSegments")}];
+          [v30 setMaximumLength:{objc_msgSend(pageCopy, "numberOfSegments")}];
         }
 
-        [v10 addObject:v30];
+        [array addObject:v30];
       }
     }
   }
 
-  if ([v10 count])
+  if ([array count])
   {
-    [v32 addDetectedAnnotations:v10];
+    [v32 addDetectedAnnotations:array];
   }
 }
 
-+ (CGAffineTransform)_normalizedToPageTransformForPageWithBounds:(SEL)a3
++ (CGAffineTransform)_normalizedToPageTransformForPageWithBounds:(SEL)bounds
 {
   height = a4.size.height;
   width = a4.size.width;

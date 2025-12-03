@@ -1,56 +1,56 @@
 @interface POUserGroupManager
-- (BOOL)removeUserWithName:(id)a3 withError:(id *)a4;
-- (BOOL)saveUsers_locked:(id)a3 withError:(id *)a4;
-- (POUserGroupManager)initWithFilePath:(id)a3;
-- (id)_nextAvailableUserId:(id)a3;
-- (id)createOrUpdateUser:(id)a3 withError:(id *)a4;
-- (id)findUser:(id)a3 withError:(id *)a4;
-- (id)getAllUsersWithError:(id *)a3;
-- (id)loadUsers_lockedWithError:(id *)a3;
+- (BOOL)removeUserWithName:(id)name withError:(id *)error;
+- (BOOL)saveUsers_locked:(id)users_locked withError:(id *)error;
+- (POUserGroupManager)initWithFilePath:(id)path;
+- (id)_nextAvailableUserId:(id)id;
+- (id)createOrUpdateUser:(id)user withError:(id *)error;
+- (id)findUser:(id)user withError:(id *)error;
+- (id)getAllUsersWithError:(id *)error;
+- (id)loadUsers_lockedWithError:(id *)error;
 @end
 
 @implementation POUserGroupManager
 
-- (POUserGroupManager)initWithFilePath:(id)a3
+- (POUserGroupManager)initWithFilePath:(id)path
 {
-  v5 = a3;
+  pathCopy = path;
   v9.receiver = self;
   v9.super_class = POUserGroupManager;
   v6 = [(POUserGroupManager *)&v9 init];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_filePath, a3);
+    objc_storeStrong(&v6->_filePath, path);
   }
 
   return v7;
 }
 
-- (id)getAllUsersWithError:(id *)a3
+- (id)getAllUsersWithError:(id *)error
 {
-  v4 = self;
-  objc_sync_enter(v4);
-  v5 = [(POUserGroupManager *)v4 loadUsers_lockedWithError:a3];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v5 = [(POUserGroupManager *)selfCopy loadUsers_lockedWithError:error];
   v6 = [v5 copy];
 
-  objc_sync_exit(v4);
+  objc_sync_exit(selfCopy);
 
   return v6;
 }
 
-- (id)findUser:(id)a3 withError:(id *)a4
+- (id)findUser:(id)user withError:(id *)error
 {
   v25 = *MEMORY[0x277D85DE8];
-  v6 = a3;
+  userCopy = user;
   v7 = PO_LOG_POUserGroupManager();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEBUG))
   {
     [POUserGroupManager findUser:withError:];
   }
 
-  v8 = self;
-  objc_sync_enter(v8);
-  [(POUserGroupManager *)v8 loadUsers_lockedWithError:a4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  [(POUserGroupManager *)selfCopy loadUsers_lockedWithError:error];
   v22 = 0u;
   v23 = 0u;
   v20 = 0u;
@@ -69,8 +69,8 @@
         }
 
         v13 = *(*(&v20 + 1) + 8 * i);
-        v14 = [v13 loginUserName];
-        if ([v14 isEqualToString:v6])
+        loginUserName = [v13 loginUserName];
+        if ([loginUserName isEqualToString:userCopy])
         {
 
 LABEL_15:
@@ -78,8 +78,8 @@ LABEL_15:
           goto LABEL_16;
         }
 
-        v15 = [v13 uniqueIdpIdentifier];
-        v16 = [v15 isEqualToString:v6];
+        uniqueIdpIdentifier = [v13 uniqueIdpIdentifier];
+        v16 = [uniqueIdpIdentifier isEqualToString:userCopy];
 
         if (v16)
         {
@@ -105,27 +105,27 @@ LABEL_15:
 
 LABEL_16:
 
-  objc_sync_exit(v8);
+  objc_sync_exit(selfCopy);
   v18 = *MEMORY[0x277D85DE8];
 
   return v17;
 }
 
-- (id)createOrUpdateUser:(id)a3 withError:(id *)a4
+- (id)createOrUpdateUser:(id)user withError:(id *)error
 {
   v60 = *MEMORY[0x277D85DE8];
-  v51 = a3;
+  userCopy = user;
   v6 = PO_LOG_POUserGroupManager();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
-    [(POUserGroupManager *)v51 createOrUpdateUser:v6 withError:?];
+    [(POUserGroupManager *)userCopy createOrUpdateUser:v6 withError:?];
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v44 = v7;
-  v8 = [(POUserGroupManager *)v7 loadUsers_lockedWithError:a4];
-  v9 = [v8 mutableCopy];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v44 = selfCopy;
+  uniqueIdpIdentifier2 = [(POUserGroupManager *)selfCopy loadUsers_lockedWithError:error];
+  v9 = [uniqueIdpIdentifier2 mutableCopy];
   v10 = v9;
   if (v9)
   {
@@ -159,37 +159,37 @@ LABEL_8:
       }
 
       v15 = *(*(&v54 + 1) + 8 * v14);
-      v50 = [v15 loginUserName];
-      v49 = [v51 loginUserName];
-      if ([v50 isEqualToString:v49])
+      loginUserName = [v15 loginUserName];
+      loginUserName2 = [userCopy loginUserName];
+      if ([loginUserName isEqualToString:loginUserName2])
       {
         break;
       }
 
-      v16 = [v15 generatedUUID];
-      v17 = [v51 generatedUUID];
-      if ([v16 isEqualToString:v17])
+      generatedUUID = [v15 generatedUUID];
+      generatedUUID2 = [userCopy generatedUUID];
+      if ([generatedUUID isEqualToString:generatedUUID2])
       {
         goto LABEL_22;
       }
 
-      v18 = [v15 uniqueIdpIdentifier];
-      v8 = [v51 uniqueIdpIdentifier];
-      if ([v18 isEqualToString:v8])
+      uniqueIdpIdentifier = [v15 uniqueIdpIdentifier];
+      uniqueIdpIdentifier2 = [userCopy uniqueIdpIdentifier];
+      if ([uniqueIdpIdentifier isEqualToString:uniqueIdpIdentifier2])
       {
 
 LABEL_22:
         break;
       }
 
-      v19 = [v15 altSecurityIdentity];
-      if (v19)
+      altSecurityIdentity = [v15 altSecurityIdentity];
+      if (altSecurityIdentity)
       {
-        v20 = [v15 altSecurityIdentity];
-        v21 = [v51 altSecurityIdentity];
-        v4 = [v20 isEqualToString:v21];
+        altSecurityIdentity2 = [v15 altSecurityIdentity];
+        altSecurityIdentity3 = [userCopy altSecurityIdentity];
+        uUID = [altSecurityIdentity2 isEqualToString:altSecurityIdentity3];
 
-        if (v4)
+        if (uUID)
         {
           goto LABEL_24;
         }
@@ -233,37 +233,37 @@ LABEL_26:
     v24 = 1;
   }
 
-  v25 = [v51 loginUserName];
-  [(POMutableUser *)v23 setLoginUserName:v25];
+  loginUserName3 = [userCopy loginUserName];
+  [(POMutableUser *)v23 setLoginUserName:loginUserName3];
 
-  v26 = [(POUser *)v23 generatedUUID];
-  v27 = v26;
-  if (v26)
+  generatedUUID3 = [(POUser *)v23 generatedUUID];
+  v27 = generatedUUID3;
+  if (generatedUUID3)
   {
     v28 = 0;
-    v29 = v26;
+    uUIDString = generatedUUID3;
   }
 
   else
   {
-    v30 = [v51 generatedUUID];
-    v8 = v30;
-    if (v30)
+    generatedUUID4 = [userCopy generatedUUID];
+    uniqueIdpIdentifier2 = generatedUUID4;
+    if (generatedUUID4)
     {
       v28 = 0;
-      v29 = v30;
+      uUIDString = generatedUUID4;
     }
 
     else
     {
-      v4 = [MEMORY[0x277CCAD78] UUID];
-      v29 = [v4 UUIDString];
-      v8 = 0;
+      uUID = [MEMORY[0x277CCAD78] UUID];
+      uUIDString = [uUID UUIDString];
+      uniqueIdpIdentifier2 = 0;
       v28 = 1;
     }
   }
 
-  [(POMutableUser *)v23 setGeneratedUUID:v29];
+  [(POMutableUser *)v23 setGeneratedUUID:uUIDString];
   if (v28)
   {
   }
@@ -272,13 +272,13 @@ LABEL_26:
   {
   }
 
-  v31 = [v51 uniqueIdpIdentifier];
-  [(POMutableUser *)v23 setUniqueIdpIdentifier:v31];
+  uniqueIdpIdentifier3 = [userCopy uniqueIdpIdentifier];
+  [(POMutableUser *)v23 setUniqueIdpIdentifier:uniqueIdpIdentifier3];
 
-  v32 = [v51 altSecurityIdentity];
-  [(POMutableUser *)v23 setAltSecurityIdentity:v32];
+  altSecurityIdentity4 = [userCopy altSecurityIdentity];
+  [(POMutableUser *)v23 setAltSecurityIdentity:altSecurityIdentity4];
 
-  v33 = [v51 uid];
+  v33 = [userCopy uid];
   v34 = v33;
   if (!v33)
   {
@@ -298,13 +298,13 @@ LABEL_26:
   v35 = [(POUser *)v23 copy];
   [obj addObject:v35];
 
-  if ([(POUserGroupManager *)v44 saveUsers_locked:obj withError:a4])
+  if ([(POUserGroupManager *)v44 saveUsers_locked:obj withError:error])
   {
     v36 = PO_LOG_POUserGroupManager();
     if (os_log_type_enabled(v36, OS_LOG_TYPE_DEBUG))
     {
-      v37 = [(POUser *)v23 generatedUUID];
-      [(POUserGroupManager *)v37 createOrUpdateUser:buf withError:v36];
+      generatedUUID5 = [(POUser *)v23 generatedUUID];
+      [(POUserGroupManager *)generatedUUID5 createOrUpdateUser:buf withError:v36];
     }
 
     v38 = v23;
@@ -312,9 +312,9 @@ LABEL_26:
 
   else
   {
-    if (a4)
+    if (error)
     {
-      v39 = *a4;
+      v39 = *error;
       v52[0] = MEMORY[0x277D85DD0];
       v52[1] = 3221225472;
       v52[2] = __51__POUserGroupManager_createOrUpdateUser_withError___block_invoke;
@@ -322,7 +322,7 @@ LABEL_26:
       v40 = v39;
       v53 = v40;
       v41 = __51__POUserGroupManager_createOrUpdateUser_withError___block_invoke(v52);
-      *a4 = v41;
+      *error = v41;
     }
 
     v38 = 0;
@@ -346,15 +346,15 @@ id __51__POUserGroupManager_createOrUpdateUser_withError___block_invoke(uint64_t
   return v1;
 }
 
-- (id)_nextAvailableUserId:(id)a3
+- (id)_nextAvailableUserId:(id)id
 {
   v23 = *MEMORY[0x277D85DE8];
-  v3 = a3;
+  idCopy = id;
   v18 = 0u;
   v19 = 0u;
   v20 = 0u;
   v21 = 0u;
-  v4 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+  v4 = [idCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
   if (v4)
   {
     v5 = v4;
@@ -366,7 +366,7 @@ id __51__POUserGroupManager_createOrUpdateUser_withError___block_invoke(uint64_t
       {
         if (*v19 != v6)
         {
-          objc_enumerationMutation(v3);
+          objc_enumerationMutation(idCopy);
         }
 
         v9 = *(*(&v18 + 1) + 8 * i);
@@ -375,16 +375,16 @@ id __51__POUserGroupManager_createOrUpdateUser_withError___block_invoke(uint64_t
         if (v10)
         {
           v11 = [v9 uid];
-          v12 = [v11 intValue];
+          intValue = [v11 intValue];
 
-          if (v12 > v7)
+          if (intValue > v7)
           {
-            v7 = v12;
+            v7 = intValue;
           }
         }
       }
 
-      v5 = [v3 countByEnumeratingWithState:&v18 objects:v22 count:16];
+      v5 = [idCopy countByEnumeratingWithState:&v18 objects:v22 count:16];
     }
 
     while (v5);
@@ -397,26 +397,26 @@ id __51__POUserGroupManager_createOrUpdateUser_withError___block_invoke(uint64_t
   }
 
   v14 = [MEMORY[0x277CCABB0] numberWithInt:v13];
-  v15 = [v14 stringValue];
+  stringValue = [v14 stringValue];
 
   v16 = *MEMORY[0x277D85DE8];
 
-  return v15;
+  return stringValue;
 }
 
-- (BOOL)removeUserWithName:(id)a3 withError:(id *)a4
+- (BOOL)removeUserWithName:(id)name withError:(id *)error
 {
   v28 = *MEMORY[0x277D85DE8];
-  v5 = a3;
+  nameCopy = name;
   v6 = PO_LOG_POUserGroupManager();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEBUG))
   {
     [POUserGroupManager removeUserWithName:withError:];
   }
 
-  v7 = self;
-  objc_sync_enter(v7);
-  v8 = [(POUserGroupManager *)v7 loadUsers_lockedWithError:a4];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  v8 = [(POUserGroupManager *)selfCopy loadUsers_lockedWithError:error];
   v9 = [v8 mutableCopy];
   v10 = v9;
   if (v9)
@@ -450,8 +450,8 @@ id __51__POUserGroupManager_createOrUpdateUser_withError___block_invoke(uint64_t
         }
 
         v17 = *(*(&v23 + 1) + 8 * i);
-        v18 = [v17 loginUserName];
-        v19 = [v18 isEqualToString:v5];
+        loginUserName = [v17 loginUserName];
+        v19 = [loginUserName isEqualToString:nameCopy];
 
         if (v19)
         {
@@ -472,23 +472,23 @@ id __51__POUserGroupManager_createOrUpdateUser_withError___block_invoke(uint64_t
 
 LABEL_16:
 
-  [(POUserGroupManager *)v7 saveUsers_locked:v12 withError:a4];
-  objc_sync_exit(v7);
+  [(POUserGroupManager *)selfCopy saveUsers_locked:v12 withError:error];
+  objc_sync_exit(selfCopy);
 
   v20 = *MEMORY[0x277D85DE8];
   return 1;
 }
 
-- (id)loadUsers_lockedWithError:(id *)a3
+- (id)loadUsers_lockedWithError:(id *)error
 {
   v29 = *MEMORY[0x277D85DE8];
-  if (a3)
+  if (error)
   {
-    *a3 = 0;
+    *error = 0;
   }
 
-  v4 = [(POUserGroupManager *)self filePath];
-  v5 = [v4 URLByAppendingPathComponent:@"com.apple.PlatformSSO.users.txt"];
+  filePath = [(POUserGroupManager *)self filePath];
+  v5 = [filePath URLByAppendingPathComponent:@"com.apple.PlatformSSO.users.txt"];
 
   v6 = [MEMORY[0x277CBEA90] dataWithContentsOfURL:v5];
   if (v6)
@@ -540,10 +540,10 @@ LABEL_16:
       v25[3] = &unk_279A3A088;
       v26 = v8;
       v17 = __48__POUserGroupManager_loadUsers_lockedWithError___block_invoke(v25);
-      if (a3)
+      if (error)
       {
         v17 = v17;
-        *a3 = v17;
+        *error = v17;
       }
 
       v10 = 0;
@@ -573,24 +573,24 @@ id __48__POUserGroupManager_loadUsers_lockedWithError___block_invoke(uint64_t a1
   return v1;
 }
 
-- (BOOL)saveUsers_locked:(id)a3 withError:(id *)a4
+- (BOOL)saveUsers_locked:(id)users_locked withError:(id *)error
 {
   v37 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  if (a4)
+  users_lockedCopy = users_locked;
+  if (error)
   {
-    *a4 = 0;
+    *error = 0;
   }
 
-  v7 = [(POUserGroupManager *)self filePath];
-  v8 = [v7 URLByAppendingPathComponent:@"com.apple.PlatformSSO.users.txt"];
+  filePath = [(POUserGroupManager *)self filePath];
+  v8 = [filePath URLByAppendingPathComponent:@"com.apple.PlatformSSO.users.txt"];
 
   v9 = objc_alloc_init(MEMORY[0x277CBEB18]);
   v32 = 0u;
   v33 = 0u;
   v34 = 0u;
   v35 = 0u;
-  v10 = v6;
+  v10 = users_lockedCopy;
   v11 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
   if (v11)
   {
@@ -605,8 +605,8 @@ id __48__POUserGroupManager_loadUsers_lockedWithError___block_invoke(uint64_t a1
           objc_enumerationMutation(v10);
         }
 
-        v15 = [*(*(&v32 + 1) + 8 * i) allData];
-        [v9 addObject:v15];
+        allData = [*(*(&v32 + 1) + 8 * i) allData];
+        [v9 addObject:allData];
       }
 
       v12 = [v10 countByEnumeratingWithState:&v32 objects:v36 count:16];
@@ -629,7 +629,7 @@ id __48__POUserGroupManager_loadUsers_lockedWithError___block_invoke(uint64_t a1
     v20 = v17;
     v30 = v20;
     v23 = __49__POUserGroupManager_saveUsers_locked_withError___block_invoke(v29);
-    if (!a4)
+    if (!error)
     {
 LABEL_15:
 
@@ -639,7 +639,7 @@ LABEL_15:
 
 LABEL_14:
     v23 = v23;
-    *a4 = v23;
+    *error = v23;
     goto LABEL_15;
   }
 
@@ -657,7 +657,7 @@ LABEL_14:
     v20 = v20;
     v27 = v20;
     v23 = __49__POUserGroupManager_saveUsers_locked_withError___block_invoke_21(v26);
-    if (!a4)
+    if (!error)
     {
       goto LABEL_15;
     }

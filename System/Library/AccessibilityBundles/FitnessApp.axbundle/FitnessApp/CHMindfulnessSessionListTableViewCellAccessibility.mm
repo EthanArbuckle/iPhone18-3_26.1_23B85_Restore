@@ -1,19 +1,19 @@
 @interface CHMindfulnessSessionListTableViewCellAccessibility
-+ (void)_accessibilityPerformValidations:(id)a3;
-- (BOOL)_isDateInLastWeek:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
+- (BOOL)_isDateInLastWeek:(id)week;
 - (id)accessibilityPath;
 - (void)_accessibilityLoadAccessibilityInformation;
 @end
 
 @implementation CHMindfulnessSessionListTableViewCellAccessibility
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"CHMindfulnessSessionListTableViewCell" hasSwiftFieldOfAnyClass:@"insetContentView"];
-  [v3 validateClass:@"CHMindfulnessSessionListTableViewCell" hasSwiftField:@"mindfulnessSessionViewModel" withSwiftType:"Optional<MindfulnessSessionViewModel>"];
-  [v3 validateClass:@"CHMindfulnessSessionListTableViewCell" hasSwiftField:@"dateLabel" withSwiftType:"UILabel"];
-  [v3 validateClass:@"FitnessUI.MindfulnessSessionViewModel" hasSwiftField:@"endDate" withSwiftType:"Date"];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"CHMindfulnessSessionListTableViewCell" hasSwiftFieldOfAnyClass:@"insetContentView"];
+  [validationsCopy validateClass:@"CHMindfulnessSessionListTableViewCell" hasSwiftField:@"mindfulnessSessionViewModel" withSwiftType:"Optional<MindfulnessSessionViewModel>"];
+  [validationsCopy validateClass:@"CHMindfulnessSessionListTableViewCell" hasSwiftField:@"dateLabel" withSwiftType:"UILabel"];
+  [validationsCopy validateClass:@"FitnessUI.MindfulnessSessionViewModel" hasSwiftField:@"endDate" withSwiftType:"Date"];
 }
 
 - (void)_accessibilityLoadAccessibilityInformation
@@ -67,28 +67,28 @@ id __96__CHMindfulnessSessionListTableViewCellAccessibility__accessibilityLoadAc
 - (id)accessibilityPath
 {
   v3 = [(CHMindfulnessSessionListTableViewCellAccessibility *)self safeSwiftValueForKey:@"insetContentView"];
-  v4 = [v3 accessibilityPath];
-  v5 = v4;
-  if (v4)
+  accessibilityPath = [v3 accessibilityPath];
+  v5 = accessibilityPath;
+  if (accessibilityPath)
   {
-    v6 = v4;
+    accessibilityPath2 = accessibilityPath;
   }
 
   else
   {
     v9.receiver = self;
     v9.super_class = CHMindfulnessSessionListTableViewCellAccessibility;
-    v6 = [(CHMindfulnessSessionListTableViewCellAccessibility *)&v9 accessibilityPath];
+    accessibilityPath2 = [(CHMindfulnessSessionListTableViewCellAccessibility *)&v9 accessibilityPath];
   }
 
-  v7 = v6;
+  v7 = accessibilityPath2;
 
   return v7;
 }
 
-- (BOOL)_isDateInLastWeek:(id)a3
+- (BOOL)_isDateInLastWeek:(id)week
 {
-  v3 = a3;
+  weekCopy = week;
   v4 = +[NSCalendar currentCalendar];
   v5 = +[NSDate date];
   v6 = [v4 dateByAddingUnit:16 value:-6 toDate:v5 options:0];
@@ -96,9 +96,9 @@ id __96__CHMindfulnessSessionListTableViewCellAccessibility__accessibilityLoadAc
   v7 = +[NSCalendar currentCalendar];
   v8 = [v7 startOfDayForDate:v6];
 
-  v9 = [v3 laterDate:v8];
+  v9 = [weekCopy laterDate:v8];
 
-  return v9 == v3;
+  return v9 == weekCopy;
 }
 
 @end

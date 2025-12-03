@@ -1,12 +1,12 @@
 @interface PKPassFooterContentView
 - (CGRect)infoButtonFrame;
-- (PKPassFooterContentView)initWithPass:(id)a3 presentationContext:(id)a4;
+- (PKPassFooterContentView)initWithPass:(id)pass presentationContext:(id)context;
 - (PKPassFooterContentViewDelegate)delegate;
-- (id)_buttonWithTitle:(id)a3 action:(id)a4;
-- (void)_infoButtonPressed:(id)a3;
-- (void)_setCoachingState:(int64_t)a3;
-- (void)_setPhysicalButtonRequired:(BOOL)a3;
-- (void)_setRequestPileSuppression:(BOOL)a3;
+- (id)_buttonWithTitle:(id)title action:(id)action;
+- (void)_infoButtonPressed:(id)pressed;
+- (void)_setCoachingState:(int64_t)state;
+- (void)_setPhysicalButtonRequired:(BOOL)required;
+- (void)_setRequestPileSuppression:(BOOL)suppression;
 - (void)dealloc;
 - (void)invalidate;
 - (void)layoutSubviews;
@@ -14,10 +14,10 @@
 
 @implementation PKPassFooterContentView
 
-- (PKPassFooterContentView)initWithPass:(id)a3 presentationContext:(id)a4
+- (PKPassFooterContentView)initWithPass:(id)pass presentationContext:(id)context
 {
-  v7 = a3;
-  v8 = a4;
+  passCopy = pass;
+  contextCopy = context;
   v41.receiver = self;
   v41.super_class = PKPassFooterContentView;
   v9 = [(PKPassFooterContentView *)&v41 initWithFrame:*MEMORY[0x1E695F058], *(MEMORY[0x1E695F058] + 8), *(MEMORY[0x1E695F058] + 16), *(MEMORY[0x1E695F058] + 24)];
@@ -27,7 +27,7 @@
     goto LABEL_21;
   }
 
-  objc_storeStrong(&v9->_pass, a3);
+  objc_storeStrong(&v9->_pass, pass);
   pass = v10->_pass;
   if (!pass)
   {
@@ -42,21 +42,21 @@
   }
 
   objc_storeStrong(&v10->_secureElementPass, v10->_pass);
-  if (v8 && [v8 isFieldDetect] && objc_msgSend(v8, "terminalType") == 4)
+  if (contextCopy && [contextCopy isFieldDetect] && objc_msgSend(contextCopy, "terminalType") == 4)
   {
 LABEL_12:
     v13 = 4;
     goto LABEL_14;
   }
 
-  v12 = [(PKPass *)v10->_pass barcodeSettings];
+  barcodeSettings = [(PKPass *)v10->_pass barcodeSettings];
 
-  if (!v12)
+  if (!barcodeSettings)
   {
-    v14 = [(PKSecureElementPass *)v10->_secureElementPass devicePrimaryContactlessPaymentApplication];
-    v15 = [v14 requiresConsentForDataRelease];
+    devicePrimaryContactlessPaymentApplication = [(PKSecureElementPass *)v10->_secureElementPass devicePrimaryContactlessPaymentApplication];
+    requiresConsentForDataRelease = [devicePrimaryContactlessPaymentApplication requiresConsentForDataRelease];
 
-    if ((v15 & 1) == 0)
+    if ((requiresConsentForDataRelease & 1) == 0)
     {
       v13 = [(PKPass *)v10->_pass style]== 7;
       goto LABEL_14;
@@ -70,23 +70,23 @@ LABEL_14:
   v10->_style = v13;
   if (!_os_feature_enabled_impl() || PKRunningInLockScreenPlugin())
   {
-    v37 = v7;
+    v37 = passCopy;
     v16 = objc_alloc_init(MEMORY[0x1E69DD250]);
     bottomRule = v10->_bottomRule;
     v10->_bottomRule = v16;
 
     v18 = v10->_bottomRule;
-    v19 = [MEMORY[0x1E69DC888] separatorColor];
-    [(UIView *)v18 setBackgroundColor:v19];
+    separatorColor = [MEMORY[0x1E69DC888] separatorColor];
+    [(UIView *)v18 setBackgroundColor:separatorColor];
 
     v20 = [MEMORY[0x1E69DCAB8] systemImageNamed:@"info.circle"];
     v21 = [MEMORY[0x1E69DCAD8] configurationWithScale:3];
     v22 = [v20 imageWithSymbolConfiguration:v21];
 
     v23 = MEMORY[0x1E69DC740];
-    v24 = [v22 configuration];
-    v25 = [MEMORY[0x1E69DC888] labelColor];
-    v26 = [v23 pkui_plainConfigurationWithImage:v22 imageConfiguration:v24 foregroundColor:v25];
+    configuration = [v22 configuration];
+    labelColor = [MEMORY[0x1E69DC888] labelColor];
+    v26 = [v23 pkui_plainConfigurationWithImage:v22 imageConfiguration:configuration foregroundColor:labelColor];
 
     objc_initWeak(&location, v10);
     v27 = MEMORY[0x1E69DC628];
@@ -123,7 +123,7 @@ LABEL_14:
     objc_destroyWeak(&v39);
     objc_destroyWeak(&location);
 
-    v7 = v37;
+    passCopy = v37;
   }
 
 LABEL_21:
@@ -196,7 +196,7 @@ void __60__PKPassFooterContentView_initWithPass_presentationContext___block_invo
 
   v16 = v8 - v15;
   v17 = v10 + -27.0;
-  v18 = [(PKPassFooterContentView *)self _shouldReverseLayoutDirection];
+  _shouldReverseLayoutDirection = [(PKPassFooterContentView *)self _shouldReverseLayoutDirection];
   v37.origin.x = v4;
   v37.origin.y = v6;
   v37.size.width = v8;
@@ -208,7 +208,7 @@ void __60__PKPassFooterContentView_initWithPass_presentationContext___block_invo
   v20 = v19;
   v34 = v21;
   v22 = v13;
-  if (v18)
+  if (_shouldReverseLayoutDirection)
   {
     v38.origin.x = v13;
     v38.origin.y = v6 + 0.0;
@@ -227,7 +227,7 @@ void __60__PKPassFooterContentView_initWithPass_presentationContext___block_invo
   v25 = v24;
   v30 = v26;
   v27 = v13;
-  if ((v18 & 1) == 0)
+  if ((_shouldReverseLayoutDirection & 1) == 0)
   {
     v40.origin.x = v13;
     v40.origin.y = v14;
@@ -260,32 +260,32 @@ void __60__PKPassFooterContentView_initWithPass_presentationContext___block_invo
   }
 }
 
-- (void)_setPhysicalButtonRequired:(BOOL)a3
+- (void)_setPhysicalButtonRequired:(BOOL)required
 {
-  if (self->_physicalButtonRequired == !a3)
+  if (self->_physicalButtonRequired == !required)
   {
-    self->_physicalButtonRequired = a3;
+    self->_physicalButtonRequired = required;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained passFooterContentViewDidChangePhysicalButtonRequirement:self];
   }
 }
 
-- (void)_setCoachingState:(int64_t)a3
+- (void)_setCoachingState:(int64_t)state
 {
-  if (self->_coachingState != a3)
+  if (self->_coachingState != state)
   {
-    self->_coachingState = a3;
+    self->_coachingState = state;
     [(PKPassFooterContentView *)self coachingStateDidChange];
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     [WeakRetained passFooterContentViewDidChangeCoachingState:self];
   }
 }
 
-- (void)_setRequestPileSuppression:(BOOL)a3
+- (void)_setRequestPileSuppression:(BOOL)suppression
 {
-  if (self->_requestPileSuppression != a3)
+  if (self->_requestPileSuppression != suppression)
   {
-    self->_requestPileSuppression = a3;
+    self->_requestPileSuppression = suppression;
     WeakRetained = objc_loadWeakRetained(&self->_delegate);
     v6 = WeakRetained;
     if (WeakRetained)
@@ -302,26 +302,26 @@ void __60__PKPassFooterContentView_initWithPass_presentationContext___block_invo
   }
 }
 
-- (void)_infoButtonPressed:(id)a3
+- (void)_infoButtonPressed:(id)pressed
 {
-  v4 = [MEMORY[0x1E69B9020] sharedService];
-  v5 = [v4 peerPaymentService];
-  v6 = [v5 account];
-  v7 = [v6 associatedPassUniqueID];
+  mEMORY[0x1E69B9020] = [MEMORY[0x1E69B9020] sharedService];
+  peerPaymentService = [mEMORY[0x1E69B9020] peerPaymentService];
+  account = [peerPaymentService account];
+  associatedPassUniqueID = [account associatedPassUniqueID];
 
-  v8 = [(PKPass *)self->_pass uniqueID];
-  v9 = [(UIView *)self pkui_viewControllerFromResponderChain];
+  uniqueID = [(PKPass *)self->_pass uniqueID];
+  pkui_viewControllerFromResponderChain = [(UIView *)self pkui_viewControllerFromResponderChain];
   if (PKStoreDemoModeEnabled())
   {
-    v10 = v7;
-    v11 = v8;
+    v10 = associatedPassUniqueID;
+    v11 = uniqueID;
     v12 = v11;
     if (v10 == v11)
     {
 
 LABEL_11:
       v15 = PKUIStoreDemoGatewayViewController();
-      [v9 presentViewController:v15 animated:1 completion:0];
+      [pkui_viewControllerFromResponderChain presentViewController:v15 animated:1 completion:0];
 
       goto LABEL_26;
     }
@@ -377,7 +377,7 @@ LABEL_11:
     aBlock[1] = 3221225472;
     aBlock[2] = __46__PKPassFooterContentView__infoButtonPressed___block_invoke;
     aBlock[3] = &unk_1E8022AD8;
-    v23 = v9;
+    v23 = pkui_viewControllerFromResponderChain;
     v36 = v23;
     v24 = _Block_copy(aBlock);
     [(PKBarcodePassDetailViewController *)v16 setSuppressedContent:v18];
@@ -391,37 +391,37 @@ LABEL_11:
   else
   {
     v19 = objc_alloc_init(MEMORY[0x1E69B8A60]);
-    v20 = [MEMORY[0x1E69B8BD8] defaultDataProvider];
+    defaultDataProvider = [MEMORY[0x1E69B8BD8] defaultDataProvider];
     objc_opt_class();
-    v34 = v7;
+    v34 = associatedPassUniqueID;
     if (objc_opt_isKindOfClass())
     {
-      v21 = [v9 groupsController];
+      groupsController = [pkui_viewControllerFromResponderChain groupsController];
     }
 
     else
     {
-      v21 = 0;
+      groupsController = 0;
     }
 
     v27 = [PKPaymentPassDetailViewController alloc];
-    v28 = [(PKPassFooterContentView *)self paymentPass];
-    v29 = [MEMORY[0x1E69B8EF8] sharedService];
-    v30 = [MEMORY[0x1E69B9020] sharedService];
-    v31 = [(PKPaymentPassDetailViewController *)v27 initWithPass:v28 group:0 groupsController:v21 webService:v29 peerPaymentWebService:v30 style:0 passLibraryDataProvider:v19 paymentServiceDataProvider:v20];
+    paymentPass = [(PKPassFooterContentView *)self paymentPass];
+    mEMORY[0x1E69B8EF8] = [MEMORY[0x1E69B8EF8] sharedService];
+    mEMORY[0x1E69B9020]2 = [MEMORY[0x1E69B9020] sharedService];
+    v31 = [(PKPaymentPassDetailViewController *)v27 initWithPass:paymentPass group:0 groupsController:groupsController webService:mEMORY[0x1E69B8EF8] peerPaymentWebService:mEMORY[0x1E69B9020]2 style:0 passLibraryDataProvider:v19 paymentServiceDataProvider:defaultDataProvider];
 
     [(PKPaymentPassDetailViewController *)v31 setShowDoneButton:1];
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v32 = [v9 groupStackView];
-      [(PKPaymentPassDetailViewController *)v31 setDeleteOverrider:v32];
+      groupStackView = [pkui_viewControllerFromResponderChain groupStackView];
+      [(PKPaymentPassDetailViewController *)v31 setDeleteOverrider:groupStackView];
     }
 
     v33 = [[PKNavigationController alloc] initWithRootViewController:v31];
-    [v9 presentViewController:v33 animated:1 completion:0];
+    [pkui_viewControllerFromResponderChain presentViewController:v33 animated:1 completion:0];
 
-    v7 = v34;
+    associatedPassUniqueID = v34;
   }
 
 LABEL_26:
@@ -453,17 +453,17 @@ id __46__PKPassFooterContentView__infoButtonPressed___block_invoke(uint64_t a1)
   return v2;
 }
 
-- (id)_buttonWithTitle:(id)a3 action:(id)a4
+- (id)_buttonWithTitle:(id)title action:(id)action
 {
   v5 = MEMORY[0x1E69DC740];
   v6 = MEMORY[0x1E69DB878];
   v7 = *MEMORY[0x1E69DDC40];
-  v8 = a4;
-  v9 = a3;
+  actionCopy = action;
+  titleCopy = title;
   v10 = [v6 systemFontOfSize:{PKScaledValueForValueWithMaximumContentSizeCategory(v7, 18.0)}];
-  v11 = [v5 pkui_plainConfigurationWithTitle:v9 font:v10];
+  v11 = [v5 pkui_plainConfigurationWithTitle:titleCopy font:v10];
 
-  v12 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v11 primaryAction:v8];
+  v12 = [MEMORY[0x1E69DC738] buttonWithConfiguration:v11 primaryAction:actionCopy];
 
   [v12 setConfigurationUpdateHandler:&__block_literal_global_48_0];
   [v12 sizeToFit];

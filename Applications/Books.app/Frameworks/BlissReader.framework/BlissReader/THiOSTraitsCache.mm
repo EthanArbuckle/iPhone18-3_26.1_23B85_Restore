@@ -2,7 +2,7 @@
 - (BOOL)isCompactHeight;
 - (BOOL)isCompactWidth;
 - (THiOSTraitsCache)init;
-- (void)updateTraitsWithCollection:(id)a3;
+- (void)updateTraitsWithCollection:(id)collection;
 @end
 
 @implementation THiOSTraitsCache
@@ -20,14 +20,14 @@
   return result;
 }
 
-- (void)updateTraitsWithCollection:(id)a3
+- (void)updateTraitsWithCollection:(id)collection
 {
-  v4 = a3;
+  collectionCopy = collection;
   dispatch_assert_queue_V2(&_dispatch_main_q);
-  v5 = [v4 horizontalSizeClass] == &dword_0 + 1;
-  [v4 horizontalSizeClass];
-  v6 = [v4 verticalSizeClass] == &dword_0 + 1;
-  [v4 verticalSizeClass];
+  v5 = [collectionCopy horizontalSizeClass] == &dword_0 + 1;
+  [collectionCopy horizontalSizeClass];
+  v6 = [collectionCopy verticalSizeClass] == &dword_0 + 1;
+  [collectionCopy verticalSizeClass];
 
   os_unfair_lock_lock(&self->_accessLock);
   self->mCompactWidth = v5;

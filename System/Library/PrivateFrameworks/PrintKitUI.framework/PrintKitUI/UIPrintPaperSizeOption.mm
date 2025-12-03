@@ -2,19 +2,19 @@
 - (NSArray)loadedPaperNames;
 - (NSArray)loadedPaperSizes;
 - (NSArray)supportedPaperNames;
-- (UIPrintPaperSizeOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4;
-- (id)_removeRollsFrom:(id)a3;
+- (UIPrintPaperSizeOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller;
+- (id)_removeRollsFrom:(id)from;
 - (id)createPrintOptionTableViewCell;
 - (id)defaultPaperIndex;
-- (id)getPaperNames:(id)a3;
+- (id)getPaperNames:(id)names;
 - (id)itemList;
 - (id)paperList;
 - (id)summary;
-- (int64_t)listItemSelected:(id)a3;
+- (int64_t)listItemSelected:(id)selected;
 - (void)currentPrinterChanged;
 - (void)dealloc;
 - (void)didSelectPrintOption;
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6;
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context;
 - (void)updateSelectedPaper;
 @end
 
@@ -25,26 +25,26 @@
   pkPrinterQueue = self->_pkPrinterQueue;
   self->_pkPrinterQueue = 0;
 
-  v4 = [(UIPrintPaperSizeOption *)self observedPrinter];
-  [v4 removeObserver:self forKeyPath:0x2871B0290];
+  observedPrinter = [(UIPrintPaperSizeOption *)self observedPrinter];
+  [observedPrinter removeObserver:self forKeyPath:0x2871B0290];
 
-  v5 = [(UIPrintOption *)self printInfo];
-  [v5 removeObserver:self forKeyPath:0x2871AF1D0];
+  printInfo = [(UIPrintOption *)self printInfo];
+  [printInfo removeObserver:self forKeyPath:0x2871AF1D0];
 
-  v6 = [(UIPrintOption *)self printInfo];
-  [v6 removeObserver:self forKeyPath:0x2871AF150];
+  printInfo2 = [(UIPrintOption *)self printInfo];
+  [printInfo2 removeObserver:self forKeyPath:0x2871AF150];
 
   v7.receiver = self;
   v7.super_class = UIPrintPaperSizeOption;
   [(UIPrintPaperSizeOption *)&v7 dealloc];
 }
 
-- (UIPrintPaperSizeOption)initWithPrintInfo:(id)a3 printPanelViewController:(id)a4
+- (UIPrintPaperSizeOption)initWithPrintInfo:(id)info printPanelViewController:(id)controller
 {
-  v6 = a3;
+  infoCopy = info;
   v33.receiver = self;
   v33.super_class = UIPrintPaperSizeOption;
-  v7 = [(UIPrintOption *)&v33 initWithPrintInfo:v6 printPanelViewController:a4];
+  v7 = [(UIPrintOption *)&v33 initWithPrintInfo:infoCopy printPanelViewController:controller];
   if (!v7)
   {
     goto LABEL_17;
@@ -54,24 +54,24 @@
   v9 = [v8 localizedStringForKey:@"Paper Size" value:@"Paper Size" table:@"Localizable"];
   [(UIPrintOption *)v7 setTitle:v9];
 
-  v10 = [(UIPrintPaperSizeOption *)v7 defaultPaperIndex];
+  defaultPaperIndex = [(UIPrintPaperSizeOption *)v7 defaultPaperIndex];
   selectedIndexPath = v7->_selectedIndexPath;
-  v7->_selectedIndexPath = v10;
+  v7->_selectedIndexPath = defaultPaperIndex;
 
   v12 = dispatch_queue_create("com.apple.UIKit.UIPrintPaperSizeOption.pkPrinter", 0);
   pkPrinterQueue = v7->_pkPrinterQueue;
   v7->_pkPrinterQueue = v12;
 
-  v14 = [(UIPrintOption *)v7 printInfo];
-  v15 = [v14 currentPrinter];
-  if (v15)
+  printInfo = [(UIPrintOption *)v7 printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  if (currentPrinter)
   {
-    v16 = v15;
-    v17 = [(UIPrintOption *)v7 printInfo];
-    v18 = [v17 currentPrinter];
-    v19 = [v18 printerInfoDict];
+    v16 = currentPrinter;
+    printInfo2 = [(UIPrintOption *)v7 printInfo];
+    currentPrinter2 = [printInfo2 currentPrinter];
+    printerInfoDict = [currentPrinter2 printerInfoDict];
 
-    if (!v19)
+    if (!printerInfoDict)
     {
       goto LABEL_7;
     }
@@ -83,22 +83,22 @@
 
   [(UIPrintPaperSizeOption *)v7 updateSelectedPaper];
 LABEL_7:
-  v20 = [(UIPrintOption *)v7 printInfo];
-  v21 = [v20 currentPrinter];
+  printInfo3 = [(UIPrintOption *)v7 printInfo];
+  currentPrinter3 = [printInfo3 currentPrinter];
 
-  if (v21)
+  if (currentPrinter3)
   {
-    v22 = [(UIPrintOption *)v7 printPanelViewController];
-    v23 = [v22 printInteractionController];
-    if ([v23 _canShowPaperList])
+    printPanelViewController = [(UIPrintOption *)v7 printPanelViewController];
+    printInteractionController = [printPanelViewController printInteractionController];
+    if ([printInteractionController _canShowPaperList])
     {
-      v24 = [(UIPrintOption *)v7 printInfo];
-      v25 = [v24 currentPrinter];
-      v26 = [v25 printerInfoDict];
-      if (v26)
+      printInfo4 = [(UIPrintOption *)v7 printInfo];
+      currentPrinter4 = [printInfo4 currentPrinter];
+      printerInfoDict2 = [currentPrinter4 printerInfoDict];
+      if (printerInfoDict2)
       {
-        v27 = [(UIPrintPaperSizeOption *)v7 loadedPaperSizes];
-        -[UIPrintOption setShouldShow:](v7, "setShouldShow:", [v27 count] != 0);
+        loadedPaperSizes = [(UIPrintPaperSizeOption *)v7 loadedPaperSizes];
+        -[UIPrintOption setShouldShow:](v7, "setShouldShow:", [loadedPaperSizes count] != 0);
       }
 
       else
@@ -118,32 +118,32 @@ LABEL_7:
     [(UIPrintOption *)v7 setShouldShow:1];
   }
 
-  v28 = [v6 currentPrinter];
-  [(UIPrintPaperSizeOption *)v7 setObservedPrinter:v28];
+  currentPrinter5 = [infoCopy currentPrinter];
+  [(UIPrintPaperSizeOption *)v7 setObservedPrinter:currentPrinter5];
 
-  v29 = [(UIPrintPaperSizeOption *)v7 observedPrinter];
-  [v29 addObserver:v7 forKeyPath:0x2871B0290 options:0 context:0];
+  observedPrinter = [(UIPrintPaperSizeOption *)v7 observedPrinter];
+  [observedPrinter addObserver:v7 forKeyPath:0x2871B0290 options:0 context:0];
 
-  v30 = [(UIPrintOption *)v7 printInfo];
-  [v30 addObserver:v7 forKeyPath:0x2871AF1D0 options:0 context:0];
+  printInfo5 = [(UIPrintOption *)v7 printInfo];
+  [printInfo5 addObserver:v7 forKeyPath:0x2871AF1D0 options:0 context:0];
 
-  v31 = [(UIPrintOption *)v7 printInfo];
-  [v31 addObserver:v7 forKeyPath:0x2871AF150 options:0 context:0];
+  printInfo6 = [(UIPrintOption *)v7 printInfo];
+  [printInfo6 addObserver:v7 forKeyPath:0x2871AF150 options:0 context:0];
 
 LABEL_17:
   return v7;
 }
 
-- (void)observeValueForKeyPath:(id)a3 ofObject:(id)a4 change:(id)a5 context:(void *)a6
+- (void)observeValueForKeyPath:(id)path ofObject:(id)object change:(id)change context:(void *)context
 {
-  v7 = a3;
+  pathCopy = path;
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __73__UIPrintPaperSizeOption_observeValueForKeyPath_ofObject_change_context___block_invoke;
   v9[3] = &unk_279A9BF78;
-  v10 = v7;
-  v11 = self;
-  v8 = v7;
+  v10 = pathCopy;
+  selfCopy = self;
+  v8 = pathCopy;
   dispatch_async(MEMORY[0x277D85CD0], v9);
 }
 
@@ -183,12 +183,12 @@ LABEL_3:
   return [v8 updateSelectedPaper];
 }
 
-- (id)_removeRollsFrom:(id)a3
+- (id)_removeRollsFrom:(id)from
 {
   v3 = MEMORY[0x277CCAC30];
-  v4 = a3;
+  fromCopy = from;
   v5 = [v3 predicateWithBlock:&__block_literal_global_7];
-  v6 = [v4 filteredArrayUsingPredicate:v5];
+  v6 = [fromCopy filteredArrayUsingPredicate:v5];
 
   return v6;
 }
@@ -203,46 +203,46 @@ uint64_t __43__UIPrintPaperSizeOption__removeRollsFrom___block_invoke(uint64_t a
 
 - (id)paperList
 {
-  v3 = [(UIPrintOption *)self printInfo];
-  v4 = [v3 currentPrinter];
+  printInfo = [(UIPrintOption *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
 
-  if (v4 && ([v4 printerInfoDict], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
+  if (currentPrinter && ([currentPrinter printerInfoDict], v5 = objc_claimAutoreleasedReturnValue(), v5, !v5))
   {
     v21 = 0;
   }
 
   else
   {
-    v6 = [(UIPrintOption *)self printPanelViewController];
-    v7 = [v6 printInteractionController];
-    [v7 _printItemContentSize];
+    printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+    printInteractionController = [printPanelViewController printInteractionController];
+    [printInteractionController _printItemContentSize];
     v9 = v8;
     v11 = v10;
 
-    if (v4)
+    if (currentPrinter)
     {
-      v12 = [(UIPrintOption *)self printInfo];
-      v13 = [v12 scaleUp];
+      printInfo2 = [(UIPrintOption *)self printInfo];
+      scaleUp = [printInfo2 scaleUp];
 
-      v14 = [v4 pkPrinter];
-      v15 = [(UIPrintOption *)self printInfo];
-      v16 = [v15 duplex];
-      if (v13)
+      pkPrinter = [currentPrinter pkPrinter];
+      printInfo3 = [(UIPrintOption *)self printInfo];
+      duplex = [printInfo3 duplex];
+      if (scaleUp)
       {
-        v17 = [UIPrintPaper _readyDocumentPaperListForPrinter:v14 withDuplexMode:v16 contentSize:1 scaleUpForRoll:v9, v11];
+        v17 = [UIPrintPaper _readyDocumentPaperListForPrinter:pkPrinter withDuplexMode:duplex contentSize:1 scaleUpForRoll:v9, v11];
       }
 
       else
       {
-        v18 = [(UIPrintOption *)self printInfo];
-        v17 = +[UIPrintPaper _readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:](UIPrintPaper, "_readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:", v14, v16, [v18 outputType], v9, v11);
+        printInfo4 = [(UIPrintOption *)self printInfo];
+        v17 = +[UIPrintPaper _readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:](UIPrintPaper, "_readyPaperListForPrinter:withDuplexMode:forContentType:contentSize:", pkPrinter, duplex, [printInfo4 outputType], v9, v11);
       }
     }
 
     else
     {
-      v14 = [(UIPrintOption *)self printInfo];
-      v17 = +[UIPrintPaper _genericPaperListForOutputType:](UIPrintPaper, "_genericPaperListForOutputType:", [v14 outputType]);
+      pkPrinter = [(UIPrintOption *)self printInfo];
+      v17 = +[UIPrintPaper _genericPaperListForOutputType:](UIPrintPaper, "_genericPaperListForOutputType:", [pkPrinter outputType]);
     }
 
     if (v9 == *MEMORY[0x277CBF3A8] && v11 == *(MEMORY[0x277CBF3A8] + 8))
@@ -276,9 +276,9 @@ uint64_t __35__UIPrintPaperSizeOption_paperList__block_invoke(uint64_t a1, void 
   loadedPaperSizes = self->_loadedPaperSizes;
   if (!loadedPaperSizes)
   {
-    v4 = [(UIPrintPaperSizeOption *)self paperList];
+    paperList = [(UIPrintPaperSizeOption *)self paperList];
     v5 = self->_loadedPaperSizes;
-    self->_loadedPaperSizes = v4;
+    self->_loadedPaperSizes = paperList;
 
     loadedPaperSizes = self->_loadedPaperSizes;
   }
@@ -291,8 +291,8 @@ uint64_t __35__UIPrintPaperSizeOption_paperList__block_invoke(uint64_t a1, void 
   loadedPaperNames = self->_loadedPaperNames;
   if (!loadedPaperNames)
   {
-    v4 = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
-    v5 = [(UIPrintPaperSizeOption *)self getPaperNames:v4];
+    loadedPaperSizes = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
+    v5 = [(UIPrintPaperSizeOption *)self getPaperNames:loadedPaperSizes];
     v6 = self->_loadedPaperNames;
     self->_loadedPaperNames = v5;
 
@@ -304,15 +304,15 @@ uint64_t __35__UIPrintPaperSizeOption_paperList__block_invoke(uint64_t a1, void 
 
 - (NSArray)supportedPaperNames
 {
-  v3 = [(UIPrintPaperSizeOption *)self supportedPaperSizes];
-  if (v3)
+  supportedPaperSizes = [(UIPrintPaperSizeOption *)self supportedPaperSizes];
+  if (supportedPaperSizes)
   {
     supportedPaperNames = self->_supportedPaperNames;
 
     if (!supportedPaperNames)
     {
-      v5 = [(UIPrintPaperSizeOption *)self supportedPaperSizes];
-      v6 = [(UIPrintPaperSizeOption *)self getPaperNames:v5];
+      supportedPaperSizes2 = [(UIPrintPaperSizeOption *)self supportedPaperSizes];
+      v6 = [(UIPrintPaperSizeOption *)self getPaperNames:supportedPaperSizes2];
       v7 = self->_supportedPaperNames;
       self->_supportedPaperNames = v6;
     }
@@ -323,12 +323,12 @@ uint64_t __35__UIPrintPaperSizeOption_paperList__block_invoke(uint64_t a1, void 
   return v8;
 }
 
-- (id)getPaperNames:(id)a3
+- (id)getPaperNames:(id)names
 {
   v21 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3 && [v3 count])
+  namesCopy = names;
+  v4 = namesCopy;
+  if (namesCopy && [namesCopy count])
   {
     v5 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v4, "count")}];
     v16 = 0u;
@@ -351,15 +351,15 @@ uint64_t __35__UIPrintPaperSizeOption_paperList__block_invoke(uint64_t a1, void 
           }
 
           v11 = *(*(&v16 + 1) + 8 * i);
-          v12 = [v11 _localizedName];
-          if (v12)
+          _localizedName = [v11 _localizedName];
+          if (_localizedName)
           {
             v13 = [MEMORY[0x277CBEB38] dictionaryWithCapacity:2];
-            [v13 setObject:v12 forKey:@"Title"];
-            v14 = [v11 _localizedMediaTypeName];
-            if (v14)
+            [v13 setObject:_localizedName forKey:@"Title"];
+            _localizedMediaTypeName = [v11 _localizedMediaTypeName];
+            if (_localizedMediaTypeName)
             {
-              [v13 setObject:v14 forKey:@"SubTitle"];
+              [v13 setObject:_localizedMediaTypeName forKey:@"SubTitle"];
             }
 
             [v5 addObject:v13];
@@ -384,20 +384,20 @@ uint64_t __35__UIPrintPaperSizeOption_paperList__block_invoke(uint64_t a1, void 
 - (id)itemList
 {
   v3 = [MEMORY[0x277CBEB18] arrayWithCapacity:2];
-  v4 = [(UIPrintPaperSizeOption *)self loadedPaperNames];
+  loadedPaperNames = [(UIPrintPaperSizeOption *)self loadedPaperNames];
 
-  if (v4)
+  if (loadedPaperNames)
   {
-    v5 = [(UIPrintPaperSizeOption *)self loadedPaperNames];
-    [v3 addObject:v5];
+    loadedPaperNames2 = [(UIPrintPaperSizeOption *)self loadedPaperNames];
+    [v3 addObject:loadedPaperNames2];
   }
 
-  v6 = [(UIPrintPaperSizeOption *)self supportedPaperNames];
+  supportedPaperNames = [(UIPrintPaperSizeOption *)self supportedPaperNames];
 
-  if (v6)
+  if (supportedPaperNames)
   {
-    v7 = [(UIPrintPaperSizeOption *)self supportedPaperNames];
-    [v3 addObject:v7];
+    supportedPaperNames2 = [(UIPrintPaperSizeOption *)self supportedPaperNames];
+    [v3 addObject:supportedPaperNames2];
   }
 
   if ([v3 count])
@@ -415,25 +415,25 @@ uint64_t __35__UIPrintPaperSizeOption_paperList__block_invoke(uint64_t a1, void 
   return v8;
 }
 
-- (int64_t)listItemSelected:(id)a3
+- (int64_t)listItemSelected:(id)selected
 {
-  v4 = a3;
-  v5 = [v4 row];
-  v6 = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
-  v7 = [v6 count] - 1;
+  selectedCopy = selected;
+  v5 = [selectedCopy row];
+  loadedPaperSizes = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
+  v7 = [loadedPaperSizes count] - 1;
 
   if (v5 <= v7)
   {
-    [(UIPrintPaperSizeOption *)self setSelectedIndexPath:v4];
-    v9 = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
-    v10 = [v9 objectAtIndex:v5];
+    [(UIPrintPaperSizeOption *)self setSelectedIndexPath:selectedCopy];
+    loadedPaperSizes2 = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
+    v10 = [loadedPaperSizes2 objectAtIndex:v5];
 
-    v11 = [(UIPrintOption *)self printPanelViewController];
-    v12 = [v11 printInteractionController];
-    [v12 setPaper:v10];
+    printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+    printInteractionController = [printPanelViewController printInteractionController];
+    [printInteractionController setPaper:v10];
 
-    v13 = [(UIPrintOption *)self printInfo];
-    [v13 setPrintPaper:v10];
+    printInfo = [(UIPrintOption *)self printInfo];
+    [printInfo setPrintPaper:v10];
 
     v8 = 1;
   }
@@ -450,17 +450,17 @@ uint64_t __35__UIPrintPaperSizeOption_paperList__block_invoke(uint64_t a1, void 
 - (id)createPrintOptionTableViewCell
 {
   v3 = objc_alloc_init(UIPrintOptionListCell);
-  v4 = [MEMORY[0x277D756E0] valueCellConfiguration];
-  v5 = [(UIPrintOption *)self title];
-  [v4 setText:v5];
+  valueCellConfiguration = [MEMORY[0x277D756E0] valueCellConfiguration];
+  title = [(UIPrintOption *)self title];
+  [valueCellConfiguration setText:title];
 
-  v6 = [(UIPrintPaperSizeOption *)self summary];
-  [v4 setSecondaryText:v6];
+  summary = [(UIPrintPaperSizeOption *)self summary];
+  [valueCellConfiguration setSecondaryText:summary];
 
-  v7 = [v4 secondaryTextProperties];
-  [v7 setNumberOfLines:0];
+  secondaryTextProperties = [valueCellConfiguration secondaryTextProperties];
+  [secondaryTextProperties setNumberOfLines:0];
 
-  [(UIPrintOptionListCell *)v3 setContentConfiguration:v4];
+  [(UIPrintOptionListCell *)v3 setContentConfiguration:valueCellConfiguration];
   [(UIPrintOptionListCell *)v3 setAccessoryType:1];
   [(UIPrintOptionListCell *)v3 setSelectionStyle:3];
   [(UIPrintOptionListCell *)v3 setItemListDelegate:self];
@@ -473,28 +473,28 @@ uint64_t __35__UIPrintPaperSizeOption_paperList__block_invoke(uint64_t a1, void 
 {
   v24 = *MEMORY[0x277D85DE8];
   v3 = [MEMORY[0x277CCAA70] indexPathForRow:0 inSection:0];
-  v4 = [(UIPrintOption *)self printInfo];
-  v5 = [v4 currentPrinter];
-  if (v5)
+  printInfo = [(UIPrintOption *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
+  if (currentPrinter)
   {
   }
 
   else
   {
-    v6 = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
+    loadedPaperSizes = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
 
-    if (!v6)
+    if (!loadedPaperSizes)
     {
       goto LABEL_15;
     }
 
-    v4 = [MEMORY[0x277D41098] defaultGenericPaperForLocale:0];
+    printInfo = [MEMORY[0x277D41098] defaultGenericPaperForLocale:0];
     v19 = 0u;
     v20 = 0u;
     v21 = 0u;
     v22 = 0u;
-    v7 = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
-    v8 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+    loadedPaperSizes2 = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
+    v8 = [loadedPaperSizes2 countByEnumeratingWithState:&v19 objects:v23 count:16];
     if (v8)
     {
       v9 = v8;
@@ -505,24 +505,24 @@ uint64_t __35__UIPrintPaperSizeOption_paperList__block_invoke(uint64_t a1, void 
         {
           if (*v20 != v10)
           {
-            objc_enumerationMutation(v7);
+            objc_enumerationMutation(loadedPaperSizes2);
           }
 
           v12 = *(*(&v19 + 1) + 8 * i);
-          v13 = [v12 pkPaper];
-          v14 = [v13 isEqualSizeAndMediaType:v4];
+          pkPaper = [v12 pkPaper];
+          v14 = [pkPaper isEqualSizeAndMediaType:printInfo];
 
           if (v14)
           {
             v15 = MEMORY[0x277CCAA70];
-            v16 = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
-            v17 = [v15 indexPathForRow:objc_msgSend(v16 inSection:{"indexOfObject:", v12), 0}];
+            loadedPaperSizes3 = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
+            v17 = [v15 indexPathForRow:objc_msgSend(loadedPaperSizes3 inSection:{"indexOfObject:", v12), 0}];
 
             v3 = v17;
           }
         }
 
-        v9 = [v7 countByEnumeratingWithState:&v19 objects:v23 count:16];
+        v9 = [loadedPaperSizes2 countByEnumeratingWithState:&v19 objects:v23 count:16];
       }
 
       while (v9);
@@ -635,26 +635,26 @@ void __45__UIPrintPaperSizeOption_updateSelectedPaper__block_invoke_2(uint64_t a
   [(UIPrintPaperSizeOption *)self setLoadedPaperNames:0];
   [(UIPrintPaperSizeOption *)self setSupportedPaperSizes:0];
   [(UIPrintPaperSizeOption *)self setSupportedPaperNames:0];
-  v3 = [(UIPrintPaperSizeOption *)self defaultPaperIndex];
-  [(UIPrintPaperSizeOption *)self setSelectedIndexPath:v3];
+  defaultPaperIndex = [(UIPrintPaperSizeOption *)self defaultPaperIndex];
+  [(UIPrintPaperSizeOption *)self setSelectedIndexPath:defaultPaperIndex];
 
   [(UIPrintPaperSizeOption *)self updateSelectedPaper];
-  v4 = [(UIPrintOption *)self printInfo];
-  v5 = [v4 currentPrinter];
+  printInfo = [(UIPrintOption *)self printInfo];
+  currentPrinter = [printInfo currentPrinter];
 
-  if (v5)
+  if (currentPrinter)
   {
-    v11 = [(UIPrintOption *)self printPanelViewController];
-    v6 = [v11 printInteractionController];
-    if ([v6 _canShowPaperList])
+    printPanelViewController = [(UIPrintOption *)self printPanelViewController];
+    printInteractionController = [printPanelViewController printInteractionController];
+    if ([printInteractionController _canShowPaperList])
     {
-      v7 = [(UIPrintOption *)self printInfo];
-      v8 = [v7 currentPrinter];
-      v9 = [v8 printerInfoDict];
-      if (v9)
+      printInfo2 = [(UIPrintOption *)self printInfo];
+      currentPrinter2 = [printInfo2 currentPrinter];
+      printerInfoDict = [currentPrinter2 printerInfoDict];
+      if (printerInfoDict)
       {
-        v10 = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
-        -[UIPrintOption setShouldShow:](self, "setShouldShow:", [v10 count] != 0);
+        loadedPaperSizes = [(UIPrintPaperSizeOption *)self loadedPaperSizes];
+        -[UIPrintOption setShouldShow:](self, "setShouldShow:", [loadedPaperSizes count] != 0);
       }
 
       else
@@ -678,16 +678,16 @@ void __45__UIPrintPaperSizeOption_updateSelectedPaper__block_invoke_2(uint64_t a
 
 - (id)summary
 {
-  v3 = [(UIPrintPaperSizeOption *)self selectedIndexPath];
-  if ([v3 section] == 1)
+  selectedIndexPath = [(UIPrintPaperSizeOption *)self selectedIndexPath];
+  if ([selectedIndexPath section] == 1)
   {
-    v4 = [(UIPrintPaperSizeOption *)self supportedPaperNames];
+    supportedPaperNames = [(UIPrintPaperSizeOption *)self supportedPaperNames];
   }
 
   else
   {
-    v5 = [(UIPrintPaperSizeOption *)self loadedPaperNames];
-    if (v5)
+    loadedPaperNames = [(UIPrintPaperSizeOption *)self loadedPaperNames];
+    if (loadedPaperNames)
     {
       [(UIPrintPaperSizeOption *)self loadedPaperNames];
     }
@@ -696,12 +696,12 @@ void __45__UIPrintPaperSizeOption_updateSelectedPaper__block_invoke_2(uint64_t a
     {
       [(UIPrintPaperSizeOption *)self supportedPaperNames];
     }
-    v4 = ;
+    supportedPaperNames = ;
   }
 
-  v6 = [v4 count];
-  v7 = [(UIPrintPaperSizeOption *)self selectedIndexPath];
-  v8 = [v7 row];
+  v6 = [supportedPaperNames count];
+  selectedIndexPath2 = [(UIPrintPaperSizeOption *)self selectedIndexPath];
+  v8 = [selectedIndexPath2 row];
 
   if (v6 <= v8)
   {
@@ -710,8 +710,8 @@ void __45__UIPrintPaperSizeOption_updateSelectedPaper__block_invoke_2(uint64_t a
 
   else
   {
-    v9 = [(UIPrintPaperSizeOption *)self selectedIndexPath];
-    v10 = [v4 objectAtIndex:{objc_msgSend(v9, "row")}];
+    selectedIndexPath3 = [(UIPrintPaperSizeOption *)self selectedIndexPath];
+    v10 = [supportedPaperNames objectAtIndex:{objc_msgSend(selectedIndexPath3, "row")}];
     v11 = [v10 objectForKey:@"Title"];
   }
 
@@ -720,8 +720,8 @@ void __45__UIPrintPaperSizeOption_updateSelectedPaper__block_invoke_2(uint64_t a
 
 - (void)didSelectPrintOption
 {
-  v2 = [(UIPrintOption *)self tableViewCell];
-  [v2 printOptionCellTapped];
+  tableViewCell = [(UIPrintOption *)self tableViewCell];
+  [tableViewCell printOptionCellTapped];
 }
 
 @end

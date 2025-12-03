@@ -1,8 +1,8 @@
 @interface HMFAttributeDescription
 + (id)shortDescription;
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (HMFAttributeDescription)init;
-- (HMFAttributeDescription)initWithName:(id)a3 value:(id)a4 options:(unint64_t)a5 formatter:(id)a6;
+- (HMFAttributeDescription)initWithName:(id)name value:(id)value options:(unint64_t)options formatter:(id)formatter;
 - (NSString)description;
 - (NSString)privateDescription;
 - (NSString)shortDescription;
@@ -20,9 +20,9 @@
 
 - (NSString)description
 {
-  v3 = [(HMFAttributeDescription *)self options];
+  options = [(HMFAttributeDescription *)self options];
 
-  return HMFAttributeDescriptionDescriptionWithOptions(self, v3);
+  return HMFAttributeDescriptionDescriptionWithOptions(self, options);
 }
 
 - (HMFAttributeDescription)init
@@ -38,51 +38,51 @@
   objc_exception_throw(v7);
 }
 
-- (HMFAttributeDescription)initWithName:(id)a3 value:(id)a4 options:(unint64_t)a5 formatter:(id)a6
+- (HMFAttributeDescription)initWithName:(id)name value:(id)value options:(unint64_t)options formatter:(id)formatter
 {
-  v10 = a3;
-  v11 = a4;
-  v12 = a6;
-  if ([v10 length])
+  nameCopy = name;
+  valueCopy = value;
+  formatterCopy = formatter;
+  if ([nameCopy length])
   {
     v18.receiver = self;
     v18.super_class = HMFAttributeDescription;
     v13 = [(HMFAttributeDescription *)&v18 init];
     if (v13)
     {
-      v14 = [v10 capitalizedString];
+      capitalizedString = [nameCopy capitalizedString];
       name = v13->_name;
-      v13->_name = v14;
+      v13->_name = capitalizedString;
 
-      objc_storeStrong(&v13->_value, a4);
-      v13->_options = a5;
-      objc_storeStrong(&v13->_formatter, a6);
+      objc_storeStrong(&v13->_value, value);
+      v13->_options = options;
+      objc_storeStrong(&v13->_formatter, formatter);
     }
 
     self = v13;
-    v16 = self;
+    selfCopy = self;
   }
 
   else
   {
-    v16 = 0;
+    selfCopy = 0;
   }
 
-  return v16;
+  return selfCopy;
 }
 
 - (unint64_t)hash
 {
-  v2 = [(HMFAttributeDescription *)self name];
-  v3 = [v2 hash];
+  name = [(HMFAttributeDescription *)self name];
+  v3 = [name hash];
 
   return v3;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
-  if (self == v4)
+  equalCopy = equal;
+  if (self == equalCopy)
   {
     v16 = 1;
   }
@@ -92,7 +92,7 @@
     objc_opt_class();
     if (objc_opt_isKindOfClass())
     {
-      v5 = v4;
+      v5 = equalCopy;
     }
 
     else
@@ -106,30 +106,30 @@
       goto LABEL_10;
     }
 
-    v7 = [(HMFAttributeDescription *)self name];
-    v8 = [(HMFAttributeDescription *)v6 name];
-    v9 = [v7 isEqualToString:v8];
+    name = [(HMFAttributeDescription *)self name];
+    name2 = [(HMFAttributeDescription *)v6 name];
+    v9 = [name isEqualToString:name2];
 
     if (!v9)
     {
       goto LABEL_10;
     }
 
-    v10 = [(HMFAttributeDescription *)self value];
-    v11 = [(HMFAttributeDescription *)v6 value];
-    v12 = [v10 isEqual:v11];
+    value = [(HMFAttributeDescription *)self value];
+    value2 = [(HMFAttributeDescription *)v6 value];
+    v12 = [value isEqual:value2];
 
     if (v12)
     {
       goto LABEL_10;
     }
 
-    v13 = [(HMFAttributeDescription *)self options];
-    if (v13 == [(HMFAttributeDescription *)v6 options])
+    options = [(HMFAttributeDescription *)self options];
+    if (options == [(HMFAttributeDescription *)v6 options])
     {
-      v14 = [(HMFAttributeDescription *)self formatter];
-      v15 = [(HMFAttributeDescription *)v6 formatter];
-      v16 = HMFEqualObjects(v14, v15);
+      formatter = [(HMFAttributeDescription *)self formatter];
+      formatter2 = [(HMFAttributeDescription *)v6 formatter];
+      v16 = HMFEqualObjects(formatter, formatter2);
     }
 
     else

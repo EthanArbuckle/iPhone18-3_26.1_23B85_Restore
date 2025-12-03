@@ -5,7 +5,7 @@
 - (MPSPolygonBuffer)initWithCoder:(NSCoder *)aDecoder;
 - (id)description;
 - (void)dealloc;
-- (void)validateWithVerticesPerPolygon:(unint64_t)a3 vertexStride:(unint64_t)a4 indexStride:(unint64_t)a5;
+- (void)validateWithVerticesPerPolygon:(unint64_t)polygon vertexStride:(unint64_t)stride indexStride:(unint64_t)indexStride;
 @end
 
 @implementation MPSPolygonBuffer
@@ -61,14 +61,14 @@
   return result;
 }
 
-- (void)validateWithVerticesPerPolygon:(unint64_t)a3 vertexStride:(unint64_t)a4 indexStride:(unint64_t)a5
+- (void)validateWithVerticesPerPolygon:(unint64_t)polygon vertexStride:(unint64_t)stride indexStride:(unint64_t)indexStride
 {
   if (!self->_vertexBuffer)
   {
     sub_239E245A0();
   }
 
-  objc_msgSend_length(self->_vertexBuffer, a2, a3, a4, a5);
+  objc_msgSend_length(self->_vertexBuffer, a2, polygon, stride, indexStride);
   vertexBufferOffset = self->_vertexBufferOffset;
   if (vertexBufferOffset >= objc_msgSend_length(self->_vertexBuffer, v10, v11, v12, v13))
   {
@@ -88,7 +88,7 @@
     v24 = objc_msgSend_length(self->_indexBuffer, v20, v21, v22, v23);
     p_indexBufferOffset = &self->_indexBufferOffset;
     p_polygonCount = &self->_polygonCount;
-    if (v24 < self->_indexBufferOffset + a5 * a3 * self->_polygonCount)
+    if (v24 < self->_indexBufferOffset + indexStride * polygon * self->_polygonCount)
     {
       sub_239E246A4();
     }
@@ -100,7 +100,7 @@
       sub_239E24700();
     }
 
-    if (*p_indexBufferOffset % a5)
+    if (*p_indexBufferOffset % indexStride)
     {
       sub_239E24758();
     }
@@ -111,7 +111,7 @@
     objc_msgSend_length(self->_vertexBuffer, v14, v15, v16, v17);
     v43 = objc_msgSend_length(self->_vertexBuffer, v39, v40, v41, v42);
     v35 = &self->_polygonCount;
-    if (v43 < self->_vertexBufferOffset + a4 * a3 * self->_polygonCount)
+    if (v43 < self->_vertexBufferOffset + stride * polygon * self->_polygonCount)
     {
       sub_239E247A8();
     }

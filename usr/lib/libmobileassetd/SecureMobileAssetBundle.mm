@@ -1,49 +1,49 @@
 @interface SecureMobileAssetBundle
 + (BOOL)_requiresLiveExclaveNonce;
-+ (BOOL)_shouldUseConclave:(BOOL)a3;
-+ (BOOL)assetIsSecureMobileAsset:(id)a3;
-+ (BOOL)clearBootTaskPlist:(id *)a3;
-+ (BOOL)commitStagedManifestsForSelectors:(id)a3 darwinOnly:(BOOL)a4 error:(id *)a5;
-+ (BOOL)commitStagedManifestsToExclavesForSelectors:(id)a3 darwinOnly:(BOOL)a4 error:(id *)a5;
-+ (BOOL)fsTag:(unsigned int *)a3 forAssetType:(id)a4 specifier:(id)a5;
-+ (BOOL)isErrorDueToDeviceBeingLocked:(id)a3;
++ (BOOL)_shouldUseConclave:(BOOL)conclave;
++ (BOOL)assetIsSecureMobileAsset:(id)asset;
++ (BOOL)clearBootTaskPlist:(id *)plist;
++ (BOOL)commitStagedManifestsForSelectors:(id)selectors darwinOnly:(BOOL)only error:(id *)error;
++ (BOOL)commitStagedManifestsToExclavesForSelectors:(id)selectors darwinOnly:(BOOL)only error:(id *)error;
++ (BOOL)fsTag:(unsigned int *)tag forAssetType:(id)type specifier:(id)specifier;
++ (BOOL)isErrorDueToDeviceBeingLocked:(id)locked;
 + (OS_dispatch_queue)personalizationQueue;
 + (id)getBootTaskPlistLock;
-+ (id)getExclaveManager:(id *)a3;
-+ (id)getSigningServerURL:(id)a3;
-+ (id)readBootTaskPlist:(id *)a3;
-- (BOOL)_activateManifestInExclaves:(unsigned int)a3 error:(id *)a4;
-- (BOOL)_beginAccessWithOptions_nowait:(id)a3 accessMechanismPtr:(int64_t *)a4 errorPtr:(id *)a5;
-- (BOOL)_generateNonceProposalForHandle:(unint64_t)a3 digest:(id *)a4 nonce:(id *)a5 error:(id *)a6;
-- (BOOL)_personalize:(id)a3 error:(id *)a4;
-- (BOOL)_queryNonceForHandle:(unint64_t)a3 domain:(unsigned int)a4 digest:(id *)a5 error:(id *)a6;
++ (id)getExclaveManager:(id *)manager;
++ (id)getSigningServerURL:(id)l;
++ (id)readBootTaskPlist:(id *)plist;
+- (BOOL)_activateManifestInExclaves:(unsigned int)exclaves error:(id *)error;
+- (BOOL)_beginAccessWithOptions_nowait:(id)options_nowait accessMechanismPtr:(int64_t *)ptr errorPtr:(id *)errorPtr;
+- (BOOL)_generateNonceProposalForHandle:(unint64_t)handle digest:(id *)digest nonce:(id *)nonce error:(id *)error;
+- (BOOL)_personalize:(id)_personalize error:(id *)error;
+- (BOOL)_queryNonceForHandle:(unint64_t)handle domain:(unsigned int)domain digest:(id *)digest error:(id *)error;
 - (BOOL)_shouldForcePersonalizationFailure;
-- (BOOL)_storeManifest:(id)a3 manifestType:(unint64_t)a4 stage:(BOOL)a5 error:(id *)a6;
-- (BOOL)_storeManifestToExclaves:(id)a3 infoPlist:(id)a4 stage:(BOOL)a5 error:(id *)a6;
-- (BOOL)beginAccessWithOptions:(id)a3 accessMechanismPtr:(int64_t *)a4 errorPtr:(id *)a5;
-- (BOOL)bundleAccessPermitted:(id *)a3;
-- (BOOL)depersonalize:(id *)a3;
-- (BOOL)endAccessWithOptions:(id)a3 accessMechanismPtr:(int64_t *)a4 errorPtr:(id *)a5;
-- (BOOL)endAccessWithOptions_nowait:(id)a3 accessMechanismPtr:(int64_t *)a4 errorPtr:(id *)a5;
-- (BOOL)graft:(id *)a3;
-- (BOOL)graftOrMount:(int64_t *)a3 graftingError:(id *)a4;
+- (BOOL)_storeManifest:(id)manifest manifestType:(unint64_t)type stage:(BOOL)stage error:(id *)error;
+- (BOOL)_storeManifestToExclaves:(id)exclaves infoPlist:(id)plist stage:(BOOL)stage error:(id *)error;
+- (BOOL)beginAccessWithOptions:(id)options accessMechanismPtr:(int64_t *)ptr errorPtr:(id *)errorPtr;
+- (BOOL)bundleAccessPermitted:(id *)permitted;
+- (BOOL)depersonalize:(id *)depersonalize;
+- (BOOL)endAccessWithOptions:(id)options accessMechanismPtr:(int64_t *)ptr errorPtr:(id *)errorPtr;
+- (BOOL)endAccessWithOptions_nowait:(id)options_nowait accessMechanismPtr:(int64_t *)ptr errorPtr:(id *)errorPtr;
+- (BOOL)graft:(id *)graft;
+- (BOOL)graftOrMount:(int64_t *)mount graftingError:(id *)error;
 - (BOOL)isAccessible;
 - (BOOL)isGrafted;
-- (BOOL)isGraftedPath:(id)a3;
-- (BOOL)isMappableToExclaves:(unsigned int *)a3;
+- (BOOL)isGraftedPath:(id)path;
+- (BOOL)isMappableToExclaves:(unsigned int *)exclaves;
 - (BOOL)isMounted;
-- (BOOL)isPersonalized:(int64_t *)a3;
-- (BOOL)isPersonalizedForExclaves:(unsigned int)a3 staged:(BOOL)a4;
-- (BOOL)isPersonalizedManifestStaged:(int64_t *)a3;
+- (BOOL)isPersonalized:(int64_t *)personalized;
+- (BOOL)isPersonalizedForExclaves:(unsigned int)exclaves staged:(BOOL)staged;
+- (BOOL)isPersonalizedManifestStaged:(int64_t *)staged;
 - (BOOL)isSecureMobileAsset;
-- (BOOL)loadTrustCache:(id *)a3;
-- (BOOL)mapToExclaves:(id *)a3;
-- (BOOL)mount:(id *)a3;
-- (BOOL)personalize:(id)a3 error:(id *)a4;
-- (BOOL)ungraft:(id *)a3;
-- (BOOL)ungraftOrUnmount:(int64_t *)a3 ungraftingError:(id *)a4;
-- (BOOL)unmapFromExclaves:(id *)a3;
-- (BOOL)unmount:(id *)a3;
+- (BOOL)loadTrustCache:(id *)cache;
+- (BOOL)mapToExclaves:(id *)exclaves;
+- (BOOL)mount:(id *)mount;
+- (BOOL)personalize:(id)personalize error:(id *)error;
+- (BOOL)ungraft:(id *)ungraft;
+- (BOOL)ungraftOrUnmount:(int64_t *)unmount ungraftingError:(id *)error;
+- (BOOL)unmapFromExclaves:(id *)exclaves;
+- (BOOL)unmount:(id *)unmount;
 - (NSDictionary)assetAttributes;
 - (NSDictionary)insecureInfoPlist;
 - (NSDictionary)secureInfoPlist;
@@ -58,26 +58,26 @@
 - (NSString)stagedPersonalizedManifestPath;
 - (NSString)ticketPath;
 - (NSString)trustCachePath;
-- (SecureMobileAssetBundle)initWithPath:(id)a3;
-- (id)_manifestDataFromStoredTicket:(id)a3 manifestType:(unint64_t)a4;
+- (SecureMobileAssetBundle)initWithPath:(id)path;
+- (id)_manifestDataFromStoredTicket:(id)ticket manifestType:(unint64_t)type;
 - (id)_personalizedBundleTicketData;
 - (id)assetValues;
-- (id)attach:(id)a3 error:(id *)a4;
+- (id)attach:(id)attach error:(id *)error;
 - (id)description;
-- (id)devnodesForDiskImageID:(id)a3 error:(id *)a4;
+- (id)devnodesForDiskImageID:(id)d error:(id *)error;
 - (id)integrityCatalogPath;
 - (unint64_t)manifestType;
 - (unsigned)graftdmgType;
 - (unsigned)secureMountAuthType;
-- (void)personalize:(id)a3 completionQueue:(id)a4 completion:(id)a5;
-- (void)recordAssetGraftStateForEarlyBootTask:(BOOL)a3 options:(id)a4;
+- (void)personalize:(id)personalize completionQueue:(id)queue completion:(id)completion;
+- (void)recordAssetGraftStateForEarlyBootTask:(BOOL)task options:(id)options;
 @end
 
 @implementation SecureMobileAssetBundle
 
-+ (BOOL)assetIsSecureMobileAsset:(id)a3
++ (BOOL)assetIsSecureMobileAsset:(id)asset
 {
-  v3 = [a3 stringByAppendingPathComponent:@"AssetData"];
+  v3 = [asset stringByAppendingPathComponent:@"AssetData"];
   v4 = [v3 stringByAppendingPathComponent:@"Restore"];
   v5 = [v4 stringByAppendingPathComponent:@"BuildManifest.plist"];
 
@@ -87,14 +87,14 @@
   return v7;
 }
 
-+ (BOOL)fsTag:(unsigned int *)a3 forAssetType:(id)a4 specifier:(id)a5
++ (BOOL)fsTag:(unsigned int *)tag forAssetType:(id)type specifier:(id)specifier
 {
-  v7 = a4;
-  v8 = a5;
+  typeCopy = type;
+  specifierCopy = specifier;
   if (__isPlatformVersionAtLeast(2, 18, 0, 0))
   {
     v9 = +[MASecureMobileAssetTypes sharedInstance];
-    v10 = [v9 fsTag:a3 forAssetType:v7 specifier:v8];
+    v10 = [v9 fsTag:tag forAssetType:typeCopy specifier:specifierCopy];
   }
 
   else
@@ -131,16 +131,16 @@ void __47__SecureMobileAssetBundle_personalizationQueue__block_invoke(id a1)
   _objc_release_x1();
 }
 
-+ (BOOL)commitStagedManifestsForSelectors:(id)a3 darwinOnly:(BOOL)a4 error:(id *)a5
++ (BOOL)commitStagedManifestsForSelectors:(id)selectors darwinOnly:(BOOL)only error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
+  onlyCopy = only;
+  selectorsCopy = selectors;
   if (__isPlatformVersionAtLeast(2, 18, 0, 0))
   {
     v8 = objc_alloc_init(MASecureManifestStorage);
     if (objc_opt_respondsToSelector())
     {
-      v9 = [v7 count];
+      v9 = [selectorsCopy count];
       v10 = _MADLog(@"SecureMA");
       v11 = v10;
       if (!v9)
@@ -151,7 +151,7 @@ void __47__SecureMobileAssetBundle_personalizationQueue__block_invoke(id a1)
           _os_log_impl(&dword_0, v11, OS_LOG_TYPE_ERROR, "[SMA] No selectors specified", buf, 2u);
         }
 
-        if (!a5)
+        if (!error)
         {
           v14 = 0;
           goto LABEL_25;
@@ -165,7 +165,7 @@ void __47__SecureMobileAssetBundle_personalizationQueue__block_invoke(id a1)
 
         v21 = v20;
         v14 = 0;
-        *a5 = v20;
+        *error = v20;
 LABEL_24:
 
 LABEL_25:
@@ -175,12 +175,12 @@ LABEL_25:
       if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412290;
-        v30 = v7;
+        v30 = selectorsCopy;
         _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "[SMA] Committing staged manifests for selectors: %@", buf, 0xCu);
       }
 
       v28 = 0;
-      v12 = [v8 commitStagedManifestsForSelectors:v7 error:&v28];
+      v12 = [v8 commitStagedManifestsForSelectors:selectorsCopy error:&v28];
       v13 = v28;
       if ((v12 & 1) == 0)
       {
@@ -192,7 +192,7 @@ LABEL_25:
           _os_log_impl(&dword_0, v22, OS_LOG_TYPE_ERROR, "[SMA] Failed to commit staged manifests: %@", buf, 0xCu);
         }
 
-        if (a5)
+        if (error)
         {
           v23 = [NSString stringWithFormat:@"Failed to commit staged manifests"];
           v24 = +[NSMutableDictionary dictionary];
@@ -201,7 +201,7 @@ LABEL_25:
           v25 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:114 userInfo:v24];
 
           v26 = v25;
-          *a5 = v25;
+          *error = v25;
         }
 
         v14 = 0;
@@ -210,7 +210,7 @@ LABEL_25:
 
       if (+[SecureMobileAssetBundle _requiresLiveExclaveNonce])
       {
-        v14 = [SecureMobileAssetBundle commitStagedManifestsToExclavesForSelectors:v7 darwinOnly:v6 error:a5];
+        v14 = [SecureMobileAssetBundle commitStagedManifestsToExclavesForSelectors:selectorsCopy darwinOnly:onlyCopy error:error];
         goto LABEL_24;
       }
     }
@@ -229,7 +229,7 @@ LABEL_25:
     goto LABEL_24;
   }
 
-  if (a5)
+  if (error)
   {
     v15 = [NSString stringWithFormat:@"Manifest storage service unavailable"];
     v16 = +[NSMutableDictionary dictionary];
@@ -238,7 +238,7 @@ LABEL_25:
     v17 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:-5 userInfo:v16];
 
     v18 = v17;
-    *a5 = v17;
+    *error = v17;
   }
 
   v14 = 0;
@@ -247,20 +247,20 @@ LABEL_26:
   return v14;
 }
 
-+ (BOOL)commitStagedManifestsToExclavesForSelectors:(id)a3 darwinOnly:(BOOL)a4 error:(id *)a5
++ (BOOL)commitStagedManifestsToExclavesForSelectors:(id)selectors darwinOnly:(BOOL)only error:(id *)error
 {
-  v6 = a4;
-  v7 = a3;
-  if (__isPlatformVersionAtLeast(2, 18, 2, 0) && [SecureMobileAssetBundle _shouldUseConclave:v6])
+  onlyCopy = only;
+  selectorsCopy = selectors;
+  if (__isPlatformVersionAtLeast(2, 18, 2, 0) && [SecureMobileAssetBundle _shouldUseConclave:onlyCopy])
   {
-    v48 = a5;
+    errorCopy = error;
     v50 = +[NSMutableArray array];
     v49 = +[NSMutableArray array];
     v55 = 0u;
     v56 = 0u;
     v57 = 0u;
     v58 = 0u;
-    v8 = v7;
+    v8 = selectorsCopy;
     v9 = [v8 countByEnumeratingWithState:&v55 objects:v63 count:16];
     if (v9)
     {
@@ -277,9 +277,9 @@ LABEL_26:
 
           v13 = *(*(&v55 + 1) + 8 * i);
           v54 = 0;
-          v14 = [v13 assetType];
-          v15 = [v13 assetSpecifier];
-          v16 = [SecureMobileAssetBundle fsTag:&v54 forAssetType:v14 specifier:v15];
+          assetType = [v13 assetType];
+          assetSpecifier = [v13 assetSpecifier];
+          v16 = [SecureMobileAssetBundle fsTag:&v54 forAssetType:assetType specifier:assetSpecifier];
 
           if (v16)
           {
@@ -301,7 +301,7 @@ LABEL_26:
               v30 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:100 userInfo:v29];
 
               v31 = v30;
-              *v48 = v30;
+              *errorCopy = v30;
 
               v26 = 0;
               goto LABEL_23;
@@ -309,8 +309,8 @@ LABEL_26:
 
             v18 = v17;
             [v50 addObject:v17];
-            v19 = [v13 assetSpecifier];
-            [v49 addObject:v19];
+            assetSpecifier2 = [v13 assetSpecifier];
+            [v49 addObject:assetSpecifier2];
           }
         }
 
@@ -337,7 +337,7 @@ LABEL_26:
     {
       v21 = v20;
       v22 = _MADLog(@"SecureMA");
-      v23 = v48;
+      v23 = errorCopy;
       if (os_log_type_enabled(v22, OS_LOG_TYPE_DEFAULT))
       {
         *buf = 138412546;
@@ -367,10 +367,10 @@ LABEL_26:
 
     else
     {
-      v23 = v48;
+      v23 = errorCopy;
       if (![v20 conformsToProtocol:&OBJC_PROTOCOL___MAExclaveManifestStorageServiceProtocol])
       {
-        if (!v48)
+        if (!errorCopy)
         {
 LABEL_52:
 
@@ -401,7 +401,7 @@ LABEL_52:
           v25 = 0;
         }
 
-        *v48 = v43;
+        *errorCopy = v43;
 LABEL_51:
 
         v8 = v25;
@@ -492,16 +492,16 @@ LABEL_25:
   return v26;
 }
 
-- (SecureMobileAssetBundle)initWithPath:(id)a3
+- (SecureMobileAssetBundle)initWithPath:(id)path
 {
-  v4 = a3;
+  pathCopy = path;
   v17.receiver = self;
   v17.super_class = SecureMobileAssetBundle;
   v5 = [(SecureMobileAssetBundle *)&v17 init];
   if (v5)
   {
-    v6 = v4;
-    v7 = realpath_DARWIN_EXTSN([v4 fileSystemRepresentation], 0);
+    v6 = pathCopy;
+    v7 = realpath_DARWIN_EXTSN([pathCopy fileSystemRepresentation], 0);
     if (v7)
     {
       v8 = [NSString stringWithUTF8String:v7];
@@ -509,7 +509,7 @@ LABEL_25:
 
     else
     {
-      v8 = v4;
+      v8 = pathCopy;
     }
 
     assetBundlePath = v5->_assetBundlePath;
@@ -521,10 +521,10 @@ LABEL_25:
       [SecureMobileAssetBundle initWithPath:];
     }
 
-    v10 = [(SecureMobileAssetBundle *)v5 assetType];
-    if (v10)
+    assetType = [(SecureMobileAssetBundle *)v5 assetType];
+    if (assetType)
     {
-      v11 = [MAAssetTypeDescriptor descriptorForAssetType:v10];
+      v11 = [MAAssetTypeDescriptor descriptorForAssetType:assetType];
     }
 
     else
@@ -533,7 +533,7 @@ LABEL_25:
       if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
       {
         *buf = 138543362;
-        v19 = v4;
+        v19 = pathCopy;
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "[SMA] Cannot create an MAAssetTypeDescriptor because assetType is nil for bundle: %{public}@", buf, 0xCu);
       }
 
@@ -653,14 +653,14 @@ void __40__SecureMobileAssetBundle_initWithPath___block_invoke(id a1)
   }
 }
 
-+ (id)getExclaveManager:(id *)a3
++ (id)getExclaveManager:(id *)manager
 {
   if (!__isPlatformVersionAtLeast(2, 18, 2, 0) || !objc_opt_class())
   {
     v5 = 0;
 LABEL_6:
     v6 = 0;
-    if (!a3)
+    if (!manager)
     {
       goto LABEL_8;
     }
@@ -689,11 +689,11 @@ LABEL_6:
   v6 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:-4 userInfo:v11];
 
   v5 = 0;
-  if (a3)
+  if (manager)
   {
 LABEL_7:
     v7 = v6;
-    *a3 = v6;
+    *manager = v6;
   }
 
 LABEL_8:
@@ -701,9 +701,9 @@ LABEL_8:
   return v5;
 }
 
-+ (BOOL)_shouldUseConclave:(BOOL)a3
++ (BOOL)_shouldUseConclave:(BOOL)conclave
 {
-  v3 = a3;
+  conclaveCopy = conclave;
   v4 = MABrainUtilityConclaveEnabled();
   if (v4)
   {
@@ -711,7 +711,7 @@ LABEL_8:
     LOBYTE(v4) = 1;
     if (has_internal_content)
     {
-      if (v3)
+      if (conclaveCopy)
       {
         v6 = _MADLog(@"SecureMA");
         if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
@@ -761,9 +761,9 @@ void __52__SecureMobileAssetBundle__requiresLiveExclaveNonce__block_invoke(id a1
   }
 }
 
-- (BOOL)personalize:(id)a3 error:(id *)a4
+- (BOOL)personalize:(id)personalize error:(id *)error
 {
-  v6 = a3;
+  personalizeCopy = personalize;
   v20 = 0;
   v21 = &v20;
   v22 = 0x2020000000;
@@ -782,11 +782,11 @@ void __52__SecureMobileAssetBundle__requiresLiveExclaveNonce__block_invoke(id a1
   v13 = &v14;
   v7 = dispatch_semaphore_create(0);
   v11 = v7;
-  [(SecureMobileAssetBundle *)self personalize:v6 completionQueue:0 completion:v10];
+  [(SecureMobileAssetBundle *)self personalize:personalizeCopy completionQueue:0 completion:v10];
   dispatch_semaphore_wait(v7, 0xFFFFFFFFFFFFFFFFLL);
-  if (a4)
+  if (error)
   {
-    *a4 = v15[5];
+    *error = v15[5];
   }
 
   v8 = *(v21 + 24);
@@ -805,32 +805,32 @@ void __45__SecureMobileAssetBundle_personalize_error___block_invoke(uint64_t a1,
   dispatch_semaphore_signal(*(a1 + 32));
 }
 
-- (void)personalize:(id)a3 completionQueue:(id)a4 completion:(id)a5
+- (void)personalize:(id)personalize completionQueue:(id)queue completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
+  personalizeCopy = personalize;
+  queueCopy = queue;
+  completionCopy = completion;
   v11 = _MADLog(@"SecureMA");
   if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "[SMA] [Personalization] enqueue %@", buf, 0xCu);
   }
 
-  v12 = [objc_opt_class() personalizationQueue];
+  personalizationQueue = [objc_opt_class() personalizationQueue];
   v16[0] = _NSConcreteStackBlock;
   v16[1] = 3221225472;
   v16[2] = __66__SecureMobileAssetBundle_personalize_completionQueue_completion___block_invoke;
   v16[3] = &unk_4B30C0;
   v16[4] = self;
-  v17 = v8;
-  v18 = v9;
-  v19 = v10;
-  v13 = v10;
-  v14 = v9;
-  v15 = v8;
-  dispatch_async(v12, v16);
+  v17 = personalizeCopy;
+  v18 = queueCopy;
+  v19 = completionCopy;
+  v13 = completionCopy;
+  v14 = queueCopy;
+  v15 = personalizeCopy;
+  dispatch_async(personalizationQueue, v16);
 }
 
 void __66__SecureMobileAssetBundle_personalize_completionQueue_completion___block_invoke(uint64_t a1)
@@ -884,9 +884,9 @@ void __66__SecureMobileAssetBundle_personalize_completionQueue_completion___bloc
   }
 }
 
-+ (id)getSigningServerURL:(id)a3
++ (id)getSigningServerURL:(id)l
 {
-  v3 = a3;
+  lCopy = l;
   v4 = _MAPreferencesCopyNSStringValue(@"TatsuURLOverride");
   if (v4)
   {
@@ -917,7 +917,7 @@ void __66__SecureMobileAssetBundle_personalize_completionQueue_completion___bloc
     }
   }
 
-  if (v3 && ([v3 isEqualToString:@"com.apple.MobileAsset.MobileAssetBrain"] & 1) != 0)
+  if (lCopy && ([lCopy isEqualToString:@"com.apple.MobileAsset.MobileAssetBrain"] & 1) != 0)
   {
     v9 = @"https://gs.apple.com";
   }
@@ -975,44 +975,44 @@ LABEL_16:
     goto LABEL_25;
   }
 
-  v7 = [v6 objectEnumerator];
-  v8 = [v7 nextObject];
-  if (!v8)
+  objectEnumerator = [v6 objectEnumerator];
+  nextObject = [objectEnumerator nextObject];
+  if (!nextObject)
   {
 LABEL_8:
     v13 = 1;
     goto LABEL_24;
   }
 
-  v9 = v8;
+  nextObject3 = nextObject;
   while (1)
   {
-    v10 = v9;
-    v11 = [v7 nextObject];
-    v12 = [(SecureMobileAssetBundle *)self assetType];
-    v2 = [v10 isEqualToString:v12];
+    v10 = nextObject3;
+    nextObject2 = [objectEnumerator nextObject];
+    assetType = [(SecureMobileAssetBundle *)self assetType];
+    v2 = [v10 isEqualToString:assetType];
 
     if (v2)
     {
       break;
     }
 
-    v9 = [v7 nextObject];
+    nextObject3 = [objectEnumerator nextObject];
 
-    if (!v9)
+    if (!nextObject3)
     {
       goto LABEL_8;
     }
   }
 
-  if ([v11 isEqualToString:@"*"])
+  if ([nextObject2 isEqualToString:@"*"])
   {
     v15 = _MADLog(@"SecureMA");
     if (os_log_type_enabled(v15, OS_LOG_TYPE_DEFAULT))
     {
-      v16 = [(SecureMobileAssetBundle *)self assetType];
+      assetType2 = [(SecureMobileAssetBundle *)self assetType];
       v24 = 138412290;
-      v25 = v16;
+      v25 = assetType2;
       _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "[SMA] All specifiers of AssetType %@ are configured to fail personalization", &v24, 0xCu);
     }
 
@@ -1020,9 +1020,9 @@ LABEL_8:
     goto LABEL_23;
   }
 
-  v15 = [v11 componentsSeparatedByString:{@", "}];
-  v17 = [(SecureMobileAssetBundle *)self assetSpecifier];
-  v2 = [v15 containsObject:v17];
+  v15 = [nextObject2 componentsSeparatedByString:{@", "}];
+  assetSpecifier = [(SecureMobileAssetBundle *)self assetSpecifier];
+  v2 = [v15 containsObject:assetSpecifier];
 
   v18 = _MADLog(@"SecureMA");
   v19 = os_log_type_enabled(v18, OS_LOG_TYPE_DEFAULT);
@@ -1030,12 +1030,12 @@ LABEL_8:
   {
     if (v19)
     {
-      v20 = [(SecureMobileAssetBundle *)self assetSpecifier];
-      v21 = [(SecureMobileAssetBundle *)self assetType];
+      assetSpecifier2 = [(SecureMobileAssetBundle *)self assetSpecifier];
+      assetType3 = [(SecureMobileAssetBundle *)self assetType];
       v24 = 138412546;
-      v25 = v20;
+      v25 = assetSpecifier2;
       v26 = 2112;
-      v27 = v21;
+      v27 = assetType3;
       v22 = "[SMA] The current specifier(%@) of AssetType %@ is configured to fail personalization";
 LABEL_21:
       _os_log_impl(&dword_0, v18, OS_LOG_TYPE_DEFAULT, v22, &v24, 0x16u);
@@ -1044,12 +1044,12 @@ LABEL_21:
 
   else if (v19)
   {
-    v20 = [(SecureMobileAssetBundle *)self assetType];
-    v21 = [(SecureMobileAssetBundle *)self assetSpecifier];
+    assetSpecifier2 = [(SecureMobileAssetBundle *)self assetType];
+    assetType3 = [(SecureMobileAssetBundle *)self assetSpecifier];
     v24 = 138412546;
-    v25 = v20;
+    v25 = assetSpecifier2;
     v26 = 2112;
-    v27 = v21;
+    v27 = assetType3;
     v22 = "[SMA] The current AssetType(%@) is in the list of those configured to fail personalization but the current specifier(%@) is not";
     goto LABEL_21;
   }
@@ -1067,25 +1067,25 @@ LABEL_25:
   return v2 & 1;
 }
 
-- (BOOL)_personalize:(id)a3 error:(id *)a4
+- (BOOL)_personalize:(id)_personalize error:(id *)error
 {
-  v5 = a3;
-  v6 = [objc_opt_class() personalizationQueue];
-  dispatch_assert_queue_V2(v6);
+  _personalizeCopy = _personalize;
+  personalizationQueue = [objc_opt_class() personalizationQueue];
+  dispatch_assert_queue_V2(personalizationQueue);
 
   AMAuthInstallLogSetHandler();
   cf = AMAuthInstallCreate();
   v66 = [(NSString *)self->_assetBundlePath stringByAppendingPathComponent:@"AssetData"];
   v67 = [v66 stringByAppendingPathComponent:@"Restore"];
   v7 = [NSURL fileURLWithPath:?];
-  v8 = [(SecureMobileAssetBundle *)self secureAssetDataPath];
-  v69 = [NSURL fileURLWithPath:v8];
+  secureAssetDataPath = [(SecureMobileAssetBundle *)self secureAssetDataPath];
+  v69 = [NSURL fileURLWithPath:secureAssetDataPath];
   [(SecureMobileAssetBundle *)self manifestType];
-  v77 = [v5 objectForKeyedSubscript:@"ssoToken"];
-  [v5 objectForKeyedSubscript:@"AuthInstallOptions"];
+  v77 = [_personalizeCopy objectForKeyedSubscript:@"ssoToken"];
+  [_personalizeCopy objectForKeyedSubscript:@"AuthInstallOptions"];
 
-  v9 = [v5 objectForKeyedSubscript:@"stageManifest"];
-  v10 = [v9 BOOLValue];
+  v9 = [_personalizeCopy objectForKeyedSubscript:@"stageManifest"];
+  bOOLValue = [v9 BOOLValue];
 
   v68 = v7;
   if ([(SecureMobileAssetBundle *)self isPersonalized])
@@ -1113,9 +1113,9 @@ LABEL_19:
       goto LABEL_20;
     }
 
-    v12 = [(SecureMobileAssetBundle *)self assetBundlePath];
+    assetBundlePath = [(SecureMobileAssetBundle *)self assetBundlePath];
     *buf = 138412290;
-    v80 = v12;
+    v80 = assetBundlePath;
     v13 = "[SMA] Bundle already personalized, skipping: %@";
 LABEL_4:
     _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, v13, buf, 0xCu);
@@ -1123,7 +1123,7 @@ LABEL_4:
     goto LABEL_5;
   }
 
-  if (v10 && [(SecureMobileAssetBundle *)self isPersonalizedManifestStaged])
+  if (bOOLValue && [(SecureMobileAssetBundle *)self isPersonalizedManifestStaged])
   {
     v11 = _MADLog(@"SecureMA");
     if (!os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
@@ -1131,9 +1131,9 @@ LABEL_4:
       goto LABEL_5;
     }
 
-    v12 = [(SecureMobileAssetBundle *)self assetBundlePath];
+    assetBundlePath = [(SecureMobileAssetBundle *)self assetBundlePath];
     *buf = 138412290;
-    v80 = v12;
+    v80 = assetBundlePath;
     v13 = "[SMA] Bundle already personalized and personalized manifest staged, skipping: %@";
     goto LABEL_4;
   }
@@ -1171,11 +1171,11 @@ LABEL_18:
   }
 
   v16 = +[NSFileManager defaultManager];
-  v59 = v8;
-  [v16 removeItemAtPath:v8 error:0];
+  v59 = secureAssetDataPath;
+  [v16 removeItemAtPath:secureAssetDataPath error:0];
 
-  v17 = [(SecureMobileAssetBundle *)self assetType];
-  v18 = [SecureMobileAssetBundle getSigningServerURL:v17];
+  assetType = [(SecureMobileAssetBundle *)self assetType];
+  v18 = [SecureMobileAssetBundle getSigningServerURL:assetType];
 
   v19 = cf;
   v65 = v18;
@@ -1201,11 +1201,11 @@ LABEL_18:
     v62 = &__NSDictionary0__struct;
 LABEL_14:
     v23 = v19;
-    v8 = v59;
+    secureAssetDataPath = v59;
     goto LABEL_20;
   }
 
-  v8 = v59;
+  secureAssetDataPath = v59;
   if (v77)
   {
     objc_opt_class();
@@ -1260,9 +1260,9 @@ LABEL_39:
     v37 = _MADLog(@"SecureMA");
     if (os_log_type_enabled(v37, OS_LOG_TYPE_DEFAULT))
     {
-      v38 = [(SecureMobileAssetBundle *)self assetType];
+      assetType2 = [(SecureMobileAssetBundle *)self assetType];
       *buf = 138412290;
-      v80 = v38;
+      v80 = assetType2;
       _os_log_impl(&dword_0, v37, OS_LOG_TYPE_DEFAULT, "[SMA] Simulating personalization failure of asset(%@) due to default", buf, 0xCu);
     }
 
@@ -1339,7 +1339,7 @@ LABEL_52:
     [SecureMobileAssetBundle _personalize:error:];
   }
 
-  v8 = v59;
+  secureAssetDataPath = v59;
   v48 = _cryptex1_product_class_productClass;
   v81[0] = kAMAuthInstallTagCryptex1ChipId;
   v81[1] = kAMAuthInstallTagCryptex1Type;
@@ -1349,7 +1349,7 @@ LABEL_52:
   v61 = v48;
   v82[2] = v48;
   v49 = [NSDictionary dictionaryWithObjects:v82 forKeys:v81 count:3];
-  v50 = [v5 objectForKeyedSubscript:@"scpParametersOverride"];
+  v50 = [_personalizeCopy objectForKeyedSubscript:@"scpParametersOverride"];
   objc_opt_class();
   v70 = v50;
   if (objc_opt_isKindOfClass())
@@ -1414,10 +1414,10 @@ LABEL_20:
       _os_log_impl(&dword_0, v27, OS_LOG_TYPE_ERROR, "[SMA] Failed to personalize asset bundle: %@", buf, 0xCu);
     }
 
-    if (a4)
+    if (error)
     {
       v28 = v14;
-      *a4 = v14;
+      *error = v14;
     }
 
     [(SecureMobileAssetBundle *)self depersonalize:0, v58];
@@ -1426,7 +1426,7 @@ LABEL_20:
   return v15;
 }
 
-- (BOOL)_generateNonceProposalForHandle:(unint64_t)a3 digest:(id *)a4 nonce:(id *)a5 error:(id *)a6
+- (BOOL)_generateNonceProposalForHandle:(unint64_t)handle digest:(id *)digest nonce:(id *)nonce error:(id *)error
 {
   if (!__isPlatformVersionAtLeast(2, 18, 0, 0))
   {
@@ -1439,7 +1439,7 @@ LABEL_9:
     v22 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:v21 userInfo:v20];
 
     v23 = v22;
-    *a6 = v22;
+    *error = v22;
 
     return 0;
   }
@@ -1483,7 +1483,7 @@ LABEL_9:
     v17 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:102 userInfo:v16];
 
     v18 = v17;
-    *a6 = v17;
+    *error = v17;
   }
 
   else
@@ -1497,14 +1497,14 @@ LABEL_9:
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "[SMA] Obtained nonce (%lu bytes) and digest (%lu bytes)", buf, 0x16u);
     }
 
-    *a4 = [[NSData alloc] initWithBytes:v28 length:0];
-    *a5 = [[NSData alloc] initWithBytes:v27 length:16];
+    *digest = [[NSData alloc] initWithBytes:v28 length:0];
+    *nonce = [[NSData alloc] initWithBytes:v27 length:16];
   }
 
   return v10;
 }
 
-- (BOOL)_queryNonceForHandle:(unint64_t)a3 domain:(unsigned int)a4 digest:(id *)a5 error:(id *)a6
+- (BOOL)_queryNonceForHandle:(unint64_t)handle domain:(unsigned int)domain digest:(id *)digest error:(id *)error
 {
   if (!__isPlatformVersionAtLeast(2, 18, 0, 0))
   {
@@ -1517,7 +1517,7 @@ LABEL_9:
     v21 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:v20 userInfo:v19];
 
     v22 = v21;
-    *a6 = v21;
+    *error = v21;
 
     return 0;
   }
@@ -1543,7 +1543,7 @@ LABEL_9:
     if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
     {
       *buf = 67109634;
-      v27 = a4;
+      domainCopy2 = domain;
       v28 = 1024;
       LODWORD(v29[0]) = v9;
       WORD2(v29[0]) = 2080;
@@ -1561,7 +1561,7 @@ LABEL_9:
     v16 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:102 userInfo:v15];
 
     v17 = v16;
-    *a6 = v16;
+    *error = v16;
   }
 
   else
@@ -1571,37 +1571,37 @@ LABEL_9:
     if (os_log_type_enabled(v23, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 67109378;
-      v27 = a4;
+      domainCopy2 = domain;
       v28 = 2112;
       v29[0] = v14;
       _os_log_impl(&dword_0, v23, OS_LOG_TYPE_DEFAULT, "[SMA] Queried nonce digest for domain %d: %@", buf, 0x12u);
     }
 
     v24 = v14;
-    *a5 = v14;
+    *digest = v14;
   }
 
   return v10;
 }
 
-- (BOOL)_storeManifest:(id)a3 manifestType:(unint64_t)a4 stage:(BOOL)a5 error:(id *)a6
+- (BOOL)_storeManifest:(id)manifest manifestType:(unint64_t)type stage:(BOOL)stage error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
+  stageCopy = stage;
+  manifestCopy = manifest;
   if (__isPlatformVersionAtLeast(2, 18, 0, 0))
   {
     v11 = _MADLog(@"SecureMA");
     if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
     {
       v12 = @"Storing";
-      if (v7)
+      if (stageCopy)
       {
         v12 = @"Staging";
       }
 
       *buf = 138412802;
       v54 = v12;
-      if (a4 == 1)
+      if (type == 1)
       {
         v13 = "classic";
       }
@@ -1612,14 +1612,14 @@ LABEL_9:
       }
 
       v55 = 2112;
-      v56 = self;
+      selfCopy = self;
       v57 = 2080;
       v58 = v13;
       _os_log_impl(&dword_0, v11, OS_LOG_TYPE_DEFAULT, "[SMA] %@ manifest for %@ (type = %s)", buf, 0x20u);
     }
 
-    v14 = [(SecureMobileAssetBundle *)self secureInfoPlistPath];
-    if (!v14)
+    secureInfoPlistPath = [(SecureMobileAssetBundle *)self secureInfoPlistPath];
+    if (!secureInfoPlistPath)
     {
       v16 = [NSString stringWithFormat:@"failed to get cryptex info plist path"];
       v23 = +[NSMutableDictionary dictionary];
@@ -1629,23 +1629,23 @@ LABEL_9:
 
       v25 = v24;
       v22 = 0;
-      *a6 = v24;
+      *error = v24;
 LABEL_43:
 
       goto LABEL_44;
     }
 
     v52 = 0;
-    v15 = [NSData dataWithContentsOfFile:v14 options:0 error:&v52];
+    v15 = [NSData dataWithContentsOfFile:secureInfoPlistPath options:0 error:&v52];
     v16 = v52;
     if (v15)
     {
       v17 = objc_alloc_init(MASecureManifestStorage);
-      if (v7)
+      if (stageCopy)
       {
         if (objc_opt_respondsToSelector())
         {
-          v7 = 1;
+          stageCopy = 1;
         }
 
         else
@@ -1657,17 +1657,17 @@ LABEL_43:
             _os_log_impl(&dword_0, v29, OS_LOG_TYPE_ERROR, "[SMA] Warning: MASecureManifestStorage does not support staging, storing manifest instead", buf, 2u);
           }
 
-          v7 = 0;
+          stageCopy = 0;
         }
       }
 
-      if (a4 != 2 || (objc_opt_respondsToSelector() & 1) != 0)
+      if (type != 2 || (objc_opt_respondsToSelector() & 1) != 0)
       {
         v48 = v15;
         if (objc_opt_respondsToSelector())
         {
           v51 = v16;
-          v30 = [v17 storeManifest:v10 manifestType:a4 infoPlist:v15 stage:v7 error:&v51];
+          v30 = [v17 storeManifest:manifestCopy manifestType:type infoPlist:v15 stage:stageCopy error:&v51];
           v31 = v51;
 
           if (v30)
@@ -1677,13 +1677,13 @@ LABEL_43:
           }
 
           v39 = "store";
-          if (v7)
+          if (stageCopy)
           {
             v39 = "stage";
           }
 
           v40 = "code";
-          if (a4 == 1)
+          if (type == 1)
           {
             v40 = "classic";
           }
@@ -1693,10 +1693,10 @@ LABEL_43:
           goto LABEL_41;
         }
 
-        if (v7)
+        if (stageCopy)
         {
           v50 = v16;
-          v32 = [v17 stageManifest:v10 infoPlist:v15 error:&v50];
+          v32 = [v17 stageManifest:manifestCopy infoPlist:v15 error:&v50];
           v33 = v50;
 
           if ((v32 & 1) == 0)
@@ -1713,7 +1713,7 @@ LABEL_41:
             v45 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:102 userInfo:v44];
 
             v46 = v45;
-            *a6 = v45;
+            *error = v45;
 
             v22 = 0;
             v15 = v48;
@@ -1724,7 +1724,7 @@ LABEL_41:
         else
         {
           v49 = v16;
-          v43 = [v17 storeManifest:v10 infoPlist:v15 error:&v49];
+          v43 = [v17 storeManifest:manifestCopy infoPlist:v15 error:&v49];
           v33 = v49;
 
           if ((v43 & 1) == 0)
@@ -1739,7 +1739,7 @@ LABEL_36:
         v15 = v48;
         if (+[SecureMobileAssetBundle _requiresLiveExclaveNonce])
         {
-          v22 = [(SecureMobileAssetBundle *)self _storeManifestToExclaves:v10 infoPlist:v48 stage:v7 error:a6];
+          v22 = [(SecureMobileAssetBundle *)self _storeManifestToExclaves:manifestCopy infoPlist:v48 stage:stageCopy error:error];
         }
 
         else
@@ -1757,7 +1757,7 @@ LABEL_36:
       v37 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:102 userInfo:v36];
 
       v38 = v37;
-      *a6 = v37;
+      *error = v37;
 
       v22 = 0;
     }
@@ -1773,7 +1773,7 @@ LABEL_36:
 
       v28 = v27;
       v22 = 0;
-      *a6 = v27;
+      *error = v27;
     }
 
 LABEL_42:
@@ -1788,7 +1788,7 @@ LABEL_42:
   v20 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:-5 userInfo:v19];
 
   v21 = v20;
-  *a6 = v20;
+  *error = v20;
 
   v22 = 0;
 LABEL_44:
@@ -1796,11 +1796,11 @@ LABEL_44:
   return v22;
 }
 
-- (BOOL)_storeManifestToExclaves:(id)a3 infoPlist:(id)a4 stage:(BOOL)a5 error:(id *)a6
+- (BOOL)_storeManifestToExclaves:(id)exclaves infoPlist:(id)plist stage:(BOOL)stage error:(id *)error
 {
-  v7 = a5;
-  v10 = a3;
-  v11 = a4;
+  stageCopy = stage;
+  exclavesCopy = exclaves;
+  plistCopy = plist;
   v12 = objc_opt_class();
   objc_sync_enter(v12);
   if (!__isPlatformVersionAtLeast(2, 18, 2, 0))
@@ -1814,12 +1814,12 @@ LABEL_44:
     goto LABEL_36;
   }
 
-  v13 = [(SecureMobileAssetBundle *)self integrityCatalogPath];
-  if (v13)
+  integrityCatalogPath = [(SecureMobileAssetBundle *)self integrityCatalogPath];
+  if (integrityCatalogPath)
   {
     v68 = 0;
-    v58 = v13;
-    v14 = [NSData dataWithContentsOfFile:v13 options:0 error:&v68];
+    v58 = integrityCatalogPath;
+    v14 = [NSData dataWithContentsOfFile:integrityCatalogPath options:0 error:&v68];
     v15 = v68;
     v59 = v14;
     if (v14)
@@ -1832,14 +1832,14 @@ LABEL_44:
       {
         v57 = v60;
         v17 = v69;
-        v18 = [(SecureMobileAssetBundle *)self assetSpecifier];
+        assetSpecifier = [(SecureMobileAssetBundle *)self assetSpecifier];
         v66 = v16;
-        LOBYTE(v17) = [v57 stageManifestForFSTag:v17 specifier:v18 manifest:v10 infoPlist:v11 catalog:v59 error:&v66];
+        LOBYTE(v17) = [v57 stageManifestForFSTag:v17 specifier:assetSpecifier manifest:exclavesCopy infoPlist:plistCopy catalog:v59 error:&v66];
         v19 = v66;
 
         if (v17)
         {
-          if (v7)
+          if (stageCopy)
           {
 LABEL_11:
 
@@ -1852,8 +1852,8 @@ LABEL_36:
           v56 = [NSNumber numberWithUnsignedInt:v69];
           v72 = v56;
           v20 = [NSArray arrayWithObjects:&v72 count:1];
-          v21 = [(SecureMobileAssetBundle *)self assetSpecifier];
-          v71 = v21;
+          assetSpecifier2 = [(SecureMobileAssetBundle *)self assetSpecifier];
+          v71 = assetSpecifier2;
           v22 = [NSArray arrayWithObjects:&v71 count:1];
           v65 = v19;
           v23 = [v57 commitStagedManifestForFSTags:v20 specifiers:v22 error:&v65];
@@ -1886,7 +1886,7 @@ LABEL_36:
         v44 = v43;
 
         v45 = v44;
-        *a6 = v44;
+        *error = v44;
 
         goto LABEL_31;
       }
@@ -1913,18 +1913,18 @@ LABEL_36:
         v39 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:102 userInfo:v38];
 
         v40 = v39;
-        *a6 = v39;
+        *error = v39;
         goto LABEL_31;
       }
 
       v57 = v60;
       v33 = objc_opt_respondsToSelector();
-      if (v33 & 1 | !v7)
+      if (v33 & 1 | !stageCopy)
       {
-        if (v7)
+        if (stageCopy)
         {
           v63 = v16;
-          v34 = [v57 stageManifest:v10 infoPlist:v11 catalog:v14 error:&v63];
+          v34 = [v57 stageManifest:exclavesCopy infoPlist:plistCopy catalog:v14 error:&v63];
           v19 = v63;
 
           if ((v34 & 1) == 0)
@@ -1939,7 +1939,7 @@ LABEL_30:
             v52 = v37;
 
             v53 = v52;
-            *a6 = v52;
+            *error = v52;
 
 LABEL_31:
             goto LABEL_32;
@@ -1960,7 +1960,7 @@ LABEL_31:
       }
 
       v62 = v16;
-      v47 = [v57 storeManifest:v10 infoPlist:v11 catalog:v14 error:&v62];
+      v47 = [v57 storeManifest:exclavesCopy infoPlist:plistCopy catalog:v14 error:&v62];
       v48 = v62;
 
       if ((v47 & v33) != 1 || (+[NSNumber numberWithUnsignedInt:](NSNumber, "numberWithUnsignedInt:", v69), v49 = objc_claimAutoreleasedReturnValue(), v70 = v49, +[NSArray arrayWithObjects:count:](NSArray, "arrayWithObjects:count:", &v70, 1), v50 = objc_claimAutoreleasedReturnValue(), v61 = v48, v51 = [v57 commitStagedManifestForFSTags:v50 error:&v61], v19 = v61, v48, v50, v49, v48 = v19, (v51 & 1) == 0))
@@ -1987,7 +1987,7 @@ LABEL_28:
     v31 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:102 userInfo:v30];
 
     v32 = v31;
-    *a6 = v31;
+    *error = v31;
   }
 
   else
@@ -1999,7 +1999,7 @@ LABEL_28:
     v27 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:102 userInfo:v26];
 
     v28 = v27;
-    *a6 = v27;
+    *error = v27;
   }
 
 LABEL_32:
@@ -2011,9 +2011,9 @@ LABEL_37:
   return v54;
 }
 
-- (BOOL)_activateManifestInExclaves:(unsigned int)a3 error:(id *)a4
+- (BOOL)_activateManifestInExclaves:(unsigned int)exclaves error:(id *)error
 {
-  v5 = *&a3;
+  v5 = *&exclaves;
   if (__isPlatformVersionAtLeast(2, 18, 2, 0))
   {
     v30 = 0;
@@ -2027,20 +2027,20 @@ LABEL_37:
         v10 = _MADLog(@"SecureMA");
         if (os_log_type_enabled(v10, OS_LOG_TYPE_DEFAULT))
         {
-          v11 = [(SecureMobileAssetBundle *)self assetType];
-          v12 = [(SecureMobileAssetBundle *)self assetSpecifier];
+          assetType = [(SecureMobileAssetBundle *)self assetType];
+          assetSpecifier = [(SecureMobileAssetBundle *)self assetSpecifier];
           *buf = 138412802;
-          v32 = v11;
+          v32 = assetType;
           v33 = 2112;
-          v34 = v12;
+          v34 = assetSpecifier;
           v35 = 1024;
           v36 = v5;
           _os_log_impl(&dword_0, v10, OS_LOG_TYPE_DEFAULT, "[SMA] Activating committed manifest for %@:%@ fstag=%u", buf, 0x1Cu);
         }
 
-        v13 = [(SecureMobileAssetBundle *)self assetSpecifier];
+        assetSpecifier2 = [(SecureMobileAssetBundle *)self assetSpecifier];
         v29 = v8;
-        v14 = [v9 activateCommittedManifestForFSTag:v5 specifier:v13 error:&v29];
+        v14 = [v9 activateCommittedManifestForFSTag:v5 specifier:assetSpecifier2 error:&v29];
         v15 = v29;
 
         v16 = _MADLog(@"SecureMA");
@@ -2049,12 +2049,12 @@ LABEL_37:
         {
           if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
           {
-            v18 = [(SecureMobileAssetBundle *)self assetType];
-            v19 = [(SecureMobileAssetBundle *)self assetSpecifier];
+            assetType2 = [(SecureMobileAssetBundle *)self assetType];
+            assetSpecifier3 = [(SecureMobileAssetBundle *)self assetSpecifier];
             *buf = 138412802;
-            v32 = v18;
+            v32 = assetType2;
             v33 = 2112;
-            v34 = v19;
+            v34 = assetSpecifier3;
             v35 = 1024;
             v36 = v5;
             v20 = "[SMA] Successfully activated committed manifest for %@:%@ fstag=%u";
@@ -2068,12 +2068,12 @@ LABEL_20:
 
         else if (os_log_type_enabled(v16, OS_LOG_TYPE_ERROR))
         {
-          v18 = [(SecureMobileAssetBundle *)self assetType];
-          v19 = [(SecureMobileAssetBundle *)self assetSpecifier];
+          assetType2 = [(SecureMobileAssetBundle *)self assetType];
+          assetSpecifier3 = [(SecureMobileAssetBundle *)self assetSpecifier];
           *buf = 138413058;
-          v32 = v18;
+          v32 = assetType2;
           v33 = 2112;
-          v34 = v19;
+          v34 = assetSpecifier3;
           v35 = 1024;
           v36 = v5;
           v37 = 2112;
@@ -2135,28 +2135,28 @@ LABEL_20:
 
 LABEL_22:
 
-  if (a4 && v15)
+  if (error && v15)
   {
     v27 = v15;
-    *a4 = v15;
+    *error = v15;
   }
 
   return v15 == 0;
 }
 
-- (BOOL)depersonalize:(id *)a3
+- (BOOL)depersonalize:(id *)depersonalize
 {
-  v5 = [(SecureMobileAssetBundle *)self secureAssetDataPath];
+  secureAssetDataPath = [(SecureMobileAssetBundle *)self secureAssetDataPath];
   v6 = _MADLog(@"SecureMA");
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 138412290;
-    v21 = self;
+    selfCopy = self;
     _os_log_impl(&dword_0, v6, OS_LOG_TYPE_DEFAULT, "[SMA] Depersonalizing %@", buf, 0xCu);
   }
 
   v7 = +[NSFileManager defaultManager];
-  v8 = [v7 fileExistsAtPath:v5];
+  v8 = [v7 fileExistsAtPath:secureAssetDataPath];
 
   if (!v8)
   {
@@ -2168,7 +2168,7 @@ LABEL_14:
 
   v9 = +[NSFileManager defaultManager];
   v19 = 0;
-  v10 = [v9 removeItemAtPath:v5 error:&v19];
+  v10 = [v9 removeItemAtPath:secureAssetDataPath error:&v19];
   v11 = v19;
 
   if (v10)
@@ -2177,7 +2177,7 @@ LABEL_14:
     if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412290;
-      v21 = v5;
+      selfCopy = secureAssetDataPath;
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "[SMA] Removed personalized bundle: %@", buf, 0xCu);
     }
   }
@@ -2201,15 +2201,15 @@ LABEL_14:
   if (os_log_type_enabled(v15, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412290;
-    v21 = v11;
+    selfCopy = v11;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "[SMA] Failed to depersonalize: %@", buf, 0xCu);
   }
 
-  if (a3)
+  if (depersonalize)
   {
     v16 = v11;
     v17 = 0;
-    *a3 = v11;
+    *depersonalize = v11;
   }
 
   else
@@ -2224,39 +2224,39 @@ LABEL_15:
 
 - (BOOL)isGrafted
 {
-  v2 = self;
-  v3 = [(SecureMobileAssetBundle *)self graftPath];
-  LOBYTE(v2) = [(SecureMobileAssetBundle *)v2 isGraftedPath:v3];
+  selfCopy = self;
+  graftPath = [(SecureMobileAssetBundle *)self graftPath];
+  LOBYTE(selfCopy) = [(SecureMobileAssetBundle *)selfCopy isGraftedPath:graftPath];
 
-  return v2;
+  return selfCopy;
 }
 
-- (BOOL)isGraftedPath:(id)a3
+- (BOOL)isGraftedPath:(id)path
 {
   v6[0] = 0;
   v6[1] = 0;
-  v3 = fsctl([a3 fileSystemRepresentation], 0xC0104A66uLL, v6, 1u);
+  v3 = fsctl([path fileSystemRepresentation], 0xC0104A66uLL, v6, 1u);
   return BYTE4(v6[0]) && v3 == 0;
 }
 
-- (BOOL)loadTrustCache:(id *)a3
+- (BOOL)loadTrustCache:(id *)cache
 {
   v5 = _MADLog(@"SecureMA");
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [(SecureMobileAssetBundle *)self assetBundlePath];
+    assetBundlePath = [(SecureMobileAssetBundle *)self assetBundlePath];
     *buf = 138412290;
-    v68 = v6;
+    v68 = assetBundlePath;
     _os_log_impl(&dword_0, v5, OS_LOG_TYPE_DEFAULT, "[SMA] Loading trustcache for %@", buf, 0xCu);
   }
 
-  v7 = [(SecureMobileAssetBundle *)self cryptexPath];
-  v8 = [(SecureMobileAssetBundle *)self trustCachePath];
-  v9 = [(SecureMobileAssetBundle *)self ticketPath];
-  v10 = v9;
-  if (!v7)
+  cryptexPath = [(SecureMobileAssetBundle *)self cryptexPath];
+  trustCachePath = [(SecureMobileAssetBundle *)self trustCachePath];
+  ticketPath = [(SecureMobileAssetBundle *)self ticketPath];
+  v10 = ticketPath;
+  if (!cryptexPath)
   {
-    if (a3)
+    if (cache)
     {
       v11 = [NSString stringWithFormat:@"cryptexPath is nil"];
       v12 = +[NSMutableDictionary dictionary];
@@ -2265,15 +2265,15 @@ LABEL_15:
       v13 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:115 userInfo:v12];
 
       v14 = v13;
-      *a3 = v13;
+      *cache = v13;
     }
 
     goto LABEL_74;
   }
 
-  if (!v8)
+  if (!trustCachePath)
   {
-    if (a3)
+    if (cache)
     {
       v15 = [NSString stringWithFormat:@"trustCachePath is nil"];
       v16 = +[NSMutableDictionary dictionary];
@@ -2282,15 +2282,15 @@ LABEL_15:
       v17 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:115 userInfo:v16];
 
       v18 = v17;
-      *a3 = v17;
+      *cache = v17;
     }
 
     goto LABEL_74;
   }
 
-  if (!v9)
+  if (!ticketPath)
   {
-    if (a3)
+    if (cache)
     {
       v19 = [NSString stringWithFormat:@"ticketPath is nil"];
       v20 = +[NSMutableDictionary dictionary];
@@ -2299,7 +2299,7 @@ LABEL_15:
       v21 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:115 userInfo:v20];
 
       v22 = v21;
-      *a3 = v21;
+      *cache = v21;
     }
 
     goto LABEL_74;
@@ -2308,7 +2308,7 @@ LABEL_15:
   v62 = -1;
   if (![(SecureMobileAssetBundle *)self isPersonalized:&v62])
   {
-    if (a3)
+    if (cache)
     {
       if (v62 >= 0x33)
       {
@@ -2362,17 +2362,17 @@ LABEL_15:
       }
 
       v80[0] = v33;
-      v80[1] = v7;
+      v80[1] = cryptexPath;
       v79[1] = @"cryptexPath";
       v79[2] = @"ticketpath";
       v80[2] = v10;
-      v80[3] = v8;
+      v80[3] = trustCachePath;
       v79[3] = @"trustCachePath";
       v79[4] = @"AssetBundlePath";
-      v48 = [(SecureMobileAssetBundle *)self assetBundlePath];
-      v80[4] = v48;
+      assetBundlePath2 = [(SecureMobileAssetBundle *)self assetBundlePath];
+      v80[4] = assetBundlePath2;
       v49 = [NSDictionary dictionaryWithObjects:v80 forKeys:v79 count:5];
-      *a3 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:v23 userInfo:v49];
+      *cache = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:v23 userInfo:v49];
     }
 
 LABEL_74:
@@ -2399,7 +2399,7 @@ LABEL_74:
     if (os_log_type_enabled(v25, OS_LOG_TYPE_DEFAULT))
     {
       *buf = 138412546;
-      v68 = v8;
+      v68 = trustCachePath;
       v69 = 2112;
       v70 = v61;
       _os_log_impl(&dword_0, v25, OS_LOG_TYPE_DEFAULT, "[SMA] Unable to acquiring unlock assertion %@: %@", buf, 0x16u);
@@ -2407,7 +2407,7 @@ LABEL_74:
   }
 
   v60 = 0;
-  v26 = [NSData dataWithContentsOfFile:v8 options:1 error:&v60];
+  v26 = [NSData dataWithContentsOfFile:trustCachePath options:1 error:&v60];
   v27 = v60;
   if (v26)
   {
@@ -2438,9 +2438,9 @@ LABEL_74:
           v51 = _MADLog(@"SecureMA");
           if (os_log_type_enabled(v51, OS_LOG_TYPE_DEFAULT))
           {
-            v52 = [(SecureMobileAssetBundle *)self assetBundlePath];
+            assetBundlePath3 = [(SecureMobileAssetBundle *)self assetBundlePath];
             *buf = 138412290;
-            v68 = v52;
+            v68 = assetBundlePath3;
             _os_log_impl(&dword_0, v51, OS_LOG_TYPE_DEFAULT, "[SMA] Successfully loaded trust cache for Secure Asset bundle: %@", buf, 0xCu);
           }
 
@@ -2458,10 +2458,10 @@ LABEL_74:
         v40 = _MADLog(@"SecureMA");
         if (os_log_type_enabled(v40, OS_LOG_TYPE_ERROR))
         {
-          v53 = [(SecureMobileAssetBundle *)self assetBundlePath];
+          assetBundlePath4 = [(SecureMobileAssetBundle *)self assetBundlePath];
           v41 = strerror(__errnum);
           *buf = 138412546;
-          v68 = v53;
+          v68 = assetBundlePath4;
           v69 = 2080;
           v70 = v41;
           _os_log_impl(&dword_0, v40, OS_LOG_TYPE_ERROR, "[SMA] Failed to load trust cache for asset bundle %@. (%s)", buf, 0x16u);
@@ -2477,7 +2477,7 @@ LABEL_74:
           v43 = 11508;
         }
 
-        if (!a3)
+        if (!cache)
         {
 LABEL_61:
           v32 = 0;
@@ -2492,12 +2492,12 @@ LABEL_62:
         v44 = [NSError errorWithDomain:"errorWithDomain:code:userInfo:" code:NSPOSIXErrorDomain userInfo:?];
         v64[1] = v44;
         v63[2] = @"AssetBundlePath";
-        v45 = [(SecureMobileAssetBundle *)self assetBundlePath];
-        v64[2] = v45;
+        assetBundlePath5 = [(SecureMobileAssetBundle *)self assetBundlePath];
+        v64[2] = assetBundlePath5;
         v64[3] = v10;
         v63[3] = @"ticketpath";
         v63[4] = @"trustCachePath";
-        v64[4] = v8;
+        v64[4] = trustCachePath;
         v36 = [NSDictionary dictionaryWithObjects:v64 forKeys:v63 count:5];
 
         v37 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:v43 userInfo:v36];
@@ -2509,7 +2509,7 @@ LABEL_62:
         if (os_log_type_enabled(v46, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412802;
-          v68 = v8;
+          v68 = trustCachePath;
           v69 = 2112;
           v70 = v26;
           v71 = 2112;
@@ -2517,7 +2517,7 @@ LABEL_62:
           _os_log_impl(&dword_0, v46, OS_LOG_TYPE_ERROR, "[SMA] Trust cache and/or ticket for %@ are invalid\ntrustCache=%@\nticket=%@", buf, 0x20u);
         }
 
-        if (!a3)
+        if (!cache)
         {
           goto LABEL_61;
         }
@@ -2525,8 +2525,8 @@ LABEL_62:
         v65[0] = NSDebugDescriptionErrorKey;
         v65[1] = @"AssetBundlePath";
         v66[0] = @"Trust cache and/or ticket is empty.";
-        v47 = [(SecureMobileAssetBundle *)self assetBundlePath];
-        v66[1] = v47;
+        assetBundlePath6 = [(SecureMobileAssetBundle *)self assetBundlePath];
+        v66[1] = assetBundlePath6;
         v36 = [NSDictionary dictionaryWithObjects:v66 forKeys:v65 count:2];
 
         v37 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:11506 userInfo:v36];
@@ -2545,7 +2545,7 @@ LABEL_62:
         _os_log_impl(&dword_0, v34, OS_LOG_TYPE_ERROR, "[SMA] Error loading Cryptex1 ticket at %@: %@", buf, 0x16u);
       }
 
-      if (!a3)
+      if (!cache)
       {
         goto LABEL_61;
       }
@@ -2555,14 +2555,14 @@ LABEL_62:
       v74[0] = v10;
       v74[1] = v55;
       v73[2] = @"AssetBundlePath";
-      v35 = [(SecureMobileAssetBundle *)self assetBundlePath];
-      v74[2] = v35;
+      assetBundlePath7 = [(SecureMobileAssetBundle *)self assetBundlePath];
+      v74[2] = assetBundlePath7;
       v36 = [NSDictionary dictionaryWithObjects:v74 forKeys:v73 count:3];
 
       v37 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:11504 userInfo:v36];
     }
 
-    *a3 = v37;
+    *cache = v37;
 
     goto LABEL_61;
   }
@@ -2571,25 +2571,25 @@ LABEL_62:
   if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v68 = v8;
+    v68 = trustCachePath;
     v69 = 2112;
     v70 = v27;
     _os_log_impl(&dword_0, v30, OS_LOG_TYPE_ERROR, "[SMA] Error loading trust cache at %@: %@", buf, 0x16u);
   }
 
-  if (a3)
+  if (cache)
   {
     v75[0] = NSFilePathErrorKey;
     v75[1] = NSUnderlyingErrorKey;
-    v76[0] = v8;
+    v76[0] = trustCachePath;
     v76[1] = v27;
     v75[2] = @"AssetBundlePath";
-    v31 = [(SecureMobileAssetBundle *)self assetBundlePath];
-    v76[2] = v31;
+    assetBundlePath8 = [(SecureMobileAssetBundle *)self assetBundlePath];
+    v76[2] = assetBundlePath8;
     v28 = [NSDictionary dictionaryWithObjects:v76 forKeys:v75 count:3];
 
     [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:11505 userInfo:v28];
-    *a3 = v32 = 0;
+    *cache = v32 = 0;
 LABEL_63:
 
     goto LABEL_64;
@@ -2608,46 +2608,46 @@ LABEL_75:
   return v32;
 }
 
-- (BOOL)bundleAccessPermitted:(id *)a3
+- (BOOL)bundleAccessPermitted:(id *)permitted
 {
   if ([(SecureMobileAssetBundle *)self manifestType]== &dword_0 + 2)
   {
-    v5 = [(SecureMobileAssetBundle *)self ticketPath];
-    v6 = [(SecureMobileAssetBundle *)self _manifestDataFromStoredTicket:v5 manifestType:2];
+    ticketPath = [(SecureMobileAssetBundle *)self ticketPath];
+    v6 = [(SecureMobileAssetBundle *)self _manifestDataFromStoredTicket:ticketPath manifestType:2];
 
     if (!v6)
     {
-      if (a3)
+      if (permitted)
       {
-        v22 = [(SecureMobileAssetBundle *)self ticketPath];
-        v23 = [NSString stringWithFormat:@"Stored personalized manifest ticket (%@) could not be read", v22];
+        ticketPath2 = [(SecureMobileAssetBundle *)self ticketPath];
+        v23 = [NSString stringWithFormat:@"Stored personalized manifest ticket (%@) could not be read", ticketPath2];
         v24 = +[NSMutableDictionary dictionary];
         [v24 setObject:v23 forKeyedSubscript:NSDebugDescriptionErrorKey];
         [v24 setObject:0 forKeyedSubscript:NSUnderlyingErrorKey];
         v25 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:116 userInfo:v24];
 
         v26 = v25;
-        *a3 = v25;
+        *permitted = v25;
       }
 
       v18 = 0;
       goto LABEL_31;
     }
 
-    v7 = [(SecureMobileAssetBundle *)self secureInfoPlistPath];
-    if (!v7)
+    secureInfoPlistPath = [(SecureMobileAssetBundle *)self secureInfoPlistPath];
+    if (!secureInfoPlistPath)
     {
-      if (a3)
+      if (permitted)
       {
-        v27 = [(SecureMobileAssetBundle *)self secureInfoPlistPath];
-        v28 = [NSString stringWithFormat:@"Secure cryptex info plist (%@) is missing on the bundle.", v27];
+        secureInfoPlistPath2 = [(SecureMobileAssetBundle *)self secureInfoPlistPath];
+        v28 = [NSString stringWithFormat:@"Secure cryptex info plist (%@) is missing on the bundle.", secureInfoPlistPath2];
         v29 = +[NSMutableDictionary dictionary];
         [v29 setObject:v28 forKeyedSubscript:NSDebugDescriptionErrorKey];
         [v29 setObject:0 forKeyedSubscript:NSUnderlyingErrorKey];
         v30 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:116 userInfo:v29];
 
         v31 = v30;
-        *a3 = v30;
+        *permitted = v30;
       }
 
       v18 = 0;
@@ -2655,11 +2655,11 @@ LABEL_75:
     }
 
     v52 = 0;
-    v8 = [NSData dataWithContentsOfFile:v7 options:1 error:&v52];
+    v8 = [NSData dataWithContentsOfFile:secureInfoPlistPath options:1 error:&v52];
     v9 = v52;
     if (!v8)
     {
-      if (!a3)
+      if (!permitted)
       {
         v18 = 0;
 LABEL_29:
@@ -2670,7 +2670,7 @@ LABEL_31:
         return v18 & 1;
       }
 
-      v12 = [NSString stringWithFormat:@"Unable to read cryptex info path %@", v7];
+      v12 = [NSString stringWithFormat:@"Unable to read cryptex info path %@", secureInfoPlistPath];
       v32 = v9;
       v33 = +[NSMutableDictionary dictionary];
       [v33 setObject:v12 forKeyedSubscript:NSDebugDescriptionErrorKey];
@@ -2679,20 +2679,20 @@ LABEL_31:
 
       v35 = v34;
       v18 = 0;
-      *a3 = v34;
+      *permitted = v34;
 LABEL_28:
 
       goto LABEL_29;
     }
 
-    v10 = [(SecureMobileAssetBundle *)self manifestVerifier];
+    manifestVerifier = [(SecureMobileAssetBundle *)self manifestVerifier];
     v51 = 0;
-    v11 = [v10 verifyPlist:v8 manifest:v6 manifestType:2 result:0 error:&v51];
+    v11 = [manifestVerifier verifyPlist:v8 manifest:v6 manifestType:2 result:0 error:&v51];
     v12 = v51;
 
     if ((v11 & 1) == 0)
     {
-      if (!a3)
+      if (!permitted)
       {
         v18 = 0;
         goto LABEL_28;
@@ -2707,7 +2707,7 @@ LABEL_28:
 
       v39 = v38;
       v18 = 0;
-      *a3 = v38;
+      *permitted = v38;
       goto LABEL_27;
     }
 
@@ -2723,16 +2723,16 @@ LABEL_28:
       v49 = v16;
       isKindOfClass = objc_opt_isKindOfClass();
       v18 = isKindOfClass;
-      if (a3 && (isKindOfClass & 1) == 0)
+      if (permitted && (isKindOfClass & 1) == 0)
       {
-        v46 = [NSString stringWithFormat:@"CryptexInfo plist is missing its asset-type defined in: %@", kCFBundleIdentifierKey];
+        kCFBundleIdentifierKey = [NSString stringWithFormat:@"CryptexInfo plist is missing its asset-type defined in: %@", kCFBundleIdentifierKey];
         v19 = +[NSMutableDictionary dictionary];
-        [v19 setObject:v46 forKeyedSubscript:NSDebugDescriptionErrorKey];
+        [v19 setObject:kCFBundleIdentifierKey forKeyedSubscript:NSDebugDescriptionErrorKey];
         [v19 setObject:0 forKeyedSubscript:NSUnderlyingErrorKey];
         v20 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:116 userInfo:v19];
 
         v21 = v20;
-        *a3 = v20;
+        *permitted = v20;
       }
 
       v15 = v47;
@@ -2740,7 +2740,7 @@ LABEL_28:
 
     else
     {
-      if (!a3)
+      if (!permitted)
       {
         v18 = 0;
         goto LABEL_26;
@@ -2758,7 +2758,7 @@ LABEL_28:
       v9 = v48;
       v44 = v43;
       v18 = 0;
-      *a3 = v43;
+      *permitted = v43;
     }
 
 LABEL_26:
@@ -2771,13 +2771,13 @@ LABEL_27:
   return v18 & 1;
 }
 
-- (BOOL)graft:(id *)a3
+- (BOOL)graft:(id *)graft
 {
   v5 = +[NSMutableDictionary dictionary];
   v60 = -1;
-  v6 = [(SecureMobileAssetBundle *)self graftPath];
-  v7 = [(SecureMobileAssetBundle *)self cryptexPath];
-  v8 = [(SecureMobileAssetBundle *)self ticketPath];
+  graftPath = [(SecureMobileAssetBundle *)self graftPath];
+  cryptexPath = [(SecureMobileAssetBundle *)self cryptexPath];
+  ticketPath = [(SecureMobileAssetBundle *)self ticketPath];
   v59 = 0;
   memset(&v58, 0, sizeof(v58));
   v101 = 0u;
@@ -2819,22 +2819,22 @@ LABEL_27:
   v69[2] = NSFilePosixPermissions;
   v70[2] = &off_4F7898;
   v54 = [NSDictionary dictionaryWithObjects:v70 forKeys:v69 count:3];
-  if (v6)
+  if (graftPath)
   {
-    if (v7)
+    if (cryptexPath)
     {
-      if ([(SecureMobileAssetBundle *)self isGraftedPath:v6])
+      if ([(SecureMobileAssetBundle *)self isGraftedPath:graftPath])
       {
         v9 = 0;
         v10 = 1;
         goto LABEL_16;
       }
 
-      v52 = v7;
+      v52 = cryptexPath;
       v53 = v5;
-      v19 = v8;
+      v19 = ticketPath;
       v20 = +[NSFileManager defaultManager];
-      v21 = [v20 fileExistsAtPath:v6 isDirectory:&v59];
+      v21 = [v20 fileExistsAtPath:graftPath isDirectory:&v59];
 
       if (v21)
       {
@@ -2844,24 +2844,24 @@ LABEL_27:
           goto LABEL_22;
         }
 
-        v50 = a3;
+        graftCopy = graft;
         v27 = +[NSFileManager defaultManager];
         v56 = 0;
-        v28 = [v27 removeItemAtPath:v6 error:&v56];
+        v28 = [v27 removeItemAtPath:graftPath error:&v56];
         v9 = v56;
 
         if (v28)
         {
           v29 = +[NSFileManager defaultManager];
           v55 = v9;
-          v30 = [v29 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:v54 error:&v55];
+          v30 = [v29 createDirectoryAtPath:graftPath withIntermediateDirectories:1 attributes:v54 error:&v55];
           v31 = v55;
 
           if (v30)
           {
             v9 = v31;
-            v8 = v19;
-            a3 = v50;
+            ticketPath = v19;
+            graft = graftCopy;
             goto LABEL_22;
           }
 
@@ -2874,37 +2874,37 @@ LABEL_27:
           v10 = 0;
         }
 
-        v8 = v19;
-        a3 = v50;
-        v7 = v52;
+        ticketPath = v19;
+        graft = graftCopy;
+        cryptexPath = v52;
         goto LABEL_10;
       }
 
-      v22 = a3;
+      graftCopy2 = graft;
       v23 = +[NSFileManager defaultManager];
       v57 = 0;
-      v24 = [v23 createDirectoryAtPath:v6 withIntermediateDirectories:1 attributes:v54 error:&v57];
+      v24 = [v23 createDirectoryAtPath:graftPath withIntermediateDirectories:1 attributes:v54 error:&v57];
       v9 = v57;
 
       if ((v24 & 1) == 0)
       {
         v10 = 0;
-        v7 = v52;
-        a3 = v22;
+        cryptexPath = v52;
+        graft = graftCopy2;
         goto LABEL_10;
       }
 
-      a3 = v22;
+      graft = graftCopy2;
 LABEL_22:
-      v7 = v52;
-      if (lstat([v6 fileSystemRepresentation], &v58))
+      cryptexPath = v52;
+      if (lstat([graftPath fileSystemRepresentation], &v58))
       {
         v25 = _MADLog(@"SecureMA");
         if (os_log_type_enabled(v25, OS_LOG_TYPE_ERROR))
         {
-          v26 = [v6 fileSystemRepresentation];
+          fileSystemRepresentation = [graftPath fileSystemRepresentation];
           *buf = 136315138;
-          v62 = v26;
+          v62 = fileSystemRepresentation;
           _os_log_impl(&dword_0, v25, OS_LOG_TYPE_ERROR, "[SMA] Could not lstat %s", buf, 0xCu);
         }
 
@@ -2915,14 +2915,14 @@ LABEL_22:
         v68[0] = @"lstat failed";
         v68[1] = v13;
         v67[2] = @"graftPath";
-        v68[2] = v6;
+        v68[2] = graftPath;
         v12 = [NSDictionary dictionaryWithObjects:v68 forKeys:v67 count:3];
         v14 = 10504;
         v15 = v12;
         goto LABEL_8;
       }
 
-      v51 = a3;
+      graftCopy3 = graft;
       if (![(SecureMobileAssetBundle *)self isPersonalized:&v60])
       {
         if (v60 >= 0x33)
@@ -2980,7 +2980,7 @@ LABEL_22:
         v66[1] = v52;
         v65[1] = @"cryptexPath";
         v65[2] = @"graftPath";
-        v66[2] = v6;
+        v66[2] = graftPath;
         v47 = [NSDictionary dictionaryWithObjects:v66 forKeys:v65 count:3];
         v48 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:v38 userInfo:v47];
 
@@ -2989,39 +2989,39 @@ LABEL_22:
         goto LABEL_69;
       }
 
-      v32 = [(SecureMobileAssetBundle *)self cryptexPath];
-      v33 = open([v32 fileSystemRepresentation], 0);
+      cryptexPath2 = [(SecureMobileAssetBundle *)self cryptexPath];
+      v33 = open([cryptexPath2 fileSystemRepresentation], 0);
 
       if (v33 < 0)
       {
         v37 = v53;
         [v53 setObject:@"open()" forKeyedSubscript:@"syscall"];
-        v40 = [(SecureMobileAssetBundle *)self cryptexPath];
-        [v53 setObject:v40 forKeyedSubscript:@"path"];
+        cryptexPath3 = [(SecureMobileAssetBundle *)self cryptexPath];
+        [v53 setObject:cryptexPath3 forKeyedSubscript:@"path"];
       }
 
       else
       {
-        v34 = open([v8 fileSystemRepresentation], 0);
+        v34 = open([ticketPath fileSystemRepresentation], 0);
         if (v34 < 0)
         {
           v37 = v53;
           [v53 setObject:@"open()" forKeyedSubscript:@"syscall"];
-          [v53 setObject:v8 forKeyedSubscript:@"path"];
+          [v53 setObject:ticketPath forKeyedSubscript:@"path"];
         }
 
         else
         {
           v49 = v34;
-          v35 = [(SecureMobileAssetBundle *)self rootHashPath];
-          v36 = open([v35 fileSystemRepresentation], 0);
+          rootHashPath = [(SecureMobileAssetBundle *)self rootHashPath];
+          v36 = open([rootHashPath fileSystemRepresentation], 0);
 
           if ((v36 & 0x80000000) == 0)
           {
             DWORD2(v71) = v49;
             v72 = v36;
             *&v73 = 16;
-            [v6 fileSystemRepresentation];
+            [graftPath fileSystemRepresentation];
             [(SecureMobileAssetBundle *)self graftdmgType];
             if (!graftdmg())
             {
@@ -3029,13 +3029,13 @@ LABEL_22:
               close(v49);
               close(v33);
               v12 = _MADLog(@"SecureMA");
-              a3 = v51;
+              graft = graftCopy3;
               if (os_log_type_enabled(v12, OS_LOG_TYPE_DEFAULT))
               {
                 *buf = 138412546;
                 v62 = v52;
                 v63 = 2112;
-                v64 = v6;
+                v64 = graftPath;
                 _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "[SMA] Successfully grafted %@ onto %@", buf, 0x16u);
               }
 
@@ -3058,8 +3058,8 @@ LABEL_22:
 
           v37 = v53;
           [v53 setObject:@"open()" forKeyedSubscript:@"syscall"];
-          v41 = [(SecureMobileAssetBundle *)self rootHashPath];
-          [v53 setObject:v41 forKeyedSubscript:@"path"];
+          rootHashPath2 = [(SecureMobileAssetBundle *)self rootHashPath];
+          [v53 setObject:rootHashPath2 forKeyedSubscript:@"path"];
 
           close(v49);
         }
@@ -3085,19 +3085,19 @@ LABEL_57:
 
       [v44 setObject:@"graft failed" forKeyedSubscript:NSDebugDescriptionErrorKey];
       [v44 setObject:v12 forKeyedSubscript:NSUnderlyingErrorKey];
-      [v44 setObject:v8 forKeyedSubscript:@"ticketPath"];
-      v45 = [(SecureMobileAssetBundle *)self cryptexPath];
-      [v44 setObject:v45 forKeyedSubscript:@"cryptexPath"];
+      [v44 setObject:ticketPath forKeyedSubscript:@"ticketPath"];
+      cryptexPath4 = [(SecureMobileAssetBundle *)self cryptexPath];
+      [v44 setObject:cryptexPath4 forKeyedSubscript:@"cryptexPath"];
 
-      v46 = [(SecureMobileAssetBundle *)self rootHashPath];
-      [v44 setObject:v46 forKeyedSubscript:@"rootHashPath"];
+      rootHashPath3 = [(SecureMobileAssetBundle *)self rootHashPath];
+      [v44 setObject:rootHashPath3 forKeyedSubscript:@"rootHashPath"];
 
-      [v44 setObject:v6 forKeyedSubscript:@"graftPath"];
+      [v44 setObject:graftPath forKeyedSubscript:@"graftPath"];
       v9 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:105 userInfo:v44];
       v10 = 0;
       v53 = v44;
 LABEL_69:
-      a3 = v51;
+      graft = graftCopy3;
       goto LABEL_9;
     }
 
@@ -3134,10 +3134,10 @@ LABEL_10:
       _os_log_impl(&dword_0, v16, OS_LOG_TYPE_ERROR, "[SMA] Failed to graft: %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (graft)
     {
       v17 = v9;
-      *a3 = v9;
+      *graft = v9;
     }
   }
 
@@ -3147,20 +3147,20 @@ LABEL_16:
   return v10;
 }
 
-- (BOOL)ungraft:(id *)a3
+- (BOOL)ungraft:(id *)ungraft
 {
   v5 = +[NSMutableDictionary dictionary];
-  v6 = [(SecureMobileAssetBundle *)self graftPath];
-  if (v6)
+  graftPath = [(SecureMobileAssetBundle *)self graftPath];
+  if (graftPath)
   {
-    if ([(SecureMobileAssetBundle *)self isGraftedPath:v6])
+    if ([(SecureMobileAssetBundle *)self isGraftedPath:graftPath])
     {
       if (MABrainUtilitySupportsGracefulUngraft())
       {
         [v5 setObject:@"UNGRAFTDMG_NOFORCE" forKeyedSubscript:@"ungraft_param"];
       }
 
-      [v6 fileSystemRepresentation];
+      [graftPath fileSystemRepresentation];
       v10 = ungraftdmg();
       v11 = _MADLog(@"SecureMA");
       v12 = v11;
@@ -3169,7 +3169,7 @@ LABEL_16:
         if (os_log_type_enabled(v11, OS_LOG_TYPE_ERROR))
         {
           v21 = 136315138;
-          v22 = [v6 fileSystemRepresentation];
+          fileSystemRepresentation = [graftPath fileSystemRepresentation];
           _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "[SMA] Could not ungraft %s", &v21, 0xCu);
         }
 
@@ -3191,7 +3191,7 @@ LABEL_16:
         v26[0] = @"ungraft failed";
         v26[1] = v15;
         v25[2] = @"graftPath";
-        v26[2] = v6;
+        v26[2] = graftPath;
         v16 = [NSDictionary dictionaryWithObjects:v26 forKeys:v25 count:3];
         v9 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:106 userInfo:v16];
 
@@ -3206,7 +3206,7 @@ LABEL_16:
       if (os_log_type_enabled(v11, OS_LOG_TYPE_DEFAULT))
       {
         v21 = 138412546;
-        v22 = v6;
+        fileSystemRepresentation = graftPath;
         v23 = 2112;
         v24 = @"ungraftdmg()";
         _os_log_impl(&dword_0, v12, OS_LOG_TYPE_DEFAULT, "[SMA] Successfully ungrafted %@ from the file system using %@", &v21, 0x16u);
@@ -3236,18 +3236,18 @@ LABEL_14:
   if (os_log_type_enabled(v17, OS_LOG_TYPE_ERROR))
   {
     v21 = 138412290;
-    v22 = v9;
+    fileSystemRepresentation = v9;
     _os_log_impl(&dword_0, v17, OS_LOG_TYPE_ERROR, "[SMA] Failed to ungraft: %@", &v21, 0xCu);
   }
 
-  if (!a3)
+  if (!ungraft)
   {
     goto LABEL_18;
   }
 
   v18 = v9;
   v19 = 0;
-  *a3 = v9;
+  *ungraft = v9;
 LABEL_23:
 
   return v19;
@@ -3255,16 +3255,16 @@ LABEL_23:
 
 - (BOOL)isMounted
 {
-  v2 = [(SecureMobileAssetBundle *)self graftPath];
-  v3 = realpath_DARWIN_EXTSN([v2 fileSystemRepresentation], 0);
+  graftPath = [(SecureMobileAssetBundle *)self graftPath];
+  v3 = realpath_DARWIN_EXTSN([graftPath fileSystemRepresentation], 0);
   if (v3)
   {
     v4 = v3;
     v5 = [NSString stringWithUTF8String:v3];
-    v6 = [v5 stringByDeletingLastPathComponent];
+    stringByDeletingLastPathComponent = [v5 stringByDeletingLastPathComponent];
     memset(&v10, 0, sizeof(v10));
     memset(&v9, 0, sizeof(v9));
-    v7 = !stat([v5 fileSystemRepresentation], &v10) && !stat(objc_msgSend(v6, "fileSystemRepresentation"), &v9) && v10.st_dev != v9.st_dev;
+    v7 = !stat([v5 fileSystemRepresentation], &v10) && !stat(objc_msgSend(stringByDeletingLastPathComponent, "fileSystemRepresentation"), &v9) && v10.st_dev != v9.st_dev;
     free(v4);
   }
 
@@ -3276,9 +3276,9 @@ LABEL_23:
   return v7;
 }
 
-- (id)attach:(id)a3 error:(id *)a4
+- (id)attach:(id)attach error:(id *)error
 {
-  v5 = a3;
+  attachCopy = attach;
   outputStructCnt = 0;
   *connect = 0;
   v51 = 0u;
@@ -3300,29 +3300,29 @@ LABEL_23:
   LODWORD(v6) = -1;
   p_weak_ivar_lyt = (&MAAIRBMobileAssetOperationMetadata__metaData + 56);
   outputStruct = 0;
-  if (v5)
+  if (attachCopy)
   {
     v8 = +[NSMutableDictionary dictionary];
     if (v8)
     {
       v9 = +[NSUUID UUID];
-      v33 = [v9 UUIDString];
+      uUIDString = [v9 UUIDString];
 
-      if (v33)
+      if (uUIDString)
       {
-        [v8 setObject:v33 forKeyedSubscript:@"hdik-unique-identifier"];
+        [v8 setObject:uUIDString forKeyedSubscript:@"hdik-unique-identifier"];
         [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:@"OSInternal"];
         [v8 setObject:&__kCFBooleanTrue forKeyedSubscript:@"write-protected"];
         [v8 setObject:&__kCFBooleanFalse forKeyedSubscript:@"autodiskmount"];
-        v32 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [v5 UTF8String], objc_msgSend(v5, "length"));
+        v32 = +[NSData dataWithBytes:length:](NSData, "dataWithBytes:length:", [attachCopy UTF8String], objc_msgSend(attachCopy, "length"));
         if (v32)
         {
           [v8 setObject:v32 forKeyedSubscript:@"image-path"];
-          v6 = open([v5 fileSystemRepresentation], 0);
+          v6 = open([attachCopy fileSystemRepresentation], 0);
           if ((v6 & 0x80000000) != 0)
           {
             Data = 0;
-            v17 = [NSString stringWithFormat:@"Failed to open %@: %{errno}d", v5, *__error()];
+            0x3FFF = [NSString stringWithFormat:@"Failed to open %@: %{errno}d", attachCopy, *__error()];
             v14 = 0;
           }
 
@@ -3359,34 +3359,34 @@ LABEL_23:
                     if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
                     {
                       *buf = 138412546;
-                      *&buf[4] = v5;
+                      *&buf[4] = attachCopy;
                       *&buf[12] = 2112;
-                      *&buf[14] = v33;
+                      *&buf[14] = uUIDString;
                       _os_log_impl(&dword_0, v27, OS_LOG_TYPE_DEFAULT, "[SMA] Successfully attached %@ with ID: %@", buf, 0x16u);
                     }
 
-                    v23 = v33;
-                    v17 = 0;
-                    v33 = v23;
+                    v23 = uUIDString;
+                    0x3FFF = 0;
+                    uUIDString = v23;
                     goto LABEL_26;
                   }
 
                   v16 = @"Failed to attach disk image: 0x%04x";
                 }
 
-                v17 = [NSString stringWithFormat:v16, v15 & 0x3FFF];
+                0x3FFF = [NSString stringWithFormat:v16, v15 & 0x3FFF];
               }
 
               else
               {
-                v17 = @"Failed to connect to disk image kernel extension.";
+                0x3FFF = @"Failed to connect to disk image kernel extension.";
               }
             }
 
             else
             {
               v14 = 0;
-              v17 = @"Failed to create dictionary with data.";
+              0x3FFF = @"Failed to create dictionary with data.";
             }
           }
         }
@@ -3396,7 +3396,7 @@ LABEL_23:
           v14 = 0;
           Data = 0;
           v32 = 0;
-          v17 = @"Failed to create data.";
+          0x3FFF = @"Failed to create data.";
         }
       }
 
@@ -3405,8 +3405,8 @@ LABEL_23:
         v14 = 0;
         Data = 0;
         v32 = 0;
-        v33 = 0;
-        v17 = @"Failed to create UUID string.";
+        uUIDString = 0;
+        0x3FFF = @"Failed to create UUID string.";
       }
     }
 
@@ -3415,8 +3415,8 @@ LABEL_23:
       v14 = 0;
       Data = 0;
       v32 = 0;
-      v33 = 0;
-      v17 = @"Failed to create dictionary.";
+      uUIDString = 0;
+      0x3FFF = @"Failed to create dictionary.";
     }
 
     p_weak_ivar_lyt = &MAAIRBMobileAssetOperationMetadata__metaData.weak_ivar_lyt;
@@ -3427,12 +3427,12 @@ LABEL_23:
     v14 = 0;
     Data = 0;
     v32 = 0;
-    v33 = 0;
+    uUIDString = 0;
     v8 = 0;
-    v17 = @"Invalid input.";
+    0x3FFF = @"Invalid input.";
   }
 
-  v18 = [p_weak_ivar_lyt[226] stringWithFormat:@"%@", v17];
+  v18 = [p_weak_ivar_lyt[226] stringWithFormat:@"%@", 0x3FFF];
   v19 = +[NSMutableDictionary dictionary];
   [v19 setObject:v18 forKeyedSubscript:NSDebugDescriptionErrorKey];
   [v19 setObject:0 forKeyedSubscript:NSUnderlyingErrorKey];
@@ -3446,10 +3446,10 @@ LABEL_23:
     _os_log_impl(&dword_0, v21, OS_LOG_TYPE_ERROR, "[SMA] Failed to attach cryptex disk image: %@", buf, 0xCu);
   }
 
-  if (a4)
+  if (error)
   {
     v22 = v20;
-    *a4 = v20;
+    *error = v20;
   }
 
   v23 = 0;
@@ -3521,9 +3521,9 @@ LABEL_26:
   return v23;
 }
 
-- (id)devnodesForDiskImageID:(id)a3 error:(id *)a4
+- (id)devnodesForDiskImageID:(id)d error:(id *)error
 {
-  v49 = a3;
+  dCopy = d;
   v51 = +[NSMutableDictionary dictionary];
   v50 = +[NSMutableArray array];
   v48 = +[NSMutableArray array];
@@ -3550,8 +3550,8 @@ LABEL_26:
   if (v7)
   {
     v56 = NSDebugDescriptionErrorKey;
-    v8 = [NSString stringWithFormat:@"IOServiceAddMatchingNotification() failed: 0x%04x", v7 & 0x3FFF];
-    v57 = v8;
+    0x3FFF = [NSString stringWithFormat:@"IOServiceAddMatchingNotification() failed: 0x%04x", v7 & 0x3FFF];
+    v57 = 0x3FFF;
     v9 = [NSDictionary dictionaryWithObjects:&v57 forKeys:&v56 count:1];
     v46 = [NSError errorWithDomain:@"IOKitErrorDomain" code:v7 userInfo:v9];
 
@@ -3569,7 +3569,7 @@ LABEL_26:
       v14 = IORegistryEntrySearchCFProperty(v13, "IOService", @"hdik-unique-identifier", 0, 3u);
       if (v14)
       {
-        if ([v49 isEqual:v14])
+        if ([dCopy isEqual:v14])
         {
           break;
         }
@@ -3643,8 +3643,8 @@ LABEL_40:
         if (ParentEntry)
         {
           v58 = NSDebugDescriptionErrorKey;
-          v28 = [NSString stringWithFormat:@"IORegistryEntryGetParentEntry() failed: 0x%04x", ParentEntry & 0x3FFF];
-          v59 = v28;
+          0x3FFF2 = [NSString stringWithFormat:@"IORegistryEntryGetParentEntry() failed: 0x%04x", ParentEntry & 0x3FFF];
+          v59 = 0x3FFF2;
           v29 = [NSDictionary dictionaryWithObjects:&v59 forKeys:&v58 count:1];
           v30 = [NSError errorWithDomain:@"IOKitErrorDomain" code:ParentEntry userInfo:v29];
 
@@ -3748,10 +3748,10 @@ LABEL_45:
   }
 
   [v51 setObject:v10 forKeyedSubscript:@"wholeDisk"];
-  if (a4)
+  if (error)
   {
     v37 = v46;
-    *a4 = v46;
+    *error = v46;
   }
 
   v38 = [v51 count];
@@ -3766,14 +3766,14 @@ LABEL_45:
   return v40;
 }
 
-- (BOOL)mount:(id *)a3
+- (BOOL)mount:(id *)mount
 {
   v4 = +[NSMutableDictionary dictionary];
   v73 = -1;
-  v5 = [(SecureMobileAssetBundle *)self graftPath];
-  v6 = [(SecureMobileAssetBundle *)self cryptexPath];
-  v7 = [(SecureMobileAssetBundle *)self ticketPath];
-  v62 = [(SecureMobileAssetBundle *)self rootHashPath];
+  graftPath = [(SecureMobileAssetBundle *)self graftPath];
+  cryptexPath = [(SecureMobileAssetBundle *)self cryptexPath];
+  ticketPath = [(SecureMobileAssetBundle *)self ticketPath];
+  rootHashPath = [(SecureMobileAssetBundle *)self rootHashPath];
   v72 = 0;
   memset(&v71, 0, sizeof(v71));
   v98 = 0u;
@@ -3802,11 +3802,11 @@ LABEL_45:
   v81[2] = &off_4F7898;
   v8 = [NSDictionary dictionaryWithObjects:v81 forKeys:v80 count:3];
   v61 = v8;
-  if (!v5)
+  if (!graftPath)
   {
-    v57 = v7;
+    v57 = ticketPath;
     v58 = v4;
-    v59 = v6;
+    v59 = cryptexPath;
     v11 = [NSString stringWithFormat:@"mountPath is nil"];
     v14 = +[NSMutableDictionary dictionary];
     [v14 setObject:v11 forKeyedSubscript:NSDebugDescriptionErrorKey];
@@ -3820,13 +3820,13 @@ LABEL_45:
     v18 = 0;
     v19 = 0;
     v10 = 0;
-    v6 = 0;
+    cryptexPath = 0;
     goto LABEL_38;
   }
 
-  if (!v6)
+  if (!cryptexPath)
   {
-    v57 = v7;
+    v57 = ticketPath;
     v58 = v4;
     v59 = 0;
     v11 = [NSString stringWithFormat:@"cryptexPath is nil"];
@@ -3850,7 +3850,7 @@ LABEL_37:
   v9 = v8;
   if (![(SecureMobileAssetBundle *)self isMounted])
   {
-    v57 = v7;
+    v57 = ticketPath;
     if ([(SecureMobileAssetBundle *)self isPersonalized:&v73])
     {
       v21 = 0;
@@ -3910,53 +3910,53 @@ LABEL_37:
       }
 
       v79[0] = v24;
-      v79[1] = v6;
+      v79[1] = cryptexPath;
       v78[1] = @"cryptexPath";
       v78[2] = @"mountPath";
-      v79[2] = v5;
+      v79[2] = graftPath;
       v25 = [NSDictionary dictionaryWithObjects:v79 forKeys:v78 count:3];
       v21 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:v22 userInfo:v25];
     }
 
     v26 = +[NSFileManager defaultManager];
-    v27 = [v26 fileExistsAtPath:v5 isDirectory:&v72];
+    v27 = [v26 fileExistsAtPath:graftPath isDirectory:&v72];
 
     v58 = v4;
-    v59 = v6;
+    v59 = cryptexPath;
     if (v27)
     {
       if (v72)
       {
         v11 = v21;
 LABEL_32:
-        if (lstat([v5 fileSystemRepresentation], &v71))
+        if (lstat([graftPath fileSystemRepresentation], &v71))
         {
           v30 = _MADLog(@"SecureMA");
           if (os_log_type_enabled(v30, OS_LOG_TYPE_ERROR))
           {
-            v31 = [v5 fileSystemRepresentation];
+            fileSystemRepresentation = [graftPath fileSystemRepresentation];
             *buf = 136315138;
-            v75 = v31;
+            v75 = fileSystemRepresentation;
             _os_log_impl(&dword_0, v30, OS_LOG_TYPE_ERROR, "[SMA] Could not lstat %s", buf, 0xCu);
           }
 
-          v6 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+          cryptexPath = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
           [v4 setObject:@"lstat() failed" forKeyedSubscript:NSDebugDescriptionErrorKey];
-          [v4 setObject:v6 forKeyedSubscript:NSUnderlyingErrorKey];
-          [v4 setObject:v5 forKeyedSubscript:@"mountPath"];
+          [v4 setObject:cryptexPath forKeyedSubscript:NSUnderlyingErrorKey];
+          [v4 setObject:graftPath forKeyedSubscript:@"mountPath"];
           v15 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:10704 userInfo:v4];
           goto LABEL_36;
         }
 
         v67 = 0;
-        v19 = [(SecureMobileAssetBundle *)self attach:v6 error:&v67];
+        v19 = [(SecureMobileAssetBundle *)self attach:cryptexPath error:&v67];
         v47 = v67;
-        v48 = v6;
-        v6 = v47;
+        v48 = cryptexPath;
+        cryptexPath = v47;
         if (!v19)
         {
           [v4 setObject:@"Failed to attach disk image" forKeyedSubscript:NSDebugDescriptionErrorKey];
-          [v4 setObject:v6 forKeyedSubscript:NSUnderlyingErrorKey];
+          [v4 setObject:cryptexPath forKeyedSubscript:NSUnderlyingErrorKey];
           [v4 setObject:v48 forKeyedSubscript:@"cryptexPath"];
           v15 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:10705 userInfo:v4];
           v16 = 0;
@@ -3997,12 +3997,12 @@ LABEL_32:
               DWORD2(v82) = 1048577;
               v65 = v49;
               v10 = [NSData dataWithContentsOfFile:v57 options:0 error:&v65];
-              v6 = v65;
+              cryptexPath = v65;
 
               if (v10)
               {
-                v64 = v6;
-                v19 = [NSData dataWithContentsOfFile:v62 options:0 error:&v64];
+                v64 = cryptexPath;
+                v19 = [NSData dataWithContentsOfFile:rootHashPath options:0 error:&v64];
                 v12 = v64;
 
                 LOWORD(v83) = 8;
@@ -4012,7 +4012,7 @@ LABEL_32:
                 *(&v99[2] + 4) = [v10 length];
                 *(v99 + 12) = [v19 bytes];
                 *(&v99[1] + 4) = [v19 length];
-                if (!mount("apfs", [v5 fileSystemRepresentation], 1048577, &v82))
+                if (!mount("apfs", [graftPath fileSystemRepresentation], 1048577, &v82))
                 {
                   v54 = _MADLog(@"SecureMA");
                   if (os_log_type_enabled(v54, OS_LOG_TYPE_DEFAULT))
@@ -4020,7 +4020,7 @@ LABEL_32:
                     *buf = 138412546;
                     v75 = v16;
                     v76 = 2112;
-                    v77 = v5;
+                    v77 = graftPath;
                     _os_log_impl(&dword_0, v54, OS_LOG_TYPE_DEFAULT, "[SMA] Successfully mounted cryptex volume %@ at %@", buf, 0x16u);
                   }
 
@@ -4028,12 +4028,12 @@ LABEL_32:
                   goto LABEL_52;
                 }
 
-                v6 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
+                cryptexPath = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
 
                 [v58 setObject:@"mount() failed" forKeyedSubscript:NSDebugDescriptionErrorKey];
-                [v58 setObject:v6 forKeyedSubscript:NSUnderlyingErrorKey];
+                [v58 setObject:cryptexPath forKeyedSubscript:NSUnderlyingErrorKey];
                 [v58 setObject:v59 forKeyedSubscript:@"cryptexPath"];
-                [v58 setObject:v5 forKeyedSubscript:@"mountPath"];
+                [v58 setObject:graftPath forKeyedSubscript:@"mountPath"];
                 [v58 setObject:v16 forKeyedSubscript:@"volumeDevNode"];
                 v15 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:107 userInfo:v58];
               }
@@ -4041,7 +4041,7 @@ LABEL_32:
               else
               {
                 [v58 setObject:@"Failed to load im4m for cryptex" forKeyedSubscript:NSDebugDescriptionErrorKey];
-                [v58 setObject:v6 forKeyedSubscript:NSUnderlyingErrorKey];
+                [v58 setObject:cryptexPath forKeyedSubscript:NSUnderlyingErrorKey];
                 [v58 setObject:v59 forKeyedSubscript:@"cryptexPath"];
                 [v58 setObject:v57 forKeyedSubscript:@"ticketPath"];
                 v15 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:10709 userInfo:v58];
@@ -4081,30 +4081,30 @@ LABEL_32:
         v16 = 0;
         v19 = 0;
         v10 = 0;
-        v6 = v49;
+        cryptexPath = v49;
 LABEL_38:
 
-        v12 = v6;
+        v12 = cryptexPath;
         v11 = v15;
         goto LABEL_39;
       }
 
       v42 = +[NSFileManager defaultManager];
       v69 = v21;
-      v43 = [v42 removeItemAtPath:v5 error:&v69];
+      v43 = [v42 removeItemAtPath:graftPath error:&v69];
       v11 = v69;
 
       if (v43)
       {
         v44 = +[NSFileManager defaultManager];
         v68 = v11;
-        v45 = [v44 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:v9 error:&v68];
+        v45 = [v44 createDirectoryAtPath:graftPath withIntermediateDirectories:1 attributes:v9 error:&v68];
         v46 = v68;
 
         if (v45)
         {
           v11 = v46;
-          v6 = v59;
+          cryptexPath = v59;
           goto LABEL_32;
         }
 
@@ -4134,17 +4134,17 @@ LABEL_39:
           if (!v18)
           {
 LABEL_49:
-            if (a3)
+            if (mount)
             {
               v40 = v11;
-              *a3 = v11;
+              *mount = v11;
             }
 
             v13 = 0;
 LABEL_52:
             v4 = v58;
-            v6 = v59;
-            v7 = v57;
+            cryptexPath = v59;
+            ticketPath = v57;
             goto LABEL_53;
           }
 
@@ -4187,7 +4187,7 @@ LABEL_47:
     {
       v28 = +[NSFileManager defaultManager];
       v70 = v21;
-      v29 = [v28 createDirectoryAtPath:v5 withIntermediateDirectories:1 attributes:v9 error:&v70];
+      v29 = [v28 createDirectoryAtPath:graftPath withIntermediateDirectories:1 attributes:v9 error:&v70];
       v11 = v70;
 
       if (v29)
@@ -4222,11 +4222,11 @@ LABEL_53:
   return v13;
 }
 
-- (BOOL)unmount:(id *)a3
+- (BOOL)unmount:(id *)unmount
 {
-  v4 = [(SecureMobileAssetBundle *)self graftPath];
+  graftPath = [(SecureMobileAssetBundle *)self graftPath];
   bzero(&v31, 0x878uLL);
-  if (statfs([v4 fileSystemRepresentation], &v31))
+  if (statfs([graftPath fileSystemRepresentation], &v31))
   {
     v5 = *__error();
     v6 = v5;
@@ -4236,7 +4236,7 @@ LABEL_53:
     v30[1] = @"statfs";
     v29[1] = @"syscall";
     v29[2] = @"mountPath";
-    v30[2] = v4;
+    v30[2] = graftPath;
     v8 = [NSDictionary dictionaryWithObjects:v30 forKeys:v29 count:3];
     v9 = [NSError errorWithDomain:NSPOSIXErrorDomain code:v6 userInfo:v8];
 
@@ -4245,7 +4245,7 @@ LABEL_5:
     goto LABEL_6;
   }
 
-  if (unmount([v4 fileSystemRepresentation], 0))
+  if (unmount([graftPath fileSystemRepresentation], 0))
   {
     v7 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
     v27[0] = NSDebugDescriptionErrorKey;
@@ -4253,7 +4253,7 @@ LABEL_5:
     v28[0] = @"unmount failed";
     v28[1] = v7;
     v27[2] = @"mountPath";
-    v28[2] = v4;
+    v28[2] = graftPath;
     v10 = [NSDictionary dictionaryWithObjects:v28 forKeys:v27 count:3];
     v9 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:108 userInfo:v10];
 
@@ -4267,7 +4267,7 @@ LABEL_5:
     *buf = 138412546;
     v24 = v11;
     v25 = 2112;
-    v26 = v4;
+    v26 = graftPath;
     _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "[SMA] Successfully unmounted cryptex volume %@ from %@", buf, 0x16u);
   }
 
@@ -4284,7 +4284,7 @@ LABEL_5:
     }
 
     *buf = 138412290;
-    v24 = v4;
+    v24 = graftPath;
     v18 = "[SMA] Successfully ejected cryptex disk image previously mounted at %@";
     v19 = v7;
     v20 = OS_LOG_TYPE_DEFAULT;
@@ -4299,7 +4299,7 @@ LABEL_5:
     }
 
     *buf = 138412546;
-    v24 = v4;
+    v24 = graftPath;
     v25 = 2112;
     v26 = v9;
     v18 = "[SMA] Failed to eject cryptex disk image previously mounted at %@: %@";
@@ -4321,22 +4321,22 @@ LABEL_6:
       _os_log_impl(&dword_0, v12, OS_LOG_TYPE_ERROR, "[SMA] Failed to unmount and eject cryptex disk image: %@", buf, 0xCu);
     }
 
-    if (a3)
+    if (unmount)
     {
       v13 = v9;
-      *a3 = v9;
+      *unmount = v9;
     }
   }
 
   return v9 == 0;
 }
 
-- (BOOL)graftOrMount:(int64_t *)a3 graftingError:(id *)a4
+- (BOOL)graftOrMount:(int64_t *)mount graftingError:(id *)error
 {
   v7 = +[NSMutableDictionary dictionary];
-  v8 = [(SecureMobileAssetBundle *)self cryptexPath];
-  v9 = self;
-  objc_sync_enter(v9);
+  cryptexPath = [(SecureMobileAssetBundle *)self cryptexPath];
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
   if (MABrainUtilityForceSecureAssetMount())
   {
     v10 = 0;
@@ -4344,7 +4344,7 @@ LABEL_6:
     goto LABEL_21;
   }
 
-  v12 = open([v8 fileSystemRepresentation], 0);
+  v12 = open([cryptexPath fileSystemRepresentation], 0);
   v13 = v12;
   v32 = v12;
   if ((v12 & 0x80000000) == 0)
@@ -4359,7 +4359,7 @@ LABEL_6:
         if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
         {
           LODWORD(buf[0]) = 138412290;
-          *(buf + 4) = v8;
+          *(buf + 4) = cryptexPath;
           v17 = "[SMA] Cryptex at %@ is not graftable";
 LABEL_12:
           v18 = v16;
@@ -4378,7 +4378,7 @@ LABEL_15:
           v21 = __error();
           v22 = strerror(*v21);
           LODWORD(buf[0]) = 138412546;
-          *(buf + 4) = v8;
+          *(buf + 4) = cryptexPath;
           WORD6(buf[0]) = 2080;
           *(buf + 14) = v22;
           v17 = "[SMA] Could not determine whether cryptex at %@ is graftable: %s";
@@ -4396,7 +4396,7 @@ LABEL_15:
       if (os_log_type_enabled(v16, OS_LOG_TYPE_DEFAULT))
       {
         LODWORD(buf[0]) = 138412290;
-        *(buf + 4) = v8;
+        *(buf + 4) = cryptexPath;
         v17 = "[SMA] Cryptex at %@ is graftable";
         goto LABEL_12;
       }
@@ -4410,7 +4410,7 @@ LABEL_15:
   v11 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
   [v7 setObject:@"Failed to open cryptex file" forKeyedSubscript:NSDebugDescriptionErrorKey];
   [v7 setObject:v11 forKeyedSubscript:NSUnderlyingErrorKey];
-  [v7 setObject:v8 forKeyedSubscript:@"cryptexPath"];
+  [v7 setObject:cryptexPath forKeyedSubscript:@"cryptexPath"];
   v10 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:-4 userInfo:v7];
   if (v13 == -1)
   {
@@ -4437,7 +4437,7 @@ LABEL_17:
     if (v15)
     {
       v31 = v10;
-      v23 = [(SecureMobileAssetBundle *)v9 graft:&v31];
+      v23 = [(SecureMobileAssetBundle *)selfCopy graft:&v31];
       v24 = v31;
 
       v25 = 1;
@@ -4448,7 +4448,7 @@ LABEL_22:
 
 LABEL_21:
     v30 = v10;
-    v23 = [(SecureMobileAssetBundle *)v9 mount:&v30];
+    v23 = [(SecureMobileAssetBundle *)selfCopy mount:&v30];
     v24 = v30;
 
     v25 = 2;
@@ -4459,42 +4459,42 @@ LABEL_23:
   v23 = 0;
   v25 = 0;
 LABEL_24:
-  objc_sync_exit(v9);
+  objc_sync_exit(selfCopy);
 
-  if (a3)
+  if (mount)
   {
-    *a3 = v25;
+    *mount = v25;
   }
 
-  if (a4 && v10)
+  if (error && v10)
   {
     v26 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v23;
 }
 
-- (BOOL)ungraftOrUnmount:(int64_t *)a3 ungraftingError:(id *)a4
+- (BOOL)ungraftOrUnmount:(int64_t *)unmount ungraftingError:(id *)error
 {
-  v6 = self;
-  objc_sync_enter(v6);
-  if ([(SecureMobileAssetBundle *)v6 isGrafted])
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if ([(SecureMobileAssetBundle *)selfCopy isGrafted])
   {
     v14 = 0;
     v7 = &v14;
-    v8 = [(SecureMobileAssetBundle *)v6 ungraft:&v14];
+    v8 = [(SecureMobileAssetBundle *)selfCopy ungraft:&v14];
     v9 = 1;
 LABEL_5:
     v10 = *v7;
     goto LABEL_7;
   }
 
-  if ([(SecureMobileAssetBundle *)v6 isMounted])
+  if ([(SecureMobileAssetBundle *)selfCopy isMounted])
   {
     v13 = 0;
     v7 = &v13;
-    v8 = [(SecureMobileAssetBundle *)v6 unmount:&v13];
+    v8 = [(SecureMobileAssetBundle *)selfCopy unmount:&v13];
     v9 = 2;
     goto LABEL_5;
   }
@@ -4503,31 +4503,31 @@ LABEL_5:
   v9 = 0;
   v8 = 1;
 LABEL_7:
-  objc_sync_exit(v6);
+  objc_sync_exit(selfCopy);
 
-  if (a3)
+  if (unmount)
   {
-    *a3 = v9;
+    *unmount = v9;
   }
 
-  if (a4 && v10)
+  if (error && v10)
   {
     v11 = v10;
-    *a4 = v10;
+    *error = v10;
   }
 
   return v8;
 }
 
-- (BOOL)beginAccessWithOptions:(id)a3 accessMechanismPtr:(int64_t *)a4 errorPtr:(id *)a5
+- (BOOL)beginAccessWithOptions:(id)options accessMechanismPtr:(int64_t *)ptr errorPtr:(id *)errorPtr
 {
-  v8 = a3;
+  optionsCopy = options;
   v9 = objc_opt_class();
   objc_sync_enter(v9);
-  LOBYTE(a5) = [(SecureMobileAssetBundle *)self _beginAccessWithOptions_nowait:v8 accessMechanismPtr:a4 errorPtr:a5];
+  LOBYTE(errorPtr) = [(SecureMobileAssetBundle *)self _beginAccessWithOptions_nowait:optionsCopy accessMechanismPtr:ptr errorPtr:errorPtr];
   objc_sync_exit(v9);
 
-  return a5;
+  return errorPtr;
 }
 
 + (id)getBootTaskPlistLock
@@ -4549,10 +4549,10 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
   _objc_release_x1();
 }
 
-- (void)recordAssetGraftStateForEarlyBootTask:(BOOL)a3 options:(id)a4
+- (void)recordAssetGraftStateForEarlyBootTask:(BOOL)task options:(id)options
 {
-  v64 = a3;
-  v67 = a4;
+  taskCopy = task;
+  optionsCopy = options;
   v5 = +[SecureMobileAssetBundle getBootTaskPlistLock];
   objc_sync_enter(v5);
   v6 = getRepositoryPath(@"/private/var/MobileAsset/AssetsV2");
@@ -4593,25 +4593,25 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
       [v8 setObject:v7 forKeyedSubscript:@"GraftOperations"];
     }
 
-    if (v64)
+    if (taskCopy)
     {
       v72[0] = @"PerformGraft";
-      v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", ([v67 flags] & 2) == 0);
+      v12 = +[NSNumber numberWithInt:](NSNumber, "numberWithInt:", ([optionsCopy flags] & 2) == 0);
       v72[1] = @"PathsToDeleteOnGraftFailure";
       v73[0] = v12;
-      v13 = [v67 pathsToPurgeOnGraftFailureInEarlyBootTask];
-      v14 = [v13 allObjects];
-      v73[1] = v14;
-      v15 = [NSDictionary dictionaryWithObjects:v73 forKeys:v72 count:2];
+      pathsToPurgeOnGraftFailureInEarlyBootTask = [optionsCopy pathsToPurgeOnGraftFailureInEarlyBootTask];
+      allObjects = [pathsToPurgeOnGraftFailureInEarlyBootTask allObjects];
+      v73[1] = allObjects;
+      assetBundlePath2 = [NSDictionary dictionaryWithObjects:v73 forKeys:v72 count:2];
 
-      v16 = [(SecureMobileAssetBundle *)self assetBundlePath];
-      [v7 setObject:v15 forKeyedSubscript:v16];
+      assetBundlePath = [(SecureMobileAssetBundle *)self assetBundlePath];
+      [v7 setObject:assetBundlePath2 forKeyedSubscript:assetBundlePath];
     }
 
     else
     {
-      v15 = [(SecureMobileAssetBundle *)self assetBundlePath];
-      [v7 removeObjectForKey:v15];
+      assetBundlePath2 = [(SecureMobileAssetBundle *)self assetBundlePath];
+      [v7 removeObjectForKey:assetBundlePath2];
     }
 
     v68 = 0;
@@ -4636,7 +4636,7 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
         v47 = _MADLog(@"SecureMA");
         if (os_log_type_enabled(v47, OS_LOG_TYPE_ERROR))
         {
-          if (v64)
+          if (taskCopy)
           {
             v48 = @"graft";
           }
@@ -4646,13 +4646,13 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
             v48 = @"ungraft";
           }
 
-          v49 = [(SecureMobileAssetBundle *)self assetType];
+          assetType = [(SecureMobileAssetBundle *)self assetType];
           v50 = __error();
           v51 = strerror(*v50);
           *buf = 138413058;
           *&buf[4] = v48;
           *&buf[12] = 2112;
-          *&buf[14] = v49;
+          *&buf[14] = assetType;
           *&buf[22] = 2112;
           *&buf[24] = v20;
           *&buf[32] = 2080;
@@ -4673,20 +4673,20 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
           {
             loga = v31;
             v40 = @"ungraft";
-            if (v64)
+            if (taskCopy)
             {
               v40 = @"graft";
             }
 
             v65 = v40;
-            v41 = [(SecureMobileAssetBundle *)self assetType];
+            assetType2 = [(SecureMobileAssetBundle *)self assetType];
             v42 = [v17 length];
             v43 = __error();
             v44 = strerror(*v43);
             *buf = 138413314;
             *&buf[4] = v65;
             *&buf[12] = 2112;
-            *&buf[14] = v41;
+            *&buf[14] = assetType2;
             *&buf[22] = 2048;
             *&buf[24] = v42;
             *&buf[32] = 2048;
@@ -4707,7 +4707,7 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
             if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
             {
               logb = v31;
-              if (v64)
+              if (taskCopy)
               {
                 v52 = @"graft";
               }
@@ -4717,13 +4717,13 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
                 v52 = @"ungraft";
               }
 
-              v53 = [(SecureMobileAssetBundle *)self assetType];
+              assetType3 = [(SecureMobileAssetBundle *)self assetType];
               v54 = __error();
               v55 = strerror(*v54);
               *buf = 138412802;
               *&buf[4] = v52;
               *&buf[12] = 2112;
-              *&buf[14] = v53;
+              *&buf[14] = assetType3;
               *&buf[22] = 2080;
               *&buf[24] = v55;
               v31 = logb;
@@ -4734,17 +4734,17 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
           else
           {
             v25 = v20;
-            v26 = [v20 fileSystemRepresentation];
+            fileSystemRepresentation = [v20 fileSystemRepresentation];
             v27 = v62;
-            v28 = [v62 fileSystemRepresentation];
-            rename(v26, v28, v29);
+            fileSystemRepresentation2 = [v62 fileSystemRepresentation];
+            rename(fileSystemRepresentation, fileSystemRepresentation2, v29);
             if (v30)
             {
               v31 = _MADLog(@"SecureMA");
               if (os_log_type_enabled(v31, OS_LOG_TYPE_ERROR))
               {
                 log = v31;
-                if (v64)
+                if (taskCopy)
                 {
                   v32 = @"graft";
                 }
@@ -4754,13 +4754,13 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
                   v32 = @"ungraft";
                 }
 
-                v33 = [(SecureMobileAssetBundle *)self assetType];
+                assetType4 = [(SecureMobileAssetBundle *)self assetType];
                 v34 = __error();
                 v35 = strerror(*v34);
                 *buf = 138413314;
                 *&buf[4] = v32;
                 *&buf[12] = 2112;
-                *&buf[14] = v33;
+                *&buf[14] = assetType4;
                 *&buf[22] = 2112;
                 *&buf[24] = v20;
                 *&buf[32] = 2112;
@@ -4777,16 +4777,16 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
               v31 = _MADLog(@"SecureMA");
               if (os_log_type_enabled(v31, OS_LOG_TYPE_DEFAULT))
               {
-                v56 = [(SecureMobileAssetBundle *)self assetType];
-                v57 = v56;
+                assetType5 = [(SecureMobileAssetBundle *)self assetType];
+                v57 = assetType5;
                 v58 = @"N";
-                if (v64)
+                if (taskCopy)
                 {
                   v58 = @"Y";
                 }
 
                 *buf = 138412546;
-                *&buf[4] = v56;
+                *&buf[4] = assetType5;
                 *&buf[12] = 2112;
                 *&buf[14] = v58;
                 _os_log_impl(&dword_0, v31, OS_LOG_TYPE_DEFAULT, "[SMA] [SecureMAHelper]: Successfully recorded graft entry | assetType:%@ | grafted:%@", buf, 0x16u);
@@ -4818,18 +4818,18 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
       v36 = _MADLog(@"SecureMA");
       if (os_log_type_enabled(v36, OS_LOG_TYPE_ERROR))
       {
-        v37 = [(SecureMobileAssetBundle *)self assetType];
-        v38 = v37;
+        assetType6 = [(SecureMobileAssetBundle *)self assetType];
+        v38 = assetType6;
         v39 = @"ungraft";
         *buf = 138412802;
-        if (v64)
+        if (taskCopy)
         {
           v39 = @"graft";
         }
 
         *&buf[4] = v39;
         *&buf[12] = 2112;
-        *&buf[14] = v37;
+        *&buf[14] = assetType6;
         *&buf[22] = 2112;
         *&buf[24] = v63;
         _os_log_impl(&dword_0, v36, OS_LOG_TYPE_ERROR, "[SMA] [SecureMAHelper]: Failed to record %@ entry for asset of type %@ into a property list. %@", buf, 0x20u);
@@ -4851,7 +4851,7 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
   objc_sync_exit(v5);
 }
 
-+ (BOOL)clearBootTaskPlist:(id *)a3
++ (BOOL)clearBootTaskPlist:(id *)plist
 {
   v4 = +[SecureMobileAssetBundle getBootTaskPlistLock];
   objc_sync_enter(v4);
@@ -4873,20 +4873,20 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
     v12 = v11 == 0;
     if (v11)
     {
-      if (a3)
+      if (plist)
       {
         v13 = v11;
-        *a3 = v11;
+        *plist = v11;
       }
 
       v14 = _MADLog(@"SecureMA");
       if (os_log_type_enabled(v14, OS_LOG_TYPE_ERROR))
       {
-        v15 = [v11 checkedDescription];
+        checkedDescription = [v11 checkedDescription];
         *buf = 138412546;
         v23 = v9;
         v24 = 2112;
-        v25 = v15;
+        v25 = checkedDescription;
         _os_log_impl(&dword_0, v14, OS_LOG_TYPE_ERROR, "[SMA] [SecureMAHelper]: Failed to delete graft list file at %@ : %@", buf, 0x16u);
       }
     }
@@ -4894,7 +4894,7 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
 
   else
   {
-    if (a3)
+    if (plist)
     {
       v16 = [NSString stringWithFormat:@"Unable to get MA repo path"];
       v17 = +[NSMutableDictionary dictionary];
@@ -4903,7 +4903,7 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
       v18 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:-4 userInfo:v17];
 
       v19 = v18;
-      *a3 = v18;
+      *plist = v18;
     }
 
     v12 = 0;
@@ -4913,7 +4913,7 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
   return v12;
 }
 
-+ (id)readBootTaskPlist:(id *)a3
++ (id)readBootTaskPlist:(id *)plist
 {
   v4 = +[SecureMobileAssetBundle getBootTaskPlistLock];
   objc_sync_enter(v4);
@@ -4924,7 +4924,7 @@ void __47__SecureMobileAssetBundle_getBootTaskPlistLock__block_invoke(id a1)
     v37 = 0;
     if (![v6 fileExistsAtPath:v5 isDirectory:&v37] || (v37 & 1) == 0)
     {
-      if (!a3)
+      if (!plist)
       {
         v16 = 0;
 LABEL_32:
@@ -4940,7 +4940,7 @@ LABEL_32:
 
       v15 = v14;
       v16 = 0;
-      *a3 = v14;
+      *plist = v14;
 LABEL_31:
 
       goto LABEL_32;
@@ -4997,7 +4997,7 @@ LABEL_30:
         _os_log_impl(&dword_0, v25, OS_LOG_TYPE_ERROR, "[SMA] [SecureMAHelper]: Failed to load existing boot plist at path %@. Error: %@", buf, 0x16u);
       }
 
-      if (a3)
+      if (plist)
       {
         v32 = [NSString stringWithFormat:@"Unable to parse boot task plist data into dictionary."];
         v31 = v12;
@@ -5007,7 +5007,7 @@ LABEL_30:
         v27 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:10504 userInfo:v26];
 
         v28 = v27;
-        *a3 = v27;
+        *plist = v27;
       }
 
       v34 = v12;
@@ -5035,7 +5035,7 @@ LABEL_29:
 
     else
     {
-      if (!a3)
+      if (!plist)
       {
         v11 = 0;
         goto LABEL_29;
@@ -5050,13 +5050,13 @@ LABEL_29:
 
       v24 = v23;
       v11 = 0;
-      *a3 = v23;
+      *plist = v23;
     }
 
     goto LABEL_29;
   }
 
-  if (a3)
+  if (plist)
   {
     v17 = [NSString stringWithFormat:@"Unable to get MA repo path"];
     v18 = +[NSMutableDictionary dictionary];
@@ -5065,7 +5065,7 @@ LABEL_29:
     v19 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:-4 userInfo:v18];
 
     v20 = v19;
-    *a3 = v19;
+    *plist = v19;
   }
 
   v16 = 0;
@@ -5076,15 +5076,15 @@ LABEL_33:
   return v16;
 }
 
-+ (BOOL)isErrorDueToDeviceBeingLocked:(id)a3
++ (BOOL)isErrorDueToDeviceBeingLocked:(id)locked
 {
-  v3 = a3;
-  v4 = [v3 domain];
-  v5 = [v4 isEqualToString:@"SecureMobileAssetErrorDomain"];
+  lockedCopy = locked;
+  domain = [lockedCopy domain];
+  v5 = [domain isEqualToString:@"SecureMobileAssetErrorDomain"];
 
   if (v5)
   {
-    v6 = [v3 code] == &loc_2CF4;
+    v6 = [lockedCopy code] == &loc_2CF4;
   }
 
   else
@@ -5095,16 +5095,16 @@ LABEL_33:
   return v6;
 }
 
-- (BOOL)_beginAccessWithOptions_nowait:(id)a3 accessMechanismPtr:(int64_t *)a4 errorPtr:(id *)a5
+- (BOOL)_beginAccessWithOptions_nowait:(id)options_nowait accessMechanismPtr:(int64_t *)ptr errorPtr:(id *)errorPtr
 {
-  v8 = a3;
+  options_nowaitCopy = options_nowait;
   if ([(SecureMobileAssetBundle *)self manifestType]!= &dword_0 + 2)
   {
     v13 = 0;
     goto LABEL_6;
   }
 
-  [v8 setFlags:{objc_msgSend(v8, "flags") | 2}];
+  [options_nowaitCopy setFlags:{objc_msgSend(options_nowaitCopy, "flags") | 2}];
   v98 = 0;
   v9 = [(SecureMobileAssetBundle *)self bundleAccessPermitted:&v98];
   v10 = v98;
@@ -5129,26 +5129,26 @@ LABEL_6:
         goto LABEL_78;
       }
 
-      if (a4)
+      if (ptr)
       {
-        *a4 = v96;
+        *ptr = v96;
       }
 
-      [(SecureMobileAssetBundle *)self recordAssetGraftStateForEarlyBootTask:1 options:v8];
-      if (([v8 flags] & 1) == 0)
+      [(SecureMobileAssetBundle *)self recordAssetGraftStateForEarlyBootTask:1 options:options_nowaitCopy];
+      if (([options_nowaitCopy flags] & 1) == 0)
       {
 LABEL_22:
-        if (([v8 flags] & 2) == 0 || v96 != 1 || !__isPlatformVersionAtLeast(2, 26, 1, 0) || (objc_opt_respondsToSelector() & 1) == 0)
+        if (([options_nowaitCopy flags] & 2) == 0 || v96 != 1 || !__isPlatformVersionAtLeast(2, 26, 1, 0) || (objc_opt_respondsToSelector() & 1) == 0)
         {
           goto LABEL_78;
         }
 
-        v25 = [(SecureMobileAssetBundle *)self graftPath];
-        v15 = [NSURL fileURLWithPath:v25 isDirectory:1];
+        graftPath = [(SecureMobileAssetBundle *)self graftPath];
+        assetType = [NSURL fileURLWithPath:graftPath isDirectory:1];
 
         v86 = 0;
-        v26 = [IXAppInstallCoordinator registerContentsForOSModuleAtURL:v15 options:0 error:&v86];
-        v16 = v86;
+        v26 = [IXAppInstallCoordinator registerContentsForOSModuleAtURL:assetType options:0 error:&v86];
+        assetSpecifier = v86;
         v27 = _MADLog(@"SecureMA");
         v28 = v27;
         if (v26)
@@ -5156,7 +5156,7 @@ LABEL_22:
           if (os_log_type_enabled(v27, OS_LOG_TYPE_DEFAULT))
           {
             *buf = 138412290;
-            *v106 = v15;
+            *v106 = assetType;
             v29 = "[SMA] Successfully registered %@ with InstallCoordination.";
             v30 = v28;
             v31 = OS_LOG_TYPE_DEFAULT;
@@ -5169,9 +5169,9 @@ LABEL_44:
         else if (os_log_type_enabled(v27, OS_LOG_TYPE_ERROR))
         {
           *buf = 138412546;
-          *v106 = v15;
+          *v106 = assetType;
           *&v106[8] = 2112;
-          *&v106[10] = v16;
+          *&v106[10] = assetSpecifier;
           v29 = "[SMA] Failed to register %@ with InstallCoordination. %@";
           v30 = v28;
           v31 = OS_LOG_TYPE_ERROR;
@@ -5183,17 +5183,17 @@ LABEL_77:
         goto LABEL_78;
       }
 
-      v15 = [(SecureMobileAssetBundle *)self assetType];
-      v16 = [(SecureMobileAssetBundle *)self assetSpecifier];
+      assetType = [(SecureMobileAssetBundle *)self assetType];
+      assetSpecifier = [(SecureMobileAssetBundle *)self assetSpecifier];
       v94 = 0;
       if (![(SecureMobileAssetBundle *)self isMappableToExclaves:&v94])
       {
         v99[0] = NSDebugDescriptionErrorKey;
         v99[1] = @"assetType";
         v21 = @"nil";
-        if (v15)
+        if (assetType)
         {
-          v22 = v15;
+          v22 = assetType;
         }
 
         else
@@ -5204,14 +5204,14 @@ LABEL_77:
         v100[0] = @"Asset type+specifier is unsupported in Exclaves";
         v100[1] = v22;
         v99[2] = @"specifier";
-        if (v16)
+        if (assetSpecifier)
         {
-          v21 = v16;
+          v21 = assetSpecifier;
         }
 
         v100[2] = v21;
-        v23 = [NSDictionary dictionaryWithObjects:v100 forKeys:v99 count:3];
-        v24 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:109 userInfo:v23];
+        ticketPath = [NSDictionary dictionaryWithObjects:v100 forKeys:v99 count:3];
+        v24 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:109 userInfo:ticketPath];
 LABEL_21:
 
         v11 = v24;
@@ -5221,7 +5221,7 @@ LABEL_21:
       v93 = -1;
       if (![(SecureMobileAssetBundle *)self isPersonalized:&v93])
       {
-        v23 = +[NSMutableDictionary dictionary];
+        ticketPath = +[NSMutableDictionary dictionary];
         if (v93 > 0x32)
         {
           v40 = @"Cannot map an unpersonalized asset to Exclaves";
@@ -5262,10 +5262,10 @@ LABEL_21:
           v40 = [@"Cannot map an unpersonalized asset to Exclaves" stringByAppendingFormat:@" (%@)", v33];
         }
 
-        [v23 setObject:v40 forKeyedSubscript:NSDebugDescriptionErrorKey];
+        [ticketPath setObject:v40 forKeyedSubscript:NSDebugDescriptionErrorKey];
 
         v48 = [NSNumber numberWithUnsignedInt:v94];
-        [v23 setObject:v48 forKeyedSubscript:@"fstag"];
+        [ticketPath setObject:v48 forKeyedSubscript:@"fstag"];
 
         if (v93 >= 0x33)
         {
@@ -5277,7 +5277,7 @@ LABEL_21:
           v49 = v93 + 11000;
         }
 
-        v24 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:v49 userInfo:v23];
+        v24 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:v49 userInfo:ticketPath];
         goto LABEL_76;
       }
 
@@ -5297,10 +5297,10 @@ LABEL_21:
           }
 
           v42 = [NSString stringWithFormat:@"Failed to activate committed manifest in Exclaves"];
-          v23 = v19;
+          ticketPath = v19;
           v43 = +[NSMutableDictionary dictionary];
           [v43 setObject:v42 forKeyedSubscript:NSDebugDescriptionErrorKey];
-          [v43 setObject:v23 forKeyedSubscript:NSUnderlyingErrorKey];
+          [v43 setObject:ticketPath forKeyedSubscript:NSUnderlyingErrorKey];
           v24 = [NSError errorWithDomain:@"SecureMobileAssetErrorDomain" code:11013 userInfo:v43];
 
           v11 = v42;
@@ -5311,15 +5311,15 @@ LABEL_21:
         goto LABEL_68;
       }
 
-      v23 = [(SecureMobileAssetBundle *)self ticketPath];
-      v34 = [(SecureMobileAssetBundle *)self secureInfoPlistPath];
-      v83 = v34;
-      if (v23)
+      ticketPath = [(SecureMobileAssetBundle *)self ticketPath];
+      secureInfoPlistPath = [(SecureMobileAssetBundle *)self secureInfoPlistPath];
+      v83 = secureInfoPlistPath;
+      if (ticketPath)
       {
-        v35 = v34;
-        if (v34)
+        v35 = secureInfoPlistPath;
+        if (secureInfoPlistPath)
         {
-          v36 = [NSData dataWithContentsOfFile:v23];
+          v36 = [NSData dataWithContentsOfFile:ticketPath];
           v37 = [NSData dataWithContentsOfFile:v35];
           v79 = v37;
           v81 = v36;
@@ -5367,7 +5367,7 @@ LABEL_68:
               v89 = v20;
               v90 = 0;
               MappedExclavePath = getMappedExclavePath(v94, &v90, &v89);
-              v23 = v90;
+              ticketPath = v90;
               v11 = v89;
 
               if (!MappedExclavePath)
@@ -5385,10 +5385,10 @@ LABEL_75:
                 goto LABEL_76;
               }
 
-              if (v23)
+              if (ticketPath)
               {
-                v57 = [(SecureMobileAssetBundle *)self accessPath];
-                v58 = [v57 isEqualToString:v23];
+                accessPath = [(SecureMobileAssetBundle *)self accessPath];
+                v58 = [accessPath isEqualToString:ticketPath];
 
                 v59 = _MADLog(@"SecureMA");
                 v60 = os_log_type_enabled(v59, OS_LOG_TYPE_DEFAULT);
@@ -5399,11 +5399,11 @@ LABEL_75:
                     *buf = 67109890;
                     *v106 = v94;
                     *&v106[4] = 2112;
-                    *&v106[6] = v15;
+                    *&v106[6] = assetType;
                     *&v106[14] = 2112;
-                    *&v106[16] = v16;
+                    *&v106[16] = assetSpecifier;
                     v107 = 2112;
-                    v108 = v23;
+                    v108 = ticketPath;
                     _os_log_impl(&dword_0, v59, OS_LOG_TYPE_DEFAULT, "[SMA] Matching registration found for Exclave mapped path [fstag=%d] %@:%@: %@", buf, 0x26u);
                   }
 
@@ -5415,16 +5415,16 @@ LABEL_75:
                   *buf = 67109890;
                   *v106 = v94;
                   *&v106[4] = 2112;
-                  *&v106[6] = v15;
+                  *&v106[6] = assetType;
                   *&v106[14] = 2112;
-                  *&v106[16] = v16;
+                  *&v106[16] = assetSpecifier;
                   v107 = 2112;
-                  v108 = v23;
+                  v108 = ticketPath;
                   _os_log_impl(&dword_0, v59, OS_LOG_TYPE_DEFAULT, "[SMA] Conflicting registration found for Exclave mapped path [fstag=%d] %@:%@: %@", buf, 0x26u);
                 }
 
                 v88 = v11;
-                v67 = unregisterMappedExclavePath([v23 fileSystemRepresentation], &v88);
+                v67 = unregisterMappedExclavePath([ticketPath fileSystemRepresentation], &v88);
                 v68 = v88;
 
                 if (v67)
@@ -5436,12 +5436,12 @@ LABEL_75:
                   v103[2] = @"path";
                   v103[3] = @"assetType";
                   v69 = @"nil";
-                  if (v15)
+                  if (assetType)
                   {
-                    v69 = v15;
+                    v69 = assetType;
                   }
 
-                  v104[2] = v23;
+                  v104[2] = ticketPath;
                   v104[3] = v69;
                   v103[4] = @"fstag";
                   v84 = [NSNumber numberWithUnsignedInt:v94];
@@ -5456,11 +5456,11 @@ LABEL_75:
                 v11 = v68;
               }
 
-              v71 = [(SecureMobileAssetBundle *)self accessPath];
-              v72 = [v71 fileSystemRepresentation];
+              accessPath2 = [(SecureMobileAssetBundle *)self accessPath];
+              fileSystemRepresentation = [accessPath2 fileSystemRepresentation];
 
               v87 = v94;
-              if (fsctl(v72, 0x80044119uLL, &v87, 0))
+              if (fsctl(fileSystemRepresentation, 0x80044119uLL, &v87, 0))
               {
                 v85 = [NSError errorWithDomain:NSPOSIXErrorDomain code:*__error() userInfo:0];
                 v101[0] = NSUnderlyingErrorKey;
@@ -5468,15 +5468,15 @@ LABEL_75:
                 v102[0] = v85;
                 v102[1] = @"Unable to register asset path with fstag";
                 v101[2] = @"path";
-                v73 = [(SecureMobileAssetBundle *)self assetBundlePath];
-                v80 = v73;
+                assetBundlePath = [(SecureMobileAssetBundle *)self assetBundlePath];
+                v80 = assetBundlePath;
                 v74 = @"nil";
-                if (v15)
+                if (assetType)
                 {
-                  v74 = v15;
+                  v74 = assetType;
                 }
 
-                v102[2] = v73;
+                v102[2] = assetBundlePath;
                 v102[3] = v74;
                 v101[3] = @"assetType";
                 v101[4] = @"fstag";
@@ -5497,11 +5497,11 @@ LABEL_75:
                   *buf = 67109890;
                   *v106 = v94;
                   *&v106[4] = 2112;
-                  *&v106[6] = v15;
+                  *&v106[6] = assetType;
                   *&v106[14] = 2112;
-                  *&v106[16] = v16;
+                  *&v106[16] = assetSpecifier;
                   v107 = 2080;
-                  v108 = v72;
+                  v108 = fileSystemRepresentation;
                   _os_log_impl(&dword_0, v77, OS_LOG_TYPE_DEFAULT, "[SMA] Successfully registered Exclave mapped path [fstag=%d] %@:%@: %s", buf, 0x26u);
                 }
               }
@@ -5562,7 +5562,7 @@ LABEL_76:
 
 LABEL_78:
   v64 = _MADLog(@"SecureMA");
-  v15 = v64;
+  assetType = v64;
   if (v11)
   {
     if (os_log_type_enabled(v64, OS_LOG_TYPE_ERROR))
@@ -5571,19 +5571,19 @@ LABEL_78:
       *v106 = self;
       *&v106[8] = 2112;
       *&v106[10] = v11;
-      _os_log_impl(&dword_0, v15, OS_LOG_TYPE_ERROR, "[SMA] Begin access failed for secure asset (%@): %@", buf, 0x16u);
+      _os_log_impl(&dword_0, assetType, OS_LOG_TYPE_ERROR, "[SMA] Begin access failed for secure asset (%@): %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (errorPtr)
     {
       v65 = v11;
-      LOBYTE(v15) = 0;
-      *a5 = v11;
+      LOBYTE(assetType) = 0;
+      *errorPtr = v11;
     }
 
     else
     {
-      LOBYTE(v15) = 0;
+      LOBYTE(assetType) = 0;
     }
   }
 
@@ -5593,33 +5593,33 @@ LABEL_78:
     {
       *buf = 138412290;
       *v106 = self;
-      _os_log_impl(&dword_0, v15, OS_LOG_TYPE_DEFAULT, "[SMA] Begin access successful for secure asset: %@", buf, 0xCu);
+      _os_log_impl(&dword_0, assetType, OS_LOG_TYPE_DEFAULT, "[SMA] Begin access successful for secure asset: %@", buf, 0xCu);
     }
 
     v11 = 0;
-    LOBYTE(v15) = 1;
+    LOBYTE(assetType) = 1;
   }
 
 LABEL_87:
 
-  return v15 & 1;
+  return assetType & 1;
 }
 
-- (BOOL)endAccessWithOptions:(id)a3 accessMechanismPtr:(int64_t *)a4 errorPtr:(id *)a5
+- (BOOL)endAccessWithOptions:(id)options accessMechanismPtr:(int64_t *)ptr errorPtr:(id *)errorPtr
 {
-  v8 = a3;
+  optionsCopy = options;
   v9 = objc_opt_class();
   objc_sync_enter(v9);
-  LOBYTE(a5) = [(SecureMobileAssetBundle *)self endAccessWithOptions_nowait:v8 accessMechanismPtr:a4 errorPtr:a5];
+  LOBYTE(errorPtr) = [(SecureMobileAssetBundle *)self endAccessWithOptions_nowait:optionsCopy accessMechanismPtr:ptr errorPtr:errorPtr];
   objc_sync_exit(v9);
 
-  return a5;
+  return errorPtr;
 }
 
-- (BOOL)endAccessWithOptions_nowait:(id)a3 accessMechanismPtr:(int64_t *)a4 errorPtr:(id *)a5
+- (BOOL)endAccessWithOptions_nowait:(id)options_nowait accessMechanismPtr:(int64_t *)ptr errorPtr:(id *)errorPtr
 {
-  v8 = a3;
-  v9 = [(SecureMobileAssetBundle *)self assetType];
+  options_nowaitCopy = options_nowait;
+  assetType = [(SecureMobileAssetBundle *)self assetType];
   v51 = 0;
   if ([(SecureMobileAssetBundle *)self isMappableToExclaves:&v51])
   {
@@ -5646,8 +5646,8 @@ LABEL_87:
       }
     }
 
-    v17 = [(SecureMobileAssetBundle *)self accessPath];
-    v18 = [v11 isEqualToString:v17];
+    accessPath = [(SecureMobileAssetBundle *)self accessPath];
+    v18 = [v11 isEqualToString:accessPath];
 
     if (v18)
     {
@@ -5673,9 +5673,9 @@ LABEL_87:
         [v22 setObject:v21 forKeyedSubscript:NSUnderlyingErrorKey];
         [v22 setObject:@"Unable to unregister fstag mapping" forKeyedSubscript:NSDebugDescriptionErrorKey];
         [v22 setObject:v11 forKeyedSubscript:@"mappedPath"];
-        if (v9)
+        if (assetType)
         {
-          v23 = v9;
+          v23 = assetType;
         }
 
         else
@@ -5718,12 +5718,12 @@ LABEL_87:
     v25 = 0;
   }
 
-  if (([v8 flags] & 1) == 0)
+  if (([options_nowaitCopy flags] & 1) == 0)
   {
     if (!__isPlatformVersionAtLeast(2, 26, 1, 0))
     {
       v44 = v25;
-      [(SecureMobileAssetBundle *)self ungraftOrUnmount:a4 ungraftingError:&v44];
+      [(SecureMobileAssetBundle *)self ungraftOrUnmount:ptr ungraftingError:&v44];
       v36 = v44;
       v28 = v25;
 LABEL_43:
@@ -5741,9 +5741,9 @@ LABEL_34:
       v37 = [(SecureMobileAssetBundle *)self ungraftOrUnmount:buf ungraftingError:&v46];
       v36 = v46;
 
-      if (a4)
+      if (ptr)
       {
-        *a4 = *buf;
+        *ptr = *buf;
       }
 
       if (v28)
@@ -5771,8 +5771,8 @@ LABEL_34:
       goto LABEL_43;
     }
 
-    v26 = [(SecureMobileAssetBundle *)self graftPath];
-    v27 = [NSURL fileURLWithPath:v26 isDirectory:1];
+    graftPath = [(SecureMobileAssetBundle *)self graftPath];
+    v27 = [NSURL fileURLWithPath:graftPath isDirectory:1];
 
     v47 = 0;
     v28 = [IXAppInstallCoordinator unregisterContentsForOSModuleAtURL:v27 options:0 error:&v47];
@@ -5824,10 +5824,10 @@ LABEL_44:
       _os_log_impl(&dword_0, v41, OS_LOG_TYPE_ERROR, "[SMA] End access failed for secure asset (%@): %@", buf, 0x16u);
     }
 
-    if (a5)
+    if (errorPtr)
     {
       v42 = v25;
-      *a5 = v25;
+      *errorPtr = v25;
     }
   }
 
@@ -5841,44 +5841,44 @@ LABEL_44:
     }
   }
 
-  [(SecureMobileAssetBundle *)self recordAssetGraftStateForEarlyBootTask:0 options:v8];
+  [(SecureMobileAssetBundle *)self recordAssetGraftStateForEarlyBootTask:0 options:options_nowaitCopy];
 
   return v25 == 0;
 }
 
-- (BOOL)mapToExclaves:(id *)a3
+- (BOOL)mapToExclaves:(id *)exclaves
 {
   v5 = objc_opt_new();
   [v5 setFlags:1];
-  LOBYTE(a3) = [(SecureMobileAssetBundle *)self beginAccessWithOptions:v5 accessMechanismPtr:0 errorPtr:a3];
+  LOBYTE(exclaves) = [(SecureMobileAssetBundle *)self beginAccessWithOptions:v5 accessMechanismPtr:0 errorPtr:exclaves];
 
-  return a3;
+  return exclaves;
 }
 
-- (BOOL)unmapFromExclaves:(id *)a3
+- (BOOL)unmapFromExclaves:(id *)exclaves
 {
   v5 = objc_opt_new();
-  LOBYTE(a3) = [(SecureMobileAssetBundle *)self endAccessWithOptions:v5 accessMechanismPtr:0 errorPtr:a3];
+  LOBYTE(exclaves) = [(SecureMobileAssetBundle *)self endAccessWithOptions:v5 accessMechanismPtr:0 errorPtr:exclaves];
 
-  return a3;
+  return exclaves;
 }
 
 - (BOOL)isSecureMobileAsset
 {
-  v2 = [(SecureMobileAssetBundle *)self assetBundlePath];
-  v3 = [SecureMobileAssetBundle assetIsSecureMobileAsset:v2];
+  assetBundlePath = [(SecureMobileAssetBundle *)self assetBundlePath];
+  v3 = [SecureMobileAssetBundle assetIsSecureMobileAsset:assetBundlePath];
 
   return v3;
 }
 
-- (BOOL)isMappableToExclaves:(unsigned int *)a3
+- (BOOL)isMappableToExclaves:(unsigned int *)exclaves
 {
   if (MABrainUtilityDeviceSupportsExclaves())
   {
     v15 = 0;
-    v5 = [(SecureMobileAssetBundle *)self assetType];
-    v6 = [(SecureMobileAssetBundle *)self assetSpecifier];
-    v7 = [SecureMobileAssetBundle fsTag:&v15 forAssetType:v5 specifier:v6];
+    assetType = [(SecureMobileAssetBundle *)self assetType];
+    assetSpecifier = [(SecureMobileAssetBundle *)self assetSpecifier];
+    v7 = [SecureMobileAssetBundle fsTag:&v15 forAssetType:assetType specifier:assetSpecifier];
 
     v8 = _MADLog(@"SecureMA");
     v9 = v8;
@@ -5886,20 +5886,20 @@ LABEL_44:
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEFAULT))
       {
-        v10 = [(SecureMobileAssetBundle *)self assetType];
-        v11 = [(SecureMobileAssetBundle *)self assetSpecifier];
+        assetType2 = [(SecureMobileAssetBundle *)self assetType];
+        assetSpecifier2 = [(SecureMobileAssetBundle *)self assetSpecifier];
         *buf = 138412802;
-        v17 = v10;
+        v17 = assetType2;
         v18 = 2112;
-        v19 = v11;
+        v19 = assetSpecifier2;
         v20 = 1024;
         v21 = v15;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEFAULT, "[SMA] Allow listed for Exclaves: %@:%@ fstag=%u", buf, 0x1Cu);
       }
 
-      if (a3)
+      if (exclaves)
       {
-        *a3 = v15;
+        *exclaves = v15;
       }
     }
 
@@ -5907,12 +5907,12 @@ LABEL_44:
     {
       if (os_log_type_enabled(v8, OS_LOG_TYPE_DEBUG))
       {
-        v12 = [(SecureMobileAssetBundle *)self assetType];
-        v13 = [(SecureMobileAssetBundle *)self assetSpecifier];
+        assetType3 = [(SecureMobileAssetBundle *)self assetType];
+        assetSpecifier3 = [(SecureMobileAssetBundle *)self assetSpecifier];
         *buf = 138412546;
-        v17 = v12;
+        v17 = assetType3;
         v18 = 2112;
-        v19 = v13;
+        v19 = assetSpecifier3;
         _os_log_impl(&dword_0, v9, OS_LOG_TYPE_DEBUG, "[SMA] Not allow listed for Exclaves: %@:%@", buf, 0x16u);
       }
     }
@@ -5928,9 +5928,9 @@ LABEL_44:
 
 - (id)_personalizedBundleTicketData
 {
-  v2 = [(SecureMobileAssetBundle *)self secureAssetDataPath];
+  secureAssetDataPath = [(SecureMobileAssetBundle *)self secureAssetDataPath];
   v3 = +[NSFileManager defaultManager];
-  v4 = [v3 fileExistsAtPath:v2];
+  v4 = [v3 fileExistsAtPath:secureAssetDataPath];
 
   if (!v4)
   {
@@ -5938,7 +5938,7 @@ LABEL_44:
     goto LABEL_16;
   }
 
-  v5 = [NSURL fileURLWithPath:v2 isDirectory:1];
+  v5 = [NSURL fileURLWithPath:secureAssetDataPath isDirectory:1];
   v6 = AMAuthInstallCreate();
   if (v6)
   {
@@ -5990,17 +5990,17 @@ LABEL_16:
   return v8;
 }
 
-- (id)_manifestDataFromStoredTicket:(id)a3 manifestType:(unint64_t)a4
+- (id)_manifestDataFromStoredTicket:(id)ticket manifestType:(unint64_t)type
 {
-  v5 = a3;
-  v6 = [NSData dataWithContentsOfFile:v5];
+  ticketCopy = ticket;
+  v6 = [NSData dataWithContentsOfFile:ticketCopy];
   v7 = v6;
   if (!v6)
   {
     goto LABEL_13;
   }
 
-  if (a4 == 2)
+  if (type == 2)
   {
     v8 = v6;
 LABEL_4:
@@ -6030,7 +6030,7 @@ LABEL_4:
     }
 
     *buf = 138412546;
-    v20 = v5;
+    v20 = ticketCopy;
     v21 = 1024;
     v22 = v15;
     v13 = "[SMA] Img4DecodeGetManifest() failed for %@: %d";
@@ -6042,7 +6042,7 @@ LABEL_4:
   if (os_log_type_enabled(v12, OS_LOG_TYPE_ERROR))
   {
     *buf = 138412546;
-    v20 = v5;
+    v20 = ticketCopy;
     v21 = 1024;
     v22 = v11;
     v13 = "[SMA] Img4DecodeInit() failed for %@: %d";
@@ -6059,20 +6059,20 @@ LABEL_14:
   return v9;
 }
 
-- (BOOL)isPersonalized:(int64_t *)a3
+- (BOOL)isPersonalized:(int64_t *)personalized
 {
-  v5 = [(SecureMobileAssetBundle *)self _personalizedBundleTicketData];
-  if (v5)
+  _personalizedBundleTicketData = [(SecureMobileAssetBundle *)self _personalizedBundleTicketData];
+  if (_personalizedBundleTicketData)
   {
-    v6 = [(SecureMobileAssetBundle *)self manifestType];
-    v7 = [(SecureMobileAssetBundle *)self ticketPath];
-    v8 = [(SecureMobileAssetBundle *)self _manifestDataFromStoredTicket:v7 manifestType:v6];
+    manifestType = [(SecureMobileAssetBundle *)self manifestType];
+    ticketPath = [(SecureMobileAssetBundle *)self ticketPath];
+    v8 = [(SecureMobileAssetBundle *)self _manifestDataFromStoredTicket:ticketPath manifestType:manifestType];
 
     if (v8)
     {
-      if ([v5 isEqualToData:v8])
+      if ([_personalizedBundleTicketData isEqualToData:v8])
       {
-        if (v6 != 2 || (-[SecureMobileAssetBundle manifestVerifier](self, "manifestVerifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 verifyManifest:v8 manifestType:2], v9, (v10 & 1) != 0))
+        if (manifestType != 2 || (-[SecureMobileAssetBundle manifestVerifier](self, "manifestVerifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 verifyManifest:v8 manifestType:2], v9, (v10 & 1) != 0))
         {
           v14 = 0;
           if (![(SecureMobileAssetBundle *)self isMappableToExclaves:&v14]|| ![SecureMobileAssetBundle _shouldUseConclave:[(SecureMobileAssetBundle *)self darwinOnly]]|| [(SecureMobileAssetBundle *)self isPersonalizedForExclaves:v14 staged:0])
@@ -6084,18 +6084,18 @@ LABEL_20:
           }
 
           v11 = 0;
-          if (!a3)
+          if (!personalized)
           {
             goto LABEL_20;
           }
 
           v12 = 3;
 LABEL_16:
-          *a3 = v12;
+          *personalized = v12;
           goto LABEL_20;
         }
 
-        if (a3)
+        if (personalized)
         {
           v11 = 0;
           v12 = 50;
@@ -6103,7 +6103,7 @@ LABEL_16:
         }
       }
 
-      else if (a3)
+      else if (personalized)
       {
         v11 = 0;
         v12 = 2;
@@ -6111,7 +6111,7 @@ LABEL_16:
       }
     }
 
-    else if (a3)
+    else if (personalized)
     {
       v11 = 0;
       v12 = 1;
@@ -6123,9 +6123,9 @@ LABEL_16:
   }
 
   v11 = 0;
-  if (a3)
+  if (personalized)
   {
-    *a3 = 0;
+    *personalized = 0;
   }
 
 LABEL_21:
@@ -6133,20 +6133,20 @@ LABEL_21:
   return v11;
 }
 
-- (BOOL)isPersonalizedManifestStaged:(int64_t *)a3
+- (BOOL)isPersonalizedManifestStaged:(int64_t *)staged
 {
-  v5 = [(SecureMobileAssetBundle *)self _personalizedBundleTicketData];
-  if (v5)
+  _personalizedBundleTicketData = [(SecureMobileAssetBundle *)self _personalizedBundleTicketData];
+  if (_personalizedBundleTicketData)
   {
-    v6 = [(SecureMobileAssetBundle *)self manifestType];
-    v7 = [(SecureMobileAssetBundle *)self stagedPersonalizedManifestPath];
-    v8 = [(SecureMobileAssetBundle *)self _manifestDataFromStoredTicket:v7 manifestType:v6];
+    manifestType = [(SecureMobileAssetBundle *)self manifestType];
+    stagedPersonalizedManifestPath = [(SecureMobileAssetBundle *)self stagedPersonalizedManifestPath];
+    v8 = [(SecureMobileAssetBundle *)self _manifestDataFromStoredTicket:stagedPersonalizedManifestPath manifestType:manifestType];
 
     if (v8)
     {
-      if ([v5 isEqualToData:v8])
+      if ([_personalizedBundleTicketData isEqualToData:v8])
       {
-        if (v6 != 2 || (-[SecureMobileAssetBundle manifestVerifier](self, "manifestVerifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 verifyManifest:v8 manifestType:2], v9, (v10 & 1) != 0))
+        if (manifestType != 2 || (-[SecureMobileAssetBundle manifestVerifier](self, "manifestVerifier"), v9 = objc_claimAutoreleasedReturnValue(), v10 = [v9 verifyManifest:v8 manifestType:2], v9, (v10 & 1) != 0))
         {
           v14 = 0;
           if (![(SecureMobileAssetBundle *)self isMappableToExclaves:&v14]|| ![SecureMobileAssetBundle _shouldUseConclave:[(SecureMobileAssetBundle *)self darwinOnly]])
@@ -6162,20 +6162,20 @@ LABEL_21:
           }
 
           v11 = 0;
-          if (!a3)
+          if (!staged)
           {
             goto LABEL_22;
           }
 
           v12 = 3;
 LABEL_17:
-          *a3 = v12;
+          *staged = v12;
 LABEL_22:
 
           goto LABEL_23;
         }
 
-        if (a3)
+        if (staged)
         {
           v11 = 0;
           v12 = 50;
@@ -6183,7 +6183,7 @@ LABEL_22:
         }
       }
 
-      else if (a3)
+      else if (staged)
       {
         v11 = 0;
         v12 = 2;
@@ -6191,7 +6191,7 @@ LABEL_22:
       }
     }
 
-    else if (a3)
+    else if (staged)
     {
       v11 = 0;
       v12 = 1;
@@ -6203,9 +6203,9 @@ LABEL_22:
   }
 
   v11 = 0;
-  if (a3)
+  if (staged)
   {
-    *a3 = 0;
+    *staged = 0;
   }
 
 LABEL_23:
@@ -6213,10 +6213,10 @@ LABEL_23:
   return v11;
 }
 
-- (BOOL)isPersonalizedForExclaves:(unsigned int)a3 staged:(BOOL)a4
+- (BOOL)isPersonalizedForExclaves:(unsigned int)exclaves staged:(BOOL)staged
 {
-  v4 = a4;
-  v5 = *&a3;
+  stagedCopy = staged;
+  v5 = *&exclaves;
   if (__isPlatformVersionAtLeast(2, 18, 2, 0))
   {
     v35 = 0;
@@ -6227,9 +6227,9 @@ LABEL_23:
       v10 = _MADLog(@"SecureMA");
       if (os_log_type_enabled(v10, OS_LOG_TYPE_ERROR))
       {
-        v11 = [v8 checkedDescription];
+        checkedDescription = [v8 checkedDescription];
         *buf = 138412290;
-        v37 = v11;
+        v37 = checkedDescription;
         _os_log_impl(&dword_0, v10, OS_LOG_TYPE_ERROR, "[SMA] Failed to get shared instance of SecureMobileAssetExclave: %@", buf, 0xCu);
       }
 
@@ -6237,7 +6237,7 @@ LABEL_23:
       goto LABEL_35;
     }
 
-    if (v4)
+    if (stagedCopy)
     {
       [(SecureMobileAssetBundle *)self stagedPersonalizedManifestPath];
     }
@@ -6247,11 +6247,11 @@ LABEL_23:
       [(SecureMobileAssetBundle *)self ticketPath];
     }
     v10 = ;
-    v12 = [(SecureMobileAssetBundle *)self secureInfoPlistPath];
-    v13 = [(SecureMobileAssetBundle *)self integrityCatalogPath];
-    v14 = v13;
+    secureInfoPlistPath = [(SecureMobileAssetBundle *)self secureInfoPlistPath];
+    integrityCatalogPath = [(SecureMobileAssetBundle *)self integrityCatalogPath];
+    v14 = integrityCatalogPath;
     v9 = 0;
-    if (!v10 || !v12 || !v13)
+    if (!v10 || !secureInfoPlistPath || !integrityCatalogPath)
     {
 LABEL_34:
 
@@ -6260,7 +6260,7 @@ LABEL_35:
     }
 
     v30 = [NSData dataWithContentsOfFile:v10];
-    v29 = [NSData dataWithContentsOfFile:v12];
+    v29 = [NSData dataWithContentsOfFile:secureInfoPlistPath];
     v28 = [NSData dataWithContentsOfFile:v14];
     v9 = 0;
     if (!v30 || !v29 || !v28)
@@ -6276,8 +6276,8 @@ LABEL_33:
       if ([v7 conformsToProtocol:&OBJC_PROTOCOL___MAExclaveManifestStorageServiceProtocol2])
       {
         v15 = v7;
-        v16 = [(SecureMobileAssetBundle *)self assetSpecifier];
-        if (v4)
+        assetSpecifier = [(SecureMobileAssetBundle *)self assetSpecifier];
+        if (stagedCopy)
         {
           v17 = 1;
         }
@@ -6288,7 +6288,7 @@ LABEL_33:
         }
 
         v34 = v8;
-        v18 = [v15 checkManifestForFSTag:v5 specifier:v16 state:v17 manifest:v30 infoPlist:v29 catalog:v28 isValid:buf error:&v34];
+        v18 = [v15 checkManifestForFSTag:v5 specifier:assetSpecifier state:v17 manifest:v30 infoPlist:v29 catalog:v28 isValid:buf error:&v34];
         v19 = v34;
       }
 
@@ -6296,7 +6296,7 @@ LABEL_33:
       {
         v33 = v8;
         v26 = v7;
-        v18 = [v26 checkManifestForFSTag:v5 staged:v4 manifest:v30 infoPlist:v29 catalog:v28 isValid:buf error:&v33];
+        v18 = [v26 checkManifestForFSTag:v5 staged:stagedCopy manifest:v30 infoPlist:v29 catalog:v28 isValid:buf error:&v33];
         v19 = v33;
       }
 
@@ -6315,9 +6315,9 @@ LABEL_33:
       v23 = v22;
       if (v21)
       {
-        v24 = [(SecureMobileAssetBundle *)self assetSpecifier];
+        assetSpecifier2 = [(SecureMobileAssetBundle *)self assetSpecifier];
         v32 = v8;
-        v25 = [v23 stageManifestForFSTag:v5 specifier:v24 manifest:v30 infoPlist:v29 catalog:v28 error:&v32];
+        v25 = [v23 stageManifestForFSTag:v5 specifier:assetSpecifier2 manifest:v30 infoPlist:v29 catalog:v28 error:&v32];
         v19 = v32;
       }
 
@@ -6326,7 +6326,7 @@ LABEL_33:
         v31 = v8;
         v25 = [v22 storeManifest:v30 infoPlist:v29 catalog:v28 error:&v31];
         v19 = v31;
-        v24 = v8;
+        assetSpecifier2 = v8;
       }
 
       buf[0] = v25;
@@ -6356,24 +6356,24 @@ LABEL_31:
 
 - (NSString)secureAssetDataPath
 {
-  v2 = [(SecureMobileAssetBundle *)self assetBundlePath];
-  v3 = [v2 stringByAppendingPathComponent:@"SecureAssetData"];
+  assetBundlePath = [(SecureMobileAssetBundle *)self assetBundlePath];
+  v3 = [assetBundlePath stringByAppendingPathComponent:@"SecureAssetData"];
 
   return v3;
 }
 
 - (NSString)graftPath
 {
-  v2 = [(SecureMobileAssetBundle *)self assetBundlePath];
-  v3 = [v2 stringByAppendingPathComponent:@".AssetData"];
+  assetBundlePath = [(SecureMobileAssetBundle *)self assetBundlePath];
+  v3 = [assetBundlePath stringByAppendingPathComponent:@".AssetData"];
 
   return v3;
 }
 
 - (NSString)cryptexPath
 {
-  v2 = [(SecureMobileAssetBundle *)self secureAssetDataPath];
-  v3 = [v2 stringByAppendingPathComponent:@"SecureMobileAsset.dmg"];
+  secureAssetDataPath = [(SecureMobileAssetBundle *)self secureAssetDataPath];
+  v3 = [secureAssetDataPath stringByAppendingPathComponent:@"SecureMobileAsset.dmg"];
 
   v4 = realpath_DARWIN_EXTSN([v3 UTF8String], 0);
   if (v4)
@@ -6390,16 +6390,16 @@ LABEL_31:
 
 - (NSString)secureInfoPlistPath
 {
-  v2 = [(SecureMobileAssetBundle *)self secureAssetDataPath];
-  v3 = [v2 stringByAppendingPathComponent:@"SecureMobileAsset-Info.plist"];
+  secureAssetDataPath = [(SecureMobileAssetBundle *)self secureAssetDataPath];
+  v3 = [secureAssetDataPath stringByAppendingPathComponent:@"SecureMobileAsset-Info.plist"];
 
   return v3;
 }
 
 - (NSString)insecureInfoPlistPath
 {
-  v2 = [(SecureMobileAssetBundle *)self assetBundlePath];
-  v3 = [v2 stringByAppendingPathComponent:@"Info.plist"];
+  assetBundlePath = [(SecureMobileAssetBundle *)self assetBundlePath];
+  v3 = [assetBundlePath stringByAppendingPathComponent:@"Info.plist"];
 
   return v3;
 }
@@ -6409,9 +6409,9 @@ LABEL_31:
   if (__isPlatformVersionAtLeast(2, 18, 0, 0))
   {
     v3 = objc_alloc_init(MASecureManifestStorage);
-    v4 = [(SecureMobileAssetBundle *)self assetType];
-    v5 = [(SecureMobileAssetBundle *)self assetSpecifier];
-    v6 = [v3 manifestPathForAssetType:v4 specifier:v5];
+    assetType = [(SecureMobileAssetBundle *)self assetType];
+    assetSpecifier = [(SecureMobileAssetBundle *)self assetSpecifier];
+    v6 = [v3 manifestPathForAssetType:assetType specifier:assetSpecifier];
   }
 
   else
@@ -6436,9 +6436,9 @@ LABEL_31:
     v3 = objc_alloc_init(MASecureManifestStorage);
     if (objc_opt_respondsToSelector())
     {
-      v4 = [(SecureMobileAssetBundle *)self assetType];
-      v5 = [(SecureMobileAssetBundle *)self assetSpecifier];
-      v6 = [v3 stagedManifestPathForAssetType:v4 specifier:v5];
+      assetType = [(SecureMobileAssetBundle *)self assetType];
+      assetSpecifier = [(SecureMobileAssetBundle *)self assetSpecifier];
+      v6 = [v3 stagedManifestPathForAssetType:assetType specifier:assetSpecifier];
 
       goto LABEL_10;
     }
@@ -6482,8 +6482,8 @@ LABEL_10:
   }
 
   v4 = +[MASecureMobileAssetTypes sharedInstance];
-  v5 = [(SecureMobileAssetBundle *)self assetType];
-  v6 = [v4 supportsLoadableTrustCache:v5];
+  assetType = [(SecureMobileAssetBundle *)self assetType];
+  v6 = [v4 supportsLoadableTrustCache:assetType];
 
   if (v6)
   {
@@ -6524,24 +6524,24 @@ LABEL_10:
 
 - (NSString)rootHashPath
 {
-  v2 = [(SecureMobileAssetBundle *)self secureAssetDataPath];
-  v3 = [v2 stringByAppendingPathComponent:@"SecureMobileAsset.root_hash"];
+  secureAssetDataPath = [(SecureMobileAssetBundle *)self secureAssetDataPath];
+  v3 = [secureAssetDataPath stringByAppendingPathComponent:@"SecureMobileAsset.root_hash"];
 
   return v3;
 }
 
 - (NSString)trustCachePath
 {
-  v2 = [(SecureMobileAssetBundle *)self secureAssetDataPath];
-  v3 = [v2 stringByAppendingPathComponent:@"SecureMobileAsset.trustcache"];
+  secureAssetDataPath = [(SecureMobileAssetBundle *)self secureAssetDataPath];
+  v3 = [secureAssetDataPath stringByAppendingPathComponent:@"SecureMobileAsset.trustcache"];
 
   return v3;
 }
 
 - (id)integrityCatalogPath
 {
-  v2 = [(SecureMobileAssetBundle *)self secureAssetDataPath];
-  v3 = [v2 stringByAppendingPathComponent:@"SecureMobileAsset.integritycatalog"];
+  secureAssetDataPath = [(SecureMobileAssetBundle *)self secureAssetDataPath];
+  v3 = [secureAssetDataPath stringByAppendingPathComponent:@"SecureMobileAsset.integritycatalog"];
 
   return v3;
 }
@@ -6558,85 +6558,85 @@ LABEL_10:
 
 - (NSDictionary)secureInfoPlist
 {
-  v2 = [(SecureMobileAssetBundle *)self secureInfoPlistPath];
-  v3 = [NSDictionary dictionaryWithContentsOfFile:v2];
+  secureInfoPlistPath = [(SecureMobileAssetBundle *)self secureInfoPlistPath];
+  v3 = [NSDictionary dictionaryWithContentsOfFile:secureInfoPlistPath];
 
   return v3;
 }
 
 - (NSDictionary)insecureInfoPlist
 {
-  v2 = [(SecureMobileAssetBundle *)self insecureInfoPlistPath];
-  v3 = [NSDictionary dictionaryWithContentsOfFile:v2];
+  insecureInfoPlistPath = [(SecureMobileAssetBundle *)self insecureInfoPlistPath];
+  v3 = [NSDictionary dictionaryWithContentsOfFile:insecureInfoPlistPath];
 
   return v3;
 }
 
 - (NSDictionary)assetAttributes
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_assetAttributes)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_assetAttributes)
   {
-    v3 = [(SecureMobileAssetBundle *)v2 insecureInfoPlist];
-    v4 = [v3 objectForKeyedSubscript:@"MobileAssetProperties"];
-    assetAttributes = v2->_assetAttributes;
-    v2->_assetAttributes = v4;
+    insecureInfoPlist = [(SecureMobileAssetBundle *)selfCopy insecureInfoPlist];
+    v4 = [insecureInfoPlist objectForKeyedSubscript:@"MobileAssetProperties"];
+    assetAttributes = selfCopy->_assetAttributes;
+    selfCopy->_assetAttributes = v4;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v6 = v2->_assetAttributes;
+  v6 = selfCopy->_assetAttributes;
 
   return v6;
 }
 
 - (NSString)assetType
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_assetType)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_assetType)
   {
-    v3 = [(SecureMobileAssetBundle *)v2 insecureInfoPlist];
-    v4 = [v3 objectForKeyedSubscript:kCFBundleIdentifierKey];
-    assetType = v2->_assetType;
-    v2->_assetType = v4;
+    insecureInfoPlist = [(SecureMobileAssetBundle *)selfCopy insecureInfoPlist];
+    v4 = [insecureInfoPlist objectForKeyedSubscript:kCFBundleIdentifierKey];
+    assetType = selfCopy->_assetType;
+    selfCopy->_assetType = v4;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v6 = v2->_assetType;
+  v6 = selfCopy->_assetType;
 
   return v6;
 }
 
 - (NSString)assetSpecifier
 {
-  v2 = self;
-  objc_sync_enter(v2);
-  if (!v2->_assetSpecifier)
+  selfCopy = self;
+  objc_sync_enter(selfCopy);
+  if (!selfCopy->_assetSpecifier)
   {
-    v3 = [(SecureMobileAssetBundle *)v2 assetAttributes];
-    v4 = [v3 objectForKeyedSubscript:@"AssetSpecifier"];
-    assetSpecifier = v2->_assetSpecifier;
-    v2->_assetSpecifier = v4;
+    assetAttributes = [(SecureMobileAssetBundle *)selfCopy assetAttributes];
+    v4 = [assetAttributes objectForKeyedSubscript:@"AssetSpecifier"];
+    assetSpecifier = selfCopy->_assetSpecifier;
+    selfCopy->_assetSpecifier = v4;
   }
 
-  objc_sync_exit(v2);
+  objc_sync_exit(selfCopy);
 
-  v6 = v2->_assetSpecifier;
+  v6 = selfCopy->_assetSpecifier;
 
   return v6;
 }
 
 - (id)description
 {
-  v3 = [(SecureMobileAssetBundle *)self assetType];
-  v4 = [(SecureMobileAssetBundle *)self assetSpecifier];
-  v5 = [(SecureMobileAssetBundle *)self assetBundlePath];
-  v6 = [v5 lastPathComponent];
+  assetType = [(SecureMobileAssetBundle *)self assetType];
+  assetSpecifier = [(SecureMobileAssetBundle *)self assetSpecifier];
+  assetBundlePath = [(SecureMobileAssetBundle *)self assetBundlePath];
+  lastPathComponent = [assetBundlePath lastPathComponent];
 
-  v7 = [NSString stringWithFormat:@"%@:%@ (%@)", v3, v4, v6];
+  v7 = [NSString stringWithFormat:@"%@:%@ (%@)", assetType, assetSpecifier, lastPathComponent];
 
   return v7;
 }
@@ -6644,11 +6644,11 @@ LABEL_10:
 - (id)assetValues
 {
   v3 = objc_opt_new();
-  v4 = [(SecureMobileAssetBundle *)self assetType];
-  [v3 setSafeObject:v4 forKey:@"AssetType"];
+  assetType = [(SecureMobileAssetBundle *)self assetType];
+  [v3 setSafeObject:assetType forKey:@"AssetType"];
 
-  v5 = [(SecureMobileAssetBundle *)self assetSpecifier];
-  [v3 setSafeObject:v5 forKey:@"AssetSpecifier"];
+  assetSpecifier = [(SecureMobileAssetBundle *)self assetSpecifier];
+  [v3 setSafeObject:assetSpecifier forKey:@"AssetSpecifier"];
 
   return v3;
 }

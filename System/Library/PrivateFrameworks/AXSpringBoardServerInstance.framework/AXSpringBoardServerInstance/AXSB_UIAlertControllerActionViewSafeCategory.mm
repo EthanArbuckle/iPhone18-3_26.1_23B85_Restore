@@ -1,15 +1,15 @@
 @interface AXSB_UIAlertControllerActionViewSafeCategory
-+ (void)_accessibilityPerformValidations:(id)a3;
++ (void)_accessibilityPerformValidations:(id)validations;
 - (void)layoutSubviews;
 @end
 
 @implementation AXSB_UIAlertControllerActionViewSafeCategory
 
-+ (void)_accessibilityPerformValidations:(id)a3
++ (void)_accessibilityPerformValidations:(id)validations
 {
-  v3 = a3;
-  [v3 validateClass:@"_UIAlertControllerActionView" hasInstanceMethod:@"action" withFullSignature:{"@", 0}];
-  [v3 validateClass:@"UIAlertAction" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
+  validationsCopy = validations;
+  [validationsCopy validateClass:@"_UIAlertControllerActionView" hasInstanceMethod:@"action" withFullSignature:{"@", 0}];
+  [validationsCopy validateClass:@"UIAlertAction" hasInstanceMethod:@"title" withFullSignature:{"@", 0}];
 }
 
 - (void)layoutSubviews
@@ -27,9 +27,9 @@
   v6 = [v5 safeValueForKey:@"title"];
   v7 = __UIAccessibilityCastAsClass();
 
-  v8 = [v5 _isChecked];
+  _isChecked = [v5 _isChecked];
   v9 = *MEMORY[0x277D76598];
-  if (!v8)
+  if (!_isChecked)
   {
     v9 = 0;
   }

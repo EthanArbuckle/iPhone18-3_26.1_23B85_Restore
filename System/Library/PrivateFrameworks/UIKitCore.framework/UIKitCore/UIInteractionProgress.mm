@@ -3,11 +3,11 @@
 - (double)velocity;
 - (id)description;
 - (int64_t)numberOfObservers;
-- (unint64_t)_indexOfObserver:(id)a3;
-- (void)addProgressObserver:(id)a3;
-- (void)endInteraction:(BOOL)a3;
-- (void)removeProgressObserver:(id)a3;
-- (void)setPercentComplete:(double)a3;
+- (unint64_t)_indexOfObserver:(id)observer;
+- (void)addProgressObserver:(id)observer;
+- (void)endInteraction:(BOOL)interaction;
+- (void)removeProgressObserver:(id)observer;
+- (void)setPercentComplete:(double)complete;
 @end
 
 @implementation UIInteractionProgress
@@ -19,9 +19,9 @@
   v2 = [(UIInteractionProgress *)&v6 init];
   if (v2)
   {
-    v3 = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
+    weakObjectsPointerArray = [MEMORY[0x1E696AE08] weakObjectsPointerArray];
     observers = v2->_observers;
-    v2->_observers = v3;
+    v2->_observers = weakObjectsPointerArray;
 
     v2->_previousUpdateTime = CACurrentMediaTime();
   }
@@ -42,11 +42,11 @@
   return v8;
 }
 
-- (void)setPercentComplete:(double)a3
+- (void)setPercentComplete:(double)complete
 {
   v18 = *MEMORY[0x1E69E9840];
   percentComplete = self->_percentComplete;
-  self->_percentComplete = a3;
+  self->_percentComplete = complete;
   mostRecentUpdateTime = self->_mostRecentUpdateTime;
   self->_previousPercentComplete = percentComplete;
   self->_previousUpdateTime = mostRecentUpdateTime;
@@ -109,9 +109,9 @@
   return result;
 }
 
-- (void)endInteraction:(BOOL)a3
+- (void)endInteraction:(BOOL)interaction
 {
-  v3 = a3;
+  interactionCopy = interaction;
   v16 = *MEMORY[0x1E69E9840];
   v11 = 0u;
   v12 = 0u;
@@ -137,12 +137,12 @@
         if (objc_opt_respondsToSelector())
         {
           [(UIInteractionProgress *)self velocity];
-          [v10 interactionProgress:self didEnd:v3 finalVelocity:?];
+          [v10 interactionProgress:self didEnd:interactionCopy finalVelocity:?];
         }
 
         else if (objc_opt_respondsToSelector())
         {
-          [v10 interactionProgress:self didEnd:v3];
+          [v10 interactionProgress:self didEnd:interactionCopy];
         }
 
         ++v9;
@@ -156,9 +156,9 @@
   }
 }
 
-- (unint64_t)_indexOfObserver:(id)a3
+- (unint64_t)_indexOfObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   v5 = [(NSPointerArray *)self->_observers count];
   v6 = v5 - 1;
   if ((v5 - 1) >= 0)
@@ -168,7 +168,7 @@
     {
       v8 = [(NSPointerArray *)self->_observers pointerAtIndex:--v7];
       v9 = v8;
-      if (v8 == v4)
+      if (v8 == observerCopy)
       {
         break;
       }
@@ -202,18 +202,18 @@ LABEL_9:
   return v10;
 }
 
-- (void)addProgressObserver:(id)a3
+- (void)addProgressObserver:(id)observer
 {
-  v4 = a3;
+  observerCopy = observer;
   if ([(UIInteractionProgress *)self _indexOfObserver:?]== 0x7FFFFFFFFFFFFFFFLL)
   {
-    [(NSPointerArray *)self->_observers addPointer:v4];
+    [(NSPointerArray *)self->_observers addPointer:observerCopy];
   }
 }
 
-- (void)removeProgressObserver:(id)a3
+- (void)removeProgressObserver:(id)observer
 {
-  v4 = [(UIInteractionProgress *)self _indexOfObserver:a3];
+  v4 = [(UIInteractionProgress *)self _indexOfObserver:observer];
   if (v4 != 0x7FFFFFFFFFFFFFFFLL)
   {
     v5 = v4;

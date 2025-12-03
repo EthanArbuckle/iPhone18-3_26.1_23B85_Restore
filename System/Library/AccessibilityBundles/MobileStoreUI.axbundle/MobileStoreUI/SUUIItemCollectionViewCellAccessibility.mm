@@ -6,13 +6,13 @@
 
 - (id)accessibilityElements
 {
-  v3 = [MEMORY[0x29EDB8DE8] array];
+  array = [MEMORY[0x29EDB8DE8] array];
   v4 = [(SUUIItemCollectionViewCellAccessibility *)self safeValueForKey:@"_layout"];
   v5 = [v4 safeValueForKey:@"_itemOfferButton"];
   [v5 accessibilitySetIdentification:@"ItemOfferButton"];
-  [v3 axSafelyAddObject:v5];
+  [array axSafelyAddObject:v5];
 
-  return v3;
+  return array;
 }
 
 @end

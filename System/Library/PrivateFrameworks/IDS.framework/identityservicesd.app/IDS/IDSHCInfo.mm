@@ -1,7 +1,7 @@
 @interface IDSHCInfo
 - (void)invalidate;
-- (void)setLocalContext:(void *)a3;
-- (void)setRemoteContext:(void *)a3;
+- (void)setLocalContext:(void *)context;
+- (void)setRemoteContext:(void *)context;
 @end
 
 @implementation IDSHCInfo
@@ -37,7 +37,7 @@
   self->_remoteContext = 0;
 }
 
-- (void)setLocalContext:(void *)a3
+- (void)setLocalContext:(void *)context
 {
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -46,7 +46,7 @@
     *buf = 134218240;
     v9 = localContext;
     v10 = 2048;
-    v11 = a3;
+    contextCopy = context;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setLocalContext - %p->%p", buf, 0x16u);
   }
 
@@ -61,10 +61,10 @@
     free(v7);
   }
 
-  self->_localContext = a3;
+  self->_localContext = context;
 }
 
-- (void)setRemoteContext:(void *)a3
+- (void)setRemoteContext:(void *)context
 {
   v5 = OSLogHandleForIDSCategory();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
@@ -73,7 +73,7 @@
     *buf = 134218240;
     v9 = remoteContext;
     v10 = 2048;
-    v11 = a3;
+    contextCopy = context;
     _os_log_impl(&_mh_execute_header, v5, OS_LOG_TYPE_DEFAULT, "setRemoteContext - %p->%p", buf, 0x16u);
   }
 
@@ -88,7 +88,7 @@
     free(v7);
   }
 
-  self->_remoteContext = a3;
+  self->_remoteContext = context;
 }
 
 @end

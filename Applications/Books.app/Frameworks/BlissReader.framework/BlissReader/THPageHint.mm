@@ -1,49 +1,49 @@
 @interface THPageHint
 - ($D6031A91289B01F4EEA92D3AF6491109)bodylessStubHint;
 - ($D6031A91289B01F4EEA92D3AF6491109)firstHint;
-- ($D6031A91289B01F4EEA92D3AF6491109)firstHintForBodyIndex:(unint64_t)a3;
+- ($D6031A91289B01F4EEA92D3AF6491109)firstHintForBodyIndex:(unint64_t)index;
 - ($D6031A91289B01F4EEA92D3AF6491109)lastHint;
-- ($D6031A91289B01F4EEA92D3AF6491109)lastHintForBodyIndex:(unint64_t)a3;
+- ($D6031A91289B01F4EEA92D3AF6491109)lastHintForBodyIndex:(unint64_t)index;
 - (CGSize)size;
-- (CGSize)sizeForBodyIndex:(unint64_t)a3;
-- (THPageHint)initWithCoder:(id)a3;
-- (THPageHint)initWithPageInfo:(id)a3;
-- (_NSRange)anchoredRangeForBodyIndex:(unint64_t)a3;
+- (CGSize)sizeForBodyIndex:(unint64_t)index;
+- (THPageHint)initWithCoder:(id)coder;
+- (THPageHint)initWithPageInfo:(id)info;
+- (_NSRange)anchoredRangeForBodyIndex:(unint64_t)index;
 - (_NSRange)range;
-- (_NSRange)rangeForBodyIndex:(unint64_t)a3;
-- (id)anchoredAttachmentPositionsForBodyChildAtIndex:(unint64_t)a3;
+- (_NSRange)rangeForBodyIndex:(unint64_t)index;
+- (id)anchoredAttachmentPositionsForBodyChildAtIndex:(unint64_t)index;
 - (id)firstChildHint;
-- (id)firstChildHintForBodyIndex:(unint64_t)a3;
+- (id)firstChildHintForBodyIndex:(unint64_t)index;
 - (id)firstColumn;
-- (id)firstColumnForBodyIndex:(unint64_t)a3;
+- (id)firstColumnForBodyIndex:(unint64_t)index;
 - (id)lastChildHint;
-- (id)lastChildHintForBodyIndex:(unint64_t)a3;
+- (id)lastChildHintForBodyIndex:(unint64_t)index;
 - (id)lastColumn;
-- (id)lastColumnForBodyIndex:(unint64_t)a3;
+- (id)lastColumnForBodyIndex:(unint64_t)index;
 - (vector<TSWPTargetHint,)hintsForBodyIndex:(THPageHint *)self;
 - (void)dealloc;
-- (void)encodeWithCoder:(id)a3;
-- (void)offsetStartCharIndicesBy:(int64_t)a3;
-- (void)setAnchoredAttachmentPositions:(id)a3 forBodyIndex:(unint64_t)a4;
-- (void)setBodylessStubHint:(id *)a3;
-- (void)setFirstChildHint:(id)a3 forBodyIndex:(unint64_t)a4;
-- (void)setHints:(const void *)a3 forBodyIndex:(unint64_t)a4;
-- (void)setLastChildHint:(id)a3 forBodyIndex:(unint64_t)a4;
-- (void)setSize:(CGSize)a3 forBodyIndex:(unint64_t)a4;
-- (void)setTopicNumbers:(void *)a3;
+- (void)encodeWithCoder:(id)coder;
+- (void)offsetStartCharIndicesBy:(int64_t)by;
+- (void)setAnchoredAttachmentPositions:(id)positions forBodyIndex:(unint64_t)index;
+- (void)setBodylessStubHint:(id *)hint;
+- (void)setFirstChildHint:(id)hint forBodyIndex:(unint64_t)index;
+- (void)setHints:(const void *)hints forBodyIndex:(unint64_t)index;
+- (void)setLastChildHint:(id)hint forBodyIndex:(unint64_t)index;
+- (void)setSize:(CGSize)size forBodyIndex:(unint64_t)index;
+- (void)setTopicNumbers:(void *)numbers;
 @end
 
 @implementation THPageHint
 
-- (THPageHint)initWithPageInfo:(id)a3
+- (THPageHint)initWithPageInfo:(id)info
 {
   v8.receiver = self;
   v8.super_class = THPageHint;
   v4 = [(THPageHint *)&v8 init];
   if (v4)
   {
-    -[THPageHint setBodyCount:](v4, "setBodyCount:", [objc_msgSend(a3 "modelBodyInfos")]);
-    [objc_msgSend(a3 "geometry")];
+    -[THPageHint setBodyCount:](v4, "setBodyCount:", [objc_msgSend(info "modelBodyInfos")]);
+    [objc_msgSend(info "geometry")];
     [(THPageHint *)v4 setSize:?];
     v4->mBodyHints = objc_alloc_init(TSUIntegerKeyDictionary);
     if ([(THPageHint *)v4 bodyCount])
@@ -66,15 +66,15 @@
   return v4;
 }
 
-- (THPageHint)initWithCoder:(id)a3
+- (THPageHint)initWithCoder:(id)coder
 {
   v12.receiver = self;
   v12.super_class = THPageHint;
   v4 = [(THPageHint *)&v12 init];
   if (v4)
   {
-    v4->mNonEmptyBodyCount = [a3 decodeIntegerForKey:@"nonEmptyBodyCount"];
-    v5 = [a3 decodeObjectOfClass:objc_opt_class() forKey:@"size"];
+    v4->mNonEmptyBodyCount = [coder decodeIntegerForKey:@"nonEmptyBodyCount"];
+    v5 = [coder decodeObjectOfClass:objc_opt_class() forKey:@"size"];
     if (v5)
     {
       [v5 CGSizeValue];
@@ -92,22 +92,22 @@
     v9 = objc_opt_class();
     v10 = [NSSet setWithObjects:v8, v9, objc_opt_class(), 0];
     objc_opt_class();
-    [a3 decodeObjectOfClasses:v10 forKey:@"bodyHints"];
+    [coder decodeObjectOfClasses:v10 forKey:@"bodyHints"];
     v4->mBodyHints = TSUDynamicCast();
-    v4->mBodyCount = [a3 decodeIntegerForKey:@"bodyCount"];
+    v4->mBodyCount = [coder decodeIntegerForKey:@"bodyCount"];
   }
 
   return v4;
 }
 
-- (void)encodeWithCoder:(id)a3
+- (void)encodeWithCoder:(id)coder
 {
-  [a3 encodeObject:self->mBodyHints forKey:@"bodyHints"];
-  [a3 encodeInteger:self->mBodyCount forKey:@"bodyCount"];
-  [a3 encodeInteger:self->mNonEmptyBodyCount forKey:@"nonEmptyBodyCount"];
+  [coder encodeObject:self->mBodyHints forKey:@"bodyHints"];
+  [coder encodeInteger:self->mBodyCount forKey:@"bodyCount"];
+  [coder encodeInteger:self->mNonEmptyBodyCount forKey:@"nonEmptyBodyCount"];
   v5 = [NSValue valueWithCGSize:self->mSize.width, self->mSize.height];
 
-  [a3 encodeObject:v5 forKey:@"size"];
+  [coder encodeObject:v5 forKey:@"size"];
 }
 
 - (void)dealloc
@@ -161,45 +161,45 @@
   return result;
 }
 
-- (_NSRange)rangeForBodyIndex:(unint64_t)a3
+- (_NSRange)rangeForBodyIndex:(unint64_t)index
 {
-  v3 = [(THPageHint *)self p_bodyHintAtIndex:a3];
+  v3 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
-  v4 = [v3 range];
+  range = [v3 range];
   result.length = v5;
-  result.location = v4;
+  result.location = range;
   return result;
 }
 
-- (_NSRange)anchoredRangeForBodyIndex:(unint64_t)a3
+- (_NSRange)anchoredRangeForBodyIndex:(unint64_t)index
 {
-  v3 = [(THPageHint *)self p_bodyHintAtIndex:a3];
+  v3 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
-  v4 = [v3 anchoredRange];
+  anchoredRange = [v3 anchoredRange];
   result.length = v5;
-  result.location = v4;
+  result.location = anchoredRange;
   return result;
 }
 
-- (void)offsetStartCharIndicesBy:(int64_t)a3
+- (void)offsetStartCharIndicesBy:(int64_t)by
 {
   if ([(THPageHint *)self nonEmptyBodyCount])
   {
     v5 = 0;
     do
     {
-      [-[THPageHint p_bodyHintAtIndex:](self p_bodyHintAtIndex:{v5++), "offsetStartCharIndexBy:", a3}];
+      [-[THPageHint p_bodyHintAtIndex:](self p_bodyHintAtIndex:{v5++), "offsetStartCharIndexBy:", by}];
     }
 
     while (v5 < [(THPageHint *)self nonEmptyBodyCount]);
   }
 }
 
-- (void)setHints:(const void *)a3 forBodyIndex:(unint64_t)a4
+- (void)setHints:(const void *)hints forBodyIndex:(unint64_t)index
 {
-  v5 = [(THPageHint *)self p_bodyHintAtIndex:a4];
+  v5 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
-  [v5 setHints:a3];
+  [v5 setHints:hints];
 }
 
 - (vector<TSWPTargetHint,)hintsForBodyIndex:(THPageHint *)self
@@ -221,18 +221,18 @@
   return result;
 }
 
-- (void)setSize:(CGSize)a3 forBodyIndex:(unint64_t)a4
+- (void)setSize:(CGSize)size forBodyIndex:(unint64_t)index
 {
-  height = a3.height;
-  width = a3.width;
-  v6 = [(THPageHint *)self p_bodyHintAtIndex:a4];
+  height = size.height;
+  width = size.width;
+  v6 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
   [v6 setSize:{width, height}];
 }
 
-- (CGSize)sizeForBodyIndex:(unint64_t)a3
+- (CGSize)sizeForBodyIndex:(unint64_t)index
 {
-  v3 = [(THPageHint *)self p_bodyHintAtIndex:a3];
+  v3 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
   [v3 size];
   result.height = v5;
@@ -240,30 +240,30 @@
   return result;
 }
 
-- (void)setFirstChildHint:(id)a3 forBodyIndex:(unint64_t)a4
+- (void)setFirstChildHint:(id)hint forBodyIndex:(unint64_t)index
 {
-  v5 = [(THPageHint *)self p_bodyHintAtIndex:a4];
+  v5 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
-  [v5 setFirstChildHint:a3];
+  [v5 setFirstChildHint:hint];
 }
 
-- (id)firstChildHintForBodyIndex:(unint64_t)a3
+- (id)firstChildHintForBodyIndex:(unint64_t)index
 {
-  v3 = [(THPageHint *)self p_bodyHintAtIndex:a3];
+  v3 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
   return [v3 firstChildHint];
 }
 
-- (void)setLastChildHint:(id)a3 forBodyIndex:(unint64_t)a4
+- (void)setLastChildHint:(id)hint forBodyIndex:(unint64_t)index
 {
-  v5 = [(THPageHint *)self p_bodyHintAtIndex:a4];
+  v5 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
-  [v5 setLastChildHint:a3];
+  [v5 setLastChildHint:hint];
 }
 
-- (id)lastChildHintForBodyIndex:(unint64_t)a3
+- (id)lastChildHintForBodyIndex:(unint64_t)index
 {
-  v3 = [(THPageHint *)self p_bodyHintAtIndex:a3];
+  v3 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
   return [v3 lastChildHint];
 }
@@ -293,16 +293,16 @@
   return result;
 }
 
-- (id)firstColumnForBodyIndex:(unint64_t)a3
+- (id)firstColumnForBodyIndex:(unint64_t)index
 {
-  v3 = [(THPageHint *)self p_bodyHintAtIndex:a3];
+  v3 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
   return [v3 firstColumn];
 }
 
-- (id)lastColumnForBodyIndex:(unint64_t)a3
+- (id)lastColumnForBodyIndex:(unint64_t)index
 {
-  v3 = [(THPageHint *)self p_bodyHintAtIndex:a3];
+  v3 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
   return [v3 lastColumn];
 }
@@ -354,39 +354,39 @@
   return [(THPageHint *)self lastHintForBodyIndex:v3];
 }
 
-- ($D6031A91289B01F4EEA92D3AF6491109)firstHintForBodyIndex:(unint64_t)a3
+- ($D6031A91289B01F4EEA92D3AF6491109)firstHintForBodyIndex:(unint64_t)index
 {
-  v3 = [(THPageHint *)self p_bodyHintAtIndex:a3];
+  v3 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
   return [v3 firstHint];
 }
 
-- ($D6031A91289B01F4EEA92D3AF6491109)lastHintForBodyIndex:(unint64_t)a3
+- ($D6031A91289B01F4EEA92D3AF6491109)lastHintForBodyIndex:(unint64_t)index
 {
-  v3 = [(THPageHint *)self p_bodyHintAtIndex:a3];
+  v3 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
   return [v3 lastHint];
 }
 
-- (id)anchoredAttachmentPositionsForBodyChildAtIndex:(unint64_t)a3
+- (id)anchoredAttachmentPositionsForBodyChildAtIndex:(unint64_t)index
 {
-  v3 = [(THPageHint *)self p_bodyHintAtIndex:a3];
+  v3 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
   return [v3 anchoredAttachmentPositions];
 }
 
-- (void)setAnchoredAttachmentPositions:(id)a3 forBodyIndex:(unint64_t)a4
+- (void)setAnchoredAttachmentPositions:(id)positions forBodyIndex:(unint64_t)index
 {
-  v5 = [(THPageHint *)self p_bodyHintAtIndex:a4];
+  v5 = [(THPageHint *)self p_bodyHintAtIndex:index];
 
-  [v5 setAnchoredAttachmentPositions:a3];
+  [v5 setAnchoredAttachmentPositions:positions];
 }
 
-- (void)setTopicNumbers:(void *)a3
+- (void)setTopicNumbers:(void *)numbers
 {
-  v3 = *(a3 + 3);
-  v4 = [(THPageHint *)self firstHint];
-  if (v3 != 0x7FFFFFFFFFFFFFFFLL && v3 >= v4->var1.location)
+  v3 = *(numbers + 3);
+  firstHint = [(THPageHint *)self firstHint];
+  if (v3 != 0x7FFFFFFFFFFFFFFFLL && v3 >= firstHint->var1.location)
   {
     [+[TSUAssertionHandler currentHandler](TSUAssertionHandler "currentHandler")];
   }
@@ -406,13 +406,13 @@
   return self;
 }
 
-- (void)setBodylessStubHint:(id *)a3
+- (void)setBodylessStubHint:(id *)hint
 {
-  self->mBodylessStubHint._frameBounds.origin = a3->var0.origin;
-  size = a3->var0.size;
-  var1 = a3->var1;
-  v5 = *&a3->var3.length;
-  *&self->mBodylessStubHint._nextWidowPullsDownFromCharIndex = *&a3->var2;
+  self->mBodylessStubHint._frameBounds.origin = hint->var0.origin;
+  size = hint->var0.size;
+  var1 = hint->var1;
+  v5 = *&hint->var3.length;
+  *&self->mBodylessStubHint._nextWidowPullsDownFromCharIndex = *&hint->var2;
   *&self->mBodylessStubHint._anchoredRange.length = v5;
   self->mBodylessStubHint._frameBounds.size = size;
   self->mBodylessStubHint._range = var1;

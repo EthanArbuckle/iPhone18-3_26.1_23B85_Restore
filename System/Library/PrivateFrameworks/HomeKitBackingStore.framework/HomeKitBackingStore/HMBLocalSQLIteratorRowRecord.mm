@@ -1,21 +1,21 @@
 @interface HMBLocalSQLIteratorRowRecord
-- (HMBLocalSQLIteratorRowRecord)initWithSQLContext:(id)a3 zoneRow:(unint64_t)a4 returning:(unint64_t)a5;
-- (id)fetchRowFromStatement:(sqlite3_stmt *)a3 skip:(BOOL *)a4 updatedSequence:(unint64_t *)a5 error:(id *)a6;
+- (HMBLocalSQLIteratorRowRecord)initWithSQLContext:(id)context zoneRow:(unint64_t)row returning:(unint64_t)returning;
+- (id)fetchRowFromStatement:(sqlite3_stmt *)statement skip:(BOOL *)skip updatedSequence:(unint64_t *)sequence error:(id *)error;
 @end
 
 @implementation HMBLocalSQLIteratorRowRecord
 
-- (id)fetchRowFromStatement:(sqlite3_stmt *)a3 skip:(BOOL *)a4 updatedSequence:(unint64_t *)a5 error:(id *)a6
+- (id)fetchRowFromStatement:(sqlite3_stmt *)statement skip:(BOOL *)skip updatedSequence:(unint64_t *)sequence error:(id *)error
 {
-  v7 = [[HMBLocalSQLContextRowRecord alloc] initWithStatement:a3 returning:[(HMBLocalSQLIteratorRowRecord *)self returning]];
-  *a5 = [(HMBLocalSQLContextRowRecord *)v7 recordRow];
+  v7 = [[HMBLocalSQLContextRowRecord alloc] initWithStatement:statement returning:[(HMBLocalSQLIteratorRowRecord *)self returning]];
+  *sequence = [(HMBLocalSQLContextRowRecord *)v7 recordRow];
 
   return v7;
 }
 
-- (HMBLocalSQLIteratorRowRecord)initWithSQLContext:(id)a3 zoneRow:(unint64_t)a4 returning:(unint64_t)a5
+- (HMBLocalSQLIteratorRowRecord)initWithSQLContext:(id)context zoneRow:(unint64_t)row returning:(unint64_t)returning
 {
-  v8 = a3;
+  contextCopy = context;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
@@ -27,7 +27,7 @@
   v16[2] = __69__HMBLocalSQLIteratorRowRecord_initWithSQLContext_zoneRow_returning___block_invoke;
   v16[3] = &unk_2786E1A10;
   v16[4] = &v17;
-  v9 = [v8 sqlBlockWithActivity:0 block:v16];
+  v9 = [contextCopy sqlBlockWithActivity:0 block:v16];
   v10 = v18[5];
   v15.receiver = self;
   v15.super_class = HMBLocalSQLIteratorRowRecord;
@@ -37,14 +37,14 @@
     goto LABEL_4;
   }
 
-  v12 = [v18[5] arguments];
-  v13 = [v12 hmf_numberForKey:@"_store_id"];
+  arguments = [v18[5] arguments];
+  v13 = [arguments hmf_numberForKey:@"_store_id"];
 
   if (v13)
   {
     v11->_zoneRowBindOffset = [v13 intValue];
-    v11->_zoneRow = a4;
-    v11->_returning = a5;
+    v11->_zoneRow = row;
+    v11->_returning = returning;
 
 LABEL_4:
     _Block_object_dispose(&v17, 8);

@@ -1,19 +1,19 @@
 @interface CRJSContext
 + (id)sharedContext;
-- (CRJSContext)initWithVirtualMachine:(id)a3;
-- (id)_cardWithTitle:(id)a3 cardSections:(id)a4 interaction:(id)a5 error:(id *)a6;
-- (void)_createCard:(id)a3 completionHandler:(id)a4;
-- (void)evaluateScript:(id)a3 completionHandler:(id)a4;
+- (CRJSContext)initWithVirtualMachine:(id)machine;
+- (id)_cardWithTitle:(id)title cardSections:(id)sections interaction:(id)interaction error:(id *)error;
+- (void)_createCard:(id)card completionHandler:(id)handler;
+- (void)evaluateScript:(id)script completionHandler:(id)handler;
 @end
 
 @implementation CRJSContext
 
-- (CRJSContext)initWithVirtualMachine:(id)a3
+- (CRJSContext)initWithVirtualMachine:(id)machine
 {
-  v4 = a3;
+  machineCopy = machine;
   v26.receiver = self;
   v26.super_class = CRJSContext;
-  v5 = [(CRJSContext *)&v26 initWithVirtualMachine:v4];
+  v5 = [(CRJSContext *)&v26 initWithVirtualMachine:machineCopy];
   if (v5)
   {
     v6 = objc_opt_class();
@@ -95,19 +95,19 @@ void __28__CRJSContext_sharedContext__block_invoke()
   sharedContext_sharedContext = v1;
 }
 
-- (void)evaluateScript:(id)a3 completionHandler:(id)a4
+- (void)evaluateScript:(id)script completionHandler:(id)handler
 {
   v23 = *MEMORY[0x277D85DE8];
-  v6 = a3;
-  v7 = a4;
-  v8 = v7;
-  if (v7)
+  scriptCopy = script;
+  handlerCopy = handler;
+  v8 = handlerCopy;
+  if (handlerCopy)
   {
     v21[0] = MEMORY[0x277D85DD0];
     v21[1] = 3221225472;
     v21[2] = __48__CRJSContext_evaluateScript_completionHandler___block_invoke;
     v21[3] = &unk_278DA59E8;
-    v9 = v7;
+    v9 = handlerCopy;
     v22 = v9;
     [(CRJSContext *)self setExceptionHandler:v21];
     objc_initWeak(&location, self);
@@ -120,7 +120,7 @@ void __28__CRJSContext_sharedContext__block_invoke()
     v10 = MEMORY[0x245D2DFD0](&v14);
     [(CRJSContext *)self setObject:v10 forKeyedSubscript:@"createCard"];
 
-    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"createCard(function() { %@ }())", v6, v14, v15, v16, v17];;
+    v11 = [MEMORY[0x277CCACA8] stringWithFormat:@"createCard(function() { %@ }())", scriptCopy, v14, v15, v16, v17];;
     v12 = [(CRJSContext *)self evaluateScript:v11];
 
     objc_destroyWeak(&v19);
@@ -151,46 +151,46 @@ void __48__CRJSContext_evaluateScript_completionHandler___block_invoke_2(uint64_
   [WeakRetained _createCard:v3 completionHandler:*(a1 + 32)];
 }
 
-- (void)_createCard:(id)a3 completionHandler:(id)a4
+- (void)_createCard:(id)card completionHandler:(id)handler
 {
-  v6 = a3;
-  v7 = a4;
-  v8 = [v6 valueForProperty:@"sash"];
+  cardCopy = card;
+  handlerCopy = handler;
+  v8 = [cardCopy valueForProperty:@"sash"];
   v9 = [v8 valueForProperty:@"applicationBundleIdentifier"];
   v10 = [v8 valueForProperty:@"title"];
-  v11 = [v6 valueForProperty:@"cardSections"];
-  v12 = [v11 toArray];
+  v11 = [cardCopy valueForProperty:@"cardSections"];
+  toArray = [v11 toArray];
 
   if ([v9 isUndefined])
   {
-    v13 = 0;
+    toString = 0;
   }
 
   else
   {
-    v13 = [v9 toString];
+    toString = [v9 toString];
   }
 
   if ([v10 isUndefined])
   {
-    v14 = 0;
+    toString2 = 0;
   }
 
   else
   {
-    v14 = [v10 toString];
+    toString2 = [v10 toString];
   }
 
-  v23 = v6;
-  v15 = [v6 valueForProperty:@"interaction"];
-  v16 = [v15 toDictionary];
+  v23 = cardCopy;
+  v15 = [cardCopy valueForProperty:@"interaction"];
+  toDictionary = [v15 toDictionary];
 
   v24 = 0;
-  v17 = [(CRJSContext *)self _cardWithTitle:v14 cardSections:v12 interaction:v16 error:&v24];
+  v17 = [(CRJSContext *)self _cardWithTitle:toString2 cardSections:toArray interaction:toDictionary error:&v24];
   v18 = v24;
   if (v18)
   {
-    (*(v7 + 2))(v7, 0, 0, 0, v18);
+    (*(handlerCopy + 2))(handlerCopy, 0, 0, 0, v18);
   }
 
   else
@@ -199,7 +199,7 @@ void __48__CRJSContext_evaluateScript_completionHandler___block_invoke_2(uint64_
     v22 = v8;
     v19 = v10;
     v21 = v20 = v9;
-    (*(v7 + 2))(v7, v13, v14, v21, 0);
+    (*(handlerCopy + 2))(handlerCopy, toString, toString2, v21, 0);
 
     v9 = v20;
     v10 = v19;
@@ -207,29 +207,29 @@ void __48__CRJSContext_evaluateScript_completionHandler___block_invoke_2(uint64_
   }
 }
 
-- (id)_cardWithTitle:(id)a3 cardSections:(id)a4 interaction:(id)a5 error:(id *)a6
+- (id)_cardWithTitle:(id)title cardSections:(id)sections interaction:(id)interaction error:(id *)error
 {
   v59 = *MEMORY[0x277D85DE8];
-  v51 = a3;
-  v9 = a4;
-  v10 = a5;
-  if (![v9 count])
+  titleCopy = title;
+  sectionsCopy = sections;
+  interactionCopy = interaction;
+  if (![sectionsCopy count])
   {
     v28 = 0;
     goto LABEL_29;
   }
 
-  v49 = a6;
-  v44 = [v10 objectForKeyedSubscript:@"intent"];
-  v41 = v10;
-  v43 = [v10 objectForKeyedSubscript:@"intentResponse"];
-  v50 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(v9, "count")}];
+  errorCopy = error;
+  v44 = [interactionCopy objectForKeyedSubscript:@"intent"];
+  v41 = interactionCopy;
+  v43 = [interactionCopy objectForKeyedSubscript:@"intentResponse"];
+  v50 = [MEMORY[0x277CBEB18] arrayWithCapacity:{objc_msgSend(sectionsCopy, "count")}];
   v52 = 0u;
   v53 = 0u;
   v54 = 0u;
   v55 = 0u;
-  v42 = v9;
-  obj = v9;
+  v42 = sectionsCopy;
+  obj = sectionsCopy;
   v47 = [obj countByEnumeratingWithState:&v52 objects:v58 count:16];
   if (v47)
   {
@@ -253,7 +253,7 @@ LABEL_4:
       }
 
       v15 = [v13 objectForKeyedSubscript:@"_type"];
-      v16 = [v15 integerValue];
+      integerValue = [v15 integerValue];
 
       v17 = [v13 objectForKeyedSubscript:@"_value"];
       v18 = [v13 objectForKeyedSubscript:@"nextCard"];
@@ -286,14 +286,14 @@ LABEL_4:
       NSSelectorFromString(v17);
       if (objc_opt_respondsToSelector())
       {
-        v25 = [v14 backingObject];
-        [v24 setValue:v25 forKey:v17];
+        backingObject = [v14 backingObject];
+        [v24 setValue:backingObject forKey:v17];
       }
 
       v26 = objc_alloc_init(MEMORY[0x277D4C730]);
-      [v26 setType:v16];
+      [v26 setType:integerValue];
       [v26 setValue:v24];
-      v27 = [(CRJSContext *)self _cardWithTitle:v51 cardSections:v20 interaction:v23 error:v49];
+      v27 = [(CRJSContext *)self _cardWithTitle:titleCopy cardSections:v20 interaction:v23 error:errorCopy];
       [v26 setNextCard:v27];
 
       [v50 addObject:v26];
@@ -311,20 +311,20 @@ LABEL_4:
       }
     }
 
-    if (v49)
+    if (errorCopy)
     {
       v38 = MEMORY[0x277CCA9B8];
       v56 = *MEMORY[0x277CCA450];
       v57 = @"Unable to create card";
-      v36 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
-      [v38 errorWithDomain:@"CRJSContextErrorDomain" code:1 userInfo:v36];
-      *v49 = v28 = 0;
+      backingObject3 = [MEMORY[0x277CBEAC0] dictionaryWithObjects:&v57 forKeys:&v56 count:1];
+      [v38 errorWithDomain:@"CRJSContextErrorDomain" code:1 userInfo:backingObject3];
+      *errorCopy = v28 = 0;
       goto LABEL_24;
     }
 
     v28 = 0;
-    v10 = v41;
-    v9 = v42;
+    interactionCopy = v41;
+    sectionsCopy = v42;
   }
 
   else
@@ -332,38 +332,38 @@ LABEL_4:
 LABEL_18:
 
     v28 = objc_alloc_init(MEMORY[0x277D4C728]);
-    [v28 setTitle:v51];
+    [v28 setTitle:titleCopy];
     [v28 setCardSections:v50];
     v29 = v44;
     if (v44)
     {
       v30 = [v44 objectForKeyedSubscript:@"_backingObject"];
       v31 = [v44 objectForKeyedSubscript:@"_type"];
-      v32 = [v30 backingObject];
+      backingObject2 = [v30 backingObject];
       [v28 setIntentMessageName:v31];
-      v33 = [v32 data];
-      [v28 setIntentMessageData:v33];
+      data = [backingObject2 data];
+      [v28 setIntentMessageData:data];
     }
 
     v34 = v43;
     if (!v43)
     {
-      v10 = v41;
-      v9 = v42;
+      interactionCopy = v41;
+      sectionsCopy = v42;
       goto LABEL_28;
     }
 
     v35 = [v43 objectForKeyedSubscript:@"_backingObject"];
     v14 = [v43 objectForKeyedSubscript:@"_type"];
     obj = v35;
-    v36 = [v35 backingObject];
+    backingObject3 = [v35 backingObject];
     [v28 setIntentResponseMessageName:v14];
-    v37 = [v36 data];
-    [v28 setIntentResponseMessageData:v37];
+    data2 = [backingObject3 data];
+    [v28 setIntentResponseMessageData:data2];
 
 LABEL_24:
-    v10 = v41;
-    v9 = v42;
+    interactionCopy = v41;
+    sectionsCopy = v42;
   }
 
   v34 = v43;

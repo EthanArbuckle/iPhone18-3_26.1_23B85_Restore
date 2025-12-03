@@ -5,32 +5,32 @@
 + (void)_findDomainSpecification;
 + (void)startViewServiceDomain;
 - (FBSWorkspace)init;
-- (FBSWorkspace)initWithSerialQueue:(id)a3;
+- (FBSWorkspace)initWithSerialQueue:(id)queue;
 - (NSArray)scenes;
-- (id)_initWithCoupler:(id)a3 options:(id)a4;
-- (id)_queue_scenesClientForEndpoint:(int)a3 creatingIfNecessary:;
+- (id)_initWithCoupler:(id)coupler options:(id)options;
+- (id)_queue_scenesClientForEndpoint:(int)endpoint creatingIfNecessary:;
 - (id)defaultService;
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3;
-- (id)descriptionWithMultilinePrefix:(id)a3;
-- (id)pseudoSceneWithIdentifier:(id)a3 specification:(id)a4;
-- (id)sceneWithIdentifier:(id)a3;
-- (id)serviceForEndpoint:(id)a3 withIdentifier:(id)a4;
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix;
+- (id)descriptionWithMultilinePrefix:(id)prefix;
+- (id)pseudoSceneWithIdentifier:(id)identifier specification:(id)specification;
+- (id)sceneWithIdentifier:(id)identifier;
+- (id)serviceForEndpoint:(id)endpoint withIdentifier:(id)identifier;
 - (id)succinctDescription;
-- (void)_calloutQueue_executeCalloutFromSource:(id)a3 withBlock:(id)a4;
-- (void)_invalidateWithCompletion:(id)a3;
-- (void)_queue_registerSource:(id)a3;
-- (void)_queue_unregisterSource:(id)a3;
-- (void)_registerSource:(id)a3;
-- (void)_registerSourceEndpoint:(id)a3;
-- (void)_registerSourcePeer:(id)a3;
-- (void)_scenesClientForEndpoint:(void *)a1;
+- (void)_calloutQueue_executeCalloutFromSource:(id)source withBlock:(id)block;
+- (void)_invalidateWithCompletion:(id)completion;
+- (void)_queue_registerSource:(id)source;
+- (void)_queue_unregisterSource:(id)source;
+- (void)_registerSource:(id)source;
+- (void)_registerSourceEndpoint:(id)endpoint;
+- (void)_registerSourcePeer:(id)peer;
+- (void)_scenesClientForEndpoint:(void *)endpoint;
 - (void)dealloc;
-- (void)enumerateScenesWithBlock:(id)a3;
-- (void)monitor:(id)a3 willLoseEndpoint:(id)a4;
-- (void)requestDestructionOfScene:(id)a3 withCompletion:(id)a4;
-- (void)requestSceneCreationWithIdentifier:(id)a3 initialClientSettings:(id)a4 completion:(id)a5;
-- (void)requestSceneCreationWithInitialClientSettings:(id)a3 completion:(id)a4;
-- (void)requestSceneFromEndpoint:(id)a3 withOptions:(id)a4 completion:(id)a5;
+- (void)enumerateScenesWithBlock:(id)block;
+- (void)monitor:(id)monitor willLoseEndpoint:(id)endpoint;
+- (void)requestDestructionOfScene:(id)scene withCompletion:(id)completion;
+- (void)requestSceneCreationWithIdentifier:(id)identifier initialClientSettings:(id)settings completion:(id)completion;
+- (void)requestSceneCreationWithInitialClientSettings:(id)settings completion:(id)completion;
+- (void)requestSceneFromEndpoint:(id)endpoint withOptions:(id)options completion:(id)completion;
 @end
 
 @implementation FBSWorkspace
@@ -72,8 +72,8 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
 + (id)_findDomainSpecification
 {
   v2 = +[FBSWorkspaceServiceSpecification identifier];
-  v3 = [off_1E76BCA60 bootstrapConfiguration];
-  v4 = [v3 domainsContainingServiceIdentifier:v2];
+  bootstrapConfiguration = [off_1E76BCA60 bootstrapConfiguration];
+  v4 = [bootstrapConfiguration domainsContainingServiceIdentifier:v2];
   if ([v4 count])
   {
     if ([v4 count] != 1)
@@ -88,22 +88,22 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
       _bs_set_crash_log_message();
     }
 
-    v5 = [v4 anyObject];
+    anyObject = [v4 anyObject];
   }
 
   else
   {
-    v5 = 0;
+    anyObject = 0;
   }
 
-  v6 = [off_1E76BC9E0 environmentAliases];
-  v7 = [off_1E76BCA30 defaultShellMachName];
-  v8 = [v6 resolveMachService:v7];
+  environmentAliases = [off_1E76BC9E0 environmentAliases];
+  defaultShellMachName = [off_1E76BCA30 defaultShellMachName];
+  v8 = [environmentAliases resolveMachService:defaultShellMachName];
 
-  v9 = [v3 domainForMachName:v8];
+  v9 = [bootstrapConfiguration domainForMachName:v8];
   if (v9)
   {
-    v10 = v9 == v5;
+    v10 = v9 == anyObject;
   }
 
   else
@@ -123,10 +123,10 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
     _bs_set_crash_log_message();
   }
 
-  if (!v5)
+  if (!anyObject)
   {
-    v11 = [off_1E76BCA60 viewServiceConfiguration];
-    v12 = [v11 domainsContainingServiceIdentifier:v2];
+    viewServiceConfiguration = [off_1E76BCA60 viewServiceConfiguration];
+    v12 = [viewServiceConfiguration domainsContainingServiceIdentifier:v2];
     if ([v12 count])
     {
       if ([v12 count] != 1)
@@ -141,16 +141,16 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
         _bs_set_crash_log_message();
       }
 
-      v5 = [v12 anyObject];
+      anyObject = [v12 anyObject];
     }
 
     else
     {
-      v5 = 0;
+      anyObject = 0;
     }
   }
 
-  return v5;
+  return anyObject;
 }
 
 + (void)startViewServiceDomain
@@ -158,7 +158,7 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"failed to find workspace-service defining domain"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -177,7 +177,7 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
   v0 = NSClassFromString(&cfstr_Fbworkspacedom.isa);
   if (v0)
   {
-    v1 = [(objc_class *)v0 startWorkspaceDomainListener];
+    startWorkspaceDomainListener = [(objc_class *)v0 startWorkspaceDomainListener];
   }
 
   else
@@ -188,10 +188,10 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
       [(FBSWorkspace *)v2 _startWorkspaceListener:v3];
     }
 
-    v1 = 0;
+    startWorkspaceDomainListener = 0;
   }
 
-  return v1;
+  return startWorkspaceDomainListener;
 }
 
 - (FBSWorkspace)init
@@ -207,7 +207,7 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
     v10 = 2114;
     v11 = v7;
     v12 = 2048;
-    v13 = self;
+    selfCopy = self;
     v14 = 2114;
     v15 = @"FBSWorkspace.m";
     v16 = 1024;
@@ -221,9 +221,9 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
   _bs_set_crash_log_message();
 }
 
-- (FBSWorkspace)initWithSerialQueue:(id)a3
+- (FBSWorkspace)initWithSerialQueue:(id)queue
 {
-  v5 = a3;
+  queueCopy = queue;
   v6 = [MEMORY[0x1E696AEC0] stringWithFormat:@"-initWithQueue: is unavailable on FBSWorkspace"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
@@ -235,7 +235,7 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
     v12 = 2114;
     v13 = v9;
     v14 = 2048;
-    v15 = self;
+    selfCopy = self;
     v16 = 2114;
     v17 = @"FBSWorkspace.m";
     v18 = 1024;
@@ -249,11 +249,11 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
   _bs_set_crash_log_message();
 }
 
-- (id)_initWithCoupler:(id)a3 options:(id)a4
+- (id)_initWithCoupler:(id)coupler options:(id)options
 {
-  v7 = a3;
-  v8 = a4;
-  v9 = v7;
+  couplerCopy = coupler;
+  optionsCopy = options;
+  v9 = couplerCopy;
   if (!v9)
   {
     [FBSWorkspace _initWithCoupler:a2 options:?];
@@ -266,14 +266,14 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
     [(FBSWorkspace *)v10 _initWithCoupler:a2 options:self];
   }
 
-  if (!v8)
+  if (!optionsCopy)
   {
     [FBSWorkspace _initWithCoupler:a2 options:?];
   }
 
-  v11 = [v8 delegate];
+  delegate = [optionsCopy delegate];
 
-  if (!v11)
+  if (!delegate)
   {
     [FBSWorkspace _initWithCoupler:a2 options:?];
   }
@@ -283,9 +283,9 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
   v12 = [(FBSWorkspace *)&v38 init];
   if (v12)
   {
-    v13 = [v8 delegate];
+    delegate2 = [optionsCopy delegate];
     delegate = v12->_delegate;
-    v12->_delegate = v13;
+    v12->_delegate = delegate2;
 
     v15 = objc_alloc_init(MEMORY[0x1E695DF90]);
     queue_identifierToScenesSource = v12->_queue_identifierToScenesSource;
@@ -296,11 +296,11 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
     queue = v12->_queue;
     v12->_queue = v18;
 
-    v20 = [v8 callOutQueue];
-    v21 = v20;
-    if (v20)
+    callOutQueue = [optionsCopy callOutQueue];
+    v21 = callOutQueue;
+    if (callOutQueue)
     {
-      v22 = v20;
+      v22 = callOutQueue;
       callOutQueue = v12->_callOutQueue;
       v12->_callOutQueue = v22;
     }
@@ -322,7 +322,7 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
     v12->_psuedoSceneUpdater = v28;
 
     v12->_isSingleton = [v10 _isSharedInstance];
-    if ([v8 isEndpointMonitoringEnabled])
+    if ([optionsCopy isEndpointMonitoringEnabled])
     {
       v30 = +[FBSWorkspaceServiceSpecification identifier];
       v31 = [off_1E76BCA38 monitorForService:v30];
@@ -343,7 +343,7 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
       }
     }
 
-    if ([v8 isDefaultShellEndpointEnabled])
+    if ([optionsCopy isDefaultShellEndpointEnabled])
     {
       v34 = +[FBSWorkspace defaultShellEndpoint];
       defaultShellEndpoint = v12->_defaultShellEndpoint;
@@ -375,7 +375,7 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
   v2 = [MEMORY[0x1E696AEC0] stringWithFormat:@"must invalidate before dealloc"];
   if (os_log_type_enabled(MEMORY[0x1E69E9C10], OS_LOG_TYPE_ERROR))
   {
-    NSStringFromSelector(a1);
+    NSStringFromSelector(self);
     objc_claimAutoreleasedReturnValue();
     v3 = OUTLINED_FUNCTION_12();
     v4 = NSStringFromClass(v3);
@@ -388,21 +388,21 @@ void __36__FBSWorkspace_defaultShellEndpoint__block_invoke()
   _bs_set_crash_log_message();
 }
 
-- (void)_invalidateWithCompletion:(id)a3
+- (void)_invalidateWithCompletion:(id)completion
 {
   v14 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  completionCopy = completion;
   if (self->_isSingleton)
   {
     [FBSWorkspace _invalidateWithCompletion:a2];
   }
 
-  v6 = v5;
+  v6 = completionCopy;
   v7 = FBLogCommon();
   if (os_log_type_enabled(v7, OS_LOG_TYPE_DEFAULT))
   {
     *buf = 134217984;
-    v13 = self;
+    selfCopy = self;
     _os_log_impl(&dword_1A2DBB000, v7, OS_LOG_TYPE_DEFAULT, "FBSWorkspace:%p invalidating.", buf, 0xCu);
   }
 
@@ -475,19 +475,19 @@ void __42__FBSWorkspace__invalidateWithCompletion___block_invoke(uint64_t a1)
 
 - (id)defaultService
 {
-  v3 = [(FBSWorkspace *)self defaultShellEndpoint];
-  v4 = [(FBSWorkspace *)self serviceForEndpoint:v3 withIdentifier:0];
+  defaultShellEndpoint = [(FBSWorkspace *)self defaultShellEndpoint];
+  v4 = [(FBSWorkspace *)self serviceForEndpoint:defaultShellEndpoint withIdentifier:0];
 
   return v4;
 }
 
-- (id)serviceForEndpoint:(id)a3 withIdentifier:(id)a4
+- (id)serviceForEndpoint:(id)endpoint withIdentifier:(id)identifier
 {
-  v6 = a4;
-  v7 = [(FBSWorkspace *)self _scenesClientForEndpoint:a3];
+  identifierCopy = identifier;
+  v7 = [(FBSWorkspace *)self _scenesClientForEndpoint:endpoint];
   if (v7)
   {
-    v8 = [[FBSWorkspaceService alloc] _initWithTarget:v7 identifier:v6];
+    v8 = [[FBSWorkspaceService alloc] _initWithTarget:v7 identifier:identifierCopy];
   }
 
   else
@@ -498,11 +498,11 @@ void __42__FBSWorkspace__invalidateWithCompletion___block_invoke(uint64_t a1)
   return v8;
 }
 
-- (void)_scenesClientForEndpoint:(void *)a1
+- (void)_scenesClientForEndpoint:(void *)endpoint
 {
   v3 = a2;
   v4 = v3;
-  if (a1)
+  if (endpoint)
   {
     v11 = 0;
     v12 = &v11;
@@ -512,13 +512,13 @@ void __42__FBSWorkspace__invalidateWithCompletion___block_invoke(uint64_t a1)
     v16 = 0;
     if (v3)
     {
-      v5 = a1[1];
+      v5 = endpoint[1];
       v8[0] = MEMORY[0x1E69E9820];
       v8[1] = 3221225472;
       v8[2] = __41__FBSWorkspace__scenesClientForEndpoint___block_invoke;
       v8[3] = &unk_1E76BDCD8;
       v10 = &v11;
-      v8[4] = a1;
+      v8[4] = endpoint;
       v9 = v3;
       [v5 performAsyncAndWait:v8];
 
@@ -530,23 +530,23 @@ void __42__FBSWorkspace__invalidateWithCompletion___block_invoke(uint64_t a1)
       v6 = 0;
     }
 
-    a1 = v6;
+    endpoint = v6;
     _Block_object_dispose(&v11, 8);
   }
 
-  return a1;
+  return endpoint;
 }
 
-- (void)requestSceneFromEndpoint:(id)a3 withOptions:(id)a4 completion:(id)a5
+- (void)requestSceneFromEndpoint:(id)endpoint withOptions:(id)options completion:(id)completion
 {
-  v8 = a3;
-  v9 = a4;
-  v10 = a5;
-  v11 = [(FBSWorkspace *)self defaultServiceForEndpoint:v8];
+  endpointCopy = endpoint;
+  optionsCopy = options;
+  completionCopy = completion;
+  v11 = [(FBSWorkspace *)self defaultServiceForEndpoint:endpointCopy];
   v12 = v11;
   if (v11)
   {
-    [v11 requestSceneWithOptions:v9 completion:v10];
+    [v11 requestSceneWithOptions:optionsCopy completion:completionCopy];
   }
 
   else
@@ -556,8 +556,8 @@ void __42__FBSWorkspace__invalidateWithCompletion___block_invoke(uint64_t a1)
     v14[1] = 3221225472;
     v14[2] = __64__FBSWorkspace_requestSceneFromEndpoint_withOptions_completion___block_invoke;
     v14[3] = &unk_1E76BD750;
-    v16 = v10;
-    v15 = v8;
+    v16 = completionCopy;
+    v15 = endpointCopy;
     [(BSServiceQueue *)callOutQueue performAsync:v14];
   }
 }
@@ -571,14 +571,14 @@ void __64__FBSWorkspace_requestSceneFromEndpoint_withOptions_completion___block_
 
 - (NSArray)scenes
 {
-  v3 = [MEMORY[0x1E695DF70] array];
+  array = [MEMORY[0x1E695DF70] array];
   queue = self->_queue;
   v9[0] = MEMORY[0x1E69E9820];
   v9[1] = 3221225472;
   v9[2] = __22__FBSWorkspace_scenes__block_invoke;
   v9[3] = &unk_1E76BCD60;
   v9[4] = self;
-  v5 = v3;
+  v5 = array;
   v10 = v5;
   [(BSServiceDispatchQueue *)queue performAsyncAndWait:v9];
   v6 = v10;
@@ -606,18 +606,18 @@ void __22__FBSWorkspace_scenes__block_invoke_2(uint64_t a1, uint64_t a2, void *a
   [v3 addObjectsFromArray:v4];
 }
 
-- (id)sceneWithIdentifier:(id)a3
+- (id)sceneWithIdentifier:(id)identifier
 {
-  v4 = a3;
+  identifierCopy = identifier;
   v17 = 0;
   v18 = &v17;
   v19 = 0x3032000000;
   v20 = __Block_byref_object_copy__3;
   v21 = __Block_byref_object_dispose__3;
   v22 = 0;
-  v5 = [MEMORY[0x1E696AF00] currentThread];
-  v6 = [v5 threadDictionary];
-  v7 = [v6 objectForKey:@"FBSWorkspaceCalloutScenesSourceKey"];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
+  v7 = [threadDictionary objectForKey:@"FBSWorkspaceCalloutScenesSourceKey"];
 
   queue = self->_queue;
   v13[0] = MEMORY[0x1E69E9820];
@@ -626,7 +626,7 @@ void __22__FBSWorkspace_scenes__block_invoke_2(uint64_t a1, uint64_t a2, void *a
   v13[3] = &unk_1E76BDC20;
   v9 = v7;
   v14 = v9;
-  v10 = v4;
+  v10 = identifierCopy;
   v15 = v10;
   v16 = &v17;
   [(BSServiceDispatchQueue *)queue performAsyncAndWait:v13];
@@ -686,35 +686,35 @@ LABEL_12:
   }
 }
 
-- (void)enumerateScenesWithBlock:(id)a3
+- (void)enumerateScenesWithBlock:(id)block
 {
-  v4 = a3;
-  if (v4)
+  blockCopy = block;
+  if (blockCopy)
   {
-    v5 = [(FBSWorkspace *)self scenes];
+    scenes = [(FBSWorkspace *)self scenes];
     v6[0] = MEMORY[0x1E69E9820];
     v6[1] = 3221225472;
     v6[2] = __41__FBSWorkspace_enumerateScenesWithBlock___block_invoke;
     v6[3] = &unk_1E76BDC48;
-    v7 = v4;
-    [v5 enumerateObjectsUsingBlock:v6];
+    v7 = blockCopy;
+    [scenes enumerateObjectsUsingBlock:v6];
   }
 }
 
-- (void)requestSceneCreationWithInitialClientSettings:(id)a3 completion:(id)a4
+- (void)requestSceneCreationWithInitialClientSettings:(id)settings completion:(id)completion
 {
-  v6 = a4;
-  v7 = a3;
+  completionCopy = completion;
+  settingsCopy = settings;
   v8 = objc_opt_new();
-  [v8 setInitialClientSettings:v7];
+  [v8 setInitialClientSettings:settingsCopy];
 
   defaultShellEndpoint = self->_defaultShellEndpoint;
   v11[0] = MEMORY[0x1E69E9820];
   v11[1] = 3221225472;
   v11[2] = __73__FBSWorkspace_requestSceneCreationWithInitialClientSettings_completion___block_invoke;
   v11[3] = &unk_1E76BDC70;
-  v12 = v6;
-  v10 = v6;
+  v12 = completionCopy;
+  v10 = completionCopy;
   [(FBSWorkspace *)self requestSceneFromEndpoint:defaultShellEndpoint withOptions:v8 completion:v11];
 }
 
@@ -729,22 +729,22 @@ uint64_t __73__FBSWorkspace_requestSceneCreationWithInitialClientSettings_comple
   return result;
 }
 
-- (void)requestSceneCreationWithIdentifier:(id)a3 initialClientSettings:(id)a4 completion:(id)a5
+- (void)requestSceneCreationWithIdentifier:(id)identifier initialClientSettings:(id)settings completion:(id)completion
 {
-  v8 = a5;
-  v9 = a4;
-  v10 = a3;
+  completionCopy = completion;
+  settingsCopy = settings;
+  identifierCopy = identifier;
   v11 = objc_opt_new();
-  [v11 setIdentifier:v10];
+  [v11 setIdentifier:identifierCopy];
 
-  [v11 setInitialClientSettings:v9];
+  [v11 setInitialClientSettings:settingsCopy];
   defaultShellEndpoint = self->_defaultShellEndpoint;
   v14[0] = MEMORY[0x1E69E9820];
   v14[1] = 3221225472;
   v14[2] = __84__FBSWorkspace_requestSceneCreationWithIdentifier_initialClientSettings_completion___block_invoke;
   v14[3] = &unk_1E76BDC70;
-  v15 = v8;
-  v13 = v8;
+  v15 = completionCopy;
+  v13 = completionCopy;
   [(FBSWorkspace *)self requestSceneFromEndpoint:defaultShellEndpoint withOptions:v11 completion:v14];
 }
 
@@ -759,45 +759,45 @@ uint64_t __84__FBSWorkspace_requestSceneCreationWithIdentifier_initialClientSett
   return result;
 }
 
-- (void)requestDestructionOfScene:(id)a3 withCompletion:(id)a4
+- (void)requestDestructionOfScene:(id)scene withCompletion:(id)completion
 {
-  v5 = a4;
-  v6 = v5;
-  if (v5)
+  completionCopy = completion;
+  v6 = completionCopy;
+  if (completionCopy)
   {
     callOutQueue = self->_callOutQueue;
     v8[0] = MEMORY[0x1E69E9820];
     v8[1] = 3221225472;
     v8[2] = __57__FBSWorkspace_requestDestructionOfScene_withCompletion___block_invoke;
     v8[3] = &unk_1E76BD318;
-    v9 = v5;
+    v9 = completionCopy;
     [(BSServiceQueue *)callOutQueue performAsync:v8];
   }
 }
 
-- (void)_registerSourceEndpoint:(id)a3
+- (void)_registerSourceEndpoint:(id)endpoint
 {
-  v5 = a3;
-  if (!v5)
+  endpointCopy = endpoint;
+  if (!endpointCopy)
   {
     [FBSWorkspace _registerSourceEndpoint:a2];
   }
 
-  v7 = v5;
-  v6 = [(FBSWorkspace *)self _scenesClientForEndpoint:v5];
+  v7 = endpointCopy;
+  v6 = [(FBSWorkspace *)self _scenesClientForEndpoint:endpointCopy];
 }
 
-- (void)_registerSourcePeer:(id)a3
+- (void)_registerSourcePeer:(id)peer
 {
-  v4 = a3;
+  peerCopy = peer;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __36__FBSWorkspace__registerSourcePeer___block_invoke;
   v7[3] = &unk_1E76BCD60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = peerCopy;
+  v6 = peerCopy;
   [(BSServiceDispatchQueue *)queue performAsyncAndWait:v7];
 }
 
@@ -856,17 +856,17 @@ void __36__FBSWorkspace__registerSourcePeer___block_invoke(uint64_t a1)
   }
 }
 
-- (void)_registerSource:(id)a3
+- (void)_registerSource:(id)source
 {
-  v4 = a3;
+  sourceCopy = source;
   queue = self->_queue;
   v7[0] = MEMORY[0x1E69E9820];
   v7[1] = 3221225472;
   v7[2] = __32__FBSWorkspace__registerSource___block_invoke;
   v7[3] = &unk_1E76BCD60;
   v7[4] = self;
-  v8 = v4;
-  v6 = v4;
+  v8 = sourceCopy;
+  v6 = sourceCopy;
   [(BSServiceDispatchQueue *)queue performAsyncAndWait:v7];
 }
 
@@ -894,26 +894,26 @@ void __32__FBSWorkspace__registerSource___block_invoke(uint64_t a1)
   }
 }
 
-- (id)pseudoSceneWithIdentifier:(id)a3 specification:(id)a4
+- (id)pseudoSceneWithIdentifier:(id)identifier specification:(id)specification
 {
-  v7 = a3;
-  v8 = a4;
-  if (!v7)
+  identifierCopy = identifier;
+  specificationCopy = specification;
+  if (!identifierCopy)
   {
     [FBSWorkspace pseudoSceneWithIdentifier:a2 specification:?];
   }
 
-  v9 = v8;
-  if (!v8)
+  v9 = specificationCopy;
+  if (!specificationCopy)
   {
     [FBSWorkspace pseudoSceneWithIdentifier:a2 specification:?];
   }
 
-  v10 = [MEMORY[0x1E696AEC0] stringWithFormat:@"PseudoScene:%@", v7];
+  identifierCopy = [MEMORY[0x1E696AEC0] stringWithFormat:@"PseudoScene:%@", identifierCopy];
   v11 = [FBSScene alloc];
   psuedoSceneUpdater = self->_psuedoSceneUpdater;
-  v13 = [FBSSceneIdentityToken pseudoTokenWithIdentifier:v10];
-  v14 = [FBSSceneIdentity identityForIdentifier:v10];
+  v13 = [FBSSceneIdentityToken pseudoTokenWithIdentifier:identifierCopy];
+  v14 = [FBSSceneIdentity identityForIdentifier:identifierCopy];
   v15 = [FBSSceneParameters parametersForSpecification:v9];
   v16 = +[FBSSceneHostHandle localHandle];
   v17 = [(FBSScene *)v11 _initWithUpdater:psuedoSceneUpdater identityToken:v13 identity:v14 parameters:v15 hostHandle:v16];
@@ -921,10 +921,10 @@ void __32__FBSWorkspace__registerSource___block_invoke(uint64_t a1)
   return v17;
 }
 
-- (void)_queue_registerSource:(id)a3
+- (void)_queue_registerSource:(id)source
 {
   v12 = *MEMORY[0x1E69E9840];
-  v5 = a3;
+  sourceCopy = source;
   [(BSServiceDispatchQueue *)self->_queue assertBarrierOnQueue];
   if (self->_queue_invalidated)
   {
@@ -934,104 +934,104 @@ void __32__FBSWorkspace__registerSource___block_invoke(uint64_t a1)
   v6 = FBLogCommon();
   if (os_log_type_enabled(v6, OS_LOG_TYPE_DEFAULT))
   {
-    v7 = [v5 identifier];
+    identifier = [sourceCopy identifier];
     v10 = 138412290;
-    v11 = v7;
+    v11 = identifier;
     _os_log_impl(&dword_1A2DBB000, v6, OS_LOG_TYPE_DEFAULT, "FBSWorkspace registering source: %@", &v10, 0xCu);
   }
 
   queue_identifierToScenesSource = self->_queue_identifierToScenesSource;
-  v9 = [v5 identifier];
-  [(NSMutableDictionary *)queue_identifierToScenesSource setObject:v5 forKey:v9];
+  identifier2 = [sourceCopy identifier];
+  [(NSMutableDictionary *)queue_identifierToScenesSource setObject:sourceCopy forKey:identifier2];
 }
 
-- (void)_queue_unregisterSource:(id)a3
+- (void)_queue_unregisterSource:(id)source
 {
   v11 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  sourceCopy = source;
   [(BSServiceDispatchQueue *)self->_queue assertBarrierOnQueue];
   v5 = FBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
-    v6 = [v4 identifier];
+    identifier = [sourceCopy identifier];
     v9 = 138412290;
-    v10 = v6;
+    v10 = identifier;
     _os_log_impl(&dword_1A2DBB000, v5, OS_LOG_TYPE_DEFAULT, "FBSWorkspace unregistering source: %@", &v9, 0xCu);
   }
 
   queue_identifierToScenesSource = self->_queue_identifierToScenesSource;
-  v8 = [v4 identifier];
-  [(NSMutableDictionary *)queue_identifierToScenesSource removeObjectForKey:v8];
+  identifier2 = [sourceCopy identifier];
+  [(NSMutableDictionary *)queue_identifierToScenesSource removeObjectForKey:identifier2];
 }
 
-- (void)_calloutQueue_executeCalloutFromSource:(id)a3 withBlock:(id)a4
+- (void)_calloutQueue_executeCalloutFromSource:(id)source withBlock:(id)block
 {
-  v13 = a3;
-  v7 = a4;
-  if (!v7)
+  sourceCopy = source;
+  blockCopy = block;
+  if (!blockCopy)
   {
     [FBSWorkspace _calloutQueue_executeCalloutFromSource:a2 withBlock:?];
   }
 
-  v8 = v7;
+  v8 = blockCopy;
   [(BSServiceQueue *)self->_callOutQueue assertBarrierOnQueue];
-  v9 = [MEMORY[0x1E696AF00] currentThread];
-  v10 = [v9 threadDictionary];
+  currentThread = [MEMORY[0x1E696AF00] currentThread];
+  threadDictionary = [currentThread threadDictionary];
 
-  v11 = [v10 objectForKey:@"FBSWorkspaceCalloutScenesSourceKey"];
-  [v10 setObject:v13 forKey:@"FBSWorkspaceCalloutScenesSourceKey"];
+  v11 = [threadDictionary objectForKey:@"FBSWorkspaceCalloutScenesSourceKey"];
+  [threadDictionary setObject:sourceCopy forKey:@"FBSWorkspaceCalloutScenesSourceKey"];
   v12 = objc_autoreleasePoolPush();
   v8[2](v8);
   objc_autoreleasePoolPop(v12);
   if (v11)
   {
-    [v10 setObject:v11 forKey:@"FBSWorkspaceCalloutScenesSourceKey"];
+    [threadDictionary setObject:v11 forKey:@"FBSWorkspaceCalloutScenesSourceKey"];
   }
 
   else
   {
-    [v10 removeObjectForKey:@"FBSWorkspaceCalloutScenesSourceKey"];
+    [threadDictionary removeObjectForKey:@"FBSWorkspaceCalloutScenesSourceKey"];
   }
 }
 
-- (void)monitor:(id)a3 willLoseEndpoint:(id)a4
+- (void)monitor:(id)monitor willLoseEndpoint:(id)endpoint
 {
   v8 = *MEMORY[0x1E69E9840];
-  v4 = a4;
+  endpointCopy = endpoint;
   v5 = FBLogCommon();
   if (os_log_type_enabled(v5, OS_LOG_TYPE_DEFAULT))
   {
     v6 = 138412290;
-    v7 = v4;
+    v7 = endpointCopy;
     _os_log_impl(&dword_1A2DBB000, v5, OS_LOG_TYPE_DEFAULT, "FBSWorkspace lost endpoint : %@", &v6, 0xCu);
   }
 }
 
-- (id)descriptionWithMultilinePrefix:(id)a3
+- (id)descriptionWithMultilinePrefix:(id)prefix
 {
-  v3 = [(FBSWorkspace *)self descriptionBuilderWithMultilinePrefix:a3];
-  v4 = [v3 build];
+  v3 = [(FBSWorkspace *)self descriptionBuilderWithMultilinePrefix:prefix];
+  build = [v3 build];
 
-  return v4;
+  return build;
 }
 
-- (id)descriptionBuilderWithMultilinePrefix:(id)a3
+- (id)descriptionBuilderWithMultilinePrefix:(id)prefix
 {
   v37 = *MEMORY[0x1E69E9840];
-  v4 = a3;
+  prefixCopy = prefix;
   v29 = [off_1E76BC9B0 builderWithObject:self];
-  v5 = [MEMORY[0x1E695DF90] dictionary];
+  dictionary = [MEMORY[0x1E695DF90] dictionary];
   queue = self->_queue;
   v34[0] = MEMORY[0x1E69E9820];
   v34[1] = 3221225472;
   v34[2] = __54__FBSWorkspace_descriptionBuilderWithMultilinePrefix___block_invoke;
   v34[3] = &unk_1E76BCD60;
   v34[4] = self;
-  v7 = v5;
+  v7 = dictionary;
   v35 = v7;
   [(BSServiceDispatchQueue *)queue performAsyncAndWait:v34];
-  v8 = [v7 allKeys];
-  v9 = [v8 sortedArrayUsingComparator:&__block_literal_global_219];
+  allKeys = [v7 allKeys];
+  v9 = [allKeys sortedArrayUsingComparator:&__block_literal_global_219];
 
   v32 = 0u;
   v33 = 0u;
@@ -1043,7 +1043,7 @@ void __32__FBSWorkspace__registerSource___block_invoke(uint64_t a1)
   {
     v11 = v10;
     v12 = *v31;
-    v27 = v4;
+    v27 = prefixCopy;
     do
     {
       for (i = 0; i != v11; ++i)
@@ -1079,34 +1079,34 @@ void __32__FBSWorkspace__registerSource___block_invoke(uint64_t a1)
 
           v19 = v17;
 
-          v20 = [v19 instance];
-          if (v20)
+          instance = [v19 instance];
+          if (instance)
           {
             v21 = MEMORY[0x1E696AEC0];
-            v22 = [v19 targetDescription];
+            targetDescription = [v19 targetDescription];
 
-            v18 = [v21 stringWithFormat:@"%@:%@", v22, v20];
-            v19 = v22;
+            targetDescription2 = [v21 stringWithFormat:@"%@:%@", targetDescription, instance];
+            v19 = targetDescription;
           }
 
           else
           {
-            v18 = [v19 targetDescription];
+            targetDescription2 = [v19 targetDescription];
           }
 
-          v4 = v27;
+          prefixCopy = v27;
         }
 
         else
         {
-          v18 = [v14 description];
+          targetDescription2 = [v14 description];
         }
 
         v23 = [v7 objectForKey:v14];
-        v24 = [v23 allObjects];
-        v25 = [v24 sortedArrayUsingComparator:&__block_literal_global_225];
+        allObjects = [v23 allObjects];
+        v25 = [allObjects sortedArrayUsingComparator:&__block_literal_global_225];
 
-        [v29 appendArraySection:v25 withName:v18 multilinePrefix:v4 skipIfEmpty:0];
+        [v29 appendArraySection:v25 withName:targetDescription2 multilinePrefix:prefixCopy skipIfEmpty:0];
       }
 
       v11 = [obj countByEnumeratingWithState:&v30 objects:v36 count:16];
@@ -1181,10 +1181,10 @@ uint64_t __54__FBSWorkspace_descriptionBuilderWithMultilinePrefix___block_invoke
 
 - (id)succinctDescription
 {
-  v2 = [(FBSWorkspace *)self succinctDescriptionBuilder];
-  v3 = [v2 build];
+  succinctDescriptionBuilder = [(FBSWorkspace *)self succinctDescriptionBuilder];
+  build = [succinctDescriptionBuilder build];
 
-  return v3;
+  return build;
 }
 
 uint64_t __41__FBSWorkspace__scenesClientForEndpoint___block_invoke(uint64_t a1)
@@ -1197,14 +1197,14 @@ uint64_t __41__FBSWorkspace__scenesClientForEndpoint___block_invoke(uint64_t a1)
   return MEMORY[0x1EEE66BB8](v2, v4);
 }
 
-- (id)_queue_scenesClientForEndpoint:(int)a3 creatingIfNecessary:
+- (id)_queue_scenesClientForEndpoint:(int)endpoint creatingIfNecessary:
 {
   v5 = a2;
-  if (a1)
+  if (self)
   {
-    [*(a1 + 8) assertBarrierOnQueue];
+    [*(self + 8) assertBarrierOnQueue];
     v6 = [FBSWorkspaceScenesClient sourceIdentifierForHostEndpoint:v5];
-    v7 = [*(a1 + 48) objectForKey:v6];
+    v7 = [*(self + 48) objectForKey:v6];
     v8 = objc_opt_class();
     v9 = v7;
     if (v8)
@@ -1227,15 +1227,15 @@ uint64_t __41__FBSWorkspace__scenesClientForEndpoint___block_invoke(uint64_t a1)
 
     v11 = v10;
 
-    if (!v11 && a3)
+    if (!v11 && endpoint)
     {
-      if ((*(a1 + 73) & 1) == 0)
+      if ((*(self + 73) & 1) == 0)
       {
-        v12 = [[FBSWorkspaceScenesClient alloc] initWithEndpoint:v5 queue:*(a1 + 8) calloutQueue:*(a1 + 16) workspace:a1];
+        v12 = [[FBSWorkspaceScenesClient alloc] initWithEndpoint:v5 queue:*(self + 8) calloutQueue:*(self + 16) workspace:self];
         if (v12)
         {
           v11 = v12;
-          v21 = [*(a1 + 48) objectForKey:v6];
+          v21 = [*(self + 48) objectForKey:v6];
           v22 = objc_opt_class();
           v23 = v21;
           if (v22)

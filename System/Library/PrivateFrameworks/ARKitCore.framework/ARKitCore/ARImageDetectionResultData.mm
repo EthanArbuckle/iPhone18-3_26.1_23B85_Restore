@@ -1,14 +1,14 @@
 @interface ARImageDetectionResultData
-- (BOOL)isEqual:(id)a3;
+- (BOOL)isEqual:(id)equal;
 - (NSDictionary)tracingEntry;
 - (NSString)description;
-- (id)anchorsForCameraWithTransform:(float32x4_t)a3 referenceOriginTransform:(float32x4_t)a4 existingAnchors:(float32x4_t)a5 anchorsToRemove:(float32x4_t)a6;
-- (id)copyWithZone:(_NSZone *)a3;
+- (id)anchorsForCameraWithTransform:(float32x4_t)transform referenceOriginTransform:(float32x4_t)originTransform existingAnchors:(float32x4_t)anchors anchorsToRemove:(float32x4_t)remove;
+- (id)copyWithZone:(_NSZone *)zone;
 @end
 
 @implementation ARImageDetectionResultData
 
-- (id)anchorsForCameraWithTransform:(float32x4_t)a3 referenceOriginTransform:(float32x4_t)a4 existingAnchors:(float32x4_t)a5 anchorsToRemove:(float32x4_t)a6
+- (id)anchorsForCameraWithTransform:(float32x4_t)transform referenceOriginTransform:(float32x4_t)originTransform existingAnchors:(float32x4_t)anchors anchorsToRemove:(float32x4_t)remove
 {
   v202 = *MEMORY[0x1E69E9840];
   v14 = a11;
@@ -42,8 +42,8 @@
         objc_opt_class();
         if (objc_opt_isKindOfClass())
         {
-          v21 = [v20 identifier];
-          [v153 setObject:v20 forKey:v21];
+          identifier = [v20 identifier];
+          [v153 setObject:v20 forKey:identifier];
         }
       }
 
@@ -60,7 +60,7 @@
   v185 = 0u;
   v186 = 0u;
   v187 = 0u;
-  obj = [a1 detectedImages];
+  obj = [self detectedImages];
   v22 = v153;
   v154 = [obj countByEnumeratingWithState:&v184 objects:v193 count:16];
   if (v154)
@@ -80,9 +80,9 @@
         }
 
         v24 = *(*(&v184 + 1) + 8 * j);
-        v25 = [v24 referenceImage];
-        v26 = [v25 identifier];
-        v27 = [v22 objectForKeyedSubscript:v26];
+        referenceImage = [v24 referenceImage];
+        identifier2 = [referenceImage identifier];
+        v27 = [v22 objectForKeyedSubscript:identifier2];
 
         if (v27)
         {
@@ -91,7 +91,7 @@
 
         else
         {
-          v29 = [a1 detectionOnly];
+          detectionOnly = [self detectionOnly];
           if (ARLinkedOnOrAfterAzulE())
           {
             v30 = 0x1E817A000;
@@ -100,24 +100,24 @@
           else
           {
             v30 = 0x1E817A000uLL;
-            if ([a1 detectionOnly])
+            if ([self detectionOnly])
             {
-              v29 = 1;
+              detectionOnly = 1;
             }
 
             else
             {
-              v29 = [a1 providesWorldTrackingCameraPose];
+              detectionOnly = [self providesWorldTrackingCameraPose];
             }
           }
 
           v31 = objc_alloc(*(v30 + 2128));
-          v32 = [v24 referenceImage];
-          v28 = [v31 initWithReferenceImage:v32 transform:v29 detectionOnly:1 tracked:{*&v144, *&v143, *&v142, *&v141}];
+          referenceImage2 = [v24 referenceImage];
+          v28 = [v31 initWithReferenceImage:referenceImage2 transform:detectionOnly detectionOnly:1 tracked:{*&v144, *&v143, *&v142, *&v141}];
         }
 
-        v33 = [v28 identifier];
-        [v22 removeObjectForKey:v33];
+        identifier3 = [v28 identifier];
+        [v22 removeObjectForKey:identifier3];
 
         *v34.i64 = ARVisionCameraToRenderingCoordinateTransform();
         v171 = v35;
@@ -165,10 +165,10 @@
         v169 = v199;
         v172 = v200;
         v177 = v201;
-        v48 = [a1 detectionOnly];
-        if (!v27 || !v48 || (LODWORD(v49) = anchorsForCameraWithTransform_referenceOriginTransform_existingAnchors_anchorsToRemove__s_percentThreshold, *&anchorsForCameraWithTransform_referenceOriginTransform_existingAnchors_anchorsToRemove__s_percentThreshold <= 0.0))
+        detectionOnly2 = [self detectionOnly];
+        if (!v27 || !detectionOnly2 || (LODWORD(v49) = anchorsForCameraWithTransform_referenceOriginTransform_existingAnchors_anchorsToRemove__s_percentThreshold, *&anchorsForCameraWithTransform_referenceOriginTransform_existingAnchors_anchorsToRemove__s_percentThreshold <= 0.0))
         {
-          if ([a1 providesWorldTrackingCameraPose])
+          if ([self providesWorldTrackingCameraPose])
           {
             [v24 worldTrackingCameraTransformAtDetection];
             v113 = 0;
@@ -182,7 +182,7 @@
             v201 = 0u;
             do
             {
-              *(&v198 + v113) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a6, COERCE_FLOAT(*&buf[v113])), a7, *&buf[v113], 1), a8, *&buf[v113], 2), a9, *&buf[v113], 3);
+              *(&v198 + v113) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(remove, COERCE_FLOAT(*&buf[v113])), a7, *&buf[v113], 1), a8, *&buf[v113], 2), a9, *&buf[v113], 3);
               v113 += 16;
             }
 
@@ -222,7 +222,7 @@
             v201 = 0u;
             do
             {
-              *(&v198 + v123) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*&buf[v123])), a3, *&buf[v123], 1), a4, *&buf[v123], 2), a5, *&buf[v123], 3);
+              *(&v198 + v123) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a2, COERCE_FLOAT(*&buf[v123])), transform, *&buf[v123], 1), originTransform, *&buf[v123], 2), anchors, *&buf[v123], 3);
               v123 += 16;
             }
 
@@ -254,7 +254,7 @@ LABEL_54:
         v201 = 0u;
         do
         {
-          *(&v198 + v50) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(a6, COERCE_FLOAT(*&buf[v50])), a7, *&buf[v50], 1), a8, *&buf[v50], 2), a9, *&buf[v50], 3);
+          *(&v198 + v50) = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(remove, COERCE_FLOAT(*&buf[v50])), a7, *&buf[v50], 1), a8, *&buf[v50], 2), a9, *&buf[v50], 3);
           v50 += 16;
         }
 
@@ -288,12 +288,12 @@ LABEL_54:
         v167 = v198;
         v160 = v201;
         v162 = v200;
-        v60 = [v27 referenceImage];
-        [v60 physicalSize];
+        referenceImage3 = [v27 referenceImage];
+        [referenceImage3 physicalSize];
         v62 = v61;
 
-        v63 = [v27 referenceImage];
-        [v63 physicalSize];
+        referenceImage4 = [v27 referenceImage];
+        [referenceImage4 physicalSize];
         v65 = v64;
 
         v66 = 0;
@@ -324,20 +324,20 @@ LABEL_54:
           v79 = vmlaq_laneq_f32(vmlaq_laneq_f32(vmlaq_lane_f32(vmulq_n_f32(v167, v76.f32[0]), v164, *v76.f32, 1), v162, v76, 2), v160, v76, 3);
           v173 = *&v78;
           *&v178 = vdivq_f32(v79, vdupq_laneq_s32(v79, 3)).u64[0];
-          v80 = [a1 currentCamera];
-          v81 = [a1 currentCamera];
-          [v81 imageResolution];
-          [v80 projectPoint:3 orientation:v173 viewportSize:{v82, v83}];
+          currentCamera = [self currentCamera];
+          currentCamera2 = [self currentCamera];
+          [currentCamera2 imageResolution];
+          [currentCamera projectPoint:3 orientation:v173 viewportSize:{v82, v83}];
           v170 = v85;
           v174 = v84;
 
           v86.f64[0] = v174;
           v86.f64[1] = v170;
           v87 = vcvt_f32_f64(v86);
-          v88 = [a1 currentCamera];
-          v89 = [a1 currentCamera];
-          [v89 imageResolution];
-          [v88 projectPoint:3 orientation:v178 viewportSize:{v90, v91}];
+          currentCamera3 = [self currentCamera];
+          currentCamera4 = [self currentCamera];
+          [currentCamera4 imageResolution];
+          [currentCamera3 projectPoint:3 orientation:v178 viewportSize:{v90, v91}];
           v175 = v93;
           v179 = v92;
 
@@ -349,12 +349,12 @@ LABEL_54:
         }
 
         while (v66 != 64);
-        v95 = [a1 currentCamera];
-        [v95 imageResolution];
+        currentCamera5 = [self currentCamera];
+        [currentCamera5 imageResolution];
         v97 = v96;
 
-        v98 = [a1 currentCamera];
-        [v98 imageResolution];
+        currentCamera6 = [self currentCamera];
+        [currentCamera6 imageResolution];
         v100 = v99;
 
         if (v97 >= v100)
@@ -381,7 +381,7 @@ LABEL_54:
             *buf = 138544130;
             *&buf[4] = v107;
             *&buf[12] = 2048;
-            *&buf[14] = a1;
+            *&buf[14] = self;
             *&buf[22] = 2048;
             *&buf[24] = v75;
             LOWORD(v196) = 2048;
@@ -404,7 +404,7 @@ LABEL_54:
           *buf = 138543618;
           *&buf[4] = v125;
           *&buf[12] = 2048;
-          *&buf[14] = a1;
+          *&buf[14] = self;
           _os_log_impl(&dword_1C241C000, v104, OS_LOG_TYPE_DEBUG, "%{public}@ <%p>: Did not update transform of image anchor", buf, 0x16u);
         }
 
@@ -421,8 +421,8 @@ LABEL_58:
   v183 = 0u;
   v180 = 0u;
   v181 = 0u;
-  v126 = [v22 allValues];
-  v127 = [v126 countByEnumeratingWithState:&v180 objects:v192 count:16];
+  allValues = [v22 allValues];
+  v127 = [allValues countByEnumeratingWithState:&v180 objects:v192 count:16];
   v128 = v135;
   if (v127)
   {
@@ -434,7 +434,7 @@ LABEL_58:
       {
         if (*v181 != v130)
         {
-          objc_enumerationMutation(v126);
+          objc_enumerationMutation(allValues);
         }
 
         v132 = *(*(&v180 + 1) + 8 * k);
@@ -445,7 +445,7 @@ LABEL_58:
         }
       }
 
-      v129 = [v126 countByEnumeratingWithState:&v180 objects:v192 count:16];
+      v129 = [allValues countByEnumeratingWithState:&v180 objects:v192 count:16];
     }
 
     while (v129);
@@ -471,18 +471,18 @@ float __117__ARImageDetectionResultData_anchorsForCameraWithTransform_referenceO
   return result;
 }
 
-- (id)copyWithZone:(_NSZone *)a3
+- (id)copyWithZone:(_NSZone *)zone
 {
-  v5 = [objc_opt_class() allocWithZone:a3];
-  v6 = [(ARImageDetectionResultData *)self detectedImages];
-  v7 = [v6 copyWithZone:a3];
+  v5 = [objc_opt_class() allocWithZone:zone];
+  detectedImages = [(ARImageDetectionResultData *)self detectedImages];
+  v7 = [detectedImages copyWithZone:zone];
   v8 = *(v5 + 32);
   *(v5 + 32) = v7;
 
   *(v5 + 10) = [(ARImageDetectionResultData *)self providesWorldTrackingCameraPose];
   *(v5 + 8) = [(ARImageDetectionResultData *)self detectionOnly];
-  v9 = [(ARImageDetectionResultData *)self currentCamera];
-  v10 = [v9 copyWithZone:a3];
+  currentCamera = [(ARImageDetectionResultData *)self currentCamera];
+  v10 = [currentCamera copyWithZone:zone];
   v11 = *(v5 + 24);
   *(v5 + 24) = v10;
 
@@ -491,20 +491,20 @@ float __117__ARImageDetectionResultData_anchorsForCameraWithTransform_referenceO
   return v5;
 }
 
-- (BOOL)isEqual:(id)a3
+- (BOOL)isEqual:(id)equal
 {
-  v4 = a3;
+  equalCopy = equal;
   objc_opt_class();
   if (objc_opt_isKindOfClass())
   {
-    v5 = v4;
-    v6 = [v5 detectedImages];
-    v7 = [(ARImageDetectionResultData *)self detectedImages];
-    if ([v6 isEqual:v7] && (v8 = v5[8], v8 == -[ARImageDetectionResultData detectionOnly](self, "detectionOnly")) && (v9 = v5[10], v9 == -[ARImageDetectionResultData providesWorldTrackingCameraPose](self, "providesWorldTrackingCameraPose")))
+    v5 = equalCopy;
+    detectedImages = [v5 detectedImages];
+    detectedImages2 = [(ARImageDetectionResultData *)self detectedImages];
+    if ([detectedImages isEqual:detectedImages2] && (v8 = v5[8], v8 == -[ARImageDetectionResultData detectionOnly](self, "detectionOnly")) && (v9 = v5[10], v9 == -[ARImageDetectionResultData providesWorldTrackingCameraPose](self, "providesWorldTrackingCameraPose")))
     {
-      v10 = [v5 currentCamera];
-      v11 = [(ARImageDetectionResultData *)self currentCamera];
-      if ([v10 isEqual:v11] && self->_predicted == objc_msgSend(v5, "predicted"))
+      currentCamera = [v5 currentCamera];
+      currentCamera2 = [(ARImageDetectionResultData *)self currentCamera];
+      if ([currentCamera isEqual:currentCamera2] && self->_predicted == objc_msgSend(v5, "predicted"))
       {
         [v5 timestamp];
         v13 = v12 == self->_timestamp;
@@ -533,8 +533,8 @@ float __117__ARImageDetectionResultData_anchorsForCameraWithTransform_referenceO
 - (NSString)description
 {
   v2 = MEMORY[0x1E696AEC0];
-  v3 = [(ARImageDetectionResultData *)self tracingEntry];
-  v4 = [v2 stringWithFormat:@"%@", v3];
+  tracingEntry = [(ARImageDetectionResultData *)self tracingEntry];
+  v4 = [v2 stringWithFormat:@"%@", tracingEntry];
 
   return v4;
 }
@@ -570,10 +570,10 @@ float __117__ARImageDetectionResultData_anchorsForCameraWithTransform_referenceO
         v10 = [MEMORY[0x1E696AD98] numberWithUnsignedLongLong:{objc_msgSend(v8, "odtObjectIdentifer")}];
         [v9 setObject:v10 forKeyedSubscript:@"odtObjectIdentifer"];
 
-        v11 = [v8 referenceImage];
-        v12 = [v11 identifier];
-        v13 = [v12 UUIDString];
-        [v9 setObject:v13 forKeyedSubscript:@"imageIdentifier"];
+        referenceImage = [v8 referenceImage];
+        identifier = [referenceImage identifier];
+        uUIDString = [identifier UUIDString];
+        [v9 setObject:uUIDString forKeyedSubscript:@"imageIdentifier"];
 
         [v8 visionTransform];
         v14 = [ARQAHelper arrayWithMatrix4x4:?];
@@ -583,19 +583,19 @@ float __117__ARImageDetectionResultData_anchorsForCameraWithTransform_referenceO
         v19 = ARMatrix4x4Description(0, v15, v16, v17, v18);
         [v9 setObject:v19 forKeyedSubscript:@"transformString"];
 
-        v20 = [v8 referenceImage];
-        v21 = [v20 name];
-        [v9 setObject:v21 forKeyedSubscript:@"referenceImageName"];
+        referenceImage2 = [v8 referenceImage];
+        name = [referenceImage2 name];
+        [v9 setObject:name forKeyedSubscript:@"referenceImageName"];
 
         v22 = MEMORY[0x1E696AD98];
-        v23 = [v8 referenceImage];
-        [v23 physicalSize];
+        referenceImage3 = [v8 referenceImage];
+        [referenceImage3 physicalSize];
         *&v24 = v24;
         v25 = [v22 numberWithFloat:v24];
         v40[0] = v25;
         v26 = MEMORY[0x1E696AD98];
-        v27 = [v8 referenceImage];
-        [v27 physicalSize];
+        referenceImage4 = [v8 referenceImage];
+        [referenceImage4 physicalSize];
         *&v29 = v28;
         v30 = [v26 numberWithFloat:v29];
         v40[1] = v30;

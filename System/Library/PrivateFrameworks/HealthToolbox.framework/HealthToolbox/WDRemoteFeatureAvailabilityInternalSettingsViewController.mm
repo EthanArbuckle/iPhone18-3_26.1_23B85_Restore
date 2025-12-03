@@ -1,12 +1,12 @@
 @interface WDRemoteFeatureAvailabilityInternalSettingsViewController
-- (WDRemoteFeatureAvailabilityInternalSettingsViewController)initWithConditions:(id)a3;
+- (WDRemoteFeatureAvailabilityInternalSettingsViewController)initWithConditions:(id)conditions;
 - (id)currentlocaleCountryCode;
-- (id)evaluateRulesForCondition:(id)a3;
-- (id)jsonStringFromDictionary:(id)a3;
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4;
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4;
-- (int64_t)numberOfSectionsInTableView:(id)a3;
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4;
+- (id)evaluateRulesForCondition:(id)condition;
+- (id)jsonStringFromDictionary:(id)dictionary;
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path;
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section;
+- (int64_t)numberOfSectionsInTableView:(id)view;
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section;
 - (void)_featureAvailabilityConditionsDidUpdate;
 - (void)_registerForNotifications;
 - (void)_unregisterForNotifications;
@@ -17,19 +17,19 @@
 
 @implementation WDRemoteFeatureAvailabilityInternalSettingsViewController
 
-- (WDRemoteFeatureAvailabilityInternalSettingsViewController)initWithConditions:(id)a3
+- (WDRemoteFeatureAvailabilityInternalSettingsViewController)initWithConditions:(id)conditions
 {
-  v5 = a3;
+  conditionsCopy = conditions;
   v11.receiver = self;
   v11.super_class = WDRemoteFeatureAvailabilityInternalSettingsViewController;
   v6 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)&v11 initWithStyle:1];
   v7 = v6;
   if (v6)
   {
-    objc_storeStrong(&v6->_conditions, a3);
-    v8 = [MEMORY[0x277CBEBD0] hk_remoteFeatureAvailabilityUserDefaults];
+    objc_storeStrong(&v6->_conditions, conditions);
+    hk_remoteFeatureAvailabilityUserDefaults = [MEMORY[0x277CBEBD0] hk_remoteFeatureAvailabilityUserDefaults];
     userDefaults = v7->_userDefaults;
-    v7->_userDefaults = v8;
+    v7->_userDefaults = hk_remoteFeatureAvailabilityUserDefaults;
 
     [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)v7 setTitle:@"Remote Conditions"];
     [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)v7 _registerForNotifications];
@@ -52,8 +52,8 @@
   v4.super_class = WDRemoteFeatureAvailabilityInternalSettingsViewController;
   [(HKTableViewController *)&v4 viewDidLoad];
   [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self reloadUserDefaultsContent];
-  v3 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)_registerForNotifications
@@ -92,24 +92,24 @@ void __86__WDRemoteFeatureAvailabilityInternalSettingsViewController__registerFo
 - (void)_featureAvailabilityConditionsDidUpdate
 {
   [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self reloadUserDefaultsContent];
-  v3 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self tableView];
-  [v3 reloadData];
+  tableView = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self tableView];
+  [tableView reloadData];
 }
 
 - (void)reloadUserDefaultsContent
 {
-  v3 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaults];
-  v4 = [v3 dictionaryRepresentation];
-  [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self setUserDefaultsContent:v4];
+  userDefaults = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaults];
+  dictionaryRepresentation = [userDefaults dictionaryRepresentation];
+  [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self setUserDefaultsContent:dictionaryRepresentation];
 
-  v5 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContent];
-  v6 = [v5 allKeys];
+  userDefaultsContent = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContent];
+  allKeys = [userDefaultsContent allKeys];
   v9[0] = MEMORY[0x277D85DD0];
   v9[1] = 3221225472;
   v9[2] = __86__WDRemoteFeatureAvailabilityInternalSettingsViewController_reloadUserDefaultsContent__block_invoke;
   v9[3] = &unk_2796E80B0;
   v9[4] = self;
-  v7 = [v6 hk_filter:v9];
+  v7 = [allKeys hk_filter:v9];
   v8 = [v7 sortedArrayUsingSelector:sel_compare_];
   [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self setUserDefaultsContentKeys:v8];
 }
@@ -124,10 +124,10 @@ uint64_t __86__WDRemoteFeatureAvailabilityInternalSettingsViewController_reloadU
   return v5;
 }
 
-- (id)jsonStringFromDictionary:(id)a3
+- (id)jsonStringFromDictionary:(id)dictionary
 {
   v6 = 0;
-  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:a3 options:1 error:&v6];
+  v3 = [MEMORY[0x277CCAAA0] dataWithJSONObject:dictionary options:1 error:&v6];
   if (v3)
   {
     v4 = [objc_alloc(MEMORY[0x277CCACA8]) initWithData:v3 encoding:4];
@@ -141,30 +141,30 @@ uint64_t __86__WDRemoteFeatureAvailabilityInternalSettingsViewController_reloadU
   return v4;
 }
 
-- (id)evaluateRulesForCondition:(id)a3
+- (id)evaluateRulesForCondition:(id)condition
 {
   v20[1] = *MEMORY[0x277D85DE8];
-  v4 = a3;
+  conditionCopy = condition;
   v5 = NSClassFromString(&cfstr_Hkactivewatchr.isa);
   if (v5)
   {
     v6 = objc_alloc_init(v5);
-    v7 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self currentlocaleCountryCode];
-    [v6 setValue:v7 forKey:@"onboardingCountryCode"];
+    currentlocaleCountryCode = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self currentlocaleCountryCode];
+    [v6 setValue:currentlocaleCountryCode forKey:@"onboardingCountryCode"];
 
     v8 = objc_alloc(MEMORY[0x277CCD8A0]);
-    v9 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContent];
+    userDefaultsContent = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContent];
     v10 = MEMORY[0x277CBEB98];
-    v20[0] = v4;
+    v20[0] = conditionCopy;
     v11 = [MEMORY[0x277CBEA60] arrayWithObjects:v20 count:1];
     v12 = [v10 setWithArray:v11];
-    v13 = [v8 initWithRawValue:v9 dataSource:v6 supportedConditions:v12];
+    v13 = [v8 initWithRawValue:userDefaultsContent dataSource:v6 supportedConditions:v12];
 
-    v14 = [v13 evaluateAll];
-    v15 = [v14 objectForKeyedSubscript:v4];
-    v16 = [v15 BOOLValue];
+    evaluateAll = [v13 evaluateAll];
+    v15 = [evaluateAll objectForKeyedSubscript:conditionCopy];
+    bOOLValue = [v15 BOOLValue];
 
-    v17 = [MEMORY[0x277CCABB0] numberWithBool:v16];
+    v17 = [MEMORY[0x277CCABB0] numberWithBool:bOOLValue];
   }
 
   else
@@ -179,16 +179,16 @@ uint64_t __86__WDRemoteFeatureAvailabilityInternalSettingsViewController_reloadU
 
 - (id)currentlocaleCountryCode
 {
-  v2 = [MEMORY[0x277CBEAF8] currentLocale];
-  v3 = [v2 countryCode];
+  currentLocale = [MEMORY[0x277CBEAF8] currentLocale];
+  countryCode = [currentLocale countryCode];
 
-  return v3;
+  return countryCode;
 }
 
-- (int64_t)numberOfSectionsInTableView:(id)a3
+- (int64_t)numberOfSectionsInTableView:(id)view
 {
-  v3 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContentKeys];
-  v4 = [v3 count];
+  userDefaultsContentKeys = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContentKeys];
+  v4 = [userDefaultsContentKeys count];
 
   if (v4 <= 1)
   {
@@ -201,9 +201,9 @@ uint64_t __86__WDRemoteFeatureAvailabilityInternalSettingsViewController_reloadU
   }
 }
 
-- (int64_t)tableView:(id)a3 numberOfRowsInSection:(int64_t)a4
+- (int64_t)tableView:(id)view numberOfRowsInSection:(int64_t)section
 {
-  v4 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContentKeys:a3];
+  v4 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContentKeys:view];
   v5 = [v4 count];
 
   if (v5)
@@ -217,16 +217,16 @@ uint64_t __86__WDRemoteFeatureAvailabilityInternalSettingsViewController_reloadU
   }
 }
 
-- (id)tableView:(id)a3 titleForFooterInSection:(int64_t)a4
+- (id)tableView:(id)view titleForFooterInSection:(int64_t)section
 {
-  v6 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContentKeys];
-  v7 = [v6 count] - 1;
+  userDefaultsContentKeys = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContentKeys];
+  v7 = [userDefaultsContentKeys count] - 1;
 
-  if (v7 == a4)
+  if (v7 == section)
   {
     v8 = MEMORY[0x277CCACA8];
-    v9 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self currentlocaleCountryCode];
-    v10 = [v8 stringWithFormat:@"The current device region from the locale has been used to evaluate the conditions here (%@).", v9];
+    currentlocaleCountryCode = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self currentlocaleCountryCode];
+    v10 = [v8 stringWithFormat:@"The current device region from the locale has been used to evaluate the conditions here (%@).", currentlocaleCountryCode];
   }
 
   else
@@ -237,56 +237,56 @@ uint64_t __86__WDRemoteFeatureAvailabilityInternalSettingsViewController_reloadU
   return v10;
 }
 
-- (id)tableView:(id)a3 cellForRowAtIndexPath:(id)a4
+- (id)tableView:(id)view cellForRowAtIndexPath:(id)path
 {
-  v6 = a4;
-  v7 = [a3 dequeueReusableCellWithIdentifier:@"default_cell"];
+  pathCopy = path;
+  v7 = [view dequeueReusableCellWithIdentifier:@"default_cell"];
   if (!v7)
   {
     v7 = [objc_alloc(MEMORY[0x277D75B48]) initWithStyle:1 reuseIdentifier:@"default_cell"];
   }
 
-  v8 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContentKeys];
-  v9 = [v8 count];
+  userDefaultsContentKeys = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContentKeys];
+  v9 = [userDefaultsContentKeys count];
 
   if (!v9)
   {
-    v20 = [v7 textLabel];
-    [v20 setText:@"N/A"];
+    textLabel = [v7 textLabel];
+    [textLabel setText:@"N/A"];
 
-    v21 = [v7 textLabel];
-    [v21 setNumberOfLines:1];
+    textLabel2 = [v7 textLabel];
+    [textLabel2 setNumberOfLines:1];
 
-    v11 = [v7 detailTextLabel];
-    [v11 setText:0];
+    detailTextLabel = [v7 detailTextLabel];
+    [detailTextLabel setText:0];
     goto LABEL_14;
   }
 
-  v10 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContentKeys];
-  v11 = [v10 objectAtIndexedSubscript:{objc_msgSend(v6, "section")}];
+  userDefaultsContentKeys2 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContentKeys];
+  detailTextLabel = [userDefaultsContentKeys2 objectAtIndexedSubscript:{objc_msgSend(pathCopy, "section")}];
 
-  if ([v6 row])
+  if ([pathCopy row])
   {
-    v12 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContent];
-    v13 = [v12 objectForKeyedSubscript:v11];
+    userDefaultsContent = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self userDefaultsContent];
+    v13 = [userDefaultsContent objectForKeyedSubscript:detailTextLabel];
 
     v14 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self jsonStringFromDictionary:v13];
-    v15 = [v7 textLabel];
-    [v15 setText:v14];
+    textLabel3 = [v7 textLabel];
+    [textLabel3 setText:v14];
 
-    v16 = [v7 textLabel];
-    [v16 setNumberOfLines:0];
+    textLabel4 = [v7 textLabel];
+    [textLabel4 setNumberOfLines:0];
   }
 
   else
   {
-    v22 = [v7 textLabel];
-    [v22 setText:v11];
+    textLabel5 = [v7 textLabel];
+    [textLabel5 setText:detailTextLabel];
 
-    v23 = [v7 textLabel];
-    [v23 setNumberOfLines:1];
+    textLabel6 = [v7 textLabel];
+    [textLabel6 setNumberOfLines:1];
 
-    v24 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self evaluateRulesForCondition:v11];
+    v24 = [(WDRemoteFeatureAvailabilityInternalSettingsViewController *)self evaluateRulesForCondition:detailTextLabel];
     v13 = v24;
     if (v24)
     {
@@ -300,18 +300,18 @@ uint64_t __86__WDRemoteFeatureAvailabilityInternalSettingsViewController_reloadU
         v25 = @"🔴";
       }
 
-      v17 = [v7 detailTextLabel];
-      v18 = v17;
+      detailTextLabel2 = [v7 detailTextLabel];
+      v18 = detailTextLabel2;
       v19 = v25;
       goto LABEL_13;
     }
   }
 
-  v17 = [v7 detailTextLabel];
-  v18 = v17;
+  detailTextLabel2 = [v7 detailTextLabel];
+  v18 = detailTextLabel2;
   v19 = 0;
 LABEL_13:
-  [v17 setText:v19];
+  [detailTextLabel2 setText:v19];
 
 LABEL_14:
 

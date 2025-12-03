@@ -1,17 +1,17 @@
 @interface LDCMMobileAssetDistributor
-- (void)receiveBehaviorDictionary:(id)a3;
+- (void)receiveBehaviorDictionary:(id)dictionary;
 @end
 
 @implementation LDCMMobileAssetDistributor
 
-- (void)receiveBehaviorDictionary:(id)a3
+- (void)receiveBehaviorDictionary:(id)dictionary
 {
   v26 = *MEMORY[0x277D85DE8];
-  v3 = a3;
-  v4 = v3;
-  if (v3)
+  dictionaryCopy = dictionary;
+  v4 = dictionaryCopy;
+  if (dictionaryCopy)
   {
-    v5 = [v3 objectForKeyedSubscript:@"LDCMBehaviorV4"];
+    v5 = [dictionaryCopy objectForKeyedSubscript:@"LDCMBehaviorV4"];
     if (v5)
     {
       v6 = v5;
